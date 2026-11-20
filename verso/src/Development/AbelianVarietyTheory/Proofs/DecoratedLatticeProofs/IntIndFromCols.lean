@@ -17,11 +17,11 @@ open GlobalTheory.StepData GlobalTheory.SymChain
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `haveI : T2Space k := GlobalTheory.SplitWeil.t2Space k`. Use `haveI : T2Space (Matrix a b k) := inferInstanceAs (T2Space (a → b → k))`. Establish `e : {x : Matrix a b k | ∀ r q, x r q ∈ 𝒪[k]} = Set.pi Set.univ fun _ : a => Set.pi Set.univ fun _ : b => (𝒪[k] : Set k)`. Use extensionality with `x`. Conclude with `⟨fun h r _ q _ => h r q, fun h r q => h r trivial q trivial⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK : IsCompact {x : Matrix a b k | ∀ r q, x r q ∈ 𝒪[k]}`. Rewrite using `[e]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_int k`. Establish `ho : IsOpen {x : Matrix a b k | ∀ r q, x r q ∈ 𝒪[k]}`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => isOpen_int k`. Use `GlobalTheory.FinPl.Comm.ite_mem_SB hK ho` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases h : ∀ r q, x r q ∈ 𝒪[k] <;> simp [Set.indicator_apply, h]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem intInd_mem_SB (a b : Type) [Fintype a] [Fintype b] :
     Set.indicator {x : Matrix a b k | ∀ r q, x r q ∈ 𝒪[k]} (fun _ => (1 : ℂ)) ∈ SB (Matrix a b k) := by
@@ -44,7 +44,7 @@ theorem intInd_mem_SB (a b : Type) [Fintype a] [Fintype b] :
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Simplify using `only [hat, mul_assoc]`. Rewrite using `[integral_const_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hat_const_mul {n : Type} [Fintype n] (ψ : AddChar k Circle) (ν : Measure k) (ε : k) (c : ℂ)
     (f : (n → k) → ℂ) (η : n → k) : hat ψ ν ε (fun y => c * f y) η = c * hat ψ ν ε f η := by
@@ -54,11 +54,11 @@ theorem hat_const_mul {n : Type} [Fintype n] (ψ : AddChar k Circle) (ν : Measu
 open Classical in
 
 /- English proof (translation)
-Use `hν.1` as an intermediate fact. Use `secondCountable k` as an intermediate fact. Use `split_ifs with hη`. Establish `hε' : ε ∈ 𝒪[k]`. Rewrite using `[Valuation.mem_integer_iff, hε]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.StepData.Model.hat_coset hψ hν hε' 0 hη]`. Simplify using the standard rewrite rules. Establish `hs : ∀ z ∈ box n (1 : kˣ), ∀ x, cosetInd (box n (1 : kˣ)) (Submodule.Quotient.mk 0) (x + z) = cosetInd (box n (1 : kˣ)) (Submodule.Quotient.mk 0) x` using `fun z hz x => by`. Establish `: (Submodule.Quotient.mk (x + z) : (n → k) ⧸ box n (1 : kˣ)) = Submodule.Quotient.mk x` using `(Submodule.Quotient.eq _).2 (by simpa using hz)`. Simplify using `only [cosetInd, Set.indicator_apply, Set.mem_setOf_eq, this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (FourierPi.fourier_eq_zero_pi (Measure.pi fun _ => ν) hψ (s := 1) (fun z hz x => hs z (fun i => hz i trivial) x) (y := ε • η) fun h' => hη fun i => ?_)` and prove the remaining obligations. Simplify using `only [hat, dotProduct_smul, smul_eq_mul, dotProduct_comm]`. Simplify `h' i trivial` using `[cball, hε, Valuation.mem_integer_iff]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hat_int {n : Type} [Fintype n] [DecidableEq n] {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ν : Measure k}
     (hν : IsUnitVol ν) {ε : k} (hε : valuation k ε = 1) (η : n → k) :
@@ -86,7 +86,7 @@ section Entries
 variable {s : ℕ} {X : ℕ → Type} [∀ j, Fintype (X j)] [∀ j, DecidableEq (X j)] {Z : Type} [Fintype Z] [DecidableEq Z]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.FinPl.Comm.t2Space_matrix_of_isNonarchimedeanLocalField (k := k) (n := X (s + 1)) (n' := X s)`. Use `GlobalTheory.FinPl.Comm.comp_mem_SB (om_mem_SB (T.mu (s + 1)) 1 1 (hT.1 s 0 rfl)) (p := fun x₀ => withCol x₀ y) (s := fun x => x.toBlocks₁₁) ?_ ?_ fun x => rfl` and prove the remaining obligations. Unfold `withCol`. Use `fun_prop`. Conclude with `continuous_pi fun i => continuous_pi fun j => (continuous_apply (Sum.inl j)).comp (continuous_apply (Sum.inl i))`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem psi_mem_SB (T : Chain k s X Z) (hT : T.Regular) (y : X (s + 1) → k) :
     (fun x₀ => T.Psi 1 x₀ y) ∈ SB (Matrix (X (s + 1)) (X s) k) := by
@@ -99,11 +99,9 @@ theorem psi_mem_SB (T : Chain k s X Z) (hT : T.Regular) (y : X (s + 1) → k) :
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.FinPl.Comm.t2Space_matrix_of_isNonarchimedeanLocalField (k := k) (n := Z ⊕ Unit) (n' := X (s + 1))`. Establish `hh` using `(GlobalTheory.IndefiniteRowSideFullHecke.OmegaColumnSlices.hat_mem_SB_and_hat_omCol k ψ ν ε hψ hν hε (X (s + 1)) 1 1 _ (cosetInd_mem_SB 1 yb)).1`. Use `GlobalTheory.FinPl.Comm.prod_mem_SB hT.2.1 hh (p := fun x : Matrix (Z ⊕ Unit) (X (s + 1)) k => fromCols x.toRows₁ (0 : Matrix Z (Fin 0) k)) (r := fun x => x (Sum.inr ())) (s := fun z => fromRows z.1.toCols₁ (Matrix.of fun (_ : Unit) => z.2)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `continuous_pi fun i => continuous_pi fun j => by`. Break down `j with j | j` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(continuous_apply j).comp (continuous_apply (Sum.inl i))`. Conclude with `j.elim0`. Conclude with `continuous_apply _`. Conclude with `continuous_pi fun i => continuous_pi fun j => by`. Break down `i with i | i` into its components or cases.
-
-Conclude with `(continuous_apply (Sum.inl j)).comp ((continuous_apply i).comp continuous_fst)`. Conclude with `(continuous_apply j).comp continuous_snd`. Apply the tactic sequence `intro x; ext (i | i) j <;> rfl`.
+A detailed English derivation is pending.
 -/
 theorem xiTop_mem_SB (T : Chain k s X Z) (hT : T.Regular) {ψ : AddChar k Circle} (hψ : HasConductor ψ 1)
     {ν : Measure k} (hν : IsUnitVol ν) {ε : k} (hε : valuation k ε = 1) (yb : (X (s + 1) → k) ⧸ box (X (s + 1)) (1 : kˣ)) :
@@ -133,9 +131,9 @@ variable {a b c : Type} [Fintype a] [DecidableEq a] [Fintype b] [Fintype c]
 open Classical in
 
 /- English proof (translation)
-Establish `hy : (Submodule.Quotient.mk y : (a → k) ⧸ box a (1 : kˣ)) = Submodule.Quotient.mk 0 ↔ ∀ i, y i ∈ 𝒪[k]`. Simplify using `[Submodule.Quotient.eq, mem_box, Valuation.mem_integer_iff]`. Unfold `cosetInd`. Distinguish the cases in `h : ∀ i, y i ∈ 𝒪[k]`. Rewrite using `[Set.indicator_of_mem (s := {y : a → k | Submodule.Quotient.mk y = Submodule.Quotient.mk 0}) (a := y) (hy.2 h), if_pos h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (s := {y : a → k | Submodule.Quotient.mk y = Submodule.Quotient.mk 0}) (a := y) (mt hy.1 h), if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetInd_zero (y : a → k) :
     cosetInd (box a (1 : kˣ)) (Submodule.Quotient.mk 0) y = if ∀ i, y i ∈ 𝒪[k] then 1 else 0 := by
@@ -151,11 +149,11 @@ theorem cosetInd_zero (y : a → k) :
 open Classical in
 
 /- English proof (translation)
-Establish `hf : (∀ r c, fromCols q (Matrix.of fun r (_ : Unit) => y r) r c ∈ 𝒪[k]) ↔ (∀ r c, q r c ∈ 𝒪[k]) ∧ ∀ i, y i ∈ 𝒪[k]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun r c => by simpa using h r (Sum.inl c), fun r => by simpa using h r (Sum.inr ())⟩`. Introduce and unpack `⟨hq, hy⟩ r (c | c)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Simplify using `using hq r c`. Simplify using `using hy r`. Rewrite using `[cosetInd_zero]`. Distinguish the cases in `h : ∀ r c, fromCols q (Matrix.of fun r (_ : Unit) => y r) r c ∈ 𝒪[k]`. Rewrite using `[Set.indicator_of_mem (s := {x : Matrix a (b ⊕ Unit) k | ∀ r c, x r c ∈ 𝒪[k]}) (a := _) h, Set.indicator_of_mem (s := {x : Matrix a b k | ∀ r c, x r c ∈ 𝒪[k]}) (a := q) (hf.1 h).1, if_pos (hf.1 h).2, mul_one]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (s := {x : Matrix a (b ⊕ Unit) k | ∀ r c, x r c ∈ 𝒪[k]}) (a := _) h]`. Distinguish the cases in `hq : ∀ r c, q r c ∈ 𝒪[k]`. Rewrite using `[Set.indicator_of_mem (s := {x : Matrix a b k | ∀ r c, x r c ∈ 𝒪[k]}) (a := q) hq, if_neg fun h2 => h (hf.2 ⟨hq, h2⟩), mul_zero]`. Rewrite using `[Set.indicator_of_notMem (s := {x : Matrix a b k | ∀ r c, x r c ∈ 𝒪[k]}) (a := q) hq, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem intInd_fromCols (q : Matrix a b k) (y : a → k) :
     Set.indicator {x : Matrix a (b ⊕ Unit) k | ∀ r c, x r c ∈ 𝒪[k]} (fun _ => (1 : ℂ))
@@ -184,11 +182,11 @@ theorem intInd_fromCols (q : Matrix a b k) (y : a → k) :
 open Classical in
 
 /- English proof (translation)
-Establish `hr : (∀ r c, q r c ∈ 𝒪[k]) ↔ (∀ r c, q.toRows₁ r c ∈ 𝒪[k]) ∧ ∀ i, q (Sum.inr ()) i ∈ 𝒪[k]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun r c => h (Sum.inl r) c, fun i => h (Sum.inr ()) i⟩`. Introduce and unpack `⟨hr, hη⟩ (r | r) c`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `hr r c`. Conclude with `hη c`. Distinguish the cases in `h : ∀ r c, q r c ∈ 𝒪[k]`. Rewrite using `[Set.indicator_of_mem (s := {x : Matrix (c ⊕ Unit) a k | ∀ r c, x r c ∈ 𝒪[k]}) (a := q) h, Set.indicator_of_mem (s := {x : Matrix c a k | ∀ r c, x r c ∈ 𝒪[k]}) (a := q.toRows₁) (hr.1 h).1, if_pos (hr.1 h).2, mul_one]`. Rewrite using `[Set.indicator_of_notMem (s := {x : Matrix (c ⊕ Unit) a k | ∀ r c, x r c ∈ 𝒪[k]}) (a := q) h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h1 : ∀ r c, q.toRows₁ r c ∈ 𝒪[k]`. Rewrite using `[Set.indicator_of_mem (s := {x : Matrix c a k | ∀ r c, x r c ∈ 𝒪[k]}) (a := q.toRows₁) h1, if_neg fun h2 => h (hr.2 ⟨h1, h2⟩), mul_zero]`. Rewrite using `[Set.indicator_of_notMem (s := {x : Matrix c a k | ∀ r c, x r c ∈ 𝒪[k]}) (a := q.toRows₁) h1, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intInd_rows (q : Matrix (c ⊕ Unit) a k) :
     Set.indicator {x : Matrix (c ⊕ Unit) a k | ∀ r c, x r c ∈ 𝒪[k]} (fun _ => (1 : ℂ)) q =
@@ -214,23 +212,21 @@ theorem intInd_rows (q : Matrix (c ⊕ Unit) a k) :
 end Ones
 
 /- English proof (translation)
-Introduce `D hLL hAMO k _ _ _ _ _ _ ν hν p s κ S t _ _ ψ hstd hchar ρ B W X T L'' o'' τ hL hτ a z₀ ha hz FA F₀ FS FT FX hcore hFX c₁ c₂ hc₁ hc₂ T₁ T₂ hT₁ hT₂ Φ₁ Φ₂ O₁ O₂ hΦ₁ hΦ₂ hO₁ hO₂`. Use `hν.1` as an intermediate fact. Take `⟨-, -, h1, h2, -⟩` from `hAMO k ν hν s κ S t`. Take `⟨Λ, hΛ, hK⟩` from `hLL k p ν hν.1 ψ hstd S.ψ hchar ρ B W X T L'' o'' τ hL hτ a z₀ ha hz _ _ _ FA F₀ FS FT FX hcore hFX T₁ T₂ hT₁ hT₂`. Take `⟨Ξ, hΞ, hΞK⟩` from `hK Φ₁ Φ₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Ξ', hΞ', hΞ'K⟩` from `hK O₁ O₂`. Establish `hreg : (S.T t).Regular` using `Chain.ofType_regular _ _ _ _ _`. Establish `hv1 : valuation k (-1 : k) = 1` using `by simp`. Set `Ξ₁ : SB (Matrix (XIx (Fin κ) t (s + 1)) (XIx (Fin κ) t s) k)` to `⟨_, psi_mem_SB _ hreg (S.y0 t)⟩`. Set `Ξ₂ : SB (Matrix (Ix (Fin κ ⊕ Fin (s + 1)) t (s + 2) ⊕ Unit) (XIx (Fin κ) t (s + 1)) k)` to `⟨_, xiTop_mem_SB _ hreg S.cond hν hv1 (Submodule.Quotient.mk (S.y0 t))⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `O₁' : SB (Matrix (XIx (Fin κ) t (s + 1)) (XIx (Fin κ) t s) k)` to `⟨_, intInd_mem_SB _ _⟩`. Set `O₂' : SB (Matrix (Ix (Fin κ ⊕ Fin (s + 1)) t (s + 2) ⊕ Unit) (XIx (Fin κ) t (s + 1)) k)` to `⟨_, intInd_mem_SB _ _⟩`. Establish `hcp : ∀ x₀ y, (S.T t).Psi 1 x₀ y = (S.T t).Psi 1 x₀ (S.y0 t) * cosetInd (box _ (1 : kˣ)) (Submodule.Quotient.mk (S.y0 t)) y` using `fun x₀ y => by`. Distinguish the cases in `hy : y - S.y0 t ∈ box _ (1 : kˣ)`. Rewrite using `[h2 x₀ y hy, cosetInd, Set.indicator_of_mem, mul_one]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.Quotient.eq _).2 hy`. Rewrite using `[cosetInd, Set.indicator_of_notMem, mul_zero]`. Conclude with `not_not.1 (mt (h1 x₀ y) hy)`. Conclude with `fun h => hy ((Submodule.Quotient.eq _).1 h)`. Establish `hprod : ∀ q, Ξ.1 q = Ξ₁.1 q.1 * Ξ₂.1 q.2` using `fun q => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hΞ q, hΦ₂]`. Establish `e : (fun y => Φ₁.1 (fromCols q.1 (Matrix.of fun r _ => y r))) = fun y => (S.T t).Psi 1 q.1 (S.y0 t) * cosetInd (box _ (1 : kˣ)) (Submodule.Quotient.mk (S.y0 t)) y`. Use function extensionality and compare the values at `y`. Rewrite using `[hΦ₁, ← hcp]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, hat_const_mul]`. Use `show _ = (S.T t).Psi 1 q.1 (S.y0 t) * ((S.T t).PhiTop (fromCols q.2.toRows₁ 0) * _)`. Expand and normalize the polynomial expressions, which then agree. Establish `hone : ∀ q, Ξ'.1 q = O₁'.1 q.1 * O₂'.1 q.2` using `fun q => by`. Rewrite using `[hΞ' q, hO₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun y => O₁.1 (fromCols q.1 (Matrix.of fun r _ => y r))) = fun y => Set.indicator {x : Matrix (XIx (Fin κ) t (s + 1)) (XIx (Fin κ) t s) k | ∀ r q, x r q ∈ 𝒪[k]} (fun _ => (1 : ℂ)) q.1 * cosetInd (box _ (1 : kˣ)) (Submodule.Quotient.mk 0) y`. Use function extensionality and compare the values at `y`. Rewrite using `[hO₁]`. Conclude with `intInd_fromCols q.1 y`. Rewrite using `[e, hat_const_mul, hat_int S.cond hν hv1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [O₁', O₂']`. Rewrite using `[intInd_rows q.2]`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `(GlobalTheory.T.heisenbergCombination_twoVariableModel_and_lineExtension D k p ψ _ _ _).1 B.A W X FA FS FX Λ c₁ c₂ Ξ₁ O₁' Ξ₂ O₂' Ξ Ξ' hΛ hc₁ hc₂ rfl rfl hprod hone`. Establish `e1` using `funext hΞK`.
-
-Establish `e2` using `funext hΞ'K`. Rewrite using `[e1, e2]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gLast : ∀ (D : D7), LastLoc D → GlobalTheory.SymChain.AtMostOne → GLast D := by
   classical

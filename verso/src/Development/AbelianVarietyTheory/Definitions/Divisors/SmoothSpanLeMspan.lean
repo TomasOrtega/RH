@@ -12,18 +12,18 @@ open GlobalTheory.CuspRep GlobalTheory.JSW
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[colU]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem colU_zero (r : ℕ) : colU (E := E) (a := a) r 0 = 1 := by
   ext i j
   simp [colU]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(1 + Matrix.of (fun i j : Fin a => if (j : ℕ) = r ∧ (i : ℕ) < r then (x + y) i else 0)) = ((1 + Matrix.of (fun i j : Fin a => if (j : ℕ) = r ∧ (i : ℕ) < r then x i else 0)) * (1 + Matrix.of (fun i j : Fin a => if (j : ℕ) = r ∧ (i : ℕ) < r then y i else 0)))`. Establish `h : Matrix.of (fun i j : Fin a => if (j : ℕ) = r ∧ (i : ℕ) < r then x i else 0) * Matrix.of (fun i j : Fin a => if (j : ℕ) = r ∧ (i : ℕ) < r then y i else 0) = 0`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.zero_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℕ) = r`. Simplify using `[hk]`. Simplify using `[hk]`. Rewrite using `[mul_add, add_mul, add_mul, one_mul, mul_one, one_mul, h, add_zero, add_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.add_apply, Matrix.of_apply, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem colU_add (r : ℕ) (x y : Fin a → Cinf E) : colU r (x + y) = colU r x * colU r y := by
   apply Units.ext
@@ -45,7 +45,7 @@ theorem colU_add (r : ℕ) (x y : Fin a → Cinf E) : colU r (x + y) = colU r x 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `: (j : ℕ) ≠ r` using `by omega`. Simplify using `[colU, this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem colU_of_le {r : ℕ} (hr : a ≤ r) (x : Fin a → Cinf E) : colU r x = 1 := by
   ext i j
@@ -53,7 +53,7 @@ theorem colU_of_le {r : ℕ} (hr : a ≤ r) (x : Fin a → Cinf E) : colU r x = 
   simp [colU, this]
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, hf, hφ, rfl⟩`. Conclude with `Submodule.mem_sInf.2 fun S hS => hS.2.2.1 _ (hS.1 φ hφ) f hf`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem smoothSpan_le_mspan (π : CuspSub E a) : smoothSpan π ≤ mspan π := by
   refine Submodule.span_le.2 ?_
@@ -61,7 +61,7 @@ theorem smoothSpan_le_mspan (π : CuspSub E a) : smoothSpan π ≤ mspan π := b
   exact Submodule.mem_sInf.2 fun S hS => hS.2.2.1 _ (hS.1 φ hφ) f hf
 
 /- English proof (translation)
-Introduce `h` and use `smoothSpan_ne_bot π (le_bot_iff.1 (h ▸ smoothSpan_le_mspan π))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mspan_ne_bot (π : CuspSub E a) : mspan π ≠ ⊥ :=
   fun h => smoothSpan_ne_bot π (le_bot_iff.1 (h ▸ smoothSpan_le_mspan π))
@@ -73,11 +73,11 @@ def leftInv (E : Type) [Field E] [NumberField E] (a : ℕ) : Submodule ℂ (GA E
   smul_mem' c F hF γ g := by simp [hF γ g]
 
 /- English proof (translation)
-Use `sInf_le ⟨fun φ hφ => (π.cusp φ hφ).1.left, fun F hF h γ g => ?_, fun F hF f _ γ g => ?_, fun F hF r f γ g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F (ratGL E a γ * g * h) = F (g * h)`. Rewrite using `[mul_assoc]`. Conclude with `hF γ _`. Express the relevant statement in the definitionally equal form `smoothInf f F (ratGL E a γ * g) = smoothInf f F g`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← smoothInf_left]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `hF γ x`. Express the relevant statement in the definitionally equal form `colConv r f F (ratGL E a γ * g) = colConv r f F g`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [colConv, mul_assoc]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[hF γ]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mspan_le_leftInv (π : CuspSub E a) : mspan π ≤ leftInv E a := by
   refine sInf_le ⟨fun φ hφ => (π.cusp φ hφ).1.left, fun F hF h γ g => ?_, fun F hF f _ γ g => ?_,
@@ -96,40 +96,34 @@ theorem mspan_le_leftInv (π : CuspSub E a) : mspan π ≤ leftInv E a := by
     rw [hF γ]
 
 /- English proof (translation)
-The claim follows from `mspan_le_leftInv π hF γ g`.
+A detailed English derivation is pending.
 -/
 theorem mspan_left (π : CuspSub E a) {F : GA E a → ℂ} (hF : F ∈ mspan π) (γ : GL (Fin a) E) (g : GA E a) :
     F (ratGL E a γ * g) = F g :=
   mspan_le_leftInv π hF γ g
 
 /- English proof (translation)
-Use `haveI : (volume : Measure (Fin a → Cinf E)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Establish `hc : Continuous fun x : Fin a → Cinf E => toL (colU r x).val`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun x : Fin a → Cinf E => (1 : Matrix (Fin a) (Fin a) (Cinf E)) i j + (if (j : ℕ) = r ∧ (i : ℕ) < r then x i else 0)`. Use `split_ifs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `continuous_const.add (continuous_apply i)`. Conclude with `continuous_const.add continuous_const`. Establish `hF : Continuous fun x : Fin a → Cinf E => φ.1 (g * infGL E a (colU r x))`. Establish `h1 : ContinuousOn (chart φ.1 g) (invSet E a)` using `(φ.2 g).continuousOn`. Establish `h2` using `h1.comp_continuous hc fun x => val_mem_invSet (colU r x)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h2.congr fun x => ?_` and prove the remaining obligations. Conclude with `chart_val φ.1 g (colU r x)`. Take `⟨C, N, hC⟩` from `(π.cusp φ hφ).1.growth g`. Use `set c₁ : ℝ := ‖(1 : Cinf E)‖`. Establish `hent : ∀ (s : Cinf E) (x : Fin a → Cinf E), ‖s‖ ≤ 1 → ‖toL ((1 : Matrix (Fin a) (Fin a) (Cinf E)) + Matrix.of (fun i j : Fin a => if (j : ℕ) = r ∧ (i : ℕ) < r then s * x i else 0))‖ ≤ c₁ + ‖x‖`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `s x hs`. Use `pi_norm_le_iff_of_nonneg (by positivity) |>.2 fun i => pi_norm_le_iff_of_nonneg (by positivity) |>.2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(1 : Matrix (Fin a) (Fin a) (Cinf E)) i j + (if (j : ℕ) = r ∧ (i : ℕ) < r then s * x i else 0)‖ ≤ _`. Use `(norm_add_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Conclude with `le_rfl`. Simplify using `[c₁]`. Use `split_ifs`. Conclude with `(norm_mul_le _ _).trans ((mul_le_mul hs (norm_le_pi_norm x i) (norm_nonneg _) zero_le_one).trans (by simp))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `hH : ∀ x : Fin a → Cinf E, height (colU r x) ≤ (1 + 2 * c₁) + 2 * ‖x‖`. Introduce `x`. Establish `e1 : (colU r x).val = (1 : Matrix (Fin a) (Fin a) (Cinf E)) + Matrix.of (fun i j : Fin a => if (j : ℕ) = r ∧ (i : ℕ) < r then (1 : Cinf E) * x i else 0)`. Simplify using `[colU]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ((colU r x)⁻¹).val = (1 : Matrix (Fin a) (Fin a) (Cinf E)) + Matrix.of (fun i j : Fin a => if (j : ℕ) = r ∧ (i : ℕ) < r then (-1 : Cinf E) * x i else 0)`. Express the relevant statement in the definitionally equal form `1 - _ = _`. Rewrite using `[sub_eq_add_neg]`. Use `congr 1`. Use extensionality with `i j w`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.neg_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `n1 : ‖(-1 : Cinf E)‖ ≤ 1`. Rewrite using `[norm_neg]; exact (pi_norm_le_iff_of_nonneg zero_le_one).2 fun w => by simp`. Establish `n0 : ‖(1 : Cinf E)‖ ≤ 1` using `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun w => by simp`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Unfold `height`. Rewrite using `[e1, e2]`. Combine the linear relations using `[hent 1 x n0, hent (-1) x n1]`. Establish `hC0 : 0 ≤ C`. Establish `h` using `hC 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : 0 < height (1 : GL (Fin a) (Cinf E)) ^ N` using `pow_pos (by linarith [one_le_height (1 : GL (Fin a) (Cinf E))]) N`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Establish `: C * height (1 : GL (Fin a) (Cinf E)) ^ N < 0` using `mul_neg_of_neg_of_pos hn hp`. Combine the linear relations using `[norm_nonneg (φ.1 (g * infGL E a 1))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set A : ℝ := 1 + 2 * c₁`. Establish `hA : 0 ≤ A` using `by positivity`. Establish `hdom : Integrable fun x : Fin a → Cinf E => C * ((A + 2 * ‖x‖) ^ N * ‖f x‖)`. Use `Integrable.const_mul ?_ C` and prove the remaining obligations. Establish `e : (fun x : Fin a → Cinf E => (A + 2 * ‖x‖) ^ N * ‖f x‖) = fun x => ∑ m ∈ Finset.range (N + 1), (2 ^ m * A ^ (N - m) * (N.choose m : ℝ)) * (‖x‖ ^ m * ‖f x‖)`.
-
-Use function extensionality and compare the values at `x`. Rewrite using `[add_comm, add_pow, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Conclude with `integrable_finset_sum _ fun m _ => (f.integrable_pow_mul volume m).const_mul _`. Use `Integrable.mono' hdom ((f.continuous.mul hF).aestronglyMeasurable) (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Establish `hb` using `(hC (colU r x)).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by linarith [one_le_height (colU r x)]) (hH x) N) hC0)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem colConv_integrable (π : CuspSub E a) {φ : Sm E a} (hφ : φ ∈ π.V) (g : GA E a) (r : ℕ)
     (f : SchwartzMap (Fin a → Cinf E) ℂ) :

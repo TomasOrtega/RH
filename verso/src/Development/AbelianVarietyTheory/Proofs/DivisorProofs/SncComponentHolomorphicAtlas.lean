@@ -26,7 +26,7 @@ def insZero {n : ℕ} (a : Fin (n + 1)) : (Fin n → ℂ) →L[ℂ] (Fin (n + 1)
         induction i using Fin.succAboveCases a <;> simp }
 
 /- English proof (translation)
-Use extensionality with `z i`. Simplify using `[insZero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem coe_insZero {n : ℕ} (a : Fin (n + 1)) :
     (insZero a : (Fin n → ℂ) → (Fin (n + 1) → ℂ)) = fun z => ins a z := by
@@ -39,14 +39,14 @@ def dropC {n : ℕ} (a : Fin (n + 1)) : (Fin (n + 1) → ℂ) →L[ℂ] (Fin n �
       map_smul' := fun _ _ => rfl }
 
 /- English proof (translation)
-Use extensionality with `p b`. Simplify using `[dropC]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem coe_dropC {n : ℕ} (a : Fin (n + 1)) :
     (dropC a : (Fin (n + 1) → ℂ) → (Fin n → ℂ)) = fun p b => p (a.succAbove b) := by
   ext p b; simp [dropC]
 
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `induction i using Fin.succAboveCases a <;> simp [h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem insertNth_drop {n : ℕ} (a : Fin (n + 1)) (p : Fin (n + 1) → ℂ) (h : p a = 0) :
     ins a (fun b => p (a.succAbove b)) = p := by
@@ -54,14 +54,14 @@ theorem insertNth_drop {n : ℕ} (a : Fin (n + 1)) (p : Fin (n + 1) → ℂ) (h 
   induction i using Fin.succAboveCases a <;> simp [h]
 
 /- English proof (translation)
-Use extensionality with `b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem drop_insertNth {n : ℕ} (a : Fin (n + 1)) (z : Fin n → ℂ) :
     (fun b => ins a z (a.succAbove b)) = z := by
   ext b; simp
 
 /- English proof (translation)
-Rewrite using `[← coe_insZero]`. Conclude with `(insZero a).continuous`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_insertNth_zero {n : ℕ} (a : Fin (n + 1)) :
     Continuous fun z : Fin n → ℂ => ins a z := by
@@ -129,7 +129,7 @@ section restrLemmas
 variable {Y : Type} [TopologicalSpace Y] {n : ℕ}
 
 /- English proof (translation)
-Establish `hz' : ins a z ∈ χ.target` using `hz`. Use `show (if h : ins a z ∈ χ.target then _ else y₀).1 = _`. Rewrite using `[dif_pos hz']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrChart_symm_val (χ : OpenPartialHomeomorph Y (Fin (n + 1) → ℂ)) (a : Fin (n + 1))
     (S : Set Y) (hS : ∀ w ∈ χ.source, w ∈ S ↔ χ w a = 0) (y₀ : S) {z : Fin n → ℂ}
@@ -142,9 +142,9 @@ theorem restrChart_symm_val (χ : OpenPartialHomeomorph Y (Fin (n + 1) → ℂ))
 end restrLemmas
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `B.cover (χ.symm p)`. Establish `h1 : AnalyticAt ℂ (B.chart j ∘ χ.symm) p` using `(h j).2 p ⟨hp, hj⟩`. Establish `h2 : AnalyticAt ℂ (χ' ∘ (B.chart j).symm) (B.chart j (χ.symm p))` using `(h' j).1 _ ⟨(B.chart j).map_source hj, by show (B.chart j).symm (B.chart j (χ.symm p)) ∈ χ'.source`. Rewrite using `[(B.chart j).left_inv hj]`. Conclude with `hp'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h2.comp_of_eq h1 rfl).congr ?_` and prove the remaining obligations. Use `filter_upwards [(χ.continuousAt_symm hp).preimage_mem_nhds ((B.chart j).open_source.mem_nhds hj)] with p' hp'`. Simplify using `only [Function.comp_apply]`. Rewrite using `[(B.chart j).left_inv hp']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analyticAt_trans {m : ℕ} {Y : Type} [TopologicalSpace Y] (B : FinHolAtlas m Y)
     {χ χ' : OpenPartialHomeomorph Y (Fin m → ℂ)} (h : IsCompatChart B χ) (h' : IsCompatChart B χ')
@@ -163,43 +163,39 @@ theorem analyticAt_trans {m : ℕ} {Y : Type} [TopologicalSpace Y] (B : FinHolAt
   rw [(B.chart j).left_inv hp']
 
 /- English proof (translation)
-Introduce `n Y _ _ _ B X _ μ q r L t W e hJ k`. Use `choose χ hχB hyχ κ hκinj hκW hκt using hJ`. Establish `hmem : ∀ y, ∀ w ∈ (χ y).source, w ∈ W k ↔ ∃ a, κ y k = some a ∧ χ y w a = 0`. Introduce `y w hw`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hwk`. Establish `h : w ∈ W k ∩ (χ y).source` using `⟨hwk, hw⟩`. Rewrite `h` using `[hκW y k]`. Conclude with `h.2`. Introduce `hex`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h : w ∈ {w ∈ (χ y).source | ∃ a, κ y k = some a ∧ χ y w a = 0}` using `⟨hw, hex⟩`. Rewrite `h` using `[← hκW y k]`. Conclude with `h.1`. Establish `hclosed : IsClosed (W k)`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_forall_mem_open]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Introduce `y hy`. Consider the cases of `hk : κ y k with`. Consider the case `none`. Use `⟨(χ y).source, ?_, (χ y).open_source, hyχ y⟩` and prove the remaining obligations. Introduce `w hw hwk`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Take `⟨a, ha, -⟩` from `(hmem y w hw).1 hwk`. Rewrite `ha` using `[hk]`. Consider the cases of `ha`. Consider the case `some a`. Use `⟨(χ y).source ∩ χ y ⁻¹' {p | p a ≠ 0}, ?_, (χ y).continuousOn.isOpen_inter_preimage (χ y).open_source (isOpen_ne_fun (continuous_apply a) continuous_const), hyχ y, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `w ⟨hw, hwa⟩ hwk`. Take `⟨a', ha', h0⟩` from `(hmem y w hw).1 hwk`. Rewrite `ha'` using `[hk]`. Consider the cases of `Option.some_injective _ ha'`. Conclude with `hwa h0`.
+Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `h0`. Conclude with `hy ((hmem y y (hyχ y)).2 ⟨a, hk, h0⟩)`. Take `⟨T, hTW, hcov⟩` from `hclosed.isCompact.elim_nhds_subcover (fun y => (χ y).source) fun y _ => (χ y).open_source.mem_nhds (hyχ y)`. Set `y : Fin T.card → Y` to `fun j => (T.equivFin.symm j).1`. Establish `hyW : ∀ j, y j ∈ W k` using `fun j => hTW _ (T.equivFin.symm j).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA : ∀ j, ∃ a, κ (y j) k = some a` using `fun j => by`. Take `⟨a, ha, -⟩` from `(hmem (y j) (y j) (hyχ _)).1 (hyW j)`. Conclude with `⟨a, ha⟩`. Use `choose a ha using hA`. Establish `hS : ∀ j, ∀ w ∈ (χ (y j)).source, w ∈ W k ↔ χ (y j) w (a j) = 0`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Introduce `j w hw`. Rewrite using `[hmem _ w hw]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a', ha', h0⟩`. Rewrite `ha'` using `[ha j]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the cases of `Option.some_injective _ ha'`. Conclude with `h0`. Introduce `h0`. Conclude with `⟨a j, ha j, h0⟩`. Set `c : Fin T.card → OpenPartialHomeomorph (W k) (Fin n → ℂ)` to `fun j => restrChart (χ (y j)) (a j) (W k) (hS j) ⟨y j, hyW j⟩`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hc_symm : ∀ j, ∀ z ∈ (c j).target, ((c j).symm z).1 = (χ (y j)).symm (ins (a j) z)` using `fun j z hz => restrChart_symm_val _ _ _ _ _ hz`. Establish `hc_nhds : ∀ j, ∀ z ∈ (c j).target, ∀ᶠ z' in 𝓝 z, ((c j).symm z').1 = (χ (y j)).symm (ins (a j) z')` using `fun j z hz => by filter_upwards [(c j).open_target.mem_nhds hz] with z' hz'`. Conclude with `hc_symm j z' hz'`. Set `C : FinHolAtlas n (W k)` to `{ n := T.card chart := c cover := by`. Introduce `v`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `hcov v.2`. Simplify using `only [mem_iUnion, exists_prop] at hv`. Take `⟨x, hx, hvx⟩` from `hv`. Use `⟨T.equivFin ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Use `show v.1 ∈ (χ (y (T.equivFin ⟨x, hx⟩))).source`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify `hvx` using `[y]`. Use `holo := by`. Introduce and unpack `j j' z ⟨hz, hz'⟩`. Establish `hzt : ins (a j) z ∈ (χ (y j)).target` using `hz`. Establish `hz's : (χ (y j)).symm (ins (a j) z) ∈ (χ (y j')).source`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((c j).symm z).1 ∈ (χ (y j')).source` using `hz'`. Rewrite `this` using `[hc_symm j z hz]`. Then use the resulting hypothesis. Establish `han` using `(dropC (a j')).analyticAt _ |>.comp ((analyticAt_trans B (hχB _) (hχB _) hzt hz's).comp ((insZero (a j)).analyticAt z))`. Use `han.congr ?_` and prove the remaining obligations. Use `filter_upwards [hc_nhds j z hz] with z' hz'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, coe_dropC, coe_insZero]`. Use `show _ = fun b => χ (y j') ((c j).symm z').1 ((a j').succAbove b)`. Rewrite using `[hz'] }`. Use `⟨C, ⟨continuous_subtype_val, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `j j' z ⟨hz, hz'⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hzt : ins (a j) z ∈ (χ (y j)).target` using `hz`. Establish `hz's : (χ (y j)).symm (ins (a j) z) ∈ (B.chart j').source`. Establish `: ((c j).symm z).1 ∈ (B.chart j').source` using `hz'`. Rewrite `this` using `[hc_symm j z hz]`. Then use the resulting hypothesis. Establish `han` using `((hχB (y j) j').2 _ ⟨hzt, hz's⟩).comp ((insZero (a j)).analyticAt z)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `han.congr ?_` and prove the remaining obligations. Use `filter_upwards [hc_nhds j z hz] with z' hz'`. Simplify using `only [Function.comp_apply, coe_insZero]`. Use `show _ = B.chart j' ((c j).symm z').1`. Rewrite using `[hz']`.
-
-Introduce `j`. Use `⟨y j, χ (y j), κ (y j), a j, hχB _, hyχ _, ha j, hκinj _, hκW _, ?_, rfl, fun w _ => rfl, rfl, fun z hz => hc_symm j z hz⟩` and prove the remaining obligations. Introduce `i`. Take `⟨h1, u, hu, hu0, hut⟩` from `hκt (y j) i`. Use `⟨h1, u, hu, hu0, fun w hw => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hut w hw]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k' _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases κ (y j) k' <;> rfl`.
+A detailed English derivation is pending.
 -/
 theorem exists_isSNCAtlas : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [CompactSpace Y] [T2Space Y]
     (B : FinHolAtlas (n + 1) Y) (X : Type) [TopologicalSpace X] (μ : Y → X) (q r : ℕ)

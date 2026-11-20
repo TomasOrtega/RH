@@ -7,31 +7,27 @@ namespace GroundTheory.Heights₂.Heights
 open Cardinal
 
 /- English proof (translation)
-Introduce `F K Ω _ _ _ _ _ _ _ hKF ι z`. Take `⟨A, hA⟩ : ∃ A : Subalgebra F Ω, A = Algebra.adjoin F (Set.range z)` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B : Subalgebra K Ω, B = Algebra.adjoin K (Set.range z)` from `⟨_, rfl⟩`. Rewrite using `[← hA, ← hB]`. Establish `hAB : ∀ w ∈ A, w ∈ B`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `w hw`. Rewrite `hw` using `[hA]`. Rewrite using `[hB]`. Proceed by induction on `hw using Algebra.adjoin_induction with`. Consider the case `mem w hw => exact Algebra.subset_adjoin hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `algebraMap c`. Rewrite using `[IsScalarTower.algebraMap_apply F K Ω c]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add u v _ _ hu hv => exact Subalgebra.add_mem _ hu hv`. Consider the case `mul u v _ _ hu hv => exact Subalgebra.mul_mem _ hu hv`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Set `i : A →+* B` to `{ toFun := fun a => ⟨a, hAB a a.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `: FaithfulSMul F A` using `(faithfulSMul_iff_algebraMap_injective F A).mpr (algebraMap F A).injective`. Take `⟨t, ht⟩` from `exists_isTranscendenceBasis F A`. Set `x : t → B` to `fun a => i a`. Use `set C : Subalgebra K B := Algebra.adjoin K (Set.range x) with hC`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hFC : ∀ r ∈ Algebra.adjoin F (Set.range ((↑) : t → A)), i r ∈ C`. Introduce `r hr`. Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem r hr`. Take `⟨a, rfl⟩` from `hr`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `Algebra.subset_adjoin ⟨a, rfl⟩`. Consider the case `algebraMap c`. Establish `: i (algebraMap F A c) = algebraMap K B (algebraMap F K c)`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(IsScalarTower.algebraMap_apply F K Ω c)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `C.algebraMap_mem _`. Consider the case `add r s _ _ hr hs`. Rewrite using `[map_add]`. Conclude with `C.add_mem hr hs`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `mul r s _ _ hr hs`. Rewrite using `[map_mul]`. Conclude with `C.mul_mem hr hs`. Set `f : Algebra.adjoin F (Set.range ((↑) : t → A)) →+* C` to `{ toFun := fun r => ⟨i r, hFC r r.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hf : Function.Injective f`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congrArg (fun c : C => ((c : B) : Ω)) hab`. Establish `key : ∀ (w : Ω), w ∈ Algebra.adjoin K (Set.range z) → ∀ (hw : w ∈ B), IsAlgebraic C (⟨w, hw⟩ : B)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Introduce `w hw'`. Proceed by induction on `hw' using Algebra.adjoin_induction with`. Consider the case `mem w hw'`. Introduce `hw`. Take `⟨m, rfl⟩` from `hw'`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzA : z m ∈ A` using `hA ▸ Algebra.subset_adjoin ⟨m, rfl⟩`. Establish `h1 : IsAlgebraic (Algebra.adjoin F (Set.range ((↑) : t → A))) (⟨z m, hzA⟩ : A)` using `ht.isAlgebraic.isAlgebraic _`. Conclude with `h1.ringHom_of_comp_eq f i hf (RingHom.ext fun _ => rfl)`. Consider the case `algebraMap k`. Introduce `hw`.
-
-Conclude with `(hKF.isAlgebraic k).ringHom_of_comp_eq ((algebraMap K C).comp (algebraMap F K)) (algebraMap K B) (RingHom.injective _) (RingHom.ext fun _ => rfl)`. Consider the case `add u v hu' hv' hu hv`. Introduce `hw`. Conclude with `(hu (hB ▸ hu')).add (hv (hB ▸ hv'))`. Consider the case `mul u v hu' hv' hu hv`.
-
-Introduce `hw`. Conclude with `(hu (hB ▸ hu')).mul (hv (hB ▸ hv'))`. Establish `alg : Algebra.IsAlgebraic C B` using `⟨fun b => key b.1 (hB ▸ b.2) b.2⟩`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem TrdegBaseAlgebraic.proof : TrdegBaseAlgebraic.Statement := by
   intro F K Ω _ _ _ _ _ _ _ hKF ι z

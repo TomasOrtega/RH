@@ -27,29 +27,29 @@ Both sides reduce to the same expression.
 theorem evAt_apply (E : Subring ℂ) (τ : ℍ) (x : ring E) : evAt E τ x = (x : ℍ → ℂ) τ := rfl
 
 /- English proof (translation)
-Use extensionality with `c`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem evAt_comp_constHom {Ω : Type} [Field Ω] (ε : Ω →+* ℂ) (τ : ℍ) :
     (evAt ε.range τ).comp (constHom ε) = ε := by
   ext c; rfl
 
 /- English proof (translation)
-Use extensionality with `c`. Conclude with `T.io_c c _ rfl`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem io_comp_constHom {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (T : Frac Ω ε) :
     T.io.comp (constHom ε) = algebraMap Ω T.K := by
   ext c; exact T.io_c c _ rfl
 
 /- English proof (translation)
-Use `set L := IntermediateField.adjoin Ω {T.io a}`. Take `⟨n, c, hc, hrel⟩` from `GlobalTheory.T.integral_over_jInvariant_of_hasSomeLevelOver ε.range b (((GlobalTheory.T.mem_modularFunctionRingOver_iff_hasSomeLevelOver ε.range).1 b).1 b.2)`. Establish `hl : ∀ i, c i ∈ Polynomial.lifts ε` using `fun i => (Polynomial.lifts_iff_coeff_lifts _).2 fun k => RingHom.mem_range.1 (hc i k)`. Use `choose d hd using fun i => (Polynomial.mem_lifts (c i)).1 (hl i)`. Set `xa : L` to `⟨T.io a, IntermediateField.mem_adjoin_simple_self Ω _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : Polynomial Ω →ₐ[Ω] L` to `Polynomial.aeval xa`. Establish `hr : b ^ n + ∑ i, (d i).eval₂ (constHom ε) a * b ^ (i : ℕ) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Establish `h` using `hrel τ`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : evAt ε.range τ (b ^ n + ∑ i, (d i).eval₂ (constHom ε) a * b ^ (i : ℕ)) = 0`. Simplify using `only [map_add, map_sum, map_mul, map_pow, Polynomial.hom_eval₂, evAt_comp_constHom, evAt_apply, ha]`. Simplify `h` using `[← Polynomial.eval_map, hd]`. Simplify `key` using `[evAt_apply]`. Establish `hK : T.io b ^ n + ∑ i, Polynomial.aeval (T.io a) (d i) * T.io b ^ (i : ℕ) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg T.io hr` as an intermediate fact. Simplify using `only [map_add, map_sum, map_mul, map_pow, Polynomial.hom_eval₂, io_comp_constHom, map_zero] at this`. Simplify `this` using `[Polynomial.aeval_def]`. Use `⟨Polynomial.X ^ n + ∑ i, Polynomial.C (φ (d i)) * Polynomial.X ^ (i : ℕ), Polynomial.monic_X_pow_add (Polynomial.degree_sum_fin_lt _), ?_⟩` and prove the remaining obligations. Establish `hφ : ∀ i, algebraMap L T.K (φ (d i)) = Polynomial.aeval (T.io a) (d i)` using `fun i => by show L.val (φ (d i)) = _`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Polynomial.aeval_algHom_apply L.val xa (d i)]`. Both sides reduce to the same expression. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finset_sum, Polynomial.eval₂_mul, Polynomial.eval₂_C, hφ]`. Conclude with `hK`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isIntegral_io_adjoin_j (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (T : Frac Ω ε)
     (a : ring ε.range) (ha : (a : ℍ → ℂ) = jT) (b : ring ε.range) :
@@ -85,9 +85,9 @@ theorem isIntegral_io_adjoin_j (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω 
   exact hK
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε T a ha f`. Take `⟨x, y, hy, hxy⟩` from `T.io_surj f`. Establish `hy' : T.io y ≠ 0` using `fun h => hy (T.io_inj (h.trans (map_zero T.io).symm))`. Establish `hf : f = T.io x * (T.io y)⁻¹` using `by rw [← hxy, mul_inv_cancel_right₀ hy']`. Rewrite using `[hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isIntegral_io_adjoin_j Ω ε T a ha x).isAlgebraic.mul (isIntegral_io_adjoin_j Ω ε T a ha y).isAlgebraic.inv`.
+A detailed English derivation is pending.
 -/
 theorem frac_isAlgebraic_adjoin_j : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (T : Frac Ω ε)
     (a : GlobalTheory.FN.ring ε.range), (a : ℍ → ℂ) = jT → ∀ f : T.K, IsAlgebraic (IntermediateField.adjoin Ω {T.io a}) f := by

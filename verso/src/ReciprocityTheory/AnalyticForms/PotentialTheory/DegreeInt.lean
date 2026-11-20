@@ -12,17 +12,17 @@ noncomputable section
 variable {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
 
 /- English proof (translation)
-Establish `hD` using `dI_chartDens_locDens A Φ hΦ`. Establish `hk : ∀ j, IntegrableOn (fun y => P.χ j ((A.chart k).symm y) * g ((A.chart k).symm y) * locDens A Φ k y) (A.chart k).target`. Introduce `j`. Establish `hm : AEStronglyMeasurable (fun y => P.χ j ((A.chart k).symm y)) (volume.restrict (A.chart k).target)` using `(dI_chi_contOn A P j k).aestronglyMeasurable (A.chart k).open_target.measurableSet`. Establish `hb : IntegrableOn (fun y => P.χ j ((A.chart k).symm y) * (g ((A.chart k).symm y) * locDens A Φ k y)) (A.chart k).target`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hint.norm.mono' (hm.mul hint.aestronglyMeasurable) (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `mul_le_of_le_one_left (norm_nonneg _) ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (P.nonneg j _)]`. Conclude with `dI_chi_le_one A P j _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hb` using `only [mul_assoc]`. Establish `htr` using `fun j => dI_transfer A hD k j (fun x => P.χ j x * g x) (fun x hx => by simp only [hg x hx, mul_zero]) (hk j)`. Use `⟨fun j => (htr j).1, ?_⟩` and prove the remaining obligations. Establish `h2 : ∀ j, ∫ y in (A.chart j).target, P.χ j ((A.chart j).symm y) * g ((A.chart j).symm y) * locDens A Φ j y = ∫ y in (A.chart k).target, P.χ j ((A.chart k).symm y) * g ((A.chart k).symm y) * locDens A Φ k y`. Introduce `j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(htr j).2.trans ?_` and prove the remaining obligations. Use `symm`. Use `setIntegral_eq_of_subset_of_forall_diff_eq_zero (A.chart k).open_target.measurableSet Set.inter_subset_left ?_` and prove the remaining obligations. Introduce `y hy`. Establish `hys : (A.chart k).symm y ∉ (A.chart j).source` using `fun hs => hy.2 ⟨hy.1, hs⟩`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [dI_chi_zero A P j hys, zero_mul]`. Express the relevant statement in the definitionally equal form `∑ j, ∫ y in (A.chart j).target, P.χ j ((A.chart j).symm y) * g ((A.chart j).symm y) * locDens A Φ j y = _`. Rewrite using `[Finset.sum_congr rfl (fun j _ => h2 j), ← integral_finset_sum Finset.univ (fun j _ => hk j)]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Finset.sum_mul, P.sum_eq_one, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem integralWith_localize_support [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
     (P : ChartPartition A) (Φ : Fin e → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i))
@@ -71,21 +71,19 @@ theorem integralWith_localize_support [CompactSpace X] [T2Space X] (A : FinHolAt
   simp only [← Finset.sum_mul, P.sum_eq_one, one_mul]
 
 /- English proof (translation)
-Use `haveI := dI_secondCountable A`. Establish `hSc : (Sᶜ).Nonempty`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[Set.not_nonempty_iff_eq_empty, Set.compl_empty_iff]`. Establish `h2` using `hd.2.1`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hne, interior_univ]`. Conclude with `Set.univ_nonempty.ne_empty h2`. Use `choose V0 hV0o hxV0 hV0S k0 hk0 W0 j0 hW0 hdis0 hpre0 hsh0 using fun x : ↥(Sᶜ) => dI_sheets hh hd (x : X) x.2`. Take `⟨T, hTc, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable V0 hV0o`. Establish `hTne : T.Nonempty`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x0, hx0⟩` from `hSc`. Establish `hx : (x0 : X) ∈ ⋃ i ∈ T, V0 i`. Rewrite using `[hTU]`. Conclude with `Set.mem_iUnion.2 ⟨⟨x0, hx0⟩, hxV0 _⟩`. Simplify using `only [Set.mem_iUnion] at hx`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Take `⟨i, hi, -⟩` from `hx`. Conclude with `⟨i, hi⟩`. Take `⟨f, hf⟩` from `hTc.exists_eq_range hTne`. Substitute `hf` using the available equality. Rewrite `hTU` using `[Set.biUnion_range]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨disjointed (fun m => V0 (f m)), fun m => V0 (f m), fun m => k0 (f m), fun m => W0 (f m), fun m => j0 (f m), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `MeasurableSet.disjointed (fun n => (hV0o (f n)).measurableSet)`. Conclude with `disjoint_disjointed _`. Rewrite using `[iUnion_disjointed]`. Apply `Set.Subset.antisymm` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Take `⟨m, hm⟩` from `Set.mem_iUnion.1 hx`. Conclude with `fun hxS => Set.disjoint_left.1 (hV0S (f m)) hm hxS`. Introduce `x hx`. Establish `hx' : x ∈ ⋃ i, V0 i` using `Set.mem_iUnion.2 ⟨⟨x, hx⟩, hxV0 _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx'` using `[← hTU]`. Conclude with `hx'`. Introduce `m first`. Consider the case `exact disjointed_subset _ m`. Consider the case `exact disjointed_le _ m`.
-
-Consider the case `exact disjointed_subset m`. Introduce `m`. Conclude with `⟨hV0o _, hk0 _, hW0 _, hdis0 _, hpre0 _, hsh0 _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sheet_partition [CompactSpace Y] [T2Space Y] [CompactSpace X] [T2Space X]
     {A : FinHolAtlas e X} {B : FinHolAtlas e Y} {h : Y → X} (hh : HoloMap B A h) {d : ℕ}
@@ -139,27 +137,25 @@ theorem exists_sheet_partition [CompactSpace Y] [T2Space Y] [CompactSpace X] [T2
     exact ⟨hV0o _, hk0 _, hW0 _, hdis0 _, hpre0 _, hsh0 _⟩
 
 /- English proof (translation)
-Establish `hΨ : ∀ i, IsPotential B ((Φ i).pullback h hh.1)` using `fun i => isPotentialPullback A B h hh (Φ i) (hΦ i)`. Establish `hfX : IntegrableOn (fun z => E.indicator g ((A.chart k).symm z) * locDens A Φ k z) (A.chart k).target` using `dI_indicator (A.chart k) hE g _ (dI_target_of_mIntegrable A Φ hΦ g hg k)`. Establish `hf0 : ∀ x, x ∉ (A.chart k).source → E.indicator g x = 0` using `fun x hx => Set.indicator_of_notMem (fun h' => hx (hVk (hEV h'))) g`. Establish `hIX` using `(integralWith_localize_support A P Φ hΦ k (E.indicator g) hf0 hfX).2`. Establish `hsum : ∀ y, E.indicator g (h y) = ∑ i, (W i).indicator (fun y => E.indicator g (h y)) y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Distinguish the cases in `hy : h y ∈ E`. Establish `hyV : y ∈ h ⁻¹' V` using `hEV hy`. Rewrite `hyV` using `[hpre]`. Take `⟨i0, hi0⟩` from `Set.mem_iUnion.1 hyV`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_eq_single i0 (fun i _ hi => Set.indicator_of_notMem (fun hiy => Set.disjoint_left.1 (show Disjoint (W i) (W i0) from hdis hi) hiy hi0) _) (fun h' => absurd (Finset.mem_univ i0) h'), Set.indicator_of_mem hi0]`. Rewrite using `[Set.indicator_of_notMem hy]`. Conclude with `(Finset.sum_eq_zero fun i _ => by simp [hy]).symm`. Establish `hsheet : ∀ i, IntegrableOn (fun y => (W i).indicator (fun y => E.indicator g (h y)) ((B.chart (j i)).symm y) * locDens B (fun i => (Φ i).pullback h hh.1) (j i) y) (B.chart (j i)).target ∧ ∫ y in (B.chart (j i)).target, (W i).indicator (fun y => E.indicator g (h y)) ((B.chart (j i …`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hbij, hWj⟩` from `hsh i`. Establish `hSI` using `sheet_integral hh Φ hΦ (j i) k (hW i) hWj hVk hbij (E.indicator g)`. Establish `hOim : IsOpen ((B.chart (j i)) '' W i)` using `(B.chart (j i)).isOpen_image_of_subset_source (hW i) hWj`. Establish `hVim : (A.chart k) '' V ⊆ (A.chart k).target`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(A.chart k).map_source (hVk hx)`. Establish `hWim : (B.chart (j i)) '' W i ⊆ (B.chart (j i)).target`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `(B.chart (j i)).map_source (hWj hw)`. Establish `hint1 : IntegrableOn (fun y => E.indicator g (h ((B.chart (j i)).symm y)) * locDens B (fun i => (Φ i).pullback h hh.1) (j i) y) ((B.chart (j i)) '' W i)` using `hSI.1.2 (hfX.mono_set hVim)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `heqW : Set.EqOn (fun y => E.indicator g (h ((B.chart (j i)).symm y)) * locDens B (fun i => (Φ i).pullback h hh.1) (j i) y) (fun y => (W i).indicator (fun y => E.indicator g (h y)) ((B.chart (j i)).symm y) * locDens B (fun i => (Φ i).pullback h hh.1) (j i) y) ((B.chart (j i)) '' W …`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Simplify using `only [(B.chart (j i)).left_inv (hWj hw), Set.indicator_of_mem hw]`. Establish `hzeroW : ∀ y ∈ (B.chart (j i)).target \ (B.chart (j i)) '' W i, (W i).indicator (fun y => E.indicator g (h y)) ((B.chart (j i)).symm y) * locDens B (fun i => (Φ i).pullback h hh.1) (j i) y = 0`. Introduce and unpack `y ⟨hy, hyW⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (B.chart (j i)).symm y ∉ W i` using `fun h' => hyW ⟨_, h', (B.chart (j i)).right_inv hy⟩`. Simplify using `[Set.indicator_of_notMem this]`. Establish `hzeroV : ∀ z ∈ (A.chart k).target \ (A.chart k) '' V, E.indicator g ((A.chart k).symm z) * locDens A Φ k z = 0`. Introduce and unpack `z ⟨hz, hzV⟩`. Establish `: (A.chart k).symm z ∉ E` using `fun h' => hzV ⟨_, hEV h', (A.chart k).right_inv hz⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Set.indicator_of_notMem this]`. Use `⟨(hint1.congr_fun heqW hOim.measurableSet).of_forall_sdiff_eq_zero (B.chart (j i)).open_target.measurableSet hzeroW, ?_⟩` and prove the remaining obligations. Rewrite using `[setIntegral_eq_of_subset_of_forall_sdiff_eq_zero (B.chart (j i)).open_target.measurableSet hWim hzeroW, ← setIntegral_congr_fun hOim.measurableSet heqW, hSI.2, ← setIntegral_eq_of_subset_of_forall_sdiff_eq_zero (A.chart k).open_target.measurableSet hVim hzeroV]`. Establish `hloc` using `fun i => integralWith_localize_support B Q (fun i => (Φ i).pullback h hh.1) hΨ (j i) ((W i).indicator (fun y => E.indicator g (h y))) (fun y hy => Set.indicator_of_notMem (fun h' => hy ((hsh i).2 h')) _) (hsheet i).1`. Establish `hpt : ∀ j' y, Q.χ j' ((B.chart j').symm y) * E.indicator g (h ((B.chart j').symm y)) * locDens B (fun i => (Φ i).pullback h hh.1) j' y = ∑ i, Q.χ j' ((B.chart j').symm y) * (W i).indicator (fun y => E.indicator g (h y)) ((B.chart j').symm y) * locDens B (fun i => (Φ i).pullback h …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j' y`. Rewrite using `[hsum, Finset.mul_sum, Finset.sum_mul]`. Use `⟨fun j' => ?_, ?_⟩` and prove the remaining obligations. Use `integrable_finsetSum Finset.univ (f := fun i y => Q.χ j' ((B.chart j').symm y) * (W i).indicator (fun y => E.indicator g (h y)) ((B.chart j').symm y) * locDens B (fun i => (Φ i).pullback h hh.1) j' y) (fun i _ => (hloc i).1 j')` as an intermediate fact. Conclude with `IntegrableOn.congr_fun this (fun y _ => (hpt j' y).symm) (B.chart j').open_target.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : integralWith B Q (fun i => (Φ i).pullback h hh.1) (fun y => E.indicator g (h y)) = ∑ i, integralWith B Q (fun i => (Φ i).pullback h hh.1) ((W i).indicator (fun y => E.indicator g (h y)))`. Unfold `integralWith`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun j' _ => ?_)` and prove the remaining obligations. Rewrite using `[← integral_finsetSum _ (fun i _ => (hloc i).1 j')]`.
-
-Conclude with `setIntegral_congr_fun (B.chart j').open_target.measurableSet (fun y _ => hpt j' y)`. Rewrite using `[h1, Finset.sum_congr rfl (fun i _ => (hloc i).2.trans (hsheet i).2), Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, hIX]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_piece [CompactSpace Y] [T2Space Y] [CompactSpace X] [T2Space X]
     [MeasurableSpace X] [BorelSpace X]
@@ -264,57 +260,51 @@ theorem degree_piece [CompactSpace Y] [T2Space Y] [CompactSpace X] [T2Space X]
       Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, hIX]
 
 /- English proof (translation)
-Introduce `e X Y _ _ _ _ _ _ A B h hh d S hd Φ hΦ g hg`. Break down `isEmpty_or_nonempty X with hX | hX` into its components or cases. Establish `hY : IsEmpty Y` using `⟨fun y => hX.false (h y)⟩`. Establish `hA : ∀ k, (A.chart k).target = ∅` using `fun k => by`. Rewrite using `[← (A.chart k).image_source_eq_target, Set.eq_empty_of_isEmpty (A.chart k).source, Set.image_empty]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : ∀ k, (B.chart k).target = ∅` using `fun k => by`. Rewrite using `[← (B.chart k).image_source_eq_target, Set.eq_empty_of_isEmpty (B.chart k).source, Set.image_empty]`. Use `⟨fun j K hK _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hK` using `[hB j, Set.subset_empty_iff]`. Rewrite using `[hK]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `integrableOn_empty`. Simplify using `[mInt, integralWith, hA, hB]`. Use `letI : MeasurableSpace X := borel X`. Establish `: BorelSpace X` using `⟨rfl⟩`. Use `letI : MeasurableSpace Y := borel Y`.
+Simplify using the standard rewrite rules. Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `: BorelSpace Y` using `⟨rfl⟩`. Establish `hΨ : ∀ i, IsPotential B ((Φ i).pullback h hh.1)` using `fun i => isPotentialPullback A B h hh (Φ i) (hΦ i)`. Take `⟨P⟩` from `existsPartition A`. Take `⟨Q⟩` from `existsPartition B`. Take `⟨E, V, k, W, j, hEm, hEd, hEU, hEV, hsh⟩` from `exists_sheet_partition hh hd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmh : Measurable h` using `hh.1.measurable`. Establish `hpiece` using `fun m => degree_piece hh Φ hΦ P Q (hEm m) (hEV m) (hsh m).1 (hsh m).2.1 (hsh m).2.2.1 (hsh m).2.2.2.1 (hsh m).2.2.2.2.1 (hsh m).2.2.2.2.2 g hg`. Establish `hvX : ∀ m, IntegrableOn (fun z => (E m).indicator g ((A.chart (k m)).symm z) * locDens A Φ (k m) z) (A.chart (k m)).target` using `fun m => dI_indicator (A.chart (k m)) (hEm m) g _ (dI_target_of_mIntegrable A Φ hΦ g hg (k m))`. Take `⟨a, ha⟩ : ∃ a : ℕ → ℝ, ∀ m, a m = ∫ z in (A.chart (k m)).target, |(E m).indicator g ((A.chart (k m)).symm z)| * |locDens A Φ (k m) z|` from `⟨_, fun m => rfl⟩`. Establish `ha0 : ∀ m, 0 ≤ a m` using `fun m => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha]`. Conclude with `setIntegral_nonneg (A.chart (k m)).open_target.measurableSet (fun z _ => mul_nonneg (abs_nonneg _) (abs_nonneg _))`. Establish `haloc : ∀ m, (∀ jj, IntegrableOn (fun z => P.χ jj ((A.chart jj).symm z) * |(E m).indicator g ((A.chart jj).symm z)| * |locDens A Φ jj z|) (A.chart jj).target) ∧ ∑ jj, ∫ z in (A.chart jj).target, P.χ jj ((A.chart jj).symm z) * |(E m).indicator g ((A.chart jj).symm z)| * |locDens A …`. Introduce `m`. Rewrite using `[ha]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `dI_localize A P (dI_chartDens_abs A (dI_chartDens_locDens A Φ hΦ)) (k m) (fun x => |(E m).indicator g x|) (fun x hx => ?_) ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_of_notMem (fun h' => hx ((hsh m).2.1 (hEV m h'))), abs_zero]`. Use `IntegrableOn.congr_fun (hvX m).norm (fun z _ => ?_) (A.chart (k m)).open_target.measurableSet` and prove the remaining obligations. Simplify using `only [Real.norm_eq_abs, abs_mul]`. Take `⟨C, hC⟩ : ∃ C : ℝ, C = ∑ jj, ∫ z in (A.chart jj).target, ‖P.χ jj ((A.chart jj).symm z) * g ((A.chart jj).symm z) * locDens A Φ jj z‖` from `⟨_, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsumN : ∀ N, ∑ m ∈ Finset.range N, a m ≤ C`. Introduce `N`. Rewrite using `[hC]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_congr rfl (fun m _ => ((haloc m).2).symm), Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun jj _ => ?_)` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ (fun m _ => (haloc m).1 jj)]`. Use `_ ≤ _ := by`. Use `Finset.sum_le_sum (fun jj _ => ?_)` and prove the remaining obligations. Use `integral_mono_of_nonneg (Eventually.of_forall fun z => ?_) (integrableOn_weight A P Φ g hg jj).norm (Eventually.of_forall fun z => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_nonneg (fun m _ => mul_nonneg (mul_nonneg (P.nonneg jj _) (abs_nonneg _)) (abs_nonneg _))`. Simplify using `only [Real.norm_eq_abs, abs_mul, abs_of_nonneg (P.nonneg jj _)]`. Rewrite using `[← Finset.sum_mul, ← Finset.mul_sum]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (dI_sum_ind_le E hEd g _ N) (P.nonneg jj _)) (abs_nonneg _)`. Establish `hfin : ∑' m, (d : ENNReal) * ENNReal.ofReal (a m) < ⊤`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ENNReal.tsum_mul_left]`. Use `ENNReal.mul_lt_top (ENNReal.natCast_lt_top d) (lt_of_le_of_lt (ENNReal.tsum_le_of_sum_range_le (c := ENNReal.ofReal C) fun N => ?_) ENNReal.ofReal_lt_top)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_sum_of_nonneg (fun m _ => ha0 m)]`. Conclude with `ENNReal.ofReal_le_ofReal (hsumN N)`. Establish `hY : ∀ j', IntegrableOn (fun y => Q.χ j' ((B.chart j').symm y) * (g ∘ h) ((B.chart j').symm y) * locDens B (fun i => (Φ i).pullback h hh.1) j' y) (B.chart j').target`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `j'`. Establish `hRm : ∀ m, MeasurableSet ((B.chart j').target ∩ (B.chart j').symm ⁻¹' (h ⁻¹' E m))` using `fun m => dI_mset (B.chart j') (hmh (hEm m))`. Establish `hRint : ∀ m, IntegrableOn (fun y => Q.χ j' ((B.chart j').symm y) * (g ∘ h) ((B.chart j').symm y) * locDens B (fun i => (Φ i).pullback h hh.1) j' y) ((B.chart j').target ∩ (B.chart j').symm ⁻¹' (h ⁻¹' E m))`. Introduce `m`. Use `(((hpiece m).1 j').mono_set Set.inter_subset_left).congr_fun (fun y hy => ?_) (hRm m)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[Set.indicator_of_mem (show h ((B.chart j').symm y) ∈ E m from hy.2)]`. Establish `hbound : ∀ m, ∫⁻ y in (B.chart j').target ∩ (B.chart j').symm ⁻¹' (h ⁻¹' E m), ‖Q.χ j' ((B.chart j').symm y) * (g ∘ h) ((B.chart j').symm y) * locDens B (fun i => (Φ i).pullback h hh.1) j' y‖ₑ ≤ d * ENNReal.ofReal (a m)`. Introduce `m`. Take `⟨hVo, hVk, hWo, hWd, hpre, hsh'⟩` from `hsh m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `s1 : ∫⁻ y in (B.chart j').target ∩ (B.chart j').symm ⁻¹' (h ⁻¹' E m), ‖Q.χ j' ((B.chart j').symm y) * (g ∘ h) ((B.chart j').symm y) * locDens B (fun i => (Φ i).pullback h hh.1) j' y‖ₑ ≤ ∫⁻ y in (B.chart j').target ∩ (B.chart j').symm ⁻¹' (h ⁻¹' E m), ENNReal.ofReal |(E m).indicat …`. Use `setLIntegral_mono' (hRm m) (fun y hy => ?_)` and prove the remaining obligations. Establish `hyE : h ((B.chart j').symm y) ∈ E m` using `hy.2`. Simplify using `only [Function.comp_apply, Set.indicator_of_mem hyE, enorm_mul, Real.enorm_eq_ofReal_abs]`. Rewrite using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mul_le_of_le_one_left zero_le ?_` and prove the remaining obligations. Conclude with `ENNReal.ofReal_le_one.2 (by`. Rewrite using `[abs_of_nonneg (Q.nonneg _ _)]`. Conclude with `dI_chi_le_one B Q j' _)`. Establish `s2 : (B.chart j').target ∩ (B.chart j').symm ⁻¹' (h ⁻¹' E m) ⊆ ⋃ i, (B.chart j') '' (W m i ∩ (B.chart j').source)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `y ⟨hyt, hyE⟩`. Establish `hyV : (B.chart j').symm y ∈ h ⁻¹' V m` using `hEV m hyE`. Rewrite `hyV` using `[hpre]`. Take `⟨i, hi⟩` from `Set.mem_iUnion.1 hyV`. Conclude with `Set.mem_iUnion.2 ⟨i, _, ⟨hi, (B.chart j').map_target hyt⟩, (B.chart j').right_inv hyt⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s3 : ∀ i, ∫⁻ y in (B.chart j') '' (W m i ∩ (B.chart j').source), ENNReal.ofReal |(E m).indicator g (h ((B.chart j').symm y))| * ENNReal.ofReal |locDens B (fun i => (Φ i).pullback h hh.1) j' y| ≤ ENNReal.ofReal (a m)`. Introduce `i`. Establish `hW' : IsOpen (W m i ∩ (B.chart j').source)` using `(hWo i).inter (B.chart j').open_source`. Establish `hbij : Set.BijOn h (W m i ∩ (B.chart j').source) (h '' (W m i ∩ (B.chart j').source))` using `((hsh' i).1.injOn.mono Set.inter_subset_left).bijOn_image`. Establish `hV' : h '' (W m i ∩ (B.chart j').source) ⊆ (A.chart (k m)).source`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `hVk ((hsh' i).1.mapsTo hw.1)`. Establish `hSL` using `sheet_lintegral hh Φ hΦ j' (k m) hW' Set.inter_subset_right hV' hbij (fun x => ENNReal.ofReal |(E m).indicator g x|)`. Establish `hn` using `ofReal_integral_norm_eq_lintegral_enorm (hvX m)`. Establish `h2 : ∫ z in (A.chart (k m)).target, ‖(E m).indicator g ((A.chart (k m)).symm z) * locDens A Φ (k m) z‖ = a m`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[ha]`. Use `setIntegral_congr_fun (A.chart (k m)).open_target.measurableSet (fun z _ => ?_)` and prove the remaining obligations. Simplify using `only [Real.norm_eq_abs, abs_mul]`. Rewrite `hn` using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(A.chart (k m)).map_source (hV' hx))`. Use `_ = ENNReal.ofReal (a m) := by`. Rewrite using `[hn]`. Use `lintegral_congr (fun z => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the second alternative. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [enorm_mul, Real.enorm_eq_ofReal_abs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[tsum_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `hU : IntegrableOn (fun y => Q.χ j' ((B.chart j').symm y) * (g ∘ h) ((B.chart j').symm y) * locDens B (fun i => (Φ i).pullback h hh.1) j' y) (⋃ m, (B.chart j').target ∩ (B.chart j').symm ⁻¹' (h ⁻¹' E m))` using `⟨AEStronglyMeasurable.iUnion fun m => (hRint m).1, (lintegral_iUnion_le _ _).trans_lt ((ENNReal.tsum_le_tsum hbound).trans_lt hfin)⟩`. Establish `hZ` using `analyticNull B (h ⁻¹' S) hd.2.2.1 hd.2.2.2.1 j'`.
+Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hZint : IntegrableOn (fun y => Q.χ j' ((B.chart j').symm y) * (g ∘ h) ((B.chart j').symm y) * locDens B (fun i => (Φ i).pullback h hh.1) j' y) ((B.chart j') '' (h ⁻¹' S ∩ (B.chart j').source))`. Rewrite using `[IntegrableOn, Measure.restrict_eq_zero.2 hZ]`. Conclude with `integrable_zero_measure`. Use `(hU.union hZint).mono_set (fun y hy => ?_)` and prove the remaining obligations. Distinguish the cases in `hyS : (B.chart j').symm y ∈ h ⁻¹' S`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Or.inr ⟨_, ⟨hyS, (B.chart j').map_target hy⟩, (B.chart j').right_inv hy⟩`. Establish `hyU : h ((B.chart j').symm y) ∈ ⋃ m, E m` using `by rw [hEU]; exact hyS`. Take `⟨m, hm⟩` from `Set.mem_iUnion.1 hyU`. Conclude with `Or.inl (Set.mem_iUnion.2 ⟨m, hy, hm⟩)`. Establish `hXsum : HasSum (fun m => integralWith A P Φ ((E m).indicator g)) (integralWith A P Φ g)` using `dI_hasSum A P Φ g (fun jj => integrableOn_weight A P Φ g hg jj) E hEm hEd S (analyticNull A S hd.1 hd.2.1) hEU`.
-
-Establish `hYsum` using `dI_hasSum B Q (fun i => (Φ i).pullback h hh.1) (g ∘ h) hY (fun m => h ⁻¹' E m) (fun m => hmh (hEm m)) (fun m m' hmm' => (hEd hmm').preimage h) (h ⁻¹' S) (analyticNull B (h ⁻¹' S) hd.2.2.1 hd.2.2.2.1) (by rw [← Set.preimage_iUnion, hEU, Set.preimage_compl])`. Establish `key : ∀ m, integralWith B Q (fun i => (Φ i).pullback h hh.1) ((h ⁻¹' E m).indicator (g ∘ h)) = d * integralWith A P Φ ((E m).indicator g)`. Introduce `m`. Rewrite using `[show (h ⁻¹' E m).indicator (g ∘ h) = fun y => (E m).indicator g (h y) from`. Use function extensionality and compare the values at `fun y => Set.indicator_comp_right h]`.
-
-Conclude with `(hpiece m).2`. Simplify using `only [key] at hYsum`. Establish `hMY : MIntegrable B (fun i => (Φ i).pullback h hh.1) (g ∘ h)` using `fun j' K hK _ => (dI_target_of_weights B Q (dI_chartDens_locDens B _ hΨ) (g ∘ h) hY j').mono_set hK`. Use `⟨hMY, ?_⟩` and prove the remaining obligations. Rewrite using `[mIntEq B Q _ hΨ (g ∘ h) hMY, mIntEq A P Φ hΦ g hg]`.
-
-Conclude with `HasSum.unique hYsum (hXsum.mul_left _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degreeFormulaInt : DegreeFormulaIntStatement := by
   intro e X Y _ _ _ _ _ _ A B h hh d S hd Φ hΦ g hg
@@ -515,9 +505,9 @@ theorem degreeFormulaInt : DegreeFormulaIntStatement := by
   exact HasSum.unique hYsum (hXsum.mul_left _)
 
 /- English proof (translation)
-Introduce `e X Y _ _ _ _ _ _ A B h hh d S hd Φ hΦ g hg`. Establish `hI : MIntegrable A Φ g`. Introduce `j K hK hKc`. Establish `h1 : ContinuousOn (fun y => g ((A.chart j).symm y)) K` using `hg.comp_continuousOn ((A.chart j).continuousOn_symm.mono hK)`. Establish `h2 : ContinuousOn (locDens A Φ j) K` using `(locDensCont A Φ hΦ j).mono hK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(h1.mul h2).integrableOn_compact hKc`. Conclude with `(degreeFormulaInt A B h hh d S hd Φ hΦ g hI).2`.
+A detailed English derivation is pending.
 -/
 theorem degreeFormula : DegreeFormulaStatement := by
   intro e X Y _ _ _ _ _ _ A B h hh d S hd Φ hΦ g hg

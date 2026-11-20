@@ -25,23 +25,23 @@ open Formalism.IndefR.FWT Formalism.L2.Pj Formalism.IndefR.Mult GlobalTheory.Rea
 namespace GlobalTheory.Mem.R3.Ext
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hH hL Xg tr R' hRS hmu ι hι`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14⟩` from `hH`. Take `⟨P'⟩` from `B'`. Simplify using `only at hPre`. Substitute `hPre` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality.
 
-Take `⟨⟨⟨H, l, c, Dw, Xo, eO⟩, U, V, dict, mu, Kf, pb⟩, cE, chiW, x₀, iota⟩` from `core'`. Establish `e1 : H = z.core.Q.H` using `eq_of_heq h1`. Substitute `e1` using the available equality. Establish `e2 : l = z.core.Q.l` using `eq_of_heq h2`. Substitute `e2` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e3 : c = z.core.Q.c` using `eq_of_heq h3`. Substitute `e3` using the available equality. Establish `e4 : Dw = z.core.Q.Dw` using `eq_of_heq h4`. Substitute `e4` using the available equality. Establish `e5 : Xo = z.core.Q.Xo` using `eq_of_heq h5`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e5` using the available equality. Establish `e6 : U = z.core.U` using `eq_of_heq h6`. Substitute `e6` using the available equality. Establish `e7 : V = z.core.V` using `eq_of_heq h7`. Substitute `e7` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e8 : dict = z.core.dict` using `eq_of_heq h8`. Substitute `e8` using the available equality. Establish `e9 : mu = z.core.mu` using `eq_of_heq h9`. Substitute `e9` using the available equality. Establish `e10 : Kf = z.core.Kf` using `eq_of_heq h10`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e10` using the available equality. Establish `e11 : cE = z.core.cE` using `eq_of_heq h11`. Substitute `e11` using the available equality. Establish `e12 : chiW = z.core.chiW` using `eq_of_heq h12`. Substitute `e12` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e13 : x₀ = z.core.x₀` using `eq_of_heq h13`. Substitute `e13` using the available equality. Establish `e14 : iota = z.core.iota` using `eq_of_heq h14`. Substitute `e14` using the available equality. Establish `hz` using `z.geo.fw.laws`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Use `case toLawsM => exact hL.toLawsM`. Use `case cUnit => exact (by with_unfolding_all exact (hz.cUnit :))`. Use `case muVal => exact (by with_unfolding_all exact (hz.muVal :))`. Use `case muConj => exact (by with_unfolding_all exact (hz.muConj :))`.
+Prove the components needed by the constructor for the conclusion. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `case intAll => exact (by with_unfolding_all exact (hz.intAll :))`. Use `case modelW => exact (by with_unfolding_all exact (hz.modelW :))`. Use `case familyUniformisationBasePointOrthogonal => exact (by with_unfolding_all exact (hz.familyUniformisationBasePointOrthogonal :))`. Use `case kfHalf => exact (by with_unfolding_all exact (hz.kfHalf :))`. Use `case adPin => exact (by with_unfolding_all exact (hz.adPin :))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lawsJ_enl : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),
     B'.toPre = B.toPre → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (Z' : w'.Lt) (hX' : B'.fields.Ok)

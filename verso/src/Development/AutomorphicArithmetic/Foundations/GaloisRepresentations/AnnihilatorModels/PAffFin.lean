@@ -7,7 +7,7 @@ open scoped Formalism.Per
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `R _ Y f hf s`. Use `haveI : GlobalTheory.FiniteSubsetsInAffineOpens Y := GlobalTheory.FiniteSubsetsInAffineOpens.of_isProjOver hf`. Take `⟨U, hU, hsub⟩` from `GlobalTheory.FiniteSubsetsInAffineOpens.exists_isAffineOpen (X := Y) (s : Set Y) s.finite_toSet`. Conclude with `⟨U, hU, fun x hx => hsub (Finset.mem_coe.mpr hx)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.affFin_of :
     AffFinProj := by

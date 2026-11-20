@@ -15,11 +15,9 @@ variable {G₁ : Type} [AddCommGroup G₁] [TopologicalSpace G₁] [IsTopologica
   {G₂ : Type} [AddCommGroup G₂] [TopologicalSpace G₂] [IsTopologicalAddGroup G₂]
 
 /- English proof (translation)
-Take `⟨d₁, K₁, hK₁, c₁⟩` from `h₁`. Take `⟨d₂, K₂, hK₂, c₂⟩` from `h₂`. Use `⟨?_, K₁ ×ˢ K₂, hK₁.prod hK₂, fun z => ?_⟩` and prove the remaining obligations. Use `DiscreteTopology.of_continuous_injective (f := fun z : Γ₁.prod Γ₂ => ((⟨z.1.1, (AddSubgroup.mem_prod.1 z.2).1⟩ : Γ₁), (⟨z.1.2, (AddSubgroup.mem_prod.1 z.2).2⟩ : Γ₂))) ?_ ?_` and prove the remaining obligations. Conclude with `((continuous_fst.comp continuous_subtype_val).subtype_mk _).prodMk ((continuous_snd.comp continuous_subtype_val).subtype_mk _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b h`. Simplify using `only [Prod.mk.injEq, Subtype.mk.injEq] at h`. Conclude with `Subtype.ext (Prod.ext h.1 h.2)`. Take `⟨γ₁, hγ₁, e₁⟩` from `c₁ z.1`. Take `⟨γ₂, hγ₂, e₂⟩` from `c₂ z.2`.
-
-Conclude with `⟨(γ₁, γ₂), AddSubgroup.mem_prod.2 ⟨hγ₁, hγ₂⟩, ⟨e₁, e₂⟩⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCoLat_prod {Γ₁ : AddSubgroup G₁} {Γ₂ : AddSubgroup G₂} (h₁ : IsCoLat Γ₁) (h₂ : IsCoLat Γ₂) :
     IsCoLat (Γ₁.prod Γ₂) := by
@@ -48,7 +46,7 @@ variable {G₁ : Type} [AddCommGroup G₁] [MeasurableSpace G₁]
   {G₂ : Type} [AddCommGroup G₂] [MeasurableSpace G₂]
 
 /- English proof (translation)
-Use extensionality with `⟨x, y⟩`. Simplify using `only [Set.mem_vadd_set_iff_neg_vadd_mem, Set.mem_prod]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem vadd_prod_set {Γ₁ : AddSubgroup G₁} {Γ₂ : AddSubgroup G₂} (g : Γ₁.prod Γ₂) (A : Set G₁) (B : Set G₂) :
     g +ᵥ (A ×ˢ B) = ((g : G₁ × G₂).1 +ᵥ A) ×ˢ ((g : G₁ × G₂).2 +ᵥ B) := by
@@ -57,7 +55,7 @@ theorem vadd_prod_set {Γ₁ : AddSubgroup G₁} {Γ₂ : AddSubgroup G₂} (g :
   rfl
 
 /- English proof (translation)
-The claim follows from `h₁.nullMeasurableSet.prod h₂.nullMeasurableSet ae_covers := by have a₁ : ∀ᵐ z ∂μ₁.prod μ₂, ∃ γ : Γ₁, γ +ᵥ z.1 ∈ 𝓕₁ := Measure.quasiMeasurePreserving_fst.ae h₁.ae_covers have a₂ : ∀ᵐ z ∂μ₁.prod μ₂, ∃ γ : Γ₂, γ +ᵥ z.2 ∈ 𝓕₂ := Measure.quasiMeasurePreserving_snd.ae h₂.ae_covers filte …`.
+A detailed English derivation is pending.
 -/
 theorem isAddFundamentalDomain_prod {Γ₁ : AddSubgroup G₁} {Γ₂ : AddSubgroup G₂} {μ₁ : Measure G₁} {μ₂ : Measure G₂}
     [SFinite μ₁] [SFinite μ₂] {𝓕₁ : Set G₁} {𝓕₂ : Set G₂}
@@ -87,15 +85,13 @@ end FD
 section Main
 
 /- English proof (translation)
-Use `letI m₁ : MeasurableSpace G₁ := borel G₁`. Use `haveI : BorelSpace G₁ := ⟨rfl⟩`. Use `letI m₂ : MeasurableSpace G₂ := borel G₂`. Use `haveI : BorelSpace G₂ := ⟨rfl⟩`. Establish `e₁ : ∃ p : Measure G₁ × Set G₁, p.1.IsAddHaarMeasure ∧ IsAddFundamentalDomain Γ₁ p.2 p.1 ∧ p.1 p.2 = 1`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨μ, F, a, b, c⟩` from `GlobalTheory.T.exists_fundamentalDomain_mass_one_cocompactLattice G₁ Γ₁ h₁`. Conclude with `⟨(μ, F), a, b, c⟩`. Establish `e₂ : ∃ p : Measure G₂ × Set G₂, p.1.IsAddHaarMeasure ∧ IsAddFundamentalDomain Γ₂ p.2 p.1 ∧ p.1 p.2 = 1`. Take `⟨μ, F, a, b, c⟩` from `GlobalTheory.T.exists_fundamentalDomain_mass_one_cocompactLattice G₂ Γ₂ h₂`. Conclude with `⟨(μ, F), a, b, c⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `A₁ : ∀ Ψ : G₁ → ℂ, avg Γ₁ Ψ = ∫ x in e₁.choose.2, Ψ x ∂e₁.choose.1` using `fun Ψ => dif_pos e₁`. Establish `A₂ : ∀ Ψ : G₂ → ℂ, avg Γ₂ Ψ = ∫ y in e₂.choose.2, Ψ y ∂e₂.choose.1` using `fun Ψ => dif_pos e₂`. Take `⟨H₁, F₁, M₁⟩` from `e₁.choose_spec`. Take `⟨H₂, F₂, M₂⟩` from `e₂.choose_spec`. Use `set μ₁ := e₁.choose.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set 𝓕₁ := e₁.choose.2`. Use `set μ₂ := e₂.choose.1`. Use `set 𝓕₂ := e₂.choose.2`. Establish `hFD : IsAddFundamentalDomain (Γ₁.prod Γ₂) (𝓕₁ ×ˢ 𝓕₂) (μ₁.prod μ₂)` using `isAddFundamentalDomain_prod F₁ F₂`. Establish `hM : μ₁.prod μ₂ (𝓕₁ ×ˢ 𝓕₂) = 1` using `by rw [Measure.prod_prod, M₁, M₂, one_mul]`.
-
-Take `⟨-, -, hI, hE⟩` from `GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average (G₁ × G₂) (Γ₁.prod Γ₂) (isCoLat_prod h₁ h₂) (μ₁.prod μ₂) (𝓕₁ ×ˢ 𝓕₂) inferInstance hFD Φ hΦ`. Rewrite `hE` using `[hM, ENNReal.toReal_one, Complex.ofReal_one, one_mul]`. Rewrite using `[← hE, setIntegral_prod _ hI, A₁]`. Simplify using `only [A₂]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem avg_prod (G₁ : Type) [AddCommGroup G₁] [TopologicalSpace G₁] [IsTopologicalAddGroup G₁]
     [LocallyCompactSpace G₁] [SecondCountableTopology G₁] [T2Space G₁]

@@ -8,7 +8,7 @@ namespace LateralTheory.E.LeafNatOnePf
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun φ => (φ.app (op U)).hom (ModuleCat.freeMk (R := ULift.{1} R) (ULift.up.{1} x))) (toSheafify_naturality Scheme.etaleTopology ((freeP R).map g))`. Simplify using `only [NatTrans.comp_app, ModuleCat.hom_comp, LinearMap.coe_comp] at h`. Unfold `freeGen`. Use `h.symm.trans (congrArg (fun y => ((toSheafify Scheme.etaleTopology ((freeP R).obj Q)).app (op U)).hom y) ?_)` and prove the remaining obligations. Conclude with `ModuleCat.free_map_apply (R := ULift.{1} R) (uliftFunctor.{1}.map (g.app (op U))) (ULift.up.{1} x)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem free_map_freeGen {P Q : PSh} (g : P ⟶ Q) (U : Scheme.{0}) (x : P.obj (op U)) :
     (((free R).map g).hom.app (op U)).hom (freeGen R P U x) = freeGen R Q U (g.app (op U) x) := by
@@ -20,7 +20,7 @@ theorem free_map_freeGen {P Q : PSh} (g : P ⟶ Q) (U : Scheme.{0}) (x : P.obj (
   exact ModuleCat.free_map_apply (R := ULift.{1} R) (uliftFunctor.{1}.map (g.app (op U))) (ULift.up.{1} x)
 
 /- English proof (translation)
-Unfold `chainsXIso chains`. Rewrite using `[Functor.comp_map, ComplexShape.Embedding.extendFunctor_map, HomologicalComplex.extendMap_f _ _ (i := p) (i' := -(p : ℤ)) rfl]`. Use `erw [Iso.inv_hom_id_assoc]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chainsXIso_nat {E E' : Spc} (f : E ⟶ E') (p : ℕ) :
     (chainsXIso R E p).inv ≫ ((chains R).map f).f (-(p : ℤ)) =
@@ -32,7 +32,7 @@ theorem chainsXIso_nat {E E' : Spc} (f : E ⟶ E') (p : ℕ) :
   rfl
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[Cochain.comp_v _ _ (zero_add n) (-(p : ℤ)) (-(p : ℤ)) s (by omega) (by omega), Cochain.ofHom_v, ← Category.assoc, chainsXIso_nat, Category.assoc]`. Rewrite using `[← free_map_freeGen]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_pull {E E' : Spc} (f : E ⟶ E') {I : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E') I n) (p : ℕ) (s : ℤ)
     (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
@@ -44,9 +44,9 @@ theorem ev_pull {E E' : Spc} (f : E ⟶ E') {I : Cx R} {n : ℤ} (α : Cochain (
   rfl
 
 /- English proof (translation)
-Introduce `q _ E E' f hE'`. Establish `hE : Inv q E` using `fun U ⟨x⟩ => hE' U ⟨(f.app (op (SimplexCategory.mk 0))).app (op U) x⟩`. Take `⟨⟨α, hα⟩, h'⟩` from `hOne q E' hE'`. Rewrite using `[h' α hα]`. Set `β : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 0)) 0` to `zcomp (Cocycle.ofHom ((chains (ZMod q)).map f)) α (zero_add 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hβ : LateralTheory.E.CupProductRingLaws.IsOneCocycle q E β` using `fun U x ζ => by`. Rewrite using `[← hα U ((f.app (op (SimplexCategory.mk 0))).app (op U) x) ζ]`. Conclude with `ev_pull f α.1 0 0 _ U x`. Rewrite using `[(hOne q E hE).2 β hβ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem LeafNatOne_of (hOne : LateralTheory.E.CupProductRingLaws.LeafOneSpec) : LateralTheory.E.CupProductRingLaws.LeafNatOne := by
   intro q _ E E' f hE'

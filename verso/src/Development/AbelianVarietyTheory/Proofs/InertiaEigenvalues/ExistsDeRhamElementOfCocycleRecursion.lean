@@ -22,7 +22,7 @@ namespace GlobalTheory.ExpImage.Sum
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P)
 
 /- English proof (translation)
-Rewrite using `[LocAinf.π₁, LocAinf.μ, map_sub, map_one, WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller]`. Use `congr 2`. Conclude with `(frobeniusEquiv (OCb l) l).apply_symm_apply AI.ε`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem frob_π₁ : WittVector.frobenius AI.π₁ = AI.μ := by
   rw [LocAinf.π₁, LocAinf.μ, map_sub, map_one, WittVector.frobenius_eq_map_frobenius,
@@ -31,7 +31,7 @@ theorem frob_π₁ : WittVector.frobenius AI.π₁ = AI.μ := by
   exact (frobeniusEquiv (OCb l) l).apply_symm_apply AI.ε
 
 /- English proof (translation)
-Establish `h1 : P.χQ h = 1` using `((GlobalTheory.Cyc.cyc_basic l P.χQ P.χQ_cyc).2.2 K h (Hinf_le_fix hh)).2.mp hh`. Establish `h2` using `GlobalTheory.T.cyclotomic_action_on_root_tower l P AI h 1 (by rw [h1]; simp) 0`. Establish `h3 : AI.actT h AI.ε = AI.ε` using `by simpa [LocAinf.εroot] using h2`. Rewrite using `[LocAinf.μ, map_sub, map_one, LocAinf.actW, WittVector.map_teichmuller]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem act_μ {K : FinExt l} {h : GQ l} (hh : h ∈ Hinf K) : AI.actW h AI.μ = AI.μ := by
   have h1 : P.χQ h = 1 :=
@@ -42,9 +42,9 @@ theorem act_μ {K : FinExt l} {h : GQ l} (hh : h ∈ Hinf K) : AI.actW h AI.μ =
   congr 2
 
 /- English proof (translation)
-Establish `e` using `congrArg (io AI) h`. Simplify using `only [map_sub, map_mul, map_pow, io_act, io_zl AI T] at e`. Establish `h1 : io AI AI.π₁ ^ k * u ^ k = 1` using `by rw [← mul_pow, hu, one_pow]`. Establish `h2 : P.actQdR g (io AI AI.π₁) ^ k * P.actQdR g u ^ k = 1`. Rewrite using `[← mul_pow, ← map_mul, hu, map_one, one_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow]`. Take the linear combination `(u ^ k * P.actQdR g u ^ k) * e - (qB P (U : ℚ_[l]) * P.actQdR g (io AI β) * P.actQdR g u ^ k) * h1 + (io AI β * u ^ k + io AI r * u ^ k) * h2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem step_dR (T : LocTied l P AI) {g : GQ l} {U : ℤ_[l]} {k : ℕ} {β r : Ainf l} {u : P.R.BdR}
     (hu : io AI AI.π₁ * u = 1) (h : Step AI g U AI.π₁ k β r) :
@@ -60,11 +60,11 @@ theorem step_dR (T : LocTied l P AI) {g : GQ l} {U : ℤ_[l]} {k : ℕ} {β r : 
     + (io AI β * u ^ k + io AI r * u ^ k) * h2
 
 /- English proof (translation)
-Use `GlobalTheory.T.padicInt_add_fil_closed_in_deRhamPeriodRing l P AI T M hM _ fun n => ?_` and prove the remaining obligations. Take `⟨R₀, h₀⟩` from `hb n`. Take `⟨R₁, h₁⟩` from `hE n`. Take `⟨z, hz⟩` from `hS (max R₀ R₁)`. Establish `a` using `h₀ _ (le_max_left R₀ R₁)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a'` using `h₁ _ (le_max_right R₀ R₁)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Use `add_mem (sub_mem a (qB_mul_mem_Lat AI T U (act_mem_Lat AI g a))) a'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-hz`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem limit (T : LocTied l P AI) {M : ℕ} (hM : 1 ≤ M) (g : GQ l) (U : ℤ_[l]) (b v : P.R.BdR)
     (S E : ℕ → P.R.BdR)
@@ -85,9 +85,9 @@ theorem limit (T : LocTied l P AI) {M : ℕ} (hM : 1 ≤ M) (g : GQ l) (U : ℤ_
   linear_combination -hz
 
 /- English proof (translation)
-Proceed by induction on `R with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ R ih`. Take `⟨z, hz⟩` from `ih`. Take `⟨w, hw⟩` from `h R`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨z + (l : ℤ_[l]) ^ (s * R) * w, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_range_succ, map_add, map_mul, map_pow, map_natCast]`. Rewrite using `[PadicInt.coe_add, PadicInt.coe_mul, PadicInt.coe_pow, PadicInt.coe_natCast, map_add, map_mul, map_pow, map_natCast, mul_add s R 1, pow_add, mul_one]`. Take the linear combination `hz + (l : P.R.BdR) ^ (s * R) * hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem telescope (g : GQ l) (U : ℤ_[l]) (s : ℕ) (B H : ℕ → P.R.BdR)
     (h : ∀ k, ∃ z : ℤ_[l], qB P (U : ℚ_[l]) * P.actQdR g (B k) - B k =
@@ -108,27 +108,27 @@ theorem telescope (g : GQ l) (U : ℤ_[l]) (s : ℕ) (B H : ℕ → P.R.BdR)
     linear_combination hz + (l : P.R.BdR) ^ (s * R) * hw
 
 /- English proof (translation)
-Introduce `l _ P AI T K s hs g U M hM y ⟨p, q, hq0, hp, hstep⟩`. Establish `asw` using `(GlobalTheory.ArtinSchreierWitt.main l).2.2`. Use `choose β hβ using fun k : ℕ => asw (AI.ξ ^ (k + 1)) (p k)`. Establish `hη' : ∀ k : ℕ, ∃ η : Ainf l, WittVector.frobenius η - AI.ξ ^ k * η = q k ∧ (k = 0 → η = -y)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `k with _ | k` into its components or cases. Conclude with `⟨-y, by rw [hq0, map_neg]; ring, fun _ => rfl⟩`. Take `⟨η, h⟩` from `asw (AI.ξ ^ (k + 1)) (q (k + 1))`. Conclude with `⟨η, h, fun h => absurd h (Nat.succ_ne_zero k)⟩`. Use `choose η hη hη0 using hη'`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu0, hu⟩` from `GlobalTheory.T.exists_inv_io_pi_alt l P AI T`. Establish `small` using `GlobalTheory.T.prime_pow_mul_inv_pow_mem_ainfFilLattice l P AI s hs u hu0 hu M`. Take `⟨b, hb0, hb⟩` from `GlobalTheory.T.exists_series_limit_Lat_alt l P AI M (fun k => (l : P.R.BdR) ^ (s * k) * (io AI (β k) * u ^ (k + 1))) (fun k => by`. Establish `h1 : (l : P.R.BdR) ^ (s * k) * io AI (β k) ∈ FilB P 0`. Simplify using `using io_mem AI (((l : ℕ) : Ainf l) ^ (s * k) * β k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : u ^ (k + 1) ∈ FilB P 0` using `by simpa using FilB_pow hu0 (k + 1)`. Rewrite using `[← mul_assoc]`. Conclude with `FilB_zero_mul h1 h2)`. Use the proof step `(fun n => by`. Take `⟨k₀, h⟩` from `small n`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨k₀, fun k hk => by rw [← mul_assoc]; exact h k hk _⟩)`. Establish `h1 : ∀ k, io AI AI.π₁ ^ k * u ^ k = 1` using `fun k => by rw [← mul_pow, hu, one_pow]`. Use `⟨b, hb0, fun h hh => ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ k, ∃ z : ℤ_[l], qB P ((1 : ℤ_[l]) : ℚ_[l]) * P.actQdR h (io AI (β k) * u ^ (k + 1)) - io AI (β k) * u ^ (k + 1) = (0 : P.R.BdR) - (l : P.R.BdR) ^ s * 0 + qB P (z : ℚ_[l])`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz⟩` from `GlobalTheory.T.exists_ainfCocycleRecursion_of_frobenius_twist l P AI h 1 (k + 1) (β k) 0 (by`. Rewrite using `[hβ]`. Unfold `Step`. Rewrite using `[hp k h hh, act_μ AI hh]`. Simplify using `[mul_comm])`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[step_dR AI T hu hz, zero_add, map_mul, map_pow, io_zl AI T, mul_assoc, h1]`. Expand and normalize the polynomial expressions, which then agree. Use `limit AI T hM h 1 b 0 _ (fun _ => 0) hb (fun n => ⟨0, fun _ _ => zero_mem _⟩) (fun R => by` as an intermediate fact. Simplify using `using telescope h 1 s (fun k => io AI (β k) * u ^ (k + 1)) (fun _ => 0) key R)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `using this`. Establish `key : ∀ k, ∃ z : ℤ_[l], qB P (U : ℚ_[l]) * P.actQdR g (io AI (β k) * u ^ (k + 1)) - io AI (β k) * u ^ (k + 1) = io AI (η k) * u ^ k - (l : P.R.BdR) ^ s * (io AI (η (k + 1)) * u ^ (k + 1)) + qB P (z : ℚ_[l])`. Introduce `k`. Take `⟨z, hz⟩` from `GlobalTheory.T.exists_ainfCocycleRecursion_of_frobenius_twist l P AI g U (k + 1) (β k) (AI.π₁ * η k - ((l : ℕ) : Ainf l) ^ s * η (k + 1)) (by`. Rewrite using `[hβ]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hstep k using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← hη k, ← hη (k + 1), map_sub, map_mul, map_mul, map_pow, map_natCast, frob_π₁, AI.μ_eq]`. Use the proof step `ring)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[step_dR AI T hu hz]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_add, map_sub, map_mul, map_pow, map_natCast, io_zl AI T]`. Take the linear combination `(io AI (η k) * u ^ k) * hu + qB P (z : ℚ_[l]) * h1 (k + 1)`. Use `limit AI T hM g U b _ _ (fun R => (l : P.R.BdR) ^ (s * R) * (io AI (η R) * u ^ R)) hb (fun n => ?_) (fun R => ?_)` and prove the remaining obligations. Take `⟨k₀, h⟩` from `small n`. Use `⟨k₀, fun R hR => ?_⟩` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h R hR (η R * AI.π₁) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul]`. Take the linear combination `(-(l : P.R.BdR) ^ (s * R) * (io AI (η R) * u ^ R)) * hu`. Use `telescope g U s (fun k => io AI (β k) * u ^ (k + 1)) (fun k => io AI (η k) * u ^ k) key R` as an intermediate fact. Simplify `this` using `only [hη0 0 rfl, map_neg, pow_zero, mul_one, neg_neg]`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (s : ℕ), Lev l s → ∀ (g : GQ l) (U : ℤ_[l]) (M : ℕ), 1 ≤ M → ∀ y : Ainf l, Solv AI K s g U (y - WittVector.frobenius y) → ∃ b ∈ FilB P 0, (∀ h ∈ Hinf K, NearZ P M (P.actQdR h b - b)) ∧ NearZ P M (io AI y + (qB P (U : ℚ_[l]) * P.actQdR g b - b)) := by
   intro l _ P AI T K s hs g U M hM y ⟨p, q, hq0, hp, hstep⟩

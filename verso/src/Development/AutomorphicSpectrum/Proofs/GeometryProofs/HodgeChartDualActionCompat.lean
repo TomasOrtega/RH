@@ -5,39 +5,37 @@ open Module NumberField GlobalTheory.CompanionTheory.Ar.HT GlobalTheory.Companio
 namespace GlobalTheory.CompanionTheory.Ar.Flat.HTL
 
 /- English proof (translation)
-Introduce `A K _ _ _ _ _ _ _ E _ _ c hc p R N _ Li _ _ D ρ hact σ m hproj hsurj`. Establish `hp : (p : K) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Establish `hpm : ((p : K) ^ m) ≠ 0` using `pow_ne_zero _ hp`. Establish `hmemM : ∀ w ∈ D.om', eigProj D.ρΩ σ w ∈ D.omHT σ` using `fun w hw => ⟨w, hw, rfl⟩`. Establish `hh : ∀ i : Fin N, D.h (Pi.single i 1) ∈ D.om'` using `fun i => Submodule.mem_sup_left (Submodule.subset_span ⟨_, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `v : Fin N → D.omHT σ` to `fun i => ⟨eigProj D.ρΩ σ (D.h (Pi.single i 1)), hmemM _ (hh i)⟩`. Set `Q : (Fin N → A) →ₗ[A] D.omHT σ` to `Fintype.linearCombination A v`. Establish `hQ : ∀ x, ((Q x : D.omHT σ) : Module.Dual K Li) = D.q σ x`. Introduce `x`. Simplify using `[Q, Fintype.linearCombination_apply, HTChart.q, v]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `P : Submodule A (D.omHT σ)` to `LinearMap.range (((p : A) ^ m) • (LinearMap.id : D.omHT σ →ₗ[A] D.omHT σ))`. Establish `hsurjQ : Function.Surjective (P.mkQ ∘ₗ Q)`. Introduce `y`. Take `⟨z, rfl⟩` from `P.mkQ_surjective y`. Take `⟨x, y', hy', h⟩` from `hsurj z z.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨x, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply]`. Rewrite using `[Submodule.Quotient.eq]`. Use `⟨-⟨y', hy'⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[hQ, h]`. Take `⟨r, hr⟩` from `Module.projective_lifting_property (P.mkQ ∘ₗ Q) P.mkQ hsurjQ`. Establish `hr' : ∀ z : D.omHT σ, ∃ z' : D.omHT σ, Q (r z) = z + ((p : A) ^ m) • z'`. Introduce `z`. Use `LinearMap.congr_fun hr z` as an intermediate fact.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply] at this`. Rewrite `this` using `[Submodule.Quotient.eq]`. Take `⟨z', hz'⟩` from `this`. Use `⟨z', ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply] at hz'`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz']`. Normalize the expressions using the abelian group laws. Establish `hvec` using `fun k => HTL.exists_vec D ρ hc hact σ ((LinearMap.proj k) ∘ₗ r)`. Use `choose ev hev hevz using hvec`. Set `Rr : (Fin N → K) →ₗ[K] Li` to `Fintype.linearCombination K ev`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hRr : ∀ x, Rr x = ∑ k, x k • ev k` using `fun x => by simp [Rr, Fintype.linearCombination_apply]`. Establish `hzL : ∀ e ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ (σ.comp c.toRingHom)) 1 (algebraMap A K).range, ∀ z : D.omHT σ, (z : Module.Dual K Li) e ∈ (algebraMap A K).range`. Introduce `e he z`. Take `⟨w, hw, hz⟩` from `z.2`. Establish `hz' : eigProj D.ρΩ σ w = z` using `hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hz', eigProj_apply D ρ hc hact σ he.1 w]`. Simplify using `using he.2 w hw`. Use `⟨Rr, fun k => ?_, fun e he => ?_⟩` and prove the remaining obligations. Establish `h1 : Rr (Pi.single k 1) = ev k` using `by simp [hRr, Pi.single_apply]`. Rewrite using `[h1]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hev k, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, ← eigProj_apply D ρ hc hact σ (hev k) w]`. Conclude with `⟨_, (hevz k ⟨_, hmemM w hw⟩).symm⟩`. Set `x : Fin N → K` to `fun l => D.h (Pi.single l 1) e`. Establish `hRx : Rr x ∈ GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ (σ.comp c.toRingHom)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hRr]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hev k)`. Establish `key : ∀ z : D.omHT σ, ∃ z' : D.omHT σ, (z : Module.Dual K Li) (Rr x) = (z : Module.Dual K Li) e + (p : K) ^ m * (z' : Module.Dual K Li) e`. Introduce `z`. Take `⟨z', hz'⟩` from `hr' z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨z', ?_⟩` and prove the remaining obligations. Establish `h1 : (z : Module.Dual K Li) (Rr x) = ∑ k, x k * algebraMap A K (r z k)`. Rewrite using `[hRr, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hevz k z]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h2 : ((Q (r z) : D.omHT σ) : Module.Dual K Li) e = ∑ k, algebraMap A K (r z k) * x k`. Rewrite using `[hQ, HTChart.q, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, eigProj_apply D ρ hc hact σ he.1, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ((Q (r z) : D.omHT σ) : Module.Dual K Li) e = (z : Module.Dual K Li) e + (p : K) ^ m * (z' : Module.Dual K Li) e`. Rewrite using `[hz']`. Simplify using `[Algebra.smul_def]`. Rewrite using `[h1, ← h3, h2]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub` using `Submodule.sub_mem _ hRx he.1`. Use `⟨((p : K) ^ m)⁻¹ • (Rr x - e), ⟨Submodule.smul_mem _ _ hsub, fun w hw => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, ← eigProj_apply D ρ hc hact σ (Submodule.smul_mem _ _ hsub) w]`. Take `⟨z', hz'⟩` from `key ⟨_, hmemM w hw⟩`. Establish `hval : eigProj D.ρΩ σ w (((p : K) ^ m)⁻¹ • (Rr x - e)) = (z' : Module.Dual K Li) e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, map_sub]`. Establish `: eigProj D.ρΩ σ w (Rr x) = eigProj D.ρΩ σ w e + (p : K) ^ m * (z' : Module.Dual K Li) e` using `hz'`. Rewrite using `[this, add_sub_cancel_left, smul_eq_mul, inv_mul_cancel_left₀ hpm]`. Rewrite using `[hval]`. Conclude with `hzL e he z'`.
-
-Rewrite using `[smul_smul, mul_inv_cancel₀ hpm, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_retraction_mod : ∀ (A K : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [Field K] [Algebra A K] [IsFractionRing A K] [CharZero K] (E : Type) [Field E] [NumberField E] (c : E ≃+* E) (hc : ∀ x, c (c x) = x) (p R N : ℕ) [Fact p.Prime] (Li : Type) [AddCommGroup Li] [Module K Li] (D : HTChart A K c p R N (Module.Dual K Li)) (ρ : 𝓞 E →+* Module.End K Li), (∀ (a : 𝓞 E) (w : Module.Dual K Li), D.ρΩ a w = w ∘ₗ ρ (RingOfIntegers.mapRingEquiv c a)) → ∀ (σ : E →+* K) (m : ℕ), Module.Projective A (D.omHT σ) → (∀ y ∈ D.omHT σ, ∃ x : Fin N → A, ∃ y' ∈ D.omHT σ, y = D.q σ x + ((p : A) ^ m) • y') → ∃ Rr : (Fin N → K) →ₗ[K] Li, (∀ k, Rr (Pi.single k 1) ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ (σ.comp c.toRingHom)) 1 (algebraMap A K).range) ∧ ∀ e ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ (σ.comp c.toRingHom)) 1 (algebraMap A K).range, ∃ e' ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ (σ.comp c.toRingHom)) 1 (algebraMap A K).range, Rr (fun l => D.h (Pi.single l 1) e) = e + ((p : K) ^ m) • e' := by
   intro A K _ _ _ _ _ _ _ E _ _ c hc p R N _ Li _ _ D ρ hact σ m hproj hsurj

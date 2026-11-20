@@ -8,7 +8,7 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
 /- English proof (translation)
-The claim follows from `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal (IsTotallyReal.isReal Rat.infinitePlace)).norm_map_of_map_zero (map_zero _) (x.1 Rat.infinitePlace)`.
+A detailed English derivation is pending.
 -/
 private theorem abs_re (x : A ℚ) : |UpperTheory.ConvolutionTheory.RankTwoDescent.re x| = ‖x.1 Rat.infinitePlace‖ :=
   (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal
@@ -16,7 +16,7 @@ private theorem abs_re (x : A ℚ) : |UpperTheory.ConvolutionTheory.RankTwoDesce
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction in
 /- English proof (translation)
-The claim follows from `|UpperTheory.ConvolutionTheory.RankTwoDescent.re (a' : A ℚ)| ≤ Bu * (ab a / c) := by intro c hc obtain ⟨S, hS, hSm⟩ := exists_isCompact_mul_mem_of_ideleModule_mem_Icc (K := ℚ) hc c have hv : Continuous fun u : IdeleGroup ℚ => ((u : IdeleGroup ℚ) : A ℚ) := Units.continuous_val hav …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_rat_mul_idele_finitePart_mem_compact_of_le_norm :
     ∀ c : ℝ, 0 < c → ∃ (S : Set (A ℚ)ˣ) (Bu : ℝ), IsCompact S ∧ 1 ≤ Bu ∧ ∀ a : (A ℚ)ˣ, c ≤ ab a →

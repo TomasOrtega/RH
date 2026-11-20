@@ -15,19 +15,17 @@ namespace GlobalTheory.PsiValUnit
 open GlobalTheory.BXOf
 
 /- English proof (translation)
-Introduce `R _ _ D W χ hW F _ _ T _ φ₁ hφ hP J₀ h₀ J hJ`. Establish `hmem : spMap φ₁ (closedPoint T) ∈ W ⊓ (D.c χ).left ⁻¹ᵁ D.P.L.U (J₀ ((D.c χ).left (spMap φ₁ (closedPoint T))))` using `⟨hP, h₀ _⟩`. Take `⟨V, hVa, hPV, hVle⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp (Sp R).isBasis_affineOpens) hmem`. Use `set j₀ := J₀ ((D.c χ).left (spMap φ₁ (closedPoint T))) with hj₀`. Establish `hxK : D.xK χ = jK R ≫ (D.c χ).left` using `by show (toUnit (TK R) ≫ D.c χ).left = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left]`. Use `congr 1`. Establish `hwch : jK R ⁻¹ᵁ V ≤ (LB.LinComb D.P.L (K` using `PUnit) (fun _ => D.xK χ) (fun _ => -1)).U (fun _ => j₀) := fun x hx => Set.mem_iInter.2 fun _ => by show D.xK χ x ∈ D.P.L.U j₀`. Rewrite using `[hxK]`. Conclude with `(hVle hx).2`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, hre⟩` from `hW (fun _ => j₀) V hVa (fun x hx => (hVle hx).1) (fun x hx => (hVle hx).2) hwch`. Establish `hcomp : ((𝟙 (TF (R` using `R) F) :).left ≫ jFK (R := R) F) ≫ jK R = spMap T.subtype ≫ spMap φ₁ := by`. Rewrite using `[Over.id_left, Category.id_comp]`. Rewrite using `[jFK, jK, spMap, spMap, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(RingHom.ext hφ).symm`. Establish `hch : J (((𝟙 (TF (R` using `R) F) :).left ≫ jFK (R := R) F) ≫ D.xK χ) = j₀ := by`. Establish `e : ((𝟙 (TF (R` using `R) F) :).left ≫ jFK (R := R) F) ≫ D.xK χ = spMap T.subtype ≫ (spMap φ₁ ≫ (D.c χ).left) := by`. Rewrite using `[hxK, ← Category.assoc, hcomp, Category.assoc]`. Rewrite using `[e, hJ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e1` using `val_of (D.psi χ) ((𝟙 (TF (R := R) F) :).left ≫ jFK (R := R) F) (closedPoint F) J (fun _ => j₀) (fun _ => hch)`. Establish `hin : jK R (((𝟙 (TF (R` using `R) F) :).left ≫ jFK (R := R) F) (closedPoint F)) ∈ V := by show (((𝟙 (TF (R := R) F) :).left ≫ jFK (R := R) F) ≫ jK R) (closedPoint F) ∈ V`. Rewrite using `[hcomp]`. Conclude with `top_le_of_mem (spMap φ₁) hPV trivial`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : res hwch ((D.psi χ).s fun _ => j₀) = pullU (jK R) V hr.unit` using `Units.ext hre.symm`. Establish `e3` using `gm_res ((𝟙 (TF (R := R) F) :).left ≫ jFK (R := R) F) (closedPoint F) hwch hin ((D.psi χ).s fun _ => j₀)`. Rewrite `e3` using `[e2, gm_pull ((𝟙 (TF (R := R) F) :).left ≫ jFK (R := R) F) (jK R) (closedPoint F) V hin hr.unit, hcomp]`. Establish `e4` using `sig_nat T.subtype (spMap φ₁) hPV hr.unit`. Use `⟨sig T (gm (spMap φ₁) (closedPoint T) V hr.unit), ?_⟩` and prove the remaining obligations.
-
-Conclude with `(congrArg (fun u => (sig F u : F)) (e1.trans e3.symm)).trans (congrArg Units.val e4).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem psi_val_unit_of_psiUnitOn : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (W : (Sp R).Opens) (χ : D.X), PsiUnitOn D χ W → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (T : Subring F) [IsLocalRing T] (φ₁ : R →+* T), (∀ r, (φ₁ r : F) = algebraMap (FractionRing R) F (algebraMap R _ r)) → spMap φ₁ (closedPoint T) ∈ W → ∀ (J₀ : D.P.A.left → D.P.L.ι), (∀ x, x ∈ D.P.L.U (J₀ x)) → ∀ (J : ((TF (R := R) F).left ⟶ D.P.A.left) → D.P.L.ι), (∀ ψ : Sp T ⟶ D.P.A.left, J (spMap T.subtype ≫ ψ) = J₀ (ψ (closedPoint T))) → ∃ u : Tˣ, (GlobalTheory.BXOf.sig F (val (D.psi χ) ((𝟙 (TF (R := R) F) :).left ≫ jFK (R := R) F) (closedPoint F) J) : F) = ((u : T) : F) := by
   intro R _ _ D W χ hW F _ _ T _ φ₁ hφ hP J₀ h₀ J hJ

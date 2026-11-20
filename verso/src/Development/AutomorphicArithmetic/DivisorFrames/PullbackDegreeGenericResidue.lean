@@ -10,7 +10,7 @@ open GlobalTheory.VertCmp GlobalTheory.Mean4O GlobalTheory.CoverNorm GlobalTheor
 open scoped Classical
 
 /- English proof (translation)
-Take `rfl : x = genericPoint X` from `(h.antisymm (genericPoint_specializes x)).eq`. Rewrite using `[TopCat.Presheaf.stalkSpecializes_refl]`. Conclude with `Function.surjective_id`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem surj_specializes {X : Scheme.{0}} [IsIntegral X] {x : X} (h : x ⤳ genericPoint X) :
     Function.Surjective (X.presheaf.stalkSpecializes h) := by
@@ -19,9 +19,9 @@ private theorem surj_specializes {X : Scheme.{0}} [IsIntegral X] {x : X} (h : x 
   exact Function.surjective_id
 
 /- English proof (translation)
-Use `letI := (SmallSec.fnMap g hg).toAlgebra`. Use `letI := (g.residueFieldMap (genericPoint X')).hom.toAlgebra`. Set `i₀ : X.functionField →+* X.residueField (g (genericPoint X'))` to `(X.presheaf.stalkSpecializes hg ≫ X.residue _).hom`. Set `j₀ : X'.functionField →+* X'.residueField (genericPoint X')` to `(X'.residue _).hom`. Set `i` to `RingEquiv.ofBijective i₀ ⟨i₀.injective, (X.residue_surjective _).comp (surj_specializes hg)⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `j` to `RingEquiv.ofBijective j₀ ⟨j₀.injective, X'.residue_surjective _⟩`. Use `Algebra.finrank_eq_of_equiv_equiv i j ?_` and prove the remaining obligations. Use extensionality with `a`. Conclude with `congr($(Scheme.residue_residueFieldMap g (genericPoint X')) (X.presheaf.stalkSpecializes hg a))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem finrank_fnMap {X X' : Scheme.{0}} [IsIntegral X] [IsIntegral X'] (g : X' ⟶ X)
     (hg : g (genericPoint X') ⤳ genericPoint X) :
@@ -39,9 +39,9 @@ private theorem finrank_fnMap {X X' : Scheme.{0}} [IsIntegral X] [IsIntegral X']
   exact congr($(Scheme.residue_residueFieldMap g (genericPoint X')) (X.presheaf.stalkSpecializes hg a))
 
 /- English proof (translation)
-Take `⟨ψ, _, hψ⟩` from `dominatesStalk_iff_exists_isLocalHom.1 h`. Establish `_ : Nonempty (⊤ : X.Opens)` using `⟨⟨x, trivial⟩⟩`. Establish `e : toFunctionField p a = algebraMap _ X.functionField (X.presheaf.germ ⊤ x trivial (p.appTop ((Scheme.ΓSpecIso (.of A)).inv a)))` using `(Scheme.algebraMap_germ_eq_germToFunctionField X (U := ⊤) (x := x) trivial _).symm`. Use `⟨toFunctionField p a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← hψ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ψ _).2`. Conclude with `SmallSec.fnMap_fnOf g hg (U := ⊤) trivial trivial (p.appTop ((Scheme.ΓSpecIso (.of A)).inv a))`.
+A detailed English derivation is pending.
 -/
 private theorem toFF_mem {X X' : Scheme.{0}} [IsIntegral X] [IsIntegral X'] (g : X' ⟶ X)
     (hg : g (genericPoint X') ⤳ genericPoint X) {A : Type} [CommRing A] (p : X ⟶ Sp A) {x : X}
@@ -58,15 +58,15 @@ private theorem toFF_mem {X X' : Scheme.{0}} [IsIntegral X] [IsIntegral X'] (g :
   · exact SmallSec.fnMap_fnOf g hg (U := ⊤) trivial trivial (p.appTop ((Scheme.ΓSpecIso (.of A)).inv a))
 
 /- English proof (translation)
-Introduce `R _ X X' _ _ _ _ q q' d hq hq' hX hX' g w hg hd η hη a ha`. Use `GlobalTheory.IsNormalScheme.of_pred hX` as an intermediate fact. Use `GlobalTheory.IsNormalScheme.of_pred hX'` as an intermediate fact. Establish `hpr : IsProper q` using `(isProper_and_exists_isAmpleLB_of_isProjOver hq.isProjOver).1`. Establish `hpr' : IsProper q'` using `(isProper_and_exists_isAmpleLB_of_isProjOver hq'.isProjOver).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsep : X.IsSeparated` using `⟨by rw [← terminal.comp_from q]; infer_instance⟩`. Establish `: CharZero X.functionField` using `((fnOf (⊤ : X.Opens) (TopologicalSpace.Opens.mem_top _)).charZero_iff (fnOf_injective ⊤ (TopologicalSpace.Opens.mem_top _))).1 hq.charZero`. Establish `hr` using `finrank_fnMap g hg`. Establish `hfin : (SmallSec.fnMap g hg).Finite`. Use `letI := (SmallSec.fnMap g hg).toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Conclude with `Module.finite_of_finrank_pos (hr ▸ Nat.pos_of_ne_zero hd)`. Establish `hN : ValCount.rnorm (SmallSec.fnMap g hg) (SmallSec.fnMap g hg a) = a ^ g.residueDegree (genericPoint X')`. Use `letI := (SmallSec.fnMap g hg).toAlgebra`. Rewrite using `[← hr]`. Conclude with `Algebra.norm_algebraMap a`.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨W, hW⟩` from `exists_dominatesStalk η`. Use `hW.isDiscreteValuationRing hη` as an intermediate fact. Rewrite using `[UpperTheory.order_eq_valuation_codim_one X η W hη hW a, ← ValCount.vord_pow, ← hN, (UpperTheory.valuation_norm_sum_extensions _ _ _ hfin W).2.2 _ ((map_ne_zero _).2 ha), UpperTheory.order_codim_one_finite_map X X' R q' g hg hfin η W hη hW]`. Use `finsum_congr fun V => if_congr (and_iff_left_of_imp ?_) rfl rfl` and prove the remaining obligations. Introduce `hV o`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx, e⟩` from `toFF_mem g hg q hW o`. Rewrite using `[← w, ← e]`. Rewrite `hx` using `[← hV]`. Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.pullback_degree_generic_residue :
     ∀ (R : Type) [CommRing R] (X X' : Scheme.{0}) [IsIntegral X] [IsIntegral X'] [IsLocallyNoetherian X] [IsLocallyNoetherian X'] (q : X ⟶ Sp R) (q' : X' ⟶ Sp R) (d : ℕ), IsArithVar q d → IsArithVar q' d → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X' → ∀ (g : X' ⟶ X), g ≫ q = q' → ∀ (hg : g (genericPoint X') ⤳ genericPoint X), g.residueDegree (genericPoint X') ≠ 0 → ∀ η : X, Order.coheight η = 1 → ∀ a : X.functionField, a ≠ 0 → (∑ᶠ ζ : X', if g ζ = η then Scheme.ord (SmallSec.fnMap g hg a) ζ * (g.residueDegree ζ : ℤ) else 0) = (g.residueDegree (genericPoint X') : ℤ) * Scheme.ord a η := by

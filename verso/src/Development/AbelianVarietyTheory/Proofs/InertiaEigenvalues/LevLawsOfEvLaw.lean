@@ -28,7 +28,7 @@ def levOne (W : LocWach PD L O v n) (i : ZMod n) (ζ : L) : O⟦X⟧ →ₐ[O] L
 omit [CharZero L] [Algebra ℚ L] in
 
 /- English proof (translation)
-Establish `h` using `W.lev_letter i ζ (f - Pi.constAlgHom O (ZMod n) O⟦X⟧ (f i)) (sub_self (f i))`. Rewrite `h` using `[map_sub, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_eq_levOne (W : LocWach PD L O v n) (i : ZMod n) (ζ : L) (f : LetA O n) :
     W.lev i ζ f = levOne W i ζ (f i) := by
@@ -37,7 +37,7 @@ theorem lev_eq_levOne (W : LocWach PD L O v n) (i : ZMod n) (ζ : L) (f : LetA O
   exact h
 
 /- English proof (translation)
-Take `⟨E, h0, h1, h2⟩` from `W.lev_π i ζ h`. Establish `hE : E = exp L` using `Ser.ode_unique 1 (by rw [map_one, one_mul]; exact h1) (by rw [map_one, one_mul]; exact derivative_exp L) (by rw [h0, constantCoeff_exp])`. Rewrite using `[← hE, ← h2, add_sub_cancel_left]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem levOne_X (W : LocWach PD L O v n) (i : ZMod n) {ζ : L} (h : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) :
     levOne W i ζ X = C ζ * exp L - 1 := by
@@ -48,13 +48,13 @@ theorem levOne_X (W : LocWach PD L O v n) (i : ZMod n) {ζ : L} (h : ∃ j : ℕ
   rfl
 
 /- English proof (translation)
-Establish `hc' : ∀ g, algebraMap O L (W.χΓ g : O) = algebraMap ℤ_[l] L (c g)` using `fun g => by rw [← hc, ← IsScalarTower.algebraMap_apply]`. Establish `hpr : PD.p.Prime` using `hp ▸ (Fact.out : l.Prime)`. Establish `hφX : W.φ₀ X = (1 + X) ^ l - 1` using `by rw [W.φ₀_X, W.q₀_def, hp]`. Establish `hφ : W.φ₀ = GlobalTheory.Fon.phi0 l O` using `GlobalTheory.Cyc.algHom_ext_of_constantCoeff_zero _ _ (by rw [hφX, GlobalTheory.Fon.cyclotomicFrobeniusPowerSeries_X]) (by rw [hφX]; simp)`. Establish `hγ : ∀ g, W.γ₀ g = GlobalTheory.Fon.gam O (c g)` using `fun g => GlobalTheory.Cyc.algHom_ext_of_constantCoeff_zero _ _ (GlobalTheory.Cyc.eq_of_commute_pow l hl0 hlu W.φ₀ _ _ hφX (W.γ₀_comm g _) (by rw [hφ]; exact GlobalTheory.Fon.cyclotomicFrobenius_comm_gammaAction _ _ _) (W.γ₀_X g).1 (GlobalTheory.Fon.constantCoeff_gam_X _ _) (by rw …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `g i ζ _ j a h hj rfl f`. Rewrite `hj`, the goal using `[hc']`. Rewrite using `[lev_eq_levOne, lev_eq_levOne]`. Express the relevant statement in the definitionally equal form `levOne W i ζ (W.γ₀ g (f i)) = _`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hγ]`. Conclude with `Ser.ev_gam H (hp ▸ h.pow_eq_one) _ (hv _ j a hj) (levOne_X W i ⟨j, h⟩) (levOne_X W i (root_pow hpr ⟨j, h⟩ a)) (f i)`. Introduce and unpack `i ζ ⟨j, h⟩ f`. Rewrite using `[lev_eq_levOne, lev_eq_levOne]`. Express the relevant statement in the definitionally equal form `levOne W i ζ (W.φ₀ (f (i - 1))) = _`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `Ser.ev_gam H (hp ▸ h.pow_eq_one) (l : ℤ_[l]) (a := l) (by simp) (levOne_X W i ⟨j, h⟩) (levOne_X W (i - 1) (root_pow hpr ⟨j, h⟩ l)) (f (i - 1))` as an intermediate fact. Rewrite `this` using `[GlobalTheory.Fon.gam_l, map_natCast]`. Rewrite using `[hφ, hp]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levLaws_of_evLaw [IsDomain O] (hl0 : (l : O) ≠ 0) (hlu : ¬ IsUnit (l : O)) (W : LocWach PD L O v n)
     (hp : PD.p = l) (c : W.Gam → ℤ_[l]) (hc : ∀ g, algebraMap ℤ_[l] O (c g) = (W.χΓ g : O))
@@ -96,7 +96,7 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (H : LocHW
   {K : FinExt l} {s : ℕ} {LL : FinExt l} (h : Good K s LL)
 
 /- English proof (translation)
-Take `⟨_, -, h0, hu, -⟩` from `GlobalTheory.Per.integers_completeDVR l LL`. Take `⟨c, hc⟩` from `Ser.exists_padic_char (GamL H h)`. Use `levLaws_of_evLaw h0 hu _ (P.PD_p K) (fun g => (c g : ℤ_[l])) hc (Ser.dvd_of_le_v P) ?_` and prove the remaining obligations. Use `Ser.evLaw_integers P LL using 1` and compare the differences between its conclusion and the goal. Conclude with `Algebra.algebra_ext _ _ fun r => PowerSeries.algebraMap_apply`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem levLaws : LevLaws (H.W K s LL h) := by
   obtain ⟨_, -, h0, hu, -⟩ := GlobalTheory.Per.integers_completeDVR l LL
@@ -106,21 +106,21 @@ theorem levLaws : LevLaws (H.W K s LL h) := by
   exact Algebra.algebra_ext _ _ fun r => PowerSeries.algebraMap_apply
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.HWL.Back.ioE_φ (O := ↥(OL LL)) Subtype.val_injective _, GlobalTheory.HWL.Back.ioE_γ (O := ↥(OL LL)) Subtype.val_injective _⟩`.
+Supply the required witnesses or components.
 -/
 theorem ioLaws_tie : IoLaws (F.E K s LL h).tie :=
   ⟨GlobalTheory.HWL.Back.ioE_φ (O := ↥(OL LL)) Subtype.val_injective _,
     GlobalTheory.HWL.Back.ioE_γ (O := ↥(OL LL)) Subtype.val_injective _⟩
 
 /- English proof (translation)
-The claim follows from `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2 GlobalTheory.TrivCrys.isCrys_lat_of_trivial _ (H.W K s LL h).one_triv`.
+A detailed English derivation is pending.
 -/
 theorem one_crys : IsCrys (P.PD K) (H.W K s LL h).one.ρ :=
   haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
   GlobalTheory.TrivCrys.isCrys_lat_of_trivial _ (H.W K s LL h).one_triv
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨(C.C K s LL h).tie.lev_Γ, (C.C K s LL h).tie.lev_φ⟩, ioLaws_tie H F h, one_crys H h⟩`.
+Supply the required witnesses or components.
 -/
 theorem laws_of_cmp (C : LocCmpT l P AI H F) : Laws H F h :=
   ⟨⟨(C.C K s LL h).tie.lev_Γ, (C.C K s LL h).tie.lev_φ⟩, ioLaws_tie H F h, one_crys H h⟩
@@ -128,7 +128,7 @@ theorem laws_of_cmp (C : LocCmpT l P AI H F) : Laws H F h :=
 end Concrete
 
 /- English proof (translation)
-Introduce `H F _ _ _ h` and use `⟨levLaws H h, ioLaws_tie H F h, one_crys H h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem laws : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (H : LocHW l P) (F : LocFon l P AI H)
     {K : FinExt l} {s : ℕ} {LL : FinExt l} (h : Good K s LL), Laws H F h :=

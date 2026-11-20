@@ -46,7 +46,7 @@ def chartTw (i : ℕ) (hi : i + 1 ≤ D.R.m) (β : T.Ch u μ (i + 1)) (B : GL (F
   fin := fin
 
 /- English proof (translation)
-Establish `hk` using `Gt.gat_k u w hg`. Rewrite using `[← rank_step D i hi, ht]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_lv (Gt : GatTies D) (Fl : Fills (D.gat u w hg)) (ht : Fl.t = D.R.t) (i : ℕ) (hi : i < D.R.m) :
     (D.gat u w hg).P.m + (i + 1) * (Fl.t + 1) + 1 = (D.sp.X (i + 1)).rank := by
@@ -91,7 +91,7 @@ def ChData.Lc (Cd : ChData T X0 u μ w hg) (Gt : GatTies D) (Fl : Fills (D.gat u
     (Cd.B i hi)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun c => absurd c.1 (by omega)⟩`.
+Supply the required witnesses or components.
 -/
 theorem ChData.empty (Cd : ChData T X0 u μ w hg) (Gt : GatTies D) (Fl : Fills (D.gat u w hg)) (ht : Fl.t = D.R.t) (j : ℕ)
     (hj : D.R.m ≤ j) : IsEmpty ((Cd.Lv Gt Fl ht).compS j) :=
@@ -104,7 +104,7 @@ variable {Tw : TwForms D} {H : Formalism.L2.Herm.HermColsCh D} {J : Formalism.L2
   (dt : ∀ j (hj : j + 1 ≤ D.R.m) β, DetTie (W.ch u μ hμ (j + 1) (one_le j) hj β).lev)
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem ChData.frRat (j : ℕ) (hj : j + 1 ≤ D.R.m) (β : T.Ch u μ (j + 1)) :
     FrRatJ ((Cd.Lc Gt Fl ht j hj).t β) (Cd.Lc Gt Fl ht j hj).B :=
@@ -113,7 +113,7 @@ theorem ChData.frRat (j : ℕ) (hj : j + 1 ≤ D.R.m) (β : T.Ch u μ (j + 1)) :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `(W.car u μ hμ (j + 1) (one_le j) hj β).Uloc_eq`.
+A detailed English derivation is pending.
 -/
 theorem ChData.sameU (j : ℕ) (hj : j + 1 ≤ D.R.m) (β : T.Ch u μ (j + 1)) :
     SameUlocJ hj ((formsInTw W u μ hμ j hj (dt j hj)).K β).lev ((Cd.Lc Gt Fl ht j hj).Uloc β) :=
@@ -122,7 +122,7 @@ theorem ChData.sameU (j : ℕ) (hj : j + 1 ≤ D.R.m) (β : T.Ch u μ (j + 1)) :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `(W.car u μ hμ (j + 1) (one_le j) hj β).Lb_eq`.
+A detailed English derivation is pending.
 -/
 theorem ChData.Lb_eq (j : ℕ) (hj : j + 1 ≤ D.R.m) (β : T.Ch u μ (j + 1)) :
     ((formsInTw W u μ hμ j hj (dt j hj)).K β).lev.Lb = reL (rankN D (j + 1) hj) ((Cd.Lc Gt Fl ht j hj).Lb β) :=

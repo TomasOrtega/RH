@@ -11,11 +11,11 @@ open Formalism.L2.Th1.CM Formalism.L2.Th1.F
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [xsOf, Finset.mem_image, Finset.mem_filter, Finset.mem_inter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, ⟨hP, hβP⟩, rfl⟩`. Use `⟨⟨P, hP, rfl⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hT'.mem_xsOf hβ (hT.notMem hP)).2 hβP` as an intermediate fact. Simplify `this` using `only [xsOf, Finset.mem_image]`. Introduce and unpack `⟨⟨P, hP, rfl⟩, h2⟩`. Use `⟨P, ⟨hP, ?_⟩, rfl⟩` and prove the remaining obligations. Use `(hT'.mem_xsOf hβ (hT.notMem hP)).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `h2` using `only [xsOf, Finset.mem_image]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem xsOf_filter (L : PeriodPair) (α β : ℂ) (hα : MulStable L α) (hβ : MulStable L β) (T T' : Finset ℂ)
     (hT : IsHalfReps L α T) (hT' : IsHalfReps L β T') :
@@ -33,7 +33,7 @@ theorem xsOf_filter (L : PeriodPair) (α β : ℂ) (hα : MulStable L α) (hβ :
     simpa only [xsOf, Finset.mem_image] using h2
 
 /- English proof (translation)
-Introduce `ω hω`. Use `L.lattice.nsmul_mem hω n` as an intermediate fact. Simplify `this` using `[nsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem natCast_mulStable (L : PeriodPair) (n : ℕ) : MulStable L (n : ℂ) := by
   intro ω hω
@@ -41,25 +41,23 @@ theorem natCast_mulStable (L : PeriodPair) (n : ℕ) : MulStable L (n : ℂ) := 
   simpa [nsmul_eq_mul] using this
 
 /- English proof (translation)
-Take `⟨p, r, hp, hb, -, hp3, hr, hdiv, hndiv⟩` from `prime_choice d (l + 3) hsq hd4 h3 hd3`. Take `⟨M, hM⟩` from `hdiv`. Establish `hpM : ¬ p ∣ M`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `hndiv ⟨c, by rw [hM]; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hp2 : p ≠ 2` using `by omega`. Establish `hp0 : (p : ℂ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Use `set β : ℂ := (r : ℂ) + redSqD d with hβdef`. Establish `hβs : MulStable L β` using `sqD_mulStable d L hCM r`. Establish `hβN : Complex.normSq β = ((p * M : ℕ) : ℝ)` using `by rw [← hM]; exact sqD_normSq d r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβN' : Complex.normSq β = ((r ^ 2 + d : ℕ) : ℝ)` using `sqD_normSq d r`. Establish `hps : MulStable L (p : ℂ)` using `natCast_mulStable L p`. Establish `hpN : Complex.normSq (p : ℂ) = ((p * p : ℕ) : ℝ)`. Rewrite using `[Complex.normSq_natCast]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpodd : Odd p` using `hp.odd_of_ne_two hp2`. Establish `hdodd : Odd d` using `by rw [Nat.odd_iff]; omega`. Establish `hNodd : Odd (r ^ 2 + d)` using `(hr.pow_of_ne_zero two_ne_zero).add_odd hdodd`. Establish `hβ0 : β ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Rewrite `hβN'` using `[h0, map_zero]`. Establish `: (r ^ 2 + d : ℕ) = 0` using `by exact_mod_cast hβN'.symm`. Use linear arithmetic over natural numbers and integers. Take `⟨T, hT⟩` from `halfReps_exist L (p : ℂ) hp0 hps (p * p) hpN (hpodd.mul hpodd)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T', hT'⟩` from `halfReps_exist L β hβ0 hβs (r ^ 2 + d) hβN' hNodd`. Establish `hcard` using `card_G L β hβs p M hp hp2 hβN hpM T hT`. Use `⟨p, T.filter (fun P => β * P ∈ L.lattice), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Break down `(Nat.dvd_prime hp).1 h with h1 | h1` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `hl.one_lt.ne' h1`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Introduce `z hz`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz'` using `(Finset.mem_filter.1 hz).1`. Conclude with `⟨hT.notMem hz', (hT.1 z hz').1⟩`. Introduce `k h2 h3' hω`. Establish `hpk : (p : ℂ) ∈ k` using `natCast_mem k p`. Establish `hβk : β ∈ k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hβdef, redSqD]`. Conclude with `k.add_mem (natCast_mem k r) (k.sub_mem (k.mul_mem (by simp) hω) k.one_mem)`. Establish `h1` using `kerPoly_mem L (p : ℂ) T hp0 hps hT k h2 h3' hpk`. Establish `h1'` using `kerPoly_mem L β T' hβ0 hβs hT' k h2 h3' hβk`. Establish `h4` using `prod_mem_of_rootPoly k _ (rootPoly_inter_mem k _ _ h1 h1')`.
-
-Rewrite `h4` using `[← xsOf_filter L (p : ℂ) β hps hβs T T' hT hT', xsOf, Finset.prod_image]`. Conclude with `h4`. Introduce `a ha b hb hab`. Conclude with `hT.injOn (Finset.mem_coe.2 (Finset.mem_filter.1 ha).1) (Finset.mem_coe.2 (Finset.mem_filter.1 hb).1) hab`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kerProd_ideal (d : ℕ) (L : PeriodPair) (hsq : Squarefree d) (hd4 : d % 4 = 3) (hCM : HasCMBy d L)
     (l : ℕ) (hl : l.Prime) (h3 : 3 ∣ d) (hd3 : d ≠ 3) : KerProdAt d L l 3 := by

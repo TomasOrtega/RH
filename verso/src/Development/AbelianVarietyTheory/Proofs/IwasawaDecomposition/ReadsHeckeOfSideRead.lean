@@ -15,13 +15,13 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 namespace GlobalTheory.LevCmp.ValQ
 
 /- English proof (translation)
-Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Use `haveI : IsAlgClosed D.nd.Om := IsAlgClosure.isAlgClosed D.host.E`. Take `⟨art, hart, hH⟩` from `hR`. Take `⟨A, hA⟩` from `ReciprocityTheory.Gal.exists_isPlaceOver D.nd.Om P'`. Take `⟨hq2, hq1⟩` from `GlobalTheory.TameValChar.two_le_normV_and_not_mem P'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨ϖ, hϖ1, hϖ2⟩ : ∃ ϖ0 : 𝓞 D.host.E, ϖ0 ∈ P'.asIdeal ∧ ϖ0 ∉ P'.asIdeal ^ 2 := by`. Establish `hlt` using `Ideal.pow_succ_lt_pow (P := P'.asIdeal) P'.ne_bot 1`. Rewrite `hlt` using `[pow_one]`. Take `⟨x, hx, hx'⟩` from `SetLike.exists_of_lt hlt`. Conclude with `⟨x, hx, hx'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨π, hπ⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap D.host.E D.nd.Om (ϖ : D.host.E)) (show 0 < normV P' - 1 by omega)`. Establish `hxu : IsUnitAt P' (atFin P' y)` using `by show Valued.v (((y : D.host.E) : P'.adicCompletion D.host.E)) = 1`. Rewrite using `[hy, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `(HeightOneSpectrum.valuation_eq_one_iff_notMem _).2 ha`. Take `⟨σ, hσI, hσart, hσval⟩` from `GlobalTheory.TameRecip.exists_ine_of_unit hGAR D.host.E D.nd.Om art hart P' A hA ϖ hϖ1 hϖ2 π hπ (atFin P' y) a hxu (by simp [atFin, hy])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hTR : NX.TameRep P' 1 σ a` using `⟨A, hA, hσI, ϖ, π, hϖ1, hϖ2, hπ, by simpa using hσval⟩`. Establish `hI : ∀ A : ValuationSubring D.nd.Om, IsPlaceOver A P' → ∀ σ ∈ Ine (F` using `D.host.E) A, ∃ N : ℕ, ψ σ ^ (D.ntw.l i ^ N) = 1 := fun _ _ σ _ => hord σ`. Rewrite using `[GlobalTheory.TameResRead.tameVal_eq_of_tameRep ψ P' 1 (D.ntw.l i) hopen hl hI σ a ha hTR]`. Establish `h1` using `hH _ σ hσart.symm`. Conclude with `(congrArg (fun z : ℂˣ => (z : ℂ)) h1).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tameVal_eq_locK (hGAR : GlobalTheory.Published.GlobalArtinReciprocity) (D : D7) (i : D.ntw.Tw) (k : ℕ)
     (e : NX.Kk D i k →+* ℂ) (ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ) (χ : HChar D.host.E)
@@ -56,19 +56,17 @@ theorem tameVal_eq_locK (hGAR : GlobalTheory.Published.GlobalArtinReciprocity) (
   exact (congrArg (fun z : ℂˣ => (z : ℂ)) h1).symm
 
 /- English proof (translation)
-Introduce `hP hL`. Use `GlobalTheory.Mem.Top.Bl.StepW.of_all ?_` and prove the remaining obligations. Introduce `K B f T w _ _ _ P x l v i b ψ hA j htw hl hok e hside hR P' hP' a y ha hy`. Establish `h2` using `P.q.mu.tw v`. Establish `hPQ : P' ∈ QOf P v` using `(cell (D := Dof x) l.b.Bs.exp b hA j).QP_sub hP'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlP` using `(hA.1 P' hPQ).2`. Establish `hpD` using `(hA.2.1 P' hPQ).1`. Establish `hg` using `(hA.2.1 P' hPQ).2`. Establish `hmu : ((cfOf x).mu0 j).UnrAt P'` using `((cfOf x).isMu0 j).unr P' fun k hk => hg k hk`. Establish `hxu : IsUnitAt P' (atFin P' y)` using `by show Valued.v (((y : (Dof x).host.E) : P'.adicCompletion (Dof x).host.E)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hy, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `(HeightOneSpectrum.valuation_eq_one_iff_notMem _).2 ha`. Rewrite using `[l.b.Bs.exp.sgnT_one, tameVal_eq_locK hP.what₂.art (Dof x) i (T.k v) e ψ (T.psi v) hR hA.2.2.1 hA.2.2.2.2.1 P' hlP a y ha hy]`. Establish `hp' : P' ∉ placesOver B.host.E (if B.places.resChar v = B.host.pde then B.host.pde' else B.host.pde)`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hpD` to reduce the goal to its premises. Rewrite using `[← Finset.mem_coe, (Dof x).ntw.pD_eq i, hl]`. Conclude with `h`. Use `show _ = ((((cfOf x).mu0 j).loc P' (atFin P' y) * (w.I.xi ((Dof x).what₂.muTw v)).loc P' (atFin P' y) : ℂˣ) : ℂ)`. Rewrite using `[hmu _ hxu, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `h3 : w.I.xi ((Dof x).what₂.muTw v) = T.xiTw f v` using `h2`. Rewrite using `[h3]`. Unfold `TwDat.xiTw`. Use `split_ifs with hc`. Rewrite `hp'` using `[if_pos hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd` using `f.isDel'.unr P' hp' _ hxu`. Use `show _ = (((f.del'.loc P') ((atFin P') y) * ((T.psi v).loc P') ((atFin P') y) : ℂˣ) : ℂ)`. Rewrite using `[hd, one_mul]`. Both sides reduce to the same expression. Rewrite `hp'` using `[if_neg hc]`.
-
-Establish `hd` using `f.isDel.unr P' hp' _ hxu`. Use `show _ = (((f.del.loc P') ((atFin P') y) * ((T.psi v).loc P') ((atFin P') y) : ℂˣ) : ℂ)`. Rewrite using `[hd, one_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ B _ T w P x => ∀ (l : StrictHenselianAcyclic hL x) (v : B.places.Pl) (i : (Dof x).ntw.Tw) (b : Bool) (ψ : G (Dof x).host.E (Dof x).nd.Om →* ((Dof x).ntw.Ok i (T.k v))ˣ) (hA : NX.AdmTw (Dof x) i (T.k v) (QOf P v) ψ) (j : Fin (Dof x).R.m), TwistedAt (Dof x) v → (Dof x).ntw.l i = B.places.resChar v → IntegralHeckeForms.TwOK i (T.k v) (QOf P v) ψ → ∀ e, SideRead i b (T.k v) e → ReadsHecke e ψ (T.psi v) → ∀ P' ∈ (cell (D := Dof x) l.b.Bs.exp b hA j).QP, ∀ (a : 𝓞 (Dof x).host.E) (k : (Dof x).host.Eˣ), a ∉ P'.asIdeal → (k : (Dof x).host.E) = (a : (Dof x).host.E) → e (NX.ofOk (Dof x) i (T.k v) (NX.tameVal ψ P' l.b.Bs.exp.sgnT a).1) = (((eta (D := Dof x) (cfOf x) w.I.xi v j).locK P' k : ℂˣ) : ℂ) := by
   intro hP hL

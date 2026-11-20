@@ -10,7 +10,7 @@ set_option maxHeartbeats 1600000
 namespace GlobalTheory.NL.WkRange
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a x, E.tie.jD_smul, E.tie.ioE_ext]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jD_smul_letter {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {K : FinExt l} {s : ℕ}
     {LL : FinExt l} {h : Good K s LL}
@@ -20,19 +20,17 @@ theorem jD_smul_letter {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l
   rw [← algebraMap_smul W.EE a x, E.tie.jD_smul, E.tie.ioE_ext]
 
 /- English proof (translation)
-Introduce `l _ P AI K s LL h W E T`. Take `⟨S, hS⟩` from `W.N_fg T`. Set `n : Fin S.card → W.DD T` to `fun i => (S.equivFin.symm i : W.DD T)`. Establish `hrange : Set.range n = (S : Set (W.DD T))`. Use extensionality with `z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(S.equivFin.symm i).2`. Introduce `hz; exact ⟨S.equivFin ⟨z, hz⟩, by simp [n]⟩`. Establish `hspan : W.N T = Submodule.span (AA K LL) (Set.range n)` using `by rw [hrange, hS]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨S.card, fun i => E.tie.jD T ((letπ : AA K LL) • n i), ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨m, hm, rfl⟩` from `Submodule.mem_map.1 hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[hspan]`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (AA K LL)).1 hm`. Use `⟨c, ?_⟩` and prove the remaining obligations. Simplify using `only [smulA, LinearMap.smul_apply, LinearMap.id_apply, Finset.smul_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [jD_smul_letter]`. Conclude with `smul_comm _ _ _`. Introduce and unpack `⟨c, rfl⟩`. Use `⟨∑ i, c i • ((letπ : AA K LL) • n i), ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.mem_map.2 ⟨∑ i, c i • n i, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hspan]`. Conclude with `(Submodule.mem_span_range_iff_exists_fun (AA K LL)).2 ⟨c, rfl⟩`. Simplify using `only [smulA, LinearMap.smul_apply, LinearMap.id_apply, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`. Simplify using `only [map_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => jD_smul_letter E T _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jD_aN_eq_range : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {K : FinExt l} {s : ℕ} {LL : FinExt l} {h : Good K s LL} {W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) (Module.finrank ℚ_[l] ↥(K0 K))} (E : EtSit P AI K s LL h W) (T : Lt K LL), ∃ (r : ℕ) (y : Fin r → TW (RW LL) T), E.tie.jD T '' (aN W T letπ : Set (W.DD T)) = Set.range fun a : Fin r → AA K LL => ∑ i, inclR LL (E.tie.io (a i)) • y i := by
   intro l _ P AI K s LL h W E T

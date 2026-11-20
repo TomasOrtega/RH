@@ -10,7 +10,7 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI : NeZero l := ⟨hl.ne'⟩`. Unfold `lev`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lev_finiteIndex' (N l : ℕ) (hN : 0 < N) (hl : 0 < l) : (lev N l).FiniteIndex := by
   haveI : NeZero N := ⟨hN.ne'⟩
@@ -25,15 +25,13 @@ theorem pet_eq_quotInt (Γ : Subgroup SL(2, ℤ)) (k : ℤ) (f g : ℍ → ℂ) 
     pet Γ k f g = UpperTheory.V.Lit.KT.quotInt Γ (petersson k f g) := rfl
 
 /- English proof (translation)
-Introduce `N l k hN hl f g h c`. Use `haveI := lev_finiteIndex' N l hN hl`. Use `haveI : Fintype (SL(2, ℤ) ⧸ lev N l) := Fintype.ofFinite _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : petersson k ⇑f (⇑g + c • ⇑h) = fun z => petersson k f g z + c * petersson k f h z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [petersson, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨B, hB⟩` from `CuspFormClass.petersson_bounded_left k _ f g`. Take `⟨B', hB'⟩` from `CuspFormClass.petersson_bounded_left k _ f h`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `petersson_continuous k (ModularFormClass.continuous f) (ModularFormClass.continuous g)`. Establish `hc'` using `petersson_continuous k (ModularFormClass.continuous f) (ModularFormClass.continuous h)`. Establish `hb'' : ∀ z, ‖c * petersson k f h z‖ ≤ ‖c‖ * B'` using `fun z => by`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hB' z) (norm_nonneg _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pet_eq_quotInt, pet_eq_quotInt, pet_eq_quotInt, e, UpperTheory.V.Lit.KT.quotInt_add (ψ := fun z => c * petersson k f h z) _ hc hB (continuous_const.mul hc') hb'', UpperTheory.V.Lit.KT.quotInt_mul]`. Simplify using `only [pet, finsum_eq_sum_of_fintype]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_conj]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `z`. Conclude with `petersson_symm _ _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pet_sesq : ∀ (N l : ℕ) (k : ℤ), 0 < N → 0 < l → ∀ (f g h : CuspForm (GlobalTheory.Hk.lev N l) k) (c : ℂ), GlobalTheory.Hk.pet (GlobalTheory.Hk.lev N l) k ⇑f (⇑g + c • ⇑h) = GlobalTheory.Hk.pet (GlobalTheory.Hk.lev N l) k ⇑f ⇑g + c * GlobalTheory.Hk.pet (GlobalTheory.Hk.lev N l) k ⇑f ⇑h ∧ GlobalTheory.Hk.pet (GlobalTheory.Hk.lev N l) k ⇑g ⇑f = (starRingEnd ℂ) (GlobalTheory.Hk.pet (GlobalTheory.Hk.lev N l) k ⇑f ⇑g) := by
   intro N l k hN hl f g h c

@@ -11,13 +11,11 @@ noncomputable section
 namespace GlobalTheory.QuotGlue
 
 /- English proof (translation)
-Establish `sq : ∀ j, IsPullback (pullback.fst A.hom (𝒰.f j)) (q j).left Q.left (ψ j)` using `fun j => by`. Use `IsPullback.of_bot ?_ (hc j).symm (hψ j)` and prove the remaining obligations. Establish `e1 : (q j).left ≫ (B j).hom = pullback.snd A.hom (𝒰.f j)` using `Over.w (q j)`. Establish `e2 : Q.left ≫ G.hom = A.hom` using `Over.w Q`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsPullback.of_hasPullback _ _`. Establish `hoi : ∀ j, IsOpenImmersion (ψ j)` using `fun j => MorphismProperty.of_isPullback (P := @IsOpenImmersion) (hψ j).flip inferInstance`. Establish `cov : ∀ x : G.left, ∃ j y, ψ j y = x`. Introduce `x`. Take `⟨j, u, hu⟩` from `𝒰.exists_eq (G.hom x)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, -⟩` from `Scheme.exists_preimage_of_isPullback (hψ j) x u hu.symm`. Conclude with `⟨j, p, hp⟩`. Use `IsZariskiLocalAtTarget.of_openCover (Scheme.Cover.mkOfCovers 𝒰.I₀ (fun j => (B j).left) ψ cov) fun j => ?_` and prove the remaining obligations. Establish `h` using `hq j`. Rewrite `h` using `[← (sq j).isoPullback_hom_snd, P.cancel_left_of_respectsIso]`.
-
-Conclude with `h`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_local (P : MorphismProperty Scheme.{0}) [IsZariskiLocalAtTarget P]
     (S : Scheme.{0}) (𝒰 : S.OpenCover.{0}) (A G : Over S) (Q : A ⟶ G)
@@ -44,7 +42,7 @@ theorem of_local (P : MorphismProperty Scheme.{0}) [IsZariskiLocalAtTarget P]
   exact h
 
 /- English proof (translation)
-Introduce `S 𝒰 A G Q B ψ q hψ hc hf hfl hs`. Establish `: IsZariskiLocalAtTarget @IsFinite.{0}` using `by set_option backward.isDefEq.respectTransparency.types false in exact inferInstance`. Establish `: IsZariskiLocalAtTarget @Flat.{0}` using `HasRingHomProperty.instIsZariskiLocalAtTarget (P := @Flat.{0})`. Conclude with `⟨of_local @IsFinite S 𝒰 A G Q B ψ q hψ hc hf, of_local @Flat S 𝒰 A G Q B ψ q hψ hc hfl, of_local @Surjective S 𝒰 A G Q B ψ q hψ hc hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem finite_flat_surjective : ∀ (S : Scheme.{0}) (𝒰 : S.OpenCover.{0}) (A G : Over S) (Q : A ⟶ G)
     (B : ∀ j, Over (𝒰.X j)) (ψ : ∀ j, (B j).left ⟶ G.left) (q : ∀ j, (Over.pullback (𝒰.f j)).obj A ⟶ B j),

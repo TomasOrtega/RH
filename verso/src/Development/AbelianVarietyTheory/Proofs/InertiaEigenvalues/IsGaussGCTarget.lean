@@ -9,9 +9,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMon.Gauss
 
 /- English proof (translation)
-Establish `h : ∃ N, IsGauss l ρ N` using `GlobalTheory.GaussExt.exists_gauss_acris l ρ h0 h1`. Establish `e : gC l ρ = Classical.choose h`. Use function extensionality and compare the values at `x`. Simplify using `only [gC, dif_pos h]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Classical.choose_spec h`.
+A detailed English derivation is pending.
 -/
 theorem isGauss_gC_of_le (l : ℕ) [Fact l.Prime] (ρ : ℝ) (h0 : (l : ℝ)⁻¹ ≤ ρ) (h1 : ρ < 1) :
     IsGauss l ρ (gC l ρ) := by
@@ -23,7 +23,7 @@ theorem isGauss_gC_of_le (l : ℕ) [Fact l.Prime] (ρ : ℝ) (h0 : (l : ℝ)⁻�
   exact Classical.choose_spec h
 
 /- English proof (translation)
-Introduce `l _ ρ h0 h1` and use `isGauss_gC_of_le l ρ h0 h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGauss_gC_target : ∀ (l : ℕ) [Fact l.Prime] (ρ : ℝ), (l : ℝ)⁻¹ ≤ ρ → ρ < 1 → IsGauss l ρ (gC l ρ) :=
   fun l _ ρ h0 h1 => isGauss_gC_of_le l ρ h0 h1

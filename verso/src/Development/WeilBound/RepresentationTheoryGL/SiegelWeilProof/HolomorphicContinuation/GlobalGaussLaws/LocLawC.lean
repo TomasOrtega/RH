@@ -14,11 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace PositivityTheory.Rg.Sw.Glob.LocLawH
 
 /- English proof (translation)
-Establish `hk : k = (m : ℤ) + j + j` using `by omega`. Establish `hkj : k - j = (m : ℤ) + j` using `by omega`. Establish `hpq : -(p : ℤ) + -(q : ℤ) = -(m : ℤ)` using `by omega`. Rewrite using `[← zpow_add₀ (div_ne_zero hZ (pow_ne_zero 2 hR)), hpq, hkj, hk]`. Establish `hR2 : (R ^ 2 : ℂ) = R * R` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hR2]`. Simplify using `only [div_eq_mul_inv, mul_zpow, _root_.inv_zpow, zpow_add₀ hZ, zpow_add₀ hR, _root_.zpow_neg, zpow_natCast, inv_inv, mul_inv]`. Establish `h1 : Z ^ m ≠ 0` using `pow_ne_zero _ hZ`. Establish `h2 : R ^ m ≠ 0` using `pow_ne_zero _ hR`. Establish `h3 : Z ^ j ≠ 0` using `zpow_ne_zero _ hZ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : R ^ j ≠ 0` using `zpow_ne_zero _ hR`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Rewrite using `[inv_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem alg_id (Z R : ℂ) (hZ : Z ≠ 0) (hR : R ≠ 0) (k j : ℤ) (p q m : ℕ) (hm : p + q = m) (hj : k - m = j + j) :
     (Z / R) ^ k * R ^ (m : ℤ) = (Z * (Z / R ^ 2)) ^ (k - j) * ((Z / R ^ 2) ^ (-(p : ℤ)) * (Z / R ^ 2) ^ (-(q : ℤ))) := by

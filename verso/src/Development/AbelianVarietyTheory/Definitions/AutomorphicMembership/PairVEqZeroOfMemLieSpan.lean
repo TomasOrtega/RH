@@ -14,9 +14,9 @@ open Formalism.MainNotions.DIV.Cons (SCF intO)
 namespace GlobalTheory.LocM
 
 /- English proof (translation)
-Use `le_antisymm ((AddSubgroup.closure_le _).2 ?_) fun v hv => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, x, hx, rfl⟩`. Establish `h` using `Submodule.smul_mem (Submodule.span ↥(intO C) s) (⟨a, ha⟩ : ↥(intO C)) (Submodule.subset_span hx)`. Rewrite `h` using `[← algebraMap_smul C]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `replace hv : v ∈ Submodule.span ↥(intO C) s := hv`. Take `⟨n, a, x, rfl⟩` from `Submodule.mem_span_set'.1 hv`. Conclude with `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.subset_closure ⟨a i, (a i).2, x i, (x i).2, (algebraMap_smul C (a i) (x i : V)).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem ospan_eq_span {C V : Type} [NormedField C] [IsUltrametricDist C] [AddCommGroup V] [Module C V]
     [Module ↥(intO C) V] [IsScalarTower ↥(intO C) C V] (s : Set V) :
@@ -43,9 +43,9 @@ def htMap : P.T →+ P.OmC := P.inclOm.toAddMonoidHom.comp P.al₀.toAddMonoidHo
 def lieSpan : Submodule ↥C.S P.V := Submodule.span ↥C.S (P.latLie : Set P.V)
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y hx hy => exact Submodule.add_mem _ (hx trivial) (hy trivial)`. Consider the case `tmul c t`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← mul_one c, ← smul_eq_mul, ← TensorProduct.smul_tmul']`. Conclude with `Submodule.smul_mem _ c (Submodule.subset_span ⟨t, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_tateIncl : Submodule.span ↥C.S (Set.range (tateIncl P)) = ⊤ := by
   refine eq_top_iff.2 fun x _ => ?_
@@ -57,7 +57,7 @@ theorem span_tateIncl : Submodule.span ↥C.S (Set.range (tateIncl P)) = ⊤ := 
     exact Submodule.smul_mem _ c (Submodule.subset_span ⟨t, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `P.alC_tmul 1 t`.
+A detailed English derivation is pending.
 -/
 theorem alC_tateIncl (t : P.T) : P.alC (tateIncl P t) = htMap P t := P.alC_tmul 1 t
 
@@ -92,13 +92,13 @@ def htToMdl {Z : ct.Mdl} (y : ct.Pt Z) :
     (by rw [Category.assoc, y.z_π]; exact (isGrpPullback_htToModel (ct.dat y)).1.w)
 
 /- English proof (translation)
-The claim follows from `Z.tMap.cart.1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem htToMdl_φ {Z : ct.Mdl} (y : ct.Pt Z) : letI : Fact p.Prime := ⟨ct.hp⟩
     ct.htToMdl y ≫ Z.tMap.φ = htToModel (ct.dat y) := Z.tMap.cart.1.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `letI : Fact p.Prime := ⟨ct.hp⟩ Z.tMap.cart.cancel ((isGrpPullback_htToModel (ct.dat y)).congr y.z_π.symm (ct.htToMdl_φ y).symm) (Z.tMap.cart.1.lift_snd _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem isGrpPullback_htToMdl {Z : ct.Mdl} (y : ct.Pt Z) : letI : Fact p.Prime := ⟨ct.hp⟩; letI := A.H.starRing
     IsGrpPullback (ct.htPt y).G Z.t.G y.z (ct.htToMdl y) :=
@@ -135,12 +135,12 @@ namespace HTp
 variable (ct : At S κ p) {Z : ct.Mdl} (y : ct.Pt Z)
 
 /- English proof (translation)
-The claim follows from `A.cm _`.
+A detailed English derivation is pending.
 -/
 example (τ : PsiT D) : At.psiEmb D τ (A.H.rt : D.host.E) = A.H.rt0 := A.cm _
 
 /- English proof (translation)
-Use `letI : Fact p.Prime := ⟨ct.hp⟩`. Use `letI := A.H.starRing`. Rewrite using `[← coe_embInt]`. Conclude with `mem_eigenSub.1 (proj_mem (isSplitting_embInt y.P) (ct.htPt y).actV _ x) a`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (τ : PsiT D) (a : 𝓞 D.host.E) (x : (htpTrue ct).TC y) : letI : Fact p.Prime := ⟨ct.hp⟩; letI := A.H.starRing
     (ct.htPt y).actV a ((htpTrue ct).eT y τ x) =

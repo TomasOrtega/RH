@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.UnitOpen
 
 /- English proof (translation)
-Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ hx]`. Use `congr 1`. Use `Int.toNat_sub_toNat_neg m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem zpow_mul_toNat {F : Type} [Field F] {x : F} (hx : x ≠ 0) (m : ℤ) :
     x ^ m * x ^ (-m).toNat = x ^ m.toNat := by
@@ -22,17 +22,17 @@ theorem zpow_mul_toNat {F : Type} [Field F] {x : F} (hx : x ≠ 0) (m : ℤ) :
   omega
 
 /- English proof (translation)
-Introduce `E _ _ _ H D' l c L V _ _ Q _ oQ iw I _ s ε e hdiv f hf y`. Take `⟨g, hD, hg, -, -⟩` from `hdiv`. Establish `h1 : ∀ χ, PsiUnitOn (mulDeg L.D l.M') χ Set.univ` using `fun χ => L.gen (l.M' • χ)`. Establish `h2 : PsiUnitOn (GlobalTheory.PolDeg.rescale Q g) y Set.univ` using `GlobalTheory.T.psiUnitOn_univ_of_pullback_generating _ _ _ _ _ hD h1 y`. Establish `h3 : PsiUnitOn (GlobalTheory.PolDeg.rescale Q g) y (PrimeSpectrum.basicOpen f : Set (PrimeSpectrum V))` using `fun j W hW _ => h2 j W hW (Set.subset_univ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hf0 : f = 0`. Substitute `hf0` using the available equality. Use `GlobalTheory.T.psiUnitOn_of_rescaled_psiUnitOn V Q g y _ 0 0 (by simp) (fun p hp => ?_) h3` and prove the remaining obligations. Conclude with `((hp : (0 : V) ∉ (p : PrimeSpectrum V).asIdeal) (Ideal.zero_mem _)).elim`. Use `set m : I → ℤ := fun k => (l.M' : ℤ) * ε k (e y) (H.w0 • e y) with hm`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs : ∀ k, s k ≠ 0` using `fun k hk => by`. Take `⟨n, hn⟩` from `hf k`. Rewrite `hn` using `[hk, zero_dvd_iff]`. Conclude with `hf0 (pow_eq_zero_iff'.1 hn).1`. Use `GlobalTheory.T.psiUnitOn_of_rescaled_psiUnitOn V Q g y _ (∏ k, s k ^ (m k).toNat) (∏ k, s k ^ (-m k).toNat) ?_ (fun p hp => ?_) h3` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy` using `hg y`. Establish `hgy : ((g y : (FractionRing V)ˣ) : FractionRing V) = (∏ k, algebraMap V (FractionRing V) (s k) ^ m k)⁻¹`. Rewrite using `[← hy, Units.val_inv_eq_inv_val, inv_inv]`. Establish `hne : ∀ k, algebraMap V (FractionRing V) (s k) ≠ 0` using `fun k => (map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 (hs k)`. Rewrite using `[hgy, map_prod, map_prod, inv_mul_eq_iff_eq_mul₀ (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hne k)), ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow, zpow_mul_toNat (hne k)]`. Establish `hp' : f ∉ (p : PrimeSpectrum V).asIdeal` using `hp`. Establish `hk : ∀ k, s k ∉ (p : PrimeSpectrum V).asIdeal` using `fun k hk => by`. Take `⟨n, hn⟩` from `hf k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hp' ((p : PrimeSpectrum V).isPrime.mem_of_pow_mem n (Ideal.mem_of_dvd _ hn hk))`. Apply the tactic sequence `constructor <;>`. Introduce `hmem`. Take `⟨k, -, hk'⟩` from `((p : PrimeSpectrum V).isPrime.prod_mem_iff).1 hmem`. Conclude with `hk k ((p : PrimeSpectrum V).isPrime.mem_of_pow_mem _ hk')`.
+A detailed English derivation is pending.
 -/
 theorem psiUnitOn_basicOpen_of_divFrom : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D' : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} (L : LowBase D' c) {V : Type} [CommRing V] [IsDomain V] (Q : DegPre V) [Module (𝓞 E) Q.X] (oQ : letI := H.starRing; Q.OAct (𝓞 E)) (iw : L.W →+* V) {I : Type} [Fintype I] (s : I → V) (ε : I → LinearMap.BilinForm ℤ L.D.X) (e : Q.X ≃ₗ[𝓞 E] L.D.X), DivFrom L Q oQ iw s ε e → ∀ f : V, (∀ k, ∃ n : ℕ, s k ∣ f ^ n) → ∀ y, PsiUnitOn Q y (PrimeSpectrum.basicOpen f : Set (PrimeSpectrum V)) := by
   intro E _ _ _ H D' l c L V _ _ Q _ oQ iw I _ s ε e hdiv f hf y

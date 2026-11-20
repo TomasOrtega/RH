@@ -11,7 +11,7 @@ def rectInt (f : ℂ → ℂ) (z w : ℂ) : ℂ :=
     I • (∫ y : ℝ in z.im..w.im, f (w.re + y * I)) - I • ∫ y : ℝ in z.im..w.im, f (z.re + y * I)
 
 /- English proof (translation)
-Introduce `x hx`. Conclude with `(ContinuousAt.comp (f := fun t : ℝ => (t : ℂ) + b * I) (x := x) (hc x hx) (by fun_prop)).continuousWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma continuousOn_hseg {f : ℂ → ℂ} {a₁ a₂ b : ℝ}
     (hc : ∀ x ∈ uIcc a₁ a₂, ContinuousAt f (x + b * I)) :
@@ -21,7 +21,7 @@ lemma continuousOn_hseg {f : ℂ → ℂ} {a₁ a₂ b : ℝ}
     (by fun_prop)).continuousWithinAt
 
 /- English proof (translation)
-Introduce `y hy`. Conclude with `(ContinuousAt.comp (f := fun t : ℝ => (a : ℂ) + t * I) (x := y) (hc y hy) (by fun_prop)).continuousWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma continuousOn_vseg {f : ℂ → ℂ} {a b₁ b₂ : ℝ}
     (hc : ∀ y ∈ uIcc b₁ b₂, ContinuousAt f (a + y * I)) :
@@ -31,9 +31,9 @@ lemma continuousOn_vseg {f : ℂ → ℂ} {a b₁ b₂ : ℝ}
     (by fun_prop)).continuousWithinAt
 
 /- English proof (translation)
-Use `intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun x : ℝ => F (x + b * I)) (fun x hx => ?_) (continuousOn_hseg hc).intervalIntegrable` and prove the remaining obligations. Establish `hg : HasDerivAt (fun t : ℝ => (t : ℂ) + b * I) 1 x`. Simplify using `using ((hasDerivAt_id x).ofReal_comp).add_const ((b : ℂ) * I)`. Establish `hd` using `(h x hx).comp x hg`. Rewrite `hd` using `[mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hd`.
+A detailed English derivation is pending.
 -/
 lemma hint_of_hasDerivAt {F f : ℂ → ℂ} {a₁ a₂ b : ℝ}
     (h : ∀ x ∈ uIcc a₁ a₂, HasDerivAt F (f (x + b * I)) (x + b * I))
@@ -48,11 +48,9 @@ lemma hint_of_hasDerivAt {F f : ℂ → ℂ} {a₁ a₂ b : ℝ}
   exact hd
 
 /- English proof (translation)
-Establish `hd : ∀ y ∈ uIcc b₁ b₂, HasDerivAt (fun t : ℝ => F (a + t * I)) (f (a + y * I) * I) y`. Introduce `y hy`. Establish `hg : HasDerivAt (fun t : ℝ => (a : ℂ) + t * I) I y`. Simplify using `using (((hasDerivAt_id y).ofReal_comp).mul_const I).const_add (a : ℂ)`. Conclude with `(h y hy).comp y hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← intervalIntegral.integral_smul]`. Establish `e : (fun y : ℝ => I • f (a + y * I)) = fun y : ℝ => f (a + y * I) * I`. Use function extensionality and compare the values at `y`. Rewrite using `[smul_eq_mul, mul_comm]`. Rewrite using `[e]`.
-
-Conclude with `intervalIntegral.integral_eq_sub_of_hasDerivAt hd ((continuousOn_vseg hc).mul continuousOn_const).intervalIntegrable`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma vint_of_hasDerivAt {F f : ℂ → ℂ} {a b₁ b₂ : ℝ}
     (h : ∀ y ∈ uIcc b₁ b₂, HasDerivAt F (f (a + y * I)) (a + y * I))
@@ -76,7 +74,7 @@ def rectBdry (z w : ℂ) : Set ℂ :=
        (s.im ∈ uIcc z.im w.im ∧ (s.re = z.re ∨ s.re = w.re))}
 
 /- English proof (translation)
-Simplify using `only [rectBdry, Set.mem_ofPred_eq]`. Conclude with `Or.inl ⟨by simpa using hx, Or.inl (by simp)⟩`.
+Simplify using the standard rewrite rules. Prove the first alternative.
 -/
 lemma hseg_mem_bdry_bot {z w : ℂ} {x : ℝ} (hx : x ∈ uIcc z.re w.re) :
     ((x : ℂ) + z.im * I) ∈ rectBdry z w := by
@@ -84,7 +82,7 @@ lemma hseg_mem_bdry_bot {z w : ℂ} {x : ℝ} (hx : x ∈ uIcc z.re w.re) :
   exact Or.inl ⟨by simpa using hx, Or.inl (by simp)⟩
 
 /- English proof (translation)
-Simplify using `only [rectBdry, Set.mem_ofPred_eq]`. Conclude with `Or.inl ⟨by simpa using hx, Or.inr (by simp)⟩`.
+Simplify using the standard rewrite rules. Prove the first alternative.
 -/
 lemma hseg_mem_bdry_top {z w : ℂ} {x : ℝ} (hx : x ∈ uIcc z.re w.re) :
     ((x : ℂ) + w.im * I) ∈ rectBdry z w := by
@@ -92,7 +90,7 @@ lemma hseg_mem_bdry_top {z w : ℂ} {x : ℝ} (hx : x ∈ uIcc z.re w.re) :
   exact Or.inl ⟨by simpa using hx, Or.inr (by simp)⟩
 
 /- English proof (translation)
-Simplify using `only [rectBdry, Set.mem_ofPred_eq]`. Conclude with `Or.inr ⟨by simpa using hy, Or.inl (by simp)⟩`.
+Simplify using the standard rewrite rules. Prove the second alternative.
 -/
 lemma vseg_mem_bdry_left {z w : ℂ} {y : ℝ} (hy : y ∈ uIcc z.im w.im) :
     ((z.re : ℂ) + y * I) ∈ rectBdry z w := by
@@ -100,7 +98,7 @@ lemma vseg_mem_bdry_left {z w : ℂ} {y : ℝ} (hy : y ∈ uIcc z.im w.im) :
   exact Or.inr ⟨by simpa using hy, Or.inl (by simp)⟩
 
 /- English proof (translation)
-Simplify using `only [rectBdry, Set.mem_ofPred_eq]`. Conclude with `Or.inr ⟨by simpa using hy, Or.inr (by simp)⟩`.
+Simplify using the standard rewrite rules. Prove the second alternative.
 -/
 lemma vseg_mem_bdry_right {z w : ℂ} {y : ℝ} (hy : y ∈ uIcc z.im w.im) :
     ((w.re : ℂ) + y * I) ∈ rectBdry z w := by
@@ -108,7 +106,7 @@ lemma vseg_mem_bdry_right {z w : ℂ} {y : ℝ} (hy : y ∈ uIcc z.im w.im) :
   exact Or.inr ⟨by simpa using hy, Or.inr (by simp)⟩
 
 /- English proof (translation)
-Unfold `rectInt`. Rewrite using `[hint_of_hasDerivAt (fun x hx => h _ (hseg_mem_bdry_bot hx)) (fun x hx => hc _ (hseg_mem_bdry_bot hx)), hint_of_hasDerivAt (fun x hx => h _ (hseg_mem_bdry_top hx)) (fun x hx => hc _ (hseg_mem_bdry_top hx)), vint_of_hasDerivAt (fun y hy => h _ (vseg_mem_bdry_right hy)) (fun y hy = …`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rectInt_eq_zero_of_primitive {F f : ℂ → ℂ} {z w : ℂ}
     (h : ∀ s ∈ rectBdry z w, HasDerivAt F (f s) s) (hc : ∀ s ∈ rectBdry z w, ContinuousAt f s) :
@@ -125,7 +123,7 @@ def rectOpen (z w : ℂ) : Set ℂ := {s | z.re < s.re ∧ s.re < w.re ∧ z.im 
 def rectClosed (z w : ℂ) : Set ℂ := Icc z.re w.re ×ℂ Icc z.im w.im
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨h1, h2, h3, h4⟩` from `hp`. Apply the tactic sequence `rcases hs with ⟨-, h | h⟩ | ⟨-, h | h⟩ <;> linarith`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma ne_of_mem_bdry_of_mem_open {z w s p : ℂ} (hs : s ∈ rectBdry z w) (hp : p ∈ rectOpen z w) :
     s ≠ p := by
@@ -134,9 +132,9 @@ lemma ne_of_mem_bdry_of_mem_open {z w s p : ℂ} (hs : s ∈ rectBdry z w) (hp :
   rcases hs with ⟨-, h | h⟩ | ⟨-, h | h⟩ <;> linarith
 
 /- English proof (translation)
-Apply `rectInt_eq_zero_of_primitive (F := fun s => -(s - p)⁻¹)` to reduce the goal to its premises. Introduce `s hs`. Establish `hne : s - p ≠ 0` using `sub_ne_zero.2 (ne_of_mem_bdry_of_mem_open hs hp)`. Establish `hd` using `((hasDerivAt_inv hne).comp_sub_const s p).neg`. Rewrite `hd` using `[neg_neg]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hd`. Introduce `s hs`. Establish `hne : s - p ≠ 0` using `sub_ne_zero.2 (ne_of_mem_bdry_of_mem_open hs hp)`. Conclude with `ContinuousAt.inv₀ (by fun_prop) (pow_ne_zero 2 hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rectInt_inv_sub_sq {z w p : ℂ} (hp : p ∈ rectOpen z w) :
     rectInt (fun s => ((s - p) ^ 2)⁻¹) z w = 0 := by
@@ -151,7 +149,7 @@ theorem rectInt_inv_sub_sq {z w p : ℂ} (hp : p ∈ rectOpen z w) :
     exact ContinuousAt.inv₀ (by fun_prop) (pow_ne_zero 2 hne)
 
 /- English proof (translation)
-Establish `h` using `Complex.arg_neg_eq_arg_sub_pi_of_im_pos ha`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[Complex.log_re]`. Simplify using `[Complex.log_im, h]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma log_sub_log_neg_of_im_pos {a : ℂ} (ha : 0 < a.im) : Complex.log a - Complex.log (-a) = π * I := by
   have h := Complex.arg_neg_eq_arg_sub_pi_of_im_pos ha
@@ -160,7 +158,7 @@ lemma log_sub_log_neg_of_im_pos {a : ℂ} (ha : 0 < a.im) : Complex.log a - Comp
   · simp [Complex.log_im, h]
 
 /- English proof (translation)
-Establish `h` using `Complex.arg_neg_eq_arg_add_pi_of_im_neg hb`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[Complex.log_re]`. Simplify using `[Complex.log_im, h]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma log_neg_sub_log_of_im_neg {b : ℂ} (hb : b.im < 0) : Complex.log (-b) - Complex.log b = π * I := by
   have h := Complex.arg_neg_eq_arg_add_pi_of_im_neg hb
@@ -169,13 +167,13 @@ lemma log_neg_sub_log_of_im_neg {b : ℂ} (hb : b.im < 0) : Complex.log (-b) - C
   · simp [Complex.log_im, h]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `id hp`. Establish `hcont : ∀ s ∈ rectBdry z w, ContinuousAt (fun s => (s - p)⁻¹) s` using `fun s hs => ContinuousAt.inv₀ (by fun_prop) (sub_ne_zero.2 (ne_of_mem_bdry_of_mem_open hs hp))`. Establish `hL : ∀ s, s - p ∈ slitPlane → HasDerivAt (fun s => Complex.log (s - p)) ((s - p)⁻¹) s`. Introduce `s hs`. Simplify using `using ((hasDerivAt_id s).sub_const p).clog hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hM : ∀ s, p - s ∈ slitPlane → HasDerivAt (fun s => Complex.log (p - s)) ((s - p)⁻¹) s`. Introduce `s hs`. Use `((hasDerivAt_id s).const_sub p).clog hs using 1` and compare the differences between its conclusion and the goal. Simplify using `only [id_eq]`. Rewrite using `[neg_div, ← div_neg, neg_sub, one_div]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `rectInt`. Rewrite using `[hint_of_hasDerivAt (F := fun s => Complex.log (s - p)) (f := fun s => (s - p)⁻¹) (a₁ := z.re) (a₂ := w.re) (b := z.im) (fun x _ => hL _ (mem_slitPlane_iff.2 (Or.inr (by intro h; simp at h; linarith)))) (fun x hx => hcont _ (hseg_mem_bdry_bot hx)), hint_of_hasDerivAt (F := fun s …`. Establish `e1` using `log_sub_log_neg_of_im_pos (a := (z.re : ℂ) + w.im * I - p) (by simp; linarith)`. Establish `e2` using `log_neg_sub_log_of_im_neg (b := (z.re : ℂ) + z.im * I - p) (by simp; linarith)`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1`, `e2` using `[neg_sub]`. Use `beta_reduce`. Take the linear combination `e1 + e2`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rectInt_inv_sub {z w p : ℂ} (hp : p ∈ rectOpen z w) :
     rectInt (fun s => (s - p)⁻¹) z w = 2 * π * I := by
@@ -215,7 +213,7 @@ theorem rectInt_inv_sub {z w p : ℂ} (hp : p ∈ rectOpen z w) :
   linear_combination e1 + e2
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hf.comp (by fun_prop : Continuous fun x : ℝ => (x : ℂ) + z.im * I).continuousOn fun x hx => hseg_mem_bdry_bot hx).intervalIntegrable`. Conclude with `(hf.comp (by fun_prop : Continuous fun x : ℝ => (x : ℂ) + w.im * I).continuousOn fun x hx => hseg_mem_bdry_top hx).intervalIntegrable`. Conclude with `(hf.comp (by fun_prop : Continuous fun y : ℝ => (w.re : ℂ) + y * I).continuousOn fun y hy => vseg_mem_bdry_right hy).intervalIntegrable`. Conclude with `(hf.comp (by fun_prop : Continuous fun y : ℝ => (z.re : ℂ) + y * I).continuousOn fun y hy => vseg_mem_bdry_left hy).intervalIntegrable`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma sides_integrable {f : ℂ → ℂ} {z w : ℂ} (hf : ContinuousOn f (rectBdry z w)) :
     IntervalIntegrable (fun x : ℝ => f (x + z.im * I)) volume z.re w.re ∧
@@ -233,7 +231,7 @@ lemma sides_integrable {f : ℂ → ℂ} {z w : ℂ} (hf : ContinuousOn f (rectB
       fun y hy => vseg_mem_bdry_left hy).intervalIntegrable
 
 /- English proof (translation)
-Unfold `rectInt`. Rewrite using `[intervalIntegral.integral_congr (fun x hx => h (hseg_mem_bdry_bot hx)), intervalIntegral.integral_congr (fun x hx => h (hseg_mem_bdry_top hx)), intervalIntegral.integral_congr (fun y hy => h (vseg_mem_bdry_right hy)), intervalIntegral.integral_congr (fun y hy => h (vseg_mem_bdry …`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma rectInt_congr {f g : ℂ → ℂ} {z w : ℂ} (h : EqOn f g (rectBdry z w)) :
     rectInt f z w = rectInt g z w := by
@@ -244,9 +242,9 @@ lemma rectInt_congr {f g : ℂ → ℂ} {z w : ℂ} (h : EqOn f g (rectBdry z w)
     intervalIntegral.integral_congr (fun y hy => h (vseg_mem_bdry_left hy))]
 
 /- English proof (translation)
-Take `⟨f1, f2, f3, f4⟩` from `sides_integrable hf`. Take `⟨g1, g2, g3, g4⟩` from `sides_integrable hg`. Unfold `rectInt`. Use `beta_reduce`. Rewrite using `[intervalIntegral.integral_add f1 g1, intervalIntegral.integral_add f2 g2, intervalIntegral.integral_add f3 g3, intervalIntegral.integral_add f4 g4]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma rectInt_add {f g : ℂ → ℂ} {z w : ℂ} (hf : ContinuousOn f (rectBdry z w))
     (hg : ContinuousOn g (rectBdry z w)) :
@@ -261,7 +259,7 @@ lemma rectInt_add {f g : ℂ → ℂ} {z w : ℂ} (hf : ContinuousOn f (rectBdry
   ring
 
 /- English proof (translation)
-Unfold `rectInt`. Use `beta_reduce`. Simplify using `only [intervalIntegral.integral_const_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma rectInt_const_mul (c : ℂ) (f : ℂ → ℂ) (z w : ℂ) :
     rectInt (fun s => c * f s) z w = c * rectInt f z w := by
@@ -271,16 +269,16 @@ lemma rectInt_const_mul (c : ℂ) (f : ℂ → ℂ) (z w : ℂ) :
   ring
 
 /- English proof (translation)
-Unfold `rectInt`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 lemma rectInt_zero (z w : ℂ) : rectInt (fun _ => 0) z w = 0 := by
   unfold rectInt
   simp
 
 /- English proof (translation)
-Use `revert hF`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `only [Finset.sum_empty]`. Conclude with `rectInt_zero z w`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a S ha ih hF`. Simplify using `only [Finset.sum_insert ha]`. Rewrite using `[rectInt_add (hF a (Finset.mem_insert_self a S)) (continuousOn_finsetSum _ fun i hi => hF i (Finset.mem_insert_of_mem hi)), ih (fun i hi => hF i (Finset.mem_insert_of_mem hi))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rectInt_finset_sum {ι : Type*} (S : Finset ι) (F : ι → ℂ → ℂ) {z w : ℂ}
     (hF : ∀ i ∈ S, ContinuousOn (F i) (rectBdry z w)) :
@@ -298,23 +296,21 @@ lemma rectInt_finset_sum {ι : Type*} (S : Finset ι) (F : ι → ℂ → ℂ) {
       ih (fun i hi => hF i (Finset.mem_insert_of_mem hi))]
 
 /- English proof (translation)
-Simplify using `[rectClosed, Complex.mem_reProdIm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_rectClosed {z w s : ℂ} :
     s ∈ rectClosed z w ↔ (z.re ≤ s.re ∧ s.re ≤ w.re) ∧ (z.im ≤ s.im ∧ s.im ≤ w.im) := by
   simp [rectClosed, Complex.mem_reProdIm]
 
 /- English proof (translation)
-Use extensionality with `s`. Simplify using `[rectOpen, Complex.mem_reProdIm, and_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma rectOpen_eq (z w : ℂ) : rectOpen z w = Ioo z.re w.re ×ℂ Ioo z.im w.im := by
   ext s
   simp [rectOpen, Complex.mem_reProdIm, and_assoc]
 
 /- English proof (translation)
-Establish `ho : IsOpen (rectOpen z w)`. Rewrite using `[rectOpen_eq]`. Conclude with `isOpen_Ioo.reProdIm isOpen_Ioo`. Use `Filter.mem_of_superset (ho.mem_nhds hp) fun s hs => ?_` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `hs`.
-
-Conclude with `mem_rectClosed.2 ⟨⟨h1.le, h2.le⟩, h3.le, h4.le⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma rectClosed_mem_nhds {z w p : ℂ} (hp : p ∈ rectOpen z w) : rectClosed z w ∈ 𝓝 p := by
   have ho : IsOpen (rectOpen z w) := by
@@ -325,9 +321,9 @@ lemma rectClosed_mem_nhds {z w p : ℂ} (hp : p ∈ rectOpen z w) : rectClosed z
   exact mem_rectClosed.2 ⟨⟨h1.le, h2.le⟩, h3.le, h4.le⟩
 
 /- English proof (translation)
-Introduce `s hs`. Rewrite using `[mem_rectClosed]`. Break down `hs with ⟨hr, hi⟩ | ⟨hi, hr⟩` into its components or cases. Rewrite `hr` using `[uIcc_of_le hre, Set.mem_Icc]`. Apply the tactic sequence `rcases hi with hi | hi <;> exact ⟨hr, by constructor <;> linarith⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hi` using `[uIcc_of_le him, Set.mem_Icc]`. Apply the tactic sequence `rcases hr with hr | hr <;> exact ⟨by constructor <;> linarith, hi⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma rectBdry_subset {z w : ℂ} (hre : z.re ≤ w.re) (him : z.im ≤ w.im) :
     rectBdry z w ⊆ rectClosed z w := by
@@ -340,14 +336,14 @@ lemma rectBdry_subset {z w : ℂ} (hre : z.re ≤ w.re) (him : z.im ≤ w.im) :
     rcases hr with hr | hr <;> exact ⟨by constructor <;> linarith, hi⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hp`. Conclude with `⟨by linarith, by linarith⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma le_of_mem_rectOpen {z w p : ℂ} (hp : p ∈ rectOpen z w) : z.re ≤ w.re ∧ z.im ≤ w.im := by
   obtain ⟨h1, h2, h3, h4⟩ := hp
   exact ⟨by linarith, by linarith⟩
 
 /- English proof (translation)
-Establish `e : rectClosed z w = uIcc z.re w.re ×ℂ uIcc z.im w.im`. Rewrite using `[rectClosed, uIcc_of_le hre, uIcc_of_le him]`. Rewrite `hf` using `[e]`. Unfold `rectInt`. Conclude with `Complex.integral_boundary_rect_eq_zero_of_differentiableOn f z w hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rectInt_eq_zero_of_differentiableOn {f : ℂ → ℂ} {z w : ℂ} (hre : z.re ≤ w.re)
     (him : z.im ≤ w.im) (hf : DifferentiableOn ℂ f (rectClosed z w)) : rectInt f z w = 0 := by
@@ -358,7 +354,7 @@ theorem rectInt_eq_zero_of_differentiableOn {f : ℂ → ℂ} {z w : ℂ} (hre :
   exact Complex.integral_boundary_rect_eq_zero_of_differentiableOn f z w hf
 
 /- English proof (translation)
-The claim follows from `hh.div (continuousOn_id.sub continuousOn_const) fun s hs => sub_ne_zero.2 (ne_of_mem_bdry_of_mem_open hs hp)`.
+A detailed English derivation is pending.
 -/
 lemma continuousOn_div_sub {h : ℂ → ℂ} {z w p : ℂ} (hp : p ∈ rectOpen z w)
     (hh : ContinuousOn h (rectBdry z w)) : ContinuousOn (fun s => h s / (s - p)) (rectBdry z w) :=
@@ -366,7 +362,7 @@ lemma continuousOn_div_sub {h : ℂ → ℂ} {z w p : ℂ} (hp : p ∈ rectOpen 
     sub_ne_zero.2 (ne_of_mem_bdry_of_mem_open hs hp)
 
 /- English proof (translation)
-The claim follows from `hh.div ((continuousOn_id.sub continuousOn_const).pow 2) fun s hs => pow_ne_zero 2 (sub_ne_zero.2 (ne_of_mem_bdry_of_mem_open hs hp))`.
+A detailed English derivation is pending.
 -/
 lemma continuousOn_div_sub_sq {h : ℂ → ℂ} {z w p : ℂ} (hp : p ∈ rectOpen z w)
     (hh : ContinuousOn h (rectBdry z w)) :
@@ -375,22 +371,22 @@ lemma continuousOn_div_sub_sq {h : ℂ → ℂ} {z w p : ℂ} (hp : p ∈ rectOp
     pow_ne_zero 2 (sub_ne_zero.2 (ne_of_mem_bdry_of_mem_open hs hp))
 
 /- English proof (translation)
-The claim follows from `hh.continuousOn.mono (rectBdry_subset (le_of_mem_rectOpen hp).1 (le_of_mem_rectOpen hp).2)`.
+A detailed English derivation is pending.
 -/
 lemma continuousOn_bdry {h : ℂ → ℂ} {z w p : ℂ} (hp : p ∈ rectOpen z w)
     (hh : DifferentiableOn ℂ h (rectClosed z w)) : ContinuousOn h (rectBdry z w) :=
   hh.continuousOn.mono (rectBdry_subset (le_of_mem_rectOpen hp).1 (le_of_mem_rectOpen hp).2)
 
 /- English proof (translation)
-Take `⟨hre, him⟩` from `le_of_mem_rectOpen hp`. Establish `hN` using `rectClosed_mem_nhds hp`. Establish `hsub` using `rectBdry_subset hre him`. Establish `hdc : ContinuousOn (dslope h p) (rectClosed z w)` using `(continuousOn_dslope hN).2 ⟨hh.continuousOn, hh.differentiableAt hN⟩`. Establish `hz : rectInt (dslope h p) z w = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : rectClosed z w = uIcc z.re w.re ×ℂ uIcc z.im w.im`. Rewrite using `[rectClosed, uIcc_of_le hre, uIcc_of_le him]`. Unfold `rectInt`. Use `Complex.integral_boundary_rect_eq_zero_of_differentiable_on_off_countable _ z w {p} (Set.countable_singleton p) (e ▸ hdc) ?_` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[min_eq_left hre, max_eq_right hre, min_eq_left him, max_eq_right him]`. Take `⟨hx1, hx2⟩` from `hx`. Establish `hxo : x ∈ rectOpen z w`. Rewrite using `[rectOpen_eq]`. Conclude with `hx1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(differentiableAt_dslope_of_ne hx2).2 (hh.differentiableAt (rectClosed_mem_nhds hxo))`. Establish `hinv : ContinuousOn (fun s => h p * (s - p)⁻¹) (rectBdry z w)` using `continuousOn_const.mul (ContinuousOn.inv₀ (continuousOn_id.sub continuousOn_const) fun s hs => sub_ne_zero.2 (ne_of_mem_bdry_of_mem_open hs hp))`. Establish `hcong : EqOn (fun s => h s / (s - p)) (fun s => dslope h p s + h p * (s - p)⁻¹) (rectBdry z w)`. Introduce `s hs`. Establish `hne : s - p ≠ 0` using `sub_ne_zero.2 (ne_of_mem_bdry_of_mem_open hs hp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[dslope_of_ne _ (sub_ne_zero.1 hne), slope_def_field, div_eq_mul_inv, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[rectInt_congr hcong, rectInt_add (hdc.mono hsub) hinv, hz, rectInt_const_mul, rectInt_inv_sub hp]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rectInt_div_sub {h : ℂ → ℂ} {z w p : ℂ} (hp : p ∈ rectOpen z w)
     (hh : DifferentiableOn ℂ h (rectClosed z w)) :
@@ -428,11 +424,11 @@ theorem rectInt_div_sub {h : ℂ → ℂ} {z w p : ℂ} (hp : p ∈ rectOpen z w
   ring
 
 /- English proof (translation)
-Take `⟨hre, him⟩` from `le_of_mem_rectOpen hp`. Establish `hN` using `rectClosed_mem_nhds hp`. Establish `hsub` using `rectBdry_subset hre him`. Establish `hd : DifferentiableOn ℂ (dslope h p) (rectClosed z w)` using `(Complex.differentiableOn_dslope hN).2 hh`. Establish `hinv : ContinuousOn (fun s => h p * ((s - p) ^ 2)⁻¹) (rectBdry z w)` using `continuousOn_const.mul (ContinuousOn.inv₀ ((continuousOn_id.sub continuousOn_const).pow 2) fun s hs => pow_ne_zero 2 (sub_ne_zero.2 (ne_of_mem_bdry_of_mem_open hs hp)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcong : EqOn (fun s => h s / (s - p) ^ 2) (fun s => dslope h p s / (s - p) + h p * ((s - p) ^ 2)⁻¹) (rectBdry z w)`. Introduce `s hs`. Establish `hne : s - p ≠ 0` using `sub_ne_zero.2 (ne_of_mem_bdry_of_mem_open hs hp)`. Simplify using `only`. Rewrite using `[dslope_of_ne _ (sub_ne_zero.1 hne), slope_def_field, div_div, ← sq, div_eq_mul_inv, div_eq_mul_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[rectInt_congr hcong, rectInt_add (continuousOn_div_sub hp (hd.continuousOn.mono hsub)) hinv, rectInt_div_sub hp hd, rectInt_const_mul, rectInt_inv_sub_sq hp, dslope_same]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rectInt_div_sub_sq {h : ℂ → ℂ} {z w p : ℂ} (hp : p ∈ rectOpen z w)
     (hh : DifferentiableOn ℂ h (rectClosed z w)) :
@@ -458,17 +454,17 @@ theorem rectInt_div_sub_sq {h : ℂ → ℂ} {z w p : ℂ} (hp : p ∈ rectOpen 
   ring
 
 /- English proof (translation)
-Take `⟨hre, him⟩` from `le_of_mem_rectOpen h0`. Establish `hsub` using `rectBdry_subset hre him`. Establish `hEb : ContinuousOn E (rectBdry z w)` using `hE.continuousOn.mono hsub`. Establish `hA : ContinuousOn (fun s => H s * E s / (s - 0)) (rectBdry z w)` using `continuousOn_div_sub h0 ((hH.mul hE).continuousOn.mono hsub)`. Establish `hT : ∀ ρ ∈ Z, ContinuousOn (fun s => wt ρ / ρ * (E s / (s - ρ)) + -(wt ρ / ρ) * (E s / (s - 0))) (rectBdry z w)` using `fun ρ hρ => (continuousOn_const.mul (continuousOn_div_sub (hZ ρ hρ).2 hEb)).add (continuousOn_const.mul (continuousOn_div_sub h0 hEb))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ContinuousOn (fun s => ∑ ρ ∈ Z, (wt ρ / ρ * (E s / (s - ρ)) + -(wt ρ / ρ) * (E s / (s - 0)))) (rectBdry z w)` using `continuousOn_finsetSum _ hT`. Establish `hC : ContinuousOn (fun s => e * (E s / (s - 0) ^ 2)) (rectBdry z w)` using `continuousOn_const.mul (continuousOn_div_sub_sq h0 hEb)`. Establish `hcong : EqOn (fun s => (H s + (∑ ρ ∈ Z, wt ρ / (s - ρ)) + e / s) * (E s / s)) (fun s => H s * E s / (s - 0) + (∑ ρ ∈ Z, (wt ρ / ρ * (E s / (s - ρ)) + -(wt ρ / ρ) * (E s / (s - 0)))) + e * (E s / (s - 0) ^ 2)) (rectBdry z w)`. Introduce `s hs`. Establish `hs0 : s ≠ 0` using `ne_of_mem_bdry_of_mem_open hs h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [sub_zero]`. Rewrite using `[add_mul, add_mul, Finset.sum_mul]`. Establish `hterm : ∀ ρ ∈ Z, wt ρ / (s - ρ) * (E s / s) = wt ρ / ρ * (E s / (s - ρ)) + -(wt ρ / ρ) * (E s / s)`. Introduce `ρ hρ`. Establish `hρ0` using `(hZ ρ hρ).1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsρ : s - ρ ≠ 0` using `sub_ne_zero.2 (ne_of_mem_bdry_of_mem_open hs (hZ ρ hρ).2)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hterm]`. Use `congr 1`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mul_div_assoc]`. Rewrite using `[div_mul_div_comm, ← sq, mul_div_assoc]`. Establish `hsum : ∀ ρ ∈ Z, rectInt (fun s => wt ρ / ρ * (E s / (s - ρ)) + -(wt ρ / ρ) * (E s / (s - 0))) z w = 2 * π * I * (wt ρ * ((E ρ - E 0) / ρ))`. Introduce `ρ hρ`. Rewrite using `[rectInt_add (f := fun s => wt ρ / ρ * (E s / (s - ρ))) (g := fun s => -(wt ρ / ρ) * (E s / (s - 0))) (continuousOn_const.mul (continuousOn_div_sub (hZ ρ hρ).2 hEb)) (continuousOn_const.mul (continuousOn_div_sub h0 hEb)), rectInt_const_mul, rectInt_const_mul, rectInt_div_sub (hZ …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[rectInt_congr hcong, rectInt_add (f := fun s => H s * E s / (s - 0) + ∑ ρ ∈ Z, (wt ρ / ρ * (E s / (s - ρ)) + -(wt ρ / ρ) * (E s / (s - 0)))) (g := fun s => e * (E s / (s - 0) ^ 2)) (hA.add hB) hC, rectInt_add (f := fun s => H s * E s / (s - 0)) (g := fun s => ∑ ρ ∈ Z, (wt ρ / ρ …`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rect_residue_gen {z w : ℂ} {H E : ℂ → ℂ} (Z : Finset ℂ) (wt : ℂ → ℂ) (e : ℂ)
     (h0 : (0 : ℂ) ∈ rectOpen z w) (hH : DifferentiableOn ℂ H (rectClosed z w))
@@ -527,9 +523,9 @@ theorem rect_residue_gen {z w : ℂ} {H E : ℂ → ℂ} (Z : Finset ℂ) (wt : 
   ring
 
 /- English proof (translation)
-Establish `hu0 : (u : ℂ) ≠ 0` using `ofReal_ne_zero.2 hu.ne'`. Establish `hd : ∀ s : ℂ, HasDerivAt (fun s : ℂ => (u : ℂ) ^ s) ((u : ℂ) ^ s * Complex.log u) s` using `fun s => (hasStrictDerivAt_const_cpow (Or.inl hu0)).hasDerivAt`. Establish `hE : DifferentiableOn ℂ (fun s : ℂ => (u : ℂ) ^ s) (rectClosed z w)` using `fun s _ => (hd s).differentiableAt.differentiableWithinAt`. Rewrite using `[rect_residue_gen Z wt e h0 hH hE hZ]`. Use `beta_reduce`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hd 0).deriv, ofReal_log hu.le]`. Simplify using `only [cpow_zero, mul_one, one_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rect_residue {z w : ℂ} {H : ℂ → ℂ} (Z : Finset ℂ) (wt : ℂ → ℂ) (e : ℂ) {u : ℝ} (hu : 0 < u)
     (h0 : (0 : ℂ) ∈ rectOpen z w) (hH : DifferentiableOn ℂ H (rectClosed z w))

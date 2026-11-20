@@ -28,15 +28,13 @@ def TWStatement : Prop :=
 namespace PeriodicValuation
 
 /- English proof (translation)
-Establish `he : ∀ r, P r → P (r + |d|)`. Introduce `r hr`. Break down `lt_or_gt_of_ne hd with hneg | hpos` into its components or cases. Rewrite using `[abs_of_neg hneg]`. Establish `h1 : P (r - d)` using `(hper (r - d)).2 (by rwa [sub_add_cancel])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `h1` using `[sub_eq_add_neg]`. Rewrite using `[abs_of_pos hpos]`. Conclude with `(hper r).1 hr`. Establish `hn : ∀ k : ℕ, P (r₁ + k * |d|)`. Introduce `k`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => simpa using h`. Consider the case `succ k ih`. Establish `h2` using `he _ ih`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : 0 < |d|` using `abs_pos.2 hd`. Take `⟨k, hk⟩` from `exists_nat_gt ((r₂ - r₁) / |d|)`. Rewrite `hk` using `[div_lt_iff₀ hpos]`.
-
-Conclude with `hmono _ _ (by linarith) (hn k)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem all_of_periodic {P : ℚ → Prop} (hmono : ∀ r r' : ℚ, r' ≤ r → P r → P r') {d : ℚ} (hd : d ≠ 0)
     (hper : ∀ r, P r ↔ P (r + d)) (r₁ r₂ : ℚ) (h : P r₁) : P r₂ := by
@@ -67,21 +65,21 @@ end PeriodicValuation
 open PeriodicValuation
 
 /- English proof (translation)
-Introduce `V _ _ _ ϖ hϖ D Q hQ F _ _ v hv k hk p w hw ζ hζ hfin s t s' hst hts' r`. Take `⟨c, hc⟩` from `hTW V ϖ hϖ D Q hQ F v hv k hk p w hw ζ hζ`. Take `⟨Φ, hΦ⟩` from `phiFun_of_globalFns hL.globalFns V (maximalIdeal V) D F k hk p w hw`. Take `⟨M, hM1, hM⟩` from `hfin`. Set `step : Fam D.toPre F k → Fam D.toPre F k` to `fun x => ζ • Φ x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hsm : ∀ x : Fam D.toPre F k, Fam.IsSmul D.toPre F ζ (Φ x) (step x)` using `fun x α j => rfl`. Establish `hstep : ∀ x r, NuGe D Q F v k x r ↔ NuGe D Q F v k (step x) (r + c)` using `fun x r => hc x (Φ x) (step x) ((hΦ x (Φ x)).2 rfl) (hsm x) r`. Establish `hsame : ∀ x y : Fam D.toPre F k, (∀ α j, (x.s α).f j = (y.s α).f j) → ∀ r, NuGe D Q F v k x r ↔ NuGe D Q F v k y r`. Introduce `x y hxy r`. Simplify using `only [NuGe, VGe, hxy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hiter : ∀ n : ℕ, ∀ r, NuGe D Q F v k s r ↔ NuGe D Q F v k (step^[n] s) (r + n * c)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro r`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `r`. Rewrite using `[ih r, Function.iterate_succ_apply', hstep (step^[n] s) (r + n * c)]`. Establish `e : r + n * c + c = r + ((n + 1 : ℕ) : ℚ) * c` using `by push_cast; ring`. Rewrite using `[e]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hret : ∀ α j, ((step^[M] s).s α).f j = (s.s α).f j`. Use `hM (fun i => step^[i.val] s) (fun i => Φ (step^[i.val] s)) fun i => ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(hΦ _ _).2 rfl`. Introduce `α j show ((step^[i.val + 1] s).s α).f j = _`. Rewrite using `[Function.iterate_succ_apply']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hsm _ α j`. Establish `hper : ∀ r, NuGe D Q F v k s r ↔ NuGe D Q F v k s (r + M * c)` using `fun r => (hiter M r).trans (hsame _ _ hret _)`. Distinguish the cases in `hc0 : c = 0`. Establish `h` using `hc s t s' hst hts' r`. Rewrite `h` using `[hc0, add_zero]`. Then use the resulting hypothesis.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (M : ℚ) * c ≠ 0` using `mul_ne_zero (by exact_mod_cast (by omega : M ≠ 0)) hc0`. Establish `hmono : ∀ r r' : ℚ, r' ≤ r → NuGe D Q F v k s r → NuGe D Q F v k s r'` using `fun r r' h hp => NuGe.mono (h := hp) (hr := h)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : NuGe D Q F v k s (r - c)` using `all_of_periodic hmono hd hper r (r - c) h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `(hc s t s' hst hts' (r - c)).1 h1`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce `h`. Establish `h1 : NuGe D Q F v k s (r - c)` using `(hc s t s' hst hts' (r - c)).2 (by rwa [sub_add_cancel])`. Conclude with `all_of_periodic hmono hd hper (r - c) r h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem galois_fixed_adelic_matrices_descend (hL : Laws) (hTW : TWStatement) : FiniteOrderValuationInvariance := by
   intro V _ _ _ ϖ hϖ D Q hQ F _ _ v hv k hk p w hw ζ hζ hfin s t s' hst hts' r

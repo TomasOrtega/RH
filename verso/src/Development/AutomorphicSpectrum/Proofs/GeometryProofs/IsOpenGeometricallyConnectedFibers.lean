@@ -14,7 +14,7 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
 /- English proof (translation)
-Introduce `k _ _ G _ _ hs hp`. Establish `hgen` using `GlobalTheory.T.geometric_connectedness_generalizes k G.left G.hom (η[G]).left (Over.w η[G]) hs hp`. Establish `hspec` using `GlobalTheory.T.connected_fibers_stableUnderSpecialization k G hs hp`. Conclude with `GlobalTheory.T.isOpen_of_stable_under_generalization_specialization k _ hgen hspec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_geometricallyConnected_fibres :
     ∀ (k : Type) [CommRing k] [IsNoetherianRing k] (G : Over (Sp k)) [GrpObj G] [IsCommMonObj G],

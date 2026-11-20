@@ -19,7 +19,7 @@ def HilbAddBlock.Statement : Prop :=
     hilbFn (addBlockPrime N I) m = hilbFn I (fun k => m (some k)) * projSpaceHilb N (m none)
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : projSpaceHilb 1 2 = 3 ∧ projSpaceHilb 2 2 = 6 ∧ projSpaceHilb 2 (-1) = 0 := by
   refine ⟨?_, ?_, ?_⟩ <;> decide

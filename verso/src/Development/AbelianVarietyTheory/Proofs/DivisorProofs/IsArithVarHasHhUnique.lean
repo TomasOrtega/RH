@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.FlagZ GlobalTheor
 namespace GlobalTheory.FlagZ
 
 /- English proof (translation)
-Introduce `ι _ N`. Establish `hd` using `GlobalTheory.T.partial_flag_smooth_arithmetic ι (ι × Fin (N + 1)) N Prod.fst Prod.snd`. Rewrite `hd` using `[(GlobalTheory.T.cell_variety_dimension_counts ι N).1]`. Conclude with `⟨hd.2.2, fun H => ((H ℤ _ _ _ hd.2.2).2 _ grLine).1, fun _ _ hΦ => hΦ.eq_hh hd.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isArithVar_hasHh_unique : ∀ (ι : Type) [Fintype ι] (N : ℕ), GlobalTheory.IsArithVar (flStr ι N) (dimFl ι N) ∧
     (GlobalTheory.Published.ArExists → HasHh ι N) ∧

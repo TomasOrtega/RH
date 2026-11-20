@@ -15,17 +15,15 @@ noncomputable section
 namespace GlobalTheory.SmallRoute
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W t i j M hM Θ' F hB g₁ z hI hJ`. Establish `hσ : ∀ X : Node, X.InRange D.R.m → SigmaFinite (M.ν X)` using `fun X hX => by`. Take `⟨h1, h2, -⟩` from `GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D (G.V X)`. Use `haveI := (hM.vtx X hX).haar_fund.1`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hσ (.grid i (j + 1)) ⟨i.2.le, j.2⟩`. Use `haveI := hσ (.grid i j) ⟨i.2.le, j.2.le⟩`. Establish `hpt : ∀ u, ∫ g in M.fd (.grid i (j + 1)), F g * translates z (kerSmall W Θ' g g₁) u ∂M.ν (.grid i (j + 1)) = Θ'.sum fun d c => c * translates z (outer W M d F g₁) u`. Introduce `u`. Establish `hint : ∀ d ∈ Θ'.support, ∀ k, IntegrableOn (fun g => W.kerA (.down t i j) d.1.2 g (u * k) * F g) (M.fd (.grid i (j + 1))) (M.ν (.grid i (j + 1)))` using `fun d hd k => (hB d hd).1.2 (u * k)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `e : ∀ g, F g * translates z (kerSmall W Θ' g g₁) u = ∑ k ∈ z.support, ∑ d ∈ Θ'.support, z k * (Θ' d * (W.kerA (.right i j) d.2 (u * k) g₁ * (W.kerA (.down t i j) d.1.2 g (u * k) * F g)))`. Introduce `g`. Simplify using `only [translates, kerSmall, Finsupp.sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun d _ => by ring`. Repeatedly rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[integral_finset_sum _ fun k _ => integrable_finset_sum _ fun d hd => (((hint d hd k).const_mul _).const_mul _).const_mul _]`. Repeatedly rewrite using `[integral_finset_sum _ fun d hd => (((hint d hd _).const_mul _).const_mul _).const_mul _]`. Simplify using `only [integral_const_mul, translates, outer, Finsupp.sum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun k _ => by ring`.
+Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hint2 : ∀ d ∈ Θ'.support, Integrable (translates z (outer W M d F g₁)) ((M.ν (.grid i j)).restrict (M.fd (.grid i j)))` using `fun d hd => integrable_finset_sum _ fun k _ => (hI d hd k).const_mul _`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[hpt]`. Use `_ = _ := by`.
-
-Simplify using `only [Finsupp.sum]`. Rewrite using `[integral_finset_sum _ fun d hd => (hint2 d hd).const_mul _]`. Repeatedly rewrite using `[integral_const_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_integral_translates_outer_eq : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀)
     (W : G.Weil) (t : T) (i j : Fin D.R.m) (M : Vol G) (hM : M.Is t) (Θ' : TotT G (routeSmall t i j))

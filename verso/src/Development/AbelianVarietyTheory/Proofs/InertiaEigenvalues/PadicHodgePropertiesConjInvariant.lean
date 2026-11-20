@@ -26,13 +26,13 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
 include he
 
 /- English proof (translation)
-Set `E : V ⊗[Qp] BdR ≃ₗ[LL] V' ⊗[Qp] BdR` to `AlgebraTensorModule.congr e (LinearEquiv.refl Qp BdR)`. Establish `hE : ∀ g x, E (actVdR PD ρ g x) = actVdR PD ρ' g (E x)`. Introduce `g x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b => simp [E, actVdR, he]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]`. Establish `hD : DdR PD ρ = (DdR PD ρ').comap (E : V ⊗[Qp] BdR →ₗ[LL] V' ⊗[Qp] BdR)`. Use extensionality with `x`. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, Submodule.mem_comap, sub_eq_zero]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx g`. Rewrite using `[LinearEquiv.coe_coe, ← hE, hx g]`. Introduce `hx g`. Apply `E.injective` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hE]`. Conclude with `hx g`. Rewrite using `[hD]`. Conclude with `(E.ofSubmodule' (DdR PD ρ')).finrank_eq`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_DdR_congr : finrank LL ↥(DdR PD ρ) = finrank LL ↥(DdR PD ρ') := by
   let E : V ⊗[Qp] BdR ≃ₗ[LL] V' ⊗[Qp] BdR := AlgebraTensorModule.congr e (LinearEquiv.refl Qp BdR)
@@ -63,7 +63,7 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : Type} [Field E] [Fiel
   {Gw : Subgroup (Ω ≃ₐ[E] Ω)} (Bw : LocBridge l E Ω Gw O) {a : ℕ}
 
 /- English proof (translation)
-Set `f : Bool × Fin a × Fin a → Om l` to `fun p => if p.1 then (A : Matrix (Fin a) (Fin a) (Om l)) p.2.1 p.2.2 else ((A⁻¹ : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) p.2.1 p.2.2`. Establish `hfin : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] (Set.range f))` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Use `⟨supExt L₁ ⟨_, hfin⟩, le_sup_left, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Conclude with `(le_sup_right : IntermediateField.adjoin ℚ_[l] (Set.range f) ≤ L₁.1 ⊔ _) (IntermediateField.subset_adjoin _ _ ⟨(true, i, j), rfl⟩)`. Conclude with `(le_sup_right : IntermediateField.adjoin ℚ_[l] (Set.range f) ≤ L₁.1 ⊔ _) (IntermediateField.subset_adjoin _ _ ⟨(false, i, j), rfl⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_ext_entries (L₁ : FinExt l) (A : GL (Fin a) (Om l)) :
     ∃ L₂ : FinExt l, L₁.1 ≤ L₂.1 ∧ (∀ i j, (A : Matrix (Fin a) (Fin a) (Om l)) i j ∈ L₂.1) ∧
@@ -79,7 +79,7 @@ theorem exists_ext_entries (L₁ : FinExt l) (A : GL (Fin a) (Om l)) :
       (IntermediateField.subset_adjoin _ _ ⟨(false, i, j), rfl⟩)
 
 /- English proof (translation)
-Simplify using `[LocBridge.repE, Matrix.toLinAlgEquiv'_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem repE_apply (L : FinExt l) (r : ↥Gw →* GL (Fin a) ↥L.1) (g : ↥(GK Bw.Kw)) (x : Fin a → ↥L.1) :
     Bw.repE L r g x = ((r (Bw.e.symm g) : GL (Fin a) ↥L.1) : Matrix (Fin a) (Fin a) ↥L.1).mulVec x := by
@@ -88,15 +88,15 @@ theorem repE_apply (L : FinExt l) (r : ↥Gw →* GL (Fin a) ↥L.1) (g : ↥(GK
 variable {Bw} in
 
 /- English proof (translation)
-Take `⟨L₂, hL, hA, hB⟩` from `exists_ext_entries L₁ A`. Set `A₂ : Matrix (Fin a) (Fin a) ↥L₂.1` to `fun i j => ⟨_, hA i j⟩`. Set `B₂ : Matrix (Fin a) (Fin a) ↥L₂.1` to `fun i j => ⟨_, hB i j⟩`. Set `f : ↥L₂.1 →+* Om l` to `algebraMap ↥L₂.1 (Om l)`. Establish `fA : f.mapMatrix A₂ = (A : Matrix (Fin a) (Fin a) (Om l))` using `rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `fB : f.mapMatrix B₂ = ((A⁻¹ : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))` using `rfl`. Establish `inj : Function.Injective (f.mapMatrix : Matrix (Fin a) (Fin a) ↥L₂.1 → Matrix (Fin a) (Fin a) (Om l))` using `Matrix.map_injective Subtype.val_injective`. Establish `h1 : A₂ * B₂ = 1` using `inj (by rw [map_mul, map_one, fA, fB, ← Units.val_mul, mul_inv_cancel, Units.val_one])`. Establish `h2 : B₂ * A₂ = 1` using `inj (by rw [map_mul, map_one, fA, fB, ← Units.val_mul, inv_mul_cancel, Units.val_one])`. Set `U : GL (Fin a) ↥L₂.1` to `⟨A₂, B₂, h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨L₂, hL, (MulAut.conj U).toMonoidHom.comp (Formalism.MainNotions.N.mapRep (IntermediateField.inclusion hL).toRingHom r₁), ?_, ?_⟩` and prove the remaining obligations. Use `⟨h₁.1.trans hL, ?_⟩` and prove the remaining obligations. Use extensionality with `g i j`. Rewrite using `[hc g, ← h₁.2]`. Express the relevant statement in the definitionally equal form `(f.mapMatrix (A₂ * ((IntermediateField.inclusion hL).toRingHom.mapMatrix ((r₁ g : GL (Fin a) ↥L₁.1) : Matrix (Fin a) (Fin a) ↥L₁.1)) * B₂)) i j = ((A : Matrix (Fin a) (Fin a) (Om l)) * (algebraMap ↥L₁.1 (Om l)).mapMatrix ((r₁ g : GL (Fin a) ↥L₁.1) : Matrix (Fin a) (Fin a) ↥L₁.1) …`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul, map_mul, fA, fB]`. Both sides reduce to the same expression. Use `⟨Formalism.MainNotions.N.K.Norm.matEquiv A₂ B₂ h1 h2, fun g x => ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.MainNotions.N.K.Norm.matEquiv_apply, Formalism.MainNotions.N.K.Norm.matEquiv_apply, repE_apply, repE_apply]`. Express the relevant statement in the definitionally equal form `A₂.mulVec (Matrix.mulVec _ x) = Matrix.mulVec (A₂ * _ * B₂) (A₂.mulVec x)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, h2, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_conj_model {r r' : ↥Gw →* GL (Fin a) (Om l)} (A : GL (Fin a) (Om l))
     (hc : ∀ g, r' g = A * r g * A⁻¹) {L₁ : FinExt l} {r₁ : ↥Gw →* GL (Fin a) ↥L₁.1}
@@ -134,13 +134,13 @@ theorem exists_conj_model {r r' : ↥Gw →* GL (Fin a) (Om l)} (A : GL (Fin a) 
     rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, h2, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `l _ P E Ω _ _ _ _ O _ _ _ Gw Bw a r r' A hc`. Establish `dR : ∀ {L₁ L₂ : FinExt l} {r₁ : ↥Gw →* GL (Fin a) ↥L₁.1} (hL : L₁.1 ≤ L₂.1) (r₂ : ↥Gw →* GL (Fin a) ↥L₂.1) (e : (Fin a → ↥L₂.1) ≃ₗ[↥L₂.1] (Fin a → ↥L₂.1)), (∀ g x, e (Bw.repE L₂ (Formalism.MainNotions.N.mapRep (IntermediateField.inclusion hL).toRingHom r₁) g x) = Bw.repE L₂ r₂ g …`. Introduce `L₁ L₂ r₁ hL r₂ e he hd`. Establish `h` using `(local_ext P Bw hL r₁).2.1.2 hd`. Unfold `LocBridge.IsdRE at h ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← finrank_DdR_congr (P.PD Bw.Kw) e he, h]`. Use `⟨fun ⟨L₁, r₁, h₁, hd⟩ => ?_, fun ⟨L₁, r₁, h₁, hd⟩ => ?_, fun ⟨L₁, r₁, h₁, hd⟩ => ?_, fun τ J ⟨L₁, r₁, h₁, hd, τ₁, hτ, hJ⟩ => ?_⟩` and prove the remaining obligations. Take `⟨L₂, hL, r₂, hm, e, he⟩` from `exists_conj_model A hc h₁`. Conclude with `⟨L₂, r₂, hm, dR hL r₂ e he hd⟩`. Take `⟨L₂, hL, r₂, hm, e, he⟩` from `exists_conj_model A hc h₁`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨L₂, r₂, hm, Formalism.MainNotions.N.K.Norm.isCrys_congr (P.PD Bw.Kw) e he ((local_ext P Bw hL r₁).1.2 hd)⟩`. Take `⟨L₂, hL, r₂, hm, e, he⟩` from `exists_conj_model A hc h₁`. Take `⟨K', hK, hcr⟩` from `(local_ext P Bw hL r₁).2.2.1.2 hd`. Conclude with `⟨L₂, r₂, hm, K', hK, Formalism.MainNotions.N.K.Norm.isCrys_congr (P.PD K') e (fun g x => he _ x) hcr⟩`. Take `⟨L₂, hL, r₂, hm, e, he⟩` from `exists_conj_model A hc h₁`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨L₂, r₂, hm, dR hL r₂ e he hd, (IntermediateField.inclusion hL).comp τ₁, fun x => hτ x, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[hJ n, ← (local_ext P Bw hL r₁).2.2.2 τ₁ n]`. Conclude with `Formalism.MainNotions.N.K.Norm.multV_congr (P.PD Bw.Kw) e he _ n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_conj : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (E Ω : Type) [Field E] [NumberField E] [Field Ω]
     [Algebra E Ω] (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Gw : Subgroup (Ω ≃ₐ[E] Ω))

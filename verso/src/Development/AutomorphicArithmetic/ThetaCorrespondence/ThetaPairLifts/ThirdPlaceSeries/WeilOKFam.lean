@@ -22,35 +22,33 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam.WeilTup
 variable {D : D7}
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u hP f v hR hC hτ t`. Establish `hmE : ¬ Odd D.R.m`. Take `⟨a, ha⟩` from `D.R.m_even`. Introduce and unpack `⟨b, hb⟩`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 
-Establish `hE` using `GlobalTheory.WeilDatumExistence.weilDatumExists D`. Establish `hX` using `hP.bot.hyp.2.2.2.1.chain.ωX t`. Simplify using `only [Formalism.IndefR.Lift.chrStep, if_neg hmE] at hX`. Establish `hη : ∀ j' (h' : j' + 2 * 0 + 2 = D.R.m), IsHeckeChar D (_root_.GlobalTheory.Fam.pk_z W).eta ∧ ResEta D (_root_.GlobalTheory.Fam.pk_z W).eta 1`. Introduce `j' h'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : j' + 1 + 1 = D.R.m` using `by omega`. Establish `hk` using `hC.kom t (j' + 1) (by omega)`. Establish `hμH : IsHeckeChar D ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t D.R.m)`. Establish `h1 : IsHeckeChar D ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j' + 1 + 1))` using `hk.hecS`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Establish `hμR : ResEta D ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t D.R.m) (D.sp.X'.rank + 1)`. Establish `h1 : ResEta D ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j' + 1 + 1)) (D.sp.X (j' + 1 + 1)).rank` using `hk.resT`. Establish `h2 : D.sp.X'.rank + f.c.Lz.rank = (D.sp.X (j' + 1 + 1)).rank` using `(f.c.oT (j' + 1 + 1) e).rank_add`. Rewrite `h1` using `[← h2, (hτ j' h').1, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `hH : IsHeckeChar D (_root_.GlobalTheory.Fam.pk_z W).eta`. Establish `h1` using `hecke_mul (hecke_inv hX.hecT) hμH`. Rewrite `h1` using `[_root_.mul_inv_rev, inv_inv, inv_mul_cancel_right]`. Then use the resulting hypothesis. Conclude with `⟨hH, resEta_of_diff hμR hX.resT⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_, hτ⟩` and prove the remaining obligations. Introduce `j σ h`. Take `⟨hHη, hRη⟩` from `hη (j + 2 * σ + 2) (by omega)`. Establish `hzH` using `hecke_inv hHη`. Establish `hzR` using `Formalism.L2.Theta.resEta_inv hRη`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk0` using `hC.kom t j (by omega)`. Establish `hk1` using `hC.kom t (j + 1) (by omega)`. Take `⟨-, -, bV, bW⟩` from `(hR.row t).sBF j (σ + 1) h`. Take `⟨-, -, fV, fW⟩` from `(hR.row t).sFB j σ h`. Establish `hL` using `(f.c.bes j (σ + 1) h).line.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hL'` using `(f.c.bes (j + 1 + 1) σ (idx_step h)).line.1`. Take `⟨omz, homz⟩` from `hE (f.c.bes j (σ + 1) h).L (D.sp.X (j + 1)) (_root_.GlobalTheory.Fam.pk_z W).ψ (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹ ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1)) hk0.std hzH hk0.hecT (by rw [hL]; exact hzR) hk0.resT`. Take `⟨omz', homz'⟩` from `hE (D.sp.X (j + 1)) (f.c.bes (j + 1 + 1) σ (idx_step h)).L (_root_.GlobalTheory.Fam.pk_z W).ψ ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1 + 1)) (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹ hk1.std hk1.hecS hzH hk1.resS (by rw [hL']; exact hzR)`. Use `⟨(_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1), (_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1 + 1), (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹, omz, omz', bV, fW, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[bW]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk0`. Rewrite using `[bW]`. Conclude with `homz`. Rewrite using `[fV]`. Conclude with `hk1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[fV]`. Conclude with `homz'`. Introduce `j h`. Establish `e : j + 1 + 1 = D.R.m` using `by omega`. Take `⟨hHη, hRη⟩` from `hη j h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzH` using `hecke_inv hHη`. Establish `hzR` using `Formalism.L2.Theta.resEta_inv hRη`. Establish `hk0` using `hC.kom t j (by omega)`. Establish `hk1` using `hC.kom t (j + 1) (by omega)`. Take `⟨-, -, bV, bW⟩` from `(hR.row t).sBF j 0 h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hL` using `(f.c.bes j 0 h).line.1`. Establish `hXH : IsHeckeChar D ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1 + 1) * (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹)` using `by rw [e]; exact hX.hecT`. Establish `hXR : ResEta D ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1 + 1) * (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹) D.sp.X'.rank` using `by rw [e]; exact hX.resT`. Take `⟨omz, homz⟩` from `hE (f.c.bes j 0 h).L (D.sp.X (j + 1)) (_root_.GlobalTheory.Fam.pk_z W).ψ (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹ ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1)) hk0.std hzH hk0.hecT (by rw [hL]; exact hzR) hk0.resT`. Take `⟨omT', homT⟩` from `hE (D.sp.X (j + 1)) D.sp.X' (_root_.GlobalTheory.Fam.pk_z W).ψ ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1 + 1)) ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1 + 1) * (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹) hk1.std hk1.hecS hXH hk1.resS hXR`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Take `⟨omz'', homz''⟩` from `hE (D.sp.X (j + 1)) f.c.Lz (_root_.GlobalTheory.Fam.pk_z W).ψ ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1 + 1)) (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹⁻¹ hk1.std hk1.hecS (by rw [inv_inv]; exact hHη) hk1.resS (by rw [(hτ j h).1, inv_inv]; exact hRη)`. Establish `hμ1 : (_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1 + 1) * (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹ * (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹⁻¹ = (_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1 + 1)`. Rewrite using `[inv_inv, inv_mul_cancel_right]`. Establish `key : ∀ n (e' : D.R.m - 1 = n), IsWeilDatumO (_root_.GlobalTheory.Fam.pk_z W).ψ (Yc D n) D.sp.X' ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1 + 1)) ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1 + 1) * (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹) (Eq.rec (motive` using `fun n _ => Om (Yc D n) D.sp.X') ((_root_.GlobalTheory.Fam.pk_z W).ωX t) e') := by`. Introduce `n e'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `e'` using the available equality. Rewrite using `[e]`. Conclude with `hX`. Use `⟨(_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1), (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹, (_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1 + 1), (_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t (j + 1 + 1) * (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹, omz, omT', omz'', bV, ?_, …` and prove the remaining obligations. Rewrite using `[bW]`.
-
-Conclude with `hk0`. Rewrite using `[bW]`. Conclude with `homz`. Rewrite using `[hμ1]`. Conclude with `hk1`.
+A detailed English derivation is pending.
 -/
 theorem weilOK_fam_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (u : D.what₂.Word), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (v : VCom f.c), f.RowOK → f.ColOK → (∀ j h, f.c.Lz.rank = 1 ∧ (v.τ j h)ᴴ * ((f.c.bes j 0 h).L.gram * v.τ j h) = (-(D.host.xi0 * star D.host.xi0)) • f.c.Lz.gram) → ∀ t, WeilOK (t := f.t t) v := by
   intro D L hT Gi Gl Kc Yd cX ex W u hP f v hR hC hτ t

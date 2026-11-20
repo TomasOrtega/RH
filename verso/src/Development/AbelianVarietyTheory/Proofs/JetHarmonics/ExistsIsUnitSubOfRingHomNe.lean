@@ -3,33 +3,29 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A O _ _ _ _ g hg hgO hA σ σ' hne`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hne` to reduce the goal to its premises. Establish `hgm : (g : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr hgO)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : Ideal.span {(g : O)} ≤ IsLocalRing.maximalIdeal O` using `(Ideal.span_singleton_le_iff_mem _).mpr hgm`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ) (M := A)`. Use `set J : Ideal O := Ideal.span ((fun a => σ a - σ' a) '' (s : Set A)) with hJ`. Establish `hmem : ∀ a : A, σ a - σ' a ∈ J`. Introduce `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Establish `ha : a ∈ Submodule.span ℤ (s : Set A)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem y hy => exact Ideal.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: σ (y + z) - σ' (y + z) = (σ y - σ' y) + (σ z - σ' z)`. Rewrite using `[map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `J.add_mem hy hz`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `smul n y _ hy`. Establish `: σ (n • y) - σ' (n • y) = (n : O) * (σ y - σ' y)`. Simplify using `[zsmul_eq_mul, mul_sub]`. Rewrite using `[this]`. Conclude with `J.mul_mem_left _ hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgk : (g : IsLocalRing.ResidueField O) = 0`. Rewrite using `[← map_natCast (IsLocalRing.residue O), IsLocalRing.residue_eq_zero_iff]`. Conclude with `hgm`. Establish `hle : J ≤ Ideal.span {(g : O)} • J`. Rewrite using `[hJ, Ideal.span_le]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, -, rfl⟩`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp (hA a)`. Establish `hc1 : σ c * g = σ a ^ g - σ a`. Rewrite using `[← map_natCast σ g, ← map_mul, hc, map_sub, map_pow]`. Establish `hc2 : σ' c * g = σ' a ^ g - σ' a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast σ' g, ← map_mul, hc, map_sub, map_pow]`. Establish `hgeom` using `geom_sum₂_mul (σ a) (σ' a) g`. Establish `key : (σ a - σ' a) * ((∑ i ∈ Finset.range g, σ a ^ i * σ' a ^ (g - 1 - i)) - 1) = (g : O) * (σ c - σ' c)`. Take the linear combination `hgeom - hc1 + hc2`. Establish `hr : IsLocalRing.residue O (σ' a) = IsLocalRing.residue O (σ a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_comm, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr (hcon a))`. Establish `hS : (∑ i ∈ Finset.range g, σ a ^ i * σ' a ^ (g - 1 - i)) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sum]`. Repeatedly rewrite using `[map_mul, map_pow, hr, ← pow_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl (g := fun _ => IsLocalRing.residue O (σ a) ^ (g - 1)) (fun i hi => by have := Finset.mem_range.mp hi; congr 1; omega)]`. Rewrite using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul, hgk, zero_mul]`. Establish `hu : IsUnit ((∑ i ∈ Finset.range g, σ a ^ i * σ' a ^ (g - 1 - i)) - 1)`. Assume the negation of the conclusion as `hu`. Establish `h1 : (1 : O) ∈ IsLocalRing.maximalIdeal O`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Ideal.sub_mem _ hS ((IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr hu))` as an intermediate fact. Simplify using `using this`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).mpr h1)`. Establish `: σ a - σ' a = ((g : O) * (σ c - σ' c)) * ↑hu.unit⁻¹`. Rewrite using `[← key, mul_assoc, IsUnit.mul_val_inv, mul_one]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `show σ a - σ' a ∈ (Ideal.span {(g : O)} • J : Ideal O)`. Rewrite using `[this, Ideal.smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) (hmem c))`. Establish `hfg : J.FG` using `by classical`. Conclude with `⟨s.image (fun a => σ a - σ' a), by rw [Finset.coe_image]⟩`.
-
-Establish `hjac : Ideal.span {(g : O)} ≤ (⊥ : Ideal O).jacobson`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Conclude with `hspan`. Establish `hbot` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot _ J hfg hle hjac`. Use extensionality with `a`.
-
-Use `hmem a` as an intermediate fact. Rewrite `this` using `[hbot]`. Conclude with `sub_eq_zero.mp ((Submodule.mem_bot _).mp this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_isUnit_sub_of_ringHom_ne : ∀ (A O : Type) [CommRing A] [Module.Finite ℤ A] [CommRing O] [IsLocalRing O] (g : ℕ), g.Prime → ¬ IsUnit (g : O) → (∀ x : A, x ^ g - x ∈ Ideal.span {(g : A)}) → ∀ σ σ' : A →+* O, σ ≠ σ' → ∃ a : A, IsUnit (σ a - σ' a) := by
   intro A O _ _ _ _ g hg hgO hA σ σ' hne

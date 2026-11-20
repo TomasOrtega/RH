@@ -14,13 +14,13 @@ open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D V`. Take `⟨-, -, hfg, hsp, -, hcc, -, hG, hdet, -, hL⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Establish `hint : ∀ z : D.host.E, IsIntegral ℤ z ↔ z ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`. Introduce `z`. Rewrite using `[FractionalIdeal.mem_one_iff, IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, hfg, hsp, ?_⟩` and prove the remaining obligations. Introduce `a b`. Simplify using `only [Matrix.neg_apply, map_neg, ← hcc, hG]`. Rewrite using `[Matrix.det_neg]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by norm_num)) hdet`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[← hL x]`. Use `forall_congr' fun y => imp_congr_right fun _ => ?_` and prove the remaining obligations. Establish `he : herm (-(V.gram)ᵀ) x y = -(∑ a, ∑ b, x a * V.gramᵀ a b * cF D (y b))`. Simplify using `only [herm, Matrix.neg_apply, mul_neg, neg_mul, Finset.sum_neg_distrib, hcc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, hint, ← hint, ← hint]`. Conclude with `⟨fun h => by simpa using h.neg, fun h => h.neg⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Member.selfDualLat_neg_gram_transpose : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D), GlobalTheory.UCls.SelfDualLat (-(V.gram)ᵀ) (GlobalTheory.Member.latC V) := by
   intro D V

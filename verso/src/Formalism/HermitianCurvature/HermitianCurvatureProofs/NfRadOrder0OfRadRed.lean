@@ -18,9 +18,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Matri
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Establish `hz : inWb k r z` using `hB.2.1`. Establish `hz' : inWb k r z'` using `hB.2.2.1`. Establish `hS` using `(hB.2.2.2.2.2.1.2 ζ hζ).2`. Establish `e1 : fvec k r z (Fin.last r) = z` using `by simp [fvec]`. Establish `e2 : fvec k r z' (Fin.last r) = z'` using `by simp [fvec]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `zetaL muZ`. Rewrite using `[e1, e2, ← TwoByOneBlock.jV_wbPart hz, ← TwoByOneBlock.jV_wbPart hz', TwoByOneBlock.emb_mulVec_jV, TwoByOneBlock.herm_jV]`. Conclude with `hS`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeta_muZ (hB : RadBase k r z z' μsec π π') {ζ : ℂ} (hζ : Tz k r z * Tz k r z' < Complex.normSq ζ) :
     zetaL k r z z' (Fin.last r) (muZ k r μsec ζ) = ζ := by
@@ -34,9 +34,7 @@ theorem zeta_muZ (hB : RadBase k r z z' μsec π π') {ζ : ℂ} (hζ : Tz k r z
   exact hS
 
 /- English proof (translation)
-Establish `h1 : IsOpen (OmX r)`. Establish `e : OmX r = ⋂ l : Fin r, {x : Fin r → ℂ | x l ≠ 0}` using `by ext x; simp [OmX]`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun l => isOpen_ne_fun (continuous_apply l) continuous_const`. Establish `h2 : IsOpen {ζ : ℂ | Tz k r z * Tz k r z' < Complex.normSq ζ}` using `isOpen_lt continuous_const Complex.continuous_normSq`.
-
-Conclude with `(h1.preimage continuous_fst).inter (h2.preimage continuous_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_QR : IsOpen (QR k r z z') := by
   have h1 : IsOpen (OmX r) := by
@@ -48,7 +46,7 @@ theorem isOpen_QR : IsOpen (QR k r z z') := by
   exact (h1.preimage continuous_fst).inter (h2.preimage continuous_snd)
 
 /- English proof (translation)
-Simplify using `only [radR, Set.indicator_of_mem hx, mulZ_eq f hΦ, zeta_muZ hB hx.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem radR_mulZ (hB : RadBase k r z z' μsec π π') (f : ℂ → ℂ) {Φ : Fn k r (Wq →L[ℂ] Wp)}
     (hΦ : Φ ∈ RadSp k r z z' π π') {x : (Fin r → ℂ) × ℂ} (hx : x ∈ QR k r z z') :
@@ -56,7 +54,7 @@ theorem radR_mulZ (hB : RadBase k r z z' μsec π π') (f : ℂ → ℂ) {Φ : F
   simp only [radR, Set.indicator_of_mem hx, mulZ_eq f hΦ, zeta_muZ hB hx.2]
 
 /- English proof (translation)
-Unfold `radR`. Apply the tactic sequence `by_cases hx : x ∈ QR k r z z' <;> simp [hx]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem radR_sub {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (F G : Fn k r E) (x : (Fin r → ℂ) × ℂ) :
     radR k r z z' μsec (F - G) x = radR k r z z' μsec F x - radR k r z z' μsec G x := by
@@ -64,7 +62,7 @@ theorem radR_sub {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (F G : Fn
   by_cases hx : x ∈ QR k r z z' <;> simp [hx]
 
 /- English proof (translation)
-Unfold `radR`. Apply the tactic sequence `by_cases hx : x ∈ QR k r z z' <;> simp [hx]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem radR_add {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (F G : Fn k r E) (x : (Fin r → ℂ) × ℂ) :
     radR k r z z' μsec (F + G) x = radR k r z z' μsec F x + radR k r z z' μsec G x := by
@@ -72,7 +70,7 @@ theorem radR_add {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (F G : Fn
   by_cases hx : x ∈ QR k r z z' <;> simp [hx]
 
 /- English proof (translation)
-Unfold `radR`. Apply the tactic sequence `by_cases hx : x ∈ QR k r z z' <;> simp [hx]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem radR_zero' {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (x : (Fin r → ℂ) × ℂ) :
     radR k r z z' μsec (0 : Fn k r E) x = 0 := by
@@ -80,9 +78,9 @@ theorem radR_zero' {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (x : (F
   by_cases hx : x ∈ QR k r z z' <;> simp [hx]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c g0`. Simplify using `only [mulZ]`. Distinguish the cases in `hx : (c, g0) ∈ DomR k r z z'`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx]`. Establish `h2 : 0 < GGl k r z z' g0` using `hx.2.2`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `GGl at h2`. Use `show f (zetaL k r z z' (Fin.last r) g0) • Φ c g0 = g (zetaL k r z z' (Fin.last r) g0) • Φ c g0`. Rewrite using `[h (show Tz k r z * Tz k r z' < Complex.normSq (zetaL k r z z' (Fin.last r) g0) by linarith)]`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hx]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulZ_congr {f g : ℂ → ℂ} (h : Set.EqOn f g {ζ | Tz k r z * Tz k r z' < Complex.normSq ζ}) {E : Type}
     [NormedAddCommGroup E] [NormedSpace ℂ E] (Φ : Fn k r E) : mulZ k r z z' f Φ = mulZ k r z z' g Φ := by
@@ -97,7 +95,7 @@ theorem mulZ_congr {f g : ℂ → ℂ} (h : Set.EqOn f g {ζ | Tz k r z * Tz k r
   · rw [Set.indicator_of_notMem hx, Set.indicator_of_notMem hx]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c g0`. Distinguish the cases in `hx : (c, g0) ∈ DomR k r z z'`. Simplify using `only [mulZ, Set.indicator_of_mem hx, mul_smul]`. Simplify using `only [mulZ, Set.indicator_of_notMem hx]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mulZ_mul {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (f g : ℂ → ℂ) (Φ : Fn k r E) :
     mulZ k r z z' f (mulZ k r z z' g Φ) = mulZ k r z z' (fun ζ => f ζ * g ζ) Φ := by
@@ -107,7 +105,7 @@ theorem mulZ_mul {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (f g : �
   · simp only [mulZ, Set.indicator_of_notMem hx]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c g0`. Distinguish the cases in `hx : (c, g0) ∈ DomR k r z z'`. Simplify using `only [mulZ, Pi.add_apply, Set.indicator_of_mem hx, add_smul]`. Simplify using `only [mulZ, Pi.add_apply, Set.indicator_of_notMem hx, add_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mulZ_add_left {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (f g : ℂ → ℂ) (Φ : Fn k r E) :
     mulZ k r z z' (fun ζ => f ζ + g ζ) Φ = mulZ k r z z' f Φ + mulZ k r z z' g Φ := by
@@ -117,14 +115,14 @@ theorem mulZ_add_left {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (f g
   · simp only [mulZ, Pi.add_apply, Set.indicator_of_notMem hx, add_zero]
 
 /- English proof (translation)
-Simplify using `using mulZ_lin (z := z) (z' := z') f Φ Ψ 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mulZ_add_right (f : ℂ → ℂ) (Φ Ψ : Fn k r (Wq →L[ℂ] Wp)) :
     mulZ k r z z' f (Φ + Ψ) = mulZ k r z z' f Φ + mulZ k r z z' f Ψ := by
   simpa using mulZ_lin (z := z) (z' := z') f Φ Ψ 1
 
 /- English proof (translation)
-Rewrite using `[mulZ_eq _ hΦ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulZ_const (c : ℂ) {Φ : Fn k r (Wq →L[ℂ] Wp)} (hΦ : Φ ∈ RadSp k r z z' π π') :
     mulZ k r z z' (fun _ => c) Φ = c • Φ := by
@@ -132,7 +130,7 @@ theorem mulZ_const (c : ℂ) {Φ : Fn k r (Wq →L[ℂ] Wp)} (hΦ : Φ ∈ RadSp
   rfl
 
 /- English proof (translation)
-Apply `dZ_dZb_of` to reduce the goal to its premises. Introduce `v`. Rewrite using `[(hf.hasFDerivAt.fun_add hg.hasFDerivAt).fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, fderiv_wirt]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wirt_add {f g : ℂ → ℂ} {w : ℂ} (hf : DifferentiableAt ℝ f w) (hg : DifferentiableAt ℝ g w) :
     dZ (fun ζ => f ζ + g ζ) w = dZ f w + dZ g w ∧ dZb (fun ζ => f ζ + g ζ) w = dZb f w + dZb g w := by
@@ -143,7 +141,7 @@ theorem wirt_add {f g : ℂ → ℂ} {w : ℂ} (hf : DifferentiableAt ℝ f w) (
   ring
 
 /- English proof (translation)
-Apply `dZ_dZb_of` to reduce the goal to its premises. Introduce `v`. Rewrite using `[(hf.hasFDerivAt.fun_mul hg.hasFDerivAt).fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, fderiv_wirt]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wirt_mul {f g : ℂ → ℂ} {w : ℂ} (hf : DifferentiableAt ℝ f w) (hg : DifferentiableAt ℝ g w) :
     dZ (fun ζ => f ζ * g ζ) w = f w * dZ g w + g w * dZ f w ∧
@@ -165,22 +163,22 @@ def Good (f : ℂ → ℂ) : Prop :=
 variable {T a b}
 
 /- English proof (translation)
-The claim follows from `isOpen_lt continuous_const Complex.continuous_normSq`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_U : IsOpen {ζ : ℂ | Tz k r z * Tz k r z' < Complex.normSq ζ} :=
   isOpen_lt continuous_const Complex.continuous_normSq
 
 /- English proof (translation)
-Take `rfl : f = g` from `funext e`. Conclude with `h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem good_congr {f g : ℂ → ℂ} (h : Good T a b f) (e : ∀ ζ, f ζ = g ζ) : Good T a b g := by
   obtain rfl : f = g := funext e
   exact h
 
 /- English proof (translation)
-Use `⟨contDiffOn_const, fun Φ Ψ h => ?_⟩` and prove the remaining obligations. Establish `hΨ : Ψ = c • Φ` using `Subtype.ext (by rw [h, mulZ_const c Φ.2]; rfl)`. Establish `e : (fun ζ => a * dZ (fun _ : ℂ => c) ζ + b * dZb (fun _ : ℂ => c) ζ) = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `ζ`. Simplify using `[dZ, dZb]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hΨ, map_smul, e, mulZ_const c (T Φ).2, mulZ_const 0 Φ.2, zero_smul, add_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem good_const (c : ℂ) : Good T a b (fun _ => c) := by
   refine ⟨contDiffOn_const, fun Φ Ψ h => ?_⟩
@@ -192,9 +190,9 @@ theorem good_const (c : ℂ) : Good T a b (fun _ => c) := by
   rfl
 
 /- English proof (translation)
-Use `⟨contDiff_id.contDiffOn, fun Φ Ψ h => ?_⟩` and prove the remaining obligations. Rewrite using `[ha Φ Ψ h]`. Establish `hd : ∀ ζ, dZ id ζ = 1 ∧ dZb id ζ = 0` using `fun ζ => dZ_dZb_of (fun v => by rw [fderiv_id]; simp)`. Establish `e : (fun ζ => a * dZ id ζ + b * dZb id ζ) = fun _ => a`. Use function extensionality and compare the values at `ζ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[(hd ζ).1, (hd ζ).2]`. Rewrite using `[e, mulZ_const a Φ.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_id (ha : ∀ Φ Ψ : RadSp k r z z' π π', (Ψ : Fn k r (Wq →L[ℂ] Wp)) = mulZ k r z z' id (Φ : Fn k r (Wq →L[ℂ] Wp)) →
         (T Ψ : Fn k r (Wq →L[ℂ] Wp)) = mulZ k r z z' id (T Φ : Fn k r (Wq →L[ℂ] Wp)) + a • (Φ : Fn k r (Wq →L[ℂ] Wp))) :
@@ -208,9 +206,9 @@ theorem good_id (ha : ∀ Φ Ψ : RadSp k r z z' π π', (Ψ : Fn k r (Wq →L[�
   rw [e, mulZ_const a Φ.2]
 
 /- English proof (translation)
-Establish `ec : (⇑(starRingEnd ℂ) : ℂ → ℂ) = ⇑(Complex.conjCLE : ℂ ≃L[ℝ] ℂ)`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Use `⟨by rw [ec]; exact Complex.conjCLE.contDiff.contDiffOn, fun Φ Ψ h => ?_⟩` and prove the remaining obligations. Rewrite using `[hb Φ Ψ h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : ∀ ζ, dZ (starRingEnd ℂ) ζ = 0 ∧ dZb (starRingEnd ℂ) ζ = 1` using `fun ζ => dZ_dZb_of (fun v => by rw [ec, ContinuousLinearEquiv.fderiv]; simp)`. Establish `e : (fun ζ => a * dZ (starRingEnd ℂ) ζ + b * dZb (starRingEnd ℂ) ζ) = fun _ => b`. Use function extensionality and compare the values at `ζ`. Simplify using `[(hd ζ).1, (hd ζ).2]`. Rewrite using `[e, mulZ_const b Φ.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_conj (hb : ∀ Φ Ψ : RadSp k r z z' π π', (Ψ : Fn k r (Wq →L[ℂ] Wp)) = mulZ k r z z' (starRingEnd ℂ) (Φ : Fn k r (Wq →L[ℂ] Wp)) →
         (T Ψ : Fn k r (Wq →L[ℂ] Wp)) = mulZ k r z z' (starRingEnd ℂ) (T Φ : Fn k r (Wq →L[ℂ] Wp)) + b • (Φ : Fn k r (Wq →L[ℂ] Wp))) :
@@ -228,11 +226,11 @@ theorem good_conj (hb : ∀ Φ Ψ : RadSp k r z z' π π', (Ψ : Fn k r (Wq →L
   rw [e, mulZ_const b Φ.2]
 
 /- English proof (translation)
-Use `⟨hf.1.add hg.1, fun Φ Ψ h => ?_⟩` and prove the remaining obligations. Set `Ψf : RadSp k r z z' π π'` to `⟨mulZ k r z z' f Φ, mulZ_mem hf.1 Φ.2⟩`. Set `Ψg : RadSp k r z z' π π'` to `⟨mulZ k r z z' g Φ, mulZ_mem hg.1 Φ.2⟩`. Establish `hΨ : Ψ = Ψf + Ψg` using `Subtype.ext (by rw [h, mulZ_add_left]; rfl)`. Establish `hL : Set.EqOn (fun ζ => a * dZ (fun ζ => f ζ + g ζ) ζ + b * dZb (fun ζ => f ζ + g ζ) ζ) (fun ζ => (a * dZ f ζ + b * dZb f ζ) + (a * dZ g ζ + b * dZb g ζ)) {ζ | Tz k r z * Tz k r z' < Complex.normSq ζ}`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `hfd` using `(hf.1.differentiableOn (by simp)).differentiableAt (isOpen_U.mem_nhds hw)`. Establish `hgd` using `(hg.1.differentiableOn (by simp)).differentiableAt (isOpen_U.mem_nhds hw)`. Simplify using `only [(wirt_add hfd hgd).1, (wirt_add hfd hgd).2]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hΨ, map_add, Submodule.coe_add, hf.2 Φ Ψf rfl, hg.2 Φ Ψg rfl, mulZ_congr hL]`. Simplify using `only [mulZ_add_left]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem good_add {f g : ℂ → ℂ} (hf : Good T a b f) (hg : Good T a b g) : Good T a b (fun ζ => f ζ + g ζ) := by
   refine ⟨hf.1.add hg.1, fun Φ Ψ h => ?_⟩
@@ -252,11 +250,11 @@ theorem good_add {f g : ℂ → ℂ} (hf : Good T a b f) (hg : Good T a b g) : G
   abel
 
 /- English proof (translation)
-Use `⟨hf.1.mul hg.1, fun Φ Ψ h => ?_⟩` and prove the remaining obligations. Set `Ψg : RadSp k r z z' π π'` to `⟨mulZ k r z z' g Φ, mulZ_mem hg.1 Φ.2⟩`. Establish `eg : (Ψg : Fn k r (Wq →L[ℂ] Wp)) = mulZ k r z z' g Φ` using `rfl`. Establish `h1 : (Ψ : Fn k r (Wq →L[ℂ] Wp)) = mulZ k r z z' f (mulZ k r z z' g Φ)` using `by rw [h, mulZ_mul]`. Establish `hL : Set.EqOn (fun ζ => a * dZ (fun ζ => f ζ * g ζ) ζ + b * dZb (fun ζ => f ζ * g ζ) ζ) (fun ζ => f ζ * (a * dZ g ζ + b * dZb g ζ) + (a * dZ f ζ + b * dZb f ζ) * g ζ) {ζ | Tz k r z * Tz k r z' < Complex.normSq ζ}`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `hfd` using `(hf.1.differentiableOn (by simp)).differentiableAt (isOpen_U.mem_nhds hw)`. Establish `hgd` using `(hg.1.differentiableOn (by simp)).differentiableAt (isOpen_U.mem_nhds hw)`. Simplify using `only [(wirt_mul hfd hgd).1, (wirt_mul hfd hgd).2]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hf.2 Ψg Ψ h1, hg.2 Φ Ψg rfl, eg, mulZ_add_right, mulZ_mul, mulZ_mul, mulZ_mul, mulZ_congr hL, mulZ_add_left, add_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem good_mul {f g : ℂ → ℂ} (hf : Good T a b f) (hg : Good T a b g) : Good T a b (fun ζ => f ζ * g ζ) := by
   refine ⟨hf.1.mul hg.1, fun Φ Ψ h => ?_⟩
@@ -275,7 +273,7 @@ theorem good_mul {f g : ℂ → ℂ} (hf : Good T a b f) (hg : Good T a b g) : G
     mulZ_add_left, add_assoc]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact good_congr (good_const 1) (fun ζ => by simp)`. Consider the case `succ n ih => exact good_congr (good_mul ih hf) (fun ζ => by ring)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem good_pow {f : ℂ → ℂ} (hf : Good T a b f) (n : ℕ) : Good T a b (fun ζ => f ζ ^ n) := by
   induction n with
@@ -283,7 +281,7 @@ theorem good_pow {f : ℂ → ℂ} (hf : Good T a b f) (n : ℕ) : Good T a b (f
   | succ n ih => exact good_congr (good_mul ih hf) (fun ζ => by ring)
 
 /- English proof (translation)
-Establish `h1` using `good_add (good_id (b := b) ha) (good_const (T := T) (a := a) (b := b) (-ζ0))`. Establish `h2` using `good_add (good_conj (a := a) hb) (good_const (T := T) (a := a) (b := b) (-star ζ0))`. Use `good_congr (good_mul (good_const c) (good_mul (good_pow h1 j) (good_pow h2 l))) (fun x => ?_)` and prove the remaining obligations. Simplify using `only [mono, id, sub_eq_add_neg]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem good_mono (ha : ∀ Φ Ψ : RadSp k r z z' π π', (Ψ : Fn k r (Wq →L[ℂ] Wp)) = mulZ k r z z' id (Φ : Fn k r (Wq →L[ℂ] Wp)) →
         (T Ψ : Fn k r (Wq →L[ℂ] Wp)) = mulZ k r z z' id (T Φ : Fn k r (Wq →L[ℂ] Wp)) + a • (Φ : Fn k r (Wq →L[ℂ] Wp)))
@@ -299,21 +297,19 @@ theorem good_mono (ha : ∀ Φ Ψ : RadSp k r z z' π π', (Ψ : Fn k r (Wq →L
 end Main
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ k r z z' μsec π π' hB T a b hT ha hb f hf Φ Ψ hΨ`. Take `⟨n, A, -, hA⟩` from `hT`. Establish `hUo : IsOpen {ζ : ℂ | Tz k r z * Tz k r z' < Complex.normSq ζ}` using `isOpen_U`. Establish `hQo : IsOpen (QR k r z z')` using `isOpen_QR`. Establish `hg : ContDiffOn ℝ ∞ (fun ζ => a * dZ f ζ + b * dZb f ζ) {ζ : ℂ | Tz k r z * Tz k r z' < Complex.normSq ζ}` using `(contDiffOn_const.mul (contDiffOn_dZ hUo hf)).add (contDiffOn_const.mul (contDiffOn_dZb hUo hf))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : ContDiffOn ℝ ∞ (radR k r z z' μsec (Φ : Fn k r (Wq →L[ℂ] Wp))) (QR k r z z')` using `(hMem Wp Wq k r z z' μsec π π' hB _ Φ.2).1`. Set `D : RadSp k r z z' π π'` to `T Ψ - mulZEnd hf (T Φ) - mulZEnd hg Φ`. Establish `eD : (D : Fn k r (Wq →L[ℂ] Wp)) = (T Ψ : Fn k r (Wq →L[ℂ] Wp)) - mulZ k r z z' f (T Φ : Fn k r (Wq →L[ℂ] Wp)) - mulZ k r z z' (fun ζ => a * dZ f ζ + b * dZb f ζ) (Φ : Fn k r (Wq →L[ℂ] Wp))` using `rfl`. Establish `key : radR k r z z' μsec (D : Fn k r (Wq →L[ℂ] Wp)) = radR k r z z' μsec ((0 : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp))`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Submodule.coe_zero, radR_zero']`. Distinguish the cases in `hx : x ∈ QR k r z z'`. Use `swap`. Simplify using `[radR, hx]`. Establish `hΛeq : ∀ h : ℂ → ℂ, ContDiffOn ℝ ∞ h {ζ : ℂ | Tz k r z * Tz k r z' < Complex.normSq ζ} → ∀ Ψh : RadSp k r z z' π π', (Ψh : Fn k r (Wq →L[ℂ] Wp)) = mulZ k r z z' h (Φ : Fn k r (Wq →L[ℂ] Wp)) → (∑ j ∈ Finset.range (n + 1), A j x (iteratedFDeriv ℝ j (fun y => h y.2 • radR k r z z' μ …`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h _ Ψh hΨh`. Rewrite using `[hA Ψh x hx]`. Use `congr 2`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hev : (fun y => h y.2 • radR k r z z' μsec (Φ : Fn k r (Wq →L[ℂ] Wp)) y) =ᶠ[𝓝 x] radR k r z z' μsec (Ψh : Fn k r (Wq →L[ℂ] Wp))` using `Filter.eventually_of_mem (hQo.mem_nhds hx) fun y hy => by rw [hΨh, radR_mulZ hB h Φ.2 hy]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hev.iteratedFDeriv ℝ j).eq_of_nhds]`. Establish `hJ : JetR {ζ : ℂ | Tz k r z * Tz k r z' < Complex.normSq ζ} x.2 (fun h => (∑ j ∈ Finset.range (n + 1), A j x (iteratedFDeriv ℝ j (fun y => h y.2 • radR k r z z' μsec (Φ : Fn k r (Wq →L[ℂ] Wp)) y) x)) - h x.2 • radR k r z z' μsec (T Φ : Fn k r (Wq →L[ℂ] Wp)) x - (a * dZ h x.2 + b …`. Establish `hI : ∀ j ∈ Finset.range (n + 1), JetR {ζ : ℂ | Tz k r z * Tz k r z' < Complex.normSq ζ} x.2 (fun h => A j x (iteratedFDeriv ℝ j (fun y => h y.2 • radR k r z z' μsec (Φ : Fn k r (Wq →L[ℂ] Wp)) y) x))` using `fun j _ => jetR_map (A j x).toLinearMap (jetR_iter (ContinuousLinearMap.snd ℝ (Fin r → ℂ) ℂ) hUo hQo (fun y hy => hy.2) hx j (Wq →L[ℂ] Wp) _ hsm)`. Use `jetR_sub (jetR_sub (jetR_sum _ hI) (jetR_congr (jetR_word [] (cl 1 (radR k r z z' μsec (T Φ : Fn k r (Wq →L[ℂ] Wp)) x))) (fun h _ => by simp [cl_apply, wd]))) (jetR_congr (jetR_add (jetR_word [false] (cl a (radR k r z z' μsec (Φ : Fn k r (Wq →L[ℂ] Wp)) x))) (jetR_word [true] (cl …` and prove the remaining obligations. Establish `hmono : ∀ (c : ℂ) (j l : ℕ), (fun h : ℂ → ℂ => (∑ j ∈ Finset.range (n + 1), A j x (iteratedFDeriv ℝ j (fun y => h y.2 • radR k r z z' μsec (Φ : Fn k r (Wq →L[ℂ] Wp)) y) x)) - h x.2 • radR k r z z' μsec (T Φ : Fn k r (Wq →L[ℂ] Wp)) x - (a * dZ h x.2 + b * dZb h x.2) • radR k r z z …`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c j l`. Establish `hG` using `good_mono ha hb x.2 c j l`. Set `Ψh : RadSp k r z z' π π'` to `⟨mulZ k r z z' _ Φ, mulZ_mem hG.1 Φ.2⟩`. Use `beta_reduce`. Rewrite using `[hΛeq _ hG.1 Ψh rfl, hG.2 Φ Ψh rfl, radR_add, radR_mulZ hB _ (T Φ).2 hx, radR_mulZ hB _ Φ.2 hx]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `h0` using `jetR_zero hUo hx.2 hJ hmono f hf`. Rewrite `h0` using `[hΛeq f hf Ψ hΨ]`. Rewrite using `[eD, radR_sub, radR_sub, radR_mulZ hB _ (T Φ).2 hx, radR_mulZ hB _ Φ.2 hx]`. Conclude with `h0`.
-
-Establish `hD0` using `hInj Wp Wq k r z z' μsec π π' hB _ D.2 _ (0 : RadSp k r z z' π π').2 key`. Rewrite `hD0` using `[eD, Submodule.coe_zero, sub_sub, sub_eq_zero]`. Conclude with `hD0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radOrder0_of (hMem : RadRedMem) (hInj : RadRedInj) : RadOrder0 := by
   intro Wp Wq _ _ _ _ _ _ k r z z' μsec π π' hB T a b hT ha hb f hf Φ Ψ hΨ
@@ -393,13 +389,13 @@ end Formalism.FourierDecayAlt.P.NFRO
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `NFRO.radOrder0_of`.
+A detailed English derivation is pending.
 -/
 theorem nf_radOrder0_of_radRed : Formalism.FourierDecayAlt.NF.RadRedMem → Formalism.FourierDecayAlt.NF.RadRedInj → Formalism.FourierDecayAlt.NF.RadOrder0 :=
   NFRO.radOrder0_of
 
 /- English proof (translation)
-The claim follows from `nf_radOrder0_of_radRed radical_reduction_mem radical_reduction_injective`.
+A detailed English derivation is pending.
 -/
 theorem radical_order_zero : Formalism.FourierDecayAlt.NF.RadOrder0 :=
   nf_radOrder0_of_radRed radical_reduction_mem radical_reduction_injective

@@ -4,7 +4,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.PolyApproxZeroPadic
 open GlobalTheory.Cong
 /- English proof (citation)
-Apply `GlobalTheory.PowerSumPoly.exists_intPoly_psum_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsIntPolyEsymmEqPowerSumMultiset.lean&line=8#L8)
 -/

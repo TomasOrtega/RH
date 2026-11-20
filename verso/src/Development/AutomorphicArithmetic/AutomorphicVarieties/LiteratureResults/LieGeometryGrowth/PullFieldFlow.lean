@@ -10,7 +10,7 @@ namespace UpperTheory.V.Lit.Geo
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use `ga_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [map_mul, pInf_infGL, pInf_finGL, mul_one]`. Simplify using `only [map_mul, pFin_infGL, pFin_finGL, one_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem rat_split (γ : GL (Fin a) E) (g : GL (Fin a) (Cinf E)) (x : GL (Fin a) (Af E)) :
     infGL E a (GeneralLinearGroup.map (pInf E) (ratGL E a γ) * g) *
@@ -22,7 +22,7 @@ private theorem rat_split (γ : GL (Fin a) E) (g : GL (Fin a) (Cinf E)) (x : GL 
     rfl
 
 /- English proof (translation)
-Establish `h : (expU fun _ : InfinitePlace E => ((0 : ℝ) : ℂ)) = 1`. Use extensionality with `w`. Simplify using `[expU]`. Rewrite using `[splitCentre, h, map_one, map_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem centre_zero : splitCentre E a 0 = 1 := by
   have h : (expU fun _ : InfinitePlace E => ((0 : ℝ) : ℂ)) = 1 := by
@@ -31,9 +31,9 @@ private theorem centre_zero : splitCentre E a 0 = 1 := by
   rw [splitCentre, h, map_one, map_one]
 
 /- English proof (translation)
-Use `⟨Real.log r / 2, _, rfl, fun p => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h : (Units.map (Matrix.scalar (Fin a)).toMonoidHom (expU fun _ : InfinitePlace E => ((Real.log r / 2 : ℝ) : ℂ)) : GL (Fin a) (Cinf E)).val = Real.exp (Real.log r / 2) • (1 : Matrix (Fin a) (Fin a) (Cinf E))`. Use extensionality with `i j w`. Apply the tactic sequence `by_cases hij : i = j <;> simp [expU, hij, Matrix.one_apply]`. Establish `e : Real.exp (Real.log r / 2) * Real.exp (Real.log r / 2) = r`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_add, add_halves, Real.exp_log hr]`. Express the relevant statement in the definitionally equal form `Matrix.of (sand _ p).1 = r • Matrix.of p.1`. Rewrite using `[sand_val, h, star_smul, star_one, star_trivial, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul, e]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem scal_ex (r : ℝ) (hr : 0 < r) : ∃ (t : ℝ) (c : GL (Fin a) (Cinf E)),
     infGL E a c = splitCentre E a t ∧ ∀ p : HV E a, sand c p = r • p := by
@@ -49,7 +49,7 @@ private theorem scal_ex (r : ℝ) (hr : 0 < r) : ∃ (t : ℝ) (c : GL (Fin a) (
   rw [sand_val, h, star_smul, star_one, star_trivial, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul, e]
 
 /- English proof (translation)
-Rewrite using `[flow, hW, ← map_smul, ← map_add, map_mul, ContinuousLinearMap.mul_apply]`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin a) (Fin a) (Cinf E)) + t • (Y (infGL E a g * finGL E a x)).1 = h.val * 1 * star h.val`. Rewrite using `[mul_one, hh]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem flow_eq {U : Subgroup (GL (Fin a) (Af E))} {Y : GA E a → Herm E a}
     {W : (GL (Fin a) (Af E) ⧸ U) → HV E a → HV E a} (hW : FCorr U Y W) (g h : GL (Fin a) (Cinf E))
@@ -66,15 +66,15 @@ end UpperTheory.V.Lit.Geo
 open UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Introduce `E _ _ _ a ho U Ξ Y C hY W hW`. Use `⟨⟨fun s => ⟨fieldSm E a U Y C hY W hW s, ?_⟩, ?_, ?_⟩, flow_eq hW⟩` and prove the remaining obligations. Introduce and unpack `p ⟨g, rfl⟩ t ht`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective s`. Take `⟨h, hh, -⟩` from `hY.root (infGL E a g * finGL E a x) t (abs_le.2 ⟨by linarith [ht.1], ht.2⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[flow_eq hW g h x t hh]`. Conclude with `⟨_, rfl⟩`. Introduce and unpack `γ s p ⟨g, rfl⟩`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective s`. Establish `hs : ∀ p : HV E a, (geo ho U Ξ).ρ γ (sand g p) = sand (GeneralLinearGroup.map (pInf E) (ratGL E a γ.1) * g) p` using `fun p => by`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[geo_ρ, map_mul]`. Both sides reduce to the same expression. Establish `hσ : (geo ho U Ξ).σ γ (x : GL (Fin a) (Af E) ⧸ U) = ((GeneralLinearGroup.map (algebraMap E (Af E)) γ.1 * x : GL (Fin a) (Af E)) : GL (Fin a) (Af E) ⧸ U)` using `rfl`. Establish `hl` using `hY.left γ.1 0 (infGL E a g * finGL E a x)`. Rewrite `hl` using `[centre_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hσ, hs, hW, hW, hs, rat_split, hl]`. Introduce and unpack `s r hr p ⟨g, rfl⟩`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective s`. Take `⟨t, c, hc, hp⟩` from `scal_ex (E := E) (a := a) r hr`. Establish `hl` using `hY.left 1 t (infGL E a g * finGL E a x)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hl` using `[map_one, one_mul, ← hc, ← mul_assoc, ← map_mul]`. Establish `hs : ∀ p : HV E a, r • sand g p = sand (c * g) p` using `fun p => by`. Rewrite using `[map_mul, ContinuousLinearMap.mul_apply, hp]`. Rewrite using `[hs, hW, hW, hs, hl]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Lit.Geo.fieldFlow :
     FieldFlow := by

@@ -21,7 +21,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hl.βX`. Conclude with `GlobalTheory.T.parahoricLevel_liftsExist D.sp.X' R.βX (R.datXt t) _ _ hc (GlobalTheory.ChainEquiv.places_sep R.toLevCh _ hl t).1 (GlobalTheory.ChainEquiv.places_sep R.toLevCh _ hl t).2 g0`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem liftsExist_top (R : RealDat D A Ks) (hl : R.toLevCh.Is A.μ0) (t : T) (g0 : G0 R.Pg D.R.r) :
     ∃ κ, IsLevelLift D.sp.X' R.βX (R.datXt t) g0 κ := by
@@ -32,13 +32,13 @@ theorem liftsExist_top (R : RealDat D A Ks) (hl : R.toLevCh.Is A.μ0) (t : T) (g
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `b t y hy`. Establish `hm : D.R.m - 1 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hrel : ∀ p : (R.levR F b).H, GlobalTheory.ChainEquiv.Rel R t p (D.R.m - 1) (R.ioX t y) ((((R.levR F b).chi p : ℂˣ) : ℂ) • R.ioX t y)`. Introduce `p`. Establish `hL` using `liftsExist_top R hl t (p : G0 R.Pg D.R.r)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hL.elim fun κ' hκ' => ?_` and prove the remaining obligations. Introduce `κ hκ v g`. Establish `hF : ∀ w h, (((((R.levR F b).chi p : ℂˣ) : ℂ) • y : LinearMap.range (R.cX.toMap R.prX ∘ₗ (R.HX t).e)) : SmT R.MX →ₗ[ℂ] (GA D D.sp.X' → ℂ)) w h = (levChi _ R.βX (flagL (R.datXt t)) κ')⁻¹ * (y : SmT R.MX →ₗ[ℂ] (GA D D.sp.X' → ℂ)) w (h * κ')`. Introduce `w h`. Establish `hT : HasType D.sp.X' R.βX (withP (R.datXt t) (R.levR F b)) ((y : SmT R.MX →ₗ[ℂ] (GA D D.sp.X' → ℂ)) w)` using `(GlobalTheory.ChainEquiv.multT_value _ _ _ _ _ hy w).2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.KeepLevel.eigen_of_hasType hT p hκ' h]`. Both sides reduce to the same expression. Establish `key` using `GlobalTheory.ChainEquiv.step R.ψ R.θ hM.inf _ _ (R.ωX t) (hc.ωX t) _ _ _ _ (R.vX t) (hc.ptX t) (R.MY (D.R.m - 1)) (R.βY (D.R.m - 1)) (R.datYt t (D.R.m - 1) R.triv) rfl _ (GlobalTheory.ChainEquiv.meas_chain hM.νY hM.νY' t _ hm).1 _ (GlobalTheory.ChainEquiv.meas_chain hM.νY hM.νY' …`. Establish `e` using `(R.ioX t).map_smul (((R.levR F b).chi p : ℂˣ) : ℂ) y`. Conclude with `(congrArg (fun U : R.CC t (D.R.m - 1) => (U : SmT (R.MY (D.R.m - 1)) →ₗ[ℂ] (GA D (Yc D (D.R.m - 1)) → ℂ)) v g) e).symm.trans key`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `(GlobalTheory.KeepLevel.mem_lvlPart_iff (R := R) (R.levR F b) t (D.R.m - 1) (R.ioX t y)).2 hrel`. Conclude with `(mem_multT R.θ (R.MY (D.R.m - 1)) _ _ _).2 hU`.
+A detailed English derivation is pending.
 -/
 theorem topLev_of_clauses (R : RealDat D A Ks) (F : Face D A) (hl : R.toLevCh.Is A.μ0) (hM : R.IsModels) (hc : R.IsChain)
     (hS : ∀ t j, j < D.R.m → SchurMult R.θ (R.MY j) (levS _ (R.βY j) (R.datYt t j R.triv))
@@ -76,7 +76,7 @@ end TopLevProof
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `hC D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hP hH`. Conclude with `topLev_of_clauses R.toRealDat F.lv2 hP.char.base.lev hP.char.base.models (RealDat.chain_of_weak hP.char.base.chain hH.aux.ex) (fun _ _ _ => GlobalTheory.MultFinite.schurMult hC.2.2.2.2 _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem topLev_holds : (GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧ GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay) → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd), Pins R F cG → Holds R F → GlobalTheory.Mem.R3.DTheta.TopLev R.toRealDat F.lv2 := by
   intro hC D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hP hH

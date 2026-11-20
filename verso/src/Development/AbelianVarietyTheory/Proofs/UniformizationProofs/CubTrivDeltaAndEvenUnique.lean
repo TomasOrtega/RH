@@ -22,7 +22,7 @@ namespace GlobalTheory.CubTrivTorus
 variable {S : Scheme.{0}} {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Use `ext`. Apply `fn_ext` to reduce the goal to its premises. Introduce `x _`. Rewrite using `[gs_unit (𝟙 Z) x ⊤ (by simp) u, gs_unit (𝟙 Z) x ⊤ (by simp) v, h x]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private lemma global_units_ext_of_gm_id_eq {Z : Scheme.{0}} {u v : Γ(Z, ⊤)ˣ}
     (h : ∀ z : Z, gm (𝟙 Z) z ⊤ u = gm (𝟙 Z) z ⊤ v) : u = v := by
@@ -32,7 +32,7 @@ private lemma global_units_ext_of_gm_id_eq {Z : Scheme.{0}} {u v : Γ(Z, ⊤)ˣ}
   rw [gs_unit (𝟙 Z) x ⊤ (by simp) u, gs_unit (𝟙 Z) x ⊤ (by simp) v, h x]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma scheme_appTop_comp_apply {A B C : Scheme.{0}} (f : A ⟶ B) (g : B ⟶ C) (a : Γ(C, ⊤)) :
     f.appTop.hom (g.appTop.hom a) = (f ≫ g).appTop.hom a := by
@@ -40,7 +40,7 @@ private lemma scheme_appTop_comp_apply {A B C : Scheme.{0}} (f : A ⟶ B) (g : B
   rfl
 
 /- English proof (translation)
-Establish `e : Units.map (r.appTop.hom : Γ(B, ⊤) →* Γ(A, ⊤)) ρ = c` using `global_units_ext_of_gm_id_eq fun z => by rw [← h z, gm_top r]; rfl`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma global_val_eq_of_gm_eq {A B : Scheme.{0}} (r : A ⟶ B) (ρ : Γ(B, ⊤)ˣ) (c : Γ(A, ⊤)ˣ)
     (h : ∀ z, gm r z ⊤ ρ = gm (𝟙 A) z ⊤ c) : r.appTop.hom ρ.val = c.val := by
@@ -50,7 +50,7 @@ private lemma global_val_eq_of_gm_eq {A B : Scheme.{0}} (r : A ⟶ B) (ρ : Γ(B
   rfl
 
 /- English proof (translation)
-Establish `e` using `global_val_eq_of_gm_eq r ρ (Units.map (r₁.appTop.hom : Γ(B, ⊤) →* Γ(A, ⊤)) ρ * Units.map (r₂.appTop.hom : Γ(B, ⊤) →* Γ(A, ⊤)) ρ) (fun z => by rw [map_mul, h z, gm_top r₁, gm_top r₂]; rfl)`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma global_val_eq_mul_of_gm_eq_mul {A B : Scheme.{0}} (r r₁ r₂ : A ⟶ B) (ρ : Γ(B, ⊤)ˣ)
     (h : ∀ z, gm r z ⊤ ρ = gm r₁ z ⊤ ρ * gm r₂ z ⊤ ρ) :
@@ -61,11 +61,11 @@ private lemma global_val_eq_mul_of_gm_eq_mul {A B : Scheme.{0}} (r r₁ r₂ : A
   rfl
 
 /- English proof (translation)
-Establish `hm : ∀ (Z : Over S) (t t' : Z ⟶ splitTorus S X) (y : Z ⟶ Y), (lift (t * t') y).left.appTop.hom ρ.val = (lift t y).left.appTop.hom ρ.val * (lift t' y).left.appTop.hom ρ.val` using `fun Z t t' y => global_val_eq_mul_of_gm_eq_mul _ _ _ ρ (hρ Z t t' y)`. Take `⟨χ, hχ, huniq⟩` from `GlobalTheory.existsUnique_character_of_mul S X Y ρ hm`. Use `⟨χ, fun Z t y z => ?_, fun χ' hχ' => huniq χ' ?_⟩` and prove the remaining obligations. Rewrite using `[gm_top]`. Use `congr 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using `only [Units.coe_map, hχ, chV_val]`. Use `show (lift t y).left.appTop.hom ((fst (splitTorus S X) Y).left.appTop.hom _) = _`. Rewrite using `[scheme_appTop_comp_apply, ← Over.comp_left, lift_fst]`. Establish `e` using `global_val_eq_of_gm_eq (𝟙 _) ρ (chV (fst (splitTorus S X) Y) χ') (fun z => by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hχ' (splitTorus S X ⊗ Y) (fst _ _) (snd _ _) z` as an intermediate fact. Rewrite using `[lift_fst_snd, Over.id_left] at this)` and apply the resulting hypothesis. Rewrite `e` using `[chV_val]`. Simplify using `using e`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem existsUnique_char {Y : Over S} [ConnectedSpace Y.left] (ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)ˣ)
     (hρ : ∀ (Z : Over S) (t t' : Z ⟶ splitTorus S X) (y : Z ⟶ Y) (z : Z.left),
@@ -91,7 +91,7 @@ theorem existsUnique_char {Y : Over S} [ConnectedSpace Y.left] (ρ : Γ((splitTo
     simpa using e
 
 /- English proof (translation)
-Take `⟨χ, hχ, -⟩` from `existsUnique_char ρ hρ`. Rewrite using `[hχ Z t y z, ← hχ Z t 1 z]`. Conclude with `h₁ Z t z`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_mul {Y : Over S} [GrpObj Y] [ConnectedSpace Y.left] (ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)ˣ)
     (hρ : ∀ (Z : Over S) (t t' : Z ⟶ splitTorus S X) (y : Z ⟶ Y) (z : Z.left),
@@ -103,9 +103,7 @@ theorem eq_one_of_mul {Y : Over S} [GrpObj Y] [ConnectedSpace Y.left] (ρ : Γ((
   exact h₁ Z t z
 
 /- English proof (translation)
-Establish `hS : ConnectedSpace (𝟙_ (Over S)).left` using `‹ConnectedSpace S›`. Use `haveI : Smooth (𝟙_ (Over S)).hom := by show Smooth (𝟙 S); infer_instance`. Use `haveI : GeometricallyConnected (𝟙_ (Over S)).hom := by show GeometricallyConnected (𝟙 S); infer_instance`. Take `⟨h, -⟩` from `(GlobalTheory.GroupConn.connectedSpace_group S (𝟙_ (Over S))).2 X (𝟙_ (Over S)) hS`. Use `haveI : ConnectedSpace ((Over.forget S).obj (splitTorus S X ⊗ 𝟙_ (Over S))) := h`.
-
-Set `e` to `(Over.forget S).mapIso (ρ_ (splitTorus S X))`. Conclude with `(Scheme.homeoOfIso e).surjective.connectedSpace (Scheme.homeoOfIso e).continuous`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem connectedSpace_torus [ConnectedSpace S] [Module.Free ℤ X] : ConnectedSpace (splitTorus S X).left := by
   have hS : ConnectedSpace (𝟙_ (Over S)).left := ‹ConnectedSpace S›
@@ -117,7 +115,7 @@ theorem connectedSpace_torus [ConnectedSpace S] [Module.Free ℤ X] : ConnectedS
   exact (Scheme.homeoOfIso e).surjective.connectedSpace (Scheme.homeoOfIso e).continuous
 
 /- English proof (translation)
-Rewrite using `[gm_top, gm_top (r ≫ g)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private lemma gm_units_map_global_eq_gm_comp {A B C : Scheme.{0}} (r : A ⟶ B) (g : B ⟶ C) (v : Γ(C, ⊤)ˣ) (z : A) :
     gm r z ⊤ (Units.map (g.appTop.hom : Γ(C, ⊤) →* Γ(B, ⊤)) v) = gm (r ≫ g) z ⊤ v := by
@@ -125,25 +123,23 @@ private lemma gm_units_map_global_eq_gm_comp {A B C : Scheme.{0}} (r : A ⟶ B) 
   congr 1
 
 /- English proof (translation)
-Use `haveI : ConnectedSpace (splitTorus S X).left := connectedSpace_torus`. Use `haveI hS : ConnectedSpace (𝟙_ (Over S)).left := ‹ConnectedSpace S›`. Choose the witnesses or unpack the hypotheses as in `⟨ρ, hρ⟩ : ∃ ρ : Γ((splitTorus S X ⊗ splitTorus S X).left, ⊤)ˣ, ∀ (Z : Over S) (x y : Z ⟶ splitTorus S X) (z : Z.left), gm (lift x y).left z ⊤ ρ = gm (x * y).left z ⊤ u * (gm x.left z ⊤ u)⁻¹ * (gm y.left z ⊤ u)⁻¹ := by`. Use `⟨Units.map ((fst (splitTorus S X) (splitTorus S X) * snd _ _).left.appTop.hom : Γ((splitTorus S X).left, ⊤) →* Γ((splitTorus S X ⊗ splitTorus S X).left, ⊤)) u * (Units.map ((fst (splitTorus S X) (splitTorus S X)).left.appTop.hom : Γ((splitTorus S X).left, ⊤) →* Γ((splitTorus S X …` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv, map_inv, gm_units_map_global_eq_gm_comp, gm_units_map_global_eq_gm_comp, gm_units_map_global_eq_gm_comp, ← Over.comp_left, ← Over.comp_left, ← Over.comp_left, MonObj.comp_mul, lift_fst, lift_snd]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmulρ : ∀ (Z : Over S) (t t' y : Z ⟶ splitTorus S X) (z : Z.left), gm (lift (t * t') y).left z ⊤ ρ = gm (lift t y).left z ⊤ ρ * gm (lift t' y).left z ⊤ ρ`. Introduce `Z t t' y z`. Rewrite using `[hρ, hρ, hρ]`. Establish `alg : ∀ a b c d e f g : (Z.left.presheaf.stalk z)ˣ, a * b * c * d = e * f * g → a * e⁻¹ * d⁻¹ = f * b⁻¹ * d⁻¹ * (g * c⁻¹ * d⁻¹)`. Introduce `a b c d e f g h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `ha : a = e * f * g * b⁻¹ * c⁻¹ * d⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ha]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `alg _ _ _ _ _ _ _ (h₃ Z t t' y z)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `honeρ : ∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (z : Z.left), gm (lift t (1 : Z ⟶ splitTorus S X)).left z ⊤ ρ = 1`. Introduce `Z t z`. Rewrite using `[hρ, _root_.mul_one, h₁ Z z, inv_one, _root_.mul_one, _root_.mul_inv_cancel]`. Establish `hmul : ∀ (Z : Over S) (x y : Z ⟶ splitTorus S X) (z : Z.left), gm (x * y).left z ⊤ u = gm x.left z ⊤ u * gm y.left z ⊤ u`. Introduce `Z x y z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `e` using `eq_one_of_mul ρ hmulρ honeρ Z x y z`. Rewrite `e` using `[hρ]`. Combine the equalities or inequalities in the displayed calculation. Establish `germ : ∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (y : Z ⟶ 𝟙_ (Over S)) (z : Z.left), gm (lift t y).left z ⊤ (Units.map ((fst (splitTorus S X) (𝟙_ (Over S))).left.appTop.hom : Γ((splitTorus S X).left, ⊤) →* Γ((splitTorus S X ⊗ 𝟙_ (Over S)).left, ⊤)) u) = gm t.left z ⊤ u`. Introduce `Z t y z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[gm_units_map_global_eq_gm_comp, ← Over.comp_left, lift_fst]`. Take `⟨ψ, hψ, -⟩` from `existsUnique_char (Y := 𝟙_ (Over S)) (Units.map ((fst (splitTorus S X) (𝟙_ (Over S))).left.appTop.hom : Γ((splitTorus S X).left, ⊤) →* Γ((splitTorus S X ⊗ 𝟙_ (Over S)).left, ⊤)) u) (fun Z t t' y z => by rw [germ, germ, germ]; exact hmul Z t t' z)`. Establish `hψ' : ∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (z : Z.left), gm t.left z ⊤ u = gm (𝟙 Z.left) z ⊤ (chV t ψ)` using `fun Z t z => by rw [← germ Z t (toUnit Z) z]; exact hψ Z t (toUnit Z) z`. Establish `two : ∀ (Z : Over S) (t : Z ⟶ splitTorus S X), chV t (ψ + ψ) = 1`. Introduce `Z t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `global_units_ext_of_gm_id_eq` to reduce the goal to its premises. Introduce `z`. Establish `e1 : gm (t⁻¹).left z ⊤ u = (gm t.left z ⊤ u)⁻¹` using `by rw [hψ' Z t⁻¹ z, hψ' Z t z, chV_inv, map_inv]`. Rewrite using `[chV_add, map_mul, map_one, ← hψ' Z t z]`. Use `nth_rewrite 1 [← he Z t z]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, _root_.inv_mul_cancel]`. Take `⟨χ₀, -, h₀⟩` from `existsUnique_char (Y := 𝟙_ (Over S)) (1 : Γ((splitTorus S X ⊗ 𝟙_ (Over S)).left, ⊤)ˣ) (fun Z t t' y z => by simp)`. Establish `e0` using `h₀ 0 (fun Z t y z => by rw [chV_zero, map_one, map_one])`. Establish `e2` using `h₀ (ψ + ψ) (fun Z t y z => by rw [two Z t, map_one, map_one])`. Establish `h2 : (2 : ℤ) • ψ = 0` using `by rw [two_smul]; exact e2.trans e0.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hψ0 : ψ = 0` using `(smul_eq_zero.mp h2).resolve_left two_ne_zero`. Apply `global_units_ext_of_gm_id_eq` to reduce the goal to its premises. Introduce `z`. Establish `e` using `hψ' (splitTorus S X) (𝟙 _) z`. Rewrite `e` using `[Over.id_left, hψ0, chV_zero]`.
-
-Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_even [ConnectedSpace S] [Module.Free ℤ X] (u : Γ((splitTorus S X).left, ⊤)ˣ)
     (h₃ : ∀ (Z : Over S) (x y w : Z ⟶ splitTorus S X) (z : Z.left),
@@ -229,7 +225,7 @@ section
 variable {G H : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj H] (i : H ⟶ G)
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_two]`. Simplify using `[← Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_cubTriv {T : Over S} (x : T ⟶ H) {U : Type} [CommGroup U] (h : (T.left ⟶ G.left) → U) :
     ∏ k : Fin 2, h (x.left ≫ ![i.left, (1 : H ⟶ G).left] k) ^ (![1, -1] : Fin 2 → ℤ) k =
@@ -238,11 +234,11 @@ theorem prod_cubTriv {T : Over S} (x : T ⟶ H) {U : Type} [CommGroup U] (h : (T
   simp [← Over.comp_left]
 
 /- English proof (translation)
-Establish `e1 : (lift t x).left ≫ ((fst H G ≫ i) * snd H G).left = ((t ≫ i) * x).left`. Rewrite using `[← Over.comp_left, MonObj.comp_mul, lift_fst_assoc, lift_snd]`. Establish `e2 : (lift t x).left ≫ (fst H G ≫ i).left = (t ≫ i).left`. Rewrite using `[← Over.comp_left, lift_fst_assoc]`. Establish `e3 : (lift t x).left ≫ (snd H G).left = x.left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, lift_snd]`. Establish `e4 : (lift t x).left ≫ (1 : H ⊗ G ⟶ G).left = (1 : T ⟶ G).left`. Rewrite using `[← Over.comp_left, MonObj.comp_one]`. Rewrite using `[Fin.prod_univ_four]`. Express the relevant statement in the definitionally equal form `h ((lift t x).left ≫ ((fst H G ≫ i) * snd H G).left) ^ (1 : ℤ) * h ((lift t x).left ≫ (fst H G ≫ i).left) ^ (-1 : ℤ) * h ((lift t x).left ≫ (snd H G).left) ^ (-1 : ℤ) * h ((lift t x).left ≫ (1 : H ⊗ G ⟶ G).left) ^ (1 : ℤ) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e1, e2, e3, e4]`. Simplify using `only [zpow_one, zpow_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_biTriv {T : Over S} (t : T ⟶ H) (x : T ⟶ G) {U : Type} [CommGroup U] (h : (T.left ⟶ G.left) → U) :
     ∏ k : Fin 4, h ((lift t x).left ≫ lamφ i k) ^ Oε k =
@@ -265,13 +261,13 @@ theorem prod_biTriv {T : Over S} (t : T ⟶ H) (x : T ⟶ G) {U : Type} [CommGro
 variable {i} [IsMonHom i] {L : RigLB G} {c : CubicalStr G L}
 
 /- English proof (translation)
-Establish `hu` using `ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen L.L _ _ σ.s σ.gen (fst H H * snd H H).left`. Establish `hu'` using `ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen L.L _ _ _ _ _ _ (ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen L.L _ _ _ _ _ _ (ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen L.L _ _ s.s s.gen (lift (fst H H) (snd H H ≫ i)).left) (ReciprocityTheory.ChartRest …`. Take `⟨a, ha⟩` from `GlobalTheory.TorusCoord.exists_ratio L.isLB (fun U _ h => by`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[prod_cubTriv i (fst H H * snd H H) h, prod_biTriv i (fst H H) (snd H H ≫ i) h, prod_cubTriv i (fst H H) h, prod_cubTriv i (snd H H) h, MonObj.mul_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `key : ∀ A F N O : U, A * O⁻¹ = A * F⁻¹ * N⁻¹ * O * (F * O⁻¹) * (N * O⁻¹)` using `fun A F N O => by`. Combine the equalities or inequalities in the displayed calculation. Conclude with `key _ _ _ _) _ hu _ hu'`. Use `⟨a, fun T t t' z J hJ => ?_⟩` and prove the remaining obligations. Establish `key` using `ha T.left (lift t t').left z J hJ`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[val_pull hJ, val_mul hJ, val_mul hJ, val_pull hJ, val_pull hJ, val_pull hJ]`. Establish `e1 : (lift t t').left ≫ (fst H H * snd H H).left = (t * t').left`. Rewrite using `[← Over.comp_left, MonObj.comp_mul, lift_fst, lift_snd]`. Establish `e2 : (lift t t').left ≫ (lift (fst H H) (snd H H ≫ i)).left = (lift t (t' ≫ i)).left`. Rewrite using `[← Over.comp_left, comp_lift, lift_fst, lift_snd_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : (lift t t').left ≫ (fst H H).left = t.left` using `by rw [← Over.comp_left, lift_fst]`. Establish `e4 : (lift t t').left ≫ (snd H H).left = t'.left` using `by rw [← Over.comp_left, lift_snd]`. Rewrite `key` using `[e1, e2, e3, e4]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_delta (s : BiTriv c i) (σ : CubTriv c i) : ∃ a : Γ((H ⊗ H).left, ⊤)ˣ,
     ∀ (T : Over S) (t t' : T ⟶ H) (z : T.left) (J), Good L.L z J → val σ.s (t * t').left z J =
@@ -309,15 +305,15 @@ variable [ConnectedSpace S] [Module.Free ℤ X] {G : Over S} [GrpObj G] [IsCommM
   [IsMonHom i]
 
 /- English proof (translation)
-Use `haveI : ConnectedSpace (splitTorus S X).left := connectedSpace_torus`. Take `⟨a, ha⟩` from `exists_unit_delta s σ`. Establish `hmul : ∀ (Z : Over S) (t₁ t₂ y : Z ⟶ splitTorus S X) (z : Z.left), gm (lift (t₁ * t₂) y).left z ⊤ a = gm (lift t₁ y).left z ⊤ a * gm (lift t₂ y).left z ⊤ a`. Introduce `Z t₁ t₂ y z`. Take `⟨J, hJ⟩` from `exists_good_pt L.isLB z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `ha Z (t₁ * t₂) y z J hJ`. Establish `h2` using `ha Z t₁ y z J hJ`. Establish `h3` using `ha Z t₂ y z J hJ`. Establish `hc` using `σ.cub Z t₁ t₂ y z J hJ`. Establish `hl` using `s.law1 Z t₁ t₂ (y ≫ i) z J hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `alg : ∀ A A₁ A₂ C s₁ s₂ P Q R Y : (Z.left.presheaf.stalk z)ˣ, A * (C * s₁ * s₂ * P * Y) * Q * R * Y = C * P * (A₁ * (s₁ * Q * Y)) * (A₂ * (s₂ * R * Y)) → A = A₁ * A₂`. Introduce `A A₁ A₂ C s₁ s₂ P Q R Y h`. Apply `mul_right_cancel (b := C * s₁ * s₂ * P * Y * Q * R * Y)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite `hc` using `[h1, h2, h3, hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `alg _ _ _ _ _ _ _ _ _ _ hc`. Establish `hone : ∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (z : Z.left), gm (lift t (1 : Z ⟶ splitTorus S X)).left z ⊤ a = 1`. Introduce `Z t z`. Take `⟨J, hJ⟩` from `exists_good_pt L.isLB z`. Establish `h1` using `ha Z t 1 z J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h1` using `[_root_.mul_one, MonObj.one_comp, BiTriv.val_one_right s hJ, CubTriv.val_one σ hJ, _root_.one_mul, _root_.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ha T t t' z J hJ, eq_one_of_mul a hmul hone T t t' z, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_mul_eq {L : RigLB G} {c : CubicalStr G L} (s : BiTriv c i) (σ : CubTriv c i) (T : Over S)
     (t t' : T ⟶ splitTorus S X) (z : T.left) (J) (hJ : Good L.L z J) : val σ.s (t * t').left z J =
@@ -354,19 +350,19 @@ theorem val_mul_eq {L : RigLB G} {c : CubicalStr G L} (s : BiTriv c i) (σ : Cub
   rw [ha T t t' z J hJ, eq_one_of_mul a hmul hone T t t' z, _root_.one_mul]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `GlobalTheory.TorusCoord.exists_ratio P.L.isLB (fun U _ h => rfl) σ.s σ.gen σ'.s σ'.gen`. Establish `h3 : ∀ (Z : Over S) (x y w : Z ⟶ splitTorus S X) (z : Z.left), gm (x * y * w).left z ⊤ u * gm x.left z ⊤ u * gm y.left z ⊤ u * gm w.left z ⊤ u = gm (x * y).left z ⊤ u * gm (x * w).left z ⊤ u * gm (y * w).left z ⊤ u`. Introduce `Z x y w z`. Take `⟨J, hJ⟩` from `exists_good_pt P.L.isLB z`. Establish `hc` using `σ.cub Z x y w z J hJ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc'` using `σ'.cub Z x y w z J hJ`. Simplify using `only [hu Z.left _ z J hJ] at hc`. Establish `alg : ∀ a b c d e f g S₁ S₂ S₃ S₄ C S₅ S₆ S₇ : (Z.left.presheaf.stalk z)ˣ, a * S₁ * (b * S₂) * (c * S₃) * (d * S₄) = C * (e * S₅) * (f * S₆) * (g * S₇) → S₁ * S₂ * S₃ * S₄ = C * S₅ * S₆ * S₇ → a * b * c * d = e * f * g`. Introduce `a b c d e f g S₁ S₂ S₃ S₄ C S₅ S₆ S₇ h h'`. Apply `mul_right_cancel (b := S₁ * S₂ * S₃ * S₄)` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `alg _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hc hc'`. Establish `h1 : ∀ (Z : Over S) (z : Z.left), gm (1 : Z ⟶ splitTorus S X).left z ⊤ u = 1`. Introduce `Z z`. Take `⟨J, hJ⟩` from `exists_good_pt P.L.isLB z`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `hu Z.left (1 : Z ⟶ splitTorus S X).left z J hJ`. Rewrite `e` using `[CubTriv.val_one σ hJ, CubTriv.val_one σ' hJ, _root_.mul_one]`. Conclude with `e.symm`. Establish `he : ∀ (Z : Over S) (x : Z ⟶ splitTorus S X) (z : Z.left), gm (x⁻¹).left z ⊤ u = gm x.left z ⊤ u`. Introduce `Z x z`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨J, hJ⟩` from `exists_good_pt P.L.isLB z`. Establish `e` using `h Z x z J hJ`. Establish `e'` using `h' Z x z J hJ`. Rewrite `e` using `[hu Z.left _ z J hJ, hu Z.left _ z J hJ, e']`. Apply `mul_right_cancel (b := val P.sym (x ≫ i).left z J * val σ'.s x.left z J)` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e.trans (by ac_rfl)`. Establish `hu1` using `eq_one_of_even u h3 h1 he`. Establish `hs : σ.s = σ'.s` using `GlobalTheory.TorusCoord.gen_eq_of_corr P.L.isLB σ.gen σ'.gen (corr_of_val P.L.isLB fun y J hJ => by`. Rewrite using `[hu _ _ y J hJ, hu1, map_one, _root_.one_mul])`. Take `⟨s₁, g₁, c₁⟩` from `σ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 
-Take `⟨s₂, g₂, c₂⟩` from `σ'`. Consider the cases of `hs`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem eq_of_even {P : CP G} {σ σ' : CubTriv P.c i} (h : σ.Even) (h' : σ'.Even) : σ = σ' := by
   classical
@@ -412,7 +408,7 @@ theorem eq_of_even {P : CP G} {σ σ' : CubTriv P.c i} (h : σ.Even) (h' : σ'.E
   rfl
 
 /- English proof (translation)
-Introduce `S _ X _ _ G _ _ P i hi`. Conclude with `⟨fun s σ T t t' z J hJ => val_mul_eq s σ T t t' z J hJ, fun σ σ' h h' => eq_of_even h h'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem cubTriv_delta_and_even_unique : (∀ (S : Scheme.{0}) [ConnectedSpace S] (X : Type) [AddCommGroup X] [Module.Free ℤ X] (G : Over S) [GrpObj G] [IsCommMonObj G] (P : CP G) (i : splitTorus S X ⟶ G), IsMonHom i → (∀ (s : BiTriv P.c i) (σ : CubTriv P.c i) (T : Over S) (t t' : T ⟶ splitTorus S X) (z : T.left) (J), Good P.L.L z J → val σ.s (t * t').left z J = val s.s (lift t (t' ≫ i)).left z J * val σ.s t.left z J * val σ.s t'.left z J) ∧ ∀ σ σ' : CubTriv P.c i, σ.Even → σ'.Even → σ = σ') := by
   intro S _ X _ _ G _ _ P i hi

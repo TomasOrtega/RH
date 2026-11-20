@@ -29,9 +29,9 @@ abbrev stdF (L : LocBessel k r) (ka : ℝ) (f : Mx k r → (L.Wq →L[ℂ] L.Wp)
   fun x => turnF L ka f (cjI k r ka⁻¹ 1 x)
 
 /- English proof (translation)
-Use `show ((ka⁻¹ : ℝ) : ℂ) * cOfDpsi (ka : ℂ) = cStd`. Establish `hk0 : (ka : ℂ) ≠ 0` using `by exact_mod_cast hka.ne'`. Simplify using `only [cOfDpsi, cStd, Complex.ofReal_inv]`. Use `first`. Consider the case `(rw [mul_comm, mul_assoc, mul_inv_cancel₀ hk0, mul_one])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `field_simp`. Consider the case `(field_simp; ring)`.
+A detailed English derivation is pending.
 -/
 theorem stdL_c (L : LocBessel k r) (ka : ℝ) (hka : 0 < ka) : (stdL L ka hka).c = cStd := by
   show ((ka⁻¹ : ℝ) : ℂ) * cOfDpsi (ka : ℂ) = cStd
@@ -43,13 +43,13 @@ theorem stdL_c (L : LocBessel k r) (ka : ℝ) (hka : 0 < ka) : (stdL L ka hka).c
   | (field_simp; ring)
 
 /- English proof (translation)
-Establish `hκ : 0 < ka⁻¹` using `inv_pos.2 hka`. Establish `hτ : (0 : ℝ) < 1` using `one_pos`. Establish `e1 : Tz k r (stdL L ka hka).z = (1 : ℝ) ^ 2 * Tz k r (turnL L ka).z` using `Tz_smul _ _`. Establish `e2 : Tz k r (stdL L ka hka).z' = (1 : ℝ) ^ 2 * Tz k r (turnL L ka).z'` using `Tz_smul _ _`. Rewrite using `[← jNorm2_turn L ka hc f μsec]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `jNorm2_tr hκ hτ (turnL L ka) (stdL L ka hka) e1 e2 (turnF L ka f) (stdF L ka f) μsec (secTr 1 μsec) 1 hk2 fun p hp hζ => ?_` and prove the remaining obligations. Rewrite using `[secTr_sBig hτ]`. Establish `hb : bigCell k r (sBig r ka⁻¹ 1 p).1 (μsec p.2) = cj k r ka⁻¹ 1 (bigCell k r p.1 (μsec p.2))`. Rewrite using `[bigCell_cj hκ hτ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hb]`. Use `show @hsNormSq L.Wp L.Wq _ _ _ _ _ ((stdL L ka hka).J (stdF L ka f) (cj k r ka⁻¹ 1 (bigCell k r p.1 (μsec p.2)))) = _`. Rewrite using `[J_trD hκ hτ (turnL L ka)]`. Establish `hfe : (fun x => stdF L ka f (cj k r ka⁻¹ 1 x)) = turnF L ka f`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show turnF L ka f (cjI k r ka⁻¹ 1 (cj k r ka⁻¹ 1 x)) = _`. Rewrite using `[cjI_cj hκ hτ]`. Rewrite using `[hfe, norm_one, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jNorm2_std (L : LocBessel k r) (ka : ℝ) (hka : 0 < ka) (hc : L.c = ((2 * ka : ℝ) : ℂ)) (hk2 : 2 ≤ k)
     (f : Mx k r → (L.Wq →L[ℂ] L.Wp)) (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
@@ -74,7 +74,7 @@ theorem jNorm2_std (L : LocBessel k r) (ka : ℝ) (hka : 0 < ka) (hc : L.c = ((2
   rw [hfe, norm_one, one_pow, one_mul]
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.S.hsNormSq, Formalism.MainNotions.S.hsInner, Formalism.FourierDecayAlt.B.hsVec, PiLp.norm_sq_eq_of_L2, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `inner_self_eq_norm_sq (𝕜 := ℂ) (A (stdOrthonormalBasis ℂ Wq i))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hsNormSq_eq_norm_hsVec {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (A : Wq →L[ℂ] Wp) :
@@ -84,15 +84,13 @@ theorem hsNormSq_eq_norm_hsVec {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProd
   exact inner_self_eq_norm_sq (𝕜 := ℂ) (A (stdOrthonormalBasis ℂ Wq i))
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.B.JF besselJ`. Establish `: SigmaFinite D.μW` using `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarW`. Establish `: SigmaFinite D.μN` using `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarN`. Establish `: SigmaFinite D.μW'` using `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarW'`. Establish `hW : ∀ᵐ x ∂D.μW, Matrix.of x ∈ UWset k r D.z`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ae_iff]`. Conclude with `D.haarW.conc`. Establish `hN : ∀ᵐ x ∂D.μN, Matrix.of x ∈ Nset k r`. Rewrite using `[ae_iff]`. Conclude with `D.haarN.conc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hW' : ∀ᵐ x ∂D.μW', Matrix.of x ∈ UWset k r D.z'`. Rewrite using `[ae_iff]`. Conclude with `D.haarW'.conc`. Establish `g1 : ∀ᵐ p ∂((D.μW.prod D.μN).prod (D.μW'.prod D.μN)), Matrix.of p.1.1 ∈ UWset k r D.z` using `(Measure.quasiMeasurePreserving_fst.comp Measure.quasiMeasurePreserving_fst).ae hW`. Establish `g2 : ∀ᵐ p ∂((D.μW.prod D.μN).prod (D.μW'.prod D.μN)), Matrix.of p.1.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_snd.comp Measure.quasiMeasurePreserving_fst).ae hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `g3 : ∀ᵐ p ∂((D.μW.prod D.μN).prod (D.μW'.prod D.μN)), Matrix.of p.2.1 ∈ UWset k r D.z'` using `(Measure.quasiMeasurePreserving_fst.comp Measure.quasiMeasurePreserving_snd).ae hW'`. Establish `g4 : ∀ᵐ p ∂((D.μW.prod D.μN).prod (D.μW'.prod D.μN)), Matrix.of p.2.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_snd.comp Measure.quasiMeasurePreserving_snd).ae hN`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [g1, g2, g3, g4] with p h1 h2 h3 h4`. Establish `hm : (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * g * Matrix.of p.2.2 * Matrix.of p.2.1 ∈ UH (Hpk k r)` using `WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (WeylGroupFacts.uh_inv h1.1) (WeylGroupFacts.uh_inv h2.1)) hg) h4.1) h3.1`.
-
-Simplify using `only [h _ hm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem JF_congr {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (D : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) {F F' : Mx k r → (Wq →L[ℂ] Wp)}
@@ -123,13 +121,13 @@ theorem JF_congr {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ W
   simp only [h _ hm]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩` from `hD`. Unfold `Formalism.FourierDecayAlt.B.normSq jNorm2 jNormSq`. Rewrite using `[h1, h2]`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Distinguish the cases in `hw0 : bcWeight (k0 + 1) r (Tz (k0 + 1) r L.z) (Tz (k0 + 1) r L.z') q = 0`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hw0, zero_mul, zero_mul]`. Take `⟨hcq, hζ⟩` from `bcWeight_ne hk2 hw0`. Establish `hμ` using `(hsec.2 q.2 hζ).1`. Establish `hgU : bigCell (k0 + 1) r q.1 (μsec q.2) ∈ UH (Hpk (k0 + 1) r)` using `Formalism.QuantumDeterminants.bigCellMem _ _ _ _ hcq hμ`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), Real.sq_sqrt (hsNormSq_nonneg' _), hsNormSq_eq_norm_hsVec]`. Establish `hg : Formalism.FourierDecayAlt.B.gq D q = bigCell (k0 + 1) r q.1 (μsec q.2)`. Unfold `Formalism.FourierDecayAlt.B.gq`. Rewrite using `[h8]`. Use `show ‖Formalism.FourierDecayAlt.B.hsVec (Formalism.FourierDecayAlt.B.JF D F (Formalism.FourierDecayAlt.B.gq D q))‖ ^ 2 = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, JF_congr D hFF hgU]`. Use `congr 2`. Unfold `Formalism.FourierDecayAlt.B.JF`. Rewrite using `[h1, h2, h3, h4, h5, h6, h7, ← hc]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem normSq_tie {k0 r : ℕ} (hk2 : 2 ≤ k0 + 1) (L : LocBessel (k0 + 1) r) (hc : L.c = cStd)
     (μsec : ℂ → Matrix (Fin (k0 + 1 + 1)) (Fin (k0 + 1 + 1)) ℂ) (hsec : IsSection (k0 + 1) r L.z L.z' μsec)
@@ -159,7 +157,7 @@ theorem normSq_tie {k0 r : ℕ} (hk2 : 2 ≤ k0 + 1) (L : LocBessel (k0 + 1) r) 
   rfl
 
 /- English proof (translation)
-Set `T' : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (T : H →ₗ[ℂ] H), norm_map' := hT }`. Conclude with `T'.inner_map_map a b`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem inner_iso {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (T : H →L[ℂ] H) (hT : ∀ u, ‖T u‖ = ‖u‖)
     (a b : H) : ⟪T a, T b⟫_ℂ = ⟪a, b⟫_ℂ := by
@@ -167,13 +165,13 @@ theorem inner_iso {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (T
   exact T'.inner_map_map a b
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hκ : 0 < ka⁻¹` using `inv_pos.2 hka`. Take `⟨h1, hmul, hiso⟩` from `Formalism.MainNotions.LeviCoordinates.discrete_series_unitary_rep (turn_hσ L)`. Establish `h1' : (turnL L ka).σ 1 = 1` using `h1`. Establish `hmul' : ∀ a ∈ UH (Hpk k r), ∀ b ∈ UH (Hpk k r), (turnL L ka).σ (a * b) = ((turnL L ka).σ a).comp ((turnL L ka).σ b)` using `hmul`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso' : ∀ a ∈ UH (Hpk k r), ∀ u : L.Hs, ‖(turnL L ka).σ a u‖ = ‖u‖` using `hiso`. Establish `hdM` using `dM_mem_UH (k := k) (r := r) hκ one_pos`. Establish `hdMi` using `dMi_mem_UH (k := k) (r := r) hκ one_pos`. Establish `e1 : (turnL L ka).σ (dM k r ka⁻¹ 1 * x * dMi k r ka⁻¹ 1) = ((turnL L ka).σ (dM k r ka⁻¹ 1)).comp (((turnL L ka).σ x).comp ((turnL L ka).σ (dMi k r ka⁻¹ 1)))`. Rewrite using `[hmul' _ (WeylGroupFacts.uh_mul hdM hx) _ hdMi, hmul' _ hdM _ hx, ContinuousLinearMap.comp_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ a b : L.Hs, ⟪a, (turnL L ka).σ (dM k r ka⁻¹ 1) b⟫_ℂ = ⟪(turnL L ka).σ (dMi k r ka⁻¹ 1) a, b⟫_ℂ`. Introduce `a b`. Rewrite using `[← inner_iso ((turnL L ka).σ (dM k r ka⁻¹ 1)) (hiso' _ hdM) ((turnL L ka).σ (dMi k r ka⁻¹ 1) a) b]`. Use `congr 1`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hmul' _ hdM _ hdMi, dM_mul_dMi hκ one_pos, h1']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `show (innerSL ℂ ξ').smulRight (⟪v, (turnL L ka).σ (dM k r ka⁻¹ 1 * x * dMi k r ka⁻¹ 1) v'⟫_ℂ • ξ) = (innerSL ℂ ξ').smulRight (⟪(turnL L ka).σ (dMi k r ka⁻¹ 1) v, (turnL L ka).σ x ((turnL L ka).σ (dMi k r ka⁻¹ 1) v')⟫_ℂ • ξ)`. Rewrite using `[e1, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, e2]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdF_coef (L : LocBessel k r) (ka : ℝ) (hka : 0 < ka) (v v' : L.Hs) (ξ : L.Wp) (ξ' : L.Wq) :
     ∀ x ∈ UH (Hpk k r), stdF L ka (Formalism.MainNotions.S.Pv.AmpDD.coefF L v v' ξ ξ') x =
@@ -203,15 +201,13 @@ theorem stdF_coef (L : LocBessel k r) (ka : ℝ) (hka : 0 < ka) (v v' : L.Hs) (�
   rw [e1, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, e2]
 
 /- English proof (translation)
-Establish `: SigmaFinite L.μW` using `L.hμW.1.1`. Establish `hc' : cOfDpsi (ka : ℂ) * Complex.I = L.c` using `by rw [hc]; exact turn_c ka`. Establish `hinv : L.μW.prod L.μN = (L.μW.prod L.μN).map (Prod.map (cA k r) (cA k r))`. Rewrite using `[← Measure.map_prod_map _ _ continuous_cA.measurable continuous_cA.measurable, map_cA_UW L.hμW.1]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(map_cA_haarLie L.κN).symm`. Unfold `Formalism.FourierDecayAlt.ThreeDimData.be`. Use `conv_lhs => rw [hinv]`. Rewrite using `[show (Prod.map (cA k r) (cA k r) : Mt k r × Mt k r → Mt k r × Mt k r) = ⇑((cAE k r).prodCongr (cAE k r)) from rfl, integral_map_equiv]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Take `⟨a, b⟩` from `p`. Use `show Formalism.FourierDecayAlt.ThreeDimData.beInt L.z (cOfDpsi (ka : ℂ)) (turnL L ka).π (turnL L ka).σ v w (cA k r a, cA k r b) = Formalism.FourierDecayAlt.ThreeDimData.beInt L.z L.c L.π L.σ v w (a, b)`. Unfold `Formalism.FourierDecayAlt.ThreeDimData.beInt`. Simplify using `only [of_cA]`. Rewrite using `[psi_conjI L.hz.1 hc' (Matrix.of b)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : tT k r * (tTi k r * Matrix.of a * tT k r * (tTi k r * Matrix.of b * tT k r)) * tTi k r = Matrix.of a * Matrix.of b`. Rewrite using `[← conjI_mul, conj_conjI]`. Establish `e2 : tT k r * (tTi k r * Matrix.of a * tT k r)⁻¹ * tTi k r = (Matrix.of a)⁻¹`. Rewrite using `[← conjI_inv, conj_conjI]`. Use `show (⟪w, L.σ (tT k r * (tTi k r * Matrix.of a * tT k r * (tTi k r * Matrix.of b * tT k r)) * tTi k r) v⟫_ℂ * star (psi k r L.z L.c (Matrix.of b))) • L.π (tT k r * (tTi k r * Matrix.of a * tT k r)⁻¹ * tTi k r) = _`.
-
-Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem be_turn (L : LocBessel k r) (ka : ℝ) (hc : L.c = ((2 * ka : ℝ) : ℂ)) [SigmaFinite L.μN] (v w : L.Hs) :
     Formalism.FourierDecayAlt.ThreeDimData.be L.z (cOfDpsi (ka : ℂ)) (turnL L ka).π (turnL L ka).σ L.μW L.μN v w =
@@ -243,27 +239,25 @@ theorem be_turn (L : LocBessel k r) (ka : ℝ) (hc : L.c = ((2 * ka : ℝ) : ℂ
   rw [e1, e2]
 
 /- English proof (translation)
-Establish `hκ : 0 < ka⁻¹` using `inv_pos.2 hka`. Establish `: SigmaFinite L.μW` using `L.hμW.1.1`. Take `⟨h1, hmul, hiso⟩` from `Formalism.MainNotions.LeviCoordinates.discrete_series_unitary_rep (turn_hσ L)`. Establish `h1' : (turnL L ka).σ 1 = 1` using `h1`. Establish `hmul' : ∀ a ∈ UH (Hpk k r), ∀ b ∈ UH (Hpk k r), (turnL L ka).σ (a * b) = ((turnL L ka).σ a).comp ((turnL L ka).σ b)` using `hmul`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso' : ∀ a ∈ UH (Hpk k r), ∀ u : L.Hs, ‖(turnL L ka).σ a u‖ = ‖u‖` using `hiso`. Establish `hdM` using `dM_mem_UH (k := k) (r := r) hκ one_pos`. Establish `hdMi` using `dMi_mem_UH (k := k) (r := r) hκ one_pos`. Establish `hN : (stdL L ka hka).μN = L.μN.map (cjT k r ka⁻¹ 1)` using `(map_haarLie_N hκ one_pos L.κN).symm`. Establish `hprod : (stdL L ka hka).μW.prod (stdL L ka hka).μN = (L.μW.prod L.μN).map (Prod.map (cjT k r ka⁻¹ 1) (cjT k r ka⁻¹ 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hN, ← Measure.map_prod_map _ _ measurable_cjT measurable_cjT]`. Both sides reduce to the same expression. Establish `hcs : cStd = ((ka⁻¹ : ℝ) : ℂ) * cOfDpsi (ka : ℂ)` using `(stdL_c L ka hka).symm`. Unfold `Formalism.FourierDecayAlt.ThreeDimData.be`. Rewrite using `[hprod, show (Prod.map (cjT k r ka⁻¹ 1) (cjT k r ka⁻¹ 1) : Mt k r × Mt k r → Mt k r × Mt k r) = ⇑((cjE (k := k) (r := r) hκ one_pos).prodCongr (cjE hκ one_pos)) from rfl, integral_map_equiv]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hW : ∀ᵐ x ∂L.μW, Matrix.of x ∈ UWset k r L.z`. Rewrite using `[ae_iff]`. Simplify using `using L.hμW.1.2.2.1`. Establish `hNa : ∀ᵐ x ∂L.μN, Matrix.of x ∈ Nset k r` using `Formalism.MainNotions.S.Pv.AmpDDPf.ae_mem_haarLieN L.κN`. Establish `g1 : ∀ᵐ p ∂(L.μW.prod L.μN), Matrix.of p.1 ∈ UWset k r L.z` using `Measure.quasiMeasurePreserving_fst.ae hW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g2 : ∀ᵐ p ∂(L.μW.prod L.μN), Matrix.of p.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_snd.ae hNa`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [g1, g2] with p hp1 hp2`. Take `⟨a, b⟩` from `p`. Establish `ha : Matrix.of a ∈ UH (Hpk k r)` using `hp1.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : Matrix.of b ∈ UH (Hpk k r)` using `hp2.1`. Use `show Formalism.FourierDecayAlt.ThreeDimData.beInt (stdL L ka hka).z cStd (stdL L ka hka).π (turnL L ka).σ ((turnL L ka).σ (dMi k r ka⁻¹ 1) v) ((turnL L ka).σ (dMi k r ka⁻¹ 1) w) (cjT k r ka⁻¹ 1 a, cjT k r ka⁻¹ 1 b) = Formalism.FourierDecayAlt.ThreeDimData.beInt L.z (cOfDpsi (ka : …`. Unfold `Formalism.FourierDecayAlt.ThreeDimData.beInt`. Simplify using `only [of_cjT]`. Establish `hps : Formalism.QuantumDeterminants.psi k r (stdL L ka hka).z cStd (cj k r ka⁻¹ 1 (Matrix.of b)) = Formalism.QuantumDeterminants.psi k r L.z (cOfDpsi (ka : ℂ)) (Matrix.of b)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcs]`. Conclude with `psi_cj hκ one_pos L.hz.1 _ _`. Establish `hpi : (stdL L ka hka).π (cj k r ka⁻¹ 1 (Matrix.of a))⁻¹ = (turnL L ka).π (Matrix.of a)⁻¹` using `by show (turnL L ka).π (cjI k r ka⁻¹ 1 (cj k r ka⁻¹ 1 (Matrix.of a))⁻¹) = _`. Rewrite using `[← cj_inv hκ one_pos, cjI_cj hκ one_pos]`. Establish `hca` using `(cj_mem_UH_iff hκ one_pos _).2 ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcb` using `(cj_mem_UH_iff hκ one_pos _).2 hb`. Establish `hin : ⟪(turnL L ka).σ (dMi k r ka⁻¹ 1) w, (turnL L ka).σ (cj k r ka⁻¹ 1 (Matrix.of a) * cj k r ka⁻¹ 1 (Matrix.of b)) ((turnL L ka).σ (dMi k r ka⁻¹ 1) v)⟫_ℂ = ⟪w, (turnL L ka).σ (Matrix.of a * Matrix.of b) v⟫_ℂ`. Rewrite using `[← inner_iso ((turnL L ka).σ (dM k r ka⁻¹ 1)) (hiso' _ hdM)]`. Rewrite using `[← ContinuousLinearMap.comp_apply ((turnL L ka).σ (dM k r ka⁻¹ 1)) ((turnL L ka).σ (dMi k r ka⁻¹ 1)), ← hmul' _ hdM _ hdMi, dM_mul_dMi hκ one_pos, h1', ContinuousLinearMap.one_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcab` using `WeylGroupFacts.uh_mul hca hcb`. Establish `hmat : dM k r ka⁻¹ 1 * (cj k r ka⁻¹ 1 (Matrix.of a) * cj k r ka⁻¹ 1 (Matrix.of b)) * dMi k r ka⁻¹ 1 = Matrix.of a * Matrix.of b`. Rewrite using `[← cj_mul hκ one_pos]`. Unfold `cj`. Establish `e : ∀ X : Mx k r, dM k r ka⁻¹ 1 * (dMi k r ka⁻¹ 1 * X * dM k r ka⁻¹ 1) * dMi k r ka⁻¹ 1 = (dM k r ka⁻¹ 1 * dMi k r ka⁻¹ 1) * X * (dM k r ka⁻¹ 1 * dMi k r ka⁻¹ 1)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `X`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, dM_mul_dMi hκ one_pos, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[← ContinuousLinearMap.comp_apply ((turnL L ka).σ (cj k r ka⁻¹ 1 (Matrix.of a) * cj k r ka⁻¹ 1 (Matrix.of b))) ((turnL L ka).σ (dMi k r ka⁻¹ 1)), ← hmul' _ hcab _ hdMi, ← ContinuousLinearMap.comp_apply ((turnL L ka).σ (dM k r ka⁻¹ 1)), ← hmul' _ hdM _ (WeylGroupFacts.uh_mul hcab …`. Rewrite using `[hps, hpi, hin]`.
-
-Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem be_dil (L : LocBessel k r) (ka : ℝ) (hka : 0 < ka) [SigmaFinite L.μN] (v w : L.Hs) :
     Formalism.FourierDecayAlt.ThreeDimData.be (stdL L ka hka).z cStd (stdL L ka hka).π (turnL L ka).σ (stdL L ka hka).μW (stdL L ka hka).μN
@@ -339,15 +333,13 @@ theorem be_dil (L : LocBessel k r) (ka : ℝ) (hka : 0 < ka) [SigmaFinite L.μN]
   rfl
 
 /- English proof (translation)
-Establish `: SigmaFinite L.μW'` using `L.hμW'.1.1`. Establish `hc' : cOfDpsi (ka : ℂ) * Complex.I = L.c` using `by rw [hc]; exact turn_c ka`. Establish `hinv : L.μW'.prod L.μN = (L.μW'.prod L.μN).map (Prod.map (cA k r) (cA k r))`. Rewrite using `[← Measure.map_prod_map _ _ continuous_cA.measurable continuous_cA.measurable, map_cA_UW L.hμW'.1]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(map_cA_haarLie L.κN).symm`. Unfold `Formalism.FourierDecayAlt.ThreeDimData.be`. Use `conv_lhs => rw [hinv]`. Rewrite using `[show (Prod.map (cA k r) (cA k r) : Mt k r × Mt k r → Mt k r × Mt k r) = ⇑((cAE k r).prodCongr (cAE k r)) from rfl, integral_map_equiv]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Take `⟨a, b⟩` from `p`. Use `show Formalism.FourierDecayAlt.ThreeDimData.beInt L.z' (cOfDpsi (ka : ℂ)) (turnL L ka).π' (turnL L ka).σ v w (cA k r a, cA k r b) = Formalism.FourierDecayAlt.ThreeDimData.beInt L.z' L.c L.π' L.σ v w (a, b)`. Unfold `Formalism.FourierDecayAlt.ThreeDimData.beInt`. Simplify using `only [of_cA]`. Rewrite using `[psi_conjI L.hz'.1 hc' (Matrix.of b)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : tT k r * (tTi k r * Matrix.of a * tT k r * (tTi k r * Matrix.of b * tT k r)) * tTi k r = Matrix.of a * Matrix.of b`. Rewrite using `[← conjI_mul, conj_conjI]`. Establish `e2 : tT k r * (tTi k r * Matrix.of a * tT k r)⁻¹ * tTi k r = (Matrix.of a)⁻¹`. Rewrite using `[← conjI_inv, conj_conjI]`. Use `show (⟪w, L.σ (tT k r * (tTi k r * Matrix.of a * tT k r * (tTi k r * Matrix.of b * tT k r)) * tTi k r) v⟫_ℂ * star (psi k r L.z' L.c (Matrix.of b))) • L.π' (tT k r * (tTi k r * Matrix.of a * tT k r)⁻¹ * tTi k r) = _`.
-
-Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem be_turn' (L : LocBessel k r) (ka : ℝ) (hc : L.c = ((2 * ka : ℝ) : ℂ)) [SigmaFinite L.μN] (v w : L.Hs) :
     Formalism.FourierDecayAlt.ThreeDimData.be L.z' (cOfDpsi (ka : ℂ)) (turnL L ka).π' (turnL L ka).σ L.μW' L.μN v w =
@@ -379,27 +371,25 @@ theorem be_turn' (L : LocBessel k r) (ka : ℝ) (hc : L.c = ((2 * ka : ℝ) : �
   rw [e1, e2]
 
 /- English proof (translation)
-Establish `hκ : 0 < ka⁻¹` using `inv_pos.2 hka`. Establish `: SigmaFinite L.μW'` using `L.hμW'.1.1`. Take `⟨h1, hmul, hiso⟩` from `Formalism.MainNotions.LeviCoordinates.discrete_series_unitary_rep (turn_hσ L)`. Establish `h1' : (turnL L ka).σ 1 = 1` using `h1`. Establish `hmul' : ∀ a ∈ UH (Hpk k r), ∀ b ∈ UH (Hpk k r), (turnL L ka).σ (a * b) = ((turnL L ka).σ a).comp ((turnL L ka).σ b)` using `hmul`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso' : ∀ a ∈ UH (Hpk k r), ∀ u : L.Hs, ‖(turnL L ka).σ a u‖ = ‖u‖` using `hiso`. Establish `hdM` using `dM_mem_UH (k := k) (r := r) hκ one_pos`. Establish `hdMi` using `dMi_mem_UH (k := k) (r := r) hκ one_pos`. Establish `hN : (stdL L ka hka).μN = L.μN.map (cjT k r ka⁻¹ 1)` using `(map_haarLie_N hκ one_pos L.κN).symm`. Establish `hprod : (stdL L ka hka).μW'.prod (stdL L ka hka).μN = (L.μW'.prod L.μN).map (Prod.map (cjT k r ka⁻¹ 1) (cjT k r ka⁻¹ 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hN, ← Measure.map_prod_map _ _ measurable_cjT measurable_cjT]`. Both sides reduce to the same expression. Establish `hcs : cStd = ((ka⁻¹ : ℝ) : ℂ) * cOfDpsi (ka : ℂ)` using `(stdL_c L ka hka).symm`. Unfold `Formalism.FourierDecayAlt.ThreeDimData.be`. Rewrite using `[hprod, show (Prod.map (cjT k r ka⁻¹ 1) (cjT k r ka⁻¹ 1) : Mt k r × Mt k r → Mt k r × Mt k r) = ⇑((cjE (k := k) (r := r) hκ one_pos).prodCongr (cjE hκ one_pos)) from rfl, integral_map_equiv]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hW : ∀ᵐ x ∂L.μW', Matrix.of x ∈ UWset k r L.z'`. Rewrite using `[ae_iff]`. Simplify using `using L.hμW'.1.2.2.1`. Establish `hNa : ∀ᵐ x ∂L.μN, Matrix.of x ∈ Nset k r` using `Formalism.MainNotions.S.Pv.AmpDDPf.ae_mem_haarLieN L.κN`. Establish `g1 : ∀ᵐ p ∂(L.μW'.prod L.μN), Matrix.of p.1 ∈ UWset k r L.z'` using `Measure.quasiMeasurePreserving_fst.ae hW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g2 : ∀ᵐ p ∂(L.μW'.prod L.μN), Matrix.of p.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_snd.ae hNa`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [g1, g2] with p hp1 hp2`. Take `⟨a, b⟩` from `p`. Establish `ha : Matrix.of a ∈ UH (Hpk k r)` using `hp1.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : Matrix.of b ∈ UH (Hpk k r)` using `hp2.1`. Use `show Formalism.FourierDecayAlt.ThreeDimData.beInt (stdL L ka hka).z' cStd (stdL L ka hka).π' (turnL L ka).σ ((turnL L ka).σ (dMi k r ka⁻¹ 1) v) ((turnL L ka).σ (dMi k r ka⁻¹ 1) w) (cjT k r ka⁻¹ 1 a, cjT k r ka⁻¹ 1 b) = Formalism.FourierDecayAlt.ThreeDimData.beInt L.z' (cOfDpsi (k …`. Unfold `Formalism.FourierDecayAlt.ThreeDimData.beInt`. Simplify using `only [of_cjT]`. Establish `hps : Formalism.QuantumDeterminants.psi k r (stdL L ka hka).z' cStd (cj k r ka⁻¹ 1 (Matrix.of b)) = Formalism.QuantumDeterminants.psi k r L.z' (cOfDpsi (ka : ℂ)) (Matrix.of b)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcs]`. Conclude with `psi_cj hκ one_pos L.hz'.1 _ _`. Establish `hpi : (stdL L ka hka).π' (cj k r ka⁻¹ 1 (Matrix.of a))⁻¹ = (turnL L ka).π' (Matrix.of a)⁻¹` using `by show (turnL L ka).π' (cjI k r ka⁻¹ 1 (cj k r ka⁻¹ 1 (Matrix.of a))⁻¹) = _`. Rewrite using `[← cj_inv hκ one_pos, cjI_cj hκ one_pos]`. Establish `hca` using `(cj_mem_UH_iff hκ one_pos _).2 ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcb` using `(cj_mem_UH_iff hκ one_pos _).2 hb`. Establish `hin : ⟪(turnL L ka).σ (dMi k r ka⁻¹ 1) w, (turnL L ka).σ (cj k r ka⁻¹ 1 (Matrix.of a) * cj k r ka⁻¹ 1 (Matrix.of b)) ((turnL L ka).σ (dMi k r ka⁻¹ 1) v)⟫_ℂ = ⟪w, (turnL L ka).σ (Matrix.of a * Matrix.of b) v⟫_ℂ`. Rewrite using `[← inner_iso ((turnL L ka).σ (dM k r ka⁻¹ 1)) (hiso' _ hdM)]`. Rewrite using `[← ContinuousLinearMap.comp_apply ((turnL L ka).σ (dM k r ka⁻¹ 1)) ((turnL L ka).σ (dMi k r ka⁻¹ 1)), ← hmul' _ hdM _ hdMi, dM_mul_dMi hκ one_pos, h1', ContinuousLinearMap.one_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcab` using `WeylGroupFacts.uh_mul hca hcb`. Establish `hmat : dM k r ka⁻¹ 1 * (cj k r ka⁻¹ 1 (Matrix.of a) * cj k r ka⁻¹ 1 (Matrix.of b)) * dMi k r ka⁻¹ 1 = Matrix.of a * Matrix.of b`. Rewrite using `[← cj_mul hκ one_pos]`. Unfold `cj`. Establish `e : ∀ X : Mx k r, dM k r ka⁻¹ 1 * (dMi k r ka⁻¹ 1 * X * dM k r ka⁻¹ 1) * dMi k r ka⁻¹ 1 = (dM k r ka⁻¹ 1 * dMi k r ka⁻¹ 1) * X * (dM k r ka⁻¹ 1 * dMi k r ka⁻¹ 1)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `X`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, dM_mul_dMi hκ one_pos, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[← ContinuousLinearMap.comp_apply ((turnL L ka).σ (cj k r ka⁻¹ 1 (Matrix.of a) * cj k r ka⁻¹ 1 (Matrix.of b))) ((turnL L ka).σ (dMi k r ka⁻¹ 1)), ← hmul' _ hcab _ hdMi, ← ContinuousLinearMap.comp_apply ((turnL L ka).σ (dM k r ka⁻¹ 1)), ← hmul' _ hdM _ (WeylGroupFacts.uh_mul hcab …`. Rewrite using `[hps, hpi, hin]`.
-
-Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem be_dil' (L : LocBessel k r) (ka : ℝ) (hka : 0 < ka) [SigmaFinite L.μN] (v w : L.Hs) :
     Formalism.FourierDecayAlt.ThreeDimData.be (stdL L ka hka).z' cStd (stdL L ka hka).π' (turnL L ka).σ (stdL L ka hka).μW' (stdL L ka hka).μN
@@ -475,7 +465,7 @@ theorem be_dil' (L : LocBessel k r) (ka : ℝ) (hka : 0 < ka) [SigmaFinite L.μN
   rfl
 
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.bcWeight`. Use `split_ifs with h`. Conclude with `mul_nonneg (Finset.prod_nonneg fun a _ => by positivity) (pow_nonneg (sub_nonneg.2 h) _)`. Conclude with `le_refl 0`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem bcWeight_nonneg' (k r : ℕ) (T T' : ℝ) (p : (Fin r → ℂ) × ℂ) : 0 ≤ bcWeight k r T T' p := by
   unfold Formalism.QuantumDeterminants.bcWeight
@@ -484,15 +474,15 @@ theorem bcWeight_nonneg' (k r : ℕ) (T T' : ℝ) (p : (Fin r → ℂ) × ℂ) :
   · exact le_refl 0
 
 /- English proof (translation)
-Introduce `h0`. Apply `h` to reduce the goal to its premises. Unfold `Formalism.FourierDecayAlt.B.normSq Formalism.QuantumDeterminants.jNormSq at h0`. Unfold `Formalism.FourierDecayAlt.B.beta Formalism.QuantumDeterminants.betaBig`. Establish `key : ∀ f : (Fin r → ℂ) × ℂ → ℝ, (∀ p, 0 ≤ f p) → ∫⁻ p, ENNReal.ofReal (f p) = 0 → ∫ p, (f p : ℂ) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Introduce `f hf0 hl`. Use `first`. Consider the case `rw [integral_complex_ofReal]`. Consider the case `rw [← integral_complex_ofReal]`. Consider the case `rw [integral_ofReal (𝕜 := ℂ)]`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hm : AEStronglyMeasurable f (volume : Measure ((Fin r → ℂ) × ℂ))`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall hf0) hm, hl, ENNReal.toReal_zero, Complex.ofReal_zero]`. Rewrite using `[integral_non_aestronglyMeasurable hm, Complex.ofReal_zero]`. Establish `hz` using `key _ ?nn h0`. Use `case nn =>`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Conclude with `mul_nonneg (bcWeight_nonneg' k r _ _ p) (sq_nonneg _)`. Rewrite using `[← hz]`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `beta_reduce`. Rewrite using `[inner_self_eq_norm_sq_to_K, Complex.ofReal_mul, Complex.ofReal_pow]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem normSq_ne_of_beta {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (D : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (F : Mx k r → (Wq →L[ℂ] Wp))
@@ -524,21 +514,19 @@ theorem normSq_ne_of_beta {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSp
   rfl
 
 /- English proof (translation)
-Introduce `h0`. Establish `hκ : 0 < ka⁻¹` using `inv_pos.2 hka`. Establish `hstd` using `jNorm2_std L ka hka hc hk2 (Formalism.MainNotions.S.Pv.AmpDD.coefF L v v' ξ ξ') μsec hsec`. Rewrite `hstd` using `[h0, mul_zero]`. Establish `hsec₁ : IsSection (k0 + 1) r (stdL L ka hka).z (stdL L ka hka).z' (secTr 1 μsec)` using `isSection_tr one_pos hsec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hκ0₁ : (stdL L ka hka).κN ≠ 0` using `mul_ne_zero hκ0 (ENNReal.ofReal_pos.2 (deltaN_pos hκ one_pos)).ne'`. Establish `hκT₁ : (stdL L ka hka).κN ≠ ⊤` using `ENNReal.mul_ne_top hκT ENNReal.ofReal_ne_top`. Take `⟨D, hDz, hDz', hDπ, hDπ', hDμW, hDμN, hDμW', hDsec⟩` from `Formalism.MainNotions.BigCellDensity.settingTie k0 r (stdL L ka hka) (secTr 1 μsec) (stdL_c L ka hka) hsec₁ hκ0₁ hκT₁`. Establish `hσt` using `turn_hσ L`. Take `⟨-, hmulT, -⟩` from `Formalism.MainNotions.LeviCoordinates.discrete_series_unitary_rep hσt`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdMi` using `dMi_mem_UH (k := k0 + 1) (r := r) hκ one_pos`. Establish `hvt : (turnL L ka).σ (dMi (k0 + 1) r ka⁻¹ 1) v ∈ PI.UpqRep.smoothVecs (k` using `k0 + 1) (r := r) (turnL L ka).σ := Formalism.MainNotions.LeviCoordinates.smooth_vectors_translate (turnL L ka).σ hmulT hdMi hv`. Establish `hvt' : (turnL L ka).σ (dMi (k0 + 1) r ka⁻¹ 1) v' ∈ PI.UpqRep.smoothVecs (k` using `k0 + 1) (r := r) (turnL L ka).σ := Formalism.MainNotions.LeviCoordinates.smooth_vectors_translate (turnL L ka).σ hmulT hdMi hv'`. Use `set Fc := Formalism.MainNotions.S.Pv.BetaCut.coefM (turnL L ka).σ ((turnL L ka).σ (dMi (k0 + 1) r ka⁻¹ 1) v) ((turnL L ka).σ (dMi (k0 + 1) r ka⁻¹ 1) v') ξ ξ' with hFc`. Establish `hN : Formalism.FourierDecayAlt.B.normSq D Fc = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[normSq_tie hk2 (stdL L ka hka) (stdL_c L ka hka) (secTr 1 μsec) hsec₁ D ⟨hDz, hDz', hDπ, hDπ', hDμW, hDμN, hDμW', hDsec⟩ Fc (stdF L ka (Formalism.MainNotions.S.Pv.AmpDD.coefF L v v' ξ ξ')) (fun x hx => (stdF_coef L ka hka v v' ξ ξ' x hx).symm)]`. Conclude with `hstd`. Take `⟨m, hmA, hmh⟩` from `Formalism.L2.S.Pv.PeriodG.exponent_ok (k0 + 1) r hok L.ε`. Establish `hAm : Formalism.FourierDecayAlt.B.AB (k0 + 1) r ≤ m`. Establish `hle : Formalism.FourierDecayAlt.B.AB (k0 + 1) r ≤ Formalism.FourierDecayAlt.ThreeDimData.AG (k0 + 1) r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `Formalism.FourierDecayAlt.B.AB Formalism.FourierDecayAlt.ThreeDimData.AG`. Establish `h1 : (1 : ℝ) ≤ ((k0 + 1 : ℕ) : ℝ) + r` using `by push_cast; linarith [(Nat.cast_nonneg k0 : (0:ℝ) ≤ k0), (Nat.cast_nonneg r : (0:ℝ) ≤ r)]`. Establish `h2 : (1 : ℝ) ≤ (r : ℝ) + 1` using `by linarith [(Nat.cast_nonneg r : (0:ℝ) ≤ r)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc0, -, -, hβ, -, -⟩` from `Formalism.FourierDecayAlt.P.b_any_of_xi (k0 + 1) r _ _ D (Formalism.FourierDecayAlt.B.AB (k0 + 1) r) le_rfl`. Establish `hF5 : Formalism.FourierDecayAlt.B.InCC (Formalism.FourierDecayAlt.B.AB (k0 + 1) r) 5 Fc` using `hCI (k0 + 1) r L.ε L.lam L.Hs (turnL L ka).σ h m _ L.hlam hσt hgap hmh hAm _ hvt _ hvt' L.Wp L.Wq ξ ξ'`. Establish `: SigmaFinite L.μN` using `(Formalism.MainNotions.BridgeCSB.haarLieN _ _ _ hκ0 hκT).1`. Establish `hbD : Formalism.FourierDecayAlt.ThreeDimData.be D.z cStd D.π (turnL L ka).σ D.μW D.μN ((turnL L ka).σ (dMi (k0 + 1) r ka⁻¹ 1) v) ((turnL L ka).σ (dMi (k0 + 1) r ka⁻¹ 1) v) = (innerSL ℂ ((fun _ => l) ((turnL L ka).σ (dMi (k0 + 1) r ka⁻¹ 1) v))).smulRight ((fun _ => l) ((turnL L ka …`. Rewrite using `[hDz, hDπ, hDμW, hDμN, be_dil L ka hka v v, be_turn L ka hc v v]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hbe`. Establish `hbD' : Formalism.FourierDecayAlt.ThreeDimData.be D.z' cStd D.π' (turnL L ka).σ D.μW' D.μN ((turnL L ka).σ (dMi (k0 + 1) r ka⁻¹ 1) v') ((turnL L ka).σ (dMi (k0 + 1) r ka⁻¹ 1) v') = (innerSL ℂ ((fun _ => l') ((turnL L ka).σ (dMi (k0 + 1) r ka⁻¹ 1) v'))).smulRight ((fun _ => l') ((t …`. Rewrite using `[hDz', hDπ', hDμW', hDμN, be_dil' L ka hka v' v', be_turn' L ka hc v' v']`. Conclude with `hbe'`. Establish `hbI` using `hBI (k0 + 1) r _ _ D L.ε L.lam L.Hs (turnL L ka).σ h L.hlam hσt hgap hok _ _ (fun _ => l) (fun _ => l') ξ ξ' hvt hvt' hbD hbD' hl hl'`.
-
-Establish `hbeta : Formalism.FourierDecayAlt.B.beta D Fc Fc ≠ 0`. Rewrite using `[hβ Fc Fc hF5 hF5]`. Conclude with `mul_ne_zero (by exact_mod_cast hc0.ne') hbI`. Conclude with `normSq_ne_of_beta D Fc hbeta hN`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jNorm2_coef_ne {k0 r : ℕ} (hk2 : 2 ≤ k0 + 1) (L : LocBessel (k0 + 1) r)
     (ka : ℝ) (hka : 0 < ka) (hc : L.c = ((2 * ka : ℝ) : ℂ)) (hκ0 : L.κN ≠ 0) (hκT : L.κN ≠ ⊤)
@@ -608,17 +596,17 @@ theorem jNorm2_coef_ne {k0 r : ℕ} (hk2 : 2 ≤ k0 + 1) (L : LocBessel (k0 + 1)
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Establish `hTi : tTi k r * tT k r = 1`. Establish `h1` using `tT_mul_tTi k r`. Unfold `tT tTi at h1 ⊢`. Rewrite `h1`, the goal using `[Matrix.diagonal_mul_diagonal]`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `(simpa only [mul_comm] using h1)`. Consider the case `(convert h1 using 3 <;> ring)`. Establish `hTH : (tT k r)ᴴ = tTi k r`. Unfold `tT tTi`. Rewrite using `[Matrix.diagonal_conjTranspose]`.
+Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hTiH : (tTi k r)ᴴ = tT k r` using `by rw [← hTH, Matrix.conjTranspose_conjTranspose]`. Establish `hHT : (tT k r)ᴴ * Hpk k r * tT k r = Hpk k r`. Rewrite using `[← Hpk_tTi, Matrix.mul_assoc, hTi, Matrix.mul_one]`. Establish `hconj : ∀ g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, gᴴ * Hpk k r * g = Hpk k r → (tT k r * g * tTi k r)ᴴ * Hpk k r * (tT k r * g * tTi k r) = Hpk k r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hTiH]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (tT k r)ᴴ, ← Matrix.mul_assoc ((tT k r)ᴴ * Hpk k r), hHT]`. Rewrite using `[← Matrix.mul_assoc gᴴ, ← Matrix.mul_assoc (gᴴ * Hpk k r), hg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Hpk_tTi, ← Matrix.mul_assoc, hTH, tT_mul_tTi, Matrix.one_mul]`. Set `Φ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ →ₗ[ℝ] Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ` to `{ toFun := fun g => tT k r * g * tTi k r map_add' := by intro a b; simp [Matrix.mul_add, Matrix.add_mul] map_smul' := by intro c a; simp [Matrix.mul_smul, Matrix.smul_mul] }`. Establish `hcont : Continuous fun g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => tT k r * g * tTi k r` using `(LinearMap.toContinuousLinearMap Φ).continuous`. Simplify using `only [PI.UpqRep.smoothVecs, Set.mem_setOf_eq, PI.UpqRep.IsSmoothVec] at hv ⊢`. Introduce `g₀ hg₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨U, F, hU, hgU, hF, hEq⟩` from `hv (tT k r * g₀ * tTi k r) (hconj g₀ hg₀)`. Use `⟨(fun g => tT k r * g * tTi k r) ⁻¹' U, fun g => F (tT k r * g * tTi k r), hU.preimage hcont, hgU, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hF.comp (LinearMap.toContinuousLinearMap Φ).contDiff.contDiffOn (fun g hg => hg)`. Introduce `g hg hgH`. Conclude with `hEq _ hg (hconj g hgH)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_turn (L : LocBessel k r) (ka : ℝ) {v : L.Hs} (hv : v ∈ PI.UpqRep.smoothVecs (k := k) (r := r) L.σ) :
     v ∈ PI.UpqRep.smoothVecs (k := k) (r := r) (turnL L ka).σ := by
@@ -659,7 +647,7 @@ theorem smooth_turn (L : LocBessel k r) (ka : ℝ) {v : L.Hs} (hv : v ∈ PI.Upq
     exact hEq _ hg (hconj g hgH)
 
 /- English proof (translation)
-Take `⟨k0, rfl⟩ : ∃ k0, k = k0 + 1` from `⟨k - 1, by omega⟩`. Conclude with `jNorm2_coef_ne hk2 L ka hka hc hκ0 hκT μsec hsec h hgap hok v v' (smooth_turn L ka hv) (smooth_turn L ka hv') l l' ξ ξ' hbe hbe' hl hl' hCI hBI`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem jNorm2_coef_ne' {k r : ℕ} (hk2 : 2 ≤ k) (L : LocBessel k r)
     (ka : ℝ) (hka : 0 < ka) (hc : L.c = ((2 * ka : ℝ) : ℂ)) (hκ0 : L.κN ≠ 0) (hκT : L.κN ≠ ⊤)

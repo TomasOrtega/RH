@@ -13,15 +13,15 @@ noncomputable section
 namespace MainStatements.WeightKernel.PArchGroup
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem cT_star' {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) : Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ := by
   ext i j; rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Establish `h2` using `congrArg Matrix.det h`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul]`. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Rewrite `h2` using `[h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hJ.ne_zero h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_form {n : ℕ} {J M : Matrix (Fin n) (Fin n) ℂ} (hJ : IsUnit J.det) (h : Mᴴ * J * M = J) :
     IsUnit M := by
@@ -33,7 +33,7 @@ theorem isUnit_of_form {n : ℕ} {J M : Matrix (Fin n) (Fin n) ℂ} (hJ : IsUnit
   exact hJ.ne_zero h2.symm
 
 /- English proof (translation)
-The claim follows from `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_form {n : ℕ} (J : Matrix (Fin n) (Fin n) ℂ) :
     IsClosed {M : Matrix (Fin n) (Fin n) ℂ | Mᴴ * J * M = J} :=
@@ -46,17 +46,15 @@ namespace MainStatements.WeightKernel
 
 open PArchGroup in
 /- English proof (translation)
-Introduce `D V w τ`. Establish `h` using `isCMExt_host D`. Establish `hu : IsUnit V.gram.det` using `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V`. Establish `hJ : IsUnit (V.gram.map τ.1).det`. Rewrite using `[show V.gram.map τ.1 = τ.1.mapMatrix V.gram from rfl, ← RingHom.map_det]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu.map _`. Establish `hr : ∀ M, M ∈ Set.range (archMat D.sp.cm.sig V.gram τ) ↔ Mᴴ * V.gram.map τ.1 * M = V.gram.map τ.1`. Introduce `M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[archMat_eq_archEquiv V.gram h τ g, ← cT_star']`. Conclude with `(archEquiv V.gram h τ g).2`. Introduce `hM`. Establish `hU` using `isUnit_of_form hJ hM`. Establish `hmem : hU.unit ∈ Formalism.UG.UJ (starRingEnd ℂ) (V.gram.map τ.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Formalism.UG.cT (starRingEnd ℂ) (hU.unit : Matrix (Fin _) (Fin _) ℂ) * V.gram.map τ.1 * (hU.unit : Matrix (Fin _) (Fin _) ℂ) = V.gram.map τ.1`. Rewrite using `[cT_star', IsUnit.unit_spec]`. Conclude with `hM`. Use `⟨(archEquiv V.gram h τ).symm ⟨hU.unit, hmem⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[archMat_eq_archEquiv V.gram h τ, MulEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `IsUnit.unit_spec hU`. Use `⟨hJ, ⟨isEmbedding_archMat V.gram h τ, ?_⟩, hr⟩` and prove the remaining obligations. Establish `: Set.range (matCoord (archMat D.sp.cm.sig V.gram τ)) = {M : Matrix (Fin _) (Fin _) ℂ | Mᴴ * V.gram.map τ.1 * M = V.gram.map τ.1}`. Use extensionality with `M`. Conclude with `hr M`.
-
-Rewrite using `[this]`. Conclude with `isClosed_form _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archGroup : ArchGroup := by
   intro D V w τ

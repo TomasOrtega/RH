@@ -17,9 +17,9 @@ section Generic
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Use `(hintSph G K _ fun k hk x => ?_).trans rfl` and prove the remaining obligations. Establish `h1 : f (x * k) = f x` using `by simpa using hf.1 1 ⟨k, hk⟩ x`. Establish `h2 : g (k⁻¹ * (x⁻¹ * y)) = g (x⁻¹ * y)`. Simplify using `using hg.1 ⟨k⁻¹, K.inv_mem hk⟩ 1 (x⁻¹ * y)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e : (x * k)⁻¹ * y = k⁻¹ * (x⁻¹ * y)` using `by group`. Use `show f (x * k) * g ((x * k)⁻¹ * y) = f x * g (x⁻¹ * y)`. Rewrite using `[h1, e, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hint_mul_eq_conv (K : Subgroup G) {f g : G → ℂ} (hf : f ∈ Hecke ℂ K) (hg : g ∈ Hecke ℂ K) :
     (fun y => hint K fun z => f z * g (z⁻¹ * y)) = Formalism.UG.conv K f g := by
@@ -33,9 +33,9 @@ private theorem hint_mul_eq_conv (K : Subgroup G) {f g : G → ℂ} (hf : f ∈ 
   rw [h1, e, h2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ K`. Rewrite using `[Formalism.UG.P.dosetInd_of_mem ℂ K 1 x ((Formalism.UG.P.mem_dc_one K x).2 hx)]`. Simplify using `[Set.indicator_apply, hx]`. Rewrite using `[Formalism.UG.P.dosetInd_of_not_mem ℂ K 1 x fun h => hx ((Formalism.UG.P.mem_dc_one K x).1 h)]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Set.indicator_apply, hx]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ind_eq_dosetInd (K : Subgroup G) : (K : Set G).indicator (1 : G → ℂ) = dosetInd ℂ K 1 := by
   funext x
@@ -46,9 +46,9 @@ private theorem ind_eq_dosetInd (K : Subgroup G) : (K : Set G).indicator (1 : G 
     simp [Set.indicator_apply, hx]
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `one => show (K : Set G).indicator 1 ∈ Hecke ℂ K`. Rewrite using `[ind_eq_dosetInd]`. Conclude with `Formalism.UG.Final.DosetIndMem G K ℂ 1`. Consider the case `gen i => exact hg i`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c a ih => exact (Hecke ℂ K).smul_mem c ih`. Consider the case `add a b iha ihb => exact (Hecke ℂ K).add_mem iha ihb`. Consider the case `mul a b iha ihb => show (fun y => hint K fun z => a.fn K g z * b.fn K g (z⁻¹ * y)) ∈ Hecke ℂ K`. Rewrite using `[hint_mul_eq_conv K iha ihb]`. Conclude with `Formalism.UG.Final.HeckeConvMem G K ℂ hK _ iha _ ihb`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fn_mem {ι : Type} (K : Subgroup G) (hK : IsCommensurated K) (g : ι → G → ℂ)
     (hg : ∀ i, g i ∈ Hecke ℂ K) (e : Ex ι) : e.fn K g ∈ Hecke ℂ K := by
@@ -68,9 +68,9 @@ private theorem fn_mem {ι : Type} (K : Subgroup G) (hK : IsCommensurated K) (g 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Rewrite using `[ind_eq_dosetInd, heckeVec_dosetInd hx (a := 1) (R := {1})]`. Simplify using the standard rewrite rules. Introduce `γ hγ`. Rewrite using `[Finset.mem_singleton.1 hγ]`. Conclude with `(Formalism.UG.P.mem_dc_one K 1).2 K.one_mem`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Use `⟨1, ⟨Finset.mem_singleton_self _, by simpa using (Formalism.UG.P.mem_dc_one K g).1 hg⟩, ?_⟩` and prove the remaining obligations. Conclude with `fun γ hγ => Finset.mem_singleton.1 hγ.1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem heckeVec_ind (K : Subgroup G) (ρ : Representation ℂ G V) {x : V} (hx : x ∈ fixed ρ K) :
     heckeVec ρ K ((K : Set G).indicator 1) x = x := by
@@ -84,9 +84,9 @@ private theorem heckeVec_ind (K : Subgroup G) (ρ : Representation ℂ G V) {x :
     exact fun γ hγ => Finset.mem_singleton.1 hγ.1
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `one => show heckeVec ρ K ((K : Set G).indicator 1) x = (1 : ℂ) • x`. Rewrite using `[heckeVec_ind K ρ hx, one_smul]`. Consider the case `gen i => exact hc i`. Consider the case `smul z a ih => show heckeVec ρ K (z • a.fn K g) x = (z * a.ev c) • x`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[GlobalTheory.CompanionTheory.Ipf.Val.SphM.heckeVec_smul, ih, mul_smul]`. Consider the case `add a b iha ihb => show heckeVec ρ K (a.fn K g + b.fn K g) x = (a.ev c + b.ev c) • x`. Rewrite using `[GlobalTheory.CompanionTheory.Ipf.Val.SphM.heckeVec_add hK (fn_mem K hK g hg a) (fn_mem K hK g hg b), iha, ihb, add_smul]`. Consider the case `mul a b iha ihb => show heckeVec ρ K (fun y => hint K fun z => a.fn K g z * b.fn K g (z⁻¹ * y)) x = (a.ev c * b.ev c) • x`. Rewrite using `[hint_mul_eq_conv K (fn_mem K hK g hg a) (fn_mem K hK g hg b), GlobalTheory.CompanionTheory.Ipf.Val.SphM.heckeVec_conv hK (fn_mem K hK g hg a) (fn_mem K hK g hg b) ρ hx, ihb, GlobalTheory.CompanionTheory.Ipf.Val.SphM.heckeVec_smul_vec, iha, smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem heckeVec_fn {ι : Type} (K : Subgroup G) (hK : IsCommensurated K) (g : ι → G → ℂ)
     (hg : ∀ i, g i ∈ Hecke ℂ K) (ρ : Representation ℂ G V) {x : V} (hx : x ∈ fixed ρ K) (c : ι → ℂ)
@@ -110,9 +110,9 @@ private theorem heckeVec_fn {ι : Type} (K : Subgroup G) (hK : IsCommensurated K
       GlobalTheory.CompanionTheory.Ipf.Val.SphM.heckeVec_smul_vec, iha, smul_smul, mul_comm]
 
 /- English proof (translation)
-Take `⟨hb, S, hS⟩` from `hf`. Use `⟨?_, fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hcomp : IsCompact (⋃ s ∈ (S : Set G), (fun p : G × G => p.1 * s * p.2) '' ((K : Set G) ×ˢ (K : Set G)))` using `S.finite_toSet.isCompact_biUnion fun s _ => (hc.prod hc).image (by fun_prop)`. Use `HasCompactSupport.intro hcomp fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨s, hs, a, b, e⟩` from `hS x h0`. Conclude with `hx (Set.mem_biUnion (Finset.mem_coe.2 hs) ⟨(a, b), ⟨a.2, b.2⟩, e.symm⟩)`. Simplify using `using hb ⟨k, hk⟩ 1 x`. Simplify using `using hb 1 ⟨k, hk⟩ x`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem isHecke_of_mem [TopologicalSpace G] [IsTopologicalGroup G] {K : Subgroup G}
     (hc : IsCompact (K : Set G)) {f : G → ℂ} (hf : f ∈ Hecke ℂ K) : IsHecke K f := by
@@ -133,11 +133,11 @@ end UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
 open UpperTheory.V.Z.Tf.GlobalTraceComparison in
 /- English proof (translation)
-Introduce `E _ _ _ n w e`. Establish `hu : IsUnifV E w (unif w)` using `Classical.epsilon_spec (exists_isUnifV w)`. Establish `hK : IsCommensurated (KGL w n)` using `Formalism.UG.Final.GLintComm E w n`. Establish `hT : ∀ j : Fin (n + 1), Tj ℂ n (Ov E w) (unif w) j ∈ Formalism.UG.Hecke ℂ (KGL w n)` using `fun j => Tj_mem_hecke hu j`. Take `⟨ho, hc⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem : fn1 n w e ∈ Formalism.UG.Hecke ℂ (KGL w n)` using `fn_mem _ hK _ hT e`. Establish `hH : IsHecke (KGL w n) (fn1 n w e)` using `isHecke_of_mem hc hmem`. Use `⟨hH, fun V _ _ ρ x B hx => ?_⟩` and prove the remaining obligations. Establish `hfix : x ∈ fixed ρ (KGL w n)` using `hx.2.1`. Rewrite using `[(cvOp _ _ ho hc V ρ _ _ hH hH x hfix).2.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `heckeVec_fn _ hK _ hT ρ hfix _ (fun j => hx.2.2.2 (unif w) hu j (Nat.lt_succ_iff.1 j.2)) e`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.exAct :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.ExAct := by

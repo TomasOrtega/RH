@@ -22,9 +22,9 @@ def GenericSectionMinimumIntegral (G : GlobalFamilyData (xplus X E hM) ka wL wF)
     ∃ k, ord (unifO (xplus X E hM) la G.N) ζ (toOsK (xplus X E hM) la G.w (wRat G la k)) = 0
 
 /- English proof (translation)
-Distinguish the cases in `hz : z = 0`. Simplify using `[hz, nval_zero]`. Rewrite using `[nval_of_ne hz, nval_of_ne hz, EReal.coe_nonneg, EReal.coe_nonneg]`. Establish `: (0 : ℝ) < e` using `by exact_mod_cast he`. Prove the components needed by the constructor for the conclusion.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Simplify using `using (div_nonneg_iff.1 h).elim (fun h' => h'.1) (fun h' => absurd h'.2 (not_le.2 this))`. Introduce `h; exact div_nonneg (by simpa using h) this.le`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 -/
 lemma nval_nonneg_iff {T : CDVR} {e : ℕ} (he : 0 < e) (z : T.Fr) : 0 ≤ nval T.V e z ↔ 0 ≤ nval T.V 1 z := by
   by_cases hz : z = 0
@@ -36,7 +36,7 @@ lemma nval_nonneg_iff {T : CDVR} {e : ℕ} (he : 0 < e) (z : T.Fr) : 0 ≤ nval 
     · intro h; exact div_nonneg (by simpa using h) this.le
 
 /- English proof (translation)
-Distinguish the cases in `hz : z = 0`. Simplify using `[hz, nval_zero]`. Rewrite using `[nval_of_ne hz, nval_of_ne hz]`. Establish `: (e : ℝ) ≠ 0` using `by exact_mod_cast he.ne'`. Simplify using `[div_eq_zero_iff, this]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma nval_eq_zero_iff {T : CDVR} {e : ℕ} (he : 0 < e) (z : T.Fr) : nval T.V e z = 0 ↔ nval T.V 1 z = 0 := by
   by_cases hz : z = 0
@@ -46,25 +46,21 @@ lemma nval_eq_zero_iff {T : CDVR} {e : ℕ} (he : 0 < e) (z : T.Fr) : nval T.V e
     simp [div_eq_zero_iff, this]
 
 /- English proof (translation)
-Use `set h := hs ζ with hh`. Establish `hb : h.ev (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec (xplus X E hM) la G.w 0) ≠ 0` using `h.s0.ne_zero`. Establish `he` using `h.ep_pos`. Establish `hwk : ∀ k, E.vAt' la (y ζ) (X.inc wL (G.w k)) = nval h.T.V (ep (unifO (xplus X E hM) la G.N) ζ) (h.ev (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec (xplus X E hM) la G.w 0)) + nval h.T.V (ep (unifO (xplus X E hM) la G.N) ζ) (h.lift (wRat G la k : Lw (xplus X E hM) la G.w))`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.hv, ← nval_mul]`. Use `congr 1`. Use `show _ = _ * h.lift (frac (xplus X E hM) la G.w 1 _)`. Rewrite using `[h.lift_frac, pow_one, mul_comm, mul_assoc, inv_mul_cancel₀ hb, mul_one]`. Establish `hord : ∀ k, nval h.T.V 1 (h.lift (wRat G la k : Lw (xplus X E hM) la G.w)) = toE (ord (unifO (xplus X E hM) la G.N) ζ (toOsK (xplus X E hM) la G.w (wRat G la k)))` using `fun k => (h.ord (wRat G la k)).symm`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hint, k0, hk0⟩` from `h0 hfd hred ζ`. Establish `hnn : ∀ k, 0 ≤ nval h.T.V (ep (unifO (xplus X E hM) la G.N) ζ) (h.lift (wRat G la k : Lw _ la G.w))`. Introduce `k`. Rewrite using `[nval_nonneg_iff he, hord]`. Use `hint k` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data.
 
-Generalize the expression as in `ord (unifO (xplus X E hM) la G.N) ζ (toOsK (xplus X E hM) la G.w (wRat G la k)) = o at this ⊢`. Consider the cases of `o with`. Consider the case `top => simp [toE]`. Consider the case `coe n => simp only [toE]`. Conclude with `(WithTop.coe_nonneg.1 this)` after adjusting the coercions.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hz0 : nval h.T.V (ep (unifO (xplus X E hM) la G.N) ζ) (h.lift (wRat G la k0 : Lw _ la G.w)) = 0`. Rewrite using `[nval_eq_zero_iff he, hord, hk0]`. Use `show toE ((0 : ℤ) : WithTop ℤ) = 0`. Simplify using `[toE]`. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(iInf₂_le (G.w k0) (by rw [← hspan]; exact Submodule.subset_span ⟨k0, rfl⟩)).trans_eq ?_ show E.vAt' la (y ζ) (X.inc wL (G.w k0)) = _` and prove the remaining obligations. Rewrite using `[hwk, hz0, add_zero]`. Use `le_iInf₂ fun F hF => ?_` and prove the remaining obligations. Rewrite `hF` using `[← hspan]`. Use `show _ ≤ E.vAt' la (y ζ) (X.inc wL F)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Rewrite using `[hwk]`. Conclude with `le_add_of_nonneg_right (hnn k)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Consider the case `zero => rw [map_zero, E.vAt'_zero]`. Conclude with `le_top`. Consider the case `add x z _ _ hx hz`. Rewrite using `[map_add]`. Conclude with `(le_min hx hz).trans (E.vAt'_add la _ _ _)`.
-
-Consider the case `smul a x _ hx`. Distinguish the cases in `ha : ((a : 𝓞 B.KO) : B.KO) = 0`. Establish `: a = 0` using `by exact_mod_cast ha`. Rewrite using `[this, zero_smul, map_zero, E.vAt'_zero]`. Conclude with `le_top`.
-
-Rewrite using `[← algebraMap_smul B.KO a x, map_smul, E.vAt'_smul la _ _ _ ha]`. Conclude with `le_add_of_nonneg_of_le (by exact_mod_cast vAdd_int_nonneg la ha) hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem depthAtSec_of {G : GlobalFamilyData (xplus X E hM) ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)} (S : Scal B)
     (hspan : SpanW (xplus X E hM) G.w S) (h0 : GenericSectionMinimumIntegral G la)

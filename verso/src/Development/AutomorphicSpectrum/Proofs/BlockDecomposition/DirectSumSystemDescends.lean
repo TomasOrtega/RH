@@ -43,9 +43,9 @@ def inc (i : I) (m : ℕ) : (P i).cech.X m →ₗ[K] (sumPM P).cech.X m :=
   LinearMap.pi fun t => (DirectSum.lof K I (fun j => (P j).M (ent t)) i) ∘ₗ LinearMap.proj t
 
 /- English proof (translation)
-Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of j x`. Express the relevant statement in the definitionally equal form `DirectSum.component K I _ i (DirectSum.lmap _ _) = _`. Rewrite using `[← DirectSum.lof_eq_of K, DirectSum.lmap_lof]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[DirectSum.component.of, e]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem component_res {S T : Finset ι} (h : S ⊆ T) (i : I) (x : (sumPM P).M S) :
     DirectSum.component K I (fun j => (P j).M T) i ((sumPM P).res h x) =
@@ -62,14 +62,14 @@ theorem component_res {S T : Finset ι} (h : S ⊆ T) (i : I) (x : (sumPM P).M S
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-The claim follows from `DirectSum.lmap_lof _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem res_lof {S T : Finset ι} (h : S ⊆ T) (i : I) (x : (P i).M S) :
     (sumPM P).res h (DirectSum.lof K I (fun j => (P j).M S) i x) =
       DirectSum.lof K I (fun j => (P j).M T) i ((P i).res h x) := DirectSum.lmap_lof _ _ _
 
 /- English proof (translation)
-Rewrite using `[Cos.d_apply, Cos.d_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem pr_d (i : I) (m : ℕ) (z : (sumPM P).cech.X m) :
     pr P i (m + 1) ((sumPM P).cech.d m z) = (P i).cech.d m (pr P i m z) := by
@@ -79,9 +79,9 @@ theorem pr_d (i : I) (m : ℕ) (z : (sumPM P).cech.X m) :
   congr 1
 
 /- English proof (translation)
-Rewrite using `[Cos.d_apply, Cos.d_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(res_lof P _ i _).symm`.
+A detailed English derivation is pending.
 -/
 theorem inc_d (i : I) (m : ℕ) (y : (P i).cech.X m) :
     inc P i (m + 1) ((P i).cech.d m y) = (sumPM P).cech.d m (inc P i m y) := by
@@ -93,7 +93,7 @@ theorem inc_d (i : I) (m : ℕ) (y : (P i).cech.X m) :
   exact (res_lof P _ i _).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Use `DFinsupp.ext fun i => ?_` and prove the remaining obligations. Conclude with `congrFun (h i) t`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cochain_ext {m : ℕ} {z : (sumPM P).cech.X m} (h : ∀ i, pr P i m z = 0) : z = 0 := by
   funext t
@@ -101,7 +101,7 @@ theorem cochain_ext {m : ℕ} {z : (sumPM P).cech.X m} (h : ∀ i, pr P i m z = 
   exact congrFun (h i) t
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Conclude with `component_res P _ i _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pr_aug (i : I) (x : (sumPM P).M ∅) :
     pr P i 0 ((sumPM P).aug x) = (P i).aug (DirectSum.component K I (fun j => (P j).M ∅) i x) := by
@@ -109,7 +109,7 @@ theorem pr_aug (i : I) (x : (sumPM P).M ∅) :
   exact component_res P _ i _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Conclude with `res_lof P _ i _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem aug_lof (i : I) (x : (P i).M ∅) :
     (sumPM P).aug (DirectSum.lof K I (fun j => (P j).M ∅) i x) = inc P i 0 ((P i).aug x) := by
@@ -117,14 +117,14 @@ theorem aug_lof (i : I) (x : (P i).M ∅) :
   exact res_lof P _ i _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Conclude with `DirectSum.component.lof_self (M := fun j => (P j).M (ent t)) K i (y t)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pr_inc_self (i : I) (m : ℕ) (y : (P i).cech.X m) : pr P i m (inc P i m y) = y := by
   funext t
   exact DirectSum.component.lof_self (M := fun j => (P j).M (ent t)) K i (y t)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `DirectSum.component K I (fun j => (P j).M (ent t)) i (DirectSum.lof K I (fun j => (P j).M (ent t)) j (y t)) = 0`. Rewrite using `[DirectSum.component.of, dif_neg e]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pr_inc_ne {i j : I} (e : j ≠ i) (m : ℕ) (y : (P j).cech.X m) : pr P i m (inc P j m y) = 0 := by
   funext t
@@ -133,9 +133,9 @@ theorem pr_inc_ne {i j : I} (e : j ≠ i) (m : ℕ) (y : (P j).cech.X m) : pr P 
 
 open Classical in
 /- English proof (translation)
-Use `⟨Finset.univ.biUnion fun t => DFinsupp.support (z t), sub_eq_zero.1 (cochain_ext P fun i => ?_)⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_sum]`. Distinguish the cases in `hi : i ∈ Finset.univ.biUnion fun t => DFinsupp.support (z t)`. Rewrite using `[Finset.sum_eq_single_of_mem i hi (fun j _ e => pr_inc_ne P e _ _), pr_inc_self, sub_self]`. Establish `hz : pr P i m z = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Assume the negation of the conclusion as `hne`. Conclude with `hi (Finset.mem_biUnion.2 ⟨t, Finset.mem_univ _, DFinsupp.mem_support_iff.2 hne⟩)`. Rewrite using `[hz, Finset.sum_eq_zero (fun j hj => pr_inc_ne P (ne_of_mem_of_not_mem hj hi) _ _), sub_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decomp [Fintype ι] {m : ℕ} (z : (sumPM P).cech.X m) :
     ∃ F : Finset I, z = ∑ i ∈ F, inc P i m (pr P i m z) := by
@@ -150,19 +150,17 @@ theorem decomp [Fintype ι] {m : ℕ} (z : (sumPM P).cech.X m) :
     rw [hz, Finset.sum_eq_zero (fun j hj => pr_inc_ne P (ne_of_mem_of_not_mem hj hi) _ _), sub_zero]
 
 /- English proof (translation)
-Use `⟨fun x => ?_, fun x hx => ?_, fun y hy => ?_, fun m y hy => ?_⟩` and prove the remaining obligations. Use `cochain_ext P fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pr P i 1 ((sumPM P).cech.d 0 ((sumPM P).aug x)) = 0`. Rewrite using `[pr_d, pr_aug]`. Conclude with `(h i).1 _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_smul]`. Use `DFinsupp.ext fun i => ?_` and prove the remaining obligations. Establish `h0 : (P i).aug (DirectSum.component K I (fun j => (P j).M ∅) i x) = 0`. Rewrite using `[← pr_aug, hx, map_zero]`. Establish `h1` using `(h i).2.1 _ h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[one_smul]`. Conclude with `h1`. Take `⟨F, hF⟩` from `decomp P y`. Establish `hc : ∀ i, (P i).cech.d 0 (pr P i 0 y) = 0` using `fun i => by`. Rewrite using `[← pr_d]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (pr P i 1) hy).trans (map_zero _)`. Use `choose c hc' using fun i => (h i).2.2.1 _ (hc i)`. Use `⟨∑ i ∈ F, DirectSum.lof K I (fun j => (P j).M ∅) i (c i), ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, map_sum]`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) hF.symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aug_lof, hc', one_smul]`. Take `⟨F, hF⟩` from `decomp P y`. Establish `hc : ∀ i, (P i).cech.d (m + 1) (pr P i (m + 1) y) = 0` using `fun i => by`. Rewrite using `[← pr_d]`. Conclude with `(congrArg (pr P i (m + 2)) hy).trans (map_zero _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose c hc' using fun i => (h i).2.2.2 m _ (hc i)`. Use `⟨∑ i ∈ F, inc P i m (c i), ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Express the relevant statement in the definitionally equal form `(sumPM P).cech.d m _ = y`. Rewrite using `[map_sum]`.
-
-Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) hF.symm` and prove the remaining obligations. Rewrite using `[← inc_d]`. Establish `h2` using `hc' i`. Rewrite `h2` using `[one_smul]`. Conclude with `congrArg (inc P i (m + 1)) h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_ex [Fintype ι] (h : ∀ i, (P i).Ex) : (sumPM P).Ex := by
   refine ⟨fun x => ?_, fun x hx => ?_, fun y hy => ?_, fun m y hy => ?_⟩
@@ -202,7 +200,7 @@ theorem sum_ex [Fintype ι] (h : ∀ i, (P i).Ex) : (sumPM P).Ex := by
     exact congrArg (inc P i (m + 1)) h2
 
 /- English proof (translation)
-Introduce `n` and use `sum_ex (fun i => (A i).term n) fun i => h i n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_desc {K : Type} [Field K] {ι : Type} [DecidableEq ι] [Fintype ι] {I : Type 1} [DecidableEq I]
     (A : I → Sy.{1} K ι) (h : ∀ i, (A i).Desc) : (sumSy A).Desc :=

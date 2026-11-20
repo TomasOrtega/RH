@@ -9,11 +9,11 @@ namespace GroundTheory.Heights₂.Heights
 open IsLocalRing
 
 /- English proof (translation)
-Take `⟨hprime, a, rfl⟩` from `(isAssociatedPrime_iff (I := p) (M := B ⧸ I)).1 hp`. Establish `hI : I ≤ Submodule.colon (⊥ : Submodule B (B ⧸ I)) {a}` using `fun b hb => by`. Rewrite using `[Submodule.mem_colon_singleton, Submodule.mem_bot, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 hb, zero_mul]`. Use `⟨hI, (isAssociatedPrime_iff).2 ⟨?_, a, ?_⟩⟩` and prove the remaining obligations. Conclude with `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rwa [Ideal.mk_ker])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `c`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Rewrite using `[Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective, Submodule.mem_colon_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b', hb', hbb'⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hbb']`. Simplify `hb'` using `[Submodule.mem_colon_singleton, Algebra.smul_def]`. Introduce `h`. Conclude with `⟨b, by simpa [Submodule.mem_colon_singleton, Algebra.smul_def] using h, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_mem_associatedPrimes_quotient {B : Type*} [CommRing B] [IsNoetherianRing B] (I p : Ideal B)
     (hp : p ∈ associatedPrimes B (B ⧸ I)) :
@@ -36,11 +36,11 @@ theorem map_mem_associatedPrimes_quotient {B : Type*} [CommRing B] [IsNoetherian
       exact ⟨b, by simpa [Submodule.mem_colon_singleton, Algebra.smul_def] using h, rfl⟩
 
 /- English proof (translation)
-Introduce `B _ _ d x hx hdim p hp`. Use `set I := Ideal.span (Set.range x) with hIdef`. Establish `hCM : IsCohenMacaulayLocalRing (B ⧸ I)` using `hQ B d x hx hdim`. Take `⟨hIp, hq⟩` from `map_mem_associatedPrimes_quotient I p hp`. Take `⟨hmin, hdq⟩` from `hU (B ⧸ I) _ hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcomap : (p.map (Ideal.Quotient.mk I)).comap (Ideal.Quotient.mk I) = p`. Rewrite using `[Ideal.comap_map_of_surjective' _ Ideal.Quotient.mk_surjective, Ideal.mk_ker, sup_eq_left.2 hIp]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.minimalPrimes_eq_comap]`. Conclude with `⟨_, hmin, hcomap⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hdq]`. Conclude with `(ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hIp)).symm`.
+A detailed English derivation is pending.
 -/
 theorem CMQuotientUnmixed.proof (hQ : CMParameterQuotient.Statement) (hU : CMRingUnmixed.Statement) :
     CMQuotientUnmixed.Statement := by

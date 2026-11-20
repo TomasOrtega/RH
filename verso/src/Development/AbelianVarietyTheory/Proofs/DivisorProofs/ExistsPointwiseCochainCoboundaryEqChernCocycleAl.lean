@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Rewrite using `[← d1_apply, h]`. Simplify using `only [Pi.sub_apply, h0, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem commAlgFunctorCoboundaryOne_apply_of_eq_sub_vanishing {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {F : C ⥤ CommAlgCat.{0} R}
     {m : C1 F} {z z' : C2 F} (h : d1 F m = z - z') {T T' T'' : C} (a : T ⟶ T') (b : T' ⟶ T'')
@@ -27,11 +27,11 @@ theorem commAlgFunctorCoboundaryOne_apply_of_eq_sub_vanishing {R : Type} [CommRi
   simp only [Pi.sub_apply, h0, sub_zero]
 
 /- English proof (translation)
-Take `⟨i, hi, u, ℓ, hu, hℓ, hz⟩` from `hw`. Rewrite `hz` using `[CoefMap.pullCohomologyTwo_class, H2.mk_eq_mk]`. Take `⟨m, hm⟩` from `hz`. Establish `sm : ∀ {T T' : Thick g s} (_ : T ⟶ T'), IsSmall g s L.U T → IsSmall g s L.U T'`. Introduce and unpack `T T' a ⟨j, hj⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨j, a.le_preimage hj⟩`. Use `⟨fun T T' a ↦ if h : IsSmall g s L.U T then m ⟨T, h⟩ ⟨T', sm a h⟩ (ObjectProperty.homMk a) else 0, ?_⟩` and prove the remaining obligations. Introduce `T T' T'' a b h hJ`. Establish `h1` using `sm a h`. Establish `h2` using `sm b h1`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[d1_apply]`. Simplify using `only [dif_pos h, dif_pos h1]`. Use `commAlgFunctorCoboundaryOne_apply_of_eq_sub_vanishing hm (T := ⟨T, h⟩) (T' := ⟨T', h1⟩) (T'' := ⟨T'', h2⟩) (ObjectProperty.homMk a) (ObjectProperty.homMk b) ?_` and prove the remaining obligations. Use `(hℓ ⟨T, h⟩ ⟨T', h1⟩ ⟨T'', h2⟩ (ObjectProperty.homMk a) (ObjectProperty.homMk b)).1` as an intermediate fact. Conclude with `Ideal.mem_bot.1 (hJ.le this)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_crystallineCochain_coboundary_eq_chernCocycle {R : Type} [CommRing R] {I : Ideal R} {g : DividedPowers I} {X : Scheme.{0}}
     {s : X ⟶ Sp R} {L : LB X} {w : Z2 (O g s)} (hw : IsChern g s L (CatCoh.H2.mk _ w)) :
@@ -56,7 +56,7 @@ theorem exists_crystallineCochain_coboundary_eq_chernCocycle {R : Type} [CommRin
   exact Ideal.mem_bot.1 (hJ.le this)
 
 /- English proof (translation)
-Take `⟨V, hV⟩` from `exists_crystallineCochain_coboundary_eq_chernCocycle hw`. Use `⟨fun E _ _ E' _ _ z z' a ↦ V _ _ a, ?_⟩` and prove the remaining obligations. Introduce `E _ _ E' _ _ E'' _ _ z z' z'' a b ψ hb hz`. Substitute `hb` using the available equality. Conclude with `hV _ _ _ a b hz rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_pt_d_eq_chern {R : Type} [CommRing R] {X : Over (Sp R)} {L : LB X.left}
     {w : Z2 (O (dp0 R) (X.hom ≫ 𝟙 _))} (hw : IsChern (dp0 R) _ L (CatCoh.H2.mk _ w)) :
@@ -73,11 +73,11 @@ theorem exists_pt_d_eq_chern {R : Type} [CommRing R] {X : Over (Sp R)} {L : LB X
   exact hV _ _ _ a b hz rfl
 
 /- English proof (translation)
-Introduce `R _ X L w hw`. Take `⟨V, hV⟩` from `exists_pt_d_eq_chern hw`. Use `⟨fun E _ _ E' _ _ φ z ↦ V E E' z _ (trivMap φ z), ?_⟩` and prove the remaining obligations. Introduce `E _ _ E' _ _ E'' _ _ φ ψ z hz`. Establish `gen : ∀ (y : Pt X E'') (_ : y = spOver (ψ.comp φ) ≫ z) (f : trivAt z ⟶ trivAt y), (∀ c, f.φ c = ψ (φ c)) → V E E'' z _ (trivMap (ψ.comp φ) z) = V E E'' z y f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy f hf`. Substitute `hy` using the available equality. Conclude with `congrArg (V E E'' z _) (Thick.hom_ext fun c ↦ (hf c).symm)`. Establish `hc` using `gen (spOver ψ ≫ spOver φ ≫ z) (by rw [← Category.assoc, spOver_comp]) (trivMap φ z ≫ trivMap ψ (spOver φ ≫ z)) fun _ ↦ rfl`. Establish `key` using `hV E E' E'' z _ _ (trivMap φ z) (trivMap ψ (spOver φ ≫ z)) ψ rfl hz`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[← hc]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem exists_pointwiseCochain_coboundary_eq_chernCocycle : ∀ (R : Type) [CommRing R] (X : Over (Sp R)) (L : LB X.left) (w : Z2 (O (dp0 R) (X.hom ≫ 𝟙 _))), IsChern (dp0 R) _ L (CatCoh.H2.mk _ w) → ∃ n : Fn1 X, ∀ (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E'] (E'' : Type) [CommRing E''] [Algebra R E''] (φ : E →ₐ[R] E') (ψ : E' →ₐ[R] E'') (z : Pt X E), Sm L.U z → ψ (n E E' φ z) - n E E'' (ψ.comp φ) z + n E' E'' ψ (spOver φ ≫ z) = w.1 _ _ _ (trivMap φ z) (trivMap ψ (spOver φ ≫ z)) := by
   intro R _ X L w hw

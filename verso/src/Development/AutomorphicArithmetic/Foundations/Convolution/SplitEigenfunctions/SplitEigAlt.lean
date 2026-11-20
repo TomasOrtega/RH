@@ -14,19 +14,17 @@ open UpperTheory.V.Af.Smo (Eig EigAt)
 open UpperTheory.ConvolutionTheory.RankTwoDescent
 
 /- English proof (translation)
-Take `⟨n, a, b, hab⟩` from `Submodule.mem_span_set'.1 hc`. Use `choose Λ f hb using fun i => (b i).2`. Establish `hval : ∀ x, c x = ∑ i, a i * Λ i (ρ x (f i))`. Introduce `x`. Rewrite using `[← hab]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hb i]`. Set `R : H →* Module.End ℂ (Fin n → V)` to `{ toFun := fun h => LinearMap.pi fun i => (ρ (ι h)).comp (LinearMap.proj i) map_one' := LinearMap.ext fun x => funext fun i => by simp map_mul' := fun p q => LinearMap.ext fun x => funext fun i => by simp }`. Establish `hR : ∀ h (x : Fin n → V) i, R h x i = ρ (ι h) (x i)` using `fun _ _ _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hfix⟩` from `UpperTheory.ConvolutionTheory.R2.H.avg H (Fin n → V) R f (by`. Establish `: ∀ᶠ h in 𝓝 (1 : H), ∀ i, ρ (ι h) (f i) = f i` using `Filter.eventually_all.2 fun i => hsm (f i)`. Use `filter_upwards [this] with h hh`. Use function extensionality and compare the values at `i`. Conclude with `hh i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `S : Fin n → V` to `∑ k ∈ s, R k f`. Establish `hS : ∀ i, S i = ∑ k ∈ s, ρ (ι k) (f i)` using `fun i => by`. Simplify using `only [S, Finset.sum_apply, hR]`. Establish `hcard : (s.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 hs)`. Establish `key : c = (s.card : ℂ)⁻¹ • ∑ i, a i • fun x => Λ i (ρ x (S i))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Establish `h1 : (s.card : ℂ) * c x = ∑ k ∈ s, c (x * ι k)`. Simplify using `only [hinv, Finset.sum_const, nsmul_eq_mul]`. Establish `h2 : ∑ k ∈ s, c (x * ι k) = ∑ i, a i * Λ i (ρ x (S i))`. Simplify using `only [hval, hS, map_sum, map_mul, Module.End.mul_apply, Finset.mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_comm`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`. Rewrite using `[← h2, ← h1, inv_mul_cancel_left₀ hcard]`. Rewrite using `[key]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨Λ i, S i, fun h => ?_, rfl⟩))` and prove the remaining obligations.
-
-Use `congrFun (hfix h) i` as an intermediate fact. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mc_fix {G V H : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [CompactSpace H] (ι : H →* G)
@@ -70,7 +68,7 @@ private theorem mc_fix {G V H : Type} [Group G] [AddCommGroup V] [Module ℂ V] 
   exact this
 
 /- English proof (translation)
-Use `GlobalTheory.LFun.finite_heckeVec (Formalism.UG.Final.GLintComm K w n) (GlobalTheory.LFun.Tj_mem_hecke hϖ j) (1 : Representation ℂ (GL (Fin n) (Kv w)) ℂ) (1 : ℂ)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem tj_fin {K : Type} [Field K] [NumberField K] (w : P K) (n : ℕ) {ϖ : Kv w} (hϖ : Formalism.UG.IsUnifV K w ϖ) (j : ℕ) :
     (Function.support fun c : GL (Fin n) (Kv w) ⧸ GlobalTheory.LFun.KGL w n => Formalism.UG.Tj ℂ n (Formalism.UG.Ov K w) ϖ j c.out).Finite := by
@@ -79,7 +77,7 @@ private theorem tj_fin {K : Type} [Field K] [NumberField K] (w : P K) (n : ℕ) 
   simpa using this
 
 /- English proof (translation)
-Use `finsum_eq_sum_of_support_subset _ fun c hc => ?_` and prove the remaining obligations. Simplify using `only [Set.Finite.coe_toFinset, Function.mem_support] at hc ⊢`. Conclude with `left_ne_zero_of_mul hc`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tj_sum {K : Type} [Field K] [NumberField K] (w : P K) (n : ℕ) {ϖ : Kv w} (hϖ : Formalism.UG.IsUnifV K w ϖ) (j : ℕ)
     (W : GL (Fin n) (Kv w) → ℂ) (g : GL (Fin n) (Kv w)) :
@@ -90,19 +88,19 @@ private theorem tj_sum {K : Type} [Field K] [NumberField K] (w : P K) (n : ℕ) 
   exact left_ne_zero_of_mul hc
 
 /- English proof (translation)
-Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem c h`. Take `⟨Λ, f, hf, rfl⟩` from `h`. Use `⟨hB.card, fun g k hk => ?_, fun ϖ hϖ j hj g => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply, hf k hk]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : f = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Establish `he` using `(hB.2 f (GlobalTheory.LGrp.mem_fixed.2 hf) h0).2.2.2 ϖ hϖ j hj`. Set `L : V →+ ℂ` to `(Λ.comp (ρ g)).toAddMonoidHom`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hs` using `L.map_finsum (GlobalTheory.LFun.finite_heckeVec (Formalism.UG.Final.GLintComm K w n) (GlobalTheory.LFun.Tj_mem_hecke hϖ j) ρ f)`. Use `Eq.trans (finsum_congr fun c => ?_) (hs.symm.trans ((congrArg L he).trans ?_))` and prove the remaining obligations. Simplify using `[L, map_mul]`. Simplify using `[L]`. Consider the case `zero => exact ⟨hB.card, by simp, by simp⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Use `⟨hB.card, fun g k hk => ?_, fun ϖ hϖ j hj g => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, ha.inv g k hk, hb.inv g k hk]`. Establish `e1` using `ha.eig ϖ hϖ j hj g`. Establish `e2` using `hb.eig ϖ hϖ j hj g`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1`, `e2`, the goal using `[tj_sum w n hϖ j]`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib, e1, e2]`. Consider the case `smul z a _ ha`. Use `⟨hB.card, fun g k hk => ?_, fun ϖ hϖ j hj g => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, ha.inv g k hk]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e1` using `ha.eig ϖ hϖ j hj g`. Rewrite `e1`, the goal using `[tj_sum w n hϖ j]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => mul_left_comm _ _ _`. Use `_ = _ := by rw [e1, mul_left_comm]`.
+A detailed English derivation is pending.
 -/
 private theorem eig_span {K : Type} [Field K] [NumberField K] (w : P K) {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin n) (Kv w)) V) {B : Multiset ℂˣ} (hB : GlobalTheory.LFun.HasSatGL w ρ B)
@@ -143,7 +141,7 @@ private theorem eig_span {K : Type} [Field K] [NumberField K] (w : P K) {n : ℕ
         _ = _ := by rw [e1, mul_left_comm]
 
 /- English proof (translation)
-Establish `hO : ∀ x, c x ∈ Formalism.UG.Ov M w ↔ x ∈ Formalism.UG.Ov K v` using `fun x => by`. Express the relevant statement in the definitionally equal form `Valued.v (c x) ≤ 1 ↔ Valued.v x ≤ 1`. Rewrite using `[hc]`. Establish `hGv : ∀ (g : GL (Fin n) (Kv v)) i j, (Matrix.GeneralLinearGroup.map c.toRingHom g).1 i j = c (g.1 i j)` using `fun _ _ _ => rfl`. Simplify using `only [GlobalTheory.LFun.KGL, GlobalTheory.AdelicU.mem_GLint_iff, ← map_inv, hGv, hO]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem kgl_map {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] {n : ℕ} {v : P K} {w : P M}
     (c : Kv v ≃+* Kv w) (hc : ∀ x, Valued.v (c x) = Valued.v x) (g : GL (Fin n) (Kv v)) :
@@ -155,23 +153,21 @@ private theorem kgl_map {K M : Type} [Field K] [NumberField K] [Field M] [Number
   simp only [GlobalTheory.LFun.KGL, GlobalTheory.AdelicU.mem_GLint_iff, ← map_inv, hGv, hO]
 
 /- English proof (translation)
-Introduce `E _ _ _ D W M N P π Φ hΦ v w hs B hB hFix g`. Take `⟨hq, i, hc, hx, hv⟩` from `hs`. Take `⟨θ, hθ⟩` from `UpperTheory.ConvolutionTheory.R2.I.splt ℚ E D v w i hc hx`. Establish `hmc` using `UpperTheory.ConvolutionTheory.R2.I.key ℚ E D W M π v θ _ hθ Φ hΦ g`. Set `gm : GL (Fin 2) (Kv v) →* GL (Fin 2) (Kv w)` to `Matrix.GeneralLinearGroup.map i.toRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `gi : GL (Fin 2) (Kv w) →* GL (Fin 2) (Kv v)` to `Matrix.GeneralLinearGroup.map i.symm.toRingHom`. Establish `hgm : ∀ y, gm (gi y) = y` using `fun y => by`. Use extensionality with `a b`. Simplify using `[gm, gi]`. Establish `hgi : ∀ y, gi (gm y) = y` using `fun y => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `[gm, gi]`. Set `c : GL (Fin 2) (Kv v) → ℂ` to `fun x => WE D Φ.1 (g * lc w (gm x))`. Establish `hinv : ∀ x (k : GlobalTheory.LFun.KGL v 2), c (x * (GlobalTheory.LFun.KGL v 2).subtype k) = c x`. Introduce `x k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : gm k.1 ∈ GlobalTheory.LFun.KGL w 2` using `(kgl_map i hv k.1).1 k.2`. Express the relevant statement in the definitionally equal form `WE D Φ.1 (g * lc w (gm (x * k.1))) = WE D Φ.1 (g * lc w (gm x))`. Unfold `WE`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Use `beta_reduce`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, ← mul_assoc g, ← mul_assoc _ _ (lc w (gm k.1)), hFix _ _ hk]`. Use `haveI : CompactSpace (GlobalTheory.LFun.KGL v 2) := isCompact_iff_compactSpace.mp (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL v 2).2`. Establish `hsm : ∀ f, ∀ᶠ h in 𝓝 (1 : GlobalTheory.LFun.KGL v 2), π.locRep v ((GlobalTheory.LFun.KGL v 2).subtype h) f = f` using `fun f => (continuous_subtype_val.tendsto (1 : GlobalTheory.LFun.KGL v 2)).eventually (((UpperTheory.ConvolutionTheory.R2.I.locSm ℚ π v).1 f).mem_nhds (by simp))`. Establish `h1` using `mc_fix (π.locRep v) (GlobalTheory.LFun.KGL v 2).subtype hsm hmc hinv`. Set `ρ' : Representation ℂ (GL (Fin 2) (Kv w)) π.V` to `(π.locRep v).comp gi`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hq' : Formalism.UG.qV E w = Formalism.UG.qV ℚ v`. Simplify `hq` using `[Formalism.UG.qV, Ideal.absNorm_apply, Submodule.cardQuot_apply, normV]`. Establish `hB' : GlobalTheory.LFun.HasSatGL w ρ' B` using `GlobalTheory.IsoPull.hasSatGL_of_ringEquiv i hv hq' (LinearEquiv.refl ℂ _) (fun x f => by`. Express the relevant statement in the definitionally equal form `π.locRep v (gi (gm x)) f = π.locRep v x f`. Rewrite using `[hgi]) hB`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun y => WE D Φ.1 (g * finGL E 2 (locGL E 2 w y))) = LinearMap.funLeft ℂ ℂ gi c`. Use function extensionality and compare the values at `y`. Express the relevant statement in the definitionally equal form `_ = WE D Φ.1 (g * lc w (gm (gi y)))`. Rewrite using `[hgm]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `eig_span w ρ' hB' ((Submodule.map_span_le _ _ _).2 ?_ (Submodule.mem_map_of_mem h1))` and prove the remaining obligations. Introduce and unpack `_ ⟨Λ, f, hf, rfl⟩`. Use `Submodule.subset_span ⟨Λ, f, fun k hk => ?_, rfl⟩` and prove the remaining obligations. Establish `: gi k ∈ GlobalTheory.LFun.KGL v 2` using `(kgl_map i hv (gi k)).2 (by rwa [hgm])`.
-
-Conclude with `hf ⟨gi k, this⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.splitEig :
     SplitEig := by

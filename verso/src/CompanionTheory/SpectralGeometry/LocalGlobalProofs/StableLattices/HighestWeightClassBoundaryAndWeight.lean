@@ -27,9 +27,9 @@ theorem cre_app (i : Pos n) (x : Cn n V) (B : Finset (Pos n)) :
     cre i x B = if i ∈ B then CompanionTheory.D.LK.sg i B • x (B.erase i) else 0 := rfl
 
 /- English proof (translation)
-Unfold `CompanionTheory.D.LK.sg`. Use `congr 2`. Use extensionality with `j`. Simplify using `only [mem_filter, mem_erase]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `fun h => ⟨h.1.2, h.2⟩`. Conclude with `fun h => ⟨⟨fun e => by subst e; exact lt_irrefl _ h.2, h.1⟩, h.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sg_erase (i : Pos n) (B : Finset (Pos n)) : CompanionTheory.D.LK.sg i (B.erase i) = CompanionTheory.D.LK.sg i B := by
   unfold CompanionTheory.D.LK.sg
@@ -41,13 +41,13 @@ theorem sg_erase (i : Pos n) (B : Finset (Pos n)) : CompanionTheory.D.LK.sg i (B
   · exact fun h => ⟨⟨fun e => by subst e; exact lt_irrefl _ h.2, h.1⟩, h.2⟩
 
 /- English proof (translation)
-Unfold `CompanionTheory.D.LK.sg`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sg_sq (i : Pos n) (B : Finset (Pos n)) : CompanionTheory.D.LK.sg i B * CompanionTheory.D.LK.sg i B = 1 := by
   unfold CompanionTheory.D.LK.sg; rw [← pow_add, ← two_mul, pow_mul]; simp
 
 /- English proof (translation)
-Rewrite using `[cre_app]`. Use `split_ifs with h`. Rewrite using `[ann_app, if_neg (notMem_erase i B), insert_erase h, sg_erase, smul_smul, sg_sq, one_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cre_ann (i : Pos n) (x : Cn n V) (B : Finset (Pos n)) :
     cre i (ann i x) B = if i ∈ B then x B else 0 := by
@@ -57,11 +57,11 @@ theorem cre_ann (i : Pos n) (x : Cn n V) (B : Finset (Pos n)) :
   · rfl
 
 /- English proof (translation)
-Unfold `adC`. Establish `e1 : (a = i.1.1 ∧ k.1 = (a, i.1.2)) ↔ (k = i ∧ i.1.1 = a)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨Subtype.ext (h2.trans (Prod.ext h1 rfl)), h1.symm⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨rfl, h⟩`. Conclude with `⟨h.symm, Prod.ext h rfl⟩`. Establish `e2 : (i.1.2 = a ∧ k.1 = (i.1.1, a)) ↔ (k = i ∧ i.1.2 = a)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨Subtype.ext (h2.trans (Prod.ext rfl h1.symm)), h1⟩`. Introduce and unpack `⟨rfl, h⟩`. Conclude with `⟨h, Prod.ext rfl h⟩`. Simplify using `only [e1, e2]`. Apply the tactic sequence `by_cases hk : k = i <;> simp [hk]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adC_self (a : Fin n) (i k : Pos n) :
     adC a a i k = if k = i then ((if i.1.1 = a then 1 else 0) - (if i.1.2 = a then 1 else 0) : ℂ) else 0 := by
@@ -78,9 +78,9 @@ theorem adC_self (a : Fin n) (i k : Pos n) :
   by_cases hk : k = i <;> simp [hk]
 
 /- English proof (translation)
-Simplify using `only [adL, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, Pi.smul_apply, Module.End.mul_apply, adC_self]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem adL_self_apply (a : Fin n) (x : Cn n V) (B : Finset (Pos n)) :
     adL a a x B = ∑ i : Pos n, (((if i.1.1 = a then 1 else 0) - (if i.1.2 = a then 1 else 0) : ℂ)) •
@@ -94,27 +94,25 @@ theorem adL_self_apply (a : Fin n) (x : Cn n V) (B : Finset (Pos n)) :
   · simp
 
 /- English proof (translation)
-Introduce `n ε lev V _ _ E γ u _ hu`. Establish `memA : ∀ i : Pos n, i ∈ omU ε lev ↔ ε i.1.1 = ε i.1.2 ∧ lev i.1.1 < lev i.1.2` using `fun i => by simp [omU]`. Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `B`. Rewrite using `[CompanionTheory.D.LK.bd_apply, Finset.sum_eq_zero, Finset.sum_eq_zero, add_zero, Pi.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `fun i _ => Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun k _ => ?_ split_ifs with ht` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Take `⟨h1, -, -, h4⟩` from `CompanionTheory.D.LK.tri_ne h`. Establish `e : insert i (insert j (B.erase k)) = omU ε lev`. Assume the negation of the conclusion as `h'`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h4 (Pi.single_eq_of_ne h' _)`. Establish `ci` using `(memA i).1 (e ▸ mem_insert_self _ _)`. Establish `cj` using `(memA j).1 (e ▸ mem_insert_of_mem (mem_insert_self _ _))`. Take `⟨-, -, t1, t2, t3⟩` from `ht`. Establish `ck : k ∈ omU ε lev` using `(memA k).2 ⟨by rw [t2, t3, ci.1, t1]; exact cj.1, by rw [t2, t3]; exact (ci.2.trans_eq (congrArg lev t1)).trans cj.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ck` using `[← e]`. Establish `pi` using `i.2`. Establish `pj` using `j.2`. Break down `mem_insert.1 ck with h | h` into its components or cases. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `pj` using `[← t1, t3]`. Conclude with `lt_irrefl _ pj`. Break down `mem_insert.1 h with h | h` into its components or cases. Substitute `h` using the available equality. Rewrite `pi` using `[← t2, t1]`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `lt_irrefl _ pi`. Conclude with `notMem_erase _ _ h`. Both sides reduce to the same expression. Introduce `i _`. Rewrite using `[if_pos rfl, ann_app]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hi`. Conclude with `map_zero _`. Distinguish the cases in `e : insert i B = omU ε lev`. Establish `hiA` using `(memA i).1 (e ▸ mem_insert_self i B)`. Rewrite using `[e, Pi.single_eq_same, map_smul, hu.2 _ _ i.2 hiA.1, smul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Pi.single_eq_of_ne e, smul_zero, map_zero]`. Use function extensionality and compare the values at `B show E a a ((Pi.single (omU ε lev) u : Cn n V) B) + adL a a (Pi.single (omU ε lev) u) B = _`. Rewrite using `[adL_self_apply]`. Simplify using `only [cre_ann]`. Distinguish the cases in `e : B = omU ε lev`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Substitute `e` using the available equality. Rewrite using `[Pi.single_eq_same, hu.1 a, Pi.smul_apply, Pi.single_eq_same]`. Establish `hs : ∀ i : Pos n, ((if i.1.1 = a then 1 else 0) - (if i.1.2 = a then 1 else 0) : ℂ) • (if i ∈ omU ε lev then u else 0) = (if i ∈ omU ε lev then ((if i.1.1 = a then 1 else 0) - (if i.1.2 = a then 1 else 0) : ℂ) else 0) • u`. Apply the tactic sequence `intro i; split_ifs <;> simp`. Rewrite using `[Finset.sum_congr rfl fun i _ => hs i, ← Finset.sum_smul, ← add_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[← Finset.sum_filter, Finset.filter_mem_eq_inter, univ_inter, Finset.sum_sub_distrib, Finset.sum_boole, Finset.sum_boole]`. Simplify using `only [wt]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using `[Pi.single_eq_of_ne e]`.
+A detailed English derivation is pending.
 -/
 theorem top_cycle_weight : ∀ (n : ℕ) (ε : Fin n → Bool) (lev : Fin n → ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V) (γ : Fin n → ℝ) (u : V), Monotone lev → KHighest ε E γ u →

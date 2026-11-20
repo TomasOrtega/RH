@@ -21,7 +21,7 @@ def poleV (μ : Fin n → ℝ) : Fin n → ℂ := fun s => ((μ s + (1 - (n : �
 def poleVd (μ : Fin n → ℝ) : Fin n → ℂ := fun s => ((-μ s + (1 - (n : ℝ)) / 2 : ℝ) : ℂ)
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[PowerSeries.coeff_rescale, PowerSeries.coeff_C]`. Use `split_ifs with h`. Simplify using `[h]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rescale_neg_one_const (c : ℂ) :
     PowerSeries.rescale (-1 : ℂ) (PowerSeries.C c) = PowerSeries.C c := by
@@ -32,7 +32,7 @@ theorem rescale_neg_one_const (c : ℂ) :
   · simp
 
 /- English proof (translation)
-Establish `h1 : PowerSeries.rescale (-1 : ℂ) (1 - PowerSeries.C c * PowerSeries.X) = 1 + PowerSeries.C c * PowerSeries.X`. Simplify using `[PowerSeries.rescale_X, rescale_neg_one_const]`. Establish `hc0 : PowerSeries.constantCoeff (1 - PowerSeries.C c * PowerSeries.X) ≠ 0` using `by simp`. Establish `hc1 : PowerSeries.constantCoeff (1 + PowerSeries.C c * PowerSeries.X) ≠ 0` using `by simp`. Rewrite using `[PowerSeries.eq_inv_iff_mul_eq_one hc1, ← h1, ← map_mul, PowerSeries.inv_mul_cancel _ hc0, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rescale_neg_one_geometric_inv (c : ℂ) :
     PowerSeries.rescale (-1 : ℂ) ((1 - PowerSeries.C c * PowerSeries.X)⁻¹) =
@@ -45,9 +45,9 @@ theorem rescale_neg_one_geometric_inv (c : ℂ) :
   rw [PowerSeries.eq_inv_iff_mul_eq_one hc1, ← h1, ← map_mul, PowerSeries.inv_mul_cancel _ hc0, map_one]
 
 /- English proof (translation)
-Establish `key : ∀ s, (1 + PowerSeries.X * (1 - PowerSeries.C ((-l) s) * PowerSeries.X)⁻¹) = PowerSeries.rescale (-1 : ℂ) (1 - PowerSeries.X * (1 - PowerSeries.C (l s) * PowerSeries.X)⁻¹)`. Introduce `s`. Rewrite using `[map_sub, map_one, map_mul, PowerSeries.rescale_X, rescale_neg_one_geometric_inv]`. Simplify using `only [Pi.neg_apply, map_neg, map_one, neg_mul, one_mul, sub_neg_eq_add]`. Unfold `resSeries gelfandSeries`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Repeatedly rewrite using `[key]`. Rewrite using `[← map_prod, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem residueSeries_neg (l : Fin n → ℂ) :
     resSeries (-l) = -PowerSeries.rescale (-1 : ℂ) (gelfandSeries l) := by
@@ -62,7 +62,7 @@ theorem residueSeries_neg (l : Fin n → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[residueSeries_neg, map_neg, PowerSeries.coeff_rescale]`. Unfold `gval`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coeff_residueSeries_neg (l : Fin n → ℂ) (k : ℕ) :
     PowerSeries.coeff (k + 1) (resSeries (-l)) = (-1 : ℂ) ^ k * gval l k := by
@@ -71,7 +71,7 @@ theorem coeff_residueSeries_neg (l : Fin n → ℂ) (k : ℕ) :
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Simplify using `only [poleV, icShift, Pi.neg_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pole_eq_neg_shift (μ : Fin n → ℝ) : poleV μ = -icShift (-μ) := by
   funext s
@@ -80,7 +80,7 @@ theorem pole_eq_neg_shift (μ : Fin n → ℝ) : poleV μ = -icShift (-μ) := by
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Simplify using `only [poleVd, icShift, Pi.neg_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dualPole_eq_neg_shift (μ : Fin n → ℝ) : poleVd μ = -icShift μ := by
   funext s
@@ -89,7 +89,7 @@ theorem dualPole_eq_neg_shift (μ : Fin n → ℝ) : poleVd μ = -icShift μ := 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Establish `hr : (r : ℕ) + 1 ≤ n` using `r.2`. Simplify using `only [icShift, Function.comp_apply, Pi.add_apply, Pi.neg_apply, rho, Fin.revPerm_apply, Fin.val_rev]`. Move the coercions through the operations in `[Nat.cast_sub hr]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem infinitesimalShift_reversed (ν : Fin n → ℝ) :
     icShift ((fun r => -ν (Fin.rev r)) + rho n) = icShift (-(ν + rho n)) ∘ Fin.revPerm := by
@@ -100,7 +100,7 @@ theorem infinitesimalShift_reversed (ν : Fin n → ℝ) :
   ring
 
 /- English proof (translation)
-Introduce `k x hx`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, gelfand_hw hE hv k, smul_comm]`. Rewrite using `[map_smul, gelfand_hw (antiE_isGlRep hE) (antiE_hw hv) k, infinitesimalShift_reversed, gval_perm, smul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasGelfandChar_span_hw {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E) {ν : Fin n → ℝ} {v : M}
     (hv : IsHWVec E ν v) : HasGelfandChar E (ν + rho n) (Submodule.span ℂ {v}) := by
@@ -111,7 +111,7 @@ theorem hasGelfandChar_span_hw {E : Fin n → Fin n → Module.End ℂ M} (hE : 
   · rw [map_smul, gelfand_hw (antiE_isGlRep hE) (antiE_hw hv) k, infinitesimalShift_reversed, gval_perm, smul_comm]
 
 /- English proof (translation)
-Rewrite using `[ptr_eeV_pow, LinearMap.smul_apply, (hS k x hx).2, smul_smul, pole_eq_neg_shift, coeff_residueSeries_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptr_eeV_pow_char {E : Fin n → Fin n → Module.End ℂ M} {μ : Fin n → ℝ} {S : Submodule ℂ M}
     (hS : HasGelfandChar E μ S) (k : ℕ) (x : M) (hx : x ∈ S) :
@@ -119,7 +119,7 @@ theorem ptr_eeV_pow_char {E : Fin n → Fin n → Module.End ℂ M} {μ : Fin n 
   rw [ptr_eeV_pow, LinearMap.smul_apply, (hS k x hx).2, smul_smul, pole_eq_neg_shift, coeff_residueSeries_neg]
 
 /- English proof (translation)
-Rewrite using `[ptr_eeVd_pow, LinearMap.smul_apply, (hS k x hx).1, smul_smul, dualPole_eq_neg_shift, coeff_residueSeries_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptr_eeVd_pow_char {E : Fin n → Fin n → Module.End ℂ M} {μ : Fin n → ℝ} {S : Submodule ℂ M}
     (hS : HasGelfandChar E μ S) (k : ℕ) (x : M) (hx : x ∈ S) :

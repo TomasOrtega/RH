@@ -14,14 +14,14 @@ open GlobalTheory.Member
 namespace GlobalTheory.Member.RatElt
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (x y : Fin n → A) :
     Formalism.UG.hform σ J x y = (σ ∘ x) ⬝ᵥ (J *ᵥ y) := by
   simp [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `h : σ ∘ (g *ᵥ x) = (g.map σ) *ᵥ (σ ∘ x)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec σ g x i`. Rewrite using `[hform_eq, hform_eq, h, Formalism.UG.cT, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (σ ∘ x) (g.map σ)ᵀ, Matrix.vecMul_transpose]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_mulVec {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J g : Matrix (Fin n) (Fin n) A)
     (x y : Fin n → A) :
@@ -32,9 +32,9 @@ theorem hform_mulVec {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J g : M
     Matrix.dotProduct_mulVec (σ ∘ x) (g.map σ)ᵀ, Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Establish `h : σ ∘ (Pi.single i 1 : Fin n → A) = Pi.single i 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hk]`. Rewrite using `[hform_eq, h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hform_single {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (i j : Fin n) :
     Formalism.UG.hform σ J (Pi.single i 1) (Pi.single j 1) = J i j := by
@@ -45,9 +45,9 @@ theorem hform_single {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Mat
   rw [hform_eq, h]; simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Formalism.UG.cT σ (g : Matrix (Fin n) (Fin n) A) * J * (g : Matrix (Fin n) (Fin n) A) = J ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h x y`. Rewrite using `[hform_mulVec, h]`. Introduce `h`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Use `h (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[hform_mulVec, hform_single, hform_single]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_UJ_iff {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A)
     (g : GL (Fin n) A) :
@@ -61,9 +61,9 @@ theorem mem_UJ_iff {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matri
     rwa [hform_mulVec, hform_single, hform_single] at this
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (inclR (F` using `F) (E := E) R) := Algebra.TensorProduct.includeRight_injective (algebraMap F R).injective`. Establish `hc : Formalism.UG.cT (sigR R σ) ((g : Matrix (Fin n) (Fin n) E).map (inclR (F` using `F) R)) = (Formalism.UG.cT (σ : E →+* E) (g : Matrix (Fin n) (Fin n) E)).map (inclR (F := F) R) := by`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, sigR, inclR]`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR R σ) ((g : Matrix (Fin n) (Fin n) E).map (inclR (F := F) R)) * J.map (inclR (F := F) R) * (g : Matrix (Fin n) (Fin n) E).map (inclR (F := F) R) = J.map (inclR (F := F) R) ↔ Formalism.UG.cT (σ : E →+* E) (g : Matrix (Fin n) (Fin n) E) * J * (g : Matrix (Fin n …`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hc, ← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `(Matrix.map_injective hinj).eq_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bc_mem_HR_iff {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     [Nontrivial R] (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (g : GL (Fin n) E) :
@@ -80,7 +80,7 @@ theorem bc_mem_HR_iff {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) 
   exact (Matrix.map_injective hinj).eq_iff
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.bc, inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bc_map_incl {F E : Type} [Field F] [Field E] [Algebra F E] {R S : Type} [CommRing R] [Algebra F R]
     [CommRing S] [Algebra F S] (φ : R →ₐ[F] S) {n : ℕ} (g : GL (Fin n) E) :
@@ -92,9 +92,9 @@ theorem bc_map_incl {F E : Type} [Field F] [Field E] [Algebra F E] {R S : Type} 
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `herm Formalism.UG.hform`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `x b * (-V.gram a b) * cc (y a) = -(cc (y a) * V.gram a b * x b)`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_eq (V : HSp D) (x y : Fin V.rank → D.host.E) :
     herm (-V.gramᵀ) x y = - Formalism.UG.hform (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram y x := by
@@ -107,7 +107,7 @@ theorem herm_eq (V : HSp D) (x y : Fin V.rank → D.host.E) :
   ring
 
 /- English proof (translation)
-Establish `: Nontrivial (AF D.host.F)` using `(AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F).nontrivial`. Rewrite using `[bc_mem_HR_iff, mem_UJ_iff]`. Simplify using `only [herm_eq, neg_inj]`. Conclude with `forall_comm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem herm_iff (V : HSp D) (g : GL (Fin V.rank) D.host.E) :
     (∀ u v, herm (-V.gramᵀ) ((g : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ u)
@@ -119,7 +119,7 @@ theorem herm_iff (V : HSp D) (g : GL (Fin V.rank) D.host.E) :
   exact forall_comm
 
 /- English proof (translation)
-Unfold `finHom IsRat at *`. Rewrite using `[MonoidHom.comp_apply, h]`. Conclude with `bc_map_incl _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_eq {V : HSp D} {γ : GA D V} {γ' : GL (Fin V.rank) D.host.E} (h : IsRat V γ γ') :
     (finHom V γ).1 = (γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (F := D.host.F) (Af D.host.F)) := by
@@ -128,7 +128,7 @@ theorem fin_eq {V : HSp D} {γ : GA D V} {γ' : GL (Fin V.rank) D.host.E} (h : I
   exact bc_map_incl _ _
 
 /- English proof (translation)
-Unfold `infHom IsRat at *`. Rewrite using `[MonoidHom.comp_apply, h]`. Conclude with `bc_map_incl _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_eq {V : HSp D} {γ : GA D V} {γ' : GL (Fin V.rank) D.host.E} (h : IsRat V γ γ') :
     (infHom V γ).1 = (γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (F := D.host.F) (Ainf D.host.F)) := by
@@ -137,15 +137,13 @@ theorem inf_eq {V : HSp D} {γ : GA D V} {γ' : GL (Fin V.rank) D.host.E} (h : I
   exact bc_map_incl _ _
 
 /- English proof (translation)
-Introduce `D V`. Establish `hmem : ∀ γ γ', IsRat V γ γ' → Formalism.UG.bc (incA D) γ' ∈ HR (AF D.host.F) D.sp.cm.sig V.gram`. Introduce `γ γ' h`. Rewrite using `[← h]`. Conclude with `γ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Nontrivial (AF D.host.F)` using `(AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F).nontrivial`. Use `⟨fun γ => ⟨?_, ?_⟩, fun γ γ' h => (herm_iff V γ').2 (hmem γ γ' h), fun γ' h => ⟨⟨_, (herm_iff V γ').1 h⟩, rfl⟩, fun γ γ' δ δ' h k => ⟨?_, ?_⟩, fun γ γ' h => ⟨fun v => ?_, fun τ θ hθ => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨γ', -, h⟩`. Conclude with `⟨γ', h.symm⟩`. Introduce and unpack `⟨γ', h⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨γ', (bc_mem_HR_iff _ _ _ _).1 (hmem γ γ' h), h.symm⟩`. Unfold `IsRat at *`. Rewrite using `[map_mul, map_mul, h, k]`. Unfold `IsRat at *`. Rewrite using `[map_inv, map_inv, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fin_eq h]`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (inclR (F := D.host.F) (Af D.host.F)) (γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E) v i).symm`. Unfold `archM`. Rewrite using `[inf_eq h]`.
-
-Use extensionality with `i j`. Conclude with `hθ.1 _`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem rational_elements : ∀ (D : D7) (V : HSp D), (∀ γ, γ ∈ GQ V ↔ ∃ γ', IsRat V γ γ') ∧ (∀ γ γ', IsRat V γ γ' → (∀ u v, herm (-V.gramᵀ) ((γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ u) ((γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ v) = herm (-V.gramᵀ) u v)) ∧ (∀ γ' : GL (Fin V.rank) D.host.E, (∀ u v, herm (-V.gramᵀ) ((γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ u) ((γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ v) = herm (-V.gramᵀ) u v) → ∃ γ, IsRat V γ γ') ∧ (∀ γ γ' δ δ', IsRat V γ γ' → IsRat V δ δ' → IsRat V (γ * δ) (γ' * δ') ∧ IsRat V γ⁻¹ γ'⁻¹) ∧ ∀ γ γ', IsRat V γ γ' → (∀ v, (finHom V γ).1 *ᵥ finVec V v = finVec V ((γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ v)) ∧ ∀ τ θ, Formalism.MainNotions.StandardLattice.IsInfEmb τ θ → archM V θ γ = (γ' : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map τ := by
   intro D V

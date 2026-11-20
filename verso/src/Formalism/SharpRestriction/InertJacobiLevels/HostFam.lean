@@ -28,11 +28,11 @@ def Rt (s : ℕ) : Ranks where
   m_sq_le_N := by omega
 
 /- English proof (translation)
-Introduce `h`. Establish `hu : IsUnit (m : 𝓞 K)`. Rewrite using `[← Ideal.span_singleton_eq_top]`. Conclude with `top_le_iff.1 h`. Establish `hn : IsUnit (Algebra.norm ℤ (m : 𝓞 K))` using `hu.map _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[show (m : 𝓞 K) = algebraMap ℤ (𝓞 K) (m : ℤ) by simp, Algebra.norm_algebraMap, Int.isUnit_iff]`. Establish `hr : 0 < Module.finrank ℤ (𝓞 K)` using `Module.finrank_pos`. Establish `h2 : (2 : ℤ) ^ Module.finrank ℤ (𝓞 K) ≤ (m : ℤ) ^ Module.finrank ℤ (𝓞 K)` using `pow_le_pow_left₀ (by norm_num) (by exact_mod_cast hm) _`. Establish `h3 : (2 : ℤ) ≤ 2 ^ Module.finrank ℤ (𝓞 K)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases hn with h | h <;> omega`.
+A detailed English derivation is pending.
 -/
 theorem top_primitive {K : Type} [Field K] [NumberField K] (m : ℕ) (hm : 1 < m) :
     ¬ (⊤ : Ideal (𝓞 K)) ≤ Ideal.span {(m : 𝓞 K)} := by
@@ -51,7 +51,7 @@ theorem top_primitive {K : Type} [Field K] [NumberField K] (m : ℕ) (hm : 1 < m
   rcases hn with h | h <;> omega
 
 /- English proof (translation)
-Proceed by induction on `B with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Finset.prod_range_succ]`. Conclude with `ih.mul ⟨n, rfl⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem oddProd_odd (B : ℕ) : Odd (∏ i ∈ Finset.range B, (2 * i + 1)) := by
   induction B with
@@ -59,15 +59,15 @@ theorem oddProd_odd (B : ℕ) : Odd (∏ i ∈ Finset.range B, (2 * i + 1)) := b
   | succ n ih => rw [Finset.prod_range_succ]; exact ih.mul ⟨n, rfl⟩
 
 /- English proof (translation)
-Use `set P : ℕ := ∏ i ∈ Finset.range B, (2 * i + 1) with hP`. Establish `hodd : Odd P` using `oddProd_odd B`. Establish `hP0 : P ≠ 0` using `by rintro h; rw [h] at hodd; exact absurd hodd (by decide)`. Establish `hco : IsCoprime (8 * (P : ℤ) - 1) ((16 * P : ℕ) : ℤ)` using `⟨-(8 * (P : ℤ) + 1), 4 * P, by push_cast; ring⟩`. Take `⟨d, hdN, hdp, hd⟩` from `Nat.forall_exists_prime_gt_and_zmodEq N (q := 16 * P) (a := 8 * (P : ℤ) - 1) (by omega) hco`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hd.symm.dvd`. Move the coercions through the operations in `at hc`. Take `⟨s, hs⟩` from `hodd`. Use `⟨d, hdN, hdp, ?_, fun p hp h2 hB => ?_⟩` and prove the remaining obligations. Establish `h1 : (d : ℤ) = 16 * (s + P * c) + 7`.
+Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (P : ℤ) = 2 * s + 1` using `by exact_mod_cast hs`. Take the linear combination `hc + 8 * this`. Use linear arithmetic over natural numbers and integers. Take `⟨i, hi⟩` from `hp.odd_of_ne_two h2`. Establish `hdv : p ∣ P`.
+Take a linear combination of the given relations to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hi]; exact Finset.dvd_prod_of_mem _ (Finset.mem_range.2 (by omega))`. Take `⟨e, he⟩` from `hdv`. Establish `he' : (P : ℤ) = p * e` using `by exact_mod_cast he`. Establish `: (-(d : ℤ)) % p = 1 % p`. Establish `h3 : (-(d : ℤ)) = 1 + p * (-(8 * e) - 16 * e * c)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-1 : ℤ) * hc + (-8 - 16 * c) * he'`. Rewrite using `[h3, Int.add_mul_emod_self_left]`. Rewrite using `[jacobiSym.mod_left' this, jacobiSym.one_left]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_d (B N : ℕ) : ∃ d : ℕ, N < d ∧ d.Prime ∧ d % 16 = 7 ∧
     ∀ p : ℕ, p.Prime → p ≠ 2 → p ≤ B → jacobiSym (-(d : ℤ)) p = 1 := by
@@ -98,15 +98,15 @@ theorem exists_d (B N : ℕ) : ∃ d : ℕ, N < d ∧ d.Prime ∧ d % 16 = 7 ∧
     rw [jacobiSym.mod_left' this, jacobiSym.one_left]
 
 /- English proof (translation)
-Take `⟨s, hs⟩ : ∃ s : ℕ, d = 16 * s + 7` from `⟨d / 16, by omega⟩`. Establish `hs' : (d : ℤ) = 16 * s + 7` using `by exact_mod_cast hs`. Establish `hco : IsCoprime (1 + 6 * (d : ℤ)) ((8 * d : ℕ) : ℤ)`. Use `push_cast`. Conclude with `IsCoprime.mul_right ⟨3, -(36 * s + 16), by rw [hs']; ring⟩ ⟨1, -6, by ring⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hqN, hqp, hq⟩` from `Nat.forall_exists_prime_gt_and_zmodEq N (q := 8 * d) (a := 1 + 6 * (d : ℤ)) (by omega) hco`. Take `⟨c, hc⟩` from `hq.symm.dvd`. Move the coercions through the operations in `at hc`. Establish `h8 : q % 8 = 3`. Establish `h1 : (q : ℤ) = 8 * (12 * s + 5 + d * c) + 3` using `by linear_combination hc + 6 * hs'`.
+Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨q, hqN, hqp, h8, ?_⟩` and prove the remaining obligations. Establish `hq4 : q % 4 = 3` using `by omega`. Establish `hd4 : d % 4 = 3` using `by omega`. Establish `hqd : jacobiSym (q : ℤ) d = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (q : ℤ) % d = 1 % d`. Establish `h3 : (q : ℤ) = 1 + d * (6 + 8 * c)` using `by linear_combination hc`. Rewrite using `[h3, Int.add_mul_emod_self_left]`. Rewrite using `[jacobiSym.mod_left' this, jacobiSym.one_left]`. Rewrite using `[jacobiSym.neg _ (Nat.odd_iff.2 (by omega)), ZMod.χ₄_nat_three_mod_four hq4, jacobiSym.quadratic_reciprocity_three_mod_four hd4 hq4, hqd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 theorem exists_q (d N : ℕ) (hd : d % 16 = 7) : ∃ q : ℕ, N < q ∧ q.Prime ∧ q % 8 = 3 ∧
     jacobiSym (-(d : ℤ)) q = 1 := by
@@ -135,16 +135,16 @@ theorem exists_q (d N : ℕ) (hd : d % 16 = 7) : ∃ q : ℕ, N < q ∧ q.Prime 
   norm_num
 
 /- English proof (translation)
-Take `⟨g, h1, h2, h3⟩` from `Nat.forall_exists_prime_gt_and_modEq N (q := M) (a := 1) hM (Nat.coprime_one_left M)`. Conclude with `⟨g, h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_one_mod (M N : ℕ) (hM : M ≠ 0) : ∃ g : ℕ, N < g ∧ g.Prime ∧ g ≡ 1 [MOD M] := by
   obtain ⟨g, h1, h2, h3⟩ := Nat.forall_exists_prime_gt_and_modEq N (q := M) (a := 1) hM (Nat.coprime_one_left M)
   exact ⟨g, h1, h2, h3⟩
 
 /- English proof (translation)
-Establish `hv : padicValNat l (g ^ e - 1) ≠ 0`. Introduce `h0`. Establish `h2` using `h.2`. Rewrite `h2` using `[h0, mul_zero, pow_zero]`. Use `Nat.one_le_pow e g hg` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h3 : g ^ e - 1 ∣ ∏ i ∈ Finset.range 9, (g ^ (i + 1) - 1)`. Use `Finset.dvd_prod_of_mem (fun i => g ^ (i + 1) - 1) (Finset.mem_range.2 (show e - 1 < 9 by omega))` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel h1]`. Then use the resulting hypothesis. Conclude with `((dvd_pow_self l hv).trans pow_padicValNat_dvd).trans h3`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exc_dvd_prod {g e l : ℕ} (hg : 1 ≤ g) (h1 : 1 ≤ e) (h9 : e ≤ 9) (h : Formalism.CyclotomicNorms.Exc g e l) :
     l ∣ ∏ i ∈ Finset.range 9, (g ^ (i + 1) - 1) := by
@@ -160,19 +160,19 @@ theorem exc_dvd_prod {g e l : ℕ} (hg : 1 ≤ g) (h1 : 1 ≤ e) (h9 : e ≤ 9) 
   exact ((dvd_pow_self l hv).trans pow_padicValNat_dvd).trans h3
 
 /- English proof (translation)
-Introduce and unpack `⟨-, hlt⟩`. Establish `: Fact l.Prime` using `⟨hl⟩`. Use `set x : ℕ := M * (1 + M * c) with hx`. Establish `hgx : g = x + 1` using `by rw [hg, hx]; ring`. Use `set S : ℕ := ∑ i ∈ Finset.range e, (x + 1) ^ i with hS`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgeo : S * x + 1 = g ^ e` using `by rw [hgx]; exact geom_sum_mul_add x e`. Establish `hSe : S ≡ e [MOD M]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff]`. Rewrite using `[hS, hx]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h16 : 16 ≤ l ^ 4`. Combine the equalities or inequalities in the displayed calculation. Establish `hnd : ¬ l ^ 4 ∣ S`. Introduce `hd`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `Nat.le_of_dvd (by omega) ((hSe.dvd_iff hM).1 hd)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hS0 : S ≠ 0` using `by rintro h; exact hnd (h ▸ dvd_zero _)`. Establish `hvS : padicValNat l S ≤ 3`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hnd ((pow_dvd_pow l (by omega)).trans pow_padicValNat_dvd)`. Establish `hlM : l ∣ M` using `(dvd_pow_self l (by norm_num)).trans hM`. Establish `hv1 : padicValNat l (1 + M * c) = 0`. Apply `padicValNat.eq_zero_of_not_dvd` to reduce the goal to its premises. Introduce `hd`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hl.one_lt.ne' (Nat.dvd_one.1 ((Nat.dvd_add_left (hlM.mul_right c)).1 hd))`. Establish `hval : padicValNat l (g ^ e - 1) = padicValNat l S + padicValNat l M`. Rewrite using `[← hgeo, Nat.add_sub_cancel, hx, padicValNat.mul hS0 (by positivity), padicValNat.mul hM0.ne' (by positivity), hv1, add_zero]`. Establish `hle : l ^ (4 * padicValNat l (g ^ e - 1)) ≤ M ^ 7`. Establish `a1 : l ^ padicValNat l M ≤ M` using `Nat.le_of_dvd hM0 pow_padicValNat_dvd`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `a2 : l ^ 4 ≤ M` using `Nat.le_of_dvd hM0 hM`. Combine the equalities or inequalities in the displayed calculation. Establish `hge : g ≤ g ^ e` using `Nat.le_self_pow (by omega) g`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem not_exc_of_cong {M l g e c : ℕ} (hl : l.Prime) (hM : l ^ 4 ∣ M) (hM0 : 0 < M)
     (hg : g = 1 + M + M ^ 2 * c) (hbig : M ^ 7 ≤ g) (h1 : 1 ≤ e) (h9 : e ≤ 9) : ¬ Formalism.CyclotomicNorms.Exc g e l := by
@@ -218,19 +218,17 @@ theorem not_exc_of_cong {M l g e c : ℕ} (hl : l.Prime) (hM : l ^ 4 ∣ M) (hM0
   omega
 
 /- English proof (translation)
-Use `set P : ℕ := g0 * ∏ i ∈ Finset.range 9, (g0 ^ (i + 1) - 1) with hP`. Establish `hP0 : 0 < P`. Use `Nat.mul_pos hg0.pos (Finset.prod_pos fun i _ => ?_)` and prove the remaining obligations. Conclude with `Nat.sub_pos_of_lt (Nat.one_lt_pow (Nat.succ_ne_zero i) hg0.one_lt)`. Use `set M : ℕ := (m * P) ^ 4 with hM`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmP : 0 < m * P` using `Nat.mul_pos (Nat.pos_of_ne_zero hm) hP0`. Establish `hM0 : 0 < M` using `pow_pos hmP 4`. Establish `hPM : P ≤ M`. Combine the equalities or inequalities in the displayed calculation. Establish `hco : (1 + M).Coprime (M ^ 2)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `Nat.Coprime.pow_right` to reduce the goal to its premises. Rewrite using `[Nat.coprime_add_self_left]`. Conclude with `Nat.coprime_one_left M`. Take `⟨g1, hgt, hp, hmod⟩` from `Nat.forall_exists_prime_gt_and_modEq (M ^ 7 + M + 1 + g0) (q := M ^ 2) (a := 1 + M) (pow_ne_zero 2 hM0.ne') hco`. Take `⟨c, hc⟩` from `(Nat.modEq_iff_dvd' (show 1 + M ≤ g1 by omega)).1 hmod.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg1 : g1 = 1 + M + M ^ 2 * c` using `by omega`. Establish `hbig : M ^ 7 ≤ g1` using `by omega`. Establish `hmM : m ∣ M` using `(Dvd.intro P rfl).trans (dvd_pow_self _ (by norm_num))`. Use `⟨g1, by omega, hp, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : g1 ≡ 1 + M [MOD m]` using `hmod.of_dvd (hmM.trans (dvd_pow_self M (by norm_num)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : 1 + M ≡ 1 + 0 [MOD m]` using `Nat.ModEq.add_left 1 ((Nat.modEq_zero_iff_dvd).2 hmM)`. Conclude with `h1.trans h2`. Rewrite using `[Set.disjoint_left]`. Introduce `l hl0 hl1`. Establish `hlP : l.Prime ∧ l ∣ P`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hl0 with h | ⟨e, h1, h9, h⟩` into its components or cases. Rewrite using `[Set.mem_singleton_iff.1 h]`. Conclude with `⟨hg0, Dvd.intro _ rfl⟩`. Conclude with `⟨h.1, (exc_dvd_prod hg0.pos h1 h9 h).trans (Dvd.intro_left _ rfl)⟩`. Break down `hl1 with h | ⟨e, h1, h9, h⟩` into its components or cases.
-
-Use `Nat.le_of_dvd hP0 hlP.2` as an intermediate fact. Rewrite `this` using `[Set.mem_singleton_iff.1 h]`. Establish `: M ≤ M ^ 7` using `Nat.le_self_pow (by norm_num) _`. Use linear arithmetic over natural numbers and integers. Conclude with `not_exc_of_cong hlP.1 (pow_dvd_pow_of_dvd (hlP.2.trans (Dvd.intro_left _ rfl)) 4) hM0 hg1 hbig h1 h9 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_bb_disjoint (m g0 : ℕ) (hm : m ≠ 0) (hg0 : g0.Prime) : ∃ g1 : ℕ, g0 < g1 ∧ g1.Prime ∧
     g1 ≡ 1 [MOD m] ∧ Disjoint (Formalism.CyclotomicNorms.BB 9 g0) (Formalism.CyclotomicNorms.BB 9 g1) := by
@@ -298,9 +296,9 @@ structure Arith (B N : ℕ) where
 attribute [instance] Arith.instField Arith.instNF
 
 /- English proof (translation)
-Take `⟨d, hdN, hdp, hd16, hsp⟩` from `exists_d B N`. Take `⟨q, hqN, hqp, hq8, hj⟩` from `exists_q d N hd16`. Establish `hM : 16 * q * d ≠ 0` using `Nat.mul_ne_zero (Nat.mul_ne_zero (by norm_num) hqp.ne_zero) hdp.ne_zero`. Take `⟨g0, h0, h0p, h0m⟩` from `exists_one_mod (16 * q * d) 61 hM`. Take `⟨g1, h1, h1p, h1m, hbb⟩` from `exists_bb_disjoint (16 * q * d) g0 hM h0p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨L, iF, iN, ζ, a, b, hl⟩` from `Formalism.TwoAdicCyclotomicDecomposition.layerExists 4 q d`. Conclude with `⟨⟨q, d, ⟨hqp, hdp, hq8, hd16, hj⟩, hqN, hdN, hsp, g0, g1, h0p, h1p, h0, h1, h0m, h1m, hbb, L, ζ, a, b, hl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem arith_nonempty (B N : ℕ) : Nonempty (Arith B N) := by
   obtain ⟨d, hdN, hdp, hd16, hsp⟩ := exists_d B N
@@ -312,12 +310,12 @@ theorem arith_nonempty (B N : ℕ) : Nonempty (Arith B N) := by
   exact ⟨⟨q, d, ⟨hqp, hdp, hq8, hd16, hj⟩, hqN, hdN, hsp, g0, g1, h0p, h1p, h0, h1, h0m, h1m, hbb, L, ζ, a, b, hl⟩⟩
 
 /- English proof (translation)
-The claim follows from `Formalism.HC.frameCyc_h_injective 2 1`.
+A detailed English derivation is pending.
 -/
 theorem frame2_inj : Function.Injective (Formalism.HC.cyclicFrame 2).h := Formalism.HC.frameCyc_h_injective 2 1
 
 /- English proof (translation)
-The claim follows from `frame2_inj`.
+A detailed English derivation is pending.
 -/
 theorem Rt_h_injective (s : ℕ) : Function.Injective (Rt s).toFrame.h := frame2_inj
 
@@ -332,7 +330,7 @@ Both sides reduce to the same expression.
 theorem Arith.ax_QS {B N : ℕ} (A : Arith B N) : A.ax.QS = A.QS := rfl
 
 /- English proof (translation)
-Establish `h1 : g ≡ 1 [MOD 16]` using `(h.of_mul_right _).of_mul_right _`. Rewrite using `[Nat.Coprime, h1.gcd_eq, Nat.gcd_one_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem coprime_sixteen_of_mod {g q d : ℕ} (h : g ≡ 1 [MOD 16 * q * d]) : Nat.Coprime g 16 := by
   have h1 : g ≡ 1 [MOD 16] := (h.of_mul_right _).of_mul_right _
@@ -341,7 +339,7 @@ private theorem coprime_sixteen_of_mod {g q d : ℕ} (h : g ≡ 1 [MOD 16 * q * 
 variable {s B : ℕ} (A : Arith B (4 * (2 * s + 15) * 9 + 1))
 
 /- English proof (translation)
-Apply `Set.nonempty_of_ncard_ne_zero` to reduce the goal to its premises. Rewrite using `[A.ax.der.cmType.2.1]`. Use `(Formalism.HC.cyclicFrame 2).ord_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Arith.cm_nonempty : A.ax.cmType.Nonempty := by
   apply Set.nonempty_of_ncard_ne_zero
@@ -350,12 +348,12 @@ theorem Arith.cm_nonempty : A.ax.cmType.Nonempty := by
   omega
 
 /- English proof (translation)
-The claim follows from `A.cm_nonempty`.
+A detailed English derivation is pending.
 -/
 theorem Arith.ax_cm_nonempty : A.ax.toHostRaw.cmType.Nonempty := A.cm_nonempty
 
 /- English proof (translation)
-The claim follows from `A.ax.der.principal`.
+A detailed English derivation is pending.
 -/
 theorem Arith.bb_ex : ∃ 𝔟 : Ideal (𝓞 A.ax.E),
     differentIdeal (𝓞 A.ax.K) (𝓞 A.ax.E) = 𝔟 * (A.ax.conj • 𝔟) ∧ 𝔟 ⊔ A.ax.conj • 𝔟 = ⊤ ∧
@@ -363,7 +361,7 @@ theorem Arith.bb_ex : ∃ 𝔟 : Ideal (𝓞 A.ax.E),
   A.ax.der.principal
 
 /- English proof (translation)
-The claim follows from `Formalism.HC.D7.gal_sqq φ hH h σ`.
+A detailed English derivation is pending.
 -/
 private theorem gal_sqq_ax (φ : Formalism.HC.Frame) (hinj : Function.Injective φ.h) {q d : ℕ} (hH : HostHyp q d)
     (he : 2 ≤ φ.e) {L : Type} [Field L] [NumberField L] {ζ a b : L} (h : IsLayer (φ.e + 2) q d ζ a b)
@@ -443,14 +441,14 @@ theorem hostOf_levelPrimes (u0 : (Rt s).A) (T Lw : ℕ) : (hostOf A u0 T Lw).lev
     {31, 61, A.g0, A.g1} ∪ ({T} : Finset ℕ).filter (fun p => Nat.Coprime p 16) := rfl
 
 /- English proof (translation)
-The claim follows from `Finset.mem_union_right _ (Finset.mem_filter.2 ⟨Finset.mem_singleton_self T, Nat.Coprime.pow_right 4 (Nat.coprime_two_right.2 hT)⟩)`.
+A detailed English derivation is pending.
 -/
 theorem hostOf_T_level (u0 : (Rt s).A) {T : ℕ} (Lw : ℕ) (hT : Odd T) : T ∈ (hostOf A u0 T Lw).levelPrimes :=
   Finset.mem_union_right _ (Finset.mem_filter.2 ⟨Finset.mem_singleton_self T,
     Nat.Coprime.pow_right 4 (Nat.coprime_two_right.2 hT)⟩)
 
 /- English proof (translation)
-Establish `hc : Nat.Coprime T 16` using `Nat.Coprime.pow_right 4 (Nat.coprime_two_right.2 hT)`. Rewrite using `[hostOf_levelPrimes, Finset.filter_singleton, if_pos hc]`. Use extensionality with `p`. Simplify using `[or_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hostOf_levelPrimes_of_odd (u0 : (Rt s).A) {T : ℕ} (Lw : ℕ) (hT : Odd T) :
     (hostOf A u0 T Lw).levelPrimes = {31, 61, A.g0, A.g1, T} := by
@@ -460,7 +458,7 @@ theorem hostOf_levelPrimes_of_odd (u0 : (Rt s).A) {T : ℕ} (Lw : ℕ) (hT : Odd
   simp [or_assoc]
 
 /- English proof (translation)
-The claim follows from `hostOf_T_level A u0 Lw hT`.
+A detailed English derivation is pending.
 -/
 theorem hostOf_mem_level (u0 : (Rt s).A) {T : ℕ} (Lw : ℕ) (hT : Odd T) :
     T ∈ (hostOf A u0 T Lw).levelPrimes := hostOf_T_level A u0 Lw hT

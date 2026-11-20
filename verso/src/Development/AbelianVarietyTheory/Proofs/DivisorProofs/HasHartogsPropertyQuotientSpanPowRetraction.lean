@@ -8,9 +8,9 @@ open scoped TensorProduct
 namespace GlobalTheory.GoodEtaleSection
 
 /- English proof (translation)
-Establish `hρa : ∀ b, ρ (algebraMap A R b) = b` using `fun b => by simpa using congrArg (fun f => f b) hρ`. Establish `hmem : ρ r ∈ Ideal.span {a}`. Use `GlobalTheory.PrincipalHartogs.mem_span_singleton_of_forall_height_le_one a (ρ r) fun p hp hp1 => ?_` and prove the remaining obligations. Take `⟨u, hu, m', hm⟩` from `h p hp hp1`. Use `⟨u, hu, Ideal.mem_span_singleton.2 ⟨ρ m', ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hm` using `[← hker, RingHom.mem_ker, map_sub, map_mul, map_mul, hρa, hρa, sub_eq_zero]`. Conclude with `hm`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton.1 hmem`. Use `⟨algebraMap A R b, ?_⟩` and prove the remaining obligations. Rewrite using `[← hker, RingHom.mem_ker, map_sub, map_mul, hρa, hρa, hb, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hartRep_one (A R : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A]
     [CommRing R] [Algebra A R] (ρ : R →+* A) (hρ : ρ.comp (algebraMap A R) = RingHom.id A)
@@ -30,19 +30,19 @@ theorem hartRep_one (A R : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] 
   rw [← hker, RingHom.mem_ker, map_sub, map_mul, hρa, hρa, hb, sub_self]
 
 /- English proof (translation)
-Establish `hρa : ∀ b, ρ (algebraMap A R b) = b` using `fun b => by simpa using congrArg (fun f => f b) hρ`. Establish `ht0 : ρ t = 0` using `by rw [← RingHom.mem_ker, hker]; exact Ideal.mem_span_singleton_self t`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro r _; exact ⟨0, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `r hr`. Take `⟨x, hx⟩` from `hartRep_one A R ρ hρ t hker a r fun p hp hp1 => by`. Take `⟨u, hu, m', hm⟩` from `hr p hp hp1`. Conclude with `⟨u, hu, m', Ideal.span_singleton_le_span_singleton.2 (dvd_pow_self t n.succ_ne_zero) hm⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, hy⟩` from `Ideal.mem_span_singleton.1 hx`. Take `⟨y', hy'⟩` from `ih y fun p hp hp1 => by`. Take `⟨u, hu, m', hm⟩` from `hr p hp hp1`. Take `⟨q, hq⟩` from `Ideal.mem_span_singleton.1 hm`. Establish `key : t * (algebraMap A R u * y) - algebraMap A R a * (m' - algebraMap A R u * x) = t ^ (n + 1) * q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take the linear combination `hq - (algebraMap A R u) * hy`. Establish `h2 : a * ρ (m' - algebraMap A R u * x) = 0`. Use `congrArg ρ key` as an intermediate fact. Rewrite `this` using `[map_sub]`. Simplify using `only [map_mul, map_pow, ht0, hρa, zero_mul, zero_sub, zero_pow n.succ_ne_zero, neg_eq_zero] at this`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Establish `h3 : m' - algebraMap A R u * x ∈ Ideal.span {t}`. Rewrite using `[← hker, RingHom.mem_ker]`. Conclude with `(mul_eq_zero.1 h2).resolve_left ha`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton.1 h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨u, hu, z, Ideal.mem_span_singleton.2 ⟨q, ?_⟩⟩` and prove the remaining obligations. Establish `h4 : t * (algebraMap A R u * y - algebraMap A R a * z - t ^ n * q) = 0`. Rewrite `key` using `[hz]`. Take the linear combination `key`. Conclude with `sub_eq_zero.1 ((mul_left_mem_nonZeroDivisors_eq_zero_iff ht).1 h4)`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨s, hs⟩` from `Ideal.mem_span_singleton.1 hy'`. Use `⟨x + t * y', Ideal.mem_span_singleton.2 ⟨s, ?_⟩⟩` and prove the remaining obligations. Take the linear combination `hy + t * hs`.
+A detailed English derivation is pending.
 -/
 theorem hartRep (A R : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A]
     [CommRing R] [Algebra A R] (ρ : R →+* A) (hρ : ρ.comp (algebraMap A R) = RingHom.id A)
@@ -87,11 +87,9 @@ theorem hartRep (A R : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsI
     linear_combination hy + t * hs
 
 /- English proof (translation)
-Introduce `A R _ _ _ _ _ _ ρ hρ t hker ht n a ha m hm`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Take `⟨r', hr'⟩` from `hartRep A R ρ hρ t hker ht a ha n r fun p hp hp1 => by`. Take `⟨u, hu, m', hm'⟩` from `hm p hp hp1`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective m'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨u, hu, s, ?_⟩` and prove the remaining obligations. Rewrite `hm'` using `[Algebra.smul_def, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, ← map_mul, Ideal.Quotient.eq, Ideal.span_singleton_pow]`. Conclude with `hm'`. Use `⟨Ideal.Quotient.mk _ r', ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq, Ideal.span_singleton_pow]`.
-
-Conclude with `hr'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hart_quot : ∀ (A R : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A]
     [CommRing R] [Algebra A R] (ρ : R →+* A), ρ.comp (algebraMap A R) = RingHom.id A →

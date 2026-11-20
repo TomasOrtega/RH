@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.KummerTheory.SecSHPf
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Establish `h` using `Presheaf.equalizerSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)) (X := op U) x y hxy`. Use `hU _ h` as an intermediate fact. Simplify using `[Presheaf.equalizerSieve] at this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Introduce `s`. Establish `h` using `Presheaf.imageSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)) (U := op U) s`. Take `⟨t, ht⟩` from `hU _ h`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `at ht`. Conclude with `ht`.
+A detailed English derivation is pending.
 -/
 theorem bij_of_top (R : Type) [CommRing R] (M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)) (U : Scheme.{0})
     (hU : ∀ S ∈ Scheme.etaleTopology U, S (𝟙 U)) : Function.Bijective (ofRings.sec M U) := by
@@ -32,11 +32,11 @@ def ShSect : Prop := ∀ (A : Type) [CommRing A], SH A → ∀ (Y : Scheme.{0}) 
   Etale f → Surjective f → ∃ s : Spec (CommRingCat.of A) ⟶ Y, s ≫ f = 𝟙 _
 
 /- English proof (translation)
-Introduce `S hS`. Take `⟨hH, hsc⟩` from `hA`. Take `⟨𝒰, hle⟩` from `Scheme.mem_grothendieckTopology_iff.1 hS`. Take `⟨i, y, hy⟩` from `((Scheme.presieve₀_mem_precoverage_iff 𝒰.toPreZeroHypercover).1 𝒰.mem₀).1 (IsLocalRing.closedPoint A : Spec (CommRingCat.of A))`. Establish `he : Etale (𝒰.f i)` using `𝒰.map_prop i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsurj : Surjective (𝒰.f i)`. Use `⟨fun p => ?_⟩` and prove the remaining obligations. Establish `hsp : p ⤳ (𝒰.f i) y`. Rewrite using `[hy]`. Conclude with `IsLocalRing.specializes_closedPoint (R := A) p`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y', -, hy'⟩` from `Flat.generalizingMap (𝒰.f i) hsp`. Conclude with `⟨y', hy'⟩`. Take `⟨s, hs'⟩` from `hs A ⟨hH, hsc⟩ _ (𝒰.f i) he hsurj`. Use `S.downward_closed (hle (𝒰.X i) (𝒰.f i) (Presieve.ofArrows.mk i)) s` as an intermediate fact. Rewrite `this` using `[hs']`. Then use the resulting hypothesis.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem top_of_sect (hs : ShSect) (A : Type) [CommRing A] (hA : SH A) :
     ∀ S ∈ Scheme.etaleTopology (Spec (CommRingCat.of A)), S (𝟙 _) := by
@@ -61,7 +61,7 @@ end LateralTheory.KummerTheory.SecSHPf
 namespace LateralTheory.KummerTheory
 
 /- English proof (translation)
-Introduce `A _ hA R _ M`. Conclude with `SecSHPf.bij_of_top R M _ (SecSHPf.top_of_sect h A hA)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem SecSH_of (h : SecSHPf.ShSect) : SecSH := by
   intro A _ hA R _ M

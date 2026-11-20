@@ -14,23 +14,23 @@ noncomputable section
 namespace GlobalTheory.LowRow
 
 /- English proof (translation)
-Introduce `eps Fm`. Take `⟨x0, h0⟩` from `GlobalTheory.ShNums.size_rel Fm`. Use `⟨x0, fun x hx1 hx i j => ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, heta, hw, h4, h2b, -, hw1, hsum⟩` from `h0 x hx hx1 i`. Establish `SZ` using `Fm.sizes x hx1 i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `P` using `Fm.params x hx1 i`. Generalize the expression as in `Fm.L x i = L at *`. Generalize the expression as in `Fm.D x i = D at *`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hG, -, -⟩` from `SZ`. Establish `hxp : 0 < L.sc.x` using `by linarith`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hb' : 0 < L.sc.b'` using `div_pos (mul_pos hxp hb) (Real.exp_pos _)`. Establish `he` using `L.etaSz_pos`. Establish `hSc` using `L.Sc_pos`. Establish `hq : L.sc.b' / L.sc.x ≤ L.sc.b'` using `div_le_self hb'.le (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : 0 < L.sc.b' / L.sc.x` using `div_pos hb' hxp`. Establish `hwj : ∀ τ, wj D (j.1 + 1) τ = (((D.hc τ).e j : ℚ) : ℝ)`. Introduce `τ`. Unfold `wj`. Rewrite using `[dif_pos (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hwin : ∀ τ, 0 < wj D (j.1 + 1) τ ∧ wj D (j.1 + 1) τ ≤ 2 * L.sc.b`. Introduce `τ`. Distinguish the cases in `h1 : (D.eTau τ : D.R.GG) ∈ D.host.thickPlaces`. Use `L.win_thick (j.1 + 1) (by omega) (by omega) τ h1` as an intermediate fact.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`. Distinguish the cases in `h2 : (D.eTau τ : D.R.GG) ∈ D.host.topPlaces`. Take `⟨t, ht, e⟩` from `Finset.mem_image.mp h2`. Establish `a` using `L.win_top (j.1 + 1) (by omega) (by omega) τ ⟨t, ht⟩ e.symm`. Establish `a3` using `L.bT_ge ⟨t, ht⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a4` using `GlobalTheory.Ggeo.bT_le_five_quarters P ⟨t, ht⟩`. Apply the tactic sequence `constructor <;> linarith [a.1, a.2]`. Establish `a` using `L.win_thin (j.1 + 1) (by omega) (by omega) τ ⟨(D.eTau τ).2, h2, h1⟩`. Apply the tactic sequence `constructor <;> linarith [a.1, a.2]`. Use `⟨fun τ => ⟨?_, ?_, fun l => ?_, fun l => ?_⟩, fun l => (hG l l).1⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hwj]`. Conclude with `(hwin τ).1`. Rewrite using `[← hwj]`. Conclude with `(hwin τ).2`. Use `L.cloud_v τ l` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨this.1, by linarith [this.2]⟩`. Use `L.be_close τ l j` as an intermediate fact. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem weightSizes_along : ∀ (eps : ℝ) (Fm : FamP eps), ∃ x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x →
     ∀ (i : Fm.Ix x) j, Sizes (Fm.D x i) j (Fm.L x i).sc.b := by

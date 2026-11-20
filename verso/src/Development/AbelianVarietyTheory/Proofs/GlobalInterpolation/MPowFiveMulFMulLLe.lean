@@ -7,19 +7,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Establish `hn` using `h.n_le`. Take `⟨-, ⟨-, hm⟩, -, -⟩` from `h`. Establish `hx1` using `s.one_lt_alt`. Establish `hx0 : 0 < s.x` using `by linarith`. Establish `he` using `s.eps_pos`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm2 : (R.m : ℝ) ≤ 2 * s.x ^ (1 / 2 - s.eps / 16)`. Use `hm.trans (le_of_eq ?_)` and prove the remaining obligations. Establish `hd : s.delta1 = s.x ^ (-(s.eps / 8))` using `rfl`. Rewrite using `[hd, Real.sqrt_eq_rpow, ← Real.rpow_one_add' hx0.le (by linarith [s.eps_lt]), ← Real.rpow_mul hx0.le]`. Use `congr 2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hm5 : (R.m : ℝ) ^ 5 ≤ 32 * s.x ^ (5 / 2 - 5 * s.eps / 16)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← Real.rpow_natCast (s.x ^ (1 / 2 - s.eps / 16)), ← Real.rpow_mul hx0.le]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Evaluate the numerical expressions. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hf : (R.f : ℝ) ≤ 4 * s.x ^ (2 + 8 * s.eps + s.eps / 100)`.
+Evaluate the numerical expressions. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Ranks.f]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL : s.L = s.x ^ s.eps` using `rfl`. Establish `hL0 : 0 ≤ s.x ^ s.eps` using `by positivity`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hL]`. Use `gcongr`. Use `_ = 128 * (s.x ^ (5 / 2 - 5 * s.eps / 16) * s.x ^ (2 + 8 * s.eps + s.eps / 100) * s.x ^ s.eps) := by ring`. Use `_ ≤ 128 * s.x ^ (9 / 2 + 9 * s.eps) := by`.
-
-Rewrite using `[← Real.rpow_add hx0, ← Real.rpow_add hx0]`. Conclude with `mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le hx1.le (by linarith)) (by norm_num)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem m_pow_five_mul_f_mul_L_le (s : Scale) (R : Ranks) (h : RankVal s R) :
     (R.m : ℝ) ^ 5 * R.f * s.L ≤ 128 * s.x ^ (9 / 2 + 9 * s.eps) := by
@@ -53,29 +51,25 @@ theorem m_pow_five_mul_f_mul_L_le (s : Scale) (R : Ranks) (h : RankVal s R) :
         exact mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le hx1.le (by linarith)) (by norm_num)
 
 /- English proof (translation)
-Introduce `eps CG CF he _ hG hF`. Use `set K : ℝ := 2 * (2 + 256 * CG + CF) + 2 with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Use `⟨K ^ (1 / eps), fun s R hs hx hR => ?_⟩` and prove the remaining obligations. Establish `hx1` using `s.one_lt_alt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : 0 < s.x` using `by linarith`. Establish `hb` using `m_pow_five_mul_f_mul_L_le s R hR`. Establish `hk` using `hR.2.2.1.1`. Rewrite `hb`, `hk` using `[hs]`. Establish `hKx : K ≤ s.x ^ eps`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_mul hK0, one_div_mul_cancel he.ne', Real.rpow_one]`. Use `_ ≤ s.x ^ eps := by gcongr`. Use `set X : ℝ := s.x ^ (9 / 2 + 9 * eps) with hX`. Establish `hxX : s.x ≤ X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hX1 : 1 ≤ X` using `by linarith`. Establish `hkX : K * X ≤ R.k`. Use `le_trans ?_ hk` and prove the remaining obligations. Establish `: s.x ^ (9 / 2 + 10 * eps) = s.x ^ eps * X`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hX, ← Real.rpow_add hx0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hk2 : 2 ≤ R.k` using `by have := R.m_add_three_le_k; omega`. Establish `hlog : Real.log s.x ≤ X`. Use `Real.log_le_sub_one_of_pos hx0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (3 : ℝ) ≤ Real.exp 2` using `by have := Real.add_one_le_exp (2 : ℝ); linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hl2 : (1 / 2 : ℝ) ≤ Real.log 2` using `by have := Real.log_two_gt_d9; linarith`. Establish `hA : CG * (R.m : ℝ) ^ 5 * R.f * s.L ≤ 128 * CG * X`. Combine the equalities or inequalities in the displayed calculation. Establish `hFX : Real.log s.x * CF ≤ X * CF` using `by gcongr`. Establish `hkc : ((R.k - 2 : ℕ) : ℝ) = (R.k : ℝ) - 2` using `by rw [Nat.cast_sub hk2]; norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmain : 3 * Real.exp (CG * (R.m : ℝ) ^ 5 * R.f * s.L) ^ 2 * s.x ^ CF ≤ ((2 ^ (R.k - 2) : ℕ) : ℝ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_def_of_pos hx0]`. Use `gcongr`. Use `_ = Real.exp (2 + 256 * CG * X + X * CF) := by`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sq, ← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ Real.exp (((R.k - 2 : ℕ) : ℝ) * Real.log 2) := by`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : 2 + 256 * CG * X + X * CF ≤ ((R.k - 2 : ℕ) : ℝ) * (1 / 2)`. Rewrite using `[hkc]`. Rewrite `hkX` using `[hK]`. Use the polynomial consequences of the given equalities and inequalities. Use `h1.trans ?_` and prove the remaining obligations.
-
-Use `gcongr`. Use `_ = ((2 ^ (R.k - 2) : ℕ) : ℝ) := by`. Rewrite using `[Real.exp_nat_mul, Real.exp_log (by norm_num)]; push_cast; rfl`. Establish `hle` using `Nat.ceil_le.2 hmain`. Establish `hcard : Fintype.card (Fin ⌈3 * Real.exp (CG * (R.m : ℝ) ^ 5 * R.f * s.L) ^ 2 * s.x ^ CF⌉₊) ≤ Fintype.card (Fin (R.k - 2) → Bool)`.
-
-Simplify using `using hle`. Take `⟨c⟩` from `Function.Embedding.nonempty_of_card_le hcard`. Conclude with `⟨c, c.injective, Nat.ceil_pos.2 (by positivity)⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_injective_words : ∀ eps CG CF : ℝ, 0 < eps → eps < 1 / 52 → 0 ≤ CG → 0 ≤ CF → ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks), s.eps = eps → x0 ≤ s.x → RankVal s R → ∃ c : Fin ⌈3 * Real.exp (CG * (R.m : ℝ) ^ 5 * R.f * s.L) ^ 2 * s.x ^ CF⌉₊ → (Fin (R.k - 2) → Bool), Function.Injective c ∧ 0 < ⌈3 * Real.exp (CG * (R.m : ℝ) ^ 5 * R.f * s.L) ^ 2 * s.x ^ CF⌉₊ := by
   intro eps CG CF he _ hG hF

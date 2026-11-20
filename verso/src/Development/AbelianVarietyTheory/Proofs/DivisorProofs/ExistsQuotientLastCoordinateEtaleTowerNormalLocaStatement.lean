@@ -10,7 +10,7 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrep
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.IsEtTower.exists_quotient_last | exact GlobalTheory.FieldPair.IsEtTower.exists_quotient_last | (intros; apply GlobalTheory.FieldPair.IsEtTower.exists_quotient_last <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_quotient_lastCoordinate_etaleTowerNormalLocal : ∀ {K L : Type} [Field K] [Field L] (cK : ℂ →+* K) (cL : ℂ →+* L) (r : ℕ) (R : Subring K) (T : Subring L)
     (ι : R →+* T) (ψ : T →+* R) (τ : Fin (r + 1) → T) (hT : IsEtTower cK R cL T ι ψ τ),

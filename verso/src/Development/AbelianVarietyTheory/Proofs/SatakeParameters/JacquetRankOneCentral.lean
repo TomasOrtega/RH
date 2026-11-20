@@ -16,21 +16,19 @@ namespace GlobalTheory.JacGL1
 open GlobalTheory.SmGL GlobalTheory.PRep Matrix in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ d V _ _ σ ω s' b f j hd hj hω z x`. Establish `hsum : ∑ i, b i = 1`. Use `Fintype.card_congr f` as an intermediate fact. Simplify `this` using `[Fintype.card_sigma, hd]`. Establish `hsplit` using `Finset.add_sum_erase Finset.univ b (Finset.mem_univ j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `ha : ∀ i, i ≠ j → IsEmpty (Fin (b i))` using `fun i hi => by`. Establish `h0 : ∑ i ∈ Finset.univ.erase j, b i = 0` using `by omega`. Rewrite using `[Finset.sum_eq_zero_iff.1 h0 i (Finset.mem_erase.2 ⟨hi, Finset.mem_univ i⟩)]`. Use `infer_instance`. Establish `h1 : leviEmb k f (Pi.mulSingle j (GeneralLinearGroup.scalar (Fin (b j)) z)) = GeneralLinearGroup.scalar (Fin d) z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i i'`. Take `⟨⟨a, y⟩, rfl⟩` from `f.surjective i`. Take `⟨⟨a', y'⟩, rfl⟩` from `f.surjective i'`. Take `rfl : a = j` from `by_contra fun h => (ha a h).elim y`. Take `rfl : a' = a` from `by_contra fun h => (ha a' h).elim y'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[leviEmb_apply_same]`. Simplify using `[GeneralLinearGroup.scalar, diagonal_apply]`. Establish `h2 : modExp (fun i => Fin (b i)) j = 0`. Unfold `modExp`. Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a hb`. Use `ha a (Finset.mem_filter.1 hb).2.ne` as an intermediate fact. Conclude with `Nat.cast_eq_zero.2 Fintype.card_eq_zero`. Introduce `a hb`. Use `ha a (Finset.mem_filter.1 hb).2.ne'` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.cast_eq_zero.2 Fintype.card_eq_zero`. Establish `h3 : deltaHalf k (fun i => Fin (b i)) (Pi.mulSingle j (GeneralLinearGroup.scalar (Fin (b j)) z)) = 1`. Rewrite using `[deltaHalf_apply]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : a = j`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `hb` using the available equality. Simplify using `[h2]`. Rewrite using `[Pi.mulSingle_eq_of_ne hb, map_one, map_one]`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `(jac_mk f σ _ v).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[h3, h1, hω z v, inv_one, Units.val_one, one_smul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jac_mulSingle_scalar : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (d : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (σ : Representation ℂ (GL (Fin d) k) V) (ω : kˣ →* ℂˣ) (s' : ℕ) (b : Fin s' → ℕ) (f : (Σ j, Fin (b j)) ≃ Fin d) (j : Fin s'), d = 1 → b j = 1 → GlobalTheory.SmGL.HasCentralChar σ ω → ∀ (z : kˣ) (x : GlobalTheory.PRep.Jacquet σ (GlobalTheory.SmGL.unipRad k f)), GlobalTheory.SmGL.jac f σ (Pi.mulSingle j (Matrix.GeneralLinearGroup.scalar (Fin (b j)) z)) x = (ω z : ℂ) • x := by
   intro k _ _ _ _ d V _ _ σ ω s' b f j hd hj hω z x

@@ -13,7 +13,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Take `⟨w, τ, Z, -, hy⟩` from `hγ`. Take `⟨y, e, -⟩` from `hy t`. Rewrite using `[e]`. Conclude with `commute_embArch σ J y (mem_finPts_iff_forall.1 hk w)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_isRealLine_finPts {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) (t : ℝ) {k : GAd σ J}
     (hk : k ∈ finPts σ J) : Commute (γ t) k := by
@@ -22,11 +22,11 @@ theorem commute_isRealLine_finPts {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J
   rw [e]; exact commute_embArch σ J y (mem_finPts_iff_forall.1 hk w)
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro _ k hk hk' g`. Conclude with `hφ k hk hk' g`. Consider the case `cons γ l ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hl k hk hk' g`. Establish `hγ` using `hl γ List.mem_cons_self`. Establish `ih'` using `ih (fun δ hδ => hl δ (List.mem_cons_of_mem _ hδ)) k hk hk'`. Simplify using `only [List.foldr_cons, lineDer]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[mul_assoc, ← (commute_isRealLine_finPts hγ t hk').eq, ← mul_assoc, ih']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem foldr_lineDer_mul_level {φ : GAd σ J → ℂ} {U : Subgroup (GAd σ J)}
     (hφ : ∀ k ∈ U, k ∈ finPts σ J → ∀ g, φ (g * k) = φ g) :
@@ -45,9 +45,9 @@ theorem foldr_lineDer_mul_level {φ : GAd σ J → ℂ} {U : Subgroup (GAd σ J)
     rw [mul_assoc, ← (commute_isRealLine_finPts hγ t hk').eq, ← mul_assoc, ih']
 
 /- English proof (translation)
-Establish `hc : Tendsto (fun g => g₀⁻¹ * g) (𝓝 g₀) (𝓝 1)`. Conclude with `Continuous.tendsto' (by fun_prop) g₀ 1 (by simp)`. Establish `h1 : Tendsto (fun h => ofInf σ J (projInf σ J h)) (𝓝 1) (𝓝 1)`. Conclude with `Continuous.tendsto' ((continuous_ofInf σ J).comp (continuous_projInf σ J)) 1 1 (by simp)`. Establish `h2 : Tendsto (fun h => ofFin σ J (projFin σ J h)) (𝓝 1) (𝓝 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `Continuous.tendsto' ((continuous_ofFin σ J).comp (continuous_projFin σ J)) 1 1 (by simp)`. Use `⟨h1.comp hc, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(h2.comp hc).eventually (hU.mem_nhds U.one_mem)] with g hg`. Conclude with `⟨hg, mem_finPts.2 (projInf_ofFin σ J _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem eventually_decomp {U : Subgroup (GAd σ J)} (hU : IsOpen (U : Set (GAd σ J))) (g₀ : GAd σ J) :
     Tendsto (fun g => ofInf σ J (projInf σ J (g₀⁻¹ * g))) (𝓝 g₀) (𝓝 1) ∧
@@ -63,7 +63,7 @@ theorem eventually_decomp {U : Subgroup (GAd σ J)} (hU : IsOpen (U : Set (GAd �
   exact ⟨hg, mem_finPts.2 (projInf_ofFin σ J _)⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.secondKindCoordinates_infiniteAdelicUnitaryPoints F E σ h n J hJ`.
+A detailed English derivation is pending.
 -/
 theorem chart (h : IsCMExt F E σ) (hJ : IsHermND σ J) :
     ∃ (m : ℕ) (η : Fin m → ℝ → GAd σ J) (s : GAd σ J → Fin m → ℝ), (∀ i, IsRealLine σ J (η i)) ∧
@@ -72,15 +72,13 @@ theorem chart (h : IsCMExt F E σ) (hJ : IsHermND σ J) :
   GlobalTheory.T.secondKindCoordinates_infiniteAdelicUnitaryPoints F E σ h n J hJ
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ φ ⟨U, hU, hlev⟩ _ hsm l hl`. Take `⟨m, η, s, hη, hs, hP⟩` from `chart h hJ`. Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations. Establish `hH : Continuous fun t : Fin m → ℝ => l.foldr lineDer φ (g₀ * (List.ofFn fun i => η i (t i)).prod)` using `(GlobalTheory.ThK.RealLineGrowthDerivative.contDiff_foldr_lineDer hsm l hl m η hη g₀).continuous`. Establish `hη0 : ∀ i, η i 0 = 1` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `isRealLine_add F E σ h n J (η i) (hη i) 0 0`. Rewrite `e` using `[add_zero]`. Conclude with `left_eq_mul.1 e`. Establish `h0 : (List.ofFn fun i => η i ((0 : Fin m → ℝ) i)).prod = 1`. Simplify using `[hη0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨hx, hu⟩` from `eventually_decomp hU g₀`. Establish `hx' : Tendsto (fun g => ofInf σ J (projInf σ J (g₀⁻¹ * g))) (𝓝 g₀) (𝓝[(infPts σ J : Set (GAd σ J))] 1)` using `tendsto_nhdsWithin_iff.2 ⟨hx, Eventually.of_forall fun g => mem_infPts.2 (projFin_ofInf σ J _)⟩`. Establish `key : ∀ᶠ g in 𝓝 g₀, l.foldr lineDer φ (g₀ * (List.ofFn fun i => η i (s (ofInf σ J (projInf σ J (g₀⁻¹ * g))) i)).prod) = l.foldr lineDer φ g` using `by filter_upwards [hu, hx'.eventually hP] with g hu' hP'`. Rewrite using `[← hP']`. Establish `e : g = g₀ * ofInf σ J (projInf σ J (g₀⁻¹ * g)) * ofFin σ J (projFin σ J (g₀⁻¹ * g))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, ofInf_projInf_mul_ofFin_projFin, mul_inv_cancel_left]`. Use `conv_rhs => rw [e]`. Conclude with `(foldr_lineDer_mul_level hlev l hl _ hu'.1 hu'.2 _).symm`. Establish `lim` using `(hH.tendsto 0).comp (hs.comp hx')`. Rewrite `lim` using `[h0, mul_one]`.
-
-Conclude with `lim.congr' key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_foldr_lineDer : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ φ : GAd σ J → ℂ, (∃ U : Subgroup (GAd σ J), IsOpen (U : Set (GAd σ J)) ∧ ∀ k ∈ U, k ∈ finPts σ J → ∀ g, φ (g * k) = φ g) → Continuous φ → IsSm σ J φ → ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, IsRealLine σ J γ) → Continuous (l.foldr lineDer φ) := by
   intro F E _ _ _ _ _ σ h n J hJ φ ⟨U, hU, hlev⟩ _ hsm l hl

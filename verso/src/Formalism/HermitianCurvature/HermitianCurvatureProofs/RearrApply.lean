@@ -20,7 +20,7 @@ Both sides reduce to the same expression.
 theorem inE_apply (p : α × (β × γ)) : inE p = (p.2.1, (p.1, p.2.2)) := rfl
 
 /- English proof (translation)
-Establish `e1` using `MeasurePreserving.symm _ (measurePreserving_prodAssoc μa μb μc)`. Establish `e2` using `(Measure.measurePreserving_swap (μ := μa) (ν := μb)).prod (MeasurePreserving.id μc)`. Establish `e3` using `measurePreserving_prodAssoc μb μa μc`. Conclude with `e3.comp (e2.comp e1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inE_mp (μa : Measure α) (μb : Measure β) (μc : Measure γ) [SFinite μa] [SFinite μb] [SFinite μc] :
     MeasurePreserving (inE : α × (β × γ) ≃ᵐ β × (α × γ)) (μa.prod (μb.prod μc)) (μb.prod (μa.prod μc)) := by
@@ -45,9 +45,9 @@ Both sides reduce to the same expression.
     rearr k r w q = ((q.1.2.1, q.2.2.1), ((q.1.1, q.1.2.2), (q.2.1, q.2.2.2))) := rfl
 
 /- English proof (translation)
-Establish `e1` using `measurePreserving_prodAssoc μa μb (μc.prod μd)`. Establish `e2` using `MeasurePreserving.symm _ (measurePreserving_prodAssoc μb μc μd)`. Establish `e3` using `(Measure.measurePreserving_swap (μ := μb) (ν := μc)).prod (MeasurePreserving.id μd)`. Establish `e4` using `measurePreserving_prodAssoc μc μb μd`. Establish `e5` using `MeasurePreserving.symm _ (measurePreserving_prodAssoc μa μc (μb.prod μd))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(e5.comp ((MeasurePreserving.id μa).prod (e4.comp (e3.comp e2)))).comp e1`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 private theorem measurePreserving_swap4 {α β γ δ : Type} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ]
     [MeasurableSpace δ] (μa : Measure α) (μb : Measure β) (μc : Measure γ) (μd : Measure δ) [SFinite μa]
@@ -65,11 +65,7 @@ private theorem measurePreserving_swap4 {α β γ δ : Type} [MeasurableSpace α
   rfl
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasureOnCompacts S.μW := ⟨fun K hK => S.haarW.finite_compact K hK⟩`. Use `haveI : IsFiniteMeasureOnCompacts S.μW' := ⟨fun K hK => S.haarW'.finite_compact K hK⟩`. Use `haveI : IsFiniteMeasureOnCompacts μ0 := ⟨fun K hK => hμ0.finite_compact K hK⟩`. Use `haveI : IsFiniteMeasureOnCompacts μ0' := ⟨fun K hK => hμ0'.finite_compact K hK⟩`. Use `haveI t1 : SFinite S.μW := inferInstance`.
-
-Use `haveI t2 : SFinite μ0 := inferInstance`. Use `haveI t5 : SFinite S.μW' := inferInstance`. Use `haveI t6 : SFinite μ0' := inferInstance`. Use `haveI t3 : SFinite (volume : Measure (C2.LPidx w → ℂ)) := inferInstance`. Use `haveI t4 : SFinite (volume : Measure (G.UT (r + 1) → ℂ)) := inferInstance`.
-
-Establish `h1` using `(inE_mp S.μW (volume : Measure (C2.LPidx w → ℂ)) μ0).prod (inE_mp S.μW' (volume : Measure (G.UT (r + 1) → ℂ)) μ0')`. Establish `h2` using `measurePreserving_swap4 (volume : Measure (C2.LPidx w → ℂ)) (S.μW.prod μ0) (volume : Measure (G.UT (r + 1) → ℂ)) (S.μW'.prod μ0')`. Conclude with `h2.comp h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mp_rearr (S : B.RealPlaceData k r Wp Wq) (w : Equiv.Perm (Fin (r + 1))) {μ0 μ0' : Measure (Mt k r)}
     (hμ0 : B.IsHaarOn (C2.N0set k r S.z) μ0) (hμ0' : B.IsHaarOn (C2.N0set k r S.z') μ0') :

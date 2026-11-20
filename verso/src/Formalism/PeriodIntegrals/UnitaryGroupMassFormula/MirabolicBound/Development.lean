@@ -35,9 +35,9 @@ def colM {n : ℕ} (x : Fin n → F) : Matrix (Fin (n + 1)) (Fin (n + 1)) F :=
     finSumFinEquiv.symm finSumFinEquiv.symm
 
 /- English proof (translation)
-Simplify using `only [colM]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Use `congr 2`. Simplify using the standard rewrite rules. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[add_comm]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem colM_mul {n : ℕ} (x y : Fin n → F) : colM x * colM y = colM (x + y) := by
   simp only [colM]
@@ -49,7 +49,7 @@ theorem colM_mul {n : ℕ} (x y : Fin n → F) : colM x * colM y = colM (x + y) 
   · simp
 
 /- English proof (translation)
-Simplify using `only [colM]`. Establish `: (Matrix.of fun i (_ : Fin 1) => (0 : Fin n → F) i) = 0` using `by ext; simp`. Rewrite using `[this, Matrix.fromBlocks_one]`. Conclude with `Matrix.submatrix_one_equiv _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colM_zero {n : ℕ} : colM (0 : Fin n → F) = 1 := by
   simp only [colM]
@@ -112,7 +112,7 @@ def SepLemma : Prop :=
 def StepOf : Prop := UnitriangularBlockExtension → ColFacts → ConjCol → RowExists → CharOrth → SepLemma → StepProp
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact hb F`. Consider the case `succ n ih => exact hs F n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem claim_all (hb : BaseProp) (hs : StepProp) (F : Type) [Field F] [Fintype F] : ∀ n, Claim F n := by
   intro n
@@ -121,11 +121,11 @@ theorem claim_all (hb : BaseProp) (hs : StepProp) (F : Type) [Field F] [Fintype 
   | succ n ih => exact hs F n ih
 
 /- English proof (translation)
-Introduce `F _ _ k ψ₀ hψ V _ _ _ π _ hgen`. Take `⟨ℓ, hℓ, hW⟩` from `hgen`. Consider the cases of `k with`. Consider the case `zero`. Rewrite using `[Finset.Ico_eq_empty_of_le (by norm_num), Finset.prod_empty]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `: Nontrivial V`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hℓ (by ext v; simp [Subsingleton.elim v 0])`. Conclude with `Module.finrank_pos`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `succ n`. Take `⟨p, -, hli⟩` from `claim_all hb hs F n ψ₀ hψ V π ℓ hℓ hW`. Establish `h1` using `hli.fintype_card_le_finrank`. Rewrite `h1` using `[Fintype.card_fin, Subspace.dual_finrank_eq]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mirabolicBound_of (hb : BaseProp) (hs : StepProp) : MirabolicBound := by
   intro F _ _ k ψ₀ hψ V _ _ _ π _ hgen
@@ -145,7 +145,7 @@ theorem mirabolicBound_of (hb : BaseProp) (hs : StepProp) : MirabolicBound := by
     exact h1
 
 /- English proof (translation)
-The claim follows from `mirabolicBound_of hb (hst h1 h2 h3 h4 h5 h6)`.
+A detailed English derivation is pending.
 -/
 theorem mirabolicBound_of_steps (hb : BaseProp) (hst : StepOf) (h1 : UnitriangularBlockExtension) (h2 : ColFacts) (h3 : ConjCol)
     (h4 : RowExists) (h5 : CharOrth) (h6 : SepLemma) : MirabolicBound :=

@@ -5,7 +5,7 @@ universe u_1
 namespace Bl.MatrixMapSub
 
 /- English proof (translation)
-Introduce `A _ d σ X Y`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.sub_apply, map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem goal1 :
   ∀ {A : Type u_1} [inst : CommRing.{u_1} A] {d : Nat} (σ : RingHom.{u_1, u_1} A A)

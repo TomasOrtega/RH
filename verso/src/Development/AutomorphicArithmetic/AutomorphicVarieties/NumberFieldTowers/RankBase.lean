@@ -8,7 +8,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Tower
 
 /- English proof (translation)
-Use `LinearEquiv.length_eq (e.ofSubmodules _ _ ?_)` and prove the remaining obligations. Use extensionality with `y`. Take `⟨x, rfl⟩` from `e.surjective y`. Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.symm_apply_apply, Submodule.mem_torsionBy_iff, Submodule.mem_torsionBy_iff, ← map_smul, map_eq_zero_iff _ e.injective]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rb_len {R M M' : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M']
     (e : M ≃ₗ[R] M') (a : R) :
@@ -20,13 +20,13 @@ private theorem rb_len {R M M' : Type} [CommRing R] [AddCommGroup M] [Module R M
     ← map_smul, map_eq_zero_iff _ e.injective]
 
 /- English proof (translation)
-Take `⟨φ, -, hφ, hc, -, -⟩` from `galTransport F Ω F' Ω' f σ h`. Establish `hm : (cycU l (⊤ : Subgroup (G F' Ω'))).map φ = cycU l U`. Rewrite using `[hU]`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨g', hg', rfl⟩`. Use `⟨(hV _).2 fun y => σ.injective ?_, (hc l g').trans hg'.2⟩` and prove the remaining obligations. Rewrite using `[hφ, RingEquiv.apply_symm_apply, AlgEquiv.commutes]`. Introduce and unpack `⟨h1, h2⟩`. Set `g' : G F' Ω'` to `AlgEquiv.ofRingEquiv (f := (σ.symm.trans g.toRingEquiv).trans σ) fun y => by show σ (g (σ.symm (algebraMap F' Ω' y))) = _`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Rewrite using `[(hV g).1 h1 y, RingEquiv.apply_symm_apply]`. Establish `e : φ g' = g` using `AlgEquiv.ext fun x => σ.injective (by`. Rewrite using `[hφ]`. Use `show σ (g (σ.symm (σ x))) = _`. Rewrite using `[RingEquiv.symm_apply_apply])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g', ⟨trivial, ?_⟩, e⟩` and prove the remaining obligations. Conclude with `(hc l g').symm.trans (e ▸ h2)`. Take `⟨Ψ, -⟩` from `dinfTransport F Ω F' Ω' f σ h φ hφ l N U ⊤ hm`. Conclude with `rb_len Ψ _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem rb_key (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (F' Ω' : Type) [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] [IsAlgClosure F' Ω'] (f : F →+* F') (σ : Ω ≃+* Ω')
@@ -55,9 +55,9 @@ private theorem rb_key (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algeb
   exact rb_len Ψ _
 
 /- English proof (translation)
-Set `σ : Ω ≃ₐ[L] AlgebraicClosure L` to `IsAlgClosure.equiv L Ω (AlgebraicClosure L)`. Establish `hs : ∀ y, σ.toRingEquiv.symm (algebraMap L _ y) = algebraMap L Ω y` using `fun y => σ.symm.commutes y`. Use `rb_key k Ω L (AlgebraicClosure L) (algebraMap k L) σ.toRingEquiv (fun x => ?_) l N U _ (fun g => ?_) hU` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply k L Ω]`. Conclude with `σ.commutes _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hs]`. Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 private theorem rb_one (k L Ω : Type) [Field k] [NumberField k] [Field L] [NumberField L] [Field Ω] [Algebra k L]
     [Algebra k Ω] [Algebra L Ω] [IsScalarTower k L Ω] [IsAlgClosure k Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (N : ℕ)
@@ -71,9 +71,9 @@ private theorem rb_one (k L Ω : Type) [Field k] [NumberField k] [Field L] [Numb
     exact Iff.rfl
 
 /- English proof (translation)
-Use `⟨rb_one, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `l _ L L' _ _ _ _ N ⟨e⟩`. Set `σ` to `IsAlgClosure.equivOfEquiv (AlgebraicClosure L) (AlgebraicClosure L') e`. Establish `h : ∀ x, σ (algebraMap L _ x) = algebraMap L' _ (e x)` using `fun x => IsAlgClosure.equivOfEquiv_algebraMap _ _ e x`. Use `rb_key L _ L' _ e.toRingHom σ h l N ⊤ ⊤ (fun g => ⟨fun _ y => ?_, fun _ => trivial⟩) rfl` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `e.surjective y`. Rewrite using `[← h, RingEquiv.symm_apply_apply, AlgEquiv.commutes]`. Introduce `l _ L L' _ _ _ _ _ n N hc haveI : Algebra.IsAlgebraic L L' := Algebra.IsAlgebraic.tower_top (K := ℚ) L haveI : IsAlgClosure L (AlgebraicClosure L') := ⟨inferInstance, Algebra.IsAlgebraic.trans L L' _⟩`. Establish `h` using `galOfCyc L (AlgebraicClosure L') l n L L'`. Rewrite using `[← rb_one L L' (AlgebraicClosure L') l N ⊤ (by rw [h, cycU_levU, galOf_self]), rb_one L L (AlgebraicClosure L') l N ⊤ (by rw [galOf_self])]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Tower.rankBase :
     (∀ (k L Ω : Type) [Field k] [NumberField k] [Field L] [NumberField L] [Field Ω] [Algebra k L] [Algebra k Ω] [Algebra L Ω] [IsScalarTower k L Ω] [IsAlgClosure k Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (N : ℕ) (U : Subgroup (G k Ω)), cycU l U = cycU l (galOf k L Ω) → xRank l N U = rankN l L N) ∧

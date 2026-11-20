@@ -8,7 +8,7 @@ open GlobalTheory.Col PowerSeries
 namespace GlobalTheory.Col
 
 /- English proof (translation)
-Introduce `R _ p hp σ hF h₁ h₂ r k hk hu he`. Take `⟨b, hb⟩` from `exists_basis_one_add_X_pow R p hF.complete`. Conclude with `normOp_congr_of_basis R p b hb h₁ h₂ r k hk hu he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem normOp_congr : ∀ (R : Type) [CommRing R] (p : ℕ) [hp : Fact p.Prime] (σ : R ≃+* R), FrobLift R p σ →
     ∀ (h₁ h₂ r : PowerSeries R) (k : ℕ), 1 ≤ k → IsUnit h₂ → h₁ = h₂ + (p : PowerSeries R) ^ k * r →

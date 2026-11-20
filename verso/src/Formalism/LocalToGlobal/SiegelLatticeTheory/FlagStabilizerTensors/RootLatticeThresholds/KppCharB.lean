@@ -15,20 +15,20 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting 
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Rewrite using `[X.g_eq]`. Conclude with `Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g_pos : 0 < X.B.g := by
   rw [X.g_eq]; exact Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos
 
 /- English proof (translation)
-Unfold `divN`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem divN_add (a b : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) :
     divN X.B.I X.B.g (a + b) = divN X.B.I X.B.g a + divN X.B.I X.B.g b := by
   unfold divN; ring
 
 /- English proof (translation)
-Unfold `divN`. Establish `hg : ((X.B.g : ℕ) : X.B.I.F) ≠ 0` using `Nat.cast_ne_zero.2 (g_pos X).ne'`. Rewrite using `[← mul_assoc, ← map_natCast (algebraMap X.B.I.F (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)), ← map_mul, inv_mul_cancel₀ hg, map_one, one_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem divN_g (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) :
     divN X.B.I X.B.g ((X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * c) = c := by
@@ -38,16 +38,16 @@ theorem divN_g (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) :
     inv_mul_cancel₀ hg, map_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[divN_add, X.psiEf_add, divN_g, X.psiEf_int d hd, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_modg (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) {d : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (hd : d ∈ IntAf X.B.I.F X.B.I.E) :
     X.psiEf (divN X.B.I X.B.g (c + (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * d)) = X.psiEf (divN X.B.I X.B.g c) := by
   rw [divN_add, X.psiEf_add, divN_g, X.psiEf_int d hd, mul_one]
 
 /- English proof (translation)
-Unfold `divN`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, map_mul]`. Use `congr 1`. Use `show algebraMap X.B.I.F X.B.I.E ((X.B.g : X.B.I.F)⁻¹) ⊗ₜ[X.B.I.F] (1 : Af X.B.I.F) = Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (((X.B.g : ℕ) : X.B.I.E)⁻¹)`. Rewrite using `[map_inv₀, map_natCast]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem divN_incl (y : X.B.I.E) : divN X.B.I X.B.g (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) y) =
     Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (((X.B.g : ℕ) : X.B.I.E)⁻¹ * y) := by
@@ -60,7 +60,7 @@ theorem divN_incl (y : X.B.I.E) : divN X.B.I X.B.g (Formalism.UG.inclE (F := X.B
   rfl
 
 /- English proof (translation)
-Unfold `psiEinf`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[X.B.I.cm.cmUnram.2.1 (X.B.I.φ v) y]`. Use `congr 2`. Simplify using `only [starRingEnd_apply, star_star]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -73,7 +73,7 @@ theorem psiEinf_star (y : X.B.I.E) : psiEinf X.B.I (star y) = psiEinf X.B.I y :=
   ring
 
 /- English proof (translation)
-Establish `h1` using `X.psiEf_rat (star y)`. Establish `h2` using `X.psiEf_rat y`. Rewrite `h1` using `[psiEinf_star]`. Establish `hne : psiEinf X.B.I y ≠ 0` using `by intro h; rw [h, mul_zero] at h2; exact zero_ne_one h2`. Conclude with `mul_right_cancel₀ hne (h1.trans h2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psi_incl_star (y : X.B.I.E) :
     X.psiEf (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (star y)) =
@@ -85,9 +85,9 @@ theorem psi_incl_star (y : X.B.I.E) :
   exact mul_right_cancel₀ hne (h1.trans h2.symm)
 
 /- English proof (translation)
-Establish `e : ∀ a : 𝓞 X.B.I.E, iE X.B.I a * (m : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) = Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) ((a : X.B.I.E) * m) := by`. Introduce `a`. Rewrite using `[map_mul, map_natCast]`. Rewrite using `[e, e, divN_incl, divN_incl, sigO_coe]`. Establish `: ((X.B.g : ℕ) : X.B.I.E)⁻¹ * (star (ε : X.B.I.E) * m) = star (((X.B.g : ℕ) : X.B.I.E)⁻¹ * ((ε : X.B.I.E) * m))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[star_mul, star_mul, star_inv₀, star_natCast, star_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, psi_incl_star]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_sig (ε : 𝓞 X.B.I.E) (m : ℕ) :
     X.psiEf (divN X.B.I X.B.g (iE X.B.I (sigO X.B.I ε) * (m : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F))) =
@@ -103,9 +103,7 @@ theorem psi_sig (ε : 𝓞 X.B.I.E) (m : ℕ) :
 variable {kv : Σ k : Fin 2, D.nd.PlG k}
 
 /- English proof (translation)
-Rewrite using `[g_eq_cast]`. Apply the tactic sequence `fin_cases k <;> fin_cases k'`. Conclude with `absurd rfl hk`. Both sides reduce to the same expression. Conclude with `mul_comm _ _`.
-
-Conclude with `absurd rfl hk`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem g_split_mul {k k' : Fin 2} (hk : k' ≠ k) :
     ((D.host.g k : ℕ) : 𝓞 X.B.I.E) * ((D.host.g k' : ℕ) : 𝓞 X.B.I.E) = ((X.B.g : ℕ) : 𝓞 X.B.I.E) := by
@@ -117,14 +115,14 @@ theorem g_split_mul {k k' : Fin 2} (hk : k' ≠ k) :
   · exact absurd rfl hk
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases k <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem other_ne (k : Fin 2) : (1 - k) ≠ k := by fin_cases k <;> decide
 
 /- English proof (translation)
-Take `⟨δ, hδ⟩` from `Ideal.mem_span_singleton'.1 hε`. Establish `e : iE X.B.I ε * ((m + D.host.g kv.1 * q : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) = iE X.B.I ε * (m : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) + (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * (iE X.B.I δ * q)`. Establish `hg : ((X.B.g : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) = iE X.B.I (((D.host.g kv.1 : ℕ) : 𝓞 X.B.I.E) * ((D.host.g (1 - kv.1) : ℕ) : 𝓞 X.B.I.E))`. Rewrite using `[g_split_mul X (other_ne kv.1)]`. Simplify using `[iE]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hg, ← hδ]`. Simplify using `only [iE, map_mul, map_natCast, Nat.cast_add, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, psi_modg X _ (mul_mem (iE_int X.B.I δ) (natCast_mem _ q))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_period {ε : 𝓞 X.B.I.E} (hε : ε ∈ Ideal.span {((D.host.g (1 - kv.1) : ℕ) : 𝓞 X.B.I.E)}) (m q : ℕ) :
     X.psiEf (divN X.B.I X.B.g (iE X.B.I ε * ((m + D.host.g kv.1 * q : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F))) =

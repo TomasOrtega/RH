@@ -32,7 +32,7 @@ def invSub (a : A) (M : Submodule A D) : Submodule A D where
     exact M.smul_mem _ hk
 
 /- English proof (translation)
-Introduce and unpack `x ⟨k, hk⟩`. Take `⟨j, hj⟩` from `h hk`. Conclude with `⟨j + k, by rwa [pow_add, mul_smul]⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem invSub_le {a : A} {M M' : Submodule A D} (h : M ≤ invSub a M') :
     invSub a M ≤ invSub a M' := by

@@ -14,7 +14,7 @@ namespace CrisToPeriodApply
 section
 
 /- English proof (translation)
-Introduce `_ _ _` and use `RingHom.comp_apply _ _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.cris_zero_to_period_apply : ∀ (l : ℕ) [Fact l.Prime] (a : (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))), ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap ↥(Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) a = algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) a) :=
   fun _ _ _ => RingHom.comp_apply _ _ _
@@ -25,7 +25,7 @@ namespace PeriodMapApply
 section
 
 /- English proof (translation)
-Introduce `_ _ _` and use `RingHom.comp_apply _ _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.aB_apply : ∀ (l : ℕ) [Fact l.Prime] (a : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) a = algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) a) :=
   fun _ _ _ => RingHom.comp_apply _ _ _
@@ -36,7 +36,7 @@ namespace PeriodGeneratorApply
 section
 
 /- English proof (translation)
-Introduce `l _ z`. Conclude with `RingHom.comp_apply _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.algebraMap_comp_ofPadicInt_apply : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), ((algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l))) z = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z) := by
   intro l _ z
@@ -48,7 +48,7 @@ namespace TeichmullerAction
 section
 
 /- English proof (translation)
-Introduce `l _ g y`. Conclude with `WittVector.map_teichmuller l _ y`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.sigA_teich : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (y : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))), (Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) (WittVector.teichmuller l y) = WittVector.teichmuller l ((Reformulated.AutPerF.Tilt.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) y) := by
   intro l _ g y
@@ -60,7 +60,7 @@ namespace EvaluationExt
 section
 
 /- English proof (translation)
-Introduce `_ _ _ _ h` and use `Reformulated.AutPerF.BdRPlus.ext_eval h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.ev_ext : ∀ (l : ℕ) [Fact l.Prime] (y y' : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) (h : ∀ n, Reformulated.AutPerF.BdRPlus.eval l ↥(PadicComplexInt l) n y = Reformulated.AutPerF.BdRPlus.eval l ↥(PadicComplexInt l) n y'), y = y' :=
   fun _ _ _ _ h => Reformulated.AutPerF.BdRPlus.ext_eval h
@@ -71,7 +71,7 @@ namespace ThetaOfFiltration
 section
 
 /- English proof (translation)
-Introduce `l _ y h`. Rewrite `h` using `[Reformulated.AutPerF.BdRPlus.fil, pow_one, RingHom.mem_ker]`. Rewrite using `[Reformulated.AutPerF.BdRPlus.thetaC_apply, h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bridge.thetaD_of_mem_FilP : ∀ (l : ℕ) [Fact l.Prime] {y : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))} (h : y ∈ Reformulated.AutPerF.BdRPlus.fil l ↥(PadicComplexInt l) 1), (Reformulated.AutPerF.BdRPlus.thetaC l (PadicComplexInt l)) y = 0 := by
   intro l _ y h
@@ -84,7 +84,7 @@ namespace SigmaEqMap
 section
 
 /- English proof (translation)
-Introduce `l _ g`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem Bridge.sigA_eq_map : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)), (Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) = WittVector.map ((Reformulated.AutPerF.Tilt.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g))) := by
   intro l _ g
@@ -100,7 +100,7 @@ namespace Bridge.IsUnitOfGeneratorLemmas
 open Reformulated.AutPerF
 
 /- English proof (translation)
-Establish `h1` using `congrArg (Ideal.map (algebraMap (AinfInv p R) (BdRPlus p R))) h`. Establish `h2 : RingHom.ker (BdRPlus.theta p R) = Ideal.span {algebraMap (AinfInv p R) (BdRPlus p R) a}`. Rewrite using `[BdRPlus.ker_theta_eq_map, h1, Ideal.map_span, Set.image_singleton]`. Conclude with `(BdR.algebraMap_ne_zero h2).isUnit`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_general {p : ℕ} [Fact p.Prime] {R : Type*} [CommRing R] [Fact ¬IsUnit (p : R)]
     [IsAdicComplete (Ideal.span {(p : R)}) R] [IsDomain R] [ValuationRing R] [CharZero R]
@@ -116,7 +116,7 @@ theorem isUnit_general {p : ℕ} [Fact p.Prime] {R : Type*} [CommRing R] [Fact �
 end Bridge.IsUnitOfGeneratorLemmas
 
 /- English proof (translation)
-Introduce `l _ a h`. Conclude with `Bridge.IsUnitOfGeneratorLemmas.isUnit_general h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.isUnit_of_generator : ∀ (l : ℕ) [Fact l.Prime] {a : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))} (h : (Reformulated.AutPerF.AinfInv.kerTheta l ↥(PadicComplexInt l)) = Ideal.span {a}), IsUnit (((algebraMap (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)))) a) := by
   intro l _ a h
@@ -128,7 +128,7 @@ namespace ContinuousGalois
 section
 
 /- English proof (translation)
-Introduce `l _ g`. Conclude with `(isometry_smul ℂ_[l] g).continuous`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.sigC_cont : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)), Continuous ((MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ℂ_[l] g)) := by
   intro l _ g
@@ -140,7 +140,7 @@ namespace FiltrationMem
 section
 
 /- English proof (translation)
-Introduce `l _ n y`. Rewrite using `[← Reformulated.AutPerF.BdRPlus.ker_eval n, RingHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bridge.mem_FilP : ∀ (l : ℕ) [Fact l.Prime] (n : ℕ) (y : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))), y ∈ Reformulated.AutPerF.BdRPlus.fil l ↥(PadicComplexInt l) n ↔ Reformulated.AutPerF.BdRPlus.eval l ↥(PadicComplexInt l) n y = 0 := by
   intro l _ n y
@@ -152,7 +152,7 @@ namespace AlgebraMemThetaKernel
 section
 
 /- English proof (translation)
-Introduce `l _ a h`. Establish `h' : Reformulated.AutPerF.Ainf.theta l ↥(PadicComplexInt l) a = 0` using `h`. Rewrite using `[RingHom.mem_ker, Reformulated.AutPerF.AinfInv.theta_algebraMap, h', map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bridge.alg_mem_kerP : ∀ (l : ℕ) [Fact l.Prime] {a : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))} (h : (WittVector.fontaineTheta ↥(PadicComplexInt l) l) a = 0), algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) a ∈ (Reformulated.AutPerF.AinfInv.kerTheta l ↥(PadicComplexInt l)) := by
   intro l _ a h
@@ -165,7 +165,7 @@ namespace CrisEquivExists
 section
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨RingEquiv.refl _, fun _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Bridge.exists_acris_equiv : ∀ (l : ℕ) [Fact l.Prime], ∃ e : (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) ≃+* AdicCompletion (Ideal.span {((l : ℕ) : (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)))}) ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))), ∀ s, e (algebraMap ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) s) = algebraMap _ _ s :=
   fun _ _ => ⟨RingEquiv.refl _, fun _ => rfl⟩
@@ -176,7 +176,7 @@ namespace DividedPowerFiltrationIff
 section
 
 /- English proof (translation)
-Introduce `l _ n y`. Rewrite using `[← Reformulated.AutPerF.BdRPlus.ker_eval n, RingHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bridge.mem_filtration_iff_mem_kerTheta_pow : ∀ (l : ℕ) [Fact l.Prime] (n : ℕ) (y : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))), y ∈ Reformulated.AutPerF.BdRPlus.fil l ↥(PadicComplexInt l) n ↔ Reformulated.AutPerF.BdRPlus.eval l ↥(PadicComplexInt l) n y = 0 := by
   intro l _ n y
@@ -188,7 +188,7 @@ namespace EvaluationSurjective
 section
 
 /- English proof (translation)
-Introduce `l _ n y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨algebraMap _ _ x, Reformulated.AutPerF.BdRPlus.eval_algebraMap n x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Bridge.ev_surj : ∀ (l : ℕ) [Fact l.Prime] (n : ℕ), Function.Surjective (Reformulated.AutPerF.BdRPlus.eval l ↥(PadicComplexInt l) n) := by
   intro l _ n y
@@ -201,7 +201,7 @@ namespace DeRhamFiltrationNat
 section
 
 /- English proof (translation)
-Introduce `l _ n z h`. Conclude with `(Reformulated.AutPerF.BdR.algebraMap_mem_fil_iff n z).2 h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.alg_mem_FilD_nat : ∀ (l : ℕ) [Fact l.Prime] {n : ℕ} {z : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))} (h : z ∈ Reformulated.AutPerF.BdRPlus.fil l ↥(PadicComplexInt l) n), algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) z ∈ Reformulated.AutPerF.BdR.fil l ↥(PadicComplexInt l) (n : ℤ) := by
   intro l _ n z h
@@ -213,9 +213,7 @@ namespace PeriodRingExt
 section
 
 /- English proof (translation)
-Introduce `l _ R _ f g h`. Use `Reformulated.AutPerF.Bcris.hom_ext fun y => ?_` and prove the remaining obligations. Establish `key` using `Reformulated.AutPerF.BcrisPlus.hom_ext (f := f.comp (algebraMap (Reformulated.AutPerF.BcrisPlus l ↥(PadicComplexInt l)) _)) (g := g.comp (algebraMap (Reformulated.AutPerF.BcrisPlus l ↥(PadicComplexInt l)) _)) (fun x => by`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, ← IsScalarTower.algebraMap_apply]`. Conclude with `h x)`.
-
-Conclude with `RingHom.congr_fun key y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.bcris_ext : ∀ (l : ℕ) [Fact l.Prime] {R : Type} [CommRing R] {f g : (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l)) →+* R} (h : ∀ x, f (algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) x) = g (algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) x)), f = g := by
   intro l _ R _ f g h
@@ -234,11 +232,11 @@ namespace DeRhamFiltrationNeg
 section
 
 /- English proof (translation)
-Introduce `l _ n x`. Establish `h1 : (-(n : ℤ)).toNat = 0` using `by omega`. Establish `h2 : (- -(n : ℤ)).toNat = n` using `by omega`. Rewrite using `[Reformulated.AutPerF.BdR.fil, h1, h2, Submodule.mem_div_iff_forall_mul_mem, Reformulated.AutPerF.BdR.filNat, Reformulated.AutPerF.BdR.filNat]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h y hy`. Take `⟨z, -, hz⟩` from `Submodule.mem_map.1 (h _ (Submodule.mem_map.2 ⟨y, hy, rfl⟩))`. Conclude with `⟨z, hz⟩`. Introduce `h y hy`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `h w hw`. Use `Submodule.mem_map.2 ⟨z, ?_, hz⟩` and prove the remaining obligations. Rewrite using `[Reformulated.AutPerF.BdRPlus.fil, pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.mem_FilD_neg : ∀ (l : ℕ) [Fact l.Prime] (n : ℕ) (x : (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))), x ∈ Reformulated.AutPerF.BdR.fil l ↥(PadicComplexInt l) (-(n : ℤ)) ↔ ∀ y ∈ Reformulated.AutPerF.BdRPlus.fil l ↥(PadicComplexInt l) n, ∃ z : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)), algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) z = x * algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) y := by
   intro l _ n x
@@ -263,7 +261,7 @@ namespace FrobeniusEqMap
 section
 
 /- English proof (translation)
-Introduce `_ _` and use `Reformulated.AutPerF.Ainf.frob_eq_map`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.phiA_eq_map : ∀ (l : ℕ) [Fact l.Prime], (Reformulated.AutPerF.Ainf.frob l ↥(PadicComplexInt l)) = WittVector.map (frobenius ((Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))) l) :=
   fun _ _ => Reformulated.AutPerF.Ainf.frob_eq_map
@@ -274,7 +272,7 @@ namespace DividedPowerApply
 section
 
 /- English proof (translation)
-Introduce `_ _ a` and use `RingHom.comp_apply _ _ a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.pD_apply : ∀ (l : ℕ) [Fact l.Prime] (a : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), ((algebraMap (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)))) a = algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) a) :=
   fun _ _ a => RingHom.comp_apply _ _ a
@@ -285,7 +283,7 @@ namespace CrisGeneratorB
 section
 
 /- English proof (translation)
-Introduce `l _ z`. Conclude with `RingHom.comp_apply _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.zB_apply : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), (((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l))) z = ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) ((Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z) := by
   intro l _ z
@@ -297,7 +295,7 @@ namespace ScalarTowerAlt
 section
 
 /- English proof (translation)
-Introduce `l _ x`. Apply the tactic sequence `first | rfl | exact IsScalarTower.algebraMap_apply _ _ _ x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.tower : ∀ (l : ℕ) [Fact l.Prime] (x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) x = algebraMap ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))) x) := by
   intro l _ x
@@ -309,7 +307,7 @@ namespace DeRhamGeneratorApply
 section
 
 /- English proof (translation)
-Introduce `_ _ _` and use `RingHom.comp_apply _ _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.zD_apply : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), (((algebraMap (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)))).comp ((algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)))) z = ((algebraMap (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)))) (((algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l))) z) :=
   fun _ _ _ => RingHom.comp_apply _ _ _
@@ -320,7 +318,7 @@ namespace CrisToComplexAlgebra
 section
 
 /- English proof (translation)
-Introduce `l _ a` and use `Reformulated.AutPerF.IsUnitBall.awayEquiv_algebraMap (PadicComplexInt l) l a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.toC_alg : ∀ (l : ℕ) [Fact l.Prime] (a : ↥(PadicComplexInt l)), ((Reformulated.AutPerF.IsUnitBall.awayEquiv (PadicComplexInt l) l).toRingEquiv.toRingHom) (algebraMap (↥(PadicComplexInt l)) (Localization.Away ((l : ℕ) : ↥(PadicComplexInt l))) a) = (a : ℂ_[l]) :=
   fun l _ a => Reformulated.AutPerF.IsUnitBall.awayEquiv_algebraMap (PadicComplexInt l) l a
@@ -331,7 +329,7 @@ namespace CrisZeroDividedPowerMem
 section
 
 /- English proof (translation)
-Introduce `l _ x hx n y h`. Rewrite using `[← Reformulated.AutPerF.AinfInv.eq_gamma h]`. Conclude with `(Reformulated.AutPerF.AcrisZero.gamma n x hx).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.mem_Acris0_of_dividedPower : ∀ (l : ℕ) [Fact l.Prime] {x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))} (hx : (WittVector.fontaineTheta ↥(PadicComplexInt l) l) x = 0) {n : ℕ} {y : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))} (h : (n.factorial : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) * y = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) x ^ n), y ∈ (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) := by
   intro l _ x hx n y h
@@ -344,7 +342,7 @@ namespace SigmaCoeffA
 section
 
 /- English proof (translation)
-Introduce `l _ g w n`. Apply the tactic sequence `first | exact WittVector.map_coeff _ _ _ | rfl`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.sigA_coeff : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (w : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) (n : ℕ), ((Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) w).coeff n = (Reformulated.AutPerF.Tilt.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) (w.coeff n) := by
   intro l _ g w n
@@ -356,7 +354,7 @@ namespace CrisGeneratorA
 section
 
 /- English proof (translation)
-Introduce `l _ z`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem Bridge.zA_apply : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z = WittVector.map (ZMod.castHom (dvd_refl l) ((Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l)))) (WittVector.fromPadicInt l z) := by
   intro l _ z
@@ -368,7 +366,7 @@ namespace GeneratorRelation
 section
 
 /- English proof (translation)
-Introduce `_ _ _` and use `RingHom.comp_apply _ _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.zB_eq_aB_zA : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), (((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l))) z = ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) ((Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z) :=
   fun _ _ _ => RingHom.comp_apply _ _ _
@@ -379,7 +377,7 @@ namespace EvaluationAlgebra
 section
 
 /- English proof (translation)
-Introduce `l _ n a`. Rewrite using `[Reformulated.AutPerF.BdRPlus.eval_algebraMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bridge.ev_alg : ∀ (l : ℕ) [Fact l.Prime] (n : ℕ) (a : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), Reformulated.AutPerF.BdRPlus.eval l ↥(PadicComplexInt l) n (algebraMap ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) a) = Ideal.Quotient.mk _ a := by
   intro l _ n a
@@ -391,7 +389,7 @@ namespace DividedPowerAlgebraMap
 section
 
 /- English proof (translation)
-Introduce `_ _ _ a` and use `Reformulated.AutPerF.BdRPlus.map_algebraMap _ a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.sigDp_alg : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (a : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), (Reformulated.AutPerF.BdRPlus.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) (algebraMap ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) a) = algebraMap ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) (Reformulated.AutPerF.AinfInv.extend l ((Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g))) a) :=
   fun _ _ _ a => Reformulated.AutPerF.BdRPlus.map_algebraMap _ a
@@ -402,7 +400,7 @@ namespace DeRhamPlusEquivExists
 section
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨RingEquiv.refl _, fun _ => rfl, fun _ _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Bridge.exists_bdRp_equiv : ∀ (l : ℕ) [Fact l.Prime], ∃ e : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)) ≃+* AdicCompletion ((Reformulated.AutPerF.AinfInv.kerTheta l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), (∀ a, e (algebraMap ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) a) = algebraMap _ _ a) ∧ ∀ n y, AdicCompletion.evalₐ ((Reformulated.AutPerF.AinfInv.kerTheta l ↥(PadicComplexInt l))) n (e y) = Reformulated.AutPerF.BdRPlus.eval l ↥(PadicComplexInt l) n y :=
   fun _ _ => ⟨RingEquiv.refl _, fun _ => rfl, fun _ _ => rfl⟩
@@ -413,7 +411,7 @@ namespace ThetaAlgebraMap
 section
 
 /- English proof (translation)
-Introduce `l _ a`. Rewrite using `[RingHom.comp_apply, Reformulated.AutPerF.AinfInv.theta_algebraMap]`. Conclude with `Reformulated.AutPerF.IsUnitBall.awayEquiv_algebraMap (PadicComplexInt l) l _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.fontaineTheta_algebraMap : ∀ (l : ℕ) [Fact l.Prime] (a : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), (((Reformulated.AutPerF.IsUnitBall.awayEquiv (PadicComplexInt l) l).toRingEquiv.toRingHom).comp (Reformulated.AutPerF.AinfInv.theta l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) a) = (((WittVector.fontaineTheta ↥(PadicComplexInt l) l) a : ↥(PadicComplexInt l)) : ℂ_[l]) := by
   intro l _ a
@@ -426,7 +424,7 @@ namespace FrobeniusTeichmuller
 section
 
 /- English proof (translation)
-Introduce `l _ y`. Conclude with `(Reformulated.AutPerF.Ainf.frob_teich y).trans (map_pow (WittVector.teichmuller l) y l).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.phiA_teich : ∀ (l : ℕ) [Fact l.Prime] (y : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))), (Reformulated.AutPerF.Ainf.frob l ↥(PadicComplexInt l)) (WittVector.teichmuller l y) = WittVector.teichmuller l (y ^ l) := by
   intro l _ y
@@ -438,7 +436,7 @@ namespace FrobeniusCoeffA
 section
 
 /- English proof (translation)
-Introduce `l _ w n`. Conclude with `WittVector.coeff_frobenius_charP l w n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.phiA_coeff : ∀ (l : ℕ) [Fact l.Prime] (w : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) (n : ℕ), ((Reformulated.AutPerF.Ainf.frob l ↥(PadicComplexInt l)) w).coeff n = w.coeff n ^ l := by
   intro l _ w n
@@ -450,7 +448,7 @@ namespace IntegralActionCoe
 section
 
 /- English proof (translation)
-Introduce `l _ g y`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem Bridge.sigO_coe : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (y : ↥(PadicComplexInt l)), (((MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g) y : ↥(PadicComplexInt l)) : ℂ_[l]) = (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ℂ_[l] g) (y : ℂ_[l]) := by
   intro l _ g y
@@ -462,7 +460,7 @@ namespace FiltrationNatExists
 section
 
 /- English proof (translation)
-Introduce `l _ n x h`. Rewrite `h` using `[Reformulated.AutPerF.BdR.fil_natCast, Reformulated.AutPerF.BdR.filNat, Submodule.mem_map]`. Take `⟨y, hy, e⟩` from `h`. Conclude with `⟨y, hy, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Bridge.exists_of_mem_FilD_nat : ∀ (l : ℕ) [Fact l.Prime] {n : ℕ} {x : (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))} (h : x ∈ Reformulated.AutPerF.BdR.fil l ↥(PadicComplexInt l) (n : ℤ)), ∃ z ∈ Reformulated.AutPerF.BdRPlus.fil l ↥(PadicComplexInt l) n, algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) z = x := by
   intro l _ n x h
@@ -476,7 +474,7 @@ namespace CrisZeroLe
 section
 
 /- English proof (translation)
-Introduce `l _ S h`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `y ⟨n, x, hx, rfl⟩`. Conclude with `h x n _ hx (Reformulated.AutPerF.AinfInv.factorial_mul_gamma n _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Bridge.Acris0_le : ∀ (l : ℕ) [Fact l.Prime] {S : Subalgebra ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)))} (h : ∀ (x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) (n : ℕ) (y : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), (WittVector.fontaineTheta ↥(PadicComplexInt l) l) x = 0 → (n.factorial : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) * y = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) x ^ n → y ∈ S), (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) ≤ S := by
   intro l _ S h
@@ -490,7 +488,7 @@ namespace ThetaDeRhamAlgebra
 section
 
 /- English proof (translation)
-Introduce `l _ a`. Rewrite using `[Reformulated.AutPerF.BdRPlus.thetaC_apply, Reformulated.AutPerF.BdRPlus.theta_algebraMap]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Bridge.thetaD_alg : ∀ (l : ℕ) [Fact l.Prime] (a : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), (Reformulated.AutPerF.BdRPlus.thetaC l (PadicComplexInt l)) (algebraMap ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) a) = (((Reformulated.AutPerF.IsUnitBall.awayEquiv (PadicComplexInt l) l).toRingEquiv.toRingHom).comp (Reformulated.AutPerF.AinfInv.theta l ↥(PadicComplexInt l))) a := by
   intro l _ a
@@ -503,7 +501,7 @@ namespace DeRhamSigmaAlgebra
 section
 
 /- English proof (translation)
-Introduce `l _ g b`. Conclude with `Reformulated.AutPerF.BdR.map_algebraMap (MulSemiringAction.toRingEquiv (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g) b`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.sigD_alg : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (b : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))), (Reformulated.AutPerF.BdR.map l (MulSemiringAction.toRingEquiv (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)).toRingHom (algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) b) = algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) b) := by
   intro l _ g b
@@ -516,7 +514,7 @@ namespace GeneratorAlgebraRelation
 section
 
 /- English proof (translation)
-Introduce `_ _ _` and use `RingHom.comp_apply _ _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.padicIntMap_eq_algebraMap_comp : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), ((algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l))) z = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z) :=
   fun _ _ _ => RingHom.comp_apply _ _ _
@@ -527,7 +525,7 @@ namespace PeriodCrisZeroAlgebra
 section
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨fun _ => RingHom.comp_apply _ _ _, fun _ => RingHom.comp_apply _ _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Bridge.aB_a0B_alg : ∀ (l : ℕ) [Fact l.Prime], (∀ a : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)), ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) a = algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) a)) ∧ ∀ s : (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)), ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap ↥(Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) s = algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) s) :=
   fun _ _ => ⟨fun _ => RingHom.comp_apply _ _ _, fun _ => RingHom.comp_apply _ _ _⟩
@@ -538,7 +536,7 @@ namespace DividedPowerFiltration
 section
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ hy` and use `Reformulated.AutPerF.BdRPlus.map_mem_fil _ hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.sigDp_mem_FilP : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (n : ℕ) (y : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))), y ∈ Reformulated.AutPerF.BdRPlus.fil l ↥(PadicComplexInt l) n → (Reformulated.AutPerF.BdRPlus.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) y ∈ Reformulated.AutPerF.BdRPlus.fil l ↥(PadicComplexInt l) n :=
   fun _ _ _ _ _ hy => Reformulated.AutPerF.BdRPlus.map_mem_fil _ hy
@@ -549,7 +547,7 @@ namespace DividedPowerCrisAlgebra
 section
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨fun _ => RingHom.comp_apply _ _ _, fun _ => RingHom.comp_apply _ _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Bridge.pD_a0B_alg : ∀ (l : ℕ) [Fact l.Prime], (∀ a : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)), ((algebraMap (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)))) a = algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) a)) ∧ (∀ s : (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)), ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap ↥(Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) s = algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) s)) :=
   fun _ _ => ⟨fun _ => RingHom.comp_apply _ _ _, fun _ => RingHom.comp_apply _ _ _⟩
@@ -560,7 +558,7 @@ namespace DeRhamFiltrationZero
 section
 
 /- English proof (translation)
-Introduce `_ _ y` and use `(Reformulated.AutPerF.BdR.mem_fil_zero_iff _).2 ⟨y, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.alg_mem_FilD_zero : ∀ (l : ℕ) [Fact l.Prime] (y : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))), algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) y ∈ Reformulated.AutPerF.BdR.fil l ↥(PadicComplexInt l) 0 :=
   fun _ _ y => (Reformulated.AutPerF.BdR.mem_fil_zero_iff _).2 ⟨y, rfl⟩
@@ -571,7 +569,7 @@ namespace CrisGeneratorAlgebra
 section
 
 /- English proof (translation)
-Introduce `_ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem Bridge.zB_alg : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), (((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l))) z = algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z)) :=
   fun _ _ _ => rfl
@@ -582,7 +580,7 @@ namespace CrisZeroDividedPowersLe
 section
 
 /- English proof (translation)
-Introduce `l _ S h`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `y ⟨n, x, hx, rfl⟩`. Conclude with `h x n _ hx (Reformulated.AutPerF.AinfInv.factorial_mul_gamma n _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Bridge.Acris0_le_of_dividedPowers : ∀ (l : ℕ) [Fact l.Prime] (S : Subalgebra ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)))), (∀ (x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) (n : ℕ) (y : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), (WittVector.fontaineTheta ↥(PadicComplexInt l) l) x = 0 → ((n.factorial : ℕ) : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) * y = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) x ^ n → y ∈ S) → (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) ≤ S := by
   intro l _ S h
@@ -596,7 +594,7 @@ namespace DeRhamGeneratorAlgebra
 section
 
 /- English proof (translation)
-Introduce `l _ z`. Simplify using `only [RingHom.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem Bridge.zD_eq_alg : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), (((algebraMap (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)))).comp ((algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)))) z = algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z))) := by
   intro l _ z
@@ -608,7 +606,7 @@ namespace CrisZeroFactorialMul
 section
 
 /- English proof (translation)
-Introduce `l _ x hx n y h`. Rewrite using `[← Reformulated.AutPerF.AinfInv.eq_gamma h]`. Conclude with `(Reformulated.AutPerF.AcrisZero.gamma n x hx).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.mem_Acris0_of_factorial_mul : ∀ (l : ℕ) [Fact l.Prime] (x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), (WittVector.fontaineTheta ↥(PadicComplexInt l) l) x = 0 → ∀ (n : ℕ) (y : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), ((n.factorial : ℕ) : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) * y = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) x ^ n → y ∈ (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) := by
   intro l _ x hx n y h
@@ -621,7 +619,7 @@ namespace CrisZeroLeAlt
 section
 
 /- English proof (translation)
-Introduce `l _ S h`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, x, hx, rfl⟩`. Conclude with `h x hx n _ (Reformulated.AutPerF.AinfInv.factorial_mul_gamma n _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Bridge.acris0_le : ∀ (l : ℕ) [Fact l.Prime] (S : Subalgebra ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)))), (∀ x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)), (WittVector.fontaineTheta ↥(PadicComplexInt l) l) x = 0 → ∀ (n : ℕ) (y : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), ((n.factorial : ℕ) : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) * y = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) x ^ n → y ∈ S) → (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) ≤ S := by
   intro l _ S h
@@ -635,7 +633,7 @@ namespace CrisToPeriodAlgebra
 section
 
 /- English proof (translation)
-Introduce `l _ a`. Use `first`. Consider the case `rfl`. Consider the case `(simp only [RingHom.comp_apply]; rw [← IsScalarTower.algebraMap_apply])`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Bridge.cris_zero_to_period_algebra : ∀ (l : ℕ) [Fact l.Prime] (a : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap ↥(Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))) a) = ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) a := by
   intro l _ a
@@ -649,7 +647,7 @@ namespace FrobeniusGeneratorB
 section
 
 /- English proof (translation)
-Introduce `l _ z`. Establish `h : Reformulated.AutPerF.Ainf.frob l ↥(PadicComplexInt l) (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l) z) = Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l) z` using `Reformulated.AutPerF.Ainf.frob_algebraMap z`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, Reformulated.AutPerF.Bcris.frob_algebraMap_acris, Reformulated.AutPerF.Acris.frob_algebraMap, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bridge.phiB_zB : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), (Reformulated.AutPerF.Bcris.frob l ↥(PadicComplexInt l)) ((((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l))) z) = (((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l))) z := by
   intro l _ z
@@ -666,7 +664,7 @@ namespace CrisZeroLeThird
 section
 
 /- English proof (translation)
-Introduce `l _ S h`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, x, hx, rfl⟩`. Conclude with `h x hx n _ (Algebra.subset_adjoin ⟨n, x, hx, rfl⟩) (Reformulated.AutPerF.AinfInv.factorial_mul_gamma n _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Bridge.acris0_le_3 : ∀ (l : ℕ) [Fact l.Prime] (S : Subalgebra ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)))), (∀ x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)), (WittVector.fontaineTheta ↥(PadicComplexInt l) l) x = 0 → ∀ (n : ℕ) (y : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), y ∈ (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) → ((n.factorial : ℕ) : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) * y = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) x ^ n → y ∈ S) → (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) ≤ S := by
   intro l _ S h
@@ -681,7 +679,7 @@ namespace DividedPowerInCrisZero
 section
 
 /- English proof (translation)
-Introduce `l _ x n y hx hy`. Rewrite using `[← Reformulated.AutPerF.AinfInv.eq_gamma hy]`. Conclude with `(Reformulated.AutPerF.AcrisZero.gamma n x hx).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.dividedPower_mem_Acris0 : ∀ (l : ℕ) [Fact l.Prime] (x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) (n : ℕ) (y : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), (WittVector.fontaineTheta ↥(PadicComplexInt l) l) x = 0 → ((n.factorial : ℕ) : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) * y = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) x ^ n → y ∈ (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) := by
   intro l _ x n y hx hy
@@ -694,7 +692,7 @@ namespace PeriodGeneratorImage
 section
 
 /- English proof (translation)
-Introduce `_ _ z` and use `(RingHom.comp_apply _ _ z).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.aB_zA : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), ((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) ((Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z) = (((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))).comp (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l))) z :=
   fun _ _ z => (RingHom.comp_apply _ _ z).symm
@@ -705,7 +703,7 @@ namespace DividedPowerMemCrisZero
 section
 
 /- English proof (translation)
-Introduce `l _ a ha n x hx`. Rewrite using `[← Reformulated.AutPerF.AinfInv.eq_gamma hx]`. Conclude with `(Reformulated.AutPerF.AcrisZero.gamma n a ha).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.dividedPower_mem_acris0 : ∀ (l : ℕ) [Fact l.Prime] (a : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), a ∈ RingHom.ker ((WittVector.fontaineTheta ↥(PadicComplexInt l) l)) → ∀ (n : ℕ) (x : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), ((n.factorial : ℕ) : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) * x = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) a ^ n → x ∈ (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)) := by
   intro l _ a ha n x hx
@@ -718,7 +716,7 @@ namespace EvaluationDividedPower
 section
 
 /- English proof (translation)
-Introduce `l _ g n y a h`. Rewrite using `[Reformulated.AutPerF.BdRPlus.eval_map, h, Ideal.quotientMap_mk]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Bridge.ev_sigDp : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (n : ℕ) (y : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) (a : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), Reformulated.AutPerF.BdRPlus.eval l ↥(PadicComplexInt l) n y = Ideal.Quotient.mk _ a → Reformulated.AutPerF.BdRPlus.eval l ↥(PadicComplexInt l) n ((Reformulated.AutPerF.BdRPlus.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) y) = Ideal.Quotient.mk _ (Reformulated.AutPerF.AinfInv.extend l ((Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g))) a) := by
   intro l _ g n y a h
@@ -731,7 +729,7 @@ namespace FrobeniusPeriodAlgebraMap
 section
 
 /- English proof (translation)
-Introduce `l _ x`. Conclude with `Reformulated.AutPerF.Bcris.frob_algebraMap_acris x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisMaps.φB_algebraMap : ∀ (l : ℕ) [Fact l.Prime] (x : (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))), (Reformulated.AutPerF.Bcris.frob l ↥(PadicComplexInt l)) (algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) x) = algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris.frob l ↥(PadicComplexInt l)) x) := by
   intro l _ x
@@ -743,7 +741,7 @@ namespace DeRhamFraction
 section
 
 /- English proof (translation)
-Introduce `_ _` and use `inferInstance`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisLoc.bdR_frac : ∀ (l : ℕ) [Fact l.Prime], IsFractionRing ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) :=
   fun _ _ => inferInstance
@@ -754,7 +752,7 @@ namespace CrisRootNeOne
 section
 
 /- English proof (translation)
-Introduce `l _`. Take `⟨ε, hε⟩` from `Reformulated.AutPerF.exists_isPrimitive (p := l) (R := PadicComplexInt l)`. Use `⟨ε.1, ε.2, fun h => ?_⟩` and prove the remaining obligations. Apply `(Reformulated.AutPerF.isPrimitive_iff ε).1 hε` to reduce the goal to its premises. Rewrite using `[h, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bridge.CrisLoc.exists_root_ne_one :
     ∀ (l : ℕ) [Fact l.Prime], ∃ e : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l)), e.untilt = 1 ∧ e ≠ 1 := by
@@ -780,9 +778,9 @@ variable {R : Type u} [CommRing R] [Fact ¬IsUnit (p : R)] [IsAdicComplete (span
 variable [IsDomain R] [ValuationRing R] [CharZero R] [IsAlgClosed (FractionRing R)]
 
 /- English proof (translation)
-Establish `h : RingHom.ker (BdRPlus.theta p R) = Ideal.span {algebraMap (AinfInv p R) (BdRPlus p R) b}`. Establish `h1` using `congrArg (Ideal.map (algebraMap (AinfInv p R) (BdRPlus p R))) hb`. Rewrite using `[BdRPlus.ker_theta_eq_map, h1, Ideal.map_span, Set.image_singleton]`. Establish `h0` using `pow_ne_zero n (BdR.algebraMap_ne_zero h)`. Rewrite using `[BdR.mem_fil_iff h, zpow_neg, zpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `exists_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[eq_inv_mul_iff_mul_eq₀ h0, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_fil_neg_iff (b : AinfInv p R) (hb : AinfInv.kerTheta p R = Ideal.span {b}) (n : ℕ)
     (x : BdR p R) :
@@ -801,7 +799,7 @@ theorem mem_fil_neg_iff (b : AinfInv p R) (hb : AinfInv.kerTheta p R = Ideal.spa
 end Bridge.CrisLoc.FiltrationNegIff
 
 /- English proof (translation)
-Introduce `_ _ b hb n x` and use `Bridge.CrisLoc.FiltrationNegIff.mem_fil_neg_iff b hb n x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisLoc.mem_fil_neg : ∀ (l : ℕ) [Fact l.Prime] (b : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) (hb : (Reformulated.AutPerF.AinfInv.kerTheta l ↥(PadicComplexInt l)) = Ideal.span {b}) (n : ℕ) (x : (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))), x ∈ Reformulated.AutPerF.BdR.fil l ↥(PadicComplexInt l) (-(n : ℤ)) ↔ ∃ y : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)), x * algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) b) ^ n = algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) y :=
   fun _ _ b hb n x => Bridge.CrisLoc.FiltrationNegIff.mem_fil_neg_iff b hb n x
@@ -812,7 +810,7 @@ namespace AdicCoeffGalois
 section
 
 /- English proof (translation)
-Introduce `l _ g x n y h`. Rewrite using `[Reformulated.AutPerF.Tilt.coeff_map, h]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Bridge.AdicMaps.coeff_galois : ∀ (l : ℕ) [Fact l.Prime] (g : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) (x : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))) (n : ℕ) (y : ↥(PadicComplexInt l)) (h : PreTilt.coeff n x = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : ↥(PadicComplexInt l))}) y), PreTilt.coeff n ((Reformulated.AutPerF.Tilt.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) x) = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : ↥(PadicComplexInt l))}) ((MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g) y) := by
   intro l _ g x n y h
@@ -825,7 +823,7 @@ namespace CrisFrobeniusAlgebraMap
 section
 
 /- English proof (translation)
-Introduce `_ _ _ x` and use `Reformulated.AutPerF.Bcris.map_algebraMap_acris _ _ x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisMaps.σB_algebraMap : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (x : (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))), (Reformulated.AutPerF.Bcris.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g) (MulAction.injective g)) (algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) x) = algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) x) :=
   fun _ _ _ x => Reformulated.AutPerF.Bcris.map_algebraMap_acris _ _ x
@@ -836,7 +834,7 @@ namespace CrisCompletionExists
 section
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨RingEquiv.refl _, fun _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Bridge.AdicMaps.exists_acris_completion : ∀ (l : ℕ) [Fact l.Prime], ∃ e : (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) ≃+* AdicCompletion (Ideal.span {(l : (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)))}) ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))), ∀ s : (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)), e (algebraMap ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) s) = algebraMap ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l))) (AdicCompletion (Ideal.span {(l : (Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)))}) ((Reformulated.AutPerF.acrisZero l ↥(PadicComplexInt l)))) s :=
   fun _ _ => ⟨RingEquiv.refl _, fun _ => rfl⟩
@@ -847,7 +845,7 @@ namespace DeRhamAway
 section
 
 /- English proof (translation)
-Introduce `l _ b hb`. Use `Reformulated.AutPerF.BdR.isLocalization_away ?_` and prove the remaining obligations. Establish `h` using `congrArg (Ideal.map (algebraMap (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)))) hb`. Rewrite using `[Reformulated.AutPerF.BdRPlus.ker_theta_eq_map, h, Ideal.map_span, Set.image_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bridge.CrisLoc.bdR_away : ∀ (l : ℕ) [Fact l.Prime] (b : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) (hb : (Reformulated.AutPerF.AinfInv.kerTheta l ↥(PadicComplexInt l)) = Ideal.span {b}), IsLocalization.Away (algebraMap ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) b) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) := by
   intro l _ b hb
@@ -862,7 +860,7 @@ namespace FrobeniusGalois
 section
 
 /- English proof (translation)
-Introduce `_ _ _ x` and use `(Reformulated.AutPerF.Acris.map_frob _ x).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisMaps.frob_gal : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (x : (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))), (Reformulated.AutPerF.Acris.frob l ↥(PadicComplexInt l)) ((Reformulated.AutPerF.Acris.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) x) = (Reformulated.AutPerF.Acris.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) ((Reformulated.AutPerF.Acris.frob l ↥(PadicComplexInt l)) x) :=
   fun _ _ _ x => (Reformulated.AutPerF.Acris.map_frob _ x).symm
@@ -873,7 +871,7 @@ namespace FrobeniusMulA
 section
 
 /- English proof (translation)
-Introduce `l _ g h x`. Rewrite using `[Reformulated.AutPerF.toRingHom_mul, Reformulated.AutPerF.Ainf.map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bridge.RingBasics.σA_mul : ∀ (l : ℕ) [Fact l.Prime] (g h : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), (Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) (g * h))) x = (Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) ((Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) h)) x) := by
   intro l _ g h x
@@ -885,7 +883,7 @@ namespace FrobeniusApplyA
 section
 
 /- English proof (translation)
-Introduce `l _ x`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem Bridge.RingBasics.φA_apply : ∀ (l : ℕ) [Fact l.Prime] (x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), (Reformulated.AutPerF.Ainf.frob l ↥(PadicComplexInt l)) x = WittVector.frobenius x := by
   intro l _ x
@@ -897,7 +895,7 @@ namespace ThetaKernel
 section
 
 /- English proof (translation)
-Introduce `l _ x hx`. Rewrite `hx` using `[pow_one]`. Establish `h : Reformulated.AutPerF.AinfInv.theta l ↥(PadicComplexInt l) x = 0` using `hx`. Rewrite using `[RingHom.comp_apply, h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bridge.RingBasics.fontaineTheta_eq_zero_of_mem_ker : ∀ (l : ℕ) [Fact l.Prime] (x : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) (hx : x ∈ (Reformulated.AutPerF.AinfInv.kerTheta l ↥(PadicComplexInt l)) ^ 1), (((Reformulated.AutPerF.IsUnitBall.awayEquiv (PadicComplexInt l) l).toRingEquiv.toRingHom).comp (Reformulated.AutPerF.AinfInv.theta l ↥(PadicComplexInt l))) x = 0 := by
   intro l _ x hx
@@ -911,7 +909,7 @@ namespace FrobeniusTiltMul
 section
 
 /- English proof (translation)
-Introduce `l _ g h x`. Rewrite using `[Reformulated.AutPerF.toRingHom_mul]`. Conclude with `(Reformulated.AutPerF.Tilt.map_map _ _ x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.σF_mul : ∀ (l : ℕ) [Fact l.Prime] (g h : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (x : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))), (Reformulated.AutPerF.Tilt.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) (g * h))) x = (Reformulated.AutPerF.Tilt.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) ((Reformulated.AutPerF.Tilt.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) h)) x) := by
   intro l _ g h x
@@ -924,7 +922,7 @@ namespace NormGaloisComplex
 section
 
 /- English proof (translation)
-Introduce `l _ g x`. Conclude with `Reformulated.AutPerF.IsUnitBall.norm_smul_eq _ g x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.norm_σC : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (x : ℂ_[l]), ‖(MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ℂ_[l] g) x‖ = ‖x‖ := by
   intro l _ g x
@@ -936,7 +934,7 @@ namespace FrobeniusComplexCoe
 section
 
 /- English proof (translation)
-Introduce `l _ g x` and use `Reformulated.AutPerF.padicComplex_smul_coe l g x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.σC_coe : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (x : (PadicAlgCl l)), (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ℂ_[l] g) (x : ℂ_[l]) = ((g x : (PadicAlgCl l)) : ℂ_[l]) :=
   fun l _ g x => Reformulated.AutPerF.padicComplex_smul_coe l g x
@@ -947,7 +945,7 @@ namespace FrobeniusOneA
 section
 
 /- English proof (translation)
-Introduce `l _ x`. Establish `h : MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) (1 : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) = RingHom.id _` using `RingHom.ext fun y => one_smul _ y`. Rewrite using `[h]`. Conclude with `Reformulated.AutPerF.Ainf.map_id x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.σA_one : ∀ (l : ℕ) [Fact l.Prime] (x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), (Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) (1 : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)))) x = x := by
   intro l _ x
@@ -963,7 +961,7 @@ namespace ExtensionAlgebra
 section
 
 /- English proof (translation)
-Introduce `l _ f x`. Conclude with `Reformulated.AutPerF.AinfInv.extend_algebraMap f x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.awayMap_algebraMap₂ : ∀ (l : ℕ) [Fact l.Prime] (f : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) →+* (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) (x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), Reformulated.AutPerF.AinfInv.extend l f (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) x) = algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) (f x) := by
   intro l _ f x
@@ -975,7 +973,7 @@ namespace FrobeniusGeneratorA
 section
 
 /- English proof (translation)
-Introduce `_ _ z` and use `Reformulated.AutPerF.Ainf.frob_algebraMap z`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.φA_zA : ∀ (l : ℕ) [Fact l.Prime] (z : ℤ_[l]), (Reformulated.AutPerF.Ainf.frob l ↥(PadicComplexInt l)) ((Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z) = (Reformulated.AutPerF.Ainf.ofPadicInt l ↥(PadicComplexInt l)) z :=
   fun _ _ z => Reformulated.AutPerF.Ainf.frob_algebraMap z
@@ -986,7 +984,7 @@ namespace UntiltFrobenius
 section
 
 /- English proof (translation)
-Introduce `l _ g x`. Conclude with `Reformulated.AutPerF.Tilt.untilt_map _ x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.untilt_σF : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (x : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))), ((Reformulated.AutPerF.Tilt.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) x).untilt = (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g) x.untilt := by
   intro l _ g x
@@ -998,7 +996,7 @@ namespace FrobeniusKernel
 section
 
 /- English proof (translation)
-Introduce `l _ g` and use `Reformulated.AutPerF.AinfInv.kerTheta_le_comap (p := l) (MulSemiringAction.toRingHom _ _ g)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.ker_σ : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)), (Reformulated.AutPerF.AinfInv.kerTheta l ↥(PadicComplexInt l)) ≤ Ideal.comap (Reformulated.AutPerF.AinfInv.extend l ((Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)))) ((Reformulated.AutPerF.AinfInv.kerTheta l ↥(PadicComplexInt l))) :=
   fun l _ g => Reformulated.AutPerF.AinfInv.kerTheta_le_comap (p := l) (MulSemiringAction.toRingHom _ _ g)
@@ -1009,7 +1007,7 @@ namespace NormEqValuation
 section
 
 /- English proof (translation)
-Introduce `l _ x`. Rewrite using `[PadicComplex.norm_eq_norm, Valuation.norm_def, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bridge.RingBasics.norm_eq_val : ∀ (l : ℕ) [Fact l.Prime] (x : ℂ_[l]), ‖x‖ = ((Valued.v x : NNReal) : ℝ) := by
   intro l _ x
@@ -1022,7 +1020,7 @@ namespace PadicMapAlgebra
 section
 
 /- English proof (translation)
-Introduce `_ f r` and use `Reformulated.AutPerF.adicMap_algebraMap _ _ f _ r`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.AdicMaps.padicMap_alg : ∀ {R S : Type} [CommRing R] [CommRing S] (p : ℕ) (f : R →+* S) (r : R), (Reformulated.AutPerF.adicMap _ _ f (Reformulated.AutPerF.span_natCast_le_comap p f)) (algebraMap R (AdicCompletion (Ideal.span {(p : R)}) R) r) = algebraMap S (AdicCompletion (Ideal.span {(p : S)}) S) (f r) :=
   fun _ f r => Reformulated.AutPerF.adicMap_algebraMap _ _ f _ r
@@ -1033,7 +1031,7 @@ namespace PrimeNeZero
 section
 
 /- English proof (translation)
-Introduce `l hl`. Conclude with `Nat.cast_ne_zero.mpr hl.out.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.p_ne_zero : ∀ (l : ℕ) [Fact l.Prime] , ((l : ℕ) : ℂ_[l]) ≠ 0 := by
   intro l hl
@@ -1045,11 +1043,11 @@ namespace FactorialMulPartial
 section
 
 /- English proof (translation)
-Introduce `R _ hR x n`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk' : k + 1 ≤ n` using `Finset.mem_range.mp hk`. Take `⟨c, hc⟩ : k + 1 ∣ n.factorial` from `Nat.dvd_factorial (Nat.succ_pos k) hk'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : n.factorial / (k + 1) = c`. Rewrite using `[hc]`. Conclude with `Nat.mul_div_cancel_left c (Nat.succ_pos k)`. Establish `h2 : ((k + 1 : ℕ) : R) * Ring.inverse ((k + 1 : ℕ) : R) = 1` using `Ring.mul_inverse_cancel _ (hR (k + 1) (Nat.succ_ne_zero k))`. Rewrite using `[h1, hc, Nat.cast_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `((-1) ^ k * (c : R) * x ^ (k + 1)) * h2`.
+A detailed English derivation is pending.
 -/
 theorem Bridge.CrisIncl.factorial_mul_partial : ∀ {R : Type} [CommRing R] (hR : ∀ m : ℕ, m ≠ 0 → IsUnit (m : R)) (x : R) (n : ℕ), ((n.factorial : ℕ) : R) * ∑ k ∈ Finset.range n, (-1) ^ k * Ring.inverse ((k + 1 : ℕ) : R) * x ^ (k + 1) = ∑ k ∈ Finset.range n, (-1) ^ k * ((n.factorial / (k + 1) : ℕ) : R) * x ^ (k + 1) := by
   intro R _ hR x n
@@ -1070,9 +1068,9 @@ namespace AdicLevelCompat
 section
 
 /- English proof (translation)
-Introduce `R S _ _ I J f hf m n hle`. Use extensionality with `x`. Take `⟨a, rfl⟩` from `AdicCompletion.mk_surjective I R x`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, AdicCompletion.evalₐ_mk, Ideal.Quotient.mkₐ_eq_mk, Ideal.quotientMap_mk, Ideal.Quotient.factor_mk]`. Rewrite using `[Ideal.Quotient.eq, ← map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Reformulated.AutPerF.pow_le_comap_pow hf m` to reduce the goal to its premises. Establish `h` using `a.2 hle`. Rewrite `h` using `[SModEq.sub_mem]`. Establish `h2` using `(Submodule.neg_mem_iff _).2 h`. Simplify using `using h2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Bridge.AdicMaps.levMap_compat : ∀ {R S : Type} [CommRing R] [CommRing S] (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) {m n : ℕ} (hle : m ≤ n), (Ideal.Quotient.factorPow J hle).comp (((Ideal.quotientMap (J ^ n) f (Reformulated.AutPerF.pow_le_comap_pow hf n))).comp (AdicCompletion.evalₐ I n : AdicCompletion I R →+* R ⧸ I ^ n)) = ((Ideal.quotientMap (J ^ m) f (Reformulated.AutPerF.pow_le_comap_pow hf m))).comp (AdicCompletion.evalₐ I m : AdicCompletion I R →+* R ⧸ I ^ m) := by
   intro R S _ _ I J f hf m n hle
@@ -1092,7 +1090,7 @@ namespace AdicEvaluationMk
 section
 
 /- English proof (translation)
-Introduce `R S _ _ I J f hf n x r h`. Rewrite using `[Reformulated.AutPerF.evalₐ_adicMap, h]`. Apply the tactic sequence `first | rfl | simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.AdicMaps.evalₐ_adicMap_mk : ∀ {R S : Type} [CommRing R] [CommRing S] (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (n : ℕ) (x : AdicCompletion I R) (r : R) (h : AdicCompletion.evalₐ I n x = Ideal.Quotient.mk _ r), AdicCompletion.evalₐ J n (Reformulated.AutPerF.adicMap I J f hf x) = Ideal.Quotient.mk _ (f r) := by
   intro R S _ _ I J f hf n x r h
@@ -1105,7 +1103,7 @@ namespace DeRhamHomExt
 section
 
 /- English proof (translation)
-Introduce `l _ R _ f g h`. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) (RingHom.ext h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisLoc.bdR_hom_ext : ∀ (l : ℕ) [Fact l.Prime] {R : Type} [CommRing R] {f g : (Reformulated.AutPerF.BdR l ↥(PadicComplexInt l)) →+* R} (h : ∀ x : (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)), f (algebraMap _ _ x) = g (algebraMap _ _ x)), f = g := by
   intro l _ R _ f g h
@@ -1118,7 +1116,7 @@ namespace GaloisNormAlt
 section
 
 /- English proof (translation)
-Introduce `l _ g x`. Rewrite using `[← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq]`. Conclude with `(spectralNorm_eq_of_equiv g x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.norm_gal : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (x : PadicAlgCl l), ‖g x‖ = ‖x‖ := by
   intro l _ g x
@@ -1131,7 +1129,7 @@ namespace AdicEvaluationMap
 section
 
 /- English proof (translation)
-Introduce `I J f hf n x` and use `Reformulated.AutPerF.evalₐ_adicMap I J f hf n x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.AdicMaps.evalₐ_adicMap : ∀ {R S : Type} [CommRing R] [CommRing S] (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (n : ℕ) (x : AdicCompletion I R), AdicCompletion.evalₐ J n (Reformulated.AutPerF.adicMap I J f hf x) = (Ideal.quotientMap (J ^ n) f (Reformulated.AutPerF.pow_le_comap_pow hf n)) (AdicCompletion.evalₐ I n x) :=
   fun I J f hf n x => Reformulated.AutPerF.evalₐ_adicMap I J f hf n x
@@ -1142,7 +1140,7 @@ namespace RootConstantCoeffNeZero
 section
 
 /- English proof (translation)
-Introduce `l _ e hne h`. Apply `hne` to reduce the goal to its premises. Rewrite `h` using `[map_sub, map_one, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`. Conclude with `sub_eq_zero.mp h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisLoc.constantCoeff_root_ne_zero : ∀ (l : ℕ) [Fact l.Prime] (e : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))) (hne : e ≠ 1), WittVector.constantCoeff (WittVector.teichmuller l e - 1 : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ≠ 0 := by
   intro l _ e hne h
@@ -1156,7 +1154,7 @@ namespace AdicMapAlgebra
 section
 
 /- English proof (translation)
-Introduce `R S _ _ I J f hf r`. Conclude with `Reformulated.AutPerF.adicMap_algebraMap I J f hf r`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.AdicMaps.adicMap_alg : ∀ {R S : Type} [CommRing R] [CommRing S] (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (r : R), Reformulated.AutPerF.adicMap I J f hf (algebraMap R (AdicCompletion I R) r) = algebraMap S (AdicCompletion J S) (f r) := by
   intro R S _ _ I J f hf r
@@ -1168,7 +1166,7 @@ namespace AdicSpanLeComap
 section
 
 /- English proof (translation)
-Introduce `R S _ _ p f`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.AdicMaps.span_le_comap : ∀ {R S : Type} [CommRing R] [CommRing S] (p : ℕ) (f : R →+* S), Ideal.span {(p : R)} ≤ (Ideal.span {(p : S)}).comap f := by
   intro R S _ _ p f
@@ -1181,7 +1179,7 @@ namespace FrobeniusComplexOne
 section
 
 /- English proof (translation)
-Introduce `l _ x`. Conclude with `one_smul _ x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.σC_one : ∀ (l : ℕ) [Fact l.Prime] (x : ℂ_[l]), (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ℂ_[l] 1) x = x := by
   intro l _ x
@@ -1193,7 +1191,7 @@ namespace PrimeIsUnit
 section
 
 /- English proof (translation)
-Introduce `l _` and use `Reformulated.AutPerF.AinfInv.isUnit_p l`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.isUnit_l :
     ∀ (l : ℕ) [Fact l.Prime] , IsUnit ((l : ℕ) : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) :=
@@ -1205,7 +1203,7 @@ namespace NormPrimeLtOne
 section
 
 /- English proof (translation)
-Introduce `l _`. Establish `h : ((l : ℕ) : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] (l : ℚ_[l])` using `by simp`. Rewrite using `[h, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.norm_p_lt : ∀ (l : ℕ) [Fact l.Prime] , ‖((l : ℕ) : ℂ_[l])‖ < 1 := by
   intro l _
@@ -1219,7 +1217,7 @@ namespace NatIsUnit
 section
 
 /- English proof (translation)
-Introduce `l _ n hn`. Establish `h : IsUnit ((n : ℕ) : ℚ)` using `IsUnit.mk0 _ (Nat.cast_ne_zero.2 hn)`. Establish `h2` using `h.map (algebraMap ℚ (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)))`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Bridge.RingBasics.isUnit_nat :
     ∀ (l : ℕ) [Fact l.Prime] (n : ℕ) (hn : n ≠ 0), IsUnit ((n : ℕ) : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) := by
@@ -1234,7 +1232,7 @@ namespace AdicLevelMap
 section
 
 /- English proof (translation)
-Introduce `R S _ _ I J f hf n r`. Conclude with `Ideal.quotientMap_mk`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.AdicMaps.levMap_mk : ∀ {R S : Type} [CommRing R] [CommRing S] (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (n : ℕ) (r : R), (Ideal.quotientMap (J ^ n) f (Reformulated.AutPerF.pow_le_comap_pow hf n)) (Ideal.Quotient.mk _ r) = Ideal.Quotient.mk _ (f r) := by
   intro R S _ _ I J f hf n r
@@ -1246,7 +1244,7 @@ namespace FactorPowerEval
 section
 
 /- English proof (translation)
-Introduce `R _ I m n hle x`. Take `⟨s, rfl⟩` from `AdicCompletion.mk_surjective I R x`. Rewrite using `[AdicCompletion.evalₐ_mk, AdicCompletion.evalₐ_mk, Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk, Ideal.Quotient.eq]`. Establish `h` using `SModEq.sub_mem.1 (s.property hle).symm`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Bridge.AdicMaps.factorPow_evalₐ : ∀ {R : Type} [CommRing R] (I : Ideal R) {m n : ℕ} (hle : m ≤ n) (x : AdicCompletion I R), Ideal.Quotient.factorPow I hle (AdicCompletion.evalₐ I n x) = AdicCompletion.evalₐ I m x := by
   intro R _ I m n hle x
@@ -1274,9 +1272,9 @@ variable {R : Type u} [CommRing R] [Fact ¬IsUnit (p : R)] [IsAdicComplete (span
   [IsDomain R] [ValuationRing R] [CharZero R] [IsAlgClosed (FractionRing R)]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `AcrisZero.mem_span_gamma_xi ϖ hx` as an intermediate fact. Rewrite using `[dpSpan, Set.image_univ]`. Conclude with `this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Use `(show dpSpan (AinfInv p R) (Ainf.xi ϖ) Set.univ ≤ Subalgebra.toSubmodule (acrisZero p R) from ?_) hx` and prove the remaining obligations. Rewrite using `[dpSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨m, -, rfl⟩`. Conclude with `(AcrisZero.gamma m (Ainf.xi ϖ) (Ainf.theta_xi ϖ)).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_acrisZero_iff (ϖ : PFlat p R) (x : AinfInv p R) :
     x ∈ acrisZero p R ↔ x ∈ dpSpan (AinfInv p R) (Ainf.xi ϖ) Set.univ := by
@@ -1293,17 +1291,15 @@ theorem mem_acrisZero_iff (ϖ : PFlat p R) (x : AinfInv p R) :
     exact (AcrisZero.gamma m (Ainf.xi ϖ) (Ainf.theta_xi ϖ)).2
 
 /- English proof (translation)
-Take `⟨ϖ⟩ : Nonempty (PFlat p R)` from `inferInstance`. Take `⟨a, y, rfl⟩` from `Acris.exists_eq_add 1 x`. Rewrite `hx`, the goal using `[pow_one]`. Establish `h0 : algebraMap (Ainf p R) (AinfInv p R) (Ainf.xi ϖ) ≠ 0` using `(map_ne_zero_iff _ AinfInv.algebraMap_injective).2 (Ainf.xi_ne_zero ϖ)`. Establish `hξ : ∀ a : Ainf p R, algebraMap (Ainf p R) (AinfInv p R) (Ainf.xi ϖ) ∣ algebraMap (Ainf p R) (AinfInv p R) a → Ainf.xi ϖ ∣ a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a ha`. Establish `h1` using `(AinfInv.algebraMap_mem_kerTheta_pow_iff ϖ 1 a).1 (by`. Rewrite using `[pow_one, AinfInv.kerTheta_eq ϖ, mem_span_singleton]`. Conclude with `ha)`. Simplify using `using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, e⟩` from `exists_eq_mul_of_forall h0 hξ (q := p) (Fact.out : p.Prime).pos (AinfInv.isUnit_p p) ((mem_acrisZero_iff ϖ _).1 a.2) (fun n => by`. Take `⟨w, hw⟩` from `(Acris.toRange p R n y).2`. Use `⟨-(w : AinfInv p R), neg_mem ((mem_acrisZero_iff ϖ _).1 w.2), ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (BdRPlus.eval p R n) hx`. Rewrite `h1` using `[map_add, map_mul, map_natCast, map_add, map_mul, map_natCast, map_zero, Acris.toBdRPlus_algebraMap_zero, BdRPlus.eval_algebraMap, Acris.eval_toBdRPlus, ← hw]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Ideal.Quotient.mk (AinfInv.kerTheta p R ^ n) ((a : AinfInv p R) - p * -(w : AinfInv p R)) = 0`. Rewrite using `[mul_neg, sub_neg_eq_add, map_add, map_mul, map_natCast]`. Conclude with `h1`. Rewrite `h2` using `[Ideal.Quotient.eq_zero_iff_mem, AinfInv.kerTheta_eq ϖ, Ideal.span_singleton_pow, mem_span_singleton]`. Conclude with `h2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `e' : a = (p : AcrisZero p R) * ⟨z, (mem_acrisZero_iff ϖ _).2 hz⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [MulMemClass.coe_mul, SubringClass.coe_natCast]`. Conclude with `e`. Rewrite using `[e', map_mul, map_natCast]`.
-
-Conclude with `dvd_add (dvd_mul_right _ _) (dvd_mul_right _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_dvd_of_eq_zero {x : Acris p R} (hx : Acris.toBdRPlus p R x = 0) :
     (p : Acris p R) ∣ x := by
@@ -1340,11 +1336,11 @@ theorem p_dvd_of_eq_zero {x : Acris p R} (hx : Acris.toBdRPlus p R x = 0) :
   exact dvd_add (dvd_mul_right _ _) (dvd_mul_right _ _)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `Acris.eq_zero_of_forall_dvd fun n => ?_` and prove the remaining obligations. Establish `hu : IsUnit (p : BdRPlus p R)` using `IsUnit.of_mul_eq_one _ BdRPlus.p_mul_inv`. Proceed by induction on `n with`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ n ih`. Take `⟨y, rfl⟩` from `ih`. Rewrite `hx` using `[map_mul, map_pow, map_natCast]`. Rewrite using `[pow_succ]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_dvd_mul_left _ (p_dvd_of_eq_zero ((hu.pow n).mul_right_eq_zero.1 hx))`.
+A detailed English derivation is pending.
 -/
 theorem toBdRPlus_injective : Function.Injective (Acris.toBdRPlus p R) := by
   rw [injective_iff_map_eq_zero]
@@ -1360,7 +1356,7 @@ theorem toBdRPlus_injective : Function.Injective (Acris.toBdRPlus p R) := by
     exact mul_dvd_mul_left _ (p_dvd_of_eq_zero ((hu.pow n).mul_right_eq_zero.1 hx))
 
 /- English proof (translation)
-Introduce `x y h`. Establish `h1` using `congrArg (Bcris.toBdR p R) h`. Rewrite `h1` using `[Bcris.toBdR_algebraMap_acris, Bcris.toBdR_algebraMap_acris]`. Conclude with `toBdRPlus_injective (BdR.algebraMap_injective h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_injective : Function.Injective (algebraMap (Acris p R) (Bcris p R)) := by
   intro x y h
@@ -1371,7 +1367,7 @@ theorem algebraMap_injective : Function.Injective (algebraMap (Acris p R) (Bcris
 end Bridge.alg_Bcris_injective_aux
 
 /- English proof (translation)
-Introduce `_ _` and use `Bridge.alg_Bcris_injective_aux.algebraMap_injective`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.alg_Bcris_injective : ∀ (l : ℕ) [Fact l.Prime], Function.Injective (algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) :=
   fun _ _ => Bridge.alg_Bcris_injective_aux.algebraMap_injective
@@ -1387,9 +1383,9 @@ namespace Bridge.RingBasics.ExtendedInverseLemmas
 open Reformulated.AutPerF
 
 /- English proof (translation)
-Establish `h : (AinfInv.extend p (Ainf.map p (MulSemiringAction.toRingHom G R g))).comp (AinfInv.extend p (Ainf.map p (MulSemiringAction.toRingHom G R g⁻¹))) = RingHom.id _`. Apply `IsLocalization.ringHom_ext (Submonoid.powers (p : Ainf p R))` to reduce the goal to its premises. Use `RingHom.ext fun y => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, AinfInv.extend_algebraMap, RingHom.id_apply]`. Rewrite using `[Ainf.map_map, ← toRingHom_mul, mul_inv_cancel, toRingHom_one, Ainf.map_id]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.congr_fun h x`.
+A detailed English derivation is pending.
 -/
 theorem extend_extend_inv {p : ℕ} [Fact p.Prime] {R : Type*} [CommRing R]
     [Fact ¬IsUnit (p : R)] {G : Type*} [Group G] [MulSemiringAction G R] (g : G)
@@ -1407,7 +1403,7 @@ theorem extend_extend_inv {p : ℕ} [Fact p.Prime] {R : Type*} [CommRing R]
 end Bridge.RingBasics.ExtendedInverseLemmas
 
 /- English proof (translation)
-Introduce `_ _ g x` and use `Bridge.RingBasics.ExtendedInverseLemmas.extend_extend_inv g x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.extP_inv : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (x : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))), Reformulated.AutPerF.AinfInv.extend l ((Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g))) (Reformulated.AutPerF.AinfInv.extend l ((Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g⁻¹))) x) = x :=
   fun _ _ g x => Bridge.RingBasics.ExtendedInverseLemmas.extend_extend_inv g x
@@ -1420,7 +1416,7 @@ section
 namespace Bridge.RingBasics.SpanPowerIntegralLemmas
 
 /- English proof (translation)
-Rewrite using `[PadicComplex.norm_eq_norm]`. Simplify using `only [Valuation.norm_def, PadicComplex.RankOne.hom_eq_embedding]`. Rewrite using `[Valuation.embedding_restrict (PadicComplex.valued l).v y]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_eq_val (l : ℕ) [Fact l.Prime] (y : ℂ_[l]) :
     ‖y‖ = (((PadicComplex.valued l).v y : NNReal) : ℝ) := by
@@ -1429,7 +1425,7 @@ theorem norm_eq_val (l : ℕ) [Fact l.Prime] (y : ℂ_[l]) :
   rw [Valuation.embedding_restrict (PadicComplex.valued l).v y]
 
 /- English proof (translation)
-Rewrite using `[PadicComplexInt, Valuation.mem_valuationSubring_iff, norm_eq_val]`. Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem mem_iff (l : ℕ) [Fact l.Prime] (y : ℂ_[l]) : y ∈ PadicComplexInt l ↔ ‖y‖ ≤ 1 := by
   rw [PadicComplexInt, Valuation.mem_valuationSubring_iff, norm_eq_val]
@@ -1439,13 +1435,13 @@ end Bridge.RingBasics.SpanPowerIntegralLemmas
 
 open Bridge.RingBasics.SpanPowerIntegralLemmas in
 /- English proof (translation)
-Introduce `l hl n x`. Establish `hl0 : ((l : ℕ) : ℂ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr hl.out.ne_zero`. Establish `hpos : 0 < ‖((l : ℕ) : ℂ_[l])‖ ^ n` using `pow_pos (norm_pos_iff.mpr hl0) n`. Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨c, rfl⟩`. Establish `hc : ‖(c : ℂ_[l])‖ ≤ 1` using `(mem_iff l c).mp c.2`. Establish `h : ((((l : ℕ) : ↥(PadicComplexInt l)) ^ n * c : ↥(PadicComplexInt l)) : ℂ_[l]) = ((l : ℕ) : ℂ_[l]) ^ n * (c : ℂ_[l])`. Simplify using the standard rewrite rules. Rewrite using `[h, norm_mul, norm_pow]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_right hpos.le hc`. Introduce `h`. Establish `hm : (x : ℂ_[l]) / ((l : ℕ) : ℂ_[l]) ^ n ∈ PadicComplexInt l`. Rewrite using `[mem_iff, norm_div, norm_pow]`. Conclude with `(div_le_one hpos).mpr h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨_, hm⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h2 : ((((l : ℕ) : ↥(PadicComplexInt l)) ^ n * ⟨_, hm⟩ : ↥(PadicComplexInt l)) : ℂ_[l]) = ((l : ℕ) : ℂ_[l]) ^ n * ((x : ℂ_[l]) / ((l : ℕ) : ℂ_[l]) ^ n)`. Simplify using the standard rewrite rules. Rewrite using `[h2, mul_div_cancel₀ _ (pow_ne_zero n hl0)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.mem_span_pow_OC : ∀ (l : ℕ) [Fact l.Prime] (n : ℕ) (x : ↥(PadicComplexInt l)), x ∈ (Ideal.span {((l : ℕ) : ↥(PadicComplexInt l))}) ^ n ↔ ‖(x : ℂ_[l])‖ ≤ ‖((l : ℕ) : ℂ_[l])‖ ^ n := by
   intro l hl n x
@@ -1476,7 +1472,7 @@ namespace CrisHomExt
 section
 
 /- English proof (translation)
-Introduce `l _ R _ f g h`. Use `IsLocalization.ringHom_ext (Reformulated.AutPerF.BcrisPlus.periods l ↥(PadicComplexInt l)) ?_` and prove the remaining obligations. Use `IsLocalization.ringHom_ext (Submonoid.powers (l : Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ?_` and prove the remaining obligations. Conclude with `RingHom.ext fun x => h x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisLoc.bcris_hom_ext : ∀ (l : ℕ) [Fact l.Prime] {R : Type} [CommRing R] {f g : (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l)) →+* R} (h : ∀ x : (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)), f (algebraMap _ _ x) = g (algebraMap _ _ x)), f = g := by
   intro l _ R _ f g h
@@ -1491,7 +1487,7 @@ namespace UnitOfGenerator
 section
 
 /- English proof (translation)
-Introduce `l _ b hb`. Establish `h : RingHom.ker (Reformulated.AutPerF.BdRPlus.theta l ↥(PadicComplexInt l)) = Ideal.span {algebraMap (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l)) (Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l)) b}`. Rewrite using `[Reformulated.AutPerF.BdRPlus.ker_theta_eq_map, hb, Ideal.map_span, Set.image_singleton]`. Conclude with `(Reformulated.AutPerF.BdR.algebraMap_ne_zero h).isUnit`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisLoc.unit_of_generator : ∀ (l : ℕ) [Fact l.Prime] (b : (Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) (hb : (Reformulated.AutPerF.AinfInv.kerTheta l ↥(PadicComplexInt l)) = Ideal.span {b}), IsUnit (algebraMap ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdR l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.AinfInv l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.BdRPlus l ↥(PadicComplexInt l))) b)) := by
   intro l _ b hb
@@ -1507,11 +1503,11 @@ namespace PadicIntHomExt
 section
 
 /- English proof (translation)
-Introduce `l _ A _ hA f g`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `hA.haus _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `Ideal.mem_span_singleton.1 (PadicInt.appr_spec n x)`. Establish `hx : x = ((PadicInt.appr x n : ℕ) : ℤ_[l]) + (l : ℤ_[l]) ^ n * y`. Rewrite using `[← hy]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨f y - g y, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : f x = ((PadicInt.appr x n : ℕ) : A) + (l : A) ^ n * f y` using `by conv_lhs => rw [hx]`. Rewrite using `[map_add, map_mul, map_pow, map_natCast, map_natCast]`. Establish `h2 : g x = ((PadicInt.appr x n : ℕ) : A) + (l : A) ^ n * g y` using `by conv_lhs => rw [hx]`. Rewrite using `[map_add, map_mul, map_pow, map_natCast, map_natCast]`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -1541,7 +1537,7 @@ section
 namespace Bridge.RingBasics.WittFrobeniusLiftLemmas
 
 /- English proof (translation)
-Establish `h0 : WittVector.constantCoeff (WittVector.frobenius x - x ^ p) = 0`. Rewrite using `[map_sub, map_pow, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply, WittVector.coeff_frobenius_charP, sub_self]`. Establish `h1 : WittVector.frobenius x - x ^ p ∈ Ideal.span {(p : WittVector p k)}` using `(WittVector.mem_span_p_iff_coeff_zero_eq_zero _).2 h0`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton.1 h1`. Conclude with `⟨z, by rw [← hz]; ring⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem witt_frobenius_lift (p : ℕ) [Fact p.Prime] (k : Type*) [CommRing k] [CharP k p]
     [PerfectRing k p] (x : WittVector p k) :
@@ -1557,7 +1553,7 @@ theorem witt_frobenius_lift (p : ℕ) [Fact p.Prime] (k : Type*) [CommRing k] [C
 end Bridge.RingBasics.WittFrobeniusLiftLemmas
 
 /- English proof (translation)
-Introduce `l _ x`. Conclude with `Bridge.RingBasics.WittFrobeniusLiftLemmas.witt_frobenius_lift l _ x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.frob_lift : ∀ (l : ℕ) [Fact l.Prime] (x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), ∃ z : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)), (Reformulated.AutPerF.Ainf.frob l ↥(PadicComplexInt l)) x = x ^ l + (l : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) * z := by
   intro l _ x
@@ -1573,9 +1569,9 @@ open Ideal Reformulated.AutPerF
 namespace Bridge.CrisLoc.UnitOfRootLemmas
 
 /- English proof (translation)
-Establish `h1 : (p : A) ^ (n + 1) ∣ (∑ i ∈ Finset.range p, v ^ i) - p`. Establish `: (∑ i ∈ Finset.range p, v ^ i) - (p : A) = ∑ i ∈ Finset.range p, (v ^ i - 1)`. Rewrite using `[Finset.sum_sub_distrib]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.dvd_sum fun i _ => hv.trans (by simpa using sub_dvd_pow_sub_pow v 1 i)`. Take `⟨c, hc⟩` from `h1`. Use `⟨y * (1 + (p : A) ^ n * c), ?_, ⟨y * c, by ring⟩⟩` and prove the remaining obligations. Rewrite using `[← geom_sum_mul, eq_add_of_sub_eq hc, ← h]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem step {A : Type*} [CommRing A] (p n : ℕ) (z y v : A) (h : (p : A) ^ n * (z * y) = v - 1)
     (hv : (p : A) ^ (n + 1) ∣ v - 1) :
@@ -1594,13 +1590,13 @@ variable {p : ℕ} [Fact p.Prime]
 variable {R : Type*} [CommRing R] [Fact ¬IsUnit (p : R)] [IsAdicComplete (span {(p : R)}) R]
 
 /- English proof (translation)
-Generalize the expression as in `hw : algebraMap (Ainf p R) (AcrisZero p R) u = w`. Establish `hs : ∀ (n : ℕ) (y : AcrisZero p R), (p : AcrisZero p R) ^ n * ((w - 1) * y) = w ^ p ^ (n + 1) - 1 → ∃ y', (p : AcrisZero p R) ^ (n + 1) * ((w - 1) * y') = w ^ p ^ (n + 1 + 1) - 1 ∧ (p : AcrisZero p R) ^ n ∣ y' - y`. Introduce `n y h`. Take `⟨l, hl, -⟩` from `Acris.exists_quot u hu (n + 1)`. Rewrite `hl` using `[hw]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `step p n (w - 1) y _ h ⟨l, hl.symm⟩` as an intermediate fact. Rewrite `this` using `[← pow_mul, ← pow_succ p (n + 1)]`. Then use the resulting hypothesis. Use `choose! f hf using hs`. Set `y : ℕ → AcrisZero p R` to `fun n => Nat.rec (∑ i ∈ Finset.range p, w ^ i) (fun n y => f n y) n`. Establish `hy : ∀ n, (p : AcrisZero p R) ^ n * ((w - 1) * y n) = w ^ p ^ (n + 1) - 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Express the relevant statement in the definitionally equal form `_ * (_ * ∑ i ∈ Finset.range p, w ^ i) = _`. Rewrite using `[pow_zero, one_mul, zero_add, pow_one, mul_comm, geom_sum_mul]`.
+Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih => exact (hf n _ ih).1`. Conclude with `⟨y, fun n => ⟨hy n, (hf n _ (hy n)).2⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_seq (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
     ∃ y : ℕ → AcrisZero p R, ∀ n,
@@ -1630,13 +1626,13 @@ theorem exists_seq (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
   exact ⟨y, fun n => ⟨hy n, (hf n _ (hy n)).2⟩⟩
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `exists_seq u hu`. Establish `hc : ∀ m n, m ≤ n → (p : AcrisZero p R) ^ m ∣ y n - y m`. Introduce `m n h`. Proceed by induction on `n, h using Nat.le_induction with`. Consider the case `base => simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n h ih`. Use `dvd_add ((pow_dvd_pow _ h).trans (hy n).2) ih` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Set `Y : Acris p R` to `adicMk (span {(p : AcrisZero p R)}) (fun n => Ideal.Quotient.mk _ (y n)) (fun m n hle => by`. Simplify using `only [Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Conclude with `Ideal.Quotient.eq.2 ((AcrisZero.mem_span_pow_iff _ _).2 (hc m n hle)))`. Establish `hY : ∀ n, Acris.eval p R n Y = Ideal.Quotient.mk _ (y n)` using `fun n => evalₐ_adicMk _ _ _ n`. Use `⟨Y, Acris.ext_eval fun n => ?_⟩` and prove the remaining obligations. Take `⟨l, hl, hl'⟩` from `Acris.exists_quot u hu (n + 1)`. Establish `h1 : Acris.eval p R n (Acris.log u hu) = Ideal.Quotient.mk _ l`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Acris.factorPow_eval (Nat.le_succ n), hl']`. Simplify using `only [Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk]`. Establish `h2 : (p : AcrisZero p R) * l = (algebraMap (Ainf p R) (AcrisZero p R) u - 1) * y n` using `AcrisZero.p_pow_mul_cancel n (by rw [(hy n).1, ← hl]; ring)`. Rewrite using `[map_mul, map_mul, hY, h1, map_natCast, IsScalarTower.algebraMap_apply (Ainf p R) (AcrisZero p R) (Acris p R), Acris.eval_algebraMap, ← map_mul, map_sub, map_one, ← h2, map_mul, map_natCast]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_p_mul_log (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
     algebraMap (Ainf p R) (Acris p R) (u - 1) ∣ (p : Acris p R) * Acris.log u hu := by
@@ -1665,13 +1661,11 @@ theorem dvd_p_mul_log (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
     ← map_mul, map_sub, map_one, ← h2, map_mul, map_natCast]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing η with`. Consider the case `zero => exact absurd (by rw [Tilt.seq_zero, tateModule.untilt_eq_one]) h`. Consider the case `succ n ih`. Distinguish the cases in `h1 : Tilt.seq 1 η.1 = 1`. Set `η' : tateModule p R` to `⟨(frobeniusEquiv (Tilt p R) p).symm η.1, by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `PreTilt.untilt _ = 1`. Rewrite using `[← Tilt.seq_zero, Tilt.seq_frobeniusEquiv_symm]`. Conclude with `h1⟩`. Establish `h2 : η = η' ^ p` using `Subtype.ext (frobeniusEquiv_symm_pow_p (Tilt p R) p η.1).symm`. Establish `h3` using `ih η' (by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Tilt.seq n ((frobeniusEquiv (Tilt p R) p).symm η.1) ≠ 1`. Rewrite using `[Tilt.seq_frobeniusEquiv_symm]`. Conclude with `h)`. Rewrite using `[h2, Bcris.logTeich_pow]`. Conclude with `Bcris.isUnit_p.mul h3`.
-
-Conclude with `Bcris.isUnit_logTeich ((isPrimitive_iff η).2 h1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_logTeich_of_seq (n : ℕ) (η : tateModule p R) (h : Tilt.seq n η.1 ≠ 1) :
     IsUnit (Bcris.logTeich η) := by
@@ -1691,9 +1685,7 @@ theorem isUnit_logTeich_of_seq (n : ℕ) (η : tateModule p R) (h : Tilt.seq n �
     · exact Bcris.isUnit_logTeich ((isPrimitive_iff η).2 h1)
 
 /- English proof (translation)
-Take `⟨n, hn⟩ : ∃ n, Tilt.seq n e ≠ 1` from `by by_contra! h`. Conclude with `hne (Tilt.ext_seq fun n => by rw [h n, map_one])`. Establish `h1` using `isUnit_logTeich_of_seq n (⟨e, he⟩ : tateModule p R) hn`. Establish `h2` using `map_dvd (algebraMap (Acris p R) (Bcris p R)) (dvd_p_mul_log (Ainf.teich p e) (by rw [Ainf.theta_teich]; exact he))`. Rewrite `h2` using `[map_mul, map_natCast]`.
-
-Conclude with `isUnit_of_dvd_unit h2 (Bcris.isUnit_p.mul h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_teich_sub_one (e : Tilt p R) (he : e.untilt = 1) (hne : e ≠ 1) :
     IsUnit (((algebraMap (Acris p R) (Bcris p R)).comp (algebraMap (Ainf p R) (Acris p R)))
@@ -1710,7 +1702,7 @@ theorem isUnit_teich_sub_one (e : Tilt p R) (he : e.untilt = 1) (hne : e ≠ 1) 
 end Bridge.CrisLoc.UnitOfRootLemmas
 
 /- English proof (translation)
-Introduce `_ _ e he hne` and use `Bridge.CrisLoc.UnitOfRootLemmas.isUnit_teich_sub_one e he hne`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisLoc.unit_of_root_aB : ∀ (l : ℕ) [Fact l.Prime] (e : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))) (he : e.untilt = 1) (hne : e ≠ 1), IsUnit (((algebraMap (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))).comp (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)))) (WittVector.teichmuller l e - 1)) :=
   fun _ _ e he hne => Bridge.CrisLoc.UnitOfRootLemmas.isUnit_teich_sub_one e he hne
@@ -1721,7 +1713,7 @@ namespace ThetaFrobeniusA
 section
 
 /- English proof (translation)
-Introduce `_ _ _ x` and use `Reformulated.AutPerF.Ainf.theta_map _ x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.θ_σA : ∀ (l : ℕ) [Fact l.Prime] (g : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (x : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))), (WittVector.fontaineTheta ↥(PadicComplexInt l) l) ((Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) x) = (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g) ((WittVector.fontaineTheta ↥(PadicComplexInt l) l) x) :=
   fun _ _ _ x => Reformulated.AutPerF.Ainf.theta_map _ x
@@ -1736,7 +1728,7 @@ structure Extends {l : ℕ} [Fact l.Prime] (f : (Reformulated.AutPerF.Ainf l ↥
   alg : ∀ a : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)), F (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) a) = algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (f a)
 
 /- English proof (translation)
-Introduce `l _`. Conclude with `⟨fun _ hy => Reformulated.AutPerF.AcrisZero.extend_mem _ Reformulated.AutPerF.AcrisZero.gamma_frob_mem hy, fun s => Reformulated.AutPerF.Acris.frob_algebraMap_zero s, fun a => Reformulated.AutPerF.Acris.frob_algebraMap a⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem Bridge.CrisMaps.frob_extends : ∀ (l : ℕ) [Fact l.Prime], Extends (Reformulated.AutPerF.Ainf.frob l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris.frob l ↥(PadicComplexInt l)) := by
   intro l _
@@ -1754,7 +1746,7 @@ structure Extends {l : ℕ} [Fact l.Prime] (f : (Reformulated.AutPerF.Ainf l ↥
   alg : ∀ a : (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)), F (algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) a) = algebraMap (Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l)) (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) (f a)
 
 /- English proof (translation)
-Introduce `l _ g`. Conclude with `{ mem := fun _ hy => Reformulated.AutPerF.AcrisZero.extend_mem _ (Reformulated.AutPerF.AcrisZero.gamma_map_mem _) hy env := fun s => Reformulated.AutPerF.Acris.map_algebraMap_zero _ s alg := fun a => Reformulated.AutPerF.Acris.map_algebraMap _ a }`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisMaps.gal_extends : ∀ (l : ℕ) [Fact l.Prime] (g : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l), Extends (Reformulated.AutPerF.Ainf.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) (Reformulated.AutPerF.Acris.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) g)) := by
   intro l _ g
@@ -1770,7 +1762,7 @@ namespace FrobeniusMulComplex
 section
 
 /- English proof (translation)
-Introduce `l _ g h x`. Simplify using `only [MulSemiringAction.toRingHom_apply, mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem Bridge.RingBasics.σC_mul : ∀ (l : ℕ) [Fact l.Prime] (g h : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) (x : ℂ_[l]), (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ℂ_[l] (g * h)) x = (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ℂ_[l] g) ((MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ℂ_[l] h) x) := by
   intro l _ g h x
@@ -1782,7 +1774,7 @@ namespace IntegralComplexMem
 section
 
 /- English proof (translation)
-Introduce `l _ x`. Rewrite using `[PadicComplexInt, Valuation.mem_valuationSubring_iff, PadicComplex.norm_eq_norm, Valuation.norm_def, ← NNReal.coe_one, NNReal.coe_le_coe, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bridge.RingBasics.mem_OC : ∀ (l : ℕ) [Fact l.Prime] (x : ℂ_[l]), x ∈ PadicComplexInt l ↔ ‖x‖ ≤ 1 := by
   intro l _ x
@@ -1796,7 +1788,7 @@ namespace FrobeniusTiltOne
 section
 
 /- English proof (translation)
-Introduce `l _ x`. Establish `h : MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) (1 : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) = RingHom.id _` using `RingHom.ext fun y => one_smul _ y`. Rewrite using `[h]`. Conclude with `Reformulated.AutPerF.Tilt.map_id x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.σF_one : ∀ (l : ℕ) [Fact l.Prime] (x : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))), (Reformulated.AutPerF.Tilt.map l (MulSemiringAction.toRingHom (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) ↥(PadicComplexInt l) (1 : (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)))) x = x := by
   intro l _ x

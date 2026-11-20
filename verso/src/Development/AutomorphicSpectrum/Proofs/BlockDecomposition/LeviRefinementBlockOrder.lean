@@ -11,13 +11,13 @@ open DoubleCoset (doubleCoset)
 namespace GlobalTheory.CompanionTheory.CellCompare
 
 /- English proof (translation)
-Introduce `k _ _ _ _ α β' _ _ _ _ N m _ _ c _ _ e f δ hδ x`. Unfold `relParab`. Rewrite using `[Subgroup.mem_pi]`. Express the relevant statement in the definitionally equal form `_ ↔ (leviEmb k e x : Matrix (Fin N) (Fin N) k).BlockTriangular δ`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx p q hpq`. Take `⟨⟨a, u⟩, rfl⟩` from `e.surjective p`. Take `⟨⟨b, v⟩, rfl⟩` from `e.surjective q`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `⟨⟨j, t⟩, rfl⟩` from `(f a).surjective u`. Take `⟨⟨j', t'⟩, rfl⟩` from `(f a).surjective v`. Rewrite using `[leviEmb_apply_same]`. Conclude with `mem_parab_iff.1 (hx a trivial) j j' t t' ((hδ a j' j t' t).1 hpq)`. Conclude with `leviEmb_apply_ne k e x hab u v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hx i _`. Rewrite using `[mem_parab_iff]`. Introduce `j j' t t' hjj`. Establish `h` using `hx ((hδ i j' j t' t).2 hjj)`. Rewrite `h` using `[leviEmb_apply_same]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_relParab_iff_leviEmb_mem_blockUpper :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

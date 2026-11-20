@@ -10,9 +10,9 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 
 /- English proof (translation)
-Introduce `q`. Take `⟨δ, hδ, e⟩` from `(pkLaws (K := K)).2.2.2 (q.out * ⟨γ, hγ⟩)`. Establish `h1` using `h (Quotient.mk _ (q.out * ⟨γ, hγ⟩))`. Unfold `qx at h1 ⊢`. Rewrite `h1` using `[e, mul_assoc, (hpSpec (K := K)).2.2.1 δ hδ, Subgroup.coe_mul, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 private theorem om_of_mul {K : Type} [Field K] [NumberField K] {T : ℝ} {γ : G1 K (2 + 2)} (hγ : γ ∈ Gam K (2 + 2))
     {x : G1 K (2 + 2)} (h : Om T x) : Om T (γ * x) := by
@@ -24,13 +24,13 @@ private theorem om_of_mul {K : Type} [Field K] [NumberField K] {T : ℝ} {γ : G
   exact h1
 
 /- English proof (translation)
-Introduce `K _ _ T`. Establish `h1 : ∀ γ ∈ Gam K (2 + 2), ∀ x : G1 K (2 + 2), Om T (γ * x) ↔ Om T x` using `fun γ hγ x => ⟨fun h => by`. Use `om_of_mul (inv_mem hγ) h` as an intermediate fact. Rewrite using `[inv_mul_cancel_left] at this, om_of_mul hγ⟩` and apply the resulting hypothesis. Establish `h2 : IsClosed {x : G1 K (2 + 2) | Om T x}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Unfold `Om`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun q => isClosed_le ((hpSpec (K := K)).2.2.2.1.comp (continuous_const.mul continuous_id)) continuous_const`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[measurableSet_quotient]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : Quotient.mk'' ⁻¹' {y : RightCosetSpace (Gam K (2 + 2)) | Om T (Quotient.out y : G1 K (2 + 2))} = {x : G1 K (2 + 2) | Om T x}`. Use extensionality with `x`. Take `⟨γ, hγ⟩` from `mk_eq_mk_iff.1 (Quotient.out_eq (RightCosetSpace.mk (Gam K (2 + 2)) x))`. Express the relevant statement in the definitionally equal form `Om T (Quotient.out (RightCosetSpace.mk (Gam K (2 + 2)) x)) ↔ Om T x`. Rewrite using `[← hγ]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 _ γ.2 x`. Rewrite using `[h]`. Conclude with `h2.measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.omMeas :
     ∀ {K : Type} [Field K] [NumberField K] (T : ℝ), (∀ γ ∈ Gam K (2 + 2), ∀ x : G1 K (2 + 2), Om T (γ * x) ↔ Om T x) ∧ IsClosed {x : G1 K (2 + 2) | Om T x} ∧

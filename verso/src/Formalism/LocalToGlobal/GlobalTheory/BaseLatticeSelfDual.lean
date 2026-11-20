@@ -29,7 +29,7 @@ def Coord.lat (K : Coord hc S n) (L : Submodule (𝓞 E) S.V) : Submodule (𝓞 
   L.map ((K.κ : S.V →ₗ[E] (n → E)).restrictScalars (𝓞 E))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ show K.κ.symm (K.κ x) ∈ L`. Rewrite using `[LinearEquiv.symm_apply_apply]` and apply the resulting hypothesis. Introduce `h`. Conclude with `⟨_, h, K.κ.apply_symm_apply y⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem Coord.mem_lat (K : Coord hc S n) (L : Submodule (𝓞 E) S.V) (y : n → E) : y ∈ K.lat L ↔ K.κ.symm y ∈ L := by
   constructor
@@ -40,11 +40,11 @@ theorem Coord.mem_lat (K : Coord hc S n) (L : Submodule (𝓞 E) S.V) (y : n →
     exact ⟨_, h, K.κ.apply_symm_apply y⟩
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[K.mem_lat, Formalism.HermitianLatticesTheory.dualBasic_mem_dual, mem_dl]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨x, hx, rfl⟩`. Establish `h1` using `h x hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h1` using `[K.form, LinearEquiv.apply_symm_apply]`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 h1`. Conclude with `⟨r, hr⟩`. Introduce `h x hx`. Establish `h1` using `h (K.κ x) ⟨x, hx, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[K.form, LinearEquiv.apply_symm_apply]`. Take `⟨r, hr⟩` from `h1`. Conclude with `Submodule.mem_one.2 ⟨r, hr⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Coord.lat_dual (K : Coord hc S n) (L : Submodule (𝓞 E) S.V) :
     K.lat (Formalism.HermitianLatticesTheory.dual S.hT L) = dl hc.sig K.J (K.lat L) := by
@@ -63,9 +63,9 @@ theorem Coord.lat_dual (K : Coord hc S n) (L : Submodule (𝓞 E) S.V) :
     exact Submodule.mem_one.2 ⟨r, hr⟩
 
 /- English proof (translation)
-Use `⟨Module.Finite.iff_fg.2 (hL.fg.map _), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `h1 : K.κ.symm y ∈ Submodule.span E (L : Set S.V)` using `by rw [hL.span_eq_top]; trivial`. Establish `h2 : K.κ (K.κ.symm y) ∈ (Submodule.span E (L : Set S.V)).map (K.κ : S.V →ₗ[E] (n → E))` using `⟨_, h1, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[LinearEquiv.apply_symm_apply, Submodule.map_span]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Coord.isLat_lat (K : Coord hc S n) {L : Submodule (𝓞 E) S.V} (hL : Submodule.IsLattice E L) :
     IsLat (K.lat L) := by
@@ -78,11 +78,11 @@ theorem Coord.isLat_lat (K : Coord hc S n) {L : Submodule (𝓞 E) S.V} (hL : Su
   exact h2
 
 /- English proof (translation)
-Use `⟨M.map ((K.κ.symm : (n → E) →ₗ[E] S.V).restrictScalars (𝓞 E)), ⟨(Module.Finite.iff_fg.1 hM.1).map _, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `h1 : K.κ x ∈ Submodule.span E (M : Set (n → E))` using `by rw [hM.2]; trivial`. Establish `h2 : K.κ.symm (K.κ x) ∈ (Submodule.span E (M : Set (n → E))).map (K.κ.symm : (n → E) →ₗ[E] S.V)` using `⟨_, h1, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[LinearEquiv.symm_apply_apply, Submodule.map_span]`. Conclude with `h2`. Use extensionality with `y`. Rewrite using `[K.mem_lat]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨z, hz, hzy⟩`. Establish `: z = y` using `K.κ.symm.injective hzy`. Rewrite using `[← this]` and apply the resulting hypothesis. Introduce `hy`. Conclude with `⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Coord.exists_lat (K : Coord hc S n) {M : Submodule (𝓞 E) (n → E)} (hM : IsLat M) :
     ∃ L : Submodule (𝓞 E) S.V, Submodule.IsLattice E L ∧ K.lat L = M := by
@@ -103,13 +103,13 @@ theorem Coord.exists_lat (K : Coord hc S n) {M : Submodule (𝓞 E) (n → E)} (
       exact ⟨y, hy, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨_, Formalism.HermitianLatticesTheory.majDual_star_int r⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem star_int (r : 𝓞 E) : star (algebraMap (𝓞 E) E r) ∈ Set.range (algebraMap (𝓞 E) E) :=
   ⟨⟨_, Formalism.HermitianLatticesTheory.majDual_star_int r⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨L, hL, rfl⟩` from `K.exists_lat hM`. Rewrite using `[← K.lat_dual]`. Conclude with `K.isLat_lat (Formalism.HermitianLatticesTheory.dualLattice (𝓞 E) E S.V S.hT S.herm S.nondeg star_int L hL).1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Coord.isLat_dl (K : Coord hc S n) (M : Submodule (𝓞 E) (n → E)) (hM : IsLat M) : IsLat (dl hc.sig K.J M) := by
   obtain ⟨L, hL, rfl⟩ := K.exists_lat hM
@@ -117,7 +117,7 @@ theorem Coord.isLat_dl (K : Coord hc S n) (M : Submodule (𝓞 E) (n → E)) (hM
   exact K.isLat_lat (Formalism.HermitianLatticesTheory.dualLattice (𝓞 E) E S.V S.hT S.herm S.nondeg star_int L hL).1
 
 /- English proof (translation)
-Rewrite using `[← K.lat_dual]`. Unfold `Coord.lat`. Rewrite using `[Submodule.map_sup, Submodule.map_smul'']`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Coord.lat_companion (K : Coord hc S n) (L : Submodule (𝓞 E) S.V) (a : 𝓞 E) :
     K.lat (L ⊔ Ideal.span {a} • Formalism.HermitianLatticesTheory.dual S.hT L) =
@@ -127,7 +127,7 @@ theorem Coord.lat_companion (K : Coord hc S n) (L : Submodule (𝓞 E) S.V) (a :
   rw [Submodule.map_sup, Submodule.map_smul'']
 
 /- English proof (translation)
-Rewrite using `[K.lat_companion, eq_glob_of_hat (K.isLat_lat hL) g hyl, ← hbase, glob_companion hc.sig K.J K.isLat_dl hΛb ha g hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Coord.companion (K : Coord hc S n) {L : Submodule (𝓞 E) S.V} (hL : Submodule.IsLattice E L)
     {Λb : Submodule (𝓞 E) (n → E)} (hΛb : IsLat Λb) (g : GL n 𝒜)
@@ -139,7 +139,7 @@ theorem Coord.companion (K : Coord hc S n) {L : Submodule (𝓞 E) S.V} (hL : Su
     glob_companion hc.sig K.J K.isLat_dl hΛb ha g hg]
 
 /- English proof (translation)
-Rewrite using `[← K.lat_dual]`. Establish `: Formalism.HermitianLatticesTheory.dual S.hT S.L0 = S.L0` using `S.baseLattice_isUnimodular`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Coord.base_lattice_self_dual (K : Coord hc S n) : dl hc.sig K.J (K.lat S.L0) = K.lat S.L0 := by
   rw [← K.lat_dual]

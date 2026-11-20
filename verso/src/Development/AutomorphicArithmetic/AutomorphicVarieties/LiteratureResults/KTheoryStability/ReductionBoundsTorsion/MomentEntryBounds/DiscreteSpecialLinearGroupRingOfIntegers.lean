@@ -7,13 +7,13 @@ open NumberField NumberField.InfinitePlace Matrix MeasureTheory UpperTheory.V.KT
 namespace PositivityTheory.KB.MomentRationality.Disc
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ha`. Establish `hn : Algebra.norm ℤ a ≠ 0` using `Algebra.norm_ne_zero_iff.2 ha`. Establish `h1 : (1 : ℝ) ≤ |((Algebra.norm ℤ a : ℤ) : ℝ)|`. Establish `: (1 : ℤ) ≤ |Algebra.norm ℤ a|` using `Int.one_le_abs hn`. Conclude with `this` after adjusting the coercions.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `prod_eq_abs_norm (a : L)`. Rewrite `h2` using `[← Algebra.coe_norm_int]`. Establish `h3 : ∏ w : InfinitePlace L, w (a : L) ^ w.mult < 1`. Take `⟨w0⟩` from `(inferInstance : Nonempty (InfinitePlace L))`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ w0)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : ∏ w ∈ Finset.univ.erase w0, w (a : L) ^ w.mult ≤ 1` using `Finset.prod_le_one (fun w _ => pow_nonneg (apply_nonneg _ _) _) (fun w _ => pow_le_one₀ (apply_nonneg _ _) (h w).le)`. Establish `hw0 : w0 (a : L) ^ w0.mult < 1` using `pow_lt_one₀ (apply_nonneg _ _) (h w0) InfinitePlace.mult_pos.ne'`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[h2]`. Move the coercions through the operations in `at h3`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_lt_one {L : Type} [Field L] [NumberField L] (a : 𝓞 L)
     (h : ∀ w : InfinitePlace L, w (a : L) < 1) : a = 0 := by
@@ -41,7 +41,7 @@ theorem eq_zero_of_lt_one {L : Type} [Field L] [NumberField L] (a : 𝓞 L)
   linarith
 
 /- English proof (translation)
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem continuous_entry {L : Type} [Field L] [NumberField L] {N : ℕ} (w : InfinitePlace L) (i j : Fin N) :
     Continuous fun x : Sp L N => mt x w i j := by
@@ -56,7 +56,7 @@ theorem mt_latS {L : Type} [Field L] [NumberField L] {N : ℕ} (σ : SpecialLine
       w.embedding (((σ : Matrix (Fin N) (Fin N) (𝓞 L)) i j : 𝓞 L) : L) := rfl
 
 /- English proof (translation)
-The claim follows from `(RingOfIntegers.basis L).equivFun.injective.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_O (L : Type) [Field L] [NumberField L] : Countable (𝓞 L) :=
   (RingOfIntegers.basis L).equivFun.injective.countable
@@ -68,21 +68,19 @@ namespace PositivityTheory.KB
 open MomentRationality MomentRationality.Disc
 
 /- English proof (translation)
-Introduce `L _ _ N`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[discreteTopology_iff_isOpen_singleton_one]`. Set `U : Set (Sp L N)` to `{x | ∀ w i j, ‖mt x w i j - (1 : Matrix (Fin N) (Fin N) ℂ) i j‖ < 1}`. Establish `hU : IsOpen U`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [U, Set.setOf_forall]`. Apply the tactic sequence `exact isOpen_iInter_of_finite fun w => isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => isOpen_lt ((continuous_entry w i j).sub continuous_const).norm continuous_const`. Use `isOpen_induced_iff.2 ⟨U, hU, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨γ, hγ⟩`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hγU`. Take `⟨σ, rfl⟩` from `hγ`. Establish `hσ : σ = 1`. Use `Matrix.SpecialLinearGroup.ext _ _ fun i j => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0` using `eq_zero_of_lt_one (((σ : Matrix (Fin N) (Fin N) (𝓞 L)) i j) - (1 : Matrix (Fin N) (Fin N) (𝓞 L)) i j) (fun w => ?_)`. Simplify using `using sub_eq_zero.1 h0`. Establish `h1` using `hγU w i j`. Rewrite `h1` using `[mt_latS]`. Rewrite using `[← norm_embedding_eq]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h1 using 2` and compare the differences between its conclusion and the goal. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `hσ` using the available equality. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `h`. Establish `h' : γ = 1` using `congrArg Subtype.val h`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `h'` using the available equality. Introduce `w i j`. Establish `hone : mt (1 : Sp L N) w = 1` using `rfl`. Rewrite using `[hone, sub_self, norm_zero]`. Conclude with `one_pos`.
-
-Use `haveI := countable_O L haveI : Countable (Matrix (Fin N) (Fin N) (𝓞 L)) := inferInstanceAs (Countable (Fin N → Fin N → 𝓞 L)) haveI : Countable (SpecialLinearGroup (Fin N) (𝓞 L)) := inferInstanceAs (Countable {A : Matrix (Fin N) (Fin N) (𝓞 L) // A.det = 1})`. Conclude with `(MonoidHom.rangeRestrict_surjective (MonoidHom.pi fun w : InfinitePlace L => SpecialLinearGroup.map (n := Fin N) (embO w))).countable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discrete_specialLinearGroup_ringOfIntegers : SDisc := by
   intro L _ _ N

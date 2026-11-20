@@ -7,7 +7,7 @@ noncomputable section
 namespace GlobalTheory.NormalCore
 
 /- English proof (translation)
-Use extensionality with `X`. Simplify using `only [ebox, Set.mem_setOf_eq, Set.mem_preimage, of_apply, Valuation.mem_integer_iff, map_mul]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Establish `h0 : 0 < valuation k ((ϖ ^ r i j : kˣ) : k)` using `zero_lt_iff.2 (by simp)`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, inv_mul_le_iff₀ h0, mul_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ebox_eq_preimage {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {A D : Type} (ϖ : kˣ) (C : Matrix A D k) (r : A → D → ℕ) :
@@ -20,9 +20,9 @@ theorem ebox_eq_preimage {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
   rw [Units.val_inv_eq_inv_val, map_inv₀, inv_mul_le_iff₀ h0, mul_one]
 
 /- English proof (translation)
-Rewrite using `[ebox_eq_preimage]`. Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce `hX`. Use `⟨_, hX, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Simplify using `[← mul_assoc]`. Introduce and unpack `⟨Y, hY, rfl⟩`. Simplify `hY` using `[← mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ebox_eq_image {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {A D : Type} (ϖ : kˣ) (C : Matrix A D k) (r : A → D → ℕ) :
@@ -39,7 +39,7 @@ theorem ebox_eq_image {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     simpa [← mul_assoc] using hY
 
 /- English proof (translation)
-Rewrite using `[ebox_eq_image]`. Conclude with `isCompact_intMatrix.image (by fun_prop)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_ebox {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {A D : Type} [Fintype A] [Fintype D] (ϖ : kˣ) (C : Matrix A D k) (r : A → D → ℕ) :
@@ -48,7 +48,7 @@ theorem isCompact_ebox {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k
   exact isCompact_intMatrix.image (by fun_prop)
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `: T2Space (Matrix A D k)` using `inferInstanceAs (T2Space (A → D → k))`. Use `⟨(isCompact_ebox ϖ C r).isClosed, ?_⟩` and prove the remaining obligations. Rewrite using `[ebox_eq_preimage]`. Conclude with `isOpen_intMatrix.preimage (by fun_prop)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClopen_ebox (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (A D : Type) [Fintype A] [Fintype D] (ϖ : kˣ) (C : Matrix A D k) (r : A → D → ℕ) :

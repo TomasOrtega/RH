@@ -8,7 +8,7 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Establish `h` using `Nat.pow_succ_le_ascFactorial (n + 1) A`. Rewrite `h` using `[Nat.ascFactorial_eq_factorial_mul_choose]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pow_succ_le_factorial_mul_choose (n A : ℕ) :
     ((n : ℝ) + 1) ^ A ≤ (A.factorial : ℝ) * ((n + A).choose A : ℕ) := by
@@ -17,7 +17,7 @@ lemma pow_succ_le_factorial_mul_choose (n A : ℕ) :
   exact_mod_cast h
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_exp, ← Real.exp_nat_mul]`. Use `congr 1`. Simplify using `[Complex.mul_re, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma norm_qterm (n : ℕ) (τ : ℍ) :
     ‖cexp (2 * π * Complex.I * n * τ)‖ = Real.exp (-2 * π * τ.im) ^ n := by
@@ -27,13 +27,13 @@ lemma norm_qterm (n : ℕ) (τ : ℍ) :
   ring
 
 /- English proof (translation)
-Use `set t := 2 * π * y with ht`. Establish `htpos : 0 < t` using `by positivity`. Establish `hty : y ≤ t`. Establish `: (1 : ℝ) ≤ 2 * π` using `by nlinarith [Real.pi_gt_three]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h1 : Real.exp (-t) ≤ (1 + t)⁻¹`. Rewrite using `[Real.exp_neg]`. Conclude with `inv_anti₀ (by positivity) (by linarith [Real.add_one_le_exp t])`. Establish `h2 : t / (1 + t) ≤ 1 - Real.exp (-t)`. Establish `: t / (1 + t) = 1 - (1 + t)⁻¹` using `by field_simp; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (1 - Real.exp (-t))⁻¹ ≤ (t / (1 + t))⁻¹` using `inv_anti₀ (by positivity) h2`. Establish `h4 : (t / (1 + t))⁻¹ = 1 + t⁻¹` using `by field_simp; ring`. Establish `h5 : t⁻¹ ≤ y⁻¹` using `inv_anti₀ hy hty`. Establish `: -2 * π * y = -t` using `by rw [ht]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 lemma one_sub_exp_inv_le (y : ℝ) (hy : 0 < y) :
     (1 - Real.exp (-2 * π * y))⁻¹ ≤ 1 + y⁻¹ := by
@@ -56,11 +56,11 @@ lemma one_sub_exp_inv_le (y : ℝ) (hy : 0 < y) :
   linarith
 
 /- English proof (translation)
-Break down `le_or_gt 1 y with h | h` into its components or cases. Establish `: 1 + y⁻¹ ≤ 2 * y`. Establish `: y⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ h`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Establish `: 0 ≤ (y ^ B)⁻¹` using `by positivity`. Use polynomial arithmetic with `[pow_pos (two_pos : (0:ℝ) < 2) B]`. Establish `: 1 + y⁻¹ ≤ 2 * y⁻¹`. Establish `: 1 ≤ y⁻¹` using `one_le_inv₀ hy |>.mpr h.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ y ^ B` using `by positivity`. Use polynomial arithmetic with `[pow_pos (two_pos : (0:ℝ) < 2) B]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma one_add_inv_pow_le (y : ℝ) (hy : 0 < y) (B : ℕ) :
     (1 + y⁻¹) ^ B ≤ 2 ^ B * (y ^ B + (y ^ B)⁻¹) := by
@@ -83,17 +83,17 @@ lemma one_add_inv_pow_le (y : ℝ) (hy : 0 < y) (B : ℕ) :
         nlinarith [pow_pos (two_pos : (0:ℝ) < 2) B]
 
 /- English proof (translation)
-Introduce `a ⟨C, A, hC⟩`. Establish `hC0 : 0 ≤ C`. Use `hC 0` as an intermediate fact. Simplify using `at this`. Conclude with `le_trans (norm_nonneg _) this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C * A.factorial * 2 ^ (A + 1), A + 1, fun τ => ?_⟩` and prove the remaining obligations. Use `set y := τ.im`. Establish `hy : 0 < y` using `τ.im_pos`. Use `set r := Real.exp (-2 * π * y) with hr`. Establish `hr0 : 0 < r` using `Real.exp_pos _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hr1 : r < 1`. Use `Real.pi_pos` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hrn : ‖r‖ < 1` using `by rwa [Real.norm_of_nonneg hr0.le]`. Establish `hS` using `hasSum_choose_mul_geometric_of_norm_lt_one (𝕜 := ℝ) A hrn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hbound : ∀ n : ℕ, ‖a n * cexp (2 * π * Complex.I * n * τ)‖ ≤ (C * A.factorial) * (((n + A).choose A : ℕ) * r ^ n)`. Introduce `n`. Rewrite using `[norm_mul, norm_qterm]`. Establish `h1` using `hC n`. Establish `h2` using `pow_succ_le_factorial_mul_choose n A`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hsum2 : HasSum (fun n : ℕ => (C * A.factorial) * (((n + A).choose A : ℕ) * r ^ n)) ((C * A.factorial) * (1 / (1 - r) ^ (A + 1)))` using `hS.mul_left _`. Establish `hsumm : Summable (fun n : ℕ => ‖a n * cexp (2 * π * Complex.I * n * τ)‖)` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hbound hsum2.summable`. Establish `key : ‖qs a τ‖ ≤ (C * A.factorial) * (1 / (1 - r) ^ (A + 1))`. Unfold `qs`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hinv : 1 / (1 - r) ^ (A + 1) ≤ 2 ^ (A + 1) * (y ^ (A + 1) + (y ^ (A + 1))⁻¹)`. Rewrite using `[one_div, ← inv_pow]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mod_qs_of_polyB : ∀ a : ℕ → ℂ, PolyB a → Mod (qs a) := by
   intro a ⟨C, A, hC⟩

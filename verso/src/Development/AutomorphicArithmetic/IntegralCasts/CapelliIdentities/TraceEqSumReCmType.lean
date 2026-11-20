@@ -1,19 +1,17 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `E _ _ Ψ _ φ hinj h x`. Establish `hcc : ∀ s : E →+* ℂ, (starRingEnd ℂ).comp ((starRingEnd ℂ).comp s) = s`. Introduce `s`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Set `g : Ψ ⊕ Ψ → (E →+* ℂ)` to `Sum.elim φ (fun τ => (starRingEnd ℂ).comp (φ τ))`. Establish `hg : Function.Bijective g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(a | a) (b | b) hab`. Conclude with `congrArg Sum.inl (hinj hab)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `absurd ⟨a, hab⟩ ((h (φ b)).1 ⟨b, rfl⟩)`. Conclude with `absurd ⟨b, hab.symm⟩ ((h (φ a)).1 ⟨a, rfl⟩)`. Establish `h2` using `congrArg (fun s => (starRingEnd ℂ).comp s) hab`. Simplify using `only [g, Sum.elim_inr, hcc] at h2`. Conclude with `congrArg Sum.inr (hinj h2)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `s`. Distinguish the cases in `hs : ∃ τ, φ τ = s`. Take `⟨τ, hτ⟩` from `hs`. Conclude with `⟨Sum.inl τ, hτ⟩`. Take `⟨τ, hτ⟩` from `not_not.1 (fun hn => hs ((h s).2 hn))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Sum.inr τ, ?_⟩` and prove the remaining obligations. Simplify using `only [g, Sum.elim_inr, hτ, hcc]`. Establish `h1 : ((Algebra.trace ℚ E x : ℚ) : ℂ) = ∑ s : E →+* ℂ, s x`. Establish `h0` using `trace_eq_sum_embeddings ℂ (K := ℚ) (L := E) (x := x)`. Rewrite `h0` using `[eq_ratCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `(Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) _ _ (fun s => rfl)).symm`. Rewrite `h1` using `[← Fintype.sum_bijective g hg (fun t => g t x) (fun s => s x) (fun _ => rfl), Fintype.sum_sum_type, ← Finset.sum_add_distrib]`. Establish `h2` using `congrArg Complex.re h1`. Rewrite `h2` using `[Complex.ratCast_re, Complex.re_sum]`.
-
-Rewrite using `[h2]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[g, two_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.trace_eq_sum_re_cm_type :
     ∀ {E : Type} [Field E] [NumberField E] {Ψ : Type} [Fintype Ψ] (φ : Ψ → (E →+* ℂ)),

@@ -14,11 +14,11 @@ open Formalism.DworkPowerSeriesWeights (Integral mvExp frameJet jetPair minorPro
 open Formalism.GrowthSums (gamP rhoP gainG excessGain)
 
 /- English proof (translation)
-Introduce `F σ _ _ _ _`. Set `inst : NormedField (Formalism.DworkPowerSeriesWeights.GK F σ)` to `(Formalism.DworkPowerSeriesWeights.gAbs F σ).toNormedField`. Set `ι : MvPolynomial σ F →+* Formalism.DworkPowerSeriesWeights.GK F σ` to `algebraMap _ _`. Establish `hι : ∀ P, ‖ι P‖ = Formalism.DworkPowerSeriesWeights.gN P` using `fun P => Formalism.DworkPowerSeriesWeights.gAbs_algebraMap P`. Establish `hev : ∀ P, MvPolynomial.eval₂ (ι.comp MvPolynomial.C) (fun i => ι (MvPolynomial.X i)) P = ι P` using `Formalism.DworkPowerSeriesWeights.eval₂_ringHom_eq ι`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Formalism.DworkPowerSeriesWeights.GK F σ, inst, ?_, ?_, ι.comp MvPolynomial.C, fun i => ι (MvPolynomial.X i), ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm fun x y => Formalism.DworkPowerSeriesWeights.gAbs_add_le_max x y`. Conclude with `charZero_of_injective_ringHom (ι.comp MvPolynomial.C).injective`. Introduce `z`. Rewrite using `[RingHom.comp_apply, hι, Formalism.DworkPowerSeriesWeights.gN_C]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `P`. Rewrite using `[hev, hι]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem generic_elements_exist : GenericExistsK := by
   intro F σ _ _ _ _
@@ -43,21 +43,19 @@ namespace EGaussK
 open EGauss
 
 /- English proof (translation)
-Establish `hpp : p.Prime` using `Fact.out`. Take `⟨K, instK, hult, hchar, φ, Y, hφ, hgauss⟩` from `generic_elements_exist K₁ (ZMod (2 * ν) × Fin r0 × Fin r0)`. Establish `hnp : ‖(p : K)‖ = (p : ℝ)⁻¹` using `by rw [← map_natCast φ, hφ, hn1]`. Establish `hY : ∀ y, ‖Y y‖ ≤ 1`. Introduce `y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hgauss (MvPolynomial.X y)`. Rewrite `h` using `[MvPolynomial.eval₂_X]`. Rewrite using `[h]`. Use `ciSup_le fun m => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_X]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Take `⟨C, ξ, e, l, sf, T, I', hop, hξ, hT, hal, hcap, hls, hB⟩` from `struct TT colN hts hp I Y`. Use `⟨K, instK, hult, C, fun s => φ (u s), MvPowerSeries.map φ F, ξ, e, l, sf, T, I', ⟨hpp, hp2, hnp, fun s => by rw [hφ]; exact hu s, ?_, ?_, ?_, ?_⟩, ?_, hal, hcap, hls, hB⟩` and prove the remaining obligations. Establish `h` using `inClass_map φ hφ _ _ _ hF`. Rewrite `h` using `[map_natCast, map_hhS]`. Then use the resulting hypothesis.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `s a`. Take `⟨y, h⟩` from `hξ s a`. Rewrite using `[h]`. Conclude with `hY y`. Introduce `c i a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, h⟩` from `hT c i a`. Rewrite using `[h]`. Conclude with `hY y`. Introduce `x hx`. Establish `h : alN e x.1 = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hal]`. Unfold `alG`. Rewrite using `[if_neg hx]`. Unfold `alN at h`. Conclude with `(Finset.sum_eq_zero_iff.1 h) x.2 (Finset.mem_univ _)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Use `le_trans (le_ciSup (Formalism.DworkPowerSeriesWeights.bddAbove_norm_coeff _) n) ?_` and prove the remaining obligations. Rewrite using `[← hgauss, ← hop]`. Unfold `frameJet`. Rewrite using `[Formalism.DworkPowerSeriesWeights.eval₂_jetPairPoly, map_prod]`.
-
-Simplify using `only [Formalism.DworkPowerSeriesWeights.ringMap_minorProd, map_sum, map_mul, MvPolynomial.map_C, MvPolynomial.map_X, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X]`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reduce (K₁ : Type) [NormedField K₁] [IsUltrametricDist K₁] [CharZero K₁]
     (p : ℕ) [Fact p.Prime] (ν r0 r1 : ℕ) [NeZero ν] (u : ZMod (2 * ν) → K₁)
@@ -125,15 +123,15 @@ theorem reduce (K₁ : Type) [NormedField K₁] [IsUltrametricDist K₁] [CharZe
     exact le_rfl
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `h1p : 1 ≤ p ^ 2` using `Nat.one_le_pow _ _ hp.out.pos`. Establish `hN : ((p ^ 2 - 1 : ℕ) : ℝ) = (p : ℝ) ^ 2 - 1`. Rewrite using `[Nat.cast_sub h1p, Nat.cast_pow, Nat.cast_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hNpos : (0 : ℝ) < (p : ℝ) ^ 2 - 1` using `by nlinarith`. Establish `hNne : p ^ 2 - 1 ≠ 0`. Introduce `h`. Establish `h0 : ((p ^ 2 - 1 : ℕ) : ℝ) = 0` using `by rw [h]; simp`. Rewrite `h0` using `[hN]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ‖ϖ‖ = (p : ℝ) ^ (-(rhoP p))`. Establish `h1 : ‖ϖ‖ ^ (p ^ 2 - 1) = (p : ℝ)⁻¹` using `by rw [← norm_pow, hϖ, hn]`. Establish `h2 : ((p : ℝ) ^ (-(rhoP p))) ^ (p ^ 2 - 1) = (p : ℝ)⁻¹`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hp0.le, hN]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `rhoP`. Rewrite using `[neg_mul, one_div, inv_mul_cancel₀ hNpos.ne', Real.rpow_neg_one]`. Establish `h3 : ‖ϖ‖ ^ (p ^ 2 - 1) = ((p : ℝ) ^ (-(rhoP p))) ^ (p ^ 2 - 1)` using `h1.trans h2.symm`. Establish `hx : (0 : ℝ) ≤ (p : ℝ) ^ (-(rhoP p))` using `Real.rpow_nonneg hp0.le _`. Use `first`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact (pow_left_inj₀ (norm_nonneg _) hx hNne).1 h3`. Consider the case `exact (pow_left_inj (norm_nonneg _) hx hNne).1 h3`. Rewrite using `[norm_pow, key, ← Real.rpow_natCast, ← Real.rpow_mul hp0.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_unif_pow {K : Type} [NormedField K] {p : ℕ} [hp : Fact p.Prime]
     (hn : ‖(p : K)‖ = (p : ℝ)⁻¹) {ϖ : K} (hϖ : ϖ ^ (p ^ 2 - 1) = (p : K))
@@ -165,9 +163,9 @@ theorem norm_unif_pow {K : Type} [NormedField K] {p : ℕ} [hp : Fact p.Prime]
   ring
 
 /- English proof (translation)
-Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp.out.pos`. Rewrite `hx` using `[hxy, norm_mul, norm_unif_pow hn hϖ d]`. Establish `hpos : (0 : ℝ) < (p : ℝ) ^ (-(rhoP p * d))` using `Real.rpow_pos_of_pos hp0 _`. Establish `hsplit : (p : ℝ) ^ (-(g + rhoP p * d)) = (p : ℝ) ^ (-(rhoP p * d)) * (p : ℝ) ^ (-g)`. Rewrite using `[← Real.rpow_add hp0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hx` using `[hsplit]`. Conclude with `le_of_mul_le_mul_left hx hpos`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend {K : Type} [NormedField K] {p : ℕ} [hp : Fact p.Prime]
     (hn : ‖(p : K)‖ = (p : ℝ)⁻¹) {ϖ : K} (hϖ : ϖ ^ (p ^ 2 - 1) = (p : K))
@@ -188,7 +186,7 @@ end EGaussK
 open EGaussK DeterminantJetScaling ScaledSeriesSubstitution
 
 /- English proof (translation)
-Introduce `K _ _ _ p _ ν r0 r1 _ u F TT colN hts hp I hp2 hn hu hF n`. Take `⟨K', iK, hU, C, u', F', ξ, e, l, sf, T, I', hH, hb, hal, hcap, hls, -⟩` from `EGaussK.reduce K p ν r0 r1 u F TT colN hts hp I hp2 hn hu hF`. Establish `h1` using `hE K' p ν r0 r1 C u' F' TT ξ e l sf T I' hH`. Rewrite `h1` using `[hal, hcap, hls]`. Conclude with `(hb n).trans h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_a_one_generic_of_entry (hE : EntryExcessBound) : GaussBoundNoOperatorGeneric := by
   intro K _ _ _ p _ ν r0 r1 _ u F TT colN hts hp I hp2 hn hu hF n
@@ -199,7 +197,7 @@ theorem gauss_a_one_generic_of_entry (hE : EntryExcessBound) : GaussBoundNoOpera
   exact (hb n).trans h1
 
 /- English proof (translation)
-Introduce `K _ _ _ p _ ν r0 r1 _ u F TT colN hts hp I hp2 hn hu hF n`. Take `⟨K', iK, hU, C, u', F', ξ, e, l, sf, T, I', hH, hb, hal, hcap, hls, -⟩` from `EGaussK.reduce K p ν r0 r1 u F TT colN hts hp I hp2 hn hu hF`. Establish `h1` using `hE K' p ν r0 r1 C u' F' TT ξ e l sf T I' hH`. Rewrite `h1` using `[hal, hcap, hls]`. Conclude with `(hb n).trans h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_a_two_generic_of_entry (hE : EntryCappedBound) : GaussBoundArbitraryGeneric := by
   intro K _ _ _ p _ ν r0 r1 _ u F TT colN hts hp I hp2 hn hu hF n
@@ -210,11 +208,11 @@ theorem gauss_a_two_generic_of_entry (hE : EntryCappedBound) : GaussBoundArbitra
   exact (hb n).trans h1
 
 /- English proof (translation)
-Introduce `K _ _ _ p _ ν r0 r1 i _ u F TT colN hts hp I hp2 hn hi hu hF n`. Take `⟨K', iK, hU, C, u', F', ξ, e, l, sf, T, I', hH, hb, hal, hcap, hls, hJ⟩` from `EGaussK.reduce K p ν r0 r1 u F TT colN hts hp I hp2 hn hu hF`. Establish `h1` using `hE K' p ν r0 r1 C u' F' TT ξ e l sf T I' (univ.filter (fun b : Fin r1 => b.val < i)) hH`. Rewrite `h1` using `[hal, hcap, hls]`. Establish `h2` using `hJ (univ.filter (fun b : Fin r1 => b.val < i)) i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hn' : ‖(p : K')‖ = (p : ℝ)⁻¹` using `hH.2.2.1`. Rewrite `h1` using `[norm_mul, norm_pow, hn']`. Rewrite using `[norm_mul, norm_pow, hn]`. Establish `hp1 : (1 : ℝ) ≤ p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt.le`. Establish `hinv : (p : ℝ)⁻¹ ≤ 1` using `by first`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact inv_le_one_of_one_le₀ hp1`. Consider the case `exact inv_le_one hp1`. Establish `hinv0 : (0 : ℝ) ≤ (p : ℝ)⁻¹` using `by positivity`. Use `le_trans ?_ h1` and prove the remaining obligations. Conclude with `mul_le_mul (pow_le_pow_of_le_one hinv0 hinv h2) (hb n) (norm_nonneg _) (by positivity)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GaussBK_of (hE : EntryB) : GaussBK := by
   intro K _ _ _ p _ ν r0 r1 i _ u F TT colN hts hp I hp2 hn hi hu hF n
@@ -237,22 +235,22 @@ theorem GaussBK_of (hE : EntryB) : GaussBK := by
   exact mul_le_mul (pow_le_pow_of_le_one hinv0 hinv h2) (hb n) (norm_nonneg _) (by positivity)
 
 /- English proof (translation)
-The claim follows from `gauss_a_one_generic_of_entry Top.entry_a_one`.
+A detailed English derivation is pending.
 -/
 theorem gauss_a_one_generic : GaussBoundNoOperatorGeneric := gauss_a_one_generic_of_entry Top.entry_a_one
 
 /- English proof (translation)
-The claim follows from `gauss_a_two_generic_of_entry Top.entry_a_two`.
+A detailed English derivation is pending.
 -/
 theorem gauss_a_two_generic : GaussBoundArbitraryGeneric := gauss_a_two_generic_of_entry Top.entry_a_two
 
 /- English proof (translation)
-The claim follows from `GaussBK_of Top.entryB`.
+A detailed English derivation is pending.
 -/
 theorem gauss_b_generic : GaussBK := GaussBK_of Top.entryB
 
 /- English proof (translation)
-Introduce `K _ _ _ p _ ν r0 r1 _ u ϖ Th TT colN hts hp I h2 hn hϖ hu hF n`. Establish `hb` using `h K p ν r0 r1 u _ TT colN hts hp I h2 hn hu hF n`. Rewrite `hb` using `[deg_eq]`. Use `EGaussK.descend hn hϖ _ _ _ _ ?_ hb` and prove the remaining obligations. Rewrite using `[frameJet_scale, MvPolynomial.coeff_C_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem kernel_a_one_generic_of_gauss (h : GaussBoundNoOperatorGeneric) : KernelValuationBoundUltrametric := by
   intro K _ _ _ p _ ν r0 r1 _ u ϖ Th TT colN hts hp I h2 hn hϖ hu hF n
@@ -262,7 +260,7 @@ theorem kernel_a_one_generic_of_gauss (h : GaussBoundNoOperatorGeneric) : Kernel
   rw [frameJet_scale, MvPolynomial.coeff_C_mul]
 
 /- English proof (translation)
-Introduce `K _ _ _ p _ ν r0 r1 _ u ϖ Th TT colN hts hp I h2 hn hϖ hu hF n`. Establish `hb` using `h K p ν r0 r1 u _ TT colN hts hp I h2 hn hu hF n`. Rewrite `hb` using `[deg_eq]`. Use `EGaussK.descend hn hϖ _ _ _ _ ?_ hb` and prove the remaining obligations. Rewrite using `[frameJet_scale, MvPolynomial.coeff_C_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem kernel_a_two_generic_of_gauss (h : GaussBoundArbitraryGeneric) : KernelBoundArbitrarySizes := by
   intro K _ _ _ p _ ν r0 r1 _ u ϖ Th TT colN hts hp I h2 hn hϖ hu hF n
@@ -272,7 +270,7 @@ theorem kernel_a_two_generic_of_gauss (h : GaussBoundArbitraryGeneric) : KernelB
   rw [frameJet_scale, MvPolynomial.coeff_C_mul]
 
 /- English proof (translation)
-Introduce `K _ _ _ p _ ν r0 r1 i _ u ϖ Th TT colN hts hp I h2 hn hi hϖ hu hF n`. Establish `hb` using `h K p ν r0 r1 i u _ TT colN hts hp I h2 hn hi hu hF n`. Rewrite `hb` using `[deg_eq]`. Use `EGaussK.descend hn hϖ _ _ _ _ ?_ hb` and prove the remaining obligations. Rewrite using `[frameJet_scale, MvPolynomial.coeff_C_mul, mul_left_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem KernelBK_of (h : GaussBK) : KernelBK := by
   intro K _ _ _ p _ ν r0 r1 i _ u ϖ Th TT colN hts hp I h2 hn hi hϖ hu hF n
@@ -282,33 +280,33 @@ theorem KernelBK_of (h : GaussBK) : KernelBK := by
   rw [frameJet_scale, MvPolynomial.coeff_C_mul, mul_left_comm]
 
 /- English proof (translation)
-Conclude with `kernel_a_one_generic_of_gauss gauss_a_one_generic`.
+A detailed English derivation is pending.
 -/
 theorem kernel_a_one_generic : KernelValuationBoundUltrametric := by
   exact kernel_a_one_generic_of_gauss gauss_a_one_generic
 
 /- English proof (translation)
-Conclude with `kernel_a_two_generic_of_gauss gauss_a_two_generic`.
+A detailed English derivation is pending.
 -/
 theorem kernel_a_two_generic : KernelBoundArbitrarySizes := by
   exact kernel_a_two_generic_of_gauss gauss_a_two_generic
 
 /- English proof (translation)
-Conclude with `KernelBK_of gauss_b_generic`.
+A detailed English derivation is pending.
 -/
 theorem kernel_b_generic : KernelBK := by
   exact KernelBK_of gauss_b_generic
 
 /- English proof (translation)
-Introduce `p _ K0 _ _ _ _ σ hU hζ F hF be hbe K _ _ _ j ν r0 r1 _ hj om oms ϖ μ U0 Φ hϖ hom hμ0 hμ hU0 hΦ0 hΦ TT colN hts hp I n`. Take `⟨c, hc, -, -, hcl⟩` from `hS K0 p σ hU hζ F hF be hbe`. Establish `hin` using `hcl K j ν r0 r1 hj om oms ϖ μ U0 Φ hϖ hom hμ0 hμ hU0 hΦ0 hΦ`. Establish `hp2 : 2 < p` using `hU.2.1`. Establish `hn : ‖(p : K)‖ = (p : ℝ)⁻¹` using `by rw [← map_natCast j, hj, hU.2.2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpC : (p : K) ≠ 0` using `by exact_mod_cast hU.1.ne_zero`. Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Apply `hpC` to reduce the goal to its premises. Rewrite using `[← hϖ, zero_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `: 2 ^ 2 ≤ p ^ 2` using `Nat.pow_le_pow_left hp2.le 2`. Use linear arithmetic over natural numbers and integers. Establish `hu : ∀ s : ZMod (2 * ν), ‖uS (j c) (j (σ c)) s‖ ≤ 1`. Introduce `s`. Unfold `uS`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Rewrite using `[norm_neg, hj]`. Conclude with `norm_lift_le_one hU hc`. Rewrite using `[hj]`. Conclude with `hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hin' : InClass (p : K) (hhS p (uS (j c) (j (σ c)))) (MvPowerSeries.subst (fun x => MvPowerSeries.C ϖ * (MvPowerSeries.X x : MvPowerSeries (ZV ν r0 r1) K)) (thetaLog om oms ϖ μ (mvExp (-Φ) * U0)))`. Unfold `thetaLog`. Rewrite using `[scale_scale hϖ0]`. Conclude with `hin`. Conclude with `⟨h1 K p ν r0 r1 _ ϖ _ TT colN hts hp I hp2 hn hϖ hu hin' n, h2 K p ν r0 r1 _ ϖ _ TT colN hts hp I hp2 hn hϖ hu hin' n, fun i hi => h3 K p ν r0 r1 i _ ϖ _ TT colN hts hp I hp2 hn hi hϖ hu hin' n⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kernel_bounds_generic_of_uniform (hS : ThmSUniform) (h1 : KernelValuationBoundUltrametric) (h2 : KernelBoundArbitrarySizes) (h3 : KernelBK) :
     KernelBoundsGeneric := by
@@ -344,7 +342,7 @@ theorem kernel_bounds_generic_of_uniform (hS : ThmSUniform) (h1 : KernelValuatio
     fun i hi => h3 K p ν r0 r1 i _ ϖ _ TT colN hts hp I hp2 hn hi hϖ hu hin' n⟩
 
 /- English proof (translation)
-Conclude with `kernel_bounds_generic_of_uniform theorem_s_uniform kernel_a_one_generic kernel_a_two_generic kernel_b_generic`.
+A detailed English derivation is pending.
 -/
 theorem kernel_bounds_generic : KernelBoundsGeneric := by
   exact kernel_bounds_generic_of_uniform theorem_s_uniform kernel_a_one_generic kernel_a_two_generic kernel_b_generic

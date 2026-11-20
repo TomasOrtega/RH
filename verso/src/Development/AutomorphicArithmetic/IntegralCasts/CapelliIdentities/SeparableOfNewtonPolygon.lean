@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Nat.cast_succ]`. Conclude with `w.map_add_le ih (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma val_nat_le_one {L Γ : Type} [Field L] [LinearOrderedCommGroupWithZero Γ]
     (w : Valuation L Γ) (m : ℕ) : w (m : L) ≤ 1 := by
@@ -12,21 +12,19 @@ private lemma val_nat_le_one {L Γ : Type} [Field L] [LinearOrderedCommGroupWith
     exact w.map_add_le ih (by simp)
 
 /- English proof (translation)
-Establish `hex : ∃ j, n ≤ j ∨ t (j + 1) < t j` using `⟨n, Or.inl le_rfl⟩`. Use `set j := Nat.find hex with hj`. Establish `hjn : j ≤ n` using `Nat.find_min' hex (Or.inl le_rfl)`. Establish `hlo : ∀ k < j, t k ≤ t (k + 1)` using `fun k hk => not_lt.1 fun h => Nat.find_min hex hk (Or.inr h)`. Establish `hlo' : ∀ k, k + 1 < j → t k < t (k + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Establish `h1` using `hc k (by omega)`. Establish `h2 : t (k + 1) * t (k + 1) ≤ t (k + 1) * t (k + 2)` using `mul_le_mul_of_nonneg_left (hlo (k + 1) hk) zero_le`. Conclude with `lt_of_mul_lt_mul_right (h1.trans_le h2) zero_le`. Establish `hhi : ∀ k, j ≤ k → k < n → t (k + 1) < t k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `k hk`. Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base`. Introduce `h`. Break down `Nat.find_spec hex with h' | h'` into its components or cases.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h'`. Consider the case `succ k hk ih`. Introduce `h`. Establish `h1` using `hc k (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : t (k + 1) * t (k + 1) ≤ t k * t (k + 1)` using `mul_le_mul_of_nonneg_right (ih (by omega)).le zero_le`. Conclude with `lt_of_mul_lt_mul_left (h1.trans_le h2) zero_le`. Establish `hle : ∀ k ≤ j, t k ≤ t j`. Introduce `k hk`. Proceed by induction on `hk using Nat.decreasingInduction with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `self => exact le_rfl`. Consider the case `of_succ k hk ih => exact (hlo k hk).trans ih`. Establish `hgt : ∀ k, j + 1 ≤ k → k ≤ n → t k < t j`. Introduce `k hk`. Proceed by induction on `k, hk using Nat.le_induction with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Consider the case `base => intro h; exact hhi j le_rfl (by omega)`. Consider the case `succ k hk ih => intro h; exact (hhi k (by omega) (by omega)).trans (ih (by omega))`. Use `⟨j, hjn, fun k hk h1 h2 => ?_⟩` and prove the remaining obligations. Break down `lt_or_gt_of_ne h1 with h | h` into its components or cases. Conclude with `(hlo' k (by omega)).trans_le (hle _ (by omega))`.
-
-Conclude with `hgt k h hk`.
+A detailed English derivation is pending.
 -/
 private lemma exists_peak {Γ : Type} [LinearOrderedCommGroupWithZero Γ] (n : ℕ) (t : ℕ → Γ)
     (h0 : ∀ k ≤ n, 0 < t k) (hc : ∀ k, k + 2 ≤ n → t k * t (k + 2) < t (k + 1) * t (k + 1)) :
@@ -73,15 +71,13 @@ private lemma exists_peak {Γ : Type} [LinearOrderedCommGroupWithZero Γ] (n : �
   · exact hgt k h hk
 
 /- English proof (translation)
-Establish `hpos : ∀ k ≤ n, 0 < w (b k)` using `fun k hk => zero_lt_iff.2 ((map_ne_zero w).2 (h0 k hk))`. Take `⟨j, hjn, hj⟩` from `exists_peak n (fun k => w (b k)) hpos (fun k hk => by simpa only [map_mul] using hc k hk)`. Establish `hs : ∑ k ∈ Finset.range (n + 1), (((k + 1 : ℕ) : L) - (j : L)) * b k = 0`. Establish `: ∀ k : ℕ, (((k + 1 : ℕ) : L) - (j : L)) * b k = (k : L) * b k + (1 - (j : L)) * b k`. Introduce `k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this, Finset.sum_add_distrib, ← Finset.mul_sum, h1, h2, mul_zero, add_zero]`. Establish `hjj : (((j + 1 : ℕ) : L) - (j : L)) * b j = b j` using `by push_cast; ring`. Establish `key` using `w.map_sum_eq_of_lt (s := Finset.range (n + 1)) (f := fun k => (((k + 1 : ℕ) : L) - (j : L)) * b k) (j := j) (Finset.mem_range.2 (by omega)) (by`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k hk`. Rewrite `hk` using `[Finset.mem_sdiff, Finset.mem_range, Finset.mem_singleton]`. Rewrite using `[hjj]`. Distinguish the cases in `hkj : k + 1 = j`. Rewrite using `[hkj, sub_self, zero_mul, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpos j hjn`. Rewrite using `[map_mul]`. Use `lt_of_le_of_lt ?_ (hj k (by omega) hk.2 hkj)` and prove the remaining obligations. Conclude with `mul_le_of_le_one_left zero_le (w.map_sub_le (val_nat_le_one w _) (val_nat_le_one w _)))`. Rewrite `key` using `[hs, hjj, map_zero]`.
-
-Conclude with `(hpos j hjn).ne key`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma no_double_zero {L Γ : Type} [Field L] [LinearOrderedCommGroupWithZero Γ]
     (w : Valuation L Γ) (n : ℕ) (b : ℕ → L) (h0 : ∀ k ≤ n, b k ≠ 0)
@@ -113,13 +109,11 @@ private lemma no_double_zero {L Γ : Type} [Field L] [LinearOrderedCommGroupWith
   exact (hpos j hjn).ne key
 
 /- English proof (translation)
-Take `⟨A, h, hA⟩` from `IsLocalRing.exists_factor_valuationRing (f.comp v.valuationSubring.subtype)`. Use `⟨A, fun x y hxy => ?_⟩` and prove the remaining obligations. Establish `hy : 0 < v y` using `lt_of_le_of_lt zero_le hxy`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `at hy`. Establish `hlt : v (x / y) < 1`. Rewrite using `[map_div₀]`. Conclude with `(div_lt_one₀ hy).2 hxy`. Set `z : v.valuationSubring` to `⟨x / y, hlt.le⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hz : z ∈ IsLocalRing.maximalIdeal v.valuationSubring` using `(Valuation.mem_maximalIdeal_iff _ _).2 hlt`. Use `haveI : IsLocalRing A.toSubring := inferInstanceAs (IsLocalRing A)`. Establish `hz'` using `(A.valuation_lt_one_iff _).1 (map_nonunit ((f.comp v.valuationSubring.subtype).codRestrict A.toSubring h) z hz)`. Establish `hz'' : A.valuation (f (x / y)) < 1` using `hz'`. Rewrite `hz''` using `[map_div₀, map_div₀]`.
-
-Conclude with `(div_lt_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 ((map_ne_zero f).2 hy0)))).1 hz''`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_extension {K L Γ : Type} [Field K] [Field L]
     [LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (f : K →+* L) :
@@ -145,7 +139,7 @@ private lemma exists_extension {K L Γ : Type} [Field K] [Field L]
   exact (div_lt_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 ((map_ne_zero f).2 hy0)))).1 hz''
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_insert (by simp)]`. Use `congr 1`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private lemma tail_succ {Γ : Type} [CommMonoid Γ] {n : ℕ} (γ : Fin n → Γ) (k : ℕ) (hk : k < n) :
     ∏ i ∈ Finset.univ.filter (fun i : Fin n => k ≤ i.val), γ i =
@@ -157,27 +151,25 @@ private lemma tail_succ {Γ : Type} [CommMonoid Γ] {n : ℕ} (γ : Fin n → Γ
   omega
 
 /- English proof (translation)
-Introduce `K Γ _ _ v n γ hγ hγ0 p _ hn hv`. Establish `hv0 : ∀ k ≤ n, v (p.coeff k) ≠ 0` using `fun k hk => by`. Rewrite using `[hv k hk]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => hγ0 i`. Establish `ha0 : ∀ k ≤ n, p.coeff k ≠ 0` using `fun k hk => (map_ne_zero v).1 (hv0 k hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstep : ∀ k (hk : k < n), v (p.coeff k) = γ ⟨k, hk⟩ * v (p.coeff (k + 1))` using `fun k hk => by`. Rewrite using `[hv k hk.le, hv (k + 1) hk, tail_succ γ k hk]`. Establish `hconc : ∀ k, k + 2 ≤ n → v (p.coeff k * p.coeff (k + 2)) < v (p.coeff (k + 1) * p.coeff (k + 1))`. Introduce `k hk`. Establish `e1` using `hstep k (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hstep (k + 1) (by omega)`. Establish `hlt : γ ⟨k, by omega⟩ < γ ⟨k + 1, by omega⟩` using `hγ (by simp [Fin.lt_def])`. Establish `hp : 0 < v (p.coeff (k + 1)) * v (p.coeff (k + 2))` using `mul_pos (zero_lt_iff.2 (hv0 _ (by omega))) (zero_lt_iff.2 (hv0 _ hk))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, e1, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ < γ ⟨k + 1, by omega⟩ * (v (p.coeff (k + 1)) * v (p.coeff (k + 2))) := mul_lt_mul_of_pos_right hlt hp`. Use `_ = v (p.coeff (k + 1) * p.coeff (k + 1)) := by`. Rewrite using `[map_mul, mul_left_comm, ← e2]`. Rewrite using `[Polynomial.separable_def, Polynomial.isCoprime_iff_aeval_ne_zero_of_isAlgClosed K (AlgebraicClosure K)]`. Introduce `r`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_or, not_not, not_not]`. Take `⟨hp, hd⟩` from `hcon`. Use `set f := algebraMap K (AlgebraicClosure K) with hf`. Take `⟨A, hA⟩` from `exists_extension v f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr : r ≠ 0`. Introduce and unpack `rfl`. Rewrite `hp` using `[← Polynomial.coeff_zero_eq_aeval_zero']`. Conclude with `ha0 0 (Nat.zero_le _) ((map_eq_zero _).1 hp)`. Use `no_double_zero A.valuation n (fun k => f (p.coeff k) * r ^ k) (fun k hk => mul_ne_zero ((map_ne_zero f).2 (ha0 k hk)) (pow_ne_zero _ hr)) ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k hk`. Establish `e1 : f (p.coeff k) * r ^ k * (f (p.coeff (k + 2)) * r ^ (k + 2)) = f (p.coeff k * p.coeff (k + 2)) * r ^ (2 * k + 2)` using `by rw [map_mul]; ring`. Establish `e2 : f (p.coeff (k + 1)) * r ^ (k + 1) * (f (p.coeff (k + 1)) * r ^ (k + 1)) = f (p.coeff (k + 1) * p.coeff (k + 1)) * r ^ (2 * k + 2)` using `by rw [map_mul]; ring`. Rewrite using `[e1, e2, map_mul A.valuation, map_mul A.valuation]`. Conclude with `mul_lt_mul_of_pos_right (hA _ _ (hconc k hk)) (zero_lt_iff.2 ((map_ne_zero _).2 (pow_ne_zero _ hr)))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Rewrite `hp` using `[Polynomial.aeval_eq_sum_range, hn]`. Simplify `hp` using `only [Algebra.smul_def]`. Establish `hX : Polynomial.aeval r (Polynomial.derivative p * Polynomial.X) = 0` using `by rw [map_mul, hd, zero_mul]`. Establish `hcoeff : ∀ k : ℕ, (Polynomial.derivative p * Polynomial.X).coeff k = (k : K) * p.coeff k`. Introduce `k`.
+Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Consider the cases of `k with`. Consider the case `zero => simp`. Consider the case `succ k => rw [Polynomial.coeff_mul_X, Polynomial.coeff_derivative]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hdeg : (Polynomial.derivative p * Polynomial.X).natDegree < n + 1`. Rewrite using `[Nat.lt_succ_iff, Polynomial.natDegree_le_iff_coeff_eq_zero]`. Introduce `k hk`. Rewrite using `[hcoeff, Polynomial.coeff_eq_zero_of_natDegree_lt (hn ▸ hk), mul_zero]`. Rewrite `hX` using `[Polynomial.aeval_eq_sum_range' hdeg]`.
-
-Simplify `hX` using `only [hcoeff, Algebra.smul_def, map_mul, map_natCast, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.separable_of_newton_polygon :
     ∀ {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) (n : ℕ) (γ : Fin n → Γ),

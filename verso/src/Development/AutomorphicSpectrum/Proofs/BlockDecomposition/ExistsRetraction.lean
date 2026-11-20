@@ -11,9 +11,9 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.CovRoot
 
 /- English proof (translation)
-Set `b` to `AdjoinRoot.powerBasis' hP`. Establish `h0 : 0 < b.dim` using `by simpa [b] using hd`. Use `⟨b.basis.coord ⟨0, h0⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : b.basis ⟨0, h0⟩ = 1` using `by simp`. Express the relevant statement in the definitionally equal form `b.basis.repr 1 ⟨0, h0⟩ = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← h1, b.basis.repr_self]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_retraction {A : Type} [CommRing A] (P : Polynomial A) (hP : P.Monic)
     (hd : 0 < P.natDegree) : ∃ ρ : AdjoinRoot P →ₗ[A] A, ρ 1 = 1 := by
@@ -26,15 +26,15 @@ theorem exists_retraction {A : Type} [CommRing A] (P : Polynomial A) (hP : P.Mon
   simp
 
 /- English proof (translation)
-Introduce `p _ A _ r P hA hP hd`. Establish `hpS : (p : AdjoinRoot P) = 0`. Use `congrArg (algebraMap A (AdjoinRoot P)) hA.char` as an intermediate fact. Simplify using `using this`. Take `⟨T, _, i, hq⟩` from `GlobalTheory.CompanionTheory.PerfClos.exists_PQ p (AdjoinRoot P) ⊥ hpS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `letI : Algebra A T := (i.comp (algebraMap A (AdjoinRoot P))).toAlgebra`. Set `i' : AdjoinRoot P →ₐ[A] T` to `{ i with commutes' := fun _ => rfl }`. Establish `hq' : PQ p (i' : AdjoinRoot P →+* T) ⊥` using `hq`. Use `⟨T, inferInstance, inferInstance, hq.pf, ?_, i' (AdjoinRoot.root P), ?_⟩` and prove the remaining obligations. Use `GlobalTheory.CompanionTheory.CovCmp.cov_of_solv p A T r fun m n a c hs => ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨A, inferInstance, inferInstance, GlobalTheory.CompanionTheory.CovMono.cov_self p A r, ?_⟩` and prove the remaining obligations. Take `⟨k, s, hs'⟩` from `GlobalTheory.T.frobenius_power_solution_lift p A (AdjoinRoot P) T i' ⊥ m n a c hA.char hq' hs`. Use `GlobalTheory.T.perfect_frobenius_root_solution p A A m n k a c hA ?_` and prove the remaining obligations. Take `⟨ρ, hρ⟩` from `exists_retraction P hP hd`. Establish `hρa : ∀ x : A, ρ (algebraMap A (AdjoinRoot P) x) = x` using `fun x => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, hρ, smul_eq_mul, mul_one]`. Use `⟨fun j => ρ (s j), fun t => ?_⟩` and prove the remaining obligations. Establish `h` using `sub_eq_zero.mp ((Ideal.mem_bot).mp (hs' t))`. Establish `h2` using `congrArg ρ h`. Rewrite `h2` using `[map_sum, hρa]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h2`. Rewrite using `[Polynomial.aeval_algHom_apply]`. Establish `: Polynomial.aeval (AdjoinRoot.root P) P = 0`. Simplify using `[AdjoinRoot.aeval_eq]`. Rewrite using `[this, map_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cov_root : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] (r : ℕ → A)
     (P : Polynomial A), Pf p A → P.Monic → 0 < P.natDegree →

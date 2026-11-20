@@ -21,7 +21,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
 
 /- English proof (translation)
-Establish `e1 : x ⊗ₜ[F] a = (x ⊗ₜ[F] (1 : 𝔸)) * ((1 : E) ⊗ₜ[F] a)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[e1]`. Conclude with `mul_mem (Subring.subset_closure (Or.inl ⟨⟨x, ⟨⟨_, hx⟩, rfl⟩⟩, rfl⟩)) (Subring.subset_closure (Or.inr ⟨⟨a, fun v => Subring.mem_iInf.1 ha v⟩, rfl⟩))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmul_mem {x : E} (hx : IsIntegral ℤ x) {a : 𝔸} (ha : a ∈ intRing F) :
     x ⊗ₜ[F] a ∈ Formalism.L2.Herm.intAf F E := by
@@ -32,7 +32,7 @@ theorem tmul_mem {x : E} (hx : IsIntegral ℤ x) {a : 𝔸} (ha : a ∈ intRing 
     (Subring.subset_closure (Or.inr ⟨⟨a, fun v => Subring.mem_iInf.1 ha v⟩, rfl⟩))
 
 /- English proof (translation)
-Rewrite using `[← nsmul_eq_mul, ← nsmul_eq_mul, ← nsmul_eq_mul, mul_smul, TensorProduct.tmul_smul, TensorProduct.smul_tmul', ← TensorProduct.smul_tmul', ← TensorProduct.smul_tmul', smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_mul_tmul (c e : ℕ) (x : E) (a : 𝔸) :
     ((c * e : ℕ) : E ⊗[F] 𝔸) * (x ⊗ₜ[F] a) = ((c : E) * x) ⊗ₜ[F] ((e : 𝔸) * a) := by
@@ -40,7 +40,7 @@ theorem natCast_mul_tmul (c e : ℕ) (x : E) (a : 𝔸) :
     ← TensorProduct.smul_tmul', ← TensorProduct.smul_tmul', smul_comm]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (Algebra.TensorProduct.basis 𝔸 b).sum_repr z]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, Algebra.TensorProduct.comm_tmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_eq_sum {m : ℕ} (b : Module.Basis (Fin m) F E) (z : 𝔸 ⊗[F] E) :
     Algebra.TensorProduct.comm F 𝔸 E z = ∑ k, b k ⊗ₜ[F] (Algebra.TensorProduct.basis 𝔸 b).repr z k := by
@@ -51,9 +51,9 @@ theorem comm_eq_sum {m : ℕ} (b : Module.Basis (Fin m) F E) (z : 𝔸 ⊗[F] E)
     Algebra.TensorProduct.comm_tmul]
 
 /- English proof (translation)
-Take `⟨c, hc, h⟩` from `GlobalTheory.HolDict.ShortVec.exists_common_denom (integralClosure ℤ E).toSubring b fun k => by`. Take `⟨k, hk, r, hr⟩` from `GlobalTheory.SmoothForms.denom_exists_int (b k)`. Conclude with `⟨k, hk, hr ▸ r.2⟩`. Use `⟨c, hc, fun e z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[comm_eq_sum b, Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subring.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[natCast_mul_tmul]`. Conclude with `tmul_mem (h k) (hz k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_denom_comm {m : ℕ} (b : Module.Basis (Fin m) F E) : ∃ c : ℕ, 0 < c ∧ ∀ (e : ℕ) (z : 𝔸 ⊗[F] E),
       (∀ k, (e : 𝔸) * (Algebra.TensorProduct.basis 𝔸 b).repr z k ∈ intRing F) →
@@ -70,9 +70,9 @@ theorem exists_denom_comm {m : ℕ} (b : Module.Basis (Fin m) F E) : ∃ c : ℕ
 end
 
 /- English proof (translation)
-Introduce `D V`. Take `⟨θ, hθ⟩` from `(GlobalTheory.Ker.exists_infFam_and_stdChar D).1`. Take `⟨C, -, hC⟩` from `GlobalTheory.Grow.height_comparison V hθ`. Take `⟨c, hc, h⟩` from `exists_denom_comm (Module.finBasis D.host.F D.host.E)`. Use `⟨c * C, 1, fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, hd, hdH, hint⟩` from `GlobalTheory.HolDict.ShortVec.exists_denom_le_height θ (V := V) g`. Use `⟨c * d, Nat.mul_pos hc hd, ?_, fun i j => h d _ (hint i j)⟩` and prove the remaining obligations. Rewrite using `[pow_one, Nat.cast_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hdH.trans (hC g).1) (Nat.cast_nonneg c)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_denom_le_height_pow : ∀ (D : D7) (V : HSp D), ∃ (C : ℝ) (A : ℕ), ∀ g : GA D V, ∃ d : ℕ, 0 < d ∧
     (d : ℝ) ≤ C * GlobalTheory.Grow.height V g ^ A ∧

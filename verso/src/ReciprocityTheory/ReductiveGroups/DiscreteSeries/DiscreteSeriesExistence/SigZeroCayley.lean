@@ -9,21 +9,19 @@ open Finset Matrix
 namespace ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `szc_exists_perm k r hk`. Establish `hCC` using `szc_CC k r`. Establish `hCs` using `szc_Cstar k r`. Establish `hCHC` using `szc_CHC k r`. Use `set C := szcMk (szcTau k r) (szcC k r) (szcO k r) with hCdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPs : (C.submatrix π id)ᴴ = C.submatrix id π`. Rewrite using `[Matrix.conjTranspose_submatrix, hCs]`. Establish `hPP : C.submatrix π id * (C.submatrix π id)ᴴ = 1`. Rewrite using `[hPs, ← Matrix.submatrix_mul C C (⇑π) id (⇑π) Function.bijective_id, hCC, Matrix.submatrix_one_equiv]`. Establish `hPsP : (C.submatrix π id)ᴴ * C.submatrix π id = 1` using `mul_eq_one_comm.mp hPP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : Formalism.REAL.Jm (Formalism.MainNotions.CayleySignature.eps48 k r) = C.submatrix π id * Formalism.QuantumDeterminants.Hpk k r * (C.submatrix π id)ᴴ`. Establish `e1 : C.submatrix π id * Formalism.QuantumDeterminants.Hpk k r * (C.submatrix π id)ᴴ = (C * Formalism.QuantumDeterminants.Hpk k r * C).submatrix π π`. Rewrite using `[hPs, Matrix.submatrix_mul (C * Formalism.QuantumDeterminants.Hpk k r) C (⇑π) id (⇑π) Function.bijective_id, Matrix.submatrix_mul C (Formalism.QuantumDeterminants.Hpk k r) (⇑π) id id Function.bijective_id, Matrix.submatrix_id_id]`. Rewrite using `[e1, hCHC, Matrix.submatrix_diagonal_equiv]`. Unfold `Formalism.REAL.Jm`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `h` using `hπ i`. Simplify using `only [Function.comp_apply, szcD]`. Consider the cases of `he : Formalism.MainNotions.CayleySignature.eps48 k r i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Establish `h' : r + k ≤ (π i).val` using `h.mp he`. Simplify using `[not_lt.mpr h']`. Establish `h' : (π i).val < r + k`. Assume the negation of the conclusion as `hh`. Use `h.mpr (not_lt.mp hh)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[he]`. Conclude with `Bool.noConfusion this`. Simplify using `[h']`. Use `⟨C.submatrix π id, ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.S.IsCayleyU Formalism.MainNotions.S.IsCayley`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_det_of_right_inverse hPP)`. Rewrite using `[hJ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose]`.
-
-Conclude with `hPP`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cayley_unitary (k r : ℕ) (hk : 1 ≤ k) :
     ∃ P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ,
@@ -79,9 +77,7 @@ section BlockSumPreservesCone
 variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Take `⟨hu, hJ⟩` from `hg`. Establish `h1 : gᴴ * g = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.mem_unitaryGroup_iff'.1 hu`. Use `show gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε`.
-
-Rewrite using `[Matrix.mul_assoc, ← hJ, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem szc_Kset_UJ {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) :
     g ∈ Formalism.MainNotions.S.UJset ε := by
@@ -92,7 +88,7 @@ theorem szc_Kset_UJ {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg :
   rw [Matrix.mul_assoc, ← hJ, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
 /- English proof (translation)
-Use `⟨Submonoid.mul_mem _ hg.1 hh.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hh.2, ← Matrix.mul_assoc, hg.2, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem szc_Kset_mul {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε)
     (hh : h ∈ Formalism.REAL.Kset ε) : g * h ∈ Formalism.REAL.Kset ε := by
@@ -103,9 +99,9 @@ variable {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ]
   {U V : Matrix (Fin n) (Fin n) ℂ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h g hg v hv`. Establish `e : U * (V * g * U) * V = g`. Combine the equalities or inequalities in the displayed calculation. Use `h (V * g * U) (szc_Kset_mul (szc_Kset_mul hV hg) hU) v hv` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify `this` using `only [e]`. Introduce `h g hg v hv`. Conclude with `h (U * g * V) (szc_Kset_mul (szc_Kset_mul hU hg) hV) v hv`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem szc_stab_iff (hU : U ∈ Formalism.REAL.Kset ε) (hV : V ∈ Formalism.REAL.Kset ε) (hUV : U * V = 1)
     (S' : Submodule ℂ H) :
@@ -121,9 +117,9 @@ theorem szc_stab_iff (hU : U ∈ Formalism.REAL.Kset ε) (hV : V ∈ Formalism.R
     exact h (U * g * V) (szc_Kset_mul (szc_Kset_mul hU hg) hV) v hv
 
 /- English proof (translation)
-Establish `hUtV : U * t * V ∈ Formalism.REAL.Kset ε` using `szc_Kset_mul (szc_Kset_mul hU ht) hV`. Establish `e : t * V = V * (U * t * V)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hσ.1.2 t (szc_Kset_UJ ht) V (szc_Kset_UJ hV), ContinuousLinearMap.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = σ V (σ (U * t * V) v) := by`. Rewrite using `[e, hσ.1.2 V (szc_Kset_UJ hV) _ (szc_Kset_UJ hUtV), ContinuousLinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem szc_conj_V (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) (hU : U ∈ Formalism.REAL.Kset ε)
     (hV : V ∈ Formalism.REAL.Kset ε) (hVU : V * U = 1) {t : Matrix (Fin n) (Fin n) ℂ}
@@ -138,9 +134,9 @@ theorem szc_conj_V (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotion
         rw [e, hσ.1.2 V (szc_Kset_UJ hV) _ (szc_Kset_UJ hUtV), ContinuousLinearMap.comp_apply]
 
 /- English proof (translation)
-Establish `hUtV : U * t * V ∈ Formalism.REAL.Kset ε` using `szc_Kset_mul (szc_Kset_mul hU ht) hV`. Establish `e : U * t * V * U = U * t` using `by rw [Matrix.mul_assoc (U * t), hVU, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hσ.1.2 _ (szc_Kset_UJ hUtV) U (szc_Kset_UJ hU), ContinuousLinearMap.comp_apply]`. Use `_ = σ (U * t) v := by rw [e]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = σ U (σ t v) := by`. Rewrite using `[hσ.1.2 U (szc_Kset_UJ hU) t (szc_Kset_UJ ht), ContinuousLinearMap.comp_apply]`.
+A detailed English derivation is pending.
 -/
 theorem szc_conj_U (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) (hU : U ∈ Formalism.REAL.Kset ε)
     (hV : V ∈ Formalism.REAL.Kset ε) (hVU : V * U = 1) {t : Matrix (Fin n) (Fin n) ℂ}
@@ -154,15 +150,15 @@ theorem szc_conj_U (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotion
         rw [hσ.1.2 U (szc_Kset_UJ hU) t (szc_Kset_UJ ht), ContinuousLinearMap.comp_apply]
 
 /- English proof (translation)
-Take `⟨hfd, hst, hirr, ⟨v, hvS, hv0, hvw⟩, hdom⟩` from `hS`. Establish `hst'` using `(szc_stab_iff hU hV hUV S).mp hst`. Use `⟨hfd, hst', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `S' hle hS'`. Conclude with `hirr S' hle ((szc_stab_iff hU hV hUV S').mpr hS')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨σ V v, hst' V hV v hvS, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hv0` to reduce the goal to its premises. Use `hσ.2.1 V (szc_Kset_UJ hV) v` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `norm_eq_zero.mp this.symm`. Introduce `θ hθ`. Establish `h1 : σ (U * _ * V) v = _` using `hvw θ hθ`. Rewrite using `[szc_conj_V hσ hU hV hVU hθ, h1, map_smul]`. Introduce `μ w hw hw0 hww`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hdom μ (σ U w) (hst' U hU w hw) ?_ ?_` and prove the remaining obligations. Introduce `h0`. Apply `hw0` to reduce the goal to its premises. Use `hσ.2.1 U (szc_Kset_UJ hU) w` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_eq_zero.mp this.symm`. Introduce `θ hθ show σ (U * _ * V) (σ U w) = _`. Rewrite using `[szc_conj_U hσ hU hV hVU hθ, hww θ hθ, map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem szc_kType_conj (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) (hU : U ∈ Formalism.REAL.Kset ε)
     (hV : V ∈ Formalism.REAL.Kset ε) (hUV : U * V = 1) (hVU : V * U = 1)
@@ -194,7 +190,7 @@ theorem szc_kType_conj (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNo
       rw [szc_conj_U hσ hU hV hVU hθ, hww θ hθ, map_smul]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.lowKSub`. Conclude with `sSup_le_sSup (fun S hS => szc_kType_conj hσ hU hV hUV hVU hS)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem szc_lowKSub_le (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) (hU : U ∈ Formalism.REAL.Kset ε)
     (hV : V ∈ Formalism.REAL.Kset ε) (hUV : U * V = 1) (hVU : V * U = 1) (lam : Fin n → ℝ) :
@@ -209,7 +205,7 @@ section CayleyFacts
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 
 /- English proof (translation)
-Establish `h` using `Matrix.mem_unitaryGroup_iff.mp hP.2`. Rewrite `h` using `[Matrix.star_eq_conjTranspose]`. Conclude with `⟨mul_eq_one_comm.mp h, h⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem szc_unit_facts {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) : Pᴴ * P = 1 ∧ P * Pᴴ = 1 := by
@@ -218,7 +214,7 @@ theorem szc_unit_facts {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
   exact ⟨mul_eq_one_comm.mp h, h⟩
 
 /- English proof (translation)
-Take `⟨_, h2⟩` from `szc_unit_facts hP`. Rewrite using `[← hP.1.2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, Matrix.one_mul, Matrix.mul_one]`. Use `_ = P * (Pᴴ * Formalism.REAL.Jm ε * P) * Pᴴ := by simp only [Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem szc_J_eq {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) : Formalism.REAL.Jm ε = P * Formalism.QuantumDeterminants.Hpk k r * Pᴴ := by
@@ -229,11 +225,11 @@ theorem szc_J_eq {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     _ = P * (Pᴴ * Formalism.REAL.Jm ε * P) * Pᴴ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨hP1, hP2⟩` from `szc_unit_facts hP`. Take `⟨hQ1, _⟩` from `szc_unit_facts hQ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `eP` using `szc_J_eq hP`. Establish `eQ` using `szc_J_eq hQ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hQ1, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc Pᴴ P, hP1, Matrix.one_mul]`. Use `_ = Formalism.REAL.Jm ε * (P * Qᴴ) := by rw [← eP]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem szc_K_mem {P Q : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) (hQ : Formalism.MainNotions.S.IsCayleyU k r ε Q) :
@@ -265,9 +261,9 @@ variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k +
   {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
 
 /- English proof (translation)
-Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Establish `hdet` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1.1`. Establish `key : ∀ g, P * (P⁻¹ * g * P) * P⁻¹ = g`. Introduce `g`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [key]`. Conclude with `hDS`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDSHpk_of_isDS (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) (hDS : Formalism.MainNotions.S.IsDS ε lam σ) :
     Formalism.MainNotions.S.IsDSHpk k r ε lam (fun g => σ (P * g * P⁻¹)) := by
@@ -281,17 +277,15 @@ theorem isDSHpk_of_isDS (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) (hDS :
   exact hDS
 
 /- English proof (translation)
-Take `⟨hP1, _⟩` from `szc_unit_facts hP`. Establish `hPi : P⁻¹ = Pᴴ` using `Matrix.inv_eq_left_inv hP1`. Establish `hJ` using `szc_J_eq hP`. Establish `hmap : ∀ g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), P * g * P⁻¹ ∈ Formalism.MainNotions.S.UJset ε`. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg' : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`. Rewrite using `[hPi]`. Use `show (P * g * Pᴴ)ᴴ * Formalism.REAL.Jm ε * (P * g * Pᴴ) = Formalism.REAL.Jm ε`. Rewrite using `[hJ]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Use `_ = P * Formalism.QuantumDeterminants.Hpk k r * Pᴴ := by simp only [hP1, Matrix.mul_one, hg']`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show σ (P * 1 * P⁻¹) = 1`. Rewrite using `[Matrix.mul_one, Matrix.mul_nonsing_inv P ((Matrix.isUnit_iff_isUnit_det P).mp hP.1.1)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hσ.1.1`. Introduce `a ha b hb show σ (P * (a * b) * P⁻¹) = (σ (P * a * P⁻¹)).comp (σ (P * b * P⁻¹))`. Rewrite using `[← hσ.1.2 _ (hmap a ha) _ (hmap b hb)]`. Use `congr 1`. Rewrite using `[hPi]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hP1, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = P * a * Pᴴ * (P * b * Pᴴ) := by simp only [Matrix.mul_assoc]`. Introduce `g hg v`.
-
-Conclude with `hσ.2.1 _ (hmap g hg) v`. Introduce `v`. Establish `hc : Continuous (fun g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => P * g * P⁻¹)` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Conclude with `(hσ.2.2 v).comp hc.continuousOn (fun g hg => hmap g hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isURepOn_UH_of (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) :
     Formalism.MainNotions.S.IsURepOn (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) (fun g => σ (P * g * P⁻¹)) := by
@@ -329,13 +323,13 @@ theorem isURepOn_UH_of (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) (hσ : 
     exact (hσ.2.2 v).comp hc.continuousOn (fun g hg => hmap g hg)
 
 /- English proof (translation)
-Take `⟨P', hP', hw1, hw2⟩` from `hw`. Establish `hU : P * P'ᴴ ∈ Formalism.REAL.Kset ε` using `szc_K_mem hP hP'`. Establish `hV : P' * Pᴴ ∈ Formalism.REAL.Kset ε` using `szc_K_mem hP' hP`. Take `⟨hP1, hP2⟩` from `szc_unit_facts hP`. Take `⟨hQ1, hQ2⟩` from `szc_unit_facts hP'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hPi : P⁻¹ = Pᴴ` using `Matrix.inv_eq_left_inv hP1`. Establish `hQi : P'⁻¹ = P'ᴴ` using `Matrix.inv_eq_left_inv hQ1`. Establish `hUV : P * P'ᴴ * (P' * Pᴴ) = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hVU : P' * Pᴴ * (P * P'ᴴ) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `key : ∀ g, P * (P'⁻¹ * g * P') * P⁻¹ = P * P'ᴴ * g * (P' * Pᴴ)`. Introduce `g`. Rewrite using `[hPi, hQi]`. Simplify using `only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hw2' : w ∈ Formalism.MainNotions.S.lowKSub ε lam (fun g => σ (P * (P'⁻¹ * g * P') * P⁻¹))` using `hw2`. Simplify using `only [key] at hw2'`. Conclude with `⟨hw1, szc_lowKSub_le hDS.2.2.1 hU hV hUV hVU lam hw2'⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem isLowUnit_of_isLowUnitH (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) (hDS : Formalism.MainNotions.S.IsDS ε lam σ) {w : H}
     (hw : Formalism.MainNotions.S.IsLowUnitH k r ε lam (fun g => σ (P * g * P⁻¹)) w) : Formalism.MainNotions.S.IsLowUnit ε lam σ w := by

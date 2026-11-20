@@ -16,11 +16,9 @@ section Emb
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hv : Tendsto (fun n : ℕ => ((unif k : kˣ) : k) ^ n) atTop (nhds 0)`. Rewrite using `[(IsValuativeTopology.hasBasis_nhds_zero k).tendsto_right_iff]`. Introduce `γ _`. Take `⟨N, hN⟩` from `exists_pow_lt₀ (ValuativeRel.uniformizer_lt_one (R := k)) γ`. Use `filter_upwards [eventually_ge_atTop N] with n hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, map_pow, GlAx.unif_spec]`. Conclude with `lt_of_le_of_lt (pow_le_pow_right_of_le_one' ValuativeRel.uniformizer_lt_one.le hn) hN`. Establish `hj' : Tendsto (fun n : ℕ => (j (unif k : k)) ^ n) atTop (nhds 0)`. Use `(hj.tendsto 0).comp hv` as an intermediate fact. Simplify `this` using `[Function.comp_def, map_pow]`.
-
-Conclude with `tendsto_pow_atTop_nhds_zero_iff_norm_lt_one.mp hj'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem norm_unif_lt (j : k →+* Qbar l) (hj : Continuous j) : ‖j (unif k : k)‖ < 1 := by
   have hv : Tendsto (fun n : ℕ => ((unif k : kˣ) : k) ^ n) atTop (nhds 0) := by
@@ -42,7 +40,7 @@ section Pow
 variable {L : Type} [Field L] [NumberField L] {l : ℕ} [Fact l.Prime] (w : Plc L)
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.HeckeGal.finite_contEmb (l := l) w`. Use `haveI := Fintype.ofFinite {j : w.adicCompletion L →+* Qbar l // Continuous j}`. Unfold `algPow`. Rewrite using `[finprod_eq_prod_of_fintype]`. Conclude with `Finset.prod_ne_zero_iff.2 fun j _ => zpow_ne_zero _ ((map_ne_zero j.1).2 (Units.ne_zero _))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_ne (h : (L →+* Qbar l) → ℤ) :
     algPow w h ((unif (w.adicCompletion L) : (w.adicCompletion L)ˣ) : w.adicCompletion L) ≠ 0 := by
@@ -53,9 +51,9 @@ private theorem pow_ne (h : (L →+* Qbar l) → ℤ) :
   exact Finset.prod_ne_zero_iff.2 fun j _ => zpow_ne_zero _ ((map_ne_zero j.1).2 (Units.ne_zero _))
 
 /- English proof (translation)
-Use `haveI : Finite {j : w.adicCompletion L →+* Qbar l // Continuous j} := GlobalTheory.HeckeGal.finite_contEmb (l := l) w`. Use `haveI := Fintype.ofFinite {j : w.adicCompletion L →+* Qbar l // Continuous j}`. Unfold `algPow`. Rewrite using `[finprod_eq_prod_of_fintype, finprod_eq_prod_of_fintype, norm_prod, norm_prod]`. Use `Finset.prod_le_prod (fun j _ => norm_nonneg _) fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_zpow, norm_zpow]`. Establish `hlt` using `norm_unif_lt (k := w.adicCompletion L) (l := l) j.1 j.2`. Establish `hpos : 0 < ‖j.1 ((unif (w.adicCompletion L) : (w.adicCompletion L)ˣ) : w.adicCompletion L)‖` using `norm_pos_iff.mpr ((_root_.map_ne_zero _).mpr (Units.ne_zero _))`. Conclude with `zpow_le_zpow_right_of_le_one₀ hpos hlt.le (hh _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pow_anti {h h' : (L →+* Qbar l) → ℤ} (hh : ∀ τ, h τ ≤ h' τ) :
     ‖algPow w h' ((unif (w.adicCompletion L) : (w.adicCompletion L)ˣ) : w.adicCompletion L)‖ ≤
@@ -74,13 +72,13 @@ private theorem pow_anti {h h' : (L →+* Qbar l) → ℤ} (hh : ∀ τ, h τ �
   exact zpow_le_zpow_right_of_le_one₀ hpos hlt.le (hh _)
 
 /- English proof (translation)
-Establish `hc : Nat.card 𝓀[w.adicCompletion L] = Nat.card (𝓞 L ⧸ w.asIdeal)`. Use `GlobalTheory.LocLanglands.resCard_eq_normV (E := L) w` as an intermediate fact. Simplify `this` using `[GlobalTheory.SplitWeil.resCard, Formalism.ConjugateSelfDual.normV]`. Rewrite using `[hc]`. Use `haveI := w.isPrime`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : ((l : ℕ) : 𝓞 L ⧸ w.asIdeal) = 0`. Use `(Ideal.Quotient.eq_zero_iff_mem (I := w.asIdeal)).mpr hl` as an intermediate fact. Simplify using `using this`. Establish `hdvd : addOrderOf (1 : 𝓞 L ⧸ w.asIdeal) ∣ l`. Apply `addOrderOf_dvd_of_nsmul_eq_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hz` using `[nsmul_eq_mul]`. Establish `hord : addOrderOf (1 : 𝓞 L ⧸ w.asIdeal) = l`. Break down `(Nat.dvd_prime (Fact.out : l.Prime)).mp hdvd with h | h` into its components or cases. Establish `h1` using `addOrderOf_nsmul_eq_zero (1 : 𝓞 L ⧸ w.asIdeal)`. Rewrite `h1` using `[h, one_nsmul]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd h1 one_ne_zero`. Conclude with `h`. Rewrite using `[← hord]`. Conclude with `addOrderOf_dvd_natCard _`.
+A detailed English derivation is pending.
 -/
 private theorem card_dvd (hl : ((l : ℕ) : 𝓞 L) ∈ w.asIdeal) : l ∣ Nat.card 𝓀[w.adicCompletion L] := by
   have hc : Nat.card 𝓀[w.adicCompletion L] = Nat.card (𝓞 L ⧸ w.asIdeal) := by
@@ -104,9 +102,9 @@ private theorem card_dvd (hl : ((l : ℕ) : 𝓞 L) ∈ w.asIdeal) : l ∣ Nat.c
   exact addOrderOf_dvd_natCard _
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `card_dvd w hl`. Rewrite using `[hm, Nat.cast_mul, ← map_natCast (algebraMap ℚ_[l] (Qbar l)) l, ← map_natCast (algebraMap ℚ_[l] (Qbar l)) m, ← map_mul]`. Establish `he : ‖algebraMap ℚ_[l] (Qbar l) ((l : ℚ_[l]) * (m : ℚ_[l]))‖ = ‖(l : ℚ_[l]) * (m : ℚ_[l])‖` using `PadicAlgCl.norm_extends l _`. Rewrite using `[he, norm_mul]`. Establish `hm1 : ‖(m : ℚ_[l])‖ ≤ 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using Padic.norm_int_le_one (p := l) (m : ℤ)`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 -/
 private theorem norm_card_lt (hl : ((l : ℕ) : 𝓞 L) ∈ w.asIdeal) :
     ‖((Nat.card 𝓀[w.adicCompletion L] : ℕ) : Qbar l)‖ < 1 := by
@@ -125,13 +123,11 @@ private theorem norm_card_lt (hl : ((l : ℕ) : 𝓞 L) ∈ w.asIdeal) :
 end Pow
 
 /- English proof (translation)
-Use `Finset.prod_nbij (fun i : Fin n => (i : ℕ)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hi`. Simplify using `only [Finset.mem_range]`. Establish `: (i : ℕ) ≤ (j : ℕ)` using `hi`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `a _ b _ hab`. Conclude with `Fin.ext hab`. Introduce `k hk`. Simplify using `only [Finset.mem_coe, Finset.mem_range] at hk`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨k, by omega⟩, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq]`. Use `show k ≤ (j : ℕ)`. Use linear arithmetic over natural numbers and integers. Introduce `i _`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem prod_le {M : Type} [CommMonoid M] {n : ℕ} (f : ℕ → M) (j : Fin n) :
     ∏ i with i ≤ j, f (i : ℕ) = ∏ k ∈ Finset.range (j + 1), f k := by
@@ -154,7 +150,7 @@ private theorem prod_le {M : Type} [CommMonoid M] {n : ℕ} (f : ℕ → M) (j :
     rfl
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [h 0]`. Consider the case `succ m ih`. Rewrite using `[Finset.prod_range_succ, ih]`. Clear denominators, using `[h m, h 0]` for the nonvanishing conditions.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 private theorem prod_tele {U : ℕ → ℂ} (h : ∀ k, U k ≠ 0) (m : ℕ) :
     ∏ k ∈ Finset.range m, U (k + 1) / U k = U m / U 0 := by
@@ -165,41 +161,37 @@ private theorem prod_tele {U : ℕ → ℂ} (h : ∀ k, U k ≠ 0) (m : ℕ) :
     field_simp [h m, h 0]
 
 /- English proof (translation)
-Establish `hq0' : (q : ℂ) ≠ 0`. Introduce `h`. Apply `hq0` to reduce the goal to its premises. Establish `: q = 0` using `by exact_mod_cast h`. Simplify using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hqpos : 0 < ‖(q : Qbar l)‖` using `norm_pos_iff.mpr hq0`. Set `A : ℕ → Qbar l` to `fun k => if h : k < n then a ⟨k, h⟩ else 1`. Set `W : ℕ → Qbar l` to `fun k => if h : k < n then ι.symm (u ⟨k, h⟩) else 1`. Establish `hAne : ∀ k, A k ≠ 0`. Introduce `k`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : k < n`. Simplify using `only [A, dif_pos h]`. Conclude with `ha _`. Simplify using `only [A, dif_neg h]`. Conclude with `one_ne_zero`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hWn : ∀ k, ‖W k‖ = 1`. Introduce `k`. Distinguish the cases in `h : k < n`. Simplify using `only [W, dif_pos h]`. Conclude with `hu _`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `only [W, dif_neg h]`. Conclude with `norm_one`. Establish `hWne : ∀ k, W k ≠ 0` using `fun k => norm_ne_zero_iff.mp (by rw [hWn k]; exact one_ne_zero)`. Set `T : ℕ → Qbar l` to `fun k => (∏ i ∈ Finset.range (k + 1), A i) * W k * ∏ i ∈ Finset.range (k + 1), (q : Qbar l) ^ i`. Establish `hTne : ∀ k, T k ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `k`. Use `mul_ne_zero (mul_ne_zero ?_ (hWne k)) ?_` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => hAne i`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => pow_ne_zero _ hq0`. Set `Tm : ℕ → Qbar l` to `fun k => if k = 0 then 1 else T (k - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hTm0 : Tm 0 = 1` using `by simp [Tm]`. Establish `hTms : ∀ k, Tm (k + 1) = T k` using `by intro k; simp [Tm]`. Establish `hTmne : ∀ k, Tm k ≠ 0`. Introduce `k`. Break down `k with _ | k` into its components or cases.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hTm0]`. Conclude with `one_ne_zero`. Rewrite using `[hTms]`. Conclude with `hTne k`. Set `U : ℕ → ℂ` to `fun k => ι (Tm k)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hUne : ∀ k, U k ≠ 0` using `fun k => (_root_.map_ne_zero ι).mpr (hTmne k)`. Set `ω : Fin n → ℂˣ` to `fun i => Units.mk0 (U ((i : ℕ) + 1) / U i) (div_ne_zero (hUne _) (hUne _))`. Set `G : ℕ → ℝ` to `fun k => ∏ i ∈ Finset.range k, (‖A i‖ * ‖(q : Qbar l)‖ ^ i)`. Establish `hGs : ∀ k, G (k + 1) = G k * (‖A k‖ * ‖(q : Qbar l)‖ ^ k)` using `fun k => Finset.prod_range_succ _ _`. Establish `hG : ∀ k, k ≤ n → ‖Tm k‖ = G k`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Break down `k with _ | k` into its components or cases. Rewrite using `[hTm0, norm_one]`. Both sides reduce to the same expression. Rewrite using `[hTms]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [T, G, norm_mul, norm_prod, norm_pow, hWn k, mul_one, Finset.prod_mul_distrib]`. Establish `hGne : ∀ k, G k ≠ 0`. Introduce `k`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => mul_ne_zero (norm_ne_zero_iff.mpr (hAne i)) (pow_ne_zero _ hqpos.ne')`. Establish `hnorm : ∀ i : Fin n, ‖ι.symm (ω i : ℂ)‖ = ‖a i‖ * ‖(q : Qbar l)‖ ^ (i : ℕ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Establish `e1 : ι.symm (ω i : ℂ) = Tm ((i : ℕ) + 1) / Tm i`. Simplify using `only [ω, Units.val_mk0, U, map_div₀, RingEquiv.symm_apply_apply]`. Rewrite using `[e1, norm_div, hG _ (Nat.succ_le_of_lt i.isLt), hG _ i.isLt.le, hGs, mul_div_cancel_left₀ _ (hGne _)]`. Simplify using `only [A, dif_pos i.isLt]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsa : StrictAnti (fun i : Fin n => ‖a i‖ * ‖(q : Qbar l)‖ ^ (i : ℕ))`. Introduce `i i' hii`. Establish `h1 : ‖a i'‖ ≤ ‖a i‖` using `hanti i i' hii.le`. Establish `h2 : ‖(q : Qbar l)‖ ^ (i' : ℕ) < ‖(q : Qbar l)‖ ^ (i : ℕ)` using `pow_lt_pow_right_of_lt_one₀ hqpos hq1 (Fin.lt_iff_val_lt_val.mp hii)`. Establish `h3 : 0 < ‖a i‖` using `norm_pos_iff.mpr (ha i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨ω, ?_, ?_⟩` and prove the remaining obligations. Introduce `i i' h`. Apply `hsa.injective` to reduce the goal to its premises. Use `show ‖a i‖ * ‖(q : Qbar l)‖ ^ (i : ℕ) = ‖a i'‖ * ‖(q : Qbar l)‖ ^ (i' : ℕ)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← hnorm i, ← hnorm i', h]`. Introduce `j`. Establish `hL : (∏ i ∈ Finset.univ.filter fun i : Fin n => (i : ℕ) < j + 1, a i) = ∏ k ∈ Finset.range (j + 1), A k`. Rewrite using `[← prod_le A j]`. Use `Finset.prod_congr ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `constructor <;> intro h`. Conclude with `Fin.le_iff_val_le_val.mpr (by omega)`. Use `Fin.le_iff_val_le_val.mp h` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Introduce `i _`. Simplify using `only [A, dif_pos i.isLt]`. Establish `hR : (∏ i with i ≤ j, (ω i : ℂ) * ((q : ℂ) ^ (i : ℕ))⁻¹) = ∏ k ∈ Finset.range (j + 1), (U (k + 1) / U k * ((q : ℂ) ^ k)⁻¹)` using `prod_le (fun k => U (k + 1) / U k * ((q : ℂ) ^ k)⁻¹) j`. Establish `hWj : ι (W j) = u j` using `by simp only [W, dif_pos j.isLt, RingEquiv.apply_symm_apply]`.
-
-Establish `hqp : (∏ k ∈ Finset.range (j + 1), (q : ℂ) ^ k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ hq0'`. Establish `hUj : U ((j : ℕ) + 1) = ι (∏ k ∈ Finset.range (j + 1), A k) * u j * ∏ k ∈ Finset.range (j + 1), (q : ℂ) ^ k`. Simplify using `only [U, hTms, T, map_mul, hWj, map_prod, map_pow, map_natCast]`. Establish `hU0 : U 0 = 1` using `by simp only [U, hTm0, map_one]`. Rewrite using `[hL, hR, Finset.prod_mul_distrib, prod_tele hUne, Finset.prod_inv_distrib, hUj, hU0, div_one, mul_assoc _ (∏ k ∈ Finset.range (j + 1), (q : ℂ) ^ k), mul_inv_cancel₀ hqp, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exp_core {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {n : ℕ} (a : Fin n → Qbar l) (u : Fin n → ℂ) (q : ℕ)
     (ha : ∀ i, a i ≠ 0) (hanti : ∀ i i', i ≤ i' → ‖a i'‖ ≤ ‖a i‖) (hq0 : (q : Qbar l) ≠ 0)
@@ -309,7 +301,7 @@ private theorem exp_core {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {n : �
 end UpperTheory.V.Z.J.D
 
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ l _ n c H hA ι lam v u hu`. Establish `hl` using `hA.Sl_over v`. Take `⟨ω, h1, h2⟩` from `exp_core ι (fun i => algPow (H.Sl v) (lowW lam i) ((unif ((H.Sl v).adicCompletion L) : ((H.Sl v).adicCompletion L)ˣ) : (H.Sl v).adicCompletion L)) u (Nat.card 𝓀[(H.Sl v).adicCompletion L]) (fun i => pow_ne _ _) (fun i i' h => pow_anti _ fun τ => (lam τ).anti (Fin.rev_le_rev.2 h)) …`. Conclude with `⟨ω, h1, fun j => h2 j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.J.D.slope :
     Slope := by

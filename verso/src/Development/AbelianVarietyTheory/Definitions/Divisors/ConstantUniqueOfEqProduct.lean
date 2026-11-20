@@ -20,9 +20,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Establish `: ((η ^ n : (AE D)ˣ →* Circle) : (AE D)ˣ → Circle) = fun x => η x ^ n`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hη.1.pow n`. Rewrite using `[MonoidHom.pow_apply, hη.2 x, one_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hecke_pow {η : (AE D)ˣ →* Circle} (hη : IsHeckeChar D η) (n : ℕ) : IsHeckeChar D (η ^ n) := by
   refine ⟨?_, fun x => ?_⟩
@@ -33,15 +33,15 @@ theorem hecke_pow {η : (AE D)ˣ →* Circle} (hη : IsHeckeChar D η) (n : ℕ)
   · rw [MonoidHom.pow_apply, hη.2 x, one_pow]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hη.1, fun e he a => by rw [MonoidHom.pow_apply, hη.2 e he a, pow_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem res_pow {η : (AE D)ˣ →* Circle} (hη : ResEta D η 1) (n : ℕ) : ResEta D (η ^ n) n :=
   ⟨hη.1, fun e he a => by rw [MonoidHom.pow_apply, hη.2 e he a, pow_one]⟩
 
 /- English proof (translation)
-Take `⟨m, hm, h1, h2⟩` from `hη`. Establish `hm1 : m = 1`. Establish `: (m : ℚ) = 1` using `by rw [hm]; norm_num`. Conclude with `this` after adjusting the coercions. Substitute `hm1` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, by push_cast; ring, h1, fun θ hθ x hx hx' => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, Circle.coe_pow, h2 θ hθ x hx hx', zpow_one, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_pow {η : (AE D)ˣ →* Circle} {τ : D.what₂.Tau} (hη : HasInfExp D η τ (1 / 2)) (n : ℕ) :
     HasInfExp D (η ^ n) τ ((n : ℚ) / 2) := by
@@ -54,9 +54,9 @@ theorem exp_pow {η : (AE D)ˣ →* Circle} {τ : D.what₂.Tau} (hη : HasInfEx
   rw [MonoidHom.pow_apply, Circle.coe_pow, h2 θ hθ x hx hx', zpow_one, zpow_natCast]
 
 /- English proof (translation)
-Introduce `x h1 h2 h3`. Use `hη x ?_ h2 h3` and prove the remaining obligations. Take `⟨α, rfl, -⟩` from `hε`. Establish `h4` using `congrArg (infPart D) h1`. Establish `h5 : infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)) = 0` using `by show infPart D ((pairA D.host.F 0 α) ⊗ₜ 1) = 0 show (fstA D.host.F (pairA D.host.F 0 α)) ⊗ₜ[D.host.F] (1 : D.host.E) = 0 show (0 : Ainf D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `TensorProduct.zero_tmul _ _`. Rewrite `h4` using `[map_mul, h5, zero_mul, map_sub, map_one]`. Conclude with `(sub_eq_zero.1 h4.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unramAt_of_everywhere {η : (AE D)ˣ →* Circle} (hη : UnramEverywhere D η) {v : HeightOneSpectrum (𝓞 D.host.F)}
     {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) : UnramAt ε η := by
@@ -73,7 +73,7 @@ theorem unramAt_of_everywhere {η : (AE D)ˣ →* Circle} (hη : UnramEverywhere
   exact (sub_eq_zero.1 h4.symm)
 
 /- English proof (translation)
-The claim follows from `hom inf := hθ std := Matrix.ext fun i j => by refine (Examples₂.stdSpace_gram_apply (E := D.host.E) Examples₂.star_isIntegral (2 * k) (fun _ => false) (2 * k) 0 i j).trans ?_ exact (Matrix.one_apply (i := i) (j := j)).symm even := ⟨k, two_mul k⟩ sigV := Examples₂.posSpace_sigOK _ …`.
+A detailed English derivation is pending.
 -/
 theorem isPair_pow {η : (AE D)ˣ →* Circle} (hη : IsEtaTilde D η) {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ)
     (k : ℕ) (W : HSp D) (hW : W.SigOK)
@@ -98,7 +98,7 @@ theorem isPair_pow {η : (AE D)ˣ →* Circle} (hη : IsEtaTilde D η) {ψ : Add
   eta := ⟨η, hη⟩
 
 /- English proof (translation)
-Take `⟨η, hη⟩` from `hη`. Take `⟨⟨θ, hθ⟩, ψ, hψ⟩` from `GlobalTheory.Ker.exists_infFam_and_stdChar D`. Take `⟨om, hom⟩` from `hex ψ hψ (Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral (2 * k)) W (η ^ (2 * k)) (η ^ W.rank) (hecke_pow hη.1 _) (hecke_pow hη.1 _) (res_pow hη.2.2.1 _) (res_pow hη.2.2.1 _)`. Conclude with `⟨ψ, θ, _, _, _, om, rfl, isPair_pow hη hθ k W hW om hom⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isPair (hη : ∃ η, IsEtaTilde D η)
     (hex : ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) → ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle),
@@ -113,7 +113,7 @@ theorem exists_isPair (hη : ∃ η, IsEtaTilde D η)
   exact ⟨ψ, θ, _, _, _, om, rfl, isPair_pow hη hθ k W hW om hom⟩
 
 /- English proof (translation)
-Introduce `a _` and use `⟨0, zero_mem _, by rw [map_one, nsmul_zero] show finVec W (ι a) - (1 : Matrix _ _ _).mulVec (finVec W (ι a)) = 0 rw [Matrix.one_mulVec, sub_self]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem markAd_one {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} (l : Level H) (W : HSp D)
     (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin W.rank → D.host.E)) : MarkAd l W rfl ι 1 ι := fun a _ =>
@@ -123,7 +123,7 @@ theorem markAd_one {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host
     rw [Matrix.one_mulVec, sub_self]⟩
 
 /- English proof (translation)
-The claim follows from `hm.2.2`.
+A detailed English derivation is pending.
 -/
 theorem markAd_of_markBy {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {r : ℕ}
     {c : Coeff l} {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (V : HSp D) (hr : V.rank = r)
@@ -135,9 +135,9 @@ theorem markAd_of_markBy {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host 
   hm.2.2
 
 /- English proof (translation)
-Establish `hM : Mfr l ≠ ⊥`. Introduce `h`. Establish `h₁ : l.Mb * Mfr l = Ideal.span {(l.M : 𝓞 E)}` using `l.prod`. Rewrite `h₁` using `[h, Ideal.mul_bot, eq_comm, Ideal.span_singleton_eq_bot]`. Establish `h₂ : l.M = 0` using `by exact_mod_cast h₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `l.three_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `(Mfr l).finiteQuotientOfFreeOfNeBot hM` as an intermediate fact. Use `Dw.fin` as an intermediate fact. Conclude with `Submodule.finite_quotient_smul (Mfr l) (N := (⊤ : Submodule (𝓞 E) Dw.La)) Module.Finite.fg_top`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_levQc {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
     (l : Level H) : Finite (LevQc Dw l) := by
@@ -153,13 +153,11 @@ theorem finite_levQc {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Rec
   exact Submodule.finite_quotient_smul (Mfr l) (N := (⊤ : Submodule (𝓞 E) Dw.La)) Module.Finite.fg_top
 
 /- English proof (translation)
-Use `haveI := finite_levQc Dw l`. Use `haveI := Fintype.ofFinite (Fin n → LevQc Dw l)`. Establish `hz : inC c (zetaM c) = Complex.exp (2 * Real.pi * Complex.I / (l.M : ℂ))`. Rewrite using `[zetaM, map_pow]`. Use `show zeta l.M' ^ (l.M' / l.M) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm⟩ : l.M ∣ l.M'` from `Nat.dvd_lcm_left _ _`. Establish `h0 : 0 < l.M` using `by have := l.three_le; omega`. Establish `h1 : l.M' ≠ 0` using `Nat.lcm_ne_zero h0.ne' l.A_pos.ne'`. Establish `h2 : (m : ℂ) ≠ 0` using `by rintro h; apply h1; rw [hm, Nat.cast_eq_zero.1 h, mul_zero]`. Establish `h3 : (l.M : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 h0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[zeta, ← Complex.exp_nat_mul, hm, Nat.mul_div_cancel_left _ h0]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[phiHat, hatC, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, map_sum]`.
-
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_zpow₀, hz]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hatC_phiHat {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} (c : Coeff l) {n : ℕ}
     (φ : (Fin n → LevQc Dw l) → c.F) (q : Fin n → LevQ Dw l) :
@@ -186,7 +184,7 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.L
   {C : Core D} [Algebra C.Q.c.F D.what₂.LL] {R : RealDat D A C.Q.c.F} {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0}
 
 /- English proof (translation)
-Take `⟨h, J', h1, -, h3, h4⟩` from `(hp.tuple t).reps`. Take `⟨x₁, hx₁⟩` from `(h4 x).1 hx`. Rewrite using `[h3 _ x hx₁, one_mul]`. Use `hs.2.2 t h J' h1 _ x hx₁ f hf hth q.out` as an intermediate fact. Conclude with `this.trans (mul_assoc _ _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem row_identity {O : OMDat C R i Tp tup} {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : (R.MW i (sg0 D A)).Vec}
     {cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ} {ph : ℂ} (hs : SerOf O κ v₀ cc ph) {ι x₀} (hp : O.Pins κ v₀ ι x₀) (t : Tp)
@@ -202,14 +200,14 @@ theorem row_identity {O : OMDat C R i Tp tup} {κ : WeightFamilies.Wt D ((i : �
   exact this.trans (mul_assoc _ _ _)
 
 /- English proof (translation)
-Clear the denominators using the available nonvanishing facts. Take the linear combination `h`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem phase_eq_inv_mul_product {p a c l m r : ℂ} (h0 : p ≠ 0) (h : p * a = c * l * m * r) : 1 * a = p⁻¹ * c * l * m * r := by
   field_simp
   linear_combination h
 
 /- English proof (translation)
-Establish `hne` using `mul_ne_zero h0 ha`. Rewrite `h`, `h'` using `[mul_assoc, mul_assoc]`. Conclude with `mul_right_cancel₀ (fun hz => hne (by rw [h, hz, mul_zero])) (h.symm.trans h')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constant_unique_of_eq_product {p a c c' l m r : ℂ} (h0 : p ≠ 0) (ha : a ≠ 0) (h : p * a = c * l * m * r) (h' : p * a = c' * l * m * r) :
     c = c' := by
@@ -218,7 +216,7 @@ theorem constant_unique_of_eq_product {p a c c' l m r : ℂ} (h0 : p ≠ 0) (ha 
   exact mul_right_cancel₀ (fun hz => hne (by rw [h, hz, mul_zero])) (h.symm.trans h')
 
 /- English proof (translation)
-Establish `h0 : ph ≠ 0` using `fun h => by have := hs.2.1; rw [h, norm_zero] at this; exact zero_ne_one this`. Use `⟨fun k => by rw [norm_mul, norm_inv, hs.2.1, hs.1 k]; norm_num, norm_one, fun t h J' h1 y x h2 f hf h3 g => ?_⟩` and prove the remaining obligations. Conclude with `phase_eq_inv_mul_product h0 (hs.2.2 t h J' h1 y x h2 f hf h3 g)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem phase_one {O : OMDat C R i Tp tup} {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : (R.MW i (sg0 D A)).Vec}
     {cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ} {ph : ℂ} (hs : SerOf O κ v₀ cc ph) : SerOf O κ v₀ (fun k => ph⁻¹ * cc k) 1 := by
@@ -227,7 +225,7 @@ theorem phase_one {O : OMDat C R i Tp tup} {κ : WeightFamilies.Wt D ((i : ℕ) 
   exact phase_eq_inv_mul_product h0 (hs.2.2 t h J' h1 y x h2 f hf h3 g)
 
 /- English proof (translation)
-Establish `e` using `hs.2.2 t h J' h1 y x h2 f hf h3 g`. Establish `e'` using `hs'.2.2 t h J' h1 y x h2 f hf h3 g`. Establish `h0 : ph ≠ 0` using `fun h => by have := hs.2.1; rw [h, norm_zero] at this; exact zero_ne_one this`. Conclude with `constant_unique_of_eq_product h0 hg e e'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem const_unique {O : OMDat C R i Tp tup} {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : (R.MW i (sg0 D A)).Vec}
     {cc cc' : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ} {ph : ℂ} (hs : SerOf O κ v₀ cc ph) (hs' : SerOf O κ v₀ cc' ph)

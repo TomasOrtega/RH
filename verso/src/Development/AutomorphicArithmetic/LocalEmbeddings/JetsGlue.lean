@@ -48,9 +48,7 @@ variable {ρ Λ ρ' Λ' s e B} (h : LastOK ρ Λ ρ' Λ' s e B) {F : GA D A → 
 include h hF hF'
 
 /- English proof (translation)
-Rewrite using `[← h.avg κ h1 h2]`. Use `integral_congr_ae (.of_forall fun k => ?_)` and prove the remaining obligations. Establish `e1` using `isFinReal_apply h.fin hF (e z) ⟨s k, h.sinf _ k.2⟩`. Use `beta_reduce`. Rewrite using `[map_mul, h.sfin, isFinReal_apply h.fin' hF']`.
-
-Conclude with `congrArg (· * _) e1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem last_avg (κ : Measure (GinfC A')) (h1 : κ.IsHaarMeasure) (h2 : IsProbabilityMeasure κ) (z : GfC A') :
     ∫ k, F (s (z * k)) * F' (z * k) ∂κ = B (v (e z)) (v' z) := by
@@ -62,9 +60,9 @@ theorem last_avg (κ : Measure (GinfC A')) (h1 : κ.IsHaarMeasure) (h2 : IsProba
   exact congrArg (· * _) e1
 
 /- English proof (translation)
-Take `⟨hfin, κ, hκH, hκP, hU⟩` from `GlobalTheory.DefiniteClassReal.integral_eq_finClSum_avg A' h.pos K₀ K hK₀ hK hle μ fd hμ (fun g => F (s g) * F' g) (fun γ hγ g => by rw [map_mul, hFa _ (h.rat γ hγ), hFa' γ hγ]) (fun k hk g => by rw [map_mul, (hr k hk).1, (hr k hk).2]) (fun z => by`. Establish `e1 : ∀ k : GinfC A', F (s (z * k)) = Λ (ρ (s k)⁻¹ (ρ (s z)⁻¹ (v (finOf _ (s z)))))` using `fun k => by`. Rewrite using `[hF, map_mul, finOf_mul_inf _ _ ⟨s k, h.sinf _ k.2⟩, mul_inv_rev, map_mul, Module.End.mul_apply]`. Establish `e2 : ∀ k : GinfC A', F' (z * k) = Λ' (ρ' (k : GA D A')⁻¹ (ρ' z⁻¹ (v' (finOf _ z))))` using `fun k => by`. Rewrite using `[hF', finOf_mul_inf, mul_inv_rev, map_mul, Module.End.mul_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e1, e2]`. Conclude with `h.coef _ _)`. Rewrite using `[hU]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[last_avg h hF hF' κ hκH hκP, wgt, div_eq_mul_inv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem last_int (hFa : ∀ γ ∈ GQ A, ∀ g, F (γ * g) = F g) (hFa' : ∀ γ ∈ GQ A', ∀ g, F' (γ * g) = F' g)
     {K K₀ : Subgroup (GL (Fin A'.rank) (Lev.EAf D))} (hK : IsOpenCompactLevel _ K) (hK₀ : IsOpenCompactLevel _ K₀) (hle : K ≤ K₀)
@@ -94,15 +92,15 @@ variable {V : ℕ → HSp D} {Mo : ℕ → Type} [∀ n, AddCommGroup (Mo n)] [�
   (comp : ∀ n, GfC (V n) → GfC (V (n + 1)) → Mo n →ₗ[ℂ] Mo (n + 1)) (v : GfC (V 0) → Mo 0)
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem ext_lt {P : ℕ → Type} [∀ j, One (P j)] {n : ℕ} (x : ∀ j : Fin n, P j) {j : ℕ} (h : j < n) : ext n x j = x ⟨j, h⟩ :=
   dif_pos h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Rewrite using `[ext_lt _ j.2, Function.update_self]`. Conclude with `(Function.update_self (β := P) (j : ℕ) z _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne hi]`. Unfold `ext`. Use `split_ifs with h`. Conclude with `Function.update_of_ne (fun e => hi (congrArg Fin.val e)) _ _`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ext_update {P : ℕ → Type} [∀ j, One (P j)] {n : ℕ} (x : ∀ j : Fin n, P j) (j : Fin n) (z : P j) :
     ext n (Function.update (β := fun j : Fin n => P j) x j z) = Function.update (β := P) (ext n x) (j : ℕ) z := by
@@ -118,13 +116,11 @@ theorem ext_update {P : ℕ → Type} [∀ j, One (P j)] {n : ℕ} (x : ∀ j : 
     · rfl
 
 /- English proof (translation)
-Rewrite using `[finsum_snoc n hA]`. Use `finsum_congr fun a => ?_` and prove the remaining obligations. Use `letI : ∀ j : Fin n, Fintype (A j) := fun j => @Fintype.ofFinite _ (hA j (by omega))`. Rewrite using `[sumV_eq comp v o w n fun j hj => hA j (by omega), finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : ext (P` using `fun j => GfC (V j)) (n + 1) (fun j => o j (Fin.snoc (α := fun j : Fin (n + 1) => A j) c a j)) n = o n a := by`. Rewrite using `[ext, dif_pos (Nat.lt_succ_self n)]`. Conclude with `congrArg (o n) (Fin.snoc_last (α := fun j : Fin (n + 1) => A j) a c)`. Establish `e2 : ptV comp v (ext (n + 1) fun j => o j (Fin.snoc (α` using `fun j : Fin (n + 1) => A j) c a j)) n = ptV comp v (ext n fun j => o j (c j)) n := ptV_congr comp v n fun j hj => by`. Rewrite using `[ext, ext, dif_pos (Nat.lt_succ_of_lt hj), dif_pos hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (o j) (Fin.snoc_castSucc (α := fun j : Fin (n + 1) => A j) a c ⟨j, hj⟩)`. Establish `e3 : ∏ j : Fin (n + 1), w j (Fin.snoc (α` using `fun j : Fin (n + 1) => A j) c a j) = w n a * ∏ j : Fin n, w j (c j) := by`. Rewrite using `[Fin.prod_univ_castSucc, mul_comm]`. Use `congrArg₂ _ (congrArg (w n) (Fin.snoc_last (α := fun j : Fin (n + 1) => A j) a c)) ?_` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun j _ => congrArg (w j) (Fin.snoc_castSucc (α := fun j : Fin (n + 1) => A j) a c j)`.
-
-Rewrite using `[e1, e2, e3, map_smul, smul_eq_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_last {A : ℕ → Type} (o : ∀ n, A n → GfC (V n)) (w : ∀ n, A n → ℂ) (n : ℕ) (hA : ∀ j < n + 1, Finite (A j))
     (ℓ : GfC (V n) → Mo n →ₗ[ℂ] ℂ) :
@@ -180,7 +176,7 @@ variable {comp : ∀ n, GfC (V n) → GfC (V (n + 1)) → Mo n →ₗ[ℂ] Mo (n
 include hc hF hFa hc' hF' hFa' h
 
 /- English proof (translation)
-Take `⟨κ, k1, k2⟩` from `exists_haar _ h.defn`. Take `⟨γ, hγ, e3⟩` from `hY N le_rfl`. Rewrite using `[pairP, pairP, h1, h2, ← last_avg h (ptF_real comp v ρ Λ X' N) (ptF_real comp' v' ρ' Λ' Y' N) κ k1 k2, ← last_avg h (ptF_real comp v ρ Λ X N) (ptF_real comp' v' ρ' Λ' Y N) κ k1 k2, ptF_rat hc hF hFa hX N le_rfl, ptF_rat hc' hF' hFa' (fun j hj => hY j hj.le) N le_rfl, e3]`. Conclude with `avg_rat _ κ (fun z => ptF comp v ρ Λ X N (s z) * ptF comp' v' ρ' Λ' Y N z) (fun q hq z => by`. Rewrite using `[map_mul, ptF_left hc hF hFa X N le_rfl _ (h.rat q hq), ptF_left hc' hF' hFa' Y N le_rfl q hq]) hγ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairP_rat {X X' : ∀ n, GfC (V n)} {Y Y' : ∀ n, GfC (V' n)} (hX : ∀ j < N, ∃ γ ∈ ratFin (V j), X' j = γ * X j)
     (hY : ∀ j ≤ N, ∃ γ ∈ ratFin (V' j), Y' j = γ * Y j) (h1 : X N = e (Y N)) (h2 : X' N = e (Y' N)) :
@@ -194,13 +190,13 @@ theorem pairP_rat {X X' : ∀ n, GfC (V n)} {Y Y' : ∀ n, GfC (V' n)} (hX : ∀
     rw [map_mul, ptF_left hc hF hFa X N le_rfl _ (h.rat q hq), ptF_left hc' hF' hFa' Y N le_rfl q hq]) hγ _
 
 /- English proof (translation)
-Take `⟨n1, ⟨K₀, n2, n3, n4⟩, n5⟩` from `hN`. Establish `fA : ∀ j < N, Finite (FinCl (V j) (K j))` using `fun j hj => (ClassFin.finite_finCl_and_gamOrd _ _ (hc j hj).2.1 (hK j hj).1).1`. Establish `fA' : ∀ j < N + 1, Finite (FinCl (V' j) (K' j))` using `fun j hj => by`. Break down `(Nat.lt_succ_iff.1 hj).eq_or_lt with rfl | hj` into its components or cases. Conclude with `(ClassFin.finite_finCl_and_gamOrd _ _ h.pos n1).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ClassFin.finite_finCl_and_gamOrd _ _ (hc' j hj).2.1 (hK' j hj).1).1`. Rewrite using `[last_int h (liftC_real hc hF hFa μ fd K hK N le_rfl) (liftC_real hc' hF' hFa' μ' fd' K' hK' N le_rfl) (liftC_left hc hFa μ fd N le_rfl) (liftC_left hc' hFa' μ' fd' N le_rfl) n1 n2 n3 n4 (fun k hk => ⟨liftC_right μ fd N _ (n5 k hk).1, liftC_right μ' fd' N _ (n5 k hk).2⟩)]`. Use `(sum_last comp' v' (A := fun n => FinCl (V' n) (K' n)) (fun _ c => Quotient.out c) (fun n => wgt (V' n) (μ' n) (K' n)) N fA' (fun z => B (sumV (A := fun n => FinCl (V n) (K n)) (fun _ c => Quotient.out c) (fun n => wgt (V n) (μ n) (K n)) comp v N (e z)))).trans ?_` and prove the remaining obligations. Use `letI : ∀ j : Fin N, Fintype (FinCl (V j) (K j)) := fun j => @Fintype.ofFinite _ (fA j j.2)`. Use `letI : ∀ j : Fin (N + 1), Fintype (FinCl (V' j) (K' j)) := fun j => @Fintype.ofFinite _ (fA' j j.2)`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Fintype.sum_prod_type_right]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[sumV_eq comp v _ _ N fA, finsum_eq_sum_of_fintype, map_sum, LinearMap.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `e1 : ptV comp v (ptX N e (fun j => Quotient.out (a j)) (fun i => Quotient.out (b i))) N = ptV comp v (ext N fun j => Quotient.out (a j)) N` using `ptV_congr comp v N fun j hj => Function.update_of_ne hj.ne _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ptX N e (fun j => Quotient.out (a j)) (fun i => Quotient.out (b i)) N = e (ext (P` using `fun j => GfC (V' j)) (N + 1) (fun i => Quotient.out (b i)) N) := Function.update_self ..`. Rewrite using `[pairP, e1, e2, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem one_term (μ : ∀ n, Measure (GA D (V n))) (fd : ∀ n, Set (GA D (V n)))
     (K : ∀ n, Subgroup (GL (Fin (V n).rank) (Lev.EAf D)))
@@ -256,7 +252,7 @@ def NearOK (ker : ∀ n, GA D (V n) → GA D (V (n + 1)) → ℂ) (F : GA D (V 0
     ∀ᶠ k in 𝓝 (1 : GA D (V (n + 1))), k ∈ GfC (V (n + 1)) → ∀ g h, ker n g (h * k) = ker n g h
 
 /- English proof (translation)
-The claim follows from `| 0, _ => h.1 | n + 1, hn => (h.2 n hn).2`.
+A detailed English derivation is pending.
 -/
 theorem NearOK.fixAt {ker : ∀ n, GA D (V n) → GA D (V (n + 1)) → ℂ} {F : GA D (V 0) → ℂ} {N : ℕ} (h : NearOK ker F N) :
     ∀ n ≤ N, ∀ᶠ k in 𝓝 (1 : GA D (V n)), k ∈ GfC (V n) → FixAt ker F n k
@@ -264,7 +260,7 @@ theorem NearOK.fixAt {ker : ∀ n, GA D (V n) → GA D (V (n + 1)) → ℂ} {F :
   | n + 1, hn => (h.2 n hn).2
 
 /- English proof (translation)
-Use `exists_fine _ hK ?_` and prove the remaining obligations. Use `(Filter.eventually_all_finset S).2 fun d hd => ((h d hd).fixAt n hn.le).and ((h d hd).2 n hn).1` as an intermediate fact. Conclude with `this.mono fun k hk hf d hd => ⟨(hk d hd).1 hf, (hk d hd).2 hf⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_fine_chain {ι : Type} (S : Finset ι) {ker : ι → ∀ n, GA D (V n) → GA D (V (n + 1)) → ℂ} {F : GA D (V 0) → ℂ} {N : ℕ}
     (h : ∀ d ∈ S, NearOK (ker d) F N) {n : ℕ} (hn : n < N) {K : Subgroup (GL (Fin (V n).rank) (Lev.EAf D))}
@@ -283,29 +279,27 @@ variable {ι : Type} (τ : ι →₀ ℂ)
   {B : Mo N →ₗ[ℂ] Mo' N →ₗ[ℂ] ℂ} {F : GA D (V 0) → ℂ} {F' : GA D (V' 0) → ℂ}
 
 /- English proof (translation)
-Establish `hG` using `(GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (V N)).2.2.2.2.1`. Establish `hG'` using `(GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (V' N)).2.2.2.2.1`. Establish `x1 : ∀ n, ∃ K'' : Subgroup (GL (Fin (V n).rank) (Lev.EAf D)), ∀ hn : n < N, K'' ≤ K n hn ∧ IsOpenCompactLevel _ K'' ∧ ∀ k ∈ Lev.levA _ K'', ∀ d ∈ τ.support, FixAt (ker d) F n k ∧ ∀ g h, ker d n (g * k) h = ker d n g h` using `fun n => by`. Distinguish the cases in `h0 : n < N`. Take `⟨K'', a⟩` from `exists_fine_chain τ.support hn h0 (hK n h0).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨K'', fun _ => a⟩`. Conclude with `⟨⊤, fun h1 => absurd h1 h0⟩`. Establish `x2 : ∀ n, ∃ K'' : Subgroup (GL (Fin (V' n).rank) (Lev.EAf D)), ∀ hn : n ≤ N, K'' ≤ K' n hn ∧ IsOpenCompactLevel _ K'' ∧ (n < N → ∀ k ∈ Lev.levA _ K'', ∀ d ∈ τ.support, FixAt (ker' d) F' n k ∧ ∀ g h, ker' d n (g * k) h = ker' d n g h) ∧ ∀ hN : n = N, ∀ k ∈ Lev.levA _ K'', ∀ d ∈ τ. …` using `fun n => by`. Break down `lt_trichotomy n N with h0 | rfl | h0` into its components or cases. Take `⟨K'', a, b, c⟩` from `exists_fine_chain τ.support hn' h0 (hK' n h0.le).1`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨K'', fun _ => ⟨a, b, fun _ => c, fun e => absurd e h0.ne⟩⟩`. Establish `t : Filter.Tendsto s (𝓝 1) (𝓝 1)` using `by simpa using h.cont.tendsto 1`. Use `(Filter.eventually_all_finset τ.support).2 fun d hd => (t.eventually ((hn d hd).fixAt n le_rfl)).and ((hn' d hd).fixAt n le_rfl)` as an intermediate fact. Take `⟨K'', a, b, c⟩` from `exists_fine _ (hK' n le_rfl).1 (p := fun k => ∀ d ∈ τ.support, FixAt (ker d) F n (s k) ∧ FixAt (ker' d) F' n k) (this.mono fun k hk hf d hd => ⟨(hk d hd).1 (by rw [h.sfin ⟨k, hf⟩]; exact (e _).2), (hk d hd).2 hf⟩)`. Conclude with `⟨K'', fun _ => ⟨a, b, fun e => absurd e (lt_irrefl _), fun _ => c⟩⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⊤, fun h1 => absurd h0 (not_lt.2 h1)⟩`. Use `choose J hJ using x1`. Use `choose J' hJ' using x2`. Establish `hrat : ∀ {X X' : ∀ n, GfC (V n)} {Y Y' : ∀ n, GfC (V' n)}, (∀ j < N, ∃ γ ∈ ratFin (V j), X' j = γ * X j) → (∀ j ≤ N, ∃ γ ∈ ratFin (V' j), Y' j = γ * Y j) → X N = e (Y N) → X' N = e (Y' N) → P X' Y' = P X Y` using `fun a1 a2 a3 a4 => by`. Rewrite using `[hP, hP]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `Finsupp.sum_congr fun d hd => by rw [pairP_rat (hc d hd) hF hFa (hc' d hd) hF' hFa' h a1 a2 a3 a4]`. Establish `up : ∀ {W : ℕ → HSp D} (X : ∀ n, GfC (W n)) (j : ℕ) (γ : GfC (W j)), γ ∈ ratFin (W j) → ∀ (z : GfC (W j)) (i : ℕ), ∃ γ' ∈ ratFin (W i), Function.update X j (γ * z) i = γ' * Function.update X j z i` using `fun X j γ hγ z i => by`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Conclude with `⟨γ, hγ, by simp⟩`.
+Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨1, one_mem _, by simp [Function.update_of_ne hi]⟩`. Establish `pN : ∀ x y, ptX (V` using `V) (V' := V') N e x y N = e (ext (P := fun j => GfC (V' j)) (N + 1) y N) := fun x y => Function.update_self ..`. Establish `pU : ∀ x y (j : Fin N) z, ptX (V` using `V) (V' := V') N e (Function.update (β := fun j : Fin N => GfC (V j)) x j z) y = Function.update (β := fun j => GfC (V j)) (ptX N e x y) (j : ℕ) z := fun x y j z => by`. Rewrite using `[ptX, ptX, ext_update (P := fun j => GfC (V j)), Function.update_comm j.2.ne]`. Rewrite using `[← GlobalTheory.ClassRegroup.finCl_regroup_prod (fun j : Fin N => V j) (fun i : Fin (N + 1) => V' i) (fun j => hV j j.2) (fun i => hV' i (Nat.le_of_lt_succ i.2)) (K := fun j => K j j.2) (K'' := fun j => J j) (L := fun i => K' i (Nat.le_of_lt_succ i.2)) (L'' := fun i => J' i) (fun …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : ∀ j : Fin N, Fintype (FinCl (V j) (J j)) := fun j => @Fintype.ofFinite _ (ClassFin.finite_finCl_and_gamOrd _ _ (hV j j.2) (hJ j j.2).2.1).1`. Use `letI : ∀ j : Fin (N + 1), Fintype (FinCl (V' j) (J' j)) := fun j => @Fintype.ofFinite _ (ClassFin.finite_finCl_and_gamOrd _ _ (hV' j (Nat.le_of_lt_succ j.2)) (hJ' j (Nat.le_of_lt_succ j.2)).2.1).1`. Establish `key` using `fun d (hd : d ∈ τ.support) => (one_term (hc d hd) hF hFa (hc' d hd) hF' hFa' h μ fd J (fun n hn => ⟨(hJ n hn).2.1, ⟨_, (hK n hn).1, (hJ n hn).1, (hK n hn).2⟩, fun k hk => (hJ n hn).2.2 k hk d hd⟩) μ' fd' J' (fun n hn => ⟨(hJ' n hn.le).2.1, ⟨_, (hK' n hn.le).1, (hJ' n hn.le).1, (h …`. Rewrite using `[Finsupp.sum, Finset.sum_congr rfl fun d hd => congrArg (τ d * ·) (key d hd)]`. Simplify using `only [finsum_eq_sum_of_fintype, hP, Finsupp.sum, Finset.mul_sum]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => mul_left_comm _ _ _`. Introduce `y j x`. Use `⟨fun γ hγ z => ?_, fun k hk z => ?_⟩` and prove the remaining obligations. Use `hrat (fun i _ => ?_) (fun i _ => ⟨1, one_mem _, (one_mul _).symm⟩) (pN _ _) (pN _ _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[pU, pU]`. Conclude with `up _ _ γ hγ z i`. Use `r1 (Function.update (β := fun j => GfC (V j)) (ptX N e x y) (j : ℕ) z) (ext (P := fun j => GfC (V' j)) (N + 1) y) j j.2 k hk` as an intermediate fact. Rewrite `this` using `[Function.update_self, Function.update_idem]`. Simplify `this` using `only [pU]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x i y`. Use `⟨fun γ hγ z => ?_, fun k hk z => ?_⟩` and prove the remaining obligations. Use `hrat (fun j hj => ⟨1, one_mem _, ?_⟩) (fun j _ => ?_) (pN _ _) (pN _ _)` and prove the remaining obligations. Rewrite using `[one_mul, ptX, ptX, Function.update_of_ne hj.ne, Function.update_of_ne hj.ne]`. Rewrite using `[ext_update (P := fun j => GfC (V' j)), ext_update (P := fun j => GfC (V' j))]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `up _ _ γ hγ z j`. Simplify using `only [ptX, ext_update (P := fun j => GfC (V' j))]`. Take `⟨i, hi⟩` from `i`. Break down `(Nat.le_of_lt_succ hi).eq_or_lt with rfl | hi'` into its components or cases. Use `r3 (Function.update (ext (P := fun j => GfC (V j)) i x) i (e z)) (Function.update (ext (P := fun j => GfC (V' j)) (i + 1) y) i z) k (by simp) hk` as an intermediate fact.
-
-Simplify `this` using `only [Function.update_self, Function.update_idem]`. Use `r2 (Function.update (ext (P := fun j => GfC (V j)) N x) N (e (ext (P := fun j => GfC (V' j)) (N + 1) y N))) (Function.update (ext (P := fun j => GfC (V' j)) (N + 1) y) i z) i hi' k hk` as an intermediate fact. Simplify `this` using `only [Function.update_self, Function.update_idem, Function.update_of_ne hi'.ne']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem glue (hc : ∀ d ∈ τ.support, ∀ n < N, ArrowOK (comp d) ρ (ker d) Λ n) (hF : IsFinReal (ρ 0) F (Λ 0) v)
     (hFa : ∀ γ ∈ GQ (V 0), ∀ g, F (γ * g) = F g) (hn : ∀ d ∈ τ.support, NearOK (ker d) F N)

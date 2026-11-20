@@ -14,27 +14,25 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace GlobalTheory.EX.OB
 
 /- English proof (translation)
-Take `⟨T, hTS, hxT⟩` from `Submodule.mem_span_finite_of_mem_span hx`. Take `⟨T', hT'S, rfl⟩` from `Finset.subset_set_image_iff.1 hTS`. Use `Submodule.span_mono hT'S ?_` and prove the remaining obligations. Use `set N := Submodule.span B (T' : Set V) with hN`. Establish `: Module.Finite B N` using `Module.Finite.span_of_finite B T'.finite_toSet`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.IsTorsionFree B V` using `Module.IsTorsionFree.trans_faithfulSMul B K V`. Establish `: Module.Free B N` using `inferInstance`. Set `e0` to `Module.Free.chooseBasis B N`. Set `e : Module.Free.ChooseBasisIndex B N → V` to `fun i => (e0 i : V)`. Establish `heB : LinearIndependent B e` using `e0.linearIndependent.map' N.subtype N.ker_subtype`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heK : LinearIndependent K e` using `(LinearIndependent.iff_fractionRing B K).1 heB`. Establish `hspan : N ≤ Submodule.span B (Set.range e)`. Introduce `y hy`. Establish `h1 : (⟨y, hy⟩ : N) ∈ Submodule.span B (Set.range e0)` using `by rw [e0.span_eq]; trivial`. Establish `h2` using `Submodule.mem_map_of_mem (f := N.subtype) h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h2`. Establish `hxe : φ x ∈ Submodule.span O (Set.range (φ ∘ e))`. Use `(Submodule.span_le.2 ?_) hxT` and prove the remaining obligations. Rewrite using `[Finset.coe_image]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hy'` using `hspan (Submodule.subset_span hy)`. Rewrite using `[SetLike.mem_coe]`. Use `clear hy`. Proceed by induction on `hy' using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem z hz => obtain ⟨i, rfl⟩ := hz`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => simp`. Consider the case `add z z' _ _ h h' => rw [map_add]`. Conclude with `Submodule.add_mem _ h h'`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Consider the case `smul a z _ h`. Take `⟨o, ho⟩` from `(hσ (algebraMap B K a)).2 ⟨a, rfl⟩`. Rewrite using `[← algebraMap_smul K a z, hφ, ← ho, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ h`. Establish `hxK : x ∈ Submodule.span K (Set.range e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hn`. Establish `h1 : LinearIndependent K (fun o => Option.casesOn' o x e)` using `heK.option hn`. Establish `h2` using `FBC.li_of_basis_li σ φ hφ b hb _ h1`. Establish `h3 : (φ ∘ fun o => Option.casesOn' o x e) = fun o => Option.casesOn' o (φ x) (φ ∘ e)`. Apply the tactic sequence `ext o; cases o <;> rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h2` using `[h3, linearIndependent_option']`. Conclude with `h2.2 (Submodule.span_subset_span O Kf _ hxe)`. Take `⟨k, hk⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hxK`. Take `⟨o, ho⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 hxe`. Establish `hli` using `FBC.li_of_basis_li σ φ hφ b hb _ heK`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `heq : ∀ i, σ (k i) = algebraMap O Kf (o i)`. Apply `Fintype.linearIndependent_iffₛ.1 hli` to reduce the goal to its premises. Simplify using `only [algebraMap_smul, ho]`. Rewrite using `[← hk, map_sum]`. Simplify using `[hφ]`.
-
-Rewrite using `[← hk]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `(hσ (k i)).1 ⟨o i, (heq i).symm⟩`. Rewrite using `[← ha, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (e0 i).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_semilinear {B K O Kf V W ι : Type*} [CommRing B] [IsDomain B] [IsPrincipalIdealRing B] [Field K]
     [Algebra B K] [IsFractionRing B K] [CommRing O] [Field Kf] [Algebra O Kf]
@@ -100,21 +98,21 @@ theorem mem_span_of_semilinear {B K O Kf V W ι : Type*} [CommRing B] [IsDomain 
   exact Submodule.smul_mem _ _ (e0 i).2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Establish `hM : c.cmp u w hg (D.nuIn u x) ∈ (D.gat u w hg).M`. Take `⟨⟨-, F, hF, hFe⟩, -⟩` from `hx`. Rewrite using `[← hFe]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ hF`. Rewrite `hM` using `[← c.cmp_M u w hg]`. Use `D.intW_dvr w` as an intermediate fact. Use `D.intW_frac w` as an intermediate fact. Establish `h1 : D.nuIn u x ∈ Submodule.span (intW D.what₂.places w) (((D.fm u).lat 0).L : Set ((D.fm u).lat 0).V)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_span_of_semilinear (c.embW u w hg) (fun k => ?_) (c.cmp u w hg) (c.cmp_smul u w hg) ((D.fm u).lat 0).b (c.cmp_li u w hg) _ _ hM` and prove the remaining obligations. Rewrite using `[← c.embW_int u w hg k]`. Conclude with `⟨fun h => ⟨⟨k, h⟩, rfl⟩, by rintro ⟨a, rfl⟩; exact a.2⟩`. Take `⟨s, hs, hsx⟩` from `(D.mem_locW_iff w ((D.fm u).lat 0).L (D.nuIn u x)).1 h1`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show ((D.nuIn u).restrictScalars (𝓞 D.what₂.LL)) (s • x) ∈ ((D.fm u).lat 0).L`. Rewrite using `[map_smul]`. Conclude with `hsx`. Use `set a : ℕ := ∑ t0 ∈ G.VV X K (G.aL L) (G.bL L) (D.what₂.places.resChar w), ⌈G.Sv X K (G.aL L) (G.bL L) (D.what₂.places.resChar w) t0⌉.toNat with ha set b : ℕ := ⌈G.tauP X K (G.aL L) (G.bL L) (D.what₂.places.resChar w)⌉.toNat with hb`. Use `⟨D.what₂.places.resChar w ^ (b + a), pow_ne_zero _ (D.what₂.places.resChar_prime w).ne_zero, fun x hx => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hF1 : c.cmp u w hg (D.nuIn u x) ∈ (D.gat u w hg).M`. Rewrite using `[← c.cmp_M u w hg]`. Conclude with `Submodule.subset_span ⟨D.nuIn u x, hx, rfl⟩`. Establish `hF2 : c.cmp u w hg (D.nuIn u x) ∈ Y.Vram u w hg`. Rewrite using `[← SetLike.mem_coe, hv u w hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Use `Submodule.subset_span ⟨D.nuIn u x, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← D.nuIn_range u]`. Conclude with `⟨x, rfl⟩`. Rewrite using `[map_nsmul, map_nsmul, ← Nat.cast_smul_eq_nsmul (D.gat u w hg).O, Nat.cast_pow]`. Generalize the expression as in `c.cmp u w hg (D.nuIn u x) = F at hF1 hF2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `G.NP`. Use `⟨⟨?_, ?_⟩, Submodule.smul_mem _ _ hF2⟩` and prove the remaining obligations. Rewrite using `[pow_add, mul_smul]`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨∅, Finset.empty_subset _, F, hF1, ?_⟩` and prove the remaining obligations. Simplify using `[G.yProd, ha]`. Use `⟨((D.what₂.places.resChar w : ℕ) : (D.gat u w hg).O) ^ a • F, Submodule.smul_mem _ _ hF1, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, mul_smul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem NP_full (D : D7) (L : SizeData₂ D) (X : G.Inst D L) (Y : G.LatInst D) (K : G.Consts) (c : LatCmp D)
     (hv : c.VramDef Y) (u : D.what₂.Word) (w : D.what₂.places.Pl)

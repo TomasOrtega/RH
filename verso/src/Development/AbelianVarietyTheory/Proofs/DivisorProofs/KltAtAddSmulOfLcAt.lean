@@ -19,13 +19,13 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 namespace GlobalTheory.PairStep
 
 /- English proof (translation)
-Introduce `X _ _ _ p n hp hn Δ D δ x hD hk hl hδ hδ1`. Take `⟨η, m, g, hη, hm, hg, hkl⟩` from `hk`. Take `⟨m', f, hm', -, hf⟩` from `GlobalTheory.T.exists_localEquation_effectiveQCartierDivisor X p D hD x`. Take `⟨m₁, g₁, hm₁, h₁, e₁⟩` from `GlobalTheory.T.isLogCanonicalLocalEquation_add_smul_divisor X p n Δ D η x m m' g f 1 hm hm' hg hf`. Take `⟨m₂, g₂, hm₂, h₂, e₂⟩` from `GlobalTheory.T.isLogCanonicalLocalEquation_add_smul_divisor X p n Δ D η x m m' g f (1 - δ) hm hm' hg hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `h₁` using `[one_smul]`. Establish `hlc` using `(GlobalTheory.T.logCanonicalAt_iff_of_isLogCanonicalLocalEquation X p n hp hn (Δ + D) η x m₁ g₁ hη hm₁ h₁).1 hl`. Use `⟨η, m₂, g₂, hη, hm₂, h₂, fun E hE => ?_⟩` and prove the remaining obligations. Establish `a` using `hkl E hE`. Establish `b` using `hlc E hE`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `b` using `[e₁]`. Rewrite using `[e₂]`. Use `set t : ℚ := (E.ord f : ℚ) / m'`. Use `set d := discrep E η m g`. Establish `h1 : -δ < δ * d` using `by nlinarith`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2 : -(1 - δ) ≤ (1 - δ) * (d - 1 * t)` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem kltAt_add_smul_of_lcAt : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X]
     [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n →

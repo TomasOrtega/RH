@@ -17,30 +17,30 @@ def der (r n : ℕ) (a b : Fin r) :
   mkDerivation ℚ fun v => if v.1 = b then X (a, v.2) else 0
 
 /- English proof (translation)
-Rewrite using `[der, mkDerivation_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem der_X {r n : ℕ} (a b : Fin r) (v : Fin r × Fin n) :
     der r n a b (X v) = if v.1 = b then X (a, v.2) else 0 := by
   rw [der, mkDerivation_X]
 
 /- English proof (translation)
-Establish `h : ⁅der r n a b, der r n c d⁆ = (if b = c then der r n a d else 0) - (if d = a then der r n c b else 0)`. Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce and unpack `⟨x, s⟩`. Rewrite using `[Derivation.commutator_apply, Derivation.sub_apply]`. Establish `e3 : ∀ (P : Prop) [Decidable P] (D : Derivation ℚ (MvPolynomial (Fin r × Fin n) ℚ) (MvPolynomial (Fin r × Fin n) ℚ)) (g : MvPolynomial (Fin r × Fin n) ℚ), (if P then D else 0) g = if P then D g else 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `P _ D g`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [e3, der_X]`. Distinguish the cases in `h1 : x = d`. Substitute `h1` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h2 : x = b`. Substitute `h2` using the available equality. Distinguish the cases in `h3 : x = c`. Substitute `h3` using the available equality. Distinguish the cases in `h4 : x = a`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `h4` using the available equality. Simplify using `[der_X]`. Establish `h4' : ¬ a = x` using `fun h => h4 h.symm`. Simplify using `[der_X, h4, h4']`. Establish `h3' : ¬ c = x` using `fun h => h3 h.symm`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `h4 : x = a`. Substitute `h4` using the available equality. Simplify using `[der_X, h3, h3']`. Establish `h4' : ¬ a = x` using `fun h => h4 h.symm`. Simplify using `[der_X, h3, h4, h3', h4']`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h3 : b = c`. Substitute `h3` using the available equality. Simplify using `[der_X, h2]`. Establish `h3' : ¬ c = b` using `fun h => h3 h.symm`. Simplify using `[der_X, h2, h3, h3']`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : x = b`. Substitute `h2` using the available equality. Distinguish the cases in `h4 : d = a`. Substitute `h4` using the available equality. Simplify using `[der_X, h1]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h4' : ¬ a = d` using `fun h => h4 h.symm`. Simplify using `[der_X, h1, h4, h4']`. Simplify using `[der_X, h1, h2]`. Establish `h'` using `congrArg (fun D => D f) h`. Simplify using `only [Derivation.commutator_apply, Derivation.sub_apply] at h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h']`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem der_comm {r n : ℕ} (a b c d : Fin r) (f : MvPolynomial (Fin r × Fin n) ℚ) :
     der r n a b (der r n c d f) - der r n c d (der r n a b f) =
@@ -88,7 +88,7 @@ theorem der_comm {r n : ℕ} (a b c d : Fin r) (f : MvPolynomial (Fin r × Fin n
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[rowGen, aeval_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rowGen_X' {r n : ℕ} (a b : Fin r) (v : Fin r × Fin n) :
     rowGen ℚ a b (X v) = Polynomial.C (X v) +
@@ -96,20 +96,20 @@ theorem rowGen_X' {r n : ℕ} (a b : Fin r) (v : Fin r × Fin n) :
   rw [rowGen, aeval_X]
 
 /- English proof (translation)
-Rewrite using `[← MvPolynomial.algebraMap_eq, AlgHom.commutes, Polynomial.algebraMap_apply, MvPolynomial.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rowGen_C' {r n : ℕ} (a b : Fin r) (c : ℚ) :
     rowGen ℚ a b (C c : MvPolynomial (Fin r × Fin n) ℚ) = Polynomial.C (C c) := by
   rw [← MvPolynomial.algebraMap_eq, AlgHom.commutes, Polynomial.algebraMap_apply, MvPolynomial.algebraMap_eq]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c => simp [rowGen_C', ← MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, map_add, mul_add, hp, hq]`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul, Polynomial.derivative_mul, Derivation.leibniz, map_add, smul_eq_mul, smul_eq_mul, map_mul, map_mul, ← hp, der_X, rowGen_X']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h1 : v.1 = b`. Distinguish the cases in `h2 : a = b`. Substitute `h2` using the available equality. Establish `e : ((a, v.2) : Fin r × Fin n) = v` using `by rw [← h1]`. Simplify using `only [h1, if_true, rowGen_X', e]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ¬ ((a, v.2) : Fin r × Fin n).1 = b` using `h2`. Simplify using `only [h1, h2, if_true, if_false, rowGen_X', h3]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1, if_false, map_zero]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rowGen_derivative {r n : ℕ} (a b : Fin r) (f : MvPolynomial (Fin r × Fin n) ℚ) :
     (1 + if a = b then Polynomial.X else 0) * Polynomial.derivative (rowGen ℚ a b f) =
@@ -136,9 +136,9 @@ theorem rowGen_derivative {r n : ℕ} (a b : Fin r) (f : MvPolynomial (Fin r × 
       ring
 
 /- English proof (translation)
-Unfold `rowDiv`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c => simp [rowGen_C']`. Consider the case `add p q hp hq => rw [map_add, Polynomial.coeff_add, hp, hq]`. Consider the case `mul_X p v hp`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[map_mul, Polynomial.mul_coeff_zero, hp, rowGen_X']`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowDiv_zero' {r n : ℕ} (a b : Fin r) (f : MvPolynomial (Fin r × Fin n) ℚ) : rowDiv ℚ a b 0 f = f := by
   unfold rowDiv
@@ -150,13 +150,13 @@ theorem rowDiv_zero' {r n : ℕ} (a b : Fin r) (f : MvPolynomial (Fin r × Fin n
     split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun P => Polynomial.coeff P k) (rowGen_derivative a b f)`. Use `beta_reduce at h`. Unfold `rowDiv`. Rewrite using `[← h, add_mul, one_mul, Polynomial.coeff_add, Polynomial.coeff_derivative]`. Distinguish the cases in `hab : a = b`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [hab, if_true]`. Consider the cases of `k with`. Consider the case `zero => simp [MvPolynomial.smul_eq_C_mul, mul_comm]`. Consider the case `succ k`. Rewrite using `[Polynomial.coeff_X_mul, Polynomial.coeff_derivative]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [MvPolynomial.smul_eq_C_mul]`. Use `push_cast`. Simplify using `only [map_add, map_natCast, map_one]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hab, if_false, zero_mul, Polynomial.coeff_zero, add_zero, sub_zero, MvPolynomial.smul_eq_C_mul]`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Simplify using `only [map_add, map_natCast, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rowDiv_succ {r n : ℕ} (a b : Fin r) (k : ℕ) (f : MvPolynomial (Fin r × Fin n) ℚ) :
     ((k + 1 : ℕ) : ℚ) • rowDiv ℚ a b (k + 1) f =
@@ -181,7 +181,7 @@ theorem rowDiv_succ {r n : ℕ} (a b : Fin r) (k : ℕ) (f : MvPolynomial (Fin r
     ring
 
 /- English proof (translation)
-Establish `h` using `rowDiv_succ a b 0 f`. Simplify `h` using `[rowDiv_zero']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rowDiv_one {r n : ℕ} (a b : Fin r) (f : MvPolynomial (Fin r × Fin n) ℚ) :
     rowDiv ℚ a b 1 f = der r n a b f := by
@@ -189,11 +189,11 @@ theorem rowDiv_one {r n : ℕ} (a b : Fin r) (f : MvPolynomial (Fin r × Fin n) 
   simpa [rowDiv_zero'] using h
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro f hf`. Rewrite using `[rowDiv_zero']` and apply the resulting hypothesis. Consider the case `succ k ih`. Introduce `f hf`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `rowDiv_succ a b k f`. Establish `h2 : rowDiv ℚ a b k (der r n a b f) - (if a = b then (k : ℚ) • rowDiv ℚ a b k f else 0) ∈ M`. Use `M.sub_mem (ih _ (hM f hf)) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `M.smul_mem _ (ih f hf)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `M.zero_mem`. Rewrite `h2` using `[← h]`. Establish `h3` using `M.smul_mem (((k + 1 : ℕ) : ℚ)⁻¹) h2`. Rewrite `h3` using `[smul_smul, inv_mul_cancel₀ (by positivity), one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem closed_of_der {r n : ℕ} (a b : Fin r) (M : Submodule ℚ (MvPolynomial (Fin r × Fin n) ℚ))
     (hM : ∀ f ∈ M, der r n a b f ∈ M) (k : ℕ) : ∀ f ∈ M, rowDiv ℚ a b k f ∈ M := by
@@ -212,11 +212,11 @@ theorem closed_of_der {r n : ℕ} (a b : Fin r) (M : Submodule ℚ (MvPolynomial
     rwa [smul_smul, inv_mul_cancel₀ (by positivity), one_smul] at h3
 
 /- English proof (translation)
-Proceed by induction on `k generalizing f with`. Consider the case `zero => simp [rowDiv_zero']`. Consider the case `succ k ih`. Establish `h` using `rowDiv_succ a b k f`. Simplify using `only [hab, if_false, sub_zero] at h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[ih]`. Establish `h3` using `congrArg (fun x => (((k + 1 : ℕ) : ℚ)⁻¹) • x) h`. Use `beta_reduce at h3`. Rewrite `h3` using `[smul_smul, inv_mul_cancel₀ (by positivity), one_smul]`. Rewrite using `[h3, smul_smul, pow_succ, Module.End.mul_apply, Nat.factorial_succ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Rewrite using `[mul_inv]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem der_pow {r n : ℕ} (a b : Fin r) (hab : a ≠ b) (k : ℕ) (f : MvPolynomial (Fin r × Fin n) ℚ) :
     rowDiv ℚ a b k f = ((k.factorial : ℚ)⁻¹) • ((der r n a b : Module.End ℚ _) ^ k) f := by
@@ -235,7 +235,7 @@ theorem der_pow {r n : ℕ} (a b : Fin r) (hab : a ≠ b) (k : ℕ) (f : MvPolyn
     rw [mul_inv]
 
 /- English proof (translation)
-Establish `h` using `rowDivStable ℚ r n ν a b 1 f hf`. Rewrite `h` using `[rowDiv_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem der_mem {r n : ℕ} (ν : Fin n → ℕ) (a b : Fin r) (f : MvPolynomial (Fin r × Fin n) ℚ)
     (hf : f ∈ dualWeyl ℚ r n ν) : (der r n a b : Module.End ℚ _) f ∈ dualWeyl ℚ r n ν := by
@@ -243,36 +243,36 @@ theorem der_mem {r n : ℕ} (ν : Fin n → ℕ) (a b : Fin r) (f : MvPolynomial
   rwa [rowDiv_one] at h
 
 /- English proof (translation)
-The claim follows from `(fockQBilin σ f f' g 0).1`.
+A detailed English derivation is pending.
 -/
 theorem fock_add_left {σ : Type} (f f' g : MvPolynomial σ ℚ) : fockQ (f + f') g = fockQ f g + fockQ f' g :=
   (fockQBilin σ f f' g 0).1
 
 /- English proof (translation)
-The claim follows from `(fockQBilin σ f 0 g c).2`.
+A detailed English derivation is pending.
 -/
 theorem fock_smul_left {σ : Type} (c : ℚ) (f g : MvPolynomial σ ℚ) : fockQ (c • f) g = c * fockQ f g :=
   (fockQBilin σ f 0 g c).2
 
 /- English proof (translation)
-The claim follows from `(fockQPos σ f g).1`.
+A detailed English derivation is pending.
 -/
 theorem fock_symm {σ : Type} (f g : MvPolynomial σ ℚ) : fockQ f g = fockQ g f := (fockQPos σ f g).1
 
 /- English proof (translation)
-Rewrite using `[fock_symm, fock_add_left, fock_symm g, fock_symm g']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_add_right {σ : Type} (f g g' : MvPolynomial σ ℚ) : fockQ f (g + g') = fockQ f g + fockQ f g' := by
   rw [fock_symm, fock_add_left, fock_symm g, fock_symm g']
 
 /- English proof (translation)
-Rewrite using `[fock_symm, fock_smul_left, fock_symm g]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_smul_right {σ : Type} (c : ℚ) (f g : MvPolynomial σ ℚ) : fockQ f (c • g) = c * fockQ f g := by
   rw [fock_symm, fock_smul_left, fock_symm g]
 
 /- English proof (translation)
-Rewrite using `[← rowDiv_one, ← rowDiv_one]`. Conclude with `fockQRowDivAdj r n a b 1 f g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_der {r n : ℕ} (a b : Fin r) (f g : MvPolynomial (Fin r × Fin n) ℚ) :
     fockQ (der r n a b f) g = fockQ f (der r n b a g) := by

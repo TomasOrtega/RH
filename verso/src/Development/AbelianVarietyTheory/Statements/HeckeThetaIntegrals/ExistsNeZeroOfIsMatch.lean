@@ -32,9 +32,9 @@ Both sides reduce to the same expression.
 theorem diagSp_rank (P q : ℕ) : (diagSp D P q).rank = P + q := rfl
 
 /- English proof (translation)
-Rewrite using `[h]`. Establish `hr : (diagSp D P q).rank - q = P` using `by rw [diagSp_rank]; omega`. Rewrite using `[hr]`. Use `GlobalTheory.Ker.Inhab.hasSignature_diag P q _ fun i j => ?_` and prove the remaining obligations. Establish `e` using `Examples₂.stdSpace_gram_apply (E := D.host.E) Examples₂.star_isIntegral (P + q) (fun i : Fin (P + q) => decide (P ≤ (i : ℕ))) P q i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [gramAt]`. Use `(congrArg (tauE D τ) e).trans ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [Examples₂.map_sgn]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diagSp_sig (P q q' : ℕ) (h : q' = q) (τ : D.what₂.Tau) :
     Formalism.UG.HasSignature (gramAt D (diagSp D P q) τ) ((diagSp D P q).rank - q') q' := by
@@ -49,11 +49,11 @@ theorem diagSp_sig (P q q' : ℕ) (h : q' = q) (τ : D.what₂.Tau) :
   split_ifs <;> simp [Examples₂.map_sgn]
 
 /- English proof (translation)
-Introduce `x hx hf hf'`. Establish `h0 : infPart D (algebraMap (AF D.host.F) (AE D) e) = 0`. Take `⟨a, rfl, -, -⟩` from `he`. Establish `e0 : algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 a) = pairA D.host.F 0 a ⊗ₜ[D.host.F] (1 : D.host.E)`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Rewrite using `[e0]`. Simplify using `only [infPart, fstA, pairA]`. Use `first`. Consider the case `(rw [Algebra.TensorProduct.map_tmul]; exact TensorProduct.zero_tmul _ _)`. Consider the case `(rw [Algebra.TensorProduct.map_tmul]; simp; exact TensorProduct.zero_tmul _ _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(erw [Algebra.TensorProduct.map_tmul]; exact TensorProduct.zero_tmul _ _)`. Establish `hx'` using `congrArg (infPart D) hx`. Rewrite `hx'` using `[map_mul, h0, zero_mul, map_sub, map_one]`. Conclude with `h x (sub_eq_zero.1 hx'.symm) hf hf'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unramAt_of_everywhere {χ : (AE D)ˣ →* Circle} (h : UnramEverywhere D χ) {v : HeightOneSpectrum (𝓞 D.host.F)}
     {e : AF D.host.F} (he : IsPlaceIdem D v e) : GlobalTheory.WeilParts.UnramAt e χ := by
@@ -73,13 +73,13 @@ theorem unramAt_of_everywhere {χ : (AE D)ˣ →* Circle} (h : UnramEverywhere D
   exact h x (sub_eq_zero.1 hx'.symm) hf hf'
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `⟨⟨?_, fun x => ?_⟩, fun τ => ?_, ⟨h3.1, fun η _ a => by simp⟩, fun x _ _ _ => by simp⟩` and prove the remaining obligations. Rewrite using `[pow_zero]`. Conclude with `continuous_const`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `using GlobalTheory.Mem.HeckeExp.hasInfExp_mul (h2 τ) (GlobalTheory.Mem.HeckeExp.hasInfExp_inv (h2 τ))`. Consider the case `succ n ih`. Take `⟨i1, i2, i3, i4⟩` from `ih`. Rewrite using `[pow_succ]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨i1.1.mul h1.1.inv, fun x => ?_⟩, fun τ => ?_, Formalism.L2.Theta.resEta_mul i3 (Formalism.L2.Theta.resEta_inv h3), fun x a b c => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, i1.2 x, h1.2 x, inv_one, one_mul]`. Use `GlobalTheory.Mem.HeckeExp.hasInfExp_mul (i2 τ) (GlobalTheory.Mem.HeckeExp.hasInfExp_inv (h2 τ)) using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, i4 x a b c, h4 x a b c, inv_one, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem inv_pow_laws {χ : (AE D)ˣ →* Circle} (h1 : IsHeckeChar D χ) (h2 : ∀ τ, HasInfExp D χ τ (1 / 2)) (h3 : ResEta D χ 1)
     (h4 : UnramEverywhere D χ) (n : ℕ) :
@@ -104,15 +104,15 @@ theorem inv_pow_laws {χ : (AE D)ˣ →* Circle} (h1 : IsHeckeChar D χ) (h2 : �
     · rw [MonoidHom.mul_apply, MonoidHom.inv_apply, i4 x a b c, h4 x a b c, inv_one, one_mul]
 
 /- English proof (translation)
-Take `⟨η, e1, e2, e3, e4⟩` from `GlobalTheory.Mem.EtaTilde.exists_etaTilde D`. Establish `c1` using `inv_pow_laws e1 e2 e3 e4 (2 * p + 2 * q + 2 + k + 2 * (8 * (p + q) + 8 + 2 * k))`. Establish `c2` using `inv_pow_laws e1 e2 e3 e4 (6 * (p + q) + 6 + k)`. Use `⟨diagSp D (5 * p + 6 * q + 6 + k) p, diagSp D (2 * p + q + 2 + k) q, diagSp D (7 * (p + q) + 8 + 2 * k) (p + q), η⁻¹ ^ (2 * p + 2 * q + 2 + k + 2 * (8 * (p + q) + 8 + 2 * k)), η⁻¹ ^ (6 * (p + q) + 6 + k), ?_, ?_, ?_, fun τ => ⟨diagSp_sig _ p p rfl τ, diagSp_sig _ q q rfl τ⟩⟩` and prove the remaining obligations. Use `⟨c1.1, c2.1, Formalism.L2.Theta.resEta_parity c1.2.2.1 ?_, Formalism.L2.Theta.resEta_parity c2.2.2.1 ?_, ?_, ?_, ⟨p, q, fun τ => ⟨diagSp_sig _ p p rfl τ, diagSp_sig _ q q rfl τ, diagSp_sig _ (p + q) (p + q) rfl τ⟩, ?_, ?_⟩, fun τ => ⟨_, _, c1.2.1 τ, c2.2.1 τ, ?_⟩, fun v e he => O …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[diagSp_rank]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[diagSp_rank]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [diagSp_rank]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[diagSp_rank]; exact ⟨4 * (p + q) + 4 + k, by ring⟩`. Simplify using `only [diagSp_rank]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [diagSp_rank]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[diagSp_rank]`. Use `push_cast`. Establish `: (0 : ℚ) ≤ p` using `Nat.cast_nonneg _`. Establish `: (0 : ℚ) ≤ q` using `Nat.cast_nonneg _`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (0 : ℚ) ≤ k` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[diagSp_rank]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[diagSp_rank]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -145,9 +145,9 @@ theorem exists_isTriple (D : D7) (p q k : ℕ) : ∃ (W W₁ X : HSp D) (α β :
   · rw [diagSp_rank]; ring
 
 /- English proof (translation)
-Take `⟨ω', hω'⟩` from `hW D ψ (sgn ε M) X χ χ' hψ h1 h2 r1 r2`. Use `⟨ω'.comp ((ofSgn ε M).symm.toMonoidHom.prodMap (MonoidHom.id (GA D X))), ?_⟩` and prove the remaining obligations. Establish `e : GlobalTheory.Grid.WRep.toSgn (S` using `M) (T := X) ε (ω'.comp ((ofSgn ε M).symm.toMonoidHom.prodMap (MonoidHom.id (GA D X)))) = ω' := by`. Use extensionality with `x : 1`. Break down `x with ⟨g, k⟩` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[GlobalTheory.Grid.WRep.toSgn]`. Unfold `GlobalTheory.Grid.IsWeil`. Rewrite using `[e]`. Conclude with `hω'`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isWeil (hW : GlobalTheory.Published.WeilRepresentationUnitaryPair) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     (ε : Bool) (M X : HSp D) {χ χ' : (AE D)ˣ →* Circle} (h1 : IsHeckeChar D χ) (h2 : IsHeckeChar D χ') (r1 : ResEta D χ M.rank)
@@ -164,7 +164,7 @@ theorem exists_isWeil (hW : GlobalTheory.Published.WeilRepresentationUnitaryPair
   exact hω'
 
 /- English proof (translation)
-Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv]`. Conclude with `h.1.mul h'.1.inv`. Rewrite using `[MonoidHom.div_apply, h.2 x, h'.2 x, div_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isHeckeChar_div' {χ χ' : (AE D)ˣ →* Circle} (h : IsHeckeChar D χ) (h' : IsHeckeChar D χ') :
     IsHeckeChar D (χ / χ') := by
@@ -174,7 +174,7 @@ private theorem isHeckeChar_div' {χ χ' : (AE D)ˣ →* Circle} (h : IsHeckeCha
   · rw [MonoidHom.div_apply, h.2 x, h'.2 x, div_one]
 
 /- English proof (translation)
-Use `⟨exists_isWeil hW hψ true W X h.hecB (isHeckeChar_div' h.hecB h.hecA) h.resB ?_, exists_isWeil hW hψ false W₁ X h.hecA (isHeckeChar_div' h.hecA h.hecB) h.resA ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv, h.rank]`. Conclude with `Formalism.L2.Theta.resEta_mul h.resB (Formalism.L2.Theta.resEta_inv h.resA)`. Rewrite using `[div_eq_mul_inv, h.rank, add_comm]`. Conclude with `Formalism.L2.Theta.resEta_mul h.resA (Formalism.L2.Theta.resEta_inv h.resB)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_weil_of_isTriple (hW : GlobalTheory.Published.WeilRepresentationUnitaryPair) {ψ : AddChar (AF D.host.F) ℂ}
     (hψ : IsStdChar D ψ (-1)) {W W₁ X : HSp D} {α β : (AE D)ˣ →* Circle} (h : IsTriple W W₁ X α β) :

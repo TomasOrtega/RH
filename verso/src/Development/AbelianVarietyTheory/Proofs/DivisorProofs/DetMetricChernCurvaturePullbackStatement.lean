@@ -13,7 +13,7 @@ open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.S
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.MixDens.chernMat_det_pull_eq_trace_curv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDetMetricChernCurvaturePullback.lean&line=24#L24)
 -/

@@ -18,14 +18,14 @@ variable {k : Type} [Field k] [Invertible (2 : k)] {E : Type} [Field E] [Algebra
   {Cy : Matrix β ν E} {om : UG c JA × UG c JB →* Module.End ℂ ((κ → k) → ℂ)} {l : ((κ → k) → ℂ) →ₗ[ℂ] ℂ}
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comm {G H Y : Type} [Group G] [Group H] (om : G × H →* Module.End ℂ (Y → ℂ)) (g : G) (h : H) (φ : Y → ℂ) :
     om (1, h) (om (g, 1) φ) = om (g, 1) (om (1, h) φ) := by
   rw [← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]; simp
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, φ, hφ, rfl⟩`. Use `LinearMap.mem_ker.2 (funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, Pi.sub_apply, secMap_apply, secMap_apply, comm, h.lin l hl g (om (1, x) φ) (h.split.2.1.pres x φ hφ)]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem locAug_le_ker (h : IsLinPair c ψ ξ JA JB d χ Cy om) (hl : IsYInv c ψ d Cy l) :
     locAug om ≤ LinearMap.ker (secMap om l) := by
@@ -36,7 +36,7 @@ theorem locAug_le_ker (h : IsLinPair c ψ ξ JA JB d χ Cy om) (hl : IsYInv c ψ
   simp
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, φ, hφ, rfl⟩`. Conclude with `(SB _).sub_mem (h.pres g φ hφ) hφ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem locAug_le_SB (h : IsLinPair c ψ ξ JA JB d χ Cy om) : locAug om ≤ SB (κ → k) := by
   refine Submodule.span_le.2 ?_
@@ -44,7 +44,7 @@ theorem locAug_le_SB (h : IsLinPair c ψ ξ JA JB d χ Cy om) : locAug om ≤ SB
   exact (SB _).sub_mem (h.pres g φ hφ) hφ
 
 /- English proof (translation)
-Introduce `e`. Take `⟨φ, hφ, h0⟩` from `hl.2`. Use `congrFun (LinearMap.mem_ker.1 (locAug_le_ker h hl.1 (e ▸ hφ))) 1` as an intermediate fact. Rewrite `this` using `[secMap_apply, show ((1 : UG c JA), (1 : UG c JB)) = 1 from rfl, map_one]`. Conclude with `h0 this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locAug_ne_SB (h : IsLinPair c ψ ξ JA JB d χ Cy om) (hl : IsYForm c ψ d Cy l) : locAug om ≠ SB (κ → k) := by
   intro e
@@ -54,7 +54,7 @@ theorem locAug_ne_SB (h : IsLinPair c ψ ξ JA JB d χ Cy om) (hl : IsYForm c ψ
   exact h0 this
 
 /- English proof (translation)
-Take `⟨φ, hφ, rfl⟩` from `hf`. Use `h.split.2.2 l trivial hl p t hp _ (h.split.2.1.pres x φ hφ)` as an intermediate fact. Rewrite using `[secMap_apply, secMap_apply, show ((1 : UG c JA), p * x) = (1, p) * (1, x) by simp, map_mul]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_left (h : IsLinPair c ψ ξ JA JB d χ Cy om) (hl : IsYInv c ψ d Cy l) {f : UG c JB → ℂ} (hf : f ∈ secSpace om l)
     (p : UG c JB) (t : GL ν E) (hp : ((p : GL β E) : Matrix β β E) * Cy = Cy * (t : Matrix ν ν E)) (x : UG c JB) :
@@ -67,7 +67,7 @@ theorem sec_left (h : IsLinPair c ψ ξ JA JB d χ Cy om) (hl : IsYInv c ψ d Cy
   exact this
 
 /- English proof (translation)
-Take `⟨φ, hφ, rfl⟩` from `hf`. Use `⟨om (1, y) φ, h.split.2.1.pres y φ hφ, funext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[secMap_apply, secMap_apply, show ((1 : UG c JA), x * y) = (1, x) * (1, y) by simp, map_mul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sec_right (h : IsLinPair c ψ ξ JA JB d χ Cy om) {f : UG c JB → ℂ} (hf : f ∈ secSpace om l) (y : UG c JB) :
     (fun x => f (x * y)) ∈ secSpace om l := by
@@ -80,7 +80,7 @@ omit [IsTopologicalRing k] [LocallyCompactSpace k] [TopologicalSpace E] [IsModul
   [DecidableEq β] [DecidableEq ν] in
 
 /- English proof (translation)
-Introduce `z φ _`. Simplify using `[Darboux.rho, schr, hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isYInv_eval_zero (hd : ∀ z : Matrix α ν E, (d.e (z * Cyᵀ)).1 = 0) :
     IsYInv c ψ d Cy (LinearMap.proj (0 : κ → k)) := by
@@ -92,13 +92,13 @@ end General
 section Abstract
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun _ _ => ⟨IsLocallyConstant.of_discrete _, HasCompactSupport.of_compactSpace _⟩`.
+A detailed English derivation is pending.
 -/
 theorem SB_top (Y : Type) [TopologicalSpace Y] [DiscreteTopology Y] [Finite Y] : SB Y = ⊤ :=
   eq_top_iff.2 fun _ _ => ⟨IsLocallyConstant.of_discrete _, HasCompactSupport.of_compactSpace _⟩
 
 /- English proof (translation)
-Use `le_bot_iff.1 (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨g, φ, -, rfl⟩`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem locAug_one (G H Y : Type) [Group G] [Group H] [TopologicalSpace Y] :
     locAug (1 : G × H →* Module.End ℂ (Y → ℂ)) = ⊥ := by
@@ -107,11 +107,9 @@ theorem locAug_one (G H Y : Type) [Group G] [Group H] [TopologicalSpace Y] :
   simp
 
 /- English proof (translation)
-Establish `hf : Module.finrank ℂ (Y' → ℂ) = 1` using `by rw [Module.finrank_fintype_fun_eq_card]; simp`. Use `haveI : IsSimpleOrder (Submodule ℂ (Y' → ℂ)) := is_simple_module_of_finrank_eq_one hf`. Take `⟨y⟩` from `‹Nonempty Y›`. Use `⟨?_, fun N _ _ _ => ?_, (locAug 1).mkQ ∘ₗ LinearMap.funLeft ℂ ℂ (fun _ => y), ?_, ?_, fun h φ _ φ' _ e => e⟩` and prove the remaining obligations. Rewrite using `[locAug_one, SB_top]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bot_ne_top`. Rewrite using `[locAug_one, SB_top]`. Conclude with `eq_bot_or_eq_top N`. Rewrite using `[Submodule.map_comp, SB_top, SB_top, Submodule.map_top (LinearMap.funLeft ℂ ℂ _), LinearMap.range_eq_top.2]`. Conclude with `fun f => ⟨fun _ => f default, funext fun z => by simp [LinearMap.funLeft, Subsingleton.elim z default]⟩`.
-
-Rewrite using `[locAug_one]`. Conclude with `bot_le`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coinvQuot_point (G G' H Y Y' : Type) [Group G] [Group G'] [Group H] [TopologicalSpace Y] [DiscreteTopology Y]
     [Finite Y] [Nonempty Y] [TopologicalSpace Y'] [Unique Y'] :
@@ -127,9 +125,9 @@ theorem coinvQuot_point (G G' H Y Y' : Type) [Group G] [Group G'] [Group H] [Top
   · rw [locAug_one]; exact bot_le
 
 /- English proof (translation)
-Introduce and unpack `⟨-, h, -⟩`. Rewrite `h` using `[locAug_one, SB_top]`. Break down `h (LinearMap.ker (LinearMap.proj true)) bot_le le_top (fun _ _ h => h) with e | e` into its components or cases. Establish `: (Pi.single false 1 : Bool → ℂ) ∈ LinearMap.ker (LinearMap.proj (R` using `ℂ) (φ := fun _ : Bool => ℂ) true) := by simp`. Rewrite `this` using `[e]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using congrFun ((Submodule.mem_bot ℂ).1 this) false`. Establish `: (1 : Bool → ℂ) ∈ LinearMap.ker (LinearMap.proj (R` using `ℂ) (φ := fun _ : Bool => ℂ) true) := e ▸ trivial`. Simplify using `at this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_coinvQuot_two {G Y : Type} [Group G] [TopologicalSpace Y] (om : G × Unit →* Module.End ℂ (Y → ℂ)) :
     ¬ IsCoinvQuot om (1 : Unit × Unit →* Module.End ℂ (Bool → ℂ)) := by
@@ -143,7 +141,7 @@ theorem not_coinvQuot_two {G Y : Type} [Group G] [TopologicalSpace Y] (om : G ×
     simp at this
 
 /- English proof (translation)
-Introduce and unpack `⟨h0, -, p, hp, -⟩`. Use `h0 (le_antisymm hle fun φ hφ => ?_)` and prove the remaining obligations. Take `⟨z, -, hz⟩ : (locAug om').mkQ φ ∈ (SB Empty).map p` from `hp ▸ ⟨φ, hφ, rfl⟩`. Rewrite `hz` using `[Subsingleton.elim z 0, map_zero]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 hz.symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_coinvQuot_empty {G G' H Y' : Type} [Group G] [Group G'] [Group H] [TopologicalSpace Y']
     (om : G × H →* Module.End ℂ (Empty → ℂ)) (om' : G' × H →* Module.End ℂ (Y' → ℂ)) (hle : locAug om' ≤ SB Y') :
@@ -155,9 +153,9 @@ theorem not_coinvQuot_empty {G G' H Y' : Type} [Group G] [Group G'] [Group H] [T
   exact (Submodule.Quotient.mk_eq_zero _).1 hz.symm
 
 /- English proof (translation)
-Introduce and unpack `⟨-, -, p, hp, -, he⟩`. Rewrite `hp`, `he` using `[SB_top]`. Take `⟨z, -, hz⟩ : (locAug 1).mkQ (1 : Unit → ℂ) ∈ (⊤ : Submodule ℂ (Unit → ℂ)).map p` from `hp ▸ ⟨1, trivial, rfl⟩`. Use `he (-1) z trivial 1 trivial hz` as an intermediate fact. Rewrite `this` using `[hom, map_smul, hz, ← map_smul]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(Submodule.Quotient.eq _).1 this`. Rewrite `h2` using `[locAug_one]`. Use `congrFun ((Submodule.mem_bot ℂ).1 h2) ()` as an intermediate fact. Simplify using `at this`. Evaluate the numerical expressions using `at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem not_coinvQuot_sign (om : Unit × ℂˣ →* Module.End ℂ (Unit → ℂ)) (hom : ∀ u φ, om (1, u) φ = (u : ℂ) • φ) :
     ¬ IsCoinvQuot om (1 : Unit × ℂˣ →* Module.End ℂ (Unit → ℂ)) := by
@@ -179,7 +177,7 @@ section Witt
 variable {k E : Type} [Field k] [Field E] [Algebra k E] (c : E →ₐ[k] E)
 
 /- English proof (translation)
-Use `⟨rfl, Matrix.of fun i j => Sum.elim (fun x => x.elim0) (Sum.elim (fun _ => if i = 0 then 1 else 0) (fun _ => if i = 1 then 1 else 0)) j, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> first | exact i.elim0 | exact j.elim0 |`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply, Subsingleton.elim i j]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem wittStep_plane : IsWittStep c 1 (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) E) (1 : Matrix (Fin 0) (Fin 0) E) := by
   refine ⟨rfl, Matrix.of fun i j => Sum.elim (fun x => x.elim0) (Sum.elim (fun _ => if i = 0 then 1 else 0)
@@ -188,9 +186,9 @@ theorem wittStep_plane : IsWittStep c 1 (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2)
     simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply, Subsingleton.elim i j]
 
 /- English proof (translation)
-Introduce and unpack `⟨-, P, hP⟩`. Set `i : Fin r` to `⟨0, hr⟩`. Establish `key : ∀ u v, (fun s => P s u) ⬝ᵥ JA *ᵥ (c ∘ fun s => P s v) = (Pᵀ * JA * P.map c) u v` using `fun u v => by`. Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1` using `h (fun s => P s (.inr (.inl i))) (by rw [key, hP]; simp)`. Establish `h2` using `key (.inr (.inl i)) (.inr (.inr i))`. Rewrite `h2` using `[h1, hP]`. Simplify using `at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem not_wittStep_aniso {a a' r : ℕ} (hr : 0 < r) (JA : Matrix (Fin a) (Fin a) E) (JA' : Matrix (Fin a') (Fin a') E)
     (h : ∀ x : Fin a → E, x ⬝ᵥ JA *ᵥ (c ∘ x) = 0 → x = 0) : ¬ IsWittStep c r JA JA' := by
@@ -211,9 +209,9 @@ variable {k : Type} [Field k] [Invertible (2 : k)] {E : Type} [Field E] [Algebra
 
 omit [Invertible (2 : k)] in
 /- English proof (translation)
-Use `⟨?_, !![0; 1], Matrix.fromRows !![1, 0] !![0, 1], ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fintype.sum_sum_type]`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply, Subsingleton.elim i j]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lagr_plane : IsLagr c (!![0, 1; -1, 0] : Matrix (Fin 2) (Fin 2) E) (!![1; 0] : Matrix (Fin 2) (Fin 1) E) := by
   refine ⟨?_, !![0; 1], Matrix.fromRows !![1, 0] !![0, 1], ?_, ?_, ?_⟩
@@ -225,7 +223,7 @@ theorem lagr_plane : IsLagr c (!![0, 1; -1, 0] : Matrix (Fin 2) (Fin 2) E) (!![1
 variable [TopologicalSpace k] [IsTopologicalRing k] [LocallyCompactSpace k] [TopologicalSpace E] [IsModuleTopology k E]
 
 /- English proof (translation)
-Use `⟨⟨hL, ?_, fun l _ _ p t hp φ _ => by simp⟩, fun _ _ h => h, fun g w φ _ => ?_, fun _ _ _ _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.one_comp]`. Conclude with `split_one ψ _`. Rewrite using `[Subsingleton.elim (_ * w) w]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem linPair_one (ψ : AddChar k ℂ) (ξ : E) (JA : Matrix (Fin 0) (Fin 0) E) {β ν : Type} [Fintype β] [DecidableEq β]
     [Fintype ν] [DecidableEq ν] (JB : Matrix β β E) (Cy : Matrix β ν E) (hL : IsLagr c JB Cy)
@@ -243,7 +241,7 @@ def RankZero (ψ : AddChar k ℂ) : Prop :=
     IsYForm c ψ co Cy l ∧ IsCoinvQuot om om
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨1, !![0, 1; -1, 0], !![1; 0], GlobalTheory.WeilM.SiegelModel.darbZero _ _ _ _, 1, LinearMap.proj 0, ⟨fun i => i.elim0, by simp⟩, fun i j => by fin_cases i <;> fin_cases j <;> simp, by simp, lagr_plane c, linPair_one c ψ _ _ _ _ (lagr_plane c) _, ⟨weilB_one ψ _, ⟨GlobalThe …`. Conclude with `⟨IsLocallyConstant.const 1, HasCompactSupport.of_compactSpace _⟩`. Conclude with `one_ne_zero`. Conclude with `coinvQuot_point _ _ _ _ _`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rankZero (ψ : AddChar k ℂ) : RankZero c ψ := by
   refine ⟨1, !![0, 1; -1, 0], !![1; 0], GlobalTheory.WeilM.SiegelModel.darbZero _ _ _ _, 1, LinearMap.proj 0,
@@ -259,7 +257,7 @@ theorem rankZero (ψ : AddChar k ℂ) : RankZero c ψ := by
 end RankZero
 
 /- English proof (translation)
-Take `⟨t, m, c, δ, -, ψ, -, hq, -, h1, h2, h3, -, -⟩` from `GlobalTheory.SplitUnitary.Model.isQuad_isHerm_continuous_resEtaPow K e 0`. Conclude with `⟨t, m, c, δ, ψ, hq, h1, h2, h3, rankZero c ψ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rankZero_sqrt (K : Type) [Field K] [CharZero K] [Invertible (2 : K)] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] (e : K) [Fact (∀ r : K, r ^ 2 ≠ e + 0 * r)] :

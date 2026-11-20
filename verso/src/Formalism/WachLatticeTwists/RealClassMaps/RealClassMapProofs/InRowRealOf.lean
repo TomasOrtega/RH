@@ -12,9 +12,9 @@ noncomputable section
 namespace Formalism.RepresentationBoundsCohomology.FIN
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Take `⟨⟨a, ⟨b, hb⟩⟩, hq⟩` from `IsLocalization.surj (nonZeroDivisors O) q`. Use `⟨b, nonZeroDivisors.ne_zero hb, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `Submodule.mem_one.2 ⟨a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.smul_def, mul_comm]`. Conclude with `hq.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ko_tors (O : Type) [CommRing O] [IsDomain O] (z : KO O) : ∃ c : O, c ≠ 0 ∧ c • z = 0 := by
   obtain ⟨q, rfl⟩ := Submodule.Quotient.mk_surjective _ z
@@ -26,19 +26,17 @@ theorem ko_tors (O : Type) [CommRing O] [IsDomain O] (z : KO O) : ∃ c : O, c �
   exact hq.symm
 
 /- English proof (translation)
-Introduce `p O _ _ _ _ _ _ _ A _ _ _ _ _ Y hO hA ψ`. Establish `hfg : IsFGTop O Y`. Use `hA.fg` as an intermediate fact. Use `hA.t2` as an intermediate fact. Use `hA.csmul` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, inferInstance, ?_⟩` and prove the remaining obligations. Conclude with `Module.Finite.of_injective (Y.subtype.restrictScalars O) Subtype.val_injective`. Conclude with `⟨Continuous.subtype_mk (f := fun q : O × Y => q.1 • (q.2 : A)) (continuous_fst.smul (continuous_subtype_val.comp continuous_snd)) _⟩`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha, hka⟩ : ∃ a : O, a ≠ 0 ∧ ∀ y : Y, a • ψ y = 0 := by`. Take `⟨s, hs⟩` from `hfg.fg.fg_top`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose f hf0 hf using fun y : Y => ko_tors O (ψ y)`. Use `⟨∏ y ∈ s, f y, Finset.prod_ne_zero_iff.2 (fun y _ => hf0 y), fun y => ?_⟩` and prove the remaining obligations. Establish `hy : y ∈ Submodule.span O (s : Set Y)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem f hx`. Rewrite using `[hc, mul_comm, mul_smul, hf, smul_zero]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, smul_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [map_smul, smul_comm, hx, smul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hopen` using `hfg.isOpen_mulSub hO ha`. Use `continuous_of_continuousAt_zero ψ.toAddMonoidHom ?_` and prove the remaining obligations. Introduce `U hU`. Establish `hU0 : (0 : KO O) ∈ U`. Use `mem_of_mem_nhds hU` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Rewrite using `[Filter.mem_map]`. Use `Filter.mem_of_superset (hopen.mem_nhds (zero_mem _)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Use `show ψ (a • z) ∈ U`.
-
-Rewrite using `[map_smul, hka]`. Conclude with `hU0`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiCont : StatPsiCont := by
   intro p O _ _ _ _ _ _ _ A _ _ _ _ _ Y hO hA ψ
@@ -76,11 +74,9 @@ theorem psiCont : StatPsiCont := by
   exact hU0
 
 /- English proof (translation)
-Use `⟨fun a => Continuous a, fun a ha => ?_, fun a ha => ?_, fun ψ f hf => ?_, fun a ha => hc.comp ha, ?_, hIm⟩` and prove the remaining obligations. Use `Continuous.subtype_mk (f := fun q : Dw × Dw => inc (a q.1) * (uElt r χ (q.1 : G) * ((uElt r χ (q.2 : G) - 1) * E))) ?_ _` and prove the remaining obligations. Conclude with `(hinc.comp (ha.comp continuous_fst)).mul ((hur.comp continuous_fst).mul (((hur.comp continuous_snd).sub continuous_const).mul continuous_const))`. Conclude with `((hinc.comp ha).mul (hur.mul continuous_const)).neg`. Conclude with `(psiCont p O A (Ymod r χ E) hO hA ψ).comp hf`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Introduce and unpack `_ ⟨y, _, rfl⟩`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `_ c`. Establish `h : (fun g => v (π (c.1 g))) ∈ Z1 D.ρTl'` using `(cocycles1MapOfEquivariant (resRep ρ₁ Dw) D.ρTl' (v.toLinearMap ∘ₗ π) hc he c).2`. Use `⟨c.1, c.2.2, c.2.1, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[clsRow_of_mem D v _ h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inRowReal_of (p : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]

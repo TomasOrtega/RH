@@ -23,9 +23,9 @@ noncomputable def mulHomeo (v : Pl) (u : (Qv v)ˣ) : (Qv v × Qv v) ≃ₜ (Qv v
     exact continuous_id.mul continuous_const
 
 /- English proof (translation)
-Consider the cases of `L with`. Consider the case `sp w₁ w₂ Φ`. Take `⟨h1, h2, h3⟩` from `hL`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `h2.comp_continuous (mulHomeo v u).continuous`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Conclude with `h3.comp_homeomorph (mulHomeo v u)`. Consider the case `ns w σ η Φ => exact hL`.
+A detailed English derivation is pending.
 -/
 theorem tw_ok {c : HeckeCharacter K} {v : Pl} (L : LM c v) (hL : L.ok) (u : (Qv v)ˣ) : (L.tw u).ok := by
   cases L with
@@ -37,9 +37,9 @@ theorem tw_ok {c : HeckeCharacter K} {v : Pl} (L : LM c v) (hL : L.ok) (u : (Qv 
   | ns w σ η Φ => exact hL
 
 /- English proof (translation)
-Consider the cases of `L with`. Consider the case `sp w₁ w₂ Φ`. Simplify using `only [LM.tw]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: x * (((1 : (Qv v)ˣ) : Qv v), (((1 : (Qv v)ˣ)⁻¹ : (Qv v)ˣ) : Qv v)) = x`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[this]`. Consider the case `ns w σ η Φ => rfl`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem tw_one {c : HeckeCharacter K} {v : Pl} (L : LM c v) : L.tw 1 = L := by
   cases L with
@@ -53,13 +53,13 @@ theorem tw_one {c : HeckeCharacter K} {v : Pl} (L : LM c v) : L.tw 1 = L := by
   | ns w σ η Φ => rfl
 
 /- English proof (translation)
-Apply the tactic sequence `cases L <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tw_plus {c : HeckeCharacter K} {v : Pl} (L : LM c v) (u : (Qv v)ˣ) : (L.tw u).plus = L.plus := by
   cases L <;> rfl
 
 /- English proof (translation)
-Establish `: m v = 0` using `by simpa using h1`. Simplify using `[tu, this, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem tu_off (Sv : Finset Pl) (m : Pl →₀ ℤ) (u : ∀ v : Sv, (Qv v.1)ˣ) {v : Pl}
     (h1 : v ∉ m.support) (h2 : v ∉ Sv) : tu Sv m u v = 1 := by
@@ -67,9 +67,9 @@ theorem tu_off (Sv : Finset Pl) (m : Pl →₀ ℤ) (u : ∀ v : Sv, (Qv v.1)ˣ)
   simp [tu, this, h2]
 
 /- English proof (translation)
-Take `⟨hok, S0, hS0⟩` from `hM`. Use `⟨fun v => tw_ok _ (hok v) _, S0 ∪ m.support ∪ Sv, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_union, not_or] at hv`. Take `⟨⟨h0, h1⟩, h2⟩` from `hv`. Take `⟨hU, hs⟩` from `hS0 v h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨hU, ?_⟩` and prove the remaining obligations. Simplify using `only [twM, tu_off Sv m u h1 h2, tw_one]`. Conclude with `hs`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem admissible_twisted_local_data {c : HeckeCharacter K} {M : ∀ v : Pl, LM c v} (hM : AdmM M) (Sv : Finset Pl)
     (m : Pl →₀ ℤ) (u : ∀ v : Sv, (Qv v.1)ˣ) : AdmM (twM M Sv m u) := by
@@ -84,7 +84,7 @@ theorem admissible_twisted_local_data {c : HeckeCharacter K} {M : ∀ v : Pl, LM
   exact hs
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [Gp, twM, tw_plus, Set.mem_setOf_eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Gp_twM {c : HeckeCharacter K} (M : ∀ v : Pl, LM c v) (Sv : Finset Pl)
     (m : Pl →₀ ℤ) (u : ∀ v : Sv, (Qv v.1)ˣ) : Gp (twM M Sv m u) = Gp M := by
@@ -92,9 +92,9 @@ theorem Gp_twM {c : HeckeCharacter K} (M : ∀ v : Pl, LM c v) (Sv : Finset Pl)
   simp only [Gp, twM, tw_plus, Set.mem_setOf_eq]
 
 /- English proof (translation)
-Introduce `hT h2 hcx DK c n t S hc M hM R Sv γ hγ g hg`. Unfold `thA`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `u`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hT h2 hcx DK c n t S hc (twM M Sv m u) (admissible_twisted_local_data hM Sv m u) γ hγ g (by rw [Gp_twM]; exact hg)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem avg (K : Type) [Field K] [NumberField K] : Ad3.K.QuadraticBaseChangeGL3.Th.AVG K := by
   intro hT h2 hcx DK c n t S hc M hM R Sv γ hγ g hg

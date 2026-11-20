@@ -32,7 +32,7 @@ variable {L : Type*} [Group L] [TopologicalSpace L] [IsTopologicalGroup L] [Loca
   {τ : Representation ℂ L V}
 
 /- English proof (translation)
-Introduce `u`. Use `Subgroup.isOpen_mono (H₁ := stabilizerOf τ (u : V)) (fun g hg => ?_) (hτ u)` and prove the remaining obligations. Conclude with `Subtype.ext hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSmooth_mGenSubrep (hτ : IsSmooth τ) (N : Submodule ℂ V) :
     IsSmooth (mGenSubrep τ N).toRepresentation := by
@@ -41,7 +41,7 @@ theorem isSmooth_mGenSubrep (hτ : IsSmooth τ) (N : Submodule ℂ V) :
   exact Subtype.ext hg
 
 /- English proof (translation)
-Introduce `q`. Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Use `Subgroup.isOpen_mono (H₁ := stabilizerOf (mGenSubrep τ N).toRepresentation u) (fun g hg => ?_) (isSmooth_mGenSubrep hτ N u)` and prove the remaining obligations. Use `show mGenQuotRep τ e N g (Submodule.Quotient.mk u) = Submodule.Quotient.mk u`. Rewrite using `[mGenQuotRep_mk, hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmooth_mGenQuotRep (hτ : IsSmooth τ) (e : End ℂ V) (N : Submodule ℂ V) :
     IsSmooth (mGenQuotRep τ e N) := by
@@ -92,59 +92,47 @@ attribute [instance] Decomposition.instAddCommGroup₁ Decomposition.instModule�
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨H, hHc, hHo, c, hc, N₁, N₂, hN₁H, hN₂H, hN₂c, hN₁0, hN₂0, -, hπ₁, hπ₂, hequiv⟩` from `Mx.exists_equiv_outerTensor_gkl hirr hadm`. Establish `hτ` using `hadm.1`. Establish `hσK` using `Mx.gk.isKFinite`. Use `set e₁ := kProj hσK hc`. Use `set e₂ := fixedEnd hτ hHc hHo`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set U₁ := mGenSubrep Mx.gk.rep N₁`. Use `set π₁ := Mx.gk.subQuot U₁ (mGenKernel Mx.gk.rep e₁ N₁) (mGenKernel_le_comap Mx.gk.rep e₁ N₁)`. Establish `hπ₁rep : π₁.rep = mGenQuotRep Mx.gk.rep e₁ N₁` using `Mx.gk.subQuot_rep _ _ _`. Use `set π₂ := mGenQuotRep Mx.τ e₂ N₂`. Use `set U₂ := mGenSubrep Mx.τ N₂`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hπ₂s : IsSmooth π₂` using `isSmooth_mGenQuotRep hτ e₂ N₂`. Establish `hU₂c : ∀ u ∈ U₂.toSubmodule, kProj hσK hc u = u`. Set `Y : Subrepresentation Mx.τ` to `⟨LinearMap.range (kProj hσK hc), fun g v hv => by`. Take `⟨w, rfl⟩` from `hv`. Conclude with `⟨Mx.τ g w, kProj_comm hσK hc (fun k => (Mx.comm_σ k g).symm) w⟩⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `u hu`. Take `⟨w, hw⟩` from `mGenSubrep_le Mx.τ (X := Y) hN₂c hu`. Rewrite using `[← hw, kProj_kProj]`. Establish `hπ₂adm : GroundTheory.Automorphic.IsAdmissible π₂`. Use `⟨hπ₂s, fun H' hH'c hH'o => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hfin` using `hadm.2 H' hH'c hH'o c hc`. Establish `hU₂fin : FiniteDimensional ℂ (fixedVectors U₂.toRepresentation H')`. Set `f : fixedVectors U₂.toRepresentation H' →ₗ[ℂ] LinearMap.range (kProj hσK hc ∘ₗ (fixedVectors Mx.τ H').subtype)` to `LinearMap.codRestrict _ (U₂.toSubmodule.subtype ∘ₗ Submodule.subtype _) fun u => by`. Establish `hu : ((u : U₂.toSubmodule) : V) ∈ fixedVectors Mx.τ H'` using `fun g hg => congrArg Subtype.val (u.2 g hg)`. Conclude with `⟨⟨_, hu⟩, hU₂c _ (u : U₂.toSubmodule).2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Module.Finite.of_injective f fun a b hab => by`. Use `congrArg Subtype.val hab` as an intermediate fact. Conclude with `Subtype.ext (Subtype.ext this)`. Establish `hsurj` using `fixedMap_surjective (isSmooth_mGenSubrep hτ N₂) hπ₂s hH'c hH'o (f := mGenQuotMap e₂ N₂) (Submodule.mkQ_surjective _)`. Conclude with `Module.Finite.of_surjective _ hsurj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `he₂ : IsWinProj Mx.τ e₂` using `isWinProj_fixedEnd hτ hHc hHo`. Establish `hN₂e : N₂ ≤ LinearMap.range e₂` using `fun x hx => ⟨x, fixedEnd_apply_of_mem hτ hHc hHo (hN₂H hx)⟩`. Take `⟨n₂, hn₂, hn₂0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hN₂0`. Use `set w := mGenQuotMk Mx.τ e₂ N₂ ⟨n₂, hn₂⟩`. Establish `hw0 : w ≠ 0`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Use `mGenQuotMk_injective he₂ hN₂e (a₁ := ⟨n₂, hn₂⟩) (a₂ := 0) (by rw [map_zero]; exact h0)` as an intermediate fact. Conclude with `hn₂0 (congrArg Subtype.val this)`. Establish `hwH : w ∈ fixedVectors π₂ H`. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show mGenQuotRep Mx.τ e₂ N₂ g (Submodule.Quotient.mk _) = Submodule.Quotient.mk _`. Rewrite using `[mGenQuotRep_mk]`. Use `congr 1`. Conclude with `Subtype.ext (hN₂H hn₂ g hg)`. Establish `hschur : ∀ T : End ℂ ((mGenSubrep Mx.τ N₂).toSubmodule ⧸ mGenKernel Mx.τ e₂ N₂), (∀ b, T * π₂ b = π₂ b * T) → ∃ c : ℂ, T = c • 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `T hT`. Use `haveI := hπ₂`. Establish `hwin` using `isWinProj_fixedEnd hπ₂s hHc hHo`. Establish `hfinH : FiniteDimensional ℂ (LinearMap.range (fixedEnd hπ₂s hHc hHo))`. Rewrite using `[range_fixedEnd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hπ₂adm.2 H hHc hHo`. Establish `hneH : LinearMap.range (fixedEnd hπ₂s hHc hHo) ≠ ⊥`. Rewrite using `[range_fixedEnd]`. Introduce `hb`. Establish `: w ∈ (⊥ : Submodule ℂ _)` using `hb ▸ hwH`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw0 ((Submodule.mem_bot ℂ).1 this)`. Conclude with `exists_eq_smul_of_commute hwin hneH hT (LinearMap.ext fun v => (fixedEnd_comm hπ₂s hHc hHo hT v).symm)`. Take `⟨Φ⟩` from `hequiv hschur`. Establish `hπ₁adm : π₁.IsKAdmissible`. Introduce `c₁ hc₁`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `j : (U₁.toSubmodule ⧸ mGenKernel Mx.gk.rep e₁ N₁) →ₗ[ℂ] V` to `Φ.symm.toLinearEquiv.toLinearMap ∘ₗ (TensorProduct.mk ℂ _ _).flip w`. Establish `hj : Function.Injective j` using `fun a b hab => by`. Use `Φ.symm.toLinearEquiv.injective hab` as an intermediate fact. Establish `h2 : (a - b) ⊗ₜ[ℂ] w = 0`. Rewrite using `[TensorProduct.sub_tmul]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.2 this`. Assume the negation of the conclusion as `hne`. Conclude with `tmul_ne_zero_of (sub_ne_zero.2 hne) hw0 h2`. Establish `hΦs : ∀ p z, Φ.symm (outerTensor (mGenQuotRep Mx.gk.rep e₁ N₁) π₂ p z) = Mx.fullRep p (Φ.symm z)` using `fun p z => Representation.IntertwiningMap.isIntertwining _ _ Φ.symm.toIntertwiningMap p z`. Establish `hjσ : ∀ k x, j (π₁.σ k x) = Mx.gk.σ k (j x)` using `fun k x => by show Φ.symm (π₁.σ k x ⊗ₜ w) = Mx.gk.σ k (Φ.symm (x ⊗ₜ w))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: π₁.σ k x ⊗ₜ[ℂ] w = outerTensor (mGenQuotRep Mx.gk.rep e₁ N₁) π₂ (FreeMonoid.of (Sum.inr k), 1) (x ⊗ₜ w)`. Rewrite using `[outerTensor_tmul, map_one, Module.End.one_apply]`. Both sides reduce to the same expression. Rewrite using `[this, hΦs]`. Use `show Mx.gk.rep (FreeMonoid.of (Sum.inr k)) (Mx.τ 1 _) = _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_one, Module.End.one_apply]`. Both sides reduce to the same expression. Establish `hjH : ∀ x, j x ∈ fixedVectors Mx.τ H` using `fun x g hg => by show Mx.τ g (Φ.symm (x ⊗ₜ w)) = Φ.symm (x ⊗ₜ w)`. Establish `: x ⊗ₜ[ℂ] w = outerTensor (mGenQuotRep Mx.gk.rep e₁ N₁) π₂ (1, g) (x ⊗ₜ w)`. Rewrite using `[outerTensor_tmul, map_one, Module.End.one_apply, hwH g hg]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [this, hΦs]`. Use `show _ = Mx.gk.rep 1 (Mx.τ g _)`. Rewrite using `[map_one, Module.End.one_apply]`. Set `jK : Representation.IntertwiningMap π₁.σ Mx.gk.σ` to `⟨j, fun k => LinearMap.ext fun x => hjσ k x⟩`. Set `jR` to `Representation.IntertwiningMap.equivLinearMapAsModule π₁.σ Mx.gk.σ jK`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨S, hS, rfl⟩` from `hc₁`. Establish `hjR : Function.Injective jR` using `hj`. Set `m` to `S.map jR`. Set `eS : S ≃ₗ[MonoidAlgebra ℂ K] m` to `Submodule.equivMapOfInjective jR hjR S`. Establish `hm : IsSimpleModule (MonoidAlgebra ℂ K) m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hS`, the goal using `[isSimpleModule_iff_isAtom]`. Use `⟨fun hb => hS.1 ?_, fun N hN => ?_⟩` and prove the remaining obligations. Apply `Submodule.map_injective_of_injective hjR` to reduce the goal to its premises. Rewrite using `[Submodule.map_bot]`. Conclude with `hb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : N.comap jR < S`. Establish `h1 : N.comap jR ≤ S`. Introduce `x hx`. Take `⟨y, hy, hyx⟩` from `hN.le hx`. Rewrite using `[← hjR hyx]`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hy`. Use `lt_of_le_of_ne h1 fun heq => hN.ne ?_` and prove the remaining obligations. Use `le_antisymm hN.le ?_` and prove the remaining obligations. Use `show S.map jR ≤ N`. Rewrite using `[← heq]`.
-
-Conclude with `Submodule.map_comap_le _ _`. Use `hS.2 _ hle` as an intermediate fact. Use `le_antisymm (fun x hx => ?_) bot_le` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `hN.le hx`. Establish `hy' : y ∈ N.comap jR` using `hx`.
-
-Rewrite `hy'` using `[this, Submodule.mem_bot]`. Rewrite using `[hy', map_zero]`. Conclude with `Submodule.zero_mem _`. Use `set c' := isotypicComponent (MonoidAlgebra ℂ K) Mx.gk.σ.asModule m`. Establish `hc' : c' ∈ isotypicComponents (MonoidAlgebra ℂ K) Mx.gk.σ.asModule` using `⟨m, hm, rfl⟩`.
-
-Establish `hle` using `LinearMap.le_comap_isotypicComponent (S := S) jR`. Rewrite `hle` using `[eS.isotypicComponent_eq (M := Mx.gk.σ.asModule)]`. Establish `hfin` using `hadm.2 H hHc hHo c' hc'`. Set `f : LinearMap.range (kProj π₁.isKFinite ⟨S, hS, rfl⟩) →ₗ[ℂ] LinearMap.range (kProj hσK hc' ∘ₗ (fixedVectors Mx.τ H).subtype)` to `LinearMap.codRestrict _ (j ∘ₗ Submodule.subtype _) fun x => by`. Establish `hxself : kProj π₁.isKFinite ⟨S, hS, rfl⟩ x.1 = x.1`.
-
-Take `⟨y, hy⟩` from `x.2`. Rewrite using `[← hy]`. Conclude with `kProj_kProj _ _ y`. Establish `hx` using `(kProj_apply_eq_self_iff π₁.isKFinite ⟨S, hS, rfl⟩).1 hxself`. Establish `h1 : j x ∈ c'` using `hle hx`.
-
-Conclude with `⟨⟨j x, hjH x⟩, (kProj_apply_eq_self_iff hσK hc').2 h1⟩`. Conclude with `Module.Finite.of_injective f fun a b hab => Subtype.ext (hj (congrArg Subtype.val hab))`. Establish `hirr₁ : π₁.IsIrreducible` using `by show π₁.rep.IsIrreducible`. Rewrite using `[hπ₁rep]`. Conclude with `hπ₁`.
-
-Establish `Φ' : Mx.fullRep.Equiv (outerTensor π₁.rep π₂)`. Rewrite using `[hπ₁rep]`. Conclude with `Φ`. Conclude with `⟨{ W₁ := _ W₂ := _ π₁ := π₁ π₂ := π₂ isIrreducible₁ := hirr₁ isKAdmissible₁ := hπ₁adm isIrreducible₂ := hπ₂ isAdmissible₂ := hπ₂adm equiv := Φ' }⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_decomposition (hirr : Mx.IsIrreducible) (hadm : Mx.IsAdmissible) :
     Nonempty (Mx.Decomposition) := by
@@ -326,14 +314,14 @@ namespace Decomposition
 variable {Mx}
 
 /- English proof (translation)
-The claim follows from `nonempty_equiv_fst_of_equiv D.isIrreducible₁ D.isIrreducible₂ D'.isIrreducible₁ (D.equiv.symm.trans D'.equiv)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_arch (D D' : Mx.Decomposition) : Nonempty (D.π₁.rep.Equiv D'.π₁.rep) :=
   nonempty_equiv_fst_of_equiv D.isIrreducible₁ D.isIrreducible₂ D'.isIrreducible₁
     (D.equiv.symm.trans D'.equiv)
 
 /- English proof (translation)
-The claim follows from `nonempty_equiv_snd_of_equiv D.isIrreducible₁ D.isIrreducible₂ D'.isIrreducible₂ (D.equiv.symm.trans D'.equiv)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_fin (D D' : Mx.Decomposition) : Nonempty (D.π₂.Equiv D'.π₂) :=
   nonempty_equiv_snd_of_equiv D.isIrreducible₁ D.isIrreducible₂ D'.isIrreducible₂

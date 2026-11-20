@@ -10,7 +10,7 @@ open scoped GlobalTheory.Idele
 namespace GlobalTheory.CompanionTheory.GaloisAb
 
 /- English proof (translation)
-Introduce `K _ _ a b hab`. Conclude with `ReciprocityTheory.DiscreteGroups.GlobalClassField.abRestrict_ext hab`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem abelianization_eq_of_forall_abRestrict_eq :
     ∀ (K : Type) [Field K] [NumberField K] (a b : Field.absoluteGaloisGroupAbelianization K),

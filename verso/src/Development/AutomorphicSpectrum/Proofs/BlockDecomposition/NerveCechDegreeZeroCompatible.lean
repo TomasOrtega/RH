@@ -18,9 +18,9 @@ variable {C : Type} [Category.{0} C]
 abbrev pt (a : C) : Fin (0 + 1) ⥤ C := (Functor.const _).obj a
 
 /- English proof (translation)
-Establish `hX : ∀ X : Fin (0 + 1), X = 0` using `fun X => Fin.ext (by have := X.isLt; simp only [Fin.val_zero]; omega)`. Establish `hobj : ∀ X, c.obj X = (pt (c.obj 0)).obj X` using `fun X => congrArg c.obj (hX X)`. Use `⟨c.obj 0, CategoryTheory.Functor.ext hobj (fun X Y f => ?_)⟩` and prove the remaining obligations. Take `rfl` from `hX X`. Take `rfl` from `hX Y`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : f = 𝟙 _` from `Subsingleton.elim _ _`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem exists_pt (c : Fin (0 + 1) ⥤ C) : ∃ a, c = pt a := by
   have hX : ∀ X : Fin (0 + 1), X = 0 := fun X => Fin.ext (by have := X.isLt; simp only [Fin.val_zero]; omega)
@@ -32,7 +32,7 @@ theorem exists_pt (c : Fin (0 + 1) ⥤ C) : ∃ a, c = pt a := by
   simp
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `exists_pt c`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem eval_chain (G : C ⥤ ModuleCat.{0} R) (x : NC G 0) (c : Fin (0 + 1) ⥤ C) :
     x c = x (pt (c.obj (Fin.last 0))) := by
@@ -40,7 +40,7 @@ theorem eval_chain (G : C ⥤ ModuleCat.{0} R) (x : NC G 0) (c : Fin (0 + 1) ⥤
   rfl
 
 /- English proof (translation)
-Rewrite using `[pullNC_apply]`. Use `show (G.map (c.map (homOfLE (le_refl (Fin.last (0 + 1)))))).hom (x ((Fin.succAboveOrderEmb (0 : Fin (0 + 2))).toOrderHom.monotone.functor ⋙ c)) = _`. Rewrite using `[show homOfLE (le_refl (Fin.last (0 + 1))) = 𝟙 (Fin.last (0 + 1) : Fin (0 + 1 + 1)) from Subsingleton.elim _ _, c.map_id, G.map_id]`. Conclude with `eval_chain G x _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_last (G : C ⥤ ModuleCat.{0} R) (x : NC G 0) (c : Fin (0 + 1 + 1) ⥤ C) :
     pullNC G (Fin.succAboveOrderEmb (0 : Fin (0 + 2))).toOrderHom x c = x (pt (c.obj (Fin.last (0 + 1)))) := by
@@ -52,7 +52,7 @@ theorem pull_last (G : C ⥤ ModuleCat.{0} R) (x : NC G 0) (c : Fin (0 + 1 + 1) 
   exact eval_chain G x _
 
 /- English proof (translation)
-Rewrite using `[pullNC_apply]`. Conclude with `congrArg (G.map (c.map (homOfLE (Fin.le_last 0)))).hom (eval_chain G x _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_first (G : C ⥤ ModuleCat.{0} R) (x : NC G 0) (c : Fin (0 + 1 + 1) ⥤ C) :
     pullNC G (Fin.succAboveOrderEmb (1 : Fin (0 + 2))).toOrderHom x c =
@@ -61,9 +61,9 @@ theorem pull_first (G : C ⥤ ModuleCat.{0} R) (x : NC G 0) (c : Fin (0 + 1 + 1)
   exact congrArg (G.map (c.map (homOfLE (Fin.le_last 0)))).hom (eval_chain G x _)
 
 /- English proof (translation)
-Establish `hsum : dNC G 0 x c = pullNC G (Fin.succAboveOrderEmb (0 : Fin (0 + 2))).toOrderHom x c - pullNC G (Fin.succAboveOrderEmb (1 : Fin (0 + 2))).toOrderHom x c`. Simplify using `only [dNC, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, Pi.smul_apply]`. Use `show ∑ i : Fin 2, (-1 : R) ^ (i : ℕ) • (pullNC G (Fin.succAboveOrderEmb i).toOrderHom) x c = _`. Rewrite using `[Fin.sum_univ_two]`. Apply the tactic sequence `simp only [Fin.val_zero, Fin.val_one, pow_zero, pow_one, one_smul, neg_one_smul, sub_eq_add_neg] <;> rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [hsum, pull_last, pull_first] <;> rfl`.
+A detailed English derivation is pending.
 -/
 theorem dNC_zero_apply (G : C ⥤ ModuleCat.{0} R) (x : NC G 0) (c : Fin (0 + 1 + 1) ⥤ C) :
     dNC G 0 x c = (show G.obj (c.obj (Fin.last (0 + 1))) from x (pt (c.obj (Fin.last (0 + 1))))) -
@@ -93,11 +93,11 @@ def Compat (x : NC G 0) : Prop :=
   ∀ ⦃a b : P⦄ (h : b ≤ a), val G x b = (G.map (homOfLE h).op).hom (val G x a)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx a b h`. Establish `h1` using `congrFun hx (ComposableArrows.mk₁ (homOfLE h).op)`. Establish `hm : (ComposableArrows.mk₁ (homOfLE h).op).map (homOfLE (Fin.le_last (0 : Fin (0 + 1 + 1)))) = (homOfLE h).op` using `Quiver.Hom.unop_inj (Subsingleton.elim _ _)`. Rewrite `h1` using `[dNC_zero_apply, Pi.zero_apply, sub_eq_zero, hm]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Introduce `hc`. Use function extensionality and compare the values at `c`. Rewrite using `[dNC_zero_apply, Pi.zero_apply, sub_eq_zero]`. Establish `h : (c.obj (Fin.last (0 + 1))).unop ≤ (c.obj 0).unop` using `leOfHom (c.map (homOfLE (Fin.le_last 0))).unop`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : c.map (homOfLE (Fin.le_last 0)) = (homOfLE h).op` using `Quiver.Hom.unop_inj (Subsingleton.elim _ _)`. Rewrite using `[hm]`. Conclude with `hc h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dNC_zero_iff (x : NC G 0) : dNC G 0 x = 0 ↔ Compat G x := by
   constructor
@@ -116,9 +116,9 @@ theorem dNC_zero_iff (x : NC G 0) : dNC G 0 x = 0 ↔ Compat G x := by
     exact hc h
 
 /- English proof (translation)
-Introduce `x y hxy`. Use function extensionality and compare the values at `c`. Rewrite using `[eval_chain G x c, eval_chain G y c]`. Take `⟨k, hk⟩` from `he (c.obj (Fin.last 0)).unop`. Establish `h1 : x (pt (op (({k} : Finset κ).inf' (Finset.singleton_nonempty k) e))) = y (pt (op (({k} : Finset κ).inf' (Finset.singleton_nonempty k) e)))` using `congrFun (congrFun hxy ⟨{k}, Finset.card_singleton k⟩) ⟨Finset.singleton_nonempty k⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[Finset.inf'_singleton, hk]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsLin_injective (he : Function.Surjective e) : Function.Injective (epsLin e G) := by
   intro x y hxy
@@ -132,7 +132,7 @@ theorem epsLin_injective (he : Function.Surjective e) : Function.Injective (epsL
   exact h1
 
 /- English proof (translation)
-Substitute `h` using the available equality. Apply the tactic sequence `rw [eqToHom_refl, G.map_id] <;> rfl`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_eqToHom_singleton_eq (z : Cube.Term (cubeOf e G) 1) {k' k : κ} (h : k' = k)
     (pr : op (({k'} : Finset κ).inf' (Finset.singleton_nonempty k') e) =
@@ -143,11 +143,11 @@ private theorem map_eqToHom_singleton_eq (z : Cube.Term (cubeOf e G) 1) {k' k : 
   rw [eqToHom_refl, G.map_id] <;> rfl
 
 /- English proof (translation)
-Introduce `z`. Use `choose f hf using he'`. Establish `hop : ∀ p : P, op (({f p} : Finset κ).inf' (Finset.singleton_nonempty (f p)) e) = op p`. Introduce `p`. Rewrite using `[Finset.inf'_singleton, hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun c => (G.map (eqToHom (hop (c.obj (Fin.last 0)).unop))).hom (z ⟨{f (c.obj (Fin.last 0)).unop}, Finset.card_singleton _⟩ ⟨Finset.singleton_nonempty _⟩), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s hs`. Take `⟨s, hs1⟩` from `s`. Take `⟨k, rfl⟩` from `Finset.card_eq_one.mp hs1`. Establish `hk : f (({k} : Finset κ).inf' hs.down e) = k`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `he` to reduce the goal to its premises. Rewrite using `[hf, Finset.inf'_singleton]`. Conclude with `map_eqToHom_singleton_eq e G z hk _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsLin_surjective (he : Function.Injective e) (he' : Function.Surjective e) :
     Function.Surjective (epsLin e G) := by
@@ -167,7 +167,7 @@ theorem epsLin_surjective (he : Function.Injective e) (he' : Function.Surjective
   exact map_eqToHom_singleton_eq e G z hk _
 
 /- English proof (translation)
-Use `erw [GlobalTheory.Cube.d_one_apply_pair (cubeOf e G) (epsLin e G x) hij, Pi.sub_apply]`. Conclude with `congrArg₂ (· - ·) (cubeRes_apply e G (by simp : ({j} : Finset κ) ⊆ {i, j}) (epsLin e G x ⟨{j}, Finset.card_singleton j⟩) (Finset.singleton_nonempty j) ⟨hp⟩) (cubeRes_apply e G (by simp : ({i} : Finset κ) ⊆ {i, j}) (epsLin e G x ⟨{i}, Finset.card_singleton i⟩) (Finset.singleton_no …`.
+A detailed English derivation is pending.
 -/
 theorem d_pair (x : NC G 0) {κ : Type} [LinearOrder κ] (e : κ → P) {i j : κ} (hij : i < j)
     (hp : ({i, j} : Finset κ).Nonempty)
@@ -183,7 +183,7 @@ theorem d_pair (x : NC G 0) {κ : Type} [LinearOrder κ] (e : κ → P) {i j : �
       (Finset.singleton_nonempty i) ⟨hp⟩)
 
 /- English proof (translation)
-Substitute `ha hb hm` using the available equality. Establish `e2 : homOfLE h2 = 𝟙 _` using `Subsingleton.elim _ _`. Rewrite `E` using `[e2, op_id, G.map_id]`. Conclude with `E.symm`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step (x : NC G 0) {a a' b b' m : P} (ha : a' = a) (hb : b' = b) (hm : m = b) (h : b ≤ a)
     (h1 : m ≤ a') (h2 : m ≤ b')
@@ -195,21 +195,19 @@ theorem step (x : NC G 0) {a a' b b' m : P} (ha : a' = a) (hb : b' = b) (hm : m 
   exact E.symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hd a b h`. Take `⟨i, rfl⟩` from `he a`. Take `⟨j, rfl⟩` from `he b`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hp : ({i, j} : Finset κ).Nonempty` using `Finset.insert_nonempty _ _`. Establish `h1 : ({i, j} : Finset κ).inf' hp e ≤ ({j} : Finset κ).inf' (Finset.singleton_nonempty j) e` using `Finset.inf'_mono e (by simp) _`. Establish `h2 : ({i, j} : Finset κ).inf' hp e ≤ ({i} : Finset κ).inf' (Finset.singleton_nonempty i) e` using `Finset.inf'_mono e (by simp) _`. Establish `E0 : Cube.d (cubeOf e G) 1 (epsLin e G x) ⟨{i, j}, Finset.card_pair hij.ne⟩ ⟨hp⟩ = 0`. Apply the tactic sequence `rw [hd] <;> rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `E0` using `[d_pair G x e hij hp h1 h2, sub_eq_zero]`. Conclude with `step G x (by simp) (by simp) (by simp [Finset.inf'_insert, inf_eq_right.mpr h]) h h2 h1 E0.symm`. Establish `e2 : homOfLE h = 𝟙 _` using `Subsingleton.elim _ _`. Apply the tactic sequence `rw [e2, op_id, G.map_id] <;> rfl`. Establish `hp : ({j, i} : Finset κ).Nonempty` using `Finset.insert_nonempty _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ({j, i} : Finset κ).inf' hp e ≤ ({i} : Finset κ).inf' (Finset.singleton_nonempty i) e` using `Finset.inf'_mono e (by simp) _`. Establish `h2 : ({j, i} : Finset κ).inf' hp e ≤ ({j} : Finset κ).inf' (Finset.singleton_nonempty j) e` using `Finset.inf'_mono e (by simp) _`. Establish `E0 : Cube.d (cubeOf e G) 1 (epsLin e G x) ⟨{j, i}, Finset.card_pair hij.ne⟩ ⟨hp⟩ = 0`. Apply the tactic sequence `rw [hd] <;> rfl`. Rewrite `E0` using `[d_pair G x e hij hp h1 h2, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `step G x (by simp) (by simp) (by simp [Finset.inf'_insert, inf_eq_left.mpr h]) h h1 h2 E0`. Introduce `hc`. Establish `hc' : ∀ ⦃a b : P⦄ (h : b ≤ a), val G x b = (G.map (homOfLE h).op).hom (val G x a)` using `hc`. Use function extensionality and compare the values at `t ht`. Take `⟨t, htc⟩` from `t`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨i, j, hne, hs⟩` from `Finset.card_eq_two.mp htc`. Break down `lt_or_gt_of_ne hne with hij | hij` into its components or cases. Substitute `hs` using the available equality. Establish `h1 : ({i, j} : Finset κ).inf' ht.down e ≤ ({j} : Finset κ).inf' (Finset.singleton_nonempty j) e` using `Finset.inf'_mono e (by simp) _`. Establish `h2 : ({i, j} : Finset κ).inf' ht.down e ≤ ({i} : Finset κ).inf' (Finset.singleton_nonempty i) e` using `Finset.inf'_mono e (by simp) _`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rw [d_pair G x e hij ht.down h1 h2, ← hc' h1, ← hc' h2, sub_self] <;> rfl`. Rewrite `hs` using `[Finset.pair_comm]`. Substitute `hs` using the available equality. Establish `h1 : ({j, i} : Finset κ).inf' ht.down e ≤ ({i} : Finset κ).inf' (Finset.singleton_nonempty i) e` using `Finset.inf'_mono e (by simp) _`. Establish `h2 : ({j, i} : Finset κ).inf' ht.down e ≤ ({j} : Finset κ).inf' (Finset.singleton_nonempty j) e` using `Finset.inf'_mono e (by simp) _`.
-
-Apply the tactic sequence `rw [d_pair G x e hij ht.down h1 h2, ← hc' h1, ← hc' h2, sub_self] <;> rfl`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem d_eps_zero_iff {κ : Type} [LinearOrder κ] (e : κ → P) (he : Function.Surjective e) (x : NC G 0) :
     Cube.d (cubeOf e G) 1 (epsLin e G x) = 0 ↔ Compat G x := by
@@ -261,9 +259,9 @@ theorem d_eps_zero_iff {κ : Type} [LinearOrder κ] (e : κ → P) (he : Functio
 end Semilattice
 
 /- English proof (translation)
-Introduce `hbij`. Use `⟨fun G => (LinearEquiv.ofBijective (epsLin e G) ⟨epsLin_injective e G hbij.2, epsLin_surjective e G hbij.1 hbij.2⟩).toModuleIso, ?_, ?_⟩` and prove the remaining obligations. Introduce `G G' φ`. Use extensionality with `x`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Introduce `G x`. Establish `hd1 : (nerveCx.obj G).d 0 1 = ModuleCat.ofHom (dNC G 0)` using `nerveCx_d G 0`. Establish `hc1 : ((cechOf e).obj G).d 0 1 = ModuleCat.ofHom ((cubeOf e G).d 1)` using `GlobalTheory.cechComplex_d (cubeOf e G) 0`. Rewrite using `[hd1, hc1]`. Conclude with `(dNC_zero_iff G x).trans (d_eps_zero_iff G e hbij.2 x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degZero {R : Type} [CommRing R] {P : Type} [SemilatticeInf P] {κ : Type} [LinearOrder κ] (e : κ → P) :
     Function.Bijective e → ∃ ε : ∀ G : Pᵒᵖ ⥤ ModuleCat.{0} R, (nerveCx.obj G).X 0 ≅ ((cechOf e).obj G).X 0,

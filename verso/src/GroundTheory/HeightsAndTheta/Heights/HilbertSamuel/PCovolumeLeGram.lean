@@ -8,15 +8,15 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open Module
 
 /- English proof (translation)
-Introduce `n L _ _ ι _ _ x hxL hx hcard`. Establish `hcard' : Fintype.card ι = finrank ℝ (EuclideanSpace ℝ (Fin n))`. Rewrite using `[hcard, finrank_euclideanSpace_fin]`. Set `B : Basis ι ℝ (EuclideanSpace ℝ (Fin n))` to `basisOfLinearIndependentOfCardEqFinrank' x hx hcard'`. Establish `hB : ⇑B = x` using `coe_basisOfLinearIndependentOfCardEqFinrank' _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hML : Submodule.span ℤ (Set.range B) ≤ L` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; rw [hB]; exact hxL i)`. Establish `hcovM : ZLattice.covolume (Submodule.span ℤ (Set.range B)) = Real.sqrt (Matrix.gram ℝ x).det`. Rewrite using `[GroundTheory.Heights₂.Heights.covolume_eq_sqrt_det_gram _ (B.restrictScalars ℤ)]`. Use `congr 3`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Basis.restrictScalars_apply, hB]`. Establish `hdiv` using `ZLattice.covolume_div_covolume_eq_relIndex' _ L hML`. Establish `hposM` using `ZLattice.covolume_pos (Submodule.span ℤ (Set.range B))`. Establish `hposL` using `ZLattice.covolume_pos L`. Establish `hne : (Submodule.span ℤ (Set.range B)).toAddSubgroup.relIndex L.toAddSubgroup ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hdiv` using `[h, Nat.cast_zero]`. Conclude with `(div_pos hposM hposL).ne' hdiv`. Establish `h1 : (1 : ℝ) ≤ ZLattice.covolume (Submodule.span ℤ (Set.range B)) / ZLattice.covolume L`. Rewrite using `[hdiv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.one_le_iff_ne_zero.2 hne` after adjusting the coercions. Rewrite using `[← hcovM]`. Rewrite `h1` using `[le_div_iff₀ hposL, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem CovolumeLeGram.proof : CovolumeLeGram.Statement := by
   intro n L _ _ ι _ _ x hxL hx hcard

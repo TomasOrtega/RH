@@ -17,26 +17,26 @@ namespace DiscreteGroups.T1.G.CP
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `rw [abs_le]; constructor <;> linarith [le_abs_self a, le_abs_self b, neg_abs_le a, neg_abs_le b]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_sub_le_abs_add_abs (a b : ℝ) : |a - b| ≤ |a| + |b| := by
   rw [abs_le]; constructor <;> linarith [le_abs_self a, le_abs_self b, neg_abs_le a, neg_abs_le b]
 
 /- English proof (translation)
-Apply the tactic sequence `rw [abs_le]; constructor <;> linarith [le_abs_self a, le_abs_self b, neg_abs_le a, neg_abs_le b]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_add_le_abs_add_abs (a b : ℝ) : |a + b| ≤ |a| + |b| := by
   rw [abs_le]; constructor <;> linarith [le_abs_self a, le_abs_self b, neg_abs_le a, neg_abs_le b]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.det_mul]`. Conclude with `(D1.logAbsBasic E).2.1 _ _ (Matrix.isUnits_det_units x) (Matrix.isUnits_det_units y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lAbs_mul (x y : GA E n) : logAbs (x * y).val.det = logAbs x.val.det + logAbs y.val.det := by
   rw [Units.val_mul, Matrix.det_mul]
   exact (D1.logAbsBasic E).2.1 _ _ (Matrix.isUnits_det_units x) (Matrix.isUnits_det_units y)
 
 /- English proof (translation)
-Establish `h : (ratGL E n γ).val.det = algebraMap E (Ad E) γ.val.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `(D1.logAbsBasic E).2.2 _ (Matrix.isUnits_det_units γ).ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lAbs_rat (γ : GL (Fin n) E) : logAbs (ratGL E n γ).val.det = 0 := by
   have h : (ratGL E n γ).val.det = algebraMap E (Ad E) γ.val.det := by
@@ -45,7 +45,7 @@ theorem lAbs_rat (γ : GL (Fin n) E) : logAbs (ratGL E n γ).val.det = 0 := by
   exact (D1.logAbsBasic E).2.2 _ (Matrix.isUnits_det_units γ).ne_zero
 
 /- English proof (translation)
-Establish `h` using `lAbs_mul (E := E) (n := n) 1 1`. Rewrite `h` using `[mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lAbs_one : logAbs (1 : GA E n).val.det = 0 := by
   have h := lAbs_mul (E := E) (n := n) 1 1
@@ -53,9 +53,9 @@ theorem lAbs_one : logAbs (1 : GA E n).val.det = 0 := by
   linarith
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, Nat.cast_zero, zero_mul]`. Conclude with `lAbs_one`. Consider the case `succ m ih => rw [pow_succ, lAbs_mul, ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lAbs_pow (k : GA E n) (m : ℕ) : logAbs (k ^ m).val.det = m * logAbs k.val.det := by
   induction m with
@@ -63,9 +63,9 @@ theorem lAbs_pow (k : GA E n) (m : ℕ) : logAbs (k ^ m).val.det = m * logAbs k.
   | succ m ih => rw [pow_succ, lAbs_mul, ih]; push_cast; ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ha`. Establish `hpos : 0 < |a|` using `abs_pos.2 ha`. Take `⟨m, hm⟩` from `exists_nat_gt (C / |a|)`. Establish `h1` using `h m`. Establish `h2 : C / |a| * |a| < m * |a|` using `mul_lt_mul_of_pos_right hm hpos`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[div_mul_cancel₀ _ hpos.ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eq_zero_of_nat_mul_le {a C : ℝ} (h : ∀ m : ℕ, (m : ℝ) * |a| ≤ C) : a = 0 := by
   by_contra ha
@@ -77,7 +77,7 @@ theorem eq_zero_of_nat_mul_le {a C : ℝ} (h : ∀ m : ℕ, (m : ℝ) * |a| ≤ 
   linarith
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `(isCompact_maxCompact (K := E) (n := n)).exists_bound_of_continuousOn (DiscreteGroups.T1.G.continuous_logAbs_det (E := E) (n := n)).continuousOn`. Use `eq_zero_of_nat_mul_le (C := C) fun m => ?_` and prove the remaining obligations. Establish `h` using `hC (k ^ m) (pow_mem hk m)`. Rewrite `h` using `[Real.norm_eq_abs, lAbs_pow, abs_mul, Nat.abs_cast]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lAbs_maxCompact {k : GA E n} (hk : k ∈ maxCompact (K := E) (n := n)) : logAbs k.val.det = 0 := by
   obtain ⟨C, hC⟩ := (isCompact_maxCompact (K := E) (n := n)).exists_bound_of_continuousOn
@@ -88,7 +88,7 @@ theorem lAbs_maxCompact {k : GA E n} (hk : k ∈ maxCompact (K := E) (n := n)) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CuspBoundSiegel.posIdele_congr hρ (Real.exp_pos (Real.log ρ)) (Real.exp_log hρ).symm, PositivityTheory.Rg.BcB.E1.posIdele_val, PositivityTheory.Rg.BcB.E1.logAbs_pA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lAbs_posIdele (ρ : ℝ) (hρ : 0 < ρ) :
     logAbs ((posIdele (K := E) ρ hρ : (Ad E)ˣ) : Ad E) = Module.finrank ℚ E * Real.log ρ := by
@@ -96,9 +96,9 @@ theorem lAbs_posIdele (ρ : ℝ) (hρ : 0 < ρ) :
     PositivityTheory.Rg.BcB.E1.posIdele_val, PositivityTheory.Rg.BcB.E1.logAbs_pA]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_empty, Finset.sum_empty]`. Establish `h` using `(D1.logAbsBasic E).2.2 (1 : E) one_ne_zero`. Rewrite `h` using `[map_one]`. Then use the resulting hypothesis. Introduce `a s ha ih`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : IsUnit (∏ i ∈ s, (u i : Ad E))` using `by rw [← Units.coe_prod]; exact Units.isUnit _`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, (D1.logAbsBasic E).2.1 _ _ (u a).isUnit hu, ih]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lAbs_prod (s : Finset (Fin n)) (u : Fin n → (Ad E)ˣ) :
     logAbs (∏ i ∈ s, (u i : Ad E)) = ∑ i ∈ s, logAbs (u i : Ad E) := by
@@ -111,7 +111,7 @@ theorem lAbs_prod (s : Finset (Fin n)) (u : Fin n → (Ad E)ˣ) :
     rw [Finset.prod_insert ha, Finset.sum_insert ha, (D1.logAbsBasic E).2.1 _ _ (u a).isUnit hu, ih]
 
 /- English proof (translation)
-Rewrite using `[coe_diagUnits, Matrix.det_diagonal]`. Use `(lAbs_prod Finset.univ fun i => (posIdele (K := E) (r i) (hr i) : (Ad E)ˣ)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => lAbs_posIdele (r i) (hr i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lAbs_diag (r : Fin n → ℝ) (hr : ∀ i, 0 < r i) :
     logAbs (diagUnits n (fun i => posIdele (K := E) (r i) (hr i))).val.det =
@@ -122,9 +122,9 @@ theorem lAbs_diag (r : Fin n → ℝ) (hr : ∀ i, 0 < r i) :
   exact Finset.sum_congr rfl fun i _ => lAbs_posIdele (r i) (hr i)
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Rewrite using `[Finset.sum_range_succ']`. Establish `h0 : PositivityTheory.Rg.Rs.An.sr ℓ 0 = 0` using `by simp [PositivityTheory.Rg.Rs.An.sr]`. Rewrite using `[h0, add_zero]`. Establish `h1 : ∀ k ∈ Finset.range m, PositivityTheory.Rg.Rs.An.sr ℓ (k + 1) = ext0 ℓ k - ext0 ℓ (k + 1)` using `fun k hk => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hk` using `[Finset.mem_range]`. Rewrite using `[sr_eq ℓ (by omega) (by omega), Nat.add_sub_cancel]`. Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_range_sub']`. Rewrite using `[ext0, ext0, dif_pos (by omega), dif_pos (by omega)]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_sr (ℓ : Fin n → ℝ) (hn : 0 < n) :
     ∑ r ∈ Finset.range n, PositivityTheory.Rg.Rs.An.sr ℓ r = ℓ ⟨0, hn⟩ - ℓ ⟨n - 1, by omega⟩ := by
@@ -140,7 +140,7 @@ theorem sum_sr (ℓ : Fin n → ℝ) (hn : 0 < n) :
   rfl
 
 /- English proof (translation)
-The claim follows from `|ℓ i| ≤ S + 2 * (∑ r ∈ Finset.range n, PositivityTheory.Rg.Rs.An.sr ℓ r + 2 * (n : ℝ) * t₀) := by have hc0 : n - 1 < n := by omega set c := ℓ ⟨n - 1, hc0⟩ with hcdef set x' : Fin n → ℝ := fun j => ℓ j - c with hx' have hsr : ∀ r, PositivityTheory.Rg.Rs.An.sr x' r = PositivityTheo …`.
+A detailed English derivation is pending.
 -/
 theorem coord_bound (ℓ : Fin n → ℝ) (hn : 0 < n) (t₀ S : ℝ) (ht : ∀ r, -t₀ ≤ PositivityTheory.Rg.Rs.An.sr ℓ r)
     (hS : |∑ i, ℓ i| ≤ S) (i : Fin n) :

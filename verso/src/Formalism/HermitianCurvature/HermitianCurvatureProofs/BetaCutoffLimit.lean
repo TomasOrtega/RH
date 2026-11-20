@@ -24,9 +24,9 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Unfold `JF besselJ`. Rewrite using `[← integral_smul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Establish `hae : ∀ᵐ p ∂((D.μW.prod D.μN).prod (D.μW'.prod D.μN)), D.inSS p` using `Formalism.FourierDecayAlt.P.B5.ae_inSS D`. Use `filter_upwards [hae] with p hp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `Formalism.FourierDecayAlt.P.JCx1.needs.gf_sgs D hp g`. Simplify using `only [sgs] at e`. Simplify using `only [Formalism.FourierDecayAlt.D.cutF, e]`. Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, smul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem JF_cutF (D : RealPlaceData k r Wp Wq) (χ : ℝ → ℝ) (F : Mat k r → (Wq →L[ℂ] Wp)) (ε : ℝ)
     (g : Mat k r) :
@@ -42,13 +42,13 @@ theorem JF_cutF (D : RealPlaceData k r Wp Wq) (χ : ℝ → ℝ) (F : Mat k r �
   rw [ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, smul_comm]
 
 /- English proof (translation)
-Unfold `hsVec`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hsVec_smul' [FiniteDimensional ℂ Wq] (a : ℂ) (A : Wq →L[ℂ] Wp) : hsVec (a • A) = a • hsVec A := by
   unfold hsVec; ext i; simp
 
 /- English proof (translation)
-Unfold `hsVec`. Conclude with `(PiLp.continuous_toLp 2 _).comp (continuous_pi fun i => (ContinuousLinearMap.apply ℂ Wp (stdOrthonormalBasis ℂ Wq i)).continuous)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hsVec_cont' [FiniteDimensional ℂ Wq] : Continuous (hsVec : (Wq →L[ℂ] Wp) → _) := by
   unfold hsVec
@@ -56,14 +56,14 @@ theorem hsVec_cont' [FiniteDimensional ℂ Wq] : Continuous (hsVec : (Wq →L[�
     (continuous_pi fun i => (ContinuousLinearMap.apply ℂ Wp (stdOrthonormalBasis ℂ Wq i)).continuous)
 
 /- English proof (translation)
-Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem inner_self_real {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (x : E) :
     inner ℂ x x = ((‖x‖ ^ 2 : ℝ) : ℂ) := by
   rw [inner_self_eq_norm_sq_to_K]; norm_cast
 
 /- English proof (translation)
-Unfold `bcWeight`. Use `split_ifs with h`. Conclude with `mul_nonneg (Finset.prod_nonneg fun a _ => pow_nonneg (norm_nonneg _) _) (pow_nonneg (sub_nonneg.2 h) _)`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem bcWeight_nonneg' (T T' : ℝ) (q : (Fin r → ℂ) × ℂ) : 0 ≤ bcWeight k r T T' q := by
   unfold bcWeight
@@ -73,7 +73,7 @@ theorem bcWeight_nonneg' (T T' : ℝ) (q : (Fin r → ℂ) × ℂ) : 0 ≤ bcWei
   · exact le_rfl
 
 /- English proof (translation)
-Unfold `beta betaBig`. Use `integral_congr_ae (ae_of_all _ fun q => ?_)` and prove the remaining obligations. Simplify using `only [gq]`. Rewrite using `[JF_cutF, hsVec_smul', inner_smul_left, inner_smul_right, inner_self_real, Complex.conj_ofReal]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -90,11 +90,11 @@ theorem beta_cutF [FiniteDimensional ℂ Wq] (D : RealPlaceData k r Wp Wq) (χ :
   ring
 
 /- English proof (translation)
-Take `⟨hs, ⟨δ, _, h0⟩, h1⟩` from `hχ`. Establish `hc : Continuous χ` using `hs.continuous`. Take `⟨M, hM⟩` from `(isCompact_Icc (a := δ) (b := 1)).exists_bound_of_continuousOn hc.continuousOn`. Use `⟨max M 1, le_trans zero_le_one (le_max_right _ _), fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x < δ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h0 x hx, abs_zero]`. Conclude with `le_trans zero_le_one (le_max_right _ _)`. Distinguish the cases in `hx1 : 1 ≤ x`. Rewrite using `[h1 x hx1, abs_one]`. Conclude with `le_max_right _ _`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hM x ⟨not_lt.1 hx, le_of_not_ge hx1⟩` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Conclude with `this.trans (le_max_left _ _)`.
+A detailed English derivation is pending.
 -/
 theorem cut_bound {χ : ℝ → ℝ} (hχ : Formalism.FourierDecayAlt.C6.IsCut0 χ) : ∃ M : ℝ, 0 ≤ M ∧ ∀ x, |χ x| ≤ M := by
   obtain ⟨hs, ⟨δ, _, h0⟩, h1⟩ := hχ
@@ -117,35 +117,29 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Take `⟨_, _, _, hB1, _⟩` from `Formalism.FourierDecayAlt.P.b_any_of_xi k r Wp Wq D A hA`. Take `⟨C0, hC0⟩` from `hB1`. Take `⟨c4, hc4⟩` from `hF 4`. Establish `hfin : normSq D F ≠ ⊤` using `(hC0 F F c4 c4 (hF 5) (hF 5) hc4 hc4).1`. Use `⟨hfin, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set w : (Fin r → ℂ) × ℂ → ℝ := bcWeight k r (Tz k r D.z) (Tz k r D.z') with hw`. Use `set J : (Fin r → ℂ) × ℂ → _ := fun q => hsVec (JF D F (gq D q)) with hJ`. Use `set h : (Fin r → ℂ) × ℂ → ℝ := fun q => w q * ‖J q‖ ^ 2 with hh`. Use `set μQ : Measure ((Fin r → ℂ) × ℂ) := volume.restrict (Qset D) with hμQ`. Establish `hw0 : ∀ q, 0 ≤ w q` using `fun q => bcWeight_nonneg' _ _ q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hh0 : ∀ q, 0 ≤ h q` using `fun q => mul_nonneg (hw0 q) (sq_nonneg _)`. Establish `hwQ : ∀ q, q ∉ Qset D → w q = 0`. Introduce `q hq`. Establish `: ¬ 0 < w q` using `hq`. Conclude with `le_antisymm (not_lt.1 this) (hw0 q)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hcont : ContinuousOn F (GV k r)` using `Formalism.FourierDecayAlt.P.B7.jc_cont (hF 4)`. Establish `hJm : AEStronglyMeasurable J μQ`. Establish `h1` using `Formalism.FourierDecayAlt.P.B7.jc_aesm_J D hcont (1, 1)`. Establish `e : (fun q => Jtau D (1, 1) F (gq D q)) = fun q => JF D F (gq D q)`. Use function extensionality and compare the values at `fun q => Formalism.FourierDecayAlt.P.bessel_function_trivial_index k r Wp Wq D F (gq D q)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[e]`. Conclude with `hsVec_cont'.comp_aestronglyMeasurable h1`. Establish `hwm : Measurable w` using `Formalism.FourierDecayAlt.P.B7.measurable_bcWeight _ _`. Establish `hhm : AEStronglyMeasurable h μQ` using `hwm.aestronglyMeasurable.mul (hJm.norm.pow 2)`. Establish `hlin : normSq D F = ∫⁻ q, ENNReal.ofReal (h q) ∂μQ` using `by show (∫⁻ q, ENNReal.ofReal (h q)) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hμQ, setLIntegral_eq_of_support_subset]`. Introduce `q hq`. Assume the negation of the conclusion as `hn`. Apply `hq` to reduce the goal to its premises. Simplify using `only [hh, hwQ q hn, zero_mul, ENNReal.ofReal_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hhi : Integrable h μQ`. Use `⟨hhm, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (ae_of_all _ hh0), ← hlin]`. Conclude with `lt_top_iff_ne_top.2 hfin`. Establish `hlim : ∫ q, ((h q : ℝ) : ℂ) ∂μQ = (((normSq D F).toReal : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_complex_ofReal, integral_eq_lintegral_of_nonneg_ae (ae_of_all _ hh0) hhm, ← hlin]`. Take `⟨M, hM0, hM⟩` from `cut_bound hχ`. Establish `hχc : Continuous χ` using `hχ.1.continuous`. Establish `hGc : Continuous fun x : Mt k r => Gf k r D.z D.z' (Matrix.of x)` using `(Formalism.FourierDecayAlt.P.DifferentialOperatorClasses.gf_cont k r D.z D.z').comp continuous_id`. Use `set Fe : ℝ → (Fin r → ℂ) × ℂ → ℂ := fun ε q => ((w q * χ (Gf k r D.z D.z' (gq D q) / ε) ^ 2 * ‖J q‖ ^ 2 : ℝ) : ℂ) with hFe`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbeta : ∀ ε, beta D (Formalism.FourierDecayAlt.D.cutF D χ F ε) (Formalism.FourierDecayAlt.D.cutF D χ F ε) = ∫ q, Fe ε q ∂μQ`. Introduce `ε`. Rewrite using `[beta_cutF, hμQ, setIntegral_eq_integral_of_forall_compl_eq_zero]`. Introduce `q hq`. Simplify using `only [hFe, hwQ q hq, zero_mul, Complex.ofReal_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hbeta]`. Rewrite using `[← hlim]`. Use `tendsto_integral_filter_of_dominated_convergence (fun q => M ^ 2 * h q) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `Eventually.of_forall fun ε => ?_` and prove the remaining obligations. Establish `hχm : AEStronglyMeasurable (fun q => χ (Gf k r D.z D.z' (gq D q) / ε)) μQ`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(((hχc.comp (hGc.div_const ε)).measurable.comp (Formalism.FourierDecayAlt.P.B7.measurable_gqM D)).aestronglyMeasurable).congr ?_` and prove the remaining obligations. Use `filter_upwards [Formalism.FourierDecayAlt.P.B7.ae_mem_good_set_restrict D] with q hq`. Simplify using `only [Function.comp_apply]`. Rewrite using `[Formalism.FourierDecayAlt.P.B7.gqM_eq D hq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Complex.continuous_ofReal.comp_aestronglyMeasurable ((hwm.aestronglyMeasurable.mul (hχm.pow 2)).mul (hJm.norm.pow 2))`. Use `Eventually.of_forall fun ε => ae_of_all _ fun q => ?_` and prove the remaining obligations. Simplify using `only [hFe, Complex.norm_real, Real.norm_eq_abs]`. Establish `h2 : χ (Gf k r D.z D.z' (gq D q) / ε) ^ 2 ≤ M ^ 2`. Rewrite using `[← sq_abs]`.
-
-Conclude with `pow_le_pow_left₀ (abs_nonneg _) (hM _) 2`. Rewrite using `[abs_of_nonneg (mul_nonneg (mul_nonneg (hw0 q) (sq_nonneg _)) (sq_nonneg _))]`. Simplify using `only [hh]`. Use polynomial arithmetic with `[hw0 q, sq_nonneg ‖J q‖, mul_nonneg (hw0 q) (sq_nonneg ‖J q‖)]`. Conclude with `hhi.const_mul _`.
-
-Use `filter_upwards [Formalism.FourierDecayAlt.P.B7.ae_mem_good_set_restrict D] with q hq`. Establish `hG : 0 < Gf k r D.z D.z' (gq D q)` using `(Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom D hq).2.2`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, Filter.Eventually.filter_mono nhdsWithin_le_nhds (eventually_le_nhds hG)] with ε hε hle`. Simplify using `only [hFe, hh]`.
-
-Rewrite using `[hχ.2.2 _ ((one_le_div (Set.mem_Ioi.mp hε)).mpr hle)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem beta_cut_limit (D : RealPlaceData k r Wp Wq) (χ : ℝ → ℝ) (hχ : Formalism.FourierDecayAlt.C6.IsCut0 χ)
     (F : Mat k r → (Wq →L[ℂ] Wp)) (A : ℝ) (hA : AB k r ≤ A) (hF : ∀ m : ℕ, InCC A m F) :
@@ -239,11 +233,11 @@ theorem beta_cut_limit (D : RealPlaceData k r Wp Wq) (χ : ℝ → ℝ) (hχ : F
 end core
 
 /- English proof (translation)
-Unfold `AB`. Use `set n : ℝ := 2 * (r : ℝ) + k + 1 with hn`. Use `set x : ℝ := (r : ℝ) + 1 with hx`. Establish `hk' : (2 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`. Establish `h1 : (k : ℝ) + r ≤ n` using `by rw [hn]; linarith`. Establish `h2 : 1 ≤ x` using `by rw [hx]; linarith`. Establish `h3 : 3 ≤ n` using `by rw [hn]; linarith`. Establish `h4 : x ≤ x ^ 4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: 1 ≤ x ^ 3` using `one_le_pow₀ h2`. Use the polynomial consequences of the given equalities and inequalities. Establish `h5 : 2 * n + 1 ≤ n ^ 3` using `by nlinarith`. Establish `h6 : 0 ≤ (N : ℝ) * n ^ 2` using `mul_nonneg hN (sq_nonneg _)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem AB_le_of_thr (k r N : ℕ) (A₀ : ℝ) (hk : 2 ≤ k)
     (h : 1 * ((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (r : ℝ) + k + 1) ^ 2 + (2 * (r : ℝ) + k + 1) ^ 3) ≤ A₀) :
@@ -276,7 +270,7 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt
 
 /- English proof (translation)
-Use `⟨1, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hP v`. Take `⟨_, _, _, hB, _, _, _, _, _, _, hk, hA, _⟩` from `hP`. Conclude with `Formalism.FourierDecayAlt.P.JCTx2.beta_cut_limit (T v).base χ hB.1 (f v) A₀ (Formalism.FourierDecayAlt.P.JCTx2.AB_le_of_thr S.G.k S.G.r S.Ntop A₀ hk hA) (fun m => (hB.2 v).2.2.2.2.1 m)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem beta_cutoff_limit : Formalism.FourierDecayAlt.JCT.BetaCutLimit := by
   refine ⟨1, ?_⟩

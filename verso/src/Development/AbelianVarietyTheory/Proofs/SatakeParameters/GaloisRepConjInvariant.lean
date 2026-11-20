@@ -30,7 +30,7 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K L L' : FinExt l}
   {ι : Type} [Fintype ι] [DecidableEq ι] {E : V' ≃ₗ[↥L.1] (ι → V)}
 
 /- English proof (translation)
-Use `L.2` as an intermediate fact. Rewrite using `[IsSst, ← finrank_mul_finrank ℚ_[l] ↥L.1 V, ← finrank_mul_finrank ℚ_[l] ↥L.1 ↥(Dst P ρ), mul_left_comm]`. Conclude with `(Nat.mul_right_inj finrank_pos.ne').symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSst_iff : IsSst P ρ ↔ finrank ℚ_[l] ↥(Dst P ρ) = finrank ℚ_[l] ↥(K0 K) * finrank ℚ_[l] V := by
   have := L.2
@@ -38,18 +38,16 @@ theorem isSst_iff : IsSst P ρ ↔ finrank ℚ_[l] ↥(Dst P ρ) = finrank ℚ_[
   exact (Nat.mul_right_inj finrank_pos.ne').symm
 
 /- English proof (translation)
-Rewrite using `[finrank, rank_fun, Cardinal.toNat_mul, Cardinal.toNat_natCast, finrank]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_pi_card {k M ι : Type} [Field k] [AddCommGroup M] [Module k M] [Fintype ι] :
     finrank k (ι → M) = Fintype.card ι * finrank k M := by
   rw [finrank, rank_fun, Cardinal.toNat_mul, Cardinal.toNat_natCast, finrank]
 
 /- English proof (translation)
-Establish `hm : ∀ x : V' ⊗[ℚ_[l]] Bst P, x ∈ Dst P ρ' ↔ ∀ i, tensCoord E (Bst P) x i ∈ Dst P ρ` using `fun x => by`. Simplify using `only [mem_Dst]`. Use `⟨fun hx i g => by rw [← GlobalTheory.PstExt.tensCoord_stRep P hE, hx g], fun hx g => ?_⟩` and prove the remaining obligations. Conclude with `(tensCoord E (Bst P)).injective (funext fun i => by rw [GlobalTheory.PstExt.tensCoord_stRep P hE, hx i g])`. Set `e : ↥(Dst P ρ') ≃ₗ[ℚ_[l]] (ι → ↥(Dst P ρ))` to `{ toFun := fun x i => ⟨tensCoord E (Bst P) x.1 i, (hm _).1 x.2 i⟩ invFun := fun y => ⟨(tensCoord E (Bst P)).symm fun i => (y i).1, (hm _).2 fun i => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `(y i).2⟩`. Use the proof step `map_add' := fun x y => funext fun i => Subtype.ext (congrFun (map_add (tensCoord E (Bst P)) x.1 y.1) i)`. Use the proof step `map_smul' := fun c x => funext fun i => Subtype.ext (congrFun (((tensCoord E (Bst P)).restrictScalars ℚ_[l]).map_smul c x.1) i)`. Use `left_inv := fun x => Subtype.ext ((tensCoord E (Bst P)).symm_apply_apply x.1)`.
-
-Use `right_inv := fun y => funext fun i => Subtype.ext (congrFun ((tensCoord E (Bst P)).apply_symm_apply fun i => (y i).1) i) }`. Rewrite `h`, the goal using `[isSst_iff]`. Rewrite using `[e.finrank_eq, (E.restrictScalars ℚ_[l]).finrank_eq, finrank_pi_card, finrank_pi_card, h, mul_left_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSst_of_coord (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i)) (h : IsSst P ρ) : IsSst P ρ' := by
   have hm : ∀ x : V' ⊗[ℚ_[l]] Bst P, x ∈ Dst P ρ' ↔ ∀ i, tensCoord E (Bst P) x i ∈ Dst P ρ := fun x => by
@@ -75,9 +73,9 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : Type} [Field E] [Fiel
   {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] {m : ℕ}
 
 /- English proof (translation)
-Set `_ : Algebra ↥L₁.1 ↥L₂.1` to `(IntermediateField.inclusion hL).toRingHom.toAlgebra`. Establish `: IsScalarTower ℚ_[l] ↥L₁.1 ↥L₂.1` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `L₂.2` as an intermediate fact. Establish `: FiniteDimensional ↥L₁.1 ↥L₂.1` using `Module.Finite.of_restrictScalars_finite ℚ_[l] _ _`. Establish `hρ : ∀ g, ∃ M : Matrix (Fin m) (Fin m) ↥L₁.1, (∀ x, Bw.repE L₁ r₁ g x = M.mulVec x) ∧ ∀ x, Bw.repE L₂ (mapRep (IntermediateField.inclusion hL).toRingHom r₁) g x = (M.map (algebraMap ↥L₁.1 ↥L₂.1)).mulVec x` using `fun g => ⟨r₁ (Bw.e.symm g), fun _ => rfl, fun _ => rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isSst_of_coord P (E := vecCoord ↥L₁.1 ↥L₂.1 m) (vecCoord_rep hρ) h`.
+A detailed English derivation is pending.
 -/
 theorem isSst_enlarge {Gw : Subgroup (Ω ≃ₐ[E] Ω)} (Bw : LocBridge l E Ω Gw O) {L₁ L₂ : FinExt l} (hL : L₁.1 ≤ L₂.1)
     (r₁ : ↥Gw →* GL (Fin m) ↥L₁.1) (h : IsSst P (Bw.repE L₁ r₁)) :
@@ -93,7 +91,7 @@ theorem isSst_enlarge {Gw : Subgroup (Ω ≃ₐ[E] Ω)} (Bw : LocBridge l E Ω G
   exact isSst_of_coord P (E := vecCoord ↥L₁.1 ↥L₂.1 m) (vecCoord_rep hρ) h
 
 /- English proof (translation)
-Take `⟨L₁, r₁, h₁, hp⟩` from `h`. Take `⟨L₂, hL, r₂, hm, e, he⟩` from `GlobalTheory.ConjLocal.exists_conj_model p hc h₁`. Use `⟨L₂, r₂, hm, isSst_of_coord P (ι := Unit) (E := e.symm.trans (LinearEquiv.funUnique Unit _ _).symm) (fun g x _ => ?_) (isSst_enlarge P Bw hL r₁ hp)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.symm _ = Bw.repE L₂ _ g (e.symm x)`. Rewrite using `[e.symm_apply_eq, he, e.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSstAt_conj {Gw : Subgroup (Ω ≃ₐ[E] Ω)} (Bw : LocBridge l E Ω Gw O) {r r' : ↥Gw →* GL (Fin m) (Om l)}
     (p : GL (Fin m) (Om l)) (hc : ∀ g, r' g = p * r g * p⁻¹) (h : IsSstAt P Bw r) : IsSstAt P Bw r' := by
@@ -105,7 +103,7 @@ theorem isSstAt_conj {Gw : Subgroup (Ω ≃ₐ[E] Ω)} (Bw : LocBridge l E Ω Gw
   rw [e.symm_apply_eq, he, e.apply_symm_apply]
 
 /- English proof (translation)
-Take `⟨L₁, r₁, h₁, hp⟩` from `h`. Take `⟨L₂, hL, r₂, hm, e, he⟩` from `GlobalTheory.ConjLocal.exists_conj_model p hc h₁`. Conclude with `⟨L₂, r₂, hm, GlobalTheory.PstConj.isPst_congr P e he (GlobalTheory.PstExt.isPst_enlarge P Bw hL r₁ hp)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isPstAt_conj {Gw : Subgroup (Ω ≃ₐ[E] Ω)} (Bw : LocBridge l E Ω Gw O) {r r' : ↥Gw →* GL (Fin m) (Om l)}
     (p : GL (Fin m) (Om l)) (hc : ∀ g, r' g = p * r g * p⁻¹) (h : IsPstAt P Bw r) : IsPstAt P Bw r' := by
@@ -114,7 +112,7 @@ theorem isPstAt_conj {Gw : Subgroup (Ω ≃ₐ[E] Ω)} (Bw : LocBridge l E Ω Gw
   exact ⟨L₂, r₂, hm, GlobalTheory.PstConj.isPst_congr P e he (GlobalTheory.PstExt.isPst_enlarge P Bw hL r₁ hp)⟩
 
 /- English proof (translation)
-Distinguish the cases in `hr : IsPstAt P Bw r`. Conclude with `GlobalTheory.ConjGal.wdAt_conj P ι Bw h hj r r' p hc hr (isPstAt_conj P Bw p hc hr)`. Rewrite using `[wdAt_of_not_isPstAt ι Bw h hj hr, wdAt_of_not_isPstAt ι Bw h hj fun hr' => hr (isPstAt_conj P Bw p⁻¹ (fun g => by rw [hc]; group) hr')]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wdAt_conj [NumberField E] [IsAlgClosure E Ω] (ι : Om l ≃+* ℂ) {A : ValuationSubring Ω}
     {w : HeightOneSpectrum (𝓞 E)} (Bw : LocBridge l E Ω (Dec (F := E) A) O) (h : IsPlaceOver A w) (hj : Induces Bw)

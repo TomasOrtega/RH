@@ -6,9 +6,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h1 : ∀ a b, dualTens E a b (dualTens E b a x) i = E a b (E b a (x i)) - (if i = a then E a b (x b) else 0) - (if i = b then E b a (x a) else 0) + (if i = b then x b else 0)`. Introduce `a b`. Simplify using `only [dualTens, map_sub, if_true]`. Apply the tactic sequence `split_ifs <;> (try simp only [map_zero]) <;> abel`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Finset.sum_apply, h1, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true, Pi.add_apply, Pi.smul_apply, splitCas, Cas, LinearMap.sum_apply, Module.End.mul_apply]`. Rewrite using `[Finset.sum_comm (f := fun a b => if i = a then E a b (x b) else 0)]`. Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_const, Finset.card_univ, Fintype.card_fin, Nat.cast_smul_eq_nsmul, two_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private lemma dualTens_casimir_sum {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ M) (x : Fin n → M) :
@@ -30,9 +30,9 @@ private lemma dualTens_casimir_sum {M : Type} [NormedAddCommGroup M] [InnerProdu
   abel
 
 /- English proof (translation)
-Unfold `casG`. Establish `: ∀ a, (μ - Pi.single s 1 : Fin n → ℝ) a ^ 2 = μ a ^ 2 + (if s = a then (-2 * μ s + 1) else 0)`. Introduce `a`. Distinguish the cases in `h : s = a`. Substitute `h` using the available equality.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h, Ne.symm h]`. Simplify using `only [this, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma casG_sub_single {n : ℕ} (μ : Fin n → ℝ) (s : Fin n) :
     casG (μ - Pi.single s 1) = casG μ - 2 * μ s + 1 := by
@@ -46,11 +46,11 @@ private lemma casG_sub_single {n : ℕ} (μ : Fin n → ℝ) (s : Fin n) :
   ring
 
 /- English proof (translation)
-Introduce `M _ _ n ε E N _ _ F io pr μ hE hF hT s y`. Establish `h1 : io s (Cas (F s) y) = ∑ a, ∑ b, dualTens E a b (dualTens E b a (io s y))`. Simplify using `only [Cas, LinearMap.sum_apply, Module.End.mul_apply, map_sum, hT.io_comm]`. Rewrite `h1` using `[dualTens_casimir_sum, (hF s).2.2, map_smul, casG_sub_single]`. Establish `h2 : (fun i => Cas E (io s y i)) = (casG μ : ℂ) • io s y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hE.2.2]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`. Establish `h3 : splitCas E (io s y) = (1 / 2 : ℂ) • (((casG μ - 2 * μ s + 1 : ℝ) : ℂ) • io s y - (casG μ : ℂ) • io s y - (n : ℂ) • io s y)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Use `module`. Rewrite using `[h3]`. Use `push_cast`. Use `module`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem splitCas_eigenvalue_summand : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (N : Fin n → Type) [∀ s, NormedAddCommGroup (N s)] [∀ s, InnerProductSpace ℂ (N s)] (F : ∀ s, Fin n → Fin n → Module.End ℂ (N s)) (io : ∀ s, N s →ₗ[ℂ] (Fin n → M)) (pr : ∀ s, (Fin n → M) →ₗ[ℂ] N s) (μ : Fin n → ℝ), IsMod ε E μ → (∀ s, IsMod ε (F s) (μ - Pi.single s 1)) → AlgTens ε E N F io pr → ∀ s (y : N s), splitCas E (io s y) = ((-μ s + (1 - (n : ℝ)) / 2 : ℝ) : ℂ) • io s y := by
   intro M _ _ n ε E N _ _ F io pr μ hE hF hT s y

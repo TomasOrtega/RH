@@ -12,15 +12,13 @@ def singleDecomp (d : IndexData) (τ : Fin d.f) (Q : XPoly d) : ℕ → Fin d.f 
   fun k σ => if k = 1 then (if σ = τ then Q else 0) else 0
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hp : (RestTerms.blockPowerSum d.f d.N 1 τ).IsHomogeneous 1`. Unfold `RestTerms.blockPowerSum`. Conclude with `IsHomogeneous.sum _ _ _ (fun i _ => by simpa using isHomogeneous_X ℚ (τ, i))`. Simplify `hp.mul hQ` using `[add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk σ`. Unfold `singleDecomp`. Use `split_ifs with h1 h2`. Substitute `h1` using the available equality. Simplify using `using hQ`.
+Replace the relevant objects with their definitions. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `isHomogeneous_zero _ _ _`. Conclude with `isHomogeneous_zero _ _ _`. Unfold `RestTerms.IsPowerSumDecomposition singleDecomp`. Establish `h1 : 1 ∈ Icc 1 d.N`. Use `d.two_le_N` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_eq_single_of_mem 1 h1]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
-
-Simplify using `[hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem singleDecomp_isHomDecomp (d : IndexData) (τ : Fin d.f) (Q : XPoly d)
     (hQ : Q.IsHomogeneous d.D) :
@@ -46,11 +44,11 @@ theorem singleDecomp_isHomDecomp (d : IndexData) (τ : Fin d.f) (Q : XPoly d)
       simp [hk]
 
 /- English proof (translation)
-Unfold `restTot rest₂`. Establish `h : ∀ (p : ℕ) (σ : Fin d.f), ∑ k ∈ Icc 2 d.N, ∑' n : ℕ, restSeries d p (S.frob p) (singleDecomp d τ Q) σ k n = 0`. Introduce `p σ`. Use `Finset.sum_eq_zero (fun k hk => ?_)` and prove the remaining obligations. Establish `hk1 : k ≠ 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `at hk`. Use linear arithmetic over natural numbers and integers. Establish `: ∀ n, restSeries d p (S.frob p) (singleDecomp d τ Q) σ k n = 0`. Introduce `n`. Simplify using `[restSeries, singleDecomp, hk1]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem restTot_singleDecomp (d : IndexData) (S : EndSystem d) (B0 : ℕ) (τ : Fin d.f)
     (Q : XPoly d) : restTot S B0 (singleDecomp d τ Q) = 0 := by
@@ -68,7 +66,7 @@ theorem restTot_singleDecomp (d : IndexData) (S : EndSystem d) (B0 : ℕ) (τ : 
   simp [h]
 
 /- English proof (translation)
-Use `d.j_lt_N` as an intermediate fact. Rewrite using `[Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_lowerIdx_filter (d : IndexData) :
     (univ.filter (fun i : Fin d.N => i.val < d.j)).card = d.j := by
@@ -77,23 +75,23 @@ theorem card_lowerIdx_filter (d : IndexData) :
   omega
 
 /- English proof (translation)
-Introduce `d S hI hH B0 A0 b0 hA hb τ Q hQ hint`. Use `set F := RestTerms.blockPowerSum d.f d.N 1 τ * Q with hF`. Establish `hdec` using `singleDecomp_isHomDecomp d τ Q hQ`. Establish `key` using `h83 d S hI B0 A0 b0 hA hb F (singleDecomp d τ Q) hdec`. Rewrite `key` using `[restTot_singleDecomp, hH τ Q hQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsh : shSum d F = d.j`. Unfold `shSum`. Rewrite using `[Finset.sum_eq_single τ]`. Rewrite using `[hSh d τ F _ hdec.1 hdec.2.1 hdec.2.2]`. Establish `h1 : 1 ∈ Icc 1 d.N`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `d.two_le_N` as an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_eq_single_of_mem 1 h1]`. Establish `hl : lowerPowerSum d (1 - 1) τ = (d.j : XPoly d)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[lowerPowerSum, card_lowerIdx_filter]`. Establish `hj : ((d.j : XPoly d)) * Q = d.j • Q` using `(nsmul_eq_mul _ _).symm`. Simplify using `only [singleDecomp, if_true, Nat.cast_one, one_mul, hl, hj, map_nsmul, hint]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[singleDecomp, hk]`. Introduce `σ _ hσ`. Rewrite using `[hSh d σ F _ hdec.1 hdec.2.1 hdec.2.2]`. Use `Finset.sum_eq_zero (fun k _ => ?_)` and prove the remaining obligations. Simplify using `[singleDecomp, hσ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `htot : totSum d F = d.N`. Unfold `totSum`. Rewrite using `[Finset.sum_eq_single τ]`. Rewrite using `[hTot d τ F _ hdec.1 hdec.2.1 hdec.2.2]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[singleDecomp, hint]`. Introduce `σ _ hσ`. Rewrite using `[hTot d σ F _ hdec.1 hdec.2.1 hdec.2.2]`. Simplify using `[singleDecomp, hσ]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hsh, htot]`. Establish `hv` using `S.vol_pos`. Rewrite using `[key]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem HeightLimitIdentity.proof (h83 : HeightTauIdentity.Statement) (hSh : ShFormula.Statement)
     (hTot : TotFormula.Statement) : HeightLimitIdentity.Statement := by

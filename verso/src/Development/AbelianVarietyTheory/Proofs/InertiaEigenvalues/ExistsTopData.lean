@@ -12,7 +12,7 @@ instance (typ : Bool) (h η : ℕ) : DecidablePred (InWin typ h η) := fun u => 
   unfold InWin; infer_instance
 
 /- English proof (translation)
-Use `split_ifs with ha`. Conclude with `Multiset.count_eq_one_of_mem (Finset.Ico _ _).nodup (mem_block.2 ha)`. Conclude with `Multiset.count_eq_zero.2 fun hm => ha (mem_block.1 hm)`.
+A detailed English derivation is pending.
 -/
 theorem count_block (w : ℤ) (t : ℕ) (a : ℤ) :
     (block w t).count a = if w ≤ a ∧ a < w + t then 1 else 0 := by
@@ -65,13 +65,11 @@ def ofWindow {n r : ℕ} (t : ℕ) (h η : ZMod n → ℕ) (typ : ZMod n → Boo
     exact this
 
 /- English proof (translation)
-Establish `hUeq : ∀ i, (ofWindow t h η typ w U hh hη ht hc hU hB).U i = U i` using `fun i => Multiset.filter_add_not _ _`. Use `⟨ofWindow t h η typ w U hh hη ht hc hU hB, rfl, fun i => ⟨rfl, hUeq i, fun a => ?_⟩, h1, fun i u hu β hβ => ?_, fun i u hu y hy1 hy2 => ?_⟩` and prove the remaining obligations. Rewrite using `[TopData.Ut, hUeq, Multiset.count_add]`. Express the relevant statement in the definitionally equal form `(((U i).count a + (block (w i) t).count a : ℕ) : ℤ) = _`. Rewrite using `[count_block]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hu'` using `Multiset.mem_filter.1 hu`. Establish `hβ'` using `mem_block.1 hβ`. Conclude with `h2 i u hu'.1 hu'.2 β hβ'.1 hβ'.2`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu'` using `Multiset.mem_filter.1 hu`. Use `h3 i u hu'.1 hu'.2 y hy1 hy2` as an intermediate fact. Establish `he : (ofWindow t h η typ w U hh hη ht hc hU hB).cloudRes i u = if typ i then u else (h i : ℤ) - u`. Apply the tactic sequence `cases hi : typ i <;> simp [TopData.cloudRes, ofWindow, hi]`. Rewrite using `[he]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_topData (l n t r : ℕ) (h η : ZMod n → ℕ) (typ : ZMod n → Bool) (w : ZMod n → ℤ)
     (U : ZMod n → Multiset ℤ) (hh : ∀ i, 2 ≤ h i) (hη : ∀ i, 1 ≤ η i) (ht : 1 ≤ t)

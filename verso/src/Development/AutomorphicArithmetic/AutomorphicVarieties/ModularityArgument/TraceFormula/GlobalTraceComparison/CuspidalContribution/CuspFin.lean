@@ -14,11 +14,11 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open PositivityTheory.Rg.BcB.SpectralAccumulation PositivityTheory.Rg.Rs MeasureTheory
 
 /- English proof (translation)
-Use `Set.eq_empty_of_forall_notMem ?_` and prove the remaining obligations. Introduce and unpack `c ⟨φ, hφ, F₀, ⟨μ, 𝓕, hμ, h𝓕, e⟩, F, hF, hF0, -⟩`. Establish `h0 : F₀ = 0`. Use function extensionality and compare the values at `g`. Establish `hc` using `(π.cusp φ hφ).2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h` using `@hc r hr hrN (_root_.borel _) ⟨rfl⟩ μ 𝓕 hμ h𝓕 g`. Rewrite using `[e]`. Simplify `h` using `[PositivityTheory.Affgl.CT.ct]`. Substitute `h0` using the available equality. Use `hF0 ((Submodule.mem_bot ℂ).1 ((Submodule.span_le (p := ⊥)).2 ?_ hF))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `(Submodule.mem_bot ℂ).2 rfl`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem expV_cusp {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ} (π : CuspSub E N)
     {r : ℕ} (hr : 0 < r) (hrN : r < N) : ExpV r π.V = ∅ := by
@@ -36,9 +36,9 @@ private theorem expV_cusp {E : Type} [Field E] [NumberField E] [IsCMField E] {N 
   exact (Submodule.mem_bot ℂ).2 rfl
 
 /- English proof (translation)
-Take `⟨T₁, e₁⟩` from `h`. Take `⟨T₂, e₂⟩` from `h'`. Use `⟨T₁.trans T₂.symm, fun o φ => ?_⟩` and prove the remaining obligations. Establish `a` using `e₁ o φ (π.op o φ) rfl`. Establish `b` using `e₂ o (T₂.symm (T₁ φ)) (π'.op o (T₂.symm (T₁ φ))) rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `b` using `[LinearEquiv.apply_symm_apply]`. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `Subtype.ext (a.trans b.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem iso_of_isoV {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ} {π π' : CuspSub E N}
     {V : Submodule ℂ (Sm E N)} (h : IsoV π.V V) (h' : IsoV π'.V V) : π.Iso π' := by
@@ -53,7 +53,7 @@ private theorem iso_of_isoV {E : Type} [Field E] [NumberField E] [IsCMField E] {
   exact Subtype.ext (a.trans b.symm)
 
 /- English proof (translation)
-The claim follows from `isDiscrete_of_cuspSub π fun φ hφ => by obtain ⟨C, hC⟩ := GlobalTheory.CompanionTheory.CuspFinGL.cuspFormsBoundedGL.of_invariant (π.cusp φ hφ) (hn φ hφ) exact GlobalTheory.DiscChar.isSqInt_of_bounded (hn φ hφ) (C := C) fun g => by simpa using hC g`.
+A detailed English derivation is pending.
 -/
 private theorem isDiscrete_of_norm' {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ} {π : CuspSub E N}
     (hn : GlobalTheory.DiscSpec.IsNormalised π) : IsDiscrete π.V :=
@@ -62,13 +62,11 @@ private theorem isDiscrete_of_norm' {E : Type} [Field E] [NumberField E] [IsCMFi
     exact GlobalTheory.DiscChar.isSqInt_of_bounded (hn φ hφ) (C := C) fun g => by simpa using hC g
 
 /- English proof (translation)
-Introduce `E _ _ _ N hN K W R hK hW`. Use `letI : MeasurableSpace (GA E N) := _root_.borel _`. Use `haveI : BorelSpace (GA E N) := ⟨rfl⟩`. Set `μ : Measure (GA E N)` to `Measure.haar`. Take `⟨V₀, hV₀⟩` from `hF E N μ K W R 1 hK hW one_pos (PositivityTheory.Rg.BcB.CG.reproEx_holds E N μ K W R hK hW)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hex : ∀ π : {π : CuspSub E N | GlobalTheory.DiscSpec.IsNormalised π ∧ HasType K W π.V ∧ InfBdd R π.V}, ∃ V' ∈ V₀, IsoV π.1.V V'` using `fun π => hV₀ _ (isDiscrete_of_norm' π.2.1) π.2.2.1 π.2.2.2 fun r hr hrN c hc => by`. Rewrite `hc` using `[expV_cusp π.1 hr hrN]`. Conclude with `hc.elim`. Use `choose f hf hfi using hex`. Set `g : {π : CuspSub E N | GlobalTheory.DiscSpec.IsNormalised π ∧ HasType K W π.V ∧ InfBdd R π.V} → V₀` to `fun π => ⟨f π, hf π⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : Function.Injective g` using `fun a b hab => by`. Establish `e : f a = f b` using `congrArg Subtype.val hab`. Establish `h` using `iso_of_isoV (hfi a) (e ▸ hfi b)`. Conclude with `Subtype.ext ((UpperTheory.ConvolutionTheory.Dp.isoEq E N _ _).1 h)`. Use `haveI := Finite.of_injective g hg`.
-
-Conclude with `Set.toFinite _`.
+A detailed English derivation is pending.
 -/
 private theorem cuspFin_of (hF : FinDisc) : CuspFin := by
   intro E _ _ _ N hN K W R hK hW
@@ -92,7 +90,7 @@ private theorem cuspFin_of (hF : FinDisc) : CuspFin := by
   exact Set.toFinite _
 
 /- English proof (translation)
-The claim follows from `cuspFin_of GlobalTheory.T.finite_discriminant_identity`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp.cuspFin :
     CuspFin :=

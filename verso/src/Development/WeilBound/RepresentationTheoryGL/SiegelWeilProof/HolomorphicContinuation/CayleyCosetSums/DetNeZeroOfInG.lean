@@ -16,7 +16,7 @@ variable {n : ℕ}
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Unfold `InG at *`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem inG_mul {x y : M2 n} (hx : InG x) (hy : InG y) : InG (x * y) := by
   unfold InG at *
@@ -25,9 +25,9 @@ theorem inG_mul {x y : M2 n} (hx : InG x) (hy : InG y) : InG (x * y) := by
     _ = JJ n := by rw [hx, hy]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg Matrix.det hx`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, h, mul_zero]`. Establish `h2 : (JJ n).det ≠ 0`. Use `congrArg Matrix.det (JJ_mul_JJ (n := n))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.det_mul, Matrix.det_neg]`. Introduce `h3`. Rewrite `this` using `[h3, zero_mul]`. Simplify using `at this`. Conclude with `h2 h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_inG {x : M2 n} (hx : InG x) : x.det ≠ 0 := by
   intro h

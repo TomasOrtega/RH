@@ -15,15 +15,13 @@ section Places
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Take `⟨i₀, hi₀⟩` from `hx`. Use `haveI : Nonempty ι := ⟨i₀⟩`. Establish `hS : (⋃ i ∈ Finset.univ.filter (fun i => x i ≠ 0), Function.mulSupport fun v : FinitePlace L => v (x i)).Finite`. Use `Set.Finite.biUnion (Finset.finite_toSet _) fun i hi => ?_` and prove the remaining obligations. Conclude with `FinitePlace.mulSupport_finite (by simpa using hi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hS.subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Apply `hv` to reduce the goal to its premises. Establish `h1 : ∀ i, x i ≠ 0 → v (x i) = 1`. Introduce `i hi`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hn (Set.mem_biUnion (by simpa using hi) h)`. Establish `h2 : ∀ i, v (x i) ≤ 1`. Introduce `i`. Distinguish the cases in `hi : x i = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hi]`. Conclude with `(h1 i hi).le`. Establish `h3 : (⨆ i, v (x i)) = 1`. Establish `hle : (⨆ i, v (x i)) ≤ 1` using `ciSup_le h2`. Establish `hge : (1 : ℝ) ≤ ⨆ i, v (x i)`.
-
-Establish `hb : BddAbove (Set.range fun i => v (x i))` using `(Set.finite_range _).bddAbove`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_antisymm hle hge`. Simplify using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma log_sup_support {ι : Type} [Fintype ι] (x : ι → L) (hx : ∃ i, x i ≠ 0) :
     (Function.support fun v : FinitePlace L => Real.log (⨆ i, v (x i))).Finite := by
@@ -56,7 +54,7 @@ lemma log_sup_support {ι : Type} [Fintype ι] (x : ι → L) (hx : ∃ i, x i �
   simp [h3]
 
 /- English proof (translation)
-Use `(FinitePlace.mulSupport_finite hx).subset fun v hv => ?_` and prove the remaining obligations. Introduce `h`. Apply `hv` to reduce the goal to its premises. Simplify using `only [h, Real.log_one]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 lemma log_support {x : L} (hx : x ≠ 0) : (Function.support fun v : FinitePlace L => Real.log (v x)).Finite := by
   refine (FinitePlace.mulSupport_finite hx).subset fun v hv => ?_
@@ -65,17 +63,17 @@ lemma log_support {x : L} (hx : x ≠ 0) : (Function.support fun v : FinitePlace
   simp only [h, Real.log_one]
 
 /- English proof (translation)
-Establish `h` using `prod_abs_eq_one hx`. Rewrite `h` using `[InfinitePlace.prod_eq_abs_norm]`. Rewrite using `[ReciprocityTheory.MultiplicativeHeights.sum_log_norm_embedding_eq x hx]`. Establish `hf : (Function.mulSupport fun v : FinitePlace L => v x).Finite` using `FinitePlace.mulSupport_finite hx`. Establish `hpos : ∀ v : FinitePlace L, v x ≠ 0` using `fun v => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using hx`. Establish `e : (∑ᶠ v : FinitePlace L, Real.log (v x)) = Real.log (∏ᶠ v : FinitePlace L, v x)`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := hf.toFinset) _ (by simp), finsum_eq_sum_of_support_subset (s := hf.toFinset) _ ?_, Real.log_prod fun v _ => hpos v]`. Introduce `v hv`. Simplify using `only [Set.Finite.coe_toFinset, Function.mem_mulSupport]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h1`. Apply `hv` to reduce the goal to its premises. Simplify using `only [h1, Real.log_one]`. Establish `hP : (∏ᶠ v : FinitePlace L, v x) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[h0, mul_zero]`. Conclude with `zero_ne_one h`. Establish `hN : ((Algebra.norm ℚ x : ℚ) : ℝ) ≠ 0`. Conclude with `(Algebra.norm_ne_zero_iff.2 hx)` after adjusting the coercions. Rewrite using `[e, Real.log_abs]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : |((Algebra.norm ℚ x : ℚ) : ℝ)| * ∏ᶠ v : FinitePlace L, v x = 1`. Rewrite using `[← h]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h3` using `congrArg Real.log h2`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h3` using `[Real.log_mul (abs_ne_zero.2 hN) hP, Real.log_abs, Real.log_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 lemma product_formula {x : L} (hx : x ≠ 0) :
     (∑ᶠ v : FinitePlace L, Real.log (v x)) + ∑ σ : L →+* ℂ, Real.log ‖σ x‖ = 0 := by
@@ -110,7 +108,7 @@ lemma product_formula {x : L} (hx : x ≠ 0) :
   linarith
 
 /- English proof (translation)
-Rewrite using `[finsum_eq_sum_of_support_subset (s := hf.toFinset ∪ hg.toFinset) f (by simp [Set.subset_def]; tauto), finsum_eq_sum_of_support_subset (s := hf.toFinset ∪ hg.toFinset) g (by simp [Set.subset_def]; tauto)]`. Conclude with `Finset.sum_le_sum fun a _ => h a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma finsum_le_of_le {α : Type} {f g : α → ℝ} (hf : (Function.support f).Finite) (hg : (Function.support g).Finite)
     (h : ∀ a, f a ≤ g a) : ∑ᶠ a, f a ≤ ∑ᶠ a, g a := by
@@ -120,7 +118,7 @@ lemma finsum_le_of_le {α : Type} {f g : α → ℝ} (hf : (Function.support f).
   exact Finset.sum_le_sum fun a _ => h a
 
 /- English proof (translation)
-The claim follows from `|(Module.finrank ℚ L : ℝ)⁻¹ * ∑ σ, S σ| ≤ C := by have hd : (0 : ℝ) < Module.finrank ℚ L := by exact_mod_cast Module.finrank_pos have hc : ∑ _σ : L →+* ℂ, C = Module.finrank ℚ L * C := by simp [Finset.card_univ, Embeddings.card L ℂ] rw [abs_mul, abs_of_pos (inv_pos.2 hd), inv_mul …`.
+A detailed English derivation is pending.
 -/
 lemma avg_abs_le (S : (L →+* ℂ) → ℝ) {C : ℝ} (h : ∀ σ, |S σ| ≤ C) :
     |(Module.finrank ℚ L : ℝ)⁻¹ * ∑ σ, S σ| ≤ C := by
@@ -140,21 +138,21 @@ def bnorm (z : (Σ k, ι k) → ℂ) (k : K) : ℝ :=
   Real.sqrt (∑ i, ‖z ⟨k, i⟩‖ ^ 2)
 
 /- English proof (translation)
-Use `Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun i => ‖z ⟨k, i⟩‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma norm_le_bnorm (z : (Σ k, ι k) → ℂ) (k : K) (i : ι k) : ‖z ⟨k, i⟩‖ ≤ bnorm z k := by
   refine Real.le_sqrt_of_sq_le ?_
   exact Finset.single_le_sum (f := fun i => ‖z ⟨k, i⟩‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `h`. Conclude with `(norm_pos_iff.2 hi).trans_le (norm_le_bnorm z k i)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma bnorm_pos {z : (Σ k, ι k) → ℂ} {k : K} (h : ∃ i, z ⟨k, i⟩ ≠ 0) : 0 < bnorm z k := by
   obtain ⟨i, hi⟩ := h
   exact (norm_pos_iff.2 hi).trans_le (norm_le_bnorm z k i)
 
 /- English proof (translation)
-Unfold `bnorm`. Simplify using `only [norm_mul, mul_pow, ← Finset.mul_sum]`. Rewrite using `[Real.sqrt_mul (by positivity), Real.sqrt_sq (norm_nonneg _)]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma bnorm_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) (k : K) :
     bnorm (fun p => c p.1 * z p) k = ‖c k‖ * bnorm z k := by
@@ -163,14 +161,14 @@ lemma bnorm_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) (k : K) :
   rw [Real.sqrt_mul (by positivity), Real.sqrt_sq (norm_nonneg _)]
 
 /- English proof (translation)
-The claim follows from `Real.continuous_sqrt.comp (continuous_finset_sum _ fun i _ => ((continuous_apply (⟨k, i⟩ : Σ k, ι k)).norm).pow 2)`.
+A detailed English derivation is pending.
 -/
 lemma continuous_bnorm (k : K) : Continuous fun z : (Σ k, ι k) → ℂ => bnorm z k :=
   Real.continuous_sqrt.comp
     (continuous_finset_sum _ fun i _ => ((continuous_apply (⟨k, i⟩ : Σ k, ι k)).norm).pow 2)
 
 /- English proof (translation)
-Establish `h1 : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun z : (Σ k, ι k) → ℂ => ∑ i, ‖z ⟨k, i⟩‖ ^ 2` using `ContDiff.sum fun i _ => (contDiff_apply ℝ ℂ (⟨k, i⟩ : Σ k, ι k)).norm_sq ℝ`. Use `h1.contDiffOn.sqrt fun z hz => ?_` and prove the remaining obligations. Use `bnorm_pos (hz k)` as an intermediate fact. Unfold `bnorm at this`. Conclude with `fun h0 => by simp [h0] at this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma contDiffOn_bnorm (k : K) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, ι k) → ℂ => bnorm z k) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
@@ -182,7 +180,7 @@ lemma contDiffOn_bnorm (k : K) :
   exact fun h0 => by simp [h0] at this
 
 /- English proof (translation)
-The claim follows from `|Real.log (B.h z) - ∑ k, (B.a k : ℝ) * Real.log (bnorm z k)| ≤ C := by set S : Set ((Σ k, ι k) → ℂ) := {z | ∀ k, bnorm z k = 1} with hS have hcl : IsClosed S := by simp only [hS, Set.setOf_forall] exact isClosed_iInter fun k => isClosed_eq (continuous_bnorm k) continuous_const ha …`.
+A detailed English derivation is pending.
 -/
 lemma exists_bound (B : HermLine ι) (hB : IsSmoothHerm B) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ z : (Σ k, ι k) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) →
@@ -246,7 +244,7 @@ def twistLine (A : HermLine ι) (m : ℕ) : HermLine ι where
     rw [mul_div_mul_comm]
 
 /- English proof (translation)
-Use `ContDiffOn.div (ContDiffOn.pow hA m) (contDiffOn_prod fun k _ => contDiffOn_bnorm k) fun z hz => ?_` and prove the remaining obligations. Conclude with `(Finset.prod_pos fun k _ => bnorm_pos (hz k)).ne'`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma twistLine_smooth {A : HermLine ι} (hA : IsSmoothHerm A) (m : ℕ) : IsSmoothHerm (twistLine A m) := by
   refine ContDiffOn.div (ContDiffOn.pow hA m) (contDiffOn_prod fun k _ => contDiffOn_bnorm k) fun z hz => ?_
@@ -268,9 +266,9 @@ def sumHt (L : Type) [Field L] [NumberField L] (w : (Σ k, ι k) → L) : ℝ :=
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Take `⟨i₀, hi₀⟩` from `h`. Use `mul_nonneg (inv_nonneg.2 (Nat.cast_nonneg _)) ?_` and prove the remaining obligations. Rewrite using `[← product_formula hi₀]`. Use `add_le_add ?_ (Finset.sum_le_sum fun σ _ => ?_)` and prove the remaining obligations. Use `finsum_le_of_le (log_support hi₀) (log_sup_support (fun i => w ⟨k, i⟩) ⟨i₀, hi₀⟩) fun v => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp : 0 < v (w ⟨k, i₀⟩)`. Establish `: v (w ⟨k, i₀⟩) ≠ 0` using `by simpa using hi₀`. Conclude with `lt_of_le_of_ne (apply_nonneg v _) this.symm`. Conclude with `Real.log_le_log hp (le_ciSup (f := fun i => v (w ⟨k, i⟩)) (Set.finite_range _).bddAbove i₀)`. Conclude with `Real.log_le_log (norm_pos_iff.2 ((map_ne_zero σ).2 hi₀)) (norm_le_bnorm (fun p => σ (w p)) k i₀)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma blockHt_nonneg (w : (Σ k, ι k) → L) (k : K) (h : ∃ i, w ⟨k, i⟩ ≠ 0) : 0 ≤ blockHt L w k := by
   obtain ⟨i₀, hi₀⟩ := h
@@ -286,19 +284,19 @@ lemma blockHt_nonneg (w : (Σ k, ι k) → L) (k : K) (h : ∃ i, w ⟨k, i⟩ �
       (norm_le_bnorm (fun p => σ (w p)) k i₀)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun k _ => blockHt_nonneg w k (h k)`.
+A detailed English derivation is pending.
 -/
 lemma sumHt_nonneg (w : (Σ k, ι k) → L) (h : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) : 0 ≤ sumHt L w :=
   Finset.sum_nonneg fun k _ => blockHt_nonneg w k (h k)
 
 /- English proof (translation)
-Establish `e : (∑ᶠ v : FinitePlace L, ∑ k, a k * Real.log (⨆ i, v (w ⟨k, i⟩))) = ∑ k, a k * ∑ᶠ v : FinitePlace L, Real.log (⨆ i, v (w ⟨k, i⟩))`. Rewrite using `[finsum_sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_finsum]`. Introduce `k _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(log_sup_support (fun i => w ⟨k, i⟩) (hw k)).subset fun v hv => right_ne_zero_of_mul hv`. Establish `e2 : ∑ σ : L →+* ℂ, ∑ k, a k * Real.log (bnorm (fun p => σ (w p)) k) = ∑ k, a k * ∑ σ : L →+* ℂ, Real.log (bnorm (fun p => σ (w p)) k)`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => (Finset.mul_sum _ _ _).symm`. Establish `e3 : ∑ k, a k * blockHt L w k = (Module.finrank ℚ L : ℝ)⁻¹ * (∑ k, a k * ∑ᶠ v : FinitePlace L, Real.log (⨆ i, v (w ⟨k, i⟩)) + ∑ k, a k * ∑ σ : L →+* ℂ, Real.log (bnorm (fun p => σ (w p)) k))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_add_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Unfold `blockHt`. Expand and normalize the polynomial expressions, which then agree. Unfold `ptHt`.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, Finset.sum_sub_distrib, e2, e3]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma ptHt_eq (a : K → ℝ) (φ : ((Σ k, ι k) → ℂ) → ℝ) (w : (Σ k, ι k) → L) (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) :
     ptHt a φ L w = ∑ k, a k * blockHt L w k + (Module.finrank ℚ L : ℝ)⁻¹ *
@@ -326,13 +324,13 @@ lemma ptHt_eq (a : K → ℝ) (φ : ((Σ k, ι k) → ℂ) → ℝ) (w : (Σ k, 
   ring
 
 /- English proof (translation)
-Unfold `lineHt`. Rewrite using `[ptHt_eq _ _ w hw, ptHt_eq _ _ w hw]`. Establish `h1 : ∀ σ : L →+* ℂ, Real.log ((twistLine A m).h fun p => σ (w p)) - ∑ k, (((twistLine A m).a k : ℤ) : ℝ) * Real.log (bnorm (fun p => σ (w p)) k) = m * (Real.log (A.h fun p => σ (w p)) - ∑ k, (A.a k : ℝ) * Real.log (bnorm (fun p => σ (w p)) k))`. Introduce `σ`. Establish `hz : ∀ k, ∃ i, (fun p => σ (w p)) ⟨k, i⟩ ≠ 0` using `fun k => by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `hw k`. Conclude with `⟨i, (map_ne_zero σ).2 hi⟩`. Establish `hb : ∀ k, bnorm (fun p => σ (w p)) k ≠ 0` using `fun k => (bnorm_pos (hz k)).ne'`. Establish `e : (twistLine A m).h (fun p => σ (w p)) = (A.h fun p => σ (w p)) ^ m / ∏ k, bnorm (fun p => σ (w p)) k` using `rfl`. Rewrite using `[e, Real.log_div (pow_ne_zero _ (A.pos _ hz).ne') (Finset.prod_ne_zero_iff.2 fun k _ => hb k), Real.log_pow, Real.log_prod fun k _ => hb k]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [twistLine]`. Use `push_cast`. Simplify using `only [sub_mul, one_mul, Finset.sum_sub_distrib, mul_sub, Finset.mul_sum, mul_assoc]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1, ← Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∑ k, (((twistLine A m).a k : ℤ) : ℝ) * blockHt L w k = m * ∑ k, (A.a k : ℝ) * blockHt L w k - sumHt L w`. Simplify using `only [twistLine, sumHt]`. Use `push_cast`. Simplify using `only [sub_mul, one_mul, Finset.sum_sub_distrib, Finset.mul_sum, mul_assoc]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -366,11 +364,11 @@ lemma lineHt_twist (A : HermLine ι) (m : ℕ) (w : (Σ k, ι k) → L) (hw : �
   ring
 
 /- English proof (translation)
-Take `⟨C, hC0, hC⟩` from `exists_bound B hB`. Use `⟨∑ k, |(B.a k : ℝ)|, C, Finset.sum_nonneg fun _ _ => abs_nonneg _, hC0, fun L _ _ w hw => ?_⟩` and prove the remaining obligations. Establish `hh : ∀ k, 0 ≤ blockHt L w k` using `fun k => blockHt_nonneg w k (hw k)`. Unfold `lineHt`. Rewrite using `[ptHt_eq _ _ w hw]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `(abs_add_le _ _).trans (add_le_add ?_ (avg_abs_le _ fun σ => hC _ fun k => ?_))` and prove the remaining obligations. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Unfold `sumHt`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[abs_mul, abs_of_nonneg (hh k)]`. Conclude with `mul_le_mul_of_nonneg_right (Finset.single_le_sum (f := fun k => |(B.a k : ℝ)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ k)) (hh k)`. Take `⟨i, hi⟩` from `hw k`. Conclude with `⟨i, (map_ne_zero σ).2 hi⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma abs_lineHt_le (B : HermLine ι) (hB : IsSmoothHerm B) :
     ∃ n C : ℝ, 0 ≤ n ∧ 0 ≤ C ∧ ∀ (L : Type) [Field L] [NumberField L] (w : (Σ k, ι k) → L),
@@ -398,14 +396,14 @@ section Sections
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-The claim follows from `(comp_aeval_apply (R := ℤ) (f := z) σ.toIntAlgHom f).symm`.
+A detailed English derivation is pending.
 -/
 lemma aeval_emb {L : Type} [Field L] (σ : L →+* ℂ) (z : (Σ k, ι k) → L) (f : MRing ι) :
     aeval (fun p => σ (z p)) f = σ (aeval z f) :=
   (comp_aeval_apply (R := ℤ) (f := z) σ.toIntAlgHom f).symm
 
 /- English proof (translation)
-Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Conclude with `⟨i, (map_ne_zero σ).2 hi⟩`. Rewrite using `[aeval_emb, hz.2 f hf, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 lemma ptsOver_emb {L : Type} [Field L] (σ : L →+* ℂ) {P : Ideal (MRing ι)} {z : (Σ k, ι k) → L}
     (hz : z ∈ ptsOver L P) : (fun p => σ (z p)) ∈ ptsOver ℂ P := by
@@ -415,7 +413,7 @@ lemma ptsOver_emb {L : Type} [Field L] (σ : L →+* ℂ) {P : Ideal (MRing ι)}
   · rw [aeval_emb, hz.2 f hf, map_zero]
 
 /- English proof (translation)
-Take `⟨dg, dh, g, f, hg, hf, hd, hy, h0, h1⟩` from `h`. Use `⟨dg, dh, g, f, hg, hf, hd, hy, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_emb]`. Conclude with `(map_ne_zero σ).2 h0`. Rewrite using `[aeval_emb, aeval_emb, h1, map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hasVal_emb {L : Type} [Field L] (σ : L →+* ℂ) {y : (Σ k, ι k) → Ω} {a : K → ℤ} {u : Ω}
     {z : (Σ k, ι k) → L} {w : L} (h : HasVal y a u z w) : HasVal y a u (fun p => σ (z p)) (σ w) := by
@@ -426,13 +424,13 @@ lemma hasVal_emb {L : Type} [Field L] (σ : L →+* ℂ) {y : (Σ k, ι k) → �
   · rw [aeval_emb, aeval_emb, h1, map_mul]
 
 /- English proof (translation)
-Establish `hu' : ((1 : ℕ) : Ω) * u ^ 1 ∈ chartLatNm y M.a 1` using `by simpa using hu`. Take `⟨C, hC⟩` from `GlobalTheory.T.archimedean_value_bound K ι Ω y d hv hb M 1 1 u hM one_pos one_pos hu'`. Use `⟨C, fun L _ _ w hw val hval hw' => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.height_lower_bound_chart_norm K ι Ω y d hv hb M.a u 1 1 one_pos one_pos hu' (fun z => Real.log (M.h z)) L w hw val hval hw'`. Simplify using `only [Nat.cast_one, Real.log_one, div_one, sub_zero] at h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `le_trans ?_ h1` and prove the remaining obligations. Establish `hd : (0 : ℝ) < Module.finrank ℚ L` using `by exact_mod_cast Module.finrank_pos`. Establish `hc : ∑ _σ : L →+* ℂ, (-C) = Module.finrank ℚ L * (-C)`. Simplify using `[Finset.card_univ, Embeddings.card L ℂ]`. Rewrite using `[le_inv_mul_iff₀ hd, ← hc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun σ _ => ?_` and prove the remaining obligations. Establish `hz` using `ptsOver_emb σ hw`. Establish `h2` using `hC _ hz (σ val) (hasVal_emb σ hw')`. Establish `hvp : 0 < ‖σ val‖` using `norm_pos_iff.2 ((map_ne_zero σ).2 hval)`. Establish `hpos` using `M.pos (fun p => σ (w p)) hz.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Real.log_le_log hvp h2`. Rewrite `h3` using `[Real.log_mul (Real.exp_pos C).ne' hpos.ne', Real.log_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma lineHt_lower {y : (Σ k, ι k) → Ω} {d : ℕ} (hv : IsArithVar (mCoordIdeal y) d) (hb : Birational y)
     (M : HermLine ι) (hM : IsSmoothHerm M) (u : Ω) (hu : u ∈ chartLatNm y M.a 1) :
@@ -458,9 +456,9 @@ lemma lineHt_lower {y : (Σ k, ι k) → Ω} {d : ℕ} (hv : IsArithVar (mCoordI
   linarith
 
 /- English proof (translation)
-Take `⟨m, l, s, hs, hcov⟩` from `ha`. Establish `hM` using `twistLine_smooth hA m`. Use `choose C hC using fun i => lineHt_lower hv hb (twistLine A m) hM (s i) (hs i)`. Use `⟨m, ∑ i, |C i|, Finset.sum_nonneg fun _ _ => abs_nonneg _, fun L _ _ w hw => ?_⟩` and prove the remaining obligations. Take `⟨i, val, hval, hw'⟩` from `hcov L w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hC i L w hw val hval hw'`. Rewrite `h1` using `[lineHt_twist A m w hw.1]`. Establish `h2 : C i ≤ ∑ i, |C i|` using `(le_abs_self _).trans (Finset.single_le_sum (f := fun i => |C i|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma sumHt_le {y : (Σ k, ι k) → Ω} {d : ℕ} (hv : IsArithVar (mCoordIdeal y) d) (hb : Birational y)
     (A : HermLine ι) (hA : IsSmoothHerm A) (ha : AmpleQ y A.a) :
@@ -480,19 +478,19 @@ lemma sumHt_le {y : (Σ k, ι k) → Ω} {d : ℕ} (hv : IsArithVar (mCoordIdeal
 end Sections
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y d hv hb A hA ha`. Take `⟨m, C, hC0, hC⟩` from `sumHt_le hv hb A hA ha`. Take `⟨nA, CA, hnA, hCA, hAle⟩` from `abs_lineHt_le A hA`. Break down `Nat.eq_zero_or_pos m with hm | hm` into its components or cases. Substitute `hm` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Establish `hsum : ∀ (L : Type) [Field L] [NumberField L], ∀ w ∈ ptsOver L (mCoordIdeal y), sumHt L w ≤ C`. Introduce `L _ _ w hw`. Simplify using `using hC L w hw`. Use `⟨⟨nA * C + CA, fun L _ _ w hw => ?_⟩, fun B hB => ?_⟩` and prove the remaining obligations. Establish `h1` using `hAle L w hw.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `mul_le_mul_of_nonneg_left (hsum L w hw) hnA`. Combine the linear relations using `[neg_abs_le (lineHt A L w)]`. Take `⟨n, CB, hn, hCB, hBle⟩` from `abs_lineHt_le B hB`. Use `⟨0, n * C + CB, le_rfl, fun L _ _ w hw => ?_⟩` and prove the remaining obligations. Establish `h1` using `hBle L w hw.1`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `mul_le_mul_of_nonneg_left (hsum L w hw) hn`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmr : (0 : ℝ) < m` using `by exact_mod_cast hm`. Use `⟨⟨C / m, fun L _ _ w hw => ?_⟩, fun B hB => ?_⟩` and prove the remaining obligations. Establish `h1` using `hC L w hw`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `sumHt_nonneg w hw.1`. Rewrite using `[neg_le_iff_add_nonneg, ← mul_le_mul_iff_right₀ hmr]`. Establish `h3 : (m : ℝ) * (lineHt A L w + C / m) = m * lineHt A L w + C`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_zero, h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨n, CB, hn, hCB, hBle⟩` from `abs_lineHt_le B hB`. Use `⟨n * m, n * C + CB, mul_nonneg hn hmr.le, fun L _ _ w hw => ?_⟩` and prove the remaining obligations. Establish `h1` using `hBle L w hw.1`. Establish `h2` using `mul_le_mul_of_nonneg_left (hC L w hw) hn`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[h1, h2]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem height_bound : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (d : ℕ), IsArithVar (mCoordIdeal y) d → Birational y → ∀ A : HermLine ι, IsSmoothHerm A → AmpleQ y A.a → (∃ C : ℝ, ∀ (L : Type) [Field L] [NumberField L], ∀ w ∈ ptsOver L (mCoordIdeal y), -C ≤ lineHt A L w) ∧ ∀ B : HermLine ι, IsSmoothHerm B → ∃ n C : ℝ, 0 ≤ n ∧ ∀ (L : Type) [Field L] [NumberField L], ∀ w ∈ ptsOver L (mCoordIdeal y), |lineHt B L w| ≤ n * lineHt A L w + C := by
   intro K _ ι _ Ω _ y d hv hb A hA ha

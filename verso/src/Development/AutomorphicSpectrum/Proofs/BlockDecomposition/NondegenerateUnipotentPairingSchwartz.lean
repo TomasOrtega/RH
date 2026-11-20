@@ -17,20 +17,20 @@ section aux
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `map_mul (unipIn k d) (Multiplicative.ofAdd x) (Multiplicative.ofAdd y)`.
+A detailed English derivation is pending.
 -/
 theorem uM_add_eq (d : ℕ) (x y : Fin d → k) : uM d (x + y) = uM d x * uM d y :=
   map_mul (unipIn k d) (Multiplicative.ofAdd x) (Multiplicative.ofAdd y)
 
 /- English proof (translation)
-The claim follows from `map_one (unipIn k d)`.
+A detailed English derivation is pending.
 -/
 theorem uM_zero_eq (d : ℕ) : uM (k := k) d 0 = 1 := map_one (unipIn k d)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_mem_polyBall x`. Set `P : Subgroup (Multiplicative (Fin d → k))` to `polyBall (k := k) d s`. Use `haveI : CompactSpace P := isCompact_iff_compactSpace.mp (isCompact_polyBall d s)`. Set `N : Subgroup P` to `H.subgroupOf P`. Establish `hN : IsOpen (N : Set P)` using `hH.preimage continuous_subtype_val`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Finite (P ⧸ N) := Subgroup.quotient_finite_of_isOpen N hN`. Take `⟨n, hn, -, hmem⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (H := N) Subgroup.index_ne_zero_of_finite ⟨x, hs⟩`. Conclude with `⟨n, hn, by simpa [N, Subgroup.mem_subgroupOf] using hmem⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_mem (d : ℕ) (H : Subgroup (Multiplicative (Fin d → k)))
     (hH : IsOpen (H : Set (Multiplicative (Fin d → k)))) (x : Multiplicative (Fin d → k)) :
@@ -60,7 +60,7 @@ def stabU {d : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representat
     simp
 
 /- English proof (translation)
-The claim follows from `(hρ t).preimage (continuous_unipIn d)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_stabU {d : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (Mir k d) W)
     (hρ : IsSmooth ρ) (t : W) : IsOpen (stabU ρ t : Set (Multiplicative (Fin d → k))) :=
@@ -74,29 +74,27 @@ def bump {V : Type} [AddCommGroup V] [Module ℂ V] (d : ℕ) (s : kˣ) (a : V) 
 end aux
 
 /- English proof (translation)
-Introduce `k _ _ _ _ d hd R R' hR' V V' _ _ _ _ _ B hB hn ι hι hιs ι' hιs' hr hC`. Take `⟨a, ha⟩` from `exists_ne (0 : V)`. Set `i₀ : Fin d` to `⟨0, hd⟩`. Establish `hU : {y : k | y ≠ 1} ∈ 𝓝 (0 : k)` using `isOpen_ne.mem_nhds (zero_ne_one (α := k))`. Take `⟨s, hs⟩` from `exists_cball_subset hU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `x₀ : Fin d → k` to `Pi.single i₀ 1`. Set `f₀ : SchF k d V` to `bump d s a`. Establish `hx₀ : x₀ ∉ FourierPi.box (Fin d) s` using `fun h => hs (h i₀ trivial) (by simp [x₀])`. Establish `h0 : (0 : Fin d → k) ∈ FourierPi.box (Fin d) s` using `fun i _ => by simp [cball]`. Establish `hne : shiftF x₀ f₀ - f₀ ≠ 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1` using `congrArg (fun f : SchF k d V => f.1 0) h`. Establish `h2 : (shiftF x₀ f₀).1 0 = 0`. Rewrite using `[shiftF_apply, zero_add]`. Conclude with `Set.indicator_of_notMem (f := fun _ => a) hx₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : f₀.1 0 = a` using `Set.indicator_of_mem (f := fun _ => a) h0`. Establish `h4 : (shiftF x₀ f₀).1 0 - f₀.1 0 = 0` using `h1`. Rewrite `h4` using `[h2, h3, zero_sub, neg_eq_zero]`. Conclude with `ha h4`. Establish `hv : ι (shiftF x₀ f₀ - f₀) ≠ 0` using `fun h => hne (hι (h.trans (map_zero ι).symm))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨t, ht⟩` from `hn _ hv`. Apply `ht` to reduce the goal to its premises. Establish `hinv : ∀ y z : Fin d → k, R'.ρ (uM d y) (R'.ρ (uM d z) t) = R'.ρ (uM d (y + z)) t`. Introduce `y z`. Rewrite using `[uM_add_eq, map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w : R'.V := R'.ρ (uM d (-x₀)) t - t with hw`. Establish `hBv : B (ι (shiftF x₀ f₀ - f₀)) t = B (ι f₀) w`. Establish `h1` using `hB x₀ (ι f₀) (R'.ρ (uM d (-x₀)) t)`. Rewrite `h1` using `[hinv, add_neg_cancel, uM_zero_eq, map_one, Module.End.one_apply]`. Rewrite using `[map_sub, hιs, map_sub, LinearMap.sub_apply, hw, map_sub, h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hBv]`. Take `⟨f', hf'⟩` from `hr (-x₀) t`. Establish `step : ∀ y : Fin d → k, B (ι f₀) (R'.ρ (uM d (y + -x₀)) t) - B (ι f₀) (R'.ρ (uM d y) t) = B (ι f₀) w`. Introduce `y`. Establish `hf2 : ι' f' = w` using `hf'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : B (ι f₀) (R'.ρ (uM d y) w) = B (ι f₀) w`. Rewrite using `[← hf2, ← hιs', hC]`. Rewrite using `[← h1, hw, map_sub, map_sub, hinv]`. Establish `hall : ∀ i : ℕ, B (ι f₀) (R'.ρ (uM d (i • x₀)) t) = B (ι f₀) t - (i : ℂ) * B (ι f₀) w`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `i with`. Consider the case `zero => simp [uM_zero_eq]`. Consider the case `succ i ih`. Establish `h1` using `step ((i + 1) • x₀)`. Establish `h2 : (i + 1) • x₀ + -x₀ = i • x₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[succ_nsmul]`. Normalize the expressions using the abelian group laws. Rewrite `h1` using `[h2, ih]`. Use `push_cast`. Take the linear combination `-h1`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hn0, hnm⟩` from `exists_pow_mem d (stabU R'.ρ t) (isOpen_stabU R'.ρ hR' t) (Multiplicative.ofAdd x₀)`. Establish `hfix : R'.ρ (uM d (n • x₀)) t = t` using `hnm`. Establish `h1` using `hall n`. Rewrite `h1` using `[hfix]`. Establish `h2 : (n : ℂ) * B (ι f₀) w = 0` using `by linear_combination h1`.
-
-Conclude with `(mul_eq_zero.1 h2).resolve_left (Nat.cast_ne_zero.2 hn0.ne')`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem false_of_translation_invariant : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (d : ℕ) (hd : 0 < d) (R R' : MRep k d) (hR' : IsSmooth R'.ρ) {V V' : Type} [AddCommGroup V] [Module ℂ V]

@@ -16,9 +16,9 @@ open Filter Topology GlobalTheory.ChartGlue
 namespace GlobalTheory.Mean4O.HessInd
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨by rw [pow_zero]; exact unitAt_one _, by`. Establish `e` using `ratVal_fnOf (y := y) mem_ptsIn_top trivial 1`. Rewrite using `[map_one, ev_one mem_ptsIn_top, ← pow_zero b, ← pow_zero (ratVal b y)] at e⟩` and apply the resulting hypothesis. Consider the case `succ n ih => exact ⟨by rw [pow_succ]; exact ih.1.mul hb, by`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Rewrite using `[pow_succ, pow_succ, ratVal_mul ih.1.regAt hb.regAt, ih.2]⟩`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unitAt_pow_ratVal {k : Type} [CommRing k] {σ : k →+* ℂ} {Z : Scheme.{0}} [IsIntegral Z] {q : Z ⟶ Sp k}
     {y : CxPts q σ} {b : Z.functionField} (hb : UnitAt (under y) b) (n : ℕ) :
@@ -31,13 +31,13 @@ theorem unitAt_pow_ratVal {k : Type} [CommRing k] {σ : k →+* ℂ} {Z : Scheme
       rw [pow_succ, pow_succ, ratVal_mul ih.1.regAt hb.regAt, ih.2]⟩
 
 /- English proof (translation)
-Establish `hle : X.basicOpen g ≤ W` using `X.basicOpen_le g`. Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (B.U i ⊓ X.basicOpen g))`. Establish `hm` using `mem_over c.e hy (mem_ptsIn_inf.2 ⟨hi, (mem_ptsIn_basicOpen hW g).2 hg0⟩)`. Establish `hg : DifferentiableOn ℂ (ev p σ W g ∘ c.e.symm) (c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ (B.U i ⊓ X.basicOpen g))` using `(c.holo _ g).mono fun v hv => ⟨hv.1, ptsIn_mono hle (mem_ptsIn_inf.1 hv.2).2⟩`. Establish `h0 : ∀ v ∈ c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ (B.U i ⊓ X.basicOpen g), (ev p σ _ g ∘ c.e.symm) v ≠ 0` using `fun v hv => (mem_ptsIn_basicOpen (ptsIn_mono hle (mem_ptsIn_inf.1 hv.2).2) g).1 (mem_ptsIn_inf.1 hv.2).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul ho ((contDiffOn_chart (h i) c).mono fun v hv => ⟨hv.1, (mem_ptsIn_inf.1 hv.2).1⟩) (contDiffOn_log_normSq ho hg h0) (-1) hm`. Establish `e₀ : ReciprocityTheory.L2DbarEstimates.cHess e (fun w => ((Real.log (‖(ev p σ _ g ∘ c.e.symm) w‖ ^ 2) : ℝ) : ℂ)) (c.e y) = 0`. Use extensionality with `a b`. Conclude with `ReciprocityTheory.L2DbarEstimates.Y.cmpa_hess_log ho hm hg h0 a b`. Rewrite `e₁` using `[e₀, smul_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `e₁.symm.trans ((ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_add_const _ (t : ℂ) _).symm.trans (ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr ?_))` and prove the remaining obligations. Establish `hc : Tendsto c.e.symm (𝓝 (c.e y)) (𝓝 y)`. Use `c.e.continuousAt_symm (c.e.map_source hy)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, c.e.left_inv hy]`. Then use the resulting hypothesis. Use `filter_upwards [hc.eventually hu] with v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hv]`. Simplify using `only [Function.comp_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hess_eq_of_log {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {e : ℕ} {B : LB X}
     {φ : Weight p σ B} (h : φ.IsCInf) (c : AlgChart p σ e) {y : CxPts p σ} (hy : y ∈ c.e.source) {i : B.ι}
@@ -74,19 +74,19 @@ theorem hess_eq_of_log {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
 variable {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F} {V : Cover Y}
 
 /- English proof (translation)
-Substitute `hσ` using the available equality. Establish `hz : under z ∈ (L.B.pull V.j).U (fun _ => i)`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Use `mem_ptsIn.1 hi` as an intermediate fact. Rewrite `this` using `[e₂]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hu : V.π (under z) = under y` using `by show _ = y.1 _`. Rewrite using `[e₁]`. Both sides reduce to the same expression. Establish `H` using `h₂ τ z y y' (fun _ => i) e₁ e₂ hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `U₁` using `h₁ _ _ hz`. Rewrite `U₁` using `[hu]`. Establish `hb` using `(Base.isEqn_eqn A.D (under y)).generatesAt_iff.1 hf`. Use `set b := f * (eqn A.D (under y) : Y.Fn) with hbd`. Use `set g := genAt A.D (under y) with hgd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfb : f = b * g` using `by simp [hbd, hgd, genAt]`. Establish `hP : C.pn Y τ A.D (A.m τ) (C.cx Y τ f) y = ‖ratVal b y‖ ^ 2 * C.pn Y τ A.D (A.m τ) (C.cx Y τ g) y`. Rewrite using `[← C.pn_mul Y τ A.D (A.m τ) _ _ y hb.regAt (generatesAt_genAt A.D _).regularAt, ← hfb]`. Establish `hφb : UnitAt (under z) (V.φ b)` using `V.unitAt_φ (hu ▸ hb)`. Take `⟨k₁, k₂⟩` from `unitAt_pow_ratVal hφb k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `k₂` using `[V.ratVal_φ z y e₁ hb.regAt]`. Establish `hs : V.φ f ^ k * (r (fun _ => i) : V.G.functionField) = V.φ b ^ k * (V.φ g ^ k * (r (fun _ => i) : V.G.functionField))`. Rewrite using `[hfb, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨k₁.mul U₁, ?_⟩` and prove the remaining obligations. Rewrite using `[ratVal_mul k₁.regAt U₁.regAt, k₂, lnN, hP]`. Establish `n₁ : 0 < ‖ratVal b y‖` using `norm_pos_iff.2 (ratVal_ne_zero hb)`. Establish `n₂` using `norm_pos_iff.2 (ratVal_ne_zero U₁)`. Establish `n₃ : 0 < C.pn Y τ A.D (A.m τ) (C.cx Y τ g) y` using `hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `H'` using `congrArg Real.log H`. Rewrite `H'` using `[Real.log_pow, Real.log_mul (Real.exp_pos _).ne' n₃.ne', Real.log_exp, Real.log_mul (pow_pos n₂ 2).ne' (Real.exp_pos _).ne', Real.log_exp, Real.log_pow]`. Rewrite using `[Real.log_mul (pow_pos n₁ 2).ne' n₃.ne', norm_mul, norm_pow, Real.log_pow, Real.log_pow, Real.log_mul (pow_pos n₁ k).ne' n₂.ne', Real.log_pow]`. Move the coercions through the operations in `at H' ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem weight_eq {A : Adl C Y} {L : HermLB V.p} {k : ℕ} {r : (L.B.pull V.j).ι → V.G.functionFieldˣ}
     (h₁ : ∀ i, ∀ x ∈ (L.B.pull V.j).U i, UnitAt x (V.φ (genAt A.D (V.π x)) ^ k * r i))
@@ -143,17 +143,17 @@ theorem weight_eq {A : Adl C Y} {L : HermLB V.p} {k : ℕ} {r : (L.B.pull V.j).�
   linarith
 
 /- English proof (translation)
-Introduce `F _ _ C Y V e M I ε π hD A L k Q hI hQ σ c y hy i hi`. Take `⟨r, -, h₁, h₂, -⟩` from `hI`. Establish `hcont` using `(Cover.isDown_continuous_surjective F Y V e M I ε π hD σ).1`. Take `⟨hσ, hw⟩` from `hD σ`. Use `choose w hwj hwπ using hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `z : CxPts V.p σ → CxPts (V.π ≫ Y.str) (I.ε (ε σ))` to `fun a => ⟨w a, by rw [← Category.assoc, hwπ]; exact (I.pt _ (π σ a)).2⟩`. Take `⟨f, hf⟩` from `(hQ (ε σ)).1 (π σ y)`. Establish `key` using `fun a (ha : a ∈ ptsIn V.p σ (L.B.U i)) (hb : π σ a ∈ (Q (ε σ)).U (π σ y)) => weight_eq h₁ h₂ hσ (z a) (I.pt _ (π σ a)) a i (hwπ a).symm (hwj a).symm ha (hf _ hb).1 (hf _ hb).2.1`. Establish `hyQ` using `(Q (ε σ)).mem_U (π σ y)`. Take `⟨W, hW, g, hg⟩` from `(key y hi hyQ).1.regAt.exists_fnOf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W', hle, hy', n, g', hn, hg'⟩` from `GenericFibreInt.exists_nat_mul_eq_app F V.X V.G V.p _ V.j V.pb W _ hW Unit fun _ => g`. Establish `hmem (a : CxPts V.p σ) : a ∈ ptsIn V.p σ W' ↔ z a ∈ ptsIn _ _ (V.j ⁻¹ᵁ W')`. Rewrite using `[mem_ptsIn, mem_ptsIn, ← hwj a]`. Both sides reduce to the same expression. Establish `hval (a : CxPts V.p σ) (ha : a ∈ ptsIn V.p σ W') : ev V.p σ W' (g' ()) a = n * ratVal (V.φ f ^ k * (r (fun _ => i) : V.G.functionField)) (z a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz` using `(hmem a).1 ha`. Establish `e₁ : ev V.p σ W' (g' ()) a = ev _ _ (V.j ⁻¹ᵁ W') (V.j.app W' (g' ())) (z a)`. Use `Eq.trans ?_ (Points.valR_comp (w a) V.j W' (g' ()))` and prove the remaining obligations. Rewrite using `[hwj a]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, ← hg' (), ev_mul, ev_res hle hz, ← hg, ratVal_fnOf (ptsIn_mono hle hz), ev_eq hz, map_natCast]`. Establish `hyW` using `(hmem y).2 (mem_ptsIn.2 hy')`. Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Use `hess_eq_of_log (L.cInf σ) c hy hi (g' ()) hyW ?_ (u := fun a => 2 * (k * (Q (ε σ)).φ (π σ y) (π σ a))) (Real.log (‖(n : ℂ)‖ ^ 2) - k * (2 * (A.n : ℕ) * A.ci (InfinitePlace.mk (I.ε (ε σ))))) ?_` and prove the remaining obligations. Rewrite using `[hval y hyW]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_ne_zero hn' (ratVal_ne_zero (key y hi hyQ).1)`. Use `filter_upwards [(isOpen_ptsIn _).mem_nhds hi, (isOpen_ptsIn _).mem_nhds hyW, (((Q (ε σ)).isOpen_U _).preimage hcont).mem_nhds hyQ] with a ha ha' hb`. Take `⟨k₁, k₂⟩` from `key a ha hb`. Rewrite using `[(hf _ hb).2.2, k₂, hval a ha', norm_mul, mul_pow, Real.log_mul (pow_ne_zero 2 (norm_ne_zero_iff.2 hn')) (pow_ne_zero 2 (norm_ne_zero_iff.2 (ratVal_ne_zero k₁)))]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hessRel_of_induces : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (V : Cover Y) (e : ℕ)
     (M : Man e) (I : ManIs M Y) (ε : (𝓞 F →+* ℂ) → Fin (M.n + 1)) (π : ∀ σ, CxPts V.p σ → M.X (ε σ)),

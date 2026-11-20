@@ -16,9 +16,9 @@ namespace GlobalTheory.RawThetaSup
 open GlobalTheory.Dict.ShortPoint
 
 /- English proof (translation)
-Establish `hJ0 : 0 < J` using `by rw [hJ]; exact_mod_cast hj`. Establish `hs : 0 < Real.sqrt J` using `Real.sqrt_pos.2 hJ0`. Establish `hb : ‖((Real.sqrt J : ℝ) : ℂ)‖ ^ 2 = J`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg hs.le, Real.sq_sqrt hJ0.le]`. Establish `h1` using `norm_index_cancellation_le_bound hJ hj hz hb hC h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (1 : ℂ)⁻¹ * (m : ℂ)⁻¹ * (Q : ℂ)⁻¹ * (z : ℂ) * κ * t = ((Real.sqrt J : ℝ) : ℂ) * (((Real.sqrt J : ℝ) : ℂ)⁻¹ * (m : ℂ)⁻¹ * (Q : ℂ)⁻¹ * (z : ℂ) * κ * t)`. Establish `: ((Real.sqrt J : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hs.ne'`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, norm_mul, Complex.norm_real, Real.norm_of_nonneg hs.le]`. Conclude with `mul_le_mul_of_nonneg_left (h1.trans_eq (_root_.one_mul B)) hs.le`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_rawThetaSeries_index_bound_le_sqrt {κ t : ℂ} {m z Q : ℕ} {J B : ℝ} {j : ℕ} (hJ : J = j) (hj : 0 < j) (hz : z = m * j)
     (hC : 0 ≤ 1 * (B / Real.sqrt J)) (h : ‖((Q : ℂ))⁻¹ * (κ * t)‖ ≤ 1 * (B / Real.sqrt J)) :
@@ -36,9 +36,9 @@ theorem norm_rawThetaSeries_index_bound_le_sqrt {κ t : ℂ} {m z Q : ℕ} {J B 
   exact mul_le_mul_of_nonneg_left (h1.trans_eq (_root_.one_mul B)) hs.le
 
 /- English proof (translation)
-Establish `hL : Laws` using `GlobalTheory.firstFiveLaws.1`. Take `⟨hval, hnat⟩` from `GlobalTheory.shortThetaValue_existsUnique_natural hL GlobalTheory.chartIndependence_unconditional E H Dw l Xo c nab hnab n Λ N hU hT hO a P hP.1 w 1`. Take `⟨v, hv, -⟩` from `hval S y`. Take `⟨p, φ, y0, hy0⟩` from `GlobalTheory.Frames.allTest_of_secBaseChange hL.secBaseChange E H Dw l Xo c S y`. Establish `e1` using `GlobalTheory.CoverDescent.evR_of_test (GlobalTheory.Frames.algebraic_laws hL.secBaseChange E H Dw l Xo c).2.2.1 f hf.1 p φ y0 y hy0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `hnat p.R S φ y0 y hy0 _ v (h p y0) hv`. Rewrite using `[e1, e2]`. Conclude with `hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thLaValAt_evR {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c nab)
@@ -62,21 +62,21 @@ theorem thLaValAt_evR {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hci` using `GlobalTheory.chartIndependence_unconditional`. Establish `hr : r = Dw.p + Dw.q` using `hU.1`. Establish `hn : Even n` using `hDom.2`. Use `letI A₁ : Algebra c.F ℂ := σ.toAlgebra`. Establish `huf : IsUnitFr (U.X k) x.1` using `fun τ i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Unfold `dmin lminor`. Rewrite using `[hxo τ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal, norm_prod]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, FD.sgn]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨W, Dc, A, θ, v, κ, he, hg, hw, hL, hmk, hA, hrd, hth, hmean, hvac, hprod⟩` from `GlobalTheory.T.exists_analyticData_unitFrame_framedPoint E H Dw l Xo c σ r U hσ hU hr1 a n hDom k x huf`. Take `⟨-, -, hlen, -, -⟩` from `hx_ortho E r (U.X k) W.g Dc.bas Dc.idx Dc.sympl x.1 x.2 hxo`. Establish `hv0` using `thLaValAt_evR nab hnab hΛu hΛt hΛl hP w hf hraw ℂ (unC U k x)`. Establish `hM : 0 < l.M` using `by have := l.three_le; omega`. Take `⟨-, hV, hVd, hstd⟩` from `GenLatCmp.genLat_vset E n Λ.La`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hΛ : Λ.La ∈ Vset E n l.M` using `hV _ N hM hΛu hΛt hΛl`. Establish `hΛ1 : Λ.La ∈ Vset E n 1` using `hVd 1 _ (one_dvd _) hΛ`. Take `⟨Y, hY⟩` from `(GlobalTheory.T.dual_half_level_marking_exists_and_match E H Dw l r (U.X k) (U.X k).Λ (W.mark k) _ hL hmk (Complex.isPrimitiveRoot_exp _ hM.ne')).2.2.2.2 n N hΛl.1.pos`. Establish `hval` using `GlobalTheory.T.shortThetaValue_complexPoint_eq_classicalTheta hci E H Dw l Xo c r W.g (U.X k) Dc.bas Dc.idx W.e x.1 (U.X k).Λ (unC U k x) A Dc.sympl x.2 hL Dw.p n Dc.hr Dc.eL hr hn (he ▸ Dc.dir_eq) nab hnab θ v κ hrd hvac hprod (W.mark k) hmk hA Λ.La hΛ N hΛl Y hY a P hP.1 w 1 _ …`. Establish `hhom : (MvPolynomial.rename Dc.eL (MvPolynomial.map σ P)).IsHomogeneous (Formalism.L2.Pj.DF Dw a)` using `(((GlobalTheory.T.exists_integralHarmonic_ne_zero_and_isHomogeneous E H Dw l c a n).2 P hP.1).map σ).rename_isHomogeneous`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcore` using `fun y => GlobalTheory.T.jet_translate_projected_vacuum_le E r (U.X k) W.g Dw.p Dc.hr Dc.bas Dc.idx n Dc.sympl hn H.w0 hw _ hL Λ.La hΛ1 v hvac x.1 x.2 hxo t ht (hct k) θ κ hth hmean hprod lam hlam (fun u hu hu0 => hlam2.trans (hlen u hu hu0)) y _ _ hhom`. Take `⟨R, -, -, hR, hR0, -⟩` from `VacMean.vac_proj_mean E r (U.X k) W.g Dw.p Dc.hr Dc.bas Dc.idx n Dc.sympl hn H.w0 hw _ hL Λ.La hΛ1 v hvac`. Rewrite `hR0` using `[hR]`. Establish `hJ : (0 : ℝ) < Real.sqrt ((((stdL E n).toAddSubgroup.relIndex Λ.La.toAddSubgroup) : ℝ) ^ r)` using `Real.sqrt_pos.2 (by exact_mod_cast hR0)`. Establish `hsb : IsSB (projA (U.X k) Dc.bas (H.w0 : E) (tens Λ.La (U.X k).Λ) v)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨v', hv'⟩, -, h, -⟩` from `TensVac.vacua E r (U.X k) W.g Dc.bas Dc.idx n Dc.sympl hn _ H.w0.isIntegral_coe hw _ hL 1 Λ.La hΛ1`. Rewrite using `[h v hvac.1 v' hv']`. Conclude with `isSB_smul _ hv'.1`. Rewrite `hcore` using `[sum_coeff_rename]`. Establish `hc2` using `fun y => (le_div_iff₀ hJ).2 (hcore y)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0` using `(norm_nonneg _).trans (hc2 0)`. Establish `hmeanle` using `norm_mean_le Dc.hr Dc.idx Dc.sympl x.2 (fun q => algebraMap c.F ℂ (w q)) (fun q => heisG (U.X k) Dc.bas (Y q) (projA (U.X k) Dc.bas (H.w0 : E) (tens Λ.La (U.X k).Λ) v)) (fun q => ((heisG_laws E r (U.X k) W.g Dc.bas Dc.idx n Dc.sympl hn).2.2.2 (Y q) _ hsb).1) _ κ zero_le_one hB0 h …`. Establish `hfin` using `norm_rawThetaSeries_index_bound_le_sqrt (Nat.cast_pow _ r).symm hR0 (zCard_eq Λ hstd hΛl r) (mul_nonneg zero_le_one hB0) hmeanle`. Establish `hev' : Formalism.L2.PjFree.toC (evR Xo c f (U.un k x)) = evR Xo c f (unC U k x)` using `rfl`. Rewrite using `[hev', hval, ← hg, index_Ln Λ hstd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_inv₀, map_natCast, map_one]`. Conclude with `hfin`.
+A detailed English derivation is pending.
 -/
 theorem norm_evR_le (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r)

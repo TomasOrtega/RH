@@ -24,7 +24,7 @@ def SchF : Submodule ℂ ((Fin d → k) → V) where
   smul_mem' := fun c f hf => ⟨hf.1.comp (fun v => c • v), hf.2.comp_left (smul_zero c)⟩
 
 /- English proof (translation)
-Conclude with `Continuous.matrix_mulVec continuous_const continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mulVec (g : GL (Fin d) k) :
     Continuous fun y : Fin d → k => (g : Matrix (Fin d) (Fin d) k).mulVec y := by

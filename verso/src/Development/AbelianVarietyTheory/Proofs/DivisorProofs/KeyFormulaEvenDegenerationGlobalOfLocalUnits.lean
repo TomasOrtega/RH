@@ -13,7 +13,7 @@ open Classical
 namespace GlobalTheory.KeyEvenGlue
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [lbPow, LB.LinComb, LB.wchart]`. Simplify using the standard rewrite rules. Conclude with `⟨fun h => h _, fun h i => h⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem lbPow_U' {S : Scheme.{0}} (M : LB S) (n : ℕ) (j : (lbPow M n).ι) : (lbPow M n).U j = M.U (j PUnit.unit) := by
   ext x
@@ -22,9 +22,7 @@ theorem lbPow_U' {S : Scheme.{0}} (M : LB S) (n : ℕ) (j : (lbPow M n).ι) : (l
   exact ⟨fun h => h _, fun h i => h⟩
 
 /- English proof (translation)
-Simplify using `only [lbPow, LB.LinComb, Fintype.prod_unique, zpow_natCast, Units.val_pow_eq_pow_val, map_pow]`. Use `congr 1`. Simplify using `[res, pullU]`. Use `erw [map_pow]`. Use `congr 1`.
-
-Use `erw [Units.coe_map, Units.coe_map]`. Conclude with `TopCat.Presheaf.germ_res_apply _ _ _ _ _`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem germ_lbPow_g' {S : Scheme.{0}} (M : LB S) (n : ℕ) (j j' : (lbPow M n).ι) (x : S)
     (h : x ∈ (lbPow M n).U j ⊓ (lbPow M n).U j') (h' : x ∈ M.U (j PUnit.unit) ⊓ M.U (j' PUnit.unit)) :
@@ -39,13 +37,11 @@ theorem germ_lbPow_g' {S : Scheme.{0}} (M : LB S) (n : ℕ) (j j' : (lbPow M n).
   exact TopCat.Presheaf.germ_res_apply _ _ _ _ _
 
 /- English proof (translation)
-Introduce `κ hH hF hL S s G _ _ g L δ σ hg hS hN hs h0 hsa hsm hne hop hsym hδ hpol hunif hnz`. Use `haveI := hS`. Take `⟨f, hloc, hcomp⟩` from `GlobalTheory.T.thetaKeyValues_detOmega_delta_local_units κ hH hF hL S s G g L δ σ hg hN hs h0 hsa hsm hne hop hsym hδ hpol hunif hnz`. Use `GlobalTheory.T.lineBundleIso_of_compatible_rational_local_units S (lbPow δ 8) (lbPow (SiegelTor.hodge G g) 4) (fun p => f (p.1 PUnit.unit) (p.2 PUnit.unit)) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨c, i⟩ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[lbPow_U', lbPow_U']`. Take `⟨V, hV, hxV, u, hu⟩` from `hloc _ _ x hx`. Conclude with `⟨V, by rw [lbPow_U', lbPow_U']; exact hV, hxV, u, hu⟩`. Introduce and unpack `⟨c, i⟩ ⟨c', i'⟩ h1 h2`. Establish `h1' : genericPoint S ∈ (VB.det (LieVB.omega G) g).U (c PUnit.unit) ⊓ (VB.det (LieVB.omega G) g).U (c' PUnit.unit)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[lbPow_U', lbPow_U']`. Conclude with `h1`. Establish `h2' : genericPoint S ∈ δ.U (i PUnit.unit) ⊓ δ.U (i' PUnit.unit)`. Rewrite `h2` using `[lbPow_U', lbPow_U']`. Conclude with `h2`.
-
-Simplify using `only`. Rewrite using `[germ_lbPow_g' δ 8 i i' _ h2 h2', germ_lbPow_g' _ 4 c c' _ h1 h1']`. Conclude with `hcomp _ _ _ _ h1' h2'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem keyGlob_of_keyLoc : ∀ κ : Rule, Homog (fun _ => 1) κ → Funct κ → KeyLoc κ → KeyGlob := by
   intro κ hH hF hL S s G _ _ g L δ σ hg hS hN hs h0 hsa hsm hne hop hsym hδ hpol hunif hnz

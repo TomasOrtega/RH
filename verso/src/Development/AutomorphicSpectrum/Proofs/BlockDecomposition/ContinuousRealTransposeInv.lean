@@ -16,9 +16,7 @@ open GlobalTheory.CompanionTheory.GL2Factorization
 namespace GlobalTheory.CompanionTheory.GL2Factorization.CtIn
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Use `show Continuous (fun g : GL (Fin m) ℝ => ((g⁻¹ : GL (Fin m) ℝ).val)ᵀ)`. Conclude with `(Units.continuous_val.comp continuous_inv).matrix_transpose`. Use `show Continuous (fun g : GL (Fin m) ℝ => (g.val)ᵀ)`.
-
-Conclude with `Units.continuous_val.matrix_transpose`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem continuous_tinvR (m : ℕ) : Continuous (GL2LocalData.tinvR : GL (Fin m) ℝ → GL (Fin m) ℝ) := by
   rw [Units.continuous_iff]
@@ -29,7 +27,7 @@ theorem continuous_tinvR (m : ℕ) : Continuous (GL2LocalData.tinvR : GL (Fin m)
     exact Units.continuous_val.matrix_transpose
 
 /- English proof (translation)
-The claim follows from `continuous_tinvR`.
+A detailed English derivation is pending.
 -/
 theorem tinvR_continuous : ∀ m : ℕ, Continuous (GL2LocalData.tinvR : GL (Fin m) ℝ → GL (Fin m) ℝ) :=
   continuous_tinvR

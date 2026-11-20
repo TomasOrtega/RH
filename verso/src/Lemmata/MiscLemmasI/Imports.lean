@@ -6,7 +6,7 @@ open scoped ComplexOrder
 namespace Bl.SecondBlockLemmaJ
 
 /- English proof (translation)
-Set `: Algebra K L` to `τ.toAlgebra`. Establish `: FaithfulSMul K L` using `(faithfulSMul_iff_algebraMap_injective K L).2 τ.injective`. Conclude with `(linearIndependent_algebraMap_comp_iff (R := K) (S := L) (v := c)).2 hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem goal1 {K L ι n : Type} [Field K] [Field L] [Fintype ι] [Fintype n] [DecidableEq ι]
     [DecidableEq n] (τ : K →+* L) (c : ι → n → K) (hc : LinearIndependent K c) :

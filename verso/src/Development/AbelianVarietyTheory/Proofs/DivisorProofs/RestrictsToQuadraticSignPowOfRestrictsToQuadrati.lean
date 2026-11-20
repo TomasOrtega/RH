@@ -25,9 +25,9 @@ attribute [local instance] _root_.Formalism.BasicNotions.Host.cmStar _root_.Glob
   _root_.GlobalTheory.LocalData.isLocalField _root_.GlobalTheory.FunObj.borelKw
   _root_.GlobalTheory.FunObj.borelSpaceKw in
 /- English proof (translation)
-Rewrite `h` using `[Algebra.norm_apply, ← LinearMap.isUnit_iff_isUnit_det]`. Take `⟨u, hu⟩` from `h`. Use `IsUnit.of_mul_eq_one (u.inv 1) ?_` and prove the remaining obligations. Use `congrArg (fun f : Module.End R S => f 1) u.val_inv` as an intermediate fact. Simplify using `only [hu] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem isUnit_of_isUnit_norm' {R S : Type} [CommRing R] [CommRing S] [Algebra R S]
     [Module.Free R S] [Module.Finite R S] (z : S) (h : IsUnit (Algebra.norm R z)) : IsUnit z := by
@@ -46,17 +46,17 @@ attribute [local instance] _root_.Formalism.BasicNotions.Host.cmStar _root_.Glob
   _root_.GlobalTheory.FunObj.borelSpaceKw in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ h2 χ n hχ`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩`. Take `⟨⟨η, hη⟩, hall⟩` from `hχ`. Establish `hηe` using `hη.eq_normSign`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show χ ((Units.map ↑(algebraMap (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F ⊗[F] E))) a) = η a ^ n from hall η hη a]`. Use `split_ifs with ha`. Take `⟨y, hy, z, hz, rfl⟩` from `Subgroup.mem_sup.1 ha`. Take `⟨t, rfl⟩` from `hy`. Take `⟨w, rfl⟩` from `hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, hη.2.1 t, hη.2.2.1 w]`. Simplify using the standard rewrite rules. Establish `hs : _root_.GlobalTheory.IdeleNormChar.normSign E a ≠ 1`. Introduce `h1`. Take `⟨t, ht⟩` from `(_root_.GlobalTheory.IdeleNormChar.normSign_eq_one_iff E a).1 h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `_root_.GlobalTheory.QuadSymbol.mem_normGroup_iff.1 ht`. Establish `hzu : IsUnit z` using `isUnit_of_isUnit_norm' z (hz ▸ Units.isUnit _)`. Apply `ha` to reduce the goal to its premises. Establish `hn : Units.map (Algebra.norm (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F)) hzu.unit = a / _root_.GlobalTheory.QuadSymbol.toUnits F (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) t`. Use `ext`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hz`. Establish `key : a = _root_.GlobalTheory.QuadSymbol.toUnits F (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) t * Units.map (Algebra.norm (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F)) hzu.unit`. Rewrite using `[hn, mul_div_cancel]`. Rewrite using `[key]`. Conclude with `mul_mem (Subgroup.mem_sup_left ⟨t, rfl⟩) (Subgroup.mem_sup_right ⟨_, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hm : _root_.GlobalTheory.IdeleNormChar.normSign E a = -1` using `(Int.units_eq_one_or _).resolve_left hs`. Rewrite using `[hηe]`. Simplify using `[hm, _root_.GlobalTheory.IdeleNormChar.signToCircle]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LFun.resEtaPow_of_resEta : ∀ (F E : Type) [Field F]
     [NumberField F] [Field E] [NumberField E] [Algebra F E], Module.finrank F E = 2 →

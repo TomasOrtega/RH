@@ -12,7 +12,7 @@ namespace GlobalTheory.DRFlag
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `h1 : u = u'` using `funext fun i => GlobalTheory.FlagMod.tan_ext_left (hu i)`. Establish `h2 : v = v'` using `funext fun i => GlobalTheory.FlagMod.tan_ext_left (hv i)`. Substitute `h1 h2` using the available equality. Conclude with `e`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem initSpan_eq_transport {Y : Scheme.{0}} {t : SAB H Y} {K : Type} [Field K] {p p' : Sp K ⟶ Y} (h : p = p')
     {m n : ℕ} (u : Fin m → TanM p t.G) (v : Fin n → TanM p t.G) (u' : Fin m → TanM p' t.G)
@@ -26,15 +26,13 @@ theorem initSpan_eq_transport {Y : Scheme.{0}} {t : SAB H Y} {K : Type} [Field K
   exact e
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c V M X π ty A σ k X' f ty' A' hfl hI x`. Take `⟨U, hU, m, b, hxU, hb⟩` from `hI (f x)`. Take `⟨_, ⟨U', hU', rfl⟩, hx, hle⟩` from `X'.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ ((f ⁻¹ᵁ U : X'.Opens) : Set X') from hxU) (f ⁻¹ᵁ U).isOpen`. Establish `hle' : U' ≤ f ⁻¹ᵁ U` using `fun y hy => hle hy`. Establish `h0 : ⊤ ≤ (tau hU' ≫ f) ⁻¹ᵁ U` using `le_preimage_map f hle' (tau_le hU' le_rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : spMap (ev (tau hU' ≫ f) U h0) ≫ tau hU ≫ π = tau hU' ≫ f ≫ π`. Rewrite using `[← Category.assoc]`. Conclude with `(congrArg (· ≫ π) (spMap_ev (tau hU' ≫ f) hU h0)).trans (Category.assoc _ _ _)`. Use `⟨U', hU', m, basPull (ev (tau hU' ≫ f) U h0) e0 b, hx, ?_⟩` and prove the remaining obligations. Introduce `K _ w hw u hu j hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw' : ⊤ ≤ (w ≫ f) ⁻¹ᵁ U` using `le_preimage_map f hle' hw`. Take `⟨U₁, hU₁⟩` from `Atlas.FlagAt.exists_up (hfl K w _ hu)`. Establish `key` using `hb K (w ≫ f) hw' U₁ (hU₁ ▸ hfl K w _ hu) j hj`. Establish `e1 : spMap (ev w U' hw) ≫ tau hU' ≫ f = w ≫ f`. Rewrite using `[← Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (· ≫ f) (spMap_ev w hU' hw)`. Establish `e2 : ev (w ≫ f) U hw' = (ev w U' hw).comp (ev (tau hU' ≫ f) U h0)` using `(GlobalTheory.FlagMod.ev_congr e1.symm U hw' (le_preimage_comp _ h0)).trans (ev_spMap _ _ U h0 _)`. Use `initSpan_eq_transport (Category.assoc w f π) _ _ _ _ (fun i => ?_) (fun i => ?_) key` and prove the remaining obligations. Conclude with `congrFun (congrFun hU₁ σ) i`. Rewrite using `[basAt_left b, basAt_left (basPull (ev (tau hU' ≫ f) U h0) e0 b) w hw, basPull_apply, GlobalTheory.FlagMod.tanPull_left, e2, GlobalTheory.FlagMod.dualMap_comp, ← spMap_comp', Category.assoc]`.
-
-Conclude with `Category.assoc _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntStep.pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : ValuationSubring c.F) (M : Model Xo c V.subtype) (X : Scheme.{0}) (π : X ⟶ M.X) (ty : (E →+* ℂ) → Finset ℕ) (A : Atlas M π ty) (σ : E →+* ℂ) (k : ℕ) (X' : Scheme.{0}) (f : X' ⟶ X) (ty' : (E →+* ℂ) → Finset ℕ) (A' : Atlas M (f ≫ π) ty'), (∀ (K : Type) [Field K] (w : Sp K ⟶ X') (u : Vecs Dw M.t K), A'.FlagAt w u → A.FlagAt (w ≫ f) u) → IntStep A σ k → IntStep A' σ k := by
   intro E _ _ _ H Dw l Xo c V M X π ty A σ k X' f ty' A' hfl hI x

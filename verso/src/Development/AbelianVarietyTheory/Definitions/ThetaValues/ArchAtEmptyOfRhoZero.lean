@@ -30,15 +30,15 @@ def evG : AddMonoidAlgebra (T.R j) (Deg D j) →+* (DomPt T j → ℂ) :=
   AddMonoidAlgebra.liftNCRingHom (rdRing h j hj) 1 (fun _ _ => Commute.all _ _)
 
 /- English proof (translation)
-Simplify using `[evG, AddMonoidAlgebra.liftNCRingHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evG_single (m : Deg D j) (f : T.R j) : evG h j hj (AddMonoidAlgebra.single m f) = rdRing h j hj f := by
   simp [evG, AddMonoidAlgebra.liftNCRingHom]
 
 /- English proof (translation)
-Proceed by induction on `F using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add F G hF hG => rw [smul_add, map_add, map_add, hF, hG, smul_add]`. Consider the case `single m f`. Rewrite using `[AddMonoidAlgebra.smul_single, evG_single, evG_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `y`. Express the relevant statement in the definitionally equal form `rdU (T.U j T.σ₀) (a • f) y.1 y.2.1 = _`. Rewrite using `[map_smulₛₗ]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evG_smul (a : T.Q.c.F) (F : AddMonoidAlgebra (T.R j) (Deg D j)) :
     evG h j hj (a • F) = T.σ₀ a • evG h j hj F := by
@@ -53,11 +53,11 @@ theorem evG_smul (a : T.Q.c.F) (F : AddMonoidAlgebra (T.R j) (Deg D j)) :
 
 set_option synthInstance.maxHeartbeats 200000 in
 /- English proof (translation)
-Establish `hJ` using `GlobalTheory.ReadingIndependence.jInjRd_of_laws T h.toLawsCore.toLawsM hj (wtA u) u.n m (fun i => Submodule.inclusion (cutR_le T.C j u) (F i)) (hF.map' (Submodule.inclusion (cutR_le T.C j u)) (Submodule.ker_inclusion _ _ _))`. Rewrite `hJ`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Use `hJ g ?_` and prove the remaining obligations. Use function extensionality and compare the values at `k x`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hx : x ∈ ((T.U j T.σ₀).X k).dom`. Use `congrFun hg ⟨k, x, hx⟩` as an intermediate fact. Simplify using `only [incG_apply, evG_single, Finset.sum_apply, Pi.smul_apply] at this ⊢`. Conclude with `this`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Pi.zero_apply]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `: rdC (T.U j) T.σ₀ (wtA u) u.n (Submodule.inclusion (cutR_le T.C j u) (F i)) k x = 0` using `dif_neg hx`. Rewrite using `[this, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evG_indep (u : WeightFamilies.Wt D j) (m : ℕ) (F : Fin m → (recB h.toLawsCore).Cusp j u) (hF : LinearIndependent (recB h.toLawsCore).KO F) :
     LinearIndependent ℂ fun i => evG h j hj (incG deg (cutR T.C j) u (F i)) := by
@@ -85,7 +85,7 @@ def rdgU (n : SecNorm (recB h.toLawsCore)) : Rdg (recPlusN h j hj n) where
   indep := evG_indep h j hj
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => rfl, fun u F y => congrFun (evG_single h j hj (deg u) F.1) y⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRdgU_rdgU (n : SecNorm (recB h.toLawsCore)) : IsRdgU h j hj n (rdgU h j hj n) (Equiv.refl _) :=
   ⟨fun _ => rfl, fun u F y => congrFun (evG_single h j hj (deg u) F.1) y⟩
@@ -93,7 +93,7 @@ theorem isRdgU_rdgU (n : SecNorm (recB h.toLawsCore)) : IsRdgU h j hj n (rdgU h 
 end Record
 
 /- English proof (translation)
-Rewrite using `[← show v = v' from funext e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem li_congr {ι M : Type} [AddCommGroup M] [Module ℂ M] {v v' : ι → M} (h : LinearIndependent ℂ v)
     (e : ∀ i, v i = v' i) : LinearIndependent ℂ v' := by
@@ -119,13 +119,13 @@ Both sides reduce to the same expression.
 def tl (β : Fin (n + 1) →₀ ℕ) : ℕ := ∑ i : Fin n, β i.succ
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_eq_sum, Fin.sum_univ_succ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem degree_eq (β : Fin (n + 1) →₀ ℕ) : β.degree = β 0 + tl β := by
   rw [Finsupp.degree_eq_sum, Fin.sum_univ_succ]; rfl
 
 /- English proof (translation)
-Rewrite using `[monomial_eq, Finsupp.prod_fintype _ _ (by simp), Fin.prod_univ_succ]`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mono_ex (a : ℕ) (α : Fin n → ℕ) :
     (monomial (ex a α) (1 : ℂ)) = (∏ i, X i.succ ^ α i) * X 0 ^ a := by
@@ -133,13 +133,13 @@ theorem mono_ex (a : ℕ) (α : Fin n → ℕ) :
   simp [mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => exact ⟨0, fun _ => Nat.zero_le _, by simp⟩`. Consider the case `succ a ih`. Take `⟨α, h1, h2⟩` from `ih (by omega)`. Establish `: ∃ i, α i < γ i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `Finset.sum_le_sum (s := Finset.univ) fun i _ => hc i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨i, hi⟩` from `this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨α + Pi.single i 1, fun k => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1 k` using `[hk]`. Simplify using `[Finset.sum_add_distrib, h2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_le_sum (γ : Fin n → ℕ) (a : ℕ) (h : a ≤ ∑ i, γ i) : ∃ α : Fin n → ℕ, α ≤ γ ∧ ∑ i, α i = a := by
   induction a with
@@ -165,15 +165,15 @@ def supp (q : (Fin (n + 1) →₀ ℕ) → Prop) : Submodule ℂ (MvPolynomial (
   smul_mem' := fun c p hp β hβ => by simp [hp β hβ]
 
 /- English proof (translation)
-Rewrite using `[eval_eq', Finset.sum_eq_single (ex k 0)]`. Rewrite using `[Fin.prod_univ_succ]`. Simplify using the standard rewrite rules. Introduce `β hβ hne`. Establish `hd : β.degree = k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Conclude with `(mem_support_iff.1 hβ) (hp.coeff_eq_zero hc)`. Establish `: ∃ i : Fin n, β i.succ ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Establish `: tl β = 0` using `Finset.sum_eq_zero fun i _ => hc i`. Rewrite `hd` using `[degree_eq]`. Use extensionality with `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[hc i]`. Take `⟨i, hi⟩` from `this`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i.succ) (by simp [hi]), mul_zero]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hn`. Rewrite using `[notMem_support_iff.1 hn, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem eval_single_eq_coeff (p : MvPolynomial (Fin (n + 1)) ℂ) {k : ℕ} (hp : p.IsHomogeneous k) :
     eval (Pi.single 0 1) p = coeff (ex k 0) p := by
@@ -211,7 +211,7 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
 
 include hs in
 /- English proof (translation)
-Simplify using `[Rdg.mon, hs, mono_ex]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mon_eq (α : Fin (WeightFamilies.dimY D j) → ℕ) (a : ℕ) :
     R.mon w t α * R.s w t 0 ^ a = φ (monomial (ex a α) 1) := by
@@ -219,11 +219,11 @@ theorem mon_eq (α : Fin (WeightFamilies.dimY D j) → ℕ) (a : ℕ) :
 
 include hs hsp in
 /- English proof (translation)
-Take `⟨α, h1, h2⟩` from `exists_le_sum (fun i => β i.succ) a ha`. Establish `hle : ex 0 α ≤ β` using `fun i => Fin.cases (by simp) (fun i => by simpa using h1 i) i`. Establish `hdeg : (ex 0 α).degree = a` using `by rw [degree_eq]; simpa [tl] using h2`. Establish `hsum : ex 0 α + (β - ex 0 α) = β` using `add_tsub_cancel_of_le hle`. Use `Submodule.subset_span ⟨α, φ (monomial (β - ex 0 α) c), h2, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsp]`. Use `⟨_, isHomogeneous_monomial c ?_, rfl⟩` and prove the remaining obligations. Use `congrArg Finsupp.degree hsum` as an intermediate fact. Rewrite `this` using `[map_add]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `mon_eq R φ w t hs α 0` as an intermediate fact. Rewrite `this` using `[pow_zero, mul_one]`. Rewrite using `[this, ← map_mul, monomial_mul, hsum, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mono_mem_deep (u : WeightFamilies.Wt D j) (a : ℕ) (β : Fin (WeightFamilies.dimY D j + 1) →₀ ℕ) (c : ℂ)
     (hd : β.degree = u.n / 2 + a) (ha : a ≤ tl β) : φ (monomial β c) ∈ R.deep w t u a := by
@@ -243,11 +243,11 @@ theorem mono_mem_deep (u : WeightFamilies.Wt D j) (a : ℕ) (β : Fin (WeightFam
 
 include hs hsp in
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `g ⟨α, f, hα, hf, rfl⟩`. Rewrite `hf` using `[hsp]`. Take `⟨q, -, rfl⟩` from `hf`. Use `mon_eq R φ w t hs α 0` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[pow_zero, mul_one]`. Use `⟨monomial (ex 0 α) 1 * q, fun β hβ => ?_, by simp [this]⟩` and prove the remaining obligations. Rewrite using `[coeff_monomial_mul', if_neg]`. Introduce `hle`. Apply `hβ` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hα]`. Conclude with `Finset.sum_le_sum fun i _ => by simpa using hle i.succ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deep_le (u : WeightFamilies.Wt D j) (a : ℕ) : R.deep w t u a ≤ (supp fun β => a ≤ tl β).map φ.toLinearMap := by
   refine Submodule.span_le.2 ?_
@@ -265,53 +265,51 @@ theorem deep_le (u : WeightFamilies.Wt D j) (a : ℕ) : R.deep w t u a ≤ (supp
 
 include hs hsp in
 /- English proof (translation)
-Establish `hconst : ∀ f ∈ R.sp wF Set.univ, f = φ (C (f x0))`. Introduce `f hf`. Rewrite `hf` using `[hsp, hF]`. Take `⟨q, hq, rfl⟩` from `hf`. Establish `h0 : q.totalDegree = 0` using `Nat.le_zero.1 (IsHomogeneous.totalDegree_le hq)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h0` using `[totalDegree_eq_zero_iff_eq_C]`. Express the relevant statement in the definitionally equal form `φ q = φ (C (φ q x0))`. Rewrite using `[hx, h0]`. Simplify using the standard rewrite rules. Establish `hlead : ∀ {m : ℕ} (θ : Fin m → R.Y → ℂ), (∀ i, θ i ∈ R.sp wF Set.univ) → ∀ p, R.lead w t T (a0 D j T) θ p = φ (monomial (ex (T - ∑ i, p.1.1 i) p.1.1) (θ p.2 x0))`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `m θ hθ p`. Rewrite using `[Rdg.lead, mon_eq R φ w t hs, hconst _ (hθ p.2), ← map_mul, mul_comm, C_mul_monomial, ← hconst _ (hθ p.2), mul_one]`. Establish `hrk : Module.finrank ℂ (R.sp ka Set.univ) = (T + WeightFamilies.dimY D j).choose (WeightFamilies.dimY D j)`. Rewrite using `[hsp, (Submodule.equivMapOfInjective _ hφ _).symm.finrank_eq, GlobalTheory.ProjCut.finrank_homogeneousSubmodule, hk, Fintype.card_fin, show 2 * T / 2 = T by omega, show T + (WeightFamilies.dimY D j + 1) - 1 = T + WeightFamilies.dimY D j by omega, Nat.choose_symm_add]`. Use `⟨fun _ => ⟨?_, fun i => ?_⟩, fun v => ⟨φ (C (v 0)), ?_, fun q => ?_⟩, fun k g hg h0 => ⟨0, ?_⟩, fun m θ hθ hi => ⟨?_, ?_⟩, ?_, ?_, fun m θ hθ hspan => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hs, hx]`. Simplify using `[hs, hx]`. Rewrite using `[hsp, hF]`. Conclude with `⟨_, isHomogeneous_C _ _, rfl⟩`. Rewrite using `[hx, Subsingleton.elim q 0]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hn : (addL wF wL k).n / 2 = k`. Express the relevant statement in the definitionally equal form `(wF.n + k * wL.n) / 2 = k`. Rewrite using `[hF, hL]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `hg` using `[hsp, hn]`. Take `⟨q, hq, rfl⟩` from `hg`. Establish `h1 : coeff (ex k 0) q = 0` using `by rw [← eval_single_eq_coeff q hq, ← hx]; exact h0 0`. Express the relevant statement in the definitionally equal form `R.s w t 0 ^ (0 + 1) * φ q ∈ _`. Rewrite using `[zero_add, pow_one, hs, ← map_mul, q.as_sum, Finset.mul_sum, map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun β hβ => ?_` and prove the remaining obligations. Establish `hd : β.degree = k`. Assume the negation of the conclusion as `hc`. Conclude with `(mem_support_iff.1 hβ) (hq.coeff_eq_zero hc)`. Rewrite using `[MvPolynomial.X, monomial_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mono_mem_deep R φ hsp w t hs _ _ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_add, add_zero, hn, hd]`. Simplify using `[add_comm]`. Assume the negation of the conclusion as `hc`. Establish `h2 : tl β = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: tl β ≤ tl (Finsupp.single 0 1 + β)` using `Finset.sum_le_sum fun i _ => by simp`. Use linear arithmetic over natural numbers and integers. Apply `mem_support_iff.1 hβ` to reduce the goal to its premises. Rewrite using `[← h1]`. Use `congr 1`.
+Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[degree_eq]`. Use extensionality with `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (Finset.sum_eq_zero_iff.1 h2) i (Finset.mem_univ _)`. Establish `hm : m ≤ 1` using `by simpa using hi.fintype_card_le_finrank`. Establish `hsub : Subsingleton (Fin m)` using `Fin.subsingleton_iff_le_one.2 hm`. Establish `hne : ∀ i, θ i x0 ≠ 0` using `fun i h => hi.ne_zero i (by funext q; exact h)`. Establish `h1 : LinearIndependent ℂ fun p : {α : Fin (WeightFamilies.dimY D j) → ℕ // ∑ i, α i < a0 D j T} × Fin m => (monomial (ex (T - ∑ i, p.1.1 i) p.1.1) (1 : ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(basisMonomials (Fin (WeightFamilies.dimY D j + 1)) ℂ).linearIndependent.comp (fun p : {α : Fin (WeightFamilies.dimY D j) → ℕ // ∑ i, α i < a0 D j T} × Fin m => ex (T - ∑ i, p.1.1 i) p.1.1) (fun p q hpq => Prod.ext (Subtype.ext (funext fun i => by simpa using DFunLike.congr_fun h …` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Establish `h2` using `(h1.units_smul fun p => Units.mk0 _ (hne p.2)).map' φ.toLinearMap (LinearMap.ker_eq_bot.2 hφ)`. Use `li_congr h2 fun p => ?_` and prove the remaining obligations. Rewrite using `[hlead θ hθ]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Units.smul_def, smul_monomial, ← map_smul]`. Establish `h1 : Submodule.span ℂ (Set.range (R.lead w t T (a0 D j T) θ)) ≤ (supp fun β => tl β < a0 D j T).map φ.toLinearMap`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Use `⟨_, fun β hβ => ?_, (hlead θ hθ p).symm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_monomial, if_neg]`. Introduce and unpack `rfl`. Conclude with `hβ (by simpa [tl] using p.1.2)`. Use `Disjoint.mono h1 (deep_le R φ hsp w t hs _ _) ?_` and prove the remaining obligations. Rewrite using `[disjoint_iff, ← Submodule.map_inf _ hφ, eq_bot_iff]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨p, ⟨hp1, hp2⟩, rfl⟩`. Establish `: p = 0`. Use extensionality with `β`. Distinguish the cases in `hβ : tl β < a0 D j T`. Conclude with `hp2 β (by omega)`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp1 β hβ`. Simplify using `[this]`. Rewrite using `[hrk, one_mul]; exact Nat.choose_le_choose _ (by omega)`. Rewrite using `[one_mul, ← hrk]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hex : ∃ i, θ i x0 ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `: Submodule.span ℂ (Set.range (vals (fun _ : Fin 1 => x0) θ)) ≤ ⊥`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Use function extensionality and compare the values at `q`. Conclude with `hc i`. Rewrite `this` using `[hspan]`. Use `congrFun (show (1 : Fin 1 → ℂ) = 0 from this Submodule.mem_top) 0` as an intermediate fact.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `at this`. Take `⟨i, hi⟩` from `hex`. Express the relevant statement in the definitionally equal form `R.sp ka Set.univ ≤ _`. Rewrite using `[hsp, hk, show 2 * T / 2 = T by omega]`. Introduce and unpack `_ ⟨q, hq, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails.
 
-Express the relevant statement in the definitionally equal form `φ q ∈ _`. Rewrite using `[q.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun β hβ => ?_` and prove the remaining obligations. Establish `hd : β.degree = T`. Assume the negation of the conclusion as `hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `(mem_support_iff.1 hβ) (hq.coeff_eq_zero hc)`. Distinguish the cases in `hb : tl β < a0 D j T`. Use `Submodule.mem_sup_left ?_` and prove the remaining obligations. Establish `h1` using `hlead θ hθ (⟨fun i => β i.succ, hb⟩, i)`. Establish `h2 : ex (T - ∑ i : Fin (WeightFamilies.dimY D j), β i.succ) (fun i => β i.succ) = β`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `hd` using `[degree_eq, tl]`. Use extensionality with `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Simplify using `only [h2] at h1`. Establish `h3 : φ (monomial β (coeff β q)) = (coeff β q / θ i x0) • R.lead w t T (a0 D j T) θ (⟨fun i => β i.succ, hb⟩, i)`. Rewrite using `[h1, ← map_smul, smul_monomial, smul_eq_mul, div_mul_cancel₀ _ hi]`. Rewrite using `[h3]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Use `Submodule.mem_sup_right (mono_mem_deep R φ hsp w t hs _ _ _ _ ?_ (by omega))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (wF.n + WeightFamilies.dimY D j * wL.n) / 2 + (T - WeightFamilies.dimY D j)`. Rewrite using `[hd, hF, hL]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem anFacts_of_poly (hφ : Function.Injective φ) (x0 : R.Y) (hx : ∀ p, φ p x0 = eval (Pi.single 0 1) p)
     (hL : wL.n = 2) (ka wF : WeightFamilies.Wt D j) (hF : wF.n = 0) (T : ℕ) (hT : WeightFamilies.dimY D j ≤ T) (hk : ka.n = 2 * T) :
@@ -453,7 +451,7 @@ def hN (j : ℕ) (w : WeightFamilies.Wt D j) (σ : B₀.KO →+* ℂ) (f : MvPol
   ∑ m ∈ Finset.finsuppAntidiag Finset.univ (w.n / 2), ‖σ (coeff m f)‖
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => norm_nonneg _ defin f hf h0 := by ext m by_cases hm : m.degree = w.n / 2 · have := (Finset.sum_eq_zero_iff_of_nonneg fun _ _ => norm_nonneg _).1 h0 m (by rw [Finset.mem_finsuppAntidiag]; exact ⟨by rw [← hm, Finsupp.degree_eq_sum], Finset.subset_univ _ …`.
+A detailed English derivation is pending.
 -/
 theorem hN_norm (j : ℕ) (_ : InR D j) (w : WeightFamilies.Wt D j) (σ : B₀.KO →+* ℂ) : IsNormOn (hC B₀ j w) σ (hN B₀ j w σ) where
   nonneg f _ := Finset.sum_nonneg fun _ _ => norm_nonneg _
@@ -470,7 +468,7 @@ theorem hN_norm (j : ℕ) (_ : InR D j) (w : WeightFamilies.Wt D j) (σ : B₀.K
     exact Finset.sum_le_sum fun m _ => by rw [coeff_add, map_add]; exact norm_add_le _ _
 
 /- English proof (translation)
-The claim follows from `Module.Finite.iff_fg.2 (homogeneousSubmodule_fg _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem hC_fd (j : ℕ) (_ : InR D j) (w : WeightFamilies.Wt D j) : FiniteDimensional B₀.KO (hC B₀ j w) :=
   Module.Finite.iff_fg.2 (homogeneousSubmodule_fg _ _ _)
@@ -499,7 +497,7 @@ def toyX : PJ D (exampleB B₀) P j :=
 def fn (n : ℕ) : MvPolynomial (Fin n) ℂ →ₐ[ℂ] ((Fin n → ℂ) → ℂ) := aeval fun i y => y i
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [fn]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => rw [map_mul, Pi.mul_apply, hp]`. Simplify using `[fn]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem fn_apply {n : ℕ} (p : MvPolynomial (Fin n) ℂ) (y : Fin n → ℂ) : fn n p y = eval y p := by
   induction p using MvPolynomial.induction_on with
@@ -508,7 +506,7 @@ theorem fn_apply {n : ℕ} (p : MvPolynomial (Fin n) ℂ) (y : Fin n → ℂ) : 
   | mul_X p i hp => rw [map_mul, Pi.mul_apply, hp]; simp [fn]
 
 /- English proof (translation)
-Introduce `p q h` and use `MvPolynomial.funext fun y => by rw [← fn_apply, ← fn_apply, h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fn_inj (n : ℕ) : Function.Injective (fn n) := fun p q h =>
   MvPolynomial.funext fun y => by rw [← fn_apply, ← fn_apply, h]
@@ -519,14 +517,14 @@ def evP (n : ℕ) (M : Type) [AddCommMonoid M] : AddMonoidAlgebra (MvPolynomial 
   AddMonoidAlgebra.liftNCRingHom ((fn n).toRingHom.comp (MvPolynomial.map σ)) 1 (fun _ _ => Commute.all _ _)
 
 /- English proof (translation)
-Simplify using `[evP, AddMonoidAlgebra.liftNCRingHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evalEmbedding_single {n : ℕ} {M : Type} [AddCommMonoid M] (m : M) (f : MvPolynomial (Fin n) K) :
     evP σ n M (AddMonoidAlgebra.single m f) = fn n (MvPolynomial.map σ f) := by
   simp [evP, AddMonoidAlgebra.liftNCRingHom]
 
 /- English proof (translation)
-Proceed by induction on `F using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add F G hF hG => rw [smul_add, map_add, map_add, hF, hG, smul_add]`. Consider the case `single m f`. Rewrite using `[AddMonoidAlgebra.smul_single, evalEmbedding_single, evalEmbedding_single, ← map_smul, smul_eq_C_mul, smul_eq_C_mul, map_mul, map_C]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalEmbedding_smul {n : ℕ} {M : Type} [AddCommMonoid M] (a : K) (F : AddMonoidAlgebra (MvPolynomial (Fin n) K) M) :
     evP σ n M (a • F) = σ a • evP σ n M F := by
@@ -537,7 +535,7 @@ theorem evalEmbedding_smul {n : ℕ} {M : Type} [AddCommMonoid M] (a : K) (F : A
     rw [AddMonoidAlgebra.smul_single, evalEmbedding_single, evalEmbedding_single, ← map_smul, smul_eq_C_mul, smul_eq_C_mul, map_mul, map_C]
 
 /- English proof (translation)
-Use `letI : Algebra K ℂ := σ.toAlgebra`. Establish `h1` using `(Module.Flat.linearIndependent_one_tmul (S := ℂ) hF).map' (algebraTensorAlgEquiv K ℂ (σ := Fin n)).toLinearEquiv.toLinearMap (LinearEquiv.ker _)`. Use `li_congr h1 fun i => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem map_indep {n m : ℕ} (F : Fin m → MvPolynomial (Fin n) K) (hF : LinearIndependent K F) :
     LinearIndependent ℂ fun i => MvPolynomial.map σ (F i) := by
@@ -559,13 +557,13 @@ def exampleEvaluation (σ : B₀.KO →+* ℂ) : Rdg (toyX X₀ hj) where
     exact li_congr h1 fun i => (evalEmbedding_single σ (deg u) (F i).1).symm
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨F, -, rfl⟩`. Conclude with `⟨_, IsHomogeneous.map (cutR_le (hC B₀) j u F.2) σ, (evalEmbedding_single σ (deg u) F.1).symm⟩`. Introduce and unpack `_ ⟨q, hq, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `fn _ q ∈ _`. Rewrite using `[q.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun β hβ => ?_` and prove the remaining obligations. Establish `hd : β.degree = u.n / 2`. Assume the negation of the conclusion as `hc`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `(mem_support_iff.1 hβ) (IsHomogeneous.coeff_eq_zero hq hc)`. Establish `hm : (monomial β (1 : B₀.KO)) ∈ cutR (hC B₀) j u`. Rewrite using `[cutR_eq _ hj]`. Conclude with `isHomogeneous_monomial _ hd`. Establish `: fn _ (monomial β (coeff β q)) = coeff β q • fn _ (MvPolynomial.map σ (monomial β 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_smul, map_monomial, map_one, smul_monomial, smul_eq_mul, mul_one]`. Establish `h2 : fn _ (MvPolynomial.map σ (monomial β 1)) ∈ (exampleEvaluation X₀ hj σ).sp u Set.univ` using `Submodule.subset_span ⟨⟨_, hm⟩, trivial, evalEmbedding_single σ (deg u) _⟩`. Rewrite using `[this]`. Conclude with `((exampleEvaluation X₀ hj σ).sp u Set.univ).smul_mem (coeff β q) h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exampleEvaluation_span_univ (σ : B₀.KO →+* ℂ) (u : WeightFamilies.Wt D j) :
     (exampleEvaluation X₀ hj σ).sp u Set.univ = (homogeneousSubmodule _ ℂ (u.n / 2)).map (fn _).toLinearMap := by
@@ -593,7 +591,7 @@ def toyW (k : Fin (WeightFamilies.dimY D j + 1)) : (exampleB B₀).Cusp j (wscal
   ⟨MvPolynomial.X k, by rw [cutR_eq _ hj]; rw [hC, show (wscalar D j 2 even_two).n / 2 = 1 from Nat.div_self two_pos]; exact isHomogeneous_X B₀.KO k⟩
 
 /- English proof (translation)
-Use `anFacts_of_poly (exampleEvaluation X₀ hj σ) (fn _) (exampleEvaluation_span_univ X₀ hj σ) _ _ (fun i => ?_) (fn_inj _) _ (fun p => fn_apply p _) rfl _ _ rfl T hT rfl` and prove the remaining obligations. Establish `h : ∀ k, (exampleEvaluation X₀ hj σ).ev ((toyX X₀ hj).inc _ (toyW hj k)) = fn _ (MvPolynomial.X k)` using `fun k => (evalEmbedding_single σ _ _).trans (congrArg _ (map_X σ k))`. Simplify using `only [Rdg.s, h]`. Rewrite using `[Finset.sum_eq_single i (fun b _ hb => by rw [if_neg hb.symm]; exact zero_smul ℂ _) (by simp), if_pos rfl]`. Conclude with `one_smul ℂ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toy (σ : B₀.KO →+* ℂ) (T : ℕ) (hT : WeightFamilies.dimY D j ≤ T) :
     AnFacts (exampleEvaluation X₀ hj σ) (toyW hj) (fun p => if p.1 = p.2 then 1 else 0) (wscalar D j (2 * T) (even_two_mul T))
@@ -615,23 +613,21 @@ open ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestric
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {K : Type} [Field K]
 
 /- English proof (translation)
-Use `choose e h1 h2 hu using hu`. Establish `hdep : ¬ LinearIndependent ℤ fun a (k : Fin 3) => (e a k.castSucc : ℤ)` using `fun h => by`. Use `h.fintype_card_le_finrank` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, a0, ha0⟩` from `Fintype.not_linearIndependent_iff.1 hdep`. Establish `hk : ∀ k : Fin 3, ∑ a, c a * e a k.castSucc = 0` using `fun k => by simpa using congrFun hc k`. Establish `hs : ∑ a, c a = 0`. Establish `: (∑ a, c a) * d = ∑ a, c a * e a 0 + ∑ a, c a * e a 1`. Rewrite using `[Finset.sum_mul, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun a _ => by rw [← h1 a]; push_cast; ring`. Rewrite `this` using `[show ∑ a, c a * e a 0 = 0 from hk 0, show ∑ a, c a * e a 1 = 0 from hk 1, add_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_right (by exact_mod_cast hd.ne')`. Establish `hall : ∀ k : Fin 4, ∑ a, c a * e a k = 0`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Fin.lastCases ?_ hk k` and prove the remaining obligations. Establish `: (∑ a, c a) * d = ∑ a, c a * e a 2 + ∑ a, c a * e a 3`. Rewrite using `[Finset.sum_mul, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [← h2 a]; push_cast; ring`. Rewrite `this` using `[hs, zero_mul, show ∑ a, c a * e a 2 = 0 from hk 2, zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.symm`. Set `cp : Fin m →₀ ℕ` to `Finsupp.equivFunOnFinite.symm fun a => (c a).toNat`. Set `cm : Fin m →₀ ℕ` to `Finsupp.equivFunOnFinite.symm fun a => (-c a).toNat`. Establish `hpm : ∀ a, c a = (cp a : ℤ) - cm a` using `fun a => (Int.toNat_sub_toNat_neg (c a)).symm`. Establish `hne : cp ≠ cm` using `fun h => ha0 (by rw [hpm, h, sub_self])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : cp.degree = cm.degree`. Rewrite using `[Finsupp.degree_eq_sum, Finsupp.degree_eq_sum]`. Simplify using `only [hpm, Finset.sum_sub_distrib, sub_eq_zero] at hs`. Conclude with `hs` after adjusting the coercions. Establish `hexp : ∀ k, ∑ a, e a k * cp a = ∑ a, e a k * cm a` using `fun k => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `hall k` as an intermediate fact. Simplify using `only [hpm, sub_mul, Finset.sum_sub_distrib, sub_eq_zero] at this`. Simplify using `only [mul_comm (e _ k)]`. Conclude with `this` after adjusting the coercions. Establish `hev : ∀ (β : Fin m →₀ ℕ) x, eval₂ σ (fun i => u i x) (monomial β 1) = ∏ k, v k x ^ ∑ a, e a k * β a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `β x`. Rewrite using `[eval₂_monomial, map_one, one_mul, Finsupp.prod_fintype _ _ (by simp)]`. Simplify using `only [hu, ← Finset.prod_pow, ← pow_mul]`. Rewrite using `[Finset.prod_comm]`. Conclude with `Finset.prod_congr rfl fun k _ => Finset.prod_pow_eq_pow_sum _ _ _`.
-
-Use `⟨monomial cp 1 - monomial cm 1, cm.degree, fun h => ?_, (isHomogeneous_monomial _ hdeg).sub (isHomogeneous_monomial _ rfl), fun x _ => ?_⟩` and prove the remaining obligations. Use `congrArg (coeff cp) h` as an intermediate fact. Simplify using `[coeff_monomial, hne.symm] at this`. Rewrite using `[eval₂_sub, hev, hev]`. Simplify using `[hexp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem homRel_of_monomials (σ : K →+* ℂ) (X : Data E r) {m d : ℕ} (hm : 3 < m) (hd : 0 < d)
     (v : Fin 4 → Frame X.Ψ r → ℂ) (u : Fin m → Frame X.Ψ r → ℂ)
@@ -682,11 +678,11 @@ theorem homRel_of_monomials (σ : K →+* ℂ) (X : Data E r) {m d : ℕ} (hm : 
   · rw [eval₂_sub, hev, hev]; simp [hexp]
 
 /- English proof (translation)
-Take `⟨⟨_, _, -, -, h1⟩, ⟨_, _, -, -, h2⟩⟩` from `GlobalTheory.InterpCheck.margins_definite X hp Xa`. Establish `hR` using `GlobalTheory.InterpCheck.leviRh_definite X hp`. Establish `hL` using `GlobalTheory.InterpCheck.leviL_nonneg X Xa`. Use `⟨⟨_, _, lt_add_one _, lt_add_one _, fun τ hτ x0 ho z hz ξ => ?_⟩, ⟨_, _, lt_add_one _, lt_add_one _, fun x0 ho z hz ξ => ?_⟩, hL, hC, fun k P hP => ⟨hP, fun ξ hξ => (hiso ξ hξ).elim⟩⟩` and prove the remaining obligations. Establish `a1` using `h1 x0 ho z hz ξ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a2` using `h2 x0 ho z hz ξ`. Rewrite `a1`, `a2`, the goal using `[hR x0 ho, mul_zero]`. Break down `hτ with rfl | rfl` into its components or cases. Simplify using `using a1`. Conclude with `a2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `a1` using `h1 x0 ho z hz ξ`. Rewrite `a1`, the goal using `[hR x0 ho, mul_zero]`. Use `mul_nonneg (Nat.cast_nonneg (α := ℝ) (nd X)) (hL x0 ho z hz ξ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem margins_of_definite (X : Data E r) (hp : X.p0 = 0 ∨ X.p0 = r) (Xa : ArchInM X)
     (hC : ∃ C : ℝ, ∀ x ∈ X.dom, Xa.ps0 x ≤ C) (hiso : ∀ ξ, ¬ X.IsIso ξ) : Margins X Xa := by
@@ -710,17 +706,17 @@ theorem margins_of_definite (X : Data E r) (hp : X.p0 = 0 ∨ X.p0 = r) (Xa : Ar
 open GlobalTheory.TwoLines GlobalTheory.InterpCheck.Lines in
 
 /- English proof (translation)
-Take `⟨τ₁, τ₂, hne, hall⟩` from `exists_two (defData E) h`. Establish `hn` using `GlobalTheory.InterpCheck.Lines.nd_eq_two hne hall`. Set `v : Fin 4 → Frame (defData E).Ψ 2 → ℂ` to `![fun x => x τ₁ 0 0, fun x => x τ₁ 1 0, fun x => x τ₂ 0 0, fun x => x τ₂ 1 0]`. Establish `hw : ∀ (k : Fin 4) (d : ℕ), ∃ e : Fin 4 → ℕ, e 0 + e 1 = d ∧ e 2 + e 3 = d ∧ ∀ x, GlobalTheory.InterpCheck.Lines.monAll τ₁ τ₂ k x ^ d = ∏ i, v i x ^ e i`. Introduce `k d`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `fin_cases k`. Conclude with `⟨![d, 0, d, 0], rfl, rfl, fun x => by`. Simplify using `[v, GlobalTheory.InterpCheck.Lines.monAll, GlobalTheory.InterpCheck.Lines.mon, Fin.prod_univ_four, mul_pow]⟩`. Conclude with `⟨![d, 0, 0, d], rfl, by simp, fun x => by`. Simplify using `[v, GlobalTheory.InterpCheck.Lines.monAll, GlobalTheory.InterpCheck.Lines.mon, Fin.prod_univ_four, mul_pow]⟩`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨![0, d, d, 0], by simp, rfl, fun x => by`. Simplify using `[v, GlobalTheory.InterpCheck.Lines.monAll, GlobalTheory.InterpCheck.Lines.mon, Fin.prod_univ_four, mul_pow]⟩`. Conclude with `⟨![0, d, 0, d], by simp, by simp, fun x => by`. Simplify using `[v, GlobalTheory.InterpCheck.Lines.monAll, GlobalTheory.InterpCheck.Lines.mon, Fin.prod_univ_four, mul_pow]⟩`. Use `⟨defData E, GlobalTheory.InterpCheck.Lines.thetaIn rfl rfl rfl hne hall, GlobalTheory.InterpCheck.Lines.flatIn rfl rfl rfl hne hall, rfl, ⟨fun jj => ?_, fun jj => ?_⟩, margins_of_definite _ (Or.inr rfl) _ ⟨0, fun _ _ => le_rfl⟩ (not_isIso rfl)⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `homRel_of_monomials σ _ (by omega) one_pos v _ fun a => ?_` and prove the remaining obligations. Take `⟨e, h1, h2, h3⟩` from `hw (jj a) 1`. Conclude with `⟨e, h1, h2, fun x => by rw [← h3, pow_one]; rfl⟩`. Use `homRel_of_monomials σ _ (by omega) two_pos v _ fun a => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun a => ?_) a` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨e, h1, h2, h3⟩` from `hw 0 2`. Use `⟨e, h1, h2, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3]`. Express the relevant statement in the definitionally equal form `GlobalTheory.InterpCheck.Lines.mon τ₁ τ₂ 0 0 x ^ 0 * (GlobalTheory.InterpCheck.Lines.mon τ₁ τ₂ 0 0 x ^ 2) ^ (1 * (2 / 2)) = GlobalTheory.InterpCheck.Lines.mon τ₁ τ₂ 0 0 x ^ 2`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Evaluate the numerical expressions. Extract witnesses or component facts from the available result.
 
-Take `⟨e, h1, h2, h3⟩` from `hw (jj a) 2`. Use `⟨e, h1, h2, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3]`. Express the relevant statement in the definitionally equal form `GlobalTheory.InterpCheck.Lines.monAll τ₁ τ₂ (jj a) x ^ (2 * (1 * (2 / 2))) = _`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem relIn_margins_lines (σ : K →+* ℂ) (h : Module.finrank ℚ E = 4) :
     ∃ (X : Data E 2) (Xa : ArchInM X) (Fl : FlatM X Xa), Fl.δ = 2 ∧ RelIn σ X Xa ∧ Margins X Xa := by
@@ -763,7 +759,7 @@ theorem relIn_margins_lines (σ : K →+* ℂ) (h : Module.finrank ℚ E = 4) :
 end Lines
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun A => by have := (A.Xa k).frame_theta_const_pos rw [A.hc k, WeightFamilies.c1, h0] at this simp at this⟩`.
+Supply the required witnesses or components.
 -/
 theorem archAt_empty_of_rho_zero {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) {N : ℕ} {wL wF : WeightFamilies.Wt D j}
     (w : Fin N → (recB h.toLawsCore).Cusp j wL) (Tn : ℕ) (CR Tt c : ℝ) (h0 : WeightFamilies.rho D j = 0)

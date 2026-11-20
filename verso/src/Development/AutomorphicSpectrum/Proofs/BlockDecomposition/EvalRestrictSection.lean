@@ -8,7 +8,7 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.ConeEval
 
 /- English proof (translation)
-Introduce `K _ X q T V W h hT hT' s`. Establish `e : X.presheaf.map (homOfLE h).op ≫ (pt T).appLE V ⊤ hT = (pt T).appLE W ⊤ hT'` using `Scheme.Hom.map_appLE _ _ _`. Unfold `ev rs GlobalTheory.Cris.evalAt`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_rs_eq : ∀ {K : Type} [CommRing K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)} (T : Thick (smFun X q))
     {V W : X.Opens} (h : V ≤ W) (hT : InU V T) (hT' : InU W T) (s : Γ(X, W)), ev T hT (rs h s) = ev T hT' s := by

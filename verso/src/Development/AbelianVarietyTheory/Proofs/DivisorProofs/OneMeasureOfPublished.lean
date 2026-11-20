@@ -16,7 +16,7 @@ open MeasureTheory Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.IndefR.
 namespace GlobalTheory.OneMeasureAll
 
 /- English proof (translation)
-Introduce `hP D Tu C t0 hC i P`. Use `⟨GlobalTheory.T.level_index_bound_of_classicalTheorems hP D Tu C t0 hC i P, fun τ => GlobalTheory.T.one_le_dimAt' D i τ, fun μ 𝓕 hF => ⟨GlobalTheory.T.fundamental_domain_measure_ne_zero hP D Tu C t0 hC i P μ 𝓕 hF, GlobalTheory.T.fundamental_domain_measure_ne_top hP D Tu C t0 hC i …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem oneMeasure : Hypotheses2 → ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.OneMeasure D := by
   intro hP D Tu C t0 hC i P

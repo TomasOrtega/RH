@@ -16,26 +16,24 @@ noncomputable section
 namespace GlobalTheory.KTypeFin
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.positive_form_orthonormal_basis_unitary`.
+A detailed English derivation is pending.
 -/
 theorem sesq_onb : ∀ (Wt : Type) [AddCommGroup Wt] [Module ℂ Wt] (S : Submodule ℂ Wt) [FiniteDimensional ℂ S] (Bf : S →ₗ⋆[ℂ] S →ₗ[ℂ] ℂ), (∀ x y, Bf y x = starRingEnd ℂ (Bf x y)) → (∀ x, x ≠ 0 → 0 < (Bf x x).re) → ∃ (m : ℕ) (b : Fin m → S), (∀ i j, Bf (b i) (b j) = if i = j then 1 else 0) ∧ Submodule.span ℂ (Set.range b) = ⊤ ∧ ∀ T : S →ₗ[ℂ] S, (∀ x y, Bf (T x) (T y) = Bf x y) → (∀ j, T (b j) = ∑ i, Bf (b i) (T (b j)) • b i) ∧ Matrix.of (fun i j => Bf (b i) (T (b j))) ∈ Matrix.unitaryGroup (Fin m) ℂ := GlobalTheory.T.positive_form_orthonormal_basis_unitary
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finite_dim_functional_point_evaluations`.
+A detailed English derivation is pending.
 -/
 theorem eval_combo : ∀ (Xt : Type) (S : Submodule ℂ (Xt → ℂ)) [FiniteDimensional ℂ S] (l : S →ₗ[ℂ] ℂ), ∃ (n : ℕ) (x : Fin n → Xt) (c : Fin n → ℂ), ∀ f : S, l f = ∑ i, c i * (f : Xt → ℂ) (x i) := GlobalTheory.T.finite_dim_functional_point_evaluations
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.matched_invariant_hermitian_form`.
+A detailed English derivation is pending.
 -/
 theorem exists_matched_l2_inner_product : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∃ Bf : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) →ₗ⋆[ℂ] ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) →ₗ[ℂ] ℂ, (∀ x y, Bf y x = starRingEnd ℂ (Bf x y)) ∧ (∀ x, x ≠ 0 → 0 < (Bf x x).re) ∧ ∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf σ G.W B.emb, ∀ x y x' y' : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), (x' : GlobalTheory.ThK.Fn F a' (a + a')) = om' (1, k) x → (y' : GlobalTheory.ThK.Fn F a' (a + a')) = om' (1, k) y → Bf x' y' = Bf x y := GlobalTheory.T.matched_invariant_hermitian_form
 
 /- English proof (translation)
-Establish `e0 : mat (k * k') = mat k * mat k'` using `rfl`. Use `⟨fun u hu => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `h1 : u • (mat k - 1) = 0` using `hk.1 u hu`. Establish `h2 : u • (mat k' - 1) = 0` using `hk'.1 u hu`. Establish `e : mat (k * k') - 1 = (mat k - 1) * mat k' + (mat k' - 1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e0]`. Use `noncomm_ring`. Use `show u • (mat (k * k') - 1) = 0`. Rewrite using `[e, smul_add, ← Matrix.smul_mul, h1, h2, zero_mul, add_zero]`. Rewrite using `[e0, Matrix.map_mul]`.
-
-Conclude with `(hk.2 w).mul_left (hk'.2 w)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kInf_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {d : ℕ}
     {W : Spc F E d} {τ : ∀ w : InfinitePlace F, EmbOver E w} {k k' : UA σ W.J} (hk : k ∈ KInf σ W τ)
@@ -52,9 +50,9 @@ theorem kInf_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
     exact (hk.2 w).mul_left (hk'.2 w)
 
 /- English proof (translation)
-Establish `hc : IsContOn (adeleClass F) om'` using `(IsUWeilPair.isUSplitting h.triple.weil').cont`. Establish `hl : (LinearMap.proj x : Fn F a' (a + a') →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm (Fin a' × Fin (a + a'))`. Introduce `g _`. Use `⟨g (fun i => (x i).2) • (BoundedContinuousFunction.evalCLM ℂ (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, BoundedContinuousFunction.evalCLM_apply, SchwartzMap.toBoundedContinuousFunctionCLM_apply, smul_eq_mul, LinearMap.proj_apply, pureA, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hc _ hl Φ hΦ).comp (continuous_const.prodMk continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem cont_eval {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
@@ -72,31 +70,27 @@ theorem cont_eval {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   exact (hc _ hl Φ hΦ).comp (continuous_const.prodMk continuous_id)
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf h Ψ hΨ`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV' h.triple`. Establish `hstab` using `(GlobalTheory.T.matched_pair_theta_exists_data hKP F E σ B a a' G X om om' R Rf h).2`. Take `⟨S, hSfin, hSle, hSk⟩` from `GlobalTheory.FockKFin.polData_kfin F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ hKP hP Ψ hΨ.1`. Use `set D := GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁ with hD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `V : Submodule ℂ (Fn F a' (a + a'))` to `Submodule.span ℂ (insert Ψ {Φ | ∃ k ∈ KInf σ G.W B.emb, Φ = om' (1, k) Ψ})`. Establish `hVD : V ≤ D` using `Submodule.span_le.2 (by`. Introduce and unpack `_ (rfl | ⟨k, hk, rfl⟩)`. Use `exacts [hΨ, hstab k hk Ψ hΨ])`. Establish `hVS : V ≤ S ⊔ Submodule.span ℂ {Ψ}` using `Submodule.span_le.2 (by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ (rfl | ⟨k, hk, rfl⟩)`. Use `exacts [Submodule.mem_sup_right (Submodule.mem_span_singleton_self _), Submodule.mem_sup_left (hSk k hk)])`. Use `haveI : FiniteDimensional ℂ V := Submodule.finiteDimensional_of_le hVS`. Establish `hVk : ∀ k ∈ KInf σ G.W B.emb, ∀ Φ ∈ V, om' (1, k) Φ ∈ V`. Introduce `k hk Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | ⟨k', hk', rfl⟩` into its components or cases. Conclude with `Submodule.subset_span (Or.inr ⟨k, hk, rfl⟩)`. Use `Submodule.subset_span (Or.inr ⟨k * k', kInf_mul hk hk', ?_⟩)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Consider the case `zero => rw [map_zero]`. Conclude with `V.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `V.add_mem hx hy`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `V.smul_mem c hx`. Take `⟨Bf, hsym, hpos, hinv⟩` from `exists_matched_l2_inner_product F E σ B a a' G X om om' R Rf h`. Set `ι : V →ₗ[ℂ] D` to `Submodule.inclusion hVD`. Set `BV : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ` to `(Bf.comp ι).compl₂ ι`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hBV : ∀ x y : V, BV x y = Bf (ι x) (ι y)` using `fun _ _ => rfl`. Take `⟨m, b, horth, hspan, hT⟩` from `sesq_onb _ V BV (fun x y => by rw [hBV, hBV]; exact hsym _ _) (fun x hx => by`. Rewrite using `[hBV]`. Conclude with `hpos _ (fun h0 => hx (Submodule.inclusion_injective hVD (h0.trans (map_zero ι).symm))))`. Set `T : ∀ k ∈ KInf σ G.W B.emb, V →ₗ[ℂ] V` to `fun k hk => (om' (1, k)).restrict (hVk k hk)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hTi : ∀ k (hk : k ∈ KInf σ G.W B.emb), ∀ x y, BV (T k hk x) (T k hk y) = BV x y` using `fun k hk x y => by`. Rewrite using `[hBV, hBV]`. Conclude with `hinv k hk _ _ _ _ rfl rfl`. Set `A : UA σ G.W.J → Matrix (Fin m) (Fin m) ℂ` to `fun k => if hk : k ∈ KInf σ G.W B.emb then Matrix.of fun i j => BV (b i) (T k hk (b j)) else 0`. Set `b' : Fin m → Fn F a' (a + a')` to `fun i => ((b i : V) : Fn F a' (a + a'))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent ℂ b`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`. Use `congrArg (BV (b j)) hg` as an intermediate fact. Simplify `this` using `[map_sum, horth, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hspan' : Submodule.span ℂ (Set.range b') = V`. Rewrite using `[show Set.range b' = V.subtype '' Set.range b from (Set.range_comp _ _), ← Submodule.map_span, hspan, Submodule.map_top, Submodule.range_subtype]`. Establish `hΨV : Ψ ∈ V` using `Submodule.subset_span (Or.inl rfl)`. Use `choose n xs cs hcs using fun i => eval_combo _ V (BV (b i))`. Use `⟨m, b', A, hli.map' V.subtype (Submodule.ker_subtype V), fun i => hVD (b i).2, hspan'.symm ▸ hΨV, fun k hk j => ?_, fun k hk => ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e` using `congrArg Subtype.val ((hT (T k hk) (hTi k hk)).1 j)`. Simplify using `only [A, dif_pos hk]`. Simplify `e` using `[T, b', Submodule.coe_sum, Submodule.coe_smul]`. Simplify using `only [A, dif_pos hk]`. Conclude with `(hT (T k hk) (hTi k hk)).2`.
-
-Establish `hc : Continuous fun k : UA σ G.W.J => (Matrix.of fun i j => ∑ l, cs i l * om' (1, k) (b' j) (xs i l) : Matrix (Fin m) (Fin m) ℂ)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Conclude with `continuous_finset_sum _ fun l _ => continuous_const.mul (cont_eval h (b' j) (GlobalTheory.ThKRatInv.polData_le_schA B G.M' h.triple.geo.hM' (hVD (b j).2).1) _)`. Use `hc.continuousOn.congr fun k hk => ?_` and prove the remaining obligations.
-
-Simplify using `only [A, dif_pos hk]`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[hcs i (T k hk (b j))]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kfin : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ Ψ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∃ (m : ℕ) (b : Fin m → GlobalTheory.ThK.Fn F a' (a + a')) (A : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J → Matrix (Fin m) (Fin m) ℂ), LinearIndependent ℂ b ∧ (∀ i, b i ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)) ∧ Ψ ∈ Submodule.span ℂ (Set.range b) ∧ (∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf σ G.W B.emb, ∀ j, om' (1, k) (b j) = ∑ i, A k i j • b i) ∧ (∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf σ G.W B.emb, A k ∈ Matrix.unitaryGroup (Fin m) ℂ) ∧ ContinuousOn A (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf σ G.W B.emb) := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf h Ψ hΨ

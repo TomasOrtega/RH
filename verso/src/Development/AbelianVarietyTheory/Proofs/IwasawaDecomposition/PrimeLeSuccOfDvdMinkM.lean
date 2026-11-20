@@ -8,7 +8,7 @@ open NumberField Formalism.BasicNotions
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n p hp h`. Unfold `minkM Formalism.HermitianLatticeCounting.S6.minkowskiM at h`. Take `⟨q, hq, hpq⟩` from `(Prime.dvd_finset_prod_iff hp.prime _).1 h`. Rewrite `hq` using `[Finset.mem_filter, Finset.mem_range]`. Establish `h1 : p = q` using `(Nat.prime_dvd_prime_iff_eq hp hq.2).1 (hp.dvd_of_dvd_pow hpq)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/

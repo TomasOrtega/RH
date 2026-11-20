@@ -2,25 +2,23 @@ import Mathlib
 open NumberField IsDedekindDomain Filter Topology
 
 /- English proof (translation)
-Set `f : ι → (Circle →* ((∀ w, K w) × B))` to `fun w => (MonoidHom.inl _ _).comp ((MonoidHom.mulSingle K w).comp (((e w).symm : ℂ →+* K w).toMonoidHom.comp Circle.coeHom))`. Establish `hf : ∀ w z, f w z = (Pi.mulSingle w ((e w).symm (z : ℂ)), 1)` using `fun w z => rfl`. Establish `hfc : ∀ w, Continuous (f w)` using `fun w => by`. Establish `: (f w : Circle → _) = fun z : Circle => (Pi.mulSingle w ((e w).symm (z : ℂ)), (1 : B))`. Use function extensionality and compare the values at `(hf w)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[this]`. Conclude with `((continuous_mulSingle w).comp ((he w).comp continuous_subtype_val)).prodMk continuous_const`. Use `⟨fun w => (f w).toHomUnits, fun w => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`. Use `⟨hfc w, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (fun z : Circle => (((f w).toHomUnits z)⁻¹ : ((∀ w, K w) × B)ˣ).val) = fun z => f w z⁻¹`. Use function extensionality and compare the values at `z`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Conclude with `this ▸ (hfc w).comp continuous_inv`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ∀ w, e w ((x : (∀ w, K w) × B).1 w) ≠ 0` using `fun w => by`. Establish `h` using `congrArg (fun y : (∀ w, K w) × B => y.1 w) x.mul_inv`. Simplify using `only [Prod.fst_mul, Pi.mul_apply, Prod.fst_one, Pi.one_apply] at h`. Conclude with `(map_ne_zero_iff _ (e w).injective).2 (left_ne_zero_of_mul_eq_one h)`. Set `t : ι → Circle` to `fun w => Circle.exp (Complex.arg (e w ((x : (∀ w, K w) × B).1 w)))`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `T : ((∀ w, K w) × B)ˣ` to `∏ w, (f w).toHomUnits (t w)`. Establish `hT : (T : (∀ w, K w) × B) = (fun w => (e w).symm (t w : ℂ), 1)`. Simplify using `only [T, Units.coe_prod, MonoidHom.coe_toHomUnits, hf]`. Use extensionality with `w`. Rewrite using `[Prod.fst_prod]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrFun (Finset.univ_prod_mulSingle (fun w => (e w).symm (t w : ℂ))) w`. Rewrite using `[Prod.snd_prod]`. Simplify using the standard rewrite rules. Establish `hx' : ((x * T⁻¹ : ((∀ w, K w) × B)ˣ) : (∀ w, K w) × B) * T = x`. Rewrite using `[← Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨x * T⁻¹, ?_, fun w => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Prod.snd hx'`. Rewrite `h` using `[Prod.snd_mul, hT, hx]`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun y : (∀ w, K w) × B => e w (y.1 w)) hx'`. Simplify using `only [Prod.fst_mul, Pi.mul_apply, hT, map_mul, RingEquiv.apply_symm_apply] at h`. Establish `h2` using `Complex.norm_mul_exp_arg_mul_I (e w ((x : (∀ w, K w) × B).1 w))`. Establish `h3 : (t w : ℂ) = Complex.exp (Complex.arg (e w ((x : (∀ w, K w) × B).1 w)) * Complex.I)` using `Circle.coe_exp _`. Rewrite `h2` using `[← h3, ← h]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `mul_right_cancel₀ (t w).coe_ne_zero h2`. Rewrite using `[← h4]`. Conclude with `Complex.ofReal_im _`. Establish `: (x * T⁻¹)⁻¹ * x = T`. Rewrite using `[mul_inv, inv_inv, mul_right_comm, inv_mul_cancel, one_mul]`.
-
-Rewrite using `[this]`. Conclude with `Subgroup.prod_mem _ fun w _ => Subgroup.mem_iSup_of_mem w ⟨t w, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem polar_decomposition_circles {ι : Type} [Fintype ι] (K : ι → Type) [∀ w, Field (K w)]
     [∀ w, TopologicalSpace (K w)] (e : ∀ w, K w ≃+* ℂ) (he : ∀ w, Continuous (e w).symm)
@@ -83,7 +81,7 @@ private theorem polar_decomposition_circles {ι : Type} [Fintype ι] (K : ι →
         Subgroup.mem_iSup_of_mem w ⟨t w, rfl⟩
 
 /- English proof (translation)
-Introduce `E _ _ hE`. Conclude with `polar_decomposition_circles (fun w : InfinitePlace E => w.Completion) (fun w => InfinitePlace.Completion.ringEquivComplexOfIsComplex (hE.isComplex w)) (fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (hE.isComplex w)).symm.continuous) (FiniteAdeleRing (𝓞 E) E)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.adele_units_polar_circles :
     ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E →

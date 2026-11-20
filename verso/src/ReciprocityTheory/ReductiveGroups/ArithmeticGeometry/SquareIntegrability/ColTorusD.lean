@@ -14,11 +14,11 @@ open NumberField Complex MeasureTheory
 noncomputable section
 
 /- English proof (translation)
-Establish `e1 : ‖w - (ua + y)‖ ^ 2 = ‖w‖ ^ 2 - 2 * inner ℝ w ua - 2 * inner ℝ w y + ‖ua‖ ^ 2 + 2 * inner ℝ ua y + ‖y‖ ^ 2`. Rewrite using `[@norm_sub_sq_real, @norm_add_sq_real, inner_add_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `hua` using `norm_nonneg ua`. Establish `hy` using `norm_nonneg y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpq : 0 ≤ Real.pi * q` using `by positivity`. Establish `t1 : Real.pi * q * inner ℝ w ua ≤ Real.pi * q * (r * ‖ua‖)` using `mul_le_mul_of_nonneg_left ((real_inner_le_norm w ua).trans (mul_le_mul_of_nonneg_right hw hua)) hpq`. Establish `t2 : Real.pi * q * inner ℝ w y ≤ Real.pi * q * (r * ‖y‖)` using `mul_le_mul_of_nonneg_left ((real_inner_le_norm w y).trans (mul_le_mul_of_nonneg_right hw hy)) hpq`. Establish `h3 : -(2 * inner ℝ (q • ua) y) ≤ M1 * ‖y‖ ^ 2` using `(neg_le_abs _).trans hc6`. Rewrite `h3` using `[real_inner_smul_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `t3 : Real.pi * (-(2 * (q * inner ℝ ua y))) ≤ Real.pi * (M1 * ‖y‖ ^ 2)` using `mul_le_mul_of_nonneg_left h3 Real.pi_pos.le`. Establish `t4 : 0 ≤ Real.pi * q * ‖w‖ ^ 2` using `by positivity`. Rewrite using `[e1]`. Use polynomial arithmetic with `[t1, t2, t3, t4]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem ct_expo_vec {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] (w ua y : V)
     {q M1 r : ℝ} (hq : 0 < q) (hw : ‖w‖ ≤ r)
@@ -48,25 +48,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {X : PT E} {DF : ℕ
   {I : Submodule ℤ (Vsp X.dim)}
 
 /- English proof (translation)
-Simplify using `[cabPoly]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ct_cabPoly_zero {ι : Type} [Fintype ι] : cabPoly (0 : EuclideanSpace ℂ ι) 0 = 1 := by
   simp [cabPoly]
 
 /- English proof (translation)
-Establish `hq2 : (2 : ℝ) ≤ P.q` using `cab_q_ge P`. Establish `hq2n : 2 ≤ P.q` using `by exact_mod_cast hq2`. Establish `hR0sq` using `P.hR0`. Establish `hR0ne : P.R0 ≠ 0` using `by intro h; rw [h] at hR0sq; norm_num at hR0sq`. Establish `hR0pos : 0 < |P.R0|` using `abs_pos.mpr hR0ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlat : ∀ γ ∈ lat (ctY (Col.YB hI hP P.q) w).b, γ ≠ 0 → |P.R0| ≤ Real.sqrt (P.q * Real.pi) * ‖γ‖` using `cab_YB_abs hI hP P.q`. Establish `hGle : Col.gB (IR I) ≤ X.gA` using `cab_gB_le (IR I)`. Establish `hGle' : (Col.gB (IR I) : ℝ) ≤ X.gA` using `by exact_mod_cast hGle`. Establish `hcD : (c : ℝ) ≤ DF` using `by exact_mod_cast hc`. Establish `h90 : 90 * ((Fintype.card (Fin (Col.gB (IR I))) : ℝ) + c) ≤ |P.R0| ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sq_abs, Fintype.card_fin]`. Use polynomial arithmetic with `[hR0sq.2]`. Take `⟨β, hβ, hjet, hl2⟩` from `hA (Fin (Col.gB (IR I))) (ctY (Col.YB hI hP P.q) w) P.q c |P.R0| P.hq (ctY_coc _ _ _ (Col.YB_coc hI hP P.q)) hR0pos hlat (by rw [sq_abs]; exact hR0sq.1) h90 (cabPoly 0 0) (by rw [ct_cabPoly_zero]; simp)`. Rewrite `hjet`, `hl2` using `[ct_cabPoly_zero]`. Establish `hJ` using `cab_J_le (0 : EuclideanSpace ℂ (Fin (Col.gB (IR I)))) (by simp) 0 P.q P.hq`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hJ` using `[ct_cabPoly_zero, Fintype.card_fin]`. Establish `hl2' : (ctY (Col.YB hI hP P.q) w).l2 P.q β ≤ 6 * ((Nat.factorial 0 : ℕ) * (2 / (P.q * Real.pi)) ^ 0 * (2 / P.q) ^ Fintype.card (Fin (Col.gB (IR I))))`. Rewrite using `[Fintype.card_fin]`. Simplify using `only [Nat.factorial_zero, Nat.cast_one, pow_zero, one_mul] at hJ ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h90' : 90 * (Fintype.card (Fin (Col.gB (IR I))) : ℝ) ≤ |P.R0| ^ 2`. Establish `: (0 : ℝ) ≤ 90 * c` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hβc : ContDiff ℂ (⊤ : ℕ∞) β` using `(cab_contDiff_top hβ.1).of_le (by exact_mod_cast le_top)`. Take `⟨hb0, hbj⟩` from `ct_jet_one_iter β hβc c hjet`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨β, hβ, hb0, hbj, ?_, fun t => ?_⟩` and prove the remaining obligations. Use `hl2'.trans ?_` and prove the remaining obligations. Simplify using `only [Nat.factorial_zero, Nat.cast_one, pow_zero, one_mul, Fintype.card_fin]`. Establish `: (2 / (P.q : ℝ)) ^ Col.gB (IR I) ≤ 1` using `pow_le_one₀ (by positivity) ((div_le_one (by linarith)).2 hq2)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `cab_sup hS (ctY (Col.YB hI hP P.q) w) P.q 0 hq2n |P.R0| hR0pos hlat h90' β hβ hl2' t` as an intermediate fact. Simplify `this` using `[Fintype.card_fin]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ct_beta (hA : PropAStatement) (hS : GSupStatement) (hI : IsSplit P I) (hP : Ext.PackingCount)
     (w : EuclideanSpace ℂ (Fin (Col.gB (IR I)))) (c : ℕ) (hc : c ≤ DF) :
@@ -122,9 +122,9 @@ def ctS (X : PT E) (I : Submodule ℤ (Vsp X.dim)) (q : ℕ)
   (ctC I q a)⁻¹ • X.U q (fun _ => a) (Col.colS X I q β)
 
 /- English proof (translation)
-Unfold `Col.uc Col.z ctA`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Col.Hf_smul_l, smul_smul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[show (1 / (q : ℂ)) = ((1 / (q : ℝ) : ℝ) : ℂ) by push_cast; ring, Complex.im_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ct_uc_A (x0 : Vsp X.dim) (q : ℕ) :
     Col.uc (IR I) (ctA x0 q) = (1 / (q : ℝ)) • Col.uc (IR I) x0 := by
@@ -136,15 +136,15 @@ theorem ct_uc_A (x0 : Vsp X.dim) (q : ℕ) :
   rw [show (1 / (q : ℂ)) = ((1 / (q : ℝ) : ℝ) : ℂ) by push_cast; ring, Complex.im_ofReal_mul]
 
 /- English proof (translation)
-Establish `hK` using `Col.hK_of hI`. Unfold `ctC`. Rewrite using `[Complex.norm_exp]`. Use `congr 1`. Establish `h1` using `Col.norm_sq_decomp hK a`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h2` using `Col.norm_wmap hK a`. Establish `h3` using `Col.norm_uc_sq (IR I) a`. Rewrite using `[Col.Hf_self a, Col.Hf_self (Col.wmap (IR I) a), h2, h3]`. Establish `hS : (Col.S (IR I) a).re = ∑ k, ((Col.z (IR I) k a).re ^ 2 - (Col.z (IR I) k a).im ^ 2)`. Unfold `Col.S`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[sq, Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : ∀ k, ‖Col.z (IR I) k a‖ ^ 2 = (Col.z (IR I) k a).re ^ 2 + (Col.z (IR I) k a).im ^ 2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.div_re, Complex.ofReal_re, Complex.ofReal_im, Complex.natCast_re, Complex.natCast_im]`. Rewrite using `[hS, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hn, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ct_norm_C (hI : IsSplit P I) (q : ℕ) (a : Vsp X.dim) :
     ‖ctC I q a‖ = Real.exp (-(q * Real.pi * ‖Col.uc (IR I) a‖ ^ 2)) := by
@@ -169,9 +169,9 @@ theorem ct_norm_C (hI : IsSplit P I) (q : ℕ) (a : Vsp X.dim) :
   ring
 
 /- English proof (translation)
-Unfold `PT.l2`. Repeatedly rewrite using `[pointwiseNormSq_translate X]`. Establish `hc : Continuous (fun v => X.ptN2 q F v)`. Use `hF.1.continuous` as an intermediate fact. Unfold `PT.ptN2 HC Hf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `fun_prop`. Conclude with `TiledBoundaries.stepT E X 1 ℝ (fun v => X.ptN2 q F v) hc (fun γ hγ v => pointwiseNormSq_add_period X hF hγ v) a`.
+A detailed English derivation is pending.
 -/
 theorem l2_U_eq_l2 {q : ℕ} {F : (Fin 1 → Vsp X.dim) → ℂ} (hF : F ∈ X.Sec q 1) (a : Fin 1 → Vsp X.dim) :
     X.l2 q (X.U q a F) = X.l2 q F := by
@@ -184,7 +184,7 @@ theorem l2_U_eq_l2 {q : ℕ} {F : (Fin 1 → Vsp X.dim) → ℂ} (hF : F ∈ X.S
   exact TiledBoundaries.stepT E X 1 ℝ (fun v => X.ptN2 q F v) hc (fun γ hγ v => pointwiseNormSq_add_period X hF hγ v) a
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `[ctS, PT.U, HC, Col.colS]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ct_fun (q : ℕ) (β : EuclideanSpace ℂ (Fin (Col.gB (IR I))) → ℂ) (a : Vsp X.dim) :
     ctS X I q β a = fun w => (ctC I q a)⁻¹ *
@@ -193,17 +193,15 @@ theorem ct_fun (q : ℕ) (β : EuclideanSpace ℂ (Fin (Col.gB (IR I))) → ℂ)
   simp [ctS, PT.U, HC, Col.colS]
 
 /- English proof (translation)
-Use `set c0 : ℂ := -(2 * Real.pi * q : ℂ) * Complex.I with hc0`. Use `set ℓL : Vsp X.dim →L[ℂ] ℂ := c0 • innerSL ℂ ua with hℓ`. Establish `hℓv : ∀ v, ℓL v = c0 * Hf v ua`. Introduce `v`. Rewrite using `[hℓ, ContinuousLinearMap.smul_apply, innerSL_apply_apply, Col.Hf_eq_inner, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hf1 : (fun v => cexp (c0 * Hf v ua) * Col.F0 I q βt v) = fun v => cexp (ℓL v) * Col.F0 I q βt v` using `by funext v; rw [hℓv]`. Rewrite using `[hf1]`. Use `set W := Col.wmap (IR I) with hW`. Establish `hexpc : ContDiff ℂ (⊤ : ℕ∞) (fun v => cexp (ℓL v))` using `ℓL.contDiff.cexp`. Establish `hgc : ContDiff ℂ (⊤ : ℕ∞) (fun v => βt (W v))` using `(cab_contDiff_top (hβt.comp W.differentiable)).of_le (by exact_mod_cast le_top)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF0c : ContDiff ℂ (⊤ : ℕ∞) (Col.F0 I q βt)` using `(cab_contDiff_top (differentiable_zeroModeLift I q βt hβt)).of_le (by exact_mod_cast le_top)`. Establish `hle : ((c : ℕ) : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)` using `by exact_mod_cast le_top`. Establish `hr` using `cab_restrict (cabVP σ) (c := c) (f := fun v => cexp (ℓL v) * Col.F0 I q βt v) (g := fun v => cexp (ℓL v) * βt (W v)) ((hexpc.mul hF0c).of_le hle) ((hexpc.mul hgc).of_le hle) (fun v hv => by simp only [zeroModeLift_on_part hI q βt σ v hv, hW]) xs hxs`. Rewrite using `[hr]`. Establish `hj : ∀ j, 1 ≤ j → j ≤ c → iteratedFDeriv ℂ j (fun v => βt (W v)) 0 = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j hj1 hjc`. Establish `hβj : ContDiff ℂ j βt` using `contDiff_of_differentiable_fd hβt j`. Use `W.iteratedFDeriv_comp_right hβj (0 : Vsp X.dim) le_rfl` as an intermediate fact. Use `show iteratedFDeriv ℂ j (βt ∘ W) 0 = 0`. Rewrite using `[this, map_zero, hbj j hj1 hjc]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hm` using `ct_iter_mul_jet_one (fun v => cexp (ℓL v)) (fun v => βt (W v)) hexpc hgc c (by simp [hb0]) hj`. Rewrite using `[hm, ct_iter_cexp_apply]`. Establish `h0 : Hf (0 : Vsp X.dim) ua = 0` using `by simp [Hf]`.
-
-Simplify using `[hℓv, h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ct_main (hI : IsSplit P I) (σ : E →+* ℂ) (q c : ℕ)
     (βt : EuclideanSpace ℂ (Fin (Col.gB (IR I))) → ℂ) (hβt : Differentiable ℂ βt) (hb0 : βt 0 = 1)

@@ -22,11 +22,11 @@ def IsTensAbs (σ : ∀ v, G v → (H v →L[ℂ] H v)) (σs : (∀ v, G v) → 
 variable {σ : ∀ v, G v → (H v →L[ℂ] H v)} {σs : (∀ v, G v) → (Hs →L[ℂ] Hs)} {tens : (∀ v, H v) → Hs}
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x0`. Use `set F : (∀ v, H v) → ℝ := fun x => RCLike.re (∏ v, ⟪x v, x v⟫_ℂ) - 2 * RCLike.re (∏ v, ⟪x v, x0 v⟫_ℂ) + RCLike.re (∏ v, ⟪x0 v, x0 v⟫_ℂ) with hF`. Establish `hFc : Continuous F` using `by fun_prop`. Establish `hnorm : ∀ x, ‖tens x - tens x0‖ = Real.sqrt (F x)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[← Real.sqrt_sq (norm_nonneg _), norm_sub_sq (𝕜 := ℂ), norm_sq_eq_re_inner (𝕜 := ℂ), norm_sq_eq_re_inner (𝕜 := ℂ), h.1, h.1, h.1]`. Establish `hF0 : F x0 = 0` using `by simp only [hF]; ring`. Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Repeatedly rewrite using `[hnorm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Tendsto (fun x => Real.sqrt (F x)) (𝓝 x0) (𝓝 (Real.sqrt (F x0)))` using `(Real.continuous_sqrt.comp hFc).tendsto x0`. Rewrite `h2` using `[hF0, Real.sqrt_zero]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_tens (h : IsTensAbs σ σs tens) : Continuous tens := by
   rw [continuous_iff_continuousAt]
@@ -47,11 +47,11 @@ theorem continuous_tens (h : IsTensAbs σ σs tens) : Continuous tens := by
   exact h2
 
 /- English proof (translation)
-Establish `hS : ∀ b ∈ Submodule.span ℂ (Set.range tens), ⟪σs g (tens x), σs g b⟫_ℂ = ⟪tens x, b⟫_ℂ`. Introduce `b hb`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem b hb`. Take `⟨y, rfl⟩` from `hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h.2.1, h.2.1, h.1, h.1]`. Conclude with `Finset.prod_congr rfl fun v _ => (hσ v).2.2.1 (g v) (x v) (y v)`. Consider the case `zero => simp`. Consider the case `add b c _ _ hb hc => rw [map_add, inner_add_right, inner_add_right, hb, hc]`. Consider the case `smul c b _ hb => rw [map_smul, inner_smul_right, inner_smul_right, hb]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hcl : IsClosed {b : Hs | ⟪σs g (tens x), σs g b⟫_ℂ = ⟪tens x, b⟫_ℂ}` using `isClosed_eq (continuous_const.inner (σs g).continuous) (continuous_const.inner continuous_id)`. Establish `hsub` using `closure_minimal (fun b hb => hS b hb) hcl`. Rewrite `hsub` using `[h.2.2.closure_eq]`. Conclude with `hsub (Set.mem_univ a)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_unit (hσ : ∀ v, IsUnitRep (σ v)) (h : IsTensAbs σ σs tens) (g : ∀ v, G v) (a : Hs) (x : ∀ v, H v) :
     ⟪σs g (tens x), σs g a⟫_ℂ = ⟪tens x, a⟫_ℂ := by
@@ -72,11 +72,11 @@ theorem tens_unit (hσ : ∀ v, IsUnitRep (σ v)) (h : IsTensAbs σ σs tens) (g
   exact hsub (Set.mem_univ a)
 
 /- English proof (translation)
-Establish `hS : ∀ c ∈ Submodule.span ℂ (Set.range tens), ⟪σs g c, σs g b⟫_ℂ = ⟪c, b⟫_ℂ`. Introduce `c hc`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem c hc`. Take `⟨x, rfl⟩` from `hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `tens_unit hσ h g b x`. Consider the case `zero => simp`. Consider the case `add c d _ _ hc hd => rw [map_add, inner_add_left, inner_add_left, hc, hd]`. Consider the case `smul t c _ hc => rw [map_smul, inner_smul_left, inner_smul_left, hc]`. Establish `hcl : IsClosed {c : Hs | ⟪σs g c, σs g b⟫_ℂ = ⟪c, b⟫_ℂ}` using `isClosed_eq ((σs g).continuous.inner continuous_const) (continuous_id.inner continuous_const)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub` using `closure_minimal (fun c hc => hS c hc) hcl`. Rewrite `hsub` using `[h.2.2.closure_eq]`. Conclude with `hsub (Set.mem_univ a)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_unit_all (hσ : ∀ v, IsUnitRep (σ v)) (h : IsTensAbs σ σs tens) (g : ∀ v, G v) (a b : Hs) :
     ⟪σs g a, σs g b⟫_ℂ = ⟪a, b⟫_ℂ := by
@@ -96,25 +96,23 @@ theorem tens_unit_all (hσ : ∀ v, IsUnitRep (σ v)) (h : IsTensAbs σ σs tens
   exact hsub (Set.mem_univ a)
 
 /- English proof (translation)
-Establish `hnorm : ∀ g c, ‖σs g c‖ = ‖c‖`. Introduce `g c`. Rewrite using `[norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ), tens_unit_all hσ h g c c]`. Establish `hspan : ∀ b ∈ Submodule.span ℂ (Set.range tens), Continuous fun g => σs g b`. Introduce `b hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem b hb`. Take `⟨x, rfl⟩` from `hb`. Establish `e : (fun g => σs g (tens x)) = fun g => tens (fun v => σ v (g v) (x v))`. Use function extensionality and compare the values at `fun g => h.2.1 g x`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Conclude with `(continuous_tens h).comp (continuous_pi fun v => ((hσ v).2.2.2 (x v)).comp (continuous_apply v))`. Consider the case `zero => simp only [map_zero]`. Conclude with `continuous_const`. Consider the case `add b c _ _ hb hc => simp only [map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hb.add hc`. Consider the case `smul t b _ hb => simp only [map_smul]`. Conclude with `hb.const_smul t`. Use `⟨?_, ?_, fun g a b => tens_unit_all hσ h g a b, ?_⟩` and prove the remaining obligations. Apply `ContinuousLinearMap.ext_on h.2.2` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[h.2.1]`. Simplify using `only [ContinuousLinearMap.one_apply]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show σ v 1 (x v) = x v`. Rewrite using `[(hσ v).1]`. Both sides reduce to the same expression. Introduce `g g'`. Apply `ContinuousLinearMap.ext_on h.2.2` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[ContinuousLinearMap.mul_apply, h.2.1, h.2.1, h.2.1]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Use `show σ v (g v * g' v) (x v) = σ v (g v) (σ v (g' v) (x v))`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hσ v).2.1]`. Both sides reduce to the same expression. Introduce `a`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨b, hb, hab⟩` from `h.2.2.exists_dist_lt a (by positivity : (0 : ℝ) < ε / 3)`. Establish `hc` using `Metric.tendsto_nhds.mp ((hspan b hb).tendsto g0) (ε / 3) (by positivity)`. Use `filter_upwards [hc] with g hg`.
-
-Establish `h1 : dist (σs g a) (σs g b) = dist a b`. Rewrite using `[dist_eq_norm, dist_eq_norm, ← map_sub, hnorm]`. Establish `h2 : dist (σs g0 b) (σs g0 a) = dist a b`. Rewrite using `[dist_eq_norm, dist_eq_norm, ← map_sub, hnorm, norm_sub_rev]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isUnitRep_tens (hσ : ∀ v, IsUnitRep (σ v)) (h : IsTensAbs σ σs tens) : IsUnitRep σs := by
   have hnorm : ∀ g c, ‖σs g c‖ = ‖c‖ := by

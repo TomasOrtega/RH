@@ -18,16 +18,16 @@ open Matrix
 
 namespace GlobalTheory.CuspBlock
 /- English proof (translation)
-Simplify using `[tripPlace, finSigmaFinEquiv_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tripPlace_val {l d N : ℕ} (h : l + d ≤ N) (p : Σ j : Fin 3, Fin (tripSizes l d N j)) :
     ((tripPlace h p : Fin N) : ℕ) = (∑ j : Fin p.1, tripSizes l d N (Fin.castLE p.1.isLt.le j)) + p.2 := by
   simp [tripPlace, finSigmaFinEquiv_apply]
 
 /- English proof (translation)
-Introduce `l d N h k`. Take `⟨p, rfl⟩` from `(tripPlace h).surjective k`. Rewrite using `[Equiv.symm_apply_apply, tripPlace_val]`. Take `⟨j, i⟩` from `p`. Establish `hi` using `i.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply the tactic sequence `fin_cases j <;>`. Apply the tactic sequence `simp_all [tripSizes, Fin.sum_univ_succ] <;> (try split_ifs) <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tripPlace_symm_fst : ∀ {l d N : ℕ} (h : l + d ≤ N) (k : Fin N),
     ((tripPlace h).symm k).1 = if k.val < l then 0 else if k.val < l + d then 1 else 2 := by

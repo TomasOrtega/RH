@@ -8,46 +8,46 @@ namespace GlobalTheory.SgAlg.WittField
 variable {E : Type} [Field E] {σ : E →+* E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Simplify using `[form, mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_add_left (v v' w : Fin n → E) : form σ J (v + v') w = form σ J v w + form σ J v' w := by
   simp [form, mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `[form, mulVec_sub, dotProduct_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_sub_left (v v' w : Fin n → E) : form σ J (v - v') w = form σ J v w - form σ J v' w := by
   simp [form, mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-Simplify using `[form, mulVec_smul, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_left (c : E) (v w : Fin n → E) : form σ J (c • v) w = c * form σ J v w := by
   simp [form, mulVec_smul, dotProduct_smul]
 
 /- English proof (translation)
-Simplify using `only [form, Pi.sub_apply, map_sub]`. Rewrite using `[show (fun i => σ (w i) - σ (w' i)) = (fun i => σ (w i)) - (fun i => σ (w' i)) from rfl, sub_dotProduct]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_sub_right (v w w' : Fin n → E) : form σ J v (w - w') = form σ J v w - form σ J v w' := by
   simp only [form, Pi.sub_apply, map_sub]
   rw [show (fun i => σ (w i) - σ (w' i)) = (fun i => σ (w i)) - (fun i => σ (w' i)) from rfl, sub_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [form, Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[show (fun i => σ c * σ (w i)) = σ c • (fun i => σ (w i)) from rfl, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem form_smul_right (c : E) (v w : Fin n → E) : form σ J v (c • w) = σ c * form σ J v w := by
   simp only [form, Pi.smul_apply, smul_eq_mul, map_mul]
   rw [show (fun i => σ c * σ (w i)) = σ c • (fun i => σ (w i)) from rfl, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Use `congrFun (congrFun hJ i) j` as an intermediate fact. Simplify `this` using `[cT]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem herm_entry (hJ : cT σ J = J) (i j : Fin n) : σ (J j i) = J i j := by
   have := congrFun (congrFun hJ i) j
   simpa [cT] using this
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, mulVec, map_sum, map_mul, hσ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [show J j i = σ (J i j) from (herm_entry hJ j i).symm]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_conj (hσ : ∀ x, σ (σ x) = x) (hJ : cT σ J = J) (v w : Fin n → E) :
     form σ J w v = σ (form σ J v w) := by
@@ -58,14 +58,14 @@ theorem form_conj (hσ : ∀ x, σ (σ x) = x) (hJ : cT σ J = J) (v w : Fin n �
   ring
 
 /- English proof (translation)
-Simplify using `only [form, Pi.add_apply, map_add]`. Rewrite using `[show (fun i => σ (w i) + σ (w' i)) = (fun i => σ (w i)) + (fun i => σ (w' i)) from rfl, add_dotProduct]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_add_right (v w w' : Fin n → E) : form σ J v (w + w') = form σ J v w + form σ J v w' := by
   simp only [form, Pi.add_apply, map_add]
   rw [show (fun i => σ (w i) + σ (w' i)) = (fun i => σ (w i)) + (fun i => σ (w' i)) from rfl, add_dotProduct]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[mulVec, vecMul, dotProduct, cT, map_sum, map_mul, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conj_mulVec (B : Matrix (Fin n) (Fin n) E) (w : Fin n → E) :
     (fun i => σ ((B *ᵥ w) i)) = (fun i => σ (w i)) ᵥ* cT σ B := by
@@ -73,7 +73,7 @@ theorem conj_mulVec (B : Matrix (Fin n) (Fin n) E) (w : Fin n → E) :
   simp [mulVec, vecMul, dotProduct, cT, map_sum, map_mul, mul_comm]
 
 /- English proof (translation)
-Unfold `form`. Rewrite using `[conj_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_mulVec (A B : Matrix (Fin n) (Fin n) E) (v w : Fin n → E) :
     form σ J (A *ᵥ v) (B *ᵥ w) = (fun i => σ (w i)) ⬝ᵥ ((cT σ B * J * A) *ᵥ v) := by
@@ -81,16 +81,16 @@ theorem form_mulVec (A B : Matrix (Fin n) (Fin n) E) (v w : Fin n → E) :
   rw [conj_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[form_mulVec, hg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isUn_form {g : Matrix (Fin n) (Fin n) E} (hg : IsUn σ J g) (v w : Fin n → E) :
     form σ J (g *ᵥ v) (g *ᵥ w) = form σ J v w := by
   rw [form_mulVec, hg]; rfl
 
 /- English proof (translation)
-Establish `: (fun k => σ ((Pi.single i (1 : E) : Fin n → E) k)) = (Pi.single i (1 : E) : Fin n → E)`. Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Rewrite using `[this]`. Simplify using `[mulVec, dotProduct, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem single_entry (M : Matrix (Fin n) (Fin n) E) (i j : Fin n) :
     (fun k => σ ((Pi.single i (1 : E) : Fin n → E) k)) ⬝ᵥ (M *ᵥ (Pi.single j (1 : E) : Fin n → E)) = M i j := by
@@ -102,7 +102,7 @@ theorem single_entry (M : Matrix (Fin n) (Fin n) E) (i j : Fin n) :
   simp [mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `h (Pi.single j 1) (Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[form_mulVec]`. Unfold `form at this`. Rewrite `this` using `[single_entry, single_entry]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUn_of_form {g : Matrix (Fin n) (Fin n) E}
     (h : ∀ v w, form σ J (g *ᵥ v) (g *ᵥ w) = form σ J v w) : IsUn σ J g := by
@@ -113,14 +113,14 @@ theorem isUn_of_form {g : Matrix (Fin n) (Fin n) E}
   rwa [single_entry, single_entry] at this
 
 /- English proof (translation)
-Unfold `cT`. Rewrite using `[Matrix.map_mul, transpose_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_mul (A B : Matrix (Fin n) (Fin n) E) : cT σ (A * B) = cT σ B * cT σ A := by
   unfold cT
   rw [Matrix.map_mul, transpose_mul]
 
 /- English proof (translation)
-Unfold `IsUn at *`. Establish `: cT σ h * cT σ g * J * (g * h) = cT σ h * (cT σ g * J * g) * h`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[cT_mul, this, hg, hh]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUn_mul {g h : Matrix (Fin n) (Fin n) E} (hg : IsUn σ J g) (hh : IsUn σ J h) :
     IsUn σ J (g * h) := by
@@ -130,7 +130,7 @@ theorem isUn_mul {g h : Matrix (Fin n) (Fin n) E} (hg : IsUn σ J g) (hh : IsUn 
   rw [cT_mul, this, hg, hh]
 
 /- English proof (translation)
-The claim follows from `isUn_of_form (by intro v w; simp)`.
+A detailed English derivation is pending.
 -/
 theorem isUn_one : IsUn σ J 1 := isUn_of_form (by intro v w; simp)
 
@@ -138,7 +138,7 @@ def qr (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (u : Fin n → E) (l : E)
   1 - l • vecMulVec u ((fun i => σ (u i)) ᵥ* J)
 
 /- English proof (translation)
-Establish `h1 : ((fun i => σ (u i)) ᵥ* J) ⬝ᵥ v = form σ J v u`. Unfold `form`. Rewrite using `[dotProduct_mulVec]`. Unfold `qr`. Rewrite using `[sub_mulVec, one_mulVec, smul_mulVec, vecMulVec_mulVec, h1, op_smul_eq_smul, smul_smul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem qr_mulVec (u : Fin n → E) (l : E) (v : Fin n → E) :
     qr σ J u l *ᵥ v = v - (l * form σ J v u) • u := by
@@ -148,7 +148,7 @@ theorem qr_mulVec (u : Fin n → E) (l : E) (v : Fin n → E) :
   rw [sub_mulVec, one_mulVec, smul_mulVec, vecMulVec_mulVec, h1, op_smul_eq_smul, smul_smul]
 
 /- English proof (translation)
-Rewrite using `[qr_mulVec, qr_mulVec]`. Simplify using `only [form_sub_left, form_sub_right, form_smul_left, form_smul_right, map_mul]`. Rewrite using `[form_conj hσ hJ w u]`. Take the linear combination `(form σ J v u * σ (form σ J w u)) * hl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem qr_form (hσ : ∀ x, σ (σ x) = x) (hJ : cT σ J = J) (u : Fin n → E) (l : E)
     (hl : l * σ l * form σ J u u = l + σ l) (v w : Fin n → E) :
@@ -159,27 +159,27 @@ theorem qr_form (hσ : ∀ x, σ (σ x) = x) (hJ : cT σ J = J) (u : Fin n → E
   linear_combination (form σ J v u * σ (form σ J w u)) * hl
 
 /- English proof (translation)
-The claim follows from `isUn_of_form (qr_form hσ hJ u l hl)`.
+A detailed English derivation is pending.
 -/
 theorem isUn_qr (hσ : ∀ x, σ (σ x) = x) (hJ : cT σ J = J) (u : Fin n → E) (l : E)
     (hl : l * σ l * form σ J u u = l + σ l) : IsUn σ J (qr σ J u l) :=
   isUn_of_form (qr_form hσ hJ u l hl)
 
 /- English proof (translation)
-Rewrite using `[qr_mulVec, hy]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qr_fix (u : Fin n → E) (l : E) (y : Fin n → E) (hy : form σ J y u = 0) :
     qr σ J u l *ᵥ y = y := by
   rw [qr_mulVec, hy]; simp
 
 /- English proof (translation)
-Use `set c := form σ J x (x - x') with hcdef`. Establish `hσc : σ c ≠ 0`. Introduce `h`. Apply `hc` to reduce the goal to its premises. Rewrite using `[← hσ c, h, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : form σ J (x - x') (x - x') = c + σ c`. Rewrite using `[hcdef, ← form_conj hσ hJ]`. Simplify using `only [form_sub_left, form_sub_right]`. Take the linear combination `(-1 : E) * hxx`. Use `⟨qr σ J (x - x') c⁻¹, isUn_qr hσ hJ _ _ ?_, fun i => qr_fix _ _ _ ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv₀, hN]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[form_sub_right, hy i, sub_self]`. Rewrite using `[qr_mulVec, ← hcdef, inv_mul_cancel₀ hc, one_smul]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem stepA (hσ : ∀ x, σ (σ x) = x) (hJ : cT σ J = J) {a : ℕ} (y : Fin a → Fin n → E)
     (x x' : Fin n → E) (hy : ∀ i, form σ J (y i) x = form σ J (y i) x')
@@ -198,23 +198,21 @@ theorem stepA (hσ : ∀ x, σ (σ x) = x) (hJ : cT σ J = J) {a : ℕ} (y : Fin
   · rw [qr_mulVec, ← hcdef, inv_mul_cancel₀ hc, one_smul]; abel
 
 /- English proof (translation)
-Distinguish the cases in `hc : form σ J x (x - x') ≠ 0`. Conclude with `stepA hσ hJ y x x' hy hxx hc`. Use `push_neg at hc`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu, hxu, hx'u⟩ : ∃ u : Fin n → E, (∀ i, form σ J (y i) u = 0) ∧ form σ J x u ≠ 0 ∧ form σ J x' u ≠ 0 := by`. Distinguish the cases in `h1 : form σ J x' u₁ ≠ 0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨u₁, hu₁, by rw [hxu₁]; exact one_ne_zero, h1⟩`. Distinguish the cases in `h2' : form σ J x u₂ ≠ 0`. Conclude with `⟨u₂, hu₂, h2', by rw [hxu₂]; exact one_ne_zero⟩`. Use `push_neg at h1 h2'`. Use `⟨u₁ + u₂, fun i => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[form_add_right, hu₁, hu₂]`. Simplify using the standard rewrite rules. Rewrite using `[form_add_right, hxu₁, h2']`. Simplify using the standard rewrite rules. Rewrite using `[form_add_right, h1, hxu₂]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨l, hl0, hl⟩ : ∃ l : E, l ≠ 0 ∧ l * σ l * form σ J u u = l + σ l := by`. Distinguish the cases in `hN : form σ J u u = 0`. Conclude with `⟨δ, hδ, by rw [hN, hσδ]; ring⟩`. Establish `hσN : σ (form σ J u u) = form σ J u u` using `(form_conj hσ hJ u u).symm`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨2 / form σ J u u, div_ne_zero h2 hN, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, hσN, map_ofNat]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `set z := qr σ J u l *ᵥ x with hz`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzx : z = x - (l * form σ J x u) • u` using `qr_mulVec u l x`. Take `⟨g, hg, hgy, hgz⟩` from `stepA hσ hJ y z x' (fun i => by`. Rewrite using `[hzx, form_sub_right, form_smul_right, hu i, mul_zero, sub_zero, hy i])`. Use the proof step `(by rw [hz, qr_form hσ hJ u l hl, hxx])`. Use the proof step `(by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hval : form σ J z (z - x') = l * form σ J x u * form σ J u x'`. Rewrite using `[hzx]`. Simplify using `only [form_sub_left, form_sub_right, form_smul_left, form_smul_right, map_mul]`. Rewrite `hc` using `[form_sub_right]`. Rewrite using `[form_conj hσ hJ x u]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hc + (form σ J x u * σ (form σ J x u)) * hl`. Rewrite using `[hval, form_conj hσ hJ x' u]`. Use `mul_ne_zero (mul_ne_zero hl0 hxu) ?_` and prove the remaining obligations. Introduce `h`. Apply `hx'u` to reduce the goal to its premises.
-
-Rewrite using `[← hσ (form σ J x' u), h, map_zero])`. Use `⟨g * qr σ J u l, isUn_mul hg (isUn_qr hσ hJ u l hl), fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec, qr_fix u l (y i) (hu i), hgy i]`. Rewrite using `[← mulVec_mulVec, ← hz, hgz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step (hσ : ∀ x, σ (σ x) = x) (hJ : cT σ J = J) {δ : E} (hδ : δ ≠ 0) (hσδ : σ δ = -δ)
     (h2 : (2 : E) ≠ 0) {a : ℕ} (y : Fin a → Fin n → E)
@@ -266,7 +264,7 @@ theorem step (hσ : ∀ x, σ (σ x) = x) (hJ : cT σ J = J) {δ : E} (hδ : δ 
   · rw [← mulVec_mulVec, ← hz, hgz]
 
 /- English proof (translation)
-Unfold `form`. Simplify using `only [hσ]`. Rewrite using `[show (fun k => (m ᵥ* J⁻¹) k) = m ᵥ* J⁻¹ from rfl, ← dotProduct_mulVec, mulVec_mulVec, nonsing_inv_mul J hdet, one_mulVec]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem form_dual (hσ : ∀ x, σ (σ x) = x) (hdet : IsUnit J.det) (m v : Fin n → E) :
     form σ J v (fun k => σ ((m ᵥ* J⁻¹) k)) = m ⬝ᵥ v := by
@@ -276,17 +274,13 @@ theorem form_dual (hσ : ∀ x, σ (σ x) = x) (hdet : IsUnit J.det) (m v : Fin 
     nonsing_inv_mul J hdet, one_mulVec]
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => intro x x' ℓ ℓ' _ _ _`. Conclude with `⟨1, isUn_one, fun j => j.elim0⟩`. Consider the case `succ a ih`. Introduce `x x' ℓ ℓ' hℓ hℓ' hx`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g₁, hg₁, hg₁x⟩` from `ih (fun j => x j.castSucc) (fun j => x' j.castSucc) (fun i => ℓ i.castSucc) (fun i => ℓ' i.castSucc) (fun i j => by simp [hℓ, Fin.castSucc_inj]) (fun i j => by simp [hℓ', Fin.castSucc_inj]) (fun i j => hx _ _)`. Establish `hinv : (J⁻¹ * cT σ g₁ * J) * g₁ = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT σ g₁), hg₁, nonsing_inv_mul J hdet]`. Use `set m := ℓ (Fin.last a) ᵥ* (J⁻¹ * cT σ g₁ * J) with hm`. Establish `hm' : ∀ v, m ⬝ᵥ (g₁ *ᵥ v) = ℓ (Fin.last a) ⬝ᵥ v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Rewrite using `[hm, ← dotProduct_mulVec, mulVec_mulVec, hinv, one_mulVec]`. Take `⟨h, hh, hhy, hhx⟩` from `step hσ hJ hδ hσδ h2 (fun i => x' i.castSucc) (g₁ *ᵥ x (Fin.last a)) (x' (Fin.last a)) (fun i => by`. Use `isUn_form hg₁ (x i.castSucc) (x (Fin.last a))` as an intermediate fact. Rewrite `this` using `[hg₁x i, hx]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this)`. Use the proof step `(by rw [isUn_form hg₁, hx])`. Use the proof step `(fun k => σ ((m ᵥ* J⁻¹) k)) (fun k => σ ((ℓ' (Fin.last a) ᵥ* J⁻¹) k))`. Use the proof step `(fun i => by rw [form_dual hσ hdet, ← hg₁x i, hm', hℓ]; simp [(Fin.castSucc_lt_last i).ne'])`. Use the proof step `(by rw [form_dual hσ hdet, hm', hℓ]; simp)`.
-
-Use the proof step `(fun i => by rw [form_dual hσ hdet, hℓ']; simp [(Fin.castSucc_lt_last i).ne'])`. Use the proof step `(by rw [form_dual hσ hdet, hℓ']; simp)`. Use `⟨h * g₁, isUn_mul hh hg₁, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec]`. Proceed by induction on `j using Fin.lastCases with`.
-
-Consider the case `last => exact hhx`. Consider the case `cast i => rw [hg₁x i, hhy i]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem witt_vec (hσ : ∀ x, σ (σ x) = x) (hJ : cT σ J = J) (hdet : IsUnit J.det) {δ : E}
     (hδ : δ ≠ 0) (hσδ : σ δ = -δ) (h2 : (2 : E) ≠ 0) (a : ℕ) :
@@ -325,7 +319,7 @@ theorem witt_vec (hσ : ∀ x, σ (σ x) = x) (hJ : cT σ J = J) (hdet : IsUnit 
     | cast i => rw [hg₁x i, hhy i]
 
 /- English proof (translation)
-Simplify using `only [pairM, cT, form, Matrix.mul_apply, mulVec, dotProduct, transpose_apply, map_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairM_entry {a : ℕ} (X : Matrix (Fin n) (Fin a) E) (i j : Fin a) :
     pairM σ J X X i j = form σ J (fun k => X k j) (fun k => X k i) := by
@@ -340,9 +334,9 @@ end GlobalTheory.SgAlg.WittField
 open GlobalTheory.SgAlg Matrix in
 
 /- English proof (translation)
-Introduce `E _ σ hQ n a J hJ X X' ⟨L, hL⟩ ⟨L', hL'⟩ hG`. Take `⟨hσ, ⟨e, he⟩, -, h2, -⟩` from `hQ`. Establish `hδ : e - σ e ≠ 0` using `sub_ne_zero.mpr (Ne.symm he)`. Establish `hσδ : σ (e - σ e) = -(e - σ e)` using `by rw [map_sub, hσ]; ring`. Apply the tactic sequence `obtain ⟨g, hg, hgx⟩ := WittField.witt_vec hσ hJ.1 hJ.2 hδ hσδ h2.ne_zero a (fun j k => X k j) (fun j k => X' k j) (fun i => L i) (fun i => L' i) (fun i j => by rw [← Matrix.mul_apply', hL, Matrix.one_apply]) (fun i j => by rw [← Matrix.mul_apply', hL', Matrix.one_apply]) (fun i j …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Use extensionality with `k j`. Use `congrFun (hgx j) k` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, mulVec, dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GlobalTheory.SgAlg.witt_free_field : ∀ {E : Type} [Field E] (σ : E →+* E), IsQA σ → ∀ {n a : ℕ}
     (J : Matrix (Fin n) (Fin n) E), IsHermU σ J → ∀ (X X' : Matrix (Fin n) (Fin a) E), Free X →

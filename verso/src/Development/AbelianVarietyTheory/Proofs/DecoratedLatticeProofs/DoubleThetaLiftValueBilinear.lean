@@ -29,19 +29,17 @@ open GlobalTheory.Core.Mi.SepPer
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨-, -, ⟨Ω, hΩc, hΩ⟩, -⟩` from `GlobalTheory.T.besselGroup_quotient_fundamentalDomain_cocompact D ρ B`. Take `⟨Cφ, hCφ⟩` from `GlobalTheory.Unf.EvalCont.bounded_of_contAut B.cpt hφ`. Establish `hμ : B.vA.μ B.vA.𝓕 < ⊤` using `GlobalTheory.Unf.vol_fund_lt_top B.cpt B.vA`. Establish `hν1 : B.vN.ν B.vN.𝓝 = 1` using `B.vN.unit.2.2`. Establish `hν : B.vN.ν B.vN.𝓝 < ⊤` using `by rw [hν1]; exact ENNReal.one_lt_top`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsFiniteMeasure (B.vN.ν.restrict B.vN.𝓝) := isFiniteMeasure_restrict.2 hν.ne`. Establish `hemb` using `GlobalTheory.Unf.BesSemi.continuous_embA B.d B.o`. Establish `hpsi` using `GlobalTheory.CharLaws.continuous_psiBes ψ B.d hψ.1.1 1 (vecB B.o B.ζ)`. Take `⟨K, hK⟩` from `hΩc.exists_bound_of_continuousOn hf.1.continuousOn`. Establish `hsup : ∀ (h : GA D B.A) (n : flagN B.d), ‖f (n.1 * embA B.d B.o h)‖ ≤ K`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h n`. Establish `hs : n.1 * embA B.d B.o h ∈ besGrp B.d B.o` using `mul_mem (Subgroup.mem_sup_left n.2) (Subgroup.mem_sup_right ⟨h, rfl⟩)`. Take `⟨γ, hγ, hγs⟩` from `hΩ _ hs`. Rewrite using `[← hf.2 γ (Subgroup.mem_inf.1 hγ).1]`. Conclude with `hK _ hγs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbd : ∀ h n, ‖GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ f h n‖ ≤ Cφ * K`. Introduce `h n`. Simplify using `only [GlobalTheory.MixPer.besFun, norm_mul, norm_star, norm_psiBes hψ, mul_one]`. Conclude with `mul_le_mul (hCφ h) (hsup h n) (norm_nonneg _) ((norm_nonneg _).trans (hCφ h))`. Establish `hcont : ∀ h, Continuous (GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ f h)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Introduce `h`. Express the relevant statement in the definitionally equal form `Continuous fun n : flagN B.d => φ h * f (n.1 * embA B.d B.o h) * star (psiBes ψ B.d 1 (vecB B.o B.ζ) n.1)`. Conclude with `(continuous_const.mul (hf.1.comp (continuous_subtype_val.mul continuous_const))).mul (continuous_star.comp (hpsi.comp continuous_subtype_val))`. Establish `hcontH : ∀ n : flagN B.d, Continuous fun h => GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ f h n`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [GlobalTheory.MixPer.besFun]`. Conclude with `(hφ.2.mul (hf.1.comp (continuous_const.mul hemb))).mul continuous_const`. Establish `houtC : Continuous fun h => ∫ n in B.vN.𝓝, GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ f h n ∂B.vN.ν` using `by haveI := GlobalTheory.Unf.EvalCont.firstCountable_GA B.A`. Conclude with `continuous_of_dominated (bound := fun _ => Cφ * K) (fun h => (hcont h).aestronglyMeasurable) (fun h => Filter.Eventually.of_forall fun n => hbd h n) (integrable_const _) (Filter.Eventually.of_forall fun n => hcontH n)`. Use `⟨fun h => Measure.integrableOn_of_bounded hν.ne (hcont h).aestronglyMeasurable (Filter.Eventually.of_forall fun n => hbd h n), ?_⟩` and prove the remaining obligations.
-
-Use `Measure.integrableOn_of_bounded (M := Cφ * K * B.vN.ν.real B.vN.𝓝) hμ.ne houtC.aestronglyMeasurable (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Conclude with `norm_setIntegral_le_of_norm_le_const hν fun n _ => hbd h n`.
+A detailed English derivation is pending.
 -/
 theorem per_int {ρ : ℕ} (B : BesLev D ρ) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     {φ : GA D B.A → ℂ} (hφ : IsContAut B.A φ) {f : GA D B.V → ℂ} (hf : f ∈ contLeft B.V) :
@@ -89,9 +87,9 @@ theorem per_int {ρ : ℕ} (B : BesLev D ρ) {ψ : AddChar (AF D.host.F) ℂ} (h
   exact norm_setIntegral_le_of_norm_le_const hν fun n _ => hbd h n
 
 /- English proof (translation)
-Take `⟨i₁, o₁⟩` from `per_int B hψ h₁ hf`. Take `⟨i₂, o₂⟩` from `per_int B hψ h₂ hf`. Establish `e : ∀ h n, GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ (φ₁ + φ₂) f h n = GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ₁ f h n + GlobalTheory.MixPer.besFun ψ 1 B.d B.o B.ζ φ₂ f h n`. Introduce `h n`. Simplify using `only [GlobalTheory.MixPer.besFun, Pi.add_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [GlobalTheory.Unf.BesLev.per, GlobalTheory.MixPer.besPer]`. Repeatedly rewrite using `[e]`. Rewrite using `[← integral_add o₁ o₂]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun h => integral_add (i₁ h) (i₂ h))`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem per_add_left {ρ : ℕ} (B : BesLev D ρ) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     {φ₁ φ₂ : GA D B.A → ℂ} (h₁ : IsContAut B.A φ₁) (h₂ : IsContAut B.A φ₂) {f : GA D B.V → ℂ} (hf : f ∈ contLeft B.V) :
@@ -107,7 +105,7 @@ theorem per_add_left {ρ : ℕ} (B : BesLev D ρ) {ψ : AddChar (AF D.host.F) �
   exact integral_congr_ae (Filter.Eventually.of_forall fun h => integral_add (i₁ h) (i₂ h))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u v`. Simplify using `only [biComb, GlobalTheory.FrComb.comb_apply, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem biComb_add (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (c : WO A S →₀ ℂ) (c' : WO S A' →₀ ℂ)
     (K K' : WO A S → WO S A' → ℂ) : biComb ψ A S A' c c' (K + K') = biComb ψ A S A' c c' K + biComb ψ A S A' c c' K' := by
@@ -115,7 +113,7 @@ theorem biComb_add (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (c : WO A S
   simp only [biComb, GlobalTheory.FrComb.comb_apply, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u v`. Simplify using `only [biComb, GlobalTheory.FrComb.comb_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem biComb_smul (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (c : WO A S →₀ ℂ) (c' : WO S A' →₀ ℂ)
     (a : ℂ) (K : WO A S → WO S A' → ℂ) : biComb ψ A S A' c c' (a • K) = a • biComb ψ A S A' c c' K := by
@@ -128,17 +126,17 @@ end GlobalTheory.TriStep.Lin
 open GlobalTheory.TriStep.Lin GlobalTheory.Core.Mi.SepPer in
 
 /- English proof (translation)
-Introduce `D ψ hψ σ S Q c₁ c₂ _ _ φ hφ Λ _ hΛ`. Establish `hB : BiAct D` using `GlobalTheory.SeeSaw.biAct_all D`. Establish `hC : ∀ Ξ, IsBiTheta ψ S.B.A S.J.W₀ S.B'.A (biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ Ξ))` using `fun Ξ => GlobalTheory.T.isJointlySmoothBiTheta_twoVarCombination D ψ hψ S.B.A S.J.W₀ S.B'.A (Λ Ξ) (hΛ Ξ) c₁ c₂`. Establish `hA : ∀ Ξ, IsContAut S.B'.A (biLift S.oma S.omb S.B.vA S.J.v0 φ (biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ Ξ)))` using `fun Ξ => GlobalTheory.SeeSawLastValue.contAut_biLift hB S.weila S.weilb S.B.cpt S.J.cpt S.B.vA S.J.v0 hφ (hC Ξ)`. Establish `hL : ∀ Ξ Ξ', biLift S.oma S.omb S.B.vA S.J.v0 φ (biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ (Ξ + Ξ'))) = biLift S.oma S.omb S.B.vA S.J.v0 φ (biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ Ξ)) + biLift S.oma S.omb S.B.vA S.J.v0 φ (biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ Ξ'))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Ξ Ξ'`. Use function extensionality and compare the values at `h₂`. Apply the tactic sequence `have e := GlobalTheory.SeeSmallPf.biLift_sum hB S.weila S.weilb S.B.cpt S.J.cpt S.B.vA S.J.v0 hφ ![biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ Ξ), biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ Ξ')] (fun i => by fin_cases i <;> simp [hC]) h₂`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one] at e`. Rewrite using `[map_add, biComb_add, e, Pi.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : ∀ f : GlobalTheory.TriStep.space Q, f.1 ∈ contLeft S.B'.V`. Introduce `f`. Use `f.2.1 1` as an intermediate fact. Rewrite `this` using `[map_one, GlobalTheory.TriStep.rTrans_one]`. Conclude with `⟨this.2, this.1⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Use `⟨LinearMap.mk₂ ℂ (fun Ξ f => GlobalTheory.TriStep.valK S Q c₁ c₂ φ Λ Ξ f.1) ?_ ?_ ?_ ?_, fun Ξ f => rfl⟩` and prove the remaining obligations. Introduce `Ξ Ξ' f`. Simplify using `only [GlobalTheory.TriStep.valK]`. Rewrite using `[hL, per_add_left S.B' hψ (hA Ξ) (hA Ξ') (hf f)]`. Introduce `a Ξ f`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [GlobalTheory.TriStep.valK]`. Rewrite using `[map_smul, biComb_smul, GlobalTheory.SeeSawRhs.biLift_smul, GlobalTheory.SeeSawStep.per_smul_left, smul_eq_mul]`. Introduce `Ξ f g`. Simplify using `only [GlobalTheory.TriStep.valK]`. Take `⟨-, -, ⟨Ω, hΩc, hΩ⟩, -⟩` from `GlobalTheory.T.besselGroup_quotient_fundamentalDomain_cocompact D σ S.B'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨Cp, hadd, -⟩` from `per_add_bound S.B' hψ (hA Ξ) Ω hΩc hΩ`. Conclude with `hadd _ _ (hf f) (hf g)`. Introduce `a Ξ f`. Simplify using `only [GlobalTheory.TriStep.valK]`. Conclude with `GlobalTheory.SeeSawStep.per_smul_right S.B' ψ _ a f.1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TriStep.valK_bilin : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (σ : ℕ) (S : Dbl2 ψ σ) (Q : QStep S) (c₁ : WO S.B.A S.J.W₀ →₀ ℂ) (c₂ : WO S.J.W₀ S.B'.A →₀ ℂ), Q.Away c₁ → Q.Away c₂ → ∀ φ, IsContAut S.B.A φ → ∀ (Λ : SB (Matrix Q.n₁ Q.n₀ Q.k × Matrix Q.n₂ Q.n₁ Q.k) →ₗ[ℂ] (WO S.B.A S.J.W₀ → WO S.J.W₀ S.B'.A → ℂ)), (ofSplit Q.q).IsBiModel ψ Q.F.F₀ Q.F.F₁ Q.F.F₂ Λ → (∀ Ξ, IsBiTheta ψ S.B.A S.J.W₀ S.B'.A (Λ Ξ)) → ∃ T : SB (Matrix Q.n₁ Q.n₀ Q.k × Matrix Q.n₂ Q.n₁ Q.k) →ₗ[ℂ] GlobalTheory.TriStep.space Q →ₗ[ℂ] ℂ, ∀ Ξ f, T Ξ f = GlobalTheory.TriStep.valK S Q c₁ c₂ φ Λ Ξ f.1 := by
   intro D ψ hψ σ S Q c₁ c₂ _ _ φ hφ Λ _ hΛ

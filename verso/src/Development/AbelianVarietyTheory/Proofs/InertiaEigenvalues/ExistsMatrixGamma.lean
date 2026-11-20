@@ -10,27 +10,23 @@ noncomputable section
 namespace GlobalTheory.WachTie
 
 /- English proof (translation)
-Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ v n W l R j jE T r b hF _ hb`. Take `⟨-, hinv, -, -, -, hs, hX, -⟩` from `hF`. Establish `hsm : ∀ (g : W.Gam) (a : LetA O n) (x : W.DD T), W.γD T g (a • x) = letγ (W.γ₀ g) a • W.γD T g x` using `fun g a x => by`. Use `W.γD_smul T g (algebraMap (LetA O n) W.EE a) x` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.γE_ext, algebraMap_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hXj : (X : O⟦X⟧) ∣ j X`. Establish `h1 : (1 : W.Gam) ∈ W.DelF` using `(W.DelF_def 1).2 ⟨1, one_pos, one_pow _⟩`. Establish `h2 : R.s ≠ 0` using `by rw [hs]; exact (Finset.card_pos.2 ⟨1, h1⟩).ne'`. Conclude with `(dvd_pow_self _ h2).trans hX.symm.dvd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `z : Fin r → ↥(W.N T)` to `fun k => ⟨W.γD T W.gam (b k : W.DD T), W.N_Γ T _ _ (b k).2⟩`. Establish `hexp : ∀ y : ↥(W.N T), (y : W.DD T) = ∑ m, b.repr y m • (b m : W.DD T)` using `fun y => by conv_lhs => rw [← b.sum_repr y]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Establish `hc : ∀ k m i, ∃ c, j c = b.repr (z k) m i`. Introduce `k m i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hinv _).2 fun δ hδ => ?_` and prove the remaining obligations. Establish `h1 : W.γD T δ (z k : W.DD T) = z k`. Express the relevant statement in the definitionally equal form `W.γD T δ (W.γD T W.gam (b k : W.DD T)) = W.γD T W.gam (b k : W.DD T)`. Rewrite using `[← W.γD_mul, mul_comm, W.γD_mul, (hb k).2 δ hδ]`. Establish `h2 : z k = ∑ m, letγ (W.γ₀ δ) (b.repr (z k) m) • b m`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← h1]`. Use `conv_lhs => rw [hexp (z k)]`. Simplify using `only [map_sum, hsm, Submodule.coe_sum, Submodule.coe_smul]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [(hb m).2 δ hδ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : b.repr (z k) m = letγ (W.γ₀ δ) (b.repr (z k) m)` using `by conv_lhs => rw [h2]`. Rewrite using `[b.repr_sum_self]`. Conclude with `(congrFun h3 i).symm`. Use `choose c hc using hc`. Use `⟨fun i => Matrix.of fun m k => c k m i, fun i => ?_, fun k => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd : ∀ m k, (X : O⟦X⟧) ∣ c k m i - (1 : Matrix (Fin r) (Fin r) O⟦X⟧) m k`. Introduce `m k`. Take `⟨y, hy, hy'⟩` from `W.N_π T W.gam _ (b k).2`. Establish `h1 : z k - b k = (letπ : LetA O n) • (⟨y, hy⟩ : ↥(W.N T))` using `Subtype.ext hy'`. Establish `h2` using `congrArg (fun w => b.repr w m i) h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sub, map_smul, Finsupp.sub_apply, Finsupp.smul_apply, Pi.sub_apply, smul_eq_mul, Pi.mul_apply, b.repr_self, letπ] at h2`. Rewrite using `[X_dvd_iff, ← constantCoeff_algHom j hXj, ← X_dvd_iff, map_sub, hc]`. Establish `h3 : j ((1 : Matrix (Fin r) (Fin r) O⟦X⟧) m k) = (Finsupp.single k (1 : LetA O n) : Fin r →₀ LetA O n) m i`. Distinguish the cases in `h : m = k`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne h, Finsupp.single_eq_of_ne h]`. Simplify using the standard rewrite rules. Rewrite using `[h3, h2]`. Conclude with `dvd_mul_right _ _`.
-
-Use `choose d hd using hd`. Use `⟨Matrix.of d, ?_⟩` and prove the remaining obligations. Use `ext1 m k`. Simplify using `only [Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← hd]`.
-
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Matrix.of_apply, hc]`. Conclude with `hexp (z k)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_matrix_gamma : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n) {l : ℕ} (R : Fr l O) (j : O⟦X⟧ →ₐ[O] O⟦X⟧) (jE : (ZMod n → R.EE) →ₐ[O] W.EE) (T : LocLat G Qp LL O) {r : ℕ} (b : Module.Basis (Fin r) (LetA O n) ↥(W.N T)), FrTie W R j → EETie W R j jE → (∀ k, (b k : W.DD T) ∈ W.NΔ T) → ∃ Gm : ZMod n → Matrix (Fin r) (Fin r) O⟦X⟧, (∀ i, ∃ B : Matrix (Fin r) (Fin r) O⟦X⟧, Gm i = 1 + (X : O⟦X⟧) • B) ∧ (∀ k, W.γD T W.gam (b k : W.DD T) = ∑ m, (fun i => j (Gm i m k) : LetA O n) • (b m : W.DD T)) := by
   intro G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ v n W l R j jE T r b

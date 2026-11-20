@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open Matrix Polynomial GlobalTheory.SplitWeil GlobalTheory.SmGL
 
 /- English proof (translation)
-Rewrite `h` using `[Matrix.eval_charpoly]`. Take `⟨v, hv, hMv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Rewrite `hMv` using `[Matrix.sub_mulVec]`. Establish `hs : Matrix.scalar (Fin 2) c *ᵥ v = c • v`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `[Matrix.scalar_apply, Matrix.mulVec_smul]`. Rewrite `hMv` using `[hs]`. Conclude with `(sub_eq_zero.mp hMv).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_eigvec {k : Type} [Field k] (M : Matrix (Fin 2) (Fin 2) k) (c : k)
     (h : M.charpoly.eval c = 0) : ∃ v : Fin 2 → k, v ≠ 0 ∧ M *ᵥ v = c • v := by
@@ -20,27 +20,25 @@ private theorem exists_eigvec {k : Type} [Field k] (M : Matrix (Fin 2) (Fin 2) k
   exact (sub_eq_zero.mp hMv).symm
 
 /- English proof (translation)
-Introduce `k _ _ _ _ γ a b hab hchar`. Establish `ha : (γ : Matrix (Fin 2) (Fin 2) k).charpoly.eval (a : k) = 0`. Simplify using `[hchar]`. Establish `hb : (γ : Matrix (Fin 2) (Fin 2) k).charpoly.eval (b : k) = 0`. Simplify using `[hchar]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨v, hv0, hv⟩` from `exists_eigvec _ _ ha`. Take `⟨w, hw0, hw⟩` from `exists_eigvec _ _ hb`. Establish `hab' : (a : k) ≠ (b : k)` using `fun h => hab (Units.ext h)`. Set `P : Matrix (Fin 2) (Fin 2) k` to `Matrix.of fun i j => ![v, w] j i`. Establish `hPv : ∀ u : Fin 2 → k, P *ᵥ u = u 0 • v + u 1 • w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `u`. Use extensionality with `i`. Simplify using `[P, Matrix.mulVec, dotProduct, Fin.sum_univ_two, mul_comm]`. Establish `hdet : P.det ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu0, hu⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Rewrite `hu` using `[hPv]`. Establish `h2 : (γ : Matrix (Fin 2) (Fin 2) k) *ᵥ (u 0 • v + u 1 • w) = 0`. Rewrite using `[hu, Matrix.mulVec_zero]`. Rewrite `h2` using `[Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, hv, hw]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (u 1 * ((b : k) - a)) • w = 0`. Establish `e : (u 1 * ((b : k) - a)) • w = (u 0 • (a : k) • v + u 1 • (b : k) • w) - (a : k) • (u 0 • v + u 1 • w)` using `by module`. Rewrite using `[e, h2, hu, smul_zero, sub_zero]`. Break down `smul_eq_zero.mp h3 with h4 | h4` into its components or cases. Establish `hu1 : u 1 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `mul_eq_zero.mp h4 with h5 | h5` into its components or cases. Conclude with `h5`. Conclude with `absurd (sub_eq_zero.mp h5).symm hab'`. Rewrite `hu` using `[hu1, zero_smul, add_zero]`. Break down `smul_eq_zero.mp hu with h6 | h6` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Apply `hu0` to reduce the goal to its premises. Use extensionality with `i`. Use `fin_cases i`. Simplify using `using h6`. Simplify using `using hu1`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv0 h6`. Conclude with `hw0 h4`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero P hdet, ?_⟩` and prove the remaining obligations. Establish `hg : ((Matrix.GeneralLinearGroup.mkOfDetNeZero P hdet : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) = P` using `rfl`. Rewrite using `[eq_mul_inv_iff_mul_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, hg, UpperTheory.V.Z.Sym.Sig.dg, val_diagT]`. Use extensionality with `i j`. Use `fin_cases j`. Use `congrFun hv i` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec, dotProduct] at this`. Simplify using `[P, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal]`. Rewrite using `[this, mul_comm]`. Use `congrFun hw i` as an intermediate fact. Simplify using `[Matrix.mulVec, dotProduct] at this`.
-
-Simplify using `[P, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal]`. Rewrite using `[this, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Sig.normalD :
     UpperTheory.V.Z.Sym.Sig.NormalD := by

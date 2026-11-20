@@ -15,7 +15,7 @@ private def Q (Δ a b c d : K) : Matrix (Fin 2) (Fin 2) (Lsq K Δ) :=
   !![⟨a, b⟩, ⟨c, d⟩; ⟨-c, d⟩, ⟨a, -b⟩]
 
 /- English proof (translation)
-Use extensionality with `i j : 1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> ext <;> simp [Q, Matrix.mul_apply] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Q_mul (a b c d a' b' c' d' : K) :
     Q Δ a b c d * Q Δ a' b' c' d' =
@@ -25,7 +25,7 @@ private theorem Q_mul (a b c d a' b' c' d' : K) :
   fin_cases i <;> fin_cases j <;> ext <;> simp [Q, Matrix.mul_apply] <;> ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_two]`. Apply the tactic sequence `ext <;> simp [Q, pow_two] <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Q_det (a b c d : K) :
     (Q Δ a b c d).det = algebraMap K _ (a ^ 2 - Δ * b ^ 2 + c ^ 2 - Δ * d ^ 2) := by
@@ -33,14 +33,14 @@ private theorem Q_det (a b c d : K) :
   ext <;> simp [Q, pow_two] <;> ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.trace_fin_two]`. Apply the tactic sequence `ext <;> simp [Q] <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Q_trace (a b c d : K) : (Q Δ a b c d).trace = algebraMap K _ (2 * a) := by
   rw [Matrix.trace_fin_two]
   ext <;> simp [Q] <;> ring
 
 /- English proof (translation)
-Establish `h0` using `congrFun (congrFun h 0) 0`. Establish `h1` using `congrFun (congrFun h 0) 1`. Simplify using `[Q] at h0 h1`. Conclude with `⟨h0.1, h0.2, h1.1, h1.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem Q_inj {a b c d a' b' c' d' : K} (h : Q Δ a b c d = Q Δ a' b' c' d') :
     a = a' ∧ b = b' ∧ c = c' ∧ d = d' := by
@@ -50,19 +50,17 @@ private theorem Q_inj {a b c d a' b' c' d' : K} (h : Q Δ a b c d = Q Δ a' b' c
   exact ⟨h0.1, h0.2, h1.1, h1.2⟩
 
 /- English proof (translation)
-Establish `key : g ∈ DX Δ ↔ ∀ i j, star ((g : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) i j) = ((((wJ Δ)⁻¹ * g * ((wJ Δ)⁻¹)⁻¹ : GL (Fin 2) (Lsq K Δ))) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) i j`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Conclude with `congrArg (fun x : GL (Fin 2) (Lsq K Δ) => (x : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) i j) h`. Introduce `h show GeneralLinearGroup.map (starRingEnd (Lsq K Δ)) g = (MulAut.conj (wJ Δ)⁻¹).toMonoidHom g`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ext (Matrix.ext fun i j => h i j)`. Rewrite using `[key]`. Establish `winv : (((wJ Δ)⁻¹ : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) = !![0, -1; 1, 0]` using `rfl`. Establish `w : ((wJ Δ : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) = !![0, 1; -1, 0]` using `rfl`. Establish `hg` using `Matrix.eta_fin_two (g : Matrix (Fin 2) (Fin 2) (Lsq K Δ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [inv_inv, Units.val_mul, winv, w]`. Rewrite using `[hg]`. Simplify using `only [Matrix.mul_fin_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, zero_mul, one_mul, neg_mul, mul_zero, mul_one, mul_neg, zero_add, add_zero, neg_zero, neg_neg]`. Use `set p := (g : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) 0 0`. Use `set q := (g : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) 0 1`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set r := (g : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) 1 0`. Use `set s := (g : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) 1 1`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h00` using `h 0 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `h01` using `h 0 1`. Simplify using `at h00 h01`. Establish `hr : r = -star q` using `by rw [h01, neg_neg]`. Use `⟨p.re, p.im, q.re, q.im, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, ← h00]`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j : 1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> ext <;> simp [Q]`. Introduce and unpack `⟨a, b, c, d, e⟩ i j`. Establish `ep` using `congrFun (congrFun e 0) 0`. Establish `eq` using `congrFun (congrFun e 0) 1`.
-
-Establish `er` using `congrFun (congrFun e 1) 0`. Establish `es` using `congrFun (congrFun e 1) 1`. Simplify using `[Q] at ep eq er es`. Rewrite using `[ep, eq, er, es]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> ext <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem mem_DX_iff (g : GL (Fin 2) (Lsq K Δ)) :
     g ∈ DX Δ ↔ ∃ a b c d, (g : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) = Q Δ a b c d := by
@@ -107,14 +105,14 @@ private theorem mem_DX_iff (g : GL (Fin 2) (Lsq K Δ)) :
     fin_cases i <;> fin_cases j <;> ext <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j : 1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> ext <;> simp [Q, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Q_one : Q Δ 1 0 0 0 = 1 := by
   ext i j : 1
   fin_cases i <;> fin_cases j <;> ext <;> simp [Q, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
 
 /- English proof (translation)
-Use extensionality with `i j : 1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> ext <;> simp [Q, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Q_lin (x y a b c d : K) :
     x • (1 : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) + y • Q Δ a b c d =
@@ -123,14 +121,14 @@ private theorem Q_lin (x y a b c d : K) :
   fin_cases i <;> fin_cases j <;> ext <;> simp [Q, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> ring
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext e)`.
+A detailed English derivation is pending.
 -/
 private theorem DX_ext {g h : DX Δ} (e : mt g = mt h) : g = h := Subtype.ext (Units.ext e)
 
 /- English proof (translation)
-Establish `h1 : Q Δ a b c d * Q Δ (a / (a ^ 2 - Δ * b ^ 2 + c ^ 2 - Δ * d ^ 2)) (-b / (a ^ 2 - Δ * b ^ 2 + c ^ 2 - Δ * d ^ 2)) (-c / (a ^ 2 - Δ * b ^ 2 + c ^ 2 - Δ * d ^ 2)) (-d / (a ^ 2 - Δ * b ^ 2 + c ^ 2 - Δ * d ^ 2)) = 1`. Rewrite using `[Q_mul, ← Q_one]`. Apply the tactic sequence `congr 1 <;> field_simp <;> ring`. Establish `h2 : Q Δ (a / (a ^ 2 - Δ * b ^ 2 + c ^ 2 - Δ * d ^ 2)) (-b / (a ^ 2 - Δ * b ^ 2 + c ^ 2 - Δ * d ^ 2)) (-c / (a ^ 2 - Δ * b ^ 2 + c ^ 2 - Δ * d ^ 2)) (-d / (a ^ 2 - Δ * b ^ 2 + c ^ 2 - Δ * d ^ 2)) * Q Δ a b c d = 1`. Rewrite using `[Q_mul, ← Q_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `congr 1 <;> field_simp <;> ring`. Set `g : GL (Fin 2) (Lsq K Δ)` to `⟨_, _, h1, h2⟩`. Establish `hg : g ∈ DX Δ` using `(mem_DX_iff g).2 ⟨a, b, c, d, rfl⟩`. Conclude with `⟨⟨g, hg⟩, rfl⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem DX_of {a b c d : K} (h : a ^ 2 - Δ * b ^ 2 + c ^ 2 - Δ * d ^ 2 ≠ 0) :
     ∃ g : DX Δ, mt g = Q Δ a b c d := by
@@ -147,15 +145,15 @@ private theorem DX_of {a b c d : K} (h : a ^ 2 - Δ * b ^ 2 + c ^ 2 - Δ * d ^ 2
   exact ⟨⟨g, hg⟩, rfl⟩
 
 /- English proof (translation)
-Simplify using `using congrArg QuadraticAlgebra.re h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem alg_inj {x y : K} (h : algebraMap K (Lsq K Δ) x = algebraMap K (Lsq K Δ) y) : x = y := by
   simpa using congrArg QuadraticAlgebra.re h
 
 /- English proof (translation)
-Take `⟨a, b, c, d, e⟩` from `(mem_DX_iff γ.1).1 γ.2`. Establish `e' : mt γ = Q Δ a b c d` using `e`. Use `⟨a, b, c, d, e', ?_, ?_⟩` and prove the remaining obligations. Use `h.2` as an intermediate fact. Rewrite `this` using `[e', Q_trace]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `alg_inj this`. Use `h.1` as an intermediate fact. Rewrite `this` using `[e', Q_det, ← map_one (algebraMap K (Lsq K Δ))]`. Conclude with `alg_inj this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coords {τ : K} {γ : DX Δ} (h : HasTr γ τ) :
     ∃ a b c d, mt γ = Q Δ a b c d ∧ 2 * a = τ ∧ a ^ 2 - Δ * b ^ 2 + c ^ 2 - Δ * d ^ 2 = 1 := by
@@ -170,7 +168,7 @@ private theorem coords {τ : K} {γ : DX Δ} (h : HasTr γ τ) :
     exact alg_inj this
 
 /- English proof (translation)
-Establish `hz : i * n = 0`. Rewrite using `[← h]`. Take the linear combination `(Δ * b) * hb - c * hc + (Δ * d) * hd`. Conclude with `(mul_eq_zero.1 hz).resolve_right hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem mul_pure_eq_zero {n b c d i : K} (hn : n ≠ 0) (h : Δ * b ^ 2 - c ^ 2 + Δ * d ^ 2 = n)
     (hb : i * b = 0) (hc : i * c = 0) (hd : i * d = 0) : i = 0 := by
@@ -180,13 +178,13 @@ private theorem mul_pure_eq_zero {n b c d i : K} (hn : n ≠ 0) (h : Δ * b ^ 2 
   exact (mul_eq_zero.1 hz).resolve_right hn
 
 /- English proof (translation)
-Take `⟨a, b, c, d, e, hτ, hN⟩` from `coords h`. Establish `hu : Q Δ a b c d * Q Δ a b c d = (-1 : K) • (1 : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) + τ • Q Δ a b c d`. Rewrite using `[Q_mul, Q_lin]`. Use `congr 1`. Take the linear combination `(-1) * hN + a * hτ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `b * hτ`. Take the linear combination `c * hτ`. Take the linear combination `d * hτ`. Set `φ : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) (Lsq K Δ)` to `QuadraticAlgebra.lift ⟨Q Δ a b c d, hu⟩`. Establish `hφ : ∀ z : Etau K τ, φ z = z.re • (1 : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) + z.im • Q Δ a b c d`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z`. Simplify using `[φ]`. Set `j : (Etau K τ)ˣ →* DX Δ` to `(Units.map (φ : Etau K τ →* Matrix (Fin 2) (Fin 2) (Lsq K Δ))).codRestrict (DX Δ) (fun z => (mem_DX_iff _).2 ⟨_, _, _, _, by show φ (z : Etau K τ) = _`. Rewrite using `[hφ, Q_lin]⟩)`. Use `⟨j, fun z => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show φ (z : Etau K τ) = _`. Rewrite using `[hφ, show mt γ = Q Δ a b c d from e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_emb {τ : K} {γ : DX Δ} (h : HasTr γ τ) : ∃ j, IsEmb τ γ j := by
   obtain ⟨a, b, c, d, e, hτ, hN⟩ := coords h
@@ -210,7 +208,7 @@ private theorem exists_emb {τ : K} {γ : DX Δ} (h : HasTr γ τ) : ∃ j, IsEm
   rw [hφ, show mt γ = Q Δ a b c d from e]
 
 /- English proof (translation)
-Substitute `h0 h1 h2 h3` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem Q_congr {a b c d a' b' c' d' : K} (h0 : a = a') (h1 : b = b') (h2 : c = c') (h3 : d = d') :
     Q Δ a b c d = Q Δ a' b' c' d' := by
@@ -218,7 +216,7 @@ private theorem Q_congr {a b c d a' b' c' d' : K} (h0 : a = a') (h1 : b = b') (h
   rfl
 
 /- English proof (translation)
-Rewrite using `[hj z, e, Q_lin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem emb_coord {τ a b c d : K} {γ : DX Δ} {j : (Etau K τ)ˣ →* DX Δ} (e : mt γ = Q Δ a b c d)
     (hj : IsEmb τ γ j) (z : (Etau K τ)ˣ) :
@@ -227,9 +225,9 @@ private theorem emb_coord {τ a b c d : K} {γ : DX Δ} {j : (Etau K τ)ˣ →* 
   rw [hj z, e, Q_lin]
 
 /- English proof (translation)
-Take `⟨a, b, c, d, e, ha, hN⟩` from `coords h`. Establish `hn : a ^ 2 - 1 ≠ 0` using `fun h0 => hτ (by rw [← ha]; linear_combination 4 * h0)`. Introduce `z w hzw`. Establish `hz` using `emb_coord e hj z`. Rewrite `hz` using `[hzw, emb_coord e hj w]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h0, h1, h2', h3⟩` from `Q_inj hz`. Establish `hi : (w : Etau K τ).im - (z : Etau K τ).im = 0` using `mul_pure_eq_zero (Δ := Δ) (b := b) (c := c) (d := d) hn (by linear_combination -hN) (by linear_combination h1) (by linear_combination h2') (by linear_combination h3)`. Establish `hi' : (w : Etau K τ).im = (z : Etau K τ).im` using `sub_eq_zero.1 hi`. Rewrite `h0` using `[hi']`. Conclude with `Units.ext (QuadraticAlgebra.ext (add_right_cancel h0).symm hi'.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem emb_inj {τ : K} (hτ : τ ^ 2 - 4 ≠ 0) {γ : DX Δ} (h : HasTr γ τ)
     {j : (Etau K τ)ˣ →* DX Δ} (hj : IsEmb τ γ j) : Function.Injective j := by
@@ -247,9 +245,9 @@ private theorem emb_inj {τ : K} (hτ : τ ^ 2 - 4 ≠ 0) {γ : DX Δ} (h : HasT
   exact Units.ext (QuadraticAlgebra.ext (add_right_cancel h0).symm hi'.symm)
 
 /- English proof (translation)
-Substitute `hnn` using the available equality. Use `⟨(Δ * x1 * b - x2 * c + Δ * x3 * d) / (Δ * b ^ 2 - c ^ 2 + Δ * d ^ 2), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hn]`. Take the linear combination `(-c) * e3 + d * hΔ`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hn]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-Δ * b) * e3 + (Δ * d) * e1`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hn]`. Take the linear combination `(-b) * hΔ + c * e1`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem cent_coord {n b c d x1 x2 x3 : K} (hn : n ≠ 0) (hnn : Δ * b ^ 2 - c ^ 2 + Δ * d ^ 2 = n)
     (hΔ : Δ * (x1 * d - x3 * b) = 0) (e1 : x2 * d - x3 * c = 0) (e3 : x1 * c - x2 * b = 0) :
@@ -264,23 +262,23 @@ private theorem cent_coord {n b c d x1 x2 x3 : K} (hn : n ≠ 0) (hnn : Δ * b ^
     linear_combination (-b) * hΔ + c * e1
 
 /- English proof (translation)
-Take `⟨a, b, c, d, e, ha, hN⟩` from `coords h`. Establish `hn : a ^ 2 - 1 ≠ 0`. Introduce `h0`. Apply `hτ` to reduce the goal to its premises. Rewrite using `[← ha]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `4 * h0`. Establish `hnn : Δ * b ^ 2 - c ^ 2 + Δ * d ^ 2 = a ^ 2 - 1` using `by linear_combination (-1) * hN`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Apply `DX_ext` to reduce the goal to its premises.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show mt (j z) * mt γ = mt γ * mt (j z)`. Rewrite using `[emb_coord e hj, e, Q_mul, Q_mul]`. Apply the tactic sequence `congr 1 <;> ring`. Introduce `hx`. Take `⟨x0, x1, x2, x3, ex⟩` from `(mem_DX_iff x.1).1 x.2`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm : mt x * mt γ = mt γ * mt x` using `congrArg mt hx`. Rewrite `hm` using `[show mt x = Q Δ x0 x1 x2 x3 from ex, e, Q_mul, Q_mul]`. Take `⟨k0, k1, k2, k3⟩` from `Q_inj hm`. Establish `e1 : x2 * d - x3 * c = 0` using `mul_left_cancel₀ h2 (by linear_combination k1)`. Establish `eΔ : Δ * (x1 * d - x3 * b) = 0` using `mul_left_cancel₀ h2 (by linear_combination k2)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : x1 * c - x2 * b = 0` using `mul_left_cancel₀ h2 (by linear_combination k3)`. Take `⟨β, hx1, hx2, hx3⟩` from `cent_coord hn hnn eΔ e1 e3`. Establish `hdet : IsUnit (mt x).det`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.isUnit _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hdet` using `[show mt x = Q Δ x0 x1 x2 x3 from ex, Q_det]`. Establish `hNx : x0 ^ 2 - Δ * x1 ^ 2 + x2 ^ 2 - Δ * x3 ^ 2 ≠ 0`. Introduce `h0`. Rewrite `hdet` using `[h0, map_zero]`. Conclude with `not_isUnit_zero hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `zz : Etau K τ` to `⟨x0 - β * a, β⟩`. Establish `hnorm : QuadraticAlgebra.norm zz = x0 ^ 2 - Δ * x1 ^ 2 + x2 ^ 2 - Δ * x3 ^ 2`. Simplify using `only [QuadraticAlgebra.norm, MonoidHom.coe_mk, OneHom.coe_mk, zz]`. Rewrite using `[hx1, hx2, hx3]`. Take the linear combination `β ^ 2 * hnn - ((x0 - β * a) * β) * ha`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hu : IsUnit zz` using `QuadraticAlgebra.isUnit_iff_norm_isUnit.2 (by rw [hnorm]; exact hNx.isUnit)`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Apply `DX_ext` to reduce the goal to its premises. Rewrite using `[emb_coord e hj, show mt x = Q Δ x0 x1 x2 x3 from ex]`. Simplify using `only [IsUnit.unit_spec, zz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hx1, hx2, hx3]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem emb_range {τ : K} (hτ : τ ^ 2 - 4 ≠ 0) (h2 : (2 : K) ≠ 0) {γ : DX Δ} (h : HasTr γ τ)
     {j : (Etau K τ)ˣ →* DX Δ} (hj : IsEmb τ γ j) (x : DX Δ) : x ∈ j.range ↔ x * γ = γ * x := by
@@ -329,7 +327,7 @@ private theorem emb_range {τ : K} (hτ : τ ^ 2 - 4 ≠ 0) (h2 : (2 : K) ≠ 0)
     ring
 
 /- English proof (translation)
-Use extensionality with `i j : 1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> ext <;> simp [Q]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem scal_val (u : Kˣ) :
     ((((GeneralLinearGroup.scalar (Fin 2)).comp (Units.map (algebraMap K (Lsq K Δ) : K →* Lsq K Δ))) u :
@@ -338,15 +336,15 @@ private theorem scal_val (u : Kˣ) :
   fin_cases i <;> fin_cases j <;> ext <;> simp [Q]
 
 /- English proof (translation)
-Take `⟨a, b, c, d, e, ha, hN⟩` from `coords h`. Establish `hn : a ^ 2 - 1 ≠ 0` using `fun h0 => hτ (by rw [← ha]; linear_combination 4 * h0)`. Use extensionality with `z`. Rewrite using `[Subgroup.mem_comap]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hz`. Take `⟨u, hu⟩` from `Subgroup.mem_subgroupOf.1 hz`. Establish `hm : mt (j z) = Q Δ u 0 0 0`. Rewrite using `[← scal_val u]`. Conclude with `(congrArg Units.val hu).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[emb_coord e hj z]`. Take `⟨h0, h1, h2, h3⟩` from `Q_inj hm`. Establish `hi : (z : Etau K τ).im = 0` using `mul_pure_eq_zero (Δ := Δ) (b := b) (c := c) (d := d) hn (by linear_combination -hN) h1 h2 h3`. Rewrite `h0` using `[hi, zero_mul, add_zero]`. Use `⟨u, Units.ext ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using `using h0.symm`. Simplify using `using hi.symm`. Introduce and unpack `⟨u, rfl⟩`. Use `Subgroup.mem_subgroupOf.2 ⟨u, Units.ext ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = mt (j _)`. Rewrite using `[scal_val, emb_coord e hj]`. Apply the tactic sequence `refine Q_congr ?_ ?_ ?_ ?_ <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem emb_centre {τ : K} (hτ : τ ^ 2 - 4 ≠ 0) {γ : DX Δ} (h : HasTr γ τ)
     {j : (Etau K τ)ˣ →* DX Δ} (hj : IsEmb τ γ j) : (ZD Δ).comap j = scalE τ := by
@@ -376,13 +374,13 @@ private theorem emb_centre {τ : K} (hτ : τ ^ 2 - 4 ≠ 0) {γ : DX Δ} (h : H
     refine Q_congr ?_ ?_ ?_ ?_ <;> simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `H`. Use `push_neg at H`. Establish `E1` using `H c (Δ * b) 0 (by ring)`. Establish `E2` using `H d 0 (-b) (by ring)`. Establish `E3` using `H 0 (Δ * d) c (by ring)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E23` using `H d (Δ * d) (c - b) (by ring)`. Establish `hc1 : Δ * (c ^ 2 - Δ * b ^ 2) = 0` using `by linear_combination -E1`. Establish `hc1' : c ^ 2 - Δ * b ^ 2 = 0` using `(mul_eq_zero.1 hc1).resolve_left hΔ`. Establish `hc3 : Δ * (Δ * d ^ 2 - c ^ 2) = 0` using `by linear_combination E3`. Establish `hc3' : Δ * d ^ 2 - c ^ 2 = 0` using `(mul_eq_zero.1 hc3).resolve_left hΔ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbc : (2 * Δ) * (b * c) = 0` using `by linear_combination E23 - E2 - E3`. Establish `hbc' : b * c = 0` using `(mul_eq_zero.1 hbc).resolve_left (mul_ne_zero h2 hΔ)`. Establish `hc4 : c ^ 4 = 0` using `by linear_combination c ^ 2 * hc1' + (Δ * b * c) * hbc'`. Establish `hc0 : c = 0` using `pow_eq_zero_iff (by norm_num) |>.1 hc4`. Apply `hn` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-hu - hc1' + hc3' + c * hc0`.
+A detailed English derivation is pending.
 -/
 private theorem exists_orth (h2 : (2 : K) ≠ 0) (hΔ : Δ ≠ 0) {b c d n : K} (hn : n ≠ 0)
     (hu : Δ * b ^ 2 - c ^ 2 + Δ * d ^ 2 = n) :
@@ -405,19 +403,19 @@ private theorem exists_orth (h2 : (2 : K) ≠ 0) (hΔ : Δ ≠ 0) {b c d n : K} 
   linear_combination -hu - hc1' + hc3' + c * hc0
 
 /- English proof (translation)
-Distinguish the cases in `hs : (0 : K) ^ 2 - Δ * (b + b') ^ 2 + (c + c') ^ 2 - Δ * (d + d') ^ 2 = 0`. Take `⟨p, q, r, horth, hY⟩` from `exists_orth h2 hΔ hn hv`. Establish `hX1 : (0 : K) ^ 2 - Δ * (b - b') ^ 2 + (c - c') ^ 2 - Δ * (d - d') ^ 2 ≠ 0`. Introduce `h0`. Apply `hn` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h4 : (2 * 2 : K) * n = 0` using `by linear_combination -hs - h0 - 2 * hu - 2 * hv`. Conclude with `(mul_eq_zero.1 h4).resolve_left (mul_ne_zero h2 h2)`. Establish `hA : Q Δ 0 b c d * Q Δ 0 (b - b') (c - c') (d - d') = Q Δ 0 (b - b') (c - c') (d - d') * Q Δ 0 (-b') (-c') (-d')`. Rewrite using `[Q_mul, Q_mul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hu - hv`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Establish `hB : Q Δ 0 (-b') (-c') (-d') * Q Δ 0 p q r = Q Δ 0 p q r * Q Δ 0 b' c' d'`.
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Q_mul, Q_mul]`. Use `congr 1`. Take the linear combination `-2 * horth`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨0 * 0 + Δ * (b - b') * p - (c - c') * q + Δ * (d - d') * r, 0 * p + (b - b') * 0 - (d - d') * q + (c - c') * r, 0 * q + Δ * (b - b') * r + (c - c') * 0 - Δ * (d - d') * p, 0 * r + (b - b') * q + (d - d') * 0 - (c - c') * p, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (0 * 0 + Δ * (b - b') * p - (c - c') * q + Δ * (d - d') * r) ^ 2 - Δ * (0 * p + (b - b') * 0 - (d - d') * q + (c - c') * r) ^ 2 + (0 * q + Δ * (b - b') * r + (c - c') * 0 - Δ * (d - d') * p) ^ 2 - Δ * (0 * r + (b - b') * q + (d - d') * 0 - (c - c') * p) ^ 2 = ((0 : K) ^ 2 - Δ …` using `by ring`. Rewrite using `[e]`. Conclude with `mul_ne_zero hX1 hY`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Q_mul, ← mul_assoc, hA, mul_assoc, hB, ← mul_assoc]`. Use `⟨0, b + b', c + c', d + d', hs, ?_⟩` and prove the remaining obligations. Rewrite using `[Q_mul, Q_mul]`. Use `congr 1`. Take the linear combination `hu - hv`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem conj_core (h2 : (2 : K) ≠ 0) (hΔ : Δ ≠ 0) {b c d b' c' d' n : K} (hn : n ≠ 0)
     (hu : Δ * b ^ 2 - c ^ 2 + Δ * d ^ 2 = n) (hv : Δ * b' ^ 2 - c' ^ 2 + Δ * d' ^ 2 = n) :
@@ -467,13 +465,13 @@ private theorem conj_core (h2 : (2 : K) ≠ 0) (hΔ : Δ ≠ 0) {b c d b' c' d' 
     · ring
 
 /- English proof (translation)
-Take `⟨a, b, c, d, e, ha, hN⟩` from `coords h`. Take `⟨a', b', c', d', e', ha', hN'⟩` from `coords h'`. Take `rfl : a' = a` from `mul_left_cancel₀ h2 (ha'.trans ha.symm)`. Establish `hn : a' ^ 2 - 1 ≠ 0` using `fun h0 => hτ (by rw [← ha]; linear_combination 4 * h0)`. Take `⟨x0, x1, x2, x3, hx, hm⟩` from `conj_core h2 hΔ hn (b := b) (c := c) (d := d) (b' := b') (c' := c') (d' := d') (by linear_combination -hN) (by linear_combination -hN')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, ex⟩` from `DX_of hx`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `hc : γ * x = x * γ'`. Apply `DX_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `mt γ * mt x = mt x * mt γ'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e, e', ex, Q_mul, Q_mul]`. Rewrite `hm` using `[Q_mul, Q_mul]`. Take `⟨q0, q1, q2, q3⟩` from `Q_inj hm`. Use `Q_congr ?_ ?_ ?_ ?_` and prove the remaining obligations. Take the linear combination `q0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `q1`. Take the linear combination `q2`. Take the linear combination `q3`. Rewrite using `[mul_assoc, hc, inv_mul_cancel_left]`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 private theorem conj_main {τ : K} (hτ : τ ^ 2 - 4 ≠ 0) (h2 : (2 : K) ≠ 0) (hΔ : Δ ≠ 0) {γ γ' : DX Δ}
     (h : HasTr γ τ) (h' : HasTr γ' τ) : ∃ x, γ' = x⁻¹ * γ * x := by
@@ -503,7 +501,7 @@ end Coord
 end UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Introduce `K _ _ Δ τ hΔ hτ γ hγ`. Establish `h2 : (2 : K) ≠ 0` using `two_ne_zero`. Conclude with `⟨exists_emb hγ, fun j hj => ⟨emb_inj hτ hγ hj, emb_range hτ h2 hγ hj, emb_centre hτ hγ hj⟩, fun γ' hγ' => conj_main hτ h2 hΔ hγ hγ'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Sym.Glob.embAlg :
     UpperTheory.V.Z.Sym.Glob.EmbAlg := by

@@ -29,7 +29,7 @@ open scoped TensorProduct
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
 
 /- English proof (translation)
-Establish `h` using `LinearMap.congr_fun (goodOp_comm (R := R) hX j g) x`. Simplify using `only [LinearMap.comp_apply, twRep_apply, map_smul] at h`. Establish `h'` using `congrArg (fun y => (((R.FW j).chi g : D.what₂.LLˣ) : D.what₂.LL) • y) h`. Simplify using `only [smul_smul, Units.mul_inv, one_smul] at h'`. Conclude with `h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem goodOp_rho_comm {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (j : Fin D.R.m) (g : G) (x : Fin (R.nW j) → D.what₂.LL) :
@@ -55,7 +55,7 @@ variable {T : Full D} [inst : Algebra T.J.Q.c.F D.what₂.LL] {R : RealDat D A T
   {y : (Fin (O.nX v i) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fin (OnTies.srcDim A ι (R.mu v) U ψ) → D.what₂.LL)}
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => (toForms_bijective h fw ι z).1 ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[t.e_eOp, t.rho_eq_of_actionPin ha, t.rho_eq_of_actionPin ha, t.e_eOp]`. Conclude with `goodOp_rho_comm hX ι (inc g) _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tie_e_comm_rho (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (ha : ActionPin h fw ι ℓ)
     (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (g : P) : O.e i ∘ₗ O.ρ i g = O.ρ i g ∘ₗ O.e i := by
@@ -65,13 +65,13 @@ theorem tie_e_comm_rho (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ
   exact goodOp_rho_comm hX ι (inc g) _
 
 /- English proof (translation)
-Establish `hb` using `toForms_bijective h fw ι z`. Use `⟨?_, fun x hx => ?_, trace_lattice_le_theta_lattice_at_place t hi hU hp hA⟩` and prove the remaining obligations. Use `Submodule.fg_of_fg_map_injective ((toForms h fw ι z).restrictScalars (𝓞 D.what₂.LL)) hb.1 ?_` and prove the remaining obligations. Rewrite using `[t.ThJ_eq, Submodule.map_comap_eq_of_surjective (f := (toForms h fw ι z).restrictScalars (𝓞 D.what₂.LL)) hb.2]`. Conclude with `thetaBase_fg hd hM`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[t.ThJ_eq]`. Establish `hx' : toForms h fw ι z x ∈ thetaBase R ι U ψ ph v p` using `hx`. Express the relevant statement in the definitionally equal form `x ∈ Formalism.EigenvalueLevelCeiling.eig _ _ _`. Unfold `Formalism.EigenvalueLevelCeiling.eig`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Establish `hU' : ∀ g : P, g ∈ O.U → inc g ∈ U` using `fun g hg => by`. Rewrite `hg` using `[t.U_eq]`. Conclude with `hg`. Establish `hu : inc u ∈ U` using `hU' u u.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hb.1` to reduce the goal to its premises. Rewrite using `[t.rho_eq_of_actionPin ha, hty _ hx' ⟨inc u, hu⟩, map_smul, t.ψ_eq u hu]`.
+A detailed English derivation is pending.
 -/
 theorem tie_thetaJ (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (ha : ActionPin h fw ι ℓ)
     (hi : Function.Injective inc) (hU : U ≤ inc.range) (hd : FormsDetermined R ι) (hM : SpanOverClasses R ι U ψ ph v p)
@@ -106,7 +106,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} {p : PtAt ex Csz}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `hC.tup.mu_ne w hw ((hC.tup.mu_conj w).symm.trans (hC.tup.mu_off _ h))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem conjPl_mem_twPl (hC : (R2 p).Char (F2 p)) {w : HeightOneSpectrum (𝓞 D.what₂.LL)} (hw : w ∈ p.R.twPl) :
     Formalism.DivisionValues.conjPl w ∈ p.R.twPl := by
@@ -114,13 +114,13 @@ theorem conjPl_mem_twPl (hC : (R2 p).Char (F2 p)) {w : HeightOneSpectrum (𝓞 D
   exact hC.tup.mu_ne w hw ((hC.tup.mu_conj w).symm.trans (hC.tup.mu_off _ h))
 
 /- English proof (translation)
-Take `⟨hC, hOk, hLU, -⟩` from `GlobalTheory.T.second_link_of_weight_rows _ _ _ _ _ _ _ _ _ _ p hR hm.1`. Take `⟨hc, hinj, z, act, y, ht⟩` from `hrec.1.tied`. Establish `hX` using `hOk.irr`. Establish `h1` using `hC.grp.levels`. Establish `hU : (F2 p).P0 ≤ (mirIncl (R2 p)).range` using `fun g hg => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, -, e⟩` from `(mem_base_iff h1 g).1 hg`. Conclude with `⟨u, e⟩`. Establish `hProj : LeafProj O` using `(level_of_tied ⟨z, act, y, ht⟩ hX h1).2.2`. Establish `hd : ∀ j, FormsDetermined (R2 p) j` using `fun j => formsDetermined_of (GlobalTheory.IndefiniteRowSideFullHecke.ResidueInjectivityAt.ResInj.of_char GlobalTheory.LowTypeRestriction.resInj _ _ hC) hC.models.HW hLU`. Establish `hComm : ∀ j (g : Mir (R2 p)), O.e j ∘ₗ O.ρ j g = O.ρ j g ∘ₗ O.e j` using `fun j g => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v₁, -⟩` from `exists_place3 D.what₂.LL`. Conclude with `tie_e_comm_rho (ht v₁ j).1 (ht v₁ j).2 hOk.irr g`. Establish `key : ∀ v ∈ p.R.twPl, ∀ j, (O.ThJ v j).FG ∧ O.ThJ v j ≤ (Formalism.EigenvalueLevelCeiling.eig (O.ρ j) O.U O.ψ).restrictScalars (𝓞 D.what₂.LL) ∧ Formalism.HermitianLatticesTheory.localization₂ v.asIdeal (O.Th0 v j) ≤ Formalism.HermitianLatticesTheory.localization₂ v.asIdeal (O.ThJ …` using `fun v hv j => by`. Establish `hv' : v ∈ (R2 p).twPl` using `hv`. Establish `hdel : ∀ x, ((((R2 p).C.delAt (Formalism.EigenvalueLevelCeiling.plc v)).1 x : ℂˣ) : ℂ) ∈ D.what₂.embLL.range` using `fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `Formalism.L2.Pj.FO_le _ (hm.2.1.delAt_mem (Formalism.EigenvalueLevelCeiling.plc v) x)`. Conclude with `⟨a, ha⟩`. Establish `hty` using `GlobalTheory.T.baseTupleThetaSpan_hasType _ _ _ _ _ _ (R2 p) (F2 p) ⟨hC.lev, hC.grp, hC.fam, hC.models, hC.chain, hC.thP⟩ j hLU (hd j) v hv' hC.tup.mu_on hdel (fun u => chi_eq_one h1 hC.grp.chiW j u.2)`. Conclude with `tie_thetaJ (ht v j).1 (ht v j).2 (mirIncl_injective _) hU (hd j) (hMax v hv j) hty (hrec.1.ok.run v hv' j) (hCmp v hv j)`. Conclude with `GlobalTheory.T.eigenlattice_local_containment_at_pairs _ _ _ _ _ _ O hSp hD hProj hComm fun w hw => ⟨fun j => key w hw j, fun j => key _ (conjPl_mem_twPl hC hw) j⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rankAtPlaces_rec (hR : p.Rows) (hm : More p) {Pm : ParameterChoice' D L} {Tp : ParamsT D L Pm} {r : TwoRuns p.T p.P.Gp}
     {c : OnConst} {O : Obj p c} (hrec : RecAt p Tp r O)
@@ -164,11 +164,11 @@ end Point
 end GlobalTheory.BigOn
 
 /- English proof (translation)
-Introduce `hM hG hC`. Use `((hM.and hG).and hC).imp fun Fm CH _ H => ?_` and prove the remaining obligations. Take `⟨⟨⟨x1, H1⟩, ⟨c0, H2⟩⟩, ⟨x3, H3⟩⟩` from `H`. Use `⟨c0, fun c hc hb => ?_⟩` and prove the remaining obligations. Take `⟨x2, H2'⟩` from `H2 c hc hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨max x1 (max x2 x3), fun x hx hle i p hR hm r O hrec => ?_⟩` and prove the remaining obligations. Establish `hle1 : x1 ≤ x` using `(le_max_left _ _).trans hle`. Establish `hle2 : x2 ≤ x` using `((le_max_left _ _).trans (le_max_right _ _)).trans hle`. Establish `hle3 : x3 ≤ x` using `((le_max_right _ _).trans (le_max_right _ _)).trans hle`. Establish `hg` using `H2' x hx hle2 i p hR hm r O hrec`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `rankAtPlaces_rec hR hm hrec (H1 x hx hle1 i p hR hm) hg.2.1 hg.2.2.2.1 (H3 x hx hle3 i p hR hm r hrec.1.ok hrec.2)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BigOn.rankLocSt_of : MaxSt → GeoSt → (AtRuns fun Fm x _ i p r h => ∀ v ∈ p.R.twPl, ∀ j, letI : Algebra (r.used v).full.J.Q.c.F (Fm.D x i).what₂.LL := p.alg; GlobalTheory.TraceClassRank.CompareOffOwn (T := (r.used v).full) (R := R2 p) (h.laws v).p (fw2 p) j (r.lev j) (F2 p).P0 (F2 p).ψ0⁻¹ 1 v (ownAt (Fm.D x i) v)) → (AtRec fun _ _ _ _ _ _ O => GlobalTheory.TraceClassRank.RankAtPlaces O) := by
   intro hM hG hC

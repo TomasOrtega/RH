@@ -15,29 +15,29 @@ namespace GlobalTheory.Jet.VminusComp
 def ht {n : ℕ} (μ : Fin n → ℝ) : ℝ := ∑ i : Fin n, ((i : ℕ) : ℝ) * μ i
 
 /- English proof (translation)
-Simplify using `[ht, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ht_add {n : ℕ} (μ ν : Fin n → ℝ) : ht (μ + ν) = ht μ + ht ν := by
   simp [ht, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[ht, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ht_sub {n : ℕ} (μ ν : Fin n → ℝ) : ht (μ - ν) = ht μ - ht ν := by
   simp [ht, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[ht, Formalism.REAL.root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ht_root {n : ℕ} (a b : Fin n) : ht (Formalism.REAL.root a b) = ((a : ℕ) : ℝ) - ((b : ℕ) : ℝ) := by
   simp [ht, Formalism.REAL.root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `c`. Establish `h` using `congrArg (fun T : Module.End ℂ W => T x) (hF c c a b rfl hab)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hx c, map_smul] at h`. Rewrite `h` using `[sub_eq_iff_eq_add]`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h1 : c = a <;> by_cases h2 : b = c`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using `[Formalism.REAL.root]`. Substitute `h1` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[Formalism.REAL.root, h2, Pi.single_apply, Ne.symm h2, add_smul, add_comm]`. Substitute `h2` using the available equality. Simplify using `[Formalism.REAL.root, h1, Pi.single_apply, add_smul, sub_smul, add_comm]`. Simplify using `[Formalism.REAL.root, h1, h2, Pi.single_apply, Ne.symm h2]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem weight_shift {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ} {ε : Fin n → Bool}
     {F : Fin n → Fin n → Module.End ℂ W} (hF : Formalism.REAL.KRel ε F) {ν : Fin n → ℝ} {x : W}
@@ -57,9 +57,9 @@ theorem weight_shift {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ} {ε : 
   · simp [Formalism.REAL.root, h1, h2, Pi.single_apply, Ne.symm h2]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact ⟨μ, le_rfl, by simpa [ew] using hx⟩`. Consider the case `cons p w ih`. Take `⟨ν, h1, h2⟩` from `ih (fun q hq => hw q (List.mem_cons_of_mem _ hq))`. Establish `hp` using `hw p (List.mem_cons_self ..)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨ν + Formalism.REAL.root p.1 p.2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ht_add, ht_root]`. Establish `: ((p.2 : ℕ) : ℝ) < ((p.1 : ℕ) : ℝ)` using `by exact_mod_cast hp.2`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify `weight_shift hF h2 hp.1` using `only [ew, Module.End.mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem word_weight {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ} {ε : Fin n → Bool}
     {F : Fin n → Fin n → Module.End ℂ W} (hF : Formalism.REAL.KRel ε F) {μ : Fin n → ℝ} {x : W}
@@ -78,11 +78,11 @@ theorem word_weight {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ} {ε : F
     · simpa only [ew, Module.End.mul_apply] using weight_shift hF h2 hp.1
 
 /- English proof (translation)
-Introduce `c`. Establish `h1` using `congrArg (fun G : Arr V n 1 => G (fun _ => (a, b))) (hG c)`. Simplify using `only at h1`. Rewrite `h1` using `[arr_operator_one_apply, PiLp.smul_apply, add_comm, ← eq_sub_iff_add_eq]`. Rewrite using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h1 : a = c <;> by_cases h2 : b = c`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using `[Formalism.REAL.root]`. Substitute `h1` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[Formalism.REAL.root, h2, Pi.single_apply, Ne.symm h2, sub_smul]`. Substitute `h2` using the available equality. Simplify using `[Formalism.REAL.root, h1, Pi.single_apply, Ne.symm h1, add_smul, sub_smul]`. Simplify using `[Formalism.REAL.root, h1, h2, Pi.single_apply, Ne.symm h2, Ne.symm h1]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem comp_weight {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ}
     {E : Fin n → Fin n → Module.End ℂ V} {ν : Fin n → ℝ} {G : Arr V n 1}
@@ -102,9 +102,7 @@ theorem comp_weight {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] 
   · simp [Formalism.REAL.root, h1, h2, Pi.single_apply, Ne.symm h2, Ne.symm h1]
 
 /- English proof (translation)
-Introduce `a b hab x hx`. Establish `: isoPart ε F T S ≤ (isoPart ε F T S).comap (F a b)`. Apply `isotypic_part_le_of_forall` to reduce the goal to its premises. Introduce `y hy μ hμ hyh z hz`. Conclude with `compact_span_le_isotypic_part hy hμ hyh (compact_span_stable_general y a b hab z hz)`.
-
-Conclude with `this hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isoPart_stable {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ} {ε : Fin n → Bool}
     {F : Fin n → Fin n → Module.End ℂ W} (T : Set (Fin n → ℝ)) (S : Submodule ℂ W) :
@@ -117,17 +115,17 @@ theorem isoPart_stable {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ} {ε 
   exact this hx
 
 /- English proof (translation)
-Introduce `V _ _ n ε E abelian₂ u hg hu hΛ hfd`. Establish `hle : Vminus ε E abelian₂ u ≤ arrV0 ε E u 1`. Apply `isotypic_part_le_of_forall` to reduce the goal to its premises. Introduce `y hy μ _ _`. Conclude with `compact_span_le_of_stable noncompact_arr_one_compact_stable hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfd0` using `noncompact_arr_finite_dimensional (j := 1) hfd`. Use `⟨isoPart_stable _ _, hle, Submodule.finiteDimensional_of_le hle, ?_⟩` and prove the remaining obligations. Introduce `G hG a b hab`. Establish `hKR` using `glRel_kRel ε _ ((arrModule V n ε E 1).1 hg).1`. Set `ℓ : Arr V n 1 →ₗ[ℂ] ℂ` to `(innerₛₗ ℂ u) ∘ₗ (LinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 → Fin n × Fin n => V) (fun _ => (a, b)) ∘ₗ arrOf V n 1)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hℓ : ∀ G : Arr V n 1, ℓ G = ⟪u, G (fun _ => (a, b))⟫_ℂ` using `fun G => rfl`. Establish `hker : Vminus ε E abelian₂ u ≤ LinearMap.ker ℓ`. Apply `isotypic_part_le_of_forall` to reduce the goal to its premises. Introduce and unpack `y - μ ⟨a', b', hba, -, rfl⟩ hyh`. Rewrite using `[(kLow _ n ε _ _ y hKR hyh).1, lowSpan, Submodule.span_le]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Take `⟨ν, h1, h2⟩` from `word_weight hKR hyh.1 w hw`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, hℓ]`. Use `kWtOrth V n ε E _ _ _ _ (isUnitary_kUnit ε E hu) hΛ.1 (comp_weight h2 a b) ?_` and prove the remaining obligations. Introduce `h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3` using `congrArg ht h`. Rewrite `h3` using `[ht_sub, ht_root]`. Rewrite `h1` using `[ht_add, ht_root]`. Establish `e1 : ((b' : ℕ) : ℝ) < ((a' : ℕ) : ℝ)` using `by exact_mod_cast hba`. Establish `e2 : ((a : ℕ) : ℝ) ≤ ((b : ℕ) : ℝ)` using `by exact_mod_cast not_lt.mp hab`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hker hG`.
+A detailed English derivation is pending.
 -/
 theorem vminus_comp : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (abelian₂ : Fin n → ℝ) (u : V), GlRel E → IsUnitary ε E → KHighest ε E abelian₂ u → FiniteDimensional ℂ (kSpan ε E u) → KStable ε (arrE E 1) (Vminus ε E abelian₂ u) ∧ Vminus ε E abelian₂ u ≤ arrV0 ε E u 1 ∧ FiniteDimensional ℂ (Vminus ε E abelian₂ u) ∧ ∀ G ∈ Vminus ε E abelian₂ u, ∀ a b, ¬ b < a → ⟪u, at1 G a b⟫_ℂ = 0 := by
   intro V _ _ n ε E abelian₂ u hg hu hΛ hfd

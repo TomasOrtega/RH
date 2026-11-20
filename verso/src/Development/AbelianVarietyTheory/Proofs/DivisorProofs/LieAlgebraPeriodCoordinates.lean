@@ -19,17 +19,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LieCoord
 
 /- English proof (translation)
-Introduce `E _ _ I _ 𝔠 φ L R X₀ X U p hpull`. Take `⟨e, he⟩` from `GlobalTheory.T.lie_algebra_base_change_iso (R := R) (R' := ℂ) hpull`. Take `⟨h₁, h₂⟩` from `GlobalTheory.TorusTransfer.tangent_bijective U.u X.dim`. Take `⟨d, hdi, hd⟩` from `GlobalTheory.DiagCoord.exists_diff_linear U.u X.rm h₁ h₂`. Establish `hds : Function.Surjective d` using `fun w => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, ⟨hv, hw⟩, -⟩` from `h₂ w`. Conclude with `⟨GlobalTheory.Serre.Lie.mk X.rm v hv, (h₁ v hv).unique (hd _) hw⟩`. Set `D : X.Lie ≃ₗ[ℂ] (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `LinearEquiv.ofBijective d ⟨hdi, hds⟩`. Set `cd : X₀.Lie →ₗ[R] (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `((D.toLinearMap ∘ₗ e.toLinearMap).restrictScalars R) ∘ₗ TensorProduct.mk R ℂ X₀.Lie 1`. Establish `hcd : ∀ v, cd v = d (e (1 ⊗ₜ v))` using `fun v => rfl`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨cd, fun v => ⟨e (1 ⊗ₜ v), (he v _).2 rfl, by rw [hcd]; exact hd _⟩, fun v v' W hc hW => ?_, fun ω => ?_⟩` and prove the remaining obligations. Establish `h' : v' = e (1 ⊗ₜ v)` using `(he v v').1 hc`. Rewrite using `[hcd, ← h']`. Conclude with `(h₁ _ v'.isTangent).unique hW (hd v')`. Set `ωc : ℂ ⊗[R] X₀.Lie →ₗ[ℂ] ℂ` to `LinearMap.liftBaseChange ℂ ((Algebra.linearMap R ℂ) ∘ₗ ω)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Λ : (Fin (Module.finrank ℚ (FR E)) → ℂ) →ₗ[ℂ] ℂ` to `ωc ∘ₗ e.symm.toLinearMap ∘ₗ D.symm.toLinearMap`. Use `⟨fun j => Λ (Pi.single j 1), fun v => ?_⟩` and prove the remaining obligations. Establish `h1 : ((ω v : R) : ℂ) = Λ (cd v)`. Simplify using `[Λ, ωc, cd, D]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, LinearMap.pi_apply_eq_sum_univ Λ (cd v)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_comm]`. Use `congr 2`. Use extensionality with `i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, eq_comm]`.
+A detailed English derivation is pending.
 -/
 theorem exists_lieCoord_unif : ∀ {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] {𝔠 : FracId (FR E)} {φ : I → E →+* ℂ} {L : Set E}
     (R : Subring ℂ) (X₀ : Obj (FR E) 𝔠 (Sp R)) (X : Obj (FR E) 𝔠 (Sp ℂ)) (U : Unif φ L 0 X) (p : X.A.left ⟶ X₀.A.left),

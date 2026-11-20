@@ -39,20 +39,20 @@ Both sides reduce to the same expression.
 theorem splitEquiv_apply (x : ∀ j, G j) : splitEquiv i G x = (x i, fun j : {j // j ≠ i} => x j) := rfl
 
 /- English proof (translation)
-The claim follows from `congrArg Prod.fst ((splitEquiv i G).apply_symm_apply (a, b))`.
+A detailed English derivation is pending.
 -/
 theorem splitEquiv_symm_self (a : G i) (b : ∀ j : {j // j ≠ i}, G j) : (splitEquiv i G).symm (a, b) i = a :=
   congrArg Prod.fst ((splitEquiv i G).apply_symm_apply (a, b))
 
 /- English proof (translation)
-The claim follows from `congrFun (congrArg Prod.snd ((splitEquiv i G).apply_symm_apply (a, b))) j`.
+A detailed English derivation is pending.
 -/
 theorem splitEquiv_symm_ne (a : G i) (b : ∀ j : {j // j ≠ i}, G j) (j : {j // j ≠ i}) :
     (splitEquiv i G).symm (a, b) j = b j :=
   congrFun (congrArg Prod.snd ((splitEquiv i G).apply_symm_apply (a, b))) j
 
 /- English proof (translation)
-Apply `(splitEquiv i G).injective` to reduce the goal to its premises. Rewrite using `[ContinuousMulEquiv.apply_symm_apply, splitEquiv_apply]`. Conclude with `Prod.ext (Pi.mulSingle_eq_same i a).symm (funext fun j => (Pi.mulSingle_eq_of_ne j.2 a).symm)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitEquiv_symm_one (a : G i) : (splitEquiv i G).symm (a, 1) = Pi.mulSingle i a := by
   apply (splitEquiv i G).injective
@@ -60,7 +60,7 @@ theorem splitEquiv_symm_one (a : G i) : (splitEquiv i G).symm (a, 1) = Pi.mulSin
   exact Prod.ext (Pi.mulSingle_eq_same i a).symm (funext fun j => (Pi.mulSingle_eq_of_ne j.2 a).symm)
 
 /- English proof (translation)
-Simplify using `only [mem_cent]`. Rewrite using `[← (splitEquiv i G).injective.eq_iff, map_mul, map_mul, ContinuousMulEquiv.apply_symm_apply, splitEquiv_apply]`. Conclude with `Prod.ext_iff`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitEquiv_symm_mem_cent (g : ∀ j, G j) (a : G i) (b : ∀ j : {j // j ≠ i}, G j) :
     (splitEquiv i G).symm (a, b) ∈ cent g ↔ a ∈ cent (g i) ∧ b ∈ cent (fun j : {j // j ≠ i} => g j) := by
@@ -71,7 +71,7 @@ theorem splitEquiv_symm_mem_cent (g : ∀ j, G j) (a : G i) (b : ∀ j : {j // j
 end Split
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h j => mem_cent.2 (congrFun (mem_cent.1 h) j), fun h => mem_cent.2 (funext fun j => mem_cent.1 (h j))⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_cent_pi {ι : Type} {G : ι → Type} [∀ j, Group (G j)] {g x : ∀ j, G j} :
     x ∈ cent g ↔ ∀ j, x j ∈ cent (g j) :=
@@ -83,9 +83,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Establish `hm` using `mem_atPts.1 (embAt_mem σ J S x)`. Use `mem_cent.2 (GAd_ext σ J (fun w => ?_) fun v => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, mem_finPts_iff_forall.1 hm.1 w, one_mul, mul_one]`. Distinguish the cases in `hv : v ∈ S`. Establish `h` using `congrFun (mem_cent.1 hx) ⟨v, hv⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, show proj σ J v (embAt σ J S x) = x ⟨v, hv⟩ from proj_embAt σ J S x ⟨v, hv⟩]`. Conclude with `h`. Simplify using `only [map_mul, hm.2 v hv, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem embAt_mem_cent {S : Finset (HeightOneSpectrum (𝓞 F))} {g : GAd σ J} {x : ∀ v : S, GLoc σ J v}
     (hx : x ∈ cent (projAt σ J S g)) : embAt σ J S x ∈ cent g := by
@@ -99,7 +99,7 @@ theorem embAt_mem_cent {S : Finset (HeightOneSpectrum (𝓞 F))} {g : GAd σ J} 
     · simp only [map_mul, hm.2 v hv, one_mul, mul_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun a b => Subtype.ext (funext fun v => by have hc := isMulCommutative_cent_HA (isRegSS_proj_ratEmb hγ v) exact congrArg Subtype.val (hc.1.1 ⟨a.1 v, mem_cent_pi.1 a.2 v⟩ ⟨b.1 v, mem_cent_pi.1 b.2 v⟩))⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isMulCommutative_cent_projAt (S : Finset (HeightOneSpectrum (𝓞 F))) {γ : GRat σ J} (hγ : IsRegSS γ.1.1) :
     IsMulCommutative (cent (projAt σ J S (ratEmb σ J γ))) :=
@@ -108,9 +108,9 @@ theorem isMulCommutative_cent_projAt (S : Finset (HeightOneSpectrum (𝓞 F))) {
     exact congrArg Subtype.val (hc.1.1 ⟨a.1 v, mem_cent_pi.1 a.2 v⟩ ⟨b.1 v, mem_cent_pi.1 b.2 v⟩))⟩⟩
 
 /- English proof (translation)
-Introduce `t ht x`. Simplify using `only [map_mul, Pi.mul_apply]`. Rewrite using `[hCi _ (embAt_mem_cent σ J ht)]`. Use `congr 1`. Use `Finset.prod_congr rfl fun v _ => congrArg (ff v) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : t v * proj σ J v g = proj σ J v g * t v` using `mem_cent.1 (mem_cent_pi.1 ht v)`. Establish `e : (t v * x v)⁻¹ * proj σ J v g * (t v * x v) = (x v)⁻¹ * ((t v)⁻¹ * (proj σ J v g * t v)) * x v` using `by group`. Rewrite using `[e, ← hc, inv_mul_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem leftInv_integrand (S : Finset (HeightOneSpectrum (𝓞 F))) {g : GAd σ J} (ff : ∀ v, GLoc σ J v → ℂ)
     {C : GAd σ J → ℂ} (hCi : LeftInv (cent g) C) :
@@ -125,9 +125,7 @@ theorem leftInv_integrand (S : Finset (HeightOneSpectrum (𝓞 F))) {g : GAd σ 
   rw [e, ← hc, inv_mul_cancel_left]
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace (∀ v : S, GLoc σ J v) := Pi.locallyCompactSpace_of_finite`. Use `haveI := isMulRightInvariant_cent (isMulCommutative_cent_projAt σ J S hγ) dt`. Establish `hp : ∀ v : S, IsProperOrbit (cent (proj σ J v (ratEmb σ J γ))) (proj σ J v (ratEmb σ J γ))` using `fun v => isProperOrbit_GLoc h hJ (isRegSS_proj_ratEmb hγ v)`. Use `choose K hK hK' using fun v : S => hp v _ (hs v).isCompact`. Use `integrable_descend (isClosed_cent _) (leftInv_integrand σ J S ff hCi) ((hC.comp (continuous_embAt σ J S)).mul (continuous_finset_prod _ fun v _ => (hc v).comp ((((continuous_apply v).inv).mul continuous_const).mul (continuous_apply v)))) (isCompact_univ_pi hK) fun x hx => ?_` and prove the remaining obligations.
-
-Establish `h1 : ∀ v : S, (x v)⁻¹ * proj σ J v (ratEmb σ J γ) * x v ∈ tsupport (ff v)` using `fun v => subset_tsupport _ (Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hx) v (Finset.mem_univ _))`. Use `choose t ht ht' using fun v => hK' v (x v) (h1 v)`. Conclude with `⟨t, mem_cent_pi.2 ht, fun v _ => ht' v⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem integrable_integrand (h : IsCMExt F E σ) (hJ : IsHermND σ J) (S : Finset (HeightOneSpectrum (𝓞 F)))
     {γ : GRat σ J} (hγ : IsRegSS γ.1.1) (ff : ∀ v, GLoc σ J v → ℂ) (hc : ∀ v : S, Continuous (ff v))
@@ -167,28 +165,28 @@ def splitAt (S : Finset (HeightOneSpectrum (𝓞 F))) [DecidableEq S] (v₀ : S)
 variable {σ J}
 
 /- English proof (translation)
-The claim follows from `splitEquiv_symm_self (G := fun v : S => GLoc σ J v) a b`.
+A detailed English derivation is pending.
 -/
 theorem splitAt_self {S : Finset (HeightOneSpectrum (𝓞 F))} [DecidableEq S] {v₀ : S} (a : GLoc σ J v₀)
     (b : ∀ j : {j : S // j ≠ v₀}, GLoc σ J j) : splitAt σ J S v₀ (a, b) v₀ = a :=
   splitEquiv_symm_self (G := fun v : S => GLoc σ J v) a b
 
 /- English proof (translation)
-The claim follows from `splitEquiv_symm_ne (G := fun v : S => GLoc σ J v) a b j`.
+A detailed English derivation is pending.
 -/
 theorem splitAt_ne {S : Finset (HeightOneSpectrum (𝓞 F))} [DecidableEq S] {v₀ : S} (a : GLoc σ J v₀)
     (b : ∀ j : {j : S // j ≠ v₀}, GLoc σ J j) (j : {j : S // j ≠ v₀}) : splitAt σ J S v₀ (a, b) j = b j :=
   splitEquiv_symm_ne (G := fun v : S => GLoc σ J v) a b j
 
 /- English proof (translation)
-The claim follows from `splitEquiv_symm_one (G := fun v : S => GLoc σ J v) a`.
+A detailed English derivation is pending.
 -/
 theorem splitAt_one {S : Finset (HeightOneSpectrum (𝓞 F))} [DecidableEq S] {v₀ : S} (a : GLoc σ J v₀) :
     splitAt σ J S v₀ (a, 1) = Pi.mulSingle v₀ a :=
   splitEquiv_symm_one (G := fun v : S => GLoc σ J v) a
 
 /- English proof (translation)
-The claim follows from `splitEquiv_symm_mem_cent (G := fun v : S => GLoc σ J v) g a b`.
+A detailed English derivation is pending.
 -/
 theorem splitAt_mem_cent {S : Finset (HeightOneSpectrum (𝓞 F))} [DecidableEq S] {v₀ : S} (g : ∀ v : S, GLoc σ J v)
     (a : GLoc σ J v₀) (b : ∀ j : {j : S // j ≠ v₀}, GLoc σ J j) :
@@ -204,7 +202,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Simplify using `only [quotInt, GlobalTheory.AutomorphicL2Unitary.descend]`. Conclude with `integral_const_mul _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quotInt_const_mul {H : Type} [Group H] [MeasurableSpace H] (T : Subgroup H) (dt : Measure T) (dh : Measure H)
     (c : ℂ) (f : H → ℂ) : quotInt T dt dh (fun x => c * f x) = c * quotInt T dt dh f := by
@@ -212,15 +210,13 @@ theorem quotInt_const_mul {H : Type} [Group H] [MeasurableSpace H] (T : Subgroup
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Establish `hint` using `integrable_integrand σ J h hJ S hγ ff hc hs hC hCi dg dt`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Use `haveI : LocallyCompactSpace (∀ v : S, GLoc σ J v) := Pi.locallyCompactSpace_of_finite`. Use `haveI : LocallyCompactSpace (∀ j : {j : S // j ≠ v₀}, GLoc σ J j) := Pi.locallyCompactSpace_of_finite`. Use `haveI : LocallyCompactSpace (cent (proj σ J v₀ (ratEmb σ J γ))) := (isClosed_cent _).locallyCompactSpace`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `GlobalTheory.T.quotient_measure_fibration (GLoc σ J v₀) (∀ j : {j : S // j ≠ v₀}, GLoc σ J j) (∀ v : S, GLoc σ J v) (splitAt σ J S v₀) (cent (proj σ J v₀ (ratEmb σ J γ))) (cent (fun j : {j : S // j ≠ v₀} => proj σ J j (ratEmb σ J γ))) (cent (projAt σ J S (ratEmb σ J γ))) (fun a b …` and prove the remaining obligations. Use `set e := splitAt σ J S v₀`. Establish `hsplit : (fun a => C (embAt σ J S (e (a, b))) * ∏ v : S, ff v ((e (a, b) v)⁻¹ * proj σ J v (ratEmb σ J γ) * e (a, b) v)) = fun a => (∏ j : {j : S // j ≠ v₀}, ff j ((b j)⁻¹ * proj σ J j (ratEmb σ J γ) * b j)) * (C (embAt σ J S (e (a, b))) * ff v₀ (a⁻¹ * proj σ J v₀ (ratEmb σ J γ) …`. Use function extensionality and compare the values at `a`. Rewrite using `[Fintype.prod_eq_mul_prod_subtype_ne _ v₀]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e, splitAt_self, splitAt_ne]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmul : ∀ a a' : GLoc σ J v₀, e (a * a', b) = e (a, 1) * e (a', b)` using `fun a a' => by`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`. Use `(congrArg _ hsplit).trans ((quotInt_const_mul _ _ _ _ _).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hloc (fun a => C (embAt σ J S (e (a, b)))) (hC.comp ((continuous_embAt σ J S).comp (e.continuous.comp (continuous_id.prodMk continuous_const)))) (fun t ht a => by`. Express the relevant statement in the definitionally equal form `C (embAt σ J S (e (t * a, b))) = C (embAt σ J S (e (a, b)))`. Rewrite using `[hmul, map_mul, hCi _ (embAt_mem_cent σ J ((splitAt_mem_cent (projAt σ J S (ratEmb σ J γ)) t 1).2 ⟨ht, one_mem _⟩))])`. Use the proof step `(fun g hg x => by`. Express the relevant statement in the definitionally equal form `C (embAt σ J S (e (g * x, b))) = C (embAt σ J S (e (x, b)))`.
-
-Rewrite using `[hmul, map_mul, show e (g, 1) = Pi.mulSingle v₀ g from splitAt_one g, embAt_mulSingle]`. Conclude with `hCP g hg _) Measure.haar, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasQuotInt_integrand_zero (h : IsCMExt F E σ) (hJ : IsHermND σ J) (S : Finset (HeightOneSpectrum (𝓞 F)))
     [DecidableEq S] (v₀ : S) {γ : GRat σ J} (hγ : IsRegSS γ.1.1) (ff : ∀ v, GLoc σ J v → ℂ)
@@ -272,7 +268,7 @@ end GlobalTheory.TypesFactor
 namespace GlobalTheory.TypesFactor
 
 /- English proof (translation)
-Introduce `hTC D V T U μf ff hff hHaar hH Φ u γ hu hγ hlevi C hC hCi hCN dg _ dt _`. Take `⟨ε, hW, hε2, hεpos, hεlt, hεγ, hεN⟩` from `GlobalTheory.T.levi_idempotent_splitting D V Φ u hu`. Take `⟨v₀, hv₀⟩` from `hH ε.rank hεpos hεlt`. Establish `hfin` using `hff.isFinFamily.1`. Conclude with `hasQuotInt_integrand_zero (isCMExt_host D) (isHermND_gram V) T.S v₀ hγ ff (fun v => (hfin v).1.continuous) (fun v => (hfin v).2) (μf v₀) hC hCi (fun g => ε.map (T.frame v₀).emb * ((splitHom D.sp.cm.sig V.gram (T.frame v₀).emb g).1 - 1) * (1 - ε.map (T.frame v₀).emb) = (splitHom D …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem typesFactor_vanish : GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic.TypeConstTermVanish → ∀ (D : D7) (V : HSp D) (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ), IsTestFin T U μf ff → (∀ v, (μf v).IsHaarMeasure) → GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.HypH (k := fun v : T.S => ResF v.1) T.τ → ∀ (Φ : WittFrame V) (u : SV (wittIndex V)) (γ : GF V), u ≠ 0 → IsRegSS γ.1.1 → rat V γ ∈ Φ.levi D.sp.cm (AF D.host.F) {u} → ∀ C : GA D V → ℂ, Continuous C → LeftInv (cent (rat V γ)) C → (∀ hW : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.IsIsotropic V (Φ.sub u), LeftInv (NA (IsoFlag.single hW)) C) → ∀ (dg : Measure (∀ v : T.S, GLoc D.sp.cm.sig V.gram v)) [dg.IsHaarMeasure] (dt : Measure (cent (projAt D.sp.cm.sig V.gram T.S (rat V γ)))) [dt.IsHaarMeasure], HasQuotInt (cent (projAt D.sp.cm.sig V.gram T.S (rat V γ))) dt dg (fun x => C (embAt D.sp.cm.sig V.gram T.S x) * ∏ v : T.S, ff v ((x v)⁻¹ * proj D.sp.cm.sig V.gram v (rat V γ) * x v)) 0 := by
   intro hTC D V T U μf ff hff hHaar hH Φ u γ hu hγ hlevi C hC hCi hCN dg _ dt _

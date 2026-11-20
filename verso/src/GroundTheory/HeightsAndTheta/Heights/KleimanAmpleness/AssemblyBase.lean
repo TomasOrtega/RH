@@ -56,238 +56,238 @@ namespace GroundTheory.Heights₂.Heights.Kleiman
 universe u v w
 
 /- English proof (translation)
-The claim follows from `CechDSq.proof`.
+A detailed English derivation is pending.
 -/
 theorem CechDSq.full : CechDSq.Statement.{u, v} := CechDSq.proof
 /- English proof (translation)
-The claim follows from `DegLocExact.proof`.
+A detailed English derivation is pending.
 -/
 theorem DegLocExact.full : DegLocExact.Statement.{u, v} := DegLocExact.proof
 /- English proof (translation)
-The claim follows from `CechExact.proof CechDSq.full DegLocExact.full`.
+A detailed English derivation is pending.
 -/
 theorem CechExact.full : CechExact.Statement.{u, v} := CechExact.proof CechDSq.full DegLocExact.full
 /- English proof (translation)
-The claim follows from `CechTop.proof`.
+A detailed English derivation is pending.
 -/
 theorem CechTop.full : CechTop.Statement.{u, v} := CechTop.proof
 /- English proof (translation)
-The claim follows from `CechFlat.proof`.
+A detailed English derivation is pending.
 -/
 theorem CechFlat.full : CechFlat.Statement.{u, v} := CechFlat.proof
 /- English proof (translation)
-The claim follows from `Cech.Cone.proof`.
+A detailed English derivation is pending.
 -/
 theorem Cech.Cone.full : Cech.Cone.Statement.{u, v} := Cech.Cone.proof
 /- English proof (translation)
-The claim follows from `Cech.Transport.proof`.
+A detailed English derivation is pending.
 -/
 theorem Cech.Transport.full : Cech.Transport.Statement.{u, v, w} := Cech.Transport.proof
 /- English proof (translation)
-The claim follows from `SerrePoly.Laurent.proof`.
+A detailed English derivation is pending.
 -/
 theorem SerrePoly.Laurent.full : SerrePoly.Laurent.Statement.{u} := SerrePoly.Laurent.proof
 /- English proof (translation)
-The claim follows from `SerrePoly.LaurentCohom.proof Cech.Cone.full`.
+A detailed English derivation is pending.
 -/
 theorem SerrePoly.LaurentCohom.full : SerrePoly.LaurentCohom.Statement.{u} :=
   SerrePoly.LaurentCohom.proof Cech.Cone.full
 /- English proof (translation)
-The claim follows from `SerrePoly.proof SerrePoly.Laurent.full Cech.Transport.full SerrePoly.LaurentCohom.full`.
+A detailed English derivation is pending.
 -/
 theorem SerrePoly.full : SerrePoly.Statement.{u} :=
   SerrePoly.proof SerrePoly.Laurent.full Cech.Transport.full SerrePoly.LaurentCohom.full
 /- English proof (translation)
-The claim follows from `SerreFree.proof SerrePoly.full`.
+A detailed English derivation is pending.
 -/
 theorem SerreFree.full : SerreFree.Statement.{u, v} := SerreFree.proof SerrePoly.full
 /- English proof (translation)
-The claim follows from `GradedPres.proof`.
+A detailed English derivation is pending.
 -/
 theorem GradedPres.full : GradedPres.Statement.{u, v} := GradedPres.proof
 /- English proof (translation)
-The claim follows from `GradedULift.proof`.
+A detailed English derivation is pending.
 -/
 theorem GradedULift.full : GradedULift.Statement.{u, v} := GradedULift.proof
 /- English proof (translation)
-The claim follows from `CohomRetract.proof`.
+A detailed English derivation is pending.
 -/
 theorem CohomRetract.full : CohomRetract.Statement.{u, v, w} := CohomRetract.proof
 
 /- English proof (translation)
-The claim follows from `SerreFinite.proof CechExact.full CechTop.full SerreFree.full GradedPres.full GradedULift.full CohomRetract.full`.
+A detailed English derivation is pending.
 -/
 theorem SerreFinite.full : SerreFinite.Statement.{u, v} :=
   SerreFinite.proof CechExact.full CechTop.full SerreFree.full GradedPres.full GradedULift.full
     CohomRetract.full
 
 /- English proof (translation)
-The claim follows from `SerreVanish.proof CechExact.full CechTop.full SerreFree.full GradedPres.full GradedULift.full CohomRetract.full`.
+A detailed English derivation is pending.
 -/
 theorem SerreVanish.full : SerreVanish.Statement.{u, v} :=
   SerreVanish.proof CechExact.full CechTop.full SerreFree.full GradedPres.full GradedULift.full
     CohomRetract.full
 
 /- English proof (translation)
-The claim follows from `SerreOnto.proof CechExact.full SerreFree.full SerreVanish.full`.
+A detailed English derivation is pending.
 -/
 theorem SerreOnto.full : SerreOnto.Statement.{u, v} :=
   SerreOnto.proof CechExact.full SerreFree.full SerreVanish.full
 
 /- English proof (translation)
-The claim follows from `SerreTail.proof SerreFinite.full SerreOnto.full`.
+A detailed English derivation is pending.
 -/
 theorem SerreTail.full : SerreTail.Statement.{u, v} := SerreTail.proof SerreFinite.full SerreOnto.full
 
 /- English proof (translation)
-The claim follows from `Extension.proof`.
+A detailed English derivation is pending.
 -/
 theorem Extension.full : Extension.Statement.{u, v, w} := Extension.proof
 /- English proof (translation)
-The claim follows from `Generated.proof Extension.full`.
+A detailed English derivation is pending.
 -/
 theorem Generated.full : Generated.Statement.{u, w} := Generated.proof Extension.full
 /- English proof (translation)
-The claim follows from `TwistFinite.proof Extension.full SerreFinite.full`.
+A detailed English derivation is pending.
 -/
 theorem TwistFinite.full : TwistFinite.Statement.{u, w} := TwistFinite.proof Extension.full SerreFinite.full
 /- English proof (translation)
-The claim follows from `FiniteTwists.proof TwistFinite.full`.
+A detailed English derivation is pending.
 -/
 theorem FiniteTwists.full : FiniteTwists.Statement.{u, w} := FiniteTwists.proof TwistFinite.full
 /- English proof (translation)
-The claim follows from `TwistSections.proof SerreOnto.full`.
+A detailed English derivation is pending.
 -/
 theorem TwistSections.full : TwistSections.Statement.{u, w} := TwistSections.proof SerreOnto.full
 /- English proof (translation)
-The claim follows from `ProjDegreePositive.proof`.
+A detailed English derivation is pending.
 -/
 theorem ProjDegreePositive.full : ProjDegreePositive.Statement.{u} := ProjDegreePositive.proof
 /- English proof (translation)
-The claim follows from `HilbertPositive.proof ProjDegreePositive.full TwistSections.full`.
+A detailed English derivation is pending.
 -/
 theorem HilbertPositive.full : HilbertPositive.Statement.{u, w} :=
   HilbertPositive.proof ProjDegreePositive.full TwistSections.full
 /- English proof (translation)
-The claim follows from `HilbertPoint.proof`.
+A detailed English derivation is pending.
 -/
 theorem HilbertPoint.full : HilbertPoint.Statement.{u, w} := HilbertPoint.proof
 /- English proof (translation)
-The claim follows from `PrimeFiltration.Exists.proof`.
+A detailed English derivation is pending.
 -/
 theorem PrimeFiltration.Exists.full : PrimeFiltration.Exists.Statement.{u, v, w} :=
   PrimeFiltration.Exists.proof
 /- English proof (translation)
-The claim follows from `PrimeFiltration.proof PrimeFiltration.Exists.full`.
+A detailed English derivation is pending.
 -/
 theorem PrimeFiltration.full : PrimeFiltration.Statement.{u, v, w} :=
   PrimeFiltration.proof PrimeFiltration.Exists.full
 /- English proof (translation)
-The claim follows from `PrimeFiltration.Irrelevant.proof`.
+A detailed English derivation is pending.
 -/
 theorem PrimeFiltration.Irrelevant.full : PrimeFiltration.Irrelevant.Statement.{u} :=
   PrimeFiltration.Irrelevant.proof
 /- English proof (translation)
-The claim follows from `PrimeFiltration.Point.proof`.
+A detailed English derivation is pending.
 -/
 theorem PrimeFiltration.Point.full : PrimeFiltration.Point.Statement.{u, w} := PrimeFiltration.Point.proof
 /- English proof (translation)
-The claim follows from `PrimeFiltration.Restrict.proof`.
+A detailed English derivation is pending.
 -/
 theorem PrimeFiltration.Restrict.full : PrimeFiltration.Restrict.Statement.{u, w} :=
   PrimeFiltration.Restrict.proof
 /- English proof (translation)
-The claim follows from `Restriction.proof`.
+A detailed English derivation is pending.
 -/
 theorem Restriction.full : Restriction.Statement.{u, w} := Restriction.proof
 
 /- English proof (translation)
-The claim follows from `VeryAmpleTwistGenerated.proof`.
+A detailed English derivation is pending.
 -/
 theorem VeryAmpleTwistGenerated.full : VeryAmpleTwistGenerated.Statement.{u, w} :=
   VeryAmpleTwistGenerated.proof
 /- English proof (translation)
-The claim follows from `AmpleCover.proof`.
+A detailed English derivation is pending.
 -/
 theorem AmpleCover.full : AmpleCover.Statement.{u, w} := AmpleCover.proof
 /- English proof (translation)
-The claim follows from `StepThree.Away.proof`.
+A detailed English derivation is pending.
 -/
 theorem StepThree.Away.full : StepThree.Away.Statement.{u, w} := StepThree.Away.proof
 /- English proof (translation)
-The claim follows from `RestrictTwist.proof`.
+A detailed English derivation is pending.
 -/
 theorem RestrictTwist.full : RestrictTwist.Statement.{u, w} := RestrictTwist.proof
 /- English proof (translation)
-The claim follows from `StepData.JProper.proof`.
+A detailed English derivation is pending.
 -/
 theorem StepData.JProper.full : StepData.JProper.Statement.{u, w} := StepData.JProper.proof
 /- English proof (translation)
-The claim follows from `SubvarDrop.proof`.
+A detailed English derivation is pending.
 -/
 theorem SubvarDrop.full : SubvarDrop.Statement.{u, w} := SubvarDrop.proof
 
 /- English proof (translation)
-The claim follows from `AmpleTwistLocal.proof hA`.
+A detailed English derivation is pending.
 -/
 theorem AmpleTwistLocal.assembled (hA : AmpleAffineGen.Statement.{u, w}) :
     AmpleTwistLocal.Statement.{u, w} :=
   AmpleTwistLocal.proof hA
 
 /- English proof (translation)
-The claim follows from `GeneratedAmple.proof AmpleCover.full (AmpleTwistLocal.assembled hA)`.
+A detailed English derivation is pending.
 -/
 theorem GeneratedAmple.assembled (hA : AmpleAffineGen.Statement.{u, w}) :
     GeneratedAmple.Statement.{u, w} :=
   GeneratedAmple.proof AmpleCover.full (AmpleTwistLocal.assembled hA)
 
 /- English proof (translation)
-The claim follows from `TwistVanish.proof Extension.full SerreVanish.full hS`.
+A detailed English derivation is pending.
 -/
 theorem TwistVanish.assembled (hS : TwistSplit.Statement.{u, w}) : TwistVanish.Statement.{u, w} :=
   TwistVanish.proof Extension.full SerreVanish.full hS
 
 /- English proof (translation)
-The claim follows from `NefRestrict.proof RestrictTwist.full hRL`.
+A detailed English derivation is pending.
 -/
 theorem NefRestrict.assembled (hRL : RestrLenRestrict.Statement.{u, w}) : NefRestrict.Statement.{u, w} :=
   NefRestrict.proof RestrictTwist.full hRL
 
 /- English proof (translation)
-The claim follows from `FiniteSections.proof Extension.full hT`.
+A detailed English derivation is pending.
 -/
 theorem FiniteSections.assembled (hT : TildeTail.Statement.{u, w}) : FiniteSections.Statement.{u, w} :=
   FiniteSections.proof Extension.full hT
 
 /- English proof (translation)
-The claim follows from `Domination.proof (FiniteSections.assembled hT)`.
+A detailed English derivation is pending.
 -/
 theorem Domination.assembled (hT : TildeTail.Statement.{w, w}) : Domination.Statement.{u, w} :=
   Domination.proof (FiniteSections.assembled hT)
 
 /- English proof (translation)
-The claim follows from `SurjectiveClosed.proof Extension.full hFam hVan`.
+A detailed English derivation is pending.
 -/
 theorem SurjectiveClosed.assembled (hFam : IdealTwistFamily.Statement.{u, w})
     (hVan : TildeVanish.Statement.{u, w, w}) : SurjectiveClosed.Statement.{u, w} :=
   SurjectiveClosed.proof Extension.full hFam hVan
 
 /- English proof (translation)
-The claim follows from `ConservationOfDegree.proof hA hB`.
+A detailed English derivation is pending.
 -/
 theorem ConservationOfDegree.assembled (hA : FibreHilbertFlat.Statement.{u, w})
     (hB : FibreCycleDegree.Statement.{u, w}) : ConservationOfDegree.Statement.{u, w} :=
   ConservationOfDegree.proof hA hB
 
 /- English proof (translation)
-The claim follows from `NefGeneric.proof (ConservationOfDegree.assembled hA hB)`.
+A detailed English derivation is pending.
 -/
 theorem NefGeneric.assembled (hA : FibreHilbertFlat.Statement.{u, w})
     (hB : FibreCycleDegree.Statement.{u, w}) : NefGeneric.Statement.{u, w} :=
   NefGeneric.proof (ConservationOfDegree.assembled hA hB)
 
 /- English proof (translation)
-The claim follows from `SectionCount.Drop.proof hF hT hH hR`.
+A detailed English derivation is pending.
 -/
 theorem SectionCount.Drop.assembled (hF : SectionCount.Drop.Filt.Statement.{u, w})
     (hT : SectionCount.Drop.Term.Statement.{u, w}) (hH : SectionCount.Drop.HilbW.Statement.{u, w})
@@ -295,7 +295,7 @@ theorem SectionCount.Drop.assembled (hF : SectionCount.Drop.Filt.Statement.{u, w
   SectionCount.Drop.proof hF hT hH hR
 
 /- English proof (translation)
-The claim follows from `SectionCount.proof hTop (SectionCount.Drop.assembled hF hT hH hR)`.
+A detailed English derivation is pending.
 -/
 theorem SectionCount.assembled (hTop : SectionCount.Top.Statement.{u, w})
     (hF : SectionCount.Drop.Filt.Statement.{u, w}) (hT : SectionCount.Drop.Term.Statement.{u, w})
@@ -304,7 +304,7 @@ theorem SectionCount.assembled (hTop : SectionCount.Top.Statement.{u, w})
   SectionCount.proof hTop (SectionCount.Drop.assembled hF hT hH hR)
 
 /- English proof (translation)
-The claim follows from `StepThree.proof StepThree.Away.full (StepThree.OnW.proof hL hG)`.
+A detailed English derivation is pending.
 -/
 theorem StepThree.assembled (hL : StepThree.OnW.Lift.Statement.{u, w})
     (hG : StepThree.OnW.Gen.Statement.{u, w}) : StepThree.Statement.{u, w} :=

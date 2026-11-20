@@ -9,7 +9,7 @@ open Formalism.UG (cT bc)
 namespace GlobalTheory.SphEis
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J K hK`. Establish `hd : DiscreteTopology (ratPts σ J)` using `inferInstance`. Establish `hcl : IsClosed ((ratPts σ J : Subgroup (GAd σ J)) : Set (GAd σ J))` using `Subgroup.isClosed_of_discrete`. Conclude with `(hK.inter_right hcl).finite (IsDiscrete.mono (isDiscrete_iff_discreteTopology.2 hd) Set.inter_subset_right)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compact_inter_ratPts_finite : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (K : Set (GAd σ J)),

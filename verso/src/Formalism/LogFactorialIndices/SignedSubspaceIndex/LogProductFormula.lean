@@ -8,27 +8,23 @@ open scoped ComplexConjugate
 open IsDedekindDomain NumberField
 
 /- English proof (translation)
-Introduce `L _ _ x hx`. Take `⟨I, hIdef⟩ : ∃ I : FractionalIdeal (nonZeroDivisors (𝓞 L)) L, I = FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 L)) x` from `⟨_, rfl⟩`. Rewrite using `[← hIdef]`. Establish `hI : I ≠ 0`. Rewrite using `[hIdef, Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Establish `hfin : (Function.support fun v : HeightOneSpectrum (𝓞 L) => FractionalIdeal.count L v I).Finite`. Establish `hev` using `FractionalIdeal.finite_factors I`. Conclude with `Filter.eventually_cofinite.mp hev`. Establish `hR : (∑ᶠ v : HeightOneSpectrum (𝓞 L), (FractionalIdeal.count L v I : ℝ) * Real.log (Ideal.absNorm v.asIdeal : ℝ)) = ∑ v ∈ hfin.toFinset, (FractionalIdeal.count L v I : ℝ) * Real.log (Ideal.absNorm v.asIdeal : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `v hv`. Rewrite using `[Set.Finite.coe_toFinset, Function.mem_support]`. Rewrite `hv` using `[Function.mem_support]`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hv (by simp [h0])`. Establish `hsub2 : Function.mulSupport (fun v : HeightOneSpectrum (𝓞 L) => (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 L)) L) ^ FractionalIdeal.count L v I) ⊆ (hfin.toFinset : Set _)`. Introduce `v hv`. Rewrite using `[Set.Finite.coe_toFinset, Function.mem_support]`. Rewrite `hv` using `[Function.mem_mulSupport]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Conclude with `hv (by simp [h0])`. Establish `hfac : ∏ v ∈ hfin.toFinset, (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 L)) L) ^ FractionalIdeal.count L v I = I`. Rewrite using `[← finprod_eq_prod_of_mulSupport_subset _ hsub2]`. Conclude with `FractionalIdeal.finprod_heightOneSpectrum_factorization' L hI`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN1 : FractionalIdeal.absNorm I = ∏ v ∈ hfin.toFinset, (Ideal.absNorm v.asIdeal : ℚ) ^ FractionalIdeal.count L v I` using `by conv_lhs => rw [← hfac]`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[map_zpow₀, FractionalIdeal.coeIdeal_absNorm]`. Establish `hN2 : FractionalIdeal.absNorm I = |Algebra.norm ℚ x|`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hIdef]`. Conclude with `FractionalIdeal.absNorm_span_singleton (𝓞 L) x`. Establish `hprod : ∏ σ : L →+* ℂ, σ x = algebraMap ℚ ℂ (Algebra.norm ℚ x)`. Rewrite using `[Algebra.norm_eq_prod_embeddings ℚ ℂ x]`. Conclude with `Fintype.prod_equiv (RingHom.equivRatAlgHom L ℂ) _ _ (fun σ => rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hne1 : ∀ σ ∈ (Finset.univ : Finset (L →+* ℂ)), ‖σ x‖ ≠ 0` using `fun σ _ => by`. Rewrite using `[norm_ne_zero_iff]`. Conclude with `(map_ne_zero σ).mpr hx`. Establish `hL : ∑ σ : L →+* ℂ, Real.log ‖σ x‖ = Real.log |((Algebra.norm ℚ x : ℚ) : ℝ)|`. Rewrite using `[← Real.log_prod hne1, ← norm_prod, hprod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[eq_ratCast (algebraMap ℚ ℂ)]`. Simplify using the standard rewrite rules. Establish `hne2 : ∀ v ∈ hfin.toFinset, ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ FractionalIdeal.count L v I ≠ 0`. Introduce `v _`.
-
-Apply `zpow_ne_zero` to reduce the goal to its premises. Rewrite using `[Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Rewrite using `[hL, hR, ← Rat.cast_abs, ← hN2, hN1]`. Use `push_cast`.
-
-Rewrite using `[Real.log_prod hne2]`. Use `Finset.sum_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[Real.log_zpow]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_product_formula : LogProductFormula := by
   intro L _ _ x hx

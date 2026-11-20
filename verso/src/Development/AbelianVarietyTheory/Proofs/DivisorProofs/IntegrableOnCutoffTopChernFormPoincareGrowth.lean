@@ -17,7 +17,7 @@ open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 set_option autoImplicit false in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GoodTop.offHyp`. Conclude with `Iff.rfl`.
+Replace the relevant objects with their definitions. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private lemma mem_offHyp_iff {n : ℕ} {S : Finset (Fin n)}
     {U : Set (_root_.ReciprocityTheory.L2DbarEstimates.V n)} {v : _root_.ReciprocityTheory.L2DbarEstimates.V n} :
@@ -29,7 +29,7 @@ open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 set_option autoImplicit false in
 /- English proof (translation)
-Use `ContinuousAt.mul (Complex.continuous_ofReal.continuousAt.comp (f := ρ) hρ) ?_` and prove the remaining obligations. Use `_root_.GlobalTheory.GoodTop.continuousAt_mixTop (K := fun x _ => _root_.GlobalTheory.GoodTop.curvAt G x) fun i a b p q => ?_` and prove the remaining obligations. Apply the tactic sequence `have h := hG.curv (j := 0) hdet (by rw [zero_add]; first | exact le_top | exact_mod_cast (le_top : ((2 : ℕ∞) ≤ ⊤)) | exact WithTop.coe_le_coe.2 le_top) (_root_.GlobalTheory.GoodMetric.coordVec a) (_root_.GlobalTheory.GoodMetric.coordVec b) p q`. Conclude with `h.continuousAt`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma continuousAt_cutoff_mul_mix_curvAt {n : ℕ} {r : Type} [Fintype r]
     [DecidableEq r] {G : _root_.ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ} {ρ : _root_.ReciprocityTheory.L2DbarEstimates.V n → ℝ} {v : _root_.ReciprocityTheory.L2DbarEstimates.V n}
@@ -49,11 +49,11 @@ open scoped ContDiff Matrix in
 set_option autoImplicit false in
 
 /- English proof (translation)
-Introduce `n r _ _ S U K G₀ G₁ ρ c hU hK hKU hS hG₀ hG₁ hconn hcurv hρ hρK`. Take `⟨C₀, hC₀⟩` from `hK.exists_bound_of_continuousOn (hρ.continuousOn.mono hKU)`. Use `_root_.GlobalTheory.T.integrableOn_offCoordinateHyperplanes_of_poincareBound S U K _ (C₀ * ((Fintype.card r : ℝ) ^ n * (n.factorial : ℝ) ^ 2 * |c| ^ n)) hU hK hKU hS ?_ ?_ ?_` and prove the remaining obligations. Introduce `v hv`. Establish `hvU` using `(mem_offHyp_iff.1 hv).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(continuousAt_cutoff_mul_mix_curvAt (hG₁ v hv).1 (hG₁ v hv).2 (hρ.contDiffAt (hU.mem_nhds hvU)).continuousAt).continuousWithinAt`. Introduce `v hv hvK`. Rewrite using `[hρK v (mem_offHyp_iff.1 hv).1 hvK, Complex.ofReal_zero, zero_mul]`. Introduce `v hv hvK`. Establish `hpos` using `(_root_.GlobalTheory.GoodTop.poinWt_mem_Icc_and_pos S v (hS v (mem_offHyp_iff.1 hv).1)).2 (mem_offHyp_iff.1 hv).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `_root_.GlobalTheory.GoodTop.norm_mixTop_le_of_weighted (fun _ => _root_.GlobalTheory.GoodTop.curvAt G₁ v) (_root_.GlobalTheory.GoodMetric.poinWt S v) c hpos (fun _ a b p q => hcurv v hv a b p q)`. Rewrite using `[norm_mul, Complex.norm_real]`. Conclude with `(mul_le_mul (hC₀ v hvK) hP (norm_nonneg _) ((norm_nonneg _).trans (hC₀ v hvK))).trans_eq (by ring)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GoodTop.integrableOn_cut_mixTop_curvAt :
     ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (S : Finset (Fin n)) (U K : Set (_root_.ReciprocityTheory.L2DbarEstimates.V n)) (G₀ G₁ : _root_.ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ) (ρ : _root_.ReciprocityTheory.L2DbarEstimates.V n → ℝ) (c : ℝ), IsOpen U → IsCompact K → K ⊆ U → (∀ v ∈ U, ∀ a ∈ S, ‖v a‖ ≤ 1 / 2) → (∀ v ∈ U, _root_.GlobalTheory.HermFrame.MContDiffAt ∞ G₀ v ∧ IsUnit (G₀ v).det) → (∀ v ∈ _root_.GlobalTheory.GoodTop.offHyp S U, _root_.GlobalTheory.HermFrame.MContDiffAt ∞ G₁ v ∧ IsUnit (G₁ v).det) → (∀ v ∈ _root_.GlobalTheory.GoodTop.offHyp S U, ∀ a i j, ‖_root_.GlobalTheory.HermFrame.conn G₁ v (_root_.GlobalTheory.GoodMetric.coordVec a) i j‖ * _root_.GlobalTheory.GoodMetric.poinWt S v a ≤ c) → (∀ v ∈ _root_.GlobalTheory.GoodTop.offHyp S U, ∀ a b i j, ‖_root_.GlobalTheory.HermFrame.curv G₁ v (_root_.GlobalTheory.GoodMetric.coordVec a) (_root_.GlobalTheory.GoodMetric.coordVec b) i j‖ * (_root_.GlobalTheory.GoodMetric.poinWt S v a * _root_.GlobalTheory.GoodMetric.poinWt S v b) ≤ c) → ContDiffOn ℝ ∞ ρ U → (∀ v ∈ U, v ∉ K → ρ v = 0) → IntegrableOn (fun v => (ρ v : ℂ) * _root_.GlobalTheory.GoodTop.mixTop fun _ => _root_.GlobalTheory.GoodTop.curvAt G₁ v) (_root_.GlobalTheory.GoodTop.offHyp S U) := by

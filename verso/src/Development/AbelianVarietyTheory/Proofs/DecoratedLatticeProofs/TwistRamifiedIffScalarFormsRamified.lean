@@ -19,11 +19,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdForm
 
 /- English proof (translation)
-Take `⟨γ0, hγ0, c, k0, hk0, κ0, hκ0, rfl⟩` from `(GlobalTheory.T.chartLevels_reps_represent_unitaryDoubleCosets I hOk hP l Z u a Ch A hA j hj b).1.dec x`. Establish `hrd` using `(GlobalTheory.T.scalarForms_on_charts_of_trueColumnTuple I hOk hP l Z u a Ch A hA θ hθ j hj φ hφ).2 b y`. Set `y' : (I.chain l u a).Y j` to `⟨fun τ => (show Matrix (Fin (B.R.N j)) (Fin (B.R.N j)) ℂ from infM θ _ (rankN (I.rec7 l Z) j hj) k0 τ) * y.1 τ, fun τ => by`. Rewrite using `[Matrix.det_mul]`. Conclude with `(GlobalTheory.AdForm.RdVal.infM_unit θ _ (rankN (I.rec7 l Z) j hj) k0 τ).mul (y.2 τ)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy' : IsTr (G` using `fun _ => 1) (infM θ _ (rankN (I.rec7 l Z) j hj) k0) ⟨y.1, y.2⟩ ⟨y'.1, y'.2⟩ := fun _ => rfl`. Rewrite using `[hrd γ0 hγ0 c k0 hk0 ⟨κ0, hκ0⟩ y' hy']`. Establish `e : γ * (γ0 * (A.h j b c * k0) * κ0) * κ.1 = (γ * γ0) * (A.h j b c * k0) * ((⟨κ0, hκ0⟩ : A.U j b) * κ).1`. Simplify using `only [Subgroup.coe_mul, mul_assoc]`. Rewrite using `[e, hrd (γ * γ0) (Subgroup.mul_mem _ hγ hγ0) c k0 hk0 (⟨κ0, hκ0⟩ * κ) y' hy', map_mul, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem rd_mul_level {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (hP : TC.Pins B X) (l : I.Laws)
     (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch) (hA : A.Is)
@@ -43,17 +43,17 @@ theorem rd_mul_level {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (hP
   ring
 
 /- English proof (translation)
-Introduce `B X I hOk hP l Z u a Ch A hA θ hθ k _ _ _ _ ι p β Q L hStd j hj φ hφ`. Establish `hlaw` using `rd_mul_level I hOk hP l Z u a Ch A hA θ hθ j hj φ hφ`. Establish `hcont : ∀ b y, IsContAut _ (A.rd θ j hj b φ y)` using `fun b y => ⟨fun γ hγ g => by simpa using hlaw b y g γ hγ 1, GlobalTheory.T.tupleColumn_scalarAdelicForm_continuous I hOk hP l Z u a Ch A hA θ hθ j hj φ hφ b y⟩`. Use `⟨hcont, ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `hStd.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: Finite ι` using `Finite.of_equiv _ e.symm`. Use `haveI := Fintype.ofFinite ι`. Establish `hlev` using `GlobalTheory.T.twistLevelStabiliserAtLevelPrime_proof I hOk hP l Z u a Ch A hA k ι p β Q L hStd (Finset.univ.toList) (Finset.nodup_toList _) (fun i => Finset.mem_toList.2 (Finset.mem_univ i)) j hj`. Establish `hfix : ∀ b y i (x : GL (Fin ((I.rec7 l Z).sp.X j).rank) k), x • Q j i = Q j i → rTrans ((β j i).gl x) (A.rd θ j hj b φ y) = A.rd θ j hj b φ y`. Introduce `b y i x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hm, h1⟩` from `(hlev b).1 i x hx`. Use function extensionality and compare the values at `g`. Use `hlaw b y g 1 (Subgroup.one_mem _) ⟨_, hm⟩` as an intermediate fact. Simplify `this` using `[rTrans, h1]`. Use `choose gS hgS using fun (i : ι) (s : 𝓀[k]ˣ) => MulAction.exists_smul_eq (GL (Fin ((I.rec7 l Z).sp.X j).rank) k) (Q j i) (s • Q j i)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hram : ∀ b y i, GlobalTheory.FinPl.RamAt (β j i) (Q j i) (A.rd θ j hj b φ y) ↔ ∑ᶠ s, rTrans ((β j i).gl (gS i s)) (A.rd θ j hj b φ y) = 0`. Introduce `b y i`. Rewrite using `[GlobalTheory.T.ramifiedLevel_stabilizer_iff_all_data (I.rec7 l Z) k (p i) (Fin _) _ (β j i) (Q j i) (gS i) (hgS i)]`. Conclude with `⟨fun h => h.2.2, fun h => ⟨hcont b y, fun x hx => hfix b y i x hx, h⟩⟩`. Establish `hdia` using `fun i => GlobalTheory.T.diamondTranslates_scalarForms_sum_iff I hOk hP l Z u a Ch A hA θ hθ k ι p β Q L hStd j hj φ hφ i (e i) (he i) (gS i) (hgS i)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `only [hram]`. Unfold `RamT`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hR⟩ b y i`. Conclude with `(hdia i).2 (fun c => hR (e i) c) b y`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Use `⟨hφ, fun v c => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `e.surjective v`. Conclude with `(hdia i).1 (fun b y => h b y i) c`.
+A detailed English derivation is pending.
 -/
 theorem ram_iff_scalar_ram : TwRam' := by
   intro B X I hOk hP l Z u a Ch A hA θ hθ k _ _ _ _ ι p β Q L hStd j hj φ hφ

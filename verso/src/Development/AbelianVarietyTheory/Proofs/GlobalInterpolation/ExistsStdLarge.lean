@@ -27,38 +27,34 @@ def stdConst (CT2 C8 p m l : ℝ) : FC where
   T := { CP := p, eP := 12, Cp := 1, Cb := l, cTO := 377, ChT := l, CbN := l }
 
 /- English proof (translation)
-Simplify `h` using `[FC.cPre, stdConst]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem stdConst_cPre (CT2 C8 p m l c : ℝ) (h : c ∈ (stdConst CT2 C8 p m l).cPre) : c = p := by
   simpa [FC.cPre, stdConst] using h
 
 /- English proof (translation)
-Simplify `h` using `[FC.cMid, stdConst]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem stdConst_cMid (CT2 C8 p m l c : ℝ)
     (h : c ∈ (stdConst CT2 C8 p m l).cMid (stdConst CT2 C8 p m l).P.CF) : c = m := by
   simpa [FC.cMid, stdConst] using h
 
 /- English proof (translation)
-Simplify `h` using `[FC.cLast, stdConst]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem stdConst_cLast (CT2 C8 p m l c : ℝ) (h : c ∈ (stdConst CT2 C8 p m l).cLast) : c = l := by
   simpa [FC.cLast, stdConst] using h
 
 /- English proof (translation)
-Take `⟨p, hp1, hpK, hpK0⟩ : ∃ p : ℝ, 1000 ≤ p ∧ K.pre ≤ p ∧ K0.pre ≤ p` from `⟨max 1000 (max K.pre K0.pre), le_max_left _ _, (le_max_left _ _).trans (le_max_right _ _), (le_max_right _ _).trans (le_max_right _ _)⟩`. Take `⟨m, hm1, hmK, hmK0⟩ : ∃ m : ℝ, 1 ≤ m ∧ K.mid (stdConst CT2 C8 p 0 0).cOut ≤ m ∧ K0.mid (stdConst CT2 C8 p 0 0).cOut ≤ m` from `⟨max 1 (max _ _), le_max_left _ _, (le_max_left _ _).trans (le_max_right _ _), (le_max_right _ _).trans (le_max_right _ _)⟩`. Take `⟨l, hl1, hlK, hlK0⟩ : ∃ l : ℝ, 1 ≤ l ∧ K.last ((stdConst CT2 C8 p m 0).cOut ++ (stdConst CT2 C8 p m 0).cMid m) ≤ l ∧ K0.last ((stdConst CT2 C8 p m 0).cOut ++ (stdConst CT2 C8 p m 0).cMid m) ≤ l` from `⟨max 1 (max _ _), le_max_left _ _, (le_max_left _ _).trans (le_max_right _ _), (le_max_right _ _).trans (le_max_right _ _)⟩`. Establish `hm0 : 0 ≤ m` using `by linarith`. Establish `hl0 : 0 ≤ l` using `by linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨stdConst CT2 C8 p m l, ⟨?_, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, h8, hp1, ?_, ?_⟩, rfl, rfl, ⟨?_, trivial, ?_, ?_⟩, ⟨?_, trivial, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, le_rfl, rfl⟩`. Introduce `c hc`. Rewrite using `[stdConst_cMid _ _ _ _ _ _ hc]`. Conclude with `hm1`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Rewrite using `[stdConst_cLast _ _ _ _ _ _ hc]`. Conclude with `hl1`. Introduce `c hc`. Rewrite using `[stdConst_cPre _ _ _ _ _ _ hc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpK`. Introduce `c hc`. Rewrite using `[stdConst_cMid _ _ _ _ _ _ hc]`. Conclude with `hmK`. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[stdConst_cLast _ _ _ _ _ _ hc]`. Conclude with `hlK`. Introduce `c hc`. Rewrite using `[stdConst_cPre _ _ _ _ _ _ hc]`. Conclude with `hpK0`.
-
-Introduce `c hc`. Rewrite using `[stdConst_cMid _ _ _ _ _ _ hc]`. Conclude with `hmK0`. Introduce `c hc`. Rewrite using `[stdConst_cLast _ _ _ _ _ _ hc]`.
-
-Conclude with `hlK0`. Conclude with `⟨hm0, hl0, hl0, hl0, hl0, hl0, hl0, hl0, hl0, hl0, hl0, by norm_num [stdConst], by norm_num [stdConst], by norm_num [stdConst], hl0⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_std_large (K K0 : TransportedAlt) (CT2 C8 : ℝ) (h8 : 1 ≤ C8) :
     ∃ C : FC, Std C ∧ C.CT2 = CT2 ∧ C.P.Cpde = C8 ∧ C.Large K C.P.CF ∧ C.Large K0 C.P.CF ∧ C.GK.Nonneg := by

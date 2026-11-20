@@ -8,11 +8,11 @@ namespace GroundTheory.Heights₂.Heights
 open Matrix Real
 
 /- English proof (translation)
-Use `⟨72 * Real.exp 4, by positivity, ?_⟩` and prove the remaining obligations. Introduce `g Y ρ hY hρ hmin u`. Take `⟨hsum, Λ, hΛ, hle⟩` from `hPD g Y ρ hY hρ hmin u`. Use `⟨hsum, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos g with rfl | hg` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hq : ∀ k : Fin 0 → ℤ, qf Y (intVec k + u) = 0` using `fun k => by simp [qf]`. Simplify using `only [hq, mul_zero, Real.exp_zero, tsum_const, Nat.card_unique, one_smul, Nat.cast_zero, zero_div, Real.rpow_zero, Matrix.det_isEmpty, Real.one_rpow, pow_zero, mul_one, le_refl]`. Establish `hdet : 0 < Y.det` using `hY.det_pos`. Establish `hd : 0 ≤ Y.det ^ (-(1 / 2 : ℝ))` using `Real.rpow_nonneg hdet.le _`. Establish `hS` using `(hSS g hg Λ ρ hρ hΛ).2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `hC g hg`. Establish `hr : 0 ≤ (1 + 1 / ρ) ^ g` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem GaussianSum.proof (hPD : GaussPoissonDual.Statement) (hSS : GaussShellSum.Statement)
     (hC : GaussConstant.Statement) : GaussianSum.Statement := by

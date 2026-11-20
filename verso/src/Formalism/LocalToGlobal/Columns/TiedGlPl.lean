@@ -19,9 +19,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
   (halg : ∀ a : v.adicCompletion F, spl ((1 : E) ⊗ₜ[F] a) = (a, a))
 
 /- English proof (translation)
-Rewrite `h` using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Establish `hle` using `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) F v).1 x.2`. Use `lt_of_le_of_ne hle fun h1 => h ?_` and prove the remaining obligations. Establish `hx0 : (x : v.adicCompletion F) ≠ 0` using `fun h0 => by rw [h0, map_zero] at h1; exact zero_ne_one h1`. Set `y : v.adicCompletionIntegers F` to `⟨(x : v.adicCompletion F)⁻¹, (HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) F v).2 (by rw [map_inv₀, h1, inv_one])⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hxy : x * y = 1` using `Subtype.ext (mul_inv_cancel₀ hx0)`. Conclude with `⟨⟨x, y, hxy, (mul_comm _ _).trans hxy⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem glk_val_lt (x : v.adicCompletionIntegers F) (h : IsLocalRing.residue (v.adicCompletionIntegers F) x = 0) :
     Valued.v (x : v.adicCompletion F) < 1 := by
@@ -35,7 +35,7 @@ theorem glk_val_lt (x : v.adicCompletionIntegers F) (h : IsLocalRing.residue (v.
   exact ⟨⟨x, y, hxy, (mul_comm _ _).trans hxy⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[gloRho_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem gloRho_oToS (a : 𝓞 E) : gloRho v spl halg (oToS F E a) = IsLocalRing.residue (v.adicCompletionIntegers F)
     ⟨gloPhi v spl (inclE (F := F) (v.adicCompletion F) (algebraMap (𝓞 E) E a)), by
@@ -48,19 +48,17 @@ theorem gloRho_oToS (a : 𝓞 E) : gloRho v spl halg (oToS F E a) = IsLocalRing.
 include hc in
 
 /- English proof (translation)
-Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Conclude with `h2 (by rw [map_zero]; exact zero_mem _)`. Establish `hϖ : gloRho v spl halg (oToS F E ϖ) = 0`. Rewrite using `[gloRho_oToS]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `glo_res_zero v _ hval`. Set `Q : Pl E` to `{ asIdeal := RingHom.ker ((gloRho v spl halg).comp (oToS F E)) isPrime := RingHom.ker_isPrime _ ne_bot := fun hb => hϖ0 (by`. Establish `: ϖ ∈ RingHom.ker ((gloRho v spl halg).comp (oToS F E))` using `hϖ`. Rewrite using `[hb, Ideal.mem_bot] at this) }` and apply the resulting hypothesis. Establish `hQ : IsOver v Q` using `by show v.asIdeal = Q.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `r`. Rewrite using `[Ideal.mem_comap]`. Use `show r ∈ v.asIdeal ↔ gloRho v spl halg (oToS F E (algebraMap (𝓞 F) (𝓞 E) r)) = 0`. Rewrite using `[gloRho_algMap]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `hr`. Use `glo_res_zero v _ ?_` and prove the remaining obligations. Use `show Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) r) < 1`. Rewrite using `[csApprox_val_int]`. Conclude with `(HeightOneSpectrum.intValuation_lt_one_iff_mem v r).2 hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `hr`. Use `glk_val_lt v _ hr` as an intermediate fact. Express the relevant statement in the definitionally equal form `Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) r) < 1 at this`. Rewrite `this` using `[csApprox_val_int]`. Conclude with `(HeightOneSpectrum.intValuation_lt_one_iff_mem v r).1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `rll_over_cases hc hov hQ with h | h` into its components or cases. Introduce `a ha`. Establish `: a ∈ Q.asIdeal` using `by rw [h]; exact ha`. Conclude with `this`. It suffices to derive a contradiction.
-
-Establish `: ϖ ∈ Q.asIdeal` using `hϖ`. Rewrite `this` using `[h, mem_conjP]`. Conclude with `h2 this`.
+A detailed English derivation is pending.
 -/
 theorem glk_ker (w : Pl E) (hov : IsOver v w) (ϖ : 𝓞 E) (h2 : cO E ϖ ∉ w.asIdeal)
     (hval : Valued.v (gloPhi v spl (inclE (F := F) (v.adicCompletion F) (algebraMap (𝓞 E) E ϖ))) < 1) :
@@ -118,9 +116,9 @@ structure GSplit where
 
 include hc hPr in
 /- English proof (translation)
-Establish `hne : X.conjO (Pr.piG i) ≠ 0`. Introduce `h0`. Use `hPr.piG_norm i` as an intermediate fact. Rewrite `this` using `[h0, mul_zero]`. Conclude with `(Nat.cast_ne_zero.2 (hPr.g_prime i).ne_zero) this.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_plUnder_iff_norm hc (fun P => mem_divs hne P) (Pr.g i) ?_ v` and prove the remaining obligations. Establish `h2 : cO X.E (X.conjO (Pr.piG i)) = Pr.piG i` using `RingOfIntegers.ext (star_star _)`. Rewrite using `[h2, mul_comm]`. Conclude with `hPr.piG_norm i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glk_under (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) : v ∈ plUnder X.F (Pr.vG i) ↔ (Pr.g i : 𝓞 X.F) ∈ v.asIdeal := by
   have hne : X.conjO (Pr.piG i) ≠ 0 := by
@@ -133,7 +131,7 @@ theorem glk_under (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) : v ∈ plUnder
   rw [h2, mul_comm]; exact hPr.piG_norm i
 
 /- English proof (translation)
-Unfold `Primes.vGs`. Use `fin_cases i`. Conclude with `Finset.mem_union_left _ h`. Conclude with `Finset.mem_union_right _ h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem glk_vG_le (i : Fin 2) {w : Pl X.E} (h : w ∈ Pr.vG i) : w ∈ Pr.vGs := by
   classical
@@ -146,19 +144,19 @@ def gwOf (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : 𝓞 X.F)
   ⟨((glk_under hc hPr i v).2 h).choose, glk_vG_le i ((glk_under hc hPr i v).2 h).choose_spec.1⟩
 
 /- English proof (translation)
-The claim follows from `((glk_under hc hPr i v).2 h).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem gwOf_mem (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal) :
     (gwOf hc hPr i v h).1 ∈ Pr.vG i := ((glk_under hc hPr i v).2 h).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `((glk_under hc hPr i v).2 h).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem gwOf_over (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal) :
     IsOver v (gwOf hc hPr i v h).1 := ((glk_under hc hPr i v).2 h).choose_spec.2
 
 /- English proof (translation)
-Break down `rll_over_cases hc (gwOf_over hc hPr i v h) hw' with e | e` into its components or cases. Conclude with `Subtype.ext e`. Conclude with `absurd e (rlh_vGs_not_conj hPr (gwOf hc hPr i v h).2 w'.2)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem gwOf_uniq (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal) (w' : Pr.vGs)
     (hw' : IsOver v w'.1) : w' = gwOf hc hPr i v h := by
@@ -169,9 +167,9 @@ theorem gwOf_uniq (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : 
 variable {hc}
 
 /- English proof (translation)
-Use `glk_ker hc v (S.sp i v h) (S.sp_alg i v h) _ (gwOf_over hc hPr i v h) (X.conjO (Pr.piG i)) ?_ (S.sp_pi i v h)` and prove the remaining obligations. Establish `h2 : cO X.E (X.conjO (Pr.piG i)) = Pr.piG i` using `RingOfIntegers.ext (star_star _)`. Rewrite using `[h2]`. Introduce `hmem`. Establish `h3 : X.conjO (Pr.piG i) ∈ (gwOf hc hPr i v h).1.asIdeal` using `decoFin_mem_of_mem_divs (gwOf_mem hc hPr i v h)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨a, b, e⟩` from `hPr.piG_cop i`. Apply `one_notMem (gwOf hc hPr i v h).1` to reduce the goal to its premises. Rewrite using `[← e]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hmem) (Ideal.mul_mem_left _ _ h3)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GSplit.ker (S : GSplit (Pr := Pr) hc) (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal) :
     ∀ a ∈ (gwOf hc hPr i v h).1.asIdeal, gloRho v (S.sp i v h) (S.sp_alg i v h) (oToS X.F X.E a) = 0 := by
@@ -192,9 +190,9 @@ def GSplit.eK (S : GSplit (Pr := Pr) hc) (i : Fin 2) (v : HeightOneSpectrum (�
 include hPr in
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hϖ`. Establish `hg : (Pr.g i : 𝓞 X.E) ∈ (gwOf hc hPr i v h).1.asIdeal`. Establish `h1 : (Pr.g i : 𝓞 X.F) ∈ (gwOf hc hPr i v h).1.asIdeal.comap (algebraMap (𝓞 X.F) (𝓞 X.E))` using `(gwOf_over hc hPr i v h) ▸ h`. Rewrite `h1` using `[Ideal.mem_comap, map_natCast]`. Then use the resulting hypothesis. Establish `h2 : ϖ = 1 + (Pr.g i : 𝓞 X.E) * s` using `by rw [← hs]; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[h2, map_add, map_add, map_one, map_one, S.ker hPr i v h _ (Ideal.mul_mem_right _ _ hg), add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem GSplit.res_one (S : GSplit (Pr := Pr) hc) (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal)
     (ϖ : 𝓞 X.E) (hϖ : (Pr.g i : 𝓞 X.E) ∣ ϖ - 1) : gloRho v (S.sp i v h) (S.sp_alg i v h) (oToS X.F X.E ϖ) = 1 := by
@@ -225,7 +223,7 @@ theorem GSplit.unitOf_val (S : GSplit (Pr := Pr) hc) (i : Fin 2) (v : HeightOneS
       gloPhi v (S.sp i v h) (inclE (F := X.F) (v.adicCompletion X.F) (algebraMap (𝓞 X.E) X.E ϖ)) := rfl
 
 /- English proof (translation)
-Rewrite using `[← S.res_one hPr i v h ϖ hϖ, gloRho_oToS]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem GSplit.unitOf_res (S : GSplit (Pr := Pr) hc) (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal)
     (ϖ : 𝓞 X.E) (hϖ : (Pr.g i : 𝓞 X.E) ∣ ϖ - 1) :
@@ -235,9 +233,7 @@ theorem GSplit.unitOf_res (S : GSplit (Pr := Pr) hc) (i : Fin 2) (v : HeightOneS
 
 include hPr in
 /- English proof (translation)
-Use `Dvd.dvd.trans ?_ (hPr.piT_cong u)` and prove the remaining obligations. Establish `: Pr.g i ∣ Pr.cond * (Pr.g 0 * Pr.g 1) ^ 2`. Use `Dvd.dvd.mul_left (Dvd.dvd.trans ?_ (dvd_pow_self _ two_ne_zero)) _` and prove the remaining obligations. Use `fin_cases i`. Conclude with `Dvd.intro _ rfl`.
-
-Conclude with `Dvd.intro_left _ rfl`. Conclude with `Nat.cast_dvd_cast this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem glk_piT_cong (u : Pr.Word) (i : Fin 2) : (Pr.g i : 𝓞 X.E) ∣ Pr.piT u - 1 := by
   refine Dvd.dvd.trans ?_ (hPr.piT_cong u)

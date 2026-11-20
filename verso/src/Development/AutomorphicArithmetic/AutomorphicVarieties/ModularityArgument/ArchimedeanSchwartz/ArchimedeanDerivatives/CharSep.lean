@@ -12,13 +12,13 @@ namespace UpperTheory.V.Z.Inf.H.Phase
 private def ex (r : ℝ) : ℂˣ := Circle.toUnits (Circle.exp r)
 
 /- English proof (translation)
-Simplify using `[ex, Circle.exp_add]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ex_add (a b : ℝ) : ex (a + b) = ex a * ex b := by
   simp [ex, Circle.exp_add]
 
 /- English proof (translation)
-Simplify using `[ex]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ex_zero : ex 0 = 1 := by simp [ex]
 

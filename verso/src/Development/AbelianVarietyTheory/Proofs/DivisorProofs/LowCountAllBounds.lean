@@ -10,11 +10,9 @@ open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.LowCount
 
 /- English proof (translation)
-Establish `hn : ∀ n : ℕ, 0 ≤ v (n : C)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `push_cast`. Conclude with `le_trans (le_min ih (by simp)) (v.map_add _ _)`. Break down `Int.eq_nat_or_neg z with ⟨n, rfl | rfl⟩` into its components or cases. Conclude with `hn n` after adjusting the coercions. Use `push_cast`.
-
-Rewrite using `[v.map_neg]`. Conclude with `hn n`.
+Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_intCast_nonneg {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (z : ℤ) :
     0 ≤ v (z : C) := by
@@ -30,11 +28,11 @@ theorem v_intCast_nonneg {C : Type} [Field C] (v : AddValuation C (WithTop ℝ))
   · push_cast; rw [v.map_neg]; exact hn n
 
 /- English proof (translation)
-Introduce `C _ _ v M ρ g hg P B hB`. Apply `AddValuation.map_le_sum` to reduce the goal to its premises. Introduce `α hα`. Rewrite using `[v.map_mul, v.map_mul]`. Establish `h1` using `hB α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hg α`. Establish `h3` using `v_intCast_nonneg v (P.coeff α)`. Establish `h4 : (((B + ∑ m, ρ m * α m : ℝ)) : WithTop ℝ) + (((0 - ∑ m, ρ m * α m : ℝ)) : WithTop ℝ) ≤ v ((∏ m, (α m).factorial : ℕ) : C) + v (coeff α g)` using `add_le_add h1 h2`. Rewrite `h4` using `[← WithTop.coe_add]`. Establish `h5 : (B + ∑ m, ρ m * α m) + (0 - ∑ m, ρ m * α m) = B` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h4` using `[h5]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem low_count_first_bound : FactorialWeightedSumBound := by
   intro C _ _ v M ρ g hg P B hB
@@ -57,9 +55,9 @@ end GlobalTheory.LowCount
 namespace GlobalTheory.LowCount
 
 /- English proof (translation)
-Establish `hp' : (3 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `hlp : 0 < Real.log p` using `Real.log_pos (by linarith)`. Establish `h3 : Real.log 3 ≤ Real.log p` using `Real.log_le_log (by norm_num) hp'`. Establish `h : 8 * Real.log 2 ≤ 7 * Real.log 3`. Use `Real.log_le_log (by norm_num) (show (2:ℝ) ^ 8 ≤ 3 ^ 7 by norm_num)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.log_pow, Real.log_pow]`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.logb, div_le_iff₀ hlp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem logb_two_le (p : ℕ) (hp : 3 ≤ p) : Real.logb p 2 ≤ 7 / 8 := by
   have hp' : (3 : ℝ) ≤ p := by exact_mod_cast hp
@@ -74,31 +72,29 @@ theorem logb_two_le (p : ℕ) (hp : 3 ≤ p) : Real.logb p 2 ≤ 7 / 8 := by
   linarith
 
 /- English proof (translation)
-Introduce `p i cr K ex hp hex hcr hK hK2`. Establish `hp' : (3 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `hp1 : (1 : ℝ) < p` using `by linarith`. Establish `hex' : (1 : ℝ) ≤ ex` using `by exact_mod_cast hex`. Use `set D : ℝ := (p : ℝ) ^ 2 - 1 with hD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD8 : 8 ≤ D` using `by nlinarith`. Use `set q : ℝ := (p : ℝ) ^ (-(2 * (K : ℤ) + 1)) with hq`. Establish `hq0 : 0 ≤ q` using `zpow_nonneg (by linarith) _`. Establish `hqe : (ex : ℝ) * q ≤ 1`. Establish `hpos : (0 : ℝ) < (p : ℝ) ^ (2 * K + 1)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `: q = 1 / (p : ℝ) ^ (2 * K + 1)`. Rewrite using `[hq, zpow_neg, one_div, show (2 * (K : ℤ) + 1) = ((2 * K + 1 : ℕ) : ℤ) by push_cast; ring, zpow_natCast]`. Rewrite using `[this, mul_one_div, div_le_one hpos]`. Conclude with `hK` after adjusting the coercions. Establish `hrK : radius p K = (1 + q) / D` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hrm : radius p (-1) = (1 + p) / D`. Rewrite using `[hD]`. Simplify using `only [radius]`. Evaluate the numerical expressions. Establish `hpm : 1 / ((p : ℝ) - 1) = (1 + p) / D`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hD, div_eq_div_iff (by linarith) (by nlinarith)]; ring`. Establish `hL : Real.logb p (ex + 1) ≤ Real.logb p ex + 7 / 8`. Establish `h2 : ((ex : ℝ) + 1) ≤ ex * 2` using `by linarith`. Use `Real.logb_le_logb_of_le hp1 (by linarith) h2` as an intermediate fact. Rewrite `this` using `[Real.logb_mul (by linarith) (by norm_num)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `[logb_two_le p hp]`. Establish `hi : (cr : ℝ) ≤ i` using `by exact_mod_cast hcr`. Establish `hi0 : (0 : ℝ) ≤ i` using `by positivity`. Establish `hii : (i : ℝ) ≤ (i : ℝ) ^ 2`. Break down `Nat.eq_zero_or_pos i with h | h` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify using `[h]`. Establish `: (1 : ℝ) ≤ i` using `by exact_mod_cast h`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hrK, hrm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdiv : (i : ℝ) * ex / ((p : ℝ) - 1) = i * ex * (1 / ((p : ℝ) - 1))` using `by ring`. Rewrite using `[hdiv, hpm]`. Establish `key : ((i : ℝ) - cr) * ex * (ex * q) ≤ ((i : ℝ) - cr) * ex`. Use `mul_le_mul_of_nonneg_left hqe (mul_nonneg (sub_nonneg.2 hi) (by positivity : (0:ℝ) ≤ ex))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (i : ℝ) * ex * ((1 + p) / D) - (i : ℝ) ^ 2 * Real.logb p (ex + 1) - i * ex * ((1 + q) / D) - ex * cr * ((1 + p) / D - (1 + q) / D) - ((((i : ℝ) - cr) * ex * p / D) - (i : ℝ) ^ 2 * (Real.logb p ex + 1)) = (i : ℝ) ^ 2 * (Real.logb p ex + 1 - Real.logb p (ex + 1)) - ((i : ℝ) - c …` using `by field_simp; ring`. Establish `h1 : ((i : ℝ) - cr) * (ex * q) / D ≤ i / 8`. Rewrite using `[div_le_iff₀ (by linarith)]`. Establish `: ((i : ℝ) - cr) * (ex * q) ≤ (i : ℝ) - cr` using `by nlinarith [mul_le_mul_of_nonneg_left hqe (sub_nonneg.2 hi)]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2 : (i : ℝ) ^ 2 / 8 ≤ (i : ℝ) ^ 2 * (Real.logb p ex + 1 - Real.logb p (ex + 1))`. Use polynomial arithmetic with `[sq_nonneg (i : ℝ)]`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `Nat.eq_zero_or_pos K with h0 | h0` into its components or cases. Substitute `h0` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: 0 ≤ Real.logb p ex` using `Real.logb_nonneg hp1 hex'`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `hK2 with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : ((p : ℝ) ^ (2 * K - 1) : ℝ) ≤ ex` using `by exact_mod_cast h.le`. Use `Real.logb_le_logb_of_le hp1 (by positivity) h'` as an intermediate fact. Rewrite `this` using `[Real.logb_pow, Real.logb_self_eq_one hp1]`. Establish `hc : ((2 * K - 1 : ℕ) : ℝ) = 2 * (K : ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`.
-
-Rewrite `this` using `[hc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem low_count_third_bound : RadiusExponentInequality := by
   intro p i cr K ex hp hex hcr hK hK2
@@ -172,9 +168,9 @@ end GlobalTheory.LowCount
 namespace GlobalTheory.LowCount
 
 /- English proof (translation)
-Establish `hs : ∑ e : Fin i, ∑ c : Fin i, α (e, c) = ∑ e : Fin i, ex`. Rewrite using `[← Fintype.sum_prod_type' (fun e c => α (e, c))]`. Rewrite `hdeg` using `[Finsupp.degree_eq_sum]`. Simplify using `[hdeg, mul_comm]`. Introduce `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Finset.sum_eq_sum_iff_of_le (fun e _ => hrow e)).1 hs e (Finset.mem_univ e)`.
+A detailed English derivation is pending.
 -/
 theorem rows_eq {i ex : ℕ} (α : Fin i × Fin i →₀ ℕ) (hdeg : Finsupp.degree α = i * ex)
     (hrow : ∀ e : Fin i, ∑ c : Fin i, α (e, c) ≤ ex) : ∀ e : Fin i, ∑ c : Fin i, α (e, c) = ex := by
@@ -186,11 +182,11 @@ theorem rows_eq {i ex : ℕ} (α : Fin i × Fin i →₀ ℕ) (hdeg : Finsupp.de
   exact (Finset.sum_eq_sum_iff_of_le (fun e _ => hrow e)).1 hs e (Finset.mem_univ e)
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun k => if k < cr then a else b) i, Finset.sum_ite]`. Establish `h1 : (Finset.range i).filter (· < cr) = Finset.range cr`. Use extensionality with `k`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2 : ((Finset.range i).filter (fun k => ¬ k < cr)).card = i - cr`. Establish `: (Finset.range i).filter (fun k => ¬ k < cr) = Finset.Ico cr i`. Use extensionality with `k`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[this, Nat.card_Ico]`. Rewrite using `[Finset.sum_const, Finset.sum_const, h1, h2, Finset.card_range, nsmul_eq_mul, nsmul_eq_mul]`. Move the coercions through the operations in `[hcr]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem count_lt (i cr : ℕ) (hcr : cr ≤ i) (a b : ℝ) :
     ∑ e : Fin i, (if e.val < cr then a else b) = cr * a + (i - cr) * b := by
@@ -205,21 +201,21 @@ theorem count_lt (i cr : ℕ) (hcr : cr ≤ i) (a b : ℝ) :
   push_cast [hcr]; ring
 
 /- English proof (translation)
-Introduce `C _ _ v p hp hp3 hv i cr K ex hcr α hdeg hrow`. Establish `hR` using `rows_eq α hdeg hrow`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.one_lt`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `le_of_eq` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Fintype.sum_prod_type]`. Establish `: ∀ e : Fin i, ∑ c : Fin i, (if (e, c).1.val < cr then radius p (-1) else radius p K) * (α (e, c) : ℝ) = (if e.val < cr then radius p (-1) else radius p K) * ex`. Introduce `e`. Rewrite using `[← hR e, Nat.cast_sum, Finset.mul_sum]`. Rewrite using `[Finset.sum_congr rfl (fun e _ => this e), ← Finset.sum_mul, count_lt i cr hcr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hN : (∏ x, (α x).factorial : ℕ) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun x _ => Nat.factorial_ne_zero _`. Rewrite using `[GlobalTheory.T.addValuation_natCast_eq_padicValNat' C v p hp hv _ hN]`. Rewrite using `[WithTop.coe_le_coe]`. Rewrite using `[GlobalTheory.LegendreBounds.padicValNat_prod_factorial p hp]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : ∀ x : Fin i × Fin i, α x ≤ ex`. Introduce `x`. Rewrite using `[← hR x.1]`. Conclude with `Finset.single_le_sum (f := fun c => α (x.1, c)) (fun c _ => Nat.zero_le _) (Finset.mem_univ x.2)`. Establish `hterm : ∀ x : Fin i × Fin i, (α x : ℝ) / ((p : ℝ) - 1) - Real.logb p ((ex : ℝ) + 1) ≤ (padicValNat p (α x).factorial : ℝ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[GlobalTheory.LegendreBounds.legendre_real p hp]`. Establish `hd` using `GlobalTheory.T.digits_sum_le_mul_logb p (α x) hp`. Establish `hlog : Real.logb p ((α x : ℝ) + 1) ≤ Real.logb p ((ex : ℝ) + 1)` using `Real.logb_le_logb_of_le hp1 (by positivity) (by have := hle x; push_cast; exact_mod_cast (by omega : α x + 1 ≤ ex + 1))`. Establish `h0 : (0 : ℝ) < (p : ℝ) - 1` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_div]`. Establish `: (((Nat.digits p (α x)).sum : ℕ) : ℝ) / ((p : ℝ) - 1) ≤ Real.logb p ((ex : ℝ) + 1)`. Rewrite using `[div_le_iff₀ h0]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hsum` using `Finset.sum_le_sum (s := Finset.univ) (fun x _ => hterm x)`. Rewrite `hsum` using `[Finset.sum_sub_distrib, ← Finset.sum_div, Finset.sum_const, Finset.card_univ, Fintype.card_prod, Fintype.card_fin, nsmul_eq_mul]`. Establish `htot : (∑ x : Fin i × Fin i, (α x : ℝ)) = i * ex`. Rewrite `hdeg` using `[Finsupp.degree_eq_sum]`. Conclude with `hdeg` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `hsum` using `[htot]`. Move the coercions through the operations in `at hsum ⊢`. Use polynomial arithmetic with `[hsum]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem low_count_second_bound : FactorialMultiindexBound := by
   intro C _ _ v p hp hp3 hv i cr K ex hcr α hdeg hrow
@@ -264,7 +260,7 @@ theorem low_count_second_bound : FactorialMultiindexBound := by
     nlinarith [hsum]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨low_count_first_bound, low_count_second_bound, low_count_third_bound⟩`.
+Supply the required witnesses or components.
 -/
 theorem lowC_all : FactorialWeightedSumBound ∧ FactorialMultiindexBound ∧ RadiusExponentInequality :=
   ⟨low_count_first_bound, low_count_second_bound, low_count_third_bound⟩

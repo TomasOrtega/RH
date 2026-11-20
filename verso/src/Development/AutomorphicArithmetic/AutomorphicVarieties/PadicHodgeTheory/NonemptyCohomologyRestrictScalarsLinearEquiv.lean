@@ -14,11 +14,9 @@ private def subEq {Q A X : Type} [CommRing Q] [CommRing A] [Algebra Q A] [AddCom
   right_inv _ := rfl
 
 /- English proof (translation)
-Use `⟨(Submodule.Quotient.equiv (B'.comap Z'.subtype) ((B.comap Z.subtype).restrictScalars Q) (subEq Z' Z hZ) ?_).trans (Submodule.Quotient.restrictScalarsEquiv Q (B.comap Z.subtype))⟩` and prove the remaining obligations. Use extensionality with `⟨x, hx⟩`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyx⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `: (y : X) = x` using `congrArg Subtype.val hyx`. Use `show x ∈ B`. Rewrite using `[← this]`. Conclude with `(hB _).1 hy`. Introduce `h`.
-
-Conclude with `⟨⟨x, (hZ x).2 hx⟩, (hB x).2 h, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem quotEq {Q A X : Type} [CommRing Q] [CommRing A] [Algebra Q A] [AddCommGroup X] [Module A X]
     [Module Q X] [IsScalarTower Q A X] (Z' B' : Submodule Q X) (Z B : Submodule A X)
@@ -38,15 +36,15 @@ private theorem quotEq {Q A X : Type} [CommRing Q] [CommRing A] [Algebra Q A] [A
     exact ⟨⟨x, (hZ x).2 hx⟩, (hB x).2 h, rfl⟩
 
 /- English proof (translation)
-Introduce `Q A _ _ _ G _ _ V _ _ _ _ _ _ _ _ ρ`. Establish `hd : ∀ n (f : (Fin n → G) → V), dn (resCoef Q ρ) n f = dn ρ n f`. Introduce `n f`. Use function extensionality and compare the values at `g`. Rewrite using `[dn_apply, dn_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul A ((-1 : Q) ^ ((j : ℕ) + 1))]`. Simplify using the standard rewrite rules. Use `⟨⟨subEq _ _ fun x => Iff.rfl⟩, quotEq _ _ _ _ (fun x => Iff.rfl) ?_, quotEq _ _ _ _ (fun x => Iff.rfl) ?_, fun n => quotEq _ _ _ _ ?_ ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Simplify using `only [ReciprocityTheory.Gal.B1, LinearMap.mem_range]`. Conclude with `Iff.rfl`. Introduce `x`. Simplify using `only [ReciprocityTheory.Gal.B2, Submodule.mem_map, mem_contMaps]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Iff.rfl`. Introduce `x`. Simplify using `only [ReciprocityTheory.Gal.Zn, Submodule.mem_inf, LinearMap.mem_ker, ReciprocityTheory.Gal.Cn, mem_contMaps, hd]`. Introduce `x`. Consider the cases of `n with`.
+Unfold both sides to obtain the same proposition, which implies itself. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => simp [ReciprocityTheory.Gal.Bn]`. Consider the case `succ n => simp only [ReciprocityTheory.Gal.Bn, Submodule.mem_map, ReciprocityTheory.Gal.Cn, mem_contMaps, hd]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem UpperTheory.nonempty_cohomology_restrictScalars_linearEquiv :
     ∀ (Q : Type) {A : Type} [CommRing Q] [CommRing A] [Algebra Q A] {G : Type} [Group G] [TopologicalSpace G] {V : Type} [AddCommGroup V] [Module A V] [Module Q V] [IsScalarTower Q A V] [TopologicalSpace V] [IsTopologicalAddGroup V] [ContinuousConstSMul A V] [ContinuousConstSMul Q V] (ρ : Representation A G V), Nonempty (↥(H0 (resCoef Q ρ)) ≃ₗ[Q] ↥(H0 ρ)) ∧ Nonempty (H1 (resCoef Q ρ) ≃ₗ[Q] H1 ρ) ∧ Nonempty (H2 (resCoef Q ρ) ≃ₗ[Q] H2 ρ) ∧ ∀ n, Nonempty (Hn (resCoef Q ρ) n ≃ₗ[Q] Hn ρ n) := by

@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasseNormTheo
 
 open UpperTheory.V.Z.Sym.Loc in
 /- English proof (translation)
-Unfold `hs`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hn`. Rewrite `h` using `[if_neg (fun ⟨a, b, e⟩ => hn ⟨a, b, e.symm⟩)]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at h`. Introduce and unpack `⟨a, b, e⟩`. Conclude with `if_pos ⟨a, b, e.symm⟩`.
+Evaluate the numerical expressions. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem hs_eq_one_iff {K : Type} [Field K] (d x : K) :
     hs d x = 1 ↔ ∃ a b : K, x = a ^ 2 - d * b ^ 2 := by
@@ -20,7 +20,7 @@ private theorem hs_eq_one_iff {K : Type} [Field K] (d x : K) :
     exact if_pos ⟨a, b, e.symm⟩
 
 /- English proof (translation)
-Introduce `F _ _ d x hd hx hr hf`. Rewrite using `[hs_eq_one_iff]`. Conclude with `GlobalTheory.QNorm.hasseNormSt F d x hd hx (fun σ => (hs_eq_one_iff _ _).1 (hr σ)) (fun v => (hs_eq_one_iff _ _).1 (hf v))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Glob.hsHasse :
     UpperTheory.V.Z.Sym.Glob.HsHasse := by

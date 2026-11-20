@@ -15,7 +15,7 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.FixedAlgebraic
 
 /- English proof (translation)
-Introduce `K x _ hx`. Take `⟨y, hy⟩` from `GlobalTheory.GaloisDescent.complex_mem_range_of_forall_algEquiv (K := K) x fun σ => hx σ.toRingEquiv fun y hy => σ.commutes ⟨y, hy⟩`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_ringEquiv_fixed :
     ∀ (K : Subfield ℂ) (x : ℂ), IsAlgebraic ℚ x →

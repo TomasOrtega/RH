@@ -19,16 +19,16 @@ namespace GlobalTheory.ThKContSmall
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.div' h'.1, fun x => by simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_self']⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHecke_div {χ χ' : Chr F E} (h : GlobalTheory.LFun.IsHecke F E χ) (h' : GlobalTheory.LFun.IsHecke F E χ') :
     GlobalTheory.LFun.IsHecke F E (χ / χ') :=
   ⟨h.1.div' h'.1, fun x => by simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_self']⟩
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Introduce `a`. Establish `e` using `h a`. Establish `e'` using `h' a`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, e, e']`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[pow_add]`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℂ m with hm | hm <;> rw [hm] <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem resEtaPow_div {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {K : Subgroup Rˣ}
     {χ χ' : Aˣ →* Circle} {n m k : ℕ} (h : ResEtaPow K χ n) (h' : ResEtaPow K χ' m) (hk : k = n + m) :
@@ -46,7 +46,7 @@ theorem resEtaPow_div {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {K : 
 variable {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.base, h.geo.hV, h.geo.hW, h.geo.hM, h.chars.heckeβ, isHecke_div h.chars.heckeβ h.chars.heckeα, h.chars.resβ, resEtaPow_div h.chars.resβ h.chars.resα rfl, h.weil⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPair_big (h : IsTriple B G X om om') :
     IsPair B G.M X.β (X.β / X.α) om (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) :=
@@ -54,7 +54,7 @@ theorem isPair_big (h : IsTriple B G X om om') :
     resEtaPow_div h.chars.resβ h.chars.resα rfl, h.weil⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.base, h.geo.hV', h.geo.hW, h.geo.hM', h.chars.heckeα, isHecke_div h.chars.heckeα h.chars.heckeβ, h.chars.resα, resEtaPow_div h.chars.resα h.chars.resβ (add_comm _ _), h.weil'⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPair_small (h : IsTriple B G X om om') :
     IsPair B G.M' X.α (X.α / X.β) om' G.q (a' - G.q) (a + a' - (G.p + G.q)) (G.p + G.q) :=
@@ -62,7 +62,7 @@ theorem isPair_small (h : IsTriple B G X om om') :
     resEtaPow_div h.chars.resα h.chars.resβ (add_comm _ _), h.weil'⟩
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, h1, h2, -, rfl⟩`. Establish `h3` using `(h2.and hM.std).mono fun w hw => hw.1.trans hw.2`. Conclude with `Submodule.subset_span ⟨f, _, ⟨isLocallyConstant_finprod_evalV φ h1 h3, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 h3⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem so_le_schA {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W} {ψ : AddChar (AF F) ℂ} (hM : M.IsGood ψ)
     {v : Pl F} (t : E →ₐ[F] Fv F v) : M.So ψ t ≤ schA F _ := by
@@ -73,9 +73,9 @@ theorem so_le_schA {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W
     GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 h3⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨rfl, A, hA⟩` from `h`. Set `A' : Matrix (Fin (r + s)) (Fin (r + s)) ℂ` to `A.submatrix id finSumFinEquiv.symm`. Establish `e : A'ᵀ * M * A'.map star = (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) _ ℂ).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Rewrite using `[← hA]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `h0`. Establish `e2` using `congrArg Matrix.det e`. Rewrite `e2` using `[Matrix.det_mul, Matrix.det_mul, h0, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_neg]`. Simplify using `at e2`. Conclude with `absurd e2.symm (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨rfl, A, hA⟩ := h
@@ -91,15 +91,11 @@ theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h 
   exact absurd e2.symm (by simp)
 
 /- English proof (translation)
-Substitute `hH` using the available equality. Use `letI : MeasurableSpace (HR (AF F) σ J) := borel _`. Use `haveI : BorelSpace (HR (AF F) σ J) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Take `⟨S, -, hcov, -, hvol, -⟩` from `GlobalTheory.SiegelSet.exists_cover hS hσ hJ`.
+Substitute using the available equality. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set Γ := (Matrix.GeneralLinearGroup.map (n := Fin n) (inclR (F := F) (E := E) (AF F))).range.subgroupOf (HR (AF F) σ J)`. Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))`. Use `haveI : Countable (GL (Fin n) E) := Units.val_injective.countable`. Use `haveI : Countable Γ := by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Countable (Matrix.GeneralLinearGroup.map (n` using `Fin n) (inclR (F := F) (E := E) (AF F))).range := (MonoidHom.rangeRestrict_surjective _).countable`. Conclude with `Function.Injective.countable (f := fun γ : Γ => (⟨γ.1.1, γ.2⟩ : (Matrix.GeneralLinearGroup.map (n := Fin n) (inclR (F := F) (E := E) (AF F))).range)) fun x y h => Subtype.ext (Subtype.ext (Subtype.mk.inj h))`. Use `haveI : MeasurableConstSMul Γ (HR (AF F) σ J) := ⟨fun γ => (continuous_mul_left γ.1).measurable⟩`. Use `haveI : SMulInvariantMeasure Γ (HR (AF F) σ J) μ := ⟨fun γ s _ => measure_preimage_mul μ γ.1 s⟩`. Use `lt_of_le_of_lt (GlobalTheory.measure_le_of_isFundamentalDomain_of_ae_covers hD (.of_forall fun g => ?_)) (hvol μ hμ)` and prove the remaining obligations.
-
-Take `⟨γ, ⟨δ, -, hδ⟩, s, hs, e⟩` from `hcov g`. Set `γ' : Γ` to `⟨γ, δ, hδ⟩`. Use `⟨γ'⁻¹, ?_⟩` and prove the remaining obligations. Establish `: γ'⁻¹ • g = s` using `inv_smul_eq_iff.2 e`. Rewrite using `[this]`.
-
-Conclude with `hs`.
+A detailed English derivation is pending.
 -/
 theorem measure_fundamental_domain_lt_top (hS : GlobalTheory.Published.SiegelSetUnitary) (hσ : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : IsHermND σ J) (H : Subgroup (GL (Fin n) (AE F E))) (hH : H = HR (AF F) σ J) (μ : @Measure H (borel H))
@@ -132,11 +128,9 @@ theorem measure_fundamental_domain_lt_top (hS : GlobalTheory.Published.SiegelSet
   rw [this]; exact hs
 
 /- English proof (translation)
-Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hB.cm`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hd : Y.J.det ≠ 0` using `fun h0 => det_ne_zero_of_hasSig (hY.sig w) (by`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero])`. Establish `hJ : IsHermND σ ((1 : E) • Y.J.map σ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[one_smul]`. Use `⟨fun i j => congrArg σ (hY.herm i j), ?_⟩` and prove the remaining obligations. Establish `e : (Y.J.map σ).det = σ Y.J.det` using `((σ : E →+* E).map_det _).symm`. Rewrite using `[e]`. Conclude with `(map_ne_zero σ).2 hd`.
-
-Conclude with `measure_fundamental_domain_lt_top hS hB.cm hJ _ (GlobalTheory.SiegelSet.ug_eq_hr hσ one_ne_zero) M.μ hM.haar M.dom hM.dom`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_dom_lt_top (hS : GlobalTheory.Published.SiegelSetUnitary) (hB : B.IsGood σ) {n d r s : ℕ} {Y : Spc F E n} {W : Spc F E d}
     (hY : Y.IsHerm σ B r s) {M : Model σ Y W} {ψ : AddChar (AF F) ℂ} (hM : M.IsGood ψ) : M.μ M.dom < ⊤ := by
@@ -153,21 +147,15 @@ theorem measure_dom_lt_top (hS : GlobalTheory.Published.SiegelSetUnitary) (hB : 
   exact measure_fundamental_domain_lt_top hS hB.cm hJ _ (GlobalTheory.SiegelSet.ug_eq_hr hσ one_ne_zero) M.μ hM.haar M.dom hM.dom
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT Φ' hΦ'`. Establish `hPair` using `isPair_small hT`. Establish `hSo : Φ' ∈ G.M'.So B.ψ B.τ₁` using `(Submodule.mem_inf.1 hΦ').2`. Establish `hS : Φ' ∈ schA F _` using `so_le_schA hT.geo.hM' _ hSo`. Establish `hB` using `(GlobalTheory.T.theta_basic_properties hP.base F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair).1 Φ' hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, fun γ hγ h => ?_⟩` and prove the remaining obligations. Take `⟨C, k, hC⟩` from `GlobalTheory.T.schwartz_orbit_decay hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair Φ' hSo 0 haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Establish `hv` using `measure_dom_lt_top hP.siegelSetUnitary hT.base hT.geo.hV' hT.geo.hM'`. Establish `hht : Continuous (fun h : UA σ G.W.J => (ht h : ℝ))` using `NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp continuous_subtype_val)`. Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : SecondCountableTopology (AE F E) := by`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Conclude with `e.secondCountableTopology`. Use `haveI hMat : SecondCountableTopology (Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin (a + a') → Fin (a + a') → AE F E))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : SecondCountableTopology (Matrix (Fin (a + a')) (Fin (a + a')) (AE F E))ᵐᵒᵖ := (MulOpposite.opHomeomorph (M := Matrix (Fin (a + a')) (Fin (a + a')) (AE F E))).symm.secondCountableTopology`. Use `haveI : SecondCountableTopology (GL (Fin (a + a')) (AE F E)) := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : SecondCountableTopology (UA σ G.W.J) := (Topology.IsEmbedding.subtypeVal (p := fun x : GL (Fin (a + a')) (AE F E) => x ∈ GlobalTheory.WeilM.UG (cA σ) (incM F G.W.J))).secondCountableTopology`. Use `haveI : FirstCountableTopology (UA σ G.W.J) := TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Rewrite using `[continuous_iff_continuousAt]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Introduce `h₀`. Establish `hev : ∀ᶠ h in 𝓝 h₀, (ht h : ℝ) < ht h₀ + 1` using `hht.continuousAt.eventually_lt continuousAt_const (lt_add_one _)`. Unfold `Model.I`. Use `continuousAt_of_dominated (bound := fun _ => max C 0 * ((ht h₀ : ℝ) + 1) ^ k) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun h => (hB.1.comp (continuous_id.prodMk continuous_const)).aestronglyMeasurable`.
-
-Use `filter_upwards [hev] with h hh`. Use `Eventually.of_forall fun g => ?_` and prove the remaining obligations. Establish `h1` using `hC g h`. Rewrite `h1` using `[pow_zero, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `integrableOn_const hv.ne`. Conclude with `Eventually.of_forall fun g => (hB.1.comp (continuous_const.prodMk continuous_id)).continuousAt`. Unfold `Model.I`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e` using `hB.2.1 1 (one_mem _) γ hγ g h`.
-
-Rewrite `e` using `[one_mul]`. Conclude with `e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contSmall : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

@@ -8,17 +8,17 @@ open scoped Matrix
 namespace GlobalTheory.CocWildTame
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ W B γ hγ z hz hcoc hw hγ0 s hs`. Establish `hwild : ∀ σ : G ℚ Ω, (∀ y : Ω, y ≠ 0 → B.valuation (σ y / y - 1) < 1) → σ ∈ Ine (F` using `ℚ) B := fun σ hσ => GlobalTheory.TameConjInv.wild_mem_Ine B hσ`. Establish `h1 : z 1 = 0` using `hw 1 (fun y hy => by simp [div_self hy])`. Establish `key : ∀ h ∈ Subgroup.closure (insert γ {σ : G ℚ Ω | ∀ y : Ω, y ≠ 0 → B.valuation (σ y / y - 1) < 1}), h ∈ Ine (F` using `ℚ) B ∧ z h = 0 := by`. Introduce `h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hh using Subgroup.closure_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | hx` into its components or cases. Conclude with `⟨hγ.1, hγ0⟩`. Conclude with `⟨hwild x hx, hw x hx⟩`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Consider the case `one => exact ⟨one_mem _, h1⟩`. Consider the case `mul x y _ _ ihx ihy`. Take `⟨hx, hzx⟩` from `ihx`. Take `⟨hy, hzy⟩` from `ihy`. Conclude with `⟨mul_mem hx hy, by rw [hcoc x hx y hy, hzx, hzy, Matrix.mulVec_zero, add_zero]⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `inv x _ ihx`. Take `⟨hx, hzx⟩` from `ihx`. Use `⟨inv_mem hx, ?_⟩` and prove the remaining obligations. Use `hcoc x⁻¹ (inv_mem hx) x hx` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, h1, hzx, Matrix.mulVec_zero, add_zero]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Establish `hclosed : IsClosed {t : G ℚ Ω | z t = 0}`. Establish `: {t : G ℚ Ω | z t = 0} = ⋂ i, (fun t => z t i) ⁻¹' {0}`. Use extensionality with `t`. Simplify using `[funext_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `isClosed_iInter fun i => (isClosed_singleton).preimage (hz i)`. Establish `hsub : ((Subgroup.closure (insert γ {σ : G ℚ Ω | ∀ y : Ω, y ≠ 0 → B.valuation (σ y / y - 1) < 1}) : Subgroup (G ℚ Ω)) : Set (G ℚ Ω)) ⊆ {t : G ℚ Ω | z t = 0}` using `fun h hh => (key h hh).2`. Conclude with `(closure_minimal hsub hclosed) (hγ.2 hs)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_on_Ine : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : R2 Ω l) (B : ValuationSubring Ω) (γ : G ℚ Ω), Formalism.BasicNotions.TameGenAt B γ → ∀ z : G ℚ Ω → Fin 2 → Qbar l, (∀ i, Continuous fun s => z s i) → (∀ s ∈ Ine (F := ℚ) B, ∀ t ∈ Ine (F := ℚ) B, z (s * t) = z s + mat W s *ᵥ z t) → (∀ σ : G ℚ Ω, (∀ y : Ω, y ≠ 0 → B.valuation (σ y / y - 1) < 1) → z σ = 0) → z γ = 0 → ∀ s ∈ Ine (F := ℚ) B, z s = 0 := by
   intro l _ Ω _ _ W B γ hγ z hz hcoc hw hγ0 s hs

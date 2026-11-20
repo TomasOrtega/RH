@@ -9,11 +9,11 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.TangentOrigin GlobalTheory.Toroid
 open scoped ComplexOrder
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hs`. Establish `h : f (genericPoint Y.X) ⤳ genericPoint B.X` using `hy ▸ (genericPoint_specializes y).map f.continuous`. Set `φ : B.Fn →+* Y.Fn` to `(B.X.presheaf.stalkSpecializes h ≫ f.stalkMap (genericPoint Y.X)).hom`. Establish `h₁ : genericPt Y ≫ f = spMap φ ≫ genericPt B`. Express the relevant statement in the definitionally equal form `Y.X.fromSpecStalk _ ≫ f = Spec.map (B.X.presheaf.stalkSpecializes h ≫ f.stalkMap (genericPoint Y.X)) ≫ B.X.fromSpecStalk _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk]`. Use `⟨φ, h₁, EigLoc.spMap_inj ?_⟩` and prove the remaining obligations. Establish `h1 : genericPt Y ≫ Y.str = spMap (algebraMap F Y.Fn)` using `(GlobalTheory.FlagBundle.ratOf Y).pt_s`. Establish `h2 : genericPt B ≫ B.str = spMap (algebraMap F B.Fn)` using `(GlobalTheory.FlagBundle.ratOf B).pt_s`. Establish `h3 : spMap (φ.comp (algebraMap F B.Fn)) = spMap φ ≫ spMap (algebraMap F B.Fn)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[h3, ← h1, ← h2, ← hf, ← Category.assoc, h₁, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_fnMap {F : Type} [Field F] {Y B : Var F} (f : Y.X ⟶ B.X) (hf : f ≫ B.str = Y.str)
     (hs : genericPoint B.X ∈ Set.range f) :
@@ -35,7 +35,7 @@ private theorem exists_fnMap {F : Type} [Field F] {Y B : Var F} (f : Y.X ⟶ B.X
   rw [h3, ← h1, ← h2, ← hf, ← Category.assoc, h₁, Category.assoc]
 
 /- English proof (translation)
-Take `⟨z, hz⟩ : ((O.s.U O.κ.σ₀).X k).dom.Nonempty` from `GlobalTheory.OrbitScalar.exists_mem_dom _`. Use `⟨⟨z, hz⟩, fun pt => ?_⟩` and prove the remaining obligations. Conclude with `(isPreconnected_range (O.Φ.C k).π.continuous).subset_connectedComponent ⟨y, rfl⟩ (O.Φ.label k ⟨z, hz⟩ pt)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem onComp_π {D : D7} (O : Setup D) (k : O.s.Comp) (y : (O.Φ.C k).Y.X) :
     OnComp O.s k ((O.Φ.C k).π y) := by
@@ -45,29 +45,27 @@ private theorem onComp_π {D : D7} (O : Setup D) (k : O.s.Comp) (y : (O.Φ.C k).
     (O.Φ.label k ⟨z, hz⟩ pt)
 
 /- English proof (translation)
-Introduce `D O c₀`. Take `⟨B, j, hB, hcov⟩` from `GlobalTheory.T.exists_varieties_components_smooth_genericFibre _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e O.s.geo O.s.T.smooth`. Set `η` to `genericPoint (O.Φ.C c₀).Y.X`. Take `⟨i, hi, -⟩` from `hcov ((O.Φ.C c₀).π η)`. Establish `hop : ∀ i', IsOpen (Set.range (j i'))` using `fun i' => haveI := (hB i').1 (j i').isOpenEmbedding.isOpen_range`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcl : IsClopen (Set.range (j i))`. Use `⟨⟨isOpen_iff_forall_mem_open.2 fun z hz => ?_⟩, hop i⟩` and prove the remaining obligations. Take `⟨i', h1, h2⟩` from `hcov z`. Use `⟨Set.range (j i'), fun w hw hw' => hz ?_, hop i', h1⟩` and prove the remaining obligations. Rewrite using `[(hcov w).unique hw' hw]` and apply the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hsub : Set.range (O.Φ.C c₀).π ⊆ Set.range (j i)` using `(isPreconnected_range (O.Φ.C c₀).π.continuous).subset_isClopen hcl ⟨_, ⟨η, rfl⟩, hi⟩`. Use `(hB i).1` as an intermediate fact. Set `f : (O.Φ.C c₀).Y.X ⟶ (B i).X` to `IsOpenImmersion.lift (j i) (O.Φ.C c₀).π hsub`. Establish `hf : f ≫ j i = (O.Φ.C c₀).π` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hstr : f ≫ (B i).str = (O.Φ.C c₀).Y.str`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← (hB i).2.2.1, ← Category.assoc, hf, (O.Φ.C c₀).π_str]`. Establish `hl : ∀ (K : Type) [Field K] [IsAlgClosed K] (χ : O.κ.c.F →+* K) (x : Sp K ⟶ (B i).X), (x ≫ j i) ≫ genStr O.s.T.Z = spMap χ → ∀ k : EigFrame O.s.T.Z χ ((x ≫ j i) ≫ genι O.s.T.Z), ∃! p : Sp K ⟶ (O.Φ.C c₀).Y.X, p ≫ f = x ∧ (O.Φ.C c₀).Carries p k`. Introduce `K _ _ χ x hx k`. Take `⟨⟨i', p⟩, ⟨hp1, hp2⟩, hu⟩` from `O.Φ.lifts K χ (x ≫ j i) hx k`. Simplify using `only at hp1 hp2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Set `o : Sp K` to `IsLocalRing.closedPoint K`. Choose the witnesses or unpack the hypotheses as in `rfl : i' = c₀ := by`. Establish `h1` using `onComp_π O i' (p o)`. Establish `h2` using `onComp_π O c₀ η`. Establish `h3 : (O.Φ.C i').π (p o) ∈ Set.range (j i)` using `⟨x o, by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, ← hp1, Scheme.Hom.comp_apply]⟩`. Establish `h4 : connectedComponent ((O.Φ.C c₀).π η) = connectedComponent ((O.Φ.C i').π (p o))` using `connectedComponent_eq ((isPreconnected_range (j i).continuous).subset_connectedComponent hi h3)`. Unfold `OnComp at h2`. Rewrite `h2` using `[h4]`. Conclude with `(PtComp.existsUnique_onComp O.s _).unique h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨p, ⟨(cancel_mono (j i)).1 (by rw [Category.assoc, hf, hp1]), hp2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `q ⟨h1, h2⟩`. Conclude with `eq_of_heq (Sigma.mk.inj (hu ⟨_, q⟩ ⟨by rw [← hf, ← Category.assoc, h1], h2⟩)).2`. Establish `hs : genericPoint (B i).X ∈ Set.range f`. Set `K` to `AlgebraicClosure (B i).Fn`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `x : Sp K ⟶ (B i).X` to `spMap (algebraMap (B i).Fn K) ≫ genericPt (B i)`. Set `χ : O.κ.c.F →+* K` to `(Spec.preimage ((x ≫ j i) ≫ genStr O.s.T.Z)).hom`. Establish `hχ : (x ≫ j i) ≫ genStr O.s.T.Z = spMap χ` using `(Spec.map_preimage _).symm`. Take `⟨k⟩` from `EigLoc.exists_eigFrame _ _ _ _ _ _ _ _ O.s.T.Z K χ _ hχ`. Take `⟨p, ⟨hp, -⟩, -⟩` from `hl K χ x hχ k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `o : Sp K` to `IsLocalRing.closedPoint K`. Use `⟨p o, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hp]`. Express the relevant statement in the definitionally equal form `(B i).X.fromSpecStalk _ (spMap (algebraMap (B i).Fn K) o) = _`. Rewrite using `[show spMap (algebraMap (B i).Fn K) o = IsLocalRing.closedPoint ((B i).X.presheaf.stalk (genericPoint (B i).X)) from Subsingleton.elim (α := PrimeSpectrum (B i).Fn) _ _]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Scheme.fromSpecStalk_closedPoint`. Take `⟨φ, hφ1, hφ2⟩` from `exists_fnMap f hstr hs`. Use `⟨B i, j i, f, φ, (hB i).2.2.1, ⟨hf, hstr, hφ1, ?_⟩, ?_, fun K _ _ χ x hx k => ?_⟩` and prove the remaining obligations. Rewrite using `[constF, constF, hφ2, RingHom.comp_assoc]`. Establish `h1` using `O.S.p_eq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `O.S.rank_eq`. Establish `h3 : O.S.Dw.q = O.N - O.j` using `by omega`. Establish `h4 : Module.finrank ℚ D.host.E / 2 = Fintype.card D.what₂.Tau`. Establish `h5 : D.R.f = 2 * D.R.ord` using `rfl`. Rewrite using `[D.host.finrank_cmField, D.what₂.card_Tau, h5]`.
-
-Use linear arithmetic over natural numbers and integers. Rewrite using `[(hB i).2.1, Datum.dim, GlobalTheory.FlagPoly.dimGr, h4, h1, h3, mul_assoc]`. Conclude with `hl K χ x hx k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.flag_polynomial_dimension :
     ∀ (D : D7) (O : Setup D) (c₀ : O.s.Comp), ∃ (B : Var D.what₂.LL) (ρB : B.X ⟶ gen O.s.T.Z) (f : (O.Φ.C c₀).Y.X ⟶ B.X) (φ : B.Fn →+* (O.Φ.C c₀).Y.Fn), ρB ≫ genStr O.s.T.Z ≫ spMap O.κ.e.toRingHom = B.str ∧ IsOver O.κ.e ρB (O.Φ.C c₀).π f φ ∧ B.dim = GlobalTheory.FlagPoly.dimGr D.what₂.Tau O.N O.j ∧ (∀ (K : Type) [Field K] [IsAlgClosed K] (χ : O.κ.c.F →+* K) (x : Sp K ⟶ B.X), x ≫ ρB ≫ genStr O.s.T.Z = spMap χ → ∀ k : EigFrame O.s.T.Z χ (x ≫ ρB ≫ genι O.s.T.Z), ∃! p : Sp K ⟶ (O.Φ.C c₀).Y.X, p ≫ f = x ∧ (O.Φ.C c₀).Carries p k) := by

@@ -11,7 +11,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.CompanionTheory.TorusAct
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono i, Category.assoc, h, IsMonHom.one_hom_assoc, IsMonHom.one_hom, IsMonHom.one_hom]`. Use `mul_hom := by`. Rewrite using `[← cancel_mono i, Category.assoc, h, IsMonHom.mul_hom_assoc, Category.assoc, IsMonHom.mul_hom, tensorHom_comp_tensorHom_assoc, ← h, ← tensorHom_comp_tensorHom_assoc, IsMonHom.mul_hom]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMonHom_of_comp_mono {C : Type*} [Category C] [CartesianMonoidalCategory C] {T G : C}
     [MonObj T] [MonObj G] (i : T ⟶ G) [IsMonHom i] [Mono i] (f : G ⟶ G) [IsMonHom f] (u : T ⟶ T)
@@ -23,7 +23,7 @@ theorem isMonHom_of_comp_mono {C : Type*} [Category C] [CartesianMonoidalCategor
       tensorHom_comp_tensorHom_assoc, ← h, ← tensorHom_comp_tensorHom_assoc, IsMonHom.mul_hom]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.SplitTorus.eq_torusMap_iff _ _).2 (GlobalTheory.Diag.diagMap_chi S u)`.
+A detailed English derivation is pending.
 -/
 theorem diagMap_eq_torusMap {S : Scheme.{0}} {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (u : Y →+ X) :
     GlobalTheory.Diag.diagMap S u = GlobalTheory.SplitTorus.torusMap S u :=
@@ -32,7 +32,7 @@ theorem diagMap_eq_torusMap {S : Scheme.{0}} {X Y : Type} [AddCommGroup X] [AddC
 variable {K : Type} [Field K] {G : Over (Sp K)} [GrpObj G]
 
 /- English proof (translation)
-Use `letI := τ.addCommGroup`. Use `letI := τ.grpB`. Conclude with `⟨fun g h e => τ.isKernel.hom_ext e (toUnit_unique _ _)⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem mono_i (τ : TorusExtension G) : letI := τ.addCommGroup; letI := τ.grpB; Mono τ.i := by
   letI := τ.addCommGroup
@@ -40,11 +40,9 @@ theorem mono_i (τ : TorusExtension G) : letI := τ.addCommGroup; letI := τ.grp
   exact ⟨fun g h e => τ.isKernel.hom_ext e (toUnit_unique _ _)⟩
 
 /- English proof (translation)
-Use `letI := τ.addCommGroup`. Use `letI := τ.grpB`. Introduce `b hb hq`. Use `haveI := mono_i τ`. Use `haveI := τ.i_hom`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `w : (τ.i ≫ f) ≫ τ.q = toUnit _ ≫ η`. Rewrite using `[Category.assoc, hq, ← Category.assoc, τ.isKernel.w, Category.assoc, IsMonHom.one_hom]`. Set `u` to `τ.isKernel.lift (τ.i ≫ f) (toUnit _) w`. Establish `hu : u ≫ τ.i = τ.i ≫ f` using `τ.isKernel.lift_fst _ _ _`. Use `haveI : IsMonHom u := isMonHom_of_comp_mono τ.i f u hu`.
-
-Take `⟨φ, hφ⟩` from `GlobalTheory.SplitTorus.exists_eq_torusMap u`. Conclude with `⟨φ, hφ ▸ hu⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_restrict (τ : TorusExtension G) (f : G ⟶ G) [IsMonHom f] :
     letI := τ.addCommGroup; letI := τ.grpB; ∀ (b : τ.B ⟶ τ.B), IsMonHom b → f ≫ τ.q = τ.q ≫ b →
@@ -63,15 +61,13 @@ theorem exists_restrict (τ : TorusExtension G) (f : G ⟶ G) [IsMonHom f] :
   exact ⟨φ, hφ ▸ hu⟩
 
 /- English proof (translation)
-Introduce `K _ G _ τ O _ act`. Use `letI := τ.addCommGroup`. Use `letI := τ.grpB`. Introduce `hb`. Use `haveI := mono_i τ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI := τ.i_hom`. Establish `ex : ∀ a, ∃ φ : τ.X →+ τ.X, GlobalTheory.SplitTorus.torusMap (Sp K) φ ≫ τ.i = τ.i ≫ act.act a` using `fun a => by`. Take `⟨b, h1, h2⟩` from `hb a`. Use `haveI := act.hom a`. Conclude with `exists_restrict τ _ b h1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose φ hφ using ex`. Establish `inj : ∀ {α β : τ.X →+ τ.X}, GlobalTheory.SplitTorus.torusMap (Sp K) α ≫ τ.i = GlobalTheory.SplitTorus.torusMap (Sp K) β ≫ τ.i → α = β` using `fun h => GlobalTheory.SplitTorus.torusMap_injective ((cancel_mono _).1 h)`. Establish `h1 : φ 1 = AddMonoidHom.id τ.X` using `inj (by`. Rewrite using `[hφ, act.one, GlobalTheory.SplitTorus.torusMap_id, Category.comp_id, Category.id_comp])`. Establish `hm : ∀ a b, φ (a * b) = (φ a).comp (φ b)` using `fun a b => inj (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Rewrite using `[hφ, act.mul, GlobalTheory.SplitTorus.torusMap_comp, Category.assoc, hφ, ← Category.assoc _ τ.i, hφ, Category.assoc])`. Establish `ha : ∀ a b, φ (a + b) = φ a + φ b` using `fun a b => inj (by`. Rewrite using `[hφ, act.add, GlobalTheory.SplitTorus.torusMap_add, MonObj.mul_comp, hφ, hφ, MonObj.comp_mul])`. Set `ρ : O →+* AddMonoid.End τ.X` to `RingHom.mk' ⟨⟨φ, h1⟩, hm⟩ ha`. Use `letI m : Module O τ.X := Module.compHom τ.X ρ`.
-
-Use `⟨m, fun a => ?_⟩` and prove the remaining obligations. Establish `e : DistribSMul.toAddMonoidHom τ.X a = φ a` using `rfl`. Rewrite using `[GlobalTheory.Diag.diagAct_act, e, diagMap_eq_torusMap, hφ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_module_diagAct : ∀ (K : Type) [Field K] (G : Over (Sp K)) [GrpObj G] (τ : TorusExtension G)
     (O : Type) [CommRing O] (act : OAct O G), letI := τ.addCommGroup; letI := τ.grpB;

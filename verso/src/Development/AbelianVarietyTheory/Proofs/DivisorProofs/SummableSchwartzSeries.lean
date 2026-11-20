@@ -8,11 +8,11 @@ namespace GlobalTheory
 namespace SchwartzSum
 
 /- English proof (translation)
-Introduce `V _ _ _ ι u hu`. Establish `hS : Summable u`. Rewrite using `[summable_iff_vanishing]`. Introduce `e he`. Take `⟨⟨S, r⟩, hr, hsub⟩` from `(schwartz_withSeminorms ℂ V ℂ).hasBasis_zero_ball.mem_iff.1 he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only at hr hsub`. Establish `hg : Summable (fun i => ∑ kn ∈ S, schwartzSeminormFamily ℂ V ℂ kn (u i))` using `summable_sum fun kn _ => hu kn.1 kn.2`. Take `⟨s, hs⟩` from `(summable_iff_vanishing_norm.1 hg) r hr`. Use `⟨s, fun t ht => hsub ?_⟩` and prove the remaining obligations. Rewrite using `[Seminorm.mem_ball_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hs t ht`. Combine the equalities or inequalities in the displayed calculation. Use `⟨∑' i, u i, fun x => ?_, fun T => hS.hasSum.mapL T⟩` and prove the remaining obligations. Establish `h` using `hS.hasSum.mapL ((BoundedContinuousFunction.evalCLM ℂ x).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ V ℂ))`. Simplify using `using h`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasSum_of_summable_seminorms :
     ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {ι : Type}

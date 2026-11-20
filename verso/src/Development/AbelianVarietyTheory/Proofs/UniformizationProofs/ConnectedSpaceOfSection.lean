@@ -13,9 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupConn
 
 /- English proof (translation)
-Establish `hsec : ∀ y : S, f (s y) = y` using `fun y => by`. Simplify using `using congrArg (fun g : S ⟶ S => g y) hs`. Take `⟨y₀⟩` from `(inferInstance : Nonempty S)`. Use `connectedSpace_iff_connectedComponent.mpr ⟨s y₀, Set.eq_univ_iff_forall.mpr fun x => ?_⟩` and prove the remaining obligations. Establish `hbase : s (f x) ∈ connectedComponent (s y₀)` using `(isPreconnected_range s.continuous).subset_connectedComponent ⟨y₀, rfl⟩ ⟨f x, rfl⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfib : x ∈ connectedComponent (s (f x))` using `(f.isConnected_preimage_singleton (f x)).isPreconnected.subset_connectedComponent (show f (s (f x)) = f x from hsec (f x)) rfl`. Rewrite using `[connectedComponent_eq hbase]`. Conclude with `hfib`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem connectedSpace_of_section {X S : Scheme.{0}} (f : X ⟶ S) [GeometricallyConnected f]
     [ConnectedSpace S] (s : S ⟶ X) (hs : s ≫ f = 𝟙 S) : ConnectedSpace X := by
@@ -33,7 +33,7 @@ theorem connectedSpace_of_section {X S : Scheme.{0}} (f : X ⟶ S) [Geometricall
   exact hfib
 
 /- English proof (translation)
-Establish `: GeometricallyConnected (snd G Y).left` using `show GeometricallyConnected (pullback.snd G.hom Y.hom) from inferInstance`. Establish `hsec : (lift (toUnit Y ≫ η[G]) (𝟙 Y)).left ≫ (snd G Y).left = 𝟙 Y.left`. Rewrite using `[← Over.comp_left, lift_snd, Over.id_left]`. Conclude with `connectedSpace_of_section (snd G Y).left _ hsec`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem connectedSpace_tensor {S : Scheme.{0}} (G : Over S) [GrpObj G] [GeometricallyConnected G.hom]
     (Y : Over S) [ConnectedSpace Y.left] : ConnectedSpace (G ⊗ Y).left := by
@@ -45,7 +45,7 @@ theorem connectedSpace_tensor {S : Scheme.{0}} (G : Over S) [GrpObj G] [Geometri
   exact connectedSpace_of_section (snd G Y).left _ hsec
 
 /- English proof (translation)
-Introduce `S _ G _ _ _`. Use `⟨connectedSpace_of_section (S := S) (X := G.left) G.hom η[G].left (Over.w _), fun X _ _ Y _ => ⟨?_, connectedSpace_tensor G Y⟩⟩` and prove the remaining obligations. Establish `: UniqueSums X` using `UniqueSums.of_injective_addHom (Module.Free.chooseBasis ℤ X).repr.toAddEquiv.toAddHom (Module.Free.chooseBasis ℤ X).repr.injective inferInstance`. Conclude with `connectedSpace_tensor (splitTorus S X) Y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem connectedSpace_group : ∀ (S : Scheme.{0}) [ConnectedSpace S] (G : Over S) [GrpObj G] [Smooth G.hom] [GeometricallyConnected G.hom], ConnectedSpace G.left ∧ ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] (Y : Over S), ConnectedSpace Y.left → ConnectedSpace (splitTorus S X ⊗ Y).left ∧ ConnectedSpace (G ⊗ Y).left := by
   intro S _ G _ _ _

@@ -14,15 +14,15 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   [T2Space G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Take `⟨V, hVc, hV1⟩` from `exists_compact_mem_nhds (1 : G)`. Use `set E : Set G := V * (K : Set G) with hE`. Establish `hEc : IsCompact E` using `hVc.mul hK`. Establish `hVE : V ⊆ E` using `fun v hv => ⟨v, hv, 1, K.one_mem, mul_one v⟩`. Establish `hEn : E ∈ nhds (1 : G)` using `Filter.mem_of_superset hV1 hVE`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < μ E` using `Measure.measure_pos_of_mem_nhds μ hEn`. Establish `hfin : μ E ≠ ⊤` using `hEc.measure_lt_top.ne`. Establish `hpre : (fun x => x * k) ⁻¹' E = E`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, hE, Set.mem_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, c, hc, hvc⟩`. Use `⟨v, hv, c * k⁻¹, K.mul_mem hc (K.inv_mem hk), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, hvc, mul_inv_cancel_right]`. Introduce and unpack `⟨v, hv, c, hc, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨v, hv, c * k, K.mul_mem hc hk, (mul_assoc _ _ _).symm⟩`. Establish `h` using `Measure.map_right_mul_eq_modularCharacterFun_smul μ k`. Establish `h2` using `congrArg (fun ν : Measure G => ν E) h`. Rewrite `h2` using `[Measure.map_apply (measurable_mul_const k) hEc.isClosed.measurableSet, hpre, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Establish `h3 : ((Measure.modularCharacterFun k : ℝ≥0) : ℝ≥0∞) * μ E = 1 * μ E`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul]`. Conclude with `h2.symm`. Establish `h4` using `(ENNReal.mul_left_inj hpos.ne' hfin).1 h3`. Conclude with `h4` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma modChar_eq_one_of_compact (μ : Measure G) [μ.IsHaarMeasure] [μ.InnerRegular]
     (K : Subgroup G) (hK : IsCompact (K : Set G)) (k : G) (hk : k ∈ K) :
@@ -53,13 +53,13 @@ lemma modChar_eq_one_of_compact (μ : Measure G) [μ.IsHaarMeasure] [μ.InnerReg
   exact_mod_cast h4
 
 /- English proof (translation)
-Establish `hR : μ.IsMulRightInvariant` using `⟨fun g => by`. Rewrite using `[Measure.map_right_mul_eq_modularCharacterFun_smul μ g]`. Establish `: Measure.modularCharacterFun g = 1` using `h g`. Rewrite using `[this, one_smul]⟩`. Use `⟨hR, ⟨?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `c : ℝ≥0∞` to `Measure.haarScalarFactor μ.inv μ`. Establish `hc : μ.inv = c • μ` using `Measure.isMulLeftInvariant_eq_smul_of_innerRegular μ.inv μ`. Establish `h1 : Measure.map Inv.inv (Measure.map Inv.inv μ) = c ^ 2 • μ`. Rewrite using `[← Measure.inv_def μ, hc, Measure.map_smul, ← Measure.inv_def μ, hc, smul_smul, pow_two]`. Establish `μeq : μ = c ^ 2 • μ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Measure.map_map continuous_inv.measurable continuous_inv.measurable]`. Simplify `h1` using `only [inv_involutive, Function.Involutive.comp_self, Measure.map_id]`. Establish `K : TopologicalSpace.PositiveCompacts G` using `Classical.arbitrary _`. Establish `h2 : c ^ 2 * μ K = 1 ^ 2 * μ K` using `by conv_rhs => rw [μeq]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : c ^ 2 = 1 ^ 2` using `(ENNReal.mul_left_inj (Measure.measure_pos_of_nonempty_interior _ K.interior_nonempty).ne' K.isCompact.measure_lt_top.ne).1 h2`. Establish `h4 : c = 1` using `(ENNReal.pow_right_strictMono two_ne_zero).injective h3`. Rewrite using `[hc, h4, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma unimod_of_modChar (μ : Measure G) [μ.IsHaarMeasure] [μ.InnerRegular]
     (h : ∀ g : G, Measure.modularCharacter g = 1) :
@@ -102,7 +102,7 @@ Both sides reduce to the same expression.
 lemma toM_mkU (g : Matrix (Fin n) (Fin n) ℂ) (hg : inUJ ε g) : toM (mkU ε g hg) = g := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext h)`.
+A detailed English derivation is pending.
 -/
 lemma ext_toM {a b : UJ ε} (h : toM a = toM b) : a = b := Subtype.ext (Units.ext h)
 
@@ -112,14 +112,14 @@ Both sides reduce to the same expression.
 lemma toM_mul (a b : UJ ε) : toM (a * b) = toM a * toM b := rfl
 
 /- English proof (translation)
-Use `show (((a : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = _`. Conclude with `Units.inv_eq_of_mul_eq_one_left (coeMatrix_left_inv ε _ a.2)`.
+A detailed English derivation is pending.
 -/
 lemma toM_inv (a : UJ ε) : toM a⁻¹ = Jm ε * (toM a)ᴴ * Jm ε := by
   show (((a : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = _
   exact Units.inv_eq_of_mul_eq_one_left (coeMatrix_left_inv ε _ a.2)
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : ε a = true <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma Jm_mul_self_eq_one' : Jm ε * Jm ε = 1 := by
   unfold Jm
@@ -129,7 +129,7 @@ private lemma Jm_mul_self_eq_one' : Jm ε * Jm ε = 1 := by
   by_cases h : ε a = true <;> simp [h]
 
 /- English proof (translation)
-Unfold `inUJ Jm`. Rewrite using `[diagonal_conjTranspose, diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : ε a = true <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma inUJ_J : inUJ ε (Jm ε) := by
   unfold inUJ Jm
@@ -139,7 +139,7 @@ lemma inUJ_J : inUJ ε (Jm ε) := by
   by_cases h : ε a = true <;> simp [h]
 
 /- English proof (translation)
-Establish `h1 : g * (Jm ε * gᴴ * Jm ε) = 1` using `mul_eq_one_comm.mp (coeMatrix_left_inv ε g hg)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma inUJ_mul_J_conj {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : g * Jm ε * gᴴ = Jm ε := by
   have h1 : g * (Jm ε * gᴴ * Jm ε) = 1 := mul_eq_one_comm.mp (coeMatrix_left_inv ε g hg)
@@ -148,13 +148,11 @@ lemma inUJ_mul_J_conj {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : g * Jm
     _ = Jm ε := by rw [h1, Matrix.one_mul]
 
 /- English proof (translation)
-Use `set j := mkU ε (Jm ε) (inUJ_J ε) with hj`. Establish `hjj : j * j = 1` using `ext_toM ε (by show Jm ε * Jm ε = 1`. Conclude with `Jm_mul_self ε)`. Establish `hinv : h⁻¹ = j * h * j` using `ext_toM ε (by`. Rewrite using `[toM_inv, hh]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `rfl)`. Use `set D : UJ ε →* ℝ≥0 := Measure.modularCharacter with hD`. Establish `e1 : D j * D j = 1` using `by rw [← map_mul, hjj, map_one]`. Establish `e0 : D h * D h⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Rewrite `e0` using `[hinv, map_mul, map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e2 : D h * D h = 1`. Rewrite using `[← e0, show D h * (D j * D h * D j) = D h * D h * (D j * D j) by ring, e1, mul_one]`. Establish `e3 : ((D h : ℝ)) * (D h : ℝ) = 1` using `by exact_mod_cast e2`. Break down `mul_self_eq_one_iff.mp e3 with e4 | e4` into its components or cases. Conclude with `e4` after adjusting the coercions.
-
-Use `(D h).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma modChar_herm (h : UJ ε) (hh : (toM h)ᴴ = toM h) : Measure.modularCharacter h = 1 := by
   set j := mkU ε (Jm ε) (inUJ_J ε) with hj
@@ -177,15 +175,15 @@ lemma modChar_herm (h : UJ ε) (hh : (toM h)ᴴ = toM h) : Measure.modularCharac
     linarith
 
 /- English proof (translation)
-Unfold `Kset`. Establish `hK : IsCompact (Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => Metric.closedBall (0 : ℂ) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`. Use `hK.of_isClosed_subset ?_ ?_` and prove the remaining obligations. Use `IsClosed.inter (s₁ := {g : Matrix (Fin n) (Fin n) ℂ | g ∈ unitaryGroup (Fin n) ℂ}) (s₂ := {g : Matrix (Fin n) (Fin n) ℂ | g * Jm ε = Jm ε * g}) ?_ ?_` and prove the remaining obligations. Establish `e : {g : Matrix (Fin n) (Fin n) ℂ | g ∈ unitaryGroup (Fin n) ℂ} = {g | g * star g = 1}` using `Set.ext fun g => mem_unitaryGroup_iff`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `isClosed_eq (continuous_id.matrix_mul continuous_id.matrix_conjTranspose) continuous_const`. Conclude with `isClosed_eq (continuous_id.matrix_mul continuous_const) (continuous_const.matrix_mul continuous_id)`. Introduce and unpack `(g : Matrix (Fin n) (Fin n) ℂ) ⟨hg, -⟩`. Use `Set.mem_univ_pi.mpr fun i => Set.mem_univ_pi.mpr fun j => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Establish `hu : g * gᴴ = 1` using `mem_unitaryGroup_iff.mp hg`. Establish `h` using `congrFun (congrFun hu i) i`. Rewrite `h` using `[Matrix.mul_apply]`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.one_apply_eq] at h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∑ k, ‖g i k‖ ^ 2 = 1`. Establish `h4 : ∑ k, g i k * star (g i k) = ∑ k, ((‖g i k‖ ^ 2 : ℝ) : ℂ)`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite `h` using `[h4, ← Complex.ofReal_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `h` after adjusting the coercions. Establish `h3 : ‖g i j‖ ^ 2 ≤ 1` using `h2 ▸ Finset.single_le_sum (fun k _ => sq_nonneg ‖g i k‖) (Finset.mem_univ j)`. Use polynomial arithmetic with `[norm_nonneg (g i j)]`.
+A detailed English derivation is pending.
 -/
 lemma isCompact_Kset : IsCompact (Kset ε) := by
   unfold Kset
@@ -216,33 +214,31 @@ lemma isCompact_Kset : IsCompact (Kset ε) := by
     nlinarith [norm_nonneg (g i j)]
 
 /- English proof (translation)
-The claim follows from `(isClosedEmbeddingMatrix n ε).1.isCompact_preimage (isCompact_Kset ε)`.
+A detailed English derivation is pending.
 -/
 lemma isCompact_KG : IsCompact ((KG ε : Set (UJ ε))) :=
   (isClosedEmbeddingMatrix n ε).1.isCompact_preimage (isCompact_Kset ε)
 
 /- English proof (translation)
-Use `set G := toM g with hG`. Use `set P := Gᴴ * G with hPdef`. Establish `hP : 0 ≤ P` using `(posSemidef_conjTranspose_mul_self G).nonneg`. Use `set s := CFC.sqrt P with hsdef`. Establish `hs0 : 0 ≤ s` using `CFC.sqrt_nonneg P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hss : s * s = P` using `CFC.sqrt_mul_sqrt_self P hP`. Establish `hsH : sᴴ = s` using `hs0.posSemidef.isHermitian.eq`. Establish `hJ` using `Jm_mul_self ε`. Establish `hJH` using `Jm_conjTranspose ε`. Establish `hPJP : P * Jm ε * P = Jm ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `inUJ_mul_J_conj ε g.2` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hPi : P⁻¹ = Jm ε * P * Jm ε`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set w := Jm ε * s * Jm ε with hw`. Establish `hw0 : 0 ≤ w`. Use `hs0.posSemidef.conjTranspose_mul_mul_same (Jm ε)` as an intermediate fact. Rewrite `this` using `[hJH]`. Conclude with `this.nonneg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hJPJ0 : 0 ≤ Jm ε * P * Jm ε`. Use `hP.posSemidef.conjTranspose_mul_mul_same (Jm ε)` as an intermediate fact. Rewrite `this` using `[hJH]`. Conclude with `this.nonneg`. Establish `hww : w * w = Jm ε * P * Jm ε`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hsq : CFC.sqrt (Jm ε * P * Jm ε) = w` using `(CFC.sqrt_eq_iff _ _ hJPJ0 hw0).2 hww`. Establish `hsinv : s⁻¹ = w`. Rewrite using `[hsdef, hP.posSemidef.inv_sqrt, hPi, hsq]`. Establish `hdetP : IsUnit P.det` using `Matrix.isUnit_det_of_right_inverse (B := Jm ε * P * Jm ε) (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hdets : IsUnit s.det`. Rewrite `hdetP` using `[← hss, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_left hdetP`. Establish `hsw : s * w = 1` using `by rw [← hsinv]; exact Matrix.mul_nonsing_inv s hdets`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsJs : s * Jm ε * s = Jm ε`. Combine the equalities or inequalities in the displayed calculation. Establish `hws : w * s = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hsU : inUJ ε s` using `by unfold inUJ; rw [hsH]; exact hsJs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨mkU ε s hsU, hsH, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_KG]`. Use `set M := toM (g * (mkU ε s hsU)⁻¹) with hM`. Establish `hMw : M = G * w`. Rewrite using `[hM, toM_mul, toM_inv, toM_mkU, hsH]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hMU : Mᴴ * M = 1`. Establish `hwH : wᴴ = w` using `hw0.posSemidef.isHermitian.eq`. Rewrite using `[hMw, Matrix.conjTranspose_mul, hwH]`. Combine the equalities or inequalities in the displayed calculation. Establish `hMJ : Mᴴ * Jm ε * M = Jm ε` using `(g * (mkU ε s hsU)⁻¹).2`.
-
-Use `⟨Matrix.mem_unitaryGroup_iff'.mpr (by rw [Matrix.star_eq_conjTranspose]; exact hMU), ?_⟩` and prove the remaining obligations. Establish `hMM : M * Mᴴ = 1` using `mul_eq_one_comm.mp hMU`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 lemma polar (g : UJ ε) : ∃ s : UJ ε, (toM s)ᴴ = toM s ∧ g * s⁻¹ ∈ KG ε := by
   set G := toM g with hG
@@ -310,7 +306,7 @@ lemma polar (g : UJ ε) : ∃ s : UJ ε, (toM s)ᴴ = toM s ∧ g * s⁻¹ ∈ K
     _ = Jm ε * M := by rw [hMM, Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨s, hs, hk⟩` from `polar ε g`. Establish `h1` using `modChar_eq_one_of_compact (muG ε) (KG ε) (isCompact_KG ε) _ hk`. Establish `h2` using `modChar_herm ε s hs`. Establish `e : g = (g * s⁻¹) * s` using `by group`. Rewrite using `[e, map_mul, h1, h2, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem modChar_UJ [T2Space (UJ ε)] (g : UJ ε) : Measure.modularCharacter g = 1 := by
   obtain ⟨s, hs, hk⟩ := polar ε g
@@ -322,7 +318,7 @@ theorem modChar_UJ [T2Space (UJ ε)] (g : UJ ε) : Measure.modularCharacter g = 
 end Matrices
 
 /- English proof (translation)
-Unfold `StUnimod`. Introduce `n ε`. Conclude with `unimod_of_modChar (muG ε) (fun g => modChar_UJ ε g)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stUnimod : StUnimod := by
   unfold StUnimod

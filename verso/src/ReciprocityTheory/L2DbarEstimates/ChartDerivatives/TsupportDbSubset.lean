@@ -8,35 +8,35 @@ open scoped ContDiff ENNReal
 noncomputable section
 
 /- English proof (translation)
-Conclude with `fun _ _ => contDiffOn_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Smooth.const {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (c : ℂ) :
     Smooth n z (fun _ => c) := by
   exact fun _ _ => contDiffOn_const
 
 /- English proof (translation)
-Conclude with `fun e he => (hf e he).add (hg e he)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Smooth.add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℂ) (hf : Smooth n z f) (hg : Smooth n z g) :
     Smooth n z (fun x => f x + g x) := by
   exact fun e he => (hf e he).add (hg e he)
 
 /- English proof (translation)
-Conclude with `fun e he => (hf e he).sub (hg e he)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Smooth.sub {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℂ) (hf : Smooth n z f) (hg : Smooth n z g) :
     Smooth n z (fun x => f x - g x) := by
   exact fun e he => (hf e he).sub (hg e he)
 
 /- English proof (translation)
-Conclude with `fun e he => (hf e he).mul (hg e he)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Smooth.mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℂ) (hf : Smooth n z f) (hg : Smooth n z g) :
     Smooth n z (fun x => f x * g x) := by
   exact fun e he => (hf e he).mul (hg e he)
 
 /- English proof (translation)
-Introduce `e he`. Establish `h1` using `Complex.conjCLE.contDiff.comp_contDiffOn (hf e he)`. Use `h1.congr (fun w _ => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Smooth.conj {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ) (hf : Smooth n z f) :
     Smooth n z (fun x => (starRingEnd ℂ) (f x)) := by
@@ -46,7 +46,7 @@ theorem Smooth.conj {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (
   simp
 
 /- English proof (translation)
-Introduce `e he`. Conclude with `Complex.contDiff_exp.comp_contDiffOn (hf e he)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Smooth.cexp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ) (hf : Smooth n z f) :
     Smooth n z (fun x => Complex.exp (f x)) := by
@@ -54,7 +54,7 @@ theorem Smooth.cexp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (
   exact Complex.contDiff_exp.comp_contDiffOn (hf e he)
 
 /- English proof (translation)
-Introduce `e he`. Establish `h1` using `(Complex.ofRealCLM.comp Complex.reCLM).contDiff.comp_contDiffOn (hf e he)`. Use `h1.congr (fun w _ => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Smooth.re {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ) (hf : Smooth n z f) :
     SmoothR n z (fun x => (f x).re) := by
@@ -64,7 +64,7 @@ theorem Smooth.re {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f 
   simp
 
 /- English proof (translation)
-Introduce `e he`. Establish `h1` using `(Smooth.mul n z f _ hf (Smooth.conj n z f hf)) e he`. Use `h1.congr (fun w _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Smooth.normSq {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ) (hf : Smooth n z f) :
     SmoothR n z (fun x => ‖f x‖ ^ 2) := by
@@ -74,7 +74,7 @@ theorem Smooth.normSq {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   simp only [Function.comp_apply, Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Introduce `e he`. Establish `h1` using `Complex.reCLM.contDiff.comp_contDiffOn (hf e he)`. Establish `h2` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (hk.comp_contDiffOn h1)`. Use `h2.congr (fun w _ => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem SmoothR.comp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℝ → ℝ) (hk : ContDiff ℝ ∞ k) (f : M → ℝ) (hf : SmoothR n z f) :
     SmoothR n z (fun x => k (f x)) := by
@@ -85,7 +85,7 @@ theorem SmoothR.comp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) 
   simp
 
 /- English proof (translation)
-Establish `h1` using `Smooth.add n z _ _ hf hg`. Unfold `SmoothR`. Simplify using `using h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem SmoothR.add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℝ) (hf : SmoothR n z f) (hg : SmoothR n z g) :
     SmoothR n z (fun x => f x + g x) := by
@@ -94,7 +94,7 @@ theorem SmoothR.add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (
   simpa using h1
 
 /- English proof (translation)
-Establish `h1` using `Smooth.mul n z _ _ hf hg`. Unfold `SmoothR`. Simplify using `using h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem SmoothR.mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℝ) (hf : SmoothR n z f) (hg : SmoothR n z g) :
     SmoothR n z (fun x => f x * g x) := by
@@ -103,63 +103,63 @@ theorem SmoothR.mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (
   simpa using h1
 
 /- English proof (translation)
-Conclude with `fun _ _ => differentiableOn_const _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Holo.const {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (c : ℂ) :
     Holo n z (fun _ => c) := by
   exact fun _ _ => differentiableOn_const _
 
 /- English proof (translation)
-Conclude with `fun e he => (hf e he).add (hg e he)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Holo.add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℂ) (hf : Holo n z f) (hg : Holo n z g) :
     Holo n z (fun x => f x + g x) := by
   exact fun e he => (hf e he).add (hg e he)
 
 /- English proof (translation)
-Conclude with `fun e he => (hf e he).sub (hg e he)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Holo.sub {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℂ) (hf : Holo n z f) (hg : Holo n z g) :
     Holo n z (fun x => f x - g x) := by
   exact fun e he => (hf e he).sub (hg e he)
 
 /- English proof (translation)
-Conclude with `fun e he => (hf e he).mul (hg e he)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Holo.mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℂ) (hf : Holo n z f) (hg : Holo n z g) :
     Holo n z (fun x => f x * g x) := by
   exact fun e he => (hf e he).mul (hg e he)
 
 /- English proof (translation)
-Conclude with `fun _ _ => contDiffOn_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ck.const {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (c : ℂ) :
     Ck n z k (fun _ => c) := by
   exact fun _ _ => contDiffOn_const
 
 /- English proof (translation)
-Conclude with `fun e he => (hf e he).add (hg e he)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ck.add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (f g : M → ℂ) (hf : Ck n z k f) (hg : Ck n z k g) :
     Ck n z k (fun x => f x + g x) := by
   exact fun e he => (hf e he).add (hg e he)
 
 /- English proof (translation)
-Conclude with `fun e he => (hf e he).sub (hg e he)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ck.sub {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (f g : M → ℂ) (hf : Ck n z k f) (hg : Ck n z k g) :
     Ck n z k (fun x => f x - g x) := by
   exact fun e he => (hf e he).sub (hg e he)
 
 /- English proof (translation)
-Conclude with `fun e he => (hf e he).mul (hg e he)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ck.mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (f g : M → ℂ) (hf : Ck n z k f) (hg : Ck n z k g) :
     Ck n z k (fun x => f x * g x) := by
   exact fun e he => (hf e he).mul (hg e he)
 
 /- English proof (translation)
-Introduce `e he`. Establish `h1` using `Complex.conjCLE.contDiff.comp_contDiffOn (hf e he)`. Use `h1.congr (fun w _ => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Ck.conj {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (f : M → ℂ) (hf : Ck n z k f) :
     Ck n z k (fun x => (starRingEnd ℂ) (f x)) := by
@@ -169,7 +169,7 @@ theorem Ck.conj {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : 
   simp
 
 /- English proof (translation)
-Introduce `e he`. Conclude with `Complex.contDiff_exp.comp_contDiffOn (hf e he)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Ck.cexp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (f : M → ℂ) (hf : Ck n z k f) :
     Ck n z k (fun x => Complex.exp (f x)) := by
@@ -177,7 +177,7 @@ theorem Ck.cexp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : 
   exact Complex.contDiff_exp.comp_contDiffOn (hf e he)
 
 /- English proof (translation)
-Introduce `e he`. Establish `h1` using `(Complex.ofRealCLM.comp Complex.reCLM).contDiff.comp_contDiffOn (hf e he)`. Use `h1.congr (fun w _ => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Ck.re {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (f : M → ℂ) (hf : Ck n z k f) :
     CkR n z k (fun x => (f x).re) := by
@@ -187,7 +187,7 @@ theorem Ck.re {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : �
   simp
 
 /- English proof (translation)
-Introduce `e he`. Establish `h1` using `(Ck.mul n z k f _ hf (Ck.conj n z k f hf)) e he`. Use `h1.congr (fun w _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Ck.normSq {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (f : M → ℂ) (hf : Ck n z k f) :
     CkR n z k (fun x => ‖f x‖ ^ 2) := by
@@ -197,7 +197,7 @@ theorem Ck.normSq {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k 
   simp only [Function.comp_apply, Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Introduce `e he`. Establish `h1` using `Complex.reCLM.contDiff.comp_contDiffOn (hf e he)`. Establish `h2` using `Complex.ofRealCLM.contDiff.comp_contDiffOn ((hφ.of_le (by exact_mod_cast le_top)).comp_contDiffOn h1)`. Use `h2.congr (fun w _ => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem CkR.comp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (φ : ℝ → ℝ) (hφ : ContDiff ℝ ∞ φ) (f : M → ℝ) (hf : CkR n z k f) :
     CkR n z k (fun x => φ (f x)) := by
@@ -209,7 +209,7 @@ theorem CkR.comp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k :
   simp
 
 /- English proof (translation)
-Establish `h1` using `Ck.add n z k _ _ hf hg`. Unfold `CkR`. Simplify using `using h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem CkR.add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (f g : M → ℝ) (hf : CkR n z k f) (hg : CkR n z k g) :
     CkR n z k (fun x => f x + g x) := by
@@ -218,7 +218,7 @@ theorem CkR.add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : 
   simpa using h1
 
 /- English proof (translation)
-Establish `h1` using `Ck.mul n z k _ _ hf hg`. Unfold `CkR`. Simplify using `using h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem CkR.mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (f g : M → ℝ) (hf : CkR n z k f) (hg : CkR n z k g) :
     CkR n z k (fun x => f x * g x) := by
@@ -227,16 +227,14 @@ theorem CkR.mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : 
   simpa using h1
 
 /- English proof (translation)
-Conclude with `hf`.
+A detailed English derivation is pending.
 -/
 theorem CkR.ofReal {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (f : M → ℝ) (hf : CkR n z k f) :
     Ck n z k (fun x => (f x : ℂ)) := by
   exact hf
 
 /- English proof (translation)
-Take `⟨he, hx⟩` from `Classical.choose_spec h`. Use `⟨he, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[he hx]`. Conclude with `(Classical.choose h).map_source hx`. Rewrite using `[he hx]`.
-
-Conclude with `(Classical.choose h).left_inv hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isChart_choose_and_symm_apply {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (x : M)
     (h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source) :
@@ -248,7 +246,7 @@ private theorem isChart_choose_and_symm_apply {M : Type*} [TopologicalSpace M] (
   · rw [he hx]; exact (Classical.choose h).left_inv hx
 
 /- English proof (translation)
-Simplify using `only [d, dif_pos h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem d_eq_wd_comp_chosen_chart_symm {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n)
     (f : M → ℂ) (x : M) (h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source) :
@@ -256,7 +254,7 @@ private theorem d_eq_wd_comp_chosen_chart_symm {M : Type*} [TopologicalSpace M] 
   simp only [d, dif_pos h]
 
 /- English proof (translation)
-Simplify using `only [db, dif_pos h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem db_eq_wdb_comp_chosen_chart_symm {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n)
     (f : M → ℂ) (x : M) (h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source) :
@@ -264,7 +262,7 @@ private theorem db_eq_wdb_comp_chosen_chart_symm {M : Type*} [TopologicalSpace M
   simp only [db, dif_pos h]
 
 /- English proof (translation)
-The claim follows from `((hf e he).differentiableOn (by simp)).differentiableAt (e.open_target.mem_nhds hw)`.
+A detailed English derivation is pending.
 -/
 private theorem differentiableAt_comp_chart_symm_of_mem_target {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ)
     (hf : Ck n z 1 f) (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (w : V n)
@@ -272,7 +270,7 @@ private theorem differentiableAt_comp_chart_symm_of_mem_target {M : Type*} [Topo
   ((hf e he).differentiableOn (by simp)).differentiableAt (e.open_target.mem_nhds hw)
 
 /- English proof (translation)
-Establish `h1 : HasFDerivAt (fun y => F y + G y) _ w` using `hF.hasFDerivAt.add hG.hasFDerivAt`. Establish `h2 : HasFDerivAt (fun y => F y * G y) _ w` using `hF.hasFDerivAt.mul hG.hasFDerivAt`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;>`. Apply the tactic sequence `simp only [wd, wdb, h1.fderiv, h2.fderiv, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul] <;> ring`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem wd_wdb_add_and_mul (n : ℕ) (j : Fin n) {F G : V n → ℂ} {w : V n}
     (hF : DifferentiableAt ℝ F w) (hG : DifferentiableAt ℝ G w) :
@@ -287,7 +285,7 @@ private theorem wd_wdb_add_and_mul (n : ℕ) (j : Fin n) {F G : V n → ℂ} {w 
       ContinuousLinearMap.smul_apply, smul_eq_mul] <;> ring
 
 /- English proof (translation)
-Establish `h1 : HasFDerivAt (fun y => c * F y) _ w` using `hF.hasFDerivAt.const_mul c`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;>`. Apply the tactic sequence `simp only [wd, wdb, h1.fderiv, ContinuousLinearMap.smul_apply, smul_eq_mul] <;> ring`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem wd_wdb_const_mul (n : ℕ) (j : Fin n) (c : ℂ) {F : V n → ℂ} {w : V n}
     (hF : DifferentiableAt ℝ F w) :
@@ -298,7 +296,7 @@ private theorem wd_wdb_const_mul (n : ℕ) (j : Fin n) (c : ℂ) {F : V n → �
     simp only [wd, wdb, h1.fderiv, ContinuousLinearMap.smul_apply, smul_eq_mul] <;> ring
 
 /- English proof (translation)
-Establish `h1` using `hF.hasFDerivAt.cexp`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;>`. Apply the tactic sequence `simp only [wd, wdb, h1.fderiv, ContinuousLinearMap.smul_apply, smul_eq_mul] <;> ring`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem wd_wdb_cexp (n : ℕ) (j : Fin n) {F : V n → ℂ} {w : V n}
     (hF : DifferentiableAt ℝ F w) :
@@ -309,9 +307,9 @@ private theorem wd_wdb_cexp (n : ℕ) (j : Fin n) {F : V n → ℂ} {w : V n}
     simp only [wd, wdb, h1.fderiv, ContinuousLinearMap.smul_apply, smul_eq_mul] <;> ring
 
 /- English proof (translation)
-Establish `h1 : (fun y => (starRingEnd ℂ) (F y)) = Complex.conjCLE ∘ F` using `by funext y; simp`. Establish `h2 : ∀ v, fderiv ℝ (fun y => (starRingEnd ℂ) (F y)) w v = (starRingEnd ℂ) (fderiv ℝ F w v)`. Introduce `v`. Rewrite using `[h1, Complex.conjCLE.comp_fderiv]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `refine ⟨?_, ?_⟩ <;>`. Apply the tactic sequence `simp only [wd, wdb, h2, map_div₀, map_sub, map_add, map_mul, Complex.conj_I, map_ofNat] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem wdb_conj_eq_conj_wd_and_wd_conj (n : ℕ) (j : Fin n) (F : V n → ℂ) (w : V n) :
     wdb n j (fun y => (starRingEnd ℂ) (F y)) w = (starRingEnd ℂ) (wd n j F w) ∧
@@ -323,7 +321,7 @@ private theorem wdb_conj_eq_conj_wd_and_wd_conj (n : ℕ) (j : Fin n) (F : V n �
     simp only [wd, wdb, h2, map_div₀, map_sub, map_add, map_mul, Complex.conj_I, map_ofNat] <;> ring
 
 /- English proof (translation)
-Establish `h1 : HasFDerivAt (fun y => ((P y : ℝ) : ℂ)) (Complex.ofRealCLM.comp (fderiv ℝ P w)) w` using `Complex.ofRealCLM.hasFDerivAt.comp w hP.hasFDerivAt`. Establish `h2 : HasFDerivAt (fun y => ((k (P y) : ℝ) : ℂ)) (Complex.ofRealCLM.comp (deriv k (P w) • fderiv ℝ P w)) w` using `Complex.ofRealCLM.hasFDerivAt.comp w ((hk (P w)).hasDerivAt.comp_hasFDerivAt w hP.hasFDerivAt)`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;>`. Apply the tactic sequence `simp only [wd, wdb, h1.fderiv, h2.fderiv, ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, Complex.ofRealCLM_apply, smul_eq_mul, Complex.ofReal_mul] <;> ring`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem wd_wdb_ofReal_comp_real_chain (n : ℕ) (j : Fin n) (k : ℝ → ℝ) (hk : Differentiable ℝ k)
     (P : V n → ℝ) (w : V n) (hP : DifferentiableAt ℝ P w) :
@@ -339,7 +337,7 @@ private theorem wd_wdb_ofReal_comp_real_chain (n : ℕ) (j : Fin n) (k : ℝ →
       ContinuousLinearMap.smul_apply, Complex.ofRealCLM_apply, smul_eq_mul, Complex.ofReal_mul] <;> ring
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨he, ht, hsx⟩` from `isChart_choose_and_symm_apply n z x h`. Rewrite using `[d_eq_wd_comp_chosen_chart_symm n z j _ x h, d_eq_wd_comp_chosen_chart_symm n z j f x h, d_eq_wd_comp_chosen_chart_symm n z j g x h]`. Conclude with `(wd_wdb_add_and_mul n j (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht) (differentiableAt_comp_chart_symm_of_mem_target n z g hg _ he _ ht)).1`. Simplify using `[d, db, h]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem d_add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℂ) (hf : Ck n z 1 f) (hg : Ck n z 1 g) (j : Fin n) (x : M) :
     d n z j (fun y => f y + g y) x = d n z j f x + d n z j g x := by
@@ -350,7 +348,7 @@ theorem d_add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : 
   · simp [d, db, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨he, ht, hsx⟩` from `isChart_choose_and_symm_apply n z x h`. Rewrite using `[db_eq_wdb_comp_chosen_chart_symm n z j _ x h, db_eq_wdb_comp_chosen_chart_symm n z j f x h, db_eq_wdb_comp_chosen_chart_symm n z j g x h]`. Conclude with `(wd_wdb_add_and_mul n j (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht) (differentiableAt_comp_chart_symm_of_mem_target n z g hg _ he _ ht)).2.1`. Simplify using `[d, db, h]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem db_add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℂ) (hf : Ck n z 1 f) (hg : Ck n z 1 g) (j : Fin n) (x : M) :
     db n z j (fun y => f y + g y) x = db n z j f x + db n z j g x := by
@@ -361,7 +359,7 @@ theorem db_add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g :
   · simp [d, db, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨he, ht, hsx⟩` from `isChart_choose_and_symm_apply n z x h`. Rewrite using `[d_eq_wd_comp_chosen_chart_symm n z j _ x h, d_eq_wd_comp_chosen_chart_symm n z j f x h]`. Conclude with `(wd_wdb_const_mul n j c (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht)).1`. Simplify using `[d, db, h]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem d_const_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (c : ℂ) (f : M → ℂ) (hf : Ck n z 1 f) (j : Fin n) (x : M) :
     d n z j (fun y => c * f y) x = c * d n z j f x := by
@@ -372,7 +370,7 @@ theorem d_const_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (
   · simp [d, db, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨he, ht, hsx⟩` from `isChart_choose_and_symm_apply n z x h`. Rewrite using `[db_eq_wdb_comp_chosen_chart_symm n z j _ x h, db_eq_wdb_comp_chosen_chart_symm n z j f x h]`. Conclude with `(wd_wdb_const_mul n j c (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht)).2`. Simplify using `[d, db, h]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem db_const_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (c : ℂ) (f : M → ℂ) (hf : Ck n z 1 f) (j : Fin n) (x : M) :
     db n z j (fun y => c * f y) x = c * db n z j f x := by
@@ -383,9 +381,9 @@ theorem db_const_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) 
   · simp [d, db, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨he, ht, hsx⟩` from `isChart_choose_and_symm_apply n z x h`. Establish `hx' : ∀ F : M → ℂ, (F ∘ (Classical.choose h).symm) (z x) = F x` using `fun F => by simp [hsx]`. Rewrite using `[d_eq_wd_comp_chosen_chart_symm n z j _ x h, d_eq_wd_comp_chosen_chart_symm n z j f x h, d_eq_wd_comp_chosen_chart_symm n z j g x h]`. Use `(wd_wdb_add_and_mul n j (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht) (differentiableAt_comp_chart_symm_of_mem_target n z g hg _ he _ ht)).2.2.1.trans ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hx' f, hx' g]`. Simplify using `[d, db, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem d_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℂ) (hf : Ck n z 1 f) (hg : Ck n z 1 g) (j : Fin n) (x : M) :
     d n z j (fun y => f y * g y) x = d n z j f x * g x + f x * d n z j g x := by
@@ -398,9 +396,9 @@ theorem d_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : 
   · simp [d, db, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨he, ht, hsx⟩` from `isChart_choose_and_symm_apply n z x h`. Establish `hx' : ∀ F : M → ℂ, (F ∘ (Classical.choose h).symm) (z x) = F x` using `fun F => by simp [hsx]`. Rewrite using `[db_eq_wdb_comp_chosen_chart_symm n z j _ x h, db_eq_wdb_comp_chosen_chart_symm n z j f x h, db_eq_wdb_comp_chosen_chart_symm n z j g x h]`. Use `(wd_wdb_add_and_mul n j (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht) (differentiableAt_comp_chart_symm_of_mem_target n z g hg _ he _ ht)).2.2.2.trans ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hx' f, hx' g]`. Simplify using `[d, db, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem db_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℂ) (hf : Ck n z 1 f) (hg : Ck n z 1 g) (j : Fin n) (x : M) :
     db n z j (fun y => f y * g y) x = db n z j f x * g x + f x * db n z j g x := by
@@ -413,21 +411,21 @@ theorem db_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g :
   · simp [d, db, h]
 
 /- English proof (translation)
-Simplify using `[d, wd, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem d_const {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (c : ℂ) (j : Fin n) (x : M) :
     d n z j (fun _ => c) x = 0 := by
   simp [d, wd, Function.comp_def]
 
 /- English proof (translation)
-Simplify using `[db, wdb, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem db_const {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (c : ℂ) (j : Fin n) (x : M) :
     db n z j (fun _ => c) x = 0 := by
   simp [db, wdb, Function.comp_def]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨he, ht, hsx⟩` from `isChart_choose_and_symm_apply n z x h`. Rewrite using `[db_eq_wdb_comp_chosen_chart_symm n z j _ x h, d_eq_wd_comp_chosen_chart_symm n z j f x h]`. Conclude with `(wdb_conj_eq_conj_wd_and_wd_conj n j (f ∘ (Classical.choose h).symm) (z x)).1`. Simplify using `[d, db, h]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem db_conj {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ) (j : Fin n) (x : M) :
     db n z j (fun y => (starRingEnd ℂ) (f y)) x = (starRingEnd ℂ) (d n z j f x) := by
@@ -438,7 +436,7 @@ theorem db_conj {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : 
   · simp [d, db, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨he, ht, hsx⟩` from `isChart_choose_and_symm_apply n z x h`. Rewrite using `[d_eq_wd_comp_chosen_chart_symm n z j _ x h, db_eq_wdb_comp_chosen_chart_symm n z j f x h]`. Conclude with `(wdb_conj_eq_conj_wd_and_wd_conj n j (f ∘ (Classical.choose h).symm) (z x)).2`. Simplify using `[d, db, h]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem d_conj {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ) (j : Fin n) (x : M) :
     d n z j (fun y => (starRingEnd ℂ) (f y)) x = (starRingEnd ℂ) (db n z j f x) := by
@@ -449,7 +447,7 @@ theorem d_conj {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M
   · simp [d, db, h]
 
 /- English proof (translation)
-Establish `h1` using `db_conj n z (fun y => (ph y : ℂ)) j x`. Simplify using `using h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem db_ofReal {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (ph : M → ℝ) (j : Fin n) (x : M) :
     db n z j (fun y => (ph y : ℂ)) x = (starRingEnd ℂ) (d n z j (fun y => (ph y : ℂ)) x) := by
@@ -457,9 +455,9 @@ theorem db_ofReal {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (ph
   simpa using h1
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨he, ht, hsx⟩` from `isChart_choose_and_symm_apply n z x h`. Establish `hx' : ∀ F : M → ℂ, (F ∘ (Classical.choose h).symm) (z x) = F x` using `fun F => by simp [hsx]`. Rewrite using `[d_eq_wd_comp_chosen_chart_symm n z j _ x h, d_eq_wd_comp_chosen_chart_symm n z j f x h]`. Use `(wd_wdb_cexp n j (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht)).1.trans ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hx' f]`. Simplify using `[d, db, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem d_cexp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ) (hf : Ck n z 1 f) (j : Fin n) (x : M) :
     d n z j (fun y => Complex.exp (f y)) x = Complex.exp (f x) * d n z j f x := by
@@ -472,9 +470,9 @@ theorem d_cexp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M
   · simp [d, db, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨he, ht, hsx⟩` from `isChart_choose_and_symm_apply n z x h`. Establish `hx' : ∀ F : M → ℂ, (F ∘ (Classical.choose h).symm) (z x) = F x` using `fun F => by simp [hsx]`. Rewrite using `[db_eq_wdb_comp_chosen_chart_symm n z j _ x h, db_eq_wdb_comp_chosen_chart_symm n z j f x h]`. Use `(wd_wdb_cexp n j (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht)).2.trans ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hx' f]`. Simplify using `[d, db, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem db_cexp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ) (hf : Ck n z 1 f) (j : Fin n) (x : M) :
     db n z j (fun y => Complex.exp (f y)) x = Complex.exp (f x) * db n z j f x := by
@@ -487,9 +485,9 @@ theorem db_cexp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : 
   · simp [d, db, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨he, ht, hsx⟩` from `isChart_choose_and_symm_apply n z x h`. Rewrite using `[d_eq_wd_comp_chosen_chart_symm n z j _ x h, d_eq_wd_comp_chosen_chart_symm n z j _ x h]`. Establish `hP : DifferentiableAt ℝ (ph ∘ (Classical.choose h).symm) (z x)`. Establish `h1` using `((Complex.reCLM.contDiff.comp_contDiffOn (hph _ he)).differentiableOn (by simp)).differentiableAt ((Classical.choose h).open_target.mem_nhds ht)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun w => by simp)`. Use `(wd_wdb_ofReal_comp_real_chain n j k (hk.differentiable (by simp)) _ _ hP).1.trans ?_` and prove the remaining obligations. Simplify using `[hsx, Function.comp_def]`. Simplify using `[d, db, h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem d_comp_real {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℝ → ℝ) (hk : ContDiff ℝ ∞ k) (ph : M → ℝ) (hph : CkR n z 1 ph) (j : Fin n) (x : M) :
     d n z j (fun y => (k (ph y) : ℂ)) x = ((deriv k (ph x) : ℝ) : ℂ) * d n z j (fun y => (ph y : ℂ)) x := by
@@ -505,9 +503,9 @@ theorem d_comp_real {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (
   · simp [d, db, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨he, ht, hsx⟩` from `isChart_choose_and_symm_apply n z x h`. Rewrite using `[db_eq_wdb_comp_chosen_chart_symm n z j _ x h, db_eq_wdb_comp_chosen_chart_symm n z j _ x h]`. Establish `hP : DifferentiableAt ℝ (ph ∘ (Classical.choose h).symm) (z x)`. Establish `h1` using `((Complex.reCLM.contDiff.comp_contDiffOn (hph _ he)).differentiableOn (by simp)).differentiableAt ((Classical.choose h).open_target.mem_nhds ht)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun w => by simp)`. Use `(wd_wdb_ofReal_comp_real_chain n j k (hk.differentiable (by simp)) _ _ hP).2.trans ?_` and prove the remaining obligations. Simplify using `[hsx, Function.comp_def]`. Simplify using `[d, db, h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem db_comp_real {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℝ → ℝ) (hk : ContDiff ℝ ∞ k) (ph : M → ℝ) (hph : CkR n z 1 ph) (j : Fin n) (x : M) :
     db n z j (fun y => (k (ph y) : ℂ)) x = ((deriv k (ph x) : ℝ) : ℂ) * db n z j (fun y => (ph y : ℂ)) x := by
@@ -523,11 +521,11 @@ theorem db_comp_real {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) 
   · simp [d, db, h]
 
 /- English proof (translation)
-Use `closure_minimal (fun x hx => ?_) (isClosed_tsupport f)` and prove the remaining obligations. Assume the negation of the conclusion as `hxs`. Rewrite `hx` using `[Function.mem_support]`. Apply `hx` to reduce the goal to its premises. Establish `hf0 : f =ᶠ[𝓝 x] 0` using `notMem_tsupport_iff_eventuallyEq.mp hxs`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨he, ht, hsx⟩` from `isChart_choose_and_symm_apply n z x h`. Rewrite using `[d_eq_wd_comp_chosen_chart_symm n z j f x h]`. Establish `h2 : (f ∘ (Classical.choose h).symm) =ᶠ[𝓝 (z x)] (fun _ => (0 : ℂ))`. Establish `hc` using `(Classical.choose h).continuousAt_symm ht`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hf0` using `[← hsx]`. Conclude with `hc.eventually hf0`. Simplify using `only [wd, h2.fderiv_eq]`. Simplify using the standard rewrite rules. Simplify using `[d, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tsupport_d_subset {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n) (f : M → ℂ) :
     tsupport (d n z j f) ⊆ tsupport f := by
@@ -548,11 +546,11 @@ theorem tsupport_d_subset {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → 
   · simp [d, h]
 
 /- English proof (translation)
-Use `closure_minimal (fun x hx => ?_) (isClosed_tsupport f)` and prove the remaining obligations. Assume the negation of the conclusion as `hxs`. Rewrite `hx` using `[Function.mem_support]`. Apply `hx` to reduce the goal to its premises. Establish `hf0 : f =ᶠ[𝓝 x] 0` using `notMem_tsupport_iff_eventuallyEq.mp hxs`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨he, ht, hsx⟩` from `isChart_choose_and_symm_apply n z x h`. Rewrite using `[db_eq_wdb_comp_chosen_chart_symm n z j f x h]`. Establish `h2 : (f ∘ (Classical.choose h).symm) =ᶠ[𝓝 (z x)] (fun _ => (0 : ℂ))`. Establish `hc` using `(Classical.choose h).continuousAt_symm ht`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hf0` using `[← hsx]`. Conclude with `hc.eventually hf0`. Simplify using `only [wdb, h2.fderiv_eq]`. Simplify using the standard rewrite rules. Simplify using `[db, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tsupport_db_subset {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n) (f : M → ℂ) :
     tsupport (db n z j f) ⊆ tsupport f := by

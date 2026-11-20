@@ -50,9 +50,9 @@ abbrev mv (a : Late B C) (N : ∀ u, Submodule (𝓞 B.LL) (a.V.div.Nu u).V) (h 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `letI := alg (mv a N h) iK`. Introduce `Y' Z' hj hl`. Establish `h1 : lamW R F (R.EEp3, R.toRealDat.EEat, R.Wp3) ((by with_unfolding_all exact (Z.jW :))) X.logLam` using `(by with_unfolding_all exact (hl :))`. Establish `ej : ((by with_unfolding_all exact (Z.jW :)) : JW R F) = (by with_unfolding_all exact (Z'.jW :))` using `eq_of_heq ((by with_unfolding_all exact (hj.symm :)))`. Establish `el : X.logLam = (by with_unfolding_all exact (X'.logLam :))` using `eq_of_heq ((by with_unfolding_all exact (hX.symm :)))`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `cast (congr (congrArg₂ (lamW R F) (parts_eq (mv a N h) R F) ej) el) h1`. Conclude with `(by with_unfolding_all exact (h2 :))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lamAre_copy (a : Late B C) (N : ∀ u, Submodule (𝓞 B.LL) (a.V.div.Nu u).V) (h : B.Word → ℝ)
     [iK : Algebra Ks a.D.what₂.LL] {A : FamIn3 a.D.what₂.LL G Pl0 I0 (List ℕ) T a.D.R.m} (R : RealDat3 a.D A Ks) (F : Face3 a.D A)
@@ -74,19 +74,17 @@ end Copy
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `Γ K B f T w Z Wt N h O O' hO t t' hs hp`. Establish `hOX : O'.X = (by with_unfolding_all exact ((divTr (D` using `w.D Z) N h O.X) :)) := by subst hO; exact (by with_unfolding_all exact ((Eq.refl (divTr (D := w.D Z) N h O.X)) :))`. Use `clear hO`. Generalize the expression as in `O'.X = X' at hOX`. Use `revert t'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Fix the arbitrary inputs or assume the hypotheses.
 
-Generalize the expression as in `O'.p0 = p0'`. Introduce `t' hs`. Substitute `hOX` using the available equality. Consider the cases of `t' with | mk hX' r' => ?_`. Consider the cases of `r' with | mk z' holds' Y' Zr' => ?_`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Consider the cases of `z' with | @mk Xg' tr' core' alg' alg_eq' R' => ?_`. Establish `hXg` using `hs.Xg`. Establish `htr` using `hs.tr`. Establish `hcore` using `hs.core`. Establish `hR` using `hs.R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hj` using `hs.jW`. Use `clear hs`. Express the relevant statement in the definitionally equal form `Xg' = t.r.z.Xg at hXg`. Express the relevant statement in the definitionally equal form `tr' = t.r.z.tr at htr`. Substitute `hXg htr` using the available equality.
+Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Substitute using the available equality.
 
-Express the relevant statement in the definitionally equal form `HEq core' _ at hcore`. Establish `hc` using `eq_of_heq hcore`. Substitute `hc` using the available equality. Establish `ha : alg' = GlobalTheory.Mem.R3.Tr.alg (a` using `⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) ⟨(Db.setDivZ Z N h).W, (Db.setDivZ Z N h).V, (Db.setDivZ Z N h).S, (Db.setDivZ Z N h).N, (Db.setDivZ Z N h).G⟩ t.r.z.alg := by`. Apply `Algebra.algebra_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Substitute using the available equality.
 
-Introduce `r`. Apply `(w.st (Db.setDivZ Z N h)).B.embLL.injective` to reduce the goal to its premises. Conclude with `(by with_unfolding_all exact (((alg_eq' r).trans (t.r.z.alg_eq r).symm) :))`. Substitute `ha` using the available equality. Express the relevant statement in the definitionally equal form `HEq R' _ at hR`.
-
-Establish `hR2` using `eq_of_heq hR`. Substitute `hR2` using the available equality. Use `⟨⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact ((GeoCl.step (Γ := Γ) (D := (w.st Z).toD7) N h hp.geo) :))`. Conclude with `(by with_unfolding_all exact ((lamAre_copy (a := ⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) N h (iK := t.r.z.alg) t.r.z.R t.r.z.F t.r.Z O.X (((divTr (D := w.D Z) N h O.X))) (((HEq.refl O.X.logLam))) (X0' := (p0')) (Y' := (Y')) ((Zr')) ((hj)) hp.lam) : _))`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem oAt_setDiv : ∀ (Γ : GeoP) (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ) (O : Obj2 (w.D Z)) (O' : Obj2 (w.D (Db.setDivZ Z N h))), O' = O.tr N h → ∀ (t : RowsT K w Z Wt O.p0) (t' : RowsT K w (Db.setDivZ Z N h) Wt O'.p0), R3.Rw.RowsSame t t' → OAt (geoCl Γ) t O.X → Nonempty (OAt (geoCl Γ) t' O'.X) := by
   intro Γ K B f T w Z Wt N h O O' hO t t' hs hp

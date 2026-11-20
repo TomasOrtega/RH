@@ -16,9 +16,9 @@ variable {V' : Type} [AddCommGroup V'] [Module K V'] [FiniteDimensional K V'] [M
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K}
 
 /- English proof (translation)
-Establish `hv : vd h (Formalism.HermitianLatticesTheory.gmap g (locF 𝔭 L)) 𝔭 = vd h L 𝔭`. Rewrite using `[UnimodularLocalization.vd_gmap hg, vd_locF hK hF hs hd hL hLi h𝔭]`. Establish `ha : alphaL h (Formalism.HermitianLatticesTheory.gmap g (locF 𝔭 L)) 𝔭 = alphaL h L 𝔭`. Rewrite using `[BrB.alphaL_gmap hg]`. Unfold `alphaL`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [akCount_locF hF h L 𝔭 h𝔭]`. Use `⟨?_, hv⟩` and prove the remaining obligations. Unfold `nu`. Rewrite using `[ha, hv]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nu_gmap_locF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -37,19 +37,15 @@ theorem nu_gmap_locF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : 
   rw [ha, hv]
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `exists_mReps hK hF hs hd S hL hLi h𝔭 hn hx hsr`. Establish `h1` using `nkCount_eq_sum hK hF hs hd S hL hLi h𝔭 hn hx hR`. Establish `h2 : ∀ M ∈ R, ∀ᶠ J in atTop, ∀ᶠ k in atTop, kap S M 𝔭 n J k = kap S (locF 𝔭 M₂) 𝔭 n J k`. Introduce `M hM`. Take `⟨⟨⟨g, hg, rfl⟩, hxM⟩, -⟩` from `hR.1 M hM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hxM`, the goal using `[LocalizedFibreSets.gmap_locF]`. Conclude with `kap_eq hK hF hs hd S (LocalizedFibreSets.isLattice_gmap g hL) (UnimodularLocalization.isIntegralLat_gmap hg hLi) hM₂ hM₂i h𝔭 hn hx hxM hx₂`. Establish `h3 : ∀ᶠ J in atTop, ∀ᶠ k in atTop, ∀ M ∈ R, kap S M 𝔭 n J k = kap S (locF 𝔭 M₂) 𝔭 n J k` using `by filter_upwards [(Finset.eventually_all R).mpr h2] with J hJ`. Conclude with `(Finset.eventually_all R).mpr hJ`. Establish `hq : (0 : ℝ) < (Ideal.absNorm 𝔭 : ℝ)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `reductionMapsOfForms.absNorm_pos h𝔭` after adjusting the coercions. Use `filter_upwards [h1, h3] with J hJ1 hJ3`. Use `filter_upwards [hJ1, hJ3] with k hk1 hk3`. Rewrite using `[hk1, ← sum_oM hK hF hs hd S hL hLi h𝔭 hsr hR (fun T => (nu h' T 𝔭)⁻¹), Nat.cast_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun M hM => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hk3 M hM]`. Take `⟨⟨⟨g, hg, rfl⟩, hxM⟩, -⟩` from `hR.1 M hM`. Take `⟨e1, e2⟩` from `nu_gmap_locF hK hF hs hd hL hLi h𝔭 hg`. Establish `hν : 0 < nu h L 𝔭`. Rewrite using `[← e1, LocalizedFibreSets.gmap_locF]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `nu_pos hK hF hs hd (LocalizedFibreSets.isLattice_gmap g hL) (UnimodularLocalization.isIntegralLat_gmap hg hLi) h𝔭`. Establish `hν' : 0 < nu h' (S.cut (Formalism.HermitianLatticesTheory.gmap g (locF 𝔭 L))) 𝔭`. Rewrite using `[LocalizedFibreSets.gmap_locF, LocalizedFibreSets.cut_locF]`. Conclude with `nu_pos hK hF (S.isSymm hs) (S.isTotPosDef hd) (StabilizerLattices.isLattice_cut S (LocalizedFibreSets.isLattice_gmap g hL)) (UnimodularLocalization.isIntegralLat_cut S (UnimodularLocalization.isIntegralLat_gmap hg hLi)) h𝔭`. Establish `ho : (oM S (Formalism.HermitianLatticesTheory.gmap g (locF 𝔭 L)) : ℝ) ≠ 0`.
-
-Rewrite `hxM`, the goal using `[LocalizedFibreSets.gmap_locF]`. Conclude with `oM_ne_zero hs S (LocalizedFibreSets.isLattice_gmap g hL) h𝔭 hxM` after adjusting the coercions. Unfold `kap`. Rewrite using `[e1, e2]`. Establish `hq'` using `pow_pos hq (vd h L 𝔭)`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem main_term (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm) (hd : IsTotPosDef h)
     (S : VecSplit h h') {L : Submodule (𝓞 K) V}

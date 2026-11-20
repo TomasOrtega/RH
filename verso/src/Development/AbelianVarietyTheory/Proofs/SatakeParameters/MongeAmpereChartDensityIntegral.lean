@@ -18,14 +18,14 @@ namespace GlobalTheory.RoadU.CharTwist
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `(hx.tw χ hχ).of_equiv (x.twEquiv χ hχ)`.
+A detailed English derivation is pending.
 -/
 theorem hasSupport_rep_tw {x : IrrGL k} {s : Multiset (IrrGL k)} (hx : HasSupport x.rep s) (χ : kˣ →* ℂˣ)
     (hχ : IsSmoothChar χ) : HasSupport (x.tw χ hχ).rep (s.map (·.tw χ hχ)) :=
   (hx.tw χ hχ).of_equiv (x.twEquiv χ hχ)
 
 /- English proof (translation)
-Simplify using `only [chars, Multiset.map_map, Function.comp_def, IrrGL.tw_ofChar]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chars_tw {n : ℕ} (ξ : Fin n → (kˣ →* ℂˣ)) (hξ : ∀ j, IsSmoothChar (ξ j)) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     (chars ξ hξ).map (·.tw χ hχ) = chars (fun j => ξ j * χ) fun j => (hξ j).mul hχ := by

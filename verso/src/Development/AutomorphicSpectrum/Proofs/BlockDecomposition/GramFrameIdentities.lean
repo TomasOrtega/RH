@@ -18,14 +18,14 @@ namespace GlobalTheory.CompanionTheory.ColumnSplitting
 variable {D : D7} {n t : ℕ} {B W : HSp D}
 
 /- English proof (translation)
-Simplify using `only [adj_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sand {k l a b c : ℕ} (G : Mx D k k) (x : Mx D k l) (u : Mx D l a) (y : Mx D k b) (v : Mx D b c) :
     adj (x ⬝ u) ⬝ (G ⬝ (y ⬝ v)) = adj u ⬝ ((adj x ⬝ (G ⬝ y)) ⬝ v) := by
   simp only [adj_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hu` using `mt_unitary W h⁻¹`. Establish `hr : adj (rat x₀) ⬝ (gA W ⬝ rat x₀) = rat (gramQ W x₀)` using `gram_rat W (a := x₀) (b := x₀) (c := gramQ W x₀) (by show x₀ᴴ * W.gram * x₀ = x₀ᴴ * (W.gram * x₀)`. Rewrite using `[Matrix.mul_assoc])`. Establish `e : adj (ww W x₀ h) ⬝ (gA W ⬝ ww W x₀ h) = adj (rat x₀) ⬝ ((adj (mt W h⁻¹) ⬝ (gA W ⬝ mt W h⁻¹)) ⬝ rat x₀)` using `sand (gA W) (mt W h⁻¹) (rat x₀) (mt W h⁻¹) (rat x₀)`. Rewrite using `[e, hu, hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_ww (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E) (h : GA D W) :
     adj (ww W x₀ h) ⬝ (gA W ⬝ ww W x₀ h) = rat (gramQ W x₀) := by
@@ -40,7 +40,7 @@ theorem gram_ww (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E) (h : GA D W) 
   rw [e, hu, hr]
 
 /- English proof (translation)
-Rewrite using `[adj_add, Matrix.add_mul, sand, sand, d.gram_XX, d.gram_0X]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frame_perp (d : HypDec B W t) {a c : ℕ} (u : Mx D t a) (w : Mx D W.rank a) (v : Mx D t c) :
     adj (d.jX ⬝ u + d.j0 ⬝ w) ⬝ (gA B ⬝ (d.jX ⬝ v)) = 0 := by
@@ -48,7 +48,7 @@ theorem frame_perp (d : HypDec B W t) {a c : ℕ} (u : Mx D t a) (w : Mx D W.ran
   simp
 
 /- English proof (translation)
-Establish `h1` using `frame_perp d u w u`. Establish `h2 : adj (d.jX ⬝ u + d.j0 ⬝ w) ⬝ (gA B ⬝ (d.j0 ⬝ w)) = adj w ⬝ (gA W ⬝ w)`. Rewrite using `[adj_add, Matrix.add_mul, sand, sand, d.wittDecomp_gram_X_anisotropic, d.gram_00]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.mul_add, Matrix.mul_add, h1, h2, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_gram (d : HypDec B W t) {a : ℕ} (u : Mx D t a) (w : Mx D W.rank a) :
     adj (d.jX ⬝ u + d.j0 ⬝ w) ⬝ (gA B ⬝ (d.jX ⬝ u + d.j0 ⬝ w)) = adj w ⬝ (gA W ⬝ w) := by
@@ -59,13 +59,13 @@ theorem frame_gram (d : HypDec B W t) {a : ℕ} (u : Mx D t a) (w : Mx D W.rank 
   rw [Matrix.mul_add, Matrix.mul_add, h1, h2, zero_add]
 
 /- English proof (translation)
-Establish `h2 : adj ξ ⬝ (gA B ⬝ (ξ ⬝ y + d.jX ⬝ v)) = rat b₀.1 ⬝ y`. Rewrite using `[Matrix.mul_add, Matrix.mul_add, hp, add_zero, ← Matrix.mul_assoc (gA B), ← Matrix.mul_assoc (adj ξ), hg]`. Establish `hinv : rat b₀.1⁻¹ ⬝ rat b₀.1 = (1 : Mx D W.rank W.rank)`. Rewrite using `[← rat_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hdet), rat_one]`. Establish `h3 : yv B b₀ (ξ, ξ ⬝ y + d.jX ⬝ v) = y` using `by show rat b₀.1⁻¹ ⬝ (adj ξ ⬝ (gA B ⬝ (ξ ⬝ y + d.jX ⬝ v))) = y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2, ← Matrix.mul_assoc, hinv, Matrix.one_mul]`. Establish `hxξ : adj (d.jX ⬝ v) ⬝ (gA B ⬝ ξ) = 0`. Use `gram_swap B hp` as an intermediate fact. Rewrite `this` using `[adj_zero]`. Then use the resulting hypothesis. Establish `hxx : adj (d.jX ⬝ v) ⬝ (gA B ⬝ (d.jX ⬝ v)) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[sand, d.gram_XX]`. Simplify using the standard rewrite rules. Establish `hq : adj (d.jX ⬝ v) ⬝ (gA B ⬝ (ξ ⬝ y + d.jX ⬝ v)) = 0`. Rewrite using `[Matrix.mul_add, Matrix.mul_add, hxx, add_zero, ← Matrix.mul_assoc (gA B), ← Matrix.mul_assoc (adj (d.jX ⬝ v)), hxξ, Matrix.zero_mul]`. Establish `h4 : ip B (ξ ⬝ y + d.jX ⬝ v) (ξ ⬝ y + d.jX ⬝ v) = adj y ⬝ (rat b₀.1 ⬝ y)` using `by show adj (ξ ⬝ y + d.jX ⬝ v) ⬝ (gA B ⬝ (ξ ⬝ y + d.jX ⬝ v)) = _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[adj_add, Matrix.add_mul, hq, add_zero, adj_mul ξ y, Matrix.mul_assoc, h2]`. Use `⟨h3, ?_⟩` and prove the remaining obligations. Use `show ip B (ξ ⬝ y + d.jX ⬝ v) (ξ ⬝ y + d.jX ⬝ v) - pr b₀ (yv B b₀ (ξ, ξ ⬝ y + d.jX ⬝ v)) (yv B b₀ (ξ, ξ ⬝ y + d.jX ⬝ v)) = 0`. Rewrite using `[h3, h4]`. Conclude with `sub_eq_zero.2 rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_gram (d : HypDec B W t) (b₀ : HermE D W.rank) (hdet : b₀.1.det ≠ 0) (ξ : Mx D B.rank W.rank) (v : Mx D t t)
     (y : Mx D W.rank t) (hg : adj ξ ⬝ (gA B ⬝ ξ) = rat b₀.1) (hp : adj ξ ⬝ (gA B ⬝ (d.jX ⬝ v)) = 0) :
@@ -96,9 +96,9 @@ theorem pair_gram (d : HypDec B W t) (b₀ : HermE D W.rank) (hdet : b₀.1.det 
   exact sub_eq_zero.2 rfl
 
 /- English proof (translation)
-Introduce `D n t B W d hn b₀ hdet x₀ hx p`. Establish `hg : adj (d.jX ⬝ c1 hn p.2.1 + d.j0 ⬝ ww W x₀ p.1) ⬝ (gA B ⬝ (d.jX ⬝ c1 hn p.2.1 + d.j0 ⬝ ww W x₀ p.1)) = rat b₀.1`. Rewrite using `[frame_gram, gram_ww, hx]`. Establish `hp` using `frame_perp d (c1 hn p.2.1) (ww W x₀ p.1) (c2 hn p.2.1)`. Take `⟨h3, h5⟩` from `pair_gram d b₀ hdet _ (c2 hn p.2.1) p.2.2 hg hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hg, h3, h5⟩`.
+Supply the required witnesses or components.
 -/
 theorem zp_eq : ZpEq := by
   intro D n t B W d hn b₀ hdet x₀ hx p

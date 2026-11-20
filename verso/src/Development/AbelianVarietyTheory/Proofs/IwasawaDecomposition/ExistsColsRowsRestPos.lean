@@ -19,7 +19,7 @@ def stdOLat (O : Type) [CommRing O] (φ : O →+* ℂ) (n : ℕ) : Rows.OLat O �
         exact (EuclideanSpace.basisFun (Fin n) ℂ).toBasis.span_eq }
 
 /- English proof (translation)
-Simplify `hx` using `[stdOLat]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_stdOLat {O : Type} [CommRing O] {φ : O →+* ℂ} {n : ℕ} {x : Euc n}
     (hx : x ∈ (stdOLat O φ n).gen) : ∃ i, EuclideanSpace.basisFun (Fin n) ℂ i = x := by
@@ -32,7 +32,7 @@ def coordEmb {K : Type} [Field K] (σ : K →+* ℂ) (n : ℕ) : (Fin n → K) �
   map_smul' a x := by ext i; simp
 
 /- English proof (translation)
-Use extensionality with `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[coordEmb]`. Simplify using `[coordEmb, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coordEmb_single {K : Type} [Field K] (σ : K →+* ℂ) (n : ℕ) (i : Fin n) :
     coordEmb σ n (Pi.single i 1) = EuclideanSpace.basisFun (Fin n) ℂ i := by
@@ -42,11 +42,11 @@ theorem coordEmb_single {K : Type} [Field K] (σ : K →+* ℂ) (n : ℕ) (i : F
   · simp [coordEmb, h]
 
 /- English proof (translation)
-Use `letI : Fintype ι := FiniteDimensional.fintypeBasisIndex b`. Establish `hs : ⊤ ≤ Submodule.span ℂ (Set.range (fun i => coordEmb σ n (b i)))`. Rewrite using `[← (EuclideanSpace.basisFun (Fin n) ℂ).toBasis.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[OrthonormalBasis.coe_toBasis, ← coordEmb_single σ, ← b.sum_repr (Pi.single i 1), map_sum]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Use `⟨linearIndependent_of_top_le_span_of_card_eq_finrank hs ?_, top_le_iff.mp hs⟩` and prove the remaining obligations. Rewrite using `[← Module.finrank_eq_card_basis b]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem coordEmb_basis {K : Type} [Field K] (σ : K →+* ℂ) (n : ℕ) {ι : Type}
     (b : Module.Basis ι K (Fin n → K)) :
@@ -66,7 +66,7 @@ theorem coordEmb_basis {K : Type} [Field K] (σ : K →+* ℂ) (n : ℕ) {ι : T
   simp
 
 /- English proof (translation)
-Use `letI : NormedAddCommGroup V := c.toNormedAddCommGroup`. Use `letI : InnerProductSpace ℂ V := InnerProductSpace.ofCore c.toCore`. Use `⟨(stdOrthonormalBasis ℂ V).repr.symm.toLinearEquiv, fun x y => ?_⟩` and prove the remaining obligations. Conclude with `((stdOrthonormalBasis ℂ V).repr.symm.inner_map_map x y).symm`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_frame {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (c : InnerProductSpace.Core ℂ V) :
@@ -105,7 +105,7 @@ def ramCore (u : B.Word)
     simp at this
 
 /- English proof (translation)
-Use `(C.mem u).A.Mu0_fd` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le (show (C.mem u).A.Mram ≤ (C.mem u).A.Mu0 from inf_le_left)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mram_fd (u : B.Word) : FiniteDimensional ℂ (C.mem u).A.Mram := by
   have := (C.mem u).A.Mu0_fd
@@ -199,9 +199,7 @@ namespace GlobalTheory.Mem
 open Formalism.BasicNotions RowsModel in
 
 /- English proof (translation)
-Introduce `B C n D h0 hT h1 h2`. Establish `hf : ∀ u, ∃ e : Euc (C.mem u).A.du ≃ₗ[ℂ] (C.mem u).A.Mram, ∀ φ ψ, inner ℂ φ ψ = (C.fm u).ipC 0 (e φ).1 (e ψ).1` using `fun u => haveI := mram_fd C u exists_frame (ramCore C u (h1 u) (h2 u))`. Use `choose eM heM using hf`. Use `⟨model C n D (fun u => (h0 u).some.trans (WithLp.linearEquiv 2 ℂ _).symm) (fun u μ => (hT u μ).some.trans (WithLp.linearEquiv 2 ℂ _).symm) eM heM, rfl, rfl, fun μ => ?_, fun _ => rfl, fun _ _ => ?_⟩` and prove the remaining obligations. Conclude with `finrank_euclideanSpace_fin`.
-
-Conclude with `finrank_euclideanSpace_fin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_rowsRest :
     ∀ (B : Base) (C : Cols B) (n : C.Tup → ℕ) (D : ℕ),
@@ -225,7 +223,7 @@ theorem exists_rowsRest :
   · exact finrank_euclideanSpace_fin
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `show ((Nat.card PUnit : ℕ) : ℂ)⁻¹ * (starRingEnd ℂ (φ c ()) * ψ c ()) = _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem RowsModel.ipC_cols (B : Base) (u : B.Word)
     (φ ψ : ((ColsModel.cols B).mem u).C.cls 0 → ((ColsModel.cols B).mem u).C.Y 0 → ℂ) :
@@ -237,13 +235,11 @@ theorem RowsModel.ipC_cols (B : Base) (u : B.Word)
 open Formalism.BasicNotions RowsModel in
 
 /- English proof (translation)
-Take `⟨W, h1, h2, h3, h4, h5⟩` from `exists_rowsRest B (ColsModel.cols B) (fun _ => 1) D (fun _ => ⟨(LinearEquiv.funUnique (Fin 1) ℂ ℂ).symm⟩) (fun _ _ => ⟨(LinearEquiv.funUnique (Fin 1) ℂ ℂ).symm⟩) (fun u φ _ ψ _ => by`. Rewrite using `[ipC_cols, ipC_cols, map_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by simp [mul_comm])`. Use the proof step `(fun u φ _ hφ => by`. Rewrite using `[ipC_cols, Complex.re_sum]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, φ c () ≠ 0 := by`. Assume the negation of the conclusion as `h`. Conclude with `hφ (funext fun c => funext fun _ => not_not.mp fun hc => h ⟨c, hc⟩)`. Use `Finset.sum_pos' (fun c _ => ?_) ⟨c, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Check the signs of the components of the expression. Rewrite using `[Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re] positivity)`. Use `⟨_, W, h1, h2, fun u => ?_, h3, h4, h5⟩` and prove the remaining obligations. Establish `: Fact (B.T u).Prime` using `⟨B.T_prime u⟩`. Establish `hne : ((ColsModel.cols B).mem u).A.Mram ≠ ⊥` using `MemberTorsor.mram_ne_bot B.R (Tau B.R) (B.hcW u) (B.T u) (card_Tau B.host) (ColsModel.two_lt_alt B.toPre u)`.
-
-Use `Submodule.nontrivial_iff_ne_bot.mpr hne` as an intermediate fact. Conclude with `(W.eMu u).toEquiv.nontrivial`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_cols_rowsRest (B : Base) (D : ℕ) :
     ∃ (C : Cols B) (W : RowsRest B C), W.Drows = D ∧ W.D0 = D ∧ (∀ u, Nontrivial (W.Mu u)) ∧
@@ -274,7 +270,7 @@ theorem exists_cols_rowsRest (B : Base) (D : ℕ) :
   exact (W.eMu u).toEquiv.nontrivial
 
 /- English proof (translation)
-Take `⟨C, W, h, -, h', -⟩` from `exists_cols_rowsRest B 1`. Conclude with `⟨C, W, by omega, h'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cols_rowsRest_pos (B : Base) :
     ∃ (C : Cols B) (W : RowsRest B C), 0 < W.Drows ∧ ∀ u, Nontrivial (W.Mu u) := by

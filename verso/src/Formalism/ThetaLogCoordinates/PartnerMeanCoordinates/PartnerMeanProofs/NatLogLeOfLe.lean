@@ -5,9 +5,9 @@ namespace Formalism.InvariantFactorPaths.MC
 open Polynomial Finset Formalism.GM Formalism.GM.M Formalism.GM.MeanGammaLemmas Formalism.InvariantFactorPaths.OddLevelGainBounds.TB
 
 /- English proof (translation)
-Establish `h0 : ((n : ℚ) : ℚ_[p]) = (n : ℚ_[p])` using `by push_cast; rfl`. Establish `h1 : ‖(n : ℚ_[p])‖ = (p : ℝ) ^ (-(padicValNat p n : ℤ))`. Rewrite using `[← h0, Padic.eq_padicNorm, padicNorm.eq_zpow_of_nonzero (by exact_mod_cast hn), padicValRat.of_nat]`. Apply the tactic sequence `push_cast <;> simp [padicValRat.of_nat]`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[h1, ← Real.rpow_intCast, Real.logb_rpow (by positivity) hp1.ne']`. Simplify using `only [Int.cast_neg, Int.cast_natCast, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma neg_logb_norm_natCast_eq_padicValNat (p : ℕ) [hp : Fact p.Prime] (n : ℕ) (hn : n ≠ 0) :
     -Real.logb p ‖(n : ℚ_[p])‖ = (padicValNat p n : ℝ) := by
@@ -21,13 +21,11 @@ private lemma neg_logb_norm_natCast_eq_padicValNat (p : ℕ) [hp : Fact p.Prime]
   simp only [Int.cast_neg, Int.cast_natCast, neg_neg]
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) ≤ p` using `by exact_mod_cast hp.out.one_lt.le`. Break down `Nat.eq_zero_or_pos n with rfl | hpos` into its components or cases. Simplify using `only [Nat.digits_zero, List.sum_nil, Nat.cast_zero]`. Conclude with `mul_nonneg (by linarith) (by positivity)`. Establish `hlen` using `Nat.digits_len p n hp.out.one_lt hpos.ne'`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : (p.digits n).sum ≤ (p.digits n).length * (p - 1)`. Use `List.sum_le_card_nsmul (p.digits n) (p - 1) (fun x hx => Nat.le_sub_one_of_lt (Nat.digits_lt_base hp.out.one_lt hx))` as an intermediate fact. Simplify `this` using `[smul_eq_mul]`. Rewrite `hsum` using `[hlen]`. Establish `hlog : Nat.log p n ≤ Nat.log p Xb` using `Nat.log_mono_right hn`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((p.digits n).sum : ℝ) ≤ ((Nat.log p n : ℝ) + 1) * ((p : ℝ) - 1)`. Establish `h3` using `(Nat.cast_le (α := ℝ)).mpr hsum`. Rewrite `h3` using `[Nat.cast_mul, Nat.cast_add, Nat.cast_one, Nat.cast_sub hp.out.one_lt.le, Nat.cast_one]`. Conclude with `h3`. Establish `hl : (Nat.log p n : ℝ) ≤ Nat.log p Xb` using `by exact_mod_cast hlog`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private lemma digits_sum_le_sub_one_mul_log_add_one (p : ℕ) [hp : Fact p.Prime] (n Xb : ℕ) (hn : n ≤ Xb) :
     ((p.digits n).sum : ℝ) ≤ ((p : ℝ) - 1) * ((Nat.log p Xb : ℝ) + 1) := by
@@ -50,23 +48,23 @@ private lemma digits_sum_le_sub_one_mul_log_add_one (p : ℕ) [hp : Fact p.Prime
     nlinarith
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Establish `hq : 0 < (p : ℝ) - 1` using `by linarith`. Establish `hA : p ^ Mm * (e.factorial * (z + e).choose e) ≠ 0` using `mul_ne_zero (pow_ne_zero _ hp.out.ne_zero) (mul_ne_zero (Nat.factorial_ne_zero _) (Nat.choose_pos (Nat.le_add_left e z)).ne')`. Establish `hB : o.factorial * S.factorial ≠ 0` using `mul_ne_zero (Nat.factorial_ne_zero _) (Nat.factorial_ne_zero _)`. Establish `hβ : betaT p Mm z o S e = ((p ^ Mm * (e.factorial * (z + e).choose e) : ℕ) : ℚ_[p]) / ((o.factorial * S.factorial : ℕ) : ℚ_[p])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [betaT]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hA' : ‖((p ^ Mm * (e.factorial * (z + e).choose e) : ℕ) : ℚ_[p])‖ ≠ 0` using `norm_ne_zero_iff.mpr (by exact_mod_cast hA)`. Establish `hB' : ‖((o.factorial * S.factorial : ℕ) : ℚ_[p])‖ ≠ 0` using `norm_ne_zero_iff.mpr (by exact_mod_cast hB)`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hβ, norm_div, Real.logb_div hA' hB']`. Establish `e1` using `neg_logb_norm_natCast_eq_padicValNat p _ hA`. Establish `e2` using `neg_logb_norm_natCast_eq_padicValNat p _ hB`. Rewrite `e1` using `[padicValNat.mul (pow_ne_zero _ hp.out.ne_zero) (mul_ne_zero (Nat.factorial_ne_zero _) (Nat.choose_pos (Nat.le_add_left e z)).ne'), padicValNat.prime_pow, padicValNat.mul (Nat.factorial_ne_zero _) (Nat.choose_pos (Nat.le_add_left e z)).ne']`. Rewrite `e2` using `[padicValNat.mul (Nat.factorial_ne_zero _) (Nat.factorial_ne_zero _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Nat.cast_add] at e1 e2`. Establish `hC : (padicValNat p ((z + e).choose e) : ℝ) ≤ Nat.log p Xb`. Establish `h` using `@Nat.factorization_choose_le_log p (z + e) e`. Rewrite `h` using `[Nat.factorization_def _ hp.out]`. Conclude with `h.trans (Nat.log_mono_right (by omega))` after adjusting the coercions.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `L : ∀ n : ℕ, ((p : ℝ) - 1) * (padicValNat p n.factorial : ℝ) = n - ((p.digits n).sum : ℝ)`. Introduce `n`. Establish `h` using `sub_one_mul_padicValNat_factorial (p := p) n`. Establish `h' : (((p - 1) * padicValNat p n.factorial : ℕ) : ℝ) = ((n - (p.digits n).sum : ℕ) : ℝ)`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[Nat.cast_mul, Nat.cast_sub (Nat.digit_sum_le p n), Nat.cast_sub hp.out.one_lt.le]`. Simplify using `using h'`. Establish `dso` using `digits_sum_le_sub_one_mul_log_add_one p o Xb ho`. Establish `dsS` using `digits_sum_le_sub_one_mul_log_add_one p S Xb hS`. Establish `dse : (0 : ℝ) ≤ ((p.digits e).sum : ℝ)` using `by positivity`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Le` using `L e`. Establish `Lo` using `L o`. Establish `LS` using `L S`. Establish `hsub : ((S + o - e : ℕ) : ℝ) = (S : ℝ) + o - e`. Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlv : ((p : ℝ) - 1) * ((Nat.log p Xb : ℝ) + 1) ≤ ((p : ℝ) - 1) * lgv` using `mul_le_mul_of_nonneg_left hL hq.le`. Establish `hdiv : ((S + o - e : ℕ) : ℝ) / ((p : ℝ) - 1) ≤ 2 * lgv - ((padicValNat p e.factorial : ℝ) - padicValNat p o.factorial - padicValNat p S.factorial)`. Rewrite using `[div_le_iff₀ hq, hsub]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hceil : (Mm : ℝ) < κ + 1` using `by rw [hM]; exact Nat.ceil_lt_add_one hκ0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL' : (Nat.log p Xb : ℝ) ≤ lgv - 1` using `by linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma per_rowX (p : ℕ) [hp : Fact p.Prime] (Xb S o z e Mm : ℕ) (κ κ4 lgv : ℝ)
     (heo : e ≤ o) (ho : o ≤ Xb) (hS : S ≤ Xb) (hz : z + o ≤ Xb) (hL : (Nat.log p Xb : ℝ) + 1 ≤ lgv)
@@ -126,61 +124,51 @@ lemma per_rowX (p : ℕ) [hp : Fact p.Prime] (Xb S o z e Mm : ℕ) (κ κ4 lgv :
   linarith
 
 /- English proof (translation)
-Introduce `p hp K r hr LLw q J M ρ z w n₀ f ord s d Yw Xb E κ κ4 lgv U V dg hρ hr2 hv hli hspan hord hfil hE hYw hd hcop hSs h2S hzo hYX hrX hL hκ hL4 hsmith`. Establish `hr1 : 1 ≤ r` using `by omega`. Establish `hmem : ∀ b, f b ∈ MMwZ p LLw J M ρ w` using `fun b => hspan ▸ Submodule.subset_span ⟨b, rfl⟩`. Establish `hPol : ∀ b, f b ∈ Pol p r LLw` using `fun b => (Submodule.mem_inf.mp (Submodule.mem_inf.mp (Submodule.mem_inf.mp (Submodule.mem_inf.mp (hmem b)).1).1).1).1`. Establish `hPolZ : ∀ b, f b ∈ PolZ p r LLw` using `fun b => Submodule.mem_inf.mpr ⟨hPol b, (Submodule.mem_inf.mp (hmem b)).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCI` using `fun x y => hC p K r LLw ρ z (f x) (f y) hr1 hv (hPolZ x) (hPolZ y)`. Use `choose cc hcc using hCI`. Use `set S := LLw.total with hSdef`. Use `set o := LLw.deg (Fin.last K) with hodef`. Use `set cI := (K + 4) * (r * Nat.log p (S + o + r)) + 6 * Nat.log p (S + o + r) with hcIdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Establish `hlgv1 : 1 ≤ lgv`. Establish `: (0 : ℝ) ≤ (Nat.log p Xb : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hκ0 : 0 ≤ κ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans ?_ hκ` and prove the remaining obligations. Check the signs of the components of the expression. Establish `hoS0 : o ≤ S` using `Finset.single_le_sum (f := LLw.deg) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)`. Establish `hS2a : S ≤ Xb` using `by omega`. Establish `ho2a : o ≤ Xb` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcI : (cI : ℝ) ≤ κ`. Establish `hX1 : Xb ≠ 0` using `by omega`. Establish `hl : Nat.log p (S + o + r) ≤ Nat.log p Xb + 1`. Rewrite using `[← Nat.log_mul_base hp.out.one_lt hX1]`. Apply `Nat.log_mono_right` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 2 ≤ p` using `hp.out.two_le`. Use the polynomial consequences of the given equalities and inequalities. Establish `hl' : (Nat.log p (S + o + r) : ℝ) ≤ lgv`. Establish `: (Nat.log p (S + o + r) : ℝ) ≤ (Nat.log p Xb : ℝ) + 1` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hK0 : (0 : ℝ) ≤ ((K : ℝ) + 4) * (r : ℝ) + 6` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcIdef]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `_ ≤ (((K : ℝ) + 4) * (r : ℝ) + 6) * lgv := mul_le_mul_of_nonneg_left hl' hK0`. Use `_ ≤ κ := hκ`. Establish `hcIc : cI ≤ ⌈κ⌉₊`. Establish `: (cI : ℝ) ≤ (⌈κ⌉₊ : ℝ)` using `hcI.trans (Nat.le_ceil κ)`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩ : ∃ m : ℕ, m + cI = ⌈κ⌉₊` from `⟨⌈κ⌉₊ - cI, Nat.sub_add_cancel hcIc⟩`. Take `⟨hAeval, hnat, hlead, hord_le, hoS⟩` from `lead_part hDeg hLead LLw J M ρ z w n₀ f ord κ4 m cI cc hr1 hv hli hspan hord hfil hL4 (fun x y n hn => hcc x y n hn)`. Use `set Aq := binMatK ℚ_[p] (2 * S) (coefT p (S + o) m cc) with hAqdef`. Establish `hLB` using `lead_bound p (fun b => ‖betaT p (m + cI) z o S (ord b)‖) (fun b => S + o - ord b) κ4 (κ + 3 * lgv + κ4) ‖Aq.det.leadingCoeff‖ (fun b => norm_pos_iff.mpr (betaT_ne_zero p _ _ _ _ _)) hlead (fun b => per_rowX p Xb S o z (ord b) (m + cI) κ κ4 lgv (hord_le b) ho2a hS2a hzo hL hκ0 hm)`. Use `set alg := algebraMap ℚ_[p] (PadicAlgCl p) with halg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set c' : Fin n₀ → Fin n₀ → ℕ → PadicAlgCl p := fun i j k => alg (coefT p (S + o) m cc i j k) with hc'`. Establish `hAK : binMatK (PadicAlgCl p) (2 * S) c' = Aq.map (Polynomial.map alg)` using `binMatK_map ℚ_[p] (PadicAlgCl p) alg (2 * S) _`. Establish `hDk : (binMatK (PadicAlgCl p) (2 * S) c').det = Aq.det.map alg`. Rewrite using `[hAK]`. Conclude with `split_det p Aq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hsplit, hcard⟩` from `splits_form (binMatK (PadicAlgCl p) (2 * S) c').det`. Establish `hlc : (binMatK (PadicAlgCl p) (2 * S) c').det.leadingCoeff = alg Aq.det.leadingCoeff`. Rewrite using `[hDk, leadingCoeff_map]`. Establish `hnd : (binMatK (PadicAlgCl p) (2 * S) c').det.natDegree = Aq.det.natDegree`. Rewrite using `[hDk, natDegree_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlcnorm : ‖(binMatK (PadicAlgCl p) (2 * S) c').det.leadingCoeff‖ = ‖Aq.det.leadingCoeff‖`. Rewrite using `[hlc, halg, norm_algebraMap']`. Establish `hprod_pos : 0 < ∏ b, (‖betaT p (m + cI) z o S (ord b)‖ * (p : ℝ) ^ (-κ4))`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `b _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_pos (norm_pos_iff.mpr (betaT_ne_zero p _ _ _ _ _)) (Real.rpow_pos_of_pos (by linarith) _)`. Establish `hleadne : (binMatK (PadicAlgCl p) (2 * S) c').det.leadingCoeff ≠ 0`. Rewrite using `[← norm_pos_iff, hlcnorm]`. Conclude with `lt_of_lt_of_le hprod_pos hlead`. Establish `hLB' : -Real.logb p ‖(binMatK (PadicAlgCl p) (2 * S) c').det.leadingCoeff‖ + ((binMatK (PadicAlgCl p) (2 * S) c').det.roots.card : ℝ) / ((p : ℝ) - 1) ≤ (n₀ : ℝ) * (κ + 3 * lgv + κ4)`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hlcnorm, hcard, hnd, hnat]`. Conclude with `hLB`. Establish `hc'norm : ∀ i j k, ‖c' i j k‖ ≤ 1`. Introduce `i j k`. Simplify using `only [hc', halg, norm_algebraMap', coefT]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Rewrite using `[norm_mul, norm_pow, Padic.norm_p]`. Establish `h1 : ‖((cc i j k : ℤ_[p]) : ℚ_[p])‖ ≤ 1`. Rewrite using `[← PadicInt.norm_def]`. Conclude with `PadicInt.norm_le_one _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `h2 : ((p : ℝ)⁻¹) ^ m ≤ 1` using `pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ hp1.le)`. Combine the equalities or inequalities in the displayed calculation. Simplify using the standard rewrite rules. Use `set h := Nat.log p Xb + 1 with hhdef`. Establish `hph : Xb ≤ p ^ h` using `(Nat.lt_pow_succ_log_self hp.out.one_lt Xb).le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hhl : (h : ℝ) ≤ lgv` using `by rw [hhdef]; push_cast; exact hL`. Establish `hYh : Yw ≤ p ^ h` using `by omega`. Establish `hdelh : 2 * S ≤ p ^ h` using `by omega`. Use `set idx : ℤ → ℕ := fun t => ((t - (s : ℤ)) / (d : ℤ)).toNat with hidxdef`. Establish `hidx : ∀ j : ℕ, idx (progr (s : ℤ) (d : ℤ) j) = j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j`. Simplify using `only [hidxdef, progr, add_sub_cancel_left]`. Rewrite using `[Int.mul_ediv_cancel_left _ (by exact_mod_cast hd.ne')]`. Simplify using the standard rewrite rules. Use `set U' : ℤ → Matrix (Fin n₀) (Fin n₀) (PadicAlgCl p) := fun t => (U (idx t)).map alg with hU'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set V' : ℤ → Matrix (Fin n₀) (Fin n₀) (PadicAlgCl p) := fun t => (V (idx t)).map alg with hV'`. Use `set dg' : ℤ → Fin n₀ → PadicAlgCl p := fun t b => alg (dg (idx t) b) with hdg'`. Establish `hsm : ∀ j ∈ range Yw, (∀ x y, ‖U' (progr (s : ℤ) (d : ℤ) j) x y‖ ≤ 1) ∧ (∀ x y, ‖V' (progr (s : ℤ) (d : ℤ) j) x y‖ ≤ 1) ∧ ‖(U' (progr (s : ℤ) (d : ℤ) j)).det‖ = 1 ∧ ‖(V' (progr (s : ℤ) (d : ℤ) j)).det‖ = 1 ∧ (binMatK (PadicAlgCl p) (2 * S) c').map (Polynomial.eval ((progr (s : ℤ) …`. Introduce `j hj`. Take `⟨hU1, hV1, hUd, hVd, hfac⟩` from `hsmith j (Finset.mem_range.mp hj)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hU', hV', hdg', hidx]`. Use `⟨fun x y => ?_, fun x y => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, halg, norm_algebraMap']`. Conclude with `hU1 x y`. Rewrite using `[Matrix.map_apply, halg, norm_algebraMap']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hV1 x y`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, halg, norm_algebraMap']`. Conclude with `hUd`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, halg, norm_algebraMap']`. Conclude with `hVd`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[hAK]`. Use extensionality with `x y`. Establish `hpt : ((progr (s : ℤ) (d : ℤ) j : ℤ) : PadicAlgCl p) = ((s + d * j : ℕ) : PadicAlgCl p)`. Simplify using `[progr]`. Establish `hfe` using `congrFun (congrFun hfac x) y`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.mul_diagonal] at hfe`. Simplify using `only [Matrix.map_apply, hpt, eval_natCast_map, Matrix.mul_apply, Matrix.mul_diagonal]`. Rewrite using `[hAeval x y (s + d * j) (le_trans hSs (Nat.le_add_right _ _)), hm, hfe, map_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`.
-
-Simplify using `[Matrix.diagonal_apply, map_sum]`. Establish `hcop' : IsCoprime (d : ℤ) (p : ℤ)` using `hcop`. Establish `hE0 : (0 : ℝ) < E` using `by linarith`. Establish `key` using `hW p (PadicAlgCl p) n₀ (2 * S) h E c' (binMatK (PadicAlgCl p) (2 * S) c').det.leadingCoeff (binMatK (PadicAlgCl p) (2 * S) c').det.roots (s : ℤ) (d : ℤ) Yw (κ + 3 * lgv + κ4) U' V' dg' hcop' (by omega) hYh hdelh hE0 hleadne hc'norm hsplit hsm hLB'`. Establish `hcnt : ∀ j ∈ range Yw, ((univ.filter (fun b => ‖dg j b‖ < (p : ℝ) ^ (-E))).card : ℝ) ≤ ((univ.filter (fun b => ‖dg' (progr (s : ℤ) (d : ℤ) j) b‖ ≤ (p : ℝ) ^ (-E))).card : ℝ)`.
-
-Introduce `j _`. Establish `hsub : univ.filter (fun b => ‖dg j b‖ < (p : ℝ) ^ (-E)) ⊆ univ.filter (fun b => ‖dg' (progr (s : ℤ) (d : ℤ) j) b‖ ≤ (p : ℝ) ^ (-E))`. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢`. Simplify using `only [hdg', hidx, halg, norm_algebraMap']`.
-
-Conclude with `hb.le`. Conclude with `Finset.card_le_card hsub` after adjusting the coercions. Establish `hYpos : (0 : ℝ) < Yw` using `by exact_mod_cast hYw`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hSdef]`.
-
-Use `push_cast`. Establish `h1 : 2 * (S : ℝ) * h / Yw ≤ 2 * (S : ℝ) * lgv / Yw`. Apply `div_le_div_of_nonneg_right _ hYpos.le` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hhl (by positivity)`. Establish `h2 : (κ + 3 * lgv + κ4) + 2 * (S : ℝ) * h / Yw ≤ (κ + 3 * lgv + κ4) + 2 * (S : ℝ) * lgv / Yw`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `div_le_div_of_nonneg_right h2 hE0.le`. Establish `hn0 : (0 : ℝ) ≤ n₀` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem meanGamX_of (hDeg : GamDeg) (hLead : GamLead) (hC : GamIntC) (hW : Formalism.GM.WindowFullAP) :
     MeanGamX := by

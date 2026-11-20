@@ -10,14 +10,14 @@ section Approximation
 variable {R : Type*} [CommRing R] (I : Ideal R)
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smodEq_pow_iff_sub_mem {x y : R} {n : ℕ} :
     x ≡ y [SMOD (I ^ n • ⊤ : Submodule R R)] ↔ x - y ∈ I ^ n := by
   rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Qp1.exists_limit_of_approx <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_limit_of_approx [IsPrecomplete I R] (P : ℕ → R → Prop)
     (hstep : ∀ n x, P n x → ∃ y, y - x ∈ I ^ n ∧ P (n + 1) y) {x₀ : R} (h₀ : P 0 x₀) :
@@ -25,13 +25,11 @@ theorem exists_limit_of_approx [IsPrecomplete I R] (P : ℕ → R → Prop)
   by apply _root_.UpperTheory.Reformulated.B.Qp1.exists_limit_of_approx <;> assumption
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_limit_of_approx I (fun n y => F y ∈ I ^ (m + n) ∧ y - x₀ ∈ I ^ m) (fun n y ⟨h1, h2⟩ => by`. Take `⟨z, hz1, hz2⟩` from `hstep (m + n) y h1`. Use `⟨z, Ideal.pow_le_pow_right (by omega) hz1, hz2, ?_⟩` and prove the remaining obligations. Establish `e : z - x₀ = (z - y) + (y - x₀)` using `by ring`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.add_mem _ (Ideal.pow_le_pow_right (by omega) hz1) h2)`. Use the proof step `⟨by simpa using h₀, by simp⟩`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Use `IsHausdorff.haus (I := I) inferInstance _ fun n => ?_` and prove the remaining obligations. Rewrite using `[smodEq_pow_iff_sub_mem, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, ⟨hy1, _⟩, hy⟩` from `hx n`. Establish `e : F x = (F x - F y) + F y` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ (hF n x y hy) (Ideal.pow_le_pow_right (by omega) hy1)`. Take `⟨y, ⟨_, hy2⟩, hy⟩` from `hx m`.
-
-Establish `e : x - x₀ = (x - y) + (y - x₀)` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ hy hy2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_zero_of_approx [IsAdicComplete I R] (F : R → R)
     (hF : ∀ n x y, x - y ∈ I ^ n → F x - F y ∈ I ^ n)
@@ -65,9 +63,9 @@ variable {A B : Type*} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
   [CommRing B] [IsDomain B] [IsDiscreteValuationRing B] [Algebra A B]
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `hm : a ∈ maximalIdeal A` using `(mem_maximalIdeal a).2 h`. Use `Ideal.mem_map_of_mem (algebraMap A B) hm` as an intermediate fact. Rewrite `this` using `[hunr]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mem_maximalIdeal _).1 this ha`.
+A detailed English derivation is pending.
 -/
 theorem isLocalHom_of_map_maximalIdeal
     (hunr : (maximalIdeal A).map (algebraMap A B) = maximalIdeal B) :
@@ -80,7 +78,7 @@ theorem isLocalHom_of_map_maximalIdeal
   exact (mem_maximalIdeal _).1 this ha
 
 /- English proof (translation)
-Rewrite `hπ`, the goal using `[IsDiscreteValuationRing.irreducible_iff_uniformizer]`. Rewrite using `[← hunr, hπ, Ideal.map_span, Set.image_singleton]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem irreducible_algebraMap (hunr : (maximalIdeal A).map (algebraMap A B) = maximalIdeal B)
     {π : A} (hπ : Irreducible π) : Irreducible (algebraMap A B π) := by
@@ -88,7 +86,7 @@ theorem irreducible_algebraMap (hunr : (maximalIdeal A).map (algebraMap A B) = m
   rw [← hunr, hπ, Ideal.map_span, Set.image_singleton]
 
 /- English proof (translation)
-Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_maximalIdeal_pow_iff {ϖ : B} (hϖ : Irreducible ϖ) {x : B} {n : ℕ} :
     x ∈ maximalIdeal B ^ n ↔ ϖ ^ n ∣ x := by
@@ -105,7 +103,7 @@ variable {A B : Type*} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
   (hσ : ∀ x : B, residue B (σ x) = residue B x ^ Nat.card (ResidueField A))
 
 /- English proof (translation)
-The claim follows from `Finite.one_lt_card`.
+A detailed English derivation is pending.
 -/
 theorem one_lt_card_residueField : 1 < Nat.card (ResidueField A) :=
   Finite.one_lt_card
@@ -113,13 +111,11 @@ theorem one_lt_card_residueField : 1 < Nat.card (ResidueField A) :=
 include hσ in
 
 /- English proof (translation)
-Use `open Polynomial in`. Use `set q := Nat.card (ResidueField A)`. Establish `hq : 1 < q` using `one_lt_card_residueField`. Use `set a := residue B v`. Use `set b := residue B w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hlow : (C b - C a * X : (ResidueField B)[X]).degree < (X ^ q : (ResidueField B)[X]).degree`. Rewrite using `[degree_X_pow]`. Use `lt_of_le_of_lt (degree_sub_le _ _) (max_lt ?_ ?_)` and prove the remaining obligations. Conclude with `lt_of_le_of_lt degree_C_le (by exact_mod_cast (by omega : 0 < q))`. Conclude with `lt_of_le_of_lt (degree_C_mul_X_le a) (by exact_mod_cast hq)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hdeg : (X ^ q + (C b - C a * X) : (ResidueField B)[X]).degree = q`. Rewrite using `[degree_add_eq_left_of_degree_lt hlow, degree_X_pow]`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_root (X ^ q + (C b - C a * X) : (ResidueField B)[X]) (by rw [hdeg]; exact_mod_cast (by omega : q ≠ 0))`. Take `⟨z', rfl⟩` from `residue_surjective z`. Use `⟨z', ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [IsRoot, eval_add, eval_sub, eval_pow, eval_X, eval_C, eval_mul] at hz`. Rewrite using `[map_add, map_sub, map_mul, hσ]`. Take the linear combination `hz`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_residue_sub_mul_add_eq_zero (v w : B) :
     ∃ z : B, residue B (σ z - v * z + w) = 0 := by
@@ -147,17 +143,15 @@ variable {π : A} (hπB : Irreducible (algebraMap A B π))
 include hσ hπB
 
 /- English proof (translation)
-Use `set ϖ := algebraMap A B π`. Establish `hσϖ : ∀ (n : ℕ) (t : B), σ (ϖ ^ n * t) = ϖ ^ n * σ t`. Introduce `n t`. Rewrite using `[map_mul, map_pow, AlgHom.commutes]`. Take `⟨x, hx, hxm⟩` from `exists_eq_zero_of_approx (maximalIdeal B) (fun x => σ x - v * x - c) (fun n x y hxy => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hxy`, the goal using `[mem_maximalIdeal_pow_iff hπB]`. Take `⟨t, ht⟩` from `hxy`. Use `⟨σ t - v * t, ?_⟩` and prove the remaining obligations. Establish `: x = y + ϖ ^ n * t` using `by rw [← ht]; ring`. Simplify using `only [this, map_add, hσϖ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `ring)`. Use the proof step `(fun n x hx => by`. Rewrite `hx` using `[mem_maximalIdeal_pow_iff hπB]`. Take `⟨w, hw⟩` from `hx`. Take `⟨z, hz⟩` from `exists_residue_sub_mul_add_eq_zero σ hσ v w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hz` using `[residue_eq_zero_iff, hπB.maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨t, ht⟩` from `hz`. Use `⟨x + ϖ ^ n * z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_maximalIdeal_pow_iff hπB]`. Conclude with `⟨z, by ring⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mem_maximalIdeal_pow_iff hπB]`. Use `⟨t, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, hσϖ]`. Establish `e : σ x - v * x - c = ϖ ^ n * w` using `hw`. Take the linear combination `e + ϖ ^ n * ht)`.
-
-Use `h₀`. Conclude with `⟨x, sub_eq_zero.1 (by simpa using hx), hxm⟩`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sub_mul_eq_of_mem [IsAdicComplete (maximalIdeal B) B] (v c : B) {m : ℕ} {x₀ : B}
     (h₀ : σ x₀ - v * x₀ - c ∈ maximalIdeal B ^ m) :
@@ -192,7 +186,7 @@ theorem exists_sub_mul_eq_of_mem [IsAdicComplete (maximalIdeal B) B] (v c : B) {
   exact ⟨x, sub_eq_zero.1 (by simpa using hx), hxm⟩
 
 /- English proof (translation)
-Take `⟨x, hx, -⟩` from `exists_sub_mul_eq_of_mem σ hσ hπB v c (m := 0) (x₀ := 0) (by simp)`. Conclude with `⟨x, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sub_mul_eq [IsAdicComplete (maximalIdeal B) B] (v c : B) :
     ∃ x, σ x - v * x = c := by
@@ -200,15 +194,15 @@ theorem exists_sub_mul_eq [IsAdicComplete (maximalIdeal B) B] (v c : B) :
   exact ⟨x, hx⟩
 
 /- English proof (translation)
-Use `set q := Nat.card (ResidueField A)`. Establish `hq : 1 < q` using `one_lt_card_residueField`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (residue B v) (n := q - 1) (by omega)`. Establish `hv0 : residue B v ≠ 0` using `(residue_ne_zero_iff_isUnit _).2 v.isUnit`. Establish `hz0 : z ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow (by omega)]`. Conclude with `hv0 hz.symm`. Take `⟨z', rfl⟩` from `residue_surjective z`. Establish `h₀ : σ z' - v * z' - 0 ∈ maximalIdeal B ^ 1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_one, ← residue_eq_zero_iff, sub_zero, map_sub, map_mul, hσ]`. Establish `e : residue B z' ^ q = residue B z' ^ (q - 1) * residue B z'`. Rewrite using `[← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, hz, sub_self]`. Take `⟨x, hx, hxm⟩` from `exists_sub_mul_eq_of_mem σ hσ hπB v 0 h₀`. Establish `hxu : IsUnit x`. Rewrite using `[← residue_ne_zero_iff_isUnit]`. Rewrite `hxm` using `[pow_one, ← residue_eq_zero_iff, map_sub, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hxm]` and apply the resulting hypothesis. Use `⟨hxu.unit, ?_⟩` and prove the remaining obligations. Simplify `hx` using `[sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_units_eq_mul [IsAdicComplete (maximalIdeal B) B] (v : Bˣ) :
     ∃ η : Bˣ, σ η = v * η := by
@@ -248,7 +242,7 @@ variable {A B : Type*} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
 include hunr hσ
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Introduce `c`. Take `⟨x, hx⟩` from `exists_sub_mul_eq σ hσ (irreducible_algebraMap hunr hπ) 1 c`. Conclude with `⟨x, by simpa using hx⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surjective_sub_self : Function.Surjective fun x : B => σ x - x := by
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible A
@@ -257,9 +251,9 @@ theorem surjective_sub_self : Function.Surjective fun x : B => σ x - x := by
   exact ⟨x, by simpa using hx⟩
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Introduce `v`. Take `⟨η, hη⟩` from `exists_units_eq_mul σ hσ (irreducible_algebraMap hunr hπ) v`. Use `⟨η, ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_iff_eq_mul]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Simplify using `using hη`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem surjective_div_self :
     Function.Surjective fun u : Bˣ => Units.map (σ : B →* B) u / u := by

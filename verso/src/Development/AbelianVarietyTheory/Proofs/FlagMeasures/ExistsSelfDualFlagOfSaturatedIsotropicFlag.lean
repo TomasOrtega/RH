@@ -7,60 +7,58 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.RadCov.FullFlag
 
 /- English proof (translation)
-The claim follows from `Submodule.finrank_mono (Submodule.span_mono h)`.
+A detailed English derivation is pending.
 -/
 theorem rkK_mono {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [FiniteDimensional K V] {M N : Submodule (𝓞 K) V} (h : M ≤ N) : Formalism.HN.rkK M ≤ Formalism.HN.rkK N :=
   Submodule.finrank_mono (Submodule.span_mono h)
 
 /- English proof (translation)
-Introduce `I xf a j S hS`. Take `⟨h0, hmono, hrk, hsat, hiso⟩` from `hS`. Use `set x : I.GA := (1, xf) with hx`. Take `⟨-, hA, -, -, -⟩` from `GlobalTheory.PointLattice.lamX_selfDual I x`. Take `⟨-, -, -, -, hw⟩` from `GlobalTheory.Count.FrameMajorant.frames_give_majorants I x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hX : ∀ v, IsUnit (frm I x v).det` using `fun v => (hw v).1`. Take `⟨-, -, -, hmain⟩` from `PerpStep.main I x`. Establish `hform : ∀ s y : Fin I.n → I.E, star s ⬝ᵥ (I.J *ᵥ y) = Formalism.UG.hform (starRingEnd I.E) I.J s y`. Introduce `s y`. Simplify using `[Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc, starRingEnd_apply, -star_trivial]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmem : ∀ N y, y ∈ perpIn I x N ↔ y ∈ lamX I x ∧ ∀ s ∈ N, star s ⬝ᵥ (I.J *ᵥ y) = 0`. Introduce `N y`. Rewrite using `[PerpStep.perpIn_eq, PerpStep.mem_perp]`. Simplify using `only [hform]`. Establish `hsatS : ∀ i, Formalism.HN.IsSat (Formalism.HermitianLatticesTheory.realize (bas I) (frm I x)) (lamX I x) (S i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `e : S i = lamX I x ⊓ (Submodule.span I.E (S i : Set (Fin I.n → I.E))).restrictScalars (𝓞 I.E)`. Use extensionality with `y`. Conclude with `hsat i y`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `PerpStep.sat_inf (bas I) (frm I x) hX _ hA _`. Take `⟨G, hG⟩ : ∃ G : ℕ → Submodule (𝓞 I.E) (Fin I.n → I.E), ∀ b, G b = S ⟨min b a, Nat.lt_succ_of_le (min_le_right _ _)⟩` from `⟨_, fun _ => rfl⟩`. Establish `hGS : ∀ i : Fin (a + 1), G i = S i`. Introduce `i`. Rewrite using `[hG]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congr 1`. Use `ext`. Use `i.2` as an intermediate fact. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hG0 : G 0 = ⊥` using `(hGS 0).trans h0`. Establish `hGm : Monotone G`. Introduce `b c h`. Rewrite using `[hG, hG]`. Conclude with `hmono (Fin.mk_le_mk.2 (min_le_min_right _ h))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hGsat : ∀ b, Formalism.HN.IsSat (Formalism.HermitianLatticesTheory.realize (bas I) (frm I x)) (lamX I x) (G b)`. Introduce `b`. Rewrite using `[hG]`. Conclude with `hsatS _`. Establish `hGr : ∀ i : Fin a, Formalism.HN.rkK (G (i + 1)) = Formalism.HN.rkK (G i) + j i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i`. Establish `h1` using `hGS i.succ`. Establish `h2` using `hGS i.castSucc`. Rewrite `h1` using `[Fin.val_succ]`. Rewrite `h2` using `[Fin.val_castSucc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[h1, h2, hrk]`. Establish `hGsum : ∀ b (hb : b ≤ a), Formalism.HN.rkK (G b) = ∑ i : Fin b, j (Fin.castLE hb i)`. Introduce `b`. Proceed by induction on `b with`. Consider the case `zero => intro _`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hG0, Formalism.HN.rkK]`. Consider the case `succ b ih`. Introduce `hb`. Rewrite using `[Fin.sum_univ_castSucc]`. Use `hGr ⟨b, hb⟩` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only at this`. Rewrite using `[this, ih (by omega)]`. Both sides reduce to the same expression. Establish `hGa : Formalism.HN.rkK (G a) = ∑ i, j i`. Rewrite using `[hGsum a le_rfl]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hPr : ∀ b, Formalism.HN.rkK (perpIn I x (G b)) + Formalism.HN.rkK (G b) = I.n` using `fun b => (hmain _ _ (hGsat b) (hGsat b) le_rfl).2.1`. Establish `hPP : ∀ b, perpIn I x (perpIn I x (G b)) = G b` using `fun b => (hmain _ _ (hGsat b) (hGsat b) le_rfl).2.2.1`. Establish `hPa : ∀ b c, b ≤ c → perpIn I x (G c) ≤ perpIn I x (G b)` using `fun b c h => (hmain _ _ (hGsat b) (hGsat c) (hGm h)).2.2.2.1`. Establish `hP0 : perpIn I x (G 0) = lamX I x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `y`. Rewrite using `[hmem, hG0]`. Use `⟨fun h => h.1, fun h => ⟨h, fun s hs => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(Submodule.mem_bot _).1 hs]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmid : G a ≤ perpIn I x (G a)`. Introduce `y hy`. Establish `e : G a = S (Fin.last a)` using `hGS (Fin.last a)`. Rewrite using `[hmem]`. Use `⟨(hGsat a).1 hy, fun s hs => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hform]`. Rewrite `hs`, `hy` using `[e]`. Conclude with `hiso s hs y hy`. Take `⟨F, hF1, hF2⟩ : ∃ F : ℕ → Submodule (𝓞 I.E) (Fin I.n → I.E), (∀ b, b ≤ a → F b = G b) ∧ ∀ b c, a < b → c = 2 * a + 1 - b → F b = perpIn I x (G c)` from `⟨fun b => if b ≤ a then G b else perpIn I x (G (2 * a + 1 - b)), fun b hb => if_pos hb, fun b c hb hc => hc ▸ if_neg (by omega)⟩`. Establish `hFm : Monotone F`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `monotone_nat_of_le_succ fun b => ?_` and prove the remaining obligations. Break down `lt_trichotomy b a with h | rfl | h` into its components or cases. Rewrite using `[hF1 b h.le, hF1 (b + 1) h]`. Conclude with `hGm (by omega)`. Rewrite using `[hF1 b le_rfl, hF2 (b + 1) b (by omega) (by omega)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmid`. Rewrite using `[hF2 b _ h rfl, hF2 (b + 1) _ (by omega) rfl]`. Conclude with `hPa _ _ (by omega)`. Establish `hFtop : ∀ b, 2 * a + 1 ≤ b → F b = lamX I x` using `fun b hb => by`. Rewrite using `[hF2 b 0 (by omega) (by omega), hP0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨F, fun b => Formalism.HN.rkK (F (b + 1)) - Formalism.HN.rkK (F b), ⟨hFm, ?_, ?_, ?_⟩, hFtop _ le_rfl, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hF1 0 (by omega), hG0]`. Introduce `b hb`. Rewrite using `[hFtop b hb, hFtop _ le_rfl]`. Introduce `b hb y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hFtop _ le_rfl, ← hmem]`. Distinguish the cases in `h : b ≤ a`. Rewrite using `[hF1 b h, hF2 _ b (by omega) (by omega)]`. Rewrite using `[hF2 b _ (by omega) rfl, hPP, hF1 _ (by omega)]`. Introduce `i`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hF1 i (by have := i.2; omega), hGS]`. Introduce `b`. Use `rkK_mono (hFm (Nat.le_succ b))` as an intermediate fact. Simplify using `only [Nat.succ_eq_add_one] at this ⊢`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `i`. Establish `hi` using `i.2`. Establish `h1` using `hGr i`. Establish `h2` using `hPr i`. Establish `h3` using `hPr (i + 1)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[hF1 i (by omega), hF1 (i + 1) (by omega), hF2 (2 * a - i + 1) i (by omega) (by omega), hF2 (2 * a - i) (i + 1) (by omega) (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `hPr a`. Simplify using `only`.
-
-Rewrite using `[hF1 a le_rfl, hF2 (a + 1) a (by omega) (by omega)]`. Use linear arithmetic over natural numbers and integers. Introduce `b hb`. Simplify using `only`. Rewrite using `[hFtop b hb, hFtop _ (by omega), Nat.sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (I : AutInst) (xf : I.Gf) (a : ℕ) (j : Fin a → ℕ) (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E)), IsSatFlag I (lamX I (1, xf)) j S → ∃ (F : ℕ → Submodule (𝓞 I.E) (Fin I.n → I.E)) (r : ℕ → ℕ), IsDualFlag I.J F (2 * a + 1) ∧ F (2 * a + 1) = lamX I (1, xf) ∧ (∀ i : Fin (a + 1), F i = S i) ∧ (∀ b, Formalism.HN.rkK (F (b + 1)) = Formalism.HN.rkK (F b) + r b) ∧ (∀ i : Fin a, r i = j i ∧ r (2 * a - i) = j i) ∧ r a = I.n - 2 * ∑ i, j i ∧ ∀ b, 2 * a + 1 ≤ b → r b = 0 := by
   intro I xf a j S hS

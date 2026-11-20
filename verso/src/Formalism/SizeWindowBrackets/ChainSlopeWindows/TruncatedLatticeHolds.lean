@@ -18,7 +18,7 @@ def pLen (p : Ideal R) [p.IsPrime] (A B : Submodule R W) : ℕ∞ :=
   Module.length R ((localization₂ p A) ⧸ (localization₂ p B).comap (localization₂ p A).subtype)
 
 /- English proof (translation)
-The claim follows from `indexBasic_len_add (localization₂ p B) (localization₂ p C) (localization₂ p A) (locBasic_locS_mono _ hBC) (locBasic_locS_mono _ hCA)`.
+A detailed English derivation is pending.
 -/
 theorem pLen_add (p : Ideal R) [p.IsPrime] {A C B : Submodule R W} (hBC : B ≤ C) (hCA : C ≤ A) :
     pLen p A B = pLen p C B + pLen p A C :=
@@ -26,7 +26,7 @@ theorem pLen_add (p : Ideal R) [p.IsPrime] {A C B : Submodule R W} (hBC : B ≤ 
     (locBasic_locS_mono _ hCA)
 
 /- English proof (translation)
-Unfold `pLen`. Rewrite using `[Submodule.comap_subtype_self]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pLen_self (p : Ideal R) [p.IsPrime] (A : Submodule R W) : pLen p A A = 0 := by
   unfold pLen
@@ -34,9 +34,9 @@ theorem pLen_self (p : Ideal R) [p.IsPrime] (A : Submodule R W) : pLen p A A = 0
   simp
 
 /- English proof (translation)
-Establish `hnle : ¬ m ≤ p` using `fun hle => h (hm.eq_of_le hp.ne_top hle).symm`. Take `⟨s, hsm, hsp⟩` from `SetLike.not_le_iff_exists.1 hnle`. Establish `hA : A ≤ localization₂ p C` using `fun x hx => ⟨s, hsp, hkill s hsm x hx⟩`. Establish `hle : localization₂ p A ≤ localization₂ p C`. Use `locBasic_locS_mono p.primeCompl hA` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `localization₂ at this ⊢`. Rewrite `this` using `[locBasic_locS_idem]`. Then use the resulting hypothesis. Unfold `pLen`. Rewrite using `[Submodule.comap_subtype_eq_top.2 hle]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pLen_simple_ne (p m : Ideal R) [hp : p.IsMaximal] [hm : m.IsMaximal] (h : p ≠ m)
     {A C : Submodule R W} (hkill : ∀ s ∈ m, ∀ x ∈ A, s • x ∈ C) : pLen p A C = 0 := by
@@ -52,9 +52,9 @@ theorem pLen_simple_ne (p m : Ideal R) [hp : p.IsMaximal] [hm : m.IsMaximal] (h 
   simp
 
 /- English proof (translation)
-Introduce `s hs x hx`. Establish `h0 : e (Submodule.Quotient.mk (s • (⟨x, hx⟩ : A))) = 0`. Rewrite using `[Submodule.Quotient.mk_smul, map_smul]`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (e (Submodule.Quotient.mk (⟨x, hx⟩ : A)))`. Rewrite using `[← hy, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `m.mul_mem_right _ hs`. Rewrite `h0` using `[map_eq_zero_iff e e.injective, Submodule.Quotient.mk_eq_zero]`. Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kill_of_equiv (m : Ideal R) {A C : Submodule R W}
     (e : (A ⧸ C.comap A.subtype) ≃ₗ[R] (R ⧸ m)) : ∀ s ∈ m, ∀ x ∈ A, s • x ∈ C := by
@@ -69,23 +69,19 @@ theorem kill_of_equiv (m : Ideal R) {A C : Submodule R W}
     exact h0
 
 /- English proof (translation)
-Establish `hkill` using `kill_of_equiv m e`. Establish `hinv : ∀ s ∉ m, ∃ t, t * s - 1 ∈ m`. Introduce `s hs`. Take `⟨t, ht⟩` from `Ideal.Quotient.exists_inv (I := m) (a := Ideal.Quotient.mk m s) (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])`. Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, map_one, mul_comm, ht, sub_self]`. Establish `hAP : A ≤ localization₂ m A` using `locBasic_le_locS _ A`. Set `ψ : A →ₗ[R] (localization₂ m A) ⧸ (localization₂ m C).comap (localization₂ m A).subtype` to `((localization₂ m C).comap (localization₂ m A).subtype).mkQ ∘ₗ Submodule.inclusion hAP`. Establish `hsurj : Function.Surjective ψ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z`. Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `H x`. Take `⟨s, hs, hsx⟩` from `x.2`. Take `⟨t, ht⟩` from `hinv s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨t • s • (x : W), A.smul_mem t hsx⟩, ?_⟩` and prove the remaining obligations. Use `show Submodule.mkQ _ _ = Submodule.Quotient.mk x`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.eq]`. Use `show (t • s • (x : W) - x) ∈ localization₂ m C`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : s • (t • s • (x : W) - x) = (t * s - 1) • (s • (x : W))` using `by module`. Rewrite using `[e1]`. Conclude with `hkill _ ht _ hsx`. Establish `hker : LinearMap.ker ψ = C.comap A.subtype`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[LinearMap.mem_ker]`. Use `show Submodule.mkQ _ _ = 0 ↔ _`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `show (x : W) ∈ localization₂ m C ↔ (x : W) ∈ C`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨s, hs, hsx⟩`. Take `⟨t, ht⟩` from `hinv s hs`. Establish `e1 : (x : W) = t • (s • (x : W)) - (t * s - 1) • (x : W)` using `by module`. Rewrite using `[e1]`. Conclude with `C.sub_mem (C.smul_mem t hsx) (hkill _ ht _ x.2)`.
-
-Introduce `hx`. Conclude with `locBasic_le_locS _ C hx`. Establish `e2 : (A ⧸ C.comap A.subtype) ≃ₗ[R] (localization₂ m A) ⧸ (localization₂ m C).comap (localization₂ m A).subtype` using `(Submodule.quotEquivOfEq _ _ hker.symm).trans (ψ.quotKerEquivOfSurjective hsurj)`. Establish `hs : IsSimpleModule R (R ⧸ m)` using `isSimpleModule_iff_isCoatom.2 hm.out`. Unfold `pLen`.
-
-Rewrite using `[(e2.symm.trans e).length_eq]`. Conclude with `Module.length_eq_one_iff.2 hs`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pLen_simple_self (m : Ideal R) [hm : m.IsMaximal] {A C : Submodule R W}
     (e : (A ⧸ C.comap A.subtype) ≃ₗ[R] (R ⧸ m)) : pLen m A C = 1 := by
@@ -136,35 +132,31 @@ theorem pLen_simple_self (m : Ideal R) [hm : m.IsMaximal] {A C : Submodule R W}
   exact Module.length_eq_one_iff.2 hs
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `A B hBA hn hn0`. Distinguish the cases in `hEq : B = A`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hEq` using the available equality. Use `⟨0, fun w => ?_, ?_⟩` and prove the remaining obligations. Use `w.2.isPrime` as an intermediate fact. Rewrite using `[pLen_self]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finsupp.prod_zero_index, AddSubgroup.relIndex_self]`. Use `set B' := B.comap A.subtype with hB'`. Establish `hcard : Nat.card (A ⧸ B') ≠ 0` using `by rw [← hn] at hn0; exact hn0`. Establish `hfin : Finite (A ⧸ B')` using `Nat.finite_of_card_ne_zero hcard`. Establish `hnt : Nontrivial (A ⧸ B')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.Quotient.nontrivial_iff]`. Introduce `htop`. Conclude with `hEq (le_antisymm hBA (Submodule.comap_subtype_eq_top.1 htop))`. Break down `eq_top_or_exists_le_coatom (⊥ : Submodule R (A ⧸ B')) with h | ⟨Q1, hQ1, -⟩` into its components or cases. Conclude with `absurd h bot_ne_top`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsimple : IsSimpleModule R ((A ⧸ B') ⧸ Q1)` using `isSimpleModule_iff_isCoatom.2 hQ1`. Take `⟨m0, hm0, ⟨e0⟩⟩` from `isSimpleModule_iff_quot_maximal.1 hsimple`. Use `set C' : Submodule R A := Q1.comap B'.mkQ with hC'`. Use `set C : Submodule R W := C'.map A.subtype with hC`. Establish `hCA : C ≤ A` using `Submodule.map_subtype_le A C'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hCc : C.comap A.subtype = C'` using `Submodule.comap_map_eq_of_injective A.injective_subtype C'`. Establish `hBC : B ≤ C`. Introduce `x hx`. Use `⟨⟨x, hBA hx⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show B'.mkQ ⟨x, hBA hx⟩ ∈ Q1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: B'.mkQ ⟨x, hBA hx⟩ = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hx`. Rewrite using `[this]`. Conclude with `Q1.zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hker : LinearMap.ker (Q1.mkQ ∘ₗ B'.mkQ) = C.comap A.subtype`. Rewrite using `[LinearMap.ker_comp, Submodule.ker_mkQ, hCc]`. Establish `hsurj : Function.Surjective (Q1.mkQ ∘ₗ B'.mkQ)` using `Q1.mkQ_surjective.comp B'.mkQ_surjective`. Establish `e : (A ⧸ C.comap A.subtype) ≃ₗ[R] (R ⧸ m0)` using `((Submodule.quotEquivOfEq _ _ hker.symm).trans ((Q1.mkQ ∘ₗ B'.mkQ).quotKerEquivOfSurjective hsurj)).trans e0`. Establish `hmul` using `AddSubgroup.relIndex_mul_relIndex B.toAddSubgroup C.toAddSubgroup A.toAddSubgroup ((Submodule.toAddSubgroup_le _ _).2 hBC) ((Submodule.toAddSubgroup_le _ _).2 hCA)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hCAcard : C.toAddSubgroup.relIndex A.toAddSubgroup = Nat.card (R ⧸ m0)`. Express the relevant statement in the definitionally equal form `Nat.card (A ⧸ C.comap A.subtype) = _`. Conclude with `Nat.card_congr e.toEquiv`. Establish `hne : B.toAddSubgroup.relIndex C.toAddSubgroup ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hmul` using `[h0, zero_mul, hn]`. Conclude with `hn0 hmul.symm`. Establish `hne2 : Nat.card (R ⧸ m0) ≠ 0`. Introduce `h0`. Rewrite `hmul` using `[hCAcard, h0, mul_zero, hn]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hn0 hmul.symm`. Establish `h1 : 1 < Nat.card (R ⧸ m0)`. Establish `: Finite (R ⧸ m0)` using `Nat.finite_of_card_ne_zero hne2`. Establish `: Nontrivial (R ⧸ m0)` using `Ideal.Quotient.nontrivial_iff.2 hm0.ne_top`. Conclude with `Finite.one_lt_card`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : B.toAddSubgroup.relIndex C.toAddSubgroup < n`. Rewrite using `[← hn, ← hmul, hCAcard]`. Use `Nat.pos_of_ne_zero hne` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Take `⟨k1, hk1, hk1c⟩` from `ih _ hlt C B hBC rfl hne`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨k1 + Finsupp.single ⟨m0, hm0⟩ 1, fun w => ?_, ?_⟩` and prove the remaining obligations. Use `w.2.isPrime` as an intermediate fact. Use `w.2` as an intermediate fact. Rewrite using `[pLen_add w.1 hBC hCA, hk1 w, Finsupp.add_apply, Finsupp.single_apply]`. Distinguish the cases in `hw : (⟨m0, hm0⟩ : {p : Ideal R // p.IsMaximal}) = w`.
-
-Substitute `hw` using the available equality. Rewrite using `[if_pos rfl, pLen_simple_self m0 e]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hw, pLen_simple_ne w.1 m0 (fun h => hw (Subtype.ext h.symm)) (kill_of_equiv m0 e)]`. Simplify using the standard rewrite rules.
-
-Establish `hz : ∀ w : {p : Ideal R // p.IsMaximal}, Nat.card (R ⧸ w.1) ^ 0 = 1` using `fun _ => pow_zero _`. Establish `ha : ∀ (w : {p : Ideal R // p.IsMaximal}) (a c : ℕ), Nat.card (R ⧸ w.1) ^ (a + c) = Nat.card (R ⧸ w.1) ^ a * Nat.card (R ⧸ w.1) ^ c` using `fun _ _ _ => pow_add _ _ _`. Rewrite using `[Finsupp.prod_add_index' (h := fun (w : {p : Ideal R // p.IsMaximal}) (j : ℕ) => Nat.card (R ⧸ w.1) ^ j) hz ha, Finsupp.prod_single_index (h := fun (w : {p : Ideal R // p.IsMaximal}) (j : ℕ) => Nat.card (R ⧸ w.1) ^ j) (hz _), pow_one, ← hmul, hk1c, hCAcard]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_pLen : ∀ (n : ℕ) (A B : Submodule R W), B ≤ A →
     B.toAddSubgroup.relIndex A.toAddSubgroup = n → n ≠ 0 →
@@ -253,9 +245,9 @@ theorem card_pLen : ∀ (n : ℕ) (A B : Submodule R W), B ≤ A →
 end Loc
 
 /- English proof (translation)
-Take `⟨k, hk, hc⟩` from `card_pLen _ A B hBA rfl h`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, Finsupp.prod, Nat.cast_prod, Real.log_prod]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, Real.log_pow, Ideal.absNorm_apply, Submodule.cardQuot_apply, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[hc, Finsupp.prod]`. Conclude with `Finset.prod_eq_zero hw (by exact_mod_cast h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indexLocLen_finsupp {K V : Type} [Field K] [NumberField K] [AddCommGroup V]
     [Module (𝓞 K) V] (A B : Submodule (𝓞 K) V) (hBA : B ≤ A)
@@ -276,17 +268,15 @@ theorem indexLocLen_finsupp {K V : Type} [Field K] [NumberField K] [AddCommGroup
     exact Finset.prod_eq_zero hw (by exact_mod_cast h0)
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ A B hBA h`. Take `⟨k, hk, hc⟩` from `indexLocLen_finsupp A B hBA h`. Establish `hl : ∀ w : {p : Ideal (𝓞 K) // p.IsMaximal}, (haveI` using `w.2.isPrime; Formalism.HermitianLatticesTheory.locLen w.1 A B) = k w := by`. Introduce `w`. Use `hk w` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `pLen at this`. Unfold `Formalism.HermitianLatticesTheory.locLen`. Rewrite using `[this, ENat.toNat_natCast]`. Use `⟨fun w => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hk w` as an intermediate fact.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `pLen at this`. Rewrite using `[this]`. Conclude with `ENat.natCast_ne_top _`. Use `k.support.finite_toSet.subset fun w hw => ?_` and prove the remaining obligations. Rewrite `hw` using `[Function.mem_support, hl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Conclude with `hw`. Rewrite using `[hc, finsum_eq_sum_of_support_subset (s := k.support)]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `w hw`. Rewrite `hw` using `[Function.mem_support, hl]`. Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Introduce `h0`. Rewrite `hw` using `[h0]`.
-
-Simplify using `at hw`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem index_local_length : IndexLocLen := by
   intro K V _ _ _ _ A B hBA h
@@ -322,11 +312,11 @@ variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Set `T : Submodule K V` to `{ carrier := locS (nonZeroDivisors (𝓞 K)) Y add_mem' := (locS (nonZeroDivisors (𝓞 K)) Y).add_mem zero_mem' := (locS (nonZeroDivisors (𝓞 K)) Y).zero_mem smul_mem' := by`. Introduce and unpack `c v ⟨d, hd, hdv⟩`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (𝓞 K) c`. Establish `hb0 : algebraMap (𝓞 K) K b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Use `⟨b * d, Submonoid.mul_mem _ hb hd, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : algebraMap (𝓞 K) K b * (algebraMap (𝓞 K) K a / algebraMap (𝓞 K) K b) = algebraMap (𝓞 K) K a`. Clear the denominators using the available nonvanishing facts. Establish `: (b * d) • ((algebraMap (𝓞 K) K a / algebraMap (𝓞 K) K b) • v) = a • (d • v)`. Rewrite using `[mul_comm, mul_smul, ← algebraMap_smul K b, smul_smul, hc, algebraMap_smul, smul_comm]`. Rewrite using `[this]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Y.smul_mem a hdv }`. Establish `hle : Submodule.span K (Y : Set V) ≤ T` using `Submodule.span_le.mpr (fun y hy => locBasic_le_locS _ Y hy)`. Conclude with `hle hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem span_le_locS (Y : Submodule (𝓞 K) V) {x : V} (hx : x ∈ Submodule.span K (Y : Set V)) :
     x ∈ locS (nonZeroDivisors (𝓞 K)) Y := by
@@ -353,11 +343,9 @@ theorem span_le_locS (Y : Submodule (𝓞 K) V) {x : V} (hx : x ∈ Submodule.sp
   exact hle hx
 
 /- English proof (translation)
-Establish `hEM : E ≤ locS (nonZeroDivisors (𝓞 K)) M` using `fun x hx => span_le_locS M (h ▸ Submodule.subset_span hx)`. Take `⟨d, hd, hdE⟩` from `indexBasic_denom _ E M hE hEM`. Establish `hd0 : algebraMap (𝓞 K) K d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_mono (fun x hx => hx.1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.2 fun x hx => ?_` and prove the remaining obligations. Establish `h1 : d • x ∈ (E ⊓ M : Submodule (𝓞 K) V)` using `⟨E.smul_mem d hx, hdE x hx⟩`. Establish `h2 : x = (algebraMap (𝓞 K) K d)⁻¹ • (d • x)`. Rewrite using `[← algebraMap_smul K d x, smul_smul, inv_mul_cancel₀ hd0, one_smul]`. Rewrite using `[h2]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_inf {E M : Submodule (𝓞 K) V} (hE : E.FG)
     (h : Submodule.span K (E : Set V) = Submodule.span K (M : Set V)) :
@@ -384,11 +372,11 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComple
   [DecidableEq ι]
 
 /- English proof (translation)
-Establish `hn` using `fun w => HeightGram.norm_det_gramPl b X w e`. Establish `hprod` using `(height_gram_determinant K V ι b X hX j e he).1`. Establish `hpos : 0 < ∏ w, (gramPl b X w e).det.re`. Rewrite using `[← hprod]`. Conclude with `ht_pos b X hX (Submodule.fg_span (Set.finite_range e))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : (gramPl b X v e).det.re ≠ 0`. Introduce `h0`. Rewrite `hpos` using `[Finset.prod_eq_zero (Finset.mem_univ v) h0]`. Conclude with `lt_irrefl _ hpos`. Establish `hge : 0 ≤ (gramPl b X v e).det.re` using `by rw [← hn v]; exact norm_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨lt_of_le_of_ne hge h0.symm, ?_⟩` and prove the remaining obligations. Apply `(Complex.abs_re_eq_norm).1` to reduce the goal to its premises. Rewrite using `[hn v, abs_of_nonneg hge]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_pos (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {j : ℕ} (e : Fin j → V) (he : LinearIndependent K e)
@@ -407,25 +395,25 @@ theorem gram_pos (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
   rw [hn v, abs_of_nonneg hge]
 
 /- English proof (translation)
-Establish `hs` using `span_inf hE h`. Establish `hrE : rkK (E ⊓ M) = rkK E` using `by unfold rkK; rw [hs]`. Establish `hrM : rkK (E ⊓ M) = rkK M` using `by unfold rkK; rw [hs, h]`. Establish `h1` using `ht_index b X hX hE inf_le_left hrE`. Establish `h2` using `ht_index b X hX hM inf_le_right hrM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1` using `relIndex_ne_zero b X hX hE inf_le_left hrE`. Establish `n2` using `relIndex_ne_zero b X hX hM inf_le_right hrM`. Take `⟨kE, hkE, hcE⟩` from `indexLocLen_finsupp E (E ⊓ M) inf_le_left n1`. Take `⟨kM, hkM, hcM⟩` from `indexLocLen_finsupp M (E ⊓ M) inf_le_right n2`. Establish `hl : ∀ w : {p : Ideal (𝓞 K) // p.IsMaximal}, (haveI` using `w.2.isPrime; lidx w.1 E M) = (kE w : ℤ) - kM w := by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w`. Establish `a1` using `hkE w`. Establish `a2` using `hkM w`. Unfold `pLen at a1 a2`. Unfold `lidx Formalism.HermitianLatticesTheory.locLen`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Rewrite using `[a1, a2, ENat.toNat_natCast, ENat.toNat_natCast]`. Establish `hsub : ∀ w : {p : Ideal (𝓞 K) // p.IsMaximal}, w ∉ kE.support ∪ kM.support → (haveI` using `w.2.isPrime; lidx w.1 E M) = 0 := by`. Introduce `w hw`. Rewrite `hw` using `[Finset.mem_union, not_or, Finsupp.notMem_support_iff, Finsupp.notMem_support_iff]`. Rewrite using `[hl, hw.1, hw.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨(kE.support ∪ kM.support).finite_toSet.subset fun w hw => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `hw (hsub w hc)`. Rewrite using `[finsum_eq_sum_of_support_subset (s := kE.support ∪ kM.support)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ∑ w ∈ kE.support, Real.log (Ideal.absNorm w.1 : ℝ) * (kE w : ℝ) = ∑ w ∈ kE.support ∪ kM.support, Real.log (Ideal.absNorm w.1 : ℝ) * (kE w : ℝ)` using `Finset.sum_subset Finset.subset_union_left fun w _ hw => by`. Rewrite using `[Finsupp.notMem_support_iff.1 hw]`. Simplify using the standard rewrite rules. Establish `e2 : ∑ w ∈ kM.support, Real.log (Ideal.absNorm w.1 : ℝ) * (kM w : ℝ) = ∑ w ∈ kE.support ∪ kM.support, Real.log (Ideal.absNorm w.1 : ℝ) * (kM w : ℝ)` using `Finset.sum_subset Finset.subset_union_right fun w _ hw => by`. Rewrite using `[Finsupp.notMem_support_iff.1 hw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `e3 : ∑ w ∈ kE.support ∪ kM.support, Real.log (Ideal.absNorm w.1 : ℝ) * (haveI` using `w.2.isPrime; (lidx w.1 E M : ℝ)) = ∑ w ∈ kE.support ∪ kM.support, Real.log (Ideal.absNorm w.1 : ℝ) * (kE w : ℝ) - ∑ w ∈ kE.support ∪ kM.support, Real.log (Ideal.absNorm w.1 : ℝ) * (kM w : ℝ) := by`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3, ← e1, ← e2, ← hcE, ← hcM]`. Establish `l1` using `congrArg Real.log h1`. Establish `l2` using `congrArg Real.log h2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `l1` using `[Real.log_mul (ht_pos b X hX hE).ne' (by exact_mod_cast n1)]`. Rewrite `l2` using `[Real.log_mul (ht_pos b X hX hM).ne' (by exact_mod_cast n2)]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `w hw`. Assume the negation of the conclusion as `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hw` to reduce the goal to its premises. Use `show _ * _ = (0 : ℝ)`. Rewrite using `[hsub w hc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ht_lidx (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {E M : Submodule (𝓞 K) V} (hE : E.FG) (hM : M.FG)
@@ -490,19 +478,19 @@ theorem ht_lidx (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
       rw [hsub w hc]; simp
 
 /- English proof (translation)
-Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e M he hM hM0 hsp`. Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hrk : rkK M = j`. Unfold `rkK`. Rewrite using `[hsp, finrank_span_eq_card he, Fintype.card_fin]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : 0 < j` using `hrk ▸ rkK_pos hM0`. Establish `hE : (Submodule.span (𝓞 K) (Set.range e)).FG` using `Submodule.fg_span (Set.finite_range e)`. Establish `hsp' : Submodule.span K ((Submodule.span (𝓞 K) (Set.range e) : Submodule (𝓞 K) V) : Set V) = Submodule.span K (M : Set V)`. Rewrite using `[Submodule.span_span_of_tower, hsp]`. Take `⟨hfin, hlog⟩` from `ht_lidx b X hX hE hM hsp'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨hrk, hj, gram_pos b X hX e he, hfin, ?_⟩` and prove the remaining obligations. Rewrite using `[muDef_eq_log b X hX hM hM0, hlog, (height_gram_determinant K V ι b X hX j e he).1, Real.log_prod (fun v _ => (gram_pos b X hX e he v).1.ne')]`. Unfold `lcv lcvInf lcvFin`. Establish `hn : (Module.finrank ℚ K : ℝ) = 2 * (nPl K : ℝ)`. Rewrite using `[sizeMu_finrank_eq K]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hf : (nPl K : ℝ) ≠ 0`. Establish `: 0 < nPl K` using `Fintype.card_pos`. Conclude with `this.ne'` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj' : (rkK M : ℝ) ≠ 0` using `by rw [hrk]; exact_mod_cast hj.ne'`. Establish `hsum : ∑ᶠ p : {p : Ideal (𝓞 K) // p.IsMaximal}, (Real.log (Ideal.absNorm p.1 : ℝ) / (Module.finrank ℚ K : ℝ)) * (haveI` using `p.2.isPrime; (lidx p.1 (Submodule.span (𝓞 K) (Set.range e)) M : ℝ)) = (1 / (Module.finrank ℚ K : ℝ)) * ∑ᶠ p : {p : Ideal (𝓞 K) // p.IsMaximal}, Real.log (Ideal.absNorm p.1 : ℝ) * (haveI := p.2.isPrime; (lidx p.1 (Submodule.span (𝓞 K) (Set.range e)) M : ℝ)) := by`. Rewrite using `[mul_finsum']`. Use `finsum_congr fun p => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `hfin.subset fun p hp => ?_` and prove the remaining obligations. Rewrite `hp`, the goal using `[Function.mem_support]`. Introduce `h0`. Apply `hp` to reduce the goal to its premises. Rewrite using `[h0]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hsum, hn]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem log_covolume_slope_mu : LcvMu := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e M he hM hM0 hsp
@@ -543,7 +531,7 @@ theorem log_covolume_slope_mu : LcvMu := by
   field_simp
 
 /- English proof (translation)
-Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e M he hM hM0 hsp`. Take `⟨-, -, -, hfin, hmu⟩` from `log_covolume_slope_mu K V ι b X hX j e M he hM hM0 hsp`. Conclude with `⟨hfin, hmu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem covolume_formula : Formalism.HN.LcvFormula := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e M he hM hM0 hsp
@@ -561,7 +549,7 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComple
 local notation "FI" => FractionalIdeal (nonZeroDivisors (𝓞 K)) K
 
 /- English proof (translation)
-Rewrite using `[map_inv₀, Rat.cast_inv, Real.log_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem log_absNorm_inv (I : FI) :
     Real.log ((FractionalIdeal.absNorm I⁻¹ : ℚ) : ℝ) =
@@ -569,13 +557,13 @@ theorem log_absNorm_inv (I : FI) :
   rw [map_inv₀, Rat.cast_inv, Real.log_inv]
 
 /- English proof (translation)
-Establish `h` using `ht_fractional b X hX hN hI`. Establish `hp` using `ht_pos b X hX hN`. Unfold `ht at h hp`. Rewrite `h` using `[rkK_idealSmul hI]`. Use `set c : ℝ := (2 : ℝ) ^ (nPl K * rkK N) * |(NumberField.discr K : ℝ)| ^ (-(rkK N : ℝ) / 2) with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hD : 0 < |(NumberField.discr K : ℝ)|` using `abs_pos.mpr (Int.cast_ne_zero.mpr (NumberField.discr_ne_zero K))`. Establish `hc0 : 0 < c` using `by positivity`. Establish `hcov : 0 < Formalism.F.covol (zl (realize b X) N)`. Assume the negation of the conclusion as `hneg`. Establish `: c * Formalism.F.covol (zl (realize b X) N) ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos hc0.le (not_lt.1 hneg)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : Formalism.F.covol (zl (realize b X) (idealSmul (I : Submodule (𝓞 K) K) N)) = Formalism.F.covol (zl (realize b X) N) * ((FractionalIdeal.absNorm I : ℚ) : ℝ) ^ rkK N`. Apply `mul_left_cancel₀ hc0.ne'` to reduce the goal to its premises. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Unfold `deg Formalism.F.deg`. Rewrite using `[h2, Real.log_mul hcov.ne' (pow_ne_zero _ (absNorm_pos hI).ne'), Real.log_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem deg_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {N : Submodule (𝓞 K) V} (hN : N.FG) {I : FI} (hI : I ≠ 0) :
@@ -604,7 +592,7 @@ theorem deg_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι 
   ring
 
 /- English proof (translation)
-Rewrite using `[(place_lattice_structure K V ι b X hX _ (idealSmul_fg I hN)).2.1, (place_lattice_structure K V ι b X hX _ hN).2.1, rkK_idealSmul hI]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rk_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {N : Submodule (𝓞 K) V} (hN : N.FG) {I : FI} (hI : I ≠ 0) :
@@ -613,15 +601,15 @@ theorem rk_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι �
     rkK_idealSmul hI]
 
 /- English proof (translation)
-Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hIL0 : idealSmul (I : Submodule (𝓞 K) K) L ≠ ⊥` using `ne_bot_of_rkK_pos (by rw [rkK_idealSmul hI]; exact rkK_pos hL0)`. Establish `hILfg` using `idealSmul_fg I hL`. Establish `hlat` using `(place_lattice_structure K V ι b X hX L hL).1`. Establish `hlatI` using `(place_lattice_structure K V ι b X hX _ hILfg).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(slope_characterization (𝓞 K) V _ (realize b X) _ hlatI hIL0).2.1]`. Introduce `N hN`. Establish `hI' : I⁻¹ ≠ 0` using `inv_ne_zero hI`. Use `set N' := idealSmul ((I⁻¹ : FI) : Submodule (𝓞 K) K) N with hN'`. Establish `hN'L : N' ≤ L`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `idealSmul_mono_right ((I⁻¹ : FI) : Submodule (𝓞 K) K) hN` as an intermediate fact. Rewrite `this` using `[idealSmul_inv_cancel hI]`. Then use the resulting hypothesis. Establish `hNeq : N = idealSmul (I : Submodule (𝓞 K) K) N'` using `(idealSmul_cancel_inv hI N).symm`. Establish `hN'fg : N'.FG` using `fg_of_le hL hN'L`. Establish `hch` using `((slope_characterization (𝓞 K) V _ (realize b X) L hlat hL0).2.1 (muMin (realize b X) L)).1 le_rfl N' hN'L`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hNeq, deg_fractional b X hX hL hI, deg_fractional b X hX hN'fg hI, rk_fractional b X hX hL hI, rk_fractional b X hX hN'fg hI]`. Establish `r1` using `(place_lattice_structure K V ι b X hX L hL).2.1`. Establish `r2` using `(place_lattice_structure K V ι b X hX N' hN'fg).2.1`. Establish `hq : (Module.finrank ℚ K : ℝ) ≠ 0` using `(finrank_pos' (K := K)).ne'`. Establish `e1 : Real.log ((FractionalIdeal.absNorm I : ℚ) : ℝ) / (Module.finrank ℚ K : ℝ) * ((rk (realize b X) L : ℝ) - rk (realize b X) N') = ((rkK L : ℝ) - rkK N') * Real.log ((FractionalIdeal.absNorm I : ℚ) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[r1, r2]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use polynomial arithmetic with `[hch, e1]`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem muMin_fractional_ge (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {L : Submodule (𝓞 K) V} (hL : L.FG) (hL0 : L ≠ ⊥) {I : FI}
@@ -657,9 +645,9 @@ theorem muMin_fractional_ge (b : Basis ι K V) (X : InfinitePlace K → Matrix �
   nlinarith [hch, e1]
 
 /- English proof (translation)
-Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hIL0 : idealSmul (I : Submodule (𝓞 K) K) L ≠ ⊥` using `ne_bot_of_rkK_pos (by rw [rkK_idealSmul hI]; exact rkK_pos hL0)`. Apply `le_antisymm` to reduce the goal to its premises. Establish `h` using `muMin_fractional_ge b X hX (idealSmul_fg I hL) hIL0 (inv_ne_zero hI)`. Rewrite `h` using `[idealSmul_inv_cancel hI, log_absNorm_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : -Real.log ((FractionalIdeal.absNorm I : ℚ) : ℝ) / (Module.finrank ℚ K : ℝ) = -(Real.log ((FractionalIdeal.absNorm I : ℚ) : ℝ) / (Module.finrank ℚ K : ℝ))` using `by ring`. Rewrite `h` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `muMin_fractional_ge b X hX hL hL0 hI`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem muMin_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {L : Submodule (𝓞 K) V} (hL : L.FG) (hL0 : L ≠ ⊥) {I : FI}
@@ -679,9 +667,9 @@ theorem muMin_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι �
   · exact muMin_fractional_ge b X hX hL hL0 hI
 
 /- English proof (translation)
-Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hIL0 : idealSmul (I : Submodule (𝓞 K) K) L ≠ ⊥` using `ne_bot_of_rkK_pos (by rw [rkK_idealSmul hI]; exact rkK_pos hL0)`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `muMaxDef_fractional_le b X hX hL hL0 hI`. Establish `h` using `muMaxDef_fractional_le b X hX (idealSmul_fg I hL) hIL0 (inv_ne_zero hI)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[idealSmul_inv_cancel hI, log_absNorm_inv]`. Establish `e : 2 * -Real.log ((FractionalIdeal.absNorm I : ℚ) : ℝ) / (Module.finrank ℚ K : ℝ) = -(2 * Real.log ((FractionalIdeal.absNorm I : ℚ) : ℝ) / (Module.finrank ℚ K : ℝ))` using `by ring`. Rewrite `h` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem muMaxDef_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {L : Submodule (𝓞 K) V} (hL : L.FG) (hL0 : L ≠ ⊥) {I : FI}
@@ -703,7 +691,7 @@ theorem muMaxDef_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix �
 end Mod
 
 /- English proof (translation)
-Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX I hI M hM hM0`. Use `⟨idealSmul_fg I hM, muDef_fractional b X hX hM hM0 hI, muMaxDef_fractional b X hX hM hM0 hI, ?_⟩` and prove the remaining obligations. Unfold `muMinDef`. Rewrite using `[muMin_fractional b X hX hM hM0 hI]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ideal_scaling_holds : Formalism.HN.IdealScale := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX I hI M hM hM0
@@ -714,16 +702,16 @@ theorem ideal_scaling_holds : Formalism.HN.IdealScale := by
   ring
 
 /- English proof (translation)
-Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX M N hM hNM hN0 hrk`. Conclude with `⟨muDef_index b X hX hM hNM hN0 hrk, muMaxDef_mono b X hX hM hNM hN0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem index_slope_formula : Formalism.HN.IndexMu := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX M N hM hNM hN0 hrk
   exact ⟨muDef_index b X hX hM hNM hN0 hrk, muMaxDef_mono b X hX hM hNM hN0⟩
 
 /- English proof (translation)
-Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX I hI M N' hM hM0 hN' hN'0 hrk`. Establish `hfg` using `idealSmul_fg I hM`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← muMaxDef_fractional b X hX hM hM0 hI]`. Conclude with `muMaxDef_mono b X hX hfg hN' hN'0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[muDef_index b X hX hfg hN' hN'0 (by rw [hrk, rkK_idealSmul hI]), muDef_fractional b X hX hM hM0 hI, rkK_idealSmul hI]`.
+A detailed English derivation is pending.
 -/
 theorem truncated_lattice_holds : Formalism.HN.CutLattice := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX I hI M N' hM hM0 hN' hN'0 hrk
@@ -735,9 +723,9 @@ theorem truncated_lattice_holds : Formalism.HN.CutLattice := by
       muDef_fractional b X hX hM hM0 hI, rkK_idealSmul hI]
 
 /- English proof (translation)
-Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX j j' e e' M he he' hM hM0 hsp hsp'`. Take `⟨hrk, hj, -, -, h1⟩` from `log_covolume_slope_mu K V ι b X hX j e M he hM hM0 hsp`. Take `⟨-, -, -, -, h2⟩` from `log_covolume_slope_mu K V ι b X hX j' e' M he' hM hM0 hsp'`. Establish `hj' : (rkK M : ℝ) ≠ 0` using `by rw [hrk]; exact_mod_cast hj.ne'`. Rewrite `h2` using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(div_left_inj' hj').1 h2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem covolume_basis_free : LcvBasisFree := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX j j' e e' M he he' hM hM0 hsp hsp'
@@ -749,11 +737,11 @@ theorem covolume_basis_free : LcvBasisFree := by
   linarith
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ M`. Take `⟨s, hsN, hspan, hli⟩` from `exists_linearIndependent K (M : Set V)`. Establish `hfin : s.Finite` using `hli.setFinite`. Set `_ : Fintype s` to `hfin.fintype`. Set `e : Fin (Fintype.card s) → V` to `fun i => ((Fintype.equivFin s).symm i : V)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `he : LinearIndependent K e` using `hli.comp _ (Fintype.equivFin s).symm.injective`. Establish `hrange : Set.range e = s`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `((Fintype.equivFin s).symm i).2`. Introduce `hx; exact ⟨Fintype.equivFin s ⟨x, hx⟩, by simp [e]⟩`. Conclude with `⟨_, e, he, fun a => hsN ((Fintype.equivFin s).symm a).2, by rw [hrange, hspan]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem covolume_exists : LcvExists := by
   intro K V _ _ _ _ _ _ _ M
@@ -770,11 +758,11 @@ theorem covolume_exists : LcvExists := by
   exact ⟨_, e, he, fun a => hsN ((Fintype.equivFin s).symm a).2, by rw [hrange, hspan]⟩
 
 /- English proof (translation)
-Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e he hj`. Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hfin0 : lcvFin e (Submodule.span (𝓞 K) (Set.range e)) = 0`. Unfold `lcvFin`. Establish `: ∀ p : {p : Ideal (𝓞 K) // p.IsMaximal}, (haveI` using `p.2.isPrime; lidx p.1 (Submodule.span (𝓞 K) (Set.range e)) (Submodule.span (𝓞 K) (Set.range e))) = 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Introduce `p`. Unfold `lidx`. Rewrite using `[sub_self]`. Simplify using `only [this, Int.cast_zero, mul_zero, finsum_zero]`. Establish `hrk` using `HeightGram.rkK_span (K := K) e he`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : Submodule.span (𝓞 K) (Set.range e) ≠ ⊥` using `ne_bot_of_rkK_pos (by rw [hrk]; exact hj)`. Take `⟨-, -, -, -, h1⟩` from `log_covolume_slope_mu K V ι b X hX j e _ he (Submodule.fg_span (Set.finite_range e)) h0 (Submodule.span_span_of_tower _ _ _)`. Use `⟨hfin0, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, hrk, lcv, hfin0, add_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem covolume_free_module : LcvFree := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e he hj
@@ -802,9 +790,9 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K]
   [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Set `φ : V →+ (ι → ℂ)` to `AddMonoidHom.mk' (fcoord b X v) (fcoord_add b X v)`. Establish `h : φ (∑ k, c k • e k) = ∑ k, φ (c k • e k)` using `map_sum φ _ _`. Establish `h2 : ∀ x, φ x = fcoord b X v x` using `fun _ => rfl`. Simplify using `only [h2] at h`. Rewrite using `[h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => HeightGram.fcoord_smul b X v (c k) (e k)`.
+A detailed English derivation is pending.
 -/
 theorem fcoord_sum (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     {j : ℕ} (c : Fin j → K) (e : Fin j → V) :
@@ -817,11 +805,11 @@ theorem fcoord_sum (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
   exact Finset.sum_congr rfl fun k _ => HeightGram.fcoord_smul b X v (c k) (e k)
 
 /- English proof (translation)
-Set `Mv : Matrix ι (Fin j) ℂ` to `Matrix.of fun i a => fcoord b X v (e a) i`. Establish `hG : gramPl b X v e = Mvᴴ * Mv`. Use extensionality with `a c`. Simplify using `[gramPl, majAt, Mv, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Establish `hG' : gramPl b X v (fun a => ∑ c, g c a • e c) = (Mv * g.map v.embedding)ᴴ * (Mv * g.map v.embedding)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `a c`. Simplify using `only [gramPl, majAt, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, fcoord_sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Mv, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `congr 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Rewrite using `[hG', hG, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gramPl_baseChange (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) {j : ℕ} (e : Fin j → V) (g : Matrix (Fin j) (Fin j) K) :
@@ -845,9 +833,9 @@ theorem gramPl_baseChange (b : Basis ι K V) (X : InfinitePlace K → Matrix ι 
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hdet : (g.map v.embedding).det = v.embedding g.det`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Establish `hw : (gramPl b X v e).det = (((gramPl b X v e).det.re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [him])`. Rewrite using `[gramPl_baseChange, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, hdet, hw]`. Establish `e1 : star (v.embedding g.det) * (((gramPl b X v e).det.re : ℝ) : ℂ) * v.embedding g.det = ((Complex.normSq (v.embedding g.det) * (gramPl b X v e).det.re : ℝ) : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.ofReal_mul, Complex.normSq_eq_conj_mul_self, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, Complex.ofReal_re, Complex.normSq_eq_norm_sq, InfinitePlace.norm_embedding_eq, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_gramPl_baseChange (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) {j : ℕ} (e : Fin j → V) (g : Matrix (Fin j) (Fin j) K)
@@ -867,13 +855,13 @@ theorem det_gramPl_baseChange (b : Basis ι K V) (X : InfinitePlace K → Matrix
     Complex.ofReal_re]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self c))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Establish `h : e k = ∑ a, g⁻¹ a k • ∑ c, g c a • e c`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ c, ∑ a, (g⁻¹ a k * g c a) • e c = ((g * g⁻¹) c k) • e c`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Rewrite using `[← Finset.sum_smul, Matrix.mul_apply]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`. Simplify using `only [this, Matrix.mul_nonsing_inv g hg, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self a))`.
+A detailed English derivation is pending.
 -/
 theorem span_baseChange {j : ℕ} (e : Fin j → V) (g : Matrix (Fin j) (Fin j) K)
     (hg : IsUnit g.det) :
@@ -900,7 +888,7 @@ theorem span_baseChange {j : ℕ} (e : Fin j → V) (g : Matrix (Fin j) (Fin j) 
       Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self a))
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Set.finrank, span_baseChange e g hg]`. Conclude with `linearIndependent_iff_card_eq_finrank_span.1 he`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linInd_baseChange {j : ℕ} (e : Fin j → V) (he : LinearIndependent K e)
     (g : Matrix (Fin j) (Fin j) K) (hg : IsUnit g.det) :
@@ -911,17 +899,17 @@ theorem linInd_baseChange {j : ℕ} (e : Fin j → V) (he : LinearIndependent K 
 end BaseChange
 
 /- English proof (translation)
-Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e g M he hg hM hM0 hsp`. Establish `hd : g.det ≠ 0` using `hg.ne_zero`. Establish `hn : (Module.finrank ℚ K : ℝ) = 2 * (nPl K : ℝ)`. Rewrite using `[sizeMu_finrank_eq K]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hf : (nPl K : ℝ) ≠ 0`. Establish `: 0 < nPl K` using `Fintype.card_pos`. Conclude with `this.ne'` after adjusting the coercions. Establish `hprod : ∏ v : InfinitePlace K, v g.det ^ 2 = |((Algebra.norm ℚ g.det : ℚ) : ℝ)|`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `InfinitePlace.prod_eq_abs_norm g.det`. Rewrite using `[← Rat.cast_abs, ← h]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.mult, if_neg (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex v))]`. Establish `hinf : lcvInf b X (fun a => ∑ c, g c a • e c) = lcvInf b X e + 2 / (Module.finrank ℚ K : ℝ) * Real.log |((Algebra.norm ℚ g.det : ℚ) : ℝ)|`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `lcvInf`. Establish `h1 : ∀ v : InfinitePlace K, Real.log (gramPl b X v (fun a => ∑ c, g c a • e c)).det.re = Real.log (v g.det ^ 2) + Real.log (gramPl b X v e).det.re`. Introduce `v`. Take `⟨hp, him⟩` from `gram_pos b X hX e he v`. Rewrite using `[det_gramPl_baseChange b X v e g him, Real.log_mul _ hp.ne']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `pow_ne_zero _ ((map_ne_zero v).2 hd)`. Simplify using `only [h1]`. Rewrite using `[Finset.sum_add_distrib, ← Real.log_prod (fun v _ => pow_ne_zero _ ((map_ne_zero v).2 hd)), hprod, hn]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hinf, ?_⟩` and prove the remaining obligations. Establish `hfree` using `covolume_basis_free K V ι b X hX j j e (fun a => ∑ c, g c a • e c) M he (linInd_baseChange e he g hg) hM hM0 hsp (by rw [span_baseChange e g hg, hsp])`. Unfold `lcv at hfree`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem covolume_base_change : LcvBaseChange := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX j e g M he hg hM hM0 hsp
@@ -959,11 +947,11 @@ theorem covolume_base_change : LcvBaseChange := by
   linarith
 
 /- English proof (translation)
-Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b j e I he hj hI`. Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Set `X : InfinitePlace K → Matrix ι ι ℂ` to `fun _ => 1`. Establish `hX : ∀ v, IsUnit (X v).det` using `fun v => by simp [X]`. Establish `hE : (Submodule.span (𝓞 K) (Set.range e)).FG` using `Submodule.fg_span (Set.finite_range e)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrk` using `HeightGram.rkK_span (K := K) e he`. Establish `h0 : Submodule.span (𝓞 K) (Set.range e) ≠ ⊥` using `ne_bot_of_rkK_pos (by rw [hrk]; exact hj)`. Establish `hI0 : idealSmul (I : Submodule (𝓞 K) K) (Submodule.span (𝓞 K) (Set.range e)) ≠ ⊥` using `ne_bot_of_rkK_pos (by rw [rkK_idealSmul hI, hrk]; exact hj)`. Take `⟨hr, -, -, -, h1⟩` from `log_covolume_slope_mu K V ι b X hX j e _ he (idealSmul_fg I hE) hI0 (by rw [span_idealSmul hI, Submodule.span_span_of_tower])`. Establish `h2` using `muDef_fractional b X hX hE h0 hI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3` using `(covolume_free_module K V ι b X hX j e he hj).2`. Rewrite `h2` using `[h1, h3, hr, lcv]`. Establish `hj' : (j : ℝ) ≠ 0` using `by exact_mod_cast hj.ne'`. Establish `hq : (Module.finrank ℚ K : ℝ) ≠ 0` using `(finrank_pos' (K := K)).ne'`. Clear denominators, using `at h2 ⊢` for the nonvanishing conditions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -988,13 +976,13 @@ theorem covolume_ideal : LcvIdeal := by
   linarith
 
 /- English proof (translation)
-Set `_ : StarRing (CyclotomicField 3 ℚ)` to `starRingOfComm`. Establish `hcyc : IsCyclotomicExtension {3} ℚ (CyclotomicField 3 ℚ)` using `CyclotomicField.isCyclotomicExtension 3 ℚ`. Establish `hTC : IsTotallyComplex (CyclotomicField 3 ℚ)` using `IsCyclotomicExtension.Rat.isTotallyComplex (n := 3) (CyclotomicField 3 ℚ) (by norm_num)`. Establish `he : LinearIndependent (CyclotomicField 3 ℚ) (fun _ : Fin 1 => (1 : CyclotomicField 3 ℚ))` using `LinearIndependent.of_subsingleton 0 one_ne_zero`. Establish `hI : (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 (CyclotomicField 3 ℚ))) (2 : CyclotomicField 3 ℚ)) ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`. Conclude with `two_ne_zero`. Rewrite using `[covolume_ideal (CyclotomicField 3 ℚ) (CyclotomicField 3 ℚ) Unit (Basis.singleton Unit (CyclotomicField 3 ℚ)) 1 _ _ he one_pos hI, FractionalIdeal.absNorm_span_singleton]`. Establish `hn : Algebra.norm ℚ (2 : CyclotomicField 3 ℚ) = 2 ^ Module.finrank ℚ (CyclotomicField 3 ℚ)`. Use `Algebra.norm_algebraMap (S := CyclotomicField 3 ℚ) (2 : ℚ)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `hpos : 0 < Module.finrank ℚ (CyclotomicField 3 ℚ)` using `Module.finrank_pos`. Establish `h1 : (1 : ℝ) < ((|Algebra.norm ℚ (2 : CyclotomicField 3 ℚ)| : ℚ) : ℝ)`. Rewrite using `[hn, abs_of_pos (by positivity)]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Conclude with `one_lt_pow₀ one_lt_two hpos.ne'`. Establish `h2` using `Real.log_pos h1`. Establish `h3 : (0 : ℝ) < (Module.finrank ℚ (CyclotomicField 3 ℚ) : ℝ)` using `by exact_mod_cast hpos`. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem lcv_nonvacuous :
     letI : StarRing (CyclotomicField 3 ℚ) := starRingOfComm

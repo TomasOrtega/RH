@@ -29,21 +29,19 @@ noncomputable section
 namespace GlobalTheory.ChainTw
 
 /- English proof (translation)
-Introduce `hRD hHowe D hND c w hw k hk s s' hs hs' p hp u B φ hu v _ hne`. Take `⟨hr, _, hfl⟩` from `hs`. Take `⟨hr', _, hfl'⟩` from `hs'`. Establish `hlat' : ∀ (f : GA D s'.V → ℂ) (B : GlobalTheory.LFun.Fam D.host.E), GlobalTheory.LFun.IsParamFun D.sp.cm.sig s'.V.gram s'.Λ (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))) f B ↔ GlobalTheory.LFun.IsParamFunV s'.V c.S f B` using `(GlobalTheory.T.thetaChainStage_lattice_stabilizer_params_off_set D c hw.com (k + 1) hk _ hfl').2`. Establish `hlat : ∀ (f : GA D s.V → ℂ) (B : GlobalTheory.LFun.Fam D.host.E), GlobalTheory.LFun.IsParamFun D.sp.cm.sig s.V.gram s.Λ (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))) f B ↔ GlobalTheory.LFun.IsParamFunV s.V c.S f B` using `(GlobalTheory.T.thetaChainStage_lattice_stabilizer_params_off_set D c hw.com k hk.le _ hfl).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y := PiLocalization₂.val u v with hy`. Establish `hy0 : y ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Step.up, h]`. Establish `hyB : IsParamFunV s.V c.S (fun g => conj (y g)) B` using `(hlat _ B).1 (hu.2 v hy0)`. Establish `hconj : (fun x => conj (p.up φ y x)) = fun x => ∫ g in s.fd, thetaKO p.ω g x (p.pt φ) * conj (y g) ∂s.ν`. Use function extensionality and compare the values at `x`. Simplify using `only [Step.up]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `[map_mul]`. Establish `hne' : (fun x => ∫ g in s.fd, thetaKO p.ω g x (p.pt φ) * conj (y g) ∂s.ν) ≠ 0`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hconj]`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Simplify using `using congrFun h x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hrank : s'.V.rank = s.V.rank + D.R.t`. Establish `h1 : s'.V.rank = D.R.rankY (k + 1)` using `hfl'.rank`. Establish `h2 : s.V.rank = D.R.rankY k` using `hfl.rank`. Rewrite using `[h1, h2, rankY_succ]`. Establish `hYA` using `PiLocalization₂.val_autCusp c s u v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfock` using `GlobalTheory.T.twistedChainStep_fockVectors_spherical_offS D hND c w hw k hk s s' ⟨hr, by assumption, hfl⟩ ⟨hr', by assumption, hfl'⟩ p hp`. Unfold `ParFun`. Rewrite using `[hlat', hconj]`. Introduce `w0 hw0 w' h`. Establish `hw0' : w0 ∉ c.S` using `by simpa using hw0`.
-
-Conclude with `GlobalTheory.T.thetaIntegral_conjCuspForm_parameterTransfer hRD D (GlobalTheory.T.sphericalParameterTransfer_all_finitePlaces hHowe D) c.ψ c.θ s.V s'.V _ _ p.ω hw.com.inf hp.weil D.R.t hrank s.ν s.fd hfl.haar hfl.fund w0 (fun w'' hw'' => GlobalTheory.T.thetaChain_step_chars_unram …`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem upParQ_of_transfer : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram → ∀ D : D7, UpParQ D := by
   intro hRD hHowe D hND c w hw k hk s s' hs hs' p hp u B φ hu v _ hne

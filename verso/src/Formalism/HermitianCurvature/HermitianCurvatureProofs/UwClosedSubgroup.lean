@@ -19,21 +19,21 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 variable {k : ℕ}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `[D.castM]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem castM_inv' {a b : ℕ} (h : a = b) (g : B.Mat k a) : D.castM h g⁻¹ = (D.castM h g)⁻¹ := by
   subst h
   simp [D.castM]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 private theorem castV_rfl' {a : ℕ} (h : a = a) (v : Fin (2 * a + k + 1) → ℂ) : D.castV h v = v := by
   funext i
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `[D.castM, castV_rfl']`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem psi_castM {a b : ℕ} (h : a = b) (v : Fin (2 * a + k + 1) → ℂ) (c : ℂ) (g : B.Mat k a) :
     psi k b (D.castV h v) c (D.castM h g) = psi k a v c g := by
@@ -41,21 +41,21 @@ theorem psi_castM {a b : ℕ} (h : a = b) (v : Fin (2 * a + k + 1) → ℂ) (c :
   simp [D.castM, castV_rfl']
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify `hg` using `[D.castM]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem castM_UH {a b : ℕ} (h : a = b) {g : B.Mat k a} (hg : g ∈ UH (Hpk k a)) : D.castM h g ∈ UH (Hpk k b) := by
   subst h
   simpa [D.castM] using hg
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify `hg` using `[D.castM]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem castM_N {a b : ℕ} (h : a = b) {g : B.Mat k a} (hg : g ∈ Nset k a) : D.castM h g ∈ Nset k b := by
   subst h
   simpa [D.castM] using hg
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify `hg` using `[D.castM, castV_rfl']`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem castM_UWv {a b : ℕ} (h : a = b) {v : Fin (2 * a + k + 1) → ℂ} {g : B.Mat k a} (hg : g ∈ UWset k a v) :
     D.castM h g ∈ UWset k b (D.castV h v) := by
@@ -63,16 +63,16 @@ theorem castM_UWv {a b : ℕ} (h : a = b) {v : Fin (2 * a + k + 1) → ℂ} {g :
   simpa [D.castM, castV_rfl'] using hg
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify `e` using `[D.castM]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem castM_inj {a b : ℕ} (h : a = b) {g g' : B.Mat k a} (e : D.castM h g = D.castM h g') : g = g' := by
   subst h
   simpa [D.castM] using e
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e : (D.castM (k` using `k) (rfl : a = a)) = fun g => g := by`. Use function extensionality and compare the values at `g`. Simplify using `[D.castM]`. Rewrite using `[e]`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem castM_cont {a b : ℕ} (h : a = b) : Continuous (D.castM (k := k) h) := by
   subst h
@@ -83,7 +83,7 @@ theorem castM_cont {a b : ℕ} (h : a = b) : Continuous (D.castM (k := k) h) := 
   exact continuous_id
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[castV_rfl']`. Conclude with `hv`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inWb_castV {a b : ℕ} (h : a = b) {v : Fin (2 * a + k + 1) → ℂ} (hv : inWb k a v) : inWb k b (D.castV h v) := by
   subst h
@@ -91,7 +91,7 @@ theorem inWb_castV {a b : ℕ} (h : a = b) {v : Fin (2 * a + k + 1) → ℂ} (hv
   exact hv
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Dx2.Rad.one_UW z, fun _ ha _ hb => WeylGroupFacts.uw_mul ha hb, fun _ ha => WeylGroupFacts.uw_inv ha, fun _ ha => HermitianFormFactor.UH_unit (Ux3.hpk_det k r) ha.1, B6.isClosed_UWset k r z⟩`.
+Supply the required witnesses or components.
 -/
 theorem uw_closedSubgroup (r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : B2.IsClosedSubgroup (UWset k r z) :=
   ⟨Dx2.Rad.one_UW z, fun _ ha _ hb => WeylGroupFacts.uw_mul ha hb, fun _ ha => WeylGroupFacts.uw_inv ha,
@@ -101,9 +101,9 @@ def levA (ρ : ℕ) (x : Mt k ρ) : Mt k (ρ + 1) :=
   Matrix.of.symm (D.castM (Nat.add_comm 1 ρ) (ιLev k 1 ρ (Matrix.of x)))
 
 /- English proof (translation)
-Simplify using `only [Formalism.QuantumDeterminants.ιLev]`. Distinguish the cases in `hp : 1 ≤ p.val ∧ p.val < 2 * ρ + k + 1 + 1`. Distinguish the cases in `hq : 1 ≤ q.val ∧ q.val < 2 * ρ + k + 1 + 1`. Simplify using `only [dif_pos hp, dif_pos hq, Matrix.of_apply]`. Conclude with `(continuous_apply _).comp (continuous_apply _)`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_pos hp, dif_neg hq]`. Conclude with `continuous_const`. Simplify using `only [dif_neg hp]`. Conclude with `continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem continuous_ιLev_apply (ρ : ℕ) (p q : Fin (2 * (1 + ρ) + k + 1)) :
     Continuous fun x : Mt k ρ => ιLev k 1 ρ (Matrix.of x) p q := by
@@ -118,9 +118,9 @@ private theorem continuous_ιLev_apply (ρ : ℕ) (p q : Fin (2 * (1 + ρ) + k +
     exact continuous_const
 
 /- English proof (translation)
-Apply `continuous_pi` to reduce the goal to its premises. Introduce `p`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `q`. Simplify using `only [levA, Matrix.of_symm_apply, D.castM, Matrix.reindex_apply, Matrix.submatrix_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_ιLev_apply ρ _ _`.
+A detailed English derivation is pending.
 -/
 theorem levA_cont (ρ : ℕ) : Continuous (levA (k := k) ρ) := by
   apply continuous_pi
@@ -131,7 +131,7 @@ theorem levA_cont (ρ : ℕ) : Continuous (levA (k := k) ρ) := by
   exact continuous_ιLev_apply ρ _ _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `[D.castM]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 private theorem castM_mul_hermitian_curvature {a b : ℕ} (h : a = b) (g g' : B.Mat k a) :
     D.castM h (g * g') = D.castM h g * D.castM h g' := by
@@ -139,7 +139,7 @@ private theorem castM_mul_hermitian_curvature {a b : ℕ} (h : a = b) (g g' : B.
   simp [D.castM]
 
 /- English proof (translation)
-Establish `hL` using `PI.QnLevBasicsW.level_group_homomorphism`. Unfold `Formalism.QuantumDeterminants.LevHom at hL`. Rewrite using `[(hL k 1 ρ).2 a b]`. Conclude with `castM_mul_hermitian_curvature _ _ _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_mul' (ρ : ℕ) (a b : B.Mat k ρ) :
     D.castM (Nat.add_comm 1 ρ) (ιLev k 1 ρ (a * b)) =
@@ -150,14 +150,14 @@ theorem lev_mul' (ρ : ℕ) (a b : B.Mat k ρ) :
   exact castM_mul_hermitian_curvature _ _ _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `[D.castM]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem castM_back {a b : ℕ} (h : a = b) (g : B.Mat k b) : D.castM h (D.castM h.symm g) = g := by
   subst h
   simp [D.castM]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[castV_rfl', castV_rfl']`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem castV_back {a b : ℕ} (h : a = b) (v : Fin (2 * b + k + 1) → ℂ) : D.castV h (D.castV h.symm v) = v := by
   subst h
@@ -170,9 +170,9 @@ theorem levA_apply (ρ : ℕ) (x : Mt k ρ) :
     (Matrix.of (levA ρ x) : B.Mat k (ρ + 1)) = D.castM (Nat.add_comm 1 ρ) (ιLev k 1 ρ (Matrix.of x)) := rfl
 
 /- English proof (translation)
-Establish `ha' : D.castM (Nat.add_comm 1 ρ).symm a ∈ UWset k (1 + ρ) (liftVec k 1 ρ z0)`. Use `castM_UWv (Nat.add_comm 1 ρ).symm ha` as an intermediate fact. Establish `e : D.castV (Nat.add_comm 1 ρ).symm (D.castV (Nat.add_comm 1 ρ) (liftVec k 1 ρ z0)) = liftVec k 1 ρ z0`. Use `castV_back (k := k) (Nat.add_comm 1 ρ).symm (liftVec k 1 ρ z0)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[e]`. Then use the resulting hypothesis. Take `⟨y, hy, hy'⟩` from `JCTx5.uw_onto (k := k) (i := 1) (r' := ρ) z0 _ ha'`. Conclude with `⟨y, hy, by rw [hy']; exact castM_back _ a⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lev_onto {ρ : ℕ} (z0 : Fin (2 * ρ + k + 1) → ℂ) (a : B.Mat k (ρ + 1))
     (ha : a ∈ UWset k (ρ + 1) (D.castV (Nat.add_comm 1 ρ) (liftVec k 1 ρ z0))) :
@@ -187,19 +187,17 @@ theorem lev_onto {ρ : ℕ} (z0 : Fin (2 * ρ + k + 1) → ℂ) (a : B.Mat k (ρ
   exact ⟨y, hy, by rw [hy']; exact castM_back _ a⟩
 
 /- English proof (translation)
-Use `set U1 := UWset k (ρ + 1) (D.castV (Nat.add_comm 1 ρ) (liftVec k 1 ρ z0)) with hU1`. Establish `hm : Measurable (levA (k` using `k) ρ) := (levA_cont ρ).measurable`. Establish `hmem : ∀ y ∈ UWset k ρ z0, (Matrix.of (levA ρ y) : B.Mat k (ρ + 1)) ∈ U1` using `fun y hy => castM_UWv _ (Dx2.Tower.lev_UW 1 ρ z0 (Matrix.of y) hy)`. Use `set ν := μ0.map (levA (k := k) ρ) with hν`. Establish `hνu : ν Set.univ = 1` using `by rw [hν, Measure.map_apply hm MeasurableSet.univ, Set.preimage_univ, n0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconc : ν U1ᶜ = 0`. Establish `hcl : IsClosed {x : Mt k (ρ + 1) | Matrix.of x ∈ U1}` using `B7.isClosed_UW _`. Use `show ν {x : Mt k (ρ + 1) | Matrix.of x ∈ U1}ᶜ = 0`. Rewrite using `[hν, Measure.map_apply hm hcl.measurableSet.compl]`. Apply `measure_mono_null _ h0.conc` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy hyU`. Conclude with `hy (hmem y hyU)`. Establish `hleft : ∀ a ∈ U1, ν.map (lmulM a) = ν`. Introduce `a ha`. Take `⟨a0, ha0, rfl⟩` from `lev_onto z0 a ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hl : Measurable (lmulM (k` using `k) (r := ρ + 1) (D.castM (Nat.add_comm 1 ρ) (ιLev k 1 ρ a0))) := B2x5.measurable_lmulM _`. Establish `hl0 : Measurable (lmulM (k` using `k) (r := ρ) a0) := B2x5.measurable_lmulM _`. Establish `e : lmulM (D.castM (Nat.add_comm 1 ρ) (ιLev k 1 ρ a0)) ∘ levA (k` using `k) ρ = levA ρ ∘ lmulM a0 := by`. Use function extensionality and compare the values at `x`. Use `show (D.castM (Nat.add_comm 1 ρ) (ιLev k 1 ρ a0) * D.castM (Nat.add_comm 1 ρ) (ιLev k 1 ρ (Matrix.of x)) : B.Mat k (ρ + 1)) = D.castM (Nat.add_comm 1 ρ) (ιLev k 1 ρ (a0 * Matrix.of x))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[lev_mul']`. Rewrite using `[hν, Measure.map_map hl hm, e, ← Measure.map_map hm hl0, h0.left a0 ha0]`. Establish `hfin : ∀ K : Set (Mt k (ρ + 1)), IsCompact K → ν K < ⊤`. Introduce `K _`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `Formalism.FourierDecayAlt.P.haar_measure_unique_up_to_scalar k (ρ + 1) U1 μ1 ν (uw_closedSubgroup (ρ + 1) _) h1 hconc hleft hfin`. Establish `hc1 : (c : ENNReal) = 1`. Use `congrArg (fun μ : Measure (Mt k (ρ + 1)) => μ Set.univ) hc` as an intermediate fact. Simplify using `only [Measure.smul_apply, n1, hνu, smul_eq_mul, mul_one, ENNReal.smul_def] at this`. Conclude with `this.symm`.
-
-Establish `hc1' : c = 1` using `by exact_mod_cast hc1`. Rewrite using `[hc, hc1', one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muW_lev {ρ : ℕ} (z0 : Fin (2 * ρ + k + 1) → ℂ)
     (μ0 : Measure (Mt k ρ)) (μ1 : Measure (Mt k (ρ + 1)))
@@ -249,9 +247,9 @@ def Qm (ρ : ℕ) (p : Mt k (1 + ρ) × Mt k ρ) : Mt k (ρ + 1) :=
   Matrix.of.symm (D.castM (Nat.add_comm 1 ρ) (Matrix.of p.1 * ιLev k 1 ρ (Matrix.of p.2)))
 
 /- English proof (translation)
-Establish `hI : Continuous fun p : Mt k (1 + ρ) × Mt k ρ => ιLev k 1 ρ (Matrix.of p.2)` using `continuous_pi fun a => continuous_pi fun b => (continuous_ιLev_apply ρ a b).comp continuous_snd`. Establish `h1 : Continuous fun p : Mt k (1 + ρ) × Mt k ρ => (Matrix.of p.1 : B.Mat k (1 + ρ))` using `continuous_fst`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `i`. Apply `continuous_pi` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j`. Simplify using `only [Qm, Matrix.of_symm_apply, D.castM, Matrix.reindex_apply, Matrix.submatrix_apply]`. Conclude with `(continuous_apply _).comp ((continuous_apply _).comp (h1.matrix_mul hI))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Qm_cont (ρ : ℕ) : Continuous (Qm (k := k) ρ) := by
   have hI : Continuous fun p : Mt k (1 + ρ) × Mt k ρ => ιLev k 1 ρ (Matrix.of p.2) :=
@@ -265,20 +263,20 @@ theorem Qm_cont (ρ : ℕ) : Continuous (Qm (k := k) ρ) := by
   exact (continuous_apply _).comp ((continuous_apply _).comp (h1.matrix_mul hI))
 
 /- English proof (translation)
-The claim follows from `Dx2.MN.sigma_of_haar (Formalism.FourierDecayAlt.P.heisenberg_haar_measure k ρ)`.
+A detailed English derivation is pending.
 -/
 theorem sf_heis (ρ : ℕ) : SigmaFinite (B2.μHeis k ρ) :=
   Dx2.MN.sigma_of_haar (Formalism.FourierDecayAlt.P.heisenberg_haar_measure k ρ)
 
 /- English proof (translation)
-The claim follows from `Dx2.MN.sigma_of_haar (Dx2.MN.haar ρ)`.
+A detailed English derivation is pending.
 -/
 theorem sf_muN (ρ : ℕ) : SigmaFinite (D.muN k ρ) := Dx2.MN.sigma_of_haar (Dx2.MN.haar ρ)
 
 /- English proof (translation)
-Use `sf_heis (k := k) ρ` as an intermediate fact. Use `sf_muN (k := k) ρ` as an intermediate fact. Establish `hl : Measurable (B2.levM k ρ)` using `(B2x2.levM_cont k ρ).measurable`. Establish `hmu : Measurable (B2.mulM : Mt k (1 + ρ) × Mt k (1 + ρ) → Mt k (1 + ρ))` using `B2x2.mulM_cont.measurable`. Establish `hc : Measurable (Dx2.MN.castMt (k` using `k) (Nat.add_comm 1 ρ)) := (Dx2.MN.castMt_cont _).measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (B2.μHeis k ρ).prod ((D.muN k ρ).map (B2.levM k ρ)) = ((B2.μHeis k ρ).prod (D.muN k ρ)).map (Prod.map id (B2.levM k ρ))`. Rewrite using `[← Measure.map_prod_map _ _ measurable_id hl, Measure.map_id]`. Rewrite using `[Dx2.MN.muN_succ, e1, Measure.map_map hmu (measurable_id.prodMap hl), Measure.map_map hc (hmu.comp (measurable_id.prodMap hl))]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem muN_succ' (ρ : ℕ) : D.muN k (ρ + 1) = ((B2.μHeis k ρ).prod (D.muN k ρ)).map (Qm ρ) := by
   have := sf_heis (k := k) ρ

@@ -20,14 +20,14 @@ def cmp (B : Type) [CommRing B] [Algebra R B] (e : ℕ) :
   (algebraTensorAlgEquiv R B).toLinearEquiv.toLinearMap ∘ₗ (homogeneousSubmodule σ R e).subtype.baseChange B
 
 /- English proof (translation)
-Simplify using `[cmp, algebraTensorAlgEquiv_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cmp_tmul (B : Type) [CommRing B] [Algebra R B] (e : ℕ) (b : B) (F : homogeneousSubmodule σ R e) :
     cmp B e (b ⊗ₜ F) = b • map (algebraMap R B) (F : MvPolynomial σ R) := by
   simp [cmp, algebraTensorAlgEquiv_tmul]
 
 /- English proof (translation)
-Use `(algebraTensorAlgEquiv R B).injective.comp (lTensor_subtype_injective_of_retraction (homogeneousSubmodule σ R e) ((homogeneousComponent e).codRestrict _ fun F => homogeneousComponent_mem e F) ?_ B)` and prove the remaining obligations. Use `ext1 F`. Conclude with `Subtype.ext (homogeneousComponent_eq_self F.2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cmp_injective (B : Type) [CommRing B] [Algebra R B] (e : ℕ) :
     Injective (cmp (R := R) (σ := σ) B e) := by
@@ -38,7 +38,7 @@ theorem cmp_injective (B : Type) [CommRing B] [Algebra R B] (e : ℕ) :
   exact Subtype.ext (homogeneousComponent_eq_self F.2)
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [coeff_map, coeff_homogeneousComponent]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_homogeneousComponent {B : Type} [CommRing B] (φ : R →+* B) (n : ℕ) (p : MvPolynomial σ R) :
     map φ (homogeneousComponent n p) = homogeneousComponent n (map φ p) := by
@@ -47,17 +47,15 @@ theorem map_homogeneousComponent {B : Type} [CommRing B] (φ : R →+* B) (n : �
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hX : ∀ (i : σ), ∀ G ∈ Submodule.span B (map φ '' (I : Set (MvPolynomial σ R))), X i * G ∈ Submodule.span B (map φ '' (I : Set (MvPolynomial σ R)))`. Introduce `i G hG`. Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨X i * y, I.mul_mem_left _ hy, by simp⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [mul_smul_comm]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.smul_mem _ _ hx`. Establish `hm : ∀ (a : MvPolynomial σ B), ∀ G ∈ Submodule.span B (map φ '' (I : Set (MvPolynomial σ R))), a * G ∈ Submodule.span B (map φ '' (I : Set (MvPolynomial σ R)))`. Introduce `a`. Proceed by induction on `a using MvPolynomial.induction_on with`. Consider the case `C b => intro G hG`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[C_mul']`. Conclude with `Submodule.smul_mem _ _ hG`. Consider the case `add p q hp hq => intro G hG`. Rewrite using `[add_mul]`. Conclude with `add_mem (hp G hG) (hq G hG)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p i hp => intro G hG`. Rewrite using `[mul_assoc]`. Conclude with `hp _ (hX i G hG)`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span hx`.
-
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul a x _ hx => exact hm a x hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_span_of_mem_map {B : Type} [CommRing B] (φ : R →+* B) (I : Ideal (MvPolynomial σ R))
     {F : MvPolynomial σ B} (hF : F ∈ I.map (map φ)) : F ∈ Submodule.span B (map φ '' (I : Set (MvPolynomial σ R))) := by
@@ -85,13 +83,13 @@ theorem mem_span_of_mem_map {B : Type} [CommRing B] (φ : R →+* B) (I : Ideal 
   | smul a x _ hx => exact hm a x hx
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.baseChange_eq_span, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨F, hF, rfl⟩, rfl⟩`. Rewrite using `[TensorProduct.mk_apply, cmp_tmul, one_smul]`. Conclude with `⟨IsHomogeneous.map F.2 _, Ideal.mem_map_of_mem _ hF⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `F ⟨hF, hFI⟩`. Establish `h1` using `mem_span_of_mem_map _ I hFI`. Rewrite using `[← homogeneousComponent_eq_self hF]`. Use `clear hF hFI`. Proceed by induction on `h1 using Submodule.span_induction with`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Use `⟨1 ⊗ₜ ⟨homogeneousComponent e y, homogeneousComponent_mem e y⟩, Submodule.tmul_mem_baseChange_of_mem _ (hI y hy e), ?_⟩` and prove the remaining obligations. Rewrite using `[cmp_tmul, one_smul, map_homogeneousComponent]`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_cmp_formsIn (B : Type) [CommRing B] [Algebra R B] (I : Ideal (MvPolynomial σ R))
     (hI : ∀ F ∈ I, ∀ e, homogeneousComponent e F ∈ I) (e : ℕ) :
@@ -117,7 +115,7 @@ theorem map_cmp_formsIn (B : Type) [CommRing B] [Algebra R B] (I : Ideal (MvPoly
     | smul a x _ hx => rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Establish `h` using `map_cmp_formsIn B (⊤ : Ideal (MvPolynomial σ R)) (fun _ _ _ => trivial) e`. Rewrite `h` using `[Ideal.map_top]`. Simplify `h` using `[formsIn]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem range_cmp (B : Type) [CommRing B] [Algebra R B] (e : ℕ) :
     LinearMap.range (cmp (R := R) (σ := σ) B e) = homogeneousSubmodule σ B e := by
@@ -131,25 +129,25 @@ def formsBasis (R σ : Type) [CommRing R] (e : ℕ) :
     (LinearEquiv.ofEq _ _ (homogeneousSubmodule_eq_finsupp_supported σ R e).symm)
 
 /- English proof (translation)
-The claim follows from `.of_basis (formsBasis R σ e)`.
+A detailed English derivation is pending.
 -/
 theorem forms_free (e : ℕ) : Module.Free R (homogeneousSubmodule σ R e) := .of_basis (formsBasis R σ e)
 
 /- English proof (translation)
-The claim follows from `Module.Finite.iff_fg.mpr (homogeneousSubmodule_fg _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem forms_finite [Finite σ] (e : ℕ) : Module.Finite R (homogeneousSubmodule σ R e) :=
   Module.Finite.iff_fg.mpr (homogeneousSubmodule_fg _ _ _)
 
 /- English proof (translation)
-The claim follows from `Module.finrank_eq_nat_card_basis ((formsBasis R σ e).baseChange K)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_tensor_forms (K : Type) [Field K] [Algebra R K] (e : ℕ) :
     finrank K (K ⊗[R] homogeneousSubmodule σ R e) = Nat.card {m : σ →₀ ℕ | m.degree = e} :=
   Module.finrank_eq_nat_card_basis ((formsBasis R σ e).baseChange K)
 
 /- English proof (translation)
-Use `haveI := forms_finite (R := R) (σ := σ) e`. Rewrite using `[(baseChangeQuotEquiv K _).finrank_eq, dimDeg, ← map_cmp_formsIn K I hI e, ← (Submodule.equivMapOfInjective _ (cmp_injective K e) _).finrank_eq, Submodule.finrank_quotient_add_finrank, finrank_tensor_forms]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_quot_add_dimDeg [Finite σ] (K : Type) [Field K] [Algebra R K] (I : Ideal (MvPolynomial σ R))
     (hI : ∀ F ∈ I, ∀ e, homogeneousComponent e F ∈ I) (e : ℕ) :
@@ -164,14 +162,14 @@ def ev (d : ℕ) (p : Hh → σ → R) : homogeneousSubmodule σ R d →ₗ[R] (
   LinearMap.pi fun h => (aeval (p h)).toLinearMap ∘ₗ (homogeneousSubmodule σ R d).subtype
 
 /- English proof (translation)
-Simplify using `[ev, coe_aeval_eq_eval]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_apply (d : ℕ) (p : Hh → σ → R) (F : homogeneousSubmodule σ R d) (h : Hh) :
     ev d p F h = eval (p h) (F : MvPolynomial σ R) := by
   simp [ev, coe_aeval_eq_eval]
 
 /- English proof (translation)
-Establish `: vanIdeal d p ≤ RingHom.ker (eval (p h))` using `Ideal.span_le.2 fun G hG => hG.2 h`. Conclude with `this hF`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eval_eq_zero_of_mem_vanIdeal {d : ℕ} {p : Hh → σ → R} {F : MvPolynomial σ R} (hF : F ∈ vanIdeal d p)
     (h : Hh) : eval (p h) F = 0 := by
@@ -179,7 +177,7 @@ theorem eval_eq_zero_of_mem_vanIdeal {d : ℕ} {p : Hh → σ → R} {F : MvPoly
   exact this hF
 
 /- English proof (translation)
-Use `letI := (MvPolynomial.gradedAlgebra : GradedAlgebra (homogeneousSubmodule σ R))`. Establish `h : (vanIdeal d p).IsHomogeneous (homogeneousSubmodule σ R)` using `Ideal.homogeneous_span _ _ fun x hx => ⟨d, hx.1⟩`. Use `h e hF` as an intermediate fact. Rewrite `this` using `[show ((DirectSum.decompose (homogeneousSubmodule σ R) F e : homogeneousSubmodule σ R e) : MvPolynomial σ R) = homogeneousComponent e F from MvPolynomial.decomposition.decompose'_apply F e]`. Then use the resulting hypothesis.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem component_mem_vanIdeal (d : ℕ) (p : Hh → σ → R)
     (F : MvPolynomial σ R) (hF : F ∈ vanIdeal d p) (e : ℕ) : homogeneousComponent e F ∈ vanIdeal d p := by
@@ -192,7 +190,7 @@ theorem component_mem_vanIdeal (d : ℕ) (p : Hh → σ → R)
     = homogeneousComponent e F from MvPolynomial.decomposition.decompose'_apply F e] at this
 
 /- English proof (translation)
-Use extensionality with `F`. Rewrite using `[LinearMap.mem_ker, funext_iff]`. Simplify using `only [ev_apply]`. Conclude with `⟨fun h => Ideal.subset_span ⟨F.2, h⟩, fun h => eval_eq_zero_of_mem_vanIdeal h⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem ker_ev (d : ℕ) (p : Hh → σ → R) : LinearMap.ker (ev d p) = formsIn (vanIdeal d p) d := by
   ext F
@@ -201,17 +199,17 @@ theorem ker_ev (d : ℕ) (p : Hh → σ → R) : LinearMap.ker (ev d p) = formsI
   exact ⟨fun h => Ideal.subset_span ⟨F.2, h⟩, fun h => eval_eq_zero_of_mem_vanIdeal h⟩
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite Hh`. Establish `key : ∀ z h, TensorProduct.piScalarRight R B B Hh ((ev d p).baseChange B z) h = eval (fun i => algebraMap R B (p h i)) (cmp B d z)`. Introduce `z h`. Proceed by induction on `z with`. Consider the case `zero => simp`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]`. Consider the case `tmul b F`. Rewrite using `[cmp_tmul, smul_eval, LinearMap.baseChange_tmul, TensorProduct.piScalarRight_apply, TensorProduct.piScalarRightHom_tmul]`. Use `beta_reduce`. Rewrite using `[ev_apply, Algebra.smul_def, mul_comm, eval_map]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← eval₂_id, eval₂_comp_left, RingHom.comp_id]`. Both sides reduce to the same expression. Use extensionality with `F`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Establish `h1 : cmp B d z ∈ homogeneousSubmodule σ B d` using `range_cmp (R := R) B d ▸ LinearMap.mem_range_self _ z`. Use `⟨h1, Ideal.subset_span ⟨h1, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← key, LinearMap.mem_ker.1 hz]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Rewrite `h1` using `[← range_cmp (R := R) B d]`. Take `⟨z, rfl⟩` from `h1`. Use `⟨z, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, ← (TensorProduct.piScalarRight R B B Hh).map_eq_zero_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `h`. Rewrite using `[key]`. Conclude with `eval_eq_zero_of_mem_vanIdeal h2 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_cmp_ker_ev [Finite Hh] (B : Type) [CommRing B] [Algebra R B] (d : ℕ) (p : Hh → σ → R) :
     (LinearMap.ker ((ev d p).baseChange B)).map (cmp B d) =
@@ -249,9 +247,9 @@ theorem map_cmp_ker_ev [Finite Hh] (B : Type) [CommRing B] [Algebra R B] (d : �
     exact eval_eq_zero_of_mem_vanIdeal h2 h
 
 /- English proof (translation)
-Establish `h1` using `map_cmp_ker_ev B d p`. Rewrite `h1` using `[← h, ker_ev, map_cmp_formsIn B _ (component_mem_vanIdeal d p)]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[vanIdeal, Ideal.map_span, Ideal.span_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(h1.le ⟨IsHomogeneous.map hF.1 _, Ideal.mem_map_of_mem _ (Ideal.subset_span hF)⟩).2`. Rewrite using `[vanIdeal, Ideal.span_le]`. Introduce `F hF`. Conclude with `(h1.ge ⟨hF.1, Ideal.subset_span hF⟩).2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem map_vanIdeal_of_ker [Finite Hh] (B : Type) [CommRing B] [Algebra R B] (d : ℕ) (p : Hh → σ → R)
     (h : (LinearMap.ker (ev d p)).baseChange B = LinearMap.ker ((ev d p).baseChange B)) :
@@ -267,7 +265,7 @@ theorem map_vanIdeal_of_ker [Finite Hh] (B : Type) [CommRing B] [Algebra R B] (d
     exact (h1.ge ⟨hF.1, Ideal.subset_span hF⟩).2
 
 /- English proof (translation)
-Use `haveI := forms_finite (R := R) (σ := σ) d`. Rewrite using `[dimDeg, ← map_cmp_ker_ev K d p, ← (Submodule.equivMapOfInjective _ (cmp_injective K d) _).finrank_eq, LinearMap.finrank_range_add_finrank_ker, finrank_tensor_forms]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_range_ev_add_dimDeg [Finite σ] [Finite Hh] (K : Type) [Field K] [Algebra R K] (d : ℕ)
     (p : Hh → σ → R) :
@@ -279,9 +277,9 @@ theorem finrank_range_ev_add_dimDeg [Finite σ] [Finite Hh] (K : Type) [Field K]
     LinearMap.finrank_range_add_finrank_ker, finrank_tensor_forms]
 
 /- English proof (translation)
-Set `q : PrimeSpectrum R` to `⟨RingHom.ker (algebraMap R K), RingHom.ker_isPrime _⟩`. Take `⟨_, ⟨f, rfl⟩, hpf, hf⟩` from `(PrimeSpectrum.isTopologicalBasis_basic_opens.mem_nhds_iff).1 (Semicont.eventually_finrank_fiber_le (M := M) q)`. Use `⟨f, hpf, fun L _ _ hL => ?_⟩` and prove the remaining obligations. Set `q' : PrimeSpectrum R` to `⟨RingHom.ker (algebraMap R L), RingHom.ker_isPrime _⟩`. Rewrite using `[finrank_tensorProduct_eq_finrank_fiber L q' rfl, finrank_tensorProduct_eq_finrank_fiber K q rfl]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf (show q' ∈ _ from hL)`.
+A detailed English derivation is pending.
 -/
 theorem exists_finrank_le (M : Type) [AddCommGroup M] [Module R M] [Module.Finite R M]
     (K : Type) [Field K] [Algebra R K] :
@@ -296,11 +294,11 @@ theorem exists_finrank_le (M : Type) [AddCommGroup M] [Module R M] [Module.Finit
   exact hf (show q' ∈ _ from hL)
 
 /- English proof (translation)
-Use `haveI := forms_finite (R := R) (σ := σ) e`. Use `letI := x.toAlgebra`. Take `⟨f, hf, h⟩` from `exists_finrank_le (R := R) (homogeneousSubmodule σ R e ⧸ formsIn I e) K`. Use `⟨f, hf, fun L _ y hy => ?_⟩` and prove the remaining obligations. Use `letI := y.toAlgebra`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h1` using `h L hy`. Establish `h2` using `finrank_quot_add_dimDeg K I hI e`. Establish `h3` using `finrank_quot_add_dimDeg L I hI e`. Express the relevant statement in the definitionally equal form `_ + dimDeg (I.map (map x)) e = _ at h2`. Express the relevant statement in the definitionally equal form `_ + dimDeg (I.map (map y)) e = _ at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_dimDeg_map_le [Finite σ] (I : Ideal (MvPolynomial σ R))
     (hI : ∀ F ∈ I, ∀ e, homogeneousComponent e F ∈ I) (e : ℕ) (K : Type) [Field K] (x : R →+* K) :
@@ -319,11 +317,11 @@ theorem exists_dimDeg_map_le [Finite σ] (I : Ideal (MvPolynomial σ R))
   omega
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite Hh`. Use `letI := x.toAlgebra`. Take `⟨f, hf, h⟩` from `exists_finrank_le (R := R) ((Hh → R) ⧸ LinearMap.range (ev d p)) K`. Use `⟨f, hf, fun L _ y hy => ?_⟩` and prove the remaining obligations. Use `letI := y.toAlgebra`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Establish `h1` using `h L hy`. Establish `h2` using `finrank_range_ev_add_dimDeg K d p`. Establish `h3` using `finrank_range_ev_add_dimDeg L d p`. Establish `h4` using `finrank_baseChange_coker_add_finrank_range K (ev d p)`. Establish `h5` using `finrank_baseChange_coker_add_finrank_range L (ev d p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[Module.finrank_eq_nat_card_basis ((Pi.basisFun R Hh).baseChange K)]`. Rewrite `h5` using `[Module.finrank_eq_nat_card_basis ((Pi.basisFun R Hh).baseChange L)]`. Express the relevant statement in the definitionally equal form `_ + dimDeg (vanIdeal d fun h i => x (p h i)) d = _ at h2`. Express the relevant statement in the definitionally equal form `_ + dimDeg (vanIdeal d fun h i => y (p h i)) d = _ at h3`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_dimDeg_vanIdeal_le [Finite σ] [Finite Hh] (d : ℕ) (p : Hh → σ → R)
     (K : Type) [Field K] (x : R →+* K) :
@@ -346,9 +344,9 @@ theorem exists_dimDeg_vanIdeal_le [Finite σ] [Finite Hh] (d : ℕ) (p : Hh → 
   omega
 
 /- English proof (translation)
-Use `haveI := forms_finite (R := R) (σ := σ) d`. Use `letI := x.toAlgebra`. Take `⟨s, hs⟩` from `exists_comp_comp_eq_of_isLocallyConstant_finrank_range (ev d p) (IsLocallyConstant.of_constant _ fun q q' => by`. Establish `h1` using `finrank_range_ev_add_dimDeg q.asIdeal.ResidueField d p`. Establish `h2` using `finrank_range_ev_add_dimDeg q'.asIdeal.ResidueField d p`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Nat.cast_injective (R := ℚ) ((h _ (algebraMap R q.asIdeal.ResidueField)).trans (h _ (algebraMap R q'.asIdeal.ResidueField)).symm)`. Use the proof step `omega)`. Conclude with `map_vanIdeal_of_ker B d p (baseChange_ker_of_comp_comp_eq _ s hs B)`.
+A detailed English derivation is pending.
 -/
 theorem map_vanIdeal_of_const [IsReduced R] [Finite σ] [Finite Hh] (d : ℕ) (p : Hh → σ → R) (ρ : ℚ)
     (h : ∀ (K : Type) [Field K] (x : R →+* K), (dimDeg (vanIdeal d fun h i => x (p h i)) d : ℚ) = ρ)
@@ -366,7 +364,7 @@ theorem map_vanIdeal_of_const [IsReduced R] [Finite σ] [Finite Hh] (d : ℕ) (p
   exact map_vanIdeal_of_ker B d p (baseChange_ker_of_comp_comp_eq _ s hs B)
 
 /- English proof (translation)
-The claim follows from `map_vanIdeal_of_ker B d p (baseChange_ker B _)`.
+A detailed English derivation is pending.
 -/
 theorem map_vanIdeal_of_flat [Finite Hh] (d : ℕ) (p : Hh → σ → R) (B : Type) [CommRing B] [Algebra R B]
     [Module.Flat R B] :
@@ -374,9 +372,9 @@ theorem map_vanIdeal_of_flat [Finite Hh] (d : ℕ) (p : Hh → σ → R) (B : Ty
   map_vanIdeal_of_ker B d p (baseChange_ker B _)
 
 /- English proof (translation)
-Use `haveI := forms_finite (R := R) (σ := σ) e`. Use `projective_of_finite_of_isLocallyConstant_finrank_fiber (IsLocallyConstant.of_constant _ fun q q' => ?_)` and prove the remaining obligations. Establish `h1` using `finrank_quot_add_dimDeg q.asIdeal.ResidueField I hI e`. Establish `h2` using `finrank_quot_add_dimDeg q'.asIdeal.ResidueField I hI e`. Establish `h3` using `Nat.cast_injective (R := ℚ) ((h _ (algebraMap R q.asIdeal.ResidueField)).trans (h _ (algebraMap R q'.asIdeal.ResidueField)).symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem projective_of_const [IsReduced R] [Finite σ] (I : Ideal (MvPolynomial σ R))
     (hI : ∀ F ∈ I, ∀ e, homogeneousComponent e F ∈ I) (e : ℕ) (ρ : ℚ)
@@ -392,11 +390,9 @@ theorem projective_of_const [IsReduced R] [Finite σ] (I : Ideal (MvPolynomial �
   omega
 
 /- English proof (translation)
-Set `A` to `Localization.Away f`. Use `haveI : Module.Flat R A := IsLocalization.flat A (Submonoid.powers f)`. Use `haveI : IsReduced A := isReduced_localizationPreserves (Submonoid.powers f) A inferInstance`. Set `x' : A →+* K` to `IsLocalization.Away.lift f (IsUnit.mk0 _ hx)`. Establish `hx' : x'.comp (algebraMap R A) = x` using `IsLocalization.Away.lift_comp f _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `map_vanIdeal_of_const d (fun h i => algebraMap R A (p h i)) ρ (fun L _ y => h L (y.comp (algebraMap R A)) ((IsLocalization.Away.algebraMap_isUnit (S := A) f).map y).ne_zero) K x'`. Rewrite `h1` using `[← map_vanIdeal_of_flat, Ideal.map_map]`. Rewrite using `[← hx']`. Use `h1 using 2` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext fun F => (map_map _ _ F).symm`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_vanIdeal_of_const_away [IsReduced R] [Finite σ] [Finite Hh] (d : ℕ) (p : Hh → σ → R) (ρ : ℚ) (f : R)
     (h : ∀ (K : Type) [Field K] (x : R →+* K), x f ≠ 0 → (dimDeg (vanIdeal d fun h i => x (p h i)) d : ℚ) = ρ)
@@ -416,7 +412,7 @@ theorem map_vanIdeal_of_const_away [IsReduced R] [Finite σ] [Finite Hh] (d : �
   · rfl
 
 /- English proof (translation)
-Establish `: homogeneousSubmodule σ K e ⊓ (vanIdeal d p).restrictScalars K = homogeneousSubmodule σ K e ⊓ I.restrictScalars K`. Use extensionality with `F`. Conclude with `and_congr_right fun hF => ((h e he).2 F hF).symm`. Rewrite using `[← (h e he).1, dimDeg, dimDeg, this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dimDeg_eq_of_cutBy {K : Type} [Field K] {I : Ideal (MvPolynomial σ K)} {Q : Polynomial ℚ} {d : ℕ}
     {p : Hh → σ → K} (h : CutBy I Q d p) {e : ℕ} (he : e ≥ d) :

@@ -22,18 +22,18 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Rg.Sw.LVs.HolB.JJ_sq`.
+A detailed English derivation is pending.
 -/
 theorem JJ_mul_self : JJ n * JJ n = -1 := PositivityTheory.Rg.Sw.LVs.HolB.JJ_sq
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv (by rw [mul_neg, JJ_mul_self, neg_neg])`.
+A detailed English derivation is pending.
 -/
 theorem JJ_inv : (JJ n)⁻¹ = -JJ n :=
   Matrix.inv_eq_right_inv (by rw [mul_neg, JJ_mul_self, neg_neg])
 
 /- English proof (translation)
-Simplify using `only [sig, JJ_inv, neg_mul, neg_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sig_eq (X : M2 n) : sig X = JJ n * Xᴴ * JJ n := by
   simp only [sig, JJ_inv, neg_mul, neg_neg]
@@ -41,9 +41,9 @@ theorem sig_eq (X : M2 n) : sig X = JJ n * Xᴴ * JJ n := by
 def IsLie (X : M2 n) : Prop := Xᴴ = JJ n * X * JJ n
 
 /- English proof (translation)
-Unfold `IsLie dir1`. Rewrite using `[sig_eq, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, JJ_conjTranspose]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, ← Matrix.mul_assoc, JJ_mul_self]`. Simplify using `only [Matrix.mul_assoc, JJ_mul_self, Matrix.neg_mul, Matrix.mul_neg, neg_neg, Matrix.mul_one, Matrix.one_mul]`. Establish `h2 : star (1 / 2 : ℂ) = 1 / 2` using `by simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h2, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isLie_first_direction (Z : M2 n) : IsLie (dir1 Z) := by
   unfold IsLie dir1
@@ -55,9 +55,9 @@ theorem isLie_first_direction (Z : M2 n) : IsLie (dir1 Z) := by
   rw [h2, add_comm]
 
 /- English proof (translation)
-Unfold `IsLie dir2`. Rewrite using `[sig_eq, Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, JJ_conjTranspose]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, ← Matrix.mul_assoc, JJ_mul_self]`. Simplify using `only [Matrix.mul_assoc, JJ_mul_self, Matrix.neg_mul, Matrix.mul_neg, neg_neg, Matrix.mul_one, Matrix.one_mul]`. Establish `h2 : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Complex.conj_I]`. Rewrite using `[h2, neg_smul, ← smul_neg, neg_sub]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLie_second_direction (Z : M2 n) : IsLie (dir2 Z) := by
   unfold IsLie dir2
@@ -70,7 +70,7 @@ theorem isLie_second_direction (Z : M2 n) : IsLie (dir2 Z) := by
   rw [h2, neg_smul, ← smul_neg, neg_sub]
 
 /- English proof (translation)
-Consider the cases of `b`. Conclude with `isLie_second_direction Z`. Conclude with `isLie_first_direction Z`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem lie_dir (Z : M2 n) (b : Bool) : IsLie (if b then dir1 Z else dir2 Z) := by
   cases b
@@ -84,9 +84,9 @@ def Ju (n : ℕ) : (M2 n)ˣ where
   inv_val := by rw [neg_mul, JJ_mul_self, neg_neg]
 
 /- English proof (translation)
-Unfold `cE`. Rewrite using `[← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, star_trivial, hX]`. Establish `h : s • (JJ n * X * JJ n) = (Ju n : M2 n) * ((-s) • X) * ((Ju n)⁻¹ : (M2 n)ˣ)`. Simplify using `only [Ju, Units.inv_mk, Units.val_mk, Matrix.mul_neg, Matrix.mul_smul, neg_smul]`. Rewrite using `[Matrix.neg_mul, neg_neg, Matrix.smul_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Matrix.exp_units_conj]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cE_conjTranspose {X : M2 n} (hX : IsLie X) (s : ℝ) : (cE X s)ᴴ = JJ n * cE X (-s) * -JJ n := by
   unfold cE
@@ -98,7 +98,7 @@ theorem cE_conjTranspose {X : M2 n} (hX : IsLie X) (s : ℝ) : (cE X s)ᴴ = JJ 
   rfl
 
 /- English proof (translation)
-Unfold `InG`. Rewrite using `[cE_conjTranspose hX]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Matrix.neg_mul, JJ_mul_self, neg_neg, Matrix.one_mul, Matrix.mul_neg]`. Use `_ = JJ n := by rw [← cE_add, neg_add_cancel, cE_zero, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inG_cE {X : M2 n} (hX : IsLie X) (s : ℝ) : InG (cE X s) := by
   unfold InG
@@ -108,7 +108,7 @@ theorem inG_cE {X : M2 n} (hX : IsLie X) (s : ℝ) : InG (cE X s) := by
     _ = JJ n := by rw [← cE_add, neg_add_cancel, cE_zero, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `cE`. Rewrite using `[Complex.coe_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cE_eq_exp (X : M2 n) (s : ℝ) : NormedSpace.exp ((s : ℂ) • X) = cE X s := by
   unfold cE; rw [Complex.coe_smul]
@@ -118,11 +118,9 @@ def gam {X : M2 n} (hX : IsLie X) (t : ℝ) : GR n :=
     inG_cE hX t⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, fun t => rfl⟩` and prove the remaining obligations. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`. Conclude with `⟨cE_continuous X, (cE_continuous X).comp continuous_neg⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `cE_zero X`. Introduce `s t`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
-
-Conclude with `cE_add X s t`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem curveGR' {X : M2 n} (hX : IsLie X) : Continuous (gam hX) ∧ gam hX 0 = 1 ∧
     (∀ s t, gam hX (s + t) = gam hX s * gam hX t) ∧ ∀ t, mR (gam hX t) = cE X t := by
@@ -140,7 +138,7 @@ namespace PositivityTheory.Rg.Sw.HSt
 open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.HSt.FL
 
 /- English proof (translation)
-Introduce `n Z b`. Take `⟨h1, h2, h3, h4⟩` from `curveGR' (lie_dir Z b)`. Conclude with `⟨gam (lie_dir Z b), h1, h2, h3, fun t => by rw [h4, cE_eq_exp]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem curveGR : CurveGR := by
   intro n Z b

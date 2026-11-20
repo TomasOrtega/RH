@@ -8,13 +8,11 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 namespace CrystallineSemistableComparison
 
 /- English proof (translation)
-Establish `hfin : (irreducibleComponents X).Finite` using `NoetherianSpace.finite_irreducibleComponents`. Establish `h : (connectedComponent x)ᶜ = ⋃ Z ∈ {Z ∈ irreducibleComponents X | ¬ Z ⊆ connectedComponent x}, Z`. Use extensionality with `y`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, Set.mem_ofPred_eq, exists_prop]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hy`. Take `⟨Z, hZ, hyZ⟩` from `exists_mem_irreducibleComponents_subset_of_isIrreducible {y} isIrreducible_singleton`. Use `⟨Z, ⟨hZ, fun hsub ↦ hy (hsub (hyZ rfl))⟩, hyZ rfl⟩` and prove the remaining obligations. Introduce and unpack `⟨Z, ⟨hZ, hnot⟩, hyZ⟩ hy`. Apply `hnot` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : Z ⊆ connectedComponent y` using `IsPreconnected.subset_connectedComponent (IsPreirreducible.isPreconnected hZ.1.2) hyZ`. Rewrite `h1` using `[← connectedComponent_eq hy]`. Then use the resulting hypothesis. Establish `hc : IsClosed (connectedComponent x)ᶜ`. Rewrite using `[h]`. Conclude with `(hfin.subset fun Z hZ ↦ hZ.1).isClosed_biUnion fun Z hZ ↦ isClosed_of_mem_irreducibleComponents Z hZ.1`.
-
-Conclude with `isClosed_compl_iff.mp hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_connectedComponent_of_noetherianSpace {X : Type*} [TopologicalSpace X] [NoetherianSpace X]
     (x : X) : IsOpen (connectedComponent x) := by
@@ -39,9 +37,9 @@ theorem isOpen_connectedComponent_of_noetherianSpace {X : Type*} [TopologicalSpa
   exact isClosed_compl_iff.mp hc
 
 /- English proof (translation)
-Establish `: DiscreteTopology (_root_.ConnectedComponents X)`. Rewrite using `[discreteTopology_iff_isOpen_singleton]`. Introduce `c`. Take `⟨x, rfl⟩` from `ConnectedComponents.surjective_coe c`. Rewrite using `[← ConnectedComponents.isQuotientMap_coe.isOpen_preimage, connectedComponents_preimage_singleton]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_connectedComponent_of_noetherianSpace x`. Establish `: CompactSpace (_root_.ConnectedComponents X)` using `inferInstance`. Conclude with `finite_of_compact_of_discrete`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_connectedComponents_of_noetherianSpace (X : Type*) [TopologicalSpace X] [NoetherianSpace X] :
     Finite (_root_.ConnectedComponents X) := by
@@ -55,15 +53,13 @@ theorem finite_connectedComponents_of_noetherianSpace (X : Type*) [TopologicalSp
   exact finite_of_compact_of_discrete
 
 /- English proof (translation)
-Use `finite_connectedComponents_of_noetherianSpace X` as an intermediate fact. Set `e` to `Finite.equivFin (_root_.ConnectedComponents X)`. Establish `hopen : ∀ c : _root_.ConnectedComponents X, IsOpen (_root_.ConnectedComponents.mk ⁻¹' {c} : Set X)`. Introduce `c`. Take `⟨x, rfl⟩` from `ConnectedComponents.surjective_coe c`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[connectedComponents_preimage_singleton]`. Conclude with `isOpen_connectedComponent_of_noetherianSpace x`. Set `U : Fin (Nat.card (_root_.ConnectedComponents X)) → X.Opens` to `fun a ↦ ⟨_, hopen (e.symm a)⟩`. Use `⟨_, U, ⟨fun a ↦ inferInstance, fun x ↦ ⟨e (_root_.ConnectedComponents.mk x), ?_⟩, fun a b hab ↦ ?_⟩, fun a ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Opens.range_ι] show _root_.ConnectedComponents.mk x = e.symm (e (_root_.ConnectedComponents.mk x))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Scheme.Opens.range_ι, Scheme.Opens.range_ι]`. Use `Set.disjoint_left.mpr fun y hy hy' ↦ hab (e.symm.injective ?_)` and prove the remaining obligations. Conclude with `(hy : _root_.ConnectedComponents.mk y = _).symm.trans hy'`. Take `⟨x, hx⟩` from `ConnectedComponents.surjective_coe (e.symm a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : ((U a : X.Opens) : Set X) = connectedComponent x` using `by show _root_.ConnectedComponents.mk ⁻¹' {e.symm a} = _`. Rewrite using `[← hx, connectedComponents_preimage_singleton]`. Establish `: ConnectedSpace ((U a : X.Opens) : Set X)`. Rewrite using `[hU]`. Conclude with `isConnected_iff_connectedSpace.mp isConnected_connectedComponent`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isSum_components (X : Scheme.{0}) [NoetherianSpace X] :
     ∃ (r : ℕ) (U : Fin r → X.Opens), IsSum (fun a ↦ (U a).ι) ∧ ∀ a, ConnectedSpace (U a).toScheme := by

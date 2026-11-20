@@ -3,7 +3,7 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.LC
 
 /- English proof (translation)
-The claim follows from `NullS.nullStable`.
+A detailed English derivation is pending.
 -/
 theorem nullStable : NullStable := NullS.nullStable
 

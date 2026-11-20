@@ -12,7 +12,7 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `Complex.exp (s * _) * Complex.exp (t * _) = Complex.exp ((s + t) * _)`. Rewrite using `[← Complex.exp_add, add_mul]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem absC_mul (s t : ℂ) : Model.absC E s * Model.absC E t = Model.absC E (s + t) := by
   apply Subtype.ext
@@ -22,34 +22,34 @@ theorem absC_mul (s t : ℂ) : Model.absC E s * Model.absC E t = Model.absC E (s
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `GlobalTheory.Mem.Chr.CharModel.absChar_isAbsPow x`.
+A detailed English derivation is pending.
 -/
 theorem isAbsPow_absC (x : ℝ) : (Model.absC E (x : ℂ)).IsAbsPow x :=
   GlobalTheory.Mem.Chr.CharModel.absChar_isAbsPow x
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `PositivityTheory.RSHS.ProjectionSandwichLength.eq_of_isAbsPow h (isAbsPow_absC x)`.
+A detailed English derivation is pending.
 -/
 theorem eq_absC {ν : HChar E} {x : ℝ} (h : ν.IsAbsPow x) : ν = Model.absC E (x : ℂ) :=
   PositivityTheory.RSHS.ProjectionSandwichLength.eq_of_isAbsPow h (isAbsPow_absC x)
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Simplify using `only [chiDet, MonoidHom.comp_apply, det_leviEmb, map_prod, Units.coe_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chiDet_leviEmb {c N : ℕ} {n : Fin c → ℕ} (h : ∑ i, n i = N) (χ : HChar E) (m : ∀ i, GA E (n i)) :
     ((chiDet N χ (leviEmb (Ad E) (stdBlocks n h) m) : ℂˣ) : ℂ) = ∏ i, ((chiDet (n i) χ (m i) : ℂˣ) : ℂ) := by
   simp only [chiDet, MonoidHom.comp_apply, det_leviEmb, map_prod, Units.coe_prod]
 
 /- English proof (translation)
-Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨φ, rfl⟩` from `hF`. Use `Submodule.subset_span ⟨fun i => ⟨mulChi (n i) χ (φ i).1, ⟨(φ i).1, (φ i).2, rfl⟩⟩, funext fun m => ?_⟩` and prove the remaining obligations. Simplify using `only [mulChi_apply, Finset.prod_mul_distrib]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `zero`. Use `zero_mem (tensorForms fun i => (π i).twist χ) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using the standard rewrite rules. Consider the case `add F G _ _ hF hG`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `add_mem hF hG using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `[add_mul]`. Consider the case `smul c F _ hF`. Use `Submodule.smul_mem _ c hF using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `m`. Simplify using `[mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tensorForms_mulChi {c : ℕ} {n : Fin c → ℕ} (π : ∀ i, CuspSub E (n i)) (χ : HChar E)
     {G : (∀ i, GA E (n i)) → ℂ} (hG : G ∈ tensorForms π) :
@@ -73,19 +73,19 @@ theorem tensorForms_mulChi {c : ℕ} {n : Fin c → ℕ} (π : ∀ i, CuspSub E 
     simp [mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `h₁ using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨φ₁, rfl⟩` from `hF`. Proceed by induction on `h₂ using Submodule.span_induction with`. Consider the case `mem F hF`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨φ₂, rfl⟩` from `hF`. Use `Submodule.subset_span ⟨Fin.addCases (motive := fun i => ↥(π i).V) φ₁ φ₂, funext fun m => ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_add, Fin.addCases_left, Fin.addCases_right]`. Consider the case `zero`. Use `zero_mem (tensorForms (n := fun _ => a) π) using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `m`. Simplify using the standard rewrite rules. Consider the case `add F G _ _ hF hG`. Use `add_mem hF hG using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[mul_add]`. Consider the case `smul c F _ hF`. Use `Submodule.smul_mem _ c hF using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Use `zero_mem (tensorForms (n := fun _ => a) π) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `add F G _ _ hF hG`. Use `add_mem hF hG using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `[add_mul]`. Consider the case `smul c F _ hF`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `Submodule.smul_mem _ c hF using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tensorForms_append {d₁ d₂ a : ℕ} (π : Fin (d₁ + d₂) → CuspSub E a) {G₁ : (Fin d₁ → GA E a) → ℂ}
     {G₂ : (Fin d₂ → GA E a) → ℂ} (h₁ : G₁ ∈ tensorForms (n := fun _ => a) (fun b => π (Fin.castAdd d₂ b)))

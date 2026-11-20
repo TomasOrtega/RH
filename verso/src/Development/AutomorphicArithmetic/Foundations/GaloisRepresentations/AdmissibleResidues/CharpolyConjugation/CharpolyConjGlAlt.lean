@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Admis
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N Polynomial GlobalTheory GlobalTheory.WeilDeligne GlobalTheory.CuspRep UpperTheory.V.Af UpperTheory.GalN.V
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem charpoly_conj_gl {k : Type} [Field k] {n : ℕ} (g a : GL (Fin n) k) :
     ((g * a * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).charpoly =
@@ -15,11 +15,11 @@ private theorem charpoly_conj_gl {k : Type} [Field k] {n : ℕ} (g a : GL (Fin n
   rw [Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ n r r' hiso hU w hw A hA hfin`. Take `⟨g, hg⟩` from `hiso`. Establish `hfin' : (r '' (Ine (F` using `F) A : Set (G F Ω))).Finite := by`. Use `(hfin.image (fun x => g⁻¹ * x * g)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨r' s, ⟨s, hs, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [hg s]`. Use `group`. Take `⟨s, j, hj, hF, h⟩` from `hU w hw A hA hfin'`. Use `⟨s, j, hj, hF, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `α β hα hβ k hk`. Rewrite `hα`, `hβ` using `[hg s, charpoly_conj_gl]`. Conclude with `h α β hα hβ k hk`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.GalN.V.L.wiso :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (r : G F Ω →* GL (Fin n) (Qbar l)) (r' : G F Ω →* GL (Fin n) (Qbar l)), RepIso r r' → Unlinked r → Unlinked r' := by

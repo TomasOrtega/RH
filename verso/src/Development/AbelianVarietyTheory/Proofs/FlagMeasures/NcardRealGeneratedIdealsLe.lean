@@ -8,13 +8,13 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.RealIdealCount
 
 /- English proof (translation)
-Use `le_antisymm ?_ Ideal.map_comap_le` and prove the remaining obligations. Use `conv_lhs => rw [h]`. Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `t ⟨ht, hst⟩`. Establish `hreal : (t : E) ∈ maximalRealSubfield E`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ`. Establish `key` using `hs φ (t : E)`. Rewrite `key` using `[hst, starRingEnd_apply]`. Conclude with `key.symm`. Establish `hint : IsIntegral ℤ (⟨(t : E), hreal⟩ : maximalRealSubfield E)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `ht' : IsIntegral ℤ (t : E)` using `t.isIntegral_coe`. Conclude with `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ (maximalRealSubfield E) E) (algebraMap (maximalRealSubfield E) E).injective).mp ht'`. Set `s : 𝓞 (maximalRealSubfield E)` to `⟨⟨(t : E), hreal⟩, hint⟩`. Establish `hs' : algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s = t`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite using `[← hs']`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, hs']`. Conclude with `ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_map_comap {E : Type} [Field E] [NumberField E] [StarRing E]
     (hs : ∀ (φ : E →+* ℂ) (a : E), φ (star a) = starRingEnd ℂ (φ a)) {𝔫 : Ideal (𝓞 E)}
@@ -44,11 +44,9 @@ theorem eq_map_comap {E : Type} [Field E] [NumberField E] [StarRing E]
   exact ht
 
 /- English proof (translation)
-Use `GlobalTheory.LeastExponentCompare.isCMField_of_conj E (fun z => star z) (fun φ z => by rw [hs, starRingEnd_apply]) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace E))`. Establish `hreal : w.IsReal`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Use extensionality with `z`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq]`. Use `hs w.embedding z` as an intermediate fact. Rewrite `this` using `[hne z, starRingEnd_apply]`.
-
-Conclude with `this.symm`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.mpr (hTC.isComplex w)) hreal`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isCMField_of_star_compat {E : Type} [Field E] [NumberField E] [StarRing E]
     [hTC : IsTotallyComplex E]
@@ -68,7 +66,7 @@ private theorem isCMField_of_star_compat {E : Type} [Field E] [NumberField E] [S
   exact (InfinitePlace.not_isReal_iff_isComplex.mpr (hTC.isComplex w)) hreal
 
 /- English proof (translation)
-Establish `h1` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Rewrite `h1` using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E, IsTotallyComplex.finrank (K := E)]`. Establish `h2` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := E)`. Rewrite `h2` using `[IsTotallyComplex.nrRealPlaces_eq_zero E, zero_add]`. Unfold `Formalism.HermitianLatticesTheory.fDeg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -83,19 +81,17 @@ private theorem finrank_maximalRealSubfield_eq_fDeg (E : Type) [Field E] [Number
   omega
 
 /- English proof (translation)
-Introduce `E _ _ _ hE Y hY`. Take `⟨hTC, hs, -⟩` from `hE`. Use `haveI := hTC`. Use `haveI : IsCMField E := isCMField_of_star_compat hs`. Use `set F := maximalRealSubfield E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S : Set (Ideal (𝓞 E)) := {𝔫 : Ideal (𝓞 E) | 𝔫 ≠ ⊥ ∧ 𝔫 = Ideal.span {t | t ∈ 𝔫 ∧ star (t : E) = t} ∧ (Ideal.absNorm 𝔫 : ℝ) ≤ Y ^ 2} with hSdef`. Use `set T : Set (Ideal (𝓞 F)) := {𝔞 : Ideal (𝓞 F) | 𝔞 ≠ ⊥ ∧ (Ideal.absNorm 𝔞 : ℝ) ≤ Y} with hTdef`. Set `g : Ideal (𝓞 E) → Ideal (𝓞 F)` to `fun 𝔫 => 𝔫.comap (algebraMap (𝓞 F) (𝓞 E))`. Establish `hmap : ∀ 𝔫 ∈ S, 𝔫 = (g 𝔫).map (algebraMap (𝓞 F) (𝓞 E))` using `fun 𝔫 h𝔫 => eq_map_comap hs h𝔫.2.1`. Establish `hdeg : Module.finrank (𝓞 F) (𝓞 E) = 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E]`. Conclude with `Algebra.IsQuadraticExtension.finrank_eq_two F E`. Establish `hinj : Set.InjOn g S`. Introduce `𝔫₁ h₁ 𝔫₂ h₂ heq`. Rewrite using `[hmap 𝔫₁ h₁, hmap 𝔫₂ h₂, heq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmaps : Set.MapsTo g S T`. Introduce `𝔫 h𝔫`. Establish `hn` using `hmap 𝔫 h𝔫`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `hbot`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `h𝔫.1` to reduce the goal to its premises. Rewrite using `[hn, hbot, Ideal.map_bot]`. Establish `hnorm : Ideal.absNorm 𝔫 = Ideal.absNorm (g 𝔫) ^ 2` using `by conv_lhs => rw [hn]`. Rewrite using `[Ideal.absNorm_algebraMap, hdeg]`. Establish `hle` using `h𝔫.2.2`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hle` using `[hnorm]`. Move the coercions through the operations in `at hle`. Conclude with `(pow_le_pow_iff_left₀ (Nat.cast_nonneg _) (by linarith) two_ne_zero).mp hle`. Establish `hT : T.Finite` using `GlobalTheory.IdealBoundedNorm.finite_setOf_absNorm_le F Y`. Use `⟨Set.Finite.of_injOn hmaps hinj hT, ?_⟩` and prove the remaining obligations.
-
-Establish `hcard : S.ncard ≤ T.ncard` using `Set.ncard_le_ncard_of_injOn g hmaps hinj hT`. Establish `hTb` using `GlobalTheory.IdealBoundedNorm.ncard_absNorm_le F Y hY`. Rewrite `hTb` using `[finrank_maximalRealSubfield_eq_fDeg E]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ncard_real_ideals_le : ∀ (E : Type) [Field E] [NumberField E] [StarRing E], Formalism.HermitianLatticesTheory.IsCMUnram E → ∀ Y : ℝ, 1 ≤ Y → {𝔫 : Ideal (𝓞 E) | 𝔫 ≠ ⊥ ∧ 𝔫 = Ideal.span {t | t ∈ 𝔫 ∧ star (t : E) = t} ∧ (Ideal.absNorm 𝔫 : ℝ) ≤ Y ^ 2}.Finite ∧ (({𝔫 : Ideal (𝓞 E) | 𝔫 ≠ ⊥ ∧ 𝔫 = Ideal.span {t | t ∈ 𝔫 ∧ star (t : E) = t} ∧ (Ideal.absNorm 𝔫 : ℝ) ≤ Y ^ 2}.ncard : ℕ) : ℝ) ≤ Y * (1 + Real.log Y) ^ Formalism.HermitianLatticesTheory.fDeg E := by
   intro E _ _ _ hE Y hY

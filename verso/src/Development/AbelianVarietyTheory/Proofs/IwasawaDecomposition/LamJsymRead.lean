@@ -12,13 +12,13 @@ noncomputable section
 namespace GlobalTheory.LamRead
 
 /- English proof (translation)
-Apply the tactic sequence `rw [Formalism.L2.G.sum_sup hr k ((Finset.range r).filter (fun x => x + 1 ≠ k)) (fun x hx => by simp only [Finset.mem_filter, Finset.mem_range]; constructor <;> intro h <;> first | exact h.2 | exact ⟨by omega, h⟩) N, Finset.filter_filter, Finset.sum_filter]`. Establish `h1 : ∀ x ∈ Finset.range r, (if x + 1 ≠ k ∧ x + 1 < r then Formalism.L2.G.entN N x (x + 1) else 0) = if x + 1 < r ∧ x + 1 ≠ k then f x (x + 1) else 0` using `fun x hx => by`. Distinguish the cases in `hx' : x + 1 < r ∧ x + 1 ≠ k`. Rewrite using `[if_pos hx', if_pos ⟨hx'.2, hx'.1⟩]`. Establish `a1 : x < n` using `by omega`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a2 : x + 1 < n` using `by omega`. Unfold `Formalism.L2.G.entN`. Rewrite using `[dif_pos ⟨a1, a2⟩]`. Conclude with `(hf ⟨x, a1⟩ ⟨x + 1, a2⟩).symm`. Rewrite using `[if_neg hx', if_neg (fun h => hx' ⟨h.2, h.1⟩)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl h1]`. Take `⟨d, rfl⟩ : ∃ d, r = k + d` from `⟨r - k, by omega⟩`. Rewrite using `[Finset.sum_range_add, Nat.add_sub_cancel_left]`. Distinguish the cases in `hd : d = 0`. Substitute `hd` using the available equality.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.TopLawSym.sum_pred k _ _ fun p hp => by omega]`. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.TopLawSym.sum_pred k _ _ fun p hp => by omega, GlobalTheory.TopLawSym.sum_pred d (fun p => f (k + p) (k + p + 1)) (fun p => k + p + 1 < k + d ∧ k + p + 1 ≠ k) fun p hp => by omega]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_skip {F : Type} [Field F] {n r k : ℕ} (hr : r ≤ n) (hk : k ≤ r) (N : Matrix (Fin n) (Fin n) F) (f : ℕ → ℕ → F)
     (hf : ∀ i j : Fin n, f i.1 j.1 = N i j) :
@@ -48,9 +48,9 @@ theorem sum_skip {F : Type} [Field F] {n r k : ℕ} (hr : r ≤ n) (hk : k ≤ r
       GlobalTheory.TopLawSym.sum_pred d (fun p => f (k + p) (k + p + 1)) (fun p => k + p + 1 < k + d ∧ k + p + 1 ≠ k) fun p hp => by omega]
 
 /- English proof (translation)
-Establish `hb` using `GlobalTheory.DatumLaw.blk_le (r := r) (a := r + m * t) hs le_rfl`. Distinguish the cases in `hir : i < r`. Rewrite using `[coarse_of_lt hir]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h2 : i < r + m * t`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[GlobalTheory.TopLawSym.coarse_eq ht (by omega) h2, Nat.add_right_cancel_iff, Nat.div_eq_iff ht]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[coarse_of_le (by omega), blkIdx_replicate_of_le t m _ (by`. Use `Nat.sub_le_sub_right (Nat.not_lt.1 h2) r` as an intermediate fact. Rewrite using `[Nat.add_sub_cancel_left] at this)]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -69,15 +69,15 @@ theorem coarse_iff {r m t s i : ℕ} (ht : 0 < t) (hs : s < m) :
       omega
 
 /- English proof (translation)
-Set `A : ℕ → ℕ → κ` to `fun i j => if h' : i < n ∧ j < n then (M.1 : Matrix (Fin n) (Fin n) κ) ⟨i, h'.1⟩ ⟨j, h'.2⟩ else 0`. Establish `hA : ∀ i j : Fin n, A i.1 j.1 = (M.1 : Matrix (Fin n) (Fin n) κ) i j` using `fun i j => dif_pos ⟨i.2, j.2⟩`. Establish `h0 : ((lamJsym ψ χ n k r t m rS h M : Kˣ) : K) = ((chiSymF ψ r k rS (HPar0 h _ _ M) : Kˣ) : K) * ((detChar χ n r (List.replicate m t) ⟨M.1, HPar_le h _ _ M.2⟩ : Kˣ) : K)` using `rfl`. Establish `hrS : Formalism.L2.Forms.rSym k rS = r` using `hr.symm`. Rewrite using `[h0, GlobalTheory.TopLawSym.chiSymF_val ψ (by omega) (HPar0 h _ _ M) A fun i j => hA (Fin.castLE h i) (Fin.castLE h j), detChar_apply, List.length_replicate, Units.coe_prod, map_mul, map_prod, ← hψ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.L2.Forms.lamSym Formalism.L2.Forms.lamJ`. Rewrite using `[hrS]`. Use `congr 1`. Use `congr 1`. Rewrite using `[sum_skip h (by omega) _ (fun i j => e (A i j)) fun i j => by rw [hA]; rfl, map_add, map_sum, map_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite `hs` using `[Finset.mem_range]`. Rewrite using `[← hχ s hs, GlobalTheory.TopLaw.blkDet_eq_dB (coarse r (List.replicate m t)) (s + 1) (r + s * t) t (GlobalTheory.DatumLaw.blk_le hs hn) (fun i _ => coarse_iff ht hs) ⟨M.1, HPar_le h _ _ M.2⟩ A hA]`. Unfold `GlobalTheory.DatumLaw.dB`. Rewrite using `[RingHom.map_det]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use extensionality with `u v`. Establish `hb` using `GlobalTheory.DatumLaw.blk_le hs hn`. Establish `a1 : r + s * t + u.1 < n` using `by have := u.2; omega`. Establish `a2 : r + s * t + v.1 < n` using `by have := v.2; omega`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show e (A (r + s * t + u.1) (r + s * t + v.1)) = Formalism.L2.Forms.entN _ (r + s * t + u.1) (r + s * t + v.1)`. Unfold `Formalism.L2.Forms.entN`. Rewrite using `[dif_pos ⟨a1, a2⟩]`. Conclude with `congrArg e (hA ⟨_, a1⟩ ⟨_, a2⟩)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamJsym_read (κ κ' K : Type) [CommRing κ] [Field κ'] [Field K] (e : κ →+* κ') (emb : K →+* ℂ) (ψ : AddChar κ K)
     (χ : ℕ → κˣ →* Kˣ) (ψ' : AddChar κ' ℂ) (χ' : ℕ → MulChar κ' ℂ) (n k r t m rS : ℕ) (h : r ≤ n) (hr : r = k + 2 * rS + 1)

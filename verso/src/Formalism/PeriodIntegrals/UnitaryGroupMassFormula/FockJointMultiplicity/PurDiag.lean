@@ -9,9 +9,7 @@ namespace PI.FJMB
 variable {σ : Type*}
 
 /- English proof (translation)
-Use `revert hi`. Use `Fin.cases ?_ ?_ i` and prove the remaining obligations. Introduce `h`. Conclude with `absurd rfl h`. Introduce `j _`.
-
-Conclude with `Fin.succ_pos j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem fin_zero_lt_of_ne_zero {k : ℕ} (i : Fin (k + 1)) (hi : i ≠ 0) : (0 : Fin (k + 1)) < i := by
   revert hi
@@ -22,13 +20,13 @@ private theorem fin_zero_lt_of_ne_zero {k : ℕ} (i : Fin (k + 1)) (hi : i ≠ 0
     exact Fin.succ_pos j
 
 /- English proof (translation)
-Introduce `S`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using the standard rewrite rules. Introduce `b S hb ih hS`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Conclude with `hS (Finset.mem_insert_self _ _)`. Establish `hS0 : (0 : Fin (m + 1)) ∉ S` using `fun h => hS (Finset.mem_insert_of_mem h)`. Rewrite using `[← ih hS0]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfun : (fun i k => if i ∈ insert b S then M i k - M i c / M 0 c * M 0 k else M i k) = rowAddM (fun i k => if i ∈ S then M i k - M i c / M 0 c * M 0 k else M i k) 0 b (-(M b c / M 0 c))`. Use function extensionality and compare the values at `i k`. Distinguish the cases in `hib : i = b`. Substitute `hib` using the available equality. Apply the tactic sequence `simp [rowAddM, hb, hS0] <;> ring`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[rowAddM, hib]`. Rewrite using `[hfun]`. Conclude with `row_inv ι hι 0 b (Ne.symm hb0) f (hf b (fin_zero_lt_of_ne_zero b hb0)) _ p _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aeval_fill_sub_multiple_of_zeroth_line {m n : ℕ} (ι : Fin (m + 1) × Fin n → σ) (hι : Function.Injective ι)
     (f : MvPolynomial σ ℂ) (hf : ∀ b : Fin (m + 1), 0 < b → PI.FJM.bRow ι 0 b f = 0)
@@ -58,13 +56,13 @@ private theorem aeval_fill_sub_multiple_of_zeroth_line {m n : ℕ} (ι : Fin (m 
     exact row_inv ι hι 0 b (Ne.symm hb0) f (hf b (fin_zero_lt_of_ne_zero b hb0)) _ p _
 
 /- English proof (translation)
-Introduce `T`. Use `Finset.induction_on T ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using the standard rewrite rules. Introduce `b T hb ih hT`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Conclude with `hT (Finset.mem_insert_self _ _)`. Establish `hT0 : (0 : Fin (n + 1)) ∉ T` using `fun h => hT (Finset.mem_insert_of_mem h)`. Rewrite using `[← ih hT0]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfun : (fun i k => if k ∈ insert b T then M i k - M r k / M r 0 * M i 0 else M i k) = colAddM (fun i k => if k ∈ T then M i k - M r k / M r 0 * M i 0 else M i k) 0 b (-(M r b / M r 0))`. Use function extensionality and compare the values at `i k`. Distinguish the cases in `hkb : k = b`. Substitute `hkb` using the available equality. Apply the tactic sequence `simp [colAddM, hb, hT0] <;> ring`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[colAddM, hkb]`. Rewrite using `[hfun]`. Conclude with `col_inv ι hι 0 b (Ne.symm hb0) f (hf b (fin_zero_lt_of_ne_zero b hb0)) _ p _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aeval_fill_column_elimination {m n : ℕ} (ι : Fin m × Fin (n + 1) → σ) (hι : Function.Injective ι)
     (f : MvPolynomial σ ℂ) (hf : ∀ d : Fin (n + 1), 0 < d → PI.FJM.bCol ι 0 d f = 0)
@@ -94,25 +92,23 @@ private theorem aeval_fill_column_elimination {m n : ℕ} (ι : Fin m × Fin (n 
     exact col_inv ι hι 0 b (Ne.symm hb0) f (hf b (fin_zero_lt_of_ne_zero b hb0)) _ p _
 
 /- English proof (translation)
-Use `haveI : Infinite ℂ := Infinite.of_injective (Nat.cast : ℕ → ℂ) Nat.cast_injective`. Establish `key : ∀ y : σ → ℂ, y (ι (0, 0)) ≠ 0 → aeval y f = 0`. Introduce `y hc`. Set `M : Fin (m + 1) → Fin (n + 1) → ℂ` to `fun i k => y (ι (i, k))`. Set `M1 : Fin (m + 1) → Fin (n + 1) → ℂ` to `fun i k => if i ∈ Finset.univ.erase (0 : Fin (m + 1)) then M i k - M i 0 / M 0 0 * M 0 k else M i k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `M2 : Fin (m + 1) → Fin (n + 1) → ℂ` to `fun i k => if k ∈ Finset.univ.erase (0 : Fin (n + 1)) then M1 i k - M1 0 k / M1 0 0 * M1 i 0 else M1 i k`. Establish `hy : fill ι M y = y`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : ∃ x, ι x = v`. Take `⟨x, rfl⟩` from `hv`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `fill_ι hι M y x`. Use `push_neg at hv`. Conclude with `fill_not ι M y v hv`. Establish `h1 : aeval (fill ι M1 y) f = aeval (fill ι M y) f` using `aeval_fill_sub_multiple_of_zeroth_line ι hι f (fun b hb => hf.1 0 b hb) M y 0 (Finset.univ.erase 0) (by simp)`. Establish `h2 : aeval (fill ι M2 y) f = aeval (fill ι M1 y) f` using `aeval_fill_column_elimination ι hι f (fun d hd => hf.2 0 d hd) M1 y 0 (Finset.univ.erase 0) (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hvan : ∀ v ∈ edge ι, fill ι M2 y v = 0`. Introduce `v hv`. Simplify using `only [edge, Set.mem_setOf_eq] at hv`. Break down `hv with ⟨l, rfl⟩ | ⟨j, rfl⟩` into its components or cases. Rewrite using `[fill_ι hι]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `[M2, M1, M]`. Apply the tactic sequence `all_goals first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`. Consider the case `(rw [div_mul_cancel₀ _ hc, sub_self])`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [hc]`. Rewrite using `[fill_ι hι]`. Simplify using `[M2, M1, M]`. Apply the tactic sequence `all_goals first`. Consider the case `(field_simp; done)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Consider the case `(field_simp; ring)`. Consider the case `(rw [div_mul_cancel₀ _ hc, sub_self])`. Consider the case `simp [hc]`. Establish `h3` using `aeval_killS_of_zero (edge ι) (fill ι M2 y) hvan f`. Rewrite `h3` using `[hg, map_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hmul : f * X (ι (0, 0)) = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `y`. Rewrite using `[map_mul, MvPolynomial.eval_X, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hy0 : y (ι (0, 0)) = 0`. Rewrite using `[hy0, mul_zero]`. Establish `e : MvPolynomial.eval y f = aeval y f` using `by first`. Consider the case `rfl`. Consider the case `simp [MvPolynomial.coe_aeval_eq_eval]`.
-
-Rewrite using `[e, key y hy0, zero_mul]`. Conclude with `(mul_eq_zero.mp hmul).resolve_right (MvPolynomial.X_ne_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem elim_step {m n : ℕ} (ι : Fin (m + 1) × Fin (n + 1) → σ) (hι : Function.Injective ι)
     (f : MvPolynomial σ ℂ) (hf : HWB ι f) (hg : aeval (killS (edge ι)) f = 0) : f = 0 := by
@@ -173,19 +169,17 @@ theorem elim_step {m n : ℕ} (ι : Fin (m + 1) × Fin (n + 1) → σ) (hι : Fu
   exact (mul_eq_zero.mp hmul).resolve_right (MvPolynomial.X_ne_zero _)
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `n ι _ f _ hg`. Establish `hempty : offD ι = ∅`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `v`. Simplify using `only [offD, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨i, _, _, _⟩`. Conclude with `Fin.elim0 i`. Rewrite `hg` using `[hempty, aeval_killS_empty]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Conclude with `hg`. Consider the case `succ m ih`. Introduce `n`. Consider the cases of `n with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ι _ f _ hg`. Establish `hempty : offD ι = ∅`. Use extensionality with `v`. Simplify using `only [offD, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨_, k, _, _⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Conclude with `Fin.elim0 k`. Rewrite `hg` using `[hempty, aeval_killS_empty]`. Conclude with `hg`. Consider the case `succ n`. Introduce `ι hι f hf hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hinj : Function.Injective (fun x : Fin m × Fin n => ι (x.1.succ, x.2.succ))`. Introduce `x y hxy`. Establish `h` using `hι hxy`. Simplify using `only [Prod.mk.injEq, Fin.succ_inj] at h`. Conclude with `Prod.ext h.1 h.2`.
-
-Apply `elim_step ι hι f hf` to reduce the goal to its premises. Apply `ih n (fun x : Fin m × Fin n => ι (x.1.succ, x.2.succ)) hinj _ (hwb_restrict ι hι f hf)` to reduce the goal to its premises. Rewrite using `[aeval_killS_union, offD_step ι hι]`. Conclude with `hg`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_zero : ∀ (m n : ℕ) (ι : Fin m × Fin n → σ), Function.Injective ι → ∀ f : MvPolynomial σ ℂ,
     HWB ι f → aeval (killS (offD ι)) f = 0 → f = 0 := by

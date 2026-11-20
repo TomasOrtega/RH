@@ -11,9 +11,9 @@ namespace GlobalTheory.EtC
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 
 /- English proof (translation)
-Introduce `q _ i`. Take `⟨h1, h2, -⟩` from `_root_.GlobalTheory.EtC.toSheafify_loc_bij_lift (ZMod q) (Scheme.Γ ⋙ _root_.GlobalTheory.EtC.twF q i)`. Use `⟨_, toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ _root_.GlobalTheory.EtC.twF q i), h1, h2, fun U hU => ?_⟩` and prove the remaining obligations. Take `⟨x⟩` from `hU`. Use `haveI : Nontrivial Γ(U, ⊤) := (U.presheaf.germ ⊤ x trivial).hom.domain_nontrivial`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI := (_root_.GlobalTheory.TwFree.twist_free q i Γ(U, ⊤)).1`. Express the relevant statement in the definitionally equal form `Module.Flat (ULift.{1} (ZMod q)) ((_root_.GlobalTheory.EtC.Prim q Γ(U, ⊤) →₀ ULift.{1} (ZMod q)) ⧸ _root_.GlobalTheory.EtC.twRel q i Γ(U, ⊤))`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.EtC.flatS_tw : ∀ (q : ℕ) [NeZero q] (i : ℤ),
     _root_.GlobalTheory.EtC.FlatS (_root_.GlobalTheory.EtC.tw q i) := by

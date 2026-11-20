@@ -29,7 +29,7 @@ structure ManIs {e : ℕ} (M : Man e) (Y : Var F) : Type where
   alg : ∀ a j, ∃ c : AlgChart Y.str (ε a) e, (M.A a).chart j = (pt a).transOpenPartialHomeomorph c.finChart
 
 /- English proof (translation)
-Establish `h` using `Fintype.card_congr I.ε`. Rewrite `h` using `[Fintype.card_fin, NumberField.Embeddings.card]`. Rewrite using `[M.κ_eq, ← h]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem ManIs.κ_eq {e : ℕ} {M : Man e} (I : ManIs M Y) : M.κ = (Module.finrank ℚ F : ℝ)⁻¹ := by
   have h := Fintype.card_congr I.ε
@@ -50,7 +50,7 @@ variable (Y) in
 def atlasOf (σ : F →+* ℂ) : FinHolAtlas Y.dim (Pts Y σ) := (AnRead.all Y.str σ Y.dim).finAtlas
 
 /- English proof (translation)
-The claim follows from `AnRead.isAlgAtlas_finAtlas _`.
+A detailed English derivation is pending.
 -/
 theorem isAlgAtlas_atlasOf (σ : F →+* ℂ) : IsAlgAtlas (atlasOf Y σ) := AnRead.isAlgAtlas_finAtlas _
 
@@ -81,7 +81,7 @@ variable (Y) in
 def fsPot (σ : F →+* ℂ) : LocPot (Pts Y σ) := ((ProjAn.fsO1 F σ Y.N).pull Y.ι Y.ι_str).locPot
 
 /- English proof (translation)
-The claim follows from `have := CxPts.t2Space_cxPts_of_isProjOver σ Y.isProjOver InhabCalc.isBd_empty _ _ ((ProjPos.fubiniStudy_weight_pullback_isSmooth _ _ (AnRead.all Y.str σ Y.dim)).isPotential (isAlgAtlas_atlasOf σ)) (((ProjPos.fubiniStudy_weight_pullback_isSmooth _ _ (AnRead.all Y.str σ Y.dim)).isP …`.
+A detailed English derivation is pending.
 -/
 theorem isBd_fsPot (σ : F →+* ℂ) : IsBd (atlasOf Y σ) ∅ (fun _ => Real.exp 1) (fsPot Y σ) :=
   have := CxPts.t2Space_cxPts_of_isProjOver σ Y.isProjOver
@@ -91,7 +91,7 @@ theorem isBd_fsPot (σ : F →+* ℂ) : IsBd (atlasOf Y σ) ∅ (fun _ => Real.e
       (ProjPos.fubiniStudy_weight_pullback_closed_immersion_strictPos _ _ _))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, ⟨manIsOf _ _ _ isBd_fsPot⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_manIs (Y : Var F) : ∃ M : Man Y.dim, Nonempty (ManIs M Y) :=
   ⟨_, ⟨manIsOf _ _ _ isBd_fsPot⟩⟩
@@ -105,7 +105,7 @@ abbrev genAt (Δ : Y.Dv) (x : Y.X) : Y.Fn := ((eqn Δ x)⁻¹ : Y.Fnˣ)
 omit [NumberField F] in
 
 /- English proof (translation)
-Rewrite using `[genAt, Units.val_inv_eq_inv_val]`. Conclude with `CartierDiv.isEqn_iff_generatesAt_inv.1 (Base.isEqn_eqn Δ x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generatesAt_genAt (Δ : Y.Dv) (x : Y.X) : Δ.GeneratesAt x (genAt Δ x) := by
   rw [genAt, Units.val_inv_eq_inv_val]
@@ -119,9 +119,9 @@ def lnRatio (m m' : C.Met Y σ Δ) (y : Pts Y σ) : ℝ :=
 def PosAt (m : C.Met Y σ Δ) (y : Pts Y σ) : Prop := 0 < C.pn Y σ Δ m (C.cx Y σ (genAt Δ (under y))) y
 
 /- English proof (translation)
-Establish `he` using `Base.isEqn_eqn Δ (under y)`. Establish `hu` using `he.generatesAt_iff.1 hf`. Use `⟨‖ratVal (f * (eqn Δ (under y) : Y.Fn)) y‖ ^ 2, ?_, fun m => ?_⟩` and prove the remaining obligations. Conclude with `pow_pos (norm_pos_iff.2 (ratVal_ne_zero hu)) 2`. Rewrite using `[← C.pn_mul Y σ Δ m _ _ y hu.regAt (generatesAt_genAt Δ _).regularAt]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Simplify using `[genAt]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pn_eq {f : Y.Fn} {y : Pts Y σ} (hf : Δ.GeneratesAt (under y) f) : ∃ a : ℝ, 0 < a ∧ ∀ m : C.Met Y σ Δ,
     C.pn Y σ Δ m (C.cx Y σ f) y = a * C.pn Y σ Δ m (C.cx Y σ (genAt Δ (under y))) y := by
@@ -134,7 +134,7 @@ theorem exists_pn_eq {f : Y.Fn} {y : Pts Y σ} (hf : Δ.GeneratesAt (under y) f)
     simp [genAt]
 
 /- English proof (translation)
-Take `⟨a, ha, e⟩` from `exists_pn_eq (C := C) hf`. Simplify using `only [lnRatio, lnN]`. Rewrite using `[e m, e m', Real.log_mul ha.ne' (ne_of_gt h), Real.log_mul ha.ne' (ne_of_gt h')]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lnRatio_eq {m m' : C.Met Y σ Δ} {f : Y.Fn} {y : Pts Y σ} (hf : Δ.GeneratesAt (under y) f) (h : PosAt m y)
     (h' : PosAt m' y) : lnRatio m m' y = lnN m f y - lnN m' f y := by
@@ -147,7 +147,7 @@ def IsPot {X : Type} [TopologicalSpace X] (h : X → Pts Y σ) (m : C.Met Y σ �
   ∀ x, ∃ f : Y.Fn, ∀ y ∈ P.U x, Δ.GeneratesAt (under (h y)) f ∧ PosAt m (h y) ∧ P.φ x y = -lnN m f (h y)
 
 /- English proof (translation)
-Introduce `x` and use `by refine ⟨(r (pick φ.isLB x) : Y.Fn)⁻¹, fun y hy => ?_⟩ have hi : under y ∈ L.U (pick φ.isLB x) := CxPts.mem_ptsIn.1 hy have hg := CartierDiv.isEqn_iff_generatesAt_inv.1 (h.isEqn _ _ hi) have e := C.pn_ofWeight Y σ Δ L r h φ _ y _ hi hg.regularAt rw [inv_mul_cancel₀ (Units.ne_ze …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isPot_ofWeight {L : LB Y.X} {r : L.ι → Y.Fnˣ} (h : Presents Δ L r) (φ : Weight Y.str σ L) :
     IsPot id (C.ofWeight Y σ Δ L r h φ) φ.locPot := fun x => by
@@ -171,7 +171,7 @@ def ManIs.FormOf {e : ℕ} {M : Man e} (I : ManIs M Y) {ι : Type} [Fintype ι] 
     ∀ j, ∀ y ∈ ((M.A a).chart j).target, ∀ w, leviAt (M.A a) (P a) j y w = ∑ i, t i * leviAt (M.A a) (Q i) j y w
 
 /- English proof (translation)
-Introduce `a` and use `⟨fun _ => (φ _).locPot, fun _ => ⟨isPot_ofWeight hL _, ((Weight.isCInf_iff_isSmooth (AnRead.all Y.str _ Y.dim)).1 (hφ _)).isPotential (isAlgAtlas_atlasOf _)⟩, fun j y _ w => by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem formOf_ofWeight {Z : ∀ σ, Set (Pts Y σ)} {r : ∀ σ, Pts Y σ → ℝ} {Om : ∀ σ, LocPot (Pts Y σ)}
     (h : ∀ σ, IsBd (atlasOf Y σ) (Z σ) (r σ) (Om σ)) {Δ : Y.Dv} {L : LB Y.X} {g : L.ι → Y.Fnˣ} (hL : Presents Δ L g)
@@ -221,7 +221,7 @@ def deg : ℕ := V.π.residueDegree (genericPoint V.G)
 def ν : ℝ := (Module.finrank ℚ F : ℝ) * V.deg
 
 /- English proof (translation)
-Set `` to `(V.π.residueFieldMap (genericPoint V.G)).hom.toAlgebra`. Establish `: Module.Finite (Y.X.residueField (V.π (genericPoint V.G))) (V.G.residueField (genericPoint V.G))` using `residueFieldMap_finite_of_locallyQuasiFinite V.π _`. Conclude with `Module.finrank_pos`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem deg_pos : 0 < V.deg := by
   let := (V.π.residueFieldMap (genericPoint V.G)).hom.toAlgebra
@@ -230,7 +230,7 @@ theorem deg_pos : 0 < V.deg := by
   exact Module.finrank_pos
 
 /- English proof (translation)
-The claim follows from `mul_pos (Nat.cast_pos.2 Module.finrank_pos) (Nat.cast_pos.2 V.deg_pos)`.
+A detailed English derivation is pending.
 -/
 theorem ν_pos : 0 < V.ν := mul_pos (Nat.cast_pos.2 Module.finrank_pos) (Nat.cast_pos.2 V.deg_pos)
 
@@ -250,7 +250,7 @@ def ofModel (M : TrueGeo.Model Y) (h : ReciprocityTheory.ChartRestriction.G.Geo.
   φ_spec := (Category.comp_id _).trans ((congrArg (· ≫ _) (Spec.map_id _)).trans (Category.id_comp _)).symm
 
 /- English proof (translation)
-The claim follows from `Scheme.Hom.residueDegree_id _`.
+A detailed English derivation is pending.
 -/
 theorem deg_ofModel (M : TrueGeo.Model Y) (h : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.X) : (ofModel M h).deg = 1 :=
   Scheme.Hom.residueDegree_id _
@@ -268,13 +268,13 @@ def Induces (A : Adl C Y) (L : HermLB V.p) (k : ℕ) : Prop :=
       k * A.lg v e y = Real.log (e.w (valAt z (V.φ (genAt A.D (below y.1)) ^ k * (r i : V.G.functionField))))
 
 /- English proof (translation)
-Take `⟨-, r, hr, h₁, h₂⟩` from `hL`. Establish `hg (x : Y.X) : ((k : ℕ) • A.D).GeneratesAt x (genAt A.D x ^ (k : ℕ))`. Use `CartierDiv.isEqn_iff_generatesAt_inv.1 ((Base.isEqn_eqn A.D x).nsmul k)` as an intermediate fact. Rewrite `this` using `[Units.val_pow_eq_pow_val, ← inv_pow, ← Units.val_inv_eq_inv_val]`. Then use the resulting hypothesis. Use `⟨r, hr.isRatSec, fun i x hx => (hr.isEqn i x hx).generatesAt_iff.1 (hg x), fun σ z y y' i e₁ e₂ hi => ?_, fun v e y z yt i e₁ e₂ hi => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : y = z` from `Subtype.ext (e₁.trans (Category.comp_id _))`. Use `h₁ σ y y' i _ e₂ hi (hg _).regularAt` as an intermediate fact. Rewrite `this` using `[C.pn_mPow Y σ A.D k _ _ y (generatesAt_genAt _ _)]`. Rewrite using `[mul_pow, ← Real.exp_nat_mul]`. Use `Eq.trans ?_ this` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Take `rfl : z = y.1` from `(Category.comp_id _).symm.trans e₁`. Use `h₂ v e y yt i e₂ hi` as an intermediate fact. Rewrite `this` using `[Pi.zero_apply, mul_zero, sub_zero, Units.val_mul, Units.val_pow_eq_pow_val]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem induces_ofModel {A : Adl C Y} {M : TrueGeo.Model Y} (h : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.X)
     {L : HermLB M.p} {k : ℕ+} (hL : A.Induced M L k 0) : (ofModel M h).Induces A L k := by
@@ -302,11 +302,11 @@ def IsDown {e : ℕ} {M : Man e} (I : ManIs M Y) (ε : (𝓞 F →+* ℂ) → Fi
     ∀ z, ∃ w : Sp ℂ ⟶ V.G, w ≫ V.j = z.1 ∧ w ≫ V.π = (I.pt _ (π σ z)).1
 
 /- English proof (translation)
-Establish `h (σ : 𝓞 F →+* ℂ) : ∃ a, (I.ε a).comp (algebraMap (𝓞 F) F) = σ`. Establish `hi : Function.Injective σ` using `(RingHom.injective_iff_ker_eq_bot _).2 (Ideal.eq_bot_of_comap_eq_bot (R := ℤ) (eq_bot_iff.2 fun n hn => by simpa using hn))`. Take `⟨τ, hτ⟩ : ∃ τ : F →+* ℂ, τ.comp (algebraMap (𝓞 F) F) = σ` from `⟨IsFractionRing.lift (K := F) hi, RingHom.ext fun x => by`. Rewrite using `[RingHom.comp_apply, IsFractionRing.lift_algebraMap]⟩`. Conclude with `⟨I.ε.symm τ, by rwa [Equiv.apply_symm_apply]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `choose ε hε using h`. Establish `h' (σ : 𝓞 F →+* ℂ) (z : CxPts V.p σ) : ∃ y : M.X (ε σ), ∃ w : Sp ℂ ⟶ V.G, w ≫ V.j = z.1 ∧ w ≫ V.π = (I.pt _ y).1`. Establish `e : z.1 ≫ V.p = spMap (I.ε (ε σ)) ≫ spMap (algebraMap (𝓞 F) F)`. Rewrite using `[z.2, ← hε σ, hε σ]`. Conclude with `(congrArg spMap (hε σ).symm).trans (Spec.map_comp (CommRingCat.ofHom _) (CommRingCat.ofHom _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(I.pt _).symm ⟨V.pb.lift _ _ e ≫ V.π, by rw [Category.assoc, V.pb.lift_snd]⟩, V.pb.lift _ _ e, V.pb.lift_fst _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Homeomorph.apply_symm_apply]`. Use `choose π hπ using h'`. Conclude with `⟨ε, π, fun σ => ⟨hε σ, hπ σ⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isDown {e : ℕ} {M : Man e} (I : ManIs M Y) : ∃ ε π, V.IsDown I ε π := by
   have h (σ : 𝓞 F →+* ℂ) : ∃ a, (I.ε a).comp (algebraMap (𝓞 F) F) = σ := by
@@ -331,7 +331,7 @@ theorem exists_isDown {e : ℕ} {M : Man e} (I : ManIs M Y) : ∃ ε π, V.IsDow
 end Cover
 
 /- English proof (translation)
-The claim follows from `have : IsPrincipalIdealRing (𝓞 ℚ) := .of_surjective Rat.ringOfIntegersEquiv.symm.toRingHom Rat.ringOfIntegersEquiv.symm.surjective ⟨.ofModel (Model.pspace ℚ n) (Models.isNormalScheme_projSpace _ n), Cover.deg_ofModel _ _, Cover.induces_ofModel _ (Adl.induced_triv C _)⟩`.
+A detailed English derivation is pending.
 -/
 example (C : CxSt ℚ) (n : ℕ) : ∃ V : Cover (proj ℚ n), V.deg = 1 ∧ V.Induces (Adl.triv C _) (HermLB.triv V.p) 1 :=
   have : IsPrincipalIdealRing (𝓞 ℚ) :=

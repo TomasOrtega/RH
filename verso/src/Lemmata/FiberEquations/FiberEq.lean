@@ -6,11 +6,9 @@ open scoped ComplexConjugate nonZeroDivisors
 namespace Bl.FiberEquations
 
 /- English proof (translation)
-Use extensionality with `φ`. Simplify using `only [mem_filter, mem_univ, true_and, mem_insert, mem_singleton]`. Use `conv_lhs => rw [← InfinitePlace.mk_embedding w, InfinitePlace.mk_eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | h)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Conclude with `Or.inl h`. Use `right`. Rewrite using `[← h, ComplexEmbedding.involutive_conjugate E φ]`. Introduce and unpack `(h | h)`. Conclude with `Or.inl h`.
-
-Use `right`. Rewrite using `[h, ComplexEmbedding.involutive_conjugate E]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Prove the first alternative. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma fiber_eq {E : Type} [Field E] (w : InfinitePlace E) [DecidableEq (InfinitePlace E)]
     [DecidableEq (E →+* ℂ)] [Fintype (E →+* ℂ)] :
@@ -30,11 +28,11 @@ private lemma fiber_eq {E : Type} [Field E] (w : InfinitePlace E) [DecidableEq (
       rw [h, ComplexEmbedding.involutive_conjugate E]
 
 /- English proof (translation)
-Establish `h1 : ((Algebra.trace ℚ E x : ℚ) : ℂ) = ∑ φ : E →+* ℂ, φ x`. Establish `h` using `trace_eq_sum_embeddings (K := ℚ) (L := E) (E := ℂ) (x := x)`. Rewrite `h` using `[eq_ratCast]`. Rewrite using `[h]`. Conclude with `Fintype.sum_equiv (RingHom.equivRatAlgHom (R := E) (S := ℂ)).symm _ _ (fun σ => rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_ratCast, h1, Complex.ofReal_sum, ← Finset.sum_fiberwise univ (fun φ : E →+* ℂ => InfinitePlace.mk φ) (fun φ => φ x)]`. Use `Finset.sum_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Establish `hne : w.embedding ≠ ComplexEmbedding.conjugate w.embedding`. Introduce `h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsTotallyComplex.complexEmbedding_not_isReal w.embedding (ComplexEmbedding.isReal_iff.mpr h.symm)`. Rewrite using `[fiber_eq w, Finset.sum_pair hne, ComplexEmbedding.conjugate_coe_eq, Complex.add_conj]`.
+A detailed English derivation is pending.
 -/
 theorem goal1 (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (x : E) :
     ((Algebra.trace ℚ E x : ℚ) : ℝ) = ∑ w : InfinitePlace E, 2 * (w.embedding x).re := by

@@ -22,9 +22,9 @@ namespace UpperTheory.Zero.ConvolutionTheory.EB
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `one => exact tendsto_const_nhds`. Consider the case `gen i => exact h i`. Consider the case `smul c a ih => exact ih.const_mul c`. Consider the case `add a b iha ihb => exact iha.add ihb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul a b iha ihb => exact iha.mul ihb`.
+Treat this case separately.
 -/
 private theorem ev_tendsto {ι : Type} (e : Ex ι) {x : ℕ → ι → ℂ} {y : ι → ℂ}
     (h : ∀ i, Tendsto (fun k => x k i) atTop (𝓝 (y i))) :
@@ -37,7 +37,7 @@ private theorem ev_tendsto {ι : Type} (e : Ex ι) {x : ℕ → ι → ℂ} {y :
   | mul a b iha ihb => exact iha.mul ihb
 
 /- English proof (translation)
-Introduce `h0`. Establish `h` using `GlobalTheory.LFun.ConjPlace.satEig_inv_mul (q := q) hC (le_refl n)`. Rewrite `h` using `[h0, mul_zero, Nat.sub_self, GlobalTheory.LFun.ConjPlace.satEig_zero]`. Conclude with `zero_ne_one h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem satEig_top_ne_zero (q n : ℕ) {C : Multiset ℂˣ} (hC : C.card = n) : satEig q n C n ≠ 0 := by
   intro h0
@@ -46,7 +46,7 @@ private theorem satEig_top_ne_zero (q n : ℕ) {C : Multiset ℂˣ} (hC : C.card
   exact zero_ne_one h
 
 /- English proof (translation)
-Rewrite using `[eq_div_iff (satEig_top_ne_zero q n hB)]`. Conclude with `GlobalTheory.LFun.ConjPlace.satEig_inv_mul hB hi`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem satEig_inv_eq (q n : ℕ) {B : Multiset ℂˣ} (hB : B.card = n) {i : ℕ} (hi : i ≤ n) :
     satEig q n (inv B) i = satEig q n B (n - i) / satEig q n B n := by
@@ -54,7 +54,7 @@ private theorem satEig_inv_eq (q n : ℕ) {B : Multiset ℂˣ} (hB : B.card = n)
   exact GlobalTheory.LFun.ConjPlace.satEig_inv_mul hB hi
 
 /- English proof (translation)
-Rewrite using `[satEig_inv_eq q n hC hi]`. Simplify using `only [fun k => satEig_inv_eq q n (hB k) hi]`. Conclude with `(h (n - i)).div (h n) (satEig_top_ne_zero q n hC)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem satEig_inv_tendsto (q n : ℕ) {B : ℕ → Multiset ℂˣ} {C : Multiset ℂˣ} (hB : ∀ k, (B k).card = n)
     (hC : C.card = n) (h : ∀ i : ℕ, Tendsto (fun k => satEig q n (B k) i) atTop (𝓝 (satEig q n C i)))
@@ -65,18 +65,16 @@ private theorem satEig_inv_tendsto (q n : ℕ) {B : ℕ → Multiset ℂˣ} {C :
   exact (h (n - i)).div (h n) (satEig_top_ne_zero q n hC)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.UnrEuler.ConjFac.absNorm_conjSrc _ w`.
+A detailed English derivation is pending.
 -/
 private theorem qV_cPl {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Pl E) :
     Formalism.UG.qV E (cPl w) = Formalism.UG.qV E w :=
   GlobalTheory.UnrEuler.ConjFac.absNorm_conjSrc _ w
 
 /- English proof (translation)
-Introduce `E _ _ _ a b T e₁ e₂ B₁ B₂ C₁ C₂ h`. Unfold `UpperTheory.V.Z.Tf.GlobalTraceComparison.val`. Use `tendsto_finset_prod _ fun w hw => Tendsto.mul ?_ ?_` and prove the remaining obligations. Take `⟨-, -, -, h₁, h₂⟩` from `h w (Or.inl hw)`. Conclude with `ev_tendsto _ fun p => (h₁ p.1).mul (h₂ p.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcc : cPl (cPl w) = w` using `((UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.places E).2.1 w).1`. Take `⟨c₁, c₂, hk, h₁, h₂⟩` from `h (cPl w) (Or.inr (hcc.symm ▸ hw))`. Rewrite `h₁`, `h₂` using `[qV_cPl]`. Use `ev_tendsto _ fun p => Tendsto.mul ?_ ?_` and prove the remaining obligations. Conclude with `satEig_inv_tendsto _ a (fun k => (hk k).1) c₁ h₁ (Nat.lt_succ_iff.1 p.1.2)`.
-
-Conclude with `satEig_inv_tendsto _ b (fun k => (hk k).2) c₂ h₂ (Nat.lt_succ_iff.1 p.2.2)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem valLim : ValLim := by
   intro E _ _ _ a b T e₁ e₂ B₁ B₂ C₁ C₂ h

@@ -10,17 +10,17 @@ set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ nS nT N e hrat y z`. Use `haveI : Nontrivial (AF F) := (AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial`. Set `I : Matrix (Fin nT) (Fin nS) E →ₗ[F] Formalism.IndefR.DatumF.WOF F E nS nT` to `(Algebra.TensorProduct.includeRight (R := F) (A := AF F) (B := E)).toLinearMap.mapMatrix`. Establish `hI : ∀ x, I x = Formalism.IndefR.DatumF.ratWF x` using `fun x => rfl`. Set `L : Matrix (Fin nT) (Fin nS) E →ₗ[F] GlobalTheory.ThetaTransform.VA F N` to `(e.toLinearMap.restrictScalars F).comp I`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hL : ∀ x, L x = e (Formalism.IndefR.DatumF.ratWF x)` using `fun x => by rw [← hI]; rfl`. Set `r : (Fin N → F) →ₗ[F] (Fin N → AF F)` to `LinearMap.pi fun i => (Algebra.linearMap F (AF F)).comp (LinearMap.proj i)`. Set `R : ((Fin N → F) × (Fin N → F)) →ₗ[F] GlobalTheory.ThetaTransform.VA F N` to `LinearMap.prodMap r r`. Establish `hR : ∀ y z, R (y, z) = (GlobalTheory.SWQ.rat y, GlobalTheory.SWQ.rat z)` using `fun _ _ => rfl`. Establish `hAinj : Function.Injective (algebraMap F (AF F))` using `AdeleRing.algebraMap_injective _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrinj : Function.Injective r` using `fun a b h => funext fun i => hAinj (congrFun h i)`. Establish `hRinj : Function.Injective R` using `fun a b h => Prod.ext (hrinj (congrArg Prod.fst h)) (hrinj (congrArg Prod.snd h))`. Establish `hIinj : Function.Injective I` using `fun a b h => Matrix.ext fun i j => Algebra.TensorProduct.includeRight_injective hAinj (congrFun (congrFun h i) j)`. Establish `hLinj : Function.Injective L` using `e.injective.comp hIinj`. Establish `hle : LinearMap.range L ≤ LinearMap.range R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨y', z', h⟩` from `hrat x`. Conclude with `⟨(y', z'), by rw [hR, hL, h]⟩`. Establish `hdim : Fintype.card (Fin nT) * Fintype.card (Fin nS) * Module.finrank F E = N + N`. Establish `h1` using `e.finrank_eq`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Module.finrank_matrix, Module.finrank_baseChange, Module.finrank_prod, Module.finrank_fin_fun]`. Conclude with `h1`. Establish `hfin : Module.finrank F (LinearMap.range L) = Module.finrank F (LinearMap.range R)`. Rewrite using `[LinearMap.finrank_range_of_inj hLinj, LinearMap.finrank_range_of_inj hRinj, Module.finrank_matrix, Module.finrank_prod, Module.finrank_fin_fun, hdim]`. Establish `heq` using `Submodule.eq_of_le_of_finrank_eq hle hfin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, hx⟩ : (R (y, z)) ∈ LinearMap.range L` from `heq ▸ ⟨(y, z), rfl⟩`. Conclude with `⟨x, by rw [← hL, hx, hR]⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.WeilSchrodinger.rat_onto_of_rat_maps_F : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (nS nT N : ℕ)
     (e : Formalism.IndefR.DatumF.WOF F E nS nT ≃ₗ[AF F] GlobalTheory.ThetaTransform.VA F N),

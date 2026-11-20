@@ -9,11 +9,11 @@ namespace GlobalTheory.AffCover
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Use `⟨{a | ∃ i, ∀ p : PrimeSpectrum K, p ∈ PrimeSpectrum.basicOpen a → p ∈ x ⁻¹ᵁ V i}, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hsM⟩` from `Ideal.exists_le_maximal _ hne`. Set `p : PrimeSpectrum K` to `⟨M, hM.isPrime⟩`. Take `⟨i, hi⟩` from `hV p`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨a, rfl⟩, hpa, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hi (x ⁻¹ᵁ V i).isOpen`. Establish `ha : a ∈ M` using `hsM (Ideal.subset_span ⟨i, fun q hq => hsub hq⟩)`. Conclude with `hpa ha`. Introduce and unpack `⟨a, i, hi⟩`. Use `⟨i, fun q _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hq : PrimeSpectrum.comap (algebraMap K (Localization.Away a)) q ∈ PrimeSpectrum.basicOpen a`. Rewrite using `[← SetLike.mem_coe, ← PrimeSpectrum.localization_away_comap_range (Localization.Away a) a]`. Conclude with `⟨q, rfl⟩`. Conclude with `hi _ hq`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_span_top_basicOpen_cover {K : Type} [CommRing K] {X : Scheme.{0}} (x : Sp K ⟶ X) {ι : Type}
     (V : ι → X.Opens) (hV : ∀ p : Sp K, ∃ i, p ∈ x ⁻¹ᵁ V i) :

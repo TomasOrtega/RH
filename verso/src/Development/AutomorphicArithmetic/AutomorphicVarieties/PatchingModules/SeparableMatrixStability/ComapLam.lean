@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Rewrite using `[MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapDomainRingHom_apply]`. Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises. Simplify using `only [MonoidAlgebra.coeff_map, MonoidAlgebra.coeff_mapDomain]`. Conclude with `Finsupp.mapDomain_mapRange _ _ _ _ (map_add φ)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem md_comm {A B G G' : Type} [CommRing A] [CommRing B] [Group G] [Group G'] (f : G →* G')
     (φ : A →+ B) (y : MonoidAlgebra A G) :
@@ -15,7 +15,7 @@ private theorem md_comm {A B G G' : Type} [CommRing A] [CommRing B] [Group G] [G
   exact Finsupp.mapDomain_mapRange _ _ _ _ (map_add φ)
 
 /- English proof (translation)
-Conclude with `md_comm f φ.toAddMonoidHom y`.
+A detailed English derivation is pending.
 -/
 private theorem md_comm' {A B G G' : Type} [CommRing A] [CommRing B] [Group G] [Group G'] (f : G →* G')
     (φ : A →+* B) (y : MonoidAlgebra A G) :
@@ -24,7 +24,7 @@ private theorem md_comm' {A B G G' : Type} [CommRing A] [CommRing B] [Group G] [
   exact md_comm f φ.toAddMonoidHom y
 
 /- English proof (translation)
-Introduce `y`. Take `⟨x, hx⟩` from `Finsupp.mapDomain_surjective hf y.coeff`. Use `⟨MonoidAlgebra.ofCoeff x, ?_⟩` and prove the remaining obligations. Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises. Rewrite using `[MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.coeff_mapDomain, MonoidAlgebra.coeff_ofCoeff, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem md_surj (A : Type) {G G' : Type} [CommRing A] [Group G] [Group G'] (f : G →* G')
     (hf : Function.Surjective f) : Function.Surjective (MonoidAlgebra.mapDomainRingHom A f) := by
@@ -35,7 +35,7 @@ private theorem md_surj (A : Type) {G G' : Type} [CommRing A] [Group G] [Group G
   rw [MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.coeff_mapDomain, MonoidAlgebra.coeff_ofCoeff, hx]
 
 /- English proof (translation)
-Use `show D.D (Polynomial A) (MonoidAlgebra.mapDomainRingHom _ f (MonoidAlgebra.single 1 Polynomial.X - MonoidAlgebra.mapRingHom G Polynomial.C y)) = _`. Rewrite using `[map_sub, md_comm', MonoidAlgebra.mapDomainRingHom_apply (Polynomial A) f (MonoidAlgebra.single 1 Polynomial.X), MonoidAlgebra.mapDomain_single, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem comap_chi {n : ℕ} {A G G' : Type} [CommRing A] [Group G] [Group G'] (f : G →* G') (D : GDet n A G')
     (y : MonoidAlgebra A G) : (D.comap f).chi y = D.chi (MonoidAlgebra.mapDomainRingHom A f y) := by
@@ -46,7 +46,7 @@ private theorem comap_chi {n : ℕ} {A G G' : Type} [CommRing A] [Group G] [Grou
   rfl
 
 /- English proof (translation)
-Unfold `GDet.gen`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapDomain_smul, ← MonoidAlgebra.mapDomainRingHom_apply, md_comm']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem md_gen {A G G' : Type} [CommRing A] [Group G] [Group G'] (f : G →* G') {m : ℕ}
     (y : Fin m → MonoidAlgebra A G) :
@@ -58,9 +58,9 @@ private theorem md_gen {A G G' : Type} [CommRing A] [Group G] [Group G'] (f : G 
     ← MonoidAlgebra.mapDomainRingHom_apply, md_comm']
 
 /- English proof (translation)
-Simplify using `only [GDet.CH, Set.mem_setOf_eq]`. Use `exists_congr fun m => exists_congr fun y => exists_congr fun β => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `g`. Rewrite using `[h g, MonoidAlgebra.coeff_map, Finsupp.mapRange_apply]`. Both sides reduce to the same expression. Introduce `h g`. Rewrite using `[h, MonoidAlgebra.coeff_map, Finsupp.mapRange_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -81,9 +81,9 @@ private theorem mem_CH {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n
     rfl
 
 /- English proof (translation)
-Rewrite using `[md_comm]`. Use `congr 1`. Establish `hc : ((D.comap f).map (MvPolynomial.C : A →+* MvPolynomial (Fin m) A)).chi (GDet.gen y) = (D.map (MvPolynomial.C : A →+* MvPolynomial (Fin m) A)).chi (GDet.gen fun j => MonoidAlgebra.mapDomainRingHom A f (y j))`. Rewrite using `[← md_gen]`. Conclude with `comap_chi f (D.map MvPolynomial.C) (GDet.gen y)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, ← md_gen]`. Conclude with `(Polynomial.aeval_algHom_apply (MonoidAlgebra.mapDomainAlgHom (R := MvPolynomial (Fin m) A) (A := MvPolynomial (Fin m) A) f) _ _).symm`.
+A detailed English derivation is pending.
 -/
 private theorem md_CH {n : ℕ} {A G G' : Type} [CommRing A] [Group G] [Group G'] (f : G →* G') (D : GDet n A G')
     {m : ℕ} (y : Fin m → MonoidAlgebra A G) (β : Fin m →₀ ℕ) :
@@ -106,21 +106,19 @@ private theorem md_CH {n : ℕ} {A G G' : Type} [CommRing A] [Group G] [Group G'
     (MonoidAlgebra.mapDomainAlgHom (R := MvPolynomial (Fin m) A) (A := MvPolynomial (Fin m) A) f) _ _).symm
 
 /- English proof (translation)
-Introduce `n A G G' _ _ _ f D`. Use `⟨comap_chi f D, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i y`. Simplify using `only [GDet.lam, comap_chi]`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [GDet.tr, GDet.lam, comap_chi]`. Introduce `B _ φ`. Apply `GDet.ext` to reduce the goal to its premises. Introduce `C _ _ x`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `ρ`. Apply `GDet.ext` to reduce the goal to its premises. Introduce `B _ _ x`. Establish `key : ((GDet.repAlg ρ B).comp (MonoidAlgebra.mapDomainAlgHom (R` using `B) (A := B) f)) = GDet.repAlg (ρ.comp f) B := by`. Apply `MonoidAlgebra.algHom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `g`. Simplify using `[GDet.repAlg, MonoidAlgebra.mapDomainAlgHom]`. Conclude with `Subsingleton.elim _ _`. Use `show Matrix.det (GDet.repAlg ρ B (MonoidAlgebra.mapDomainRingHom B f x)) = Matrix.det (GDet.repAlg (ρ.comp f) B x)`. Rewrite using `[← key]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `hf`. Prove the components needed by the constructor for the conclusion. Introduce `D' h`. Apply `GDet.ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `B _ _ x`. Take `⟨x', rfl⟩` from `md_surj B f hf x`. Conclude with `congrArg (fun E : GDet n A G => E.D B x') h`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨w, hw, rfl⟩`. Take `⟨m, y, β, rfl⟩` from `(mem_CH _ _).1 hw`. Conclude with `(mem_CH _ _).2 ⟨m, _, β, md_CH f D y β⟩`. Introduce `hz`. Take `⟨m, y', β, rfl⟩` from `(mem_CH _ _).1 hz`.
-
-Use `choose y hy using fun j => md_surj A f hf (y' j)`. Establish `hy' : (fun j => MonoidAlgebra.mapDomainRingHom A f (y j)) = y'` using `funext hy`. Use `⟨_, (mem_CH _ _).2 ⟨m, y, β, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[md_CH, hy']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.comap_lam :
     ∀ (n : ℕ) (A G G' : Type) [CommRing A] [Group G] [Group G'] (f : G →* G') (D : GDet n A G'), (∀ y, (D.comap f).chi y = D.chi (MonoidAlgebra.mapDomainRingHom A f y)) ∧ (∀ i y, (D.comap f).lam i y = D.lam i (MonoidAlgebra.mapDomainRingHom A f y)) ∧ (∀ y, (D.comap f).tr y = D.tr (MonoidAlgebra.mapDomainRingHom A f y)) ∧ (∀ (B : Type) [CommRing B] (φ : A →+* B), (D.comap f).map φ = (D.map φ).comap f) ∧ (∀ ρ : G' →* Matrix (Fin n) (Fin n) A, (GDet.ofRep ρ).comap f = GDet.ofRep (ρ.comp f)) ∧ (Function.Surjective f → (∀ D' : GDet n A G', D'.comap f = D.comap f → D' = D) ∧ MonoidAlgebra.mapDomainRingHom A f '' (D.comap f).CH = D.CH) := by

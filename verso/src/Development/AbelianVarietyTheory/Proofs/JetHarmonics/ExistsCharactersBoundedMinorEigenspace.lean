@@ -22,17 +22,17 @@ section SlopeTestRemainingChoices
 open ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs GlobalTheory.CharDepth IsLocalRing
 
 /- English proof (translation)
-Establish `hv` using `Valuation.integer.integers vm`. Take `⟨hw1, w', hw2, hww⟩` from `hw`. Set `S : Matrix (Fin n) (Fin m) vm.integer` to `Matrix.of fun q x => ⟨w q x, (hle _).2 (hw1 q x)⟩`. Set `W : Matrix (Fin m) (Fin n) vm.integer` to `Matrix.of fun x q => ⟨w' x q, (hle _).2 (hw2 x q)⟩`. Establish `hSW : S * W = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `q q'`. Use `hww q q'` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.one_apply, S, W, Matrix.of_apply]`. Use `push_cast`. Rewrite using `[this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hpos : 0 < (xs : ℝ)` using `lt_of_lt_of_le (Real.rpow_pos_of_pos h0 _) hB`. Establish `e1` using `ValuationFitting.lenCoker_eq_logb hT hv h0 h1 α hx hpos`. Rewrite `e1` using `[← ValuationFitting.lenCoker_vA]`. Establish `e2` using `S4.lenCoker_mul_le (ValuationFitting.vA V vm.integer) (ValuationFitting.vA_nonneg hT hv h0 h1) S W hSW α`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : Real.logb (vm (V.l : C) : ℝ) xs ≤ B`. Rewrite `hB` using `[← Real.rpow_logb h0 (ne_of_lt h1) hpos, Real.rpow_le_rpow_left_iff_of_base_lt_one h0 h1]`. Then use the resulting hypothesis. Establish `e4 : S4.lenCoker (ValuationFitting.vA V vm.integer) (S * α) ≤ (B : WithTop ℝ)` using `e2.trans (e1.le.trans (WithTop.coe_le_coe.2 e3))`. Unfold `S4.lenCoker at e4`. Take `⟨g, -, hg⟩` from `(Finset.inf_le_iff (WithTop.coe_lt_top B)).1 e4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Use `⟨g, le_of_eq_of_le ?_ hg⟩` and prove the remaining obligations. Rewrite using `[ValuationFitting.vA_apply, RingHom.map_det, ← Matrix.det_transpose]`. Use `congr 2`. Use extensionality with `q ρ`. Simplify using `[Matrix.mul_apply, S, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun x _ => mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_minor_le {C : Type} [Field C] (V : VF C) (vm : Valuation C NNReal) (hT : ValuationFitting.ValTie V vm)
     (h0 : 0 < (vm (V.l : C) : ℝ)) (h1 : (vm (V.l : C) : ℝ) < 1) (hle : ∀ x : C, vm x ≤ 1 ↔ V.Ge 0 x)
@@ -71,7 +71,7 @@ theorem exists_minor_le {C : Type} [Field C] (V : VF C) (vm : Valuation C NNReal
 open ReciprocityTheory.ChartRestriction.G.PullbackSections.CVA ReciprocityTheory.ChartRestriction.G.TB.LogPf in
 
 /- English proof (translation)
-Use `⟨by rw [MvPowerSeries.constantCoeff_map, hu.1, map_one], ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (MvPowerSeries.map φ) hu.2`. Rewrite `h` using `[map_mul, map_ev' φ (CZ.cons (cc_addOf' hF (cc_pt' 0) (cc_pt' 1)) CZ.nil), map_ev' φ (CZ.cons (cc_pt' 0) CZ.nil), map_ev' φ (CZ.cons (cc_pt' 1) CZ.nil)]`. Simplify using `only [mV_cons, mV_nil, mapPoint_addOf φ F (cc_pt' 0) (cc_pt' 1), mapPoint_pt] at h`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCh_map {R k : Type} [CommRing R] [CommRing k] (φ : R →+* k) {d : ℕ} (F : Fin d → PS R 2 d)
     (hF : ∀ i, MvPowerSeries.constantCoeff (F i) = 0) (u : PS R 1 d) (hu : IsCh F u) :
@@ -84,7 +84,7 @@ theorem isCh_map {R k : Type} [CommRing R] [CommRing k] (φ : R →+* k) {d : �
   exact h
 
 /- English proof (translation)
-Rewrite using `[Matrix.range_mulVecLin]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem span_res_eq {O : Type} [CommRing O] {d s N : ℕ} (W : Fin s → Fin d → O) (u : Fin N → PS O 1 d) :
     Submodule.span O (Set.range fun k => res W (dl (u k))) =
@@ -95,34 +95,32 @@ theorem span_res_eq {O : Type} [CommRing O] {d s N : ℕ} (W : Fin s → Fin d �
 attribute [local instance] CategoryTheory.Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem family_cast_iff {A : Type} (P : ∀ s : ℕ, (Fin s → A) → Prop) {ι : Type} {r : ι → ℕ} (g : ∀ i, Fin (r i) → A)
     {i j : ι} (h : i = j) : P _ (g i) ↔ P _ (g j) := by
   subst h; rfl
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `T io y Ch X hy hdisc d _ tau htau hfrob s`. Take `⟨U⟩` from `GlobalTheory.CharDepth.nonempty_unifChart E H Dw l Xo c T io y Ch hy p X`. Take `⟨τT, -, hty, hinj, -, hconj⟩` from `exists_types_valuationRing E H l c T io p X`. Use `set τO : (E →+* ℂ) → (𝓞 E →+* X.O) := fun τ => X.ι.comp (τT τ) with hτO`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `heig` using `fun τ => (isEigBasis_valExt E H Dw l Xo c T io y Ch p X τO hty τ).1`. Establish `hcard` using `(GlobalTheory.EmbCount.card_emb E p X.C X.v X.O X.ints 0 (by simp)).2`. Establish `hpos : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Use `haveI : Finite (𝓞 E →+* X.O) := Nat.finite_of_card_ne_zero (by omega)`. Establish `hbij : Function.Bijective τO`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hinj.bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[hcard, Nat.card_eq_fintype_card, NumberField.Embeddings.card E ℂ]`. Set `e` to `Equiv.ofBijective τO hbij`. Establish `he : ∀ τ, e.symm (τO τ) = τ` using `fun τ => e.symm_apply_apply τ`. Establish `hfr : ∀ s x, τO (tau (s + 1)) x - τO (tau s) x ^ p ∈ maximalIdeal X.O`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `s x`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, X.ints.isUnit_iff_valuation_eq_one, map_sub, map_pow, hty, hty]`. Conclude with `(hfrob s x).ne`. Take `⟨w, hwn, t, ht, hb⟩` from `GlobalTheory.OrbitPlace.exists_placeU_of_frobenius_orbit E p X.C X.v X.O X.ints X.nonunit.out hdisc d (fun s => τO (tau s)) (hinj.comp htau) hfr`. Substitute `hwn` using the available equality.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hact : actMap U.ι' U.act = fun a i => MvPowerSeries.map X.ι (Ch.actT a i)` using `funext U.act_eq`. Establish `hnu : ¬ IsUnit ((p : U.T'.V))` using `fun h => X.nonunit.out (by have h' := h.map U.ι'; rwa [map_natCast] at h')`. Establish `hd' : ¬ ((p : ℤ) ∣ Algebra.discr ℤ (Module.Free.chooseBasis ℤ (𝓞 E)))`. Rewrite using `[NumberField.discr_eq_discr E (Module.Free.chooseBasis ℤ (𝓞 E))]` and apply the resulting hypothesis. Establish `hadd : ∀ (j : Fin w.n) (k : ℕ), (((j + Fin.ofNat w.n k : Fin w.n).val : ℕ) : ZMod w.n) = ((j.val : ℕ) : ZMod w.n) + (k : ZMod w.n)`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j k`. Rewrite using `[Fin.val_add, ZMod.natCast_mod, Nat.cast_add, Fin.val_ofNat, ZMod.natCast_mod]`. Establish `hone : ∀ j : Fin w.n, (((j + 1 : Fin w.n).val : ℕ) : ZMod w.n) = ((j.val : ℕ) : ZMod w.n) + 1`. Introduce `j`. Use `hadd j 1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `this` using `[Nat.cast_one]`. Then use the resulting hypothesis. Set `j0 : Fin w.n` to `⟨s.val, ZMod.val_lt s⟩`. Establish `hj0 : ((j0.val : ℕ) : ZMod w.n) = s` using `ZMod.natCast_zmod_val s`. Take `⟨xs, hxs, hle⟩` from `hU U.T'.V hnu U.t.G U.P.D U.P.A U.P.U.toUnifPre _ U.F U.x U.chart hp2 (𝓞 E) U.t.act.toRingAct U.P.oD U.P.oA U.P.lin hd' U.act U.acts X.C X.v X.O X.ints U.ι' U.ι'_local w t hb (fun j a => by rw [ht, ht, hone]; exact hfr _ a) (fun σ => Dw.mult (e.symm σ)) (fun σ i k => X.ι (Ch.uvec …`. Rewrite using `[hact]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `heig (e.symm σ)` as an intermediate fact. Rewrite using `[show τO (e.symm σ) = σ from e.apply_symm_apply σ] at this) j0` and apply the resulting hypothesis. Use `⟨xs, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← U.law_eq]`. Use `(family_cast_iff (fun _ g => HasAF X.v (U.F.mapF U.ι') g xs) (fun (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) k => X.ι (Ch.uvecT ⟨τ, i⟩ k)) ?_).1 hxs` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ht, hj0, he]`. Establish `h2` using `NNReal.coe_le_coe.2 hle`. Rewrite `h2` using `[NNReal.coe_rpow, map_natCast]`. Use `le_of_eq_of_le ?_ h2` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `tsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[ht, hadd, hj0]`. Use `congr 3`. Rewrite using `[Equiv.eq_symm_apply]`. Use extensionality with `a`.
-
-Use `show X.ι (τT _ a) = X.ι (τT _ _)`. Rewrite using `[hconj]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem colength_bound (p : ℕ) [Fact p.Prime] (hU : UpFSt p) (hp2 : p ≠ 2) (E : Type) [Field E] [NumberField E]
     [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) :
@@ -198,33 +196,31 @@ theorem colength_bound (p : ℕ) [Fact p.Prime] (hU : UpFSt p) (hp2 : p ≠ 2) (
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `hU E _ _ _ H Dw lv Xo c inst hstar`. Take `rfl : inst = H.starRing` from `GlobalTheory.PowGerm.starSt E H inst hstar`. Use `letI := H.starRing`. Introduce `T io y C3 C _ _ V ι hι k Y hY hy hdisc d _ tau htau hfrob s n w hw`. Use `haveI := Y.algClosed`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI : Fact V.l.Prime := ⟨V.l_prime⟩`. Take `⟨vm, hT, h0, h1, hle, hlt, hcpl, ⟨hzp⟩⟩` from `GlobalTheory.ValExp.exists_mulVal C V Y.cpl`. Establish `hv` using `Valuation.integer.integers vm`. Set `ιO : T.V →+* vm.integer` to `(ι.comp (algebraMap T.V T.Fr)).codRestrict vm.integer fun t => (hle _).2 (embIntSt_holds T C V ι hι t)`. Establish `hl0 : ((V.l : ℕ) : T.Fr) ≠ 0` using `by exact_mod_cast V.l_prime.ne_zero`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvl : (vV T.V ((V.l : ℕ) : T.Fr) : ℝ) ≠ 0`. Introduce `h`. Use `hι _ hl0` as an intermediate fact. Rewrite `this` using `[map_natCast, V.v_l, h, div_zero]`. Conclude with `one_ne_zero (by exact_mod_cast this : (1 : ℝ) = 0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hval : ∀ x : T.Fr, x ≠ 0 → (vm (ι x) : ℝ) = (vm (V.l : C) : ℝ) ^ ((vV T.V x : ℝ) / (vV T.V (V.l : T.Fr) : ℝ))`. Introduce `x hx`. Take `⟨t, ht1, ht2⟩` from `hT (ι x) ((map_ne_zero ι).2 hx)`. Rewrite `ht1` using `[hι x hx]`. Rewrite using `[ht2, WithTop.coe_injective ht1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc : IsLocalHom ιO` using `⟨fun a ha => by`. Establish `h2 : vm (ι (algebraMap T.V T.Fr a)) = 1` using `hv.isUnit_iff_valuation_eq_one.1 ha`. Establish `ha0 : algebraMap T.V T.Fr a ≠ 0`. Introduce `h`. Rewrite `h2` using `[h, map_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one h2`. Establish `h3` using `hval _ ha0`. Rewrite `h3` using `[h2, NNReal.coe_one, eq_comm, ← Real.rpow_zero (vm (V.l : C) : ℝ), Real.rpow_right_inj h0 h1.ne, div_eq_zero_iff, or_iff_left hvl, Int.cast_eq_zero]`. Establish `h4 : valV T.V (algebraMap T.V T.Fr a) = 1`. Establish `h5` using `WithZero.exp_log (valV_ne_zero (V := T.V) ha0)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Unfold `vV at h3`. Rewrite `h3` using `[neg_eq_zero]`. Rewrite using `[← h5, h3, WithZero.exp_zero]`. Assume the negation of the conclusion as `hna`. Establish `h6 : valV T.V (algebraMap T.V T.Fr a) < 1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem _ a).2 hna`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h6.ne h4⟩`. Establish `hnu : Fact (¬ IsUnit ((V.l : ℕ) : vm.integer))` using `⟨by`. Rewrite using `[hv.isUnit_iff_valuation_eq_one, map_natCast]`. Introduce `h`. Rewrite `h1` using `[h]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `at h1⟩`. Set `X : GlobalTheory.CharDepth.ValExt T V.l` to `{ C := C, v := vm, O := vm.integer, ints := hv, nonunit := hnu, cpl := hcpl, zp := hzp, ι := ιO, ι_local := hloc, ιF := ι, comp := fun _ => rfl, val := hval }`. Take `⟨xs, ⟨N, u, hu, hlen⟩, hB⟩` from `colength_bound V.l (hU V.l) Y.l_odd E H Dw lv Xo c T io y C3 X hy hdisc d tau htau (fun s x => (hlt _).2 (hfrob s x)) s`. Rewrite `hlen` using `[span_res_eq]`. Take `⟨g, hg⟩` from `exists_minor_le V vm hT h0 h1 hle _ xs hlen _ hB w hw`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF : Y.B.G.F = fun i => MvPowerSeries.map (algebraMap vm.integer C) (MvPowerSeries.map ιO (C3.FT i))`. Use function extensionality and compare the values at `i`. Rewrite using `[hY.F i, show (a3B C3).G.F i = _ from C3.gen.1.1 i]`. Both sides reduce to the same expression. Use `⟨fun ρ => MvPowerSeries.map (algebraMap vm.integer C) (u (g ρ)), fun ρ => ⟨fun μ => ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hle _).1 (MvPowerSeries.coeff μ (u (g ρ))).2`. Rewrite using `[hF]`. Use `isCh_map _ _ (fun i => ?_) _ (hu (g ρ))` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `Y.B.G.const i` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[hF]`. Conclude with `this`. Use `le_of_eq_of_le ?_ hg` and prove the remaining obligations. Use `congr 2`. Use extensionality with `ρ q`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.of_apply, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [Matrix.of_apply, ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.res, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct]`. Use `Eq.trans ?_ (map_sum (algebraMap vm.integer C) _ _).symm` and prove the remaining obligations.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show chartUnitVectors C3 ⟨tau s, x⟩ i = _ from C3.gen.1.2.2.2.2.2.2 _ i, mul_comm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_chars_minor_le : (∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.UpFSt p) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (lv : Level H) (Xo : Moduli Dw lv) (c : Coeff lv) [StarRing (𝓞 E)], (∀ x : 𝓞 E, star x = H.bar x) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C3 : IntChart T io y) (C : Type) [Field C] [CharZero C] (V : VF C) (ι : T.Fr →+* C), EmbOK T V ι → ∀ (k : ℕ) (Y : FBChart C V (𝓞 E) (chD C3.ch)), IsBC C3 ι k Y → y.IsAlg → ¬ (V.l : ℤ) ∣ NumberField.discr E → ∀ (d : ℕ) [NeZero d] (tau : ZMod d → (E →+* ℂ)), Function.Injective tau → FrobOrd V io ι tau → ∀ (s : ZMod d) (n : ℕ) (w : Fin n → Fin (Dw.mult (tau s)) → C), IsSat V w → ∃ χ : Fin n → PS C 1 (chD C3.ch), (∀ ρ, IntS V (χ ρ) ∧ ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.IsCh Y.B.G.F (χ ρ)) ∧ V.v (Matrix.of fun ρ q : Fin n => ∑ x, (∑ i, ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.dl (χ ρ) i * ι (chartUnitVectors C3 ⟨tau s, x⟩ i)) * w q x).det ≤ (((∑' i : ℕ, ((V.l : ℝ) ^ (-((i : ℝ) + 1))) * (Dw.mult (ComplexEmbedding.conjugate (tau (s + ((i + 1 : ℕ) : ZMod d)))) : ℝ)) : ℝ) : WithTop ℝ) := by
   intro hU E _ _ _ H Dw lv Xo c inst hstar

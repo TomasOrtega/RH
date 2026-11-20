@@ -7,11 +7,11 @@ open PositivityTheory.Rg.BcB.F.F5 PositivityTheory.Rg.BcB.F.Tail
 namespace PositivityTheory.Rg.BcB.F.Choice
 
 /- English proof (translation)
-Introduce `hP hC _hG E _ _ _ n w ι _ s Z α hZ`. Establish `hfin : (⋃ i, (fun p : (Fin (s i).a → ℂˣ) × (Fin (s i).b → ℂˣ) => chiOf w (s i) p.1 p.2) '' Z i).Finite` using `Set.finite_iUnion (fun i => (hZ i).image _)`. Take `⟨c, hc, h1, h0⟩` from `hP n 2 α (hfin.toFinset.erase α) (by simp)`. Use `⟨c, hc, h1, ?_⟩` and prove the remaining obligations. Introduce `i p hp hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hneq`. Apply `hne` to reduce the goal to its premises. Establish `key : (c.sum fun x a => a * ↑(∏ k : Fin n, (s i).eps k ^ x k) * ev2 w p.1 p.2 (resL (s i) x) (resR (s i) x)) = evalGL c (chiOf w (s i) p.1 p.2)`. Unfold `evalGL`. Use `Finsupp.sum_congr (fun x _ => ?_)` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, hC E n w (s i) p.1 p.2 x]`. Rewrite using `[key]`. Apply `h0` to reduce the goal to its premises. Simplify using `only [Finset.mem_erase, Set.Finite.mem_toFinset, Set.mem_iUnion, Set.mem_image]`. Conclude with `⟨hneq, i, p, hp, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem choiceTOf : ChoiceTOf := by
   intro hP hC _hG E _ _ _ n w ι _ s Z α hZ

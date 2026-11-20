@@ -7,9 +7,9 @@ noncomputable section
 namespace UpperTheory.Kd.C7.C2
 
 /- English proof (translation)
-Establish `key` using `PowerSeries.map_subst (hasSubst_pow (R := R) b) (h := f) h`. Unfold `sb`. Rewrite using `[PowerSeries.coe_substAlgHom, PowerSeries.coe_substAlgHom]`. Establish `e : MvPowerSeries.map f (((1 + PowerSeries.X : PowerSeries R) ^ b) - 1) = (((1 + PowerSeries.X : PowerSeries S) ^ b) - 1)`. Express the relevant statement in the definitionally equal form `PowerSeries.map f _ = _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Rewrite `key` using `[e]`. Conclude with `key`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_sb {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (b : ℕ) (h : PowerSeries R) :
     PowerSeries.map f (sb b h) = sb b (PowerSeries.map f h) := by
@@ -23,7 +23,7 @@ private theorem map_sb {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (b
   exact key
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Use `congr 1`. Conclude with `(sb (R := R) b).commutes x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem sb_C {R : Type} [CommRing R] (b : ℕ) (x : R) (h : PowerSeries R) :
     sb b (PowerSeries.C x * h) = PowerSeries.C x * sb b h := by
@@ -34,14 +34,14 @@ private theorem sb_C {R : Type} [CommRing R] (b : ℕ) (x : R) (h : PowerSeries 
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one h`.
+A detailed English derivation is pending.
 -/
 private theorem norm_sum_le_one {K ι : Type} [NormedField K] [IsUltrametricDist K] (s : Finset ι) (f : ι → K)
     (h : ∀ i ∈ s, ‖f i‖ ≤ 1) : ‖∑ i ∈ s, f i‖ ≤ 1 :=
   IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one h
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha (by rwa [norm_neg]))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_sub_le_one {K : Type} [NormedField K] [IsUltrametricDist K] {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) :
     ‖a - b‖ ≤ 1 := by
@@ -49,28 +49,28 @@ private theorem norm_sub_le_one {K : Type} [NormedField K] [IsUltrametricDist K]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha (by rwa [norm_neg]))
 
 /- English proof (translation)
-Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nmul {K : Type} [NormedField K] {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) : ‖a * b‖ ≤ 1 := by
   rw [norm_mul]; exact mul_le_one₀ ha (norm_nonneg _) hb
 
 /- English proof (translation)
-Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem npow {K : Type} [NormedField K] {a : K} (ha : ‖a‖ ≤ 1) (n : ℕ) : ‖a ^ n‖ ≤ 1 := by
   rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ha
 
 /- English proof (translation)
-Establish `: ‖a‖ ^ n = 1` using `by rw [← norm_pow, h, norm_one]`. Conclude with `((pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 this).le`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem norm_root {K : Type} [NormedField K] {a : K} {n : ℕ} (hn : n ≠ 0) (h : a ^ n = 1) : ‖a‖ ≤ 1 := by
   have : ‖a‖ ^ n = 1 := by rw [← norm_pow, h, norm_one]
   exact ((pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 this).le
 
 /- English proof (translation)
-Distinguish the cases in `hx : IsUnit x`. Take `⟨u, rfl⟩` from `hx`. Use `norm_root (n := Fintype.card (ZMod l)ˣ) Fintype.card_ne_zero ?_` and prove the remaining obligations. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, pow_card_eq_one, Units.val_one, map_one]`. Rewrite using `[φ.map_nonunit hx, norm_zero]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_le_one`.
+A detailed English derivation is pending.
 -/
 private theorem norm_chi (φ : DirichletCharacter (Qbar l) l) (x : ZMod l) : ‖φ x‖ ≤ 1 := by
   by_cases hx : IsUnit x
@@ -80,11 +80,11 @@ private theorem norm_chi (φ : DirichletCharacter (Qbar l) l) (x : ZMod l) : ‖
   · rw [φ.map_nonunit hx, norm_zero]; exact zero_le_one
 
 /- English proof (translation)
-Establish `h1 : ‖ξ‖ ≤ 1` using `norm_root (pow_ne_zero r (Fact.out : l.Prime).ne_zero) hξ.pow_eq_one`. Use `⟨fun n => ∑ x ∈ (Finset.range (l ^ r)).filter (fun x => ¬ l ∣ x), ∑ i ∈ Finset.range (l ^ r), φ (x : ZMod l) * ((x : Qbar l) ^ k) * (ξ ^ (l ^ r - (i * x) % l ^ r) * (ξ ^ i - 1) ^ n), fun n => ?_, fun L => ?_⟩` and prove the remaining obligations. Use `norm_sum_le_one _ _ fun x _ => norm_sum_le_one _ _ fun i _ => ?_` and prove the remaining obligations. Conclude with `nmul (nmul (norm_chi φ _) (npow (IsUltrametricDist.norm_natCast_le_one _ _) _)) (nmul (npow h1 _) (npow (norm_sub_le_one (npow h1 _) norm_one.le) _))`. Simplify using `only [intg, mass, tval, Finset.mul_sum, Finset.sum_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use symmetry to reverse the relation.
 
-Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem intg_lin (φ : DirichletCharacter (Qbar l) l) (k r : ℕ) (ξ : Qbar l) (hξ : IsPrimitiveRoot ξ (l ^ r)) :
     ∃ a : ℕ → Qbar l, (∀ n, ‖a n‖ ≤ 1) ∧ ∀ L, intg φ k L r ξ = ∑ n ∈ Finset.range (l ^ (3 * r)), a n * L.coeff n := by
@@ -108,30 +108,30 @@ private def abelian₂ (D : Fin β.d → PowerSeries Φ.R) : PowerSeries ℂ_[l]
   ∑ i, PowerSeries.C (algebraMap (PadicAlgCl l) ℂ_[l] (β.val i)) * PowerSeries.map Φ.jh (D i)
 
 /- English proof (translation)
-Simplify using `[abelian₂, Fr.lam, PowerSeries.coeff_C_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem Lam_coeff (D : Fin β.d → PowerSeries Φ.R) (n : ℕ) :
     (abelian₂ Φ β D).coeff n = Φ.lam β (fun i => (D i).coeff n) := by
   simp [abelian₂, Fr.lam, PowerSeries.coeff_C_mul]
 
 /- English proof (translation)
-Simplify using `[abelian₂, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem Lam_sub (D E : Fin β.d → PowerSeries Φ.R) :
     abelian₂ Φ β (fun i => D i - E i) = abelian₂ Φ β D - abelian₂ Φ β E := by
   simp [abelian₂, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [abelian₂, map_sum, sb_C, map_sb]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem Lam_sb (g : ℕ) (D : Fin β.d → PowerSeries Φ.R) :
     abelian₂ Φ β (fun i => sb g (D i)) = sb g (abelian₂ Φ β D) := by
   simp only [abelian₂, map_sum, sb_C, map_sb]
 
 /- English proof (translation)
-Establish `h` using `β.e.sum_repr (b * β.e k)`. Establish `h2` using `congrArg (fun x : c.O => (x : PadicAlgCl l)) h`. Simplify using `only [Bas.val, Bas.mat, Algebra.leftMulMatrix_eq_repr_mul]`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul] at h2`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← Algebra.smul_def]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem val_mul (b : c.O) (k : Fin β.d) :
     ∑ i, β.val i * algebraMap ℤ_[l] (PadicAlgCl l) (β.mat b i k) = (b : PadicAlgCl l) * β.val k := by
@@ -145,9 +145,9 @@ private theorem val_mul (b : c.O) (k : Fin β.d) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [abelian₂, Fr.act, map_sum, map_mul, PowerSeries.map_C, Φ.jh_alg, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← map_mul, ← map_mul, ← val_mul β b k, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem Lam_act (b : c.O) (D : Fin β.d → PowerSeries Φ.R) :
     abelian₂ Φ β (Φ.act (β.mat b) D) = PowerSeries.C (algebraMap (PadicAlgCl l) ℂ_[l] (b : PadicAlgCl l)) * abelian₂ Φ β D := by
@@ -159,23 +159,23 @@ private theorem Lam_act (b : c.O) (D : Fin β.d → PowerSeries Φ.R) :
   rw [map_mul, map_mul, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `PadicComplex.norm_extends l x`.
+A detailed English derivation is pending.
 -/
 private theorem nf (x : PadicAlgCl l) : ‖algebraMap (PadicAlgCl l) ℂ_[l] x‖ = ‖x‖ := PadicComplex.norm_extends l x
 
 /- English proof (translation)
-Rewrite using `[Lam_coeff, Fr.lam]`. Conclude with `norm_sum_le_one _ _ fun i _ => nmul (by rw [nf]; exact hβ i) (Φ.jh_le _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Lam_le (hβ : ∀ i, ‖β.val i‖ ≤ 1) (D : Fin β.d → PowerSeries Φ.R) (n : ℕ) : ‖(abelian₂ Φ β D).coeff n‖ ≤ 1 := by
   rw [Lam_coeff, Fr.lam]
   exact norm_sum_le_one _ _ fun i _ => nmul (by rw [nf]; exact hβ i) (Φ.jh_le _)
 
 /- English proof (translation)
-Establish `h : ∀ (i : Fin β.d) (n : ℕ), ∃ (y : R0 A) (e : Φ.R), (D i).coeff n = Φ.i0 y + (l : Φ.R) ^ N * e`. Introduce `i n`. Take `⟨y, hy⟩` from `Φ.dense ((D i).coeff n) N`. Take `⟨e, he⟩` from `Ideal.mem_span_singleton'.1 hy`. Conclude with `⟨y, e, by linear_combination -he⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose y e hye using h`. Use `⟨PowerSeries.mk fun n => ∑ i, β.val i * j (y i n), fun i => PowerSeries.mk (e i), fun n => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_mk]`. Conclude with `norm_sum_le_one _ _ fun i _ => nmul (hβ i) (hj _ (y i n).2.1)`. Use extensionality with `n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, PowerSeries.coeff_C_mul, Lam_coeff, Lam_coeff, PowerSeries.coeff_map, PowerSeries.coeff_mk, Fr.lam, Fr.lam, map_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hye, PowerSeries.coeff_mk, map_add, map_mul, map_mul, map_pow, map_natCast, Φ.jh_comp_incl]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem approx (hj : ∀ x ∈ A, ‖j x‖ ≤ 1) (hβ : ∀ i, ‖β.val i‖ ≤ 1) (D : Fin β.d → PowerSeries Φ.R) (N : ℕ) :
     ∃ (H : PowerSeries (Qbar l)) (E : Fin β.d → PowerSeries Φ.R), (∀ n, ‖H.coeff n‖ ≤ 1) ∧
@@ -200,25 +200,23 @@ end UpperTheory.Kd.C7.C2
 
 open UpperTheory.Kd.C7.C2 in
 /- English proof (translation)
-Introduce `l _ _ Ω _ _ _ A _ j Φ hj c β D D' Gs v g c₂ k φ θ hg hθ hv _ hD hrel n`. Establish `hβ` using `((pBasEx l c).2 β).1`. Use `⟨n + c₂ + 1, fun r hr ξ hξ => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hint⟩` from `intg_lin φ k r ξ hξ`. Take `⟨H, E, hH, hHE⟩` from `approx Φ β hj hβ D' (2 * r)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hS` using `pIntShift l H hH g hg φ k r ξ (by omega) hξ`. Use `set f := algebraMap (PadicAlgCl l) ℂ_[l] with hf`. Establish `h1 : abelian₂ Φ β D = PowerSeries.C v * PowerSeries.map f Gs`. Use extensionality with `m`. Rewrite using `[Lam_coeff, hD, PowerSeries.coeff_C_mul, PowerSeries.coeff_map]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : abelian₂ Φ β (Φ.act (β.mat ((l : c.O) ^ c₂)) D) = abelian₂ Φ β (fun i => sb g (D' i) - Φ.act (β.mat θ) D' i)` using `congrArg _ (funext hrel)`. Rewrite `h2` using `[Lam_sub, Lam_sb, Lam_act, Lam_act, h1, hHE, map_add, sb_C, ← map_sb, ← Lam_sb]`. Use `set W := abelian₂ Φ β (fun i => sb g (E i) - Φ.act (β.mat θ) E i) with hW`. Establish `hWle : ∀ m, ‖W.coeff m‖ ≤ 1` using `Lam_le Φ β hβ _`. Rewrite `hW` using `[Lam_sub, Lam_act]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hl : algebraMap (PadicAlgCl l) ℂ_[l] (((l : c.O) ^ c₂ : c.O) : PadicAlgCl l) = (l : ℂ_[l]) ^ c₂`. Simplify using the standard rewrite rules. Establish `h3 : ∀ m, (l : ℂ_[l]) ^ c₂ * v * f (Gs.coeff m) = f ((sb g H).coeff m - (θ : PadicAlgCl l) * H.coeff m) + (l : ℂ_[l]) ^ (2 * r) * W.coeff m`. Introduce `m`. Establish `h4` using `congrArg (PowerSeries.coeff m) h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hW]`. Simplify using `only [map_sub, map_add, mul_add, PowerSeries.coeff_C_mul, PowerSeries.coeff_map, map_mul f] at h4 ⊢`. Take the linear combination `h4 - v * f (Gs.coeff m) * hl`. Establish `h5 : (l : ℂ_[l]) ^ c₂ * v * f (intg φ k Gs r ξ) = f (intg φ k (sb g H) r ξ - φ (g : ZMod l) * (g : Qbar l) ^ k * intg φ k H r ξ) + (l : ℂ_[l]) ^ (2 * r) * ∑ m ∈ Finset.range (l ^ (3 * r)), f (a m) * W.coeff m`. Rewrite using `[← hθ, hint, hint, hint, Finset.mul_sum, ← Finset.sum_sub_distrib, map_sum, map_sum, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `h6` using `h3 m`. Simplify using `only [map_sub, map_mul] at h6 ⊢`. Take the linear combination `f (a m) * h6`. Establish `hfl : ‖(l : ℂ_[l])‖ = ‖(l : Qbar l)‖` using `by rw [← nf, map_natCast]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h7 : ‖(l : ℂ_[l]) ^ c₂ * v * f (intg φ k Gs r ξ)‖ ≤ ‖(l : Qbar l)‖ ^ (2 * r)`. Rewrite using `[h5]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[hf, nf, ← norm_pow]`. Conclude with `hS`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_pow, hfl]`. Use `mul_le_of_le_one_right (by positivity) (norm_sum_le_one _ _ fun m _ => nmul ?_ (hWle m))` and prove the remaining obligations. Rewrite using `[hf, nf]`. Conclude with `ha m`. Rewrite `h7` using `[norm_mul, norm_mul, norm_pow, hv, hfl, mul_one, hf, nf]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpos : 0 < ‖(l : Qbar l)‖` using `norm_pos_iff.2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Establish `hle : ‖(l : Qbar l)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one _ _`. Rewrite using `[Cg, sub_zero, norm_pow]`. Use `le_of_mul_le_mul_left (h7.trans ?_) (pow_pos hpos c₂)` and prove the remaining obligations. Rewrite using `[← pow_add]`.
-
-Conclude with `pow_le_pow_of_le_one hpos.le hle (by omega)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.C7.pClause2 :
     UpperTheory.Kd.C7.SClause2 := by

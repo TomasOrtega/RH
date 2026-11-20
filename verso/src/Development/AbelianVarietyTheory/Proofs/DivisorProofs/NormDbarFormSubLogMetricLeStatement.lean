@@ -9,7 +9,7 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.HermFrame Glob
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CurveDens.norm_sq_dbar_proj_rank_two` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormDbarFormSubLogMetricLe.lean&line=42#L42)
 -/

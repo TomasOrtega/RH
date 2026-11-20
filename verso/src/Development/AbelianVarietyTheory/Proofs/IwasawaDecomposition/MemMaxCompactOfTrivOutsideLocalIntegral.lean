@@ -8,7 +8,7 @@ open TensorProduct
 namespace GlobalTheory.InertUmax
 
 /- English proof (translation)
-Establish `h` using `TensorProduct.equivFinsuppOfBasisLeft_symm_apply b (TensorProduct.equivFinsuppOfBasisLeft b z)`. Rewrite `h` using `[LinearEquiv.symm_apply_apply, Finsupp.sum_fintype _ _ (by simp), Fin.sum_univ_two]`. Conclude with `⟨_, _, h⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem tensor_decomp {K M N : Type*} [Field K] [AddCommGroup M] [Module K M]
     [AddCommGroup N] [Module K N] (b : Module.Basis (Fin 2) K M) (z : M ⊗[K] N) :
@@ -19,7 +19,7 @@ theorem tensor_decomp {K M N : Type*} [Field K] [AddCommGroup M] [Module K M]
   exact ⟨_, _, h⟩
 
 /- English proof (translation)
-Establish `h'` using `congrArg (TensorProduct.equivFinsuppOfBasisLeft b) h`. Establish `h0` using `DFunLike.congr_fun h' 0`. Establish `h1` using `DFunLike.congr_fun h' 1`. Simplify using `[map_add, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply] at h0 h1`. Conclude with `⟨h0, h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem tensor_decomp_zero {K M N : Type*} [Field K] [AddCommGroup M] [Module K M]
     [AddCommGroup N] [Module K N] (b : Module.Basis (Fin 2) K M) (a c : N)
@@ -34,7 +34,7 @@ variable (L : Type) [Field L] [NumberField L] [IsCMField L]
 
 omit [IsCMField L] in
 /- English proof (translation)
-Simplify using `[ReciprocityTheory.Aut.compAt, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem compAt_tmul (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (x : L) (a : AFplus L) :
     compAt L v (x ⊗ₜ[maximalRealSubfield L] a) = x ⊗ₜ[maximalRealSubfield L] (a v) := by
@@ -42,13 +42,11 @@ theorem compAt_tmul (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (x : 
   rfl
 
 /- English proof (translation)
-Set `b : Module.Basis (Fin 2) (maximalRealSubfield L) L` to `Module.finBasisOfFinrankEq _ _ (Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield L) L)`. Take `⟨A, B, hAB⟩` from `tensor_decomp b z`. Establish `hoff : ∀ w, A w = 0 ∧ B w = 0`. Introduce `w`. Establish `h` using `hz w`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[hAB, map_add, compAt_tmul, compAt_tmul]`. Conclude with `tensor_decomp_zero b _ _ h`. Establish `hA : A = 0`. Apply `DFunLike.ext` to reduce the goal to its premises. Introduce `w`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hoff w).1`. Establish `hB : B = 0`. Apply `DFunLike.ext` to reduce the goal to its premises. Introduce `w`. Conclude with `(hoff w).2`.
-
-Rewrite using `[hAB, hA, hB]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_compAt (z : AL L) (hz : ∀ v, compAt L v z = 0) : z = 0 := by
   let b : Module.Basis (Fin 2) (maximalRealSubfield L) L := Module.finBasisOfFinrankEq _ _
@@ -79,7 +77,7 @@ def sgl (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
 
 omit [IsCMField L] in
 /- English proof (translation)
-Conclude with `Pi.single_eq_same (M := fun w : HeightOneSpectrum (𝓞 (maximalRealSubfield L)) => w.adicCompletion (maximalRealSubfield L)) v r`.
+A detailed English derivation is pending.
 -/
 theorem sgl_same (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
     (r : v.adicCompletion (maximalRealSubfield L)) : sgl L v r v = r := by
@@ -89,7 +87,7 @@ theorem sgl_same (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
 
 omit [IsCMField L] in
 /- English proof (translation)
-Conclude with `Pi.single_eq_of_ne (M := fun w : HeightOneSpectrum (𝓞 (maximalRealSubfield L)) => w.adicCompletion (maximalRealSubfield L)) hw r`.
+A detailed English derivation is pending.
 -/
 theorem sgl_ne (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
     (r : v.adicCompletion (maximalRealSubfield L)) {w} (hw : w ≠ v) : sgl L v r w = 0 := by
@@ -99,9 +97,7 @@ theorem sgl_ne (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
 
 omit [IsCMField L] in
 /- English proof (translation)
-Use `Subring.subset_closure (Or.inr ⟨sgl L v r, fun w => ?_, rfl⟩)` and prove the remaining obligations. Break down `eq_or_ne w v with rfl | hw` into its components or cases. Rewrite using `[sgl_same]`. Conclude with `hr`. Rewrite using `[sgl_ne L v r hw]`.
-
-Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_tmul_sgl_mem (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
     (r : v.adicCompletion (maximalRealSubfield L))
@@ -115,9 +111,9 @@ theorem one_tmul_sgl_mem (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
 omit [IsCMField L] in
 
 /- English proof (translation)
-Establish `key : tensInt (F` using `maximalRealSubfield L) (v.adicCompletion (maximalRealSubfield L)) (intOE L) (Formalism.UG.Ov (maximalRealSubfield L) v) ≤ (ALint L).map (compAt L v) := by`. Rewrite using `[tensInt, Subring.closure_le]`. Introduce and unpack `_ (⟨⟨_, s, rfl⟩, rfl⟩ | ⟨r, rfl⟩)`. Use `⟨(s : L) ⊗ₜ[maximalRealSubfield L] (1 : AFplus L), Subring.subset_closure (Or.inl ⟨s, rfl⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[compAt_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨_, one_tmul_sgl_mem L v r r.2, ?_⟩` and prove the remaining obligations. Rewrite using `[compAt_tmul, sgl_same]`. Conclude with `key hy`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
     (y : L ⊗[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L))
@@ -136,9 +132,9 @@ theorem exists_lift (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
   exact key hy
 
 /- English proof (translation)
-Take `⟨Y, hY, hYv⟩` from `exists_lift L v _ hv`. Establish `h : x - Y * ((1 : L) ⊗ₜ[maximalRealSubfield L] sgl L v 1) = 0`. Apply `eq_zero_of_compAt` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_sub, map_mul, compAt_tmul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Break down `eq_or_ne w v with rfl | hw` into its components or cases. Rewrite using `[sgl_same, hYv, ← Algebra.TensorProduct.one_def, mul_one, sub_self]`. Rewrite using `[sgl_ne L v 1 hw, hoff w hw, tmul_zero, mul_zero, sub_self]`. Rewrite using `[sub_eq_zero.1 h]`. Conclude with `Subring.mul_mem _ hY (one_tmul_sgl_mem L v 1 (one_mem _))`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_ALint_of_supported (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (x : AL L)
     (hoff : ∀ w, w ≠ v → compAt L w x = 0)
@@ -157,7 +153,7 @@ theorem mem_ALint_of_supported (v : HeightOneSpectrum (𝓞 (maximalRealSubfield
   exact Subring.mul_mem _ hY (one_tmul_sgl_mem L v 1 (one_mem _))
 
 /- English proof (translation)
-Take `⟨Q, rfl⟩` from `hP`. Conclude with `((Q : Matrix (Fin n) (Fin n) S) i j).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem entries_mem_of_range {K : Type} [Field K] (S : Subring K) {n : ℕ} (P : GL (Fin n) K)
     (hP : P ∈ (Formalism.UG.bc (n := Fin n) S.subtype).range) (i j : Fin n) :
@@ -166,19 +162,17 @@ theorem entries_mem_of_range {K : Type} [Field K] (S : Subring K) {n : ℕ} (P :
   exact ((Q : Matrix (Fin n) (Fin n) S) i j).2
 
 /- English proof (translation)
-Introduce `L _ _ _ n v w Dv z hz hint i j`. Establish `hP` using `entries_mem_of_range _ _ Dv.Pint`. Establish `hP'` using `entries_mem_of_range _ _ (inv_mem Dv.Pint)`. Establish `hg : Formalism.UG.bc (n` using `Fin n) (Dv.e : L ⊗[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L) →+* w.adicCompletion L) (Matrix.GeneralLinearGroup.map (compAt L v) (z : GL (Fin n) (AL L))) = Dv.P * Dv.loc z * Dv.P⁻¹ := by`. Unfold `InertDatum.loc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `group`. Establish `he : Dv.e (compAt L v ((z.1 : Matrix (Fin n) (Fin n) (AL L)) i j)) ∈ intL (w.adicCompletion L)`. Establish `h1 : Dv.e (compAt L v ((z.1 : Matrix (Fin n) (Fin n) (AL L)) i j)) = ((Dv.P * Dv.loc z * Dv.P⁻¹ : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) i j`. Rewrite using `[← hg]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Simplify using `only [Units.val_mul, Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hP i l) (hint l k)) (hP' k j)`. Establish `hv` using `(Dv.integ _).2 he`. Establish `hone : ∀ {R : Type} [CommRing R] (S : Subring R), (1 : Matrix (Fin n) (Fin n) R) i j ∈ S`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `R _ S`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hc : ∀ u, compAt L u ((1 : Matrix (Fin n) (Fin n) (AL L)) i j) = (1 : Matrix (Fin n) (Fin n) _) i j`. Introduce `u`. Simplify using `only [Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hd : (z.1 : Matrix (Fin n) (Fin n) (AL L)) i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `mem_ALint_of_supported L v` to reduce the goal to its premises. Introduce `u hu`. Establish `h` using `congrFun (congrFun (hz u hu) i) j`. Rewrite using `[map_sub, hc, ← h, Matrix.map_apply, sub_self]`. Rewrite using `[map_sub, hc]`.
-
-Conclude with `Subring.sub_mem _ hv (hone _)`. Use `Subring.add_mem _ hd (hone (ALint L))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_Umax_of_trivOutside_of_loc_integral : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w) (z : GAf L n), TrivOutside {v} z → (∀ i j, ((Dv.loc z : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) i j ∈ intL (w.adicCompletion L)) → z ∈ Umax L n := by
   intro L _ _ _ n v w Dv z hz hint i j

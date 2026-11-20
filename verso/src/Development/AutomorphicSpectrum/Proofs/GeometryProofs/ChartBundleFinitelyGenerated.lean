@@ -8,7 +8,7 @@ open GlobalTheory.CompanionTheory.Ar.Num (dotDual)
 namespace GlobalTheory.CompanionTheory.Ar.Geo
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Xgn.chart_lattice_finitely_generated`.
+A detailed English derivation is pending.
 -/
 theorem chartBundle_lat_fg : ∀ (O : Type) [CommRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (ι : Type) (x : ι → Ω) (r : ℕ)
     (B : ChartBundle O x r (Fin r → Ω)) (c : ι), x c ≠ 0 → ∃ (n : ℕ) (s : Fin n → Fin r → Ω), (∀ k, s k ∈ B.lat c) ∧

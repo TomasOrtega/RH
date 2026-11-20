@@ -16,7 +16,7 @@ open GlobalTheory.ChainPts
 open GlobalTheory.ChainDesc
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ChainDesc.FreeAct.exists_act` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCoordinatesMatrixActionFreeModule.lean&line=80#L80)
 -/

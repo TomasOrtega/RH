@@ -30,15 +30,15 @@ variable {O O' : Type} [CommRing O] [CommRing O'] [Algebra O O'] {W W' : Type} [
   [Fintype ι]
 
 /- English proof (translation)
-Set `ψ : ι → (↥S' →ₗ[O] ↥S)` to `fun i => LinearMap.codRestrict S ((LinearMap.proj i ∘ₗ E.toLinearMap) ∘ₗ (S'.subtype.restrictScalars O)) (fun x => (hS x).1 x.2 i)`. Set `Φ : ↥S' →ₗ[O] (ι → ↥S ⧸ N.comap S.subtype)` to `LinearMap.pi fun i => (N.comap S.subtype).mkQ ∘ₗ ψ i`. Establish `hψ : ∀ (x : ↥S') i, ((ψ i x : ↥S) : W) = E x i` using `fun _ _ => rfl`. Establish `hΦ : ∀ x : ↥S', Φ x = 0 ↔ x ∈ N'.comap S'.subtype`. Introduce `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.mem_comap, Submodule.coe_subtype, hN, funext_iff]`. Simplify using `only [Φ, LinearMap.pi_apply, LinearMap.comp_apply, Submodule.mkQ_apply, Pi.zero_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, hψ]`. Establish `hsurj : Function.Surjective Φ`. Introduce `y`. Use `choose s hs using fun i => Submodule.Quotient.mk_surjective _ (y i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw : E.symm (fun i => (s i : W)) ∈ S'` using `(hS _).2 (by simp)`. Use `⟨⟨_, hw⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[← hs i]`. Simplify using `only [Φ, LinearMap.pi_apply, LinearMap.comp_apply, Submodule.mkQ_apply]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hψ]`. Simplify using the standard rewrite rules. Establish `hker : LinearMap.ker Φ = (N'.comap S'.subtype).restrictScalars O`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, Submodule.restrictScalars_mem]`. Conclude with `hΦ x`. Set `e : (↥S' ⧸ N'.comap S'.subtype) ≃ₗ[O] (ι → ↥S ⧸ N.comap S.subtype)` to `(Submodule.Quotient.restrictScalarsEquiv O (N'.comap S'.subtype)).symm ≪≫ₗ Submodule.quotEquivOfEq _ _ hker.symm ≪≫ₗ Φ.quotKerEquivOfSurjective hsurj`. Rewrite using `[e.length_eq, Module.length_pi, ENat.card_eq_coe_fintype_card]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_subquot (E : W' ≃ₗ[O] (ι → W)) (S' N' : Submodule O' W') (S N : Submodule O W)
     (hS : ∀ x, x ∈ S' ↔ ∀ i, E x i ∈ S) (hN : ∀ x, x ∈ N' ↔ ∀ i, E x i ∈ N) :
@@ -118,7 +118,7 @@ Both sides reduce to the same expression.
     tensCoord E C (v ⊗ₜ[Qp] c) i = E v i ⊗ₜ[Qp] c := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => simp [h]`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensCoord_map {C D : Type} [AddCommGroup C] [Module Qp C] [AddCommGroup D] [Module Qp D]
     (φ' : V' →ₗ[LL'] V') (φ : V →ₗ[LL] V) (h : ∀ x i, E (φ' x) i = φ (E x i)) (ψ : C →ₗ[Qp] D)
@@ -149,7 +149,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
 
 omit [Algebra LL LL'] [IsScalarTower LL LL' V'] in
 /- English proof (translation)
-Unfold `actVB`. Conclude with `tensCoord_map E (ρ' g) (ρ g) (hE g) _ x i`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tensCoord_actVB (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i)) (g : G) (x : V' ⊗[Qp] B)
     (i : ι) : tensCoord E B (actVB PD ρ' g x) i = actVB PD ρ g (tensCoord E B x i) := by
@@ -158,7 +158,7 @@ theorem tensCoord_actVB (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i)) (g : G) (
 
 omit [Algebra LL LL'] [IsScalarTower LL LL' V'] in
 /- English proof (translation)
-Unfold `actVdR`. Conclude with `tensCoord_map E (ρ' g) (ρ g) (hE g) _ x i`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tensCoord_actVdR (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i)) (g : G) (x : V' ⊗[Qp] BdR)
     (i : ι) : tensCoord E BdR (actVdR PD ρ' g x) i = actVdR PD ρ g (tensCoord E BdR x i) := by
@@ -167,13 +167,13 @@ theorem tensCoord_actVdR (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i)) (g : G) 
 
 omit [Algebra LL LL'] [IsScalarTower LL LL' V'] in
 /- English proof (translation)
-Establish `key : ∀ {W : Type} [AddCommGroup W] [Module LL W] [Module Qp W] [IsScalarTower Qp LL W] (r : Representation LL G W) (y : W ⊗[Qp] B), y ∈ Dcris PD r ↔ ∀ g, actVB PD r g y = y`. Introduce `W _ _ _ _ r y`. Simplify using `[Dcris, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]`. Establish `key' : x ∈ Dcris PD ρ' ↔ ∀ g, actVB PD ρ' g x = x`. Simplify using `[Dcris, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[key']`. Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Rewrite using `[key]`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← tensCoord_actVB PD hE g x i, hx g]`. Introduce `hx g`. Apply `(tensCoord E B).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[tensCoord_actVB PD hE]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(key _ _).1 (hx i) g`.
+A detailed English derivation is pending.
 -/
 theorem mem_Dcris_iff (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i)) (x : V' ⊗[Qp] B) :
     x ∈ Dcris PD ρ' ↔ ∀ i, tensCoord E B x i ∈ Dcris PD ρ := by
@@ -196,9 +196,9 @@ theorem mem_Dcris_iff (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i)) (x : V' ⊗
     exact (key _ _).1 (hx i) g
 
 /- English proof (translation)
-Distinguish the cases in `hM : Module.Finite F M`. Simplify using `[Module.finrank_pi_fintype]`. Break down `isEmpty_or_nonempty ι with hι | ⟨⟨i⟩⟩` into its components or cases. Rewrite using `[Module.finrank_zero_of_subsingleton]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hnot : ¬ Module.Finite F (ι → M)` using `fun h => hM (Module.Finite.of_surjective (LinearMap.proj i : (ι → M) →ₗ[F] M) (fun m => ⟨fun _ => m, rfl⟩))`. Rewrite using `[Module.finrank_of_not_finite hnot, Module.finrank_of_not_finite hM, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_fun' {F M : Type} [Field F] [AddCommGroup M] [Module F M] (ι : Type) [Fintype ι] :
     finrank F (ι → M) = Fintype.card ι * finrank F M := by
@@ -214,11 +214,11 @@ theorem finrank_fun' {F M : Type} [Field F] [AddCommGroup M] [Module F M] (ι : 
       rw [Module.finrank_of_not_finite hnot, Module.finrank_of_not_finite hM, mul_zero]
 
 /- English proof (translation)
-Unfold `IsCrys at h ⊢`. Establish `hn : 0 < Fintype.card ι` using `Fintype.card_pos`. Set `eD : ↥((Dcris PD ρ').restrictScalars LL) ≃ₗ[LL] (ι → ↥(Dcris PD ρ))` to `subEquiv (tensCoord E B) _ _ (fun x => mem_Dcris_iff PD hE x)`. Establish `h1 : finrank LL ↥(Dcris PD ρ') = Fintype.card ι * finrank LL ↥(Dcris PD ρ)`. Establish `h0` using `eD.finrank_eq`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[finrank_fun']`. Conclude with `h0`. Establish `h2 : finrank LL V' = Fintype.card ι * finrank LL V`. Rewrite using `[E.finrank_eq, finrank_fun']`. Establish `t1` using `Module.finrank_mul_finrank LL LL' ↥(Dcris PD ρ')`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t2` using `Module.finrank_mul_finrank LL LL' V'`. Rewrite `t1`, `t2` using `[hι]`. Establish `e1 : finrank LL' ↥(Dcris PD ρ') = finrank Qp K₀ * finrank LL V` using `Nat.eq_of_mul_eq_mul_left hn (by rw [t1, h1, h])`. Establish `e2 : finrank LL' V' = finrank LL V` using `Nat.eq_of_mul_eq_mul_left hn (by rw [t2, h2])`. Rewrite using `[e1, e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCrys_ext (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i))
     (hι : finrank LL LL' = Fintype.card ι) [Nonempty ι] (h : IsCrys PD ρ) : IsCrys PD ρ' := by
@@ -242,21 +242,21 @@ theorem isCrys_ext (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i))
   rw [e1, e2]
 
 /- English proof (translation)
-Establish `hA : ∀ y : V' ⊗[Qp] BdR, y ∈ DdR PD ρ' ↔ ∀ i, tensCoord E BdR y i ∈ DdR PD ρ`. Introduce `y`. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `hy i g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← tensCoord_actVdR PD hE g y i, hy g]`. Introduce `hy g`. Apply `(tensCoord E BdR).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[tensCoord_actVdR PD hE]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy i g`. Establish `hmul : ∀ (c : K) (y : V' ⊗[Qp] BdR) i, tensCoord E BdR (mulVdR (K` using `K) (BdR := BdR) (V := V') (LL := LL') c y) i = mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) c (tensCoord E BdR y i) := fun c y i => tensCoord_map E LinearMap.id LinearMap.id (fun _ _ => rfl) _ y i`. Establish `hsm : ∀ (c : K) (y : V' ⊗[Qp] BdR) i, tensCoord E BdR (τ' c • y) i = τ c • tensCoord E BdR y i`. Introduce `c y i`. Rewrite using `[hτ, algebraMap_smul, map_smul, Pi.smul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB : ∀ y : V' ⊗[Qp] BdR, (∀ c : K, mulVdR (K` using `K) (BdR := BdR) (V := V') (LL := LL') c y = τ' c • y) ↔ ∀ i, ∀ c : K, mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) c (tensCoord E BdR y i) = τ c • tensCoord E BdR y i := by`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy i c`. Rewrite using `[← hmul, ← hsm, hy c]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy c`. Apply `(tensCoord E BdR).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[hmul, hsm]`. Conclude with `hy i c`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hC : ∀ y : V' ⊗[Qp] BdR, y ∈ FilV PD (LL` using `LL') (V := V') a ↔ ∀ i, tensCoord E BdR y i ∈ FilV PD (LL := LL) (V := V) a := by`. Introduce `y`. Establish `hmap : ∀ (z : V' ⊗[Qp] ↥((PD.Fil a).restrictScalars Qp)) i, tensCoord E BdR (AlgebraTensorModule.map (LinearMap.id : V' →ₗ[LL'] V') ((PD.Fil a).restrictScalars Qp).subtype z) i = AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) ((PD.Fil a).restrictScalars Qp).subtype (tensCoor …` using `fun z i => tensCoord_map E LinearMap.id LinearMap.id (fun _ _ => rfl) _ z i`. Simplify using `only [FilV, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, rfl⟩ i`. Conclude with `⟨tensCoord E _ z i, (hmap z i).symm⟩`. Introduce `hy choose z hz using hy`. Use `⟨(tensCoord E _).symm z, ?_⟩` and prove the remaining obligations. Apply `(tensCoord E BdR).injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hmap, LinearEquiv.apply_symm_apply, hz i]`. Simplify using `only [FildR, DdRE, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Rewrite using `[hA, hB, hC]`. Simplify using `only [forall_and]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_FildR_iff (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i)) (τ : K →ₐ[Qp] LL)
     (τ' : K →ₐ[Qp] LL') (hτ : ∀ c, τ' c = algebraMap LL LL' (τ c)) (a : ℤ) (x : V' ⊗[Qp] BdR) :
@@ -321,9 +321,9 @@ theorem mem_FildR_iff (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i)) (τ : K →
   simp only [forall_and]
 
 /- English proof (translation)
-Unfold `JumpsInV IsJumpV at *`. Introduce `a ha`. Apply `h a` to reduce the goal to its premises. Introduce `heq`. Apply `ha` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Rewrite using `[mem_FildR_iff PD hE τ τ' hτ, mem_FildR_iff PD hE τ τ' hτ, heq]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem jumpsInV_ext (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i)) (τ : K →ₐ[Qp] LL)
     (τ' : K →ₐ[Qp] LL') (hτ : ∀ c, τ' c = algebraMap LL LL' (τ c)) (S : Set ℤ)
@@ -390,11 +390,11 @@ variable {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower 
     {E : V' ≃ₗ[LL] (ι → V)} {L : Lattice (O := O) ρ} {L' : Lattice (O := O') ρ'}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Continuous c ∧ ∀ g h, c (g * h) = c g + ρ' g (c h)) ↔ ∀ i, (Continuous (funCoord O G E c i) ∧ ∀ g h, funCoord O G E c i (g * h) = funCoord O G E c i g + ρ g (funCoord O G E c i h))`. Simplify using `only [funCoord_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hcont, hcoc⟩ i`. Use `⟨(continuous_apply i).comp (hc.comp hcont), fun g h => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcoc, map_add, Pi.add_apply, hE]`. Introduce `H`. Use `⟨?_, fun g h => ?_⟩` and prove the remaining obligations. Establish `hcont : Continuous fun g => E.symm (fun i => E (c g) i)` using `hs.comp (continuous_pi fun i => (H i).1)`. Simplify using `using hcont`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `E.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[map_add, Pi.add_apply, (H i).2 g h, hE]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_continuous_cocycles_iff_coords (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i)) (hc : Continuous E)
     (hs : Continuous E.symm) (c : G → V') :
@@ -417,11 +417,11 @@ theorem mem_continuous_cocycles_iff_coords (hE : ∀ g x i, E (ρ' g x) i = ρ g
       rw [map_add, Pi.add_apply, (H i).2 g h, hE]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(c ∈ continuousCocycles ρ' ∧ ∃ x : V' ⊗[Qp] B, ∀ g, c g ⊗ₜ[Qp] (1 : B) = actVB PD ρ' g x - x) ↔ ∀ i, (funCoord O G E c i ∈ continuousCocycles ρ ∧ ∃ x : V ⊗[Qp] B, ∀ g, funCoord O G E c i g ⊗ₜ[Qp] (1 : B) = actVB PD ρ g x - x)`. Rewrite using `[mem_continuous_cocycles_iff_coords (O := O) hE hc hs]`. Simplify using `only [funCoord_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, x, hx⟩ i`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨hz i, tensCoord E B x i, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← tensCoord_tmul E (c g) (1 : B) i, hx g, map_sub, Pi.sub_apply, tensCoord_actVB PD hE]`. Introduce `H`. Establish `hz : ∀ i, funCoord O G E c i ∈ continuousCocycles ρ` using `fun i => (H i).1`. Use `choose x hx using fun i => (H i).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hz, (tensCoord E B).symm x, fun g => ?_⟩` and prove the remaining obligations. Apply `(tensCoord E B).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[tensCoord_tmul, map_sub, Pi.sub_apply, tensCoord_actVB PD hE, LinearEquiv.apply_symm_apply, hx i g]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_finiteCocycles_iff_bcrisTensor_coboundary (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i)) (hc : Continuous E)
     (hs : Continuous E.symm) (c : G → V') :
@@ -445,9 +445,9 @@ theorem mem_finiteCocycles_iff_bcrisTensor_coboundary (hE : ∀ g x i, E (ρ' g 
       hx i g]
 
 /- English proof (translation)
-Simplify using `only [latticeFiniteCocycles, latticeCocycles, Submodule.mem_inf, Submodule.restrictScalars_mem, Submodule.mem_pi, Set.mem_univ, true_implies]`. Rewrite using `[mem_continuous_cocycles_iff_coords (O := O) hE hc hs, mem_finiteCocycles_iff_bcrisTensor_coboundary (O := O) PD hE hc hs]`. Simplify using `only [hL, funCoord_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩ i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨h1 i, fun g => h2 g i⟩, h3 i⟩`. Introduce `H`. Conclude with `⟨⟨fun i => (H i).1.1, fun g i => (H i).1.2 g⟩, fun i => (H i).2⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_Z1fT_iff (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i)) (hc : Continuous E)
     (hs : Continuous E.symm) (hL : ∀ x, x ∈ L'.T ↔ ∀ i, E x i ∈ L.T) (c : G → V') :
@@ -466,11 +466,11 @@ omit [TopologicalSpace G] [TopologicalSpace V] [ContinuousAdd V] [ContinuousCons
   [TopologicalSpace V'] [ContinuousAdd V'] [ContinuousConstSMul LL' V'] [Fintype ι]
   [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `only [latticeCoboundaries, Submodule.mem_map, LinearMap.coe_restrictScalars]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ i`. Use `⟨E x i, (hL x).1 hx i, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[cob, hE]`. Introduce `H choose x hx hcx using H`. Use `⟨E.symm x, (hL _).2 (by simpa using hx), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Apply `E.injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun (hcx i) g`. Simplify using `only [cob, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply, funCoord_apply] at h1 ⊢`. Rewrite using `[map_sub, Pi.sub_apply, hE, LinearEquiv.apply_symm_apply, h1]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_B1T_iff (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i))
     (hL : ∀ x, x ∈ L'.T ↔ ∀ i, E x i ∈ L.T) (c : G → V') :
@@ -517,13 +517,13 @@ variable {V₁ : Type} [AddCommGroup V₁] [Module LL V₁] [Module Qp V₁] [Is
     (F : LatHom L₁ L₂) (F' : LatHom L₁' L₂')
 
 /- English proof (translation)
-Establish `post_coord : ∀ (x : G → V₁') i, funCoord O G E₂ (F'.post x) i = F.post (funCoord O G E₁ x i)`. Introduce `x i`. Use function extensionality and compare the values at `g`. Simplify using `[LatHom.post, hF]`. Unfold `LatHom.ImF`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hc i`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hc`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hy`. Use `Submodule.mem_sup.2 ⟨F.post (funCoord O G E₁ x i), Submodule.mem_map_of_mem ((mem_Z1fT_iff PD hE₁ hc₁ hs₁ hL₁ x).1 hx i), funCoord O G E₂ z i, (mem_B1T_iff hE₂ hL₂ z).1 hz i, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, Pi.add_apply, post_coord]`. Introduce `H choose y hy z hz hyz using fun i => Submodule.mem_sup.1 (H i) choose x hx hxy using fun i => Submodule.mem_map.1 (hy i)`. Use `Submodule.mem_sup.2 ⟨F'.post ((funCoord O G E₁).symm x), Submodule.mem_map_of_mem ((mem_Z1fT_iff PD hE₁ hc₁ hs₁ hL₁ _).2 (by simpa using hx)), (funCoord O G E₂).symm z, (mem_B1T_iff hE₂ hL₂ _).2 (by simpa using hz), ?_⟩` and prove the remaining obligations. Apply `(funCoord O G E₂).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_add, Pi.add_apply, post_coord, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply, hxy i, hyz i]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_ImF_iff (hE₁ : ∀ g x i, E₁ (ρ₁' g x) i = ρ₁ g (E₁ x i)) (hc₁ : Continuous E₁)
     (hs₁ : Continuous E₁.symm) (hL₁ : ∀ x, x ∈ L₁'.T ↔ ∀ i, E₁ x i ∈ L₁.T)
@@ -561,9 +561,9 @@ omit [TopologicalSpace G] [Fintype ι] [DecidableEq ι] [ContinuousAdd V₁] [Co
   [ContinuousAdd V₂'] [ContinuousConstSMul LL' V₂'] [Module O V₁'] [IsScalarTower O LL V₁']
   [Module O V₂'] [IsScalarTower O LL V₂'] in
 /- English proof (translation)
-Unfold `LatHom.Onto at h ⊢`. Introduce `y hy`. Establish `hyi : ∀ i, E₂ y i ∈ L₂.T` using `(hL₂ y).1 hy`. Use `choose x hx hfx using fun i => h _ (hyi i)`. Use `⟨E₁.symm x, (hL₁ _).2 (by simpa using hx), ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `E₂.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[hF, LinearEquiv.apply_symm_apply, hfx]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onto_ext (hL₁ : ∀ x, x ∈ L₁'.T ↔ ∀ i, E₁ x i ∈ L₁.T)
     (hL₂ : ∀ x, x ∈ L₂'.T ↔ ∀ i, E₂ x i ∈ L₂.T)
@@ -578,7 +578,7 @@ theorem onto_ext (hL₁ : ∀ x, x ∈ L₁'.T ↔ ∀ i, E₁ x i ∈ L₁.T)
   rw [hF, LinearEquiv.apply_symm_apply, hfx]
 
 /- English proof (translation)
-Unfold `LatHom.col`. Rewrite using `[← IsLocalRing.length_restrictScalars O O', length_subquot (funCoord O G E₂) _ _ _ _ (mem_Z1fT_iff PD hE₂ hc₂ hs₂ hL₂) (mem_ImF_iff PD F F' hE₁ hc₁ hs₁ hL₁ hE₂ hL₂ hF)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem col_ext [Algebra O O'] [IsLocalRing O] [IsLocalRing O'] [IsLocalHom (algebraMap O O')]
     [IsScalarTower O O' V₂']
@@ -597,11 +597,11 @@ theorem col_ext [Algebra O O'] [IsLocalRing O] [IsLocalRing O'] [IsLocalHom (alg
 end Two
 
 /- English proof (translation)
-Set `Φ : W' →ₗ[R] (ι → W ⧸ N)` to `LinearMap.pi fun i => N.mkQ ∘ₗ (LinearMap.proj i ∘ₗ E.toLinearMap)`. Establish `hsurj : Function.Surjective Φ`. Introduce `y`. Use `choose s hs using fun i => Submodule.Quotient.mk_surjective _ (y i)`. Use `⟨E.symm s, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Φ, ← hs i]`. Establish `hker : LinearMap.ker Φ = N'.restrictScalars R`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, Submodule.restrictScalars_mem, hN, funext_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Φ, Submodule.Quotient.mk_eq_zero]`. Set `e : (W' ⧸ N') ≃ₗ[R] (ι → W ⧸ N)` to `(Submodule.Quotient.restrictScalarsEquiv R N').symm ≪≫ₗ Submodule.quotEquivOfEq _ _ hker.symm ≪≫ₗ Φ.quotKerEquivOfSurjective hsurj`. Rewrite using `[e.length_eq, Module.length_pi, ENat.card_eq_coe_fintype_card]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem length_quotient_eq_card_mul_of_pi_equiv {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R']
     {W W' : Type} [AddCommGroup W] [AddCommGroup W'] [Module R W] [Module R W'] [Module R' W']
@@ -628,13 +628,13 @@ private theorem length_quotient_eq_card_mul_of_pi_equiv {R R' : Type} [CommRing 
 omit [TopologicalSpace G] [DecidableEq ι] in
 
 /- English proof (translation)
-Unfold `lenOl`. Rewrite using `[← IsLocalRing.length_restrictScalars O O']`. Rewrite using `[length_quotient_eq_card_mul_of_pi_equiv b.equivFun (Ideal.span {((PD.p : ℕ) : O')}) (Ideal.span {((PD.p : ℕ) : O)})]`. Introduce `x`. Establish `hcast : ∀ y : O', ((PD.p : ℕ) : O') * y = ((PD.p : ℕ) : O) • y` using `fun y => by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def, map_natCast]`. Simplify using `only [Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ i`. Use `⟨b.equivFun y i, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcast, map_smul, Pi.smul_apply, smul_eq_mul]`. Introduce `H choose a ha using H`. Use `⟨b.equivFun.symm a, ?_⟩` and prove the remaining obligations. Apply `b.equivFun.injective` to reduce the goal to its premises. Rewrite using `[hcast, map_smul, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[ha i, Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem lenOl_ext [Algebra O O'] [IsLocalRing O] [IsLocalRing O'] [IsLocalHom (algebraMap O O')]
     (b : Basis ι O O') :
@@ -662,15 +662,13 @@ theorem lenOl_ext [Algebra O O'] [IsLocalRing O] [IsLocalRing O'] [IsLocalHom (a
 end Lat
 
 /- English proof (translation)
-Use `lift f to ℕ using hf`. Establish `hmt : m ≠ ⊤`. Introduce and unpack `rfl`. Establish `h1 : ((m' * f : ℕ) : ℕ∞) = ⊤`. Use `push_cast`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hm` using `[ENat.mul_top, hd.ne']`. Conclude with `ENat.natCast_ne_top _ h1`. Establish `hkt : k ≠ ⊤`. Introduce and unpack `rfl`. Establish `h1 : ((k' * f : ℕ) : ℕ∞) = ⊤`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `push_cast`. Simplify `hk` using `[ENat.mul_top, hd.ne']`. Conclude with `ENat.natCast_ne_top _ h1`. Use `lift m to ℕ using hmt`. Use `lift k to ℕ using hkt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨m, k, rfl, rfl, ?_⟩` and prove the remaining obligations. Establish `hm' : (d : ℝ) * m = m' * f` using `by exact_mod_cast hm.symm`. Establish `hk' : (d : ℝ) * k = k' * f` using `by exact_mod_cast hk.symm`. Establish `hdpos : (0 : ℝ) < d` using `by exact_mod_cast hd`. Establish `hle : (d : ℝ) * m ≤ d * (β * k)`.
-
-Rewrite using `[hm', show (d : ℝ) * (β * k) = β * (d * k) by ring, hk']`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_left hle hdpos`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem descend_bound {m k f : ℕ∞} {m' k' d : ℕ} (hd : 0 < d) (hf : f ≠ ⊤)
     (hm : (m' : ℕ∞) * f = d * m) (hk : (k' : ℕ∞) * f = d * k) {β : ℝ} (h : (m' : ℝ) ≤ β * k') :
@@ -702,9 +700,9 @@ theorem descend_bound {m k f : ℕ∞} {m' k' d : ℕ} (hd : 0 < d) (hf : f ≠ 
   exact le_of_mul_le_mul_left hle hdpos
 
 /- English proof (translation)
-Establish `: Nontrivial O` using `(algebraMap O O').domain_nontrivial`. Establish `: Module.Free O O'` using `Module.Free.of_basis b`. Establish `: Nonempty ι` using `b.index_nonempty`. Establish `hn : 0 < Fintype.card ι` using `Fintype.card_pos`. Set `eS : ↥(S'.restrictScalars O) ≃ₗ[O] (ι → ↥S)` to `subEquiv E (S'.restrictScalars O) S hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hpi : finrank O (ι → ↥S) = Fintype.card ι * finrank O ↥S` using `(Finsupp.linearEquivFunOnFinite O ↥S ι).finrank_eq.symm.trans (finrank_finsupp O ↥S)`. Establish `t` using `Module.finrank_mul_finrank O O' ↥S'`. Establish `t' : finrank O ↥S' = finrank O (ι → ↥S)` using `eS.finrank_eq`. Rewrite `t` using `[Module.finrank_eq_card_basis b, t', hpi]`. Conclude with `Nat.eq_of_mul_eq_mul_left hn t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_ext {O O' : Type} [CommRing O] [CommRing O'] [Nontrivial O'] [Algebra O O']
     {W W' : Type} [AddCommGroup W] [AddCommGroup W'] [Module O W] [Module O W'] [Module O' W']

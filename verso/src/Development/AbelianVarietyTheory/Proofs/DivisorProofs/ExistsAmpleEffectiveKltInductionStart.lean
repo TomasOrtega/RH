@@ -23,27 +23,25 @@ namespace GlobalTheory.PairStep
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hPr X _ _ _ p n hp hn`. Use `letI := algebraΓOfHom p`. Introduce `Δ r N₀ hN₀ β hΔ hklt hr hnef hbig hβ`. Take `⟨H, hH⟩` from `exists_isAmpleLB_of_isProjOver hp`. Take `⟨A, hA⟩` from `toPic_surjective (cls H hH.isLB)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hAamp : IsAmpleLB (toLB A)`. Rewrite `hA` using `[toPic_apply]`. Conclude with `hH.of_lbIso (isLB_toLB A) ((cls_eq_iff (isLB_toLB A) hH.isLB).1 hA)`. Take `⟨a, E₀, ha, hE₀, hKod⟩` from `GlobalTheory.KodairaLemma.exists_nsmul_cls_eq_add_toPic_of_isBig ℂ X p hp N₀ (toLB A) hbig hAamp`. Take `⟨F, hF⟩` from `toPic_surjective (a • cls N₀ hN₀)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, G, hm, hG⟩` from `GlobalTheory.T.exists_logCanonicalMultiple_of_globally_klt X p n hp hn Δ hΔ hklt`. Establish `hB : IsQCart (qWeil E₀ 1)` using `⟨1, E₀, one_pos, hE₀, rfl⟩`. Take `⟨c₀, hc₀, hc₀k⟩` from `GlobalTheory.T.exists_pos_klt_add_smul_effective_divisor hPr X p n hp hn Δ m G (qWeil E₀ 1) hm hG hklt hB`. Use `set q : ℕ := ⌈1 / c₀ + (a : ℚ) * r / β⌉₊ + 1 with hq`. Establish `hqpos : (0 : ℚ) < q` using `by positivity`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqgt : 1 / c₀ + (a : ℚ) * r / β < q`. Use `Nat.le_ceil (1 / c₀ + (a : ℚ) * r / β)` as an intermediate fact. Rewrite using `[hq]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hara : (0 : ℚ) ≤ (a : ℚ) * r / β` using `by positivity`. Establish `hinv : (0 : ℚ) < 1 / c₀` using `by positivity`. Establish `h1 : 1 / (q : ℚ) ≤ c₀`. Rewrite using `[div_le_iff₀ hqpos]`. Establish `: 1 / c₀ < q` using `by linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `this` using `[div_lt_iff₀ hc₀]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (a : ℚ) * r / q < β`. Establish `: (a : ℚ) * r / β < q` using `by linarith`. Rewrite `this` using `[div_lt_iff₀ hβ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[div_lt_iff₀ hqpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨A, F, a, hAamp, ha, hF, (a : ℚ) * r / q, 1 / q, q, E₀, by omega, hE₀, by positivity, h2, ?_, ?_⟩` and prove the remaining obligations. Introduce `C hC`. Establish `e1` using `interNumRed_of_cls_eq_nsmul_add ℂ X p hp (lbPow N₀ a) (toLB A) (toLB E₀) (isLB_lbPow hN₀ a) (isLB_toLB A) (isLB_toLB E₀) 1 1 C hC (by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[cls_lbPow hN₀ a, one_smul, one_smul, ← toPic_apply]`. Conclude with `hKod)`. Establish `e2` using `interNumRed_of_cls_eq_nsmul_add ℂ X p hp (lbPow N₀ a) N₀ N₀ (isLB_lbPow hN₀ a) hN₀ hN₀ a 0 C hC (by rw [cls_lbPow hN₀ a, zero_smul, add_zero])`. Establish `e3 : (interNumRed ℂ C ![toLB E₀] : ℚ) = a * interNumRed ℂ C ![N₀] - interNumRed ℂ C ![toLB A]`. Establish `: interNumRed ℂ C ![toLB E₀] = a * interNumRed ℂ C ![N₀] - interNumRed ℂ C ![toLB A]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `e1` using `[e2]`. Move the coercions through the operations in `at e1`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions. Rewrite using `[e3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hr' : (r : ℚ) ≠ 0` using `by exact_mod_cast hr.ne'`. Clear the denominators using the available nonvanishing facts. Introduce `y`. Establish `k` using `(kltAt_lcAt_of_le_coeff X p n hp hn Δ (qWeil E₀ 1) (1 / q) c₀ y hB h1).1 (hc₀k y)`. Use `k using 2` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `z`. Simplify using `only [qWeil, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Nat.cast_one, div_one]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_ample_eff_kltAt_start : GlobalTheory.Published.Principalisation → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n →

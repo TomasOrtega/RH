@@ -4,19 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 open Finset UpperTheory.V.Bern
 
 /- English proof (translation)
-Introduce `k j hjk`. Establish `hdvd : ∀ p : ℕ, p.Prime → p ≤ k + 1 → p ∣ primorial (k + 1)`. Introduce `p hp hpk`. Conclude with `Finset.dvd_prod_of_mem _ (Finset.mem_filter.2 ⟨Finset.mem_range.2 (by omega), hp⟩)`. Break down `Nat.even_or_odd j with ⟨m, rfl⟩ | hodd` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨z0, hz0⟩` from `Bernoulli.vonStaudt_clausen m`. Establish `h2 : m + m = 2 * m` using `by ring`. Rewrite using `[h2]`. Establish `hB : bernoulli (2 * m) = (z0 : ℚ) - ∑ p ∈ range (2 * m + 2) with Nat.Prime p ∧ p - 1 ∣ 2 * m, (1 : ℚ) / p`. Rewrite using `[hz0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨(primorial (k + 1) : ℤ) * z0 - ∑ p ∈ range (2 * m + 2) with Nat.Prime p ∧ p - 1 ∣ 2 * m, ((primorial (k + 1) / p : ℕ) : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[Int.cast_sub, Int.cast_mul, Int.cast_sum]`. Simplify using `only [Int.cast_natCast]`. Rewrite using `[hB, mul_sub, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Finset.mem_filter, Finset.mem_range]`. Establish `hpd : p ∣ primorial (k + 1)` using `hdvd p hp.2.1 (by omega)`. Rewrite using `[Nat.cast_div hpd (Nat.cast_ne_zero.2 hp.2.1.ne_zero)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Break down `Nat.lt_or_ge 1 j with h1 | h1` into its components or cases. Conclude with `⟨0, by rw [bernoulli_eq_zero_of_odd hodd h1]; simp⟩`. Establish `hj : j = 1`. Take `⟨r, rfl⟩` from `hodd`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Substitute `hj` using the available equality. Take `⟨t, ht⟩` from `hdvd 2 Nat.prime_two (by omega)`. Use `⟨-(t : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[bernoulli_one, ht]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Bern.b_primden :
     ∀ (k j : ℕ), j ≤ k → ∃ z : ℤ, (primorial (k + 1) : ℚ) * bernoulli j = z := by

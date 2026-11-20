@@ -17,7 +17,7 @@ open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
 open Formalism.G (unitBall)
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ φ _ hl g2 g3 s2 ε` and use `Formalism.L2.Th1.E.Joints.map_phFF φ hl g2 g3 s2 ε`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PhMap_proof : PhMap := fun _ _ _ _ _ _ φ _ hl g2 g3 s2 ε =>
   Formalism.L2.Th1.E.Joints.map_phFF φ hl g2 g3 s2 ε
@@ -29,7 +29,7 @@ section Maps
 variable {K K' : Type} [Field K] [CharZero K] [Field K'] [CharZero K'] (φ : K →+* K')
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, hf, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_map {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) :
     PowerSeries.constantCoeff (PowerSeries.map φ f) = 0 := by
@@ -37,7 +37,7 @@ theorem cc_map {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) :
     PowerSeries.coeff_zero_eq_constantCoeff_apply, hf, map_zero]
 
 /- English proof (translation)
-Use `(expSpec K' l hl).2.2.2 _ (cc_map φ (expSpec K l hl).1) ?_` and prove the remaining obligations. Rewrite using `[← Formalism.L2.Th1.E.Joints.map_lgF' φ l, ← Formalism.L2.Th1.B.Map.map_psubst' φ (expSpec K l hl).1, (expSpec K l hl).2.1, PowerSeries.map_X]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_expF {l : ℕ} (hl : 2 ≤ l) : PowerSeries.map φ (expF K l) = expF K' l := by
   refine (expSpec K' l hl).2.2.2 _ (cc_map φ (expSpec K l hl).1) ?_
@@ -45,7 +45,7 @@ theorem map_expF {l : ℕ} (hl : 2 ≤ l) : PowerSeries.map φ (expF K l) = expF
     (expSpec K l hl).2.1, PowerSeries.map_X]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.C.mulBy`. Rewrite using `[Formalism.L2.Th1.B.Map.map_psubst' φ (FAux.cc_arg hl a), map_mul, PowerSeries.map_C, Formalism.L2.Th1.E.Joints.map_lgF', map_expF φ hl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mulBy {l : ℕ} (hl : 2 ≤ l) (a : K) :
     PowerSeries.map φ (Formalism.L2.Th1.C.mulBy (lgF K l) (expF K l) a) =
@@ -55,7 +55,7 @@ theorem map_mulBy {l : ℕ} (hl : 2 ≤ l) (a : K) :
     Formalism.L2.Th1.E.Joints.map_lgF', map_expF φ hl]
 
 /- English proof (translation)
-The claim follows from `Pair.cc_ps (τ := Unit) (FAux.cc_arg hl a) (expSpec K l hl).1`.
+A detailed English derivation is pending.
 -/
 theorem cc_mulBy {l : ℕ} (hl : 2 ≤ l) (a : K) :
     PowerSeries.constantCoeff (Formalism.L2.Th1.C.mulBy (lgF K l) (expF K l) a) = 0 :=
@@ -68,7 +68,7 @@ section Field
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `⟨?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_map, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h.1, map_zero]`. Unfold `Formalism.L2.Th1.C.mvExp`. Rewrite using `[← PowerSeries.map_exp (MaximalUnramifiedExtension l).subtype, ← Formalism.L2.Th1.B.Map.map_psubst (MaximalUnramifiedExtension l).subtype h.1, MvPowerSeries.coeff_map]`. Conclude with `h.2 n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lg_map {τ : Type} {f : MvPowerSeries τ (MaximalUnramifiedExtension l)}
     (h : Formalism.L2.Th1.C.LG (unitBall (MaximalUnramifiedExtension l)) f) :
@@ -82,7 +82,7 @@ theorem lg_map {τ : Type} {f : MvPowerSeries τ (MaximalUnramifiedExtension l)}
     exact h.2 n
 
 /- English proof (translation)
-The claim follows from `BrC.of_closed_int hU (P := fun z : MaximalUnramifiedExtension l => P (z : ℂ_[l])) (hc.preimage continuous_subtype_val) (fun n => by simpa using hi n) hx hs`.
+A detailed English derivation is pending.
 -/
 theorem of_closed_int {σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l} (hU : UnrOK (MaximalUnramifiedExtension l) l σ) {P : ℂ_[l] → Prop}
     (hc : IsClosed {z : ℂ_[l] | P z}) (hi : ∀ n : ℤ, P (n : ℂ_[l])) {x : MaximalUnramifiedExtension l} (hx : ‖x‖ ≤ 1)
@@ -91,7 +91,7 @@ theorem of_closed_int {σ : MaximalUnramifiedExtension l →+* MaximalUnramified
     (fun n => by simpa using hi n) hx hs
 
 /- English proof (translation)
-Introduce `n`. Establish `h` using `map_mulBy (MaximalUnramifiedExtension l).subtype hU.1.two_le α`. Rewrite using `[show (α : ℂ_[l]) = (MaximalUnramifiedExtension l).subtype α from rfl, ← h, PowerSeries.coeff_map]`. Conclude with `BrC.endInt hU hα hs n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem endInt {σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l} (hU : UnrOK (MaximalUnramifiedExtension l) l σ) {α : MaximalUnramifiedExtension l} (hα : ‖α‖ ≤ 1)
     (hs : σ (σ α) = α) :
@@ -102,9 +102,9 @@ theorem endInt {σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtensi
   exact BrC.endInt hU hα hs n
 
 /- English proof (translation)
-Establish `h1` using `lg_map ((BrC.phNorm_iff ph α).2 h)`. Unfold `Formalism.L2.Th1.C.PhNormAt Formalism.L2.Th1.C.Cong`. Establish `e : MvPowerSeries.map (MaximalUnramifiedExtension l).subtype (PowerSeries.subst (Formalism.L2.Th1.C.mulBy (lgF (MaximalUnramifiedExtension l) l) (expF (MaximalUnramifiedExtension l) l) α) ph - (α * σ α) • ph) = PowerSeries.subst (Formalism.L2.Th1.C.mulBy (lgF ℂ_[l] l) (expF ℂ_[l] …`. Rewrite using `[map_sub, Formalism.L2.Th1.B.Map.map_psubst (MaximalUnramifiedExtension l).subtype (cc_mulBy hl α), MvPowerSeries.smul_eq_C_mul, MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.map_C]`. Establish `h2 : MvPowerSeries.map (MaximalUnramifiedExtension l).subtype (Formalism.L2.Th1.C.mulBy (lgF (MaximalUnramifiedExtension l) l) (expF (MaximalUnramifiedExtension l) l) α) = Formalism.L2.Th1.C.mulBy (lgF ℂ_[l] l) (expF ℂ_[l] l) (α : ℂ_[l])` using `map_mulBy (MaximalUnramifiedExtension l).subtype hl α`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2, map_mul]`. Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phNorm {σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l} (hl : 2 ≤ l) {ph : PowerSeries (MaximalUnramifiedExtension l)} {α : MaximalUnramifiedExtension l}
     (h : NormRel l σ ph α) :
@@ -135,19 +135,17 @@ end PAdicPowerSeriesCoefficients
 
 open PAdicPowerSeriesCoefficients in
 /- English proof (translation)
-Introduce `l _ h5 g2 g3 ε s2 hg2 hg3 hε hth σ hU F _ hN`. Establish `hl : 2 ≤ l` using `hU.1.two_le`. Establish `hnl : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹`. Establish `h : ‖(((l : ℕ) : MaximalUnramifiedExtension l) : ℂ_[l])‖ = (l : ℝ)⁻¹` using `hU.2.2.1`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hP` using `BrC.logPair (K := ℂ_[l]) hl`. Take `⟨F', hF'⟩` from `(Formalism.InvariantFactorPaths.G7.Top.lawExists ℂ_[l] l hU.1 hnl).1`. Establish `hph : PowerSeries.constantCoeff (PowerSeries.map (MaximalUnramifiedExtension l).subtype (phFF l g2 g3 s2 ε)) = 0` using `cc_map _ (FAux.cc_phFF hl g2 g3 s2 ε)`. Establish `hth' : ∀ n, ‖PowerSeries.coeff n (thetaS l (g2 : ℂ_[l]) (g3 : ℂ_[l]) (ε : ℂ_[l]))‖ ≤ 1`. Introduce `n`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm` using `FAux.thetaS_map (MaximalUnramifiedExtension l).subtype hl g2 g3 ε`. Establish `e : thetaS l (g2 : ℂ_[l]) (g3 : ℂ_[l]) (ε : ℂ_[l]) = PowerSeries.map (MaximalUnramifiedExtension l).subtype (thetaS l g2 g3 ε)` using `hm.symm`. Rewrite using `[e, PowerSeries.coeff_map]`. Conclude with `hth n`. Establish `hF1 : F1 F' (cob F' (PowerSeries.map (MaximalUnramifiedExtension l).subtype (phFF l g2 g3 s2 ε)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PhMap_proof _ _ (MaximalUnramifiedExtension l).subtype l hl]`. Conclude with `first_level_on_curve ℂ_[l] l hU.1 hU.2.1 hnl F' hF' _ _ _ _ hg2 hg3 hε hth'`. Take `⟨-, hFG, hC1⟩` from `Formalism.L2.Th1.C.first_level_from_universal_holds ℂ_[l] F' _ _ _ hP (BrC.lawLog hl hF') hph hF1.2.1`. Establish `hFr : Formalism.L2.Th1.C.Frame (unitBall ℂ_[l]) (lgF ℂ_[l] l) (expF ℂ_[l] l) (PowerSeries.map (MaximalUnramifiedExtension l).subtype (phFF l g2 g3 s2 ε))` using `⟨hP, hFG, hph⟩`. Establish `hσ : ∀ a : MaximalUnramifiedExtension l, ‖a‖ ≤ 1 → ‖σ a‖ ≤ 1` using `(frobSq (MaximalUnramifiedExtension l) l σ hU).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl` using `Formalism.L2.Th1.C.unit_ball_closed ℂ_[l]`. Establish `hbin : ∀ z : MaximalUnramifiedExtension l, ‖z‖ ≤ 1 → σ z = z → Formalism.L2.Th1.C.IsBinomScalar (unitBall ℂ_[l]) (z : ℂ_[l])` using `fun z hz hs => of_closed_int hU (Formalism.L2.Th1.C.binomClosed ℂ_[l] _ hcl) (Formalism.L2.Th1.C.intBinomScalar ℂ_[l] _) hz hs`. Set `_ : StarRing (BrC.Osub σ)` to `BrC.starO hσ`. Establish `key` using `Formalism.L2.Th1.C.normAdjAll ℂ_[l] (unitBall ℂ_[l]) _ _ _ hFr (BrC.Osub σ) ((MaximalUnramifiedExtension l).subtype.comp (BrC.Osub σ).subtype) (fun α => endInt hU α.2.1 α.2.2) (fun z hz => hbin z.1 z.2.1 (congrArg Subtype.val hz)) (fun z hz => of_closed_int hU (Formalism.L2.Th1.C …`. Establish `h2 : ‖(2 : MaximalUnramifiedExtension l)‖ = 1` using `BrC.norm_two hU`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ‖(2 : ℂ_[l])‖ = 1` using `by rw [← h2, ← FAux.norm_coe, map_ofNat]`. Rewrite using `[norm_inv, h3, inv_one])`. Use the proof step `(by`. Establish `: (2 : BrC.Osub σ) = (BrC.unitO (BrC.norm_two hU) (by rw [map_ofNat, map_ofNat]) : (BrC.Osub σ)ˣ)` using `Subtype.ext rfl`. Rewrite using `[this]`.
-
-Conclude with `Units.isUnit _)`. Use the proof step `(BrC.two_units hU)`. Use the proof step `(fun u => phNorm hl (hN _ (BrC.norm_unitO u) (u : BrC.Osub σ).2.2))`. Use `⟨hFr, hC1, fun α hα hs => ⟨endInt hU hα hs, ?_⟩, hbin⟩` and prove the remaining obligations. Conclude with `key ⟨α, BrC.mem_Osub.2 ⟨hα, hs⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem CalcC_proof : CalcC := by
   intro l _ h5 g2 g3 ε s2 hg2 hg3 hε hth σ hU F _ hN

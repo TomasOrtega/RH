@@ -24,49 +24,47 @@ abbrev swi (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Alg
   (Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E).symm.toAlgHom.toRingHom
 
 /- English proof (translation)
-The claim follows from `(Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E).symm_apply_apply z`.
+A detailed English derivation is pending.
 -/
 theorem swi_sw (z : FiniteAdeleRing (𝓞 F) F ⊗[F] E) : swi F E (sw F E z) = z :=
   (Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E).symm_apply_apply z
 
 /- English proof (translation)
-Use `show (Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E).symm (x ⊗ₜ[F] a) = a ⊗ₜ[F] x`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem swi_tmul (a : FiniteAdeleRing (𝓞 F) F) (x : E) : swi F E (x ⊗ₜ[F] a) = a ⊗ₜ[F] x := by
   show (Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E).symm (x ⊗ₜ[F] a) = a ⊗ₜ[F] x
   rw [AlgEquiv.symm_apply_eq]; rfl
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Col.stdLat, Submodule.mem_pi, Submodule.mem_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stdLat_iff {m : ℕ} (y : Fin m → E) :
     y ∈ Formalism.L2.Col.stdLat E m ↔ ∀ i, y i ∈ Set.range (algebraMap (𝓞 E) E) := by
   simp [Formalism.L2.Col.stdLat, Submodule.mem_pi, Submodule.mem_one]
 
 /- English proof (translation)
-Introduce `v` and use `ha v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intAf_mem {a : FiniteAdeleRing (𝓞 F) F} (ha : a ∈ Formalism.MainNotions.StandardLattice.intAf F) : a ∈ Formalism.UG.intAd F := fun v => ha v
 
 /- English proof (translation)
-Introduce `v` and use `ha v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intAd_mem {a : FiniteAdeleRing (𝓞 F) F} (ha : a ∈ Formalism.UG.intAd F) : a ∈ Formalism.MainNotions.StandardLattice.intAf F := fun v => ha v
 
 variable {n m : ℕ} (e : Fin n ≃ Fin m) (L : Set (Fin n → E))
 
 /- English proof (translation)
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Establish `hmem : (1 : E) ⊗ₜ[F] a ∈ Formalism.UG.tensInt (F` using `F) (FiniteAdeleRing (𝓞 F) F) (Formalism.UG.intOE E) (Formalism.UG.intAd F) := Subring.subset_closure (Or.inr ⟨⟨a, intAf_mem ha⟩, rfl⟩)`. Establish `hx' : (fun j => x (e.symm j)) ∈ Formalism.L2.Col.stdLat E m` using `(mem_stdLat_iff _).2 fun j => (hL x).1 hx _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (fun j => sw F E (a ⊗ₜ[F] x (e.symm j))) = (⟨_, hmem⟩ : Formalism.UG.tensInt (F` using `F) (FiniteAdeleRing (𝓞 F) F) (Formalism.UG.intOE E) (Formalism.UG.intAd F)) • (fun j => Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (x (e.symm j))) := by`. Use function extensionality and compare the values at `j`. Use `show x (e.symm j) ⊗ₜ[F] a = ((1 : E) ⊗ₜ[F] a) * (x (e.symm j) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hx', rfl⟩)`. Consider the case `zero`. Establish `: (fun j => sw F E ((0 : Fin n → FiniteAdeleRing (𝓞 F) F ⊗[F] E) (e.symm j))) = 0`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz`. Establish `: (fun j => sw F E ((y + z) (e.symm j))) = (fun j => sw F E (y (e.symm j))) + (fun j => sw F E (z (e.symm j)))`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy`. Establish `: (fun j => sw F E ((-y) (e.symm j))) = -(fun j => sw F E (y (e.symm j)))`.
-
-Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `neg_mem hy`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latHat_to_latS (hL : ∀ x, x ∈ L ↔ ∀ i, x i ∈ Set.range (algebraMap (𝓞 E) E)) (w : Fin n → FiniteAdeleRing (𝓞 F) F ⊗[F] E)
     (hw : w ∈ Formalism.MainNotions.StandardLattice.latHat F E L) :
@@ -100,33 +98,29 @@ theorem latHat_to_latS (hL : ∀ x, x ∈ L ↔ ∀ i, x i ∈ Set.range (algebr
     rw [this]; exact neg_mem hy
 
 /- English proof (translation)
-Proceed by induction on `hs using Subring.closure_induction with`. Consider the case `mem s hs`. Introduce `w hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Break down `hs with ⟨⟨c, hc⟩, rfl⟩ | ⟨⟨b, hb⟩, rfl⟩` into its components or cases. Take `⟨o, rfl⟩` from `RingHom.mem_range.1 hc`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨a, ha, fun i => algebraMap (𝓞 E) E o * x i, (hL _).2 fun i => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, hp⟩` from `(hL x).1 hx i`. Conclude with `⟨o * p, by rw [map_mul, hp]⟩`. Use function extensionality and compare the values at `i show swi F E (algebraMap (𝓞 E) E o ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) * (a ⊗ₜ[F] x i) = a ⊗ₜ[F] (algebraMap (𝓞 E) E o * x i)`. Rewrite using `[swi_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨b * a, intAd_mem (mul_mem hb (intAf_mem ha)), x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show swi F E ((1 : E) ⊗ₜ[F] b) * (a ⊗ₜ[F] x i) = (b * a) ⊗ₜ[F] x i`. Rewrite using `[swi_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `: (fun i => swi F E s * (0 : Fin n → FiniteAdeleRing (𝓞 F) F ⊗[F] E) i) = 0`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add y z _ _ hy hz`. Establish `: (fun i => swi F E s * (y + z) i) = (fun i => swi F E s * y i) + (fun i => swi F E s * z i)`. Use function extensionality and compare the values at `i`. Simplify using `[mul_add]`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `add_mem hy hz`. Consider the case `neg y _ hy`. Establish `: (fun i => swi F E s * (-y) i) = -(fun i => swi F E s * y i)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `neg_mem hy`. Consider the case `zero`. Introduce `w _`. Establish `: (fun i => swi F E 0 * w i) = 0` using `by funext i; simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `one`. Introduce `w hw`. Establish `: (fun i => swi F E 1 * w i) = w` using `by funext i; simp`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[this]`. Conclude with `hw`. Consider the case `add s t _ _ hs ht`. Introduce `w hw`. Establish `: (fun i => swi F E (s + t) * w i) = (fun i => swi F E s * w i) + (fun i => swi F E t * w i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[add_mul]`. Rewrite using `[this]`. Conclude with `add_mem (hs w hw) (ht w hw)`. Consider the case `neg s _ hs`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Establish `: (fun i => swi F E (-s) * w i) = -(fun i => swi F E s * w i)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
-
-Conclude with `neg_mem (hs w hw)`. Consider the case `mul s t _ _ hs ht`. Introduce `w hw`. Establish `: (fun i => swi F E (s * t) * w i) = (fun i => swi F E s * (fun i => swi F E t * w i) i)`. Use function extensionality and compare the values at `i`.
-
-Simplify using `[mul_assoc]`. Rewrite using `[this]`. Conclude with `hs _ (ht w hw)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_latHat (hL : ∀ x, x ∈ L ↔ ∀ i, x i ∈ Set.range (algebraMap (𝓞 E) E)) (s : E ⊗[F] FiniteAdeleRing (𝓞 F) F)
     (hs : s ∈ Formalism.UG.tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (Formalism.UG.intOE E) (Formalism.UG.intAd F)) :
@@ -189,17 +183,15 @@ theorem mul_latHat (hL : ∀ x, x ∈ L ↔ ∀ i, x i ∈ Set.range (algebraMap
     rw [this]; exact hs _ (ht w hw)
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨1, intAd_mem (one_mem _), fun i => x (e i), (hL _).2 fun i => (mem_stdLat_iff x).1 hx _, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Use `show swi F E (x (e i) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) = (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x (e i)`. Conclude with `swi_tmul _ _`. Consider the case `zero`. Establish `: (fun i => swi F E ((0 : Fin m → E ⊗[F] FiniteAdeleRing (𝓞 F) F) (e i))) = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `: (fun i => swi F E ((y + z) (e i))) = (fun i => swi F E (y (e i))) + (fun i => swi F E (z (e i)))`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `add_mem hy hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul s y _ hy`. Establish `: (fun i => swi F E ((s • y) (e i))) = (fun i => swi F E (s : E ⊗[F] FiniteAdeleRing (𝓞 F) F) * (fun i => swi F E (y (e i))) i)`. Use function extensionality and compare the values at `i`. Use `show swi F E ((s : E ⊗[F] FiniteAdeleRing (𝓞 F) F) * y (e i)) = _`. Rewrite using `[map_mul]`.
-
-Rewrite using `[this]`. Conclude with `mul_latHat L hL _ s.2 _ hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latS_to_latHat (hL : ∀ x, x ∈ L ↔ ∀ i, x i ∈ Set.range (algebraMap (𝓞 E) E)) (v : Fin m → E ⊗[F] FiniteAdeleRing (𝓞 F) F)
     (hv : v ∈ Formalism.UG.latS (F := F) (FiniteAdeleRing (𝓞 F) F)
@@ -229,13 +221,11 @@ theorem latS_to_latHat (hL : ∀ x, x ∈ L ↔ ∀ i, x i ∈ Set.range (algebr
     rw [this]; exact mul_latHat L hL _ s.2 _ hy
 
 /- English proof (translation)
-Use `set w := ((g⁻¹ : GL (Fin n) (FiniteAdeleRing (𝓞 F) F ⊗[F] E)) : Matrix (Fin n) (Fin n) _).mulVec (fun i => (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x i) with hw`. Establish `hv : (((Units.map (Matrix.reindexAlgEquiv (E ⊗[F] FiniteAdeleRing (𝓞 F) F) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) e).toMonoidHom (Formalism.UG.bc (sw F E) g))⁻¹ : GL (Fin m) _) : Matrix (Fin m) (Fin m) _).mulVec (fun j => Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (x (e.symm j))) = fun j => sw F E (w (e.symm j)) := by`. Rewrite using `[← map_inv, ← map_inv]`. Use function extensionality and compare the values at `j`. Rewrite using `[hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.UG.bc, Units.coe_map, MonoidHom.coe_coe, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Rewrite using `[← e.symm.sum_comp]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply, Formalism.UG.inclE]`. Use `show w ∈ _ ↔ _ ∈ Formalism.UG.latS (F := F) (FiniteAdeleRing (𝓞 F) F) (Formalism.UG.tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (Formalism.UG.intOE E) (Formalism.UG.intAd F)) (Formalism.L2.Col.stdLat E m)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hv]`. Prove the components needed by the constructor for the conclusion. Conclude with `latHat_to_latS e L hL w`. Introduce `h`. Use `latS_to_latHat e L hL _ h` as an intermediate fact.
-
-Simplify `this` using `[swi_sw]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_iff_swap (hL : ∀ x, x ∈ L ↔ ∀ i, x i ∈ Set.range (algebraMap (𝓞 E) E))
     (g : GL (Fin n) (FiniteAdeleRing (𝓞 F) F ⊗[F] E)) (x : Fin n → E) :
@@ -268,15 +258,15 @@ theorem mem_iff_swap (hL : ∀ x, x ∈ L ↔ ∀ i, x i ∈ Set.range (algebraM
 end Gen
 
 /- English proof (translation)
-Substitute `hW` using the available equality. Use `revert x`. Use `show ∀ x : Fin N → D.host.E, (∑ i, x i • (Pi.basisFun D.host.E (Fin N)) i) ∈ Formalism.BasicNotions.Examples₂.stdLat N ↔ ∀ i, x i ∈ Set.range (algebraMap (𝓞 D.host.E) D.host.E)`. Introduce `x`. Establish `hsum : (∑ i, x i • (Pi.basisFun D.host.E (Fin N)) i) = x`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `(Pi.basisFun D.host.E (Fin N)).sum_repr x` using `only [Pi.basisFun_repr]`. Rewrite using `[hsum, Formalism.BasicNotions.Examples₂.stdLat, Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩ i`. Use `⟨c i, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (∑ j, c j • (Pi.basisFun D.host.E (Fin N)) j) i = c i • (1 : D.host.E)`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single i]`. Simplify using `[Pi.basisFun_apply]`. Introduce `b _ hb`. Simplify using `[Pi.basisFun_apply, Pi.single_apply, Ne.symm hb]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[← congrFun hc i, e1, Algebra.smul_def, mul_one]`. Introduce `hx choose c hc using hx`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_apply, Finset.sum_eq_single j]`. Simplify using `[Pi.basisFun_apply, Algebra.smul_def, hc]`. Introduce `b _ hb`. Simplify using `[Pi.basisFun_apply, Pi.single_apply, Ne.symm hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_selfDualLatticeCoords_iff_integral_posSpace (D : D7) (W : HSpace D.host.E) (hstar : ∀ x : D.host.E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (N : ℕ)
     (hW : W = Formalism.BasicNotions.Examples₂.posSpace hstar N) (x : Fin W.rank → D.host.E) :
@@ -310,7 +300,7 @@ theorem mem_selfDualLatticeCoords_iff_integral_posSpace (D : D7) (W : HSpace D.h
     · simp
 
 /- English proof (translation)
-Take `⟨hs, -, h2, -⟩` from `hI.spaces`. Conclude with `mem_selfDualLatticeCoords_iff_integral_posSpace X.toD7 X.toD7.sp.X' hs _ h2 x`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_selfDualLatticeCoords_iff_integral_rowSpace (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hI : I.Ok)
     (x : Fin X.toD7.sp.X'.rank → X.toD7.host.E) :
@@ -319,11 +309,9 @@ theorem mem_selfDualLatticeCoords_iff_integral_rowSpace (X : Stages) {px : PreX 
   exact mem_selfDualLatticeCoords_iff_integral_posSpace X.toD7 X.toD7.sp.X' hs _ h2 x
 
 /- English proof (translation)
-Introduce `X px I _ hI U t h`. Establish `hN : (RowAd.decoAd X I t h).1.N = Formalism.UG.CS.globLat (RowAd.ptE X h) (Formalism.L2.Col.stdLat _ _)`. Unfold `RowAd.decoAd Formalism.L2.Col.decoOf`. Use `split_ifs with h1`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Formalism.L2.Col.decorated_lattice_exists X.toD7.sp.cm _ _ _ _ (RowDeco.ptE_mem_UAd X I hI h)) h1`. Rewrite using `[hN]`. Unfold `Bridge.hLat`. Use `conv_rhs => rw [← Submodule.span_eq ((Formalism.UG.CS.globLat (RowAd.ptE X h) (Formalism.L2.Col.stdLat _ _)).map (LinearEquiv.funCongrLeft (𝓞 X.toD7.host.E) X.toD7.host.E (finCongr (RowAd.rank_X' X).symm).symm).toLinearMap)]`. Use `congr 1`.
-
-Use extensionality with `x`. Conclude with `(mem_iff_swap (finCongr (RowAd.rank_X' X)) (L0c X.toD7 X.toD7.sp.X') (mem_selfDualLatticeCoords_iff_integral_rowSpace X I hI) h.1 x).trans (Submodule.mem_map_equiv (e := LinearEquiv.funCongrLeft (𝓞 X.toD7.host.E) X.toD7.host.E (finCongr (RowAd.rank_X' X).symm).symm) _).symm`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem hLat_eq_decoAd_N : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px), X.B.fields.Ok → I.Ok →
     ∀ (U : Set I.ι) (t : TupU I U) (h : Bridge.Gf X.toD7.sp.X'),

@@ -17,14 +17,14 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {v : Pl F}
 
 /- English proof (translation)
-Rewrite using `[Subsingleton.elim (invTwo v) invTwoV]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem schr_inst (ψ : AddChar (Fv F v) ℂ) :
     @schr _ _ (invTwo v) ψ κ _ = @schr _ _ (invTwoV (v := v)) ψ κ _ := by
   rw [Subsingleton.elim (invTwo v) invTwoV]
 
 /- English proof (translation)
-Introduce `r hr`. Rewrite using `[schr_inst, schr_tens ψ _ _ (indep_of hr.1), offP_eq, sub_smul, (at_iff _).1 hw, one_smul, sub_self, schr_zero]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ad_heis (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F)) (hw : At (evFin F v) w) (φ : (κ → Fv F v) → ℂ) :
     Acts (evFin F v) (schr ψ w) φ (@schr _ _ (invTwo v) (psiV ψ v) κ _ (locW v w) φ) := by
@@ -33,9 +33,9 @@ theorem ad_heis (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F)) (
   rfl
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `Function.ne_iff.1 hne`. Set `S : Module.End ℂ ((κ → Fv F v) → ℂ)` to `(LinearMap.proj y : ((κ → Fv F v) → ℂ) →ₗ[ℂ] ℂ).smulRight ((φ₀ y)⁻¹ • φ)`. Establish `h` using `lift_mem (v := v) (S := S) (fun θ _ => Submodule.smul_mem _ _ (Submodule.smul_mem _ _ hφ)) hr.2`. Rewrite `h` using `[lift_tens _ _ (indep_of hr.1)]`. Establish `e : S φ₀ = φ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `φ₀ y • (φ₀ y)⁻¹ • φ = φ`. Rewrite using `[smul_smul, mul_inv_cancel₀ hy, one_smul]`. Conclude with `⟨hr.1, e ▸ h⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ad_rest (r : (κ → AF F) → ℂ) (φ₀ : (κ → Fv F v) → ℂ) (hne : φ₀ ≠ 0) (hr : Rest (evFin F v) φ₀ r)
     (φ : (κ → Fv F v) → ℂ) (hφ : φ ∈ SB (κ → Fv F v)) : Rest (evFin F v) φ r := by
@@ -49,13 +49,13 @@ theorem ad_rest (r : (κ → AF F) → ℂ) (φ₀ : (κ → Fv F v) → ℂ) (h
   exact ⟨hr.1, e ▸ h⟩
 
 /- English proof (translation)
-Establish `hA` using `isCharAF_of_isStd hψ`. Establish `hc : Continuous (psv v ψ)` using `hA.1.comp cont_at`. Rewrite `h5` using `[schr_inst]`. Establish `hL' : ∀ φ ∈ SB (κ → Fv F v), L' φ ∈ SB (κ → Fv F v)` using `fun φ h => (h4 φ h).2.1`. Take `⟨x₀, hx₀⟩` from `hA.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `GlobalTheory.CompanionTheory.AdelicSchur.schur F κ ψ hA.1 (fun e => hx₀ (by rw [e]; rfl)) hA.2.2.1 (lift v L' * T) (fun Φ hΦ => lift_mem hL' (h1 Φ hΦ)) (fun l hl => h2 _ (lift_adm hL' l hl)) fun w Φ hΦ => by`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, h3 w Φ hΦ]`. Use `lift_schr ψ ?_ (fun φ hφ => ?_) (h1 Φ hΦ)` and prove the remaining obligations. Rewrite using `[offP_eq, offP_eq, ← sub_eq_zero, ← smul_sub, sub_smul, one_smul, (at_iff _).1 (h6 w).2, sub_self]`. Establish `e` using `h5 (evP v w) _ (hL' φ hφ)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[(h4 φ hφ).2.2.2]`. Establish `e2 : evP v (s w) = sv (evP v w)` using `(h6 w).1`. Rewrite using `[e2]`. Conclude with `(congrArg L' e).symm.trans (h4 _ (schr_mem_SB hc _ (hL' φ hφ))).2.2.1`. Use `⟨a, fun φ hφ r hr => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `congrArg (lift v L) (ha _ hr.2)`. Rewrite `e` using `[Module.End.mul_apply, lift_lift (S'' := 1) hL' (fun θ h => (h4 θ h).2.2.2) (h1 _ hr.2), lift_one, map_smul, lift_tens _ _ (indep_of hr.1)]`. Rewrite using `[e]`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ad_act (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
     (T : Module.End ℂ ((κ → AF F) → ℂ)) (s : (κ → AF F) × (κ → AF F) → (κ → AF F) × (κ → AF F))
@@ -91,7 +91,7 @@ theorem ad_act (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
   simp only [tens, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Establish `e : z = fun i => atPlace v (evFin F v (z i))` using `funext fun i => by`. Rewrite using `[← ep_mul]`. Conclude with `(congrFun ((at_iff z).1 hz) i).symm`. Rewrite using `[e]`. Conclude with `h x _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indep_at {r : (κ → AF F) → ℂ} (h : Indep v r) (x z : κ → AF F) (hz : At (evFin F v) z) : r (x + z) = r x := by
   have e : z = fun i => atPlace v (evFin F v (z i)) := funext fun i => by
@@ -103,19 +103,19 @@ attribute [local instance] GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAd
 
 open GlobalTheory.DiagForm Classical in
 /- English proof (translation)
-Set `b : ContDiffBump (0 : κ → mixedEmbedding.mixedSpace F)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h1 : HasCompactSupport fun x => (b x : ℂ)` using `b.hasCompactSupport.comp_left (g := fun x : ℝ => (x : ℂ)) (by simp)`. Set `f : SInf F κ` to `h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff)`. Use `⟨f, ?_⟩` and prove the remaining obligations. Establish `hm` using `pure_mem f (good_std (F := F) (κ := κ))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg` using `pf_mem (good_std (F := F) (κ := κ))`. Use `set g := pf (stdF (F := F) κ) with hgd`. Establish `g01 : ∀ y, g y = 0 ∨ g y = 1` using `fun y => by`. Take `⟨S, hS⟩` from `exists_fin (good_std (F := F) (κ := κ)).2 y`. Rewrite using `[hgd, pf_eq_prod S y hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_induction _ (fun z : ℂ => z = 0 ∨ z = 1) ?_ (Or.inr rfl) fun u _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rintro a c (rfl | rfl) (rfl | rfl) <;> simp`. Apply the tactic sequence `simp only [stdF, Set.indicator_apply] split_ifs <;> simp`. Establish `g0 : g 0 = 1`. Rewrite using `[hgd, pf, finprod_eq_one_of_forall_eq_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Simplify using `[stdF, Set.indicator_apply]`. Establish `e : resD F κ (boxFun (pure f (stdF κ)) (pure f (stdF κ))) = fun p => (((b (eI F κ p.1)) ^ 2 : ℝ) : ℂ) * ((‖g p.2‖ : ℝ) : ℂ)` using `funext fun p => by`. Establish `e1 : pure f (stdF κ) (glue p) = (b (eI F κ p.1) : ℂ) * g p.2`. Express the relevant statement in the definitionally equal form `f (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _)) * g p.2 = _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `pure f (stdF κ) (glue p) * pure f (stdF κ) (glue p) = _`. Rewrite using `[e1]`. Apply the tactic sequence `rcases g01 p.2 with h | h <;> simp [h, sq]`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lDiag, LinearMap.comp_apply, Lext_apply _ (integrable_resD (GlobalTheory.SchwartzBox.boxFun_mem_schA F κ κ _ hm _ hm)), e, mu, integral_prod_mul (fun u => (((b (eI F κ u)) ^ 2 : ℝ) : ℂ)) (fun y => ((‖g y‖ : ℝ) : ℂ)), integral_complex_ofReal, integral_complex_ofReal]`. Use `mul_ne_zero (Complex.ofReal_ne_zero.2 (ne_of_gt ?_)) (Complex.ofReal_ne_zero.2 (ne_of_gt ?_))` and prove the remaining obligations. Use `((b.continuous.comp (eI F κ).continuous).pow 2).integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 0) ?_ (fun u => sq_nonneg _) ?_` and prove the remaining obligations. Conclude with `(b.hasCompactSupport.comp_homeomorph (eI F κ).toHomeomorph).comp_left (g := fun x : ℝ => x ^ 2) (by simp)`. Simplify using `only [Function.comp_apply, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]`. Simplify using the standard rewrite rules. Conclude with `hg.1.continuous.norm.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 0) hg.2.norm (fun _ => norm_nonneg _) (by simp [g0])`.
+A detailed English derivation is pending.
 -/
 theorem lDiag_box_ne : ∃ f : SInf F κ, lDiag F κ (boxFun (pure f (stdF κ)) (pure f (stdF κ))) ≠ 0 := by
   let b : ContDiffBump (0 : κ → mixedEmbedding.mixedSpace F) := ⟨1, 2, one_pos, one_lt_two⟩
@@ -160,15 +160,13 @@ theorem lDiag_box_ne : ∃ f : SInf F κ, lDiag F κ (boxFun (pure f (stdF κ)) 
 
 open Classical in
 /- English proof (translation)
-Establish `hA` using `isCharAF_of_isStd h`. Take `⟨x₀, hx₀⟩` from `hA.2.2.2`. Use `⟨fun e => hx₀ (by rw [e]; rfl), fun v => ⟨hA.1.comp cont_at, fun e => ?_⟩⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `((GlobalTheory.CompanionTheory.AdeleCharLocal.char_nontrivial_at_every_place F ψ hA).1 v).2`. Conclude with `hy (DFunLike.congr_fun e y)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Heisenberg₂ F _ _ κ _ ψ v w hw φ := ad_heis ψ w hw φ`. Use `rest F _ _ κ _ v r φ₀ _ hne hr φ hφ := ad_rest r φ₀ hne hr φ hφ`. Use `act F _ _ κ _ ψ hψ v T s L L' sv := ad_act ψ hψ T s L L' sv`. Use `diag F _ _ κ _ ψ v := by`. Take `⟨f, hf⟩` from `lDiag_box_ne (F := F) (κ := κ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi` using `indep_pure (v := v) f (stdF (F := F) κ)`. Establish `e : tens (evFin F v) (stdF κ v) (pure f (Function.update (stdF κ) v 1)) = pure f (stdF κ)`. Rewrite using `[← pure_update f (good_std (F := F) (κ := κ)).2, Function.update_eq_self]`. Establish `hm` using `pure_mem f (good_std (F := F) (κ := κ))`. Use `⟨_, GlobalTheory.DiagForm.lDiag_adm, fun x y Φ hΦ => GlobalTheory.DiagForm.lDiag_schr ψ x y hΦ, stdF κ v, stdF_mem v, pure f (Function.update (stdF κ) v 1), ⟨indep_at hi, e ▸ hm⟩, ⟨fun x z hz => ?_, ?_⟩, e ▸ hf⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h1` using `indep_at hi (x ∘ Sum.inl) (z ∘ Sum.inl) fun u hu => funext fun i => congrFun (hz u hu) _`. Establish `h2` using `indep_at hi (x ∘ Sum.inr) (z ∘ Sum.inr) fun u hu => funext fun i => congrFun (hz u hu) _`. Conclude with `congrArg₂ (· * ·) h1 h2`. Use `GlobalTheory.SchwartzBox.boxFun_mem_schA F κ κ _ hm _ hm` as an intermediate fact. Rewrite `this` using `[← e]`.
-
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem adjoint_statement : AdSt where
   psi F _ _ ψ h := by

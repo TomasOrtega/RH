@@ -13,7 +13,7 @@ namespace GlobalTheory.HTLift
 open GlobalTheory.SiegelPull
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by show (x.left ≫ α.left) ≫ φ = (x.left ≫ φ) ≫ β.left rw [Category.assoc, hab, Category.assoc])`.
+A detailed English derivation is pending.
 -/
 theorem push_comp' {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S' ⟶ S}
     {φ : A'.left ⟶ A.left} (h : IsGrpPullback A' A f φ) {α : A' ⟶ A'} {β : A ⟶ A}
@@ -23,23 +23,17 @@ theorem push_comp' {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [G
     rw [Category.assoc, hab, Category.assoc])
 
 /- English proof (translation)
-Introduce `p _ D R _ b N N' hd hc S s o T lv hL`. Take `⟨hadd, hker, hlin, hlev, hgeom⟩` from `hL`. Take `⟨oT, ⟨mT⟩⟩` from `GlobalTheory.T.exists_harrisTaylorObject_pullback p D R b N S T.left s T.hom o`. Establish `pb` using `mT.cart`. Set `eta : D.La → (𝟙_ (Over T.left) ⟶ oT.A)` to `fun a => Over.homMk (pb.1.lift (lv a).left (𝟙 _) (by rw [Over.w, Category.id_comp])) (pb.1.lift_snd _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `etaφ : ∀ a, (eta a).left ≫ mT.φ = (lv a).left` using `fun a => pb.1.lift_fst _ _ _`. Set `u : Over.mk ((𝟙_ (Over T.left)).hom ≫ T.hom) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `key : ∀ a, pushHom pb _ (eta a) = u ≫ lv a` using `fun a => Over.OverMorphism.ext (by show (eta a).left ≫ mT.φ = 𝟙 T.left ≫ (lv a).left`. Rewrite using `[Category.id_comp]`. Conclude with `etaφ a)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `o'' : Obj b N' (T.hom ≫ s)` to `{ A := oT.A ab := oT.ab act := oT.act P := oT.P isLB := oT.isLB rig₁ := oT.rig₁ rig₂ := oT.rig₂`. Use symmetry as in `:= oT.symm`. Use `ample := oT.ample`. Use `kerP := oT.kerP`. Use `rosati := oT.rosati`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `lie := oT.lie`. Use `lieRank := oT.lieRank`. Use `eta := eta`. Use `eta_add := fun y z => push_injective pb _ (by`. Rewrite using `[map_mul, key, key, key, hadd, MonObj.comp_mul])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eta_lin := fun c y => push_injective pb _ (by`. Rewrite using `[push_comp' pb (mT.act c), key, key, hlin, Category.assoc])`. Use `eta_ker := fun y => push_injective pb _ (by`. Rewrite using `[key, hker, map_one, MonObj.comp_one])`. Use `geom := fun k _ _ x β hx => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨I, hI⟩` from `hgeom k x`. Set `e : (Over.mk x ⟶ oT.A) ≃* (Over.mk (x ≫ T.hom) ⟶ o.A)` to `MulEquiv.ofBijective (pushHom pb (Over.mk x)) ⟨push_injective pb _, push_surjective pb _⟩`. Establish `ea : ∀ c g, e (g ≫ oT.act.act c) = e g ≫ o.act.act c` using `fun c g => push_comp' pb (mT.act c) _ g`. Establish `ex : ∀ z, z.left = (e.symm z).left ≫ mT.φ` using `fun z => (congrArg (fun q => q.left) (e.apply_symm_apply z)).symm`. Establish `dg` using `diag_iso mT.sq mT.pol`.
-
-Use `⟨{ ζ := I.ζ, ζ_prim := I.ζ_prim, ζ_pow := I.ζ_pow, ev := fun n y => e.symm (I.ev n y) add := fun n y z => by rw [I.add, map_mul] lin := fun n c y => e.injective (by rw [ea, e.apply_symm_apply, e.apply_symm_apply, I.lin]) ker := fun n hn hp y => by rw [map_eq_one_iff _ e.symm.inje …` and prove the remaining obligations. Rewrite using `[← map_eq_one_iff e e.injective, map_pow, I.onto n hn hp (e q)]`. Conclude with `exists_congr fun y => e.symm_apply_eq.symm`. Use `tower := fun n m hn hm hp y => by rw [← map_pow, I.tower n m hn hm hp]`. Use `isom := fun n hn hp y z => (weilIs_grpPullback_of_comm S T.left o.A oT.A T.hom mT.φ _ _ (pull_isLB o.isLB _) (pull_isLB oT.isLB _) pb dg (Over.mk x) n _ _ (I.ev n y) (I.ev n z) _ (ex _) (ex _)).2 (I.isom n hn hp y z) }, fun y => ?_⟩`.
-
-Use `show toUnit _ ≫ eta y = e.symm (I.ev N' y)`. Rewrite using `[eq_comm, e.symm_apply_eq, ← hI y]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show x ≫ (lv y).left = ((toUnit (Over.mk x)).left ≫ (eta y).left) ≫ mT.φ`. Rewrite using `[Category.assoc, etaφ, Over.toUnit_left]`.
-
-Use `rfl }`. Set `mm : ObjMap (o''.forget N hd hc) o T.hom` to `{ φ := mT.φ, φ₂ := mT.φ₂, cart := mT.cart, sq := mT.sq, act := mT.act, pol := mT.pol, eta := fun y => by show (eta ((N' / N) • y)).left ≫ mT.φ = T.hom ≫ (o.eta y).left`. Rewrite using `[etaφ, hlev, Over.comp_left, Over.toUnit_left] }`. Conclude with `⟨o'', mm, fun a => etaφ a⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_obj_of_isLift : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R)
     (N N' : ℕ) (hd : N ∣ N') (hc : N'.Coprime p) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s) (T : Over S)

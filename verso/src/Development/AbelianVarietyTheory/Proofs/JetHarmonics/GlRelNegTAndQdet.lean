@@ -9,21 +9,21 @@ namespace GlobalTheory.CapelliNegT
 open Finset in
 
 /- English proof (translation)
-Introduce `A _ _ n E hE`. Use `⟨?_, fun u => ?_⟩` and prove the remaining obligations. Unfold `_root_.Formalism.REAL.GlRel at hE ⊢`. Introduce `a b c d`. Establish `h` using `hE b a d c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[neg_mul_neg, neg_mul_neg, h]`. Simplify using `only [@eq_comm _ a d, @eq_comm _ c b]`. Apply the tactic sequence `split_ifs <;> abel`. Establish `hrow : ∀ v : ℂ, _root_.Formalism.REAL.qdet E v = _root_.PI.qminorRow E id id v`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : _root_.PI.RowForm` using `_root_.quantum_minor_row_form`. Unfold `_root_.PI.RowForm at key`. Conclude with `key A n n E hE id id v`. Establish `hM : ∀ (x : ℂ) (a b : Fin n), _root_.Formalism.REAL.Tm (fun a b => -E b a) x a b = -_root_.Formalism.REAL.Tm E (-x) b a`. Introduce `x a b`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `_root_.Formalism.REAL.Tm`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `only [if_true, map_neg]`. Normalize the expressions using the abelian group laws.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, Ne.symm h, if_false]`. Normalize the expressions using the abelian group laws. Establish `hneg : ∀ g : Fin n → A, (List.ofFn fun k => -g k).prod = (-1) ^ n * (List.ofFn g).prod`. Introduce `g`. Establish `hl : (List.ofFn fun k => -g k) = (List.ofFn g).map Neg.neg`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Rewrite using `[hl, List.prod_map_neg, List.length_ofFn]`. Establish `harg : ∀ k : Fin n, -(u - ((k : ℕ) : ℂ)) = (n : ℂ) - 1 - u - n + 1 + ((k : ℕ) : ℂ)`. Introduce `k`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hrow]`. Unfold `_root_.Formalism.REAL.qdet _root_.Formalism.REAL.qminor _root_.PI.qminorRow`. Rewrite using `[Algebra.smul_def, map_pow, map_neg, map_one, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hM, hneg, harg, id]`. Rewrite using `[← mul_assoc, ← mul_assoc, ((Commute.neg_one_right _).pow_right n).eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CapelliNegT.glRel_negT_and_qdet :
     ∀ (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (E : Fin n → Fin n → A), _root_.Formalism.REAL.GlRel E →

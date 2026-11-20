@@ -11,9 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam
 
 /- English proof (translation)
-Use `haveI := Fact.mk hp`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Rewrite using `[padicValRat.mul (pow_ne_zero _ hr) (pow_ne_zero _ hs), padicValRat.pow r, padicValRat.pow s, hc.1, hc.2]`.
-
-Simplify using the standard rewrite rules.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem padicValRat_pow_mul_pow_ne_zero_imp {r s : ℚ} (hr : r ≠ 0) (hs : s ≠ 0) (a b : ℕ) (p : ℕ) (hp : p.Prime)
     (h : padicValRat p (r ^ a * s ^ b) ≠ 0) : padicValRat p r ≠ 0 ∨ padicValRat p s ≠ 0 := by
@@ -25,9 +23,7 @@ theorem padicValRat_pow_mul_pow_ne_zero_imp {r s : ℚ} (hr : r ≠ 0) (hs : s �
   simp
 
 /- English proof (translation)
-Use `haveI := Fact.mk hp`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Rewrite using `[padicValRat.div (pow_ne_zero _ hr) (pow_ne_zero _ hs), padicValRat.pow r, padicValRat.pow s, hc.1, hc.2]`.
-
-Simplify using the standard rewrite rules.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem padicValRat_pow_div_pow_ne_zero_imp {r s : ℚ} (hr : r ≠ 0) (hs : s ≠ 0) (a b : ℕ) (p : ℕ) (hp : p.Prime)
     (h : padicValRat p (r ^ a / s ^ b) ≠ 0) : padicValRat p r ≠ 0 ∨ padicValRat p s ≠ 0 := by
@@ -39,7 +35,7 @@ theorem padicValRat_pow_div_pow_ne_zero_imp {r s : ℚ} (hr : r ≠ 0) (hs : s �
   simp
 
 /- English proof (translation)
-Take `⟨hy, n, hn, r, hr, he, -⟩` from `h`. Introduce `hx`. Rewrite `he` using `[hx, zero_div, zero_pow hn.ne']`. Conclude with `hr (by exact_mod_cast he.symm)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitRatio_ne_zero {S : ℕ → Prop} {x y : ℂ} (h : UnitRatio S x y) : x ≠ 0 := by
   obtain ⟨hy, n, hn, r, hr, he, -⟩ := h
@@ -48,17 +44,15 @@ theorem unitRatio_ne_zero {S : ℕ → Prop} {x y : ℂ} (h : UnitRatio S x y) :
   exact hr (by exact_mod_cast he.symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hy, 1, one_pos, 1, one_ne_zero, by simp [div_self hy], fun p _ h => by simp at h⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitRatio_refl (S : ℕ → Prop) {y : ℂ} (hy : y ≠ 0) : UnitRatio S y y :=
   ⟨hy, 1, one_pos, 1, one_ne_zero, by simp [div_self hy], fun p _ h => by simp at h⟩
 
 /- English proof (translation)
-Take `⟨hy, n, hn, r, hr, he, hS⟩` from `h`. Take `⟨hy', n', hn', r', hr', he', hS'⟩` from `h'`. Use `⟨mul_ne_zero hy hy', n * n', Nat.mul_pos hn hn', r ^ n' * r' ^ n, mul_ne_zero (pow_ne_zero _ hr) (pow_ne_zero _ hr'), ?_, ?_⟩` and prove the remaining obligations. Establish `: x * x' / (y * y') = (x / y) * (x' / y')` using `by field_simp`. Rewrite using `[this, mul_pow, pow_mul, pow_mul, he, ← pow_mul, mul_comm n n', pow_mul, he']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `p hp hv`. Break down `padicValRat_pow_mul_pow_ne_zero_imp hr hr' n' n p hp hv with h1 | h1` into its components or cases. Conclude with `hS p hp h1`.
-
-Conclude with `hS' p hp h1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem unitRatio_mul {S : ℕ → Prop} {x y x' y' : ℂ} (h : UnitRatio S x y) (h' : UnitRatio S x' y') :
     UnitRatio S (x * x') (y * y') := by
@@ -75,11 +69,11 @@ theorem unitRatio_mul {S : ℕ → Prop} {x y x' y' : ℂ} (h : UnitRatio S x y)
     · exact hS' p hp h1
 
 /- English proof (translation)
-Establish `hx'` using `unitRatio_ne_zero h'`. Take `⟨hy, n, hn, r, hr, he, hS⟩` from `h`. Take `⟨hy', n', hn', r', hr', he', hS'⟩` from `h'`. Use `⟨div_ne_zero hy hy', n * n', Nat.mul_pos hn hn', r ^ n' / r' ^ n, div_ne_zero (pow_ne_zero _ hr) (pow_ne_zero _ hr'), ?_, ?_⟩` and prove the remaining obligations. Establish `: x / x' / (y / y') = (x / y) / (x' / y')` using `by field_simp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, div_pow, pow_mul, pow_mul, he, ← pow_mul, mul_comm n n', pow_mul, he']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `p hp hv`. Break down `padicValRat_pow_div_pow_ne_zero_imp hr hr' n' n p hp hv with h1 | h1` into its components or cases.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hS p hp h1`. Conclude with `hS' p hp h1`.
+A detailed English derivation is pending.
 -/
 theorem unitRatio_div {S : ℕ → Prop} {x y x' y' : ℂ} (h : UnitRatio S x y) (h' : UnitRatio S x' y') :
     UnitRatio S (x / x') (y / y') := by
@@ -97,14 +91,14 @@ theorem unitRatio_div {S : ℕ → Prop} {x y x' y' : ℂ} (h : UnitRatio S x y)
     · exact hS' p hp h1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hy, n, hn, 1, one_ne_zero, by rw [div_pow, h, div_self (pow_ne_zero _ hy)]; simp, fun p _ h => by simp at h⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitRatio_of_pow_eq (S : ℕ → Prop) {x y : ℂ} {n : ℕ} (hy : y ≠ 0) (hn : 0 < n) (h : x ^ n = y ^ n) :
     UnitRatio S x y :=
   ⟨hy, n, hn, 1, one_ne_zero, by rw [div_pow, h, div_self (pow_ne_zero _ hy)]; simp, fun p _ h => by simp at h⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using unitRatio_refl S one_ne_zero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `unitRatio_mul (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitRatio_prod (S : ℕ → Prop) {I : Type} (s : Finset I) (x y : I → ℂ)
     (h : ∀ i ∈ s, UnitRatio S (x i) (y i)) : UnitRatio S (∏ i ∈ s, x i) (∏ i ∈ s, y i) := by
@@ -116,7 +110,7 @@ theorem unitRatio_prod (S : ℕ → Prop) {I : Type} (s : Finset I) (x y : I →
     exact unitRatio_mul (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Introduce `S` and use `⟨fun y hy => unitRatio_refl S hy, fun x y x' y' h h' => ⟨unitRatio_mul h h', unitRatio_div h h', unitRatio_ne_zero h⟩, fun x y n hy hn h => unitRatio_of_pow_eq S hy hn h, fun I s x y h => unitRatio_prod S s x y h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem unitRatio_laws : ∀ S : ℕ → Prop, (∀ y : ℂ, y ≠ 0 → UnitRatio S y y) ∧ (∀ x y x' y' : ℂ, UnitRatio S x y → UnitRatio S x' y' → UnitRatio S (x * x') (y * y') ∧ UnitRatio S (x / x') (y / y') ∧ x ≠ 0) ∧ (∀ (x y : ℂ) (n : ℕ), y ≠ 0 → 0 < n → x ^ n = y ^ n → UnitRatio S x y) ∧ ∀ (I : Type) (s : Finset I) (x y : I → ℂ), (∀ i ∈ s, UnitRatio S (x i) (y i)) → UnitRatio S (∏ i ∈ s, x i) (∏ i ∈ s, y i) :=
   fun S => ⟨fun y hy => unitRatio_refl S hy,

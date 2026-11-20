@@ -20,17 +20,15 @@ namespace GlobalTheory.GenericPull
 open GlobalTheory.ArcPull GlobalTheory.PsiEvenPull GlobalTheory.FieldPull
 
 /- English proof (translation)
-Establish `p₁ : IsGrpPullback D₁.P.A D₀.P.A (spMap α) (proj h₁)` using `pull_grp h₁`. Establish `sc : spMap β ≫ spMap α = spMap (β.comp α)` using `(spMap_comp α β).symm`. Establish `p : IsGrpPullback D.P.A D₀.P.A (spMap β ≫ spMap α) (proj h)` using `(pull_grp h).congr sc.symm rfl`. Take `⟨Φ, e₁, e₂⟩ : ∃ Φ : D.P.A.left ⟶ D₁.P.A.left, Φ ≫ proj h₁ = proj h ∧ Φ ≫ D₁.P.A.hom = D.P.A.hom ≫ spMap β` from `⟨p₁.1.lift (proj h) (D.P.A.hom ≫ spMap β) (p.1.w.trans (Category.assoc _ _ _).symm), p₁.1.lift_fst _ _ _, p₁.1.lift_snd _ _ _⟩`. Establish `gp : IsGrpPullback D.P.A D₁.P.A (spMap β) Φ` using `IsGrpPullback.cancel p₁ (p.congr rfl e₁.symm) e₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw, hr, T⟩` from `exists_cancel_of_eq e₁ D₀.P.isLB D₁.P.isLB D.P.isLB h₁.w h.w ((isGen_iff _).1 h₁.w_gen) ((isGen_iff _).1 h.w_gen) sc (cubeMapOf gp).e_comm (pmaps_rig h₁) (pmaps_rig h)`. Set `xe : D.X ≃+ D₁.X` to `h.xe.trans h₁.xe.symm`. Establish `hxe : ∀ x, h₁.xe (xe x) = h.xe x` using `fun x => h₁.xe.apply_symm_apply _`. Establish `hc : ∀ x, (D.c x).left ≫ Φ = spMap β ≫ (D₁.c (xe x)).left` using `fun x => by`. Apply `p₁.1.hom_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, e₁, Category.assoc, h₁.c_pr, hxe]`. Conclude with `(h.c_pr x).trans ((congrArg (· ≫ _) sc.symm).trans (Category.assoc _ _ _))`. Rewrite using `[Category.assoc, e₂, ← Category.assoc, Over.w, Category.assoc, Over.w]`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Take `⟨hD, -, -, -⟩` from `exists_isPullDeg_of_val β D₁ D gp w hw hr xe hc (fun x z J₁ J hJ₁ hJ => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨J₀, hJ₀⟩` from `DegPull.exists_good' D₀.P.isLB z`. Establish `sβ : jK K ≫ spMap β = genMap β.injective ≫ jK K₁` using `(Category.id_comp _).symm.trans (fracMap_sq β.injective)`. Establish `sα : jK K₁ ≫ spMap α = genMap hα ≫ jK R` using `(Category.id_comp _).symm.trans (fracMap_sq hα)`. Establish `q₁ : genMap β.injective ≫ jK K₁ ≫ spMap α = (genMap β.injective ≫ genMap hα) ≫ jK R` using `(congrArg (_ ≫ ·) sα).trans (Category.assoc _ _ _).symm`. Establish `q : 𝟙 (TK K).left ≫ jK K ≫ spMap (β.comp α) = (genMap β.injective ≫ genMap hα) ≫ jK R` using `(Category.id_comp _).trans ((congrArg (_ ≫ ·) sc.symm).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) sβ).trans ((Category.assoc _ _ _).trans q₁))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v` using `psi_val h _ _ q hJ₀ hJ x`. Establish `v₁` using `psi_val h₁ _ _ q₁ hJ₀ hJ₁ (xe x)`. Establish `hx : D.xK x ≫ Φ = genMap β.injective ≫ D₁.xK (xe x)` using `by show (jK K ≫ (D.c x).left) ≫ Φ = genMap β.injective ≫ jK K₁ ≫ (D₁.c (xe x)).left`. Rewrite using `[Category.assoc, hc, ← Category.assoc, sβ, Category.assoc]`. Rewrite `v₁` using `[hxe, v, Category.id_comp, T _ z J₀ J₁ J hJ₀ hJ₁ hJ, hx, mul_inv, _root_.mul_assoc]`.
-
-Conclude with `(mul_left_cancel v₁).symm)`. Conclude with `⟨hD⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_isPullDeg_cancel {R K₁ K : Type} [CommRing R] [IsDomain R] [Field K₁] [Field K] {α : R →+* K₁}
     (hα : Function.Injective α) (β : K₁ →+* K) {D₀ : DegPre R} {D₁ : DegPre K₁} {D : DegPre K}
@@ -73,7 +71,7 @@ theorem nonempty_isPullDeg_cancel {R K₁ K : Type} [CommRing R] [IsDomain R] [F
   exact ⟨hD⟩
 
 /- English proof (translation)
-Take `⟨U, hU, hψ⟩` from `PsiSpread.exists_psiOn D hB`. Take `⟨E, p, -⟩` from `DegPull.exists_isPullDeg polBaseChange_holds R (FractionRing R) (algebraMap R (FractionRing R)) D U hψ (TauPull.jK_mem (R := R) (genericPoint (Spec (CommRingCat.of (FractionRing R)))) U ⟨_, hU⟩)`. Conclude with `⟨E, ⟨p⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_generic_fibre {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (hB : D.TauBimult) :
     ∃ E : DegPre (FractionRing R), Nonempty (IsPullDeg (algebraMap R (FractionRing R)) D E) := by
@@ -89,9 +87,9 @@ namespace GlobalTheory.Mum
 open GlobalTheory.GenericPull
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D₁ D₂ W _ _ φ hφ D' p₁ p₂`. Take `⟨E₁, ⟨q₁⟩⟩` from `exists_generic_fibre D₁.toPre D₁.tau_bimult`. Take `⟨E₂, ⟨q₂⟩⟩` from `exists_generic_fibre D₂.toPre D₂.tau_bimult`. Take `⟨E', ⟨q⟩⟩` from `exists_generic_fibre D' (TauPull.tauBimult_pull globalFns_holds p₁ D₁.tau_bimult)`. Establish `e : (algebraMap W (FractionRing W)).comp φ = (ArcPull.fracMap hφ).comp (algebraMap R (FractionRing R))` using `RingHom.ext fun x => (ArcPull.fracMap_algebraMap hφ x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hR` using `IsFractionRing.injective R (FractionRing R)`. Establish `hW` using `IsFractionRing.injective W (FractionRing W)`. Take `⟨r₁⟩` from `e ▸ PullDegComp.nonempty_isPullDeg_comp hφ hW p₁ q`. Take `⟨r₂⟩` from `e ▸ PullDegComp.nonempty_isPullDeg_comp hφ hW p₂ q`. Conclude with `⟨E₁, E₂, FractionRing W, inferInstance, ArcPull.fracMap hφ, E', ⟨q₁⟩, ⟨q₂⟩, nonempty_isPullDeg_cancel hR _ q₁ r₁, nonempty_isPullDeg_cancel hR _ q₂ r₂⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_generic_common_pull : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D₁ D₂ : DegData R (maximalIdeal R)) (W : Type) [CommRing W] [IsDomain W] (φ : R →+* W), Function.Injective φ → ∀ D' : DegPre W, IsPullDeg φ D₁.toPre D' → IsPullDeg φ D₂.toPre D' → ∃ (E₁ E₂ : DegPre (FractionRing R)) (L : Type) (_ : Field L) (β : FractionRing R →+* L) (E' : DegPre L), Nonempty (IsPullDeg (algebraMap R (FractionRing R)) D₁.toPre E₁) ∧ Nonempty (IsPullDeg (algebraMap R (FractionRing R)) D₂.toPre E₂) ∧ Nonempty (IsPullDeg β E₁ E') ∧ Nonempty (IsPullDeg β E₂ E') := by
   intro R _ _ _ _ D₁ D₂ W _ _ φ hφ D' p₁ p₂

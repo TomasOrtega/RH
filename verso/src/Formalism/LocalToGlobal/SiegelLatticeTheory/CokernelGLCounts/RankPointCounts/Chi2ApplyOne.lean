@@ -24,9 +24,9 @@ def CovolTie : Prop :=
     X.B.I.vol X.B.μf X.B.fund
 
 /- English proof (translation)
-Take `⟨h1, -, -, hmul, hnorm⟩` from `hK`. Establish `hm` using `hmul 1 h1 1 h1`. Simplify using `only [mul_one] at hm`. Establish `hne : X.chi2 1 ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn` using `hnorm 1 h1`. Rewrite `hn` using `[h0, norm_zero]`. Conclude with `zero_ne_one hn`. Conclude with `mul_left_cancel₀ hne (hm.symm.trans (mul_one _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi2_apply_one (hK : X.LevelSubgroupCharacter) : X.chi2 1 = 1 := by
   obtain ⟨h1, -, -, hmul, hnorm⟩ := hK
@@ -40,7 +40,7 @@ theorem chi2_apply_one (hK : X.LevelSubgroupCharacter) : X.chi2 1 = 1 := by
   exact mul_left_cancel₀ hne (hm.symm.trans (mul_one _).symm)
 
 /- English proof (translation)
-Establish `h` using `X.e_eq 1`. Establish `h1 : (1 : X.B.I.Gf) ∈ X.K2` using `hK.1`. Express the relevant statement in the definitionally equal form `X.B.e 1 = if (1 : X.B.I.Gf) ∈ X.K2 then star (X.chi2 1) / ((X.B.μf X.K2).toReal : ℂ) else 0 at h`. Rewrite `h` using `[if_pos h1, chi2_apply_one X hK, star_one]`. Rewrite using `[h, one_div, ← Complex.ofReal_inv, Complex.ofReal_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem e_one_re (hK : X.LevelSubgroupCharacter) : (X.B.e 1).re = ((X.B.μf X.K2).toReal)⁻¹ := by
   have h := X.e_eq 1
@@ -62,9 +62,9 @@ variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubg
   (i0 i0' : ∀ _ : NumberField.InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.S3.MassData.Dstar Formalism.L2.SG.RowsConc.DstC Formalism.MainNotions.S.AutInst.Dstar`. Rewrite using `[e_one_re X hK]`. Establish `hdeg : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).deg = Formalism.MainNotions.PlaceDegreeData.fdegAll X.B.I X.B.σ X.B.w` using `rfl`. Establish `hvol : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).volG = covolBy (G` using `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) X.B.I.cm.sig X.B.I.J) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HFinIn (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.A …`. Establish `hkpp : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).μKpp = (bOf X hb hK FdN FdN' u u' X0 L A).μKpp` using `rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hdeg, hvol, h3, hkpp, hKpp hH, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem MassDataDstarX (L : LocIn (TypX X)) (A : AnIn) (hH : HypX X hb FdN FdN' u u')
     (hKpp : KppVolAt X hb hK FdN FdN' u u' X0 L A) (h2 : FiniteLevelVolumeEquality X hb) (h3 : CovolTie X) :
@@ -82,7 +82,7 @@ theorem MassDataDstarX (L : LocIn (TypX X)) (A : AnIn) (hH : HypX X hb FdN FdN' 
   ring
 
 /- English proof (translation)
-Unfold `MassDataDstarC`. Rewrite using `[hT]`. Conclude with `MassDataDstarX (hH := hH) (hKpp := hKpp) (h2 := h2) (h3 := h3) (ψ := ψ) (T := T) (sd := sd) (C := C) (Th := Th) (vR := vR) (Q := Q) (M := M) (δ := δ) (i0 := i0) (i0' := i0') (νq := νq)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem massDataDstarC_of (L : LocIn (TypX X)) (A : AnIn) (hH : HypX X hb FdN FdN' u u')
     (hKpp : KppVolAt X hb hK FdN FdN' u u' X0 L A) (h2 : FiniteLevelVolumeEquality X hb) (h3 : CovolTie X)

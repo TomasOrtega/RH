@@ -13,7 +13,7 @@ namespace GlobalTheory.HypChartPf
 open PI.RhsWLim PI.RhsWLim.W
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[qFw, kapT, Complex.re_add_im]`. Simplify using `[qFw, kapT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma ofLp_qFw_kapT (k : ℕ) (v : (Fin k → ℂ) × ℂ) :
     WithLp.ofLp (qFw k (kapT k v)) = (WithLp.toLp 2 v.1, Complex.arg v.2) := by
@@ -22,9 +22,9 @@ private lemma ofLp_qFw_kapT (k : ℕ) (v : (Fin k → ℂ) × ℂ) :
   · simp [qFw, kapT]
 
 /- English proof (translation)
-Simplify using `only [hypS, Set.mem_ofPred_eq] at hv`. Establish `hn : ‖(WithLp.toLp 2 v.1 : EuclideanSpace ℂ (Fin k))‖ ^ 2 + T' = ‖v.2‖ ^ 2`. Rewrite using `[← normSq_sum_eq, ← Complex.normSq_eq_norm_sq]`. Simplify using `only []`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [hypPar, hn, Real.sqrt_sq (norm_nonneg _), Complex.norm_mul_exp_arg_mul_I, ]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hypPar_toLp_arg_of_mem_hypS (k : ℕ) (T' : ℝ) (v : (Fin k → ℂ) × ℂ) (hv : v ∈ hypS k T') :
     hypPar k T' (WithLp.toLp 2 v.1, Complex.arg v.2) = v := by
@@ -36,9 +36,9 @@ private lemma hypPar_toLp_arg_of_mem_hypS (k : ℕ) (T' : ℝ) (v : (Fin k → �
   simp only [hypPar, hn, Real.sqrt_sq (norm_nonneg _), Complex.norm_mul_exp_arg_mul_I, ]
 
 /- English proof (translation)
-Use extensionality with `o`. Break down `o with _ | ⟨a, b⟩` into its components or cases. Simplify using `only [kapT, hypPar]`. Simplify using `only [qFw] at hx ⊢`. Simplify using `only [WithLp.equiv_symm_apply, WithLp.ofLp_toLp]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Complex.arg_real_mul _ (Real.sqrt_pos.2 (add_pos_of_nonneg_of_pos (sq_nonneg _) hT')), Complex.exp_mul_I, Complex.arg_cos_add_sin_mul_I hx]`. Apply the tactic sequence `cases b <;> simp [kapT, hypPar, qFw]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma kapT_hypPar_ofLp_qFw (k : ℕ) (T' : ℝ) (hT' : 0 < T') (x : TrE k)
     (hx : (WithLp.ofLp (qFw k x)).2 ∈ Set.Ioc (-Real.pi) Real.pi) :
@@ -53,17 +53,17 @@ private lemma kapT_hypPar_ofLp_qFw (k : ℕ) (T' : ℝ) (hT' : 0 < T') (x : TrE 
   · cases b <;> simp [kapT, hypPar, qFw]
 
 /- English proof (translation)
-Establish `hpos : (0 : ℝ) < 2 * Real.pi` using `by positivity`. Establish `h1` using `isAddFundamentalDomain_Ioc hpos 0 (volume : Measure ℝ)`. Establish `h2` using `isAddFundamentalDomain_Ioc hpos (-Real.pi) (volume : Measure ℝ)`. Rewrite `h1` using `[zero_add]`. Rewrite `h2` using `[show -Real.pi + 2 * Real.pi = Real.pi by ring]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ n : ℤ, ∀ x, n • (2 * Real.pi) + x ∈ A ↔ x ∈ A`. Introduce `n`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ m ih`. Introduce `x`. Rewrite using `[← ih x, ← hp ((m : ℤ) • (2 * Real.pi) + x)]`. Rewrite using `[show ((m : ℤ) + 1) • (2 * Real.pi) + x = (m : ℤ) • (2 * Real.pi) + x + 2 * Real.pi by`. Rewrite using `[add_smul, one_smul]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `abel]`. Consider the case `pred m ih`. Introduce `x`. Establish `h` using `hp ((-(m : ℤ) - 1) • (2 * Real.pi) + x)`. Rewrite using `[show (-(m : ℤ) - 1) • (2 * Real.pi) + x + 2 * Real.pi = (-(m : ℤ)) • (2 * Real.pi) + x by`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_smul, one_smul]`. Use the proof step `abel, ih x] at h`. Conclude with `h.symm`. Rewrite using `[Measure.restrict_apply hA, Measure.restrict_apply hA]`. Use `h1.measure_set_eq h2 hA ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Introduce and unpack `⟨g, hg⟩`. Take `⟨n, rfl⟩` from `AddSubgroup.mem_zmultiples_iff.mp hg`. Use extensionality with `x`. Conclude with `key n x`.
+A detailed English derivation is pending.
 -/
 theorem restrict_periodic (A : Set ℝ) (hA : MeasurableSet A) (hp : ∀ x, x + 2 * Real.pi ∈ A ↔ x ∈ A) :
     volume.restrict (Set.Ioc (0 : ℝ) (2 * Real.pi)) A = volume.restrict (Set.Ioc (-Real.pi) Real.pi) A := by
@@ -95,13 +95,13 @@ theorem restrict_periodic (A : Set ℝ) (hA : MeasurableSet A) (hp : ∀ x, x + 
   exact key n x
 
 /- English proof (translation)
-Establish `hmeas : Measurable (hypPar k T')` using `(continuous_hypPar k T').measurable`. Establish `hP : MeasurableSet (hypPar k T' ⁻¹' E)` using `hmeas hE`. Unfold `hypM`. Rewrite using `[Measure.smul_apply, Measure.map_apply hmeas hE, smul_eq_mul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Measure.prod_apply hP, Measure.prod_apply (hP.inter (MeasurableSet.univ.prod measurableSet_Ioc))]`. Use `lintegral_congr (fun y => ?_)` and prove the remaining obligations. Establish `hs : MeasurableSet (Prod.mk y ⁻¹' (hypPar k T' ⁻¹' E))` using `measurable_prodMk_left hP`. Rewrite using `[restrict_periodic _ hs ?_, Measure.restrict_apply hs]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `θ`. Simplify using the standard rewrite rules. Introduce `x`. Establish `e : hypPar k T' (y, x + 2 * Real.pi) = hypPar k T' (y, x)`. Simplify using `only [hypPar, Prod.mk.injEq, true_and]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[show ((x + 2 * Real.pi : ℝ) : ℂ) * Complex.I = (x : ℂ) * Complex.I + 2 * Real.pi * Complex.I by push_cast; ring, Complex.exp_periodic]`. Simplify using `only [Set.mem_preimage]`. Rewrite using `[e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hypM_eq (k : ℕ) (T' : ℝ) (E : Set ((Fin k → ℂ) × ℂ)) (hE : MeasurableSet E) :
     hypM k T' E = (1 / 2) * (volume.prod volume)
@@ -127,11 +127,11 @@ theorem hypM_eq (k : ℕ) (T' : ℝ) (E : Set ((Fin k → ℂ) × ℂ)) (hE : Me
     rw [e]
 
 /- English proof (translation)
-Rewrite using `[hypM_eq k T' E hE]`. Use `congr 1`. Establish `hFm : MeasurableSet (hypPar k T' ⁻¹' E ∩ Set.univ ×ˢ Set.Ioc (-Real.pi) Real.pi)` using `((continuous_hypPar k T').measurable hE).inter (MeasurableSet.univ.prod measurableSet_Ioc)`. Establish `hset : kapT k '' E = (fun x : TrE k => WithLp.ofLp (qFw k x)) ⁻¹' (hypPar k T' ⁻¹' E ∩ Set.univ ×ˢ Set.Ioc (-Real.pi) Real.pi)`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_image, Set.mem_preimage, Set.mem_inter_iff, Set.mem_prod, Set.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Rewrite using `[ofLp_qFw_kapT k v, hypPar_toLp_arg_of_mem_hypS k T' v (hS hv)]`. Conclude with `⟨hv, Complex.arg_mem_Ioc _⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨_, h1, kapT_hypPar_ofLp_qFw k T' hT' x h2⟩`. Rewrite using `[hset, (qIso_measurePreserving k).measure_preimage hFm.nullMeasurableSet]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem hypM_eq_kapT (k : ℕ) (T' : ℝ) (hT' : 0 < T') (E : Set ((Fin k → ℂ) × ℂ)) (hE : MeasurableSet E)
     (hS : E ⊆ hypS k T') : hypM k T' E = (1 / 2) * volume (kapT k '' E) := by
@@ -155,7 +155,7 @@ def sgn (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ :=
   if r ≤ i.val ∧ i.val < r + k then 1 else if i.val = r + k then -1 else 0
 
 /- English proof (translation)
-Use `show _ = _`. Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.neg_apply]`. Unfold `opGen sgn`. Apply the tactic sequence `split_ifs <;> (try (exfalso; omega)) <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem gen_semiconj (k r : ℕ) (q : TrE k) :
     SemiconjBy (Matrix.diagonal (sgn k r)) (-opGen k r q) (opGen k r q)ᴴ := by
@@ -166,9 +166,9 @@ theorem gen_semiconj (k r : ℕ) (q : TrE k) :
   split_ifs <;> (try (exfalso; omega)) <;> simp
 
 /- English proof (translation)
-Establish `hdet : IsUnit U.det` using `(Matrix.isUnit_iff_isUnit_det U).mp hU`. Establish `h1 : Xᴴ = U * -X * U⁻¹` using `by rw [h, Matrix.mul_nonsing_inv_cancel_right _ _ hdet]`. Establish `h3 : NormedSpace.exp (-X) * NormedSpace.exp X = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl X)), neg_add_cancel, NormedSpace.exp_zero]`. Rewrite using `[← Matrix.exp_conjTranspose, h1, Matrix.exp_conj _ _ hU]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_left _ _ hdet, h3, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma exp_conjTranspose_mul_mul_exp_of_skew {n : Type*} [Fintype n] [DecidableEq n] (U X : Matrix n n ℂ)
     (hU : IsUnit U) (h : U * -X = Xᴴ * U) : (NormedSpace.exp X)ᴴ * U * NormedSpace.exp X = U := by
@@ -182,19 +182,17 @@ private lemma exp_conjTranspose_mul_mul_exp_of_skew {n : Type*} [Fintype n] [Dec
   rw [Matrix.nonsing_inv_mul_cancel_left _ _ hdet, h3, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hsemi` using `gen_semiconj k r q`. Unfold `SemiconjBy at hsemi`. Establish `hent : ∀ i j, sgn k r i * -opGen k r q i j = star (opGen k r q j i) * sgn k r j`. Introduce `i j`. Use `congrFun (congrFun hsemi i) j` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.neg_apply]`. Then use the resulting hypothesis. Establish `hz : ∀ i j, sgn k r i = 0 → opGen k r q i j = 0 ∧ opGen k r q j i = 0`. Introduce `i j hi`. Unfold `sgn at hi`. Use `split_ifs at hi with h1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions using `at hi`. Evaluate the numerical expressions using `at hi`. Unfold `opGen`. Apply the tactic sequence `constructor <;> split_ifs <;> rfl`. Apply `exp_conjTranspose_mul_mul_exp_of_skew` to reduce the goal to its premises.
+Evaluate the numerical expressions. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Matrix.isUnit_iff_isUnit_det _).2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_diagonal]`. Use `isUnit_iff_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun i _ => ?_)` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `hu`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `h`. Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.neg_apply]`. Distinguish the cases in `hi : sgn k r i = 0`. Take `⟨h1, h2⟩` from `hz i j hi`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[h1, h2]`. Distinguish the cases in `hj : sgn k r j = 0`. Take `⟨h1, h2⟩` from `hz j i hj`. Simplify using `[h1, h2]`. Simplify using `only [if_neg hi, if_neg hj]`.
-
-Conclude with `hent i j`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma exp_opGen_conjTranspose_mul_diagonal_mul (k r : ℕ) (q : TrE k) (u : ℂ) (hu : u ≠ 0) :
     (NormedSpace.exp (opGen k r q))ᴴ * Matrix.diagonal (fun i => if sgn k r i = 0 then u else sgn k r i) *
@@ -232,9 +230,9 @@ private lemma exp_opGen_conjTranspose_mul_diagonal_mul (k r : ℕ) (q : TrE k) (
     exact hent i j
 
 /- English proof (translation)
-Establish `hD : Matrix.diagonal (sgn k r) = (1 / 2 : ℂ) • (Matrix.diagonal (fun i => if sgn k r i = 0 then 1 else sgn k r i) + Matrix.diagonal (fun i => if sgn k r i = 0 then -1 else sgn k r i))`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Matrix.diagonal_apply_eq, Matrix.smul_apply, Matrix.add_apply, smul_eq_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs with h <;> [rw [h]; skip] <;> ring`. Simplify using `[Matrix.diagonal_apply_ne _ hij]`. Rewrite using `[hD, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, exp_opGen_conjTranspose_mul_diagonal_mul k r q 1 one_ne_zero, exp_opGen_conjTranspose_mul_diagonal_mul k r q (-1) (neg_ne_zero.2 one_ne_zero)]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_form (k r : ℕ) (q : TrE k) :
     (NormedSpace.exp (opGen k r q))ᴴ * Matrix.diagonal (sgn k r) * NormedSpace.exp (opGen k r q) =
@@ -252,7 +250,7 @@ theorem exp_form (k r : ℕ) (q : TrE k) :
     exp_opGen_conjTranspose_mul_diagonal_mul k r q 1 one_ne_zero, exp_opGen_conjTranspose_mul_diagonal_mul k r q (-1) (neg_ne_zero.2 one_ne_zero)]
 
 /- English proof (translation)
-Introduce `a b h`. Use `ext`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[wI] at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private lemma wI_injective' (k r : ℕ) : Function.Injective (wI k r) := by
   intro a b h
@@ -262,15 +260,15 @@ private lemma wI_injective' (k r : ℕ) : Function.Injective (wI k r) := by
   omega
 
 /- English proof (translation)
-Establish `hs : star v ⬝ᵥ (Matrix.diagonal (sgn k r) *ᵥ v) = ∑ j : Fin (k + 1), star (v (wI k r j)) * (sgn k r (wI k r j) * v (wI k r j))`. Simplify using `only [dotProduct, Matrix.mulVec_diagonal, Pi.star_apply]`. Use `symm`. Use `Fintype.sum_of_injective _ (wI_injective' k r) _ (fun i => star (v i) * (sgn k r i * v i)) ?_ (fun _ => rfl)` and prove the remaining obligations. Introduce `i hi`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: sgn k r i = 0`. Unfold `sgn`. Rewrite using `[if_neg, if_neg]`. Introduce `h; exact hi ⟨⟨i.val - r, by omega⟩, by ext; simp [wI]; omega⟩`. Introduce and unpack `⟨h1, h2⟩; exact hi ⟨⟨i.val - r, by omega⟩, by ext; simp [wI]; omega⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Simplify using `[this]`. Establish `h1 : ∀ j : Fin k, sgn k r (wI k r j.castSucc) = 1`. Introduce `j`. Unfold `sgn`. Rewrite using `[if_pos]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[wI]`. Establish `h2 : sgn k r (wI k r (Fin.last k)) = -1`. Apply the tactic sequence `unfold sgn; rw [if_neg, if_pos] <;> simp [wI]`. Rewrite using `[hs, Fin.sum_univ_castSucc, h2]`. Simplify using `only [h1, opCo]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Simplify using `[Complex.normSq_eq_conj_mul_self, sub_eq_add_neg]`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 -/
 theorem form_eq (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) :
     star v ⬝ᵥ (Matrix.diagonal (sgn k r) *ᵥ v) =
@@ -297,11 +295,11 @@ theorem form_eq (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) :
   simp [Complex.normSq_eq_conj_mul_self, sub_eq_add_neg]
 
 /- English proof (translation)
-Introduce and unpack `p ⟨q, -, rfl⟩`. Establish `hq : star (NormedSpace.exp (opGen k r q) *ᵥ opBase k r T') ⬝ᵥ (Matrix.diagonal (sgn k r) *ᵥ (NormedSpace.exp (opGen k r q) *ᵥ opBase k r T')) = star (opBase k r T') ⬝ᵥ (Matrix.diagonal (sgn k r) *ᵥ opBase k r T')`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, exp_form]`. Rewrite `hq` using `[form_eq, form_eq]`. Establish `hb : ∀ i : Fin k, opBase k r T' (wI k r i.castSucc) = 0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Establish `hne : wI k r i.castSucc ≠ wI k r (Fin.last k)` using `fun h => (Fin.castSucc_lt_last i).ne (wI_injective' k r h)`. Simplify using `[opBase, wLast, bvec, hne]`. Establish `hl : opBase k r T' (wI k r (Fin.last k)) = (Real.sqrt T' : ℂ)`. Simplify using `[opBase, wLast, bvec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [opCo, hb, hl, map_zero, Finset.sum_const_zero, Complex.normSq_ofReal, Real.mul_self_sqrt hT'.le] at hq`. Simplify using `only [hypS, Set.mem_ofPred_eq, opCo]`. Combine the linear relations using `[Complex.ofReal_injective hq]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem opE_subset (k r : ℕ) (T' : ℝ) (hT' : 0 < T') (ρ : ℝ) : opE k r T' ρ ⊆ hypS k T' := by
   rintro p ⟨q, -, rfl⟩
@@ -322,9 +320,9 @@ theorem opE_subset (k r : ℕ) (T' : ℝ) (hT' : 0 < T') (ρ : ℝ) : opE k r T'
   linarith [Complex.ofReal_injective hq]
 
 /- English proof (translation)
-Unfold `HypChart`. Introduce `k r T' hk hT'`. Use `⟨1, one_pos, fun ρ _ _ => ?_⟩` and prove the remaining obligations. Establish `himg : phiT k r T' '' Metric.ball 0 ρ = kapT k '' opE k r T' ρ`. Rewrite using `[opE, Set.image_image]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[himg, hypM_eq_kapT k T' hT' _ (opEMeas k r T' ρ) (opE_subset k r T' hT' ρ)]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem hypChart : HypChart := by
   unfold HypChart

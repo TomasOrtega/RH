@@ -7,15 +7,15 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `n k f u u'`. Simplify using `only [specFirst, bind₁_bind₁, bind₁_rename]`. Use `congrArg (fun φ => bind₁ φ f) (funext fun ij => ?_)` and prove the remaining obligations. Take `⟨i, j⟩` from `ij`. Establish `one : (1 : Fin (k + 1 + 1)) = Fin.succ 0` using `Fin.succ_zero_eq_one.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the cases of `i using Fin.cases with`. Consider the case `zero => show (bind₁ (specFirstVar u')) (specFirstVar u (Equiv.swap (0 : Fin (k + 1 + 1)) 1 0, j)) = (bind₁ (specFirstVar u)) (specFirstVar u' (0, j))`. Rewrite using `[Equiv.swap_apply_left, one]`. Simplify using `only [specFirstVar, Fin.cases_succ, Fin.cases_zero, bind₁_X_right, bind₁_C_right]`. Consider the case `succ i`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the cases of `i using Fin.cases with`. Consider the case `zero => show (bind₁ (specFirstVar u')) (specFirstVar u (Equiv.swap (0 : Fin (k + 1 + 1)) 1 (Fin.succ 0), j)) = (bind₁ (specFirstVar u)) (specFirstVar u' (Fin.succ 0, j))`. Establish `h : Equiv.swap (0 : Fin (k + 1 + 1)) 1 (Fin.succ 0) = 0`. Rewrite using `[← one]`. Conclude with `Equiv.swap_apply_right _ _`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Simplify using `only [specFirstVar, Fin.cases_succ, Fin.cases_zero, bind₁_X_right, bind₁_C_right]`. Consider the case `succ i => show (bind₁ (specFirstVar u')) (specFirstVar u (Equiv.swap (0 : Fin (k + 1 + 1)) 1 (Fin.succ (Fin.succ i)), j)) = (bind₁ (specFirstVar u)) (specFirstVar u' (Fin.succ (Fin.succ i), j))`. Establish `h : Equiv.swap (0 : Fin (k + 1 + 1)) 1 (Fin.succ (Fin.succ i)) = Fin.succ (Fin.succ i)`. Use `Equiv.swap_apply_of_ne_of_ne (Fin.succ_ne_zero _) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one]`. Conclude with `fun h' => Fin.succ_ne_zero i (Fin.succ_injective _ h')`. Rewrite using `[h]`. Simplify using `only [specFirstVar, Fin.cases_succ, bind₁_X_right]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SpecFirstRename.proof : SpecFirstRename.Statement := by
   intro n k f u u'

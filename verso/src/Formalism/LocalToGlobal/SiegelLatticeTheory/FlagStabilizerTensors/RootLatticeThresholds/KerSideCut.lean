@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section Chain
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => first | rfl | simp [Formalism.ThetaLiftIndependence.chainOpM]`. Consider the case `succ m ih`. Simplify using `only [Formalism.ThetaLiftIndependence.chainOpM, ih]`. Use function extensionality and compare the values at `t`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Formalism.ThetaLiftIndependence.kerOpM, Finset.sum_add_distrib, smul_add, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chainOpM_add' {Rg : Type} [CommSemiring Rg] {ι : ℕ → Type} [∀ j, Fintype (ι j)]
     {M : ℕ → Type} [∀ j, AddCommMonoid (M j)] [∀ j, Module Rg (M j)]
@@ -31,9 +31,9 @@ theorem chainOpM_add' {Rg : Type} [CommSemiring Rg] {ι : ℕ → Type} [∀ j, 
     simp [Formalism.ThetaLiftIndependence.kerOpM, Finset.sum_add_distrib, smul_add, map_add]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => first | rfl | simp [Formalism.ThetaLiftIndependence.chainOpM]`. Consider the case `succ m ih`. Simplify using `only [Formalism.ThetaLiftIndependence.chainOpM, ih]`. Use function extensionality and compare the values at `t`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Formalism.ThetaLiftIndependence.kerOpM, Finset.smul_sum, map_smul, smul_smul, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chainOpM_smul' {Rg : Type} [CommSemiring Rg] {ι : ℕ → Type} [∀ j, Fintype (ι j)]
     {M : ℕ → Type} [∀ j, AddCommMonoid (M j)] [∀ j, Module Rg (M j)]
@@ -57,7 +57,7 @@ def perColL (D : D7) (u : D.what₂.Word) : D.what₂.Mu u →ₗ[ℂ] D.what₂
     (D.mem u).A.Mram.subtype ∘ₗ (D.eMu u).toLinearMap).compl₂ (D.eMt u).symm.toLinearMap
 
 /- English proof (translation)
-Rewrite using `[D.perCol_base_eq_PtilCol]`. Simplify using `only [perColL, LinearMap.compl₂_apply, LinearMap.comp_apply, PeriodMap.PtilCol, PeriodMap.Ptil]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem perColL_apply (D : D7) (u : D.what₂.Word) (φ : D.what₂.Mu u) (F : D.what₂.Amb D.what₂.mu0) :
     perColL D u φ F = D.what₂.perCol u D.what₂.mu0 φ F := by

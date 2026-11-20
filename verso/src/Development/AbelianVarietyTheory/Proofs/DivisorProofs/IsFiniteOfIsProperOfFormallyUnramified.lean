@@ -13,9 +13,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.PropFin
 
 /- English proof (translation)
-Introduce `X S f _ hp hu`. Establish `hlqf : LocallyQuasiFinite f`. Use `⟨fun {U} hU {V} hV e => ?_⟩` and prove the remaining obligations. Establish `h₁` using `f.formallyUnramified_appLE hU hV e`. Establish `h₂` using `f.finiteType_appLE hU hV e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `algebraize [(f.appLE U V e).hom]`. Conclude with `inferInstanceAs (Algebra.QuasiFinite _ _)`. Conclude with `IsFinite.of_isProper_of_locallyQuasiFinite f`.
+A detailed English derivation is pending.
 -/
 theorem isFinite_of_isProper_of_formallyUnramified :
     ∀ (X S : Scheme.{0}) (f : X ⟶ S) [IsLocallyNoetherian S],

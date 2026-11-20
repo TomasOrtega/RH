@@ -12,7 +12,7 @@ section Helpers
 variable {O : Type} [CommRing O] [IsDomain O]
 
 /- English proof (translation)
-Use `choose q hq using h`. Use `⟨PowerSeries.mk q, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_C_mul, PowerSeries.coeff_mk]`. Conclude with `hq n`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem C_dvd_of_forall_dvd_coeff (a : O) (w : PowerSeries O) (h : ∀ n, a ∣ coeff n w) :
     C a ∣ w := by
@@ -23,11 +23,11 @@ theorem C_dvd_of_forall_dvd_coeff (a : O) (w : PowerSeries O) (h : ∀ n, a ∣ 
   exact hq n
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `h`. Establish `hk : Ideal.Quotient.mk (Ideal.span {ϖ}) ϖ = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self ϖ)`. Establish `h0 : PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ})) (f * w) = 0`. Rewrite using `[hq, map_mul, PowerSeries.map_C, hk, map_zero, zero_mul]`. Rewrite `h0` using `[map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw : PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ})) w = 0` using `(mul_eq_zero.mp h0).resolve_left hf`. Apply `C_dvd_of_forall_dvd_coeff` to reduce the goal to its premises. Introduce `n`. Establish `hn` using `congrArg (PowerSeries.coeff n) hw`. Rewrite `hn` using `[PowerSeries.coeff_map, map_zero, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hn`.
+A detailed English derivation is pending.
 -/
 theorem C_dvd_of_C_dvd_mul (ϖ : O) [(Ideal.span {ϖ}).IsMaximal] (f w : PowerSeries O)
     (hf : PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ})) f ≠ 0)
@@ -47,9 +47,9 @@ theorem C_dvd_of_C_dvd_mul (ϖ : O) [(Ideal.span {ϖ}).IsMaximal] (f w : PowerSe
   exact hn
 
 /- English proof (translation)
-Take `⟨u, E, hu, hE, hdeg, rfl⟩` from `hp`. Substitute `hdeg` using the available equality. Rewrite using `[map_mul]`. Use `mul_ne_zero (hu.map _).ne_zero ?_` and prove the remaining obligations. Introduce `h0`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc` using `congrArg (PowerSeries.coeff E.natDegree) h0`. Rewrite `hc` using `[PowerSeries.coeff_map, Polynomial.coeff_coe, hE.monic.coeff_natDegree, map_one, map_zero]`. Conclude with `one_ne_zero hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_ne_zero_of_unitDist (ϖ : O) [(Ideal.span {ϖ}).IsMaximal] (d : ℕ)
     (p : PowerSeries O) (hp : UnitDist ϖ d p) :
@@ -64,7 +64,7 @@ theorem map_ne_zero_of_unitDist (ϖ : O) [(Ideal.span {ϖ}).IsMaximal] (d : ℕ)
   exact one_ne_zero hc
 
 /- English proof (translation)
-Take `⟨u, E, hu, hE, hdeg, rfl⟩` from `hp`. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, map_mul]`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, Polynomial.coeff_coe]`. Conclude with `hE.mem (by omega)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_mem_of_unitDist (ϖ : O) (d : ℕ) (p : PowerSeries O) (hp : UnitDist ϖ d p)
     (hd : 1 ≤ d) : coeff 0 p ∈ Ideal.span {ϖ} := by
@@ -77,13 +77,13 @@ theorem constantCoeff_mem_of_unitDist (ϖ : O) (d : ℕ) (p : PowerSeries O) (hp
 end Helpers
 
 /- English proof (translation)
-Establish `hC : (C ϖ : PowerSeries O) ≠ 0` using `fun h => hϖ0 (by simpa using congrArg PowerSeries.constantCoeff h)`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hz`. Consider the case `succ N ih`. Introduce `z hz`. Apply `ih` to reduce the goal to its premises. Rewrite `hz`, the goal using `[Ideal.mem_span_singleton]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `hz`. Establish `hdiv : C ϖ ∣ q * y` using `⟨C (ϖ ^ N) * z, by rw [← hy, pow_succ, map_mul]; ring⟩`. Take `⟨y', rfl⟩` from `C_dvd_of_C_dvd_mul ϖ q y hq hdiv`. Use `⟨y', ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hC` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hy` using `[pow_succ, map_mul]`. Take the linear combination `hy`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem mem_span_of_C_pow_mul_mem_span {O : Type} [CommRing O] [IsDomain O] (ϖ : O)
     [(Ideal.span {ϖ}).IsMaximal] (hϖ0 : ϖ ≠ 0) (q : PowerSeries O)
@@ -109,9 +109,7 @@ private theorem mem_span_of_C_pow_mul_mem_span {O : Type} [CommRing O] [IsDomain
     linear_combination hy
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ d p hp k N z hz`. Use `PrincipalIdealRing.isMaximal_of_irreducible hϖ` as an intermediate fact. Establish `hq : PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ})) (p ^ k) ≠ 0`. Rewrite using `[map_pow]`. Conclude with `pow_ne_zero k (map_ne_zero_of_unitDist ϖ d p hp)`.
-
-Conclude with `mem_span_of_C_pow_mul_mem_span ϖ hϖ.ne_zero (p ^ k) hq N z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_pow_of_uniformizer_mul : SatDist := by
   intro O _ _ _ ϖ hϖ d p hp k N z hz
@@ -122,19 +120,17 @@ theorem mem_span_pow_of_uniformizer_mul : SatDist := by
   exact mem_span_of_C_pow_mul_mem_span ϖ hϖ.ne_zero (p ^ k) hq N z hz
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ d p hp hd c y N a h`. Establish `key : ∀ (N : ℕ) (z : PowerSeries O), C (ϖ ^ N) * z ∈ Ideal.span {p} → z ∈ Ideal.span {p}` using `fun N z hz => by simpa using mem_span_pow_of_uniformizer_mul O ϖ hϖ d p hp 1 N z (by simpa using hz)`. Establish `hp0` using `constantCoeff_mem_of_unitDist ϖ d p hp hd`. Rewrite `hp0` using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, Ideal.mem_span_singleton]`. Establish `h1` using `key N _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `clear h`. Proceed by induction on `y generalizing c a with`. Consider the case `zero => simp`. Consider the case `succ y ih`. Establish `e2 : C (ϖ ^ y) * (C ϖ * a) = C (ϖ ^ (y + 1)) * a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← map_mul, pow_succ]`. Establish `h2 : C c - C (ϖ ^ y) * (C ϖ * a) ∈ Ideal.span {p}`. Rewrite using `[e2]`. Conclude with `h1`. Take `⟨c', rfl⟩` from `ih c (C ϖ * a) h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : C (ϖ ^ y) * (C c' - C ϖ * a) = C (ϖ ^ y * c') - C (ϖ ^ (y + 1)) * a`. Rewrite using `[mul_sub, ← map_mul, ← mul_assoc, ← map_mul, ← pow_succ]`. Establish `h3 : C c' - C ϖ * a ∈ Ideal.span {p}`. Apply `key y` to reduce the goal to its premises. Rewrite using `[e3]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h1`. Take `⟨g, hg⟩` from `Ideal.mem_span_singleton'.mp h3`. Establish `h4` using `congrArg PowerSeries.constantCoeff hg`. Simplify using `only [map_mul, map_sub, PowerSeries.constantCoeff_C] at h4`. Establish `hc' : ϖ ∣ c'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `e : c' = PowerSeries.constantCoeff g * PowerSeries.constantCoeff p + ϖ * PowerSeries.constantCoeff a`. Take the linear combination `(-1 : O) * h4`. Rewrite using `[e]`. Conclude with `dvd_add (dvd_mul_of_dvd_right hp0 _) (dvd_mul_right _ _)`. Take `⟨c'', rfl⟩` from `hc'`.
-
-Conclude with `⟨c'', by ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pow_dvd_of_const_mem_span : ConstDist := by
   intro O _ _ _ ϖ hϖ d p hp hd c y N a h
@@ -172,7 +168,7 @@ theorem pow_dvd_of_const_mem_span : ConstDist := by
     exact ⟨c'', by ring⟩
 
 /- English proof (translation)
-Unfold `CoprimeRat at h ⊢`. Take `⟨N, A, A', hA⟩` from `h`. Conclude with `⟨N, A', A, by rw [← hA]; ring⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem coprimeRat_symm' {O : Type} [CommRing O] {ϖ : O} {x y : PowerSeries O}
     (h : CoprimeRat ϖ x y) : CoprimeRat ϖ y x := by
@@ -181,7 +177,7 @@ private theorem coprimeRat_symm' {O : Type} [CommRing O] {ϖ : O} {x y : PowerSe
   exact ⟨N, A', A, by rw [← hA]; ring⟩
 
 /- English proof (translation)
-Unfold `CoprimeRat at h1 h2 ⊢`. Take `⟨N, A, A', hA⟩` from `h1`. Take `⟨M, B, B', hB⟩` from `h2`. Use `⟨N + M, A * B, A * x * B' + A' * (B * x' + B' * y), ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, map_mul, ← hA, ← hB]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -195,9 +191,9 @@ private theorem coprimeRat_mul_left' {O : Type} [CommRing O] {ϖ : O} {x x' y : 
   ring
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero`. Unfold `CoprimeRat`. Conclude with `⟨0, 1, 0, by simp⟩`. Consider the case `succ a ih`.
+Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite using `[pow_succ]`. Conclude with `coprimeRat_mul_left' ih h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coprimeRat_pow_left' {O : Type} [CommRing O] {ϖ : O} {x y : PowerSeries O}
     (h : CoprimeRat ϖ x y) (a : ℕ) : CoprimeRat ϖ (x ^ a) y := by
@@ -210,11 +206,11 @@ private theorem coprimeRat_pow_left' {O : Type} [CommRing O] {ϖ : O} {x y : Pow
     exact coprimeRat_mul_left' ih h
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ d d' p p' hp hp' hcop a b z hza hzb`. Use `PrincipalIdealRing.isMaximal_of_irreducible hϖ` as an intermediate fact. Establish `hc : CoprimeRat ϖ (p ^ a) (p' ^ b)` using `coprimeRat_symm' (coprimeRat_pow_left' (coprimeRat_symm' (coprimeRat_pow_left' hcop a)) b)`. Unfold `CoprimeRat at hc`. Take `⟨M, B, B', hB⟩` from `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.mp hza`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp hzb`. Establish `hq : PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ})) (p ^ a * p' ^ b) ≠ 0`. Rewrite using `[map_mul, map_pow, map_pow]`. Conclude with `mul_ne_zero (pow_ne_zero a (map_ne_zero_of_unitDist ϖ d p hp)) (pow_ne_zero b (map_ne_zero_of_unitDist ϖ d' p' hp'))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_span_of_C_pow_mul_mem_span ϖ hϖ.ne_zero _ hq M z (Ideal.mem_span_singleton'.mpr ⟨B * t + B' * s, ?_⟩)` and prove the remaining obligations. Rewrite using `[← hB]`. Take the linear combination `(B * p ^ a) * ht + (B' * p' ^ b) * hs`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem coprimeProd_statement : CoprimeProd := by
   intro O _ _ _ ϖ hϖ d d' p p' hp hp' hcop a b z hza hzb

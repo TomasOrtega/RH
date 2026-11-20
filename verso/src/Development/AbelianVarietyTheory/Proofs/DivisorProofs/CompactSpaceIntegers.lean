@@ -12,13 +12,13 @@ open GlobalTheory.LKTrip GlobalTheory.LKGeo GlobalTheory.UPel.HT
 namespace GlobalTheory.AdelicLimitCompactness
 
 /- English proof (translation)
-Set `I` to `{n : ℕ // 0 < n ∧ Nat.Coprime n p}`. Use `haveI : Nonempty I := ⟨⟨1, one_pos, Nat.coprime_one_left p⟩⟩`. Set `S : I → Set O` to `fun n => Set.range fun b : O => (c n.1 : O) + (n.1 : O) * b`. Establish `hcomp : ∀ n, IsCompact (S n)` using `fun n => isCompact_range (by fun_prop)`. Establish `hsub : ∀ (n k : I) (m : ℕ), 0 < m → k.1 = n.1 * m → S k ⊆ S n`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `n k m hm hk _ ⟨b, rfl⟩`. Take `⟨z, hz⟩` from `hc n.1 m n.2.1 hm (hk ▸ k.2.2)`. Use `⟨z + m * b, ?_⟩` and prove the remaining obligations. Simplify using `only [hk, hz]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdir : Directed (fun x y => x ⊇ y) S`. Introduce `n m`. Use `⟨⟨n.1 * m.1, Nat.mul_pos n.2.1 m.2.1, Nat.Coprime.mul_left n.2.2 m.2.2⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hsub n _ m.1 m.2.1 rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hsub m _ n.1 n.2.1 (mul_comm _ _)`. Take `⟨a, ha⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed S hdir (fun n => Set.range_nonempty _) hcomp (fun n => (hcomp n).isClosed)`. Use `⟨a, fun n hn hp => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `Set.mem_iInter.1 ha ⟨n, hn, hp⟩`. Conclude with `⟨b, hb.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_limit_compact (p : ℕ) (O : Type) [CommRing O] [TopologicalSpace O] [IsTopologicalRing O]
     [CompactSpace O] [T2Space O] (c : ℕ → ℤ)
@@ -47,7 +47,7 @@ theorem exists_limit_compact (p : ℕ) (O : Type) [CommRing O] [TopologicalSpace
   exact ⟨b, hb.symm⟩
 
 /- English proof (translation)
-The claim follows from `(Rat.HeightOneSpectrum.adicCompletionIntegers.padicIntEquiv v).toHomeomorph.symm.compactSpace`.
+A detailed English derivation is pending.
 -/
 theorem compactSpace_integers {R : Type} [CommRing R] [Algebra R ℚ] [IsIntegralClosure R ℤ ℚ]
     [IsDedekindDomain R] [IsFractionRing R ℚ] (v : HeightOneSpectrum R) :
@@ -66,21 +66,21 @@ theorem eval_ofInt (x : ∀ v : AwayP p, v.1.adicCompletionIntegers ℚ) (v : Aw
     AfP.eval v (ofInt x) = x v := rfl
 
 /- English proof (translation)
-Introduce `v` and use `(x v).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInt_ofInt (x : ∀ v : AwayP p, v.1.adicCompletionIntegers ℚ) : IsIntAf (ofInt x) :=
   fun v => (x v).2
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.ext _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem afp_ext {a b : AfP p} (h : ∀ v, AfP.eval v a = AfP.eval v b) : a = b :=
   RestrictedProduct.ext _ _ h
 
 /- English proof (translation)
-Establish `h : ∀ v : AwayP p, ∃ a : v.1.adicCompletionIntegers ℚ, ∀ n : ℕ, 0 < n → Nat.Coprime n p → ∃ b : v.1.adicCompletionIntegers ℚ, a = (c n : v.1.adicCompletionIntegers ℚ) + n * b` using `fun v => haveI := compactSpace_integers v.1 exists_limit_compact p _ c hc`. Use `choose a ha using h`. Use `⟨ofInt a, fun n hn hp => ?_⟩` and prove the remaining obligations. Use `choose b hb using fun v => ha v n hn hp`. Use `⟨ofInt b, isInt_ofInt b, afp_ext fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[map_add, map_mul, map_intCast, map_natCast, eval_ofInt, eval_ofInt, hb v]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_limit_adele (c : ℕ → ℤ)
     (hc : ∀ n m : ℕ, 0 < n → 0 < m → Nat.Coprime (n * m) p → ∃ z : ℤ, c (n * m) = c n + n * z) :
@@ -105,23 +105,21 @@ def inHom : D.La →+ AfP p ⊗[ℚ] VQ D where
   map_add' x y := by simp [inAf, TensorProduct.tmul_add]
 
 /- English proof (translation)
-Rewrite using `[inAf, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_inAf (a : AfP p) (x : D.La) : a • inAf D x = a ⊗ₜ ((1 : ℚ) ⊗ₜ x) := by
   rw [inAf, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨a, x, ha, smul_inAf D a x⟩`.
+A detailed English derivation is pending.
 -/
 theorem smul_inAf_mem {a : AfP p} (ha : IsIntAf a) (x : D.La) : a • inAf D x ∈ LaHat D :=
   AddSubgroup.subset_closure ⟨a, x, ha, smul_inAf D a x⟩
 
 /- English proof (translation)
-Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a', x, ha', rfl⟩` from `hz`. Rewrite using `[← smul_inAf, smul_smul]`. Conclude with `smul_inAf_mem D (fun v => by rw [map_mul]; exact mul_mem (ha v) (ha' v)) x`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
-
-Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem {a : AfP p} (ha : IsIntAf a) {v : AfP p ⊗[ℚ] VQ D} (hv : v ∈ LaHat D) : a • v ∈ LaHat D := by
   induction hv using AddSubgroup.closure_induction with
@@ -134,27 +132,23 @@ theorem smul_mem {a : AfP p} (ha : IsIntAf a) {v : AfP p ⊗[ℚ] VQ D} (hv : v 
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Set `b` to `Module.Free.chooseBasis ℤ D.La`. Set `B` to `Algebra.TensorProduct.basis (AfP p) (Algebra.TensorProduct.basis ℚ b)`. Establish `hB : ∀ i, B i = inAf D (b i)` using `fun i => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [B, Algebra.TensorProduct.basis_apply, inAf]`. Establish `hlim` using `fun i j => exists_limit_adele (p := p) (fun n => b.repr (g n (b i)) j) (by`. Introduce `n m hn hm hp`. Take `⟨z, hz⟩` from `hg n m hn hm hp (b i)`. Conclude with `⟨b.repr z j, by simp [hz]⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose a ha using hlim`. Set `h₀ : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)` to `B.constr (AfP p) fun i => ∑ j, a i j • inAf D (b j)`. Establish `h₀b : ∀ i, h₀ (inAf D (b i)) = ∑ j, a i j • inAf D (b j)` using `fun i => by`. Rewrite using `[← hB]`. Conclude with `B.constr_basis _ _ i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Establish `key : ∀ n : ℕ, 0 < n → Nat.Coprime n p → ∀ x : D.La, ∃ w ∈ LaHat D, h₀ (inHom D x) = inHom D (g n x) + n • w`. Introduce `n hn hp x`. Establish `hx : x ∈ Submodule.span ℤ (Set.range b)` using `b.mem_span x`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, rfl⟩` from `hy`. Use `choose e he he' using fun j => ha i j n hn hp`. Use `⟨∑ j, e j • inAf D (b j), sum_mem fun j _ => smul_inAf_mem D (he j) _, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← b.sum_repr (g n (b i)), map_sum]`. Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `(h₀b i).trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[he' j, map_zsmul, add_smul, mul_smul, Int.cast_smul_eq_zsmul, Nat.cast_smul_eq_nsmul]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Take `⟨w, hw, e⟩` from `hx`. Take `⟨w', hw', e'⟩` from `hy`. Use `⟨w + w', add_mem hw hw', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, e, e', map_add, map_add, nsmul_add]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `smul k x _ hx`. Take `⟨w, hw, e⟩` from `hx`. Use `⟨k • w, zsmul_mem hw k, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, map_zsmul, e, map_zsmul, map_zsmul, zsmul_add, smul_comm k n w]`. Use `⟨h₀, fun v hv => ?_, key⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a', x, ha', rfl⟩` from `hz`. Take `⟨w, hw, e⟩` from `key 1 one_pos (Nat.coprime_one_left p) x`. Rewrite using `[← smul_inAf, map_smul]`.
-
-Express the relevant statement in the definitionally equal form `a' • h₀ (inHom D x) ∈ _`. Rewrite using `[e, smul_add, one_nsmul]`. Conclude with `add_mem (smul_inAf_mem D ha' _) (smul_mem D ha' hw)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
-
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_adelic_limit (g : ℕ → D.La →+ D.La)
     (hg : ∀ n m : ℕ, 0 < n → 0 < m → Nat.Coprime (n * m) p → ∀ x : D.La, ∃ z : D.La, g (n * m) x = g n x + n • z) :
@@ -214,7 +208,7 @@ theorem exists_adelic_limit (g : ℕ → D.La →+ D.La)
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Introduce `_ _ D g hg` and use `exists_adelic_limit D g hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (p : ℕ) [Fact (Nat.Prime p)] (D : Datum p) (g : ℕ → D.La →+ D.La),
     (∀ n m : ℕ, 0 < n → 0 < m → Nat.Coprime (n * m) p → ∀ x : D.La, ∃ z : D.La, g (n * m) x = g n x + n • z) →

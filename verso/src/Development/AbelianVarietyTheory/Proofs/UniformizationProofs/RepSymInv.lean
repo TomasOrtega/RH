@@ -28,7 +28,7 @@ def Rep (P : ∀ (U : Type) [CommGroup U], ((Y.left ⟶ X) → U) → U)
 variable {L Y}
 
 /- English proof (translation)
-Take `⟨K, _, φ, ε, s, hP, hv⟩` from `h`. Take `⟨K', _, φ', ε', s', hP', hv'⟩` from `h'`. Use `⟨K ⊕ K', inferInstance, _, _, H1.SectionArithmetic.mulSec s s', fun U _ h => ?_, fun T r z J hJ => ?_⟩` and prove the remaining obligations. Conclude with `DVR.prod_sum₂ _ (hP U h) (hP' U h)`. Rewrite using `[H1.SectionArithmetic.sval_mulSec _ _ _ _ hJ, hv T r z J hJ, hv' T r z J hJ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rep.mul {P P' v v'} (h : Rep L Y P v) (h' : Rep L Y P' v') :
     Rep L Y (fun U _ h => P U h * P' U h) (fun T r z J => v T r z J * v' T r z J) := by
@@ -39,7 +39,7 @@ theorem Rep.mul {P P' v v'} (h : Rep L Y P v) (h' : Rep L Y P' v') :
   · rw [H1.SectionArithmetic.sval_mulSec _ _ _ _ hJ, hv T r z J hJ, hv' T r z J hJ]
 
 /- English proof (translation)
-Take `⟨K', _, φ', ε', s', hP', hv'⟩` from `h`. Take `⟨s, hs⟩` from `exists_sec hL (φ' := φ) (ε' := ε) (fun U _ h => (hP' U h).trans (hP U h)) s'`. Conclude with `⟨s, fun T r z J hJ => (hs _ _ z J hJ).trans (hv' T r z J hJ)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Rep.out (hL : L.IsLB) {P v} (h : Rep L Y P v) {K : Type} [Fintype K] (φ : K → (Y.left ⟶ X)) (ε : K → ℤ)
     (hP : ∀ (U : Type) [CommGroup U] (h : (Y.left ⟶ X) → U), P U h = ∏ k, h (φ k) ^ ε k) :
@@ -50,7 +50,7 @@ theorem Rep.out (hL : L.IsLB) {P v} (h : Rep L Y P v) {K : Type} [Fintype K] (φ
   exact ⟨s, fun T r z J hJ => (hs _ _ z J hJ).trans (hv' T r z J hJ)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨K, inferInstance, _, _, H1.SectionArithmetic.pullSec s q, fun _ _ _ => rfl, fun _ _ z _ hJ => H1.SectionArithmetic.sval_pullSec _ _ _ z hJ⟩`.
+Supply the required witnesses or components.
 -/
 theorem rep_sec {Y' : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y' ⟶ X)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε)) (q : Y.left ⟶ Y') :
@@ -59,7 +59,7 @@ theorem rep_sec {Y' : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y' ⟶ X)}
     fun _ _ z _ hJ => H1.SectionArithmetic.sval_pullSec _ _ _ z hJ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨K, inferInstance, _, _, H1.SectionArithmetic.pullSec (genSec t ht) q, fun _ _ _ => rfl, fun _ _ z _ hJ => (H1.SectionArithmetic.sval_pullSec _ _ _ z hJ).trans (sval_genSec t ht _ z hJ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem rep_gen {Y' : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y' ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (q : Y.left ⟶ Y') :
@@ -68,7 +68,7 @@ theorem rep_gen {Y' : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y' ⟶ X)}
     fun _ _ z _ hJ => (H1.SectionArithmetic.sval_pullSec _ _ _ z hJ).trans (sval_genSec t ht _ z hJ)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨K, inferInstance, _, _, H1.SectionArithmetic.pullSec (genSec (LB.invGen L φ ε t) (DVR.invGen_isGen _ _ _ _ ht)) q, fun _ _ _ => DVR.prod_neg _ _ rfl, fun _ _ z _ hJ => (H1.SectionArithmetic.sval_pullSec _ _ _ z hJ).trans ((sval_genSec _ _ _ z hJ).trans (congrArg Units.val (val_i …`.
+Supply the required witnesses or components.
 -/
 theorem rep_inv {Y' : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y' ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (q : Y.left ⟶ Y') :
@@ -79,7 +79,7 @@ theorem rep_inv {Y' : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y' ⟶ X)}
       (congrArg Units.val (val_inv _ _)))⟩
 
 /- English proof (translation)
-Take `⟨K', _, φ', ε', s', hP', hv'⟩` from `h`. Conclude with `⟨K', inferInstance, φ', ε', s', fun U _ h => (hP' U h).trans (hP U h), fun T r z J hJ => (hv' T r z J hJ).trans (hv T r z J hJ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Rep.congr {P P' v v'} (h : Rep L Y P v)
     (hP : ∀ (U : Type) [CommGroup U] (h : (Y.left ⟶ X) → U), P U h = P' U h)
@@ -89,9 +89,9 @@ theorem Rep.congr {P P' v v'} (h : Rep L Y P v)
     fun T r z J hJ => (hv' T r z J hJ).trans (hv T r z J hJ)⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `⟨DVR.SecOps.secZero, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_zero]`. Conclude with `(gs_eq r z _ (hJ.mem φ r) 0).trans (by rw [map_zero, map_zero])`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Take `⟨d, hd⟩` from `ih (fun i => s i.succ)`. Use `⟨DVR.SecOps.secAdd (s 0) d, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_succ, ← hd Z r z J hJ]`. Conclude with `gs_add r z _ (hJ.mem φ r) _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum {K : Type} [Fintype K] (φ : K → (Y.left ⟶ X)) (ε : K → ℤ) {n : ℕ}
     (s : Fin n → LB.Sec (LB.LinComb L φ ε)) :
@@ -113,15 +113,15 @@ end Rep
 variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {Y : Over (Spec (CommRingCat.of R))}
 
 /- English proof (translation)
-The claim follows from `DVR.comp_cP D ρ a`.
+A detailed English derivation is pending.
 -/
 theorem comp_cT {T T' : Over (Spec (CommRingCat.of R))} (ρ : T' ⟶ T) (a : D.X) : ρ ≫ cT D T a = cT D T' a :=
   DVR.comp_cP D ρ a
 
 /- English proof (translation)
-Establish `e₀ : x.left ≫ D.famφB α 0 = x.left` using `Category.comp_id _`. Establish `e₁ : x.left ≫ D.famφB α 1 = (x * cT D T α).left` using `congrArg (fun q => q.left) ((MonObj.comp_mul x (𝟙 _) (cT D _ α)).trans (by rw [comp_cT, Category.comp_id]))`. Establish `e₂ : x.left ≫ D.famφB α 2 = (cT D T α).left` using `congrArg (fun q => q.left) (comp_cT D x α)`. Establish `e₃ : x.left ≫ D.famφB α 3 = (1 : T ⟶ D.P.A).left` using `congrArg (fun q : T ⟶ D.P.A => q.left) (MonObj.comp_one (M := D.P.A) x)`. Rewrite using `[Fin.prod_univ_four, e₀, e₁, e₂, e₃]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show _ ^ ((k : ℤ) - 1) * _ ^ (1 : ℤ) * _ ^ (-1 : ℤ) * _ ^ (1 : ℤ) = _`. Rewrite using `[zpow_one, zpow_one, zpow_neg_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_famB {T : Over (Spec (CommRingCat.of R))} (x : T ⟶ D.P.A) (α : D.X) (k : ℕ) {U : Type} [CommGroup U]
     (h : (T.left ⟶ D.P.A.left) → U) : ∏ i, h (x.left ≫ D.famφB α i) ^ DegPre.famε k i =
@@ -137,9 +137,9 @@ theorem prod_famB {T : Over (Spec (CommRingCat.of R))} (x : T ⟶ D.P.A) (α : D
   rw [zpow_one, zpow_one, zpow_neg_one]
 
 /- English proof (translation)
-Establish `e₀ : (lift ρ x).left ≫ famφT D T₀ α 0 = x.left` using `congrArg (fun q => q.left) (lift_snd ρ x)`. Establish `e₁ : (lift ρ x).left ≫ famφT D T₀ α 1 = (x * cT D T α).left` using `congrArg (fun q => q.left) ((MonObj.comp_mul (lift ρ x) (snd T₀ D.P.A) (cT D _ α)).trans (by rw [comp_cT, lift_snd]))`. Establish `e₂ : (lift ρ x).left ≫ famφT D T₀ α 2 = (cT D T α).left` using `congrArg (fun q => q.left) (comp_cT D (lift ρ x) α)`. Establish `e₃ : (lift ρ x).left ≫ famφT D T₀ α 3 = (1 : T ⟶ D.P.A).left` using `congrArg (fun q : T ⟶ D.P.A => q.left) (MonObj.comp_one (M := D.P.A) (lift ρ x))`. Rewrite using `[Fin.prod_univ_four, e₀, e₁, e₂, e₃]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show _ ^ ((k : ℤ) - 1) * _ ^ (1 : ℤ) * _ ^ (-1 : ℤ) * _ ^ (1 : ℤ) = _`. Rewrite using `[zpow_one, zpow_one, zpow_neg_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_famT {T T₀ : Over (Spec (CommRingCat.of R))} (ρ : T ⟶ T₀) (x : T ⟶ D.P.A) (α : D.X) (k : ℕ) {U : Type}
     [CommGroup U] (h : (T.left ⟶ D.P.A.left) → U) : ∏ i, h ((lift ρ x).left ≫ famφT D T₀ α i) ^ DegPre.famε k i =
@@ -156,7 +156,7 @@ theorem prod_famT {T T₀ : Over (Spec (CommRingCat.of R))} (ρ : T ⟶ T₀) (x
   rw [zpow_one, zpow_one, zpow_neg_one]
 
 /- English proof (translation)
-The claim follows from `(rep_sec f (lift ρ x).left).congr (fun _ _ h => prod_famT D ρ x α k h) (fun _ r z J _ => by rw [← Over.comp_left, comp_lift])`.
+A detailed English derivation is pending.
 -/
 theorem rep_fam {T₀ : Over (Spec (CommRingCat.of R))} (ρ : Y ⟶ T₀) (x : Y ⟶ D.P.A) {α : D.X} {k : ℕ}
     (f : SecBT D T₀ k α) :
@@ -170,7 +170,7 @@ def cubP {U : Type} [CommGroup U] (h : (Y.left ⟶ D.P.A.left) → U) (x x' y : 
         h y.left * (h (1 : Y ⟶ D.P.A).left)⁻¹
 
 /- English proof (translation)
-The claim follows from `(rep_gen (L := D.P.L) (φ := thφ D.P.A (x3 D.P.A)) (ε := thε) D.cub.t D.cub.isGen (lift x (lift x' y)).left).congr (fun _ _ h => prod_cub x x' y h) (fun _ r z J _ => by rw [← Over.comp_left, comp_lift, comp_lift]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem rep_cub (x x' y : Y ⟶ D.P.A) :
     Rep D.P.L Y (fun _ _ h => cubP D h x x' y) (fun _ r z J => (cubV D.cub z J (r ≫ x) (r ≫ x') (r ≫ y)).val) :=
@@ -179,7 +179,7 @@ theorem rep_cub (x x' y : Y ⟶ D.P.A) :
     (fun _ r z J _ => by rw [← Over.comp_left, comp_lift, comp_lift]; rfl)
 
 /- English proof (translation)
-The claim follows from `(rep_inv (L := D.P.L) (φ := thφ D.P.A (x3 D.P.A)) (ε := thε) D.cub.t D.cub.isGen (lift x (lift x' y)).left).congr (fun _ _ h => congrArg (·⁻¹) (prod_cub x x' y h)) (fun _ r z J _ => by rw [← Over.comp_left, comp_lift, comp_lift]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem rep_cub_inv (x x' y : Y ⟶ D.P.A) :
     Rep D.P.L Y (fun _ _ h => (cubP D h x x' y)⁻¹)
@@ -189,7 +189,7 @@ theorem rep_cub_inv (x x' y : Y ⟶ D.P.A) :
     (fun _ r z J _ => by rw [← Over.comp_left, comp_lift, comp_lift]; rfl)
 
 /- English proof (translation)
-The claim follows from `(rep_inv D.sym D.sym_gen y.left).congr (fun _ _ h => by rw [Fin.prod_univ_two] show (h (y⁻¹).left ^ (1 : ℤ) * h (y.left ≫ 𝟙 _) ^ (-1 : ℤ))⁻¹ = _ rw [Category.comp_id, zpow_one, zpow_neg_one, mul_inv, inv_inv]) (fun _ _ _ _ _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem rep_sym_inv (y : Y ⟶ D.P.A) :
     Rep D.P.L Y (fun _ _ h => (h (y⁻¹).left)⁻¹ * h y.left) (fun _ r z J => ((val D.sym (r ≫ y).left z J)⁻¹).val) :=
@@ -201,7 +201,7 @@ theorem rep_sym_inv (y : Y ⟶ D.P.A) :
     (fun _ _ _ _ _ => rfl)
 
 /- English proof (translation)
-Use `(rep_gen (L := D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig D.rig_gen Y.hom).congr (fun _ _ h => ?_) (fun T r z J _ => ?_)` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique, zpow_one]`. Both sides reduce to the same expression. Rewrite using `[Over.w r]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rep_rig :
     Rep D.P.L Y (fun _ _ h => h (1 : Y ⟶ D.P.A).left) (fun _ _ z J => (rigV D z J).val) := by
@@ -211,13 +211,13 @@ theorem rep_rig :
   · rw [Over.w r]; rfl
 
 /- English proof (translation)
-The claim follows from `DVR.cPoint_add D T a b`.
+A detailed English derivation is pending.
 -/
 theorem cT_add (T : Over (Spec (CommRingCat.of R))) (a b : D.X) : cT D T (a + b) = cT D T a * cT D T b :=
   DVR.cPoint_add D T a b
 
 /- English proof (translation)
-The claim follows from `DVR.prod_sum₂ _ (prod_famB D _ α 2 h) (prod_famB D _ β 2 h)`.
+A detailed English derivation is pending.
 -/
 theorem box_form (α β : D.X) {U : Type} [CommGroup U] (h : ((D.P.A ⊗ D.P.A).left ⟶ D.P.A.left) → U) :
     ∏ k : Fin 4 ⊕ Fin 4, h (Sum.elim (fun i => (fst D.P.A D.P.A).left ≫ D.famφB α i)
@@ -229,7 +229,7 @@ theorem box_form (α β : D.X) {U : Type} [CommGroup U] (h : ((D.P.A ⊗ D.P.A).
   DVR.prod_sum₂ _ (prod_famB D _ α 2 h) (prod_famB D _ β 2 h)
 
 /- English proof (translation)
-Simplify using `only [cubP, hc, mul_inv_cancel_right, mul_inv_cancel]`. Rewrite using `[mul_comm x (a * b), mul_comm (x * y) a, ← _root_.mul_assoc a x y, mul_comm (x * y⁻¹) b, ← _root_.mul_assoc b x y⁻¹, mul_comm y c]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, Nat.cast_one, Nat.cast_ofNat]`. Use `module`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_add {U : Type} [CommGroup U] (h : (Y.left ⟶ D.P.A.left) → U) (x y a b c : Y ⟶ D.P.A) (hc : c * b = a) :
     cubP D h x y y⁻¹ * ((h (y⁻¹).left)⁻¹ * h y.left) * (h (1 : Y ⟶ D.P.A).left * h (1 : Y ⟶ D.P.A).left) *
@@ -246,13 +246,13 @@ theorem form_add {U : Type} [CommGroup U] (h : (Y.left ⟶ D.P.A.left) → U) (x
   module
 
 /- English proof (translation)
-Introduce `R _ _ D T₀ ρ₀ α β`. Use `⟨fun n f f' => ?_, fun a b g g' hα hβ => ?_⟩` and prove the remaining obligations. Use `choose s hs using fun i => ((rep_fam D ρ₀ (fst D.P.A D.P.A) (f i)).mul (rep_fam D ρ₀ (snd D.P.A D.P.A) (f' i))).out D.P.isLB _ _ (fun _ _ h => (box_form D α β h).symm)`. Take `⟨d, hd⟩` from `exists_sum _ _ s`. Use `⟨d, fun T x y z J hJ => (hd _ _ z J hJ).trans (Finset.sum_congr rfl fun i _ => ?_)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs i T (lift x y) z J hJ, lift_fst, lift_snd]`. Substitute `hα hβ` using the available equality. Set `x` to `fst D.P.A D.P.A`. Set `y` to `snd D.P.A D.P.A`. Establish `hc : cT D (D.P.A ⊗ D.P.A) (a - b) * cT D _ b = cT D _ a` using `by rw [← cT_add, sub_add_cancel]`.
+Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `(((((((rep_cub D x y y⁻¹).mul (rep_sym_inv D y)).mul ((rep_rig D).mul (rep_rig D))).mul (rep_cub D (cT D _ a) (cT D _ b) x)).mul (rep_cub D (cT D _ b) y y⁻¹)).mul (((rep_cub_inv D (cT D _ a) x y).mul (rep_cub_inv D (cT D _ b) x y⁻¹)).mul (rep_cub_inv D (cT D _ (a - b)) (cT D _ b) …`. Use `⟨d, fun T p q z J hJ => (hd T (lift p q) z J hJ).trans ?_⟩` and prove the remaining obligations. Establish `e₁ : lift p q ≫ x = p` using `lift_fst _ _`. Establish `e₂ : lift p q ≫ y = q` using `lift_snd _ _`. Establish `e₃ : lift p q ≫ y⁻¹ = q⁻¹` using `by rw [GrpObj.comp_inv, e₂]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₄ : lift p q ≫ (x * y) = p * q` using `by rw [MonObj.comp_mul, e₁, e₂]`. Establish `e₅ : lift p q ≫ (x * y⁻¹) = p * q⁻¹` using `by rw [MonObj.comp_mul, e₁, e₃]`. Simplify using `only [e₁, e₂, e₃, e₄, e₅, comp_cT]`. Use `congr 1`. Simplify using `only [kapV, kap0, rigV, mul_inv, sq, Units.val_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (T₀ : Over (Spec (CommRingCat.of R))) (ρ₀ : D.P.A ⊗ D.P.A ⟶ T₀) (α β : D.X), (∀ (n : ℕ) (f : Fin n → SecBT D T₀ 2 α) (f' : Fin n → SecBT D T₀ 2 β), ∃ d : LB.Sec (LB.LinComb D.P.L (K := Fin 4 ⊕ Fin 4) (Sum.elim (fun i => (fst D.P.A D.P.A).left ≫ D.famφB α i) (fun i => (snd D.P.A D.P.A).left ≫ D.famφB β i)) (Sum.elim (DegPre.famε 2) (DegPre.famε 2))), ∀ (T : Over (Spec (CommRingCat.of R))) (x y : T ⟶ D.P.A) (z : T.left) (J), Good D.P.L z J → sval d (lift x y).left z J = ∑ i, sval (f i) (lift (lift x y ≫ ρ₀) x).left z J * sval (f' i) (lift (lift x y ≫ ρ₀) y).left z J) ∧ ∀ (a b : D.X) (g : SecBT D T₀ 1 a) (g' : SecBT D T₀ 1 b), α = a + b → β = a - b → ∃ d : LB.Sec (LB.LinComb D.P.L (K := Fin 4 ⊕ Fin 4) (Sum.elim (fun i => (fst D.P.A D.P.A).left ≫ D.famφB α i) (fun i => (snd D.P.A D.P.A).left ≫ D.famφB β i)) (Sum.elim (DegPre.famε 2) (DegPre.famε 2))), ∀ (T : Over (Spec (CommRingCat.of R))) (x y : T ⟶ D.P.A) (z : T.left) (J), Good D.P.L z J → sval d (lift x y).left z J = (kapV D a b z J x y).val * (sval g (lift (lift x y ≫ ρ₀) (x * y)).left z J * sval g' (lift (lift x y ≫ ρ₀) (x * y⁻¹)).left z J) := by
   intro R _ _ D T₀ ρ₀ α β

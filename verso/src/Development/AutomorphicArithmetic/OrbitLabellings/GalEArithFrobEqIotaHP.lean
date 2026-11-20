@@ -8,11 +8,11 @@ open scoped BigOperators
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Classical
 
 /- English proof (translation)
-Introduce `D p hp hc P hP1 hP2 σ hσ`. Establish `hcl : primeClass D.host.toHostRaw p = PrimeClass.inertClass` using `hc`. Take `⟨hN, hj, hps⟩` from `(primeClass_eq_inert_iff_symbols hp).1 hcl`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hcop : Nat.Coprime p D.host.condN` using `hp.coprime_iff_not_dvd.2 hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∃ g, g ∈ frobSet D p` using `⟨_, P, hP1, hP2, σ, hσ, rfl⟩`. Take `⟨P', hP'1, hP'2, σ', hσ', hg⟩` from `Classical.epsilon_spec hne`. Establish `e1` using `(D.host.frob_iff p hcop P σ).1 hσ`. Establish `e2` using `(D.host.frob_iff p hcop P' σ').1 hσ'`. Establish `h1 : (D.host.galE σ).1 = Formalism.FrobeniusOrbits.c0` using `(D.host.hostClasses p hN P σ hσ).2.2.2 ⟨hj, hps⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (D.host.galE σ).2 = D.R.iota (hP D p)`. Unfold `hP`. Rewrite using `[Formalism.HC.Frame.iota_iotaInv, ← hg, e1, e2]`. Conclude with `⟨Prod.ext h1 h2, by rw [h2, Formalism.HC.Frame.orderOf_iota]⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.galE_arithFrob_eq_iota_hP :
     ∀ (D : D7) (p : ℕ), p.Prime → IsResidueClassZero D p →

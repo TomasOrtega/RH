@@ -13,9 +13,9 @@ section Lemmas
 variable {L : Type} [Field L] [NumberField L] {N : ℕ}
 
 /- English proof (translation)
-Unfold `actL actM`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Establish `hi : Continuous fun x : Gp L N => fun w => (((x w)⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)` using `continuous_pi fun w => Units.continuous_coe_inv.comp (continuous_apply w)`. Use `continuous_pi fun w => ?_` and prove the remaining obligations. Establish `hw` using `(continuous_apply w).comp hi`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `((hw.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul hw`.
+A detailed English derivation is pending.
 -/
 theorem actL_cont (h : HS L N) : Continuous fun x : Gp L N => actL x h := by
   unfold actL actM
@@ -27,11 +27,11 @@ theorem actL_cont (h : HS L N) : Continuous fun x : Gp L N => actL x h := by
   exact ((hw.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul hw
 
 /- English proof (translation)
-Unfold `ofS`. Use `continuous_pi fun w => ?_` and prove the remaining obligations. Simplify using `only [MonoidHom.coe_comp, Function.comp_def, MonoidHom.pi_apply, Pi.evalMonoidHom_apply]`. Rewrite using `[Units.continuous_iff]`. Establish `hv : Continuous fun a : Sp L N => ((a w : Matrix.SpecialLinearGroup (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)` using `continuous_subtype_val.comp (continuous_apply w)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hv, ?_⟩` and prove the remaining obligations. Establish `hi : ∀ A : Matrix.SpecialLinearGroup (Fin N) ℂ, ((SpecialLinearGroup.toGL A)⁻¹ : GL (Fin N) ℂ).val = Matrix.adjugate (A : Matrix (Fin N) (Fin N) ℂ)`. Introduce `A`. Rewrite using `[← map_inv]`. Conclude with `Matrix.SpecialLinearGroup.coe_inv A`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hi]`. Conclude with `hv.matrix_adjugate`.
+A detailed English derivation is pending.
 -/
 theorem ofS_cont : Continuous (ofS L N) := by
   unfold ofS
@@ -50,9 +50,9 @@ theorem ofS_cont : Continuous (ofS L N) := by
   exact hv.matrix_adjugate
 
 /- English proof (translation)
-Unfold `fr`. Establish `hp : Continuous fun x : Gp L N => actL x ↑(one L N)` using `actL_cont _`. Establish `hw : Continuous fun x : Gp L N => ω (actL x ↑(one L N))` using `hω.comp_continuous hp fun x => (x • one L N).2`. Establish `hu : Continuous fun x : Gp L N => fun i => actL x (u i)` using `continuous_pi fun i => actL_cont (u i)`. Simplify using `only [ContinuousAlternatingMap.compContinuousLinearMap_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hw.eval hu`.
+A detailed English derivation is pending.
 -/
 theorem fr_comp_cont {q : ℕ} {ω : Form (HS L N) q} (hω : ContinuousOn ω (Pos L N)) (u : Fin q → HS L N) :
     Continuous fun x => fr ω x u := by
@@ -66,9 +66,9 @@ theorem fr_comp_cont {q : ℕ} {ω : Form (HS L N) q} (hω : ContinuousOn ω (Po
   exact hw.eval hu
 
 /- English proof (translation)
-Unfold `fr`. Establish `hm : actL x ↑(one L N) ∈ Pos L N` using `(x • one L N).2`. Establish `h1` using `hω _ hm`. Establish `hc : actL (g * x) = (actL g).comp (actL x)` using `ContinuousLinearMap.ext fun h => actL_mul g x h`. Rewrite using `[hc, ← h1]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `v`. Simplify using `only [ContinuousAlternatingMap.compContinuousLinearMap_apply, ContinuousLinearMap.comp_apply, Function.comp_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fr_inv {q : ℕ} {ω : Form (HS L N) q} {g : Gp L N} (hω : FInv ω g) (x : Gp L N) :
     fr ω (g * x) = fr ω x := by
@@ -83,15 +83,15 @@ theorem fr_inv {q : ℕ} {ω : Form (HS L N) q} {g : Gp L N} (hω : FInv ω g) (
     Function.comp_def]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[fr]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fr_sub {q : ℕ} (ω ω' : Form (HS L N) q) (x : Gp L N) : fr (ω - ω') x = fr ω x - fr ω' x := by
   ext v; simp [fr]
 
 /- English proof (translation)
-Unfold `FInv at hω hω' ⊢`. Introduce `h hh`. Use extensionality with `v`. Establish `a` using `congrArg (fun f => f v) (hω h hh)`. Establish `b` using `congrArg (fun f => f v) (hω' h hh)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ContinuousAlternatingMap.compContinuousLinearMap_apply] at a b`. Simplify using `only [ContinuousAlternatingMap.compContinuousLinearMap_apply, Pi.sub_apply, ContinuousAlternatingMap.sub_apply, a, b]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem finv_sub {q : ℕ} {ω ω' : Form (HS L N) q} {g : Gp L N} (hω : FInv ω g) (hω' : FInv ω' g) :
     FInv (ω - ω') g := by
@@ -105,7 +105,7 @@ theorem finv_sub {q : ℕ} {ω ω' : Form (HS L N) q} {g : Gp L N} (hω : FInv �
     ContinuousAlternatingMap.sub_apply, a, b]
 
 /- English proof (translation)
-Unfold `dC`. Use function extensionality and compare the values at `y`. Rewrite using `[← Finset.sum_sub_distrib]`. Simplify using `only [mul_sub]`.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dC_sub {Y : Type} {m : ℕ} (F G : (Fin (m + 1) → Y) → ℝ) :
     dC (fun y => F y - G y) = fun y => dC F y - dC G y := by
@@ -115,7 +115,7 @@ theorem dC_sub {Y : Type} {m : ℕ} (F G : (Fin (m + 1) → Y) → ℝ) :
   simp only [mul_sub]
 
 /- English proof (translation)
-Unfold `ev`. Simplify using `only [mul_sub, Finsupp.sum_sub]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ev_sub {G H Y : Type} [Group G] [Group H] [MulAction H Y] (ρ : G →* H) {m : ℕ}
     (F F' : (Fin (m + 1) → Y) → ℝ) (y : Y) (z : Chn G m) :
@@ -124,9 +124,9 @@ theorem ev_sub {G H Y : Type} [Group G] [Group H] [MulAction H Y] (ρ : G →* H
   simp only [mul_sub, Finsupp.sum_sub]
 
 /- English proof (translation)
-Unfold `ev`. Use `Finsupp.sum_congr fun g _ => ?_` and prove the remaining obligations. Rewrite using `[hG]`. Use `congr 2`. Use function extensionality and compare the values at `j`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_toK {m : ℕ} (G : (Fin (m + 1) → GK L N) → ℝ) (Φ : (Fin (m + 1) → Pos L N) → ℝ)
     (hG : ∀ y, G y = Φ fun j => toP L N (y j) • one L N) (z : Chn (Gm L N) m) :
@@ -140,7 +140,7 @@ theorem ev_toK {m : ℕ} (G : (Fin (m + 1) → GK L N) → ℝ) (Φ : (Fin (m + 
   rfl
 
 /- English proof (translation)
-Unfold `pb`. Establish `hc : actL (g * e) = (actL g).comp (actL e)` using `ContinuousLinearMap.ext fun x => actL_mul g e x`. Rewrite using `[hc]`. Use extensionality with `v`. Simplify using `only [ContinuousAlternatingMap.compContinuousLinearMap_apply, ContinuousLinearMap.comp_apply, Function.comp_def]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem pb_actL_compContinuousLinearMap_eq_pb_mul {k : ℕ} (ω : Form (HS L N) k) (g e : Gp L N) (h : HS L N) :
     (pb g ω (actL e h)).compContinuousLinearMap (actL e) = pb (g * e) ω h := by
@@ -153,9 +153,9 @@ private theorem pb_actL_compContinuousLinearMap_eq_pb_mul {k : ℕ} (ω : Form (
     Function.comp_def]
 
 /- English proof (translation)
-Establish `hm : actL g h ∈ Pos L N` using `(g • (⟨h, hh⟩ : Pos L N)).2`. Establish `h1 : pb a ω (actL g h) = ω (actL g h)`. Unfold `pb`. Conclude with `ha _ hm`. Rewrite using `[← pb_actL_compContinuousLinearMap_eq_pb_mul, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `pb`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem pb_mul_eq_pb_of_fInv_of_mem_Pos {k : ℕ} {ω : Form (HS L N) k} {a : Gp L N} (ha : FInv ω a) (g : Gp L N)
     {h : HS L N} (hh : h ∈ Pos L N) : pb (a * g) ω h = pb g ω h := by
@@ -168,11 +168,11 @@ private theorem pb_mul_eq_pb_of_fInv_of_mem_Pos {k : ℕ} {ω : Form (HS L N) k}
   rfl
 
 /- English proof (translation)
-Unfold `mn`. Distinguish the cases in `hfin : Finite (Quotient (QuotientGroup.rightRel S))`. Use `haveI := Fintype.ofFinite (Quotient (QuotientGroup.rightRel S))`. Simplify using `only [finsum_eq_sum_of_fintype]`. Use extensionality with `v`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[ContinuousAlternatingMap.compContinuousLinearMap_apply]`. Establish `hinf : Infinite (Gm L N ⧸ S)`. Rewrite using `[← not_finite_iff_infinite]`. Introduce `hf`. Conclude with `hfin (Finite.of_equiv _ (QuotientGroup.quotientRightRelEquivQuotientLeftRel S).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : S.index = 0` using `Subgroup.index_eq_zero_iff_infinite.2 hinf`. Simplify using `only [h0, Nat.cast_zero, _root_.inv_zero, zero_smul]`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mn_compContinuousLinearMap_actL {k : ℕ} (S : Subgroup (Gm L N))
     (F : Quotient (QuotientGroup.rightRel S) → (HS L N [⋀^Fin k]→L[ℝ] ℝ)) (e : Gp L N) :
@@ -193,23 +193,21 @@ private theorem mn_compContinuousLinearMap_actL {k : ℕ} (S : Subgroup (Gm L N)
     simp
 
 /- English proof (translation)
-Unfold `FInv Hk`. Introduce `h hh`. Rewrite using `[mn_compContinuousLinearMap_actL]`. Simplify using `only [pb_actL_compContinuousLinearMap_eq_pb_mul]`. Set `σ : Quotient (QuotientGroup.rightRel (Sg q)) ≃ Quotient (QuotientGroup.rightRel (Sg q))` to `{ toFun := Quotient.map' (fun x => x * γ) (fun a b hab => by`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Rewrite `hab`, the goal using `[QuotientGroup.rightRel_apply]`. Simplify `hab)` using `[_root_.mul_inv_rev, mul_assoc]`. Use `invFun := Quotient.map' (fun x => x * γ⁻¹) (fun a b hab => by`. Rewrite `hab`, the goal using `[QuotientGroup.rightRel_apply]`. Simplify `hab)` using `[_root_.mul_inv_rev, mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `left_inv := by`. Introduce `c`. Proceed by induction on `c using Quotient.inductionOn' with`. Consider the case `h a => simp only [Quotient.map'_mk'', mul_inv_cancel_right]`. Use `right_inv := by`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `c`. Proceed by induction on `c using Quotient.inductionOn' with`. Consider the case `h a => simp only [Quotient.map'_mk'', inv_mul_cancel_right] }`. Establish `key : ∀ c, pb (toP L N (q * toK L N (σ c).out)) ω h = pb (toP L N (q * toK L N c.out) * emb L N γ) ω h`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e1 : σ c = Quotient.mk'' (c.out * γ)` using `by conv_lhs => rw [← Quotient.out_eq' c]`. Both sides reduce to the same expression. Establish `e2 : (Quotient.mk'' (σ c).out : Quotient (QuotientGroup.rightRel (Sg q))) = Quotient.mk'' (c.out * γ)`. Rewrite using `[Quotient.out_eq', e1]`. Establish `hr` using `Quotient.exact' e2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hr` using `[QuotientGroup.rightRel_apply]`. Establish `hs : (σ c).out * (c.out * γ)⁻¹ ∈ Sg q`. Use `(Sg q).inv_mem hr` as an intermediate fact. Simplify `this` using `[_root_.mul_inv_rev, mul_assoc]`. Unfold `Sg at hs`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, ⟨t, rfl⟩, hx⟩` from `Subgroup.mem_map.1 (Subgroup.mem_comap.1 hs)`. Establish `eq : q * toK L N (σ c).out = toK L N t * ((q * toK L N c.out) * toK L N γ)`. Establish `hsplit : (σ c).out = ((σ c).out * (c.out * γ)⁻¹) * (c.out * γ)` using `by group`. Rewrite using `[hsplit, map_mul (toK L N) _ (c.out * γ), ← hx]`. Simplify using `[MulAut.conj_apply, mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `ht : FInv ω (toP L N (toK L N t))` using `hω t`. Rewrite using `[eq, map_mul, map_mul, pb_mul_eq_pb_of_fInv_of_mem_Pos ht _ hh]`. Both sides reduce to the same expression. Unfold `mn`. Use `congr 1`.
-
-Rewrite using `[← finsum_comp_equiv σ (f := fun c => pb (toP L N (q * toK L N c.out)) ω h)]`. Conclude with `finsum_congr fun c => (key c).symm`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hk_finv_emb {k : ℕ} (q : GK L N) {ω : Form (HS L N) k} (hω : ∀ γ, FInv ω (emb L N γ)) (γ : Gm L N) :
     FInv (Hk q ω) (emb L N γ) := by
@@ -261,11 +259,11 @@ theorem Hk_finv_emb {k : ℕ} (q : GK L N) {ω : Form (HS L N) k} (hω : ∀ γ,
   exact finsum_congr fun c => (key c).symm
 
 /- English proof (translation)
-Establish `hcomm : ∀ g : Gp L N, g * scal L N s = scal L N s * g`. Introduce `g`. Unfold `scal`. Use function extensionality and compare the values at `w`. Conclude with `(GeneralLinearGroup.scalar_commute (s w) (g w)).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Unfold `FInv Hk`. Introduce `h hh`. Rewrite using `[mn_compContinuousLinearMap_actL]`. Simplify using `only [pb_actL_compContinuousLinearMap_eq_pb_mul]`. Unfold `mn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Use `show pb (toP L N (q * toK L N c.out) * scal L N s) ω h = pb (toP L N (q * toK L N c.out)) ω h`. Rewrite using `[hcomm, pb_mul_eq_pb_of_fInv_of_mem_Pos (hω s) _ hh]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hk_finv_scal {k : ℕ} (q : GK L N) {ω : Form (HS L N) k} (hω : ∀ s, FInv ω (scal L N s))
     (s : InfinitePlace L → ℂˣ) : FInv (Hk q ω) (scal L N s) := by
@@ -285,7 +283,7 @@ theorem Hk_finv_scal {k : ℕ} (q : GK L N) {ω : Form (HS L N) k} (hω : ∀ s,
   rw [hcomm, pb_mul_eq_pb_of_fInv_of_mem_Pos (hω s) _ hh]
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => exact ⟨hG, hγ, hs⟩`. Consider the case `succ r ih`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `⟨Hk_good q ih.1, Hk_finv_emb q ih.2.1, Hk_finv_scal q ih.2.2⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem Hk_iter_props {k : ℕ} (q : GK L N) {ω : Form (HS L N) (k + 1)} (hG : Good ω)
     (hγ : ∀ γ, FInv ω (emb L N γ)) (hs : ∀ s, FInv ω (scal L N s)) (r : ℕ) :
@@ -297,13 +295,11 @@ theorem Hk_iter_props {k : ℕ} (q : GK L N) {ω : Form (HS L N) (k + 1)} (hG : 
     exact ⟨Hk_good q ih.1, Hk_finv_emb q ih.2.1, Hk_finv_scal q ih.2.2⟩
 
 /- English proof (translation)
-Establish `hpb : ∀ g : Gp L N, ContinuousOn (pb g ω) (Pos L N)`. Introduce `g`. Establish `ha : ContinuousOn (fun h => ω (actL g h)) (Pos L N)` using `hc.comp (actL g).continuous.continuousOn fun h hh => (g • (⟨h, hh⟩ : Pos L N)).2`. Unfold `pb`. Conclude with `(ContinuousAlternatingMap.compContinuousLinearMapCLM (actL g)).continuous.comp_continuousOn ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `Hk mn`. Distinguish the cases in `hfin : Finite (Quotient (QuotientGroup.rightRel (Sg q)))`. Use `haveI := Fintype.ofFinite (Quotient (QuotientGroup.rightRel (Sg q)))`. Simplify using `only [finsum_eq_sum_of_fintype]`. Conclude with `ContinuousOn.const_smul (continuousOn_finset_sum _ fun c _ => hpb _) ((((Sg q).index : ℕ) : ℝ)⁻¹)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinf : Infinite (Gm L N ⧸ Sg q)`. Rewrite using `[← not_finite_iff_infinite]`. Introduce `hf`. Conclude with `hfin (Finite.of_equiv _ (QuotientGroup.quotientRightRelEquivQuotientLeftRel (Sg q)).symm)`. Establish `h0 : (Sg q).index = 0` using `Subgroup.index_eq_zero_iff_infinite.2 hinf`.
-
-Simplify using `only [h0, Nat.cast_zero, _root_.inv_zero, zero_smul]`. Conclude with `continuousOn_const`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem continuousOn_Hk_of_continuousOn {k : ℕ} (q : GK L N) {ω : Form (HS L N) k} (hc : ContinuousOn ω (Pos L N)) :
     ContinuousOn (Hk q ω) (Pos L N) := by
@@ -327,17 +323,17 @@ private theorem continuousOn_Hk_of_continuousOn {k : ℕ} (q : GK L N) {ω : For
     exact continuousOn_const
 
 /- English proof (translation)
-Establish `step : ∀ ω' : Form (HS L N) (k + 1), ContinuousOn ω' (Pos L N) → hecke (toK L N) (MonoidHom.id (GK L N)) q (fun y : Fin (k + 2) → GK L N => intP ω' fun j => toP L N (y j) • one L N) = fun y : Fin (k + 2) → GK L N => intP (Hk q ω') fun j => toP L N (y j) • one L N`. Introduce `ω' hc`. Use function extensionality and compare the values at `y`. Rewrite using `[intP_Hk q hc]`. Unfold `hecke mn Sg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Simplify using `only [MonoidHom.id_apply]`. Rewrite using `[intP_pb]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, mul_smul]`. Establish `hcont : ∀ n, ContinuousOn ((Hk q)^[n] ω) (Pos L N)`. Introduce `n`. Proceed by induction on `n with`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact hω`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `continuousOn_Hk_of_continuousOn q ih`. Establish `hall : ∀ n, (hecke (toK L N) (MonoidHom.id (GK L N)) q)^[n] (fun y : Fin (k + 2) → GK L N => intP ω fun j => toP L N (y j) • one L N) = fun y : Fin (k + 2) → GK L N => intP ((Hk q)^[n] ω) fun j => toP L N (y j) • one L N`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Simplify using `only [Function.iterate_succ_apply']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih, step _ (hcont n)]`. Conclude with `congrFun (hall r) y`.
+A detailed English derivation is pending.
 -/
 theorem hecke_iter {k : ℕ} (q : GK L N) {ω : Form (HS L N) (k + 1)} (hω : ContinuousOn ω (Pos L N)) (r : ℕ)
     (y : Fin (k + 2) → GK L N) :

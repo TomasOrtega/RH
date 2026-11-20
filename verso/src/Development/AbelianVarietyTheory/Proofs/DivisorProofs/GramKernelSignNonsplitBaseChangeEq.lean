@@ -12,7 +12,7 @@ section Gen
 variable {L : Type} [Field L] (τ : L →+* L) {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [hform, cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_eq_mat (J : Matrix (Fin n) (Fin n) L) {ι : Type} [Fintype ι] (f : ι → Fin n → L) (i j : ι) :
     hform τ J (f i) (f j) = (cT τ (Matrix.of fun r i => f i r) * J * Matrix.of fun r i => f i r) i j := by
@@ -20,15 +20,13 @@ theorem hform_eq_mat (J : Matrix (Fin n) (Fin n) L) {ι : Type} [Fintype ι] (f 
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `hM : (Matrix.of fun r i => ((b i : V) : Fin n → L) r) = (Matrix.of fun r i => ((c i : V) : Fin n → L) r) * c.toMatrix b`. Use extensionality with `r j`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply]`. Establish `h` using `c.sum_toMatrix_smul_self b j`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `e1 : (Matrix.of fun i j => hform τ J (b i).1 (b j).1) = cT τ (Matrix.of fun r i => ((b i : V) : Fin n → L) r) * J * Matrix.of fun r i => ((b i : V) : Fin n → L) r`. Use extensionality with `i j`. Conclude with `hform_eq_mat τ J (fun i => ((b i : V) : Fin n → L)) i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e2 : (Matrix.of fun i j => hform τ J (c i).1 (c j).1) = cT τ (Matrix.of fun r i => ((c i : V) : Fin n → L) r) * J * Matrix.of fun r i => ((c i : V) : Fin n → L) r`. Use extensionality with `i j`. Conclude with `hform_eq_mat τ J (fun i => ((c i : V) : Fin n → L)) i j`. Establish `hdet : ∀ P : Matrix ι ι L, (cT τ P).det = τ P.det`. Introduce `P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `cT`. Rewrite using `[Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, hM, cT_mul]`. Use `set Mc := Matrix.of fun r i => ((c i : V) : Fin n → L) r`.
-
-Use `set P := c.toMatrix b`. Establish `: cT τ P * cT τ Mc * J * (Mc * P) = cT τ P * (cT τ Mc * J * Mc) * P`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, Matrix.det_mul, Matrix.det_mul, hdet]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_det_change (J : Matrix (Fin n) (Fin n) L) (V : Submodule L (Fin n → L)) {ι : Type} [Fintype ι]
     [DecidableEq ι] (c b : Module.Basis ι L V) :
@@ -59,7 +57,7 @@ theorem gram_det_change (J : Matrix (Fin n) (Fin n) L) (V : Submodule L (Fin n �
   rw [this, Matrix.det_mul, Matrix.det_mul, hdet]
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Matrix.det (c.toMatrix_mul_toMatrix_flip b)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toMatrix_det_ne {V : Submodule L (Fin n → L)} {ι : Type} [Fintype ι] [DecidableEq ι]
     (c b : Module.Basis ι L V) : (c.toMatrix b).det ≠ 0 := by
@@ -74,7 +72,7 @@ section BC
 variable {K L : Type} [Field K] [Field L] (φ : K →+* L) {n : ℕ}
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[LinearMap.mem_ker, Matrix.toLin'_apply]`. Use function extensionality and compare the values at `i`. Rewrite using `[← RingHom.map_mulVec, hx]`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_ker_map {A : Matrix (Fin n) (Fin n) K} {x : Fin n → K} (hx : x ∈ LinearMap.ker (Matrix.toLin' A)) :
     (φ ∘ x) ∈ LinearMap.ker (Matrix.toLin' (A.map φ)) := by
@@ -83,9 +81,9 @@ theorem mem_ker_map {A : Matrix (Fin n) (Fin n) K} {x : Fin n → K} (hx : x ∈
   rw [← RingHom.map_mulVec, hx]; simp
 
 /- English proof (translation)
-Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (Matrix.toLin' (A.map φ))`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker (Matrix.toLin' A)`. Establish `h3 : (A.map φ).rank = A.rank` using `GlobalTheory.Core.Rk.rank_map_field φ A`. Express the relevant statement in the definitionally equal form `(A.map φ).rank + _ = _ at h1`. Express the relevant statement in the definitionally equal form `A.rank + _ = _ at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Module.finrank_fin_fun] at h1 h2`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_ker_map (A : Matrix (Fin n) (Fin n) K) :
     Module.finrank L (LinearMap.ker (Matrix.toLin' (A.map φ))) =
@@ -104,9 +102,9 @@ section Val
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Establish `hx' : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Establish `hy' : Valued.v y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`. Establish `hxy' : Valued.v (x * y) ≠ 0` using `(Valuation.ne_zero_iff _).2 (mul_ne_zero hx hy)`. Unfold `ordL`. Rewrite using `[dif_neg hx', dif_neg hy', dif_neg hxy']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `: WithZero.unzero hxy' = WithZero.unzero hx' * WithZero.unzero hy'`. Apply `WithZero.coe_injective` to reduce the goal to its premises. Rewrite using `[WithZero.coe_mul, WithZero.coe_unzero, WithZero.coe_unzero, WithZero.coe_unzero, map_mul]`. Rewrite using `[this, toAdd_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ordL_mul {x y : L} (hx : x ≠ 0) (hy : y ≠ 0) : ordL (x * y) = ordL x + ordL y := by
   have hx' : Valued.v x ≠ 0 := (Valuation.ne_zero_iff _).2 hx
@@ -120,9 +118,9 @@ theorem ordL_mul {x y : L} (hx : x ≠ 0) (hy : y ≠ 0) : ordL (x * y) = ordL x
   rw [this, toAdd_mul]; ring
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Establish `hτ : τ t ≠ 0` using `(map_ne_zero τ).2 ht`. Establish `ho : ordL (τ t) = ordL t`. Unfold `ordL`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [hv]`. Rewrite using `[ordL_mul (mul_ne_zero hτ ha) ht, ordL_mul hτ ha, ho, show ordL t + ordL a + ordL t = ordL a + 2 * ordL t by ring, zpow_add₀ (by norm_num : (-1 : ℂ) ≠ 0), _root_.zpow_mul]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem sign_conj_mul {τ : L →+* L} (hv : ∀ x, Valued.v (τ x) = Valued.v x) {t : L} (ht : t ≠ 0) (a : L) :
     (-1 : ℂ) ^ ordL (τ t * a * t) = (-1) ^ ordL a := by
@@ -141,17 +139,15 @@ section Main
 variable {K L : Type} [Field K] [Field L] (σ : K →+* K) (τ : L →+* L) (φ : K →+* L) {n : ℕ}
 
 /- English proof (translation)
-Use `letI := φ.toAlgebra`. Use `haveI : FaithfulSMul K L := (faithfulSMul_iff_algebraMap_injective K L).2 φ.injective`. Use `set V := LinearMap.ker (Matrix.toLin' A) with hV`. Use `set V' := LinearMap.ker (Matrix.toLin' (A.map φ)) with hV'`. Establish `hk : Module.finrank L V' = Module.finrank K V` using `finrank_ker_map φ A`.
+Equip the data with the indicated structure. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Break down `isEmpty_or_nonempty (Fin (Module.finrank L V')) with he | hne` into its components or cases. Use `haveI : IsEmpty (Fin (Module.finrank K V)) := hk ▸ he`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_isEmpty, Matrix.det_isEmpty]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `b` to `Module.finBasis K V`. Set `v : Fin (Module.finrank L V') → V'` to `fun i => ⟨φ ∘ ((b (Fin.cast hk i) : V) : Fin n → K), mem_ker_map φ (b (Fin.cast hk i)).2⟩`. Establish `hli : LinearIndependent L v`. Apply `LinearIndependent.of_comp V'.subtype` to reduce the goal to its premises. Establish `h0 : LinearIndependent K (fun i => ((b (Fin.cast hk i) : V) : Fin n → K))` using `(b.linearIndependent.map' V.subtype V.ker_subtype).comp _ (Fin.cast_injective hk)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `linearIndependent_algebraMap_comp_iff.2 h0`. Set `c` to `basisOfLinearIndependentOfCardEqFinrank hli (Fintype.card_fin _)`. Establish `hc : ∀ i, c i = v i` using `fun i => by simp [c]`. Use `⟨(c.toMatrix (Module.finBasis L V')).det, toMatrix_det_ne c _, ?_⟩` and prove the remaining obligations. Establish `e1 : gramOn τ (H.map φ) V' = Matrix.of fun i j => hform τ (H.map φ) (Module.finBasis L V' i).1 (Module.finBasis L V' j).1` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[e1, gram_det_change τ (H.map φ) V' c (Module.finBasis L V')]`. Establish `e2 : (Matrix.of fun i j => hform τ (H.map φ) (c i).1 (c j).1) = ((gramOn σ H V).map φ).submatrix (finCongr hk) (finCongr hk)`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, hc, v, Matrix.submatrix_apply, Matrix.map_apply, gramOn, hform, map_sum, map_mul, Function.comp_apply, hφ, finCongr_apply]`. Both sides reduce to the same expression.
-
-Rewrite using `[e2, Matrix.det_submatrix_equiv_self, show ((gramOn σ H V).map φ).det = φ (gramOn σ H V).det from (RingHom.map_det φ _).symm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_det_map (hφ : ∀ x, τ (φ x) = φ (σ x)) (H A : Matrix (Fin n) (Fin n) K) :
     ∃ t : L, t ≠ 0 ∧ (gramOn τ (H.map φ) (LinearMap.ker (Matrix.toLin' (A.map φ)))).det =
@@ -191,7 +187,7 @@ theorem gram_det_map (hφ : ∀ x, τ (φ x) = φ (σ x)) (H A : Matrix (Fin n) 
 end Main
 
 /- English proof (translation)
-Introduce `E _ _ _ hU w hw n H A`. Establish `hc` using `GlobalTheory.ConjAtPlace.main E hU w`. Establish `hφ : ∀ x : E, cj w (algebraMap E (w.adicCompletion E) x) = algebraMap E (w.adicCompletion E) ((IsCMField.complexConj E).toRingEquiv.toRingHom x)` using `fun x => (hc.2.2.2.1 hw).1 x`. Take `⟨t, ht, hdet⟩` from `gram_det_map (IsCMField.complexConj E).toRingEquiv.toRingHom (cj w) (algebraMap E (w.adicCompletion E)) hφ H A`. Rewrite using `[hdet, sign_conj_mul hc.2.2.1 ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w →
     ∀ (n : ℕ) (H A : Matrix (Fin n) (Fin n) E),

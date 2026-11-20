@@ -14,19 +14,17 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace GlobalTheory.CompanionTheory.WaveMult
 
 /- English proof (translation)
-Introduce `hL n _ _ μ _ E k k' hk hk'`. Take `⟨hsub, -, -, -, hcG, -, -⟩` from `hL n`. Take `⟨hkc, R, hR⟩` from `hk`. Take `⟨hkc', R', hR'⟩` from `hk'`. Use `haveI : CompleteSpace E.V := FiniteDimensional.complete ℂ E.V`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hval : ∀ y : G n, y.val ∈ GLs n` using `fun y => by`. Establish `: IsUnit y.val.det` using `(Matrix.isUnit_iff_isUnit_det _).1 y.isUnit`. Conclude with `this.ne_zero`. Establish `hmul : ∀ a ∈ GLs n, ∀ b ∈ GLs n, a * b ∈ GLs n` using `fun a ha b hb => by`. Express the relevant statement in the definitionally equal form `(a * b).det ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero ha hb`. Use `⟨?_, R + R', fun x hx hlt => ?_⟩` and prove the remaining obligations. Establish `hcv : Continuous (fun y : G n => y.val)` using `Units.continuous_val`. Establish `hci : Continuous (fun y : G n => (y⁻¹ : G n).val)` using `hcv.comp continuous_inv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ContinuousOn (fun p : Mat n × G n => k p.2.val) (GLs n ×ˢ Set.univ)` using `hkc.comp (hcv.comp continuous_snd).continuousOn (fun p _ => hval p.2)`. Establish `h2 : ContinuousOn (fun p : Mat n × G n => k' ((p.2⁻¹ : G n).val * p.1)) (GLs n ×ˢ Set.univ)` using `hkc'.comp ((hci.comp continuous_snd).mul continuous_fst).continuousOn (fun p hp => hmul _ (hval _) _ hp.1)`. Establish `h3 : ContinuousOn (Function.uncurry fun (x : Mat n) (y : G n) => k y.val * k' ((y⁻¹ : G n).val * x)) (GLs n ×ˢ Set.univ)` using `h1.clm_comp h2`. Conclude with `continuousOn_integral_of_compact_support (hcG R) h3 (fun x y _ hy => by`. Establish `: R < lg y.val` using `not_le.1 hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hR _ (hval y) this])`. Establish `hz : ∀ y : G n, k y.val * k' ((y⁻¹ : G n).val * x) = 0` using `fun y => by`. Distinguish the cases in `hy : R < lg y.val`. Simplify using `[hR _ (hval y) hy]`. Establish `hm : (y⁻¹ : G n).val * x ∈ GLs n` using `hmul _ (hval _) _ hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle` using `hsub _ (hval y) _ hm`. Establish `he : y.val * ((y⁻¹ : G n).val * x) = x`. Rewrite using `[← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul]`. Rewrite `hle` using `[he]`. Establish `: R' < lg ((y⁻¹ : G n).val * x)` using `by linarith [not_lt.1 hy]`.
-
-Rewrite using `[hR' _ hm this, mul_zero]`. Express the relevant statement in the definitionally equal form `∫ y : G n, k y.val * k' ((y⁻¹ : G n).val * x) ∂μ = 0`. Rewrite using `[show (fun y : G n => k y.val * k' ((y⁻¹ : G n).val * x)) = fun _ => 0 from funext hz, integral_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kReg_conv : LgFacts → ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
     (E : KMod n) (k k' : Mat n → (E.V →L[ℂ] E.V)), KReg k → KReg k' → KReg (conv μ E k k') := by

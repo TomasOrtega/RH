@@ -16,7 +16,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Establish `h1 : sc (E` using `E) v x = algebraMap (Fv F v) (Fv F v ⊗[F] E) x := by`. Simplify using `[PI.LocJacTyp.sc, Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[h1, Algebra.norm_algebraMap, Module.finrank_baseChange, hfin]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sc (hfin : Module.finrank F E = 2) (x : Fv F v) :
     Algebra.norm (Fv F v) (sc (E := E) v x) = x ^ 2 := by
@@ -26,7 +26,7 @@ theorem norm_sc (hfin : Module.finrank F E = 2) (x : Fv F v) :
   rw [h1, Algebra.norm_algebraMap, Module.finrank_baseChange, hfin]
 
 /- English proof (translation)
-Establish `hu : ∀ i, IsUnit (sc (E` using `E) v (x i)) := fun i => (isUnit_iff_ne_zero.2 (hx i)).map (algebraMap (Fv F v) (Fv F v ⊗[F] E))`. Rewrite using `[BM.box_measure_mul (E := E) v ι μ _ hu]`. Simplify using `only [norm_sc v hfin, absV_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem boxScale {ι : Type} [Fintype ι] (hfin : Module.finrank F E = 2)
     (μ : Measure (ι → Fv F v ⊗[F] E)) [μ.IsAddHaarMeasure] (x : ι → Fv F v) (hx : ∀ i, x i ≠ 0) :

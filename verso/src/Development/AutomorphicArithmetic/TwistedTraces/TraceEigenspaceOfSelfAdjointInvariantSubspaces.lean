@@ -9,33 +9,31 @@ section Hil
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /- English proof (translation)
-Rewrite using `[hV.submodule_topologicalClosure_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem prj_mem_cl {V : Submodule ℂ H} (hV : IsClosed (V : Set H)) (v : H) : v ∈ V.topologicalClosure ↔ v ∈ V := by
   rw [hV.submodule_topologicalClosure_eq]
 
 /- English proof (translation)
-The claim follows from `(prj_mem_cl hV _).1 (Submodule.starProjection_apply_mem _ v)`.
+A detailed English derivation is pending.
 -/
 private theorem prj_mem {V : Submodule ℂ H} (hV : IsClosed (V : Set H)) (v : H) : prj V v ∈ V :=
   (prj_mem_cl hV _).1 (Submodule.starProjection_apply_mem _ v)
 
 /- English proof (translation)
-The claim follows from `Submodule.starProjection_eq_self_iff.2 (Submodule.le_topologicalClosure V hv)`.
+A detailed English derivation is pending.
 -/
 private theorem prj_self {V : Submodule ℂ H} {v : H} (hv : v ∈ V) : prj V v = v :=
   Submodule.starProjection_eq_self_iff.2 (Submodule.le_topologicalClosure V hv)
 
 /- English proof (translation)
-The claim follows from `(isSelfAdjoint_starProjection _).adjoint_eq`.
+A detailed English derivation is pending.
 -/
 private theorem prj_adj (V : Submodule ℂ H) : ContinuousLinearMap.adjoint (prj V) = prj V :=
   (isSelfAdjoint_starProjection _).adjoint_eq
 
 /- English proof (translation)
-Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Use `show T (prj V v) = prj V (T v)`. Use `symm`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero ((prj_mem_cl hV _).2 (h _ (prj_mem hV v))) fun w hw => ?_` and prove the remaining obligations. Rewrite using `[← map_sub, ← ContinuousLinearMap.adjoint_inner_right, hT]`.
-
-Conclude with `Submodule.starProjection_inner_eq_zero v _ ((prj_mem_cl hV _).2 (h w ((prj_mem_cl hV _).1 hw)))`.
+Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prj_comm {V : Submodule ℂ H} (hV : IsClosed (V : Set H)) (T : H →L[ℂ] H)
     (hT : ContinuousLinearMap.adjoint T = T) (h : ∀ v ∈ V, T v ∈ V) : T * prj V = prj V * T := by
@@ -47,7 +45,7 @@ private theorem prj_comm {V : Submodule ℂ H} (hV : IsClosed (V : Set H)) (T : 
   exact Submodule.starProjection_inner_eq_zero v _ ((prj_mem_cl hV _).2 (h w ((prj_mem_cl hV _).1 hw)))
 
 /- English proof (translation)
-Establish `: (eigIn W A x : Set H) = (W : Set H) ∩ {v | A v = (x : ℂ) • v}`. Use extensionality with `v`. Simplify using `[eigIn, Module.End.mem_eigenspace_iff]`. Rewrite using `[this]`. Conclude with `hW.inter (isClosed_eq A.continuous (continuous_const_smul _))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eigIn_closed {W : Submodule ℂ H} (hW : IsClosed (W : Set H)) (A : H →L[ℂ] H) (x : ℝ) :
     IsClosed (eigIn W A x : Set H) := by
@@ -58,20 +56,20 @@ private theorem eigIn_closed {W : Submodule ℂ H} (hW : IsClosed (W : Set H)) (
   exact hW.inter (isClosed_eq A.continuous (continuous_const_smul _))
 
 /- English proof (translation)
-Simplify using `[eigIn, Module.End.mem_eigenspace_iff]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_eigIn {W : Submodule ℂ H} {A : H →L[ℂ] H} {x : ℝ} {v : H} :
     v ∈ eigIn W A x ↔ v ∈ W ∧ A v = (x : ℂ) • v := by
   simp [eigIn, Module.End.mem_eigenspace_iff]
 
 /- English proof (translation)
-Establish `hc` using `prj_comm hX (prj P) (prj_adj P) h`. Establish `hXP : IsClosed ((X ⊓ P : Submodule ℂ H) : Set H)`. Rewrite using `[Submodule.coe_inf]`. Conclude with `hX.inter hP`. Establish `key : prj X * prj P = prj (X ⊓ P)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Use `show prj X (prj P v) = (X ⊓ P).topologicalClosure.starProjection v`. Use `symm`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero ?_ fun w hw => ?_` and prove the remaining obligations. Use `(prj_mem_cl hXP _).2 ⟨prj_mem hX _, ?_⟩` and prove the remaining obligations.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun S : H →L[ℂ] H => S v) hc` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply] at this`. Rewrite using `[← this]`. Conclude with `prj_mem hP _`. Establish `hw'` using `(prj_mem_cl hXP _).1 hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∀ (Q : Submodule ℂ H) (a b : H), ⟪prj Q a, b⟫_ℂ = ⟪a, prj Q b⟫_ℂ` using `fun Q a b => by`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right, prj_adj]`. Rewrite using `[inner_sub_left, hs, hs, prj_self hw'.1, prj_self hw'.2, sub_self]`. Conclude with `⟨key, hc.trans key⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem prj_inf {P X : Submodule ℂ H} (hP : IsClosed (P : Set H)) (hX : IsClosed (X : Set H))
     (h : ∀ v ∈ X, prj P v ∈ X) : prj X * prj P = prj (X ⊓ P) ∧ prj P * prj X = prj (X ⊓ P) := by
@@ -95,23 +93,23 @@ private theorem prj_inf {P X : Submodule ℂ H} (hP : IsClosed (P : Set H)) (hX 
   exact ⟨key, hc.trans key⟩
 
 /- English proof (translation)
-Use `set A := Oa ∘L prj Fx with hA`. Use `set X := eigIn V A x with hXd`. Establish `hXc : IsClosed (X : Set H)` using `eigIn_closed hV A x`. Establish `hOP : Oa * prj Ty = prj Ty * Oa` using `prj_comm hTy Oa hOa hOT`. Establish `hOFx : Oa * prj Fx = prj Fx * Oa` using `prj_comm hFx Oa hOa hOF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVP : prj V * prj Ty = prj Ty * prj V` using `prj_comm hTy (prj V) (prj_adj V) hVT`. Establish `hFP : prj Fx * prj Ty = prj Ty`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Conclude with `prj_self (hle (prj_mem hTy v))`. Establish `hPF : prj Ty * prj Fx = prj Ty` using `(prj_comm hFx (prj Ty) (prj_adj Ty) fun v _ => hle (prj_mem hTy v)).trans hFP`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAP : A * prj Ty = prj Ty * A` using `by show Oa * prj Fx * prj Ty = prj Ty * (Oa * prj Fx)`. Rewrite using `[mul_assoc, hFP, hOP, ← mul_assoc, ← hOP, mul_assoc, hPF, hOP]`. Establish `hAadj : star A = A` using `by show star (Oa * prj Fx) = Oa * prj Fx`. Rewrite using `[star_mul, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.star_eq_adjoint, hOa, prj_adj, hOFx]`. Establish `heq : X ⊓ Ty = eigIn (V ⊓ Ty) Oa x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `v`. Simplify using `only [Submodule.mem_inf, mem_eigIn, hXd]`. Establish `hA1 : v ∈ Ty → A v = Oa v` using `fun hv => by show Oa (prj Fx v) = Oa v`. Rewrite using `[prj_self (hle hv)]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Conclude with `⟨⟨h1, h3⟩, by rwa [← hA1 h3]⟩`. Introduce and unpack `⟨⟨h1, h3⟩, h2⟩`. Conclude with `⟨⟨h1, by rwa [hA1 h3]⟩, h3⟩`. Establish `hPX : ∀ v ∈ X, prj Ty v ∈ X`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Take `⟨h1, h2⟩` from `mem_eigIn.1 hv`. Use `mem_eigIn.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `congrArg (fun S : H →L[ℂ] H => S v) hVP` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply, prj_self h1] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Conclude with `prj_mem hV _`. Use `congrArg (fun S : H →L[ℂ] H => S v) hAP` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply] at this`. Rewrite using `[this, h2, map_smul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨k1, k2⟩` from `prj_inf hTy hXc hPX`. Rewrite `k1`, `k2` using `[heq]`. Use `⟨k1, k2, ?_⟩` and prove the remaining obligations. Establish `hAX : A * prj X = (x : ℂ) • prj X`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `(mem_eigIn.1 (prj_mem hXc v)).2`. Establish `hsX : star (prj X) = prj X`. Rewrite using `[ContinuousLinearMap.star_eq_adjoint, prj_adj]`. Use `congrArg star hAX` as an intermediate fact. Rewrite `this` using `[star_mul, star_smul, hAadj, hsX, RCLike.star_def, Complex.conj_ofReal]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem core (Ty Fx V : Submodule ℂ H) (hTy : IsClosed (Ty : Set H)) (hFx : IsClosed (Fx : Set H))
     (hV : IsClosed (V : Set H)) (hle : Ty ≤ Fx) (Oa : H →L[ℂ] H) (hOa : ContinuousLinearMap.adjoint Oa = Oa)
@@ -170,9 +168,7 @@ private theorem core (Ty Fx V : Submodule ℂ H) (hTy : IsClosed (Ty : Set H)) (
   rwa [star_mul, star_smul, hAadj, hsX, RCLike.star_def, Complex.conj_ofReal] at this
 
 /- English proof (translation)
-Establish `hcl : E.topologicalClosure = E` using `(Submodule.closed_of_finiteDimensional E).submodule_topologicalClosure_eq`. Use `haveI : FiniteDimensional ℂ E.topologicalClosure := by rw [hcl]; infer_instance`. Establish `h1 : IsHilbertSchmidt (E.topologicalClosure.subtypeL)`. Rewrite using `[isHilbertSchmidt_iff (stdOrthonormalBasis ℂ E.topologicalClosure).toHilbertBasis, tsum_fintype]`. Conclude with `ENNReal.sum_lt_top.2 fun i _ => ENNReal.pow_lt_top enorm_lt_top`.
-
-Conclude with `h1.comp_right E.topologicalClosure.orthogonalProjection`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isHS_prj (E : Submodule ℂ H) [FiniteDimensional ℂ E] : IsHilbertSchmidt (prj E) := by
   have hcl : E.topologicalClosure = E :=
@@ -184,21 +180,21 @@ private theorem isHS_prj (E : Submodule ℂ H) [FiniteDimensional ℂ E] : IsHil
   exact h1.comp_right E.topologicalClosure.orthogonalProjection
 
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.ext fun v => prj_self (prj_mem hV v)`.
+A detailed English derivation is pending.
 -/
 private theorem prj_idem {V : Submodule ℂ H} (hV : IsClosed (V : Set H)) : prj V * prj V = prj V :=
   ContinuousLinearMap.ext fun v => prj_self (prj_mem hV v)
 
 /- English proof (translation)
-Simplify using `only [trace, ContinuousLinearMap.smul_apply, inner_smul_right, tsum_mul_left]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem trace_sm (c : ℂ) (S : H →L[ℂ] H) : trace (c • S) = c * trace S := by
   simp only [trace, ContinuousLinearMap.smul_apply, inner_smul_right, tsum_mul_left]
 
 /- English proof (translation)
-Establish `e1 : U * ((k • (Oa * S)) * Θ) = k • (A * ((U * S) * Θ))`. Rewrite using `[h5, smul_mul_assoc, mul_smul_comm]`. Use `congr 1`. Simplify using `only [← mul_assoc]`. Rewrite using `[h4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : PX * ((U * S) * Θ) = PY * ((U * S) * Θ)`. Rewrite using `[← h1, mul_assoc PX P, ← mul_assoc P, h6]`. Rewrite using `[e1, smul_mul_assoc, mul_smul_comm, ← mul_assoc PX (A * _), ← mul_assoc PX A, h3, smul_mul_assoc, smul_mul_assoc, smul_smul, e2, mul_assoc PY]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem alg {R : Type} [Ring R] [Algebra ℂ R] (PX P PY A Oa U S Θ : R) (k x : ℂ)
     (h1 : PX * P = PY) (h3 : PX * A = x • PX) (h4 : U * A = A * U)
@@ -219,21 +215,19 @@ end Hil
 end UpperTheory.RedH
 
 /- English proof (translation)
-Introduce `H _ _ _ Ty Fx V hTy hFx hV hle Oa hOa hOT hOF hVT x κ U S Θ hfin hUA hS hUS`. Take `⟨k1, k2, k3⟩` from `UpperTheory.RedH.core Ty Fx V hTy hFx hV hle Oa hOa hOT hOF hVT x`. Use `set PX := prj (eigIn V (Oa ∘L prj Fx) x) with hPX`. Use `set PY := prj (eigIn (V ⊓ Ty) Oa x) with hPY`. Establish `hXc : IsClosed ((eigIn V (Oa ∘L prj Fx) x : Submodule ℂ H) : Set H)` using `UpperTheory.RedH.eigIn_closed hV _ x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXX : PX * PX = PX` using `UpperTheory.RedH.prj_idem hXc`. Establish `hXY : PX * PY = PY` using `by rw [← k1, ← mul_assoc, hXX]`. Establish `hYc : IsClosed ((eigIn (V ⊓ Ty) Oa x : Submodule ℂ H) : Set H)` using `Submodule.closed_of_finiteDimensional _`. Establish `hYY : PY * PY = PY` using `UpperTheory.RedH.prj_idem hYc`. Establish `hHS : IsHilbertSchmidt PY` using `UpperTheory.RedH.isHS_prj _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTC : IsTraceClass PY`. Establish `h` using `isTraceClass_comp hHS hHS`. Establish `e : PY ∘L PY = PY` using `hYY`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hal` using `UpperTheory.RedH.alg PX (prj Ty) PY (Oa ∘L prj Fx) Oa U S Θ κ (x : ℂ) k1 k3 hUA.eq (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Use `show Oa (S v) = Oa (prj Fx (S v))`. Rewrite using `[UpperTheory.RedH.prj_self (hle (hS v))])`. Use the proof step `(by`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `UpperTheory.RedH.prj_self (hUS v))`. Use `set D : H →L[ℂ] H := (U * S) * Θ with hD`. Establish `t1 : trace (PY * (D * PX)) = trace (D * PY)`. Establish `h` using `trace_comp_comm hTC (D * PX)`. Establish `e1 : (D * PX) ∘L PY = D * PY` using `by show (D * PX) * PY = D * PY`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, hXY]`. Rewrite `h` using `[e1]`. Conclude with `h.symm`. Establish `t2 : trace (PY * (D * PY)) = trace (D * PY)`. Establish `h` using `trace_comp_comm hTC (D * PY)`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (D * PY) ∘L PY = D * PY` using `by show (D * PY) * PY = D * PY`. Rewrite using `[mul_assoc, hYY]`. Rewrite `h` using `[e1]`. Conclude with `h.symm`. Unfold `trOn`.
-
-Rewrite using `[← hPX, ← hPY]`. Establish `g1 : PX ∘L (U ∘L (κ • (Oa ∘L S)) ∘L Θ) ∘L PX = (κ * x) • (PY * (D * PX))` using `hal`. Establish `g2 : PY ∘L (U ∘L S ∘L Θ) ∘L PY = PY * (D * PY)` using `by show PY * ((U * (S * Θ)) * PY) = PY * (D * PY)`. Simplify using `only [hD, mul_assoc]`. Rewrite using `[g1, g2, UpperTheory.RedH.trace_sm, t1, t2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.trace_eigenspace_of_selfAdjoint_invariant_subspaces :
     ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (Ty Fx V : Submodule ℂ H),

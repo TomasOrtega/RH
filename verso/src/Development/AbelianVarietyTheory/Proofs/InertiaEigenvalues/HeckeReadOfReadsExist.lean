@@ -78,9 +78,9 @@ variable (YS : NX.NExpRealS Rl cG S) (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂
   {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [smul_zero, map_zero, smul_zero]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`. Consider the case `tmul a f`. Rewrite using `[TensorProduct.smul_tmul', evK_tmul, evK_tmul, smul_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· • _) (map_mul (ρ.e i b) c a)`.
+A detailed English derivation is pending.
 -/
 theorem evK_smul (c : NX.KB S i b) (x : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1)) :
     evK YS v₀ hρ i j b (c • x) = ρ.e i b c • evK YS v₀ hρ i j b x := by
@@ -92,15 +92,15 @@ theorem evK_smul (c : NX.KB S i b) (x : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ
     exact congrArg (· • _) (map_mul (ρ.e i b) c a)
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero`. Establish `e0 : NX.hkFR S i _ b hL hs k P (0 : NX.Fm S i ((j : ℕ) + 1) b) = 0` using `LinearMap.map_zero _`. Rewrite using `[show (0 : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1)) = (0 : NX.Fm S i ((j : ℕ) + 1) b) from rfl, e0]`. Establish `z0 : evK YS v₀ hρ i j b (0 : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1)) = 0` using `map_zero _`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `erw [z0]`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy`. Establish `e0 : NX.hkFR S i _ b hL hs k P ((x + y : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1)) : NX.Fm S i ((j : ℕ) + 1) b) = NX.hkFR S i _ b hL hs k P x + NX.hkFR S i _ b hL hs k P y` using `LinearMap.map_add _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0]`. Use `erw [map_add (evK YS v₀ hρ i j b)]`. Rewrite using `[hx, hy, map_add, ← smul_add]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `[Finset.sum_add_distrib]`. Consider the case `tmul a f`. Express the relevant statement in the definitionally equal form `evK YS v₀ hρ i j b (a ⊗ₜ[S.Ks] _) = _`. Rewrite using `[evK_tmul, evK_tmul]`. Express the relevant statement in the definitionally equal form `ρ.e i b a • evW YS v₀ j (hL k P f.1) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[h]`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem evK_hkFR (hL : ℕ → PlE D.host → Module.End D.what₂.LL (S.WL ((j : ℕ) + 1)))
     (hs : NX.HeckeStabR S ((j : ℕ) + 1) hL) (k : ℕ) (P : PlE D.host) (R : Finset (GA D (Wc D j))) (c : ℂ)
@@ -141,21 +141,19 @@ section Main
 variable (YS : NX.NExpRealS Rl cG S) (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec)
 
 /- English proof (translation)
-Introduce and unpack `α R z ⟨hα, hR, hz⟩`. Use function extensionality and compare the values at `x`. Rewrite using `[Setup.hecke_apply]`. Establish `hδ'` using `hδ i j b k P hk α z hα hz`. Take `⟨hk1, hkr, hsp, hP⟩` from `hk`.
+Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ho` using `GlobalTheory.ExportPin.Model.covered_of_allPlaces Rl hIs hA i P hP hsp`. Establish `hR' : Bridge.IsDC (levG (Wc D j) (Rl.βW j) (Rl.datWp j Rl.triv)) α R` using `GlobalTheory.PrincipalLevel.levK_eq_levG hpin i j b ▸ hR`. Establish `hw : ∀ w, evW YS v₀ j (hL ((j : ℕ) + 1) k P w) = ((((Rl.C.mu0 j).val P : ℂˣ) : ℂ)⁻¹ ^ k * (((Nat.card (Formalism.L2.DIV.kP P) : ℕ) : ℂ) ^ (k * (D.R.nV / 2)))⁻¹) • fun x => ∑ γ ∈ R, evW YS v₀ j w (x * γ)`. Introduce `w`. Use `hr j k P hsp ho hkr α R hα hR' w` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `congrArg (fun T => T (v₀ j _)) this`. Establish `hmu : (((ρ.B i j b).mu0 z : Circle) : ℂ) = (((Rl.C.mu0 j).val P : ℂˣ) : ℂ) ^ k`. Rewrite using `[hpin.mu0 i j b]`. Use `GlobalTheory.HeckeDetChar.chi_detAt (hIs.mu0 j) (Q := Rl.Pg) ?_ ?_ ?_ hα hz` and prove the remaining obligations. Use `(hρ.base i j b).unram` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hpin.Pg i j b, hpin.mu0 i j b]`. Then use the resulting hypothesis. Take `⟨Q, h1, -, h3⟩` from `(hρ.base i j b).places.split`. Conclude with `hpin.Pg i j b ▸ h3.mono h1`. Establish `hA' : Rl.Sb = Rl.Pg` using `hA`. Rewrite using `[← hA']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `ho`. Establish `hrk : (Vc D j).rank = D.R.nV` using `D.sp.V_rank _ (Nat.le_add_left _ _) j.2`. Express the relevant statement in the definitionally equal form `ν⁻¹ • evK YS v₀ hρ i j b (YS.eF i _ b (Nat.le_add_left _ _) j.2 g) x = _`. Rewrite using `[e1]`. Use `erw [evK_smul YS v₀ hρ i j b ((algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (u i b P)) ^ k)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `erw [evK_hkFR YS v₀ hρ i j b (hL ((j : ℕ) + 1)) hs k P R _ hw]`. Establish `he : ρ.e i b ((algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (u i b P)) ^ k) = ρ.eO i b (u i b P) ^ k`. Rewrite using `[map_pow]`. Both sides reduce to the same expression. Establish `hm : (((ρ.B i j b).mu z : Circle) : ℂ) = (((ρ.B i j b).mu0 z : Circle) : ℂ) * (((ρ.B i j b).de.chi z : Circle) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Base.mu, MonoidHom.mul_apply, Circle.coe_mul]`. Establish `hr1 : ∀ y, realRd YS v₀ hρ i j b ν f y = ν⁻¹ * evK YS v₀ hρ i j b (YS.eF i _ b (Nat.le_add_left _ _) j.2 f) y` using `fun _ => rfl`. Establish `hq : normV P = Nat.card (Formalism.L2.DIV.kP P)` using `rfl`. Simplify using `only [hr1, Pi.smul_apply, smul_eq_mul, he, hδ', hm, hmu, hrk, hq]`. Rewrite using `[← Finset.mul_sum]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem heckeAt_of_scaled {ρ : Setup D.ntw} (hpin : RealPin Rl cG ρ) (hIs : Rl.toRealDat.toLevCh.Is A3.A.μ0)
     (hA : Rl.AllPlaces) (hρ : ρ.Good) {hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)}

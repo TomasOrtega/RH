@@ -13,24 +13,24 @@ variable {X : Scheme.{0}} {ι : Type} (I : ι → X.IdealSheafData)
 def ideal (S : Finset ι) : X.IdealSheafData := ⨆ i ∈ S, I i
 
 /- English proof (translation)
-The claim follows from `le_iSup₂ (f := fun i (_ : i ∈ S) => I i) i h`.
+A detailed English derivation is pending.
 -/
 theorem le_ideal {S : Finset ι} {i : ι} (h : i ∈ S) : I i ≤ ideal I S :=
   le_iSup₂ (f := fun i (_ : i ∈ S) => I i) i h
 
 /- English proof (translation)
-The claim follows from `iSup₂_le fun _ hi => le_ideal I (h hi)`.
+A detailed English derivation is pending.
 -/
 theorem ideal_mono {S S' : Finset ι} (h : S ⊆ S') : ideal I S ≤ ideal I S' :=
   iSup₂_le fun _ hi => le_ideal I (h hi)
 
 /- English proof (translation)
-Simplify using `[ideal]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem ideal_empty : ideal I ∅ = ⊥ := by simp [ideal]
 
 /- English proof (translation)
-Simplify using `[ideal]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem ideal_singleton (i : ι) : ideal I {i} = I i := by simp [ideal]
 
@@ -42,7 +42,7 @@ instance (S : Finset ι) : IsClosedImmersion (Yι I S) :=
   inferInstanceAs (IsClosedImmersion (ideal I S).subschemeι)
 
 /- English proof (translation)
-The claim follows from `Scheme.IdealSheafData.ker_subschemeι _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ker_Yι (S : Finset ι) : (Yι I S).ker = ideal I S := Scheme.IdealSheafData.ker_subschemeι _
 
@@ -51,21 +51,21 @@ def incl {S S' : Finset ι} (h : S ⊆ S') : Y I S' ⟶ Y I S :=
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `Scheme.IdealSheafData.inclusion_subschemeι _ @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem incl_Yι {S S' : Finset ι} (h : S ⊆ S') : incl I h ≫ Yι I S = Yι I S' :=
   Scheme.IdealSheafData.inclusion_subschemeι _
 
 @[simp]
 /- English proof (translation)
-The claim follows from `Scheme.IdealSheafData.inclusion_id _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem incl_refl (S : Finset ι) : incl I (subset_refl S) = 𝟙 (Y I S) :=
   Scheme.IdealSheafData.inclusion_id _
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `Scheme.IdealSheafData.inclusion_comp _ _`.
+A detailed English derivation is pending.
 -/
 theorem incl_comp {S S' S'' : Finset ι} (h : S ⊆ S') (h' : S' ⊆ S'') :
     incl I h' ≫ incl I h = incl I (h.trans h') :=
@@ -85,19 +85,19 @@ def Ystrπ (s : ℕ) : Ystr I s ⟶ X := Sigma.desc fun S : Idx ι s => Yι I S.
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `Sigma.ι_desc _ _`.
+A detailed English derivation is pending.
 -/
 theorem inj_Ystrπ {s : ℕ} (S : Idx ι s) : inj I S ≫ Ystrπ I s = Yι I S.1 := Sigma.ι_desc _ _
 
 /- English proof (translation)
-The claim follows from `Sigma.hom_ext _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem Ystr_hom_ext {s : ℕ} {Z : Scheme.{0}} {f g : Ystr I s ⟶ Z} (h : ∀ S : Idx ι s, inj I S ≫ f = inj I S ≫ g) :
     f = g :=
   Sigma.hom_ext _ _ h
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `T`. Take `⟨T', hT'⟩` from `T'`. Simplify using `only at e`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem incl_inj_congr {s : ℕ} {A : Finset ι} {T T' : Idx ι s} (e : T.1 = T'.1) (h : T.1 ⊆ A) (h' : T'.1 ⊆ A) :
     incl I h ≫ inj I T = incl I h' ≫ inj I T' := by
@@ -116,13 +116,13 @@ def face {s : ℕ} (S : Idx ι (s + 1)) (j : Fin (s + 2)) : Idx ι s :=
     rw [Finset.card_erase_of_mem (Finset.orderEmbOfFin_mem _ _ _), S.2]; rfl⟩
 
 /- English proof (translation)
-The claim follows from `Finset.erase_subset _ _`.
+A detailed English derivation is pending.
 -/
 theorem face_subset {s : ℕ} (S : Idx ι (s + 1)) (j : Fin (s + 2)) : (face S j).1 ⊆ S.1 :=
   Finset.erase_subset _ _
 
 /- English proof (translation)
-Use `Finset.orderEmbOfFin_unique h' (f := fun m => S.orderEmbOfFin h (k.succAbove m)) (fun m => Finset.mem_erase.2 ⟨fun e => Fin.succAbove_ne k m ((S.orderEmbOfFin h).injective e), Finset.orderEmbOfFin_mem _ _ _⟩) ((S.orderEmbOfFin h).strictMono.comp (Fin.strictMono_succAbove k))` as an intermediate fact. Conclude with `(congrFun this m).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem orderEmbOfFin_erase {S : Finset ι} {n : ℕ} (h : S.card = n + 1) (k : Fin (n + 1))
     (h' : (S.erase (S.orderEmbOfFin h k)).card = n) (m : Fin n) :
@@ -134,7 +134,7 @@ theorem orderEmbOfFin_erase {S : Finset ι} {n : ℕ} (h : S.card = n + 1) (k : 
   exact (congrFun this m).symm
 
 /- English proof (translation)
-Simplify using `only [face]`. Rewrite using `[orderEmbOfFin_erase, orderEmbOfFin_erase, Fin.succAbove_of_castSucc_lt _ _ (Fin.castSucc_lt_succ_iff.2 hij), Fin.succAbove_of_le_castSucc _ _ (Fin.castSucc_le_castSucc_iff.2 hij)]`. Conclude with `Finset.erase_right_comm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem face_face {s : ℕ} (S : Idx ι (s + 2)) {i j : Fin (s + 2)} (hij : i ≤ j) :
     (face (face S j.succ) i).1 = (face (face S i.castSucc) j).1 := by
@@ -149,7 +149,7 @@ def δ (s : ℕ) (j : Fin (s + 2)) : Ystr I (s + 1) ⟶ Ystr I s :=
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `Sigma.ι_desc _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem inj_δ {s : ℕ} (j : Fin (s + 2)) (S : Idx ι (s + 1)) :
     inj I S ≫ δ I s j = incl I (face_subset S j) ≫ inj I (face S j) :=
@@ -157,13 +157,13 @@ theorem inj_δ {s : ℕ} (j : Fin (s + 2)) (S : Idx ι (s + 1)) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `Ystr_hom_ext I fun S => by simp`.
+A detailed English derivation is pending.
 -/
 theorem δ_Ystrπ (s : ℕ) (j : Fin (s + 2)) : δ I s j ≫ Ystrπ I s = Ystrπ I (s + 1) :=
   Ystr_hom_ext I fun S => by simp
 
 /- English proof (translation)
-The claim follows from `Ystr_hom_ext I fun S => by simp only [inj_δ_assoc, Category.assoc, inj_δ, incl_comp_assoc] exact incl_inj_congr I (face_face S hij) _ _`.
+A detailed English derivation is pending.
 -/
 theorem δ_comp_δ {s : ℕ} {i j : Fin (s + 2)} (hij : i ≤ j) :
     δ I (s + 1) j.succ ≫ δ I s i = δ I (s + 1) i.castSucc ≫ δ I s j :=
@@ -198,14 +198,14 @@ def toFibre (S : Finset ι) (h : fibreIdeal p ϖ ≤ ideal I S) : Y I S ⟶ fibr
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `IsClosedImmersion.lift_fac _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem toFibre_fst (S : Finset ι) (h : fibreIdeal p ϖ ≤ ideal I S) :
     toFibre I p ϖ S h ≫ pullback.fst p (resMap ϖ) = Yι I S :=
   IsClosedImmersion.lift_fac _ _ _
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hS`. Conclude with `(h i).trans (le_ideal I hi)`. Use the proof step `@[reassoc (attr := simp)]`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fibreIdeal_le_ideal {S : Finset ι} (hS : S.Nonempty) (h : ∀ i, fibreIdeal p ϖ ≤ I i) :
     fibreIdeal p ϖ ≤ ideal I S := by
@@ -214,7 +214,7 @@ theorem fibreIdeal_le_ideal {S : Finset ι} (hS : S.Nonempty) (h : ∀ i, fibreI
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `(cancel_mono (pullback.fst p (resMap ϖ))).1 (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem incl_toFibre {S S' : Finset ι} (hSS : S ⊆ S') (h : fibreIdeal p ϖ ≤ ideal I S) :
     incl I hSS ≫ toFibre I p ϖ S h = toFibre I p ϖ S' (h.trans (ideal_mono I hSS)) :=
@@ -225,14 +225,14 @@ def toRes (S : Finset ι) (h : fibreIdeal p ϖ ≤ ideal I S) :
   toFibre I p ϖ S h ≫ pullback.snd p (resMap ϖ)
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]`. Conclude with `mul_le_of_le_one_right bot_le le_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_le (i : ι) [Fintype ι] [DecidableEq ι] : ∏ j, I j ≤ I i := by
   rw [← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]
   exact mul_le_of_le_one_right bot_le le_top
 
 /- English proof (translation)
-Rewrite using `[ideal_singleton, ← h]`. Conclude with `prod_le I i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibreIdeal_le_of_prod [Fintype ι] (h : ∏ j, I j = fibreIdeal p ϖ) (i : ι) :
     fibreIdeal p ϖ ≤ ideal I {i} := by
@@ -251,7 +251,7 @@ variable {X' : Scheme.{0}} (f : X' ⟶ X)
 def pull : ι → X'.IdealSheafData := fun i => (I i).comap f
 
 /- English proof (translation)
-Unfold `ideal pull`. Conclude with `((Scheme.IdealSheafData.map_gc f).l_iSup₂).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ideal_pull (S : Finset ι) : ideal (pull I f) S = (ideal I S).comap f := by
   unfold ideal pull
@@ -268,7 +268,7 @@ def pullIso (S : Finset ι) : Y (pull I f) S ≅ pullback f (Yι I S) :=
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(isoOfEq (ideal_pull I f S)).hom ≫ (Scheme.IdealSheafData.comapIso (ideal I S) f).hom ≫ pullback.fst _ _ = _`. Rewrite using `[Scheme.IdealSheafData.comapIso_hom_fst]`. Conclude with `Scheme.IdealSheafData.inclusion_subschemeι _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullIso_hom_fst (S : Finset ι) : (pullIso I f S).hom ≫ pullback.fst _ _ = Yι (pull I f) S := by
   change (isoOfEq (ideal_pull I f S)).hom ≫ (Scheme.IdealSheafData.comapIso (ideal I S) f).hom ≫ pullback.fst _ _ = _
@@ -279,7 +279,7 @@ def pullMap (S : Finset ι) : Y (pull I f) S ⟶ Y I S := (pullIso I f S).hom �
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Simplify using `[pullMap, ← pullback.condition]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pullMap_Yι (S : Finset ι) : pullMap I f S ≫ Yι I S = Yι (pull I f) S ≫ f := by
   simp [pullMap, ← pullback.condition]
@@ -287,18 +287,18 @@ theorem pullMap_Yι (S : Finset ι) : pullMap I f S ≫ Yι I S = Yι (pull I f)
 end BaseChange
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(inj I S).base y⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_Ystr {s : ℕ} (S : Idx ι s) (y : Y I S.1) : Nonempty (Ystr I s) := ⟨(inj I S).base y⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x => IsEmpty.false ((Sigma.desc (fun S : Idx ι s => (isEmptyElim S : Y I S.1 ⟶ ∅)) : Ystr I s ⟶ ∅).base x)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isEmpty_Ystr {s : ℕ} (h : IsEmpty (Idx ι s)) : IsEmpty (Ystr I s) :=
   ⟨fun x => IsEmpty.false ((Sigma.desc (fun S : Idx ι s => (isEmptyElim S : Y I S.1 ⟶ ∅)) : Ystr I s ⟶ ∅).base x)⟩
 
 /- English proof (translation)
-Rewrite using `[← Set.range_nonempty_iff_nonempty (f := (Yι I S).base)]`. Unfold `Yι`. Rewrite using `[← Scheme.IdealSheafData.range_subschemeι]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nonempty_Y_iff (S : Finset ι) : Nonempty (Y I S) ↔ ((ideal I S).support : Set X).Nonempty := by
   rw [← Set.range_nonempty_iff_nonempty (f := (Yι I S).base)]
@@ -322,7 +322,7 @@ def YstrToFibre (h : ∀ i, fibreIdeal p ϖ ≤ I i) (s : ℕ) : Ystr I s ⟶ fi
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `Sigma.ι_desc _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem inj_YstrToFibre (h : ∀ i, fibreIdeal p ϖ ≤ I i) {s : ℕ} (S : Idx ι s) :
     inj I S ≫ YstrToFibre I p ϖ h s =
@@ -331,7 +331,7 @@ theorem inj_YstrToFibre (h : ∀ i, fibreIdeal p ϖ ≤ I i) {s : ℕ} (S : Idx 
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `Ystr_hom_ext I fun S => by simp @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem YstrToFibre_fst (h : ∀ i, fibreIdeal p ϖ ≤ I i) (s : ℕ) :
     YstrToFibre I p ϖ h s ≫ pullback.fst p (resMap ϖ) = Ystrπ I s :=
@@ -339,7 +339,7 @@ theorem YstrToFibre_fst (h : ∀ i, fibreIdeal p ϖ ≤ I i) (s : ℕ) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `(cancel_mono (pullback.fst p (resMap ϖ))).1 (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem δ_YstrToFibre [LinearOrder ι] (h : ∀ i, fibreIdeal p ϖ ≤ I i) (s : ℕ) (j : Fin (s + 2)) :
     δ I s j ≫ YstrToFibre I p ϖ h s = YstrToFibre I p ϖ h (s + 1) :=
@@ -353,7 +353,7 @@ variable {X' : Scheme.{0}} (f : X' ⟶ X)
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `(cancel_mono (Yι I S)).1 (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem incl_pullMap {S S' : Finset ι} (h : S ⊆ S') :
     incl (pull I f) h ≫ pullMap I f S = pullMap I f S' ≫ incl I h :=
@@ -364,21 +364,21 @@ def pullStr (s : ℕ) : Ystr (pull I f) s ⟶ Ystr I s :=
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `Sigma.ι_desc _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem inj_pullStr {s : ℕ} (S : Idx ι s) : inj (pull I f) S ≫ pullStr I f s = pullMap I f S.1 ≫ inj I S :=
   Sigma.ι_desc _ _
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `Ystr_hom_ext _ fun S => by simp @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem pullStr_Ystrπ (s : ℕ) : pullStr I f s ≫ Ystrπ I s = Ystrπ (pull I f) s ≫ f :=
   Ystr_hom_ext _ fun S => by simp
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `Ystr_hom_ext _ fun S => by simp only [inj_δ_assoc, inj_pullStr_assoc, Category.assoc] rw [inj_pullStr, incl_pullMap_assoc, inj_δ]`.
+A detailed English derivation is pending.
 -/
 theorem δ_pullStr [LinearOrder ι] (s : ℕ) (j : Fin (s + 2)) :
     δ (pull I f) s j ≫ pullStr I f s = pullStr I f (s + 1) ≫ δ I s j :=
@@ -415,12 +415,12 @@ def red : A O ϖ →+* O ⧸ Ideal.span {ϖ} :=
     simp [Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton_self])
 
 /- English proof (translation)
-Simplify using `[red, T]`.
+Simplify using the standard rewrite rules.
 -/
 theorem reduction_uniformizerPoint (k : Fin 2) : red O ϖ (T O ϖ k) = 0 := by simp [red, T]
 
 /- English proof (translation)
-Rewrite using `[compIdeal, Scheme.IdealSheafData.coe_support_ofIdealTop, Scheme.zeroLocus_span, Scheme.zeroLocus_singleton, basicOpen_eq_of_affine]`. Conclude with `fun h' => (PrimeSpectrum.mem_basicOpen (x := (x : PrimeSpectrum (A O ϖ))) _).1 h' hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_support_compIdeal (x : XS O ϖ) (k : Fin 2) (hx : T O ϖ k ∈ x.asIdeal) :
     x ∈ ((compIdeal O ϖ k).support : Set (XS O ϖ)) := by
@@ -429,17 +429,15 @@ theorem mem_support_compIdeal (x : XS O ϖ) (k : Fin 2) (hx : T O ϖ k ∈ x.asI
   exact fun h' => (PrimeSpectrum.mem_basicOpen (x := (x : PrimeSpectrum (A O ϖ))) _).1 h' hx
 
 /- English proof (translation)
-The claim follows from `isEmpty_Ystr _ ⟨fun S => by have := S.1.card_le_univ; have h2 := S.2; simp at this; omega⟩`.
+A detailed English derivation is pending.
 -/
 theorem isEmpty_Ystr_two : IsEmpty (Ystr (compIdeal O ϖ) 2) :=
   isEmpty_Ystr _ ⟨fun S => by have := S.1.card_le_univ; have h2 := S.2; simp at this; omega⟩
 
 /- English proof (translation)
-Use `haveI : Nontrivial (O ⧸ Ideal.span {ϖ}) := Ideal.Quotient.nontrivial_iff.2 (by rwa [Ne, Ideal.span_singleton_eq_top])`. Take `⟨M, hM⟩` from `Ideal.exists_maximal (O ⧸ Ideal.span {ϖ})`. Set `x : XS O ϖ` to `⟨M.comap (red O ϖ), Ideal.comap_isPrime _ _⟩`. Establish `hx : x ∈ ((ideal (compIdeal O ϖ) Finset.univ).support : Set (XS O ϖ))`. Simplify using `only [ideal, Scheme.IdealSheafData.support_iSup, TopologicalSpace.Closeds.coe_iInf, Set.mem_iInter]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _`. Use `mem_support_compIdeal O ϖ x k ?_` and prove the remaining obligations. Use `show red O ϖ (T O ϖ k) ∈ M`. Rewrite using `[reduction_uniformizerPoint]`. Conclude with `zero_mem _`.
-
-Take `⟨y⟩` from `(nonempty_Y_iff (compIdeal O ϖ) Finset.univ).2 ⟨x, hx⟩`. Conclude with `nonempty_Ystr (compIdeal O ϖ) (s := 1) ⟨Finset.univ, by simp⟩ y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nonempty_Ystr_one (h : ¬ IsUnit ϖ) : Nonempty (Ystr (compIdeal O ϖ) 1) := by
   haveI : Nontrivial (O ⧸ Ideal.span {ϖ}) :=
@@ -456,7 +454,7 @@ theorem nonempty_Ystr_one (h : ¬ IsUnit ϖ) : Nonempty (Ystr (compIdeal O ϖ) 1
   exact nonempty_Ystr (compIdeal O ϖ) (s := 1) ⟨Finset.univ, by simp⟩ y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨nonempty_Ystr_one ℤ 2 (by decide), isEmpty_Ystr_two ℤ 2⟩`.
+Supply the required witnesses or components.
 -/
 example : Nonempty (Ystr (compIdeal ℤ 2) 1) ∧ IsEmpty (Ystr (compIdeal ℤ 2) 2) :=
   ⟨nonempty_Ystr_one ℤ 2 (by decide), isEmpty_Ystr_two ℤ 2⟩
@@ -466,14 +464,14 @@ end GlobalTheory.Strata.Example
 namespace GlobalTheory.Strata
 
 /- English proof (translation)
-The claim follows from `(Finset.orderEmbOfFin_unique h (f := id) (fun _ => Finset.mem_univ _) strictMono_id).symm`.
+A detailed English derivation is pending.
 -/
 theorem orderEmbOfFin_univ_fin {n : ℕ} (h : (Finset.univ : Finset (Fin n)).card = n) :
     ((Finset.univ : Finset (Fin n)).orderEmbOfFin h : Fin n → Fin n) = id :=
   (Finset.orderEmbOfFin_unique h (f := id) (fun _ => Finset.mem_univ _) strictMono_id).symm
 
 /- English proof (translation)
-Simplify using `only [face, orderEmbOfFin_univ_fin, id]`. Evaluate the decidable proposition.
+Simplify using the standard rewrite rules. Evaluate the decidable proposition.
 -/
 example : (face (ι := Fin 2) (s := 0) ⟨Finset.univ, by simp⟩ 0).1 = {1} ∧
     (face (ι := Fin 2) (s := 0) ⟨Finset.univ, by simp⟩ 1).1 = {0} := by

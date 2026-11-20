@@ -18,20 +18,20 @@ noncomputable section
 namespace GlobalTheory.MumRigidZero
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (u ≫ toUnit X) (toUnit Y)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_one_pt {S : Scheme.{0}} {X Y M : Over S} [GrpObj M] (u : Y ⟶ X) : u ≫ (1 : X ⟶ M) = 1 := by
   rw [Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (u ≫ toUnit X) (toUnit Y)]
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Hom.one_def, Category.assoc, IsMonHom.one_hom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_comp_hom {S : Scheme.{0}} {X M N : Over S} [GrpObj M] [GrpObj N] (f : M ⟶ N) [IsMonHom f] :
     (1 : X ⟶ M) ≫ f = 1 := by
   rw [Hom.one_def, Hom.one_def, Category.assoc, IsMonHom.one_hom]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_comp_left {S : Scheme.{0}} {B₀ B : Over S} (a b : B₀ ⟶ B) {T : Over S} (p q : T ⟶ B₀) :
     (lift p q).left ≫ (lift (fst B₀ B₀ ≫ a) (snd B₀ B₀ ≫ b) : B₀ ⊗ B₀ ⟶ B ⊗ B).left =
@@ -39,23 +39,21 @@ theorem lift_comp_left {S : Scheme.{0}} {B₀ B : Over S} (a b : B₀ ⟶ B) {T 
   rw [← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc]
 
 /- English proof (translation)
-Introduce `S B₀ B _ _ _ _ M₀ M hM₀ hM hB₀ a b _ _ w hw hn T y z J J' hJ hJ'`. Establish `hG` using `GlobalTheory.globalFns_holds`. Establish `hL : (abelian₂ B M).IsLB` using `DVR.linComb_isLB _ hM _ _`. Establish `hL' : (abelian₂ B₀ M₀).IsLB` using `DVR.linComb_isLB _ hM₀ _ _`. Set `β₂` to `(lift (fst B₀ B₀ ≫ a) (snd B₀ B₀ ≫ b) : G2 B₀ ⟶ G2 B).left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ1 : Fin 1 → (B₀.left ⟶ (G2 B₀).left)` to `fun _ => (lift (1 : B₀ ⟶ B₀) (𝟙 B₀)).left`. Set `ε1 : Fin 1 → ℤ` to `fun _ => 1`. Establish `fe' : FormEq (K` using `PEmpty) PEmpty.elim PEmpty.elim (flatφ (lamφ B₀) φ1) (flatε lamε ε1) := fun U _ h => by`. Rewrite using `[prod_flat, Fin.prod_univ_one, Fintype.prod_empty]`. Use `show 1 = (∏ i, h ((lift (1 : B₀ ⟶ B₀) (𝟙 B₀)).left ≫ lamφ B₀ i) ^ lamε i) ^ (1 : ℤ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_lam, _root_.one_mul (𝟙 B₀)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [zpow_one, ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws. Establish `fe : FormEq (K` using `PEmpty) PEmpty.elim PEmpty.elim (flatφ (lamφ B) fun k => φ1 k ≫ β₂) (flatε lamε ε1) := fun U _ h => by`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_flat, Fin.prod_univ_one, Fintype.prod_empty]`. Use `show 1 = (∏ i, h (((lift (1 : B₀ ⟶ B₀) (𝟙 B₀)).left ≫ β₂) ≫ lamφ B i) ^ lamε i) ^ (1 : ℤ)`. Rewrite using `[lift_comp_left, prod_lam, one_comp_hom a, Category.id_comp, _root_.one_mul b]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [zpow_one, ofMul_mul, ofMul_inv, ofMul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Normalize the expressions using the abelian group laws. Take `⟨g', hg', hv'⟩` from `exists_gen hM₀ fe' (LB.oneGen M₀) (oneGen_isGen _)`. Take `⟨g, hg, hv⟩` from `exists_gen hM fe (LB.oneGen M) (oneGen_isGen _)`. Establish `Fa : ∀ {Z : Scheme.{0}} (r : Z ⟶ B₀.left) (z₀ : Z) J₀, Good M₀ z₀ J₀ → val (L` using `abelian₂ B₀ M₀) (nest M₀ (lamφ B₀) lamε φ1 ε1 g') r z₀ (ind B₀ J₀) = 1 := fun r z₀ J₀ hJ₀ => by`. Use `(val_nest hg' r (good_ind hJ₀) hJ₀).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [adj_ind hM₀ hJ₀, one_zpow, Finset.prod_const_one, _root_.one_mul]`. Conclude with `(hv' _ r z₀ J₀ hJ₀).trans (val_one r)`. Establish `Ft : ∀ {Z : Scheme.{0}} (r : Z ⟶ B₀.left) (z₀ : Z) J₀, Good M z₀ J₀ → val (L` using `abelian₂ B M) (nest M (lamφ B) lamε (fun k => φ1 k ≫ β₂) ε1 g) r z₀ (ind B J₀) = 1 := fun r z₀ J₀ hJ₀ => by`. Use `(val_nest hg r (good_ind hJ₀) hJ₀).trans ?_` and prove the remaining obligations. Simplify using `only [adj_ind hM hJ₀, one_zpow, Finset.prod_const_one, _root_.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hv _ r z₀ J₀ hJ₀).trans (val_one r)`. Establish `Fp : ∀ {T₀ : Over S} (c : T₀ ⟶ B₀) (z₀ : T₀.left) (J₀ : (T₀.left ⟶ B.left) → M.ι) (J₀' : (T₀.left ⟶ B₀.left) → M₀.ι), pw w φ1 ε1 c.left z₀ (fun k => ind B J₀ (c.left ≫ φ1 k ≫ β₂)) (fun k => ind B₀ J₀' (c.left ≫ φ1 k)) = lamVal w (lift (1 : T₀ ⟶ B₀) c).left z₀ J₀ J₀'`. Introduce `T₀ c z₀ J₀ J₀'`. Rewrite using `[pw_eq, Fin.prod_univ_one]`. Use `show lamVal w (c ≫ lift (1 : B₀ ⟶ B₀) (𝟙 B₀)).left z₀ J₀ J₀' ^ (1 : ℤ) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[comp_lift, comp_one_pt, Category.comp_id, zpow_one]`. Establish `he : (1 : 𝟙_ (Over S) ⟶ B₀).left ≫ B₀.hom = 𝟙 _` using `Over.w (1 : 𝟙_ (Over S) ⟶ B₀)`. Establish `E` using `rigid_pw w hw hL hL' φ1 ε1 (nest_isGen hg') (nest_isGen hg) B₀.hom _ he (hG _ _ hB₀).2 (fun y₀ => by`. Take `⟨J₁, hJ₁⟩` from `GlobalTheory.UU.exists_good_pt hM y₀`. Take `⟨J₁', hJ₁'⟩` from `GlobalTheory.UU.exists_good_pt hM₀ y₀`.
-
-Use `⟨ind B J₁, ind B₀ J₁', good_ind hJ₁, good_ind hJ₁', ?_⟩` and prove the remaining obligations. Rewrite using `[Ft _ y₀ J₁ hJ₁, Fp (1 : 𝟙_ (Over S) ⟶ B₀), Fa _ y₀ J₁' hJ₁', hn (𝟙_ (Over S)) y₀ J₁ J₁' hJ₁ hJ₁', _root_.mul_one])`. Use the proof step `T.left y.left z (ind B J) (ind B₀ J') (good_ind hJ) (good_ind hJ')`. Rewrite `E` using `[Ft _ z J hJ, Fp y, Fa _ z J' hJ', _root_.mul_one]`. Conclude with `E.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamVal_one_left : ∀ {S : Scheme.{0}} (B₀ B : Over S) [GrpObj B₀] [IsCommMonObj B₀] [GrpObj B] [IsCommMonObj B] (M₀ : LB B₀.left) (M : LB B.left), M₀.IsLB → M.IsLB → IsAbelianScheme B₀ → ∀ (a b : B₀ ⟶ B) [IsMonHom a] [IsMonHom b] (w : LB.Iso (abelian₂ B₀ M₀) ((abelian₂ B M).pull (lift (fst B₀ B₀ ≫ a) (snd B₀ B₀ ≫ b) : G2 B₀ ⟶ G2 B).left)), w.IsGen → (∀ (T : Over S) (z : T.left) (J : (T.left ⟶ B.left) → M.ι) (J' : (T.left ⟶ B₀.left) → M₀.ι), Good M z J → Good M₀ z J' → GlobalTheory.PolDeg.lamVal w (lift (1 : T ⟶ B₀) (1 : T ⟶ B₀)).left z J J' = 1) → ∀ (T : Over S) (y : T ⟶ B₀) (z : T.left) (J : (T.left ⟶ B.left) → M.ι) (J' : (T.left ⟶ B₀.left) → M₀.ι), Good M z J → Good M₀ z J' → GlobalTheory.PolDeg.lamVal w (lift (1 : T ⟶ B₀) y).left z J J' = 1 := by
   intro S B₀ B _ _ _ _ M₀ M hM₀ hM hB₀ a b _ _ w hw hn T y z J J' hJ hJ'

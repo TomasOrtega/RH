@@ -17,11 +17,11 @@ namespace GlobalTheory.ShareOn
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `Formalism.MainNotions.Closed.imp (Formalism.MainNotions.Closed.and _root_.GlobalTheory.ShareOn.p0_extreme_or_archOn_of_runModel _root_.GlobalTheory.BigOn.typePrimes_gt_three_r_alt) ?_` and prove the remaining obligations. Introduce `eps Fm CH _ hx0`. Take `⟨x0, hx0⟩` from `_root_.GlobalTheory.BigTop.EventuallyAtPoints.and hx0.1 hx0.2`. Use `⟨x0, fun x hx hle ι p hrows hmore r hr hown i => ?_⟩` and prove the remaining obligations. Take `⟨harch, hg⟩` from `hx0 x hx hle ι p hrows`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hfin, hact, M, ka, hRM⟩` from `exists_runModel p hmore r hr hown i`. Establish `hb0 : 0 < badN (Fm.D x ι)`. Take `⟨v, -⟩` from `hRM`. Conclude with `(GlobalTheory.TrivLevel.badN_pos_iff _).2 (hmore.2.1.fieldAt v).bad`. Take `⟨hcard, ρ, σ, f, h1, h2, h3, h4⟩` from `Reading.reading_of_runModel p r hr i M ka hb0 (Fm.parT x hx ι).nV_ge hRM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨C, hfin, hact, M, ka, ρ, σ, f, h1, h2, h3, h4, levelCondition_restrict_of_halfUnipotent p r hr i M ka (hg hmore) hRM, hcard, harch hmore r hr hown i C M ka hRM⟩`.
+A detailed English derivation is pending.
 -/
 theorem modelSt_alt : _root_.GlobalTheory.ShareOn.ModelStatement := by
   refine Formalism.MainNotions.Closed.imp (Formalism.MainNotions.Closed.and _root_.GlobalTheory.ShareOn.p0_extreme_or_archOn_of_runModel _root_.GlobalTheory.BigOn.typePrimes_gt_three_r_alt) ?_

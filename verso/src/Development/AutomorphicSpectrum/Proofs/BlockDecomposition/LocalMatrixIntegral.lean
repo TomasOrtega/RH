@@ -8,7 +8,7 @@ open HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain Positivity
 open scoped TensorProduct
 
 /- English proof (translation)
-Simplify using `only [Rv, Set.mem_ofPred_eq]`. Introduce `k`. Rewrite using `[show inclR (F := F) (Fv F v) e = (1 : Fv F v) ⊗ₜ[F] e from rfl, Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]`. Conclude with `h k`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inclR_mem_Rv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {d : ℕ}
     (bs : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (e : E)
@@ -21,7 +21,7 @@ theorem inclR_mem_Rv {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   exact h k
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (AlgHom.id F (Fv F v)) σ ((1 : Fv F v) ⊗ₜ[F] e) = (1 : Fv F v) ⊗ₜ[F] σ e`. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigR_inclR {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     (v : HeightOneSpectrum (𝓞 F)) (e : E) :
@@ -31,7 +31,7 @@ theorem sigR_inclR {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E
   rw [Algebra.TensorProduct.map_tmul, AlgHom.id_apply]
 
 /- English proof (translation)
-Establish `h1 : S.subtype.mapMatrix (matS S X hX) = (inclR (F` using `F) (Fv F v)).mapMatrix X := by`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[show (((matS S X hX).det : S) : Fv F v ⊗[F] E) = S.subtype (matS S X hX).det from rfl, RingHom.map_det, h1, ← RingHom.map_det]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_det_matS {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     {v : HeightOneSpectrum (𝓞 F)} (S : Subring (Fv F v ⊗[F] E)) {m : ℕ} (X : Matrix (Fin m) (Fin m) E)
@@ -44,17 +44,17 @@ theorem coe_det_matS {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F
     RingHom.map_det, h1, ← RingHom.map_det]
 
 /- English proof (translation)
-Unfold `LocMat`. Introduce `F E _ _ _ _ _ σ d bs v S σS hS hσS m X hherm hdet hint`. Establish `memS : ∀ e : E, (∀ k, algebraMap F (Fv F v) (bs.repr e k) ∈ v.adicCompletionIntegers F) → inclR (F` using `F) (Fv F v) e ∈ S := by`. Introduce `e he`. Establish `h` using `inclR_mem_Rv bs v e he`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[← hS]`. Conclude with `h`. Establish `hX : ∀ i j, inclR (F` using `F) (Fv F v) (X i j) ∈ S := by`. Introduce `i j`. Apply `memS` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Apply `hint` to reduce the goal to its premises. Simplify using `only [matSet, Finset.mem_union, Finset.mem_image, Finset.mem_univ, true_and]`. Conclude with `Or.inl ⟨(i, j, k), rfl⟩`. Establish `hinv : inclR (F` using `F) (Fv F v) X.det⁻¹ ∈ S := by`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Prove the first alternative. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `memS` to reduce the goal to its premises. Introduce `k`. Apply `hint` to reduce the goal to its premises. Simplify using `only [matSet, Finset.mem_union, Finset.mem_image, Finset.mem_univ, true_and]`. Conclude with `Or.inr ⟨k, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Prove the second alternative. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hX, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j show ((σS (matS S X hX j i) : S) : Fv F v ⊗[F] E) = inclR (F := F) (Fv F v) (X i j)`. Rewrite using `[hσS]`. Use `show sigR (Fv F v) σ (inclR (F := F) (Fv F v) (X j i)) = inclR (F := F) (Fv F v) (X i j)`. Rewrite using `[sigR_inclR, hherm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `isUnit_iff_exists_inv.mpr ⟨⟨inclR (F := F) (Fv F v) X.det⁻¹, hinv⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (((matS S X hX).det : S) : Fv F v ⊗[F] E) * inclR (F := F) (Fv F v) X.det⁻¹ = 1`. Rewrite using `[coe_det_matS, ← map_mul, mul_inv_cancel₀ hdet, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locMat : LocMat := by
   unfold LocMat

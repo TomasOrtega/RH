@@ -16,14 +16,14 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.V.Z.Win
 
 /- English proof (translation)
-Introduce `A hA` and use `(h A hA).imp fun _ k => ⟨k.1, fun i j e => k.2 i j 1 le_rfl (by simpa only [pow_one] using e)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem unlocked_of_potentially {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
     {r : G F Ω →* GL (Fin n) (Qbar l)} {v : HeightOneSpectrum (𝓞 F)} (h : PotUnl r v) : Unl1 r v := fun A hA =>
   (h A hA).imp fun _ k => ⟨k.1, fun i j e => k.2 i j 1 le_rfl (by simpa only [pow_one] using e)⟩
 
 /- English proof (translation)
-Introduce `w hw _`. Establish `hv : ((l : ℕ) : 𝓞 ℚ) ∈ (w.under (𝓞 ℚ)).asIdeal`. Simplify `hw` using `[HeightOneSpectrum.under, Ideal.mem_comap]`. Establish `h` using `(((hFL ℚ Ω l n r).2.2.2 M).2.2 w hw).1 (hp _ hv)`. Conclude with `unlocked_of_potentially h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem keeps_of_pot (hFL : FlagLaws) {K M Ω : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Field Ω] [CharZero Ω]
     [IsAlgClosure ℚ Ω] [Algebra K Ω] [Algebra K M] [Algebra M Ω] [IsScalarTower K M Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
@@ -37,15 +37,13 @@ private theorem keeps_of_pot (hFL : FlagLaws) {K M Ω : Type} [Field K] [NumberF
   exact unlocked_of_potentially h
 
 /- English proof (translation)
-Take `⟨M, _, _, _, iK, iK', iM, tK, tK', gK, gK', hs, hs', hM, hM'⟩` from `UpperTheory.V.Z.Bc.biQuad K K' Ω hK hK'`. Use `haveI := across_up K Ω`. Use `haveI := across_up K' Ω`. Use `haveI := across_up M Ω`. Take `⟨c, hcc⟩` from `across_cc Ω`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : (r.comp (resG ℚ K Ω)).comp (resG K M Ω) = (r.comp (resG ℚ K' Ω)).comp (resG K' M Ω)` using `MonoidHom.ext fun s => rfl`. Establish `hiM : IsIrr ((r.comp (resG ℚ K Ω)).comp (resG K M Ω))`. Use `across_irr r _ ((resG ℚ K Ω).comp (resG K M Ω)) ?_ hi` and prove the remaining obligations. Introduce and unpack `⟨s, ⟨t, rfl⟩, h2⟩`. Take `⟨u, rfl⟩` from `(hM t).2 h2`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨u, rfl⟩`. Establish `hiM' : IsIrr ((r.comp (resG ℚ K' Ω)).comp (resG K' M Ω))` using `he ▸ hiM`. Establish `hiK : IsIrr (r.comp (resG ℚ K Ω))` using `across_irr r ((resG ℚ K Ω).comp (resG K M Ω)) (resG ℚ K Ω) (fun s => ⟨resG K M Ω s, rfl⟩) hiM`. Establish `hiK' : IsIrr (r.comp (resG ℚ K' Ω))` using `across_irr r ((resG ℚ K' Ω).comp (resG K' M Ω)) (resG ℚ K' Ω) (fun s => ⟨resG K' M Ω s, rfl⟩) hiM'`. Take `⟨P, hPa⟩` from `across_pair (F := K) r θ hd c`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨P', hPa'⟩` from `across_pair (F := K') r θ hd c`. Establish `pol : Sol.Pol ι (r.comp (resG ℚ K Ω))` using `⟨ℚ, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, θ, c, P, hθ, UpperTheory.V.Ws.auSign θ, hcc, hPa⟩`. Establish `pol' : Sol.Pol ι (r.comp (resG ℚ K' Ω))` using `⟨ℚ, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, θ, c, P', hθ, UpperTheory.V.Ws.auSign θ, hcc, hPa'⟩`. Establish `up` using `(hUD hP hR K M Ω hs l ι n hn (r.comp (resG ℚ K Ω)) (hc.comp (continuous_restrictScalarsHom ℚ K Ω)) hiM pol (hA hc K hK hiK) (((hFL ℚ Ω l n r).2.2.2 K).2.1 hF)).1 hW`. Rewrite `up` using `[he]`.
-
-Conclude with `(hUD hP hR K' M Ω hs' l ι n hn (r.comp (resG ℚ K' Ω)) (hc.comp (continuous_restrictScalarsHom ℚ K' Ω)) hiM' pol' (hA hc K' hK' hiK') (((hFL ℚ Ω l n r).2.2.2 K').2.1 hF)).2 (((hFL ℚ Ω l n r).2.2.2 K').1 hI) (keeps_of_pot hFL r hp) up`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem step (hFL : FlagLaws) (hUD : AUpDown) (hP : HypothesesH) (hR : RowT) (K K' Ω : Type) [Field K] [NumberField K] [IsCMField K]
     [Field K'] [NumberField K'] [IsCMField K'] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra K Ω] [Algebra K' Ω]

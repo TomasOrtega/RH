@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.TanAdd
 
 /- English proof (translation)
-Establish `e : GlobalTheory.GrpTangent.epsScale (0 : S) ≫ c = c`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Establish `h` using `Over.w (GlobalTheory.GrpTangent.epsScale (0 : S))`. Rewrite using `[Over.comp_left, hc, ← Category.assoc]`. Conclude with `congrArg (· ≫ p) h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, tanVal_epsScale, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem tanVal_const_point {S : Type} [CommRing S] {A : Over (Sp S)} (c : epsR S ⟶ A) (p : Sp S ⟶ A.left)
     (hc : c.left = spMap (algebraMap S (DualNumber S)) ≫ p) (f : Form (A.hom ≫ 𝟙 _)) :
@@ -33,11 +33,9 @@ theorem tanVal_const_point {S : Type} [CommRing S] {A : Over (Sp S)} (c : epsR S
   rw [← e, tanVal_epsScale, zero_mul]
 
 /- English proof (translation)
-Establish `h1 : (1 : Over.mk (spMap (algebraMap S S)) ⟶ A).left = η[A].left`. Rewrite using `[Hom.one_def, Over.comp_left]`. Establish `: (CartesianMonoidalCategory.toUnit (Over.mk (spMap (algebraMap S S)))).left = 𝟙 (Sp S)`. Establish `h` using `Over.w (CartesianMonoidalCategory.toUnit (Over.mk (spMap (algebraMap S S))))`. Use `(Category.comp_id _).symm.trans (h.trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Spec.map_id _`. Rewrite using `[this]`. Conclude with `Category.id_comp _`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
-
-Conclude with `Over.OverMorphism.ext (h.trans h1.symm)`. Introduce `h`. Conclude with `(congrArg Over.Hom.left h).trans h1`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isTangent_iff_reduction_eq_one {S : Type} [CommRing S] {A : Over (Sp S)} [GrpObj A] (z : epsR S ⟶ A) :
     IsTangent z ↔ spOver (TrivSqZeroExt.fstHom S S S) ≫ z = 1 := by
@@ -56,9 +54,9 @@ theorem isTangent_iff_reduction_eq_one {S : Type} [CommRing S] {A : Over (Sp S)}
     exact (congrArg Over.Hom.left h).trans h1
 
 /- English proof (translation)
-Use `⟨?_, fun f ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[isTangent_iff_reduction_eq_one, MonObj.comp_mul, GrpObj.comp_inv, mul_inv_eq_one]`. Conclude with `⟨fun h ↦ Over.OverMorphism.ext h, fun h ↦ congrArg Over.Hom.left h⟩`. Establish `h` using `tanVal_mul_all hC hH S A g hA hg f (y * c⁻¹) c`. Rewrite `h` using `[inv_mul_cancel_right, tanVal_const_point c p hc f, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem translate_const (hC : CrystallineSmoothLift) (hH : AbelianHodgeDeRham) (S : Type) [CommRing S]
     (A : Over (Sp S)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A)

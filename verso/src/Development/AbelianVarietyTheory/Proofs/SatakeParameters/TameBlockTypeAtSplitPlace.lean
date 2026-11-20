@@ -13,13 +13,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.TypeBlockPf
 
 /- English proof (translation)
-Introduce `D w hw`. Establish `hc : ∀ x : 𝓞 D.host.E, ((GlobalTheory.SumWCompare.cj D.host.E x : 𝓞 D.host.E) : D.host.E) = D.host.conj (x : D.host.E)`. Introduce `x`. Rewrite using `[GlobalTheory.SumWCompare.cj_coe, GlobalTheory.DimPartsCompare.star_conj]`. Establish `hcc : ∀ z : D.host.E, D.host.conj (D.host.conj z) = z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z`. Rewrite using `[← GlobalTheory.DimPartsCompare.star_conj, ← GlobalTheory.DimPartsCompare.star_conj, star_star]`. Take `⟨x, hx, hy⟩` from `hw`. Establish `hsp : IsSplitPl D.host (GlobalTheory.DimPartsCompare.cPl w)`. Use `⟨GlobalTheory.SumWCompare.cj D.host.E x, ?_, fun y e hy' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.DimPartsCompare.mem_cPl, GlobalTheory.SumWCompare.cj_cj]`. Conclude with `hx`. Rewrite `hy'` using `[GlobalTheory.DimPartsCompare.mem_cPl]`. Use `hy _ ?_ hy'` and prove the remaining obligations. Rewrite using `[hc, show y = x from RingOfIntegers.ext (by rw [e, hc, hcc])]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, -, hs, -⟩` from `GlobalTheory.SplitConjPlace.splitEx_all D _ hsp`. Use `⟨s, HeightOneSpectrum.ext (Ideal.ext fun y => ?_)⟩` and prove the remaining obligations. Use `hs (GlobalTheory.SumWCompare.cj D.host.E y) y (by rw [hc, hcc])` as an intermediate fact. Rewrite `this` using `[GlobalTheory.DimPartsCompare.mem_cPl, GlobalTheory.SumWCompare.cj_cj]`. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitAt : ∀ (D : D7) (w : PlE D.host), IsSplitPl D.host w → ∃ s : SplitPlace D.host.E, s.w = w := by
   intro D w hw
@@ -41,11 +41,9 @@ theorem splitAt : ∀ (D : D7) (w : PlE D.host), IsSplitPl D.host w → ∃ s : 
   exact this.symm
 
 /- English proof (translation)
-Introduce `hL D P S hT i w hw ⟨k, hk⟩ htame`. Use `⟨htame, fun Q => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `splitAt D w hw`. Take `⟨c, T, hc, hcs, -, -, -⟩` from `hT.rep i s hw Q`. Establish `hf : ∃ f ∈ NG.isoTyp (P.M.loc i).wt.ρ (P.H.av.S i Q), f ≠ 0 ∧ ∀ x : GAf D.host.E D.R.nV, TrivOutside {s.v} x → Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x) ∈ blockGrp (s.w.adicCompletion D.host.E) D.R.r D.R.t → NG.rt D.host.E D.R.nV x f = blockChar (S i s.w hw).mu ( …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, e | e⟩` from `GlobalTheory.DimPartsCompare.cover k s.w hk`. Conclude with `GlobalTheory.T.split_place_completion_iso_tame hL D P S hT i k v s hw e htame c hc hcs Q`. Conclude with `GlobalTheory.T.conjugate_place_completion_iso_tame hL D P S hT i k v s hw e htame c hc hcs Q`. Take `⟨f, hfS, hf0, hfe⟩` from `hf`. Take `⟨y, hy0, hy⟩` from `GlobalTheory.T.local_irreducible_fixed_vectors D.host.E D.R.nV (P.M.loc i).wt (P.H.av.S i Q) (P.H.av.irr i Q) s _ (hT.rep i s hw Q) c hc hcs (blockGrp _ D.R.r D.R.t) (blockChar (S i s.w hw).mu) (fun h hh => hh.1) (fun h hh => ⟨kOne_le_blockGrp _ _ hh, blockChar_kOne _ htame hh⟩) …`.
-
-Conclude with `⟨y, hy0, isBlockVec_of _ _ _ hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), ∀ S : Reading P.T, IsTrue P S → ∀ i w hw, (∃ k, w ∈ placesOver D.host.E (D.host.g k)) → GlobalTheory.SplitWeil.IsTame (S i w hw).mu → TypeBlock S i w hw := by
   intro hL D P S hT i w hw ⟨k, hk⟩ htame

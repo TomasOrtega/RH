@@ -7,15 +7,13 @@ open TensorProduct
 namespace CrystallinePoints.Pd
 
 /- English proof (translation)
-Use `set P := LinearMap.range γ`. Establish `key : ∀ m : Ideal R, m.IsMaximal → ∃ r : R, r - 1 ∈ m ∧ ∀ x : M, r • x ∈ P`. Introduce `m hm`. Establish `hin : (⊤ : Submodule R (M ⧸ P)) ≤ m • ⊤`. Establish `e` using `congrArg (Submodule.map P.mkQ) (h m hm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[Submodule.map_sup, Submodule.map_smul'', Submodule.map_top, Submodule.range_mkQ, Submodule.mkQ_map_self, bot_sup_eq]`. Conclude with `e.symm.le`. Take `⟨r, hr, hr'⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul m _ (Module.Finite.fg_top) hin`. Use `⟨r, hr, fun x ↦ ?_⟩` and prove the remaining obligations. Use `hr' (Submodule.Quotient.mk x) trivial` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Rewrite `this` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis. Set `J : Ideal R` to `{ carrier := {r | ∀ x : M, r • x ∈ P} add_mem' := fun ha hb x ↦ by rw [add_smul]; exact P.add_mem (ha x) (hb x) zero_mem' := fun x ↦ by rw [zero_smul]; exact P.zero_mem smul_mem' := fun c r hr x ↦ by rw [smul_eq_mul, mul_smul]; exact P.smul_mem c (hr x) }`. Establish `hJ : J = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal J hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, hr'⟩` from `key m hm`. Establish `h1 : r ∈ m` using `hle hr'`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using m.sub_mem h1 hr))`. Introduce `x`. Establish `: (1 : R) ∈ J` using `hJ ▸ Submodule.mem_top`.
-
-Establish `hx : x ∈ P` using `by simpa using this x`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem surjective_of_sup_smulD {R : Type} [CommRing R] {H M : Type*} [AddCommGroup H] [Module R H]
     [AddCommGroup M] [Module R M] [Module.Finite R M] (γ : H →ₗ[R] M)
@@ -51,9 +49,9 @@ theorem surjective_of_sup_smulD {R : Type} [CommRing R] {H M : Type*} [AddCommGr
   exact hx
 
 /- English proof (translation)
-Use `letI : Field (R ⧸ m) := Ideal.Quotient.field m`. Establish `h` using `Module.rankAtStalk_baseChange (R := R) (M := M) (S := R ⧸ m) (⊥ : PrimeSpectrum (R ⧸ m))`. Rewrite `h` using `[Module.rankAtStalk_eq_finrank_of_free]`. Rewrite using `[show Module.finrank (R ⧸ m) ((R ⧸ m) ⊗[R] M) = _ from h]`. Use `congr 1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Simplify using `[Ideal.Quotient.eq_zero_iff_mem]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem finrank_res {R : Type} [CommRing R] (m : Ideal R) [hm : m.IsMaximal] (M : Type*) [AddCommGroup M]
     [Module R M] [Module.Finite R M] [Module.Projective R M] :
@@ -67,7 +65,7 @@ theorem finrank_res {R : Type} [CommRing R] (m : Ideal R) [hm : m.IsMaximal] (M 
   simp [Ideal.Quotient.eq_zero_iff_mem]
 
 /- English proof (translation)
-Rewrite using `[← (TensorProduct.quotTensorEquivQuotSMul M m).map_eq_zero_iff, ← Submodule.Quotient.mk_eq_zero]`. Establish `: TensorProduct.quotTensorEquivQuotSMul M m ((1 : R ⧸ m) ⊗ₜ[R] y) = Submodule.Quotient.mk y`. Use `TensorProduct.quotTensorEquivQuotSMul_mk_tmul (M := M) m 1 y` as an intermediate fact. Rewrite `this` using `[map_one, one_smul]`. Then use the resulting hypothesis. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem oneT_iff {R : Type} [CommRing R] (m : Ideal R) {M : Type*} [AddCommGroup M] [Module R M]
     (y : M) : (1 : R ⧸ m) ⊗ₜ[R] y = 0 ↔ y ∈ m • (⊤ : Submodule R M) := by
@@ -78,23 +76,21 @@ theorem oneT_iff {R : Type} [CommRing R] (m : Ideal R) {M : Type*} [AddCommGroup
   rw [this]
 
 /- English proof (translation)
-Introduce `R _ H _ _ M _ _ g F N hc fH pH rH fF pF rF fM pM rM γ hγ`. Use `surjective_of_sup_smulD γ fun m hm ↦ ?_` and prove the remaining obligations. Use `letI : Field (R ⧸ m) := Ideal.Quotient.field m`. Set `π : H →ₗ[R] N` to `Submodule.linearProjOfIsCompl N F hc.symm`. Establish `hπ : ∀ n : N, π n = n` using `fun n ↦ Submodule.linearProjOfIsCompl_apply_left hc.symm n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hπF : ∀ x ∈ F, π x = 0` using `fun x hx ↦ Submodule.linearProjOfIsCompl_apply_right' hc.symm hx`. Use `haveI : Module.Finite R N := Module.Finite.of_surjective π fun n ↦ ⟨n, hπ n⟩`. Establish `d1` using `finrank_res m H`. Establish `d2` using `finrank_res m F`. Establish `d3` using `finrank_res m M`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `d1` using `[rH]`. Rewrite `d2` using `[rF]`. Rewrite `d3` using `[rM]`. Establish `d4 : Module.finrank (R ⧸ m) ((R ⧸ m) ⊗[R] N) = g`. Establish `e : (R ⧸ m) ⊗[R] H ≃ₗ[R ⧸ m] ((R ⧸ m) ⊗[R] F) × ((R ⧸ m) ⊗[R] N)` using `(LinearEquiv.baseChange R (R ⧸ m) _ _ (Submodule.prodEquivOfIsCompl F N hc).symm).trans (TensorProduct.prodRight R (R ⧸ m) (R ⧸ m) F N)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `e.finrank_eq` as an intermediate fact. Rewrite `this` using `[Module.finrank_prod, d1, d2]`. Use linear arithmetic over natural numbers and integers. Establish `su : Function.Surjective (algebraMap R (R ⧸ m))` using `Ideal.Quotient.mk_surjective`. Set `δ` to `(γ ∘ₗ N.subtype).baseChange (R ⧸ m)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective δ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨n, rfl⟩` from `TensorProduct.mk_surjective R N (R ⧸ m) su z`. Establish `h1 : γ n ∈ m • (⊤ : Submodule R M)` using `(oneT_iff m _).1 hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, w, hw, e⟩` from `Submodule.mem_sup.1 (hγ m hm n h1)`. Use `(oneT_iff m n).2 ?_` and prove the remaining obligations. Establish `e2 : n = π w` using `by rw [← hπ n, ← e, map_add, hπF f hf, zero_add]`. Rewrite using `[e2]`. Establish `: π w ∈ Submodule.map π (m • ⊤)` using `Submodule.mem_map_of_mem hw`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top this`. Establish `hs : Function.Surjective δ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (d4.trans d3.symm)).1 hinj`. Use `eq_top_iff.2 fun y _ ↦ ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `hs ((1 : R ⧸ m) ⊗ₜ y)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, rfl⟩` from `TensorProduct.mk_surjective R N (R ⧸ m) su z`. Establish `h2 : y - γ n ∈ m • (⊤ : Submodule R M)`. Use `(oneT_iff m _).1 ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_sub, ← hz]`. Conclude with `sub_self _`.
-
-Conclude with `Submodule.mem_sup.2 ⟨γ n, ⟨n, rfl⟩, _, h2, add_sub_cancel _ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resSurj_coreD.{u} :
   ∀ (R : Type) [CommRing R] (H : Type 1) [AddCommGroup H] [Module R H] (M : Type u) [AddCommGroup M] [Module R M]

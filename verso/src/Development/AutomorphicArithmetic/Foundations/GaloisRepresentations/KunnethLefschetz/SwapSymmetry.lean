@@ -7,13 +7,13 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 open scoped TensorProduct DirectSum
 
 /- English proof (translation)
-Simplify using `[pb, pullHQ, pullHl_id, LinearMap.baseChange_id]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem pb_self (l : ℕ) [Fact l.Prime] {X : Scheme.{0}} (n : ℤ) (x : V l X n) : pb l (𝟙 X) n x = x := by
   simp [pb, pullHQ, pullHl_id, LinearMap.baseChange_id]
 
 /- English proof (translation)
-Rewrite using `[LateralTheory.EtaleTrace.pb_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem pb_comp_apply (l : ℕ) [Fact l.Prime] {Z Y X : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (n : ℤ) (x : V l X n) :
     pb l (f ≫ g) n x = pb l f n (pb l g n x) := by
@@ -21,11 +21,11 @@ private theorem pb_comp_apply (l : ℕ) [Fact l.Prime] {Z Y X : Scheme.{0}} (f :
   rfl
 
 /- English proof (translation)
-Introduce `hP l _ k _ _ hl d X p hSP hR G n w h h' x`. Take `⟨hprop, hsm⟩` from `hSP`. Use `haveI := hprop`. Establish `hpair` using `(hP k d p inferInstance hsm).1`. Establish `hunit : IsUnit ((l : Γ(X, ⊤)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsUnit ((l : k))` using `isUnit_iff_ne_zero.mpr hl`. Establish `h2` using `(h1.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom).map p.appTop.hom`. Simplify `h2` using `[map_natCast]`. Establish `hu` using `hR.mul_one X hunit`. Establish `key : ∀ f : pullback p p ⟶ X, pullback.diagonal p ≫ f = 𝟙 X → cupV l (pullback p p) h (pb l f n x) (G.diag d p) = G.g hpair h x`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Establish `hd : G.diag d p = G.g hpair (show (0 : ℤ) + 2 * d = 2 * d by simp) (oneV l X)`. Simplify using `only [GysQ.diag, GysQ.cls, dif_pos hpair]`. Rewrite using `[hd, ← G.proj hpair (show n + 0 = n by simp) h (show (0 : ℤ) + 2 * d = 2 * d by simp) h, ← pb_comp_apply, hf, pb_self, hu]`. Rewrite using `[key _ (by simp), hR.comm (pullback p p) (2 * d) n w h' h, key _ (by simp), Int.negOnePow_even _ ⟨d * n, by ring⟩, one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.swap_holds :
     UpperTheory.Gal.KunnethLefschetz.Swap := by

@@ -10,73 +10,65 @@ namespace PositivityTheory.KB.SpectralGap
 open PGap
 
 /- English proof (translation)
-Introduce `hH hD hU hA Λ S _ _ _ _ _ _ _ _ _ _ μ _ j hj K₀ K₁ K₂ hT hdense D₀ D₁ D₂ hD₀ hD₁ hD₂ hfin h01 w hwm hwi hw2 hw0`. Use `set B := K₀ ⊓ K₁ ⊓ K₂ with hBdef`. Establish `hBE1 : B ≤ K₀ ⊓ K₁` using `inf_le_left`. Establish `hBE2 : B ≤ K₀ ⊓ K₂` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`. Establish `hBE3 : B ≤ K₁ ⊓ K₂` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE1K0 : K₀ ⊓ K₁ ≤ K₀` using `inf_le_left`. Establish `hE1K1 : K₀ ⊓ K₁ ≤ K₁` using `inf_le_right`. Establish `hE2K0 : K₀ ⊓ K₂ ≤ K₀` using `inf_le_left`. Establish `hE2K2 : K₀ ⊓ K₂ ≤ K₂` using `inf_le_right`. Establish `hE3K1 : K₁ ⊓ K₂ ≤ K₁` using `inf_le_left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE3K2 : K₁ ⊓ K₂ ≤ K₂` using `inf_le_right`. Establish `hBK0 : B ≤ K₀` using `hBE1.trans hE1K0`. Establish `hBK1 : B ≤ K₁` using `hBE1.trans hE1K1`. Establish `i0 : (B.subgroupOf K₀).index ≠ 0` using `hT.fin₀`. Establish `i1 : (B.subgroupOf K₁).index ≠ 0` using `hT.fin₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i2 : (B.subgroupOf K₂).index ≠ 0` using `hT.fin₂`. Establish `iBE1` using `(idx_ne hBE1 hE1K0 i0).1`. Establish `iE1K0` using `(idx_ne hBE1 hE1K0 i0).2`. Establish `iE1K1` using `(idx_ne hBE1 hE1K1 i1).2`. Establish `iBE2` using `(idx_ne hBE2 hE2K0 i0).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iE2K0` using `(idx_ne hBE2 hE2K0 i0).2`. Establish `iBE3` using `(idx_ne hBE3 hE3K1 i1).1`. Establish `iE3K1` using `(idx_ne hBE3 hE3K1 i1).2`. Take `⟨DB, hDB⟩` from `u_dom μ hU hj hBK0 i0 hD₀`. Take `⟨DE1, hDE1⟩` from `u_dom μ hU hj hE1K0 iE1K0 hD₀`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨DE2, hDE2⟩` from `u_dom μ hU hj hE2K0 iE2K0 hD₀`. Take `⟨DE3, hDE3⟩` from `u_dom μ hU hj hE3K1 iE3K1 hD₁`. Establish `hm0` using `u_measure μ hU hj hBK0 i0 hD₀ hDB`. Establish `hm1` using `u_measure μ hU hj hBK1 i1 hD₁ hDB`. Establish `: Countable (K₀.map j)` using `countable_map`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD0ne : μ D₀ ≠ 0` using `hD₀.measure_ne_zero (NeZero.ne μ)`. Establish `hidx : (B.subgroupOf K₀).index = (B.subgroupOf K₁).index`. Establish `h : ((B.subgroupOf K₀).index : ENNReal) * μ D₀ = (B.subgroupOf K₁).index * μ D₀`. Rewrite using `[← hm0, hm1, h01]`. Conclude with `(ENNReal.mul_left_inj hD0ne hfin.ne).1 h` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hDBfin : μ DB < ⊤`. Rewrite using `[hm0]`. Conclude with `ENNReal.mul_lt_top (ENNReal.natCast_lt_top _) hfin`. Establish `: IsFiniteMeasure (μ.restrict DB)` using `isFiniteMeasure_restrict.2 hDBfin.ne`. Establish `: IsFiniteMeasure (μ.restrict D₁)` using `isFiniteMeasure_restrict.2 (h01 ▸ hfin).ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwB : LInv j B w` using `linv_mono j hBK1 hwi`. Establish `hw2B : IntegrableOn (fun x => w x ^ 2) DB μ` using `(int_iff_inv μ hU hj hBK1 i1 hD₁ hDB (hwm.pow_const 2) (linv_sq j hwi)).2 hw2`. Establish `hwG : Good j B μ DB w` using `(good_iff hwm hwB).2 hw2B`. Use `set v := avg j (K₀ ⊓ K₁) K₀ w with hv`. Establish `hvm : Measurable v` using `u_meas μ hU hj hE1K0 iE1K0 hwm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hvK : LInv j K₀ v` using `u_inv μ hU hj hE1K0 iE1K0 (linv_mono j hE1K1 hwi)`. Establish `hv2 : IntegrableOn (fun x => v x ^ 2) D₀ μ`. Establish `h1 : IntegrableOn (fun x => w x ^ 2) DE1 μ` using `(int_iff_inv μ hU hj hE1K1 iE1K1 hD₁ hDE1 (hwm.pow_const 2) (linv_sq j hwi)).2 hw2`. Rewrite `h1` using `[u_int_iff μ hU hj hE1K0 iE1K0 hD₀ hDE1 (hwm.pow_const 2) (linv_sq j (linv_mono j hE1K1 hwi))]`. Establish `e : (avg j (K₀ ⊓ K₁) K₀ fun y => |w y ^ 2|) = avg j (K₀ ⊓ K₁) K₀ fun y => w y ^ 2`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Conclude with `abs_of_nonneg (sq_nonneg _)`. Rewrite `h1` using `[e]`. Use `h1.mono' (hvm.pow_const 2).aestronglyMeasurable (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]`. Conclude with `avg_sq_le j iE1K0 w x`. Establish `hv2B : IntegrableOn (fun x => v x ^ 2) DB μ` using `(int_iff_inv μ hU hj hBK0 i0 hD₀ hDB (hvm.pow_const 2) (linv_sq j hvK)).2 hv2`. Establish `hvG : Good j B μ DB v` using `(good_iff hvm (linv_mono j hBK0 hvK)).2 hv2B`. Establish `hwint1 : IntegrableOn w D₁ μ` using `((memLp_two_iff_integrable_sq hwm.aestronglyMeasurable).2 hw2).integrable (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hwE1 : IntegrableOn w DE1 μ` using `(int_iff_inv μ hU hj hE1K1 iE1K1 hD₁ hDE1 hwm hwi).2 hwint1`. Establish `hv0 : ∫ x in D₀, v x ∂μ = 0`. Establish `e1` using `int_eq_inv μ hU hj hE1K1 iE1K1 hD₁ hDE1 hwm hwi hwE1`. Establish `e2` using `u_int_eq μ hU hj hE1K0 iE1K0 hD₀ hDE1 hwm (linv_mono j hE1K1 hwi) hwE1`. Rewrite `e1` using `[hw0, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `e2` using `[e1]`. Establish `hne : (((K₀ ⊓ K₁).subgroupOf K₀).index : ℝ) ≠ 0` using `by exact_mod_cast iE1K0`. Conclude with `(mul_eq_zero.1 e2.symm).resolve_left hne`. Establish `hker : cls j B μ DB v ∈ (W j B μ DB (K₀ ⊓ K₁) ⊓ W j B μ DB (K₀ ⊓ K₂) ⊓ W j B μ DB (K₁ ⊓ K₂))ᗮ`. Rewrite using `[Submodule.mem_orthogonal]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `f hf`. Take `⟨F, hF, rfl⟩` from `cls_surj f`. Rewrite `hf` using `[Submodule.mem_inf, Submodule.mem_inf]`. Take `⟨⟨h1, h2⟩, h3⟩` from `hf`. Establish `inv : ∀ {E : Subgroup Λ}, B ≤ E → (B.subgroupOf E).index ≠ 0 → ∀ {DE : Set S}, IsFundamentalDomain (E.map j) DE μ → cls j B μ DB F ∈ W j B μ DB E → ∀ γ ∈ E, (fun x => F (j γ * x)) =ᵐ[μ] F`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `E hBE hiE DE hDE hW γ hγ`. Establish `hae` using `ae_eq_cosetAvg_of_mem_invariantSubspace hU hj hDB hBE hiE hDE hF hW`. Establish `hG` using `good_avg hU hj hDB hBE hiE hDE hF`. Establish `hsp` using `ae_spread hDB hF.1 hG.1 hF.2.1 hG.2.1 hae`. Establish `hinv` using `u_inv μ hU hj hBE hiE hF.2.1`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `e : (fun x => avg j B E F (j γ * x)) = avg j B E F` using `funext fun x => hinv γ hγ x`. Conclude with `((ae_translate (j γ) hsp).trans (Filter.EventuallyEq.of_eq e)).trans hsp.symm`. Set `G : Subgroup Λ` to `{ carrier := {γ | (fun x => F (j γ * x)) =ᵐ[μ] F} one_mem' := by`. Simplify using `only [Set.mem_ofPred_eq, map_one, one_mul]`. Conclude with `Filter.EventuallyEq.rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_ofPred_eq, map_mul, mul_assoc] at ha hb ⊢`. Conclude with `(ae_translate (j b) ha).trans hb`. Use the proof step `inv_mem' := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a ha`. Simplify using `only [Set.mem_ofPred_eq, map_inv] at ha ⊢`. Use `ae_translate (j a)⁻¹ ha` as an intermediate fact. Simplify using `only [mul_inv_cancel_left] at this`. Conclude with `this.symm }`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hE1G : K₀ ⊓ K₁ ≤ G` using `fun γ hγ => inv hBE1 iBE1 hDE1 h1 γ hγ`. Establish `hE2G : K₀ ⊓ K₂ ≤ G` using `fun γ hγ => inv hBE2 iBE2 hDE2 h2 γ hγ`. Establish `hE3G : K₁ ⊓ K₂ ≤ G` using `fun γ hγ => inv hBE3 iBE3 hDE3 h3 γ hγ`. Take `⟨g, hg, hgB⟩` from `exists_not_mem hT.big₀₂`. Establish `hgE1 : g ∉ K₀ ⊓ K₁` using `fun h => hgB (Subgroup.mem_inf.2 ⟨h, (Subgroup.mem_inf.1 hg).2⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK0 : K₀ ≤ G` using `twoTr_le hT.two₀ hE1G (Subgroup.mem_inf.1 hg).1 hgE1 (hE2G hg)`. Take `⟨g', hg', hg'B⟩` from `exists_not_mem hT.big₀₁`. Establish `hg'E3 : g' ∉ K₁ ⊓ K₂` using `fun h => hg'B (Subgroup.mem_inf.2 ⟨hg', (Subgroup.mem_inf.1 h).2⟩)`. Establish `hK1 : K₁ ≤ G` using `twoTr_le hT.two₁ hE3G (Subgroup.mem_inf.1 hg').2 hg'E3 (hE1G hg')`. Establish `hsup : K₀ ⊔ K₁ ≤ G` using `sup_le hK0 hK1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `hA S μ ((K₀ ⊔ K₁).map j) hdense F hF.1 (by`. Introduce and unpack `_ ⟨γ, hγ, rfl⟩`. Conclude with `hsup hγ)`. Rewrite using `[cls_inner hF hvG]`. Establish `hFc : (fun x => F x * v x) =ᵐ[μ.restrict DB] fun x => c * v x` using `(ae_restrict_of_ae hc).mono fun x hx => by dsimp only; rw [hx]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvint : IntegrableOn v DB μ` using `hvG.2.2.integrable (by norm_num)`. Rewrite using `[integral_congr_ae hFc, integral_const_mul, int_eq_inv μ hU hj hBK0 i0 hD₀ hDB hvm hvK hvint, hv0, mul_zero, mul_zero]`. Establish `hB1 : B = (K₀ ⊓ K₁) ⊓ (K₀ ⊓ K₂)`. Rewrite using `[hBdef]`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Subgroup.mem_inf]`. The claim follows by propositional logic. Establish `hB2 : B = (K₁ ⊓ K₂) ⊓ (K₀ ⊓ K₁)`. Rewrite using `[hBdef]`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Subgroup.mem_inf]`. The claim follows by propositional logic. Establish `hB3 : B = (K₁ ⊓ K₂) ⊓ (K₀ ⊓ K₂)`. Rewrite using `[hBdef]`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Subgroup.mem_inf]`. The claim follows by propositional logic. Establish `a1` using `angle hU hj hDB hD hB1 hE1K0 hE2K0 i0 hT.two₀ hT.big₀₂ hD₀ hDE1 hDE2`. Establish `a2` using `angle hU hj hDB hD hB2 hE3K1 hE1K1 i1 hT.two₁ hT.big₀₁ hD₁ hDE3 hDE1`. Establish `a3` using `angle hU hj hDB hD hB3 hE3K2 hE2K2 i2 hT.two₂ hT.big₀₂ hD₂ hDE3 hDE2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `le12` using `le_inf (W_anti hU hj hDB hBE1 hE1K0 i0 hDE1 hD₀) (W_anti hU hj hDB hBE2 hE2K0 i0 hDE2 hD₀)`. Establish `le13` using `le_inf (W_anti hU hj hDB hBE1 hE1K1 i1 hDE1 hD₁) (W_anti hU hj hDB hBE3 hE3K1 i1 hDE3 hD₁)`. Establish `le23` using `le_inf (W_anti hU hj hDB hBE2 hE2K2 i2 hDE2 hD₂) (W_anti hU hj hDB hBE3 hE3K2 i2 hDE3 hD₂)`. Establish `hvmem : cls j B μ DB v ∈ W j B μ DB (K₀ ⊓ K₁) ⊓ W j B μ DB (K₀ ⊓ K₂)` using `Submodule.mem_inf.2 ⟨mem_W_of_inv hU hj hDB hBE1 iBE1 hDE1 hvG (linv_mono j hE1K0 hvK), mem_W_of_inv hU hj hDB hBE2 iBE2 hDE2 hvG (linv_mono j hE2K0 hvK)⟩`. Establish `hwmem : cls j B μ DB w ∈ W j B μ DB (K₀ ⊓ K₁) ⊓ W j B μ DB (K₁ ⊓ K₂)` using `Submodule.mem_inf.2 ⟨mem_W_of_inv hU hj hDB hBE1 iBE1 hDE1 hwG (linv_mono j hE1K1 hwi), mem_W_of_inv hU hj hDB hBE3 iBE3 hDE3 hwG (linv_mono j hE3K1 hwi)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmain` using `hH (HL j B μ DB) (W j B μ DB (K₀ ⊓ K₁)) (W j B μ DB (K₀ ⊓ K₂)) (W j B μ DB (K₁ ⊓ K₂)) (W j B μ DB K₀) (W j B μ DB K₁) (W j B μ DB K₂) (W_closed _ _ _ _ _) (W_closed _ _ _ _ _) (W_closed _ _ _ _ _) (W_closed _ _ _ _ _) (W_closed _ _ _ _ _) (W_closed _ _ _ _ _) le12 le13 le23 a1 a2 …`. Establish `hBw : avg j B K₀ w = v`. Rewrite using `[← u_trans μ hU hj hBK0 i0 hBE1 hE1K0 hwB, u_id μ hU hj hBE1 iBE1 (linv_mono j hE1K1 hwi)]`. Establish `hin : ⟪cls j B μ DB v, cls j B μ DB w⟫_ℝ = (B.subgroupOf K₀).index * ∫ x in D₀, v x ^ 2 ∂μ`. Rewrite using `[cls_inner hvG hwG, u_int_eq μ hU hj hBK0 i0 hD₀ hDB (u := fun x => v x * w x) (hvm.mul hwm) (linv_mul j (linv_mono j hBK0 hvK) hwB) (integrableOn_mul hvG.2.2 hwG.2.2)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 2`. Use function extensionality and compare the values at `x`. Rewrite using `[avg_mul_left j hvK, hBw, sq]`. Establish `hnv : ‖cls j B μ DB v‖ ^ 2 = (B.subgroupOf K₀).index * ∫ x in D₀, v x ^ 2 ∂μ`. Rewrite using `[cls_norm_sq hvG, int_eq_inv μ hU hj hBK0 i0 hD₀ hDB (u := fun x => v x ^ 2) (hvm.pow_const 2) (linv_sq j hvK) hv2B]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hnw : ‖cls j B μ DB w‖ ^ 2 = (B.subgroupOf K₀).index * ∫ x in D₁, w x ^ 2 ∂μ`. Rewrite using `[cls_norm_sq hwG, int_eq_inv μ hU hj hBK1 i1 hD₁ hDB (u := fun x => w x ^ 2) (hwm.pow_const 2) (linv_sq j hwi) hw2B, hidx]`. Use `⟨hv2, hv0, ?_⟩` and prove the remaining obligations. Use `set n : ℝ := ((B.subgroupOf K₀).index : ℝ)`. Establish `hn0 : 0 < n` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero i0)`.
-
-Use `set P := ∫ x in D₀, v x ^ 2 ∂μ`. Use `set Q := ∫ x in D₁, w x ^ 2 ∂μ`. Use `set a := ‖cls j B μ DB v‖`. Use `set b := ‖cls j B μ DB w‖`. Establish `ha : 0 ≤ a` using `norm_nonneg _`.
-
-Establish `hb : 0 ≤ b` using `norm_nonneg _`. Rewrite `hmain` using `[hin]`. Establish `h1 : a ^ 2 ≤ 2 / 5 * (a * b)` using `by rw [hnv]; exact (le_abs_self _).trans hmain`. Establish `h2 : a ^ 2 ≤ (2 / 5) ^ 2 * b ^ 2`. Break down `ha.lt_or_eq with ha' | ha'` into its components or cases.
-
-Establish `: a ≤ 2 / 5 * b` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[← ha']`. Use polynomial arithmetic with `[sq_nonneg b]`. Rewrite `h2` using `[hnv, hnw]`.
-
-Establish `: n * P ≤ n * ((2 / 5) ^ 2 * Q)` using `by linarith`. Conclude with `le_of_mul_le_mul_left this hn0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gapAbs_of : Hilb → Design → Unfold → AEConst → GapAbs := by
   intro hH hD hU hA Λ S _ _ _ _ _ _ _ _ _ _ μ _ j hj K₀ K₁ K₂ hT hdense D₀ D₁ D₂ hD₀ hD₁ hD₂ hfin h01

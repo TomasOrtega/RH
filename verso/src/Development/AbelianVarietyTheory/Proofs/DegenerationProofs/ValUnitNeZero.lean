@@ -24,7 +24,7 @@ def Reg (W : Y.Opens) (F : (Sp C ⟶ Y) → C) : Prop :=
 variable {W : Y.Opens} {F G : (Sp C ⟶ Y) → C}
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `hF`. Take `⟨s, hs⟩` from `hG`. Conclude with `⟨r * s, fun x hx hW => by rw [valR_mul x W hW, ← hr x hx hW, ← hs x hx hW]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Reg.mul (hF : Reg q σ W F) (hG : Reg q σ W G) : Reg q σ W fun x => F x * G x := by
   obtain ⟨r, hr⟩ := hF
@@ -32,7 +32,7 @@ theorem Reg.mul (hF : Reg q σ W F) (hG : Reg q σ W G) : Reg q σ W fun x => F 
   exact ⟨r * s, fun x hx hW => by rw [valR_mul x W hW, ← hr x hx hW, ← hs x hx hW]⟩
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `hF`. Conclude with `⟨r ^ n, fun x hx hW => by beta_reduce`. Rewrite using `[hr x hx hW, valR_eq x W hW, valR_eq x W hW, map_pow]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem Reg.pow (hF : Reg q σ W F) (n : ℕ) : Reg q σ W fun x => F x ^ n := by
   obtain ⟨r, hr⟩ := hF
@@ -41,7 +41,7 @@ theorem Reg.pow (hF : Reg q σ W F) (n : ℕ) : Reg q σ W fun x => F x ^ n := b
     rw [hr x hx hW, valR_eq x W hW, valR_eq x W hW, map_pow]⟩
 
 /- English proof (translation)
-Use `choose r hr using hF`. Use `⟨∑ i, r i, fun x hx hW => ?_⟩` and prove the remaining obligations. Rewrite using `[valR_eq x W hW, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (hr i x hx hW).trans (valR_eq x W hW _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Reg.sum {I : Type} [Fintype I] {F : I → (Sp C ⟶ Y) → C} (hF : ∀ i, Reg q σ W (F i)) :
     Reg q σ W fun x => ∑ i, F i x := by
@@ -51,20 +51,20 @@ theorem Reg.sum {I : Type} [Fintype I] {F : I → (Sp C ⟶ Y) → C} (hF : ∀ 
   exact Finset.sum_congr rfl fun i _ => (hr i x hx hW).trans (valR_eq x W hW _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨constFn q W a, fun x hx hW => (GlobalTheory.Points.valR_constFn_of_over q σ x hx W hW a).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem Reg.const (a : K) : Reg q σ W fun _ => σ a :=
   ⟨constFn q W a, fun x hx hW => (GlobalTheory.Points.valR_constFn_of_over q σ x hx W hW a).symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(g.appLE U W h).hom s, fun x _ hW => (GlobalTheory.Points.valR_appLE x g h hW s).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem Reg.pull {X : Scheme.{0}} (g : Y ⟶ X) {U : X.Opens} (h : W ≤ g ⁻¹ᵁ U) (s : Γ(X, U)) :
     Reg q σ W fun x => valR (x ≫ g) U s :=
   ⟨(g.appLE U W h).hom s, fun x _ hW => (GlobalTheory.Points.valR_appLE x g h hW s).symm⟩
 
 /- English proof (translation)
-Use `⟨(g.appLE U W h).hom (s⁻¹).val, fun x _ hW => ?_⟩` and prove the remaining obligations. Establish `hU : ⊤ ≤ (x ≫ g) ⁻¹ᵁ U` using `fun _ hz => h (hW hz)`. Rewrite using `[GlobalTheory.Points.valR_appLE x g h hW]`. Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[← valR_mul _ U hU, Units.mul_inv, valR_eq _ U hU, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Reg.inv_unit {X : Scheme.{0}} (g : Y ⟶ X) {U : X.Opens} (h : W ≤ g ⁻¹ᵁ U) (s : Γ(X, U)ˣ) :
     Reg q σ W fun x => (valR (x ≫ g) U s.val)⁻¹ := by
@@ -75,7 +75,7 @@ theorem Reg.inv_unit {X : Scheme.{0}} (g : Y ⟶ X) {U : X.Opens} (h : W ≤ g �
   rw [← valR_mul _ U hU, Units.mul_inv, valR_eq _ U hU, map_one]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `Reg.inv_unit (q := q) (σ := σ) g h (X.toRingedSpace.isUnit_res_basicOpen s).unit`. Use `⟨r, fun x hx hW => ?_⟩` and prove the remaining obligations. Rewrite using `[← hr x hx hW]`. Conclude with `congrArg _ (valR_res (x ≫ g) (X.basicOpen_le s) (fun _ hz => h (hW hz)) s).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Reg.inv_basicOpen {X : Scheme.{0}} (g : Y ⟶ X) {U : X.Opens} (s : Γ(X, U))
     (h : W ≤ g ⁻¹ᵁ X.basicOpen s) : Reg q σ W fun x => (valR (x ≫ g) U s)⁻¹ := by
@@ -90,7 +90,7 @@ section Val
 variable {C : Type} [Field C] {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[valR_eq x U h]`. Conclude with `(s.isUnit.map _).ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_unit_ne_zero (x : Sp C ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (s : Γ(X, U)ˣ) :
     valR x U s.val ≠ 0 := by
@@ -98,7 +98,7 @@ theorem val_unit_ne_zero (x : Sp C ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ 
   exact (s.isUnit.map _).ne_zero
 
 /- English proof (translation)
-Rewrite using `[valR_eq x U h, valR_eq x U h, ← MonoidHom.coe_coe, ← Units.coe_map, map_zpow, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_zpow (x : Sp C ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (s : Γ(X, U)ˣ) (n : ℤ) :
     valR x U (s ^ n).val = valR x U s.val ^ n := by
@@ -106,7 +106,7 @@ theorem val_zpow (x : Sp C ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (s : 
   rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Points.valR_appLE x g e h s.val`.
+A detailed English derivation is pending.
 -/
 theorem val_res_pull (x : Sp C ⟶ Y) (g : Y ⟶ X) {U : X.Opens} {W : Y.Opens} (e : W ≤ g ⁻¹ᵁ U)
     (h : ⊤ ≤ x ⁻¹ᵁ W) (s : Γ(X, U)ˣ) : valR x W (res e (pullU g U s)).val = valR (x ≫ g) U s.val :=
@@ -115,13 +115,13 @@ theorem val_res_pull (x : Sp C ⟶ Y) (g : Y ⟶ X) {U : X.Opens} {W : Y.Opens} 
 def tv (L : LB X) (x : Sp C ⟶ X) (i j : L.ι) : C := valR x (L.U i ⊓ L.U j) (L.g i j).val
 
 /- English proof (translation)
-The claim follows from `val_unit_ne_zero x (U := L.U i ⊓ L.U j) (fun _ hz => ⟨hi hz, hj hz⟩) _`.
+A detailed English derivation is pending.
 -/
 theorem tv_ne_zero (L : LB X) {x : Sp C ⟶ X} {i j : L.ι} (hi : ⊤ ≤ x ⁻¹ᵁ L.U i) (hj : ⊤ ≤ x ⁻¹ᵁ L.U j) :
     tv L x i j ≠ 0 := val_unit_ne_zero x (U := L.U i ⊓ L.U j) (fun _ hz => ⟨hi hz, hj hz⟩) _
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun u : Γ(X, L.U i)ˣ => valR x (L.U i) u.val) (hL.g_self i)`. Use `(valR_res x (le_inf le_rfl le_rfl) hi _).symm.trans (e.trans ?_)` and prove the remaining obligations. Rewrite using `[valR_eq x _ hi, Units.val_one, map_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tv_self {L : LB X} (hL : L.IsLB) {x : Sp C ⟶ X} {i : L.ι} (hi : ⊤ ≤ x ⁻¹ᵁ L.U i) :
     tv L x i i = 1 := by
@@ -130,16 +130,14 @@ theorem tv_self {L : LB X} (hL : L.IsLB) {x : Sp C ⟶ X} {i : L.ι} (hi : ⊤ �
   rw [valR_eq x _ hi, Units.val_one, map_one]
 
 /- English proof (translation)
-Introduce `_ hz` and use `Set.mem_iInter.2 fun k => h k hz`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_wchart {L : LB X} {I : Type} [Fintype I] {φ : I → (Y ⟶ X)} {x : Sp C ⟶ Y} {j : I → L.ι}
     (h : ∀ k, ⊤ ≤ (x ≫ φ k) ⁻¹ᵁ L.U (j k)) : ⊤ ≤ x ⁻¹ᵁ LB.wchart L φ j :=
   fun _ hz => Set.mem_iInter.2 fun k => h k hz
 
 /- English proof (translation)
-Establish `hh : ⊤ ≤ x ⁻¹ᵁ (LB.wchart L φ j ⊓ LB.wchart L φ j')` using `fun _ hz => ⟨le_wchart h hz, le_wchart h' hz⟩`. Establish `A : ∀ u : I → Γ(Y, LB.wchart L φ j ⊓ LB.wchart L φ j')ˣ, valR x _ (∏ k, u k ^ ε k).val = ∏ k, valR x _ (u k).val ^ ε k` using `fun u => by`. Rewrite using `[valR_eq x _ hh, Units.coe_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun k _ => (valR_eq x _ hh _).symm.trans (val_zpow x hh _ _)`. Use `(A _).trans (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations.
-
-Conclude with `congrArg (· ^ ε k) (val_res_pull x (φ k) (U := L.U (j k) ⊓ L.U (j' k)) _ hh (L.g (j k) (j' k)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tv_linComb (L : LB X) {I : Type} [Fintype I] (φ : I → (Y ⟶ X)) (ε : I → ℤ) {x : Sp C ⟶ Y}
     {j j' : I → L.ι} (h : ∀ k, ⊤ ≤ (x ≫ φ k) ⁻¹ᵁ L.U (j k)) (h' : ∀ k, ⊤ ≤ (x ≫ φ k) ⁻¹ᵁ L.U (j' k)) :
@@ -153,7 +151,7 @@ theorem tv_linComb (L : LB X) {I : Type} [Fintype I] (φ : I → (Y ⟶ X)) (ε 
   exact congrArg (· ^ ε k) (val_res_pull x (φ k) (U := L.U (j k) ⊓ L.U (j' k)) _ hh (L.g (j k) (j' k)))
 
 /- English proof (translation)
-Establish `hh : ⊤ ≤ x ⁻¹ᵁ (L.U i ⊓ L.U j)` using `fun y hy => ⟨hi hy, hj hy⟩`. Establish `e` using `congrArg (valR x (L.U i ⊓ L.U j)) (s.compat i j)`. Rewrite `e` using `[valR_mul x _ hh]`. Conclude with `(valR_res x inf_le_left hh _).symm.trans (e.trans (congrArg _ (valR_res x inf_le_right hh _)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_val {L : LB X} (s : L.Sec) {x : Sp C ⟶ X} {i j : L.ι} (hi : ⊤ ≤ x ⁻¹ᵁ L.U i)
     (hj : ⊤ ≤ x ⁻¹ᵁ L.U j) : valR x (L.U i) (s.f i) = tv L x i j * valR x (L.U j) (s.f j) := by
@@ -163,7 +161,7 @@ theorem sec_val {L : LB X} (s : L.Sec) {x : Sp C ⟶ X} {i j : L.ι} (hi : ⊤ �
   exact (valR_res x inf_le_left hh _).symm.trans (e.trans (congrArg _ (valR_res x inf_le_right hh _)))
 
 /- English proof (translation)
-The claim follows from `sec_val ⟨fun i => (t.s i).val, fun i j => congrArg Units.val (ht i j)⟩ hi hj`.
+A detailed English derivation is pending.
 -/
 theorem gen_val {L : LB X} {t : L.Gen} (ht : t.IsGen) {x : Sp C ⟶ X} {i j : L.ι} (hi : ⊤ ≤ x ⁻¹ᵁ L.U i)
     (hj : ⊤ ≤ x ⁻¹ᵁ L.U j) : valR x (L.U i) (t.s i).val = tv L x i j * valR x (L.U j) (t.s j).val :=
@@ -182,13 +180,13 @@ structure IsoVal {K C : Type} [Field K] [Field C] {X H Y : Scheme.{0}} (q : Y �
     Reg q σ W (fun x => ω (x ≫ g) l m) ∧ Reg q σ W (fun x => (ω (x ≫ g) l m)⁻¹)
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Establish `mem : ∀ {x : Sp C ⟶ Y} {l m}, ⊤ ≤ (x ≫ j) ⁻¹ᵁ M.U l → ⊤ ≤ (x ≫ ψ) ⁻¹ᵁ L.U m → ⊤ ≤ x ⁻¹ᵁ (LB.div (M.pull j) (L.pull ψ)).U (fun _ => l, fun _ => m)` using `fun hl hm _ hz => ⟨Set.mem_iInter.2 fun _ => hl hz, Set.mem_iInter.2 fun _ => hm hz⟩`. Establish `key : ∀ (x : Sp C ⟶ Y) l l' m m', ⊤ ≤ (x ≫ j) ⁻¹ᵁ M.U l → ⊤ ≤ (x ≫ j) ⁻¹ᵁ M.U l' → ⊤ ≤ (x ≫ ψ) ⁻¹ᵁ L.U m → ⊤ ≤ (x ≫ ψ) ⁻¹ᵁ L.U m' → valR x _ (w.s (fun _ => l, fun _ => m)).val = tv M (x ≫ j) l l' * (tv L (x ≫ ψ) m m')⁻¹ * valR x _ (w.s (fun _ => l', fun _ => m')).val`. Introduce `x l l' m m' hl hl' hm hm'`. Use `(gen_val hw (mem hl hm) (mem hl' hm')).trans (congrArg (· * _) ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hh : ⊤ ≤ x ⁻¹ᵁ ((LB.div (M.pull j) (L.pull ψ)).U (fun _ => l, fun _ => m) ⊓ (LB.div (M.pull j) (L.pull ψ)).U (fun _ => l', fun _ => m'))` using `fun _ hz => ⟨mem hl hm hz, mem hl' hm' hz⟩`. Use `(valR_mul x _ hh _ _).trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Use `(valR_res x _ hh _).trans ((tv_linComb M _ _ (fun _ => hl) (fun _ => hl')).trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[← zpow_neg_one, ← zpow_neg_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(val_zpow x hh _ _).trans (congrArg (· ^ (-1 : ℤ)) ?_)` and prove the remaining obligations. Use `(valR_res x _ hh _).trans ((tv_linComb L _ _ (fun _ => hm) (fun _ => hm')).trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `⟨fun x l m => valR x _ (w.s (fun _ => l, fun _ => m)).val, fun x l m hl hm => val_unit_ne_zero x (mem hl hm) _, fun x l l' m hl hl' hm => ?_, fun x l m m' hl hm hm' => ?_, fun g W l m hl hm => ?_⟩` and prove the remaining obligations. Rewrite using `[key x l l' m m hl hl' hm hm, tv_self hL hm, inv_one, _root_.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key x l l m m' hl hl hm hm', tv_self hM hl, _root_.one_mul, mul_right_comm, inv_mul_cancel₀ (tv_ne_zero L hm hm'), _root_.one_mul]`. Establish `e : W ≤ g ⁻¹ᵁ (LB.div (M.pull j) (L.pull ψ)).U (fun _ => l, fun _ => m)` using `fun _ hz => ⟨Set.mem_iInter.2 fun _ => hl hz, Set.mem_iInter.2 fun _ => hm hz⟩`. Conclude with `⟨Reg.pull g e _, Reg.inv_unit g e _⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_isoVal {K C : Type} [Field K] [Field C] {X H Y : Scheme.{0}} (q : Y ⟶ Sp K) (σ : K →+* C)
     {L : LB X} {M : LB H} (hL : L.IsLB) (hM : M.IsLB) {ψ : Y ⟶ X} {j : Y ⟶ H}

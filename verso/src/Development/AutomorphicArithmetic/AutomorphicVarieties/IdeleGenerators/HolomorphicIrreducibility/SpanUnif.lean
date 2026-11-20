@@ -13,17 +13,17 @@ private def KK (φ : O →+* K) (n : ℕ) : Subgroup (GL (Fin 2) K) :=
     (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O ^ n)))).map (Matrix.GeneralLinearGroup.map φ)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Use `⟨h 0 0, h 0 1, h 1 0, h 1 1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> rfl`. Use `(Matrix.GeneralLinearGroup.det h).isUnit` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`. Then use the resulting hypothesis. Establish `h0` using `congrFun hh 0`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify `h0` using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Establish `h0` using `congrFun hh 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq, map_one]`. Simplify `h0` using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Introduce and unpack `⟨a, b, c, d, hg, hu, hc, hd⟩`. Establish `hu' : IsUnit (!![a, b; c, d] : Matrix (Fin 2) (Fin 2) O)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_fin_two_of]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu`. Take `⟨h, hh⟩` from `hu'`. Use `⟨h, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.vecMul ![0, 1] ((h : Matrix (Fin 2) (Fin 2) O).map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O ^ n))) = ![0, 1]`. Rewrite using `[hh]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[← Ideal.Quotient.eq_zero_iff_mem]`. Rewrite `hd` using `[← Ideal.Quotient.eq, map_one]`. Apply the tactic sequence `ext i; fin_cases i <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two, hc, hd]`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(h : Matrix (Fin 2) (Fin 2) O).map φ = g`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh, hg]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem mem_KK (φ : O →+* K) (n : ℕ) (g : GL (Fin 2) K) :
     g ∈ KK φ n ↔ ∃ a b c d : O, (g : Matrix (Fin 2) (Fin 2) K) = !![φ a, φ b; φ c, φ d] ∧
@@ -62,7 +62,7 @@ Both sides reduce to the same expression.
 private theorem aff_val (π : Kˣ) (u : K) : (aff π u : Matrix (Fin 2) (Fin 2) K) = !![(π : K), u; 0, 1] := rfl
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨a, b, c, d, h, hu, -, -⟩` from `(mem_KK _ _ _).1 hg`. Conclude with `(mem_KK _ _ _).2 ⟨a, b, c, d, h, hu, by simp, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem le_KK (φ : O →+* K) : KK φ 1 ≤ KK φ 0 := by
   intro g hg
@@ -70,9 +70,9 @@ private theorem le_KK (φ : O →+* K) : KK φ 1 ≤ KK φ 0 := by
   exact (mem_KK _ _ _).2 ⟨a, b, c, d, h, hu, by simp, by simp⟩
 
 /- English proof (translation)
-Take `⟨a, b, c, d, h, hu, hc, -⟩` from `(mem_KK _ _ _).1 hg`. Rewrite `hc` using `[pow_one, hm, Ideal.mem_span_singleton']`. Take `⟨e, rfl⟩` from `hc`. Use `(mem_KK _ _ _).2 ⟨a, p * b, e, d, ?_, ?_, by simp, by simp⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.mul_inv_eq_iff_eq_mul, Units.val_mul, h, aff_val, ← hp]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring`. Use `hu using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem conj_mem (φ : O →+* K) (π : Kˣ) (p : O) (hp : φ p = π) (hm : maximalIdeal O = Ideal.span {p})
     (g : GL (Fin 2) K) (hg : g ∈ KK φ 1) : aff π 0 * g * (aff π 0)⁻¹ ∈ KK φ 0 := by
@@ -86,7 +86,7 @@ private theorem conj_mem (φ : O →+* K) (π : Kˣ) (p : O) (hp : φ p = π) (h
     ring
 
 /- English proof (translation)
-Use `(mem_KK _ _ _).2 ⟨1, u, 0, 1, ?_, by simp, by simp, by simp⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.mul_inv_eq_iff_eq_mul, aff_val, aff_val]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem unip_mem (φ : O →+* K) (π : Kˣ) (u : O) : aff π (φ u) * (aff π 0)⁻¹ ∈ KK φ 0 := by
   refine (mem_KK _ _ _).2 ⟨1, u, 0, 1, ?_, by simp, by simp, by simp⟩
@@ -94,9 +94,9 @@ private theorem unip_mem (φ : O →+* K) (π : Kˣ) (u : O) : aff π (φ u) * (
   ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `hu' : IsUnit (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) K)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_fin_two_of]`. Simplify using the standard rewrite rules. Take `⟨s, hs⟩` from `hu'`. Use `⟨s, (mem_KK _ _ _).2 ⟨0, 1, 1, 0, by simp [hs], by simp, by simp, by simp⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, hs, aff_val]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem weyl (φ : O →+* K) (π : Kˣ) : ∃ s ∈ KK φ 0,
     Matrix.GeneralLinearGroup.scalar (Fin 2) π * s = aff π 0 * (s * aff π 0 * s * s) := by
@@ -109,7 +109,7 @@ private theorem weyl (φ : O →+* K) (π : Kˣ) : ∃ s ∈ KK φ 0,
   ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem scalar_comm (π : Kˣ) (g : GL (Fin 2) K) :
     Matrix.GeneralLinearGroup.scalar (Fin 2) π * g = g * Matrix.GeneralLinearGroup.scalar (Fin 2) π := by
@@ -118,19 +118,19 @@ private theorem scalar_comm (π : Kˣ) (g : GL (Fin 2) K) :
   ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, mul_comm]
 
 /- English proof (translation)
-Establish `hq : (S.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hS`. Use `set q : ℂ := (S.card : ℂ) with hqdef`. Establish `hx' : ∀ k ∈ KK φ 0, ρ k x = x` using `hx`. Establish `hmul : ∀ g h v, ρ (g * h) v = ρ g (ρ h v)` using `fun g h v => by rw [map_mul]; rfl`. Establish `hz' : ρ (Matrix.GeneralLinearGroup.scalar (Fin 2) π) x = (a * b / q) • x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_eq_inv_mul, ← smul_smul, ← hz, smul_smul, inv_mul_cancel₀ hq, one_smul]`. Use `⟨x - (b / q) • ρ (aff π 0)⁻¹ x, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h1 : x = (b / q) • ρ (aff π 0)⁻¹ x` using `sub_eq_zero.1 h`. Establish `hb0 : b ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `h1` using `[zero_div, zero_smul]`. Conclude with `hx0 h1`. Establish `h2 : ρ (aff π 0) x = (b / q) • x` using `by conv_lhs => rw [h1]`. Rewrite using `[map_smul, ← hmul, mul_inv_cancel, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Take `⟨s, hs, he⟩` from `weyl φ π`. Establish `h3` using `congrArg (fun g => ρ g x) he`. Simplify using `only [hmul, hx' s hs, h2, map_smul, hz', smul_smul] at h3`. Establish `h4` using `smul_left_injective ℂ hx0 h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts.
 
-Apply `hb` to reduce the goal to its premises. Clear denominators, using `at h4` for the nonvanishing conditions. Take the linear combination `-h4`. Use `Submodule.sub_mem _ (fun k hk => hx' k (le_KK φ hk)) (Submodule.smul_mem _ _ fun k hk => ?_)` and prove the remaining obligations. Establish `h1` using `hx' _ (conj_mem φ π p hp hm k hk)`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `conv_rhs => rw [← h1]`. Rewrite using `[← hmul, ← hmul]`. Use `congr 2`. Use `group`. Establish `h1 : ∀ u ∈ S, ρ (aff π (φ u)) (x - (b / q) • ρ (aff π 0)⁻¹ x) = ρ (aff π (φ u)) x - (b / q) • x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `u _`. Rewrite using `[map_sub, map_smul, ← hmul, hx' _ (unip_mem φ π u)]`. Rewrite `hT` using `[scalar_comm, hmul, hz', map_smul]`. Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_sub_distrib, Finset.sum_const, eq_sub_of_add_eq hT, ← Nat.cast_smul_eq_nsmul ℂ, ← hqdef, smul_smul, mul_div_cancel₀ _ hq, smul_sub, smul_smul, add_smul, mul_div_assoc]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem gen (φ : O →+* K) (π : Kˣ) (p : O) (hp : φ p = π) (hm : maximalIdeal O = Ideal.span {p})
     {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin 2) K) V) (S : Finset O) (hS : S.card ≠ 0)
@@ -179,17 +179,15 @@ private theorem gen (φ : O →+* K) (π : Kˣ) (p : O) (hp : φ p = π) (hm : m
 end Gen
 
 /- English proof (translation)
-Establish `hp0 : (p : w.adicCompletion F) ≠ 0`. Introduce `h`. Rewrite `hp` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hp.symm`. Use extensionality with `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_span_singleton', IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : Valued.v (x : w.adicCompletion F) < 1` using `lt_of_le_of_ne x.2 h`. Establish `h2 : Valued.v (x : w.adicCompletion F) ≤ WithZero.exp (-1 : ℤ)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne (Valued.v (x : w.adicCompletion F)) 0 with h0 | h0` into its components or cases. Rewrite using `[h0]`. Conclude with `zero_le'`. Rewrite `h1`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h1` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Use `⟨⟨(x : w.adicCompletion F) / p, ?_⟩, Subtype.ext (div_mul_cancel₀ _ hp0)⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_div₀, hp]`. Conclude with `div_le_one_of_le₀ h2 zero_le'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨z, rfl⟩ h`. Establish `hz : Valued.v (z : w.adicCompletion F) ≤ 1` using `z.2`. Establish `h1 : Valued.v ((z : w.adicCompletion F) * p) ≤ WithZero.exp (-1 : ℤ)`. Rewrite using `[map_mul, hp]`. Conclude with `mul_le_of_le_one_left' hz`.
-
-Establish `h' : Valued.v ((z : w.adicCompletion F) * p) = 1` using `h`. Rewrite `h1` using `[h', ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem span_unif {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F))
     (p : w.adicCompletionIntegers F) (hp : Valued.v (p : w.adicCompletion F) = WithZero.exp (-1 : ℤ)) :
@@ -223,17 +221,15 @@ private theorem span_unif {F : Type} [Field F] [NumberField F] (w : HeightOneSpe
     omega
 
 /- English proof (translation)
-Introduce `F _ _ w V _ _ ρ x a b hx0 hx hT hz hb`. Establish `hπ : Valued.v ((atFin w (unif w) : (w.adicCompletion F)ˣ) : w.adicCompletion F) = WithZero.exp (-1 : ℤ)` using `unif_spec w`. Establish `hmem : ((atFin w (unif w) : (w.adicCompletion F)ˣ) : w.adicCompletion F) ∈ w.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hπ, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨σ, hσ⟩` from `(IsLocalRing.residue_surjective (R := w.adicCompletionIntegers F)).hasRightInverse`. Use `Fintype.ofFinite (IsLocalRing.ResidueField (w.adicCompletionIntegers F))` as an intermediate fact. Establish `hS : Set.BijOn (IsLocalRing.residue _) ((Finset.univ.image σ : Finset _) : Set (w.adicCompletionIntegers F)) Set.univ`. Use `⟨fun _ _ => trivial, ?_, fun y _ => ⟨σ y, by simp, hσ y⟩⟩` and prove the remaining obligations. Introduce `a ha b hb h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.coe_image, Finset.coe_univ, Set.image_univ] at ha hb`. Take `⟨a, rfl⟩` from `ha`. Take `⟨b, rfl⟩` from `hb`. Rewrite `h` using `[hσ, hσ]`. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : (Finset.univ.image σ).card = normV w`. Rewrite using `[Finset.card_image_of_injective _ hσ.injective, Finset.card_univ, ← Nat.card_eq_fintype_card]`. Conclude with `(Nat.card_congr (GroundTheory.Global.residueFieldEquiv w).toEquiv).symm`. Establish `hne : (Finset.univ.image σ).card ≠ 0` using `Finset.card_ne_zero.2 (Finset.univ_nonempty.image σ)`. Establish `h0` using `(uopSum F w V ρ 0 x hx).2 _ hS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[if_pos rfl, hT]`. Rewrite `hz`, `hb` using `[← hcard]`. Take `⟨y, hy0, hy, hU⟩` from `gen (w.adicCompletionIntegers F).subtype (atFin w (unif w)) ⟨_, hmem⟩ rfl (span_unif w ⟨_, hmem⟩ hπ) ρ _ hne x a b hx0 hx h0.symm hz hb`. Use `⟨y, hy0, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[(uopSum F w V ρ 1 y hy).2 _ hS, if_neg one_ne_zero, add_zero]`.
-
-Conclude with `hU`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.pStab :
     UpperTheory.V.Sd.PStab := by

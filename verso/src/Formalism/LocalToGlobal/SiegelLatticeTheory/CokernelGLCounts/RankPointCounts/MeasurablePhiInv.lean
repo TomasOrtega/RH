@@ -17,30 +17,30 @@ def phiInv (v : ι → ℂ) : mixedSpace K :=
   (fun w => isEmptyElim w, fun w => if cj (σ.symm w) then (starRingEnd ℂ) (v (σ.symm w)) else v (σ.symm w))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases h : cj i <;> simp [phiMap, phiInv, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phiMap_phiInv (v : ι → ℂ) : phiMap σ cj (phiInv σ cj v) = v := by
   funext i
   by_cases h : cj i <;> simp [phiMap, phiInv, h]
 
 /- English proof (translation)
-Use `Prod.ext (funext fun w => isEmptyElim w) (funext fun w => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases h : cj (σ.symm w) <;> simp [phiMap, phiInv, h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phiInv_phiMap (x : mixedSpace K) : phiInv σ cj (phiMap σ cj x) = x := by
   refine Prod.ext (funext fun w => isEmptyElim w) (funext fun w => ?_)
   by_cases h : cj (σ.symm w) <;> simp [phiMap, phiInv, h]
 
 /- English proof (translation)
-Use `Prod.ext (funext fun w' => isEmptyElim w') (funext fun w' => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases h : cj (σ.symm w') <;> simp [phiInv, h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phiInv_add (v w : ι → ℂ) : phiInv σ cj (v + w) = phiInv σ cj v + phiInv σ cj w := by
   refine Prod.ext (funext fun w' => isEmptyElim w') (funext fun w' => ?_)
   by_cases h : cj (σ.symm w') <;> simp [phiInv, h]
 
 /- English proof (translation)
-Unfold `phiInv`. Use `Measurable.prodMk (measurable_pi_lambda _ fun w => isEmptyElim w) (measurable_pi_lambda _ fun w => ?_)` and prove the remaining obligations. Distinguish the cases in `h : cj (σ.symm w)`. Simplify using `only [h, ↓reduceIte]`. Conclude with `Complex.continuous_conj.measurable.comp (measurable_pi_apply _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, ↓reduceIte]`. Conclude with `measurable_pi_apply _`.
+A detailed English derivation is pending.
 -/
 theorem measurable_phiInv : Measurable (phiInv σ cj (K := K)) := by
   unfold phiInv
@@ -54,7 +54,7 @@ theorem measurable_phiInv : Measurable (phiInv σ cj (K := K)) := by
 end Inv
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [mem_idealLattice]; rfl)`. Consider the case `exact mem_idealLattice K I`. Consider the case `simp [idealLattice]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem mem_idealLattice_iff' (K : Type) [Field K] [NumberField K]
     (I : (FractionalIdeal (nonZeroDivisors (𝓞 K)) K)ˣ) (x : mixedSpace K) :
@@ -65,11 +65,11 @@ private theorem mem_idealLattice_iff' (K : Type) [Field K] [NumberField K]
   | simp [idealLattice]
 
 /- English proof (translation)
-Set `b` to `fractionalIdealLatticeBasis K I`. Establish `hmem : ∀ y : mixedSpace K, y ∈ (idealLattice K I).toAddSubgroup ↔ y ∈ Submodule.span ℤ (Set.range b)`. Introduce `y`. Rewrite using `[Submodule.mem_toAddSubgroup, mem_idealLattice_iff', mem_span_fractionalIdealLatticeBasis, Set.mem_image]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨ZSpan.fundamentalDomain b, ZSpan.fundamentalDomain_measurableSet b, fun x => ?_⟩` and prove the remaining obligations. Take `⟨l, hl, hu⟩` from `ZSpan.exist_unique_vadd_mem_fundamentalDomain b x`. Use `⟨⟨l, (hmem l).2 l.2⟩, by simpa [Submodule.vadd_def, vadd_eq_add] using hl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨m, hm⟩ hm'`. Establish `h2` using `hu ⟨m, (hmem m).1 hm⟩ (by simpa [Submodule.vadd_def, vadd_eq_add] using hm')`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h3 : m = (l : mixedSpace K)` using `congrArg Subtype.val h2`. Conclude with `Subtype.ext h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem idealLattice_fd (K : Type) [Field K] [NumberField K] (I : (FractionalIdeal (nonZeroDivisors (𝓞 K)) K)ˣ) :
     ∃ FL : Set (mixedSpace K), MeasurableSet FL ∧
@@ -88,13 +88,11 @@ theorem idealLattice_fd (K : Type) [Field K] [NumberField K] (I : (FractionalIde
   exact Subtype.ext h3
 
 /- English proof (translation)
-Introduce `y`. Take `⟨l, hl, hu⟩` from `h (g y)`. Establish `hfl : f l ∈ M` using `(hLM _).2 (by rw [hgf]; exact l.2)`. Use `⟨⟨f l, hfl⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show g (f l + y) ∈ F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, hgf]`. Conclude with `hl`. Introduce and unpack `⟨m, hm⟩ hm'`. Establish `hm'' : g m + g y ∈ F`. Establish `h3` using `hm'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[Set.mem_preimage, hg]`. Conclude with `h3`. Establish `h2 : g m = l` using `congrArg Subtype.val (hu ⟨g m, (hLM m).1 hm⟩ hm'')`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show m = f l`.
-
-Rewrite using `[← h2, hfg]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem existsUnique_add_mem_preimage_of_additive_equiv {V W : Type} [AddCommGroup V] [AddCommGroup W]
     (f : V → W) (g : W → V) (hgf : ∀ x, g (f x) = x) (hfg : ∀ y, f (g y) = y)
@@ -119,11 +117,9 @@ private theorem existsUnique_add_mem_preimage_of_additive_equiv {V W : Type} [Ad
     rw [← h2, hfg]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [phiMap]`. Use `split_ifs with h`. Rewrite using `[(hφ i).resolve_left h, ComplexEmbedding.conjugate_coe_eq] first`. Consider the case `rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [mixedEmbedding]`. Establish `h' : φ i = (σ i).1.embedding` using `by simpa using h`. Rewrite using `[h']`. Use `first`. Consider the case `rfl`.
-
-Consider the case `simp [mixedEmbedding]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem phiMap_mixedEmbedding_eq {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι]
     (φ : ι → (K →+* ℂ)) (σ : ι ≃ {w : InfinitePlace K // w.IsComplex})
@@ -143,31 +139,29 @@ private theorem phiMap_mixedEmbedding_eq {K : Type} [Field K] [NumberField K] {�
     | simp [mixedEmbedding]
 
 /- English proof (translation)
-Establish `hne : Nonempty ι`. Take `⟨w⟩ : Nonempty (InfinitePlace K)` from `inferInstance`. Establish `hw : w.IsComplex` using `(w.isReal_or_isComplex).resolve_left (fun h => isEmptyElim (⟨w, h⟩ : {w : InfinitePlace K // w.IsReal}))`. Conclude with `⟨σ.symm ⟨w, hw⟩⟩`. Set `cj : ι → Prop` to `fun i => φ i ≠ (σ i).1.embedding`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `IA : AddSubgroup K` to `((I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K).toAddSubgroup`. Set `E : K →+ (ι → ℂ)` to `{ toFun := fun a i => s * φ i a map_zero' := by`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use the proof step `map_add' := fun a b => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[mul_add] }`. Establish `hE : Function.Injective E`. Introduce `a b hab`. Take `⟨i0⟩` from `hne`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : s * φ i0 a = s * φ i0 b` using `congrFun hab i0`. Conclude with `(φ i0).injective (mul_left_cancel₀ hs h1)`. Set `f : mixedSpace K → (ι → ℂ)` to `fun x i => s * phiMap σ cj x i`. Set `g : (ι → ℂ) → mixedSpace K` to `fun v => phiInv σ cj (fun i => s⁻¹ * v i)`. Establish `hgf : ∀ x, g (f x) = x` using `fun x => by show phiInv σ cj (fun i => s⁻¹ * (s * phiMap σ cj x i)) = x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [inv_mul_cancel_left₀ hs]`. Conclude with `phiInv_phiMap σ cj x`. Establish `hfg : ∀ y, f (g y) = y` using `fun y => by show (fun i => s * phiMap σ cj (phiInv σ cj (fun j => s⁻¹ * y j)) i) = y`. Simplify using `only [phiMap_phiInv, mul_inv_cancel_left₀ hs]`. Establish `hg : ∀ y z, g (y + z) = g y + g z` using `fun y z => by show phiInv σ cj (fun i => s⁻¹ * (y + z) i) = phiInv σ cj (fun i => s⁻¹ * y i) + phiInv σ cj (fun i => s⁻¹ * z i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← phiInv_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[mul_add]`. Establish `hfE : ∀ a, f (mixedEmbedding K a) = E a` using `fun a => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Conclude with `congrArg (s * ·) (congrFun (phiMap_mixedEmbedding_eq φ σ hφ a) i)`. Set `L : AddSubgroup (ι → ℂ)` to `IA.map E`. Establish `hLM : ∀ w, w ∈ L ↔ g w ∈ (idealLattice K I).toAddSubgroup`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hw`. Take `⟨a, ha, rfl⟩` from `AddSubgroup.mem_map.1 hw`. Establish `h1 : g (E a) = mixedEmbedding K a` using `by rw [← hfE a, hgf]`. Rewrite using `[h1, Submodule.mem_toAddSubgroup, mem_idealLattice_iff']`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, ha, rfl⟩`. Introduce `hw`. Rewrite `hw` using `[Submodule.mem_toAddSubgroup, mem_idealLattice_iff']`. Take `⟨a, ha, hae⟩` from `hw`. Use `AddSubgroup.mem_map.2 ⟨a, ha, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hfE a, hae, hfg]`. Take `⟨FL, hFLm, hFL⟩` from `idealLattice_fd K I`. Establish `hgm : Measurable g` using `(measurable_phiInv σ cj).comp (measurable_pi_lambda _ fun i => measurable_const.mul (measurable_pi_apply i))`. Establish `hdL : ∀ y, ∃! m : L, (m : ι → ℂ) + y ∈ g ⁻¹' FL` using `existsUnique_add_mem_preimage_of_additive_equiv f g hgf hfg hg _ L hLM FL hFL`. Set `Λ' : AddSubgroup (ι → ℂ)` to `Λ.map E`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : Λ' ≤ L` using `AddSubgroup.map_mono (fun a ha => hΛ a ha)`. Establish `hri : Λ'.relIndex L ≠ 0` using `by show Λ'.relIndex (IA.map E) ≠ 0`. Rewrite using `[← AddSubgroup.relIndex_comap, AddSubgroup.comap_map_eq_self_of_injective hE]`. Conclude with `hk0`. Establish `hfin : (Λ'.addSubgroupOf L).FiniteIndex` using `⟨hri⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨G, hGm, hG⟩` from `coset_fd L Λ' hle hfin (g ⁻¹' FL) (hFLm.preimage hgm) hdL`. Use `⟨G, hGm, fun v => ?_⟩` and prove the remaining obligations. Take `⟨⟨w, hw⟩, hwG, hu⟩` from `hG v`. Take `⟨a, ha, rfl⟩` from `AddSubgroup.mem_map.1 hw`. Use `⟨⟨a, ha⟩, hwG, ?_⟩` and prove the remaining obligations.
-
-Introduce and unpack `⟨b, hb⟩ hbG`. Establish `h3` using `hu ⟨E b, AddSubgroup.mem_map_of_mem E hb⟩ hbG`. Conclude with `Subtype.ext (hE (congrArg Subtype.val h3))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_fd (K : Type) [Field K] [NumberField K] [IsEmpty {w : InfinitePlace K // w.IsReal}]
     (ι : Type) [Fintype ι] (φ : ι → (K →+* ℂ)) (σ : ι ≃ {w : InfinitePlace K // w.IsComplex})
@@ -252,11 +246,9 @@ theorem exists_fd (K : Type) [Field K] [NumberField K] [IsEmpty {w : InfinitePla
   exact Subtype.ext (hE (congrArg Subtype.val h3))
 
 /- English proof (translation)
-Establish `hu0 : u ≠ 0`. Introduce `h0`. Rewrite `hu` using `[h0, norm_zero]`. Conclude with `zero_ne_one hu`. Set `e : ℂ ≃ₗᵢ[ℝ] ℂ` to `{ toFun := fun z => u * z invFun := fun z => u⁻¹ * z map_add' := fun z w => mul_add u z w map_smul' := fun c z => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.id_apply, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Use `left_inv := fun z => inv_mul_cancel_left₀ hu0 z`. Use `right_inv := fun z => mul_inv_cancel_left₀ hu0 z`. Use the proof step `norm_map' := fun z => by show ‖u * z‖ = ‖z‖`.
-
-Rewrite using `[norm_mul, hu, one_mul] }`. Conclude with `e.measurePreserving`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem measurePreserving_mul_left_of_norm_eq_one (u : ℂ) (hu : ‖u‖ = 1) :
     MeasurePreserving (fun z : ℂ => u * z) volume volume := by
@@ -279,15 +271,13 @@ private theorem measurePreserving_mul_left_of_norm_eq_one (u : ℂ) (hu : ‖u�
   exact e.measurePreserving
 
 /- English proof (translation)
-Establish `hr0 : ‖s‖ ≠ 0` using `norm_ne_zero_iff.2 hs`. Establish `hrc : ((‖s‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hr0`. Set `u : ℂ` to `s / ((‖s‖ : ℝ) : ℂ)`. Establish `hur : u * ((‖s‖ : ℝ) : ℂ) = s` using `div_mul_cancel₀ s hrc`. Establish `hu1 : ‖u‖ = 1` using `by show ‖s / ((‖s‖ : ℝ) : ℂ)‖ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_div, Complex.norm_real, Real.norm_eq_abs, abs_norm, div_self hr0]`. Establish `h1 : MeasurePreserving (fun z : ℂ => u * z) volume volume`. Conclude with `measurePreserving_mul_left_of_norm_eq_one u hu1`. Establish `hm : MeasurePreserving (fun v : ι → ℂ => fun i => u * v i) volume volume`. Conclude with `volume_preserving_pi (fun _ => h1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF' : MeasurableSet ((fun v : ι → ℂ => fun i => u * v i) ⁻¹' F)` using `hm.measurable hF`. Establish `hFd' : ∀ v, ∃! a : Λ, (fun i => ((‖s‖ : ℝ) : ℂ) * φ i a) + v ∈ (fun v : ι → ℂ => fun i => u * v i) ⁻¹' F`. Introduce `v`. Use `(existsUnique_congr fun a => ?_).2 (hFd (fun i => u * v i))` and prove the remaining obligations. Establish `h2 : (fun i => u * ((fun i => ((‖s‖ : ℝ) : ℂ) * φ i a) + v) i) = (fun i => s * φ i a) + fun i => u * v i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply]`. Rewrite using `[mul_add, ← mul_assoc, hur]`. Rewrite using `[Set.mem_preimage, h2]`. Establish `h3` using `idealCovol K ι φ σ hφ I Λ hΛ k hk hk0 ‖s‖ hr0 _ hF' hFd'`.
-
-Rewrite using `[← hm.measure_preimage hF.nullMeasurableSet, h3, abs_norm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealCovolC (K : Type) [Field K] [NumberField K] [IsEmpty {w : InfinitePlace K // w.IsReal}]
     (ι : Type) [Fintype ι] (φ : ι → (K →+* ℂ)) (σ : ι ≃ {w : InfinitePlace K // w.IsComplex})

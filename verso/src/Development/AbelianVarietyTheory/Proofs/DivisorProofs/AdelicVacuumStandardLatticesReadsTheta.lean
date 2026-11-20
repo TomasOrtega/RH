@@ -22,19 +22,19 @@ open GlobalTheory.StdRead
 namespace GlobalTheory.VacRead
 
 /- English proof (translation)
-Introduce `D ψ θ S T a d hS hT δ hcc hSet v hv`. Substitute `hS hT` using the available equality. Establish `hδ : δ ≠ 0` using `GlobalTheory.NormExact.delta_ne_zero hSet.crv`. Establish `h1 : ∀ {k : ℕ} (M : Matrix (Fin k) (Fin k) D.host.E), M = 1 → Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) ((1 : GL (Fin k) D.host.E) : Matrix (Fin k) (Fin k) D.host.E) * M * ((1 : GL (Fin k) D.host.E) : Matrix (Fin k) (Fin k) D.host.E) = 1`. Introduce `k M hM`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hM` using the available equality. Simplify using `[Formalism.UG.cT]`. Take `⟨Φ, hΦd, hΦ⟩` from `GlobalTheory.FockPos.vacuum_real_entire ψ θ S T 1 1 _ _ (h1 _ hSet.gS) (h1 _ hSet.gT) v hv`. Establish `hinV : ∀ {k : ℕ} (L : Submodule (𝓞 D.host.E) (Fin k → D.host.E)), GlobalTheory.MovedDict.inV (D` using `D) 1 L = (L : Set (Fin k → D.host.E)) := by`. Introduce `k L`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[GlobalTheory.MovedDict.inV]`. Establish `hv'` using `hv`. Rewrite `hv'` using `[← hinV (stdL D S.rank), ← hinV (stdL D T.rank)]`. Establish `hC : Formalism.MainNotions.StandardLatticesGL3.Crv D D.host.ccK δ` using `by rw [hcc]; exact hSet.crv`. Establish `hTh` using `GlobalTheory.ThetaLawMoved.theta_of_vacuum_moved ψ θ S T 1 1 (h1 _ hSet.gS) (h1 _ hSet.gT) δ hC hδ (stdL D S.rank) (stdL D T.rank) (GlobalTheory.MovedVacuum.sd_stdL D _) (GlobalTheory.MovedVacuum.sd_stdL D _) v hv' Φ hΦd hΦ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hTh` using `[hcc]`. Use `⟨fun Y => Φ (δ⁻¹ • Y), hTh, ?_, ?_⟩` and prove the remaining obligations. Introduce `hG`. Establish `h0 : v = 0` using `GlobalTheory.TwistFactorCompare.theta_eq_zero_of_real hv.2.theta (fun w hw => by`. Rewrite using `[hΦ w hw]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `congrFun hG (δ • GlobalTheory.FockPos.zCo θ 1 1 w)`. Simplify using `only [smul_smul, inv_mul_cancel₀ hδ, one_smul, Pi.zero_apply] at e`. Rewrite using `[e, mul_zero])`. Take `⟨⟨p, hp⟩, hq⟩` from `hv.2.norm`. Establish `e` using `hq p hp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[h0]`. Simplify using `[nrm2] at e`. Rewrite using `[GlobalTheory.NormExact.reads_iff hSet.crv hSet.scale]`. Use `⟨hv.2.theta, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ w hw]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `τ i j`. Simplify using `[smul_eq_mul, map_one, mul_one, inv_mul_cancel_left₀ hδ]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vacuum_reads_theta : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d) (δ : ℂ),
   D.host.ccK = ⊤ → Setup ψ θ S T ⊤ δ 1 → ∀ v : WO S T → ℂ, IsVacO ψ θ S T (fun _ => 1) (fun _ => 1) (stdL D S.rank : Set (Fin S.rank → D.host.E)) (stdL D T.rank : Set (Fin T.rank → D.host.E)) v →

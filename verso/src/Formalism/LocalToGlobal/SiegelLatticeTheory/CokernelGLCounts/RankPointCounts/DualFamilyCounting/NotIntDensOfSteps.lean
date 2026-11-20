@@ -18,20 +18,20 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V)
 
 /- English proof (translation)
-Use `H.h_smul_left 0 0 y` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem h_zero_left (y : V) : H.h 0 y = 0 := by
   have := H.h_smul_left 0 0 y
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[H.h_herm (c • y) x, H.h_smul_left, map_mul, ← H.h_herm y x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_smul_right (c : E) (x y : V) : H.h x (c • y) = M.L.cj c * H.h x y := by
   rw [H.h_herm (c • y) x, H.h_smul_left, map_mul, ← H.h_herm y x]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [h_zero_left]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.h_add_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem h_sum_left {ι : Type} (s : Finset ι) (x : ι → V) (y : V) :
     H.h (∑ i ∈ s, x i) y = ∑ i ∈ s, H.h (x i) y := by
@@ -40,7 +40,7 @@ theorem h_sum_left {ι : Type} (s : Finset ι) (x : ι → V) (y : V) :
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.h_add_left, ih]
 
 /- English proof (translation)
-Rewrite using `[H.h_herm (∑ i ∈ s, x i) y, h_sum_left, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (H.h_herm (x i) y).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h_sum_right {ι : Type} (s : Finset ι) (x : ι → V) (y : V) :
     H.h y (∑ i ∈ s, x i) = ∑ i ∈ s, H.h y (x i) := by
@@ -48,7 +48,7 @@ theorem h_sum_right {ι : Type} (s : Finset ι) (x : ι → V) (y : V) :
   exact Finset.sum_congr rfl fun i _ => (H.h_herm (x i) y).symm
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, h_sum_left, h_sum_right, H.h_smul_left, h_smul_right, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_comb {ι : Type} [Fintype ι] (v : ι → V) (A : Matrix ι ι E) :
     (Matrix.of fun a b => H.h (∑ d, A d b • v d) (∑ c, A c a • v c)) =
@@ -68,7 +68,7 @@ variable {E : Type} [CommRing E] {O : Subring E} {V : Type} [AddCommGroup V] [Mo
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_third_alt_form.goal1 .. | (apply Bl.general_b_fact_third_alt_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third_alt_form.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem change_basis (g b : ι → V) (hg : LinearIndependent O g)
     (hs : Submodule.span O (Set.range g) = Submodule.span O (Set.range b)) :
@@ -82,13 +82,11 @@ section Glob
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [FlagG.fvec, F.z_norm]`. Consider the case `cast b`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [FlagG.fvec, Fin.snoc_last, Fin.snoc_castSucc]`. Rewrite using `[if_neg (by simp [Fin.castSucc_ne_last])]`. Rewrite using `[← (VS D).herm.eq (F.e b) F.z, F.z_orth b, map_zero]`. Consider the case `cast a`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (by simp [Fin.castSucc_ne_last])]`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp only [Fin.snoc_last]`. Conclude with `F.z_orth a`. Consider the case `cast b => simp only [Fin.snoc_castSucc]`.
-
-Conclude with `F.e_iso a b`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem flag_hT {T : D.host.E} (F : FlagG (VS D) D.R.rS T) (a b : Fin (D.R.rS + 1)) :
     (VS D).hT (F.fvec a) (F.fvec b) = if a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS then -T else 0 := by
@@ -112,9 +110,9 @@ def vfam {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.r
   Sum.elim F0.fvec F'.fl.fvec
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using `only [Ga, Matrix.fromBlocks_apply₁₁, Matrix.of_apply, vfam, Sum.elim_inl, brS]`. Rewrite using `[flag_hT]`. Simplify using `[Ga, vfam, brS, ZhatL, Zhat]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Ga, Matrix.fromBlocks_apply₂₁, Matrix.conjTranspose_apply, Matrix.of_apply, vfam, Sum.elim_inl, Sum.elim_inr, brS, ZhatL, Zhat]`. Rewrite using `[← (VS D).herm.eq (F0.fvec b) (F'.fl.fvec a)]`. Both sides reduce to the same expression. Simplify using `only [Ga, Matrix.fromBlocks_apply₂₂, Matrix.of_apply, vfam, Sum.elim_inr, brS]`. Rewrite using `[flag_hT]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ga_eq {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') :
     Ga T T' (ZhatL (lf D F0) F') = Matrix.of fun a b => brS (VS D) (vfam F0 F' b) (vfam F0 F' a) := by
@@ -137,7 +135,7 @@ def g0 (L : LocSp D M) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) {T T' : 
   fun a => phi δ p a • L.bc p (vfam F0 F' a)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [GaLoc, Matrix.of_apply, g0, (L.H p).h_smul_left, h_smul_right, L.bc_form, ga_eq]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gaLoc_eq (L : LocSp D M) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) {T T' : D.host.E}
     (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') :
@@ -160,9 +158,9 @@ def locFam (L : LocSp D M) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) {T T
   | some g => fun b => ∑ d, amat p g d b • g0 L δ p F0 F' d
 
 /- English proof (translation)
-Unfold `GaPlus locFam`. Consider the cases of `hs : (M p).split with`. Consider the case `none => simp only`. Conclude with `gaLoc_eq L δ p F0 F'`. Consider the case `some g`.
+Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[gram_comb, gaLoc_eq L δ p F0 F']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gaPlus_eq_gram (L : LocSp D M) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) {T T' : D.host.E}
     (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') :
@@ -209,15 +207,15 @@ def JordanL : Prop :=
           (Finset.univ.filter fun i => ϖ ∣ a i).card = cJ (VS D).hT (UPair D F0 F') (MMof D F0 F') p.asIdeal
 
 /- English proof (translation)
-Introduce `D δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP hI p`. Substitute `hZ` using the available equality. Take `⟨hli, hsp⟩` from `hF D δ M hA L u u' hT F0 what₂ hR F' hz hP p`. Take `⟨b, a, hbs, horth, hdiag, hcnt⟩` from `hJ D δ M hA L u u' hT F0 what₂ hR F' hz hP hI p (ϖ p) (hϖ p)`. Take `⟨Q, P, hQ, hPQ⟩` from `change_basis (O := (M p).L.O) (locFam L δ p F0 F') b hli (hsp.trans hbs.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdet : (Q.map (M p).L.O.subtype).det = ((Q.det : (M p).L.O) : (D.s.atP p).Ep)` using `(RingHom.map_det (M p).L.O.subtype Q).symm`. Use `⟨Q.map (M p).L.O.subtype, a, fun i j => (Q i j).2, ⟨((P.det : (M p).L.O) : (D.s.atP p).Ep), P.det.2, ?_⟩, ?_, hcnt⟩` and prove the remaining obligations. Rewrite using `[hdet]`. Establish `h1 : P.det * Q.det = 1` using `by rw [← Matrix.det_mul, hPQ, Matrix.det_one]`. Establish `h2 : ((Q.det * P.det : (M p).L.O) : (D.s.atP p).Ep) = 1` using `by rw [mul_comm, h1]; rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h2`. Rewrite using `[gaPlus_eq_gram L δ p F0 F']`. Establish `hg : locFam L δ p F0 F' = fun j => ∑ i, (Q.map (M p).L.O.subtype) i j • b i`. Use function extensionality and compare the values at `j`. Rewrite using `[hQ j]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hg, gram_comb]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.diagonal_apply]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hij`. Substitute `hij` using the available equality. Conclude with `hdiag i`. Conclude with `horth i j hij`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem gaPlusDiag_of (hF : FrameBasisL) (hJ : JordanL) : GaPlusDiag := by
   intro D δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP hI p
@@ -254,22 +252,20 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[M.L.O_def]`. Conclude with `hx.map (M.L.cj.toAlgHom.restrictScalars 𝒪[F])`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cj_mem_O (x : E) (hx : x ∈ M.L.O) : M.L.cj x ∈ M.L.O := by
   rw [M.L.O_def] at hx ⊢
   exact hx.map (M.L.cj.toAlgHom.restrictScalars 𝒪[F])
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, rfl⟩` from `hx`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨a, rfl⟩ := hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Conclude with `hG a b`. Consider the case `zero => have := h_smul_right H 0 (g b) 0`. Rewrite `this` using `[zero_smul, map_zero, zero_mul]`. Rewrite using `[this]`. Conclude with `M.L.O.zero_mem`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add y y' _ _ ih ih'`. Rewrite using `[H.h_herm (y + y') (g b), H.h_add_left, map_add, ← H.h_herm y (g b), ← H.h_herm y' (g b)]`. Conclude with `M.L.O.add_mem ih ih'`. Consider the case `smul c y _ ih`. Rewrite using `[Subring.smul_def, h_smul_right]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `M.L.O.mul_mem (cj_mem_O _ c.2) ih`. Consider the case `zero => rw [h_zero_left]`. Conclude with `M.L.O.zero_mem`. Consider the case `add x x' _ _ ih ih' => rw [H.h_add_left]`. Conclude with `M.L.O.add_mem ih ih'`.
-
-Consider the case `smul c x _ ih => rw [Subring.smul_def, H.h_smul_left]`. Conclude with `M.L.O.mul_mem c.2 ih`.
+A detailed English derivation is pending.
 -/
 theorem h_int_span (H : Loc.HermSp M V) {ι : Type} (g : ι → V) (hG : ∀ a b, H.h (g b) (g a) ∈ M.L.O)
     {x y : V} (hx : x ∈ Submodule.span M.L.O (Set.range g)) (hy : y ∈ Submodule.span M.L.O (Set.range g)) :
@@ -299,11 +295,11 @@ def LocGlobIntE : Prop :=
     x ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)
 
 /- English proof (translation)
-Introduce `D δ M hA L u u' hT F0 what₂ hR Z F' hz hZ hP hInt`. Substitute `hZ` using the available equality. Introduce `x hx y hy`. Use `hLG D _ fun p => ?_` and prove the remaining obligations. Take `⟨-, hsp⟩` from `hF D δ M hA L u u' hT F0 what₂ hR F' hz hP p`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ∀ v ∈ MMof D F0 F', L.bc p v ∈ Submodule.span (M p).L.O (Set.range (locFam L δ p F0 F'))` using `fun v hv => hsp ▸ Submodule.subset_span ⟨v, hv, rfl⟩`. Establish `e : (D.s.atP p).ιE ((VS D).hT x y) = (L.H p).h (L.bc p y) (L.bc p x)` using `(L.bc_form p y x).symm`. Rewrite using `[e, ← (hA p).2.2.2.1]`. Use `h_int_span (L.H p) (locFam L δ p F0 F') (fun a b => ?_) (hmem y hy) (hmem x hx)` and prove the remaining obligations. Use `hInt p a b` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[gaPlus_eq_gram L δ p F0 F']`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaPlusIntMM_of (hF : FrameBasisL) (hLG : LocGlobIntE) : GaPlusIntMM := by
   intro D δ M hA L u u' hT F0 what₂ hR Z F' hz hZ hP hInt
@@ -321,7 +317,7 @@ theorem gaPlusIntMM_of (hF : FrameBasisL) (hLG : LocGlobIntE) : GaPlusIntMM := b
   exact this
 
 /- English proof (translation)
-The claim follows from `notIntDens_of h1 (gaPlusIntMM_of hF hLG)`.
+A detailed English derivation is pending.
 -/
 theorem notIntDens_of_steps (h1 : LocSelfDual) (hF : FrameBasisL) (hLG : LocGlobIntE) : NotIntDens :=
   notIntDens_of h1 (gaPlusIntMM_of hF hLG)

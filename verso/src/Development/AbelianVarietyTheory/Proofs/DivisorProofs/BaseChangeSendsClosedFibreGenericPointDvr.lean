@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Desc.GaussBC
 
 /- English proof (translation)
-Establish `l₁ : x < e` using `lt_of_le_not_ge h₁ (fun h => n₁ (h₁.antisymm h).eq)`. Establish `l₂ : e < g` using `lt_of_le_not_ge h₂ (fun h => n₂ (h₂.antisymm h).eq)`. Establish `a₁` using `Order.coheight_add_one_le l₁`. Establish `a₂` using `Order.coheight_add_one_le l₂`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem two_le_coheight_of_chain {X : Scheme.{0}} {x e g : X} (h₁ : e ⤳ x) (h₂ : g ⤳ e) (n₁ : e ≠ x)
     (n₂ : g ≠ e) : (2 : ℕ∞) ≤ Order.coheight x := by
@@ -25,7 +25,7 @@ theorem two_le_coheight_of_chain {X : Scheme.{0}} {x e g : X} (h₁ : e ⤳ x) (
     _ ≤ Order.coheight x := a₁
 
 /- English proof (translation)
-Introduce `h₂`. Rewrite `h` using `[ringKrullDim_stalk_eq_coheight]`. Establish `: Order.coheight x = 1` using `by exact_mod_cast h`. Rewrite `h₂` using `[this]`. Conclude with `absurd h₂ (by decide)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_two_le_coheight_of_ringKrullDim_eq_one {X : Scheme.{0}} (x : X)
     (h : ringKrullDim (X.presheaf.stalk x) = 1) : ¬ (2 : ℕ∞) ≤ Order.coheight x := by
@@ -36,9 +36,9 @@ theorem not_two_le_coheight_of_ringKrullDim_eq_one {X : Scheme.{0}} (x : X)
   exact absurd h₂ (by decide)
 
 /- English proof (translation)
-Introduce `h`. Set `p₀ : Sp R` to `⟨⊥, Ideal.bot_prime⟩`. Establish `hs : p₀ ⤳ f (genericPoint X)`. Rewrite using `[h]`. Conclude with `(PrimeSpectrum.le_iff_specializes p₀ (closedPoint R)).mp bot_le`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hfw⟩` from `Flat.generalizingMap f hs`. Establish `hw' : w = genericPoint X` using `(hw.antisymm (genericPoint_specializes w)).eq`. Rewrite `hfw` using `[hw', h]`. Conclude with `IsDiscreteValuationRing.not_a_field R (congrArg PrimeSpectrum.asIdeal hfw)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_genericPoint_ne_closedPoint {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     {X : Scheme.{0}} [IsIntegral X] (f : X ⟶ Sp R) [Flat f] : f (genericPoint X) ≠ closedPoint R := by
@@ -52,29 +52,23 @@ theorem apply_genericPoint_ne_closedPoint {R : Type} [CommRing R] [IsDomain R] [
   exact IsDiscreteValuationRing.not_a_field R (congrArg PrimeSpectrum.asIdeal hfw)
 
 /- English proof (translation)
-Introduce `T D _ _ _ _ _ _ a ha hm H _ _ H' _ _ π θ hG hpb _ y y' hy hy' hdy hdy'`. Use `haveI : Smooth H.hom := hG.smooth`. Use `haveI : Flat H'.hom := MorphismProperty.of_isPullback hpb (inferInstanceAs (Flat H.hom))`. Use `haveI : Flat (spMap a) := (HasRingHomProperty.Spec_iff (P := @Flat)).mpr ha`. Use `haveI : Flat π := MorphismProperty.of_isPullback hpb.flip (inferInstanceAs (Flat (spMap a)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hsq : ∀ z, H.hom (π z) = spMap a (H'.hom z)` using `fun z => by`. Use `congrArg (fun f => f.base z) hpb.w` as an intermediate fact. Simplify using `using this`. Establish `hcl : spMap a (closedPoint D) = closedPoint T`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `show Ideal.comap a (maximalIdeal D) = maximalIdeal T`. Establish `hle : maximalIdeal T ≤ Ideal.comap a (maximalIdeal D)` using `Ideal.map_le_iff_le_comap.mp hm.le`. Conclude with `((maximalIdeal.isMaximal T).eq_of_le (Ideal.IsPrime.ne_top inferInstance) hle).symm`. Establish `hback : ∀ p : Sp D, spMap a p = closedPoint T → p = closedPoint D`. Introduce `p hp`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hne`. Establish `hbot : p.asIdeal = ⊥`. Assume the negation of the conclusion as `hb`. Conclude with `hne (PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal (p.isPrime.isMaximal hb)))`. Establish `hker : Ideal.comap a ⊥ = maximalIdeal T`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hbot]`. Conclude with `congrArg PrimeSpectrum.asIdeal hp`. Apply `IsDiscreteValuationRing.not_a_field D` to reduce the goal to its premises. Rewrite using `[← hm, ← hker]`. Conclude with `le_antisymm Ideal.map_comap_le bot_le`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set F : Set H.left := H.hom ⁻¹' {closedPoint T} with hFdef`. Establish `hFc : IsClosed F` using `(isClosed_singleton_closedPoint T).preimage H.hom.continuous`. Establish `hFi : IsIrreducible F` using `by haveI := GlobalTheory.SemiAbFibre.irreducibleSpace_fibre _ H hG _ ((Sp T).fromSpecResidueField (closedPoint T)) haveI : IrreducibleSpace (H.hom.fiber (closedPoint T)) := this`. Establish `hr` using `(IrreducibleSpace.isIrreducible_univ (H.hom.fiber (closedPoint T))).image _ (Scheme.Hom.fiberι H.hom (closedPoint T)).continuous.continuousOn`. Rewrite `hr` using `[Set.image_univ]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `hr using 1` and compare the differences between its conclusion and the goal. Conclude with `(Scheme.Hom.range_fiberι H.hom (closedPoint T)).symm`. Establish `hξ₀` using `hFi.isGenericPoint_genericPoint_closure`. Rewrite `hξ₀` using `[hFc.closure_eq]`. Use `set ξ₀ := hFi.genericPoint`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgH` using `apply_genericPoint_ne_closedPoint H.hom`. Establish `hgH'` using `apply_genericPoint_ne_closedPoint H'.hom`. Establish `hyξ₀ : y = ξ₀`. Assume the negation of the conclusion as `hne`. Use `not_two_le_coheight_of_ringKrullDim_eq_one y hdy (two_le_coheight_of_chain (hξ₀.specializes hy) (genericPoint_specializes ξ₀) (Ne.symm hne) ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hgH` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `hξ₀.mem`. Establish `hzξ₀ : π y' = ξ₀`.
-
-Assume the negation of the conclusion as `hne`. Establish `hz : π y' ∈ F` using `by show H.hom (π y') = closedPoint T`. Rewrite using `[hsq, hy', hcl]`. Take `⟨w, hw, hπw⟩` from `Flat.generalizingMap π (hξ₀.specializes hz)`. Use `not_two_le_coheight_of_ringKrullDim_eq_one y' hdy' (two_le_coheight_of_chain hw (genericPoint_specializes w) ?_ ?_)` and prove the remaining obligations.
-
-Introduce and unpack `rfl`. Conclude with `hne hπw`. Introduce `h`. Apply `hgH'` to reduce the goal to its premises. Apply `hback` to reduce the goal to its premises.
-
-Rewrite using `[← hsq, h, hπw]`. Conclude with `hξ₀.mem`. Rewrite using `[hzξ₀, hyξ₀]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_eq_of_closedFibre_dim_one : ∀ (T D : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [CommRing D] [IsDomain D] [IsDiscreteValuationRing D] (a : T →+* D), a.Flat → (maximalIdeal T).map a = maximalIdeal D → ∀ (H : Over (Sp T)) [GrpObj H] [IsIntegral H.left] (H' : Over (Sp D)) [GrpObj H'] [IsIntegral H'.left] (π : H'.left ⟶ H.left) (θ : H.left.functionField →+* H'.left.functionField), IsSemiAbelian H → IsPullback π H'.hom H.hom (spMap a) → PFF (𝟙 _) π θ → ∀ (y : H.left) (y' : H'.left), H.hom y = closedPoint T → H'.hom y' = closedPoint D → ringKrullDim (H.left.presheaf.stalk y) = 1 → ringKrullDim (H'.left.presheaf.stalk y') = 1 → π y' = y := by
   intro T D _ _ _ _ _ _ a ha hm H _ _ H' _ _ π θ hG hpb _ y y' hy hy' hdy hdy'

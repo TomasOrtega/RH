@@ -120,9 +120,9 @@ def LowerBoundComponent.Statement : Prop :=
 namespace Line
 
 /- English proof (translation)
-Use `⟨le_rfl, le_rfl, le_rfl, by rw [Jint_line]; norm_num, fun Z hZ => le_of_eq ?_⟩` and prove the remaining obligations. Establish `h1 : ‖Z 0 0‖ = 1` using `hZ 0 0`. Establish `hdet : (1 + Z * Z.conjTranspose).det = 1 + Z 0 0 * starRingEnd ℂ (Z 0 0)`. Establish `h` using `Matrix.det_fin_one (1 + Z * Z.conjTranspose : Matrix (Fin 1) (Fin 1) ℂ)`. Use `h.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[hdet, Complex.mul_conj, Complex.normSq_eq_norm_sq, h1]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem grassmannianHeightZTwo_hypotheses :
     2 ≤ 2 ∧ 1 ≤ 1 ∧ 1 ≤ 2 - 1 ∧ 0 < Jint Unit 2 1 (-1) ∧
@@ -152,25 +152,25 @@ def projLineComponentSetting : ComponentSetting (lineData II hII) GaussianInt Ga
   Lval := 0
 
 /- English proof (translation)
-Simplify using `[ComponentSetting.La, projLineComponentSetting, abelian₂]`.
+Simplify using the standard rewrite rules.
 -/
 theorem projLineComponentSetting_La (B : ℕ) : (projLineComponentSetting II hII).La B = Real.log B := by
   simp [ComponentSetting.La, projLineComponentSetting, abelian₂]
 
 /- English proof (translation)
-Introduce `_ _` and use `le_rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zero_hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ zeroSystem Unit (PBlk 2) W 1 ![fsLine 2] :=
   fun _ _ => le_rfl
 
 /- English proof (translation)
-Introduce `B p q hB _ _`. Use `⟨1, one_pos, fun t' _ _ W _ _ _ => ?_⟩` and prove the remaining obligations. Establish `hB1 : (1 : ℝ) ≤ B`. Establish `: 1 ≤ B` using `le_trans (by norm_num [lineData, ComponentData.f]) hB`. Conclude with `this` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : 0 ≤ Real.log B` using `Real.log_nonneg hB1`. Rewrite using `[projLineComponentSetting_La]`. Establish `h0 : htMUc (projLineComponentSetting zeroSystem zero_hII).H (projLineComponentSetting zeroSystem zero_hII).S' B p q t' W = 0`. Simplify using `[htMUc, zeroSystem]`. Rewrite using `[h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hKA : (lineData zeroSystem zero_hII).KA = 0` using `rfl`. Rewrite using `[hKA]`. Establish `: (0 : ℝ) ≤ 1 * ((lineData zeroSystem zero_hII).f : ℝ) * ((lineData zeroSystem zero_hII).j' : ℝ) * Real.log B`. Establish `hf : ((lineData zeroSystem zero_hII).f : ℝ) = 1` using `by norm_num [ComponentData.f]`. Establish `hj : ((lineData zeroSystem zero_hII).j' : ℝ) = 1` using `by norm_num [ComponentData.j', lineData]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, hj]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem htInterior_line : HtInterior 1 (projLineComponentSetting zeroSystem zero_hII) := by
   intro B p q hB _ _
@@ -193,7 +193,7 @@ theorem htInterior_line : HtInterior 1 (projLineComponentSetting zeroSystem zero
   linarith
 
 /- English proof (translation)
-Introduce `B p q hB hp hpq`. Take `⟨t₀, ht₀, h⟩` from `htInterior_line B p q hB hp hpq`. Conclude with `⟨t₀, ht₀, fun t' ht0 ht1 W hW hXW _ => h t' ht0 ht1 W hW hXW fun z _ => Set.notMem_empty z⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem htBoundary_line : HtBoundary 1 (projLineComponentSetting zeroSystem zero_hII) := by
   intro B p q hB hp hpq
@@ -201,11 +201,11 @@ theorem htBoundary_line : HtBoundary 1 (projLineComponentSetting zeroSystem zero
   exact ⟨t₀, ht₀, fun t' ht0 ht1 W hW hXW _ => h t' ht0 ht1 W hW hXW fun z _ => Set.notMem_empty z⟩
 
 /- English proof (translation)
-Introduce `_ _ B hB`. Establish `hB1 : (1 : ℝ) ≤ B`. Establish `: 1 ≤ B` using `le_trans (by norm_num [lineData, ComponentData.f]) hB`. Conclude with `this` after adjusting the coercions. Rewrite using `[projLineComponentSetting_La]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : meanU (projLineComponentSetting II hII).H (projLineComponentSetting II hII).Cd = 0` using `meanU_line`. Rewrite using `[h0]`. Establish `hf : ((lineData II hII).f : ℝ) = 1` using `by norm_num [ComponentData.f]`. Establish `hj : ((lineData II hII).j' : ℝ) = 1` using `by norm_num [ComponentData.j', lineData]`. Rewrite using `[hf, hj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Real.log_nonneg hB1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cuspMean_line : CuspMean 1 (projLineComponentSetting II hII) := by
   intro _ _ B hB
@@ -222,9 +222,9 @@ theorem cuspMean_line : CuspMean 1 (projLineComponentSetting II hII) := by
   linarith
 
 /- English proof (translation)
-Introduce `p q _ _`. Use `⟨1, one_pos, fun t' _ _ => ?_⟩` and prove the remaining obligations. Establish `hKA : (lineData zeroSystem zero_hII).KA = 0` using `rfl`. Establish `h0 : topMUc (projLineComponentSetting zeroSystem zero_hII).H (projLineComponentSetting zeroSystem zero_hII).S' B p q t' = 0`. Simplify using `[topMUc, zeroSystem]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0, hKA]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stokesLimit_hyp_line (B : ℕ) : StokesLimit.Hyp (projLineComponentSetting zeroSystem zero_hII) B 0 := by
   intro p q _ _
@@ -236,7 +236,7 @@ theorem stokesLimit_hyp_line (B : ℕ) : StokesLimit.Hyp (projLineComponentSetti
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, tendsto_const_nhds⟩`.
+Supply the required witnesses or components.
 -/
 theorem arLimExists_line (B : ℕ) :
     ArLimExists (projLineComponentSetting zeroSystem zero_hII).H (projLineComponentSetting zeroSystem zero_hII).S B :=

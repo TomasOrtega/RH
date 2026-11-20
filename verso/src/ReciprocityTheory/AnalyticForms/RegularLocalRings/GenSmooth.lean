@@ -6,19 +6,17 @@ namespace ReciprocityTheory.AnForm.R
 open MvPolynomial
 
 /- English proof (translation)
-Establish `hspan : Submodule.span K (Set.range fun i => M i) = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hf⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Establish `hfx : ∀ x : Fin r → K, f x = ∑ k, x k * f (Pi.single k 1)`. Introduce `x`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [← (Pi.basisFun K (Fin r)).sum_repr x]`. Simplify using `[map_sum, smul_eq_mul]`. Establish `hc : M.mulVec (fun k => f (Pi.single k 1)) = 0`. Use function extensionality and compare the values at `i`. Establish `hi : M i ∈ LinearMap.ker f` using `hf (Submodule.subset_span ⟨i, rfl⟩)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[LinearMap.mem_ker, hfx]`. Conclude with `hi`. Establish `hc0` using `hM _ hc`. Apply `hf0` to reduce the goal to its premises. Apply `(Pi.basisFun K (Fin r)).ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Establish `hk` using `congrFun hc0 k`. Simplify using `using hk`. Take `⟨κ, a, ha, hsp, hli⟩` from `exists_linearIndependent' K (fun i => M i)`. Establish `hsp' : Submodule.span K (Set.range ((fun i => M i) ∘ a)) = ⊤` using `hsp.trans hspan`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Finite κ := Finite.of_injective a ha`. Use `haveI : Fintype κ := Fintype.ofFinite κ`. Set `B` to `Module.Basis.mk hli hsp'.ge`. Establish `hcard : Fintype.card κ = r`. Establish `h` using `Module.finrank_eq_card_basis B`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using h.symm`. Set `e : Fin r ≃ κ` to `(Fintype.equivFinOfCardEq hcard).symm`. Use `⟨a ∘ e, ?_⟩` and prove the remaining obligations. Establish `hli2 : LinearIndependent K (Matrix.row (M.submatrix (a ∘ e) id))` using `hli.comp e e.injective`. Rewrite `hli2` using `[Matrix.linearIndependent_rows_iff_isUnit, Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`.
-
-Conclude with `hli2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_exists_rows_det_ne_zero {K : Type*} [Field K] {t r : ℕ} (M : Matrix (Fin t) (Fin r) K)
     (hM : ∀ c : Fin r → K, M.mulVec c = 0 → c = 0) :
@@ -61,25 +59,25 @@ theorem gs_exists_rows_det_ne_zero {K : Type*} [Field K] {t r : ℕ} (M : Matrix
   exact hli2
 
 /- English proof (translation)
-Establish `key : ∀ m ∈ (pderiv j p).support, ∃ m' ∈ p.support, m = m' - Finsupp.single j 1`. Introduce `m hm`. Rewrite `hm` using `[p.as_sum, map_sum]`. Take `⟨m', hm', hmm⟩` from `Finset.mem_biUnion.1 (MvPolynomial.support_sum hm)`. Rewrite `hmm` using `[pderiv_monomial]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨m', hm', Finset.mem_singleton.1 (support_monomial_subset hmm)⟩`. Establish `hdeg : ∀ m ∈ (pderiv j p).support, m j < degreeOf j p`. Introduce `m hm`. Take `⟨m', hm', rfl⟩` from `key m hm`. Establish `h1` using `monomial_le_degreeOf j hm'`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : (m' - Finsupp.single j 1 : σ →₀ ℕ) j = m' j - 1` using `by simp`. Rewrite using `[h2]`. Use linear arithmetic over natural numbers and integers. Use `⟨?_, (degreeOf_lt_iff hj).2 hdeg, ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨m', hm', hm'j⟩ : ∃ m' ∈ p.support, 0 < m' j := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h3 : degreeOf j p < 1` using `(degreeOf_lt_iff one_pos).2 (fun m hm => by have := hcon m hm; omega)`. Use linear arithmetic over natural numbers and integers. Introduce `h0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : coeff (m' - Finsupp.single j 1) (pderiv j p) = coeff m' p * (m' j : ℚ)` using `by conv_lhs => rw [p.as_sum]`. Rewrite using `[map_sum, coeff_sum]`. Simplify using `only [pderiv_monomial, coeff_monomial]`. Rewrite using `[Finset.sum_eq_single m']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hne split_ifs with h`. Establish `hbj : b j = 0`. Assume the negation of the conclusion as `hbj`. Apply `hne` to reduce the goal to its premises. Establish `e1 : b - Finsupp.single j 1 + Finsupp.single j 1 = b` using `tsub_add_cancel_of_le (Finsupp.single_le_iff.2 (by omega))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : m' - Finsupp.single j 1 + Finsupp.single j 1 = m'` using `tsub_add_cancel_of_le (Finsupp.single_le_iff.2 (by omega))`. Rewrite using `[← e1, ← e2, h]`. Simplify using `[hbj]`. Both sides reduce to the same expression. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hm' h`. Rewrite `hc` using `[h0, coeff_zero]`. Establish `hne : coeff m' p ≠ 0` using `mem_support_iff.1 hm'`. Establish `hne2 : (m' j : ℚ) ≠ 0` using `by exact_mod_cast hm'j.ne'`. Conclude with `mul_ne_zero hne hne2 hc.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `i hi`. Rewrite `hi`, the goal using `[mem_vars]`. Take `⟨m, hm, him⟩` from `hi`. Take `⟨m', hm', rfl⟩` from `key m hm`. Use `⟨m', hm', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `him`, the goal using `[Finsupp.mem_support_iff]`. Introduce `h0`. Apply `him` to reduce the goal to its premises. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gs_pderiv_facts {σ : Type*} (p : MvPolynomial σ ℚ) (j : σ) (hj : 0 < degreeOf j p) :
     pderiv j p ≠ 0 ∧ degreeOf j (pderiv j p) < degreeOf j p ∧
@@ -142,75 +140,65 @@ theorem gs_pderiv_facts {σ : Type*} (p : MvPolynomial σ ℚ) (j : σ) (hj : 0 
     simp [h0]
 
 /- English proof (translation)
-Set `A` to `MvPolynomial σ ℚ ⧸ 𝔭`. Use `haveI : IsDomain A := Ideal.Quotient.isDomain 𝔭`. Set `K` to `FractionRing A`. Set `π : MvPolynomial σ ℚ →+* K` to `(algebraMap A K).comp (Ideal.Quotient.mk 𝔭)`. Establish `hπ : ∀ f, π f = 0 ↔ f ∈ 𝔭`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f`. Simplify using `only [π, RingHom.comp_apply]`. Rewrite using `[IsFractionRing.to_map_eq_zero_iff (R := A) (K := K), Ideal.Quotient.eq_zero_iff_mem]`. Set `xb : σ → A` to `fun s => Ideal.Quotient.mk 𝔭 (X s)`. Establish `hmk : Ideal.Quotient.mkₐ ℚ 𝔭 = aeval xb` using `MvPolynomial.algHom_ext fun s => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_X, Ideal.Quotient.mkₐ_eq_mk]`. Establish `hmk' : ∀ f, Ideal.Quotient.mk 𝔭 f = aeval xb f` using `fun f => by`. Rewrite using `[← hmk, Ideal.Quotient.mkₐ_eq_mk]`. Use `haveI : Algebra.FiniteType ℚ A := inferInstance`. Take `⟨s0, hs1, hs2⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := ℚ) (A := A)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : s0 = d`. Establish `: (s0 : WithBot ℕ∞) = (d : WithBot ℕ∞)` using `hs1.symm.trans hd`. Conclude with `this` after adjusting the coercions. Substitute `hs0` using the available equality. Use `haveI : FaithfulSMul ℚ A := (faithfulSMul_iff_algebraMap_injective ℚ A).mpr (algebraMap ℚ A).injective`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hadj : Algebra.adjoin ℚ (Set.range xb) = ⊤`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval, ← hmk]`. Use `eq_top_iff.mpr fun x _ => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ideal.Quotient.mkₐ_surjective ℚ 𝔭 x`. Conclude with `⟨y, rfl⟩`.
+Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Algebra.IsAlgebraic (Algebra.adjoin ℚ (Set.range xb)) A := by`. Prove the components needed by the constructor for the conclusion. Introduce `a`. Establish `ha : a ∈ Algebra.adjoin ℚ (Set.range xb)` using `by rw [hadj]; trivial`. Conclude with `isAlgebraic_algebraMap (R := Algebra.adjoin ℚ (Set.range xb)) (A := A) (⟨a, ha⟩ : Algebra.adjoin ℚ (Set.range xb))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨u, hu, hub⟩` from `exists_isTranscendenceBasis_subset (R := ℚ) (Set.range xb)`. Use `haveI : Finite u := ((Set.finite_range xb).subset hu).to_subtype`. Use `haveI : Fintype u := Fintype.ofFinite u`. Establish `hcardu : Fintype.card u = s0`. Establish `h1` using `hub.cardinalMk_eq_trdeg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hs2, Cardinal.mk_fintype]`. Conclude with `h1` after adjusting the coercions. Set `g : u → σ` to `fun y => (hu y.2).choose`. Establish `hg : ∀ y, xb (g y) = y` using `fun y => (hu y.2).choose_spec`. Establish `hginj : Function.Injective g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `y y' h`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hg y, ← hg y', h]`. Establish `hind : ∀ Q : MvPolynomial σ ℚ, (↑Q.vars : Set σ) ⊆ Set.range g → Q ∈ 𝔭 → Q = 0`. Introduce `Q hQ hQp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Take `⟨q, rfl⟩` from `exists_rename_eq_of_vars_subset_range Q g hginj hQ`. Establish `h0 : aeval ((↑) : u → A) q = 0`. Rewrite `hQp` using `[← Ideal.Quotient.eq_zero_iff_mem, hmk', aeval_rename]`. Establish `hfun : ((↑) : u → A) = xb ∘ g` using `funext fun y => (hg y).symm`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hQp`. Rewrite using `[hub.1.eq_zero_of_aeval_eq_zero q h0, map_zero]`. Establish `hrel : ∀ j, j ∉ Set.range g → ∃ Q : MvPolynomial σ ℚ, Q ∈ 𝔭 ∧ Q ≠ 0 ∧ (↑Q.vars : Set σ) ⊆ insert j (Set.range g)`. Introduce `j hj`. Set `w : Option u → A` to `fun o => o.elim (xb j) ((↑) : u → A)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : ¬ AlgebraicIndependent ℚ w`. Introduce `h`. Rewrite `h` using `[AlgebraicIndependent.option_iff]`. Conclude with `h.2 (hub.isAlgebraic.isAlgebraic (xb j))`. Rewrite `hw` using `[algebraicIndependent_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Use `push_neg at hw`. Take `⟨p, hp0, hp⟩` from `hw`. Set `h : Option u → σ` to `fun o => o.elim j g`. Establish `hinj : Function.Injective h`. Introduce and unpack `(_ | y) (_ | y') hyy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Conclude with `absurd ⟨y', hyy.symm⟩ hj`. Conclude with `absurd ⟨y, hyy⟩ hj`. Conclude with `congr_arg some (hginj hyy)`. Use `⟨rename h p, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, hmk', aeval_rename]`. Establish `hfun : xb ∘ h = w`. Use function extensionality and compare the values at `o`. Consider the cases of `o with`. Consider the case `none => rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Consider the case `some y => exact hg y`. Rewrite using `[hfun]`. Conclude with `hp0`. Conclude with `fun h0 => hp ((rename_injective h hinj) (h0.trans (map_zero _).symm))`. Introduce `i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `vars_rename h p (Finset.mem_coe.mp hi)` as an intermediate fact. Take `⟨o, -, rfl⟩` from `Finset.mem_image.mp this`. Consider the cases of `o with`. Consider the case `none => exact Set.mem_insert _ _`. Consider the case `some y => exact Set.mem_insert_of_mem _ ⟨y, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hT : Fintype.card {j // j ∉ Set.range g} = Fintype.card σ - s0`. Rewrite using `[Fintype.card_subtype_compl, ← hcardu]`. Use `congr 1`. Rewrite using `[← Set.card_range_of_injective hginj]`. Set `e : {j // j ∉ Set.range g} ≃ Fin (Fintype.card σ - s0)` to `Fintype.equivFinOfCardEq hT`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Set `b : Fin (Fintype.card σ - s0) → σ` to `fun k => (e.symm k).1`. Establish `hb : ∀ k, b k ∉ Set.range g` using `fun k => (e.symm k).2`. Establish `hbinj : Function.Injective b` using `fun k k' h => e.symm.injective (Subtype.ext h)`. Set `M : Matrix (Fin t) (Fin (Fintype.card σ - s0)) K` to `Matrix.of fun i k => π (pderiv (b k) (G i))`. Establish `hM : ∀ c, M.mulVec c = 0 → c = 0`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Set `D : MvPolynomial σ ℚ → K` to `fun f => ∑ k, π (pderiv (b k) f) * c k`. Establish `hDG : ∀ i, D (G i) = 0` using `fun i => by`. Use `congr_fun hc i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, M, D]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hDp : ∀ f ∈ 𝔭, D f = 0`. Introduce `f hf`. Rewrite `hf` using `[← hG]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `hx`. Conclude with `hDG i`. Consider the case `zero => simp [D]`. Consider the case `add x y _ _ hx hy`. Establish `: D (x + y) = D x + D y`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [D, map_add, add_mul, Finset.sum_add_distrib]`. Rewrite using `[this, hx, hy, add_zero]`. Consider the case `smul a x hx' hx`. Establish `hx0 : π x = 0` using `(hπ x).2 (hG ▸ hx')`. Establish `: D (a • x) = π a * D x`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [D, smul_eq_mul, Derivation.leibniz, map_add, map_mul, hx0, zero_mul, add_zero, Finset.mul_sum, mul_assoc]`. Rewrite using `[this, hx, mul_zero]`. Use function extensionality and compare the values at `k0`. Set `j` to `b k0`. Establish `hj : j ∉ Set.range g` using `hb k0`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hex : ∃ n, ∃ Q : MvPolynomial σ ℚ, Q ∈ 𝔭 ∧ Q ≠ 0 ∧ (↑Q.vars : Set σ) ⊆ insert j (Set.range g) ∧ degreeOf j Q = n`. Take `⟨Q, h1, h2, h3⟩` from `hrel j hj`. Conclude with `⟨_, Q, h1, h2, h3, rfl⟩`. Take `⟨Q, hQp, hQ0, hQv, hQd⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ Q' : MvPolynomial σ ℚ, Q' ∈ 𝔭 → Q' ≠ 0 → (↑Q'.vars : Set σ) ⊆ insert j (Set.range g) → degreeOf j Q ≤ degreeOf j Q'`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `Q' h1 h2 h3`. Rewrite using `[hQd]`. Conclude with `Nat.find_min' hex ⟨Q', h1, h2, h3, rfl⟩`. Establish `hpos : 0 < degreeOf j Q`. Assume the negation of the conclusion as `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_neg at h0`. Apply `hQ0` to reduce the goal to its premises. Apply `hind Q _ hQp` to reduce the goal to its premises. Introduce `i hi`. Break down `hQv hi with rfl | hi'` into its components or cases.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-It suffices to derive a contradiction. Rewrite `hi` using `[Finset.mem_coe, mem_vars]`. Take `⟨m, hm, him⟩` from `hi`. Use `monomial_le_degreeOf j hm` as an intermediate fact. Rewrite `him` using `[Finsupp.mem_support_iff]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `hi'`. Take `⟨hd0, hdlt, hdv⟩` from `gs_pderiv_facts Q j hpos`. Establish `hnot : π (pderiv j Q) ≠ 0`. Rewrite using `[Ne, hπ]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hmem`. Use `hmin _ hmem hd0 (fun i hi => hQv (Finset.mem_coe.mpr (hdv (Finset.mem_coe.mp hi))))` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hDQ : D Q = π (pderiv j Q) * c k0`. Simplify using `only [D]`.
-
-Rewrite using `[Finset.sum_eq_single k0]`. Introduce `k _ hk`. Establish `: pderiv (b k) Q = 0`. Apply `pderiv_eq_zero_of_notMem_vars` to reduce the goal to its premises. Introduce `hv`.
-
-Break down `hQv (Finset.mem_coe.mpr hv) with h | h` into its components or cases. Conclude with `hk (hbinj h)`. Conclude with `hb k h`. Rewrite using `[this, map_zero, zero_mul]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ k0) h`. Use `hDp Q hQp` as an intermediate fact. Rewrite `this` using `[hDQ]`. Simplify using `using (mul_eq_zero.mp this).resolve_left hnot`. Take `⟨a, ha⟩` from `gs_exists_rows_det_ne_zero M hM`.
-
-Use `⟨a, b, fun hmem => ha ?_⟩` and prove the remaining obligations. Establish `h1` using `(hπ _).2 hmem`. Rewrite `h1` using `[RingHom.map_det]`. Establish `hM' : M.submatrix a id = π.mapMatrix (Matrix.of fun i j => pderiv (b j) (G (a i)))`. Use extensionality with `i k`.
-
-Both sides reduce to the same expression. Rewrite using `[hM']`. Conclude with `h1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_jacobian_minor_not_mem' {σ : Type} [Fintype σ]
     (𝔭 : Ideal (MvPolynomial σ ℚ)) [𝔭.IsPrime] {t : ℕ}
@@ -404,7 +392,7 @@ theorem exists_jacobian_minor_not_mem' {σ : Type} [Fintype σ]
   exact h1
 
 /- English proof (translation)
-The claim follows from `exists_jacobian_minor_not_mem' 𝔭 G hG d hd`.
+A detailed English derivation is pending.
 -/
 theorem exists_jacobian_minor_not_mem {σ : Type} [Fintype σ]
     (𝔭 : Ideal (MvPolynomial σ ℚ)) [𝔭.IsPrime] {t : ℕ}

@@ -6,7 +6,7 @@ universe u v
 namespace Formalism.L2.Th1.A
 
 /- English proof (translation)
-The claim follows from `division_spec`.
+A detailed English derivation is pending.
 -/
 theorem divSpec : DivSpec.{u, v} := division_spec
 

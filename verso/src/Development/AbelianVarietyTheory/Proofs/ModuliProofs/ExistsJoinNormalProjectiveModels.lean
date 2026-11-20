@@ -23,11 +23,11 @@ noncomputable section
 namespace GlobalTheory.JoinModels
 
 /- English proof (translation)
-Introduce `x`. Take `⟨h1, h2⟩` from `h (j x)`. Establish `hf : (j.stalkMap x).hom.Flat` using `Flat.stalkMap j x`. Establish `hs : Function.Surjective (j.stalkMap x).hom` using `j.stalkMap_surjective x`. Establish `hi : Function.Injective (j.stalkMap x).hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := (j.stalkMap x).hom.toAlgebra`. Establish `: Module.Flat (X.presheaf.stalk (j x)) (U.presheaf.stalk x)` using `hf`. Establish `: IsLocalHom (algebraMap (X.presheaf.stalk (j x)) (U.presheaf.stalk x))` using `inferInstanceAs (IsLocalHom (j.stalkMap x).hom)`. Use `Module.FaithfullyFlat.of_flat_of_isLocalHom (A := X.presheaf.stalk (j x)) (B := U.presheaf.stalk x)` as an intermediate fact. Conclude with `FaithfulSMul.algebraMap_injective (X.presheaf.stalk (j x)) (U.presheaf.stalk x)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e` to `RingEquiv.ofBijective (j.stalkMap x).hom ⟨hi, hs⟩`. Establish `h3 : IsDomain (U.presheaf.stalk x)` using `e.symm.toMulEquiv.isDomain _`. Conclude with `⟨h3, IsIntegrallyClosed.of_equiv e⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isNormalScheme_of_flat_preimmersion {U X : Scheme.{0}} (j : U ⟶ X) [IsPreimmersion j] [Flat j]
     (h : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme U := by
@@ -48,9 +48,9 @@ theorem isNormalScheme_of_flat_preimmersion {U X : Scheme.{0}} (j : U ⟶ X) [Is
   exact ⟨h3, IsIntegrallyClosed.of_equiv e⟩
 
 /- English proof (translation)
-Establish `Hu` using `IsPullback.of_hasPullback v q`. Establish `: Mono (pullback.snd v q)` using `inferInstance`. Set `c : U ⟶ pullback v q` to `pullback.lift (𝟙 U) j (by simpa using h.symm)`. Establish `hc₁ : c ≫ pullback.fst _ _ = 𝟙 U` using `pullback.lift_fst _ _ _`. Establish `hc₂ : c ≫ pullback.snd _ _ = j` using `pullback.lift_snd _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsClosedImmersion (c ≫ pullback.fst _ _)` using `by rw [hc₁]; infer_instance`. Establish `: IsClosedImmersion c` using `.of_comp c (pullback.fst _ _)`. Establish `H` using `(GlobalTheory.isPullback_toImage_of_isClosedImmersion j c _ hc₂).paste_horiz Hu`. Rewrite `H` using `[hc₁]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isPullback_toImage_comp {U P Z : Scheme.{0}} (j : U ⟶ P) (q : P ⟶ Z) (v : U ⟶ Z)
     (h : j ≫ q = v) [QuasiCompact j] [IsSeparated q] [Flat v] [Mono v] :
@@ -66,13 +66,13 @@ theorem isPullback_toImage_comp {U P Z : Scheme.{0}} (j : U ⟶ P) (q : P ⟶ Z)
   rwa [hc₁] at H
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset I, ∃ (P : Scheme.{0}) (r : P ⟶ Sp O) (j : U ⟶ P), IsProjOver r ∧ j ≫ r = σ ∧ ∀ i ∈ S, ∃ p : P ⟶ X i, p ≫ s i = r ∧ j ≫ p = u i`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Take `⟨i⟩` from `‹Nonempty I›`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨X i, s i, u i, hs i, hu i, by simp⟩`. Consider the case `insert k S _ ih`. Take `⟨P, r, j, h1, h2, h3⟩` from `ih`. Use `⟨pullback r (s k), pullback.fst _ _ ≫ r, pullback.lift j (u k) (h2.trans (hu k).symm), GlobalTheory.ProjSpace.isProjOver_pullback h1 (hs k), by rw [pullback.lift_fst_assoc, h2], fun i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hi with rfl | hi` into its components or cases.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨pullback.snd _ _, pullback.condition.symm, pullback.lift_snd _ _ _⟩`. Take `⟨p, hp1, hp2⟩` from `h3 i hi`. Conclude with `⟨pullback.fst _ _ ≫ p, by rw [Category.assoc, hp1], by rw [pullback.lift_fst_assoc, hp2]⟩`. Use `Fintype.ofFinite I` as an intermediate fact. Take `⟨P, r, j, h1, h2, h3⟩` from `key Finset.univ`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose p hp using fun i => h3 i (Finset.mem_univ i)`. Conclude with `⟨P, r, j, p, h1, h2, hp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_common_projective {O : Type} [CommRing O] {U : Scheme.{0}} (σ : U ⟶ Sp O) {I : Type}
     [Finite I] [Nonempty I] (X : I → Scheme.{0}) (s : ∀ i, X i ⟶ Sp O) (hs : ∀ i, IsProjOver (s i))
@@ -101,7 +101,7 @@ theorem exists_common_projective {O : Type} [CommRing O] {U : Scheme.{0}} (σ : 
   exact ⟨P, r, j, p, h1, h2, hp⟩
 
 /- English proof (translation)
-Take `⟨N, i, hi, rfl⟩` from `h`. Use `isProper_str O N` as an intermediate fact. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isProper_of_proj {O : Type} [CommRing O] {X : Scheme.{0}} {s : X ⟶ Sp O} (h : IsProjOver s) :
     IsProper s := by
@@ -110,11 +110,11 @@ theorem isProper_of_proj {O : Type} [CommRing O] {X : Scheme.{0}} {s : X ⟶ Sp 
   infer_instance
 
 /- English proof (translation)
-Take `⟨P, r, j, p, h1, h2, h3⟩` from `exists_common_projective σ X s hs u hu`. Use `isProper_of_proj h1` as an intermediate fact. Establish `hsep : ∀ i, IsSeparated (p i)` using `fun i => by`. Establish `: IsSeparated (p i ≫ s i)` using `by rw [(h3 i).1]; infer_instance`. Conclude with `IsSeparated.of_comp (p i) (s i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact j`. Take `⟨i⟩` from `‹Nonempty I›`. Establish `: QuasiCompact (j ≫ p i)` using `by rw [(h3 i).2]; infer_instance`. Conclude with `QuasiCompact.of_comp j (p i)`. Take `⟨N, e, he, hr⟩` from `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨j.image, j.imageι ≫ r, j.toImage, fun i => j.imageι ≫ p i, ⟨N, j.imageι ≫ e, inferInstance, by rw [Category.assoc, hr]⟩, by simpa using h2, fun i => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, (h3 i).1]`. Conclude with `isPullback_toImage_comp j (p i) (u i) (h3 i).2`.
+A detailed English derivation is pending.
 -/
 theorem exists_join {O : Type} [CommRing O] {U : Scheme.{0}} (σ : U ⟶ Sp O) {I : Type}
     [Finite I] [Nonempty I] (X : I → Scheme.{0}) (s : ∀ i, X i ⟶ Sp O) (hs : ∀ i, IsProjOver (s i))
@@ -138,35 +138,33 @@ theorem exists_join {O : Type} [CommRing O] {U : Scheme.{0}} (σ : U ⟶ Sp O) {
   · exact isPullback_toImage_comp j (p i) (u i) (h3 i).2
 
 /- English proof (translation)
-Introduce `E _ _ _ H U F O _ _ c t β I _ _ R _ a b ω C hβ hR _ _`. Take `⟨⟨_, _⟩, _, hfr⟩` from `hβ`. Use `letI := β.toAlgebra`. Establish `hβ : algebraMap O F = β` using `rfl`. Establish `hcl : ∀ i, ∃ (X' : Scheme.{0}) (s' : X' ⟶ Sp O) (κ : (C i).X ⟶ X'), IsProjOver s' ∧ IsPullback κ (C i).s s' (spMap (b i))` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := (b i).toAlgebra`. Use `(hR i).2.2` as an intermediate fact. Conclude with `GlobalTheory.ProjClosure.exists_projective_closure O (R i) (a i) (C i).X (C i).s (C i).proj`. Use `choose X' s' κ hs' hk using hcl`. Establish `hbo : ∀ i, IsOpenImmersion (spMap (b i))` using `fun i => by`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI := (b i).toAlgebra`. Use `(hR i).2.2` as an intermediate fact. Conclude with `IsOpenImmersion.of_isLocalization (a i)`. Establish `hko : ∀ i, IsOpenImmersion (κ i)` using `fun i => MorphismProperty.of_isPullback (hk i).flip (hbo i)`. Establish `hj : ∀ i, IsPreimmersion (C i).j ∧ Flat (C i).j ∧ QuasiCompact (C i).j ∧ QuasiCompact (κ i)` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨⟨_, _⟩, _, hfr⟩, _, _⟩` from `hR i`. Use `letI := (ω i).toAlgebra`. Take `⟨-, -, -, h1, h2, -, h3⟩` from `GlobalTheory.genericPart_dense_proOpen (R i) F (C i).X U (C i).s (C i).jQ (C i).flat (C i).proj (C i).jQ_open (C i).jQ_dense`. Conclude with `⟨h1, h2, h3, MorphismProperty.of_isPullback (hk i).flip inferInstance⟩`. Establish `hωb : ∀ i, spMap (ω i) ≫ spMap (b i) = spMap β` using `fun i => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, (hR i).2.1]`. Establish `hjs : ∀ i, (C i).j ≫ (C i).s = c ≫ spMap (ω i)` using `fun i => by`. Rewrite using `[Cpt.j, Category.assoc, pullback.condition, reassoc_of% (C i).jQ_over]`. Establish `h1` using `fun i => (hj i).1`. Establish `h2` using `fun i => (hj i).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `fun i => (hj i).2.2.1`. Establish `h4` using `fun i => (hj i).2.2.2`. Take `⟨P, r, j, p, hr, hjr, hp⟩` from `exists_join (c ≫ spMap β) X' s' hs' (fun i => (C i).j ≫ κ i) (fun i => by rw [Category.assoc, (hk i).w, reassoc_of% (hjs i), hωb])`. Establish `hjp : ∀ i, j ≫ p i = (C i).j ≫ κ i` using `fun i => by simpa using (hp i).2.w.symm`. Set `jP : U ⟶ pullback r (spMap β)` to `pullback.lift j c hjr`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hjP₁ : jP ≫ pullback.fst _ _ = j` using `pullback.lift_fst _ _ _`. Establish `hjP₂ : jP ≫ pullback.snd _ _ = c` using `pullback.lift_snd _ _ _`. Take `⟨i₀⟩` from `‹Nonempty I›`. Establish `hU : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme U` using `isNormalScheme_of_flat_preimmersion (C i₀).j (C i₀).normal`. Establish `hjPo : IsOpenImmersion jP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `G` using `(IsPullback.of_hasPullback (C i₀).s (spMap (ω i₀))).flip.paste_vert (hk i₀).flip`. Rewrite `G` using `[hωb]`. Set `ρ : pullback r (spMap β) ⟶ pullback (C i₀).s (spMap (ω i₀))` to `G.lift (pullback.snd _ _) (pullback.fst _ _ ≫ p i₀) (by rw [Category.assoc, (hp i₀).1, pullback.condition])`. Establish `hρ₁ : ρ ≫ pullback.snd _ _ = pullback.snd _ _` using `G.lift_fst _ _ _`. Establish `hρ₂ : ρ ≫ pullback.fst _ _ ≫ κ i₀ = pullback.fst _ _ ≫ p i₀` using `G.lift_snd _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `A : IsPullback ρ (pullback.fst r (spMap β)) (pullback.fst _ _ ≫ κ i₀) (p i₀)`. Use `IsPullback.of_right (h₁₂ := pullback.snd _ _) (h₂₂ := s' i₀) (v₁₃ := spMap β) ?_ hρ₂ G` and prove the remaining obligations. Rewrite using `[hρ₁, (hp i₀).1]`. Conclude with `(IsPullback.of_hasPullback _ _).flip`. Establish `B : IsPullback (𝟙 U) jP (C i₀).jQ ρ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsPullback.of_bot (v₂₁ := pullback.fst _ _) (v₂₂ := pullback.fst _ _ ≫ κ i₀) (h₃₁ := p i₀) ?_ ?_ A` and prove the remaining obligations. Rewrite using `[hjP₁, ← Category.assoc]`. Conclude with `(hp i₀).2`. Use `G.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.assoc, hρ₁, hjP₂, (C i₀).jQ_over]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.id_comp, Category.assoc, hρ₂, reassoc_of% hjP₁, hjp, Cpt.j, Category.assoc]`. Conclude with `MorphismProperty.of_isPullback B (C i₀).jQ_open`. Take `⟨Y, π, jQ, -, hY, hproj, hflat, hq₁, hq₂, hqo, hqd, hqr⟩` from `GlobalTheory.exists_normal_finite_model_of_finite_over_open O F P U r c j jP.opensRange jP.isoOpensRange.hom hr hU inferInstance (by rw [Scheme.Hom.isoOpensRange_hom_ι_assoc]; exact hjP₁) (by rw [Scheme.Hom.isoOpensRange_hom_ι_assoc]; exact hjP₂)`. Set `f : ∀ i, pullback (π ≫ r) (spMap (b i)) ⟶ (C i).X` to `fun i => (hk i).lift (pullback.fst _ _ ≫ π ≫ p i) (pullback.snd _ _) (by rw [Category.assoc, Category.assoc, (hp i).1, pullback.condition])`. Establish `hf : ∀ i, f i ≫ κ i = pullback.fst _ _ ≫ π ≫ p i` using `fun i => (hk i).lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨Y, π ≫ r, jQ, f, hY, hproj, hflat, hq₁, hqo, hqd, fun i => ⟨(hk i).lift_snd _ _ _, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `g hg`. Establish `hq₂' : jQ ≫ pullback.fst (π ≫ r) (spMap β) ≫ π = j` using `hq₂`. Rewrite using `[← cancel_mono (κ i), Category.assoc, hf, reassoc_of% hg, reassoc_of% hq₂', hjp]`. Introduce and unpack `x ⟨y, hy⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : p i (π (pullback.fst (π ≫ r) (spMap (b i)) x)) = ((C i).j ≫ κ i) y`. Rewrite using `[Scheme.Hom.comp_apply, hy, ← Scheme.Hom.comp_apply (f i), hf]`. Simplify using `only [Scheme.Hom.comp_apply]`. Take `⟨z, -, hz⟩` from `Scheme.exists_preimage_of_isPullback (hp i).2 y _ e1.symm`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : pullback.fst (π ≫ r) (spMap (b i)) x ∈ Set.range (pullback.fst (π ≫ r) (spMap β)) := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Scheme.Pullback.range_fst]`. Use `⟨c z, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply π r, ← hz, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hjr]`. Take `⟨v, hv⟩` from `(hqr w).mpr ⟨jP.isoOpensRange.hom z, by`. Rewrite using `[← Scheme.Hom.comp_apply, Scheme.Hom.isoOpensRange_hom_ι_assoc]`.
-
-Conclude with `(congrArg (fun m : U ⟶ P => m z) hjP₁).trans (hz.trans (congrArg π hw.symm))⟩`. Conclude with `⟨v, by rw [Scheme.Hom.comp_apply, ← hw]; exact congrArg _ hv⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_join_scheme : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (U : Scheme.{0}) (F O : Type) [Field F] [CommRing O] (c : U ⟶ Sp F) (t : SAB H U) (β : O →+* F) (I : Type) [Finite I] [Nonempty I] (R : I → Type) [∀ i, CommRing (R i)] (a : I → O) (b : ∀ i, O →+* R i) (ω : ∀ i, R i →+* F) (C : ∀ i, Cpt c t (ω i)), IsDedFrac β → (∀ i, IsDedFrac (ω i) ∧ (ω i).comp (b i) = β ∧ @IsLocalization.Away O _ (a i) (R i) _ (b i).toAlgebra) → Ideal.span (Set.range a) = ⊤ → CharZero O → ∃ (X : Scheme.{0}) (s : X ⟶ Sp O) (jQ : U ⟶ pullback s (spMap β)) (f : ∀ i, pullback s (spMap (b i)) ⟶ (C i).X), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X ∧ IsProjOver s ∧ Flat s ∧ jQ ≫ pullback.snd _ _ = c ∧ IsOpenImmersion jQ ∧ Dense (Set.range jQ) ∧ ∀ i, f i ≫ (C i).s = pullback.snd _ _ ∧ (∀ g : U ⟶ pullback s (spMap (b i)), g ≫ pullback.fst _ _ = jQ ≫ pullback.fst _ _ → g ≫ f i = (C i).j) ∧ ∀ x : ↥(pullback s (spMap (b i))), f i x ∈ Set.range (C i).j → pullback.fst s (spMap (b i)) x ∈ Set.range (jQ ≫ pullback.fst s (spMap β)) := by
   intro E _ _ _ H U F O _ _ c t β I _ _ R _ a b ω C hβ hR _ _

@@ -38,7 +38,7 @@ def ValUniq : Prop := ∀ x i L Q Q', G.P.IsLatTup L → IsVal S emb embLL G A p
 variable {S emb embLL G e A pos embV yc}
 
 /- English proof (translation)
-Unfold `valC`. Rewrite using `[dif_pos (hex x i L hL)]`. Conclude with `Classical.choose_spec (hex x i L hL)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valC_spec (hex : ValEx S emb embLL G A pos embV yc) (x : V) (i : G.comp) (L : G.P.Tup) (hL : G.P.IsLatTup L) :
     IsVal S emb embLL G A pos embV yc x i L (valC S emb embLL G A pos embV yc x i L) := by
@@ -47,14 +47,14 @@ theorem valC_spec (hex : ValEx S emb embLL G A pos embV yc) (x : V) (i : G.comp)
   exact Classical.choose_spec (hex x i L hL)
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul' {R R' ι : Type} [CommRing R] [CommRing R'] (f : R →+* R') (a : R) (Q : MvPolynomial ι R) :
     MvPolynomial.map f (a • Q) = f a • MvPolynomial.map f Q := by
   rw [MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]
 
 /- English proof (translation)
-Use `⟨Submodule.add_mem _ h.1 h'.1, fun g hg c γ hγ κ hp z z' hz => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, map_add, Pi.add_apply, Pi.add_apply, Pi.add_apply, h.2 g hg c γ hγ κ hp z z' hz, h'.2 g hg c γ hγ κ hp z z' hz, mul_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsVal.add {x y : V} {i : G.comp} {L : G.P.Tup} {Q Q' : XR G.P LL}
     (h : IsVal S emb embLL G A pos embV yc x i L Q) (h' : IsVal S emb embLL G A pos embV yc y i L Q') :
@@ -64,7 +64,7 @@ theorem IsVal.add {x y : V} {i : G.comp} {L : G.P.Tup} {Q Q' : XR G.P LL}
     h'.2 g hg c γ hγ κ hp z z' hz, mul_add]
 
 /- English proof (translation)
-Use `⟨Submodule.smul_mem _ a h.1, fun g hg c γ hγ κ hp z z' hz => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul', map_smul, LinearMap.map_smulₛₗ, Pi.smul_apply, Pi.smul_apply, Pi.smul_apply, h.2 g hg c γ hγ κ hp z z' hz, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsVal.smul {x : V} {i : G.comp} {L : G.P.Tup} {Q : XR G.P LL} (a : LL)
     (h : IsVal S emb embLL G A pos embV yc x i L Q) : IsVal S emb embLL G A pos embV yc (a • x) i L (a • Q) := by

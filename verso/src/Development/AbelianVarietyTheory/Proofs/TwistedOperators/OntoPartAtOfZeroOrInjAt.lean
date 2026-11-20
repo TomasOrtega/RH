@@ -27,7 +27,7 @@ variable {H Γ W : Type} [Group H] [Group Γ] [NormedAddCommGroup W] [InnerProdu
   {ρ : Γ →* Module.End ℂ W} {J : Subgroup H} {χ : J →* ℂˣ} {Φ : H → W}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨fun γ u => by simpa using h γ u 1, fun u k hk => by simpa using h 1 u ⟨k, hk⟩⟩, fun h γ u k => by rw [h.2 _ _ k.2, h.1]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_adForms_iff : Φ ∈ Bridge.AdForms ι ρ J χ ↔
     (∀ γ u, Φ (ι γ * u) = ρ γ (Φ u)) ∧ ∀ u k (hk : k ∈ J), Φ (u * k) = (χ ⟨k, hk⟩ : ℂ) • Φ u :=
@@ -35,7 +35,7 @@ theorem mem_adForms_iff : Φ ∈ Bridge.AdForms ι ρ J χ ↔
     fun h γ u k => by rw [h.2 _ _ k.2, h.1]⟩
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.1 ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun ℓ => by rw [map_sub, h ℓ, sub_self])`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_dual {x y : W} (h : ∀ ℓ : W →ₗ[ℂ] ℂ, ℓ x = ℓ y) : x = y :=
   sub_eq_zero.1 ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun ℓ => by rw [map_sub, h ℓ, sub_self])
@@ -51,7 +51,7 @@ def cmp (ℓ : c.W →ₗ[ℂ] ℂ) : (Bridge.Gf V → c.W) →ₗ[ℂ] (GA D V 
 variable {c}
 
 /- English proof (translation)
-Introduce `κ hκ g` and use `(congrArg (fun u => ℓ (Φ u)) ((fin V).map_mul g κ)).trans ((congrArg ℓ ((mem_adForms_iff.1 hΦ).2 (fin V g) _ ((mem_J V β L hκ.1).2 hκ))).trans (ℓ.map_smul _ _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasType_form {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {ρ : GQ V →* Module.End ℂ W} {Φ : Bridge.Gf V → W}
     (hΦ : Φ ∈ Bridge.AdForms (Bridge.ratF V) ρ (levEnv V β L).J (levEnv V β L).χ)
@@ -60,15 +60,15 @@ theorem hasType_form {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     ((congrArg ℓ ((mem_adForms_iff.1 hΦ).2 (fin V g) _ ((mem_J V β L hκ.1).2 hκ))).trans (ℓ.map_smul _ _))
 
 /- English proof (translation)
-The claim follows from `(fin_lift V u).elim fun g hg => hg.2 ▸ h g hg.1`.
+A detailed English derivation is pending.
 -/
 theorem forall_fin {p : Bridge.Gf V → Prop} (h : ∀ g ∈ GfC V, p (fin V g)) (u : Bridge.Gf V) : p u :=
   (fin_lift V u).elim fun g hg => hg.2 ▸ h g hg.1
 
 /- English proof (translation)
-Establish `hc : ∀ (ℓ : W →ₗ[ℂ] ℂ) g, hk V w a (fun g => ℓ (Φ (fin V g))) g = ℓ (hkF V w a Φ (fin V g))` using `fun ℓ g => by`. Rewrite using `[GlobalTheory.LevOp.hk_apply]`. Simplify using `only [hkF, Finsupp.sum, map_sum, LinearMap.map_smul, smul_eq_mul, heckeLin_apply, MonoidHom.map_mul]`. Use `mem_adForms_iff.2 ⟨fun γ u => ?_, fun u k => ?_⟩` and prove the remaining obligations. Simplify using `only [hkF, Finsupp.sum, mul_assoc, (mem_adForms_iff.1 hΦ).1, map_sum, LinearMap.map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `forall_fin (p := fun k => ∀ hk : k ∈ (levEnv V β L).J, hkF V w a Φ (u * k) = ((levEnv V β L).χ ⟨k, hk⟩ : ℂ) • hkF V w a Φ u) (fun κ hκ hk => ?_) k` and prove the remaining obligations. Use `forall_fin (p := fun u => hkF V w a Φ (u * fin V κ) = ((levEnv V β L).χ ⟨fin V κ, hk⟩ : ℂ) • hkF V w a Φ u) (fun g _ => eq_of_dual fun ℓ => ?_) u` and prove the remaining obligations. Use `h3 _ (hasType_form hΦ ℓ) κ ((mem_J V β L hκ).1 hk) g` as an intermediate fact. Rewrite `this` using `[hc, hc, MonoidHom.map_mul]`. Conclude with `this.trans (ℓ.map_smul _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hkF_mem {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {ρ : GQ V →* Module.End ℂ W} {w : Pl D.host.E}
     (a : List ℤ →₀ ℂ) (h3 : ∀ Φ, HasType V β (flag1L L) Φ → HasType V β (flag1L L) (hk V w a Φ))
@@ -88,7 +88,7 @@ theorem hkF_mem {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {ρ 
     exact this.trans (ℓ.map_smul _ _).symm
 
 /- English proof (translation)
-Rewrite using `[one_pow, Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 w.isPrime.ne_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_notMem (w : Pl D.host.E) (n : ℕ) : ((1 ^ n : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal := by
   rw [one_pow, Nat.cast_one]
@@ -100,9 +100,9 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.GoodPrimes.offS_iff]`. Unfold `badS`. Simplify using `only [Finset.mem_image, Finset.mem_union, not_exists, not_and]`. Use `forall₂_congr fun PP _ => ⟨fun h => ⟨fun e => h (by rw [e]), fun e => h (GlobalTheory.LevelPlaces.under_eq_of_isConjPl e)⟩, fun h e => ?_⟩` and prove the remaining obligations. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq e.symm with h1 | h1` into its components or cases.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h.1 h1.symm`. Conclude with `h.2 (GlobalTheory.GoodPrimes.isConjPl_iff.2 h1)`.
+A detailed English derivation is pending.
 -/
 theorem offS_iff_good (t : T) (w : Pl D.host.E) : OffS D (badS R t) w ↔ Good R t w := by
   classical
@@ -115,9 +115,9 @@ theorem offS_iff_good (t : T) (w : Pl D.host.E) : OffS D (badS R t) w ↔ Good R
   · exact h.2 (GlobalTheory.GoodPrimes.isConjPl_iff.2 h1)
 
 /- English proof (translation)
-Establish `key : ∀ w a, ∃ s : Module.End ℂ (R.HV i t).H, Good R t w → ∀ x, (R.HV i t).e (s x) = hkF (Vc D i) w a ((R.HV i t).e x)`. Introduce `w a`. Distinguish the cases in `hw : Good R t w`. Use `swap`. Conclude with `⟨0, fun h => absurd h hw⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hL.βV i).elim fun n hn => ?_` and prove the remaining obligations. Establish `h3` using `(GlobalTheory.LevOp.level_operators (Vc D i) (R.βV i) (R.ΛV i) _ (flag1L (R.datVt i t)) hn w (one_notMem w n) hw).2.2.1 a`. Conclude with `(GlobalTheory.DefiniteOps.exists_lift (R.HV i t) _ _ (hM.HV i t) (opOf (GlobalTheory.DefiniteOps.rtr (fin (Vc D i)) (R.cV i).W) w a) fun Φ hΦ => GlobalTheory.DefiniteOps.hkF_eq (Vc D i) w a Φ ▸ hkF_mem a h3 hΦ).imp fun s hs _ x => (hs x).trans (GlobalTheory.DefiniteOps.hkF_eq _ _ …`. Use `choose h hh using key`. Conclude with `⟨h, fun w hw c x => hh w c hw x⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_opsV (hL : R.toLevCh.Is A.μ0) (hM : R.IsModels) (i : Fin D.R.m) (t : T) : ∃ h, IsOpsV R i t h := by
   have key : ∀ w a, ∃ s : Module.End ℂ (R.HV i t).H, Good R t w → ∀ x, (R.HV i t).e (s x) = hkF (Vc D i) w a ((R.HV i t).e x) := by

@@ -18,11 +18,9 @@ open Formalism.L2.G.Pend
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (j : ℕ)
 
 /- English proof (translation)
-Unfold `linP`. Use `MvPolynomial.IsWeightedHomogeneous.sum _ _ _ fun y _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Distinguish the cases in `h : A x y = 0`. Rewrite using `[h, map_zero, map_zero, zero_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `MvPolynomial.isWeightedHomogeneous_zero _ _ _`. Establish `h2 : wB X j v s x = wB X j v s y`. Unfold `wB`. Rewrite using `[hA x y h]`. Rewrite using `[h2]`.
-
-Conclude with `(MvPolynomial.isWeightedHomogeneous_X _ _ y).C_mul _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_linearForm_of_blockDiagonal (A : X.ZA j → X.ZA j → Kc) (hA : BlockDiag X Kc j A) (v : X.Pl) (s : Fin (X.G.P.n' v)) (x : X.ZA j) :
     MvPolynomial.IsWeightedHomogeneous (wB X j v s)
@@ -40,7 +38,7 @@ theorem isWeightedHomogeneous_linearForm_of_blockDiagonal (A : X.ZA j → X.ZA j
     exact (MvPolynomial.isWeightedHomogeneous_X _ _ y).C_mul _
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.aeval_monomial, map_one, one_mul, Finsupp.weight_apply]`. Conclude with `MvPolynomial.IsWeightedHomogeneous.prod _ _ _ fun x _ => (isWeightedHomogeneous_linearForm_of_blockDiagonal X Kc j A hA v s x).pow _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mono_wh_A (A : X.ZA j → X.ZA j → Kc) (hA : BlockDiag X Kc j A) (v : X.Pl) (s : Fin (X.G.P.n' v)) (m : X.ZA j →₀ ℕ) :
     MvPolynomial.IsWeightedHomogeneous (wB X j v s)
@@ -50,9 +48,9 @@ theorem mono_wh_A (A : X.ZA j → X.ZA j → Kc) (hA : BlockDiag X Kc j A) (v : 
   exact MvPolynomial.IsWeightedHomogeneous.prod _ _ _ fun x _ => (isWeightedHomogeneous_linearForm_of_blockDiagonal X Kc j A hA v s x).pow _
 
 /- English proof (translation)
-Establish `key : ∀ (v : X.Pl) (s : Fin (X.G.P.n' v)), ∑ a, ∑ b, n ⟨v, (s, a, b)⟩ = ∑ a, ∑ b, m ⟨v, (s, a, b)⟩`. Introduce `v s`. Rewrite using `[← wt_eq, ← wt_eq]`. Assume the negation of the conclusion as `hne`. Conclude with `h ((mono_wh_A X Kc j A hA v s m).coeff_eq_zero n hne)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions.
 
-Unfold `GoodDeg`. Simplify using `only [key]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hGd_A (A : X.ZA j → X.ZA j → Kc) (hA : BlockDiag X Kc j A) (m n : X.ZA j →₀ ℕ)
     (h : MvPolynomial.coeff n (MvPolynomial.aeval (linP fun x y => algebraMap Kc (XspC (X.Pj (j + 1)) Kc) (A x y))
@@ -68,7 +66,7 @@ theorem hGd_A (A : X.ZA j → X.ZA j → Kc) (hA : BlockDiag X Kc j A) (m n : X.
 end ChainPf
 
 /- English proof (translation)
-Introduce `p _ X Kc _ _ j A hA P f`. Conclude with `Formalism.L2.G.Pend.pr_sub A (Formalism.L2.G.Pend.GoodDeg X j) (hGd_A X Kc j A hA) P f`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chain_linear : ChainLin := by
   intro p _ X Kc _ _ j A hA P f
@@ -76,7 +74,7 @@ theorem chain_linear : ChainLin := by
   exact Formalism.L2.G.Pend.pr_sub A (Formalism.L2.G.Pend.GoodDeg X j) (hGd_A X Kc j A hA) P f
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero fun x => by rw [map_sum] exact Finset.sum_eq_zero fun y _ => by rw [map_mul, MvPowerSeries.constantCoeff_X, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_lin {ι R : Type} [Fintype ι] [CommRing R] (B : ι → ι → R) :
     MvPowerSeries.HasSubst (fun x : ι => ∑ y, MvPowerSeries.C (B x y) * MvPowerSeries.X y) :=
@@ -85,7 +83,7 @@ theorem hasSubst_lin {ι R : Type} [Fintype ι] [CommRing R] (B : ι → ι → 
     exact Finset.sum_eq_zero fun y _ => by rw [map_mul, MvPowerSeries.constantCoeff_X, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coe_substAlgHom ha, map_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom ha, MvPowerSeries.subst_mul ha, MvPowerSeries.subst_C, MvPowerSeries.subst_X ha]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_lin {σ τ R : Type} [Fintype σ] [CommRing R] {a : σ → MvPowerSeries τ R} (ha : MvPowerSeries.HasSubst a)
     (c : σ → R) :
@@ -96,11 +94,11 @@ theorem subst_lin {σ τ R : Type} [Fintype σ] [CommRing R] {a : σ → MvPower
   rw [MvPowerSeries.coe_substAlgHom ha, MvPowerSeries.subst_mul ha, MvPowerSeries.subst_C, MvPowerSeries.subst_X ha]
 
 /- English proof (translation)
-Introduce `κ ι R _ _ _ e he B g`. Establish `hr : MvPowerSeries.HasSubst (Formalism.L2.KerInert.Loc.resFam (R` using `R) e) := Formalism.L2.KerInert.Loc.hasSubst_resFam e`. Establish `hB` using `hasSubst_lin B`. Establish `hBe` using `hasSubst_lin (fun x y => B (e x) (e y))`. Unfold `linSub`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Formalism.L2.KerInert.Loc.resV_eq_subst he.1, Formalism.L2.KerInert.Loc.resV_eq_subst he.1, MvPowerSeries.subst_comp_subst_apply hB hr, MvPowerSeries.subst_comp_subst_apply hr hBe]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Take `⟨k, rfl⟩` from `he.2 i`. Rewrite using `[subst_lin hr, Formalism.L2.KerInert.Loc.resFam_apply he.1, MvPowerSeries.subst_X hBe]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Equiv.sum_comp (Equiv.ofBijective e he)]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.ofBijective_apply]`. Rewrite using `[Formalism.L2.KerInert.Loc.resFam_apply he.1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rename_linear : RenameLin := by
   intro κ ι R _ _ _ e he B g
@@ -127,11 +125,11 @@ open Formalism.L2.G.Pend
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (j : ℕ)
 
 /- English proof (translation)
-Establish `h : (trSub X Kc j V).comp (trSub X Kc j U) = trSub X Kc j (fun z y => ∑ x, V z x * U x y)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `y`. Rewrite using `[AlgHom.comp_apply]`. Unfold `trSub`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[MvPolynomial.aeval_X, MvPolynomial.aeval_X]`. Unfold `linT`. Simplify using `only [map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.aeval_X, MvPolynomial.algebraMap_eq, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun z _ => Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trSub_mul (U V : X.ZA j → X.ZA j → Kc) (P : DA X Kc j) :
     trSub X Kc j V (trSub X Kc j U P) = trSub X Kc j (fun z y => ∑ x, V z x * U x y) P := by
@@ -151,7 +149,7 @@ theorem trSub_mul (U V : X.ZA j → X.ZA j → Kc) (P : DA X Kc j) :
   rfl
 
 /- English proof (translation)
-Introduce `z y h`. Take `⟨x, _, hx⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Rewrite using `[hU x y (right_ne_zero_of_mul hx), hV z x (left_ne_zero_of_mul hx)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockDiag_mul {U V : X.ZA j → X.ZA j → Kc} (hV : BlockDiag X Kc j V) (hU : BlockDiag X Kc j U) :
     BlockDiag X Kc j (fun z y => ∑ x, V z x * U x y) := by
@@ -160,7 +158,7 @@ theorem blockDiag_mul {U V : X.ZA j → X.ZA j → Kc} (hV : BlockDiag X Kc j V)
   rw [hU x y (right_ne_zero_of_mul hx), hV z x (left_ne_zero_of_mul hx)]
 
 /- English proof (translation)
-Rewrite using `[pairD_eq X Kc j P' f (P.support ∪ P'.support) Finset.subset_union_right, pairD_eq X Kc j P f (P.support ∪ P'.support) Finset.subset_union_left, map_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[h n, LinearMap.map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairD_lin (τ : XspC (X.Pj (j + 1)) Kc →ₗ[Kc] XspC (X.Pj (j + 1)) Kc) (P P' : DA X Kc j)
     (h : ∀ n, MvPolynomial.coeff n P' = τ (MvPolynomial.coeff n P)) (f : MvPowerSeries (X.ZA j) Kc) :
@@ -172,20 +170,20 @@ theorem pairD_lin (τ : XspC (X.Pj (j + 1)) Kc →ₗ[Kc] XspC (X.Pj (j + 1)) Kc
   rw [h n, LinearMap.map_smul]
 
 /- English proof (translation)
-Apply the tactic sequence `cases j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glAt_glInv (B : ∀ v : X.Pl, GL (Fin ((X.Fl.Pj j).m + 1)) (X.G.P.Qq v)) : glAt X j (glInv X j B) = B := by
   cases j <;> rfl
 
 /- English proof (translation)
-Introduce `x y h` and use `LkB_ne X Kc j B x y h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blockDiag_LkB [Algebra (Formalism.L2.G.Pend.K0 p) Kc] (B : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) :
     BlockDiag X Kc j (LkB X Kc j B) :=
   fun x y h => LkB_ne X Kc j B x y h
 
 /- English proof (translation)
-Unfold `linSub SA`. Use `congr 1`. Use function extensionality and compare the values at `z`. Conclude with `linS_LkB X Kc j B z`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem linSub_LkB [Algebra (Formalism.L2.G.Pend.K0 p) Kc] (B : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) (f : MvPowerSeries (X.ZA j) Kc) :
     linSub (LkB X Kc j B) f = SA X Kc j B f := by
@@ -195,7 +193,7 @@ theorem linSub_LkB [Algebra (Formalism.L2.G.Pend.K0 p) Kc] (B : ∀ v : X.Pl, GL
   exact linS_LkB X Kc j B z
 
 /- English proof (translation)
-Introduce `x y h`. Unfold `VOf at h`. Assume the negation of the conclusion as `hne`. Conclude with `h (if_neg fun hh => hne hh.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem blockDiag_VOf [Algebra (Formalism.L2.G.Pend.K0 p) Kc] {D : D7} (fd : Formalism.L2.PairingIndexBounds.F.FData X D) (c : Kc) (La' : X.Lt (j + 1)) :
     BlockDiag X Kc j (VOf Kc fd c j La') := by
@@ -205,7 +203,7 @@ theorem blockDiag_VOf [Algebra (Formalism.L2.G.Pend.K0 p) Kc] {D : D7} (fd : For
   exact h (if_neg fun hh => hne hh.1)
 
 /- English proof (translation)
-Rewrite using `[chain_linear p X Kc j _ (blockDiag_mul X Kc j hV (blockDiag_LkB X Kc j _)), ← trSub_mul, ← chain_linear p X Kc j V hV, ← chain_linear p X Kc j _ (blockDiag_LkB X Kc j _), linSub_LkB, ← delF_apply, (delEquivH X Kc j A Gm _ hG hO).2, delF_apply, chain_linear p X Kc j V hV, pairD_l …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chain_core [Algebra (Formalism.L2.G.Pend.K0 p) Kc] (V : X.ZA j → X.ZA j → Kc) (hV : BlockDiag X Kc j V)
     (A : ∀ v : Fin (X.Pj j).nV, GL (Fin ((X.Pj j).m + 1)) ((X.Pj j).Qq v))
@@ -223,7 +221,7 @@ theorem chain_core [Algebra (Formalism.L2.G.Pend.K0 p) Kc] (V : X.ZA j → X.ZA 
 end Alg
 
 /- English proof (translation)
-Use `⟨Formalism.L2.G.Pend.kapOf_injective X pos j, fun t => ?_⟩` and prove the remaining obligations. Take `⟨τ, b, a⟩` from `t`. Use `⟨⟨(pos.symm τ).1, ((pos.symm τ).2, Fin.cast (Formalism.L2.G.Pend.rank_eq X j) a, Fin.cast (Formalism.L2.G.Pend.rank_eq X (j + 1)) b)⟩, ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.L2.G.Pend.kapOf]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem kapOf_bij {p : ℕ} [Fact p.Prime] (X : Sys p) {T : Type} (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ T) (j : ℕ) :
     Function.Bijective (Formalism.L2.G.Pend.kapOf X pos j) := by
@@ -234,7 +232,7 @@ theorem kapOf_bij {p : ℕ} [Fact p.Prime] (X : Sys p) {T : Type} (pos : (Σ v :
   simp [Formalism.L2.G.Pend.kapOf]
 
 /- English proof (translation)
-Unfold `frGL`. Rewrite using `[dif_pos (hFr j La v)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frGL_val {p : ℕ} [Fact p.Prime] {X : Sys p} {D : D7} (fd : Formalism.L2.PairingIndexBounds.F.FData X D) (hFr : FrInv fd) (j : ℕ)
     (La : X.Lt j) (v : X.Pl) : ((frGL fd j La v : GL _ _) : Matrix _ _ _) = fd.frM j La v := by
@@ -243,7 +241,7 @@ theorem frGL_val {p : ℕ} [Fact p.Prime] {X : Sys p} {D : D7} (fd : Formalism.L
   rfl
 
 /- English proof (translation)
-Unfold `Formalism.L2.PairingIndexBounds.F.subBG`. Rewrite using `[if_pos rfl]`. Simplify using `only`. Generalize the expression as in `hw' : pos.symm (pos w) = w'`. Take `rfl : w' = w` from `by rw [← hw']; exact pos.symm_apply_apply w`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
 Both sides reduce to the same expression.
 -/
@@ -266,31 +264,29 @@ theorem subBG_diag {p : ℕ} [Fact p.Prime] {X : Sys p} {D : D7} (E : Formalism.
   rfl
 
 /- English proof (translation)
-Introduce `p _ X D E pos fd c hFr j La La' x y`. Set `_` to `Formalism.L2.G.Pend.wittFractionAlgebraCp p`. Set `_` to `Formalism.L2.G.Pend.algKfC E`. Take `⟨v, s, a, b⟩` from `x`. Take `⟨v', s', a', b'⟩` from `y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : (⟨v', s'⟩ : Σ v : X.Pl, Fin (X.G.P.n' v)) = ⟨v, s⟩`. Consider the cases of `h`. Rewrite using `[Finset.sum_eq_single (⟨v, (s, a, b')⟩ : X.ZA j)]`. Establish `hL : Formalism.L2.G.Pend.LkB X ℂ_[p] j (BOf fd j La) ⟨v, (s, a, b')⟩ ⟨v, (s, a', b')⟩ = Formalism.L2.G.Pend.cf X ℂ_[p] j (BOf fd j La) v s a a'`. Unfold `Formalism.L2.G.Pend.LkB`.
+Consider separately whether the proposition holds or fails. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.sum_eq_single a']`. Rewrite using `[if_pos rfl]`. Introduce `a'' _ hne`. Rewrite using `[if_neg]`. Introduce `hh`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hne (congrArg (fun z : X.ZA j => z.2.2.1) hh).symm`. Introduce `hh`. Conclude with `absurd (Finset.mem_univ _) hh`. Rewrite using `[hL]`. Establish `htw : Formalism.L2.PairingIndexBounds.F.twG X E v s = Formalism.L2.G.Pend.tw X ℂ_[p] v s` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hB : ((BOf fd j La v : GL _ _) : Matrix _ _ _) = (fd.frM j La v)⁻¹`. Unfold `BOf`. Rewrite using `[Matrix.coe_units_inv, frGL_val fd hFr]`. Establish `hBi : (((BOf fd j La v)⁻¹ : GL _ _) : Matrix _ _ _) = fd.frM j La v`. Unfold `BOf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_inv, frGL_val fd hFr]`. Rewrite using `[show Formalism.L2.G.Pend.kapOf X pos j ⟨v, (s, a, b)⟩ = (pos ⟨v, s⟩, Fin.cast (Formalism.L2.G.Pend.rank_eq X (j + 1)).symm b, Fin.cast (Formalism.L2.G.Pend.rank_eq X j).symm a) from rfl, show Formalism.L2.G.Pend.kapOf X pos j ⟨v, (s, a', b')⟩ = (pos ⟨v, s⟩, Fin.cast (Formalism.L …`. Distinguish the cases in `hs : IsOddPos s`. Simplify using `only [VOf, Formalism.L2.G.Pend.cf, hs, and_self, ↓reduceIte, htw, hBi, Formalism.L2.G.Pend.mAt, Matrix.submatrix_apply, Matrix.map_apply, finCongr_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [VOf, Formalism.L2.G.Pend.cf, hs, and_self, ↓reduceIte, htw, hB, Formalism.L2.G.Pend.mAt, Matrix.transpose_apply, Matrix.submatrix_apply, Matrix.map_apply, finCongr_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨vz, sz, az, bz⟩ _ hz`. Assume the negation of the conclusion as `hne`. Establish `hV` using `left_ne_zero_of_mul hne`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLk` using `right_ne_zero_of_mul hne`. Establish `hcond : (⟨vz, sz⟩ : Σ v : X.Pl, Fin (X.G.P.n' v)) = ⟨v, s⟩ ∧ az = a`. Assume the negation of the conclusion as `hc`. Apply `hV` to reduce the goal to its premises. Unfold `VOf`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Conclude with `if_neg hc`. Take `⟨h1, h2⟩` from `hcond`. Unfold `Formalism.L2.G.Pend.LkB at hLk`. Take `⟨a'', _, ha''⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hLk`. Establish `hy : (⟨v, (s, a', b')⟩ : X.ZA j) = ⟨vz, (sz, a'', bz)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Split into cases according to the possible forms of the given data.
 
-Assume the negation of the conclusion as `hc`. Apply `ha''` to reduce the goal to its premises. Conclude with `if_neg hc`. Consider the cases of `h1`. Establish `hb : b' = bz` using `congrArg (fun z : X.ZA j => z.2.2.2) hy`.
+Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hb` using the available equality. Conclude with `hz (by rw [show az = a from h2])`. Introduce `hh`. Conclude with `absurd (Finset.mem_univ _) hh`. Establish `hne : (Formalism.L2.G.Pend.kapOf X pos j ⟨v, (s, a, b)⟩).1 ≠ (Formalism.L2.G.Pend.kapOf X pos j ⟨v', (s', a', b')⟩).1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `hh`. Conclude with `h (pos.injective hh).symm`. Unfold `Formalism.L2.PairingIndexBounds.F.subBG`. Rewrite using `[if_neg hne, mul_zero]`. Use `symm`.
-
-Use `Finset.sum_eq_zero fun z _ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hz`. Establish `h1` using `blockDiag_VOf X ℂ_[p] j fd c La' _ z (left_ne_zero_of_mul hz)`. Establish `h2` using `blockDiag_LkB X ℂ_[p] j (BOf fd j La) z _ (right_ne_zero_of_mul hz)`. Conclude with `h (h2.trans h1)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem substitution_split : SubBSplit := by
   intro p _ X D E pos fd c hFr j La La' x y
@@ -367,15 +363,13 @@ theorem substitution_split : SubBSplit := by
     exact h (h2.trans h1)
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc0 Dx cX ex t u μ p _ X _ E hfin hst g hLT pos fd cc δ B χ lamK SS cl Ξ₀ muT`. Introduce `hFr hS hK Y σ cls cmp κ ι Φ₀ τ sc sH Gm j cK hN hMv hOp hDeg hSer hChi hYEq`. Introduce `La hLa x Q hQ c' L' hL'`. Establish `hTh : Y.ThF j La (c', L') = Formalism.L2.G.Pend.thFOf X pos (Formalism.L2.PairingIndexBounds.F.FrecG E.toCEmb pos fd B χ lamK SS cl Ξ₀ muT (Formalism.L2.PairingIndexBounds.F.ltC g hLT)) j La (c', L')` using `Formalism.L2.G.Pend.pendR_ThF_rep X E.toCEmb hfin hst _ _ hS hK j La (c', L') hLa`. Establish `hsr : srOf Y j La (c', L') = (Y.eS j La * (Y.eT j (c', L'))⁻¹ : X.G.Kf) • linSub (fun z y => ∑ w, VOf Y.Kc fd (Formalism.L2.PairingIndexBounds.F.ltC g hLT) j (c', L') z w * Formalism.L2.G.Pend.LkB X Y.Kc j (BOf fd j La) w y) (resV (Formalism.L2.G.Pend.kapOf X pos j) (serG fd B χ …`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `srOf`. Rewrite using `[hTh]`. Use `congr 1`. Use `show resV (Formalism.L2.G.Pend.kapOf X pos j) (linSub (fun x y => Formalism.L2.PairingIndexBounds.F.ltC g hLT * Formalism.L2.PairingIndexBounds.F.subBG E.toCEmb pos fd j La (c', L') x y) (serG fd B χ lamK SS cl Ξ₀ muT j La (c', L'))) = _`. Rewrite using `[rename_linear _ _ _ _ (kapOf_bij X pos j)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `z y`. Conclude with `hSp p X D E.toCEmb pos fd _ hFr j La (c', L') z y`. Take `⟨hMe, hG, hO⟩` from `hMv La hLa x`. Use `beta_reduce at hMe`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `chain_core X Y.Kc j (VOf Y.Kc fd (Formalism.L2.PairingIndexBounds.F.ltC g hLT) j (c', L')) (blockDiag_VOf X Y.Kc j fd _ (c', L')) (glInv X j (BOf fd j La)) (Gm j La x) hG hO (τ j c' L') (hYEq c' L' hL' (Gm j La x) hG hO) (resV (Formalism.L2.G.Pend.kapOf X pos j) (serG fd B χ lamK …`. Rewrite `hc` using `[glAt_glInv]`. Establish `hPD` using `pairing_dictionary p X Y.Kc j D (D.R.N j) (D.R.N (j + 1)) ι (eIdx X D pos j hN) (eIdx_injective X D pos j hN) (Φ₀ j) (polDY D (t.O u μ).dgen (Q (cls j La.1 La.2)) (N' := D.R.N (j + 1))) ((t.rd u μ).Th t.seam t.amb j (cls j La.1 La.2) (κ j c' L')) (resV (Formalism.L2.G.Pend.kapOf …`. Use `show sc j c' L' • τ j c' L' (Φ₀ j (_ • pairR D (polDY D (t.O u μ).dgen (Q (cls j La.1 La.2)) (N' := D.R.N (j + 1))) ((t.rd u μ).Th t.seam t.amb j (cls j La.1 La.2) (κ j c' L')))) = cK • Formalism.L2.G.Pend.pairD X Y.Kc j (Formalism.L2.G.Pend.polDel X Y.Kc j (cmp j x La.1 La.2)) ( …`. Rewrite using `[hsr, Formalism.L2.G.Pend.pairD_smul_right, ← hMe, hc, hOp La hLa x Q hQ, hPD, LinearMap.map_smulₛₗ, map_smul, map_smul, ← algebraMap_smul Y.Kc (Y.eS j La * (Y.eT j (c', L'))⁻¹), smul_smul, smul_smul, smul_smul, smul_smul]`.
-
-Use `congr 1`. Rewrite using `[← hChi La hLa c' L' hL']`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delPolH_of (hSp : SubBSplit) : DelPolH := by
   intro D L hT Gi Gl Kc0 Dx cX ex t u μ p _ X _ E hfin hst g hLT pos fd cc δ B χ lamK SS cl Ξ₀ muT
@@ -417,7 +411,7 @@ theorem delPolH_of (hSp : SubBSplit) : DelPolH := by
   rw [← hChi La hLa c' L' hL']
 
 /- English proof (translation)
-The claim follows from `delPolH_of substitution_split`.
+A detailed English derivation is pending.
 -/
 theorem difference_polynomial_hecke : DelPolH := delPolH_of substitution_split
 

@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.FEquiProof
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Take `⟨⟨z, hz⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `congrArg (Submodule.Quotient.mk (p := ((cx F₃).B j).submoduleOf ((cx F₃).Z j))) (Subtype.ext (h z))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pull_pull_of_pullC {R₀ R₁ R₂ R₃ : Type} [CommRing R₀] [CommRing R₁] [CommRing R₂] [CommRing R₃]
     {C₀ C₁ C₂ C₃ : Type 1} [Category.{0} C₀] [Category.{0} C₁] [Category.{0} C₂] [Category.{0} C₃]
@@ -28,7 +28,7 @@ theorem pull_pull_of_pullC {R₀ R₁ R₂ R₃ : Type} [CommRing R₀] [CommRin
   exact congrArg (Submodule.Quotient.mk (p := ((cx F₃).B j).submoduleOf ((cx F₃).Z j))) (Subtype.ext (h z))
 
 /- English proof (translation)
-Rewrite using `[twUg_algebraMap]`. Use `congrArg (algebraMap A.U A.Ug) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `PAlg.twU σ A ((PAlg.tw σ A).th (WittVector.teichmuller l e)) = A.th (WittVector.teichmuller l (PAlg.twId σ A e))`. Rewrite using `[PAlg.twU_th, WittVector.map_teichmuller]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem twUg_sharp (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) (e : (PAlg.tw σ A).A) :
     twUg σ A (algebraMap (PAlg.tw σ A).U (PAlg.tw σ A).Ug ((PAlg.tw σ A).sharp e)) =
@@ -39,7 +39,7 @@ theorem twUg_sharp (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) (e : (PAlg.tw σ A).A
   rw [PAlg.twU_th, WittVector.map_teichmuller]
 
 /- English proof (translation)
-The claim follows from `(hN l H _ (hA.tw σ) n).1 A hA (PAlg.twId σ A) (PAlg.pdOk_twId σ A) (twUg σ A) (fun e _ => twUg_sharp σ A e) f`.
+A detailed English derivation is pending.
 -/
 theorem twAcr_lcA (hN : LcNat) (H : RIn l) (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) (hA : A.IsTest) (n : ℕ)
     (f : LocallyConstant (SU (PAlg.tw σ A)) (ZMod (l ^ n))) :
@@ -48,7 +48,7 @@ theorem twAcr_lcA (hN : LcNat) (H : RIn l) (σ : Gal(PadicAlgCl l/K)) (A : PAlg 
   (hN l H _ (hA.tw σ) n).1 A hA (PAlg.twId σ A) (PAlg.pdOk_twId σ A) (twUg σ A) (fun e _ => twUg_sharp σ A e) f
 
 /- English proof (translation)
-Use extensionality with `v`. Establish `e' : b (a v) = d (c v)`. Rewrite using `[← Scheme.Hom.comp_apply, e, Scheme.Hom.comp_apply]`. Conclude with `congrArg x e'`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lcRes_sq {q : ℕ} {A B C D : Scheme.{0}} {a : A ⟶ B} {b : B ⟶ D} {c : A ⟶ C} {d : C ⟶ D} (e : a ≫ b = c ≫ d)
     (x : LocallyConstant D (ZMod q)) : lcRes q a (lcRes q b x) = lcRes q c (lcRes q d x) := by
@@ -68,7 +68,7 @@ def gM (H : RIn l) (r : Roots l) (M : Model l K) (σ : Gal(PadicAlgCl l/K)) (n :
   Spec.map (CommRingCat.ofHom (twUg σ c.1.obj))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (twUg σ c'.1.obj)) ≫ Spec.map (CommRingCat.ofHom (PAlg.mapUg (PAlg.twMap σ φ.1.hom))) = Spec.map (CommRingCat.ofHom (PAlg.mapUg φ.1.hom)) ≫ Spec.map (CommRingCat.ofHom (twUg σ c.1.obj))`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Conclude with `congrArg (fun f => Spec.map (CommRingCat.ofHom f)) ((hT l K σ).1 _ _ φ.1.hom)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gM_sq (hT : TwUg) (H : RIn l) (r : Roots l) (M : Model l K) (σ : Gal(PadicAlgCl l/K)) (n : ℕ) {c c' : El M.P}
     (φ : c ⟶ c') : gM H r M σ n c' ≫ ((pM H r M n).S.map ((tM M σ).map φ)).unop =
@@ -97,7 +97,7 @@ abbrev gaM (M : Model l K) (σ : Gal(PadicAlgCl l/K)) (n : ℕ) : Mor (modF (Acr
   galMor σ (pxTw M.p (okToOC l K) σ (galOC_okToOC σ)) n
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Establish `hA` using `(s.obj (Fin.last j)).1.property`. Set `f : LocallyConstant (SU (PAlg.tw σ (s.obj (Fin.last j)).1.obj)) (ZMod (l ^ n))` to `z (s ⋙ tM M σ)`. Conclude with `(twAcr_lcA hN H σ (s.obj (Fin.last j)).1.obj hA n f).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem lM_pullC_twMor (hT : TwUg) (hN : LcNat) (H : RIn l) (r : Roots l) (M : Model l K) (σ : Gal(PadicAlgCl l/K)) (n j : ℕ)
     (z : Cn (pM H r M n).L j) :
@@ -108,7 +108,7 @@ theorem lM_pullC_twMor (hT : TwUg) (hN : LcNat) (H : RIn l) (r : Roots l) (M : M
   exact (twAcr_lcA hN H σ (s.obj (Fin.last j)).1.obj hA n f).symm
 
 /- English proof (translation)
-The claim follows from `pull_pull_of_pullC (twMor hT H r M σ n) (lM hN H r M n) (lM hN H r M n) (gaM M σ n) j (lM_pullC_twMor hT hN H r M σ n j) x`.
+A detailed English derivation is pending.
 -/
 theorem lM_pull_twMor (hT : TwUg) (hN : LcNat) (H : RIn l) (r : Roots l) (M : Model l K) (σ : Gal(PadicAlgCl l/K)) (n j : ℕ)
     (x : CH.H (pM H r M n).L j) :
@@ -117,7 +117,7 @@ theorem lM_pull_twMor (hT : TwUg) (hN : LcNat) (H : RIn l) (r : Roots l) (M : Mo
     (lM_pullC_twMor hT hN H r M σ n j) x
 
 /- English proof (translation)
-The claim follows from `hE E.gen (l ^ n) (El M.P) (El M.P) (pM H r M n) (pM H r M n) (gb M) (gb M) (pts H r M (𝟭 _) n) (pts H r M (𝟭 _) n) (GlobalTheory.Et.galMap (PadicAlgCl l) M.q σ) (twMor hT H r M σ n) (gM H r M σ n) (fun φ => gM_sq hT H r M σ n φ) (fun c f => rfl) (fun c => (hT l K σ).2.2 M c.1.obj …`.
+A detailed English derivation is pending.
 -/
 theorem key (hE : CrystallineSemistableComparison.E.EtNat) (hT : CrystallineSemistableComparison.E.TwUg) (E : EtIn) (H : RIn l) (r : Roots l) (M : Model l K) (σ : Gal(PadicAlgCl l/K)) (n j : ℕ)
     (x : Ht (l ^ n) (sch.obj (gb M)) j 0) :
@@ -141,7 +141,7 @@ theorem galMH_apply (M : Model l K) (σ : Gal(PadicAlgCl l/K)) (n j : ℕ) (y : 
     M.galMH σ n j y = (gaM M σ n).pull j y := rfl
 
 /- English proof (translation)
-The claim follows from `(eM_apply hN H r M n j _).trans ((congrArg ((lM hN H r M n).pull j) (key hE hT E H r M σ n j x).symm).trans ((lM_pull_twMor hT hN H r M σ n j _).trans ((congrArg ((gaM M σ n).pull j) (eM_apply hN H r M n j x).symm).trans (galMH_apply M σ n j _).symm)))`.
+A detailed English derivation is pending.
 -/
 theorem equi_at (hE : CrystallineSemistableComparison.E.EtNat) (hT : CrystallineSemistableComparison.E.TwUg) (E : EtIn) (hN : LcNat) (H : RIn l) (r : Roots l) (M : Model l K)
     (σ : Gal(PadicAlgCl l/K)) (n j : ℕ) (x : Ht (l ^ n) (sch.obj (gb M)) j 0) :
@@ -151,7 +151,7 @@ theorem equi_at (hE : CrystallineSemistableComparison.E.EtNat) (hT : Crystalline
       (galMH_apply M σ n j _).symm)))
 
 /- English proof (translation)
-Introduce `hE hT E hN l _ H r K M n j σ x` and use `equi_at hE hT E hN H r M σ n j x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fEqui : CrystallineSemistableComparison.E.EtNat → CrystallineSemistableComparison.E.TwUg → CrystallineSemistableComparison.E.FEqui :=
   fun hE hT E hN l _ H r K M n j σ x => equi_at hE hT E hN H r M σ n j x

@@ -3,17 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open UpperTheory.V.FW
 
 /- English proof (translation)
-Introduce `k A _ _ a x ha h`. Establish `hx : AddMonoidAlgebra.single a (1:k) * x = x`. Rewrite `h` using `[sub_mul, one_mul, sub_eq_zero]`. Conclude with `h.symm`. Establish `step : ∀ c, x.coeff (c + a) = x.coeff c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Use `conv_lhs => rw [← hx]`. Rewrite using `[AddMonoidAlgebra.coeff_single_mul_apply, one_mul, add_comm c a, neg_add_cancel_left]`. Establish `key : ∀ b (n : ℕ), x.coeff (b + n • a) = x.coeff b`. Introduce `b n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [succ_nsmul, ← add_assoc, step, ih]`. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b, x.coeff b ≠ 0 := by`.
+Treat this case separately. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hne (AddMonoidAlgebra.ext (Finsupp.ext fun c => by simp [hc c]))`. Establish `hinj : Function.Injective fun n : ℕ => b + n • a`. Introduce `n m hnm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [add_right_inj] at hnm`. Break down `le_total n m with hle | hle` into its components or cases. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite `hnm` using `[add_nsmul, left_eq_add]`. Simplify using `[ha d hnm]`.
-
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite `hnm` using `[add_nsmul, add_eq_left]`. Simplify using `[ha d hnm]`. Conclude with `Set.infinite_of_injective_forall_mem hinj (fun n => show b + n • a ∈ (x.coeff.support : Set A) by simp [key, hb]) x.coeff.support.finite_toSet`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.nzd :
     ∀ (k A : Type) [CommRing k] [AddCommGroup A] (a : A) (x : AddMonoidAlgebra k A), (∀ m : ℕ, m • a = 0 → m = 0) → (1 - AddMonoidAlgebra.single a 1) * x = 0 → x = 0 := by

@@ -15,15 +15,15 @@ namespace ChowFormHeightComparison₂.CF.H
 variable {R : Type} [CommRing R] {Z : Scheme.{0}} {B : LB Z} {m : ℕ} {p : Z ⟶ Sp R} {s : Fin m → B.Sec}
 
 /- English proof (translation)
-Establish `hy0 : y ∈ ptsIn p σ (B.U (pick hB y))` using `mem_pick hB y`. Establish `hz : under y ∈ B.U (pick hB y)` using `mem_ptsIn.mp hy0`. Set `ψ` to `Z.descResidueField (Scheme.stalkClosedPointTo (y : Sp ℂ ⟶ Z))`. Establish `hev : ∀ f : Γ(Z, B.U (pick hB y)), ψ.hom ((Z.evaluation (B.U (pick hB y)) (under y) hz).hom f) = ev p σ (B.U (pick hB y)) f y`. Introduce `f`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv` using `congrArg (fun g => g.hom f) (Points.germ_stalkClosedPointTo_eq_valMap (C := ℂ) (y : Sp ℂ ⟶ Z) (B.U (pick hB y)) hy0)`. Rewrite using `[ev_eq hy0, evHom]`. Use `Eq.trans ?_ hv` and prove the remaining obligations. Both sides reduce to the same expression. Establish `hmem : q ∈ RingHom.ker (coneHom p s (under y) (pick hB y) hz)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h` using `hq`. Simplify using `only [ptIdeal, Submodule.mem_iInf] at h`. Conclude with `h _ hz`. Establish `hΦ : eval₂Hom σ (coords p σ hB s y) = (Polynomial.evalRingHom 1).comp ((Polynomial.mapRingHom ψ.hom).comp (coneHom p s (under y) (pick hB y) hz))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Simplify using `only [coneHom, RingHom.comp_apply, eval₂Hom_C, Polynomial.coe_mapRingHom, Polynomial.map_C, Polynomial.coe_evalRingHom, Polynomial.eval_C]`. Use `erw [hev, ev_algX hy0]`. Introduce `k`. Simplify using `only [coneHom, RingHom.comp_apply, eval₂Hom_X', Polynomial.coe_mapRingHom, Polynomial.map_mul, Polynomial.map_X, Polynomial.map_C, Polynomial.coe_evalRingHom, Polynomial.eval_mul, Polynomial.eval_X, Polynomial.eval_C, one_mul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `erw [hev]`. Both sides reduce to the same expression. Establish `he : eval₂ σ (coords p σ hB s y) q = eval₂Hom σ (coords p σ hB s y) q` using `rfl`. Rewrite using `[he, hΦ, RingHom.comp_apply, RingHom.comp_apply, RingHom.mem_ker.mp hmem, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval₂_coords_eq_zero (hB : B.IsLB) {σ : R →+* ℂ} (y : CxPts p σ) {q : MvPolynomial (Fin m) R}
     (hq : q ∈ ptIdeal p s (under y)) : eval₂ σ (coords p σ hB s y) q = 0 := by
@@ -59,21 +59,19 @@ theorem eval₂_coords_eq_zero (hB : B.IsLB) {σ : R →+* ℂ} (y : CxPts p σ)
   rw [he, hΦ, RingHom.comp_apply, RingHom.comp_apply, RingHom.mem_ker.mp hmem, map_zero, map_zero]
 
 /- English proof (translation)
-Take `⟨hprime, hspec, -, -⟩` from `h1 R Z p B m s hE`. Set `C : Closeds Z` to `⟨(U : Set Z)ᶜ, U.isOpen.isClosed_compl⟩`. Take `⟨S, hirr, hSC⟩` from `NoetherianSpace.exists_finset_irreducible C`. Establish `hg0 : ∀ k : S, ∃ g : Z, IsGenericPoint g (k : Set Z)` using `fun k => QuasiSober.sober (hirr k) k.1.isClosed`. Use `choose g hg using hg0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0 : ∀ k : S, ∃ (d : ℕ) (r : MvPolynomial (Fin m) R), r.IsHomogeneous d ∧ r ∈ ptIdeal p s (g k) ∧ r ∉ ptIdeal p s (genericPoint Z)`. Introduce `k`. Establish `hk : (k : Set Z) ⊆ (U : Set Z)ᶜ`. Introduce `z hz`. Establish `h' : z ∈ (C : Set Z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hSC]`. Conclude with `(Finset.le_sup (f := id) k.2) hz`. Conclude with `h'`. Establish `hnot : ¬ ptIdeal p s (g k) ≤ ptIdeal p s (genericPoint Z)`. Introduce `hle`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : genericPoint Z ∈ closure ({g k} : Set Z)` using `specializes_iff_mem_closure.mp ((hspec _ _).mpr hle)`. Establish `hcl : closure ({g k} : Set Z) = (k : Set Z)` using `hg k`. Rewrite `hm` using `[hcl]`. Conclude with `hk hm hU`. Take `⟨f, hf, hfn⟩` from `Set.not_subset.mp hnot`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hex : ∃ d, homogeneousComponent d f ∉ ptIdeal p s (genericPoint Z)`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hfn` to reduce the goal to its premises. Rewrite using `[← MvPolynomial.sum_homogeneousComponent f]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.sum_mem _ fun d _ => hcon d`. Take `⟨d, hd⟩` from `hex`. Conclude with `⟨d, _, homogeneousComponent_isHomogeneous d f, (hprime (g k)).isHomog f hf d, hd⟩`. Use `choose d r hr using hr0`. Use `⟨∑ k, d k, ∏ k, r k, IsHomogeneous.prod _ _ _ fun k _ => (hr k).1, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `hmem`. Take `⟨k, -, hk⟩` from `((hprime _).isPrime.prod_mem_iff).mp hmem`. Conclude with `(hr k).2.2 hk`. Introduce `z hz`. Establish `hzC : z ∈ (C : Set Z)` using `hz`.
-
-Rewrite `hzC` using `[hSC, Closeds.coe_finset_sup, Finset.sup_set_eq_biUnion]`. Simplify using `only [Set.mem_iUnion] at hzC`. Take `⟨k, hkS, hzk⟩` from `hzC`. Establish `hle` using `(hspec (g ⟨k, hkS⟩) z).mp ((hg ⟨k, hkS⟩).specializes hzk)`. Conclude with `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem _ (Finset.mem_univ _)) (hle (hr ⟨k, hkS⟩).2.1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_form (h1 : StPts) [IsIntegral Z] [NoetherianSpace Z] (hE : Emb p s) (U : Z.Opens)
     (hU : genericPoint Z ∈ U) : ∃ (n : ℕ) (q : MvPolynomial (Fin m) R), q.IsHomogeneous n ∧
@@ -125,9 +123,9 @@ end ChowFormHeightComparison₂.CF.H
 open ChowFormHeightComparison₂.CF.H in
 
 /- English proof (translation)
-Introduce `K _ _ Z _ p B m s e hE hX`. Use `hX.isNoetherian` as an intermediate fact. Take `⟨U, x, hU, hg, hx⟩` from `GlobalTheory.GenericEtale.exists_etale_coords hX`. Take `⟨n, q, h₁, h₂, h₃⟩` from `exists_form h1 hE U hg`. Use `⟨n, q, h₁, h₂, fun σ y hy => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy' : y ∈ ptsIn p σ U` using `mem_ptsIn.2 (by_contra fun h => hy (eval₂_coords_eq_zero hE.isLB y (h₃ _ h)))`. Take `⟨c, hc, -⟩` from `AlgChart.exists_of_etale hU x hx hy'`. Conclude with `⟨c, hc⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ChowFormHeightComparison₂.CF.stCharts (h1 : ChowFormHeightComparison₂.CF.StPts) : ChowFormHeightComparison₂.CF.StCharts := by
   intro K _ _ Z _ p B m s e hE hX

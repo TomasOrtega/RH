@@ -14,15 +14,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Compa
   (φ : ∀ i, H i →* G) (hφ : ∀ i, Continuous (φ i)) (A : Type) [AddCommGroup A]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `cohomologyπ_surjective (divFunRep φ A) n x`. Use `set c := cochainOf (divFunRep φ A) (cocycleι (divFunRep φ A) n z) with hc`. Establish `hfin : (Set.range c).Finite` using `(isLocallyConstant_cochainOf _).range_finite`. Establish `hT : (⋃ f ∈ Set.range c, {i | ((f : divFun φ A) : I → G → A) i ≠ 0}).Finite` using `hfin.biUnion fun f _ => (f : divFun φ A).2.1`. Use `hT.subset fun i hi => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hiT`. Apply `hi` to reduce the goal to its premises. Establish `hz : cocyclesMapAlong (φ i) (hφ i) (divFunEval φ A i) n z = 0`. Apply `cocycleι_injective` to reduce the goal to its premises. Apply `cochainOf_injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong, map_zero]`. Use function extensionality and compare the values at `h`. Rewrite using `[divFunEval_hom_apply]`. Establish `hmem : ((c (⇑(φ i) ∘ h) : divFun φ A) : I → G → A) i = 0`. Assume the negation of the conclusion as `hne`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hiT (Set.mem_biUnion ⟨_, rfl⟩ hne)`. Express the relevant statement in the definitionally equal form `((c (⇑(φ i) ∘ h) : divFun φ A) : I → G → A) i 1 = 0`. Rewrite using `[hmem]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(cohomologyMapAlong (φ i) (hφ i) (divFunEval φ A i) n) (cohomologyπ (divFunRep φ A) n z) = 0`.
-
-Rewrite using `[cohomologyMapAlong_cohomologyπ, hz, map_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_divFunEval_ne_zero (n : ℕ) (x : cohomology (divFunRep φ A) n) :
     {i | (cohomologyMapAlong (φ i) (hφ i) (divFunEval φ A i) n).hom x ≠ 0}.Finite := by

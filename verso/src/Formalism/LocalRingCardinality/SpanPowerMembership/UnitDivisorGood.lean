@@ -18,7 +18,7 @@ abbrev period2 : PeriodMap R0 (chain1 Tau) where
   period := LinearMap.mul ℂ ℂ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `_ _`. Simplify using `[ColumnChain.K, Formalism.ThetaLiftIndependence.kerOpM, ColumnChain.Kmap, ColumnChain.divDe, ColumnChain.sharp, mulFun, chain1_wt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem chain1_K (i : ℕ) (z : ℂ) : (chain1 Tau).K i (fun _ _ => z) = fun _ _ => z := by
   funext _ _
@@ -26,14 +26,14 @@ theorem chain1_K (i : ℕ) (z : ℂ) : (chain1 Tau).K i (fun _ _ => z) = fun _ _
     chain1_wt]
 
 /- English proof (translation)
-Use `show (chain1 Tau).K 1 ((chain1 Tau).K 0 (fun _ _ => z)) = _`. Rewrite using `[chain1_K, chain1_K]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chain1_col (z : ℂ) : (chain1 Tau).col (fun _ _ => z) = fun _ _ => z := by
   show (chain1 Tau).K 1 ((chain1 Tau).K 0 (fun _ _ => z)) = _
   rw [chain1_K, chain1_K]
 
 /- English proof (translation)
-Use `show ((chain1 Tau).col (fun _ _ => z)) () () * F = z * F`. Rewrite using `[chain1_col]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem period2_PtilCol (z F : ℂ) : (period2 Tau).PtilCol (fun _ _ => z) F = z * F := by
   show ((chain1 Tau).col (fun _ _ => z)) () () * F = z * F
@@ -56,25 +56,25 @@ def slL : LL →ₛₗ[embLL] ℂ where
 
 include heo in
 /- English proof (translation)
-Apply the tactic sequence `rcases heo with rfl | rfl <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smul_id_idem : (eo • (LinearMap.id : ℂ →ₗ[ℂ] ℂ)) ∘ₗ (eo • LinearMap.id) = eo • LinearMap.id := by
   rcases heo with rfl | rfl <;> simp
 
 include heo in
 /- English proof (translation)
-Introduce `x y`. Apply the tactic sequence `rcases heo with rfl | rfl <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smul_id_sa : (eo • (LinearMap.id : ℂ →ₗ[ℂ] ℂ)).IsSymmetric := by
   intro x y
   rcases heo with rfl | rfl <;> simp
 
 /- English proof (translation)
-Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex LL LL) = 1`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, Module.finrank_self]`. Take `⟨i0, hi0⟩` from `Fintype.card_eq_one_iff.mp hcard`. Establish `: Subsingleton (Module.Free.ChooseBasisIndex LL LL)` using `⟨fun a b => (hi0 a).trans (hi0 b).symm⟩`. Establish `hne : slL LL embLL (b i0) ≠ 0` using `(map_ne_zero embLL).mpr (b.ne_zero i0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨LinearIndependent.of_subsingleton i0 hne, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `z _`. Establish `hz : z = (z / slL LL embLL (b i0)) • slL LL embLL (b i0)`. Rewrite using `[smul_eq_mul, div_mul_cancel₀ _ hne]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i0, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slL_basis (b : Module.Basis (Module.Free.ChooseBasisIndex LL LL) LL LL) :
     LinearIndependent ℂ (fun i => slL LL embLL (b i)) ∧
@@ -180,7 +180,7 @@ abbrev div2 : DivData K Unit :=
     Dall := 1 }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨oneHLat_good K, fun _ => oneHLat_good K⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitDivisor_good : (div2 K).RR.Good ∧ ∀ u, ((div2 K).Nu u).Good :=
   ⟨oneHLat_good K, fun _ => oneHLat_good K⟩
@@ -227,7 +227,7 @@ def forms2 : MemberForms LL embLL Pl Tau (fun _ => hc0) (chain1 Tau) (baseColumn
   { forms1 Tau T embLL Pl hTau Dst hD with }
 
 /- English proof (translation)
-The claim follows from `forms1_ipC Tau T embLL Pl hTau Dst hD φ ψ`.
+A detailed English derivation is pending.
 -/
 theorem forms2_ipC (φ ψ : FU) :
     (forms2 Tau T embLL Pl hTau Dst hD).ipC 0 φ ψ = starRingEnd ℂ (φ () ()) * ψ () () :=
@@ -237,9 +237,9 @@ end Forms
 
 open Polynomial in
 /- English proof (translation)
-Introduce and unpack `⟨h1, -, -, -, h4, v, q, -, ⟨s, hs'⟩, -, hN, hN3⟩`. Establish `hs : f = q * s` using `hs'`. Establish `hf0 : f ≠ 0` using `(h1 v).1.ne_zero`. Establish `hfN : f.natDegree = N` using `(h1 v).2.1`. Establish `hq0 : q ≠ 0` using `fun h => hf0 (by rw [hs, h, zero_mul])`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : s ≠ 0` using `fun h => hf0 (by rw [hs, h, mul_zero])`. Establish `hdeg : f.natDegree = q.natDegree + s.natDegree` using `by conv_lhs => rw [hs]`. Conclude with `natDegree_mul hq0 hs0`. Take `⟨_, hv'⟩` from `h4 s.natDegree (by omega) (by omega)`. Conclude with `hv' ⟨s, ⟨q, by rw [mul_comm]; exact hs⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_isGood_const {N g : ℕ} [Fact g.Prime] {PP J : Type} (f : (ZMod g)[X])
     (χ : PP → J → (ZMod g)ˣ) : ¬ Formalism.CyclotomicNorms.IsGood N g (fun _ : PP => f) χ := by

@@ -5,7 +5,7 @@ open Filter Topology Complex NumberField IsDedekindDomain
 namespace PositivityTheory.Lord
 
 /- English proof (translation)
-Introduce `s`. Establish `hN' : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hN`. Conclude with `(differentiableAt_const _).sub ((differentiableAt_const _).mul (differentiableAt_id.neg.const_cpow (Or.inl hN')))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem factor_differentiable (N : ℕ) (hN : N ≠ 0) (c : ℂ) :
     Differentiable ℂ (fun s : ℂ => 1 - c * (N : ℂ) ^ (-s)) := by
@@ -15,18 +15,18 @@ theorem factor_differentiable (N : ℕ) (hN : N ≠ 0) (c : ℂ) :
     ((differentiableAt_const _).mul (differentiableAt_id.neg.const_cpow (Or.inl hN')))
 
 /- English proof (translation)
-The claim follows from `(PositivityTheory.Lord.factor_differentiable N hN c).analyticAt x`.
+A detailed English derivation is pending.
 -/
 theorem factor_analytic (N : ℕ) (hN : N ≠ 0) (c x : ℂ) :
     AnalyticAt ℂ (fun s : ℂ => 1 - c * (N : ℂ) ^ (-s)) x :=
   (PositivityTheory.Lord.factor_differentiable N hN c).analyticAt x
 
 /- English proof (translation)
-Introduce `h`. Establish `hpos : 0 < N` using `by omega`. Establish `hN1 : (1 : ℝ) < N` using `by exact_mod_cast (show 1 < N by omega)`. Establish `hlt : ‖(N : ℂ) ^ (-s)‖ < 1`. Rewrite using `[Complex.norm_natCast_cpow_of_pos hpos, Complex.neg_re]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.rpow_lt_one_of_one_lt_of_neg hN1 (neg_neg_of_pos hs)`. Establish `h1 : c * (N : ℂ) ^ (-s) = 1` using `(sub_eq_zero.mp h).symm`. Establish `hn : ‖c * (N : ℂ) ^ (-s)‖ < 1`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[h1, norm_one]`. Conclude with `lt_irrefl _ hn`.
+A detailed English derivation is pending.
 -/
 theorem factor_ne_zero (N : ℕ) (hN : 2 ≤ N) (c s : ℂ) (hc : ‖c‖ ≤ 1) (hs : 0 < s.re) :
     1 - c * (N : ℂ) ^ (-s) ≠ 0 := by
@@ -46,11 +46,11 @@ theorem factor_ne_zero (N : ℕ) (hN : 2 ≤ N) (c s : ℂ) (hc : ‖c‖ ≤ 1)
   exact lt_irrefl _ hn
 
 /- English proof (translation)
-Introduce `h`. Establish `hpos : 0 < N` using `by omega`. Establish `hN1 : (1 : ℝ) < N` using `by exact_mod_cast (show 1 < N by omega)`. Establish `h1 : c * (N : ℂ) ^ (-(j : ℂ)) = 1` using `(sub_eq_zero.mp h).symm`. Establish `hn : ‖c * (N : ℂ) ^ (-(j : ℂ))‖ = ‖(1 : ℂ)‖` using `by rw [h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hn` using `[norm_mul, hc, one_mul, norm_one, Complex.norm_natCast_cpow_of_pos hpos, Complex.neg_re, Complex.intCast_re]`. Break down `lt_or_gt_of_ne hj with hj' | hj'` into its components or cases. Establish `hjr : (j : ℝ) < 0` using `by exact_mod_cast hj'`. Establish `: (1 : ℝ) < (N : ℝ) ^ (-(j : ℝ))` using `Real.one_lt_rpow hN1 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hjr : (0 : ℝ) < j` using `by exact_mod_cast hj'`. Establish `: (N : ℝ) ^ (-(j : ℝ)) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg hN1 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem factor_ne_zero_int (N : ℕ) (hN : 2 ≤ N) (c : ℂ) (hc : ‖c‖ = 1) (j : ℤ) (hj : j ≠ 0) :
     1 - c * (N : ℂ) ^ (-(j : ℂ)) ≠ 0 := by
@@ -70,7 +70,7 @@ theorem factor_ne_zero_int (N : ℕ) (hN : 2 ≤ N) (c : ℂ) (hc : ‖c‖ = 1)
     linarith
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Lord.ZO.of_analytic (PositivityTheory.Lord.factor_analytic N (by omega) c _) (PositivityTheory.Lord.factor_ne_zero_int N hN c hc j hj)`.
+A detailed English derivation is pending.
 -/
 theorem factor_zo (N : ℕ) (hN : 2 ≤ N) (c : ℂ) (hc : ‖c‖ = 1) (j : ℤ) (hj : j ≠ 0) :
     ZO (fun s : ℂ => 1 - c * (N : ℂ) ^ (-s)) (j : ℂ) 0 :=
@@ -78,11 +78,11 @@ theorem factor_zo (N : ℕ) (hN : 2 ≤ N) (c : ℂ) (hc : ‖c‖ = 1) (j : ℤ
     (PositivityTheory.Lord.factor_ne_zero_int N hN c hc j hj)
 
 /- English proof (translation)
-Establish `hN' : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Establish `han : AnalyticAt ℂ (fun s : ℂ => 1 - (N : ℂ) ^ (-s)) 0`. Simplify `PositivityTheory.Lord.factor_analytic N (by omega) 1 0` using `only [one_mul]`. Establish `hd : HasDerivAt (fun s : ℂ => 1 - (N : ℂ) ^ (-s)) (-((N : ℂ) ^ (-(0 : ℂ)) * Complex.log N * (-1))) 0` using `(((hasDerivAt_id (0 : ℂ)).neg).const_cpow (Or.inl hN')).const_sub 1`. Use `PositivityTheory.Lord.ZO.one_of_deriv han ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show 1 - (N : ℂ) ^ (-(0 : ℂ)) = 0`. Rewrite using `[neg_zero, Complex.cpow_zero, sub_self]`. Rewrite using `[hd.deriv, neg_zero, Complex.cpow_zero, one_mul, mul_neg_one, neg_neg]`. Introduce `hlog`. Establish `h1 : (N : ℂ) = 1` using `by rw [← Complex.exp_log hN', hlog, Complex.exp_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: N = 1` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem factor_zo_zero (N : ℕ) (hN : 2 ≤ N) : ZO (fun s : ℂ => 1 - (N : ℂ) ^ (-s)) 0 1 := by
   have hN' : (N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
@@ -101,9 +101,9 @@ theorem factor_zo_zero (N : ℕ) (hN : 2 ≤ N) : ZO (fun s : ℂ => 1 - (N : �
     omega
 
 /- English proof (translation)
-Establish `h0 : Ideal.absNorm P.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `P.ne_bot`. Establish `h1 : Ideal.absNorm P.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `P.isPrime.ne_top`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem two_le_absNorm (K : Type) [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K)) :
     2 ≤ Ideal.absNorm P.asIdeal := by

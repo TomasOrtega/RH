@@ -8,13 +8,11 @@ open NumberField IsDedekindDomain MeasureTheory ValuativeRel Matrix Formalism.L2
 namespace GlobalTheory.UnipLevelTopo
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A _ _ c J g hJo hJc`. Take `⟨h1, h2⟩` from `isOpen_isCompact_conj g hJo hJc`. Establish `hemb : Topology.IsClosedEmbedding (Subtype.val : N k A c 1 → GL (A ⊕ Fin c) k)` using `(GlobalTheory.RootEx.VolN.isClosed_N (k := k) (n := A) (c := c) 1).isClosedEmbedding_subtypeVal`. Establish `eC : (((Cgrp J g).subgroupOf (N k A c 1) : Subgroup (N k A c 1)) : Set (N k A c 1)) = Subtype.val ⁻¹' (J.comap (MulAut.conj g⁻¹).toMonoidHom : Set (GL (A ⊕ Fin c) k))`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_preimage, Cgrp, Subgroup.mem_inf]`. Conclude with `⟨fun h => h.2, fun h => ⟨Subgroup.mem_sup_right x.2, h⟩⟩`. Establish `eK : (((KO k (A ⊕ Fin c)).subgroupOf (N k A c 1) : Subgroup (N k A c 1)) : Set (N k A c 1)) = Subtype.val ⁻¹' (KO k (A ⊕ Fin c) : Set (GL (A ⊕ Fin c) k))`. Use extensionality with `x`. Simplify using `[Subgroup.mem_subgroupOf]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_inf, eC, eK]`. Conclude with `(h1.inter GlobalTheory.SplitFlip.isOpen_KO).preimage continuous_subtype_val`. Rewrite using `[eC]`. Conclude with `hemb.isCompact_preimage h2`.
-
-Rewrite using `[eK]`. Conclude with `hemb.isCompact_preimage GlobalTheory.SplitFlip.isCompact_KO`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_inf_isCompact : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {A : Type} [Fintype A] [DecidableEq A] {c : ℕ} (J : Subgroup (GL (A ⊕ Fin c) k)) (g : GL (A ⊕ Fin c) k), IsOpen (J : Set (GL (A ⊕ Fin c) k)) → IsCompact (J : Set (GL (A ⊕ Fin c) k)) → IsOpen ((((Cgrp J g).subgroupOf (N k A c 1)) ⊓ ((KO k (A ⊕ Fin c)).subgroupOf (N k A c 1)) : Subgroup (N k A c 1)) : Set (N k A c 1)) ∧ IsCompact (((Cgrp J g).subgroupOf (N k A c 1) : Subgroup (N k A c 1)) : Set (N k A c 1)) ∧ IsCompact (((KO k (A ⊕ Fin c)).subgroupOf (N k A c 1) : Subgroup (N k A c 1)) : Set (N k A c 1)) := by
   intro k _ _ _ _ A _ _ c J g hJo hJc

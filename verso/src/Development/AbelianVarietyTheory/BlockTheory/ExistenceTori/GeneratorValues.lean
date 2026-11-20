@@ -38,9 +38,9 @@ Both sides reduce to the same expression.
 lemma xK_eq (D : DegPre R) (χ : D.X) : D.xK χ = jK R ≫ (D.c χ).left := rfl
 
 /- English proof (translation)
-Establish `hc : (D.c χ).left (closedPoint R) ∈ ⨆ i, D.P.L.U i`. Rewrite using `[D.P.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hc`. Establish `ht : IsIntChart D (D.c χ) i` using `((closedPoint_mem_iff (R := R) ((D.c χ).left ⁻¹ᵁ D.P.L.U i)).1 hi).ge`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨_, fun _ => i, ?_, ht, rfl⟩` and prove the remaining obligations. Introduce `y _`. Conclude with `Set.mem_iInter.2 fun _ => ht (Set.mem_univ (jK R y))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isPsiCoord [IsLocalRing R] (D : DegPre R) (χ : D.X) : ∃ x, IsPsiCoord D χ x := by
   have hc : (D.c χ).left (closedPoint R) ∈ ⨆ i, D.P.L.U i := by
@@ -53,7 +53,7 @@ theorem exists_isPsiCoord [IsLocalRing R] (D : DegPre R) (χ : D.X) : ∃ x, IsP
   exact Set.mem_iInter.2 fun _ => ht (Set.mem_univ (jK R y))
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma res_res {X : Scheme.{0}} {U V W : X.Opens} (h : U ≤ V) (h' : V ≤ W) (s : Γ(X, W)ˣ) :
     res h (res h' s) = res (h.trans h') s := by
@@ -62,7 +62,7 @@ lemma res_res {X : Scheme.{0}} {U V W : X.Opens} (h : U ≤ V) (h' : V ≤ W) (s
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]; rfl
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `((Spec.map φ ≫ c).appLE U ⊤ h' ≫ (Scheme.ΓSpecIso T).hom).hom g.val = (c.appLE U ⊤ h ≫ (Scheme.ΓSpecIso S).hom ≫ φ).hom g.val`. Rewrite using `[← Scheme.ΓSpecIso_naturality, ← Category.assoc, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Use `erw [Scheme.Hom.appLE_comp_appLE]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma pull_val {X : Scheme.{0}} {S T : CommRingCat.{0}} (φ : S ⟶ T) (c : Spec S ⟶ X)
     (U : X.Opens) (g : Γ(X, U)ˣ) (h : ⊤ ≤ c ⁻¹ᵁ U) (h' : ⊤ ≤ (Spec.map φ ≫ c) ⁻¹ᵁ U) :
@@ -77,13 +77,11 @@ lemma pull_val {X : Scheme.{0}} {S T : CommRingCat.{0}} (φ : S ⟶ T) (c : Spec
   rfl
 
 /- English proof (translation)
-Take `⟨j, h, hj, rfl⟩` from `hx`. Take `⟨j', h', hj', rfl⟩` from `hx'`. Establish `key` using `congrArg (res (le_inf h h')) (D.psi_gen χ j j')`. Rewrite `key` using `[map_mul, res_res, res_res]`. Establish `hjj : ⊤ ≤ (D.c χ).left ⁻¹ᵁ (D.P.L.U (j PUnit.unit) ⊓ D.P.L.U (j' PUnit.unit))` using `le_inf hj hj'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hK : ⊤ ≤ (jK R ≫ (D.c χ).left) ⁻¹ᵁ (D.P.L.U (j PUnit.unit) ⊓ D.P.L.U (j' PUnit.unit))` using `fun y _ => hjj (Set.mem_univ (jK R y))`. Use `⟨(Units.map (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom.toMonoidHom (res hjj (pullU (D.c χ).left _ (D.P.L.g _ _))))⁻¹, ?_⟩` and prove the remaining obligations. Establish `hg : res (le_inf h h') ((LB.LinComb D.P.L (K` using `PUnit) (fun _ => ptK (D.c χ)) (fun _ => -1)).g j j') = (res hK (pullU (jK R ≫ (D.c χ).left) _ (D.P.L.g _ _)))⁻¹ := by`. Simplify using `only [LB.LinComb, Finset.univ_unique, Finset.prod_singleton, zpow_neg, zpow_one]`. Use `(MonoidHom.map_inv _ _).trans (congrArg Inv.inv ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `res_res _ _ _`. Unfold `genVal`. Rewrite using `[key, map_mul, hg]`. Use `congr 1`. Use `(MonoidHom.map_inv _ _).trans (Eq.trans (congrArg Inv.inv ?_) (MonoidHom.map_inv _ _).symm)` and prove the remaining obligations.
-
-Conclude with `pull_val (CommRingCat.ofHom (algebraMap R (FractionRing R))) (D.c χ).left _ _ hjj hK`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsPsiCoord.unique {D : DegPre R} {χ : D.X} {x x' : (FractionRing R)ˣ}
     (hx : IsPsiCoord D χ x) (hx' : IsPsiCoord D χ x') :
@@ -113,7 +111,7 @@ def psiCoord [IsLocalRing R] (D : DegPre R) (χ : D.X) : (FractionRing R)ˣ :=
   (exists_isPsiCoord D χ).choose
 
 /- English proof (translation)
-The claim follows from `(exists_isPsiCoord D χ).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem psiCoord_spec [IsLocalRing R] (D : DegPre R) (χ : D.X) : IsPsiCoord D χ (psiCoord D χ) :=
   (exists_isPsiCoord D χ).choose_spec
@@ -130,7 +128,7 @@ variable [IsLocalRing R] {Γ : Type} [AddCommGroup Γ] (v : LatticeVal R Γ)
 def psiVal (D : DegPre R) (χ : D.X) : Γ := v.toFun (psiCoord D χ)
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `(psiCoord_spec D χ).unique hx`. Rewrite using `[psiVal, hu, v.map_mul, v.map_unit, zero_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiVal_eq {D : DegPre R} {χ : D.X} {x : (FractionRing R)ˣ} (hx : IsPsiCoord D χ x) :
     psiVal v D χ = v.toFun x := by
@@ -140,7 +138,7 @@ theorem psiVal_eq {D : DegPre R} {χ : D.X} {x : (FractionRing R)ˣ} (hx : IsPsi
 def periodForm (D : DegPre R) (a b : D.X) : Γ := psiVal v D (a + b) - psiVal v D a - psiVal v D b
 
 /- English proof (translation)
-Simplify using `only [periodForm, add_comm a b]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem periodForm_symm (D : DegPre R) (a b : D.X) : periodForm v D a b = periodForm v D b a := by
   simp only [periodForm, add_comm a b]; abel
@@ -155,7 +153,7 @@ section DVR
 variable (R) [IsDiscreteValuationRing R]
 
 /- English proof (translation)
-The claim follows from `(Valuation.ne_zero_iff _).2 x.ne_zero`.
+A detailed English derivation is pending.
 -/
 lemma valuation_ne_zero (x : (FractionRing R)ˣ) :
     (IsDiscreteValuationRing.maximalIdeal R).valuation (FractionRing R) x.val ≠ 0 :=
@@ -192,7 +190,7 @@ section DVR
 variable [IsDiscreteValuationRing R]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `- WithZero.log ((IsDiscreteValuationRing.maximalIdeal R).valuation (FractionRing R) (algebraMap R (FractionRing R) ϖ)) = 1`. Use `erw [IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap, IsDedekindDomain.HeightOneSpectrum.intValuation_singleton _ h0 h]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ord_vw_uniformiser {ϖ : R} (h0 : ϖ ≠ 0) (h : maximalIdeal R = Ideal.span {ϖ}) :
     (ord_vw R).toFun (toUnitK ϖ h0) = 1 := by
@@ -203,7 +201,7 @@ theorem ord_vw_uniformiser {ϖ : R} (h0 : ϖ ≠ 0) (h : maximalIdeal R = Ideal.
   simp
 
 /- English proof (translation)
-Establish `h1 : (IsDiscreteValuationRing.maximalIdeal R).valuation (FractionRing R) (toUnitK r h0).val < 1` using `(IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem _ r).2 h`. Establish `h2` using `(WithZero.log_lt_log (valuation_ne_zero R (toUnitK r h0)) one_ne_zero).2 h1`. Rewrite `h2` using `[WithZero.log_one]`. Conclude with `neg_pos.2 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_vw_pos {r : R} (h0 : r ≠ 0) (h : r ∈ maximalIdeal R) :
     0 < (ord_vw R).toFun (toUnitK r h0) := by
@@ -217,7 +215,7 @@ theorem ord_vw_pos {r : R} (h0 : r ≠ 0) (h : r ∈ maximalIdeal R) :
 def ramIdx {p : ℕ} (hp : IsOverPrime R p) : ℤ := (ord_vw R).toFun (toUnitK (p : R) hp.ne_zero)
 
 /- English proof (translation)
-The claim follows from `ord_vw_pos _ hp.mem`.
+A detailed English derivation is pending.
 -/
 theorem ramIdx_pos {p : ℕ} (hp : IsOverPrime R p) : 0 < ramIdx hp := ord_vw_pos _ hp.mem
 
@@ -227,7 +225,7 @@ def ord_vp {p : ℕ} (hp : IsOverPrime R p) : LatticeVal R ℚ where
   map_unit u := by rw [(ord_vw R).map_unit]; simp
 
 /- English proof (translation)
-The claim follows from `div_self (Int.cast_ne_zero.2 (ramIdx_pos hp).ne')`.
+A detailed English derivation is pending.
 -/
 theorem ord_vp_p {p : ℕ} (hp : IsOverPrime R p) :
     (ord_vp hp).toFun (toUnitK (p : R) hp.ne_zero) = 1 :=
@@ -244,7 +242,7 @@ def periodForm_vp {p : ℕ} (hp : IsOverPrime R p) (D : DegPre R) (a b : D.X) : 
   periodForm (ord_vp hp) D a b
 
 /- English proof (translation)
-Simplify using `only [periodForm_vp, periodForm_vw, periodForm, psiVal, ord_vp]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem periodForm_vp_eq {p : ℕ} (hp : IsOverPrime R p) (D : DegPre R) (a b : D.X) :
     periodForm_vp hp D a b = (periodForm_vw D a b : ℚ) / (ramIdx hp : ℚ) := by
@@ -265,7 +263,7 @@ variable {φ : FractionRing R →+* F}
 
 omit [IsDomain R] in
 /- English proof (translation)
-Establish `h1` using `hφ.le_one u`. Establish `h2` using `hφ.le_one (u⁻¹ : Rˣ)`. Establish `h3 : ‖φ (algebraMap R (FractionRing R) u)‖ * ‖φ (algebraMap R (FractionRing R) (u⁻¹ : Rˣ))‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, ← map_mul, Units.mul_inv, map_one, map_one, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (φ (algebraMap R (FractionRing R) u))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem IsCentred.norm_unit (hφ : IsCentred φ) (u : Rˣ) :
     ‖φ (algebraMap R (FractionRing R) u)‖ = 1 := by
@@ -276,7 +274,7 @@ theorem IsCentred.norm_unit (hφ : IsCentred φ) (u : Rˣ) :
   nlinarith [norm_nonneg (φ (algebraMap R (FractionRing R) u))]
 
 /- English proof (translation)
-Establish `e : φ (algebraMap R (FractionRing R) (p : R)) = (p : F)` using `by simp`. Establish `h0 : 0 < ‖(p : F)‖`. Rewrite using `[← e]`. Conclude with `norm_pos_iff.2 ((map_ne_zero φ).2 (toUnitK (p : R) hp.ne_zero).ne_zero)`. Conclude with `⟨h0, Real.log_neg h0 (e ▸ hφ.lt_one _ hp.mem)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsCentred.log_norm_p_neg (hφ : IsCentred φ) {p : ℕ} (hp : IsOverPrime R p) :
     0 < ‖(p : F)‖ ∧ Real.log ‖(p : F)‖ < 0 := by
@@ -296,7 +294,7 @@ def normVal_vp (hφ : IsCentred φ) {p : ℕ} (_hp : IsOverPrime R p) : LatticeV
     rw [hφ.norm_unit, Real.log_one, zero_div]
 
 /- English proof (translation)
-Establish `e : φ (algebraMap R (FractionRing R) (p : R)) = (p : F)` using `by simp`. Express the relevant statement in the definitionally equal form `Real.log ‖φ (algebraMap R (FractionRing R) (p : R))‖ / _ = 1`. Rewrite using `[e]`. Conclude with `div_self (hφ.log_norm_p_neg hp).2.ne`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normVal_vp_p (hφ : IsCentred φ) {p : ℕ} (hp : IsOverPrime R p) :
     (normVal_vp hφ hp).toFun (toUnitK (p : R) hp.ne_zero) = 1 := by
@@ -314,7 +312,7 @@ def periodFormAt_vp (hφ : IsCentred φ) {p : ℕ} (hp : IsOverPrime R p) (D : D
 end Normed
 
 /- English proof (translation)
-The claim follows from `hp.out ne_zero := Nat.cast_ne_zero.2 hp.out.ne_zero mem := by rw [PadicInt.maximalIdeal_eq_span_p]; exact Ideal.mem_span_singleton_self _`.
+A detailed English derivation is pending.
 -/
 theorem isOverPrime_padicInt (p : ℕ) [hp : Fact p.Prime] : IsOverPrime ℤ_[p] p where
   prime := hp.out
@@ -322,9 +320,7 @@ theorem isOverPrime_padicInt (p : ℕ) [hp : Fact p.Prime] : IsOverPrime ℤ_[p]
   mem := by rw [PadicInt.maximalIdeal_eq_span_p]; exact Ideal.mem_span_singleton_self _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖FractionRing.algEquiv ℤ_[p] ℚ_[p] (algebraMap _ _ r)‖ ≤ 1`. Rewrite using `[AlgEquiv.commutes]`. Conclude with `r.2`. Use `lt_one r hr := by`. Express the relevant statement in the definitionally equal form `‖FractionRing.algEquiv ℤ_[p] ℚ_[p] (algebraMap _ _ r)‖ < 1`.
-
-Rewrite using `[AlgEquiv.commutes]`. Conclude with `PadicInt.mem_nonunits.1 hr`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCentred_padic (p : ℕ) [Fact p.Prime] :
     IsCentred (R := ℤ_[p]) (FractionRing.algEquiv ℤ_[p] ℚ_[p]).toRingEquiv.toRingHom where
@@ -336,7 +332,7 @@ theorem isCentred_padic (p : ℕ) [Fact p.Prime] :
     rw [AlgEquiv.commutes]; exact PadicInt.mem_nonunits.1 hr
 
 /- English proof (translation)
-The claim follows from `ord_vw_uniformiser _ PadicInt.maximalIdeal_eq_span_p`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] : ramIdx (isOverPrime_padicInt p) = 1 :=
   ord_vw_uniformiser _ PadicInt.maximalIdeal_eq_span_p

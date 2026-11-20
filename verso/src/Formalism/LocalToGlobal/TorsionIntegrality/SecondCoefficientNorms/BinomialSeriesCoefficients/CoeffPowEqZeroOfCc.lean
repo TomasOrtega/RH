@@ -9,13 +9,13 @@ namespace Formalism.L2.Th1.C
 variable {K : Type} [Field K] [CharZero K] {σ : Type}
 
 /- English proof (translation)
-The claim follows from `PowerSeries.HasSubst.of_constantCoeff_zero hf`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_of_cc {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0) :
     PowerSeries.HasSubst f := PowerSeries.HasSubst.of_constantCoeff_zero hf
 
 /- English proof (translation)
-Use `first`. Consider the case `exact map_add Finsupp.degree a b`. Consider the case `exact Finsupp.degree_add a b`. Consider the case `simp [Finsupp.degree_add]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem finsupp_degree_add (a b : σ →₀ ℕ) : (a + b).degree = a.degree + b.degree := by
   first
@@ -24,9 +24,9 @@ private theorem finsupp_degree_add (a b : σ →₀ ℕ) : (a + b).degree = a.de
   | simp [Finsupp.degree_add]
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Use `first`. Consider the case `rw [Finset.HasAntidiagonal.mem_antidiagonal] at hp`. Consider the case `simp only [Finset.mem_antidiagonal] at hp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp at hp`. Establish `hd : p.1.degree + p.2.degree = n.degree` using `by rw [← finsupp_degree_add, hp]`. Distinguish the cases in `h1 : p.1.degree < a`. Rewrite using `[hA _ h1, zero_mul]`. Rewrite using `[hB _ (by omega), mul_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_mul_eq_zero_of_degree_lt_add' {A B : MvPowerSeries σ K} {a b : ℕ}
     (hA : ∀ m : σ →₀ ℕ, m.degree < a → MvPowerSeries.coeff m A = 0)
@@ -45,9 +45,9 @@ private theorem coeff_mul_eq_zero_of_degree_lt_add' {A B : MvPowerSeries σ K} {
   · rw [hB _ (by omega), mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro n hn`. Simplify using `at hn`. Consider the case `succ k ih`. Introduce `n hn`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ']`. Establish `e : (k + 1) * a = a + k * a` using `by ring`. Conclude with `coeff_mul_eq_zero_of_degree_lt_add' hA ih n (by rw [e] at hn; exact hn)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem coeff_pow_eq_zero_of_degree_lt_mul {A : MvPowerSeries σ K} {a : ℕ}
     (hA : ∀ m : σ →₀ ℕ, m.degree < a → MvPowerSeries.coeff m A = 0) (k : ℕ) :
@@ -61,9 +61,9 @@ private theorem coeff_pow_eq_zero_of_degree_lt_mul {A : MvPowerSeries σ K} {a :
     exact coeff_mul_eq_zero_of_degree_lt_add' hA ih n (by rw [e] at hn; exact hn)
 
 /- English proof (translation)
-Establish `h1 : ∀ m : σ →₀ ℕ, m.degree < 1 → MvPowerSeries.coeff m f = 0`. Introduce `m hm`. Establish `hm0 : m = 0` using `(Finsupp.degree_eq_zero_iff m).1 (by omega)`. Substitute `hm0` using the available equality. Simplify using `using hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `coeff_pow_eq_zero_of_degree_lt_mul h1 k n (by simpa using h)`.
+A detailed English derivation is pending.
 -/
 theorem coeff_pow_eq_zero_of_cc {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0)
     {n : σ →₀ ℕ} {k : ℕ} (h : n.degree < k) : MvPowerSeries.coeff n (f ^ k) = 0 := by
@@ -75,9 +75,9 @@ theorem coeff_pow_eq_zero_of_cc {f : MvPowerSeries σ K} (hf : MvPowerSeries.con
   exact coeff_pow_eq_zero_of_degree_lt_mul h1 k n (by simpa using h)
 
 /- English proof (translation)
-Unfold `mvExp`. Rewrite using `[PowerSeries.coeff_subst (hasSubst_of_cc hf), finsum_eq_sum_of_support_subset _ (s := Finset.range N) ?_]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[PowerSeries.coeff_exp]`. Introduce `k hk`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hk` using `[Function.mem_support]`. Simplify using `only [Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hkN`. Apply `hk` to reduce the goal to its premises. Simplify using `[coeff_pow_eq_zero_of_cc hf (show n.degree < k by omega)]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem coeff_mvExp {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0)
     {n : σ →₀ ℕ} {N : ℕ} (hN : n.degree < N) :
@@ -97,7 +97,7 @@ theorem coeff_mvExp {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f
     simp [coeff_pow_eq_zero_of_cc hf (show n.degree < k by omega)]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_mvExp (map_zero _) (Nat.lt_succ_self n.degree), Finset.sum_range_succ']`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mvExp_zero : mvExp (0 : MvPowerSeries σ K) = 1 := by
   classical
@@ -106,7 +106,7 @@ theorem mvExp_zero : mvExp (0 : MvPowerSeries σ K) = 1 := by
   simp
 
 /- English proof (translation)
-Establish `h` using `coeff_mvExp hf (n := 0) (N := 1) (by simp)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem constantCoeff_mvExp {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0) :
     MvPowerSeries.constantCoeff (mvExp f) = 1 := by
@@ -114,7 +114,7 @@ theorem constantCoeff_mvExp {f : MvPowerSeries σ K} (hf : MvPowerSeries.constan
   simpa using h
 
 /- English proof (translation)
-Rewrite using `[coeff_mvExp hf hm, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem coeff_mvExp_eq_coeff_trunc_sum {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0)
     (N : ℕ) (m : σ →₀ ℕ) (hm : m.degree < N) :
@@ -124,9 +124,9 @@ private theorem coeff_mvExp_eq_coeff_trunc_sum {f : MvPowerSeries σ K} (hf : Mv
   simp only [map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.coeff_mul, MvPowerSeries.coeff_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Use `first`. Consider the case `rw [Finset.HasAntidiagonal.mem_antidiagonal] at hp`. Consider the case `simp only [Finset.mem_antidiagonal] at hp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp at hp`. Establish `hd : p.1.degree + p.2.degree = n.degree` using `by rw [← finsupp_degree_add, hp]`. Rewrite using `[hA _ (by omega), hB _ (by omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_mul_congr_of_degree_lt {A A' B B' : MvPowerSeries σ K} {N : ℕ}
     (hA : ∀ m : σ →₀ ℕ, m.degree < N → MvPowerSeries.coeff m A = MvPowerSeries.coeff m A')
@@ -144,13 +144,13 @@ private theorem coeff_mul_congr_of_degree_lt {A A' B B' : MvPowerSeries σ K} {N
   rw [hA _ (by omega), hB _ (by omega)]
 
 /- English proof (translation)
-Use extensionality with `n`. Establish `hE : MvPowerSeries.pderiv K i (∑ k ∈ Finset.range (n.degree + 1 + 1), ((k.factorial : K))⁻¹ • f ^ k) = MvPowerSeries.pderiv K i f * ∑ k ∈ Finset.range (n.degree + 1), ((k.factorial : K))⁻¹ • f ^ k`. Rewrite using `[map_sum, Finset.mul_sum, Finset.sum_range_succ' _ (n.degree + 1)]`. Establish `h0 : MvPowerSeries.pderiv K i (((Nat.factorial 0 : K))⁻¹ • f ^ 0) = 0` using `by simp`. Rewrite using `[h0, add_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hc : (((k + 1).factorial : K))⁻¹ * ((k + 1 : ℕ) : K) = ((k.factorial : K))⁻¹`. Rewrite using `[Nat.factorial_succ]`. Use `push_cast`. Establish `: (k.factorial : K) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos k).ne'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[Derivation.map_smul, Derivation.leibniz_pow, Nat.add_sub_cancel, smul_eq_mul, ← Nat.cast_smul_eq_nsmul K, smul_smul, hc, mul_smul_comm, mul_comm (MvPowerSeries.pderiv K i f)]`. Rewrite using `[MvPowerSeries.coeff_pderiv, coeff_mvExp_eq_coeff_trunc_sum hf (n.degree + 1 + 1) _ ?_, ← MvPowerSeries.coeff_pderiv, hE]`. Conclude with `coeff_mul_congr_of_degree_lt (fun _ _ => rfl) (fun m hm => (coeff_mvExp_eq_coeff_trunc_sum hf _ m hm).symm) n (Nat.lt_succ_self _)`. Rewrite using `[finsupp_degree_add, Finsupp.degree_single]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem pderiv_mvExp {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0) (i : σ) :
     MvPowerSeries.pderiv K i (mvExp f) = MvPowerSeries.pderiv K i f * mvExp f := by
@@ -179,9 +179,9 @@ theorem pderiv_mvExp {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff 
     omega
 
 /- English proof (translation)
-Establish `e` using `Nat.choose_mul_factorial_mul_factorial h`. Establish `h1 : (m.factorial : K) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos m).ne'`. Establish `h2 : ((k - m).factorial : K) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos _).ne'`. Establish `h3 : (k.choose m : K) ≠ 0` using `by exact_mod_cast (Nat.choose_pos h).ne'`. Rewrite using `[← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`.
+Move the embeddings inside the algebraic operations. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem inv_factorial_mul_choose_eq {k m : ℕ} (h : m ≤ k) :
     ((k.factorial : K))⁻¹ * (k.choose m : K) =
@@ -197,13 +197,13 @@ private theorem inv_factorial_mul_choose_eq {k m : ℕ} (h : m ≤ k) :
   | (field_simp; ring)
 
 /- English proof (translation)
-Establish `hfg : MvPowerSeries.constantCoeff (f + g) = 0` using `by simp [hf, hg]`. Use extensionality with `n`. Rewrite using `[coeff_mvExp hfg (Nat.lt_succ_self n.degree), coeff_mul_congr_of_degree_lt (coeff_mvExp_eq_coeff_trunc_sum hf (n.degree + 1)) (coeff_mvExp_eq_coeff_trunc_sum hg (n.degree + 1)) n (Nat.lt_succ_self _), Finset.sum_mul_sum, map_sum]`. Simplify using `only [map_sum, smul_mul_smul_comm, map_smul, smul_eq_mul]`. Establish `hL : ∀ k ∈ Finset.range (n.degree + 1), ((k.factorial : K))⁻¹ * MvPowerSeries.coeff n ((f + g) ^ k) = ∑ m ∈ Finset.range (k + 1), ((m.factorial : K))⁻¹ * (((k - m).factorial : K))⁻¹ * MvPowerSeries.coeff n (f ^ m * g ^ (k - m))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `k _`. Rewrite using `[add_pow, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hmk : m ≤ k` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hm)`. Rewrite using `[← map_natCast (MvPowerSeries.C (σ := σ) (R := K)) (k.choose m), mul_comm _ (MvPowerSeries.C _), MvPowerSeries.coeff_C_mul, ← mul_assoc, inv_factorial_mul_choose_eq hmk]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl hL]`. Establish `hflip` using `Finset.sum_range_diag_flip (n.degree + 1) (fun a b => ((a.factorial : K))⁻¹ * ((b.factorial : K))⁻¹ * MvPowerSeries.coeff n (f ^ a * g ^ b))`. Apply the tactic sequence `try simp only at hflip`. Rewrite using `[hflip]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_subset (fun j hj => Finset.mem_range.2 (lt_of_lt_of_le (Finset.mem_range.1 hj) (Nat.sub_le _ _))) ?_` and prove the remaining obligations. Introduce `j hj hj'`. Simplify using `only [Finset.mem_range, not_lt] at hi hj hj'`. Rewrite using `[coeff_mul_eq_zero_of_degree_lt_add' (fun m hm => coeff_pow_eq_zero_of_cc hf hm) (fun m hm => coeff_pow_eq_zero_of_cc hg hm) n (by omega), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mvExp_add_binomial_series_coefficients {f g : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0)
     (hg : MvPowerSeries.constantCoeff g = 0) : mvExp (f + g) = mvExp f * mvExp g := by
@@ -239,7 +239,7 @@ private theorem mvExp_add_binomial_series_coefficients {f g : MvPowerSeries σ K
     (fun m hm => coeff_pow_eq_zero_of_cc hg hm) n (by omega), mul_zero]
 
 /- English proof (translation)
-Establish `h` using `mvExp_add_binomial_series_coefficients (f := -f) (g := f) (by simp [hf]) hf`. Rewrite `h` using `[neg_add_cancel, mvExp_zero]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvExp_neg {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0) :
     mvExp (-f) * mvExp f = 1 := by
@@ -248,7 +248,7 @@ theorem mvExp_neg {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f =
   exact h.symm
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `mvExp_neg hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvExp_mul_neg {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0) :
     mvExp f * mvExp (-f) = 1 := by
@@ -256,28 +256,28 @@ theorem mvExp_mul_neg {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff
   exact mvExp_neg hf
 
 /- English proof (translation)
-The claim follows from `isUnit_iff_exists_inv.2 ⟨_, mvExp_mul_neg hf⟩`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_mvExp {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0) :
     IsUnit (mvExp f) := isUnit_iff_exists_inv.2 ⟨_, mvExp_mul_neg hf⟩
 
 /- English proof (translation)
-The claim follows from `mvExp_add_binomial_series_coefficients hf hg`.
+A detailed English derivation is pending.
 -/
 theorem mvExp_add {f g : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0)
     (hg : MvPowerSeries.constantCoeff g = 0) : mvExp (f + g) = mvExp f * mvExp g := mvExp_add_binomial_series_coefficients hf hg
 
 /- English proof (translation)
-Rewrite using `[← mvExp_add (by simp [hf, hg]) hg, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mvExp_sub_mul {f g : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0)
     (hg : MvPowerSeries.constantCoeff g = 0) : mvExp (f - g) * mvExp g = mvExp f := by
   rw [← mvExp_add (by simp [hf, hg]) hg, sub_add_cancel]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [mvExp_zero]`. Consider the case `insert x s hx ih`. Establish `hs : MvPowerSeries.constantCoeff (∑ a ∈ s, f a) = 0`. Rewrite using `[map_sum]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun b hb => hf b (Finset.mem_insert_of_mem hb)`. Rewrite using `[Finset.sum_insert hx, Finset.prod_insert hx, mvExp_add (hf x (Finset.mem_insert_self x s)) hs, ih (fun b hb => hf b (Finset.mem_insert_of_mem hb))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvExp_sum {ι : Type} (s : Finset ι) (f : ι → MvPowerSeries σ K)
     (hf : ∀ a ∈ s, MvPowerSeries.constantCoeff (f a) = 0) :
@@ -294,7 +294,7 @@ theorem mvExp_sum {ι : Type} (s : Finset ι) (f : ι → MvPowerSeries σ K)
       ih (fun b hb => hf b (Finset.mem_insert_of_mem hb))]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [mvExp_zero]`. Consider the case `succ n ih => rw [succ_nsmul, mvExp_add (by simp [hf]) hf, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mvExp_nsmul {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0) (n : ℕ) :
     mvExp (n • f) = mvExp f ^ n := by
@@ -303,7 +303,7 @@ theorem mvExp_nsmul {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f
   | succ n ih => rw [succ_nsmul, mvExp_add (by simp [hf]) hf, ih, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `mvExp_nsmul hf n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvExp_smul_nat {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0) (n : ℕ) :
     mvExp ((n : K) • f) = mvExp f ^ n := by
@@ -311,17 +311,15 @@ theorem mvExp_smul_nat {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoef
   exact mvExp_nsmul hf n
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hex : ∃ d : ℕ, ∃ m : σ →₀ ℕ, m.degree = d ∧ MvPowerSeries.coeff m h ≠ 0`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Conclude with `hne (MvPowerSeries.ext fun m => by simpa using hall _ m rfl)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hmd, hm⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ m' : σ →₀ ℕ, m'.degree < Nat.find hex → MvPowerSeries.coeff m' h = 0`. Introduce `m' hm'`. Assume the negation of the conclusion as `hc`. Conclude with `Nat.find_min hex hm' ⟨m', rfl, hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Apply `hm` to reduce the goal to its premises. Simplify using `using hh`. Establish `hd1 : 1 ≤ Nat.find hex`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[← hmd]`. Assume the negation of the conclusion as `h0`. Conclude with `hm0 ((Finsupp.degree_eq_zero_iff m).1 (by omega))`. Establish `he'` using `congrArg (MvPowerSeries.coeff m) he`. Rewrite `he'` using `[coeff_mvExp hh (show m.degree < Nat.find hex + 1 by omega), Finset.sum_eq_single 1]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `[hm0, MvPowerSeries.coeff_one] at he'`. Conclude with `hm he'`. Introduce `k _ hk1`. Break down `Nat.lt_or_gt_of_ne hk1 with hk0 | hk2` into its components or cases. Establish `hk : k = 0` using `by omega`.
-
-Substitute `hk` using the available equality. Simplify using `[hm0, MvPowerSeries.coeff_one]`. Rewrite using `[coeff_pow_eq_zero_of_degree_lt_mul hmin k m (by rw [hmd]; nlinarith), mul_zero]`. Introduce `h1`. Conclude with `absurd (Finset.mem_range.2 (by omega)) h1`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_mvExp_eq_one {h : MvPowerSeries σ K} (hh : MvPowerSeries.constantCoeff h = 0)
     (he : mvExp h = 1) : h = 0 := by
@@ -358,9 +356,9 @@ private theorem eq_zero_of_mvExp_eq_one {h : MvPowerSeries σ K} (hh : MvPowerSe
     exact absurd (Finset.mem_range.2 (by omega)) h1
 
 /- English proof (translation)
-Establish `h1` using `mvExp_sub_mul hf hg`. Rewrite `h1` using `[h]`. Establish `h2 : mvExp (f - g) = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mvExp_mul_neg hg, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 1 := by rw [h1, mvExp_mul_neg hg]`. Conclude with `sub_eq_zero.1 (eq_zero_of_mvExp_eq_one (by simp [hf, hg]) h2)`.
+A detailed English derivation is pending.
 -/
 theorem mvExp_inj {f g : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0)
     (hg : MvPowerSeries.constantCoeff g = 0) (h : mvExp f = mvExp g) : f = g := by
@@ -373,7 +371,7 @@ theorem mvExp_inj {f g : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f
   exact sub_eq_zero.1 (eq_zero_of_mvExp_eq_one (by simp [hf, hg]) h2)
 
 /- English proof (translation)
-Unfold `mvExp`. Rewrite using `[PowerSeries.derivative_subst (hasSubst_of_cc hf), PowerSeries.derivative_exp, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem derivative_mvExp {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) :
     PowerSeries.derivative K (mvExp f : PowerSeries K) =
@@ -382,7 +380,7 @@ theorem derivative_mvExp {f : PowerSeries K} (hf : PowerSeries.constantCoeff f =
   rw [PowerSeries.derivative_subst (hasSubst_of_cc hf), PowerSeries.derivative_exp, mul_comm]
 
 /- English proof (translation)
-Unfold `mvExp`. Conclude with `PowerSeries.subst_comp_subst_apply (hasSubst_of_cc hf) (hasSubst_of_cc ha) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem subst_mvExp {f : PowerSeries K} {a : MvPowerSeries σ K}
     (hf : PowerSeries.constantCoeff f = 0) (ha : MvPowerSeries.constantCoeff a = 0) :
@@ -391,9 +389,9 @@ theorem subst_mvExp {f : PowerSeries K} {a : MvPowerSeries σ K}
   exact PowerSeries.subst_comp_subst_apply (hasSubst_of_cc hf) (hasSubst_of_cc ha) _
 
 /- English proof (translation)
-Unfold `mvExp`. Establish `hs : MvPowerSeries.HasSubst (fun _ : Unit => f)` using `by first`. Consider the case `exact hasSubst_of_cc hf`. Consider the case `exact (hasSubst_of_cc hf).const`. Consider the case `exact PowerSeries.HasSubst.const (hasSubst_of_cc hf)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact MvPowerSeries.subst_comp_subst_apply hs ha _`. Consider the case `(rw [PowerSeries.subst, PowerSeries.subst, MvPowerSeries.subst_comp_subst_apply hs ha])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mvSubst_mvExp {τ : Type} {f : MvPowerSeries σ K} {a : σ → MvPowerSeries τ K}
     (hf : MvPowerSeries.constantCoeff f = 0) (ha : MvPowerSeries.HasSubst a) :
@@ -409,9 +407,9 @@ theorem mvSubst_mvExp {τ : Type} {f : MvPowerSeries σ K} {a : σ → MvPowerSe
   | (rw [PowerSeries.subst, PowerSeries.subst, MvPowerSeries.subst_comp_subst_apply hs ha])
 
 /- English proof (translation)
-Unfold `mvExp`. Establish `hX : PowerSeries.HasSubst (c • PowerSeries.X : PowerSeries K)` using `hasSubst_of_cc (by first`. Consider the case `(simp; done)`. Consider the case `(simp only [map_smul, smul_eq_zero]; right; exact PowerSeries.constantCoeff_X)`. Consider the case `(simp [PowerSeries.X]; done))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[PowerSeries.rescale_eq_subst, PowerSeries.rescale_eq_subst, PowerSeries.subst_comp_subst_apply (hasSubst_of_cc hf) hX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rescale_mvExp {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) (c : K) :
     PowerSeries.rescale c (mvExp f : PowerSeries K) = mvExp (PowerSeries.rescale c f) := by
@@ -426,7 +424,7 @@ theorem rescale_mvExp {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0)
     PowerSeries.subst_comp_subst_apply (hasSubst_of_cc hf) hX]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `mvExp_add hf (by simp [hg])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvExp_sub {f g : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0)
     (hg : MvPowerSeries.constantCoeff g = 0) : mvExp (f - g) = mvExp f * mvExp (-g) := by
@@ -434,7 +432,7 @@ theorem mvExp_sub {f g : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f
   exact mvExp_add hf (by simp [hg])
 
 /- English proof (translation)
-Introduce `K _ _ σ`. Conclude with `⟨mvExp_zero, fun f hf => constantCoeff_mvExp hf, fun f g hf hg => mvExp_add hf hg, fun f g hf hg h => mvExp_inj hf hg h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem formalExpLaws' : MvExpLaws := by
   intro K _ _ σ
@@ -442,7 +440,7 @@ theorem formalExpLaws' : MvExpLaws := by
     fun f g hf hg h => mvExp_inj hf hg h⟩
 
 /- English proof (translation)
-Introduce `K _ _ σ f a hf ha`. Conclude with `subst_mvExp hf ha`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem formalExpSubst' : MvExpSubst := by
   intro K _ _ σ f a hf ha

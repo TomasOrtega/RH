@@ -15,7 +15,7 @@ variable {K A B C : Type} [Field K] [AddCommGroup A] [Module K A] [AddCommGroup 
   [AddCommGroup C] [Module K C]
 
 /- English proof (translation)
-Establish `hb : b = (e : A →ₗ[K] B) ∘ₗ a ∘ₗ (e.symm : B →ₗ[K] A)`. Use extensionality with `x`. Simplify using `[h]`. Rewrite using `[hb, LinearMap.det_conj]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_eq_of_intertwine (e : A ≃ₗ[K] B) (a : A →ₗ[K] A) (b : B →ₗ[K] B)
     (h : ∀ x, e (a x) = b (e x)) : LinearMap.det b = LinearMap.det a := by
@@ -25,11 +25,11 @@ theorem det_eq_of_intertwine (e : A ≃ₗ[K] B) (a : A →ₗ[K] A) (b : B →�
   rw [hb, LinearMap.det_conj]
 
 /- English proof (translation)
-Establish `hle : LinearMap.ker π ≤ (LinearMap.ker π).comap b`. Introduce `x hx`. Rewrite `*` using `[Submodule.mem_comap, LinearMap.mem_ker]`. Rewrite using `[hc, hx, map_zero]`. Rewrite using `[LinearMap.det_eq_det_mul_det (LinearMap.ker π) b hle]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `det_eq_of_intertwine ((LinearEquiv.ofInjective i hi).trans (LinearEquiv.ofEq _ _ hex)) a _ ?_` and prove the remaining obligations. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[ha]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `(det_eq_of_intertwine (π.quotKerEquivOfSurjective hπ) _ c ?_).symm` and prove the remaining obligations. Introduce `x`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ x`. Simplify using `[hc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem det_exact [FiniteDimensional K B] (i : A →ₗ[K] B) (π : B →ₗ[K] C)
     (hi : Function.Injective i) (hπ : Function.Surjective π)
@@ -53,19 +53,17 @@ theorem det_exact [FiniteDimensional K B] (i : A →ₗ[K] B) (π : B →ₗ[K] 
     simp [hc]
 
 /- English proof (translation)
-Substitute `hS hI` using the available equality. Set `i : ↥(P ⊓ Q) →ₗ[K] ↥P × ↥Q` to `LinearMap.prod (Submodule.inclusion inf_le_left) (-Submodule.inclusion inf_le_right)`. Set `π : ↥P × ↥Q →ₗ[K] ↥(P ⊔ Q)` to `LinearMap.coprod (Submodule.inclusion le_sup_left) (Submodule.inclusion le_sup_right)`. Establish `hi : Function.Injective i`. Introduce `x y hxy`.
+Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun z => ((z.1 : ↥P) : B)) hxy` as an intermediate fact. Conclude with `Subtype.ext (by simpa [i] using this)`. Establish `hπ : Function.Surjective π`. Introduce and unpack `⟨x, hx⟩`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(⟨y, hy⟩, ⟨z, hz⟩), Subtype.ext (by simp [π])⟩`. Establish `hex : LinearMap.range i = LinearMap.ker π`. Use extensionality with `⟨p, q⟩`. Simplify using `only [LinearMap.mem_range, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, hx⟩`. Rewrite using `[← hx]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[i, π]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : (p : B) + q = 0` using `by simpa [π] using congrArg Subtype.val h`. Establish `hpQ : (p : B) ∈ Q`. Rewrite using `[eq_neg_of_add_eq_zero_left h']`. Conclude with `Q.neg_mem q.2`. Establish `hq : -(p : B) = q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[neg_eq_iff_add_eq_zero]`. Conclude with `h'`. Use `⟨⟨p, Submodule.mem_inf.2 ⟨p.2, hpQ⟩⟩, Prod.ext (Subtype.ext rfl) (Subtype.ext ?_)⟩` and prove the remaining obligations. Simplify `hq` using `[i]`. Establish `key` using `det_exact i π hi hπ hex (Φ.restrict hI') (LinearMap.prodMap (Φ.restrict hP') (Φ.restrict hQ')) (Φ.restrict hS') (fun x => Prod.ext (Subtype.ext (by simp [i])) (Subtype.ext (by simp [i]))) (fun x => Subtype.ext (by simp [π]))`.
-
-Rewrite `key` using `[LinearMap.det_prodMap]`. Conclude with `key.symm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_sup_mul_det_inf [FiniteDimensional K B] (Φ : B →ₗ[K] B) (P Q S I : Submodule K B)
     (hS : S = P ⊔ Q) (hI : I = P ⊓ Q)
@@ -124,7 +122,7 @@ def homSub (P Q : Submodule ℂ (Fin n → ℂ)) : Submodule ℂ (Matrix (Fin n)
     fun y => by rw [Matrix.smul_mulVec]; exact Q.smul_mem c (hX.2 y)⟩
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_homSub {P Q : Submodule ℂ (Fin n → ℂ)} {X : Matrix (Fin n) (Fin n) ℂ} :
     X ∈ homSub P Q ↔ (∀ y ∈ P, X *ᵥ y = 0) ∧ ∀ y, X *ᵥ y ∈ Q := by
@@ -140,16 +138,16 @@ Both sides reduce to the same expression.
 theorem twoSided_apply (f g X : Matrix (Fin n) (Fin n) ℂ) : twoSided f g X = f * X * g := rfl
 
 /- English proof (translation)
-Rewrite using `[twoSided_apply, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twoSided_mulVec (f g X : Matrix (Fin n) (Fin n) ℂ) (y : Fin n → ℂ) :
     twoSided f g X *ᵥ y = f *ᵥ (X *ᵥ (g *ᵥ y)) := by
   rw [twoSided_apply, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Introduce `X hX`. Rewrite `hX`, the goal using `[mem_homSub]`. Use `⟨fun y hy => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[twoSided_mulVec, hX.1 _ (hP y hy), Matrix.mulVec_zero]`. Rewrite using `[twoSided_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hQ _ (hX.2 _)`.
+A detailed English derivation is pending.
 -/
 theorem homSub_stable {f g : Matrix (Fin n) (Fin n) ℂ} {P Q : Submodule ℂ (Fin n → ℂ)}
     (hP : ∀ y ∈ P, g *ᵥ y ∈ P) (hQ : ∀ y ∈ Q, f *ᵥ y ∈ Q) :
@@ -162,13 +160,13 @@ theorem homSub_stable {f g : Matrix (Fin n) (Fin n) ℂ} {P Q : Submodule ℂ (F
     exact hQ _ (hX.2 _)
 
 /- English proof (translation)
-Establish `hf : ∀ y ∈ V, Matrix.toLin' f y ∈ V` using `fun y hy => by`. Rewrite using `[Matrix.toLin'_apply]`. Conclude with `hV y hy`. Establish `hg : ∀ y ∈ V, Matrix.toLin' g y ∈ V` using `fun y hy => by`. Rewrite using `[Matrix.toLin'_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `GlobalTheory.FlagLeviGroup.inv_keeps hgf V hV y hy`. Unfold `detOn`. Rewrite using `[dif_pos hf]`. Apply `norm_pos_iff.2` to reduce the goal to its premises. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcomp : ((Matrix.toLin' g).restrict hg).comp ((Matrix.toLin' f).restrict hf) = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce and unpack `⟨y, hy⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Matrix.mulVec_mulVec, hgf]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg LinearMap.det hcomp` as an intermediate fact. Rewrite `this` using `[LinearMap.det_comp, h0, mul_zero, LinearMap.det_id]`. Conclude with `zero_ne_one this`.
+A detailed English derivation is pending.
 -/
 theorem detOn_pos {f g : Matrix (Fin n) (Fin n) ℂ} (hgf : g * f = 1) (V : Submodule ℂ (Fin n → ℂ))
     (hV : ∀ y ∈ V, f *ᵥ y ∈ V) : 0 < detOn f V := by
@@ -196,7 +194,7 @@ def killing (N : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ)) (V : Submodule ℂ 
     Submodule ℂ (Matrix (Fin n) (Fin n) ℂ) := N ⊓ homSub V ⊤
 
 /- English proof (translation)
-Simplify using `[killing, Submodule.mem_inf, mem_homSub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_killing {N : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ)} {V : Submodule ℂ (Fin n → ℂ)}
     {X : Matrix (Fin n) (Fin n) ℂ} : X ∈ killing N V ↔ X ∈ N ∧ ∀ y ∈ V, X *ᵥ y = 0 := by
@@ -207,9 +205,9 @@ section Flag
 variable {r : ℕ} {F : ℕ → Submodule ℂ (Fin n → ℂ)} {N : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ)}
 
 /- English proof (translation)
-Introduce `X hX`. Rewrite `hX` using `[mem_homSub]`. Rewrite using `[hN]`. Introduce `s hs y hy`. Break down `Nat.lt_or_ge s k with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hX.1 y (hF (Nat.succ_le_of_lt h) hy)]`. Conclude with `(F s).zero_mem`. Conclude with `hF h (hX.2 y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homSub_le (hF : Monotone F)
     (hN : ∀ X, X ∈ N ↔ ∀ s, s < r → ∀ y ∈ F (s + 1), X *ᵥ y ∈ F s) (k : ℕ) :
@@ -224,19 +222,19 @@ theorem homSub_le (hF : Monotone F)
   · exact hF h (hX.2 y)
 
 /- English proof (translation)
-Establish `hkk : F k ≤ F (k + 1)` using `hF (Nat.le_succ k)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `X hX`. Rewrite `hX` using `[mem_killing]`. Establish `hXN` using `(hN X).1 hX.1 k hk`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨p, hp⟩` from `LinearMap.exists_leftInverse_of_injective (F (k + 1)).subtype (Submodule.ker_subtype _)`. Establish `hpy : ∀ y ∈ F (k + 1), ((p y : F (k + 1)) : Fin n → ℂ) = y`. Introduce `y hy`. Simplify using `using congrArg Subtype.val (LinearMap.congr_fun hp ⟨y, hy⟩)`. Set `M : Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toMatrix' ((Matrix.toLin' X).comp ((F (k + 1)).subtype.comp p))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `hM : ∀ y, M *ᵥ y = X *ᵥ ((p y : F (k + 1)) : Fin n → ℂ)`. Introduce `y`. Simplify using `[M, LinearMap.toMatrix'_mulVec]`. Establish `h2 : M ∈ homSub (F k) (F k)`. Rewrite using `[mem_homSub]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun y hy => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hM, hpy y (hkk hy)]`. Conclude with `hX.2 y hy`. Rewrite using `[hM]`. Conclude with `hXN _ (p y).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : X - M ∈ killing N (F (k + 1))`. Rewrite using `[mem_killing]`. Use `⟨N.sub_mem hX.1 (homSub_le hF hN k h2), fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec, hM, hpy y hy, sub_self]`. Use `Submodule.add_mem_sup h1 h2` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Apply `sup_le` to reduce the goal to its premises. Introduce `X hX`. Rewrite `hX`, the goal using `[mem_killing]`. Conclude with `⟨hX.1, fun y hy => hX.2 y (hkk hy)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `X hX`. Rewrite using `[mem_killing]`. Use `⟨homSub_le hF hN k hX, ?_⟩` and prove the remaining obligations. Rewrite `hX` using `[mem_homSub]`. Conclude with `hX.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killing_eq_sup (hF : Monotone F)
     (hN : ∀ X, X ∈ N ↔ ∀ s, s < r → ∀ y ∈ F (s + 1), X *ᵥ y ∈ F s) {k : ℕ} (hk : k < r) :
@@ -280,11 +278,11 @@ theorem killing_eq_sup (hF : Monotone F)
       exact hX.1
 
 /- English proof (translation)
-Establish `hkk : F k ≤ F (k + 1)` using `hF (Nat.le_succ k)`. Use extensionality with `X`. Rewrite using `[Submodule.mem_inf, mem_killing, mem_homSub, mem_homSub]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h3 : X ∈ homSub (F k) (F k)`. Rewrite using `[mem_homSub]`. Conclude with `⟨fun y hy => h1 y (hkk hy), h2⟩`. Conclude with `⟨⟨homSub_le hF hN k h3, h1⟩, fun y hy => h1 y (hkk hy), h2⟩`. Introduce and unpack `⟨⟨_, h1⟩, _, h2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h1, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem homSub_eq_inf (hF : Monotone F)
     (hN : ∀ X, X ∈ N ↔ ∀ s, s < r → ∀ y ∈ F (s + 1), X *ᵥ y ∈ F s) (k : ℕ) :
@@ -304,7 +302,7 @@ theorem homSub_eq_inf (hF : Monotone F)
 end Flag
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ r ih`. Rewrite using `[ih (fun k hk => h k (Nat.lt_succ_of_lt hk)), h r (Nat.lt_succ_self r), Finset.sum_range_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem telescope_nat (a c : ℕ → ℕ) (r : ℕ) (h : ∀ k < r, a k = a (k + 1) + c k) :
     a 0 = a r + ∑ s ∈ Finset.range r, c s := by
@@ -316,7 +314,7 @@ theorem telescope_nat (a c : ℕ → ℕ) (r : ℕ) (h : ∀ k < r, a k = a (k +
     ring
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ r ih`. Rewrite using `[ih (fun k hk => h k (Nat.lt_succ_of_lt hk)), h r (Nat.lt_succ_self r), Finset.prod_range_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem telescope_real (a c : ℕ → ℝ) (r : ℕ) (h : ∀ k < r, a k = a (k + 1) * c k) :
     a 0 = a r * ∏ s ∈ Finset.range r, c s := by
@@ -328,39 +326,39 @@ theorem telescope_real (a c : ℕ → ℝ) (r : ℕ) (h : ∀ k < r, a k = a (k 
     ring
 
 /- English proof (translation)
-Introduce `n f g r F N hfg hdet hF h0 hr hfF hN`. Establish `hgf : g * f = 1` using `mul_eq_one_comm.mp hfg`. Establish `hgF : ∀ s, ∀ y ∈ F s, g *ᵥ y ∈ F s` using `fun s => GlobalTheory.FlagLeviGroup.inv_keeps hgf (F s) (hfF s)`. Establish `hNst : ∀ X ∈ N, twoSided f g X ∈ N`. Introduce `X hX`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hX`, the goal using `[hN]`. Introduce `s hs y hy`. Rewrite using `[twoSided_mulVec]`. Conclude with `hfF s _ (hX s hs _ (hgF (s + 1) y hy))`. Establish `hKst : ∀ k, ∀ X ∈ killing N (F k), twoSided f g X ∈ killing N (F k)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k X hX`. Rewrite `hX`, the goal using `[mem_killing]`. Use `⟨hNst X hX.1, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[twoSided_mulVec, hX.2 _ (hgF k y hy), Matrix.mulVec_zero]`. Establish `hHst : ∀ P Q : Submodule ℂ (Fin n → ℂ), (∀ y ∈ P, f *ᵥ y ∈ P) → (∀ y ∈ Q, f *ᵥ y ∈ Q) → ∀ X ∈ homSub P Q, twoSided f g X ∈ homSub P Q` using `fun P Q hP hQ => homSub_stable (GlobalTheory.FlagLeviGroup.inv_keeps hgf P hP) hQ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `fun (P Q : Submodule ℂ (Fin n → ℂ)) (hP : ∀ y ∈ P, f *ᵥ y ∈ P) (hQ : ∀ y ∈ Q, f *ᵥ y ∈ Q) => GlobalTheory.T.det_conj_on_matrices_killing_into_subspace n f g P Q (homSub P Q) hfg hdet hP hQ (fun _ => mem_homSub)`. Establish `hmono : ∀ k, F k ≤ F (k + 1)` using `fun k => hF (Nat.le_succ k)`. Establish `hK0 : killing N (F 0) = N`. Use extensionality with `X`. Rewrite using `[mem_killing, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hKr : killing N (F r) = ⊥`. Use extensionality with `X`. Rewrite using `[mem_killing, hr, Submodule.mem_bot]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, h⟩`. Establish `hX : Matrix.toLin' X = 0` using `LinearMap.ext fun y => by`. Simplify using `using h y Submodule.mem_top`. Conclude with `(LinearEquiv.map_eq_zero_iff Matrix.toLin').1 hX`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨N.zero_mem, fun y _ => Matrix.zero_mulVec y⟩`. Establish `hdim : ∀ k < r, Module.finrank ℂ (killing N (F k)) = Module.finrank ℂ (killing N (F (k + 1))) + (Module.finrank ℂ (F (k + 1)) - Module.finrank ℂ (F k)) * Module.finrank ℂ (F k)`. Introduce `k hk`. Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq (killing N (F (k + 1))) (homSub (F k) (F k))`. Rewrite `h1` using `[← killing_eq_sup hF hN hk, ← homSub_eq_inf hF hN k, (key _ _ (hfF (k + 1)) (hfF k)).1, (key _ _ (hfF k) (hfF k)).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle1 : Module.finrank ℂ (F k) ≤ Module.finrank ℂ (F (k + 1))` using `Submodule.finrank_mono (hmono k)`. Establish `hle2 : Module.finrank ℂ (F (k + 1)) ≤ n`. Simplify using `using Submodule.finrank_le (F (k + 1))`. Take `⟨e, he⟩` from `Nat.exists_eq_add_of_le hle1`. Take `⟨m, hm⟩` from `Nat.exists_eq_add_of_le hle2`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E1 : n - Module.finrank ℂ (F (k + 1)) = m` using `by omega`. Establish `E2 : n - Module.finrank ℂ (F k) = m + e` using `by omega`. Establish `E3 : Module.finrank ℂ (F (k + 1)) - Module.finrank ℂ (F k) = e` using `by omega`. Rewrite `h1` using `[E1, E2]`. Rewrite using `[E3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h1` using `[add_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hstep : ∀ k < r, ‖LinearMap.det ((twoSided f g).restrict (hKst k))‖ = ‖LinearMap.det ((twoSided f g).restrict (hKst (k + 1)))‖ * (detOn f (F k) ^ Module.finrank ℂ (F (k + 1)) / detOn f (F (k + 1)) ^ Module.finrank ℂ (F k))`. Introduce `k hk`. Establish `hm` using `det_sup_mul_det_inf (twoSided f g) (killing N (F (k + 1))) (homSub (F k) (F k)) (killing N (F k)) (homSub (F (k + 1)) (F k)) (killing_eq_sup hF hN hk) (homSub_eq_inf hF hN k) (hKst (k + 1)) (hHst _ _ (hfF k) (hfF k)) (hKst k) (hHst _ _ (hfF (k + 1)) (hfF k))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `(key _ _ (hfF (k + 1)) (hfF k)).2 ((twoSided f g).restrict (hHst _ _ (hfF (k + 1)) (hfF k))) (fun X => twoSided_apply f g _)`. Establish `hB` using `(key _ _ (hfF k) (hfF k)).2 ((twoSided f g).restrict (hHst _ _ (hfF k) (hfF k))) (fun X => twoSided_apply f g _)`. Establish `hnorm` using `congrArg (fun z : ℂ => ‖z‖) hm`. Simplify using `only [norm_mul] at hnorm`. Rewrite `hnorm` using `[hA, hB]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx` using `detOn_pos hgf (F k) (hfF k)`. Establish `hy` using `detOn_pos hgf (F (k + 1)) (hfF (k + 1))`. Establish `hle1 : Module.finrank ℂ (F k) ≤ Module.finrank ℂ (F (k + 1))` using `Submodule.finrank_mono (hmono k)`. Establish `hle2 : Module.finrank ℂ (F (k + 1)) ≤ n`. Simplify using `using Submodule.finrank_le (F (k + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `Nat.exists_eq_add_of_le hle1`. Take `⟨m, hm'⟩` from `Nat.exists_eq_add_of_le hle2`. Establish `E1 : n - Module.finrank ℂ (F (k + 1)) = m` using `by omega`. Establish `E2 : n - Module.finrank ℂ (F k) = m + e` using `by omega`. Rewrite `hnorm` using `[E1, E2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[he, mul_div_assoc', eq_div_iff (pow_pos hy _).ne']`. Apply `mul_left_cancel₀ (pow_ne_zero m hx.ne')` to reduce the goal to its premises. Take the linear combination `hnorm`. Establish `hDr : ‖LinearMap.det ((twoSided f g).restrict (hKst r))‖ = 1`. Establish `hb : ∀ X ∈ (⊥ : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ)), twoSided f g X ∈ (⊥ : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ))`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `X hX`. Rewrite `hX`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hX, map_zero]`. Use `det_eq_of_intertwine (LinearEquiv.ofEq _ _ hKr) ((twoSided f g).restrict (hKst r)) ((twoSided f g).restrict hb) (fun x => Subtype.ext rfl)` as an intermediate fact. Rewrite using `[← this, LinearMap.det_eq_one_of_subsingleton, norm_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `ht` using `telescope_nat (fun k => Module.finrank ℂ (killing N (F k))) (fun s => (Module.finrank ℂ (F (s + 1)) - Module.finrank ℂ (F s)) * Module.finrank ℂ (F s)) r hdim`. Rewrite `ht` using `[hK0, hKr, finrank_bot, zero_add]`. Conclude with `ht`. Establish `ht` using `telescope_real (fun k => ‖LinearMap.det ((twoSided f g).restrict (hKst k))‖) (fun s => detOn f (F s) ^ Module.finrank ℂ (F (s + 1)) / detOn f (F (s + 1)) ^ Module.finrank ℂ (F s)) r hstep`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ht` using `[hDr, one_mul]`. Rewrite using `[← ht]`. Use `det_eq_of_intertwine (LinearEquiv.ofEq _ _ hK0) ((twoSided f g).restrict (hKst 0)) φ (fun x => Subtype.ext (by rw [hφ]; exact twoSided_apply f g _))` as an intermediate fact. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flag_finrank_det : ∀ (n : ℕ) (f g : Matrix (Fin n) (Fin n) ℂ) (r : ℕ) (F : ℕ → Submodule ℂ (Fin n → ℂ)) (N : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ)), f * g = 1 → ‖f.det‖ = 1 → Monotone F → F 0 = ⊥ → F r = ⊤ → (∀ s, ∀ y ∈ F s, f *ᵥ y ∈ F s) → (∀ X, X ∈ N ↔ ∀ s, s < r → ∀ y ∈ F (s + 1), X *ᵥ y ∈ F s) → Module.finrank ℂ N = ∑ s ∈ Finset.range r, (Module.finrank ℂ (F (s + 1)) - Module.finrank ℂ (F s)) * Module.finrank ℂ (F s) ∧ ∀ φ : N →ₗ[ℂ] N, (∀ X : N, ((φ X : N) : Matrix (Fin n) (Fin n) ℂ) = f * (X : Matrix (Fin n) (Fin n) ℂ) * g) → ‖LinearMap.det φ‖ = ∏ s ∈ Finset.range r, detOn f (F s) ^ Module.finrank ℂ (F (s + 1)) / detOn f (F (s + 1)) ^ Module.finrank ℂ (F s) := by
   intro n f g r F N hfg hdet hF h0 hr hfF hN

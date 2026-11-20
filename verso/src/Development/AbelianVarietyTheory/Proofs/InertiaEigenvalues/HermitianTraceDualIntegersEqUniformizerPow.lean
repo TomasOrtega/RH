@@ -12,17 +12,17 @@ namespace GlobalTheory.JR.DualLattice
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `hO : ∀ x ∈ O, x ≠ 0 → ∃ k : ℕ, ∃ u ∈ O, (∃ w ∈ O, u * w = 1) ∧ x = (p : R) ^ k * u`. Introduce `x hxO hx0`. Establish `hex' : ∃ k : ℕ, ¬ ∃ z ∈ O, x = (p : R) ^ k * z`. Take `⟨n, hn⟩` from `hsep x hx0`. Conclude with `⟨n, fun ⟨z, hz, hzx⟩ => hn z hz hzx.symm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨m, hm, hmin⟩ : ∃ m : ℕ, (¬ ∃ z ∈ O, x = (p : R) ^ m * z) ∧ ∀ j < m, ∃ z ∈ O, x = (p : R) ^ j * z` from `⟨Nat.find hex', Nat.find_spec hex', fun j hj => by simpa using Nat.find_min hex' hj⟩`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hm ⟨x, hxO, by simp⟩`. Take `⟨z, hz, hxz⟩` from `hmin (m - 1) (by omega)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hdich z hz with ⟨w, hw, hzw⟩ | hu` into its components or cases. It suffices to derive a contradiction. Apply `hm` to reduce the goal to its premises. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[hxz, hzw, ← mul_assoc, ← pow_succ, Nat.sub_add_cancel (Nat.pos_of_ne_zero hm0)]`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨_, z, hz, hu, hxz⟩`. Introduce `y hy`. Take `⟨n, hn⟩` from `hex y`. Establish `hne : (p : R) ^ n * y ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hy` to reduce the goal to its premises. Use `congrArg (fun t => ((p⁻¹ : Rˣ) : R) ^ n * t) h` as an intermediate fact. Simplify `this` using `[← mul_assoc, ← mul_pow]`. Take `⟨k, u, hu, hunit, hk⟩` from `hO _ hn hne`. Use `⟨(k : ℤ) - n, u, hu, hunit, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : ((p ^ ((k : ℤ) - n) : Rˣ) : R) = ((p⁻¹ : Rˣ) : R) ^ n * (p : R) ^ k`. Rewrite using `[_root_.zpow_sub, zpow_natCast, zpow_natCast, Units.val_mul, ← inv_pow, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, mul_comm]`. Rewrite using `[e1, mul_assoc, ← hk, ← mul_assoc, ← mul_pow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zpow_mul_unit (O : Subring R) (p : Rˣ)
     (hdich : ∀ y ∈ O, (∃ z ∈ O, y = (p : R) * z) ∨ ∃ z ∈ O, y * z = 1)
@@ -64,21 +64,21 @@ theorem eq_zpow_mul_unit (O : Subring R) (p : Rˣ)
   simp
 
 /- English proof (translation)
-Establish `hup : ∀ v : ℤ, ((p ^ v : Rˣ) : R) ∈ D → ∀ k : ℕ, ((p ^ (v + k) : Rˣ) : R) ∈ D`. Introduce `v hv k`. Establish `: ((p ^ (v + k) : Rˣ) : R) = (p : R) ^ k * ((p ^ v : Rˣ) : R)`. Rewrite using `[_root_.zpow_add, zpow_natCast, mul_comm, Units.val_mul, Units.val_pow_eq_pow_val]`. Rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmul _ hv _ (pow_mem hpO k)`. Take `⟨n, hn⟩` from `hbig`. Establish `hinh : ∃ v : ℤ, ((p ^ v : Rˣ) : R) ∈ D` using `⟨n, by simpa using hn 1 (one_mem O)⟩`. Establish `hbdd : ∃ b : ℤ, ∀ v : ℤ, ((p ^ v : Rˣ) : R) ∈ D → b ≤ v`. Assume the negation of the conclusion as `hcon`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hcon`. Establish `hall : ∀ v : ℤ, ((p ^ v : Rˣ) : R) ∈ D`. Introduce `v`. Take `⟨w, hw, hwv⟩` from `hcon v`. Use `hup w hw (v - w).toNat` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[Int.toNat_of_nonneg (by omega), add_sub_cancel]`. Then use the resulting hypothesis. Take `⟨y, hy⟩` from `hne`. Take `⟨m, hm⟩` from `hex y`. Apply `hy` to reduce the goal to its premises. Establish `h1` using `hmul _ (hall (-(m : ℤ))) _ hm`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : ((p ^ (-(m : ℤ)) : Rˣ) : R) * (p : R) ^ m = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_mul, ← zpow_natCast, ← _root_.zpow_add, neg_add_cancel, zpow_zero, Units.val_one]`. Establish `h2 : (p : R) ^ m * y * ((p ^ (-(m : ℤ)) : Rˣ) : R) = y`. Take the linear combination `y * hq`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e, he, hmin⟩` from `Int.exists_least_of_bdd hbdd hinh`. Use `⟨e, Set.ext fun y => ⟨fun hy => ?_, fun ⟨z, hz, hyz⟩ => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hy0 : y = 0`. Conclude with `⟨0, zero_mem O, by simp [hy0]⟩`. Take `⟨v, u, hu, ⟨w, hw, huw⟩, hyv⟩` from `hunit y hy0`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ((p ^ v : Rˣ) : R) ∈ D`. Use `hmul y hy w hw` as an intermediate fact. Establish `e2 : w * y = ((p ^ v : Rˣ) : R)` using `by rw [hyv, mul_comm, mul_assoc, huw, mul_one]`. Rewrite `this` using `[e2]`. Then use the resulting hypothesis. Establish `hev` using `hmin v hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(p : R) ^ (v - e).toNat * u, O.mul_mem (pow_mem hpO _) hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hyv, ← mul_assoc, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← zpow_natCast, ← _root_.zpow_add, Int.toNat_of_nonneg (by omega), add_sub_cancel]`. Rewrite using `[hyz, mul_comm]`. Conclude with `hmul _ he _ hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zpow_smul (O : Subring R) (p : Rˣ) (D : Set R) (hpO : (p : R) ∈ O)
     (hmul : ∀ y ∈ D, ∀ r ∈ O, r * y ∈ D)
@@ -137,39 +137,35 @@ namespace GlobalTheory.JR.DualLattice
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ U A ψ hψ hK hL ϖ O hOo hOc hOstar hpO hpnu hdich hnbhd hex a`. Use `U.charZero` as an intermediate fact. Use `U.ultraF` as an intermediate fact. Use `U.lcF` as an intermediate fact. Use `EtMeas.finite_L A` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A.L`. Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A.K`. Establish `: IsTopologicalRing A.L` using `IsModuleTopology.isTopologicalRing F A.L`. Establish `hLnt : Nontrivial A.L` using `⟨hL.exists_pair_ne⟩`. Establish `hKnt : Nontrivial A.K` using `⟨hK.exists_pair_ne⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `p : A.Lˣ` to `Units.map (algebraMap A.K A.L).toMonoidHom ϖ`. Establish `hp : (p : A.L) = algebraMap A.K A.L (ϖ : A.K)` using `rfl`. Establish `hpz : ∀ v : ℤ, ((p ^ v : A.Lˣ) : A.L) = algebraMap A.K A.L ((ϖ ^ v : A.Kˣ) : A.K)`. Introduce `v`. Rewrite using `[show p ^ v = Units.map (algebraMap A.K A.L).toMonoidHom (ϖ ^ v) from (map_zpow _ ϖ v).symm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hpn : ∀ n : ℕ, (p : A.L) ^ n = algebraMap A.K A.L ((ϖ : A.K) ^ n)`. Introduce `n`. Rewrite using `[hp, map_pow]`. Establish `hmul : ∀ y ∈ {y : A.L | ∀ m ∈ O, A.kerL ψ (a : A.K) y m = 1}, ∀ r ∈ O, r * y ∈ {y : A.L | ∀ m ∈ O, A.kerL ψ (a : A.K) y m = 1}`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy r hr m hm`. Establish `e1 : star (r * y) * m = star y * (star r * m)` using `by rw [star_mul']; ring`. Simplify using `only [Et.kerL, Set.mem_setOf_eq] at hy ⊢`. Rewrite using `[e1]`. Conclude with `hy _ (O.mul_mem (hOstar r hr) hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hψl : IsLocallyConstant (fun x => ψ x)` using `((GlobalTheory.StdChar.psi_conductor F E).2 ψ hψ).1`. Establish `hg : Continuous (fun q : A.L × A.L => Algebra.trace F A.K ((a : A.K) * Algebra.trace A.K A.L (star q.1 * q.2)))`. Establish `hs : Continuous (star : A.L → A.L)` using `IsModuleTopology.continuous_of_linearMap (EtMeas.starF A)`. Establish `ht : Continuous (Algebra.trace A.K A.L)` using `IsModuleTopology.continuous_of_linearMap ((Algebra.trace A.K A.L).restrictScalars F)`. Establish `htF : Continuous (Algebra.trace F A.K)` using `IsModuleTopology.continuous_of_linearMap (Algebra.trace F A.K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `htF.comp (continuous_const.mul (ht.comp ((hs.comp continuous_fst).mul continuous_snd)))`. Establish `hW : IsOpen {q : A.L × A.L | A.kerL ψ (a : A.K) q.1 q.2 = 1}` using `(hψl.isOpen_fiber 1).preimage hg`. Take `⟨u, v, hu, -, h0u, hOv, huv⟩` from `generalized_tube_lemma (isCompact_singleton (x := (0 : A.L))) hOc hW (by`. Introduce and unpack `⟨y, m⟩ ⟨hy, -⟩`. Simplify using `only [Set.mem_singleton_iff] at hy`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hy` using the available equality. Simplify using `[Et.kerL, Et.psiK])`. Take `⟨n, hn⟩` from `hnbhd u (hu.mem_nhds (h0u rfl))`. Establish `hbig : ∃ n : ℕ, ∀ z ∈ O, (p : A.L) ^ n * z ∈ {y : A.L | ∀ m ∈ O, A.kerL ψ (a : A.K) y m = 1}`. Use `⟨n, fun z hz m hm => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((p : A.L) ^ n * z, m) ∈ u ×ˢ v` using `⟨by rw [hpn]; exact hn z hz, hOv hm⟩`. Conclude with `huv this`. Establish `hinj : ∀ k₁ k₂ : A.K, algebraMap A.K A.L k₁ = algebraMap A.K A.L k₂ → k₁ = k₂`. Introduce `k₁ k₂ h`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k', hk'⟩` from `hK.mul_inv_cancel (sub_ne_zero.2 hne)`. Establish `: algebraMap A.K A.L ((k₁ - k₂) * k') = 0` using `by rw [map_mul, map_sub, h, sub_self, zero_mul]`. Rewrite `this` using `[hk', map_one]`. Conclude with `one_ne_zero this`. Establish `hne : ∃ y, y ∉ {y : A.L | ∀ m ∈ O, A.kerL ψ (a : A.K) y m = 1}`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨-, x, hx, -⟩` from `hψ`. Establish `hd : (Module.finrank F A.K : F) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Use `set t : F := x / (2 * (Module.finrank F A.K : F)) with ht`. Use `set c : A.K := ((a⁻¹ : A.Kˣ) : A.K) * algebraMap F A.K t with hc`. Use `⟨algebraMap A.K A.L c, fun h => hx ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `h 1 (one_mem O)`. Establish `htr : Algebra.trace A.K A.L (star (algebraMap A.K A.L c) * 1) = 2 * c`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[mul_one, A.star_K, (GlobalTheory.JR.EtFacts.main F E A).2.1, A.star_K, two_mul, map_add]`. Establish `hac : (a : A.K) * (2 * c) = algebraMap F A.K (2 * t)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[hc, map_mul, map_ofNat, ← mul_assoc, mul_comm (a : A.K) 2, mul_assoc 2, ← mul_assoc (a : A.K), Units.mul_inv, one_mul]`. Simplify using `only [Et.kerL, Et.psiK, htr, hac, Algebra.trace_algebraMap, nsmul_eq_mul] at h1`. Rewrite using `[← h1, ht]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsep : ∀ x : A.L, x ≠ 0 → ∃ n : ℕ, ∀ z ∈ O, (p : A.L) ^ n * z ≠ x`. Introduce `x hx`. Take `⟨n, hn⟩` from `hnbhd {x}ᶜ (isOpen_compl_singleton.mem_nhds (Ne.symm hx))`. Conclude with `⟨n, fun z hz => by rw [hpn]; exact hn z hz⟩`. Establish `hex' : ∀ y : A.L, ∃ n : ℕ, (p : A.L) ^ n * y ∈ O`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y`. Take `⟨n, hn⟩` from `hex y`. Conclude with `⟨n, by rw [hpn]; exact hn⟩`. Establish `hdich' : ∀ y ∈ O, (∃ z ∈ O, y = (p : A.L) * z) ∨ ∃ z ∈ O, y * z = 1`. Rewrite using `[hp]`.
-
-Conclude with `hdich`. Establish `hunit` using `eq_zpow_mul_unit O p hdich' hsep hex'`. Take `⟨e, he⟩` from `eq_zpow_smul O p _ (by rw [hp]; exact hpO) hmul hbig hne hex' hunit`. Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`.
-
-Simplify using `only [hpz]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dual_eq_zpow : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → IsField A.K → IsField A.L → ∀ (ϖ : A.Kˣ) (O : Subring A.L), IsOpen (O : Set A.L) → IsCompact (O : Set A.L) → (∀ y ∈ O, star y ∈ O) → algebraMap A.K A.L (ϖ : A.K) ∈ O → (¬ ∃ z ∈ O, algebraMap A.K A.L (ϖ : A.K) * z = 1) → (∀ y ∈ O, (∃ z ∈ O, y = algebraMap A.K A.L (ϖ : A.K) * z) ∨ ∃ z ∈ O, y * z = 1) → (∀ U ∈ 𝓝 (0 : A.L), ∃ n : ℕ, ∀ z ∈ O, algebraMap A.K A.L ((ϖ : A.K) ^ n) * z ∈ U) → (∀ y : A.L, ∃ n : ℕ, algebraMap A.K A.L ((ϖ : A.K) ^ n) * y ∈ O) → ∀ a : A.Kˣ, ∃ e : ℤ, {y : A.L | ∀ m ∈ O, A.kerL ψ (a : A.K) y m = 1} = {y : A.L | ∃ z ∈ O, y = algebraMap A.K A.L ((ϖ ^ e : A.Kˣ) : A.K) * z} := by
   intro F E _ _ _ _ U A ψ hψ hK hL ϖ O hOo hOc hOstar hpO hpnu hdich hnbhd hex a

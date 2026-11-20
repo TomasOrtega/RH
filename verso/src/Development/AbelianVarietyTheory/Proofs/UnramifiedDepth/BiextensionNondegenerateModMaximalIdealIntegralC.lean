@@ -44,25 +44,25 @@ variable {Ω : Type} [Field Ω] {p : ℕ} [Fact p.Prime] [CharP Ω p] {S S' : Sc
   {G : Over S} [GrpObj G] {B : Over S'} [GrpObj B] {X : Type} [AddCommGroup X] {τ : PtHom s s' G B} {io : TorHom s G X}
 
 /- English proof (translation)
-The claim follows from `pow_eq_zero_of_le (Fact.out : p.Prime).two_le he`.
+A detailed English derivation is pending.
 -/
 theorem pow_p_of_sq {A : Type} [CommRing A] {e : A} (he : e ^ 2 = 0) : e ^ p = 0 :=
   pow_eq_zero_of_le (Fact.out : p.Prime).two_le he
 
 /- English proof (translation)
-The claim follows from `pow_p_of_sq (by rw [pow_two, DualNumber.eps_mul_eps])`.
+A detailed English derivation is pending.
 -/
 theorem eps_pow : (DualNumber.eps : DualNumber Ω) ^ p = 0 :=
   pow_p_of_sq (by rw [pow_two, DualNumber.eps_mul_eps])
 
 /- English proof (translation)
-Establish `h2` using `GlobalTheory.T.eq_one_of_tangent_vector_eq_one Ω p S' s' B _ (hg.map h) h1`. Establish `h3 : ∀ (A : Type) [CommRing A] [Algebra Ω A] (a : A), ∃ χ, a ^ p = 0 → io A χ = g A a` using `fun A _ _ a => by`. Distinguish the cases in `ha : a ^ p = 0`. Take `⟨χ, hχ⟩` from `(h.2.2.2.1 A _).1 (h2 A a ha)`. Conclude with `⟨χ, fun _ => hχ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨1, fun k => absurd k ha⟩`. Use `choose χ hχ using h3`. Establish `h4 : χ (DualNumber Ω) DualNumber.eps = 1` using `MonoidHom.ext fun x => GlobalTheory.T.alphaP_multiplicativeCharacter_eq_one Ω p (fun A _ _ a => χ A a x) (fun A A' _ _ _ _ f a ha => by`. Establish `ha' : f a ^ p = 0` using `by rw [← map_pow, ha, map_zero]`. Establish `: χ A' (f a) = (Units.map (f : A →* A')).comp (χ A a)` using `h.2.2.1 A' (by rw [hχ A' _ ha', h.2.1, hχ A a ha, hg.1 A A' f a ha])`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `DFunLike.congr_fun this x) (fun A _ _ a a' ha ha' => by`. Establish `hs : (a + a') ^ p = 0`. Break down `subsingleton_or_nontrivial A with _ | _` into its components or cases. Conclude with `Subsingleton.elim _ _`. Use `charP_of_injective_algebraMap (algebraMap Ω A).injective p` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_pow_char, ha, ha', add_zero]`. Establish `: χ A (a + a') = χ A a * χ A a'` using `h.2.2.1 A (by rw [map_mul, hχ A _ hs, hχ A a ha, hχ A a' ha', hg.2 A a a' ha ha'])`. Conclude with `DFunLike.congr_fun this x) _ _ eps_pow`. Rewrite using `[← hχ _ _ eps_pow, h4, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_torus (h : IsTorExt s s' G B X τ io) {g : Fam s G} (hg : IsAlpha p s G g)
     (h1 : τ _ (g (DualNumber Ω) DualNumber.eps) = 1) : g (DualNumber Ω) DualNumber.eps = 1 := by
@@ -93,9 +93,9 @@ theorem eq_one_of_torus (h : IsTorExt s s' G B X τ io) {g : Fam s G} (hg : IsAl
 variable [IsCommMonObj G] [IsCommMonObj B] {L : RigLB G} {c : CubicalStr G L} {M : RigLB B} {c' : CubicalStr B M}
 
 /- English proof (translation)
-Introduce `A _ _ π hπ e he y hy hyp`. Establish `hp` using `(Fact.out : p.Prime).ne_zero`. Take `⟨x, hx, rfl⟩` from `h.2.2.2.2 A π hπ y hy`. Take `⟨χ, hχ⟩` from `(h.2.2.2.1 A (x ^ p)).1 (by rw [map_pow, hyp])`. Establish `h1 : (Units.map (π : A →* Ω)).comp χ = 1` using `h.2.2.1 Ω (by rw [h.2.1, hχ, MonObj.comp_pow, hx, one_pow, map_one])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨A', _, _, f, π', χ', hf, hc, hn, h2, h3⟩` from `GlobalTheory.T.exists_pth_root_torus_point_nilpotent_augmented_ext Ω p X A π hπ χ fun a => congrArg Units.val (DFunLike.congr_fun h1 a)`. Establish `h4 : (Units.map (π' : A' →* Ω)).comp χ' = 1` using `MonoidHom.ext fun a => Units.ext (h2 a)`. Establish `k` using `ht A' _ _ (ho A' π' hn (f e) (by rw [← map_pow, he, map_zero]) ((homAt s f ≫ x) * (io A' χ')⁻¹) (by rw [MonObj.comp_mul, GrpObj.comp_inv, ← h.2.1, h4, map_one, inv_one, _root_.mul_one, ← Category.assoc, hom_comp, hc, hx]) (by rw [mul_pow, inv_pow, ← map_pow, h3, h.2.1, hχ, MonObj …`. Rewrite `k` using `[hg.1 A A' f e (pow_p_of_sq he), map_mul, map_inv, (h.2.2.2.1 A' _).2 ⟨χ', rfl⟩, inv_one, _root_.mul_one, h.1, h.1]`. Conclude with `cubWeil_of_injective f hf ((hg.map h).pow_eq_one hp (pow_p_of_sq he)) hyp k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Orth.map [Module.Free ℤ X] [Module.Finite ℤ X] (h : IsTorExt s s' G B X τ io) (ht : Transfer p c c' τ)
     {g : Fam s G} (hg : IsAlpha p s G g) (ho : Orth p s G c g) : Orth p s' B c' (fun A _ _ a => τ A (g A a)) := by
@@ -117,16 +117,16 @@ theorem Orth.map [Module.Free ℤ X] [Module.Finite ℤ X] (h : IsTorExt s s' G 
   exact cubWeil_of_injective f hf ((hg.map h).pow_eq_one hp (pow_p_of_sq he)) hyp k
 
 /- English proof (translation)
-Introduce `_ hg ho` and use `eq_one_of_torus h hg (hB _ (hg.map h) (ho.map h ht hg))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NonDeg.of_torExt [Module.Free ℤ X] [Module.Finite ℤ X] (h : IsTorExt s s' G B X τ io) (ht : Transfer p c c' τ)
     (hB : NonDeg p s' B c') : NonDeg p s G c := fun _ hg ho =>
   eq_one_of_torus h hg (hB _ (hg.map h) (ho.map h ht hg))
 
 /- English proof (translation)
-Introduce `g hg ho`. Establish `hp` using `(Fact.out : p.Prime).ne_zero`. Establish `: Module.Finite Ω (DualNumber Ω)` using `inferInstanceAs (Module.Finite Ω (Ω × Ω))`. Use `hP _ _ (hg.pow_eq_one hp eps_pow) (GlobalTheory.T.cubicalWeil_trivial_of_localArtinian_points Ω S s G L c p hf (DualNumber Ω) _ (hg.pow_eq_one hp eps_pow) fun A _ _ π hπ f y hy => ?_)` and prove the remaining obligations. Establish `he : f DualNumber.eps ^ 2 = 0` using `by rw [← map_pow, pow_two, DualNumber.eps_mul_eps, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx : (homAt s π ≫ y) ^ p = 1` using `by rw [← MonObj.comp_pow, hy, MonObj.comp_one]`. Establish `k₁` using `GlobalTheory.T.alphaP_homomorphism_cubicalWeil_trivial_rational_torsion Ω p S s G L c g hg _ hx A _ (pow_p_of_sq he)`. Establish `k₂` using `ho A π hπ _ he (y * (homAt s (Algebra.ofId Ω A) ≫ homAt s π ≫ y)⁻¹) (by rw [MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc (homAt s π), hom_comp, Subsingleton.elim (π.comp (Algebra.ofId Ω A)) (AlgHom.id Ω Ω), hom_id, Category.id_comp, mul_inv_cancel]) (by rw [mul_pow, inv_pow …`. Establish `k` using `cubWeil_mul_right k₂ k₁`. Rewrite `k` using `[inv_mul_cancel_right, hg.1 _ A f _ eps_pow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem NonDeg.of_perf [IsAlgClosed Ω] (hf : IsFinite ((𝟙 G) ^ p : G ⟶ G).left) (hP : Perf p G c) :
     NonDeg p s G c := by
@@ -148,11 +148,11 @@ theorem NonDeg.of_perf [IsAlgClosed Ω] (hf : IsFinite ((𝟙 G) ^ p : G ⟶ G).
 end Steps
 
 /- English proof (translation)
-Establish `hl` using `GlobalTheory.firstFiveLaws.1`. Set `K` to `AlgebraicClosure (FractionRing O)`. Establish `hi : Function.Injective (algebraMap O K)`. Rewrite using `[IsScalarTower.algebraMap_eq O (FractionRing O) K]`. Conclude with `(algebraMap (FractionRing O) K).injective.comp (IsFractionRing.injective O _)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: CharZero K` using `charZero_of_injective_algebraMap hi`. Establish `hnK : (n : K) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Take `⟨f₁, f₂, f₃⟩` from `GlobalTheory.T.finite_flat_surjective_mul_by_n_abelianScheme hl O P.A P.isAb P.L P.isLB P.ample n hn`. Use `⟨f₁, GlobalTheory.T.eq_one_of_cubWeil_trivial_of_generic O K hi P.A P.g P.smoothDim L c n hn f₁ f₂ ((hl.mulN _ P n hn).2.2.2.2 K _ hnK) fun y hy hp => ?_⟩` and prove the remaining obligations. Establish `ht` using `CubNondeg.main hl _ P.A P.isAb L c K _ n hnK f₁ f₂ f₃ y hy hp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[hL]`. Take `⟨u, hu⟩` from `ht`. Conclude with `P.ktriv K _ y fun _ => ⟨⊤, trivial, _, LB.isGen_genPull _ u hu _⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem perf_of_polAV {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [CharZero O] (P : Out.PolAV (Sp O))
     [IsCommMonObj P.A] [IsNoetherianRing O] (L : RigLB P.A) (hL : L.L = P.L) (c : CubicalStr P.A L) {n : ℕ} (hn : 1 ≤ n) :
@@ -175,13 +175,11 @@ theorem perf_of_polAV {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [Char
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨W, _, _, _, f, β', t', m, hW, hf, hβ', ht', hs⟩` from `GlobalTheory.T.exists_finite_extension_split_special_fibre_point E H V hV t ht Ω β hβ`. Take `⟨τ, io, h₁, h₂⟩` from `GlobalTheory.T.exists_torusExtension_points_pullback_fieldPoint E H _ _ _ t t' m Ω (spMap β) (spMap β') (by`. Rewrite using `[← hf]`. Conclude with `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom β')).symm) p`. Use `NonDeg.of_torExt h₁ h₂ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨P, -⟩` from `GlobalTheory.LN.uDvrSt_holds E H W hW t' ht' hs`. Take `⟨τ', io', k₁, k₂⟩` from `GlobalTheory.T.exists_isTorusExtensionOnPoints_mod_ideal W _ P.D.toPre t'.G (P.U.gt 0) Ω β' hβ'`. Establish `k₃` using `GlobalTheory.T.abelianPart_projection_respects_orthogonality W _ P.D P.A t'.G P.U.toUnifPre Ω β' hβ' τ' k₂ p`. Use `hW.1` as an intermediate fact. Use `hW.2.2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f₁, f₂⟩` from `perf_of_polAV P.D.toPre.P ⟨_, P.D.toPre.rig, P.D.toPre.P.isLB, P.D.toPre.rig_gen⟩ rfl P.D.toPre.cub (Fact.out : p.Prime).one_le`. Establish `k₄` using `NonDeg.of_torExt k₁ k₃ (NonDeg.of_perf f₁ f₂)`. Establish `key : ∀ (L : RigLB t'.G) (_ : L = t'.PP) (c : CubicalStr t'.G L), NonDeg p (spMap β') t'.G c → NonDeg p (spMap β') t'.G t'.cub`. Introduce and unpack `L rfl c hc`. Rewrite using `[PtGermCompare.cubical_unique (PtGermCompare.surjective_cube P.U.toUnifPre) t'.cub c]` and apply the resulting hypothesis.
-
-Conclude with `key _ P.bundle _ k₄`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem nonDeg_of_polAt {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (hV : GlobalTheory.LN.CDvr V) (t : SAB H (Sp V))
     (ht : GlobalTheory.LN.PolAt t (Out.jK V)) {Ω : Type} [Field Ω] [IsAlgClosed Ω] (p : ℕ) [Fact p.Prime] [CharP Ω p]
@@ -205,7 +203,7 @@ theorem nonDeg_of_polAt {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (hV
   exact key _ P.bundle _ k₄
 
 /- English proof (translation)
-Use `MvPowerSeries.map_subst (a := fun q : Fin 3 × Fin d => a q.1 q.2) (MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => ha q.1 q.2) (h := β) f` as an intermediate fact. Rewrite `this` using `[show MvPowerSeries.subst (fun q : Fin 3 × Fin d => a q.1 q.2) f = 1 from h, map_one]`. Unfold `ev`. Simplify using `only [h']`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_map_eq_one {R R' : Type} [CommRing R] [CommRing R'] (β : R →+* R') {d : ℕ} (f : PS R 3 d)
     (a : Fin 3 → Germ.Pt R 2 d) (a' : Fin 3 → Germ.Pt R' 2 d) (ha : ∀ j i, MvPowerSeries.constantCoeff (a j i) = 0)
@@ -218,13 +216,13 @@ theorem ev_map_eq_one {R R' : Type} [CommRing R] [CommRing R'] (β : R →+* R')
   exact this.symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c inst hstar T io y C3 C _ _ V ι' hι k Y hY`. Take `rfl` from `PowGerm.starSt E H inst hstar`. Use `letI := H.starRing`. Use `letI := io.toAlgebra`. Assume the negation of the conclusion as `hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨Ω, _, _, _, ρ, hρ⟩` from `GlobalTheory.T.exists_algClosed_residueField_valuedField C V Y.algClosed`. Take `⟨j, hj, hjm⟩` from `GlobalTheory.T.exists_ringHom_valuationRing_of_embOK T C V ι' hι`. Establish `: Fact V.l.Prime` using `⟨V.l_prime⟩`. Take `⟨BT, hF, -, h1, h2, -⟩` from `integralChart_formalBiext E H Dw l Xo c T io y C3`. Establish `hF0 : ∀ i, MvPowerSeries.constantCoeff (C3.FT i) = 0` using `fun i => hF ▸ BT.G.const i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : V.RR.subtype.comp j = ι'.comp (algebraMap T.V T.Fr)` using `RingHom.ext hj`. Establish `hD` using `GlobalTheory.T.degenerate_direction_of_not_nondegenerate C V _ _ Y T.V j C3.FT C3.ph2T hF0 (fun i => by rw [hY.F, e, MvPowerSeries.map_comp]; exact congrArg _ (C3.gen.1.1 i)) (by rw [hY.ph2, e, MvPowerSeries.map_comp]; exact congrArg _ C3.gen.1.2.2.2.1) Ω ρ hρ hN`. Take `⟨P, hP, hL⟩` from `GlobalTheory.T.exists_formalChart_point_nilpotent_coordinates E H T.V C3.I.G _ _ _ _ _ _ C3.chartT hF0 Ω (ρ.comp j)`. Use `GlobalTheory.T.not_nondegenerate_of_degenerate_series_direction Ω V.l _ _ C3.I.G.G _ C3.I.G.cub _ _ (MvPowerSeries.map (ρ.comp j) C3.ph1T) _ P (fun i => by rw [MvPowerSeries.constantCoeff_map, hF0, map_zero]) ?_ ?_ ?_ hL (GlobalTheory.T.universalChart_points_over_field_point E H …` and prove the remaining obligations. Apply the tactic sequence `refine ev_map_eq_one _ _ _ _ ?_ ?_ (h1 ▸ BT.cocycleLeft_zero_fst) <;> intro a b <;> fin_cases a <;> simp [pt]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `refine ev_map_eq_one _ _ _ _ ?_ ?_ (h1 ▸ BT.cocycleLeft_zero_snd) <;> intro a b <;> fin_cases a <;> simp [pt]`. Apply the tactic sequence `refine ev_map_eq_one _ _ _ _ ?_ ?_ (h2 ▸ BT.cocycleRight_zero_fst) <;> intro a b <;> fin_cases a <;> simp [pt]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ndg_at_chart : ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) [StarRing (NumberField.RingOfIntegers E)], NondegenerateCharts Xo c := by
   intro E _ _ _ H Dw l Xo c inst hstar T io y C3 C _ _ V ι' hι k Y hY

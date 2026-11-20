@@ -18,7 +18,7 @@ section Frob
 open scoped Matrix.Norms.Frobenius
 
 /- English proof (translation)
-Rewrite using `[Matrix.frobenius_norm_def, ← Real.sqrt_eq_rpow, Real.sq_sqrt (by positivity)]`. Simplify using `only [Real.rpow_two]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frob_sq (A : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :
     ‖A‖ ^ 2 = ∑ i, ∑ j, ‖A i j‖ ^ 2 := by
@@ -26,7 +26,7 @@ theorem frob_sq (A : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :
   simp only [Real.rpow_two]
 
 /- English proof (translation)
-Establish `h : ∀ x, ∑ w, ‖Z x w‖ ^ 2 = ∑ o, ‖Z x (e o)‖ ^ 2` using `fun x => (e.sum_comp (fun w => ‖Z x w‖ ^ 2)).symm`. Rewrite using `[frob_sq, Finset.sum_congr rfl (fun x _ => h x), ← e.sum_comp (fun x => ∑ o, ‖Z x (e o)‖ ^ 2)]`. Simplify using `only [Fintype.sum_option, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frob_split (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
     (Z : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :
@@ -40,11 +40,11 @@ theorem frob_split (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q))
   ring
 
 /- English proof (translation)
-Establish `h3 : 0 < 3 * t` using `by linarith`. Establish `hη0 : 0 ≤ η` using `by rw [hη]; exact div_nonneg (by linarith) h3.le`. Establish `key : η * (3 * t) = t - 1` using `by rw [hη]; field_simp`. Establish `hηt : η < 1 / 3` using `by nlinarith`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hW' : (1 - η) * R ≤ W` using `by linarith`. Establish `hsq : ((1 - η) * R) ^ 2 ≤ W ^ 2` using `pow_le_pow_left₀ (by nlinarith) hW' 2`. Establish `hge : 1 ≤ t * (1 - η) ^ 2` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hsq (by linarith : (0 : ℝ) ≤ t), sq_nonneg R]`. Establish `hW' : W ≤ (1 + η) * R` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hsq : W ^ 2 ≤ ((1 + η) * R) ^ 2` using `pow_le_pow_left₀ hW hW' 2`. Establish `hle : (1 + η) ^ 2 ≤ t` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hle (sq_nonneg R)]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem add_le_mul_pow_of_sq_le_of_le_mul {t η R W : ℝ} (ht : 1 < t) (hη : η = (t - 1) / (3 * t)) (hR : 0 ≤ R)
     (hW : 0 ≤ W) (h1 : W ≤ R + η * R) (h2 : R ≤ W + η * R) :
@@ -66,7 +66,7 @@ theorem add_le_mul_pow_of_sq_le_of_le_mul {t η R W : ℝ} (ht : 1 < t) (hη : �
     nlinarith [mul_le_mul_of_nonneg_right hle (sq_nonneg R)]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hab`. Rewrite `hab` using `[not_le]`. Use the polynomial consequences of the given equalities and inequalities.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private lemma le_of_sq_le_sq_of_nonneg {a b : ℝ} (hb : 0 ≤ b) (h : a ^ 2 ≤ b ^ 2) : a ≤ b := by
   by_contra hab
@@ -74,51 +74,47 @@ private lemma le_of_sq_le_sq_of_nonneg {a b : ℝ} (hb : 0 ≤ b) (h : a ^ 2 ≤
   nlinarith
 
 /- English proof (translation)
-Introduce `P Q P' Q' e j hj t ht`. Use `set η : ℝ := (t - 1) / (3 * t) with hη`. Establish `hηpos : 0 < η` using `div_pos (by linarith) (by linarith)`. Establish `hη3 : η < 1 / 3`. Rewrite using `[hη, div_lt_iff₀ (by linarith)]; linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set c : ℝ := η / 3 with hc`. Establish `hcpos : 0 < c` using `by positivity`. Establish `hc1 : c < 1` using `by linarith`. Use `⟨min 1 (c ^ 2), lt_min one_pos (by positivity), ?_⟩` and prove the remaining obligations. Introduce `y a hy hya hrow hblk g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyc : ptSq e y < c ^ 2` using `lt_of_lt_of_le hy (min_le_right _ _)`. Establish `hy1 : ptSq e y < 1` using `lt_of_lt_of_le hy (min_le_left _ _)`. Take `⟨h00, h0b, ha0, hab⟩` from `hj g`. Establish `hcol : ∀ x, UpqT.mat a x (e none) = y x`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun hya x` as an intermediate fact. Simplify `this` using `[act, baseVec, Matrix.mulVec, dotProduct, Pi.single_apply]`. Use `set S : ℝ := ∑ i, ‖y (e (some i))‖ ^ 2 with hS`. Establish `hS0 : 0 ≤ S` using `by positivity`. Establish `hpt : ptSq e y = ‖y (e none) - 1‖ ^ 2 + 2 * S` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSpt : S ≤ ptSq e y` using `by nlinarith [sq_nonneg ‖y (e none) - 1‖]`. Establish `hSc : S < c ^ 2` using `lt_of_le_of_lt hSpt hyc`. Establish `hS1 : S < 1` using `lt_of_le_of_lt hSpt hy1`. Establish `hn1 : 1 ≤ ‖1 + y (e none)‖`. Establish `h1 : ‖y (e none) - 1‖ < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[norm_nonneg (y (e none) - 1), sq_nonneg ‖y (e none) - 1‖]`. Establish `h2 : (2 : ℂ) = (1 + y (e none)) - (y (e none) - 1)` using `by ring`. Establish `h3 : ‖(2 : ℂ)‖ ≤ ‖1 + y (e none)‖ + ‖y (e none) - 1‖`. Rewrite using `[h2]`. Conclude with `norm_sub_le _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ‖(2 : ℂ)‖ = 2` using `by simp`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set M := UpqT.mat a with hM`. Use `set K := UpqT.mat (j g) - 1 with hK`. Use `set Ep : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ := Matrix.of fun x w => (e.symm x).elim 0 (fun _ => (e.symm w).elim 0 (fun _ => (M - 1) x w)) with hEp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Use `set Z0 := (M - 1) + K - Ep with hZ0`. Use `set Z := UpqT.mat (a * j g) - 1 with hZ`. Establish `hmul : UpqT.mat (a * j g) = M * UpqT.mat (j g)` using `rfl`. Establish `hZe : Z = (M - 1) + K + (M - 1) * K`. Rewrite using `[hZ, hmul, hK]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `noncomm_ring`. Establish `hdiff : Z - Z0 = Ep + (M - 1) * K`. Rewrite using `[hZe, hZ0]`. Normalize the expressions using the abelian group laws. Establish `hK2 : ‖K‖ ^ 2 = hsDist g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[frob_split e K]`. Simplify using `[hK, Matrix.sub_apply, Matrix.one_apply, h00, h0b, ha0, hab, hsDist]`. Establish `hEp2 : ‖Ep‖ ^ 2 = ∑ i, ∑ b, ‖(M - 1) (e (some i)) (e (some b))‖ ^ 2`. Rewrite using `[frob_split e Ep]`. Simplify using `[hEp, Matrix.of_apply]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hEpS : ‖Ep‖ ^ 2 ≤ S ^ 2`. Rewrite using `[hEp2, sq, hS, Finset.sum_mul_sum]`. Use `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hblk i b, div_pow, ← mul_pow]`. Establish `hp : 0 ≤ (‖y (e (some i))‖ * ‖y (e (some b))‖) ^ 2` using `sq_nonneg _`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hM2 : ‖M - 1‖ ^ 2 = ptSq e y + ‖Ep‖ ^ 2`. Rewrite using `[frob_split e (M - 1), hEp2, hpt]`. Simplify using `[Matrix.sub_apply, Matrix.one_apply, hcol, hrow]`. Rewrite using `[hS, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e00 : Z0 (e none) (e none) = y (e none) - 1`. Simplify using `[hZ0, hK, hEp, Matrix.of_apply, Matrix.sub_apply, Matrix.add_apply, hcol, h00]`. Establish `e0b : ∀ b, Z0 (e none) (e (some b)) = M (e none) (e (some b))`. Introduce `b`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hZ0, hK, hEp, Matrix.of_apply, Matrix.sub_apply, Matrix.add_apply, Matrix.one_apply, h0b]`. Establish `ei0 : ∀ i, Z0 (e (some i)) (e none) = y (e (some i))`. Introduce `i`. Simplify using `[hZ0, hK, hEp, Matrix.of_apply, Matrix.sub_apply, Matrix.add_apply, Matrix.one_apply, hcol, ha0]`. Establish `eib : ∀ i b, Z0 (e (some i)) (e (some b)) = (UpqT.mat g - 1) i b`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i b`. Simplify using `[hZ0, hK, hEp, Matrix.of_apply, Matrix.sub_apply, Matrix.add_apply, Matrix.one_apply, hab]`. Establish `hZ02 : ‖Z0‖ ^ 2 = ptSq e y + hsDist g`. Rewrite using `[frob_split e Z0, e00]`. Simplify using `only [e0b, ei0, eib, hrow]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpt, hS]`. Unfold `hsDist`. Expand and normalize the polynomial expressions, which then agree. Establish `hZ2 : ‖Z‖ ^ 2 = hsDist (a * j g)`. Rewrite using `[frob_sq]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Establish `hR0 : 0 ≤ ‖Z0‖` using `norm_nonneg _`. Establish `hEpb : ‖Ep‖ ≤ c * ‖Z0‖`. Apply `le_of_sq_le_sq_of_nonneg (by positivity)` to reduce the goal to its premises. Rewrite using `[mul_pow, hZ02]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : 0 ≤ hsDist g` using `by rw [← hK2]; positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm, mul_add]`. Conclude with `le_add_of_nonneg_right (mul_nonneg (sq_nonneg c) hg)`. Establish `hMb : ‖M - 1‖ ≤ 2 * c`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `le_of_sq_le_sq_of_nonneg (by positivity)` to reduce the goal to its premises. Rewrite using `[hM2]`. Establish `h1 : ‖Ep‖ ^ 2 ≤ c ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (2 * c) ^ 2 = 4 * c ^ 2` using `by ring`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Combine the linear relations using `[sq_nonneg c]`. Establish `hKb : ‖K‖ ≤ ‖Z0‖`. Apply `le_of_sq_le_sq_of_nonneg hR0` to reduce the goal to its premises. Rewrite using `[hK2, hZ02]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: 0 ≤ ptSq e y` using `by rw [hpt]; positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdb : ‖Z - Z0‖ ≤ η * ‖Z0‖`. Rewrite using `[hdiff]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `h1 : ‖Z‖ ≤ ‖Z0‖ + η * ‖Z0‖`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖Z0‖ ≤ ‖Z‖ + η * ‖Z0‖`. Combine the equalities or inequalities in the displayed calculation. Take `⟨hA, hB⟩` from `add_le_mul_pow_of_sq_le_of_le_mul ht hη hR0 (norm_nonneg _) h1 h2`.
-
-Rewrite `hA`, `hB` using `[hZ02, hZ2]`. Conclude with `⟨hA, hB⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hsDist_section_mul_block : ∀ (P Q P' Q' : ℕ) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (j : UpqT P' Q' → UpqT P Q), IsBlockEmb e j → ∀ t : ℝ, 1 < t → ∃ δ : ℝ, 0 < δ ∧ ∀ (y : Sp P Q) (a : UpqT P Q), ptSq e y < δ → act a (baseVec e) = y → (∀ b, ‖UpqT.mat a (e none) (e (some b))‖ = ‖y (e (some b))‖) → (∀ i b, ‖(UpqT.mat a - 1) (e (some i)) (e (some b))‖ = ‖y (e (some i))‖ * ‖y (e (some b))‖ / ‖1 + y (e none)‖) → ∀ g : UpqT P' Q', ptSq e y + hsDist g ≤ t * hsDist (a * j g) ∧ hsDist (a * j g) ≤ t * (ptSq e y + hsDist g) := by
   intro P Q P' Q' e j hj t ht

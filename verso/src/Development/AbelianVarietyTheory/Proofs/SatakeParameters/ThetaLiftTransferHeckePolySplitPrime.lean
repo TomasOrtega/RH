@@ -21,9 +21,9 @@ namespace GlobalTheory.ThetaPrimeHecke
 open Formalism.L2.Host Formalism.L2.Col
 
 /- English proof (translation)
-Establish `h1 : Valued.v ((atFin Q k : (Q.adicCompletion L)ˣ) : Q.adicCompletion L) = WithZero.exp (-1 : ℤ)`. Rewrite using `[← hk]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' Q (k : L)`. Establish `h2 : Valued.v ((atFin Q (unif Q) : (Q.adicCompletion L)ˣ) : Q.adicCompletion L) = WithZero.exp (-1 : ℤ)` using `unif_spec Q`. Establish `h3 : IsUnitAt Q (atFin Q k * (atFin Q (unif Q))⁻¹)` using `by show Valued.v _ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, h1, h2, mul_inv_cancel₀ WithZero.exp_ne_zero]`. Establish `h4` using `hu _ h3`. Rewrite `h4` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locK_eq_val {L : Type} [Field L] [NumberField L] (χ : HChar L) (Q : HeightOneSpectrum (𝓞 L))
     (hu : χ.UnrAt Q) (k : Lˣ) (hk : Q.valuation L (k : L) = WithZero.exp (-1 : ℤ)) :
@@ -41,9 +41,9 @@ theorem locK_eq_val {L : Type} [Field L] [NumberField L] (χ : HChar L) (Q : Hei
   exact h4
 
 /- English proof (translation)
-Take `⟨ϖ, h⟩` from `Q.intValuation_exists_uniformizer`. Use `⟨ϖ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Q.intValuation_lt_one_iff_mem, h, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Rewrite using `[← Q.intValuation_le_pow_iff_mem, h, WithZero.exp_le_exp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[← h]`. Conclude with `Q.valuation_of_algebraMap ϖ`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unif {L : Type} [Field L] [NumberField L] (Q : HeightOneSpectrum (𝓞 L)) :
     ∃ ϖ : 𝓞 L, ϖ ∈ Q.asIdeal ∧ ϖ ∉ Q.asIdeal ^ 2 ∧ Q.valuation L (ϖ : L) = WithZero.exp (-1 : ℤ) := by
@@ -54,11 +54,11 @@ theorem exists_unif {L : Type} [Field L] [NumberField L] (Q : HeightOneSpectrum 
   · rw [← h]; exact Q.valuation_of_algebraMap ϖ
 
 /- English proof (translation)
-Establish `key` using `GlobalTheory.KerRangeCount.card_ker_and_heckePolyOf_conv.2 ℂ q r t (fun j => if j ≤ r then a j else 0) u⁻¹ (u⁻¹ * v) (fun j hj => if_neg (by omega))`. Establish `h1 : heckePolyOf r q (fun j => if j ≤ r then a j else 0) = heckePolyOf r q a`. Unfold `heckePolyOf`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Simplify `hj)]` using `only [if_pos (show j ≤ r by simpa [Nat.lt_succ_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[h1]`. Rewrite using `[← key]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [ite_mul, mul_ite, zero_mul, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_filter, ← Finset.sum_filter]`. Use `Finset.sum_congr (by ext j; simp [Nat.lt_succ_iff, and_comm]) fun j hj => ?_` and prove the remaining obligations. Establish `hjk : j ≤ k` using `by simpa [Nat.lt_succ_iff] using (Finset.mem_filter.1 hj).1`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hjk`. Rewrite using `[Nat.add_sub_cancel_left, pow_add, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -87,9 +87,9 @@ theorem poly_id (q r t : ℕ) (u v : ℂ) (a : ℕ → ℂ) :
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `hc`. Apply `h` to reduce the goal to its premises. Use `HeightOneSpectrum.ext ((conjPl P).isMaximal.eq_of_le P.isPrime.ne_top ?_)` and prove the remaining obligations. Use `Ideal.map_le_iff_le_comap.2 fun c hcP => ?_` and prove the remaining obligations. Take `⟨c', hc', he⟩` from `hc c hcP`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: Formalism.DivisionValues.cO D.host.E c = c'` using `RingOfIntegers.ext he.symm`. Rewrite using `[Ideal.mem_comap, this]`. Conclude with `hc'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_isConjPl {P : Pl D.host.E} (h : conjPl P ≠ P) : ¬ Formalism.IndefR.Lev.IsConjPl P P := by
   intro hc
@@ -102,14 +102,14 @@ theorem not_isConjPl {P : Pl D.host.E} (h : conjPl P ≠ P) : ¬ Formalism.Indef
   exact hc'
 
 /- English proof (translation)
-Introduce `e f h x h1 h2 h3`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, ha e f h x h1 h2 h3, hb e f h x h1 h2 h3, inv_one, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem unrPl_mul_inv {P : Pl D.host.E} {a b : (AE D)ˣ →* Circle} (ha : UnrPl P a) (hb : UnrPl P b) : UnrPl P (a * b⁻¹) := by
   intro e f h x h1 h2 h3
   rw [MonoidHom.mul_apply, MonoidHom.inv_apply, ha e f h x h1 h2 h3, hb e f h x h1 h2 h3, inv_one, mul_one]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hr`. Take `⟨b, rfl⟩` from `ht`. Rewrite using `[show (2 * a + 1 + 1) / 2 = a + 1 by omega, show (2 * b + 1 + 1) / 2 = b + 1 by omega, he, ← hq]`. Prove the components needed by the constructor for the conclusion. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -129,33 +129,31 @@ theorem consts (μ η ηa q s : ℂ) (hμ : μ ≠ 0) (hη : η ≠ 0) (hs : s �
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hc hS i t P`. Take `⟨hQ0, hG, -, hF⟩` from `GlobalTheory.T.theta_lift_levels_good_primes_properties R F hc.lev`. Take `⟨hgood, hsplit, hq⟩` from `hF hc.fam t P P.2`. Take `⟨hunη, hunμ⟩` from `GlobalTheory.T.splittingCharacters_unramified_offLevels R F hc.lev t _ hgood`. Take `⟨gramR, c0R, c0L, tie⟩` from `hc.fam.tie`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hAr, hAt⟩` from `tie.ranks`. Establish `hP0 : (P : Pl0) ∈ A.ok A.μ0`. Establish `h` using `(tie.ok t P).1 P.2`. Rewrite using `[tie.ok, hQ0]`. Simplify using `only [Finset.coe_empty, Set.union_empty]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨h.1, fun h' => h.2.1 (Or.inl h'), fun Q hQ => h.2.2 Q (Or.inl hQ)⟩`. Take `⟨e, he⟩` from `GlobalTheory.ParahoricLift.exists_isIdemAt (not_isConjPl hsplit)`. Take `⟨ϖ, hϖ1, hϖ2, hϖ3⟩` from `exists_unif (R.pl P)`. Establish `hϖ0 : (ϖ : D.host.E) ≠ 0` using `fun h => by`. Rewrite `hϖ3` using `[h, map_zero]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.exp_ne_zero hϖ3.symm`. Establish `hpl : Formalism.L2.JoinChr.IsPlIdem D e (R.pl P)`. Take `⟨⟨h1, h2, v, ε, h3, h4⟩, h5⟩` from `he`. Conclude with `⟨h1, ⟨v, ε, h3, Or.inl ⟨h2, h4⟩⟩, h5⟩`. Set `x : (AE D)ˣ` to `Formalism.L2.JoinChr.locU hpl.1 (Units.mk0 _ hϖ0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx : (x : AE D) = Formalism.L2.JoinChr.locE D e (Units.mk0 _ hϖ0 : D.host.Eˣ)` using `rfl`. Establish `hx' : (x : AE D) = e * incA D (ϖ : D.host.E) + (1 - e)`. Rewrite using `[hx, Formalism.L2.JoinChr.locE, Units.val_mk0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hun1` using `hunμ ((i : ℕ) + 1) (Nat.le_add_left _ _) i.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hfix, hM⟩` from `GlobalTheory.T.thetaVacuum_heckeIdentity_splitPlace R.ψ _ _ _ _ _ (R.pl P) (hc.thP.ωP i t) hsplit hun1 (unrPl_mul_inv hun1 hunη)`. Establish `hW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Establish `hV : (Vc D i).rank = (Wc D i).rank + D.R.t`. Rewrite using `[hW]`. Conclude with `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM'` using `(hM e ϖ x D.R.t he hϖ1 hϖ2 hx').2 hV`. Use `⟨_, fun k hk => GlobalTheory.T.thetaLiftGoodProjector_intertwines_matchedHecke R F hc hS i t _ hgood hfix _ _ (hM' k hk), fun a => ?_⟩` and prove the remaining obligations. Establish `hu0 : (R.C.mu0 i).UnrAt (R.pl P)`. Use `(R.C.isMu0 i).unr _ fun k hk => (hG t _ hgood).1 ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `fin_cases k`. Conclude with `Ideal.mul_mem_right _ _ hk`. Conclude with `Ideal.mul_mem_left _ _ hk`. Establish `huξ : (R.xiH t).UnrAt (R.pl P)`. Assume the negation of the conclusion as `h`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `(hc.lev.Q_ram t _).1 h with h | ⟨PP, h1, h2⟩` into its components or cases. Conclude with `(hgood _ (Or.inr h)).1 rfl`. Conclude with `(hgood _ (Or.inr h1)).2 h2`. Establish `hη : ((R.eta x : Circle) : ℂ) = (R.C.eta.val (R.pl P) : ℂˣ)`. Rewrite using `[hc.lev.eta.2 _ e hpl _ x hx, locK_eq_val _ _ (R.C.isEta.unr _) _ hϖ3]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hμ : ((R.toLevCh.mu t ((i : ℕ) + 1) x : Circle) : ℂ) = D.what₂.embLL (A.muVal i t P : D.what₂.LL)`. Rewrite using `[hc.fam.muVal i t P P.2, HChar.val_mul, Units.val_mul, ← locK_eq_val _ _ hu0 (Units.mk0 _ hϖ0) hϖ3, ← locK_eq_val _ _ huξ (Units.mk0 _ hϖ0) hϖ3, ← (hc.lev.mu0 i).2 _ e hpl _ x hx, ← (hc.lev.xi t).2 _ e hpl _ x hx, ← Circle.coe_mul]`. Both sides reduce to the same expression. Establish `hN : (0 : ℝ) < (Ideal.absNorm (R.pl P).asIdeal : ℕ)` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero fun h => (R.pl P).ne_bot (Ideal.absNorm_eq_zero_iff.1 h))`. Establish `hs0 : ((Real.sqrt (Ideal.absNorm (R.pl P).asIdeal : ℕ) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.sqrt_pos.2 hN).ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hss : ((Real.sqrt (Ideal.absNorm (R.pl P).asIdeal : ℕ) : ℝ) : ℂ) * ((Real.sqrt (Ideal.absNorm (R.pl P).asIdeal : ℕ) : ℝ) : ℂ) = (Ideal.absNorm (R.pl P).asIdeal : ℕ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt hN.le, Complex.ofReal_natCast]`. Establish `hηa : D.what₂.embLL (A.etaVal P : D.what₂.LL) = ((R.eta x : Circle) : ℂ) * ((Real.sqrt (Ideal.absNorm (R.pl P).asIdeal : ℕ) : ℝ) : ℂ)⁻¹`. Rewrite using `[hc.fam.etaVal P hP0, hη, etaAlg, HChar.valTw, Complex.cpow_neg, Real.sqrt_eq_rpow, Complex.ofReal_cpow hN.le, Complex.ofReal_natCast]`. Establish `hr : Odd (Wc D i).rank`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hW]`. Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Conclude with `⟨a + b - 1, by unfold Ranks.r; omega⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c1, c2⟩` from `consts _ _ _ _ _ (Circle.coe_ne_zero (R.toLevCh.mu t ((i : ℕ) + 1) x)) (Circle.coe_ne_zero (R.eta x)) hs0 hss hηa _ _ hr D.R.t_odd`. Establish `hB : ((A.fam.L i t).blockProd P).map D.what₂.embLL = blockPoly (D.what₂.embLL (firstValA (A.muVal i t) A.etaVal A.q A.r P)) (A.q P) A.t`. Rewrite using `[← map_blockPoly]`. Simplify using `[BlockDat.blockProd, FamIn.fam, liftDat]`. Rewrite using `[hB, firstValA, map_mul D.what₂.embLL, map_mul D.what₂.embLL, Units.val_inv_eq_inv_val, map_inv₀, map_pow D.what₂.embLL, map_natCast D.what₂.embLL, ← hμ, hAr, hAt, hq, ← hW, ← c1, ← c2]`.
-
-Simplify using `only [Lift.chrTh, MonoidHom.mul_apply, MonoidHom.inv_apply, Circle.coe_mul, Circle.coe_inv]`. Rewrite using `[hV]`. Conclude with `poly_id _ _ _ _ _ a`.
+A detailed English derivation is pending.
 -/
 theorem transfer_and_heckePoly : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Core R F → SchurAll R → ∀ i t (P : A.ok t), ∃ z : ℕ → ℕ → ℂ, (∀ k, k ≤ (Vc D i).rank → MatchW R i t (R.pl P) (Finsupp.single (splitLab (Vc D i).rank k) 1) (splitC (Wc D i).rank (z k))) ∧ ∀ a : ℕ → ℂ, Formalism.L2.Col.heckePolyOf (Vc D i).rank (A.q P) (fun k => ∑ j ∈ Finset.range ((Wc D i).rank + 1), z k j * a j) = (Formalism.L2.Col.heckePolyOf (Wc D i).rank (A.q P) a).comp (C (D.what₂.embLL (A.etaVal P : D.what₂.LL) * (A.q P : ℂ) ^ ((D.R.t + 1) / 2)) * X) * ((A.fam.L i t).blockProd P).map D.what₂.embLL := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hc hS i t P

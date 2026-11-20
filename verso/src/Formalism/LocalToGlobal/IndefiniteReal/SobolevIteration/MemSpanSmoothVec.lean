@@ -16,7 +16,7 @@ section SV
 variable {ρ Lie}
 
 /- English proof (translation)
-Introduce `k Xs _`. Simplify using `only [map_zero]`. Conclude with `contDiff_const`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma smoothVec_zero : SmoothVec Lie ρ 0 := by
   intro k Xs _
@@ -24,7 +24,7 @@ lemma smoothVec_zero : SmoothVec Lie ρ 0 := by
   exact contDiff_const
 
 /- English proof (translation)
-Introduce `k Xs hXs`. Simplify using `only [map_add]`. Conclude with `(ha k Xs hXs).add (hb k Xs hXs)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma smoothVec_add {a b : E} (ha : SmoothVec Lie ρ a) (hb : SmoothVec Lie ρ b) : SmoothVec Lie ρ (a + b) := by
   intro k Xs hXs
@@ -32,7 +32,7 @@ lemma smoothVec_add {a b : E} (ha : SmoothVec Lie ρ a) (hb : SmoothVec Lie ρ b
   exact (ha k Xs hXs).add (hb k Xs hXs)
 
 /- English proof (translation)
-Introduce `k Xs hXs`. Simplify using `only [map_smul]`. Conclude with `(ha k Xs hXs).const_smul c`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma smoothVec_smul (c : ℂ) {a : E} (ha : SmoothVec Lie ρ a) : SmoothVec Lie ρ (c • a) := by
   intro k Xs hXs
@@ -40,16 +40,16 @@ lemma smoothVec_smul (c : ℂ) {a : E} (ha : SmoothVec Lie ρ a) : SmoothVec Lie
   exact (ha k Xs hXs).const_smul c
 
 /- English proof (translation)
-Rewrite using `[← Complex.coe_smul]`. Conclude with `smoothVec_smul (c : ℂ) ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma smoothVec_rsmul (c : ℝ) {a : E} (ha : SmoothVec Lie ρ a) : SmoothVec Lie ρ (c • a) := by
   rw [← Complex.coe_smul]
   exact smoothVec_smul (c : ℂ) ha
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact smoothVec_zero`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact smoothVec_add hx hy`. Consider the case `smul c x _ hx => exact smoothVec_smul c hx`. Introduce `h`. Conclude with `Submodule.subset_span h`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma mem_span_smoothVec {a : E} : a ∈ Submodule.span ℂ {w | SmoothVec Lie ρ w} ↔ SmoothVec Lie ρ a := by
   constructor
@@ -71,7 +71,7 @@ variable (hU1 : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ U) (hUm : ∀ a ∈ U, ∀ 
 
 include hU1 hUm in
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using hU1`. Consider the case `cons a l ih`. Rewrite using `[List.prod_cons]`. Conclude with `hUm a (hl a (by simp)) _ (ih (fun b hb => hl b (by simp [hb])))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma list_prod_mem (l : List (Matrix (Fin n) (Fin n) ℂ)) (hl : ∀ a ∈ l, a ∈ U) : l.prod ∈ U := by
   induction l with
@@ -82,9 +82,9 @@ lemma list_prod_mem (l : List (Matrix (Fin n) (Fin n) ℂ)) (hl : ∀ a ∈ l, a
 
 include hU1 hUm hexp in
 /- English proof (translation)
-Use `list_prod_mem hU1 hUm _ ?_` and prove the remaining obligations. Introduce `a ha`. Establish `ha'` using `List.mem_of_mem_drop ha`. Simplify using `only [List.mem_ofFn] at ha'`. Take `⟨i, rfl⟩` from `ha'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `hexp _ (hZ i) _`.
+A detailed English derivation is pending.
 -/
 lemma prod_drop_mem {N : ℕ} (Z : Fin N → Matrix (Fin n) (Fin n) ℂ) (hZ : ∀ i, Z i ∈ Lie) (r : Fin N → ℝ) (j : ℕ) :
     ((List.ofFn fun i => NormedSpace.exp (r i • Z i)).drop j).prod ∈ U := by
@@ -98,15 +98,15 @@ lemma prod_drop_mem {N : ℕ} (Z : Fin N → Matrix (Fin n) (Fin n) ℂ) (hZ : �
 include hU1 hUm hρ hexp in
 
 /- English proof (translation)
-Introduce `k Xs hXs`. Establish `hX' : ∀ i, (Fin.snoc Xs X : Fin (k + 1) → Matrix (Fin n) (Fin n) ℂ) i ∈ Lie`. Introduce `i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hX`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hXs j`. Establish `hsn : ContDiff ℝ ∞ (fun t : Fin k → ℝ => (Fin.snoc t s : Fin (k + 1) → ℝ))`. Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using (contDiff_const : ContDiff ℝ ∞ fun _ : Fin k → ℝ => s)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (contDiff_pi.1 contDiff_id j : ContDiff ℝ ∞ fun t : Fin k → ℝ => t j)`. Establish `h` using `(hw (k + 1) (Fin.snoc Xs X) hX').comp hsn`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[List.ofFn_succ', List.concat_eq_append, List.prod_append, List.prod_singleton]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`. Establish `hP : (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod ∈ U`. Use `list_prod_mem hU1 hUm _ (fun a ha => ?_)` and prove the remaining obligations. Simplify using `only [List.mem_ofFn] at ha`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨i, rfl⟩` from `ha`. Conclude with `hexp _ (hXs i) _`. Rewrite using `[hρ _ hP _ (hexp _ hX _)]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma smoothVec_rep_exp {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ Lie) (s : ℝ) {w : E} (hw : SmoothVec Lie ρ w) :
     SmoothVec Lie ρ (ρ (NormedSpace.exp (s • X)) w) := by
@@ -143,11 +143,11 @@ def orb {N : ℕ} (Z : Fin N → Matrix (Fin n) (Fin n) ℂ) (u : E) (j : ℕ) (
 def mask {N : ℕ} (j : ℕ) (r : Fin N → ℝ) : Fin N → ℝ := fun i => if i.val < j then 0 else r i
 
 /- English proof (translation)
-Establish `hd : (List.ofFn fun i => NormedSpace.exp (mask j r i • Z i)).drop j = (List.ofFn fun i => NormedSpace.exp (r i • Z i)).drop j`. Apply `List.ext_getElem` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `k h1 h2`. Simplify using `only [List.getElem_drop, List.getElem_ofFn, mask]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (by simp)]`. Establish `ht : ((List.ofFn fun i => NormedSpace.exp (mask j r i • Z i)).take j).prod = 1`. Apply `List.prod_eq_one` to reduce the goal to its premises. Introduce `x hx`. Take `⟨k, hk, rfl⟩` from `List.mem_iff_getElem.1 hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hkj : k < j` using `by simp at hk; omega`. Simplify using `[List.getElem_take, mask, hkj]`. Rewrite using `[← List.prod_take_mul_prod_drop (List.ofFn fun i => NormedSpace.exp (mask j r i • Z i)) j, ht, one_mul, hd]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma prod_mask {N : ℕ} (Z : Fin N → Matrix (Fin n) (Fin n) ℂ) (j : ℕ) (r : Fin N → ℝ) :
     (List.ofFn fun i => NormedSpace.exp (mask j r i • Z i)).prod =
@@ -168,9 +168,7 @@ lemma prod_mask {N : ℕ} (Z : Fin N → Matrix (Fin n) (Fin n) ℂ) (j : ℕ) (
   rw [← List.prod_take_mul_prod_drop (List.ofFn fun i => NormedSpace.exp (mask j r i • Z i)) j, ht, one_mul, hd]
 
 /- English proof (translation)
-Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i.val < j`. Simplify using `only [mask, h, if_true]`. Conclude with `contDiff_const`. Simplify using `only [mask, h, if_false]`.
-
-Conclude with `contDiff_pi.1 contDiff_id i`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma contDiff_mask {N : ℕ} (j : ℕ) : ContDiff ℝ ∞ (mask (N := N) j) := by
   refine contDiff_pi.2 fun i => ?_
@@ -181,7 +179,7 @@ lemma contDiff_mask {N : ℕ} (j : ℕ) : ContDiff ℝ ∞ (mask (N := N) j) := 
     exact contDiff_pi.1 contDiff_id i
 
 /- English proof (translation)
-Establish `h` using `(hu N Z hZ).comp (contDiff_mask (N := N) j)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r`. Simplify using `only [orb, Function.comp_apply, prod_mask]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma contDiff_orb {N : ℕ} (Z : Fin N → Matrix (Fin n) (Fin n) ℂ) (hZ : ∀ i, Z i ∈ Lie) {u : E}
     (hu : SmoothVec Lie ρ u) (j : ℕ) : ContDiff ℝ ∞ (orb ρ Z u j) := by
@@ -192,11 +190,11 @@ lemma contDiff_orb {N : ℕ} (Z : Fin N → Matrix (Fin n) (Fin n) ℂ) (hZ : �
 
 include hU1 hUm hρ hexp in
 /- English proof (translation)
-Simplify using `only [orb]`. Establish `hlen : j < (List.ofFn fun i => NormedSpace.exp (Function.update r ⟨j, hj⟩ s i • Z i)).length`. Simplify using `using hj`. Rewrite using `[List.drop_eq_getElem_cons hlen, List.prod_cons]`. Establish `hdrop : (List.ofFn fun i => NormedSpace.exp (Function.update r ⟨j, hj⟩ s i • Z i)).drop (j + 1) = (List.ofFn fun i => NormedSpace.exp (r i • Z i)).drop (j + 1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `List.ext_getElem` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `k h1 h2`. Simplify using `only [List.getElem_drop, List.getElem_ofFn]`. Rewrite using `[Function.update_apply, if_neg]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Simplify using `only [Fin.mk.injEq] at h`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hdrop, List.getElem_ofFn, Function.update_apply, if_pos rfl, hρ _ (hexp _ (hZ _) _) _ (prod_drop_mem hU1 hUm hexp Z hZ r (j + 1))]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma orb_update {N : ℕ} (Z : Fin N → Matrix (Fin n) (Fin n) ℂ) (hZ : ∀ i, Z i ∈ Lie) (u : E) (j : ℕ)
     (hj : j < N) (r : Fin N → ℝ) (s : ℝ) :
@@ -220,7 +218,7 @@ lemma orb_update {N : ℕ} (Z : Fin N → Matrix (Fin n) (Fin n) ℂ) (hZ : ∀ 
   rfl
 
 /- English proof (translation)
-Simplify using `only [orb]`. Rewrite using `[List.ofFn_succ', List.concat_eq_append, List.drop_left' (by simp), List.prod_singleton]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma orb_last {k : ℕ} (Z : Fin (k + 1) → Matrix (Fin n) (Fin n) ℂ) (u : E) (r : Fin (k + 1) → ℝ) :
     orb ρ Z u k r = ρ (NormedSpace.exp (r (Fin.last k) • Z (Fin.last k))) u := by
@@ -229,25 +227,25 @@ lemma orb_last {k : ℕ} (Z : Fin (k + 1) → Matrix (Fin n) (Fin n) ℂ) (u : E
 
 include hU1 hUm hρ hexp in
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `j hj`. Use `⟨[], by simp, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u _ r _`. Take `rfl : j = k` from `by omega`. Establish `h0 : l.drop j = []` using `List.drop_eq_nil_of_le (by omega)`. Rewrite using `[h0, List.foldr_nil, pds_nil]`. Consider the case `succ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `j hj`. Take `⟨L', hL'1, hL'2⟩` from `ih (j + 1) (by omega)`. Establish `hjk : j < k` using `by omega`. Use `⟨⟨j, by omega⟩ :: L', ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `List.mem_cons.1 hi with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `⟨le_refl _, hjk⟩`. Use `hL'1 i h` as an intermediate fact. Conclude with `⟨by omega, this.2⟩`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce `u hu r hr`. Establish `hjl : j < l.length` using `by omega`. Rewrite using `[List.drop_eq_getElem_cons hjl, List.foldr_cons, hL'2 u hu r (fun i h1 h2 => hr i (by omega) h2), pds_cons]`. Establish `hne : ∀ i ∈ L', i ≠ (⟨j, by omega⟩ : Fin (k + 1))`. Introduce `i hi h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hL'1 i hi).1` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`. Establish `hF : ContDiff ℝ ∞ (pds L' (orb ρ Z u j))` using `contDiff_pds L' (contDiff_orb Z hZ hu j)`. Establish `hdiff : DifferentiableAt ℝ (pds L' (orb ρ Z u j)) r` using `hF.differentiable (by simp) r`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pd_eq_deriv _ r hdiff]`. Establish `hZj : Z ⟨j, by omega⟩ = l[j]` using `hZl ⟨j, by omega⟩ hjk`. Establish `hfun : (fun t : ℝ => pds L' (orb ρ Z u j) (r + t • Pi.single (⟨j, by omega⟩ : Fin (k + 1)) (1 : ℝ))) = fun t => ρ (NormedSpace.exp (t • Z ⟨j, by omega⟩)) (pds L' (orb ρ Z u (j + 1)) r)`. Use function extensionality and compare the values at `t`. Establish `hup : r + t • Pi.single (⟨j, by omega⟩ : Fin (k + 1)) (1 : ℝ) = Function.update r ⟨j, by omega⟩ t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = ⟨j, by omega⟩`. Substitute `h` using the available equality. Simplify using `[hr ⟨j, by omega⟩ (le_refl j) hjk]`. Simplify using `[h, Pi.single_apply, Function.update_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h1 : pds L' (orb ρ Z u j) (Function.update r ⟨j, by omega⟩ t) = pds L' (fun r' => orb ρ Z u j (Function.update r' ⟨j, by omega⟩ t)) r`. Rewrite using `[pds_update L' _ hne t (contDiff_orb Z hZ hu j)]`. Establish `h2 : (fun r' => orb ρ Z u j (Function.update r' ⟨j, by omega⟩ t)) = fun r' => ((ρ (NormedSpace.exp (t • Z ⟨j, by omega⟩))).restrictScalars ℝ) (orb ρ Z u (j + 1) r')`. Use function extensionality and compare the values at `r'`. Conclude with `orb_update hU1 hUm hρ hexp Z hZ u j (by omega) r' t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hup, h1, h2, pds_clm L' _ (contDiff_orb Z hZ hu (j + 1))]`. Both sides reduce to the same expression. Apply the tactic sequence `(rw [hfun, hZj]) <;> rfl`.
+Both sides reduce to the same expression. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem word_pds {k : ℕ} (l : List (Matrix (Fin n) (Fin n) ℂ)) (hl : l.length = k)
     (Z : Fin (k + 1) → Matrix (Fin n) (Fin n) ℂ) (hZ : ∀ i, Z i ∈ Lie)
@@ -309,7 +307,7 @@ theorem word_pds {k : ℕ} (l : List (Matrix (Fin n) (Fin n) ℂ)) (hl : l.lengt
       (rw [hfun, hZj]) <;> rfl
 
 /- English proof (translation)
-Simplify using `only [orb, List.drop_zero]`. Rewrite using `[List.ofFn_succ', List.concat_eq_append, List.prod_append, List.prod_singleton]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma orb_zero_split {k : ℕ} (Z : Fin (k + 1) → Matrix (Fin n) (Fin n) ℂ) (u : E) (r : Fin (k + 1) → ℝ) :
     orb ρ Z u 0 r = ρ ((List.ofFn fun i : Fin k => NormedSpace.exp (r i.castSucc • Z i.castSucc)).prod *
@@ -320,15 +318,15 @@ lemma orb_zero_split {k : ℕ} (Z : Fin (k + 1) → Matrix (Fin n) (Fin n) ℂ) 
 include hU1 hUm hρ hexp in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Establish `hdiff : DifferentiableAt ℝ (orb ρ Z u 0) r` using `(contDiff_orb Z hZ hu 0).differentiable (by simp) r`. Rewrite using `[pd_eq_deriv _ r hdiff]`. Establish `hP : (List.ofFn fun i : Fin k => NormedSpace.exp (r i.castSucc • Z i.castSucc)).prod ∈ U`. Use `list_prod_mem hU1 hUm _ (fun a ha => ?_)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [List.mem_ofFn] at ha`. Take `⟨i, rfl⟩` from `ha`. Conclude with `hexp _ (hZ _) _`. Establish `hE : ∀ s : ℝ, NormedSpace.exp (s • Z (Fin.last k)) ∈ U` using `fun s => hexp _ (hZ _) _`. Establish `hfun : (fun t : ℝ => orb ρ Z u 0 (r + t • Pi.single (Fin.last k) 1)) = fun t => ((ρ (List.ofFn fun i : Fin k => NormedSpace.exp (r i.castSucc • Z i.castSucc)).prod).comp (ρ (NormedSpace.exp (r (Fin.last k) • Z (Fin.last k))))) (ρ (NormedSpace.exp (t • Z (Fin.last k))) u)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[orb_zero_split]`. Establish `hc : ∀ i : Fin k, (r + t • Pi.single (Fin.last k) (1 : ℝ) : Fin (k + 1) → ℝ) i.castSucc = r i.castSucc`. Introduce `i`. Simplify using `[Pi.single_apply, Fin.castSucc_ne_last]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hl : (r + t • Pi.single (Fin.last k) (1 : ℝ) : Fin (k + 1) → ℝ) (Fin.last k) = r (Fin.last k) + t` using `by simp`. Simplify using `only [hc, hl]`. Rewrite using `[add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl (Z (Fin.last k))).smul_left _).smul_right _), ← mul_assoc, hρ _ (hUm _ hP _ (hE _)) _ (hE _), hρ _ hP _ (hE _)]`. Both sides reduce to the same expression. Rewrite using `[hfun]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD : HasDerivAt (fun t : ℝ => ((ρ (List.ofFn fun i : Fin k => NormedSpace.exp (r i.castSucc • Z i.castSucc)).prod).comp (ρ (NormedSpace.exp (r (Fin.last k) • Z (Fin.last k))))) (ρ (NormedSpace.exp (t • Z (Fin.last k))) u)) (((ρ (List.ofFn fun i : Fin k => NormedSpace.exp (r i.cas …` using `((((ρ (List.ofFn fun i : Fin k => NormedSpace.exp (r i.castSucc • Z i.castSucc)).prod).comp (ρ (NormedSpace.exp (r (Fin.last k) • Z (Fin.last k))))).restrictScalars ℝ).hasFDerivAt).comp_hasDerivAt (0 : ℝ) hd`. Apply the tactic sequence `(rw [hD.deriv, orb_zero_split, hρ _ hP _ (hE _)]) <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma pd_last_orb {k : ℕ} (Z : Fin (k + 1) → Matrix (Fin n) (Fin n) ℂ) (hZ : ∀ i, Z i ∈ Lie) {u w : E}
     (hu : SmoothVec Lie ρ u) (hd : HasDerivAt (fun t : ℝ => ρ (NormedSpace.exp (t • Z (Fin.last k))) u) w 0) :
@@ -368,15 +366,15 @@ lemma pd_last_orb {k : ℕ} (Z : Fin (k + 1) → Matrix (Fin n) (Fin n) ℂ) (hZ
 include hU1 hUm hρ hexp in
 
 /- English proof (translation)
-Set `Z : Fin (l.length + 1) → Matrix (Fin n) (Fin n) ℂ` to `fun i => if h : i.val < l.length then l[i.val] else X`. Establish `hZ : ∀ i, Z i ∈ Lie`. Introduce `i`. Simplify using `only [Z]`. Use `split_ifs with h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hl _ (by simp)`. Conclude with `hX`. Establish `hZl : ∀ (i : Fin (l.length + 1)) (h : i.val < l.length), Z i = l[i.val]'(by omega)`. Introduce `i h`. Simplify using `only [Z, dif_pos h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨L, -, hL⟩` from `word_pds hU1 hUm hρ hexp l rfl Z hZ hZl l.length 0 (by simp)`. Use `⟨Z, L, hZ, by simp [Z], ?_⟩` and prove the remaining obligations. Introduce `v hv t`. Establish `hr : ∀ i : Fin (l.length + 1), 0 ≤ i.val → i.val < l.length → (t • Pi.single (Fin.last l.length) (1 : ℝ)) i = 0`. Introduce `i _ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: i ≠ Fin.last _`. Introduce `h'`. Rewrite `h` using `[h']`. Simplify using `at h`. Simplify using `[Pi.single_apply, this]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hL v hv _ hr` as an intermediate fact. Rewrite `this` using `[List.drop_zero]`. Rewrite using `[← this, orb_last]`. Simplify using `[Z]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma word_eval (l : List (Matrix (Fin n) (Fin n) ℂ)) (hl : ∀ Y ∈ l, Y ∈ Lie)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ Lie) :
@@ -412,11 +410,11 @@ lemma word_eval (l : List (Matrix (Fin n) (Fin n) ℂ)) (hl : ∀ Y ∈ l, Y ∈
 include hU1 hUm hρ hexp in
 
 /- English proof (translation)
-Take `⟨Z, L, hZ, hZX, hL⟩` from `word_eval hU1 hUm hρ hexp l hl hX`. Establish `hfun : (fun t : ℝ => l.foldr (dRep ρ) (ρ (NormedSpace.exp (t • X)) u)) = fun t => pds L (orb ρ Z u 0) (0 + t • Pi.single (Fin.last _) 1)`. Use function extensionality and compare the values at `t`. Rewrite using `[hL u hu t, zero_add]`. Rewrite using `[hfun]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hF : ContDiff ℝ ∞ (pds L (orb ρ Z u 0))` using `contDiff_pds L (contDiff_orb Z hZ hu 0)`. Establish `h1` using `pd_hasDerivAt (Fin.last _) (0 : Fin (l.length + 1) → ℝ) (hF.differentiable (by simp) 0)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Establish `hd' : HasDerivAt (fun t : ℝ => ρ (NormedSpace.exp (t • Z (Fin.last _))) u) w 0`. Rewrite using `[hZX]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd`. Rewrite using `[pd_pds _ L (contDiff_orb Z hZ hu 0), pd_last_orb hU1 hUm hρ hexp Z hZ hu hd']`. Use `hL w hw 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul, NormedSpace.exp_zero, hρ1, ContinuousLinearMap.one_apply]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_deriv (hρ1 : ρ 1 = 1) (l : List (Matrix (Fin n) (Fin n) ℂ)) (hl : ∀ Y ∈ l, Y ∈ Lie)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ Lie) {u w : E} (hu : SmoothVec Lie ρ u) (hw : SmoothVec Lie ρ w)
@@ -442,11 +440,11 @@ theorem word_deriv (hρ1 : ρ 1 = 1) (l : List (Matrix (Fin n) (Fin n) ℂ)) (hl
 include hU1 hUm hρ hexp in
 
 /- English proof (translation)
-Take `⟨Z, L, hZ, -, hL⟩` from `word_eval hU1 hUm hρ hexp l hl hX`. Establish `key : ∀ v, SmoothVec Lie ρ v → l.foldr (dRep ρ) v = pds L (orb ρ Z v 0) 0`. Introduce `v hv`. Use `hL v hv 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul, NormedSpace.exp_zero, hρ1, ContinuousLinearMap.one_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hab : SmoothVec Lie ρ (a + c • b)` using `smoothVec_add ha (smoothVec_rsmul c hb)`. Rewrite using `[key _ hab, key _ ha, key _ hb]`. Establish `horb : orb ρ Z (a + c • b) 0 = fun r => orb ρ Z a 0 r + c • orb ρ Z b 0 r`. Use function extensionality and compare the values at `r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [orb, map_add, ContinuousLinearMap.map_smul_of_tower]`. Rewrite using `[horb, pds_add L (contDiff_orb Z hZ ha 0) ((contDiff_orb Z hZ hb 0).const_smul c), pds_smul L c (contDiff_orb Z hZ hb 0)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_lin (hρ1 : ρ 1 = 1) (l : List (Matrix (Fin n) (Fin n) ℂ)) (hl : ∀ Y ∈ l, Y ∈ Lie)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ Lie) {a b : E} (ha : SmoothVec Lie ρ a) (hb : SmoothVec Lie ρ b)

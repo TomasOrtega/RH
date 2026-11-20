@@ -4,7 +4,7 @@ open PowerSeries
 namespace GlobalTheory.PadicUnitGen
 
 /- English proof (translation)
-Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dvd_iff_toZMod {l : ℕ} [Fact l.Prime] (x : ℤ_[l]) :
     (l : ℤ_[l]) ∣ x ↔ PadicInt.toZMod x = 0 := by
@@ -12,7 +12,7 @@ theorem dvd_iff_toZMod {l : ℕ} [Fact l.Prime] (x : ℤ_[l]) :
     Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ j ih`. Take `⟨z, hz⟩` from `ih`. Conclude with `⟨j + z + t * z, by rw [pow_succ, hz]; push_cast; ring⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem one_add_pow_eq {R : Type*} [CommRing R] (t : R) (j : ℕ) :
     ∃ z, (1 + t) ^ j = 1 + j * t + t ^ 2 * z := by
@@ -23,17 +23,17 @@ theorem one_add_pow_eq {R : Type*} [CommRing R] (t : R) (j : ℕ) :
     exact ⟨j + z + t * z, by rw [pow_succ, hz]; push_cast; ring⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hu.symm`. Establish `hu' : u = 1 + l * (w : ℤ_[l])` using `by rw [hw]; ring`. Establish `h3 : 3 ≤ l`. Use `hl.out.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hl0 : PadicInt.toZMod (l : ℤ_[l]) = 0` using `by simp`. Establish `hw0 : PadicInt.toZMod (w : ℤ_[l]) ≠ 0` using `(w.isUnit.map (PadicInt.toZMod (p := l))).ne_zero`. Establish `hu1 : PadicInt.toZMod u = 1` using `by rw [hu']; simp`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, by simpa using hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Take `⟨m, c, hc⟩` from `ih`. Take `⟨y, hy⟩` from `ZMod.exists_one_add_mul_pow_prime_pow_eq (R := ℤ_[l]) (u := l) (v := l) hl.out dvd_rfl (by rw [← pow_two, ← pow_succ]; exact pow_dvd_pow _ h3) (w : ℤ_[l]) k`. Rewrite `hy` using `[← hu']`. Use `set j : ℕ := (PadicInt.toZMod c / PadicInt.toZMod (w : ℤ_[l])).val with hj`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `one_add_pow_eq ((l : ℤ_[l]) ^ k * l * (w + l * y)) j`. Use `⟨m + l ^ k * j, ?_⟩` and prove the remaining obligations. Establish `hd : (l : ℤ_[l]) ∣ c - u ^ m * (j * (w + l * y) + (l : ℤ_[l]) ^ k * l * (w + l * y) ^ 2 * z)`. Rewrite using `[dvd_iff_toZMod]`. Simplify using `only [map_sub, map_mul, map_add, map_pow, hl0, hu1, map_natCast, hj, ZMod.natCast_zmod_val, ZMod.natCast_self]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨d, hd⟩` from `hd`. Use `⟨d, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, pow_mul, hy, hz]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hc + (l : ℤ_[l]) ^ (k + 1) * hd`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_approx {l : ℕ} [hl : Fact l.Prime] (u : ℤ_[l]) (h2 : l ≠ 2)
     (hu : Associated (u - 1) (l : ℤ_[l])) (x : ℤ_[l]) (hx : (l : ℤ_[l]) ∣ x - 1) (k : ℕ) :
@@ -70,15 +70,15 @@ theorem exists_pow_approx {l : ℕ} [hl : Fact l.Prime] (u : ℤ_[l]) (h2 : l �
     linear_combination hc + (l : ℤ_[l]) ^ (k + 1) * hd
 
 /- English proof (translation)
-Set `f : Δ →* (ZMod l)ˣ` to `(Units.map (PadicInt.toZMod (p := l) : ℤ_[l] →* ZMod l)).comp Δ.subtype`. Establish `hinj : Function.Injective f`. Rewrite using `[injective_iff_map_eq_one]`. Introduce `δ hδ`. Establish `h1 : PadicInt.toZMod ((δ : ℤ_[l]ˣ) : ℤ_[l]) = 1` using `congrArg Units.val hδ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ((δ : ℤ_[l]ˣ) : ℤ_[l]) ^ (l - 1) = 1`. Establish `: δ ^ (l - 1) = 1` using `by rw [← hΔ]; exact pow_card_eq_one'`. Use `congrArg (fun t : Δ => ((t : ℤ_[l]ˣ) : ℤ_[l])) this` as an intermediate fact. Simplify using `using this`. Establish `h3` using `geom_sum_mul ((δ : ℤ_[l]ˣ) : ℤ_[l]) (l - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h3` using `[h2, sub_self]`. Break down `mul_eq_zero.1 h3 with h | h` into its components or cases. It suffices to derive a contradiction. Use `congrArg (PadicInt.toZMod (p := l)) h` as an intermediate fact. Simplify using `only [map_sum, map_pow, h1, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, map_zero] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[Nat.cast_pred hl.out.pos]`. Simplify using `at this`. Use `ext`. Simplify using `using sub_eq_zero.1 h`. Establish `hbij : Function.Bijective f`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hinj.bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[hΔ, Nat.card_eq_fintype_card, ZMod.card_units]`. Take `⟨δ, hδ⟩` from `hbij.2 x`. Conclude with `⟨δ, δ.2, congrArg Units.val hδ⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lift {l : ℕ} [hl : Fact l.Prime] (Δ : Subgroup ℤ_[l]ˣ) [Finite Δ]
     (hΔ : Nat.card Δ = l - 1) (x : (ZMod l)ˣ) :
@@ -111,11 +111,11 @@ theorem exists_lift {l : ℕ} [hl : Fact l.Prime] (Δ : Subgroup ℤ_[l]ˣ) [Fin
   exact ⟨δ, δ.2, congrArg Units.val hδ⟩
 
 /- English proof (translation)
-Introduce `l hl Δ _ u h2 hΔ hu k a ha`. Establish `ha0 : (a : ZMod l) ≠ 0` using `by rwa [Ne, ZMod.natCast_eq_zero_iff]`. Take `⟨δ, hδ, hδa⟩` from `exists_lift Δ hΔ (Units.mk0 _ ha0)`. Establish `hx : (l : ℤ_[l]) ∣ (a : ℤ_[l]) * (δ⁻¹ : ℤ_[l]ˣ) - 1`. Establish `: (l : ℤ_[l]) ∣ (a : ℤ_[l]) - δ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dvd_iff_toZMod, map_sub, hδa]`. Simplify using the standard rewrite rules. Establish `h` using `this.mul_right ((δ⁻¹ : ℤ_[l]ˣ) : ℤ_[l])`. Rewrite `h` using `[sub_mul, Units.mul_inv]`. Then use the resulting hypothesis. Take `⟨m, hm⟩` from `exists_pow_approx u h2 hu _ hx k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `⟨δ, hδ, m, (pow_dvd_pow _ (Nat.le_succ k)).trans ?_⟩` and prove the remaining obligations. Establish `h` using `hm.mul_left (δ : ℤ_[l])`. Rewrite `h` using `[mul_sub, mul_comm (a : ℤ_[l]), Units.mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_root_mul_pow_approx :
     ∀ {l : ℕ} [Fact l.Prime] (Δ : Subgroup ℤ_[l]ˣ) [Finite Δ] (u : ℤ_[l]), l ≠ 2 →

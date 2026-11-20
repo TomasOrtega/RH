@@ -11,25 +11,25 @@ noncomputable section
 namespace GlobalTheory.KappaModel
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ ψk ν hψ hne hν`. Use `secondCountable k` as an intermediate fact. Use `t2Space k` as an intermediate fact. Set `ψ' : AddChar k Circle` to `{ toFun := fun u => ψk (-u) map_zero_eq_one' := by simp map_add_eq_mul' := by intro a b; rw [neg_add, AddChar.map_add_eq_mul] }`. Establish `hψ'app : ∀ u, ψ' u = ψk (-u)` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ' : Continuous ψ'` using `hψ.comp continuous_neg`. Establish `hne' : ψ' ≠ 1`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Use `DFunLike.ext _ _ fun u => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun χ : AddChar k Circle => χ (-u)) h` as an intermediate fact. Simplify `this` using `[hψ'app]`. Take `⟨C', hC'pos, hC'⟩` from `GlobalTheory.LocFlat.PartialFourier.partial_fourier_inversion k ψ' ν hψ' hne' hν n`. Use `⟨((C' : ℂ))⁻¹, fun c hc Φ hΦ => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `e : (n → k) ≃ₜ Matrix n Unit k` to `{ toFun := fun y => Matrix.of fun r _ => y r invFun := fun M r => M r () left_inv := fun _ => rfl right_inv := fun M => by ext i j; rfl continuous_toFun := by fun_prop continuous_invFun := by fun_prop }`. Use `set g : (n → k) → ℂ := fun y => c (Matrix.of fun r _ => y r) with hgdef`. Establish `hg : g ∈ SB (n → k)` using `⟨hc.1.comp_continuous e.continuous, hc.2.comp_homeomorph e⟩`. Set `p : (n → k) × (Empty → k) ≃ₜ (n → k)` to `Homeomorph.prodUnique (n → k) (Empty → k)`. Use `set f : (n → k) × (Empty → k) → ℂ := fun q => g q.1 with hfdef`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hf : f ∈ SB ((n → k) × (Empty → k))` using `⟨hg.1.comp_continuous p.continuous, hg.2.comp_homeomorph p⟩`. Use `set a : n → k := fun r => x r () with hadef`. Take `⟨-, hinv⟩` from `hC' Empty a f hf`. Use `set μJ : Measure (Empty → k) := Measure.pi fun _ => ν with hμJ`. Establish `hJ : μJ.real Set.univ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hμJ, Measure.pi_of_empty (x := (fun e => e.elim))]`. Simplify using the standard rewrite rules. Establish `h1 : ∀ l : n → k, ∫ q : (n → k) × (Empty → k), f q * (ψ' (l ⬝ᵥ q.1) : ℂ) ∂((Measure.pi fun _ => ν).prod μJ) = ∫ y : n → k, g y * (ψk (-1 * (l ⬝ᵥ y)) : ℂ) ∂(Measure.pi fun _ => ν)`. Introduce `l`. Rewrite using `[hfdef]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hψ'app, neg_one_mul]`. Rewrite using `[integral_fun_fst (f := fun y : n → k => g y * (ψk (-(l ⬝ᵥ y)) : ℂ)), hJ, one_smul]`. Establish `h2 : ∫ y : Empty → k, f (a, y) ∂μJ = g a`. Rewrite using `[hfdef]`. Simplify using `only`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[integral_const, hJ, one_smul]`. Simplify using `only [h1, h2] at hinv`. Simplify using `only [hψ'app, neg_neg] at hinv`. Establish `h3 : g a = c x`. Rewrite using `[hgdef]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hC0 : (C' : ℂ) ≠ 0` using `by exact_mod_cast hC'pos.ne'`. Simplify using `only [finv, hΦ]`. Rewrite using `[← h3, show ∫ η : n → k, GlobalTheory.StepData.hat ψk ν (-1) g ((Matrix.of fun _ r => η r : Matrix Unit n k) ()) * (ψk (η ⬝ᵥ fun r => x r ()) : ℂ) ∂(Measure.pi fun _ => ν) = ∫ l : n → k, (ψk (l ⬝ᵥ a) : ℂ) * ∫ y : n → k, g y * (ψk (-1 * (l ⬝ᵥ y)) : ℂ) ∂(Measure.pi fun _ => ν) ∂(Me …`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use function extensionality and compare the values at `η`. Rewrite using `[mul_comm]`. Use the proof step `rfl]`. Rewrite using `[hinv]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem finv_hat_neg_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (ψk : AddChar k Circle) (ν : Measure k), Continuous ψk → ψk ≠ 1 → ν.IsAddHaarMeasure → ∃ C : ℂ, ∀ c : Matrix n Unit k → ℂ, c ∈ SB (Matrix n Unit k) → ∀ Φ : Matrix Unit n k → ℂ, (∀ η, Φ η = GlobalTheory.StepData.hat ψk ν (-1) (fun y => c (Matrix.of fun r _ => y r)) (η ())) → GlobalTheory.KappaModel.finv ψk ν C Φ = c := by
   intro k _ _ _ _ _ _ n _ _ ψk ν hψ hne hν

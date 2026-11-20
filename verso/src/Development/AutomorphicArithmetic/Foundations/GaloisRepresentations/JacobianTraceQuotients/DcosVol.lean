@@ -14,9 +14,9 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Use `⟨?_, fun ⟨u, _, hu, i, hi, e⟩ => ⟨u, hu, i, hi, e⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Take `⟨u, hu, d, hd, c, hc, rfl⟩` from `hK.fact a ha`. Use `⟨u, hu.2, hu.1, _, mul_mem (mul_mem hd (hK.low t ht c hc)) hb, ?_⟩` and prove the remaining obligations. Establish `e : diagT k (Fin n) t * diagT k (Fin n) d = diagT k (Fin n) d * diagT k (Fin n) t`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, mul_comm, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem mem_dcos_iff {K : Subgroup (GL (Fin n) k)} (hK : IwLev K) {t : Fin n → kˣ} (ht : Dom t)
     (g : GL (Fin n) k) :
@@ -33,7 +33,7 @@ private theorem mem_dcos_iff {K : Subgroup (GL (Fin n) k)} (hK : IwLev K) {t : F
     _ = _ := by rw [← e]; group
 
 /- English proof (translation)
-Use extensionality with `g`. Conclude with `⟨fun ⟨a, ha, b, hb, e⟩ => ⟨(a, b), ⟨ha, hb⟩, e.symm⟩, fun ⟨x, hx, e⟩ => ⟨x.1, hx.1, x.2, hx.2, e.symm⟩⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 private theorem dcos_eq_image (K : Subgroup (GL (Fin n) k)) (t : Fin n → kˣ) :
     dcos K t = (fun x : GL (Fin n) k × GL (Fin n) k => x.1 * diagT k (Fin n) t * x.2) ''
@@ -42,7 +42,7 @@ private theorem dcos_eq_image (K : Subgroup (GL (Fin n) k)) (t : Fin n → kˣ) 
   exact ⟨fun ⟨a, ha, b, hb, e⟩ => ⟨(a, b), ⟨ha, hb⟩, e.symm⟩, fun ⟨x, hx, e⟩ => ⟨x.1, hx.1, x.2, hx.2, e.symm⟩⟩
 
 /- English proof (translation)
-Rewrite using `[dcos_eq_image]`. Conclude with `(hK.1.prod hK.1).image (by fun_prop)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isCompact_dcos {K : Subgroup (GL (Fin n) k)} (hK : CO K) (t : Fin n → kˣ) :
     IsCompact (dcos K t) := by
@@ -50,9 +50,9 @@ private theorem isCompact_dcos {K : Subgroup (GL (Fin n) k)} (hK : CO K) (t : Fi
   exact (hK.1.prod hK.1).image (by fun_prop)
 
 /- English proof (translation)
-Establish `e : dcos K t = ⋃ a ∈ (K : Set (GL (Fin n) k)), (fun g => (a * diagT k (Fin n) t) * g) '' (K : Set (GL (Fin n) k))`. Use extensionality with `g`. Simplify using `only [Set.mem_iUnion, Set.mem_image, exists_prop]`. Conclude with `⟨fun ⟨a, ha, b, hb, e⟩ => ⟨a, ha, b, hb, e.symm⟩, fun ⟨a, ha, b, hb, e⟩ => ⟨a, ha, b, hb, e.symm⟩⟩`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_biUnion fun a _ => (Homeomorph.mulLeft (a * diagT k (Fin n) t)).isOpenMap _ hK.2`.
+A detailed English derivation is pending.
 -/
 private theorem isOpen_dcos {K : Subgroup (GL (Fin n) k)} (hK : CO K) (t : Fin n → kˣ) :
     IsOpen (dcos K t) := by
@@ -66,9 +66,7 @@ private theorem isOpen_dcos {K : Subgroup (GL (Fin n) k)} (hK : CO K) (t : Fin n
 
 open GlobalTheory.SplitWeil GlobalTheory.IwahoriTraceProof in
 /- English proof (translation)
-Establish `e : (unipB k (Fin n) : Set (GL (Fin n) k)) = (⋂ i, ⋂ j, ⋂ _ : j < i, {g : GL (Fin n) k | g.val i j = 0}) ∩ ⋂ i, {g : GL (Fin n) k | g.val i i = 1}`. Use extensionality with `g`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter]`. Conclude with `mem_unipB k`. Rewrite using `[e]`.
-
-Conclude with `(isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (Units.continuous_val.matrix_elem i j) continuous_const).inter (isClosed_iInter fun i => isClosed_eq (Units.continuous_val.matrix_elem i i) continuous_const)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isClosed_unipB : IsClosed (unipB k (Fin n) : Set (GL (Fin n) k)) := by
   have e : (unipB k (Fin n) : Set (GL (Fin n) k)) = (⋂ i, ⋂ j, ⋂ _ : j < i, {g : GL (Fin n) k | g.val i j = 0}) ∩
@@ -84,13 +82,11 @@ private theorem isClosed_unipB : IsClosed (unipB k (Fin n) : Set (GL (Fin n) k))
 open GlobalTheory.SplitWeil GlobalTheory.IwahoriTraceProof in
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Use `letI : MeasurableSpace (unipRad k (points (Fin n))) := _root_.borel _`. Use `haveI : BorelSpace (unipRad k (points (Fin n))) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (unipRad k (points (Fin n))) := (UnipHaar.unipHomeo (points (Fin n))).isClosedEmbedding.locallyCompactSpace`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology (unipRad k (points (Fin n))) := (UnipHaar.unipHomeo (points (Fin n))).secondCountableTopology`. Set `ν : Measure (unipRad k (points (Fin n)))` to `Measure.haar`. Establish `ho : IsOpen {s : unipRad k (points (Fin n)) | (s : GL (Fin n) k) ∈ K}` using `hK.co.2.preimage continuous_subtype_val`. Establish `hcl : IsClosed (unipRad k (points (Fin n)) : Set (GL (Fin n) k))` using `isClosed_unipB`. Establish `hc : IsCompact {s : unipRad k (points (Fin n)) | (s : GL (Fin n) k) ∈ K}` using `hcl.isClosedEmbedding_subtypeVal.isCompact_preimage hK.co.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `measure_mul_eq μ ν hK.co.2 (t := diagT k (Fin n) t) (fun u hu => by simpa [unipB] using conj_mem_unipB t⁻¹ hu) (fun u hu hI => hK.up t ht u ⟨hI, hu⟩) (isCompact_dcos hK.co t).measurableSet (mem_dcos_iff hK ht)`. Establish `h2` using `UnipHaar.haar_conj_eq_modulus_mul k (Fin n) (Fin n) (fun _ => Unit) (points (Fin n)) ν (leviTorus k (Fin n) t) _ ho.measurableSet`. Rewrite `h2` using `[← deltaB_eq_modulus]`. Establish `h3` using `(congrArg (· * μ (dcos K t)) h2).symm.trans h1`. Rewrite `h3` using `[mul_right_comm, ENNReal.mul_left_inj (ho.measure_pos ν ⟨1, one_mem K⟩).ne' hc.measure_lt_top.ne]`.
-
-Rewrite using `[measureReal_def, measureReal_def, ← h3, ENNReal.toReal_mul, ENNReal.toReal_ofReal (deltaB_pos t).le, mul_right_comm, mul_inv_cancel₀ (deltaB_pos t).ne', one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem measure_dcos [MeasurableSpace (GL (Fin n) k)] [BorelSpace (GL (Fin n) k)] (μ : Measure (GL (Fin n) k))
     [μ.IsHaarMeasure] {K : Subgroup (GL (Fin n) k)} (hK : IwLev K) {t : Fin n → kˣ} (ht : Dom t) :
@@ -126,7 +122,7 @@ end
 end UpperTheory.Gal.Join
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n _ _ μ _ K hK t ht`. Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Establish `hc` using `isCompact_dcos hK.co t`. Use `⟨⟨(LocallyConstant.indicator (1 : LocallyConstant (GL (Fin n) k) ℂ) ⟨hc.isClosed, isOpen_dcos hK.co t⟩).2, HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩, measure_dcos μ hK ht⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Join.dcosVol :
     UpperTheory.Gal.Join.DcosVol := by

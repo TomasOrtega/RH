@@ -22,7 +22,7 @@ theorem prO_apply {X Y : Submodule K V} (hc : IsCompl X Y) (x : V) :
     prO hc x = X.projection Y hc x := rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.projection_add_projection_eq_self hc x`.
+A detailed English derivation is pending.
 -/
 theorem prO_add {X Y : Submodule K V} (hc : IsCompl X Y) (x : V) :
     prO hc x + prO hc.symm x = x :=
@@ -34,7 +34,7 @@ def toDisc (h : V →ₗ⋆[K] V →ₗ[K] K) {X Y : Submodule K V} (hc : IsComp
   Submodule.mkQ _ ∘ₗ LinearMap.codRestrict _ (prO hc ∘ₗ Λ.subtype) (fun x => hP x x.2)
 
 /- English proof (translation)
-Use `(Submodule.mkQ_surjective _).comp ?_` and prove the remaining obligations. Introduce and unpack `⟨v, hv⟩`. Take `⟨x, hx, e⟩` from `hS v hv`. Conclude with `⟨⟨x, hx⟩, Subtype.ext e⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toDisc_surj (h : V →ₗ⋆[K] V →ₗ[K] K) {X Y : Submodule K V} (hc : IsCompl X Y)
     (L Λ : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (hP : ∀ x ∈ Λ, prO hc x ∈ locF 𝔭 (dualIn h X L))
@@ -46,7 +46,7 @@ theorem toDisc_surj (h : V →ₗ⋆[K] V →ₗ[K] K) {X Y : Submodule K V} (hc
   exact ⟨⟨x, hx⟩, Subtype.ext e⟩
 
 /- English proof (translation)
-Rewrite using `[LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_ker_toDisc (h : V →ₗ⋆[K] V →ₗ[K] K) {X Y : Submodule K V} (hc : IsCompl X Y)
     (L Λ : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (hP : ∀ x ∈ Λ, prO hc x ∈ locF 𝔭 (dualIn h X L))
@@ -57,7 +57,7 @@ theorem mem_ker_toDisc (h : V →ₗ⋆[K] V →ₗ[K] K) {X Y : Submodule K V} 
   rfl
 
 /- English proof (translation)
-Rewrite using `[← hX, Submodule.mem_inf]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun H => H.1`. Introduce `H`. Conclude with `⟨H, Submodule.projection_apply_mem hc x⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem prO_mem_iff {X Y : Submodule K V} (hc : IsCompl X Y) {L Λ : Submodule (𝓞 K) V}
     {𝔭 : Ideal (𝓞 F)} (hX : Λ ⊓ X.restrictScalars (𝓞 K) = locF 𝔭 L) (x : V) :
@@ -69,11 +69,11 @@ theorem prO_mem_iff {X Y : Submodule K V} (hc : IsCompl X Y) {L Λ : Submodule (
     exact ⟨H, Submodule.projection_apply_mem hc x⟩
 
 /- English proof (translation)
-Establish `hker : LinearMap.ker (toDisc h hc M Λ 𝔭 hPU) = LinearMap.ker (toDisc h hc.symm T Λ 𝔭 hPW)`. Use extensionality with `x`. Rewrite using `[mem_ker_toDisc, mem_ker_toDisc, prO_mem_iff hc hU, prO_mem_iff hc.symm hW]`. Establish `e` using `prO_add hc (x : V)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `H`. Establish `: prO hc.symm (x : V) = (x : V) - prO hc (x : V)` using `eq_sub_of_add_eq' e`. Rewrite using `[this]`. Conclude with `Λ.sub_mem x.2 H`. Introduce `H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: prO hc (x : V) = (x : V) - prO hc.symm (x : V)` using `eq_sub_of_add_eq e`. Rewrite using `[this]`. Conclude with `Λ.sub_mem x.2 H`. Conclude with `⟨((LinearMap.quotKerEquivOfSurjective _ (toDisc_surj h hc M Λ 𝔭 hPU hSU)).symm.trans (Submodule.quotEquivOfEq _ _ hker)).trans (LinearMap.quotKerEquivOfSurjective _ (toDisc_surj h hc.symm T Λ 𝔭 hPW hSW))⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem discIso_of_proj (h : V →ₗ⋆[K] V →ₗ[K] K) {U W : Submodule K V} (hc : IsCompl U W)
     {M T Λ : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)}

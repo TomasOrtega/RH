@@ -62,15 +62,15 @@ def BlochKatoLocal : Prop :=
     BlochKato.DimFormula (P.PD K) ∧ BlochKato.RationalDuality (P.PD K) ∧ BlochKato.IntegralDuality (P.PD K)
 
 /- English proof (translation)
-Establish `hχ : ∀ g : ↥(GK K), ‖(((P.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l])‖ ≤ 1`. Introduce `g`. Take `⟨a, ha, -⟩` from `P.χQ_cyc (g : GQ l) 0 1 (by simp)`. Rewrite using `[P.PD_χ]`. Establish `h1 : ‖(P.χQ (g : GQ l) : ℚ_[l]) - (a : ℚ_[l])‖ ≤ 1` using `by simpa using ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ‖(a : ℚ_[l])‖ ≤ 1`. Use `Padic.norm_int_le_one (p := l) (a : ℤ)` as an intermediate fact. Simplify using `using this`. Use `Padic.nonarchimedean ((P.χQ (g : GQ l) : ℚ_[l]) - (a : ℚ_[l])) (a : ℚ_[l])` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.trans (max_le h1 h2)`. Use `⟨⟨LinearMap.range (Algebra.linearMap ℤ_[l] ℚ_[l]), ?_, ?_, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Introduce and unpack `g _ ⟨z, rfl⟩`. Set `u : ℤ_[l]` to `⟨_, hχ g⟩`. Use `⟨u * z, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu : (u : ℚ_[l]) = (((P.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l])` using `rfl`. Simplify using `[charRep, cycLL, hu]`. Rewrite using `[LinearMap.range_eq_map]`. Conclude with `Submodule.FG.map _ Module.Finite.fg_top`. Conclude with `Module.Free.of_equiv (LinearEquiv.ofInjective (Algebra.linearMap ℤ_[l] ℚ_[l]) (IsFractionRing.injective ℤ_[l] ℚ_[l]))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `h1 : (1 : ℚ_[l]) ∈ Submodule.span ℚ_[l] ((LinearMap.range (Algebra.linearMap ℤ_[l] ℚ_[l]) : Submodule ℤ_[l] ℚ_[l]) : Set ℚ_[l])` using `Submodule.subset_span ⟨1, by simp⟩`. Simplify using `using Submodule.smul_mem _ x h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem BlochKato.exists_cyclotomicLattice (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) :
     ∃ L1 : Lattice (O := ℤ_[l]) (charRep (cycLL (P.PD K) ℚ_[l])),
@@ -108,7 +108,7 @@ namespace BlochKato
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `⟨⟨inferInstance, inferInstance, inferInstance⟩, inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Conclude with `(PadicInt.isOpenEmbedding_coe (p := l)).isOpen_range`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem goodO_padicInt : GoodO (Qp := ℚ_[l]) ℚ_[l] ℤ_[l] := by
   refine ⟨⟨inferInstance, inferInstance, inferInstance⟩, inferInstance, inferInstance, inferInstance, ?_⟩
@@ -122,9 +122,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {K₀ K : Type} [Field K₀] 
     {PD : PeriodData G ℚ_[l] K₀ K B BdR}
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ _ _ V' _ _ _ _ _ _ _ ρ ρ' P hc hc' hdR hP`. Use `letI : Module ℤ_[l] V := Module.compHom V (algebraMap ℤ_[l] ℚ_[l])`. Use `letI : Module ℤ_[l] V' := Module.compHom V' (algebraMap ℤ_[l] ℚ_[l])`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] V := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] V' := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`.
-
-Conclude with `h ℚ_[l] ℤ_[l] goodO_padicInt { V := V, ρ := ρ, cont := hc } { V := V', ρ := ρ', cont := hc' } P hdR hP`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem rationalDuality_of_allCoefficients (h : bkACore PD) : RationalDuality PD := by
   intro V _ _ _ _ _ _ _ V' _ _ _ _ _ _ _ ρ ρ' P hc hc' hdR hP
@@ -135,7 +133,7 @@ theorem rationalDuality_of_allCoefficients (h : bkACore PD) : RationalDuality PD
   exact h ℚ_[l] ℤ_[l] goodO_padicInt { V := V, ρ := ρ, cont := hc } { V := V', ρ := ρ', cont := hc' } P hdR hP
 
 /- English proof (translation)
-Introduce `L1 hL1 V _ _ _ _ _ _ _ _ _ V' _ _ _ _ _ _ _ _ _ ρ ρ' L L' P hc hc' hdR hP`. Conclude with `h ℚ_[l] ℤ_[l] goodO_padicInt L1 hL1 { V := V, ρ := ρ, cont := hc } { V := V', ρ := ρ', cont := hc' } L L' P hdR hP`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem integralDuality_of_allCoefficients (h : bkBCore PD) : IntegralDuality PD := by
   intro L1 hL1 V _ _ _ _ _ _ _ _ _ V' _ _ _ _ _ _ _ _ _ ρ ρ' L L' P hc hc' hdR hP

@@ -27,7 +27,7 @@ variable {f} {G : Over S} {G' : Over (Sp R)} [GrpObj G] [GrpObj G'] [IsCommMonOb
   [IsCommMonObj G'] {φ : G'.left ⟶ G.left}
 
 /- English proof (translation)
-Use `(map_prod Φ _ _).trans (Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hΦ, Over.comp_left, Over.comp_left, hΦ, Category.assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_tanExp (Φ : (epsR R ⟶ G') ≃* (Over.mk ((epsR R).hom ≫ f) ⟶ G))
     (hΦ : ∀ x, (Φ x).left = x.left ≫ φ) {n : ℕ} (v : Fin n → (epsR R ⟶ G')) (c : Fin n → R) :
@@ -38,7 +38,7 @@ theorem push_tanExp (Φ : (epsR R ⟶ G') ≃* (Over.mk ((epsR R).hom ≫ f) ⟶
   rfl
 
 /- English proof (translation)
-The claim follows from `map_prod (MonoidHom.mk' (fun y : T ⟶ G => y ≫ F) fun a b => MonObj.mul_comp a b F) x s`.
+A detailed English derivation is pending.
 -/
 theorem prod_comp {T G₁ : Over S} [GrpObj G₁] [IsCommMonObj G₁] (F : G ⟶ G₁) [IsMonHom F]
     {J : Type} (s : Finset J) (x : J → (T ⟶ G)) : (∏ i ∈ s, x i) ≫ F = ∏ i ∈ s, x i ≫ F :=
@@ -47,9 +47,9 @@ theorem prod_comp {T G₁ : Over S} [GrpObj G₁] [IsCommMonObj G₁] (F : G ⟶
 omit [GrpObj G] [IsCommMonObj G] in
 
 /- English proof (translation)
-Establish `h₁ : tanExp v (N • c) = tanExp v 0`. Express the relevant statement in the definitionally equal form `(combHom hv.1 (N • c)).toMul = (combHom hv.1 0).toMul`. Rewrite using `[map_nsmul, map_zero, toMul_nsmul]`. Conclude with `h`. Establish `h₂` using `(isLieBasisOver_self hv).1 _ _ h₁`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Use `congrFun h₂ i` as an intermediate fact. Simplify `this` using `[hN.ne']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pow {K : Type} [Field K] [CharZero K] {A : Over (Sp K)} [GrpObj A]
     [IsCommMonObj A] {n : ℕ} {v : Fin n → (epsR K ⟶ A)} (hv : IsLieBasis v) {c : Fin n → K}
@@ -66,29 +66,27 @@ theorem eq_zero_of_pow {K : Type} [Field K] [CharZero K] {A : Over (Sp K)} [GrpO
 end General
 
 /- English proof (translation)
-Introduce `E _ _ _ _ H l cf _ nΨ n' f o La hg L hL hdet`. Take `⟨-, -, -, hB, hΨ, h', -, -, -, -, -, -, -, ⟨hmΨ, hm', N, ψΨ, ψ', hN, -, hsum⟩, -⟩` from `hg`. Take `⟨hsrc, -, hw, -⟩` from `hL`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 hdet`. Use `choose w hw hwc using hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ΦB, hΦB⟩` from `exists_mulEquiv_points_of_isGrpPullback _ _ _ _ _ _ hB.1 (epsR o.K₁)`. Take `⟨ΦΨ, hΦΨ⟩` from `exists_mulEquiv_points_of_isGrpPullback _ _ _ _ _ _ hΨ.1 (epsR o.K₁)`. Take `⟨Φ', hΦ'⟩` from `exists_mulEquiv_points_of_isGrpPullback _ _ _ _ _ _ h'.1 (epsR o.K₁)`. Set `e` to `Equiv.ofBijective _ hsrc`. Establish `he : ∀ q, L.src (e.symm q) = q` using `fun q => e.apply_symm_apply q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwl : ∀ j i, ΦB (w (e.symm (.inl (j, i)))) = ΦΨ (o.xΨ.v i) ≫ o.φΨ j` using `fun j i => by`. Use `hw (e.symm (.inl (j, i)))` as an intermediate fact. Rewrite `this` using `[LamLetters.IsLetter, he]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hΦB, Over.comp_left, hΦΨ, Category.assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hwr : ∀ j i, ΦB (w (e.symm (.inr (j, i)))) = Φ' (o.x'.v i) ≫ o.φ' j` using `fun j i => by`. Use `hw (e.symm (.inr (j, i)))` as an intermediate fact. Rewrite `this` using `[LamLetters.IsLetter, he]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hΦB, Over.comp_left, hΦ', Category.assoc]`. Conclude with `this`. Establish `hone : tanExp w c = 1`. Choose the witnesses or unpack the hypotheses as in `rfl : w = fun k => tanExp o.xB.v (L.U k) :=`. Use function extensionality and compare the values at `fun k => (isLieComb_iff_tanExp _ _).1 (hwc k)`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(tanExp_tanExp o.xB.basis.1 (fun k => L.U k) c).trans ?_` and prove the remaining obligations. Rewrite using `[← Matrix.vecMul_eq_sum, hc]`. Conclude with `lieExp_eq_one o.xB.basis.1 _ (fun _ => rfl) _`. Take `⟨-, hpad, hpow, hps⟩ : _ ∧ (∀ a b : Over.mk ((epsR o.K₁).hom ≫ gmap o.K₁) ⟶ o.B.A, padd _ a b = a * b) ∧ _` from `points_sums_eq_products.1 _ _ _`. Set `a` to `fun j => ΦΨ (tanExp o.xΨ.v fun i => c (e.symm (.inl (j, i))))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `a'` to `fun j => Φ' (tanExp o.x'.v fun i => c (e.symm (.inr (j, i))))`. Establish `hs : padd o.B.A (psumPt fun k => a k ≫ o.φΨ k) (psumPt fun k => a' k ≫ o.φ' k) = 1`. Rewrite using `[hpad, hps, hps, List.prod_ofFn, List.prod_ofFn, ← map_one ΦB, ← hone, push_tanExp ΦB hΦB, ← e.symm.prod_comp, Fintype.prod_sum_type, Fintype.prod_prod_type, Fintype.prod_prod_type]`. Apply the tactic sequence `congr 1 <;> refine Finset.prod_congr rfl fun j _ => ?_`. Use `hmΨ j` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [a, push_tanExp ΦΨ hΦΨ, prod_comp, hwl, Category.assoc]`. Use `hm' j` as an intermediate fact. Simplify using `only [a', push_tanExp Φ' hΦ', prod_comp, hwr, Category.assoc]`. Establish `hs₀ : padd o.B.A (psumPt fun k => (1 : Over.mk ((epsR o.K₁).hom ≫ gmap o.K₁) ⟶ _) ≫ o.φΨ k) (psumPt fun k => (1 : Over.mk ((epsR o.K₁).hom ≫ gmap o.K₁) ⟶ _) ≫ o.φ' k) = 1`. Rewrite using `[hpad, hps, hps, List.prod_ofFn, List.prod_ofFn, Finset.prod_eq_one, Finset.prod_eq_one, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j _`. Use `hm' j` as an intermediate fact. Conclude with `MonObj.one_comp _`. Introduce `j _`. Use `hmΨ j` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `MonObj.one_comp _`. Take `⟨p₁, p₂⟩` from `hsum _ a a'`. Take `⟨q₁, q₂⟩` from `hsum _ (fun _ => 1) (fun _ => 1)`. Rewrite `p₁`, `p₂` using `[hs]`. Rewrite `q₁`, `q₂` using `[hs₀]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hc0` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Take `⟨q, rfl⟩` from `e.symm.surjective k`. Break down `q with ⟨j, i⟩ | ⟨j, i⟩` into its components or cases. Establish `h` using `(p₁ j).symm.trans (q₁ j)`.
-
-Rewrite `h` using `[(points_sums_eq_products.1 _ _ _).2.2.1, (points_sums_eq_products.1 _ _ _).2.2.1, one_pow, ← map_pow, map_eq_one_iff _ ΦΨ.injective]`. Conclude with `congrFun (eq_zero_of_pow o.xΨ.basis hN h) i`. Establish `h` using `(p₂ j).symm.trans (q₂ j)`. Rewrite `h` using `[(points_sums_eq_products.1 _ _ _).2.2.1, (points_sums_eq_products.1 _ _ _).2.2.1, one_pow, ← map_pow, map_eq_one_iff _ Φ'.injective]`. Conclude with `congrFun (eq_zero_of_pow o.x'.basis hN h) i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamInd : LamIndSt := by
   intro E _ _ _ _ H l cf _ nΨ n' f o La hg L hL hdet

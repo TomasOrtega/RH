@@ -9,9 +9,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul a t`. Rewrite using `[TensorProduct.map_tmul, Module.Basis.baseChange_repr_tmul, ← congrFun (LinearMap.toMatrix_mulVec_repr b b r t) i, Matrix.mulVec, dotProduct, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Module.Basis.baseChange_repr_tmul, map_smul, Algebra.smul_def, Algebra.smul_def, map_mul, mul_assoc]`. Consider the case `add y z hy hz`. Rewrite using `[map_add, map_add, Finsupp.add_apply, hy, hz, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Simplify using `only [map_add, Finsupp.add_apply, mul_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem repr_map_baseChange {l : ℕ} [Fact l.Prime] {T : Type} [AddCommGroup T] [Module ℤ_[l] T] {d : ℕ}
     (b : Module.Basis (Fin d) ℤ_[l] T) (s : WCb l →ₗ[ℤ_[l]] WCb l) (r : T →ₗ[ℤ_[l]] T)
@@ -37,37 +37,33 @@ namespace GlobalTheory.BSP
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `l _ K bk d S M e hF T _ _ ρ j H`. Establish `hfin` using `H.finite`. Establish `hfree` using `H.free`. Take `⟨e', he'⟩` from `GlobalTheory.T.isSemilinearBaseChange_exists_basis_eq_image_of_basis _ _ _ _ _ (M.tr bk.ι) (M.tr_bc bk.ι) (Fin d) e`. Take `⟨c, hc⟩` from `GlobalTheory.T.isSemilinearBaseChange_exists_basis_eq_image_of_basis _ _ _ _ _ j H.bc (Fin d) e'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hrank : Module.finrank ℤ_[l] T = d`. Rewrite using `[← Module.finrank_baseChange (R := WCb l), Module.finrank_eq_card_basis c, Fintype.card_fin]`. Set `b` to `Module.finBasisOfFinrankEq ℤ_[l] T hrank`. Set `U : Matrix (Fin d) (Fin d) (WCb l)` to `(b.baseChange (WCb l)).toMatrix c`. Establish `hck : ∀ k, c k = ∑ i, U i k • (b.baseChange (WCb l)) i` using `fun k => ((b.baseChange (WCb l)).sum_repr (c k)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcj : ∀ k, c k = j (M.tr bk.ι (e k))` using `fun k => by rw [hc, he']`. Use `⟨b, U, ⟨?_, ?_, ?_⟩, fun k => ?_⟩` and prove the remaining obligations. Use `letI := (b.baseChange (WCb l)).invertibleToMatrix c`. Conclude with `isUnit_of_invertible _`. Establish `hu : IsUnit (inclW l (bk.ev bk.E))` using `isUnit_inclW_of_span bk.span_ev`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `t : ↥(ainfObj K).I` to `⟨bk.ι.f bk.E, bk.ι.f_I _ (Ideal.mem_span_singleton_self _)⟩`. Establish `hu' : IsUnit (((inclW l).comp (ainfId K).toRingHom) (t : (ainfObj K).A))` using `hu`. Establish `ht0 : (t : (ainfObj K).A) ≠ 0` using `fun h => hu'.ne_zero (by rw [h, map_zero])`. Establish `key : ∀ k, inclW l (bk.ev bk.E) ^ S.a • TensorProduct.map (frobW l).toLinearMap LinearMap.id (c k) = ∑ i, bk.evW (S.A i k) • c i`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsum : ∑ j', (Pi.single k (1 : (ainfObj K).A) : Fin d → (ainfObj K).A) j' • M.tr bk.ι (e j') = M.tr bk.ι (e k)`. Simplify using `[Pi.single_apply]`. Take `⟨m, s, hm⟩` from `exists_isFrac (t : (ainfObj K).A) (M.Φ (ainfObj K) t (∑ j', (Pi.single k (1 : (ainfObj K).A) : Fin d → (ainfObj K).A) j' • M.tr bk.ι (e j')))`. Take `⟨r, hr⟩` from `GlobalTheory.T.prismaticFCrystal_frobenius_pullback_basis l K bk d M e S.a S.A hF.Φ (ainfObj K) bk.ι t _ m s hm`. Use `replace hm : IsFrac (t : (ainfObj K).A) (M.Φ (ainfObj K) t (M.tr bk.ι (e k))) m s := by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hm` using `only [hsum]`. Establish `hj : inclW l (bk.ev bk.E) ^ s • TensorProduct.map (frobW l).toLinearMap LinearMap.id (j (M.tr bk.ι (e k))) = j m` using `H.j_φ t ht0 _ m s hm`. Establish `hφ1 : (fun j' => (ainfObj K).D.φ ((Pi.single k (1 : (ainfObj K).A) : Fin d → (ainfObj K).A) j')) = (Pi.single k (1 : (ainfObj K).A) : Fin d → (ainfObj K).A)`. Use function extensionality and compare the values at `fun j' => by`. Distinguish the cases in `h : j' = k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Rewrite `hr` using `[hφ1]`. Establish `hr3` using `(j.map_smulₛₗ ((t : (ainfObj K).A) ^ r) _).symm.trans ((congrArg j hr).trans j.map_zero)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hur : IsUnit (((inclW l).comp (ainfId K).toRingHom) ((t : (ainfObj K).A) ^ r))`. Rewrite using `[map_pow]`. Conclude with `hu'.pow r`. Establish `hr5` using `sub_eq_zero.1 ((j.map_sub _ _).symm.trans (hur.smul_eq_zero.1 hr3))`. Establish `hr7` using `(j.map_smulₛₗ _ _).symm.trans (hr5.trans (j.map_smulₛₗ _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ((inclW l).comp (ainfId K).toRingHom) ((BK.hf bk.ι bk.E) ^ S.a) = inclW l (bk.ev bk.E) ^ S.a` using `map_pow _ _ _`. Establish `e2 : ((inclW l).comp (ainfId K).toRingHom) ((t : (ainfObj K).A) ^ s) = inclW l (bk.ev bk.E) ^ s` using `map_pow _ _ _`. Establish `hsum2 : j (∑ i, (S.A.map (BK.hf bk.ι)).mulVec (Pi.single k 1) i • M.tr bk.ι (e i)) = ∑ i, bk.evW (S.A i k) • c i`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[LinearMap.map_smulₛₗ, ← hcj, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Apply `(hu.pow s).smul_left_cancel.1` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcj, smul_smul, smul_smul, mul_comm]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `_ = inclW l (bk.ev bk.E) ^ S.a • j m := congrArg _ hj`. Use `_ = ((inclW l).comp (ainfId K).toRingHom) ((BK.hf bk.ι bk.E) ^ S.a) • j m := congrArg (· • j m) e1.symm`. Use `_ = ((inclW l).comp (ainfId K).toRingHom) ((t : (ainfObj K).A) ^ s) • j (∑ i, (S.A.map (BK.hf bk.ι)).mulVec (Pi.single k 1) i • M.tr bk.ι (e i)) := hr7`. Use `_ = inclW l (bk.ev bk.E) ^ s • ∑ i, bk.evW (S.A i k) • c i := by rw [e2, hsum2]`. Establish `hev : ∀ x, bk.evW x = inclW l (bk.ev x)` using `fun _ => rfl`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Matrix.ext fun i k => ?_` and prove the remaining obligations. Establish `h` using `congrArg (fun y => (b.baseChange (WCb l)).repr y i) (key k)`. Simplify using `only [map_smul, map_sum, Finsupp.smul_apply, Finsupp.coe_finsetSum, Finset.sum_apply, repr_map_baseChange, LinearMap.toMatrix_id, Matrix.one_apply, smul_eq_mul, apply_ite (algebraMap ℤ_[l] (WCb l)), map_one, map_zero, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ …`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.mul_apply, smul_eq_mul, hev, U, Module.Basis.toMatrix_apply]`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Finset.sum_congr rfl fun x _ => by rw [hev, mul_comm]`. Introduce `g`. Establish `keyg : ∀ k, TensorProduct.map (galW l (g : GQ l)).toLinearMap (ρ g) (c k) = ∑ i, inclW l (S.ε bk.ι ((ainfHom K g).comp bk.ι) i k) • c i`. Introduce `k`. Rewrite using `[hcj, ← H.j_act_of g (ainfHom K g) (fun _ => rfl), ← M.tr_comp, hF.tr bk.ι ((ainfHom K g).comp bk.ι) k, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, ← hcj]`. Both sides reduce to the same expression. Use `Matrix.ext fun i k => ?_` and prove the remaining obligations. Establish `h` using `congrArg (fun y => (b.baseChange (WCb l)).repr y i) (keyg k)`.
-
-Simplify using `only [map_smul, map_sum, Finsupp.smul_apply, Finsupp.coe_finsetSum, Finset.sum_apply, repr_map_baseChange, smul_eq_mul, AlgEquiv.toLinearMap_apply] at h`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, U, Module.Basis.toMatrix_apply, zW]`. Rewrite using `[h]`. Conclude with `Finset.sum_congr rfl fun x _ => mul_comm _ _`. Rewrite using `[← hcj, hck]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.baseChange_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mReal_of_realises : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (S : Strat bk d) (M : FCrys l ↥(OL K)) (e : Module.Basis (Fin d) bk.prism.A (M.M bk.prism)), Framed S M e → ∀ (T : Type) [AddCommGroup T] [Module ℤ_[l] T] (ρ : ↥(GK K) → (T →ₗ[ℤ_[l]] T)) (j : M.M (ainfObj K) →ₛₗ[(inclW l).comp (ainfId K).toRingHom] (WCb l ⊗[ℤ_[l]] T)), Realises K M (ainfObj K) (ainfId K) T ρ j → ∃ (b : Module.Basis (Fin d) ℤ_[l] T) (U : Matrix (Fin d) (Fin d) (WCb l)), MReal S (fun g => LinearMap.toMatrix b b (ρ g)) U ∧ ∀ k, j (M.tr bk.ι (e k)) = ∑ i, U i k ⊗ₜ[ℤ_[l]] b i := by
   intro l _ K bk d S M e hF T _ _ ρ j H

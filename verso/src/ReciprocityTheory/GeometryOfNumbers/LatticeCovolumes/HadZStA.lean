@@ -5,15 +5,15 @@ namespace ReciprocityTheory.GeometryOfNumbersTheory.LinearIndependentExtension
 open Matrix
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `a u0 hu0 hd har`. Use `⟨0, Fin.elim0, by omega, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.append_right_nil u0 _ rfl]`. Conclude with `hu0.comp _ (Fin.cast_injective _)`. Consider the case `succ d ih`. Introduce `a u0 hu0 hd har`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, w j ∉ Submodule.span ℚ (Set.range u0) := by`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `haveI : Nonempty (Fin r) := ⟨⟨0, by omega⟩⟩`. Establish `htop : Submodule.span ℚ (Set.range w) = ⊤` using `hw.span_eq_top_of_card_eq_finrank (by simp)`. Establish `hle : Submodule.span ℚ (Set.range w) ≤ Submodule.span ℚ (Set.range u0)` using `Submodule.span_le.mpr (Set.range_subset_iff.mpr hcon)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle` using `[htop, top_le_iff]`. Establish `h1 : Module.finrank ℚ (Submodule.span ℚ (Set.range u0)) ≤ Fintype.card (Fin a)` using `finrank_range_le_card (R := ℚ) u0`. Rewrite `h1` using `[hle, finrank_top]`. Simplify using `at h1`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu1 : LinearIndependent ℚ (Fin.snoc u0 (w j) : Fin (a + 1) → (Fin r → ℚ))` using `linearIndependent_fin_snoc.mpr ⟨hu0, hj⟩`. Take `⟨m, f, hm, hli⟩` from `ih (a + 1) (Fin.snoc u0 (w j)) hu1 (by omega) (by omega)`. Use `⟨m + 1, Fin.cons j f, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.comp_cons, Fin.append_right_cons]`. Conclude with `hli.comp _ (Fin.cast_injective _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_linearIndependent_append_of_codim {r : ℕ} (w : Fin r → (Fin r → ℚ))
     (hw : LinearIndependent ℚ w) :
@@ -50,7 +50,7 @@ private theorem exists_linearIndependent_append_of_codim {r : ℕ} (w : Fin r �
     exact hli.comp _ (Fin.cast_injective _)
 
 /- English proof (translation)
-Establish `har : a ≤ r`. Establish `h` using `hu0.fintype_card_le_finrank`. Simplify using `using h`. Conclude with `exists_linearIndependent_append_of_codim w hw _ a u0 hu0 rfl har`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_append_li {a r : ℕ} (u0 : Fin a → (Fin r → ℚ)) (hu0 : LinearIndependent ℚ u0)
     (w : Fin r → (Fin r → ℚ)) (hw : LinearIndependent ℚ w) :

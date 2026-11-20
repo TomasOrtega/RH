@@ -17,17 +17,15 @@ open Formalism.DivisionValues
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hσ : ∀ σ : D.what₂.LL →+* ℂ, ‖σ a‖ = 1` using `fun σ => by`. Establish `h : (σ a) ^ n = 1` using `by rw [← map_pow, ha, map_one]`. Conclude with `Complex.norm_eq_one_of_pow_eq_one h hn`. Establish `hconj : ∀ z : ℂ, ‖z‖ = 1 → starRingEnd ℂ z = z⁻¹` using `fun z hz => by`. Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `a0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[zero_pow hn]`. Conclude with `zero_ne_one ha`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m0 : D.what₂.embLL a ≠ 0` using `(map_ne_zero _).2 a0`. Establish `h2 : star a * a = 1` using `D.what₂.embLL.injective (by`. Rewrite using `[map_mul, D.starLL_cx, hconj _ (hσ _), inv_mul_cancel₀ m0, map_one])`. Establish `hs : star a = a⁻¹` using `eq_inv_of_mul_eq_one_left h2`. Establish `h1 : a ∈ Formalism.DivisionValues.cmMax D.what₂.LL`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `∀ σ : D.what₂.LL →+* ℂ, σ (star a) = starRingEnd ℂ (σ a)`. Introduce `σ`. Rewrite using `[hs, map_inv₀, hconj _ (hσ σ)]`. Establish `hi : IsIntegral (𝓞 D.what₂.LL) a`. Use `IsIntegral.of_pow (Nat.pos_of_ne_zero hn) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ha]`. Conclude with `isIntegral_one`. Take `⟨x, hx⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Establish `hx1 : x ^ n = 1` using `IsFractionRing.injective (𝓞 D.what₂.LL) D.what₂.LL (by rw [map_pow, hx, ha, map_one])`. Use `⟨(IsUnit.of_pow_eq_one hx1 hn).unit, ?_, h1, h2⟩` and prove the remaining obligations.
-
-Rewrite using `[IsUnit.unit_spec]`. Conclude with `hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_pow (a : D.what₂.LL) (n : ℕ) (hn : n ≠ 0) (ha : a ^ n = 1) :
     ∃ u : (𝓞 D.what₂.LL)ˣ, ((u : 𝓞 D.what₂.LL) : D.what₂.LL) = a ∧ a ∈ Formalism.DivisionValues.cmMax D.what₂.LL ∧ star a * a = 1 := by
@@ -60,9 +58,9 @@ theorem exists_unit_of_pow (a : D.what₂.LL) (n : ℕ) (hn : n ≠ 0) (ha : a ^
   exact hx
 
 /- English proof (translation)
-Take `⟨a1, a2, a3⟩` from `h`. Use `⟨fun γ γE hγ v => by simp [a1 γ γE hγ v], a2.units_smul fun _ => Units.mk0 _ hμ, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← a3, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Submodule.smul_mem _ μ⁻¹ (Submodule.subset_span (R := ℂ) (s := Set.range fun i => (μ • c0) (bVV D.what₂.LL lam i)) ⟨i, rfl⟩)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `Set.mem_of_eq_of_mem (inv_smul_smul₀ hμ (c0 _)).symm this`.
+A detailed English derivation is pending.
 -/
 theorem coefMapTie_smul {V C lam c0 rho} (h : Formalism.IndefR.Bridge.CoefMapTie (D := D) V C (lam := lam) c0 rho) {μ : ℂ} (hμ : μ ≠ 0) :
     Formalism.IndefR.Bridge.CoefMapTie V C (μ • c0) rho := by
@@ -75,15 +73,15 @@ theorem coefMapTie_smul {V C lam c0 rho} (h : Formalism.IndefR.Bridge.CoefMapTie
   exact Set.mem_of_eq_of_mem (inv_smul_smul₀ hμ (c0 _)).symm this
 
 /- English proof (translation)
-Establish `l0 : l ≠ 0` using `right_ne_zero_of_mul_eq_one h2`. Establish `m0 : D.what₂.embLL l ≠ 0` using `(map_ne_zero _).2 l0`. Establish `li : (((u⁻¹ : (𝓞 D.what₂.LL)ˣ) : 𝓞 D.what₂.LL) : D.what₂.LL) = l⁻¹` using `eq_inv_of_mul_eq_one_left (by rw [← hu, ← map_mul (algebraMap (𝓞 D.what₂.LL) D.what₂.LL), Units.inv_mul, map_one])`. Take `⟨e, a1, a2, a3, a4, a5⟩` from `h`. Set `s` to `LinearEquiv.smulOfNeZero D.what₂.LL (VV D.what₂.LL lam) l⁻¹ (inv_ne_zero l0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hs : ∀ x, (e.trans s) x = l⁻¹ • e x` using `fun _ => rfl`. Establish `hm : ∀ N : Submodule (𝓞 D.what₂.LL) S.V, N.map ((e.trans s).toLinearMap.restrictScalars (𝓞 D.what₂.LL)) = N.map (e.toLinearMap.restrictScalars (𝓞 D.what₂.LL))` using `fun N => by`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨((u⁻¹ : (𝓞 D.what₂.LL)ˣ) : 𝓞 D.what₂.LL) • v, N.smul_mem _ hv, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul D.what₂.LL]`. Conclude with `(map_smul e _ _).trans (congrArg (· • e v) li)`. Introduce and unpack `⟨v, hv, rfl⟩`. Use `⟨(u : 𝓞 D.what₂.LL) • v, N.smul_mem _ hv, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul D.what₂.LL]`. Use `show (e.trans s) ((algebraMap (𝓞 D.what₂.LL) D.what₂.LL (u : 𝓞 D.what₂.LL)) • v) = e v`. Rewrite using `[show algebraMap (𝓞 D.what₂.LL) D.what₂.LL (u : 𝓞 D.what₂.LL) = l from hu]`. Conclude with `(hs _).trans ((congrArg (l⁻¹ • ·) (map_smul e l v)).trans (inv_smul_smul₀ l0 _))`. Use `⟨e.trans s, fun i j => ?_, fun x => ?_, fun x x' => ?_, fun c => (hm _).trans (a4 c), fun c => (hm _).trans (a5 c)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (inv_mem h1) (a1 i j)`. Rewrite using `[hs, LinearMap.smul_apply, map_smulₛₗ, map_inv₀, smul_inv_smul₀ m0, a2]`. Rewrite using `[hs, hs, map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply, a3, smul_smul, starRingEnd_apply, star_inv₀, ← mul_inv, mul_comm, h2, inv_one, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem coefTie_smul {V C S J χ P lam c0 pair nab del}
     (h : Formalism.IndefR.Bridge.CoefTie (D := D) V C (S := S) (J := J) (χ := χ) P lam c0 pair nab del)
@@ -126,11 +124,11 @@ namespace GlobalTheory.Mem.R3.Rw.OmExt
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R c0L hc i a n hn ha`. Take `⟨u, hu, h1, h2⟩` from `RootUpd.exists_unit_of_pow a n hn ha`. Establish `m0 : D.what₂.embLL a ≠ 0` using `(map_ne_zero _).2 (right_ne_zero_of_mul_eq_one h2)`. Take `⟨gramR, c0R, ht⟩` from `hc`. Use `⟨gramR, c0R, ⟨ht.ranks, ht.v0, ht.tauL_ok, ht.pl_inj, ht.q, ht.S_fin, ht.ok, ht.gramR_eq, ht.mapR, fun j => ?_, ht.coefR, fun j t => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `eq_or_ne j i with rfl | hj` into its components or cases. Rewrite using `[Function.update_self]`. Conclude with `RootUpd.coefMapTie_smul (ht.mapL j) m0`. Rewrite using `[Function.update_of_ne hj]`. Conclude with `ht.mapL j`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `eq_or_ne j i with rfl | hj` into its components or cases. Rewrite using `[Function.update_self]`. Conclude with `RootUpd.coefTie_smul (ht.coefL j t) a u hu h1 h2`. Rewrite using `[Function.update_of_ne hj]`. Conclude with `ht.coefL j t`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefFam_update_root : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)

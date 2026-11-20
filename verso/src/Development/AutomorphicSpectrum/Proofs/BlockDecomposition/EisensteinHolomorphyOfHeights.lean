@@ -16,11 +16,9 @@ namespace GlobalTheory.CompanionTheory.EisHolFam
 open GlobalTheory.StdUnn.HeightExists GlobalTheory.StdUnn.PolesModel
 
 /- English proof (translation)
-Introduce `_ D p χ _ c f hc hd hl h`. Use `haveI := t2Space_adeleRing' (F := D.host.F)`. Establish `hsub : rightOf (max c ((p : ℝ) / 2)) ⊆ {z : ℂ | c < z.re}` using `fun z hz => lt_of_le_of_lt (le_max_left _ _) (mem_rightOf.1 hz)`. Establish `key` using `analyticOnNhd_cosetSum (P := P D p) (Γ := GF D p) (K := K D p) (δ := modP (D := D) (n := p)) (χ := χ.comp detP) (ρ := (p : ℝ) / 2) (σ := max c ((p : ℝ) / 2)) (Φ := f) isIwasawa isCompact_K (hc.mono (Set.prod_mono hsub (Set.subset_univ _))) (fun z hz q g => by`. Use `hl z (hsub hz) q q.2 (leviBlock (D := D) (n := p) q) rfl g` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `this)`. Use the proof step `(fun τ hτ => summable_spherical τ (lt_of_le_of_lt (le_max_right _ _) hτ))`. Use the proof step `(fun g => (hd g).mono hsub) h`. Use `key.differentiableOn.mono fun z hz => ?_` and prove the remaining obligations.
-
-Conclude with `mem_rightOf.2 (max_lt hz.1 hz.2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eisHol_of_htExist : HtExist → EisHol := by
   intro _ D p χ _ c f hc hd hl h

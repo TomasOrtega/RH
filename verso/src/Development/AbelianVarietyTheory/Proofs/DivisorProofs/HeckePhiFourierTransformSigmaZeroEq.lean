@@ -11,11 +11,11 @@ open scoped FourierTransform
 namespace GlobalTheory.HeckeTwo
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `him : ((y : ℂ) * I).im = y` using `by simp`. Simplify using `only [GlobalTheory.LipschitzTR.phi1, Set.indicator, Set.mem_Ioi, him, sign_pos hy, SignType.coe_one, one_mul]`. Distinguish the cases in `ht : 0 < t`. Rewrite using `[if_pos ht, if_pos ht, abs_of_pos ht]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `congr 2`. Put the polynomial expressions in normal form. Rewrite using `[I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[if_neg ht, if_neg ht]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma lipschitzOneVariableKernel_two_eq_indicator {y : ℝ} (hy : 0 < y) :
     GlobalTheory.LipschitzTR.phi1 2 ((y : ℂ) * I) =
@@ -33,7 +33,7 @@ lemma lipschitzOneVariableKernel_two_eq_indicator {y : ℝ} (hy : 0 < y) :
   · rw [if_neg ht, if_neg ht]
 
 /- English proof (translation)
-Rewrite using `[norm_pow, norm_inv, inv_pow, Complex.sq_norm, Complex.normSq_apply]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma norm_inv_ofReal_add_mul_I_sq (x y : ℝ) : ‖((x : ℂ) + (y : ℂ) * I)⁻¹ ^ 2‖ = (x ^ 2 + y ^ 2)⁻¹ := by
   rw [norm_pow, norm_inv, inv_pow, Complex.sq_norm, Complex.normSq_apply]
@@ -41,7 +41,7 @@ lemma norm_inv_ofReal_add_mul_I_sq (x y : ℝ) : ‖((x : ℂ) + (y : ℂ) * I)�
   ring
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `at this`. Conclude with `hy.ne' this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ofReal_add_ofReal_mul_I_ne_zero (x : ℝ) {y : ℝ} (hy : 0 < y) : (x : ℂ) + (y : ℂ) * I ≠ 0 := by
   intro h
@@ -50,27 +50,27 @@ lemma ofReal_add_ofReal_mul_I_ne_zero (x : ℝ) {y : ℝ} (hy : 0 < y) : (x : �
   exact hy.ne' this
 
 /- English proof (translation)
-Introduce `ν y hy`. Use `set g := GlobalTheory.LipschitzTR.phi1 2 ((y : ℂ) * I) with hg`. Establish `hw : ((y : ℂ) * I).im ≠ 0` using `by simp [hy.ne']`. Establish `hgc : Continuous g` using `GlobalTheory.LipschitzTR.continuous_lipschitzOneVariableKernel le_rfl hw`. Establish `hgi : Integrable g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, lipschitzOneVariableKernel_two_eq_indicator hy, integrable_indicator_iff measurableSet_Ioi]`. Conclude with `GlobalTheory.LipschitzTR.integrableOn_pow_mul_cexp_neg 1 (by simp; positivity)`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `hF : ∀ x : ℝ, 𝓕 g x = -(4 * (Real.pi : ℂ) ^ 2)⁻¹ * (((-x : ℝ) : ℂ) + (y : ℂ) * I)⁻¹ ^ 2`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg, GlobalTheory.LipschitzTR.fourier_phi1_eq_factorial_mul_zpow 2 le_rfl even_two _ hw x]`. Establish `hne` using `ofReal_add_ofReal_mul_I_ne_zero (-x) hy`. Rewrite using `[zpow_neg, zpow_natCast]`. Move the coercions through the operations in `at hne ⊢`. Establish `: (y : ℂ) * I - x = -(x : ℂ) + y * I` using `by ring`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Rewrite using `[I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFi : Integrable (𝓕 g)`. Establish `hb : Integrable (fun x : ℝ => ((4 * Real.pi ^ 2 * y ^ 2)⁻¹ : ℝ) * (1 + (x / y) ^ 2)⁻¹)` using `(integrable_inv_one_add_sq.comp_div hy.ne').const_mul _`. Use `hb.mono' ?_ (Filter.Eventually.of_forall fun x => le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[show (𝓕 g) = fun x : ℝ => -(4 * (Real.pi : ℂ) ^ 2)⁻¹ * (((-x : ℝ) : ℂ) + (y : ℂ) * I)⁻¹ ^ 2 from funext hF]`. Conclude with `Continuous.aestronglyMeasurable (continuous_const.mul ((((continuous_ofReal.comp continuous_neg).add continuous_const).inv₀ (fun x => ofReal_add_ofReal_mul_I_ne_zero (-x) hy)).pow 2))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hF, norm_mul, norm_neg, norm_inv, norm_mul, norm_pow, norm_inv_ofReal_add_mul_I_sq]`. Simplify using `only [RCLike.norm_ofNat, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos, neg_sq]`. Establish `: y ≠ 0` using `hy.ne'`. Apply the tactic sequence `field_simp <;> ring`. Establish `hinv : 𝓕 (𝓕⁻ g) = g` using `hgc.fourier_fourierInv_eq hgi hFi`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hphi : ∀ t : ℝ, phi 0 ((t : ℂ) + (y : ℂ) * I) = -4 * (Real.pi : ℂ) ^ 2 * 𝓕⁻ g t`. Introduce `t`. Rewrite using `[Real.fourierInv_eq_fourier_neg, hF, neg_neg]`. Unfold `phi`. Rewrite using `[mul_zero, Complex.cpow_zero, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Clear the denominators using the available nonvanishing facts. Establish `hT : hTrans 0 ν y = -4 * (Real.pi : ℂ) ^ 2 * 𝓕 (𝓕⁻ g) ν`. Unfold `hTrans`. Rewrite using `[Real.fourier_real_eq_integral_exp_smul, ← integral_const_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[hphi t, smul_eq_mul]`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[hT, hinv, hg]`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.LipschitzTR.phi1]`. Establish `him : ((y : ℂ) * I).im = y` using `by simp`. Rewrite using `[him, sign_pos hy, SignType.coe_one, one_mul]`. Distinguish the cases in `hν : 0 < ν`. Rewrite using `[if_pos hν, if_pos hν, abs_of_pos hν]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[I_sq]`. Put the polynomial expressions in normal form. Rewrite using `[if_neg hν, if_neg hν, mul_zero]`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hTrans_sigma_zero_eq : ∀ (ν y : ℝ), 0 < y → GlobalTheory.HeckeTwo.hTrans 0 ν y =
     if 0 < ν then -4 * (Real.pi : ℂ) ^ 2 * (ν : ℂ) * ((Real.exp (-(2 * Real.pi * ν * y)) : ℝ) : ℂ) else 0 := by

@@ -7,7 +7,7 @@ namespace GlobalTheory
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Filter Topology MeasureTheory
 
 /- English proof (translation)
-The claim follows from `| [] => Formalism.FourierDecayAlt.P.Qx2.good_id | a :: w => (Formalism.FourierDecayAlt.P.Dx1.LZ.good_Tc (k := k) (r := r) (E := E) s (a.2 : ℂ)).comp (capelliFold_good s w)`.
+A detailed English derivation is pending.
 -/
 theorem capelliFold_good {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (s : ℂ) :
     ∀ w : List (Bool × ℝ), Formalism.FourierDecayAlt.P.Qx2.Good k r 0 Set.univ
@@ -16,7 +16,7 @@ theorem capelliFold_good {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSp
   | a :: w => (Formalism.FourierDecayAlt.P.Dx1.LZ.good_Tc (k := k) (r := r) (E := E) s (a.2 : ℂ)).comp (capelliFold_good s w)
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ s w a X Z hX hZ g hg`. Conclude with `(capelliFold_good s w).lin X Z a (Formalism.FourierDecayAlt.P.Dx1.LZ.smooth_of_ck hX) (Formalism.FourierDecayAlt.P.Dx1.LZ.smooth_of_ck hZ) g (Formalism.FourierDecayAlt.P.Dx1.LZ.glev0 hg)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem capelliFold_add_smul :
     ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]

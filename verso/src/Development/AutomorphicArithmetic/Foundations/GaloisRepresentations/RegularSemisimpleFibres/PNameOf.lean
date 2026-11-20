@@ -10,7 +10,7 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use `haveI : Module.Finite (ZMod g) K := Module.finite_of_finrank_pos (hK ▸ hm)`. Use `haveI : Finite K := Module.finite_of_finite (ZMod g)`. Use `haveI : Fintype K := Fintype.ofFinite K`. Rewrite using `[Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := ZMod g), ZMod.card, hK]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem natCard_of_finrank {g : ℕ} [Fact g.Prime] {m : ℕ} (hm : 0 < m) {K : Type} [Field K] [Algebra (ZMod g) K]
     (hK : Module.finrank (ZMod g) K = m) : Nat.card K = g ^ m := by
@@ -20,9 +20,7 @@ private theorem natCard_of_finrank {g : ℕ} [Fact g.Prime] {m : ℕ} (hm : 0 < 
   rw [Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := ZMod g), ZMod.card, hK]
 
 /- English proof (translation)
-Use `haveI : Module.Finite (ZMod g) K := Module.finite_of_finrank_pos (hK ▸ hm)`. Use `haveI : Finite K := Module.finite_of_finite (ZMod g)`. Use `haveI : Fintype K := Fintype.ofFinite K`. Establish `hc : Fintype.card K = g ^ m`. Rewrite using `[← Nat.card_eq_fintype_card]`.
-
-Conclude with `natCard_of_finrank hm hK`. Rewrite using `[← hc]`. Conclude with `FiniteField.pow_card x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem frob_top {g : ℕ} [Fact g.Prime] {m : ℕ} (hm : 0 < m) {K : Type} [Field K] [Algebra (ZMod g) K]
     (hK : Module.finrank (ZMod g) K = m) (x : K) : x ^ g ^ m = x := by
@@ -36,7 +34,7 @@ private theorem frob_top {g : ℕ} [Fact g.Prime] {m : ℕ} (hm : 0 < m) {K : Ty
   exact FiniteField.pow_card x
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ, pow_mul, pow_mul, ← ih, ← Polynomial.expand_aeval, ZMod.expand_card, map_pow]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem aeval_pow_prime_pow_eq_pow {g : ℕ} [Fact g.Prime] {K : Type} [Field K] [Algebra (ZMod g) K]
     (Y : (ZMod g)[X]) (x : K) (j : ℕ) : aeval (x ^ g ^ j) Y = (aeval x Y) ^ g ^ j := by
@@ -46,17 +44,15 @@ private theorem aeval_pow_prime_pow_eq_pow {g : ℕ} [Fact g.Prime] {K : Type} [
     rw [pow_succ, pow_mul, pow_mul, ← ih, ← Polynomial.expand_aeval, ZMod.expand_card, map_pow]
 
 /- English proof (translation)
-Introduce `h`. Establish `hg : g.Prime` using `Fact.out`. Use `haveI : Module.Finite (ZMod g) K := Module.finite_of_finrank_pos (hK ▸ hm)`. Use `haveI : Finite K := Module.finite_of_finite (ZMod g)`. Use `haveI : Fintype K := Fintype.ofFinite K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : IsIntegral (ZMod g) (z : K)` using `Algebra.IsIntegral.isIntegral _`. Use `set F := IntermediateField.adjoin (ZMod g) {(z : K)} with hFdef`. Establish `hF : Module.finrank (ZMod g) F = m`. Rewrite using `[IntermediateField.adjoin.finrank hint, hz]`. Establish `hfix : ∀ y ∈ F, y ^ g ^ a = y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y hy`. Establish `hy' : y ∈ Algebra.adjoin (ZMod g) {(z : K)}`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic]`. Conclude with `hy`. Rewrite `hy'` using `[Algebra.adjoin_singleton_eq_range_aeval]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p, rfl⟩` from `hy'`. Use `show (aeval (z : K) p) ^ g ^ a = aeval (z : K) p`. Rewrite using `[← aeval_pow_prime_pow_eq_pow, h]`. Establish `hq : 1 < g ^ a` using `Nat.one_lt_pow ha.ne' hg.one_lt`. Establish `hP0 : (X ^ (g ^ a) - X : K[X]) ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero K hq`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hle` using `Polynomial.card_le_degree_of_subset_roots (p := (X ^ (g ^ a) - X : K[X])) (Z := Finset.univ.map (Function.Embedding.subtype (· ∈ F))) (by`. Introduce `y hy`. Rewrite `hy` using `[Finset.map_val, Multiset.mem_map]`. Take `⟨⟨y, hyF⟩, -, rfl⟩` from `hy`. Rewrite using `[Polynomial.mem_roots hP0, IsRoot, eval_sub, eval_pow, eval_X]`.
-
-Simplify using `only [Function.Embedding.coe_subtype]`. Rewrite using `[hfix y hyF, sub_self])`. Rewrite `hle` using `[FiniteField.X_pow_card_sub_X_natDegree_eq K hq, Finset.card_map, Finset.card_univ, Module.card_eq_pow_finrank (K := ZMod g), ZMod.card, hF]`. Use `Nat.pow_lt_pow_right hg.one_lt ham` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem conj_ne {g : ℕ} [Fact g.Prime] {m : ℕ} (hm : 0 < m) {K : Type} [Field K] [Algebra (ZMod g) K]
     (hK : Module.finrank (ZMod g) K = m) (z : Kˣ) (hz : (minpoly (ZMod g) (z : K)).natDegree = m)
@@ -96,11 +92,11 @@ private theorem conj_ne {g : ℕ} [Fact g.Prime] {m : ℕ} (hm : 0 < m) {K : Typ
   omega
 
 /- English proof (translation)
-Introduce `h`. Establish `key : ∀ x : K, (x ^ g ^ i) ^ g ^ (m - i) = x`. Introduce `x`. Rewrite using `[← pow_mul, ← pow_add, Nat.add_sub_cancel' (by omega)]`. Conclude with `frob_top hm hK x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `conj_ne hm hK z hz (j - i) (by omega) (by omega)` to reduce the goal to its premises. Establish `hs : (z : K) ^ g ^ j = ((z : K) ^ g ^ (j - i)) ^ g ^ i`. Rewrite using `[← pow_mul, ← pow_add, Nat.sub_add_cancel hij.le]`. Rewrite `h` using `[hs]`. Establish `h2` using `congrArg (fun y => y ^ g ^ (m - i)) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [key] at h2`. Conclude with `h2.symm`.
+A detailed English derivation is pending.
 -/
 private theorem conj_inj {g : ℕ} [Fact g.Prime] {m : ℕ} (hm : 0 < m) {K : Type} [Field K] [Algebra (ZMod g) K]
     (hK : Module.finrank (ZMod g) K = m) (z : Kˣ) (hz : (minpoly (ZMod g) (z : K)).natDegree = m)
@@ -119,22 +115,20 @@ private theorem conj_inj {g : ℕ} [Fact g.Prime] {m : ℕ} (hm : 0 < m) {K : Ty
   exact h2.symm
 
 /- English proof (translation)
-Rewrite using `[aeval_pow_prime_pow_eq_pow, hx, zero_pow (pow_ne_zero _ (Fact.out : g.Prime).ne_zero)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem aeval_conj {g : ℕ} [Fact g.Prime] {K : Type} [Field K] [Algebra (ZMod g) K]
     (Y : (ZMod g)[X]) (x : K) (hx : aeval x Y = 0) (j : ℕ) : aeval (x ^ g ^ j) Y = 0 := by
   rw [aeval_pow_prime_pow_eq_pow, hx, zero_pow (pow_ne_zero _ (Fact.out : g.Prime).ne_zero)]
 
 /- English proof (translation)
-Establish `hzm : (minpoly (ZMod g) (z : K)).natDegree = m`. Rewrite using `[← minpoly.eq_of_irreducible_of_monic hY hz hYm, hYd]`. Establish `hnd : ((Multiset.range m).map fun j => ι ((z : K) ^ g ^ j)).Nodup`. Rewrite using `[Multiset.nodup_map_iff_inj_on (Multiset.nodup_range m)]`. Introduce `i hi j hj hij`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Multiset.mem_range] at hi hj`. Establish `h' : (z : K) ^ g ^ i = (z : K) ^ g ^ j` using `ι.injective hij`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Conclude with `absurd h' (conj_inj hm hK z hzm i j h hj)`. Conclude with `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd h'.symm (conj_inj hm hK z hzm j i h hi)`. Establish `hP0 : ((Y.map (algebraMap (ZMod g) K)).map ι) ≠ 0` using `((hYm.map _).map _).ne_zero`. Establish `hle : ((Multiset.range m).map fun j => ι ((z : K) ^ g ^ j)) ≤ ((Y.map (algebraMap (ZMod g) K)).map ι).roots`. Rewrite using `[Multiset.le_iff_subset hnd]`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy` using `[Multiset.mem_map]`. Take `⟨j, -, rfl⟩` from `hy`. Rewrite using `[mem_roots hP0, IsRoot, eval_map, eval₂_map, ← Polynomial.hom_eval₂, ← aeval_def, aeval_conj Y _ hz j, map_zero]`. Establish `hdeg : ((Y.map (algebraMap (ZMod g) K)).map ι).natDegree = m`. Rewrite using `[natDegree_map, natDegree_map, hYd]`.
-
-Use `(Multiset.eq_of_le_of_card_le hle ?_).symm` and prove the remaining obligations. Rewrite using `[Multiset.card_map, Multiset.card_range, ← hdeg]`. Conclude with `card_roots' _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem roots_conj {g : ℕ} [Fact g.Prime] {m : ℕ} (hm : 0 < m) {K : Type} [Field K] [Algebra (ZMod g) K]
     (hK : Module.finrank (ZMod g) K = m) (Y : (ZMod g)[X]) (hY : Irreducible Y) (hYm : Y.Monic)
@@ -167,11 +161,11 @@ private theorem roots_conj {g : ℕ} [Fact g.Prime] {m : ℕ} (hm : 0 < m) {K : 
   exact card_roots' _
 
 /- English proof (translation)
-Establish `hone : g ^ m ≡ 1 [MOD g ^ m - 1]` using `Nat.modEq_sub (Nat.one_le_pow _ _ hg)`. Establish `h2` using `h.mul_right (g ^ (m - i))`. Establish `e1 : c * g ^ i * g ^ (m - i) = c * g ^ m`. Rewrite using `[mul_assoc, ← pow_add, Nat.add_sub_cancel' (by omega)]`. Establish `e2 : c * g ^ j * g ^ (m - i) = c * g ^ (j - i) * g ^ m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, mul_assoc, ← pow_add, ← pow_add]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Rewrite `h2` using `[e1, e2]`. Establish `h3 : c * g ^ m ≡ c [MOD g ^ m - 1]` using `by simpa using hone.mul_left c`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : c * g ^ (j - i) * g ^ m ≡ c * g ^ (j - i) [MOD g ^ m - 1]`. Simplify using `using hone.mul_left (c * g ^ (j - i))`. Conclude with `hc (j - i) (by omega) (by omega) (h4.symm.trans (h2.symm.trans h3))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem false_of_reg_of_mul_pow_modEq {g m c i j : ℕ} (hg : 0 < g) (hc : Reg g m c) (hij : i < j) (hj : j < m)
     (h : c * g ^ i ≡ c * g ^ j [MOD g ^ m - 1]) : False := by
@@ -190,13 +184,11 @@ private theorem false_of_reg_of_mul_pow_modEq {g m c i j : ℕ} (hg : 0 < g) (hc
   exact hc (j - i) (by omega) (by omega) (h4.symm.trans (h2.symm.trans h3))
 
 /- English proof (translation)
-Introduce `i j hi hj hij`. Establish `hg : g.Prime` using `Fact.out`. Use `haveI : Module.Finite (ZMod g) K := Module.finite_of_finrank_pos (hK ▸ hm)`. Use `haveI : Finite K := Module.finite_of_finite (ZMod g)`. Use `haveI : Fintype K := Fintype.ofFinite K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ζ, hζ⟩` from `IsCyclic.exists_generator (α := Kˣ)`. Establish `hord : orderOf ζ = g ^ m - 1`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hζ, Nat.card_eq_fintype_card, Fintype.card_units, ← Nat.card_eq_fintype_card, natCard_of_finrank hm hK]`. Establish `hv` using `DFunLike.congr_fun hij ζ`. Simplify using `only [MonoidHom.pow_apply, ← pow_mul] at hv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hv` using `[← map_pow, ← map_pow]`. Establish `hv' : Θ (ι ((ζ ^ (c * g ^ i) : Kˣ) : K)) = Θ (ι ((ζ ^ (c * g ^ j) : Kˣ) : K))` using `congrArg (fun u : ℂˣ => (u : ℂ)) hv`. Establish `h1` using `hΘ _ _ (by simp) (by simp) hv'`. Establish `h2 : ζ ^ (c * g ^ i) = ζ ^ (c * g ^ j)` using `Units.ext (ι.injective h1)`. Rewrite `h2` using `[pow_eq_pow_iff_modEq, hord]`.
-
-Break down `lt_trichotomy i j with h | h | h` into its components or cases. Conclude with `(false_of_reg_of_mul_pow_modEq hg.pos hc h hj h2).elim`. Conclude with `h`. Conclude with `(false_of_reg_of_mul_pow_modEq hg.pos hc h hi h2.symm).elim`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem regular_character_of_pow {g : ℕ} [Fact g.Prime] {m : ℕ} (hm : 0 < m) {K 𝔨 : Type} [Field K] [Algebra (ZMod g) K] [Field 𝔨]
     (hK : Module.finrank (ZMod g) K = m) (ι : K →+* 𝔨) (Θ : 𝔨 →* ℂ) (hΘ : Inj Θ) (c : ℕ) (hc : Reg g m c) :
@@ -224,21 +216,21 @@ private theorem regular_character_of_pow {g : ℕ} [Fact g.Prime] {m : ℕ} (hm 
   · exact (false_of_reg_of_mul_pow_modEq hg.pos hc h hi h2.symm).elim
 
 /- English proof (translation)
-Introduce `g _ m hm F K 𝔨 _ _ _ _ _ hK r e ι Θ hΘ c hc`. Use `⟨(Units.map (Θ.comp ι.toMonoidHom)) ^ c, ?_, regular_character_of_pow hm hK ι Θ hΘ c hc, ?_⟩` and prove the remaining obligations. Introduce `u`. Rewrite using `[MonoidHom.pow_apply, Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `τ hτ y hy z hz set Y : (ZMod g)[X] := (y : Matrix (Fin m) (Fin m) (ZMod g)).charpoly with hYdef`. Establish `hYm : Y.Monic` using `Matrix.charpoly_monic _`. Establish `hYd : Y.natDegree = m`. Rewrite using `[hYdef, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Set `γ : GL (Fin m) F` to `Matrix.GeneralLinearGroup.map r.symm.toRingHom y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hyγ : Matrix.GeneralLinearGroup.map r.toRingHom γ = y`. Use extensionality with `i j`. Simplify using `[γ]`. Establish `hγc : (γ : Matrix (Fin m) (Fin m) F).charpoly = Y.map r.symm.toRingHom`. Rewrite using `[show (γ : Matrix (Fin m) (Fin m) F) = (y : Matrix (Fin m) (Fin m) (ZMod g)).map r.symm.toRingHom from rfl, Matrix.charpoly_map]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hirr : Irreducible (LinearMap.charpoly (Matrix.toLin' (γ : Matrix (Fin m) (Fin m) F)))`. Rewrite using `[Matrix.charpoly_toLin', hγc]`. Conclude with `(MulEquiv.irreducible_iff (Polynomial.mapEquiv r.symm)).mpr hy`. Rewrite using `[← hyγ, hτ γ]`. Use `delta cusp psiG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `(GlobalTheory.T.invariantSubspaceMobiusInverseCharpoly_of_irreducible F (Fin m → F) _ (GlobalTheory.T.rootPowerSumCharacter_additive_and_X_sub_one_pow F (Θ.comp e) c).1 _ hirr).trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.charpoly_toLin', hγc]`. Use `delta GlobalTheory.CuspGL.rootSum`. Rewrite using `[Polynomial.map_map]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : (Y.map ((algebraMap F (AlgebraicClosure F)).comp r.symm.toRingHom)).Splits` using `IsAlgClosed.splits _`. Establish `hroots : (Y.map ((algebraMap F (AlgebraicClosure F)).comp r.symm.toRingHom)).roots.map e = ((Y.map (algebraMap (ZMod g) K)).map ι).roots`. Rewrite using `[← hP.roots_map e, Polynomial.map_map, Polynomial.map_map]`. Use `congr 2`. Conclude with `Subsingleton.elim _ _`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hre : ((Y.map ((algebraMap F (AlgebraicClosure F)).comp r.symm.toRingHom)).roots.map fun α => (Θ.comp e) α ^ c) = (((Y.map ((algebraMap F (AlgebraicClosure F)).comp r.symm.toRingHom)).roots.map e).map fun β => Θ β ^ c)`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[hre, hroots, roots_conj hm hK Y hy hYm hYd z hz ι, Multiset.map_map, Finset.sum_eq_multiset_sum, Finset.range_val]`. Apply `congrArg` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `j _`. Simplify using `only [Function.comp_apply]`. Rewrite using `[MonoidHom.pow_apply, Units.val_pow_eq_pow_val, Units.coe_map, Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.nameOf :
     NameOf := by

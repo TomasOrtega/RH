@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 namespace LateralTheory.E.SheafPushoutSquare
 
 /- English proof (translation)
-Establish `hpo : IsPushout (a.app T) (b.app T) ((pushout.inl a b).app T) ((pushout.inr a b).app T)` using `(IsPushout.of_hasPushout a b).map ((evaluation _ _).obj T)`. Set `P : Submodule (ULift.{1} R) ((pushout a b).obj T)` to `LinearMap.range (((pushout.inl a b).app T).hom.coprod ((pushout.inr a b).app T).hom)`. Set `π : (pushout a b).obj T ⟶ ModuleCat.of _ (((pushout a b).obj T) ⧸ P)` to `ModuleCat.ofHom P.mkQ`. Establish `h0 : π = 0`. Apply `hpo.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Apply the tactic sequence `exact (Submodule.Quotient.mk_eq_zero P).2 ⟨(x, 0), by simp <;> rfl⟩`. Use extensionality with `y`. Apply the tactic sequence `exact (Submodule.Quotient.mk_eq_zero P).2 ⟨(0, y), by simp <;> rfl⟩`. Establish `hz : P.mkQ z = 0` using `congrArg (fun f => f.hom z) h0`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Take `⟨⟨x, y⟩, hxy⟩` from `(Submodule.Quotient.mk_eq_zero P).1 hz`. Conclude with `⟨x, y, by simpa using hxy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pushout_elem {R : Type} [CommRing R] {MA MB MC : PMod R} (a : MA ⟶ MB) (b : MA ⟶ MC) (T : Scheme.{0}ᵒᵖ)
     (z : (pushout a b).obj T) : ∃ (x : MB.obj T) (y : MC.obj T),
@@ -31,27 +31,27 @@ theorem pushout_elem {R : Type} [CommRing R] {MA MB MC : PMod R} (a : MA ⟶ MB)
   exact ⟨x, y, by simpa using hxy⟩
 
 /- English proof (translation)
-Introduce `R _ MA MB MC MD a b c d w hon hker`. Set `φ` to `pushout.desc c d w`. Establish `hinl : ∀ T x, (φ.app T).hom (((pushout.inl a b).app T).hom x) = (c.app T).hom x` using `fun T x => by`. Express the relevant statement in the definitionally equal form `((pushout.inl a b ≫ φ).app T).hom x = _`. Rewrite using `[pushout.inl_desc]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hinr : ∀ T y, (φ.app T).hom (((pushout.inr a b).app T).hom y) = (d.app T).hom y` using `fun T y => by`. Express the relevant statement in the definitionally equal form `((pushout.inr a b ≫ φ).app T).hom y = _`. Rewrite using `[pushout.inr_desc]`. Establish `hs : Presheaf.IsLocallySurjective Scheme.etaleTopology.{0} φ`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `T z`. Take `⟨S, hS, hP⟩` from `hon T z`. Use `Scheme.etaleTopology.superset_covering ?_ hS` and prove the remaining obligations. Introduce `V k hk`. Take `⟨x, y, hxy⟩` from `hP V k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨((pushout.inl a b).app _).hom x + ((pushout.inr a b).app _).hom y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(φ.app _).hom _ = _`. Rewrite using `[map_add, hinl, hinr]`. Conclude with `hxy`. Establish `hi : Presheaf.IsLocallyInjective Scheme.etaleTopology.{0} φ`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `T u v huv`. Take `⟨x, y, hxy⟩` from `pushout_elem a b T (u - v)`. Establish `h0 : (c.app T).hom x + (d.app T).hom y = 0`. Rewrite using `[← hinl, ← hinr, ← map_add, hxy, map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `sub_eq_zero.2 huv`. Take `⟨S, hS, hP⟩` from `hker T.unop x y h0`. Use `Scheme.etaleTopology.superset_covering ?_ hS` and prove the remaining obligations. Introduce `V k hk`. Take `⟨w', hw1, hw2⟩` from `hP V k hk`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((pushout a b).map k.op).hom u = ((pushout a b).map k.op).hom v`. Rewrite using `[← sub_eq_zero, ← map_sub, ← hxy, map_add]`. Establish `n1 : ((pushout a b).map k.op).hom (((pushout.inl a b).app T).hom x) = ((pushout.inl a b).app _).hom ((MB.map k.op).hom x)`. Express the relevant statement in the definitionally equal form `((pushout.inl a b).app T ≫ (pushout a b).map k.op).hom x = _`. Rewrite using `[← NatTrans.naturality]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `n2 : ((pushout a b).map k.op).hom (((pushout.inr a b).app T).hom y) = ((pushout.inr a b).app _).hom ((MC.map k.op).hom y)`. Express the relevant statement in the definitionally equal form `((pushout.inr a b).app T ≫ (pushout a b).map k.op).hom y = _`. Rewrite using `[← NatTrans.naturality]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hc : ((pushout.inl a b).app (op V)).hom ((a.app (op V)).hom w') = ((pushout.inr a b).app (op V)).hom ((b.app (op V)).hom w')`. Express the relevant statement in the definitionally equal form `((a ≫ pushout.inl a b).app (op V)).hom w' = ((b ≫ pushout.inr a b).app (op V)).hom w'`. Rewrite using `[pushout.condition]`. Establish `hy : (MC.map k.op).hom y = -(b.app (op V)).hom w'` using `by rw [hw2, neg_neg]`. Rewrite using `[n1, n2, ← hw1, hy, map_neg, hc, add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: EssentiallySmall.{1} Scheme.{0}` using `inferInstance`. Establish `hW : Scheme.etaleTopology.{0}.W φ` using `Scheme.etaleTopology.W_of_isLocallyBijective φ`. Establish `hiso : IsIso ((presheafToSheaf Scheme.etaleTopology.{0} _).map φ)` using `(GrothendieckTopology.W_iff _ φ).1 hW`. Establish `h` using `(IsPushout.of_hasPushout a b).map (presheafToSheaf Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} R)))`. Use `h.of_iso (Iso.refl _) (Iso.refl _) (Iso.refl _) (asIso ((presheafToSheaf _ _).map φ)) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `only [asIso_hom, Iso.refl_hom, Category.id_comp, ← Functor.map_comp, φ, pushout.inl_desc]`. Simplify using `only [asIso_hom, Iso.refl_hom, Category.id_comp, ← Functor.map_comp, φ, pushout.inr_desc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LeafSheafPush_pf : LeafSheafPush := by
   intro R _ MA MB MC MD a b c d w hon hker

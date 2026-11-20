@@ -11,7 +11,7 @@ noncomputable section
 attribute [local instance] MvPolynomial.algebraMvPolynomial
 
 /- English proof (translation)
-Rewrite using `[aeval_def, eval₂_map, eval_map]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem aeval_map_intRat_eq {σ : Type} (x : σ → ℂ) (f : MvPolynomial σ ℤ) :
     aeval x (map (algebraMap ℤ ℚ) f) = eval x (map (Int.castRingHom ℂ) f) := by
@@ -19,23 +19,21 @@ theorem aeval_map_intRat_eq {σ : Type} (x : σ → ℂ) (f : MvPolynomial σ �
   congr 1
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D e L _ _ _ _ hC`. Use `set I : Ideal (MvPolynomial (Σ k, ι k) ℤ) := mCoordIdeal y ⊔ Ideal.span (Set.range L) with hIdef`. Establish `key : ∀ c : ∀ k, ι k, ∃ N : ℤ, N ≠ 0 ∧ ∃ r : ℕ, C N * (∏ k, X ⟨k, c k⟩ : MvPolynomial (Σ k, ι k) ℤ) ^ r ∈ I`. Introduce `c`. Use `set f : MvPolynomial (Σ k, ι k) ℤ := ∏ k, X ⟨k, c k⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set IQ := Ideal.map (algebraMap (MvPolynomial (Σ k, ι k) ℤ) (MvPolynomial (Σ k, ι k) ℚ)) I`. Establish `hv : algebraMap _ (MvPolynomial (Σ k, ι k) ℚ) f ∈ vanishingIdeal ℚ (zeroLocus ℂ IQ)`. Rewrite using `[mem_vanishingIdeal_iff]`. Introduce `x hx`. Rewrite `hx` using `[mem_zeroLocus_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ∀ g ∈ I, eval x (map (Int.castRingHom ℂ) g) = 0` using `fun g hg => by`. Rewrite using `[← aeval_map_intRat_eq, ← algebraMap_def]`. Conclude with `hx _ (Ideal.mem_map_of_mem _ hg)`. Rewrite using `[algebraMap_def, aeval_map_intRat_eq]`. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [f, map_prod, map_X, eval_X] at hne`. Establish `hblk : ∀ k, x ⟨k, c k⟩ ≠ 0` using `fun k => (Finset.prod_ne_zero_iff.1 hne) k (Finset.mem_univ _)`. Take `⟨j, hj⟩` from `hC x ⟨fun k => ⟨c k, hblk k⟩, fun g hg => h0 g (Ideal.mem_sup_left hg)⟩`. Conclude with `hj (h0 _ (Ideal.mem_sup_right (Ideal.subset_span ⟨j, rfl⟩)))`. Rewrite `hv` using `[vanishingIdeal_zeroLocus_eq_radical]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩` from `hv`. Rewrite `hr` using `[← map_pow, IsLocalization.mem_map_algebraMap_iff ((nonZeroDivisors ℤ).map (C (σ := Σ k, ι k)))]`. Take `⟨⟨⟨u, hu⟩, ⟨m, hm⟩⟩, h⟩` from `hr`. Take `⟨n, hn, rfl⟩` from `Submonoid.mem_map.1 hm`. Use `⟨n, nonZeroDivisors.ne_zero hn, r, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hinj : Function.Injective (map (σ` using `Σ k, ι k) (algebraMap ℤ ℚ)) := map_injective _ (algebraMap ℤ ℚ).injective_int`. Establish `hu' : f ^ r * C n = u` using `hinj (by simpa only [algebraMap_def, map_mul] using h)`. Rewrite using `[mul_comm, hu']`. Conclude with `hu`. Use `choose N hN r hr using key`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Set.Finite.subset (Set.finite_iUnion fun c => (Set.finite_Iic (N c).natAbs)) ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hH⟩`. Take `⟨z, hz, hP, hL⟩` from `hH`. Use `choose c hc using hz`. Establish `: Fact p.Prime` using `⟨hp⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: CharP (AlgebraicClosure (ZMod p)) p` using `charP_of_injective_algebraMap (algebraMap (ZMod p) (AlgebraicClosure (ZMod p))).injective p`. Establish `hker : I ≤ RingHom.ker ((eval z).comp (map (Int.castRingHom (AlgebraicClosure (ZMod p)))))` using `sup_le (fun g hg => hP g hg) (Ideal.span_le.2 (by rintro _ ⟨j, rfl⟩; exact hL j))`. Establish `h1` using `hker (hr c)`. Simplify using `only [RingHom.mem_ker, RingHom.comp_apply, map_mul, map_pow, map_prod, map_X, eval_X, eq_intCast, map_intCast] at h1`. Establish `hprod : (∏ k, z ⟨k, c k⟩) ^ r c ≠ 0` using `pow_ne_zero _ (Finset.prod_ne_zero_iff.2 fun k _ => hc k)`.
-
-Establish `hNz : ((N c : ℤ) : AlgebraicClosure (ZMod p)) = 0` using `(mul_eq_zero.1 h1).resolve_right hprod`. Rewrite `hNz` using `[CharP.intCast_eq_zero_iff (AlgebraicClosure (ZMod p)) p]`. Simplify using `only [Set.mem_iUnion, Set.mem_Iic]`. Conclude with `⟨c, Nat.le_of_dvd (Int.natAbs_pos.2 (hN c)) (Int.natCast_dvd.1 hNz)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem FibreNormBadPrimesFinite.proof : FibreNormBadPrimesFinite.Statement := by
   intro K _ ι _ Ω _ _ y D e L _ _ _ _ hC

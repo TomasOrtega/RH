@@ -21,9 +21,9 @@ namespace GlobalTheory.Frames
 open IsDedekindDomain
 
 /- English proof (translation)
-Establish `: Finite (𝓞 K ⧸ la.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot la.asIdeal la.ne_bot`. Establish `: la.asIdeal.IsMaximal` using `la.isMaximal`. Set `_ : Field (𝓞 K ⧸ la.asIdeal)` to `Ideal.Quotient.field _`. Use `⟨ringChar (𝓞 K ⧸ la.asIdeal), CharP.char_is_prime (𝓞 K ⧸ la.asIdeal) _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ringChar.Nat.cast_ringChar`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_mem_place {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) :
     ∃ p : ℕ, p.Prime ∧ ((p : ℕ) : 𝓞 K) ∈ la.asIdeal := by
@@ -35,13 +35,13 @@ theorem exists_prime_mem_place {K : Type} [Field K] [NumberField K] (la : Height
   exact ringChar.Nat.cast_ringChar
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hV`. Establish `hK : ((n : ℕ) : K) ≠ 0` using `by exact_mod_cast hn`. Establish `h1 : valV V ((n : ℕ) : K') = 1`. Establish `h : ((n : ℕ) : K') = algebraMap V K' (n : V)` using `(map_natCast _ n).symm`. Rewrite using `[valV, h]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm (HeightOneSpectrum.valuation_le_one _ _)` to reduce the goal to its premises. Rewrite using `[← not_lt, HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hV`. Establish `h2 : la.valuation K ((n : ℕ) : K) < 1`. Establish `h : ((n : ℕ) : K) = algebraMap (𝓞 K) K (n : 𝓞 K)` using `(map_natCast _ n).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hmem`. Establish `h3 : WithZero.log (la.valuation K ((n : ℕ) : K)) < 0`. Use `(WithZero.log_lt_log ((la.valuation K).ne_zero_iff.2 hK) one_ne_zero).2 h2` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `ho.2 ((n : ℕ) : K)`. Rewrite `h4` using `[map_natCast, vV, h1, vLa, WithZero.log_one]`. Establish `he : (0 : ℤ) < e` using `by exact_mod_cast ho.1`. Use polynomial arithmetic with `[mul_pos he (neg_pos.2 h3)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_maximalIdeal_of_overLa {K : Type} [Field K] [NumberField K]
     {la : HeightOneSpectrum (𝓞 K)} {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
@@ -69,7 +69,7 @@ theorem natCast_mem_maximalIdeal_of_overLa {K : Type} [Field K] [NumberField K]
   nlinarith [mul_pos he (neg_pos.2 h3)]
 
 /- English proof (translation)
-Introduce `hP hN E _ _ _ H Dw l Xo c hpq hg la`. Conclude with `Formalism.L2.Pj.modelAtSt_of (Formalism.L2.Pj.partIAt_of hP hN Xo c hpq) hg la`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem modelAtSt_of_good : PartI → N1ab → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → ∀ la, Formalism.L2.Pj.ModelAtSt Xo c la := by
   intro hP hN E _ _ _ H Dw l Xo c hpq hg la

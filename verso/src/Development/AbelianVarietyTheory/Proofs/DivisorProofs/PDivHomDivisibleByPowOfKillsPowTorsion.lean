@@ -18,9 +18,9 @@ open WithConv
 variable {p : ℕ} {k : Type} [Field k]
 
 /- English proof (translation)
-Establish `h1 : ∀ b, f.app (n + 1) b = algebraMap k _ (counit b)` using `fun b => by`. Use `DFunLike.congr_fun (congrArg ofConv h) b` as an intermediate fact. Simplify using `using this`. Apply `ofConv_injective` to reduce the goal to its premises. Use `BialgHom.ext fun a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, rfl⟩` from `H.res_surjective n a`. Express the relevant statement in the definitionally equal form `f.app n (H.res n b) = algebraMap k _ (counit (H.res n b))`. Rewrite using `[← res_app, h1, AlgHomClass.commutes, CoalgHomClass.counit_comp_apply]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem conv_eq_one_of_succ {G H : PDivGroup p k} (f : G ⟶ H) (n : ℕ) (h : f.conv (n + 1) = 1) :
     f.conv n = 1 := by
@@ -34,7 +34,7 @@ theorem conv_eq_one_of_succ {G H : PDivGroup p k} (f : G ⟶ H) (n : ℕ) (h : f
   rw [← res_app, h1, AlgHomClass.commutes, CoalgHomClass.counit_comp_apply]
 
 /- English proof (translation)
-Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => exact h`. Consider the case `succ n _ ih => exact ih (conv_eq_one_of_succ f n h)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem conv_eq_one_of_le {G H : PDivGroup p k} (f : G ⟶ H) {m n : ℕ} (hmn : m ≤ n)
     (h : f.conv n = 1) : f.conv m = 1 := by
@@ -43,17 +43,17 @@ theorem conv_eq_one_of_le {G H : PDivGroup p k} (f : G ⟶ H) {m n : ℕ} (hmn :
   | succ n _ ih => exact ih (conv_eq_one_of_succ f n h)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `E _ _ x _ c`. Establish `h1 : f.app 1 c = algebraMap k _ (counit c)`. Use `DFunLike.congr_fun (congrArg ofConv hf) c` as an intermediate fact.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Rewrite using `[h1, AlgHom.commutes]`. Consider the case `succ n ih`. Introduce `E _ _ x hx c`. Establish `hx' : toConv x ^ p ^ (n + 1) = 1`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[pow_succ', pow_mul, hx, one_pow]`. Take `⟨y, hy⟩` from `(G.exists_comp_res_iff (n + 1) x).2 hx'`. Establish `hy' : toConv y ^ p = 1`. Establish `e : pointsMap E (G.res (n + 1)) (toConv y ^ p) = 1`. Rewrite using `[map_pow]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(toConv (y.comp (G.res (n + 1) : G.A (n + 2) →ₐ[k] G.A (n + 1)))) ^ p = 1`. Rewrite using `[hy, hx]`. Apply `ofConv_injective` to reduce the goal to its premises. Use `AlgHom.ext fun a => ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `G.res_surjective (n + 1) a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e2` using `DFunLike.congr_fun (congrArg ofConv e) b`. Rewrite `e2` using `[ptsMap_ofConv, AlgHom.comp_apply]`. Use `e2.trans ?_` and prove the remaining obligations. Use `show algebraMap k E (counit b) = algebraMap k E (counit (G.res (n + 1) b))`. Rewrite using `[CoalgHomClass.counit_comp_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy, AlgHom.comp_apply]`. Express the relevant statement in the definitionally equal form `y (G.res (n + 1) (f.app (n + 2) c)) = _`. Rewrite using `[res_app, ih y hy', CoalgHomClass.counit_comp_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_kill {G H : PDivGroup p k} (f : G ⟶ H) (hf : f.conv 1 = 1) (n : ℕ) :
     ∀ {E : Type} [CommRing E] [Algebra k E] (x : G.A (n + 1) →ₐ[k] E), toConv x ^ p = 1 →
@@ -88,23 +88,21 @@ theorem app_kill {G H : PDivGroup p k} (f : G ⟶ H) (hf : f.conv 1 = 1) (n : �
     rw [res_app, ih y hy', CoalgHomClass.counit_comp_apply]
 
 /- English proof (translation)
-Take `⟨r, hrs, hrk⟩` from `G.exists_res_le (m := 1) (n := n + 1) (by omega)`. Rewrite `hrk` using `[pow_one]`. Take `⟨B, _, _, _, _, j, hji, hjk, hjr⟩` from `GlobalTheory.T.exists_quotient_finiteCommGroupScheme_closedSubgroup k (G.A (n + 1)) (G.A 1) r hrs`. Establish `hP : kerIdeal (G.mulP n) = RingHom.ker r`. Rewrite using `[← kerIdeal_comp_of_surjective _ (G.res_surjective n), mulP_comp_res, hrk]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ a, G.mulP n a ∈ Set.range j` using `hjr (G.A n) (G.mulP n) hP.le`. Establish `hmk : toConv (Ideal.Quotient.mkₐ k (torsionIdeal k (G.A (n + 1)) p)) ^ p = 1` using `(torsionIdeal_le_ker_iff p _).1 fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 ha`. Establish `h2 : ∀ b, f.app (n + 1) b ∈ Set.range j`. Use `hjr (H.A (n + 1)) (f.app (n + 1)) ?_` and prove the remaining obligations. Rewrite using `[hrk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Use `(kerIdeal_le_ker_iff (f.app (n + 1)) (Ideal.Quotient.mkₐ k _)).2 (fun c => app_kill f hf n _ hmk c) ha` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 this`. Set `jl` to `(j : B →ₐ[k] G.A (n + 1)).toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ml` to `(G.mulP n : G.A n →ₐ[k] G.A (n + 1)).toLinearMap`. Establish `hle : LinearMap.range ml ≤ LinearMap.range jl`. Introduce and unpack `_ ⟨a, rfl⟩`. Take `⟨b, hb⟩` from `h1 a`. Conclude with `⟨b, hb⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e1` using `finrank_eq_ker_mul_range k (G.A (n + 1)) (G.A n) (G.mulP n)`. Establish `e2` using `finrank_eq_ker_mul_range k (G.A (n + 1)) B j`. Rewrite `e1` using `[hP]`. Rewrite `e2` using `[hjk]`. Establish `hpos : 0 < Module.finrank k (G.A (n + 1) ⧸ RingHom.ker r)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Nat.pos_of_ne_zero` to reduce the goal to its premises. Introduce `h0`. Establish `: Nontrivial (G.A (n + 1))` using `(counitAlgHom k (G.A (n + 1))).domain_nontrivial`. Establish `h3` using `Module.finrank_pos (R := k) (M := G.A (n + 1))`. Rewrite `h3` using `[e1, h0, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `lt_irrefl _ h3`. Establish `heq : LinearMap.range ml = LinearMap.range jl` using `Submodule.eq_of_le_of_finrank_eq hle (Nat.eq_of_mul_eq_mul_left hpos (e1.symm.trans e2))`. Establish `h3 : ∀ b, f.app (n + 1) b ∈ Set.range (G.mulP n)`. Introduce `b`. Take `⟨c, hc⟩` from `h2 b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: f.app (n + 1) b ∈ LinearMap.range ml`. Rewrite using `[heq]`. Conclude with `⟨c, hc⟩`. Take `⟨a, ha⟩` from `this`. Conclude with `⟨a, ha⟩`.
-
-Take `⟨ρ, hρ⟩` from `LinearMap.exists_leftInverse_of_injective ml (LinearMap.ker_eq_bot.2 (Test.mulP_injective G n))`. Conclude with `GlobalTheory.bialgHom_factor_through_split k (G.A (n + 1)) (G.A n) (H.A (n + 1)) (G.mulP n) ρ (f.app (n + 1)) (fun a => LinearMap.congr_fun hρ a) h3`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_factor [Fact p.Prime] {G H : PDivGroup p k} (f : G ⟶ H) (hf : f.conv 1 = 1)
     (n : ℕ) : ∃ g : H.A (n + 1) →ₐc[k] G.A n, ∀ b, G.mulP n (g b) = f.app (n + 1) b := by
@@ -157,15 +155,15 @@ theorem exists_factor [Fact p.Prime] {G H : PDivGroup p k} (f : G ⟶ H) (hf : f
     (f.app (n + 1)) (fun a => LinearMap.congr_fun hρ a) h3
 
 /- English proof (translation)
-Use `choose g' hg' using exists_factor f hf`. Establish `hker : ∀ n, RingHom.ker (H.res n) ≤ RingHom.ker (g' n)`. Introduce `n`. Rewrite using `[H.ker_res]`. Use `(kerIdeal_le_ker_iff _ (g' n : H.A (n + 1) →ₐ[k] G.A n)).2 fun c => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `g' n (mulBy k _ (p ^ n) c) = _`. Rewrite using `[map_mulBy, G.mulBy_pow_self, CoalgHomClass.counit_comp_apply]`. Set `gapp : ∀ n, H.A n →ₐc[k] G.A n` to `fun n => liftSurj (H.res n) (H.res_surjective n) (g' n) (hker n)`. Establish `hg : ∀ n b, gapp n (H.res n b) = g' n b` using `fun n b => liftSurj_apply ..`. Establish `hcomm : ∀ n, (G.res n).comp (gapp (n + 1)) = (gapp n).comp (H.res n)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Use `BialgHom.ext fun a => ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `H.res_surjective (n + 1) a`. Apply `Test.mulP_injective G n` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `G.mulP n (G.res n (gapp (n + 1) (H.res (n + 1) b))) = G.mulP n (gapp n (H.res n (H.res (n + 1) b)))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, hg, mulP_res, hg' n, ← res_app, ← hg' (n + 1) b, res_mulP]`. Use `⟨⟨gapp, hcomm⟩, hom_ext_conv fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_conv, pow_digit_natCast (H.hom_pow_self n _)]`. Establish `hfa : f.app n = (mulBy k (G.A n) p).comp (gapp n)`. Use `BialgHom.ext fun a => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `H.res_surjective n a`. Rewrite using `[← res_app, ← hg' n b, res_mulP, BialgHom.comp_apply, hg]`. Express the relevant statement in the definitionally equal form `toConv (f.app n) = toConv (gapp n) ^ p`. Rewrite using `[hfa, mulBy_comp, toConv_ofConv]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_p_smul [Fact p.Prime] {G H : PDivGroup p k} (f : G ⟶ H) (hf : f.conv 1 = 1) :
     ∃ g : G ⟶ H, f = (p : ℤ_[p]) • g := by
@@ -197,11 +195,11 @@ theorem exists_eq_p_smul [Fact p.Prime] {G H : PDivGroup p k} (f : G ⟶ H) (hf 
   rw [hfa, mulBy_comp, toConv_ofConv]
 
 /- English proof (translation)
-Rewrite `h` using `[smul_conv, pow_digit_natCast (H.hom_pow_self _ _)]`. Establish `h' : ∀ b, mulBy k (G.A (m + 1)) p (g.app (m + 1) b) = algebraMap k _ (counit b)`. Introduce `b`. Establish `e` using `DFunLike.congr_fun (congrArg ofConv h) b`. Establish `e2` using `DFunLike.congr_fun (mulBy_comp (g.app (m + 1)) p) b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e2` using `[BialgHom.comp_apply]`. Rewrite using `[e2]`. Simplify using `using e`. Apply `ofConv_injective` to reduce the goal to its premises. Use `BialgHom.ext fun a => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, rfl⟩` from `H.res_surjective m a`. Apply `Test.mulP_injective G m` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `G.mulP m (g.app m (H.res m b)) = G.mulP m (algebraMap k _ (counit (H.res m b)))`. Rewrite using `[← res_app, mulP_res, h', CoalgHomClass.counit_comp_apply]`. Conclude with `(AlgHomClass.commutes (G.mulP m) _).symm`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_eq_one_of_p_smul [Fact p.Prime] {G H : PDivGroup p k} (g : G ⟶ H) (m : ℕ)
     (h : ((p : ℤ_[p]) • g).conv (m + 1) = 1) : g.conv m = 1 := by
@@ -222,9 +220,9 @@ theorem conv_eq_one_of_p_smul [Fact p.Prime] {G H : PDivGroup p k} (g : G ⟶ H)
   exact (AlgHomClass.commutes (G.mulP m) _).symm
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact fun f _ => ⟨f, by rw [pow_zero, one_smul]⟩`. Consider the case `succ m ih`. Introduce `f hf`. Take `⟨g, rfl⟩` from `exists_eq_p_smul f (conv_eq_one_of_le f (by omega) hf)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g2, rfl⟩` from `ih g (conv_eq_one_of_p_smul g m hf)`. Conclude with `⟨g2, by rw [smul_smul, ← pow_succ']⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_pow_smul [Fact p.Prime] {G H : PDivGroup p k} (m : ℕ) :
     ∀ f : G ⟶ H, f.conv m = 1 → ∃ g : G ⟶ H, f = (p : ℤ_[p]) ^ m • g := by
@@ -237,7 +235,7 @@ theorem exists_eq_pow_smul [Fact p.Prime] {G H : PDivGroup p k} (m : ℕ) :
     exact ⟨g2, by rw [smul_smul, ← pow_succ']⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ m f hf` and use `exists_eq_pow_smul m f hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem divisible_of_conv_eq_one : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p]
     (G H : PDivGroup p k) (m : ℕ) (f : G ⟶ H), f.conv m = 1 →

@@ -10,7 +10,7 @@ open MeasureTheory Topology Filter Formalism.BasicNotions Formalism.L2.SG.HidaSe
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `fd_of X`. Use `continuous_pi fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun h : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J => ((HA.mat (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J h : GL (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)).mulVec (y a)`. Conclude with `(MassDataMassesW.SplitW.continuous_matHA X.B.I.cm.sig X.B.I.J (Ainf X.B.I.F)).matrix_mulVec continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem act_continuous {D : D7} (X : HidaSetting D) (y : TupI X) :
     Continuous (fun g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J => g • y) := by
@@ -22,7 +22,7 @@ theorem act_continuous {D : D7} (X : HidaSetting D) (y : TupI X) :
   exact (MassDataMassesW.SplitW.continuous_matHA X.B.I.cm.sig X.B.I.J (Ainf X.B.I.F)).matrix_mulVec continuous_const
 
 /- English proof (translation)
-Introduce `D X Z`. Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `fd_of X`. Establish `: BorelSpace (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)` using `⟨rfl⟩`. Conclude with `(act_continuous X Z).measurable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem actMeas_holds : ActMeas := by
   intro D X Z
@@ -31,7 +31,7 @@ theorem actMeas_holds : ActMeas := by
   exact (act_continuous X Z).measurable
 
 /- English proof (translation)
-The claim follows from `polar_local_of_action hK hG actMeas_holds h1 h2 h4`.
+A detailed English derivation is pending.
 -/
 theorem polar_local_of_fibres (hK : KPos) (hG : GramMeas) (h1 : FibOrbAt) (h2 : PushCont) (h4 : JacOneC) : PolarLoc :=
   polar_local_of_action hK hG actMeas_holds h1 h2 h4

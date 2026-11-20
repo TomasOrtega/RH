@@ -25,7 +25,7 @@ attribute [local instance] borelG borelF borelA borelH
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Unfold `intersection_update_fsHerm_neg_one`. Rewrite using `[if_neg hw]`. Use `split_ifs`. Conclude with `UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.exHecke2 E a b w (e w)`. Conclude with `UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.exHecke2 E a b w .one`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem position_sph (Z T : Finset (Pl E)) (L : Lv a b Z) (e : Pl E → Ex (Fin (a + 1) × Fin (b + 1)))
     (w : Pl E) (hw : w ∉ Z) : IsHecke (K2 a b w) (intersection_update_fsHerm_neg_one Z T L.ln e w) := by
@@ -36,7 +36,7 @@ private theorem position_sph (Z T : Finset (Pl E)) (L : Lv a b Z) (e : Pl E → 
   · exact UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.exHecke2 E a b w .one
 
 /- English proof (translation)
-Unfold `intersection_update_fsHerm_neg_one`. Rewrite using `[if_pos hw]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem position_Z (Z T : Finset (Pl E)) (L : Lv a b Z) (e : Pl E → Ex (Fin (a + 1) × Fin (b + 1)))
     (w : Pl E) (hw : w ∈ Z) : intersection_update_fsHerm_neg_one Z T L.ln e w = L.ln w := by
@@ -44,7 +44,7 @@ private theorem position_Z (Z T : Finset (Pl E)) (L : Lv a b Z) (e : Pl E → Ex
   rw [if_pos hw]
 
 /- English proof (translation)
-Distinguish the cases in `hw : w ∈ Z`. Rewrite using `[position_Z Z T L e w hw, position_Z Z T' L e' w hw]`. Conclude with `UpperTheory.Zero.ConvolutionTheory.EB.sphComm2 E a b w _ _ (position_sph Z T L e w hw) (position_sph Z T' L e' w hw)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem position_comm (Z T T' : Finset (Pl E)) (L : Lv a b Z) (e e' : Pl E → Ex (Fin (a + 1) × Fin (b + 1))) (w : Pl E) :
     PositivityTheory.Rg.BcN.F2.mconv (intersection_update_fsHerm_neg_one Z T L.ln e w) (intersection_update_fsHerm_neg_one Z T' L.ln e' w) =
@@ -54,7 +54,7 @@ private theorem position_comm (Z T T' : Finset (Pl E)) (L : Lv a b Z) (e e' : Pl
   · exact UpperTheory.Zero.ConvolutionTheory.EB.sphComm2 E a b w _ _ (position_sph Z T L e w hw) (position_sph Z T' L e' w hw)
 
 /- English proof (translation)
-Establish `hl` using `UpperTheory.Zero.ConvolutionTheory.EB.locAlg E a b Z L w`. Distinguish the cases in `hw : w ∈ Z`. Rewrite using `[position_Z Z T L e w hw, position_Z Z T' L e' w hw, hl.2.1]`. Conclude with `UpperTheory.Zero.ConvolutionTheory.EB.sphComm2 E a b w _ _ (position_sph Z T L e w hw) ((hl.2.2.2.2 _ (position_sph Z T' L e' w hw)).2.2)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem position_comm_star (Z T T' : Finset (Pl E)) (L : Lv a b Z) (e e' : Pl E → Ex (Fin (a + 1) × Fin (b + 1))) (w : Pl E) :
     PositivityTheory.Rg.BcN.F2.mconv (intersection_update_fsHerm_neg_one Z T L.ln e w) (lfStar (intersection_update_fsHerm_neg_one Z T' L.ln e' w)) =
@@ -66,13 +66,11 @@ private theorem position_comm_star (Z T T' : Finset (Pl E)) (L : Lv a b Z) (e e'
       ((hl.2.2.2.2 _ (position_sph Z T' L e' w hw)).2.2)
 
 /- English proof (translation)
-Introduce `E _ _ _ a b l₁ l₂ D A S Z L hS hZ T T' e₁ e₂ e₁' e₂'`. Establish `hst` using `UpperTheory.Zero.ConvolutionTheory.EB.positionTest E a b S Z L hZ`. Establish `ht : ∀ (T : Finset (Pl E)) (e : Pl E → Ex (Fin (a + 1) × Fin (b + 1))), IsTestP (intersection_update_fsHerm_neg_one Z T L.ln e)` using `fun T e => (hst.2.2 L.ln hst.1).2 T e`. Establish `hf` using `(UpperTheory.Zero.ConvolutionTheory.EB.ffAlg E a b l₁ l₂ D A S hS).2`. Establish `h1` using `hf _ _ (ht T e₁) (ht T e₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hf _ _ (ht T' e₁') (ht T' e₂')`. Establish `hstar` using `h2.2.1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show mulF A.ν (A.ff S _ _) (A.ff S _ _) = mulF A.ν (A.ff S _ _) (A.ff S _ _)`. Rewrite using `[h1.2.2.2.2 _ _ (ht T' e₁') (ht T' e₂'), h2.2.2.2.2 _ _ (ht T e₁) (ht T e₂)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [position_comm Z T T' L e₁ e₁', position_comm Z T T' L e₂ e₂']`. Use `show mulF A.ν (A.ff S _ _) (adjF (A.ff S _ _)) = mulF A.ν (adjF (A.ff S _ _)) (A.ff S _ _)`. Rewrite using `[hstar]`. Establish `hs` using `hf _ _ h2.2.2.1 h2.2.2.2.1`. Rewrite using `[h1.2.2.2.2 _ _ h2.2.2.1 h2.2.2.2.1, hs.2.2.2.2 _ _ (ht T e₁) (ht T e₂)]`.
-
-Simplify using `only [position_comm_star Z T T' L e₁ e₁', position_comm_star Z T T' L e₂ e₂']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.Zero.ConvolutionTheory.EB.hkComm :
     UpperTheory.Zero.ConvolutionTheory.EB.HkComm := by

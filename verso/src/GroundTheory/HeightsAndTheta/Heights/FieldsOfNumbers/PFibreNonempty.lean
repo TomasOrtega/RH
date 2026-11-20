@@ -13,21 +13,19 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Introduce `F _ K K' _ _ _ _ j ι' _ P' hP' n hn hc W hW hWn hle`. Use `hP'.isPrime` as an intermediate fact. Assume the negation of the conclusion as `hem`. Rewrite `hem` using `[Set.not_nonempty_iff_eq_empty]`. Take `⟨hfin, -, -⟩` from `h1 F K K' j ι' P' hP' n hn hc W hW hWn hle`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `hfin` as an intermediate fact. Establish `hnone : ∀ W' ∈ fibrePrimes j P' W, False` using `fun W' hW' => by`. Rewrite `hW'` using `[hem]`. Conclude with `hW'`. Establish `hB : IsField (degZeroLoc P' (fibrePrimes j P' W))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨0, 1, zero_ne_one⟩, mul_comm, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨b, f, g, hf, hg, hgP, -, hxfg⟩` from `DegZeroLocQuot.proof F K' ι' P' (fibrePrimes j P' W) (fun W' hW' => (hnone W' hW').elim) x.1 x.2`. Establish `hfP : f ∉ P'`. Introduce `hfP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hxfg, Ideal.Quotient.eq_zero_iff_mem.mpr hfP, map_zero, zero_div]`. Both sides reduce to the same expression. Use `⟨⟨_, div_mem_degZeroLoc P' (fibrePrimes j P' W) hg hf hfP (fun W' hW' => (hnone W' hW').elim)⟩, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hne : ∀ a : MRing ι' F, a ∉ P' → algebraMap (MRing ι' F ⧸ P') (FractionRing (MRing ι' F ⧸ P')) (Ideal.Quotient.mk P' a) ≠ 0` using `fun a ha => by`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `ha`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `x.1 * _ = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hxfg, div_mul_div_comm, mul_comm (algebraMap _ _ (Ideal.Quotient.mk P' f))]`. Conclude with `div_self (mul_ne_zero (hne g hgP) (hne f hfP))`. Establish `hinj : Function.Injective (algebraMap (degZeroLoc (contractPrime j P') {W}) (degZeroLoc P' (fibrePrimes j P' W)))`. Introduce `x y hxy`. Use `congrArg (fun z : degZeroLoc P' (fibrePrimes j P' W) => (z : FractionRing (MRing ι' F ⧸ P'))) hxy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [degZeroLoc.algebraMap_contract_coe] at this`. Conclude with `Subtype.ext ((contractFracMap j P').toRingHom.injective this)`. Establish `: Algebra.IsIntegral (degZeroLoc (contractPrime j P') {W}) (degZeroLoc P' (fibrePrimes j P' W))` using `Algebra.IsIntegral.of_finite _ _`. Establish `hA` using `isField_of_isIntegral_of_isField hinj hB`. Establish `hdim` using `(h2 F K (fun k => ι' (j k)) (contractPrime j P') (isMultiProjPrime_contractPrime j ι' hP') W hW hle).2 n hc hWn`.
-
-Rewrite `hdim` using `[ringKrullDim_eq_zero_of_isField hA]`. Conclude with `zero_ne_one hdim`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FibreNonempty.proof (h1 : SemilocalFiniteRank.Statement.{u})
     (h2 : DegZeroLocalRing.Statement.{u}) : FibreNonempty.Statement.{u} := by

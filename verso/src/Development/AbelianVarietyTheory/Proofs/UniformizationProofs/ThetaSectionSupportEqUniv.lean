@@ -22,17 +22,17 @@ open GlobalTheory.UU
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Introduce `h1 h2 V _ _ _ hV D A G _ _ U θ f hθ`. Establish `hrel` using `GlobalTheory.T.thetaSupport_pair_iff_degreeTwo_sum_diff h1 h2 V hV D A G U θ f hθ`. Establish `hodd` using `GlobalTheory.T.thetaExpansion_support_not_in_primeIndex_subgroup h1 h2 V hV D A G U θ f hθ`. Establish `hw` using `GlobalTheory.T.lineBundleSections_torusTorsion_weightSpaces h1 h2 V hV D A G U`. Establish `hpull` using `GlobalTheory.UU.PullSec.pullEx V hV D A G U (Kbar V) (𝟙_ _) (toUnit _) 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨th, hth, -⟩` from `hpull.1 θ`. Take `⟨s₀, hs₀, -⟩` from `hpull.2 f`. Establish `hone` using `(GlobalTheory.T.expF_of_theta_degree_one h1 h2 V hV D A G U θ f hθ th s₀ hth hs₀).2.2`. Establish `hne : ({α | ∃ j, (f α).f j ≠ 0} : Set D.X).Nonempty`. Take `⟨mu, t, s, hts, j, hj⟩` from `(hw 1 le_rfl).2.1 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hone t s hts`. Use `⟨0 + 1 • mu, (_root_.GlobalTheory.pullB_ne_zero_iff V D (Kbar V) 1 f s₀ hs₀ _).1 ⟨j, fun h0 => hj ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hc, h0, mul_zero]`. Take `⟨hS, Λ, hΛ, hc⟩` from `GlobalTheory.support_subgroup_odd_index D.X {α | ∃ j, (f α).f j ≠ 0} {α | U.Supp (Kbar V) 2 α} hne hrel (fun x => by`. Take `⟨mu, hmu⟩` from `(hw 2 (by norm_num)).2.1 x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨mu, by rw [← two_nsmul]; exact hmu⟩)`. Establish `htop : Λ = ⊤`. Break down `hc with h | ⟨l, hl, -, g, hg, hgΛ⟩` into its components or cases. Conclude with `h`. Use `absurd (hodd l hl g fun α hα => hgΛ α ?_) hg` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: α ∈ (Λ : Set D.X)` using `by rw [hΛ]; exact hα`. Conclude with `this`. Establish `hall : ∀ α, α ∈ ({α | ∃ j, (f α).f j ≠ 0} : Set D.X)` using `fun α => by`. Rewrite using `[← hΛ, htop]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hall, fun α => ?_⟩` and prove the remaining obligations. Establish `: α ∈ ({α | U.Supp (Kbar V) 2 α} : Set D.X)` using `by rw [hS]; exact hall α`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem theta_support_eq_univ : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ θ f, U.Theta θ f → (∀ α, ∃ j, (f α).f j ≠ 0) ∧ ∀ α, U.Supp (Kbar V) 2 α) := by
   intro h1 h2 V _ _ _ hV D A G _ _ U θ f hθ

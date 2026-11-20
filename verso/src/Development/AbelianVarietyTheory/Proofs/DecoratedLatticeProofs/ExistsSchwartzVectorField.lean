@@ -32,7 +32,7 @@ def Induced (T : (GA D V → ℂ) → GA D V → ℂ) : Prop :=
     ∀ x : Mx D V.rank n, T (fun h => Φ (mt V h⁻¹ ⬝ x)) = fun h => Ψ (mt V h⁻¹ ⬝ x)
 
 /- English proof (translation)
-Introduce `Φ hΦ`. Use `choose Ψ m e using fun i => h i Φ hΦ`. Use `⟨∑ i ∈ s, c i • Ψ i, Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (m i), fun x => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `only [e, Finset.sum_apply, Pi.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Induced.sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (A : ι → (GA D V → ℂ) → GA D V → ℂ)
     (h : ∀ i, Induced θ V n (A i)) : Induced θ V n fun f => ∑ i ∈ s, c i • A i f := by

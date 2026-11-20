@@ -17,13 +17,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ArchUnit
 
 /- English proof (translation)
-Introduce `D V τ θ hθ g`. Use `haveI : IsTotallyReal D.host.F := D.sp.cm.totReal`. Establish `hu` using `GlobalTheory.MarkUnit.infMat_unitary D.sp.cm.sig V.gram τ (fun x => IsCMField.complexEmbedding_complexConj D.host.E τ x) θ hθ g`. Establish `hm : archM V θ g = Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram θ g` using `rfl`. Rewrite using `[hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h'` using `congrArg Matrix.transpose hu`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose] at h'`. Establish `hG : (-(V.gram)ᵀ).map τ = -(V.gram.map τ)ᵀ`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hg : ∀ (G : Matrix (Fin V.rank) (Fin V.rank) D.host.E) (x : Matrix (Fin V.rank) (Fin V.rank) ℂ), gram τ G x = xᵀ * G.map τ * x.map (starRingEnd ℂ)`. Introduce `G x`. Use extensionality with `a b`. Simplify using `only [gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
-
-Rewrite using `[hg, hG, Matrix.mul_neg, Matrix.neg_mul, neg_inj, Matrix.mul_assoc]`. Conclude with `h'`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_archM : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (τ : D.host.E →+* ℂ) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ),
     Formalism.MainNotions.StandardLattice.IsInfEmb τ θ → ∀ g : GA D V, gram τ (-(V.gram)ᵀ) (archM V θ g) = (-(V.gram)ᵀ).map τ := by

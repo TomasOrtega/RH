@@ -10,11 +10,11 @@ noncomputable section
 namespace Formalism.L2.Th1.A
 
 /- English proof (translation)
-Introduce `R _ W n hn`. Take `⟨hcc, hc1⟩` from `(zSerSpec R W).1 n`. Establish `hu : IsUnit (coeff 1 (zSer W n))` using `by rw [hc1]; exact hn`. Take `⟨h0, hr, hl, h1, -, -⟩` from `compInvSpec R (zSer W n) hcc hu`. Use `⟨h0, ?_, hr, hl, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[hc1]`. Rewrite using `[mul_comm]`. Conclude with `h1`. Introduce `S _ φ`. Establish `key` using `compInvMap R S φ (zSer W n) hcc hu`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[zSerMap R S φ W n]`. Conclude with `key`. Introduce `h2`. Substitute `h2` using the available equality. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem division_spec : DivSpec.{u, v} := by
   intro R _ W n hn

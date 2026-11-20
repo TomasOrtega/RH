@@ -20,7 +20,7 @@ namespace GlobalTheory.CompanionTheory.ColumnSplitting.Cov
 variable {D : D7} {n t : ℕ} {B W : HSp D}
 
 /- English proof (translation)
-Simplify using `only [jn, bl, mm]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromBlocks]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jn_bl {a r : ℕ} (hn : r + t = n) (w : Mx D a r) (v : Mx D a t) (g : Mx D t t) :
     mm (jn hn w v) (bl hn 1 0 0 g) = jn hn w (mm v g) := by
@@ -29,7 +29,7 @@ theorem jn_bl {a r : ℕ} (hn : r + t = n) (w : Mx D a r) (v : Mx D a t) (g : Mx
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨k, rfl⟩` from `(finSumFinEquiv.trans (finCongr hn)).surjective j`. Apply the tactic sequence `rcases k with k | k <;> simp [jn, c1, c2]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jn_c (hn : W.rank + t = n) {a : ℕ} (U : Mx D a n) : jn hn (c1 hn U) (c2 hn U) = U := by
   ext i j
@@ -37,37 +37,35 @@ theorem jn_c (hn : W.rank + t = n) {a : ℕ} (U : Mx D a n) : jn hn (c1 hn U) (c
   rcases k with k | k <;> simp [jn, c1, c2]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[jn, c1]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem first_columns_join_eq (hn : W.rank + t = n) {a : ℕ} (w : Mx D a W.rank) (v : Mx D a t) : c1 hn (jn hn w v) = w := by
   ext i j
   simp [jn, c1]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[jn, c2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem second_columns_join_eq (hn : W.rank + t = n) {a : ℕ} (w : Mx D a W.rank) (v : Mx D a t) : c2 hn (jn hn w v) = v := by
   ext i j
   simp [jn, c2]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← jn_c hn U, jn_bl, first_columns_join_eq]`.
+A detailed English derivation is pending.
 -/
 theorem first_columns_mul_block_diagonal (hn : W.rank + t = n) {a : ℕ} (U : Mx D a n) (g : Mx D t t) :
     c1 hn (mm U (bl hn 1 0 0 g)) = c1 hn U := by
   conv_lhs => rw [← jn_c hn U, jn_bl, first_columns_join_eq]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← jn_c hn U, jn_bl, second_columns_join_eq]`.
+A detailed English derivation is pending.
 -/
 theorem second_columns_mul_block_diagonal (hn : W.rank + t = n) {a : ℕ} (U : Mx D a n) (g : Mx D t t) :
     c2 hn (mm U (bl hn 1 0 0 g)) = mm (c2 hn U) g := by
   conv_lhs => rw [← jn_c hn U, jn_bl, second_columns_join_eq]
 
 /- English proof (translation)
-Use `haveI : TopologicalSpace.PseudoMetrizableSpace A := inferInstance`. Use `haveI : μ.Regular := Measure.Regular.of_sigmaCompactSpace_of_isLocallyFiniteMeasure _`. Establish `h4` using `addEquivAddHaarChar_smul_map μ φ`. Rewrite `h4` using `[hc]`. Use `conv_rhs => rw [← h4]`.
-
-Rewrite using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_char {A : Type} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGroup A] [LocallyCompactSpace A]
     [SecondCountableTopology A] [T2Space A]
@@ -83,13 +81,9 @@ theorem map_char {A : Type} [AddCommGroup A] [TopologicalSpace A] [IsTopological
 set_option maxHeartbeats 1200000 in
 
 /- English proof (translation)
-Use `haveI := hμ`. Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D a b`. Use `haveI : IsTopologicalAddGroup (Mx D a b) := i1`. Use `haveI : LocallyCompactSpace (Mx D a b) := i2`. Use `haveI : SecondCountableTopology (Mx D a b) := i3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `haveI : T2Space (Mx D a b) := i4`. Use `haveI : BorelSpace (Mx D a b) := ⟨rfl⟩`. Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Establish `hc : addEquivAddHaarChar (GlobalTheory.ModuLR.lrCE (1 : GL (Fin a) (AE D)) g) = absA D (Matrix.GeneralLinearGroup.det g) ^ a`. Use `GlobalTheory.ResidueEisenstein.ModMat.addEquivAddHaarChar_lrCE D.host.F D.host.E D.sp.cm.sig (isCMExt_host D) a b (1 : GL (Fin a) (AE D)) g` as an intermediate fact.
-
-Simplify using `using this`. Establish `hA : absA D (Matrix.GeneralLinearGroup.det g) ≠ 0` using `(GlobalTheory.CompanionTheory.IwaAd.absA_pos _).ne'`. Establish `e : (fun y : Mx D a b => mm y g.1) = GlobalTheory.ModuLR.lrCE (1 : GL (Fin a) (AE D)) g`. Use function extensionality and compare the values at `y`. Rewrite using `[GlobalTheory.ModuLR.lrCE_apply, Units.val_one, Matrix.one_mul]`.
-
-Rewrite using `[e, inv_pow]`. Conclude with `map_char μ _ _ (pow_ne_zero _ hA) hc`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_right (a b : ℕ) (μ : Measure (Mx D a b)) (hμ : μ.IsAddHaarMeasure) (g : GL (Fin b) (AE D)) :
     μ.map (fun y => mm y g.1) =

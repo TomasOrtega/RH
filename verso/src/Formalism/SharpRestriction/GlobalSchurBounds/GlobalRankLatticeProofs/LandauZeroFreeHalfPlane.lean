@@ -12,7 +12,7 @@ def LandauZeroFreeHalfPlane : Prop :=
     ∀ s : ℂ, θ < s.re → riemannZeta s ≠ 0
 
 /- English proof (translation)
-Introduce `θ h0 h1 y₀ hG s hs`. Conclude with `Formalism.zetaLandau 1 (Or.inl rfl) θ h0 h1 ⟨1, y₀, fun y hy => by simpa using hG y hy⟩ s hs`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem landau_zero_free_half_plane : LandauZeroFreeHalfPlane := by
   intro θ h0 h1 y₀ hG s hs

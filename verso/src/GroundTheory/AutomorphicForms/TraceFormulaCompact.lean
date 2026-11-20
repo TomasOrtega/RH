@@ -22,13 +22,11 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
 
 /- English proof (translation)
-Establish `h` using `hasSum_integral_conj Γ μ f hf`. Rewrite `h` using `[← (Equiv.sigmaFiberEquiv (ConjClasses.mk : Γ → ConjClasses Γ)).hasSum_iff]`. Use `h.sigma fun c => ?_` and prove the remaining obligations. Set `e : {γ' : Γ // IsConj (r c) γ'} ≃ {γ' : Γ // ConjClasses.mk γ' = c}` to `Equiv.subtypeEquivRight fun γ' => by`. Establish `hc` using `hr c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h'`. Rewrite using `[← hc]`. Conclude with `ConjClasses.mk_eq_mk_iff_isConj.2 (isConj_comm.1 h')`. Introduce `h'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[← hc]`. Conclude with `isConj_comm.1 (ConjClasses.mk_eq_mk_iff_isConj.1 h')`. Establish `h2` using `hasSum_integral_conj_isConj Γ μ f (r c)`. Rewrite `h2` using `[← e.symm.hasSum_iff]`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
-
-Apply the tactic sequence `all_goals rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem hasSum_orbitalIntegral_of_rep (f : CompactlySupportedContinuousMap G ℂ)
     (hf : IsTraceClass ((rightRegularRep Γ μ).integrated μ (UnitaryRep.ccToL1 μ f)))
@@ -58,15 +56,15 @@ theorem hasSum_orbitalIntegral_of_rep (f : CompactlySupportedContinuousMap G ℂ
 omit [μ.IsMulRightInvariant] in
 
 /- English proof (translation)
-Establish `hδ : ∀ i : {γ' : Γ // IsConj γ γ'}, ∃ d : Γ, d⁻¹ * γ * d = i.1` using `fun i => by`. Take `⟨c, hc⟩` from `isConj_iff.1 i.2`. Conclude with `⟨c⁻¹, by rw [inv_inv]; exact hc⟩`. Use `choose δ hδ using hδ`. Establish `hD` using `(measure_fundamentalDomain_lt_top Γ μ).ne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEμ : ∀ i : {γ' : Γ // IsConj γ γ'}, μ (((δ i : Γ) : G) • fundamentalDomain Γ) ≠ ∞` using `fun i => by`. Rewrite using `[measure_smul]`. Conclude with `hD`. Establish `hconj : ∀ (i : {γ' : Γ // IsConj γ γ'}) (x : G), ((δ i : G) * x)⁻¹ * γ * ((δ i : G) * x) = x⁻¹ * (i.1 : G) * x`. Introduce `i x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `congrArg Subtype.val (hδ i)` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[← this]`. Use `group`. Establish `hnorm : ∀ i : {γ' : Γ // IsConj γ γ'}, ∫ x in ((δ i : Γ) : G) • fundamentalDomain Γ, ‖f (x⁻¹ * (γ : G) * x)‖ ∂μ = ∫ x in fundamentalDomain Γ, ‖f (x⁻¹ * (i.1 : G) * x)‖ ∂μ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `i`. Rewrite using `[setIntegral_smul_set μ]`. Repeatedly rewrite using `[hconj]`. Establish `hint : IntegrableOn (fun x => f (x⁻¹ * (γ : G) * x)) (⋃ i, ((δ i : Γ) : G) • fundamentalDomain Γ) μ`. Use `integrableOn_iUnion_of_summable_integral_norm (fun i => integrableOn_conj μ f _ (hEμ i)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hnorm]`. Conclude with `(summable_integral_norm_conj Γ μ f).comp_injective Subtype.val_injective`. Establish `hmeas : Measurable (conjOrbitFun (centralizerIn Γ γ) (centralizerIn_le_centralizer Γ γ) f)` using `measurable_from_quotient.2 (f.continuous.comp (by fun_prop)).measurable`. Rewrite using `[← map_restrict_eq_quotientMeasure μ (isFundamentalDomain_iUnion_smul Γ μ γ hδ), integrable_map_measure hmeas.aestronglyMeasurable (measurable_mk _).aemeasurable]`. Conclude with `hint`.
+A detailed English derivation is pending.
 -/
 theorem integrable_conjOrbitFun_centralizerIn (f : CompactlySupportedContinuousMap G ℂ) (γ : Γ) :
     Integrable (conjOrbitFun (centralizerIn Γ γ) (centralizerIn_le_centralizer Γ γ) f)
@@ -108,11 +106,11 @@ theorem integrable_conjOrbitFun_centralizerIn (f : CompactlySupportedContinuousM
 omit [μ.IsMulRightInvariant] in
 
 /- English proof (translation)
-Take `⟨h0, htop⟩` from `quotientMeasure_centralizerLattice_univ_ne_zero_ne_top Γ γ ν`. Establish `hmeas : Measurable (conjOrbitFun (Subgroup.centralizer {(γ : G)}) le_rfl f)` using `measurable_from_quotient.2 (f.continuous.comp (by fun_prop)).measurable`. Establish `hcomp : conjOrbitFun (Subgroup.centralizer {(γ : G)}) le_rfl f ∘ mapOfLe (centralizerIn_le_centralizer Γ γ) = conjOrbitFun (centralizerIn Γ γ) (centralizerIn_le_centralizer Γ γ) f`. Use function extensionality and compare the values at `y`. Take `⟨x, rfl⟩` from `mk_surjective _ y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Establish `h1 : Integrable (conjOrbitFun (Subgroup.centralizer {(γ : G)}) le_rfl f) (quotientMeasure (centralizerLattice Γ (γ : G)) ν univ • ρ)`. Rewrite using `[smul_eq_map_of_isWeilMeasure Γ μ (γ : G) ν hρ, integrable_map_measure hmeas.aestronglyMeasurable (measurable_mapOfLe _).aemeasurable, hcomp]`. Conclude with `integrable_conjOrbitFun_centralizerIn Γ μ f γ`. Establish `h2` using `h1.smul_measure (ENNReal.inv_ne_top.2 h0)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[smul_smul, ENNReal.inv_mul_cancel h0 htop, one_smul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem integrable_conjOrbitFun_of_isWeilMeasure (f : CompactlySupportedContinuousMap G ℂ)
     (γ : Γ) (ν : Measure (Subgroup.centralizer {(γ : G)})) [ν.IsHaarMeasure]
@@ -137,9 +135,9 @@ theorem integrable_conjOrbitFun_of_isWeilMeasure (f : CompactlySupportedContinuo
   rwa [smul_smul, ENNReal.inv_mul_cancel h0 htop, one_smul] at h2
 
 /- English proof (translation)
-Use `⟨UnitaryRep.hasSum_multiplicity_mul_trace hinv hsum hf (fun V => UnitaryRep.finite_setOf_isEquivalent (isCompactOperator_integrated Γ μ) hinv hsum.OrthogonalFamily (hirr V)), ?_, fun c => ?_⟩` and prove the remaining obligations. Use `hasSum_orbitalIntegral_of_rep Γ μ f hf r hr using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `c`. Use `hν c` as an intermediate fact. Conclude with `(integral_conjOrbitFun_eq_smul Γ μ _ (ν c) (hρ c) f).symm`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hν c` as an intermediate fact. Conclude with `integrable_conjOrbitFun_of_isWeilMeasure Γ μ f (r c) (ν c) (hρ c)`.
+A detailed English derivation is pending.
 -/
 theorem traceFormula (f : CompactlySupportedContinuousMap G ℂ)
     (hf : IsTraceClass ((rightRegularRep Γ μ).integrated μ (UnitaryRep.ccToL1 μ f)))
@@ -174,7 +172,7 @@ theorem traceFormula (f : CompactlySupportedContinuousMap G ℂ)
     exact integrable_conjOrbitFun_of_isWeilMeasure Γ μ f (r c) (ν c) (hρ c)
 
 /- English proof (translation)
-The claim follows from `(UnitaryRep.multiplicity_eq_finrank hinv hsum hirr (fun V => UnitaryRep.finite_setOf_isEquivalent (isCompactOperator_integrated Γ μ) hinv hsum.OrthogonalFamily (hirr V)) π (UnitaryRep.IsEquivalent.refl _)).2`.
+A detailed English derivation is pending.
 -/
 theorem multiplicity_eq_finrank_intertwiners
     {s : Set (Submodule ℂ (Lp ℂ 2 (quotientMeasure Γ μ)))}
@@ -191,7 +189,7 @@ theorem multiplicity_eq_finrank_intertwiners
       hsum.OrthogonalFamily (hirr V)) π (UnitaryRep.IsEquivalent.refl _)).2
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `traceFormula Γ μ f hf hinv hsum hirr r hr ν hν ρ hρ`. Rewrite using `[h1.tsum_eq, h2.tsum_eq]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tsum_spectral_eq_tsum_geometric (f : CompactlySupportedContinuousMap G ℂ)
     (hf : IsTraceClass ((rightRegularRep Γ μ).integrated μ (UnitaryRep.ccToL1 μ f)))
@@ -217,7 +215,7 @@ theorem tsum_spectral_eq_tsum_geometric (f : CompactlySupportedContinuousMap G �
   rw [h1.tsum_eq, h2.tsum_eq]
 
 /- English proof (translation)
-The claim follows from `traceFormula Γ μ (conv μ f₁ f₂) (isTraceClass_integrated_conv Γ μ f₁ f₂) hinv hsum hirr r hr ν hν ρ hρ`.
+A detailed English derivation is pending.
 -/
 theorem traceFormula_conv (f₁ f₂ : CompactlySupportedContinuousMap G ℂ)
     {s : Set (Submodule ℂ (Lp ℂ 2 (quotientMeasure Γ μ)))}
@@ -245,7 +243,7 @@ theorem traceFormula_conv (f₁ f₂ : CompactlySupportedContinuousMap G ℂ)
     hν ρ hρ
 
 /- English proof (translation)
-The claim follows from `traceFormula Γ μ f (isTraceClass_integrated_of_isLocallyConstant Γ μ f hf) hinv hsum hirr r hr ν hν ρ hρ`.
+A detailed English derivation is pending.
 -/
 theorem traceFormula_of_isLocallyConstant [TotallyDisconnectedSpace G]
     (f : CompactlySupportedContinuousMap G ℂ) (hf : IsLocallyConstant (f : G → ℂ))
@@ -274,7 +272,7 @@ theorem traceFormula_of_isLocallyConstant [TotallyDisconnectedSpace G]
     ν hν ρ hρ
 
 /- English proof (translation)
-The claim follows from `traceFormula Γ μ f hf hinv hsum hirr r hr ν hν (fun c => weilMeasure Γ μ (r c) (ν c)) (fun c => by have := hν c; exact isWeilMeasure_weilMeasure Γ μ (r c) (ν c))`.
+A detailed English derivation is pending.
 -/
 theorem traceFormula_haar (f : CompactlySupportedContinuousMap G ℂ)
     (hf : IsTraceClass ((rightRegularRep Γ μ).integrated μ (UnitaryRep.ccToL1 μ f)))

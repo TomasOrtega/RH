@@ -16,7 +16,7 @@ section Aut
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr { toFun := fun γ => ⟨γ.1.1, γ.1.2, mem_autLat.2 (mem_autU.1 γ.2)⟩ invFun := fun γ => ⟨⟨γ.1, γ.2.1⟩, mem_autU.2 (mem_autLat.1 γ.2.2)⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+A detailed English derivation is pending.
 -/
 theorem card_autU (N : Submodule (𝓞 E) (Sp E n)) : Nat.card (autU N) = Nat.card (Mem.Col2.autO N) :=
   Nat.card_congr
@@ -26,11 +26,11 @@ theorem card_autU (N : Submodule (𝓞 E) (Sp E n)) : Nat.card (autU N) = Nat.ca
       right_inv := fun _ => rfl }
 
 /- English proof (translation)
-Set `f : autU N →* autU (tilN N)` to `((extUH rfl).comp (autU N).subtype).codRestrict _ fun γ => mem_autU.2 (by`. Establish `h` using `tilN_gmap γ.1.1 N`. Rewrite `h` using `[mem_autU.1 γ.2]`. Conclude with `h.symm)`. Use `Subgroup.card_dvd_of_injective f fun a b hab => Subtype.ext (Subtype.ext (LinearEquiv.ext fun x => ?_))` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : extE a.1.1 = extE b.1.1` using `congrArg (fun z : autU (tilN N) => z.1.1) hab`. Establish `h1` using `initL_extE a.1.1 (incl E n x)`. Rewrite `h1` using `[h, initL_extE]`. Establish `h2 : initL E n (incl E n x) = x`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[initL, incl, LinearMap.funLeft_apply]`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_autU_dvd_tilN (N : Submodule (𝓞 E) (Sp E n)) : Nat.card (autU N) ∣ Nat.card (autU (tilN N)) := by
   let f : autU N →* autU (tilN N) :=
@@ -49,7 +49,7 @@ theorem card_autU_dvd_tilN (N : Submodule (𝓞 E) (Sp E n)) : Nat.card (autU N)
   exact h1.symm
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨N, hN, dvd_rfl⟩`. Consider the case `succ k ih`. Take `⟨N', h1, h2⟩` from `ih`. Conclude with `⟨tilN N', ⟨tilN_lattice h1.1, tilN_unimodular h1.2⟩, h2.trans (card_autU_dvd_tilN N')⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_card_autU_dvd {N : Submodule (𝓞 E) (Sp E n)} (hN : IsSdLat N) (k : ℕ) :
     ∃ N' : Submodule (𝓞 E) (Sp E (n + k)), IsSdLat N' ∧ Nat.card (autU N) ∣ Nat.card (autU N') := by
@@ -60,9 +60,9 @@ theorem exists_card_autU_dvd {N : Submodule (𝓞 E) (Sp E n)} (hN : IsSdLat N) 
     exact ⟨tilN N', ⟨tilN_lattice h1.1, tilN_unimodular h1.2⟩, h2.trans (card_autU_dvd_tilN N')⟩
 
 /- English proof (translation)
-Establish `hle : R.N i ≤ R.N R.m`. Unfold `Ranks.N`. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ hi) _`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hle`. Take `⟨N', h1, h2⟩` from `exists_card_autU_dvd hN k`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[card_autU]`. Conclude with `Mem.Col2.dvd_DGam hE R (hk ▸ Mem.Col2.N_mem_gamRanks R hm le_rfl) h1.1 h1.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_autU_dvd_DGam (hE : PosStar E) (R : Ranks) (hm : 1 ≤ R.m) {i : ℕ} (hi : i ≤ R.m) {N : Submodule (𝓞 E) (Sp E (R.N i))}
     (hN : IsSdLat N) : Nat.card (autU N) ∣ Mem.Col2.DGam E R := by
@@ -105,21 +105,21 @@ def ChiSplit (A : Amb X) : Prop :=
 variable {Ch sel mu cst σ chi}
 
 /- English proof (translation)
-Rewrite using `[rhoPt, norm_mul, norm_zpow, muInvPt, h.1 i hi, h.2 _ _ ⟨p.deco.2.lat, p.deco.2.uni⟩, one_zpow, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem RhoUnit.norm_rhoPt (h : RhoUnit Ch sel mu cst σ chi) {i : ℕ} (hi : i < R.m) {u : Pr.Word} (p : ChPt (R := R) sel mu u i) :
     ‖rhoPt Ch sel mu cst σ chi i p‖ = 1 := by
   rw [rhoPt, norm_mul, norm_zpow, muInvPt, h.1 i hi, h.2 _ _ ⟨p.deco.2.lat, p.deco.2.uni⟩, one_zpow, one_mul]
 
 /- English proof (translation)
-Rewrite using `[rhoPt', norm_mul, norm_inv, norm_zpow, muInvPt, h.1 i hi, h.2 _ _ ⟨p.deco.2.lat, p.deco.2.uni⟩, one_zpow, inv_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem RhoUnit.norm_rhoPt' (h : RhoUnit Ch sel mu cst σ chi) {i : ℕ} (hi : i < R.m) {u : Pr.Word} (p : ChPt (R := R) sel mu u (i + 1)) :
     ‖rhoPt' Ch sel mu cst σ chi i p‖ = 1 := by
   rw [rhoPt', norm_mul, norm_inv, norm_zpow, muInvPt, h.1 i hi, h.2 _ _ ⟨p.deco.2.lat, p.deco.2.uni⟩, one_zpow, inv_one, one_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ hi _ N fr => hG ▸ norm_muInvDet hX hPr hsel hS (hG ▸ ht) hL hi N fr, fun _ _ hN => norm_chiLat hX hs hχ hN⟩`.
+Supply the required witnesses or components.
 -/
 theorem rhoUnit_of {D : D7} {s : Seam D X} {χ : TaylorLogMetric.IdE D → ℂ} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ}
     {e : Fin R.m → X.Tau → ℚ} {eta : Formalism.L2.Host.HChar X.E} (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : ∀ i, Pr.g i ∈ S)
@@ -146,7 +146,7 @@ def TwEquiv : Prop :=
 variable {W Ch sel mu cst L A u m2 b hY P c}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, h.2.2.cp2Equiv hX hPr hm hc H (tameFr_chTh W Ch sel mu cst A u m2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem TwEquiv.kerEquivC (h : TwEquiv W Ch sel mu cst L A u m2 b hY P c) (hX : X.Ok) (hPr : Pr.Ok) (hm : R.m = m2 + 2) (hc : cst.Ok)
     (H : TilOk Pr sel mu u) : KerEquivC W Ch sel mu cst L A u m2 b hY P :=
@@ -228,13 +228,13 @@ variable {chi : ∀ n : ℕ, Submodule (𝓞 X.E) (Sp X.E n) → ℂ} {hX : X.Ok
 end Col
 
 /- English proof (translation)
-The claim follows from `(inferInstance : Nonempty (TopPt R sel mu u)).elim fun p => ⟨⟨.top rfl, Quotient.mk _ p⟩⟩`.
+A detailed English derivation is pending.
 -/
 example : Nonempty (twFam W Ch sel mu cst L u m2 b hY P c R.m).Cl :=
   (inferInstance : Nonempty (TopPt R sel mu u)).elim fun p => ⟨⟨.top rfl, Quotient.mk _ p⟩⟩
 
 /- English proof (translation)
-The claim follows from `haveI : NeZero (R.N (m2 + 1)) := ⟨(R.N_pos _).ne'⟩ open Classical in ⟨⟨.cpl rfl, Quotient.mk _ ⟨(DecoF.base _ _ _ _ _, {z | z - 0 ∈ locLat (rowSG Pr sel mu) (stdLat X.E (R.N (m2 + 1))) fun P => if P.1 ∈ Pr.vGs then 0 else (cst.M : ℤ)}), 0, zero_mem _, rfl⟩⟩⟩`.
+A detailed English derivation is pending.
 -/
 example : Nonempty (twFam W Ch sel mu cst L u m2 b hY P c (m2 + 1)).Cl :=
   haveI : NeZero (R.N (m2 + 1)) := ⟨(R.N_pos _).ne'⟩
@@ -242,13 +242,13 @@ example : Nonempty (twFam W Ch sel mu cst L u m2 b hY P c (m2 + 1)).Cl :=
     fun P => if P.1 ∈ Pr.vGs then 0 else (cst.M : ℤ)}), 0, zero_mem _, rfl⟩⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x => (SpIdx.isEmpty_of_lt (by omega) hi).false x.1⟩`.
+Supply the required witnesses or components.
 -/
 example (hm : R.m = m2 + 2) (i : ℕ) (hi : R.m < i) : IsEmpty (twFam W Ch sel mu cst L u m2 b hY P c i).Cl :=
   ⟨fun x => (SpIdx.isEmpty_of_lt (by omega) hi).false x.1⟩
 
 /- English proof (translation)
-Simplify using `only [rhoPt, rhoPt', h, h', map_one, one_mul, inv_one, zpow_neg, zpow_natCast, and_self]`.
+Simplify using the standard rewrite rules.
 -/
 example (σ : X.K →+* ℂ) (z : ℂ) (i : ℕ) (p : ChPt (R := R) sel mu u i) (p' : ChPt (R := R) sel mu u (i + 1))
     (h : muInvPt Ch sel mu cst i p = 1) (h' : muInvPt Ch sel mu cst i p' = 1) :

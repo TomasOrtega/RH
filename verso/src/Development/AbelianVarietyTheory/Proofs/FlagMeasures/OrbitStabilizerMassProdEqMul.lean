@@ -11,7 +11,7 @@ noncomputable def wt (G : Type) [Group G] {α : Type} [MulAction G α] (X : Set 
   if x ∈ X then ((ENat.card (MulAction.stabilizer G x) : ℕ∞) : ℝ≥0∞)⁻¹ else 0
 
 /- English proof (translation)
-Unfold `orbMass orbSum`. Use `tsum_subtype {q : MulAction.orbitRel.Quotient G α | Quotient.out q ∈ X} (fun q => ((ENat.card (MulAction.stabilizer G (Quotient.out q)) : ℕ∞) : ℝ≥0∞)⁻¹ * 1)` as an intermediate fact. Use `this.trans (tsum_congr fun q => ?_)` and prove the remaining obligations. Simplify using `[Set.indicator, wt]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem orbMass_eq (G : Type) [Group G] {α : Type} [MulAction G α] (X : Set α) :
     orbMass G X = ∑' q : MulAction.orbitRel.Quotient G α, wt G X (Quotient.out q) := by
@@ -22,11 +22,11 @@ theorem orbMass_eq (G : Type) [Group G] {α : Type} [MulAction G α] (X : Set α
   simp [Set.indicator, wt]
 
 /- English proof (translation)
-Establish `hc : ENat.card (MulAction.stabilizer G x) = ENat.card (MulAction.stabilizer G y)` using `ENat.card_congr (MulAction.stabilizerEquivStabilizerOfOrbitRel h).toEquiv`. Take `⟨g, hg⟩` from `h`. Simplify using `only at hg`. Establish `hm : x ∈ X ↔ y ∈ X`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Use `hX g⁻¹ x hx` as an intermediate fact. Rewrite `this` using `[← hg, inv_smul_smul]`. Then use the resulting hypothesis. Introduce `hy`. Rewrite using `[← hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hX g y hy`. Unfold `wt`. Rewrite using `[hc]`. Simplify using `only [hm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wt_rel (G : Type) [Group G] {α : Type} [MulAction G α] (X : Set α) (hX : Stable G X)
     {x y : α} (h : MulAction.orbitRel G α x y) : wt G X x = wt G X y := by
@@ -51,9 +51,9 @@ variable {Γ G G' α β : Type} [Group Γ] [Group G] [Group G'] [MulAction G α]
 
 include hφ in
 /- English proof (translation)
-Simplify using `only [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, rfl⟩`. Rewrite using `[hφ]`. Conclude with `⟨⟨_, rfl⟩, ⟨_, rfl⟩⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨g, hg⟩, ⟨g', hg'⟩⟩`. Use `⟨φ.symm (g, g'), ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`. Simplify using `[hg, hg']`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rel_iff (p q : α × β) : MulAction.orbitRel Γ (α × β) p q ↔
     MulAction.orbitRel G α p.1 q.1 ∧ MulAction.orbitRel G' β p.2 q.2 := by
@@ -86,9 +86,7 @@ def stabEquiv (p : α × β) : MulAction.stabilizer Γ p ≃
 
 include hφ in
 /- English proof (translation)
-Unfold `wt`. Apply the tactic sequence `by_cases h1 : p.1 ∈ X <;> by_cases h2 : p.2 ∈ Y <;> simp only [Set.mem_prod, h1, h2, and_self, and_true, and_false, if_true, if_false, mul_zero, zero_mul]`. Rewrite using `[ENat.card_congr (stabEquiv φ hφ p), ENat.card_prod, ENat.toENNReal_mul, ENNReal.mul_inv]`. Use `left`. Conclude with `(ENat.card_pos (α := MulAction.stabilizer G p.1)).ne'` after adjusting the coercions.
-
-Use `right`. Conclude with `(ENat.card_pos (α := MulAction.stabilizer G' p.2)).ne'` after adjusting the coercions.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_prod (X : Set α) (Y : Set β) (p : α × β) :
     wt Γ (X ×ˢ Y) p = wt G X p.1 * wt G' Y p.2 := by
@@ -117,11 +115,11 @@ noncomputable def orbEquiv : MulAction.orbitRel.Quotient Γ (α × β) ≃
     simp
 
 /- English proof (translation)
-Introduce `Γ G G' α β _ _ _ _ _ _ φ X Y hφ hX hY _ _`. Establish `hXY : Stable Γ (X ×ˢ Y)`. Introduce `γ p hp`. Rewrite using `[hφ]`. Conclude with `⟨hX _ _ hp.1, hY _ _ hp.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[orbMass_eq, orbMass_eq, orbMass_eq, ← (orbEquiv φ hφ).symm.tsum_eq, ENNReal.tsum_prod', ← ENNReal.tsum_mul_right]`. Use `tsum_congr fun a => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.tsum_mul_left]`. Use `tsum_congr fun b => ?_` and prove the remaining obligations. Rewrite using `[← wt_prod φ hφ X Y (Quotient.out a, Quotient.out b)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `wt_rel Γ _ hXY (Quotient.mk_out (s := MulAction.orbitRel Γ (α × β)) _)`.
+A detailed English derivation is pending.
 -/
 theorem orbMass_prod : ∀ (Γ G G' α β : Type) [Group Γ] [Group G] [Group G'] [MulAction G α]
     [MulAction G' β] [MulAction Γ (α × β)] (φ : Γ ≃* G × G') (X : Set α) (Y : Set β),

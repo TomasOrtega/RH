@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[Rder]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rder_zero (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     Rder θ V τ X (0 : GA D V → ℂ) = 0 := by
@@ -21,14 +21,14 @@ theorem rder_zero (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ
   simp [Rder]
 
 /- English proof (translation)
-Simplify using `[RderC, rder_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rderC_zero (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     RderC θ V τ Z (0 : GA D V → ℂ) = 0 := by
   simp [RderC, rder_zero]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons Z l ih`. Rewrite using `[List.map_cons, List.foldr_cons, ih]`. Conclude with `rderC_zero θ V τ Z`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem foldr_rderC_zero (l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ)) (τ : D.what₂.Tau) :
     (l.map fun Z => RderC θ V τ Z).foldr (fun f acc => f acc) (0 : GA D V → ℂ) = 0 := by
@@ -39,11 +39,11 @@ theorem foldr_rderC_zero (l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ)) (τ :
     exact rderC_zero θ V τ Z
 
 /- English proof (translation)
-Unfold `gelf`. Use `Finset.sum_eq_zero fun idx _ => ?_` and prove the remaining obligations. Establish `h : ∀ l : List ((GA D V → ℂ) → GA D V → ℂ), (∀ f ∈ l, f 0 = 0) → l.foldr (fun f acc => f acc) 0 = 0`. Introduce `l hl`. Proceed by induction on `l with`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `nil => rfl`. Consider the case `cons f l ih`. Rewrite using `[List.foldr_cons, ih (fun f' hf' => hl f' (by simp [hf']))]`. Conclude with `hl f (by simp)`. Apply `h` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Rewrite `hf` using `[List.mem_ofFn]`. Take `⟨a, rfl⟩` from `hf`. Conclude with `rderC_zero θ V τ _`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gelf_zero (τ : D.what₂.Tau) (k : ℕ) : gelf θ V τ k (0 : GA D V → ℂ) = 0 := by
   unfold gelf
@@ -63,7 +63,7 @@ theorem gelf_zero (τ : D.what₂.Tau) (k : ℕ) : gelf θ V τ k (0 : GA D V �
   exact rderC_zero θ V τ _
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons p l ih`. Rewrite using `[List.foldr_cons, ih]`. Conclude with `rder_zero θ V p.1 p.2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem foldr_rder_zero (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)) :
     l.foldr (fun p f => Rder θ V p.1 p.2 f) (0 : GA D V → ℂ) = 0 := by
@@ -74,7 +74,7 @@ theorem foldr_rder_zero (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.r
     exact rder_zero θ V p.1 p.2
 
 /- English proof (translation)
-The claim follows from `rfl level := ⟨⊤, isOpen_univ, fun _ _ _ _ => rfl⟩ cont := continuous_const smooth _ _ _ _ _ := contDiff_const zfin := by refine ⟨⊥, inferInstance, Submodule.zero_mem _, fun τ k f hf => ?_⟩ rw [Submodule.mem_bot] at hf subst hf rw [gelf_zero] exact Submodule.zero_mem _ growth := b …`.
+A detailed English derivation is pending.
 -/
 theorem isAutFunSm_zero : IsAutFunSm θ V (fun _ => 0) where
   left _ _ _ := rfl
@@ -95,7 +95,7 @@ theorem isAutFunSm_zero : IsAutFunSm θ V (fun _ => 0) where
     simp
 
 /- English proof (translation)
-Introduce `r C _ μ 𝓕 _ _ g`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isCuspFun_zero : IsCuspFun V (fun _ => 0) := by
   intro r C _ μ 𝓕 _ _ g
@@ -104,9 +104,7 @@ theorem isCuspFun_zero : IsCuspFun V (fun _ => 0) := by
 variable {V} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Use `show IsAutFunSm θ V (fun _ => 0)`. Conclude with `isAutFunSm_zero θ V`. Use `cusp v := by show IsCuspFun V (fun _ => 0)`. Conclude with `isCuspFun_zero V`. Use `lev v k _ g := by simp`.
-
-Use `equiv τ g _ v w _ := by`. Use function extensionality and compare the values at `x`. Simplify using `[rTr]`. Use `cont τ v x := by`. Use `⟨0, ⟨[], 0, by simp, fun w _ => by simp⟩, fun w => by simp⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isMultMap_zero (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) : IsMultMap θ M J χ 0 where
   aut v := by
@@ -125,7 +123,7 @@ theorem isMultMap_zero (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ
 variable (V) in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [Rder, Pi.smul_apply, smul_eq_mul]`. Use `first`. Consider the case `exact deriv_const_mul_field c`. Consider the case `simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rder_smul (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (c : ℂ) (φ : GA D V → ℂ) :
     Rder θ V τ X (c • φ) = c • Rder θ V τ X φ := by
@@ -137,7 +135,7 @@ theorem rder_smul (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ
 
 variable (V) in
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons p l ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, ih]`. Conclude with `rder_smul θ V p.1 p.2 c _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem foldr_rder_smul (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)) (c : ℂ) (φ : GA D V → ℂ) :
     l.foldr (fun p f => Rder θ V p.1 p.2 f) (c • φ) = c • l.foldr (fun p f => Rder θ V p.1 p.2 f) φ := by
@@ -150,11 +148,11 @@ theorem foldr_rder_smul (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.r
 variable (V) in
 
 /- English proof (translation)
-Simplify using `only [Pi.smul_apply, h.left γ hγ g] level := by`. Take `⟨U, hU, hk⟩` from `h.level`. Conclude with `⟨U, hU, fun k hk1 hk2 g => by simp only [Pi.smul_apply, hk k hk1 hk2 g]⟩`. Use `cont := h.cont.const_smul c`. Use `smooth k τs Xs hX g := (h.smooth k τs Xs hX g).const_smul c`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `zfin := by`. Take `⟨W, hW, hφ, hg⟩` from `h.zfin`. Conclude with `⟨W, hW, W.smul_mem c hφ, hg⟩`. Use `growth := by`. Take `⟨N, hN⟩` from `h.growth`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨N, fun l hl x => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hN l hl x`. Use `⟨‖c‖ * C, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[foldr_rder_smul, Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC g hg) (norm_nonneg c)`.
+A detailed English derivation is pending.
 -/
 theorem isAutFunSm_smul {φ : GA D V → ℂ} (h : IsAutFunSm θ V φ) (c : ℂ) : IsAutFunSm θ V (c • φ) where
   left γ hγ g := by simp only [Pi.smul_apply, h.left γ hγ g]
@@ -177,7 +175,7 @@ theorem isAutFunSm_smul {φ : GA D V → ℂ} (h : IsAutFunSm θ V φ) (c : ℂ)
 variable (V) in
 
 /- English proof (translation)
-Introduce `r C hC μ 𝓕 hμ h𝓕 g`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[MeasureTheory.integral_smul, h r C hC μ 𝓕 hμ h𝓕 g, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCuspFun_smul {φ : GA D V → ℂ} (h : IsCuspFun V φ) (c : ℂ) : IsCuspFun V (c • φ) := by
   intro r C hC μ 𝓕 hμ h𝓕 g
@@ -185,13 +183,9 @@ theorem isCuspFun_smul {φ : GA D V → ℂ} (h : IsCuspFun V φ) (c : ℂ) : Is
   rw [MeasureTheory.integral_smul, h r C hC μ 𝓕 hμ h𝓕 g, smul_zero]
 
 /- English proof (translation)
-Use `show IsAutFunSm θ V (c • T v)`. Conclude with `isAutFunSm_smul θ V (hT.aut v) c`. Use `cusp v := by show IsCuspFun V (c • T v)`. Conclude with `isCuspFun_smul V (hT.cusp v) c`. Use `lev v k hk g := by`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Simplify using `only [_root_.smul_apply, Pi.smul_apply, smul_eq_mul, hT.lev v k hk g]`. Expand and normalize the polynomial expressions, which then agree. Use `equiv τ g hg v w hw := by`. Rewrite using `[_root_.smul_apply, _root_.smul_apply, hT.equiv τ g hg v w hw]`. Both sides reduce to the same expression.
-
-Use `cont τ v x := by`. Take `⟨ℓ, ⟨L, C, hL, hC⟩, hℓ⟩` from `hT.cont τ v x`. Use `⟨c • ℓ, ⟨L, ‖c‖ * C, hL, fun w hw => ?_⟩, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC w hw) (norm_nonneg c)`.
-
-Simplify using `only [LinearMap.smul_apply, _root_.smul_apply, Pi.smul_apply, hℓ w]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMultMap_smul {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ} {T : MMap M}
     (hT : IsMultMap θ M J χ T) (c : ℂ) : IsMultMap θ M J χ (c • T) where
@@ -215,13 +209,11 @@ theorem isMultMap_smul {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ
     · simp only [LinearMap.smul_apply, _root_.smul_apply, Pi.smul_apply, hℓ w]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Use `show ∑ γ ∈ R, F (g * γ) = ∑ γ ∈ R', F (g * γ)`. Establish `ex1 : ∀ γ ∈ R, ∃ γ', γ' ∈ R' ∧ γ'⁻¹ * γ ∈ K` using `fun γ hγ => (hR'.2 γ (hR.1 γ hγ).2).exists`. Establish `ex2 : ∀ γ ∈ R', ∃ γ', γ' ∈ R ∧ γ'⁻¹ * γ ∈ K` using `fun γ hγ => (hR.2 γ (hR'.1 γ hγ).2).exists`. Use `choose! i hiR hiK using ex1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose! j hjR hjK using ex2`. Use `Finset.sum_nbij' i j hiR hjR ?_ ?_ ?_` and prove the remaining obligations. Introduce `γ hγ`. Establish `hk` using `hinv _ (hiK γ hγ)`. Rewrite `hk` using `[_root_.mul_inv_rev, _root_.inv_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hR.2 (i γ) (hR'.1 (i γ) (hiR γ hγ)).2).unique ⟨hjR (i γ) (hiR γ hγ), hjK (i γ) (hiR γ hγ)⟩ ⟨hγ, hk⟩`. Introduce `γ hγ`. Establish `hk` using `hinv _ (hjK γ hγ)`. Rewrite `hk` using `[_root_.mul_inv_rev, _root_.inv_inv]`. Conclude with `(hR'.2 (j γ) (hR.1 (j γ) (hjR γ hγ)).2).unique ⟨hiR (j γ) (hjR γ hγ), hiK (j γ) (hjR γ hγ)⟩ ⟨hγ, hk⟩`.
-
-Introduce `γ hγ show F (g * γ) = F (g * i γ)`. Rewrite using `[← hK _ (hiK γ hγ) (g * i γ), _root_.mul_assoc, _root_.mul_inv_cancel_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeLin_indep {D : D7} {V : HSp D} (K : Set (GA D V)) (x : GA D V) (R R' : Finset (GA D V))
     (F : GA D V → ℂ)
@@ -250,7 +242,7 @@ theorem heckeLin_indep {D : D7} {V : HSp D} (K : Set (GA D V)) (x : GA D V) (R R
     rw [← hK _ (hiK γ hγ) (g * i γ), _root_.mul_assoc, _root_.mul_inv_cancel_left]
 
 /- English proof (translation)
-Use extensionality with `v g`. Conclude with `congrFun (heckeLin_indep K x R R' (T v) hinv (hT v) hR hR') g`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem heckeOn_indep {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (K : Set (GA D V))
     (x : GA D V) (R R' : Finset (GA D V)) (T : MMap M)

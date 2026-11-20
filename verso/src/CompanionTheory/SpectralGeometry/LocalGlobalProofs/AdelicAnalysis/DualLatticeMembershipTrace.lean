@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.Com
 open scoped ENNReal NNReal MatrixGroups Kronecker
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (algebraMap F (A F)) B y i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem Bf_mulVec_toA {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] [DecidableEq ι]
     (B : Matrix ι ι F) (y : ι → F) : Bf B *ᵥ toA y = toA (B *ᵥ y) := by
@@ -18,11 +18,11 @@ theorem Bf_mulVec_toA {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype 
   exact (RingHom.map_mulVec (algebraMap F (A F)) B y i).symm
 
 /- English proof (translation)
-Use `choose m hm using h`. Establish `hr : (r : F) = ∑ v, ((b.repr r v : ℤ) : F) * (b v : F)` using `by conv_lhs => rw [← b.sum_repr r]`. Simplify using `[map_sum]`. Use `⟨∑ v, b.repr r v * m v, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, Finset.mul_sum, map_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `e : (N : F) * c * (((b.repr r v : ℤ) : F) * (b v : F)) = (((b.repr r v : ℤ) : ℚ) * (N : ℚ)) • ((b v : F) * c)`. Rewrite using `[Algebra.smul_def]`. Simplify using `only [eq_ratCast, Rat.cast_mul, Rat.cast_intCast, Rat.cast_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_smul, smul_eq_mul, mul_assoc, hm v]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_int_of_basis {F : Type} [Field F] [NumberField F]
     (b : Module.Basis (InfinitePlace F) ℤ (𝓞 F)) (N : ℕ) (c : F)
@@ -44,23 +44,23 @@ theorem trace_int_of_basis {F : Type} [Field F] [NumberField F]
   rw [e, map_smul, smul_eq_mul, mul_assoc, hm v]
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ ι _ _ B b N _ y`. Take `⟨-, hall⟩` from `GlobalTheory.T.standard_adelic_character F`. Take `⟨-, -, hchar⟩` from `hall ψ hψ`. Establish `hBy` using `Bf_mulVec_toA B y`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h i v`. Establish `h1 : ∀ x ∈ Oh F, ψ (algebraMap F (A F) ((N : F) * (B *ᵥ y) i) * x) = 1`. Introduce `x hx`. Establish `hmem : (Pi.single i ((N : A F) * x) : ι → A F) ∈ latN F ι N`. Use `fun j => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Conclude with `⟨x, hx, by simp⟩`. Conclude with `⟨0, oh_zero, by simp [Pi.single_eq_of_ne hj]⟩`. Establish `h2 : ψ ((Pi.single i ((N : A F) * x) : ι → A F) ⬝ᵥ (Bf B *ᵥ toA y)) = 1` using `h _ hmem`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `h2` using `[hBy, single_dotProduct]`. Rewrite using `[← h2, map_mul (algebraMap F (A F)), map_natCast (algebraMap F (A F))]`. Use `congr 1`. Simplify using `only [toA]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨n, hn⟩` from `(hchar _).mp h1 (b v)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← hn]`. Establish `e : (N : F) * (B *ᵥ y) i * (b v : F) = (N : ℚ) • ((b v : F) * (B *ᵥ y) i)`. Rewrite using `[Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_smul, smul_eq_mul]`. Introduce `h x hx`. Establish `h1 : ∀ i, ∀ x ∈ Oh F, ψ (algebraMap F (A F) ((N : F) * (B *ᵥ y) i) * x) = 1` using `fun i => (hchar _).mpr (trace_int_of_basis b N _ (h i))`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show ψ (x ⬝ᵥ (Bf B *ᵥ toA y)) = 1`. Rewrite using `[hBy, dotProduct]`. Establish `h2 : ∀ s : Finset ι, ψ (∑ i ∈ s, x i * toA (B *ᵥ y) i) = 1`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, AddChar.map_add_eq_mul, ih, mul_one]`. Take `⟨x', hx', e⟩` from `hx i`. Rewrite using `[e, ← h1 i x' hx', map_mul (algebraMap F (A F)), map_natCast (algebraMap F (A F))]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [toA]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h2 Finset.univ`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem toA_mem_perp_latN_iff : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (A F) ℂ), IsStdChar F ψ → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (B : Matrix ι ι F) (b : Module.Basis (InfinitePlace F) ℤ (𝓞 F)) (N : ℕ), 0 < N → ∀ y : ι → F, toA y ∈ perp (chiB ψ (Bf B)) (latN F ι N : Set (ι → A F)) ↔ ∀ i v, ∃ m : ℤ, (N : ℚ) * Algebra.trace ℚ F ((b v : F) * (B *ᵥ y) i) = m := by
   intro F _ _ ψ hψ ι _ _ B b N _ y

@@ -6,9 +6,9 @@ open IsLocalRing GlobalTheory.Pat
 namespace GlobalTheory.Pat
 
 /- English proof (translation)
-Introduce `R S S' _ _ _ _ _ q _ φ φ' h h'`. Use `haveI := h.complete`. Use `haveI := h'.complete`. Take `⟨θ, ⟨hθl, hθ⟩, -⟩` from `GlobalTheory.T.completion_universal_local_hom R S S' q φ φ' h h'.comap_eq`. Take `⟨η, ⟨hηl, hη⟩, -⟩` from `GlobalTheory.T.completion_universal_local_hom R S' S q φ' φ h' h.comap_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u` using `(GlobalTheory.T.completion_universal_local_hom R S S q φ φ h h.comap_eq).unique (y₁ := η.comp θ) (y₂ := RingHom.id S) ⟨RingHom.isLocalHom_comp η θ, by rw [RingHom.comp_assoc, hθ, hη]⟩ ⟨inferInstance, RingHom.id_comp φ⟩`. Establish `u'` using `(GlobalTheory.T.completion_universal_local_hom R S' S' q φ' φ' h' h'.comap_eq).unique (y₁ := θ.comp η) (y₂ := RingHom.id S') ⟨RingHom.isLocalHom_comp θ η, by rw [RingHom.comp_assoc, hη, hθ]⟩ ⟨inferInstance, RingHom.id_comp φ'⟩`. Conclude with `⟨RingEquiv.ofRingHom θ η u' u, hθ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCplAt_unique : ∀ (R S S' : Type) [CommRing R] [CommRing S] [IsLocalRing S] [CommRing S'] [IsLocalRing S'] (q : Ideal R) [q.IsPrime] (φ : R →+* S) (φ' : R →+* S'), IsCplAt q φ → IsCplAt q φ' → ∃ e : S ≃+* S', (e : S →+* S').comp φ = φ' := by
   intro R S S' _ _ _ _ _ q _ φ φ' h h'

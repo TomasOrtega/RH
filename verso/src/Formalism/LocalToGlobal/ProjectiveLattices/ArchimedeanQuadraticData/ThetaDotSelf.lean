@@ -12,7 +12,7 @@ open NumberField Matrix ComplexConjugate ReciprocityTheory.MultiplicativeHeights
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[rho_dot, ← sum_re_cmType σ hinj hcm (S.h y v)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hform i y v, jForm, Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Theta, Phi, map_mul, sgn_conj]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Put the polynomial expressions in normal form.
 -/
@@ -31,7 +31,7 @@ theorem trace_id (σ : ι → K →+* ℂ) (hinj : Function.Injective σ)
   ring_nf
 
 /- English proof (translation)
-Unfold `rho`. Simplify using `only [dotProduct]`. Use `(Equiv.sum_comp eqv (fun x : ι × Fin r × Fin 2 => (if x.2.2 = 0 then (w x.1 x.2.1).re else (w x.1 x.2.1).im) * (if x.2.2 = 0 then (w x.1 x.2.1).re else (w x.1 x.2.1).im))).trans ?_` and prove the remaining obligations. Simplify using `[Fintype.sum_prod_type, Fin.sum_univ_two, Complex.normSq_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma rho_dot_self_lemma {N : ℕ} (eqv : Fin N ≃ ι × Fin r × Fin 2) (w : ι → Fin r → ℂ) :
     rho eqv w ⬝ᵥ rho eqv w = ∑ i, ∑ j, Complex.normSq (w i j) := by
@@ -43,7 +43,7 @@ private lemma rho_dot_self_lemma {N : ℕ} (eqv : Fin N ≃ ι × Fin r × Fin 2
   simp [Fintype.sum_prod_type, Fin.sum_univ_two, Complex.normSq_apply]
 
 /- English proof (translation)
-Rewrite using `[rho_dot_self_lemma, rho_dot_self_lemma]`. Unfold `Theta sgn`. Simplify using `only [map_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem theta_dot_self (p : ℕ) {N : ℕ} (eqv : Fin N ≃ ι × Fin r × Fin 2) (w : ι → Fin r → ℂ) :
     rho eqv (Theta p w) ⬝ᵥ rho eqv (Theta p w) = rho eqv w ⬝ᵥ rho eqv w := by
@@ -54,7 +54,7 @@ theorem theta_dot_self (p : ℕ) {N : ℕ} (eqv : Fin N ≃ ι × Fin r × Fin 2
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[rho_dot_self_lemma]`. Unfold `Phi majSq normSq`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `Complex.normSq_eq_norm_sq _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem phi_dot_self (σ : ι → K →+* ℂ) (Q : ι → Matrix (Fin r) (Fin r) ℂ) {N : ℕ}
     (eqv : Fin N ≃ ι × Fin r × Fin 2) (v : Fin r → K) :
@@ -65,7 +65,7 @@ theorem phi_dot_self (σ : ι → K →+* ℂ) (Q : ι → Matrix (Fin r) (Fin r
   exact Complex.normSq_eq_norm_sq _
 
 /- English proof (translation)
-Rewrite using `[← map_one (algebraMap ℚ K), Algebra.trace_algebraMap]`. Simplify using `only [nsmul_eq_mul, mul_one, ne_eq, Nat.cast_eq_zero]`. Conclude with `Module.finrank_pos.ne'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_one_ne : Algebra.trace ℚ K 1 ≠ 0 := by
   rw [← map_one (algebraMap ℚ K), Algebra.trace_algebraMap]
@@ -73,27 +73,25 @@ theorem trace_one_ne : Algebra.trace ℚ K 1 ≠ 0 := by
   exact Module.finrank_pos.ne'
 
 /- English proof (translation)
-Unfold `jForm embVec at hform`. Take `⟨i₀⟩` from `‹Nonempty ι›`. Establish `hsingle : ∀ (j : Fin r) (b : K), (fun a => σ i₀ ((Pi.single j b : Fin r → K) a)) = (Pi.single j (σ i₀ b) : Fin r → ℂ)`. Introduce `j b`. Use function extensionality and compare the values at `a`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `ha : a = j`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne ha]`. Establish `hcol : ∀ (j : Fin r) (z : ℂ) (k : Fin r), (Q i₀ *ᵥ (Pi.single j z : Fin r → ℂ)) k = Q i₀ k j * z`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j z k`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hg : ∀ j : Fin r, S.h (Pi.single j 1) x = 0`. Introduce `j`. Establish `hlin : ∀ b : K, S.h (Pi.single j b) x = S.1 b * S.h (Pi.single j 1) x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b`. Apply `(σ i₀).injective` to reduce the goal to its premises. Rewrite using `[map_mul, hform, hform, hsingle, hsingle, S.3, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hcol, hcol, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, map_one]`. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion as `hg0`. Establish `ht` using `h (Pi.single j (S.1 (S.h (Pi.single j 1) x)⁻¹))`. Establish `ht2` using `hlin (S.1 (S.h (Pi.single j 1) x)⁻¹)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ht` using `[ht2, S.2, inv_mul_cancel₀ hg0]`. Conclude with `trace_one_ne ht`. Establish `hw : (Q i₀)ᴴ *ᵥ (fun k => sgn p k * (Q i₀ *ᵥ fun a => σ i₀ (x a)) k) = 0`. Use function extensionality and compare the values at `j`. Establish `h0` using `congrArg (σ i₀) (hg j)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[hform, hsingle, map_zero]`. Use `show ∑ k, (Q i₀)ᴴ j k * (sgn p k * (Q i₀ *ᵥ fun a => σ i₀ (x a)) k) = 0`. Rewrite using `[← h0]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hcol, map_one, mul_one, Matrix.conjTranspose_apply, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdet : ((Q i₀)ᴴ).det ≠ 0`. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `star_ne_zero.mpr (hQ i₀)`. Establish `hw0` using `Matrix.eq_zero_of_mulVec_eq_zero hdet hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hu0 : (Q i₀ *ᵥ fun a => σ i₀ (x a)) = 0`. Use function extensionality and compare the values at `k`. Establish `hk` using `congrFun hw0 k`. Simplify using `only [Pi.zero_apply] at hk ⊢`. Break down `mul_eq_zero.mp hk with hk | hk` into its components or cases.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `unfold sgn at hk split_ifs at hk <;> norm_num at hk`. Conclude with `hk`. Establish `hx0` using `Matrix.eq_zero_of_mulVec_eq_zero (hQ i₀) hu0`. Use function extensionality and compare the values at `a`. Establish `ha` using `congrFun hx0 a`.
-
-Simplify using `only [Pi.zero_apply] at ha ⊢`. Conclude with `(σ i₀).injective (by rw [ha, map_zero])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nondeg [Nonempty ι] (σ : ι → K →+* ℂ) (Q : ι → Matrix (Fin r) (Fin r) ℂ)
     (hQ : ∀ i, (Q i).det ≠ 0) (p : ℕ) (S : HermForm K r)

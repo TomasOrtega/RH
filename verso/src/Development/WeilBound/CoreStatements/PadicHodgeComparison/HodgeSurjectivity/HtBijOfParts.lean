@@ -15,7 +15,7 @@ def HTBij : Prop :=
         Module.finrank ℚ_[l] (M.V n) = ∑ a ∈ Finset.range (n + 1), Module.finrank K (Hdg M.q a n)
 
 /- English proof (translation)
-Introduce `l _ K _`. Take `⟨P, hP⟩` from `hH l K`. Use `⟨P, fun M hM => ⟨(hP M hM).1, (hP M hM).2, fun d hd n => ?_⟩⟩` and prove the remaining obligations. Establish `hs : Surj P M n` using `ontoAll_of h hS hD hF l K P (fun N hN => (hP N hN).1) M d hM hd n`. Conclude with `⟨hs, hR l K P M n hM (hF l K M hM n) ((hP M hM).1 n) hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem htBij_of_parts (h : Parts) (hR : HodgeTateDimensionEquality) (hH : HodgeTateMapExists) (hS : SqEx3) (hD : DiagEt3) (hF : EtFin) : HTBij := by
   intro l _ K _

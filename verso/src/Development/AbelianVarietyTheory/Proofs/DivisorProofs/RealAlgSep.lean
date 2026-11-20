@@ -8,15 +8,13 @@ section
 variable {X : Type} {B : Type} [AddCommGroup B] (χ : B → X → ℂ)
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨a, rfl⟩` from `hu`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem v hv`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨b, rfl⟩` from `hv`. Conclude with `Submodule.subset_span ⟨a + b, funext fun x => hadd a b x⟩`. Consider the case `zero => simp`. Consider the case `add v w _ _ hv hw`. Rewrite using `[mul_add]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hv hw`. Consider the case `smul c v _ hv`. Rewrite using `[mul_smul_comm]`. Conclude with `Submodule.smul_mem _ c hv`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add u w _ _ hu hw`. Rewrite using `[add_mul]`. Conclude with `Submodule.add_mem _ hu hw`. Consider the case `smul c u _ hu`. Rewrite using `[smul_mul_assoc]`.
-
-Conclude with `Submodule.smul_mem _ c hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_mul (hadd : ∀ (a b : B) (x : X), χ (a + b) x = χ a x * χ b x)
     {f g : X → ℂ} (hf : f ∈ Submodule.span ℂ (Set.range χ))
@@ -46,13 +44,11 @@ theorem span_mul (hadd : ∀ (a b : B) (x : X), χ (a + b) x = χ a x * χ b x)
 omit [AddCommGroup B] in
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨a, rfl⟩` from `hu`. Conclude with `⟨1, fun x => (hn a x).le⟩`. Consider the case `zero => exact ⟨0, fun x => by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add u w _ _ hu hw`. Take `⟨M1, h1⟩` from `hu`. Take `⟨M2, h2⟩` from `hw`. Use `⟨M1 + M2, fun x => ?_⟩` and prove the remaining obligations. Use `show ‖u x + w x‖ ≤ M1 + M2`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Conclude with `(norm_add_le _ _).trans (add_le_add (h1 x) (h2 x))`. Consider the case `smul c u _ hu`. Take `⟨M, h⟩` from `hu`. Use `⟨‖c‖ * M, fun x => ?_⟩` and prove the remaining obligations. Use `show ‖c • u x‖ ≤ ‖c‖ * M`.
-
-Rewrite using `[norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (h x) (norm_nonneg _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_bdd (hn : ∀ (a : B) (x : X), ‖χ a x‖ = 1)
     {f : X → ℂ} (hf : f ∈ Submodule.span ℂ (Set.range χ)) : ∃ M : ℝ, ∀ x, ‖f x‖ ≤ M := by
@@ -75,7 +71,7 @@ theorem span_bdd (hn : ∀ (a : B) (x : X), ‖χ a x‖ = 1)
     exact mul_le_mul_of_nonneg_left (h x) (norm_nonneg _)
 
 /- English proof (translation)
-Establish `h1 : χ (-b) x * χ b x = 1` using `by rw [← hadd, neg_add_cancel, h0]`. Establish `h2 : χ (-b) x = (χ b x)⁻¹` using `eq_inv_of_mul_eq_one_left h1`. Rewrite using `[h2, Complex.inv_def, Complex.normSq_eq_norm_sq, hn b x]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chi_neg (hadd : ∀ (a b : B) (x : X), χ (a + b) x = χ a x * χ b x)
     (h0 : ∀ x, χ 0 x = 1) (hn : ∀ (a : B) (x : X), ‖χ a x‖ = 1) (b : B) (x : X) :
@@ -112,15 +108,15 @@ def realAlg [TopologicalSpace X] (hadd : ∀ (a b : B) (x : X), χ (a + b) x = �
     simp [h0]
 
 /- English proof (translation)
-Introduce `x y hxy`. Take `⟨b, hb⟩` from `hs x y hxy`. Establish `hneg : ∀ u, χ (-b) u = (starRingEnd ℂ) (χ b u)` using `fun u => chi_neg χ hadd h0 hn b u`. Set `fre : C(X, ℝ)` to `⟨fun u => (χ b u).re, Complex.continuous_re.comp (hc b)⟩`. Set `fim : C(X, ℝ)` to `⟨fun u => (χ b u).im, Complex.continuous_im.comp (hc b)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hre : fre ∈ realAlg χ hadd h0` using `by show (fun u => (((χ b u).re : ℝ) : ℂ)) ∈ Submodule.span ℂ (Set.range χ)`. Establish `he : (fun u => (((χ b u).re : ℝ) : ℂ)) = (1 / 2 : ℂ) • (χ b + χ (-b))`. Use function extensionality and compare the values at `u`. Simplify using `only [Pi.smul_apply, Pi.add_apply, hneg, smul_eq_mul]`. Rewrite using `[Complex.re_eq_add_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Conclude with `Submodule.smul_mem _ _ (Submodule.add_mem _ (Submodule.subset_span ⟨b, rfl⟩) (Submodule.subset_span ⟨-b, rfl⟩))`. Establish `him : fim ∈ realAlg χ hadd h0` using `by show (fun u => (((χ b u).im : ℝ) : ℂ)) ∈ Submodule.span ℂ (Set.range χ)`. Establish `he : (fun u => (((χ b u).im : ℝ) : ℂ)) = (1 / (2 * Complex.I)) • (χ b - χ (-b))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `u`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, hneg, smul_eq_mul]`. Rewrite using `[Complex.im_eq_sub_conj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (Submodule.subset_span ⟨b, rfl⟩) (Submodule.subset_span ⟨-b, rfl⟩))`. Distinguish the cases in `hr : (χ b x).re = (χ b y).re`. Use `⟨fim, ⟨fim, him, rfl⟩, fun heq => hb (Complex.ext hr heq)⟩` and prove the remaining obligations. Conclude with `⟨fre, ⟨fre, hre, rfl⟩, hr⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem realAlg_sep [TopologicalSpace X] (hc : ∀ b, Continuous (χ b))
     (hadd : ∀ (a b : B) (x : X), χ (a + b) x = χ a x * χ b x)
@@ -156,19 +152,19 @@ theorem realAlg_sep [TopologicalSpace X] (hc : ∀ b, Continuous (χ b))
   · exact ⟨fre, ⟨fre, hre, rfl⟩, hr⟩
 
 /- English proof (translation)
-Take `⟨g, hgA, hg⟩` from `ContinuousMap.exists_mem_subalgebra_near_continuous_of_isCompact_of_separatesPoints (realAlg_sep χ hc hadd h0 hn hs) ⟨β, hβ⟩ hK hε`. Take `⟨M, hM⟩` from `span_bdd χ hn hgA`. Take `⟨p, hp⟩` from `exists_polynomial_near_of_continuousOn (-M) M (fun t => max 0 (min t 1)) (by fun_prop) ε hε`. Establish `hmem : Polynomial.aeval g p ∈ realAlg χ hadd h0`. Establish `: Algebra.adjoin ℝ {g} ≤ realAlg χ hadd h0` using `Algebra.adjoin_le (Set.singleton_subset_iff.2 hgA)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this (Polynomial.aeval_mem_adjoin_singleton ℝ g)`. Establish `hmem' : (fun x => (((Polynomial.aeval g p) x : ℝ) : ℂ)) ∈ Submodule.span ℂ (Set.range χ)` using `hmem`. Take `⟨c, hcf⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hmem'`. Establish `hval : ∀ x, ∑ b ∈ c.support, c b * χ b x = ((p.eval (g x) : ℝ) : ℂ)`. Introduce `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun hcf x` as an intermediate fact. Rewrite `this` using `[Polynomial.aeval_continuousMap_apply]`. Rewrite using `[← this, Finsupp.sum, Finset.sum_apply]`. Simplify using the standard rewrite rules. Establish `hnear : ∀ x, |p.eval (g x) - max 0 (min (g x) 1)| < ε`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use `hM x` as an intermediate fact. Rewrite `this` using `[Complex.norm_real, Real.norm_eq_abs]`. Conclude with `hp _ (abs_le.1 this)`. Use `⟨c.support, c, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hval, Complex.norm_real, Real.norm_eq_abs]`. Establish `h1` using `abs_lt.1 (hnear x)`. Establish `h2 : 0 ≤ max 0 (min (g x) 1)` using `le_max_left _ _`. Establish `h3 : max 0 (min (g x) 1) ≤ 1` using `max_le zero_le_one (min_le_right _ _)`. Rewrite using `[abs_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2]`. Rewrite using `[hval, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs]`. Establish `h1` using `abs_lt.1 (hnear x)`. Establish `h2 : |g x - β x| < ε` using `hg x hx`. Establish `h3` using `abs_lt.1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `hβ1 x`. Establish `h5 : max 0 (min (g x) 1) ≤ β x + ε` using `max_le (by linarith [h4.1]) ((min_le_left _ _).trans (by linarith [h3.2]))`. Establish `h6 : β x - ε ≤ max 0 (min (g x) 1)` using `le_max_of_le_right (le_min (by linarith [h3.1]) (by linarith [h4.2]))`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem step [TopologicalSpace X] (hc : ∀ b, Continuous (χ b))
     (hadd : ∀ (a b : B) (x : X), χ (a + b) x = χ a x * χ b x)
@@ -224,11 +220,11 @@ theorem step [TopologicalSpace X] (hc : ∀ b, Continuous (χ b))
 end
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ∃ (s : Finset B) (c : B → ℂ), (∀ x, ‖∑ b ∈ s, c b * χ b x‖ ≤ 2) ∧ ∀ x ∈ Metric.closedBall x₀ (n : ℝ), ‖∑ b ∈ s, c b * χ b x - (β x : ℂ)‖ ≤ 2 * (1 / ((n : ℝ) + 1))`. Introduce `n`. Use `step χ hc hadd h0 hn hs β hβ hβ1 (isCompact_closedBall x₀ n) Nat.one_div_pos_of_nat ?_` and prove the remaining obligations. Rewrite using `[div_le_one (by positivity)]`. Combine the linear relations using `[(Nat.cast_nonneg n : (0 : ℝ) ≤ n)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `choose s c h1 h2 using key`. Use `⟨s, c, h1, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `hlim : Tendsto (fun n : ℕ => 2 * (1 / ((n : ℝ) + 1))) atTop (𝓝 0)`. Simplify using `using (tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)).const_mul 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `squeeze_zero' (Eventually.of_forall fun n => norm_nonneg _) ?_ hlim` and prove the remaining obligations. Use `filter_upwards [(tendsto_natCast_atTop_atTop (R := ℝ)).eventually_ge_atTop (dist x x₀)] with n hn'`. Conclude with `h2 n x hn'`.
+A detailed English derivation is pending.
 -/
 theorem main {X : Type} [PseudoMetricSpace X] [ProperSpace X] (x₀ : X) {B : Type}
     [AddCommGroup B] (χ : B → X → ℂ) (hc : ∀ b, Continuous (χ b))

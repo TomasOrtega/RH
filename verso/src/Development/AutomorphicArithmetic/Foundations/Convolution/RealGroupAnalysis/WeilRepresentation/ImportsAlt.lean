@@ -6,7 +6,7 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F _ _ _ π`. Take `⟨ω, h, -⟩` from `UpperTheory.V.Af.Rn.centChar F π`. Conclude with `⟨ω.1, ω.2.1, fun f hf s g => h s f hf g⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.cen :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], St.Cen F := by

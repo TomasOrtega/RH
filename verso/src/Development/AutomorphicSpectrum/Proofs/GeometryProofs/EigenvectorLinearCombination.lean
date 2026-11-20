@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.CombEig
 
 /- English proof (translation)
-The claim follows from `| 0, e => by simpa using M.pt_zero | n + 1, e => by rw [Fin.sum_univ_succ, List.ofFn_succ, List.prod_cons, M.add, pt_sum M]`.
+A detailed English derivation is pending.
 -/
 theorem pt_sum {S : Scheme.{0}} {G : Over S} [GrpObj G] {R : Type} [CommRing R] {x : Sp R ⟶ S} {V : Type}
     [AddCommGroup V] [Module R V] (M : LieModel G x V) :
@@ -21,23 +21,23 @@ theorem pt_sum {S : Scheme.{0}} {G : Over S} [GrpObj G] {R : Type} [CommRing R] 
     rw [Fin.sum_univ_succ, List.ofFn_succ, List.prod_cons, M.add, pt_sum M]
 
 /- English proof (translation)
-Introduce `S G _ _ F _ x P _ act σ n v cf w hv hc`. Establish `key : ∀ y : epsAt x ⟶ G, IsEigVec act x σ y ↔ (IsTanAt G x y ∧ ∀ a, y ≫ act.act a = LieTangent.epsScale x (σ a) ≫ y)`. Introduce `y`. Unfold `IsEigVec`. Use `and_congr_right fun _ => forall_congr' fun a => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[h]`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `h`. Rewrite using `[h]`. Both sides reduce to the same expression. Establish `hcomm : ∀ c d : F, LieTangent.epsScale x c ≫ LieTangent.epsScale x d = LieTangent.epsScale x d ≫ LieTangent.epsScale x c`. Introduce `c d`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hr : (epsMul c).comp (epsMul d) = (epsMul d).comp (epsMul c)`. Use `RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[LieTangent.epsMul_fst]`. Simplify using `[LieTangent.epsMul_snd, mul_left_comm]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show Spec.map (CommRingCat.ofHom (epsMul c)) ≫ Spec.map (CommRingCat.ofHom (epsMul d)) = Spec.map (CommRingCat.ofHom (epsMul d)) ≫ Spec.map (CommRingCat.ofHom (epsMul c))`. Rewrite using `[LieTangent.spec_comp, LieTangent.spec_comp, hr]`. Take `⟨u, hu, rfl⟩` from `hc`. Establish `hu' : ∀ i, u i = LieTangent.epsScale x (cf i) ≫ v i`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hu i]`. Both sides reduce to the same expression. Rewrite using `[key]`. Apply `List.prod_induction (fun y => IsTanAt G x y ∧ ∀ a, y ≫ act.act a = LieTangent.epsScale x (σ a) ≫ y)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y z ⟨hy, hy'⟩ ⟨hz, hz'⟩`. Use `⟨LieTangent.isTanAt_mul hy hz, fun a => ?_⟩` and prove the remaining obligations. Use `haveI := act.hom a`. Rewrite using `[MonObj.mul_comp, hy', hz', MonObj.comp_mul]`. Use `⟨LieTangent.isTanAt_one, fun a => ?_⟩ haveI := act.hom a` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MonObj.one_comp, MonObj.comp_one]`. Introduce `y hy`. Take `⟨i, rfl⟩` from `List.mem_ofFn.mp hy`. Rewrite using `[hu']`. Take `⟨ht, he⟩` from `(key (v i)).mp (hv i)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨LieTangent.isTanAt_scale (cf i) ht, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, he a, ← Category.assoc, ← Category.assoc, hcomm]`.
+A detailed English derivation is pending.
 -/
 theorem isEigVec_comb : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (F : Type) [Field F] (x : Sp F ⟶ S) (P : Type) [CommRing P] (act : OAct P G) (σ : P →+* F) (n : ℕ) (v : Fin n → (epsAt x ⟶ G)) (cf : Fin n → F) (w : epsAt x ⟶ G), (∀ i, IsEigVec act x σ (v i)) → IsComb cf v w → IsEigVec act x σ w := by
   intro S G _ _ F _ x P _ act σ n v cf w hv hc

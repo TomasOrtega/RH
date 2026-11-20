@@ -12,15 +12,15 @@ namespace GlobalTheory.EvenTheta.Double
 variable {Λ : AddSubgroup ℂ}
 
 /- English proof (translation)
-Establish `hs0` using `(h.sg_eq_zero s).not.2 hs`. Establish `ht0` using `(h.sg_eq_zero t).not.2 ht`. Use `set E : ℂ → ℂ := fun u => Complex.exp (-(Real.pi : ℂ) * u * (starRingEnd ℂ) t / (area Λ : ℂ) - (Real.pi : ℂ) * t * (starRingEnd ℂ) t / (2 * (area Λ : ℂ))) with hE`. Use `set K : ℂ := Complex.exp ((Real.pi : ℂ) * t * (starRingEnd ℂ) t / (area Λ : ℂ)) with hK`. Use `set c : ℂ := U1 Λ t (sgStar Λ) 0 with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hθ : ∀ u, GL3Theta.th0 Λ t u = sgStar Λ (u + t) * E u * c⁻¹` using `fun u => rfl`. Use `⟨-sgStar Λ s ^ 2 * (wpF Λ t - wpF Λ s), -sgStar Λ s ^ 2 * c⁻¹ ^ 2 * K / sgStar Λ t ^ 2, fun w => ?_⟩` and prove the remaining obligations. Establish `e1 : E (w + s) * E (w - s) = E w ^ 2`. Simplify using `only [hE]`. Rewrite using `[sq, ← Complex.exp_add, ← Complex.exp_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : sgStar Λ (w + 2 * t) * E w ^ 2 = -K * sgStar Λ w`. Establish `hl` using `h.sg_law h2 w`. Rewrite `hl` using `[if_neg (by simpa using ht)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show -K * sgStar Λ w = (-1 * sgStar Λ w) * K by ring, ← hl]`. Simplify using `only [U1, hE, hK]`. Rewrite using `[mul_assoc (sgStar Λ _), sq, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 2`. Simplify using `only [map_mul, map_ofNat]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e3` using `h.sqTh_sub hs ht (w + t)`. Rewrite `e3` using `[sqTh, sqTh, show t + (w + t) = w + 2 * t by ring, show t - (w + t) = -w by ring, show s + (w + t) = w + s + t by ring, show s - (w + t) = -(w - s + t) by ring, h.sg_neg, h.sg_neg, div_eq_iff (pow_ne_zero 2 hs0)]`. Rewrite using `[hθ, hθ, hθ]`. Take the linear combination `(sgStar Λ (w + s + t) * sgStar Λ (w - s + t) * c⁻¹ ^ 2) * e1 - (E w ^ 2 * c⁻¹ ^ 2) * e3 + (sgStar Λ s ^ 2 * c⁻¹ ^ 2 * sgStar Λ w / sgStar Λ t ^ 2) * e2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_evenTheta_translate_mul_sq_comb (h : IsLat Λ) {t s : ℂ} (ht : t ∉ Λ) (h2 : 2 * t ∈ Λ) (hs : s ∉ Λ) :
     ∃ α γ : ℂ, ∀ w, GL3Theta.th0 Λ t (w + s) * GL3Theta.th0 Λ t (w - s) =
@@ -58,15 +58,15 @@ theorem exists_evenTheta_translate_mul_sq_comb (h : IsLat Λ) {t s : ℂ} (ht : 
     (sgStar Λ s ^ 2 * c⁻¹ ^ 2 * sgStar Λ w / sgStar Λ t ^ 2) * e2
 
 /- English proof (translation)
-Introduce `Λ h t ht h2 s hs z`. Take `⟨α, γ, hp⟩` from `exists_evenTheta_translate_mul_sq_comb h ht h2 hs`. Take `⟨-, h1, hev, -⟩` from `evenThetaTwoTorsion_basic_properties Λ h t ht h2`. Establish `hα : α = GL3Theta.th0 Λ t s ^ 2`. Use `hp 0` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_add, zero_sub, hev, h1, (h.sg_eq_zero 0).2 Λ.zero_mem]`. Take the linear combination `-this`. Use `set F : ℂ → ℂ := fun u => Complex.exp (-(Real.pi : ℂ) * u * (starRingEnd ℂ) s / (area Λ : ℂ) - (Real.pi : ℂ) * s * (starRingEnd ℂ) s / (2 * (area Λ : ℂ))) with hF`. Establish `hU : ∀ (G : ℂ → ℂ) u, U1 Λ s G u = G (u + s) * F u` using `fun _ _ => rfl`. Establish `hU2 : ∀ (G : ℂ → ℂ) u, U1 Λ (2 * s) G u = G (u + s + s) * (F u ^ 2 * F 0 ^ 2)`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `G u`. Simplify using `only [U1, hF]`. Rewrite using `[sq, sq, ← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `p1` using `hp (z + s)`. Establish `p0` using `hp (0 + s)`. Rewrite `p1`, `p0` using `[add_sub_cancel_right, hα]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `p0` using `[h1]`. Simplify using `only [hU, hU2]`. Simplify using `only [zero_add] at p0 ⊢`. Take the linear combination `(sgStar Λ s ^ 2 * F 0 ^ 4 * F z ^ 2) * p1 - (F 0 ^ 4 * F z ^ 2 * sgStar Λ (z + s) ^ 2) * p0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem evenTheta_double_translate_mul : ∀ Λ : AddSubgroup ℂ, IsLat Λ → ∀ t₀ : ℂ, t₀ ∉ Λ → 2 * t₀ ∈ Λ → ∀ s, s ∉ Λ → ∀ z, U1 Λ s (sgStar Λ) 0 ^ 2 * (U1 Λ (2 * s) (GL3Theta.th0 Λ t₀) z * GL3Theta.th0 Λ t₀ z) = U1 Λ s (sgStar Λ) 0 ^ 2 * U1 Λ s (GL3Theta.th0 Λ t₀) 0 ^ 2 * U1 Λ s (GL3Theta.th0 Λ t₀) z ^ 2 + (U1 Λ (2 * s) (GL3Theta.th0 Λ t₀) 0 - U1 Λ s (GL3Theta.th0 Λ t₀) 0 ^ 4) * U1 Λ s (sgStar Λ) z ^ 2 := by
   intro Λ h t ht h2 s hs z

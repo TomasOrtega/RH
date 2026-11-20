@@ -25,7 +25,7 @@ variable (E) in
 def badSet : Finset (HeightOneSpectrum (𝓞 E)) := (GlobalTheory.JSW.psiLoc_conductor_eventually E).choose
 
 /- English proof (translation)
-Introduce `x`. Simplify using `only [one_mul]`. Conclude with `(GlobalTheory.JSW.psiLoc_conductor_eventually E).choose_spec w hw x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem condOne_one_of_notMem {w : HeightOneSpectrum (𝓞 E)} (hw : w ∉ badSet E) : CondOne w 1 := by
   intro x
@@ -33,7 +33,7 @@ theorem condOne_one_of_notMem {w : HeightOneSpectrum (𝓞 E)} (hw : w ∉ badSe
   exact (GlobalTheory.JSW.psiLoc_conductor_eventually E).choose_spec w hw x
 
 /- English proof (translation)
-Rewrite using `[condExp, if_pos (condOne_one_of_notMem hw)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem condExp_eq_zero_of_notMem (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ)
     {w : HeightOneSpectrum (𝓞 E)} (hw : w ∉ badSet E) : condExp ϖ w = 0 := by
@@ -47,9 +47,9 @@ def shiftFn (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E))) (ϖ : ∀ w : He
   if w ∈ T then 0 else fun i : Fin (m + 1) => condExp ϖ w * ((m : ℤ) - ((i : ℕ) : ℤ))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hw`. Apply `h` to reduce the goal to its premises. Unfold `shiftFn`. Use `split_ifs`. Both sides reduce to the same expression.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[condExp_eq_zero_of_notMem ϖ hw]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shiftFn_mem_badSet (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E)))
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ) (w : HeightOneSpectrum (𝓞 E))
@@ -71,7 +71,7 @@ def shift (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E))) (ϖ : ∀ w : Heig
     rw [Finsupp.onFinset_apply, shiftFn, if_pos hw]⟩
 
 /- English proof (translation)
-Simplify using `only [shift, Finsupp.onFinset_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem shift_apply (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E)))
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ) (w : HeightOneSpectrum (𝓞 E)) :
@@ -80,7 +80,7 @@ theorem shift_apply (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E)))
   simp only [shift, Finsupp.onFinset_apply]
 
 /- English proof (translation)
-Rewrite using `[shift_apply, shiftFn, if_neg hw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shift_apply_of_notMem (m : ℕ) {T : Finset (HeightOneSpectrum (𝓞 E))}
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ) {w : HeightOneSpectrum (𝓞 E)} (hw : w ∉ T) :
@@ -89,7 +89,7 @@ theorem shift_apply_of_notMem (m : ℕ) {T : Finset (HeightOneSpectrum (𝓞 E))
   rw [shift_apply, shiftFn, if_neg hw]
 
 /- English proof (translation)
-Rewrite using `[shift_apply, shiftFn]`. Use `split_ifs`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shift_last (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E)))
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ) (w : HeightOneSpectrum (𝓞 E)) :

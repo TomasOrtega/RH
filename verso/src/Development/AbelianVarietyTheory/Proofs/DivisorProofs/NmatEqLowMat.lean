@@ -33,7 +33,7 @@ def zOf (X : Data E r) (z : V (nd X)) (τ : X.Ψ) : Low r → ℂ := fun p =>
 def bnd (X : Data E r) (z : V (nd X)) : ℝ := ∏ τ, gB X.p0 (zOf X z τ)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, nmat, lowMat, zOf]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem nmat_eq_lowMat (X : Data E r) (z : V (nd X)) (τ : X.Ψ) :
     (Matrix.of (nmat X z τ) : Matrix (Fin r) (Fin r) ℂ) = lowMat (zOf X z τ) := by

@@ -9,11 +9,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ _ S π hπ hS`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Establish `h1 : π ⁻¹ᵁ (Sp R).basicOpen r = ⊥`. Rewrite using `[Scheme.preimage_basicOpen_top, hr, Scheme.basicOpen_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← basicOpen_eq_bot_iff, eq_bot_iff]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `hπ.surj x`. Establish `hy : y ∈ π ⁻¹ᵁ (Sp R).basicOpen r` using `hx`. Rewrite `hy` using `[h1]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hy.elim`.
+A detailed English derivation is pending.
 -/
 theorem appTop_injective_of_surjective_toSpec_domain :
     ∀ (R : Type) [CommRing R] [IsDomain R] (S : Scheme.{0}) (π : S ⟶ Sp R),

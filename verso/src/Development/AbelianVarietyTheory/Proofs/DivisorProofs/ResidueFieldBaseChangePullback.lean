@@ -4,11 +4,11 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K K' _ _ _ X X' g p g' h x hd`. Use `letI : Algebra K (X.residueField x) := (Spec.preimage (X.fromSpecResidueField x ≫ g)).hom.toAlgebra`. Establish `h1 : IsPullback (p.fiberι x) (p.fiberToSpecResidueField x) p (X.fromSpecResidueField x)` using `IsPullback.of_hasPullback _ _`. Establish `h3` using `h1.paste_horiz h.flip`. Establish `hg : X.fromSpecResidueField x ≫ g = Spec.map (CommRingCat.ofHom (algebraMap K (X.residueField x)))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_preimage (X.fromSpecResidueField x ≫ g)]`. Both sides reduce to the same expression. Rewrite `h3` using `[hg]`. Set `e : p.fiber x ≅ Spec (.of (TensorProduct K (X.residueField x) K'))` to `h3.flip.isoPullback ≪≫ pullbackSpecIso K (X.residueField x) K'`. Establish `: IsIntegral (Spec (.of (TensorProduct K (X.residueField x) K')))` using `inferInstance`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsIntegral (p.fiber x)` using `IsIntegral.of_isIso e.inv`. Rewrite using `[← Scheme.Hom.range_fiberι, ← Set.image_univ]`. Conclude with `(PreirreducibleSpace.isPreirreducible_univ).image _ (p.fiberι x).continuous.continuousOn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseChange_field_fibre_isPreirreducible :
     ∀ (K K' : Type) [Field K] [Field K'] [Algebra K K'] (X X' : AlgebraicGeometry.Scheme.{0}) (g : X ⟶ AlgebraicGeometry.Spec (CommRingCat.of K)) (p : X' ⟶ X) (g' : X' ⟶ AlgebraicGeometry.Spec (CommRingCat.of K')), CategoryTheory.IsPullback p g' g (AlgebraicGeometry.Spec.map (CommRingCat.ofHom (algebraMap K K'))) → ∀ x : X, (letI : Algebra K (X.residueField x) := (AlgebraicGeometry.Spec.preimage (X.fromSpecResidueField x ≫ g)).hom.toAlgebra; IsDomain (TensorProduct K (X.residueField x) K')) → IsPreirreducible ((⇑p) ⁻¹' {x}) := by

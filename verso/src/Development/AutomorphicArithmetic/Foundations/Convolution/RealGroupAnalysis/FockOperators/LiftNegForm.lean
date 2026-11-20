@@ -10,7 +10,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Unfold `lift`. Simplify using `only [neg_mul]`. Conclude with `integral_neg _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem lift_neg_form {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] {D : Dat F E} (W : Weil D) (M : Meas F) (u : GL (Fin 2) (A F) → ℂ) (φ : S4 F) (h : GL (Fin 2) (A E)) :
     lift W M (fun x => -u x) φ h = -lift W M u φ h := by
@@ -19,9 +19,7 @@ private theorem lift_neg_form {F E : Type} [Field F] [NumberField F] [Field E] [
   exact integral_neg _
 
 /- English proof (translation)
-Unfold `lift`. Establish `e : ∀ χ : S4 F, Th (-χ).1 = -Th χ.1` using `fun χ => by`. Unfold `Th`. Conclude with `tsum_neg`. Simplify using `only [map_neg, e, mul_neg]`.
-
-Conclude with `integral_neg _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem lift_neg_data {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] {D : Dat F E} (W : Weil D) (M : Meas F) (u : GL (Fin 2) (A F) → ℂ) (φ : S4 F) (h : GL (Fin 2) (A E)) :
     lift W M u (-φ) h = -lift W M u φ h := by
@@ -33,19 +31,17 @@ private theorem lift_neg_data {F E : Type} [Field F] [NumberField F] [Field E] [
   exact integral_neg _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π O hE f hf φ hφ v h`. Take `⟨hV, hAd, hO⟩` from `UpperTheory.ConvolutionTheory.R2.Fo.adW F`. Establish `left : ∀ u ∈ π.V, ∀ γ g, u.1 (ratGL F 2 γ * g) = u.1 g` using `fun u hu => (π.cusp u hu).1.left`. Use `set f' := TR.rt F 2 (gl (wW F)⁻¹) f with hf'def`. Establish `hf' : f' ∈ π.V` using `(hV π f hf).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set φ' := W.Om (wW F)⁻¹ φ with hφ'def`. Establish `hφ' : φ' ∈ Fock D.δ`. Take `⟨U, hU, -, hk⟩` from `(UpperTheory.ConvolutionTheory.R2.fockSt F E D W).om φ hφ {(wW F)⁻¹} isCompact_singleton (by rintro k rfl; exact hO)`. Conclude with `hU (hk _ rfl)`. Use `set f'' := TR.Eop v 0 1 f' with hf''def`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf'' : f'' ∈ π.V` using `π.stable (.lie _) f' hf'`. Establish `e1 : φ = W.Om (wW F) φ'`. Rewrite using `[hφ'def, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `e2 : O.f D.δ v φ = -W.Om (wW F) (O.e D.δ v φ')`. Use `congrArg (fun T : Module.End ℂ (S4 F) => T φ') (UpperTheory.ConvolutionTheory.R2.Fo.fW F E D W O v)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Module.End.mul_apply, LinearMap.neg_apply] at this`. Rewrite `this` using `[← e1]`. Conclude with `this`. Establish `e3 : lift W M f.1 (W.Om (wW F) (O.e D.δ v φ')) = lift W M f'.1 (O.e D.δ v φ')` using `UpperTheory.ConvolutionTheory.R2.Fo.moveG F E D W M f.1 (left f hf) _ _`. Establish `e4 : lift W M f''.1 φ' = lift W M (TR.rt F 2 (gl (wW F)) f'').1 φ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `UpperTheory.ConvolutionTheory.R2.Fo.moveG F E D W M f''.1 (left f'' hf'') φ (wW F)⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `this`. Establish `e5 : TR.rt F 2 (gl (wW F)) f'' = -TR.Eop v 1 0 f`. Establish `a` using `congrArg (fun T : Module.End ℂ (TR.Sm F 2) => T f') (hAd v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Module.End.mul_apply, LinearMap.neg_apply] at a`. Establish `b : TR.rt F 2 (gl (wW F)) f' = f`. Rewrite using `[hf'def, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_inv_cancel, map_one, map_one, Module.End.one_apply]`. Rewrite `a` using `[b]`. Conclude with `a`.
-
-Establish `e6 : (TR.rt F 2 (gl (wW F)) f'').1 = fun x => -(TR.Eop v 1 0 f).1 x`. Rewrite using `[e5]`. Both sides reduce to the same expression. Rewrite using `[e2, lift_neg_data, e3, hE f' hf' φ' hφ' v h, neg_neg, e4, e6, lift_neg_form]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.moveF :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2) (O : Ops F), MoveE O W M π →

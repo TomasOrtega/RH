@@ -12,11 +12,11 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `B Y π E F ι w`. Use `⟨(Scheme.Modules.pullbackId Y).app F, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun t => NatTrans.app t E) (Scheme.Modules.pseudofunctor_right_unitality π)`. Simplify using `only [NatTrans.comp_app, Functor.whiskerLeft_app, Functor.rightUnitor_hom_app, eqToHom_app] at h1`. Use `erw [Category.comp_id] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (Scheme.Modules.pullbackComp (𝟙 Y) π).hom.app E ≫ (Scheme.Modules.pullbackCongr w).hom.app E = (Scheme.Modules.pullbackId Y).hom.app ((Scheme.Modules.pullback π).obj E)`. Rewrite using `[← cancel_epi ((Scheme.Modules.pullbackComp (𝟙 Y) π).inv.app E), h1, Iso.inv_hom_id_app_assoc]`. Simplify using `[Scheme.Modules.pullbackCongr, eqToHom_app]`. Establish `h3` using `(Scheme.Modules.pullbackId Y).hom.naturality ι`. Simplify using `only [Functor.id_map] at h3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, h3]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pullback_id_lift_step_self : ∀ {B Y : Scheme.{0}} (π : Y ⟶ B) (E : B.Modules) (F : Y.Modules)
     (ι : F ⟶ (Scheme.Modules.pullback π).obj E) (w : 𝟙 Y ≫ π = π),

@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.Fam.PenLoc
 
 /- English proof (translation)
-Establish `hmem' : P'.1 ∈ Pr.vGs` using `hPP ▸ hmem`. Unfold `Formalism.L2.Col.PsiAt`. Rewrite using `[GlobalTheory.SymBridge.PsiStep.omPhi_one_one, GlobalTheory.SymBridge.PsiStep.omPhi_one_one]`. Unfold `Formalism.L2.Col.PhiAt`. Rewrite using `[if_pos hmem, if_pos hmem', hsh, hPP]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiAt_one_eq {X : Formalism.L2.Col.Fields} {Pr : Formalism.L2.Col.Primes X} {R : Formalism.BasicNotions.Ranks} (Ch : Formalism.L2.Col.Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S₀ S₁ : Set ℕ} (mu : Formalism.L2.DIV.Tup X.F X.E X.K S₀)
@@ -35,9 +35,9 @@ theorem psiAt_one_eq {X : Formalism.L2.Col.Fields} {Pr : Formalism.L2.Col.Primes
   rw [if_pos hmem, if_pos hmem', hsh, hPP]
 
 /- English proof (translation)
-Unfold `GlobalTheory.SymChain.SymData.y0`. Distinguish the cases in `hr : r = Sum.inl (Sum.inr 0)`. Substitute `hr` using the available equality. Simplify using `only [Pi.single_eq_same]`. Establish `h3` using `neg_mem (show ((S'.ϖ⁻¹ : kˣ) : k) - ((S.ϖ⁻¹ : kˣ) : k) ∈ 𝒪[k] from h)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h3` using `[neg_sub]`. Then use the resulting hypothesis. Simplify using `[Pi.single_eq_of_ne hr]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 -/
 theorem lastStepPoints_sub_integral_of_uniformiser_inv {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {s κ : ℕ}
     (S S' : GlobalTheory.SymChain.SymData k s κ) (t : Type) [Fintype t] [DecidableEq t]
@@ -52,35 +52,31 @@ theorem lastStepPoints_sub_integral_of_uniformiser_inv {k : Type} [Field k] [Val
   · simp [Pi.single_eq_of_ne hr]
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a hIs hTr row col n hj`. Establish `hs : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`. Establish `hd` using `GlobalTheory.TypePrimeUnif.intAt_div_qOf B.fields (B.primes X) (GlobalTheory.Mem.FieldsLaws.fields_ok B) (GlobalTheory.BasePrimes.primes_ok B X).1`. Establish `hR` using `(hIs.tie row col).2`. Establish `hϖ` using `GlobalTheory.T.valuation_uniformizer_sub_qOf_lt_of_gRead W hW u a row col hR n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S', hSame, hA'⟩` from `GlobalTheory.Fam.MidLoc.exists_atType hW a hR n hϖ`. Establish `hA : ∀ t (P : GlobalTheory.QTw.BadPr I (W.P.I.tup t)), P.1 = (a.pl n).1 → GlobalTheory.SymBridge.AtType I.Ch I.sel (I.tup (W.P.I.tup t)) (I.cst (W.P.I.tup t)) B.embLL P (GlobalTheory.Fam.TopLoc.emb a n) S'` using `fun t P hP => hA' _ P hP`. Take `⟨e'₀, he'₀⟩` from `GlobalTheory.QTw.exists_xOrd B.R (a.G n).s`. Take `⟨e₀, he₀⟩` from `GlobalTheory.QTw.exists_xOrd B.R ((a.G n).s + 1)`. Choose the witnesses or unpack the hypotheses as in `⟨C, hC0, hC⟩ : ∃ C : ℂ, C ≠ 0 ∧ ∀ (e' : GlobalTheory.StepData.XIx (Fin B.R.k) (Fin B.R.t) (a.G n).s ≃ Fin (B.R.N (a.G n).s)) (e : GlobalTheory.StepData.XIx (Fin B.R.k) (Fin B.R.t) ((a.G n).s + 1) ≃ Fin (B.R.N ((a.G n).s + 1))), GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge. …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h0 : ∃ (t : W.P.T) (P : GlobalTheory.QTw.BadPr I (W.P.I.tup t)), P.1 = (a.pl n).1`. Take `⟨t₀, P₀, hP₀⟩` from `h0`. Establish `hA₀` using `hA t₀ P₀ hP₀`. Take `⟨C, hC0, hC⟩` from `GlobalTheory.SymBridge.psiAgree_of_atType _ _ _ _ _ _ _ _ _ _ _ _ _ _ (a.G n).ν (a.G n).unitVol hA₀ e'₀ e₀ he'₀ he₀`. Use `⟨C, hC0, fun e' e he' he t P hP x₀ y' => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : e' = e'₀` from `Equiv.ext fun r => Fin.ext ((he' r).trans (he'₀ r).symm)`. Take `rfl : e = e₀` from `Equiv.ext fun r => Fin.ext ((he r).trans (he₀ r).symm)`. Rewrite using `[hC x₀ y']`. Use `congr 2`. Conclude with `psiAt_one_eq I.Ch I.sel _ _ _ _ _ P₀ P (hP₀.trans hP.symm) hA₀.mem (hA₀.sharp.trans (hA t P hP).sharp.symm) x₀ y'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Supply the required witnesses or components.
 
-Conclude with `⟨1, one_ne_zero, fun _ _ _ _ t P hP => absurd ⟨t, P, hP⟩ h0⟩`. Use `⟨C⁻¹, inv_ne_zero hC0, fun t J hJ α γ P hP z => ?_⟩` and prove the remaining obligations. Establish `hAt` using `hA t P hP`. Take `⟨hf1, hf2⟩` from `GlobalTheory.T.true_geometry_finite_family W hW u a hIs hTr n t J hJ (a.G n).s (by omega) (J.ι _ α) P hP`. Take `⟨hg1, hg2⟩` from `GlobalTheory.T.true_geometry_finite_family W hW u a hIs hTr n t J hJ ((a.G n).s + 1) (by omega) (J.ι _ γ) P hP`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg B.embLL (GlobalTheory.T.penultimateDatum_unchanged_frames_congruent_one I.Ch I.sel _ _ (a.G n).s P hAt.mem hAt.steps (hd P.1 hAt.mem) _ _ hf1 hf2 hg1 hg2 (homOf I l Z _ hj z) (Formalism.L2.Col.repY (J.A.p0 ((a.G n).s + 1) (J.ι _ γ)).1.2))).trans ?_` and prove the remaining obligations. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hC0]`. Take `⟨e₁, he₁, hβ₁⟩` from `(hIs.stdG n).1 (a.G n).s (Nat.le_succ _)`. Take `⟨e₂, he₂, hβ₂⟩` from `(hIs.stdG n).1 ((a.G n).s + 1) le_rfl`. Establish `hr1 : ((I.rec7 l Z).sp.X (a.G n).s).rank = B.R.N (a.G n).s` using `rankN (I.rec7 l Z) _ (Nat.le_of_succ_le hj)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr2 : ((I.rec7 l Z).sp.X ((a.G n).s + 1)).rank = B.R.N ((a.G n).s + 1)` using `rankN (I.rec7 l Z) _ hj`. Use `set e' : GlobalTheory.StepData.XIx (Fin B.R.k) (Fin B.R.t) (a.G n).s ≃ Fin (B.R.N (a.G n).s) := e₁.trans (finCongr hr1) with he'd`. Use `set e : GlobalTheory.StepData.XIx (Fin B.R.k) (Fin B.R.t) ((a.G n).s + 1) ≃ Fin (B.R.N ((a.G n).s + 1)) := e₂.trans (finCongr hr2) with hed`. Establish `ho' : GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge.xPos e'` using `fun r => he₁ r`. Establish `ho : GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge.xPos e` using `fun r => he₂ r`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans (hC e' e ho' ho t P hP (homOf I l Z _ hj z) (Formalism.L2.Col.repY (J.A.p0 ((a.G n).s + 1) (J.ι _ γ)).1.2)).symm ?_` and prove the remaining obligations. Establish `hq : ((S'.ϖ : (a.G n).kˣ) : (a.G n).k) = ((Formalism.L2.Col.qOf (a.pl n).1 : ℕ) : (a.G n).k)`. Rewrite using `[hAt.tie.compl.unif, map_natCast]`. Conclude with `congrArg (fun Q => ((Formalism.L2.Col.qOf Q : ℕ) : (a.G n).k)) hP`. Establish `hnear : valuation (a.G n).k (((S'.ϖ : (a.G n).kˣ) : (a.G n).k) - (((a.G n).S.ϖ : (a.G n).kˣ) : (a.G n).k)) < valuation (a.G n).k (((a.G n).S.ϖ : (a.G n).kˣ) : (a.G n).k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hq, Valuation.map_sub_swap]`. Conclude with `hϖ`. Establish `hinv` using `GlobalTheory.SymChain.UnifChange.inv_sub_inv_mem (a.G n).S.unif hnear`. Establish `hcos : (fun r => GlobalTheory.Fam.TopLoc.emb a n (Formalism.L2.Col.repY (J.A.p0 ((a.G n).s + 1) (J.ι _ γ)).1.2 (e r))) - S'.y0 (Fin B.R.t) ∈ box (GlobalTheory.StepData.XIx (Fin B.R.k) (Fin B.R.t) ((a.G n).s + 1)) (1 : (a.G n).kˣ)` using `fun r => by`. Establish `h1` using `hJ.cosG n γ e ho r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `lastStepPoints_sub_integral_of_uniformiser_inv (a.G n).S S' (Fin B.R.t) hinv r`. Establish `h4` using `add_mem h1 h2`. Rewrite `h4` using `[sub_add_sub_cancel]`. Conclude with `h4`. Use `((GlobalTheory.SymChain.atMostOne_holds (a.G n).k (a.G n).ν (a.G n).unitVol _ _ S' (Fin B.R.t)).2.2.2.1 _ _ hcos).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `(hSame.2.1 _).trans ?_` and prove the remaining obligations. Establish `hb : ∀ {j : ℕ} (hjj : j ≤ (a.G n).s + 1) (hr : ((I.rec7 l Z).sp.X j).rank = B.R.N j) (e₃ : GlobalTheory.StepData.XIx (Fin (I.rec7 l Z).R.k) (Fin B.R.t) j ≃ Fin ((I.rec7 l Z).sp.X j).rank), ((a.G n).FX j hjj).β = (1 : Matrix _ _ (a.G n).k).submatrix id e₃ → ∀ r c, ((a.G n).FX j hj …`. Introduce `j hjj hr e₃ hβ r c`. Rewrite using `[hβ]`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin ((I.rec7 l Z).sp.X j).rank) (Fin ((I.rec7 l Z).sp.X j).rank) (a.G n).k) r (e₃ c) = _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.one_apply, LinearEquiv.refl_apply, Pi.single_apply]`. Use `show _ = GlobalTheory.Fam.TopLoc.emb a n (if (finCongr hr) r = (finCongr hr) (e₃ c) then 1 else 0)`. Distinguish the cases in `h : r = e₃ c`. Rewrite using `[if_pos h, if_pos (by rw [h]), map_one]`. Rewrite using `[if_neg h, if_neg (fun h' => h ((finCongr hr).injective h')), map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfr : GlobalTheory.SymBridge.toLoc (GlobalTheory.Fam.TopLoc.emb a n) e e' (homOf I l Z _ hj z) = ((a.G n).FX ((a.G n).s + 1) le_rfl).γ * z.map (ofSplit (a.G n).q).pr * ((a.G n).FX (a.G n).s (Nat.le_succ _)).β`. Establish `h5` using `GlobalTheory.SeeSaw.StdMatch.mul_toLoc (GlobalTheory.Fam.TopLoc.emb a n) hr1 hr2 (LinearEquiv.refl _ _) (LinearEquiv.refl _ _) e' e _ _ (hb (Nat.le_succ _) hr1 e₁ hβ₁) (hb le_rfl hr2 e₂ hβ₂) z`. Set `T : Matrix (GlobalTheory.StepData.XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) ((a.G n).s + 1)) (GlobalTheory.StepData.XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) (a.G n).s) (a.G n).k` to `GlobalTheory.SymBridge.toLoc (GlobalTheory.Fam.TopLoc.emb a n) e e' (homOf I l Z _ hj z)`. Establish `h5' : ((a.G n).FX ((a.G n).s + 1) le_rfl).β * T = z.map (ofSplit (a.G n).q).pr * ((a.G n).FX (a.G n).s (Nat.le_succ _)).β` using `h5`. Establish `h6 : ((a.G n).FX ((a.G n).s + 1) le_rfl).γ * (((a.G n).FX ((a.G n).s + 1) le_rfl).β * T) = T`.
-
-Rewrite using `[← Matrix.mul_assoc, Frame.γβ, Matrix.one_mul]`. Use `h6.symm.trans ?_` and prove the remaining obligations. Use `(congrArg _ h5').trans ?_` and prove the remaining obligations. Conclude with `(Matrix.mul_assoc _ _ _).symm`. Unfold `penXi`.
-
-Conclude with `congrArg (fun x => ((a.G n).S.T (Fin B.R.t)).Psi 1 x ((a.G n).S.y0 (Fin B.R.t))) hfr`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pen_match : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ (row : ∀ t, RowCh (pk W) (lvP W) u a.g t) (col : ∀ t : W.P.T, ColCh (D := I.rec7 l Z) u ((I.rec7 l Z).chTw u (W.P.I.tup t))) (n : Fin a.n) (hj : (a.G n).s + 1 ≤ B.R.m),
     ∃ c : ℂ, c ≠ 0 ∧ ∀ (t : W.P.T) (J : QJ a t), J.Reads →

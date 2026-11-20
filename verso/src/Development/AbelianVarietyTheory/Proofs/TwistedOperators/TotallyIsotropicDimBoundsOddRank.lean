@@ -14,31 +14,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.IsoDim
 
 /- English proof (translation)
-Use `set a := Module.finrank E W`. Set `b` to `Module.finBasis E W`. Set `ψ : V.V →ₗ[E] (Fin a → E)` to `LinearMap.pi fun i => V.hT (b i : V.V)`. Establish `hker : LinearMap.ker ψ = GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp V W`. Use extensionality with `y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.mem_ker, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp, Submodule.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Establish `e` using `congrArg (fun v : Fin a → E => v) h`. Establish `hw' : (⟨w, hw⟩ : W) = ∑ i, (b.repr ⟨w, hw⟩ i) • b i` using `(b.sum_repr _).symm`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: w = ∑ i, (b.repr ⟨w, hw⟩ i) • (b i : V.V)`. Use `congrArg Subtype.val hw'` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at this`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply]`. Use `congrFun h i` as an intermediate fact. Simplify using `only [ψ, LinearMap.pi_apply, Pi.zero_apply] at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, smul_zero]`. Introduce `h`. Use function extensionality and compare the values at `i`. Simplify `h (b i) (b i).2` using `[ψ]`. Establish `hsurj : LinearMap.range ψ = ⊤`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hf⟩` from `Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.2 hne) inferInstance`. Set `c : Fin a → E` to `fun i => f (Pi.single i 1)`. Establish `hfc : ∀ v : Fin a → E, f v = ∑ i, v i * c i`. Introduce `v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearMap.pi_apply_eq_sum_univ f v]`. Simplify using `only [smul_eq_mul, c]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Pi.single_apply, eq_comm]`. Establish `hy : ∀ y, V.hT (∑ i, (star (c i)) • (b i : V.V)) y = 0`. Introduce `y`. Establish `h1 : f (ψ y) = 0`. Establish `: f (ψ y) ∈ (LinearMap.range ψ).map f` using `⟨ψ y, ⟨y, rfl⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hf]`. Conclude with `(Submodule.mem_bot E).1 this`. Rewrite `h1` using `[hfc]`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Rewrite using `[← h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, star_star]`. Simplify using `[ψ, mul_comm]`. Establish `hx` using `V.nondeg.1 _ hy`. Establish `hli : LinearIndependent E (fun i => (b i : V.V))` using `b.linearIndependent.map' W.subtype (Submodule.ker_subtype W)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc : ∀ i, star (c i) = 0`. Use `(Fintype.linearIndependent_iff.1 hli) (fun i => star (c i)) hx` as an intermediate fact. Conclude with `this`. Apply `hf0` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `v`. Rewrite using `[hfc]`. Simplify using `[fun i => star_eq_zero.1 (hc i)]`. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker ψ`. Rewrite `hrn` using `[hsurj, hker, finrank_top, Module.finrank_fin_fun, V.rank_eq]`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_perp_add {E : Type} [Field E] [NumberField E] [StarRing E] (V : HSpace E)
     (W : Submodule E V.V) :
@@ -110,9 +108,9 @@ theorem finrank_perp_add {E : Type} [Field E] [NumberField E] [StarRing E] (V : 
 end GlobalTheory.IsoDim
 
 /- English proof (translation)
-Introduce `D V hodd W hW`. Establish `h` using `GlobalTheory.IsoDim.finrank_perp_add V W`. Establish `hle : Module.finrank D.host.E W ≤ Module.finrank D.host.E (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp V W)` using `Submodule.finrank_mono hW.2`. Establish `hpos : 0 < Module.finrank D.host.E W` using `Nat.pos_of_ne_zero fun h0 => hW.1 (Submodule.finrank_eq_zero.1 h0)`. Take `⟨k, hk⟩` from `hodd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨hpos, ?_⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 -/
 theorem GlobalTheory.IsoDim.isotropic_dim_bounds : ∀ (D : D7) (V : HSp D), Odd V.rank → ∀ W : Submodule D.host.E V.V, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.IsIsotropic V W →
     0 < Module.finrank D.host.E W ∧ 2 * Module.finrank D.host.E W + 1 ≤ V.rank := by

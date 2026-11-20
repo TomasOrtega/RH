@@ -13,7 +13,7 @@ private theorem zGL_val {L : Type} [Field L] (r : ℕ) {π : L} (hπ : π ≠ 0)
     ((zGL r hπ : GL (Fin r) L) : Matrix (Fin r) (Fin r) L) = Matrix.diagonal fun _ => π := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, zGL_val]`. Use extensionality with `i j`. Simplify using `[Matrix.diagonal_mul, Matrix.mul_diagonal, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem zGL_comm {L : Type} [Field L] (r : ℕ) {π : L} (hπ : π ≠ 0) (g : GL (Fin r) L) :
     zGL r hπ * g = g * zGL r hπ := by
@@ -23,7 +23,7 @@ private theorem zGL_comm {L : Type} [Field L] (r : ℕ) {π : L} (hπ : π ≠ 0
   simp [Matrix.diagonal_mul, Matrix.mul_diagonal, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Finset.card_compl, Fintype.card_fin, Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem card_top {r a : ℕ} (h : a ≤ r) :
     ((Finset.univ.filter fun i : Fin r => (i : ℕ) < r - a)ᶜ).card = a := by
@@ -31,25 +31,23 @@ private theorem card_top {r a : ℕ} (h : a ≤ r) :
   omega
 
 /- English proof (translation)
-Take `⟨k₁, hk₁, k₂, hk₂, e⟩` from `hb`. Use `set S : Finset (Fin r) := (Finset.univ.filter fun i : Fin r => (i : ℕ) < r - a)ᶜ with hSdef`. Establish `hS : S.card = a` using `card_top har`. Use `set G := satakeGL (Ov E w) hπ S (fun _ => 0) with hGdef`. Establish `hG : G ∈ satakeTset w ϖ a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, hx, y, hy, e'⟩` from `satakeGL_mem_doset (Ov E w) hπ S (fun _ => 0)`. Rewrite `e'` using `[hS]`. Conclude with `⟨x, hx, y, hy, e'⟩`. Establish `hGv : (G : Matrix (Fin r) (Fin r) (w.adicCompletion E)) = satakeD ϖ S`. Establish `h0 : satakeN (Ov E w) S (fun _ => 0) = 0`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[satakeN]`. Use `show (1 + satakeN (Ov E w) S (fun _ => 0)) * satakeD ϖ S = _`. Rewrite using `[h0, add_zero, Matrix.one_mul]`. Use `set d : GL (Fin r) (w.adicCompletion E) := k₁⁻¹ * b * k₂⁻¹ with hddef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : (d : Matrix (Fin r) (Fin r) (w.adicCompletion E)) = diagJ r ϖ (r - a)`. Rewrite using `[hddef, Units.val_mul, Units.val_mul, e]`. Establish `h1 : ((k₁⁻¹ : GL (Fin r) (w.adicCompletion E)) : Matrix (Fin r) (Fin r) (w.adicCompletion E)) * (k₁ : Matrix (Fin r) (Fin r) (w.adicCompletion E)) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `h2 : (k₂ : Matrix (Fin r) (Fin r) (w.adicCompletion E)) * ((k₂⁻¹ : GL (Fin r) (w.adicCompletion E)) : Matrix (Fin r) (Fin r) (w.adicCompletion E)) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h2, Matrix.mul_one, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `hGd : G * d = zGL r hπ`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Units.val_mul, hGv, hd, zGL_val]`. Unfold `satakeD diagJ`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 
-Distinguish the cases in `h : (i : ℕ) < r - a`. Simplify using `[hSdef, h]`. Introduce `h'`. Use linear arithmetic over natural numbers and integers. Simplify using `[hSdef, h]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Use linear arithmetic over natural numbers and integers. Establish `hb' : b = k₁ * d * k₂`. Rewrite using `[hddef]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : d⁻¹ * zGL r hπ = G`. Rewrite using `[← zGL_comm, ← hGd]`. Use `group`. Establish `hfin : b⁻¹ * zGL r hπ = k₂⁻¹ * G * k₁⁻¹`. Rewrite using `[← hz, hb', mul_inv_rev, mul_inv_rev]`.
-
-Use `zGL_comm r hπ k₁⁻¹` as an intermediate fact. Simplify using `only [mul_assoc]`. Rewrite using `[← this]`. Rewrite using `[hfin]`. Conclude with `satake_Tset_right w (satake_Tset_left w hG ((GLint _ _).inv_mem hk₂)) ((GLint _ _).inv_mem hk₁)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inv_mem {E : Type} [Field E] [NumberField E] (w : Pl E) {r a : ℕ} (har : a ≤ r)
     {ϖ : w.adicCompletion E} (hπ : ϖ ≠ 0) {b : GL (Fin r) (w.adicCompletion E)}
@@ -107,29 +105,27 @@ private theorem inv_mem {E : Type} [Field E] [NumberField E] (w : Pl E) {r a : �
   exact satake_Tset_right w (satake_Tset_left w hG ((GLint _ _).inv_mem hk₂)) ((GLint _ _).inv_mem hk₁)
 
 /- English proof (translation)
-Introduce `E _ _ w r a ϖ hu har V _ _ ρ f B hf`. Take `⟨hf0, hfix, -, hT⟩` from `hf`. Establish `hϖ` using `mem_Ov_of_isUnifV hu`. Establish `hπ : ϖ ≠ 0` using `satake_unif_ne_zero w hu`. Use `letI : Fintype (satakeRes (Ov E w) ⟨ϖ, hϖ⟩) := @Fintype.ofFinite _ (satake_res_finite w hϖ hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hne : ∀ j, j ≤ r → Nonempty (SatakeIdx w hϖ (n` using `r) j) := by`. Introduce `j hj`. Take `⟨S, -, hS⟩` from `Finset.exists_subset_card_eq (s := (Finset.univ : Finset (Fin r))) (n := j) (by simpa using hj)`. Conclude with `⟨⟨⟨S, hS⟩, fun _ => 0⟩⟩`. Establish `hsum : ∀ j, j ≤ r → ∑ i : SatakeIdx w hϖ (n` using `r) j, ρ (satakeB w hϖ hu i) f = satEig (qV E w) r B j • f := fun j hj => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← UpperTheory.V.Cj.S.hkSum E w r V ρ ϖ hϖ hu j hj f hfix, hT ϖ hu j hj]`. Use `set z := zGL r hπ with hzdef`. Establish `hfx : ∀ k ∈ KGL w r, ρ k f = f` using `fun k hk => GlobalTheory.LGrp.mem_fixed.1 hfix _ hk`. Establish `hB : ∀ i : SatakeIdx w hϖ (n` using `r) r, ρ (satakeB w hϖ hu i) f = ρ z f := by`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k₁, hk₁, k₂, hk₂, e⟩` from `satakeB_mem w hϖ hu i`. Establish `hdz : diagJ r ϖ r = (z : Matrix (Fin r) (Fin r) (w.adicCompletion E))`. Rewrite using `[hzdef, zGL_val]`. Unfold `diagJ`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `: satakeB w hϖ hu i = z * (k₁ * k₂)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[e, hdz, ← Units.val_mul, ← Units.val_mul, hzdef, ← zGL_comm, mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_mul, Module.End.mul_apply, hfx _ ((KGL w r).mul_mem hk₁ hk₂)]`. Take `⟨i₀⟩` from `hne r le_rfl`. Establish `hcard : (Fintype.card (SatakeIdx w hϖ (n` using `r) r) : ℂ) ≠ 0 := by`. Establish `: Fintype.card (SatakeIdx w hϖ (n` using `r) r) ≠ 0 := by haveI : Nonempty (SatakeIdx w hϖ (n := r) r) := ⟨i₀⟩`. Conclude with `Fintype.card_ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Use `set c : ℂ := (Fintype.card (SatakeIdx w hϖ (n := r) r) : ℂ)⁻¹ * satEig (qV E w) r B r with hcdef`. Establish `hzf : ρ z f = c • f`. Establish `h` using `hsum r le_rfl`. Simplify using `only [hB, Finset.sum_const, Finset.card_univ] at h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hcdef, mul_smul, ← h, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hcard, one_smul]`. Establish `hc : c ≠ 0`. Introduce `h0`. Rewrite `hzf` using `[h0, zero_smul]`. Apply `hf0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ρ z⁻¹ (ρ z f) = f`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite using `[← this, hzf, map_zero]`. Establish `hzi : ρ z⁻¹ f = c⁻¹ • f`. Establish `: ρ z⁻¹ (ρ z f) = f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite `this` using `[hzf, map_smul]`. Rewrite using `[eq_inv_smul_iff₀ hc]`. Conclude with `this`. Take `⟨i₁⟩` from `hne (r - a) (Nat.sub_le _ _)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `e` to `Fintype.equivFin (SatakeIdx w hϖ (n := r) (r - a))`. Use `⟨Fintype.card (SatakeIdx w hϖ (n := r) (r - a)), fun i => z⁻¹ * satakeB w hϖ hu (e.symm i), satEig (qV E w) r B (r - a) * c⁻¹, Fintype.card_pos_iff.2 ⟨i₁⟩, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv_rev, inv_inv]`. Conclude with `inv_mem w har hπ (satakeB_mem w hϖ hu _)`. Rewrite using `[Equiv.sum_comp e.symm (fun i => ρ (z⁻¹ * satakeB w hϖ hu i) f)]`.
-
-Simplify using `only [map_mul, Module.End.mul_apply]`. Rewrite using `[← map_sum, hsum _ (Nat.sub_le _ _), map_smul, hzi, smul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_satakeTset_sum_eigenvector :
     ∀ (E : Type) [Field E] [NumberField E] (w : Pl E) (r a : ℕ) (ϖ : w.adicCompletion E), IsUnifV E w ϖ → a ≤ r →

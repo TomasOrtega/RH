@@ -10,7 +10,7 @@ open ValuativeRel
 open GlobalTheory.Core.Mi.LatMatch
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Core.Mi.FrameMove.isFrame_of_moves` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FIsFrameFinitePartMulOfCarriesLattice.lean&line=75#L75)
 -/

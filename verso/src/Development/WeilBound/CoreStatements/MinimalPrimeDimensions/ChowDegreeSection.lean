@@ -17,7 +17,7 @@ namespace ChowFormHeightComparison₂.CF.V
 
 open GroundTheory.Heights₂.Heights GlobalTheory.CompanionTheory.Ar.Short.ChowClosing in
 /- English proof (translation)
-The claim follows from `ObjectsChow.ChowDegreeSection.proof (chowFormSectionPerfect_of (chowFormSectionAlgClosed_of (SectionOrderAlgClosed.proof IncIdealBelow.full SpecFirstMemIncIdeal.full chartChoiceAlgClosed_closed Vertical.SpecFirstNeField.full LocalizationPrimeDVR.full EmultiplicityOrd.full ChartFi …`.
+A detailed English derivation is pending.
 -/
 theorem chowDegreeSection : ObjectsChow.ChowDegreeSection.Statement :=
   ObjectsChow.ChowDegreeSection.proof
@@ -32,7 +32,7 @@ theorem chowDegreeSection : ObjectsChow.ChowDegreeSection.Statement :=
       (FundCycleBaseChange.proof MinimalPrimeComap.proof))
 
 /- English proof (translation)
-Use extensionality with `r`. Rewrite using `[algebraMap_eq_strHom]`. Simplify using `[algX, Scheme.Hom.appLE, Scheme.Hom.appTop]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem algX_strHom {κ : Type} [Field κ] {Z : Scheme.{0}} [Algebra κ Γ(Z, ⊤)] :
     algX (strHom κ Z) ⊤ = algebraMap κ Γ(Z, ⊤) := by
@@ -47,17 +47,17 @@ variable {R S : Type} [CommRing R] [CommRing S] {Z : Scheme.{0}} {p : Z ⟶ Sp R
   {B : LB Z} {m : ℕ} {s : Fin m → B.Sec}
 
 /- English proof (translation)
-Rewrite using `[← TopForm.resG_comp_algX p (le_top : U ≤ ⊤), h, ← RingHom.comp_assoc, TopForm.resG_comp_algX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algX_eq_comp (h : algX p ⊤ = (algX q ⊤).comp π) (U : Z.Opens) : algX p U = (algX q U).comp π := by
   rw [← TopForm.resG_comp_algX p (le_top : U ≤ ⊤), h, ← RingHom.comp_assoc, TopForm.resG_comp_algX]
 
 /- English proof (translation)
-Establish `hf : ∀ φ : Z ⟶ Sp R, algX φ ⊤ = ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ φ.appTop).hom`. Introduce `φ`. Use extensionality with `r`. Simplify using `[algX, Scheme.Hom.appLE, Scheme.Hom.appTop]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite `h` using `[hf, hf]`. Establish `e : f.appTop = g.appTop`. Simplify using `using CommRingCat.hom_ext h`. Use `haveI : Mono (Sp R).toSpecΓ := by`. Rewrite using `[← SpecMap_ΓSpecIso_hom]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Rewrite using `[← cancel_mono (Sp R).toSpecΓ, Scheme.toSpecΓ_naturality, Scheme.toSpecΓ_naturality, e]`.
+A detailed English derivation is pending.
 -/
 private theorem eq_of_algX_top_eq {R : Type} [CommRing R] {Z : Scheme.{0}} {f g : Z ⟶ Sp R}
     (h : algX f ⊤ = algX g ⊤) : f = g := by
@@ -76,9 +76,9 @@ private theorem eq_of_algX_top_eq {R : Type} [CommRing R] {Z : Scheme.{0}} {f g 
   rw [← cancel_mono (Sp R).toSpecΓ, Scheme.toSpecΓ_naturality, Scheme.toSpecΓ_naturality, e]
 
 /- English proof (translation)
-Apply `eq_of_algX_top_eq` to reduce the goal to its premises. Rewrite using `[h]`. Use extensionality with `r`. Establish `key` using `congrArg (fun φ => φ.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom π))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at key`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [algX, Scheme.Hom.appLE, spMap, Scheme.Hom.comp_app, CommRingCat.hom_comp, RingHom.comp_apply, RingHom.coe_comp, Function.comp_apply]`. Rewrite using `[key]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eq_comp_spMap (h : algX p ⊤ = (algX q ⊤).comp π) : q ≫ spMap π = p := by
   apply eq_of_algX_top_eq
@@ -92,9 +92,9 @@ theorem eq_comp_spMap (h : algX p ⊤ = (algX q ⊤).comp π) : q ≫ spMap π =
   rfl
 
 /- English proof (translation)
-Take `⟨hLB, hcov, hch⟩` from `hE`. Use `⟨hLB, hcov, fun k => ?_⟩` and prove the remaining obligations. Take `⟨ha, t, hs, hr⟩` from `hch k`. Use `⟨ha, t, fun x => ?_, hr⟩` and prove the remaining obligations. Take `⟨P, rfl⟩` from `hs x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨MvPolynomial.map π P, ?_⟩` and prove the remaining obligations. Rewrite using `[algX_eq_comp h]`. Simplify using `[MvPolynomial.eval₂_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem emb_base (h : algX p ⊤ = (algX q ⊤).comp π) (hE : Emb p s) : Emb q s := by
   obtain ⟨hLB, hcov, hch⟩ := hE
@@ -107,7 +107,7 @@ theorem emb_base (h : algX p ⊤ = (algX q ⊤).comp π) (hE : Emb p s) : Emb q 
   simp [MvPolynomial.eval₂_map]
 
 /- English proof (translation)
-Simplify using `only [ptIdeal, Ideal.comap_iInf, RingHom.comap_ker]`. Use `iInf_congr fun i => iInf_congr fun hi => congrArg _ ?_` and prove the remaining obligations. Use `MvPolynomial.ringHom_ext (fun r => ?_) fun j => ?_` and prove the remaining obligations. Simplify using `[coneHom, algX_eq_comp h]`. Simplify using `[coneHom]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ptIdeal_base (h : algX p ⊤ = (algX q ⊤).comp π) (z : Z) :
     ptIdeal p s z = (ptIdeal q s z).comap (MvPolynomial.map π) := by
@@ -124,11 +124,11 @@ end ChowFormHeightComparison₂.CF.V
 namespace ChowFormHeightComparison₂.CF
 
 /- English proof (translation)
-Rewrite using `[Scheme.evaluation_eq_zero_iff_notMem_basicOpen]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `ha`. Apply `h` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hne : Z.basicOpen a ≠ ⊥`. Rewrite using `[Ne, basicOpen_eq_bot_iff]` and apply the resulting hypothesis. Use `show genericPoint Z ∈ (Z.basicOpen a : Set Z)`. Rewrite using `[(genericPoint_spec Z).mem_open_set_iff (Z.basicOpen a).isOpen, Set.univ_inter]`. Rewrite `hne` using `[Ne, ← Opens.not_nonempty_iff_eq_bot, not_not]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem evaluation_genericPoint_eq_zero_iff {Z : Scheme.{0}} [IsIntegral Z] {U : Z.Opens}
     (hU : genericPoint Z ∈ U) (a : Γ(Z, U)) :
@@ -147,11 +147,11 @@ private theorem evaluation_genericPoint_eq_zero_iff {Z : Scheme.{0}} [IsIntegral
     simp
 
 /- English proof (translation)
-Establish `hη : genericPoint Z ∈ ⨆ i, B.U i`. Rewrite using `[hB.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i₀, hi₀⟩` from `Opens.mem_iSup.mp hη`. Simplify using `only [ptIdeal, Ideal.mem_iInf, RingHom.mem_ker, coneHom, MvPolynomial.eval₂Hom_C, RingHom.comp_apply, Polynomial.C_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h i₀ hi₀` as an intermediate fact. Rewrite `this` using `[V.evaluation_algX]`. Conclude with `(evaluation_genericPoint_eq_zero_iff _ _).mp this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h i hi`. Rewrite using `[V.evaluation_algX, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem C_mem_ptIdeal_genericPoint_iff {R : Type} [CommRing R] {Z : Scheme.{0}} [IsIntegral Z] {B : LB Z} {m : ℕ}
     (p : Z ⟶ Sp R) (s : Fin m → B.Sec) (hB : B.IsLB) (r : R) :
@@ -172,9 +172,9 @@ private theorem C_mem_ptIdeal_genericPoint_iff {R : Type} [CommRing R] {Z : Sche
     simp
 
 /- English proof (translation)
-Use `haveI : IsClosedImmersion (spMap π) := IsClosedImmersion.spec_of_surjective _ hπ`. Set `ι : Z ⟶ Limits.pullback p (spMap π)` to `Limits.pullback.lift (𝟙 Z) q (by simp [hq])`. Establish `h1 : ι ≫ Limits.pullback.fst p (spMap π) = 𝟙 Z` using `Limits.pullback.lift_fst _ _ _`. Establish `h2 : ι ≫ Limits.pullback.snd p (spMap π) = q` using `Limits.pullback.lift_snd _ _ _`. Use `haveI : IsIso ι := ⟨⟨Limits.pullback.fst p (spMap π), h1, by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono (Limits.pullback.fst p (spMap π)), Category.assoc, h1]`. Use the proof step `simp⟩⟩`. Rewrite using `[← h2]`. Conclude with `ProjSpace.isProjOver_comp_of_isClosedImmersion ι (ProjSpace.isProjOver_pullback_snd π hP)`.
+A detailed English derivation is pending.
 -/
 private theorem isProjOver_of_surjective_base {R S : Type} [CommRing R] [CommRing S] {Z : Scheme.{0}}
     {p : Z ⟶ Sp R} {q : Z ⟶ Sp S} {π : R →+* S} (hπ : Function.Surjective π)
@@ -192,29 +192,27 @@ private theorem isProjOver_of_surjective_base {R S : Type} [CommRing R] [CommRin
 open V in
 attribute [local instance] MvPolynomial.gradedAlgebra in
 /- English proof (translation)
-Introduce `K _ _ Z _ p B m s v d hP hE hv hd`. Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`. Use `set κ := v.asIdeal.ResidueField`. Establish `hB` using `hE.isLB`. Establish `hker : ∀ r, algX p ⊤ r = 0 ↔ r ∈ v.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `r`. Rewrite using `[← C_mem_ptIdeal_genericPoint_iff p s hB r, ← hv, Ideal.mem_comap]`. Set `e : (𝓞 K ⧸ v.asIdeal) ≃+* κ` to `RingEquiv.ofBijective _ v.asIdeal.bijective_algebraMap_quotient_residueField`. Set `φ : κ →+* Γ(Z, ⊤)` to `(Ideal.Quotient.lift v.asIdeal (algX p ⊤) fun r hr => (hker r).mpr hr).comp e.symm.toRingHom`. Use `letI inst : Algebra κ Γ(Z, ⊤) := φ.toAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨inst, ?_⟩` and prove the remaining obligations. Establish `hπ : algX p ⊤ = (algX (strHom κ Z) ⊤).comp (algebraMap (𝓞 K) κ)`. Rewrite using `[V.algX_strHom]`. Use extensionality with `r`. Use `show algX p ⊤ r = φ (algebraMap (𝓞 K) κ r)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hr : e.symm (algebraMap (𝓞 K) κ r) = Ideal.Quotient.mk v.asIdeal r`. Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [φ, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, hr, Ideal.Quotient.lift_mk]`. Establish `hsurj : Function.Surjective (algebraMap (𝓞 K) κ)` using `v.asIdeal.algebraMap_residueField_surjective`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEκ : Emb (strHom κ Z) s` using `V.emb_base hπ hE`. Establish `hPκ : IsProjOver (strHom κ Z)` using `isProjOver_of_surjective_base hsurj (V.eq_comp_spMap hπ) hP`. Establish `hred : reduceMod v (ptIdeal p s (genericPoint Z)) = ptIdeal (strHom κ Z) s (genericPoint Z)`. Rewrite using `[V.ptIdeal_base hπ]`. Conclude with `Ideal.map_comap_of_surjective _ (MvPolynomial.map_surjective _ hsurj) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hred]`. Use `set J := ptIdeal (strHom κ Z) s (genericPoint Z)`. Establish `hdimle : ringKrullDim (MvPolynomial (Fin m) κ ⧸ J) ≤ m`. Use `(ringKrullDim_quotient_le J).trans ?_` and prove the remaining obligations. Simplify using `[MvPolynomial.ringKrullDim_of_isNoetherianRing]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Establish `hdimge : ((d : WithBot ℕ∞) + 1) ≤ ringKrullDim (MvPolynomial (Fin m) κ ⧸ J)`. Use `V.dim_add_one_le h1 hEκ` as an intermediate fact. Rewrite `this` using `[hd]`. Then use the resulting hypothesis. Take `⟨n, hn⟩ : ∃ n : ℕ, ringKrullDim (MvPolynomial (Fin m) κ ⧸ J) = n` from `by revert hdimle hdimge`. Generalize the expression as in `ringKrullDim (MvPolynomial (Fin m) κ ⧸ J) = x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Introduce `hdimle hdimge`. Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => simp at hdimge`. Consider the case `coe y`. Proceed by induction on `y using ENat.recTopCoe with`.
+Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `top`. It suffices to derive a contradiction. Establish `h' : ((⊤ : ℕ∞) : WithBot ℕ∞) ≤ ((m : ℕ∞) : WithBot ℕ∞)` using `hdimle`. Rewrite `h'` using `[WithBot.coe_le_coe, top_le_iff]`. Conclude with `ENat.coe_ne_top m h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Consider the case `coe n => exact ⟨n, rfl⟩`. Establish `hnd : d + 1 ≤ n`. Rewrite `hdimge` using `[hn]`. Conclude with `hdimge` after adjusting the coercions. Establish `hn' : ringKrullDim (MvPolynomial (Fin m) κ ⧸ J) = ↑(n - 1 + 1)`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Take `⟨hZ, hdeg⟩` from `V.field_case h1 h2 h3 V.chowDegreeSection GlobalTheory.CompanionTheory.Ar.Short.ChowClosing.Auto.ObjectsChow_ChowDegreeClosedPoint (n - 1) Z B s hPκ hEκ hn'`. Establish `hnd' : n - 1 = d`.
-
-Rewrite `hZ` using `[hd]`. Conclude with `hZ.symm` after adjusting the coercions. Rewrite using `[← hnd']`. Conclude with `hdeg`.
+A detailed English derivation is pending.
 -/
 theorem stVert (h1 : StPts) (h2 : StPull) (h3 : StDiv) : StVert := by
   intro K _ _ Z _ p B m s v d hP hE hv hd

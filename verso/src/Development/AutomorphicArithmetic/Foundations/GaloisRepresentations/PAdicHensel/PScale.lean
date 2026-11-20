@@ -5,16 +5,16 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTri
 open scoped TensorProduct
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v s`.
+A detailed English derivation is pending.
 -/
 private lemma val_alg (v : HeightOneSpectrum ℤ) (s : ℚ) :
     Valued.v (algebraMap ℚ (v.adicCompletion ℚ) s) = v.valuation ℚ s :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v s
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `IsPrincipalIdealRing.principal v.asIdeal`. Establish `hg' : v.asIdeal = Ideal.span {g}` using `hg`. Use `⟨g.natAbs, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `v.ne_bot` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hg', Int.natAbs_eq_zero.mp h0]`. Simplify using the standard rewrite rules. Rewrite using `[hg', Ideal.span_singleton_eq_span_singleton]`. Conclude with `Int.associated_natAbs g`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_gen (v : HeightOneSpectrum ℤ) :
     ∃ q : ℕ, q ≠ 0 ∧ v.asIdeal = Ideal.span {(q : ℤ)} := by
@@ -29,7 +29,7 @@ private lemma exists_gen (v : HeightOneSpectrum ℤ) :
     exact Int.associated_natAbs g
 
 /- English proof (translation)
-Rewrite using `[← v.valuation_of_algebraMap (K := ℚ)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma val_nat (v : HeightOneSpectrum ℤ) (q : ℕ) :
     v.valuation ℚ (q : ℚ) = v.intValuation (q : ℤ) := by
@@ -37,7 +37,7 @@ private lemma val_nat (v : HeightOneSpectrum ℤ) (q : ℕ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[val_nat]`. Conclude with `HeightOneSpectrum.intValuation_singleton v (by exact_mod_cast h0) h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma val_self (v : HeightOneSpectrum ℤ) {q : ℕ} (h0 : q ≠ 0)
     (h : v.asIdeal = Ideal.span {(q : ℤ)}) : v.valuation ℚ (q : ℚ) = WithZero.exp (-1 : ℤ) := by
@@ -45,9 +45,9 @@ private lemma val_self (v : HeightOneSpectrum ℤ) {q : ℕ} (h0 : q ≠ 0)
   exact HeightOneSpectrum.intValuation_singleton v (by exact_mod_cast h0) h
 
 /- English proof (translation)
-Rewrite using `[val_nat]`. Apply `le_antisymm (w.intValuation_le_one _)` to reduce the goal to its premises. Rewrite using `[← not_lt, w.intValuation_lt_one_iff_mem]`. Introduce `hm`. Apply `hne` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hle : v.asIdeal ≤ w.asIdeal`. Rewrite using `[h, Ideal.span_le]`. Simplify using `using hm`. Conclude with `HeightOneSpectrum.ext ((v.isMaximal.eq_of_le w.isPrime.ne_top hle).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma val_other (v w : HeightOneSpectrum ℤ) {q : ℕ}
     (h : v.asIdeal = Ideal.span {(q : ℤ)}) (hne : w ≠ v) : w.valuation ℚ (q : ℚ) = 1 := by
@@ -62,11 +62,11 @@ private lemma val_other (v w : HeightOneSpectrum ℤ) {q : ℕ}
   exact HeightOneSpectrum.ext ((v.isMaximal.eq_of_le w.isPrime.ne_top hle).symm)
 
 /- English proof (translation)
-Establish `ht` using `(t : AfP p).2`. Establish `hti` using `((t⁻¹ : (AfP p)ˣ) : AfP p).2`. Use `(Filter.eventually_cofinite.mp (ht.and hti)).subset ?_` and prove the remaining obligations. Introduce `v hv hboth`. Apply `hv` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨h1, h2⟩` from `hboth`. Establish `h1' : Valued.v (AfP.eval v (t : AfP p)) ≤ 1` using `h1`. Establish `h2' : Valued.v (AfP.eval v ((t⁻¹ : (AfP p)ˣ) : AfP p)) ≤ 1` using `h2`. Establish `hm : Valued.v (AfP.eval v (t : AfP p)) * Valued.v (AfP.eval v ((t⁻¹ : (AfP p)ˣ) : AfP p)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm h1'` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 private lemma finite_ne_one (p : ℕ) (t : (AfP p)ˣ) :
     {v : AwayP p | Valued.v (AfP.eval v (t : AfP p)) ≠ 1}.Finite := by
@@ -86,7 +86,7 @@ private lemma finite_ne_one (p : ℕ) (t : (AfP p)ˣ) :
     _ = _ := mul_one _
 
 /- English proof (translation)
-Introduce `h`. Establish `hm : Valued.v (AfP.eval v (t : AfP p)) * Valued.v (AfP.eval v ((t⁻¹ : (AfP p)ˣ) : AfP p)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Rewrite `hm` using `[h, zero_mul]`. Conclude with `zero_ne_one hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma val_ne_zero (p : ℕ) (t : (AfP p)ˣ) (v : AwayP p) :
     Valued.v (AfP.eval v (t : AfP p)) ≠ 0 := by
@@ -97,17 +97,15 @@ private lemma val_ne_zero (p : ℕ) (t : (AfP p)ˣ) (v : AwayP p) :
   exact zero_ne_one hm
 
 /- English proof (translation)
-Introduce `p t`. Use `choose q hq0 hq using fun v : AwayP p => exists_gen v.1`. Set `n : AwayP p → ℤ` to `fun v => WithZero.log (Valued.v (AfP.eval v (t : AfP p)))`. Set `S` to `(finite_ne_one p t).toFinset`. Use `⟨∏ v ∈ S, ((q v : ℚ) ^ (-n v)), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `v _`. Apply `zpow_pos` to reduce the goal to its premises. Conclude with `Nat.pos_of_ne_zero (hq0 v)` after adjusting the coercions. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[val_alg, map_prod]`. Establish `hterm : ∀ v ∈ S, w.1.valuation ℚ ((q v : ℚ) ^ (-n v)) = if v = w then WithZero.exp (n v) else 1`. Introduce `v _`. Rewrite using `[map_zpow₀]`. Use `split_ifs with hvw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hvw` using the available equality. Rewrite using `[val_self v.1 (hq0 v) (hq v), ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules. Rewrite using `[val_other v.1 w.1 (hq v) (fun h => hvw (Subtype.ext h.symm)), _root_.one_zpow]`. Rewrite using `[Finset.prod_congr rfl hterm, Finset.prod_ite_eq']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `split_ifs with hw`. Conclude with `(WithZero.exp_log (val_ne_zero p t w)).symm`. Establish `: ¬ Valued.v (AfP.eval w (t : AfP p)) ≠ 1`. Introduce `h`. Apply `hw` to reduce the goal to its premises.
-
-Simplify `h` using `[S]`. Conclude with `not_not.mp this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G1.pScale :
     Scale := by

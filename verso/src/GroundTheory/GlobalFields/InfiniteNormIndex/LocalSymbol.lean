@@ -12,9 +12,7 @@ open NumberField NumberField.InfinitePlace NumberField.InfinitePlace.Completion 
 open scoped NumberField.LiesOver ComplexConjugate
 
 /- English proof (translation)
-Establish `: Subsingleton (KerModRange f g)` using `⟨fun p q => by`. Proceed by induction on `p using QuotientAddGroup.induction_on with | H x =>`. Proceed by induction on `q using QuotientAddGroup.induction_on with | H y =>`. Rewrite using `[KerModRange.mk_eq_mk_iff]`. Conclude with `h _ (sub_mem x.2 y.2)⟩`.
-
-Conclude with `Nat.card_of_subsingleton (0 : KerModRange f g)`.
+Establish an intermediate fact. Proceed by induction. Proceed by induction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_kerModRange_eq_one {A : Type*} [AddCommGroup A] {f g : A →+ A}
     (h : ∀ x ∈ f.ker, x ∈ g.range) : Nat.card (KerModRange f g) = 1 := by
@@ -52,9 +50,9 @@ variable {K L : Type*} [Field K] [Field L] [Algebra K L] {v : InfinitePlace K}
 section Degree
 
 /- English proof (translation)
-Establish `hc : w.comap (algebraMap K L) = v` using `NumberField.InfinitePlace.LiesOver.comap_eq w v`. Break down `w.isUnramified_or_isRamified K with h | h` into its components or cases. Rewrite using `[h.finrank_eq_one v]`. Use `⟨fun h' => absurd h' (by norm_num), fun ⟨hv, hw⟩ => absurd h ?_⟩` and prove the remaining obligations. Conclude with `isRamified_iff.2 ⟨hw, hc ▸ hv⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.finrank_eq_two v]`. Conclude with `⟨fun _ => ⟨hc ▸ h.isReal, h.isComplex⟩, fun _ => rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finrank_completion_eq_two_iff :
     Module.finrank v.Completion w.Completion = 2 ↔ v.IsReal ∧ w.IsComplex := by
@@ -67,7 +65,7 @@ theorem finrank_completion_eq_two_iff :
     exact ⟨fun _ => ⟨hc ▸ h.isReal, h.isComplex⟩, fun _ => rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← finrank_completion_eq_two_iff w]`. Break down `w.isUnramified_or_isRamified K with h | h` into its components or cases. Rewrite using `[h.finrank_eq_one v]`. Evaluate the numerical expressions. Rewrite using `[h.finrank_eq_two v]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions.
 -/
@@ -85,7 +83,7 @@ section Conj
 variable {w}
 
 /- English proof (translation)
-Use `NumberField.InfinitePlace.LiesOver.extensionEmbedding_liesOver_of_isReal w hv` as an intermediate fact. Rewrite using `[extensionEmbeddingOfIsReal_apply]`. Conclude with `Completion.liesOver_extensionEmbedding_apply w v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extensionEmbedding_algebraMap (hv : v.IsReal) (x : v.Completion) :
     extensionEmbedding w (algebraMap v.Completion w.Completion x) =
@@ -107,7 +105,7 @@ def completionConj (hv : v.IsReal) : Gal(w.Completion/v.Completion) :=
   else 1
 
 /- English proof (translation)
-Distinguish the cases in `hw : w.IsComplex`. Rewrite using `[← ringEquivComplexOfIsComplex_apply hw]`. Simplify using `[completionConj, dif_pos hw]`. Rewrite using `[completionConj, dif_neg hw, AlgEquiv.one_apply, ← extensionEmbeddingOfIsReal_apply (not_isComplex_iff_isReal.1 hw), Complex.conj_ofReal]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem extensionEmbedding_completionConj (hv : v.IsReal) (x : w.Completion) :
     extensionEmbedding w (completionConj hv x) = conj (extensionEmbedding w x) := by
@@ -118,7 +116,7 @@ theorem extensionEmbedding_completionConj (hv : v.IsReal) (x : w.Completion) :
       ← extensionEmbeddingOfIsReal_apply (not_isComplex_iff_isReal.1 hw), Complex.conj_ofReal]
 
 /- English proof (translation)
-Use `AlgEquiv.ext fun x => ?_` and prove the remaining obligations. Apply `(extensionEmbedding w).injective` to reduce the goal to its premises. Simplify using `[AlgEquiv.mul_apply, extensionEmbedding_completionConj]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem completionConj_mul_self (hv : v.IsReal) :
     completionConj (w := w) hv * completionConj hv = 1 := by
@@ -127,9 +125,9 @@ theorem completionConj_mul_self (hv : v.IsReal) :
   simp [AlgEquiv.mul_apply, extensionEmbedding_completionConj]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨z, hz⟩` from `surjective_extensionEmbedding_of_isComplex hw Complex.I`. Use `extensionEmbedding_completionConj (w := w) hv z` as an intermediate fact. Rewrite `this` using `[h, AlgEquiv.one_apply, hz, Complex.conj_I]`. Establish `h2 : (2 : ℂ) * Complex.I = 0` using `by linear_combination this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `at h2`.
+Simplify using the standard rewrite rules.
 -/
 theorem completionConj_ne_one (hv : v.IsReal) (hw : w.IsComplex) :
     completionConj (w := w) hv ≠ 1 := by
@@ -143,9 +141,9 @@ theorem completionConj_ne_one (hv : v.IsReal) (hw : w.IsComplex) :
 open scoped Classical in
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hcard` using `AlgEquiv.card_le (F := v.Completion) (K := w.Completion)`. Rewrite `hcard` using `[(finrank_completion_eq_two_iff w).2 ⟨hv, hw⟩]`. Establish `h3 : ({1, completionConj hv, σ} : Finset Gal(w.Completion/v.Completion)).card = 3` using `Finset.card_eq_three.2 ⟨1, completionConj hv, σ, (completionConj_ne_one hv hw).symm, h.1.symm, h.2.symm, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.card_le_univ ({1, completionConj hv, σ} : Finset Gal(w.Completion/v.Completion))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_one_or_eq_completionConj (hv : v.IsReal) (hw : w.IsComplex)
     (σ : Gal(w.Completion/v.Completion)) : σ = 1 ∨ σ = completionConj hv := by
@@ -162,7 +160,7 @@ theorem eq_one_or_eq_completionConj (hv : v.IsReal) (hw : w.IsComplex)
 open scoped Classical in
 
 /- English proof (translation)
-Use extensionality with `σ`. Simplify using `only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton, true_iff]`. Conclude with `eq_one_or_eq_completionConj hv hw σ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem univ_eq_one_completionConj (hv : v.IsReal) (hw : w.IsComplex) :
     (Finset.univ : Finset Gal(w.Completion/v.Completion)) = {1, completionConj hv} := by
@@ -171,7 +169,7 @@ theorem univ_eq_one_completionConj (hv : v.IsReal) (hw : w.IsComplex) :
   exact eq_one_or_eq_completionConj hv hw σ
 
 /- English proof (translation)
-Rewrite using `[← Finset.card_univ, univ_eq_one_completionConj hv hw]`. Conclude with `Finset.card_pair (completionConj_ne_one hv hw).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_gal_eq_two (hv : v.IsReal) (hw : w.IsComplex) :
     Fintype.card Gal(w.Completion/v.Completion) = 2 := by
@@ -182,7 +180,7 @@ theorem card_gal_eq_two (hv : v.IsReal) (hw : w.IsComplex) :
 variable (w) in
 
 /- English proof (translation)
-Establish `hcard` using `AlgEquiv.card_le (F := v.Completion) (K := w.Completion)`. Rewrite `hcard` using `[(finrank_completion_eq_one_iff w).2 h]`. Conclude with `Fintype.card_le_one_iff_subsingleton.1 hcard`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_gal (h : ¬ (v.IsReal ∧ w.IsComplex)) :
     Subsingleton Gal(w.Completion/v.Completion) := by
@@ -193,9 +191,9 @@ theorem subsingleton_gal (h : ¬ (v.IsReal ∧ w.IsComplex)) :
 variable (w) in
 
 /- English proof (translation)
-Rewrite using `[Nat.card_eq_fintype_card]`. Distinguish the cases in `h2 : v.IsReal ∧ w.IsComplex`. Rewrite using `[card_gal_eq_two h2.1 h2.2, (finrank_completion_eq_two_iff w).2 h2]`. Rewrite using `[(finrank_completion_eq_one_iff w).2 h2]`. Use `subsingleton_gal w h2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Fintype.card_eq_one_iff.2 ⟨1, fun _ => Subsingleton.elim _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem natCard_gal_completion :
     Nat.card Gal(w.Completion/v.Completion) = Module.finrank v.Completion w.Completion := by
@@ -216,7 +214,7 @@ section Norm
 variable {w}
 
 /- English proof (translation)
-Rewrite using `[Algebra.norm_eq_prod_automorphisms, univ_eq_one_completionConj hv hw, Finset.prod_pair (completionConj_ne_one hv hw).symm, AlgEquiv.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_norm_completion (hv : v.IsReal) (hw : w.IsComplex) (y : w.Completion) :
     algebraMap v.Completion w.Completion (Algebra.norm v.Completion y) =
@@ -226,7 +224,7 @@ theorem algebraMap_norm_completion (hv : v.IsReal) (hw : w.IsComplex) (y : w.Com
     Finset.prod_pair (completionConj_ne_one hv hw).symm, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← extensionEmbedding_algebraMap (w := w) hv, algebraMap_norm_completion hv hw, map_mul, extensionEmbedding_completionConj, Complex.mul_conj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem extensionEmbeddingOfIsReal_norm (hv : v.IsReal) (hw : w.IsComplex) (y : w.Completion) :
     extensionEmbeddingOfIsReal hv (Algebra.norm v.Completion y) =
@@ -241,13 +239,11 @@ def normSubgroup : Subgroup v.Completionˣ :=
   (Units.map (Algebra.norm v.Completion : w.Completion →* v.Completion)).range
 
 /- English proof (translation)
-Rewrite using `[normSubgroup, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[Units.coe_map, extensionEmbeddingOfIsReal_norm hv hw]`. Conclude with `Complex.normSq_pos.2 ((map_ne_zero _).2 y.ne_zero)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Take `⟨a, ha⟩` from `surjective_extensionEmbeddingOfIsReal hv (Real.sqrt (extensionEmbeddingOfIsReal hv x))`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[map_zero, eq_comm, Real.sqrt_eq_zero hx.le]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hx.ne' ha`. Use `⟨Units.mk0 (algebraMap v.Completion w.Completion a) ((map_ne_zero _).2 ha0), ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_map, Units.val_mk0, Algebra.norm_algebraMap, (finrank_completion_eq_two_iff w).2 ⟨hv, hw⟩]`. Apply `(extensionEmbeddingOfIsReal hv).injective` to reduce the goal to its premises.
-
-Rewrite using `[map_pow, ha, Real.sq_sqrt hx.le]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_normSubgroup_iff (hv : v.IsReal) (hw : w.IsComplex) (x : v.Completionˣ) :
     x ∈ normSubgroup v w ↔ 0 < extensionEmbeddingOfIsReal hv x := by
@@ -273,7 +269,7 @@ theorem mem_normSubgroup_iff (hv : v.IsReal) (hw : w.IsComplex) (x : v.Completio
 variable (w) in
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Use `⟨Units.map (algebraMap v.Completion w.Completion : v.Completion →* w.Completion) x, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_map, Units.coe_map, MonoidHom.coe_coe, Algebra.norm_algebraMap, (finrank_completion_eq_one_iff w).2 h, pow_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem normSubgroup_eq_top (h : ¬ (v.IsReal ∧ w.IsComplex)) : normSubgroup v w = ⊤ := by
   rw [eq_top_iff]
@@ -298,7 +294,7 @@ def localSymbol : v.Completionˣ →* Gal(w.Completion/v.Completion) :=
   else 1
 
 /- English proof (translation)
-Simplify using `only [localSymbol, dif_pos hv, MonoidHom.comp_apply, realSignHom_apply, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Conclude with `if_congr Iff.rfl rfl rfl`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem localSymbol_apply (hv : v.IsReal) (x : v.Completionˣ) :
     localSymbol v w x =
@@ -308,19 +304,19 @@ theorem localSymbol_apply (hv : v.IsReal) (x : v.Completionˣ) :
   exact if_congr Iff.rfl rfl rfl
 
 /- English proof (translation)
-Rewrite using `[localSymbol, dif_neg hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem localSymbol_of_not_isReal (hv : ¬ v.IsReal) : localSymbol v w = 1 := by
   rw [localSymbol, dif_neg hv]
 
 /- English proof (translation)
-Distinguish the cases in `h2 : v.IsReal ∧ w.IsComplex`. Take `⟨hv, hw⟩` from `h2`. Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, localSymbol_apply v w hv, mem_normSubgroup_iff hv hw]`. Establish `hx0 : extensionEmbeddingOfIsReal hv x ≠ 0` using `(map_ne_zero _).2 x.ne_zero`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hneg`. Establish `hlt : extensionEmbeddingOfIsReal hv x < 0` using `lt_of_le_of_ne (not_lt.1 hneg) hx0`. Rewrite `h` using `[if_pos hlt]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `completionConj_ne_one hv hw h`. Introduce `h`. Rewrite using `[if_neg (not_lt.2 h.le)]`. Rewrite using `[normSubgroup_eq_top w h2, eq_top_iff]`. Introduce `x _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mem_ker]`. Distinguish the cases in `hv : v.IsReal`. Establish `hw : ¬ w.IsComplex` using `fun hw => h2 ⟨hv, hw⟩`. Rewrite using `[localSymbol_apply v w hv, completionConj, dif_neg hw, ite_self]`. Rewrite using `[localSymbol_of_not_isReal v w hv, MonoidHom.one_apply]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_localSymbol : (localSymbol v w).ker = normSubgroup v w := by
   by_cases h2 : v.IsReal ∧ w.IsComplex
@@ -345,9 +341,9 @@ theorem ker_localSymbol : (localSymbol v w).ker = normSubgroup v w := by
     · rw [localSymbol_of_not_isReal v w hv, MonoidHom.one_apply]
 
 /- English proof (translation)
-Introduce `σ`. Distinguish the cases in `h2 : v.IsReal ∧ w.IsComplex`. Take `⟨hv, hw⟩` from `h2`. Break down `eq_one_or_eq_completionConj hv hw σ with rfl | rfl` into its components or cases. Conclude with `⟨1, map_one _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Use `⟨-1, ?_⟩` and prove the remaining obligations. Rewrite using `[localSymbol_apply v w hv, if_pos]`. Simplify using the standard rewrite rules. Use `subsingleton_gal w h2` as an intermediate fact. Conclude with `⟨1, Subsingleton.elim _ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem localSymbol_surjective : Function.Surjective (localSymbol v w) := by
   intro σ
@@ -366,7 +362,7 @@ def normQuotientEquivGal : v.Completionˣ ⧸ normSubgroup v w ≃* Gal(w.Comple
     (QuotientGroup.quotientKerEquivOfSurjective _ (localSymbol_surjective v w))
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (normQuotientEquivGal v w).toEquiv, natCard_gal_completion w]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_quotient_normSubgroup :
     Nat.card (v.Completionˣ ⧸ normSubgroup v w) = Module.finrank v.Completion w.Completion := by
@@ -389,7 +385,7 @@ theorem unitsRep_toMul (σ : Gal(w.Completion/v.Completion)) (x : Additive w.Com
   rfl
 
 /- English proof (translation)
-Rewrite using `[cycSub_apply, toMul_sub, Units.val_div_eq_div_val, unitsRep_toMul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cycSub_unitsRep_toMul (σ : Gal(w.Completion/v.Completion)) (x : Additive w.Completionˣ) :
     ((cycSub (unitsRep v w) σ x).toMul : w.Completion) =
@@ -399,7 +395,7 @@ theorem cycSub_unitsRep_toMul (σ : Gal(w.Completion/v.Completion)) (x : Additiv
 variable {v w}
 
 /- English proof (translation)
-Rewrite using `[normHom_apply, univ_eq_one_completionConj hv hw, Finset.sum_pair (completionConj_ne_one hv hw).symm, toMul_add, Units.val_mul, unitsRep_toMul, unitsRep_toMul, AlgEquiv.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem normHom_unitsRep_toMul (hv : v.IsReal) (hw : w.IsComplex) (x : Additive w.Completionˣ) :
     ((normHom (unitsRep v w) x).toMul : w.Completion) =
@@ -410,7 +406,7 @@ theorem normHom_unitsRep_toMul (hv : v.IsReal) (hw : w.IsComplex) (x : Additive 
     unitsRep_toMul, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Rewrite using `[normHom_unitsRep_toMul hv hw, map_mul, extensionEmbedding_completionConj, Complex.mul_conj, Complex.ofReal_re]`. Conclude with `Complex.normSq_pos.2 ((map_ne_zero _).2 (Units.ne_zero _))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem re_pos_of_mem_range_normHom (hv : v.IsReal) (hw : w.IsComplex)
     {x : Additive w.Completionˣ} (hx : x ∈ (normHom (unitsRep v w)).range) :
@@ -421,11 +417,11 @@ theorem re_pos_of_mem_range_normHom (hv : v.IsReal) (hw : w.IsComplex)
   exact Complex.normSq_pos.2 ((map_ne_zero _).2 (Units.ne_zero _))
 
 /- English proof (translation)
-Establish `hreal : extensionEmbedding w (x.toMul : w.Completion) = ((extensionEmbedding w (x.toMul : w.Completion)).re : ℂ)`. Establish `h` using `extensionEmbedding_completionConj (w := w) hv (x.toMul : w.Completion)`. Rewrite `h` using `[hx]`. Conclude with `(Complex.conj_eq_iff_re.1 h.symm).symm`. Use `set r := (extensionEmbedding w (x.toMul : w.Completion)).re`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `surjective_extensionEmbedding_of_isComplex hw (Real.sqrt r : ℂ)`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[map_zero, eq_comm, Complex.ofReal_eq_zero, Real.sqrt_eq_zero hpos.le]`. Conclude with `hpos.ne' ha`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨Additive.ofMul (Units.mk0 a ha0), ?_⟩` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Apply `(extensionEmbedding w).injective` to reduce the goal to its premises. Rewrite using `[normHom_unitsRep_toMul hv hw, toMul_ofMul, Units.val_mk0, map_mul, extensionEmbedding_completionConj, ha, Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt hpos.le, ← hreal]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_normHom (hv : v.IsReal) (hw : w.IsComplex) (x : Additive w.Completionˣ)
     (hx : completionConj (w := w) hv (x.toMul : w.Completion) = x.toMul)
@@ -451,9 +447,9 @@ theorem mem_range_normHom (hv : v.IsReal) (hw : w.IsComplex) (x : Additive w.Com
     Real.mul_self_sqrt hpos.le, ← hreal]
 
 /- English proof (translation)
-Distinguish the cases in `h : 1 + conj z = 0`. Use `⟨Complex.I, Complex.I_ne_zero, ?_⟩` and prove the remaining obligations. Establish `h1 : conj z = -1` using `by linear_combination h`. Establish `h2 : z = -1` using `by simpa using congrArg conj h1`. Rewrite using `[h2, Complex.conj_I]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨1 + conj z, h, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_one, Complex.conj_conj]`. Take the linear combination `-hz`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_conj_eq_mul {z : ℂ} (hz : z * conj z = 1) : ∃ u : ℂ, u ≠ 0 ∧ conj u = z * u := by
   by_cases h : 1 + conj z = 0
@@ -469,21 +465,19 @@ theorem exists_conj_eq_mul {z : ℂ} (hz : z * conj z = 1) : ∃ u : ℂ, u ≠ 
 variable (v w)
 
 /- English proof (translation)
-Use `set c := completionConj (w := w) hv`. Establish `hker : ∀ x : Additive w.Completionˣ, x ∈ (cycSub (unitsRep v w) c).ker ↔ c (x.toMul : w.Completion) = x.toMul`. Introduce `x`. Rewrite using `[AddMonoidHom.mem_ker, ← toMul_eq_one, ← Units.val_eq_one, cycSub_unitsRep_toMul, div_eq_one_iff_eq (Units.ne_zero _)]`. Use `set m : Additive w.Completionˣ := Additive.ofMul (-1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : m ∈ (cycSub (unitsRep v w) c).ker`. Rewrite using `[hker]`. Simplify using `[m]`. Establish `hme : extensionEmbedding w (m.toMul : w.Completion) = -1` using `by simp [m]`. Rewrite using `[Nat.card_eq_two_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨QuotientAddGroup.mk ⟨0, zero_mem _⟩, QuotientAddGroup.mk ⟨m, hm⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, KerModRange.mk_eq_mk_iff]`. Introduce `h`. Use `re_pos_of_mem_range_normHom hv hw h` as an intermediate fact. Rewrite `this` using `[AddSubgroup.coe_mk, zero_sub, toMul_neg, Units.val_inv_eq_inv_val, map_inv₀, hme]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions using `at this`. Rewrite using `[Set.eq_univ_iff_forall]`. Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with | H z =>`. Take `⟨x, hx⟩` from `z`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `(hker x).1 hx`. Establish `hreal : extensionEmbedding w (x.toMul : w.Completion) = ((extensionEmbedding w (x.toMul : w.Completion)).re : ℂ)`. Establish `h` using `extensionEmbedding_completionConj (w := w) hv (x.toMul : w.Completion)`. Rewrite `h` using `[hc]`. Conclude with `(Complex.conj_eq_iff_re.1 h.symm).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : (extensionEmbedding w (x.toMul : w.Completion)).re ≠ 0`. Introduce `h0`. Rewrite `hreal` using `[h0, Complex.ofReal_zero, map_eq_zero]`. Conclude with `Units.ne_zero _ hreal`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_gt_of_ne hne with hneg | hpos` into its components or cases. Use `right`. Rewrite using `[KerModRange.mk_eq_mk_iff]`. Apply `mem_range_normHom hv hw` to reduce the goal to its premises. Rewrite using `[AddSubgroup.coe_mk, AddSubgroup.coe_mk, toMul_sub, Units.val_div_eq_div_val, map_div₀, hc, (hker m).1 hm]`.
-
-Rewrite using `[AddSubgroup.coe_mk, AddSubgroup.coe_mk, toMul_sub, Units.val_div_eq_div_val, map_div₀, hme, div_neg, div_one, Complex.neg_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `left`. Rewrite using `[KerModRange.mk_eq_mk_iff, AddSubgroup.coe_mk, AddSubgroup.coe_mk, sub_zero]`. Conclude with `mem_range_normHom hv hw x hc hpos`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_kerModRange_cycSub_normHom (hv : v.IsReal) (hw : w.IsComplex) :
     Nat.card (KerModRange (cycSub (unitsRep v w) (completionConj hv))
@@ -535,11 +529,11 @@ theorem natCard_kerModRange_cycSub_normHom (hv : v.IsReal) (hw : w.IsComplex) :
       exact mem_range_normHom hv hw x hc hpos
 
 /- English proof (translation)
-Apply `natCard_kerModRange_eq_one` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[AddMonoidHom.mem_ker, ← toMul_eq_one, ← Units.val_eq_one, normHom_unitsRep_toMul hv hw]`. Establish `hz : extensionEmbedding w (x.toMul : w.Completion) * conj (extensionEmbedding w (x.toMul : w.Completion)) = 1`. Rewrite using `[← extensionEmbedding_completionConj hv, ← map_mul, hx, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu0, hu⟩` from `exists_conj_eq_mul hz`. Take `⟨y, rfl⟩` from `surjective_extensionEmbedding_of_isComplex hw u`. Establish `hy0 : y ≠ 0` using `by rintro rfl; exact hu0 (map_zero _)`. Use `⟨Additive.ofMul (Units.mk0 y hy0), ?_⟩` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[cycSub_unitsRep_toMul, toMul_ofMul, Units.val_mk0, div_eq_iff hy0]`. Apply `(extensionEmbedding w).injective` to reduce the goal to its premises. Rewrite using `[extensionEmbedding_completionConj, hu, map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_kerModRange_normHom_cycSub (hv : v.IsReal) (hw : w.IsComplex) :
     Nat.card (KerModRange (normHom (unitsRep v w))
@@ -561,7 +555,7 @@ theorem natCard_kerModRange_normHom_cycSub (hv : v.IsReal) (hw : w.IsComplex) :
   rw [extensionEmbedding_completionConj, hu, map_mul]
 
 /- English proof (translation)
-Rewrite using `[cyclicHerbrand, herbrandQuotient, natCard_kerModRange_cycSub_normHom v w hv hw, natCard_kerModRange_normHom_cycSub v w hv hw]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem cyclicHerbrand_unitsRep_eq_two (hv : v.IsReal) (hw : w.IsComplex) :
     cyclicHerbrand (unitsRep v w) (completionConj hv) = 2 := by
@@ -570,7 +564,7 @@ theorem cyclicHerbrand_unitsRep_eq_two (hv : v.IsReal) (hw : w.IsComplex) :
   norm_num
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Nat.finite_of_card_ne_zero (by rw [natCard_kerModRange_cycSub_normHom v w hv hw]; norm_num), Nat.finite_of_card_ne_zero (by rw [natCard_kerModRange_normHom_cycSub v w hv hw]; norm_num)⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasCyclicHerbrand_unitsRep (hv : v.IsReal) (hw : w.IsComplex) :
     HasCyclicHerbrand (unitsRep v w) (completionConj hv) :=
@@ -578,15 +572,13 @@ theorem hasCyclicHerbrand_unitsRep (hv : v.IsReal) (hw : w.IsComplex) :
     Nat.finite_of_card_ne_zero (by rw [natCard_kerModRange_normHom_cycSub v w hv hw]; norm_num)⟩
 
 /- English proof (translation)
-Distinguish the cases in `h2 : v.IsReal ∧ w.IsComplex`. Take `⟨hv, hw⟩` from `h2`. Establish `hσc : σ = completionConj hv`. Break down `eq_one_or_eq_completionConj hv hw σ with h | h` into its components or cases. It suffices to derive a contradiction.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Use `hσ (completionConj hv)` as an intermediate fact. Rewrite `this` using `[h, Subgroup.zpowers_one_eq_bot, Subgroup.mem_bot]`. Conclude with `completionConj_ne_one hv hw this`. Conclude with `h`. Rewrite using `[hσc, cyclicHerbrand_unitsRep_eq_two v w hv hw, (finrank_completion_eq_two_iff w).2 ⟨hv, hw⟩]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[(finrank_completion_eq_one_iff w).2 h2]`. Use `subsingleton_gal w h2` as an intermediate fact. Establish `hsub : ∀ x, cycSub (unitsRep v w) σ x = 0` using `fun x => by`. Rewrite using `[Subsingleton.elim σ 1, cycSub_apply, map_one, Module.End.one_apply, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnorm : ∀ x, normHom (unitsRep v w) x = x` using `fun x => by`. Rewrite using `[normHom_apply, Fintype.sum_subsingleton _ 1, map_one, Module.End.one_apply]`. Rewrite using `[cyclicHerbrand, herbrandQuotient, natCard_kerModRange_eq_one (fun x _ => ⟨x, hnorm x⟩), natCard_kerModRange_eq_one (fun x hx => ⟨0, by`. Rewrite using `[map_zero]`. Rewrite `hx` using `[AddMonoidHom.mem_ker, hnorm]`.
-
-Conclude with `hx.symm⟩)]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem cyclicHerbrand_unitsRep_eq_finrank (σ : Gal(w.Completion/v.Completion))
     (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :

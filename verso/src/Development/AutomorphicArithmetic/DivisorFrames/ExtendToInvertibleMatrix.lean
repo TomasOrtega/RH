@@ -6,15 +6,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `A _ _ n g v s h`. Establish `h' : IsUnit (Matrix.of fun l i => v l (s i) : Matrix (Fin n) (Fin n) A).det` using `h`. Establish `hs : Function.Injective s`. Introduce `i j hij`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `: (Matrix.of fun l i => v l (s i) : Matrix (Fin n) (Fin n) A).det = 0` using `Matrix.det_zero_of_column_eq hne (fun k => by simp [hij])`. Rewrite `h'` using `[this]`. Conclude with `not_isUnit_zero h'`. Set `E : Fin n ⊕ {x : Fin g // ¬ x ∈ Set.range s} ≃ Fin g` to `(Equiv.sumCongr (Equiv.ofInjective s hs) (Equiv.refl _)).trans (Equiv.sumCompl (fun x => x ∈ Set.range s))`. Establish `hE : ∀ m, E (Sum.inl m) = s m` using `fun m => rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `C : Matrix (Fin n ⊕ {x : Fin g // ¬ x ∈ Set.range s}) (Fin n ⊕ {x : Fin g // ¬ x ∈ Set.range s}) A` to `Matrix.fromBlocks (Matrix.of fun l i => v l (s i)) (Matrix.of fun l i => v l i.1) 0 1`. Use `⟨⟨s, hs⟩, Matrix.reindex E E C, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]`. Conclude with `h'`. Introduce `m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `j`. Take `⟨k, rfl⟩` from `E.surjective j`. Establish `h1 : (Matrix.reindex E E C) (E (Sum.inl m)) (E k) = C (Sum.inl m) k`. Simplify using `[Matrix.reindex_apply]`. Express the relevant statement in the definitionally equal form `(Matrix.reindex E E C) (E (Sum.inl m)) (E k) = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Rewrite using `[h1]`. Consider the cases of `k with`. Consider the case `inl k => rfl`. Consider the case `inr k => rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.extend_to_invertible_matrix :
     ∀ (A : Type) [CommRing A] [Nontrivial A] (n g : ℕ) (v : Fin n → Fin g → A) (s : Fin n → Fin g), IsUnit (minor v le_rfl s) → ∃ (e : Fin n ↪ Fin g) (B : Matrix (Fin g) (Fin g) A), IsUnit B.det ∧ ∀ m, B (e m) = v m := by

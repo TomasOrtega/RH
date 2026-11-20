@@ -10,7 +10,7 @@ open UpperTheory.Gal.Int.Geo (IsTrans)
 open UpperTheory.Gal.LocalSmoothExtension
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨n, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem objMap_along {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R] {b : GBase G R} {N : ℕ}
     {S S' : Scheme.{0}} {s' : S' ⟶ Sp R} {s : S ⟶ Sp R} {o' : GObj b N s'} {o : GObj b N s} {f g : S' ⟶ S}
@@ -19,15 +19,13 @@ private theorem objMap_along {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R
   exact ⟨n, rfl⟩
 
 /- English proof (translation)
-Introduce `hME hTP p _ D G L R₁ R₂ _ _ _ _ τ gb₁ gb₂ hρ ht N N' M M' P P' f f' hf hf' m m' h π o ψ φ hπ hψ`. Establish `hw : (f' ≫ π) ≫ M.s = P'.s ≫ spMap τ`. Rewrite using `[Category.assoc, hπ]`. Conclude with `hf'.w`. Take `⟨π₁, hπf, hπs⟩ : ∃ π₁ : P'.X ⟶ P.X, π₁ ≫ f = f' ≫ π ∧ π₁ ≫ P.s = P'.s` from `⟨hf.lift (f' ≫ π) P'.s hw, hf.lift_fst _ _ _, hf.lift_snd _ _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨o₁, ⟨φ₁⟩⟩ : ∃ o₁ : GObj gb₂ N P'.s, Nonempty (GObjMap o₁ P.univ π₁) := by`. Establish `key` using `exists_gObjMap_pull π₁ P.univ`. Rewrite `key` using `[hπs]`. Conclude with `key`. Set `d₁ : GObj gb₁ N (P'.s ≫ spMap τ)` to `down hρ ht rfl o₁`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `φd : GObjMap d₁ (down hρ ht rfl P.univ) π₁` to `⟨φ₁.φ, φ₁.φ₂, φ₁.cart, φ₁.sq, φ₁.act, φ₁.pol, φ₁.eta⟩`. Take `⟨n, hn⟩` from `(hME D.toG R₁ gb₁ N _ _ _ _ _ _ d₁ (down hρ ht rfl P.univ) M.univ π₁ f m).1 φd`. Take `⟨n', hn'⟩` from `objMap_along hπf n`. Take `⟨m'', hm''⟩` from `(hME D.toG R₁ gb₁ N _ _ _ _ _ _ d₁ o M.univ f' π φ).2 n'`. Take `⟨ψ₁, hψ₁, hT⟩` from `hTP p D G L R₁ gb₁ N N' _ _ M'.s (P'.s ≫ spMap τ) f' hf'.w M'.univ o (down hρ ht rfl P'.univ) d₁ m' m'' h ψ hψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t₁, t₂, t₃, t₄, t₅⟩` from `hT`. Use `⟨π₁, o₁, ψ₁, φ₁, hπs, ⟨t₁, t₂, t₃, t₄, fun k _ _ t β hβ => ?_⟩, hπf, ?_⟩` and prove the remaining obligations. Conclude with `t₅ k t (β.comp τ) (by rw [spMap_comp', ← Category.assoc, hβ])`. Establish `e : φ₁.φ ≫ m.φ = m''.φ ≫ φ.φ`. Rewrite using `[hm'', hn', hn]`.
-
-Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocalSmoothExtension.legBc_of :
     MapEq → TransPull → LegBc := by

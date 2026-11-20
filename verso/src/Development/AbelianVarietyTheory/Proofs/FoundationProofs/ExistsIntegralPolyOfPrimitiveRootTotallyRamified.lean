@@ -5,15 +5,13 @@ namespace GlobalTheory
 open Polynomial
 
 /- English proof (translation)
-Introduce `j hj`. Distinguish the cases in `hall : ∀ i ∈ s, f i = 0`. Rewrite using `[hall j hj, map_zero]`. Conclude with `zero_le'`. Use `push_neg at hall`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i0, hi0, hfi0⟩` from `hall`. Take `⟨k, hk, hkmax⟩` from `s.exists_max_image (fun i => v (f i)) ⟨i0, hi0⟩`. Establish `hk0 : v (f k) ≠ 0`. Introduce `h0`. Establish `h1` using `hkmax i0 hi0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0]`. Conclude with `hfi0 ((Valuation.zero_iff v).1 (le_antisymm h1 zero_le'))`. Establish `hsum : v (∑ i ∈ s, f i) = v (f k)`. Apply `v.map_sum_eq_of_lt hk` to reduce the goal to its premises. Introduce `i hi`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite `hi` using `[Finset.mem_sdiff, Finset.mem_singleton]`. Use `lt_of_le_of_ne (hkmax i hi.1) ?_` and prove the remaining obligations. Distinguish the cases in `hfi : f i = 0`. Rewrite using `[hfi, map_zero]`. Conclude with `hk0.symm`.
-
-Conclude with `h i hi.1 k hk hi.2 hfi`. Rewrite using `[hsum]`. Conclude with `hkmax j hj`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_term_le_sum_of_distinct {Ω Γ : Type} [Field Ω] [LinearOrderedCommGroupWithZero Γ]
     (v : Valuation Ω Γ) (s : Finset ℕ) (f : ℕ → Ω)
@@ -45,59 +43,47 @@ theorem valuation_term_le_sum_of_distinct {Ω Γ : Type} [Field Ω] [LinearOrder
   exact hkmax j hj
 
 /- English proof (translation)
-Introduce `l hfact Ω _ _ A hl K hK m hm ζ hζ hζv u hu hQ`. Take `⟨Q, hQK, hQu⟩` from `hQ`. Establish `hp : l.Prime` using `hfact.out`. Use `set e := Nat.totient (l ^ m) with he_def`. Establish `hlm : 0 < l ^ m` using `pow_pos hp.pos m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : 0 < e` using `Nat.totient_pos.2 hlm`. Use `set v := A.valuation with hv_def`. Use `set w := ζ - 1 with hw_def`. Use `set γ := v w with hγ_def`. Establish `hvl0 : v (l : Ω) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ne, Valuation.zero_iff]`. Conclude with `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `hγ0 : γ ≠ 0`. Introduce `h`. Apply `hvl0` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hζv, h, zero_pow he.ne']`. Establish `hγ1 : γ < 1`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h1 : 1 ≤ γ ^ e` using `one_le_pow₀ hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hζv]`. Conclude with `absurd hl (not_lt.2 h1)`. Establish `hγpos : 0 < γ` using `lt_of_le_of_ne zero_le' hγ0.symm`. Use `set T : Subring Ω := K.toSubring with hT_def`. Establish `hQT : (↑Q.coeffs : Set Ω) ⊆ T` using `fun x hx => hQK x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Q' := Q.toSubring T hQT with hQ'_def`. Use `set Φ := Polynomial.cyclotomic (l ^ m) T with hΦ_def`. Establish `hΦ : Φ.Monic` using `Polynomial.cyclotomic.monic _ _`. Establish `hΦdeg : Φ.natDegree = e` using `Polynomial.natDegree_cyclotomic _ _`. Establish `hΦ1 : Φ ≠ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hΦdeg` using `[h, Polynomial.natDegree_one]`. Use linear arithmetic over natural numbers and integers. Use `set R1 := Q' %ₘ Φ with hR1_def`. Establish `hR1 : R1.natDegree < e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hΦdeg]`. Conclude with `Polynomial.natDegree_modByMonic_lt _ hΦ hΦ1`. Use `set R2 := R1.comp (Polynomial.X + Polynomial.C 1) with hR2_def`. Establish `hR2 : R2.natDegree < e`. Rewrite using `[hR2_def, Polynomial.natDegree_comp, Polynomial.natDegree_X_add_C, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hR1`. Use `set f := T.subtype with hf_def`. Establish `hΦζ : Φ.eval₂ f ζ = 0`. Rewrite using `[← Polynomial.eval_map, hΦ_def, Polynomial.map_cyclotomic]`. Conclude with `(hζ.isRoot_cyclotomic hlm).eq_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu1 : R2.eval₂ f w = u`. Rewrite using `[hR2_def, Polynomial.eval₂_comp]`. Establish `h1 : (Polynomial.X + Polynomial.C 1 : Polynomial T).eval₂ f w = ζ`. Simplify using `[hw_def]`. Rewrite using `[h1, hR1_def, Polynomial.eval₂_modByMonic_eq_self_of_root hΦζ, ← hQu, ← Polynomial.eval_map, hQ'_def, Polynomial.map_toSubring]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set c : ℕ → Ω := fun i => f (R2.coeff i) with hc_def`. Establish `hsum : ∑ i ∈ Finset.range e, c i * w ^ i = u`. Rewrite using `[← hu1, Polynomial.eval₂_eq_sum_range' f hR2]`. Establish `hcK : ∀ i, c i ∈ K` using `fun i => (R2.coeff i).2`. Establish `hcv : ∀ i, c i ≠ 0 → ∃ k : ℤ, v (c i) = γ ^ ((e : ℤ) * k)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi`. Take `⟨k, hk⟩` from `hK _ (hcK i) hi`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, zpow_mul, zpow_natCast, hζv]`. Establish `hterm : ∀ i ∈ Finset.range e, ∀ j ∈ Finset.range e, i ≠ j → c i * w ^ i ≠ 0 → v (c i * w ^ i) ≠ v (c j * w ^ j)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce `i hi j hj hij hne h`. Establish `hci : c i ≠ 0` using `left_ne_zero_of_mul hne`. Take `⟨ki, hki⟩` from `hcv i hci`. Rewrite `h` using `[Valuation.map_mul, Valuation.map_pow, Valuation.map_mul, Valuation.map_pow, hki]`. Distinguish the cases in `hcj : c j = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h` using `[hcj, map_zero, zero_mul]`. Conclude with `mul_ne_zero (zpow_ne_zero _ hγ0) (pow_ne_zero _ hγ0) h`. Take `⟨kj, hkj⟩` from `hcv j hcj`. Rewrite `h` using `[hkj, ← zpow_natCast γ i, ← zpow_natCast γ j, ← zpow_add₀ hγ0, ← zpow_add₀ hγ0]`. Establish `hx` using `zpow_right_injective₀ hγpos hγ1.ne h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hi`, `hj` using `[Finset.mem_range]`. Establish `hi' : (i : ℤ) < e` using `by exact_mod_cast hi`. Establish `hj' : (j : ℤ) < e` using `by exact_mod_cast hj`. Establish `hd : (e : ℤ) * (ki - kj) = (j : ℤ) - i` using `by linarith`. Apply `hij` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `lt_trichotomy (ki - kj) 0 with h' | h' | h'` into its components or cases. Establish `h2 : (e : ℤ) * (ki - kj) ≤ -e` using `by nlinarith`. Use linear arithmetic over natural numbers and integers. Rewrite `hd` using `[h', mul_zero]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (e : ℤ) ≤ (e : ℤ) * (ki - kj)` using `by nlinarith`. Use linear arithmetic over natural numbers and integers. Establish `hvu : v u ≤ 1` using `A.valuation_le_one ⟨u, hu⟩`. Establish `hcA : ∀ i ∈ Finset.range e, c i ∈ A`. Introduce `i hi`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hci : c i = 0`. Rewrite using `[hci]`. Conclude with `A.zero_mem`. Establish `hle` using `valuation_term_le_sum_of_distinct v (Finset.range e) (fun i => c i * w ^ i) hterm i hi`. Rewrite `hle` using `[hsum]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[← A.valuation_le_one_iff]`. Take `⟨k, hk⟩` from `hcv i hci`. Rewrite `hi` using `[Finset.mem_range]`. Establish `hi' : (i : ℤ) < e` using `by exact_mod_cast hi`. Establish `hk0 : 0 ≤ k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `h1 : v (c i * w ^ i) = γ ^ ((e : ℤ) * k + i)`. Rewrite using `[Valuation.map_mul, Valuation.map_pow, hk, zpow_add₀ hγ0, zpow_natCast]`. Establish `h2 : (e : ℤ) * k + i < 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_nonneg (Int.natCast_nonneg e) (by omega : (0 : ℤ) ≤ -1 - k)]`. Establish `h3 : 1 < γ ^ ((e : ℤ) * k + i)` using `one_lt_zpow_of_neg₀ hγpos hγ1 h2`. Rewrite `h3` using `[← h1]`. Conclude with `absurd (hle.trans hvu) (not_le.2 h3)`. Rewrite using `[hk]`.
-
-Establish `h4` using `zpow_le_zpow_right_of_le_one₀ hγpos hγ1.le (mul_nonneg (Int.natCast_nonneg e) hk0 : (0 : ℤ) ≤ (e : ℤ) * k)`. Rewrite `h4` using `[zpow_zero]`. Then use the resulting hypothesis. Use `set S : Subring Ω := A.toSubring ⊓ K.toSubring with hS_def`. Establish `hcS : ∀ i, c i ∈ S`. Introduce `i`.
-
-Distinguish the cases in `hi : i < e`. Conclude with `Subring.mem_inf.2 ⟨hcA i (Finset.mem_range.2 hi), hcK i⟩`. Establish `h0 : R2.coeff i = 0` using `Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)`. Establish `h1 : c i = 0` using `by simp [hc_def, h0]`. Rewrite using `[h1]`.
-
-Conclude with `S.zero_mem`. Use `set R3 : Polynomial Ω := R2.map f with hR3_def`. Establish `hR3 : (↑R3.coeffs : Set Ω) ⊆ S`. Introduce `x hx`. Take `⟨n, -, rfl⟩` from `Polynomial.mem_coeffs_iff.1 hx`.
-
-Rewrite using `[hR3_def, Polynomial.coeff_map]`. Conclude with `hcS n`. Use `set R4 := R3.toSubring S hR3 with hR4_def`. Use `⟨(R4.comp (Polynomial.X - Polynomial.C 1)).map S.subtype, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
-
-Take `⟨n, -, rfl⟩` from `Polynomial.mem_coeffs_iff.1 hx`. Rewrite using `[Polynomial.coeff_map]`. Conclude with `Subring.mem_inf.1 ((R4.comp (Polynomial.X - Polynomial.C 1)).coeff n).2`. Rewrite using `[Polynomial.eval_map, Polynomial.eval₂_comp]`. Establish `h1 : (Polynomial.X - Polynomial.C 1 : Polynomial S).eval₂ S.subtype ζ = w`.
-
-Simplify using `[hw_def]`. Rewrite using `[h1, ← Polynomial.eval_map, hR4_def, Polynomial.map_toSubring, hR3_def, Polynomial.eval_map, hu1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_poly_of_primitiveRoot_totally_ramified :
     ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [CharZero Ω] (A : ValuationSubring Ω), A.valuation (l : Ω) < 1 → ∀ (K : Subfield Ω), (∀ x ∈ K, x ≠ 0 → ∃ k : ℤ, A.valuation x = A.valuation (l : Ω) ^ k) → ∀ (m : ℕ), 1 ≤ m → ∀ ζ : Ω, IsPrimitiveRoot ζ (l ^ m) → A.valuation (ζ - 1) ^ Nat.totient (l ^ m) = A.valuation (l : Ω) → ∀ u ∈ A, (∃ Q : Polynomial Ω, (∀ x ∈ Q.coeffs, x ∈ K) ∧ Q.eval ζ = u) → ∃ P : Polynomial Ω, (∀ x ∈ P.coeffs, x ∈ A ∧ x ∈ K) ∧ P.eval ζ = u := by

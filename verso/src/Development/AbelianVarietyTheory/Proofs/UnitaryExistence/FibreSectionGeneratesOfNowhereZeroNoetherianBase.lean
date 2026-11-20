@@ -25,23 +25,23 @@ theorem scal_eq_constFn {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a : S) (i :
     scal x a i = constFn (fst (Over.mk x) Xo.univ.t.G).left _ a := rfl
 
 /- English proof (translation)
-Rewrite using `[scal_eq_constFn]`. Conclude with `(congrArg _ (map_one _)).trans (map_one _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scal_one' {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (i : (PPx x).ι) : scal x (1 : S) i = 1 := by
   rw [scal_eq_constFn]
   exact (congrArg _ (map_one _)).trans (map_one _)
 
 /- English proof (translation)
-The claim follows from `(IsPullback.of_hasPullback _ _).flip`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_gx {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) :
     IsPullback (snd (Over.mk x) Xo.univ.t.G).left (fst (Over.mk x) Xo.univ.t.G).left Xo.univ.t.G.hom x :=
   (IsPullback.of_hasPullback _ _).flip
 
 /- English proof (translation)
-Use `Xo.smooth` as an intermediate fact. Establish `hsm : Smooth Xo.s` using `SmoothOfRelativeDimension.smooth Dw.dim Xo.s`. Establish `: IsLocallyNoetherian Xo.X` using `LocallyOfFiniteType.isLocallyNoetherian Xo.s`. Introduce `s`. Establish `hw : LBIso (PPx x) (Xo.univ.t.PP.L.pull (snd (Over.mk x) Xo.univ.t.G).left)` using `exists_iso_linComb Xo.univ.t.PP.isLB _ _ fun _ _ _ => by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `SectionBaseChange.generates hS (Obj.toPolAV Xo.univ) (isPullback_gx x) (DVR.linComb_isLB _ Xo.univ.t.PP.isLB _ _) hw θ (fun y => ?_) s` and prove the remaining obligations. Take `⟨q, i, hq, hi⟩` from `h y`. Conclude with `⟨q, hq, TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem secGen_of_secNZ (hS : Out.SecBaseChangeSt) {T : Type} [CommRing T] (x : Sp T ⟶ Xo.X)
     (θ : LB.Sec (PPx x)) (h : SecNZ x θ) : SecGen x θ := by
@@ -57,13 +57,11 @@ theorem secGen_of_secNZ (hS : Out.SecBaseChangeSt) {T : Type} [CommRing T] (x : 
   exact ⟨q, hq, TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi⟩⟩
 
 /- English proof (translation)
-Take `⟨pm, h₁, h₂, h₃⟩` from `hb`. Establish `sq : IsPullback pm (fst (Over.mk x') Xo.univ.t.G).left (fst (Over.mk j) Xo.univ.t.G).left (spMap ψ)` using `IsPullback.of_right (by rw [h₁, ← hx]; exact isPullback_gx x') h₂ (isPullback_gx j)`. Introduce `p`. Take `⟨q, i, hq, hi⟩` from `h (spMap ψ p)`. Take `⟨q', rfl, e₂⟩` from `Scheme.exists_preimage_of_isPullback sq q p hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `le : (PPx x').U i ≤ pm ⁻¹ᵁ (PPx j).U i` using `fun y hy => Set.mem_iInter.2 fun k => by`. Establish `: (snd (Over.mk x') Xo.univ.t.G).left y ∈ Xo.univ.t.PP.L.U (i k)` using `Set.mem_iInter.1 hy k`. Rewrite `this` using `[← h₁]`. Conclude with `this`. Establish `mem : q' ∈ (PPx x').U i` using `Set.mem_iInter.2 fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (snd (Over.mk j) Xo.univ.t.G).left (pm q') ∈ Xo.univ.t.PP.L.U (i k)` using `Set.mem_iInter.1 ((Gx j).basicOpen_le _ hi) k`. Use `show (snd (Over.mk x') Xo.univ.t.G).left q' ∈ Xo.univ.t.PP.L.U (i k)`. Rewrite using `[← h₁]`. Conclude with `this`. Use `⟨q', i, e₂, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← h₃ i le, scal_one', _root_.one_mul, Scheme.basicOpen_appLE]`. Conclude with `⟨mem, hi⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem secNZ_of_secBC {R T : Type} [CommRing R] [CommRing T] {ψ : R →+* T} {j : Sp R ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     {θ : LB.Sec (PPx j)} {θ' : LB.Sec (PPx x')} (h : SecNZ j θ) (hx : x' = spMap ψ ≫ j)
@@ -87,7 +85,7 @@ theorem secNZ_of_secBC {R T : Type} [CommRing R] [CommRing T] {ψ : R →+* T} {
   exact ⟨mem, hi⟩
 
 /- English proof (translation)
-Introduce `hS _ _ _ _ _ _ _ _ _ _ _ _ _ h _ _ _ x' θ' hx hb` and use `secGen_of_secNZ hS x' θ' (secNZ_of_secBC h hx hb)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem secGen_of_secNZ_baseChange : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (R : Type) [CommRing R] [IsNoetherianRing R] (j : Sp R ⟶ Xo.X) (θ : LB.Sec (PPx j)), SecNZ j θ → ∀ (T : Type) [CommRing T] (ψ : R →+* T) (x' : Sp T ⟶ Xo.X) (θ' : LB.Sec (PPx x')), x' = spMap ψ ≫ j → SecBC ψ 1 j x' θ θ' → SecGen x' θ' :=
   fun hS _ _ _ _ _ _ _ _ _ _ _ _ _ h _ _ _ x' θ' hx hb => secGen_of_secNZ hS x' θ' (secNZ_of_secBC h hx hb)

@@ -24,7 +24,7 @@ def CapSp {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (m : Fin n → �
   ⨅ w : ℂ, LinearMap.ker (qdet E w - cpol m w • (1 : Module.End ℂ V))
 
 /- English proof (translation)
-Simplify using `only [CapSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_CapSp {n : ℕ} {E : Fin n → Fin n → Module.End ℂ V} {m : Fin n → ℂ} {v : V} :
     v ∈ CapSp E m ↔ ∀ w, qdet E w v = cpol m w • v := by

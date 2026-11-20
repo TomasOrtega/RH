@@ -7,9 +7,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (cosetInd mainDa
 namespace GlobalTheory.FinPl.Comm
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite {f : Module.Dual 𝓀[k] (Red P.ker) // f ≠ 0}`. Establish `h : mainDatum q χ ε P Q = ∑ f' : {f : Module.Dual 𝓀[k] (Red P.ker) // f ≠ 0}, χ (-((ε : 𝓀[k]) * f'.1 (qvec q P))) • phiOne (ofDual P.ker f') Q`. Use function extensionality and compare the values at `x`. Rewrite using `[mainDatum, finsum_eq_sum_of_fintype, Finset.sum_apply]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h]`. Conclude with `Submodule.sum_mem _ fun f' _ => Submodule.smul_mem _ _ (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mainDatum_mem_SB (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (q : Unif k) (χ : AddChar 𝓀[k] ℂ)

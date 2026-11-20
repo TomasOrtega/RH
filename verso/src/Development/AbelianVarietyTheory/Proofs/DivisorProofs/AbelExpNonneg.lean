@@ -8,7 +8,7 @@ def abelExp {ι : Type} {N : ℕ} (lam : ι → Fin N → ℤ) (x : ι × Fin (N
   else 0
 
 /- English proof (translation)
-Unfold `abelExp`. Use `split_ifs with h`. Conclude with `sub_nonneg.2 (hlam _ _ _ (Fin.mk_le_mk.2 (Nat.sub_le _ _)))`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem abelExp_nonneg {ι : Type} {N : ℕ} (lam : ι → Fin N → ℤ)
     (hlam : ∀ τ (a b : Fin N), a ≤ b → lam τ b ≤ lam τ a) (x : ι × Fin (N + 1)) : 0 ≤ abelExp lam x := by

@@ -9,7 +9,7 @@ open PI.LatSizeCont
 namespace PI.UnitaryGroupMassFormula.LSC.GramLowOf
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `only [Size.gramV, Size.coordV, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.mulVec, dotProduct, Matrix.of_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramV_eq (I : Formalism.MainNotions.S.AutInst) (x : I.GA) (v : InfinitePlace I.F) {j : ℕ}
     (b : Fin j → Fin I.n → I.E) :

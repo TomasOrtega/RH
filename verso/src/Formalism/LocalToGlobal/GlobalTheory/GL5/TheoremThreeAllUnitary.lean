@@ -8,15 +8,13 @@ namespace Formalism.L2.GlobalTheoryTheory.GenusMassVolumes
 open Formalism.BasicNotions Formalism.MainNotions.StandardLattice Finset
 
 /- English proof (translation)
-Establish `h1 : (∑ a : Fin N, (univ.filter (fun b : Fin N => a < b ∧ s a ≠ s b)).card) = ((univ ×ˢ univ).filter (fun x : Fin N × Fin N => x.1 < x.2 ∧ s x.1 ≠ s x.2)).card`. Rewrite using `[Finset.card_filter, Finset.sum_product]`. Simplify using `only [Finset.card_filter]`. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.card_le_card_of_injOn (fun x => if s x.1 = true then (x.1, x.2) else (x.2, x.1)) ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_product, Finset.mem_univ, true_and, Finset.mem_coe] at hx ⊢`. Apply the tactic sequence `cases h1 : s x.1 <;> cases h2 : s x.2 <;> simp_all`. Introduce `x hx y hy hxy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_product, Finset.mem_univ, true_and] at hx hy`. Take `⟨x1, x2⟩` from `x`. Take `⟨y1, y2⟩` from `y`. Simplify using `only at hx hy hxy`. Apply the tactic sequence `cases h1 : s x1 <;> cases h2 : s y1 <;> simp only [h1, h2, Bool.false_eq_true, if_false, if_true, Prod.mk.injEq] at hxy`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hxy.1, hxy.2]`. Conclude with `absurd (hxy.1 ▸ hxy.2 ▸ hx.1 : y2 < y1) (lt_asymm hy.1)`. Conclude with `absurd (hxy.1 ▸ hxy.2 ▸ hx.1 : y2 < y1) (lt_asymm hy.1)`. Rewrite using `[hxy.1, hxy.2]`. Use `_ = nPlus s * nMinus s := by`.
-
-Rewrite using `[Finset.card_product]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ncPairs_card_le {N : ℕ} (s : Fin N → Bool) :
     (∑ a : Fin N, (univ.filter (fun b : Fin N => a < b ∧ s a ≠ s b)).card) ≤ nPlus s * nMinus s := by
@@ -51,7 +49,7 @@ theorem ncPairs_card_le {N : ℕ} (s : Fin N → Bool) :
         rfl
 
 /- English proof (translation)
-Unfold `lamAbs`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 private theorem sub_le_lamAbs' {N : ℕ} (lam : Fin N → ℝ) (a b : Fin N) :
     lam a - lam b ≤ lamAbs lam := by
@@ -63,13 +61,11 @@ private theorem sub_le_lamAbs' {N : ℕ} (lam : Fin N → ℝ) (a b : Fin N) :
         le_ciSup (f := fun a' : Fin N => ⨆ b' : Fin N, |lam a' - lam b'|) (Set.finite_range _).bddAbove a
 
 /- English proof (translation)
-Take `⟨hanti, hint⟩` from `h`. Use `set i0 : Fin N := ⟨0, by omega⟩`. Use `set i1 : Fin N := ⟨1, by omega⟩`. Establish `h01 : i0 < i1` using `by simp [i0, i1, Fin.lt_def]`. Take `⟨m0, hm0⟩` from `hint i0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m1, hm1⟩` from `hint i1`. Establish `hlt` using `hanti h01`. Establish `hd : lam i0 - lam i1 = ((m0 - m1 : ℤ) : ℝ)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : (0 : ℤ) < m0 - m1`. Establish `: (0 : ℝ) < ((m0 - m1 : ℤ) : ℝ)` using `by rw [← hd]; linarith`. Conclude with `this` after adjusting the coercions. Establish `h1 : (1 : ℝ) ≤ ((m0 - m1 : ℤ) : ℝ)`. Establish `: (1 : ℤ) ≤ m0 - m1` using `by omega`.
-
-Conclude with `this` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lamAbs_ge_one {N : ℕ} (lam : Fin N → ℝ) (h : Formalism.QuantumDeterminants.IsHCParam lam) (hN : 2 ≤ N) :
     1 ≤ lamAbs lam := by
@@ -94,15 +90,15 @@ theorem lamAbs_ge_one {N : ℕ} (lam : Fin N → ℝ) (h : Formalism.QuantumDete
     _ ≤ lamAbs lam := sub_le_lamAbs' lam i0 i1
 
 /- English proof (translation)
-Conclude with `sub_le_lamAbs' lam a b`.
+A detailed English derivation is pending.
 -/
 theorem sub_le_lamAbs {N : ℕ} (lam : Fin N → ℝ) (a b : Fin N) : lam a - lam b ≤ lamAbs lam := by
   exact sub_le_lamAbs' lam a b
 
 /- English proof (translation)
-Unfold `facProd`. Rewrite using `[Finset.prod_range_add]`. Apply `mul_le_mul_of_nonneg_left _ (Finset.prod_nonneg fun _ _ => by positivity)` to reduce the goal to its premises. Apply `Finset.prod_le_prod (fun _ _ => by positivity)` to reduce the goal to its premises. Introduce `j _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Nat.factorial_le (by omega)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem facProd_mul_le (p q : ℕ) : facProd p * facProd q ≤ facProd (p + q) := by
   unfold facProd
@@ -113,13 +109,13 @@ theorem facProd_mul_le (p q : ℕ) : facProd p * facProd q ≤ facProd (p + q) :
   exact_mod_cast Nat.factorial_le (by omega)
 
 /- English proof (translation)
-Establish `inner : ∀ a : Fin N, ∏ b ∈ univ.filter (fun b : Fin N => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)) = (((N - 1 - (a : ℕ)).factorial : ℕ) : ℝ)`. Introduce `a`. Rewrite using `[Finset.prod_filter]`. Establish `e : ∀ b : Fin N, (if a < b then (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)) else 1) = (fun k : ℕ => if (a : ℕ) < k then ((k : ℝ) - ((a : ℕ) : ℝ)) else 1) (b : ℕ)` using `fun b => by`. Simplify using `only [Fin.lt_iff_val_lt_val]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_congr rfl fun b _ => e b, Fin.prod_univ_eq_prod_range (fun k : ℕ => if (a : ℕ) < k then ((k : ℝ) - ((a : ℕ) : ℝ)) else 1) N, ← Finset.prod_filter]`. Establish `hI : (range N).filter (fun k => (a : ℕ) < k) = Ico ((a : ℕ) + 1) N`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hI, Finset.prod_Ico_eq_prod_range]`. Establish `e2 : ∀ j ∈ range (N - ((a : ℕ) + 1)), ((((a : ℕ) + 1 + j : ℕ) : ℝ) - ((a : ℕ) : ℝ)) = ((j + 1 : ℕ) : ℝ)`. Introduce `j _`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.prod_congr rfl e2, ← Nat.cast_prod, Finset.prod_range_add_one_eq_factorial, show N - ((a : ℕ) + 1) = N - 1 - (a : ℕ) by omega]`. Rewrite using `[Finset.prod_congr rfl fun a _ => inner a, Fin.prod_univ_eq_prod_range (fun i => (((N - 1 - i).factorial : ℕ) : ℝ)) N]`. Unfold `facProd`. Conclude with `Finset.prod_range_reflect (fun i => ((i.factorial : ℕ) : ℝ)) N`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem prod_sub_of_lt_eq_facProd (N : ℕ) :
     ∏ a : Fin N, ∏ b ∈ univ.filter (fun b : Fin N => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)) =
@@ -152,33 +148,31 @@ private theorem prod_sub_of_lt_eq_facProd (N : ℕ) :
   exact Finset.prod_range_reflect (fun i => ((i.factorial : ℕ) : ℝ)) N
 
 /- English proof (translation)
-Establish `hanti` using `hlam.1`. Establish `hL0 : 0 ≤ lamAbs lam` using `abs_param_sup_nonneg lam`. Establish `hpos : ∀ a b : Fin N, a < b → 0 < lam a - lam b` using `fun a b h => sub_pos.2 (hanti h)`. Establish `hrho : ∀ a b : Fin N, a < b → s a = s b → lam a - lam b ≤ (lam a + rhoN s a) - (lam b + rhoN s b)`. Introduce `a b h hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `rho_sub_eq_card_opposite s a b h hs` as an intermediate fact. Establish `h0 : (0 : ℝ) ≤ ((univ.filter fun c : Fin N => a < c ∧ c < b ∧ s c ≠ s a).card : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnum : (∏ a : Fin N, ∏ b ∈ univ.filter (fun b : Fin N => a < b), |lam a - lam b|) ≤ (∏ a : Fin N, ∏ b ∈ univ.filter (fun b : Fin N => a < b ∧ s a = s b), ((lam a + rhoN s a) - (lam b + rhoN s b))) * lamAbs lam ^ (∑ a : Fin N, (univ.filter (fun b : Fin N => a < b ∧ s a ≠ s b)).car …`. Rewrite using `[← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_le_prod (fun a _ => Finset.prod_nonneg fun b _ => abs_nonneg _) fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not (univ.filter fun b : Fin N => a < b) (fun b => s a = s b), Finset.filter_filter, Finset.filter_filter]`. Use `mul_le_mul ?_ ?_ (Finset.prod_nonneg fun b _ => abs_nonneg _) (Finset.prod_nonneg fun b hb => ?_)` and prove the remaining obligations. Use `Finset.prod_le_prod (fun b _ => abs_nonneg _) fun b hb => ?_` and prove the remaining obligations. Establish `h` using `(Finset.mem_filter.1 hb).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[abs_of_pos (hpos a b h.1)]`. Conclude with `hrho a b h.1 h.2`. Rewrite using `[← Finset.prod_const]`. Use `Finset.prod_le_prod (fun b _ => abs_nonneg _) fun b hb => ?_` and prove the remaining obligations. Establish `h` using `(Finset.mem_filter.1 hb).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[abs_of_pos (hpos a b h.1)]`. Conclude with `sub_le_lamAbs lam a b`. Establish `h` using `(Finset.mem_filter.1 hb).2`. Use `hpos a b h.1` as an intermediate fact. Use `hrho a b h.1 h.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcount` using `ncPairs_card_le s`. Establish `hpq : lamAbs lam ^ (∑ a : Fin N, (univ.filter (fun b : Fin N => a < b ∧ s a ≠ s b)).card) ≤ lamAbs lam ^ (nPlus s * nMinus s)`. Distinguish the cases in `hN : 2 ≤ N`. Conclude with `pow_le_pow_right₀ (lamAbs_ge_one lam hlam hN) hcount`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : nPlus s * nMinus s = 0`. Assume the negation of the conclusion as `hne`. Establish `hP : 0 < nPlus s` using `Nat.pos_of_ne_zero fun h => hne (by simp [h])`. Establish `hM : 0 < nMinus s` using `Nat.pos_of_ne_zero fun h => hne (by simp [h])`. Take `⟨a, ha⟩` from `Finset.card_pos.1 hP`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `Finset.card_pos.1 hM`. Establish `ha'` using `(Finset.mem_filter.1 ha).2`. Establish `hb'` using `(Finset.mem_filter.1 hb).2`. Establish `hab : a ≠ b` using `fun h => by rw [h, hb'] at ha'; exact Bool.noConfusion ha'`. Use `a.isLt` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `b.isLt` as an intermediate fact. Establish `: a.val ≠ b.val` using `fun h => hab (Fin.ext h)`. Use linear arithmetic over natural numbers and integers. Establish `h1 : (∑ a : Fin N, (univ.filter (fun b : Fin N => a < b ∧ s a ≠ s b)).card) = 0`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h0, h1]`. Establish `hNpq : nPlus s + nMinus s = N`. Unfold `nPlus nMinus`. Use `Finset.card_filter_add_card_filter_not (s := (univ : Finset (Fin N))) (fun a : Fin N => s a = true)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFF : 0 < facProd (nPlus s) * facProd (nMinus s)` using `mul_pos (factorial_product_pos _) (factorial_product_pos _)`. Establish `hFle : facProd (nPlus s) * facProd (nMinus s) ≤ facProd N`. Use `facProd_mul_le (nPlus s) (nMinus s)` as an intermediate fact. Rewrite `this` using `[hNpq]`. Then use the resulting hypothesis. Establish `hSame : 0 ≤ ∏ a : Fin N, ∏ b ∈ univ.filter (fun b : Fin N => a < b ∧ s a = s b), ((lam a + rhoN s a) - (lam b + rhoN s b))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.prod_nonneg fun a _ => Finset.prod_nonneg fun b hb => ?_` and prove the remaining obligations. Establish `h` using `(Finset.mem_filter.1 hb).2`. Use `hpos a b h.1` as an intermediate fact. Use `hrho a b h.1 h.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hFN : 0 < facProd N` using `factorial_product_pos N`. Unfold `Formalism.QuantumDeterminants.fdegHC dTau`. Rewrite using `[prod_sub_of_lt_eq_facProd]`. Combine the equalities or inequalities in the displayed calculation. Apply `div_le_div_of_nonneg_right _ hFN.le` to reduce the goal to its premises.
-
-Conclude with `hnum.trans (mul_le_mul_of_nonneg_left hpq hSame)`. Use `_ ≤ ((∏ a : Fin N, ∏ b ∈ univ.filter (fun b : Fin N => a < b ∧ s a = s b), ((lam a + rhoN s a) - (lam b + rhoN s b))) * lamAbs lam ^ (nPlus s * nMinus s)) / (facProd (nPlus s) * facProd (nMinus s)) := div_le_div_of_nonneg_left (mul_nonneg hSame (pow_nonneg hL0 _)) hFF hFle`. Use `_ = _ := by ring`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem fdegHC_le_dTau {N : ℕ} (s : Fin N → Bool) (lam : Fin N → ℝ) (hlam : Formalism.QuantumDeterminants.IsHCParam lam) :
     Formalism.QuantumDeterminants.fdegHC lam ≤ dTau s lam * lamAbs lam ^ (nPlus s * nMinus s) := by
@@ -267,7 +261,7 @@ theorem fdegHC_le_dTau {N : ℕ} (s : Fin N → Bool) (lam : Fin N → ℝ) (hla
     _ = _ := by ring
 
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.fdegHC`. Use `div_nonneg (Finset.prod_nonneg fun a _ => Finset.prod_nonneg fun b _ => abs_nonneg _) (Finset.prod_nonneg fun a _ => Finset.prod_nonneg fun b hb => ?_)` and prove the remaining obligations. Use `(Finset.mem_filter.1 hb).2` as an intermediate fact. Rewrite using `[sub_nonneg, Nat.cast_le]`. Conclude with `this.le`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fdegHC_nonneg {N : ℕ} (lam : Fin N → ℝ) (hlam : Formalism.QuantumDeterminants.IsHCParam lam) :
     0 ≤ Formalism.QuantumDeterminants.fdegHC lam := by
@@ -279,23 +273,23 @@ theorem fdegHC_nonneg {N : ℕ} (lam : Fin N → ℝ) (hlam : Formalism.QuantumD
   exact this.le
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.StandardLattice.RepresentationDimensionGeneral`. Introduce `N ε lam ep0 h0 H _ _ σ w p q hlam hgap hexp hep hh hDS hw`. Use `haveI : CompleteSpace H := hDS.1`. Establish `hF` using `hHC hc N ε lam hlam H σ w hDS hw`. Rewrite using `[hF]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF0` using `fdegHC_nonneg lam hlam`. Establish `hep0 : 0 ≤ ep0` using `le_trans (Real.exp_pos _).le hexp`. Use `⟨by nlinarith, ?_⟩` and prove the remaining obligations. Establish `hdim` using `hT N ε lam hlam H σ hDS`. Establish `hp : p = (nPlus ε : ℝ)` using `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : q = (nMinus ε : ℝ)` using `rfl`. Establish `hk : p * q = ((nPlus ε * nMinus ε : ℕ) : ℝ)` using `by rw [hp, hq]; push_cast; ring`. Establish `hd0 : (0 : ℝ) ≤ (Module.finrank ℂ (MainNotions.S.lowKSub ε lam σ) : ℝ)` using `Nat.cast_nonneg _`. Rewrite using `[hk, Real.rpow_natCast]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [hdim.2]`. Use `_ ≤ 4 * (Module.finrank ℂ (MainNotions.S.lowKSub ε lam σ) : ℝ) * (C3 * p * q * N * lamAbs lam) ^ (nPlus ε * nMinus ε) := by`. Break down `Nat.eq_zero_or_pos (nPlus ε * nMinus ε) with hk0 | hk0` into its components or cases. Rewrite using `[hk0, pow_zero, pow_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : 0 < nPlus ε` using `Nat.pos_of_ne_zero fun h => by simp [h] at hk0`. Establish `hM : 0 < nMinus ε` using `Nat.pos_of_ne_zero fun h => by simp [h] at hk0`. Take `⟨a, ha⟩` from `Finset.card_pos.1 hP`. Take `⟨b, hb⟩` from `Finset.card_pos.1 hM`. Establish `ha'` using `(Finset.mem_filter.1 ha).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb'` using `(Finset.mem_filter.1 hb).2`. Establish `hab : a ≠ b` using `fun h => by rw [h, hb'] at ha'; exact Bool.noConfusion ha'`. Establish `hN : 2 ≤ N`. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: a.val ≠ b.val` using `fun h => hab (Fin.ext h)`. Use linear arithmetic over natural numbers and integers. Establish `hL` using `lamAbs_ge_one lam hlam hN`. Establish `hp1 : (1 : ℝ) ≤ p` using `by rw [hp]; exact_mod_cast hP`. Establish `hq1 : (1 : ℝ) ≤ q` using `by rw [hq]; exact_mod_cast hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN1 : (1 : ℝ) ≤ N` using `by exact_mod_cast (show 1 ≤ N by omega)`. Establish `hc1 : 1 ≤ C3 * p * q * N`. Establish `h1 : 1 ≤ C3 * p` using `by nlinarith`. Establish `h2 : 1 ≤ C3 * p * q` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : lamAbs lam ≤ C3 * p * q * N * lamAbs lam` using `by nlinarith`. Establish `hpow` using `pow_le_pow_left₀ (by linarith) hX (nPlus ε * nMinus ε)`. Establish `hpos : 0 ≤ lamAbs lam ^ (nPlus ε * nMinus ε)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem theorem_three_all_unitary (D : D7) (C3 : ℝ) (hC3 : 1 ≤ C3) (hc : cdScaleTie D) (hHC : HCFormalDegree D)
     (hT : FamilyMassLastLine D) : RepresentationDimensionGeneral D C3 := by

@@ -18,9 +18,9 @@ open GlobalTheory.ShFam.Descent
 namespace GlobalTheory.DetHT
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Z p _ _ z yb yy`. Use `letI := H.starRing`. Introduce `Q π ψ hP σ j xx h`. Take `⟨-, -, h3, h4, h5⟩` from `hP`. Establish `hpb : IsGrpPullback Q.A.A Xo.univ.t.G _ (ψ ≫ Z.m0.toSABMap.φ)` using `h4.comp Z.m0.toSABMap.cart`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hact : ∀ a, (Q.oA.act a).left ≫ (ψ ≫ Z.m0.toSABMap.φ) = (ψ ≫ Z.m0.toSABMap.φ) ≫ (Xo.univ.t.act.act a).left` using `fun a => by`. Establish `e : (Q.oA.act a).left ≫ ψ = ψ ≫ (Z.oF.t.act.act a).left` using `Z.m.cart.1.hom_ext (by rw [Category.assoc, Category.assoc, Z.m.act, h5, ← Category.assoc ψ, h5, ← Category.assoc, Q.gen_act, Category.assoc, h3, Category.assoc]) (by rw [Category.assoc, Category.assoc, Over.w, h4.1.w, Over.w_assoc])`. Rewrite using `[← Category.assoc, e, Category.assoc, Category.assoc, Z.m0.toSABMap.act]`. Conclude with `fun a => (h.act a (hact a)).unique hpb.1 (by rw [z.eig σ j a, ← algebraMap_embInt Q.integers]; exact h.scale _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ptAt_tangent_isEig : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F))

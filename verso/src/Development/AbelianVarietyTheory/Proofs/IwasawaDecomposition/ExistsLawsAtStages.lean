@@ -24,9 +24,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RealGeo
 
 /- English proof (translation)
-Introduce `X hv pb hg`. Establish `hV : VolTieG X.toD7` using `GlobalTheory.Mem.Vol.volTieG_of_trueVol X.toD7 hv`. Use `⟨hV, GlobalTheory.Mem.TypeNormPin.hermitianCodeWordStages_typeNorms_principal X, ?_⟩` and prove the remaining obligations. Take `⟨T, h₁, h₂, h₃, h₄⟩` from `GlobalTheory.Member.CoreExist.exists_core_pb X.toD7 (GlobalTheory.Mem.hermitianCodeWordStages_ringOfIntegers_full X) (GlobalTheory.Mem.hermitianCodeWordStages_has_rootOfUnity X) hV pb hg`. Establish `hp : T.Q.PinField` using `h₁.pins.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `letI := algTop T hp`. Establish `ha : AlgTie T` using `algTie_algTop T hp`. Use `⟨T, algTop T hp, h₁, h₂, h₃, h₄, ha, fun x => ⟨embF T.Q.c X.toD7.host.φ₀ x, ?_⟩⟩` and prove the remaining obligations. Apply `X.toD7.what₂.embLL.injective` to reduce the goal to its premises. Conclude with `(RingHom.congr_fun (res_embLL T ha hp) (embF T.Q.c X.toD7.host.φ₀ x)).trans (RingHom.congr_fun X.toD7.embE_φ₀ x).symm`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_laws_at_stages : ∀ X : GlobalTheory.Mem.Stages, (∀ W, X.toD7.vol W = GlobalTheory.Mem.Vol.trueVol X.toD7.sp.cm (tauE X.toD7) X.toD7.cd W) → ∀ pb : Fin 2 → HeightOneSpectrum (𝓞 X.toD7.host.K), (∀ k, ((X.toD7.host.g k : ℕ) : 𝓞 X.toD7.host.K) ∈ (pb k).asIdeal) → VolTieG X.toD7 ∧ OKPsi X.toD7 ∧ ∃ (T : CoreJ X.toD7) (_ : Algebra T.Q.c.F X.toD7.what₂.LL), LawsJ T ∧ LawsCore T.toCore ∧ T.Q.Canon ∧ T.pb = pb ∧ AlgTie T ∧ ∀ x, X.toD7.embE x ∈ (algebraMap T.Q.c.F X.toD7.what₂.LL).range := by
   intro X hv pb hg

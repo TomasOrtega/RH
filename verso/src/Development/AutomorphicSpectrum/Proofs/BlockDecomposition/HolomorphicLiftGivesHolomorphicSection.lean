@@ -21,7 +21,7 @@ variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 open GlobalTheory.QCoh.Qcqs in
 
 /- English proof (translation)
-Rewrite using `[baseRingHom_comp_SpecMap, baseRingHom_top, Scheme.toSpecΓ_appTop, Iso.inv_hom_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem baseRingHom_toSpecΓ {Y : Scheme.{0}} {B : CommRingCat.{0}} (ψ : B ⟶ Γ(Y, ⊤)) :
     baseRingHom (Y.toSpecΓ ≫ Spec.map ψ) ⊤ = ψ := by
@@ -45,17 +45,17 @@ def chartMap (k : Fin (m + 1)) : CSpec c ⟶ PSpace ℤ (n k) :=
     (chartLift (c k) (Int.castRingHom _) (coordVal c k)) ≫ (Scheme.ΓSpecIso (.of (CRing c))).inv)
 
 /- English proof (translation)
-The claim follows from `ofChartHom_preimage _ _`.
+A detailed English derivation is pending.
 -/
 theorem chartMap_top (k : Fin (m + 1)) : ⊤ ≤ chartMap c k ⁻¹ᵁ chart ℤ (n k) (c k) := ofChartHom_preimage _ _
 
 /- English proof (translation)
-The claim follows from `dif_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem coordVal_self (k : Fin (m + 1)) : coordVal c k (c k) = 1 := dif_pos rfl
 
 /- English proof (translation)
-Establish `e : (chartMap c k).appLE (chart ℤ (n k) (c k)) ⊤ (chartMap_top c k) = _` using `ofChartHom_appLE (c k) _`. Unfold `pullRatio`. Rewrite using `[e]`. Conclude with `congrArg (Scheme.ΓSpecIso (.of (CRing c))).inv.hom (chartLift_ratio (c k) _ (coordVal_self c k) j)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullRatio_chartMap (k : Fin (m + 1)) (j : Bk n k) :
     pullRatio (chartMap c k) ⊤ (c k) (chartMap_top c k) j =
@@ -68,7 +68,7 @@ theorem pullRatio_chartMap (k : Fin (m + 1)) (j : Bk n k) :
 
 open GlobalTheory.QCoh.Qcqs in
 /- English proof (translation)
-Use `appLE_pullRatio (φ := chartMap c k) (W := ⊤) (i := c k) (hi := chartMap_top c k) (j := j) w (T := ⊤) le_top` as an intermediate fact. Rewrite `this` using `[pullRatio_chartMap]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullRatio_comp_chartMap {Z : Scheme.{0}} (w : Z ⟶ CSpec c) (k : Fin (m + 1))
     (h : ⊤ ≤ (w ≫ chartMap c k) ⁻¹ᵁ chart ℤ (n k) (c k)) (j : Bk n k) :
@@ -83,13 +83,13 @@ def tau : CSpec c ⟶ MP ℤ m n :=
     fun _ => specZIsTerminal.hom_ext _ _
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Arith.SchemeCoh.ProjSpace.lift_pr m n _ _ _ k`.
+A detailed English derivation is pending.
 -/
 theorem tau_pr (k : Fin (m + 1)) : tau c ≫ prB n k = chartMap c k :=
   GroundTheory.Arith.SchemeCoh.ProjSpace.lift_pr m n _ _ _ k
 
 /- English proof (translation)
-Introduce `x _` and use `Set.mem_iInter.2 fun k => by have h := chartMap_top c k (Set.mem_univ x) rw [← tau_pr] at h exact h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tau_le : ⊤ ≤ tau c ⁻¹ᵁ mchart c := fun x _ => Set.mem_iInter.2 fun k => by
   have h := chartMap_top c k (Set.mem_univ x)
@@ -100,9 +100,9 @@ def rho : CRing c →+* Γ(MP ℤ m n, mchart c) :=
   (dehomog c).comp (rename (R := ℤ) (Subtype.val : CoordIdx c → Σ k, Bk n k)).toRingHom
 
 /- English proof (translation)
-Distinguish the cases in `h : j = c k`. Substitute `h` using the available equality. Rewrite using `[coordVal_self, map_one, pullRatio_self]`. Rewrite using `[coordVal, dif_neg h]`. Simplify using `only [rho, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_X, dehomog, eval₂Hom_X']`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `resG_pullRatio _`.
+A detailed English derivation is pending.
 -/
 theorem rho_coordVal (k : Fin (m + 1)) (j : Bk n k) :
     rho c (coordVal c k j) = pullRatio (prB n k) (mchart c) (c k) (mchart_le c k) j := by
@@ -114,7 +114,7 @@ theorem rho_coordVal (k : Fin (m + 1)) (j : Bk n k) :
     exact resG_pullRatio _
 
 /- English proof (translation)
-Rewrite using `[rho_coordVal, appLE_pullRatio, ← pullRatio_chartMap]`. Conclude with `pullRatio_of_eq (tau_pr c k) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_rho_coordVal (k : Fin (m + 1)) (j : Bk n k) :
     ((tau c).appLE (mchart c) ⊤ (tau_le c)).hom (rho c (coordVal c k j)) =
@@ -123,9 +123,9 @@ theorem tau_rho_coordVal (k : Fin (m + 1)) (j : Bk n k) :
   exact pullRatio_of_eq (tau_pr c k) _ _
 
 /- English proof (translation)
-Use `ext1`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun q => ?_)` and prove the remaining obligations. Establish `e : (C r : CRing c) = ((r : ℤ) : CRing c)` using `map_intCast C r`. Rewrite using `[e]`. Conclude with `(map_intCast _ r).trans (map_intCast _ r).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨k, j⟩, h⟩` from `q`. Establish `e : (X ⟨⟨k, j⟩, h⟩ : CRing c) = coordVal c k j`. Rewrite using `[coordVal, dif_neg (show ¬ j = c k from h)]`. Rewrite using `[e]`. Conclude with `tau_rho_coordVal c k j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_comp_rho :
     CommRingCat.ofHom (rho c) ≫ (tau c).appLE (mchart c) ⊤ (tau_le c) =
@@ -147,7 +147,7 @@ def toC : (mchart c).toScheme ⟶ CSpec c :=
 
 open GlobalTheory.QCoh.Qcqs in
 /- English proof (translation)
-The claim follows from `baseRingHom_toSpecΓ _`.
+A detailed English derivation is pending.
 -/
 theorem baseRingHom_toC : baseRingHom (toC c) ⊤ =
     CommRingCat.ofHom (rho c) ≫ (mchart c).ι.appLE (mchart c) ⊤ (mchart c).ι_preimage_self.ge :=
@@ -155,9 +155,9 @@ theorem baseRingHom_toC : baseRingHom (toC c) ⊤ =
 
 open GlobalTheory.QCoh.Qcqs in
 /- English proof (translation)
-Use `GroundTheory.Arith.SchemeCoh.ProjSpace.hom_ext m n _ _ fun k => ?_` and prove the remaining obligations. Establish `e : (toC c ≫ tau c) ≫ prB n k = toC c ≫ chartMap c k` using `by rw [Category.assoc, tau_pr]`. Establish `h₀ : ⊤ ≤ (toC c ≫ chartMap c k) ⁻¹ᵁ chart ℤ (n k) (c k)` using `le_trans le_top ((toC c).preimage_mono (chartMap_top c k))`. Establish `h₂ : ⊤ ≤ ((mchart c).ι ≫ prB n k) ⁻¹ᵁ chart ℤ (n k) (c k)` using `le_trans (mchart c).ι_preimage_self.ge ((mchart c).ι.preimage_mono (mchart_le c k))`. Use `GlobalTheory.ProjSpace.hom_ext (specZIsTerminal.hom_ext _ _) fun _ => ⟨⊤, trivial, c k, e ▸ h₀, h₂, fun j => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pullRatio_of_eq e _ h₀, pullRatio_comp_chartMap, baseRingHom_toC]`. Use `(congrArg ((mchart c).ι.appLE (mchart c) ⊤ (mchart c).ι_preimage_self.ge).hom (rho_coordVal c k j)).trans ?_` and prove the remaining obligations. Conclude with `appLE_pullRatio _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem toC_tau : toC c ≫ tau c = (mchart c).ι := by
   refine GroundTheory.Arith.SchemeCoh.ProjSpace.hom_ext m n _ _ fun k => ?_
@@ -176,17 +176,17 @@ end Chart
 open GlobalTheory.QCoh.Qcqs in
 
 /- English proof (translation)
-Establish `hr : Set.range (tau c) ⊆ Set.range (mchart c).ι`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `tau_le c (Set.mem_univ x)`. Set `τ' : CSpec c ⟶ (mchart c).toScheme` to `IsOpenImmersion.lift (mchart c).ι (tau c) hr`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτ : τ' ≫ (mchart c).ι = tau c` using `IsOpenImmersion.lift_fac _ _ _`. Establish `h1 : toC c ≫ τ' = 𝟙 _`. Rewrite using `[← cancel_mono (mchart c).ι, Category.assoc, hτ, toC_tau, Category.id_comp]`. Establish `h2 : τ' ≫ toC c = 𝟙 _`. Use `eq_of_baseRingHom_top ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a : baseRingHom (τ' ≫ toC c) ⊤ = (Scheme.ΓSpecIso (.of (CRing c))).inv`. Establish `hle : (⊤ : (CSpec c).Opens) ≤ τ' ⁻¹ᵁ (⊤ : (mchart c).toScheme.Opens)` using `fun _ _ => trivial`. Rewrite using `[← baseRingHom_appLE (toC c) τ' ⊤ ⊤ hle, baseRingHom_toC, Category.assoc, Scheme.Hom.appLE_comp_appLE]`. Use `Eq.trans ?_ (tau_comp_rho c)` and prove the remaining obligations. Conclude with `congrArg _ (appLE_of_eq hτ _ _ _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[a, baseRingHom_top]`. Simplify using the standard rewrite rules. Establish `hi : IsIso (toC c)` using `⟨τ', h1, h2⟩`. Establish `hb : IsIso (baseRingHom (toC c) ⊤)`. Rewrite using `[baseRingHom_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: IsIso (toC c).appTop` using `inferInstanceAs (IsIso (Scheme.Γ.map (toC c).op))`. Use `infer_instance`. Use `⟨IsAffine.of_isIso (toC c), ?_⟩` and prove the remaining obligations. Establish `hρ : IsIso (CommRingCat.ofHom (rho c))`. Rewrite `hb` using `[baseRingHom_toC]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `IsIso.of_isIso_comp_right _ ((mchart c).ι.appLE (mchart c) ⊤ (mchart c).ι_preimage_self.ge)`. Introduce `b`. Take `⟨P, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (CommRingCat.ofHom (rho c))).2 b`. Conclude with `⟨rename Subtype.val P, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem affine_surj (c : ∀ k, Bk n k) : IsAffineOpen (mchart c) ∧ Function.Surjective (dehomog c) := by
   have hr : Set.range (tau c) ⊆ Set.range (mchart c).ι := by
@@ -221,7 +221,7 @@ theorem affine_surj (c : ∀ k, Bk n k) : IsAffineOpen (mchart c) ∧ Function.S
   exact ⟨rename Subtype.val P, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h k => GlobalTheory.CxPts.ptsIn_mono (mchart_le c k) h, fun h => GlobalTheory.CxPts.mem_ptsIn.2 (Set.mem_iInter.2 fun k => GlobalTheory.CxPts.mem_ptsIn.1 (h k))⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_ptsIn_mchart {y : GlobalTheory.CxPts (mpStr ℤ m n) σ₀} (c : ∀ k, Bk n k) :
     y ∈ ptsIn (mpStr ℤ m n) σ₀ (mchart c) ↔ ∀ k, y ∈ ptsIn (mpStr ℤ m n) σ₀ (blockChart n k (c k)) :=
@@ -229,11 +229,11 @@ theorem mem_ptsIn_mchart {y : GlobalTheory.CxPts (mpStr ℤ m n) σ₀} (c : ∀
     fun h => GlobalTheory.CxPts.mem_ptsIn.2 (Set.mem_iInter.2 fun k => GlobalTheory.CxPts.mem_ptsIn.1 (h k))⟩
 
 /- English proof (translation)
-Establish `e : (evHom hy).comp (dehomog c) = eval₂Hom (Int.castRingHom ℂ) (fun q : (Σ k, Bk n k) => z q / z ⟨q.1, c q.1⟩)`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun q => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, map_intCast, eval₂Hom_C]`. Establish `: (C r : Pol n) = (r : Pol n)` using `map_intCast C r`. Rewrite using `[this, map_intCast, map_intCast]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨k, j⟩` from `q`. Establish `hk` using `(mem_ptsIn_mchart c).1 hy k`. Simplify using `only [RingHom.comp_apply, eval₂Hom_X', dehomog]`. Rewrite using `[← ev_eq hy, GlobalTheory.CxPts.ev_res _ hy]`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(H k (c k)).2 j hk`. Rewrite using `[ev_eq hy]`. Conclude with `congrArg (fun f => f P) e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_dehomog {y : GlobalTheory.CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (H : IsUnder y z) (c : ∀ k, Bk n k)
     (hy : y ∈ ptsIn (mpStr ℤ m n) σ₀ (mchart c)) (P : Pol n) :
@@ -255,7 +255,7 @@ theorem ev_dehomog {y : GlobalTheory.CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk
   exact congrArg (fun f => f P) e
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simpa only [eval₂Hom_C] using differentiableOn_const _`. Consider the case `add p q hp hq => simpa only [map_add] using hp.fun_add hq`. Consider the case `mul_X p q hp => simpa only [map_mul, eval₂Hom_X'] using hp.fun_mul (hg q)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem differentiableOn_eval₂ {E ι : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {T : Set E} {g : E → ι → ℂ}
     (hg : ∀ q, DifferentiableOn ℂ (fun v => g v q) T) (P : MvPolynomial ι ℤ) :
@@ -266,15 +266,13 @@ theorem differentiableOn_eval₂ {E ι : Type*} [NormedAddCommGroup E] [NormedSp
   | mul_X p q hp => simpa only [map_mul, eval₂Hom_X'] using hp.fun_mul (hg q)
 
 /- English proof (translation)
-Establish `hc : ∀ k, ∃ j, γ v₀ ⟨k, j⟩ ≠ 0` using `fun k => ⟨ptChart _ k, ((hU v₀ hv₀) k _).1.1 (GlobalTheory.CxPts.mem_ptsIn.2 (mem_ptChart _ k))⟩`. Use `choose c hc using hc`. Establish `hq : ∀ q, DifferentiableOn ℂ (fun v => γ v q) O` using `fun q => differentiableOn_pi.1 hγ q`. Set `O' : Set (Fin D → ℂ)` to `⋂ k, (O ∩ (fun v => γ v ⟨k, c k⟩) ⁻¹' {0}ᶜ)`. Establish `hO' : IsOpen O'` using `isOpen_iInter_of_finite fun k => (hq _).continuousOn.isOpen_inter_preimage hO isOpen_compl_singleton`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : O' ⊆ O` using `fun v hv => (Set.mem_iInter.1 hv 0).1`. Establish `hne : ∀ v ∈ O', ∀ k, γ v ⟨k, c k⟩ ≠ 0` using `fun v hv k => (Set.mem_iInter.1 hv k).2`. Establish `hv₀' : v₀ ∈ O'` using `Set.mem_iInter.2 fun k => ⟨hv₀, hc k⟩`. Take `⟨haff, hsurj⟩` from `affine_surj c`. Establish `hUa : IsAffineOpen (i ⁻¹ᵁ mchart c)` using `haff.preimage i`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ∀ v ∈ O', PtsOver.map i rfl _ (s v) ∈ ptsIn (mpStr ℤ m n) σ₀ (mchart c)` using `fun v hv => (mem_ptsIn_mchart c).2 fun k => ((hU v (hsub hv)) k (c k)).1.2 (hne v hv k)`. Establish `hs : ∀ v ∈ O', s v ∈ ptsIn (i ≫ mpStr ℤ m n) σ₀ (i ⁻¹ᵁ mchart c)` using `fun v hv => hm v hv`. Establish `hd : ∀ a : Γ(X, i ⁻¹ᵁ mchart c), DifferentiableOn ℂ (ev (i ≫ mpStr ℤ m n) σ₀ (i ⁻¹ᵁ mchart c) a ∘ s) O'`. Introduce `a`. Take `⟨b, rfl⟩` from `i.app_surjective (mchart c) haff a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P, rfl⟩` from `hsurj b`. Use `(differentiableOn_eval₂ (g := fun v q => γ v q / γ v ⟨q.1, c q.1⟩) (fun q => by` and prove the remaining obligations. Simplify `((hq q).mono hsub).fun_mul (((hq _).mono hsub).fun_inv fun v hv => hne v hv q.1)) P).congr fun v hv => ?_` using `only [div_eq_mul_inv]`. Conclude with `(ev_app i rfl (mchart c) _ (s v)).trans (ev_dehomog (hU v (hsub hv)) c (hm v hv) P)`. Take `⟨h1, h2⟩` from `GlobalTheory.CxPts.holo_of_affine hUa hO' hs hd`.
-
-Conclude with `⟨O', hO', hv₀', hsub, h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem holo_near (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) (i : X ⟶ MP ℤ m n) [IsClosedImmersion i] (D : ℕ)
     (O : Set (Fin D → ℂ)) (γ : (Fin D → ℂ) → (Σ k, Bk n k) → ℂ) (s : (Fin D → ℂ) → GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀)
@@ -310,7 +308,7 @@ theorem holo_near (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) (i : X �
   exact ⟨O', hO', hv₀', hsub, h1, h2⟩
 
 /- English proof (translation)
-Use `⟨fun v hv => ?_, fun W f v hv => ?_⟩` and prove the remaining obligations. Take `⟨O', h1, h2, -, h4, -⟩` from `holo_near m n X i D O γ s hO hγ hU v hv`. Conclude with `(h4.continuousAt (h1.mem_nhds h2)).continuousWithinAt`. Take `⟨O', h1, h2, -, -, h5⟩` from `holo_near m n X i D O γ s hO hγ hU v hv.1`. Conclude with `(h5 W f v ⟨h2, hv.2⟩).mono_of_mem_nhdsWithin (mem_nhdsWithin.2 ⟨O', h1, h2, fun x hx => ⟨hx.1, hx.2.2⟩⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem holo (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) (i : X ⟶ MP ℤ m n) [IsClosedImmersion i] (D : ℕ)
     (O : Set (Fin D → ℂ)) (γ : (Fin D → ℂ) → (Σ k, Bk n k) → ℂ) (s : (Fin D → ℂ) → GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀)

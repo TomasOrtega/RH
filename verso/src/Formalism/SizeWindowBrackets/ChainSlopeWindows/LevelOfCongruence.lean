@@ -30,7 +30,7 @@ def K7v5 : ℝ :=
   C.cSl1 * D.nT * (m : ℝ) * (D.a / D.k + D.b') * (C.cCount * (m : ℝ) * D.L) + C.cSl1 * Xpp + 1
 
 /- English proof (translation)
-Use `(abs_le.mp (hE u0 u)).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma exponent_le_upper (hE : EComp5 D C) (u0 : U0) (u : W u0) :
     D.Ee u0 u ≤ (m : ℝ) * (D.sumA * D.lg + C.cE * D.B0) := by
@@ -38,7 +38,7 @@ lemma exponent_le_upper (hE : EComp5 D C) (u0 : U0) (u : W u0) :
   linarith
 
 /- English proof (translation)
-Use `(abs_le.mp (hE u0 u)).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma exponent_ge_lower (hE : EComp5 D C) (u0 : U0) (u : W u0) :
     (m : ℝ) * (D.sumA * D.lg - C.cE * D.B0) ≤ D.Ee u0 u := by
@@ -46,7 +46,7 @@ lemma exponent_ge_lower (hE : EComp5 D C) (u0 : U0) (u : W u0) :
   linarith
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `umean_mono (X := fun u0 => D.ASK u0 - D.Ga u0) (Y := fun _ : U0 => D.LoP C) (fun u0 => (h u0).1)` as an intermediate fact. Rewrite `this` using `[umean_const]`. Then use the resulting hypothesis. Use `umean_mono (X := D.IO) (Y := fun _ : U0 => D.LoP C) (fun u0 => (h u0).2)` as an intermediate fact. Rewrite `this` using `[umean_const]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma losses_of_losses5 [Nonempty U0] (h : LossBounds D C) : D.Losses C := by
   refine ⟨?_, ?_⟩
@@ -57,11 +57,11 @@ lemma losses_of_losses5 [Nonempty U0] (h : LossBounds D C) : D.Losses C := by
     rwa [umean_const] at this
 
 /- English proof (translation)
-Establish `hA` using `D.sumA_nonneg C hS`. Take `⟨-, -, -, -, -, -, -, -, -, hd, -⟩` from `hS`. Unfold `Data.s`. Use `sub_wmean_le (hd u0) _ (fun u => ?_)` and prove the remaining obligations. Establish `h1` using `(hSN u0 u).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `hDIV u0 u`. Rewrite `h2` using `[Finset.sum_sub_distrib, Data.sum_aT_mul]`. Establish `h3 : Lam5 D C u0 ≤ Real.log (D.T u0 u)` using `(hCount u0 u).1`. Establish `h4` using `mul_le_mul_of_nonneg_left h3 hA`. Establish `h5` using `exponent_le_upper D C hE u0 u`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `(hSl u0 u).1`. Unfold `K5v5 Data.SDiv Data.EDiv`. Apply the tactic sequence `try dsimp only`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma s_lower5 (hS : D.HidaSetting C) (hDIV : D.DIV C) (hE : EComp5 D C) (hCount : Count5 D C)
     (hSl : D.Slopes C) (hSN : QuotientSlopeBoundsWith D C Xpp) (u0 : U0) :
@@ -82,9 +82,9 @@ lemma s_lower5 (hS : D.HidaSetting C) (hDIV : D.DIV C) (hE : EComp5 D C) (hCount
   linarith
 
 /- English proof (translation)
-Establish `hA` using `D.sumA_nonneg C hS`. Establish `h1` using `exponent_le_upper D C hE u0 u'`. Establish `h2` using `exponent_ge_lower D C hE u0 u`. Establish `h3` using `(abs_le.mp (hH u0 u' u)).2`. Rewrite `h3` using `[Data.sum_aT_mul, Data.sum_aT_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `(abs_le.mp ((hCount u0 u).2.2 u')).2`. Establish `h5` using `mul_le_mul_of_nonneg_left h4 hA`. Unfold `Data.Vvar`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma Vvar_bound5 (hS : D.HidaSetting C) (hE : EComp5 D C) (hH : D.HComp C) (hCount : Count5 D C)
     (u0 : U0) (u u' : W u0) :
@@ -100,13 +100,13 @@ lemma Vvar_bound5 (hS : D.HidaSetting C) (hE : EComp5 D C) (hH : D.HComp C) (hCo
   linarith
 
 /- English proof (translation)
-Establish `hd` using `hS.2.2.2.2.2.2.2.2.2.1`. Establish `hs : ∀ u, (D.muMaxN u0 u - D.h u0 u - D.K3 C) - wmean (D.d u0) (Lo5 D C Xpp u0) ≤ D.s u0`. Introduce `u`. Unfold `Data.s`. Use `sub_wmean_le (hd u0) _ (fun u' => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(hSN u0 u).1`. Establish `h2` using `(hSN u0 u').2`. Establish `h3` using `(hSl u0 u).2`. Establish `h4` using `(hSl u0 u').1`. Establish `h5` using `Vvar_bound5 D C hS hE hH hCount u0 u u'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Data.K3`. Apply the tactic sequence `try dsimp only`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Data.uF`. Establish `hsup` using `Finset.sup'_le (Finset.univ_nonempty (α := W u0)) (fun u : W u0 => D.muMaxN u0 u - D.h u0 u) (a := D.s u0 + (D.K3 C + wmean (D.d u0) (Lo5 D C Xpp u0))) (fun u _ => by have := hs u; linarith)`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 lemma u_function_le_mean (hS : D.HidaSetting C) (hE : EComp5 D C) (hH : D.HComp C) (hCount : Count5 D C)
     (hSl : D.Slopes C) (hSN : QuotientSlopeBoundsWith D C Xpp) (u0 : U0) :
@@ -133,7 +133,7 @@ lemma u_function_le_mean (hS : D.HidaSetting C) (hE : EComp5 D C) (hH : D.HComp 
   linarith
 
 /- English proof (translation)
-Establish `h` using `D.key_identity C hv hf u0 hw`. Unfold `Data.abelian₂ at h`. Unfold `Lam5`. Take the linear combination `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma key_identity5 (hv : 0 < D.v) (hf : 0 < f) (u0 : U0) (hw : ∀ j ρ, 0 < D.w u0 j ρ) :
     D.SDiv - D.sumA * Lam5 D C u0 + (m : ℝ) * D.sumA * D.lg =
@@ -144,15 +144,15 @@ lemma key_identity5 (hv : 0 < D.v) (hf : 0 < f) (u0 : U0) (hw : ∀ j ρ, 0 < D.
   linear_combination h
 
 /- English proof (translation)
-Establish `hsl` using `s_lower5 D C Xpp hS hDIV hE hCount hSl hSN u0`. Establish `huF0` using `D.uF_nonneg C hS u0`. Establish `huF` using `u_function_le_mean D C Xpp hS hE hH hCount hSl hSN u0`. Take `⟨hx, hb, -, -, -, hv, hf, -, hw, -, -, -, -, hdelBar, hetaBar, heBar0, heBar⟩` from `hS`. Establish `hid` using `key_identity5 D C hv hf u0 (hw u0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hdel0, hdelle, heta0, hetale, he0, hele⟩` from `hFP u0`. Take `⟨hHH1, hHH2, hHH3⟩` from `hHH u0`. Establish `hSI'` using `hSI u0 hdel0 (by linarith) heta0 he0 (by linarith) hHH1 hHH2`. Establish `hX : 0 < D.x ^ C.cHH` using `Real.rpow_pos_of_pos hx _`. Establish `hphi` using `phi_bound huF0 hHH2 hHH3 hb hX huF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0 : 0 ≤ 4 * D.uF u0 * Real.log (1 + D.HH u0 / D.uF u0)` using `mul_nonneg (by linarith) (Real.log_nonneg (by have := div_nonneg hHH2.le huF0; linarith))`. Establish `hsq : Real.sqrt (D.e u0) ≤ Real.sqrt D.eBar` using `Real.sqrt_le_sqrt hele`. Establish `hc0 : 0 ≤ D.η u0 + 4 * Real.sqrt (D.e u0)` using `add_nonneg heta0 (mul_nonneg (by norm_num) (Real.sqrt_nonneg _))`. Establish `hc1 : 0 ≤ D.etaBar + 4 * Real.sqrt D.eBar` using `add_nonneg hetaBar (mul_nonneg (by norm_num) (Real.sqrt_nonneg _))`. Establish `hB : (D.η u0 + 4 * Real.sqrt (D.e u0)) * D.HH u0 ≤ (D.etaBar + 4 * Real.sqrt D.eBar) * (D.x ^ C.cHH * D.b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hB0 : 0 ≤ (D.η u0 + 4 * Real.sqrt (D.e u0)) * D.HH u0` using `mul_nonneg hc0 hHH2.le`. Establish `hinv : (1 - D.del u0)⁻¹ ≤ (1 - D.delBar)⁻¹` using `inv_anti₀ (by linarith) (by linarith)`. Establish `hinv0 : 0 ≤ (1 - D.delBar)⁻¹` using `inv_nonneg.mpr (by linarith)`. Establish `hPhi : (1 - D.del u0)⁻¹ * (4 * D.uF u0 * Real.log (1 + D.HH u0 / D.uF u0) + (D.η u0 + 4 * Real.sqrt (D.e u0)) * D.HH u0) ≤ (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH) * (D.K3 C + wmean (D.d u0) (Lo5 D C Xpp u0) + D.b) + (D.etaBar + 4 * Real.sqrt D.eBar) * (D.x ^ C.cHH * D. …`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Unfold `K0v5`. Unfold `K5v5 at hsl`. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma Ga_bound5 (hS : D.HidaSetting C) (hDIV : D.DIV C) (hE : EComp5 D C)
     (hH : D.HComp C) (hCount : Count5 D C) (hSl : D.Slopes C) (hSN : QuotientSlopeBoundsWith D C Xpp)
@@ -204,7 +204,7 @@ lemma Ga_bound5 (hS : D.HidaSetting C) (hDIV : D.DIV C) (hE : EComp5 D C)
   linarith
 
 /- English proof (translation)
-Take `⟨-, -, ha, hb', hk, -, -, -, -, hd, -, -, hcSl1, -⟩` from `hS`. Use `wmean_le_const (hd u0) _ (fun u => ?_)` and prove the remaining obligations. Establish `hc : 0 ≤ C.cSl1 * D.nT * (m : ℝ) * (D.a / D.k + D.b')` using `mul_nonneg (mul_nonneg (mul_nonneg hcSl1 D.nT_nonneg) (Nat.cast_nonneg _)) (add_nonneg (div_nonneg ha hk.le) hb')`. Establish `h1` using `mul_le_mul_of_nonneg_left (hCount u0 u).2.1 hc`. Unfold `Lo5 K7v5`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -222,13 +222,13 @@ lemma weighted_mean_lower_bound_le (hS : D.HidaSetting C) (hCount : Count5 D C) 
 end
 
 /- English proof (translation)
-Introduce `hS hDIV hE hH hCount hSl hSN hLoss hSI hHH hFP u0`. Establish `hx : 0 < D.x` using `hS.1`. Establish `hdelBar : D.delBar < 1` using `hS.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hcSl1 : 0 ≤ C.cSl1` using `hS.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hinv0 : 0 ≤ (1 - D.delBar)⁻¹` using `inv_nonneg.mpr (by linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : 0 < D.x ^ C.cHH` using `Real.rpow_pos_of_pos hx _`. Establish `hLX : 0 ≤ Real.log (1 + D.x ^ C.cHH)` using `Real.log_nonneg (by linarith)`. Establish `hc4 : 0 ≤ (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH))` using `mul_nonneg hinv0 (mul_nonneg (by norm_num) hLX)`. Establish `h1` using `Ga_bound5 D C Xpp hS hDIV hE hH hCount hSl hSN hSI hHH hFP u0`. Establish `h2` using `weighted_mean_lower_bound_le D C Xpp hS hCount u0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIO` using `mul_le_mul_of_nonneg_left (hLoss u0).2 hcSl1`. Establish `hML : wmean (D.d u0) (Lo5 D C Xpp u0) ≤ MLo5 D C Xpp`. Unfold `MLo5`. Unfold `K7v5 at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3` using `mul_le_mul_of_nonneg_left hML hc4`. Establish `h4` using `(hLoss u0).1`. Unfold `Data.K3 at h1`. Unfold `K0v5 Data.EDiv at h1`. Unfold `ErrX5at UBar5`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -257,15 +257,15 @@ theorem each_unit_bound_statement {U0 : Type} [Fintype U0] {W : U0 → Type}
   linarith
 
 /- English proof (translation)
-Introduce `hne hS hDIV hE hH hCount hSl hSN hLoss hSI hHH hFP`. Use `hne` as an intermediate fact. Establish `hx : 0 < D.x` using `hS.1`. Establish `hdelBar : D.delBar < 1` using `hS.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hcSl1 : 0 ≤ C.cSl1` using `hS.2.2.2.2.2.2.2.2.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv0 : 0 ≤ (1 - D.delBar)⁻¹` using `inv_nonneg.mpr (by linarith)`. Establish `hX : 0 < D.x ^ C.cHH` using `Real.rpow_pos_of_pos hx _`. Establish `hLX : 0 ≤ Real.log (1 + D.x ^ C.cHH)` using `Real.log_nonneg (by linarith)`. Establish `hc4 : 0 ≤ (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH))` using `mul_nonneg hinv0 (mul_nonneg (by norm_num) hLX)`. Establish `hp : 0 ≤ (1 + (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH))) * C.cSl1` using `mul_nonneg (by linarith) hcSl1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGa : ∀ u0, D.Ga u0 ≤ D.Main u0 + Real.log (Fintype.card (W u0) : ℝ) + ((1 + (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH))) * C.cSl1) * D.IO u0 + 0 * D.IO u0 + (K0v5 D C + (1 + (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH))) * K7v5 D C Xpp + (1 - D.delBar)⁻¹ * (4 * Rea …`. Introduce `u0`. Establish `h1` using `Ga_bound5 D C Xpp hS hDIV hE hH hCount hSl hSN hSI hHH hFP u0`. Establish `h2` using `weighted_mean_lower_bound_le D C Xpp hS hCount u0`. Establish `h3` using `mul_le_mul_of_nonneg_left h2 hc4`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `umean_le_comb (X := D.Ga) (A := D.Main) (B := fun u0 => Real.log (Fintype.card (W u0) : ℝ)) (P := D.IO) (E := D.IO) _ _ _ hGa`. Establish `h2` using `umean_le_comb (X := D.ASK) (A := fun u0 => D.ASK u0 - D.Ga u0) (B := D.Ga) (P := D.Ga) (E := D.Ga) 0 0 0 (fun i => by show D.ASK i ≤ (D.ASK i - D.Ga i) + D.Ga i + 0 * D.Ga i + 0 * D.Ga i + 0 linarith)`. Establish `h3` using `mul_le_mul_of_nonneg_left hLoss.2 hp`. Establish `h4` using `hLoss.1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `K0v5 Data.K3 K7v5 Data.EDiv at h1`. Unfold `errorTermWith UBar5 MLo5`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem weighted_mean_bound_statement {U0 : Type} [Fintype U0] {W : U0 → Type}
     [∀ u0, Fintype (W u0)] [∀ u0, Nonempty (W u0)] {Top : Type} [Fintype Top] {m f : ℕ}
@@ -306,7 +306,7 @@ theorem weighted_mean_bound_statement {U0 : Type} [Fintype U0] {W : U0 → Type}
   linarith
 
 /- English proof (translation)
-Introduce `hne hS hDIV hE hH hCount hSl hSN hLoss hSI hHH hFP`. Conclude with `weighted_mean_bound_statement D C Xpp hne hS hDIV hE hH hCount hSl hSN (losses_of_losses5 D C hLoss) hSI hHH hFP`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem uniform_bound_statement {U0 : Type} [Fintype U0] {W : U0 → Type}
     [∀ u0, Fintype (W u0)] [∀ u0, Nonempty (W u0)] {Top : Type} [Fintype Top] {m f : ℕ}

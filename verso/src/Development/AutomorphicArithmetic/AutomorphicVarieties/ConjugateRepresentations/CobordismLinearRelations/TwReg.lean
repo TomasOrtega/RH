@@ -5,9 +5,9 @@ open UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit Upper
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ a n π μ m hμ hm hr ν hν`. Use `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun t => ?_` and prove the remaining obligations. Establish `e` using `((hμ t).twist ν).infChar_eq`. Rewrite using `[e, (InfType.expo_of_infType E ν).2.1 _ hν t]`. Take `⟨-, h1, h2⟩` from `hr t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨(Multiset.nodup_of_le (hm t) h1).map (add_left_injective _), fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hz`. Take `⟨k, rfl⟩` from `h2 y (Multiset.mem_of_le (hm t) hy)`. Conclude with `⟨k, by push_cast; ring⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Cj.twReg :
     UpperTheory.V.Cj.TwReg := by

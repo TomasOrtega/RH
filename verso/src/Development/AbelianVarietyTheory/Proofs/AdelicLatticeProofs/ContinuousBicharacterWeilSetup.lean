@@ -8,9 +8,9 @@ open scoped ContDiff
 namespace GlobalTheory.HeisenbergGaussianSeries
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegralPointNormSquareBound.exists_pos_mul_norm_sq_le`. Consider the case `exact _root_.GlobalTheory.IntegralPointNormSquareBound.exists_pos_mul_norm_sq_le`. Consider the case `(apply _root_.GlobalTheory.IntegralPointNormSquareBound.exists_pos_mul_norm_sq_le <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegralPointNormSquareBound.exists_pos_mul_norm_sq_le <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntegralPointNormSquareBound.exists_pos_mul_norm_sq_le <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralPointNormSquareBound.exists_pos_mul_norm_sq_le ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_coercive {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (om : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (J : V →ₗ[ℝ] V) (hpos : ∀ v, v ≠ 0 → 0 < om v (J v)) :
@@ -24,7 +24,7 @@ theorem exists_coercive {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [F
   | (intros; exact _root_.GlobalTheory.IntegralPointNormSquareBound.exists_pos_mul_norm_sq_le ..)
 
 /- English proof (translation)
-Set `m : V →ₗ[ℝ] V →ₗ[ℝ] ℂ` to `LinearMap.mk₂ ℝ (fun y v => -(Real.pi : ℂ) * (Complex.I * (om y v : ℝ) + (om y (J v) : ℝ))) (by intro a b v; simp; ring) (by intro a b v; simp; ring) (by intro a b v; simp; ring) (by intro a b v; simp; ring)`. Conclude with `⟨LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap (𝕜 := ℝ) (E := V) (F' := ℂ)).toLinearMap ∘ₗ m), fun y v => rfl⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_exponent {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (om : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (J : V →ₗ[ℝ] V) :
@@ -39,7 +39,7 @@ theorem exists_exponent {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [F
     fun y v => rfl⟩
 
 /- English proof (translation)
-Set `B : V →L[ℝ] V →L[ℝ] ℝ` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap (𝕜 := ℝ) (E := V) (F' := ℝ)).toLinearMap ∘ₗ om)`. Establish `h1 : ContDiff ℝ ∞ fun v : V => B v (LinearMap.toContinuousLinearMap J v)` using `B.contDiff.clm_apply (LinearMap.toContinuousLinearMap J).contDiff`. Conclude with `h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_bilin {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (om : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (J : V →ₗ[ℝ] V) :
@@ -51,7 +51,7 @@ theorem contDiff_bilin {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [Fi
   exact h1
 
 /- English proof (translation)
-Use `hd (x + y)` as an intermediate fact. Rewrite `this` using `[hl, hr, hr, hd, hd]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem swap_mul {G : Type} [AddCommGroup G] (β : G → G → ℂ)
     (hl : ∀ x y z, β (x + y) z = β x z * β y z) (hr : ∀ x y z, β x (y + z) = β x y * β x z)
@@ -61,13 +61,13 @@ theorem swap_mul {G : Type} [AddCommGroup G] (β : G → G → ℂ)
   simpa using this
 
 /- English proof (translation)
-Take `⟨c, hc, hq⟩` from `exists_coercive om J hpos`. Establish `hs` using `GlobalTheory.GaussCoset.summable_gaussian_coset G V p Γ U₀ hinj hfin (Real.pi / 2 * c) (by positivity) (|R| * ‖M‖) w y`. Use `Summable.of_nonneg_of_le (fun g => by positivity) (fun g => ?_) hs` and prove the remaining obligations. Distinguish the cases in `hg : (g : G) + w ∈ U₀`. Rewrite using `[Set.indicator_of_mem (by exact hg), norm_mul, norm_mul, hb, one_mul, Complex.norm_exp, Real.exp_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (-(Real.pi / 2 : ℂ) * (om (p g + y) (J (p g + y)) : ℝ)).re = -(Real.pi / 2) * om (p g + y) (J (p g + y))`. Establish `: (-(Real.pi / 2 : ℂ) * (om (p g + y) (J (p g + y)) : ℝ)) = ((-(Real.pi / 2) * om (p g + y) (J (p g + y)) : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.ofReal_re]`. Rewrite using `[h1]`. Establish `h2 : -(Real.pi / 2) * om (p g + y) (J (p g + y)) ≤ -(Real.pi / 2 * c) * ‖p g + y‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left (hq (p g + y)) (show 0 ≤ Real.pi / 2 by positivity)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : R * ‖M (p g + y)‖ ≤ |R| * ‖M‖ * ‖p g + y‖`. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul (le_abs_self R) (M.le_opNorm _) (norm_nonneg _) (abs_nonneg _)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul ?_ (Real.exp_le_exp.mpr h3) (by positivity) (by positivity)` and prove the remaining obligations. Conclude with `(mul_le_of_le_one_left (by positivity) (hχ1 _)).trans (Real.exp_le_exp.mpr h2)`. Rewrite using `[Set.indicator_of_notMem (by exact hg), hχ0 _ hg]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem summable_coeff {G V : Type} [AddCommGroup G] [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] (p : G →+ V) (om : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (J : V →ₗ[ℝ] V)
@@ -115,9 +115,9 @@ variable {G V : Type} [AddCommGroup G] [AddCommGroup V] [Module ℝ V]
     {Γ : AddSubgroup G} {χ : G → ℂ}
 
 /- English proof (translation)
-Unfold `series`. Rewrite using `[← tsum_mul_left]`. Use `Eq.trans ?_ ((Equiv.addRight (⟨g₀, hg₀⟩ : Γ)).tsum_eq _)` and prove the remaining obligations. Use `tsum_congr fun g => ?_` and prove the remaining obligations. Establish `e1 : p g + (a + p (g₀ + w)) = p (g + g₀) + (a + p w)` using `by simp only [map_add]; abel`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Equiv.coe_addRight, AddSubgroup.coe_add]`. Rewrite using `[e1, hr g g₀ w, hΓ g g.2 g₀ hg₀, hl g g₀ w, add_assoc (g : G) g₀ w]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem series_quasi
     (hl : ∀ x y z, β (x + y) z = β x z * β y z) (hr : ∀ x y z, β x (y + z) = β x y * β x z)
@@ -133,9 +133,9 @@ theorem series_quasi
   ring
 
 /- English proof (translation)
-Unfold `series`. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun g => ?_` and prove the remaining obligations. Establish `h1 : β (ι a) u = 1`. Use `swap_mul β hl hr hd (ι a) u` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hβ u a, hu]`. Simplify using `using this`. Rewrite using `[← hχ (g + w), ← add_assoc (g : G) w u, hr (ι a) (g + w) u, h1, hr g w u, hl g w u, map_add p w u, hu, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem series_inv
     (hl : ∀ x y z, β (x + y) z = β x z * β y z) (hr : ∀ x y z, β x (y + z) = β x y * β x z)
@@ -156,13 +156,13 @@ theorem series_inv
   ring
 
 /- English proof (translation)
-Unfold `series`. Rewrite using `[← tsum_mul_left, ← tsum_mul_left]`. Use `tsum_congr fun g => ?_` and prove the remaining obligations. Establish `e1 : p g + (a + p (w + ι v)) = (p g + (a + p w)) + v` using `by rw [map_add, hp]; abel`. Establish `e2 : β w (ι v) * β g (ι v) * β (ι a) (ι v) = Complex.exp (-(Real.pi * Complex.I) * (om (p g + (a + p w)) v : ℝ))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hl, ← hl, hβ, map_add p, map_add p, hp]`. Use `congr 5`. Normalize the expressions using the abelian group laws. Rewrite using `[e1, ← add_assoc (g : G) w, hχ, hr (ι a) (g + w), hr g w, hM]`. Use `set y := p g + (a + p w)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : Complex.exp (-(Real.pi * Complex.I) * (om y v : ℝ)) * Complex.exp (-(Real.pi / 2 : ℂ) * (om (y + v) (J (y + v)) : ℝ)) = Complex.exp (-(Real.pi / 2 : ℂ) * (om v (J v) : ℝ)) * Complex.exp (-(Real.pi / 2 : ℂ) * (om y (J y) : ℝ)) * Complex.exp (-(Real.pi : ℂ) * (Complex.I * (om …`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [map_add, LinearMap.add_apply, hsym v y]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(β g w * β (ι a) (g + w) * χ (g + w) * Complex.exp (-(Real.pi / 2 : ℂ) * (om (y + v) (J (y + v)) : ℝ))) * e2 + (β g w * β (ι a) (g + w) * χ (g + w)) * e3`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem series_expand (hp : ∀ v, p (ι v) = v)
     (hl : ∀ x y z, β (x + y) z = β x z * β y z) (hr : ∀ x y z, β x (y + z) = β x y * β x z)
@@ -200,11 +200,11 @@ theorem series_expand (hp : ∀ v, p (ι v) = v)
     (β g w * β (ι a) (g + w) * χ (g + w)) * e3
 
 /- English proof (translation)
-Unfold `series`. Use `tsum_congr fun g => ?_` and prove the remaining obligations. Establish `h1 : β (ι a) g = Complex.exp (Real.pi * Complex.I * (om (p g) a : ℝ))`. Use `swap_mul β hl hr hd (ι a) g` as an intermediate fact. Rewrite `this` using `[hβ g a]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[eq_inv_of_mul_eq_one_left this, ← Complex.exp_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : Complex.exp (2 * Real.pi * Complex.I * (om (p g) a : ℝ)) = Complex.exp (Real.pi * Complex.I * (om (p g) a : ℝ)) * Complex.exp (Real.pi * Complex.I * (om (p g) a : ℝ))`. Rewrite using `[← Complex.exp_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hχ, hr, h1, h2, hβ, hβ, hp, hp, add_neg_cancel, add_zero]`. Simplify using `[halt]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem series_neg (hp : ∀ v, p (ι v) = v)
     (hl : ∀ x y z, β (x + y) z = β x z * β y z) (hr : ∀ x y z, β x (y + z) = β x y * β x z)
@@ -231,33 +231,29 @@ theorem series_neg (hp : ∀ v, p (ι v) = v)
 end
 
 /- English proof (translation)
-Introduce `G V _ _ _ _ _ _ p ι β om J Γ U₀ U χ hpc hιc hp hl hr hd hn hβc hβ halt hJ hsym hpos hΓ hinj _ hfin hχ0 hχ1 hχz hχι hU hUinv`. Take `⟨M, hM⟩` from `exists_exponent om J`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : V, series p ι β om J Γ χ a (ι (-a)) ≠ 0 := by`. Establish `hs` using `summable_coeff p om J Γ U₀ χ hpos hinj hfin hχ0 hχ1 (fun _ => 1) (by simp) 0 0 M 0`. Simplify using `only [one_mul, add_zero, zero_mul, Real.exp_zero, mul_one] at hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨a, ha⟩` from `GlobalTheory.charSeries_exists_ne_zero V Γ (fun g a => Complex.exp (2 * Real.pi * Complex.I * (om (p g) a : ℝ))) (fun g => χ g * Complex.exp (-(Real.pi / 2 : ℂ) * (om (p g) (J (p g)) : ℝ))) 0 (fun g a b => by rw [← Complex.exp_add]; congr 1; simp only [map_add]; push_cast; ring) …`. Establish `: (2 * Real.pi * Complex.I * (om (p g) a : ℝ) : ℂ) = ((2 * Real.pi * om (p g) a : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_exp_ofReal_mul_I])`. Use the proof step `(fun a => by simp)`. Use the proof step `(fun g hg => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : p g ≠ 0` using `fun h => hg (Subtype.ext (hinj g g.2 h))`. Establish `h2` using `(hpos _ h1).ne'`. Use `⟨(2 * om (p g) (J (p g)))⁻¹ • J (p g), ?_⟩` and prove the remaining obligations. Establish `h3 : om (p g) ((2 * om (p g) (J (p g)))⁻¹ • J (p g)) = 1 / 2`. Rewrite using `[map_smul, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Simplify using `only [h3]`. Rewrite using `[← Complex.exp_pi_mul_I]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use the proof step `ring)`. Use `hs (by simp [hχz])`. Conclude with `⟨a, by rw [series_neg hp hl hr hd hβ halt hχι]; exact ha⟩`. Establish `hexp` using `fun w : G => GlobalTheory.expSeries_contDiff_and_hasDerivAt V Γ (fun g => β g w * β (ι a) (g + w) * χ (g + w) * Complex.exp (-(Real.pi / 2 : ℂ) * (om (p g + (a + p w)) (J (p g + (a + p w))) : ℝ))) (fun g => M (p g + (a + p w))) (summable_coeff p om J Γ U₀ χ hpos hinj hfin hχ0 hχ1 …`. Establish `hexpand` using `series_expand (Γ := Γ) hp hl hr hβ hsym hχι (fun y v => M y v) hM a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : ∀ x y, β x y ≠ 0` using `fun x y h => by simpa [h] using hn x y`. Establish `hgauss : ContDiff ℝ ∞ fun v : V => Complex.exp (-(Real.pi / 2 : ℂ) * (om v (J v) : ℝ))` using `(contDiff_const.mul (Complex.ofRealCLM.contDiff.comp (contDiff_bilin om J))).cexp`. Establish `hsmooth : ∀ w, ContDiff ℝ ∞ fun v : V => series p ι β om J Γ χ a (w + ι v)`. Introduce `w`. Establish `h1 : ContDiff ℝ ∞ fun v : V => Complex.exp (Real.pi * Complex.I * (om (p w) v : ℝ))` using `(contDiff_const.mul (Complex.ofRealCLM.contDiff.comp (LinearMap.toContinuousLinearMap (om (p w))).contDiff)).cexp`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `h1.mul (hgauss.mul (hexp w).1)`. Use `(congrArg (ContDiff ℝ ∞) (funext fun v => ?_)).mp h2` and prove the remaining obligations. Rewrite using `[← hexpand w v, hβ, ← mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules. Use `⟨series p ι β om J Γ χ a, fun h => ha (by rw [h]; rfl), ?_, fun g hg w => series_quasi hl hr hΓ a g hg w, fun u hu hχ w => series_inv hl hr hd hβ a u hu hχ w, hsmooth, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `w`. Establish `hc1 : Continuous fun x : G => p (x - w)` using `hpc.comp (continuous_id.sub continuous_const)`. Establish `hc2 : Continuous fun x : G => β (w + ι (p (x - w))) ((x - w) - ι (p (x - w)))` using `hβc.comp (f := fun x : G => (w + ι (p (x - w)), (x - w) - ι (p (x - w)))) ((continuous_const.add (hιc.comp hc1)).prodMk ((continuous_id.sub continuous_const).sub (hιc.comp hc1)))`. Establish `hc3 : Continuous fun x : G => (β (w + ι (p (x - w))) ((x - w) - ι (p (x - w))))⁻¹ * series p ι β om J Γ χ a (w + ι (p (x - w)))` using `(hc2.inv₀ fun x => hne _ _).mul ((hsmooth w).continuous.comp hc1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hc3.continuousAt.congr ?_` and prove the remaining obligations. Establish `hnhds : ∀ᶠ x in nhds w, x - w ∈ U`. Establish `: IsOpen {x : G | x - w ∈ U}` using `hU.preimage (continuous_id.sub continuous_const)`. Conclude with `this.mem_nhds (by simp)`. Use `filter_upwards [hnhds] with x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `series_inv (Γ := Γ) (J := J) hl hr hd hβ a ((x - w) - ι (p (x - w))) (by rw [map_sub p, hp, sub_self]) (hUinv _ hx) (w + ι (p (x - w)))`. Rewrite using `[← h, ← mul_assoc, inv_mul_cancel₀ (hne _ _), one_mul]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Introduce `w z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hder : ∀ z : V, HasDerivAt (fun t : ℝ => β w (ι (t • z)) * series p ι β om J Γ χ a (w + ι (t • z))) (∑' g : Γ, (β g w * β (ι a) (g + w) * χ (g + w) * Complex.exp (-(Real.pi / 2 : ℂ) * (om (p g + (a + p w)) (J (p g + (a + p w))) : ℝ))) * M (p g + (a + p w)) z) 0`. Introduce `z`. Establish `g1 : HasDerivAt (fun t : ℝ => Complex.exp (-(Real.pi / 2 : ℂ) * (om (t • z) (J (t • z)) : ℝ))) 0 0`. Establish `g0 : HasDerivAt (fun t : ℝ => om (t • z) (J (t • z))) 0 0`. Use `((hasDerivAt_id (0 : ℝ)).mul (hasDerivAt_id (0 : ℝ))).mul_const (om z (J z))` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(this.congr_deriv (by simp)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `[mul_assoc]`. Conclude with `(g0.ofReal_comp.const_mul (-(Real.pi / 2 : ℂ))).cexp.congr_deriv (by simp)`. Establish `g2` using `g1.mul ((hexp w).2 z).2`. Simplify using `only [hexpand]`.
-
-Conclude with `g2.congr_deriv (by simp)`. Rewrite using `[(hder z).deriv, (hder (J z)).deriv, ← tsum_mul_left, ← ((hexp w).2 z).1.tsum_add (((hexp w).2 (J z)).1.mul_left Complex.I)]`. Use `(tsum_congr fun g => ?_).trans tsum_zero` and prove the remaining obligations. Rewrite using `[hM, hM, hJ, map_neg]`. Use `push_cast`.
-
-Take the linear combination `(-(Real.pi : ℂ) * (β g w * β (ι a) (g + w) * χ (g + w) * Complex.exp (-(Real.pi / 2 : ℂ) * (om (p g + (a + p w)) (J (p g + (a + p w))) : ℝ))) * (om (p g + (a + p w)) (J z) : ℝ)) * Complex.I_mul_I`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_theta : ∀ (G V : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (p : G →+ V) (ι : V →+ G) (β : G → G → ℂ) (om : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (J : V →ₗ[ℝ] V) (Γ U₀ U : AddSubgroup G) (χ : G → ℂ), Continuous p → Continuous ι → (∀ v, p (ι v) = v) → (∀ x y z, β (x + y) z = β x z * β y z) → (∀ x y z, β x (y + z) = β x y * β x z) → (∀ x, β x x = 1) → (∀ x y, ‖β x y‖ = 1) → Continuous (fun q : G × G => β q.1 q.2) → (∀ x v, β x (ι v) = Complex.exp (-(Real.pi * Complex.I) * (om (p x) v : ℝ))) → (∀ v, om v v = 0) → (∀ v, J (J v) = -v) → (∀ x y, om x (J y) = om y (J x)) → (∀ v, v ≠ 0 → 0 < om v (J v)) → (∀ g ∈ Γ, ∀ g' ∈ Γ, β g g' = 1) → (∀ g ∈ Γ, p g = 0 → g = 0) → (∀ v, ι v ∈ U₀) → (∀ R : ℝ, {g : G | g ∈ Γ ∧ g ∈ U₀ ∧ ‖p g‖ ≤ R}.Finite) → (∀ x, x ∉ U₀ → χ x = 0) → (∀ x, ‖χ x‖ ≤ 1) → χ 0 = 1 → (∀ x v, χ (x + ι v) = χ x) → IsOpen (U : Set G) → (∀ u ∈ U, ∀ x, β x (u - ι (p u)) * χ (x + (u - ι (p u))) = χ x) → ∃ f : G → ℂ, f ≠ 0 ∧ Continuous f ∧ (∀ g ∈ Γ, ∀ w, β g w * f (g + w) = f w) ∧ (∀ u, p u = 0 → (∀ x, β x u * χ (x + u) = χ x) → ∀ w, β w u * f (w + u) = f w) ∧ (∀ w, ContDiff ℝ ∞ fun v : V => f (w + ι v)) ∧ ∀ w z, deriv (fun t : ℝ => β w (ι (t • z)) * f (w + ι (t • z))) 0 + Complex.I * deriv (fun t : ℝ => β w (ι (t • J z)) * f (w + ι (t • J z))) 0 = 0 := by
   intro G V _ _ _ _ _ _ p ι β om J Γ U₀ U χ hpc hιc hp hl hr hd hn hβc hβ halt hJ hsym hpos hΓ hinj

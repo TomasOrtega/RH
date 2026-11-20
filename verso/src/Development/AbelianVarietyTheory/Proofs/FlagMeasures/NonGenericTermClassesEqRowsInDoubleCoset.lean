@@ -19,7 +19,7 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hx`. Conclude with `hx y hy`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orth_apply {U : Submodule E S.V} {x : S.V} (hx : x ∈ orth S U) {y : S.V} (hy : y ∈ U) :
     S.hT y x = 0 := by
@@ -27,16 +27,16 @@ theorem orth_apply {U : Submodule E S.V} {x : S.V} (hx : x ∈ orth S U) {y : S.
   exact hx y hy
 
 /- English proof (translation)
-Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_orth_of {U : Submodule E S.V} {x : S.V} (h : ∀ y ∈ U, S.hT y x = 0) : x ∈ orth S U := by
   simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker]
   exact h
 
 /- English proof (translation)
-Use `mem_orth_of fun y hy => ?_` and prove the remaining obligations. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨a, rfl⟩ := hy`. Conclude with `hx a`. Consider the case `zero => simp`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y y' _ _ h h' => simp [h, h']`. Consider the case `smul c y _ h => simp [h]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_orth_Xsp {T : E} (F : LFlag S r T) (x : S.V) (hx : ∀ a, S.hT (F.fl.e a) x = 0) :
     x ∈ orth S (Xsp F) := by
@@ -48,9 +48,9 @@ theorem mem_orth_Xsp {T : E} (F : LFlag S r T) (x : S.V) (hx : ∀ a, S.hT (F.fl
   | smul c y _ h => simp [h]
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b, rfl⟩` from `hy`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => rw [FlagG.fvec, Fin.snoc_last, ← S.herm.eq, F.fl.z_orth b, map_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `cast a => rw [FlagG.fvec, Fin.snoc_castSucc]`. Conclude with `F.fl.e_iso a b`. Consider the case `zero => simp`. Consider the case `add y y' _ _ h h' => simp [h, h']`. Consider the case `smul c y _ h => simp [h]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem frame_orth_Xsp {T : E} (F : LFlag S r T) (i : Fin (r + 1)) (y : S.V) (hy : y ∈ Xsp F) :
     S.hT (F.fl.fvec i) y = 0 := by
@@ -65,7 +65,7 @@ theorem frame_orth_Xsp {T : E} (F : LFlag S r T) (i : Fin (r + 1)) (y : S.V) (hy
   | smul c y _ h => simp [h]
 
 /- English proof (translation)
-Unfold `mapLF`. Rewrite using `[dif_pos hγ]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp [FlagG.fvec, mapFlag]`. Consider the case `cast a => simp [FlagG.fvec, mapFlag]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mapLF_fvec {T : E} (γ : S.V ≃ₗ[E] S.V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : LFlag S r T)
     (i : Fin (r + 1)) : (mapLF γ F).fl.fvec i = γ (F.fl.fvec i) := by
@@ -82,9 +82,9 @@ section NR
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Rewrite using `[FlagG.fvec, Fin.snoc_last]`. Conclude with `hn.2.2 _ (mem_orth_Xsp F _ F.fl.z_orth)`. Consider the case `cast a`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FlagG.fvec, Fin.snoc_castSucc]`. Establish `h1 : F.fl.e a ∈ Xflag F (a.1 + 1)` using `Submodule.subset_span ⟨a, by show a.1 < a.1 + 1; omega, rfl⟩`. Conclude with `Submodule.span_mono (Set.image_subset_range _ _) (hn.2.1 a.1 _ h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nrat_fvec_sub {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {n : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hn : n ∈ NRat F) (i : Fin (D.R.rS + 1)) : n (F.fl.fvec i) - F.fl.fvec i ∈ Xsp F := by
@@ -99,11 +99,11 @@ theorem nrat_fvec_sub {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {n : (VS D).V �
     exact Submodule.span_mono (Set.image_subset_range _ _) (hn.2.1 a.1 _ h1)
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Establish `h` using `nrat_fvec_sub F hn a.castSucc`. Rewrite `h` using `[FlagG.fvec, Fin.snoc_castSucc]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : F.fl.e a ∈ Xsp F` using `Submodule.subset_span ⟨a, rfl⟩`. Simplify using `using (Xsp F).add_mem h h2`. Consider the case `zero => simp`. Consider the case `add y y' _ _ h h' => rw [map_add]`. Conclude with `add_mem h h'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c y _ h => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c h`.
+A detailed English derivation is pending.
 -/
 theorem nrat_map_Xsp {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {n : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hn : n ∈ NRat F) (y : (VS D).V) (hy : y ∈ Xsp F) : n y ∈ Xsp F := by
@@ -119,7 +119,7 @@ theorem nrat_map_Xsp {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {n : (VS D).V �
   | smul c y _ h => rw [map_smul]; exact Submodule.smul_mem _ c h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_mem _, fun j x _ => by simp, fun x _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_NRat {T : D.host.E} (F : LFlag (VS D) D.R.rS T) : (1 : (VS D).V ≃ₗ[D.host.E] (VS D).V) ∈ NRat F :=
   ⟨one_mem _, fun j x _ => by simp, fun x _ => by simp⟩
@@ -135,31 +135,27 @@ section Terms
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Establish `hdim` using `Formalism.L2.SG.Corank.finrank_VS D`. Establish `hGv : Gval (lf D (X.Fu u)) t.frame ≠ 0`. Introduce `h`. Apply `ht.1` to reduce the goal to its premises. Use `show Formalism.L2.SG.TermOp.Gt t = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.L2.SG.TermOp.Gt`. Rewrite using `[if_pos ((Formalism.L2.SG.Pf.SatGram.gterm_G Y t).trans h)]`. Establish `hlat : Submodule.IsLattice D.host.E t.lam` using `((Y.rowsOK u).1 t.lam t.mem).2.1.1`. Establish `hLF : IsLift t.lam (lf D (X.Fu u))` using `((Y.rowsOK u).1 t.lam t.mem).2.1.2.2.1`. Establish `hLt : IsLift t.lam t.frame` using `t.rep.2.2.2.2.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL' : IsLift t.lam t'.frame` using `by rw [hlam]; exact t'.rep.2.2.2.2.1`. Establish `hiso : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Establish `hiso' : t'.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t'.rep.2.2.1`. Use `show Formalism.L2.SG.TermOp.s0T t t' = 1`. Unfold `Formalism.L2.SG.TermOp.s0T`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_pos ⟨hlam, hlam'⟩]`. Use `(Formalism.L2.SG.NGCut.CorankRelation.s0_eq_one_iff_Th_eq_Hp D.R.k hdim t.lam hlat _ t.frame t'.frame _ hLF hLt hGv).2 ?_` and prove the remaining obligations. Use `le_antisymm (PI.PairCorankPos.W.Th_le_Hp _ _ _ _ _) fun x hx => ?_` and prove the remaining obligations. Establish `hxo : ∀ i, (VS D).hT (Sum.elim (lf D (X.Fu u)).fl.fvec t.frame.fl.fvec i) x = 0` using `fun i => Formalism.L2.SG.NGCut.CorankRelation.hT_eq_zero_of_mem_Hp t.lam _ t.frame hx (PI.PairCorankPos.W.frame_mem_UUE t.lam hlat _ t.frame hLF hLt i)`. Establish `hxF : x ∈ orth (VS D) (Xsp (lf D (X.Fu u)))` using `mem_orth_Xsp _ x fun a => by simpa [FlagG.fvec] using hxo (Sum.inl a.castSucc)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxt : x ∈ orth (VS D) (Xsp t.frame)` using `mem_orth_Xsp _ x fun a => by simpa [FlagG.fvec] using hxo (Sum.inr a.castSucc)`. Establish `hXt : ∀ d ∈ Xsp (lf D (X.Fu u')), t.lin d ∈ Xsp t.frame` using `fun d hd => (Formalism.L2.SG.NGCut.CorankRelation.mem_Xsp_mapLF t.lin hiso (lf D (X.Fu u')) _).2 (by simpa using hd)`. Use `Submodule.mem_map.2 ⟨(x, n x), (Formalism.L2.SG.NGCut.CorankRelation.mem_ThPairs _ _ _ _ _ _).2 ⟨hx, ?_, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Use `Formalism.L2.SG.NGCut.CorankRelation.mem_Hp_of_orth t.lam _ t'.frame hLF hL' (n x) ?_` and prove the remaining obligations. Introduce and unpack `(a | b)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (VS D).hT ((lf D (X.Fu u)).fl.fvec a) (n x) = 0`. Establish `h1 : (VS D).hT ((lf D (X.Fu u)).fl.fvec a) x = 0` using `hxo (Sum.inl a)`. Establish `h2` using `frame_orth_Xsp (lf D (X.Fu u)) a _ (hn.2.2 x hxF)`. Establish `h3 : n x = x + (n x - x)` using `by abel`. Rewrite using `[h3, map_add, h1, h2, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show (VS D).hT (t'.frame.fl.fvec b) (n x) = 0`. Establish `hf : t'.frame.fl.fvec b = n (t.lin (n' ((lf D (X.Fu u')).fl.fvec b)))` using `by show (mapLF t'.lin (lf D (X.Fu u'))).fl.fvec b = _`. Rewrite using `[mapLF_fvec t'.lin hiso' _ b, he]`. Both sides reduce to the same expression. Rewrite using `[hf, hn.1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `nrat_fvec_sub (lf D (X.Fu u')) hn' b`. Establish `h4 : n' ((lf D (X.Fu u')).fl.fvec b) = (lf D (X.Fu u')).fl.fvec b + (n' ((lf D (X.Fu u')).fl.fvec b) - (lf D (X.Fu u')).fl.fvec b)` using `by abel`. Establish `h5 : (VS D).hT (t.lin ((lf D (X.Fu u')).fl.fvec b)) x = 0`. Use `hxo (Sum.inr b)` as an intermediate fact. Simplify using `only [Sum.elim_inr] at this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[show t.frame.fl.fvec b = t.lin ((lf D (X.Fu u')).fl.fvec b) from mapLF_fvec t.lin hiso _ b]`. Then use the resulting hypothesis. Rewrite using `[h4, map_add, map_add, LinearMap.add_apply, h5, orth_apply hxt (hXt _ hd), add_zero]`. Use `show x - n x ∈ Xsp (lf D (X.Fu u))`. Use `(Xsp (lf D (X.Fu u))).neg_mem (hn.2.2 x hxF)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (t'.lin * t.lin⁻¹) x - n x ∈ Xsp t'.frame`. Use `(Formalism.L2.SG.NGCut.CorankRelation.mem_Xsp_mapLF t'.lin hiso' (lf D (X.Fu u')) _).2 ?_` and prove the remaining obligations. Use `set w := t.lin.symm x with hw`. Establish `hwx : t.lin w = x` using `by simp [hw]`. Establish `key : t'.lin (w - n'.symm w) = (t'.lin * t.lin⁻¹) x - n x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he]`. Use `show n (t.lin (n' (w - n'.symm w))) = n (t.lin (n' (t.lin.symm x))) - n x`. Rewrite using `[← hw, map_sub, LinearEquiv.apply_symm_apply, map_sub, map_sub, hwx]`. Rewrite using `[← key, LinearEquiv.symm_apply_apply]`. Establish `hwo : ∀ y ∈ Xsp (lf D (X.Fu u')), (VS D).hT y w = 0` using `fun y hy => by`.
-
-Rewrite using `[← hiso y w, hwx]`. Conclude with `orth_apply hxt (hXt y hy)`. Establish `hv : n'.symm w ∈ orth (VS D) (Xsp (lf D (X.Fu u')))`. Use `mem_orth_of fun y hy => ?_` and prove the remaining obligations. Rewrite using `[← hn'.1 y (n'.symm w), LinearEquiv.apply_symm_apply]`.
-
-Conclude with `hwo _ (nrat_map_Xsp _ hn' y hy)`. Establish `h6` using `hn'.2.2 _ hv`. Rewrite `h6` using `[LinearEquiv.apply_symm_apply]`. Conclude with `h6`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonGeneric_terms_same_coset_corank_one (t t' : TauC Y u u') (ht : t ∈ (Y.tO u u').ngSet) (hlam : t.lam = t'.lam)
     (hlam' : t.lam' = t'.lam') (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hn : n ∈ NRat (lf D (X.Fu u)))
@@ -240,15 +236,15 @@ theorem nonGeneric_terms_same_coset_corank_one (t t' : TauC Y u u') (ht : t ∈ 
     exact h6
 
 /- English proof (translation)
-Introduce `D X Y u u' hT t ht t' ht' hn`. Take `⟨hR, hS, hTr⟩` from `Formalism.L2.SG.NGCut.CorankRelation.corankOne_equivalence_holds D X Y u u' hT`. Establish `hiff : clsOf Y u u' t = clsOf Y u u' t' ↔ ((Y.tO u u').rowOf t = (Y.tO u u').rowOf t' ∧ (Y.tO u u').s0 t t' = 1)`. Prove the components needed by the constructor for the conclusion. Introduce `heq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : t' ∈ clsOf Y u u' t'` using `⟨ht', rfl, hR t' ht'⟩`. Rewrite `hm` using `[← heq]`. Conclude with `⟨hm.2.1.symm, hm.2.2⟩`. Introduce and unpack `⟨hr, hs⟩`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components.
 
-Simplify using `only [Formalism.L2.SG.RowsConc.clsOf, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hrx, hsx⟩`. Conclude with `⟨hx, hrx.trans hr, hTr t' ht' t ht x hx hr.symm hrx.symm (hS t ht t' ht' hr hs) hsx⟩`. Introduce and unpack `⟨hx, hrx, hsx⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hx, hrx.trans hr.symm, hTr t ht t' ht' x hx hr hrx.symm hs hsx⟩`. Rewrite using `[hiff]`. Use `⟨fun h => h.1, fun hr => ⟨hr, ?_⟩⟩` and prove the remaining obligations. Establish `hlam : t.lam = t'.lam` using `congrArg (fun r => (r.1 : Submodule (𝓞 D.host.E) (VS D).V)) hr`. Establish `hlam' : t.lam' = t'.lam'` using `congrArg (fun r => (r.2.1 : Submodule (𝓞 D.host.E) (VS D).V)) hr`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : t'.lin ∈ nmlOf Y u u' t`. Rewrite using `[hn]`. Conclude with `⟨1, one_mem_NRat _, 1, one_mem_NRat _, by simp⟩`. Take `⟨n, hnn, n', hnn', he⟩` from `hmem`. Conclude with `nonGeneric_terms_same_coset_corank_one t t' ht hlam hlam' n hnn n' hnn' he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem clsRow_ngSet : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ConcTie X Y →
     ClsRow (Y.tO u u').ngSet (clsOf Y u u') := by

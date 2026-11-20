@@ -20,7 +20,7 @@ namespace GlobalTheory.BalProj.Alg
 open Module
 
 /- English proof (translation)
-Rewrite using `[LinearMap.trace_eq_matrix_trace R (Matrix.stdBasis R (Fin n) (Fin n)), Matrix.trace, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, LinearMap.toMatrix_apply, Matrix.stdBasis_eq_single]`. Simplify using `[Matrix.stdBasis]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_matrix_end {R : Type} [CommRing R] {n : ℕ}
     (f : Matrix (Fin n) (Fin n) R →ₗ[R] Matrix (Fin n) (Fin n) R) :
@@ -37,7 +37,7 @@ def sand {R : Type} [CommRing R] {n : ℕ} (P Q : Matrix (Fin n) (Fin n) R) :
   map_smul' := fun r x => by simp
 
 /- English proof (translation)
-Rewrite using `[trace_matrix_end, Matrix.trace, Matrix.trace, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[sand, Matrix.mul_apply, Matrix.single_apply, ite_and]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem trace_sand {R : Type} [CommRing R] {n : ℕ} (P Q : Matrix (Fin n) (Fin n) R) :
     LinearMap.trace R _ (sand P Q) = P.trace * Q.trace := by
@@ -46,7 +46,7 @@ theorem trace_sand {R : Type} [CommRing R] {n : ℕ} (P Q : Matrix (Fin n) (Fin 
   simp [sand, Matrix.mul_apply, Matrix.single_apply, ite_and]
 
 /- English proof (translation)
-Rewrite using `[trace_matrix_end, Matrix.trace]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[sand, Matrix.mul_apply, Matrix.single_apply, ite_and, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem trace_sand_transpose {R : Type} [CommRing R] {n : ℕ} (P Q : Matrix (Fin n) (Fin n) R) :
     LinearMap.trace R _ (sand P Q ∘ₗ (Matrix.transposeLinearEquiv (Fin n) (Fin n) R R).toLinearMap) =
@@ -58,7 +58,7 @@ theorem trace_sand_transpose {R : Type} [CommRing R] {n : ℕ} (P Q : Matrix (Fi
   simp [sand, Matrix.mul_apply, Matrix.single_apply, ite_and, mul_comm]
 
 /- English proof (translation)
-Establish `: Module.Finite R N` using `Module.Finite.of_surjective r (fun x => ⟨x, LinearMap.congr_fun hr x⟩)`. Rewrite using `[← LinearMap.trace_baseChange, LinearMap.baseChange_comp, LinearMap.trace_comp_comm', ← LinearMap.baseChange_comp, hr, LinearMap.baseChange_id, LinearMap.trace_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_retract {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] [Module.Free R M]
     [Module.Finite R M] (N : Submodule R M) (r : M →ₗ[R] N) (hr : r ∘ₗ N.subtype = LinearMap.id)
@@ -75,7 +75,7 @@ variable {O R J : Type} [CommRing R] [Fintype J] {n : ℕ} {A : O → Matrix (Fi
   {P : J → Matrix (Fin n) (Fin n) R}
 
 /- English proof (translation)
-Rewrite `hv` using `[← sub_eq_zero, ← sub_smul]`. Conclude with `(h.smul_eq_zero).1 hv`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_unit {M : Type} [AddCommGroup M] [Module R M] {x y : R} (h : IsUnit (x - y)) {v : M}
     (hv : x • v = y • v) : v = 0 := by
@@ -83,7 +83,7 @@ theorem eq_zero_of_unit {M : Type} [AddCommGroup M] [Module R M] {x y : R} (h : 
   exact (h.smul_eq_zero).1 hv
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hs σ τ h`. Use `eq_zero_of_unit ha ?_` and prove the remaining obligations. Rewrite using `[← Matrix.smul_mul, ← hr, ← Matrix.mul_smul, ← hl, Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem orth (hl : ∀ τ a, A a * P τ = χ τ a • P τ) (hr : ∀ τ a, P τ * A a = χ τ a • P τ)
     (hs : ∀ σ τ, σ ≠ τ → ∃ a, IsUnit (χ σ a - χ τ a)) {σ τ : J} (h : σ ≠ τ) : P σ * P τ = 0 := by
@@ -92,15 +92,15 @@ theorem orth (hl : ∀ τ a, A a * P τ = χ τ a • P τ) (hr : ∀ τ a, P τ
   rw [← Matrix.smul_mul, ← hr, ← Matrix.mul_smul, ← hl, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hm : ∀ (x : R) (X : Matrix (Fin n) (Fin n) R), (x • X).map φ = φ x • X.map φ` using `fun x X => by`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hp : LinearMap.IsProj (eigSp (fun a => (A a).map φ) (fun a => φ (χ σ a))) (Matrix.toLin' ((P σ).map φ)ᵀ)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `c a`. Rewrite using `[Matrix.toLin'_apply, Matrix.mulVec_transpose, Matrix.vecMul_vecMul, ← Matrix.map_mul, hr, hm, Matrix.vecMul_smul]`. Introduce `c hc`. Establish `h0 : ∀ τ, τ ≠ σ → c ᵥ* (P τ).map φ = 0` using `fun τ h => by`. Take `⟨a, ha⟩` from `hs τ σ h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ha'` using `ha.map φ`. Rewrite `ha'` using `[map_sub]`. Use `eq_zero_of_unit ha' ?_` and prove the remaining obligations. Rewrite using `[← Matrix.vecMul_smul, ← hm, ← hl, Matrix.map_mul, ← Matrix.vecMul_vecMul, hc a, Matrix.smul_vecMul]`. Establish `h2 : ∑ τ, (P τ).map φ = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg φ.mapMatrix h1` as an intermediate fact. Rewrite `this` using `[map_sum, map_one]`. Conclude with `this`. Rewrite using `[Matrix.toLin'_apply, Matrix.mulVec_transpose]`. Use `conv_rhs => rw [← Matrix.vecMul_one c, ← h2, Matrix.vecMul_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single σ (fun τ _ h => h0 τ h) (by simp)]`. Rewrite using `[eigRank, ← hp.trace, Matrix.trace_toLin'_eq, Matrix.trace_transpose]`. Simplify using `[Matrix.trace]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eigRank_eq (h1 : ∑ τ, P τ = 1) (hl : ∀ τ a, A a * P τ = χ τ a • P τ)
     (hr : ∀ τ a, P τ * A a = χ τ a • P τ) (hs : ∀ σ τ, σ ≠ τ → ∃ a, IsUnit (χ σ a - χ τ a))
@@ -131,25 +131,23 @@ theorem eigRank_eq (h1 : ∑ τ, P τ = 1) (hl : ∀ τ a, A a * P τ = χ τ a 
   simp [Matrix.trace]
 
 /- English proof (translation)
-Set `T` to `(Matrix.transposeLinearEquiv (Fin n) (Fin n) R R).toLinearMap`. Set `S : Matrix (Fin n) (Fin n) R →ₗ[R] Matrix (Fin n) (Fin n) R` to `∑ τ, sand (P τ) (P (c τ))`. Establish `hS : ∀ Θ, S Θ = ∑ τ, (P τ)ᵀ * Θ * P (c τ)` using `fun Θ => by`. Simplify using `only [S, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Set `q : Matrix (Fin n) (Fin n) R →ₗ[R] Matrix (Fin n) (Fin n) R` to `u • (S + S ∘ₗ T)`. Establish `hq : ∀ Θ, q Θ = u • S (Θ + Θᵀ)` using `fun Θ => by`. Rewrite using `[map_add]`. Both sides reduce to the same expression. Establish `hmem : ∀ Θ, q Θ ∈ balanced bar A` using `fun Θ => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hq]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[hS]`. Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.transpose_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_bijective c (Function.Involutive.bijective hcc) _ _ fun τ => ?_` and prove the remaining obligations. Rewrite using `[hcc, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_add, Matrix.transpose_transpose, add_comm, Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_sum, Matrix.sum_mul]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.transpose_mul, hr, Matrix.mul_assoc _ (P (c τ)), hr, hb, hcc, Matrix.transpose_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : ∀ Θ ∈ balanced bar A, q Θ = Θ` using `fun Θ hΘ => by`. Establish `h0 : ∀ σ τ, τ ≠ c σ → (P σ)ᵀ * Θ * P τ = 0` using `fun σ τ h => by`. Take `⟨a, ha⟩` from `hs σ (c τ) (fun e => h (by rw [e, hcc]))`. Use `eq_zero_of_unit ha ?_` and prove the remaining obligations. Rewrite using `[← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.transpose_smul, ← hl, Matrix.transpose_mul, Matrix.mul_assoc _ _ Θ, hΘ.2 a, ← hb, ← Matrix.mul_smul, ← hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Establish `h2 : S Θ = Θ`. Rewrite using `[hS]`. Use `conv_rhs => rw [← Matrix.one_mul Θ, ← Matrix.transpose_one, ← h1, Matrix.transpose_sum, Matrix.sum_mul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← Matrix.mul_one ((P σ)ᵀ * Θ), ← h1, Matrix.mul_sum]`. Rewrite using `[Finset.sum_eq_single (c σ) (fun τ _ h => h0 σ τ h) (by simp)]`. Rewrite using `[hq, hΘ.1, map_add, h2, ← two_smul R, smul_smul, mul_comm, hu, one_smul]`. Use `⟨q.codRestrict _ hmem, ?_, ?_⟩` and prove the remaining obligations. Use `ext1 x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Subtype.ext (hfix x.1 x.2)`. Establish `hT : LinearMap.trace R _ (S ∘ₗ T) = 0`. Establish `e : S ∘ₗ T = ∑ τ, sand (P τ) (P (c τ)) ∘ₗ T` using `by ext1 x`. Simplify using `only [S, LinearMap.sum_apply, LinearMap.comp_apply]`. Rewrite using `[e, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_eq_zero fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[trace_sand_transpose, orth hl hr hs (hc τ), Matrix.trace_zero]`. Rewrite using `[LinearMap.subtype_comp_codRestrict]`. Simplify using `only [q]`. Rewrite using `[map_smul, map_add, hT, add_zero, smul_eq_mul, ← _root_.mul_assoc, hu, _root_.one_mul]`.
-
-Simplify using `only [S]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun τ _ => trace_sand _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_retract (h1 : ∑ τ, P τ = 1) (hl : ∀ τ a, A a * P τ = χ τ a • P τ)
     (hr : ∀ τ a, P τ * A a = χ τ a • P τ) (hs : ∀ σ τ, σ ≠ τ → ∃ a, IsUnit (χ σ a - χ τ a))
@@ -211,31 +209,31 @@ theorem exists_retract (h1 : ∑ τ, P τ = 1) (hl : ∀ τ a, A a * P τ = χ �
 end abstract
 
 /- English proof (translation)
-Set `b` to `(RingOfIntegers.basis E).reindex (equivReindex E).symm`. Set `M : Matrix (E →+* ℂ) (E →+* ℂ) F` to `Matrix.of fun i τ => ⟨τ (b i : E), hF τ _⟩`. Establish `hM : IsUnit M.det`. Establish `e : (algebraMap F ℂ).mapMatrix M = basisMatrix E`. Use extensionality with `i τ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[M, b, canonicalEmbedding.latticeBasis_apply, integralBasis_apply]`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h`. Apply `det_of_basisMatrix_non_zero E` to reduce the goal to its premises. Rewrite using `[← e, ← RingHom.map_det, h, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `χ : (E →+* ℂ) → 𝓞 E → R` to `embR F hF iF`. Establish `hχa : ∀ τ a a', χ τ (a + a') = χ τ a + χ τ a'` using `fun τ a a' => by`. Simplify using `only [χ, embR]`. Rewrite using `[← map_add]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using the standard rewrite rules. Establish `hχm : ∀ τ a a', χ τ (a * a') = χ τ a * χ τ a'` using `fun τ a a' => by`. Simplify using `only [χ, embR]`. Rewrite using `[← map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules. Establish `hχ1 : ∀ τ, χ τ 1 = 1` using `fun τ => by`. Simplify using `only [χ, embR]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_one iF]`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules. Set `M'` to `iF.mapMatrix M`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `N` to `iF.mapMatrix M⁻¹`. Establish `hMN : M' * N = 1` using `by rw [← map_mul, Matrix.mul_nonsing_inv _ hM, map_one]`. Establish `hNM : N * M' = 1` using `by rw [← map_mul, Matrix.nonsing_inv_mul _ hM, map_one]`. Establish `hM' : ∀ i τ, M' i τ = χ τ (b i)` using `fun i τ => rfl`. Establish `ind : ∀ X : (E →+* ℂ) → Matrix (Fin n) (Fin n) R, (∀ a, ∑ τ, χ τ a • X τ = 0) → ∀ σ, X σ = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `X hX σ`. Establish `: ∑ i, N σ i • ∑ τ, χ τ (b i) • X τ = X σ`. Simplify using `only [Finset.smul_sum, smul_smul, ← hM']`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, ← Matrix.mul_apply, hNM]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply]`. Rewrite using `[← this]`. Simplify using `[hX]`. Set `P : (E →+* ℂ) → Matrix (Fin n) (Fin n) R` to `fun τ => ∑ i, N τ i • A (b i)`. Establish `hA : ∀ a, A a = ∑ τ, χ τ a • P τ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : 𝓞 E →+ Matrix (Fin n) (Fin n) R` to `AddMonoidHom.mk' A ha`. Set `g : 𝓞 E →+ Matrix (Fin n) (Fin n) R` to `AddMonoidHom.mk' (fun a => ∑ τ, χ τ a • P τ) fun a a' => by`. Simplify using `only [hχa, add_smul, Finset.sum_add_distrib]`. Establish `: f.toIntLinearMap = g.toIntLinearMap` using `b.ext fun j => by show A (b j) = ∑ τ, χ τ (b j) • ∑ i, N τ i • A (b i)`. Simplify using `only [Finset.smul_sum, smul_smul, ← hM']`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, ← Matrix.mul_apply, hMN]`. Simplify using `[Matrix.one_apply]`. Conclude with `fun a => LinearMap.congr_fun this a`. Use `⟨P, ?_, fun τ a => ?_, fun τ a => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h1, hA 1]`. Simplify using `[hχ1]`. Use `sub_eq_zero.1 (ind (fun τ => A a * P τ - χ τ a • P τ) (fun a' => ?_) τ)` and prove the remaining obligations. Simplify using `only [smul_sub, Finset.sum_sub_distrib, smul_smul, ← hχm, ← Matrix.mul_smul, ← Matrix.mul_sum, ← hA]`. Rewrite using `[mul_comm a', hm, sub_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `sub_eq_zero.1 (ind (fun τ => P τ * A a - χ τ a • P τ) (fun a' => ?_) τ)` and prove the remaining obligations. Simplify using `only [smul_sub, Finset.sum_sub_distrib, smul_smul, ← hχm, ← Matrix.smul_mul, ← Matrix.sum_mul, ← hA]`. Rewrite using `[hm, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_projectors {E : Type} [Field E] [NumberField E] (F : IntermediateField ℚ ℂ)
     (hF : ∀ (τ : E →+* ℂ) (a : E), τ a ∈ F) {R : Type} [CommRing R] (iF : F →+* R) {n : ℕ}
@@ -298,9 +296,9 @@ theorem exists_projectors {E : Type} [Field E] [NumberField E] (F : Intermediate
     rw [hm, sub_self]
 
 /- English proof (translation)
-Establish `: ∃ a : 𝓞 E, σ (a : E) ≠ τ (a : E)`. Assume the negation of the conclusion as `hh`. Use `push Not at hh`. Conclude with `h (IsFractionRing.ringHom_ext (A := 𝓞 E) hh)`. Take `⟨a, ha⟩` from `this`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[embR, embR, ← map_sub]`. Use `IsUnit.map iF (isUnit_iff_ne_zero.2 (sub_ne_zero.2 fun e => ha ?_))` and prove the remaining obligations. Conclude with `congrArg Subtype.val e`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem embR_sep {E : Type} [Field E] [NumberField E] (F : IntermediateField ℚ ℂ)
     (hF : ∀ (τ : E →+* ℂ) (a : E), τ a ∈ F) {R : Type} [CommRing R] (iF : F →+* R) (σ τ : E →+* ℂ) (h : σ ≠ τ) :
@@ -316,13 +314,13 @@ theorem embR_sep {E : Type} [Field E] [NumberField E] (F : IntermediateField ℚ
   exact congrArg Subtype.val e
 
 /- English proof (translation)
-Introduce `E _ _ _ H F hF R _ iF n A h1 ha hm`. Take `⟨P, hP, hl, hr⟩` from `exists_projectors F hF iF A h1 ha hm`. Establish `hs` using `embR_sep F hF iF`. Take `⟨r, hr1, hr2⟩` from `exists_retract hP hl hr hs H.bar NumberField.ComplexEmbedding.conjugate (fun τ => star_star τ) (fun τ h => IsTotallyComplex.complexEmbedding_not_isReal τ (ComplexEmbedding.isReal_iff.2 h)) (fun τ a => by`. Simplify using `only [embR]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Rewrite using `[H.bar_eq, ComplexEmbedding.conjugate_coe_eq, IsCMField.complexEmbedding_complexConj])`. Use the proof step `(iF 2⁻¹) (by rw [← map_ofNat iF 2, ← map_mul, mul_inv_cancel₀ two_ne_zero, map_one])`. Use `⟨Module.Finite.of_surjective r (fun x => ⟨x, LinearMap.congr_fun hr1 x⟩), Module.Projective.of_split _ r hr1, fun m _ => ?_⟩` and prove the remaining obligations. Use `letI := Ideal.Quotient.field m`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI : CharZero m.ResidueField := charZero_of_injective_ringHom (f := (algebraMap R m.ResidueField).comp iF) (RingHom.injective _)`. Apply `Nat.cast_injective (R := m.ResidueField)` to reduce the goal to its premises. Establish `h2` using `congrArg (algebraMap (R ⧸ m) m.ResidueField) (finrank_retract _ r hr1 (R ⧸ m))`. Rewrite `h2` using `[map_natCast, ← IsScalarTower.algebraMap_apply]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [eigRank_eq hP hl hr hs, ← map_mul, ← map_sum, ← hr2]`. Rewrite using `[map_mul, map_ofNat]`. Conclude with `congrArg _ h2`.
+A detailed English derivation is pending.
 -/
 theorem balanced_finite_projective_rank : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (F : IntermediateField ℚ ℂ) (hF : ∀ (τ : E →+* ℂ) (a : E), τ a ∈ F) (R : Type) [CommRing R] (iF : F →+* R) (n : ℕ) (A : 𝓞 E → Matrix (Fin n) (Fin n) R), A 1 = 1 → (∀ a b, A (a + b) = A a + A b) → (∀ a b, A (a * b) = A a * A b) → Module.Finite R (balanced H.bar A) ∧ Module.Projective R (balanced H.bar A) ∧ ∀ (m : Ideal R) [m.IsMaximal], 2 * Module.finrank (R ⧸ m) ((R ⧸ m) ⊗[R] balanced H.bar A) = ∑ τ : E →+* ℂ, GlobalTheory.BalProj.eigRank (algebraMap R m.ResidueField) A (GlobalTheory.BalProj.embR F hF iF τ) * GlobalTheory.BalProj.eigRank (algebraMap R m.ResidueField) A (GlobalTheory.BalProj.embR F hF iF (NumberField.ComplexEmbedding.conjugate τ)) := by
   intro E _ _ _ H F hF R _ iF n A h1 ha hm

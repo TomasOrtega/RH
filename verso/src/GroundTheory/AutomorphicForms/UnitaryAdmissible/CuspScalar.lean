@@ -22,11 +22,9 @@ variable (U : Submodule ℂ (cuspForms K n))
 include hρ in
 
 /- English proof (translation)
-Take `⟨t, rfl⟩ : ∃ t, UniversalEnvelopingAlgebra.mkAlgHom ℝ _ t = u` from `RingCon.mkₐ_surjective (α := ℝ) (UniversalEnvelopingAlgebra.ringCon ℝ _) u`. Proceed by induction on `t using TensorAlgebra.induction generalizing φ with`. Consider the case `algebraMap r`. Rewrite using `[AlgHom.commutes, AlgHom.commutes]`. Conclude with `Submodule.smul_of_tower_mem _ r hφ`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `ι X => exact hρ X φ hφ`. Consider the case `mul a b ha hb`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply]`. Conclude with `ha (hb hφ)`. Consider the case `add a b ha hb`.
-
-Rewrite using `[map_add, map_add, LinearMap.add_apply]`. Conclude with `U.add_mem (ha hφ) (hb hφ)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uActionCusp_mem (u : UEnv K n) {φ : cuspForms K n}
     (hφ : φ ∈ U) : uActionCusp K n u φ ∈ U := by
@@ -45,11 +43,11 @@ theorem uActionCusp_mem (u : UEnv K n) {φ : cuspForms K n}
     exact U.add_mem (ha hφ) (hb hφ)
 
 /- English proof (translation)
-Rewrite using `[archTraceForm_apply, archTraceForm_apply]`. Use `congr 1`. Establish `hgi : (((g⁻¹ : archGroup K n) : (ArchMatrix K n)ˣ) : ArchMatrix K n) * (((g : archGroup K n) : (ArchMatrix K n)ˣ) : ArchMatrix K n) = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hgi' : mat (((g⁻¹ : archGroup K n) : (ArchMatrix K n)ˣ) : ArchMatrix K n) * mat (((g : archGroup K n) : (ArchMatrix K n)ˣ) : ArchMatrix K n) = 1`. Rewrite using `[← mat_mul, hgi, mat_one]`. Use `set A := mat (((g : archGroup K n) : (ArchMatrix K n)ˣ) : ArchMatrix K n)`. Use `set C := mat (((g⁻¹ : archGroup K n) : (ArchMatrix K n)ˣ) : ArchMatrix K n)`. Express the relevant statement in the definitionally equal form `Matrix.trace (A * mat (X : ArchMatrix K n) * C * (A * mat (Y : ArchMatrix K n) * C)) = Matrix.trace (mat (X : ArchMatrix K n) * mat (Y : ArchMatrix K n))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e : A * mat (X : ArchMatrix K n) * C * (A * mat (Y : ArchMatrix K n) * C) = A * (mat (X : ArchMatrix K n) * mat (Y : ArchMatrix K n)) * C`. Rewrite using `[show A * mat (X : ArchMatrix K n) * C * (A * mat (Y : ArchMatrix K n) * C) = A * mat (X : ArchMatrix K n) * (C * A) * mat (Y : ArchMatrix K n) * C by`. Simplify using `only [Matrix.mul_assoc], hgi', Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hgi', Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archTraceForm_AdLie (g : archGroup K n) (X Y : (isExpLieAlgebra K n).lieSubalgebra) :
     archTraceForm K n ((isExpLieAlgebra K n).AdLie g X) ((isExpLieAlgebra K n).AdLie g Y) =
@@ -76,23 +74,19 @@ theorem archTraceForm_AdLie (g : archGroup K n) (X Y : (isExpLieAlgebra K n).lie
   rw [e, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hgi', Matrix.one_mul]
 
 /- English proof (translation)
-Use `set T : Module.End ℂ U := (uActionCusp K n u).restrict fun φ hφ => uActionCusp_mem U hρ u hφ`. Take `⟨c, hc⟩` from `exists_eq_smul_one (cuspSubmodule K n U hρ hσ hτ) hirr T (fun X => LinearMap.ext fun φ => Subtype.ext (by show uActionCusp K n (UniversalEnvelopingAlgebra.ι ℝ X) (uActionCusp K n u φ) = uActionCusp K n u (uActionCusp K n (UniversalEnvelopingAlgebra.ι ℝ X) φ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Subalgebra.mem_center_iff.1 hu, map_mul, Module.End.mul_apply]))`. Use the proof step `(fun k => LinearMap.ext fun φ => Subtype.ext (hcomm k φ))`. Use the proof step `(fun g => LinearMap.ext fun φ => Subtype.ext (by show finRepCusp K n g (uActionCusp K n u φ) = uActionCusp K n u (finRepCusp K n g φ)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[uActionCusp_finRepCusp]))`. Use the proof step `(fun v => by set S₀ := Submodule.span ℂ ((fun z => uActionCusp K n z (v : cuspForms K n)) '' ((isExpLieAlgebra K n).centerU : Set (UEnv K n))) with hS₀`. Establish `hle : cuspForms K n ≤ archSmooth K n` using `cuspForms_le_automorphicForms.trans automorphicForms_le_archSmooth`. Establish `hinc : Function.Injective (Submodule.inclusion hle)` using `Submodule.inclusion_injective _`. Establish `hS₀fin : FiniteDimensional ℂ S₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hZ` using `(v : cuspForms K n).2.1.isZFinite`. Establish `e : S₀.map (Submodule.inclusion hle) = Submodule.span ℂ ((fun z => uAction z (⟨(v : cuspForms K n), (v : cuspForms K n).2.1.isSmooth.1⟩ : archSmooth K n)) '' ((isExpLieAlgebra K n).centerU : Set (UEnv K n)))`. Rewrite using `[hS₀, Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression. Establish `: FiniteDimensional ℂ (S₀.map (Submodule.inclusion hle))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hZ`. Conclude with `Module.Finite.equiv (Submodule.equivMapOfInjective _ hinc S₀).symm`. Use `⟨S₀.comap U.subtype, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (S₀.comap U.subtype).map U.subtype ≤ S₀` using `Submodule.map_comap_le _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `: FiniteDimensional ℂ ((S₀.comap U.subtype).map U.subtype)` using `Submodule.finiteDimensional_of_le h1`. Conclude with `Module.Finite.equiv (Submodule.equivMapOfInjective _ U.injective_subtype _).symm`. Use `show (v : cuspForms K n) ∈ S₀`. Use `Submodule.subset_span ⟨1, Subalgebra.one_mem _, ?_⟩` and prove the remaining obligations. Use `show uActionCusp K n 1 (v : cuspForms K n) = v`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_one, Module.End.one_apply]`. Establish `key : ∀ x ∈ S₀, uActionCusp K n u x ∈ S₀`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨z, hz, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨u * z, Subalgebra.mul_mem _ hu hz, ?_⟩` and prove the remaining obligations. Use `show uActionCusp K n (u * z) (v : cuspForms K n) = _`. Rewrite using `[map_mul, Module.End.mul_apply]`. Consider the case `zero => rw [map_zero]`.
-
-Conclude with `S₀.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `S₀.add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `S₀.smul_mem a hx`.
-
-Introduce `w hw`. Conclude with `key _ hw)`. Use `⟨c, fun φ hφ => ?_⟩` and prove the remaining obligations. Use `congrArg (fun f : Module.End ℂ U => ((f ⟨φ, hφ⟩ : U) : cuspForms K n)) hc` as an intermediate fact. Simplify `this` using `[T]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_uActionCusp_eq_smul (hirr : (cuspSubmodule K n U hρ hσ hτ).IsIrreducible) (u : UEnv K n)
     (hu : u ∈ (isExpLieAlgebra K n).centerU)
@@ -157,7 +151,7 @@ theorem exists_uActionCusp_eq_smul (hirr : (cuspSubmodule K n U hρ hσ hτ).IsI
   simpa [T] using this
 
 /- English proof (translation)
-Unfold `casimirOp casimir`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem casimirOp_gkModuleCusp {ι : Type*} [Fintype ι]
     (b : Module.Basis ι ℝ (isExpLieAlgebra K n).lieSubalgebra) (ε : ι → ℝ) :
@@ -169,7 +163,7 @@ theorem casimirOp_gkModuleCusp {ι : Type*} [Fintype ι]
   rfl
 
 /- English proof (translation)
-Use `exists_uActionCusp_eq_smul U hρ hσ hτ hirr _ (casimir_mem_center hε horth archTraceForm_symm archTraceForm_lie) fun k φ => ?_` and prove the remaining obligations. Use `σ_mul_casimirOp (gkModuleCusp K n) hε horth archTraceForm_symm (fun k X Y => archTraceForm_AdLie (k : archGroup K n) X Y) k` as an intermediate fact. Rewrite `this` using `[casimirOp_gkModuleCusp]`. Conclude with `congrArg (fun f : Module.End ℂ (cuspForms K n) => f φ) this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_casimir_eq_smul (hirr : (cuspSubmodule K n U hρ hσ hτ).IsIrreducible) {ι : Type*} [Fintype ι]
     [DecidableEq ι] (b : Module.Basis ι ℝ (isExpLieAlgebra K n).lieSubalgebra) (ε : ι → ℝ)
@@ -184,9 +178,9 @@ theorem exists_casimir_eq_smul (hirr : (cuspSubmodule K n U hρ hσ hτ).IsIrred
   exact congrArg (fun f : Module.End ℂ (cuspForms K n) => f φ) this
 
 /- English proof (translation)
-Use `exists_uActionCusp_eq_smul U hρ hσ hτ hirr (UniversalEnvelopingAlgebra.ι ℝ Z₀) (mem_center_of_forall_ι_commute fun X => ?_) fun k φ => ?_` and prove the remaining obligations. Establish `e : ⁅UniversalEnvelopingAlgebra.ι ℝ X, UniversalEnvelopingAlgebra.ι ℝ Z₀⁆ = 0`. Rewrite using `[← LieHom.map_lie, ← lie_skew, hZ, neg_zero, map_zero]`. Rewrite `e` using `[Ring.lie_def, sub_eq_zero]`. Conclude with `e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(gkModuleCusp K n).map_ρ k ((isExpLieAlgebra K n).ofLie Z₀) φ` as an intermediate fact. Rewrite `this` using `[hAd]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lieActionCusp_eq_smul (hirr : (cuspSubmodule K n U hρ hσ hτ).IsIrreducible)
     (Z₀ : (isExpLieAlgebra K n).lieSubalgebra)
@@ -209,9 +203,9 @@ noncomputable def lapZ {d : ℕ} (b : Module.Basis (Fin d) ℝ (isExpLieAlgebra 
   Real.sqrt (1 - ε i) • b i
 
 /- English proof (translation)
-Break down `hε i with e | e` into its components or cases. Establish `h0 : lapZ b ε i = 0` using `by simp [lapZ, e]`. Rewrite using `[h0]`. Establish `: (isExpLieAlgebra K n).ofLie (0 : (isExpLieAlgebra K n).lieSubalgebra) = 0` using `rfl`. Rewrite using `[this, smul_zero, IsExpLieAlgebra.expG_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(archCompact K n).one_mem`. Use `hK i e (t * Real.sqrt (1 - ε i))` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[mul_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lapZ_mem {d : ℕ} (b : Module.Basis (Fin d) ℝ (isExpLieAlgebra K n).lieSubalgebra)
     (ε : Fin d → ℝ) (hε : ∀ i, ε i = 1 ∨ ε i = -1)
@@ -231,7 +225,7 @@ theorem lapZ_mem {d : ℕ} (b : Module.Basis (Fin d) ℝ (isExpLieAlgebra K n).l
     rfl
 
 /- English proof (translation)
-Establish `h1` using `AutomorphicForm.map_aeval_apply_of_intertwine W.subtype (A := A.restrict hA) (B := A) (fun _ => rfl) q ⟨w, hw⟩`. Establish `h2` using `AutomorphicForm.map_aeval_apply_of_intertwine W.subtype (A := A.restrict hA) (B := B) (fun x => hAB x x.2) q ⟨w, hw⟩`. Conclude with `h1.symm.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aeval_apply_eq_of_eqOn {V : Type*} [AddCommGroup V] [Module ℂ V] (A B : Module.End ℂ V)
     (W : Submodule ℂ V) (hA : ∀ w ∈ W, A w ∈ W) (hAB : ∀ w ∈ W, A w = B w) (q : Polynomial ℂ)
@@ -243,17 +237,15 @@ theorem aeval_apply_eq_of_eqOn {V : Type*} [AddCommGroup V] [Module ℂ V] (A B 
   exact h1.symm.trans h2
 
 /- English proof (translation)
-Use `set M := (cuspSubmodule K n U hρ hσ hτ).gk`. Use `set L := uActionCusp K n (laplacianU K n b)`. Use `set B : Module.End ℂ (cuspForms K n) := ∑ i, uActionCusp K n (UniversalEnvelopingAlgebra.ι ℝ (lapZ b ε i)) * uActionCusp K n (UniversalEnvelopingAlgebra.ι ℝ (lapZ b ε i))`. Apply the tactic sequence `have hsq : ∀ i, (1 - ε i) = Real.sqrt (1 - ε i) * Real.sqrt (1 - ε i) := fun i => (Real.mul_self_sqrt (by rcases hε i with e | e <;> rw [e] <;> norm_num)).symm`. Establish `hAB : ∀ ψ ∈ U, (L - ω • 1) ψ = B ψ`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `ψ hψ`. Establish `e1 : L ψ = ω • ψ + ∑ i, (1 - ε i) • uActionCusp K n (UniversalEnvelopingAlgebra.ι ℝ (b i)) (uActionCusp K n (UniversalEnvelopingAlgebra.ι ℝ (b i)) ψ)` using `by show uActionCusp K n (laplacianU K n b) ψ = _`. Rewrite using `[laplacianU_eq_casimir_add b ε, map_add, LinearMap.add_apply, hω _ hψ, map_sum, LinearMap.sum_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, map_mul, LinearMap.smul_apply, Module.End.mul_apply]`. Rewrite using `[LinearMap.sub_apply, e1, LinearMap.smul_apply, Module.End.one_apply, add_sub_cancel_left, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply]`. Simplify using `only [lapZ, map_smul, LinearMap.smul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.map_smul_of_tower, smul_smul, ← hsq]`. Establish `hAU : ∀ ψ ∈ U, (L - ω • 1) ψ ∈ U`. Introduce `ψ hψ`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `U.sub_mem (uActionCusp_mem U hρ _ hψ) (U.smul_mem ω hψ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.aeval_comp]`. Establish `e2 : Polynomial.aeval L (Polynomial.X - Polynomial.C ω) = L - ω • 1`. Rewrite using `[map_sub, Polynomial.aeval_X, Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[e2, aeval_apply_eq_of_eqOn (L - ω • 1) B U hAU hAB q φ.2]`. Establish `h3` using `AutomorphicForm.map_aeval_apply_of_intertwine U.subtype (A := ∑ i, M.ρ (lapZ b ε i) * M.ρ (lapZ b ε i)) (B := B) (fun x => by`.
-
-Simplify using `only [B, LinearMap.sum_apply, Module.End.mul_apply, map_sum]`. Use the proof step `rfl) q φ`. Rewrite `h3` using `[Submodule.subtype_apply, Submodule.subtype_apply, hq]`. Conclude with `h3.symm.trans rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_laplacian_eq_zero {d : ℕ}
     (b : Module.Basis (Fin d) ℝ (isExpLieAlgebra K n).lieSubalgebra) (ε : Fin d → ℝ)

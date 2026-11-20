@@ -33,13 +33,13 @@ namespace GlobalTheory.SS.AmpCub
 open GlobalTheory.CechPic GlobalTheory.TripleExt GlobalTheory.EndOnTorsion GlobalTheory.AmpleStabFinite GlobalTheory.AbLaw
 
 /- English proof (translation)
-Establish `h₂` using `pull_spec_local e c`. Take `⟨M, hM, rfl⟩` from `cls_surj c`. Set `eK : Sp K ⟶ pullback p (etaK V K)` to `pullback.lift (etaK V K ≫ e) (𝟙 _) (by`. Rewrite using `[Category.assoc, he, Category.id_comp]`. Conclude with `Category.comp_id _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heK : eK ≫ pullback.fst p (etaK V K) = etaK V K ≫ e` using `pullback.lift_fst _ _ _`. Take `⟨t, ht⟩` from `(cls_eq_zero_iff (pull_isLB hM (pullback.fst p (etaK V K) ≫ 𝟙 H))).1 (by`. Rewrite using `[cls_pull hM, pull_comp, pull_id, h₁])`. Take `⟨ρ, hρ⟩` from `(cls_eq_zero_iff (pull_isLB hM (e ≫ 𝟙 H))).1 (by`. Rewrite using `[cls_pull hM, pull_comp, pull_id, h₂])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, cu⟩` from `DVR.exists_normalized_to hM _ _ t ht (pullback.snd p (etaK V K)) eK (pullback.lift_snd _ _ _) _ _ (LB.pullGen M _ _ ρ (etaK V K)) (DVR.pullGen_isGen _ _ _ _ hρ _) (by`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← Category.assoc, heK, Category.assoc])`. Take `⟨s, ⟨hs₁, -⟩, -⟩` from `GenExtend.existsUnique_gen_extend V K H H p e hs hi he eK heK M hM PUnit (fun _ => 𝟙 H) (fun _ => 1) u ρ hu hρ cu`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(cls_eq_zero_iff (pull_isLB hM (𝟙 H))).2 ⟨s, hs₁⟩` as an intermediate fact. Rewrite `this` using `[cls_pull hM, pull_id]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pic_eq_zero {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K]
     [IsFractionRing V K] {H : Scheme.{0}} (p : H ⟶ Sp V) (e : Sp V ⟶ H) (hs : Smooth p)
@@ -69,9 +69,9 @@ section Cube
 variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G']
 
 /- English proof (translation)
-Establish `h₁` using `congrArg (CechPic.pull (lift (x 0) (lift (x 1) (x 2))).left) h`. Rewrite `h₁` using `[pull_cubeCls_pre, map_zero]`. Use `Eq.trans ?_ h₁` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases i <;> simp [x3]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cube_pts {c : CechPic.Pic G.left} (h : cubeCls (x3 G) c = 0) {T : Over S} (x : Fin 3 → (T ⟶ G)) :
     cubeCls x c = 0 := by
@@ -83,7 +83,7 @@ theorem cube_pts {c : CechPic.Pic G.left} (h : cubeCls (x3 G) c = 0) {T : Over S
   fin_cases i <;> simp [x3]
 
 /- English proof (translation)
-The claim follows from `(pull_cubeCls_push h (x3 G') (fun i => pushPt h.1.w (x3 G' i)) (𝟙 _) (fun _ => (Category.id_comp _).symm) c).symm.trans (by rw [cube_pts hc, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem cube_pull {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {c : CechPic.Pic G.left}
     (hc : cubeCls (x3 G) c = 0) : cubeCls (x3 G') (CechPic.pull φ c) = 0 :=
@@ -91,13 +91,13 @@ theorem cube_pull {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G'
     (by rw [cube_pts hc, map_zero])
 
 /- English proof (translation)
-Use `(Fintype.sum_equiv (Equiv.ulift : ULift.{0} (Finset (Fin 3)) ≃ Finset (Fin 3)) _ (fun I => ((-1 : ℤ) ^ (3 - I.card)) • h (psum G ![x, y, z] I)) fun _ => rfl).trans ?_` and prove the remaining obligations. Establish `u : (Finset.univ : Finset (Finset (Fin 3))) = {∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}}` using `by decide`. Establish `p₀ : psum G ![x, y, z] ∅ = 1` using `rfl`. Establish `p₁ : psum G ![x, y, z] {0} = x` using `_root_.mul_one x`. Establish `p₂ : psum G ![x, y, z] {1} = y` using `_root_.mul_one y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p₃ : psum G ![x, y, z] {2} = z` using `_root_.mul_one z`. Establish `p₄ : psum G ![x, y, z] {0, 1} = x * y` using `congrArg (x * ·) (_root_.mul_one y)`. Establish `p₅ : psum G ![x, y, z] {0, 2} = x * z` using `congrArg (x * ·) (_root_.mul_one z)`. Establish `p₆ : psum G ![x, y, z] {1, 2} = y * z` using `congrArg (y * ·) (_root_.mul_one z)`. Establish `p₇ : psum G ![x, y, z] {0, 1, 2} = x * y * z` using `(congrArg (fun w => x * (y * w)) (_root_.mul_one z)).trans (_root_.mul_assoc x y z).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[u, Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton, p₀, p₁, p₂, p₃, p₄, p₅, p₆, p₇]`. Establish `c₁ : ({0, 1} : Finset (Fin 3)).card = 2` using `by decide`. Establish `c₂ : ({0, 2} : Finset (Fin 3)).card = 2` using `by decide`. Establish `c₃ : ({1, 2} : Finset (Fin 3)).card = 2` using `by decide`. Establish `c₄ : ({0, 1, 2} : Finset (Fin 3)).card = 3` using `by decide`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [c₁, c₂, c₃, c₄, Finset.card_singleton, Finset.card_empty]`. Evaluate the numerical expressions. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Normalize the expressions using the abelian group laws.
 -/
 theorem sum_three {T : Over S} (x y z : T ⟶ G) {A : Type*} [AddCommGroup A] (h : (T ⟶ G) → A) :
     ∑ I : ULift.{0} (Finset (Fin 3)), ((-1 : ℤ) ^ (3 - I.down.card)) • h (psum G ![x, y, z] I.down) =
@@ -126,7 +126,7 @@ theorem sum_three {T : Over S} (x y z : T ⟶ G) {A : Type*} [AddCommGroup A] (h
   abel
 
 /- English proof (translation)
-The claim follows from `sum_three x y z fun w => CechPic.pull w.left c`.
+A detailed English derivation is pending.
 -/
 theorem cubeCls_three {T : Over S} (x y z : T ⟶ G) (c : CechPic.Pic G.left) :
     cubeCls ![x, y, z] c = CechPic.pull (x * y * z).left c - CechPic.pull (x * y).left c - CechPic.pull (x * z).left c -
@@ -135,16 +135,16 @@ theorem cubeCls_three {T : Over S} (x y z : T ⟶ G) (c : CechPic.Pic G.left) :
   sum_three x y z fun w => CechPic.pull w.left c
 
 /- English proof (translation)
-Rewrite using `[← pull_comp, ← Over.comp_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pull_inv {T : Over S} (x : T ⟶ G) (c : CechPic.Pic G.left) :
     CechPic.pull x.left (CechPic.pull (ι[G]).left c) = CechPic.pull (x⁻¹).left c := by
   rw [← pull_comp, ← Over.comp_left]; rfl
 
 /- English proof (translation)
-Establish `e : x3 G = ![x3 G 0, x3 G 1, x3 G 2]` using `rfl`. Establish `h₁` using `cube_pts hc ![x3 G 0, x3 G 1, x3 G 2]`. Establish `h₂` using `cube_pts hc ![(x3 G 0)⁻¹, (x3 G 1)⁻¹, (x3 G 2)⁻¹]`. Rewrite `h₁`, `h₂` using `[cubeCls_three]`. Rewrite using `[e, cubeCls_three]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, pull_inv, mul_inv, inv_one]`. Rewrite using `[← add_zero (0 : CechPic.Pic _)]`. Use `Eq.trans ?_ (congrArg₂ (· + ·) h₁ h₂)` and prove the remaining obligations. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Normalize the expressions using the abelian group laws.
 -/
 theorem cube_symm {c : CechPic.Pic G.left} (hc : cubeCls (x3 G) c = 0) :
     cubeCls (x3 G) (c + CechPic.pull (ι[G]).left c) = 0 := by
@@ -165,11 +165,11 @@ section Field
 variable {k : Type} [Field k] {H : Over (Sp k)} [GrpObj H] [IsCommMonObj H]
 
 /- English proof (translation)
-Establish `z : ∀ b : 𝟙_ (Over (Sp k)) ⟶ H, CechPic.pull (toUnit H ≫ b).left c = 0` using `fun b => by`. Rewrite using `[Over.comp_left, pull_comp]`. Conclude with `(congrArg _ (pull_spec_local (K := k) b.left c)).trans (map_zero _)`. Establish `h` using `cube_pts hc ![toUnit H ≫ a, toUnit H ≫ a⁻¹, 𝟙 H]`. Establish `e : (toUnit H ≫ a) * (toUnit H ≫ a⁻¹) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MonObj.comp_mul, mul_inv_cancel, MonObj.comp_one]`. Establish `o : CechPic.pull (1 : H ⟶ H).left c = 0` using `z η[H]`. Rewrite `h` using `[cubeCls_three, e, _root_.one_mul, z, z, o, Over.id_left, pull_id]`. Express the relevant statement in the definitionally equal form `CechPic.pull ((toUnit H ≫ a) * 𝟙 H).left c + CechPic.pull ((toUnit H ≫ a⁻¹) * 𝟙 H).left c = _`. Rewrite using `[← sub_eq_zero, ← neg_eq_zero, ← h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem square {c : CechPic.Pic H.left} (hc : cubeCls (x3 H) c = 0) (a : 𝟙_ (Over (Sp k)) ⟶ H) :
     CechPic.pull (transl a).hom.left c + CechPic.pull (transl a⁻¹).hom.left c = (2 : ℤ) • c := by
@@ -186,13 +186,13 @@ theorem square {c : CechPic.Pic H.left} (hc : cubeCls (x3 H) c = 0) (a : 𝟙_ (
   abel
 
 /- English proof (translation)
-Simplify using `[transl, MonObj.comp_mul, ← Category.assoc, toUnit_unique (x ≫ toUnit H) (𝟙 _)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pt_transl (x a : 𝟙_ (Over (Sp k)) ⟶ H) : x ≫ (transl a).hom = a * x := by
   simp [transl, MonObj.comp_mul, ← Category.assoc, toUnit_unique (x ≫ toUnit H) (𝟙 _)]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hW`. Take `⟨x, rfl⟩` from `f.surjective w`. Conclude with `⟨x, hw⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_preimage {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIso f] {W : Y.Opens} (hW : (W : Set Y).Nonempty) :
     ((f ⁻¹ᵁ W : X.Opens) : Set X).Nonempty := by
@@ -201,17 +201,17 @@ theorem nonempty_preimage {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIso f] {W : Y.Open
   exact ⟨x, hw⟩
 
 /- English proof (translation)
-Establish `iso : ∀ f : H ≅ H, IsIso f.hom.left` using `fun f => inferInstanceAs (IsIso ((Over.forget _).map f.hom))`. Establish `isoι : IsIso (ι[H]).left` using `inferInstanceAs (IsIso ((Over.forget _).map ι[H]))`. Establish `pl : ∀ f : H.left ⟶ H.left, IsLocus (CechPic.pull f (cls L hL)) (f ⁻¹ᵁ W)` using `fun f => by`. Take `⟨s, rfl⟩` from `hW.exists_sec hL`. Conclude with `⟨_, pull_isLB hL _, secPull s f, rfl, nonzeroLocus_secPull _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `key : ∀ (y : 𝟙_ (Over (Sp k)) ⟶ H) (p : Sp k), ∃ s : LB.Sec (pw L (2 : ℕ)), y.left p ∈ Out.nonzeroLocus s ∧ IsAffineOpen (Out.nonzeroLocus s)`. Introduce `y p`. Use `iso (transl y)` as an intermediate fact. Take `⟨σ, hσ, hm⟩` from `NoBasePoint.exists_section_mem H.hom ((transl y).hom.left ⁻¹ᵁ W ⊓ ((ι[H]).left ≫ (transl y).hom.left) ⁻¹ᵁ W) (nonempty_preirreducible_inter (TopologicalSpace.Opens.isOpen _) (TopologicalSpace.Opens.isOpen _) (nonempty_preimage _ hne) (nonempty_preimage _ hne))`. Set `a : 𝟙_ (Over (Sp k)) ⟶ H` to `Over.homMk σ hσ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hl` using `(pl (transl a).hom.left).add (pl (transl a⁻¹).hom.left)`. Rewrite `hl` using `[square hc a, ← cls_pw hL]`. Take `⟨s, hs⟩` from `hl.exists_sec`. Use `iso (transl a)` as an intermediate fact. Use `iso (transl a⁻¹)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨s, hs.ge ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e : y ≫ (transl a).hom = a ≫ (transl y).hom` using `by rw [pt_transl, pt_transl, _root_.mul_comm]`. Conclude with `(congrArg (fun q => q.left p ∈ W) e).mpr (hm p).1`. Establish `e : y ≫ (transl a⁻¹).hom = a ≫ ι[H] ≫ (transl y).hom`. Rewrite using `[← Category.assoc, pt_transl, pt_transl, _root_.mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `(congrArg (fun q => q.left p ∈ W) e).mpr (hm p).2`. Conclude with `(congrArg IsAffineOpen hs).mpr ((ha.preimage _).inf (ha.preimage _))`. Establish `: JacobsonSpace H.left` using `LocallyOfFiniteType.jacobsonSpace H.hom`. Take `⟨z, hz, hcl⟩` from `nonempty_inter_closedPoints (Z := closure {x}) ⟨x, subset_closure rfl⟩ isClosed_closure.isLocallyClosed`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨s, hs, hs'⟩` from `key (Over.homMk (pointOfClosedPoint H.hom z hcl) (pointOfClosedPoint_comp H.hom z hcl)) (IsLocalRing.closedPoint k)`. Establish `hs₁ : z ∈ Out.nonzeroLocus s` using `(congrArg (· ∈ Out.nonzeroLocus s) (pointOfClosedPoint_apply H.hom z hcl _)).mp hs`. Conclude with `⟨s, (specializes_iff_mem_closure.2 hz).mem_open (TopologicalSpace.Opens.isOpen _) hs₁, hs'⟩`.
+A detailed English derivation is pending.
 -/
 theorem ample [IsAlgClosed k] [LocallyOfFiniteType H.hom] [IsIntegral H.left] [H.left.IsSeparated] {L : LB H.left}
     (hL : L.IsLB) (hc : cubeCls (x3 H) (cls L hL) = 0) {W : H.left.Opens} (hW : IsLocus (cls L hL) W)
@@ -252,11 +252,11 @@ theorem ample [IsAlgClosed k] [LocallyOfFiniteType H.hom] [IsIntegral H.left] [H
   exact ⟨s, (specializes_iff_mem_closure.2 hz).mem_open (TopologicalSpace.Opens.isOpen _) hs₁, hs'⟩
 
 /- English proof (translation)
-Establish `isoι : IsIso (ι[H]).left` using `inferInstanceAs (IsIso ((Over.forget _).map ι[H]))`. Establish `hW' : IsLocus (CechPic.pull (ι[H]).left c) ((ι[H]).left ⁻¹ᵁ W)`. Take `⟨M, hM, s, rfl, rfl⟩` from `hW`. Conclude with `⟨_, pull_isLB hM _, secPull s _, rfl, nonzeroLocus_secPull _ _⟩`. Take `⟨L, hL, e⟩` from `cls_surj (c + CechPic.pull (ι[H]).left c)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hc'` using `cube_symm hc`. Establish `hW''` using `hW.add hW'`. Rewrite `hc'`, `hW''` using `[← e]`. Use `⟨L, hL, (cls_eq_zero_iff (isLB_cube _ hL)).1 ((cls_cube _ hL).trans hc'), (cls_eq_zero_iff (LB.isLB_linComb hL _ _)).1 ?_, 2, one_le_two, ample hL hc' hW'' (ha.inf (ha.preimage _)) (nonempty_preirreducible_inter W.isOpen (TopologicalSpace.Opens.isOpen _) hne (nonempty_preimage _ …` and prove the remaining obligations. Rewrite using `[cls_linComb hL, Fin.sum_univ_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (1 : ℤ) • CechPic.pull (ι[H]).left (cls L hL) + (-1 : ℤ) • CechPic.pull (𝟙 H.left) (cls L hL) = 0`. Rewrite using `[pull_id, e, map_add, ← pull_comp, ← Over.comp_left, GrpObj.inv_comp_inv, Over.id_left, pull_id]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_ampleCub [IsAlgClosed k] [LocallyOfFiniteType H.hom] [IsIntegral H.left] [H.left.IsSeparated]
     {c : CechPic.Pic H.left} (hc : cubeCls (x3 H) c = 0) {W : H.left.Opens} (hW : IsLocus c W)
@@ -281,13 +281,11 @@ theorem exists_ampleCub [IsAlgClosed k] [LocallyOfFiniteType H.hom] [IsIntegral 
 end Field
 
 /- English proof (translation)
-Use `P.isAb.comm` as an intermediate fact. Establish `hsm₂ : Smooth (G ⊗ G).hom` using `by show Smooth (pullback.fst G.hom G.hom ≫ G.hom) infer_instance`. Establish `hgc₂ : GeometricallyConnected (G ⊗ G).hom` using `by show GeometricallyConnected (pullback.fst G.hom G.hom ≫ G.hom)`. Conclude with `GeometricallyConnected.comp _ _`. Establish `hsm : Smooth (G3 G).hom` using `by show Smooth (pullback.fst G.hom (G ⊗ G).hom ≫ G.hom) infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgc : GeometricallyConnected (G3 G).hom` using `by show GeometricallyConnected (pullback.fst G.hom (G ⊗ G).hom ≫ G.hom)`. Conclude with `GeometricallyConnected.comp _ _`. Set `T' : Over (Sp K)` to `Over.mk (pullback.snd (G3 G).hom (etaK R K))`. Set `u : Over.mk (T'.hom ≫ etaK R K) ⟶ G3 G` to `Over.homMk (pullback.fst (G3 G).hom (etaK R K)) pullback.condition`. Establish `hy : ∀ y : G3 G ⟶ G, ∃ y' : T' ⟶ P.A, pushPt h.1.w y' = u ≫ y` using `fun y => ⟨Over.homMk (h.1.lift (u ≫ y).left T'.hom (Over.w (u ≫ y))) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose y hy using hy`. Set `e : 𝟙_ (Over (Sp R)) ⟶ G3 G` to `lift η[G] (lift η[G] η[G])`. Use `pic_eq_zero (K := K) (G3 G).hom e.left hsm (geometricallyIntegral_of_smooth _) (Over.w e) _ ?_` and prove the remaining obligations. Use `(pull_cubeCls_push h (fun i => y (x3 G i)) (x3 G) u (fun i => hy _) c).trans (cube_pts ?_ _)` and prove the remaining obligations. Take `⟨M, hM, eM⟩` from `cls_surj (CechPic.pull φ c)`.
-
-Rewrite using `[← eM, ← cls_cube _ hM]`. Conclude with `(cls_eq_zero_iff _).2 (GlobalTheory.T.cube_theorem_and_sections_finite_growth_abelianVariety.1 _ P M hM)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cube_model {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] (P : Out.PolAV (Sp K)) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [Smooth G.hom]
@@ -326,15 +324,15 @@ namespace GlobalTheory.SS
 open AmpCub GlobalTheory.CechPic GlobalTheory.EndOnTorsion
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ ⟨hD, _, hk, hK⟩ P G _ ⟨hc, hs, hsep, hq, hg⟩ e he`. Establish `hV : IsRegularRing R` using `ExtendRig.isRegularRing_of_isDiscreteValuationRing R`. Establish `: GeometricallyIntegral G.hom` using `geometricallyIntegral_of_smooth _`. Establish `: IsIntegral G.left` using `GeometricallyIntegral.isIntegral_of_isLocallyNoetherian G.hom`. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompactSpace G.left` using `QuasiCompact.compactSpace_of_compactSpace G.hom`. Establish `: G.left.IsSeparated` using `⟨by rw [← terminal.comp_from G.hom]; infer_instance⟩`. Establish `hst : ∀ x : G.left, UniqueFactorizationMonoid (G.left.presheaf.stalk x)` using `fun x =>`. Use `ExtendRig.isRegularRing_stalk isRegularRing_of_smooth R G.hom x` as an intermediate fact. Use `uniqueFactorizationMonoid_of_isRegularRing_of_isLocalRing exists_hasProjectiveDimensionLE_of_isRegularLocalRing isPrincipal_map_away_of_hasProjectiveDimensionLE _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `isGrpPullback_pullback G (spMap (IsLocalRing.residue R))`. Establish `: IsMonHom e.symm.hom` using `inferInstanceAs (IsMonHom e.inv)`. Establish `hA : IsGrpPullback P.A G (etaK R K) (e.inv.left ≫ pullback.fst G.hom (spMap (algebraMap R K)))` using `((isGrpPullback_of_iso e.symm).comp (isGrpPullback_pullback G (spMap (algebraMap R K)))).congr (Category.id_comp _) rfl`. Establish `: IsIntegral (spFibre G).left` using `GeometricallyIntegral.geometrically_isIntegral _ _ _ (IsPullback.of_hasPullback G.hom (spMap (IsLocalRing.residue R)))`. Establish `: IsAffineHom (pullback.fst G.hom (spMap (IsLocalRing.residue R)))` using `isAffineHom_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _).flip inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsSeparated (spFibre G).hom` using `inferInstanceAs (IsSeparated (pullback.snd _ _))`. Establish `: LocallyOfFiniteType (spFibre G).hom` using `inferInstanceAs (LocallyOfFiniteType (pullback.snd _ _))`. Establish `: (spFibre G).left.IsSeparated` using `⟨by rw [← terminal.comp_from (spFibre G).hom]; infer_instance⟩`. Take `⟨y⟩ : Nonempty (spFibre G).left` from `inferInstance`. Take `⟨W, hW, hy, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := pullback.fst G.hom (spMap (IsLocalRing.residue R)) y) trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨L, s, hL, rfl⟩` from `exists_nonzeroLocus_eq_of_isAffineOpen G.left hst W hW ⟨_, hy⟩`. Conclude with `exists_ampleCub (cube_pull hp (cube_model P G hA (cls L hL))) ⟨_, pull_isLB hL _, secPull s _, rfl, nonzeroLocus_secPull _ _⟩ (hW.preimage _) ⟨y, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_ampleCub_spFibre : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [Field K] [Algebra R K], SH R K → ∀ (P : Out.PolAV (Sp K)) (G : Over (Sp R)) [GrpObj G], SmConn G → ∀ e : (Over.pullback (spMap (algebraMap R K))).obj G ≅ P.A, IsMonHom e.hom → ∃ L : LB (spFibre G).left, AmpleCub (spFibre G) L := by
   intro R K _ _ _ _ _ ⟨hD, _, hk, hK⟩ P G _ ⟨hc, hs, hsep, hq, hg⟩ e he

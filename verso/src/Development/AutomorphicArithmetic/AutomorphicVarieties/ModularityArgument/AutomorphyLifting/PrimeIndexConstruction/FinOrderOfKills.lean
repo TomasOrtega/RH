@@ -26,18 +26,18 @@ section CongLemmas
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Simplify using `[Cong]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cong_refl (a : (Qbar l)ˣ) : Cong a a := by simp [Cong]
 
 /- English proof (translation)
-Unfold `Cong at *`. Rewrite using `[norm_sub_rev]` and apply the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem cong_symm {a b : (Qbar l)ˣ} (h : Cong a b) : Cong b a := by
   unfold Cong at *; rwa [norm_sub_rev]
 
 /- English proof (translation)
-Unfold `Cong at *`. Use `IsUltrametricDist.norm_add_le_max ((a : Qbar l) - b) ((b : Qbar l) - c)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Conclude with `this.trans_lt (max_lt h h')`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cong_trans {a b c : (Qbar l)ˣ} (h : Cong a b) (h' : Cong b c) : Cong a c := by
   unfold Cong at *
@@ -46,7 +46,7 @@ private theorem cong_trans {a b c : (Qbar l)ˣ} (h : Cong a b) (h' : Cong b c) :
   exact this.trans_lt (max_lt h h')
 
 /- English proof (translation)
-Unfold `Cong at h`. Use `IsUltrametricDist.norm_eq_of_add_norm_lt_max (x := (a : Qbar l)) (y := -(b : Qbar l)) (by rw [← sub_eq_add_neg, norm_neg, hb]; exact h.trans_le (le_max_right _ _))` as an intermediate fact. Rewrite using `[this, norm_neg, hb]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cong_norm {a b : (Qbar l)ˣ} (h : Cong a b) (hb : ‖(b : Qbar l)‖ = 1) : ‖(a : Qbar l)‖ = 1 := by
   unfold Cong at h
@@ -55,7 +55,7 @@ private theorem cong_norm {a b : (Qbar l)ˣ} (h : Cong a b) (hb : ‖(b : Qbar l
   rw [this, norm_neg, hb]
 
 /- English proof (translation)
-Unfold `Cong at *`. Rewrite using `[Units.val_mul, Units.val_mul, ← sub_mul, norm_mul, hc, mul_one]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cong_mul_right {a b : (Qbar l)ˣ} (h : Cong a b) (c : (Qbar l)ˣ) (hc : ‖(c : Qbar l)‖ = 1) :
     Cong (a * c) (b * c) := by
@@ -64,7 +64,7 @@ private theorem cong_mul_right {a b : (Qbar l)ˣ} (h : Cong a b) (c : (Qbar l)ˣ
   exact h
 
 /- English proof (translation)
-Use `cong_trans (cong_mul_right h c (cong_norm h' hd)) ?_` and prove the remaining obligations. Rewrite using `[mul_comm b c, mul_comm b d]`. Conclude with `cong_mul_right h' b hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cong_mul {a b c d : (Qbar l)ˣ} (h : Cong a b) (h' : Cong c d) (hb : ‖(b : Qbar l)‖ = 1)
     (hd : ‖(d : Qbar l)‖ = 1) : Cong (a * c) (b * d) := by
@@ -73,34 +73,34 @@ private theorem cong_mul {a b c d : (Qbar l)ˣ} (h : Cong a b) (h' : Cong c d) (
   exact cong_mul_right h' b hb
 
 /- English proof (translation)
-Rewrite using `[Units.val_inv_eq_inv_val, norm_inv, hb, inv_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem norm_inv_one {b : (Qbar l)ˣ} (hb : ‖(b : Qbar l)‖ = 1) : ‖((b⁻¹ : (Qbar l)ˣ) : Qbar l)‖ = 1 := by
   rw [Units.val_inv_eq_inv_val, norm_inv, hb, inv_one]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, norm_mul, ha, hb, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem norm_mul_one {a b : (Qbar l)ˣ} (ha : ‖(a : Qbar l)‖ = 1) (hb : ‖(b : Qbar l)‖ = 1) :
     ‖((a * b : (Qbar l)ˣ) : Qbar l)‖ = 1 := by
   rw [Units.val_mul, norm_mul, ha, hb, mul_one]
 
 /- English proof (translation)
-Rewrite using `[Units.val_pow_eq_pow_val, norm_pow, ha, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem norm_pow_one {a : (Qbar l)ˣ} (ha : ‖(a : Qbar l)‖ = 1) (n : ℕ) :
     ‖((a ^ n : (Qbar l)ˣ) : Qbar l)‖ = 1 := by
   rw [Units.val_pow_eq_pow_val, norm_pow, ha, one_pow]
 
 /- English proof (translation)
-Use `cong_mul_right (cong_symm h) (a⁻¹ * b⁻¹) (norm_mul_one (norm_inv_one (cong_norm h hb)) (norm_inv_one hb))` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left, mul_comm a⁻¹ b⁻¹, mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem cong_inv {a b : (Qbar l)ˣ} (h : Cong a b) (hb : ‖(b : Qbar l)‖ = 1) : Cong a⁻¹ b⁻¹ := by
   have := cong_mul_right (cong_symm h) (a⁻¹ * b⁻¹) (norm_mul_one (norm_inv_one (cong_norm h hb)) (norm_inv_one hb))
   rwa [mul_inv_cancel_left, mul_comm a⁻¹ b⁻¹, mul_inv_cancel_left] at this
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using cong_refl 1`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `cong_mul ih h (norm_pow_one hb n) hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem cong_pow {a b : (Qbar l)ˣ} (h : Cong a b) (hb : ‖(b : Qbar l)‖ = 1) (n : ℕ) : Cong (a ^ n) (b ^ n) := by
   induction n with
@@ -108,7 +108,7 @@ private theorem cong_pow {a b : (Qbar l)ˣ} (h : Cong a b) (hb : ‖(b : Qbar l)
   | succ n ih => rw [pow_succ, pow_succ]; exact cong_mul ih h (norm_pow_one hb n) hb
 
 /- English proof (translation)
-Take `⟨n, hn, h1⟩` from `isOfFinOrder_iff_pow_eq_one.1 h`. Establish `h2 : φ s ^ n = 1` using `by rw [← MonoidHom.pow_apply, h1]; rfl`. Establish `h3 : ‖(φ s : Qbar l)‖ ^ n = 1` using `by rw [← norm_pow, ← Units.val_pow_eq_pow_val, h2]; simp`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem norm_of_finOrder {Γ : Type} [Group Γ] {φ : Γ →* (Qbar l)ˣ} (h : IsOfFinOrder φ) (s : Γ) :
     ‖(φ s : Qbar l)‖ = 1 := by
@@ -126,16 +126,16 @@ private theorem cyc_val (s : G F Ω) :
     ((cycBar F Ω l s : (Qbar l)ˣ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) ((cycZ F Ω l s : ℤ_[l]) : ℚ_[l]) := rfl
 
 /- English proof (translation)
-Rewrite using `[cyc_val, norm_algebraMap']`. Conclude with `PadicInt.norm_units _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_cyc (s : G F Ω) : ‖((cycBar F Ω l s : (Qbar l)ˣ) : Qbar l)‖ = 1 := by
   rw [cyc_val, norm_algebraMap']
   exact PadicInt.norm_units _
 
 /- English proof (translation)
-Unfold `Cong`. Establish `e : ((cycBar F Ω l s ^ (l - 1) : (Qbar l)ˣ) : Qbar l) - ((1 : (Qbar l)ˣ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) ((((cycZ F Ω l s : ℤ_[l]) ^ (l - 1) - 1 : ℤ_[l])) : ℚ_[l])`. Rewrite using `[Units.val_pow_eq_pow_val, cyc_val]`. Simplify using the standard rewrite rules. Rewrite using `[e, norm_algebraMap']`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `‖(cycZ F Ω l s : ℤ_[l]) ^ (l - 1) - 1‖ < 1`. Rewrite using `[← PadicInt.mem_nonunits, ← IsLocalRing.mem_maximalIdeal, ← PadicInt.ker_toZMod, RingHom.mem_ker, map_sub, map_pow, map_one, ZMod.pow_card_sub_one_eq_one, sub_self]`. Conclude with `((cycZ F Ω l s).isUnit.map _).ne_zero`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cong_cyc (s : G F Ω) : Cong (cycBar F Ω l s ^ (l - 1)) 1 := by
   unfold Cong
@@ -149,7 +149,7 @@ private theorem cong_cyc (s : G F Ω) : Cong (cycBar F Ω l s ^ (l - 1)) 1 := by
   exact ((cycZ F Ω l s).isUnit.map _).ne_zero
 
 /- English proof (translation)
-Rewrite using `[pow_add, pow_mul]`. Use `cong_mul (cong_refl (cycBar F Ω l s ^ j)) (cong_pow (cong_cyc (l := l) s) (by simp) t) (norm_pow_one (norm_cyc s) j) (by simp)` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem cong_cyc_pow (s : G F Ω) (j t : ℕ) : Cong (cycBar F Ω l s ^ (j + (l - 1) * t)) (cycBar F Ω l s ^ j) := by
   rw [pow_add, pow_mul]
@@ -164,9 +164,9 @@ section Gal
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω N`. Use `isOfFinOrder_iff_pow_eq_one.2 ⟨Fintype.card (ZMod N)ˣ, Fintype.card_pos, MonoidHom.ext fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, ← map_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `h _ fun ζ hζ => ?_` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `hz.eq_pow_of_pow_eq_one hζ`. Establish `h1` using `hz.autToPow_spec ℚ (s ^ Fintype.card (ZMod N)ˣ)`. Rewrite `h1` using `[map_pow, pow_card_eq_one, Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hz.pow_eq_one, pow_one]`. Rewrite using `[map_pow, ← h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finOrder_of_kills {C : Type} [CommGroup C] {N : ℕ} (hN : 0 < N) {φ : G ℚ Ω →* C} (h : KillsMu N φ) :
     IsOfFinOrder φ := by
@@ -183,7 +183,7 @@ private theorem finOrder_of_kills {C : Type} [CommGroup C] {N : ℕ} (hN : 0 < N
 
 omit [IsAlgClosure ℚ Ω] in
 /- English proof (translation)
-Take `⟨j, hj⟩` from `h`. Use extensionality with `x`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[AlgEquiv.mul_apply, hj, hj]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem cc_sq {c : G ℚ Ω} (h : IsCC c) : c * c = 1 := by
   obtain ⟨j, hj⟩ := h
@@ -193,9 +193,9 @@ private theorem cc_sq {c : G ℚ Ω} (h : IsCC c) : c * c = 1 := by
 
 omit [IsAlgClosure ℚ Ω] in
 /- English proof (translation)
-Take `⟨j, hj⟩` from `h`. Introduce `hc`. Use `IsTotallyComplex.complexEmbedding_not_isReal (j.comp (algebraMap K Ω)) ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hj, hc x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem cc_not_mem (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Algebra K Ω] {c : G ℚ Ω} (h : IsCC c) :
     c ∉ galOf ℚ K Ω := by
@@ -207,15 +207,15 @@ private theorem cc_not_mem (K : Type) [Field K] [NumberField K] [IsTotallyComple
   rw [ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hj, hc x]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`.
+Supply the required witnesses or components.
 -/
 private theorem algClosure (K : Type) [Field K] [NumberField K] [Algebra K Ω] : IsAlgClosure K Ω :=
   ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩
 
 /- English proof (translation)
-Use `haveI := algClosure (Ω := Ω) L`. Establish `h1 : ∀ x : K, ∃ y : L, algebraMap L Ω y = algebraMap K Ω x` using `fun x => (InfiniteGalois.mem_range_algebraMap_iff_fixed (k := L) _).2 fun f => h (galEmb_mem ℚ L Ω f) x`. Use `choose f hf using h1`. Establish `hi` using `(algebraMap L Ω).injective`. Set `g : K →+* L` to `{ toFun := f map_one' := hi (by simp [hf]) map_mul' := fun a b => hi (by simp [hf]) map_zero' := hi (by simp [hf]) map_add' := fun a b => hi (by simp [hf]) }`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Supply the required witnesses or components.
 
-Use `letI := g.toAlgebra`. Conclude with `⟨_, IsScalarTower.of_algebraMap_eq fun x => (hf x).symm⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_alg (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K Ω] [Algebra L Ω]
     (h : galOf ℚ L Ω ≤ galOf ℚ K Ω) : ∃ _ : Algebra K L, IsScalarTower K L Ω := by
@@ -234,9 +234,9 @@ private theorem exists_alg (K L : Type) [Field K] [NumberField K] [Field L] [Num
   exact ⟨_, IsScalarTower.of_algebraMap_eq fun x => (hf x).symm⟩
 
 /- English proof (translation)
-Establish `hfin : {ζ : Ω | ζ ^ M = 1}.Finite` using `by classical`. Use `(Polynomial.nthRoots M (1 : Ω)).toFinset.finite_toSet.subset fun ζ hζ => ?_` and prove the remaining obligations. Simplify `hζ` using `[Polynomial.mem_nthRoots hM]`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((hfin.isOpen_biInter fun ζ _ => stabilizer_isOpen_of_isIntegral (K := ℚ) ζ).mem_nhds ?_) fun s hs => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_iInter]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `fun ζ _ => Subgroup.one_mem _`. Simplify using `only [Set.mem_iInter] at hs`. Conclude with `hφ s fun ζ hζ => hs ζ hζ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isOpen_ker_kills {C : Type} [Group C] {M : ℕ} (hM : 0 < M) {φ : G ℚ Ω →* C} (hφ : KillsMu M φ) :
     IsOpen (φ.ker : Set (G ℚ Ω)) := by
@@ -258,7 +258,7 @@ section Shape
 variable {l : ℕ} [Fact l.Prime] {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
 
 /- English proof (translation)
-Take `⟨κ, h1, h2, h3⟩` from `h`. Conclude with `⟨κ, h1, h2, fun i s => cong_trans (h3 i s) (cong_symm (h' i s))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem ordAt_change {n : ℕ} {r : G F Ω →* GL (Fin n) (Qbar l)} {m : Fin n → ℤ} {ψ ψ' : Fin n → G F Ω →* (Qbar l)ˣ}
     {A : ValuationSubring Ω} (h : OrdAt r m ψ A) (h' : ∀ i s, Cong (ψ' i s) (ψ i s)) : OrdAt r m ψ' A := by
@@ -266,7 +266,7 @@ private theorem ordAt_change {n : ℕ} {r : G F Ω →* GL (Fin n) (Qbar l)} {m 
   exact ⟨κ, h1, h2, fun i s => cong_trans (h3 i s) (cong_symm (h' i s))⟩
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨h, ?_⟩` and prove the remaining obligations. Simplify using `only [← map_inv]`. Conclude with `h.comp continuous_inv`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cont_units {Γ R : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Monoid R]
     [TopologicalSpace R] (f : Γ →* Rˣ) (h : Continuous fun s => (f s : R)) : Continuous f := by
@@ -275,7 +275,7 @@ private theorem cont_units {Γ R : Type} [Group Γ] [TopologicalSpace Γ] [IsTop
   exact h.comp continuous_inv
 
 /- English proof (translation)
-Use `cont_units _ ?_` and prove the remaining obligations. Simplify using `only [tw_val]`. Conclude with `(Units.continuous_val.comp hδ).smul (Units.continuous_val.comp h)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cont_tw {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] {n : ℕ}
     {r : Γ →* GL (Fin n) (Qbar l)} {δ : Γ →* (Qbar l)ˣ} (h : Continuous r) (hδ : Continuous δ) : Continuous (tw r δ) := by
@@ -284,17 +284,15 @@ private theorem cont_tw {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologi
   exact (Units.continuous_val.comp hδ).smul (Units.continuous_val.comp h)
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Establish `: NeZero ((l : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero⟩`. Establish `h' : ((cycZ F Ω l s : ℤ_[l]ˣ) : ℤ_[l]) = ((1 : ℕ) : ℤ_[l])`. Use `PadicInt.ext_of_toZModPow.mp fun n => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hln : ¬ A.valuation (((l ^ n : ℕ) : Ω)) < 1`. Establish `h2 : A.valuation (l : Ω) = 1` using `le_antisymm ((A.valuation_le_one_iff _).mpr (natCast_mem A l)) (not_lt.mp hA)`. Rewrite using `[Nat.cast_pow, Valuation.map_pow, h2, one_pow]`. Conclude with `lt_irrefl 1`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN0 : l ^ n ≠ 0` using `pow_ne_zero _ (Fact.out : l.Prime).ne_zero`. Use `set c := PadicInt.toZModPow n ((cycZ F Ω l s : ℤ_[l]ˣ) : ℤ_[l]) with hc`. Establish `hσζ : s ζ = ζ ^ c.val` using `cyclotomicCharacter.spec (L := Ω) l (MulSemiringAction.toRingAut (Ω ≃ₐ[F] Ω) Ω s) ζ hζ.pow_eq_one`. Establish `hlt` using `hs.2 ζ (ReciprocityTheory.Gal.valuation_eq_one_of_pow_eq_one A hN0 hζ.pow_eq_one).le`. Rewrite `hlt` using `[hσζ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `heq : ζ ^ c.val = ζ`. Use `ReciprocityTheory.Gal.eq_of_pow_eq_one A hln ?_ hζ.pow_eq_one hlt` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`. Establish `heq' : (hζ.isUnit hN0).unit ^ c.val = (hζ.isUnit hN0).unit ^ 1` using `Units.ext (by simpa using heq)`. Establish `hu : IsPrimitiveRoot (hζ.isUnit hN0).unit (l ^ n)` using `IsPrimitiveRoot.coe_units_iff.mp (by simpa using hζ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `heq'` using `[pow_eq_pow_iff_modEq, ← hu.eq_orderOf]`. Rewrite using `[map_natCast, ← ZMod.natCast_zmod_val c]`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).mpr heq'`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[cyc_val, h']`.
-
-Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cyc_ine [IsAlgClosure F Ω] {A : ValuationSubring Ω} (hA : ¬ A.valuation (l : Ω) < 1) {s : G F Ω}
     (hs : s ∈ Ine (F := F) A) : cycBar F Ω l s = 1 := by
@@ -329,7 +327,7 @@ private theorem cyc_ine [IsAlgClosure F Ω] {A : ValuationSubring Ω} (hA : ¬ A
   rw [cyc_val, h']; simp
 
 /- English proof (translation)
-Use `MonoidHom.ext fun s => Units.ext ?_` and prove the remaining obligations. Simplify using `[tw_val, Matrix.GeneralLinearGroup.val_det_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem det_tw {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (Fin 2) k) (δ : Γ →* kˣ) :
     Matrix.GeneralLinearGroup.det.comp (tw r δ) = δ ^ 2 * Matrix.GeneralLinearGroup.det.comp r := by
@@ -337,15 +335,15 @@ private theorem det_tw {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (Fin 2
   simp [tw_val, Matrix.GeneralLinearGroup.val_det_apply]
 
 /- English proof (translation)
-Establish `hJ : ∀ M : Matrix (Fin 2) (Fin 2) k, Mᵀ * !![0, 1; -1, 0] * M = M.det • !![0, 1; -1, 0]` using `fun M => by`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ, Matrix.det_fin_two] <;> ring`. Set `J : GL (Fin 2) k` to `Matrix.GeneralLinearGroup.mkOfDetNeZero !![0, 1; -1, 0] (by simp)`. Establish `eJ : (J : Matrix (Fin 2) (Fin 2) k) = !![0, 1; -1, 0]` using `rfl`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `eT : (!![0, 1; -1, 0] : Matrix (Fin 2) (Fin 2) k)ᵀ = - !![0, 1; -1, 0]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Establish `e : (σ c : Matrix (Fin 2) (Fin 2) k) * (σ c : Matrix (Fin 2) (Fin 2) k) = 1`. Rewrite using `[← Units.val_mul, ← map_mul, hc, map_one, Units.val_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e' : c⁻¹ = c` using `inv_eq_of_mul_eq_one_right hc`. Use `⟨J * σ c, ?_, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.transpose_mul, eJ, eT]`. Establish `h` using `congrArg (· * (σ c : Matrix (Fin 2) (Fin 2) k)) (hJ (σ c))`. Simplify using `only [hd, Matrix.mul_assoc, e, Matrix.mul_one, neg_smul, one_smul, Matrix.neg_mul] at h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_neg, h, neg_neg]`. Rewrite using `[e', map_mul, map_mul, Units.val_mul, Units.val_mul, Units.val_mul, eJ]`. Establish `h` using `hJ (σ s)`. Rewrite `h` using `[hs, one_smul]`. Use `conv_rhs => rw [← h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (σ c : Matrix (Fin 2) (Fin 2) k) (σ c : Matrix (Fin 2) (Fin 2) k), e, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pair_two {Γ k : Type} [Group Γ] [Field k] (σ : Γ →* GL (Fin 2) k) {c : Γ} (hc : c * c = 1)
     (hd : (σ c : Matrix (Fin 2) (Fin 2) k).det = -1) :
@@ -377,7 +375,7 @@ private theorem pair_two {Γ k : Type} [Group Γ] [Field k] (σ : Γ →* GL (Fi
       Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨κ, h1, h2, h3⟩` from `h`. Use `⟨_, (shapeFacts l _ n r δ).2.2.1 _ κ h1, fun i s hs => ?_, fun i s => cong_mul_right (h3 i s) _ (hn _)⟩` and prove the remaining obligations. Rewrite using `[zpow_add, ← h2 i s hs, ← hδ s hs]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ordAt_tw {n : ℕ} {r : G F Ω →* GL (Fin n) (Qbar l)} {m : Fin n → ℤ} {ψ : Fin n → G F Ω →* (Qbar l)ˣ}
     {A : ValuationSubring Ω} (h : OrdAt r m ψ A) (δ : G F Ω →* (Qbar l)ˣ) (hn : ∀ s, ‖(δ s : Qbar l)‖ = 1) (a : ℤ)
@@ -394,7 +392,7 @@ section Up
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hi.1, fun _ _ _ => Submodule.mem_top, fun W hW hI => hi.2.2 W hW fun g v hv => hI (galEmb K L Ω g) v hv⟩`.
+Supply the required witnesses or components.
 -/
 private theorem irr_down {k : Type} [Field k] {n : ℕ} (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L]
     [Algebra K Ω] [Algebra L Ω] [Algebra K L] [IsScalarTower K L Ω] (r : G K Ω →* GL (Fin n) k)
@@ -402,11 +400,11 @@ private theorem irr_down {k : Type} [Field k] {n : ℕ} (K L : Type) [Field K] [
   ⟨hi.1, fun _ _ _ => Submodule.mem_top, fun W hW hI => hi.2.2 W hW fun g v hv => hI (galEmb K L Ω g) v hv⟩
 
 /- English proof (translation)
-Use `haveI := algClosure (Ω := Ω) L`. Use `haveI := algClosure (Ω := Ω) K`. Take `⟨_, _⟩` from `exists_alg K L h`. Use `haveI : IsAbelianGalois K L := IsAbelianGalois.tower_top ℚ K L`. Use `haveI : Group.IsSolvable (L ≃ₐ[K] L) := isSolvable_of_comm fun a b => mul_comm' a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (r.comp (galEmb ℚ K Ω)).comp (galEmb K L Ω) = r.comp (galEmb ℚ L Ω)` using `MonoidHom.ext fun s => rfl`. Establish `h1` using `upQuad hP.af ℚ K Ω l ι hK n hn r hc ha (irr_down K L _ (e ▸ hL'))`. Establish `h1'` using `twC hP.af K Ω l ι n _ κ hκ h1`. Establish `e1 : ka = κ.comp (galEmb K L Ω)` using `MonoidHom.ext fun s => hka s _ rfl`. Establish `e2 : (tw (r.comp (galEmb ℚ K Ω)) κ).comp (galEmb K L Ω) = tw (r.comp (galEmb ℚ L Ω)) ka`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[e1]`. Both sides reduce to the same expression. Establish `h2` using `hP.up K L Ω l ι n hn _ (cont_tw (hc.comp (resFacts ℚ K Ω l n r).1) hκ.1) h1' (e2 ▸ (shapeFacts l _ n _ _).2.2.2.2.2 hL')`. Rewrite `h2` using `[e2]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem up (hP : Z.Bc.HypothesesZ) (K L : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field L] [NumberField L]
     [IsCMField L] [Algebra K Ω] [Algebra L Ω] [IsAbelianGalois ℚ L] (hK : Module.finrank ℚ K = 2)
@@ -431,11 +429,9 @@ private theorem up (hP : Z.Bc.HypothesesZ) (K L : Type) [Field K] [NumberField K
   rwa [e2] at h2
 
 /- English proof (translation)
-Use `haveI := algClosure (Ω := Ω) L`. Use `haveI := algClosure (Ω := Ω) K`. Take `⟨_, _⟩` from `exists_alg K L h`. Use `haveI : IsAbelianGalois K L := IsAbelianGalois.tower_top ℚ K L`. Use `haveI : Group.IsSolvable (L ≃ₐ[K] L) := isSolvable_of_comm fun a b => mul_comm' a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsAbelianGalois ℚ K := IsAbelianGalois.tower_bot ℚ K L`. Use `haveI : IsCMField K := IsCMField.of_isAbelianGalois K`. Establish `e : (r.comp (galEmb ℚ K Ω)).comp (galEmb K L Ω) = r.comp (galEmb ℚ L Ω)` using `MonoidHom.ext fun s => rfl`. Establish `e1 : ka = κ.comp (galEmb K L Ω)` using `MonoidHom.ext fun s => hka s _ rfl`. Establish `e2 : (tw (r.comp (galEmb ℚ K Ω)) κ).comp (galEmb K L Ω) = tw (r.comp (galEmb ℚ L Ω)) ka`.
-
-Rewrite using `[e1]`. Both sides reduce to the same expression. Establish `h2` using `hA ℚ K L Ω hK l ι r κ hc ha hκ (e ▸ hL')`. Rewrite `h2` using `[e2]`. Then use the resulting hypothesis.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem upW (hA : AwChain) (K L : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field L] [NumberField L]
     [IsCMField L] [Algebra K Ω] [Algebra L Ω] [IsAbelianGalois ℚ L] (hK : Module.finrank ℚ K = 2)
@@ -459,7 +455,7 @@ private theorem upW (hA : AwChain) (K L : Type) [Field K] [NumberField K] [IsTot
   rwa [e2] at h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1, h2, h3, h4, h5, h6, h7 h6⟩`.
+Supply the required witnesses or components.
 -/
 private theorem mkSeed {n : ℕ} {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField L] [IsCMField L] [Algebra L Ω] {ι : Qbar l ≃+* ℂ} {c : G ℚ Ω}
     {ψ τ : Fin n → G L Ω →* (Qbar l)ˣ} {m : Fin n → ℤ} {ka : G L Ω →* (Qbar l)ˣ} {r : G L Ω →* GL (Fin n) (Qbar l)}

@@ -13,9 +13,9 @@ namespace GlobalTheory.MeetsUnit
 variable {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Unfold `cU`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Fintype.sum_equiv (Equiv.mulLeft h) _ _ (fun g => ?_)` and prove the remaining obligations. Establish `e1 : MonoidAlgebra.single (h * g) (1 : ℂ) = MonoidAlgebra.single h 1 * MonoidAlgebra.single g 1`. Rewrite using `[MonoidAlgebra.single_mul_single, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : MonoidAlgebra.single (h * g)⁻¹ (1 : ℂ) * MonoidAlgebra.single h 1 = MonoidAlgebra.single g⁻¹ 1`. Rewrite using `[MonoidAlgebra.single_mul_single, one_mul, mul_inv_rev, inv_mul_cancel_right]`. Simplify using `only [Equiv.coe_mulLeft]`. Rewrite using `[mul_assoc _ (MonoidAlgebra.single (h * g)⁻¹ (1 : ℂ)), e2, e1]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem single_mul_cU (U : Subgroup G) [Fintype U] (f : U → ℂ) (h : G) :
     MonoidAlgebra.single h (1 : ℂ) * cU U f = cU U f * MonoidAlgebra.single h 1 := by
@@ -31,7 +31,7 @@ theorem single_mul_cU (U : Subgroup G) [Fintype U] (f : U → ℂ) (h : G) :
   simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `hc` using `single_mul_cU U f h`. Establish `he` using `hC (MonoidAlgebra.single h 1)`. Simplify using `only [uElt, mul_add, add_mul, mul_sub, sub_mul, mul_one, one_mul]`. Rewrite using `[he, mul_assoc (cU U f) e, he, ← mul_assoc, ← mul_assoc, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem single_mul_uElt (U : Subgroup G) [Fintype U] (f : U → ℂ) (e : MonoidAlgebra ℂ G)
     (hC : ∀ a, e * a = a * e) (h : G) :
@@ -42,9 +42,9 @@ theorem single_mul_uElt (U : Subgroup G) [Fintype U] (f : U → ℂ) (e : Monoid
   rw [he, mul_assoc (cU U f) e, he, ← mul_assoc, ← mul_assoc, hc]
 
 /- English proof (translation)
-Establish `hp : Representation.asAlgebraHom V.ρ (pU U f) = ∑ u : U, ((Fintype.card U : ℂ)⁻¹ * f u) • V.ρ u`. Simplify using `only [pU, map_sum, Representation.asAlgebraHom_single]`. Unfold `cU`. Rewrite using `[map_sum, map_sum]`. Rewrite using `[Finset.sum_congr rfl (fun g _ => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul (Representation.asAlgebraHom V.ρ), map_mul (Representation.asAlgebraHom V.ρ), Representation.asAlgebraHom_single, Representation.asAlgebraHom_single, one_smul, one_smul, LinearMap.trace_mul_comm ℂ, ← mul_assoc, ← map_mul, inv_mul_cancel, map_one, one_mul])]`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hp, map_sum]`. Simplify using `only [map_smul, smul_eq_mul, FDRep.character]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_cU (V : FDRep ℂ G) (U : Subgroup G) [Fintype U] (f : U → ℂ) :
     LinearMap.trace ℂ V (Representation.asAlgebraHom V.ρ (cU U f)) =
@@ -68,35 +68,31 @@ Both sides reduce to the same expression.
 theorem lreg_apply (g : G) (x : MonoidAlgebra ℂ G) : lreg g x = MonoidAlgebra.single g 1 * x := rfl
 
 /- English proof (translation)
-Introduce `G _ _ U _ ψ e hI hC hχ`. Use `set f : U → ℂ := fun u => (((ψ u)⁻¹ : ℂˣ) : ℂ) with hf`. Use `set w := uElt U f e with hw`. Establish `hinj : Function.Injective (LinearMap.mulLeft ℂ w)`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `y hy`. Assume the negation of the conclusion as `hy0`. Set `K : Submodule ℂ (MonoidAlgebra ℂ G)` to `LinearMap.ker (LinearMap.mulLeft ℂ w)`. Establish `hK : ∀ x, x ∈ K ↔ w * x = 0` using `fun x => LinearMap.mem_ker`. Set `A : Subrepresentation (lreg (G` to `G)) := ⟨K, fun g x hx => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[hK]`. Rewrite using `[lreg_apply, ← mul_assoc, ← single_mul_uElt U f e hC g, mul_assoc, hx, mul_zero]⟩`. Use `haveI : Nontrivial A.toSubmodule := Submodule.nontrivial_iff_ne_bot.2 (fun hb => hy0 ((Submodule.eq_bot_iff _).1 hb y hy))`. Take `⟨τ, hτs, φ, hφ, hφ0⟩` from `PI.GreenLabelSurjWork.exists_simple_constituent A.toRepresentation`. Use `haveI := hτs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI := PI.CharIdemW.nontrivial_of_simple τ`. Establish `hcomm : ∀ a : MonoidAlgebra ℂ G, (∀ k : G, MonoidAlgebra.single k (1 : ℂ) * a = a * MonoidAlgebra.single k 1) → ∀ k : G, τ.ρ k * Representation.asAlgebraHom τ.ρ a = Representation.asAlgebraHom τ.ρ a * τ.ρ k`. Introduce `a ha k`. Rewrite using `[← Representation.asAlgebraHom_single_one, ← map_mul, ← map_mul, ha k]`. Take `⟨μ, hμ⟩` from `PI.CharIdemW.schur_scalar τ _ (hcomm w (single_mul_uElt U f e hC))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨ν, hν⟩` from `PI.CharIdemW.schur_scalar τ _ (hcomm e (fun k => hC _ |>.symm))`. Establish `hφw : ∀ x, φ (Representation.asAlgebraHom τ.ρ w x) = 0`. Introduce `x`. Rewrite using `[GlobalTheory.GoodFactor.asAlg_eq τ.ρ w, LinearMap.sum_apply, map_sum]`. Simplify using `only [LinearMap.smul_apply, map_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : ∀ g, φ (τ.ρ g x) = A.toRepresentation g (φ x)` using `fun g => LinearMap.congr_fun (hφ g) x`. Simplify using `only [h1]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show ∑ g, w.coeff g • (MonoidAlgebra.single g (1 : ℂ) * (φ x : MonoidAlgebra ℂ G)) = 0`. Establish `h2 : ∀ g, w.coeff g • (MonoidAlgebra.single g (1 : ℂ) * (φ x : MonoidAlgebra ℂ G)) = MonoidAlgebra.single g (w.coeff g) * (φ x : MonoidAlgebra ℂ G)` using `fun g => by`. Rewrite using `[← smul_mul_assoc, MonoidAlgebra.smul_single', mul_one]`. Simplify using `only [h2]`. Rewrite using `[← Finset.sum_mul, GlobalTheory.GoodFactor.sum_single]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hK _).1 (φ x).2`. Establish `hμ0 : μ = 0`. Assume the negation of the conclusion as `h`. Apply `hφ0` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : x = μ⁻¹ • Representation.asAlgebraHom τ.ρ w x`. Rewrite using `[hμ, LinearMap.smul_apply, Module.End.one_apply, smul_smul, inv_mul_cancel₀ h, one_smul]`. Rewrite using `[h3, map_smul, hφw, smul_zero, LinearMap.zero_apply]`. Establish `h10 : (1 : Module.End ℂ τ) ≠ 0` using `one_ne_zero`. Establish `hνν : ν * ν = ν`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h4 : Representation.asAlgebraHom τ.ρ (e * e) = Representation.asAlgebraHom τ.ρ e` using `by rw [hI]`. Rewrite `h4` using `[map_mul, hν, smul_mul_smul_comm, one_mul]`. Conclude with `smul_left_injective ℂ h10 h4`. Establish `hTw : Representation.asAlgebraHom τ.ρ w = Representation.asAlgebraHom τ.ρ (cU U f) * Representation.asAlgebraHom τ.ρ e + 1 - Representation.asAlgebraHom τ.ρ e`. Rewrite using `[hw, uElt, map_add, map_mul, map_sub, map_one, add_sub_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hTw` using `[hμ, hμ0, zero_smul, hν]`. Establish `hν01 : ν * (ν - 1) = 0` using `by linear_combination hνν`. Break down `mul_eq_zero.mp hν01 with h0 | h0` into its components or cases. Rewrite `hTw` using `[h0, zero_smul, mul_zero, zero_add, sub_zero]`. Conclude with `h10 hTw.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hν1 : ν = 1` using `sub_eq_zero.mp h0`. Rewrite `hTw` using `[hν1, one_smul, mul_one, add_sub_cancel_right]`. Establish `htr` using `trace_cU τ U f`. Rewrite `htr` using `[← hTw, map_zero]`. Establish `hirr` using `GlobalTheory.GoodFactor.isIrrChar_character τ hτs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfix : ∑ g, e.coeff g * τ.character g = τ.character 1`. Establish `h5 : LinearMap.trace ℂ τ (Representation.asAlgebraHom τ.ρ e) = ∑ g, e.coeff g * τ.character g`. Rewrite using `[GlobalTheory.GoodFactor.asAlg_eq τ.ρ e, map_sum]`. Simplify using `only [map_smul, smul_eq_mul, FDRep.character]`. Rewrite using `[← h5, hν, hν1, one_smul, FDRep.character, map_one τ.ρ]`.
-
-Establish `hne` using `hχ _ hirr hfix`. Establish `h6 : ∑ u : U, ((Fintype.card U : ℂ)⁻¹ * f u) * τ.character u = (Fintype.card U : ℂ)⁻¹ * ∑ u : U, τ.character u * f u`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun u _ => by ring`. Rewrite `htr` using `[h6]`.
-
-Establish `hG : (Fintype.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Establish `hU : (Fintype.card U : ℂ)⁻¹ ≠ 0` using `inv_ne_zero (Nat.cast_ne_zero.mpr Fintype.card_ne_zero)`. Conclude with `mul_ne_zero hG (mul_ne_zero hU hne) htr.symm`. Take `⟨v, hv⟩` from `LinearMap.injective_iff_surjective.1 hinj 1`. Conclude with `⟨v, hv⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rightInv_uElt : ∀ {G : Type} [Group G] [Fintype G] (U : Subgroup G) [Fintype U] (ψ : U →* ℂˣ)
     (e : MonoidAlgebra ℂ G), e * e = e → (∀ a, e * a = a * e) →

@@ -18,12 +18,12 @@ section Psi
 variable {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-The claim follows from `hψ.1.2.1 a`.
+A detailed English derivation is pending.
 -/
 theorem psi_norm (hψ : IsStdChar D ψ (-1)) (a : AF D.host.F) : ‖ψ a‖ = 1 := hψ.1.2.1 a
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `psi_norm hψ a`. Rewrite `h1` using `[h, norm_zero]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_ne (hψ : IsStdChar D ψ (-1)) (a : AF D.host.F) : ψ a ≠ 0 := by
   intro h
@@ -32,9 +32,9 @@ theorem psi_ne (hψ : IsStdChar D ψ (-1)) (a : AF D.host.F) : ψ a ≠ 0 := by
   exact zero_ne_one h1
 
 /- English proof (translation)
-Establish `h1 : ψ a * conj (ψ a) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, psi_norm hψ a]`. Simplify using the standard rewrite rules. Establish `h2 : ψ a * ψ (-a) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_left_cancel₀ (psi_ne hψ a) (h1.trans h2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem psi_conj (hψ : IsStdChar D ψ (-1)) (a : AF D.host.F) : conj (ψ a) = ψ (-a) := by
   have h1 : ψ a * conj (ψ a) = 1 := by
@@ -45,7 +45,7 @@ theorem psi_conj (hψ : IsStdChar D ψ (-1)) (a : AF D.host.F) : conj (ψ a) = �
   exact mul_left_cancel₀ (psi_ne hψ a) (h1.trans h2.symm)
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `symplO_rat (S := S) (T := T) a b`. Rewrite using `[hq]`. Conclude with `hψ.1.2.2.1 q`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_rat (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (a b : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     ψ (symplO S T (ratW T S a) (ratW T S b)) = 1 := by
@@ -54,7 +54,7 @@ theorem psi_rat (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (a b : Matrix (Fin T.r
   exact hψ.1.2.2.1 q
 
 /- English proof (translation)
-The claim follows from `hψ.1.1`.
+A detailed English derivation is pending.
 -/
 theorem psi_cont (hψ : IsStdChar D ψ (-1)) : Continuous ψ := hψ.1.1
 
@@ -65,7 +65,7 @@ section Cont
 variable (S T : HSp D)
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap _`.
+A detailed English derivation is pending.
 -/
 theorem cont_trace : Continuous (Algebra.trace (AF D.host.F) (AE D)) :=
   IsModuleTopology.continuous_of_linearMap _
@@ -76,13 +76,13 @@ def cAlin (D : D7) : AE D →ₗ[AF D.host.F] AE D where
   map_smul' := Formalism.IndefR.PHeisTh.cA_smul
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap (cAlin D)`.
+A detailed English derivation is pending.
 -/
 theorem cont_cA : Continuous (cA D) :=
   IsModuleTopology.continuous_of_linearMap (cAlin D)
 
 /- English proof (translation)
-Establish `hcA : Continuous (cA D)` using `cont_cA`. Use `delta hO`. Use `fun_prop`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_hO : Continuous fun p : MO S T × MO S T => hO S T p.1 p.2 := by
   have hcA : Continuous (cA D) := cont_cA
@@ -90,9 +90,7 @@ theorem cont_hO : Continuous fun p : MO S T × MO S T => hO S T p.1 p.2 := by
   fun_prop
 
 /- English proof (translation)
-Establish `ht : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `cont_trace`. Establish `hh` using `cont_hO S T`. Use `delta symplO`. Use `first`. Consider the case `exact ht.comp (continuous_const.mul hh)`.
-
-Consider the case `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cont_symplO : Continuous fun p : MO S T × MO S T => symplO S T p.1 p.2 := by
   have ht : Continuous (Algebra.trace (AF D.host.F) (AE D)) := cont_trace
@@ -103,21 +101,21 @@ theorem cont_symplO : Continuous fun p : MO S T × MO S T => symplO S T p.1 p.2 
     | fun_prop
 
 /- English proof (translation)
-Establish `h : Continuous (Function.uncurry (hO S T))` using `cont_hO S T`. Conclude with `h.uncurry_right w`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_hO_left (w : MO S T) : Continuous fun z : MO S T => hO S T z w := by
   have h : Continuous (Function.uncurry (hO S T)) := cont_hO S T
   exact h.uncurry_right w
 
 /- English proof (translation)
-Establish `h : Continuous (Function.uncurry (symplO S T))` using `cont_symplO S T`. Conclude with `h.uncurry_right w`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_symplO_left (w : MO S T) : Continuous fun z : MO S T => symplO S T z w := by
   have h : Continuous (Function.uncurry (symplO S T)) := cont_symplO S T
   exact h.uncurry_right w
 
 /- English proof (translation)
-Use `delta symplOH`. Conclude with `continuous_const.mul (cont_symplO_left S T w)`.
+A detailed English derivation is pending.
 -/
 theorem cont_symplOH_left (w : MO S T) : Continuous fun z : MO S T => symplOH S T z w := by
   delta symplOH
@@ -130,11 +128,9 @@ section Per
 variable (S T : HSp D)
 
 /- English proof (translation)
-Establish `hq : ∀ i j k, ∃ q : D.host.F, algebraMap D.host.F (AF D.host.F) q + Formalism.IndefR.PHeisFC.Phi T S z i j k ∈ Formalism.IndefR.PHeisFC.F0 D.host.F` using `fun i j k => (Formalism.IndefR.PHeisFC.ad_exU (F := D.host.F) _).exists`. Use `choose q hq using hq`. Establish `hc : ∀ (e : D.host.E) (k : Fin (Module.finrank D.host.F D.host.E)), Formalism.IndefR.PHeisFC.cE D.host.F D.host.E (incA D e) k = algebraMap D.host.F (AF D.host.F) ((Module.finBasis D.host.F D.host.E).repr e k)`. Introduce `e k`. Use `show (Formalism.IndefR.PHeisFC.bA D.host.F D.host.E).repr ((1 : AF D.host.F) ⊗ₜ[D.host.F] e) k = _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Algebra.TensorProduct.basis_repr_tmul]`. Simplify using the standard rewrite rules. Use `⟨fun i j => ∑ k, q i j k • Module.finBasis D.host.F D.host.E k, ?_⟩` and prove the remaining obligations. Introduce `i j k`. Use `show Formalism.IndefR.PHeisFC.cE D.host.F D.host.E (incA D (∑ k', q i j k' • Module.finBasis D.host.F D.host.E k') + z i j) k ∈ _`.
-
-Rewrite using `[map_add, Pi.add_apply, hc, Module.Basis.repr_sum_self]`. Conclude with `hq i j k`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rat_shift (z : MO S T) : ∃ a : Matrix (Fin T.rank) (Fin S.rank) D.host.E,
     ratW T S a + z ∈ Formalism.IndefR.PHeisFC.FD T S := by
@@ -158,9 +154,9 @@ theorem exists_rat_shift (z : MO S T) : ∃ a : Matrix (Fin T.rank) (Fin S.rank)
   exact hq i j k
 
 /- English proof (translation)
-Take `⟨K, hK, hFK⟩` from `Formalism.IndefR.PHeisFC.FD_sub_compact T S`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hg.continuousOn`. Use `⟨C, fun z => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_rat_shift S T z`. Rewrite using `[← hp a z]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hC _ (hFK ha)`.
+A detailed English derivation is pending.
 -/
 theorem bdd_of_periodic {E' : Type*} [NormedAddCommGroup E'] (g : MO S T → E') (hg : Continuous g)
     (hp : ∀ a z, ‖g (ratW T S a + z)‖ = ‖g z‖) : ∃ C, ∀ z, ‖g z‖ ≤ C := by
@@ -172,14 +168,14 @@ theorem bdd_of_periodic {E' : Type*} [NormedAddCommGroup E'] (g : MO S T → E')
   exact hC _ (hFK ha)
 
 /- English proof (translation)
-Conclude with `(Formalism.IndefR.PHeisFC.finCovol T S).2 μ 𝓕 hμ h𝓕`.
+A detailed English derivation is pending.
 -/
 theorem measure_FD_lt_top (μ : Measure (MO S T)) (𝓕 : Set (MO S T)) (hμ : μ.IsAddHaarMeasure)
     (h𝓕 : IsAddFundamentalDomain (ratL T S) 𝓕 μ) : μ 𝓕 < ⊤ := by
   exact (Formalism.IndefR.PHeisFC.finCovol T S).2 μ 𝓕 hμ h𝓕
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `bdd_of_periodic S T g hg hp`. Conclude with `Measure.integrableOn_of_bounded (measure_FD_lt_top S T μ 𝓕 hμ h𝓕).ne hg.aestronglyMeasurable (ae_of_all _ hC)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integrableOn_of_periodic {E' : Type*} [NormedAddCommGroup E'] [SecondCountableTopology E'] (g : MO S T → E') (hg : Continuous g)
     (hp : ∀ a z, ‖g (ratW T S a + z)‖ = ‖g z‖) (μ : Measure (MO S T)) (𝓕 : Set (MO S T))
@@ -195,14 +191,14 @@ section Theta
 variable {ψ : AddChar (AF D.host.F) ℂ} (S T : HSp D)
 
 /- English proof (translation)
-Rewrite using `[hf.1 a z, norm_mul, psi_norm hψ, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_theta_shift (hψ : IsStdChar D ψ (-1)) {f : MO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (a : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (z : MO S T) : ‖f (ratW T S a + z)‖ = ‖f z‖ := by
   rw [hf.1 a z, norm_mul, psi_norm hψ, one_mul]
 
 /- English proof (translation)
-Use `show ‖ψ (symplOH S T (ratW T S a + z) v) * f (ratW T S a + z + v)‖ = ‖ψ (symplOH S T z v) * f (z + v)‖`. Rewrite using `[norm_mul, norm_mul, psi_norm hψ, psi_norm hψ, one_mul, one_mul, add_assoc, norm_theta_shift S T hψ hf a (z + v)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_heis_shift (hψ : IsStdChar D ψ (-1)) {f : MO S T → ℂ} (hf : IsThetaFunO ψ S T f) (v : MO S T)
     (a : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (z : MO S T) :
@@ -212,7 +208,7 @@ theorem norm_heis_shift (hψ : IsStdChar D ψ (-1)) {f : MO S T → ℂ} (hf : I
     norm_theta_shift S T hψ hf a (z + v)]
 
 /- English proof (translation)
-Use `delta heisO`. Conclude with `((psi_cont hψ).comp (cont_symplOH_left S T v)).mul (hf.3.comp (continuous_add_right v))`.
+A detailed English derivation is pending.
 -/
 theorem cont_heis (hψ : IsStdChar D ψ (-1)) {f : MO S T → ℂ} (hf : IsThetaFunO ψ S T f) (v : MO S T) :
     Continuous (heisO ψ S T v f) := by
@@ -220,7 +216,7 @@ theorem cont_heis (hψ : IsStdChar D ψ (-1)) {f : MO S T → ℂ} (hf : IsTheta
   exact ((psi_cont hψ).comp (cont_symplOH_left S T v)).mul (hf.3.comp (continuous_add_right v))
 
 /- English proof (translation)
-Use `integrableOn_of_periodic S T _ ((cont_heis S T hψ hf v).mul (Complex.continuous_conj.comp hf'.3)) (fun a z => ?_) μ 𝓕 hμ h𝓕` and prove the remaining obligations. Use `show ‖heisO ψ S T v f (ratW T S a + z) * conj (f' (ratW T S a + z))‖ = ‖heisO ψ S T v f z * conj (f' z)‖`. Rewrite using `[norm_mul, norm_mul, Complex.norm_conj, Complex.norm_conj, norm_heis_shift S T hψ hf v a z, norm_theta_shift S T hψ hf' a z]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_coef (hψ : IsStdChar D ψ (-1)) {f f' : MO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (hf' : IsThetaFunO ψ S T f') (v : MO S T) (μ : Measure (MO S T)) (𝓕 : Set (MO S T))
@@ -234,9 +230,9 @@ theorem integrableOn_coef (hψ : IsStdChar D ψ (-1)) {f f' : MO S T → ℂ} (h
     norm_theta_shift S T hψ hf' a z]
 
 /- English proof (translation)
-Establish `key : symplOH S T (ratW T S a) w + symplOH S T z (w + ratW T S a) + -symplOH S T (ratW T S a) (z + w) = symplOH S T z w + symplO S T z (ratW T S a)`. Rewrite using `[symplOH_add_right, symplOH_add_right, symplOH_swap S T z (ratW T S a), ← symplOH_two]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show z + (w + ratW T S a) = ratW T S a + (z + w) by abel, hf.1 a (z + w)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ψ (symplOH S T (ratW T S a) w + symplOH S T z (w + ratW T S a) + -symplOH S T (ratW T S a) (z + w)) * f (z + w) := by`. Rewrite using `[AddChar.map_add_eq_mul, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [key, AddChar.map_add_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem heis_shift_rat (hψ : IsStdChar D ψ (-1)) {f : MO S T → ℂ} (hf : IsThetaFunO ψ S T f) (w z : MO S T)
     (a : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
@@ -258,18 +254,18 @@ theorem heis_shift_rat (hψ : IsStdChar D ψ (-1)) {f : MO S T → ℂ} (hf : Is
     _ = _ := by rw [key, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Conclude with `⟨fun γ w => by simp, ⟨⊤, by simp, fun u _ _ => by funext z; simp [heisO]⟩, continuous_zero, fun k L _ _ _ => contDiff_const⟩`.
+Supply the required witnesses or components.
 -/
 theorem theta_zero : IsThetaFunO ψ S T 0 := by
   exact ⟨fun γ w => by simp, ⟨⊤, by simp, fun u _ _ => by funext z; simp [heisO]⟩, continuous_zero,
     fun k L _ _ _ => contDiff_const⟩
 
 /- English proof (translation)
-Take `⟨hq1, ⟨U1, hU1, hl1⟩, hc1, hs1⟩` from `hf`. Take `⟨hq2, ⟨U2, hU2, hl2⟩, hc2, hs2⟩` from `hg`. Use `⟨fun γ w => ?_, ⟨U1 ⊓ U2, ?_, fun u hu h0 => ?_⟩, hc1.add hc2, fun k L hL h0 w => (hs1 k L hL h0 w).add (hs2 k L hL h0 w)⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, hq1 γ w, hq2 γ w, mul_add]`. Rewrite using `[AddSubgroup.coe_inf]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU1.inter hU2`. Establish `e1` using `hl1 u hu.1 h0`. Establish `e2` using `hl2 u hu.2 h0`. Use function extensionality and compare the values at `z`. Establish `z1` using `congrFun e1 z`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z2` using `congrFun e2 z`. Simplify using `only [heisO, Pi.add_apply, Pi.zero_apply] at z1 z2 ⊢`. Rewrite using `[mul_add, z1, z2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_add {f g : MO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g) :
     IsThetaFunO ψ S T (f + g) := by
@@ -289,9 +285,9 @@ theorem theta_add {f g : MO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThe
     rw [mul_add, z1, z2]
 
 /- English proof (translation)
-Take `⟨hq1, ⟨U1, hU1, hl1⟩, hc1, hs1⟩` from `hf`. Use `⟨fun γ w => ?_, ⟨U1, hU1, fun u hu h0 => ?_⟩, hc1.const_smul c, fun k L hL h0 w => (hs1 k L hL h0 w).const_smul c⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, hq1 γ w]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1` using `hl1 u hu h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Establish `z1` using `congrFun e1 z`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at z1 ⊢`. Rewrite using `[mul_left_comm, z1]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_smul (c : ℂ) {f : MO S T → ℂ} (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (c • f) := by
   obtain ⟨hq1, ⟨U1, hU1, hl1⟩, hc1, hs1⟩ := hf
@@ -308,19 +304,19 @@ theorem theta_smul (c : ℂ) {f : MO S T → ℂ} (hf : IsThetaFunO ψ S T f) : 
 end Theta
 
 /- English proof (translation)
-Introduce `ψ hψ S T μ 𝓕 hμ h𝓕 f₁ f₁' f₂ f₂' h1 h1' h2 h2' hcoef x y`. Take `⟨v, hv⟩ : ∃ v : WO S T, v = y - x` from `⟨_, rfl⟩`. Set `φ : WO S T → ℂ` to `fun z => ψ (symplOH S T z v) * (f₁ (z + v) * conj (f₁' z) - f₂ (z + v) * conj (f₂' z))`. Establish `hφc : Continuous φ`. Establish `hs : Continuous fun z : WO S T => ψ (symplOH S T z v)` using `(psi_cont hψ).comp (cont_symplOH_left S T v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hs.mul (((h1.3.comp (continuous_add_right v)).mul (Complex.continuous_conj.comp h1'.3)).sub ((h2.3.comp (continuous_add_right v)).mul (Complex.continuous_conj.comp h2'.3)))`. Establish `hφp : ∀ γ w, φ (ratW T S γ + w) = φ w`. Introduce `γ w`. Establish `key : symplOH S T (ratW T S γ + w) v + -symplOH S T (ratW T S γ) (w + v) + symplOH S T (ratW T S γ) w = symplOH S T w v`. Rewrite using `[symplOH_add_left, symplOH_add_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hconj : ∀ b : AF D.host.F, conj (ψ (-b)) = ψ b` using `fun b => by rw [psi_conj hψ, neg_neg]`. Use `show ψ (symplOH S T (ratW T S γ + w) v) * (f₁ (ratW T S γ + w + v) * conj (f₁' (ratW T S γ + w)) - f₂ (ratW T S γ + w + v) * conj (f₂' (ratW T S γ + w))) = ψ (symplOH S T w v) * (f₁ (w + v) * conj (f₁' w) - f₂ (w + v) * conj (f₂' w))`. Rewrite using `[add_assoc, h1.1 γ (w + v), h2.1 γ (w + v), h1'.1 γ w, h2'.1 γ w, map_mul, map_mul, hconj, ← key, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφf : ∀ γ, ∫ z in 𝓕, φ z * ψ (symplO S T z (ratW T S γ)) ∂μ = 0`. Introduce `γ`. Establish `hpt : ∀ z, φ z * ψ (symplO S T z (ratW T S γ)) = ψ (symplOH S T (ratW T S γ) v) * (heisO ψ S T (v + ratW T S γ) f₁ z * conj (f₁' z) - heisO ψ S T (v + ratW T S γ) f₂ z * conj (f₂' z))`. Introduce `z`. Establish `e1` using `heis_shift_rat S T hψ h1 v z γ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e2` using `heis_shift_rat S T hψ h2 v z γ`. Use `show ψ (symplOH S T z v) * (f₁ (z + v) * conj (f₁' z) - f₂ (z + v) * conj (f₂' z)) * ψ (symplO S T z (ratW T S γ)) = _`. Take the linear combination `(-(conj (f₁' z))) * e1 + (conj (f₂' z)) * e2`. Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_const_mul, integral_sub (integrableOn_coef S T hψ h1 h1' _ μ 𝓕 hμ h𝓕) (integrableOn_coef S T hψ h2 h2' _ μ 𝓕 hμ h𝓕)]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `hcoef (v + ratW T S γ)`. Unfold `coefO at hc`. Rewrite using `[hc, sub_self, mul_zero]`. Establish `hφ0` using `(hC ψ hψ S T).2 μ 𝓕 hμ h𝓕 φ hφc hφp hφf`. Establish `hx` using `congrFun hφ0 x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx' : ψ (symplOH S T x v) * (f₁ (x + v) * conj (f₁' x) - f₂ (x + v) * conj (f₂' x)) = 0` using `hx`. Establish `h0` using `(mul_eq_zero.mp hx').resolve_left (psi_ne hψ _)`. Rewrite `h0` using `[hv, add_sub_cancel]`. Conclude with `sub_eq_zero.mp h0`.
+A detailed English derivation is pending.
 -/
 theorem kernelId_of (hC : CharComplete D) : KernelId D := by
   intro ψ hψ S T μ 𝓕 hμ h𝓕 f₁ f₁' f₂ f₂' h1 h1' h2 h2' hcoef x y
@@ -370,7 +366,7 @@ theorem kernelId_of (hC : CharComplete D) : KernelId D := by
   exact sub_eq_zero.mp h0
 
 /- English proof (translation)
-Establish `key : ∀ z : ℂ, ((‖z‖ ^ 2 : ℝ) : ℂ) = z * conj z` using `fun z => by`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[key, key, key, key]`. Simplify using `only [map_add, map_sub, map_mul, Complex.conj_I]`. Take the linear combination `(1 / 2 : ℂ) * (u * conj v - v * conj u) * Complex.I_sq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem polar_pt (u v : ℂ) : u * conj v = (1 / 4) * ((((‖u + v‖ ^ 2 : ℝ) : ℂ) - ((‖u - v‖ ^ 2 : ℝ) : ℂ)) +
     Complex.I * ((‖u + Complex.I * v‖ ^ 2 : ℝ) : ℂ) - Complex.I * ((‖u - Complex.I * v‖ ^ 2 : ℝ) : ℂ)) := by
@@ -385,9 +381,9 @@ section Svn
 variable {ψ : AddChar (AF D.host.F) ℂ} (S T : HSp D)
 
 /- English proof (translation)
-Establish `key : ∀ k : MO S T → ℂ, Continuous k → ∫ w in 𝓕, ‖k w‖ ^ 2 ∂μ = (∫⁻ w in 𝓕, ‖k w‖ₑ ^ 2 ∂μ).toReal`. Introduce `k hk`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (ae_of_all _ (fun w => sq_nonneg _)) (hk.norm.pow 2).aestronglyMeasurable]`. Use `congr 1`. Apply `lintegral_congr` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `w`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Rewrite using `[key g hg.3, key g' hg'.3, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_sq_integral_eq (hψ : IsStdChar D ψ (-1)) {g g' : MO S T → ℂ} (hg : IsThetaFunO ψ S T g)
     (hg' : IsThetaFunO ψ S T g') (μ : Measure (MO S T)) (𝓕 : Set (MO S T)) (hμ : μ.IsAddHaarMeasure)
@@ -406,33 +402,31 @@ theorem norm_sq_integral_eq (hψ : IsStdChar D ψ (-1)) {g g' : MO S T → ℂ} 
   rw [key g hg.3, key g' hg'.3, h]
 
 /- English proof (translation)
-Introduce `A hAθ hAc hAn`. Take `⟨⟨μ, 𝓕, hμ, h𝓕⟩, -⟩` from `Formalism.IndefR.PHeisFC.finCovol T S`. Establish `hint : ∀ h : WO S T → ℂ, IsThetaFunO ψ S T h → MeasureTheory.Integrable (fun x => ((‖h x‖ ^ 2 : ℝ) : ℂ)) (μ.restrict 𝓕)`. Introduce `h hh`. Use `integrableOn_of_periodic S T _ (Complex.continuous_ofReal.comp (hh.3.norm.pow 2)) (fun a z => ?_) μ 𝓕 hμ h𝓕` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ‖(((‖h (ratW T S a + z)‖ ^ 2 : ℝ)) : ℂ)‖ = ‖(((‖h z‖ ^ 2 : ℝ)) : ℂ)‖`. Rewrite using `[norm_theta_shift S T hψ hh a z]`. Establish `hsq : ∀ h : WO S T → ℂ, IsThetaFunO ψ S T h → ∫ x in 𝓕, ((‖A h x‖ ^ 2 : ℝ) : ℂ) ∂μ = ∫ x in 𝓕, ((‖h x‖ ^ 2 : ℝ) : ℂ) ∂μ`. Introduce `h hh`. Rewrite using `[integral_complex_ofReal, integral_complex_ofReal, norm_sq_integral_eq S T hψ (hAθ h hh) hh μ 𝓕 hμ h𝓕 (hAn μ 𝓕 hμ h𝓕 h hh)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hthsub : ∀ f g : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → IsThetaFunO ψ S T (f - g)`. Introduce `f g hf hg`. Establish `h1` using `theta_add S T hf (theta_smul S T (-1) hg)`. Rewrite `h1` using `[neg_one_smul, ← sub_eq_add_neg]`. Then use the resulting hypothesis. Establish `hpol : ∀ f g : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → ∫ x in 𝓕, f x * conj (g x) ∂μ = (1 / 4) * ((∫ x in 𝓕, ((‖(f + g) x‖ ^ 2 : ℝ) : ℂ) ∂μ - ∫ x in 𝓕, ((‖(f - g) x‖ ^ 2 : ℝ) : ℂ) ∂μ) + Complex.I * ∫ x in 𝓕, ((‖(f + Complex.I • g) x‖ ^ 2 : ℝ) : ℂ) ∂μ - Complex.I * …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f g hf hg`. Establish `i1` using `hint _ (theta_add S T hf hg)`. Establish `i2` using `hint _ (hthsub f g hf hg)`. Establish `i3` using `hint _ (theta_add S T hf (theta_smul S T Complex.I hg))`. Establish `i4` using `hint _ (hthsub f _ hf (theta_smul S T Complex.I hg))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ x, f x * conj (g x) = (1 / 4) * ((((‖(f + g) x‖ ^ 2 : ℝ) : ℂ) - ((‖(f - g) x‖ ^ 2 : ℝ) : ℂ)) + Complex.I * ((‖(f + Complex.I • g) x‖ ^ 2 : ℝ) : ℂ) - Complex.I * ((‖(f - Complex.I • g) x‖ ^ 2 : ℝ) : ℂ))` using `fun x => polar_pt (f x) (g x)`. Repeatedly rewrite using `[e]`. Rewrite using `[integral_const_mul, integral_sub, integral_add, integral_sub, integral_const_mul, integral_const_mul]`. Apply the tactic sequence `all_goals first`. Consider the case `exact (i1.sub i2).add (i3.const_mul _)`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact i4.const_mul _`. Consider the case `exact i1.sub i2`. Consider the case `exact i3.const_mul _`. Consider the case `exact i1`. Consider the case `exact i2`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinner : ∀ f g : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → ∫ x in 𝓕, A f x * conj (A g x) ∂μ = ∫ x in 𝓕, f x * conj (g x) ∂μ`. Introduce `f g hf hg`. Rewrite using `[hpol (A f) (A g) (hAθ f hf) (hAθ g hg), hpol f g hf hg, ← map_add A f g, ← map_sub A f g, ← map_smul A Complex.I g, ← map_add A f (Complex.I • g), ← map_sub A f (Complex.I • g), hsq _ (theta_add S T hf hg), hsq _ (hthsub f g hf hg), hsq _ (theta_add S T hf (theta_smul S T Comple …`. Establish `hcoefA : ∀ f g : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → ∀ w, coefO ψ S T μ 𝓕 (A f) (A g) w = coefO ψ S T μ 𝓕 f g w`. Introduce `f g hf hg w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `coefO`. Rewrite using `[← hAc w f hf]`. Conclude with `hinner _ _ (hH w f hf) hg`. Establish `hker : ∀ f g : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → ∀ x y, A f y * conj (A g x) = f y * conj (g x)` using `fun f g hf hg => hK ψ hψ S T μ 𝓕 hμ h𝓕 (A f) (A g) f g (hAθ f hf) (hAθ g hg) hf hg (hcoefA f g hf hg)`. Distinguish the cases in `hall : ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → ∀ x, f x = 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `⟨1, norm_one, fun f hf => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Establish `hk` using `hker f f hf hf y y`. Rewrite `hk` using `[Complex.mul_conj, Complex.mul_conj, hall f hf y, map_zero]`. Establish `hz : A f y = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h0 : Complex.normSq (A f y) = 0` using `by exact_mod_cast hk`. Conclude with `Complex.normSq_eq_zero.mp h0`. Rewrite using `[one_smul, hz, hall f hf y]`. Use `push_neg at hall`. Take `⟨f0, hf0, x0, hx0⟩` from `hall`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk0` using `hker f0 f0 hf0 hf0 x0 x0`. Rewrite `hk0` using `[Complex.mul_conj, Complex.mul_conj]`. Establish `hn : Complex.normSq (A f0 x0) = Complex.normSq (f0 x0)` using `by exact_mod_cast hk0`. Establish `hA0 : A f0 x0 ≠ 0`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hn` using `[h, map_zero, eq_comm, Complex.normSq_eq_zero]`. Conclude with `hx0 hn`. Establish `hnorm : ‖A f0 x0‖ = ‖f0 x0‖`. Establish `h2 : ‖A f0 x0‖ ^ 2 = ‖f0 x0‖ ^ 2`. Rewrite using `[← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq, hn]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp h2`. Use `⟨conj (f0 x0) / conj (A f0 x0), ?_, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, Complex.norm_conj, Complex.norm_conj, hnorm, div_self (norm_ne_zero_iff.mpr hx0)]`. Use function extensionality and compare the values at `y`. Establish `hk` using `hker f f0 hf hf0 x0 y`.
-
-Establish `hc0 : conj (A f0 x0) ≠ 0` using `(map_ne_zero _).mpr hA0`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hk`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem svnSchurO_of (hK : KernelId D)
     (hH : ∀ (w : MO S T) (f : MO S T → ℂ), IsThetaFunO ψ S T f → IsThetaFunO ψ S T (heisO ψ S T w f))
@@ -528,7 +522,7 @@ theorem svnSchurO_of (hK : KernelId D)
       linear_combination hk
 
 /- English proof (translation)
-Introduce `ψ hψ S T`. Conclude with `svnSchurO_of S T hK (hH ψ hψ S T) hψ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem svnSchurO_all_of (hK : KernelId D)
     (hH : ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (w : WO S T) (f : WO S T → ℂ),

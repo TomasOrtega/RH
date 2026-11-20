@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankinSelbergEu
 import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.VerticalStrips.UnramifiedEulerProductIntegral
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RankinSelbergEulerProduct.e6a | exact GlobalTheory.CompanionTheory.RankinSelbergEulerProduct.e6a | (intros; apply GlobalTheory.CompanionTheory.RankinSelbergEulerProduct.e6a <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.rankin_selberg_euler_product_partial : Ad3.Loc2 → Ad3.R.B0 → Ad3.R.A10 → Ad3.R.M0 → Ad3.R.E4 → Ad3.R.E0 → Ad3.R.E1 → Ad3.R.E2 → Ad3.R.UnramifiedEulerProductIntegral := by
   first | exact @GlobalTheory.CompanionTheory.RankinSelbergEulerProduct.e6a | exact GlobalTheory.CompanionTheory.RankinSelbergEulerProduct.e6a | (intros; apply GlobalTheory.CompanionTheory.RankinSelbergEulerProduct.e6a <;> assumption)

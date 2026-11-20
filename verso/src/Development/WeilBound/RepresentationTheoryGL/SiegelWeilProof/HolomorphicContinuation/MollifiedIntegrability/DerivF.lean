@@ -19,7 +19,7 @@ Both sides reduce to the same expression.
 theorem FP_eq_integral_Fi (P : PX m n) (y : E n) : FP ε c t P y = ∫ x, Fi ε c t P y x := rfl
 
 /- English proof (translation)
-Rewrite using `[(hasFDerivAt_FP hI hq hc P y).fderiv, ContinuousLinearMap.integral_apply (integrable_Fd hI hq hc P y)]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `only [Fd, ContinuousLinearMap.smul_apply, Lc_apply, smul_eq_mul, Fi]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_FP_apply (hI : IntG) (hq : Continuous (qX (n := n) ε)) (hc : 0 < c) (P : PX m n) (y w : E n) :
     fderiv ℝ (FP ε c t P) y w = ∫ x, Fi ε c t P y x * (Complex.I * t) * ((ip w (qX ε x) : ℝ) : ℂ) := by
@@ -28,7 +28,7 @@ theorem fderiv_FP_apply (hI : IntG) (hq : Continuous (qX (n := n) ε)) (hc : 0 <
   simp only [Fd, ContinuousLinearMap.smul_apply, Lc_apply, smul_eq_mul, Fi]
 
 /- English proof (translation)
-Establish `h` using `(integrable_Fd (t := t) hI hq hc P y).apply_continuousLinearMap w`. Use `h.congr (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `only [Fd, ContinuousLinearMap.smul_apply, Lc_apply, smul_eq_mul, Fi]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem integrable_Fi_mul (hI : IntG) (hq : Continuous (qX (n := n) ε)) (hc : 0 < c) (P : PX m n) (y w : E n) :
     Integrable fun x => Fi ε c t P y x * (Complex.I * t) * ((ip w (qX ε x) : ℝ) : ℂ) := by
@@ -37,9 +37,9 @@ theorem integrable_Fi_mul (hI : IntG) (hq : Continuous (qX (n := n) ε)) (hc : 0
   simp only [Fd, ContinuousLinearMap.smul_apply, Lc_apply, smul_eq_mul, Fi]
 
 /- English proof (translation)
-Unfold `dirC`. Rewrite using `[fderiv_FP_apply hI hq hc, fderiv_FP_apply hI hq hc, ← integral_const_mul, ← integral_add (integrable_Fi_mul hI hq hc P y _) ((integrable_Fi_mul hI hq hc P y _).const_mul _)]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Establish `e : ∀ a b, v a b = ((v a b).re : ℂ) + Complex.I * ((v a b).im : ℂ)` using `fun a b => by`. Rewrite using `[mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Complex.re_add_im (v a b)).symm`. Simplify using `only [ip, Complex.ofReal_sum, Complex.ofReal_mul]`. Use `conv_rhs => rw [show (∑ a, ∑ b, v a b * (qX ε x a b : ℂ)) = ∑ a, ∑ b, (((v a b).re : ℂ) + Complex.I * ((v a b).im : ℂ)) * (qX ε x a b : ℂ) from Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by rw [← e]]`. Simplify using `only [add_mul, Finset.sum_add_distrib, mul_add, Finset.mul_sum]`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem dirC_FP (hI : IntG) (hq : Continuous (qX (n := n) ε)) (hc : 0 < c) (P : PX m n)
     (v : Fin n → Fin n → ℂ) (y : E n) :
@@ -59,9 +59,9 @@ theorem dirC_FP (hI : IntG) (hq : Continuous (qX (n := n) ε)) (hc : 0 < c) (P :
   ring_nf
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single k, Finset.sum_eq_single l]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Introduce `a _ ha`. Simplify using `[ha]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_ite_pair (k l : Fin n) (α : ℂ) (f : Fin n → Fin n → ℂ) :
     ∑ a, ∑ b, (if a = k ∧ b = l then α else 0) * f a b = α * f k l := by
@@ -73,9 +73,9 @@ theorem sum_ite_pair (k l : Fin n) (α : ℂ) (f : Fin n → Fin n → ℂ) :
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun ((hA m n ε).2.1 x) k) l`. Establish `g : gramX ε x k l = evX (Qp ε k l) x` using `rfl`. Rewrite using `[← g, ← h]`. Simplify using `only [vkl, add_mul, Finset.sum_add_distrib]`. Rewrite using `[sum_ite_pair k l _ (fun a b => (qX ε x a b : ℂ)), sum_ite_pair l k _ (fun a b => (qX ε x a b : ℂ))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [herm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_vkl (hA : AlgA) (k l : Fin n) (x : Fin m → Fin n → ℂ) :
     ∑ a, ∑ b, vkl k l a b * (qX ε x a b : ℂ) = evX (Qp ε k l) x := by
@@ -89,9 +89,9 @@ theorem sum_vkl (hA : AlgA) (k l : Fin n) (x : Fin m → Fin n → ℂ) :
   ring
 
 /- English proof (translation)
-Establish `hq` using `(hA m n ε).2.2.2.2`. Use function extensionality and compare the values at `y`. Unfold `Dkl`. Rewrite using `[dirC_FP hI hq hc]`. Unfold `FP`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[sum_vkl hA]`. Simplify using `only [Fi, evX, map_mul, MvPolynomial.eval_C]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Dkl_FP (hI : IntG) (hA : AlgA) (hc : 0 < c) (P : PX m n) (k l : Fin n) :
     Dkl k l (FP ε c t P) = FP ε c t (MvPolynomial.C (Complex.I * t) * Qp ε k l * P) := by
@@ -107,9 +107,9 @@ theorem Dkl_FP (hI : IntG) (hA : AlgA) (hc : 0 < c) (P : PX m n) (k l : Fin n) :
   ring
 
 /- English proof (translation)
-Establish `hq` using `(hA m n ε).2.2.2.2`. Use function extensionality and compare the values at `y`. Simplify using `only [Pi.add_apply]`. Rewrite using `[FP_eq_integral_Fi, FP_eq_integral_Fi, FP_eq_integral_Fi, ← integral_add (integrable_Fi hI hq hc P y) (integrable_Fi hI hq hc Q y)]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fi, evX, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem FP_add (hI : IntG) (hA : AlgA) (hc : 0 < c) (P Q : PX m n) :
     FP ε c t (P + Q) = FP ε c t P + FP ε c t Q := by
@@ -122,7 +122,7 @@ theorem FP_add (hI : IntG) (hA : AlgA) (hc : 0 < c) (P Q : PX m n) :
   simp only [Fi, evX, map_add]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[FP_eq_integral_Fi, FP_eq_integral_Fi, ← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `only [Fi, evX, map_mul, MvPolynomial.eval_C]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -135,9 +135,9 @@ theorem FP_C_mul (a : ℂ) (P : PX m n) :
   simp only [Fi, evX, map_mul, MvPolynomial.eval_C]; ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use function extensionality and compare the values at `y`. Simplify using `only [Finset.sum_empty, Finset.sum_apply, Pi.zero_apply]`. Rewrite using `[FP_eq_integral_Fi]`.
+Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Fi, evX]`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, FP_add hI hA hc, ih]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem FP_sum (hI : IntG) (hA : AlgA) (hc : 0 < c) {ι : Type*} (s : Finset ι) (f : ι → PX m n) :
     FP ε c t (∑ i ∈ s, f i) = ∑ i ∈ s, FP ε c t (f i) := by
@@ -152,7 +152,7 @@ theorem FP_sum (hI : IntG) (hA : AlgA) (hc : 0 < c) {ι : Type*} (s : Finset ι)
     rw [Finset.sum_insert hi, Finset.sum_insert hi, FP_add hI hA hc, ih]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons k L ih`. Rewrite using `[List.foldr_cons, ih, Dkl_FP hI hA hc, List.map_cons, List.prod_cons]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -166,9 +166,9 @@ theorem foldr_FP (hI : IntG) (hA : AlgA) (hc : 0 < c) (σ : Equiv.Perm (Fin n)) 
     congr 1; ring
 
 /- English proof (translation)
-Establish `hprod : ∀ σ : Equiv.Perm (Fin n), ((List.finRange n).map fun k => MvPolynomial.C (Complex.I * t) * Qp ε k (σ k)).prod = MvPolynomial.C ((Complex.I * t) ^ n) * ∏ k, Qp ε k (σ k)`. Introduce `σ`. Rewrite using `[← Fin.prod_univ_def, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, map_pow]`. Simplify using `only [hprod]`. Rewrite using `[detQ, ← Matrix.det_transpose, Matrix.det_apply', Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply, Matrix.of_apply]`. Rewrite using `[show (MvPolynomial.C (((Equiv.Perm.sign σ : ℤ) : ℂ)) : PX m n) = (((Equiv.Perm.sign σ : ℤ) : PX m n)) by simp]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_perm_eq_det :
     ∑ σ : Equiv.Perm (Fin n), MvPolynomial.C ((Equiv.Perm.sign σ : ℤ) : ℂ) *
@@ -189,7 +189,7 @@ theorem sum_perm_eq_det :
   ring
 
 /- English proof (translation)
-Unfold `Delta`. Simplify using `only [foldr_FP hI hA hc]`. Rewrite using `[← sum_perm_eq_det (ε := ε) (t := t), Finset.sum_mul, FP_sum hI hA hc]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, FP_C_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Delta_FP (hI : IntG) (hA : AlgA) (hc : 0 < c) (P : PX m n) :
     Delta (FP ε c t P) = FP ε c t (MvPolynomial.C ((Complex.I * t) ^ n) * detQ ε * P) := by
@@ -200,9 +200,9 @@ theorem Delta_FP (hI : IntG) (hA : AlgA) (hc : 0 < c) (P : PX m n) :
   rw [mul_assoc, FP_C_mul]
 
 /- English proof (translation)
-Introduce `m n ε c t hc P N`. Establish `hq` using `(hA m n ε).2.2.2.2`. Use `⟨continuous_iff_continuousAt.2 fun y => (hasFDerivAt_FP hI hq hc P y).continuousAt, ?_⟩` and prove the remaining obligations. Proceed by induction on `N with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `succ N ih`. Rewrite using `[Function.iterate_succ_apply', ih, Delta_FP hI hA hc, pow_succ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem derivF_of (hI : IntG) (hA : AlgA) : DerivF := by
   intro m n ε c t hc P N
@@ -215,7 +215,7 @@ theorem derivF_of (hI : IntG) (hA : AlgA) : DerivF := by
     congr 1; ring
 
 /- English proof (translation)
-The claim follows from `derivF_of intG algA`.
+A detailed English derivation is pending.
 -/
 theorem derivF : DerivF := derivF_of intG algA
 

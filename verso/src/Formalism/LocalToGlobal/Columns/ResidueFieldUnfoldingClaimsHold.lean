@@ -4,9 +4,9 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.OneCosetSharp
 namespace Formalism.L2.Col
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `k _ _ ψ₀ χ k₀ m t j n' c n _ hr h hne`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩` from `hr`. Conclude with `(support_oneCoset k ψ₀ χ k₀ m t j n' c n h1 h2 h3 h4 h5 h6 h7 h8).1 h hne`. Introduce `k _ _ ψ₀ χ k₀ m t j n' c n _ hr`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩` from `hr`. Conclude with `(support_oneCoset k ψ₀ χ k₀ m t j n' c n h1 h2 h3 h4 h5 h6 h7 h8).2`.
+A detailed English derivation is pending.
 -/
 theorem residueFieldUnfolding_claims_hold : ResidueFieldUnfoldingSupport ∧ ResidueFieldUnfoldingNonzero := by
   refine ⟨?_, ?_⟩

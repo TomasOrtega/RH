@@ -11,9 +11,9 @@ open Formalism.UG (cT bc)
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `.mk' ((GlobalTheory.AutomorphicL2Unitary.measurableSet_stdDom Γ₁).prod (GlobalTheory.AutomorphicL2Unitary.measurableSet_stdDom Γ₂)).nullMeasurableSet ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩`. Take `⟨γ₁, h₁, u₁⟩` from `GlobalTheory.AutomorphicL2Unitary.existsUnique_stdDom Γ₁ a`. Take `⟨γ₂, h₂, u₂⟩` from `GlobalTheory.AutomorphicL2Unitary.existsUnique_stdDom Γ₂ b`. Use `⟨⟨((γ₁ : G₁), (γ₂ : G₂)), Subgroup.mem_prod.2 ⟨γ₁.2, γ₂.2⟩⟩, ⟨h₁, h₂⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨⟨c, d⟩, hcd⟩ ⟨hc, hd⟩`. Establish `e₁` using `u₁ ⟨c, (Subgroup.mem_prod.1 hcd).1⟩ hc`. Establish `e₂` using `u₂ ⟨d, (Subgroup.mem_prod.1 hcd).2⟩ hd`. Apply the tactic sequence `ext <;> simp [← e₁, ← e₂]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isFundamentalDomain_stdDom_prod {G₁ G₂ : Type} [Group G₁] [TopologicalSpace G₁] [IsTopologicalGroup G₁]
     [SecondCountableTopology G₁] [MeasurableSpace G₁] [BorelSpace G₁] [Group G₂] [TopologicalSpace G₂]
@@ -31,11 +31,11 @@ theorem isFundamentalDomain_stdDom_prod {G₁ G₂ : Type} [Group G₁] [Topolog
   ext <;> simp [← e₁, ← e₂]
 
 /- English proof (translation)
-Introduce `G₁ G₂ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Γ₁ Γ₂ _ _ h₁ h₂ μ hμ 𝓕 h𝓕`. Establish `hd` using `GlobalTheory.isFundamentalDomain_stdDom_prod Γ₁ Γ₂ μ`. Use `haveI : Countable (Γ₁.prod Γ₂) := by`. Establish `: Function.Injective (fun γ : Γ₁.prod Γ₂ => ((⟨(γ : G₁ × G₂).1, (Subgroup.mem_prod.1 γ.2).1⟩ : Γ₁), (⟨(γ : G₁ × G₂).2, (Subgroup.mem_prod.1 γ.2).2⟩ : Γ₂)))`. Introduce and unpack `⟨⟨a, b⟩, _⟩ ⟨⟨c, d⟩, _⟩ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.mk.injEq, Subtype.mk.injEq] at h`. Apply the tactic sequence `ext <;> simp [h.1, h.2]`. Conclude with `this.countable`. Rewrite using `[h𝓕.measure_eq hd]`. Establish `hp : (Measure.haar : Measure G₁).prod (Measure.haar : Measure G₂) |>.IsHaarMeasure` using `inferInstance`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Measure.isMulLeftInvariant_eq_smul μ ((Measure.haar : Measure G₁).prod (Measure.haar : Measure G₂)), Measure.smul_apply, Measure.prod_prod, ENNReal.smul_def, smul_eq_mul]`. Establish `a₁` using `h₁ Measure.haar inferInstance _ (GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom Γ₁ Measure.haar)`. Establish `a₂` using `h₂ Measure.haar inferInstance _ (GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom Γ₂ Measure.haar)`. Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top (ENNReal.mul_lt_top a₁.lt_top a₂.lt_top)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measure_fundamentalDomain_prod_lt_top : ∀ (G₁ G₂ : Type) [Group G₁] [TopologicalSpace G₁] [IsTopologicalGroup G₁] [LocallyCompactSpace G₁] [SecondCountableTopology G₁] [T2Space G₁] [MeasurableSpace G₁] [BorelSpace G₁] [Group G₂] [TopologicalSpace G₂] [IsTopologicalGroup G₂] [LocallyCompactSpace G₂] [SecondCountableTopology G₂] [T2Space G₂] [MeasurableSpace G₂] [BorelSpace G₂] (Γ₁ : Subgroup G₁) (Γ₂ : Subgroup G₂) [DiscreteTopology Γ₁] [DiscreteTopology Γ₂], (∀ μ : Measure G₁, μ.IsHaarMeasure → ∀ 𝓕, IsFundamentalDomain Γ₁ 𝓕 μ → μ 𝓕 ≠ ⊤) → (∀ μ : Measure G₂, μ.IsHaarMeasure → ∀ 𝓕, IsFundamentalDomain Γ₂ 𝓕 μ → μ 𝓕 ≠ ⊤) → ∀ μ : Measure (G₁ × G₂), μ.IsHaarMeasure → ∀ 𝓕, IsFundamentalDomain (Γ₁.prod Γ₂) 𝓕 μ → μ 𝓕 < ⊤ := by
   intro G₁ G₂ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Γ₁ Γ₂ _ _ h₁ h₂ μ hμ 𝓕 h𝓕

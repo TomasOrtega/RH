@@ -12,15 +12,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `hA : ∀ x ∈ LinearMap.ker p, T x ∈ LinearMap.ker p` using `fun x hx => by`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[h₂, hx, map_zero]`. Rewrite using `[GlobalTheory.CuspGL.charpoly_eq_restrict_mul_mapQ (LinearMap.ker p) T hA]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Set `e : M₀ ≃ₗ[K] ↥(LinearMap.ker p)` to `(LinearEquiv.ofInjective f hf).trans (LinearEquiv.ofEq _ _ (LinearMap.exact_iff.1 he).symm)`. Establish `he' : T.restrict hA = e.conj T₀`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `e.surjective y`. Rewrite using `[LinearEquiv.conj_apply, LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext (h₀ x).symm`. Rewrite using `[he', LinearEquiv.charpoly_conj]`. Set `e` to `p.quotKerEquivOfSurjective hp`. Establish `he' : (LinearMap.ker p).mapQ (LinearMap.ker p) T (fun x hx => hA x hx) = e.symm.conj T₂`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ y`. Rewrite using `[LinearEquiv.conj_apply, LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.symm_symm]`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, Submodule.mkQ_apply, Submodule.mapQ_apply]`. Simplify using `only [e, LinearMap.quotKerEquivOfSurjective_apply_mk, h₂]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[he', LinearEquiv.charpoly_conj]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem charpoly_of_exact {K M₀ M M₂ : Type} [Field K] [AddCommGroup M₀] [Module K M₀] [FiniteDimensional K M₀]
     [AddCommGroup M] [Module K M] [FiniteDimensional K M] [AddCommGroup M₂] [Module K M₂] [FiniteDimensional K M₂]
@@ -52,9 +52,9 @@ private theorem charpoly_of_exact {K M₀ M M₂ : Type} [Field K] [AddCommGroup
     rw [he', LinearEquiv.charpoly_conj]
 
 /- English proof (translation)
-Take `⟨L₁, r₁, hm₁, hV₁, e₁⟩` from `wdAt_of_isPstAt ι B h hj (r := r) ⟨L₂, r₂, hm₂, hV₂⟩`. Establish `h₁ : L₁.1 ≤ (supExt L₁ L₂).1` using `le_sup_left`. Establish `h₂ : L₂.1 ≤ (supExt L₁ L₂).1` using `le_sup_right`. Establish `e` using `IsModel.unique B r (hm₁.enlarge h₁) (hm₂.enlarge h₂)`. Establish `a₁` using `GlobalTheory.T.potSemistableParameter_coefficientField_enlarge P ι B h hj h₁ r₁ hV₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₂` using `GlobalTheory.T.potSemistableParameter_coefficientField_enlarge P ι B h hj h₂ r₂ hV₂`. Rewrite `a₁` using `[e]`. Conclude with `e₁.trans (a₁.symm.trans a₂)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wdAt_of_model {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ)
     {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
@@ -79,9 +79,9 @@ variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E 
   {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (B : LocBridge l E Ω Gw O)
 
 /- English proof (translation)
-Set `M : ↥Gw →* Matrix (Fin m) (Fin m) ↥L.1` to `{ toFun := fun g => Matrix.of fun i j => ⟨_, hr g i j⟩ map_one' := by`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, apply_ite]`. Use the proof step `map_mul' := fun g g' => by`. Use extensionality with `i j`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mul_apply] }`. Conclude with `⟨M.toHomUnits, hL, by ext g i j; rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_model {m : ℕ} (r : ↥Gw →* GL (Fin m) (Om l)) (L : FinExt l) (hL : B.LL.1 ≤ L.1)
     (hr : ∀ g i j, (r g : Matrix (Fin m) (Fin m) (Om l)) i j ∈ L.1) : ∃ r₂, IsModel B r L r₂ := by
@@ -96,17 +96,17 @@ private theorem exists_model {m : ℕ} (r : ↥Gw →* GL (Fin m) (Om l)) (L : F
   exact ⟨M.toHomUnits, hL, by ext g i j; rfl⟩
 
 /- English proof (translation)
-Establish `e₁ : ∀ g i j, (r g : Matrix (Fin (n + 1)) (Fin (n + 1)) (Om l)) i j = (((r₁ g : Matrix (Fin (n + 1)) (Fin (n + 1)) ↥L.1) i j : ↥L.1) : Om l)` using `fun g i j => by rw [← hm.2]; rfl`. Establish `eψ : ∀ g i j, (GlobalTheory.TripleGal.rk1 ψ g : Matrix (Fin 1) (Fin 1) (Om l)) i j = ψ g` using `fun g i j => by`. Rewrite using `[Subsingleton.elim j i]`. Conclude with `Matrix.diagonal_apply_eq (fun _ : Fin 1 => (ψ g : Om l)) i`. Take `⟨r₀, m₀⟩` from `exists_model B (GlobalTheory.TripleGal.rk1 ψ) L hm.1 fun g i j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eψ, ← h1, e₁]`. Conclude with `SetLike.coe_mem _`. Take `⟨r₂, m₂⟩` from `exists_model B r' L hm.1 fun g i j => by`. Rewrite using `[← h2, e₁]`. Conclude with `SetLike.coe_mem _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k0 : ∀ g (i : Fin n), (r₁ g : Matrix (Fin (n + 1)) (Fin (n + 1)) ↥L.1) i.succ 0 = 0` using `fun g i => Subtype.ext ((e₁ g _ _).symm.trans (h0 g i))`. Establish `k1 : ∀ g, (r₀ g : Matrix (Fin 1) (Fin 1) ↥L.1) 0 0 = (r₁ g : Matrix (Fin (n + 1)) (Fin (n + 1)) ↥L.1) 0 0` using `fun g => Subtype.ext (by rw [← e₁, h1, ← eψ g 0 0, ← m₀.2]; rfl)`. Establish `k2 : ∀ g i j, (r₂ g : Matrix (Fin n) (Fin n) ↥L.1) i j = (r₁ g : Matrix (Fin (n + 1)) (Fin (n + 1)) ↥L.1) i.succ j.succ` using `fun g i j => Subtype.ext (by rw [← e₁, h2, ← m₂.2]; rfl)`. Establish `ap : ∀ {m : ℕ} (s : ↥Gw →* GL (Fin m) ↥L.1) g v i, B.repE L s g v i = ∑ j, (s (B.e.symm g) : Matrix (Fin m) (Fin m) ↥L.1) i j * v j` using `fun s g v i => rfl`. Use `⟨r₀, r₂, LinearMap.single ↥L.1 (fun _ => ↥L.1) 0 ∘ₗ LinearMap.proj 0, LinearMap.funLeft ↥L.1 ↥L.1 Fin.succ, m₀, m₂, fun g v => funext fun i => ?_, fun g v => funext fun i => ?_, fun x y hxy => funext fun i => ?_, LinearMap.funLeft_surjective_of_injective _ _ _ (Fin.succ_injective …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[ap]`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[ap, k1, Fin.sum_univ_succ]`. Simplify using `[k0, Fin.sum_univ_succ]`. Rewrite using `[ap, LinearMap.funLeft_apply, ap, Fin.sum_univ_succ, k0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[k2]`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `using congrFun hxy 0`. Use `⟨fun _ => x 0, funext fun i => ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Simplify using the standard rewrite rules. Simplify using `using (congrFun hx i).symm`. Introduce and unpack `⟨y, rfl⟩`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem blocks {n : ℕ} (r : ↥Gw →* GL (Fin (n + 1)) (Om l)) (r' : ↥Gw →* GL (Fin n) (Om l))
     (ψ : ↥Gw →* (Om l)ˣ)
@@ -161,19 +161,17 @@ end Blocks
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hB F Ω _ _ _ _ _ l _ ι A w h n r r' ψ hc h0 h1 h2 c HT β Q hr hψ O _ _ _ Bw hj`. Take `⟨T⟩` from `UpperTheory.V.Loc.tiedP l`. Take `⟨d₁, j₁, p₁⟩` from `hr O Bw hj`. Take `⟨-, j₀, p₀⟩` from `hψ O Bw hj`. Establish `dr : ∀ {m : ℕ} (L : FinExt l) (s : ↥(Dec (F` using `F) A) →* GL (Fin m) ↥L.1), IsDR ((UpperTheory.V.Loc.PP l).PD Bw.Kw) (Bw.repE L s) ↔ Bw.IsdRE (UpperTheory.V.Loc.PP l) L s := fun L s => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[IsDR, finrank_fin_fun]`. Both sides reduce to the same expression. Use `⟨?_, fun τ LL' τ' hτ => ?_, fun s => ?_⟩` and prove the remaining obligations. Take `⟨L, r₁, hm, hd⟩` from `d₁`. Take `⟨r₀, r₂, f, p, -, m₂, hf, hp, fi, ps, ex⟩` from `blocks Bw r r' ψ h0 h1 h2 L r₁ hm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨L, r₂, m₂, (dr L r₂).1 (GlobalTheory.Per.ExactMult.exact_hodge_add l _ _ T Bw.Kw L _ _ _ _ _ _ f p hf hp fi ps (LinearMap.exact_iff.1 ex).symm ((dr L r₁).2 hd)).2.1⟩`. Take `⟨L, r₁, hm, hd, τ₁, t₁, hcount⟩` from `j₁ τ LL' τ' hτ`. Take `⟨r₀, r₂, f, p, m₀, m₂, hf, hp, fi, ps, ex⟩` from `blocks Bw r r' ψ h0 h1 h2 L r₁ hm`. Take `⟨-, d₂, hadd⟩` from `GlobalTheory.Per.ExactMult.exact_hodge_add l _ _ T Bw.Kw L _ _ _ _ _ _ f p hf hp fi ps (LinearMap.exact_iff.1 ex).symm ((dr L r₁).2 hd)`. Use `⟨L, r₂, m₂, (dr L r₂).1 d₂, τ₁, t₁, fun a => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a₀` using `IsJumpsAt.count_eq (UpperTheory.V.Loc.PP l) m₀ t₁ (j₀ τ LL' τ' hτ) a`. Establish `a₁` using `hcount a`. Establish `a₂ : Bw.multE (UpperTheory.V.Loc.PP l) L r₁ τ₁ a = Bw.multE (UpperTheory.V.Loc.PP l) L r₀ τ₁ a + Bw.multE (UpperTheory.V.Loc.PP l) L r₂ τ₁ a` using `(hadd τ₁ a).2.1`. Use `beta_reduce at a₀ a₁`. Rewrite `a₁` using `[← Multiset.singleton_add, Multiset.count_add, Nat.cast_add, a₀, a₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `add_left_cancel a₁`. Take `⟨L, r₁, hm, hV⟩` from `hB.isPstAt T Bw r (Units.continuous_val.comp hc) d₁`. Take `⟨r₀, r₂, f, p, m₀, m₂, hf, hp, fi, ps, ex⟩` from `blocks Bw r r' ψ h0 h1 h2 L r₁ hm`. Take `⟨V₀, V₂, wi, ws, wex⟩` from `UpperTheory.weil_deligne_functor_exactness l ι Bw.Kw L _ _ _ _ _ _ f p hf hp fi ps ex hV`. Use `haveI := hV.finite`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := V₀.finite`. Use `haveI := V₂.finite`. Establish `a₀` using `p₀ s`. Establish `a₁` using `p₁ s`. Use `beta_reduce at a₀ a₁`.
-
-Rewrite `a₀` using `[wdAt_of_model _ ι Bw h hj _ L r₀ m₀ V₀, DpstMap.charPol_wdPst _ ι Bw h hj _ V₀]`. Rewrite `a₁` using `[wdAt_of_model _ ι Bw h hj _ L r₁ hm hV, DpstMap.charPol_wdPst _ ι Bw h hj _ hV, charpoly_of_exact _ _ wi ws wex _ _ _ (DpstMap.wdLin_wdRho _ ι Bw h hj hf s) (DpstMap.wdLin_wdRho _ ι Bw h hj hp s), a₀]`. Rewrite using `[wdAt_of_model _ ι Bw h hj _ L r₂ m₂ V₂, DpstMap.charPol_wdPst _ ι Bw h hj _ V₂]`. Conclude with `mul_left_cancel₀ (X_sub_C_ne_zero _) a₁`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.deRham_rational_of_extension_by_character :
     GlobalTheory.Published.DeRhamPotSemistable → ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 F)} (h : IsPlaceOver A w) {n : ℕ} (r : ↥(Dec (F := F) A) →* GL (Fin (n + 1)) (Qbar l)) (r' : ↥(Dec (F := F) A) →* GL (Fin n) (Qbar l)) (ψ : ↥(Dec (F := F) A) →* (Qbar l)ˣ), Continuous r → (∀ g (i : Fin n), (r g : Matrix (Fin (n + 1)) (Fin (n + 1)) (Qbar l)) i.succ 0 = 0) → (∀ g, (r g : Matrix (Fin (n + 1)) (Fin (n + 1)) (Qbar l)) 0 0 = (ψ g : Qbar l)) → (∀ g (i j : Fin n), (r g : Matrix (Fin (n + 1)) (Fin (n + 1)) (Qbar l)) i.succ j.succ = (r' g : Matrix (Fin n) (Fin n) (Qbar l)) i j) → ∀ (c : (F →+* Qbar l) → ℤ) (HT : (F →+* Qbar l) → Multiset ℤ) (β : ↥(Weil h) → ℂ) (Q : ↥(Weil h) → ℂ[X]), DRat ι h r (fun τ => c τ ::ₘ HT τ) (fun s => (X - C (β s)) * Q s) → DRat ι h (GlobalTheory.TripleGal.rk1 ψ) (fun τ => {c τ}) (fun s => X - C (β s)) → DRat ι h r' HT Q := by

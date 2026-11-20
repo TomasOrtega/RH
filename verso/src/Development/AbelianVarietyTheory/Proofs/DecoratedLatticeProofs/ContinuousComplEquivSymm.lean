@@ -28,7 +28,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_compFin' (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (z : AF F ⊗[F] E) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ (compFin F E v z) = compFin F E v (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ z) := by
@@ -38,9 +38,9 @@ theorem sigR_compFin' (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (z :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Set `_ : Algebra (Fv F v) (w.adicCompletion E)` to `(GlobalTheory.LFun.complMap h).toAlgebra`. Establish `: ContinuousSMul (Fv F v) (w.adicCompletion E)` using `continuousSMul_of_algebraMap _ _ (GlobalTheory.LFun.SplitChart.continuous_complMap h)`. Set `_ : NontriviallyNormedField (Fv F v)` to `Valued.toNontriviallyNormedField _ _`. Set `f : Fv F v ≃ₐ[Fv F v] w.adicCompletion E` to `{ complEquiv hE h hτ with commutes' := fun a => rfl }`. Establish `: FiniteDimensional (Fv F v) (w.adicCompletion E)` using `f.toLinearEquiv.finiteDimensional`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsModuleTopology (Fv F v) (w.adicCompletion E)` using `isModuleTopologyOfFiniteDimensional`. Conclude with `IsModuleTopology.continuous_of_linearMap f.symm.toLinearMap`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_complEquiv_symm {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)}
     (hE : IsCMExt F E σ) (h : w.under (𝓞 F) = v) {τ : E →ₐ[F] Fv F v} (hτ : splitPrime τ = w) :
@@ -56,9 +56,9 @@ theorem continuous_complEquiv_symm {σ : E →ₐ[F] E} {v : HeightOneSpectrum (
   exact IsModuleTopology.continuous_of_linearMap f.symm.toLinearMap
 
 /- English proof (translation)
-Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Use `IsModuleTopology.continuous_of_ringHom (R := AF F) ((GlobalTheory.LFun.toCompl h).comp (compFin F E v)) ?_` and prove the remaining obligations. Establish `e : (((GlobalTheory.LFun.toCompl h).comp (compFin F E v)).comp (algebraMap (AF F) (AF F ⊗[F] E)) : AF F → w.adicCompletion E) = fun a => GlobalTheory.LFun.complMap h (evFin F v a)`. Use function extensionality and compare the values at `a`. Conclude with `(GlobalTheory.LFun.toCompl_tmul h (evFin F v a) (1 : E)).trans (by rw [map_one, mul_one])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(GlobalTheory.LFun.SplitChart.continuous_complMap h).comp ((RestrictedProduct.continuous_eval v).comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_compW {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)} (h : w.under (𝓞 F) = v) :
     Continuous fun a : AF F ⊗[F] E => GlobalTheory.LFun.toCompl h (compFin F E v a) := by
@@ -72,19 +72,17 @@ theorem continuous_compW {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum
   exact (GlobalTheory.LFun.SplitChart.continuous_complMap h).comp ((RestrictedProduct.continuous_eval v).comp continuous_snd)
 
 /- English proof (translation)
-Use `set c := complEquiv hE h hτ`. Establish `hcw : ∀ y, GlobalTheory.LFun.toCompl h y = c (splitProj τ y)` using `fun y => toCompl_eq hE h hτ y`. Establish `hcc : Continuous c.symm` using `continuous_complEquiv_symm hE h hτ`. Set `s : w.adicCompletion E →+ Fv F v ⊗[F] E` to `(splitAlgEquiv hE τ).symm.toRingEquiv.toAddEquiv.toAddMonoidHom.comp ((AddMonoidHom.inl _ _).comp c.symm.toAddEquiv.toAddMonoidHom)`. Establish `s1 : ∀ x, splitProj τ (s x) = c.symm x` using `fun x => splitProj_symm hE τ _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2 : ∀ x, splitProj (τ.comp σ) (s x) = 0` using `fun x => splitProj_comp_symm hE τ _`. Establish `hs1 : s 1 = splitIdem hE τ` using `by show (splitAlgEquiv hE τ).symm (c.symm 1, 0) = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Establish `hsc : Continuous s` using `(continuous_splitAlgEquiv_symm hE τ).comp ((continuous_id.prodMk continuous_const).comp hcc)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `clear_value s`. Establish `hst : Continuous (singleTens E v)` using `GlobalTheory.AutFunCompare.continuous_tensNU (E := E) _ _ (Continuous.prodMk continuous_const (continuous_singleFin v))`. Establish `hpl : algebraMap (AF F) (AF F ⊗[F] E) (pairA F 0 (singleFin v 1)) = singleTens E v 1` using `rfl`. Use `⟨(singleTens E v).toAddMonoidHom.comp s, hst.comp hsc, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x show GlobalTheory.LFun.toCompl h (compFin F E v (singleTens E v (s x))) = x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[compFin_singleTens_self, hcw, s1, RingEquiv.apply_symm_apply]`. Introduce `x show GlobalTheory.LFun.toCompl h (compFin F E v (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ (singleTens E v (s x)))) = 0`. Rewrite using `[sigR_singleTens, compFin_singleTens_self, hcw, ← splitProj_comp, s2, map_zero]`. Introduce `x show _ * singleTens E v (s x) = singleTens E v (s x)`. Rewrite using `[hpl, singleTens_mul, compFin_singleTens_self, one_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a x show a * singleTens E v (s x) = singleTens E v (s _)`. Rewrite using `[mul_comm, singleTens_mul]`. Use `congrArg _ (split_ext hE τ ?_ ?_)` and prove the remaining obligations. Rewrite using `[map_mul, s1, s1, hcw, map_mul, RingEquiv.symm_apply_apply, mul_comm]`. Rewrite using `[map_mul, s2, s2, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a show _ = singleTens E v (s _) + Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ (singleTens E v (s _))`. Rewrite using `[hpl, singleTens_mul, one_mul, sigR_singleTens, ← map_add]`. Use `congrArg _ (split_ext hE τ ?_ ?_)` and prove the remaining obligations. Rewrite using `[map_add, s1, hcw, RingEquiv.symm_apply_apply, ← splitProj_comp, s2, add_zero]`. Rewrite using `[map_add, s2, zero_add, splitProj_comp_sigR hE, s1, hcw, RingEquiv.symm_apply_apply, ← sigR_compFin', splitProj_comp]`.
-
-Use `show singleTens E v (s 1) = _`. Rewrite using `[hs1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iota_gen {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)}
     (hE : IsCMExt F E σ) (h : w.under (𝓞 F) = v) {τ : E →ₐ[F] Fv F v} (hτ : splitPrime τ = w) :
@@ -147,11 +145,11 @@ open scoped TensorProduct
 open GlobalTheory.Core.Rk.SplitIota in
 
 /- English proof (translation)
-Introduce `D q w h hs`. Establish `hE` using `isCMExt_host D`. Take `⟨P, Q, hPQ, hP, hQ⟩` from `hs`. Establish `hPu : P.under (𝓞 D.host.F) = q` using `HeightOneSpectrum.ext hP`. Establish `hQu : Q.under (𝓞 D.host.F) = q` using `HeightOneSpectrum.ext hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨w', hw', hw'u⟩ : ∃ w' : HeightOneSpectrum (𝓞 D.host.E), w ≠ w' ∧ w'.under (𝓞 D.host.F) = q := by`. Distinguish the cases in `e : w = P`. Conclude with `⟨Q, e ▸ hPQ, hQu⟩`. Conclude with `⟨P, e, hPu⟩`. Take `⟨τ, hτ, -⟩` from `GlobalTheory.AdelicU.existsUnique_splitPrime_eq hE hw' h hw'u`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨ι, h1, h2, h3, h4, h5, h6, h7⟩` from `exists_iota_gen hE h hτ`. Conclude with `⟨ι, h1, h2, h3, h4, h5, h6, GlobalTheory.AdelicU.Supp.isSplitIdem_iff_exists.2 ⟨q, τ, h7⟩, continuous_compW h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Core.Rk.SplitIota.exists_iota : ∀ (D : D7) (q : FinPl D) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = q), Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) q → ∃ ι : w.adicCompletion D.host.E →+ AE D, Continuous ι ∧ (∀ x, cw h (ι x) = x) ∧ (∀ x, cw h (cA D (ι x)) = 0) ∧ (∀ x, algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (singleFin q 1)) * ι x = ι x) ∧ (∀ a x, a * ι x = ι (cw h a * x)) ∧ (∀ a, algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (singleFin q 1)) * a = ι (cw h a) + cA D (ι (cw h (cA D a)))) ∧ IsSplitIdem D (ι 1) ∧ Continuous (cw h) := by
   intro D q w h hs

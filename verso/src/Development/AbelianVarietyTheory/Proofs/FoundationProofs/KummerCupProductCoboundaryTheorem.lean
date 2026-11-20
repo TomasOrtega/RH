@@ -14,17 +14,15 @@ open GlobalTheory.NeedB Polynomial
 namespace GlobalTheory.KummerCob
 
 /- English proof (translation)
-Introduce `k K Ω _ _ _ _ _ _ _ _ _ _ _ N ζ hN hζ a b α β haA hai hbA hbi ha0 hb0 hα hβ`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed K`. Use `haveI : Algebra.IsAlgebraic K Ω := IsAlgClosure.isAlgebraic`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap (RatFunc k) K).injective`. Take `⟨z, hz⟩` from `zeta_mem_range k K Ω N ζ hN hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ g : Ω ≃ₐ[K] Ω, g ζ = ζ` using `fun g => by rw [← hz]; exact g.commutes z`. Establish `hC1 : IsFirstChernClassOfLineBundle K` using `GlobalTheory.T.tsen_theorem k K`. Establish `hnorm : ∀ (L : IntermediateField K Ω), FiniteDimensional K L → ∀ c : K, c ≠ 0 → ∃ x : L, Algebra.norm K x = c` using `fun L _ c hc => GlobalTheory.T.exists_algebra_norm_eq_of_isFirstChernClass K L hC1 c hc`. Take `⟨η₀, hη₀c, hη₀⟩` from `GlobalTheory.T.exists_locallyConstant_kum_cup_coboundary_of_norm_surj K Ω N ζ hN hζ hfix hnorm a b α β ha0 hb0 hα hβ`. Take `⟨θ, hθ0, hθE, hθη, hθs⟩` from `GlobalTheory.T.kummer_cochain_character_galoisInvariant_class K Ω N ζ hN hζ hfix a b α β ha0 hb0 hα hβ η₀ hη₀c hη₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f, hf0, hfB⟩` from `GlobalTheory.T.kummer_divisor_descends_functionField k K Ω N ζ hN hζ a b α β haA hai hbA hbi ha0 hb0 hα hβ θ hθ0 hθE hθs`. Take `⟨θ₀, hθ₀⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap K Ω f) hN`. Establish `hθ₀0 : θ₀ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hθ₀` using `[zero_pow hN.ne']`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hf0 ((map_eq_zero_iff _ (algebraMap K Ω).injective).1 hθ₀.symm)`. Take `⟨hk0c, -, hk0add, -⟩` from `GlobalTheory.NeedB.KumLemma.kummer_character_main K Ω N ζ θ₀ hN hζ hfix hθ₀0 ⟨f, hθ₀.symm⟩`. Use `⟨fun g => η₀ g - kum ζ θ₀ g, hη₀c.sub hk0c, ?_, ?_⟩` and prove the remaining obligations. Introduce `g h`. Simplify using `only`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hη₀ g h, hk0add g h]`. Expand and normalize the polynomial expressions, which then agree. Introduce `B hB g hg`. Take `⟨c, hcE, hc0, hcv⟩` from `hfB B hB`. Rewrite `hcv` using `[← hθ₀]`.
-
-Take `⟨hgE, hk⟩` from `GlobalTheory.T.inertia_fixes_adjoin_kummer_roots_and_values_eq k K Ω N ζ hN hζ a b α β haA hai hbA hbi ha0 hb0 hα hβ θ θ₀ hθ0 hθ₀0 hθE ⟨f, hθ₀.symm⟩ B hB g hg c hcE hc0 hcv`. Use `show η₀ g - kum ζ θ₀ g = 0`. Rewrite using `[hθη g hgE, hk, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cup_eq_coboundary_vanishing_on_inertia : ∀ (k K Ω : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k[X] K] [Algebra (RatFunc k) K]
     [IsScalarTower k[X] (RatFunc k) K] [FiniteDimensional (RatFunc k) K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
@@ -69,11 +67,11 @@ theorem cup_eq_coboundary_vanishing_on_inertia : ∀ (k K Ω : Type) [Field k] [
     rw [hθη g hgE, hk, sub_self]
 
 /- English proof (translation)
-Introduce `k K Ω _ _ _ _ _ _ _ _ _ _ _ N ζ hN hζ a b α β ha0 hb0 haA hai hbA hbi hα hβ`. Use `haveI : Algebra.IsAlgebraic K Ω := IsAlgClosure.isAlgebraic`. Take `⟨z, hz⟩` from `zeta_mem_range k K Ω N ζ hN hζ`. Establish `hfix : ∀ g : Ω ≃ₐ[K] Ω, g ζ = ζ` using `fun g => by rw [← hz]; exact g.commutes z`. Establish `hα0 : α ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `hα` using `[zero_pow hN.ne']`. Conclude with `ha0 ((map_eq_zero_iff _ (algebraMap K Ω).injective).1 hα.symm)`. Establish `hβ0 : β ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hβ` using `[zero_pow hN.ne']`. Conclude with `hb0 ((map_eq_zero_iff _ (algebraMap K Ω).injective).1 hβ.symm)`. Take `⟨hαc, -, hαadd, -⟩` from `GlobalTheory.NeedB.KumLemma.kummer_character_main K Ω N ζ α hN hζ hfix hα0 ⟨a, hα.symm⟩`. Take `⟨hβc, -, hβadd, -⟩` from `GlobalTheory.NeedB.KumLemma.kummer_character_main K Ω N ζ β hN hζ hfix hβ0 ⟨b, hβ.symm⟩`. Conclude with `⟨hαadd, hαc, hβadd, hβc, cup_eq_coboundary_vanishing_on_inertia k K Ω N ζ hN hζ a b α β haA hai hbA hbi ha0 hb0 hα hβ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem thmA : GlobalTheory.NeedB.ThmA := by
   intro k K Ω _ _ _ _ _ _ _ _ _ _ _ N ζ hN hζ a b α β ha0 hb0 haA hai hbA hbi hα hβ

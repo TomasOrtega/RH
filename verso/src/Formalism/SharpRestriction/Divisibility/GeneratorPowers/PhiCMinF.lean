@@ -10,69 +10,63 @@ namespace Formalism.MainNotions.ModuliIntegralCharts.H1.PhiCMin
 open Matrix
 
 /- English proof (translation)
-Introduce `d L R μ hd hL hR hμ hmin δ hδ`. Take `⟨e, he⟩ : ∃ e : (Fin d → ℝ) ≃ₗ[ℝ] EuclideanSpace ℝ (Fin d), ∀ a, (e a).ofLp = a` from `⟨(WithLp.linearEquiv 2 ℝ (Fin d → ℝ)).symm, fun a => (WithLp.linearEquiv 2 ℝ (Fin d → ℝ)).apply_symm_apply a⟩`. Establish `hin : ∀ a b : Fin d → ℝ, inner ℝ (e a) (e b) = a ⬝ᵥ b`. Introduce `a b`. Rewrite using `[EuclideanSpace.inner_eq_star_dotProduct, he, he, dotProduct_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hnorm : ∀ a : Fin d → ℝ, ‖e a‖ ^ 2 = a ⬝ᵥ a`. Introduce `a`. Rewrite using `[← real_inner_self_eq_norm_sq, hin]`. Establish `hRR : R⁻¹ * R = 1` using `Matrix.nonsing_inv_mul R hR`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hRR' : R * R⁻¹ = 1` using `Matrix.mul_nonsing_inv R hR`. Establish `hcast : ∀ j : Fin d, (fun i => (((Pi.single j (1 : ℤ) : Fin d → ℤ) i : ℤ) : ℝ)) = Pi.single j (1 : ℝ)`. Introduce `j`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hij]`. Take `⟨g, hg⟩ : ∃ g : (Fin d → ℤ) →ₗ[ℤ] EuclideanSpace ℝ (Fin d), ∀ t, g t = e (R *ᵥ fun i => (t i : ℝ))` from `⟨(AddMonoidHom.mk' (fun t : Fin d → ℤ => e (R *ᵥ fun i => (t i : ℝ))) (by`. Introduce `a b`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show e (R *ᵥ fun i => ((a + b) i : ℝ)) = e (R *ᵥ fun i => (a i : ℝ)) + e (R *ᵥ fun i => (b i : ℝ))`. Establish `h1 : (fun i => ((a + b) i : ℝ)) = (fun i => (a i : ℝ)) + fun i => (b i : ℝ)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[h1, Matrix.mulVec_add, map_add])).toIntLinearMap, fun t => rfl⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hZ, hh⟩ : ∃ hZ : (Fin d → ℤ) →ₗ[ℤ] EuclideanSpace ℝ (Fin d), ∀ u, hZ u = e ((fun i => (u i : ℝ)) ᵥ* R⁻¹)` from `⟨(AddMonoidHom.mk' (fun u : Fin d → ℤ => e ((fun i => (u i : ℝ)) ᵥ* R⁻¹)) (by`. Introduce `a b`. Use `show e ((fun i => ((a + b) i : ℝ)) ᵥ* R⁻¹) = e ((fun i => (a i : ℝ)) ᵥ* R⁻¹) + e ((fun i => (b i : ℝ)) ᵥ* R⁻¹)`. Establish `h1 : (fun i => ((a + b) i : ℝ)) = (fun i => (a i : ℝ)) + fun i => (b i : ℝ)`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1, Matrix.add_vecMul, map_add])).toIntLinearMap, fun u => rfl⟩`. Establish `hquad : ∀ t : Fin d → ℝ, ‖e (R *ᵥ t)‖ ^ 2 = t ⬝ᵥ (L *ᵥ t)`. Introduce `t`. Rewrite using `[hnorm, hL, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec t, Matrix.vecMul_transpose]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlow : ∀ t : Fin d → ℤ, t ≠ 0 → μ ≤ ‖g t‖`. Introduce `t ht`. Establish `h2` using `hmin t ht`. Rewrite `h2` using `[← hquad (fun i => (t i : ℝ)), ← hg t]`. Use polynomial arithmetic with `[norm_nonneg (g t), hμ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hdisc : DiscreteTopology (LinearMap.range g)`. Apply `DiscreteTopology.of_forall_le_dist hμ` to reduce the goal to its premises. Introduce and unpack `⟨x, hx⟩ ⟨y, hy⟩ hxy`. Take `⟨s, rfl⟩` from `LinearMap.mem_range.mp hx`. Take `⟨t, rfl⟩` from `LinearMap.mem_range.mp hy`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hst : s - t ≠ 0`. Introduce `h0`. Apply `hxy` to reduce the goal to its premises. Establish `h1 : s = t` using `sub_eq_zero.mp h0`. Substitute `h1` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Subtype.dist_eq, dist_eq_norm]`. Use `show μ ≤ ‖g s - g t‖`. Rewrite using `[← map_sub]`. Conclude with `hlow _ hst`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hFsurj : ∀ x : EuclideanSpace ℝ (Fin d), ∃ w, e (R *ᵥ w) = x`. Introduce `x`. Use `⟨R⁻¹ *ᵥ e.symm x, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, hRR', Matrix.one_mulVec, LinearEquiv.apply_symm_apply]`. Establish `hspan : Submodule.span ℝ ((LinearMap.range g : Submodule ℤ (EuclideanSpace ℝ (Fin d))) : Set (EuclideanSpace ℝ (Fin d))) = ⊤`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Take `⟨w, rfl⟩` from `hFsurj x`. Establish `hw : w ∈ Submodule.span ℝ (Set.range (Pi.basisFun ℝ (Fin d)))`. Rewrite using `[(Pi.basisFun ℝ (Fin d)).span_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_top`. Establish `h1` using `Submodule.mem_map_of_mem (f := e.toLinearMap ∘ₗ Matrix.mulVecLin R) hw`. Rewrite `h1` using `[← Submodule.span_image]`. Establish `h2 : e (R *ᵥ w) = (e.toLinearMap ∘ₗ Matrix.mulVecLin R) w` using `rfl`. Rewrite using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Submodule.span_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Use `LinearMap.mem_range.mpr ⟨Pi.single j 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, hcast, Pi.basisFun_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT` using `transference_successive_minima d (LinearMap.range g) hdisc hspan 1 le_rfl hd`. Rewrite `hT` using `[Nat.add_sub_cancel]`. Take `⟨i0⟩ : Nonempty (Fin d)` from `⟨⟨0, hd⟩⟩`. Establish `hne0 : (Pi.single i0 (1 : ℤ) : Fin d → ℤ) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr_fun h i0` as an intermediate fact. Simplify using `at this`. Establish `hS1 : μ ≤ PI.succMin (LinearMap.range g) 1`. Unfold `PI.succMin`. Apply `le_csInf` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨‖g (Pi.single i0 1)‖, norm_nonneg _, fun _ => g (Pi.single i0 1), fun _ => LinearMap.mem_range_self g _, ?_, fun _ => le_rfl⟩` and prove the remaining obligations. Rewrite using `[linearIndependent_unique_iff]`. Introduce `h0`. Establish `h1` using `hlow (Pi.single i0 1) hne0`. Rewrite `h1` using `[show g (Pi.single i0 1) = 0 from h0, norm_zero]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce and unpack `b ⟨hb0, v, hvM, hvli, hvb⟩`. Take `⟨t, ht⟩` from `LinearMap.mem_range.mp (hvM 0)`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hvli.ne_zero 0 (by rw [← ht, map_zero])`. Combine the equalities or inequalities in the displayed calculation. Establish `hdual : ∀ u : Fin d → ℤ, hZ u ∈ PI.dualZ (LinearMap.range g)`. Introduce `u`. Use `show ∀ y ∈ LinearMap.range g, ∃ z : ℤ, inner ℝ (hZ u) y = (z : ℝ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨t, rfl⟩` from `LinearMap.mem_range.mp hy`. Use `⟨u ⬝ᵥ t, ?_⟩` and prove the remaining obligations. Rewrite using `[hh, hg, hin, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, hRR, Matrix.vecMul_one]`. Simplify using `[dotProduct]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (e.toLinearMap ∘ₗ Matrix.vecMulLinear R⁻¹)`. Introduce `a b hab`. Establish `h0 : e (a ᵥ* R⁻¹) = e (b ᵥ* R⁻¹)` using `hab`. Establish `h1 : a ᵥ* R⁻¹ = b ᵥ* R⁻¹` using `e.injective h0`. Establish `h2` using `congrArg (fun x => x ᵥ* R) h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify `h2` using `only [Matrix.vecMul_vecMul, hRR, Matrix.vecMul_one]`. Establish `hne2 : ∃ b : ℝ, 0 ≤ b ∧ ∃ v : Fin d → EuclideanSpace ℝ (Fin d), (∀ j, v j ∈ PI.dualZ (LinearMap.range g)) ∧ LinearIndependent ℝ v ∧ ∀ j, ‖v j‖ ≤ b`. Use `⟨∑ j, ‖hZ (Pi.single j 1)‖, Finset.sum_nonneg (fun j _ => norm_nonneg _), fun j => hZ (Pi.single j 1), fun j => hdual _, ?_, fun j => Finset.single_le_sum (f := fun j => ‖hZ (Pi.single j 1)‖) (fun i _ => norm_nonneg _) (Finset.mem_univ j)⟩` and prove the remaining obligations. Establish `hli` using `(Pi.basisFun ℝ (Fin d)).linearIndependent.map' (e.toLinearMap ∘ₗ Matrix.vecMulLinear R⁻¹) (LinearMap.ker_eq_bot.mpr hinj)`. Establish `hfun : (fun j => hZ (Pi.single j 1)) = ⇑(e.toLinearMap ∘ₗ Matrix.vecMulLinear R⁻¹) ∘ ⇑(Pi.basisFun ℝ (Fin d))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[hh, hcast]`. Use `show _ = e ((Pi.basisFun ℝ (Fin d) j) ᵥ* R⁻¹)`. Rewrite using `[Pi.basisFun_apply]`. Rewrite using `[hfun]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Conclude with `hli`. Establish `hs2nn : 0 ≤ PI.succMin (PI.dualZ (LinearMap.range g)) d`. Unfold `PI.succMin`. Conclude with `le_csInf (by exact hne2) (fun x hx => hx.1)`. Establish `hS2 : PI.succMin (PI.dualZ (LinearMap.range g)) d ≤ d / μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[le_div_iff₀ hμ]`. Use polynomial arithmetic with `[hT, hS1, hs2nn]`. Establish `hlt : PI.succMin (PI.dualZ (LinearMap.range g)) d < d / μ + δ` using `by linarith`. Unfold `PI.succMin at hlt`. Take `⟨b, ⟨hb0, v, hvD, hvli, hvb⟩, hb⟩` from `exists_lt_of_csInf_lt (by exact hne2) hlt`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hvD' : ∀ j, ∀ y ∈ LinearMap.range g, ∃ z : ℤ, inner ℝ (v j) y = (z : ℝ)` using `fun j => hvD j`. Establish `hc : ∀ j k, ∃ z : ℤ, inner ℝ (v j) (g (Pi.single k 1)) = (z : ℝ)` using `fun j k => hvD' j _ (LinearMap.mem_range_self g _)`. Use `choose c hc using hc`. Establish `hv : ∀ j, v j = hZ (c j)`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : e.symm (v j) ᵥ* R = fun k => ((c j k : ℤ) : ℝ)`. Use function extensionality and compare the values at `k`. Establish `h1` using `hc j k`. Rewrite `h1` using `[hg (Pi.single k 1), hcast k, ← e.apply_symm_apply (v j), hin, Matrix.dotProduct_mulVec, dotProduct_single, mul_one]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.vecMul_vecMul, hRR', Matrix.vecMul_one]`. Use `_ = hZ (c j) := by rw [hw, hh]`. Establish `hliZ : LinearIndependent ℤ v` using `hvli.restrict_scalars (fun a b hab => by simpa using hab)`. Establish `hcli : LinearIndependent ℤ c`.
-
-Apply `LinearIndependent.of_comp hZ` to reduce the goal to its premises. Establish `hcomp : (hZ ∘ c) = v` using `funext fun j => (hv j).symm`. Rewrite using `[hcomp]`. Conclude with `hliZ`. Use `⟨c, hcli, fun j => ?_⟩` and prove the remaining obligations.
-
-Establish `hT' : ∀ x : Fin d → ℝ, (R⁻¹)ᵀ *ᵥ x = x ᵥ* R⁻¹`. Introduce `x`. Rewrite using `[← Matrix.vecMul_transpose, Matrix.transpose_transpose]`. Rewrite using `[hT', ← hnorm, ← hh (c j), ← hv j]`. Establish `h3` using `hvb j`.
-
-Establish `h4` using `norm_nonneg (v j)`. Establish `hdm : 0 ≤ (d : ℝ) / μ` using `div_nonneg (Nat.cast_nonneg d) hμ.le`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem shortDual_holds : ShortDualStatement := by
   intro d L R μ hd hL hR hμ hmin δ hδ

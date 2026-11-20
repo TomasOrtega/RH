@@ -14,7 +14,7 @@ section SlopeTestRemainingChoices
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Rewrite using `[FractionalIdeal.count_mul K p (pow_ne_zero _ hA) (inv_ne_zero (pow_ne_zero _ hB)), FractionalIdeal.count_inv, FractionalIdeal.count_pow, FractionalIdeal.count_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem count_pow8_inv_pow4 (p : HeightOneSpectrum (𝓞 K)) {A B : FractionalIdeal (𝓞 K)⁰ K} (hA : A ≠ 0)
     (hB : B ≠ 0) :
@@ -26,7 +26,7 @@ theorem count_pow8_inv_pow4 (p : HeightOneSpectrum (𝓞 K)) {A B : FractionalId
   ring
 
 /- English proof (translation)
-Rewrite using `[FractionalIdeal.spanSingleton_pow, FractionalIdeal.spanSingleton_pow, FractionalIdeal.spanSingleton_inv, FractionalIdeal.spanSingleton_mul_spanSingleton, div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spanSingleton_pow8_div_pow4 (a b : K) :
     FractionalIdeal.spanSingleton (𝓞 K)⁰ (a ^ 8 / b ^ 4) =
@@ -35,7 +35,7 @@ theorem spanSingleton_pow8_div_pow4 (a b : K) :
     FractionalIdeal.spanSingleton_mul_spanSingleton, div_eq_mul_inv]
 
 /- English proof (translation)
-Establish `hsa : FractionalIdeal.spanSingleton (𝓞 K)⁰ ca ≠ 0` using `FractionalIdeal.spanSingleton_eq_zero_iff.not.mpr ha.1`. Establish `hsb : FractionalIdeal.spanSingleton (𝓞 K)⁰ cd ≠ 0` using `FractionalIdeal.spanSingleton_eq_zero_iff.not.mpr hb.1`. Use `⟨div_ne_zero (pow_ne_zero _ ha.1) (pow_ne_zero _ hb.1), ?_⟩` and prove the remaining obligations. Rewrite using `[spanSingleton_pow8_div_pow4, count_pow8_inv_pow4 p hsa hsb, count_pow8_inv_pow4 p hA hB, ha.2, hb.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLocGen_pow8_div_pow4 {p : HeightOneSpectrum (𝓞 K)} {ca cd : K} {A B : FractionalIdeal (𝓞 K)⁰ K}
     (hA : A ≠ 0) (hB : B ≠ 0) (ha : IsLocGen p ca A) (hb : IsLocGen p cd B) :
@@ -48,7 +48,7 @@ theorem isLocGen_pow8_div_pow4 {p : HeightOneSpectrum (𝓞 K)} {ca cd : K} {A B
   rw [spanSingleton_pow8_div_pow4, count_pow8_inv_pow4 p hsa hsb, count_pow8_inv_pow4 p hA hB, ha.2, hb.2]
 
 /- English proof (translation)
-Use `⟨inv_ne_zero h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← FractionalIdeal.spanSingleton_inv, FractionalIdeal.count_inv, FractionalIdeal.count_inv, h.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLocGen_inv {p : HeightOneSpectrum (𝓞 K)} {c : K} {I : FractionalIdeal (𝓞 K)⁰ K}
     (h : IsLocGen p c I) : IsLocGen p c⁻¹ I⁻¹ := by
@@ -56,7 +56,7 @@ theorem isLocGen_inv {p : HeightOneSpectrum (𝓞 K)} {c : K} {I : FractionalIde
   rw [← FractionalIdeal.spanSingleton_inv, FractionalIdeal.count_inv, FractionalIdeal.count_inv, h.2]
 
 /- English proof (translation)
-Establish `h1 : p.valuation K (k / c) ≤ 1` using `(hval _).1 ⟨w, hw.symm⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, div_mul_cancel₀ k hc]`. Use `_ ≤ 1 * p.valuation K c := by gcongr`. Use `_ = p.valuation K c := one_mul _`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_le_of_eq_algebraMap {K' R : Type} [Field K'] [CommRing R] [Algebra R K']
     (p : HeightOneSpectrum (𝓞 K)) (f : K →+* K')
@@ -75,11 +75,11 @@ section Local
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hsa : Ideal.span {a} ≠ 0` using `by simpa using ha0`. Establish `hsb : Ideal.span {b} ≠ 0` using `by simpa using hb0`. Rewrite using `[map_div₀, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap, IsDedekindDomain.HeightOneSpectrum.intValuation_def, IsDedekindDomain.HeightOneSpectrum.intValuation_def, if_neg ha0, if_neg hb0, div_eq_mul_inv, div …`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[FractionalIdeal.coeIdeal_span_singleton, Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr ha0`. Rewrite using `[FractionalIdeal.coeIdeal_span_singleton, Ne, inv_eq_zero, FractionalIdeal.spanSingleton_eq_zero_iff]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hb0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_eq_exp_neg_count (p : HeightOneSpectrum (𝓞 K)) {x : K} (hx : x ≠ 0) :
     p.valuation K x =
@@ -106,7 +106,7 @@ theorem valuation_eq_exp_neg_count (p : HeightOneSpectrum (𝓞 K)) {x : K} (hx 
     exact (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hb0
 
 /- English proof (translation)
-Rewrite `h1` using `[valuation_eq_exp_neg_count p hk, valuation_eq_exp_neg_count p hc, WithZero.exp_le_exp]`. Rewrite `h2` using `[valuation_eq_exp_neg_count p (inv_ne_zero hk), valuation_eq_exp_neg_count p (inv_ne_zero hc), WithZero.exp_le_exp, ← FractionalIdeal.spanSingleton_inv, ← FractionalIdeal.spanSingleton_inv, FractionalIdeal.count_inv, FractionalIdeal.count_inv]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem count_eq_of_valuation_le (p : HeightOneSpectrum (𝓞 K)) {k c : K} (hk : k ≠ 0) (hc : c ≠ 0)
     (h1 : p.valuation K k ≤ p.valuation K c) (h2 : p.valuation K k⁻¹ ≤ p.valuation K c⁻¹) :
@@ -119,7 +119,7 @@ theorem count_eq_of_valuation_le (p : HeightOneSpectrum (𝓞 K)) {k c : K} (hk 
   omega
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[h]`. Use `_ = J := FractionalIdeal.finprod_heightOneSpectrum_factorization' K hJ`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_count_eq {I J : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0) (hJ : J ≠ 0)
     (h : ∀ p : HeightOneSpectrum (𝓞 K), FractionalIdeal.count K p I = FractionalIdeal.count K p J) : I = J := by
@@ -130,7 +130,7 @@ theorem eq_of_count_eq {I J : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0) (hJ 
     _ = J := FractionalIdeal.finprod_heightOneSpectrum_factorization' K hJ
 
 /- English proof (translation)
-Establish `e : ∏ σ : K →+* ℂ, σ k = algebraMap ℚ ℂ (Algebra.norm ℚ k)`. Rewrite using `[Algebra.norm_eq_prod_embeddings ℚ ℂ]`. Conclude with `Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) _ _ (fun σ => rfl)`. Rewrite using `[← Real.log_prod (fun σ _ => norm_ne_zero_iff.mpr ((map_ne_zero σ).mpr hk)), ← norm_prod, e, FractionalIdeal.absNorm_span_singleton]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_log_norm_embeddings {k : K} (hk : k ≠ 0) :
     ∑ σ : K →+* ℂ, Real.log ‖σ k‖ =
@@ -146,29 +146,29 @@ end Local
 section Core
 
 /- English proof (translation)
-Take `⟨κ, hH, hF, hU1, -, hU2⟩` from `hKF`. Establish `hk0 : ((κ K x : Kˣ) : K) ≠ 0` using `Units.ne_zero _`. Establish `hloc' : ∀ p : HeightOneSpectrum (𝓞 K), ∃ c : K, IsLocGen p c (T.I ^ 8 * (abelian₂.I ^ 4)⁻¹) ∧ p.valuation K ((κ K x : Kˣ) : K) ≤ p.valuation K c ∧ p.valuation K ((κ K x : Kˣ) : K)⁻¹ ≤ p.valuation K c⁻¹`. Introduce `p`. Take `⟨K', _, _, R, _, _, _, _, _, f, x', a, d, ca, cd, ua, ud, hPB, hInt, hval, ha, hd, hca, hcd⟩` from `hloc p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨th', hth', v', hv', M, xR, hth, hv, hdet, hPBR⟩` from `hInt`. Establish `hHx` using `hH K' x'.P x'.g_pos x'.rig x'.rig_gen x'.th x'.th_ne x'.v x'.basis th' hth' v' hv' a M hth hv`. Establish `hFx` using `hF K K' f x x' hPB`. Take `⟨u, hu, -⟩` from `hU1 R K' xR _ hPBR`. Rewrite `hHx` using `[show (⟨x'.P, x'.g_pos, x'.rig, x'.rig_gen, x'.th, x'.th_ne, x'.v, x'.basis⟩ : KeyIn K') = x' from rfl, hFx, hu, hdet, ha, hd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : ca ^ 8 / cd ^ 4 ≠ 0` using `div_ne_zero (pow_ne_zero _ hca.1) (pow_ne_zero _ hcd.1)`. Establish `hfca : f ca ≠ 0` using `(map_ne_zero f).mpr hca.1`. Establish `hbb : algebraMap R K' (ud : R) * algebraMap R K' ((ud⁻¹ : Rˣ) : R) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hw : f ((κ K x : Kˣ) / (ca ^ 8 / cd ^ 4)) = algebraMap R K' ((ua ^ 8 * u * ud⁻¹ ^ 4 : Rˣ) : R)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_div₀, map_div₀, map_pow, map_pow, div_div_eq_mul_div, div_eq_iff (pow_ne_zero _ hfca)]`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow]`. Take the linear combination `(-(algebraMap R K' ((ud⁻¹ : Rˣ) : R)) ^ 4) * hHx - f (κ K x : Kˣ) * f cd ^ 4 * (1 + algebraMap R K' (ud : R) * algebraMap R K' ((ud⁻¹ : Rˣ) : R) + (algebraMap R K' (ud : R) * algebraMap R K' ((ud⁻¹ : Rˣ) : R)) ^ 2 + (algebraMap R K' (ud : R) * algebraMap R K' ((ud⁻¹ : Rˣ) : R)) ^ …`. Establish `hw' : f (((κ K x : Kˣ) : K)⁻¹ / (ca ^ 8 / cd ^ 4)⁻¹) = algebraMap R K' (((ua ^ 8 * u * ud⁻¹ ^ 4)⁻¹ : Rˣ) : R)`. Rewrite using `[inv_div_inv, ← inv_div, map_inv₀, hw, map_units_inv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨ca ^ 8 / cd ^ 4, isLocGen_pow8_div_pow4 hT.1 hL.1 hca hcd, valuation_le_of_eq_algebraMap p f hval hc _ hw, valuation_le_of_eq_algebraMap p f hval (inv_ne_zero hc) _ hw'⟩`. Establish `hne : T.I ^ 8 * (abelian₂.I ^ 4)⁻¹ ≠ 0` using `mul_ne_zero (pow_ne_zero _ hT.1) (inv_ne_zero (pow_ne_zero _ hL.1))`. Establish `hspan` using `hS _ _ hne hk0 hloc'`. Establish `hNT : ((FractionalIdeal.absNorm T.I : ℚ) : ℝ) ≠ 0` using `by exact_mod_cast (map_ne_zero (FractionalIdeal.absNorm : FractionalIdeal (𝓞 K)⁰ K →*₀ ℚ)).mpr hT.1`. Establish `hNL : ((FractionalIdeal.absNorm abelian₂.I : ℚ) : ℝ) ≠ 0` using `by exact_mod_cast (map_ne_zero (FractionalIdeal.absNorm : FractionalIdeal (𝓞 K)⁰ K →*₀ ℚ)).mpr hL.1`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : ∑ σ : K →+* ℂ, Real.log ‖σ (κ K x : Kˣ)‖ = 8 * Real.log ((FractionalIdeal.absNorm T.I : ℚ) : ℝ) - 4 * Real.log ((FractionalIdeal.absNorm abelian₂.I : ℚ) : ℝ)`. Rewrite using `[hN _ hk0, hspan, map_mul, map_pow, map_inv₀, map_pow]`. Use `push_cast`. Rewrite using `[Real.log_mul (pow_ne_zero _ hNT) (inv_ne_zero (pow_ne_zero _ hNL)), Real.log_inv, Real.log_pow, Real.log_pow]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `harch' : ∀ σ : K →+* ℂ, Real.log ‖σ (κ K x : Kˣ)‖ + 8 * Real.log (T.n σ) - 4 * Real.log (abelian₂.n σ) = 2 * (x.P.g : ℝ) * Real.log (2 * Real.pi)`. Introduce `σ`. Take `⟨xσ, u, Hm, W, χ, θ, Fd, hPB, hAH, hRig, hFn, hDiff, hFd, hTn, hLn⟩` from `harch σ`. Establish `hFσ` using `hF K ℂ σ x xσ hPB`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, -, hg, -⟩` from `hPB`. Establish `h2` using `hU2 xσ u Hm W χ θ Fd (T.n σ ^ 2) (abelian₂.n σ ^ 2)⁻¹ hAH hRig hFn hDiff hFd hTn (by rw [hLn, inv_div])`. Rewrite `h2` using `[hFσ, hg]`. Establish `hk : 0 < ‖σ (κ K x : Kˣ)‖` using `norm_pos_iff.mpr ((map_ne_zero σ).mpr hk0)`. Establish `hB : (T.n σ ^ 2) ^ 4 ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ (hT.2 σ).ne')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ((abelian₂.n σ ^ 2)⁻¹) ^ 2 ≠ 0` using `pow_ne_zero _ (inv_ne_zero (pow_ne_zero _ (hL.2 σ).ne'))`. Establish `h3` using `congrArg Real.log h2`. Rewrite `h3` using `[Real.log_mul (mul_ne_zero hk.ne' hB) hC, Real.log_mul hk.ne' hB]`. Simplify using `only [Real.log_pow, Real.log_inv] at h3`. Move the coercions through the operations in `at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ∑ σ : K →+* ℂ, Real.log ‖σ (κ K x : Kˣ)‖ + 8 * ∑ σ : K →+* ℂ, Real.log (T.n σ) - 4 * ∑ σ : K →+* ℂ, Real.log (abelian₂.n σ) = (Module.finrank ℚ K : ℝ) * (2 * (x.P.g : ℝ) * Real.log (2 * Real.pi))`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib, Finset.sum_congr rfl (fun σ _ => harch' σ), Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, nsmul_eq_mul]`. Establish `hdT : T.dual.deg = Real.log ((FractionalIdeal.absNorm T.I : ℚ) : ℝ) + ∑ σ : K →+* ℂ, Real.log (T.n σ)`. Simplify using `only [MLine.dual, MLine.deg, map_inv₀, Rat.cast_inv, Real.log_inv, Finset.sum_neg_distrib]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdL : abelian₂.dual.deg = Real.log ((FractionalIdeal.absNorm abelian₂.I : ℚ) : ℝ) + ∑ σ : K →+* ℂ, Real.log (abelian₂.n σ)`. Simplify using `only [MLine.dual, MLine.deg, map_inv₀, Rat.cast_inv, Real.log_inv, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdT, hdL]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(1 / 8 : ℝ) * hsum - (1 / 8 : ℝ) * hnorm`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem keyDeg_core (hKF : KeyFormula) (K : Type) [Field K] [NumberField K] (x : KeyIn K) (T abelian₂ : MLine K)
     (hT : T.Good) (hL : abelian₂.Good) (hloc : ∀ p, KeyLocAt x T abelian₂ p) (harch : ∀ σ, KeyArchAt x T abelian₂ σ)
@@ -255,7 +255,7 @@ theorem keyDeg_core (hKF : KeyFormula) (K : Type) [Field K] [NumberField K] (x :
 end Core
 
 /- English proof (translation)
-Unfold `KeyDeg`. Introduce `hKF K _ _ x T abelian₂ hT hL hloc harch`. Conclude with `keyDeg_core hKF K x T abelian₂ hT hL hloc harch (fun k hk => sum_log_norm_embeddings hk) (fun I k hI hk h => eq_of_count_eq (FractionalIdeal.spanSingleton_eq_zero_iff.not.mpr hk) hI (fun p => by`. Take `⟨c, hc, h1, h2⟩` from `h p`. Conclude with `(count_eq_of_valuation_le p hk hc.1 h1 h2).trans hc.2))`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem key_deg : KeyDeg := by
   unfold KeyDeg

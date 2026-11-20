@@ -9,13 +9,13 @@ namespace Formalism.L2.KerInert
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 /- English proof (translation)
-The claim follows from `ModelP.genus_one_witt_exists_of (GenusOneDatumExistence.genus_one_datum_exists Sigma.invAlg')`.
+A detailed English derivation is pending.
 -/
 theorem genus_one_witt_exists : GenusOneWittExists := ModelP.genus_one_witt_exists_of (GenusOneDatumExistence.genus_one_datum_exists Sigma.invAlg')
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 /- English proof (translation)
-The claim follows from `unitSubstLoc_of_model (ModelP.endIntInertAll_of endomorphisms_integral_inert genus_one_witt_exists) (ModelP.phNormOKInertAll_of phi_norm_inert_prime endomorphisms_integral_inert genus_one_witt_exists) (ModelP.biaddInertAll_of (Dict.biaddInert_of (Sigma.sigmaCurveInert_of Sigma.in …`.
+A detailed English derivation is pending.
 -/
 theorem unit_substitution_local : UnitSubstLoc :=
   unitSubstLoc_of_model (ModelP.endIntInertAll_of endomorphisms_integral_inert genus_one_witt_exists)
@@ -27,7 +27,7 @@ def WeakApproxOrthonormalBasesThetaAlgebraicity : Prop := WAPlaces ∧ OneCopyOr
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨weakApprox_of h.1, unitSubst_of_loc unit_substitution_local, unit_substitution_local, MMOnb.globONB_of h.2.1, oneCopyLoc_of_isom h.2.2.1 (AlgGrP.algZero_of_transPrime h.2.2.2), h.2.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem factsB_of (h : WeakApproxOrthonormalBasesThetaAlgebraicity) : FactsB :=
   ⟨weakApprox_of h.1, unitSubst_of_loc unit_substitution_local, unit_substitution_local, MMOnb.globONB_of h.2.1,
@@ -35,13 +35,13 @@ theorem factsB_of (h : WeakApproxOrthonormalBasesThetaAlgebraicity) : FactsB :=
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 /- English proof (translation)
-The claim follows from `intInert_ofB (factsB_of h)`.
+A detailed English derivation is pending.
 -/
 theorem integral_inert_of_weakApprox_theta (h : WeakApproxOrthonormalBasesThetaAlgebraicity) : IntInert := intInert_ofB (factsB_of h)
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 /- English proof (translation)
-The claim follows from `jetsInert_ofB (factsB_of h) hJ`.
+A detailed English derivation is pending.
 -/
 theorem jets_inert_of_weakApprox_theta (h : WeakApproxOrthonormalBasesThetaAlgebraicity) (hJ : PhiJetInt) : JetsInert := jetsInert_ofB (factsB_of h) hJ
 

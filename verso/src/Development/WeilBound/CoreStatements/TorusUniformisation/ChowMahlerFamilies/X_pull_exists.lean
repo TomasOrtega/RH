@@ -17,17 +17,15 @@ open PositivityTheory.Xgn.A_pull_line (comb mseg_join map_mem)
 open GlobalTheory.CompanionTheory.Ar.Num.LocFreeBC (smul_mem_spanOver mem_spanOver_of_mem locFree_baseChange)
 
 /- English proof (translation)
-Establish `hq` using `div_mem_chartRing (o := O) (mseg x) t s`. Unfold `chartRing at ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨u, rfl⟩` from `hy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `h : (mseg x s / mseg x t) ^ 1 * (mseg x u / mseg x s) = mseg x u / mseg x t`. Rewrite using `[pow_one, mul_comm, div_mul_div_cancel₀ hs]`. Establish `h2` using `div_mem_chartRing (o := O) (mseg x) t u`. Rewrite `h2` using `[← h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`. Consider the case `algebraMap r => exact ⟨0, by rw [pow_zero, one_mul]; exact Subalgebra.algebraMap_mem _ r⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨m, hm⟩` from `ha`. Take `⟨n, hn⟩` from `hb`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m + n, ?_⟩` and prove the remaining obligations. Establish `h : (mseg x s / mseg x t) ^ (m + n) * (a + b) = (mseg x s / mseg x t) ^ n * ((mseg x s / mseg x t) ^ m * a) + (mseg x s / mseg x t) ^ m * ((mseg x s / mseg x t) ^ n * b)` using `by ring`. Rewrite using `[h]`. Conclude with `add_mem (mul_mem (pow_mem hq n) hm) (mul_mem (pow_mem hq m) hn)`. Consider the case `mul a b _ _ ha hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `ha`. Take `⟨n, hn⟩` from `hb`. Use `⟨m + n, ?_⟩` and prove the remaining obligations. Establish `h : (mseg x s / mseg x t) ^ (m + n) * (a * b) = ((mseg x s / mseg x t) ^ m * a) * ((mseg x s / mseg x t) ^ n * b)` using `by ring`. Rewrite using `[h]`.
-
-Conclude with `mul_mem hm hn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_mem {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] {K : Type} [Fintype K]
     {ι : K → Type} (x : (Σ k, ι k) → Ω) (s t : ∀ k, ι k) (hs : mseg x s ≠ 0) (a : Ω)
@@ -64,9 +62,9 @@ theorem pow_mul_mem {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] {K : Ty
     exact mul_mem hm hn
 
 /- English proof (translation)
-Unfold `spanOver`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, _, ⟨e, he, rfl⟩, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, e, he, rfl⟩`. Introduce and unpack `⟨a, ha, e, he, rfl⟩`. Conclude with `⟨a, ha, _, ⟨e, he, rfl⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem closure_eq {O Ω₁ V V₁ : Type} [CommRing O] [Field Ω₁] [Algebra O Ω₁] [AddCommGroup V₁]
     [Module Ω₁ V₁] (R : Subalgebra O Ω₁) (f : V → V₁) (L : Set V) :
@@ -81,25 +79,23 @@ theorem closure_eq {O Ω₁ V V₁ : Type} [CommRing O] [Field Ω₁] [Algebra O
     exact ⟨a, ha, _, ⟨e, he, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Set `φ : Ω →ₐ[O] Ω₁` to `IsScalarTower.toAlgHom O Ω Ω₁`. Take `⟨hfam, hloc⟩` from `(PositivityTheory.Xgn.t_bundle_of_family O Ω K ι x N V).2 E`. Establish `hj : ∀ s : ∀ k : K ⊕ K', Sum.elim ι ι' k, mseg (bcCoord x z) s = algebraMap Ω Ω₁ (mseg x (restrictChart s)) * mseg z (fun k => s (.inr k))` using `fun s => mseg_join φ x z s`. Establish `hne : ∀ s : ∀ k : K ⊕ K', Sum.elim ι ι' k, mseg (bcCoord x z) s ≠ 0 → mseg x (restrictChart s) ≠ 0`. Introduce `s hs h`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hs` using `[hj, h, map_zero, zero_mul]`. Conclude with `hs rfl`. It suffices to establish `hov : IsLatFamily O (bcCoord x z) (fun s => spanOver (chartRing O (mseg (bcCoord x z)) s) (bc '' (E.lat (restrictChart s) : Set V))) by`. Take `⟨EB, hEB⟩` from `(PositivityTheory.Xgn.t_bundle_of_family O Ω₁ (K ⊕ K') (Sum.elim ι ι') (bcCoord x z) N V₁).1 _ hov (fun s hs => locFree_baseChange _ _ (fun a ha => map_mem φ x z s hs a ha) bc hbc N _ (hloc _ (hne s hs)))`. Conclude with `⟨EB, fun s hs => (hEB s hs).trans (closure_eq _ _ _)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun s _ a ha v hv => smul_mem_spanOver _ _ ha hv, ?_⟩` and prove the remaining obligations. Introduce `s t hs ht v hv`. Use `beta_reduce at hv ⊢`. Establish `hq` using `div_mem_chartRing (o := O) (mseg (bcCoord x z)) t s`. Use `set q := mseg (bcCoord x z) s / mseg (bcCoord x z) t with hqdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite `hv` using `[spanOver]`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, _, ⟨e, he, rfl⟩, rfl⟩` from `hy`. Take `⟨n, hn⟩` from `pow_mul_mem (bcCoord x z) s t hs a ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `hfam.2 _ _ (hne s hs) (hne t ht) e he`. Establish `hw` using `div_mem_chartRing (o := O) (mseg (bcCoord x z)) t (comb (restrictChart t) s)`. Use `set w := mseg (bcCoord x z) (comb (restrictChart t) s) / mseg (bcCoord x z) t with hwdef`. Establish `ht' : algebraMap Ω Ω₁ (mseg x (restrictChart t)) ≠ 0` using `(map_ne_zero _).mpr (hne t ht)`. Establish `hqw : q = w * algebraMap Ω Ω₁ (mseg x (restrictChart s) / mseg x (restrictChart t))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : mseg (bcCoord x z) (comb (restrictChart t) s) = algebraMap Ω Ω₁ (mseg x (restrictChart t)) * mseg z (fun k => s (.inr k))` using `hj _`. Rewrite using `[hqdef, hwdef, h1, hj s, map_div₀]`. Clear the denominators using the available nonvanishing facts. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Establish `h : q ^ (n + m) • a • bc e = (q ^ n * a * w ^ m) • bc ((mseg x (restrictChart s) / mseg x (restrictChart t)) ^ m • e)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, ← algebraMap_smul Ω₁ (_ ^ m : Ω), smul_smul, smul_smul, map_pow, pow_add, mul_assoc (q ^ n * a), ← mul_pow, ← hqw]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `smul_mem_spanOver _ _ (mul_mem hn (pow_mem hw m)) (mem_spanOver_of_mem _ ⟨_, hm, rfl⟩)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `zero => exact ⟨0, by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨m, hm⟩` from `ha`. Take `⟨n, hn⟩` from `hb`. Use `⟨m + n, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `h : q ^ (m + n) • (a + b) = q ^ n • q ^ m • a + q ^ m • q ^ n • b`. Rewrite using `[smul_add, smul_smul, smul_smul, ← pow_add, ← pow_add, add_comm n m]`. Rewrite using `[h]`. Conclude with `add_mem (smul_mem_spanOver _ _ (pow_mem hq n) hm) (smul_mem_spanOver _ _ (pow_mem hq m) hn)`. Consider the case `neg a _ ha`.
-
-Take `⟨m, hm⟩` from `ha`. Conclude with `⟨m, by rw [smul_neg]; exact neg_mem hm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main (O : Type) [CommRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K]
     [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (N : ℕ) (V : Type)
@@ -172,7 +168,7 @@ theorem main (O : Type) [CommRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : 
 end PositivityTheory.Xgn.A_pull_exists
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x N V _ _ E`. Use `⟨fun K' _ _ ι' _ z => ?_, fun Ω₁ _ _ _ _ K' _ _ ι' _ z V₁ _ _ _ _ bc hbc => PositivityTheory.Xgn.A_pull_exists.main O Ω K ι x N V E Ω₁ K' ι' z V₁ bc hbc⟩` and prove the remaining obligations. Conclude with `PositivityTheory.Xgn.A_pull_exists.main O Ω K ι x N V E Ω K' ι' z V (LinearEquiv.refl Ω V).toLinearMap (IsBaseChange.ofEquiv _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_pull_exists : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (E : ChartBundle O (mseg x) N V), (∀ (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω), ∃ EB : ChartBundle O (mseg (joinCoord x z)) N V, IsPull O x z E EB) ∧ ∀ (Ω₁ : Type) [Field Ω₁] [Algebra O Ω₁] [Algebra Ω Ω₁] [IsScalarTower O Ω Ω₁] (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω₁) (V₁ : Type) [AddCommGroup V₁] [Module Ω₁ V₁] [Module Ω V₁] [IsScalarTower Ω Ω₁ V₁] (bc : V →ₗ[Ω] V₁), IsBaseChange Ω₁ bc → ∃ EB : ChartBundle O (mseg (bcCoord x z)) N V₁, IsPullBC O x z bc E EB := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x N V _ _ E

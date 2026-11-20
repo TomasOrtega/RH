@@ -9,7 +9,7 @@ namespace PI.AddIntG.Wk
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [PI.AddIntG.flog]`. Consider the case `(rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]; simp [PI.AddIntG.flog])`. Consider the case `(rw [← PowerSeries.coeff_zero_eq_constantCoeff]; simp [PI.AddIntG.flog])`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem flog_constantCoeff (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     PowerSeries.constantCoeff (flog W wq) = 0 := by
@@ -19,15 +19,15 @@ theorem flog_constantCoeff (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_
   | (rw [← PowerSeries.coeff_zero_eq_constantCoeff]; simp [PI.AddIntG.flog])
 
 /- English proof (translation)
-Establish `h' : wq = 1 + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₁ * PowerSeries.X * wq + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₂ * PowerSeries.X ^ 2 * wq + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₃ * PowerSeries.X ^ 3 * wq ^ 2 + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₄ * PowerSeries.X ^ …` using `h`. Establish `hw : PowerSeries.constantCoeff wq = 1`. Rewrite using `[h']`. Simplify using the standard rewrite rules. Establish `h2 : (2 : ℂ_[p]) ≠ 0` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `exact two_ne_zero`. Consider the case `(intro h2z`. Establish `hinj` using `(algebraMap ℚ_[p] ℂ_[p]).injective`. Establish `h22 : algebraMap ℚ_[p] ℂ_[p] 2 = algebraMap ℚ_[p] ℂ_[p] 0`. Rewrite using `[map_ofNat, map_zero]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2z`. Conclude with `two_ne_zero (hinj h22))`. Establish `hinv : PowerSeries.constantCoeff (PI.AddIntG.omegaW W wq) = 1`. Establish `hc2 : PowerSeries.constantCoeff (2 : PowerSeries ℂ_[p]) = 2` using `map_ofNat _ 2`. Simplify using `[PI.AddIntG.omegaW, hw, PowerSeries.constantCoeff_inv, h2, hc2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `done`. Consider the case `exact mul_inv_cancel₀ h2`. Consider the case `field_simp`. Establish `e : PowerSeries.coeff 1 (PI.AddIntG.flog W wq) = PowerSeries.coeff 0 (PI.AddIntG.omegaW W wq)`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Simplify using `[PI.AddIntG.flog]`. Use `first`. Consider the case `(rw [e, PowerSeries.coeff_zero_eq_constantCoeff_apply, hinv])`. Consider the case `(rw [e]; simpa using hinv)`. Consider the case `simpa [e] using hinv`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coeff_one_flog {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     PowerSeries.coeff 1 (flog W wq) = 1 := by
@@ -62,7 +62,7 @@ theorem coeff_one_flog {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]}
   | simpa [e] using hinv
 
 /- English proof (translation)
-Establish `ha2 : MvPowerSeries.constantCoeff a = 0` using `ha`. Use `first`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero ha2`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero' ha`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_nilpotent (by rw [ha2]; exact IsNilpotent.zero)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem hasSubst_of_constantCoeff_eq_zero_additive_integral_groups {K : Type*} [Field K] {a : PowerSeries K}
     (ha : PowerSeries.constantCoeff a = 0) : PowerSeries.HasSubst a := by
@@ -73,7 +73,7 @@ private theorem hasSubst_of_constantCoeff_eq_zero_additive_integral_groups {K : 
   | exact PowerSeries.HasSubst.of_constantCoeff_nilpotent (by rw [ha2]; exact IsNilpotent.zero)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero hb`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_nilpotent (by rw [hb]; exact IsNilpotent.zero)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem hasSubst_of_mvConstantCoeff_eq_zero {K : Type*} [Field K] {σ : Type*} {b : MvPowerSeries σ K}
     (hb : MvPowerSeries.constantCoeff b = 0) : PowerSeries.HasSubst b := by
@@ -82,9 +82,9 @@ private theorem hasSubst_of_mvConstantCoeff_eq_zero {K : Type*} [Field K] {σ : 
   | exact PowerSeries.HasSubst.of_constantCoeff_nilpotent (by rw [hb]; exact IsNilpotent.zero)
 
 /- English proof (translation)
-Establish `ha'` using `hasSubst_of_constantCoeff_eq_zero_additive_integral_groups ha`. Establish `hb'` using `hasSubst_of_mvConstantCoeff_eq_zero hb`. Use `first`. Consider the case `exact PowerSeries.subst_comp_subst_apply ha' hb' f`. Consider the case `exact PowerSeries.subst_comp_subst_apply (R := K) ha' hb' f`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact congrFun (PowerSeries.subst_comp_subst ha' hb') f`. Consider the case `simp [PowerSeries.subst_comp_subst_apply ha' hb']`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem subst_subst_eq_subst_subst_of_constantCoeff {K : Type*} [Field K] {σ : Type*} {a : PowerSeries K}
     {b : MvPowerSeries σ K} (ha : PowerSeries.constantCoeff a = 0)
@@ -99,7 +99,7 @@ private theorem subst_subst_eq_subst_subst_of_constantCoeff {K : Type*} [Field K
   | simp [PowerSeries.subst_comp_subst_apply ha' hb']
 
 /- English proof (translation)
-Establish `hb'` using `hasSubst_of_mvConstantCoeff_eq_zero hb`. Use `first`. Consider the case `exact PowerSeries.subst_X hb'`. Consider the case `simp [PowerSeries.subst_X hb']`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem subst_X_eq_self_of_constantCoeff_eq_zero {K : Type*} [Field K] {σ : Type*} {b : MvPowerSeries σ K}
     (hb : MvPowerSeries.constantCoeff b = 0) :
@@ -110,7 +110,7 @@ private theorem subst_X_eq_self_of_constantCoeff_eq_zero {K : Type*} [Field K] {
   | simp [PowerSeries.subst_X hb']
 
 /- English proof (translation)
-Establish `hd : (PowerSeries.X : PowerSeries K) ^ d ∣ y ^ d` using `pow_dvd_pow_of_dvd hy d`. Conclude with `(PowerSeries.X_pow_dvd_iff.1 hd) m h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem coeff_pow_eq_zero_of_X_dvd_of_lt {K : Type*} [Field K] {y : PowerSeries K}
     (hy : PowerSeries.X ∣ y) {m d : ℕ} (h : m < d) : PowerSeries.coeff m (y ^ d) = 0 := by
@@ -118,11 +118,11 @@ private theorem coeff_pow_eq_zero_of_X_dvd_of_lt {K : Type*} [Field K] {y : Powe
   exact (PowerSeries.X_pow_dvd_iff.1 hd) m h
 
 /- English proof (translation)
-Establish `hs` using `hasSubst_of_constantCoeff_eq_zero_additive_integral_groups hy`. Establish `hX : PowerSeries.X ∣ y` using `PowerSeries.X_dvd_iff.2 hy`. Establish `e : PowerSeries.coeff n (PowerSeries.subst y l) = ∑ᶠ d, PowerSeries.coeff d l • PowerSeries.coeff n (y ^ d)` using `by first`. Consider the case `exact PowerSeries.coeff_subst' hs l n`. Consider the case `exact PowerSeries.coeff_subst hs l (Finsupp.single () n)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [PowerSeries.coeff_subst' hs]`. Consider the case `simp only [PowerSeries.coeff_subst' hs]`. Establish `hsupp : Function.support (fun d => PowerSeries.coeff d l • PowerSeries.coeff n (y ^ d)) ⊆ ↑(Finset.range (n + 1))`. Introduce `d hd`. Rewrite `hd` using `[Function.mem_support]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.mem_coe, Finset.mem_range]`. Assume the negation of the conclusion as `hlt`. Conclude with `hd (by rw [coeff_pow_eq_zero_of_X_dvd_of_lt hX (by omega), smul_zero])`. Rewrite using `[e, finsum_eq_sum_of_support_subset _ hsupp]`. Simplify using `only [smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem powerSeries_coeff_subst_eq_sum_range_coeff_mul {K : Type*} [Field K] {y : PowerSeries K}
     (hy : PowerSeries.constantCoeff y = 0) (l : PowerSeries K) (n : ℕ) :
@@ -148,11 +148,9 @@ private theorem powerSeries_coeff_subst_eq_sum_range_coeff_mul {K : Type*} [Fiel
   simp only [smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hy`. Take `⟨b, rfl⟩` from `hz`. Establish `hX : (PowerSeries.X : PowerSeries K) ≠ 0` using `PowerSeries.X_ne_zero`. Establish `hab : (PowerSeries.X : PowerSeries K) ^ n ∣ a - b`. Rewrite `hyz` using `[pow_succ', ← mul_sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_dvd_mul_iff_left hX).1 hyz`. Establish `h1 : a - b ∣ a ^ d - b ^ d` using `sub_dvd_pow_sub_pow a b d`. Establish `h2 : (PowerSeries.X : PowerSeries K) ^ 2 ∣ PowerSeries.X ^ d` using `pow_dvd_pow _ hd`. Establish `h3 : (PowerSeries.X : PowerSeries K) ^ (n + 2) = PowerSeries.X ^ 2 * PowerSeries.X ^ n` using `by ring`. Rewrite using `[h3, mul_pow, mul_pow, ← mul_sub]`.
-
-Conclude with `mul_dvd_mul h2 (hab.trans h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem X_pow_add_two_dvd_pow_sub_pow_of_X_pow_dvd_sub {K : Type*} [Field K] {y z : PowerSeries K} {n d : ℕ}
     (hy : PowerSeries.X ∣ y) (hz : PowerSeries.X ∣ z) (hyz : PowerSeries.X ^ (n + 1) ∣ y - z)
@@ -171,21 +169,21 @@ private theorem X_pow_add_two_dvd_pow_sub_pow_of_X_pow_dvd_sub {K : Type*} [Fiel
   exact mul_dvd_mul h2 (hab.trans h1)
 
 /- English proof (translation)
-Establish `hXy : PowerSeries.X ∣ y` using `PowerSeries.X_dvd_iff.2 hy`. Establish `hXz : PowerSeries.X ∣ z` using `PowerSeries.X_dvd_iff.2 hz`. Establish `key : ∀ n : ℕ, (PowerSeries.X : PowerSeries K) ^ (n + 1) ∣ y - z`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Rewrite using `[zero_add, pow_one, PowerSeries.X_dvd_iff, map_sub, hy, hz, sub_zero]`. Consider the case `succ n ih`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hm' : m < n + 1`. Conclude with `PowerSeries.X_pow_dvd_iff.1 ih m hm'`. Establish `hmn : m = n + 1` using `by omega`. Substitute `hmn` using the available equality. Establish `e : PowerSeries.coeff (n + 1) (PowerSeries.subst y l) = PowerSeries.coeff (n + 1) (PowerSeries.subst z l)` using `by rw [h]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[powerSeries_coeff_subst_eq_sum_range_coeff_mul hy, powerSeries_coeff_subst_eq_sum_range_coeff_mul hz]`. Establish `h1 : 1 ∈ Finset.range (n + 1 + 1)` using `by simp`. Establish `sy : ∑ d ∈ Finset.range (n + 1 + 1), PowerSeries.coeff d l * PowerSeries.coeff (n + 1) (y ^ d) = PowerSeries.coeff 1 l * PowerSeries.coeff (n + 1) (y ^ 1) + ∑ d ∈ (Finset.range (n + 1 + 1)).erase 1, PowerSeries.coeff d l * PowerSeries.coeff (n + 1) (y ^ d)` using `(Finset.add_sum_erase (Finset.range (n + 1 + 1)) (fun d => PowerSeries.coeff d l * PowerSeries.coeff (n + 1) (y ^ d)) h1).symm`. Establish `sz : ∑ d ∈ Finset.range (n + 1 + 1), PowerSeries.coeff d l * PowerSeries.coeff (n + 1) (z ^ d) = PowerSeries.coeff 1 l * PowerSeries.coeff (n + 1) (z ^ 1) + ∑ d ∈ (Finset.range (n + 1 + 1)).erase 1, PowerSeries.coeff d l * PowerSeries.coeff (n + 1) (z ^ d)` using `(Finset.add_sum_erase (Finset.range (n + 1 + 1)) (fun d => PowerSeries.coeff d l * PowerSeries.coeff (n + 1) (z ^ d)) h1).symm`. Establish `hrest : ∑ d ∈ (Finset.range (n + 1 + 1)).erase 1, PowerSeries.coeff d l * PowerSeries.coeff (n + 1) (y ^ d) = ∑ d ∈ (Finset.range (n + 1 + 1)).erase 1, PowerSeries.coeff d l * PowerSeries.coeff (n + 1) (z ^ d)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `d hd`. Rewrite `hd` using `[Finset.mem_erase]`. Establish `hc : PowerSeries.coeff (n + 1) (y ^ d) = PowerSeries.coeff (n + 1) (z ^ d)`. Break down `Nat.lt_or_ge d 2 with hd2 | hd2` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hd0 : d = 0` using `by omega`. Substitute `hd0` using the available equality. Simplify using the standard rewrite rules. Establish `hdv` using `X_pow_add_two_dvd_pow_sub_pow_of_X_pow_dvd_sub hXy hXz ih hd2`. Establish `hzero` using `PowerSeries.X_pow_dvd_iff.1 hdv (n + 1) (by omega)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hzero` using `[map_sub, sub_eq_zero]`. Conclude with `hzero`. Rewrite using `[hc]`. Rewrite `e` using `[sy, sz, hrest, pow_one, pow_one, hl1, one_mul, one_mul]`. Rewrite using `[map_sub, add_right_cancel e, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hzero : y - z = 0`. Use extensionality with `n`. Rewrite using `[map_zero]`. Conclude with `PowerSeries.X_pow_dvd_iff.1 (key n) n (Nat.lt_succ_self n)`. Conclude with `sub_eq_zero.1 hzero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_subst_eq_subst_of_coeff_one_eq_one {K : Type*} [Field K] {l y z : PowerSeries K}
     (hl1 : PowerSeries.coeff 1 l = 1) (hy : PowerSeries.constantCoeff y = 0)
@@ -247,11 +245,11 @@ private theorem eq_of_subst_eq_subst_of_coeff_one_eq_one {K : Type*} [Field K] {
   exact sub_eq_zero.1 hzero
 
 /- English proof (translation)
-Establish `hy0 : PowerSeries.constantCoeff (PowerSeries.subst l ex) = 0` using `by first`. Consider the case `(rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, powerSeries_coeff_subst_eq_sum_range_coeff_mul hl0]; simp [hex0])`. Consider the case `(have h00 := powerSeries_coeff_subst_eq_sum_range_coeff_mul hl0 ex 0`. Simplify using `[hex0] at h00`. Simplify using `using h00)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `(obtain ⟨e, he⟩ := PowerSeries.X_dvd_iff.2 hex0`. Rewrite using `[he, PowerSeries.subst_mul (hasSubst_of_constantCoeff_eq_zero_additive_integral_groups hl0), subst_X_eq_self_of_constantCoeff_eq_zero hl0, map_mul, hl0, zero_mul])`. Establish `hXl : PowerSeries.subst (PowerSeries.X : PowerSeries K) l = l` using `by first`. Consider the case `exact PowerSeries.subst_self l`. Consider the case `(ext n`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Rewrite using `[powerSeries_coeff_subst_eq_sum_range_coeff_mul PowerSeries.constantCoeff_X]`. Simplify using `[PowerSeries.coeff_X_pow])`. Establish `heq : PowerSeries.subst (PowerSeries.subst l ex) l = PowerSeries.subst PowerSeries.X l`. Rewrite using `[← subst_subst_eq_subst_subst_of_constantCoeff hex0 hl0 l, h, subst_X_eq_self_of_constantCoeff_eq_zero hl0, hXl]`. Conclude with `eq_of_subst_eq_subst_of_coeff_one_eq_one hl1 hy0 PowerSeries.constantCoeff_X heq`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_left_inv {K : Type*} [Field K] {l ex : PowerSeries K} (hl0 : PowerSeries.constantCoeff l = 0)
     (hl1 : PowerSeries.coeff 1 l = 1) (hex0 : PowerSeries.constantCoeff ex = 0)
@@ -275,9 +273,9 @@ theorem subst_left_inv {K : Type*} [Field K] {l ex : PowerSeries K} (hl0 : Power
   exact eq_of_subst_eq_subst_of_coeff_one_eq_one hl1 hy0 PowerSeries.constantCoeff_X heq
 
 /- English proof (translation)
-Establish `hl0` using `flog_constantCoeff W wq`. Establish `hl1` using `coeff_one_flog h`. Establish `hinv` using `subst_left_inv hl0 hl1 hex0 hex`. Use `first`. Consider the case `unfold PI.AddIntG.add`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `simp only [PI.AddIntG.add]`. Rewrite using `[← hF, ← subst_subst_eq_subst_subst_of_constantCoeff hl0 hF0 ex, hinv, subst_X_eq_self_of_constantCoeff_eq_zero hF0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_eq_of {W : WeierstrassCurve ℂ_[p]} {wq ex : PowerSeries ℂ_[p]} (h : IsWq W wq)
     (hex0 : PowerSeries.constantCoeff ex = 0) (hex : PowerSeries.subst ex (flog W wq) = PowerSeries.X)
@@ -295,13 +293,13 @@ theorem add_eq_of {W : WeierstrassCurve ℂ_[p]} {wq ex : PowerSeries ℂ_[p]} (
   rw [← hF, ← subst_subst_eq_subst_subst_of_constantCoeff hl0 hF0 ex, hinv, subst_X_eq_self_of_constantCoeff_eq_zero hF0]
 
 /- English proof (translation)
-Establish `hadd : ∀ a b : ℂ_[p], ‖a + b‖ ≤ max ‖a‖ ‖b‖` using `by first`. Consider the case `exact fun a b => IsUltrametricDist.norm_add_le_max a b`. Consider the case `exact fun a b => (IsUltrametricDist.isNonarchimedean_norm (R := ℂ_[p])) a b`. Apply the tactic sequence `refine ⟨{ carrier := {x | ‖x‖ ≤ 1}, mul_mem' := fun {a b} ha hb => ?_, one_mem' := ?_, add_mem' := fun {a b} ha hb => ?_, zero_mem' := ?_, neg_mem' := fun {a} ha => ?_ }, fun x => by first | exact Iff.rfl | simp⟩`. Express the relevant statement in the definitionally equal form `‖a‖ ≤ 1 at ha`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `‖b‖ ≤ 1 at hb`. Express the relevant statement in the definitionally equal form `‖a * b‖ ≤ 1`. Rewrite using `[norm_mul]`. Use polynomial arithmetic with `[norm_nonneg a, norm_nonneg b]`. Express the relevant statement in the definitionally equal form `‖(1 : ℂ_[p])‖ ≤ 1`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `‖a‖ ≤ 1 at ha`. Express the relevant statement in the definitionally equal form `‖b‖ ≤ 1 at hb`. Express the relevant statement in the definitionally equal form `‖a + b‖ ≤ 1`. Conclude with `(hadd a b).trans (max_le ha hb)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `‖(0 : ℂ_[p])‖ ≤ 1`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `‖a‖ ≤ 1 at ha`. Express the relevant statement in the definitionally equal form `‖-a‖ ≤ 1`. Rewrite using `[norm_neg]` and apply the resulting hypothesis.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_intS (p : ℕ) [Fact p.Prime] : ∃ S : Subring ℂ_[p], ∀ x, x ∈ S ↔ ‖x‖ ≤ 1 := by
   have hadd : ∀ a b : ℂ_[p], ‖a + b‖ ≤ max ‖a‖ ‖b‖ := by
@@ -332,11 +330,11 @@ theorem exists_intS (p : ℕ) [Fact p.Prime] : ∃ S : Subring ℂ_[p], ∀ x, x
     rwa [norm_neg]
 
 /- English proof (translation)
-Unfold `PI.AddIntG.Glue PI.AddIntG.Target`. Introduce `hlaw p _ W wq ex ha1 ha2 ha3 ha4 ha6 hW hex0 hex`. Unfold `PI.AddIntG.KeyF at hlaw`. Take `⟨S, hS⟩` from `exists_intS p`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨F, hFS, hF0, hF⟩` from `hlaw p S W wq ((hS _).2 ha1) ((hS _).2 ha2) ((hS _).2 ha3) ((hS _).2 ha4) ((hS _).2 ha6) hW`. Rewrite using `[add_eq_of hW hex0 hex F hF0 hF]`. Introduce `n`. Conclude with `(hS _).1 (hFS n)`. Introduce and unpack `⟨h1, h2, h3, h4, h6⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hFS, hF0, hF⟩` from `hlaw p (PI.AddIntG.Wp p) W wq h1 h2 h3 h4 h6 hW`. Rewrite using `[add_eq_of hW hex0 hex F hF0 hF]`. Conclude with `hFS`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_holds_var : Glue := by
   unfold PI.AddIntG.Glue PI.AddIntG.Target

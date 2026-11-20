@@ -22,15 +22,15 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X : T
   (T : Subalgebra O (X → O)) (act : T →ₐ[O] Module.End O M)
 
 /- English proof (translation)
-Establish `hspan` using `eigSpan T act hsep`. Establish `hcK : ∀ α ∈ E, ∀ f : T, α.baseChange (FractionRing O) * (actK T act).toRingHom f = (actK T act).toRingHom f * α.baseChange (FractionRing O)`. Introduce `α hα f`. Use `show α.baseChange (FractionRing O) * (act f).baseChange (FractionRing O) = (act f).baseChange (FractionRing O) * α.baseChange (FractionRing O)`. Rewrite using `[← LinearMap.baseChange_mul, hc α hα f, LinearMap.baseChange_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congMod_le hspan (latIn O M) fg_latIn S ((fun α => α.baseChange (FractionRing O)) '' E) (fun x => addVal O (a x)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, rfl⟩ f`. Conclude with `hcK α hα f`. Introduce and unpack `_ ⟨α, hα, rfl⟩ v hv`. Conclude with `baseChange_latIn α v hv`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨α, hα, rfl⟩ v _`. Establish `hle : (⨆ x, Vx T (actK T act).toRingHom x) ≤ (Formalism.NG.VS T (actK T act).toRingHom (S : Set X)).comap (α.baseChange (FractionRing O))`. Use `iSup_le fun x u hu => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap]`. Distinguish the cases in `hx : x ∈ S`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_iSup₂ (f := fun y (_ : y ∈ (S : Set X)) => Vx T (actK T act).toRingHom y) x hx ?_` and prove the remaining obligations. Use `mem_Vx.mpr fun f => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← hcK α hα f, Module.End.mul_apply, mem_Vx.mp hu f, LinearMap.map_smul_of_tower]`. Rewrite using `[h0 α hα x hx u hu]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hle` using `[hspan]`. Conclude with `hle (Submodule.mem_top (x := v))`. Introduce `x hx`. Take `⟨α, hα, h⟩` from `h1 x hx`. Conclude with `⟨_, ⟨α, hα, rfl⟩, a x, h, le_rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem congMod_le_of_family (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) (S : Finset X)
     (E : Set (Module.End O M)) (a : X → O)
@@ -73,11 +73,11 @@ theorem congMod_le_of_family (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x �
     exact ⟨_, ⟨α, hα, rfl⟩, a x, h, le_rfl⟩
 
 /- English proof (translation)
-Establish `hE : heckeEig T act = Vx T (actK T act).toRingHom` using `funext (heckeEig_eq T act)`. Rewrite `h1`, `h0` using `[hE]`. Establish `hlen` using `(len_le T act hsep (latIn O M) S).trans (congMod_le_of_family T act hsep S E a hc h1 h0)`. Simplify using `only [heckeMult, lenUnit, IdempotentNormalFormsLenFacts.length_quot_span]`. Rewrite using `[hE]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ x ∈ S, (Module.finrank (FractionRing O) (Vx T (actK T act).toRingHom x) : ℕ∞) * addVal O (a x) = ((∑ x ∈ S, Module.finrank (FractionRing O) (Vx T (actK T act).toRingHom x) * (addVal O (a x)).toNat : ℕ) : ℕ∞)`. Use `push_cast`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[ENat.natCast_toNat (fun h => ha x hx (addVal_eq_top_iff.mp h))]`. Rewrite `hlen` using `[hsum]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hnat` using `ENat.toNat_le_of_le_natCast hlen`. Simplify using `only [← mul_div_assoc, ← Finset.sum_div]`. Use `div_le_div_of_nonneg_right ?_ (Nat.cast_nonneg _)` and prove the remaining obligations. Conclude with `hnat` after adjusting the coercions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lenUnit_le_of_family (l : ℕ) (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) (S : Finset X)
     (E : Set (Module.End O M)) (a : X → O) (ha : ∀ x ∈ S, a x ≠ 0)
@@ -113,7 +113,7 @@ theorem lenUnit_le_of_family (l : ℕ) (hsep : ∀ x y : X, x ≠ y → ∃ f �
 end General
 
 /- English proof (translation)
-Introduce and unpack `D CT i k ρ eta ⟨E, a, c, hE, hg⟩`. Use `⟨c, ?_, fun π hπ => (hg π hπ).2.2.2⟩` and prove the remaining obligations. Rewrite using `[etaLoc_eq]`. Use `(lenUnit_le_of_family (D.nd.T i) (D.nd.act i) (D.nd.l i) (D.nd.T_sep i) (D.nd.Zgood i) E a (fun π hπ => (hg π hπ).1) (fun α hα => (hE α hα).1) (fun π hπ => (hg π hπ).2.1) (fun α hα => (hE α hα).2)).trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_le_sum fun π hπ => mul_le_mul_of_nonneg_left (hg π hπ).2.2.1 (Nat.cast_nonneg _)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem etaBound_of_fam : ∀ (D : D7) (CT : ℕ) (i : D.nd.Loc) (k : Fin 2) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (eta : ℕ), CongruenceFamilyEndomorphisms CT i k ρ eta → EtaBound CT i k ρ eta := by
   rintro D CT i k ρ eta ⟨E, a, c, hE, hg⟩
@@ -126,7 +126,7 @@ theorem etaBound_of_fam : ∀ (D : D7) (CT : ℕ) (i : D.nd.Loc) (k : Fin 2) (ρ
     mul_le_mul_of_nonneg_left (hg π hπ).2.2.1 (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Introduce `D CT i k ρ eta h` and use `etaBound_of_fam D CT i k ρ eta (GlobalTheory.CutFam.fam_of_cut D CT i k ρ eta h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem etaBound_of_cut : ∀ (D : D7) (CT : ℕ) (i : D.nd.Loc) (k : Fin 2) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (eta : ℕ), CongruenceLocalDecomposition CT i k ρ eta → EtaBound CT i k ρ eta :=
   fun D CT i k ρ eta h => etaBound_of_fam D CT i k ρ eta (GlobalTheory.CutFam.fam_of_cut D CT i k ρ eta h)

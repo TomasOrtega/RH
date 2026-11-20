@@ -17,9 +17,9 @@ namespace GlobalTheory.BiextSym
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Establish `hp` using `(isGen_iff w).1 hw`. Establish `le : ∀ j : Fin 2 → L.ι, LB.wchart L (K` using `Fin 2) ![F, 𝟙 X] j ≤ (L.pull F).U (fun _ => j 0) ⊓ L.U (j 1) := fun j x hx => ⟨mem_pull.2 (Set.mem_iInter.1 hx 0), Set.mem_iInter.1 hx 1⟩`. Use `⟨⟨fun j => res (le j) (w.s (fun _ => j 0, j 1))⟩, fun j j' => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `a` using `hp _ (𝟙 X) y (j 0) (j' 0) (j 1) (j' 1) (mem_pull.1 (le j hy.1).1) (mem_pull.1 (le j' hy.2).1) (le j hy.1).2 (le j' hy.2).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `((gm_res _ y _ hy _).trans (gm_res (𝟙 X) y (le j) hy.1 _)).trans (a.trans (Eq.symm ?_))` and prove the remaining obligations. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_linComb L _ _ (𝟙 X) y j j' hy.1 hy.2).trans ?_) ((gm_res _ y _ hy _).trans (gm_res (𝟙 X) y (le j') hy.2 _)))` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two]`. Use `show gm (𝟙 X ≫ F) y _ (L.g (j 0) (j' 0)) ^ (1 : ℤ) * gm (𝟙 X ≫ 𝟙 X) y _ (L.g (j 1) (j' 1)) ^ (-1 : ℤ) = _`. Rewrite using `[_root_.zpow_neg, _root_.zpow_one, _root_.zpow_one, Category.id_comp (𝟙 X)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen_of_iso {X : Scheme.{0}} {L : LB X} {F : X ⟶ X} (h : LBIso L (L.pull F)) :
     ∃ s : LB.Gen (LB.LinComb L (K := Fin 2) ![F, 𝟙 X] ![1, -1]), s.IsGen := by
@@ -41,7 +41,7 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
 
 omit [GrpObj A] [IsCommMonObj A] in
 /- English proof (translation)
-Establish `e : lift x y ≫ lift (snd A A) (fst A A) = lift y x` using `by rw [comp_lift, lift_fst, lift_snd]`. Rewrite using `[Fin.prod_univ_two]`. Use `show h (lift x y ≫ lift (snd A A) (fst A A)).left ^ (1 : ℤ) * h ((lift x y).left ≫ 𝟙 _) ^ (-1 : ℤ) = _`. Rewrite using `[e, Category.comp_id, _root_.zpow_neg, _root_.zpow_one, _root_.zpow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_sym {T : Over S} (x y : T ⟶ A) {U : Type} [CommGroup U] (h : (T.left ⟶ (A ⊗ A).left) → U) :
     ∏ i : Fin 2, h ((lift x y).left ≫ ![(lift (snd A A) (fst A A)).left, 𝟙 (A ⊗ A).left] i) ^ (![1, -1] i : ℤ) =
@@ -52,9 +52,9 @@ theorem prod_sym {T : Over S} (x y : T ⟶ A) {U : Type} [CommGroup U] (h : (T.l
   rw [e, Category.comp_id, _root_.zpow_neg, _root_.zpow_one, _root_.zpow_one]
 
 /- English proof (translation)
-Establish `a₀ : lift x (lift x' y) ≫ x3 A 0 = x` using `by simp [x3]`. Establish `a₁ : lift x (lift x' y) ≫ x3 A 1 = x'` using `by simp [x3]`. Establish `a₂ : lift x (lift x' y) ≫ x3 A 2 = y` using `by simp [x3]`. Establish `b : lift x (lift x' y) ≫ padd A (x3 A 0) (x3 A 1) = x * x'` using `(MonObj.comp_mul _ _ _).trans (by rw [a₀, a₁])`. Use `(Fintype.prod_equiv (Equiv.ulift : ULift.{0} (Fin 3) ≃ Fin 3) _ (fun i => h ((lift x (lift x' y)).left ≫ law1φ A (x3 A 0) (x3 A 1) (x3 A 2) ⟨i⟩) ^ lawε ⟨i⟩) (fun _ => rfl)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.prod_univ_three]`. Use `show h (lift x (lift x' y) ≫ lift (padd A (x3 A 0) (x3 A 1)) (x3 A 2)).left ^ (1 : ℤ) * h (lift x (lift x' y) ≫ lift (x3 A 0) (x3 A 2)).left ^ (-1 : ℤ) * h (lift x (lift x' y) ≫ lift (x3 A 1) (x3 A 2)).left ^ (-1 : ℤ) = _`. Rewrite using `[comp_lift, comp_lift, comp_lift, b, a₀, a₁, a₂]`. Simplify using `only [_root_.zpow_neg, _root_.zpow_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem biextension_first_law_product {T : Over S} (x x' y : T ⟶ A) {U : Type} [CommGroup U] (h : (T.left ⟶ (A ⊗ A).left) → U) :
     ∏ i, h ((lift x (lift x' y)).left ≫ law1φ A (x3 A 0) (x3 A 1) (x3 A 2) i) ^ lawε i =
@@ -73,9 +73,9 @@ theorem biextension_first_law_product {T : Over S} (x x' y : T ⟶ A) {U : Type}
   simp only [_root_.zpow_neg, _root_.zpow_one]
 
 /- English proof (translation)
-Establish `a₀ : lift x (lift y y') ≫ x3 A 0 = x` using `by simp [x3]`. Establish `a₁ : lift x (lift y y') ≫ x3 A 1 = y` using `by simp [x3]`. Establish `a₂ : lift x (lift y y') ≫ x3 A 2 = y'` using `by simp [x3]`. Establish `b : lift x (lift y y') ≫ padd A (x3 A 1) (x3 A 2) = y * y'` using `(MonObj.comp_mul _ _ _).trans (by rw [a₁, a₂])`. Use `(Fintype.prod_equiv (Equiv.ulift : ULift.{0} (Fin 3) ≃ Fin 3) _ (fun i => h ((lift x (lift y y')).left ≫ law2φ A (x3 A 0) (x3 A 1) (x3 A 2) ⟨i⟩) ^ lawε ⟨i⟩) (fun _ => rfl)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.prod_univ_three]`. Use `show h (lift x (lift y y') ≫ lift (x3 A 0) (padd A (x3 A 1) (x3 A 2))).left ^ (1 : ℤ) * h (lift x (lift y y') ≫ lift (x3 A 0) (x3 A 1)).left ^ (-1 : ℤ) * h (lift x (lift y y') ≫ lift (x3 A 0) (x3 A 2)).left ^ (-1 : ℤ) = _`. Rewrite using `[comp_lift, comp_lift, comp_lift, b, a₀, a₁, a₂]`. Simplify using `only [_root_.zpow_neg, _root_.zpow_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem biextension_second_law_product {T : Over S} (x y y' : T ⟶ A) {U : Type} [CommGroup U] (h : (T.left ⟶ (A ⊗ A).left) → U) :
     ∏ i, h ((lift x (lift y y')).left ≫ law2φ A (x3 A 0) (x3 A 1) (x3 A 2) i) ^ lawε i =
@@ -94,9 +94,9 @@ theorem biextension_second_law_product {T : Over S} (x y y' : T ⟶ A) {U : Type
   simp only [_root_.zpow_neg, _root_.zpow_one]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_gen_of_iso h`. Take `⟨s, hs, hv⟩` from `exists_gen hP (K' := Fin 2) (φ' := ![(lift (snd A A) (fst A A)).left, 𝟙 (A ⊗ A).left]) (ε' := ![1, -1]) (fun V _ k => by`. Establish `p` using `prod_sym (1 : A ⊗ A ⟶ A) (1 : A ⊗ A ⟶ A) k`. Use `Eq.trans (DVR.prod_sum₂ (K := Fin 2) (K' := Fin 2) (U := V) _ (c := ∏ i : Fin 2, k (![(lift (snd A A) (fst A A)).left, 𝟙 (A ⊗ A).left] i) ^ (![1, -1] i : ℤ)) rfl (DVR.prod_neg _ _ p)) ?_` and prove the remaining obligations. Rewrite using `[mul_inv_cancel, inv_one, _root_.mul_one])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(LB.mulGen P _ _ _ _ t (LB.invGen P _ _ (LB.pullGen P _ _ t (lift (1 : A ⊗ A ⟶ A) (1 : A ⊗ A ⟶ A)).left)))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ ht _)))`. Use `⟨s, hs, fun T z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hv _ _ z J hJ, val_mul hJ, val_inv, val_pull hJ, ← Over.comp_left, comp_lift, MonObj.comp_one, mul_inv_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm {P : LB (A ⊗ A).left} (hP : P.IsLB) (h : LBIso P (P.pull (lift (snd A A) (fst A A)).left)) :
     ∃ s : LB.Gen (LB.LinComb P (K := Fin 2) ![(lift (snd A A) (fst A A)).left, 𝟙 (A ⊗ A).left] ![1, -1]), s.IsGen ∧
@@ -115,7 +115,7 @@ theorem exists_norm {P : LB (A ⊗ A).left} (hP : P.IsLB) (h : LBIso P (P.pull (
   rw [hv _ _ z J hJ, val_mul hJ, val_inv, val_pull hJ, ← Over.comp_left, comp_lift, MonObj.comp_one, mul_inv_cancel]
 
 /- English proof (translation)
-Rewrite using `[val_pull hJ, ← Over.comp_left, comp_lift]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_pull₂ {X : Scheme.{0}} {P : LB X} {K : Type} [Fintype K] {B C : Over S} {φ : K → ((B ⊗ C).left ⟶ X)}
     {ε : K → ℤ} (u : LB.Gen (LB.LinComb P φ ε)) {T T' : Over S} (ρ : T' ⟶ T) {z : T'.left} {J} (hJ : Good P z J)
@@ -124,7 +124,7 @@ theorem val_pull₂ {X : Scheme.{0}} {P : LB X} {K : Type} [Fintype K] {B C : Ov
   rw [val_pull hJ, ← Over.comp_left, comp_lift]
 
 /- English proof (translation)
-Rewrite using `[val_pull hJ, ← Over.comp_left, comp_lift, comp_lift]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_pull₃ {X : Scheme.{0}} {P : LB X} {K : Type} [Fintype K] {B C D : Over S}
     {φ : K → ((B ⊗ C ⊗ D).left ⟶ X)} {ε : K → ℤ} (u : LB.Gen (LB.LinComb P φ ε)) {T T' : Over S} (ρ : T' ⟶ T)
@@ -134,9 +134,9 @@ theorem val_pull₃ {X : Scheme.{0}} {P : LB X} {K : Type} [Fintype K] {B C D : 
   rw [val_pull hJ, ← Over.comp_left, comp_lift, comp_lift]
 
 /- English proof (translation)
-Set `ρ` to `lift (1 : T ⟶ A) (lift (1 : T ⟶ A) (lift (1 : T ⟶ A) (1 : T ⟶ A)))`. Establish `a₀ : ρ ≫ x4 A 0 = 1` using `by simp [ρ, x4]`. Establish `a₁ : ρ ≫ x4 A 1 = 1` using `by simp [ρ, x4]`. Establish `a₂ : ρ ≫ x4 A 2 = 1` using `by simp [ρ, x4]`. Establish `a₃ : ρ ≫ x4 A 3 = 1` using `by simp [ρ, x4]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b₀ : ρ ≫ padd A (x4 A 0) (x4 A 1) = 1` using `(MonObj.comp_mul _ _ _).trans (by rw [a₀, a₁, _root_.mul_one])`. Establish `b₁ : ρ ≫ padd A (x4 A 2) (x4 A 3) = 1` using `(MonObj.comp_mul _ _ _).trans (by rw [a₂, a₃, _root_.mul_one])`. Establish `e` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull₃ β.law1 ρ hJ _ _ _) (val_pull₃ β.law2 ρ hJ _ _ _))) (val_pull₃ β.law2 ρ hJ _ _ _))).symm.trans ((val_corr hJ β.compat ρ.left).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((v …`. Rewrite `e` using `[b₀, b₁, a₀, a₁, a₂, a₃, mul_comm (val β.law2 _ z J) (val β.law1 _ z J)]`. Conclude with `(mul_left_cancel e).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem law_origin {P : LB (A ⊗ A).left} (β : IsBiext A P) {T : Over S} {z : T.left} {J} (hJ : Good P z J) :
     val β.law1 (lift (1 : T ⟶ A) (lift (1 : T ⟶ A) (1 : T ⟶ A))).left z J =
@@ -156,25 +156,21 @@ theorem law_origin {P : LB (A ⊗ A).left} (β : IsBiext A P) {T : Over S} {z : 
   exact (mul_left_cancel e).symm
 
 /- English proof (translation)
-Introduce `hG S A _ _ hA P β hs`. Take `⟨s, hs, h1⟩` from `exists_norm β.isLB hs`. Use `⟨s, hs, fun T z J hJ x x' y => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `ev : ∀ {T' : Over S} (σ : T' ⟶ A ⊗ A) {z : T'.left} {J}, Good P z J → val (LB.mulGen P _ _ _ _ (LB.pullGen P _ _ s (lift (fst A A) (snd A A)).left) (LB.pullGen P _ _ s (lift (snd A A) (fst A A)).left)) σ.left z J = val s (lift (σ ≫ fst A A) (σ ≫ snd A A)).left z J * val s (lift ( …` using `fun σ z J hJ => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull₂ s σ hJ _ _) (val_pull₂ s σ hJ _ _))`. Set `e : 𝟙_ (Over S) ⟶ A ⊗ A` to `lift 1 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `sj : Function.Surjective ((snd A A).left ≫ A.hom).appTop.hom` using `surj_comp (surj_snd hG hA _) (hG _ _ hA).2`. Establish `he : e.left ≫ (snd A A).left ≫ A.hom = 𝟙 _` using `by rw [Over.w]; exact Over.w e`. Establish `key` using `gen_unique' β.isLB (u' := LB.oneGen P (Y := (A ⊗ A).left)) (fun V _ k => by`. Use `(Fintype.prod_empty _).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(DVR.prod_sum₂ (K := Fin 2) (K' := Fin 2) (U := V) _ (prod_sym (fst A A) (snd A A) k) (prod_sym (snd A A) (fst A A) k)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[_root_.mul_assoc, inv_mul_cancel_left, mul_inv_cancel]) _ e.left he sj`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hs _) (DVR.pullGen_isGen _ _ _ _ hs _))`. Use the proof step `(fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm)`. Use the proof step `(fun y I hI => by`. Use `(ev e hI).trans (Eq.trans ?_ (val_one _).symm)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[lift_fst, lift_snd, h1 _ y I hI, _root_.mul_one]) _ (lift x y).left z J hJ`. Use `(ev (lift x y) hJ).symm.trans (key.trans (val_one _))` as an intermediate fact. Rewrite `this` using `[lift_fst, lift_snd]`. Then use the resulting hypothesis. Set `p₀` to `x3 A 0`. Set `p₁` to `x3 A 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `p₂` to `x3 A 2`. Establish `ev : ∀ {T' : Over S} (σ : T' ⟶ G3 A) {z : T'.left} {J}, Good P z J → val (LB.mulGen P _ _ _ _ (LB.pullGen P _ _ β.law1 (lift p₀ (lift p₁ p₂)).left) (LB.pullGen P _ _ s (lift (p₀ * p₁) p₂).left)) σ.left z J = val β.law1 (lift (σ ≫ p₀) (lift (σ ≫ p₁) (σ ≫ p₂))).left z J * val s (li …` using `fun σ z J hJ => ⟨(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull₃ β.law1 σ hJ _ _ _) (val_pull₂ s σ hJ _ _)), (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull₂ s σ hJ _ _) (val_pull₂ s σ hJ _ _))) (val_pull₃ β.law2 σ hJ _ _ …`. Set `e : 𝟙_ (Over S) ⟶ G3 A` to `lift 1 (lift 1 1)`. Establish `e₀ : e ≫ p₀ = 1` using `by simp [e, p₀, x3]`. Establish `e₁ : e ≫ p₁ = 1` using `by simp [e, p₁, x3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : e ≫ p₂ = 1` using `by simp [e, p₂, x3]`. Establish `sj : Function.Surjective ((snd A (A ⊗ A)).left ≫ (snd A A).left ≫ A.hom).appTop.hom` using `surj_comp (surj_snd hG hA _) (surj_comp (surj_snd hG hA _) (hG _ _ hA).2)`. Establish `he : e.left ≫ (snd A (A ⊗ A)).left ≫ (snd A A).left ≫ A.hom = 𝟙 _`. Rewrite using `[Over.w, Over.w]`. Conclude with `Over.w e`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ρ : T ⟶ G3 A` to `lift x (lift x' y)`. Establish `r₀ : ρ ≫ p₀ = x` using `by simp [ρ, p₀, x3]`. Establish `r₁ : ρ ≫ p₁ = x'` using `by simp [ρ, p₁, x3]`. Establish `r₂ : ρ ≫ p₂ = y` using `by simp [ρ, p₂, x3]`. Establish `o₁ : e ≫ (p₀ * p₁) = 1` using `(MonObj.comp_mul _ _ _).trans (by rw [e₀, e₁, _root_.mul_one])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `s₁ : ρ ≫ (p₀ * p₁) = x * x'` using `(MonObj.comp_mul _ _ _).trans (by rw [r₀, r₁])`. Use `(ev ρ hJ).1.symm.trans (Eq.trans (gen_unique' β.isLB (fun V _ k => by` as an intermediate fact. Use `(DVR.prod_sum₂ (K := Fin 2 ⊕ Fin 2) (K' := ULift.{0} (Fin 3)) (U := V) _ (DVR.prod_sum₂ (K := Fin 2) (K' := Fin 2) (U := V) _ (prod_sym p₀ p₂ k) (prod_sym p₁ p₂ k)) (biextension_second_law_product p₂ p₀ p₁ k)).trans (Eq.trans ?_ (DVR.prod_sum₂ (K := ULift.{0} (Fin 3)) (K' := Fin …` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
-
-Use the proof step `abel) _ e.left he sj`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ β.isGen1 _) (DVR.pullGen_isGen _ _ _ _ hs _))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hs _) (DVR.pullGen_isGen _ _ _ _ hs _)) (DVR.pullGen_isGen _ _ _ _ β.isGen2 _))`. Use the proof step `(fun y I hI => by`. Use `(ev e hI).1.trans (Eq.trans ?_ (ev e hI).2.symm)` and prove the remaining obligations.
-
-Rewrite using `[o₁, e₀, e₁, e₂, h1 _ y I hI, law_origin β hI, _root_.mul_one, _root_.one_mul, _root_.one_mul])`. Use `_ ρ.left z J hJ) (ev ρ hJ).2)`. Rewrite `this` using `[s₁, r₀, r₁, r₂]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem main :
   (ReciprocityTheory.ChartRestriction.G.Out.GlobalFnsSt → ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], ReciprocityTheory.ChartRestriction.G.Semi.IsAbelianScheme A →

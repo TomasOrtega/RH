@@ -15,15 +15,15 @@ namespace GlobalTheory.IndTraceZero
 variable {n a : ℕ} {ε : Fin n → Bool} {j : Fin a → ℕ} {W : GlobalTheory.RealInd.Flag n a}
 
 /- English proof (translation)
-Establish `hgi : g⁻¹ ∈ flagM ε W` using `(leviSub ε W).inv_mem hg`. Establish `hgg : uMat g * uMat g⁻¹ = 1`. Rewrite using `[← show uMat (g * g⁻¹) = uMat g * uMat g⁻¹ from rfl, mul_inv_cancel]`. Both sides reduce to the same expression. Establish `hJ : Jm ε * uMat g⁻¹ = (uMat g)ᴴ * Jm ε`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `conjTranspose_inv_mul_Jm (ε := ε) g⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `this.symm`. Establish `hm : uMat (g * t * g⁻¹) = uMat g * uMat t * uMat g⁻¹` using `rfl`. Establish `h' : IsSplit ε W x (g * t * g⁻¹)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(leviSub ε W).mul_mem ((leviSub ε W).mul_mem hg ht.1) hgi, fun i y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : uMat g⁻¹ *ᵥ y ∈ W i.succ` using `(hgi _ y hy).1`. Establish `h1` using `(hg _ _ (ht.2.1 i _ hy')).1`. Establish `e : uMat g *ᵥ (uMat t *ᵥ (uMat g⁻¹ *ᵥ y) - (Real.exp (x i) : ℂ) • (uMat g⁻¹ *ᵥ y)) = uMat (g * t * g⁻¹) *ᵥ y - (Real.exp (x i) : ℂ) • y`. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hgg, Matrix.one_mulVec, hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Establish `hy' : ∀ z ∈ W (Fin.last a), star z ⬝ᵥ (Jm ε *ᵥ (uMat g⁻¹ *ᵥ y)) = 0` using `fun z hz => by`. Rewrite using `[Matrix.mulVec_mulVec, hJ, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`. Conclude with `hy _ (hg _ z hz).1`. Establish `h1` using `(hg _ _ (ht.2.2 _ hy')).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : uMat g *ᵥ (uMat t *ᵥ (uMat g⁻¹ *ᵥ y) - uMat g⁻¹ *ᵥ y) = uMat (g * t * g⁻¹) *ᵥ y - y`. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hgg, Matrix.one_mulVec, hm]`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Establish `e` using `(existsUnique_isSplit hW x).unique h' ht`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem IsSplit.commute (hW : IsIsoFlag ε j W) {x : Fin a → ℝ} {t g : UJ ε} (ht : IsSplit ε W x t)
     (hg : g ∈ flagM ε W) : g * t = t * g := by
@@ -57,13 +57,13 @@ theorem IsSplit.commute (hW : IsIsoFlag ε j W) {x : Fin a → ℝ} {t g : UJ ε
     _ = t * g := by rw [e]
 
 /- English proof (translation)
-Take `⟨a', rfl⟩` from `Nat.exists_eq_succ_of_ne_zero ha`. Set `i₀ : Fin (a' + 1)` to `0`. Establish `hr : Module.finrank ℂ (W i₀.succ) = j i₀`. Rewrite using `[hW.2.2.1 i₀, show i₀.castSucc = 0 from rfl, hW.1, finrank_bot, zero_add]`. Establish `hne : W i₀.succ ≠ ⊥` using `fun e => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hj i₀` as an intermediate fact. Rewrite `hr` using `[e, finrank_bot]`. Use linear arithmetic over natural numbers and integers. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hc : Continuous fun g : UJ ε => uMat g *ᵥ y` using `(continuous_ujMat (ε := ε)).matrix_mulVec continuous_const`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hc.continuousOn`. Establish `hyn : 0 < ‖y‖` using `norm_pos_iff.2 hy0`. Take `⟨t, htK, ht⟩` from `h (C / ‖y‖)`. Establish `h1` using `ht.2.1 i₀ y hy`. Rewrite `h1` using `[show i₀.castSucc = 0 from rfl, hW.1, Submodule.mem_bot, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hC t htK`. Rewrite `h2` using `[h1, norm_smul, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le]`. Establish `h3` using `Real.add_one_le_exp (C / ‖y‖)`. Establish `h4 : (C / ‖y‖ + 1) * ‖y‖ ≤ C` using `(mul_le_mul_of_nonneg_right h3 hyn.le).trans h2`. Rewrite `h4` using `[add_mul, div_mul_cancel₀ _ hyn.ne', one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -93,9 +93,9 @@ theorem not_isSplit_subset_compact (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j 
   linarith
 
 /- English proof (translation)
-Introduce `hx`. Use `not_isSplit_subset_compact hW hj ha (hK.image (f := fun g => x * g * x⁻¹) ((continuous_const.mul continuous_id).mul continuous_const)) fun r => ?_` and prove the remaining obligations. Take `⟨t, ht, -⟩` from `exists_isSplit hW (fun _ => r)`. Establish `hc` using `IsSplit.commute hW ht hx`. Use `⟨t, ⟨x⁻¹ * t * x, mem_cent.2 ?_, by group⟩, ht⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem not_conj_mem_flagM (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i) (ha : a ≠ 0) {s : UJ ε}
     (hK : IsCompact (cent s : Set (UJ ε))) (x : UJ ε) : x * s * x⁻¹ ∉ flagM ε W := by
@@ -116,9 +116,9 @@ namespace GlobalTheory.IndTraceZero
 open GlobalTheory.HCChar GlobalTheory.Published
 
 /- English proof (translation)
-Introduce `hHC n ε μ _ X _ _ _ δ f hf I ha`. Take `⟨Θ, hΘ, hvan⟩` from `hHC.2.2.2.indModule μ I ha`. Establish `htr` using `hΘ.1.2.2 f hf.mem`. Use `htr using 1` and compare the differences between its conclusion and the goal. Use `symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Use symmetry to reverse the relation.
 
-Use `hHC.2.2.1.integral_mul_eq_zero μ (continuous_of_mem_ccSmooth isInducing_matCoord.continuous hf.mem) hf.mem.1 hΘ.1.1 (fun s x hs => (hΘ.2 s hs).2 x) fun s hs => ?_` and prove the remaining obligations. Distinguish the cases in `hK : IsCompact (cent s : Set (UJ ε))`. Conclude with `Or.inl (hvan s hs fun x => not_conj_mem_flagM I.flag I.pos ha hK x)`. Conclude with `Or.inr fun ds _ _ => hf.orb_noncompact s hs hK ds`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 -/
 theorem hasTrace_indModule_eq_zero : GlobalTheory.Published.HarishChandraCharacters → ∀ (n : ℕ) (ε : Fin n → Bool) (μ : Measure (UJ ε)) [μ.IsHaarMeasure] (X : Type) [NormedAddCommGroup X] [InnerProductSpace ℂ X] [CompleteSpace X] (δ : UJ ε →* (X →L[ℂ] X)) (f : UJ ε → ℂ), IsPseudoCoeff (ujMat ε) μ δ f → ∀ I : IndModule ε, I.a ≠ 0 → HasTrace (repOp I.rep μ f) 0 := by
   intro hHC n ε μ _ X _ _ _ δ f hf I ha

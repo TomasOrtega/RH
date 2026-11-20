@@ -8,15 +8,15 @@ open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X m c d M hm hc hd hc6 hd6 hL t ht`. Unfold `UpperTheory.V.Z.Kato.Sym.Lv at hL`. Unfold `UpperTheory.V.Z.Kato.Sym.IsSec at ht`. Take `⟨hM, hcM, hdM⟩` from `hL`. Take `⟨hgr, hok, -⟩` from `UpperTheory.V.Z.Kato.Sym.rowB Ω M hM`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hadm, -⟩` from `UpperTheory.V.Z.Kato.Sym.admB Ω ε X`. Establish `key : ∀ (s : Gal(Ω/ℚ)) (x y : UpperTheory.V.Z.Kato.Sym.Row M), UpperTheory.V.Z.Kato.Sym.Ok x y → ∃ f ∈ X.Un m, UpperTheory.V.Z.Kato.Sym.Mv X m (X.gal s) s (t (UpperTheory.V.Z.Kato.Sym.sg X c M (UpperTheory.V.Z.Kato.Sym.gr M s⁻¹ x)) (UpperTheory.V.Z.Kato.Sym.sg X d M (UpperTheory. …`. Introduce `s x y hxy`. Take `⟨hx0, hy0, -⟩` from `hok _ _ ((hok x y hxy).2.2.1 s⁻¹)`. Establish `hsx` using `UpperTheory.V.Z.Kato.Sym.sgB Ω ε X c M hc hc6 hM hcM _ hx0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsy` using `UpperTheory.V.Z.Kato.Sym.sgB Ω ε X d M hd hd6 hM hdM _ hy0`. Establish `hP` using `(ht _ _ hsx.1 hsy.1).1`. Establish `hx1` using `UpperTheory.V.Z.Kato.Sym.sgB Ω ε X c M hc hc6 hM hcM x (hok x y hxy).1`. Establish `hy1` using `UpperTheory.V.Z.Kato.Sym.sgB Ω ε X d M hd hd6 hM hdM y (hok x y hxy).2.1`. Establish `ex` using `UpperTheory.V.Z.Kato.Sym.mvEx Ω ε X m hm (X.gal s) s (hadm s) _ _ _ hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ex1` using `ex.1 (t (UpperTheory.V.Z.Kato.Sym.sg X c M x) (UpperTheory.V.Z.Kato.Sym.sg X d M y))`. Rewrite `ex1` using `[hsx.2.2.1, hsy.2.2.1, ← (hgr s s⁻¹ x).1, ← (hgr s s⁻¹ y).1, mul_inv_cancel, (hgr 1 1 x).2, (hgr 1 1 y).2]`. Conclude with `ex1 (ht _ _ hx1.1 hy1.1).1`. Use `⟨fun s x y => if h : UpperTheory.V.Z.Kato.Sym.Ok x y then Classical.choose (key s x y h) else 1, ?_⟩` and prove the remaining obligations. Unfold `UpperTheory.V.Z.Kato.Sym.IsSymb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s x y hxy`. Simplify using `only [dif_pos hxy]`. Conclude with `Classical.choose_spec (key s x y hxy)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Sym.pSymb :
     UpperTheory.V.Z.Kato.Sym.PSymb := by

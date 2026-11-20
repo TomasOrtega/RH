@@ -14,13 +14,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.A
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H}
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem emb_ext {τ τ' : E →+* ℂ} (h : ∀ a : 𝓞 E, τ (a : E) = τ' (a : E)) : τ = τ' :=
   IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext h)
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `H.sqrt_neg_disc_sq`. Rewrite `h2` using `[h]`. Simplify using `at h2`. Conclude with `H.d_prime.ne_zero h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rt0_ne_zero (H : Host E) : H.rt0 ≠ 0 := by
   intro h
@@ -30,7 +30,7 @@ theorem rt0_ne_zero (H : Host E) : H.rt0 ≠ 0 := by
   exact H.d_prime.ne_zero h2
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : (2 : ℂ) * H.rt0 = 0` using `by linear_combination h`. Conclude with `rt0_ne_zero H ((mul_eq_zero.mp h2).resolve_left two_ne_zero)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rt0_ne_neg (H : Host E) : H.rt0 ≠ -H.rt0 := by
   intro h
@@ -38,9 +38,9 @@ theorem rt0_ne_neg (H : Host E) : H.rt0 ≠ -H.rt0 := by
   exact rt0_ne_zero H ((mul_eq_zero.mp h2).resolve_left two_ne_zero)
 
 /- English proof (translation)
-Establish `val : ∀ {s t : CMType H ⊕ CMType H}, labelEmb c s = labelEmb c t → ∀ a : 𝓞 E, ((labelEmb c s a : c.F) : ℂ) = ((labelEmb c t a : c.F) : ℂ)` using `fun h a => by rw [h]`. Introduce and unpack `(τ | τ) (τ' | τ') h`. Use `congrArg Sum.inl (Subtype.ext (emb_ext fun a => val h a))` and prove the remaining obligations. Conclude with `absurd ((HodgeCptTest.labelEmb_inl_rt c τ).symm.trans ((val h H.rt).trans (HodgeCptTest.labelEmb_inr_rt c τ'))) (rt0_ne_neg H)`. Conclude with `absurd ((HodgeCptTest.labelEmb_inl_rt c τ').symm.trans ((val h H.rt).symm.trans (HodgeCptTest.labelEmb_inr_rt c τ))) (rt0_ne_neg H)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg Sum.inr (Subtype.ext (emb_ext fun a => ?_))` and prove the remaining obligations. Use `val h (H.bar.symm a)` as an intermediate fact. Simplify `this` using `[labelEmb]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem labelEmb_injective (c : Coeff l) : Function.Injective (labelEmb (H := H) c) := by
   have val : ∀ {s t : CMType H ⊕ CMType H}, labelEmb c s = labelEmb c t → ∀ a : 𝓞 E,
@@ -59,15 +59,15 @@ def labelCx (H : Host E) : CMType H ⊕ CMType H → (E →+* ℂ) :=
   Sum.elim (fun τ => τ.1) (fun τ => (starRingEnd ℂ).comp τ.1)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `(τ | τ) (τ' | τ') h`. Conclude with `congrArg Sum.inl (Subtype.ext h)`. Establish `h1` using `RingHom.congr_fun h (H.rt : E)`. Simplify using `only [labelCx, Sum.elim_inl, Sum.elim_inr, RingHom.comp_apply, τ.2, τ'.2, HodgeCptTest.imaginary_root_conj] at h1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `absurd h1 (rt0_ne_neg H)`. Establish `h1` using `RingHom.congr_fun h (H.rt : E)`. Simplify using `only [labelCx, Sum.elim_inl, Sum.elim_inr, RingHom.comp_apply, τ.2, τ'.2, HodgeCptTest.imaginary_root_conj] at h1`. Conclude with `absurd h1.symm (rt0_ne_neg H)`. Use `congrArg Sum.inr (Subtype.ext (RingHom.ext fun x => ?_))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(starRingEnd ℂ).injective (RingHom.congr_fun h x)`. Introduce `σ`. Establish `hsq : ((H.rt : 𝓞 E) : E) ^ 2 = -(H.d : E)`. Use `congrArg (fun x : 𝓞 E => (x : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hrt : σ (H.rt : E) ^ 2 = H.rt0 ^ 2`. Rewrite using `[H.sqrt_neg_disc_sq, ← map_pow, hsq]`. Simplify using the standard rewrite rules. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hrt with hp | hm` into its components or cases. Conclude with `⟨.inl ⟨σ, hp⟩, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `ht : ((starRingEnd ℂ).comp σ) (H.rt : E) = H.rt0`. Simplify using `[hm, HodgeCptTest.imaginary_root_conj]`. Use `⟨.inr ⟨(starRingEnd ℂ).comp σ, ht⟩, RingHom.ext fun x => ?_⟩` and prove the remaining obligations. Simplify using `[labelCx]`.
+A detailed English derivation is pending.
 -/
 theorem labelCx_bijective (H : Host E) : Function.Bijective (labelCx H) := by
   constructor
@@ -98,7 +98,7 @@ theorem labelCx_bijective (H : Host E) : Function.Bijective (labelCx H) := by
       simp [labelCx]
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c _ Ω _ cst`. Use `⟨fun s t h => labelEmb_injective c (RingHom.ext fun a => cst.injective (RingHom.congr_fun h a)), ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.card_of_bijective (labelCx_bijective H), NumberField.Embeddings.card]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem labels_injective_card : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H)
     (c : Coeff l) [Fintype (CMType H)] (Ω : Type) [Field Ω] (cst : c.F →+* Ω),

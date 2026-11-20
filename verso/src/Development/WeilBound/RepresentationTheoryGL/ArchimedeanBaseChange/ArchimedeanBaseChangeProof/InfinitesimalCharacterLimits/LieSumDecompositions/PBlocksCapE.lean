@@ -22,7 +22,7 @@ def adm (mm : (E →+* ℂ) → Multiset ℂ) (n : ℕ) : Finset ((E →+* ℂ) 
   exact Fintype.piFinset fun τ => ((mm τ).powerset.filter fun σ => Multiset.card σ = n).toFinset
 
 /- English proof (translation)
-Unfold `adm`. Rewrite using `[Fintype.mem_piFinset]`. Use `forall_congr' fun τ => ?_` and prove the remaining obligations. Rewrite using `[Multiset.mem_toFinset, Multiset.mem_filter, Multiset.mem_powerset]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_adm {mm : (E →+* ℂ) → Multiset ℂ} {n : ℕ} {σ : (E →+* ℂ) → Multiset ℂ} :
     σ ∈ adm mm n ↔ ∀ τ, σ τ ≤ mm τ ∧ Multiset.card (σ τ) = n := by
@@ -35,21 +35,21 @@ theorem mem_adm {mm : (E →+* ℂ) → Multiset ℂ} {n : ℕ} {σ : (E →+* �
 variable {r s : ℕ} {U : Submodule ℂ (Sm E (r + s))} {c : ℂ} {T : Sm E (r + s) →ₗ[ℂ] Sm E (r + s)}
 
 /- English proof (translation)
-Introduce `_ hz φ hφ` and use `Zalg_stable (fun X => BlockSlices.LS_stable hU hT (.lie X)) hz φ hφ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LS_zalg (hU : IsAutSt U) (hT : IsSliceMap U c T) : ∀ z ∈ Zalg E r, ∀ φ ∈ LS U T, z φ ∈ LS U T :=
   fun _ hz φ hφ => Zalg_stable (fun X => BlockSlices.LS_stable hU hT (.lie X)) hz φ hφ
 
 /- English proof (translation)
-Introduce `_ hz φ hφ` and use `Zalg_stable (fun X => BlockSlices.RS_stable hU hT (.lie X)) hz φ hφ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem RS_zalg (hU : IsAutSt U) (hT : IsSliceMap U c T) : ∀ z ∈ Zalg E s, ∀ φ ∈ RS U T, z φ ∈ RS U T :=
   fun _ hz φ hφ => Zalg_stable (fun X => BlockSlices.RS_stable hU hT (.lie X)) hz φ hφ
 
 /- English proof (translation)
-Use `⟨fun τ u => ?_, ?_⟩` and prove the remaining obligations. Establish `hI : ∀ X, ∀ φ ∈ U, lie E (r + s) X φ ∈ U` using `fun X φ hφ => hU.1 (.lie X) φ hφ`. Rewrite using `[← (BlockSlices.zalg_comm hI T hT.equiv (cap_mem_Zalg τ u) ψ hψ).2, (hinf τ).2 u ψ hψ, map_smul]`. Take `⟨n, b, q, hb, hq, he⟩` from `BlockSlices.expand hU hT ψ hψ 1 1`. Use `⟨n, b, q, fun i => ?_, fun i => rsF_sub_RS hψ 1 1 (hq i), fun p => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Submodule.span_le.2 (lsF_sub_LS hψ 1 1)) (hb i)`. Rewrite using `[← he p, BlockSlices.yp_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem data_one (hU : IsAutSt U) (hT : IsSliceMap U c T) (mm : (E →+* ℂ) → Multiset ℂ)
     (hinf : ∀ τ, HasInfCharGL U τ (mm τ)) {ψ : Sm E (r + s)} (hψ : ψ ∈ U) :
@@ -65,11 +65,11 @@ theorem data_one (hU : IsAutSt U) (hT : IsSliceMap U c T) (mm : (E →+* ℂ) �
     · rw [← he p, BlockSlices.yp_one, mul_one]
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `ℓ ⟨ψ, hψ, k, g, m₂, hℓ⟩`. Take `⟨ψ', hψ', e⟩` from `BlockSlices.base_one hU hT hψ k g`. Take `⟨hcap, n, b, q, hb, hq, hG⟩` from `data_one hU hT mm hinf hψ'`. Take `⟨S, x, hsum, hS⟩` from `decomp_G (T ψ') (hT.unipInv ψ' hψ') mm hmm hcap b q (fun i => BlockSlices.LS_aut hT _ (hb i)) (fun i => BlockSlices.RS_aut hT _ (hq i)) hG`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz` using `zspan_le b hb (LS_zalg hU hT)`. Use `choose θ hθ hθx hθe using fun σ (hσ : σ ∈ S) => (hS σ hσ).2.1 m₂`. Establish `hℓ' : ℓ = ∑ σ ∈ S.attach, θ σ.1 σ.2`. Use `Subtype.ext (funext fun m₁ => ?_)` and prove the remaining obligations. Rewrite using `[hℓ, ← e, hsum, Submodule.coe_sum, Finset.sum_apply, ← Finset.sum_attach S]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun σ _ => hθx σ.1 σ.2 m₁`. Rewrite using `[SetLike.mem_coe, hℓ']`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Establish `hadm : σ.1 ∈ adm mm r` using `mem_adm.2 (hS σ.1 σ.2).1`. Conclude with `Submodule.mem_iSup_of_mem σ.1 (Submodule.mem_iSup_of_mem hadm ⟨hz (hθ σ.1 σ.2), hθe σ.1 σ.2⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LS_le_iSup (hU : IsAutSt U) (hT : IsSliceMap U c T) (mm : (E →+* ℂ) → Multiset ℂ) (hmm : ∀ τ, (mm τ).Nodup)
     (hinf : ∀ τ, HasInfCharGL U τ (mm τ)) :
@@ -92,15 +92,15 @@ theorem LS_le_iSup (hU : IsAutSt U) (hT : IsSliceMap U c T) (mm : (E →+* ℂ) 
   exact Submodule.mem_iSup_of_mem σ.1 (Submodule.mem_iSup_of_mem hadm ⟨hz (hθ σ.1 σ.2), hθe σ.1 σ.2⟩)
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `ℓ ⟨ψ, hψ, k, g, m₁, hℓ⟩`. Take `⟨ψ', hψ', e⟩` from `BlockSlices.base_one hU hT hψ k g`. Take `⟨hcap, n, b, q, hb, hq, hG⟩` from `data_one hU hT mm hinf hψ'`. Take `⟨S, x, hsum, hS⟩` from `decomp_G (T ψ') (hT.unipInv ψ' hψ') mm hmm hcap b q (fun i => BlockSlices.LS_aut hT _ (hb i)) (fun i => BlockSlices.RS_aut hT _ (hq i)) hG`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz` using `zspan_le q hq (RS_zalg hU hT)`. Use `choose θ hθ hθx hθe using fun σ (hσ : σ ∈ S) => (hS σ hσ).2.2 m₁`. Establish `hℓ' : ℓ = ∑ σ ∈ S.attach, θ σ.1 σ.2`. Use `Subtype.ext (funext fun m₂ => ?_)` and prove the remaining obligations. Rewrite using `[hℓ, ← e, hsum, Submodule.coe_sum, Finset.sum_apply, ← Finset.sum_attach S]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun σ _ => hθx σ.1 σ.2 m₂`. Rewrite using `[SetLike.mem_coe, hℓ']`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Establish `hadm : (fun τ => mm τ - σ.1 τ) ∈ adm mm s` using `mem_adm.2 fun τ => by`. Use `⟨Multiset.sub_le_self _ _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Multiset.card_sub ((hS σ.1 σ.2).1 τ).1, (hinf τ).1, ((hS σ.1 σ.2).1 τ).2]`. Use linear arithmetic over natural numbers and integers. Use `Submodule.mem_iSup_of_mem _ (Submodule.mem_iSup_of_mem hadm ⟨hz (hθ σ.1 σ.2), fun τ w => ?_⟩)` and prove the remaining obligations. Rewrite using `[hθe σ.1 σ.2 τ w]`. Use `congr 3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `z`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem RS_le_iSup (hU : IsAutSt U) (hT : IsSliceMap U c T) (mm : (E →+* ℂ) → Multiset ℂ) (hmm : ∀ τ, (mm τ).Nodup)
     (hinf : ∀ τ, HasInfCharGL U τ (mm τ)) :

@@ -11,7 +11,7 @@ namespace UpperTheory.V.ZK.PM
 variable (A : Type) [CommRing A] {G : Type} [Group G]
 
 /- English proof (translation)
-Simplify using `[cone, Finsupp.mapDomain_single]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem single_eq_cone (m : ℕ) (x : Fin (m + 1) → G) :
     (Finsupp.single x 1 : Ch A G (m + 1)) =
@@ -19,7 +19,7 @@ private theorem single_eq_cone (m : ℕ) (x : Fin (m + 1) → G) :
   simp [cone, Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Use `Finsupp.lhom_ext fun x b => ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.smul_single_one, map_smul, map_smul, single_eq_cone, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ext_cone {m : ℕ} {B : Type} [AddCommGroup B] [Module A B] (f g : Ch A G (m + 1) →ₗ[A] B)
     (h : ∀ a y, f (cone A a m y) = g (cone A a m y)) : f = g := by
@@ -27,9 +27,9 @@ private theorem ext_cone {m : ℕ} {B : Type} [AddCommGroup B] [Module A B] (f g
   rw [← Finsupp.smul_single_one, map_smul, map_smul, single_eq_cone, h]
 
 /- English proof (translation)
-Proceed by induction on `y using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add y1 y2 h1 h2 => rw [map_add, map_add, h1, h2]`. Consider the case `single x b`. Rewrite using `[← Finsupp.smul_single_one, map_smul, map_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[cone, hbd.eq_1, Finsupp.mapDomain_single, Finsupp.linearCombination_single]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 private theorem hbd_cone_zero (a : G) (y : Ch A G 0) : hbd A G 0 (cone A a 0 y) = y := by
   induction y using Finsupp.induction_linear with
@@ -41,9 +41,9 @@ private theorem hbd_cone_zero (a : G) (y : Ch A G 0) : hbd A G 0 (cone A a 0 y) 
     simp [cone, hbd.eq_1, Finsupp.mapDomain_single, Finsupp.linearCombination_single]
 
 /- English proof (translation)
-Establish `e2 : hbd A G (m + 1) = Finsupp.linearCombination A fun x => (Finsupp.single (Fin.tail x) 1 : Ch A G (m + 1)) - cone A (x 0) m (hbd A G m (Finsupp.single (Fin.tail x) 1))` using `hbd.eq_2 A G m`. Proceed by induction on `y using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add y1 y2 h1 h2 => simp only [map_add, h1, h2] <;> abel`. Consider the case `single x b`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← Finsupp.smul_single_one]`. Simplify using `only [map_smul, ← smul_sub]`. Use `congr 1`. Rewrite using `[e2]`. Simplify using `[cone, Finsupp.mapDomain_single, Finsupp.linearCombination_single]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem hbd_cone (a : G) (m : ℕ) (y : Ch A G (m + 1)) :
     hbd A G (m + 1) (cone A a (m + 1) y) = y - cone A a m (hbd A G m y) := by
@@ -61,11 +61,11 @@ private theorem hbd_cone (a : G) (m : ℕ) (y : Ch A G (m + 1)) :
     simp [cone, Finsupp.mapDomain_single, Finsupp.linearCombination_single]
 
 /- English proof (translation)
-Establish `e : hp A k (m + 1) = Finsupp.linearCombination A fun x => cone A (x 0) (m + 1) (rmul A k (m + 1) (Finsupp.single x 1) - hp A k m (Finsupp.single (Fin.tail x) 1))` using `hp.eq_2 A k m`. Proceed by induction on `y using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add y1 y2 h1 h2 => simp only [map_add, map_sub, h1, h2] <;> abel`. Consider the case `single x b`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← Finsupp.smul_single_one]`. Simplify using `only [map_smul, ← smul_sub]`. Use `congr 1`. Establish `hc : cone A a m (Finsupp.single x 1) = Finsupp.single (Fin.cons a x) 1`. Simplify using `[cone, Finsupp.mapDomain_single]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, e, Finsupp.linearCombination_single, one_smul, Fin.cons_zero, Fin.tail_cons]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem hp_cone (k a : G) (m : ℕ) (y : Ch A G m) :
     hp A k (m + 1) (cone A a m y) = cone A a (m + 1) (rmul A k (m + 1) (cone A a m y) - hp A k m y) := by
@@ -84,11 +84,11 @@ private theorem hp_cone (k a : G) (m : ℕ) (y : Ch A G m) :
     rw [hc, e, Finsupp.linearCombination_single, one_smul, Fin.cons_zero, Fin.tail_cons]
 
 /- English proof (translation)
-Establish `e : hd A k k' (m + 1) = Finsupp.linearCombination A fun x => cone A (x 0) (m + 2) (hp A k' (m + 1) (rmul A k (m + 1) (Finsupp.single x 1)) + hd A k k' m (Finsupp.single (Fin.tail x) 1))` using `hd.eq_2 A k k' m`. Proceed by induction on `y using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add y1 y2 h1 h2 => simp only [map_add, h1, h2] <;> abel`. Consider the case `single x b`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← Finsupp.smul_single_one]`. Simplify using `only [map_smul, ← smul_add]`. Use `congr 1`. Establish `hc : cone A a m (Finsupp.single x 1) = Finsupp.single (Fin.cons a x) 1`. Simplify using `[cone, Finsupp.mapDomain_single]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, e, Finsupp.linearCombination_single, one_smul, Fin.cons_zero, Fin.tail_cons]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem hd_cone (k k' a : G) (m : ℕ) (y : Ch A G m) :
     hd A k k' (m + 1) (cone A a m y) =
@@ -109,9 +109,9 @@ private theorem hd_cone (k k' a : G) (m : ℕ) (y : Ch A G m) :
     rw [hc, e, Finsupp.linearCombination_single, one_smul, Fin.cons_zero, Fin.tail_cons]
 
 /- English proof (translation)
-Proceed by induction on `y using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add y1 y2 h1 h2 => simp only [map_add, h1, h2]`. Consider the case `single x b`. Simplify using `only [rmul, cone, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem rmul_cone (k a : G) (m : ℕ) (y : Ch A G m) :
     rmul A k (m + 1) (cone A a m y) = cone A (a * k) m (rmul A k m y) := by
@@ -125,7 +125,7 @@ private theorem rmul_cone (k a : G) (m : ℕ) (y : Ch A G m) :
     refine Fin.cases ?_ (fun j => ?_) i <;> simp
 
 /- English proof (translation)
-Proceed by induction on `y using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add y1 y2 h1 h2 => simp only [map_add, h1, h2]`. Consider the case `single x b => simp [rmul, Finsupp.mapDomain_single, mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem rmul_rmul (k k' : G) (m : ℕ) (y : Ch A G m) :
     rmul A k' m (rmul A k m y) = rmul A (k * k') m y := by
@@ -135,9 +135,9 @@ private theorem rmul_rmul (k k' : G) (m : ℕ) (y : Ch A G m) :
   | single x b => simp [rmul, Finsupp.mapDomain_single, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Use `LinearMap.congr_fun (ext_cone A ((hbd A G 0).comp (rmul A k 1)) ((rmul A k 0).comp (hbd A G 0)) fun a w => ?_) y` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[rmul_cone, hbd_cone_zero, hbd_cone_zero]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ m ih`. Use `LinearMap.congr_fun (ext_cone A ((hbd A G (m + 1)).comp (rmul A k (m + 1 + 1))) ((rmul A k (m + 1)).comp (hbd A G (m + 1))) fun a w => ?_) y` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[rmul_cone, hbd_cone, hbd_cone, ih, map_sub, rmul_cone]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hbd_rmul (k : G) (m : ℕ) (y : Ch A G (m + 1)) :
     hbd A G m (rmul A k (m + 1) y) = rmul A k m (hbd A G m y) := by
@@ -154,11 +154,11 @@ private theorem hbd_rmul (k : G) (m : ℕ) (y : Ch A G (m + 1)) :
     rw [rmul_cone, hbd_cone, hbd_cone, ih, map_sub, rmul_cone]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Establish `r0 : ∀ w : Ch A G 0, rmul A k 0 w = w` using `fun w => by`. Simplify using `only [rmul, Finsupp.lmapDomain_apply]`. Rewrite using `[show (fun (x : Fin 0 → G) (i : Fin 0) => x i * k) = id from funext fun x => funext fun i => i.elim0, Finsupp.mapDomain_id]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `LinearMap.congr_fun (ext_cone A ((hbd A G 1).comp (hp A k 1)) (rmul A k 1 - LinearMap.id - (hp A k 0).comp (hbd A G 0)) fun a w => ?_) y` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply]`. Rewrite using `[hp_cone, hbd_cone, hp.eq_1, LinearMap.zero_apply, LinearMap.zero_apply, sub_zero, sub_zero, rmul_cone, hbd_cone_zero, r0]`. Consider the case `succ m ih`. Use `LinearMap.congr_fun (ext_cone A ((hbd A G (m + 1 + 1)).comp (hp A k (m + 1 + 1))) (rmul A k (m + 1 + 1) - LinearMap.id - (hp A k (m + 1)).comp (hbd A G (m + 1))) fun a w => ?_) y` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply]`. Rewrite using `[hp_cone, hbd_cone, map_sub, map_sub, hbd_rmul, hbd_cone, ih]`. Simplify using `only [map_sub, hp_cone]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem hbd_hp (k : G) (m : ℕ) (y : Ch A G (m + 1)) :
     hbd A G (m + 1) (hp A k (m + 1) y) = rmul A k (m + 1) y - y - hp A k m (hbd A G m y) := by
@@ -182,9 +182,9 @@ private theorem hbd_hp (k : G) (m : ℕ) (y : Ch A G (m + 1)) :
     abel
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Use `LinearMap.congr_fun (ext_cone A ((hbd A G (0 + 2)).comp (hd A k k' (0 + 1))) ((hd A k k' 0).comp (hbd A G 0) - (hp A (k * k') (0 + 1) - hp A k (0 + 1) - (hp A k' (0 + 1)).comp (rmul A k (0 + 1)))) fun a w => ?_) y` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.sub_apply]`. Simplify using `only [hd_cone, hbd_cone, map_add, map_sub, hbd_hp, rmul_rmul, hbd_rmul, hbd_cone_zero, hd.eq_1, hp.eq_1, LinearMap.zero_apply, hp_cone, sub_zero, map_zero, add_zero]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Consider the case `succ m ih`. Use `LinearMap.congr_fun (ext_cone A ((hbd A G (m + 1 + 2)).comp (hd A k k' (m + 1 + 1))) ((hd A k k' (m + 1)).comp (hbd A G (m + 1)) - (hp A (k * k') (m + 1 + 1) - hp A k (m + 1 + 1) - (hp A k' (m + 1 + 1)).comp (rmul A k (m + 1 + 1)))) fun a w => ?_) y` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.sub_apply]`. Simplify using `only [hd_cone, hbd_cone, map_add, map_sub, hbd_hp, rmul_rmul, hbd_rmul, ih, hp_cone]`.
+Normalize the expressions using the abelian group laws. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -209,9 +209,9 @@ private theorem hbd_hd (k k' : G) (m : ℕ) (y : Ch A G (m + 1)) :
     abel
 
 /- English proof (translation)
-Proceed by induction on `y using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add y1 y2 h1 h2 => simp only [map_add, h1, h2]`. Consider the case `single x b`. Simplify using `only [pr, rmul, cm, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[MulAut.conj_apply, mul_assoc]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem pr_rmul (k : G) (m : ℕ) (y : Ch A G (m + 1)) :
     pr A G m (rmul A k (m + 1) y) = cm A (MulAut.conj k⁻¹).toMonoidHom m (pr A G m y) := by
@@ -228,7 +228,7 @@ private noncomputable def sec (G : Type) [Group G] (m : ℕ) : Ch A G m →ₗ[A
   Finsupp.lmapDomain A A fun g => Fin.partialProd g
 
 /- English proof (translation)
-Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add y1 y2 h1 h2 => simp only [map_add, h1, h2]`. Consider the case `single x b`. Simplify using `only [pr, sec, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single, Fin.partialProd_right_inv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private theorem pr_sec (m : ℕ) (z : Ch A G m) : pr A G m (sec A G m z) = z := by
   induction z using Finsupp.induction_linear with
@@ -238,11 +238,11 @@ private theorem pr_sec (m : ℕ) (z : Ch A G m) : pr A G m (sec A G m z) = z := 
     simp only [pr, sec, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single, Fin.partialProd_right_inv]
 
 /- English proof (translation)
-Proceed by induction on `y using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add y1 y2 h1 h2 => simp only [map_add, h1, h2]`. Consider the case `single x b`. Establish `hs : sec A G m (pr A G m (Finsupp.single x b)) = lmul A (x 0)⁻¹ (m + 1) (Finsupp.single x b)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `only [pr, sec, lmul, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `h` using `congrFun (Fin.partialProd_left_inv x) i`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[eq_inv_mul_iff_mul_eq]`. Conclude with `h`. Rewrite using `[hs, UpperTheory.leftMulChain_chainHomotopic]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hd_sec_pr (k k' : G) (m : ℕ) (y : Ch A G (m + 1)) :
     pr A G (m + 2) (hd A k k' (m + 1) (sec A G m (pr A G m y))) = pr A G (m + 2) (hd A k k' (m + 1) y) := by
@@ -264,9 +264,9 @@ end UpperTheory.V.ZK.PM
 
 open UpperTheory.V.ZK.PM in
 /- English proof (translation)
-Introduce `A _ G _ k k' m z hz`. Establish `hz' : pr A G (m + 1) (sec A G (m + 1) z) = z` using `pr_sec A (m + 1) z`. Use `set y := sec A G (m + 1) z`. Establish `h0 : pr A G (m + 1 + 1) (hd A k k' (m + 1) (PM.hbd A G (m + 1) y)) = 0`. Rewrite using `[← hd_sec_pr, ← UpperTheory.tupleChain_boundary_formula, hz', hz, map_zero, map_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hX` using `hbd_hd A k k' (m + 1) y`. Rewrite `hX` using `[eq_sub_iff_add_eq, ← eq_sub_iff_add_eq']`. Use `LinearMap.mem_range.mpr ⟨-(pr A G (m + 1 + 2) (hd A k k' (m + 1 + 1) y)), ?_⟩` and prove the remaining obligations. Rewrite using `[← hz', ← pr_rmul, ← UpperTheory.coneHomotopy_boundary_formula, ← UpperTheory.coneHomotopy_boundary_formula, ← UpperTheory.coneHomotopy_boundary_formula, ← map_sub, ← map_sub, hX, map_sub, h0, ← UpperTheory.tupleChain_boundary_formula, zero_sub, map_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.sPrismMul :
     UpperTheory.V.ZK.SPrismMul := by

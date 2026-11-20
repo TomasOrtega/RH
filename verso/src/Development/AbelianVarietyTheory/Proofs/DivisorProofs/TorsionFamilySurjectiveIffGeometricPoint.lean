@@ -13,7 +13,7 @@ namespace GlobalTheory.TorsCount
 variable {κ Q : Type} [Fintype κ] [Group Q]
 
 /- English proof (translation)
-Establish `h` using `hadd 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_zero_of_add {L : Type} [AddCommGroup L] (e : L → Q) (hadd : ∀ a c, e (a + c) = e a * e c) :
     e 0 = 1 := by
@@ -22,7 +22,7 @@ theorem map_zero_of_add {L : Type} [AddCommGroup L] (e : L → Q) (hadd : ∀ a 
   exact left_eq_mul.1 h
 
 /- English proof (translation)
-Establish `h` using `hadd (a - c) c`. Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[h, mul_inv_cancel_right]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_sub_of_add {L : Type} [AddCommGroup L] (e : L → Q) (hadd : ∀ a c, e (a + c) = e a * e c)
     (a c : L) : e (a - c) = e a * (e c)⁻¹ := by
@@ -34,9 +34,9 @@ def red (M : ℕ) (e : (κ → ℤ) → Q) (hpow : ∀ a, e a ^ M = 1) : (κ →
   fun c => ⟨e fun i => ((c i).val : ℤ), hpow _⟩
 
 /- English proof (translation)
-Use `⟨fun i => (a i : ZMod M), ?_⟩` and prove the remaining obligations. Establish `h : e (a - fun i => (((a i : ZMod M)).val : ℤ)) = 1`. Use `(hker _).2 ⟨fun i => a i / (M : ℤ), funext fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.smul_apply, nsmul_eq_mul, ZMod.val_intCast]`. Use `Int.emod_add_mul_ediv (a i) (M : ℤ)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h` using `[map_sub_of_add e hadd, mul_inv_eq_one]`. Conclude with `h.symm`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_red (M : ℕ) [NeZero M] (e : (κ → ℤ) → Q) (hadd : ∀ a c, e (a + c) = e a * e c)
     (hker : ∀ a, e a = 1 ↔ ∃ c, a = M • c) (a : κ → ℤ) :
@@ -51,9 +51,9 @@ theorem exists_red (M : ℕ) [NeZero M] (e : (κ → ℤ) → Q) (hadd : ∀ a c
   exact h.symm
 
 /- English proof (translation)
-Introduce `c c' hcc`. Establish `h1 : e (fun i => ((c i).val : ℤ)) = e (fun i => ((c' i).val : ℤ))` using `congrArg Subtype.val hcc`. Establish `h2 : e ((fun i => ((c i).val : ℤ)) - fun i => ((c' i).val : ℤ)) = 1`. Rewrite using `[map_sub_of_add e hadd, h1, mul_inv_cancel]`. Take `⟨d, hd⟩` from `(hker _).1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `i`. Establish `h3` using `congrArg (fun x : κ → ℤ => ((x i : ℤ) : ZMod M)) hd`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, nsmul_eq_mul, Int.cast_sub, Int.cast_natCast, ZMod.natCast_zmod_val, Int.cast_mul, ZMod.natCast_self, zero_mul] at h3`. Conclude with `sub_eq_zero.1 h3`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem red_injective (M : ℕ) [NeZero M] (e : (κ → ℤ) → Q) (hadd : ∀ a c, e (a + c) = e a * e c)
     (hpow : ∀ a, e a ^ M = 1) (hker : ∀ a, e a = 1 ↔ ∃ c, a = M • c) : Function.Injective (red M e hpow) := by
@@ -69,9 +69,9 @@ theorem red_injective (M : ℕ) [NeZero M] (e : (κ → ℤ) → Q) (hadd : ∀ 
   exact sub_eq_zero.1 h3
 
 /- English proof (translation)
-Use `haveI : NeZero M := ⟨hM.ne'⟩`. Establish `hb : Function.Bijective (red M e hpow)`. Use `⟨red_injective M e hadd hpow hker, fun ⟨g, hg⟩ => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hon g hg`. Take `⟨c, hc⟩` from `exists_red M e hadd hker a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c, Subtype.ext hc⟩`. Rewrite using `[← Nat.card_eq_of_bijective _ hb, Nat.card_eq_fintype_card, Fintype.card_fun, ZMod.card]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_tors (M : ℕ) (hM : 0 < M) (e : (κ → ℤ) → Q) (hadd : ∀ a c, e (a + c) = e a * e c)
     (hpow : ∀ a, e a ^ M = 1) (hker : ∀ a, e a = 1 ↔ ∃ c, a = M • c)
@@ -90,27 +90,25 @@ end GlobalTheory.TorsCount
 namespace GlobalTheory.HTSympCover
 
 /- English proof (translation)
-Introduce `p _ D R _ b N h M hM hcop S t o k _ _ y e hadd hpow hker`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Take `⟨β, hβ⟩` from `GlobalTheory.LevCover.exists_spMap (y ≫ t)`. Take `⟨I, -⟩` from `o.geom k y β hβ`. Use `haveI := D.freeLa`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI := D.finLa`. Set `B` to `Module.Free.chooseBasis ℤ D.La`. Set `ev' : (Module.Free.ChooseBasisIndex ℤ D.La → ℤ) → (Over.mk y ⟶ o.A)` to `fun a => I.ev M (B.equivFun.symm a)`. Establish `hadd' : ∀ a c, ev' (a + c) = ev' a * ev' c` using `fun a c => by`. Simplify using `only [ev', map_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `I.add M _ _`. Establish `hpow' : ∀ a, ev' a ^ M = 1` using `fun a => (I.onto M hM hcop _).2 ⟨_, rfl⟩`. Establish `hker' : ∀ a, ev' a = 1 ↔ ∃ c, a = M • c` using `fun a => by`. Simplify using `only [ev']`. Rewrite using `[I.ker M hM hcop]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨B.equivFun c, by rw [← map_nsmul, ← hc, LinearEquiv.apply_symm_apply]⟩`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨B.equivFun.symm c, map_nsmul _ _ _⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hon' : ∀ g, g ^ M = 1 → ∃ a, ev' a = g` using `fun g hg => by`. Take `⟨x, hx⟩` from `(I.onto M hM hcop g).1 hg`. Conclude with `⟨B.equivFun x, by simp only [ev', LinearEquiv.symm_apply_apply, hx]⟩`. Establish `hcard` using `GlobalTheory.TorsCount.card_tors M hM ev' hadd' hpow' hker' hon'`. Rewrite `hcard` using `[← Module.finrank_eq_card_chooseBasisIndex]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hinj` using `GlobalTheory.TorsCount.red_injective M e hadd hpow hker`. Establish `hdom : Nat.card (Fin h ⊕ Fin h → ZMod M) = M ^ (2 * h)`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_fun, ZMod.card, Fintype.card_sum, Fintype.card_fin, two_mul]`. Break down `Nat.lt_or_ge M 2 with hM2 | hM2` into its components or cases. Establish `h1 : M = 1` using `by omega`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `h1` using the available equality. Simplify using `only [true_or, iff_true]`. Introduce `g hg`. Rewrite `hg` using `[pow_one]`. Conclude with `⟨0, by rw [hg]; exact GlobalTheory.TorsCount.map_zero_of_add e hadd⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hMne : M ≠ 1` using `by omega`. Simplify using `only [hMne, false_or]`. Use `haveI : Finite {g : Over.mk y ⟶ o.A // g ^ M = 1} := Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)`. Prove the components needed by the constructor for the conclusion. Introduce `hon`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hb : Function.Bijective (GlobalTheory.TorsCount.red M e hpow)`. Use `⟨hinj, fun ⟨g, hg⟩ => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hon g hg`. Take `⟨c, hc⟩` from `GlobalTheory.TorsCount.exists_red M e hadd hker a`. Conclude with `⟨c, Subtype.ext hc⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `Nat.card_eq_of_bijective _ hb`. Rewrite `h2` using `[hcard, hdom]`. Conclude with `Nat.pow_right_injective hM2 h2`. Introduce `hr g hg`. Establish `hs : Function.Surjective (GlobalTheory.TorsCount.red M e hpow)` using `(hinj.bijective_of_nat_card_le (by rw [hcard, hdom, hr])).2`.
-
-Take `⟨c, hc⟩` from `hs ⟨g, hg⟩`. Conclude with `⟨_, congrArg Subtype.val hc⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem onto_tors_iff : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N h M : ℕ), 0 < M → M.Coprime p → ∀ (S : Scheme.{0}) (t : S ⟶ Sp R) (o : Obj b N t) (k : Type) [Field k] [IsAlgClosed k] (y : Sp k ⟶ S) (e : (Fin h ⊕ Fin h → ℤ) → (Over.mk y ⟶ o.A)), (∀ a c, e (a + c) = e a * e c) → (∀ a, e a ^ M = 1) → (∀ a, e a = 1 ↔ ∃ c, a = M • c) → ((∀ g : Over.mk y ⟶ o.A, g ^ M = 1 → ∃ a, e a = g) ↔ (M = 1 ∨ 2 * h = Module.finrank ℤ D.La)) := by
   intro p _ D R _ b N h M hM hcop S t o k _ _ y e hadd hpow hker

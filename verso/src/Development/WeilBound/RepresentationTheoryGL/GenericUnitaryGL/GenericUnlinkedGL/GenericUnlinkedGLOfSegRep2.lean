@@ -9,7 +9,7 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.Bernste
 namespace GlobalTheory.RgGu
 
 /- English proof (translation)
-The claim follows from `genericUnlinkedGL_of (fun k _ _ _ _ _ => suppExists k) (fun k _ _ _ _ _ => genericUnique k) (fun k _ _ _ _ _ => unlinkedRealize (k := k) (GlobalTheory.CompanionTheory.SegCoarse.lSegJacquet PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top hZ) (GlobalTheory.RgGu.Nup2.nuPair k …`.
+A detailed English derivation is pending.
 -/
 theorem genericUnlinkedGL_of_segRep2 (hZ : GlobalTheory.Published.SegmentRepresentation) : GlobalTheory.Published.GenericUnlinkedGL :=
   genericUnlinkedGL_of (fun k _ _ _ _ _ => suppExists k) (fun k _ _ _ _ _ => genericUnique k)

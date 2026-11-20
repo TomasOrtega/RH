@@ -13,14 +13,14 @@ def halfForm {r : ℕ} (e : Module.Basis (Fin r) ℤ X) (i j : Fin r) : LinearMa
   if i < j then pform e i j + pform e j i else if i = j then pform e i i else 0
 
 /- English proof (translation)
-Apply the tactic sequence `unfold halfForm; split_ifs <;> simp [pform_apply] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem halfForm_symm {r : ℕ} (e : Module.Basis (Fin r) ℤ X) (i j : Fin r) (x y : X) :
     halfForm e i j x y = halfForm e i j y x := by
   unfold halfForm; split_ifs <;> simp [pform_apply] <;> ring
 
 /- English proof (translation)
-Unfold `halfForm`. Break down `lt_trichotomy i₀ j₀ with h | rfl | h` into its components or cases. Apply the tactic sequence `rw [min_eq_left h.le, max_eq_right h.le] split_ifs <;> simp [pform_apply, Module.Basis.coord_apply, Finsupp.single_apply] <;> (try split_ifs) <;> (try subst_vars) <;> omega`. Apply the tactic sequence `simp only [min_self, max_self] split_ifs <;> simp [pform_apply, Module.Basis.coord_apply, Finsupp.single_apply] <;> (try split_ifs) <;> (try subst_vars) <;> omega`. Apply the tactic sequence `rw [min_eq_right h.le, max_eq_left h.le] split_ifs <;> simp [pform_apply, Module.Basis.coord_apply, Finsupp.single_apply] <;> (try split_ifs) <;> (try subst_vars) <;> omega`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem halfForm_basis {r : ℕ} (e : Module.Basis (Fin r) ℤ X) (i j i₀ j₀ : Fin r) :
     halfForm e i j (e i₀) (e j₀) = if i = min i₀ j₀ ∧ j = max i₀ j₀ then 1 else 0 := by
@@ -34,11 +34,11 @@ theorem halfForm_basis {r : ℕ} (e : Module.Basis (Fin r) ℤ X) (i j i₀ j₀
     split_ifs <;> simp [pform_apply, Module.Basis.coord_apply, Finsupp.single_apply] <;> (try split_ifs) <;> (try subst_vars) <;> omega
 
 /- English proof (translation)
-Use `LinearMap.ext_basis e e fun i₀ j₀ => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, halfForm_basis, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single (min i₀ j₀, max i₀ j₀)]`. Simplify using `only [and_self, if_true]`. Break down `le_total i₀ j₀ with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[min_eq_left h, max_eq_right h]`. Rewrite using `[min_eq_right h, max_eq_left h, hβ]`. Introduce `p _ hp`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hp (Prod.ext h1 h2)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_sum_halfForm {r : ℕ} (e : Module.Basis (Fin r) ℤ X) (β : LinearMap.BilinForm ℤ X)
     (hβ : ∀ x y, β x y = β y x) :
@@ -54,11 +54,11 @@ theorem eq_sum_halfForm {r : ℕ} (e : Module.Basis (Fin r) ℤ X) (β : LinearM
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `key : ∀ (φ ψ : X → G), (∀ a a', φ (a + a') = φ a * φ a') → (∀ a a', ψ (a + a') = ψ a * ψ a') → (∀ i, φ (e i) = ψ (e i)) → φ = ψ`. Introduce `φ ψ hφ hψ hi`. Set `Φ : X →+ Additive G` to `AddMonoidHom.mk' (fun a => Additive.ofMul (φ a)) (fun a a' => by simp [hφ])`. Set `Ψ : X →+ Additive G` to `AddMonoidHom.mk' (fun a => Additive.ofMul (ψ a)) (fun a a' => by simp [hψ])`. Establish `hL : Φ.toIntLinearMap = Ψ.toIntLinearMap` using `e.ext fun i => by simp [Φ, Ψ, hi]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Use `congrArg (fun L : X →ₗ[ℤ] Additive G => Additive.toMul (L a)) hL` as an intermediate fact. Simplify `this` using `[Φ, Ψ]`. Establish `h1 : ∀ j a, f a (e j) = g a (e j)` using `fun j => congrFun (key (fun a => f a (e j)) (fun a => g a (e j)) (fun a a' => hf a a' _) (fun a a' => hg a a' _) (fun i => h i j))`. Use function extensionality and compare the values at `a`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `key (f a) (g a) (hf' a) (hg' a) (fun j => h1 j a)`.
+A detailed English derivation is pending.
 -/
 theorem bimul_ext {G : Type} [CommGroup G] {r : ℕ} (e : Module.Basis (Fin r) ℤ X) (f g : X → X → G)
     (hf : ∀ a a' b, f (a + a') b = f a b * f a' b) (hf' : ∀ a b b', f a (b + b') = f a b * f a b')
@@ -85,7 +85,7 @@ def IsSymBasis (ε : ι → LinearMap.BilinForm ℤ X) : Prop :=
     ∀ β : LinearMap.BilinForm ℤ X, (∀ x y, β x y = β y x) → β ∈ Submodule.span ℤ (Set.range ε)
 
 /- English proof (translation)
-Establish `: ∀ p : Fin r × Fin r, ∃ c : ι → ℤ, ∑ k, c k • ε k = halfForm e p.1 p.2` using `fun p => (Submodule.mem_span_range_iff_exists_fun ℤ).1 (hε.2.2 _ (halfForm_symm e p.1 p.2))`. Use `choose c hc using this`. Conclude with `⟨c, hc⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coords {ε : ι → LinearMap.BilinForm ℤ X} (hε : IsSymBasis ε) {r : ℕ} (e : Module.Basis (Fin r) ℤ X) :
     ∃ c : Fin r × Fin r → ι → ℤ, ∀ p, ∑ k, c p k • ε k = halfForm e p.1 p.2 := by
@@ -95,9 +95,9 @@ theorem exists_coords {ε : ι → LinearMap.BilinForm ℤ X} (hε : IsSymBasis 
   exact ⟨c, hc⟩
 
 /- English proof (translation)
-Establish `h1 : ε k' = ∑ k, (∑ p, ε k' (e p.1) (e p.2) * c p k) • ε k` using `by conv_lhs => rw [eq_sum_halfForm e (ε k') (hε.1 k')]`. Repeatedly rewrite using `[← hc, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `h2 : ε k' = ∑ k, (if k' = k then (1 : ℤ) else 0) • ε k` using `by simp`. Establish `h3 : ∑ k, ((∑ p, ε k' (e p.1) (e p.2) * c p k) - (if k' = k then 1 else 0)) • ε k = 0`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[sub_smul, Finset.sum_sub_distrib, ← h1, ← h2, sub_self]`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hε.2.1 _ h3 k)`.
+A detailed English derivation is pending.
 -/
 theorem dual_coords {ε : ι → LinearMap.BilinForm ℤ X} (hε : IsSymBasis ε) {r : ℕ} (e : Module.Basis (Fin r) ℤ X)
     {c : Fin r × Fin r → ι → ℤ} (hc : ∀ p, ∑ k, c p k • ε k = halfForm e p.1 p.2) (k' k : ι) :
@@ -114,7 +114,7 @@ theorem dual_coords {ε : ι → LinearMap.BilinForm ℤ X} (hε : IsSymBasis ε
 variable {G : Type} [CommGroup G]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert x s hx ih => rw [Finset.sum_insert hx, Finset.prod_insert hx, zpow_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zpow_sumF {κ : Type} (s : Finset κ) (a : G) (f : κ → ℤ) : a ^ (∑ p ∈ s, f p) = ∏ p ∈ s, a ^ f p := by
   classical
@@ -123,9 +123,7 @@ theorem zpow_sumF {κ : Type} (s : Finset κ) (a : G) (f : κ → ℤ) : a ^ (�
   | insert x s hx ih => rw [Finset.sum_insert hx, Finset.prod_insert hx, zpow_add, ih]
 
 /- English proof (translation)
-Set `e` to `Module.finBasis ℤ X`. Take `⟨c, hc⟩` from `exists_coords hε e`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[← Finset.prod_zpow, zpow_sumF, ← zpow_mul]`. Conclude with `Finset.prod_comm`.
-
-Use `_ = 1 := by simp [h]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_prod_zpow {ε : ι → LinearMap.BilinForm ℤ X} (hε : IsSymBasis ε) [Module.Free ℤ X] [Module.Finite ℤ X]
     (u : ι → G) (h : ∀ x y, ∏ k, u k ^ ε k x y = 1) (k : ι) : u k = 1 := by
@@ -139,23 +137,21 @@ theorem eq_one_of_prod_zpow {ε : ι → LinearMap.BilinForm ℤ X} (hε : IsSym
     _ = 1 := by simp [h]
 
 /- English proof (translation)
-Set `e` to `Module.finBasis ℤ X`. Take `⟨c, hc⟩` from `exists_coords hε e`. Establish `hadd' : ∀ x y y', q x (y + y') = q x y * q x y'` using `fun x y y' => by`. Rewrite using `[hsym, hadd, hsym y, hsym y']`. Establish `hF : ∀ x y, ∏ k, (∏ p, q (e p.1) (e p.2) ^ c p k) ^ ε k x y = ∏ p : Fin (Module.finrank ℤ X) × Fin (Module.finrank ℤ X), q (e p.1) (e p.2) ^ halfForm e p.1 p.2 x y`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x y`. Repeatedly rewrite using `[← Finset.prod_zpow, ← zpow_mul]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_sumF, ← hc p]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[LinearMap.sum_apply, mul_comm]`. Use `⟨fun k => ∏ p, q (e p.1) (e p.2) ^ c p k, fun x y => ?_, fun σ hσ => funext fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[hF]`. Use `bimul_ext e q (fun x y => ∏ p : Fin (Module.finrank ℤ X) × Fin (Module.finrank ℤ X), q (e p.1) (e p.2) ^ halfForm e p.1 p.2 x y) hadd hadd' (fun a a' b => by simp only [map_add, LinearMap.add_apply, zpow_add, Finset.prod_mul_distrib]) (fun a b b' => by simp only [map_add, zpow_ad …` as an intermediate fact. Simplify using `only [halfForm_basis]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_eq_single (min i j, max i j)]`. Simplify using `only [and_self, if_true, zpow_one]`. Break down `le_total i j with h | h` into its components or cases. Rewrite using `[min_eq_left h, max_eq_right h]`. Rewrite using `[min_eq_right h, max_eq_left h, hsym]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `p _ hp`. Rewrite using `[if_neg, zpow_zero]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hp (Prod.ext h1 h2)`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `absurd (Finset.mem_univ _) h)`. Conclude with `congrFun (congrFun this x) y`. Establish `h0 : ∀ x y, ∏ k, (σ k / ∏ p, q (e p.1) (e p.2) ^ c p k) ^ ε k x y = 1` using `fun x y => by`. Repeatedly rewrite using `[div_zpow, Finset.prod_div_distrib, ← hσ, hF]`. Rewrite using `[div_eq_one]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `bimul_ext e q (fun x y => ∏ p : Fin (Module.finrank ℤ X) × Fin (Module.finrank ℤ X), q (e p.1) (e p.2) ^ halfForm e p.1 p.2 x y) hadd hadd' (fun a a' b => by simp only [map_add, LinearMap.add_apply, zpow_add, Finset.prod_mul_distrib]) (fun a b b' => by simp only [map_add, zpow_ad …` as an intermediate fact. Simplify using `only [halfForm_basis]`. Rewrite using `[Finset.prod_eq_single (min i j, max i j)]`. Simplify using `only [and_self, if_true, zpow_one]`. Break down `le_total i j with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[min_eq_left h, max_eq_right h]`. Rewrite using `[min_eq_right h, max_eq_left h, hsym]`. Introduce `p _ hp`. Rewrite using `[if_neg, zpow_zero]`. Introduce and unpack `⟨h1, h2⟩`.
-
-Conclude with `hp (Prod.ext h1 h2)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h)`. Conclude with `congrFun (congrFun this x) y`. Conclude with `div_eq_one.1 (eq_one_of_prod_zpow hε _ h0 k)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem existsUnique_coeff {ε : ι → LinearMap.BilinForm ℤ X} (hε : IsSymBasis ε) [Module.Free ℤ X] [Module.Finite ℤ X]
     (q : X → X → G) (hsym : ∀ x y, q x y = q y x) (hadd : ∀ x x' y, q (x + x') y = q x y * q x' y) :
@@ -208,7 +204,7 @@ theorem existsUnique_coeff {ε : ι → LinearMap.BilinForm ℤ X} (hε : IsSymB
     exact div_eq_one.1 (eq_one_of_prod_zpow hε _ h0 k)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `div_eq_one.1 (eq_one_of_prod_zpow hε (fun k => s k / s' k) (fun x y => ?_) k)` and prove the remaining obligations. Repeatedly rewrite using `[div_zpow, Finset.prod_div_distrib, h, div_self']`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem eq_of_prod_zpow {ε : ι → LinearMap.BilinForm ℤ X} (hε : IsSymBasis ε) [Module.Free ℤ X] [Module.Finite ℤ X]
     (s s' : ι → G) (h : ∀ x y, ∏ k, s k ^ ε k x y = ∏ k, s' k ^ ε k x y) : s = s' := by
@@ -217,7 +213,7 @@ theorem eq_of_prod_zpow {ε : ι → LinearMap.BilinForm ℤ X} (hε : IsSymBasi
   simp_rw [div_zpow, Finset.prod_div_distrib, h, div_self']
 
 /- English proof (translation)
-Use `congrFun (eq_of_prod_zpow hε (fun k => s k ^ n) (fun k => s' k ^ n) fun x y => by` as an intermediate fact. Repeatedly rewrite using `[← zpow_natCast, ← zpow_mul]`. Conclude with `h x y) k`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_pow_of_prod {ε : ι → LinearMap.BilinForm ℤ X} (hε : IsSymBasis ε) [Module.Free ℤ X] [Module.Finite ℤ X]
     (n : ℕ) (s s' : ι → G) (h : ∀ x y, ∏ k, s k ^ ((n : ℤ) * ε k x y) = ∏ k, s' k ^ ((n : ℤ) * ε k x y)) (k : ι) :
@@ -227,11 +223,11 @@ theorem pow_eq_pow_of_prod {ε : ι → LinearMap.BilinForm ℤ X} (hε : IsSymB
   exact this
 
 /- English proof (translation)
-Use `⟨fun _ x y => mul_comm x y, ?_, fun β _ => ?_⟩` and prove the remaining obligations. Rewrite using `[linearIndependent_unique_iff]`. Introduce `h`. Use `LinearMap.congr_fun₂ h 1 1` as an intermediate fact. Simplify using `at this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(Submodule.mem_span_range_iff_exists_fun ℤ).2 ⟨fun _ => β 1 1, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun x => LinearMap.ext fun y => ?_` and prove the remaining obligations. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, LinearMap.smul_apply, LinearMap.mul_apply', smul_eq_mul]`. Establish `hx : x = x • (1 : ℤ)` using `by simp`. Establish `hy : y = y • (1 : ℤ)` using `by simp`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx, hy, LinearMap.map_smul₂, LinearMap.map_smul]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isSymBasis_mul : IsSymBasis (fun _ : Fin 1 => (LinearMap.mul ℤ ℤ : LinearMap.BilinForm ℤ ℤ)) := by
   refine ⟨fun _ x y => mul_comm x y, ?_, fun β _ => ?_⟩
@@ -248,7 +244,7 @@ theorem isSymBasis_mul : IsSymBasis (fun _ : Fin 1 => (LinearMap.mul ℤ ℤ : L
     simp only [smul_eq_mul]; ring
 
 /- English proof (translation)
-The claim follows from `pow_eq_pow_of_prod isSymBasis_mul 3 (fun _ => s) (fun _ => s') (fun x y => by simpa using h x y) 0`.
+A detailed English derivation is pending.
 -/
 example (s s' : ℚˣ) (h : ∀ x y : ℤ, s ^ ((3 : ℤ) * (x * y)) = s' ^ ((3 : ℤ) * (x * y))) : s ^ 3 = s' ^ 3 :=
   pow_eq_pow_of_prod isSymBasis_mul 3 (fun _ => s) (fun _ => s') (fun x y => by simpa using h x y) 0

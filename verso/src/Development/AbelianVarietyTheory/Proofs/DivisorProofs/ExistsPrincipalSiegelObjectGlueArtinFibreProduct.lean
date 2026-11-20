@@ -29,38 +29,38 @@ namespace GlobalTheory.ArtinGlue
 open GlobalTheory.SiegelDescent GlobalTheory.SiegDesc GlobalTheory.CechPic
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.abelianScheme_glue_artinian_local_fibreProduct`.
+A detailed English derivation is pending.
 -/
 theorem lem_ab : ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀), IsPullback f₁ f₂ g₁ g₂ → IsLocalRing P → IsArtinianRing P → Function.Surjective g₁ → Function.Surjective g₂ → ∀ (A₁ : Over (Spec R₁)) [GrpObj A₁] (A₂ : Over (Spec R₂)) [GrpObj A₂] (A₀ : Over (Spec R₀)) [GrpObj A₀] (ψ₁ : A₀.left ⟶ A₁.left) (ψ₂ : A₀.left ⟶ A₂.left), IsAbelianScheme A₁ → IsAbelianScheme A₂ → IsGrpPullback A₀ A₁ (Spec.map g₁) ψ₁ → IsGrpPullback A₀ A₂ (Spec.map g₂) ψ₂ → ∃ (A : Over (Spec P)) (_ : GrpObj A) (φ₁ : A₁.left ⟶ A.left) (φ₂ : A₂.left ⟶ A.left), IsAbelianScheme A ∧ IsGrpPullback A₁ A (Spec.map f₁) φ₁ ∧ IsGrpPullback A₂ A (Spec.map f₂) φ₂ ∧ ψ₁ ≫ φ₁ = ψ₂ ≫ φ₂ := GlobalTheory.T.abelianScheme_glue_artinian_local_fibreProduct
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_lineBundle_glue_milnorPatching_artinLocal`.
+A detailed English derivation is pending.
 -/
 theorem lem_lb : ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀), IsPullback f₁ f₂ g₁ g₂ → IsLocalRing P → IsArtinianRing P → Function.Surjective g₁ → Function.Surjective g₂ → ∀ (X : Over (Spec P)) (X₁ : Over (Spec R₁)) (X₂ : Over (Spec R₂)) (X₀ : Over (Spec R₀)) (j₁ : X₁.left ⟶ X.left) (j₂ : X₂.left ⟶ X.left) (i₁ : X₀.left ⟶ X₁.left) (i₂ : X₀.left ⟶ X₂.left), Flat X.hom → IsPullback j₁ X₁.hom X.hom (Spec.map f₁) → IsPullback j₂ X₂.hom X.hom (Spec.map f₂) → IsPullback i₁ X₀.hom X₁.hom (Spec.map g₁) → i₁ ≫ j₁ = i₂ ≫ j₂ → i₂ ≫ X₂.hom = X₀.hom ≫ Spec.map g₂ → ∀ (L₁ : LB X₁.left) (L₂ : LB X₂.left), L₁.IsLB → L₂.IsLB → LBIso (L₁.pull i₁) (L₂.pull i₂) → ∃ L : LB X.left, L.IsLB ∧ LBIso L₁ (L.pull j₁) ∧ LBIso L₂ (L.pull j₂) := GlobalTheory.T.exists_lineBundle_glue_milnorPatching_artinLocal
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.pic_eq_zero_of_pullbacks_eq_zero_artinFibreProduct`.
+A detailed English derivation is pending.
 -/
 theorem lem_triv : ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀), IsPullback f₁ f₂ g₁ g₂ → IsLocalRing P → IsArtinianRing P → Function.Surjective g₁ → Function.Surjective g₂ → ∀ (A : Over (Spec P)) [GrpObj A] (A₁ : Over (Spec R₁)) (A₂ : Over (Spec R₂)) (φ₁ : A₁.left ⟶ A.left) (φ₂ : A₂.left ⟶ A.left), IsAbelianScheme A → IsPullback φ₁ A₁.hom A.hom (Spec.map f₁) → IsPullback φ₂ A₂.hom A.hom (Spec.map f₂) → ∀ c : GlobalTheory.CechPic.Pic A.left, GlobalTheory.CechPic.pull φ₁ c = 0 → GlobalTheory.CechPic.pull φ₂ c = 0 → c = 0 := GlobalTheory.T.pic_eq_zero_of_pullbacks_eq_zero_artinFibreProduct
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.fibreProduct_spec_fieldPoint_factors`.
+A detailed English derivation is pending.
 -/
 theorem lem_pt : ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀), IsPullback f₁ f₂ g₁ g₂ → Function.Surjective g₁ → Function.Surjective g₂ → ∀ (k : Type) [Field k] (x : Spec (CommRingCat.of k) ⟶ Spec P), (∃ y : Spec (CommRingCat.of k) ⟶ Spec R₁, y ≫ Spec.map f₁ = x) ∨ (∃ y : Spec (CommRingCat.of k) ⟶ Spec R₂, y ≫ Spec.map f₂ = x) := GlobalTheory.T.fibreProduct_spec_fieldPoint_factors
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.siegel_principal_artinian_of_principal_pullback`.
+A detailed English derivation is pending.
 -/
 theorem lem_princ : ∀ (g n : ℕ), 3 ≤ n → Odd n → ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀), IsPullback f₁ f₂ g₁ g₂ → IsLocalRing P → IsArtinianRing P → Function.Surjective g₁ → Function.Surjective g₂ → Nontrivial R₁ → ∀ (β : CommRingCat.of (cycAway n) ⟶ P) (c : SiegPre g n (zetaAway n) (Spec.map β)) (c₁ : SiegPre g n (zetaAway n) (Spec.map f₁ ≫ Spec.map β)), SiegPB c₁ c (Spec.map f₁) → c₁.Principal → c.Principal := GlobalTheory.T.siegel_principal_artinian_of_principal_pullback
 
 /- English proof (translation)
-Establish `hφ : φ ≫ A₀.hom = c.A.hom ≫ f` using `hp.1.w`. Take `⟨g₁, g₂, g₃⟩` from `c.geom k y β z (by rw [hs, ← Category.assoc, hy, hx]) hz`. Take `⟨σ, hσ⟩` from `exists_liftHom hp (Over.mk y) (Over.mk x) (𝟙 _) ((Category.id_comp _).trans hy.symm)`. Establish `σinj : Function.Injective σ` using `fun u v e => Over.OverMorphism.ext (by`. Simplify using `using ((hσ u _).1 rfl).symm.trans ((hσ v _).1 e.symm))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `pt : ∀ a, (toUnit (Over.mk y) ≫ c.lev a).left ≫ φ = (toUnit (Over.mk x) ≫ lev₀ a).left` using `fun a => by`. Express the relevant statement in the definitionally equal form `(y ≫ (c.lev a).left) ≫ φ = x ≫ (lev₀ a).left`. Rewrite using `[Category.assoc, hlev, ← Category.assoc, hy]`. Establish `σlev : ∀ a, σ (toUnit _ ≫ lev₀ a) = toUnit _ ≫ c.lev a` using `fun a => (hσ _ _).2 ((pt a).trans (Category.id_comp _).symm)`. Use `⟨fun a => ?_, fun g hg => ?_, fun a b => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← g₁ a, ← σlev, map_eq_one_iff σ σinj]`. Take `⟨a, ha⟩` from `g₂ (σ g) (by rw [← map_pow, hg, map_one])`. Conclude with `⟨a, σinj ((σlev a).trans ha)⟩`. Establish `hD` using `pull_isLB hP₀ (lift (𝟙 A₀) (𝟙 A₀)).left`. Establish `H` using `(GlobalTheory.weilIs_grpPullback_of_comm _ _ A₀ c.A f φ _ _ hD (pull_isLB c.isLB _) hp diag _ _ _ _ (pushPt hφ _) (pushPt hφ _) _ rfl rfl).1 (g₃ a b)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `weilIs_congr hy _ _ _ _ _ _ (pt a) (pt b) _ H`.
+A detailed English derivation is pending.
 -/
 theorem geom_transfer {S S' : Scheme.{0}} {B : Type} [CommRing B] {ζ : B} {s : S ⟶ Sp B} {s' : S' ⟶ Sp B} {h M : ℕ}
     (c : SiegPre h M ζ s') (A₀ : Over S) [GrpObj A₀] [IsCommMonObj A₀] (f : S' ⟶ S) (φ : c.A.left ⟶ A₀.left)
@@ -94,7 +94,7 @@ theorem geom_transfer {S S' : Scheme.{0}} {B : Type} [CommRing B] {ζ : B} {s : 
     exact weilIs_congr hy _ _ _ _ _ _ (pt a) (pt b) _ H
 
 /- English proof (translation)
-Establish `w : Spec.map g₁ ≫ Spec.map f₁ = Spec.map g₂ ≫ Spec.map f₂`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, hP.w]`. Conclude with `GlobalTheory.T.flat_over_artinFibreProduct_isPushout P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hl ha s₁ s₂ (Over.mk (𝟙 _)) (Over.mk (𝟙 _)) (Over.mk (𝟙 _)) (Over.mk (𝟙 _)) (Spec.map f₁) (Spec.map f₂) (Spec.map g₁) (Spec.map g₂) (show Flat (𝟙 (Spec P)) from inferInstance) (IsPullback.id_vert _) (I …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spec_isPushout (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀)
     (hP : IsPullback f₁ f₂ g₁ g₂) (hl : IsLocalRing P) (ha : IsArtinianRing P) (s₁ : Function.Surjective g₁)
@@ -106,7 +106,7 @@ theorem spec_isPushout (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) 
     (IsPullback.id_vert _) (IsPullback.id_vert _) w (by simp)
 
 /- English proof (translation)
-Take `⟨pt⟩ : Nonempty (PrimeSpectrum k)` from `inferInstance`. Conclude with `PrimeSpectrum.nonempty_iff_nontrivial.1 ⟨y.base pt⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nontrivial_of_pt (R : CommRingCat.{0}) (k : Type) [Field k] (y : Spec (CommRingCat.of k) ⟶ Spec R) :
     Nontrivial R := by
@@ -114,37 +114,29 @@ theorem nontrivial_of_pt (R : CommRingCat.{0}) (k : Type) [Field k] (y : Spec (C
   exact PrimeSpectrum.nonempty_iff_nontrivial.1 ⟨y.base pt⟩
 
 /- English proof (translation)
-Introduce `g n hn hodd P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart hs₁ hs₂ β c₁ c₂ hp₁ hp₂ hc₀`. Take `⟨c₀, ⟨ψ₁, ψ₁₂, hψ₁, sψ₁, iψ₁, lψ₁⟩, ⟨ψ₂, ψ₂₂, hψ₂, sψ₂, iψ₂, lψ₂⟩⟩` from `hc₀`. Take `⟨A, instA, φ₁, φ₂, hA, hφ₁, hφ₂, hcomm⟩` from `lem_ab P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart hs₁ hs₂ c₁.A c₂.A c₀.A ψ₁ ψ₂ c₁.ab c₂.ab hψ₁ hψ₂`. Use `haveI := hA.comm`. Establish `hAA : IsAbelianScheme (G2 A)` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ₁₂, sφ₁⟩` from `exists_isSquare hφ₁.1.w`. Take `⟨φ₂₂, sφ₂⟩` from `exists_isSquare hφ₂.1.w`. Take `⟨χ₂, sχ⟩` from `exists_isSquare (f := Spec.map g₁ ≫ Spec.map f₁) (φ := ψ₁ ≫ φ₁) (by rw [Category.assoc, hφ₁.1.w]; exact (reassoc_of% hψ₁.1.w) _)`. Establish `e₁₂ : ψ₁₂ ≫ φ₁₂ = χ₂` using `isSquare_comp rfl sψ₁ sφ₁ sχ`. Establish `e₂₂ : ψ₂₂ ≫ φ₂₂ = χ₂` using `isSquare_comp hcomm.symm sψ₂ sφ₂ sχ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `flat : Flat (G2 A).hom` using `by haveI := hAA.smooth infer_instance`. Establish `hiso₀ : LBIso (c₁.P.pull ψ₁₂) (c₂.P.pull ψ₂₂)` using `LBIso.trans (pull_isLB c₁.isLB _) c₀.isLB (pull_isLB c₂.isLB _) iψ₁.symm iψ₂`. Take `⟨L, hL, w₁, w₂⟩` from `lem_lb P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart hs₁ hs₂ (G2 A) (G2 c₁.A) (G2 c₂.A) (G2 c₀.A) φ₁₂ φ₂₂ ψ₁₂ ψ₂₂ flat (isPullback_of_isSquare hφ₁.1 sφ₁) (isPullback_of_isSquare hφ₂.1 sφ₂) (isPullback_of_isSquare hψ₁.1 sψ₁) (e₁₂.trans e₂₂.symm) (isSquare_w hψ₂.1.w sψ₂) c₁.P c₂.P c₁.isLB c₂ …`. Establish `clsP₁ : cls c₁.P c₁.isLB = pull φ₁₂ (cls L hL)`. Rewrite using `[← cls_pull hL φ₁₂ (pull_isLB hL _)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(cls_eq_iff _ _).2 w₁`. Establish `clsP₂ : cls c₂.P c₂.isLB = pull φ₂₂ (cls L hL)`. Rewrite using `[← cls_pull hL φ₂₂ (pull_isLB hL _)]`. Conclude with `(cls_eq_iff _ _).2 w₂`. Establish `rig : ∀ (a₁ : c₁.A ⟶ c₁.A ⊗ c₁.A) (a₂ : c₂.A ⟶ c₂.A ⊗ c₂.A) (a : A ⟶ A ⊗ A), a₁.left ≫ φ₁₂ = φ₁ ≫ a.left → a₂.left ≫ φ₂₂ = φ₂ ≫ a.left → (∃ t : (c₁.P.pull a₁.left).Gen, t.IsGen) → (∃ t : (c₂.P.pull a₂.left).Gen, t.IsGen) → ∃ t : (L.pull a.left).Gen, t.IsGen`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a₁ a₂ a e₁ e₂ t₁ t₂`. Use `(cls_eq_zero_iff (pull_isLB hL _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hL _ (pull_isLB hL _)]`. Use `lem_triv P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart hs₁ hs₂ A c₁.A c₂.A φ₁ φ₂ hA hφ₁.1 hφ₂.1 _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← pull_comp, ← e₁, pull_comp, ← clsP₁, ← cls_pull c₁.isLB _ (pull_isLB c₁.isLB _)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(cls_eq_zero_iff _).2 t₁`. Rewrite using `[← pull_comp, ← e₂, pull_comp, ← clsP₂, ← cls_pull c₂.isLB _ (pull_isLB c₂.isLB _)]`. Conclude with `(cls_eq_zero_iff _).2 t₂`. Establish `one₁` using `one_comp hφ₁ c₁.A A φ₁ hφ₁.1.w`. Establish `one₂` using `one_comp hφ₂ c₂.A A φ₂ hφ₂.1.w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `idφ₁ : (𝟙 c₁.A : c₁.A ⟶ c₁.A).left ≫ φ₁ = φ₁ ≫ (𝟙 A : A ⟶ A).left` using `by simp`. Establish `idφ₂ : (𝟙 c₂.A : c₂.A ⟶ c₂.A).left ≫ φ₂ = φ₂ ≫ (𝟙 A : A ⟶ A).left` using `by simp`. Establish `symm : LBIso L (L.pull (lift (snd A A) (fst A A)).left)`. Establish `sw₁` using `lift_square sφ₁ sφ₁.2.symm sφ₁.1.symm`. Establish `sw₂` using `lift_square sφ₂ sφ₂.2.symm sφ₂.1.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(cls_eq_iff hL (pull_isLB hL _)).1 (sub_eq_zero.1 (lem_triv P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart hs₁ hs₂ (G2 A) (G2 c₁.A) (G2 c₂.A) φ₁₂ φ₂₂ hAA (isPullback_of_isSquare hφ₁.1 sφ₁) (isPullback_of_isSquare hφ₂.1 sφ₂) _ ?_ ?_))` and prove the remaining obligations. Rewrite using `[map_sub, cls_pull hL _ (pull_isLB hL _), ← pull_comp, ← sw₁, pull_comp, ← clsP₁, ← cls_pull c₁.isLB _ (pull_isLB c₁.isLB _), sub_eq_zero]`. Conclude with `(cls_eq_iff _ _).2 c₁.symm`. Rewrite using `[map_sub, cls_pull hL _ (pull_isLB hL _), ← pull_comp, ← sw₂, pull_comp, ← clsP₂, ← cls_pull c₂.isLB _ (pull_isLB c₂.isLB _), sub_eq_zero]`. Conclude with `(cls_eq_iff _ _).2 c₂.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hpo` using `spec_isPushout P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart hs₁ hs₂`. Establish `levc : ∀ a, Spec.map g₁ ≫ (c₁.lev a).left ≫ φ₁ = Spec.map g₂ ≫ (c₂.lev a).left ≫ φ₂` using `fun a => by`. Simplify using `only [← Category.assoc]`. Rewrite using `[← lψ₁ a, ← lψ₂ a, Category.assoc, Category.assoc, hcomm]`. Establish `sec : ∀ {X : Scheme.{0}} {Bv : Over X} (u : 𝟙_ (Over X) ⟶ Bv), u.left ≫ Bv.hom = 𝟙 X` using `fun u => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `using Over.w u`. Establish `hlev : ∀ a, ∃ l : 𝟙_ (Over (Spec P)) ⟶ A, Spec.map f₁ ≫ l.left = (c₁.lev a).left ≫ φ₁ ∧ Spec.map f₂ ≫ l.left = (c₂.lev a).left ≫ φ₂` using `fun a => ⟨Over.homMk (hpo.desc _ _ (levc a)) (by`. Use `hpo.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hpo.inl_desc, Category.assoc, hφ₁.1.w, ← Category.assoc, sec]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, hpo.inr_desc, Category.assoc, hφ₂.1.w, ← Category.assoc, sec] simp), hpo.inl_desc _ _ _, hpo.inr_desc _ _ _⟩`. Use `choose lev hl₁ hl₂ using hlev`. Take `⟨ρ₁, hρ₁⟩` from `exists_liftHom hφ₁ (𝟙_ _) (𝟙_ _) (Spec.map f₁) ((Category.comp_id _).trans (Category.id_comp _).symm)`. Take `⟨ρ₂, hρ₂⟩` from `exists_liftHom hφ₂ (𝟙_ _) (𝟙_ _) (Spec.map f₂) ((Category.comp_id _).trans (Category.id_comp _).symm)`. Establish `ρl₁ : ∀ a, ρ₁ (lev a) = c₁.lev a` using `fun a => (hρ₁ _ _).2 (hl₁ a).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Use symmetry to reverse the relation. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `ρl₂ : ∀ a, ρ₂ (lev a) = c₂.lev a` using `fun a => (hρ₂ _ _).2 (hl₂ a).symm`. Establish `inj : ∀ x y : 𝟙_ (Over (Spec P)) ⟶ A, ρ₁ x = ρ₁ y → ρ₂ x = ρ₂ y → x = y` using `fun x y e₁ e₂ => Over.OverMorphism.ext (hpo.hom_ext (by rw [← (hρ₁ x _).1 rfl, ← (hρ₁ y _).1 rfl, e₁]) (by rw [← (hρ₂ x _).1 rfl, ← (hρ₂ y _).1 rfl, e₂]))`. Establish `diag₁ : LBIso (c₁.P.pull (lift (𝟙 c₁.A) (𝟙 c₁.A)).left) ((L.pull (lift (𝟙 A) (𝟙 A)).left).pull φ₁)` using `lbIso_square c₁.isLB hL w₁ (lift_square sφ₁ idφ₁ idφ₁)`. Establish `diag₂ : LBIso (c₂.P.pull (lift (𝟙 c₂.A) (𝟙 c₂.A)).left) ((L.pull (lift (𝟙 A) (𝟙 A)).left).pull φ₂)` using `lbIso_square c₂.isLB hL w₂ (lift_square sφ₂ idφ₂ idφ₂)`. Set `c : SiegPre g n (zetaAway n) (Spec.map β)` to `{ A := A, ab := hA, P := L, isLB := hL rig₁ := rig _ _ _ (lift_square sφ₁ one₁ idφ₁) (lift_square sφ₂ one₂ idφ₂) c₁.rig₁ c₂.rig₁ rig₂ := rig _ _ _ (lift_square sφ₁ idφ₁ one₁) (lift_square sφ₂ idφ₂ one₂) c₁.rig₂ c₂.rig₂`.
-
-Use symmetry as in `:= symm, lev := lev`. Use `lev_add := fun a b => inj _ _ (by rw [map_mul, ρl₁, ρl₁, ρl₁, c₁.lev_add]) (by rw [map_mul, ρl₂, ρl₂, ρl₂, c₂.lev_add])`. Use `lev_tors := fun a => inj _ _ (by rw [map_pow, ρl₁, c₁.lev_tors, map_one]) (by rw [map_pow, ρl₂, c₂.lev_tors, map_one])`. Use `geom := by`. Introduce `k _ _ x β' z hx hz`.
-
-Break down `lem_pt P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hs₁ hs₂ k x with ⟨y, hy⟩ | ⟨y, hy⟩` into its components or cases. Conclude with `geom_transfer c₁ A (Spec.map f₁) φ₁ L lev rfl hφ₁ hL diag₁ (fun a => (hl₁ a).symm) k x y hy β' z hx hz`. Conclude with `geom_transfer c₂ A (Spec.map f₂) φ₂ L lev rfl hφ₂ hL diag₂ (fun a => (hl₂ a).symm) k x y hy β' z hx hz }`. Establish `pb₁ : SiegPB c₁ c (Spec.map f₁)` using `⟨φ₁, φ₁₂, hφ₁, sφ₁, w₁, fun a => (hl₁ a).symm⟩`. Establish `pb₂ : SiegPB c₂ c (Spec.map f₂)` using `⟨φ₂, φ₂₂, hφ₂, sφ₂, w₂, fun a => (hl₂ a).symm⟩`.
-
-Use `⟨c, ?_, pb₁, pb₂⟩` and prove the remaining obligations. Break down `lem_pt P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hs₁ hs₂ (IsLocalRing.ResidueField P) (Spec.map (CommRingCat.ofHom (IsLocalRing.residue P))) with ⟨y, -⟩ | ⟨y, -⟩` into its components or cases. Use `haveI := nontrivial_of_pt R₁ _ y`. Conclude with `lem_princ g n hn hodd P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart hs₁ hs₂ inferInstance β c c₁ pb₁ hp₁`. Use `haveI := nontrivial_of_pt R₂ _ y`.
-
-Conclude with `lem_princ g n hn hodd P R₂ R₁ R₀ f₂ f₁ g₂ g₁ hP.flip hloc hart hs₂ hs₁ inferInstance β c c₂ pb₂ hp₂`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_principal_glue : ∀ (g n : ℕ), 3 ≤ n → Odd n → ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀), IsPullback f₁ f₂ g₁ g₂ → IsLocalRing P → IsArtinianRing P → Function.Surjective g₁ → Function.Surjective g₂ → ∀ (β : CommRingCat.of (cycAway n) ⟶ P) (c₁ : SiegPre g n (zetaAway n) (Spec.map f₁ ≫ Spec.map β)) (c₂ : SiegPre g n (zetaAway n) (Spec.map f₂ ≫ Spec.map β)), c₁.Principal → c₂.Principal → (∃ c₀ : SiegPre g n (zetaAway n) (Spec.map g₁ ≫ Spec.map f₁ ≫ Spec.map β), SiegPB c₀ c₁ (Spec.map g₁) ∧ SiegPB c₀ c₂ (Spec.map g₂)) → ∃ c : SiegPre g n (zetaAway n) (Spec.map β), c.Principal ∧ SiegPB c₁ c (Spec.map f₁) ∧ SiegPB c₂ c (Spec.map f₂) := by
   intro g n hn hodd P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart hs₁ hs₂ β c₁ c₂ hp₁ hp₂ hc₀

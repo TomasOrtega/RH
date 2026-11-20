@@ -8,7 +8,7 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 namespace GlobalTheory.SiegLoc
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.dvd) ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.symm.dvd)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_associated_pow_irreducible {W : Type} [CommRing W] [IsDomain W] {ϖ : W} (hϖ : Irreducible ϖ) {a b : ℕ}
     (h : Associated (ϖ ^ a) (ϖ ^ b)) : a = b :=
@@ -16,27 +16,25 @@ theorem eq_of_associated_pow_irreducible {W : Type} [CommRing W] [IsDomain W] {�
     ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.symm.dvd)
 
 /- English proof (translation)
-Introduce `W _ _ _ hW ϖ hϖ f be hbe hF`. Use `haveI : IsDiscreteValuationRing W := hW.1`. Establish `hv : ∀ i, ∃ v : ℕ, (f (t i) = 0 ∧ v = 0) ∨ Associated (f (t i)) (ϖ ^ v)` using `fun i => by`. Distinguish the cases in `h : f (t i) = 0`. Conclude with `⟨0, Or.inl ⟨h, rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `IsDiscreteValuationRing.associated_pow_irreducible h hϖ`. Conclude with `⟨v, Or.inr hv⟩`. Use `choose v hv using hv`. Establish `diag : ∀ y, be y y = ∑ i, ((v i * k : ℕ) : ℤ) * γ i y y` using `fun y => by`. Take `⟨r, u, hr, e⟩` from `hm y`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r', n, hr', hn, ha⟩` from `hF y`. Take `⟨w, hw⟩` from `GlobalTheory.PsiCoordLocal.exists_unit_of_coord hr hr'`. Establish `h1 : Associated (f r) (ϖ ^ n)`. Use `Associated.trans ?_ ha` and prove the remaining obligations. Rewrite using `[hw, map_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(associated_unit_mul_right _ _ (w.isUnit.map f))`. Establish `h2 : Associated (∏ i, f (t i) ^ (k * (γ i y y).toNat)) (ϖ ^ (n * 2))`. Rewrite using `[pow_mul]`. Use `Associated.trans ?_ h1.pow_pow` and prove the remaining obligations. Rewrite using `[← map_pow, e, map_mul, map_prod]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_pow]`. Conclude with `(associated_unit_mul_right _ _ (u.isUnit.map f))`. Establish `hne : ∏ i, f (t i) ^ (k * (γ i y y).toNat) ≠ 0` using `fun h0 => pow_ne_zero _ hϖ.ne_zero (h2.eq_zero_iff.1 h0)`. Establish `h3 : Associated (∏ i, f (t i) ^ (k * (γ i y y).toNat)) (∏ i, ϖ ^ (v i * (k * (γ i y y).toNat)))`. Use `Associated.prod _ _ _ fun i hi => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `hv i with ⟨h0, hv0⟩ | h` into its components or cases. Use `Finset.prod_ne_zero_iff.1 hne i hi` as an intermediate fact. Rewrite `this`, the goal using `[h0]`. Establish `e0 : k * (γ i y y).toNat = 0`. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this (zero_pow hc)`. Rewrite using `[e0]`. Simplify using the standard rewrite rules. Rewrite using `[pow_mul ϖ]`. Conclude with `h.pow_pow`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[Finset.prod_pow_eq_pow_sum]`. Establish `h4` using `eq_of_associated_pow_irreducible hϖ (h2.symm.trans h3)`. Establish `h5 : ((n * 2 : ℕ) : ℤ) = ((∑ i, v i * (k * (γ i y y).toNat) : ℕ) : ℤ)` using `by rw [h4]`. Rewrite using `[hn, mul_comm]`. Move the coercions through the operations in `at h5 ⊢`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h5]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg (hp i y), mul_assoc]`. Establish `full : ∀ y z, be y z = ∑ i, ((v i * k : ℕ) : ℤ) * γ i y z` using `fun y z => by`. Establish `h` using `diag (y + z)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [map_add, LinearMap.add_apply, mul_add, Finset.sum_add_distrib, hbe z y, fun i => hs i z y] at h`. Rewrite `h` using `[← diag y, ← diag z]`. Use linear arithmetic over natural numbers and integers. Use `⟨fun i => ((v i * k : ℕ) : ℝ), fun i => Nat.cast_nonneg _, LinearMap.ext₂ fun y z => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, smul_eq_mul, full y z]`.
-
-Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inCone_of_sq_monomial (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (Dg : DegPre R) (m : ℕ)
     (t : Fin m → R) (k : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ Dg.X) (hs : ∀ i y z, γ i y z = γ i z y)

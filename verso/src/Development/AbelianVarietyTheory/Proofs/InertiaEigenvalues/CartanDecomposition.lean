@@ -10,11 +10,9 @@ open scoped Classical
 namespace GlobalTheory.GLp
 
 /- English proof (translation)
-Establish `hP : IsPrincipalIdealRing (PadicInt.subring g)` using `inferInstanceAs (IsPrincipalIdealRing ℤ_[g])`. Establish `hg0 : (g : ℚ_[g]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : g.Prime).ne_zero`. Take `⟨c, hc0, hc⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ_[g]) (fun ij : Fin n × Fin n => (h : Matrix (Fin n) (Fin n) ℚ_[g]) ij.1 ij.2) |>.imp (fun c hc => And.intro (nonZeroDivisors.coe_ne_zero c) hc)`. Use `choose G hG using hc`. Take `⟨a, ha, k₁, ⟨k, rfl⟩, k₂, ⟨k', rfl⟩, e⟩` from `Formalism.UG.P.cartan_decomp_gen (PadicInt.subring g) (NormedField.valuation (K := ℚ_[g])) (fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PadicInt.mem_subring_iff, NormedField.valuation_apply, ← NNReal.coe_le_coe]`. Use the proof step `rfl)`. Use the proof step `(g : ℚ_[g]) hg0`. Use the proof step `(fun x hx => ⟨x.valuation, by`. Apply `NNReal.coe_injective` to reduce the goal to its premises.
-
-Rewrite using `[NormedField.valuation_apply, NormedField.valuation_apply, NNReal.coe_zpow, coe_nnnorm, coe_nnnorm, Padic.norm_eq_zpow_neg_valuation hx, Padic.norm_p, inv_zpow']⟩)`. Use `h (c : ℤ_[g]) hc0 ⟨Matrix.of fun i j => G (i, j), by`. Use extensionality with `i j`. Conclude with `hG (i, j)⟩`. Conclude with `⟨k, k', a, ha, e⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cartan_decomposition (g : ℕ) [Fact g.Prime] (n : ℕ) (h : GL (Fin n) ℚ_[g]) :
     ∃ (k k' : GL (Fin n) ℤ_[g]) (a : Fin n → ℤ), Antitone a ∧ (h : Matrix (Fin n) (Fin n) ℚ_[g]) =

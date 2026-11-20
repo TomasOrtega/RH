@@ -7,15 +7,15 @@ open Ad3 Ad3.S
 namespace GlobalTheory.CompanionTheory.CuspDecay
 
 /- English proof (translation)
-Introduce `k N _ χ f a hf`. Take `⟨h0, ⟨C₂, hC₂⟩, ⟨D, hD⟩⟩` from `coeff_and_decay f a hf.exp`. Take `⟨C₁, hC₁⟩` from `CuspFormClass.exists_bound f`. Use `⟨h0, |C₁| + |C₂| + |D|, fun z ↦ ?_, fun n ↦ ?_, fun z hz ↦ ?_⟩` and prove the remaining obligations. Establish `hy : 0 < z.im` using `z.im_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hC₁ z`. Establish `he : ((k : ℤ) : ℝ) / 2 = (k : ℝ) / 2` using `by push_cast; ring`. Rewrite `h1` using `[he, div_eq_mul_inv, ← Real.rpow_neg hy.le]`. Establish `hp : 0 ≤ z.im ^ (-(k : ℝ) / 2)` using `Real.rpow_nonneg hy.le _`. Establish `hg : -(k : ℝ) / 2 = -((k : ℝ) / 2)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hp`, the goal using `[hg]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hp` to reduce the goal to its premises. Combine the linear relations using `[le_abs_self C₁, abs_nonneg C₂, abs_nonneg D]`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h0, norm_zero]`. Conclude with `mul_nonneg (by positivity) (Real.rpow_nonneg (Nat.cast_nonneg _) _)`. Establish `h2` using `hC₂ n hn`. Establish `he : ((k : ℤ) : ℝ) / 2 = (k : ℝ) / 2` using `by push_cast; ring`. Rewrite `h2` using `[he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.trans (mul_le_mul_of_nonneg_right ?_ (Real.rpow_nonneg (Nat.cast_nonneg _) _))` and prove the remaining obligations. Combine the linear relations using `[le_abs_self C₂, abs_nonneg C₁, abs_nonneg D]`. Use `(hD z hz).trans (mul_le_mul_of_nonneg_right ?_ (Real.exp_pos _).le)` and prove the remaining obligations. Combine the linear relations using `[le_abs_self D, abs_nonneg C₁, abs_nonneg C₂]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem b1 : B1 := by
   intro k N _ χ f a hf

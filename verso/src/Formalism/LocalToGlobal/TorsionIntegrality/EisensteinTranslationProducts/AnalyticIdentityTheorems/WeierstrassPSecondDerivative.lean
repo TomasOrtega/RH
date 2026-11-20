@@ -8,7 +8,7 @@ namespace Formalism.L2.Th1.F
 namespace HalfPeriodDerivative
 
 /- English proof (translation)
-Establish `h` using `(L.analyticOnNhd_weierstrassP z hz).differentiableAt.hasDerivAt`. Rewrite `h` using `[L.deriv_weierstrassP]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma hasDerivAt_P (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) :
     HasDerivAt L.weierstrassP (L.derivWeierstrassP z) z := by
@@ -16,12 +16,12 @@ lemma hasDerivAt_P (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) :
   rwa [L.deriv_weierstrassP] at h
 
 /- English proof (translation)
-The claim follows from `L.isClosed_lattice.isOpen_compl`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_compl (L : PeriodPair) : IsOpen ((L.lattice : Set ℂ)ᶜ) := L.isClosed_lattice.isOpen_compl
 
 /- English proof (translation)
-Establish `hc : (L.lattice : Set ℂ).Countable`. Establish `: Countable L.lattice` using `L.latticeEquivProd.toEquiv.injective.countable`. Conclude with `Set.to_countable _`. Conclude with `(hc.isPathConnected_compl_of_one_lt_rank (by rw [Complex.rank_real_complex]; norm_num)).isConnected.isPreconnected`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma isPreconnected_compl (L : PeriodPair) : IsPreconnected ((L.lattice : Set ℂ)ᶜ) := by
   have hc : (L.lattice : Set ℂ).Countable := by
@@ -31,11 +31,9 @@ lemma isPreconnected_compl (L : PeriodPair) : IsPreconnected ((L.lattice : Set �
     (by rw [Complex.rank_real_complex]; norm_num)).isConnected.isPreconnected
 
 /- English proof (translation)
-Introduce `h`. Establish `h0 : Set.EqOn L.derivWeierstrassP 0 (L.lattice : Set ℂ)ᶜ` using `L.analyticOnNhd_derivWeierstrassP.eqOn_zero_of_preconnected_of_eventuallyEq_zero (isPreconnected_compl L) hz h`. Take `⟨c, hc⟩ : ∃ c, ∀ w ∈ (L.lattice : Set ℂ)ᶜ, L.weierstrassP w = c` from `(isOpen_compl L).exists_is_const_of_deriv_eq_zero (isPreconnected_compl L) L.differentiableOn_weierstrassP (fun w hw => by rw [L.deriv_weierstrassP]; exact h0 hw)`. Establish `h1 : L.weierstrassP =ᶠ[𝓝[≠] 0] fun _ => c`. Establish `h2 : ((L.lattice : Set ℂ) \ {0})ᶜ ∈ 𝓝[≠] (0 : ℂ)` using `mem_nhdsWithin_of_mem_nhds (L.compl_lattice_sdiff_singleton_mem_nhds 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [h2, self_mem_nhdsWithin] with w hw hw0`. Conclude with `hc w (fun hwL => hw ⟨hwL, hw0⟩)`. Establish `h3` using `meromorphicOrderAt_congr h1`. Rewrite `h3` using `[L.order_weierstrassP 0 (zero_mem _)]`. Rewrite `h3` using `[meromorphicOrderAt_const]`.
-
-Use `split_ifs at h3`. Conclude with `absurd h3 (by simp)`. Conclude with `absurd h3 (by decide)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma derivWeierstrassP_not_eventually_zero (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) :
     ¬ ∀ᶠ w in 𝓝 z, L.derivWeierstrassP w = 0 := by
@@ -60,7 +58,7 @@ lemma derivWeierstrassP_not_eventually_zero (L : PeriodPair) {z : ℂ} (hz : z �
   · exact absurd h3 (by decide)
 
 /- English proof (translation)
-Establish `h` using `L.derivWeierstrassP_sub_coe t ⟨2 * t, h2⟩`. Establish `e : t - 2 * t = -t` using `by ring`. Simplify using `only [e, L.derivWeierstrassP_neg] at h`. Take the linear combination `(-1 / 2 : ℂ) * h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma derivP_half (L : PeriodPair) {t : ℂ} (h2 : 2 * t ∈ L.lattice) : L.derivWeierstrassP t = 0 := by
   have h := L.derivWeierstrassP_sub_coe t ⟨2 * t, h2⟩
@@ -69,13 +67,13 @@ lemma derivP_half (L : PeriodPair) {t : ℂ} (h2 : 2 * t ∈ L.lattice) : L.deri
   linear_combination (-1 / 2 : ℂ) * h
 
 /- English proof (translation)
-Establish `a1` using `ha L (z + t) t hzt ht`. Establish `a2` using `ha L z t hzL ht`. Establish `q1` using `hq L (2 * t) z h2`. Establish `q2` using `hq L (2 * t) (z - t) h2`. Establish `e1 : z + t + t = z + 2 * t` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : z + t - t = z` using `by ring`. Establish `e3 : z - t + 2 * t = z + t` using `by ring`. Establish `e4 : z + 2 * t / 2 = z + t` using `by ring`. Establish `e5 : z - t + 2 * t / 2 = z` using `by ring`. Rewrite `a1` using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `q1` using `[e4]`. Rewrite `q2` using `[e3, e5]`. Establish `hs1 : wSigma L z ≠ 0` using `mt (hz L z).1 hzL`. Establish `hs2 : wSigma L (z + t) ≠ 0` using `mt (hz L (z + t)).1 hzt`. Establish `hE : Complex.exp (wEta L (2 * t) * (z + t)) = Complex.exp (wEta L (2 * t) * z) * Complex.exp (wEta L (2 * t) * t)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Complex.exp_add, mul_add]`. Establish `hK : wSigma L (z + t) ^ 2 * wSigma L z ^ 2 ≠ 0` using `mul_ne_zero (pow_ne_zero _ hs2) (pow_ne_zero _ hs1)`. Apply `mul_right_cancel₀ hK` to reduce the goal to its premises. Take the linear combination `(wSigma L z ^ 2 * wSigma L t ^ 2 * (L.weierstrassP z - L.weierstrassP t)) * a1 - (wSigma L (z + 2 * t) * wSigma L z) * a2 + (wSigma L z * wSigma L (z + t)) * (wSigma L (z - t) * q1 - Complex.exp (wEta L (2 * t) * t) * wSigma L z * q2 + semiChar L (2 * t) * wSigma L z * wSigma L ( …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma prod_const (ha : SigmaAdd) (hq : SigmaQuasi) (hz : SigmaZero) (L : PeriodPair) {t z : ℂ}
     (ht : t ∉ L.lattice) (h2 : 2 * t ∈ L.lattice) (hzL : z ∉ L.lattice) (hzt : z + t ∉ L.lattice) :
@@ -107,7 +105,7 @@ lemma prod_const (ha : SigmaAdd) (hq : SigmaQuasi) (hz : SigmaZero) (L : PeriodP
       + semiChar L (2 * t) * wSigma L z * wSigma L (z - t) * hE)
 
 /- English proof (translation)
-Introduce `h`. Apply `ht` to reduce the goal to its premises. Rewrite using `[← hx, ← zsmul_eq_mul, ← zsmul_eq_mul]`. Conclude with `add_mem (zsmul_mem h n) (zsmul_mem h2 m)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma notMem_of_comb (L : PeriodPair) {t : ℂ} (ht : t ∉ L.lattice) (h2 : 2 * t ∈ L.lattice) (x : ℂ)
     (n m : ℤ) (hx : (n : ℂ) * x + (m : ℂ) * (2 * t) = t) : x ∉ L.lattice := by
@@ -121,19 +119,17 @@ end HalfPeriodDerivative
 open HalfPeriodDerivative
 
 /- English proof (translation)
-Introduce `L z hz`. Establish `hA` using `L.analyticOnNhd_derivWeierstrassP z hz`. Establish `hd` using `hA.differentiableAt.hasDerivAt`. Use `set D : ℂ → ℂ := fun w => deriv L.derivWeierstrassP w - (6 * L.weierstrassP w ^ 2 - L.g₂ / 2) with hD`. Establish `hDan : AnalyticAt ℂ D z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hA.deriv`. Establish `h2` using `L.analyticOnNhd_weierstrassP z hz`. Conclude with `h1.sub (((analyticAt_const).mul (h2.pow 2)).sub analyticAt_const)`. Establish `hmem : ∀ᶠ w in 𝓝 z, w ∉ L.lattice` using `(isOpen_compl L).mem_nhds hz`. Establish `hmul : ∀ᶠ w in 𝓝 z, L.derivWeierstrassP w * D w = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ w in 𝓝 z, ∀ᶠ v in 𝓝 w, v ∉ L.lattice` using `hmem.eventually_nhds`. Use `filter_upwards [hev] with w hw`. Establish `hwL : w ∉ L.lattice` using `hw.self_of_nhds`. Establish `e1 : HasDerivAt (fun v => L.derivWeierstrassP v ^ 2) (2 * L.derivWeierstrassP w * deriv L.derivWeierstrassP w) w`. Simplify using `using ((L.analyticOnNhd_derivWeierstrassP w hwL).differentiableAt.hasDerivAt).fun_pow 2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e2 : HasDerivAt (fun v => 4 * L.weierstrassP v ^ 3 - L.g₂ * L.weierstrassP v - L.g₃) (4 * (3 * L.weierstrassP w ^ 2 * L.derivWeierstrassP w) - L.g₂ * L.derivWeierstrassP w) w`. Simplify using `using ((((hasDerivAt_P L hwL).fun_pow 3).const_mul 4).sub ((hasDerivAt_P L hwL).const_mul L.g₂)).sub_const L.g₃`. Establish `e3 : (fun v => L.derivWeierstrassP v ^ 2) =ᶠ[𝓝 w] fun v => 4 * L.weierstrassP v ^ 3 - L.g₂ * L.weierstrassP v - L.g₃` using `by filter_upwards [hw] with v hv using L.derivWeierstrassP_sq v hv`. Establish `e4` using `(e2.congr_of_eventuallyEq e3).unique e1`. Simplify using `only [hD]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Take the linear combination `(-1 / 2 : ℂ) * e4`. Establish `hD0 : D z = 0`. Break down `hA.eventually_eq_zero_or_eventually_ne_zero with h | h` into its components or cases. Conclude with `absurd h (derivWeierstrassP_not_eventually_zero L hz)`. Establish `h5 : ∀ᶠ w in 𝓝[≠] z, D w = 0` using `by filter_upwards [h, hmul.filter_mono nhdsWithin_le_nhds] with w h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `(mul_eq_zero.mp h2).resolve_left h1`. Establish `h6 : Tendsto D (𝓝[≠] z) (𝓝 (D z))` using `hDan.continuousAt.tendsto.mono_left nhdsWithin_le_nhds`. Establish `h7 : Tendsto D (𝓝[≠] z) (𝓝 0)` using `tendsto_const_nhds.congr' (h5.mono fun w hw => hw.symm)`. Conclude with `tendsto_nhds_unique h6 h7`. Establish `: deriv L.derivWeierstrassP z = 6 * L.weierstrassP z ^ 2 - L.g₂ / 2`.
-
-Simplify `hD0` using `[hD, sub_eq_zero]`. Rewrite `hd` using `[this]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem weierstrass_p_second_derivative : PSecond := by
   intro L z hz
@@ -176,11 +172,11 @@ theorem weierstrass_p_second_derivative : PSecond := by
   rwa [this] at hd
 
 /- English proof (translation)
-Introduce `L P Q z hQ hzP`. Establish `h1` using `h L (z + P) Q hzP hQ`. Simplify using `only [opU]`. Establish `e1 : z + (P + Q) = z + P + Q` using `by ring`. Establish `e2 : z + (P - Q) = z + P - Q` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, zero_add]`. Establish `hexp : Complex.exp (-(Real.pi : ℂ) * herm L z (P + Q) - (Real.pi : ℂ) * herm L (P + Q) (P + Q) / 2) * Complex.exp (-(Real.pi : ℂ) * herm L z (P - Q) - (Real.pi : ℂ) * herm L (P - Q) (P - Q) / 2) = Complex.exp (-(Real.pi : ℂ) * herm L 0 Q - (Real.pi : ℂ) * herm L Q Q / 2) ^ 2 * Co …`. Rewrite using `[← Complex.exp_add, ← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [herm, map_add, map_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(Complex.exp (-(Real.pi : ℂ) * herm L z (P + Q) - (Real.pi : ℂ) * herm L (P + Q) (P + Q) / 2) * Complex.exp (-(Real.pi : ℂ) * herm L z (P - Q) - (Real.pi : ℂ) * herm L (P - Q) (P - Q) / 2)) * h1 + (sgStar L Q ^ 2 * sgStar L (z + P) ^ 2 * (L.weierstrassP Q - L.weierstrassP (z + P) …`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem translateProduct_of (h : SgStarAdd) : TranslateProduct := by
   intro L P Q z hQ hzP
@@ -204,19 +200,19 @@ theorem translateProduct_of (h : SgStarAdd) : TranslateProduct := by
     + (sgStar L Q ^ 2 * sgStar L (z + P) ^ 2 * (L.weierstrassP Q - L.weierstrassP (z + P))) * hexp
 
 /- English proof (translation)
-Introduce `L t z ht h2 hzL hzt`. Establish `hσt : wSigma L t ≠ 0` using `mt (hz L t).1 ht`. Take `⟨κ, hκdef⟩ : ∃ κ, κ = Complex.exp (wEta L (2 * t) * t) / wSigma L t ^ 4` from `⟨_, rfl⟩`. Establish `hκ0 : κ ≠ 0`. Rewrite using `[hκdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_ne_zero (Complex.exp_ne_zero _) (pow_ne_zero _ hσt)`. Establish `hconst : ∀ w, w ∉ L.lattice → w + t ∉ L.lattice → (L.weierstrassP (w + t) - L.weierstrassP t) * (L.weierstrassP w - L.weierstrassP t) = κ`. Introduce `w hw hwt`. Rewrite using `[hκdef, eq_div_iff (pow_ne_zero _ hσt)]`. Conclude with `prod_const ha hq hz L ht h2 hw hwt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Establish an intermediate fact.
 
-It suffices to establish `hκ : κ = 3 * L.weierstrassP t ^ 2 - L.g₂ / 4 by rw [hconst z hzL hzt, hκ]`. Establish `n1 : t / 4 ∉ L.lattice` using `notMem_of_comb L ht h2 _ 4 0 (by push_cast; ring)`. Establish `n2 : t / 4 + t ∉ L.lattice` using `notMem_of_comb L ht h2 _ 4 (-2) (by push_cast; ring)`. Establish `n3 : t / 4 + t + t / 4 ∉ L.lattice` using `notMem_of_comb L ht h2 _ 2 (-1) (by push_cast; ring)`. Establish `hne : L.weierstrassP (t / 4 + t) - L.weierstrassP (t / 4) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `h`. Break down `(hi L _ _ n2 n1).1 (sub_eq_zero.mp h) with h | h` into its components or cases. Conclude with `ht (by simpa using h)`. Conclude with `n3 h`. Establish `hev : ∀ᶠ w in 𝓝 (t / 4), (L.weierstrassP (w + t) - L.weierstrassP t) * (L.weierstrassP w - L.weierstrassP t) = κ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : ∀ᶠ w in 𝓝 (t / 4), w ∉ L.lattice` using `(isOpen_compl L).mem_nhds n1`. Establish `c2 : ∀ᶠ w in 𝓝 (t / 4), w + t ∉ L.lattice` using `((continuous_id.add continuous_const).tendsto (t / 4)).eventually ((isOpen_compl L).mem_nhds n2)`. Use `filter_upwards [c1, c2] with w h1 h2 using hconst w h1 h2`. Establish `hder : HasDerivAt (fun w => (L.weierstrassP (w + t) - L.weierstrassP t) * (L.weierstrassP w - L.weierstrassP t)) (L.derivWeierstrassP (t / 4 + t) * (L.weierstrassP (t / 4) - L.weierstrassP t) + (L.weierstrassP (t / 4 + t) - L.weierstrassP t) * L.derivWeierstrassP (t / 4)) (t / 4)` using `(((hasDerivAt_P L n2).comp_add_const (t / 4) t).sub_const _).mul ((hasDerivAt_P L n1).sub_const _)`. Establish `d` using `hder.unique ((hasDerivAt_const (t / 4) κ).congr_of_eventuallyEq hev)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `s1` using `L.derivWeierstrassP_sq _ n2`. Establish `s2` using `L.derivWeierstrassP_sq _ n1`. Establish `s0` using `L.derivWeierstrassP_sq _ ht`. Rewrite `s0` using `[derivP_half L h2]`. Establish `k` using `hconst _ n1 n2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `key : κ * (L.weierstrassP (t / 4 + t) - L.weierstrassP (t / 4)) * (4 * κ - (12 * L.weierstrassP t ^ 2 - L.g₂)) = 0`. Rewrite using `[← k]`. Take the linear combination `(L.derivWeierstrassP (t / 4 + t) * (L.weierstrassP (t / 4) - L.weierstrassP t) - (L.weierstrassP (t / 4 + t) - L.weierstrassP t) * L.derivWeierstrassP (t / 4)) * d - (L.weierstrassP (t / 4) - L.weierstrassP t) ^ 2 * s1 + (L.weierstrassP (t / 4 + t) - L.weierstrassP t) ^ 2 * s2 + …`. Establish `h4` using `(mul_eq_zero.mp key).resolve_left (mul_ne_zero hκ0 hne)`. Take the linear combination `(1 / 4 : ℂ) * h4`.
+A detailed English derivation is pending.
 -/
 theorem halfShift_of (ha : SigmaAdd) (hq : SigmaQuasi) (hz : SigmaZero) (hi : PInjective) :
     HalfShift := by

@@ -16,11 +16,11 @@ def Disc0 : Prop := ∀ (R : Type) [CommRing R] {X Y : PSh} (f : X ⟶ Y),
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `hg' : g' = a.inv ≫ g ≫ b.hom` using `by rw [h]; simp`. Introduce and unpack `⟨hs, hi⟩`. Use `⟨fun y => ?_, fun x1 x2 hx => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hs (a.hom ≫ y)`. Use `⟨b.inv ≫ x, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only at hx ⊢`. Rewrite using `[hg']`. Simplify using `[hx]`. Simplify using `only at hx`. Rewrite `hx` using `[hg']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: g ≫ (b.hom ≫ x1) = g ≫ (b.hom ≫ x2)`. Use `congrArg (fun z => a.hom ≫ z) hx` as an intermediate fact. Simplify using `using this`. Use `hi this` as an intermediate fact. Simplify using `using congrArg (fun z => b.inv ≫ z) this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem relY_conj_imp (F : Shv R) (n : ℤ) {A B A' B' : HC R} (g : A ⟶ B) (g' : A' ⟶ B') (a : A ≅ A') (b : B ≅ B')
     (h : g ≫ b.hom = a.hom ≫ g') : Tri.RelY (Yres R F) n g → Tri.RelY (Yres R F) n g' := by
@@ -40,7 +40,7 @@ theorem relY_conj_imp (F : Shv R) (n : ℤ) {A B A' B' : HC R} (g : A ⟶ B) (g'
     simpa using congrArg (fun z => b.inv ≫ z) this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨relY_conj_imp F n g g' a b h, relY_conj_imp F n g' g a.symm b.symm (by rw [Iso.symm_hom, Iso.symm_hom, Iso.eq_inv_comp, ← Category.assoc, ← h]; simp)⟩`.
+Supply the required witnesses or components.
 -/
 theorem relY_conj (F : Shv R) (n : ℤ) {A B A' B' : HC R} (g : A ⟶ B) (g' : A' ⟶ B') (a : A ≅ A') (b : B ≅ B')
     (h : g ≫ b.hom = a.hom ≫ g') : Tri.RelY (Yres R F) n g ↔ Tri.RelY (Yres R F) n g' :=
@@ -51,13 +51,13 @@ def yIso (F : Shv R) (p m c : ℤ) (hc : m + p = c) : Yres R F c ≅ (Yres R F m
   (Qt R).mapIso ((shiftFunctorAdd' (Cx R) m p c hc).app (res R F)) ≪≫ ((Qt R).commShiftIso p).app _
 
 /- English proof (translation)
-Introduce and unpack `⟨hs, hi⟩`. Use `⟨fun y => ?_, fun x1 x2 hx => ?_⟩` and prove the remaining obligations. Set `e` to `yIso F p (k - 1) (k + p - 1) (by omega)`. Take `⟨z, hz⟩` from `(shiftFunctor (HC R) p).map_surjective (y ≫ e.hom)`. Take `⟨w, hw⟩` from `hs z`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(shiftFunctor (HC R) p).map w ≫ e.inv, ?_⟩` and prove the remaining obligations. Simplify using `only at hw ⊢`. Rewrite using `[← Category.assoc, ← Functor.map_comp, hw, hz]`. Simplify using the standard rewrite rules. Set `e` to `yIso F p k (k + p) rfl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Take `⟨w1, hw1⟩` from `(shiftFunctor (HC R) p).map_surjective (x1 ≫ e.hom)`. Take `⟨w2, hw2⟩` from `(shiftFunctor (HC R) p).map_surjective (x2 ≫ e.hom)`. Simplify using `only at hx`. Establish `h1 : (shiftFunctor (HC R) p).map (g ≫ w1) = (shiftFunctor (HC R) p).map (g ≫ w2)`. Rewrite using `[Functor.map_comp, Functor.map_comp, hw1, hw2, ← Category.assoc, ← Category.assoc, hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hi ((shiftFunctor (HC R) p).map_injective h1)`. Establish `: x1 ≫ e.hom = x2 ≫ e.hom` using `by rw [← hw1, ← hw2, h2]`. Simplify using `using congrArg (fun z => z ≫ e.inv) this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem relY_shift (F : Shv R) (k p : ℤ) {A B : HC R} (g : A ⟶ B) :
     Tri.RelY (Yres R F) k g → Tri.RelY (Yres R F) (k + p) (g⟦p⟧') := by
@@ -80,7 +80,7 @@ theorem relY_shift (F : Shv R) (k p : ℤ) {A B : HC R} (g : A ⟶ B) :
     simpa using congrArg (fun z => z ≫ e.inv) this
 
 /- English proof (translation)
-Simplify using `only [chains, chainsXIso, Functor.comp_map]`. Use `erw [HomologicalComplex.extendMap_f _ ComplexShape.embeddingDownNat (i := p) rfl]`. Both sides reduce to the same expression.
+Simplify by unfolding definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chains_f (U E : Spc) (u : U ⟶ E) (p : ℕ) :
     ((chains R).map u).f (-(p : ℤ)) =
@@ -90,13 +90,13 @@ theorem chains_f (U E : Spc) (u : U ⟶ E) (p : ℕ) :
   rfl
 
 /- English proof (translation)
-Introduce `R _ F U E u p k h`. Set `f` to `u.app (Opposite.op (SimplexCategory.mk p))`. Set `s0` to `(HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0).map ((free R).map f)`. Establish `h1 : Tri.RelY (Yres R F) k ((Qt R).map ((chains R).map (disc.map f)))` using `(relK_iff R _ F k).1 h`. Take `⟨a, b, hab⟩` from `hD R f`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : Tri.RelY (Yres R F) k ((Qt R).map s0)` using `(relY_conj F k _ _ a b hab).1 h1`. Establish `h3` using `relY_shift F k (p : ℤ) _ h2`. Establish `h4 : Tri.RelY (Yres R F) (k + p) ((Qt R).map (s0⟦(p : ℤ)⟧'))` using `(relY_conj F _ _ _ (((Qt R).commShiftIso (p : ℤ)).app _) (((Qt R).commShiftIso (p : ℤ)).app _) (((Qt R).commShiftIso (p : ℤ)).hom.naturality s0)).2 h3`. Set `Eo` to `(CochainComplex.singleFunctors (Shv R)).shiftIso (p : ℤ) (-(p : ℤ)) 0 (by omega)`. Establish `h5 : Tri.RelY (Yres R F) (k + p) ((Qt R).map ((CochainComplex.singleFunctor (Shv R) (-(p : ℤ))).map ((free R).map f)))` using `(relY_conj F _ _ _ ((Qt R).mapIso (Eo.symm.app _)) ((Qt R).mapIso (Eo.symm.app _)) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [Functor.mapIso_hom, Iso.app_hom, Iso.symm_hom, ← Functor.map_comp]`. Use `congr 1`. Conclude with `Eo.inv.naturality _)).2 h4`. Use `(relK_iff R _ F (k + p)).2 ?_` and prove the remaining obligations. Use `(relY_conj F _ _ _ ((Qt R).mapIso ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) (-(p : ℤ))).mapIso (chainsXIso R U p))) ((Qt R).mapIso ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) (-(p : ℤ))).mapIso (chainsXIso R E p))) ?_).2 h5` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [piece, Functor.mapIso_hom, ← Functor.map_comp, chains_f]`. Simplify using `[f]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem piece_of (hD : Disc0) : Piece := by
   intro R _ F U E u p k h

@@ -40,7 +40,7 @@ instance twQ : IsScalarTower F (QK A e) (QL A e) := IsScalarTower.of_algebraMap_
   rw [IsScalarTower.algebraMap_apply F A.K A.L]
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton']`. Take `⟨c, rfl⟩` from `ha`. Conclude with `⟨star c, by rw [star_mul, A.star_K, mul_comm]⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem star_mem (a : A.L) (ha : a ∈ (Ideal.span {e}).map (algebraMap A.K A.L)) :
     star a ∈ (Ideal.span {e}).map (algebraMap A.K A.L) := by
@@ -53,7 +53,7 @@ def eq0 : TensorProduct A.K (QK A e) A.L ≃ₗ[A.K] QL A e :=
     ((Algebra.TensorProduct.quotIdealMapEquivTensorQuot A.L (Ideal.span {e})).symm.toLinearEquiv.restrictScalars A.K)
 
 /- English proof (translation)
-Simplify using `only [eq0, LinearEquiv.trans_apply, TensorProduct.comm_tmul, LinearEquiv.restrictScalars_apply, AlgEquiv.toLinearEquiv_apply]`. Rewrite using `[← map_one (Ideal.Quotient.mk (Ideal.span {e})), Algebra.TensorProduct.quotIdealMapEquivTensorQuot_symm_tmul, one_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem etaleQuotientTensorLinearEquiv_one_tmul (x : A.L) : eq0 A e (1 ⊗ₜ x) = Ideal.Quotient.mk _ x := by
   simp only [eq0, LinearEquiv.trans_apply, TensorProduct.comm_tmul, LinearEquiv.restrictScalars_apply,
@@ -63,16 +63,16 @@ theorem etaleQuotientTensorLinearEquiv_one_tmul (x : A.L) : eq0 A e (1 ⊗ₜ x)
   rfl
 
 /- English proof (translation)
-The claim follows from `IsBaseChange.of_equiv ((eq0 A e).extendScalarsOfSurjective Ideal.Quotient.mk_surjective) fun x => by simpa using etaleQuotientTensorLinearEquiv_one_tmul A e x`.
+A detailed English derivation is pending.
 -/
 theorem isBaseChange_quot : IsBaseChange (QK A e) (IsScalarTower.toAlgHom A.K A.L (QL A e)).toLinearMap :=
   IsBaseChange.of_equiv ((eq0 A e).extendScalarsOfSurjective Ideal.Quotient.mk_surjective) fun x => by
     simpa using etaleQuotientTensorLinearEquiv_one_tmul A e x
 
 /- English proof (translation)
-Establish `h2 : IsBaseChange A.K (IsScalarTower.toAlgHom F E A.L).toLinearMap` using `(Algebra.isPushout_iff F A.K E A.L).1 A.push.symm`. Establish `h5` using `h2.comp (isBaseChange_quot A e)`. Use `Algebra.IsPushout.symm ((Algebra.isPushout_iff F (QK A e) E (QL A e)).2 ?_)` and prove the remaining obligations. Establish `hm : (IsScalarTower.toAlgHom F E (QL A e)).toLinearMap = (IsScalarTower.toAlgHom A.K A.L (QL A e)).toLinearMap.restrictScalars F ∘ₗ (IsScalarTower.toAlgHom F E A.L).toLinearMap`. Use extensionality with `y`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Rewrite using `[hm]`. Conclude with `h5`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_quot : Algebra.IsPushout F E (QK A e) (QL A e) := by
   have h2 : IsBaseChange A.K (IsScalarTower.toAlgHom F E A.L).toLinearMap :=
@@ -92,11 +92,11 @@ variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [N
 variable (A : Et F E) (e : A.K)
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨n, hn⟩` from `hx`. Rewrite `hn` using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hn`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : IsNilpotent (y * (1 - e))` using `⟨n + 1, by`. Rewrite using `[mul_pow, he.one_sub.pow_succ_eq, pow_succ, ← hc]`. Take the linear combination `(-(c * y)) * he.eq⟩`. Establish `h2` using `IsReduced.eq_zero _ h1`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨y, by linear_combination -h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isReduced_quot (he : IsIdempotentElem e) : IsReduced (QK A e) := by
   refine ⟨fun x hx => ?_⟩
@@ -138,15 +138,13 @@ def quotEt (he : IsIdempotentElem e) : Et F E :=
       rw [A.star_E] }
 
 /- English proof (translation)
-Take `⟨m₁, hm₁⟩` from `Ideal.exists_maximal K`. Establish `hex : ∃ m₂ : Ideal K, m₂.IsMaximal ∧ m₂ ≠ m₁`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `haveI : IsLocalRing K := IsLocalRing.of_unique_max_ideal ⟨m₁, hm₁, fun y hy => h y hy⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `hf (IsArtinianRing.isField_of_isReduced_of_isLocalRing K)`. Take `⟨m₂, hm₂, hne⟩` from `hex`. Set `i : MaximalSpectrum K` to `⟨m₁, hm₁⟩`. Set `j : MaximalSpectrum K` to `⟨m₂, hm₂⟩`. Establish `hij : j ≠ i` using `fun h => hne (congrArg MaximalSpectrum.asIdeal h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `haveI : i.asIdeal.IsMaximal := hm₁`. Use `haveI : j.asIdeal.IsMaximal := hm₂`. Set `φ` to `IsArtinianRing.equivPi K`. Use `⟨φ.symm (Pi.single i 1), ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `IsIdempotentElem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_mul, ← Pi.single_mul, mul_one]`. Introduce `h`. Use `congrArg φ h` as an intermediate fact. Simplify using `at this`. Introduce `h`.
-
-Use `congrFun (congrArg φ h) j` as an intermediate fact. Simplify using `[Pi.single_apply, hij] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_idem (K : Type) [CommRing K] [IsArtinianRing K] [IsReduced K] [Nontrivial K] (hf : ¬ IsField K) :
     ∃ e : K, IsIdempotentElem e ∧ e ≠ 0 ∧ e ≠ 1 := by
@@ -179,7 +177,7 @@ end GlobalTheory.JR.EtQuot
 namespace GlobalTheory.JR.EtQuot
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hu`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 -/
 theorem idem_eq_one_of_isUnit {K : Type} [CommRing K] {e : K} (he : IsIdempotentElem e) (hu : IsUnit e) : e = 1 := by
   obtain ⟨u, rfl⟩ := hu
@@ -188,28 +186,24 @@ theorem idem_eq_one_of_isUnit {K : Type} [CommRing K] {e : K} (he : IsIdempotent
     _ = 1 := by simp
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.nontrivial_iff.2 (fun h => h1 (idem_eq_one_of_isUnit he (Ideal.span_singleton_eq_top.1 h)))`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_quot {K : Type} [CommRing K] {e : K} (he : IsIdempotentElem e) (h1 : e ≠ 1) :
     Nontrivial (K ⧸ Ideal.span {e}) :=
   Ideal.Quotient.nontrivial_iff.2 (fun h => h1 (idem_eq_one_of_isUnit he (Ideal.span_singleton_eq_top.1 h)))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A hnt hf`. Use `haveI : IsArtinianRing A.K := IsArtinianRing.of_finite F A.K`. Take `⟨e, he, h0, h1⟩` from `exists_idem A.K hf`. Set `A₁` to `quotEt A e he`. Set `A₂` to `quotEt A (1 - e) he.one_sub`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `eK : A.K ≃ₐ[F] A₁.K × A₂.K` to `AlgEquiv.prodQuotientOfIsIdempotentElem F he he.one_sub (by ring) he.mul_one_sub_self`. Set `e'` to `algebraMap A.K A.L e`. Establish `he' : IsIdempotentElem e'` using `he.map _`. Establish `hJ1 : (Ideal.span {e}).map (algebraMap A.K A.L) = Ideal.span {e'}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJ2 : (Ideal.span {1 - e}).map (algebraMap A.K A.L) = Ideal.span {1 - e'}`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_sub, map_one]`. Set `eL : A.L ≃ₐ[F] A₁.L × A₂.L` to `(AlgEquiv.prodQuotientOfIsIdempotentElem F he' he'.one_sub (by ring) he'.mul_one_sub_self).trans (AlgEquiv.prodCongr (Ideal.quotientEquivAlgOfEq F hJ1.symm) (Ideal.quotientEquivAlgOfEq F hJ2.symm))`. Establish `hsum : Module.finrank F A.K = Module.finrank F A₁.K + Module.finrank F A₂.K`. Rewrite using `[eK.toLinearEquiv.finrank_eq, Module.finrank_prod]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Nontrivial A₁.K := nontrivial_quot he h1`. Use `haveI : Nontrivial A₂.K := nontrivial_quot he.one_sub (fun h => h0 (by linear_combination -h))`. Establish `p1 : 0 < Module.finrank F A₁.K` using `Module.finrank_pos`. Establish `p2 : 0 < Module.finrank F A₂.K` using `Module.finrank_pos`. Use `⟨A₁, A₂, eK, eL, ⟨fun k => ?_, fun y => ?_, fun y => ?_⟩, by omega, by omega⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show Ideal.quotientEquivAlgOfEq F hJ1.symm (Ideal.Quotient.mk _ (algebraMap A.K A.L k)) = algebraMap (QK A e) (QL A e) (Ideal.Quotient.mk _ k)`. Rewrite using `[Ideal.quotientEquivAlgOfEq_mk, Ideal.Quotient.algebraMap_quotient_map_quotient]`. Use `show Ideal.quotientEquivAlgOfEq F hJ2.symm (Ideal.Quotient.mk _ (algebraMap A.K A.L k)) = algebraMap (QK A (1 - e)) (QL A (1 - e)) (Ideal.Quotient.mk _ k)`. Rewrite using `[Ideal.quotientEquivAlgOfEq_mk, Ideal.Quotient.algebraMap_quotient_map_quotient]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show Ideal.quotientEquivAlgOfEq F hJ1.symm (Ideal.Quotient.mk _ (algebraMap E A.L y)) = Ideal.Quotient.mk _ (algebraMap E A.L y)`. Rewrite using `[Ideal.quotientEquivAlgOfEq_mk]`. Use `show Ideal.quotientEquivAlgOfEq F hJ2.symm (Ideal.Quotient.mk _ (algebraMap E A.L y)) = Ideal.Quotient.mk _ (algebraMap E A.L y)`. Rewrite using `[Ideal.quotientEquivAlgOfEq_mk]`.
-
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show Ideal.quotientEquivAlgOfEq F hJ1.symm (Ideal.Quotient.mk _ (star y)) = (quotStarRing _ (star_mem A e)).star (Ideal.quotientEquivAlgOfEq F hJ1.symm (Ideal.Quotient.mk _ y))`. Rewrite using `[Ideal.quotientEquivAlgOfEq_mk, Ideal.quotientEquivAlgOfEq_mk]`. Both sides reduce to the same expression. Use `show Ideal.quotientEquivAlgOfEq F hJ2.symm (Ideal.Quotient.mk _ (star y)) = (quotStarRing _ (star_mem A (1 - e))).star (Ideal.quotientEquivAlgOfEq F hJ2.symm (Ideal.Quotient.mk _ y))`.
-
-Rewrite using `[Ideal.quotientEquivAlgOfEq_mk, Ideal.quotientEquivAlgOfEq_mk]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_splitting : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (A : Et F E), Nontrivial A.K → ¬ IsField A.K →

@@ -3,29 +3,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Pp
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.mul_apply, Fin.sum_univ_four] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adj_mul {R : Type} [CommRing R] (X Y : M4 R) : adj (X * Y) = adj Y * adj X := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.mul_apply, Fin.sum_univ_four] <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adj_adj {R : Type} [CommRing R] (X : M4 R) : adj (adj X) = X := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]
 
 /- English proof (translation)
-Introduce `ι A F _ _ V M P g h hh`. Take `⟨k, hk, hb⟩` from `spIwa V h hh.1`. Use `⟨k, SpTri.of_map V.subtype Subtype.val_injective ?_⟩` and prove the remaining obligations. Establish `a : adj (k.map V.subtype) = (adj k).map V.subtype`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [adj_apply, Matrix.map_apply, map_zsmul]`. Establish `k1 : adj (k.map V.subtype) * k.map V.subtype = 1`. Rewrite using `[a, ← Matrix.map_mul, adj_mul_self hk, Matrix.map_one _ (map_zero _) (map_one _)]`. Generalize the expression as in `k.map V.subtype = K at hb k1`. Establish `h2 : h * adj h = 1` using `mul_adj_self hh.1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hb' : IsUp (adj h * K)`. Use `IsUp_adj hb` as an intermediate fact. Rewrite `this` using `[adj_mul, adj_adj]`. Then use the resulting hypothesis. Establish `one : adj K * h * (adj h * K) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc h, h2, Matrix.one_mul, k1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k1.trans (one_smul _ _).symm, fun i => ?_⟩` and prove the remaining obligations. Establish `e : ∀ X : M4 F, adj K * X * K = adj K * h * (adj h * X * h) * (adj h * K)` using `fun X => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, Matrix.mul_one, Matrix.mul_one]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c` using `upConj one hb hb' (hh.2 i).1`. Rewrite using `[e]`. Conclude with `⟨c.1, fun j => by rw [c.2 j]; exact (hh.2 i).2 j⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Pp.triIwa :
     ∀ {ι A F : Type} [CommRing A] [Field F] (V : ValuationSubring F) (M : ι → M4 A) (P : ι → Fin 4 → A[X]) (g : A →+* V) (h : M4 F), SpTri M P (V.subtype.comp g) h → ∃ k : M4 V, SpTri M P g k := by

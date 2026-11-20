@@ -19,7 +19,7 @@ noncomputable section
 namespace ModelDimension
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `Spec.map_surjective (X.fromSpecStalk q.1 ≫ g)`. Establish `h1 : Spec.map (ψ ≫ CommRingCat.ofHom (genMap ξ q)) = Spec.map (CommRingCat.ofHom φ)` using `(Spec.map_comp _ _).trans ((congrArg (Spec.map (CommRingCat.ofHom (genMap ξ q)) ≫ ·) hψ).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ g) (LieCarrier.genMap_fromSpecStalk q)).trans h)))`. Establish `h2` using `Spec.map_injective h1`. Conclude with `⟨ψ.hom r, congrArg (fun t => t.hom r) h2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem mem_regAt_of_over {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {R : Type} [CommRing R] (g : X ⟶ Spec (CommRingCat.of R)) (φ : R →+* Ω)
@@ -32,9 +32,9 @@ theorem mem_regAt_of_over {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (Co
   exact ⟨ψ.hom r, congrArg (fun t => t.hom r) h2⟩
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => simp`. Consider the case `one => simp`. Consider the case `prime p hp => exact (not_not.1 (hq p hp)).2.2`. Consider the case `mul a b ha hb => rw [Nat.cast_mul, mul_inv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `mul_mem ha hb`.
+A detailed English derivation is pending.
 -/
 theorem inv_natCast_mem_regAt {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (q : Cpt ξ) (hq : ∀ p : ℕ, p.Prime → ¬ InFibre ξ p q) (n : ℕ) : ((n : Ω))⁻¹ ∈ regAt ξ q := by
@@ -45,11 +45,11 @@ theorem inv_natCast_mem_regAt {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec
   | mul a b ha hb => rw [Nat.cast_mul, mul_inv]; exact mul_mem ha hb
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y S Ω _ K _ J y 𝔐 q hq a`. Establish `hfin` using `c.fin`. Establish `halg : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ c.F).2 (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) a)`. Take `⟨n, o, hn, ho⟩` from `halg.exists_nsmul_eq (𝓞 c.F)`. Establish `h1 : 𝔐.cst (algebraMap (𝓞 c.F) c.F o) ∈ regAt 𝔐.ξ q` using `mem_regAt_of_over (𝔐.f ≫ Y.s) (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F)) 𝔐.cst_over q o`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : (n : Ω) ≠ 0`. Rewrite using `[← map_natCast 𝔐.cst]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 hn)`. Establish `h2 : 𝔐.cst a = (n : Ω)⁻¹ * 𝔐.cst (algebraMap (𝓞 c.F) c.F o)`. Rewrite using `[← ho, nsmul_eq_mul, map_mul, map_natCast, inv_mul_cancel_left₀ h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `mul_mem (inv_natCast_mem_regAt q hq n) h1`.
+A detailed English derivation is pending.
 -/
 theorem constant_regular_away_fibres : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (q : Cpt 𝔐.ξ), (∀ p : ℕ, p.Prime → ¬ InFibre 𝔐.ξ p q) → ∀ a : c.F, 𝔐.cst a ∈ regAt 𝔐.ξ q := by
   intro E _ _ _ H Dw l Xo c Y S Ω _ K _ J y 𝔐 q hq a

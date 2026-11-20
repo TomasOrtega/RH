@@ -4,7 +4,7 @@ import ReciprocityTheory.Chebotarev.TendstoLogOneDivSubOne
 namespace ReciprocityTheory.Cheb
 
 /- English proof (translation)
-The claim follows from `cross cyc_holds`.
+A detailed English derivation is pending.
 -/
 theorem statement_holds : Statement := cross cyc_holds
 

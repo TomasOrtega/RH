@@ -52,9 +52,9 @@ theorem logNormAt_mkAt (z : Pts Y σ) (a : Y.Fn) (ha : UnitAt (under z) a) :
     logNormAt z (Additive.ofMul (mkAt a ha)) = Real.log ‖ratVal a z‖ := rfl
 
 /- English proof (translation)
-Establish `hu : UnitAt (under z) (f * (genAt Δ (under z))⁻¹)` using `GlobalTheory.ChernWeilLine.unitAt_mul_inv_of_generatesAt hf (generatesAt_genAt Δ _)`. Establish `hg0 : genAt Δ (under z) ≠ 0` using `Units.ne_zero _`. Establish `e : C.pn Y σ Δ m (C.cx Y σ f) z = ‖ratVal (f * (genAt Δ (under z))⁻¹) z‖ ^ 2 * C.pn Y σ Δ m (C.cx Y σ (genAt Δ (under z))) z` using `by conv_lhs => rw [← inv_mul_cancel_right₀ hg0 f]`. Conclude with `C.pn_mul Y σ Δ m _ _ z hu.regAt (generatesAt_genAt Δ _).regularAt`. Establish `hr : ‖ratVal (f * (genAt Δ (under z))⁻¹) z‖ ≠ 0` using `norm_ne_zero_iff.2 (ratVal_ne_zero hu)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [lnN]`. Rewrite using `[e, Real.log_mul (pow_ne_zero 2 hr) (ne_of_gt hp), Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lnN_eq_add {Δ : Y.Dv} {m : C.Met Y σ Δ} {f : Y.Fn} {z : Pts Y σ} (hp : PosAt m z)
     (hf : Δ.GeneratesAt (under z) f) :
@@ -79,9 +79,9 @@ namespace GlobalTheory.Mean4O.CombGen
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Establish `hG : ∏ i, g i ^ b i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ (hg i)`. Establish `e : ∏ i, (f i * (g i)⁻¹) ^ b i = (∏ i, f i ^ b i) * (∏ i, g i ^ b i)⁻¹`. Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [mul_zpow, inv_zpow]`. Rewrite using `[e, mul_pow, inv_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : gM ^ q ≠ 0` using `pow_ne_zero _ hgM`. Rewrite using `[div_eq_mul_inv, div_eq_mul_inv, div_eq_mul_inv, mul_inv, inv_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel₀ hq, inv_mul_cancel₀ hG, mul_one, mul_one]`. Use `_ = _ := by ring`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_prod_eq {ι : Type} [Fintype ι] (q : ℕ) (b : ι → ℤ) (fM gM : Y.Fn) (f g : ι → Y.Fn) (hgM : gM ≠ 0)
     (hg : ∀ i, g i ≠ 0) :
@@ -102,17 +102,15 @@ end GlobalTheory.Mean4O.CombGen
 
 open GlobalTheory.Mean4O.CombGen in
 /- English proof (translation)
-Introduce `F _ _ Y ι _ Mb ρ q b σ z gz fM f hpM hp hyp hfM hf hk hh`. Use `set x := under z with hx`. Use `set gM := genAt Mb.D x with hgM`. Use `set g : ι → Y.Fn := fun i => genAt (ρ i).D x with hg`. Establish `huM : UnitAt x (fM * gM⁻¹)` using `GlobalTheory.ChernWeilLine.unitAt_mul_inv_of_generatesAt hfM (generatesAt_genAt _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ∀ i, UnitAt x (f i * (g i)⁻¹)` using `fun i => GlobalTheory.ChernWeilLine.unitAt_mul_inv_of_generatesAt (hf i) (generatesAt_genAt _ _)`. Establish `hgM0 : gM ≠ 0` using `Units.ne_zero _`. Establish `hg0 : ∀ i, g i ≠ 0` using `fun i => Units.ne_zero _`. Establish `eS : mkAt (fM ^ q / ∏ i, f i ^ b i) hh = mkAt (gM ^ q / ∏ i, g i ^ b i) hk * mkAt (fM * gM⁻¹) huM ^ q / ∏ i, mkAt (f i * (g i)⁻¹) (hu i) ^ b i`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_div, Subgroup.coe_mul, Subgroup.coe_pow, Subgroup.coe_zpow, Subgroup.val_finset_prod, Units.val_div_eq_div_val, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_zpow_eq_zpow_val, Units.coe_prod, val_mkAt]`. Conclude with `div_prod_eq q b fM gM f g hgM0 hg0`. Establish `eL : Real.log ‖ratVal (fM ^ q / ∏ i, f i ^ b i) z‖ = Real.log ‖ratVal (gM ^ q / ∏ i, g i ^ b i) z‖ + (q : ℝ) * Real.log ‖ratVal (fM * gM⁻¹) z‖ - ∑ i, (b i : ℝ) * Real.log ‖ratVal (f i * (g i)⁻¹) z‖`. Rewrite using `[← logNormAt_mkAt z _ hh, eS, ← logNormAt_mkAt z _ hk, ← logNormAt_mkAt z _ huM]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ofMul_div, ofMul_mul, ofMul_pow, ofMul_prod, ofMul_zpow, map_sub, map_add, map_nsmul, map_sum, map_zsmul, nsmul_eq_mul, zsmul_eq_mul, logNormAt_mkAt]`. Both sides reduce to the same expression. Establish `e1` using `lnN_eq_add hpM hfM`. Establish `e2 : ∀ i, lnN ((ρ i).m σ) (f i) z = lnN ((ρ i).m σ) (g i) z + Real.log ‖ratVal (f i * (g i)⁻¹) z‖` using `fun i => lnN_eq_add (hp i) (hf i)`. Establish `s1 : ∑ i, (b i : ℝ) * lnN ((ρ i).m σ) (f i) z = ∑ i, (b i : ℝ) * lnN ((ρ i).m σ) (g i) z + ∑ i, (b i : ℝ) * Real.log ‖ratVal (f i * (g i)⁻¹) z‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [e2 i]; ring`. Establish `s2 : ∑ i, (b i : ℝ) * lnAdl (ρ i) σ z = ∑ i, (b i : ℝ) * lnN ((ρ i).m σ) (g i) z - ∑ i, (b i : ℝ) * (((ρ i).n : ℕ) : ℝ) * (ρ i).ci (InfinitePlace.mk σ)`. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp only [lnAdl, g]; ring`.
-
-Establish `hM : lnAdl Mb σ z = lnN (Mb.m σ) gM z - ((Mb.n : ℕ) : ℝ) * Mb.ci (InfinitePlace.mk σ)` using `rfl`. Rewrite `hyp` using `[hM, s2]`. Rewrite using `[eL, s1, e1]`. Take the linear combination `hyp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mean4O.CombGen.lnAdl_comb_change : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (ι : Type) [Fintype ι] (Mb : Adl (cxSt F) Y) (ρ : ι → Adl (cxSt F) Y) (q : ℕ) (b : ι → ℤ) (σ : F →+* ℂ) (z : Pts Y σ) (gz : ℝ) (fM : Y.Fn) (f : ι → Y.Fn), PosAt (Mb.m σ) z → (∀ i, PosAt ((ρ i).m σ) z) → (q : ℝ) * lnAdl Mb σ z = Real.log ‖ratVal (genAt Mb.D (under z) ^ q / ∏ i, genAt (ρ i).D (under z) ^ b i) z‖ + ∑ i, (b i : ℝ) * lnAdl (ρ i) σ z - q * ((Mb.n : ℕ) : ℝ) * gz → Mb.D.GeneratesAt (under z) fM → (∀ i, (ρ i).D.GeneratesAt (under z) (f i)) → UnitAt (under z) (genAt Mb.D (under z) ^ q / ∏ i, genAt (ρ i).D (under z) ^ b i) → UnitAt (under z) (fM ^ q / ∏ i, f i ^ b i) → (q : ℝ) * lnN (Mb.m σ) fM z = Real.log ‖ratVal (fM ^ q / ∏ i, f i ^ b i) z‖ + ∑ i, (b i : ℝ) * lnN ((ρ i).m σ) (f i) z - q * ((Mb.n : ℕ) : ℝ) * gz + ((q : ℝ) * ((Mb.n : ℕ) : ℝ) * Mb.ci (InfinitePlace.mk σ) - ∑ i, (b i : ℝ) * (((ρ i).n : ℕ) : ℝ) * (ρ i).ci (InfinitePlace.mk σ)) := by
   intro F _ _ Y ι _ Mb ρ q b σ z gz fM f hpM hp hyp hfM hf hk hh

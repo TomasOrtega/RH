@@ -27,11 +27,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
   {hc : CMData F E} {V : HSpace E} {R : Type} [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Set `f : (Fin V.rank → R ⊗[F] E) →ₗ[R ⊗[F] E] Fin V.rank → R ⊗[F] E` to `(HA.mat R hc.sig V.gram g).1.mulVecLin`. Express the relevant statement in the definitionally equal form `f (coordR V R x) ∈ _`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => rw [show coordR V R 0 = 0 from funext fun _ => by simp [coordR], map_zero]; exact zero_mem _`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ h1 h2`. Rewrite using `[show coordR V R (x + y) = coordR V R x + coordR V R y from funext fun _ => by simp [coordR], map_add]`. Conclude with `add_mem h1 h2`. Consider the case `smul a x _ h1`. Rewrite using `[show coordR V R (a • x) = inclR (F := F) R a • coordR V R x from funext fun _ => by simp [coordR], map_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ h1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_mem_of_mem_span {S : Set V.V} {A : Submodule E V.V} {g : HA R hc.sig V.gram}
     (h : ∀ x ∈ S, act hc V g (coordR V R x) ∈ extSub (F := F) V R A) {x : V.V}
@@ -52,13 +50,11 @@ theorem act_mem_of_mem_span {S : Set V.V} {A : Submodule E V.V} {g : HA R hc.sig
 end Gen
 
 /- English proof (translation)
-Introduce `D V Φ v p b hb h`. Use `IsoFlag.mem_par.2 fun i => GlobalTheory.Cusp.mem_parab.2 fun x hx => ?_` and prove the remaining obligations. Establish `hgen : ∀ j : Fin (wittIndex V), j.val < i.val → act D.sp.cm V p (coordR V (Fv D.host.F v) (Φ.e j)) ∈ extSub (F` using `D.host.F) V (Fv D.host.F v) (Φ.flag0.X i) := by`. Introduce `j hj`. Establish `hcol : act D.sp.cm V p (coordR V (Fv D.host.F v) (Φ.e j)) = ∑ k, b k j • coordR V (Fv D.host.F v) (Φ.e k)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Use `congrFun (congrFun h a) j` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.of_apply] at this`. Simplify using `only [act, Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Rewrite using `[hcol]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : j < k`. Rewrite using `[hb hk, zero_smul]`.
-
-Conclude with `zero_mem _`. Conclude with `Submodule.smul_mem _ _ (GlobalTheory.Cusp.coordR_mem V _ (Submodule.subset_span ⟨k, show k.val < i.val from Nat.lt_of_le_of_lt (Fin.le_def.1 (not_lt.1 hk)) hj, rfl⟩))`. Conclude with `act_mem_of_mem_span (S := Φ.e '' {j | j.val < i.val}) (fun _ ⟨j, hj, e⟩ => e ▸ hgen j hj) hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_pLoc_flag0_of_mul_eq_upper : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (v : HeightOneSpectrum (𝓞 D.host.F)) (p : GLoc D.sp.cm.sig V.gram v) (b : Matrix (Fin (wittIndex V)) (Fin (wittIndex V)) (TensorProduct D.host.F (Fv D.host.F v) D.host.E)), b.BlockTriangular id → (HA.mat (F := D.host.F) (Fv D.host.F v) D.sp.cm.sig V.gram p).1 * (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V (Fv D.host.F v) (Φ.e i) x) = (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V (Fv D.host.F v) (Φ.e i) x) * b → p ∈ PLoc Φ.flag0 v := by
   intro D V Φ v p b hb h

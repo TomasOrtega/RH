@@ -6,27 +6,21 @@ set_option backward.isDefEq.respectTransparency false
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set B := f.normalizationDiagram.obj (Opposite.op V.1) with hB`. Use `set ι := f.normalizationOpenCover.f V with hι`. Use `set j := f.toNormalization with hj`. Establish `key : ∀ b : B, (PrimeSpectrum.basicOpen b : Set (PrimeSpectrum B)) ⊆ ι ⁻¹' Set.range j →`. Use `letI := (f.normalizationDiagramMap.app (Opposite.op V.1)).hom.toAlgebra`.
+Establish an intermediate fact. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use the proof step `Algebra.FiniteType Γ(X, V.1) (Localization.Away b) := by`. Introduce `b hb`. Use `letI := (f.normalizationDiagramMap.app (Opposite.op V.1)).hom.toAlgebra`. Set `g : Spec (.of (Localization.Away b)) ⟶ Spec B` to `Spec.map (CommRingCat.ofHom (algebraMap B (Localization.Away b)))`. Establish `hg : Set.range (g ≫ ι) ⊆ Set.range j`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Apply `hb` to reduce the goal to its premises. Establish `: g z ∈ Set.range (PrimeSpectrum.comap (algebraMap B (Localization.Away b)))` using `⟨z, rfl⟩`. Rewrite `this` using `[PrimeSpectrum.localization_away_comap_range (Localization.Away b) b]`. Conclude with `this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Set `h` to `IsOpenImmersion.lift j (g ≫ ι) hg`. Establish `hh : h ≫ j = g ≫ ι` using `IsOpenImmersion.lift_fac _ _ _`. Use `haveI : LocallyOfFiniteType (h ≫ j) := by rw [hh]; infer_instance`. Use `haveI : LocallyOfFiniteType h := locallyOfFiniteType_of_comp h j`. Establish `e : h ≫ f = Spec.map (CommRingCat.ofHom (algebraMap Γ(X, V.1) (Localization.Away b))) ≫ V.2.fromSpec`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← f.toNormalization_fromNormalization, reassoc_of% hh, hι, f.ι_fromNormalization, ← Spec.map_comp_assoc]`. Use `congr 2`. Use `haveI : LocallyOfFiniteType (Spec.map (CommRingCat.ofHom (algebraMap Γ(X, V.1) (Localization.Away b))) ≫ V.2.fromSpec) := by`. Rewrite using `[← e]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := locallyOfFiniteType_of_comp (Spec.map (CommRingCat.ofHom (algebraMap Γ(X, V.1) (Localization.Away b)))) V.2.fromSpec`. Use `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).mp this` as an intermediate fact. Conclude with `RingHom.finiteType_algebraMap.mp this`. Establish `hcov : ∀ x : U, f x ∈ V.1 → ∃ b : B, (PrimeSpectrum.basicOpen b : Set (PrimeSpectrum B)) ⊆ ι ⁻¹' Set.range j ∧ j x ∈ ι '' (PrimeSpectrum.basicOpen b : Set (PrimeSpectrum B))`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hx' : j x ∈ Set.range ι`. Establish `h1 : j x ∈ f.fromNormalization ⁻¹ᵁ V.1` using `by show f.fromNormalization (j x) ∈ V.1`. Rewrite using `[← Scheme.Hom.comp_apply, hj, f.toNormalization_fromNormalization]`. Conclude with `hx`. Rewrite `h1` using `[f.fromNormalization_preimage V]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h1`. Take `⟨y, hy⟩` from `hx'`. Establish `hO : IsOpen (ι ⁻¹' Set.range j)` using `j.isOpenEmbedding.isOpen_range.preimage ι.continuous`. Take `⟨_, ⟨b, rfl⟩, hyb, hbO⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (show y ∈ ι ⁻¹' Set.range j from ⟨x, hy.symm⟩) hO`. Conclude with `⟨b, hbO, y, hyb, hy⟩`.
-
-Establish `hK : IsCompact (f ⁻¹' (V.1 : Set X))` using `f.isCompact_preimage V.2.isCompact`. Set `T` to `{b : B // (PrimeSpectrum.basicOpen b : Set (PrimeSpectrum B)) ⊆ ι ⁻¹' Set.range j}`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun b : T => j ⁻¹' (ι '' (PrimeSpectrum.basicOpen b.1 : Set (PrimeSpectrum B)))) (fun b => (ι.isOpenEmbedding.isOpenMap _ (PrimeSpectrum.basicOpen b.1).2).preimage j.continuous) (by`. Introduce `x hx`. Take `⟨b, hb, hxb⟩` from `hcov x hx`.
-
-Conclude with `Set.mem_iUnion.2 ⟨⟨b, hb⟩, hxb⟩)`. Use `⟨t.image Subtype.val, ?_, ?_⟩` and prove the remaining obligations. Introduce `b hb`. Take `⟨b', -, rfl⟩` from `Finset.mem_image.1 hb`. Conclude with `key b'.1 b'.2`.
-
-Introduce `x hx`. Take `⟨b, hbt, hxb⟩` from `Set.mem_iUnion₂.1 (ht hx)`. Conclude with `⟨b.1, Finset.mem_image_of_mem _ hbt, hxb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem normalization_basicOpen_cover (U X : Scheme.{0}) (f : U ⟶ X) [IsSeparated f]
     [LocallyOfFiniteType f] [QuasiCompact f] [LocallyQuasiFinite f] (V : X.AffineZariskiSite) :

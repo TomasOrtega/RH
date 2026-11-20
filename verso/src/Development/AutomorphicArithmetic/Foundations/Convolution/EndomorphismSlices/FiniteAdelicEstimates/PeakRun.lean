@@ -23,11 +23,11 @@ namespace UpperTheory.Zero.ConvolutionTheory.EB
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Introduce `E _ _ _ B Q _ χa χb Γ _ t arch a₀ x g ρ hG hK hT hHa hHb ha hv hψ hmul hadj hρ hs`. Establish `hkeep : ∀ y, ∀ f ∈ Q, (t y).op f ∈ Q ∧ star (t y).op f ∈ Q`. Introduce `y f hf`. Establish `h1` using `PositivityTheory.Rg.BcB.F.BlockFiniteConvolution.blkOp₀ E B (t y) (t y) (hG.ok y) (hG.ok y)`. Take `⟨hT1, hR1, -, -, hadjOk, hadjOp, -, -⟩` from `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `PositivityTheory.Rg.BcB.F.BlockFiniteConvolution.blkOp₀ E B (t y).adj (t y).adj hadjOk hadjOk`. Use `⟨hK _ _ hT1 hR1 f hf, ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.star_eq_adjoint, ← hadjOp]`. Conclude with `hK _ _ h2.1 h2.2.1 f hf`. Take `⟨𝔄⟩` from `algEx B.Hb Q Γ (fun y => (t y).op) (fun y => (t y).val χa χb) hG.comm hG.commStar hkeep`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ, c, w, hval, hnorm⟩` from `peakAlg B.Hb Q Γ (fun y => (t y).op) (fun y => (t y).val χa χb) 𝔄 arch a₀ x ρ ha hv hρ (fun s hb hsa => hs (fun y => s (𝔄.ι y)) hsa (realAlg E B Q Γ t (fun y => (t y).val χa χb) 𝔄 a₀ g s hG.ok hK hT hb (by rw [hsa a₀ ha, hv]; exact one_ne_zero)))`. Take `⟨R, hR, hrep⟩` from `wordRep E B χa χb {γ // arch γ} (fun γ => t γ) (t a₀) J c w hHa hHb (hG.ok a₀) (fun γ => ⟨hG.ok γ, hψ γ γ.2⟩) hmul hadj`. Use `⟨_, R, hR, ?_, hnorm⟩` and prove the remaining obligations. Rewrite `hrep` using `[hval, hv, one_mul]`. Conclude with `hrep`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem peakRun : PeakRun := by
   intro E _ _ _ B Q _ χa χb Γ _ t arch a₀ x g ρ hG hK hT hHa hHb ha hv hψ hmul hadj hρ hs

@@ -35,13 +35,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Introduce `hHCF hCRD hDSC hHCM hCW D hHF hUP`. Establish `hLF : LevFacts D` using `GlobalTheory.T.thetaChain_level_properties D`. Establish `hFD : FinDim D` using `GlobalTheory.T.thetaChainCuspSpaceFiniteDim_of_harishChandra hHCF D hLF`. Establish `hMet : MetEx D` using `GlobalTheory.T.thetaChainInnerProductsExist_of_rapidDecay hCRD D`. Establish `hES : EigSpan D` using `GlobalTheory.T.multiplicity_space_spanned_by_satake_eigen_elements hCRD D hFD hMet hLF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPI : ParIndep D` using `GlobalTheory.T.thetaChain_heckeParameters_linearIndependent D`. Establish `hPOV : ParOfVal D` using `GlobalTheory.T.hecke_parameters_of_element_from_one_nonzero_value hCRD D hMet hLF`. Establish `hPB : ParBoundW D` using `GlobalTheory.T.theta_chain_occurring_params_norm_half_rank_bound hCRD D hLF`. Establish `hLL : LevelLaw D` using `GlobalTheory.T.thetaLiftChain_fockVector_levelLaws D`. Establish `hCS : CoefSupp D` using `GlobalTheory.T.thetaChainCoef_vanishes_off_level D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hArch : GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ArchOnRecord D` using `GlobalTheory.T.archimedeanThetaCorrespondence_towers_real_data hDSC hHCM D`. Establish `hRZ : RealZeta D` using `GlobalTheory.T.thetaChain_realZeta_nonvanishing hHCM D hArch`. Establish `hZN : ZetaNe D` using `GlobalTheory.T.thetaChainLocalZetaNonvanishing_of_real D hMet hLF hLL hCS hRZ`. Establish `hUN : UpNe D` using `GlobalTheory.T.thetaLiftUpwards_ne_zero_of_lValue D hHF hMet hLF hZN`. Establish `hUS : UpSpan D` using `GlobalTheory.T.thetaLiftUpwards_in_cuspSpan hDSC hHCM hCRD hCW D hLF hLL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUA : UpAdj D` using `GlobalTheory.T.thetaLiftUpwardsAdjoint_of_rapidDecay hCRD D`. Establish `hSU : StepUp D` using `GlobalTheory.T.thetaLiftChain_adjoint_nonvanishing_step D hFD hPOV hUS hUA hUP hUN`. Establish `hCL : ChainLW D` using `GlobalTheory.T.thetaChain_LValues_nonvanishing D`. Establish `hCU : ChainUp D` using `chainUp_of D hMet hPB hCL hSU`. Conclude with `GlobalTheory.T.thetaLiftChain_surjective_of_adjoint_nonvanishing D hFD hMet hES hPI hCU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ontoAll_of_classicalTheorems : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → ∀ D : D7, GlobalTheory.Core.Rk.IP.HeckeForm D → UpPar D → OntoAll D := by
   intro hHCF hCRD hDSC hHCM hCW D hHF hUP

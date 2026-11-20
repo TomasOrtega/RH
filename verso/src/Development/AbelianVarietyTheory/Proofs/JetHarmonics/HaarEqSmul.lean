@@ -15,40 +15,36 @@ namespace GlobalTheory.BesselDegree
 open Formalism.FourierDecayAlt.P.HaarUniquenessConjugation
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isDS_iff {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ε : Fin n → Bool)
     (lam : Fin n → ℝ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :
     PI.UpqRep.IsDS ε lam σ ↔ Formalism.MainNotions.S.IsDS ε lam σ := Iff.rfl
 
 /- English proof (translation)
-Establish `hE` using `Formalism.REAL.isClosedEmbeddingMatrix`. Establish `hC` using `Formalism.QuantumDeterminants.uHConj`. Take `⟨hσ, h0, hconc, hleft⟩` from `hν`. Establish `hm` using `phi_measurable (ε := ε) hE hP`. Establish `hce` using `phi_closedEmbedding (ε := ε) hE hP`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hme : MeasurableEmbedding (phi ε P)` using `hce.measurableEmbedding`. Establish `hr` using `phi_range hE hC hP hH`. Establish `h2 : (ν.comap (phi ε P)).map (phi ε P) = ν`. Rewrite using `[hme.map_comap]`. Use `Measure.restrict_eq_self_of_ae_mem ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ae_iff, hr]`. Conclude with `hconc`. Establish `hsf : SigmaFinite (ν.comap (phi ε P))` using `SigmaFinite.of_map _ hm.aemeasurable (by rw [h2]; exact hσ)`. Establish `hinv : (ν.comap (phi ε P)).IsMulLeftInvariant` using `⟨fun u => by`. Use extensionality with `s hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_apply (measurable_const_mul u) hs, hme.comap_apply, hme.comap_apply]`. Establish `hu : Matrix.of (phi ε P u) ∈ GG k r` using `(phi_range_iff hE hC hP hH _).1 ⟨u, rfl⟩`. Establish `h1` using `hleft _ hu`. Establish `hs' : MeasurableSet (phi ε P '' s)` using `hme.measurableSet_image.2 hs`. Use `conv_rhs => rw [← h1, Measure.map_apply (lmul_cont _).measurable hs']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `⟨u * w, hw, (lmul_phi hP u w).symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨v, hv, hx⟩`. Use `⟨u⁻¹ * v, by simpa using hv, ?_⟩` and prove the remaining obligations. Establish `h2 : Formalism.QuantumDeterminants.lmulM (phi ε P u⁻¹) (Formalism.QuantumDeterminants.lmulM (phi ε P u) x) = x`. Establish `h3 : (Matrix.of (phi ε P u⁻¹) : Mx k r) * Matrix.of (phi ε P u) = 1`. Use `lmul_phi hP u⁻¹ u` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[inv_mul_cancel]`. Use `Eq.trans this ?_` and prove the remaining obligations. Use `show P⁻¹ * (1 : Mx k r) * P = 1`. Rewrite using `[Matrix.mul_one, Matrix.nonsing_inv_mul P hP]`. Use `show (Matrix.of (phi ε P u⁻¹) : Mx k r) * (Matrix.of (phi ε P u) * Matrix.of x) = Matrix.of x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, h3, Matrix.one_mul]`. Rewrite using `[← lmul_phi hP, hx]`. Conclude with `h2⟩`. Take `⟨K⟩ : Nonempty (TopologicalSpace.PositiveCompacts (Formalism.REAL.UJ ε))` from `inferInstance`. Establish `e1` using `Measure.haarMeasure_unique (ν.comap (phi ε P)) K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `Measure.haarMeasure_unique (Formalism.REAL.muG ε) K`. Establish `hb0 : Formalism.REAL.muG ε K ≠ 0` using `(Measure.measure_pos_of_nonempty_interior _ K.interior_nonempty).ne'`. Establish `hbt : Formalism.REAL.muG ε K ≠ ∞` using `K.isCompact.measure_lt_top.ne`. Use `set a := (ν.comap (phi ε P)) K with ha`. Use `set b := Formalism.REAL.muG ε K with hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : ν.comap (phi ε P) = (a / b) • Formalism.REAL.muG ε`. Rewrite using `[e1, e2, smul_smul, ENNReal.div_mul_cancel hb0 hbt]`. Establish `hc0 : a / b ≠ 0`. Introduce `h`. Rewrite `e3` using `[h, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[e3, Measure.map_zero]`. Conclude with `h0 h2.symm`. Establish `hct : a / b ≠ ∞`. Introduce `h`. Establish `hz : ∀ i, Formalism.REAL.muG ε (spanningSets (ν.comap (phi ε P)) i) = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Establish `h4` using `measure_spanningSets_lt_top (ν.comap (phi ε P)) i`. Establish `h5 : (ν.comap (phi ε P)) (spanningSets (ν.comap (phi ε P)) i) = ∞ * Formalism.REAL.muG ε (spanningSets (ν.comap (phi ε P)) i)`. Use `congrArg (fun m : Measure (Formalism.REAL.UJ ε) => m (spanningSets (ν.comap (phi ε P)) i)) e3` as an intermediate fact. Simplify `this` using `only [h, Measure.smul_apply, smul_eq_mul]`.
-
-Assume the negation of the conclusion as `hne`. Rewrite `h4` using `[h5, ENNReal.top_mul hne]`. Conclude with `lt_irrefl _ h4`. Establish `h6` using `measure_iUnion_null hz`. Rewrite `h6` using `[iUnion_spanningSets]`.
-
-Conclude with `hb0 (measure_mono_null (Set.subset_univ _) h6)`. Use `⟨a / b, hc0, hct, ?_⟩` and prove the remaining obligations. Rewrite using `[← Measure.map_smul, ← e3, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_eq_smul {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mx k r} (hP : IsUnit P.det)
     (hH : Pᴴ * Formalism.REAL.Jm ε * P = Formalism.QuantumDeterminants.Hpk k r) (ν : Measure (Formalism.QuantumDeterminants.Mt k r))
@@ -125,19 +121,19 @@ theorem haar_eq_smul {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mx k r
   rw [← Measure.map_smul, ← e3, h2]
 
 /- English proof (translation)
-Introduce `hy k r ε μG hμ`. Establish `hHC : GlobalTheory.FormalDegree.HarishChandra` using `hy.2.2.2.2.2.2`. Distinguish the cases in `hQ : ∃ Q, PI.UpqRep.IsCayleyU k r ε Q`. Use `swap`. Use `⟨1, one_pos, fun mu R hR => absurd ?_ hQ⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ, -⟩` from `hR.2`. Conclude with `⟨Q, hQ⟩`. Take `⟨Q, hQ⟩` from `hQ`. Establish `hP : IsUnit Q.det` using `(Matrix.isUnit_iff_isUnit_det Q).1 hQ.1.1`. Establish `hH : Qᴴ * Formalism.REAL.Jm ε * Q = Formalism.QuantumDeterminants.Hpk k r` using `hQ.1.2`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha0, hat, ha⟩` from `haar_eq_smul hP hH μG hμ`. Take `⟨c, hc, hF⟩` from `hHC.chamber _ ε`. Establish `hapos : 0 < a.toReal` using `ENNReal.toReal_pos ha0 hat`. Establish `hme : MeasurableEmbedding (phi ε Q)` using `(phi_closedEmbedding (ε := ε) Formalism.REAL.isClosedEmbeddingMatrix hP).measurableEmbedding`. Use `⟨c / a.toReal, div_pos hc hapos, fun mu R hR => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hDS` using `(isDS_iff _ _ _).1 ((GlobalTheory.CayleyChoice.cayley_exists_and_any k r).2 ε mu R hR Q hQ)`. Take `⟨hd, hS⟩` from `hF mu hR.1 R.H _ hDS`. Establish `hd' : 0 < c / a.toReal * Formalism.QuantumDeterminants.fdegHC mu`. Rewrite using `[div_mul_eq_mul_div]`. Conclude with `div_pos hd hapos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ v w v' w' : R.H, Integrable (fun x : Formalism.QuantumDeterminants.Mt k r => ⟪w, R.σ (Matrix.of x) v⟫_ℂ * star ⟪w', R.σ (Matrix.of x) v'⟫_ℂ) μG ∧ ∫ x, ⟪w, R.σ (Matrix.of x) v⟫_ℂ * star ⟪w', R.σ (Matrix.of x) v'⟫_ℂ ∂μG = ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / ((c / a.toReal * Formalism.Q …`. Introduce `v w v' w'`. Take `⟨h1, h2⟩` from `hS v w v' w'`. Rewrite using `[ha]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Integrable.smul_measure ?_ hat` and prove the remaining obligations. Rewrite using `[hme.integrable_map_iff]`. Conclude with `h1`. Rewrite using `[integral_smul_measure, hme.integral_map]`. Establish `h3 : ∫ g, ⟪w, R.σ (Matrix.of (phi ε Q g)) v⟫_ℂ * star ⟪w', R.σ (Matrix.of (phi ε Q g)) v'⟫_ℂ ∂(Formalism.REAL.muG ε) = ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / ((c * Formalism.QuantumDeterminants.fdegHC mu : ℝ) : ℂ)` using `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 
-Rewrite using `[h3, div_mul_eq_mul_div, Complex.ofReal_div, div_div_eq_mul_div, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨fun w hw => Formalism.FourierDecayAlt.P.DDSmoothness.fdeg_eq hd' key hw, key⟩`.
+A detailed English derivation is pending.
 -/
 theorem schur_fdeg : Hyps → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (μG : Measure (Formalism.QuantumDeterminants.Mt k r)), PI.BesselPeriodGGP.IsHaarOn (GG k r) μG → ∃ c : ℝ, 0 < c ∧ ∀ (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r), R.IsDS ε mu → (∀ w, w ≠ 0 → PI.BesselPeriodGGP.fdegH μG R.σ w = c * Formalism.QuantumDeterminants.fdegHC mu) ∧ ∀ v w v' w' : R.H, Integrable (fun x : Formalism.QuantumDeterminants.Mt k r => ⟪w, R.σ (Matrix.of x) v⟫_ℂ * star ⟪w', R.σ (Matrix.of x) v'⟫_ℂ) μG ∧ ∫ x, ⟪w, R.σ (Matrix.of x) v⟫_ℂ * star ⟪w', R.σ (Matrix.of x) v'⟫_ℂ ∂μG = ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / ((c * Formalism.QuantumDeterminants.fdegHC mu : ℝ) : ℂ) := by
   intro hy k r ε μG hμ

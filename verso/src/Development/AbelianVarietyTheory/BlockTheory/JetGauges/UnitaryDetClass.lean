@@ -51,18 +51,18 @@ def SameClass (bad Q : ℕ) (γ : Matrix (Fin n) (Fin n) E) (Λ Λ' : GenLat E n
     ∀ v ∈ Λ.La, CongrAt Q (γ.mulVec v) v
 
 /- English proof (translation)
-Simplify using `[IsUnitary, Matrix.map_one]`.
+Simplify using the standard rewrite rules.
 -/
 example : IsUnitary (1 : Matrix (Fin n) (Fin n) E) := by
   simp [IsUnitary, Matrix.map_one]
 
 /- English proof (translation)
-Introduce `v` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (Λ : GenLat E n) : Carries 1 Λ Λ := fun v => by simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by simp, fun _ => ⟨0, by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 example (Q : ℕ) (v : Fin n → E) : CongrAt Q v v := ⟨1, by simp, fun _ => ⟨0, by simp⟩⟩
 
@@ -76,7 +76,7 @@ def push {n : ℕ} (γ : Matrix (Fin n) (Fin n) E) :
   aeval fun ℓ : LtN Dw n => letB c ℓ.1 ℓ.2.1 fun k => γ k ℓ.2.2
 
 /- English proof (translation)
-Take `⟨σ, i, j⟩` from `ℓ`. Simplify using `[push, letB, Matrix.one_apply, apply_ite, ite_mul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 example {n : ℕ} (ℓ : LtN Dw n) : push c (1 : Matrix (Fin n) (Fin n) E) (X ℓ) = X ℓ := by
   obtain ⟨σ, i, j⟩ := ℓ

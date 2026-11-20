@@ -16,9 +16,9 @@ def IsMulOn {G M : Type*} [Mul G] [Mul M] (Ω : Set G) (R : G → M) : Prop :=
 section Inhabitant
 
 /- English proof (translation)
-Establish `hm : ((g⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) * (g : Matrix (Fin 2) (Fin 2) K) = 1`. Rewrite using `[← Matrix.GeneralLinearGroup.coe_mul, inv_mul_cancel, Matrix.GeneralLinearGroup.coe_one]`. Establish `h10` using `congrFun (congrFun hm 1) 0`. Establish `h11` using `congrFun (congrFun hm 1) 1`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, h, zero_mul, zero_add, Matrix.one_apply_eq, Matrix.one_apply_ne (show (1 : Fin 2) ≠ 0 by decide)] at h10 h11`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hne : ((g⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) 1 1 ≠ 0`. Introduce `h0`. Rewrite `h11` using `[h0, zero_mul]`. Conclude with `zero_ne_one h11`. Conclude with `(mul_eq_zero.mp h10).resolve_left hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GL_two_inv_one_zero {K : Type*} [Field K] (g : GL (Fin 2) K)
     (h : ((g⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) 1 0 = 0) :
@@ -34,7 +34,7 @@ theorem GL_two_inv_one_zero {K : Type*} [Field K] (g : GL (Fin 2) K)
   exact (mul_eq_zero.mp h10).resolve_left hne
 
 /- English proof (translation)
-Introduce `h1`. Establish `hm : ((g⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) * (g : Matrix (Fin 2) (Fin 2) K) = 1`. Rewrite using `[← Matrix.GeneralLinearGroup.coe_mul, inv_mul_cancel, Matrix.GeneralLinearGroup.coe_one]`. Establish `h00` using `congrFun (congrFun hm 0) 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, h0, h1] at h00`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem GL_two_col_ne_zero {K : Type*} [Field K] (g : GL (Fin 2) K)
     (h0 : (g : Matrix (Fin 2) (Fin 2) K) 0 0 = 0) : (g : Matrix (Fin 2) (Fin 2) K) 1 0 ≠ 0 := by
@@ -48,13 +48,13 @@ def bigCellGL2 (K : Type*) [Field K] : Set (GL (Fin 2) K) :=
   {g | (g : Matrix (Fin 2) (Fin 2) K) 1 0 ≠ 0}
 
 /- English proof (translation)
-Simplify using `[bigCellGL2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_notMem_bigCellGL2 (K : Type*) [Field K] : (1 : GL (Fin 2) K) ∉ bigCellGL2 K := by
   simp [bigCellGL2]
 
 /- English proof (translation)
-Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![0, 1; -1, 0] (by simp [Matrix.det_fin_two]), ?_⟩` and prove the remaining obligations. Simplify using `[bigCellGL2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_mem_bigCellGL2 (K : Type*) [Field K] :
     ∃ g : GL (Fin 2) K, g ∈ bigCellGL2 K := by
@@ -62,7 +62,7 @@ theorem exists_mem_bigCellGL2 (K : Type*) [Field K] :
   simp [bigCellGL2]
 
 /- English proof (translation)
-Introduce `h` and use `hx (GL_two_inv_one_zero x h) exists_mul_mem_left s := by classical obtain ⟨t, ht⟩ := Infinite.exists_notMem_finset (s.image fun v : GL (Fin 2) K => -(v : Matrix (Fin 2) (Fin 2) K) 1 0 / (v : Matrix (Fin 2) (Fin 2) K) 0 0) let z : GL (Fin 2) K := Matrix.GeneralLinearGroup.mkOfDetN …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isWeilCell_GL_two (K : Type*) [Field K] [Infinite K] : IsWeilCell (bigCellGL2 K) where
   inv_mem x hx := fun h => hx (GL_two_inv_one_zero x h)
@@ -95,13 +95,13 @@ namespace IsWeilCell
 variable {G : Type*} [Group G] {Ω : Set G}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by simpa using hΩ.inv_mem _ h, hΩ.inv_mem x⟩`.
+Supply the required witnesses or components.
 -/
 theorem inv_mem_iff (hΩ : IsWeilCell Ω) {x : G} : x⁻¹ ∈ Ω ↔ x ∈ Ω :=
   ⟨fun h => by simpa using hΩ.inv_mem _ h, hΩ.inv_mem x⟩
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hΩ.exists_mul_mem_left (s.image (·⁻¹))`. Use `⟨z⁻¹, fun v hv => ?_⟩` and prove the remaining obligations. Use `hΩ.inv_mem _ (hz v⁻¹ (Finset.mem_image_of_mem _ hv))` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_mul_mem_right (hΩ : IsWeilCell Ω) (s : Finset G) :
     ∃ t : G, ∀ v ∈ s, v * t ∈ Ω := by
@@ -112,14 +112,14 @@ theorem exists_mul_mem_right (hΩ : IsWeilCell Ω) (s : Finset G) :
   simpa using this
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hΩ.exists_mul_mem_left {1}`. Conclude with `⟨z * 1, hz 1 (Finset.mem_singleton_self 1)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty (hΩ : IsWeilCell Ω) : Ω.Nonempty := by
   obtain ⟨z, hz⟩ := hΩ.exists_mul_mem_left {1}
   exact ⟨z * 1, hz 1 (Finset.mem_singleton_self 1)⟩
 
 /- English proof (translation)
-Use `Set.eq_univ_of_forall fun g => ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `hΩ.exists_mul_mem_right {1, g}`. Use `⟨g * t, ht g (by simp), t⁻¹, hΩ.inv_mem _ (by simpa using ht 1 (by simp)), by group⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem mul_self_eq_univ (hΩ : IsWeilCell Ω) : Ω * Ω = Set.univ := by
   classical
@@ -130,7 +130,7 @@ theorem mul_self_eq_univ (hΩ : IsWeilCell Ω) : Ω * Ω = Set.univ := by
 variable {M : Type*} [Semigroup M] {R : G → M}
 
 /- English proof (translation)
-Establish `h1 : R (y * t) * R t⁻¹ = R y`. Rewrite using `[hR _ hyt _ (hΩ.inv_mem _ ht) (by simpa using hy)]; simp`. Rewrite using `[← h1, ← mul_assoc, hR _ hx _ hyt (by simpa [mul_assoc] using hxyt), mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_eq_of_translate (hΩ : IsWeilCell Ω) (hR : IsMulOn Ω R) {x y t : G} (hx : x ∈ Ω)
     (hy : y ∈ Ω) (ht : t ∈ Ω) (hyt : y * t ∈ Ω) (hxyt : x * y * t ∈ Ω) :
@@ -140,9 +140,9 @@ theorem mul_eq_of_translate (hΩ : IsWeilCell Ω) (hR : IsMulOn Ω R) {x y t : G
   rw [← h1, ← mul_assoc, hR _ hx _ hyt (by simpa [mul_assoc] using hxyt), mul_assoc]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hΩ.exists_mul_mem_right {1, y₁, y₂, x₁ * y₁}`. Establish `t1 : t ∈ Ω` using `by simpa using ht 1 (by simp)`. Establish `t2 : y₁ * t ∈ Ω` using `ht y₁ (by simp)`. Establish `t3 : y₂ * t ∈ Ω` using `ht y₂ (by simp)`. Establish `t4 : x₁ * y₁ * t ∈ Ω` using `ht _ (by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hΩ.mul_eq_of_translate hR hx₁ hy₁ t1 t2 t4, hΩ.mul_eq_of_translate hR hx₂ hy₂ t1 t3 (by rwa [← h]), h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_eq_mul (hΩ : IsWeilCell Ω) (hR : IsMulOn Ω R) {x₁ y₁ x₂ y₂ : G} (hx₁ : x₁ ∈ Ω)
     (hy₁ : y₁ ∈ Ω) (hx₂ : x₂ ∈ Ω) (hy₂ : y₂ ∈ Ω) (h : x₁ * y₁ = x₂ * y₂) :
@@ -157,7 +157,7 @@ theorem mul_eq_mul (hΩ : IsWeilCell Ω) (hR : IsMulOn Ω R) {x₁ y₁ x₂ y�
     hΩ.mul_eq_of_translate hR hx₂ hy₂ t1 t3 (by rwa [← h]), h]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hΩ.exists_mul_mem_right {1, g}`. Conclude with `⟨t, by simpa using ht 1 (by simp), ht g (by simp)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_translate (hΩ : IsWeilCell Ω) (g : G) : ∃ t : G, t ∈ Ω ∧ g * t ∈ Ω := by
   classical
@@ -168,13 +168,13 @@ noncomputable def translate (hΩ : IsWeilCell Ω) (g : G) : G :=
   Classical.choose (hΩ.exists_translate g)
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (hΩ.exists_translate g)).1`.
+A detailed English derivation is pending.
 -/
 theorem translate_mem (hΩ : IsWeilCell Ω) (g : G) : hΩ.translate g ∈ Ω :=
   (Classical.choose_spec (hΩ.exists_translate g)).1
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (hΩ.exists_translate g)).2`.
+A detailed English derivation is pending.
 -/
 theorem mul_translate_mem (hΩ : IsWeilCell Ω) (g : G) : g * hΩ.translate g ∈ Ω :=
   (Classical.choose_spec (hΩ.exists_translate g)).2
@@ -183,14 +183,14 @@ noncomputable def extendFun (hΩ : IsWeilCell Ω) (R : G → M) (g : G) : M :=
   R (g * hΩ.translate g) * R (hΩ.translate g)⁻¹
 
 /- English proof (translation)
-The claim follows from `hΩ.mul_eq_mul hR (hΩ.mul_translate_mem _) (hΩ.inv_mem _ (hΩ.translate_mem _)) hx hy (by group)`.
+A detailed English derivation is pending.
 -/
 theorem extendFun_mul_of_mem (hΩ : IsWeilCell Ω) (hR : IsMulOn Ω R) {x y : G} (hx : x ∈ Ω)
     (hy : y ∈ Ω) : hΩ.extendFun R (x * y) = R x * R y :=
   hΩ.mul_eq_mul hR (hΩ.mul_translate_mem _) (hΩ.inv_mem _ (hΩ.translate_mem _)) hx hy (by group)
 
 /- English proof (translation)
-Unfold `extendFun`. Rewrite using `[hR _ (hΩ.mul_translate_mem _) _ (hΩ.inv_mem _ (hΩ.translate_mem _)) (by simpa using hx)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem extendFun_of_mem (hΩ : IsWeilCell Ω) (hR : IsMulOn Ω R) {x : G} (hx : x ∈ Ω) :
     hΩ.extendFun R x = R x := by
@@ -199,15 +199,13 @@ theorem extendFun_of_mem (hΩ : IsWeilCell Ω) (hR : IsMulOn Ω R) {x : G} (hx :
   simp
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hΩ.exists_mul_mem_left {1, h, g⁻¹}`. Establish `s1 : s ∈ Ω` using `by simpa using hs 1 (by simp)`. Establish `s2 : s * h ∈ Ω` using `hs h (by simp)`. Establish `s3 : g * s⁻¹ ∈ Ω` using `by simpa using hΩ.inv_mem _ (hs g⁻¹ (by simp))`. Take `⟨t, ht⟩` from `hΩ.exists_mul_mem_right {1, g, s}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `t1 : t ∈ Ω` using `by simpa using ht 1 (by simp)`. Establish `t2 : g * t ∈ Ω` using `ht g (by simp)`. Establish `t3 : s * t ∈ Ω` using `ht s (by simp)`. Establish `eg : hΩ.extendFun R g = R (g * t) * R t⁻¹`. Rewrite using `[← hΩ.extendFun_mul_of_mem hR t2 (hΩ.inv_mem _ t1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Establish `eh : hΩ.extendFun R h = R s⁻¹ * R (s * h)`. Rewrite using `[← hΩ.extendFun_mul_of_mem hR (hΩ.inv_mem _ s1) s2]`. Use `group`. Establish `e1 : R t⁻¹ * R s⁻¹ = R (t⁻¹ * s⁻¹)` using `hR _ (hΩ.inv_mem _ t1) _ (hΩ.inv_mem _ s1) (by simpa using hΩ.inv_mem _ t3)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : R (g * t) * R (t⁻¹ * s⁻¹) = R (g * s⁻¹)`. Rewrite using `[hR _ t2 _ (by simpa using hΩ.inv_mem _ t3) (by simpa [mul_assoc] using s3)]`. Use `congr 1`. Use `group`. Rewrite using `[eg, eh, mul_assoc, ← mul_assoc (R t⁻¹), e1, ← mul_assoc, e2, ← hΩ.extendFun_mul_of_mem hR s3 s2]`.
-
-Use `congr 1`. Use `group`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem extendFun_mul (hΩ : IsWeilCell Ω) (hR : IsMulOn Ω R) (g h : G) :
     hΩ.extendFun R (g * h) = hΩ.extendFun R g * hΩ.extendFun R h := by
@@ -238,14 +236,14 @@ noncomputable def extend (hΩ : IsWeilCell Ω) (hR : IsMulOn Ω R) : G →ₙ* M
   map_mul' := hΩ.extendFun_mul hR
 
 /- English proof (translation)
-The claim follows from `hΩ.extendFun_of_mem hR hx`.
+A detailed English derivation is pending.
 -/
 theorem extend_apply_of_mem (hΩ : IsWeilCell Ω) (hR : IsMulOn Ω R) {x : G} (hx : x ∈ Ω) :
     hΩ.extend hR x = R x :=
   hΩ.extendFun_of_mem hR hx
 
 /- English proof (translation)
-Use extensionality with `g`. Take `⟨x, hx, y, hy, rfl⟩ : g ∈ Ω * Ω` from `by rw [hΩ.mul_self_eq_univ]; trivial`. Rewrite using `[map_mul, map_mul, hΦ x hx, hΦ y hy, hΩ.extend_apply_of_mem hR hx, hΩ.extend_apply_of_mem hR hy]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem extend_unique (hΩ : IsWeilCell Ω) (hR : IsMulOn Ω R) (Φ : G →ₙ* M)
     (hΦ : ∀ x ∈ Ω, Φ x = R x) : Φ = hΩ.extend hR := by
@@ -255,7 +253,7 @@ theorem extend_unique (hΩ : IsWeilCell Ω) (hR : IsMulOn Ω R) (Φ : G →ₙ* 
     hΩ.extend_apply_of_mem hR hy]
 
 /- English proof (translation)
-Use extensionality with `g`. Take `⟨x, hx, y, hy, rfl⟩ : g ∈ Ω * Ω` from `by rw [hΩ.mul_self_eq_univ]; trivial`. Rewrite using `[map_mul, map_mul, h x hx, h y hy]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulHom_ext (hΩ : IsWeilCell Ω) {Φ Ψ : G →ₙ* M} (h : ∀ x ∈ Ω, Φ x = Ψ x) : Φ = Ψ := by
   ext g
@@ -267,7 +265,7 @@ section Monoid
 variable {N : Type*} [Monoid N] {S : G → N}
 
 /- English proof (translation)
-Establish `h : hΩ.extend hS 1 * S x₀ = S x₀`. Rewrite using `[← hΩ.extend_apply_of_mem hS hx₀, ← map_mul, one_mul]`. Conclude with `hu.mul_eq_right.mp h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extend_one (hΩ : IsWeilCell Ω) (hS : IsMulOn Ω S) {x₀ : G} (hx₀ : x₀ ∈ Ω)
     (hu : IsUnit (S x₀)) : hΩ.extend hS 1 = 1 := by
@@ -282,7 +280,7 @@ noncomputable def extendMonoidHom (hΩ : IsWeilCell Ω) (hS : IsMulOn Ω S) {x�
   map_mul' := map_mul (hΩ.extend hS)
 
 /- English proof (translation)
-The claim follows from `hΩ.extend_apply_of_mem hS hx`.
+A detailed English derivation is pending.
 -/
 theorem extendMonoidHom_apply_of_mem (hΩ : IsWeilCell Ω) (hS : IsMulOn Ω S) {x₀ : G}
     (hx₀ : x₀ ∈ Ω) (hu : IsUnit (S x₀)) {x : G} (hx : x ∈ Ω) :
@@ -290,7 +288,7 @@ theorem extendMonoidHom_apply_of_mem (hΩ : IsWeilCell Ω) (hS : IsMulOn Ω S) {
   hΩ.extend_apply_of_mem hS hx
 
 /- English proof (translation)
-Use extensionality with `g`. Take `⟨x, hx, y, hy, rfl⟩ : g ∈ Ω * Ω` from `by rw [hΩ.mul_self_eq_univ]; trivial`. Rewrite using `[map_mul, map_mul, h x hx, h y hy]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem monoidHom_ext (hΩ : IsWeilCell Ω) {Φ Ψ : G →* N} (h : ∀ x ∈ Ω, Φ x = Ψ x) : Φ = Ψ := by
   ext g
@@ -298,7 +296,7 @@ theorem monoidHom_ext (hΩ : IsWeilCell Ω) {Φ Ψ : G →* N} (h : ∀ x ∈ Ω
   rw [map_mul, map_mul, h x hx, h y hy]
 
 /- English proof (translation)
-The claim follows from `hΩ.monoidHom_ext fun x hx => by rw [hΦ x hx, hΩ.extendMonoidHom_apply_of_mem hS hx₀ hu hx]`.
+A detailed English derivation is pending.
 -/
 theorem extendMonoidHom_unique (hΩ : IsWeilCell Ω) (hS : IsMulOn Ω S) {x₀ : G} (hx₀ : x₀ ∈ Ω)
     (hu : IsUnit (S x₀)) (Φ : G →* N) (hΦ : ∀ x ∈ Ω, Φ x = S x) :
@@ -306,7 +304,7 @@ theorem extendMonoidHom_unique (hΩ : IsWeilCell Ω) (hS : IsMulOn Ω S) {x₀ :
   hΩ.monoidHom_ext fun x hx => by rw [hΦ x hx, hΩ.extendMonoidHom_apply_of_mem hS hx₀ hu hx]
 
 /- English proof (translation)
-Use `⟨⟨fun _ _ => trivial, fun _ => ⟨1, fun _ _ => trivial⟩⟩, fun _ _ _ _ _ => by simp, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨Φ, hΦ⟩`. Use `hΦ 1 trivial` as an intermediate fact. Rewrite `this` using `[map_one]`. Conclude with `one_ne_zero this`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_exists_monoidHom_zero (G : Type*) [Group G] :
     IsWeilCell (Set.univ : Set G) ∧ IsMulOn (Set.univ : Set G) (fun _ => (0 : ℕ)) ∧
@@ -327,7 +325,7 @@ noncomputable def extendGroupHom (hΩ : IsWeilCell Ω) (hT : IsMulOn Ω T) : G �
   hΩ.extendMonoidHom hT (hΩ.nonempty.some_mem) (Group.isUnit _)
 
 /- English proof (translation)
-The claim follows from `hΩ.extend_apply_of_mem hT hx`.
+A detailed English derivation is pending.
 -/
 theorem extendGroupHom_apply_of_mem (hΩ : IsWeilCell Ω) (hT : IsMulOn Ω T) {x : G}
     (hx : x ∈ Ω) : hΩ.extendGroupHom hT x = T x :=
@@ -338,7 +336,7 @@ end Group
 end IsWeilCell
 
 /- English proof (translation)
-Apply `(isWeilCell_GL_two ℚ).monoidHom_ext` to reduce the goal to its premises. Introduce `x hx`. Conclude with `(isWeilCell_GL_two ℚ).extendGroupHom_apply_of_mem _ hx`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 example : (isWeilCell_GL_two ℚ).extendGroupHom (T := id) (fun _ _ _ _ _ => rfl) =
     MonoidHom.id _ := by
@@ -347,7 +345,7 @@ example : (isWeilCell_GL_two ℚ).extendGroupHom (T := id) (fun _ _ _ _ _ => rfl
   exact (isWeilCell_GL_two ℚ).extendGroupHom_apply_of_mem _ hx
 
 /- English proof (translation)
-Apply `(isWeilCell_GL_two ℚ).monoidHom_ext` to reduce the goal to its premises. Introduce `x hx`. Conclude with `(isWeilCell_GL_two ℚ).extendGroupHom_apply_of_mem _ hx`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 example : (isWeilCell_GL_two ℚ).extendGroupHom (T := fun g => Matrix.GeneralLinearGroup.det g)
     (fun x _ y _ _ => (map_mul _ x y).symm) = Matrix.GeneralLinearGroup.det := by

@@ -12,7 +12,7 @@ open CategoryTheory
 namespace CrystallineSemistableComparison.Pb
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.graded_cover_vanishing_induction`.
+A detailed English derivation is pending.
 -/
 theorem cech_top_rel : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (Φ : PDF R C) (Fil : ℤ → IdF Φ.A),
     IsFil Φ Fil → ∀ (s n : ℕ) (W : Fin (n + 2) → ObjectProperty C), (∀ T, (∃ α, W α T) → (Fil s).S T = ⊥) →

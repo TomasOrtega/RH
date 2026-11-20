@@ -20,7 +20,7 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
 
 /- English proof (translation)
-Establish `h : (fun g => rhoO D.nd i ρ π g) = fun g => (fun a b => rO D.nd i r π g (Fin.castAdd D.R.t a) (Fin.castAdd D.R.t b) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i))`. Use function extensionality and compare the values at `g`. Conclude with `Matrix.ext fun a b => (hN.2.2 g a b).symm`. Rewrite using `[h]`. Conclude with `continuous_pi fun a => continuous_pi fun b => (hc π).matrix_elem _ _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhoCont_of (hc : TruncatedSeriesCountingIdentities.FamilyContinuous i r) (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) :
     Continuous fun g => rhoO D.nd i ρ π g := by
@@ -67,9 +67,9 @@ def phiW (n : ℕ) (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) :
     rw [RingEquiv.apply_symm_apply, Equiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `⟨phiW i dc n hn, fun g x => funext fun a => ?_⟩` and prove the remaining obligations. Use `show eK (D.nbr i _ hn) ((KLat.matK (Dd.ρk 0 (uElt Dd.r Dd.χ ((Br.iota D.nbr i _ hn g : _) : GE D.nd)))).mulVec (x : {a // RepresentationBoundsCohomology.blk D.R a = 0} → FractionRing (D.nd.O i)) (H0.e0 a)) = ∑ b, Br.loc D.nbr i _ hn (WpO D.nd i ρ π) g a b * eK (D.nbr i _ hn) ((x …`. Use `(congrArg (eK (D.nbr i _ hn)) (KLat.matK_mulVec (Dd.ρk 0 (uElt Dd.r Dd.χ ((Br.iota D.nbr i _ hn g : _) : GE D.nd))) (show {a // RepresentationBoundsCohomology.blk D.R a = 0} → FractionRing (D.nd.O i) from x) (H0.e0 a))).trans ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `(Equiv.sum_comp (H0.e0 (D := D)) _).symm.trans (Finset.sum_congr rfl fun b _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rw [Algebra.smul_def, map_mul, loc_apply, H0.unipotent_block_zero_entry hD hN]`.
+A detailed English derivation is pending.
 -/
 theorem wpIso_dat (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0
       eB e₁ s Dd) (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π)
@@ -102,7 +102,7 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (hM : ∀ a b, Continuous fun g => KLat.M0 Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk g a b)
 
 /- English proof (translation)
-The claim follows from `isDR_of_wpIso i dc r ρ π hF hG2 hDec hCont (rhoCont_of i r ρ π hCont hN) n hn _ (wpIso_dat i dc r ρ π g0 eB e₁ s Dd hK hε hM hD hN n hn)`.
+A detailed English derivation is pending.
 -/
 theorem isDR_dat (hF : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π) (hDec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π)
     (hCont : TruncatedSeriesCountingIdentities.FamilyContinuous i r)

@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.PolDeg
 
 /- English proof (translation)
-Establish `hs` using `GlobalTheory.VanStalk.van_spec U.compl (ξ (closedPoint R))`. Use `GlobalTheory.VanStalk.eq_of_forall_prime (hrad _ hs.1) hf fun q => ?_` and prove the remaining obligations. Rewrite using `[idlAlong, Ideal.map_le_iff_le_comap, Ideal.span_singleton_le_iff_mem]`. Use `(hs.2 (PrimeSpectrum.comap (Scheme.stalkClosedPointTo ξ).hom q)).symm.trans ?_` and prove the remaining obligations. Establish `e` using `congrArg (fun g => g q) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(Spec.map (Scheme.stalkClosedPointTo ξ) ≫ S.fromSpecStalk (ξ (closedPoint R))) q ∈ (U.compl : Set S) ↔ _`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `ξ q ∉ (U : Set S) ↔ _`. Rewrite using `[hU q, not_not]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem idlAlong_vanishingIdeal_compl (S : Scheme.{0}) (U : S.Opens) (R : Type) [CommRing R] [IsLocalRing R]
     (ξ : Sp R ⟶ S) (f : R) (hf : (Ideal.span {f}).IsRadical) (hU : ∀ p : Sp R, ξ p ∈ (U : Set S) ↔ f ∉ p.asIdeal)

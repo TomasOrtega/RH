@@ -25,7 +25,7 @@ abbrev Pt (q : X ⟶ Spec (CommRingCat.of K)) (B : Type) [CommRing B] : Type :=
   PtOver X q (Ideal.Quotient.mk (⊥ : Ideal K)) B
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Prod.ext h1 ((cancel_mono V.ι).1 h2))`.
+A detailed English derivation is pending.
 -/
 theorem pt_ext (V : X.Opens) {B : Type} [CommRing B] {y y' : Pt (V.ι ≫ q) B} (h1 : y.1.1 = y'.1.1)
     (h2 : y.1.2 ≫ V.ι = y'.1.2 ≫ V.ι) : y = y' :=
@@ -40,13 +40,13 @@ def liftPt (V : X.Opens) {B : Type} [CommRing B] (y : Pt q B) (h : ⊤ ≤ y.1.2
     exact y.2⟩
 
 /- English proof (translation)
-The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem liftPt_fac (V : X.Opens) {B : Type} [CommRing B] (y : Pt q B) (h : ⊤ ≤ y.1.2 ⁻¹ᵁ V) :
     (liftPt V y h).1.2 ≫ V.ι = y.1.2 := IsOpenImmersion.lift_fac _ _ _
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `pt_ext V rfl ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Spec.map φ ≫ (liftPt V y h).1.2) ≫ V.ι = (liftPt V _ h').1.2 ≫ V.ι`. Rewrite using `[Category.assoc, liftPt_fac, liftPt_fac]`. Both sides reduce to the same expression.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem liftPt_map (V : X.Opens) {B B' : CommRingCat.{0}} (φ : B ⟶ B') (y : Pt q B) (y' : Pt q B')
     (h : ⊤ ≤ y.1.2 ⁻¹ᵁ V) (h' : ⊤ ≤ y'.1.2 ⁻¹ᵁ V)
@@ -59,7 +59,7 @@ theorem liftPt_map (V : X.Opens) {B B' : CommRingCat.{0}} (φ : B ⟶ B') (y : P
   rfl
 
 /- English proof (translation)
-Establish `e : Ideal.quotientMap J (RingHom.id B) hJ = RingHom.id (B ⧸ J)`. Use `ext`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `congrFun (congrArg (fun t => (ConcreteCategory.hom t : _ → _)) ((ptFun Z r (Ideal.Quotient.mk (⊥ : Ideal K))).map_id (CommRingCat.of (B ⧸ J)))) y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_id {Z : Scheme.{0}} {r : Z ⟶ Spec (CommRingCat.of K)} {B : Type} [CommRing B] (J : Ideal B) (hJ)
     (y : Pt r (B ⧸ J)) :
@@ -87,7 +87,7 @@ def smH {T T' : Thick (smFun X q)} (φ : T.B →+* T'.B) (comm : ∀ r, φ (T.i 
   mkH (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (T := T) (T' := T') φ comm dp hle hpt
 
 /- English proof (translation)
-The claim follows from `hom_ext (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (T := T) (T' := T') h`.
+A detailed English derivation is pending.
 -/
 theorem sm_ext {T T' : Thick (smFun X q)} {f g : T ⟶ T'} (h : f.φ = g.φ) : f = g :=
   hom_ext (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (T := T) (T' := T') h
@@ -97,7 +97,7 @@ def liftT (V : X.Opens) (T : Thick (smFun X q)) (h : InV V T) : Thick (smFun V.t
     (liftPt V T.y h) T.w
 
 /- English proof (translation)
-Take `⟨-, V', hV', hT⟩` from `h`. Take `rfl` from `Set.mem_singleton_iff.1 hV'`. Conclude with `hT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inV_of {V : X.Opens} {s : ℕ} {T : Thick (smFun X q)} (h : KS q s {V} T) : InV V T := by
   obtain ⟨-, V', hV', hT⟩ := h
@@ -129,7 +129,7 @@ section Equivalence
 variable {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)}
 
 /- English proof (translation)
-Use `Subtype.ext (Prod.ext (congrArg (fun z : Pt (V.ι ≫ q) B' => z.1.1) e) ?_)` and prove the remaining obligations. Establish `e2` using `congrArg (fun z : Pt (V.ι ≫ q) B' => z.1.2 ≫ V.ι) e`. Express the relevant statement in the definitionally equal form `(Spec.map φ ≫ (liftPt V y h).1.2) ≫ V.ι = (liftPt V y' h').1.2 ≫ V.ι at e2`. Rewrite `e2` using `[Category.assoc, liftPt_fac, liftPt_fac]`. Conclude with `e2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftPt_unmap (V : X.Opens) {B B' : CommRingCat.{0}} (φ : B ⟶ B') (y : Pt q B) (y' : Pt q B')
     (h : ⊤ ≤ y.1.2 ⁻¹ᵁ V) (h' : ⊤ ≤ y'.1.2 ⁻¹ᵁ V)
@@ -153,7 +153,7 @@ instance mF_full (V : X.Opens) (s : ℕ) : (mF q V s).Full where
       ObjectProperty.hom_ext _ (sm_ext rfl)⟩
 
 /- English proof (translation)
-Introduce `x _`. Express the relevant statement in the definitionally equal form `(z ≫ V.ι) x ∈ V`. Rewrite using `[Scheme.Hom.comp_apply]`. Establish `hx : V.ι (z x) ∈ (V : Set X)` using `Scheme.Opens.range_ι V ▸ ⟨z x, rfl⟩`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem top_le_comp (V : X.Opens) {Z : Scheme.{0}} (z : Z ⟶ V.toScheme) : ⊤ ≤ (z ≫ V.ι) ⁻¹ᵁ V := by
   intro x _
@@ -168,7 +168,7 @@ def pushPt (V : X.Opens) {B : Type} [CommRing B] (y : Pt (V.ι ≫ q) B) : Pt q 
     exact y.2⟩
 
 /- English proof (translation)
-The claim follows from `pt_ext V rfl (liftPt_fac V (pushPt V y) h)`.
+A detailed English derivation is pending.
 -/
 theorem lift_push (V : X.Opens) {B : Type} [CommRing B] (y : Pt (V.ι ≫ q) B) (h : ⊤ ≤ (pushPt V y).1.2 ⁻¹ᵁ V) :
     liftPt V (pushPt V y) h = y :=
@@ -179,7 +179,7 @@ def downT (V : X.Opens) (T : Thick (smFun V.toScheme (V.ι ≫ q))) : Thick (smF
     (pushPt V T.y) T.w
 
 /- English proof (translation)
-The claim follows from `top_le_comp V _`.
+A detailed English derivation is pending.
 -/
 theorem down_inV (V : X.Opens) (T : Thick (smFun V.toScheme (V.ι ≫ q))) : InV V (downT V T) :=
   top_le_comp V _
@@ -195,7 +195,7 @@ def dnInv (V : X.Opens) (T : Thick (smFun V.toScheme (V.ι ≫ q))) (h : InV V (
     (fun _ hx => hx) ((pt_id T.J _ _).trans (lift_push V T.y h).symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1, V, rfl, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem ks_of {V : X.Opens} {s : ℕ} {T : Thick (smFun X q)} (h1 : TF 1 s T) (h2 : InV V T) : KS q s {V} T :=
   ⟨h1, V, rfl, h2⟩
@@ -215,7 +215,7 @@ instance mF_essSurj (V : X.Opens) (s : ℕ) : (mF q V s).EssSurj where
 instance mF_equiv (V : X.Opens) (s : ℕ) : (mF q V s).IsEquivalence := { }
 
 /- English proof (translation)
-The claim follows from `haveI : (mV q V s a).G.IsLeftAdjoint := inferInstanceAs (mF q V s).IsLeftAdjoint P.adj_mor (mV q V s a) (fun _ => Function.bijective_id) n`.
+A detailed English derivation is pending.
 -/
 theorem mV_bij (V : X.Opens) (s a n : ℕ) : Function.Bijective ((mV q V s a).pull n) :=
   haveI : (mV q V s a).G.IsLeftAdjoint := inferInstanceAs (mF q V s).IsLeftAdjoint
@@ -230,7 +230,7 @@ variable {X Y : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)} {p : Y ⟶ Spec 
   (hh : u.resLE W V h ≫ (W.ι ≫ p) = V.ι ≫ q)
 
 /- English proof (translation)
-Use `pt_ext W rfl ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((liftPt V y hV).1.2 ≫ u.resLE W V h) ≫ W.ι = _`. Rewrite using `[Category.assoc, Scheme.Hom.resLE_comp_ι, ← Category.assoc, liftPt_fac, liftPt_fac]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_lift {B : CommRingCat.{0}} (y : Pt q B) (hV : ⊤ ≤ y.1.2 ⁻¹ᵁ V)
     (hW : ⊤ ≤ ((smMor u hu).pt.app B y : Pt p B).1.2 ⁻¹ᵁ W) :
@@ -251,9 +251,9 @@ def etaN : (mV q V s a).G ⋙ (morU (pullM (u.resLE W V h) hh a) (U := KS (W.ι 
   naturality _ _ _ := ObjectProperty.hom_ext _ (sm_ext rfl)
 
 /- English proof (translation)
-Establish `e1` using `(P.pull_comp (σ'' := RingHom.id K) (morU (pullM (u.resLE W V h) hh a) (U := KS (W.ι ≫ p) s {⊤}) (U' := KS (V.ι ≫ q) s {⊤}) hG') (mV q V s a) n x).1`. Establish `e2` using `(P.pull_comp (σ'' := RingHom.id K) (mV p W s a) (morU (pullM u hu a) (U := KS p s {W}) (U' := KS q s {V}) hG) n x).1`. Use `e1.symm.trans (Eq.trans ?_ e2)` and prove the remaining obligations. Use `P.prism _ _ (etaN u hu V W h hh s a hG hG') (fun T z => ?_) n x` and prove the remaining obligations. Take `⟨z, hz⟩` from `z`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem mV_nat (n : ℕ) (x) :
     (mV q V s a).pull n ((morU (pullM (u.resLE W V h) hh a) (U := KS (W.ι ≫ p) s {⊤}) (U' := KS (V.ι ≫ q) s {⊤}) hG').pull n x) =
@@ -270,7 +270,7 @@ theorem mV_nat (n : ℕ) (x) :
 end Natural
 
 /- English proof (translation)
-Introduce `K _` and use `⟨@fun X q V s a => mV q V s a, @fun X q V s a n => mV_bij V s a n, @fun X Y q p u hu V W h hh s a hG hG' n x => mV_nat u hu V W h hh s a hG hG' n x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem open_thick : ∀ (K : Type) [CommRing K], ∃ m : ∀ {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (V : X.Opens) (s a : ℕ),
     CH.Mor ((KS (V.ι ≫ q) s {⊤}).ι ⋙ HT.grT (smFun V.toScheme (V.ι ≫ q)) a) ((KS q s {V}).ι ⋙ HT.grT (smFun X q) a)

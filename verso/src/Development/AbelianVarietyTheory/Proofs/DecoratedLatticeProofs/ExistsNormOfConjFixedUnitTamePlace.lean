@@ -22,7 +22,7 @@ namespace GlobalTheory.FixedUnitNorm
 
 set_option synthInstance.maxHeartbeats 200000 in
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero, map_zero]`. Consider the case `add x y hx hy => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, map_add, hx, hy]`. Consider the case `tmul a m => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compAt_cA (D : D7) (v : Pl D) (a : AE D) : compAt D v (cA D a) = sigV D v (compAt D v a) := by
   induction a using TensorProduct.induction_on with
@@ -32,7 +32,7 @@ theorem compAt_cA (D : D7) (v : Pl D) (a : AE D) : compAt D v (cA D a) = sigV D 
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_algebraMap (D : D7) (v : Pl D) (c : Fv D.host.F v) (f : D.host.F) :
     c ⊗ₜ[D.host.F] (algebraMap D.host.F D.host.E f) = (algebraMap D.host.F (Fv D.host.F v) f * c) ⊗ₜ[D.host.F] (1 : D.host.E) := by
@@ -42,41 +42,37 @@ set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D v ε hT _ _ _ hid u hu hcu ⟨y, hy, huy⟩`. Take `⟨w, t, n, h1, h2, h3⟩` from `GlobalTheory.UnramifiedDiscriminant.exists_discr_notMem D.host.F D.host.E D.sp.cm.sig (GlobalTheory.AdelicU.isCMExt_host D) v (fun P hP => @hT.1 P.asIdeal P.isPrime hP)`. Establish `hw : ∀ f : D.host.F, algebraMap D.host.F D.host.E f ≠ w`. Introduce `f hf`. Apply `h3` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hs : D.sp.cm.sig w = w` using `by rw [← hf, AlgHom.commutes]`. Establish `e : algebraMap D.host.F D.host.E ((t : D.host.F) ^ 2 - 4 * n) = 0`. Rewrite using `[map_sub, map_pow, map_mul, ← h1, ← h2, hs, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ((t ^ 2 - 4 * n : 𝓞 D.host.F) : D.host.F) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `(FaithfulSMul.algebraMap_injective D.host.F D.host.E) (e.trans (map_zero _).symm)` as an intermediate fact. Use `push_cast`. Conclude with `this`. Establish `e3 : t ^ 2 - 4 * n = 0` using `RingOfIntegers.coe_eq_zero_iff.1 e2`. Rewrite using `[e3]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `v.asIdeal.zero_mem`. Take `⟨W, hW⟩` from `GlobalTheory.T.exists_integer_of_relative_trace_norm_integral D w t n h1 h2`. Establish `hone : (1 : Fv D.host.F v ⊗[D.host.F] D.host.E) ∈ intV D v` using `AddSubgroup.subset_closure ⟨1, (v.adicCompletionIntegers D.host.F).one_mem, 1, by simp [Algebra.TensorProduct.one_def]⟩`. Establish `hε1 : compAt D v ε = 1`. Take `⟨z, hz, hz1⟩` from `GlobalTheory.T.exists_integralAdele_atPlace_with_component D v 1 hone`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `congrArg (compAt D v) ((hid z).1 hz.1)`. Rewrite `h` using `[RingHom.map_mul, hz1, mul_one]`. Then use the resulting hypothesis. Take `⟨a, ha, b, hb, hU⟩` from `GlobalTheory.T.localIntegers_tensor_coords_prime_to_discriminant D v w t n h1 h2 h3 _ (GlobalTheory.T.adeleComponentAtFinitePlace_integral_mem_localTensor D v u hu)`. Establish `hsig : sigV D v (compAt D v u) = compAt D v u` using `by rw [← compAt_cA, hcu]`. Establish `hsw : D.sp.cm.sig w = algebraMap D.host.F D.host.E t - w` using `by rw [← h1]; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : b = 0`. Establish `e : sigV D v (a ⊗ₜ[D.host.F] (1 : D.host.E) + b ⊗ₜ[D.host.F] w) - (a ⊗ₜ[D.host.F] (1 : D.host.E) + b ⊗ₜ[D.host.F] w) = 0` using `by rw [← hU, hsig, sub_self]`. Establish `e' : (algebraMap D.host.F (Fv D.host.F v) t * b) ⊗ₜ[D.host.F] (1 : D.host.E) + (-(2 * b)) ⊗ₜ[D.host.F] w = 0`. Rewrite using `[← e, sigV, map_add, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, AlgHom.id_apply, map_one, hsw, TensorProduct.tmul_sub, tmul_algebraMap, TensorProduct.neg_tmul]`. Rewrite using `[show (2 : Fv D.host.F v) * b = b + b by ring, TensorProduct.add_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Use `(GlobalTheory.T.completion_tensor_relativeBasis_coords_unique D v w hw _ _ e').2` as an intermediate fact. Establish `h2b : (2 : Fv D.host.F v) * b = 0` using `neg_eq_zero.1 this`. Establish `h2ne : (2 : Fv D.host.F v) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `two_ne_zero (α := D.host.F)` to reduce the goal to its premises. Apply `(algebraMap D.host.F (Fv D.host.F v)).injective` to reduce the goal to its premises. Rewrite using `[map_ofNat, map_zero]`. Conclude with `h`. Conclude with `(mul_eq_zero.1 h2b).resolve_left h2ne`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hU` using `[hb0, TensorProduct.zero_tmul, add_zero]`. Take `⟨a', ha', b', hb', hY⟩` from `GlobalTheory.T.localIntegers_tensor_coords_prime_to_discriminant D v w t n h1 h2 h3 _ (GlobalTheory.T.adeleComponentAtFinitePlace_integral_mem_localTensor D v y hy)`. Establish `haa : a * a' = 1`. Establish `e : compAt D v u * compAt D v y = 1` using `by rw [← RingHom.map_mul, huy, hε1]`. Rewrite `e` using `[hU, hY, mul_add, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression.
 
-Establish `e' : (a * a' - 1) ⊗ₜ[D.host.F] (1 : D.host.E) + (a * b') ⊗ₜ[D.host.F] w = 0`. Rewrite using `[TensorProduct.sub_tmul, ← Algebra.TensorProduct.one_def, ← e]`. Normalize the expressions using the abelian group laws. Conclude with `sub_eq_zero.1 (GlobalTheory.T.completion_tensor_relativeBasis_coords_unique D v w hw _ _ e').1`. Set `A : v.adicCompletionIntegers D.host.F` to `⟨a, ha⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hAu : IsUnit A` using `⟨⟨A, ⟨a', ha'⟩, Subtype.ext haa, Subtype.ext (by rw [mul_comm]; exact haa)⟩, rfl⟩`. Establish `hD : IsUnit (algebraMap (𝓞 D.host.F) (v.adicCompletionIntegers D.host.F) t ^ 2 - 4 * algebraMap (𝓞 D.host.F) (v.adicCompletionIntegers D.host.F) n)`. Use `(GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff v _).2 h3` as an intermediate fact. Rewrite `this` using `[map_sub, map_pow, map_mul, map_ofNat]`. Then use the resulting hypothesis. Take `⟨r, s, hrs⟩` from `GlobalTheory.T.exists_binary_quadratic_eq_unit_of_disc_isUnit D.host.F v _ _ A hD hAu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set x' : Fv D.host.F v ⊗[D.host.F] D.host.E := (r : Fv D.host.F v) ⊗ₜ[D.host.F] (1 : D.host.E) + (s : Fv D.host.F v) ⊗ₜ[D.host.F] w`. Establish `hx'i : x' ∈ intV D v`. Use `AddSubgroup.add_mem _ (AddSubgroup.subset_closure ⟨r, r.2, 1, by simp⟩) (AddSubgroup.subset_closure ⟨s, s.2, W, by rw [hW]⟩)` and prove the remaining obligations. Establish `hcoe : ∀ c : 𝓞 D.host.F, ((algebraMap (𝓞 D.host.F) (v.adicCompletionIntegers D.host.F) c : v.adicCompletionIntegers D.host.F) : Fv D.host.F v) = algebraMap D.host.F (Fv D.host.F v) c` using `fun c => rfl`. Establish `hnorm : x' * sigV D v x' = compAt D v u`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hrs' : (r : Fv D.host.F v) ^ 2 + algebraMap D.host.F (Fv D.host.F v) t * r * s + algebraMap D.host.F (Fv D.host.F v) n * (s : Fv D.host.F v) ^ 2 = a`. Use `congrArg (fun q : v.adicCompletionIntegers D.host.F => (q : Fv D.host.F v)) hrs` as an intermediate fact. Conclude with `this`. Establish `e1 : sigV D v x' = (r : Fv D.host.F v) ⊗ₜ[D.host.F] (1 : D.host.E) + (s : Fv D.host.F v) ⊗ₜ[D.host.F] D.sp.cm.sig w`. Simplify using `only [x', sigV, map_add, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[e1, hU]`. Simplify using `only [x', add_mul, mul_add, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Establish `e2 : ((s : Fv D.host.F v) * r) ⊗ₜ[D.host.F] w = ((r : Fv D.host.F v) * s) ⊗ₜ[D.host.F] w` using `by rw [mul_comm]`. Rewrite using `[e2, h2, tmul_algebraMap, hsw, TensorProduct.tmul_sub, tmul_algebraMap]`. Establish `key : ∀ P Q R S : Fv D.host.F v ⊗[D.host.F] D.host.E, P + S + (Q - S + R) = P + Q + R` using `fun P Q R S => by abel`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[key, ← TensorProduct.add_tmul, ← TensorProduct.add_tmul]`. Use `congr 1`. Rewrite using `[← hrs']`. Expand and normalize the polynomial expressions, which then agree. Take `⟨x, hxi, hxc⟩` from `GlobalTheory.T.exists_integralAdele_atPlace_with_component D v x' hx'i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨x, hxi, ?_⟩` and prove the remaining obligations. Establish `hx0` using `(mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere D _ x).1 hxi.1`. Establish `hu0` using `(mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere D _ u).1 hu.1`. Rewrite using `[← sub_eq_zero]`. Apply `CMAdele_eq_zero_of_infinite_and_finite_components_zero` to reduce the goal to its premises.
-
-Rewrite using `[RingHom.map_sub, RingHom.map_mul, hx0.1, zero_mul, hu0.1, sub_zero]`. Introduce `w'`. Distinguish the cases in `hw' : w' = v`. Substitute `hw'` using the available equality. Rewrite using `[RingHom.map_sub, RingHom.map_mul, compAt_cA, hxc, hnorm, sub_self]`.
-
-Rewrite using `[RingHom.map_sub, RingHom.map_mul, hx0.2 w' hw', zero_mul, hu0.2 w' hw', sub_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_unit_norm : ∀ (D : D7) (v : Pl D) (ε : AE D), Tame D v → ε * ε = ε → cA D ε = ε → ε ∈ intAt D (· = v) →
     (∀ a, a ∈ idAt D (· = v) ↔ ε * a = a) → ∀ u ∈ intAt D (· = v), cA D u = u →

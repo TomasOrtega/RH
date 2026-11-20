@@ -16,7 +16,7 @@ section Gen
 variable {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] {S : Submodule R M} {n : ℕ}
 
 /- English proof (translation)
-Establish `h' : ∑ j, c j • b j = ∑ j, d j • b j` using `Subtype.ext (by simpa using h)`. Conclude with `(b.repr_sum_self c).symm.trans ((congrArg (fun y => ⇑(b.repr y)) h').trans (b.repr_sum_self d))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coeff_unique (b : Module.Basis (Fin n) R S) {c d : Fin n → R}
     (h : ∑ j, c j • (b j : M) = ∑ j, d j • (b j : M)) : c = d := by
@@ -24,7 +24,7 @@ theorem coeff_unique (b : Module.Basis (Fin n) R S) {c d : Fin n → R}
   exact (b.repr_sum_self c).symm.trans ((congrArg (fun y => ⇑(b.repr y)) h').trans (b.repr_sum_self d))
 
 /- English proof (translation)
-Use `⟨fun j => b.repr ⟨x, hx⟩ j, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at e`. Conclude with `e.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coeff (b : Module.Basis (Fin n) R S) {x : M} (hx : x ∈ S) :
     ∃ c : Fin n → R, x = ∑ j, c j • (b j : M) := by
@@ -34,7 +34,7 @@ theorem exists_coeff (b : Module.Basis (Fin n) R S) {x : M} (hx : x ∈ S) :
   exact e.symm
 
 /- English proof (translation)
-Simplify using `only [Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_smul_sum {m : ℕ} (a : Fin m → R) (B : Fin m → Fin n → R) (e : Fin n → M) :
     ∑ k, a k • ∑ j, B k j • e j = ∑ j, (∑ k, a k * B k j) • e j := by
@@ -57,7 +57,7 @@ theorem incHom_apply (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra �
     incHom l O y = inc l O y := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_one_add_X_smul {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {m : ℕ} (D : Mx R⟦X⟧ m m) :
     (1 + (X : R⟦X⟧) • D).map (PowerSeries.map f) = 1 + (X : S⟦X⟧) • D.map (PowerSeries.map f) := by
@@ -69,9 +69,9 @@ end GlobalTheory.WachMap
 namespace GlobalTheory.WachMap
 
 /- English proof (translation)
-Establish `h1 : g (u (e k)) = ∑ j, (∑ m, p m k * A j m) • (b' j : M')`. Rewrite using `[hp k, map_sum]`. Simplify using `only [hg, hA]`. Conclude with `sum_smul_sum (fun m => p m k) (fun m j => A j m) (fun j => (b' j : M'))`. Establish `h2 : u' (g (e k)) = ∑ j, (∑ m, σ (A m k) * p' j m) • (b' j : M')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA k, map_sum]`. Simplify using `only [hu', hp']`. Conclude with `sum_smul_sum (fun m => σ (A m k)) (fun m j => p' j m) (fun j => (b' j : M'))`. Establish `hc'` using `coeff_unique (c := fun j => ∑ m, p m k * A j m) (d := fun j => ∑ m, σ (A m k) * p' j m) b' ((h1.symm.trans (hc (e k))).trans h2)`. Conclude with `congrFun hc' j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coeff_comm {R M M' : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M']
     {S' : Submodule R M'} {n n' : ℕ} (e : Fin n → M) (b' : Module.Basis (Fin n') R S')
@@ -94,9 +94,9 @@ theorem coeff_comm {R M M' : Type} [CommRing R] [AddCommGroup M] [Module R M] [A
   exact congrFun hc' j
 
 /- English proof (translation)
-Use `Matrix.ext fun j k => ?_` and prove the remaining obligations. Apply `(pi0Subst_laws_hold l O).2.2.2.2.2.2.2 hl` to reduce the goal to its premises. Simplify using `only [Matrix.mul_apply]`. Use `show incHom l O (∑ m, P' j m * A' m k) = incHom l O (∑ m, A j m * P m k)`. Simplify using `only [map_sum, map_mul, incHom_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun m _ => mul_comm (inc l O (P' j m)) (inc l O (A' m k)), ← h j k]`. Conclude with `Finset.sum_congr rfl fun m _ => mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem mul_eq_of_inc {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O] (hl : l ≠ 2) {n n' : ℕ}
     (P : Mx O⟦X⟧ n n) (P' : Mx O⟦X⟧ n' n') (A A' : Mx O⟦X⟧ n' n)
@@ -122,21 +122,21 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD L O v f)
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phiD_smul (T : LocLat G Qp L O) (a : LetA O f) (x : W.DD T) :
     W.φD T (a • x) = letφ W.φ₀ a • W.φD T x := by
   rw [← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gamD_smul (T : LocLat G Qp L O) (γ : W.Gam) (a : LetA O f) (x : W.DD T) :
     W.γD T γ (a • x) = letγ (W.γ₀ γ) a • W.γD T γ x := by
   rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a x, LinearMap.map_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul_letA {T T' : LocLat G Qp L O} (g : LatHom T.L T'.L) (a : LetA O f)
     (x : W.DD T) : W.map g (a • x) = a • W.map g x := by
@@ -147,13 +147,13 @@ variable {T T' : LocLat G Qp L O} {n n' : ℕ}
   {l : ℕ} [Fact l.Prime] [Algebra ℤ_[l] O]
 
 /- English proof (translation)
-Establish `key : ∀ k, ∃ c : Fin n' → LetA O f, W.map g (b k : W.DD T) = ∑ m, c m • (b' m : W.DD T') ∧ ∀ m i, ∀ δ ∈ W.DelF, W.γ₀ δ (c m i) = c m i`. Introduce `k`. Establish `hk : (b k : W.DD T) ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ (b k : W.DD T) = b k` using `hb k`. Establish `hy : W.map g (b k : W.DD T) ∈ W.N T'` using `W.map_N g hT hT' _ hk.1`. Take `⟨c, hc⟩` from `exists_coeff b' hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨c, hc, fun m i δ hδ => ?_⟩` and prove the remaining obligations. Establish `hb2 : ∀ m, W.γD T' δ (b' m : W.DD T') = b' m` using `fun m => (show (b' m : W.DD T') ∈ W.N T' ∧ ∀ δ ∈ W.DelF, W.γD T' δ (b' m : W.DD T') = b' m from hb' m).2 δ hδ`. Establish `e1 : W.γD T' δ (W.map g (b k : W.DD T)) = W.map g (b k : W.DD T)`. Rewrite using `[← W.map_γ, hk.2 δ hδ]`. Rewrite `e1` using `[hc, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [gamD_smul, hb2] at e1`. Establish `e2` using `coeff_unique (c := fun m => letγ (W.γ₀ δ) (c m)) (d := c) b' e1`. Conclude with `congrFun (congrFun e2 m) i`. Use `choose c hc hinv using key`. Use `⟨fun i m k => Classical.choose (RF (c k m i) (fun δ hδ => hinv k m i δ hδ)), fun k => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc k]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(Classical.choose_spec (RF (c k m i) (fun δ hδ => hinv k m i δ hδ))).symm`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_mapMat (RF : ∀ a : O⟦X⟧, (∀ δ ∈ W.DelF, W.γ₀ δ a = a) → ∃ y, inc l O y = a)
     (g : LatHom T.L T'.L) (hT : IsCrys PD T.ρ)
@@ -187,13 +187,11 @@ theorem exists_mapMat (RF : ∀ a : O⟦X⟧, (∀ δ ∈ W.DelF, W.γ₀ δ a =
 variable {F : Type} [Field F] [Algebra ℤ_[l] F] [CharP F l] (red : O →+* F)
 
 /- English proof (translation)
-Establish `hc` using `fun j k => coeff_comm (fun k => (b k : W.DD T)) b' (W.map g).toAddMonoidHom (W.φD T).toAddMonoidHom (W.φD T').toAddMonoidHom (letφ W.φ₀) (fun a x => map_smul_letA W g a x) (fun a x => phiD_smul W T' a x) (fun x => W.map_φ g x) (fun m k => (fun i => inc l O (P i m k) : LetA O f)) …`. Establish `hred' : ∀ y : O⟦X⟧, (∃ y', phi l O (inc l O y) = inc l O y') ∧ ∀ y', phi l O (inc l O y) = inc l O y' → PowerSeries.map red y' = frob0 l (PowerSeries.map red y)` using `frobenius_on_pi0Subst_holds l O F red hl hred`. Set `Y : Mx O⟦X⟧ n' n` to `fun m k => Classical.choose (hred' (A (i - 1) m k)).1`. Establish `hY : ∀ m k, phi l O (inc l O (A (i - 1) m k)) = inc l O (Y m k)` using `fun m k => Classical.choose_spec (hred' (A (i - 1) m k)).1`. Establish `hi : ∀ j k, ∑ m, inc l O (P i m k) * inc l O (A i j m) = ∑ m, inc l O (Y m k) * inc l O (P' i j m)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j k`. Establish `e` using `congrFun (hc j k) i`. Rewrite `e` using `[Finset.sum_apply, Finset.sum_apply]`. Use `e.trans (Finset.sum_congr rfl fun m _ => ?_)` and prove the remaining obligations. Use `show W.φ₀ (inc l O (A (i - 1) m k)) * inc l O (P' i j m) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, hY m k]`. Establish `hM : P' i * Y = A i * P i` using `mul_eq_of_inc hl (P i) (P' i) (A i) Y hi`. Establish `hYr : Y.map (PowerSeries.map red) = ((A (i - 1)).map (PowerSeries.map red)).map (frob0 l)`. Use `Matrix.ext fun m k => ?_` and prove the remaining obligations. Conclude with `(hred' (A (i - 1) m k)).2 _ (hY m k)`.
-
-Rewrite using `[← hYr, ← Matrix.map_mul, hM, Matrix.map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_frob (hl : l ≠ 2) (hred : ∀ z : ℤ_[l], red (algebraMap ℤ_[l] O z) = algebraMap ℤ_[l] F z)
     (hφ : ∀ a, W.φ₀ a = phi l O a) (g : LatHom T.L T'.L) (P : ZMod f → Mx O⟦X⟧ n n) (P' : ZMod f → Mx O⟦X⟧ n' n')
@@ -232,11 +230,11 @@ theorem red_frob (hl : l ≠ 2) (hred : ∀ z : ℤ_[l], red (algebraMap ℤ_[l]
 omit [Algebra ℤ_[l] F] in
 
 /- English proof (translation)
-Establish `hc` using `fun j k => coeff_comm (fun k => (b k : W.DD T)) b' (W.map g).toAddMonoidHom (W.γD T γ).toAddMonoidHom (W.γD T' γ).toAddMonoidHom (letγ (W.γ₀ γ)) (fun a x => map_smul_letA W g a x) (fun a x => gamD_smul W T' γ a x) (fun x => W.map_γ g γ x) (fun m k => (fun i => inc l O ((1 + (X : …`. Establish `hi : ∀ j k, ∑ m, inc l O ((1 + (X : O⟦X⟧) • D i) m k) * inc l O (A i j m) = ∑ m, inc l O ((A i).map (gam0 (l : O) un) m k) * inc l O ((1 + (X : O⟦X⟧) • D' i) j m)`. Introduce `j k`. Establish `e` using `congrFun (hc j k) i`. Rewrite `e` using `[Finset.sum_apply, Finset.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `e.trans (Finset.sum_congr rfl fun m _ => ?_)` and prove the remaining obligations. Use `show W.γ₀ γ (inc l O (A i m k)) * inc l O ((1 + (X : O⟦X⟧) • D' i) j m) = _`. Rewrite using `[hγ, gamma_on_pi0Subst_holds l O u un hun]`. Both sides reduce to the same expression. Establish `hM` using `mul_eq_of_inc hl (1 + (X : O⟦X⟧) • D i) (1 + (X : O⟦X⟧) • D' i) (A i) ((A i).map (gam0 (l : O) un)) hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : ((A i).map (gam0 (l : O) un)).map (PowerSeries.map red) = ((A i).map (PowerSeries.map red)).map (gam0 0 (PowerSeries.map red un))`. Use `Matrix.ext fun m k => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`. Rewrite using `[gamma_reduction_holds O F red (l : O) un (A i m k), map_natCast, CharP.cast_eq_zero]`. Rewrite using `[← hG, ← map_one_add_X_smul red (D' i), ← map_one_add_X_smul red (D i), ← Matrix.map_mul, hM, Matrix.map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_gam (hl : l ≠ 2) (γ : W.Gam) (u : ℤ_[l]) (un : O⟦X⟧) (hun : IsUn l O u un)
     (hγ : ∀ a, W.γ₀ γ a = act l O u a) (g : LatHom T.L T'.L) (D : ZMod f → Mx O⟦X⟧ n n)
@@ -277,9 +275,9 @@ theorem red_gam (hl : l ≠ 2) (γ : W.Gam) (u : ℤ_[l]) (un : O⟦X⟧) (hun :
 end Local
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `: Algebra.IsIntegral ℤ_[l] ↥(OL LL)` using `⟨fun x => integralClosure.isIntegral x⟩`. Rewrite using `[CharP.charP_iff_prime_eq_zero hl, ← map_natCast (IsLocalRing.residue ↥(OL LL)), IsLocalRing.residue_eq_zero_iff]`. Establish `hmax` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := ℤ_[l]) (IsLocalRing.maximalIdeal ↥(OL LL))`. Establish `heq` using `IsLocalRing.eq_maximalIdeal hmax`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : (l : ℤ_[l]) ∈ (IsLocalRing.maximalIdeal ↥(OL LL)).comap (algebraMap ℤ_[l] ↥(OL LL))`. Rewrite using `[heq, PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton_self _`. Simplify using `using hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem charP_residueField_of_irreducible {l : ℕ} [Fact l.Prime] (LL : FinExt l) : CharP (ResidueField ↥(OL LL)) l := by
   have hl : l.Prime := Fact.out
@@ -295,9 +293,9 @@ theorem charP_residueField_of_irreducible {l : ℕ} [Fact l.Prime] (LL : FinExt 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `l _ P H K LL hA T T' n n' γ b b' N N' u un g hT hT' hF hF' hχ hun`. Establish `hl : l ≠ 2` using `hA.2.1`. Use `charP_residueField_of_irreducible LL` as an intermediate fact. Take `⟨hφ, -, hγ, -, hRF, -⟩` from `GlobalTheory.T.wachRingFacts_unramified_levelOne H K LL hA`. Establish `RF : ∀ a : (↥(OL LL))⟦X⟧, (∀ δ ∈ (H.W K 1 LL hA.2.2).DelF, (H.W K 1 LL hA.2.2).γ₀ δ a = a) → ∃ y, inc l ↥(OL LL) y = a` using `fun a ha => (hRF a).mp ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨A, hAm⟩` from `exists_mapMat (H.W K 1 LL hA.2.2) b b' RF g hT hT' hF.1 hF'.1`. Use `⟨A, hAm, fun i => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `red_frob (H.W K 1 LL hA.2.2) b b' (residue ↥(OL LL)) hl (fun z => rfl) hφ g N.P N'.P A hF.2.1 hF'.2.1 hAm i`. Conclude with `red_gam (H.W K 1 LL hA.2.2) b b' (residue ↥(OL LL)) hl γ u un hun (hγ γ u hχ) g N.D N'.D A hF.2.2.1 hF'.2.2.1 hAm i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_mapMat_redHom : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P) (K LL : FinExt l) (hA : CaseA K LL) (T T' : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (n n' : ℕ) (γ : (H.W K 1 LL hA.2.2).Gam) (b : Module.Basis (Fin n) (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) ↥((H.W K 1 LL hA.2.2).N T)) (b' : Module.Basis (Fin n') (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) ↥((H.W K 1 LL hA.2.2).N T')) (N : Lat (ZMod (Module.finrank ℚ_[l] ↥(K0 K))) n ↥(OL LL)) (N' : Lat (ZMod (Module.finrank ℚ_[l] ↥(K0 K))) n' ↥(OL LL)) (u : ℤ_[l]) (un : PowerSeries ↥(OL LL)) (g : LatHom T.L T'.L), IsCrys (P.PD K) T.ρ → IsCrys (P.PD K) T'.ρ → IsFrame (H.W K 1 LL hA.2.2) T γ b N → IsFrame (H.W K 1 LL hA.2.2) T' γ b' N' → ((H.W K 1 LL hA.2.2).χΓ γ : ↥(OL LL)) = algebraMap ℤ_[l] ↥(OL LL) u → IsUn l ↥(OL LL) u un → ∃ A : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → Mx (PowerSeries ↥(OL LL)) n' n, IsMapMat (H.W K 1 LL hA.2.2) g b b' A ∧ ∀ i, RedHom l ((PowerSeries.map (residue ↥(OL LL))) un) ((N.P i).map (PowerSeries.map (residue ↥(OL LL)))) ((N.D i).map (PowerSeries.map (residue ↥(OL LL)))) ((N'.P i).map (PowerSeries.map (residue ↥(OL LL)))) ((N'.D i).map (PowerSeries.map (residue ↥(OL LL)))) ((A i).map (PowerSeries.map (residue ↥(OL LL)))) ((A (i - 1)).map (PowerSeries.map (residue ↥(OL LL)))) := by
   intro l _ P H K LL hA T T' n n' γ b b' N N' u un g hT hT' hF hF' hχ hun

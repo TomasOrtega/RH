@@ -15,9 +15,9 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ
   [IsScalarTower ℝ ℂ E]
 
 /- English proof (translation)
-Establish `hR : DifferentiableAt ℝ F z` using `hF.restrictScalars ℝ`. Establish `hc : DifferentiableAt ℝ (fun x => conj (F x)) z` using `(conjCLE : ℂ →L[ℝ] ℂ).differentiableAt.comp z hR`. Establish `e : (fun x => ((F x).im : ℂ)) = fun x => (1 / (2 * I)) • (F x - conj (F x))`. Use function extensionality and compare the values at `x`. Rewrite using `[im_eq_sub_conj, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, del_const_smul _ (hR.fun_sub hc), ContinuousLinearMap.smul_apply, del_sub hR hc, ContinuousLinearMap.sub_apply, del_conj, dbar_eq_zero hF, del_eq_fderiv hF]`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem del_im_of_differentiableAt {F : E → ℂ} {z : E} (hF : DifferentiableAt ℂ F z) (ξ : E) :
     del (fun x => ((F x).im : ℂ)) z ξ = (1 / (2 * I)) * fderiv ℂ F z ξ := by
@@ -31,9 +31,9 @@ theorem del_im_of_differentiableAt {F : E → ℂ} {z : E} (hF : DifferentiableA
   simp
 
 /- English proof (translation)
-Establish `h` using `leviForm_re_eq_zero (f := fun x => -I * F x) (contDiffAt_const.mul hF)`. Establish `e : (fun x => ((F x).im : ℂ)) = fun x => (((-I * F x).re : ℝ) : ℂ)`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem ddbar_im_of_contDiffAt {F : E → ℂ} {z : E} (hF : ContDiffAt ℂ 2 F z) :
     ddbar (fun x => ((F x).im : ℂ)) z = 0 := by
@@ -43,7 +43,7 @@ theorem ddbar_im_of_contDiffAt {F : E → ℂ} {z : E} (hF : ContDiffAt ℂ 2 F 
   rw [e]; exact h
 
 /- English proof (translation)
-The claim follows from `(ofRealCLM.comp imCLM).contDiff.contDiffAt.comp z (hF.contDiffAt.restrict_scalars ℝ)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_im_of_analyticAt {F : E → ℂ} {z : E} (hF : AnalyticAt ℂ F z)
     {k : WithTop ℕ∞} : ContDiffAt ℝ k (fun x => ((F x).im : ℂ)) z :=
@@ -54,14 +54,14 @@ end General
 def locLog (w₀ w : ℂ) : ℂ := Complex.log (w / w₀) + Complex.log w₀
 
 /- English proof (translation)
-Rewrite using `[locLog, exp_add, exp_log (slitPlane_ne_zero h), exp_log h0, div_mul_cancel₀ _ h0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_locLog {w₀ w : ℂ} (h0 : w₀ ≠ 0) (h : w / w₀ ∈ slitPlane) :
     exp (locLog w₀ w) = w := by
   rw [locLog, exp_add, exp_log (slitPlane_ne_zero h), exp_log h0, div_mul_cancel₀ _ h0]
 
 /- English proof (translation)
-The claim follows from `(((hasDerivAt_id w).div_const w₀).clog h).add_const _`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_locLog {w₀ w : ℂ} (h : w / w₀ ∈ slitPlane) :
     HasDerivAt (locLog w₀) (1 / w₀ / (w / w₀)) w :=
@@ -79,7 +79,7 @@ def locEntry (ha : a ≤ n) (τ₀ : (Fin n → ℂ) → Matrix (Fin g) (Fin g) 
     ((B i j k : ℤ) : ℂ)
 
 /- English proof (translation)
-Rewrite using `[show polydisc n 1 = ⋂ k, {z : Fin n → ℂ | ‖z k‖ < 1} by ext; simp [polydisc]]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_lt (continuous_norm.comp (continuous_apply k)) continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_polydisc (n : ℕ) : IsOpen (polydisc n 1) := by
   rw [show polydisc n 1 = ⋂ k, {z : Fin n → ℂ | ‖z k‖ < 1} by ext; simp [polydisc]]
@@ -87,21 +87,21 @@ theorem isOpen_polydisc (n : ℕ) : IsOpen (polydisc n 1) := by
     isOpen_lt (continuous_norm.comp (continuous_apply k)) continuous_const
 
 /- English proof (translation)
-Introduce `z hz`. Set `V : Set (Fin n → ℂ)` to `{x | x ∈ polydisc n 1 ∧ ∀ i : Fin a, x (Fin.castLE ha i) / z (Fin.castLE ha i) ∈ slitPlane}`. Establish `hVo : IsOpen V`. Establish `h2 : IsOpen {x : Fin n → ℂ | ∀ i : Fin a, x (Fin.castLE ha i) / z (Fin.castLE ha i) ∈ slitPlane}`. Simplify using `only [Set.setOf_forall]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `isOpen_iInter_of_finite fun i => isOpen_slitPlane.preimage (by fun_prop)`. Conclude with `(isOpen_polydisc n).inter h2`. Establish `hzV : z ∈ V` using `⟨hz.1, fun i => by rw [div_self (hz.2 i)]; exact one_mem_slitPlane⟩`. Establish `hV : V ∈ 𝓝 z` using `hVo.mem_nhds hzV`. Establish `hd : (2 * (Real.pi : ℂ) * I) ≠ 0` using `by simp [Real.pi_ne_zero, I_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hterm : ∀ (j k : Fin g) (i : Fin a) (x : Fin n → ℂ), x ∈ V → HasFDerivAt (fun y : Fin n → ℂ => locLog (z (Fin.castLE ha i)) (y (Fin.castLE ha i)) / (2 * Real.pi * I) * ((B i j k : ℤ) : ℂ)) ((1 / z (Fin.castLE ha i) / (x (Fin.castLE ha i) / z (Fin.castLE ha i)) / (2 * Real.pi * I) …` using `ℂ) (φ := fun _ : Fin n => ℂ) (Fin.castLE ha i)) x := fun j k i x hx => by`. Establish `h1` using `((hasDerivAt_locLog (hx.2 i)).div_const (2 * (Real.pi : ℂ) * I)).mul_const ((B i j k : ℤ) : ℂ)`. Establish `h2 : HasFDerivAt (fun y : Fin n → ℂ => y (Fin.castLE ha i)) (ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin n => ℂ) (Fin.castLE ha i)) x := hasFDerivAt_apply _ _`. Conclude with `h1.comp_hasFDerivAt x h2`. Establish `hτ : ∀ j k, ∀ x ∈ V, HasFDerivAt (fun y => τ₀ y j k) (fderiv ℂ (fun y => τ₀ y j k) x) x` using `fun j k x hx => ((hP.holo j k).differentiableAt ((isOpen_polydisc n).mem_nhds hx.1)).hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have hloc : ∀ j k, ∀ x ∈ V, HasFDerivAt (locEntry ha τ₀ B z j k) (fderiv ℂ (fun y => τ₀ y j k) x + ∑ i, (1 / z (Fin.castLE ha i) / (x (Fin.castLE ha i) / z (Fin.castLE ha i)) / (2 * Real.pi * I) * ((B i j k : ℤ) : ℂ)) • ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) …`. Apply the tactic sequence `have hdiff : ∀ j k, DifferentiableOn ℂ (locEntry ha τ₀ B z j k) V := fun j k x hx => (hloc j k x hx).differentiableAt.differentiableWithinAt`. Apply the tactic sequence `have hF : ∀ j k, AnalyticAt ℂ (locEntry ha τ₀ B z j k) z := fun j k => ReciprocityTheory.AnForm.Osgood.osgood n V _ hVo (hdiff j k) z hzV`. Apply the tactic sequence `have heq : ∀ x ∈ V, hodgeGram ha τ₀ B x = of fun j k => ((locEntry ha τ₀ B z j k x).im : ℂ) := by`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hL : ∀ i, exp ((fun i => locLog (z (Fin.castLE ha i)) (x (Fin.castLE ha i))) i) = x (Fin.castLE ha i)` using `fun i => exp_locLog (hz.2 i) (hx.2 i)`. Rewrite using `[hodgeGram, ← im_period ha τ₀ B x _ hL]`. Use extensionality with `j k`. Simplify using `[period, locEntry, Matrix.sum_apply]`. Apply the tactic sequence `have hev : hodgeGram ha τ₀ B =ᶠ[𝓝 z] fun x => of fun j k => ((locEntry ha τ₀ B z j k x).im : ℂ) := Filter.eventually_of_mem hV heq`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Apply the tactic sequence `have hev' : ∀ j k, (fun x => hodgeGram ha τ₀ B x j k) =ᶠ[𝓝 z] fun x => ((locEntry ha τ₀ B z j k x).im : ℂ) := fun j k => Filter.eventually_of_mem hV fun x hx => by show hodgeGram ha τ₀ B x j k = _`. Rewrite using `[heq x hx]`. Both sides reduce to the same expression. Use `⟨fun j k => (contDiffAt_im_of_analyticAt (hF j k)).congr_of_eventuallyEq (hev' j k), fun ξ => ?_, fun ξ η => ?_⟩` and prove the remaining obligations. Rewrite using `[mdel_congr hev]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `j k`. Simplify using `only [mdel_apply, of_apply]`. Rewrite using `[del_im_of_differentiableAt (hF j k).differentiableAt, (hloc j k z hzV).fderiv]`. Simplify using `[Matrix.sum_apply, div_self (hz.2 _)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Use extensionality with `j k`. Rewrite using `[mddbar_apply, ddbar_congr (hev' j k), ddbar_im_of_contDiffAt ((hF j k).contDiffAt)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hodgeGram_local (n a g rk : ℕ) (ha : a ≤ n) (τ₀ : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ)
     (B : Fin a → Matrix (Fin g) (Fin g) ℤ) (hP : IsPeriodChart rk τ₀ B) :

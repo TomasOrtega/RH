@@ -14,15 +14,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.TwClassForms
 
 /- English proof (translation)
-Establish `hΦ : GlobalTheory.Tw.Phi a L * (GlobalTheory.Tw.Phi a L)ᵀ = 1` using `Phi_mul_transpose a L`. Establish `hΦ' : (GlobalTheory.Tw.Phi a L)ᵀ * GlobalTheory.Tw.Phi a L = 1` using `mul_eq_one_comm.1 hΦ`. Establish `hinv : (GlobalTheory.Tw.Phi a L)⁻¹ = (GlobalTheory.Tw.Phi a L)ᵀ` using `Matrix.inv_eq_left_inv hΦ'`. Establish `hθ : (thetaGL a c q).val = GlobalTheory.Tw.Phi a L * ((GeneralLinearGroup.map c q)⁻¹).valᵀ * (GlobalTheory.Tw.Phi a L)ᵀ` using `rfl`. Establish `hC : ((GeneralLinearGroup.map c q)⁻¹).valᵀ * (q.val.map c)ᵀ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.transpose_mul, show q.val.map c = (GeneralLinearGroup.map c q).val from rfl, Units.mul_inv, Matrix.transpose_one]`. Establish `k1 : ∀ X : Matrix (Fin a) (Fin a) L, (GlobalTheory.Tw.Phi a L)ᵀ * (GlobalTheory.Tw.Phi a L * X) = X`. Introduce `X`. Rewrite using `[← Matrix.mul_assoc, hΦ', Matrix.one_mul]`. Establish `k2 : ∀ X : Matrix (Fin a) (Fin a) L, ((GeneralLinearGroup.map c q)⁻¹).valᵀ * ((q.val.map c)ᵀ * X) = X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `X`. Rewrite using `[← Matrix.mul_assoc, hC, Matrix.one_mul]`. Establish `k3 : ∀ X : Matrix (Fin a) (Fin a) L, GlobalTheory.Tw.Phi a L * ((GlobalTheory.Tw.Phi a L)ᵀ * X) = X`. Introduce `X`. Rewrite using `[← Matrix.mul_assoc, hΦ, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `k4 : ∀ X : Matrix (Fin a) (Fin a) L, δ.val * ((δ⁻¹).val * X) = X`. Introduce `X`. Rewrite using `[← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Establish `hY : (q⁻¹ * δ * thetaGL a c q).val * GlobalTheory.Tw.Phi a L * ((q.val.map c)ᵀ * (GlobalTheory.Tw.Phi a L)ᵀ * (δ⁻¹).val * q.val) = 1`. Simplify using `only [Units.val_mul, hθ, Matrix.mul_assoc, k1, k2, k3, k4]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Units.inv_mul q`. Rewrite using `[Matrix.inv_eq_right_inv hY, Matrix.mul_inv_rev, hinv, ← Matrix.coe_units_inv]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twConj_gram (L : Type) [Field L] (c : L →+* L) (a : ℕ) (δ q : GL (Fin a) L) :
     (((q⁻¹ * δ * thetaGL a c q).val * GlobalTheory.Tw.Phi a L)⁻¹)ᵀ =
@@ -51,15 +51,15 @@ theorem twConj_gram (L : Type) [Field L] (c : L →+* L) (a : ℕ) (δ q : GL (F
   simp only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hΦ : GlobalTheory.Tw.Phi a L * (GlobalTheory.Tw.Phi a L)ᵀ = 1` using `Phi_mul_transpose a L`. Establish `hΦ' : (GlobalTheory.Tw.Phi a L)ᵀ * GlobalTheory.Tw.Phi a L = 1` using `mul_eq_one_comm.1 hΦ`. Establish `hdΦ : IsUnit (GlobalTheory.Tw.Phi a L).det` using `Matrix.isUnit_det_of_right_inverse hΦ`. Use `⟨fun G hG => ?_, fun δ δ' h => ?_⟩` and prove the remaining obligations. Establish `hGT : IsUnit (Gᵀ)⁻¹.det`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_nonsing_inv, Matrix.det_transpose]`. Conclude with `hG.ringInverse`. Establish `hd : IsUnit ((Gᵀ)⁻¹ * (GlobalTheory.Tw.Phi a L)ᵀ).det`. Rewrite using `[Matrix.det_mul, Matrix.det_transpose]`. Conclude with `hGT.mul hdΦ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨Matrix.nonsingInvUnit _ hd, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((Gᵀ)⁻¹ * (GlobalTheory.Tw.Phi a L)ᵀ * GlobalTheory.Tw.Phi a L)⁻¹)ᵀ = G`. Rewrite using `[Matrix.mul_assoc, hΦ', Matrix.mul_one, Matrix.nonsing_inv_nonsing_inv _ (by rw [Matrix.det_transpose]; exact hG), Matrix.transpose_transpose]`. Establish `hu : ∀ x : GL (Fin a) L, IsUnit (x.val * GlobalTheory.Tw.Phi a L).det`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_mul]`. Conclude with `(Matrix.isUnits_det_units x).mul hdΦ`. Establish `h1` using `congrArg Matrix.transpose h`. Simplify using `only [Matrix.transpose_transpose] at h1`. Establish `h2` using `congrArg Inv.inv h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[Matrix.nonsing_inv_nonsing_inv _ (hu δ), Matrix.nonsing_inv_nonsing_inv _ (hu δ')]`. Establish `h3` using `congrArg (· * (GlobalTheory.Tw.Phi a L)ᵀ) h2`. Simplify using `only [Matrix.mul_assoc, hΦ, Matrix.mul_one] at h3`. Conclude with `Units.ext h3`.
+A detailed English derivation is pending.
 -/
 theorem gram_delta (L : Type) [Field L] (a : ℕ) :
     (∀ G : Matrix (Fin a) (Fin a) L, IsUnit G.det → ∃ δ : GL (Fin a) L, ((δ.val * GlobalTheory.Tw.Phi a L)⁻¹)ᵀ = G) ∧
@@ -87,7 +87,7 @@ theorem gram_delta (L : Type) [Field L] (a : ℕ) :
     exact Units.ext h3
 
 /- English proof (translation)
-Set `f : B.A ≃ₗ[K.E] B.A` to `LinearEquiv.ofLinear (LinearMap.mulLeft K.E (t : B.A)) (LinearMap.mulLeft K.E ((t⁻¹ : B.Aˣ) : B.A)) (by ext y; simp [← mul_assoc]) (by ext y; simp [← mul_assoc])`. Use `⟨b.map f, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `only [Module.Basis.map_apply, f, LinearEquiv.ofLinear_apply, LinearMap.mulLeft_apply, GlobalTheory.UnitLemma.InvAlg.herm, map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_norm_basis (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvAlg K) (a : ℕ) (β t : B.Aˣ)
     (b : Module.Basis (Fin a) K.E B.A) : ∃ b' : Module.Basis (Fin a) K.E B.A,
@@ -102,53 +102,51 @@ theorem herm_norm_basis (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLe
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ hE w hw K e he hO a Q hQm hQd hQs B hg hP β₀ hβ₀`. Establish `hthL : thL a w = thetaGL a (cj w)` using `by rw [thL, if_neg hw]`. Establish `hnrm : ∀ y, nrmL a w y = y * thetaGL a (cj w) y` using `by intro y; rw [nrmL, if_neg hw]`. Establish `hcc : ∀ x, cj w (cj w x) = x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, rfl⟩` from `e.surjective x`. Rewrite using `[← he, ← he, K.c_c]`. Establish `hPsep : B.P.Separable` using `by rw [hP]; exact hQs.map`. Establish `hfr : Module.finrank K.E B.A = a`. Rewrite using `[← LinearMap.charpoly_natDegree (LinearMap.mulLeft K.E B.g)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `B.P.natDegree = a`. Rewrite using `[hP, natDegree_map, hQd]`. Set `b0 : Module.Basis (Fin a) K.E B.A` to `Module.finBasisOfFinrankEq K.E B.A hfr`. Establish `hε : ((-1 : B.A) ^ (a - 1) = 1 ∨ (-1 : B.A) ^ (a - 1) = -1)` using `neg_one_pow_eq_or B.A (a - 1)`. Establish `hβx : ∀ x : B.Aˣ, B.σ (x : B.A) = x → B.σ ((β₀ * x : B.Aˣ) : B.A) = (β₀ * x : B.Aˣ) * ((-1) ^ (a - 1) * B.g)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Simplify using `only [Units.val_mul, map_mul, hβ₀, hx]`. Expand and normalize the polynomial expressions, which then agree. Establish `htwE : ∀ δ δ' : GLw a w, Relation.EqvGen (fun x y : GLw a w => ∃ g, y = g⁻¹ * x * thL a w g) δ δ' → ∃ q, δ' = q⁻¹ * δ * thL a w q`. Introduce `δ δ' h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `h with`. Consider the case `rel x y hxy => exact hxy`. Consider the case `refl x => exact ⟨1, by simp⟩`. Consider the case `symm x y _ ih`. Take `⟨q, rfl⟩` from `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨q⁻¹, by simp [mul_assoc]⟩`. Consider the case `trans x y z _ _ ih1 ih2`. Take `⟨q, rfl⟩` from `ih1`. Take `⟨r, rfl⟩` from `ih2`. Conclude with `⟨q * r, by simp [mul_assoc]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hσinv : ∀ u : B.Aˣ, B.σ ((u⁻¹ : B.Aˣ) : B.A) * B.σ (u : B.A) = 1`. Introduce `u`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `hclE : ∀ x y : {x : B.Aˣ // B.σ (x : B.A) = x}, Relation.EqvGen (fun x y : {x : B.Aˣ // B.σ (x : B.A) = x} => ∃ u : B.Aˣ, (y.1 : B.A) = x.1 * (u * B.σ (u : B.A))) x y → ∃ u : B.Aˣ, (y.1 : B.A) = x.1 * (u * B.σ (u : B.A))`. Introduce `x y h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `h with`. Consider the case `rel x y hxy => exact hxy`. Consider the case `refl x => exact ⟨1, by simp⟩`. Consider the case `symm x y _ ih`. Take `⟨u, hu⟩` from `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨u⁻¹, ?_⟩` and prove the remaining obligations. Establish `h1` using `hσinv u`. Establish `h2 : ((u⁻¹ : B.Aˣ) : B.A) * u = 1` using `Units.inv_mul u`. Rewrite using `[hu]`. Take the linear combination `(-(x.1 : B.A) * (B.σ ((u⁻¹ : B.Aˣ) : B.A) * B.σ (u : B.A))) * h2 - (x.1 : B.A) * h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Consider the case `trans x y z _ _ ih1 ih2`. Take `⟨u, hu⟩` from `ih1`. Take `⟨v, hv⟩` from `ih2`. Conclude with `⟨u * v, by rw [hv, hu, Units.val_mul, map_mul]; ring⟩`. Take `⟨F0i, F0u⟩` from `gram_delta (w.adicCompletion E) a`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hF1` using `GlobalTheory.T.hermitian_form_det_unit_and_twist K B (w.adicCompletion E) e (cj w) he hcc a Q hP hQs hQd`. Establish `hF4` using `GlobalTheory.T.gramMatrix_traceForm_basis_change K B (w.adicCompletion E) e (cj w) he a`. Establish `hF6` using `twConj_gram (w.adicCompletion E) (cj w) a`. Establish `hcl : ∀ k : B.Cl, B.σ (((Quot.out k).1 : B.Aˣ) : B.A) = (Quot.out k).1` using `fun k => (Quot.out k).2`. Establish `hG : ∀ k : B.Cl, IsUnit (Matrix.of fun i j => e (B.herm (((β₀ * (Quot.out k).1 : B.Aˣ)) : B.A) (b0 i) (b0 j))).det` using `fun k => (hF1 _ (hβx _ (hcl k)) b0).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose δk hδk using fun k => F0i _ (hG k)`. Establish `hrep : ∀ k : B.Cl, ∀ δ : GLw a w, Relation.EqvGen (fun x y : GLw a w => ∃ g, y = g⁻¹ * x * thL a w g) (δk k) δ → ∃ b : Module.Basis (Fin a) K.E B.A, ((δ.val * GlobalTheory.Tw.Phi a (w.adicCompletion E))⁻¹)ᵀ = Matrix.of fun i j => e (B.herm (((β₀ * (Quot.out k).1 : B.Aˣ)) : B.A) ( …`. Introduce `k δ h`. Take `⟨q, rfl⟩` from `htwE _ _ h`. Rewrite using `[hthL, hF6, hδk k]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb'⟩` from `(hF4 _ b0).1 q`. Conclude with `⟨b', hb'.symm⟩`. Set `F : B.Cl → {c : TwCl (thL a w) // (nrmL a w c.rep).val.charpoly = Q}` to `fun k => ⟨Quot.mk _ (δk k), by`. Take `⟨b, hb⟩` from `hrep k _ (Quot.eqvGen_exact (Quot.out_eq (Quot.mk _ (δk k)))).symm`. Rewrite using `[hnrm]`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hF1 _ (hβx _ (hcl k)) b).2 _ hb⟩`. Establish `hinj : Function.Injective F`. Introduce `k k' hkk`. Establish `h1 : (Quot.mk _ (δk k) : TwCl (thL a w)) = Quot.mk _ (δk k')` using `congrArg Subtype.val hkk`. Take `⟨b', hb'⟩` from `hrep k _ (Quot.eqvGen_exact h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hb'` using `[hδk k']`. Take `⟨t, ht⟩` from `GlobalTheory.T.exists_norm_of_equal_gram_traceForms K B hPsep _ hε a _ _ (hβx _ (hcl k')) (hβx _ (hcl k)) b0 b' (fun i j => by`. Use `congrFun (congrFun hb' i) j` as an intermediate fact. Simplify using `using e.injective this)`. Establish `hrel : (Quot.mk _ (Quot.out k') : B.Cl) = Quot.mk _ (Quot.out k)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Quot.sound` to reduce the goal to its premises. Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `h2 : ((β₀⁻¹ : B.Aˣ) : B.A) * β₀ = 1` using `Units.inv_mul β₀`. Simplify using `only [Units.val_mul] at ht`. Take the linear combination `((β₀⁻¹ : B.Aˣ) : B.A) * ht - (((Quot.out k).1 : B.A) - ((Quot.out k').1 : B.A) * ((t : B.A) * B.σ (t : B.A))) * h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(Quot.out_eq k).symm.trans (hrel.symm.trans (Quot.out_eq k'))`. Establish `hsurj : Function.Surjective F`. Introduce and unpack `⟨cl, hclQ⟩`. Establish `hQδ : ((Quot.out cl) * thetaGL a (cj w) (Quot.out cl)).val.charpoly = Q`. Rewrite using `[← hnrm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hclQ`. Take `⟨β, hβ, b, hb⟩` from `GlobalTheory.T.exists_traceForm_of_twistedNorm_charpoly K B (w.adicCompletion E) e (cj w) he hcc hg a Q hP hQs hQd _ hQδ`. Establish `hx : B.σ (((β₀⁻¹ * β : B.Aˣ)) : B.A) = ((β₀⁻¹ * β : B.Aˣ) : B.A)`. Establish `h1 : B.σ ((β₀⁻¹ : B.Aˣ) : B.A) * ((β₀ : B.A) * ((-1) ^ (a - 1) * B.g)) = 1`. Rewrite using `[← hβ₀, ← map_mul, Units.inv_mul, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression.
 
-Establish `h2 : ((β₀⁻¹ : B.Aˣ) : B.A) * β₀ = 1` using `Units.inv_mul β₀`. Simplify using `only [Units.val_mul, map_mul, hβ]`. Take the linear combination `(((β₀⁻¹ : B.Aˣ) : B.A) * β) * h1 - (B.σ ((β₀⁻¹ : B.Aˣ) : B.A) * β * ((-1) ^ (a - 1) * B.g)) * h2`. Set `k : B.Cl` to `Quot.mk _ ⟨β₀⁻¹ * β, hx⟩`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hclE _ _ (Quot.eqvGen_exact (Quot.out_eq k)).symm`. Establish `hβu : ((β₀ * (Quot.out k).1 : B.Aˣ) : B.A) = (β : B.A) * ((u : B.A) * B.σ (u : B.A))`. Rewrite using `[Units.val_mul, hu, Units.val_mul]`. Establish `h2 : (β₀ : B.A) * ((β₀⁻¹ : B.Aˣ) : B.A) = 1` using `Units.mul_inv β₀`. Take the linear combination `((β : B.A) * ((u : B.A) * B.σ (u : B.A))) * h2`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b'', hb''⟩` from `herm_norm_basis K B a β u b0`. Take `⟨P, hPb⟩` from `(hF4 (β : B.A) b).2 b''`. Establish `hmat : ((δk k).val * GlobalTheory.Tw.Phi a (w.adicCompletion E))⁻¹ᵀ = (((P⁻¹ * Quot.out cl * thetaGL a (cj w) P)).val * GlobalTheory.Tw.Phi a (w.adicCompletion E))⁻¹ᵀ`. Rewrite using `[hF6, hb, ← hPb, hδk k]`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Matrix.of_apply, hβu, hb'']`. Establish `hδeq` using `F0u _ _ hmat`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(Quot.mk _ (δk k) : TwCl (thL a w)) = cl`. Rewrite using `[hδeq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hθP : thL a w P = thetaGL a (cj w) P` using `by rw [hthL]`. Conclude with `(Quot.sound (⟨P, by rw [hθP]⟩ : ∃ g, P⁻¹ * Quot.out cl * thetaGL a (cj w) P = g⁻¹ * Quot.out cl * thL a w g)).symm.trans (Quot.out_eq cl)`. Use `⟨Equiv.ofBijective F ⟨hinj, hsurj⟩, fun k => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hrep k _ (Quot.eqvGen_exact (Quot.out_eq (Quot.mk _ (δk k) : TwCl (thL a w)))).symm`. Use `⟨b, fun i j => ?_⟩` and prove the remaining obligations.
-
-Use `congrFun (congrFun hb i) j` as an intermediate fact. Rewrite `this` using `[Matrix.of_apply, Units.val_mul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twCl_equiv_cl : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (a : ℕ) (Q : (w.adicCompletion E)[X]), Q.Monic → Q.natDegree = a → Q.Separable → ∀ (B : GlobalTheory.UnitLemma.InvAlg K), B.g * B.σ B.g = 1 → B.P = Q.map e.symm.toRingHom → ∀ β₀ : B.Aˣ, B.σ (β₀ : B.A) = β₀ * ((-1) ^ (a - 1) * B.g) → ∃ F : B.Cl ≃ {c : TwCl (thL a w) // (nrmL a w c.rep).val.charpoly = Q}, ∀ k : B.Cl, ∃ b : Module.Basis (Fin a) K.E B.A, ∀ i j, (((F k).1.rep.val * GlobalTheory.Tw.Phi a (w.adicCompletion E))⁻¹)ᵀ i j = e (B.herm ((β₀ : B.A) * k.rep) (b i) (b j)) := by
   intro E _ _ _ hE w hw K e he hO a Q hQm hQd hQs B hg hP β₀ hβ₀

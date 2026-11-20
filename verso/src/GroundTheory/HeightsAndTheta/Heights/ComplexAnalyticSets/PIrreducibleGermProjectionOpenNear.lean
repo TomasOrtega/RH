@@ -10,9 +10,9 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Topology
 
 /- English proof (translation)
-Introduce `σ _ X w d A hX hirr hisow hinj`. Take `⟨N₁, hN₁, h₁⟩` from `hiso σ X w d A hX hisow`. Take `⟨N₂, hN₂, h₂⟩` from `himg σ X w d A hX hirr hisow hinj`. Take `⟨N, k, f, hNo, hwN, hf, hXN⟩` from `hX`. Use `⟨N₁ ∩ N₂ ∩ N, Filter.inter_mem (Filter.inter_mem hN₁ hN₂) (hNo.mem_nhds hwN), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x ⟨hxX, ⟨hx₁, hx₂⟩, hxN⟩ V hV`. Establish `hXx : IsAnalyticNear X x` using `⟨N, k, f, hNo, hxN, hf, hXN⟩`. Conclude with `hopen σ X x d A hXx (h₁ x ⟨hxX, hx₁⟩) (h₂ x ⟨hxX, hx₂⟩) V hV`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IrreducibleGermProjectionOpenNear.proof (hiso : IsolatedFibreNear.Statement)
     (himg : IrreducibleGermProjectionImageNear.Statement) (hopen : FiniteGermProjectionOpenAt.Statement) :

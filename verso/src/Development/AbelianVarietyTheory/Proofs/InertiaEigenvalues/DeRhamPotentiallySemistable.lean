@@ -9,7 +9,7 @@ open scoped Formalism.Per
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.deRham_potSemistable_of_matrix_monodromy GlobalTheory.T.pAdicMonodromyTheorem_matrixForm`.
+A detailed English derivation is pending.
 -/
 theorem deRham_potentiallySemistable : GlobalTheory.Published.DeRhamPotSemistable :=
   GlobalTheory.T.deRham_potSemistable_of_matrix_monodromy GlobalTheory.T.pAdicMonodromyTheorem_matrixForm

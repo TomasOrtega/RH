@@ -23,47 +23,47 @@ section Ins
 variable {R : Type} (hd : d = d₁ + 2)
 
 /- English proof (translation)
-Simplify using `[ins0]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem planeZeroInsertion_apply_inl [Zero R] (x : Fin n × Fin d₁ → R) (p : Fin n × Fin d₁) :
     ins0 hd x ((idx hd).symm (Sum.inl p)) = x p := by
   simp [ins0]
 
 /- English proof (translation)
-Simplify using `[ins0]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem planeZeroInsertion_apply_inr [Zero R] (x : Fin n × Fin d₁ → R) (p : Fin n × Fin 2) :
     ins0 hd x ((idx hd).symm (Sum.inr p)) = 0 := by
   simp [ins0]
 
 /- English proof (translation)
-Apply the tactic sequence `funext k; simp only [ins0]; rcases idx hd k with p | p <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ins0_zero [Zero R] : ins0 hd (0 : Fin n × Fin d₁ → R) = 0 := by
   funext k; simp only [ins0]; rcases idx hd k with p | p <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `funext k; simp only [ins0, Pi.add_apply]; rcases idx hd k with p | p <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ins0_add [AddZeroClass R] (x y : Fin n × Fin d₁ → R) : ins0 hd (x + y) = ins0 hd x + ins0 hd y := by
   funext k; simp only [ins0, Pi.add_apply]; rcases idx hd k with p | p <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `funext k; simp only [ins0, Pi.smul_apply]; rcases idx hd k with p | p <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ins0_smul {S : Type} [Zero R] [SMulZeroClass S R] (c : S) (x : Fin n × Fin d₁ → R) :
     ins0 hd (c • x) = c • ins0 hd x := by
   funext k; simp only [ins0, Pi.smul_apply]; rcases idx hd k with p | p <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `funext k; simp only [ins0]; rcases idx hd k with p | p <;> simp [hg]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ins0_map {R' : Type} [Zero R] [Zero R'] (g : R → R') (hg : g 0 = 0) (x : Fin n × Fin d₁ → R) :
     (fun k => g (ins0 hd x k)) = ins0 hd (fun p => g (x p)) := by
   funext k; simp only [ins0]; rcases idx hd k with p | p <;> simp [hg]
 
 /- English proof (translation)
-Simplify using `only [dotProduct]`. Rewrite using `[← (idx hd).symm.sum_comp, Fintype.sum_sum_type]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ins0_dotProduct [NonUnitalNonAssocSemiring R] (x : Fin n × Fin d₁ → R) (b : Fin n × Fin d → R) :
     ins0 hd x ⬝ᵥ b = x ⬝ᵥ fun p => b ((idx hd).symm (Sum.inl p)) := by
@@ -72,7 +72,7 @@ theorem ins0_dotProduct [NonUnitalNonAssocSemiring R] (x : Fin n × Fin d₁ →
   simp
 
 /- English proof (translation)
-Rewrite using `[ins0_dotProduct]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ins0_dotProduct_ins0 [NonUnitalNonAssocSemiring R] (x y : Fin n × Fin d₁ → R) :
     ins0 hd x ⬝ᵥ ins0 hd y = x ⬝ᵥ y := by
@@ -98,7 +98,7 @@ Both sides reduce to the same expression.
     insertZerosCLM F hd x = ins0 hd x := rfl
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun p => ?_` and prove the remaining obligations. Use `norm_le_pi_norm (ins0 hd x) ((idx hd).symm (Sum.inl p))` as an intermediate fact. Rewrite `this` using `[planeZeroInsertion_apply_inl]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem norm_le_ins0 (hd : d = d₁ + 2) (x : Fin n × Fin d₁ → mixedEmbedding.mixedSpace F) : ‖x‖ ≤ ‖ins0 hd x‖ := by
   refine (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun p => ?_
@@ -139,9 +139,9 @@ Both sides reduce to the same expression.
 @[simp] theorem evA_apply (hd : d = d₁ + 2) (Φ : Fn F n d) (x : Fin n × Fin d₁ → AF F) : evA F hd Φ x = Φ (ins0 hd x) := rfl
 
 /- English proof (translation)
-Introduce `h`. Set `b : ContDiffBump (0 : Fin n × Fin d → mixedEmbedding.mixedSpace F)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `hs : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun t : ℝ => (t : ℂ)) (by simp)`. Establish `hc : ContDiff ℝ (⊤ : ℕ∞) (fun x => ((b x : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp b.contDiff`. Establish `h1` using `congrArg (fun T : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d₁) => T (hs.toSchwartzMap hc) 0) h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : b 0 = 1` using `b.one_of_mem_closedBall (by simp [b])`. Simplify using `[ins0_zero, h2] at h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ei_ne_zero (hd : d = d₁ + 2) : ei (n := n) F hd ≠ 0 := by
   classical
@@ -154,9 +154,9 @@ theorem ei_ne_zero (hd : d = d₁ + 2) : ei (n := n) F hd ≠ 0 := by
   simp [ins0_zero, h2] at h1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [evA_apply, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, ei_apply, ev_apply]`. Rewrite using `[ins0_map hd (evI F) (by show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : AF F).1 = 0`. Rewrite using `[show (0 : AF F).1 = 0 from rfl, map_zero])]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[ins0_map hd (evFin F v) (map_zero _)]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem evA_pure (hd : d = d₁ + 2) (f : SInf F (Fin n × Fin d)) (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) :
     evA F hd (pure f φ) = pure (ei F hd f) fun v => ev hd v (φ v) := by

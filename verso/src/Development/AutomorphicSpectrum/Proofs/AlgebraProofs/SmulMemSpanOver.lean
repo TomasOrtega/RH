@@ -9,9 +9,9 @@ variable {o Ω : Type*} [CommRing o] [Field Ω] [Algebra o Ω]
   {E E₂ : Type*} [AddCommGroup E] [Module Ω E] [AddCommGroup E₂] [Module Ω E₂]
 
 /- English proof (translation)
-Unfold `spanOver at hv ⊢`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, e, he, rfl⟩` from `hx`. Conclude with `AddSubgroup.subset_closure ⟨a * b, R.mul_mem ha hb, e, he, by rw [mul_smul]⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_spanOver (R : Subalgebra o Ω) (S : Set E) {a : Ω} (ha : a ∈ R) {v : E}
     (hv : v ∈ spanOver R S) : a • v ∈ spanOver R S := by
@@ -25,9 +25,9 @@ theorem smul_mem_spanOver (R : Subalgebra o Ω) (S : Set E) {a : Ω} (ha : a ∈
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Unfold `spanOver`. Rewrite using `[AddMonoidHom.map_closure]`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨v, ⟨a, ha, e, he, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, q e, ⟨e, he, rfl⟩, by simp⟩`. Introduce and unpack `⟨a, ha, _, ⟨e, he, rfl⟩, rfl⟩`. Conclude with `⟨a • e, ⟨a, ha, e, he, rfl⟩, by simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem map_spanOver (R : Subalgebra o Ω) (S : Set E) (q : E →ₗ[Ω] E₂) :
     (spanOver R S).map q.toAddMonoidHom = spanOver R (q '' S) := by
@@ -42,33 +42,29 @@ theorem map_spanOver (R : Subalgebra o Ω) (S : Set E) (q : E →ₗ[Ω] E₂) :
     exact ⟨a • e, ⟨a, ha, e, he, rfl⟩, by simp⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ j, ∃ n : ℕ, ∃ s ∈ L, q s = f ^ n • b j`. Introduce `j`. Take `⟨n, s, hs, hs'⟩` from `(hloc (b j)).2 ⟨Pi.single j 1, fun k => ⟨0, by`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using R.one_mem`. Simplify `R.zero_mem⟩, by simp [Pi.single_apply]⟩` using `[h]`. Conclude with `⟨n, s, hs, hs'⟩`. Use `choose n s hs hqs using h1`. Use `set N := ∑ j, n j with hN`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hle : ∀ j, n j ≤ N` using `fun j => Finset.single_le_sum (f := n) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Set `t : Fin r → E` to `fun j => f ^ (N - n j) • s j`. Establish `ht : ∀ j, t j ∈ L` using `fun j => hL _ (R.pow_mem hf _) _ (hs j)`. Establish `hqt : ∀ j, q (t j) = f ^ N • b j` using `fun j => by`. Simplify using `only [t, map_smul, hqs, smul_smul, ← pow_add, Nat.sub_add_cancel (hle j)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B : Module.Basis (Fin r) Ω E₂` to `Module.Basis.mk hb hsp.ge`. Set `σ : E₂ →ₗ[Ω] E` to `B.constr Ω t`. Establish `hσ : ∀ j, σ (b j) = t j` using `fun j => by`. Establish `: b j = B j` using `by simp [B]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[σ]`. Use `set S := spanOver R₁ {e | e ∈ L ∧ q e = 0} with hS`. Establish `hup : ∀ (w : E) (m k : ℕ), f ^ m • w ∈ S → f ^ (k + m) • w ∈ S` using `fun w m k h => by`. Rewrite using `[pow_add, mul_smul]`. Conclude with `smul_mem_spanOver R₁ _ (R₁.pow_mem (hR hf) _) h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Establish `key : ∃ m : ℕ, f ^ m • (f ^ N • v - σ (q v)) ∈ S` using `by clear hq`. Unfold `spanOver at hv`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, e, he, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc, hce⟩` from `(hloc (q e)).1 ⟨0, e, he, by simp⟩`. Use `choose p hp using hc`. Use `set M := ∑ j, p j with hM`. Establish `hle' : ∀ j, p j ≤ M` using `fun j => Finset.single_le_sum (f := p) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Establish `hp' : ∀ j, f ^ M * c j ∈ R` using `fun j => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Nat.sub_add_cancel (hle' j), pow_add, mul_assoc]`. Conclude with `R.mul_mem (R.pow_mem hf _) (hp j)`. Use `⟨M, AddSubgroup.subset_closure ⟨a, ha, f ^ M • (f ^ N • e - σ (q e)), ⟨?_, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[smul_sub]`. Use `sub_mem (hL _ (R.pow_mem hf _) _ (hL _ (R.pow_mem hf _) _ he)) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hce, map_sum, Finset.smul_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_smul, hσ]`. Conclude with `hL _ (hp' j) _ (ht j)`. Rewrite using `[map_smul, map_sub, map_smul, hce, map_sum, map_sum, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_smul, hσ, hqt]`. Rewrite using `[← Finset.sum_sub_distrib, Finset.sum_eq_zero, smul_zero]`. Introduce `j _`. Rewrite using `[smul_comm, sub_self]`. Simplify using `only [map_smul] module`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Consider the case `zero => exact ⟨0, by simpa using S.zero_mem⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨m, hm⟩` from `hx`. Take `⟨k, hk⟩` from `hy`. Use `⟨k + m, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h2` using `hup _ _ m hk`. Rewrite `h2` using `[add_comm]`. Use `add_mem (hup _ _ k hm) h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add]`. Use `module`.
-
-Consider the case `neg x _ hx`. Take `⟨m, hm⟩` from `hx`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use `neg_mem hm using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_neg]`.
-
-Use `module`. Take `⟨m, hm⟩` from `key`. Use `⟨m + N, ?_⟩` and prove the remaining obligations. Simplify `hm` using `[hq, smul_smul, pow_add]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem local_step (R R₁ : Subalgebra o Ω) (hR : R ≤ R₁) (q : E →ₗ[Ω] E₂) (L : AddSubgroup E)
     (hL : ∀ a ∈ R, ∀ e ∈ L, a • e ∈ L) {r : ℕ} (f : Ω) (hf : f ∈ R) (b : Fin r → E₂)
@@ -151,13 +147,13 @@ theorem local_step (R R₁ : Subalgebra o Ω) (hR : R ≤ R₁) (q : E →ₗ[Ω
   simpa [hq, smul_smul, pow_add] using hm
 
 /- English proof (translation)
-Take `⟨-, k, f, c, hf, hc, hsum, hl⟩` from `hF`. Set `J : Ideal R` to `{ carrier := {a | (a : Ω) • v ∈ spanOver R₁ {e | e ∈ L ∧ q e = 0}} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, Subalgebra.coe_add, add_smul] at ha hb ⊢`. Conclude with `add_mem ha hb`. Use the proof step `zero_mem' := by simp`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `smul_mem' := fun a b hb => by`. Simplify using `only [Set.mem_setOf_eq, smul_eq_mul, MulMemClass.coe_mul, mul_smul] at hb ⊢`. Conclude with `smul_mem_spanOver R₁ _ (hR a.2) hb }`. Establish `h1 : (1 : R) ∈ J.radical`. Establish `: (1 : R) = ∑ l, (⟨c l, hc l⟩ : R) * ⟨f l, hf l⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hsum]`. Rewrite using `[this]`. Use `sum_mem fun l _ => Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Take `⟨b, hb, hsp, hloc⟩` from `hl l`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `local_step R R₁ hR q L hL (f l) (hf l) b hb hsp hloc hv hq`. Conclude with `⟨m, hm⟩`. Take `⟨m, hm⟩` from `h1`. Establish `: ((1 ^ m : R) : Ω) • v ∈ spanOver R₁ {e | e ∈ L ∧ q e = 0}` using `hm`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_spanOver_ker (R R₁ : Subalgebra o Ω) (hR : R ≤ R₁) (q : E →ₗ[Ω] E₂) (L : AddSubgroup E)
     (hL : ∀ a ∈ R, ∀ e ∈ L, a • e ∈ L) {r : ℕ} (hF : LocFree R r (L.map q.toAddMonoidHom))
@@ -187,17 +183,17 @@ theorem mem_spanOver_ker (R R₁ : Subalgebra o Ω) (hR : R ≤ R₁) (q : E →
   simpa using this
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ R R₁ hR E E₁ E₂ _ _ _ _ _ _ i q hi hex L r₂ hL hF`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `himg : i '' (L.comap i.toAddMonoidHom : Set E₁) = {e | e ∈ L ∧ q e = 0}`. Use extensionality with `e`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨hx, by rw [← LinearMap.mem_ker, ← hex]; exact ⟨x, rfl⟩⟩`. Introduce and unpack `⟨he, hq⟩`. Rewrite `hq` using `[← LinearMap.mem_ker, ← hex]`. Take `⟨x, rfl⟩` from `hq`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, he, rfl⟩`. Establish `hmap` using `map_spanOver R₁ (L.comap i.toAddMonoidHom : Set E₁) i`. Rewrite `hmap` using `[himg]`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Establish `hq : q (i x) = 0` using `by rw [← LinearMap.mem_ker, ← hex]; exact ⟨x, rfl⟩`. Use `mem_spanOver_ker R R₁ hR q L hL hF (v := i x) hx hq` as an intermediate fact. Rewrite `this` using `[← hmap]`. Take `⟨y, hy, hxy⟩` from `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `rfl : y = x` from `hi hxy`. Conclude with `hy`. Introduce `hx`. Establish `h1 : i x ∈ spanOver R₁ {e | e ∈ L ∧ q e = 0}`. Rewrite using `[← hmap]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx, rfl⟩`. Establish `h2 : spanOver R₁ {e | e ∈ L ∧ q e = 0} ≤ spanOver R₁ (L : Set E)` using `AddSubgroup.closure_mono fun w ⟨a, ha, e, he, hw⟩ => ⟨a, ha, e, he.1, hw⟩`. Conclude with `h2 h1`. Rewrite using `[map_spanOver, AddSubgroup.coe_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem span_comap_exact : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R R₁ : Subalgebra o Ω), R ≤ R₁ → ∀ {E E₁ E₂ : Type} [AddCommGroup E] [Module Ω E] [AddCommGroup E₁] [Module Ω E₁] [AddCommGroup E₂] [Module Ω E₂] (i : E₁ →ₗ[Ω] E) (q : E →ₗ[Ω] E₂), Function.Injective i → LinearMap.range i = LinearMap.ker q → ∀ (L : AddSubgroup E) (r₂ : ℕ), (∀ a ∈ R, ∀ e ∈ L, a • e ∈ L) → LocFree R r₂ (L.map q.toAddMonoidHom) → (spanOver R₁ (L : Set E)).comap i.toAddMonoidHom = spanOver R₁ (L.comap i.toAddMonoidHom : Set E₁) ∧ (spanOver R₁ (L : Set E)).map q.toAddMonoidHom = spanOver R₁ (L.map q.toAddMonoidHom : Set E₂) := by
   intro o Ω _ _ _ R R₁ hR E E₁ E₂ _ _ _ _ _ _ i q hi hex L r₂ hL hF

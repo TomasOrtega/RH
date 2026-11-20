@@ -5,17 +5,15 @@ open IsLocalRing GlobalTheory.Henselisation
 namespace GlobalTheory.Henselisation
 
 /- English proof (translation)
-Introduce `R _ _ i b`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective i.q.primeCompl b`. Take `⟨r₁, hr₁⟩` from `residue_surjective (i.pt a)`. Take `⟨r₂, hr₂⟩` from `residue_surjective (i.pt (s : i.A))`. Establish `hs : i.pt (s : i.A) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `s.2 (show (s : i.A) ∈ RingHom.ker i.pt from h)`. Establish `hu : IsUnit r₂`. Assume the negation of the conclusion as `hn`. Apply `hs` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hr₂]`. Conclude with `(residue_eq_zero_iff r₂).2 hn`. Take `⟨u, rfl⟩` from `hu`. Use `⟨r₁ * ((u⁻¹ : Rˣ) : R), ?_⟩` and prove the remaining obligations. Establish `key : IsLocalization.mk' i.B a s - algebraMap R i.B (r₁ * ((u⁻¹ : Rˣ) : R)) = IsLocalization.mk' i.B (a - (s : i.A) * algebraMap R i.A (r₁ * ((u⁻¹ : Rˣ) : R))) s`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[IsLocalization.eq_mk'_iff_mul_eq, sub_mul, IsLocalization.mk'_spec, map_sub]`. Simplify using `only [map_mul, ← IsScalarTower.algebraMap_apply R i.A i.B]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, IsLocalization.AtPrime.mk'_mem_maximal_iff (S := i.B) (I := i.q)]`. Use `show _ ∈ RingHom.ker i.pt`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker, map_sub, map_mul, AlgHom.commutes, ← hr₁, ← hr₂]`. Rewrite using `[show algebraMap R (ResidueField R) = residue R from rfl, ← map_mul, ← map_sub]`. Rewrite using `[residue_eq_zero_iff]`. Establish `: r₁ - (u : R) * (r₁ * ((u⁻¹ : Rˣ) : R)) = 0`. Rewrite using `[mul_left_comm, Units.mul_inv, mul_one, sub_self]`.
-
-Rewrite using `[this]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EtNbhd.exists_sub_mem_maximalIdeal :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] (i : EtNbhd R) (b : i.B),

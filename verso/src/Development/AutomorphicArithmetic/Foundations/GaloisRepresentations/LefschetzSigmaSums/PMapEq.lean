@@ -10,15 +10,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.UPel.HT.MapComp
 
 /- English proof (translation)
-Introduce `G R _ _ b N S₁ S₂ S₃ s₁ s₂ s₃ o₁ o₂ o₃ f g m₂`. Use `⟨fun m₁ => ?_, fun m => ?_⟩` and prove the remaining obligations. Use `⟨⟨m₁.φ ≫ m₂.φ, m₁.φ₂ ≫ m₂.φ₂, IsGrpPullback.comp m₁.cart m₂.cart, isSquare_comp m₁.sq m₂.sq, fun c => ?_, LBIso.trans o₁.isLB (pull_isLB o₂.isLB _) (pull_isLB o₃.isLB _) m₁.pol (lbIso_pull_comp m₂.pol m₁.φ₂ rfl), fun y => ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, m₁.act, Category.assoc, m₂.act, Category.assoc]`. Rewrite using `[← Category.assoc, m₁.eta, Category.assoc, m₂.eta, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : m.φ ≫ o₃.A.hom = (o₁.A.hom ≫ f) ≫ g`. Rewrite using `[Category.assoc]`. Conclude with `m.cart.1.w`. Set `φ : o₁.A.left ⟶ o₂.A.left` to `m₂.cart.1.lift m.φ (o₁.A.hom ≫ f) hw`. Establish `h₁ : φ ≫ m₂.φ = m.φ` using `m₂.cart.1.lift_fst _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂ : φ ≫ o₂.A.hom = o₁.A.hom ≫ f` using `m₂.cart.1.lift_snd _ _ _`. Take `⟨φ₂, hsq⟩` from `exists_isSquare h₂`. Establish `h₃ : φ₂ ≫ m₂.φ₂ = m.φ₂`. Use `isSquare_comp hsq m₂.sq` as an intermediate fact. Rewrite `this` using `[h₁]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isSquare_unique this m.sq`. Establish `hc : IsGrpPullback o₁.A o₂.A f φ` using `IsGrpPullback.cancel m₂.cart (by rw [h₁]; exact m.cart) h₂`. Use `⟨⟨φ, φ₂, hc, hsq, fun c => ?_, LBIso.trans o₁.isLB (pull_isLB o₃.isLB _) (pull_isLB o₂.isLB _) m.pol (lbIso_pull_comp m₂.pol φ₂ h₃.symm).symm, fun y => ?_⟩, h₁⟩` and prove the remaining obligations. Apply `m₂.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h₁, m.act, Category.assoc, m₂.act, ← Category.assoc, h₁]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, h₂, Category.assoc, Over.w, h₂, ← Category.assoc, Over.w]`. Apply `m₂.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h₁, m.eta, Category.assoc, Category.assoc, m₂.eta]`. Rewrite using `[Category.assoc, h₂, Category.assoc, Over.w, ← Category.assoc, Over.w]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocalSmoothExtension.mapEq_of :
     MapEq := by

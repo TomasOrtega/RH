@@ -20,11 +20,11 @@ namespace GlobalTheory.ThetaSumLevi
 open ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y Topology Filter
 
 /- English proof (translation)
-Establish `hS : ContDiffAt ℝ 2 (fun w => Real.log (∑ t ∈ s, Complex.normSq (g t w))) z` using `(ContDiffAt.sum fun t _ => contDiffAt_normSq_comp (hg t)).log hpos.ne'`. Establish `hL : ContDiffAt ℝ 2 (fun w => Real.log (Complex.normSq (D w))) z` using `(contDiffAt_normSq_comp hD).log (Complex.normSq_pos.2 hD0).ne'`. Establish `hL' : ContDiffAt ℝ 2 (fun w => c * Real.log (Complex.normSq (D w)) + d) z` using `(contDiffAt_const.mul hL).add contDiffAt_const`. Establish `hφ' : ContDiffAt ℝ 2 (fun w => (-c) * φ w) z` using `contDiffAt_const.mul hφ`. Establish `e : ∀ w, ∑ t ∈ s, Complex.normSq (g t w) = ∑ i : Fin s.card, Complex.normSq (g (s.equivFin.symm i) w)` using `fun w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_coe_sort s]`. Conclude with `(s.equivFin.symm.sum_comp fun t => Complex.normSq (g t w)).symm`. Establish `h0` using `leviV_log_sum_nonneg (u := fun (i : Fin s.card) w => Complex.normSq (g (s.equivFin.symm i) w)) (x := z) (fun i => contDiffAt_normSq_comp (hg _)) (fun i => logPshAt_normSq (hg _)) (by rw [← e]; exact hpos) ξ`. Simplify using `only [← e] at h0`. Rewrite using `[LocalMaximumSecondDerivative.leviV_ofReal_add hS (hL'.add hφ'), LocalMaximumSecondDerivative.leviV_ofReal_add hL' hφ', leviV_const_mul hL, leviV_log_normSq hD hD0, LocalMaximumSecondDerivative.leviV_ofReal_const_mul _ hφ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_zero, zero_add, Complex.add_re, Complex.re_ofReal_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem levi_lower {n : ℕ} {ι : Type} (s : Finset ι) {g : ι → V n → ℂ} {D : V n → ℂ}
     {φ : V n → ℝ} {z : V n} (c d : ℝ) (hg : ∀ t, ContDiffAt ℂ 2 (g t) z) (hD : ContDiffAt ℂ 2 D z)
@@ -54,21 +54,19 @@ theorem levi_lower {n : ℕ} {ι : Type} (s : Finset ι) {g : ι → V n → ℂ
   linarith
 
 /- English proof (translation)
-Introduce `E _ _ _ r X _ hw ps hps x0 _ z hz ξ`. Take `⟨Θ, D, κ, hκ, hΘ, hD, hD0, hval⟩` from `GlobalTheory.ThetaHol.normalised_theta_norm_holomorphic E r X hw`. Take `⟨𝒯, h1, h2⟩` from `GlobalTheory.LevelTupleSum.exists_reps X.Λ X.Λ_fg`. Use `set la : Wt X.Ψ r := fun _ j => if X.p0 ≤ (j : ℕ) then 1 else -1 with hla`. Establish `hO` using `ExF.isOpen_OmF X.toData x0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : z ∈ OmF X.toData x0` using `hz`. Establish `hc : Differentiable ℂ (cpt X.toData x0)` using `differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun b => (IW.cpt_entry_cd X.toData x0 τ a b).differentiable (by simp)`. Establish `hhol : ∀ {P : Frame X.Ψ r → ℂ}, DifferentiableOn ℂ P X.dom → ContDiffAt ℂ 2 (fun w => P (cpt X.toData x0 w)) z` using `fun hP => contDiffAt_two_of_holo hO (hP.comp hc.differentiableOn fun _ hw => hw) hz'`. Establish `key : ∀ w ∈ OmF X.toData x0, 0 < ∑ t ∈ 𝒯, Complex.normSq (∏ b, Θ (t b) (cpt X.toData x0 w)) ∧ ps (cpt X.toData x0 w) = Real.log (∑ t ∈ 𝒯, Complex.normSq (∏ b, Θ (t b) (cpt X.toData x0 w))) + (((r : ℝ) / 2 * Real.log (Complex.normSq (D (cpt X.toData x0 w))) + r * Real.log κ) + (-( …`. Introduce `w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hN : 0 < X.nfac la (cpt X.toData x0 w)` using `ReciprocityTheory.ChartRestriction.G.AR.Up.OntoE.nfac_pos X.toData x0 hw`. Establish `hx : cpt X.toData x0 w ∈ X.dom` using `hw`. Generalize the expression as in `cpt X.toData x0 w = x at hN hx`. Take `⟨A, hA⟩` from `hps x hx`. Establish `hp` using `GlobalTheory.TupleSumPos.tuple_sum_pos E r X x A`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `GlobalTheory.LevelTupleSum.sum_eq hx A 𝒯 h1 h2 _ (GlobalTheory.LevelTupleSum.torus_r A)`. Rewrite `hA`, `hp` using `[hs]`. Establish `hDp : 0 < ‖D x‖` using `norm_pos_iff.2 (hD0 x hx)`. Establish `hK : 0 < (κ * ‖D x‖ * X.nfac la x) ^ r` using `by positivity`. Establish `e : ∑ t ∈ 𝒯, ∏ b, A.T.ptN2 1 A.s (fun _ => A.φ (t b)) / A.T.l2 1 A.s = (κ * ‖D x‖ * X.nfac la x) ^ r * ∑ t ∈ 𝒯, Complex.normSq (∏ b, Θ (t b) x)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod, ← Fin.prod_const, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hval x hx A, Complex.normSq_eq_norm_sq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hA`, `hp` using `[e]`. Establish `hS` using `(mul_pos_iff_of_pos_left hK).1 hp`. Use `⟨hS, ?_⟩` and prove the remaining obligations. Rewrite using `[hA, Real.log_mul hK.ne' hS.ne', Real.log_pow, Real.log_mul (by positivity) hN.ne', Real.log_mul hκ.ne' hDp.ne', IW.log_norm_eq, phla]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hev : (fun w => ((ps (cpt X.toData x0 w) : ℝ) : ℂ)) =ᶠ[𝓝 z] fun w => ((Real.log (∑ t ∈ 𝒯, Complex.normSq (∏ b, Θ (t b) (cpt X.toData x0 w))) + (((r : ℝ) / 2 * Real.log (Complex.normSq (D (cpt X.toData x0 w))) + r * Real.log κ) + (-((r : ℝ) / 2)) * phla X.toData la (cpt X.toData x …` using `by filter_upwards [hO.mem_nhds hz'] with w hw`. Rewrite using `[(key w hw).2]`. Unfold `leviM`. Rewrite using `[leviV_congr hev]`.
-
-Conclude with `levi_lower 𝒯 (g := fun t w => ∏ b, Θ (t b) (cpt X.toData x0 w)) _ _ (fun t => contDiffAt_prod fun b _ => hhol (hΘ _)) (hhol hD) (hD0 _ hz) ((IW.phla_cpt_cdAt X.toData x0 hz' la).of_le (by norm_cast)) (key z hz').1 ξ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_log_theta_sum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : DataX E r), (∃ ξ : Fin r → E, X.toData.IsIso ξ) → (∃ w0 : 𝓞 E, ∀ u ∈ X.Λ, ∀ v ∈ X.Λ, ∃ k : ℤ, Algebra.trace ℚ E (X.ξ0 * herm X.Gm u (((w0 : E) - cc (w0 : E)) • v)) - Algebra.trace ℚ E (X.ξ0 * herm X.Gm u v) = 2 * k) → ∀ ps : Frame X.Ψ r → ℝ, (∀ x ∈ X.dom, ∃ A : TorusAt X.toData x, ps x = Real.log (∑ᶠ (a : Fin A.T.r → Vsp A.T.dim) (_ : a ∈ {a : Fin A.T.r → Vsp A.T.dim | (∀ j, a j ∈ ZSpan.fundamentalDomain A.T.b) ∧ (∀ j, ((5 : ℂ) ^ 2) • a j ∈ A.T.L) ∧ ∀ x ∈ A.T.L, ∃ c : Fin A.T.r → 𝓞 E, ∃ y ∈ A.T.L, x = ∑ j, act (c j) (((5 : ℂ) ^ 2) • a j) + (5 : ℂ) • y}), ∏ b, A.T.ptN2 1 A.s (fun _ => a b) / A.T.l2 1 A.s)) → ∀ x0 ∈ X.dom, ∀ z, cpt X.toData x0 z ∈ X.dom → ∀ ξ : Fin (nd X.toData) → ℂ, -((r : ℝ) / 2 * leviM X.toData (phla X.toData (fun _ j => if X.p0 ≤ (j : ℕ) then 1 else -1)) x0 z ξ) ≤ leviM X.toData ps x0 z ξ := by
   intro E _ _ _ r X _ hw ps hps x0 _ z hz ξ

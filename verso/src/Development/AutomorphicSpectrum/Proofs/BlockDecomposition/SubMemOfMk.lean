@@ -12,9 +12,9 @@ section Site
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} {Fil : ℤ → IdF Φ.A}
 
 /- English proof (translation)
-Establish `h1 : x ∈ (Fil ((1 : ℕ) : ℤ)).S T`. Use `hF.one T` as an intermediate fact. Simplify `hx` using `[this]`. Use `hF.mul 1 r T h1 hy` as an intermediate fact. Establish `e : (((1 + r : ℕ)) : ℤ) = (r : ℤ) + 1` using `by push_cast; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem J_mul_mem (hF : IsFil Φ Fil) (r : ℕ) {T : C} {x y : Φ.A.obj T} (hx : x ∈ Φ.J.S T)
     (hy : y ∈ (Fil r).S T) : x * y ∈ (Fil ((r : ℤ) + 1)).S T := by
@@ -37,9 +37,9 @@ theorem mulT_coe (r : ℤ) {T : C} (u : Φ.A.obj T) (x : (gr Fil r).obj T) :
       Ideal.Quotient.mk _ u * (show sqM (Fil r) (Fil (r + 1)) T from x).1 := rfl
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `x`. Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hx`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ u * Ideal.Quotient.mk _ y = Ideal.Quotient.mk _ v * Ideal.Quotient.mk _ y`. Rewrite using `[← map_mul, ← map_mul, Ideal.Quotient.eq, ← sub_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J_mul_mem hF r h hy`.
+A detailed English derivation is pending.
 -/
 theorem mulT_congr (hF : IsFil Φ Fil) (r : ℕ) {T : C} {u v : Φ.A.obj T} (h : u - v ∈ Φ.J.S T)
     (x : (gr Fil r).obj T) : mulT Fil r u x = mulT Fil r v x := by
@@ -88,9 +88,9 @@ variable (hF : IsFil Φ Fil) (r : ℕ)
 include hF
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Rewrite using `[pull_mk, pull_mk, pull_mk, ← Submodule.Quotient.mk_add]`. Use `congr 1`. Use `Subtype.ext (funext fun s => ?_)` and prove the remaining obligations. Use `(mulT_congr hF r (h _) (z.1 s)).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (u _ + v _) * _ = Ideal.Quotient.mk _ (u _) * _ + Ideal.Quotient.mk _ (v _) * _`. Rewrite using `[map_add, add_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulMor_add {u v w : ∀ T, Φ.A.obj T} (hu hv hw) (h : ∀ T, w T - (u T + v T) ∈ Φ.J.S T) (n : ℕ) (c : CH.H (gr Fil r) n) :
     (mulMor hF r w hw).pull n c = (mulMor hF r u hu).pull n c + (mulMor hF r v hv).pull n c := by
@@ -105,9 +105,9 @@ theorem mulMor_add {u v w : ∀ T, Φ.A.obj T} (hu hv hw) (h : ∀ T, w T - (u T
   rfl
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Rewrite using `[pull_mk, pull_mk, pull_mk]`. Use `congr 1`. Use `Subtype.ext (funext fun s => ?_)` and prove the remaining obligations. Use `(mulT_congr hF r (h _) (z.1 s)).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (u _ * v _) * _ = Ideal.Quotient.mk _ (u _) * (Ideal.Quotient.mk _ (v _) * _)`. Rewrite using `[map_mul, mul_assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulMor_mul {u v w : ∀ T, Φ.A.obj T} (hu hv hw) (h : ∀ T, w T - u T * v T ∈ Φ.J.S T) (n : ℕ) (c : CH.H (gr Fil r) n) :
     (mulMor hF r w hw).pull n c = (mulMor hF r u hu).pull n ((mulMor hF r v hv).pull n c) := by
@@ -122,9 +122,9 @@ theorem mulMor_mul {u v w : ∀ T, Φ.A.obj T} (hu hv hw) (h : ∀ T, w T - u T 
   rfl
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Rewrite using `[pull_mk, ← Submodule.Quotient.mk_smul]`. Use `congr 1`. Use `Subtype.ext (funext fun s => ?_)` and prove the remaining obligations. Use `(mulT_congr hF r (h _) (z.1 s)).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Conclude with `(Algebra.smul_def a (show sqM (Fil r) (Fil ((r : ℤ) + 1)) _ from z.1 s).1).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mulMor_smul {u : ∀ T, Φ.A.obj T} (hu) (a : R) (h : ∀ T, u T - algebraMap R _ a ∈ Φ.J.S T) (n : ℕ) (c : CH.H (gr Fil r) n) :
     (mulMor hF r u hu).pull n c = a • c := by
@@ -144,9 +144,9 @@ variable {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : Div
   {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
 
 /- English proof (translation)
-Establish `e : pt T' = Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) ≫ pt T`. Use `φ.pt` as an intermediate fact. Unfold `pt`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `key : ∀ (y : Spec (CommRingCat.of (T'.B ⧸ T'.J)) ⟶ X) (hy : y = Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) ≫ pt T) (h'' : ⊤ ≤ y ⁻¹ᵁ W), GlobalTheory.Cris.evalAt y W h'' f = Ideal.quotientMap T'.J φ.φ φ.hle (ev T h f)`. Introduce `y hy h''`. Substitute `hy` using the available equality. Conclude with `GlobalTheory.LogCris.evalAt_map _ (pt T) h h'' f`. Conclude with `key _ e h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ev_map {W : X.Opens} {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (h : InU W T) (h' : InU W T')
     (f : Γ(X, W)) : ev T' h' f = Ideal.quotientMap T'.J φ.φ φ.hle (ev T h f) := by
@@ -167,20 +167,20 @@ def evLift {Q : ObjectProperty (Thick (nlFun γ p X q κ))} {W : X.Opens} (hQ : 
   Function.surjInv (Ideal.Quotient.mk_surjective (I := T.obj.J)) (ev T.obj (hQ _ T.property) f)
 
 /- English proof (translation)
-The claim follows from `Function.surjInv_eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem mk_evLift {Q : ObjectProperty (Thick (nlFun γ p X q κ))} {W : X.Opens} (hQ : ∀ T, Q T → InU W T) (f : Γ(X, W))
     (T : Q.FullSubcategory) : Ideal.Quotient.mk T.obj.J (evLift hQ f T) = ev T.obj (hQ _ T.property) f :=
   Function.surjInv_eq _ _
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.eq.1 h`.
+A detailed English derivation is pending.
 -/
 theorem sub_mem_of_mk {T : Thick (nlFun γ p X q κ)} {x y : T.B} (h : Ideal.Quotient.mk T.J x = Ideal.Quotient.mk T.J y) :
     x - y ∈ T.J := Ideal.Quotient.eq.1 h
 
 /- English proof (translation)
-Use `sub_mem_of_mk (T := T'.obj) ?_` and prove the remaining obligations. Rewrite using `[mk_evLift, ev_map φ.hom (hQ _ T.property) (hQ _ T'.property), ← mk_evLift hQ f T]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evLift_nat {Q : ObjectProperty (Thick (nlFun γ p X q κ))} {W : X.Opens} (hQ : ∀ T, Q T → InU W T) (f : Γ(X, W))
     {T T' : Q.FullSubcategory} (φ : T ⟶ T') :
@@ -213,7 +213,7 @@ variable {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : Div
   (hQ : ∀ T, Q T → InU W T) (r : ℕ)
 
 /- English proof (translation)
-Use `mulMor_add hF r _ _ _ (fun T => sub_mem_of_mk (T := T.obj) ?_) r c` and prove the remaining obligations. Rewrite using `[mk_evLift, map_add (Ideal.Quotient.mk T.obj.J), mk_evLift, mk_evLift, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fAct_add (f g : Γ(X, W)) (c : HU (grF (nlFun γ p X q κ) r) Q r) :
     fAct hF hQ r (f + g) c = fAct hF hQ r f c + fAct hF hQ r g c := by
@@ -221,7 +221,7 @@ theorem fAct_add (f g : Γ(X, W)) (c : HU (grF (nlFun γ p X q κ) r) Q r) :
   rw [mk_evLift, map_add (Ideal.Quotient.mk T.obj.J), mk_evLift, mk_evLift, map_add]
 
 /- English proof (translation)
-Use `mulMor_mul hF r _ _ _ (fun T => sub_mem_of_mk (T := T.obj) ?_) r c` and prove the remaining obligations. Rewrite using `[mk_evLift, map_mul (Ideal.Quotient.mk T.obj.J), mk_evLift, mk_evLift, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fAct_mul (f g : Γ(X, W)) (c : HU (grF (nlFun γ p X q κ) r) Q r) :
     fAct hF hQ r (f * g) c = fAct hF hQ r f (fAct hF hQ r g c) := by
@@ -229,7 +229,7 @@ theorem fAct_mul (f g : Γ(X, W)) (c : HU (grF (nlFun γ p X q κ) r) Q r) :
   rw [mk_evLift, map_mul (Ideal.Quotient.mk T.obj.J), mk_evLift, mk_evLift, map_mul]
 
 /- English proof (translation)
-Use `(mulMor_smul hF r _ (1 : R) (fun T => sub_mem_of_mk (T := T.obj) ?_) r c).trans (one_smul _ _)` and prove the remaining obligations. Rewrite using `[mk_evLift, map_one, map_one (algebraMap R _)]`. Conclude with `(map_one _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fAct_one (c : HU (grF (nlFun γ p X q κ) r) Q r) : fAct hF hQ r 1 c = c := by
   refine (mulMor_smul hF r _ (1 : R) (fun T => sub_mem_of_mk (T := T.obj) ?_) r c).trans (one_smul _ _)
@@ -248,16 +248,16 @@ Both sides reduce to the same expression.
 theorem fHom_apply (f : Γ(X, W)) (c : HU (grF (nlFun γ p X q κ) r) Q r) : fHom hF hQ r f c = fAct hF hQ r f c := rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LogCris.evalAt_res (pt T) hW h h' f`.
+A detailed English derivation is pending.
 -/
 theorem ev_rs {W' : X.Opens} (hW : W' ≤ W) (T : Thick (nlFun γ p X q κ)) (h : InU W T) (h' : InU W' T) (f : Γ(X, W)) :
     ev T h' (rs hW f) = ev T h f :=
   GlobalTheory.LogCris.evalAt_res (pt T) hW h h' f
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk ((resU (grF (nlFun γ p X q κ) r) hle).hom.mapZ r ((mulMor hF r (evLift hQ f) (evLift_nat hQ f)).hom.mapZ r z)) = Submodule.Quotient.mk ((mulMor hF' r (evLift hQ' (rs hW f)) (evLift_nat hQ' (rs hW f))).hom.mapZ r ((resU (grF (nlFun γ p X q κ) r) hle).hom.mapZ …`. Use `congr 1`. Use `Subtype.ext (funext fun s => ?_)` and prove the remaining obligations. Use `Eq.symm (((mulT_congr hF' r (T := s.obj (Fin.last r)) (u := evLift hQ' (rs hW f) _) (v := evLift hQ f ((ObjectProperty.ιOfLE hle).obj (s.obj (Fin.last r)))) ?_ _)).trans ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `sub_mem_of_mk (T := (s.obj (Fin.last r)).obj) ?_` and prove the remaining obligations. Rewrite using `[mk_evLift]`. Conclude with `(ev_rs hW _ (hQ _ (hle _ (s.obj (Fin.last r)).property)) _ _).trans (mk_evLift hQ f ((ObjectProperty.ιOfLE hle).obj (s.obj (Fin.last r)))).symm`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem res_fAct {Q' : ObjectProperty (Thick (nlFun γ p X q κ))} (hF' : IsFil (sP Q') (sFil Q')) {W' : X.Opens}
     (hQ' : ∀ T, Q' T → InU W' T) (hW : W' ≤ W) (hle : Q' ≤ Q) (f : Γ(X, W)) (c : HU (grF (nlFun γ p X q κ) r) Q r) :
@@ -287,9 +287,9 @@ section Sec
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} {Fil : ℤ → IdF Φ.A}
 
 /- English proof (translation)
-Establish `h0 : x ∈ (Fil ((0 : ℕ) : ℤ)).S E.D`. Rewrite using `[hF.top _ (by simp)]; trivial`. Establish `h1` using `hc 0 (σ T') (σ T ≫ φ) h0`. Establish `e : (((0 : ℕ) : ℤ) + 1) = 1` using `by simp`. Rewrite `h1` using `[e, hF.one, Φ.A.map_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem sec_nat (hF : IsFil Φ Fil) {d : ℕ} (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T) (hc : E.GrConst Fil)
     (x : Φ.A.obj E.D) {T T' : C} (φ : T ⟶ T') :
@@ -312,7 +312,7 @@ section Res
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem res_res (F : C ⥤ ModuleCat.{0} R) {U V W : ObjectProperty C} (h₁ : V ≤ U) (h₂ : W ≤ V) (n : ℕ) (c : HU F U n) :
     (resU F h₂).pull n ((resU F h₁).pull n c) = (resU F (h₂.trans h₁)).pull n c := by
@@ -328,7 +328,7 @@ variable {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.o
   (hQ : ∀ T, Q T → InU W T) (r : ℕ)
 
 /- English proof (translation)
-Use `mulMor_smul hF r _ a (fun T => sub_mem_of_mk (T := T.obj) ?_) r c` and prove the remaining obligations. Rewrite using `[mk_evLift]`. Establish `e` using `GlobalTheory.LogCris.evalAt_base q (Ideal.Quotient.mk ⊥) (T.obj.y.1.1) (T.obj.y.1.2) T.obj.y.2 (hQ _ T.property) a`. Conclude with `e.trans (T.obj.w a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fAct_str (a : O) (c : HU (grF (nlFun (dividedPowersBot O) 0 X q (Ideal.Quotient.mk ⊥)) r) Q r) :
     fAct hF hQ r (strV q W a) c = a • c := by

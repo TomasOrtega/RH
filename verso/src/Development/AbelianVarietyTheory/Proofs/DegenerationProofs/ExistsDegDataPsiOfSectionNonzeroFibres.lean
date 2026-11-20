@@ -42,11 +42,9 @@ noncomputable section
 namespace GlobalTheory.PsiRing
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `xe.surjective α`. Assume the negation of the conclusion as `h0`. Use `push Not at h0`. Take `⟨j, hj⟩` from `h' x`. Use `hj (ThetaScalar.eq_zero_of_sval D'.P.isLB _ (fun y J' hJ' => ?_) j)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ⟩` from `exists_good_pt D.P.isLB y`. Set `T : Over (Spec (CommRingCat.of R))` to `Over.mk (((snd (𝟙_ _) D'.P.A).left ≫ β) ≫ D.P.A.hom)`. Set `p : T ⟶ D.P.A` to `Over.homMk ((snd (𝟙_ _) D'.P.A).left ≫ β) rfl`. Establish `e` using `h x _ (𝟙 _) (lift (toUnit T) p).left ((congrArg (fun q => q.left) (lift_snd (toUnit T) p)).trans (Category.id_comp _).symm) y J J' hJ hJ'`. Rewrite `e` using `[ThetaScalar.sval_eq_zero _ h0 _ y hJ]`.
-
-Conclude with `(Units.mul_right_eq_zero _).1 e.symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_secCmp {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] {φ : R →+* V} {D : DegPre R}
     {D' : DegPre V} {β : D'.P.A.left ⟶ D.P.A.left} {v : LB.Iso D'.P.L (D.P.L.pull β)} {xe : D'.X ≃+ D.X}
@@ -66,7 +64,7 @@ theorem ne_zero_of_secCmp {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [I
   exact (Units.mul_right_eq_zero _).1 e.symm
 
 /- English proof (translation)
-Establish `hi : Function.Injective ((algebraMap V (FractionRing V)).comp φ)` using `(IsFractionRing.injective V (FractionRing V)).comp hφ`. Take `⟨g, e⟩ : ∃ g : FractionRing R →+* FractionRing V, g.comp (algebraMap R (FractionRing R)) = (algebraMap V (FractionRing V)).comp φ` from `⟨IsLocalization.lift (M := nonZeroDivisors R) (g := (algebraMap V (FractionRing V)).comp φ) fun y => IsUnit.mk0 _ ((map_ne_zero_iff _ hi).2 (nonZeroDivisors.coe_ne_zero y)), IsLocalization.lift_comp _⟩`. Establish `e' : spMap g ≫ jK R = jK V ≫ spMap φ`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, e]`. Conclude with `⟨spMap g, e'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_generic_map {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] {φ : R →+* V}
     (hφ : Function.Injective φ) : ∃ gam : (TK V).left ⟶ (TK R).left, gam ≫ jK R = jK V ≫ spMap φ := by
@@ -81,29 +79,27 @@ theorem exists_generic_map {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [
   exact ⟨spMap g, e'⟩
 
 /- English proof (translation)
-Introduce `h₁ h₂ hE R _ _ _ I hA V _ _ _ hV φ hφ hI D D' A A' G _ _ G' _ _ U U' U₀ F C hU hθ`. Take `⟨hR, -, -, hP, -⟩` from `hA`. Use `hV.1` as an intermediate fact. Establish `hV' : AdmBase V (IsLocalRing.maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hV.2.1⟩`. Establish `hm : IsLocalRing.maximalIdeal V ≠ ⊤` using `(IsLocalRing.maximalIdeal.isMaximal V).ne_top`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIm : I.map φ ≤ IsLocalRing.maximalIdeal V` using `Ideal.map_le_iff_le_comap.2 hI.ge`. Take `⟨hσ₁, hσ₂⟩` from `GlobalTheory.T.fibrewiseNonzeroSection_prod_and_baseChange R V I _ φ D D'.toPre A G A' G' U U' F C`. Take `⟨σ, hσ⟩` from `hσ₁ hθ`. Take `⟨f, hf, -⟩` from `CompleteBaseExpansion.main h₁ h₂ hE R I hR hP.ne_top D A G U 1 σ`. Take `⟨σ', f', hf', hσσ, hff⟩` from `ExpCmp.expT_cmp R V I _ φ hIm D D'.toPre A A' G G' U U' F C 1 σ f hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcmp : SecCmp D D'.toPre C.β C.v C.xe f f'` using `hff`. Establish `hrel'` using `GlobalTheory.T.psiRel_of_expT' h₁ h₂ V _ hV' D' A' G' U' U₀ hU σ' f' hf'`. Establish `hne' : ∀ α, ∃ j, (f' α).f j ≠ 0`. Use `GlobalTheory.T.forall_term_ne_zero_of_psiRelation V D'.toPre f' hrel' ?_` and prove the remaining obligations. Take `⟨T, y, z, J, α, hJ, -, -, hu⟩` from `GlobalTheory.T.exists_expansionTerm_unit_closedFibre V _ hm D'.toPre A' G' U' 1 σ' f' hf' (hσ₂ 1 σ σ' hσσ hσ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨α, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Use `push Not at h0`. Rewrite `hu` using `[ThetaScalar.sval_eq_zero _ h0 _ z hJ]`. Conclude with `not_isUnit_zero hu`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨psi, h, hrel⟩` from `exists_psi_psiRel h₁ h₂ R D f (ne_zero_of_secCmp C.pbB.1.w hcmp hne')`. Set `E : DegPre R` to `withPsi D psi h`. Establish `hrelE : PsiRel E (𝟙_ _) f` using `hrel`. Establish `hrig : RigCmp φ E D'.toPre C.β C.v` using `GlobalTheory.T.rigidification_comparison_uniformisation R V I _ φ hm hIm D D'.toPre A G A' G' U U' F C`. Take `⟨gam, hgam⟩` from `exists_generic_map hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpsi : PsiCmp E D'.toPre C.β C.v C.xe gam` using `GlobalTheory.T.psiCmp_of_secCmp' R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig f f' hcmp hrelE hrel' (hne' 0) gam hgam`. Establish `hev : E.PsiEven` using `GlobalTheory.T.psiEven_descend_baseChange h₁.globalFns R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr gam hgam hpsi D'.psi_even`. Establish `hbi : E.TauBimult` using `GlobalTheory.T.tauBimult_of_baseChange' h₁.globalFns R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig gam hgam hpsi D'.tau_bimult`. Take `⟨hD, hD₁, hD₂, hD₃⟩` from `GlobalTheory.T.exists_isPullDeg_of_comparison R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr hrig gam hgam hpsi hbi`. Take `⟨ga, a, hS⟩` from `exists_psiScal R E`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨th, hth, hmul⟩` from `GlobalTheory.T.exists_thetaSection_nonzeroFibres_localRing h₂.secTwist R D`. Take `⟨q, hq⟩` from `hmul (f 0)`. Use `choose b hb using fun χ : D.X => GlobalTheory.T.exists_twistedSection_thetaTranslate_coef R D th hmul χ (ga χ) (hS χ).1 (f χ)`. Establish `hab : ∀ χ, algebraMap R (FractionRing R) q * (a χ).val = algebraMap R (FractionRing R) (b χ)` using `fun χ => GlobalTheory.T.psiScalar_eq_expansionCoef_ratio R E ga a f th hS hrelE hth χ q (b χ) hq (hb χ)`. Establish `hbI : ∀ χ : D.X, χ ≠ 0 → b χ ∈ I` using `fun χ hχ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `C.xe.surjective χ`. Take `⟨m, hm₁, hm₂⟩` from `GlobalTheory.T.psiScalar_mem_of_psi_mem_ideal R V φ E D'.toPre C.β C.v C.xe C.pbB C.v_gen C.c_pr gam hgam hpsi ga a hS x _ (D'.psi_pos x fun h0 => hχ (by rw [h0, map_zero])) _ q (hab _)`. Use `hI.le (Ideal.mem_comap.2 ?_)` and prove the remaining obligations. Conclude with `(congrArg (· ∈ IsLocalRing.maximalIdeal V) hm₂).mpr (Ideal.mul_mem_left _ _ hm₁)`. Establish `hqu : IsUnit q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨T, y, z, J, α, hJ, hz, h0, hu⟩` from `GlobalTheory.T.exists_expansionTerm_unit_closedFibre R I hP.ne_top D A G U 1 σ f hf hσ`. Distinguish the cases in `hα : α = 0`. Substitute `hα` using the available equality. Rewrite `hu` using `[hq _ _ z J hJ, show (lift (toUnit T) y).left ≫ (𝟙_ _ ⊗ D.P.A).hom = T.hom from Over.w _]`. Assume the negation of the conclusion as `hn`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cst_not_isUnit T.hom z hz hn (isUnit_of_mul_isUnit_left hu)`. Rewrite `hu` using `[hb α T y z J hJ, h0 _ (hbI α hα), MulZeroClass.zero_mul]`. Conclude with `absurd hu not_isUnit_zero`. Take `⟨q, rfl⟩` from `hqu`. Establish `hin : ∀ (χ : D.X) (J : Ideal R), b χ ∈ J → E.PsiIn χ J` using `fun χ J hJ => (PsiScalIn.main_local E ga a hS χ J).2 ⟨(q⁻¹).val * b χ, J.mul_mem_left _ hJ, by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Use `(congrArg (_ * ·) (hab χ).symm).trans ?_` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc, ← map_mul, Units.inv_mul, map_one, _root_.one_mul]⟩`. Use `⟨psi, h, ⟨E, hev, hbi, fun χ hχ => hin χ I (hbI χ hχ), fun n => ?_⟩, hD, rfl, hD₁, hD₂, hD₃⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `GlobalTheory.T.expansionCoef_mem_adic_pow R I hP.ne_top D A G U σ f th hf hth n`.
-
-Use `s.finite_toSet.subset fun χ hχ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `hχ (hin χ _ (Ideal.pow_le_pow_right (Nat.le_succ n) (hs χ hn _ _ (hb χ))))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_degData_of_thetaNZ : Laws → Laws2 → Ega → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), admitted R I → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDvr V → ∀ φ : R →+* V, Function.Injective φ → (IsLocalRing.maximalIdeal V).comap φ = I → ∀ (D : DegPre R) (D' : DegData V (IsLocalRing.maximalIdeal V)) (A : PolAV (Sp (FractionRing R))) (A' : PolAV (Sp (FractionRing V))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (G' : Over (Spec (CommRingCat.of V))) [GrpObj G'] [IsCommMonObj G'] (U : PreU I D A G) (U' : PreU (IsLocalRing.maximalIdeal V) D'.toPre A' G') (U₀ : Unif (IsLocalRing.maximalIdeal V) D' A' G') (F : G'.left ⟶ G.left) (C : Cmp φ U U' F), Under U' U₀.toUnifPre → ThetaNZ G U.P.L.L → ∃ (psi : _) (h : _) (Dd : DegData R I) (hD : IsPullDeg φ (withPsi D psi h) D'.toPre), Dd.toPre = withPsi D psi h ∧ hD.e.hom.left ≫ pullback.fst _ _ = C.β ∧ HEq hD.w C.v ∧ hD.xe = C.xe := by
   intro h₁ h₂ hE R _ _ _ I hA V _ _ _ hV φ hφ hI D D' A A' G _ _ G' _ _ U U' U₀ F C hU hθ

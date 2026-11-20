@@ -33,13 +33,13 @@ Both sides reduce to the same expression.
     blk h R a.succ b.succ = h a b := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `refine Fin.cases ?_ (fun a => ?_) a <;> simp [Fin.succ_ne_zero]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk_col (h : Matrix (Fin k) (Fin k) ℂ) (R : Fin k → ℂ) (a) : blk h R a 0 = if a = 0 then 1 else 0 := by
   refine Fin.cases ?_ (fun a => ?_) a <;> simp [Fin.succ_ne_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_succ_column_zero, Fin.sum_univ_succ]`. Simplify using `only [blk_sz, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, firstColumnBlockMatrix_apply_zero_zero, Fin.val_zero, pow_zero, one_mul, Fin.succAbove_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem det_blk (h : Matrix (Fin k) (Fin k) ℂ) (R : Fin k → ℂ) : (blk h R).det = h.det := by
   rw [Matrix.det_succ_column_zero, Fin.sum_univ_succ]
@@ -48,7 +48,7 @@ theorem det_blk (h : Matrix (Fin k) (Fin k) ℂ) (R : Fin k → ℂ) : (blk h R)
   rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `refine Fin.cases ?_ (fun a => ?_) a <;> refine Fin.cases ?_ (fun b => ?_) b <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, Matrix.vecMul, dotProduct]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blk_mul (β h : Matrix (Fin k) (Fin k) ℂ) (τ R : Fin k → ℂ) :
     blk β τ * blk h R = blk (β * h) (R + τ ᵥ* h) := by
@@ -57,7 +57,7 @@ theorem blk_mul (β h : Matrix (Fin k) (Fin k) ℂ) (τ R : Fin k → ℂ) :
     simp [Matrix.mul_apply, Fin.sum_univ_succ, Matrix.vecMul, dotProduct]
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `refine Fin.cases ?_ (fun a => ?_) a <;> refine Fin.cases ?_ (fun b => ?_) b <;>`. Simplify using `[hM, Fin.succ_ne_zero]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem eq_blk (M : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hM : ∀ a, M a 0 = if a = 0 then 1 else 0) :
     M = blk (Matrix.of fun a b => M a.succ b.succ) (fun b => M 0 b.succ) := by
@@ -66,7 +66,7 @@ theorem eq_blk (M : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hM : ∀ a, M a 0 =
     simp [hM, Fin.succ_ne_zero]
 
 /- English proof (translation)
-Establish `h1 : A * M⁻¹ * M = A` using `Matrix.nonsing_inv_mul_cancel_right _ _ hd.isUnit`. Use `conv_rhs => rw [← h1, Matrix.mul_apply]`. Simplify using `[hM]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_inv_col (A M : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hd : M.det ≠ 0)
     (hM : ∀ a, M a 0 = if a = 0 then 1 else 0) (a) : (A * M⁻¹) a 0 = A a 0 := by
@@ -90,7 +90,7 @@ def TL (g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) : Fin k → ℂ :=
 variable {s} (hs : ∀ x, x ≠ 0 → (Matrix.of (s x)).det = 1 ∧ ∀ a, s x a 0 = x a)
 
 /- English proof (translation)
-Establish `h1 : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hg.isUnit`. Use `congrFun (congrFun h1 a) 0` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mulVec_xc (g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hg : g.det ≠ 0) (a) :
     ∑ b, g a b * xc g b = if a = 0 then 1 else 0 := by
@@ -99,7 +99,7 @@ theorem mulVec_xc (g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hg : g.det ≠ 0
   rwa [Matrix.mul_apply, Matrix.one_apply] at this
 
 /- English proof (translation)
-Introduce `h`. Use `mulVec_xc g hg 0` as an intermediate fact. Simplify using `[h] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem xc_ne (g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hg : g.det ≠ 0) : xc g ≠ 0 := by
   intro h
@@ -108,7 +108,7 @@ theorem xc_ne (g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hg : g.det ≠ 0) : 
 
 include hs in
 /- English proof (translation)
-Use `eq_blk _ fun a => ?_` and prove the remaining obligations. Rewrite using `[← mulVec_xc g hg a, mm, Matrix.mul_apply]`. Simplify using `[(hs _ (xc_ne g hg)).2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mm_eq (g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hg : g.det ≠ 0) :
     mm s g = blk (hL s g) (fun b => mm s g 0 b.succ) := by
@@ -118,7 +118,7 @@ theorem mm_eq (g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hg : g.det ≠ 0) :
 
 include hs in
 /- English proof (translation)
-Establish `h1 : (mm s g).det = g.det` using `by rw [mm, Matrix.det_mul, (hs _ (xc_ne g hg)).1, mul_one]`. Conclude with `(det_blk _ _).symm.trans ((congrArg Matrix.det (mm_eq hs g hg)).symm.trans h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem det_hL (g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hg : g.det ≠ 0) : (hL s g).det = g.det := by
   have h1 : (mm s g).det = g.det := by rw [mm, Matrix.det_mul, (hs _ (xc_ne g hg)).1, mul_one]
@@ -126,17 +126,17 @@ theorem det_hL (g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hg : g.det ≠ 0) :
 
 include hs in
 /- English proof (translation)
-Establish `hx : xc (γ * g) = xc g`. Use function extensionality and compare the values at `a`. Simplify using `only [xc]`. Rewrite using `[Matrix.mul_inv_rev, mul_inv_col _ _ hγ hc]`. Establish `hγ' : γ = blk β (fun b => γ 0 b.succ)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: β = Matrix.of fun a b => γ a.succ b.succ` using `by ext a b; simp [hβ]`. Rewrite using `[this]`. Conclude with `eq_blk γ hc`. Establish `hβd : β.det ≠ 0` using `fun h0 => hγ ((congrArg Matrix.det hγ').trans ((det_blk _ _).trans h0))`. Establish `hhd : (hL s g).det ≠ 0` using `(det_hL hs g hg).trans_ne hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : mm s (γ * g) = blk (β * hL s g) ((fun b => mm s g 0 b.succ) + (fun b => γ 0 b.succ) ᵥ* hL s g)`. Establish `e : mm s (γ * g) = γ * mm s g` using `by simp only [mm, hx, Matrix.mul_assoc]`. Conclude with `e.trans ((congrArg₂ (· * ·) hγ' (mm_eq hs g hg)).trans (blk_mul _ _ _ _))`. Establish `h1 : hL s (γ * g) = β * hL s g`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hL, hm]`. Simplify using the standard rewrite rules. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h2 : (fun b => mm s (γ * g) 0 b.succ) = (fun b => mm s g 0 b.succ) + (fun b => γ 0 b.succ) ᵥ* hL s g`. Use function extensionality and compare the values at `b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hm, blk_zs]`. Unfold `TL`. Rewrite using `[h1, h2]`. Generalize the expression as in `hL s g = h at hhd ⊢`. Generalize the expression as in `(fun b : Fin k => mm s g 0 b.succ) = R`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `(fun b : Fin k => γ 0 b.succ) = τ`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_inv_rev, Matrix.nonsing_inv_mul_cancel_right _ _ hβd.isUnit, Matrix.add_vecMul, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hhd.isUnit, Matrix.vecMul_one]`.
+A detailed English derivation is pending.
 -/
 theorem hL_mul (g γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hg : g.det ≠ 0) (hγ : γ.det ≠ 0)
     (hc : ∀ a, γ a 0 = if a = 0 then 1 else 0) (β : Matrix (Fin k) (Fin k) ℂ)
@@ -170,13 +170,13 @@ theorem hL_mul (g γ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hg : g.det ≠ 0
 
 include hs in
 /- English proof (translation)
-Establish `hu : IsUnit (Matrix.of (s x)).det` using `by rw [(hs x hx).1]; exact isUnit_one`. Establish `h1 : xc (blk h (T ᵥ* h) * (Matrix.of (s x))⁻¹) = x`. Use function extensionality and compare the values at `a`. Simplify using `only [xc]`. Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hu, mul_inv_col _ _ (by rwa [det_blk]) (blk_col _ _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hs x hx).2 a`. Establish `h2 : mm s (blk h (T ᵥ* h) * (Matrix.of (s x))⁻¹) = blk h (T ᵥ* h)`. Rewrite using `[mm, h1, Matrix.nonsing_inv_mul_cancel_right _ _ hu]`. Establish `h3 : hL s (blk h (T ᵥ* h) * (Matrix.of (s x))⁻¹) = h`. Use extensionality with `a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, h2]`. Simplify using the standard rewrite rules. Use `⟨h1, h3, ?_⟩` and prove the remaining obligations. Rewrite using `[TL, h3, h2]`. Simplify using `only [blk_zs]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show (T ᵥ* h) ᵥ* _ = _`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hh.isUnit, Matrix.vecMul_one]`.
+A detailed English derivation is pending.
 -/
 theorem coord_inv (x : Fin (k + 1) → ℂ) (hx : x ≠ 0) (h : Matrix (Fin k) (Fin k) ℂ) (hh : h.det ≠ 0)
     (T : Fin k → ℂ) :
@@ -203,9 +203,9 @@ section Meas
 variable {X : Type} [MeasurableSpace X]
 
 /- English proof (translation)
-Establish `h0 : Measurable fun p => (fun a b => A p a b : Fin j → Fin j → ℂ)` using `measurable_pi_lambda _ fun a => measurable_pi_lambda _ fun b => hA a b`. Establish `h1 : Continuous fun x : Fin j → Fin j → ℂ => (Matrix.of x).det` using `Continuous.matrix_det (A := fun x : Fin j → Fin j → ℂ => Matrix.of x) continuous_id`. Establish `h2 : Continuous fun x : Fin j → Fin j → ℂ => (Matrix.of x).adjugate a b` using `(Continuous.matrix_adjugate (A := fun x : Fin j → Fin j → ℂ => Matrix.of x) continuous_id).matrix_elem a b`. Establish `h3` using `(h1.measurable.inv.mul h2.measurable).comp h0`. Establish `: (fun p => (A p)⁻¹ a b) = fun p => ((A p).det)⁻¹ * (A p).adjugate a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `h3`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meas_inv {j : ℕ} {A : X → Matrix (Fin j) (Fin j) ℂ} (hA : ∀ a b, Measurable fun p => A p a b) (a b) :
     Measurable fun p => (A p)⁻¹ a b := by
@@ -221,7 +221,7 @@ theorem meas_inv {j : ℕ} {A : X → Matrix (Fin j) (Fin j) ℂ} (hA : ∀ a b,
   rw [this]; exact h3
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply]`. Conclude with `Finset.measurable_sum _ fun c _ => (hA a c).mul (hB c b)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem meas_mul {j : ℕ} {A B : X → Matrix (Fin j) (Fin j) ℂ} (hA : ∀ a b, Measurable fun p => A p a b)
     (hB : ∀ a b, Measurable fun p => B p a b) (a b) : Measurable fun p => (A p * B p) a b := by
@@ -229,7 +229,7 @@ theorem meas_mul {j : ℕ} {A B : X → Matrix (Fin j) (Fin j) ℂ} (hA : ∀ a 
   exact Finset.measurable_sum _ fun c _ => (hA a c).mul (hB c b)
 
 /- English proof (translation)
-Simplify using `only [Matrix.vecMul, dotProduct]`. Conclude with `Finset.measurable_sum _ fun c _ => (hv c).mul (hB c b)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem meas_vecMul {j : ℕ} {v : X → Fin j → ℂ} {B : X → Matrix (Fin j) (Fin j) ℂ}
     (hv : ∀ a, Measurable fun p => v p a)
@@ -238,35 +238,35 @@ theorem meas_vecMul {j : ℕ} {v : X → Fin j → ℂ} {B : X → Matrix (Fin j
   exact Finset.measurable_sum _ fun c _ => (hv c).mul (hB c b)
 
 /- English proof (translation)
-The claim follows from `(measurable_pi_apply b).comp ((measurable_pi_apply a).comp (hm.comp hv))`.
+A detailed English derivation is pending.
 -/
 theorem measurable_matrix_of_section_entries (hm : Measurable s) {v : X → Fin (k + 1) → ℂ} (hv : Measurable v) (a b) :
     Measurable fun p => Matrix.of (s (v p)) a b :=
   (measurable_pi_apply b).comp ((measurable_pi_apply a).comp (hm.comp hv))
 
 /- English proof (translation)
-The claim follows from `meas_mul hA (measurable_matrix_of_section_entries hm (measurable_pi_lambda _ fun a => meas_inv hA a 0)) a b`.
+A detailed English derivation is pending.
 -/
 theorem meas_mm (hm : Measurable s) {A : X → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
     (hA : ∀ a b, Measurable fun p => A p a b) (a b) : Measurable fun p => mm s (A p) a b :=
   meas_mul hA (measurable_matrix_of_section_entries hm (measurable_pi_lambda _ fun a => meas_inv hA a 0)) a b
 
 /- English proof (translation)
-The claim follows from `meas_mm hm hA _ _`.
+A detailed English derivation is pending.
 -/
 theorem meas_hL (hm : Measurable s) {A : X → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
     (hA : ∀ a b, Measurable fun p => A p a b) (a b) : Measurable fun p => hL s (A p) a b :=
   meas_mm hm hA _ _
 
 /- English proof (translation)
-The claim follows from `meas_vecMul (fun _ => meas_mm hm hA _ _) (meas_inv (meas_hL hm hA)) b`.
+A detailed English derivation is pending.
 -/
 theorem meas_TL (hm : Measurable s) {A : X → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
     (hA : ∀ a b, Measurable fun p => A p a b) (b) : Measurable fun p => TL s (A p) b :=
   meas_vecMul (fun _ => meas_mm hm hA _ _) (meas_inv (meas_hL hm hA)) b
 
 /- English proof (translation)
-Apply the tactic sequence `refine Fin.cases ?_ (fun a => ?_) a <;> refine Fin.cases ?_ (fun b => ?_) b <;> simp [hA, hv]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem meas_blk {A : X → Matrix (Fin k) (Fin k) ℂ} {v : X → Fin k → ℂ}
     (hA : ∀ a b, Measurable fun p => A p a b) (hv : ∀ a, Measurable fun p => v p a) (a b) :
@@ -274,7 +274,7 @@ theorem meas_blk {A : X → Matrix (Fin k) (Fin k) ℂ} {v : X → Fin k → ℂ
   refine Fin.cases ?_ (fun a => ?_) a <;> refine Fin.cases ?_ (fun b => ?_) b <;> simp [hA, hv]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GLFirstColumn.continuous_detM.norm.measurable.pow_const 2`.
+A detailed English derivation is pending.
 -/
 theorem meas_det {j : ℕ} : Measurable fun x : Fin j → Fin j → ℂ => ‖(Matrix.of x).det‖ ^ 2 :=
   GlobalTheory.GLFirstColumn.continuous_detM.norm.measurable.pow_const 2
@@ -282,9 +282,9 @@ theorem meas_det {j : ℕ} : Measurable fun x : Fin j → Fin j → ℂ => ‖(M
 end Meas
 
 /- English proof (translation)
-Use `haveI : SigmaFinite (volume : Measure (Fin (k + 1) → ℂ)) := inferInstance`. Rewrite using `[ae_all_iff]`. Introduce `w`. Establish `h : ∀ᵐ y : Fin (k + 1) → ℂ, y ≠ 0`. Rewrite using `[ae_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `(Measure.quasiMeasurePreserving_eval (fun _ : ι => (volume : Measure (Fin (k + 1) → ℂ))) w).ae h`.
+A detailed English derivation is pending.
 -/
 theorem ae_ne_zero (ι : Type) [Fintype ι] (k : ℕ) : ∀ᵐ x : ι → Fin (k + 1) → ℂ, ∀ w, x w ≠ 0 := by
   haveI : SigmaFinite (volume : Measure (Fin (k + 1) → ℂ)) := inferInstance
@@ -295,27 +295,27 @@ theorem ae_ne_zero (ι : Type) [Fintype ι] (k : ℕ) : ∀ᵐ x : ι → Fin (k
   exact (Measure.quasiMeasurePreserving_eval (fun _ : ι => (volume : Measure (Fin (k + 1) → ℂ))) w).ae h
 
 /- English proof (translation)
-Introduce `E _ _ k hk`. Take `⟨s, hm, hs, hint⟩` from `GlobalTheory.GLFirstColumn.haar_first_column k hk`. Set `hh : MatInf E (k + 1) → MatInf E k` to `fun g w a b => hL s (Matrix.of (g w)) a b`. Set `TT : MatInf E (k + 1) → VecInf E k` to `fun g w => TL s (Matrix.of (g w))`. Apply the tactic sequence `have mh : Measurable hh := measurable_pi_lambda (X := fun _ : InfinitePlace E => Fin k → Fin k → ℂ) _ fun w => measurable_pi_lambda _ fun a => measurable_pi_lambda _ fun b => meas_hL hm (A := fun g : MatInf E (k + 1) => Matrix.of (g w)) (measurable_entry w) a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply the tactic sequence `have mT : Measurable TT := measurable_pi_lambda _ fun w => measurable_pi_lambda _ fun b => meas_TL hm (A := fun g : MatInf E (k + 1) => Matrix.of (g w)) (measurable_entry w) b`. Use `⟨hh, TT, mh, mT, fun g hg => ?_, fun g γ hg hγ hc β hβ => ?_, fun F Q Φ hF hQ hΦ => ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[detNorm_pos_iff]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← det_hL hs _ (hg w)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hg`, `hγ` using `[detNorm_pos_iff]`. Use `fun w => hL_mul hs _ _ (hg w) (hγ w) (hc w) (Matrix.of (β w)) (hβ w)` as an intermediate fact. Conclude with `⟨matInf_ext fun w => (this w).1, fun w => (this w).2⟩`. Apply the tactic sequence `have mx : Measurable fun g : MatInf E (k + 1) => (fun u a => (Matrix.of (g u))⁻¹ a 0 : VecInf E (k + 1)) := measurable_pi_lambda _ fun w => measurable_pi_lambda _ fun a => measurable_inv_entry w a 0`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `mφ : Measurable fun g : MatInf E (k + 1) => F (hh g) * Q (TT g) * Φ (fun u a => (Matrix.of (g u))⁻¹ a 0)` using `((hF.comp mh).mul (hQ.comp mT)).mul (hΦ.comp mx)`. Establish `key` using `GlobalTheory.PiCoord.piCoord (InfinitePlace E) k (fun x h T a b => (blk (Matrix.of h) (T ᵥ* Matrix.of h) * (Matrix.of (s x))⁻¹) a b) (measurable_pi_lambda _ fun a => measurable_pi_lambda _ fun b => meas_mul (meas_blk (fun a b => by simp only [Matrix.of_apply]; fun_prop) (meas_vec …`. Establish `dens : ∀ (j : ℕ) (f : MatInf E j → ENNReal), Measurable f → ∫⁻ g, f g ∂(haarGL E j) = ∫⁻ g : InfinitePlace E → Fin j → Fin j → ℂ, f g * ENNReal.ofReal ((detNorm E j g)⁻¹ ^ j)`. Introduce `j f hf`. Establish `h1 : Measurable fun x : InfinitePlace E → Fin j → Fin j → ℂ => ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j)` using `(measurable_detNorm.inv.pow_const j).ennreal_ofReal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(lintegral_withDensity_eq_lintegral_mul (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)) h1 hf).trans ?_` and prove the remaining obligations. Conclude with `lintegral_congr fun g => mul_comm _ _`. Establish `mF : Measurable fun h : MatInf E k => F h * ENNReal.ofReal (detNorm E k h)` using `hF.mul measurable_detNorm.ennreal_ofReal`. Establish `mF' : Measurable fun h : InfinitePlace E → Fin k → Fin k → ℂ => F h * ENNReal.ofReal (detNorm E k h) * ENNReal.ofReal ((detNorm E k h)⁻¹ ^ k)` using `mF.mul (measurable_detNorm.inv.pow_const k).ennreal_ofReal`. Rewrite using `[dens _ _ mφ, dens _ _ mF]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ∀ g : InfinitePlace E → Fin (k + 1) → Fin (k + 1) → ℂ, (detNorm E (k + 1) g)⁻¹ ^ (k + 1) = ∏ w, (‖(Matrix.of (g w)).det‖ ^ 2)⁻¹ ^ (k + 1)`. Introduce `g`. Rewrite using `[Finset.prod_pow, Finset.prod_inv_distrib]`. Both sides reduce to the same expression. Simplify using `only [e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← lintegral_mul_const _ hΦ]`. Use `lintegral_congr_ae ((ae_ne_zero (InfinitePlace E) k).mono fun x hx => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← mul_assoc, ← lintegral_const_mul _ mF']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun h => ?_` and prove the remaining obligations. Establish `e2 : ∏ w, ‖(Matrix.of (h w)).det‖ ^ 2 * (‖(Matrix.of (h w)).det‖ ^ 2)⁻¹ ^ k = detNorm E k h * (detNorm E k h)⁻¹ ^ k`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow _ k, Finset.prod_inv_distrib]`. Both sides reduce to the same expression. Rewrite using `[e2, ENNReal.ofReal_mul (detNorm_nonneg (E := E) h)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `(detNorm_nonneg (E := E) (j := k) h).eq_or_lt with h0 | h0` into its components or cases. Simplify using `[← h0]`. Use `replace h0 := (detNorm_pos_iff (E := E) h).1 h0`. Rewrite using `[← lintegral_const_mul _ hQ, ← lintegral_mul_const _ (hQ.const_mul _)]`. Use `lintegral_congr fun T => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fun w => coord_inv hs (x w) (hx w) (Matrix.of (h w)) (h0 w) (T w)` as an intermediate fact. Establish `a1 : hh (fun i a b => (blk (Matrix.of (h i)) (T i ᵥ* Matrix.of (h i)) * (Matrix.of (s (x i)))⁻¹) a b) = h` using `matInf_ext fun w => (this w).2.1`. Establish `a2 : TT (fun i a b => (blk (Matrix.of (h i)) (T i ᵥ* Matrix.of (h i)) * (Matrix.of (s (x i)))⁻¹) a b) = T`. Use function extensionality and compare the values at `fun w => (this w).2.2`. Establish `a3 : (fun u a => (Matrix.of fun a b => (blk (Matrix.of (h u)) (T u ᵥ* Matrix.of (h u)) * (Matrix.of (s (x u)))⁻¹) a b)⁻¹ a 0) = x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `fun w => (this w).1`. Rewrite using `[a1, a2, a3]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coordinates : ∀ (E : Type) [Field E] [NumberField E] (k : ℕ), 1 ≤ k → ∃ (hh : MatInf E (k + 1) → MatInf E k) (TT : MatInf E (k + 1) → VecInf E k), Measurable hh ∧ Measurable TT ∧ (∀ g, 0 < detNorm E (k + 1) g → detNorm E k (hh g) = detNorm E (k + 1) g) ∧ (∀ g γ : MatInf E (k + 1), 0 < detNorm E (k + 1) g → 0 < detNorm E (k + 1) γ → (∀ w a, γ w a 0 = if a = 0 then 1 else 0) → ∀ β : MatInf E k, (∀ w a b, β w a b = γ w a.succ b.succ) → hh (γ * g) = β * hh g ∧ ∀ w, TT (γ * g) w ᵥ* Matrix.of (β w) = TT g w + fun b => γ w 0 b.succ) ∧ ∀ (F : MatInf E k → ENNReal) (Q : VecInf E k → ENNReal) (Φ : VecInf E (k + 1) → ENNReal), Measurable F → Measurable Q → Measurable Φ → ∫⁻ g, F (hh g) * Q (TT g) * Φ (fun u a => (Matrix.of (g u))⁻¹ a 0) ∂(haarGL E (k + 1)) = (∫⁻ x, Φ x) * (∫⁻ T, Q T) * ∫⁻ h, F h * ENNReal.ofReal (detNorm E k h) ∂(haarGL E k) := by
   intro E _ _ k hk

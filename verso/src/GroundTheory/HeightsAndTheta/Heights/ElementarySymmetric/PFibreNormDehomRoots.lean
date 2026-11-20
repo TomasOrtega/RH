@@ -18,7 +18,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[mConeMap, aeval_def, aeval_def, eval₂_comp_left]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_mConeMap (y : (Σ k, ι k) → Ω) (t : K → Ω) (f : MRing ι) :
     MvPolynomial.eval t (mConeMap y f) = aeval (fun p => y p * t p.1) f := by
@@ -29,7 +29,7 @@ theorem eval_mConeMap (y : (Σ k, ι k) → Ω) (t : K → Ω) (f : MRing ι) :
     simp
 
 /- English proof (translation)
-Rewrite using `[← eval_mConeMap, ProjLine.mConeMap_eq_of_isMultiHomog y hg, map_mul, eval_C, map_prod]`. Simplify using `only [map_pow, eval_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aeval_scale {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d) (y : (Σ k, ι k) → Ω) (t : K → Ω) :
     aeval (fun p => y p * t p.1) g = aeval y g * ∏ k, t k ^ d k := by
@@ -39,7 +39,7 @@ theorem aeval_scale {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d) (y : 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[← eval_mConeMap, RingHom.mem_ker.1 hf, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_eq_zero_of_mem {y : (Σ k, ι k) → Ω} {f : MRing ι} (hf : f ∈ mCoordIdeal y) (t : K → Ω) :
     aeval (fun p => y p * t p.1) f = 0 := by
@@ -48,7 +48,7 @@ theorem aeval_eq_zero_of_mem {y : (Σ k, ι k) → Ω} {f : MRing ι} (hf : f �
 omit [Fintype K] in
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite using `[Finset.mem_singleton.1 (support_monomial_subset hm)]`. Conclude with `h k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_monomial {ν : (Σ k, ι k) →₀ ℕ} {d : K → ℕ} (h : ∀ k, ∑ i, ν ⟨k, i⟩ = d k) :
     IsMultiHomog (monomial ν (1 : ℤ)) d := by
@@ -59,9 +59,9 @@ theorem isMultiHomog_monomial {ν : (Σ k, ι k) →₀ ℕ} {d : K → ℕ} (h 
 omit [Fintype K] in
 
 /- English proof (translation)
-Distinguish the cases in `h : k = k'`. Substitute `h` using the available equality. Simplify using `[Finsupp.single_apply]`. Establish `h0 : ∀ (i₂ : ι k) (i : ι k'), (Finsupp.single (⟨k, i₂⟩ : Σ k, ι k) 1) ⟨k', i⟩ = 0` using `fun i₂ i => by`. Rewrite using `[Finsupp.single_apply, if_neg]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Conclude with `h (congrArg Sigma.fst h')`. Simplify using `only [h0, Finset.sum_const_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_single_block (k : K) (i₀ i₁ : ι k) (k' : K) :
     ∑ i, (Finsupp.single (⟨k, i₀⟩ : Σ k, ι k) 1) ⟨k', i⟩ =
@@ -77,11 +77,11 @@ theorem sum_single_block (k : K) (i₀ i₁ : ι k) (k' : K) :
     simp only [h0, Finset.sum_const_zero]
 
 /- English proof (translation)
-Introduce `c _`. Establish `hprod : ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * ((1 * d k : ℕ) : ℤ))) = ∏ k, (y ⟨k, c k⟩)⁻¹ ^ d k`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_one, one_mul, one_mul, zpow_neg, zpow_natCast, inv_pow]`. Rewrite using `[hprod, ← aeval_scale hg y (fun k => (y ⟨k, c k⟩)⁻¹)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : aeval (fun p => y p * (y ⟨p.1, c p.1⟩)⁻¹) g ∈ chartRingZ y c`. Rewrite using `[chartRingZ, Algebra.adjoin_range_eq_range_aeval]`. Use `⟨g, ?_⟩` and prove the remaining obligations. Simplify using `only [div_eq_mul_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[mem_integralClosure_iff]`. Conclude with `isIntegral_algebraMap (x := (⟨_, hmem⟩ : chartRingZ y c))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mem_chartLatNm {y : (Σ k, ι k) → Ω} {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d) :
     aeval y g ∈ chartLatNm y (fun k => ((1 * d k : ℕ) : ℤ)) 1 := by
@@ -102,7 +102,7 @@ theorem aeval_mem_chartLatNm {y : (Σ k, ι k) → Ω} {g : MRing ι} {d : K →
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[aeval_def, aeval_def, eval₂_comp_left]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ringHom_aeval {A A' σ : Type*} [CommRing A] [CommRing A'] [Algebra ℤ A] [Algebra ℤ A'] (φ : A →+* A')
     (x : σ → A)
@@ -114,7 +114,7 @@ theorem ringHom_aeval {A A' σ : Type*} [CommRing A] [CommRing A'] [Algebra ℤ 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[eval_map, aeval_def, eval₂_comp_left]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ringHom_aeval_eq_eval {A A' σ : Type*} [CommRing A] [CommRing A'] [Algebra ℤ A] (φ : A →+* A')
     (x : σ → A)
@@ -157,55 +157,49 @@ abbrev chartClosure (y : (Σ k, ι k) → Ω) [CharZero Ω] {D : ℕ} (L : Fin (
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D e L q hA hB he hLe hnz τ s hs j c hc ζ hζ w hw`. Take `⟨hLj, hfd, hc0, hhom, hchar⟩` from `hc`. Use `hfd` as an intermediate fact. Establish `hgen` using `hG K ι Ω y D e L hA hB he hLe hnz`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, ζ a ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hζ (funext h)`. Establish `hla : aeval y (L a) ≠ 0` using `fun h0 => X_ne_zero a (hgen 1 (X a) (isHomogeneous_X ℚ a) (by rw [aeval_X]; exact h0))`. Establish `hu : s / aeval y (L a) ^ (q * τ) ∈ chartClosure y L a` using `hS K ι Ω y D e L q hA hB he hLe hnz τ s hs a hla`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ψ, hψl, hψu⟩` from `hR Ω D (fun i => aeval y (L i)) (pullField y L) rfl hgen j (q * τ) s c hLj hc0 hhom hchar a hu ζ ha w hw`. Establish `memM : ∀ g : MRing ι, IsMultiHomog g e → aeval y g / aeval y (L a) ^ (1 * 1) ∈ chartClosure y L a` using `fun g hg => hS K ι Ω y D e L 1 hA hB he hLe hnz 1 (aeval y g) (aeval_mem_chartLatNm hg) a hla`. Establish `memL : ∀ b, aeval y (L b) / aeval y (L a) ∈ chartClosure y L a` using `fun b => (mem_integralClosure_iff _ _).2 (isIntegral_algebraMap (x := (⟨_, Algebra.subset_adjoin ⟨b, rfl⟩⟩ : Algebra.adjoin ℚ (Set.range fun k => aeval y (L k) / aeval y (L a)))))`. Establish `hsplit : ∀ (g : MRing ι) (hg : IsMultiHomog g e), (⟨aeval y g / aeval y (L a) ^ (1 * 1), memM g hg⟩ : chartClosure y L a) = ∑ x ∈ g.support.attach, ((coeff x.1 g : ℤ) : chartClosure y L a) * ⟨aeval y (monomial x.1 (1 : ℤ)) / aeval y (L a) ^ (1 * 1), memM _ (isMultiHomog_monomial …`. Introduce `g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [AddSubmonoidClass.coe_finsetSum, MulMemClass.coe_mul, SubringClass.coe_intCast]`. Rewrite using `[Finset.sum_attach g.support (fun x => ((coeff x g : ℤ) : Ω) * (aeval y (monomial x (1 : ℤ)) / aeval y (L a) ^ (1 * 1)))]`. Use `conv_lhs => rw [g.as_sum]`. Rewrite using `[map_sum, Finset.sum_div]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [aeval_monomial, map_one, one_mul, algebraMap_int_eq, eq_intCast, mul_div_assoc]`. Choose the witnesses or unpack the hypotheses as in `⟨ν, hν, hψv⟩ : ∃ (ν : (Σ k, ι k) →₀ ℕ) (hν : ν ∈ (L a).support), ψ ⟨aeval y (monomial ν (1 : ℤ)) / aeval y (L a) ^ (1 * 1), memM _ (isMultiHomog_monomial (hLe a ν hν))⟩ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (⟨aeval y (L a) / aeval y (L a) ^ (1 * 1), memM _ (hLe a)⟩ : chartClosure y L a) = 1` using `Subtype.ext (by show aeval y (L a) / aeval y (L a) ^ (1 * 1) = 1`. Rewrite using `[mul_one, pow_one, div_self hla])`. Establish `h2` using `congrArg ψ ((hsplit (L a) (hLe a)).symm.trans h1)`. Rewrite `h2` using `[map_one, map_sum]`. Simplify using `only [map_mul, map_intCast] at h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Finset.sum_eq_zero (fun x _ => by rw [h x.1 x.2, mul_zero])]`. Conclude with `zero_ne_one h2`. Take `⟨v, hvv, hψv⟩ : ∃ v : chartClosure y L a, (v : Ω) = aeval y (monomial ν (1 : ℤ)) / aeval y (L a) ^ (1 * 1) ∧ ψ v ≠ 0` from `⟨_, rfl, hψv⟩`. Establish `hsum : ∀ k, ∑ i, ν ⟨k, i⟩ = e k` using `hLe a ν hν`. Establish `hcc : ∀ k, ∃ i, ν ⟨k, i⟩ ≠ 0` using `fun k => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (s := Finset.univ) (f := fun i => ν ⟨k, i⟩) (by rw [hsum k]; exact Nat.one_le_iff_ne_zero.1 (he k))`. Conclude with `⟨i, hi⟩`. Use `choose cc hcc using hcc`. Establish `hν1 : ∀ k, (ν - Finsupp.single ⟨k, cc k⟩ 1) + Finsupp.single ⟨k, cc k⟩ 1 = ν` using `fun k => tsub_add_cancel_of_le (Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 (hcc k)))`. Establish `hmon : ∀ k, aeval y (monomial ν (1 : ℤ)) = aeval y (monomial (ν - Finsupp.single ⟨k, cc k⟩ 1) (1 : ℤ)) * y ⟨k, cc k⟩` using `fun k => by conv_lhs => rw [← hν1 k]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[monomial_add_single, pow_one, map_mul, aeval_X]`. Establish `hyν : aeval y (monomial ν (1 : ℤ)) ≠ 0` using `fun h0 => hψv (by`. Rewrite using `[show v = 0 from Subtype.ext (by rw [hvv, h0, zero_div]; rfl), map_zero])`. Establish `hyk : ∀ k, y ⟨k, cc k⟩ ≠ 0` using `fun k h0 => hyν (by rw [hmon k, h0, mul_zero])`. Establish `hy1 : ∀ k, aeval y (monomial (ν - Finsupp.single ⟨k, cc k⟩ 1) (1 : ℤ)) ≠ 0` using `fun k h0 => hyν (by rw [hmon k, h0, zero_mul])`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum' : ∀ (p : Σ k, ι k) (k' : K), ∑ i, ((ν - Finsupp.single ⟨p.1, cc p.1⟩ 1) + Finsupp.single p 1 : (Σ k, ι k) →₀ ℕ) (⟨k', i⟩ : Σ k, ι k) = e k'`. Introduce and unpack `⟨k₀, i₀⟩ k'`. Establish `h1` using `congrArg (fun μ : (Σ k, ι k) →₀ ℕ => ∑ i, μ ⟨k', i⟩) (hν1 k₀)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib] at h1 ⊢`. Rewrite using `[sum_single_block k₀ i₀ (cc k₀) k', h1, hsum k']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hr : ∀ p : Σ k, ι k, ∃ r : chartClosure y L a, (r : Ω) = aeval y (monomial (ν - Finsupp.single ⟨p.1, cc p.1⟩ 1) (1 : ℤ)) * y p / aeval y (L a) ^ (1 * 1)` using `fun p => ⟨(⟨_, memM _ (isMultiHomog_monomial (hsum' p))⟩ : chartClosure y L a), by show aeval y _ / _ = _`. Rewrite using `[monomial_add_single, pow_one, map_mul, aeval_X]⟩`. Use `choose r hr using hr`. Establish `hpow : ∀ {F : Type} [Field F] (g : chartClosure y L a →+* F), g v ≠ 0 → ∀ t : Submonoid.powers v, IsUnit (g t)` using `fun g hg t => by`. Take `⟨n, hn⟩` from `t.2`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hn, map_pow]`. Conclude with `(isUnit_iff_ne_zero.2 hg).pow n`. Establish `hv0 : (algebraMap (chartClosure y L a) Ω) v ≠ 0` using `by show (v : Ω) ≠ 0`. Rewrite using `[hvv]`. Conclude with `div_ne_zero hyν (pow_ne_zero _ hla)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Set `ψ' : Localization.Away v →+* ℂ` to `IsLocalization.lift (hpow ψ hψv)`. Set `ι' : Localization.Away v →+* Ω` to `IsLocalization.lift (hpow (algebraMap (chartClosure y L a) Ω) hv0)`. Establish `hinj : Function.Injective ι'`. Introduce `x₁ x₂ h12`. Take `⟨⟨a₁, s₁⟩, rfl⟩` from `IsLocalization.mk'_surjective (S := Localization.Away v) (Submonoid.powers v) x₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨a₂, s₂⟩, rfl⟩` from `IsLocalization.mk'_surjective (S := Localization.Away v) (Submonoid.powers v) x₂`. Rewrite using `[IsLocalization.mk'_eq_iff_eq]`. Use `congr 1`. Establish `e1` using `(IsLocalization.lift_mk'_spec (S := Localization.Away v) (hpow (algebraMap (chartClosure y L a) Ω) hv0) a₁ _ s₁).1 rfl`. Establish `e2` using `(IsLocalization.lift_mk'_spec (S := Localization.Away v) (hpow (algebraMap (chartClosure y L a) Ω) hv0) a₂ _ s₂).1 rfl`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (algebraMap (chartClosure y L a) Ω) (↑s₂ * a₁) = (algebraMap (chartClosure y L a) Ω) (↑s₁ * a₂)`. Rewrite using `[map_mul, map_mul, e1, e2]`. Express the relevant statement in the definitionally equal form `_ * (_ * ι' _) = _ * (_ * ι' _)`. Rewrite using `[h12]`. Expand and normalize the polynomial expressions, which then agree.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Subtype.val_injective key`. Establish `hι_mk : ∀ x : chartClosure y L a, ι' (IsLocalization.mk' _ x (⟨v, Submonoid.mem_powers v⟩ : Submonoid.powers v)) = (x : Ω) / v` using `fun x => (IsLocalization.lift_mk'_spec _ _ _ _).2 (by show (x : Ω) = (v : Ω) * ((x : Ω) / v)`. Establish `: (v : Ω) ≠ 0` using `hv0`. Use the proof step `field_simp)`. Establish `hι_alg : ∀ x : chartClosure y L a, ι' (algebraMap _ _ x) = x` using `fun x => IsLocalization.lift_eq _ x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hψ_alg : ∀ x : chartClosure y L a, ψ' (algebraMap _ _ x) = ψ x` using `fun x => IsLocalization.lift_eq _ x`. Set `xc : (Σ k, ι k) → Localization.Away v` to `fun p => IsLocalization.mk' _ (r p) (⟨v, Submonoid.mem_powers v⟩ : Submonoid.powers v)`. Establish `hιxc : ∀ p, ι' (xc p) = y p * (y ⟨p.1, cc p.1⟩)⁻¹` using `fun p => by show ι' (IsLocalization.mk' _ (r p) _) = _`. Rewrite using `[hι_mk, hr, hvv, hmon p.1]`. Conclude with `field_ratio _ (hy1 p.1) (hyk p.1) hla`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `z : (Σ k, ι k) → ℂ` to `fun p => ψ' (xc p)`. Establish `hιF : ∀ f : MRing ι, ι' (aeval xc f) = aeval (fun p => y p * (y ⟨p.1, cc p.1⟩)⁻¹) f` using `fun f => by`. Rewrite using `[ringHom_aeval]`. Simplify using `only [hιxc]`. Establish `hψF : ∀ f : MRing ι, ψ' (aeval xc f) = eval z (map (Int.castRingHom ℂ) f)` using `fun f => ringHom_aeval_eq_eval ψ' xc f`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz : z ∈ mcPts (mCoordIdeal y)`. Use `⟨fun k => ⟨cc k, ?_⟩, fun f hf => ?_⟩` and prove the remaining obligations. Use `show ψ' (xc ⟨k, cc k⟩) ≠ 0`. Rewrite using `[hinj (show ι' (xc ⟨k, cc k⟩) = ι' 1 by rw [hιxc, map_one, mul_inv_cancel₀ (hyk k)]), map_one]`. Conclude with `one_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : ι' (aeval xc f) = ι' 0` using `by rw [map_zero]; exact (hιF f).trans (aeval_eq_zero_of_mem hf (fun k => (y ⟨k, cc k⟩)⁻¹))`. Rewrite using `[← hψF, hinj h0, map_zero]`. Establish `hLb : ∀ b, eval z (map (Int.castRingHom ℂ) (L b)) = ζ b / ζ a * ψ' (aeval xc (L a))` using `fun b => by`. Establish `e : ι' (aeval xc (L b)) = ι' (algebraMap (chartClosure y L a) (Localization.Away v) (⟨_, memL b⟩ : chartClosure y L a) * aeval xc (L a))`. Rewrite using `[map_mul, hι_alg, hιF, hιF, aeval_scale (hLe b) y (fun k => (y ⟨k, cc k⟩)⁻¹), aeval_scale (hLe a) y (fun k => (y ⟨k, cc k⟩)⁻¹)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `field_chart (lb := aeval y (L b)) (E := ∏ k, (y ⟨k, cc k⟩)⁻¹ ^ e k) hla`. Rewrite using `[← hψF, hinj e, map_mul, hψ_alg, hψl b (memL b)]`. Establish `hT : ψ' (aeval xc (L a)) ≠ 0`. Take `⟨b, hb⟩` from `hnz z hz`. Rewrite `hb` using `[hLb]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `right_ne_zero_of_mul hb`. Use `⟨z, hz, ψ' (aeval xc (L a)) / ζ a, div_ne_zero hT ha, fun b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hLb]`. Expand and normalize the polynomial expressions, which then agree. Introduce `dg dh g h hg hh hd hgh _`.
-
-Establish `hprod : ∏ k, (y ⟨k, cc k⟩)⁻¹ ^ dg k = (∏ k, (y ⟨k, cc k⟩)⁻¹ ^ dh k) * (∏ k, (y ⟨k, cc k⟩)⁻¹ ^ e k) ^ (q * τ)`. Rewrite using `[← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hd k, ← pow_mul, ← pow_add]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `key : aeval xc g = algebraMap _ _ (⟨s / aeval y (L a) ^ (q * τ), hu⟩ : chartClosure y L a) * aeval xc (L a) ^ (q * τ) * aeval xc h`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_pow, hιF, hιF, hιF, hι_alg, aeval_scale hg y (fun k => (y ⟨k, cc k⟩)⁻¹), aeval_scale hh y (fun k => (y ⟨k, cc k⟩)⁻¹), aeval_scale (hLe a) y (fun k => (y ⟨k, cc k⟩)⁻¹), hgh, hprod]`. Conclude with `field_section (s := s) (H := aeval y h) (la := aeval y (L a)) _ hla`.
-
-Rewrite using `[← hψF, ← hψF, key, map_mul, map_mul, map_pow, hψ_alg, hψu, div_pow]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem proof (hG : PullFormsGeneric.Statement) (hS : PullSectionIntegral.Statement)
     (hR : CharpolyRootLift.Statement) : FibreNormDehomRoots.Statement := by

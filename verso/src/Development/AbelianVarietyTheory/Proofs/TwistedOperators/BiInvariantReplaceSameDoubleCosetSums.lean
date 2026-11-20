@@ -16,9 +16,9 @@ def dosetOf (K : Subgroup G) (x : G ⧸ K) : Set G :=
   DoubleCoset.doubleCoset x.out (K : Set G) (K : Set G)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `DoubleCoset.doubleCoset_eq_of_mem h`. Introduce `h`. Unfold `dosetOf at h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Conclude with `DoubleCoset.mem_doubleCoset_self K K _`.
+A detailed English derivation is pending.
 -/
 theorem mem_dosetOf_iff {x y : G ⧸ K} :
     y.out ∈ DoubleCoset.doubleCoset x.out (K : Set G) (K : Set G) ↔ dosetOf K y = dosetOf K x := by
@@ -31,7 +31,7 @@ theorem mem_dosetOf_iff {x y : G ⧸ K} :
     exact DoubleCoset.mem_doubleCoset_self K K _
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, e⟩` from `DoubleCoset.mem_doubleCoset.1 (mem_dosetOf_iff.2 h)`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_dosetOf_eq {x y : G ⧸ K} (h : dosetOf K y = dosetOf K x) :
     ∃ a b : K, y.out = (a : G) * x.out * b := by
@@ -39,9 +39,7 @@ theorem exists_of_dosetOf_eq {x y : G ⧸ K} (h : dosetOf K y = dosetOf K x) :
   exact ⟨⟨a, ha⟩, ⟨b, hb⟩, e⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ x₀ : G ⧸ K, dosetOf K x₀ = S`. Take `⟨x₀, rfl⟩` from `h`. Establish `hf` using `Formalism.UG.P.finite_cosets_in_doset hK x₀.out`. Establish `hs : {x : G ⧸ K | dosetOf K x = dosetOf K x₀} ⊆ {x : G ⧸ K | ∃ a b : K, x.out = (a : G) * x₀.out * b}` using `fun y hy => exists_of_dosetOf_eq hy`. Conclude with `(hf.subset hs).to_subtype`.
-
-Use `haveI : IsEmpty {x : G ⧸ K // dosetOf K x = S} := ⟨fun y => h ⟨y.1, y.2⟩⟩ infer_instance`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_dosetOf_fibre (hK : IsCommensurated K) (S : Set G) :
     Finite {x : G ⧸ K // dosetOf K x = S} := by
@@ -55,7 +53,7 @@ theorem finite_dosetOf_fibre (hK : IsCommensurated K) (S : Set G) :
     infer_instance
 
 /- English proof (translation)
-Take `⟨a, b, e⟩` from `exists_of_dosetOf_eq h`. Rewrite using `[e, hF a b]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem biInv_of_dosetOf_eq {F : G → ℂ} (hF : IsBiInv K F) {x y : G ⧸ K} (h : dosetOf K y = dosetOf K x) :
     F y.out = F x.out := by
@@ -63,11 +61,11 @@ theorem biInv_of_dosetOf_eq {F : G → ℂ} (hF : IsBiInv K F) {x y : G ⧸ K} (
   rw [e, hF a b]
 
 /- English proof (translation)
-Use `set s : Set (G ⧸ K) := {x | dosetOf K x = dosetOf K x₀} with hs`. Establish `e : ∀ x : G ⧸ K, dosetInd ℂ K x₀.out x.out • v (1 * x.out) = s.indicator (fun x => v x.out) x`. Introduce `x`. Distinguish the cases in `h : dosetOf K x = dosetOf K x₀`. Establish `h'` using `mem_dosetOf_iff.2 h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : x ∈ s` using `h`. Simplify using `[dosetInd, Set.indicator_of_mem h', Set.indicator_of_mem hx]`. Establish `h' : x.out ∉ DoubleCoset.doubleCoset x₀.out (K : Set G) (K : Set G)` using `fun h' => h (mem_dosetOf_iff.1 h')`. Establish `hx : x ∉ s` using `h`. Simplify using `[dosetInd, Set.indicator_of_notMem h', Set.indicator_of_notMem hx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfin : s.Finite` using `Set.finite_coe_iff.1 (finite_dosetOf_fibre hK (dosetOf K x₀))`. Rewrite using `[hAct, finsum_congr e, ← tsum_eq_finsum (L := SummationFilter.unconditional (G ⧸ K)) ((hfin.subset (Set.support_indicator_subset)))]`. Rewrite using `[← tsum_subtype]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hAct_dosetInd_eq (hK : IsCommensurated K) (x₀ : G ⧸ K) (v : G → ℂ) :
     hAct K (dosetInd ℂ K x₀.out) v 1 = ∑' y : {x : G ⧸ K // dosetOf K x = dosetOf K x₀}, v y.1.out := by
@@ -89,23 +87,21 @@ theorem hAct_dosetInd_eq (hK : IsCommensurated K) (x₀ : G ⧸ K) (v : G → �
 end DosetSwapProof
 
 /- English proof (translation)
-Introduce `G _ K hK F w φ Z hF hw hH hZ`. Use `haveI : ∀ S : Set G, Finite {x : G ⧸ K // dosetOf K x = S} := finite_dosetOf_fibre hK`. Set `e` to `Equiv.sigmaFiberEquiv (dosetOf K)`. Set `f₁ : G ⧸ K → ℂ` to `fun x => F x.out * φ x.out`. Set `f₂ : G ⧸ K → ℂ` to `fun x => F x.out * w x.out`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs : ∀ S : Set G, ∑' y : {x : G ⧸ K // dosetOf K x = S}, f₂ y.1 = ∑' y : {x : G ⧸ K // dosetOf K x = S}, f₁ y.1`. Introduce `S`. Distinguish the cases in `h : ∃ x₀ : G ⧸ K, dosetOf K x₀ = S`. Take `⟨x₀, rfl⟩` from `h`. Establish `e₂ : ∀ y : {x : G ⧸ K // dosetOf K x = dosetOf K x₀}, f₂ y.1 = F x₀.out * w y.1.out` using `fun y => by simp only [f₂, biInv_of_dosetOf_eq hF y.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : ∀ y : {x : G ⧸ K // dosetOf K x = dosetOf K x₀}, f₁ y.1 = F x₀.out * φ y.1.out` using `fun y => by simp only [f₁, biInv_of_dosetOf_eq hF y.2]`. Rewrite using `[tsum_congr e₂, tsum_congr e₁, tsum_mul_left, tsum_mul_left, ← hAct_dosetInd_eq hK, ← hAct_dosetInd_eq hK, hH]`. Use `haveI : IsEmpty {x : G ⧸ K // dosetOf K x = S} := ⟨fun y => h ⟨y.1, y.2⟩⟩`. Simplify using `[tsum_empty]`. Establish `hn : ∀ S : Set G, ∑' y : {x : G ⧸ K // dosetOf K x = S}, ‖f₂ y.1‖ ≤ ∑' y : {x : G ⧸ K // dosetOf K x = S}, ‖f₁ y.1‖`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `S`. Distinguish the cases in `h : ∃ x₀ : G ⧸ K, dosetOf K x₀ = S`. Take `⟨x₀, hx₀⟩` from `h`. Establish `c : ∀ y : {x : G ⧸ K // dosetOf K x = S}, f₂ y.1 = F x₀.out * w x₀.out` using `fun y => by`. Establish `hy : dosetOf K y.1 = dosetOf K x₀` using `y.2.trans hx₀.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [f₂, biInv_of_dosetOf_eq hF hy, biInv_of_dosetOf_eq hw hy]`. Establish `key : ∑' y : {x : G ⧸ K // dosetOf K x = S}, ‖f₂ y.1‖ = ‖∑' y : {x : G ⧸ K // dosetOf K x = S}, f₂ y.1‖`. Rewrite using `[tsum_congr (fun y => congrArg norm (c y)), tsum_congr c, tsum_const, tsum_const, nsmul_eq_mul, nsmul_eq_mul]`. Simplify using `[norm_mul]`. Rewrite using `[key, hs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `norm_tsum_le_tsum_norm Summable.of_finite`. Use `haveI : IsEmpty {x : G ⧸ K // dosetOf K x = S} := ⟨fun y => h ⟨y.1, y.2⟩⟩`. Simplify using `[tsum_empty]`. Establish `h₁ : HasSum (f₁ ∘ e) Z` using `(e.hasSum_iff).2 hZ`. Establish `h₁n : Summable fun p => ‖(f₁ ∘ e) p‖` using `summable_norm_iff.2 h₁.summable`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h₂n : Summable fun p => ‖(f₂ ∘ e) p‖`. Rewrite `h₁n`, the goal using `[summable_sigma_of_nonneg (fun _ => norm_nonneg _)]`. Use `⟨fun S => Summable.of_finite, ?_⟩` and prove the remaining obligations. Conclude with `h₁n.2.of_nonneg_of_le (fun _ => tsum_nonneg fun _ => norm_nonneg _) hn`. Establish `h₂ : Summable (f₂ ∘ e)` using `summable_norm_iff.1 h₂n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `A` using `h₂.hasSum.sigma (fun S => (Summable.of_finite).hasSum)`. Establish `B` using `h₁.sigma (fun S => (Summable.of_finite).hasSum)`. Establish `hZ' : ∑' p, (f₂ ∘ e) p = Z`. Use `A.unique ?_` and prove the remaining obligations. Establish `: (fun S => ∑' c : {x : G ⧸ K // dosetOf K x = S}, (f₂ ∘ e) ⟨S, c⟩) = fun S => ∑' c : {x : G ⧸ K // dosetOf K x = S}, (f₁ ∘ e) ⟨S, c⟩` using `funext hs`.
-
-Rewrite using `[this]`. Conclude with `B`. Use `h₂.hasSum` as an intermediate fact. Rewrite `this` using `[hZ', e.hasSum_iff]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dosetSwap : DosetSwap := by
   intro G _ K hK F w φ Z hF hw hH hZ

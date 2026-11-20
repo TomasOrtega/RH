@@ -18,7 +18,7 @@ open GlobalTheory.CechPic
 namespace GlobalTheory.NefFibTens
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX L A n hL hA Z i _ _ κ _ _ _ hd`. Establish `: Module.Finite ℤ k` using `hX.finite`. Establish `hp : IsProjOver p` using `hX.isProjOver`. Rewrite using `[NefHodgeTateAt.topSelf_of_cls_eq_add hp ((L.pow n).tens A).isLB (L.pow n).isLB A.isLB (cls_tens (L.pow n).isLB A.isLB _) Z i κ hd, NefHodgeTateAt.topSelf_pow hp L n Z i κ hd]`. Conclude with `add_nonneg (mul_nonneg (Nat.cast_nonneg _) (hL Z i κ hd)) (hA Z i κ hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nefFib_pow_tens : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (L A : HermLB p) (n : ℕ), NefFib L → NefFib A → NefFib ((L.pow n).tens A) := by
   intro k _ X _ p D hX L A n hL hA Z i _ _ κ _ _ _ hd

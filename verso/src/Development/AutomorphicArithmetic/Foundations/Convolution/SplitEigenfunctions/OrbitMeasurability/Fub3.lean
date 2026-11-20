@@ -9,9 +9,9 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperT
 open scoped Classical
 
 /- English proof (translation)
-Rewrite using `[integral_prod _ hf]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hf.prod_right_ae] with x hx`. Rewrite using `[integral_prod _ hx]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hx.prod_right_ae] with y hy`. Rewrite using `[integral_countable hy]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fub3 {X Y Z : Type} [MeasurableSpace X] [MeasurableSpace Y] [MeasurableSpace Z] [Countable Z]
     [MeasurableSingletonClass Z] (μ : Measure X) (ν : Measure Y) [SFinite μ] [SFinite ν] (f : X × Y × Z → ℂ)
@@ -27,21 +27,19 @@ private theorem fub3 {X Y Z : Type} [MeasurableSpace X] [MeasurableSpace Y] [Mea
   simp
 
 /- English proof (translation)
-Introduce `E _ _ _ D W M N P φ hφ ph hph`. Use `haveI := N.haar`. Use `haveI : SigmaFinite N.μ := inferInstance`. Take `⟨hp, hw, hint⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.yInt E D W M N P φ hφ`. Take `⟨hc, K, hK, hB⟩` from `UpperTheory.ConvolutionTheory.R2.Ff.wtBound ℚ ph`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `hint K hK`. Take `⟨B, hB⟩` from `hB n`. Take `⟨-, -, h1, h2, -⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.szLaws E D`. Establish `hI : Integrable (fun y => ph.1 (pY D y) * φ.1 (el D y)) (mY D.δ N)`. Use `(hn.norm.const_mul B).mono' ((hc.measurable.comp hp).mul hw).aestronglyMeasurable (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h0 : 0 ≤ wt K n (pY D y)`. Unfold `wt`. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg h0, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (hB () trivial _) (norm_nonneg _)`. Unfold `mY at hI ⊢`. Rewrite using `[fub3 _ _ _ hI]`. Unfold `fOn J1 UI mean ThOn`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Establish `hnu : nu ℚ (gl h * sZ D (z : IdeleGroup E)) = 1`. Establish `a` using `h1 (z : IdeleGroup E)`. Establish `b` using `h2 h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `nu at a b ⊢`. Rewrite using `[map_mul, map_mul, a, b, one_mul]`. Establish `hab : ab (1 : (A ℚ)ˣ) = 1`. Unfold `ab`. Establish `: IdeleGroup.ideleModule ℚ (1 : (A ℚ)ˣ) = 1` using `map_one _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Simplify using `only [el, pY]`. Rewrite using `[tsum_mul_right]`. Use `congr 1`.
-
-Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[map_one, Module.End.one_apply, W.L_apply, hnu, hab]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.yEq :
     UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.YEq := by

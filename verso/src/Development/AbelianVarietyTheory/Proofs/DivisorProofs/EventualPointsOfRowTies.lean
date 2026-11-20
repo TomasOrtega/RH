@@ -7,11 +7,11 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 namespace GlobalTheory.Fc.Ind
 
 /- English proof (translation)
-Establish `h' : Closed (W3 𝒜) fun Fm CH => prem Fm → ∃ C0 : ℝ, 0 ≤ C0 ∧ EvPt Fm fun x hx i p => G _ (objAt Fm x hx i) _ p → ∀ C, C0 ≤ C → T C CH _ (objAt Fm x hx i) _ p`. Take `⟨a, ha, h⟩` from `h`. Use `⟨a, ha, fun e he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `h e he hle`. Conclude with `⟨K, fun Fm CH hc hL => hK Fm CH (GlobalTheory.T.familyHypotheses_of_workingClass_sevenDuties 𝒜 _ Fm hc (hd _ Fm (w3_a hc))) hL⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `Closed.imp (Closed.and h' (Closed.and hR hG)) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨h1, h2, h3⟩ hc hp`. Take `⟨C0, hC0, a, ha⟩` from `h1 hp`. Take `⟨b, hb⟩` from `h2 hc`. Take `⟨c, hc'⟩` from `h3 hc`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨C0, hC0, fun C hC => ⟨max a (max b c), fun x hx hle i => ?_⟩⟩` and prove the remaining obligations. Establish `e1 : a ≤ x` using `(le_max_left _ _).trans hle`. Establish `e2 : b ≤ x` using `((le_max_left _ _).trans (le_max_right _ _)).trans hle`. Establish `e3 : c ≤ x` using `((le_max_right _ _).trans (le_max_right _ _)).trans hle`. Conclude with `ha x hx e1 i (σ Fm (w3_a hc) x hx i).pt (hb x hx e2 i) (hc' x hx e3 i) C hC`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem evWC_onPt_of_guarded (prem : ∀ {eps : ℝ}, FamP eps → Prop) (G : PtP) (T : ℝ → ℝ → PtP)
     (h : Closed FamHyp fun Fm CH => prem Fm → ∃ C0 : ℝ, 0 ≤ C0 ∧ EvPt Fm fun x hx i p =>

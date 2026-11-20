@@ -26,20 +26,20 @@ variable {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] (τ : MulTower R 
 def Raises (k : ℕ) (x : A) : Prop := ∀ j, ∀ f ∈ τ.V j, x * f ∈ τ.V (j + k)
 
 /- English proof (translation)
-Introduce `j f hf`. Simplify using `using hf`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem raises_one : τ.Raises 0 1 := by
   intro j f hf
   simpa using hf
 
 /- English proof (translation)
-Introduce `j f hf` and use `τ.mul_mem j w hw f hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem raises_of_mem {w : A} (hw : w ∈ τ.W) : τ.Raises 1 w :=
   fun j f hf => τ.mul_mem j w hw f hf
 
 /- English proof (translation)
-Introduce `j f hf`. Establish `e : j + (k + l) = j + l + k` using `by omega`. Rewrite using `[e, mul_assoc]`. Conclude with `hx _ _ (hy j f hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Raises.mul {τ : MulTower R A} {k l : ℕ} {x y : A} (hx : τ.Raises k x)
     (hy : τ.Raises l y) : τ.Raises (k + l) (x * y) := by
@@ -49,7 +49,7 @@ theorem Raises.mul {τ : MulTower R A} {k l : ℕ} {x y : A} (hx : τ.Raises k x
   exact hx _ _ (hy j f hf)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using τ.raises_one`. Consider the case `succ n ih`. Rewrite using `[pow_succ, Nat.mul_succ]`. Conclude with `ih.mul hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Raises.pow {τ : MulTower R A} {k : ℕ} {x : A} (hx : τ.Raises k x) (n : ℕ) :
     τ.Raises (k * n) (x ^ n) := by
@@ -60,7 +60,7 @@ theorem Raises.pow {τ : MulTower R A} {k : ℕ} {x : A} (hx : τ.Raises k x) (n
     exact ih.mul hx
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using τ.raises_one`. Consider the case `insert a t ha ih`. Rewrite using `[sum_insert ha, prod_insert ha]`. Conclude with `(h a (mem_insert_self a t)).mul (ih fun i hi => h i (mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem raises_prod {ι : Type*} (t : Finset ι) (k : ι → ℕ) (x : ι → A)
     (h : ∀ i ∈ t, τ.Raises (k i) (x i)) : τ.Raises (∑ i ∈ t, k i) (∏ i ∈ t, x i) := by
@@ -72,7 +72,7 @@ theorem raises_prod {ι : Type*} (t : Finset ι) (k : ι → ℕ) (x : ι → A)
     exact (h a (mem_insert_self a t)).mul (ih fun i hi => h i (mem_insert_of_mem hi))
 
 /- English proof (translation)
-Establish `h` using `τ.raises_prod univ (fun i => 1 * α i) (fun i => s i ^ α i) (fun i _ => (τ.raises_of_mem (hs i)).pow (α i))`. Simplify `h` using `[mono]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem raises_mono {D : ℕ} {s : Fin D → A} (hs : ∀ i, s i ∈ τ.W) (α : Fin D → ℕ) :
     τ.Raises (∑ i, α i) (mono s α) := by
@@ -81,7 +81,7 @@ theorem raises_mono {D : ℕ} {s : Fin D → A} (hs : ∀ i, s i ∈ τ.W) (α :
   simpa [mono] using h
 
 /- English proof (translation)
-Establish `h` using `τ.raises_prod univ (fun _ => 1) w (fun i _ => τ.raises_of_mem (hw i))`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem raises_prod_alt {k : ℕ} (w : Fin k → A) (hw : ∀ i, w i ∈ τ.W) :
     τ.Raises k (∏ i, w i) := by
@@ -99,7 +99,7 @@ def Vpp (D T a₀ : ℕ) (s : Fin D → A) : Submodule R A :=
 variable {D : ℕ} {s : Fin D → A}
 
 /- English proof (translation)
-Establish `h` using `((τ.raises_mono hs α).mul (τ.raises_prod_alt w hw)) 0 m hm`. Rewrite `h` using `[zero_add, hT]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gen_mem (hs : ∀ i, s i ∈ τ.W) {T : ℕ} (α : Fin D → ℕ) {k : ℕ} (w : Fin k → A)
     (hw : ∀ i, w i ∈ τ.W) {m : A} (hm : m ∈ τ.V 0) (hT : ∑ i, α i + k = T) :
@@ -108,7 +108,7 @@ theorem gen_mem (hs : ∀ i, s i ∈ τ.W) {T : ℕ} (α : Fin D → ℕ) {k : �
   rwa [zero_add, hT] at h
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sup_left (Submodule.subset_span ⟨α, k, w, m, hw, hm, hT, ha, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem_Vpp {T a₀ : ℕ} (α : Fin D → ℕ) {k : ℕ} (w : Fin k → A)
     (hw : ∀ i, w i ∈ τ.W) {m : A} (hm : m ∈ τ.V 0) (hT : ∑ i, α i + k = T)
@@ -116,7 +116,7 @@ theorem gen_mem_Vpp {T a₀ : ℕ} (α : Fin D → ℕ) {k : ℕ} (w : Fin k →
   Submodule.mem_sup_left (Submodule.subset_span ⟨α, k, w, m, hw, hm, hT, ha, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[P, Submodule.span_le]`. Introduce and unpack `F ⟨α, h, hh, hα, rfl⟩`. Establish `h'` using `τ.raises_mono hs α D h hh`. Rewrite `h'` using `[hα, Nat.add_sub_cancel' hDT]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem P_le (hs : ∀ i, s i ∈ τ.W) {T : ℕ} (hDT : D ≤ T) : τ.P D T s ≤ τ.V T := by
   rw [P, Submodule.span_le]
@@ -125,7 +125,7 @@ theorem P_le (hs : ∀ i, s i ∈ τ.W) {T : ℕ} (hDT : D ≤ T) : τ.P D T s �
   rwa [hα, Nat.add_sub_cancel' hDT] at h'
 
 /- English proof (translation)
-Use `sup_le ?_ (τ.P_le hs hDT)` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `F ⟨α, k, w, m, hw, hm, hT, -, rfl⟩`. Conclude with `τ.gen_mem hs α w hw hm hT`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Vpp_le (hs : ∀ i, s i ∈ τ.W) {T a₀ : ℕ} (hDT : D ≤ T) : τ.Vpp D T a₀ s ≤ τ.V T := by
   refine sup_le ?_ (τ.P_le hs hDT)
@@ -144,9 +144,7 @@ noncomputable def polyTower : MulTower ℚ (MvPolynomial (Fin 2) ℚ) where
     rwa [add_comm] at h
 
 /- English proof (translation)
-Use `⟨?_, MvPolynomial.X_ne_zero 0, ?_⟩` and prove the remaining obligations. Use `show _ ∈ MvPolynomial.homogeneousSubmodule (Fin 2) ℚ 1`. Rewrite using `[MvPolynomial.mem_homogeneousSubmodule]`. Conclude with `MvPolynomial.isHomogeneous_X ℚ 0`. Use `polyTower.gen_mem_Vpp (fun _ => 1) (fun i => Fin.elim0 i) (fun i => Fin.elim0 i) ?_ (by simp) (by simp) show (1 : MvPolynomial (Fin 2) ℚ) ∈ MvPolynomial.homogeneousSubmodule (Fin 2) ℚ 0` and prove the remaining obligations.
-
-Rewrite using `[MvPolynomial.mem_homogeneousSubmodule]`. Conclude with `MvPolynomial.isHomogeneous_one (Fin 2) ℚ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyTower_nontrivial :
     MvPolynomial.X 0 ∈ polyTower.W ∧ (MvPolynomial.X 0 : MvPolynomial (Fin 2) ℚ) ≠ 0 ∧
@@ -167,13 +165,13 @@ section Lift
 open MeasureTheory
 
 /- English proof (translation)
-Establish `hpt : ∀ x, ‖∑ i, u i x * Ft i x‖ ^ 2 ≤ (Fintype.card ι : ℝ) * ∑ i, r i ^ 2 * ‖Ft i x‖ ^ 2`. Introduce `x`. Establish `h1 : ‖∑ i, u i x * Ft i x‖ ≤ ∑ i, r i * ‖Ft i x‖`. Use `(norm_sum_le _ _).trans (sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (hu i x) (norm_nonneg _)`. Establish `h2` using `sq_sum_le_card_mul_sum_sq (s := (univ : Finset ι)) (f := fun i => r i * ‖Ft i x‖)`. Combine the equalities or inequalities in the displayed calculation. Establish `hint : Integrable (fun x => (Fintype.card ι : ℝ) * ∑ i, r i ^ 2 * ‖Ft i x‖ ^ 2) μ` using `(integrable_finsetSum _ fun i _ => (hFt i).const_mul (r i ^ 2)).const_mul _`. Establish `hI : ∫ x, ‖∑ i, u i x * Ft i x‖ ^ 2 ∂μ ≤ (Fintype.card ι : ℝ) * ∑ i, r i ^ 2 * (K * G i ^ 2)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_const_mul, integral_finsetSum _ fun i _ => (hFt i).const_mul (r i ^ 2)]`. Repeatedly rewrite using `[integral_const_mul]`. Use `_ ≤ _ := by gcongr with i`. Conclude with `hL i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_sum, mul_sum, mul_sum]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lift_normSq_le_of {X ι : Type*} [MeasurableSpace X] (μ : Measure X) [Fintype ι]
     (u Ft : ι → X → ℂ) (r G : ι → ℝ) (K B N : ℝ) (hB : 0 ≤ B)
@@ -216,7 +214,7 @@ theorem lift_normSq_le_of {X ι : Type*} [MeasurableSpace X] (μ : Measure X) [F
 noncomputable def cD (D : ℕ) : ℝ := 2 ^ (D + 1) * Real.pi ^ D / (D - 1).factorial
 
 /- English proof (translation)
-Unfold `cD`. Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem cD_pos (D : ℕ) : 0 < cD D := by
   unfold cD
@@ -224,7 +222,7 @@ theorem cD_pos (D : ℕ) : 0 < cD D := by
   positivity
 
 /- English proof (translation)
-Unfold `cD`. Establish `h1 : (1 : ℝ) ≤ (D - 1).factorial` using `by exact_mod_cast Nat.factorial_pos (D - 1)`. Establish `h0 : (0 : ℝ) ≤ 2 ^ (D + 1) * Real.pi ^ D` using `by have := Real.pi_pos; positivity`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem cD_le (D : ℕ) : cD D ≤ 2 * (2 * Real.pi) ^ D := by
   unfold cD
@@ -235,7 +233,7 @@ theorem cD_le (D : ℕ) : cD D ≤ 2 * (2 * Real.pi) ^ D := by
     _ = 2 * (2 * Real.pi) ^ D := by rw [mul_pow, pow_succ]; ring
 
 /- English proof (translation)
-Establish `h` using `lift_normSq_le_of μ u Ft rα G (140 * cD D * r ^ (2 * D)) (β ^ (T + D + 1)) N (by positivity) hu hFt hL hN`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem lift_normSq_le {X ι : Type*} [MeasurableSpace X] (μ : Measure X) [Fintype ι]
     (D T : ℕ) (β r : ℝ) (hβ : 0 ≤ β) (u Ft : ι → X → ℂ) (rα G : ι → ℝ) (N : ℝ)
@@ -256,7 +254,7 @@ theorem lift_level (D T a : ℕ) (hD : 1 ≤ D) (ha : a + D + 1 ≤ T) :
     D + 1 ≤ T - a ∧ 2 ≤ D + 1 := by omega
 
 /- English proof (translation)
-Use `⟨fun _ _ => by simp, fun _ => integrable_const _, fun _ => by simp, by simp⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem lift_hyps_inhabited :
     (∀ (i : Fin 1) (x : Unit), ‖(fun _ _ => (1 : ℂ)) i x‖ ≤ (fun _ => (1 : ℝ)) i) ∧
@@ -273,19 +271,19 @@ end Lift
 open Real in
 
 /- English proof (translation)
-Establish `hD' : (1 : ℝ) ≤ D` using `by exact_mod_cast hD`. Establish `hρ0 : 0 < ρ` using `lt_of_lt_of_le (by norm_num) hρ`. Establish `hρ₁0 : 0 < ρ₁` using `lt_of_lt_of_le one_pos h1`. Establish `hT0 : 0 < T` using `lt_of_lt_of_le one_pos hT`. Establish `hlogT : 0 ≤ log T` using `log_nonneg hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogρ₁ : log ρ₁ ≤ log ρ` using `log_le_log hρ₁0 h1ρ`. Establish `hlogD : log D ≤ log ρ` using `log_le_log (by linarith) hDρ`. Establish `hlogD0 : 0 ≤ log (D : ℝ)` using `log_nonneg hD'`. Establish `hlogρ₁0 : 0 ≤ log ρ₁` using `log_nonneg h1`. Take `⟨hc1, hc2⟩` from `half_log_add_le_half_log (D : ℝ) ρ hD' hρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcD` using `cD_pos D`. Establish `hcDle : log (cD D) ≤ log 2 + D * log (2 * π)`. Establish `h` using `log_le_log hcD (cD_le D)`. Rewrite `h` using `[log_mul (by norm_num) (by positivity), log_pow]`. Then use the resulting hypothesis. Establish `hsplit : log (140 * cD D * T ^ D) = log 140 + log (cD D) + D * log T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[log_mul (by positivity) (by positivity), log_mul (by norm_num) hcD.ne', log_pow]`. Establish `h280 : log 280 = log 140 + log 2`. Rewrite using `[← log_mul (by norm_num) (by norm_num)]; norm_num`. Establish `hsq : log (Real.sqrt D * ρ₁) = log D / 2 + log ρ₁`. Rewrite using `[log_mul (by positivity) hρ₁0.ne', log_sqrt (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hρT : log (ρ * T) = log ρ + log T` using `log_mul hρ0.ne' hT0.ne'`. Establish `hlogρ : 0 ≤ log ρ` using `log_nonneg (by linarith)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit, hsq, hρT]`. Establish `e1 : (D : ℝ) * log ρ₁ ≤ D * log ρ` using `mul_le_mul_of_nonneg_left hlogρ₁ (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (D : ℝ) * log D ≤ D * log ρ` using `mul_le_mul_of_nonneg_left hlogD (by linarith)`. Establish `e3 : (D : ℝ) * log T ≥ 0` using `mul_nonneg (by linarith) hlogT`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hρT]`. Establish `hL : 0 ≤ log ρ + log T` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hDD : 4 * (D : ℝ) ≤ C * D ^ 2` using `by nlinarith`. Conclude with `mul_le_mul_of_nonneg_right hDD hL`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lift_constants_le (D : ℕ) (hD : 1 ≤ D) (ρ ρ₁ T C : ℝ) (hρ : 2 ^ 26 ≤ ρ)
     (hDρ : (D : ℝ) ≤ ρ) (h1 : 1 ≤ ρ₁) (h1ρ : ρ₁ ≤ ρ) (hT : 1 ≤ T) (hC : 26 ≤ C) :

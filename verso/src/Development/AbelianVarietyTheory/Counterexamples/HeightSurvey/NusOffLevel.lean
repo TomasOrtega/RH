@@ -11,11 +11,11 @@ namespace GlobalTheory.RunNuTest
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.DIV Formalism.MainNotions.DIV.Cons NumberField IsDedekindDomain
 
 /- English proof (translation)
-Establish `hp : (0 : ℤ) < ((T + d + 2 : ℕ) : ℤ)` using `by positivity`. Rewrite using `[Int.fdiv_eq_ediv_of_nonneg _ hp.le]`. Establish `h1` using `Int.ediv_mul_le x hp.ne'`. Use `set k := x / ((T + d + 2 : ℕ) : ℤ)`. Break down `le_or_gt k 0 with hk | hk` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Int.toNat_of_nonpos hk]`. Simplify using `using hc`. Rewrite using `[Int.toNat_of_nonneg hk.le]`. Move the coercions through the operations in `at h1`. Establish `hd : (0 : ℤ) ≤ d` using `by positivity`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem floor_le (T d : ℕ) (c x : ℤ) (hc : 0 ≤ c) (hx : x ≤ c + 2) :
     (T : ℤ) * ((Int.fdiv x ((T + d + 2 : ℕ) : ℤ)).toNat : ℤ) ≤ c := by
@@ -31,7 +31,7 @@ theorem floor_le (T d : ℕ) (c x : ℤ) (hc : 0 ≤ c) (hx : x ≤ c + 2) :
     nlinarith
 
 /- English proof (translation)
-Unfold `WeightAlgebra.gapZ`. Use `split_ifs with hi`. Establish `: l ⟨i.1 + 1, hi⟩ ≤ l i` using `h (by simp [Fin.le_def])`. Use linear arithmetic over natural numbers and integers. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem gap_nonneg {p : ℕ} {l : Fin p → ℕ} (h : Antitone l) (i : Fin p) : 0 ≤ WeightAlgebra.gapZ l i := by
   unfold WeightAlgebra.gapZ
@@ -41,13 +41,13 @@ theorem gap_nonneg {p : ℕ} {l : Fin p → ℕ} (h : Antitone l) (i : Fin p) : 
   · positivity
 
 /- English proof (translation)
-Establish `key : ∀ n (i : Fin p), p - i.1 = n + 1 → (u i : ℤ) = a i - T * b i`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `i hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h i` as an intermediate fact. Establish `hn : ¬ i.1 + 1 < p` using `by omega`. Simplify `this` using `[WeightAlgebra.gapZ, hn]`. Consider the case `succ n ih`. Introduce `i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h i` as an intermediate fact. Establish `hn : i.1 + 1 < p` using `by omega`. Establish `e` using `ih ⟨i.1 + 1, hn⟩ (by show p - (i.1 + 1) = n + 1; omega)`. Simplify using `only [WeightAlgebra.gapZ, dif_pos hn] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `i`. Conclude with `key (p - i.1 - 1) i (by have := i.2; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem of_gaps {p : ℕ} (u a b : Fin p → ℕ) (T : ℤ) (h : ∀ i, WeightAlgebra.gapZ u i = WeightAlgebra.gapZ a i - T * WeightAlgebra.gapZ b i) :
     ∀ i, (u i : ℤ) = a i - T * b i := by
@@ -72,21 +72,17 @@ theorem of_gaps {p : ℕ} (u a b : Fin p → ℕ) (T : ℤ) (h : ∀ i, WeightAl
 variable {D : D7} {j : ℕ}
 
 /- English proof (translation)
-Use `⟨rfl, fun τ => of_gaps _ _ _ _ fun i => ?_, fun τ => of_gaps _ _ _ _ fun i => ?_⟩` and prove the remaining obligations. Use `show WeightAlgebra.gapZ (ofGaps _) i = _ - _ * WeightAlgebra.gapZ (ofGaps _) i`. Rewrite using `[gapZ_ofGaps, gapZ_ofGaps]`. Unfold `fGapP`. Use `split_ifs with hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (((WeightAlgebra.gapZ _ i - _ * WeightAlgebra.gapZ (ofGaps _) i).toNat : ℕ) : ℤ) = _`. Rewrite using `[gapZ_ofGaps]`. Apply `Int.toNat_of_nonneg` to reduce the goal to its premises. Unfold `lGapP`. Rewrite using `[if_pos hi]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_nonneg.2 (floor_le T _ _ _ (gap_nonneg (ka.aPlus_antitone τ) i) le_rfl)`. Use `show ((((ka.aP τ i : ℤ) - _ * ((ofGaps _ i : ℕ) : ℤ)).toNat : ℕ) : ℤ) = _`. Rewrite using `[ofGaps_last _ i hi]`. Establish `e : WeightAlgebra.gapZ (ka.aP τ) i = ka.aP τ i` using `by simp [WeightAlgebra.gapZ, hi]`. Rewrite using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `Int.toNat_of_nonneg` to reduce the goal to its premises. Unfold `lGapP`. Rewrite using `[if_neg hi]`. Use `sub_nonneg.2 (floor_le T _ _ _ (by positivity) ?_)` and prove the remaining obligations. Establish `: (0 : ℤ) ≤ ((WeightFamilies.dimY D j : ℤ) + 2) * nW` using `by positivity`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `: (0 : ℤ) ≤ D.R.r` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show WeightAlgebra.gapZ (ofGaps _) i = _ - _ * WeightAlgebra.gapZ (ofGaps _) i`. Rewrite using `[gapZ_ofGaps, gapZ_ofGaps]`. Unfold `fGapM`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs with hi`. Use `show (((WeightAlgebra.gapZ _ i - _ * WeightAlgebra.gapZ (ofGaps _) i).toNat : ℕ) : ℤ) = _`. Rewrite using `[gapZ_ofGaps]`. Apply `Int.toNat_of_nonneg` to reduce the goal to its premises. Unfold `lGapM`.
-
-Rewrite using `[if_pos hi]`. Conclude with `sub_nonneg.2 (floor_le T _ _ _ (gap_nonneg (ka.aM_anti τ) i) le_rfl)`. Use `show ((((ka.aM τ i : ℤ) - _ * ((ofGaps _ i : ℕ) : ℤ)).toNat : ℕ) : ℤ) = _`. Rewrite using `[ofGaps_last _ i hi]`. Establish `e : WeightAlgebra.gapZ (ka.aM τ) i = ka.aM τ i` using `by simp [WeightAlgebra.gapZ, hi]`.
-
-Rewrite using `[e]`. Apply `Int.toNat_of_nonneg` to reduce the goal to its premises. Unfold `lGapM`. Rewrite using `[if_neg hi]`. Conclude with `sub_nonneg.2 (floor_le T _ _ _ (by positivity) (by linarith))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isF (ka : WeightFamilies.Wt D j) (T nW nP : ℕ) (hW : Even nW) (hP : Even nP) :
     WeightAlgebra.IsF' ka (lWt D ka T nW hW) (fWt D ka (lWt D ka T nW hW) T nP hP) T nP := by
@@ -128,7 +124,7 @@ theorem isF (ka : WeightFamilies.Wt D j) (T nW nP : ℕ) (hW : Even nW) (hP : Ev
       exact sub_nonneg.2 (floor_le T _ _ _ (by positivity) (by linarith))
 
 /- English proof (translation)
-Apply `Int.toNat_of_nonneg` to reduce the goal to its premises. Rewrite using `[Int.fdiv_eq_ediv_of_nonneg _ (by positivity)]`. Conclude with `Int.ediv_nonneg hx (by positivity)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fdiv_toNat (x : ℤ) (n : ℕ) (hx : 0 ≤ x) : (((Int.fdiv x n).toNat : ℕ) : ℤ) = Int.fdiv x n := by
   apply Int.toNat_of_nonneg
@@ -136,13 +132,9 @@ theorem fdiv_toNat (x : ℤ) (n : ℕ) (hx : 0 ≤ x) : (((Int.fdiv x n).toNat :
   exact Int.ediv_nonneg hx (by positivity)
 
 /- English proof (translation)
-Use `⟨rfl, fun τ i => ?_, fun τ i => ?_⟩` and prove the remaining obligations. Use `show WeightAlgebra.gapZ (ofGaps _) i = _`. Rewrite using `[gapZ_ofGaps]`. Unfold `lGapP`. Use `split_ifs with hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `fdiv_toNat _ _ (by have := gap_nonneg (ka.aPlus_antitone τ) i; omega)`. Use `fdiv_toNat _ _ ?_` and prove the remaining obligations. Use `h τ i hi` as an intermediate fact. Use `zify at this`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `show WeightAlgebra.gapZ (ofGaps _) i = _`. Rewrite using `[gapZ_ofGaps]`. Unfold `lGapM`. Use `split_ifs with hi`. Conclude with `fdiv_toNat _ _ (by have := gap_nonneg (ka.aM_anti τ) i; omega)`.
-
-Conclude with `fdiv_toNat _ _ (by positivity)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isL (ka : WeightFamilies.Wt D j) (T nW : ℕ) (hW : Even nW)
     (h : ∀ τ (i : Fin (D.R.sigW j).1), ¬ i.1 + 1 < (D.R.sigW j).1 → (WeightFamilies.dimY D j + 2) * nW + 2 * D.R.r ≤ ka.aP τ i) :
@@ -163,9 +155,9 @@ theorem isL (ka : WeightFamilies.Wt D j) (T nW : ℕ) (hW : Even nW)
     · exact fdiv_toNat _ _ (by positivity)
 
 /- English proof (translation)
-Rewrite using `[← Nat.choose_two_right, ← Nat.choose_two_right]`. Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih`. Rewrite using `[← add_assoc, Nat.choose_succ_succ' (p + q) 1, Nat.choose_succ_succ' q 1, Nat.choose_one_right, Nat.choose_one_right]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Nat.reduceAdd]`. Rewrite using `[← ih]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem choose_two_add (p q : ℕ) : p * q + p * (p - 1) / 2 + q * (q - 1) / 2 = (p + q).choose 2 := by
   rw [← Nat.choose_two_right, ← Nat.choose_two_right]
@@ -179,9 +171,9 @@ theorem choose_two_add (p q : ℕ) : p * q + p * (p - 1) / 2 + q * (q - 1) / 2 =
 variable {L : SizeData₂ D} {P : ParameterChoice' D L}
 
 /- English proof (translation)
-Rewrite using `[T.Dp_eq]`. Unfold `WeightFamilies.dimY`. Rewrite using `[choose_two_add]`. Use `congr 2`. Use `show D.R.k + j - 1 + (D.R.m - j) = D.R.r`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem dim_eq (T : ParamsT D L P) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : WeightFamilies.dimY D j = T.Dp := by
   rw [T.Dp_eq]; unfold WeightFamilies.dimY
@@ -191,11 +183,11 @@ theorem dim_eq (T : ParamsT D L P) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : WeightFam
   unfold Ranks.r; omega
 
 /- English proof (translation)
-Take `⟨a, b, c⟩` from `GlobalTheory.RunCounterexample.clauses_at_shifted_gap T hK h1 h2`. Establish `hP : ∀ τ (i : Fin (D.R.sigW j).1), i.1 + 1 = (D.R.sigW j).1 → 2 * T.TO ^ 2 ≤ (kaR T hK j).aP τ i`. Introduce `τ i hi`. Use `b τ i hi` as an intermediate fact. Establish `: (2 * (T.TO : ℝ) ^ 2) ≤ ((kaR T hK j).aP τ i : ℝ)` using `by linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hw` using `T.nW_lo.2.1`. Use `⟨kaWt_n _ _ _ _, T.split, isL _ _ _ _ fun τ i hi => ?_, isF _ _ _ _ _ _, by omega, by omega, hP, fun τ i hi => ?_⟩` and prove the remaining obligations. Use `hP τ i (by have := i.2; omega)` as an intermediate fact. Establish `h3` using `T.TO_nW`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dim_eq T h1 h2]`. Use the polynomial consequences of the given equalities and inequalities. Use `c τ i hi` as an intermediate fact. Establish `: (2 * (T.TO : ℝ) ^ 2) ≤ ((kaR T hK j).aM τ i : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weights (T : ParamsT D L P) (hK : DV.KapDef D) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     (kaR T hK j).n = D.R.nV ∧ D.R.nV = T.nP + T.TO * T.nWn ∧ WeightAlgebra.IsL D (kaR T hK j) (lR T hK j) T.TO T.nWn ∧

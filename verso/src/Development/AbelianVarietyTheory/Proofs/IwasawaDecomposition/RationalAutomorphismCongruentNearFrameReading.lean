@@ -12,11 +12,11 @@ namespace GlobalTheory.Mem.Col2.AdT.NearCong
 open WithZero
 
 /- English proof (translation)
-Introduce `r s`. Establish `he : exp (-(N : ℤ)) ≤ 1`. Rewrite using `[← exp_zero, exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `e : A * C - 1 = (A - 1) * (C - 1) + (A - 1) + (C - 1)` using `by noncomm_ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[e, Matrix.add_apply, Matrix.add_apply]`. Use `v.map_add_le (v.map_add_le ?_ (hA r s)) (hC r s)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `v.map_sum_le fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_cong {K : Type} [Field K] (v : Valuation K ℤᵐ⁰) {n : ℕ} (N : ℕ) (A C : Matrix (Fin n) (Fin n) K)
     (hA : ∀ r s, v ((A - 1) r s) ≤ exp (-(N : ℤ))) (hC : ∀ r s, v ((C - 1) r s) ≤ exp (-(N : ℤ))) :
@@ -37,9 +37,9 @@ section Rat
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hgi : g⁻¹ ∈ Formalism.L2.Col.GLint E n P` using `inv_mem hg`. Establish `e1 : (g⁻¹ * g') x = g⁻¹ (g' x)` using `rfl`. Establish `e2 : g⁻¹ (g x) = x` using `by show (g⁻¹ * g) x = x`. Rewrite using `[inv_mul_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e : (((qOf P : ℕ) : E) ^ c)⁻¹ • ((g⁻¹ * g') x - x) = g⁻¹ ((((qOf P : ℕ) : E) ^ c)⁻¹ • (g' x - g x))`. Rewrite using `[map_smul, map_sub, e1, e2]`. Rewrite using `[e]`. Conclude with `(hgi _).2 (hC x hx)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congE_inv_mul (P : HeightOneSpectrum (𝓞 E)) (c : ℕ) (g g' : Sp E n ≃ₗ[E] Sp E n) (hg : g ∈ Formalism.L2.Col.GLint E n P)
     (hC : CongE P c g' g) : ∀ x ∈ Formalism.L2.Col.stdAt E n P, (((qOf P : ℕ) : E) ^ c)⁻¹ • ((g⁻¹ * g') x - x) ∈ Formalism.L2.Col.stdAt E n P := by
@@ -55,15 +55,13 @@ theorem congE_inv_mul (P : HeightOneSpectrum (𝓞 E)) (c : ℕ) (g g' : Sp E n 
   exact (hgi _).2 (hC x hx)
 
 /- English proof (translation)
-Establish `hx : (Pi.single s (1 : E) : Sp E n) ∈ Formalism.L2.Col.stdAt E n P`. Rewrite using `[GlobalTheory.TwistRowType.mem_stdAt]`. Introduce `k`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.TwistRowType.intSub P).one_mem`. Conclude with `(GlobalTheory.TwistRowType.intSub P).zero_mem`. Establish `h1` using `(GlobalTheory.TwistRowType.mem_stdAt P _).1 (hh _ hx) r`. Rewrite `h1` using `[GlobalTheory.UnramCompletion.intAt_iff]`. Rewrite `h1` using `[Pi.smul_apply, smul_eq_mul, Pi.sub_apply, Pi.single_apply, map_mul, map_inv₀, map_pow, hq]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : LinearMap.toMatrix' h.toLinearMap r s - (1 : Matrix (Fin n) (Fin n) E) r s = h (Pi.single s 1) r - (if r = s then 1 else 0)`. Rewrite using `[LinearMap.toMatrix'_apply, Matrix.one_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`. Generalize the expression as in `P.valuation E (h (Pi.single s 1) r - if r = s then 1 else 0) = y at h1`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hE : (exp (-1 : ℤ) ^ c)⁻¹ = exp (c : ℤ)`. Rewrite using `[← WithZero.exp_nsmul, ← WithZero.exp_neg]`. Use `congr 1`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hE]`.
-
-Establish `hm : exp (-(c : ℤ)) * exp (c : ℤ) = 1` using `by rw [← exp_add]; simp`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem val_entry (P : HeightOneSpectrum (𝓞 E)) (hq : P.valuation E ((qOf P : ℕ) : E) = exp (-1 : ℤ)) (c : ℕ)
     (h : Sp E n ≃ₗ[E] Sp E n)
@@ -98,14 +96,14 @@ section Core
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P x`.
+A detailed English derivation is pending.
 -/
 theorem vAlg' (P : HeightOneSpectrum (𝓞 E)) (x : E) :
     Valued.v (algebraMap E (P.adicCompletion E) x) = P.valuation E x :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P x
 
 /- English proof (translation)
-The claim follows from `adAt_inclE F P _`.
+A detailed English derivation is pending.
 -/
 theorem adAt_ratA (P : HeightOneSpectrum (𝓞 E)) (γ : GL (Fin n) E) (r s : Fin n) :
     adAt F P (((GlobalTheory.TwU.ratA F γ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) r s) =
@@ -113,13 +111,13 @@ theorem adAt_ratA (P : HeightOneSpectrum (𝓞 E)) (γ : GL (Fin n) E) (r s : Fi
   adAt_inclE F P _
 
 /- English proof (translation)
-Establish `hq' : P.valuation E ((qOf P : ℕ) : E) = exp (-1 : ℤ)`. Rewrite using `[← vAlg', map_natCast]`. Conclude with `hq`. Establish `e : x⁻¹ * GlobalTheory.TwU.ratA F (G g') = (x⁻¹ * GlobalTheory.TwU.ratA F (G g)) * GlobalTheory.TwU.ratA F (G (g⁻¹ * g'))`. Rewrite using `[mul_assoc, ← map_mul, ← map_mul, mul_inv_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hiff]`. Rewrite using `[hiff, e]`. Establish `hdc : exp (-(d : ℤ)) ≤ exp (-(c : ℤ))` using `by rw [exp_le_exp]; omega`. Establish `key` using `mul_cong (Valued.v : Valuation (P.adicCompletion E) ℤᵐ⁰) c ((adAt F P).mapMatrix ((x⁻¹ * GlobalTheory.TwU.ratA F (G g) : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E))) ((adAt F P).mapMatrix ((GlobalTheory.TwU.ratA F (G (g⁻¹ * g')) : GL (Fin n) (AfE F E)) : Matrix (Fin …`. Introduce `r s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `key r s` as an intermediate fact. Rewrite `this` using `[← map_mul, ← Units.val_mul]`. Then use the resulting hypothesis. Use `show Valued.v (adAt F P _ - (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s) ≤ _`. Rewrite using `[adAt_ratA, hG]`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s = algebraMap E _ ((1 : Matrix (Fin n) (Fin n) E) r s)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`. Rewrite using `[h1, ← map_sub, vAlg']`. Apply the tactic sequence `exact val_entry P hq' c _ (congE_inv_mul P c g g' hg hC) r s`.
+A detailed English derivation is pending.
 -/
 theorem core (P : HeightOneSpectrum (𝓞 E)) (hq : Valued.v ((qOf P : ℕ) : P.adicCompletion E) = exp (-1 : ℤ))
     (hiff : ∀ (N : ℕ) (z : GL (Fin n) (AfE F E)), GlobalTheory.TwU.CongAt P N z ↔
@@ -154,9 +152,9 @@ theorem core (P : HeightOneSpectrum (𝓞 E)) (hq : Valued.v ((qOf P : ℕ) : P.
 end Core
 
 /- English proof (translation)
-Introduce `B X I hI l Z a i fb dep dep' P κ g g' hg hdep hIn hC`. Unfold `GlobalTheory.TwU.InFrame GlobalTheory.TwU.NearAt at hIn ⊢`. Take `⟨hseam, hq, -⟩` from `GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hI l Z a 0 0 P 1`. Establish `hiff` using `fun N z => (GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hI l Z a ((I.rec7 l Z).R.N i) N P z).2.2`. Rewrite `hIn`, `hiff`, the goal using `[hseam]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `i1 : NumberField ↥(I.rec7 l Z).host.F` using `inferInstance`. Establish `i2 : NumberField (I.rec7 l Z).host.E` using `inferInstance`. Conclude with `@core (↥(I.rec7 l Z).host.F) (I.rec7 l Z).host.E _ i1 _ i2 _ _ _ P.1 hq hiff (GlobalTheory.TwU.seamGL (sm I l Z)) (fun _ _ _ => rfl) (dep' P) (dep P) hdep _ g g' hg hIn hC`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (a : I.ι) (i : ℕ) (fb : SBof I a → GL (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E) (dep dep' : SBof I a → ℕ) (P : SBof I a) (κ : GL (Fin ((I.rec7 l Z).R.N i)) (AfE (I.rec7 l Z).host.F (I.rec7 l Z).host.E)) (g g' : Sp B.fields.E (B.R.N i) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N i)), g ∈ Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1 → dep' P ≤ dep P → GlobalTheory.TwU.InFrame (i := i) (sm I l Z) fb dep P κ g → CongE P.1 (dep' P) g' g → GlobalTheory.TwU.InFrame (i := i) (sm I l Z) fb dep' P κ g' := by
   intro B X I hI l Z a i fb dep dep' P κ g g' hg hdep hIn hC

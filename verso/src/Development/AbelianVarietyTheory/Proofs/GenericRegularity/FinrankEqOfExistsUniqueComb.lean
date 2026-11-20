@@ -15,11 +15,11 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.Reg
 
 /- English proof (translation)
-Establish `hli : LinearIndependent L cv`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Use `(h 0 N.zero_mem).unique hg (y₂ := 0) (by simp)` as an intermediate fact. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hN : N = Submodule.span L (Set.range cv)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `v hv`. Take `⟨a, rfl, -⟩` from `h v hv`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hcv i`. Rewrite using `[hN, finrank_span_eq_card hli, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eq_of_existsUnique_comb {L V : Type} [Field L] [AddCommGroup V] [Module L V] (N : Submodule L V)
     {m : ℕ} (cv : Fin m → V) (hcv : ∀ i, cv i ∈ N) (h : ∀ v ∈ N, ∃! a : Fin m → L, ∑ i, a i • cv i = v) :
@@ -40,15 +40,15 @@ theorem finrank_eq_of_existsUnique_comb {L V : Type} [Field L] [AddCommGroup V] 
   rw [hN, finrank_span_eq_card hli, Fintype.card_fin]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y M L _ _ f x Λ τ N hN`. Establish `hx0 : x ≫ Xo.s = sOf c L`. Rewrite using `[← Λ.xF_fst, Category.assoc, pullback.condition, ← Category.assoc, Λ.xF_snd]`. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : Smooth ((Over.pullback x).obj Xo.univ.t.G).hom`. Use `Xo.univ.t.semi.smooth` as an intermediate fact. Use `show Smooth (pullback.snd Xo.univ.t.G.hom x)`. Use `infer_instance`. Take `⟨n, xc, hx⟩` from `ReciprocityTheory.ChartRestriction.G.Chart.univChartLoc ((Over.pullback x).obj Xo.univ.t.G)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨d, hd, hdW⟩ : ∃ d : Fin (Dw.mult τ) → Fin n → L, LinearIndependent L d ∧ ∀ i, d i ∈ gfpEig (c` from `c) hx τ := by`. Take `⟨B⟩ : Nonempty (Module.Basis (Fin (Dw.mult τ)) L (gfpEig (c` from `c) hx τ)) := ⟨Module.finBasisOfFinrankEq L _ (gfp_finrank hx0 hx τ)⟩`. Conclude with `⟨(gfpEig (c := c) hx τ).subtype ∘ B, B.linearIndependent.map' (gfpEig (c := c) hx τ).subtype (Submodule.ker_subtype _), fun i => by simp⟩`. Take `⟨hex, htan, hco⟩` from `GlobalTheory.Reg.vec_bijective E H Dw l Xo c O β Y M L f x Λ`. Establish `hcomb` using `GlobalTheory.Reg.VecComb.isCombAt_iff_vec E H Dw l Xo c O β Y M L f x Λ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `heig` using `GlobalTheory.Reg.isEigAt_iff_eig E H Dw l Xo c O β Y M L f x Λ τ`. Use `choose cv hcv using fun i => (hco _ (gfp_tan hx (d i))).exists`. Use `finrank_eq_of_existsUnique_comb N cv (fun i => (hN _).2 ((heig _ _ (hcv i)).1 ((gfp_eig_iff hx τ _).2 (hdW i)))) fun v hv => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `(hex v).exists`. Establish `hwt` using `htan v w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hb` using `gfp_basis hx0 hx τ d hd hdW w hwt ((heig v w hw).2 ((hN v).1 hv))`. Use `(existsUnique_congr fun a => ?_).1 hb` and prove the remaining obligations. Rewrite using `[hcomb _ cv _ a w hcv]`. Conclude with `⟨fun h => (hco w hwt).unique h hw, fun h => h ▸ hw⟩`.
+A detailed English derivation is pending.
 -/
 theorem finrank_chart_eig : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (M : MChart Y), ∀ (L : Type) [Field L] [Algebra c.F L] (f : Γ(Y.X, M.U) →+* L) (x : Sp L ⟶ Xo.X) (Λ : M.Lift f x) (τ : E →+* ℂ) (N : Submodule L (Fin M.n → L)), (∀ cv, cv ∈ N ↔ M.Eig f τ cv) → Module.finrank L N = Dw.mult τ := by
   intro E _ _ _ H Dw l Xo c O _ β Y M L _ _ f x Λ τ N hN

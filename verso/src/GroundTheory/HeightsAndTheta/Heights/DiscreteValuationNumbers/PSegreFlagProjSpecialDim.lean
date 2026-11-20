@@ -10,7 +10,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 noncomputable section
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [Ideal.mem_comap, pointIdeal, RingHom.mem_ker, pointConeMap, aeval_C, MvPolynomial.algebraMap_apply, C_eq_zero, Submodule.mem_bot]`. Conclude with `⟨fun ha => h (by rw [ha, map_zero]), fun ha => by rw [ha, map_zero]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem comap_C_pointIdeal {R : Type*} [CommRing R] {Φ : Type*} [Field Φ] [Algebra R Φ] {K : Type*}
     {ι : K → Type*} (h : Function.Injective (algebraMap R Φ)) (pt : (Σ k, ι k) → Φ) :
@@ -21,15 +21,13 @@ theorem comap_C_pointIdeal {R : Type*} [CommRing R] {Φ : Type*} [Field Φ] [Alg
   exact ⟨fun ha => h (by rw [ha, map_zero]), fun ha => by rw [ha, map_zero]⟩
 
 /- English proof (translation)
-Use `set φ : MvPolynomial (Σ k, ι k) O →+* MvPolynomial (Σ k, ι k) (IsLocalRing.ResidueField O) := MvPolynomial.map (IsLocalRing.residue O) with hφdef`. Establish `hφ : Function.Surjective φ` using `MvPolynomial.map_surjective _ Ideal.Quotient.mk_surjective`. Establish `hker : RingHom.ker φ = Ideal.span {(C ϖ : MvPolynomial (Σ k, ι k) O)}`. Rewrite using `[hφdef, MvPolynomial.ker_map, IsLocalRing.ker_residue, hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`. Use `set g := (Ideal.Quotient.mk (P.map φ)).comp φ with hgdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : Function.Surjective g` using `Ideal.Quotient.mk_surjective.comp hφ`. Establish `hkg : RingHom.ker g = P ⊔ Ideal.span {(C ϖ : MvPolynomial (Σ k, ι k) O)}`. Rewrite using `[hgdef, ← RingHom.comap_ker, Ideal.mk_ker, Ideal.comap_map_of_surjective _ hφ, ← RingHom.ker_eq_comap_bot, hker]`. Establish `e1` using `(Ideal.quotEquivOfEq hkg.symm).trans (RingHom.quotientKerEquivOfSurjective hg)`. Use `set r : MvPolynomial (Σ k, ι k) O ⧸ P := Ideal.Quotient.mk P (C ϖ) with hrdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hspan : (Ideal.span {(C ϖ : MvPolynomial (Σ k, ι k) O)}).map (Ideal.Quotient.mk P) = Ideal.span {r}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Establish `e2` using `(Ideal.quotEquivOfEq hspan.symm).trans (DoubleQuot.quotQuotEquivQuotSup P (Ideal.span {(C ϖ : MvPolynomial (Σ k, ι k) O)}))`. Establish `hr0 : r ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[hrdef, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hmem : ϖ ∈ P.comap (C : O →+* MvPolynomial (Σ k, ι k) O)` using `h0`. Rewrite `hmem` using `[hPC, Ideal.mem_bot]`. Conclude with `hϖ.ne_zero hmem`. Establish `hle` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor (mem_nonZeroDivisors_of_ne_zero hr0)`.
-
-Rewrite `hle` using `[ringKrullDim_eq_of_ringEquiv e2, ringKrullDim_eq_of_ringEquiv e1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem specialIdeal_dim_add_one_le {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}
     (hϖ : Irreducible ϖ) {K : Type*} {ι : K → Type*} (P : Ideal (MvPolynomial (Σ k, ι k) O)) [P.IsPrime]
@@ -64,13 +62,13 @@ theorem specialIdeal_dim_add_one_le {O : Type*} [CommRing O] [IsDomain O] [IsDis
   rwa [ringKrullDim_eq_of_ringEquiv e2, ringKrullDim_eq_of_ringEquiv e1] at hle
 
 /- English proof (translation)
-Establish `h` using `(specialIdeal_dim_add_one_le hϖ P hPC).trans hdim`. Unfold `FieldNumbers.relDim specialIdeal`. Generalize the expression as in `ringKrullDim (MvPolynomial (Σ k, ι k) (IsLocalRing.ResidueField O) ⧸ P.map (MvPolynomial.map (IsLocalRing.residue O))) = a at h ⊢`. Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => exact WithBot.bot_lt_coe _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Consider the case `coe a`. Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top`. It suffices to derive a contradiction. Establish `h' : ((⊤ : ℕ∞) + 1 : ℕ∞) ≤ ((n + Fintype.card K : ℕ) : ℕ∞)` using `by exact_mod_cast h`.
+Treat this case separately. Proceed by induction. Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Simplify using `at h'`. Consider the case `coe m`. Establish `h' : ((m + 1 : ℕ) : ℕ∞) ≤ ((n + Fintype.card K : ℕ) : ℕ∞)` using `by exact_mod_cast h`. Establish `h'' : m + 1 ≤ n + Fintype.card K` using `by exact_mod_cast h'`. Establish `hlt : (m : ℤ) - Fintype.card K < n` using `by omega`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(((((m : ℤ) - Fintype.card K : ℤ) : WithTop ℤ)) : WithBot (WithTop ℤ)) < (((n : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ))`. Conclude with `hlt` after adjusting the coercions.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem relDim_specialIdeal_lt {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}
     (hϖ : Irreducible ϖ) {K : Type*} [Fintype K] [DecidableEq K] {ι : K → Type*} (P : Ideal (MRing ι O)) [P.IsPrime]
@@ -97,19 +95,19 @@ theorem relDim_specialIdeal_lt {O : Type*} [CommRing O] [IsDomain O] [IsDiscrete
       exact_mod_cast hlt
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N E _ _ B B' hBB' w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ _ _ _ _ e t ht k hk`. Take `⟨h1, h2⟩` from `hTr O ϖ hϖ Ω K ι y d hV N E B B' hBB' w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ e t ht k hk`. Establish `hVt : (Algebra.trdeg O (MRing ι O ⧸ pointIdeal O y)).toENat = ((d + Fintype.card K : ℕ) : ℕ∞)`. Establish `h` using `DvrConeDimTrdeg.proof O K ι _ hV.multiProj hV.noTorsion`. Rewrite `h` using `[hV.dim]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : ((d + 1 + Fintype.card K : ℕ) : ℕ∞) = (Algebra.trdeg O (MRing ι O ⧸ pointIdeal O y)).toENat + 1`. Conclude with `h` after adjusting the coercions. Establish `h' : ((d + Fintype.card K : ℕ) : ℕ∞) + 1 = (Algebra.trdeg O (MRing ι O ⧸ pointIdeal O y)).toENat + 1`. Rewrite using `[← h0]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `(WithTop.add_right_cancel ENat.one_ne_top h').symm`. Establish `hOΩ : Function.Injective (algebraMap O Ω)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmem : a ∈ (pointIdeal O y).comap (C : O →+* MRing ι O)`. Simplify using `[Ideal.mem_comap, pointIdeal, RingHom.mem_ker, pointConeMap, ha]`. Rewrite `hmem` using `[hV.noTorsion, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `hOΦ : Function.Injective (algebraMap O Φ)`. Rewrite using `[IsScalarTower.algebraMap_eq O Ω Φ]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(algebraMap Ω Φ).injective.comp hOΩ`. Establish `key : ∀ {K' : Type} [Fintype K'] [DecidableEq K'] (j : K' ↪ Option (Option K)), Fintype.card K' = Fintype.card K + 1 → Algebra.trdeg O (MRing (fun o => bundleIdx (bundleIdx ι M) M' (j o)) O ⧸ pointIdeal O (flagProjPt j y w e φ φ' t k)) ≤ Algebra.trdeg O (MRing ι O ⧸ pointIdeal O …`. Introduce `K' _ _ j hcard hle`. Establish `hP : (pointIdeal O (flagProjPt j y w e φ φ' t k)).IsPrime`. Unfold `pointIdeal`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `RingHom.ker_isPrime _`. Establish `hPC` using `comap_C_pointIdeal hOΦ (flagProjPt j y w e φ φ' t k)`. Use `relDim_specialIdeal_lt hϖ _ hPC (d + k) ((hDim O K' _ _ hP hPC).trans ?_)` and prove the remaining obligations. Establish `ht : Cardinal.toENat _ ≤ Cardinal.toENat _` using `OrderHomClass.mono Cardinal.toENat hle`. Simplify using `only [map_add, map_natCast, hVt] at ht`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components.
 
-Establish `: ((Algebra.trdeg O (MRing (fun o => bundleIdx (bundleIdx ι M) M' (j o)) O ⧸ pointIdeal O (flagProjPt j y w e φ φ' t k))).toENat + 1 : ℕ∞) ≤ ((d + k + Fintype.card K' : ℕ) : ℕ∞)`. Rewrite using `[hcard]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `this` after adjusting the coercions. Conclude with `⟨key Function.Embedding.some (by simp) h1, key secondFactorBlocks (by simp) h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem SegreFlagProjSpecialDim.proof (hDim : PrimeDimLeTrdeg.Statement) (hTr : FlagProjTrdegLe.Statement) :
     SegreFlagProjSpecialDim.Statement := by

@@ -17,7 +17,7 @@ open scoped NNReal
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem comp_pow' {S : Scheme.{0}} {A T T₀ : Over S} [GrpObj A] (ρ : T₀ ⟶ T) (x : T ⟶ A) (n : ℕ) :
     ρ ≫ x ^ n = (ρ ≫ x) ^ n := by
@@ -26,9 +26,9 @@ private theorem comp_pow' {S : Scheme.{0}} {A T T₀ : Over S} [GrpObj A] (ρ : 
   | succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]
 
 /- English proof (translation)
-Establish `hb : h ≫ T.hom = T'.hom ≫ f`. Rewrite using `[← Over.w x, ← Category.assoc, ← hx, Category.assoc, gp.1.w, ← Category.assoc, Over.w x']`. Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv gp T' (T'.hom ≫ f) rfl`. Set `ρ : Over.mk (T'.hom ≫ f) ⟶ T` to `Over.homMk h hb`. Establish `e₁ : e x' = ρ ≫ x` using `Over.OverMorphism.ext ((he x').trans hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_one, e₁, ← comp_pow', hn, MonObj.comp_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pow_eq_one_of' {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A']
     {φ : A'.left ⟶ A.left} {T : Over S} {T' : Over S'} {h : T'.left ⟶ T.left} {x : T ⟶ A} {x' : T' ⟶ A'}
@@ -42,23 +42,21 @@ private theorem pow_eq_one_of' {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {
   rw [map_pow, map_one, e₁, ← comp_pow', hn, MonObj.comp_one]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hP`. Take `⟨lb, ζ, ⟨hζ, hadd, hlinb, honto, hisom⟩, hχ⟩` from `hch`. Establish `hp : 0 < p` using `(Fact.out : p.Prime).pos`. Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv h4 (Over.mk (𝟙 _)) yy (Category.id_comp _).symm`. Establish `hact : ∀ o : 𝓞 E, (P.oA.act o).left ≫ ψ = ψ ≫ (Z.oF.t.act.act o).left`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `o`. Apply `Z.m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, h5, Z.m.act o, ← Category.assoc ψ, h5, ← Category.assoc, P.gen_act o, Category.assoc, Category.assoc, h3 o]`. Rewrite using `[Category.assoc, Category.assoc, Over.w (Z.oF.t.act.act o), h4.1.w, ← Category.assoc, Over.w]`. Establish `hlin : ∀ (x : Over.mk (𝟙 (Sp ℂ_[p])) ⟶ P.A.A) (o : 𝓞 E), e (x ≫ P.oA.act o) = e x ≫ Z.oF.t.act.act o`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x o`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc, Category.assoc, hact]`. Establish `hsymm : ∀ y : Over.mk yy ⟶ Z.oF.t.G, (e.symm y).left ≫ ψ = y.left` using `fun y => by`. Rewrite using `[← he, MulEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hweil : ∀ (g : Sp ℂ_[p] ⟶ Xo.XF c), 𝟙 _ ≫ yy = g → ∀ (k : ℤ) (x y : Over.mk (𝟙 (Sp ℂ_[p])) ⟶ P.A.A) (x₀ y₀ : Over.mk g ⟶ Z.oF.t.G) (c : (Γ(Sp ℂ_[p], ⊤))ˣ), x₀.left = x.left ≫ ψ → y₀.left = y.left ≫ ψ → (Out.WeilIs P.A.A P.A.L k x y c ↔ Out.WeilIs Z.oF.t.G Z.oF.t.PP.L k x₀ y₀ c)`. Introduce and unpack `g rfl k x y x₀ y₀ c hx hy`. Conclude with `GlobalTheory.weilIs_grpPullback_of_comm _ _ Z.oF.t.G P.A.A yy ψ Z.oF.t.PP.L P.A.L Z.oF.t.PP.isLB P.A.isLB h4 h6 (Over.mk (𝟙 _)) k x y x₀ y₀ c hx hy`. Establish `onto : ∀ x : Over.mk (𝟙 (Sp ℂ_[p])) ⟶ P.A.A, x ^ (p ^ n) = 1 ↔ ∃ a, e.symm (lb a) = x`. Introduce `x`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e.injective.eq_iff, map_pow, map_one, honto]`. Simplify using `only [MulEquiv.symm_apply_eq]`. Establish `hw : ∀ a b, weil P.A (p ^ n) (e.symm (lb a)) (e.symm (lb b)) = ζ ^ Dw.EF a b`. Introduce `a b`. Establish `hza : (e.symm (lb a)) ^ (p ^ n) = 1` using `(onto _).2 ⟨a, rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzb : (e.symm (lb b)) ^ (p ^ n) = 1` using `(onto _).2 ⟨b, rfl⟩`. Use `((GlobalTheory.HTLat.weilIs_iff (A := P.A) (Nat.one_le_iff_ne_zero.2 (pow_pos hp n).ne') hza hzb _).1 ?_).symm` and prove the remaining obligations. Rewrite using `[hweil yy (Category.id_comp yy) _ _ _ (lb a) (lb b) _ (hsymm _).symm (hsymm _).symm]`. Conclude with `hisom a b`. Use `⟨fun a => e.symm (lb a), ζ, hζ, fun a b => by simp only [hadd, map_mul], fun o a => ?_, onto, hw, fun a w z hwp hz => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hlin, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]`. Conclude with `hlinb o a`. Establish `hzp : z ^ (p ^ n) = 1`. Apply `e.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, map_one]`. Use `pow_eq_one_of' Z.m.cart (h := spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p])) ?_ hwp` and prove the remaining obligations. Rewrite using `[he, Category.assoc, h5, hz]`. Take `⟨b, rfl⟩` from `(onto z).1 hzp`. Rewrite using `[hw]`.
-
-Apply `hχ a b w hwp` to reduce the goal to its premises. Rewrite using `[← hsymm (lb b), Category.assoc, h5, hz]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem label_move {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
@@ -121,7 +119,7 @@ private theorem label_move {E : Type} [Field E] [NumberField E] [IsCMField E] {H
     rw [← hsymm (lb b), Category.assoc, h5, hz]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hann, -, hspanW⟩` from `hK`. Establish `hLW : ∀ cf : Fin g → ℂ_[p], ∑ k, cf k • P.bLie (x k) ∈ P.W` using `fun cf => by`. Rewrite using `[hspanW]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Conclude with `(hann _).1 (hLW v) _ (hLW v')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isot_bLie {E : Type} [Field E] [NumberField E] {p : ℕ} [Fact p.Prime] [StarRing (𝓞 E)] (P : PtP E p)
     (hK : GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.KernelShape P) {g : ℕ} (x : Fin g → LieG P.Gt) (v v' : Fin g → ℂ_[p]) :
@@ -133,9 +131,9 @@ private theorem isot_bLie {E : Type} [Field E] [NumberField E] {p : ℕ} [Fact p
   exact (hann _).1 (hLW v) _ (hLW v')
 
 /- English proof (translation)
-Take `⟨d, hd'⟩` from `Ideal.mem_span_singleton'.1 hmem`. Rewrite using `[← hd', map_mul, map_pow, map_natCast, norm_mul, norm_pow]`. Establish `e2 : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]), norm_algebraMap', Padic.norm_p]`. Rewrite using `[e2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ‖algebraMap 𝓞_ℂ_[p] ℂ_[p] d‖ ≤ 1` using `(GlobalTheory.PadicComplexHost.mem_iff_norm _ _).1 d.2`. Conclude with `mul_le_of_le_one_left (by positivity) e3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem norm_le_of_mem {p : ℕ} [Fact p.Prime] {n : ℕ} {y : 𝓞_ℂ_[p]}
     (hmem : y ∈ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}) : ‖algebraMap 𝓞_ℂ_[p] ℂ_[p] y‖ ≤ (p : ℝ)⁻¹ ^ n := by
@@ -148,17 +146,17 @@ private theorem norm_le_of_mem {p : ℕ} [Fact p.Prime] {n : ℕ} {y : 𝓞_ℂ_
   exact mul_le_of_le_one_left (by positivity) e3
 
 /- English proof (translation)
-Introduce `hHT E _ _ _ H Dw l Xo c Z _ hsep p _ n yb yy hn hy halg ch hch g ee hee`. Use `letI := H.starRing`. Take `⟨P, π, ψ, hP⟩` from `UpperTheory.algebraic_p_adic_point_lifts E H Dw l Xo c Z p yb yy hy halg`. Take `⟨hLR, -, -, hK⟩` from `hHT p ℂ_[p] _ 𝓞_ℂ_[p] (𝓞 E) P`. Take `⟨lb, ζ, hζ, hadd, hlin, onto, hw, hχ⟩` from `label_move Z hP hch`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hP`. Take `⟨f, u, hflev, hflin, hu, hpair⟩` from `UpperTheory.weil_pairing_labels_torsion_points E H Dw p n P lb ζ hn hζ hadd hlin onto hw`. Establish `hspan` using `GlobalTheory.T.tate_lattice_spans E H Dw p P f (fun x hx => by`. Take `⟨t, ht⟩` from `(tate_free_of_card p _ _ P.card_torsion).2.1 1 x (by rw [pow_one]; exact hx)`. Take `⟨a, ha⟩` from `(onto _).1 (GlobalTheory.HTLat.Tate.lev_pow t n)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Rewrite using `[← ht, ← GlobalTheory.HTLat.Tate.lev_add_pow (f a) 1 k, ← GlobalTheory.HTLat.Tate.lev_add_pow t 1 k, hflev, ha])`. Take `⟨B, hB1, hB2, hB3⟩` from `UpperTheory.tate_module_pairing_congruence E H Dw p n (fun _ => rfl) P f u hn hspan hflin hu hpair`. Take `⟨x, hx1, hx2⟩` from `UpperTheory.tangent_basis_lie_coordinates E H Z.X Z.t p P yb π h2 h3 g ee hee`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL⟩ : ∃ L : (Fin g → ℂ_[p]) →ₗ[ℂ_[p]] P.V, ∀ cf, L cf = ∑ k, cf k • P.bLie (x k)` from `⟨Fintype.linearCombination ℂ_[p] fun k => P.bLie (x k), fun cf => Fintype.linearCombination_apply _ _ _⟩`. Use `⟨B ∘ₗ L, fun a h hd i => ?_, fun cf w hcw σ hσ => ?_, fun v v' hv hv' => ?_⟩` and prove the remaining obligations. Establish `hmem` using `UpperTheory.level_reduction_torsion_character E H Z.X Z.t hsep p n P yb π h2 hLR (f a) (ch a) (fun w z hwp hz => by`. Rewrite using `[hflev]`. Conclude with `hχ a w z hwp hz) g ee h hee.1 hd i (x i) (hx1 i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : L (Pi.single i 1) = P.bLie (x i)`. Simplify using `[hL, Pi.single_apply]`. Rewrite using `[LinearMap.comp_apply, hB1, e1, Point.pairV_bLie, sub_neg_eq_add, ← map_add]`. Conclude with `norm_le_of_mem hmem`. Use `hB2 _ σ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hL]`. Conclude with `hx2 cf w hcw σ hσ`. Use `hB3 (L v) (L v') ?_ hv hv'` and prove the remaining obligations. Rewrite using `[hL, hL]`. Conclude with `isot_bLie P hK x v v'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.p_adic_point_torsion_frame :
     GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.HodgeTateKernelAtPoint → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) [IsLocallyNoetherian Z.X], Z.X.IsSeparated → ∀ (p : ℕ) [Fact p.Prime] (n : ℕ) (yb : Sp 𝓞_ℂ_[p] ⟶ Z.X) (yy : Sp ℂ_[p] ⟶ Xo.XF c), 1 ≤ n → spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ yb = yy ≫ Z.j → AlgDef (spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ yb) → ∀ ch : Dw.La → TorsChar Z.t yb (p ^ n), WeilLab Z (algebraMap 𝓞_ℂ_[p] ℂ_[p]) yb yy (p ^ n) ch → ∀ (g : ℕ) (e : Fin g → (Sp (DualNumber 𝓞_ℂ_[p]) ⟶ Z.t.G.left)), IsTanBasis Z.t yb e → ∃ b, HTLin Dw Z.t p n (algebraMap 𝓞_ℂ_[p] ℂ_[p]) yb ch e b := by

@@ -14,7 +14,7 @@ universe u w
 namespace SectionCount.Drop
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp | e + 1 => by have ih := pow_add_le c n hc hn e have hn0 : 0 < n := by linarith have hA : 0 ≤ (1 + c) ^ e - 1 := by have : 1 ≤ (1 + c) ^ e := one_le_pow₀ (by linarith) linarith have hq : n ^ e / n ≤ n ^ e := div_le_self (by positivity) hn have hq' : n ^ (e + 1) / n …`.
+A detailed English derivation is pending.
 -/
 theorem pow_add_le (c n : ℝ) (hc : 0 ≤ c) (hn : 1 ≤ n) :
     ∀ e : ℕ, (n + c) ^ e ≤ n ^ e + ((1 + c) ^ e - 1) * (n ^ e / n)
@@ -37,7 +37,7 @@ theorem pow_add_le (c n : ℝ) (hc : 0 ≤ c) (hn : 1 ≤ n) :
     nlinarith [h1, h2, hqn]
 
 /- English proof (translation)
-Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (by linarith) (by nlinarith) e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_add_le_mul (c n : ℝ) (hc : 0 ≤ c) (hn : 1 ≤ n) (e : ℕ) :
     (n + c) ^ e ≤ (1 + c) ^ e * n ^ e := by
@@ -45,21 +45,19 @@ theorem pow_add_le_mul (c n : ℝ) (hc : 0 ≤ c) (hn : 1 ≤ n) (e : ℕ) :
   exact pow_le_pow_left₀ (by linarith) (by nlinarith) e
 
 /- English proof (translation)
-Establish `hn0 : 0 < n` using `by linarith`. Establish `hnc : n ≤ n + c` using `by linarith`. Establish `hP : (n + c) ^ e ≤ (1 + c) ^ e * n ^ e` using `pow_add_le_mul c n hc hn e`. Establish `hPe : 0 ≤ (n + c) ^ e` using `by positivity`. Establish `hne : n ^ e ≤ n ^ d` using `pow_le_pow_right₀ hn hed`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(abs_le.mp hh).2`. Establish `hC : C * (n + c) ^ e / (n + c) ≤ |C| * (1 + c) ^ e * (n ^ d / n)`. Combine the equalities or inequalities in the displayed calculation. Apply `div_le_div_of_nonneg_left (by positivity) hn0 hnc` to reduce the goal to its premises. Use `_ ≤ |C| * ((1 + c) ^ e * n ^ e) / n := by gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `_ ≤ |C| * ((1 + c) ^ e * n ^ d) / n := by gcongr`. Use `_ = |C| * (1 + c) ^ e * (n ^ d / n) := by ring`. Establish `hfac : (1 : ℝ) ≤ (e.factorial : ℝ)` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero e)`. Establish `hM : I * (n + c) ^ e / (e.factorial : ℝ) ≤ (if e = d then I else 0) * n ^ d / (d.factorial : ℝ) + |I| * (1 + c) ^ e * (n ^ d / n)` using `by split_ifs with hde`. Substitute `hde` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `pow_add_le c n hc hn e`. Establish `hlow : n ^ e ≤ (n + c) ^ e` using `pow_le_pow_left₀ hn0.le hnc e`. Establish `hD : 0 ≤ (n + c) ^ e - n ^ e` using `by linarith`. Establish `hq : 0 ≤ n ^ e / n` using `by positivity`. Establish `hdiff : I * ((n + c) ^ e - n ^ e) ≤ |I| * (1 + c) ^ e * (n ^ e / n)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (by nlinarith) (abs_nonneg I)`. Establish `hpos : (0 : ℝ) < (e.factorial : ℝ)` using `by linarith`. Establish `hR : 0 ≤ |I| * (1 + c) ^ e * (n ^ e / n)` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[div_le_iff₀ hpos]`. Establish `: I * (n + c) ^ e = I * n ^ e + I * ((n + c) ^ e - n ^ e)` using `by ring`. Rewrite using `[this, add_mul, div_mul_cancel₀ _ hpos.ne']`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlt : e < d` using `lt_of_le_of_ne hed hde`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hd1 : n ^ e ≤ n ^ d / n`. Rewrite using `[le_div_iff₀ hn0, ← pow_succ]`. Conclude with `pow_le_pow_right₀ hn hlt`. Establish `hpos : (0 : ℝ) < (e.factorial : ℝ)` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `: (|I| + |C|) * (1 + c) ^ e * (n ^ d / n) = |I| * (1 + c) ^ e * (n ^ d / n) + |C| * (1 + c) ^ e * (n ^ d / n)` using `by ring`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem term_le (I C c n h : ℝ) (e d : ℕ) (hed : e ≤ d) (hc : 0 ≤ c) (hn : 1 ≤ n)
     (hh : |h - I * (n + c) ^ e / (e.factorial : ℝ)| ≤ C * (n + c) ^ e / (n + c)) :
@@ -121,7 +119,7 @@ theorem term_le (I C c n h : ℝ) (e d : ℕ) (hed : e ≤ d) (hc : 0 ≤ c) (hn
   linarith
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem interNum_fin_congr {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
     {x : Fin (N + 1) → Ω} {a a' : ℕ} (h : a = a') (pp : Ideal (Poly S N)) (F : SubSystem S x Ω) :
@@ -133,35 +131,33 @@ end SectionCount.Drop
 open Classical in
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x d Nb b hZ hN hb`. Take `⟨β, hβ, hβZ, m, pp, e, c, hpp, hcount, hloss⟩` from `hF k Ω N x d Nb b hZ hb`. Use `choose c' hc' using fun j => hT k Ω N x Nb b (pp j) (e j) (c j) hN (hpp j).1`. Use `choose C hC using fun j => hH k Ω N x Nb (pp j) (e j) hN (hpp j).1`. Take `⟨-, hsym, -, hcut, -⟩` from `hR k Ω N x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g : Ideal (Poly k N) → ℤ := fun qq => interNum qq (fun _ : Fin d => Nb.toSubSystem) with hg`. Establish `hkey : ∑ j, (if e j = d then interNum (pp j) (fun _ : Fin (e j) => Nb.toSubSystem) else 0) = interNum (primeOf (S` using `k) x) (Fin.cons (α := fun _ => SubSystem k x Ω) (twistSys k x (b : ℤ)) (fun _ : Fin d => Nb.toSubSystem)) := by`. Establish `h1 : ∀ j, (if e j = d then interNum (pp j) (fun _ : Fin (e j) => Nb.toSubSystem) else 0) = if e j = d then g (pp j) else 0` using `fun j => by split_ifs with h`. Conclude with `SectionCount.Drop.interNum_fin_congr h _ _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc4` using `hcut d (primeOf (S := k) x) (fun _ => Nb) (twistBundle k x (b : ℤ)) β hZ hβ hβZ`. Establish `htb : (twistBundle k x (b : ℤ)).toSubSystem = twistSys k x (b : ℤ)` using `rfl`. Simplify using `only [htb] at hc4`. Establish `hrot` using `hsym (d + 1) (primeOf (S := k) x) (Fin.cons (α := fun _ => LineBundle k x) (twistBundle k x (b : ℤ)) (fun _ => Nb)) (finRotate (d + 1)) hZ`. Establish `hL : (fun i => (Fin.cons (α` using `fun _ => LineBundle k x) (twistBundle k x (b : ℤ)) (fun _ => Nb) i).toSubSystem) = Fin.cons (α := fun _ => SubSystem k x Ω) (twistSys k x (b : ℤ)) (fun _ : Fin d => Nb.toSubSystem) := by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Both sides reduce to the same expression. Simplify using `only [Fin.cons_succ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hLr : (fun i => (Fin.cons (α` using `fun _ => LineBundle k x) (twistBundle k x (b : ℤ)) (fun _ => Nb) (finRotate (d + 1) i)).toSubSystem) = Fin.snoc (α := fun _ => SubSystem k x Ω) (fun i : Fin d => ((fun _ => Nb) i).toSubSystem) (twistSys k x (b : ℤ)) := by`. Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[finRotate_apply]`. Rewrite using `[← hL, ← hrot, hLr, hc4, Finset.sum_congr rfl (fun j _ => h1 j)]`. Establish `hTq : ∀ qq : Ideal (Poly k N), (if h : qq ∈ (primeOf (S` using `k) x ⊔ zeroIdeal (twistSys k x (b : ℤ)) β).minimalPrimes ∧ IsSubvar x qq d then haveI : qq.IsPrime := h.1.1.1 ((cutMult (primeOf (S := k) x ⊔ zeroIdeal (twistSys k x (b : ℤ)) β) qq).toNat : ℤ) * interNum qq (fun _ : Fin d => Nb.toSubSystem) else 0) = ∑ j, if e j = d ∧ pp j = qq t …`. Introduce `qq`. Establish `hq` using `hcount qq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Distinguish the cases in `hP : qq ∈ (primeOf (S := k) x ⊔ zeroIdeal (twistSys k x (b : ℤ)) β).minimalPrimes ∧ IsSubvar x qq d`. Rewrite using `[dif_pos hP]`. Rewrite `hq` using `[dif_pos hP]`. Rewrite using `[hq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_neg hP]`. Rewrite `hq` using `[dif_neg hP]`. Rewrite using `[hq]`. Simplify using the standard rewrite rules. Rewrite using `[finsum_congr hTq, finsum_eq_sum_of_support_subset (s := Finset.univ.image pp)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hd : e j = d`. Simplify using `only [hd, true_and, if_true]`. Rewrite using `[Finset.sum_ite_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `[hd]`. Introduce `qq hqq`. Rewrite `hqq` using `[Function.mem_support]`. Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hqq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `: pp j = qq`. Assume the negation of the conclusion as `hne`. Simplify using `[hne] at hj`. Simplify using `only [Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_range]`. Conclude with `⟨j, this⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Establish `hkeyR : ∑ j, (if e j = d then (interNum (pp j) (fun _ : Fin (e j) => Nb.toSubSystem) : ℝ) else 0) = (interNum (primeOf (S` using `k) x) (Fin.cons (α := fun _ => SubSystem k x Ω) (twistSys k x (b : ℤ)) (fun _ : Fin d => Nb.toSubSystem)) : ℝ) := by`. Rewrite using `[← hkey]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hev : ∀ᶠ n : ℕ in atTop, ∀ j, |(Module.finrank k (SubSystem.quotH (twistMul Nb.toSubSystem (n + c' j) 0) ((twistMul Nb.toSubSystem (n + c' j) 0).twist (idealSys x (pp j))) 0) : ℝ) - (interNum (pp j) (fun _ : Fin (e j) => Nb.toSubSystem) : ℝ) * ((n + c' j : ℕ) : ℝ) ^ (e j) / ((e j …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[eventually_all]`. Introduce `j`. Conclude with `(tendsto_add_atTop_nat (c' j)).eventually (hC j)`. Use `⟨∑ j, (|(interNum (pp j) (fun _ : Fin (e j) => Nb.toSubSystem) : ℝ)| + |C j|) * (1 + (c' j : ℝ)) ^ (e j), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev, eventually_ge_atTop 1] with n hn hn1 i _`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hn1' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn1`. Establish `h1` using `(Int.cast_le (R := ℝ)).mpr (hloss n i)`. Move the coercions through the operations in `at h1`. Establish `h3 : ∀ j, (Module.finrank k (SubSystem.quotH (twistMul Nb.toSubSystem (n + c' j) 0) ((twistMul Nb.toSubSystem (n + c' j) 0).twist (idealSys x (pp j))) 0) : ℝ) ≤ (if e j = d then (interNum (pp j) (fun _ : Fin (e j) => Nb.toSubSystem) : ℝ) else 0) * (n : ℝ) ^ d / (d.factorial : ℝ) …` using `fun j => by`. Establish `hj` using `hn j`.
-
-Move the coercions through the operations in `at hj`. Conclude with `SectionCount.Drop.term_le _ _ _ _ _ (e j) d (hpp j).2.1 (Nat.cast_nonneg _) hn1' hj`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_add_distrib, Finset.sum_mul, Finset.sum_div]`. Use `_ = _ := by rw [hkeyR]; ring`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SectionCount.Drop.proof (hF : SectionCount.Drop.Filt.Statement.{u, w})
     (hT : SectionCount.Drop.Term.Statement.{u, w}) (hH : SectionCount.Drop.HilbW.Statement.{u, w})

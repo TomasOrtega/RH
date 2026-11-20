@@ -24,13 +24,13 @@ open AlgebraicGeometry CategoryTheory Limits NumberField MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.LamT GlobalTheory.KeyFourth
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Take `⟨⟨Ef, hE, hb⟩, -⟩` from `unimodular_and_tangent_of_isAH thetaUnifAV_all x.P x.rig x.rig_gen u Hm χ hA`. Use `u.discrete` as an intermediate fact. Establish `hv` using `volume_mul_det_eq_one_of_unimodular _ u.Λ u.full Hm Ef Fd hA.1 hA.2.1 hE hb hFd`. Establish `hd : Hm.det.re = (2 * ξ) ^ x.P.g`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hH, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin, ← Complex.ofReal_pow, Complex.ofReal_re]`. Set `W : Matrix (Fin x.P.g) (Fin x.P.g) ℂ` to `Matrix.of fun i => Pi.single (p i) 1`. Establish `hW : ‖W.det‖ = 1`. Establish `e : W = (1 : Matrix (Fin x.P.g) (Fin x.P.g) ℂ).submatrix p id`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[W, Pi.single_apply, Matrix.one_apply, eq_comm]`. Rewrite using `[e, Matrix.det_permute, Matrix.det_one, mul_one]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign p) with h | h <;> simp [h]`. Establish `key` using `hκ x u Hm W χ θ Fd 1 _ hA hR hF hD hFd hN.symm rfl`. Rewrite `hv` using `[hd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hW, eq_inv_of_mul_eq_one_left hv]`. Establish `hπ` using `Real.pi_pos`. Simplify using `only [mul_one, one_pow] at key`. Rewrite using `[← key]`. Simplify using `only [mul_pow, pow_mul']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -68,11 +68,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨ht, hg, hv⟩` from `hΦ`. Substitute `hg` using the available equality. Take `⟨W⟩` from `PullbackSections.nonempty_unfAt hU k x`. Take `⟨Wu⟩` from `PullbackSections.nonempty_unitAt W (PullbackSections.PfSupAtUnit.dmin_ortho _ hx)`. Establish `hH` using `OrthoHerm.hm_eq_smul_one E H Dw l Xo c σ r U ξ hσ hU k x W Wu hξ hx`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, χ, hΛ, hA, hR, hF, hg, hD⟩` from `OrthoMetric.exists_unif W.F (W.ik k) W.per W.pt Φ ht Wu.herm Wu.pos Wu.c2 Wu.c3 Wu.c4 Wu.c5 Wu.c6 Wu.c7`. Establish `hFd : IsAddFundamentalDomain u.Λ Wu.Fd volume` using `hΛ ▸ Wu.c8`. Establish `key` using `norm_rule_of_coord hκ Φ.key hg u h0 (e.trans W.e.symm) hA hR hF (fun i => by`. Take `⟨w, hw, hd⟩` from `hD _ _ ((U.un k x).tan (e i).1 (e i).2) (W.der (e i).1 (e i).2)`. Establish `hwv : w = Φ.v i` using `Over.OverMorphism.ext (Φ.m.cart.1.hom_ext (hw.trans (hv i).symm) ((Over.w w).trans (Over.w (Φ.v i)).symm))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hd` using `[hwv]`. Conclude with `hd) hFd Wu.c9 hH`. Rewrite `key` using `[hg]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_rule_of_isOrtho {κ : GlobalTheory.KeyCl.Rule} (hκ : GlobalTheory.KeyCl.ArchNorm (fun _ => 1) κ) {g : ℕ}
     (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r} {ξ : ℝ} (h0 : 0 < ξ)
@@ -106,9 +106,9 @@ section Weight
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Distinguish the cases in `h : τ (H.rt : E) = H.rt0`. Establish `hp : i < Dw.p` using `by simpa [Datum.mult, h] using hi`. Rewrite using `[wtOf_big _ _ ⟨τ, h⟩ i hp]`. Simplify using the standard rewrite rules. Establish `hq : i < Dw.q` using `by simpa [Datum.mult, h] using hi`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e` using `wtOf_small (Dw := Dw) 0 (-4) ⟨conjEmb τ, conj_mem h⟩ i hq`. Simplify using `only [conjEmb_conjEmb] at e`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wtOf_fst (τ : E →+* ℂ) (i : ℕ) (hi : i < Dw.mult τ) : (wtOf Dw 0 (-4)).1 (τ, i) = 4 := by
   by_cases h : τ (H.rt : E) = H.rt0
@@ -122,7 +122,7 @@ theorem wtOf_fst (τ : E →+* ℂ) (i : ℕ) (hi : i < Dw.mult τ) : (wtOf Dw 0
     simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Break down `i with _ | ⟨τ, i⟩` into its components or cases. Both sides reduce to the same expression. Conclude with `wtOf_fst τ i i.2`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exZ_wtOf : exZ Dw (wtOf Dw 0 (-4)) = (4 : ℤ) • keyEx Dw := by
   funext i
@@ -131,11 +131,11 @@ theorem exZ_wtOf : exZ Dw (wtOf Dw 0 (-4)) = (4 : ℤ) • keyEx Dw := by
   · exact wtOf_fst τ i i.2
 
 /- English proof (translation)
-Establish `hg : ∑ τ : E →+* ℂ, Dw.mult τ = g`. Use `Fintype.card_congr e` as an intermediate fact. Simplify using `using this.symm`. Establish `hs : (∑ τ : E →+* ℂ, ∑ i : Fin (Dw.mult τ), ((wtOf Dw 0 (-4)).1 (τ, i) : ℝ)) = 4 * g`. Rewrite using `[← hg, Nat.cast_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun (i : Fin (Dw.mult τ)) _ => by rw [wtOf_fst τ i i.2]]`. Simplify using `[mul_comm]`. Establish `hπ : 0 < 2 * Real.pi * x` using `by positivity`. Rewrite using `[lieFacZ, hs, ← Real.exp_log (pow_pos hπ (2 * g)), ← Real.exp_add, Real.log_pow, Real.exp_eq_one_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lieFacZ_mul {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) {x : ℝ} (hx : 0 < x) :
     lieFacZ Dw x (wtOf Dw 0 (-4)) * (2 * Real.pi * x) ^ (2 * g) = 1 := by
@@ -155,15 +155,13 @@ theorem lieFacZ_mul {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult �
 end Weight
 
 /- English proof (translation)
-Introduce `κ _ _ hκ E _ _ _ H Dw l Xo c g e σ r U x K hσ hU hx hS hpq hK hval`. Establish `hπ : 1 ≤ 2 * Real.pi` using `by linarith [Real.pi_gt_three]`. Use `⟨(2 * Real.pi) ^ (2 * g), by positivity, ?_, fun k y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[abs_of_nonneg (Real.log_nonneg (one_le_pow₀ hπ)), Real.log_pow]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `le_rfl`. Establish `hsec` using `GlobalTheory.FlatTw.Hol.isSec_modelWt_rdU E H Dw l Xo c σ r U hS hσ hU hpq (wtOf Dw 0 (-4)) (even_wtOf _ _) (fun τ i j hij hj => by rw [wtOf_fst τ j hj, wtOf_fst τ i (hij.trans_lt hj)]) K (exZ_wtOf (Dw := Dw) ▸ hK) k`. Establish `hb` using `FrameDegreeData.bOf_mem (U.X k) hy`. Establish `hz` using `OrthogonalFrameDomain.rmul_mem_dom (U.X k) hy hb`. Establish `ho` using `FrameDegreeData.ortho_bOf (U.X k) hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `FrameDegreeData.pnorm_rmul (U.X k) _ _ hsec.2.1 y hy _ hb`. Generalize the expression as in `rmul y (FrameDegreeData.bOf (U.X k) y) = z at hz ho hp`. Take `⟨τ₀⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h0 : 0 < x` using `hx k τ₀ ▸ norm_pos_iff.2 ((map_ne_zero τ₀).2 (U.X k).ξ0_ne)`. Take `⟨Φ, hΦ⟩ : ∃ Φ : FibKey Xo ℂ (U.un k ⟨z, hz⟩).x, Tied (S` from `ℂ) e (U.un k ⟨z, hz⟩).s (U.un k ⟨z, hz⟩).u Φ := @GlobalTheory.KeyFourth.exists_tied E _ _ _ H Dw l Xo c g e ℂ _ _ σ.toAlgebra (U.un k ⟨z, hz⟩) hpq`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv : rdU U (K : Rul Xo c) k z = (κ ℂ Φ.key : ℂ)`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, hz, dif_pos]`. Conclude with `@hval ℂ _ _ σ.toAlgebra (U.un k ⟨z, hz⟩) Φ hΦ`. Establish `hn : (U.X k).pnorm (modelWt U (wtOf Dw 0 (-4)) k) (rdU U (K : Rul Xo c) k) z = ‖(κ ℂ Φ.key : ℂ)‖`. Simplify using `[Data.pnorm, ReciprocityTheory.ChartRestriction.G.PullbackSections.PfSupAtUnit.dmin_ortho _ ho, hv]`.
-
-Use `show lieFacZ Dw x _ * (U.X k).pnorm (modelWt U (wtOf Dw 0 (-4)) k) (rdU U (K : Rul Xo c) k) y = _`. Rewrite using `[← hp, hn, norm_rule_of_isOrtho hκ e h0 hσ hU k ⟨z, hz⟩ (hx k) ho Φ hΦ, mul_left_comm, lieFacZ_mul e h0, mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homN_key_const : ∀ (κ : GlobalTheory.KeyCl.Rule), GlobalTheory.KeyCl.Homog (fun _ => 1) κ → GlobalTheory.KeyCl.Funct κ → GlobalTheory.KeyCl.ArchNorm (fun _ => 1) κ → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (x : ℝ) (K : (Rul Xo c)ˣ), GoodEmb c σ → IsUnf U → (∀ k (τ : E →+* ℂ), ‖τ (U.X k).ξ0‖ = x) → Nonempty (KeySec Xo c) → 1 ≤ Dw.p + Dw.q → (K : Rul Xo c) ∈ secZ Xo c ((4 : ℤ) • keyEx Dw) → (∀ (F : Type) [Field F] [CharZero F] [Algebra c.F F] (y : FrPt Xo c F) (Φ : FibKey Xo F y.x), Tied e y.s y.u Φ → evR Xo c (K : Rul Xo c) y = (κ F Φ.key : F)) → ∃ C : ℝ, 0 < C ∧ |Real.log C| ≤ 2 * (g : ℝ) * Real.log (2 * Real.pi) ∧ ∀ k, ∀ y ∈ (U.X k).dom, homN U x (wtOf Dw 0 (-4)) (K : Rul Xo c) ⟨k, y⟩ = C := by
   intro κ _ _ hκ E _ _ _ H Dw l Xo c g e σ r U x K hσ hU hx hS hpq hK hval

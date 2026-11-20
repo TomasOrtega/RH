@@ -13,11 +13,11 @@ section A
 variable {n n' : Type*} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
 
 /- English proof (translation)
-Introduce `g u _ hm`. Establish `hK : IntM (u * embX c (g : GL n k)).val`. Establish `: u * embX c (g : GL n k) ∈ (TypeDatum.full k (n ⊕ Fin c)).J` using `by simpa using hm`. Conclude with `intM_of_mem_KO this`. Establish `hs : simpleSum u ∈ 𝒪[k]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_mem fun i _ => sum_mem fun j _ => ?_` and prove the remaining obligations. Use `split_ifs`. Use `hK (.inr i) (.inr j)` as an intermediate fact. Rewrite `this` using `[Units.val_mul, ← fromBlocks_toBlocks u.val]`. Express the relevant statement in the definitionally equal form `(_ * fromBlocks _ 0 0 1 : Matrix _ _ k) _ _ ∈ _ at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[fromBlocks_multiply, toBlocks₂₂]`. Conclude with `zero_mem _`. Rewrite using `[hψ.eq_one (show _ ∈ cball (1 : kˣ) from hs)]`. Express the relevant statement in the definitionally equal form `_ = _ * (((1 : ℂˣ)⁻¹ : ℂˣ) : ℂ)`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isColChar_full {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) :
     IsColChar ψ (TypeDatum.full k (n ⊕ Fin c)).toLevel 1 1 := by
@@ -42,11 +42,11 @@ variable [MeasurableSpace k] [BorelSpace k]
 omit [DecidableEq n] in
 
 /- English proof (translation)
-Use `hν.1` as an intermediate fact. Use `secondCountable k` as an intermediate fact. Unfold `hat`. Rewrite using `[← integral_add_left_eq_self _ y₀]`. Establish `e : ∀ y : n → k, cosetInd (box n 1) (Submodule.Quotient.mk y₀) (y₀ + y) * (ψ (ε * (η ⬝ᵥ (y₀ + y))) : ℂ) = (Set.pi Set.univ fun _ => (𝒪[k] : Set k)).indicator (fun _ => (ψ (ε * (η ⬝ᵥ y₀)) : ℂ)) y` using `fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy : (y₀ + y ∈ {y' : n → k | Submodule.Quotient.mk (p` using `box n 1) y' = Submodule.Quotient.mk y₀}) ↔ y ∈ Set.pi Set.univ fun _ => (𝒪[k] : Set k) := by`. Simplify using `[Submodule.Quotient.eq, mem_box, Valuation.mem_integer_iff]`. Distinguish the cases in `h : y ∈ Set.pi Set.univ fun _ => (𝒪[k] : Set k)`. Establish `hi : ε * (η ⬝ᵥ y) ∈ 𝒪[k]` using `mul_mem hε (sum_mem fun i _ => mul_mem (hη i) (h i trivial))`. Rewrite using `[cosetInd, Set.indicator_of_mem (hy.2 h), Set.indicator_of_mem h, dotProduct_add, mul_add, AddChar.map_add_eq_mul, hψ.eq_one (show _ ∈ cball (1 : kˣ) from hi)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[cosetInd, Set.indicator_of_notMem (mt hy.1 h), Set.indicator_of_notMem h, zero_mul]`. Simplify using `only [e]`. Rewrite using `[integral_indicator_const _ (MeasurableSet.univ_pi fun _ => (isOpen_int k).measurableSet), Measure.real, Measure.pi_pi]`. Simplify using `[hν.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hat_coset {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ν : Measure k} (hν : IsUnitVol ν) {ε : k}
     (hε : ε ∈ 𝒪[k]) (y₀ : n → k) {η : n → k} (hη : ∀ i, η i ∈ 𝒪[k]) :
@@ -74,15 +74,13 @@ theorem hat_coset {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ν : Measur
 omit [DecidableEq n] [DecidableEq n'] in
 
 /- English proof (translation)
-Use `secondCountable k` as an intermediate fact. Use `t2Space k` as an intermediate fact. Establish `hc : Continuous (affPt (c` using `c) p x₀) := by`. Use `continuous_const.add (continuous_pi fun r => continuous_pi fun s => ?_)` and prove the remaining obligations. Distinguish the cases in `hf : Free p (r, s)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Matrix.of_apply, dif_pos hf]`. Conclude with `continuous_apply _`. Simplify using `only [Matrix.of_apply, dif_neg hf]`. Conclude with `continuous_const`. Establish `key : ∀ e, Φ (affPt p x₀ e) * (ψ (-ch (affPt p x₀ e)) : ℂ) = (‖Φ (affPt p x₀ e)‖ : ℝ)` using `fun e => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : Φ (affPt p x₀ e) = 0`. Simplify using `[h]`. Rewrite using `[h01 _ h, ← Circle.coe_mul, ← AddChar.map_add_eq_mul, Circle.norm_coe]`. Simplify using the standard rewrite rules. Unfold `opE`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [key]`. Rewrite using `[integral_complex_ofReal, Complex.ofReal_ne_zero]`. Use `(Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (hΦ.1.continuous.comp hc).norm ?_ (fun _ => norm_nonneg _) (x := e₀) (norm_ne_zero_iff.2 he)).ne'` and prove the remaining obligations. Use `HasCompactSupport.intro (IsCompact.image hΦ.2 (f := fun x (rs : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs}) => x rs.1.1 rs.1.2 - basePt c x₀ rs.1.1 rs.1.2) (by fun_prop)) fun e he' => norm_eq_zero.2 (by_contra fun h => he' ⟨_, subset_tsupport _ h, ?_⟩)` and prove the remaining obligations. Use function extensionality and compare the values at `⟨⟨r, s⟩, hf⟩`.
-
-Simplify using `[affPt, hf]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem opE_ne_zero' (ψ : AddChar k Circle) (ν : Measure k)
     [ν.IsAddHaarMeasure] (p : ℕ) {Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ} (hΦ : Φ ∈ SB _)
@@ -121,14 +119,14 @@ def wt (ϖ : kˣ) : n ⊕ Fin c → k := Sum.elim (fun _ => 1) fun i => (ϖ : k)
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Apply the tactic sequence `rcases i with i | i <;> simp [wt]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wt_ne_zero (ϖ : kˣ) (i : n ⊕ Fin c) : wt ϖ i ≠ 0 := by
   rcases i with i | i <;> simp [wt]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `fromBlocks 1 0 0 (diagonal _) = _`. Rewrite using `[← diagonal_one, fromBlocks_diagonal]`. Reduce the equality to equality of the corresponding arguments.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem typeFrame_val (ϖ : kˣ) (o : ι ≃ n ⊕ Fin c) : (typeFrame ϖ o).bas.val = diagonal (wt ϖ) := by
   change fromBlocks 1 0 0 (diagonal _) = _
@@ -136,7 +134,7 @@ theorem typeFrame_val (ϖ : kˣ) (o : ι ≃ n ⊕ Fin c) : (typeFrame ϖ o).bas
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[typeFrame_val, diagonal_mul_diagonal, ← diagonal_one]`. Reduce the equality to equality of the corresponding arguments. Use function extensionality and compare the values at `i`. Conclude with `mul_inv_cancel₀ (wt_ne_zero ϖ i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem typeFrame_inv (ϖ : kˣ) (o : ι ≃ n ⊕ Fin c) :
     ((typeFrame ϖ o).bas⁻¹).val = diagonal fun i => (wt ϖ i)⁻¹ := by
@@ -146,7 +144,7 @@ theorem typeFrame_inv (ϖ : kˣ) (o : ι ≃ n ⊕ Fin c) :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Rewrite using `[LatFrame.coords, typeFrame_val, typeFrame_inv, submatrix_apply, mul_diagonal, diagonal_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coords_typeFrame (ϖ : kˣ) (o : ι ≃ n ⊕ Fin c) (o' : ι' ≃ n' ⊕ Fin c')
     (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin c') k) (i : ι) (j : ι') :
@@ -159,31 +157,29 @@ section C
 variable [MeasurableSpace k] [BorelSpace k] {κ t : Type*} [Fintype κ] [DecidableEq κ] [Fintype t] [DecidableEq t]
 
 /- English proof (translation)
-Take `rfl : s = c + 1` from `by omega`. Use `set T := typeChain t ϖ P μ hμ`. Establish `hT : T.Regular` using `Chain.ofType_regular _ _ _ _ _`. Set `o` to `stdOrd κ t (l := c + 1 + 1) (0 + 1) (c + 1) (by omega)`. Set `o'` to `stdOrd κ t (l := c + 1 + 1) 0 (c + 1 + 1) (by omega)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Q` to `P.reindex (ixZero _ t)`. Establish `hQ : ∀ x, T.Phi 0 (c + 1) (by omega) x = Q.Phi t (μ 1) (((typeFrame ϖ o).coords (typeFrame ϖ o') x).submatrix (ixSucc _ t 0) id)` using `fun x => rfl`. Establish `b1 : ∀ i : Fin (c + 1), o (.inl (.inr i.castSucc)) = .inr i` using `fun i => standardOrderExtendedBasis_apply_low_block κ t _ _ _ i`. Establish `b2 : ∀ i : Fin (c + 1 + 1), o' (.inl (.inr i)) = .inr i` using `fun i => standardOrderExtendedBasis_apply_low_block κ t _ _ _ i`. Set `x : Matrix _ _ k` to `Matrix.of fun r q => wt ϖ r * (fromBlocks (1 : Matrix _ _ k) 0 0 0).submatrix o.symm o'.symm r q * (wt ϖ q)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `a1 : ∀ i, o.symm (.inr i) = .inl (.inr ⟨i.val, by omega⟩)` using `fun i => o.symm_apply_eq.2 (standardOrderExtendedBasis_apply_low_block κ t _ _ _ i).symm`. Establish `a2 : ∀ i, o'.symm (.inr i) = .inl (.inr ⟨i.val, by omega⟩)` using `fun i => o'.symm_apply_eq.2 (standardOrderExtendedBasis_apply_low_block κ t _ _ _ i).symm`. Establish `a3 : ∀ i, o.symm (.inl (.inl (.inr i))) = .inl (.inr ⟨c + 1 + i.val, by omega⟩)` using `fun i => o.symm_apply_eq.2 (stdOrd_f κ t _ _ _ i).symm`. Establish `a4 : ∀ i, o.symm (.inl (.inl (.inl i))) = .inl (.inl i)` using `fun i => o.symm_apply_eq.2 rfl`. Establish `a5 : ∀ i, o'.symm (.inl (.inl (.inl i))) = .inl (.inl i)` using `fun i => o'.symm_apply_eq.2 rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a6 : ∀ i, o.symm (.inl (.inr i)) = .inr i` using `fun i => o.symm_apply_eq.2 rfl`. Take `⟨e, he⟩` from `exists_affPt (p := 1) (x := x) (by`. Introduce and unpack `(r | r) (i | i) hf`. Both sides reduce to the same expression. Establish `hi : i.val = 0` using `by simp only [Free] at hf; omega`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `r with (r | r) | r` into its components or cases. Simplify using `[x, basePt, a2, a4]`. Simplify using `[x, basePt, a2, a3, hi]`. Simplify using `[x, basePt, a2, a6]`. Break down `i with (i | i) | i` into its components or cases.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[x, basePt, a1, a5]`. Conclude with `i.elim0`. Conclude with `i.1.elim0`. Distinguish the cases in `hri : r.val = i.val`. Simplify using `[x, basePt, a1, a2, wt, hri]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[x, basePt, a1, a2, Matrix.one_apply, wt, hri, Fin.ext_iff])`. Establish `hflat : flat ψ ν (T.mu (0 + 1)) (T.Phi 0 (c + 1) (by omega)) 1 1 ≠ 0`. Rewrite using `[flat, om_one]`. Use `fun h0 => opE_ne_zero' ψ ν 1 (hT.1 0 (c + 1) (by omega)) (fun y hy => ?_) (e₀ := e) ?_ (congrFun h0 x.toBlocks₁₁)` and prove the remaining obligations. Rewrite `hy`, the goal using `[hQ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨⟨g, hg, eg⟩, h2⟩` from `(Q.Phi_ne_zero_iff _).1 hy`. Rewrite using `[Q.Phi_of_mem _ ⟨g, hg⟩ eg h2]`. Use `hP ⟨(reGL (ixZero _ t)).symm g, hg⟩` as an intermediate fact. Rewrite `this` using `[TypeDatum.rho_apply, Units.val_mul, ← det_reGL (ixZero _ t), MulEquiv.apply_symm_apply]`. Use `this.trans (congrArg _ (congrArg _ (Finset.sum_congr rfl fun i _ => ?_)))` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `g.val (.inl (.inr i.castSucc)) (.inl (.inr i.succ)) / _ = _`. Rewrite using `[eg]`. Express the relevant statement in the definitionally equal form `(typeFrame ϖ o).coords (typeFrame ϖ o') y (.inl (.inr i.castSucc)) (.inl (.inr i.succ)) / _ = _`. Rewrite using `[coords_typeFrame, b1, b2]`. Simplify using `only [wt, Sum.elim_inr, Fin.val_succ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he, hQ]`. Establish `ex : (typeFrame ϖ o).coords (typeFrame ϖ o') x = fromBlocks 1 0 0 0`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[coords_typeFrame]`. Use `wt_ne_zero ϖ (o i)` as an intermediate fact. Use `wt_ne_zero ϖ (o' j)` as an intermediate fact. Simplify using `only [x, of_apply, submatrix_apply, Equiv.symm_apply_apply]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[ex, Q.Phi_ne_zero_iff]`. Use `⟨⟨1, one_mem _, ?_⟩, fun i j => ?_⟩` and prove the remaining obligations. Use extensionality with `(i | i) (j | j)`. Simplify using `[ixSucc, toRows₁, Matrix.one_apply]`. Conclude with `j.1.elim0`.
-
-Conclude with `i.1.elim0`. Conclude with `i.1.elim0`. Apply the tactic sequence `rcases j with j | j <;> simp [ixSucc, toRows₂]`. Conclude with `⟨⟨1, rfl, hflat⟩, fun h0 => hflat ((xi_eq_zero_iff ψ ν _ _ (hT.2.2 _ _ _).1 (hT.2.2 _ _ _).2.1 _ _ _).1 h0)⟩`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem typeChain_entry_ne_zero (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure] (ϖ : kˣ) (s c : ℕ)
     (h : 0 + 1 + c = s) (P : TypeDatum k (κ ⊕ Fin (s + 1))) (μ : ℕ → kˣ →* ℂˣ) (hμ : ∀ j, IsTame (μ j))
@@ -263,9 +259,9 @@ theorem typeChain_entry_ne_zero (ψ : AddChar k Circle) (ν : Measure k) [ν.IsA
   exact ⟨⟨1, rfl, hflat⟩, fun h0 => hflat ((xi_eq_zero_iff ψ ν _ _ (hT.2.2 _ _ _).1 (hT.2.2 _ _ _).2.1 _ _ _).1 h0)⟩
 
 /- English proof (translation)
-Use `(typeChain_entry_ne_zero ψ ν ϖ s c h _ μ hμ fun g => ?_).2` and prove the remaining obligations. Establish `hi : ∑ i : Fin s, (g : GL (κ ⊕ Fin (s + 1)) k).val (.inr i.castSucc) (.inr i.succ) / ϖ ∈ 𝒪[k]` using `sum_mem fun i _ => by`. Use `hϖ _ (mem_KOne.1 g.2 (.inr i.castSucc) (.inr i.succ))` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply_ne (by simp [Fin.ext_iff]), sub_zero]`. Rewrite using `[Valuation.mem_integer_iff, map_div₀]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_le_one_of_le₀ this zero_le`. Rewrite using `[hψ.eq_one (show _ ∈ cball (1 : kˣ) from hi), TypeDatum.rho_apply, tame_det_of_mem_KOne (hμ 1) g.2]`. Express the relevant statement in the definitionally equal form `((1 * 1⁻¹ : ℂˣ) : ℂ) = _`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem typeChain_principal_entry_ne_zero {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (ν : Measure k)
     [ν.IsAddHaarMeasure] {ϖ : kˣ} (hϖ : ∀ z : k, valuation k z < 1 → valuation k z ≤ valuation k (ϖ : k)) (s c : ℕ)
@@ -284,25 +280,25 @@ theorem typeChain_principal_entry_ne_zero {ψ : AddChar k Circle} (hψ : HasCond
 omit [MeasurableSpace k] [BorelSpace k] in
 
 /- English proof (translation)
-Introduce `g hg x₀ y`. Set `F` to `typeFrame ϖ (stdOrd κ t (l := s + 1) (s + 1) 0 rfl)`. Set `F'` to `typeFrame ϖ (stdOrd κ t (l := s + 1) s (0 + 1) rfl)`. Establish `hK : reGL F'.ord (F'.conj.symm g) ∈ KO k _`. Use `mem_stabLat.1 (hA s 0 rfl g hg)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `F'.conj_apply (F'.conj.symm g)`. Rewrite `e` using `[MulEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `F'.bas⁻¹ * g * F'.bas ∈ _ at this`. Rewrite `this` using `[e]`. Simplify `this` using `[mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hK' : F'.conj.symm g ∈ KO k _` using `((TypeDatum.full k _).reindex F'.ord.symm).le_KO (show (reGL F'.ord.symm).symm _ ∈ KO k _ from hK)`. Take `⟨u, rfl⟩` from `F'.conj.surjective g`. Rewrite `hK'` using `[MulEquiv.symm_apply_apply]`. Establish `hΨ : ∀ y, (typeChain t ϖ P μ hμ).Psi (F'.conj u) x₀ y = μ (s + 1) (Matrix.GeneralLinearGroup.det u) * P.iterPhi t μ hμ s (F.coords F' (withCol x₀ y) * u.val)` using `fun y => by`. Use `congrFun (F.om_transport F' (μ (s + 1)) u 1 (P.iterPhi t μ hμ s)) (withCol x₀ y)` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_one]`. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[LatFrame.transport, om_of_mem_KO _ hK' (one_mem _)]`. Simplify using the standard rewrite rules. Use `⟨fun h i => ?_, fun z hz => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[hΨ]`. Establish `h1 : IntM (F.coords F' (withCol x₀ y) * u.val)` using `fun i l => by`. Simplify using `using TypeDatum.intM_of_Phi_ne_zero _ _ (right_ne_zero_of_mul h) ((ixSucc _ t s).symm i) l`. Establish `h2` using `h1.mul (mem_KO.1 hK').2 (F.ord.symm (.inl i)) (F'.ord.symm (.inr 0))`. Rewrite `h2` using `[Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, coords_typeFrame]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [F, F', typeFrame, Equiv.apply_symm_apply, wt, withCol] at h2`. Establish `h0 : 0 < valuation k (ϖ : k)` using `by simp [zero_lt_iff]`. Establish `h3 : valuation k (y i) * valuation k (ϖ : k) ≤ 1` using `by simpa [Valuation.mem_integer_iff] using h2`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, ← one_mul _⁻¹, le_mul_inv_iff₀ h0]`. Conclude with `h3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΨ, hΨ]`. Establish `e : F.coords F' (withCol x₀ (y + z)) = F.coords F' (withCol x₀ y) + F.coords F' (withCol 0 z)`. Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, coords_typeFrame, coords_typeFrame, coords_typeFrame]`. Generalize the expression as in `stdOrd κ t (l := s + 1) (s + 1) 0 rfl i = i'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `stdOrd κ t (l := s + 1) s (0 + 1) rfl j = j'`. Apply the tactic sequence `rcases i' with i' | i' <;> rcases j' with j' | j' <;> simp [withCol, mul_add, add_mul]`. Establish `m : MaxM (F.coords F' (withCol 0 z))` using `fun i j => by`. Rewrite using `[coords_typeFrame]`. Generalize the expression as in `stdOrd κ t (l := s + 1) (s + 1) 0 rfl i = i'`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `stdOrd κ t (l := s + 1) s (0 + 1) rfl j = j'`. Apply the tactic sequence `rcases i' with i' | i' <;> rcases j' with j' | j' <;> simp [withCol, wt]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (by simpa using hz i') zero_le hϖ`. Rewrite using `[e, Matrix.add_mul]`. Use `congr 1`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `m'` using `m.mul_intM (intM_of_mem_KO hK')`. Generalize the expression as in `F.coords F' (withCol 0 z) * u.val = w at m' ⊢`. Generalize the expression as in `F.coords F' (withCol x₀ y) * u.val = w'`. Conclude with `TypeDatum.Phi_add _ (hμ _) (w'.submatrix (ixSucc _ t s) id) (y := w.submatrix (ixSucc _ t s) id) fun _ _ => m' _ _`.
+Replace the chosen expression with an arbitrary variable. A detailed English derivation is pending.
 -/
 theorem typeChain_adapted {ϖ : kˣ} (hϖ : valuation k (ϖ : k) < 1) {s : ℕ} (P : TypeDatum k (κ ⊕ Fin (s + 1)))
     (μ : ℕ → kˣ →* ℂˣ) (hμ : ∀ j, IsTame (μ j)) (A : RepFam k s (XIx κ t))
@@ -369,7 +365,7 @@ variable {κ t : Type*} [Fintype κ] [DecidableEq κ] [Fintype t] [DecidableEq t
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Introduce `w` and use `⟨F.bas.val * w.submatrix F.ord.symm F'.ord.symm * (F'.bas⁻¹).val, by simp only [LatFrame.coords, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one] rw [← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]; simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem coords_surjective {ι ι' Y Y' : Type*} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
     (F : LatFrame k ι Y) (F' : LatFrame k ι' Y') : Function.Surjective (F.coords F') := fun w =>
@@ -378,9 +374,9 @@ theorem coords_surjective {ι ι' Y Y' : Type*} [Fintype Y] [DecidableEq Y] [Fin
     rw [← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]; simp⟩
 
 /- English proof (translation)
-Establish `H` using `typeChain_adapted hϖ P μ hμ A hA`. Take `⟨x, hx⟩` from `coords_surjective (typeFrame ϖ (stdOrd κ t (l := s + 1) (s + 1) 0 rfl)) (typeFrame ϖ (stdOrd κ t (l := s + 1) s (0 + 1) rfl)) ((fromRows (1 : Matrix _ _ k) (0 : Matrix t _ k)).submatrix (ixSucc _ t s).symm id)`. Establish `hne : (typeChain t ϖ P μ hμ).Psi 1 x.toBlocks₁₁ (fun r => x (.inl r) (.inr 0)) ≠ 0`. Rewrite using `[Chain.Psi, om_one, withCol_blocks]`. Express the relevant statement in the definitionally equal form `P.iterPhi t μ hμ s (LatFrame.coords _ _ x) ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hx, TypeDatum.iterPhi, TypeDatum.Phi_ne_zero_iff]`. Simplify using `only [submatrix_submatrix, Equiv.symm_comp_self, Function.comp_id, submatrix_id_id]`. Conclude with `⟨⟨1, one_mem _, by simp⟩, by simpa using maxM_zero⟩`. Conclude with `⟨_, ⟨_, (H 1 h1 _ _).1 hne, rfl, 1, h1, _, hne⟩, fun h0 => hne ((Chain.xiPen_mk H h1 _ _).symm.trans (congrFun h0 _))⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem typeChain_coupIdx {ϖ : kˣ} (hϖ : valuation k (ϖ : k) < 1) {s : ℕ} (P : TypeDatum k (κ ⊕ Fin (s + 1)))
     (μ : ℕ → kˣ →* ℂˣ) (hμ : ∀ j, IsTame (μ j)) (A : RepFam k s (XIx κ t))
@@ -401,13 +397,13 @@ theorem typeChain_coupIdx {ϖ : kˣ} (hϖ : valuation k (ϖ : k) < 1) {s : ℕ} 
     fun h0 => hne ((Chain.xiPen_mk H h1 _ _).symm.trans (congrFun h0 _))⟩
 
 /- English proof (translation)
-Use `⟨⟨fun _ _ => rfl, fun j c h => by omega⟩, ?_, ?_, ?_, fun _ _ _ _ hg _ => hg⟩` and prove the remaining obligations. Introduce and unpack `j c h _ rfl`. Conclude with `one_mem _`. Introduce and unpack `j c h _ rfl y`. Express the relevant statement in the definitionally equal form `_ ∈ latOf (1 * 1) ↔ _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `[mem_latOf_one]`. Introduce and unpack `j c h _ rfl`. Use `⟨0, 0, by simp, by simp, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `latOf (1 * 1) = _`. Use `congr 1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[normalBasis_val, mul_one, Units.val_one, ← fromBlocks_one]`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem twistChain_reps_zero [MeasurableSpace k] (ψ : AddChar k Circle) (ν : Measure k) (ϖ : kˣ)
     (δ : kˣ →* ℂˣ) (hδ : IsTame δ) (ν' : ℕ → kˣ →* ℂˣ) :

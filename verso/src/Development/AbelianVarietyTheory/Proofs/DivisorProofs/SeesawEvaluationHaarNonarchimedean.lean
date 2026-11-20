@@ -24,9 +24,9 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ConeSmallRatInv
 
 /- English proof (translation)
-Establish `hTB : ThetaBasic` using `GlobalTheory.T.theta_basic_properties hKP.base`. Establish `hV' : IsPair B G₁.M' X.α (X.α / X.β) om₁' G₁.q (b - G₁.q) (a + b - (G₁.p + G₁.q)) (G₁.p + G₁.q)` using `{ base := hT₁.base, herm := hT₁.geo.hV', skew := hT₁.geo.hW, good := hT₁.geo.hM', hX := hT₁.chars.heckeα, hW := GlobalTheory.ThKRatInv.isHecke_div hT₁.chars.heckeα hT₁.chars.heckeβ, resX := hT₁.chars.resα, resW := by rw [add_comm a b]; exact GlobalTheory.ThKRatInv.resEtaPow_div h …`. Establish `hinv` using `((hTB F E σ B _ _ _ _ G₁.M' _ _ om₁' _ _ _ _ hV').1 Ψ hΨ).2.1`. Unfold `Model.I`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `g`. Simplify using `using hinv 1 (one_mem _) γ hγ g h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem I_rat_schA (hKP : GlobalTheory.ThK.KP) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {B : Base F E} {a b : ℕ} {G₁ : Geo σ a b} {X : Chars F E} {om₁ : Rep σ G₁.V G₁.W}
@@ -49,9 +49,9 @@ end GlobalTheory.ConeSmallRatInv
 namespace GlobalTheory.ConeSmallRatInv
 
 /- English proof (translation)
-Proceed by induction on `hu using Subgroup.closure_induction with`. Consider the case `mem g hg => exact hg.1`. Consider the case `one => exact Matrix.one_mulVec _`. Consider the case `mul g g' _ _ h1 h2 => rw [show mat (g * g') = mat g * mat g' from rfl, ← Matrix.mulVec_mulVec, h2, h1]`. Consider the case `inv g _ h1 => conv_lhs => rw [← h1]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Matrix.mulVec_mulVec, show mat g⁻¹ * mat g = 1 from Units.inv_mul g.1, Matrix.one_mulVec]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem unip_fix {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {d d₁ : ℕ} {W : Spc F E d} {H' : Plane E d d₁} {u : UA σ W.J} (hu : u ∈ unip σ W H') :
@@ -65,21 +65,21 @@ private theorem unip_fix {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
     rw [Matrix.mulVec_mulVec, show mat g⁻¹ * mat g = 1 from Units.inv_mul g.1, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hΦs : Φ' ∈ schA F _` using `GlobalTheory.ThKContSmall.so_le_schA hT.geo.hM' B.τ₁ (Submodule.mem_inf.1 hΦ').2`. Establish `hW` using `IsUWeilPair.isUSplitting hT.weil'`. Establish `hlaw : ∀ Ψ ∈ schA F (Fin (b + 2) × Fin (a + (b + 2))), e' (om' (1, u * m₀) Ψ) = om₁' (1, h₁) (e' Ψ)`. Introduce `Ψ hΨ`. Establish `k` using `GlobalTheory.ThK.evLaw_isoB hKP.base F E σ B a b G G₁ H H' hC e' he X om om' om₁ om₁' hT hT₁ 1 h₁ m₀ hL u hu Ψ hΨ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [mul_one, map_one, Circle.coe_one, NNReal.coe_one, Real.one_rpow, Complex.ofReal_one, one_smul] at k`. Conclude with `k`. Establish `hx : mat (u * m₀) *ᵥ incV F H'.x = incV F H'.x`. Rewrite using `[show mat (u * m₀) = mat u * mat m₀ from rfl, ← Matrix.mulVec_mulVec, hL.1, Units.val_one, one_smul, unip_fix hu]`. Generalize the expression as in `u * m₀ = m at hlaw hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheory.ConeSmall.coneI`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun l => ?_)` and prove the remaining obligations. Simplify using `only`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hΨ : om' (k.1, h) Φ' ∈ schA F _` using `hW.pres _ _ hΦs`. Establish `e1 : om' (k.1, m * h) Φ' = om' (1, m) (om' (k.1, h) Φ')`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Establish `hact : actAB (cA σ) ((1, m) : UA σ G.V'.J × UA σ G.W.J) (shiftB σ H H' l) = shiftB σ H H' l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `only [actAB, shiftB, OneMemClass.coe_one, Units.val_one, Matrix.one_mul, Matrix.smul_mul, Matrix.smul_apply]`. Use `congr 1`. Use `conv_rhs => rw [← hx]`. Simplify using `[mat, Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.mul_sum, mul_comm, mul_left_comm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Establish `e2 : G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (1, m) (om' (k.1, h) Φ')) = om' (1, m) (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ'))`. Rewrite using `[hW.impl (1, m) (shiftB σ H H' l) _ hΨ, hact]`. Establish `hρ` using `GlobalTheory.HeisSchA.rho_mem_schA G.M' B.ψ hT.base.std (shiftB σ H H' l) _ hΨ`. Rewrite using `[e1, e2, hlaw _ hρ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `habs : ∀ Y, G₁.M'.I om₁' (om₁' (1, h₁) Y) 1 = G₁.M'.I om₁' Y h₁`. Introduce `Y`. Simplify using `only [Model.I, theta]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[habs, show h₁ = h₁ * 1 by rw [mul_one], I_rat_schA hKP hT₁ _ (he.maps _ hρ) h₁ hh₁ 1]`.
+A detailed English derivation is pending.
 -/
 private theorem coneI_levi_rat (hKP : GlobalTheory.ThK.KP) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {B : Base F E} {a b : ℕ} {G : Geo σ a (b + 2)} {G₁ : Geo σ a b}
@@ -131,7 +131,7 @@ private theorem coneI_levi_rat (hKP : GlobalTheory.ThK.KP) {F E : Type} [Field F
   rw [habs, show h₁ = h₁ * 1 by rw [mul_one], I_rat_schA hKP hT₁ _ (he.maps _ hρ) h₁ hh₁ 1]
 
 /- English proof (translation)
-Rewrite using `[hχ.2 c, GlobalTheory.Doubling.absE_inclR]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem rat_scalar {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {χ : Chr F E}
     (hχ : IsHecke F E χ) (c : Eˣ) (z : ℂ) :
@@ -145,13 +145,13 @@ end GlobalTheory.ConeSmallRatInv
 namespace GlobalTheory.ConeSmallRatInv
 
 /- English proof (translation)
-Establish `hmi : mat m⁻¹ * mat m = 1` using `Units.inv_mul m.1`. Establish `hhi : mat h₁ * mat h₁⁻¹ = 1` using `Units.mul_inv h₁.1`. Establish `hmul : mat (p * m⁻¹) = mat p * mat m⁻¹` using `rfl`. Establish `hx : mat m⁻¹ *ᵥ incV F H'.x = (t⁻¹).1 • incV F H'.x`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Use `_ = (t⁻¹).1 • incV F H'.x := by`. Rewrite using `[← hl.1, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hmi, Matrix.one_mulVec]`. Establish `hι : mat m⁻¹ * incM F H'.ι = incM F H'.ι * mat h₁⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc (incM F H'.ι), ← hl.2.2]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = incM F H'.ι * mat h₁⁻¹ := by rw [hmi, Matrix.one_mul]`. Use `Subgroup.subset_closure ⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, ← Matrix.mulVec_mulVec, hx, Matrix.mulVec_smul, hpx, smul_smul, Units.inv_mul, one_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `hpι (mat h₁⁻¹ *ᵥ z)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec z (mat m⁻¹) (incM F H'.ι), hι, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_mulVec z (mat h₁), hhi, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_inv_mem_unip {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁}
@@ -180,7 +180,7 @@ private theorem mul_inv_mem_unip {F E : Type} [Field F] [NumberField F] [Field E
       Matrix.mulVec_mulVec z (mat h₁), hhi, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hs : σ.comp σ = AlgHom.id F E` using `AlgHom.ext hσ`. Establish `h : (cA σ).comp (cA σ) = AlgHom.id (AF F) (AE F E)`. Simplify using `only [cA, ← Algebra.TensorProduct.map_comp, AlgHom.comp_id, hs, Algebra.TensorProduct.map_id]`. Conclude with `DFunLike.congr_fun h a`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma cA_cA {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (a : AE F E) : cA σ (cA σ a) = a := by
@@ -190,7 +190,7 @@ private lemma cA_cA {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   exact DFunLike.congr_fun h a
 
 /- English proof (translation)
-Use `haveI : Nontrivial (AF F) := (AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 private theorem nontrivial_AE {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     Nontrivial (AE F E) := by
@@ -200,51 +200,43 @@ private theorem nontrivial_AE {F E : Type} [Field F] [NumberField F] [Field E] [
 open GlobalTheory.PlaneLeviExt in
 
 /- English proof (translation)
-Establish `hσ : ∀ z, σ (σ z) = z` using `GlobalTheory.PlaneLevi.invol_of_good hB`. Establish `hu` using `isUnit_sq σ hσ B hW hW₁ hA`. Use `set S := incM F (frame H') with hSdef`. Use `set T := incM F (coframe hA.rank H') with hTdef`. Establish `hST : S * T = 1` using `S_T hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTS : T * S = 1` using `T_S hu`. Use `set P := mat p with hPdef`. Use `set q := T * P * S with hqdef`. Use `set G := incM F (Matrix.fromBlocks W₁.J 0 0 hyp) with hGdef`. Establish `hmap : ∀ {a b c : Type} [Fintype b] (X : Matrix a b (AE F E)) (Y : Matrix b c (AE F E)), (X * Y).map (cA σ) = X.map (cA σ) * Y.map (cA σ)` using `fun X Y => Matrix.map_mul (f := (cA σ).toRingHom)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : Pᵀ * incM F W.J * P.map (cA σ) = incM F W.J` using `p.2`. Use `clear_value S T P q G`. Establish `hG : Sᵀ * incM F W.J * S.map (cA σ) = G`. Rewrite using `[hSdef, hGdef, ← gram_frame σ hσ B hW hA, incM_mul, incM_mul, incM_transpose, cA_incM]`. Establish `hSq : S * q = P * S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hqdef, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hST, Matrix.one_mul]`. Establish `hq : qᵀ * G * q.map (cA σ) = G`. Rewrite using `[← hG]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul, hmap]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Sᵀ * (Pᵀ * incM F W.J * P.map (cA σ)) * S.map (cA σ) := by`. Rewrite using `[hSq, Matrix.transpose_mul, hmap]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hP]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hSe : S *ᵥ Pi.single (Sum.inr 0) 1 = incV F H'.x`. Rewrite using `[Matrix.mulVec_single_one]`. Use extensionality with `i`. Simplify using `[hSdef, incM, frame, twoCols, incV]`. Establish `hqe : q *ᵥ Pi.single (Sum.inr 0) 1 = t.1 • Pi.single (Sum.inr 0) 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hqdef, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hSe, ht, Matrix.mulVec_smul, ← hSe, Matrix.mulVec_mulVec, hTS, Matrix.one_mulVec]`. Establish `hcol : ∀ k, q k (Sum.inr 0) = if k = Sum.inr 0 then t.1 else 0`. Introduce `k`. Use `congrFun hqe k` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[Pi.single_apply]`. Establish `hC1 : ∀ j, q (Sum.inr 1) (Sum.inl j) = 0`. Introduce `j`. Establish `h` using `congrFun (congrFun hq (Sum.inr 0)) (Sum.inl j)`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, hcol, Fintype.sum_sum_type, Fin.sum_univ_two, hGdef, incM, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, hyp] at h`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `at h`. Rewrite using `[← cA_cA σ hσ (q _ _), h, map_zero]`. Use `set A : Matrix (Fin d₁) (Fin d₁) (AE F E) := Matrix.of fun i j => q (Sum.inl i) (Sum.inl j) with hAdef`. Establish `hA1 : Aᵀ * incM F W₁.J * A.map (cA σ) = incM F W₁.J`. Use extensionality with `i j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `congrFun (congrFun hq (Sum.inl i)) (Sum.inl j)`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Fintype.sum_sum_type, Fin.sum_univ_two, hGdef, incM, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, hyp, hC1] at h`. Simplify using `at h`. Rewrite using `[hAdef]`. Simplify `h` using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, incM]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdetJ : IsUnit (incM F W₁.J).det`. Use `RingHom.map_det (inclR (F := F) (AF F)) W₁.J` as an intermediate fact. Rewrite using `[incM]`. Conclude with `(this ▸ (GlobalTheory.LeviAdapted.det_ne_zero hW₁).isUnit.map (inclR (F := F) (AF F)) :)`. Establish `hdetA : IsUnit A.det`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `congrArg Matrix.det hA1`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Establish `h2 : (A.map (cA σ)).det = cA σ A.det` using `(AlgHom.map_det (cA σ) A).symm`. Rewrite `h` using `[h2]`. Establish `h3 : A.det * cA σ A.det = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hdetJ.mul_left_cancel ?_` and prove the remaining obligations. Take the linear combination `h`. Conclude with `isUnit_iff_exists.mpr ⟨_, h3, by rw [mul_comm]; exact h3⟩`. Establish `hAu : IsUnit A` using `(Matrix.isUnit_iff_isUnit_det A).mpr hdetA`. Set `h₁ : UA σ W₁.J` to `⟨hAu.unit, by show (hAu.unit.1)ᵀ * incM F W₁.J * (hAu.unit.1).map (cA σ) = incM F W₁.J; exact hA1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmat : mat h₁ = A` using `IsUnit.unit_spec hAu`. Take `⟨p₀, hp₀⟩` from `hp`. Establish `hP₀ : P = incM F p₀.1`. Rewrite using `[hPdef]`. Conclude with `(congrArg Units.val hp₀).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hq₀ : q = incM F (coframe hA.rank H' * p₀.1 * frame H')`. Rewrite using `[hqdef, incM_mul, incM_mul, hP₀, hSdef, hTdef]`. Use `set q₀ := coframe hA.rank H' * p₀.1 * frame H' with hq₀def`. Use `clear_value q₀`. Use `haveI : Nontrivial (AE F E) := nontrivial_AE`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `htc : t.1 = inclR (F` using `F) (AF F) (q₀ (Sum.inr 0) (Sum.inr 0)) := by`. Use `hcol (Sum.inr 0)` as an intermediate fact. Rewrite `this` using `[if_pos rfl, hq₀]`. Conclude with `this.symm`. Establish `hc0 : q₀ (Sum.inr 0) (Sum.inr 0) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Rewrite `htc` using `[h0, map_zero]`. Conclude with `t.ne_zero htc`. Set `A₀ : Matrix (Fin d₁) (Fin d₁) E` to `Matrix.of fun i j => q₀ (Sum.inl i) (Sum.inl j)`. Establish `hA₀ : A = incM F A₀`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hAdef, hq₀]`. Both sides reduce to the same expression. Establish `hdet₀ : A₀.det ≠ 0`. Introduce `h0`. Use `RingHom.map_det (inclR (F := F) (AF F)) A₀` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[h0, map_zero]`. Apply `hdetA.ne_zero` to reduce the goal to its premises. Rewrite using `[hA₀]`. Conclude with `this.symm`. Use `⟨⟨Units.mk0 _ hc0, Units.ext htc⟩, h₁, ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero A₀ hdet₀, ?_⟩, fun z => ?_⟩` and prove the remaining obligations.
-
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `hA₀.symm.trans hmat.symm`. Use `set w : Fin d₁ ⊕ Fin 2 → AE F E := Sum.elim z 0 with hwdef`. Establish `hιS : incM F H'.ι *ᵥ z = S *ᵥ w`. Rewrite using `[hSdef, incM_frame, Matrix.fromCols_mulVec, hwdef, Sum.elim_comp_inl, Sum.elim_comp_inr]`.
-
-Simplify using the standard rewrite rules. Use `set w' := q *ᵥ w with hw'def`. Establish `hw1 : w' (Sum.inr 1) = 0`. Simplify using `[hw'def, hwdef, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, hC1]`. Establish `hwl : w' ∘ Sum.inl = A *ᵥ z`.
-
-Use extensionality with `i`. Simplify using `[hw'def, hwdef, hAdef, Matrix.mulVec, dotProduct, Fintype.sum_sum_type]`. Establish `hwr : incM F (twoCols H') *ᵥ (w' ∘ Sum.inr) = w' (Sum.inr 0) • incV F H'.x`. Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two, Function.comp_apply, hw1, mul_zero, add_zero]`.
-
-Simplify using `[incM, twoCols, incV, mul_comm]`. Use `⟨w' (Sum.inr 0), ?_⟩` and prove the remaining obligations. Rewrite using `[hmat, hιS, Matrix.mulVec_mulVec, ← hSq, ← Matrix.mulVec_mulVec, ← hw'def, hSdef, incM_frame, Matrix.fromCols_mulVec, hwl, hwr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem levi_data {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁} {i₀ i₁ r s r₁ s₁ : ℕ}
@@ -375,17 +367,17 @@ end GlobalTheory.ConeSmallRatInv
 
 open GlobalTheory.ConeSmallRatInv in
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' z p hp hst h`. Take `⟨t, ht⟩` from `hst`. Take `⟨⟨c, rfl⟩, h₁, hh₁, hpι⟩` from `levi_data hT.base hT.geo.hW hT₁.geo.hW hC.hH' p hp t ht`. Establish `hσ` using `GlobalTheory.PlaneLevi.invol_of_good hT.base`. Take `⟨mt, hmt, -⟩` from `GlobalTheory.CtLeviLevel.exists_levi_mat σ B hσ G.W hT.geo.hW G₁.W H' hC.hH' (Units.map (inclR (F := F) (AF F)).toMonoidHom c)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m₁, hm₁⟩` from `GlobalTheory.LeviUnitary.exists_isLevi hT.base hT.geo.hW hT₁.geo.hW hC.hH' h₁`. Establish `hm : IsLevi H' (Units.map (inclR (F` using `F) (AF F)).toMonoidHom c) h₁ (mt * m₁) := by`. Establish `hmul : ∀ g g' : UA σ G.W.J, mat (g * g') = mat g * mat g'` using `fun _ _ => rfl`. Establish `h1 : mat (1 : UA σ G₁.W.J) = 1` using `rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmul, ← Matrix.mulVec_mulVec, hm₁.1, Units.val_one, one_smul, hmt.1]`. Rewrite using `[hmul, ← Matrix.mulVec_mulVec, hm₁.2.1, inv_one, Units.val_one, map_one, one_smul, hmt.2.1]`. Rewrite using `[hmul, Matrix.mul_assoc, hm₁.2.2, ← Matrix.mul_assoc, hmt.2.2, h1, Matrix.mul_one]`. Establish `hu` using `mul_inv_mem_unip hm ht hpι`. Establish `hL1 : IsLevi (W₁` using `G₁.W) H' 1 (1 : UA σ G₁.W.J) (1 : UA σ G.W.J) := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : mat (1 : UA σ G₁.W.J) = 1` using `rfl`. Establish `h2 : mat (1 : UA σ G.W.J) = 1` using `rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, Matrix.one_mulVec, Units.val_one, one_smul]`. Rewrite using `[h2, Matrix.one_mulVec, inv_one, Units.val_one, map_one, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, Matrix.one_mul, Matrix.mul_one]`. Establish `hlaw` using `GlobalTheory.T.eisenstein_haar_stabilizer_integral hKP F E σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' z`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use `group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `_ = GlobalTheory.ConeSmall.coneI B G G₁ H H' e' K μK μ X.ν om' om₁' Φ' z (mt * (1 * m₁ * h)) := coneI_levi_rat hKP hC he K μK μ hT hT₁ Φ' hΦ' z 1 (one_mem _) 1 hL1 _ hu _`. Use `_ = GlobalTheory.ConeSmall.coneI B G G₁ H H' e' K μK μ X.ν om' om₁' Φ' z (1 * m₁ * h) := by`. Rewrite using `[hlaw _ mt hmt, rat_scalar hT.chars.heckeβ c, one_mul]`. Use `_ = GlobalTheory.ConeSmall.coneI B G G₁ H H' e' K μK μ X.ν om' om₁' Φ' z h := coneI_levi_rat hKP hC he K μK μ hT hT₁ Φ' hΦ' z h₁ hh₁ m₁ hm₁ 1 (one_mem _) h`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.seesaw_evaluation_haar_nonarchimedean : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

@@ -13,7 +13,7 @@ variable {A : Type*} [CommRing A] {τ : Type*} [SetLike τ A] [AddSubgroupClass 
   (𝒜 : ℕ → τ) [GradedRing 𝒜]
 
 /- English proof (translation)
-Establish `hpp : p.IsPrime` using `hp.1.1`. Rewrite using `[Ideal.IsHomogeneous.iff_eq]`. Use `le_antisymm (Ideal.toIdeal_homogeneousCore_le _ _) ?_` and prove the remaining obligations. Use `hp.2 ⟨hpp.homogeneousCore, ?_⟩ (Ideal.toIdeal_homogeneousCore_le _ _)` and prove the remaining obligations. Conclude with `hJ.toIdeal_homogeneousCore_eq_self.symm.trans_le (Ideal.homogeneousCore_mono _ hp.1.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_of_mem_minimalPrimes {J p : Ideal A} (hJ : J.IsHomogeneous 𝒜)
     (hp : p ∈ J.minimalPrimes) : p.IsHomogeneous 𝒜 := by
@@ -24,7 +24,7 @@ theorem isHomogeneous_of_mem_minimalPrimes {J p : Ideal A} (hJ : J.IsHomogeneous
   exact hJ.toIdeal_homogeneousCore_eq_self.symm.trans_le (Ideal.homogeneousCore_mono _ hp.1.2)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use `h fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← DirectSum.sum_support_decompose 𝒜 x]`. Conclude with `p.sum_mem fun i _ => hcon i _ (SetLike.coe_mem _) (hJ i hx)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_homogeneous_notMem_of_not_le {J p : Ideal A} (hJ : J.IsHomogeneous 𝒜)
     (h : ¬ J ≤ p) : ∃ n, ∃ x ∈ 𝒜 n, x ∈ J ∧ x ∉ p := by
@@ -36,19 +36,17 @@ theorem exists_homogeneous_notMem_of_not_le {J p : Ideal A} (hJ : J.IsHomogeneou
   exact p.sum_mem fun i _ => hcon i _ (SetLike.coe_mem _) (hJ i hx)
 
 /- English proof (translation)
-Establish `key : ∀ p : s, ∃ n, 0 < n ∧ ∃ g ∈ 𝒜 n, g ∉ p.1 ∧ ∀ q ∈ s, q ≠ p.1 → g ∈ q`. Introduce and unpack `⟨p, hp⟩`. Take `⟨n, hn, x, hx, hxp⟩` from `hpos p hp`. Establish `hH : ((s.erase p).inf id).IsHomogeneous 𝒜`. Rewrite using `[Finset.inf_eq_iInf]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.IsHomogeneous.iInf₂ fun q hq => hhom q (Finset.mem_of_mem_erase hq)`. Establish `hnle : ¬ (s.erase p).inf id ≤ p`. Rewrite using `[(hprime p hp).inf_le']`. Introduce and unpack `⟨q, hq, hqp⟩`. Conclude with `(Finset.ne_of_mem_erase hq) (hinc p hp q (Finset.mem_of_mem_erase hq) hqp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, y, hy, hyJ, hyp⟩` from `exists_homogeneous_notMem_of_not_le 𝒜 hH hnle`. Use `⟨n + m, by omega, x * y, SetLike.mul_mem_graded hx hy, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Conclude with `((hprime p hp).mem_or_mem h).elim hxp hyp`. Introduce `q hq hqp`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `q.mul_mem_left _ ((Finset.inf_le (f := id) (Finset.mem_erase.mpr ⟨hqp, hq⟩) : _ ≤ q) hyJ)`. Use `choose n hn g hg hgp hgq using key`. Establish `hD : 0 < ∏ p, n p` using `Finset.prod_pos fun p _ => hn p`. Establish `hdvd : ∀ p, n p ∣ ∏ p, n p` using `fun p => Finset.dvd_prod_of_mem _ (Finset.mem_univ p)`. Establish `hq0 : ∀ p, (∏ p, n p) / n p ≠ 0` using `fun p => (Nat.div_pos (Nat.le_of_dvd hD (hdvd p)) (hn p)).ne'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨∏ p, n p, hD, ∑ p, g p ^ ((∏ p, n p) / n p), ?_, ?_⟩` and prove the remaining obligations. Use `sum_mem fun p _ => ?_` and prove the remaining obligations. Use `SetLike.pow_mem_graded ((∏ p, n p) / n p) (hg p)` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, Nat.div_mul_cancel (hdvd p)]`. Then use the resulting hypothesis. Introduce `p hp hmem`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hmem` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ (⟨p, hp⟩ : s))]`. Establish `h2 : ∑ q ∈ Finset.univ.erase (⟨p, hp⟩ : s), g q ^ ((∏ p, n p) / n q) ∈ p`. Use `p.sum_mem fun q hq => Ideal.pow_mem_of_mem _ ?_ _ (Nat.pos_of_ne_zero (hq0 q))` and prove the remaining obligations. Use `hgq q p hp fun h => Finset.ne_of_mem_erase hq (Subtype.ext h.symm)` and prove the remaining obligations. Establish `h3` using `(Submodule.add_mem_iff_left p h2).mp hmem`.
-
-Conclude with `hgp ⟨p, hp⟩ ((hprime p hp).mem_of_pow_mem _ h3)`.
+A detailed English derivation is pending.
 -/
 theorem exists_homogeneous_forall_notMem (s : Finset (Ideal A))
     (hprime : ∀ p ∈ s, p.IsPrime) (hhom : ∀ p ∈ s, p.IsHomogeneous 𝒜)
@@ -93,11 +91,9 @@ theorem exists_homogeneous_forall_notMem (s : Finset (Ideal A))
 end Graded
 
 /- English proof (translation)
-Use `le_trans ?_ (ringKrullDim_le_of_surjective (Ideal.Quotient.factor J.le_radical) (Ideal.Quotient.factor_surjective _))` and prove the remaining obligations. Use `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor le_sup_left) (Ideal.Quotient.factor_surjective _) (r := Ideal.Quotient.mk _ f) ?_ ?_` and prove the remaining obligations. Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `x hx`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem, ← Ideal.sInf_minimalPrimes, Ideal.mem_sInf]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, ← Ideal.sInf_minimalPrimes, Ideal.mem_sInf]`. Introduce `p hp`. Conclude with `(hp.1.1.mem_or_mem (hx hp)).resolve_right (hf p hp)`. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`.
-
-Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self f)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_radical_sup_succ_le {A : Type*} [CommRing A] (J : Ideal A) {f : A}
     (hf : ∀ p ∈ J.minimalPrimes, f ∉ p) :
@@ -122,7 +118,7 @@ section Poly
 variable {σ : Type*}
 
 /- English proof (translation)
-Rewrite using `[mem_pow_idealOfVars_iff']`. Introduce `x hx`. Conclude with `hp.coeff_eq_zero (by omega)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_idealOfVars_pow_of_isHomogeneous {R : Type*} [CommRing R] {p : MvPolynomial σ R}
     {d n : ℕ} (hp : p.IsHomogeneous d) (h : n ≤ d) : p ∈ idealOfVars σ R ^ n := by
@@ -131,11 +127,11 @@ theorem mem_idealOfVars_pow_of_isHomogeneous {R : Type*} [CommRing R] {p : MvPol
   exact hp.coeff_eq_zero (by omega)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[← pow_one (idealOfVars σ k), mem_pow_idealOfVars_iff']`. Introduce `m hm`. Establish `hm0 : m = 0`. Rewrite using `[← Finsupp.degree_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Substitute `hm0` using the available equality. Assume the negation of the conclusion as `hne`. Establish `h0` using `homogeneousComponent_mem_of_mem hJ hx 0`. Rewrite `h0` using `[homogeneousComponent_zero]`.
+Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hJ' (J.eq_top_of_isUnit_mem h0 ((Ne.isUnit hne).map C))`.
+A detailed English derivation is pending.
 -/
 theorem le_idealOfVars_of_isHomogeneous {k : Type*} [Field k] {J : Ideal (MvPolynomial σ k)}
     (hJ : J.IsHomogeneous (homogeneousSubmodule σ k)) (hJ' : J ≠ ⊤) : J ≤ idealOfVars σ k := by
@@ -151,7 +147,7 @@ theorem le_idealOfVars_of_isHomogeneous {k : Type*} [Field k] {J : Ideal (MvPoly
   exact hJ' (J.eq_top_of_isUnit_mem h0 ((Ne.isUnit hne).map C))
 
 /- English proof (translation)
-Introduce `h` and use `by have := (mem_pow_idealOfVars_iff' 1 (1 : MvPolynomial σ k)).mp (by simp [h]) 0 (by simp) simp at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem idealOfVars_ne_top {k : Type*} [Field k] : idealOfVars σ k ≠ ⊤ := fun h => by
   have := (mem_pow_idealOfVars_iff' 1 (1 : MvPolynomial σ k)).mp (by simp [h]) 0 (by simp)
@@ -160,13 +156,11 @@ theorem idealOfVars_ne_top {k : Type*} [Field k] : idealOfVars σ k ≠ ⊤ := f
 variable [Finite σ] {k : Type*} [Field k]
 
 /- English proof (translation)
-Establish `hfin` using `J.finite_minimalPrimes_of_isNoetherianRing`. Establish `hhom : ∀ p ∈ J.minimalPrimes, p.IsHomogeneous (homogeneousSubmodule σ k)` using `fun p hp => isHomogeneous_of_mem_minimalPrimes _ hJ hp`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq, hqm⟩ : ∃ q ∈ J.minimalPrimes, ¬ idealOfVars σ k ≤ q := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `h (by rw [← Ideal.sInf_minimalPrimes]; exact le_sInf hcon)`. Establish `hnle : ∀ p ∈ J.minimalPrimes, ¬ idealOfVars σ k ≤ p`. Introduce `p hp hle`. Establish `hqp : q ≤ p` using `(le_idealOfVars_of_isHomogeneous (hhom q hq) hq.1.1.ne_top).trans hle`. Conclude with `hqm (hle.trans (hp.2 hq.1 hqp))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨n, hn, f, hf, hfp⟩` from `exists_homogeneous_forall_notMem (homogeneousSubmodule σ k) hfin.toFinset (fun p hp => (hfin.mem_toFinset.mp hp).1.1) (fun p hp => hhom p (hfin.mem_toFinset.mp hp)) (fun p hp q hq hqp => le_antisymm hqp ((hfin.mem_toFinset.mp hp).2 (hfin.mem_toFinset.mp hq).1 hqp)) (fun p hp => b …`. Establish `h1` using `hnle p (hfin.mem_toFinset.mp hp)`. Rewrite `h1` using `[Ideal.span_le, Set.range_subset_iff]`. Use `push Not at h1`. Take `⟨i, hi⟩` from `h1`.
-
-Conclude with `⟨1, one_pos, X i, isHomogeneous_X k i, hi⟩)`. Conclude with `⟨n, hn, f, hf, fun p hp => hfp p (hfin.mem_toFinset.mpr hp)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_form_forall_notMem_minimalPrimes {J : Ideal (MvPolynomial σ k)}
     (hJ : J.IsHomogeneous (homogeneousSubmodule σ k)) (h : ¬ idealOfVars σ k ≤ J.radical) :
@@ -196,23 +190,23 @@ theorem exists_form_forall_notMem_minimalPrimes {J : Ideal (MvPolynomial σ k)}
   exact ⟨n, hn, f, hf, fun p hp => hfp p (hfin.mem_toFinset.mpr hp)⟩
 
 /- English proof (translation)
-Establish `step : ∀ (J : Ideal (MvPolynomial σ k)), J.IsHomogeneous (homogeneousSubmodule σ k) → J ≠ ⊤ → ¬ idealOfVars σ k ≤ J.radical → ∃ m, 0 < m ∧ ∃ f : MvPolynomial σ k, f.IsHomogeneous m ∧ (J.radical ⊔ Ideal.span {f}).IsHomogeneous (homogeneousSubmodule σ k) ∧ J.radical ⊔ Ideal.span {f …`. Introduce `J hJ hJ' h`. Take `⟨m, hm, f, hf, hfp⟩` from `exists_form_forall_notMem_minimalPrimes hJ h`. Use `⟨m, hm, f, hf, ?_, ?_, ringKrullDim_quotient_radical_sup_succ_le J hfp⟩` and prove the remaining obligations. Use `hJ.radical.sup (Ideal.homogeneous_span _ _ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x rfl`. Conclude with `⟨m, hf⟩`. Use `ne_top_of_le_ne_top idealOfVars_ne_top (sup_le ?_ ?_)` and prove the remaining obligations. Conclude with `le_idealOfVars_of_isHomogeneous hJ.radical (by rwa [Ne, Ideal.radical_eq_top])`. Rewrite using `[Ideal.span_singleton_le_iff_mem, ← pow_one (idealOfVars σ k)]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Conclude with `mem_idealOfVars_pow_of_isHomogeneous hf hm`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `J hJ hJ' hdim`. Distinguish the cases in `h : idealOfVars σ k ≤ J.radical`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. It suffices to derive a contradiction.
 
-Conclude with `⟨1, one_pos, 0, fun i => isHomogeneous_zero _ _ _, h.trans (Ideal.radical_mono le_sup_left)⟩`. It suffices to derive a contradiction. Take `⟨m, hm, f, hf, h1, h2, h3⟩` from `step J hJ hJ' h`. Use `haveI := Ideal.Quotient.nontrivial_iff.mpr h2`. Establish `h4` using `(add_le_add_left (ringKrullDim_nonneg_of_nontrivial (R := MvPolynomial σ k ⧸ (J.radical ⊔ Ideal.span {f}))) 1).trans (h3.trans hdim)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h4` using `[zero_add, Nat.cast_zero]`. Conclude with `absurd h4 (not_le.mpr zero_lt_one)`. Consider the case `succ n ih`. Introduce `J hJ hJ' hdim`. Distinguish the cases in `h : idealOfVars σ k ≤ J.radical`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨1, one_pos, 0, fun i => isHomogeneous_zero _ _ _, h.trans (Ideal.radical_mono le_sup_left)⟩`. Take `⟨m, hm, f, hf, h1, h2, h3⟩` from `step J hJ hJ' h`. Establish `h4 : ringKrullDim (MvPolynomial σ k ⧸ (J.radical ⊔ Ideal.span {f})) ≤ n`. Establish `h5` using `h3.trans hdim`. Rewrite `h5` using `[Nat.cast_add, Nat.cast_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(ENat.WithBot.add_le_add_one_right_iff).mp h5`. Take `⟨e, he, F, hF, hle⟩` from `ih _ h1 h2 h4`. Use `⟨e * m, Nat.mul_pos he hm, Fin.cons (f ^ e) (fun i => F i ^ m), ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hf.pow e` using `[mul_comm]`. Simplify using `using (hF i).pow m`. Use `hle.trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.radical_le_radical_iff]`. Use `sup_le (sup_le (Ideal.radical_mono le_sup_left) ?_) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `⟨e, Ideal.mem_sup_right (Ideal.subset_span ⟨0, rfl⟩)⟩`. Rewrite using `[Ideal.span_le, Set.range_subset_iff]`. Introduce `i`. Conclude with `⟨m, Ideal.mem_sup_right (Ideal.subset_span ⟨i.succ, rfl⟩)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_forms_idealOfVars_le_radical (n : ℕ) :
     ∀ (J : Ideal (MvPolynomial σ k)), J.IsHomogeneous (homogeneousSubmodule σ k) → J ≠ ⊤ →
@@ -281,11 +275,11 @@ section AnyBase
 variable {σ ι R S : Type*} [CommRing R] [Fintype ι] [CommRing S] [Algebra R S]
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp (hN (mem_idealOfVars_pow_of_isHomogeneous hp hNd))`. Take `⟨c, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.mp hb`. Use `⟨fun i => homogeneousComponent (d - e) (c i), fun i => homogeneousComponent_isHomogeneous _ _, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ i, homogeneousComponent d (c i * F i) = F i * homogeneousComponent (d - e) (c i)`. Introduce `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `DirectSum.coe_decompose_mul_of_left_mem_of_le (homogeneousSubmodule σ R) (b := c i) (hF i) hed` as an intermediate fact. Rewrite using `[mul_comm]`. Conclude with `(decomposition.decompose'_apply _ _).symm.trans (this.trans (congrArg _ (decomposition.decompose'_apply _ _)))`. Establish `h2` using `congrArg (homogeneousComponent d) hab`. Rewrite `h2` using `[map_add, map_sum, homogeneousComponent_eq_self hp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h1] at h2`. Rewrite using `[← h2, add_sub_cancel_right]`. Conclude with `homogeneousComponent_mem_of_mem hI ha d`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_forms_sub_sum_mem {I : Ideal (MvPolynomial σ R)}
     (hI : I.IsHomogeneous (homogeneousSubmodule σ R)) {F : ι → MvPolynomial σ R} {e N d : ℕ}
@@ -313,19 +307,17 @@ theorem exists_forms_sub_sum_mem {I : Ideal (MvPolynomial σ R)}
   exact homogeneousComponent_mem_of_mem hI ha d
 
 /- English proof (translation)
-Use `letI : Algebra (MvPolynomial ι R) S := (aeval f : MvPolynomial ι R →ₐ[R] S).toRingHom.toAlgebra`. Use `haveI : IsScalarTower R (MvPolynomial ι R) S := IsScalarTower.of_algebraMap_eq fun r => ((aeval f : MvPolynomial ι R →ₐ[R] S).commutes r).symm`. Take `⟨t, ht⟩ : (restrictTotalDegree σ R d₀).FG` from `Module.Finite.iff_fg.mp inferInstance`. Set `M : Submodule (MvPolynomial ι R) S` to `Submodule.span _ (π '' t)`. Establish `hlow : ∀ p ∈ restrictTotalDegree σ R d₀, π p ∈ M`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Rewrite `hp` using `[← ht]`. Establish `h1 : π p ∈ Submodule.span R (π '' t)`. Use `Submodule.mem_map_of_mem (f := π.toLinearMap) hp` as an intermediate fact. Rewrite `this` using `[Submodule.map_span]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `Submodule.span_le_restrictScalars R (MvPolynomial ι R) _ h1`. Establish `hall : ∀ d, ∀ p : MvPolynomial σ R, p.IsHomogeneous d → π p ∈ M`. Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `p hp`. Distinguish the cases in `hd : d₀ ≤ d`. Take `⟨G, hG, hs⟩` from `h d hd p hp`. Rewrite using `[hs]`. Use `M.sum_mem fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `M.smul_mem (X i) (ih (d - e) (by omega) _ (hG i))`. Establish `h3 : algebraMap (MvPolynomial ι R) S (X i) = f i` using `aeval_X f i`. Rewrite `h2` using `[Algebra.smul_def, h3]`. Then use the resulting hypothesis. Conclude with `hlow p ((mem_restrictTotalDegree _ _ _).mpr (hp.totalDegree_le.trans (by omega)))`. Express the relevant statement in the definitionally equal form `Module.Finite (MvPolynomial ι R) S`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨t.image π, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image, eq_top_iff]`. Introduce `y _`. Take `⟨p, rfl⟩` from `hπ y`. Rewrite using `[← sum_homogeneousComponent p, map_sum]`.
-
-Conclude with `M.sum_mem fun i _ => hall i _ (homogeneousComponent_isHomogeneous _ _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_aeval_of_forms_eq_sum [Finite σ] (π : MvPolynomial σ R →ₐ[R] S)
     (hπ : Function.Surjective π) (f : ι → S) {e d₀ : ℕ} (he : 0 < e) (hed : e ≤ d₀)
@@ -370,11 +362,11 @@ theorem finite_aeval_of_forms_eq_sum [Finite σ] (π : MvPolynomial σ R →ₐ[
 end AnyBase
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Assume the negation of the conclusion as `hne`. Use `letI := φ.toAlgebra`. Use `haveI : Module.Finite (MvPolynomial (Fin δ) k) S := hφ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h1` using `ReciprocityTheory.CA.ringKrullDim_quotient_eq_quotient_comap_of_isIntegral (A := MvPolynomial (Fin δ) k) (⊥ : Ideal S)`. Rewrite `h1` using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot S), hdim]`. Establish `h2` using `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.mk ((⊥ : Ideal S).comap (algebraMap (MvPolynomial (Fin δ) k) S))) Ideal.Quotient.mk_surjective (mem_nonZeroDivisors_of_ne_zero hne) (Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_comap.mpr (Ideal.mem_bot.mpr hr)))`. Rewrite `h2` using `[← h1, MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add, Nat.card_eq_fintype_card, Fintype.card_fin]`. Establish `h3 : δ + 1 ≤ δ` using `by exact_mod_cast h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem injective_of_finite_of_ringKrullDim_eq {k S : Type*} [Field k] [CommRing S] {δ : ℕ}
     (φ : MvPolynomial (Fin δ) k →+* S) (hφ : φ.Finite) (hdim : ringKrullDim S = δ) :
@@ -401,11 +393,11 @@ section Main
 variable {σ : Type*} [Finite σ] {k : Type*} [Field k]
 
 /- English proof (translation)
-Use `haveI := Ideal.Quotient.nontrivial_iff.mpr hI`. Establish `h0` using `ringKrullDim_nonneg_of_nontrivial (R := MvPolynomial σ k ⧸ I)`. Establish `h1` using `ringKrullDim_quotient_le I`. Rewrite `h1` using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add]`. Generalize the expression as in `ringKrullDim (MvPolynomial σ k ⧸ I) = x at h0 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Proceed by induction on `x with`. Consider the case `bot => simp at h0`. Consider the case `coe x`. Proceed by induction on `x with`. Consider the case `top => exact absurd h1 (not_le.mpr (by exact_mod_cast ENat.coe_lt_top _))`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `coe n => exact ⟨n, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_ringKrullDim_quotient_mvPolynomial_eq_nat {I : Ideal (MvPolynomial σ k)}
     (hI : I ≠ ⊤) : ∃ δ : ℕ, ringKrullDim (MvPolynomial σ k ⧸ I) = δ := by
@@ -423,11 +415,11 @@ theorem exists_ringKrullDim_quotient_mvPolynomial_eq_nat {I : Ideal (MvPolynomia
     | coe n => exact ⟨n, rfl⟩
 
 /- English proof (translation)
-Establish `hI' : I ≠ ⊤`. Introduce and unpack `rfl`. Rewrite `hdim` using `[ringKrullDim_eq_bot_of_subsingleton]`. Conclude with `absurd hdim (WithBot.bot_ne_coe (a := (δ : ℕ∞)))`. Take `⟨e, he, F, hF, hle⟩` from `exists_forms_idealOfVars_le_radical δ I hI hI' hdim.le`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hle (idealOfVars_fg σ k)`. Establish `hgen : ∀ d, max N e ≤ d → ∀ p : MvPolynomial σ k, p.IsHomogeneous d → ∃ G : Fin δ → MvPolynomial σ k, (∀ i, (G i).IsHomogeneous (d - e)) ∧ p - ∑ i, F i * G i ∈ I` using `fun d hd p hp => exists_forms_sub_sum_mem hI hF hN (le_of_max_le_left hd) (le_of_max_le_right hd) hp`. Establish `hfin : (aeval (fun i => Ideal.Quotient.mk I (F i)) : MvPolynomial (Fin δ) k →ₐ[k] MvPolynomial σ k ⧸ I).Finite`. Use `finite_aeval_of_forms_eq_sum (Ideal.Quotient.mkₐ k I) (Ideal.Quotient.mkₐ_surjective k I) _ he (le_max_right N e) fun d hd p hp => ?_` and prove the remaining obligations. Take `⟨G, hG, hs⟩` from `hgen d hd p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨G, hG, ?_⟩` and prove the remaining obligations. Use `Ideal.Quotient.eq.mpr hs` as an intermediate fact. Simplify using `using this`. Conclude with `⟨e, max N e, F, he, le_max_right N e, hF, injective_of_finite_of_ringKrullDim_eq _ hfin hdim, hgen, hfin⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_forms_algebraicIndependent_finite {I : Ideal (MvPolynomial σ k)}
     (hI : I.IsHomogeneous (homogeneousSubmodule σ k)) {δ : ℕ}
@@ -462,7 +454,7 @@ theorem exists_forms_algebraicIndependent_finite {I : Ideal (MvPolynomial σ k)}
     injective_of_finite_of_ringKrullDim_eq _ hfin hdim, hgen, hfin⟩
 
 /- English proof (translation)
-Establish `h : (X 0 * X 1 : MvPolynomial (Fin 2) (ZMod 2)).IsHomogeneous (1 + 1)` using `(isHomogeneous_X _ 0).mul (isHomogeneous_X _ 1)`. Use `⟨Ideal.homogeneous_span _ _ (by rintro x rfl; exact ⟨_, h⟩), ne_top_of_le_ne_top idealOfVars_ne_top ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, ← pow_one (idealOfVars _ _)]`. Conclude with `mem_idealOfVars_pow_of_isHomogeneous h (by norm_num)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example : (Ideal.span {(X 0 * X 1 : MvPolynomial (Fin 2) (ZMod 2))}).IsHomogeneous
       (homogeneousSubmodule (Fin 2) (ZMod 2)) ∧

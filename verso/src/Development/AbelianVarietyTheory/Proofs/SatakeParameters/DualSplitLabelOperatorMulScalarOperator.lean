@@ -28,15 +28,15 @@ section Abstract
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Establish `conj : ∀ k ∈ K, z⁻¹ * k * z = k` using `fun k hk => by rw [mul_assoc, hz k hk, inv_mul_cancel_left]`. Establish `conj' : ∀ k ∈ K, z * k * z⁻¹ = k` using `fun k hk => by rw [← hz k hk, mul_inv_cancel_right]`. Use `⟨fun γ hγ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨δ, hδ, rfl⟩` from `Finset.mem_image.1 hγ`. Take `⟨k₁, a₁, k₂, a₂, rfl⟩` from `h1 δ hδ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨k₁, a₁, k₂, a₂, ?_⟩` and prove the remaining obligations. Simplify using `only [mul_assoc, hz k₂ a₂]`. Introduce and unpack `_ ⟨k₁, a₁, k₂, a₂, rfl⟩`. Establish `ex : k₁ * (α * z) * k₂ = k₁ * α * k₂ * z`. Simplify using `only [mul_assoc, hz k₂ a₂]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨γ, ⟨hγ, hw⟩, hu⟩` from `h2 (k₁ * α * k₂) ⟨k₁, a₁, k₂, a₂, rfl⟩`. Use `⟨γ * z, ⟨Finset.mem_image_of_mem _ hγ, ?_⟩, ?_⟩` and prove the remaining obligations. Use `conj _ hw` as an intermediate fact. Rewrite using `[ex]`. Use `hw using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[← this]`. Use `group`. Introduce and unpack `_ ⟨hm, hw'⟩`. Take `⟨δ, hδ, rfl⟩` from `Finset.mem_image.1 hm`. Rewrite using `[hu δ ⟨hδ, ?_⟩]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `conj' _ hw'` as an intermediate fact. Rewrite `this`, `hw'` using `[ex]`. Use `hw' using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← this]`. Use `group`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coset_mul [DecidableEq G] {K : Set G} {z α : G} {R : Finset G} (hz : ∀ k ∈ K, k * z = z * k)
     (h1 : ∀ γ ∈ R, ∃ k₁ ∈ K, ∃ k₂ ∈ K, γ = k₁ * α * k₂)
@@ -70,7 +70,7 @@ theorem coset_mul [DecidableEq G] {K : Set G} {z α : G} {R : Finset G} (hz : �
       group
 
 /- English proof (translation)
-Use `⟨fun γ hγ => ⟨1, one_mem K, 1, one_mem K, by simpa using hγ⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨1, ⟨Finset.mem_singleton_self _, by simpa using mul_mem ha hb⟩, fun γ hγ => Finset.mem_singleton.1 hγ.1⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem coset_one (K : Subgroup G) :
     (∀ γ ∈ ({1} : Finset G), ∃ k₁ ∈ (K : Set G), ∃ k₂ ∈ (K : Set G), γ = k₁ * 1 * k₂) ∧
@@ -81,7 +81,7 @@ theorem coset_one (K : Subgroup G) :
   exact ⟨1, ⟨Finset.mem_singleton_self _, by simpa using mul_mem ha hb⟩, fun γ hγ => Finset.mem_singleton.1 hγ.1⟩
 
 /- English proof (translation)
-Establish `h1 : m = b.1 * ((b⁻¹).1 * m * b.1) * (b⁻¹).1`. Simplify using `only [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Rewrite using `[h1, h, ← (Matrix.scalar_commute _ (fun r => Commute.all _ r) _).eq, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_scalar {B n : Type} [CommRing B] [Fintype n] [DecidableEq n] (b : GL n B) {m : Matrix n n B} {c : B}
     (h : (b⁻¹).1 * m * b.1 = Matrix.scalar n c) : m = Matrix.scalar n c := by
@@ -91,9 +91,9 @@ theorem eq_scalar {B n : Type} [CommRing B] [Fintype n] [DecidableEq n] (b : GL 
   rw [h1, h, ← (Matrix.scalar_commute _ (fun r => Commute.all _ r) _).eq, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h8 : π (m i j) = π (c * (1 : Matrix n n A) i j)`. Use `(congrFun (congrFun h5 i) j).trans ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[hij, Matrix.one_apply]`. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, mul_assoc, ← h3, ← h3, h8]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem scalar_parts {A B n : Type} [CommRing A] [CommRing B] [Fintype n] [DecidableEq n] (π : A →+* B) (t : B → A) (E c : A)
     (h3 : ∀ x, t (π x) = E * x) (m : Matrix n n A) (h5 : m.map π = Matrix.scalar n (π c)) :
@@ -114,11 +114,11 @@ section Divisors
 variable {R : Type} [CommRing R] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨B, b1, b2, b3, b4⟩` from `h`. Establish `core : ∀ y, e • (A * Z).mulVec y = c • e • A.mulVec y` using `fun y => by`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_smul, ← Matrix.smul_mulVec, hz, Matrix.smul_mulVec, Matrix.one_mulVec, Matrix.mulVec_smul, smul_smul, mul_comm]`. Establish `core2 : ∀ w : Fin n → R, e • B.mulVec (fun i => u' i * w i) = c • e • B.mulVec (fun i => u i * w i)` using `fun w => by`. Establish `: (fun i => u' i * w i) = c • fun i => u i * w i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hu, mul_assoc]`. Rewrite using `[this, Matrix.mulVec_smul, smul_comm]`. Use `⟨B, b1, b2, fun y hy => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, e1⟩` from `b3 y hy`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w, hw, by rw [core, core2, e1]⟩`. Take `⟨y, hy, e1⟩` from `b4 w hw`. Conclude with `⟨y, hy, by rw [core, core2, e1]⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dv_scalar {Λ : (Fin n → R) → Prop} {O : R → Prop} {e c : R} {u u' : Fin n → R} {A Z : Matrix (Fin n) (Fin n) R}
     (hz : e • Z = (e * c) • (1 : Matrix (Fin n) (Fin n) R)) (hu : ∀ i, u' i = c * u i)
@@ -143,11 +143,9 @@ end Divisors
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Take `⟨e, f, h⟩` from `GlobalTheory.IdemSupport.exists_isPrimeIdem hΦ P`. Break down `h with ⟨h, -⟩ | ⟨-, ⟨v, ε, -, rfl⟩, ht⟩` into its components or cases. Conclude with `⟨e, h⟩`. Use `absurd (GlobalTheory.IdemSupport.eq_of_le (Ideal.map_le_iff_le_comap.2 fun x hx => ?_)) hP` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `GlobalTheory.IdemSupport.Comparison₂.conj (P := P) ht`. Rewrite `h2` using `[GlobalTheory.IdemSupport.cA_algebraMap]`. Distinguish the cases in `h0 : x = 0`. Rewrite using `[h0]`. Conclude with `zero_mem _`.
-
-Conclude with `(h2 x h0).2 ((ht x h0).1 hx)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idem {P : Pl D.host.E} (hP : conjPl P ≠ P) : ∃ e : AE D, IsIdemAt e P := by
   obtain ⟨Φ, hΦ⟩ := GlobalTheory.IdemSupport.exists_comp D
@@ -162,7 +160,7 @@ theorem exists_idem {P : Pl D.host.E} (hP : conjPl P ≠ P) : ∃ e : AE D, IsId
     · exact (h2 x h0).2 ((ht x h0).1 hx)
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Take `⟨hd, ε, hε, h1⟩` from `GlobalTheory.IdemSupport.of_isPrimeIdem hΦ (f := e + cA D e) (Or.inl ⟨he, rfl⟩)`. Take `⟨hd', ε', hε', h1'⟩` from `GlobalTheory.IdemSupport.of_isPrimeIdem hΦ h`. Rewrite using `[h1, h1', GlobalTheory.IdemSupport.placeIdem_unique hε' hε]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_unique {P : Pl D.host.E} {e e' f' : AE D} (he : IsIdemAt e P) (h : IsPrimeIdem P e' f') :
     f' = e + cA D e := by
@@ -172,7 +170,7 @@ theorem idem_unique {P : Pl D.host.E} {e e' f' : AE D} (he : IsIdemAt e P) (h : 
   rw [h1, h1', GlobalTheory.IdemSupport.placeIdem_unique hε' hε]
 
 /- English proof (translation)
-Use `Set.ext fun k => ⟨?_, fun h => ⟨h.1, e, e + cA D e, Or.inl ⟨he, rfl⟩, h.2⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨h1, e', f', h2, h3⟩`. Rewrite `h3` using `[idem_unique he h2]`. Conclude with `⟨h1, h3⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem hyp_eq_locPart {P : Pl D.host.E} {e : AE D} (he : IsIdemAt e P) (V : HSp D) :
     hyp V P = locPart V (KsphC V ∅) e := by
@@ -182,13 +180,13 @@ theorem hyp_eq_locPart {P : Pl D.host.E} {e : AE D} (he : IsIdemAt e P) (V : HSp
   exact ⟨h1, h3⟩
 
 /- English proof (translation)
-Take `⟨v, π, s, h1, h2, h3, h4, -⟩` from `GlobalTheory.SplitCoord.exists_coord e he`. Take `⟨B, hB⟩` from `GlobalTheory.SplitLatBasis.exists_basis V e v π s he.1 h2 h3 h4 (GlobalTheory.LatDual.lamHat_selfDual_and_module V).2`. Take `⟨hex, hinj⟩` from `comp_bij (V := V) (B := B) he h1 h2`. Establish `hu : ∀ x : D.host.E, x ≠ 0 → π (finPart D (incA D x)) ≠ 0` using `fun x hx h => by`. Use `congrArg π (congrArg (finPart D) (congrArg (incA D) (mul_inv_cancel₀ hx)))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_mul, map_mul, h, zero_mul, map_one, map_one, map_one]`. Conclude with `zero_ne_one this`. Set `t : (Fv D.host.F v)ˣ` to `Units.mk0 _ (hu _ (inv_ne_zero h0))`. Set `a : GL (Fin V.rank) (Fv D.host.F v)` to `Units.map (Matrix.scalar (Fin V.rank)).toMonoidHom t`. Establish `ha : a.1 = Matrix.scalar (Fin V.rank) (π (finPart D (incA D ϖ⁻¹)))` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hs, hz⟩` from `hex a`. Use `⟨z, hs, fun k hk => hinj _ _ (suppAt_mul hk hs) (suppAt_mul hs hk) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hz]`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, ha]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Matrix.scalar_commute _ (fun r => Commute.all _ r) _).eq.symm`. Establish `h6` using `comp_val (V := V) (π := π) (B := B) z`. Rewrite `h6` using `[hz, ha]`. Conclude with `scalar_parts π (fun w => finPart D (s w)) _ _ h3 _ (eq_scalar B h6.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_central {e : AE D} (he : IsSplitIdem D e) (V : HSp D) {ϖ : D.host.E} (h0 : ϖ ≠ 0) :
     ∃ z : GA D V, SuppAt e V z ∧ (∀ k, SuppAt e V k → k * z = z * k) ∧
@@ -214,9 +212,9 @@ theorem exists_central {e : AE D} (he : IsSplitIdem D e) (V : HSp D) {ϖ : D.hos
     exact scalar_parts π (fun w => finPart D (s w)) _ _ h3 _ (eq_scalar B h6.symm)
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[GlobalTheory.DivDual.divAt_iff]`. Take `⟨hd, h⟩` from `h`. Use `⟨by simpa using hd, ?_⟩` and prove the remaining obligations. Rewrite using `[show finMat D.sp.cm.sig V.gram (g * z) = fm V g * fm V z from fm_mul V g z]`. Use `dv_scalar hz (fun i => ?_) h` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi : i.1 < d.length` using `by rw [hd]; exact i.2`. Establish `gd : (d.map (· - 1)).getD i.1 0 = d.getD i.1 0 - 1`. Simplify using `[List.getD_eq_getElem _ _ hi, hi]`. Rewrite using `[gd, zpow_sub_one₀ h0, mul_comm, RingHom.map_mul, RingHom.map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem divAt_mul {e : AE D} {V : HSp D} {ϖ : D.host.E} (h0 : ϖ ≠ 0) {z g : GA D V} {d : List ℤ}
     (hz : finPart D e • fm V z = (finPart D e * finPart D (incA D ϖ⁻¹)) • (1 : Matrix (Fin V.rank) (Fin V.rank) (RF D)))
@@ -232,19 +230,19 @@ theorem divAt_mul {e : AE D} {V : HSp D} {ϖ : D.host.E} (h0 : ϖ ≠ 0) {z g : 
   rw [gd, zpow_sub_one₀ h0, mul_comm, RingHom.map_mul, RingHom.map_mul]
 
 /- English proof (translation)
-Simplify using `[dualLab, splitLab, Nat.sub_sub_self hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem label_shift {n j : ℕ} (hj : j ≤ n) : (dualLab (splitLab n j)).map (· - 1) = splitLab n (n - j) := by
   simp [dualLab, splitLab, Nat.sub_sub_self hj]
 
 /- English proof (translation)
-Simplify using `[splitLab]`.
+Simplify using the standard rewrite rules.
 -/
 theorem label_shift_zero (n : ℕ) : (List.replicate n (0 : ℤ)).map (· - 1) = splitLab n n := by
   simp [splitLab]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨e, e + cA D e, ϖ, α, fun v hv => absurd hv (Finset.notMem_empty v), Or.inl ⟨he, rfl⟩, h1, h2, hd, fun _ _ => Iff.rfl, fun _ _ _ => rfl, hα, hD, hR, hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem sphOp_of {P : Pl D.host.E} {e : AE D} (he : IsIdemAt e P) {ϖ : 𝓞 D.host.E} (h1 : ϖ ∈ P.asIdeal)
     (h2 : ϖ ∉ P.asIdeal ^ 2) {V : HSp D} {d : List ℤ} (hd : d.Pairwise fun a b => b ≤ a) {α : GA D V}
@@ -254,23 +252,21 @@ theorem sphOp_of {P : Pl D.host.E} {e : AE D} (he : IsIdemAt e P) {ϖ : 𝓞 D.h
     fun _ _ => Iff.rfl, fun _ _ _ => rfl, hα, hD, hR, hc⟩
 
 /- English proof (translation)
-Introduce `D V P hP j hj M _ _ π u hu`. Take `⟨e, he⟩` from `exists_idem hP`. Take `⟨-, ϖ, -, h1, h2⟩` from `GlobalTheory.SphLabelOps.exists_real_unif D P`. Establish `h0 : (ϖ : D.host.E) ≠ 0` using `GlobalTheory.SphLabelOps.unif_ne_zero h2`. Take `⟨z, hs, hc, hz⟩` from `exists_central he.1 V h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK⟩` from `GlobalTheory.SphLabelOps.exists_hyp V P`. Establish `hKl : locPart V (KsphC V ∅) e = (K : Set (GA D V))` using `(hyp_eq_locPart he V).symm.trans hK`. Establish `hKz : ∀ k ∈ locPart V (KsphC V ∅) e, k * z = z * k` using `fun k hk => hc k hk.2`. Take `⟨-, hrep, hH⟩` from `GlobalTheory.SplitPlace.split_local V P e he`. Take `⟨α, hα⟩` from `(hH ϖ h1 h2).1 j hj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨R, r1, r2⟩` from `hrep α hα.2.1`. Establish `hDα : DivAt V e (ϖ : D.host.E) (dualLab (splitLab V.rank j)) α`. Use `(GlobalTheory.DivDual.divAt_inv_and_mul V e _ _ _ he.1.1 h0 (GlobalTheory.SplitDivisors.divAt_inv_of_isHeckeElt V P e ϖ j α he h1 h2 hj hα)).1` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `c1` using `(GlobalTheory.SphLabelOps.label_operators V P).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `shift : ∀ {d : List ℤ} {g : GA D V} {R' : Finset (GA D V)}, SuppAt e V g → DivAt V e (ϖ : D.host.E) d g → (∀ γ ∈ R', SuppAt e V γ) → IsCosetRep V (locPart V (KsphC V ∅) e) g R' → (d.map (· - 1)).Pairwise (fun a b => b ≤ a) → SphOp V P (d.map (· - 1)) (R'.image (· * z))`. Introduce `d g R' sg dg sR hr hp`. Take `⟨a, b⟩` from `coset_mul hKz (fun γ hγ => (hr.1 γ hγ).2) hr.2`. Establish `sup : ∀ γ ∈ R'.image (· * z), SuppAt e V γ` using `fun γ hγ => by`. Take `⟨δ, hδ, rfl⟩` from `Finset.mem_image.1 hγ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `suppAt_mul (sR δ hδ) hs`. Conclude with `sphOp_of he h1 h2 hp (suppAt_mul sg hs) (divAt_mul h0 hz dg) sup ⟨fun γ hγ => ⟨mem_GfC he.1 (sup γ hγ), a γ hγ⟩, b⟩`. Establish `one : IsCosetRep V (locPart V (KsphC V ∅) e) 1 {1}`. Use `coset_one K` as an intermediate fact. Rewrite `this` using `[← hKl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun γ hγ => ⟨?_, this.1 γ hγ⟩, this.2⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton.1 hγ]`. Conclude with `one_mem _`. Establish `S0` using `shift (GlobalTheory.SplitHecke.suppAt_one V) (GlobalTheory.SphLabelOps.divAt_one V he.1.1 (GlobalTheory.SphLabelOps.tie_of_isPrimeIdem (Or.inl ⟨he, rfl⟩)) (ϖ : D.host.E)) (fun γ hγ => by rw [Finset.mem_singleton.1 hγ]; exact GlobalTheory.SplitHecke.suppAt_one V) one (by rw [label …`. Rewrite `S0` using `[label_shift_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `S1 : SphOp V P (dualLab (splitLab V.rank j)) R` using `sphOp_of he h1 h2 (by simp [dualLab, splitLab, List.pairwise_append, List.pairwise_replicate]) hα.2.1 hDα r1 r2`. Establish `S2` using `shift hα.2.1 hDα r1 r2 (by rw [label_shift hj]; simp [splitLab, List.pairwise_append, List.pairwise_replicate])`. Rewrite `S2` using `[label_shift hj]`. Establish `fixw : ∀ k ∈ hyp V P, π k (π z u) = π z u` using `fun k hk => by`. Establish `hk' : k ∈ locPart V (KsphC V ∅) e` using `by rw [← hyp_eq_locPart he V]; exact hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg (fun g => π g u) (hKz k hk')` as an intermediate fact. Simplify using `only [map_mul, Module.End.mul_apply, hu k hk] at this`. Conclude with `this`. Establish `inj : Function.Injective (· * z : GA D V → GA D V)` using `mul_left_injective z`. Establish `A` using `(c1 _ _ S0).2 M π u hu`.
-
-Establish `Bq` using `(c1 _ _ S1).2 M π _ fixw`. Establish `C` using `(c1 _ _ S2).2 M π u hu`. Rewrite using `[← A, ← C, Finset.sum_image inj.injOn, Finset.sum_image inj.injOn, Finset.sum_singleton, one_mul, ← Bq]`. Conclude with `Finset.sum_congr rfl fun γ _ => by rw [map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_rel : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E), conjPl P ≠ P → ∀ j, j ≤ V.rank → ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (u : M), (∀ k ∈ hyp V P, π k u = u) → opOf π P (Finsupp.single (dualLab (splitLab V.rank j)) 1) (opOf π P (Finsupp.single (splitLab V.rank V.rank) 1) u) = opOf π P (Finsupp.single (splitLab V.rank (V.rank - j)) 1) u := by
   classical

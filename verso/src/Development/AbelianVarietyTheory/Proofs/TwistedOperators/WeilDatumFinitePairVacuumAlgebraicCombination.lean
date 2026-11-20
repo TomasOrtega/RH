@@ -43,7 +43,7 @@ namespace GlobalTheory.FinWeilAlg
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisO_smul' (w : WO S T) (c : ℂ) (f : WO S T → ℂ) : heisO ψ S T w (c • f) = c • heisO ψ S T w f := by
   funext z
@@ -51,7 +51,7 @@ theorem heisO_smul' (w : WO S T) (c : ℂ) (f : WO S T → ℂ) : heisO ψ S T w
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [heisO, Finset.sum_apply, Finset.mul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heisO_sum' {ι : Type} (s : Finset ι) (w : WO S T) (F : ι → WO S T → ℂ) :
     heisO ψ S T w (∑ i ∈ s, F i) = ∑ i ∈ s, heisO ψ S T w (F i) := by
@@ -59,18 +59,18 @@ theorem heisO_sum' {ι : Type} (s : Finset ι) (w : WO S T) (F : ι → WO S T �
   simp only [heisO, Finset.sum_apply, Finset.mul_sum]
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[← add_mul, ← map_add, show (1 / 2 : D.host.F) + 1 / 2 = 1 by norm_num, map_one, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_add_self (x y : WO S T) : symplOH S T x y + symplOH S T x y = symplO S T x y := by
   unfold symplOH
   rw [← add_mul, ← map_add, show (1 / 2 : D.host.F) + 1 / 2 = 1 by norm_num, map_one, one_mul]
 
 /- English proof (translation)
-Establish `hlaws` using `GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T`. Establish `hneg : heisO ψ S T (-u) v = c • v`. Establish `e` using `GlobalTheory.FinPl.ContrOpProof.heisO_neg_cancel ψ (-u) v`. Rewrite `e` using `[neg_neg, hu, heisO_smul']`. Break down `hc1 with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `using e`. Establish `e2` using `congrArg (fun g => (-1 : ℂ) • g) e`. Simplify using `using e2`. Establish `e1` using `GlobalTheory.VacSchurFin.thetaInner_heisenberg hψ hc (hlaws.1 (-u) v hv) hφ u`. Rewrite `e1` using `[GlobalTheory.FinPl.ContrOpProof.heisO_neg_cancel]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[GlobalTheory.RawLift.thetaInner_smul_right, e1, hneg, GlobalTheory.RawLift.thetaInner_smul_left]`. Apply the tactic sequence `rcases hc1 with rfl | rfl <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem thetaInner_sign_smul_heisenberg (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hc : IsCovolOne (ratL T S) μ 𝓕) {v φ : WO S T → ℂ} (hv : IsThetaFunO ψ S T v) (hφ : IsThetaFunO ψ S T φ)
@@ -90,7 +90,7 @@ theorem thetaInner_sign_smul_heisenberg (hψ : IsStdChar D ψ (-1)) {μ : Measur
   rcases hc1 with rfl | rfl <;> simp
 
 /- English proof (translation)
-Take `⟨U, hU, hfix⟩` from `hφ.level`. Take `⟨N, hN, hNU⟩` from `(GlobalTheory.LatLevel.level_of_generators D S T ΛS ΛT hS hT (GlobalTheory.LatFinGen.latO_finitely_generated D S T ΛS ΛT hS hT)).1 U hU`. Conclude with `⟨N, hN, fun u hu => hfix _ (hNU u hu) (GlobalTheory.VacUnique.latO_inf S T _ _ _ (AddSubgroup.nsmul_mem _ hu N))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_level {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT)
@@ -106,47 +106,43 @@ theorem exists_level {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hψ : IsStdChar D ψ (-1)` using `hv.1`. Establish `hlaws` using `GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T`. Establish `hvth` using `hv.2.theta`. Establish `hlat` using `hv.2.lat`. Establish `hv0 : ∀ a b : ℂ, a • v = b • v → a = b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b h`. Take `⟨w, hw⟩` from `GlobalTheory.SmoothVac.exists_ne_zero_of_isVacO hv`. Use `congrFun h w` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Conclude with `mul_right_cancel₀ hw this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨hdual, -, hsign⟩` from `GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS ΛT hψ hS hT`. Take `⟨N, hN, hNfix⟩` from `exists_level hS hT hφ`. Use `set Λ := latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True) with hΛ`. Establish `hinf : ∀ u ∈ Λ, u.map (infPart D) = 0` using `fun u hu => GlobalTheory.VacUnique.latO_inf S T _ _ _ hu`. Establish `hε : ∀ u : Λ, ∃ ε : ℂ, (ε = 1 ∨ ε = -1) ∧ heisO ψ S T u v = ε • v` using `fun u => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨ε, h1, h2⟩` from `hsign v hlat u u.2`. Conclude with `⟨ε, h1, h2 v hlat⟩`. Use `choose ε hε1 hε2 using hε`. Establish `hψsq : ∀ u u' : Λ, ψ (symplOH S T u u') * ψ (symplOH S T u u') = 1` using `fun u u' => by`. Rewrite using `[← AddChar.map_add_eq_mul, symplOH_add_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `(hdual u (hinf u u.2)).1 u.2 u' u'.2`. Establish `hcoef : ∀ u u' : Λ, ε u' * ε u = ψ (symplOH S T u u') * ε (u + u')` using `fun u u' => by`. Apply `hv0` to reduce the goal to its premises. Establish `e1 : heisO ψ S T u (heisO ψ S T u' v) = (ε u' * ε u) • v`. Rewrite using `[hε2 u', heisO_smul', hε2 u, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : heisO ψ S T u (heisO ψ S T u' v) = (ψ (symplOH S T u u') * ε (u + u')) • v`. Rewrite using `[hlaws.2.1, ← AddSubgroup.coe_add, hε2 (u + u'), smul_smul]`. Rewrite using `[← e1, e2]`. Establish `hhom : ∀ (u u' : Λ) (f : WO S T → ℂ), ε u • heisO ψ S T u (ε u' • heisO ψ S T u' f) = ε (u + u') • heisO ψ S T ((u + u' : Λ) : WO S T) f` using `fun u u' f => by`. Rewrite using `[heisO_smul', hlaws.2.1, smul_smul, smul_smul, AddSubgroup.coe_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[show ε u * ε u' * ψ (symplOH S T u u') = (ε u' * ε u) * ψ (symplOH S T u u') by ring, hcoef]`. Take the linear combination `ε (u + u') * hψsq u u'`. Establish `hk : ∀ t : Λ, ε ((2 * N) • t) • heisO ψ S T (((2 * N) • t : Λ) : WO S T) φ = φ` using `fun t => by`. Establish `e1 : ε ((2 * N) • t) = 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hv0` to reduce the goal to its premises. Rewrite using `[← hε2, one_smul, AddSubgroup.coe_nsmul, mul_smul]`. Conclude with `hlat.1 _ (AddSubgroup.nsmul_mem _ t.2 N)`. Rewrite using `[e1, one_smul, AddSubgroup.coe_nsmul, mul_comm, mul_smul]`. Conclude with `hNfix _ (AddSubgroup.nsmul_mem _ t.2 2)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set K : AddSubgroup Λ := (nsmulAddMonoidHom (α := Λ) (2 * N)).range with hK`. Establish `hfinQ : Finite (Λ ⧸ K)`. Take `⟨R, hR, hRdec⟩` from `GlobalTheory.LatFinMod.latO_finite_mod D S T ΛS ΛT hS.1.fg hT.1.fg (fun _ => True) (2 * N) (by omega)`. Use `haveI : Finite R := hR.to_subtype`. Use `Finite.of_surjective (fun r : R => if h : (r : WO S T) ∈ Λ then (QuotientAddGroup.mk (⟨r, h⟩ : Λ) : Λ ⧸ K) else 0) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `q`. Take `⟨t, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Take `⟨r, hr, u, hu, e⟩` from `hRdec t t.2`. Establish `hrΛ : r ∈ Λ`. Establish `: r = (t : WO S T) - (2 * N) • u` using `by rw [e]; abel`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `sub_mem t.2 (AddSubgroup.nsmul_mem _ hu _)`. Use `⟨⟨r, hr⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos hrΛ]`. Rewrite using `[QuotientAddGroup.eq]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨u, hu⟩, Subtype.ext (by simp [e])⟩`. Use `haveI : Fintype (Λ ⧸ K) := Fintype.ofFinite _`. Take `⟨g, hg⟩ : ∃ g : Λ ⧸ K → WO S T → ℂ, ∀ q, g q = ε q.out • heisO ψ S T (q.out : WO S T) φ` from `⟨_, fun _ => rfl⟩`. Establish `hshift : ∀ (u : Λ) (q : Λ ⧸ K), ε u • heisO ψ S T u (g q) = g (QuotientAddGroup.mk u + q)` using `fun u q => by`. Establish `hmem : -(QuotientAddGroup.mk u + q : Λ ⧸ K).out + (u + q.out) ∈ K`.
+Normalize the expressions using the abelian group laws. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← QuotientAddGroup.eq, QuotientAddGroup.out_eq', QuotientAddGroup.mk_add, QuotientAddGroup.out_eq']`. Take `⟨t, ht⟩` from `hmem`. Establish `e : u + q.out = (QuotientAddGroup.mk u + q : Λ ⧸ K).out + (2 * N) • t`. Rewrite `ht` using `[nsmulAddMonoidHom_apply]`. Rewrite using `[ht]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hg, hg, hhom, e, ← hhom _ ((2 * N) • t) φ, hk]`. Establish `hinv : ∀ u : Λ, ε u • heisO ψ S T u (∑ q, g q) = ∑ q, g q` using `fun u => by`. Rewrite using `[heisO_sum', Finset.smul_sum]`. Repeatedly rewrite using `[hshift u]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Equiv.sum_comp (Equiv.addLeft (QuotientAddGroup.mk u : Λ ⧸ K)) g`. Establish `hPlat : IsLatVac (heisO ψ S T) Λ (∑ q, g q)`. Use `⟨fun u hu => ?_, fun e he u hu hh => ?_⟩` and prove the remaining obligations. Establish `h1 : ε ⟨2 • u, AddSubgroup.nsmul_mem _ hu 2⟩ = 1`. Apply `hv0` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hε2, one_smul]`. Conclude with `hlat.1 u hu`. Use `hinv ⟨2 • u, AddSubgroup.nsmul_mem _ hu 2⟩` as an intermediate fact. Rewrite `this` using `[h1, one_smul]`. Then use the resulting hypothesis. Establish `h1 : ε ⟨u, hu⟩ = 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `hv0` to reduce the goal to its premises. Rewrite using `[← hε2, one_smul]`. Conclude with `hlat.2 e he u hu hh`. Use `hinv ⟨u, hu⟩` as an intermediate fact. Rewrite `this` using `[h1, one_smul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hgth : ∀ q, IsThetaFunO ψ S T (g q)` using `fun q => by`. Rewrite using `[hg]`. Conclude with `GlobalTheory.LocMod.LinSpace.isThetaFunO_smul _ (hlaws.1 _ _ hφ)`. Establish `hzero : IsThetaFunO ψ S T (0 : WO S T → ℂ)`. Simplify using `using GlobalTheory.LocMod.LinSpace.isThetaFunO_smul (0 : ℂ) hφ`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hPth : ∀ s : Finset (Λ ⧸ K), IsThetaFunO ψ S T (∑ q ∈ s, g q)` using `fun s => Finset.sum_induction _ _ (fun a b ha hb => GlobalTheory.LocMod.LinSpace.isThetaFunO_add ha hb) hzero (fun q _ => hgth q)`. Establish `hPf : ∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) (∑ q, g q)` using `fun τ => by`. Use `GlobalTheory.FockTranslate.isFockVacAt_sum D ψ θ S T hψ.1 hv.2.inf φ hφ τ _ (hφf τ) (Λ ⧸ K) Finset.univ (fun q => (q.out : WO S T)) (fun q => ε q.out) (fun q _ => hinf _ q.out.2)` as an intermediate fact. Simplify `this` using `only [← hg]`. Take `⟨a, ha⟩` from `GlobalTheory.LevelSeries.eq_smul_vacuum hψ hv.2.inf hCS hCT hS hT hv (hPth _) hPlat hPf`.
-
-Establish `hIP : ∀ s : Finset (Λ ⧸ K), GlobalTheory.RawLift.thetaIP μ 𝓕 v (∑ q ∈ s, g q) = (s.card : ℂ) * GlobalTheory.RawLift.thetaIP μ 𝓕 v φ`. Introduce `s`. Use `Finset.induction_on s (by simp [GlobalTheory.RawLift.thetaIP]) (fun q s hq ih => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_insert hq, GlobalTheory.RawLift.RealLowRed.thetaInner_add_right hψ hc.2.2 hvth (hgth q) (hPth s), ih, hg, thetaInner_sign_smul_heisenberg hψ hc hvth hφ (hε1 _) (hε2 _), Finset.card_insert_of_notMem hq]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `e : (∑ q : Λ ⧸ K, ε q.out • heisO ψ S T (q.out : WO S T) φ) = ∑ q, g q` using `Finset.sum_congr rfl fun q _ => (hg q).symm`. Use `⟨Λ ⧸ K, inferInstance, fun q => ε q.out, fun q => q.out, a, Fintype.card_pos_iff.2 ⟨0⟩, fun q => hε1 _, fun q => q.out.2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ha]`. Rewrite using `[e, hIP, Finset.card_univ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem average {θ : InfFam D} {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ}
     {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
@@ -272,14 +268,14 @@ theorem average {θ : InfFam D} {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin
   · rw [e, hIP, Finset.card_univ]
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction _ _ (fun _ _ ha hb => ha.add hb) GlobalTheory.MovedAlg.IsAlgComb.zero h`.
+A detailed English derivation is pending.
 -/
 theorem isAlgComb_finset {f₀ : WO S T → ℂ} {ι : Type} (s : Finset ι) (F : ι → WO S T → ℂ)
     (h : ∀ i ∈ s, GlobalTheory.MovedAlg.IsAlgComb ψ S T f₀ (F i)) : GlobalTheory.MovedAlg.IsAlgComb ψ S T f₀ (∑ i ∈ s, F i) :=
   Finset.sum_induction _ _ (fun _ _ ha hb => ha.add hb) GlobalTheory.MovedAlg.IsAlgComb.zero h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun _ => 1, fun _ => 0, fun _ => isAlgebraic_one, fun _ => Matrix.map_zero _ (map_zero _), by simp [GlobalTheory.SplitScalar.heisO_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAlgComb_self (f₀ : WO S T → ℂ) : GlobalTheory.MovedAlg.IsAlgComb ψ S T f₀ f₀ :=
   ⟨1, fun _ => 1, fun _ => 0, fun _ => isAlgebraic_one, fun _ => Matrix.map_zero _ (map_zero _), by
@@ -288,25 +284,21 @@ theorem isAlgComb_self (f₀ : WO S T → ℂ) : GlobalTheory.MovedAlg.IsAlgComb
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT ΛS ΛT v χS χT om hv hS hT hCS hCT hom x hx h hh`. Distinguish the cases in `hG : om (x, h) v = 0`. Conclude with `⟨0, 0, GlobalTheory.MovedAlg.IsAlgComb.zero, by rw [hG, zero_smul]⟩`. Establish `hψ : IsStdChar D ψ (-1)` using `hv.1`. Establish `hθ` using `hv.2.inf`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvth` using `hv.2.theta`. Establish `hvf` using `hv.2.fock`. Establish `hlaws` using `GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T`. Take `⟨⟨p, hp⟩, -⟩` from `hv.2.norm`. Take `⟨hGth, hGf⟩` from `GlobalTheory.FockRealMove.om_fin_fockVac D ψ θ S T χS χT om hom hθ sS sT v hvth hvf x hx h hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hv0 : v ≠ 0`. Take `⟨w, hw⟩` from `GlobalTheory.SmoothVac.exists_ne_zero_of_isVacO hv`. Introduce `h0`. Conclude with `hw (by rw [h0]; rfl)`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw, hne⟩ : ∃ w : WO S T, w.map (infPart D) = 0 ∧ GlobalTheory.RawLift.thetaIP p.1 p.2 (om (x, h) v) (heisO ψ S T w v) ≠ 0 := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Break down `GlobalTheory.VacSchurFin.irr_vac D ψ θ S T hψ hθ sS sT hCS hCT p.1 p.2 hp _ _ hGth hvth hGf hvf hcon with h1 | h1` into its components or cases. Use `exacts [hG h1, hv0 h1]`. Establish `hwth` using `hlaws.1 w v hvth`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwf` using `GlobalTheory.VacSchurFin.vac_heisO_fin hθ hw hvf`. Take `⟨hφth, hφf⟩` from `GlobalTheory.FockRealMove.om_fin_fockVac D ψ θ S T χS χT om hom hθ sS sT _ hwth hwf x⁻¹ (inv_mem hx) h⁻¹ (inv_mem hh)`. Establish `hback : om (x, h) (om (x⁻¹, h⁻¹) (heisO ψ S T w v)) = heisO ψ S T w v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_inv_cancel, mul_inv_cancel, ← Prod.one_eq_mk, map_one, Module.End.one_apply]`. Establish `hip : GlobalTheory.RawLift.thetaIP p.1 p.2 v (om (x⁻¹, h⁻¹) (heisO ψ S T w v)) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.WeilPairing.thetaInner_weilRep D ψ S T χS χT om p.1 p.2 hom hp (x, h) _ _ hvth hφth, hback]`. Conclude with `hne`. Take `⟨ι, _, c, u, a, hcard, hc, hu, hsum, hIP⟩` from `average hv hS hT hCS hCT hp hφth hφf`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hIP` using `[hsum, GlobalTheory.RawLift.thetaInner_smul_right, zero_mul, eq_comm, mul_eq_zero]`. Break down `hIP with h1 | h1` into its components or cases. Conclude with `absurd h1 (by exact_mod_cast hcard.ne')`. Conclude with `hip h1`. Establish `hψalg : ∀ u v : WO S T, u.map (infPart D) = 0 → v.map (infPart D) = 0 → IsAlgebraic ℚ (ψ (symplOH S T u v))` using `fun u v hu hv' => mem_algebraicClosure_iff.1 (GlobalTheory.BotFourier.psiH_mem hψ hS hT hu hv')`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF : om (x, h) (∑ i, c i • heisO ψ S T (u i) (om (x⁻¹, h⁻¹) (heisO ψ S T w v))) = ∑ i, c i • heisO ψ S T (actO S T x h (u i)) (heisO ψ S T w v)`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hom.om_heis x h (u i) _ hφth, hback]`. Use `⟨a⁻¹, ∑ i, c i • heisO ψ S T (actO S T x h (u i)) (heisO ψ S T w v), ?_, ?_⟩` and prove the remaining obligations.
-
-Use `isAlgComb_finset _ _ fun i _ => ?_` and prove the remaining obligations. Use `GlobalTheory.MovedAlg.IsAlgComb.smul ?_ (GlobalTheory.MovedAlg.IsAlgComb.Heisenberg₂ hψalg (GlobalTheory.FinApprox.actO_fin _ _ (GlobalTheory.VacUnique.latO_inf S T _ _ _ (hu i))) (GlobalTheory.MovedAlg.IsAlgComb.Heisenberg₂ hψalg hw (isAlgComb_self v)))` and prove the remaining obligations. Apply the tactic sequence `rcases hc i with e | e <;> rw [e]`. Conclude with `isAlgebraic_one`. Conclude with `isAlgebraic_one.neg`.
-
-Rewrite using `[← hF, hsum, map_smul, smul_smul, inv_mul_cancel₀ ha, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_vac_algComb : ∀ {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}

@@ -17,7 +17,7 @@ def NormInvP : Prop :=
     ∀ x y : Formalism.FourierDecayAlt.B.Mat k r, Formalism.FourierDecayAlt.B.gN (x * y) ≤ Formalism.FourierDecayAlt.B.gN x * Formalism.FourierDecayAlt.B.gN y
 
 /- English proof (translation)
-Introduce `k r` and use `by refine ⟨fun x hx => Formalism.FourierDecayAlt.P.norm_of_inverse k r x hx, fun x y => ?_⟩ letI : SeminormedAddCommGroup (Formalism.FourierDecayAlt.B.Mat k r) := Matrix.frobeniusSeminormedAddCommGroup have h : ∀ z : Formalism.FourierDecayAlt.B.Mat k r, Formalism.FourierDecayAlt. …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem normInvP : NormInvP := fun k r => by
   refine ⟨fun x hx => Formalism.FourierDecayAlt.P.norm_of_inverse k r x hx, fun x y => ?_⟩
@@ -33,13 +33,13 @@ theorem normInvP : NormInvP := fun k r => by
 variable {k r : ℕ}
 
 /- English proof (translation)
-Take `⟨hinvP, hsub⟩` from `normInvP k r`. Establish `hyy : y * y⁻¹ = 1` using `Matrix.mul_nonsing_inv y (isUnit_of_uh hy)`. Establish `hgg : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv g (isUnit_of_uh hg)`. Establish `hx_eq : x = y * (y⁻¹ * x * g) * g⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1y` using `(hinvP y hy).2`. Establish `h1g` using `(hinvP g hg).2`. Establish `h1x` using `(hinvP x hx).2`. Establish `hpos : 0 < Formalism.FourierDecayAlt.B.gN y * Formalism.FourierDecayAlt.B.gN g` using `by positivity`. Establish `hle : Formalism.FourierDecayAlt.B.gN x / (Formalism.FourierDecayAlt.B.gN y * Formalism.FourierDecayAlt.B.gN g) ≤ Formalism.FourierDecayAlt.B.gN (y⁻¹ * x * g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ hpos]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[(hinvP g hg).1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : 0 < Formalism.FourierDecayAlt.B.gN x` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.div_rpow hA.le hpos.le, Real.rpow_neg hpos.le, div_inv_eq_mul, mul_comm]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem gN_rpow_le {x y g : Formalism.FourierDecayAlt.B.Mat k r} (hx : x ∈ UH (Hpk k r)) (hy : y ∈ UH (Hpk k r))
     (hg : g ∈ UH (Hpk k r)) {a : ℝ} (ha : 0 ≤ a) :
@@ -77,17 +77,17 @@ def DecBd (σ : Formalism.FourierDecayAlt.B.Mat k r → (H →L[ℂ] H)) (a : �
   ∃ C : ℝ, ∀ x ∈ UH (Hpk k r), ‖⟪u', σ x u⟫_ℂ‖ ≤ C * Formalism.FourierDecayAlt.B.gN x ^ (-a)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun x _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem decBd_zero_right (σ : Formalism.FourierDecayAlt.B.Mat k r → (H →L[ℂ] H)) (a : ℝ) (u' : H) : DecBd σ a u' 0 := ⟨0, fun x _ => by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun x _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem decBd_zero_left (σ : Formalism.FourierDecayAlt.B.Mat k r → (H →L[ℂ] H)) (a : ℝ) (u : H) : DecBd σ a 0 u := ⟨0, fun x _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨C1, h1⟩` from `h1`. Take `⟨C2, h2⟩` from `h2`. Use `⟨C1 + C2, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, inner_add_right, add_mul]`. Conclude with `(norm_add_le _ _).trans (add_le_add (h1 x hx) (h2 x hx))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decBd_add_right {σ : Formalism.FourierDecayAlt.B.Mat k r → (H →L[ℂ] H)} {a : ℝ} {u' u1 u2 : H}
     (h1 : DecBd σ a u' u1) (h2 : DecBd σ a u' u2) : DecBd σ a u' (u1 + u2) := by
@@ -98,7 +98,7 @@ theorem decBd_add_right {σ : Formalism.FourierDecayAlt.B.Mat k r → (H →L[�
   exact (norm_add_le _ _).trans (add_le_add (h1 x hx) (h2 x hx))
 
 /- English proof (translation)
-Take `⟨C1, h1⟩` from `h1`. Take `⟨C2, h2⟩` from `h2`. Use `⟨C1 + C2, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[inner_add_left, add_mul]`. Conclude with `(norm_add_le _ _).trans (add_le_add (h1 x hx) (h2 x hx))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decBd_add_left {σ : Formalism.FourierDecayAlt.B.Mat k r → (H →L[ℂ] H)} {a : ℝ} {u1 u2 u : H}
     (h1 : DecBd σ a u1 u) (h2 : DecBd σ a u2 u) : DecBd σ a (u1 + u2) u := by
@@ -109,7 +109,7 @@ theorem decBd_add_left {σ : Formalism.FourierDecayAlt.B.Mat k r → (H →L[ℂ
   exact (norm_add_le _ _).trans (add_le_add (h1 x hx) (h2 x hx))
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `h`. Use `⟨‖c‖ * C, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, inner_smul_right, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC x hx) (norm_nonneg _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decBd_smul_right {σ : Formalism.FourierDecayAlt.B.Mat k r → (H →L[ℂ] H)} {a : ℝ} {u' u : H} (c : ℂ)
     (h : DecBd σ a u' u) : DecBd σ a u' (c • u) := by
@@ -119,7 +119,7 @@ theorem decBd_smul_right {σ : Formalism.FourierDecayAlt.B.Mat k r → (H →L[�
   exact mul_le_mul_of_nonneg_left (hC x hx) (norm_nonneg _)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `h`. Use `⟨‖c‖ * C, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[inner_smul_left, norm_mul, RCLike.norm_conj, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC x hx) (norm_nonneg _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decBd_smul_left {σ : Formalism.FourierDecayAlt.B.Mat k r → (H →L[ℂ] H)} {a : ℝ} {u' u : H} (c : ℂ)
     (h : DecBd σ a u' u) : DecBd σ a (c • u') u := by
@@ -134,11 +134,11 @@ def DiagonalMatrixCoefficientPowerDecay (σ : Formalism.FourierDecayAlt.B.Mat k 
 variable [CompleteSpace H] {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hD`. Establish `hmul` using `(Formalism.MainNotions.LeviCoordinates.discrete_series_unitary_rep hσ).2.1`. Use `⟨max C 0 * (Formalism.FourierDecayAlt.B.gN y * Formalism.FourierDecayAlt.B.gN g) ^ a, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hyi` using `uh_inv hy`. Establish `hz : y⁻¹ * x * g ∈ UH (Hpk k r)` using `uh_mul (uh_mul hyi hx) hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : ⟪σ y w0, σ x (σ g w0)⟫_ℂ = ⟪w0, σ (y⁻¹ * x * g) w0⟫_ℂ`. Establish `hyy : (y⁻¹)⁻¹ = y` using `Matrix.nonsing_inv_nonsing_inv y (isUnit_of_uh hy)`. Establish `h1` using `Formalism.MainNotions.DiscreteSeriesInnerProducts.ds_inv_adj hσ hyi w0 (σ x (σ g w0))`. Rewrite `h1` using `[hyy]`. Rewrite using `[h1, hmul _ (uh_mul hyi hx) _ hg, hmul _ hyi _ hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[heq]`. Combine the equalities or inequalities in the displayed calculation.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem decBd_gen {σ : Formalism.FourierDecayAlt.B.Mat k r → (H →L[ℂ] H)} (hσ : IsDSHpk k r ε lam σ) {w0 : H} {a : ℝ}
     (ha : 0 ≤ a) (hD : DiagonalMatrixCoefficientPowerDecay σ w0 a) {y g : Formalism.FourierDecayAlt.B.Mat k r} (hy : y ∈ UH (Hpk k r))
@@ -163,11 +163,11 @@ theorem decBd_gen {σ : Formalism.FourierDecayAlt.B.Mat k r → (H →L[ℂ] H)}
     _ = max C 0 * (Formalism.FourierDecayAlt.B.gN y * Formalism.FourierDecayAlt.B.gN g) ^ a * Formalism.FourierDecayAlt.B.gN x ^ (-a) := by ring
 
 /- English proof (translation)
-Introduce `u hu u' hu'`. Unfold `DDsp at hu hu'`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨g, hg, rfl⟩` from `hv`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hu' using Submodule.span_induction with`. Consider the case `mem v' hv'`. Take `⟨y, hy, rfl⟩` from `hv'`. Conclude with `decBd_gen hσ ha hD hy hg`. Consider the case `zero => exact decBd_zero_left σ a _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add a1 a2 _ _ h1 h2 => exact decBd_add_left h1 h2`. Consider the case `smul c a1 _ h1 => exact decBd_smul_left c h1`. Consider the case `zero => exact decBd_zero_right σ a u'`. Consider the case `add a1 a2 _ _ h1 h2 => exact decBd_add_right h1 h2`. Consider the case `smul c a1 _ h1 => exact decBd_smul_right c h1`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem decDD {σ : Formalism.FourierDecayAlt.B.Mat k r → (H →L[ℂ] H)} (hσ : IsDSHpk k r ε lam σ) {w0 : H} {a : ℝ}
     (ha : 0 ≤ a) (hD : DiagonalMatrixCoefficientPowerDecay σ w0 a) :

@@ -17,7 +17,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   (X : CMPack Z c FU i hP)
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `X.m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hM1, Over.comp_left, Category.assoc, X.m.act, ← Category.assoc, hM1, hρm X s e, Over.comp_left]`. Rewrite using `[Over.w, Over.comp_left, Category.assoc, Over.w, Over.w]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem act1 (s : 𝓞 E) (e : Fin g → X.K) : (curveLieModel X).pt (ρm X s e) = (curveLieModel X).pt e ≫ X.t.act.act s := by
   apply Over.OverMorphism.ext
@@ -26,15 +26,15 @@ theorem act1 (s : 𝓞 E) (e : Fin g → X.K) : (curveLieModel X).pt (ρm X s e)
   · rw [Over.w, Over.comp_left, Category.assoc, Over.w, Over.w]
 
 /- English proof (translation)
-Rewrite using `[← hM2, act1, Over.comp_left, Category.assoc, X.m'.act, ← Category.assoc, hM2, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act2 (s : 𝓞 E) (e : Fin g → X.K) : ((integralLieModel X).pt (ρm X s e)).left = ((integralLieModel X).pt e ≫ X.B.t.act.act s).left := by
   rw [← hM2, act1, Over.comp_left, Category.assoc, X.m'.act, ← Category.assoc, hM2, Over.comp_left]
 
 /- English proof (translation)
-Introduce `b a a'`. Use `haveI := ((X.fam b).1 a).isMonHom`. Apply `(integralLieModel X).inj` to reduce the goal to its premises. Rewrite using `[(integralLieModel X).add, lam_spec, lam_spec, lam_spec]`. Unfold `wB`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(X.fam b).2.1 a a', MonObj.comp_mul, MonObj.comp_mul]`.
+A detailed English derivation is pending.
 -/
 theorem lamAdd : LamAdd X := by
   intro b a a'
@@ -45,9 +45,9 @@ theorem lamAdd : LamAdd X := by
   rw [(X.fam b).2.1 a a', MonObj.comp_mul, MonObj.comp_mul]
 
 /- English proof (translation)
-Introduce `b s a`. Apply `(integralLieModel X).inj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[act2, lam_spec, lam_spec]`. Unfold `wB`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[(X.fam b).2.2.1 s a]`. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lamSmul : LamSmul X := by
   intro b s a
@@ -60,9 +60,9 @@ theorem lamSmul : LamSmul X := by
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite `h`, the goal using `[← Spec.map_preimage f1, ← Spec.map_preimage f2]`. Use `congr 1`. Rewrite `h` using `[spMap, ← Spec.map_comp, ← Spec.map_comp]`. Establish `h'` using `Spec.map_injective h`. Establish `hc : (Spec.preimage f1).hom.comp (algebraMap (𝓞 K) K) = (Spec.preimage f2).hom.comp (algebraMap (𝓞 K) K)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `y`. Conclude with `congrArg (fun φ => φ.hom y) h'`. Use extensionality with `x`. Conclude with `congrFun (congrArg DFunLike.coe (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 K)) hc)) x`.
+By extensionality, compare the relevant components. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cancel_frac {A : Type} [CommRing A] (K : Type) [Field K] [NumberField K] (f1 f2 : Sp A ⟶ Sp K)
     (h : f1 ≫ spMap (algebraMap (𝓞 K) K) = f2 ≫ spMap (algebraMap (𝓞 K) K)) : f1 = f2 := by
@@ -76,18 +76,18 @@ theorem cancel_frac {A : Type} [CommRing A] (K : Type) [Field K] [NumberField K]
   exact congrFun (congrArg DFunLike.coe (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 K)) hc)) x
 
 /- English proof (translation)
-Unfold `wB`. Rewrite using `[Over.comp_left, Over.comp_left, bK_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wB_left (b : Bool) (a : PureType.lat hP (sgnRt H b)) :
     (wB X b a).left = spMap (dualMap (algebraMap (𝓞 X.K) X.K)) ≫ (X.C b).v.left ≫ (X.ψ b a).left := by
   unfold wB; rw [Over.comp_left, Over.comp_left, bK_left]
 
 /- English proof (translation)
-Introduce `b a u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr1, hr2⟩`. Establish `hW : r ≫ X.m'.φ = ((curveLieModel X).pt (lam X b a)).left ≫ X.m'.φ`. Rewrite using `[hr2, hM2, lam_spec, wB_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `r0eq : r = ((curveLieModel X).pt (lam X b a)).left`. Apply `X.m'.cart.1.hom_ext hW` to reduce the goal to its premises. Apply `cancel_frac` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, ← X.m'.cart.1.w, ← Category.assoc, ← Category.assoc, hW]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hr1, r0eq, hM1]`. Introduce and unpack `rfl`. Conclude with `⟨((curveLieModel X).pt (lam X b a)).left, hM1 X _, by rw [hM2, lam_spec, wB_left]⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem imageIff : ImageIff X := by
   intro b a u
@@ -106,7 +106,7 @@ theorem imageIff : ImageIff X := by
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[isogeny_decomposition_product.spMap_comp, isogeny_decomposition_product.spMap_comp]`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bc_epsx {R V : Type} [CommRing R] [CommRing V] (f : R →+* V) (x : R) :
     spMap (dualMap f) ≫ spMap (GlobalTheory.CompanionTheory.Ar.epsMul x) = spMap (GlobalTheory.CompanionTheory.Ar.epsMul (f x)) ≫ spMap (dualMap f) := by
@@ -115,13 +115,13 @@ theorem bc_epsx {R V : Type} [CommRing R] [CommRing V] (f : R →+* V) (x : R) :
   ext a <;> simp [dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl, mul_comm]
 
 /- English proof (translation)
-Apply `(integralLieModel X).inj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[(integralLieModel X).smul, lam_spec, lam_spec, wB_left, wB_left, (X.fam b).2.2.1 H.w0 a]`. Take `⟨u, hu, hw⟩` from `(X.C b).eig`. Establish `hcomm` using `((X.fam b).1 a).comm (wK H)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv : ((X.C b).v ≫ (X.C b).act.act (wK H)).left = spMap (GlobalTheory.CompanionTheory.Ar.epsMul (X.ω b)) ≫ (X.C b).v.left`. Rewrite using `[hw]`. Use `hu 0` as an intermediate fact. Simplify using `only [Matrix.cons_val_zero] at this`. Simplify using `[List.ofFn_succ, this, epsScaleR_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2 : (X.C b).v.left ≫ (X.ψ b a ≫ X.B.t.act.act H.w0).left = spMap (GlobalTheory.CompanionTheory.Ar.epsMul (X.ω b)) ≫ (X.C b).v.left ≫ (X.ψ b a).left`. Establish `hcomm' : (X.C b).act.act (wK H) ≫ X.ψ b a = X.ψ b a ≫ X.B.t.act.act H.w0`. Rewrite using `[hcomm]`. Both sides reduce to the same expression. Rewrite using `[← hcomm', Over.comp_left, ← Category.assoc, ← Over.comp_left, hv, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, ← Category.assoc, bc_epsx, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_smul_w0 (b : Bool) (a : PureType.lat hP (sgnRt H b)) :
     lam X b (H.w0 • a) = algebraMap (𝓞 X.K) X.K (X.ω b) • lam X b a := by
@@ -144,11 +144,11 @@ theorem lam_smul_w0 (b : Bool) (a : PureType.lat hP (sgnRt H b)) :
   rw [h2, ← Category.assoc, bc_epsx, Category.assoc]
 
 /- English proof (translation)
-Introduce `b s a hs`. Establish `hrt : H.rt = 2 * H.w0 - 1` using `by linear_combination H.two_weight_eq_one_add_root.symm`. Establish `hsm` using `lamSmul X b H.w0 a`. Rewrite `hsm` using `[lam_smul_w0]`. Establish `hω : (s : X.K) = 2 * algebraMap (𝓞 X.K) X.K (X.ω b) - 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `(algebraMap X.K ℂ).injective` to reduce the goal to its premises. Establish `h1` using `(X.map' b).1`. Establish `h2` using `(Z b).hω`. Rewrite using `[map_sub, map_mul, map_ofNat, map_one, show algebraMap X.K ℂ s = (s : ℂ) from rfl, hs, ← h2, ← h1]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hrt, map_sub, map_mul, map_ofNat, map_one, two_mul, LinearMap.sub_apply, LinearMap.add_apply, Module.End.one_apply, ← hsm, hω]`. Simplify using `[sub_smul, two_mul, add_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lamRt : LamRt X := by
   intro b s a hs
@@ -166,13 +166,13 @@ theorem lamRt : LamRt X := by
   simp [sub_smul, two_mul, add_smul]
 
 /- English proof (translation)
-Introduce `b τ a v`. Establish `bridge` using `(GlobalTheory.T.lie_model_eigenvectors_action Xo.X X.K Xo.univ.t.G (under X.y) (Fin g → X.K) (Mm X)).1`. Set `uv : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → (Fin g → X.K)` to `fun j => ρm X (RingOfIntegers.basis E j) (lam X b a)`. Establish `hsum : ∀ (n : ℕ) (e : Fin n ≃ Module.Free.ChooseBasisIndex ℤ (𝓞 E)), ∑ k, X.β (tauE c τ (HT.dualInt E (e k))) • uv (e k) = HT.eigProj (ρm X) (X.β.comp (tauE c τ)) (lam X b a)`. Introduce `n e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Equiv.sum_comp e (fun j => X.β (tauE c τ (HT.dualInt E j)) • uv j)]`. Simplify using `[HT.eigProj, uv, LinearMap.sum_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, e, u, hu, hc⟩`. Establish `hu' : u = fun k => (Mm X).pt (uv (e k))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[(imageIff X b _ (u k)).1 (hu k), lamSmul]`. Rewrite `hc` using `[hu']`. Rewrite using `[(bridge n _ _ v).1 hc, hsum]`. Introduce and unpack `rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Set `e` to `(Fintype.equivFin (Module.Free.ChooseBasisIndex ℤ (𝓞 E))).symm`. Use `⟨_, e, fun k => (Mm X).pt (uv (e k)), fun k => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[imageIff, lamSmul]`. Rewrite using `[bridge, hsum]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cmVecIff : CMVecIff X := by
   intro b τ a v
@@ -201,7 +201,7 @@ end PositivityTheory.Xgf.cm_lie_model_action
 namespace PositivityTheory.Xgf
 
 /- English proof (translation)
-The claim follows from `cm_pack_lie_properties fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ X => ⟨cm_lie_model_action.imageIff X, cm_lie_model_action.lamSmul X, cm_lie_model_action.lamAdd X, cm_lie_model_action.lamRt X, cm_lie_model_action.cmVecIff X⟩`.
+A detailed English derivation is pending.
 -/
 theorem cm_lie_model_action : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n) (Z : ∀ b : Bool, Curve0 H (sgnRt H b)) (P : (FU.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (FU.Di i) ty P) (X : CMPack Z c FU i hP), ∃ (M : LieModel Xo.univ.t.G (under X.y) (Fin g → X.K)) (ρ : 𝓞 E →+* Module.End X.K (Fin g → X.K)) (lam : ∀ b, PureType.lat hP (sgnRt H b) → Fin g → X.K), M.IsActOf Xo.univ.t.act.act ρ ∧ (∀ b a u, X.IsImage b a u ↔ u = M.pt (lam b a)) ∧ (∀ b (s : 𝓞 E) a, lam b (s • a) = ρ s (lam b a)) ∧ (∀ b a a', lam b (a + a') = lam b a + lam b a') ∧ (∀ b (s : X.K) a, (s : ℂ) = sgnRt H b → ρ H.rt (lam b a) = s • lam b a) ∧ ∀ b (τ : E →+* ℂ) a v, X.IsCMVec b τ a v ↔ v = M.pt (HT.eigProj ρ (X.β.comp (tauE c τ)) (lam b a)) :=
   cm_pack_lie_properties fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ X =>

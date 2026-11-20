@@ -8,7 +8,7 @@ namespace LateralTheory.CohomologicalPurity
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Introduce and unpack `V g ⟨⟨t₁, h₁⟩, ⟨t₂, h₂⟩⟩`. Conclude with `⟨t₁ + t₂, by rw [map_add, map_add, h₁, h₂]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem imageSieve_add' {F G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} (f : F ⟶ G) {T : Scheme.{0}}
     (s₁ s₂ : G.obj (op T)) :
@@ -17,7 +17,7 @@ theorem imageSieve_add' {F G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)}
   exact ⟨t₁ + t₂, by rw [map_add, map_add, h₁, h₂]⟩
 
 /- English proof (translation)
-Introduce and unpack `V g ⟨t, h⟩`. Conclude with `⟨r • t, by rw [map_smul, map_smul, h]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem imageSieve_smul' {F G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} (f : F ⟶ G) {T : Scheme.{0}}
     (r : ULift.{1} R) (s : G.obj (op T)) :
@@ -26,7 +26,7 @@ theorem imageSieve_smul' {F G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)
   exact ⟨r • t, by rw [map_smul, map_smul, h]⟩
 
 /- English proof (translation)
-Use extensionality with `V g`. Simplify using `only [Sieve.top_apply, iff_true]`. Conclude with `⟨0, by rw [map_zero, map_zero]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem imageSieve_zero' {F G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} (f : F ⟶ G) {T : Scheme.{0}} :
     Presheaf.imageSieve f (0 : G.obj (op T)) = ⊤ := by
@@ -35,7 +35,7 @@ theorem imageSieve_zero' {F G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)
   exact ⟨0, by rw [map_zero, map_zero]⟩
 
 /- English proof (translation)
-Establish `e : cokernel.π ((freeP R).map i') ≫ pcok R i' i a b w = (freeP R).map b ≫ cokernel.π _`. Simplify using `[pcok]`. Use `ConcreteCategory.congr_hom (NatTrans.congr_app e V) m` as an intermediate fact. Simplify `this` using `only [NatTrans.comp_app, ConcreteCategory.comp_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pcok_π_apply (R : Type) [CommRing R] {A' B' A B : PSh} (i' : A' ⟶ B') (i : A ⟶ B) (a : A' ⟶ A)
     (b : B' ⟶ B) (w : i' ≫ b = a ≫ i) (V : Scheme.{0}ᵒᵖ) (m : ((freeP R).obj B').obj V) :
@@ -47,7 +47,7 @@ theorem pcok_π_apply (R : Type) [CommRing R] {A' B' A B : PSh} (i' : A' ⟶ B')
   simpa only [NatTrans.comp_app, ConcreteCategory.comp_apply] using this
 
 /- English proof (translation)
-Use `ConcreteCategory.congr_hom (NatTrans.congr_app (cokernel.condition ((freeP R).map i)) V) m` as an intermediate fact. Simplify using `only [NatTrans.comp_app, ConcreteCategory.comp_apply] at this`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem π_freeP_apply (R : Type) [CommRing R] {A B : PSh} (i : A ⟶ B) (V : Scheme.{0}ᵒᵖ)
     (m : ((freeP R).obj A).obj V) :
@@ -57,21 +57,21 @@ theorem π_freeP_apply (R : Type) [CommRing R] {A B : PSh} (i : A ⟶ B) (V : Sc
   rw [this]; rfl
 
 /- English proof (translation)
-Conclude with `ModuleCat.free_map_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem freePresheaf_map_freeMk (R : Type) [CommRing R] {A B : PSh} (i : A ⟶ B) (V : Scheme.{0}ᵒᵖ) (x : A.obj V) :
     ((freeP R).map i).app V (ModuleCat.freeMk (ULift.up x)) = ModuleCat.freeMk (ULift.up (i.app V x)) := by
   exact ModuleCat.free_map_apply _ _
 
 /- English proof (translation)
-Conclude with `ModuleCat.free_map_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem freePresheaf_obj_map_freeMk (R : Type) [CommRing R] (B : PSh) {V W : Scheme.{0}ᵒᵖ} (g : V ⟶ W) (x : B.obj V) :
     ((freeP R).obj B).map g (ModuleCat.freeMk (ULift.up x)) = ModuleCat.freeMk (ULift.up (B.map g x)) := by
   exact ModuleCat.free_map_apply _ _
 
 /- English proof (translation)
-Establish `: Epi ((cokernel.π ((freeP R).map i)).app V)` using `inferInstance`. Conclude with `(ModuleCat.epi_iff_surjective _).1 this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem π_app_surj (R : Type) [CommRing R] {A B : PSh} (i : A ⟶ B) (V : Scheme.{0}ᵒᵖ) :
     Function.Surjective ((cokernel.π ((freeP R).map i)).app V) := by
@@ -79,23 +79,17 @@ theorem π_app_surj (R : Type) [CommRing R] {A B : PSh} (i : A ⟶ B) (V : Schem
   exact (ModuleCat.epi_iff_surjective _).1 this
 
 /- English proof (translation)
-Set `J` to `Scheme.etaleTopology.{0}`. Set `N : Submodule (ULift.{1} R) (((freeP R).obj B).obj (op T))` to `{ carrier := {v | Presheaf.imageSieve (pcok R i' i a b w) ((cokernel.π ((freeP R).map i)).app (op T) v) ∈ J T} zero_mem' := by`. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[map_zero, imageSieve_zero']`. Conclude with `J.top_mem T`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `add_mem' := fun {v₁ v₂} h₁ h₂ => by`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[map_add]`. Conclude with `J.superset_covering (imageSieve_add' _ _ _) (J.intersection_covering h₁ h₂)`. Use the proof step `smul_mem' := fun r v h => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[map_smul]`. Conclude with `J.superset_covering (imageSieve_smul' _ _ _) h }`. Establish `gen : ∀ x, ModuleCat.freeMk x ∈ N`. Introduce and unpack `⟨y⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `show Presheaf.imageSieve _ _ ∈ J T`. Take `⟨S, hS, hS'⟩` from `h2 T y`. Use `J.superset_covering ?_ hS` and prove the remaining obligations. Introduce `V g hg`. Establish `nat` using `NatTrans.naturality_apply (cokernel.π ((freeP R).map i)) g.op (ModuleCat.freeMk (ULift.up y))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hS' g hg with ⟨x₀, hx₀⟩ | ⟨y', hy'⟩` into its components or cases. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `erw [← nat]`. Rewrite using `[freePresheaf_obj_map_freeMk]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `erw [← hx₀]`. Rewrite using `[← freePresheaf_map_freeMk R i (op V) x₀]`. Conclude with `(π_freeP_apply R i (op V) _).symm`. Use `⟨_, (pcok_π_apply R i' i a b w (op V) (ModuleCat.freeMk (ULift.up y'))).trans ?_⟩` and prove the remaining obligations. Rewrite using `[freePresheaf_map_freeMk R b (op V) y']`.
-
-Use `erw [hy', ← freePresheaf_obj_map_freeMk R B g.op y]`. Conclude with `nat`. Use `show v ∈ N`. Proceed by induction on `v using Finsupp.induction_linear with`. Consider the case `zero => exact N.zero_mem`.
-
-Consider the case `add v₁ v₂ h₁ h₂ => exact N.add_mem h₁ h₂`. Consider the case `single x r`. Use `N.smul_mem r (gen x)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `first`.
-
-Consider the case `exact (Finsupp.smul_single_one x r).symm`. Consider the case `(unfold ModuleCat.freeMk; erw [Finsupp.smul_single_one])`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_finset_adjoin_laurent_preimage (R : Type) [CommRing R] {A' B' A B : PSh} (i' : A' ⟶ B') (i : A ⟶ B) (a : A' ⟶ A)
     (b : B' ⟶ B) (w : i' ≫ b = a ≫ i)
@@ -140,7 +134,7 @@ theorem exists_finset_adjoin_laurent_preimage (R : Type) [CommRing R] {A' B' A B
     | (unfold ModuleCat.freeMk; erw [Finsupp.smul_single_one])
 
 /- English proof (translation)
-Introduce `R _ A' B' A B i' i a b w h2`. Prove the components needed by the constructor for the conclusion. Introduce `T s`. Take `⟨v, rfl⟩` from `π_app_surj R i (op T) s`. Conclude with `exists_finset_adjoin_laurent_preimage R i' i a b w h2 T v`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem leafFreeCokSurj : LeafFreeCokSurj := by
   intro R _ A' B' A B i' i a b w h2
@@ -150,7 +144,7 @@ theorem leafFreeCokSurj : LeafFreeCokSurj := by
   exact exists_finset_adjoin_laurent_preimage R i' i a b w h2 T v
 
 /- English proof (translation)
-The claim follows from `LeafFreeCok_of leafFreeCokSurj hI`.
+A detailed English derivation is pending.
 -/
 theorem LeafFreeCok_of_inj (hI : LeafFreeCokInj) : LeafFreeCok := LeafFreeCok_of leafFreeCokSurj hI
 

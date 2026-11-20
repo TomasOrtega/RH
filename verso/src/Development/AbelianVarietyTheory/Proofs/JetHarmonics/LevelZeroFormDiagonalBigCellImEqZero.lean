@@ -8,7 +8,7 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Filt
 namespace GlobalTheory.LevelFormsReal
 
 /- English proof (translation)
-Use `⟨fun b hb => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [List.mem_ofFn] at hb`. Take `⟨l, rfl⟩` from `hb`. Conclude with `⟨by simp, hc l⟩`. Simplify using `[D.ptSize, List.map_ofFn, Function.comp_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem isLocPt_ofFn {j : ℕ} (c : Fin j → ℂ) (hc : ∀ l, c l ≠ 0) :
     D.IsLocPt (List.ofFn fun l => ((1 : ℕ), c l)) j := by
@@ -19,7 +19,7 @@ theorem isLocPt_ofFn {j : ℕ} (c : Fin j → ℂ) (hc : ∀ l, c l ≠ 0) :
   · simp [D.ptSize, List.map_ofFn, Function.comp_def]
 
 /- English proof (translation)
-Rewrite using `[List.ofFn_succ']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ofFn_snoc {j : ℕ} (c : Fin j → ℂ) (t : ℂ) :
     (List.ofFn fun l => ((1 : ℕ), (Fin.snoc c t : Fin (j + 1) → ℂ) l))
@@ -28,7 +28,7 @@ theorem ofFn_snoc {j : ℕ} (c : Fin j → ℂ) (t : ℂ) :
   simp
 
 /- English proof (translation)
-Establish `h : f =ᵐ[volume] fun t => (((f t).re : ℝ) : ℂ)` using `by filter_upwards [Measure.ae_ne volume (0 : ℂ)] with t ht`. Conclude with `Complex.ext (by simp) (by simp [hf t ht])`. Rewrite using `[integral_congr_ae h, integral_complex_ofReal]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_im_eq_zero {f : ℂ → ℂ} (hf : ∀ t, t ≠ 0 → (f t).im = 0) :
     (∫ t : ℂ, f t).im = 0 := by
@@ -39,13 +39,13 @@ theorem integral_im_eq_zero {f : ℂ → ℂ} (hf : ∀ t, t ≠ 0 → (f t).im 
   simp
 
 /- English proof (translation)
-Introduce `hP Wp Wq _ _ _ _ _ _ P p Cb H w hD hH hw`. Establish `key : ∀ (n j : ℕ), j + n = P.r + 1 → ∀ c : Fin j → ℂ, (∀ l, c l ≠ 0) → (p.RR H j w (List.ofFn fun l => ((1 : ℕ), c l)) (List.ofFn fun l => ((1 : ℕ), c l))).im = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `j hj c hc`. Take `rfl : j = P.r + 1` from `hj`. Conclude with `(GlobalTheory.T.topDensity_bigCell_eq_prod_levelWeights_mul_topForm Wp Wq P p H w c hc).2.1`. Consider the case `succ n ih`. Introduce `j hj c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(GlobalTheory.T.levelModuleForm_eq_integral_of_compactCoeff hP Wp Wq P p Cb H w j _ hD hH hw (by omega) (isLocPt_ofFn c hc)).2]`. Use `integral_im_eq_zero fun t ht => ?_` and prove the remaining obligations. Establish `h` using `ih (j + 1) (by omega) (Fin.snoc c t) (fun l => by`. Use `Fin.lastCases ?_ (fun i => ?_) l` and prove the remaining obligations. Simplify using `using ht`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hc i)`. Rewrite `h` using `[ofFn_snoc]`. Simplify using `[Complex.mul_im, h]`. Simplify using `using key (P.r + 1) 0 (by omega) (fun l => l.elim0) (fun l => l.elim0)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem levelZero_im_eq_zero : P5.ThmPActualCpt → ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq) (Cb : ℝ) (H : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (w : List C.Letter), KB.InDDplus2 P p.l0 p.T.base Cb p.Θ → KB.CptCoef p.T.base H → KB.CutWord P p.l0 w → (p.RR H 0 w [] []).im = 0 := by
   intro hP Wp Wq _ _ _ _ _ _ P p Cb H w hD hH hw

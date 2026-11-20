@@ -21,7 +21,7 @@ abbrev Q (p d : ℕ) := Fin d → N p
 variable {p : ℕ} [NeZero p]
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.2 (NeZero.ne p)`.
+A detailed English derivation is pending.
 -/
 theorem p_ne : (p : ℚ) ≠ 0 := Nat.cast_ne_zero.2 (NeZero.ne p)
 
@@ -35,7 +35,7 @@ Both sides reduce to the same expression.
 theorem pinv_coe (m : ℕ) : ((pinv p m : N p) : ℚ) = ((p : ℚ) ^ m)⁻¹ := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `p_ne (p := p)` as an intermediate fact. Simplify using `only [AddSubmonoidClass.coe_nsmul, pinv_coe, nsmul_eq_mul, pow_succ]`. Clear the denominators using the available nonvanishing facts.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem p_smul_pinv (m : ℕ) : p • pinv p (m + 1) = pinv p m := by
   apply Subtype.ext
@@ -44,7 +44,7 @@ theorem p_smul_pinv (m : ℕ) : p • pinv p (m + 1) = pinv p m := by
   field_simp
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', pow_mul, ← add_assoc, hs, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem seq_pow {B : Type} [CommMonoid B] (s : ℕ → B) (hs : ∀ m, s (m + 1) ^ p = s m) (m j : ℕ) :
     s (m + j) ^ (p ^ j) = s m := by
@@ -53,9 +53,9 @@ theorem seq_pow {B : Type} [CommMonoid B] (s : ℕ → B) (hs : ∀ m, s (m + 1)
   | succ j ih => rw [pow_succ', pow_mul, ← add_assoc, hs, ih]
 
 /- English proof (translation)
-Establish `e : p ^ m' * n = p ^ m * n'`. Establish `: ((p ^ m' * n : ℕ) : ℚ) = ((p ^ m * n' : ℕ) : ℚ)`. Use `push_cast`. Rewrite using `[← h, ← h']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `this` after adjusting the coercions. Establish `h1` using `seq_pow s hs m m'`. Establish `h2` using `seq_pow s hs m' m`. Rewrite using `[← h1, ← h2, add_comm m' m, ← pow_mul, ← pow_mul, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seq_eq {B : Type} [CommMonoid B] (s : ℕ → B) (hs : ∀ m, s (m + 1) ^ p = s m) {x : ℚ}
     {m n m' n' : ℕ} (h : (p : ℚ) ^ m * x = n) (h' : (p : ℚ) ^ m' * x = n') :
@@ -71,15 +71,15 @@ theorem seq_eq {B : Type} [CommMonoid B] (s : ℕ → B) (hs : ∀ m, s (m + 1) 
   rw [← h1, ← h2, add_comm m' m, ← pow_mul, ← pow_mul, e]
 
 /- English proof (translation)
-Use `choose lv nm hl using fun x : N p => x.2.2`. Establish `key : ∀ (x : N p) (m n : ℕ), (p : ℚ) ^ m * (x : ℚ) = n → s (lv x) ^ nm x = s m ^ n` using `fun x m n h => seq_eq s hs (hl x) h`. Use `⟨{ toFun := fun x => s (lv x.toAdd) ^ nm x.toAdd, map_one' := ?_, map_mul' := ?_ }, ?_⟩` and prove the remaining obligations. Use `key (0 : N p) 0 0 (by simp)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y set a : N p := x.toAdd set b : N p := y.toAdd`. Establish `hx` using `hl a`. Establish `hy` using `hl b`. Establish `h1 : (p : ℚ) ^ (lv a + lv b) * (a : ℚ) = (p ^ lv b * nm a : ℕ)`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (p : ℚ) ^ (lv a + lv b) * (b : ℚ) = (p ^ lv a * nm b : ℕ)`. Use `push_cast`. Rewrite using `[← hy]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h3 : (p : ℚ) ^ (lv a + lv b) * ((a + b : N p) : ℚ) = (p ^ lv b * nm a + p ^ lv a * nm b : ℕ)`. Rewrite using `[AddSubmonoid.coe_add, mul_add, h1, h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e : (x * y).toAdd = a + b` using `rfl`. Simplify using `only [e]`. Rewrite using `[key _ _ _ h3, key _ _ _ h1, key _ _ _ h2, pow_add]`. Introduce `x m n h`. Conclude with `key x m n h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_hom {B : Type} [CommMonoid B] (s : ℕ → B) (hs : ∀ m, s (m + 1) ^ p = s m) :
     ∃ Θ : Multiplicative (N p) →* B, ∀ (x : N p) (m n : ℕ), (p : ℚ) ^ m * (x : ℚ) = n →
@@ -131,9 +131,9 @@ open AddMonoidAlgebra
 noncomputable def cl (a : Q p d) : E p t := Ideal.Quotient.mk (J p t) (single a 1)
 
 /- English proof (translation)
-Use `choose lv nm hl using fun k => (a k).2.2`. Use `⟨∑ k, lv k, fun k => p ^ (∑ j, lv j - lv k) * nm k, fun k => ?_⟩` and prove the remaining obligations. Establish `hle : lv k ≤ ∑ j, lv j` using `Finset.single_le_sum (f := lv) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Take `⟨e, he⟩` from `Nat.exists_eq_add_of_le hle`. Use `show (p : ℚ) ^ (∑ j, lv j) * (a k : ℚ) = ((p ^ (∑ j, lv j - lv k) * nm k : ℕ) : ℚ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[he, Nat.add_sub_cancel_left]`. Use `push_cast`. Rewrite using `[← hl k, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_common (a : Q p d) : ∃ (m : ℕ) (c : Fin d → ℕ), ∀ k, (p : ℚ) ^ m * (a k : ℚ) = c k := by
   choose lv nm hl using fun k => (a k).2.2
@@ -147,7 +147,7 @@ theorem exists_common (a : Q p d) : ∃ (m : ℕ) (c : Fin d → ℕ), ∀ k, (p
   ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [AddMonoidAlgebra.one_def]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, ← ih, single_mul_single, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem single_sum_one {ι : Type} (s : Finset ι) (f : ι → Q p d) :
     (single (∑ j ∈ s, f j) (1 : D) : A p D d) = ∏ j ∈ s, single (f j) 1 := by
@@ -157,7 +157,7 @@ theorem single_sum_one {ι : Type} (s : Finset ι) (f : ι → Q p d) :
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, ← ih, single_mul_single, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_apply, Finset.sum_eq_single k]`. Simplify using `[u]`. Introduce `j _ hj`. Simplify using `[u, Pi.single_eq_of_ne hj.symm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_smul_u_apply (c : Fin d → ℕ) (m : ℕ) (k : Fin d) :
     (∑ j, c j • u p j m) k = c k • pinv p m := by
@@ -168,9 +168,9 @@ theorem sum_smul_u_apply (c : Fin d → ℕ) (m : ℕ) (k : Fin d) :
   · simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hp` using `pow_ne_zero m (p_ne (p := p))`. Rewrite using `[sum_smul_u_apply]`. Simplify using `only [AddSubmonoidClass.coe_nsmul, pinv_coe, nsmul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h k]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem eq_sum_of_common (a : Q p d) {m : ℕ} {c : Fin d → ℕ} (h : ∀ k, (p : ℚ) ^ m * (a k : ℚ) = c k) :
     a = ∑ k, c k • u p k m := by
@@ -183,7 +183,7 @@ theorem eq_sum_of_common (a : Q p d) {m : ℕ} {c : Fin d → ℕ} (h : ∀ k, (
   field_simp
 
 /- English proof (translation)
-Rewrite using `[cl, single_sum_one, map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[cl, ← map_pow, single_pow, one_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cl_sum (m : ℕ) (c : Fin d → ℕ) : cl t (∑ k, c k • u p k m) = ∏ k, cl t (u p k m) ^ c k := by
   rw [cl, single_sum_one, map_prod]
@@ -191,7 +191,7 @@ theorem cl_sum (m : ℕ) (c : Fin d → ℕ) : cl t (∑ k, c k • u p k m) = �
   rw [cl, ← map_pow, single_pow, one_pow]
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_sum_of_common a h]`. Conclude with `cl_sum t m c`.
+A detailed English derivation is pending.
 -/
 theorem cl_eq_prod (a : Q p d) {m : ℕ} {c : Fin d → ℕ} (h : ∀ k, (p : ℚ) ^ m * (a k : ℚ) = c k) :
     cl t a = ∏ k, cl t (u p k m) ^ c k := by
@@ -199,7 +199,7 @@ theorem cl_eq_prod (a : Q p d) {m : ℕ} {c : Fin d → ℕ} (h : ∀ k, (p : �
   exact cl_sum t m c
 
 /- English proof (translation)
-Rewrite using `[cl, cl, cl, ← map_mul, single_mul_single, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cl_add (a b : Q p d) : cl t (a + b) = cl t a * cl t b := by
   rw [cl, cl, cl, ← map_mul, single_mul_single, one_mul]
@@ -211,16 +211,16 @@ theorem algebraMap_eq (x : D) :
     algebraMap D (E p t) x = Ideal.Quotient.mk (J p t) (single 0 x) := rfl
 
 /- English proof (translation)
-Establish `: single (u p k 0) (1 : D) - single 0 (t k) ∈ J p t` using `Ideal.subset_span ⟨k, rfl⟩`. Conclude with `Ideal.Quotient.eq.2 this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cl_zero (k : Fin d) : cl t (u p k 0) = algebraMap D (E p t) (t k) := by
   have : single (u p k 0) (1 : D) - single 0 (t k) ∈ J p t := Ideal.subset_span ⟨k, rfl⟩
   exact Ideal.Quotient.eq.2 this
 
 /- English proof (translation)
-Rewrite using `[cl, ← map_pow, single_pow, one_pow, cl]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[u, p_smul_pinv]`. Simplify using `[u, Pi.single_eq_of_ne hj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cl_succ (k : Fin d) (m : ℕ) : cl t (u p k (m + 1)) ^ p = cl t (u p k m) := by
   rw [cl, ← map_pow, single_pow, one_pow, cl]
@@ -233,13 +233,13 @@ theorem cl_succ (k : Fin d) (m : ℕ) : cl t (u p k (m + 1)) ^ p = cl t (u p k m
 abbrev I (p d : ℕ) := {a : Q p d // ∀ k, (a k : ℚ) < 1}
 
 /- English proof (translation)
-Take `⟨_, m, n, h⟩` from `x.2`. Use `⟨Int.fract_nonneg _, m, (n - p ^ m * ⌊(x : ℚ)⌋).toNat, ?_⟩` and prove the remaining obligations. Establish `hnn : 0 ≤ (n : ℤ) - p ^ m * ⌊(x : ℚ)⌋`. Establish `: (0 : ℚ) ≤ (p : ℚ) ^ m * Int.fract (x : ℚ)` using `mul_nonneg (by positivity) (Int.fract_nonneg _)`. Establish `e : (p : ℚ) ^ m * Int.fract (x : ℚ) = (((n : ℤ) - p ^ m * ⌊(x : ℚ)⌋ : ℤ) : ℚ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Int.fract]`. Use `push_cast`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[e]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Establish `e2 : (((n - p ^ m * ⌊(x : ℚ)⌋).toNat : ℕ) : ℚ) = (((n : ℤ) - p ^ m * ⌊(x : ℚ)⌋ : ℤ) : ℚ)`. Use `Int.toNat_of_nonneg hnn` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite using `[e2, Int.fract]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fract_mem (x : N p) : Int.fract (x : ℚ) ∈ N p := by
   obtain ⟨_, m, n, h⟩ := x.2
@@ -267,21 +267,21 @@ noncomputable def fr (a : Q p d) : I p d :=
 noncomputable def T (a : Q p d) : D := ∏ k, t k ^ ⌊(a k : ℚ)⌋₊
 
 /- English proof (translation)
-Simplify using `[u, pinv_coe]`.
+Simplify using the standard rewrite rules.
 -/
 theorem u_zero_apply_self (k : Fin d) : ((u p k 0 k : N p) : ℚ) = 1 := by
   simp [u, pinv_coe]
 
 /- English proof (translation)
-Simplify using `[u, Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem u_zero_apply_ne {j k : Fin d} (h : j ≠ k) : ((u p k 0 j : N p) : ℚ) = 0 := by
   simp [u, Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Int.fract (((a + u p k 0) j : N p) : ℚ) = Int.fract (a j : ℚ)`. Distinguish the cases in `h : j = k`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `[u_zero_apply_self]`. Simplify using `[u_zero_apply_ne h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fr_add (a : Q p d) (k : Fin d) : fr (a + u p k 0) = fr a := by
   apply Subtype.ext
@@ -294,9 +294,9 @@ theorem fr_add (a : Q p d) (k : Fin d) : fr (a + u p k 0) = fr a := by
   · simp [u_zero_apply_ne h]
 
 /- English proof (translation)
-Establish `h : ∀ j, t j ^ ⌊(((a + u p k 0) j : N p) : ℚ)⌋₊ = t j ^ ⌊(a j : ℚ)⌋₊ * (if j = k then t j else 1)`. Introduce `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `only [Pi.add_apply, AddSubmonoid.coe_add, u_zero_apply_self, if_true]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Nat.floor_add_one (a j).2.1, pow_succ]`. Simplify using `[u_zero_apply_ne hj, hj]`. Simplify using `only [T, h, Finset.prod_mul_distrib]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem T_add (a : Q p d) (k : Fin d) : T t (a + u p k 0) = T t a * t k := by
   classical
@@ -311,7 +311,7 @@ theorem T_add (a : Q p d) (k : Fin d) : T t (a + u p k 0) = T t a * t k := by
   simp
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Int.fract_eq_self.2 ⟨(i.1 j).2.1, i.2 j⟩`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem fr_of_I (i : I p d) : fr i.1 = i := by
   apply Subtype.ext
@@ -320,7 +320,7 @@ theorem fr_of_I (i : I p d) : fr i.1 = i := by
   exact Int.fract_eq_self.2 ⟨(i.1 j).2.1, i.2 j⟩
 
 /- English proof (translation)
-Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.floor_eq_zero.2 (i.2 k), pow_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem T_of_I (i : I p d) : T t i.1 = 1 := by
   refine Finset.prod_eq_one fun k _ => ?_
@@ -331,15 +331,15 @@ noncomputable def φ : A p D d →+ (I p d →₀ D) :=
     (AddMonoidHom.mulRight (T t a))).comp coeffAddEquiv.toAddMonoidHom
 
 /- English proof (translation)
-Simplify using `[φ, coeffAddEquiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem φ_single (a : Q p d) (c : D) : φ t (single a c) = Finsupp.single (fr a) (c * T t a) := by
   simp [φ, coeffAddEquiv]
 
 /- English proof (translation)
-Proceed by induction on `y using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [add_mul, map_add, hx, hy, add_zero]`. Consider the case `single a c`. Rewrite using `[mul_sub, single_mul_single, single_mul_single, map_sub, φ_single, φ_single, fr_add, T_add, add_zero, mul_one, sub_eq_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem φ_mul_gen (y : A p D d) (k : Fin d) :
     φ t (y * (single (u p k 0) 1 - single 0 (t k))) = 0 := by
@@ -353,9 +353,9 @@ theorem φ_mul_gen (y : A p D d) (k : Fin d) :
     ring
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨k, rfl⟩` from `h`. Conclude with `fun y => φ_mul_gen t y k`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact fun z => by rw [mul_add, map_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => exact fun y => by rw [smul_eq_mul, ← mul_assoc]; exact hx _`.
+Treat this case separately. Treat this case separately.
 -/
 theorem φ_mul_of_mem {x : A p D d} (hx : x ∈ J p t) : ∀ y, φ t (y * x) = 0 := by
   induction hx using Submodule.span_induction with
@@ -367,13 +367,13 @@ theorem φ_mul_of_mem {x : A p D d} (hx : x ∈ J p t) : ∀ y, φ t (y * x) = 0
   | smul a x _ hx => exact fun y => by rw [smul_eq_mul, ← mul_assoc]; exact hx _
 
 /- English proof (translation)
-Simplify using `using φ_mul_of_mem t hx 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem φ_of_mem {x : A p D d} (hx : x ∈ J p t) : φ t x = 0 := by
   simpa using φ_mul_of_mem t hx 1
 
 /- English proof (translation)
-Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: l i • (single i.1 (1 : D) : A p D d) = single i.1 (l i)`. Rewrite using `[smul_single', mul_one]`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -388,7 +388,7 @@ theorem lincomb_eq (l : I p d →₀ D) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Use `conv_rhs => rw [← Finsupp.sum_single l]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[φ_single, fr_of_I, T_of_I, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem φ_sum (l : I p d →₀ D) : φ t (∑ i ∈ l.support, single i.1 (l i)) = l := by
   rw [map_sum]
@@ -397,7 +397,7 @@ theorem φ_sum (l : I p d →₀ D) : φ t (∑ i ∈ l.support, single i.1 (l i
   rw [φ_single, fr_of_I, T_of_I, mul_one]
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff]`. Introduce `l hl`. Rewrite `hl` using `[lincomb_eq, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[← φ_sum t l]`. Conclude with `φ_of_mem t hl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linInd : LinearIndependent D (fun i : I p d => cl t i.1) := by
   rw [linearIndependent_iff]
@@ -407,9 +407,9 @@ theorem linInd : LinearIndependent D (fun i : I p d => cl t i.1) := by
   exact φ_of_mem t hl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Pi.add_apply, sum_smul_u_apply]`. Simplify using `only [AddSubmonoid.coe_add, AddSubmonoidClass.coe_nsmul, pinv_coe, nsmul_eq_mul]`. Use `show (a k : ℚ) = _ + Int.fract (a k : ℚ)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[natCast_floor_eq_intCast_floor (a k).2.1]`. Simplify using `[Int.floor_add_fract]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_floor_add_fr (a : Q p d) : a = ∑ k, ⌊(a k : ℚ)⌋₊ • u p k 0 + (fr a).1 := by
   funext k
@@ -421,7 +421,7 @@ theorem eq_floor_add_fr (a : Q p d) : a = ∑ k, ⌊(a k : ℚ)⌋₊ • u p k 
   simp [Int.floor_add_fract]
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_floor_add_fr a]`. Rewrite using `[cl_add, cl_sum, Algebra.smul_def, T, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[cl_zero, map_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cl_eq_smul (a : Q p d) : cl t a = T t a • cl t (fr a).1 := by
   conv_lhs => rw [eq_floor_add_fr a]
@@ -431,7 +431,7 @@ theorem cl_eq_smul (a : Q p d) : cl t a = T t a • cl t (fr a).1 := by
   rw [cl_zero, map_pow]
 
 /- English proof (translation)
-Establish `: c • (single a (1 : D) : A p D d) = single a c` using `by rw [smul_single', mul_one]`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mk_single (a : Q p d) (c : D) :
     Ideal.Quotient.mk (J p t) (single a c) = c • cl t a := by
@@ -440,9 +440,9 @@ theorem mk_single (a : Q p d) (c : D) :
   rfl
 
 /- English proof (translation)
-Introduce and unpack `x -`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Proceed by induction on `y using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `single a c`. Rewrite using `[mk_single, cl_eq_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨fr a, rfl⟩))`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanning : ⊤ ≤ Submodule.span D (Set.range fun i : I p d => cl t i.1) := by
   rintro x -
@@ -455,9 +455,9 @@ theorem spanning : ⊤ ≤ Submodule.span D (Set.range fun i : I p d => cl t i.1
     exact Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨fr a, rfl⟩))
 
 /- English proof (translation)
-Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Apply `AddMonoidAlgebra.ringHom_ext` to reduce the goal to its premises. Conclude with `h₁`. Introduce `a`. Take `⟨m, c, h⟩` from `exists_common a`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `show g₁ (cl t a) = g₂ (cl t a)`. Rewrite using `[cl_eq_prod t a h, map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [map_pow, map_pow, h₂]`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext {B : Type} [CommRing B] {g₁ g₂ : E p t →+* B}
     (h₁ : ∀ x, g₁ (algebraMap D (E p t) x) = g₂ (algebraMap D (E p t) x))
@@ -472,25 +472,21 @@ theorem hom_ext {B : Type} [CommRing B] {g₁ g₂ : E p t →+* B}
     exact Finset.prod_congr rfl fun k _ => by rw [map_pow, map_pow, h₂]
 
 /- English proof (translation)
-Use `choose Θ hΘ using fun k => exists_hom (c k) (hs k)`. Set `θ : Multiplicative (Q p d) →* B` to `{ toFun := fun a => ∏ k, Θ k (Multiplicative.ofAdd (a.toAdd k)) map_one' := Finset.prod_eq_one fun k _ => map_one _ map_mul' := fun x y => by`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => map_mul _ _ _ }`. Establish `hθ : ∀ k m, θ (Multiplicative.ofAdd (u p k m)) = c k m`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k m`. Use `show ∏ j, Θ j (Multiplicative.ofAdd (u p k m j)) = c k m`. Rewrite using `[Finset.prod_eq_single k]`. Use `hΘ k (pinv p m) m 1 (by` as an intermediate fact. Rewrite using `[pinv_coe, mul_inv_cancel₀ (pow_ne_zero _ p_ne)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use the proof step `simp)`. Simplify `this` using `[u]`. Introduce `j _ hj`. Establish `: u p k m j = 0` using `by simp [u, Pi.single_eq_of_ne hj]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `map_one _`. Simplify using the standard rewrite rules. Set `g₀ : A p D d →+* B` to `liftNCRingHom f θ fun _ _ => Commute.all _ _`. Establish `hg₀ : ∀ a x, g₀ (single a x) = f x * θ (Multiplicative.ofAdd a)` using `fun a x => liftNC_single _ _ _ _`. Establish `hk : ∀ x ∈ J p t, g₀ x = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: J p t ≤ RingHom.ker g₀`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `show g₀ _ = 0`. Rewrite using `[map_sub, hg₀, hg₀, hθ, h0, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: θ (Multiplicative.ofAdd 0) = 1` using `map_one θ`. Rewrite using `[this, mul_one, sub_self]`. Conclude with `fun x hx => this hx`. Set `g : E p t →+* B` to `Ideal.Quotient.lift (J p t) g₀ hk`. Establish `hgA : ∀ x, g (algebraMap D (E p t) x) = f x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[algebraMap_eq]`. Use `show g₀ _ = _`. Rewrite using `[hg₀]`. Establish `: θ (Multiplicative.ofAdd 0) = 1` using `map_one θ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, mul_one]`. Establish `hgr : ∀ k m, g (cl t (u p k m)) = c k m`. Introduce `k m`. Use `show g₀ _ = _`. Rewrite using `[hg₀, hθ, map_one, one_mul]`.
-
-Use `⟨g, ⟨RingHom.ext hgA, hgr⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g' ⟨h1, h2⟩`. Use `hom_ext t (fun x => ?_) (fun k m => ?_)` and prove the remaining obligations. Rewrite using `[hgA, ← h1]`. Both sides reduce to the same expression.
-
-Rewrite using `[h2, hgr]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift (B : Type) [CommRing B] (f : D →+* B) (c : Fin d → ℕ → B)
     (h0 : ∀ k, c k 0 = f (t k)) (hs : ∀ k m, c k (m + 1) ^ p = c k m) :
@@ -552,11 +548,9 @@ Both sides reduce to the same expression.
 theorem cl_zero_one : cl t (0 : Q p d) = 1 := rfl
 
 /- English proof (translation)
-Establish `: ∃ k, (a.1 k : ℚ) ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `ha (Subtype.ext (funext fun k => Subtype.ext (hc k)))`. Take `⟨k, hk⟩` from `this`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hp : (0 : ℚ) < (p : ℚ) ^ m` using `pow_pos (Nat.cast_pos.2 (Nat.pos_of_ne_zero (NeZero.ne p))) m`. Establish `hpos : (0 : ℚ) < (a.1 k : ℚ)` using `lt_of_le_of_ne (a.1 k).2.1 hk.symm`. Establish `h1 : (0 : ℚ) < c k` using `by rw [← h k]; exact mul_pos hp hpos`. Establish `h2 : (c k : ℚ) < (p : ℚ) ^ m`.
-
-Rewrite using `[← h k]`. Conclude with `mul_lt_of_lt_one_right hp (a.2 k)`. Conclude with `Nat.not_dvd_of_pos_of_lt (by exact_mod_cast h1) (by exact_mod_cast h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_not_dvd (a : I p d) (ha : a ≠ ⟨0, fun k => by simp⟩) {m : ℕ} {c : Fin d → ℕ}
     (h : ∀ k, (p : ℚ) ^ m * (a.1 k : ℚ) = c k) : ∃ k, ¬ p ^ m ∣ c k := by
@@ -594,7 +588,7 @@ noncomputable def rootExt : RootExt p D t where
     exact cl_eq_prod t a.1 h
 
 /- English proof (translation)
-Introduce `p hp D _ d t`. Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Conclude with `⟨rootExt t⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_rootExt : ∀ (p : ℕ), p.Prime → ∀ (D : Type) [CommRing D] {d : ℕ} (t : Fin d → D),
     Nonempty (RootExt p D t) := by

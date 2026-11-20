@@ -31,7 +31,7 @@ def den (N k : ℕ) : ℕ := N * primorial (k + 1)
 def bnd (N k : ℕ) : ℝ := 16 * (N : ℝ) ^ (k + 1) * (k.factorial : ℝ)
 
 /- English proof (translation)
-Unfold `genB`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, RingHom.map_rat_algebraMap]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_genB {R S : Type*} [CommRing R] [Algebra ℚ R] [CommRing S] [Algebra ℚ S] {N : ℕ} (f : R →+* S) (k : ℕ)
     (Φ : ZMod N → R) : f (genB k Φ) = genB k (fun a => f (Φ a)) := by
@@ -41,7 +41,7 @@ theorem map_genB {R S : Type*} [CommRing R] [Algebra ℚ R] [CommRing S] [Algebr
   rw [map_mul, RingHom.map_rat_algebraMap]
 
 /- English proof (translation)
-Rewrite using `[map_genB]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem map_genB_char {R S : Type*} [CommRing R] [Algebra ℚ R] [CommRing S] [Algebra ℚ S] {N : ℕ} (f : R →+* S) (k : ℕ)
     (χ : DirichletCharacter R N) : f (genB k χ) = genB k (χ.ringHomComp f : ZMod N → S) := by
@@ -49,7 +49,7 @@ theorem map_genB_char {R S : Type*} [CommRing R] [Algebra ℚ R] [CommRing S] [A
   congr 1
 
 /- English proof (translation)
-Unfold `genB`. Conclude with `A.sum_mem fun a _ => A.mul_mem (h _) (A.algebraMap_mem _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem genB_mem {R : Type*} [CommRing R] [Algebra ℚ R] {N : ℕ} (k : ℕ) (Φ : ZMod N → R) (A : Subalgebra ℚ R)
     (h : ∀ a, Φ a ∈ A) : genB k Φ ∈ A := by
@@ -63,25 +63,25 @@ theorem Bprim_eq {R : Type*} [CommRing R] [Algebra ℚ R] {N : ℕ} (k : ℕ) (�
     Bprim k χ = ∑ a ∈ Icc 1 χ.conductor, primVal χ a * algebraMap ℚ R (bcoef χ.conductor k a) := rfl
 
 /- English proof (translation)
-Unfold `den`. Conclude with `Nat.mul_pos hN (primorial_pos _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem den_pos {N : ℕ} (hN : 0 < N) (k : ℕ) : 0 < den N k := by
   unfold den
   exact Nat.mul_pos hN (primorial_pos _)
 
 /- English proof (translation)
-Unfold `den`. Conclude with `Nat.mul_dvd_mul_right h _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem den_dvd {M N : ℕ} (h : M ∣ N) (k : ℕ) : den M k ∣ den N k := by
   unfold den
   exact Nat.mul_dvd_mul_right h _
 
 /- English proof (translation)
-Evaluate the numerical expressions using `[bcoef]`.
+Evaluate the numerical expressions.
 -/
 example : bcoef 1 1 1 = 1 / 2 := by norm_num [bcoef]
 /- English proof (translation)
-Evaluate the numerical expressions using `[bcoef]`.
+Evaluate the numerical expressions.
 -/
 example : bcoef 3 1 1 - bcoef 3 1 2 = -1 / 3 := by norm_num [bcoef]
 

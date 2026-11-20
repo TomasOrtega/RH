@@ -17,16 +17,16 @@ section Linear
 variable {X V : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.TraceOnInjectiveMap.trOn_map_of_injective j hj M L' L h`.
+A detailed English derivation is pending.
 -/
 theorem trOn_map (j : X →ₗ[ℂ] V) (hj : Function.Injective j) (M : Submodule ℂ X) (L' : X →ₗ[ℂ] X) (L : V →ₗ[ℂ] V)
     (h : ∀ x ∈ M, L (j x) = j (L' x)) : trOn (M.map j) L = trOn M L' :=
   _root_.GlobalTheory.TraceOnInjectiveMap.trOn_map_of_injective j hj M L' L h
 
 /- English proof (translation)
-Unfold `trOn`. Use `split_ifs with hL`. Rewrite using `[LinearMap.trace, dif_neg]`. Both sides reduce to the same expression. Introduce and unpack `⟨s, ⟨b⟩⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Conclude with `h (Module.Finite.of_basis b)`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem trOn_of_not_finite (M : Submodule ℂ V) (L : V →ₗ[ℂ] V) (h : ¬ Module.Finite ℂ M) : trOn M L = 0 := by
   unfold trOn
@@ -38,7 +38,7 @@ theorem trOn_of_not_finite (M : Submodule ℂ V) (L : V →ₗ[ℂ] V) (h : ¬ M
   · rfl
 
 /- English proof (translation)
-Unfold `trOn`. Use `split_ifs with hL`. Rewrite using `[Subsingleton.elim (L.restrict hL) 0, map_zero]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trOn_bot (L : V →ₗ[ℂ] V) : trOn ⊥ L = 0 := by
   unfold trOn
@@ -54,7 +54,7 @@ variable {H X V W : Type} [Group H] [AddCommGroup X] [Module ℂ X] [AddCommGrou
   [Module ℂ W]
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[GlobalTheory.TwTrLin.mem_fixed_iff]`. Introduce `k hk`. Use `LinearMap.congr_fun (f.isIntertwining' k) v` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[← this, hv k hk]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_fixed {σ : Representation ℂ H W} {τ : Representation ℂ H X} (f : σ.IntertwiningMap τ) (K : Subgroup H)
     {v : W} (hv : v ∈ fixed σ K) : f.toLinearMap v ∈ fixed τ K := by
@@ -65,15 +65,13 @@ theorem map_fixed {σ : Representation ℂ H W} {τ : Representation ℂ H X} (f
   rw [← this, hv k hk]
 
 /- English proof (translation)
-Use `haveI : Nontrivial (fixed σ K) := Submodule.nontrivial_iff_ne_bot.2 h0`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (φ.toLinearMap.restrict (p := fixed σ K) (q := fixed σ K) fun v hv => map_fixed φ K hv)`. Take `⟨v, hv⟩` from `hc.exists_hasEigenvector`. Establish `hv1 : φ.toLinearMap v.1 = c • v.1` using `congrArg Subtype.val hv.apply_eq_smul`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `((isIrreducible_iff σ).1 inferInstance).2 (LinearMap.ker (φ.toLinearMap - c • LinearMap.id)) (fun g u hu => by` into its components or cases. Rewrite `hu`, the goal using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Use `LinearMap.congr_fun (φ.isIntertwining' g) u` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[this, hu]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
 
-Use the proof step `simp) with h | h`. It suffices to derive a contradiction. Establish `: v.1 ∈ LinearMap.ker (φ.toLinearMap - c • LinearMap.id)`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Conclude with `hv1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h]`. Conclude with `hv.2 (Subtype.ext this)`. Introduce `w`. Establish `: w ∈ LinearMap.ker (φ.toLinearMap - c • LinearMap.id)` using `h ▸ Submodule.mem_top`. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schur (σ : Representation ℂ H W) [σ.IsIrreducible] (K : Subgroup H) [Module.Finite ℂ (fixed σ K)]
     (h0 : fixed σ K ≠ ⊥) (φ : σ.IntertwiningMap σ) : ∃ c : ℂ, ∀ w, φ.toLinearMap w = c • w := by
@@ -102,15 +100,13 @@ theorem schur (σ : Representation ℂ H W) [σ.IsIrreducible] (K : Subgroup H) 
     exact this
 
 /- English proof (translation)
-Set `R` to `MonoidAlgebra ℂ H`. Set `J : τ.asModule →ₗ[R] ρ.asModule` to `Representation.IntertwiningMap.equivLinearMapAsModule τ ρ j`. Establish `hle : LocUniq.isoPart σ ρ ≤ ((isotypicComponent R ρ.asModule σ.asModule).restrictScalars ℂ).comap ρ.asModuleEquiv.symm.toLinearMap`. Use `iSup_le fun f => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Set `F : σ.asModule →ₗ[R] ρ.asModule` to `Representation.IntertwiningMap.equivLinearMapAsModule σ ρ f`. Establish `h1 : LinearMap.range F ≤ isotypicComponent R ρ.asModule σ.asModule`. Break down `LinearMap.injective_or_eq_zero F with hf | hf` into its components or cases. Conclude with `le_sSup ⟨(LinearEquiv.ofInjective F hf).symm⟩`. Simplify using `[hf]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `h1 ⟨σ.asModuleEquiv.symm v, rfl⟩`. Set `J' : τ.asModule →ₗ[R] isotypicComponent R ρ.asModule σ.asModule` to `J.codRestrict _ fun x => hle (h (τ.asModuleEquiv x))`. Establish `hJ' : Function.Injective J'` using `fun a b e => hj (congrArg Subtype.val e)`. Use `haveI : IsSemisimpleModule R τ.asModule := IsSemisimpleModule.of_injective J' hJ'`. Take `⟨ι, ⟨e⟩⟩` from `((IsIsotypicOfType.isotypicComponent R ρ.asModule σ.asModule).of_injective J' hJ').linearEquiv_finsupp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ι, fun i => (Representation.IntertwiningMap.equivLinearMapAsModule σ τ).symm (e.symm.toLinearMap ∘ₗ Finsupp.lsingle i), fun i => (Representation.IntertwiningMap.equivLinearMapAsModule τ σ).symm (Finsupp.lapply i ∘ₗ e.toLinearMap), fun i i' w => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e (e.symm (Finsupp.single i' (σ.asModuleEquiv.symm w))) i = _`. Rewrite using `[e.apply_symm_apply, Finsupp.single_apply]`. Both sides reduce to the same expression. Establish `: e (τ.asModuleEquiv.symm x) = 0` using `Finsupp.ext fun i => hx i`.
-
-Conclude with `e.injective (this.trans (map_zero e).symm)`.
+Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_decomp (σ : Representation ℂ H W) [σ.IsIrreducible] (τ : Representation ℂ H X) (ρ : Representation ℂ H V)
     (j : τ.IntertwiningMap ρ) (hj : Function.Injective j.toLinearMap)
@@ -152,23 +148,21 @@ section Trace
 variable {H X W : Type} [Group H] [AddCommGroup X] [Module ℂ X] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Establish `hsum : ∀ x, x = ∑ i, (s i).toLinearMap ((p i).toLinearMap x)` using `fun x => by`. Rewrite using `[← sub_eq_zero]`. Use `hp _ fun i => ?_` and prove the remaining obligations. Simplify using `only [map_sub, map_sum, hps]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `choose b hb using fun i j => schur σ K h0 ((p j).comp (B.comp (s i)))`. Establish `hb' : ∀ i j w, (p j).toLinearMap (B.toLinearMap ((s i).toLinearMap w)) = b i j • w` using `hb`. Use `⟨∑ i, b i i, fun A a ha hA => ?_⟩` and prove the remaining obligations. Establish `hform : ∀ y, A (B.toLinearMap y) = ∑ i, ∑ j, b i j • (s j).toLinearMap (a ((p i).toLinearMap y))` using `fun y => by conv_lhs => rw [hsum y]`. Rewrite using `[map_sum, map_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hsum (B.toLinearMap _), map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hb', map_smul, map_smul, hA]`. Establish `hY : ∀ y ∈ fixed τ K, (A ∘ₗ B.toLinearMap) y ∈ fixed τ K` using `fun y hy => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.comp_apply, hform]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (map_fixed _ K (ha _ (map_fixed _ K hy)))`. Set `sU : ι → (fixed σ K →ₗ[ℂ] fixed τ K)` to `fun i => (s i).toLinearMap.restrict fun v hv => map_fixed _ K hv`. Set `pU : ι → (fixed τ K →ₗ[ℂ] fixed σ K)` to `fun i => (p i).toLinearMap.restrict fun v hv => map_fixed _ K hv`. Unfold `trOn`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dif_pos hY, dif_pos ha]`. Establish `h1 : (A ∘ₗ B.toLinearMap).restrict hY = ∑ i, ∑ j, b i j • (sU j ∘ₗ (a.restrict ha ∘ₗ pU i))`. Use `LinearMap.ext fun y => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A (B.toLinearMap y.1) = _`. Rewrite using `[hform]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [LinearMap.sum_apply, Submodule.coe_sum]`. Both sides reduce to the same expression. Establish `h2 : ∀ i j, (a.restrict ha ∘ₗ pU i) ∘ₗ sU j = if j = i then a.restrict ha else 0` using `fun i j => by`. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a ((p i).toLinearMap ((s j).toLinearMap v.1)) = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hps]`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `map_zero a`. Rewrite using `[h1, map_sum, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_eq_single i]`. Rewrite using `[map_smul, LinearMap.trace_comp_comm', h2, if_pos rfl, smul_eq_mul]`. Introduce `j _ hj`. Rewrite using `[map_smul, LinearMap.trace_comp_comm', h2, if_neg hj, map_zero, smul_zero]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_factor (σ : Representation ℂ H W) [σ.IsIrreducible] (τ : Representation ℂ H X) {ι : Type} [Fintype ι]
     (s : ι → σ.IntertwiningMap τ) (p : ι → τ.IntertwiningMap σ)
@@ -223,15 +217,13 @@ theorem exists_factor (σ : Representation ℂ H W) [σ.IsIrreducible] (τ : Rep
   · simp
 
 /- English proof (translation)
-Distinguish the cases in `hU : Module.Finite ℂ (fixed σ K)`. Use `swap`. Rewrite using `[trOn_of_not_finite _ a hU, trOn_of_not_finite _ a' hU, mul_zero, zero_mul]`. Distinguish the cases in `h0 : fixed σ K = ⊥`. Rewrite using `[h0, trOn_bot, trOn_bot, mul_zero, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hY : Module.Finite ℂ (fixed τ K)`. Use `swap`. Rewrite using `[trOn_of_not_finite _ _ hY, trOn_of_not_finite _ _ hY, mul_zero, zero_mul]`. Take `⟨ι, s, p, hps, hp⟩` from `exists_decomp σ τ ρ j hj h`. Take `⟨u, hu, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hli : LinearIndependent ℂ fun i => (⟨(s i).toLinearMap u, map_fixed _ K hu⟩ : fixed τ K)`. Use `LinearIndependent.of_comp (fixed τ K).subtype (linearIndependent_iff'.2 fun T g hg i hi => ?_)` and prove the remaining obligations. Use `congrArg (p i).toLinearMap hg` as an intermediate fact. Simplify using `only [Function.comp_apply, Submodule.subtype_apply, map_sum, map_smul, hps, map_zero] at this`. Rewrite `this` using `[Finset.sum_eq_single i (fun j _ hj => by rw [if_neg hj, smul_zero]) (fun h => absurd hi h), if_pos rfl]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(smul_eq_zero.1 this).resolve_right hu0`. Use `haveI : Finite ι := hli.finite`. Use `haveI := Fintype.ofFinite ι`. Take `⟨t, ht⟩` from `exists_factor σ τ s p hps hp K h0 B`. Rewrite using `[ht A a ha fun i => hA (s i), ht A' a' ha' fun i => hA' (s i)]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem trOn_cross {V : Type} [AddCommGroup V] [Module ℂ V] (σ : Representation ℂ H W) [σ.IsIrreducible]
     (τ : Representation ℂ H X) (ρ : Representation ℂ H V) (j : τ.IntertwiningMap ρ)
@@ -271,7 +263,7 @@ section Split
 variable {G H V W : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Rewrite using `[LevOpTmul.levOp_apply τ K₀ K a _ ha.toFinset (fun q hq => by simpa using hq), LevOpTmul.levOp_apply σ K₀ K a _ ha.toFinset (fun q hq => by simpa using hq)]`. Simplify using `only [map_smul, map_sum, hs, LinearMap.id_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem levOp_nat {X : Type} [AddCommGroup X] [Module ℂ X] (σ : Representation ℂ H W) (τ : Representation ℂ H X)
     (s : W →ₗ[ℂ] X) (hs : ∀ h w, s (σ h w) = τ h (s w)) (K₀ K : Subgroup H) (a : H → ℂ)
@@ -287,7 +279,7 @@ variable (ι : H →* G) (r : G →* H) (hr : ∀ h, r (ι h) = h) (hc : ∀ x �
 include hr in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨(ι (r g))⁻¹ * g, by rw [MonoidHom.mem_ker, map_mul, map_inv, hr, inv_mul_cancel]⟩, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_split (g : G) : ∃ x : r.ker, g = ι (r g) * x :=
   ⟨⟨(ι (r g))⁻¹ * g, by rw [MonoidHom.mem_ker, map_mul, map_inv, hr, inv_mul_cancel]⟩, by simp⟩
@@ -295,11 +287,11 @@ theorem exists_split (g : G) : ∃ x : r.ker, g = ι (r g) * x :=
 include hr hc hK1 hK2 in
 
 /- English proof (translation)
-Simplify using `only [QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `e : (ι h * x : G)⁻¹ * (ι h' * x') = ι (h⁻¹ * h') * ((x⁻¹ * x' : r.ker) : G)`. Use `(hc _ (x⁻¹).2 (h⁻¹ * h')).eq` as an intermediate fact. Simplify using `only [Subgroup.coe_inv, Subgroup.coe_mul, map_mul, map_inv] at this ⊢`. Rewrite using `[mul_inv_rev, ← mul_assoc _ (x : G)⁻¹, ← this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Establish `h1 : h⁻¹ * h' ∈ K`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hK2 _ hm` as an intermediate fact. Rewrite `this` using `[map_mul, hr, (x⁻¹ * x').2, mul_one]`. Then use the resulting hypothesis. Conclude with `⟨h1, (U.mul_mem_cancel_left (hK1 _ h1)).1 hm⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `U.mul_mem (hK1 _ h1) h2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mk_eq_iff (h h' : H) (x x' : r.ker) :
     ((ι h * x : G) : G ⧸ U) = (ι h' * x' : G) ↔
@@ -323,19 +315,17 @@ theorem mk_eq_iff (h h' : H) (x x' : r.ker) :
 include hr hc hK1 hK2 in
 
 /- English proof (translation)
-Establish `hv'` using `(GlobalTheory.TwTrLin.mem_fixed_iff ρ U v).1 hv`. Establish `t3` using `LevOpTmul.term_mk ρ U F hFr v hv'`. Establish `t1 : ∀ g : H, a (g : H ⧸ K).out = a g` using `fun g => by`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K g`. Rewrite using `[hk, har _ k.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `t2 : ∀ g : r.ker, b (g : r.ker ⧸ U.subgroupOf r.ker).out = b g` using `fun g => by`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (U.subgroupOf r.ker) g`. Rewrite using `[hk, hbr _ k.2]`. Set `e : (H ⧸ K) × (r.ker ⧸ U.subgroupOf r.ker) → G ⧸ U` to `fun p => ((ι p.1.out * (p.2.out : r.ker) : G) : G ⧸ U)`. Establish `he : Function.Injective e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `p q h`. Use `(mk_eq_iff ι r hr hc hK1 hK2 _ _ _ _).1 h` as an intermediate fact. Simplify using `only [QuotientGroup.out_eq'] at this`. Conclude with `Prod.ext this.1 this.2`. Establish `h0' : ((K.relIndex K₀ : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LevOpTmul.levOp_apply _ K₀ K a _ ha.toFinset (fun q hq => by simpa using hq), LevOpTmul.levOp_apply _ _ _ b _ hb.toFinset (fun q hq => by simpa using hq), LevOpTmul.levOp_apply ρ _ _ _ _ ((ha.toFinset ×ˢ hb.toFinset).image e) ?_, Finset.sum_image (fun p _ q _ h => he h), Finset. …`. Simplify using `only [LinearMap.id_apply, Subgroup.relIndex_self, Nat.cast_one, inv_one, one_smul, map_smul, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `only [e]`. Rewrite using `[(t3 _).1, (t3 _).2, hF, map_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Introduce `q hq`. Take `⟨x, hx⟩` from `exists_split ι r hr q.out`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.mem_image.2 ⟨((r q.out : H ⧸ K), (x : r.ker ⧸ U.subgroupOf r.ker)), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_product, Set.Finite.mem_toFinset, Set.mem_setOf_eq, t1, t2]`. Rewrite `hq` using `[hx, hF]`. Conclude with `mul_ne_zero_iff.1 hq`. Use `conv_rhs => rw [← QuotientGroup.out_eq' q, hx]`.
-
-Conclude with `(mk_eq_iff ι r hr hc hK1 hK2 _ _ _ _).2 ⟨QuotientGroup.out_eq' _, QuotientGroup.out_eq' _⟩`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levOp_split (ρ : Representation ℂ G V) (U₀ : Subgroup G) (K₀ : Subgroup H) (h0 : K.relIndex K₀ ≠ 0)
     (F : G → ℂ) (a : H → ℂ) (b : r.ker → ℂ) (hF : ∀ h (x : r.ker), F (ι h * x) = a h * b x)
@@ -385,23 +375,23 @@ theorem levOp_split (ρ : Representation ℂ G V) (U₀ : Subgroup G) (K₀ : Su
 include hr hc hK1 hK2 in
 
 /- English proof (translation)
-Set `L` to `U.subgroupOf r.ker`. Set `ρR : Representation ℂ r.ker V` to `ρ.comp r.ker.subtype`. Set `ρH : Representation ℂ H V` to `ρ.comp ι`. Establish `hcomm : ∀ (h : H) (x : r.ker) v, ρH h (ρR x v) = ρR x (ρH h v)` using `fun h x v => by`. Express the relevant statement in the definitionally equal form `(ρ (ι h) * ρ x) v = (ρ x * ρ (ι h)) v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← map_mul, ← map_mul, (hc _ x.2 h).eq]`. Set `X' : Submodule ℂ V` to `X ⊓ fixed ρR L`. Establish `hX' : ∀ h, X' ≤ X'.comap (ρH h)` using `fun h v hv => by`. Use `⟨hX _ _ hv.1, (GlobalTheory.TwTrLin.mem_fixed_iff _ _ _).2 fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[← hcomm, (GlobalTheory.TwTrLin.mem_fixed_iff _ _ _).1 hv.2 k hk]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `τ : Representation ℂ H X'` to `ρH.subrepresentation X' hX'`. Set `j : τ.IntertwiningMap ρH` to `⟨X'.subtype, fun _ => rfl⟩`. Set `c : ℂ` to `((U.relIndex U₀ : ℕ) : ℂ)⁻¹ * (K.relIndex K₀ : ℕ)`. Set `B₀ : V →ₗ[ℂ] V` to `c • levOp ρR L L b LinearMap.id`. Establish `hB₀ : ∀ v ∈ X', B₀ v ∈ X'` using `fun v hv => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `X'.smul_mem c ⟨?_, GlobalTheory.TwTrLin.levOp_mapsTo ρR L L _ b hb (fun k hk x => (hbi k hk x).1) (fun k hk x => (hbi k hk x).2) (fun _ h => h) v hv.2⟩` and prove the remaining obligations. Rewrite using `[LevOpTmul.levOp_apply _ _ _ b _ hb.toFinset (fun q hq => by simpa using hq)]`. Conclude with `X.smul_mem _ (X.sum_mem fun q _ => X.smul_mem _ (hX _ _ hv.1))`. Set `B : τ.IntertwiningMap τ` to `⟨B₀.restrict hB₀, fun h => LinearMap.ext fun v => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `c • levOp ρR L L b LinearMap.id (ρH h v.1) = ρH h (c • levOp ρR L L b LinearMap.id v.1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, levOp_nat ρR ρR (ρH h) (hcomm h) L L b hb])⟩`. Establish `hY : X ⊓ fixed ρ U = (fixed τ K).map X'.subtype`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h3` using `(GlobalTheory.TwTrLin.mem_fixed_iff _ _ _).1 h2`. Conclude with `⟨⟨v, h1, (GlobalTheory.TwTrLin.mem_fixed_iff _ _ _).2 fun k hk => h3 _ hk⟩, (GlobalTheory.TwTrLin.mem_fixed_iff _ _ _).2 fun k hk => Subtype.ext (h3 _ (hK1 k hk)), rfl⟩`. Introduce and unpack `⟨v, hv, rfl⟩`. Use `⟨v.2.1, (GlobalTheory.TwTrLin.mem_fixed_iff _ _ _).2 fun k hk => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `exists_split ι r hr k`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxU : x ∈ L`. Establish `: ι (r k) * x ∈ U` using `hx ▸ hk`. Conclude with `(U.mul_mem_cancel_left (hK1 _ (hK2 k hk))).1 this`. Establish `h1 : ρ x v.1 = v.1` using `(GlobalTheory.TwTrLin.mem_fixed_iff _ _ _).1 v.2.2 x hxU`. Establish `h2 : ρ (ι (r k)) v.1 = v.1` using `congrArg Subtype.val ((GlobalTheory.TwTrLin.mem_fixed_iff _ _ _).1 hv _ (hK2 k hk))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ρ k v.1 = v.1`. Rewrite using `[hx, map_mul, Module.End.mul_apply, h1, h2]`. Establish `key : ∀ (F : G → ℂ) (a : H → ℂ), (∀ h (x : r.ker), F (ι h * x) = a h * b x) → (∀ k ∈ U, ∀ x, F (x * k) = F x) → (∀ k ∈ K, ∀ x, a (x * k) = a x) → {q : H ⧸ K | a q.out ≠ 0}.Finite → trOn (X ⊓ fixed ρ U) (levOp ρ U₀ U F LinearMap.id) = trOn (fixed τ K) (levOp τ K₀ K a LinearMap.id …` using `fun F a hF hFr har ha => by`. Rewrite using `[hY]`. Use `trOn_map _ X'.injective_subtype _ _ _ fun v hv => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv' : X'.subtype v ∈ X ⊓ fixed ρ U` using `hY ▸ ⟨v, hv, rfl⟩`. Rewrite using `[levOp_split ι r hr hc hK1 hK2 ρ U₀ K₀ h0 F a b hF hFr har (fun k hk x => (hbi k hk x).2) ha hb _ hv'.2, LinearMap.comp_apply, ← levOp_nat τ ρH X'.subtype (fun _ _ => rfl) K₀ K a ha]`. Both sides reduce to the same expression. Rewrite using `[key F a hF hFr (fun k hk x => (hai k hk x).2) ha, key F' a' hF' hFr' (fun k hk x => (hai' k hk x).2) ha']`. Conclude with `trOn_cross σ τ ρH j X'.injective_subtype (fun x => hiso x.2.1) K B _ _ _ _ (GlobalTheory.TwTrLin.levOp_mapsTo σ K₀ K _ a ha (fun k hk x => (hai k hk x).1) (fun k hk x => (hai k hk x).2) fun _ h => h) (GlobalTheory.TwTrLin.levOp_mapsTo σ K₀ K _ a' ha' (fun k hk x => (hai' k hk x). …`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trOn_levOp_cross (ρ : Representation ℂ G V) (X : Submodule ℂ V) (hX : ∀ g, ∀ v ∈ X, ρ g v ∈ X)
     (σ : Representation ℂ H W) [σ.IsIrreducible] (hiso : X ≤ LocUniq.isoPart σ (ρ.comp ι))

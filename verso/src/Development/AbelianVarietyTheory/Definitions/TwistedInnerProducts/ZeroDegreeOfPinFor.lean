@@ -29,7 +29,7 @@ def PinFor (hk : ∀ i j b, ℕ → PlE D.host → Module.End (FractionRing (D.n
             hkFR S i j b (hL j) (hs j h1 h2) k P (Y.eF i j b h1 h2 x)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem heckePin_iff : HeckePin Rl cG S Y ↔ PinFor Rl cG S Y D.nexp.hkF := Iff.rfl
 
@@ -38,13 +38,13 @@ def Covered : Prop :=
     Formalism.IndefR.Bridge.SplitOff P (Rl.Sb : Set (Formalism.L2.DIV.Pl D.host.E))
 
 /- English proof (translation)
-Introduce `i P hP hs`. Establish `hA' : Rl.Sb = Rl.Pg` using `hA`. Establish `key : ∀ Q ∈ Rl.Sb, ∃ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal`. Introduce `Q hQ`. Rewrite `hQ` using `[hA']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, hk⟩` from `(hL.Pg Q).1 hQ`. Establish `h1` using `Rl.C.P.pb_over k`. Establish `h2 : Q.under (𝓞 D.host.K) = Rl.C.P.pb k` using `hk`. Rewrite `h1` using `[← h2]`. Establish `h3 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ Q.asIdeal` using `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨k, by rwa [map_natCast] at h3⟩`. Use `⟨(GlobalTheory.HeckeTieCompare.isSplitPl_iff P).1 hs, fun h => ?_, fun Q hQ h => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `key P h`. Conclude with `hP (D.ntw.placesOver_subset_exceptional i k hk)`. Take `⟨k, hk⟩` from `key Q hQ`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[h, Formalism.L2.Col.conjIdeal_asIdeal, Formalism.L2.Col.mem_conjP, map_natCast]`. Conclude with `hP (D.ntw.placesOver_subset_exceptional i k hk)`.
+A detailed English derivation is pending.
 -/
 theorem covered_of_allPlaces (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hA : Rl.AllPlaces) : Covered Rl := by
   intro i P hP hs
@@ -66,9 +66,9 @@ theorem covered_of_allPlaces (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hA : Rl.Al
     exact hP (D.ntw.placesOver_subset_exceptional i k hk)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Use `(hU i σ).1 1 (fun _ => x) (by rw [linearIndependent_unique_iff]; exact h0)` as an intermediate fact. Rewrite `this` using `[linearIndependent_unique_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this hx`.
+A detailed English derivation is pending.
 -/
 theorem j_injective (hU : Rl.toRealDat.LUnif) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) :
     Function.Injective ((Rl.FW i).j σ) := by
@@ -80,9 +80,9 @@ theorem j_injective (hU : Rl.toRealDat.LUnif) (i : Fin D.R.m) (σ : D.what₂.LL
   exact this hx
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, j = n + 1` from `⟨j - 1, by omega⟩`. Set `i : Fin D.R.m` to `⟨n, h2⟩`. Take `⟨α, Rc, ha, hR⟩` from `GlobalTheory.HeckeSupSt.exists_heckeElt hL hF i ho hk`. Use extensionality with `x`. Establish `e` using `(h i k P hs ho hk α Rc ha hR x).trans (h' i k P hs ho hk α Rc ha hR x).symm`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `(Y.fi i).e.injective (j_injective Rl hU i _ ((hW i _).1 e))`.
+A detailed English derivation is pending.
 -/
 theorem reads_unique (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hF : Rl.toRealDat.IsFam) (hU : Rl.toRealDat.LUnif)
     (hW : Rl.toRealDat.models_HW) {f f' : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)}
@@ -97,7 +97,7 @@ theorem reads_unique (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hF : Rl.toRealDat.
   exact (Y.fi i).e.injective (j_injective Rl hU i _ ((hW i _).1 e))
 
 /- English proof (translation)
-Unfold `hkFR`. Use `congr 1`. Use extensionality with `x`. Conclude with `congrArg (fun t : Module.End D.what₂.LL (S.WL j) => t x) h`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem hkFR_congr (i : D.ntw.Tw) (j : ℕ) (b : Bool) {f f' : ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)}
     (hs : HeckeStabR S j f) (hs' : HeckeStabR S j f') (k : ℕ) (P : PlE D.host) (h : f k P = f' k P) :
@@ -117,7 +117,7 @@ def baseChangeOps (f : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `f' hs' hf'`. Use `⟨fun _ _ _ => 1, fun i j b h1 h2 k P x hP hsp hk => ?_⟩` and prove the remaining obligations. Establish `e` using `hkFR_congr S i j b (hs j h1 h2) (hs' j h1 h2) k P (reads_unique Rl cG S Y hL hF hU hW hf hf' j h1 h2 k P hsp (hC i P hP hsp) hk)`. Rewrite using `[← e, baseChangeOps, dif_pos ⟨h1, h2⟩, LinearEquiv.conj_apply_apply, LinearEquiv.apply_symm_apply, LinearEquiv.symm_symm, Units.val_one, map_one, one_pow, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pinFor_baseChange (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hF : Rl.toRealDat.IsFam) (hU : Rl.toRealDat.LUnif)
     (hW : Rl.toRealDat.models_HW) (hC : Covered Rl) (f : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j))
@@ -131,7 +131,7 @@ theorem pinFor_baseChange (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hF : Rl.toRea
     LinearEquiv.symm_symm, Units.val_one, map_one, one_pow, one_smul]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ (f : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (_ : ∀ j, 1 ≤ j → j ≤ D.R.m → HeckeStabR S j (f j)), Reads Rl cG S Y f`. Take `⟨f, hs, hf⟩` from `h`. Conclude with `⟨_, pinFor_baseChange Rl cG S Y hL hF hU hW (covered_of_allPlaces Rl hL hA) f hs hf⟩`. Conclude with `⟨D.nexp.hkF, fun f hs hf => absurd ⟨f, hs, hf⟩ h⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_pinFor (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hF : Rl.toRealDat.IsFam) (hU : Rl.toRealDat.LUnif)
     (hW : Rl.toRealDat.models_HW) (hA : Rl.AllPlaces) : ∃ hk, PinFor Rl cG S Y hk := by
@@ -144,7 +144,7 @@ theorem exists_pinFor (hL : Rl.toRealDat.toLevCh.Is A3.A.μ0) (hF : Rl.toRealDat
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hp f hs hf`. Use `⟨⟨f, hs, fun i b k P => (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (u i b P)) ^ k, fun _ _ _ => pow_zero _, fun i b P => ?_, fun i b k P => by rw [pow_one], hu⟩, rfl, ⟨fun i k P h1 h2 _ _ hk α R ha hR x _ => hf i k P h1 h2 hk α R ha hR x⟩, fun i b P => ⟨u i b P, pow_one _ …` and prove the remaining obligations. Conclude with `((u i b P).isUnit.map _).pow 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem row_of_pin (hp : HeckePin Rl cG S Y) (f : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j))
     (hs : ∀ j, 1 ≤ j → j ≤ D.R.m → HeckeStabR S j (f j)) (hf : Reads Rl cG S Y f)
@@ -160,11 +160,11 @@ theorem row_of_pin (hp : HeckePin Rl cG S Y) (f : ∀ j, ℕ → PlE D.host → 
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Unfold `hkFR`. Establish `: ((f k P).restrictScalars S.Ks).restrict (p` using `(S.A j).WK) (q := (S.A j).WK) (fun x hx => hs k P x hx) = 0 := by`. Use extensionality with `x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `congrArg (fun t : Module.End D.what₂.LL (S.WL j) => t x) h`. Rewrite using `[this]`. Conclude with `map_zero (Module.End.baseChangeHom S.Ks (KB S i b) (FmK S j))`. Introduce `h`. Unfold `hkFR`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: ((f k P).restrictScalars S.Ks).restrict (p` using `(S.A j).WK) (q := (S.A j).WK) (fun x hx => hs k P x hx) = 1 := by`. Use extensionality with `x`. Conclude with `congrArg (fun t : Module.End D.what₂.LL (S.WL j) => t x) h`. Rewrite using `[this]`. Conclude with `map_one (Module.End.baseChangeHom S.Ks (KB S i b) (FmK S j))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hkFR_of_smul (i : D.ntw.Tw) (j : ℕ) (b : Bool) {f : ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)}
     (hs : HeckeStabR S j f) (k : ℕ) (P : PlE D.host) :
@@ -188,15 +188,15 @@ theorem hkFR_of_smul (i : D.ntw.Tw) (j : ℕ) (b : Bool) {f : ℕ → PlE D.host
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hp`. Establish `main : ∀ c : ∀ j, Module.End D.what₂.LL (S.WL j), (∀ j x, x ∈ (S.A j).WK → c j x ∈ (S.A j).WK) → ∃ (g : ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (hg : HeckeStabR S j g), g 0 P = c j ∧ Y.eF i j b h1 h2 (hk i j b 0 P x) = hkFR S i j b g hg 0 P (Y.eF i j b h1 h2 x)`. Introduce `c hc`. Set `g : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)` to `fun j k Q => if Q = P then c j else f j k Q`. Establish `hg : ∀ j, 1 ≤ j → j ≤ D.R.m → HeckeStabR S j (g j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `j h1 h2 k Q y hy`. Distinguish the cases in `hQ : Q = P`. Simplify using `only [g, if_pos hQ]`. Conclude with `hc j y hy`. Simplify using `only [g, if_neg hQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hs j h1 h2 k Q y hy`. Establish `hr : Reads Rl cG S Y g`. Introduce `i' k Q q1 q2 q3 α R ha hR y`. Establish `hQ : Q ≠ P` using `fun e => ho (e ▸ q2)`. Simplify using `only [g, if_neg hQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hf i' k Q q1 q2 q3 α R ha hR y`. Take `⟨u, hu⟩` from `hp g hg hr`. Use `⟨g j, hg j h1 h2, if_pos rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[hu i j b h1 h2 0 P x hP hsp (Nat.zero_le _), pow_zero, one_smul]`. Take `⟨g0, hg0, e0, a0⟩` from `main (fun _ => 0) (fun j x _ => (S.A j).WK.zero_mem)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨g1, hg1, e1, a1⟩` from `main (fun _ => 1) (fun j x hx => hx)`. Rewrite `a0` using `[(hkFR_of_smul S i j b hg0 0 P).1 e0]`. Rewrite `a1` using `[(hkFR_of_smul S i j b hg1 0 P).2 e1, a0]`. Conclude with `hx ((Y.eF i j b h1 h2).map_eq_zero_iff.1 a1.symm)`.
+A detailed English derivation is pending.
 -/
 theorem not_pinFor (hk : ∀ i j b, ℕ → PlE D.host → Module.End (FractionRing (D.ntw.O i)) (D.nexp.Fm i j b))
     (f : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j))
@@ -232,13 +232,13 @@ theorem not_pinFor (hk : ∀ i j b, ℕ → PlE D.host → Module.End (FractionR
   exact hx ((Y.eF i j b h1 h2).map_eq_zero_iff.1 a1.symm)
 
 /- English proof (translation)
-Establish `h' : ∀ (i : Fin D.R.m) (k : ℕ) (P : PlE D.host), ∃ t : Module.End D.what₂.LL (Fin (Rl.nW i) → D.what₂.LL), (∀ x ∈ (Rl.FW i).WK, t x ∈ (Rl.FW i).WK) ∧ (Formalism.IndefR.Bridge.SplitOff P (Rl.Sb : Set (Formalism.L2.DIV.Pl D.host.E)) → k ≤ D.R.r → ∀ Rc, GlobalTheory.IndefiniteRowSid …`. Introduce `i k P`. Distinguish the cases in `hc : Formalism.IndefR.Bridge.SplitOff P (Rl.Sb : Set (Formalism.L2.DIV.Pl D.host.E)) ∧ k ≤ D.R.r`. Take `⟨t, t1, t2⟩` from `h i P hc.1 k hc.2`. Conclude with `⟨t, t2, fun _ _ => t1⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨1, fun x hx => hx, fun h1 h2 => absurd ⟨h1, h2⟩ hc⟩`. Use `choose t t1 t2 using h'`. Take `⟨f, hf⟩` from `GlobalTheory.HeckeTieCompare.exists_family Rl.toRealDat (WL := S.WL) (fun i => (Y.fi i).e) t`. Establish `e : ∀ (i : Fin D.R.m) k P x, (Y.fi i).e (f ((i : ℕ) + 1) k P x) = t i k P ((Y.fi i).e x)` using `fun i k P x => by`. Rewrite using `[← hf i k P, LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨f, fun j h1 h2 k P x hx => ?_, fun i k P _ ho hk α R ha hR x => ?_⟩` and prove the remaining obligations. Take `⟨n, rfl⟩ : ∃ n, j = n + 1` from `⟨j - 1, by omega⟩`. Set `i : Fin D.R.m` to `⟨n, h2⟩`. Use `((Y.fi i).wk _).2 ?_` and prove the remaining obligations. Rewrite using `[e i]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `t1 i k P _ (((Y.fi i).wk _).1 hx)`. Rewrite using `[e, GlobalTheory.HeckeTieCompare.scalar_eq Rl.toRealDat]`. Conclude with `t2 i k P ho hk R ⟨α, ha, hR⟩ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_reads
     (h : ∀ (i : Fin D.R.m) (P : PlE D.host), Formalism.IndefR.Bridge.SplitOff P (Rl.Sb : Set (Formalism.L2.DIV.Pl D.host.E)) →
@@ -270,13 +270,13 @@ theorem exists_reads
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `ho` using `hC i P hP hsp`. Establish `e1 : f j 0 P = 1`. Take `⟨n, rfl⟩ : ∃ n, j = n + 1` from `⟨j - 1, by omega⟩`. Set `i' : Fin D.R.m` to `⟨n, h2⟩`. Take `⟨e, he⟩` from `GlobalTheory.MovedIdem.exists_isIdemAt P ho.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, p1, p2⟩` from `SetLike.exists_of_lt (Ideal.pow_lt_self P.asIdeal P.ne_bot P.isPrime.ne_top 2 le_rfl)`. Establish `hd : Bridge.IsDC (levG (Wc D i') (Rl.βW i') (Rl.datWp i' Rl.triv)) 1 {1}`. Use `⟨fun a ha => ⟨1, 1, by simpa using ha⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨k₁, k₂, rfl⟩`. Use `⟨1, ⟨Finset.mem_singleton_self _, ?_⟩, fun a ha => Finset.mem_singleton.1 ha.1⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using mul_mem k₁.2 k₂.2`. Use extensionality with `y`. Establish `q` using `hf i' 0 P hsp ho (Nat.zero_le _) 1 {1} ⟨e, ϖ, he, p1, p2, GlobalTheory.HeckeParts.isHeckeElt_one _ he.1 ϖ⟩ hd y`. Establish `q'` using `GlobalTheory.IndefiniteRowSideFullHecke.RationalHeckeScalars.readAs_id Rl.toRealDat i' P ((Y.fi i').e y)`. Rewrite `q` using `[GlobalTheory.HeckeTieCompare.scalar_eq Rl.toRealDat]`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Y.fi i').e.injective (j_injective Rl hU i' _ ((hW i' _).1 (q.trans q'.symm)))`. Take `⟨u, hu⟩` from `hp f hs hf`. Use `hu i j b h1 h2 0 P x hP hsp (Nat.zero_le _)` as an intermediate fact. Rewrite `this` using `[pow_zero, one_smul, (hkFR_of_smul S i j b (hs j h1 h2) 0 P).2 e1]`. Conclude with `(Y.eF i j b h1 h2).injective this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_degree_of_pinFor (hU : Rl.toRealDat.LUnif) (hW : Rl.toRealDat.models_HW) (hC : Covered Rl)
     (hk : ∀ i j b, ℕ → PlE D.host → Module.End (FractionRing (D.ntw.O i)) (D.nexp.Fm i j b)) (hp : PinFor Rl cG S Y hk)

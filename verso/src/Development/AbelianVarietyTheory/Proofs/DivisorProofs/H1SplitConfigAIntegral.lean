@@ -18,7 +18,7 @@ namespace GlobalTheory.IndLine.AlphaInert
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Introduce `u _`. Use `show u • ((1 : Matrix (Fin n) (Fin n) (AE F E)) - 1) = 0`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_uAt {n : ℕ} (X : Spc F E n) (v : Pl F) : (1 : UA σ X.J) ∈ UAt σ X (evFin F v) := by
   intro u _
@@ -26,7 +26,7 @@ theorem one_mem_uAt {n : ℕ} (X : Spc F E n) (v : Pl F) : (1 : UA σ X.J) ∈ U
   simp
 
 /- English proof (translation)
-Introduce `u hu`. Establish `e : mat (g * h) - 1 = (mat g - 1) * mat h + (mat h - 1)` using `by show mat g * mat h - 1 = _ noncomm_ring`. Rewrite using `[e, smul_add, ← Matrix.smul_mul, hg u hu, hh u hu, Matrix.zero_mul, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_uAt {n : ℕ} {X : Spc F E n} {v : Pl F} {g h : UA σ X.J} (hg : g ∈ UAt σ X (evFin F v))
     (hh : h ∈ UAt σ X (evFin F v)) : g * h ∈ UAt σ X (evFin F v) := by
@@ -45,39 +45,35 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 open GlobalTheory.ThK.LocalOps in
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ v hv`. Establish `hvT : v ∉ X.T` using `fun h => hv.false (B.τ ⟨v, hM.triple.chars.sub h⟩)`. Establish `hvac : G.M.vac v ∈ SB _` using `(hM.triple.geo.hM.vac v).1`. Establish `hvac₁ : G₁.M.vac v ∈ SB _` using `(hM₁.triple.geo.hM.vac v).1`. Establish `hx₀ : Rf.p v (G.M.vac v) ≠ 0` using `(hM.fin.sph v hvT).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iw` using `GlobalTheory.T.nonsplit_unipotent_factor F E σ B _ _ G.W G₁.W H' 0 (b + 1) _ _ _ _ hM.triple.base hM.triple.geo.hW hM₁.triple.geo.hW hC.hH' v hv`. Establish `vf` using `GlobalTheory.T.vacuum_invariant_nonsplit_place hKP F E σ B (b + 2) a' G X om om' hM.triple v hv hvT`. Establish `lk` using `GlobalTheory.T.levi_compact_open_lift F E σ B _ _ G.W G₁.W H' 0 (b + 1) _ _ _ _ hM.triple.base hM.triple.geo.hW hM₁.triple.geo.hW hC.hH' v`. Establish `sl` using `GlobalTheory.T.unramified_local_theta_eigen hKP F E σ B b a' G₁ X om₁ om₁' R₁ Rf₁ hM₁ v hv hvT`. Establish `hP₁ : IsPair B G₁.M X.β (X.β / X.α) om₁ (b - G₁.p) G₁.p (b + a' - (G₁.p + G₁.q)) (G₁.p + G₁.q)` using `⟨hM₁.triple.base, hM₁.triple.geo.hV, hM₁.triple.geo.hW, hM₁.triple.geo.hM, hM₁.triple.chars.heckeβ, ⟨hM₁.triple.chars.heckeβ.1.div' hM₁.triple.chars.heckeα.1, fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.div_apply, hM₁.triple.chars.heckeβ.2 x, hM₁.triple.chars.heckeα.2 x, div_one]⟩,`. Use the proof step `hM₁.triple.chars.resβ, ?resW, hM₁.triple.weil⟩`. Use `case resW =>`. Introduce `x`. Establish `e₁` using `hM₁.triple.chars.resβ x`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `hM₁.triple.chars.resα x`. Establish `hpar : ((-1 : ℂ)) ^ b = (-1) ^ a'`. Break down `Nat.even_or_odd b with h | h` into its components or cases. Establish `h' : Even a'` using `(Nat.even_add.mp hM₁.triple.geo.even).mp h`. Rewrite using `[h.neg_one_pow, h'.neg_one_pow]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : Odd a'`. Break down `Nat.even_or_odd a' with h'' | h''` into its components or cases. Conclude with `absurd ((Nat.even_add.mp hM₁.triple.geo.even).mpr h'') (Nat.not_even_iff_odd.mpr h)`. Conclude with `h''`. Rewrite using `[h.neg_one_pow, h'.neg_one_pow]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.div_apply, Circle.coe_div, e₁, e₂, hM₁.triple.geo.even.neg_one_pow]`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[hpar, div_self (pow_ne_zero _ (by norm_num))]`. Establish `key1 : ∀ A, IsIndMap v om om₁ (Rf.p v) (Rf₁.p v) H' X.α ((a' : ℝ) / 2) A → ∃ c : ℂ, A (Rf.p v (G.M.vac v)) 1 = c • Rf₁.p v (G₁.M.vac v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `A hA`. Apply `sl` to reduce the goal to its premises. Introduce `k hk φ hφ φ₁ hφ₁ hact hp`. Take `⟨m, hm, hL⟩` from `lk k hk`. Establish `h1` using `hA.levi 1 k m hL hm.1 hk.1 φ hφ φ₁ hφ₁ hact _ 1 (one_mem_uAt _ v) hp.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `hA.right m hm.1 _ hvac _ hvac (vf m hm) 1 (one_mem_uAt _ v)`. Rewrite `h2` using `[one_mul]`. Rewrite `h1` using `[mul_one]`. Simplify `h2.symm` using `[h1]`. Establish `key2 : ∀ g ∈ UAt σ G.W (evFin F v), ∃ Ψ : Rf₁.Pi v, ∀ A, IsIndMap v om om₁ (Rf.p v) (Rf₁.p v) H' X.α ((a' : ℝ) / 2) A → ∀ c : ℂ, A (Rf.p v (G.M.vac v)) 1 = c • Rf₁.p v (G₁.M.vac v) → A (Rf.p v (G.M.vac v)) g = c • Ψ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg`. Take `⟨u, hu, huU, t, h₁, m, hL, hmU, hh₁U, k, hk, rfl⟩` from `iw g hg`. Take `⟨ψ₁, hψ₁, hact⟩` from `acts_exists hP₁ v (1, h₁) (one_mem_uAt _ v) hh₁U _ hvac₁`. Use `⟨((X.α t : ℂ) * (((absE F E t : ℝ) ^ ((a' : ℝ) / 2) : ℝ) : ℂ)) • Rf₁.p v ψ₁, fun A hA c hc => ?_⟩` and prove the remaining obligations. Establish `hact' : Acts (evFin F v) (om₁ (1, h₁)) (c • G₁.M.vac v) (c • ψ₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `acts_lin v (om₁ (1, h₁)) (fun φ hφ => acts_exists hP₁ v (1, h₁) (one_mem_uAt _ v) hh₁U φ hφ) hvac₁ hvac₁ hact hact c 0` as an intermediate fact. Simplify using `using this`. Rewrite using `[← hA.right k hk.1 _ hvac _ hvac (vf k hk) (u * m) (mul_mem_uAt huU hmU), hA.unip u hu huU _ m hmU]`. Establish `h3` using `hA.levi t h₁ m hL hmU hh₁U (c • G₁.M.vac v) ((SB _).smul_mem c hvac₁) (c • ψ₁) ((SB _).smul_mem c hψ₁) hact' _ 1 (one_mem_uAt _ v) (hc.trans (map_smul (Rf₁.p v) c _).symm)`. Rewrite `h3` using `[mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Rewrite using `[h3, map_smul, smul_comm]`. Establish `span : ∀ A₁ A₂, IsIndMap v om om₁ (Rf.p v) (Rf₁.p v) H' X.α ((a' : ℝ) / 2) A₁ → IsIndMap v om om₁ (Rf.p v) (Rf₁.p v) H' X.α ((a' : ℝ) / 2) A₂ → ∀ r : ℂ, (∀ h ∈ UAt σ G.W (evFin F v), A₁ (Rf.p v (G.M.vac v)) h = r • A₂ (Rf.p v (G.M.vac v)) h) → ∀ x, ∀ h ∈ UAt σ G.W (evFin F v), A₁ …`. Introduce `A₁ A₂ hA₁ hA₂ r h0`. Set `N : Submodule ℂ (Rf.Pi v)` to `{ carrier := {x | ∀ h ∈ UAt σ G.W (evFin F v), A₁ x h = r • A₂ x h} add_mem' := fun {x y} hx hy h hh => by`. Simplify using `only [map_add, Pi.add_apply, hx h hh, hy h hh, smul_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := fun h _ => by simp`. Use the proof step `smul_mem' := fun c x hx h hh => by`. Simplify using `only [map_smul, Pi.smul_apply, hx h hh, smul_comm c r] }`. Establish `hstab : ∀ h' ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB _, ∀ φ₁ ∈ SB _, Acts (evFin F v) (om (1, h')) φ φ₁ → Rf.p v φ ∈ N → Rf.p v φ₁ ∈ N`. Introduce `h' hh' φ hφ φ₁ hφ₁ hact hmem h hh`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hA₁.right h' hh' φ hφ φ₁ hφ₁ hact h hh, hA₂.right h' hh' φ hφ φ₁ hφ₁ hact h hh]`. Conclude with `hmem _ (mul_mem_uAt hh hh')`. Break down `hM.fin.irred v N hstab with hN | hN` into its components or cases. Conclude with `absurd ((Submodule.eq_bot_iff N).1 hN _ h0) hx₀`. Introduce `x h hh`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: x ∈ N` using `hN ▸ Submodule.mem_top`. Conclude with `this h hh`. Introduce `A A' hA hA'`. Take `⟨c, hc⟩` from `key1 A hA`. Take `⟨c', hc'⟩` from `key1 A' hA'`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : c = 0`. Use `left`. Introduce `x h hh`. Use `span A A hA hA 0 (fun g hg => by` as an intermediate fact. Take `⟨Ψ, hΨ⟩` from `key2 g hg`.
-
-Rewrite using `[hΨ A hA c hc, h0, zero_smul, zero_smul]) x h hh`. Simplify using `using this`. Use `right`. Use `⟨c' / c, fun x h hh => span A' A hA' hA (c' / c) (fun g hg => ?_) x h hh⟩` and prove the remaining obligations. Take `⟨Ψ, hΨ⟩` from `key2 g hg`.
-
-Rewrite using `[hΨ A' hA' c' hc', hΨ A hA c hc, smul_smul, div_mul_cancel₀ _ h0]`.
+A detailed English derivation is pending.
 -/
 theorem indLine : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)

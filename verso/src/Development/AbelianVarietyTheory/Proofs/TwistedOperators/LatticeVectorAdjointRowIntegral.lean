@@ -19,19 +19,17 @@ noncomputable section
 namespace GlobalTheory.LiftDat
 
 /- English proof (translation)
-Introduce `D S T C hn ΛT hsd hAA βS βT hβS hβT Pg Q ξ hPg h2P e he a k₀ hab hmov hgen h1 h2 h3 h4 v hv`. Break down `Nat.eq_zero_or_pos T.rank with h0 | hpos` into its components or cases. Introduce `i j; exact absurd j.2 (by omega)`. Establish `hS : 0 < S.rank` using `lt_of_lt_of_le hpos hn`. Set `i0 : Fin S.rank` to `⟨0, hS⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `y : Matrix (Fin S.rank) (Fin T.rank) D.host.E` to `vecMulVec (Pi.single i0 1) v`. Establish `hy : y ∈ tens (stdL D.host.E S.rank) C.X.Λ` using `AddSubgroup.subset_closure ⟨_, Submodule.subset_span ⟨i0, rfl⟩, v, hv, rfl⟩`. Establish `hce : cA D e * cA D e = cA D e` using `by rw [← map_mul, GlobalTheory.PlaceVec.idemSum_mul_self he]`. Establish `hfin : finPart D (cA D e) ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, hce])`. Establish `hA : ∀ o : 𝓞 D.host.E, ∀ z ∈ tens (stdL D.host.E S.rank) C.X.Λ, (o : D.host.E) • z ∈ tens (stdL D.host.E S.rank) C.X.Λ` using `fun o z hz => GlobalTheory.LiftLevel.smul_mem_tens o (fun u hu => Submodule.smul_mem _ o hu) hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : finW S T y ∈ hatA S T (tens (stdL D.host.E S.rank) C.X.Λ)`. Rewrite using `[GlobalTheory.Ker.SignVac.finW_eq]`. Conclude with `GlobalTheory.Ker.SignVac.finTens_mem (GlobalTheory.LatVac.one_mem_intAf _) hy`. Establish `hx : cA D e • finW S T y ∈ hatA S T (tens (stdL D.host.E S.rank) C.X.Λ)` using `GlobalTheory.LiftLevel.smul_mem_hatA_of_int hA hfin h0`. Establish `hhalf : IsHalf (cA D e) (cA D e • finW S T y)` using `fun i j => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hce]`. Establish `hint` using `((hgen _ hhalf).1).2 hx`. Establish `hM : ∀ N : Matrix (Fin S.rank) (Fin T.rank) (EAf D), HMul.hMul βS.val (HMul.hMul (HMul.hMul (βS⁻¹).val N) βT.val) = HMul.hMul N βT.val`. Introduce `N`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, βS.mul_inv, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ j, GlobalTheory.LiftDat.rowAdj T βT a e v 0 j = GlobalTheory.LiftLevel.adjA S T βS βT a (cA D e • finW S T y) i0 j`. Introduce `j`. Simplify using `only [GlobalTheory.LiftLevel.adjA, frMapAdj]`. Rewrite using `[hM]`. Simplify using `only [GlobalTheory.LiftDat.rowAdj, Matrix.smul_apply, C.m.gS, inv_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Use `congr 1`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, Matrix.transpose_apply, Matrix.smul_apply, smul_eq_mul, finW, y, vecMulVec_apply, Pi.single_eq_same, one_mul, i0]`. Introduce `i j`. Rewrite using `[Fin.fin_one_eq_zero i, key]`.
-
-Conclude with `hint i0 j`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowAdj_isIntM_of_mem : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (hn : T.rank ≤ S.rank) (ΛT : Lt D.host.E T.rank), IsSelfDualC T ΛT → IsAA C.X.Λ ΛT → ∀ (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (stdL D.host.E S.rank) → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ), Pg.Nonempty → (∀ PP, PP ∈ Pg ∨ PP ∈ Q → (2 : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ e : AE D, IsIdemSum e (Pg ∪ Q) → ∀ (a : AE D) (k₀ : GA D S), (∃ b : AE D, a * b = e) → GlobalTheory.LiftLevel.IsMover S T βS βT e a k₀ → GlobalTheory.LiftLevel.IsGen C βS βT Pg Q e a → GlobalTheory.LiftLevel.liftI Pg Q ≠ ⊤ → GlobalTheory.LiftLevel.liftI Pg Q ≠ ⊥ → IsCoprime (GlobalTheory.LiftLevel.liftI Pg Q) (conjI (GlobalTheory.LiftLevel.liftI Pg Q)) → IsCoprime (GlobalTheory.LiftLevel.liftI Pg Q) (Ideal.span {2}) → ∀ v ∈ C.X.Λ, IsIntM (GlobalTheory.LiftDat.rowAdj T βT a e v) := by
   intro D S T C hn ΛT hsd hAA βS βT hβS hβT Pg Q ξ hPg h2P e he a k₀ hab hmov hgen h1 h2 h3 h4 v hv

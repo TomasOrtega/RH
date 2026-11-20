@@ -5,7 +5,7 @@ import Formalism.ThetaLogCoordinates.PartnerMeanCoordinates.StatementB
 namespace Formalism.InvariantFactorPaths.MC.Top
 
 /- English proof (translation)
-The claim follows from `Formalism.InvariantFactorPaths.MC.theoremMV7`.
+A detailed English derivation is pending.
 -/
 theorem theoremMV7 : Formalism.CountingSumsFrames.TheoremMV7 := Formalism.InvariantFactorPaths.MC.theoremMV7
 

@@ -12,7 +12,7 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Introduce and unpack `⟨⟨⟩, i⟩ ⟨⟨⟩, j⟩ h`. Simplify using `only [blockIncl, Sigma.mk.injEq, heq_eq_eq, true_and] at h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem blockIncl_injective (k₀ : ι) : Function.Injective (blockIncl (n := n) k₀) := by
   rintro ⟨⟨⟩, i⟩ ⟨⟨⟩, j⟩ h
@@ -22,7 +22,7 @@ theorem blockIncl_injective (k₀ : ι) : Function.Injective (blockIncl (n := n)
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Unfold `evalCone`. Rewrite using `[eval₂_rename]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalCone_rename_blockIncl {F : Type*} [CommRing F] (k₀ : ι) (z : Cone n F)
     (f' : MvPolynomial (Coord (fun _ : Unit ↦ n k₀)) ℤ) :
@@ -34,9 +34,9 @@ theorem evalCone_rename_blockIncl {F : Type*} [CommRing F] (k₀ : ι) (z : Cone
 omit [Fintype ι] in
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨d, hd, hdv⟩` from `(mem_vars_iff_mem_support v).mp hv`. Establish `hle : coordDeg n v ≤ Finsupp.weight (coordDeg n) d` using `Finsupp.le_weight_of_ne_zero' (coordDeg n) (Finsupp.mem_support_iff.mp hdv)`. Rewrite `hle` using `[hf (mem_support_iff.mp hd)]`. Establish `h1` using `hle v.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨k, i⟩` from `v`. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality. Conclude with `⟨⟨(), i⟩, rfl⟩`. Simplify using `[coordDeg, hk] at h1`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem vars_subset_range_blockIncl (k₀ : ι) (m : ℕ) (f : MvPolynomial (Coord n) ℤ)
     (hf : IsWeightedHomogeneous (coordDeg n) f (m • Pi.single k₀ 1)) :
@@ -57,13 +57,13 @@ theorem vars_subset_range_blockIncl (k₀ : ι) (m : ℕ) (f : MvPolynomial (Coo
 omit [Fintype ι] in
 
 /- English proof (translation)
-Take `⟨f', rfl⟩` from `exists_rename_eq_of_vars_subset_range f (blockIncl k₀) (blockIncl_injective k₀) (vars_subset_range_blockIncl k₀ m f hf)`. Use `⟨f', fun d hd ↦ ?_, rfl⟩` and prove the remaining obligations. Establish `hmem : Finsupp.mapDomain (blockIncl k₀) d ∈ (rename (blockIncl k₀) f').support`. Rewrite using `[support_rename_of_injective (blockIncl_injective k₀)]`. Conclude with `Finset.mem_image_of_mem _ (mem_support_iff.mpr hd)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw` using `hf (mem_support_iff.mp hmem)`. Establish `hw' : Finsupp.weight (coordDeg n) (Finsupp.mapDomain (blockIncl k₀) d) = Finsupp.degree d • Pi.single k₀ 1`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_mapDomain_index (h := fun i (c : ℕ) ↦ c • coordDeg n i) (fun _ ↦ zero_smul ℕ _) (fun _ _ _ ↦ add_smul _ _ _)]`. Simplify using `only [Finsupp.sum, coordDeg, blockIncl]`. Rewrite using `[show Finsupp.degree d = ∑ i ∈ d.support, d i from rfl, Finset.sum_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[hw']`. Establish `hdeg : Finsupp.degree d = m`. Simplify using `using congrFun hw k₀`. Use function extensionality and compare the values at `u`. Rewrite using `[Finsupp.weight_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.sum, coordDeg, Finsupp.degree] at hdeg ⊢`. Conclude with `hdeg`.
+A detailed English derivation is pending.
 -/
 theorem exists_blockForm (k₀ : ι) (m : ℕ) (f : MvPolynomial (Coord n) ℤ)
     (hf : IsWeightedHomogeneous (coordDeg n) f (m • Pi.single k₀ 1)) :
@@ -93,9 +93,9 @@ theorem exists_blockForm (k₀ : ι) (m : ℕ) (f : MvPolynomial (Coord n) ℤ)
   exact hdeg
 
 /- English proof (translation)
-Introduce `ι _ _ n P k₀ m`. Use `⟨fun f hf ↦ exists_blockForm k₀ m f hf, fun f' _ B ↦ ⟨fun h z' hz' ↦ ?_, fun h z hz ↦ ?_⟩⟩` and prove the remaining obligations. Rewrite `hz'` using `[← hOnto ι n P k₀]`. Take `⟨z, hz, rfl⟩` from `hz'`. Simplify `h z hz` using `[evalCone_rename_blockIncl, projBlock]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hz' : projBlock k₀ z ∈ conePoints (P.projIdeal k₀) ℂ`. Rewrite using `[← hOnto ι n P k₀]`. Conclude with `⟨z, hz, rfl⟩`. Simplify `h _ hz'` using `[evalCone_rename_blockIncl, projBlock]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem SupNormEquality.proof (hOnto : BlockSurjectivity.Statement) : SupNormEquality.Statement := by
   intro ι _ _ n P k₀ m

@@ -15,19 +15,19 @@ noncomputable section
 namespace GlobalTheory.Ex.Arch.FibRos
 
 /- English proof (translation)
-Set `Φ₂ : (A' ⊗ A').left ⟶ (A ⊗ A).left` to `(lift (pushPt gp.1.w (fst A' A')) (pushPt gp.1.w (snd A' A'))).left`. Establish `f₁ : (fst A' A').left ≫ Φ = Φ₂ ≫ (fst A A).left` using `(congrArg (fun q => q.left) (lift_fst (pushPt gp.1.w (fst A' A')) (pushPt gp.1.w (snd A' A')))).symm`. Establish `f₂ : (snd A' A').left ≫ Φ = Φ₂ ≫ (snd A A).left` using `(congrArg (fun q => q.left) (lift_snd (pushPt gp.1.w (fst A' A')) (pushPt gp.1.w (snd A' A')))).symm`. Establish `f₃ : (fst A' A' ≫ a').left ≫ Φ = Φ₂ ≫ (fst A A ≫ a).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, ha, ← Category.assoc, f₁, Category.assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `f₄ : (snd A' A' ≫ b').left ≫ Φ = Φ₂ ≫ (snd A A ≫ b).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hb, ← Category.assoc, f₂, Category.assoc]`. Establish `hψ : ∀ i, rosatiφ A' a' b' i ≫ Φ = Φ₂ ≫ rosatiφ A a b i` using `fun i => by fin_cases i exacts [mul_push gp Φ₂ f₃ f₂, f₃, f₂, mul_push gp Φ₂ f₁ f₄, f₁, f₄]`. Establish `cmp : ∀ {T' : Over S'} (x' y' : T' ⟶ A') (m : T'.left ⟶ (A ⊗ A).left), x'.left ≫ Φ = m ≫ (fst A A).left → y'.left ≫ Φ = m ≫ (snd A A).left → (lift x' y').left ≫ Φ₂ = m` using `fun x' y' m hx hy => by`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Eq.trans ?_ hx` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) f₁.symm).trans ?_)` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Over.comp_left, lift_fst]`. Use `Eq.trans ?_ hy` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) f₂.symm).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Category.assoc, ← Over.comp_left, lift_snd]`. Take `⟨t, ht, vt⟩` from `exists_down_om hw hL hL' Φ₂ hψ r hr.1`. Use `⟨t, ⟨ht, corr_of_val hL' fun y I' hI' => ?_⟩, fun x' y' m hx hy z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Take `⟨I, hI⟩` from `DegPull.exists_good' hL y`. Establish `o : lift (1 : 𝟙_ (Over S') ⟶ A') (1 : 𝟙_ (Over S') ⟶ A') = lift η[A'] η[A']` using `by simp [Hom.one_def]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he : eSec A' ≫ Φ = f ≫ eSec A` using `(cubeMapOf gp).e_comm`. Establish `o₁ : (1 : 𝟙_ (Over S') ⟶ A').left = eSec A'` using `Category.id_comp _`. Establish `e` using `vt _ (lift (1 : 𝟙_ (Over S') ⟶ A') (1 : 𝟙_ (Over S') ⟶ A')).left y I I' hI hI'`. Rewrite using `[prod_ros, cmp 1 1 (f ≫ zero2 A) (by`. Rewrite using `[o₁, he, Category.assoc, ← Over.comp_left, lift_fst]; rfl) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[o₁, he, Category.assoc, ← Over.comp_left, lift_snd]`. Use the proof step `rfl),`. Use the proof step `a₁, b₁, _root_.mul_one, o] at e`. Establish `e₁` using `(val_pull hI _ _ _).symm.trans ((val_corr hI hr.2 f).trans (val_one _))`. Rewrite `e` using `[e₁]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[val_pull hI', val_one, Category.id_comp]`. Simplify using `using e.symm`. Establish `e` using `vt _ (lift x' y').left z J J' hJ hJ'`. Rewrite `e` using `[cmp x' y' m hx hy]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_ros_down {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] [IsCommMonObj A]
     [IsCommMonObj A'] {f : S' ⟶ S} {Φ : A'.left ⟶ A.left} {L : LB A.left} {L' : LB A'.left}
@@ -81,7 +81,7 @@ theorem exists_ros_down {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj 
     rwa [cmp x' y' m hx hy] at e
 
 /- English proof (translation)
-Use `(TorusExt.stalkConst z).injective ?_` and prove the remaining obligations. Rewrite using `[← TorusExt.stalkUnits_val, MulEquiv.apply_symm_apply]`. Conclude with `(toStk_valF x U z h a).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkUnits_symm_gm {F : Type} [Field F] {X : Scheme.{0}} (x : Sp F ⟶ X) (U : X.Opens) (z : Sp F) (h : x z ∈ U)
     (a : Γ(X, U)ˣ) : (((TorusExt.stalkUnits z).symm (gm x z U a) : Fˣ) : F) = valF x U a.val := by
@@ -90,11 +90,11 @@ theorem stalkUnits_symm_gm {F : Type} [Field F] {X : Scheme.{0}} (x : Sp F ⟶ X
   exact (toStk_valF x U z h a).symm
 
 /- English proof (translation)
-Set `p : Sp ℂ` to `IsLocalRing.closedPoint ℂ`. Establish `gJ : Good L p J` using `fun ψ => hJ ψ trivial`. Establish `gJ' : Good L' p (chartAt hL')` using `fun ψ => le_chartAt hL' ψ trivial`. Establish `e` using `congrArg (fun q => (((TorusExt.stalkUnits p).symm q : ℂˣ) : ℂ)) (h p _ gJ')`. Simplify using `only [map_mul, map_prod, map_zpow, Units.val_mul, Units.coe_prod, Units.val_zpow_eq_zpow_val] at e ⊢`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e₁ : (((TorusExt.stalkUnits p).symm (val r m p J) : ℂˣ) : ℂ) = vF r m J` using `stalkUnits_symm_gm _ _ p (gJ.mem φ m) _`. Establish `e₂ : (((TorusExt.stalkUnits p).symm (val t y p (chartAt hL')) : ℂˣ) : ℂ) = genVal u hL' t y z * frameProd u ε z fun k => chartAt hL' (y ≫ φ' k)` using `(stalkUnits_symm_gm _ _ p (gJ'.mem φ' y) _).trans (valAt'_gen hL' ht hz (le_wchart_chartAt hL' φ' y))`. Rewrite `e` using `[e₁, e₂, mul_left_comm, frameProd, ← Finset.prod_mul_distrib]`. Use `e.trans (congrArg _ (Finset.prod_congr rfl fun k _ => ?_))` and prove the remaining obligations. Rewrite using `[← mul_zpow, hz k, hfr _ _ (le_chartAt hL' _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun q => (q * _) ^ ε k) ?_` and prove the remaining obligations. Establish `hm : (u.ex (z k)).left p ∈ (L.pull Φ).U (fun _ => J ((u.ex (z k)).left ≫ Φ)) ⊓ L'.U (chartAt hL' (u.ex (z k)).left)` using `⟨mem_pull.2 (gJ ((u.ex (z k)).left ≫ Φ)), gJ' _⟩`. Conclude with `stalkUnits_symm_gm _ _ p hm _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vF_eq_genVal {X Y Y' : Scheme.{0}} {L : LB X} {A : Over (Sp ℂ)} [GrpObj A] {L' : LB A.left} {g : ℕ}
     {u : HolUnif A L' g} (hL' : L'.IsLB) {Φ : A.left ⟶ X} {w : LB.Iso L' (L.pull Φ)} {J : (Sp ℂ ⟶ X) → L.ι}
@@ -125,13 +125,13 @@ theorem vF_eq_genVal {X Y Y' : Scheme.{0}} {L : LB X} {A : Over (Sp ℂ)} [GrpOb
   exact stalkUnits_symm_gm _ _ p hm _
 
 /- English proof (translation)
-Introduce and unpack `- R _ _ _ D J g Λ Hm χ ex fr ⟨hJ, P', φ, w, u, hΛ, gp, hw, hAH, -, -, -, hex, hfr⟩ f f' - - F G hF hG r hr`. Establish `down : ∀ (a : D.P.A ⟶ D.P.A) (H : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), (∀ z, ex (H z) = ex z ≫ a) → ∃ a' : P'.A ⟶ P'.A, a'.left ≫ φ = φ ≫ a.left ∧ (∀ z, u.ex (H z) = u.ex z ≫ a') ∧ (1 : 𝟙_ (Over (Sp ℂ)) ⟶ P'.A) ≫ a' = 1` using `fun a H hH => by`. Set `a' : P'.A ⟶ P'.A` to `Over.homMk (gp.1.lift (φ ≫ a.left) P'.A.hom (by rw [Category.assoc, Over.w, gp.1.w])) (gp.1.lift_snd _ _ _)`. Establish `ha : a'.left ≫ φ = φ ≫ a.left` using `gp.1.lift_fst _ _ _`. Establish `hu : ∀ z, u.ex (H z) = u.ex z ≫ a'` using `fun z => Over.OverMorphism.ext (gp.1.hom_ext (by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hex, hH, Over.comp_left, Over.comp_left, hex, Category.assoc, Category.assoc, ha]) (by rw [Over.w, Over.w]))`. Use `⟨a', ha, hu, ?_⟩` and prove the remaining obligations. Establish `h0 : u.ex 0 = 1` using `(u.ker 0).2 (zero_mem _)`. Rewrite using `[← h0, ← hu, map_zero]`. Take `⟨a, ha, ua, a₁⟩` from `down f F hF`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, ub, b₁⟩` from `down f' G hG`. Take `⟨t, ht, vt⟩` from `exists_ros_down gp D.P.isLB P'.isLB hw a₁ b₁ ha hb (r := r) hr`. Take `⟨adj, one⟩` from `genVal_rosati P'.isLB hAH ua ub t ht.1 ht.2`. Use `⟨adj, fun x z => ?_⟩` and prove the remaining obligations. Establish `e` using `vF_eq_genVal P'.isLB hJ (fun z i hi => by rw [← hex]; exact hfr z i hi) r ht.1 (lift (ex x) (ex z)).left (isLift_rosati ua ub x z) (fun p J' hJ' => vt (u.ex x) (u.ex z) _ ((hex x).symm.trans (congrArg (fun q => q.left) (lift_fst (ex x) (ex z)).symm)) ((hex z).symm.trans (congrArg …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, one, _root_.one_mul]`. Simplify using `only [Fin.prod_univ_six, rosatiLift, rosatiε, Matrix.cons_val, zpow_neg, zpow_one, Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem fibRosSt : Laws → FibRosSt := by
   rintro - R _ _ _ D J g Λ Hm χ ex fr ⟨hJ, P', φ, w, u, hΛ, gp, hw, hAH, -, -, -, hex, hfr⟩ f f' - - F G hF hG r hr

@@ -27,9 +27,9 @@ variable {F : Type} [Field F] [TopologicalSpace F] [IsTopologicalDivisionRing F]
   [MeasurableSpace F] [BorelSpace F] (ν : Measure F) [ν.IsAddHaarMeasure]
   {κ : Type} [Fintype κ] [DecidableEq κ] in
 /- English proof (translation)
-Establish `hf : (fun x : F => a * x) = fun x => Units.mk0 a ha • x`. Use function extensionality and compare the values at `x`. Simplify using `[Units.smul_def]`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply (by rw [hf]; exact (continuous_const_smul _).measurable) hs, hf, Set.preimage_smul, ← distribHaarChar_mul ν]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.coe_nnreal_smul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_mul_left_eq_smul' (a : F) (ha : a ≠ 0) :
     Measure.map (fun x => a * x) ν = distribHaarChar F (Units.mk0 a ha)⁻¹ • ν := by
@@ -47,11 +47,9 @@ variable {F : Type} [Field F] [TopologicalSpace F] [IsTopologicalDivisionRing F]
   [MeasurableSpace F] [BorelSpace F] (ν : Measure F) [ν.IsAddHaarMeasure]
   {κ : Type} [Fintype κ] [DecidableEq κ] in
 /- English proof (translation)
-Establish `hfun : (diagonal D).mulVec = fun x i => (fun y => D i * y) (x i)`. Use function extensionality and compare the values at `x i`. Simplify using `[mulVec_diagonal]`. Use `haveI : ∀ i, SigmaFinite (Measure.map (fun y => D i * y) ν) := fun i => by`. Rewrite using `[map_mul_left_eq_smul' ν (D i) (hD i)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `infer_instance`. Rewrite using `[hfun, Measure.pi_map_pi (f := fun i y => D i * y) (fun i => (continuous_const.mul continuous_id).aemeasurable)]`. Repeatedly rewrite using `[map_mul_left_eq_smul' ν _ (hD _)]`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.coe_nnreal_smul_apply, Measure.pi_pi, ENNReal.coe_finset_prod, ← Finset.prod_mul_distrib]`.
-
-Conclude with `Finset.prod_congr rfl fun i _ => Measure.coe_nnreal_smul_apply _ _ _`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_diagonal_mulVec_pi (D : κ → F) (hD : ∀ i, D i ≠ 0) :
     Measure.map (diagonal D).mulVec (Measure.pi fun _ : κ => ν)
@@ -75,15 +73,13 @@ variable {F : Type} [Field F] [TopologicalSpace F] [IsTopologicalDivisionRing F]
   [MeasurableSpace F] [BorelSpace F] (ν : Measure F) [ν.IsAddHaarMeasure]
   {κ : Type} [Fintype κ] [DecidableEq κ] in
 /- English proof (translation)
-Set `p : κ → Prop` to `fun i => i ≠ t.i`. Set `α : Type` to `{ x // p x }`. Set `β : Type` to `{ x // ¬p x }`. Set `g : (α → F) → (β → F) → β → F` to `fun a b => (fun _ => t.c * a ⟨t.j, t.hij.symm⟩) + b`. Set `G : (α → F) × (β → F) → (α → F) × (β → F)` to `fun q => (id q.1, g q.1 q.2)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e : (κ → F) ≃ᵐ (α → F) × (β → F)` to `MeasurableEquiv.piEquivPiSubtypeProd (fun _ : κ => F) p`. Establish `hmv : t.toMatrix.mulVec = e.symm ∘ G ∘ e`. Consider the cases of `t with | mk i j hij c =>`. Use extensionality with `f k`. Distinguish the cases in `h : i = k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Split into cases according to the possible forms of the given data. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[e, G, g, p, TransvectionStruct.toMatrix, transvection, mulVec, dotProduct, add_mul, Finset.sum_add_distrib, MeasurableEquiv.piEquivPiSubtypeProd, Equiv.piEquivPiSubtypeProd, Matrix.single, ite_and, Matrix.one_apply, ite_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[e, G, g, p, TransvectionStruct.toMatrix, transvection, mulVec, dotProduct, add_mul, Finset.sum_add_distrib, MeasurableEquiv.piEquivPiSubtypeProd, Equiv.piEquivPiSubtypeProd, h, Matrix.single, ite_and, Ne.symm h, Matrix.one_apply, ite_mul]`. Rewrite using `[hmv]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : MeasurePreserving e (Measure.pi fun _ : κ => ν) ((Measure.pi fun _ : α => ν).prod (Measure.pi fun _ : β => ν))` using `measurePreserving_piEquivPiSubtypeProd (fun _ : κ => ν) p`. Establish `hB : MeasurePreserving G ((Measure.pi fun _ : α => ν).prod (Measure.pi fun _ : β => ν)) ((Measure.pi fun _ : α => ν).prod (Measure.pi fun _ : β => ν))`. Establish `hg : Measurable (Function.uncurry g)`. Use `Measurable.add ?_ measurable_snd` and prove the remaining obligations. Conclude with `measurable_pi_lambda _ fun _ => ((measurable_pi_apply _).comp measurable_fst).const_mul _`.
-
-Conclude with `(MeasurePreserving.id _).skew_product hg (Filter.Eventually.of_forall fun a => map_add_left_eq_self _ _)`. Conclude with `((hA.symm e).comp hB).comp hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem measurePreserving_transvection_mulVec (t : TransvectionStruct κ F) :
     MeasurePreserving t.toMatrix.mulVec (Measure.pi fun _ : κ => ν)
@@ -130,17 +126,17 @@ variable {F : Type} [Field F] [TopologicalSpace F] [IsTopologicalDivisionRing F]
   {κ : Type} [Fintype κ] [DecidableEq κ] in
 
 /- English proof (translation)
-Establish `hmeas : ∀ N : Matrix κ κ F, Measurable N.mulVec` using `fun N => (Continuous.matrix_mulVec continuous_const continuous_id).measurable`. Establish `key : ∀ u : Fˣ, (u : F) = M.det → Measure.map M.mulVec (Measure.pi fun _ : κ => ν) = distribHaarChar F u⁻¹ • Measure.pi fun _ : κ => ν`. Use `diagonal_transvection_induction_of_det_ne_zero (fun N : Matrix κ κ F => ∀ u : Fˣ, (u : F) = N.det → Measure.map N.mulVec (Measure.pi fun _ : κ => ν) = distribHaarChar F u⁻¹ • Measure.pi fun _ : κ => ν) M (hu ▸ u.ne_zero) ?_ ?_ ?_` and prove the remaining obligations. Introduce `D hD u hu`. Establish `hD' : ∀ i, D i ≠ 0` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hD` using `[det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.1 hD i (Finset.mem_univ i)`. Rewrite using `[map_diagonal_mulVec_pi ν D hD']`. Establish `hu' : u = ∏ i, Units.mk0 (D i) (hD' i)`. Use `ext`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, det_diagonal, Units.coe_prod]`. Both sides reduce to the same expression. Rewrite using `[hu', ← Finset.prod_inv_distrib, map_prod]`. Introduce `t u hu`. Establish `hu' : u = 1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `ext`. Rewrite using `[hu, TransvectionStruct.det, Units.val_one]`. Rewrite using `[hu', inv_one, map_one, one_smul]`. Conclude with `(measurePreserving_transvection_mulVec ν t).map_eq`. Introduce `A B hA hB hPA hPB u hu`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hcomp : (A * B).mulVec = A.mulVec ∘ B.mulVec`. Use function extensionality and compare the values at `fun x => (mulVec_mulVec x A B).symm`. Establish `hu' : u = Units.mk0 _ hA * Units.mk0 _ hB`. Use `ext`. Simplify using `[hu, det_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomp, ← Measure.map_map (hmeas A) (hmeas B), hPB (Units.mk0 _ hB) rfl, Measure.map_smul, hPA (Units.mk0 _ hA) rfl, smul_smul, hu', _root_.mul_inv_rev, map_mul, mul_comm]`. Rewrite using `[key u hu]`. Use extensionality with `s hs`. Rewrite using `[Measure.smul_apply, Measure.coe_nnreal_smul_apply, smul_eq_mul, ← mul_assoc, ← ENNReal.coe_mul, ← map_mul, mul_inv_cancel, map_one, ENNReal.coe_one, one_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnipChange.smul_map_mulVec_pi (M : Matrix κ κ F) (u : Fˣ)
     (hu : (u : F) = M.det) :
@@ -205,9 +201,9 @@ def filt (t : ℕ) : Submodule k (Matrix (Fin r) (Fin r) k) where
     simp [hX i j h]
 
 /- English proof (translation)
-Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : b i + s ≤ b l`. Rewrite using `[hY l j (by omega), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX i l hl, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_filt {s t : ℕ} {X Y : Matrix (Fin r) (Fin r) k} (hX : X ∈ filt k b s)
     (hY : Y ∈ filt k b t) : X * Y ∈ filt k b (s + t) := by
@@ -219,19 +215,19 @@ theorem mul_mem_filt {s t : ℕ} {X Y : Matrix (Fin r) (Fin r) k} (hX : X ∈ fi
   · rw [hX i l hl, zero_mul]
 
 /- English proof (translation)
-Introduce `_ _ hij` and use `h (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_filt_zero {X : Matrix (Fin r) (Fin r) k} (h : X.BlockTriangular b) : X ∈ filt k b 0 :=
   fun _ _ hij => h (by omega)
 
 /- English proof (translation)
-Introduce `i j hij` and use `h i j (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_filt_one {X : Matrix (Fin r) (Fin r) k} (h : X ∈ lieRadical k b) : X ∈ filt k b 1 :=
   fun i j hij => h i j (by omega)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `mem_filt_zero Matrix.blockTriangular_one`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `mul_mem_filt ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pow_mem_filt {X : Matrix (Fin r) (Fin r) k} (h : X ∈ filt k b 1) (n : ℕ) :
     X ^ n ∈ filt k b n := by
@@ -240,7 +236,7 @@ theorem pow_mem_filt {X : Matrix (Fin r) (Fin r) k} (h : X ∈ filt k b 1) (n : 
   | succ n ih => rw [pow_succ]; exact mul_mem_filt ih h
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `pow_mem_filt h _ i j ?_` and prove the remaining obligations. Use `Finset.le_sup (f := b) (Finset.mem_univ j)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pow_eq_zero {X : Matrix (Fin r) (Fin r) k} (h : X ∈ filt k b 1) :
     X ^ (Finset.univ.sup b + 1) = 0 := by
@@ -263,14 +259,14 @@ def lg (n : radical k b) : lieRadical k b :=
   ⟨((n : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) - 1, n.2⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[lg, unip]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem lg_unip (X : lieRadical k b) : lg (unip X) = X := by
   apply Subtype.ext
   simp [lg, unip]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[lg, unip]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem unip_lg (n : radical k b) : unip (lg n) = n := by
   apply Subtype.ext
@@ -297,11 +293,9 @@ def coord : lieRadical k b ≃ₗ[k] (Pos b → k) where
     simp [p.2]
 
 /- English proof (translation)
-Use `set U := (filt k b t).comap (lieRadical k b).subtype with hU`. Establish `h1 : U.map (L : lieRadical k b →ₗ[k] lieRadical k b) = U`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Introduce and unpack `_ ⟨Y, hY, rfl⟩`. Conclude with `hL t Y hY`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `LinearEquiv.finrank_map_eq L U`. Establish `h2 : L X ∈ U` using `hX`. Rewrite `h2` using `[← h1]`. Take `⟨Y, hY, e⟩` from `h2`. Establish `: Y = X` using `L.injective e`.
-
-Conclude with `this ▸ hY`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_filt_of_map (L : lieRadical k b ≃ₗ[k] lieRadical k b)
     (hL : ∀ t (X : lieRadical k b), X.1 ∈ filt k b t → (L X).1 ∈ filt k b t)
@@ -326,14 +320,14 @@ variable {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalDivisionRing k]
   {r : ℕ} {b : Fin r → ℕ}
 
 /- English proof (translation)
-The claim follows from `(Units.continuous_val.comp continuous_subtype_val).sub continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_lg_val :
     Continuous fun n : radical k b => (lg n : Matrix (Fin r) (Fin r) k) :=
   (Units.continuous_val.comp continuous_subtype_val).sub continuous_const
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `show Continuous fun x : Pos b → k => if h : b i < b j then x ⟨(i, j), h⟩ else 0`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_coord_symm_val :
     Continuous fun x : Pos b → k => ((coord k b).symm x : Matrix (Fin r) (Fin r) k) := by
@@ -359,7 +353,7 @@ def chart : (Pos b → k) ≃ₜ radical k b where
   continuous_invFun := continuous_pi fun p => continuous_lg_val.matrix_elem _ _
 
 /- English proof (translation)
-Establish `: (L : (ι → k) → ι → k) = (LinearMap.toMatrix' L).mulVec`. Use function extensionality and compare the values at `x`. Rewrite using `[← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`. Rewrite using `[this]`. Conclude with `continuous_const.matrix_mulVec continuous_id`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_linear {ι : Type} [Fintype ι] (L : (ι → k) →ₗ[k] ι → k) : Continuous L := by
   classical
@@ -370,15 +364,13 @@ theorem continuous_linear {ι : Type} [Fintype ι] (L : (ι → k) →ₗ[k] ι 
   exact continuous_const.matrix_mulVec continuous_id
 
 /- English proof (translation)
-Use `set L' : (Pos b → k) ≃ₗ[k] Pos b → k := ((coord k b).symm.trans L).trans (coord k b) with hL'`. Use `⟨L', fun x => L'.symm ((chart k b).symm (f (chart k b x))) - x, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.det_conj (L : lieRadical k b →ₗ[k] lieRadical k b) (coord k b)`. Conclude with `((continuous_linear (L'.symm : (Pos b → k) →ₗ[k] Pos b → k)).comp ((chart k b).symm.continuous.comp (hf.comp (chart k b).continuous))).sub continuous_id`. Introduce `x y i hxy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `h1 : (lg (chart k b x) - lg (chart k b y)).1 ∈ filt k b (b i.1.2 - b i.1.1)`. Introduce `p q hpq`. Distinguish the cases in `h : b p < b q`. Use `hxy ⟨(p, q), h⟩ (by simp only; omega) show ((lg (unip _) - lg (unip _) : lieRadical k b) : Matrix (Fin r) (Fin r) k) p q = 0` as an intermediate fact. Rewrite using `[lg_unip, lg_unip]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[coord, h, this]`. Conclude with `(lg (chart k b x) - lg (chart k b y)).2 p q h`. Establish `h2` using `mem_filt_of_map L hL (b i.1.2 - b i.1.1 + 1) ((L.symm (lg (f (chart k b x))) - lg (chart k b x)) - (L.symm (lg (f (chart k b y))) - lg (chart k b y))) (by simpa only [map_sub, LinearEquiv.apply_symm_apply] using hd _ _ _ h1) i.1.1 i.1.2 (by have := i.2; omega)`. Establish `h3 : ∀ z, L'.symm ((chart k b).symm (f (chart k b z))) - z = coord k b (L.symm (lg (f (chart k b z))) - lg (chart k b z))`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `e : coord k b (lg (chart k b z)) = z` using `(chart k b).symm_apply_apply z`. Rewrite using `[map_sub, e]`. Use `congr 1`. Use `show L'.symm (coord k b (lg (f (chart k b z)))) = _`. Simplify using `[hL']`.
-
-Rewrite using `[← sub_eq_zero]`. Simplify using `only [h3]`. Conclude with `h2`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem factor (L : lieRadical k b ≃ₗ[k] lieRadical k b)
     (hL : ∀ t (X : lieRadical k b), X.1 ∈ filt k b t → (L X).1 ∈ filt k b t)

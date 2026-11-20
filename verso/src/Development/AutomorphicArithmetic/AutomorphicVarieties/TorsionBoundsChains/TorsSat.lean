@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.TorsSat
 open CategoryTheory UpperTheory.V.KH
 
 /- English proof (translation)
-Establish `hS : Set.range v ∩ L = v '' (v ⁻¹' L)`. Rewrite using `[Set.image_preimage_eq_inter_range, Set.inter_comm]`. Rewrite `hnx`, the goal using `[hS]`. Rewrite `hnx`, the goal using `[Finsupp.mem_span_image_iff_linearCombination]`. Take `⟨d, hd, hdx⟩` from `hnx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[← Finsupp.range_linearCombination]`. Take `⟨c, rfl⟩` from `hx`. Establish `hcd : d = n • c`. Apply `hv` to reduce the goal to its premises. Rewrite using `[hdx, map_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hd`, the goal using `[Finsupp.mem_supported']`. Introduce `i hi`. Use `hd i hi` as an intermediate fact. Rewrite `this` using `[hcd, Finsupp.smul_apply, smul_eq_mul, mul_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.resolve_left hn`.
+A detailed English derivation is pending.
 -/
 private theorem torsSat_coeff {M ι : Type} [AddCommGroup M] (L : Set M) (v : ι → M)
     (hv : LinearIndependent ℤ v) (x : M) (hx : x ∈ Submodule.span ℤ (Set.range v))
@@ -34,7 +34,7 @@ private theorem torsSat_coeff {M ι : Type} [AddCommGroup M] (L : Set M) (v : ι
   exact this.resolve_left hn
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qi35.torsSat_mult L N h x hx`.
+A detailed English derivation is pending.
 -/
 private theorem torsSat_mult {M : Type} [AddCommGroup M] (L : Set M) (N : Submodule ℤ M)
     (h : ∀ x ∈ L, ∃ n : ℤ, n ≠ 0 ∧ n • x ∈ N) (x : M) (hx : x ∈ Submodule.span ℤ L) :
@@ -42,7 +42,7 @@ private theorem torsSat_mult {M : Type} [AddCommGroup M] (L : Set M) (N : Submod
   _root_.UpperTheory.Reformulated.B.Qi35.torsSat_mult L N h x hx
 
 /- English proof (translation)
-Establish `hx' : IsOfFinAddOrder (Submodule.Quotient.mk x : M ⧸ N)` using `hx`. Take `⟨n, hn, h⟩` from `isOfFinAddOrder_iff_nsmul_eq_zero.1 hx'`. Use `⟨n, by exact_mod_cast hn.ne', ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul, natCast_zsmul]`. Conclude with `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem torsSat_tors {M : Type} [AddCommGroup M] (N : Submodule ℤ M) (x : M)
     (hx : (Submodule.Quotient.mk x : M ⧸ N) ∈ AddCommGroup.torsion (M ⧸ N)) :
@@ -54,13 +54,13 @@ private theorem torsSat_tors {M : Type} [AddCommGroup M] (N : Submodule ℤ M) (
   exact h
 
 /- English proof (translation)
-Introduce `M ι _ _ L v B hv hL hc`. Take `⟨hfin, hB⟩` from `hc`. Use `choose lift hlift using Submodule.Quotient.mk_surjective (Submodule.span ℤ L)`. Set `f : AddCommGroup.torsion (M ⧸ Submodule.span ℤ L) → M ⧸ Submodule.span ℤ (Set.range v)` to `fun t => Submodule.Quotient.mk (lift t.1)`. Establish `hf : Function.Injective f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t s hts`. Establish `h1 : lift t.1 - lift s.1 ∈ Submodule.span ℤ (Set.range v)` using `(Submodule.Quotient.eq _).1 hts`. Establish `h2 : (Submodule.Quotient.mk (lift t.1 - lift s.1) : M ⧸ Submodule.span ℤ L) ∈ AddCommGroup.torsion (M ⧸ Submodule.span ℤ L)`. Rewrite using `[Submodule.Quotient.mk_sub, hlift, hlift]`. Conclude with `sub_mem t.2 s.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, hnx⟩` from `torsSat_tors _ _ h2`. Take `⟨m, hm, hmx⟩` from `torsSat_mult L _ hL _ hnx`. Rewrite `hmx` using `[smul_smul]`. Establish `h3` using `torsSat_coeff L v hv _ h1 _ (mul_ne_zero hm hn) hmx`. Establish `h4 : lift t.1 - lift s.1 ∈ Submodule.span ℤ L` using `Submodule.span_mono Set.inter_subset_right h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hlift t.1, ← hlift s.1]`. Conclude with `(Submodule.Quotient.eq _).2 h4`. Conclude with `⟨Finite.of_injective f hf, (Nat.card_le_card_of_injective f hf).trans hB⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KH.torsSat :
     ∀ (M ι : Type) [AddCommGroup M] [IsAddTorsionFree M] (L : Set M) (v : ι → M) (B : ℕ),

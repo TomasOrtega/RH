@@ -9,15 +9,15 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.NLink
 /- English proof (translation)
-Introduce `i hTw h2 π hπ`. Establish `hl : (D.nd.l i).Prime` using `(D.nd.lPrime i).out`. Establish `hs : D.nd.l i ∈ D.host.small` using `by rw [show D.nd.l i = 2 from h2]; exact UpperTheory.Small.two_mem D.host`. Establish `h4 : 2 ^ 2 ∣ D.host.QS` using `(pow_dvd_pow 2 (Nat.le_add_left 2 _)).trans D.host.tower_dvd`. Establish `hgk : ∀ k, D.nd.l i ≠ D.host.g k` using `fun k e => UpperTheory.Small.not_mem_of_mod D.host (D.ntypes.g_cond k) (e ▸ hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : D.nd.l i ∉ TwistedPlaces.gset D`. Simplify using `only [TwistedPlaces.gset, Finset.mem_insert, Finset.mem_singleton, not_or]`. Conclude with `⟨hgk 0, hgk 1⟩`. Establish `hL : EmbeddingTypes.hypL i` using `⟨hl.two_le, Or.inr hs, fun h => absurd hs h, hgk 0, hgk 1⟩`. Take `⟨dc, -, h⟩` from `_root_.UpperTheory.N.conclusion_split_alt hP D L P nch HW F Cm X C₂ S i hg D.host.condN (UpperTheory.N.cycAt_of i fun _ => (h4.mul_right _).mul_right _) hL (UpperTheory.N.Two.decl_split D i h2) (UpperTheory.N.locAll hP D HW F Cm (D.nd.l i))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hB, hW, hz⟩` from `h π hπ`. Establish `hs2 : 2 ≤ D.nd.s0 i`. Rewrite using `[D.nd.restNLevelExponent_of_two i h2]`. Conclude with `(Nat.prime_two.pow_dvd_iff_le_factorization D.host.QS_pos.ne').1 h4`. Establish `hh` using `UpperTheory.N.h0_le D i dc.col (fun _ => hs2) (by omega) (fun u hu => (dc.cover u).1 (Or.inr hu))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `UpperTheory.N.Num.one_le_b L`. Establish `hbB : L.sc.b ≤ RowSmall.hB L` using `(UpperTheory.N.Num.hB_bounds L P).1`. Establish `hf : (⌊2 * L.sc.b⌋₊ : ℝ) ≤ 2 * L.sc.b` using `Nat.floor_le (by linarith)`. Use `UpperTheory.N.bound_smallPrime_of_splitBound_cyclotomic L P X.ρ S.kill S.sha i hTw hs π hπ dc _ _ _ ?_ ?_ ?_ hW (by exact_mod_cast hh) hz hB` and prove the remaining obligations. Establish `: (Formalism.MainNotions.N.hN L : ℝ) ≤ RowSmall.hB L` using `Nat.floor_le (by show 0 ≤ RowSmall.hB L linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Unfold `GlobalTheory.HubX.hOf`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.N.onAt_eq_two_bounds_of_setup (hP : Hypotheses₂) (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc)
     (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (X : KillingConditions.HubData D) (C₂ : ℝ) (S : _root_.GlobalTheory.NLink.SetupAlt L nch HW X C₂) :
@@ -53,7 +53,7 @@ theorem UpperTheory.N.onAt_eq_two_bounds_of_setup (hP : Hypotheses₂) (D : D7) 
     linarith
   · linarith
 /- English proof (translation)
-Introduce `hP` and use `⟨6000, 30000, by norm_num, by norm_num, fun Fm => ⟨0, fun x _ hx i HW F Cm X C₂ S => _root_.UpperTheory.N.onAt_eq_two_bounds_of_setup hP _ _ (Fm.params x hx i) _ HW F Cm X C₂ S⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.N.exists_nonneg_twoC_constants_of_prints : Hypotheses₂ → ∃ A B : ℝ, 0 ≤ A ∧ 0 ≤ B ∧ _root_.UpperTheory.N.SecondBoundCondition A B :=
   fun hP => ⟨6000, 30000, by norm_num, by norm_num, fun Fm => ⟨0, fun x _ hx i HW F Cm X C₂ S =>

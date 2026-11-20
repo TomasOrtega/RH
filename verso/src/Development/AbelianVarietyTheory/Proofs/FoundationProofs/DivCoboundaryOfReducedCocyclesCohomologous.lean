@@ -8,25 +8,23 @@ noncomputable section
 namespace GlobalTheory.Ord2
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ W c hO z z' y y' hy hy' hz hz' ⟨m, hm⟩`. Establish `hlift : ∀ i, ∃ x : Qbar l, ∃ hx : x ∈ c.O, redL c x = m i`. Introduce `i`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (m i : ResL c)`. Conclude with `⟨a.1, a.2, by rw [redL_of_mem c a.2]; exact ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose u hu hum using hlift`. Establish `hl0 : (l : Qbar l) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hWu : ∀ s i, (mat W s *ᵥ u) i ∈ c.O`. Introduce `s i`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `c.O.add_mem (c.O.mul_mem (hO _ _ _) (hu 0)) (c.O.mul_mem (hO _ _ _) (hu 1))`. Establish `hWuR : ∀ s i, redL c ((mat W s *ᵥ u) i) = (resAct c W hO s m) i`. Introduce `s i`. Rewrite using `[resAct_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two, wRed]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[redL_add c (c.O.mul_mem (hO _ _ _) (hu 0)) (c.O.mul_mem (hO _ _ _) (hu 1)), redL_mul c (hO _ _ _) (hu 0), redL_mul c (hO _ _ _) (hu 1), hum 0, hum 1]`. Establish `key : ∀ s i, ∃ o ∈ c.O, ((l : Qbar l) * z s i - (mat W s *ᵥ y - y) i) - ((l : Qbar l) * z' s i - (mat W s *ᵥ y' - y') i) - ((mat W s *ᵥ u) i - u i) = (l : Qbar l) * o`. Introduce `s i`. Establish `h1` using `hz s i`. Establish `h2` using `hz' s i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (mat W s *ᵥ u) i - u i ∈ c.O` using `c.O.sub_mem (hWu s i) (hu i)`. Establish `hmem` using `c.O.sub_mem (c.O.sub_mem h1 h2) h3`. Use `(redL_eq_zero_iff c hmem).1 ?_` and prove the remaining obligations. Establish `e` using `congrFun (hm s) i`. Rewrite using `[redL_sub c (c.O.sub_mem h1 h2) h3, redL_sub c h1 h2, redL_sub c (hWu s i) (hu i), hWuR, hum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e' : redL c ((l : Qbar l) * z s i - (mat W s *ᵥ y - y) i) - redL c ((l : Qbar l) * z' s i - (mat W s *ᵥ y' - y') i) = (resAct c W hO s m) i - m i` using `e`. Rewrite using `[e', sub_self]`. Use `choose o ho hoe using key`. Use `⟨(l : Qbar l)⁻¹ • (y - y' + u), ?_, fun s i => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨k', hk'⟩` from `hy'`. Use `⟨k + k' + 1, fun i => ?_⟩` and prove the remaining obligations. Establish `e : (l : Qbar l) ^ (k + k' + 1) * ((l : Qbar l)⁻¹ • (y - y' + u)) i = (l : Qbar l) ^ k' * ((l : Qbar l) ^ k * y i) - (l : Qbar l) ^ k * ((l : Qbar l) ^ k' * y' i) + (l : Qbar l) ^ (k + k') * u i`. Simplify using `only [Pi.smul_apply, Pi.add_apply, Pi.sub_apply, smul_eq_mul]`. Rewrite using `[pow_succ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `c.O.add_mem (c.O.sub_mem (c.O.mul_mem (natPow_mem c _) (hk i)) (c.O.mul_mem (natPow_mem c _) (hk' i))) (c.O.mul_mem (natPow_mem c _) (hu i))`. Establish `e : (z - z') s i - (mat W s *ᵥ ((l : Qbar l)⁻¹ • (y - y' + u)) - (l : Qbar l)⁻¹ • (y - y' + u)) i = o s i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `h` using `hoe s i`. Establish `e2 : (z - z') s i - (mat W s *ᵥ ((l : Qbar l)⁻¹ • (y - y' + u)) - (l : Qbar l)⁻¹ • (y - y' + u)) i = (l : Qbar l)⁻¹ * (((l : Qbar l) * z s i - (mat W s *ᵥ y - y) i) - ((l : Qbar l) * z' s i - (mat W s *ᵥ y' - y') i) - ((mat W s *ᵥ u) i - u i))`. Simplify using `only [Matrix.mulVec_smul, Matrix.mulVec_add, Matrix.mulVec_sub, Pi.sub_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e2, h, ← mul_assoc, inv_mul_cancel₀ hl0, one_mul]`. Rewrite using `[e]`. Conclude with `ho s i`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divCob_of_resCoc_cohom : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : R2 Ω l) (c : Coef l)
     (hO : ∀ s i j, mat W s i j ∈ c.O) (z z' : G ℚ Ω → Fin 2 → Qbar l) (y y' : Fin 2 → Qbar l),

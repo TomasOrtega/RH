@@ -9,11 +9,11 @@ namespace GlobalTheory.ChainOnto.SatHeckeChar
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.UG GlobalTheory.PRep GlobalTheory.AdelicU GlobalTheory.LFun
 
 /- English proof (translation)
-Introduce `E _ _ w n B φ hφ`. Distinguish the cases in `hB : B.card = n`. Choose the witnesses or unpack the hypotheses as in `⟨α, rfl⟩ : ∃ α : Fin n → ℂˣ, Finset.univ.val.map α = B := by`. Take `⟨l, rfl⟩` from `Quot.exists_rep B`. Take `rfl : l.length = n` from `hB`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨l.get, by rw [Fin.univ_val_map, List.ofFn_get]; rfl⟩`. Take `⟨x₀, hx₀⟩` from `(hasSatGL_psFunGL (w := w) α).exists_vec`. Take `⟨z, hz, -⟩` from `SatCompare.exists_eigenvalue_GL hx₀ hx₀ φ hφ`. Use `⟨z, fun V _ _ ρ x hx => ?_⟩` and prove the remaining obligations. Take `⟨c, e1, e2⟩` from `SatCompare.exists_eigenvalue_GL hx₀ hx φ hφ`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e : z = c` using `smul_left_injective ℂ hx₀.1 (hz.symm.trans e1)`. Rewrite using `[e2, e]`. Conclude with `⟨0, fun V _ _ ρ x hx => absurd hx.2.2.1 hB⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem heckeVec_eq_smul_of_isSatVecGL :
     ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (B : Multiset ℂˣ),

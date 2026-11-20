@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.EtaJoin
 
 /- English proof (translation)
-Establish `hc` using `idempotent_central K G ℓ.X h.irr`. Establish `h1` using `(level_operator_spec K v0 h.conj B.S (h.ok.hpos v0) G B.r h.ok.act ℓ.P ℓ.ψ (idemOf ℓ.X) (hc.2 _).symm).1`. Take `⟨⟨h2, -⟩, h3⟩` from `BlockDat.lf_v_proj h`. Establish `h4 : Formalism.L2.DIV.goodAt ℓ.X ℓ.P ℓ.ψ * idemOf ℓ.X = Formalism.L2.DIV.goodAt ℓ.X ℓ.P ℓ.ψ`. Unfold `Formalism.L2.DIV.goodAt`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_assoc, hc.2, ← mul_assoc, hc.1]`. Establish `h5 : B.vPr ℓ * B.S.gaMat B.r (idemOf ℓ.X) = B.vPr ℓ`. Combine the equalities or inequalities in the displayed calculation. Unfold `BlockDat.lPr`. Rewrite using `[Matrix.mul_assoc, h1, ← Matrix.mul_assoc, Matrix.mul_assoc (B.Pq ℓ Z), h5]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem prj_mul_goodOp {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
     {B : BlockDat K G Pl0} {ℓ : Lvl K G} (Z : Submodule K B.S.Forms) {v0 : InfinitePlace K} {s : ℕ}
@@ -33,9 +33,9 @@ theorem prj_mul_goodOp {K : Type} [Field K] [NumberField K] [StarRing K] {G : Ty
   rw [Matrix.mul_assoc, h1, ← Matrix.mul_assoc, Matrix.mul_assoc (B.Pq ℓ Z), h5]
 
 /- English proof (translation)
-Introduce and unpack `y ⟨x, rfl⟩`. Use `⟨LinearMap.adjoint θ x, ?_⟩` and prove the remaining obligations. Use `ext_inner_right ℂ fun z => ?_` and prove the remaining obligations. Rewrite using `[hs (LinearMap.adjoint θ x) z, LinearMap.adjoint_inner_left, LinearMap.adjoint_inner_left]`. Use `LinearMap.congr_fun h z` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[LinearMap.comp_apply]`. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_adjoint_le_of_comp {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
     [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] (θ : V →ₗ[ℂ] W) (e : V →ₗ[ℂ] V)
@@ -49,9 +49,9 @@ theorem range_adjoint_le_of_comp {V W : Type} [NormedAddCommGroup V] [InnerProdu
   rw [this]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T m A P ψ Zs tup eMt s hOk S0 jW i t hF hθ`. Establish `hB : BlockHyp (A.fam.L i t) (A.fam.lvlA P ψ) A.fam.v0 s` using `⟨hOk.conj, fun χ hχ => hOk.irr χ hχ, hOk.lifts i t⟩`. Establish `hP : lPrj D A P ψ Zs i t * lE D A P ψ i t = lPrj D A P ψ Zs i t` using `prj_mul_goodOp (Zs.Zl i t) hB`. Use `range_adjoint_le_of_comp _ _ (D.what₂.eMt_sa _ _) ?_` and prove the remaining obligations. Use `LinearMap.ext_on_range hF.span fun k => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.comp_apply, hF.op_eq]`. Use `(hθ _).trans (Eq.trans ?_ (hθ _).symm)` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec (Pi.single k 1), hP]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaCut_of_tie : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (m : ℕ) (A : FamIn D.what₂.LL G Pl0 T m) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (tup : T → D.what₂.Tup) (eMt : ∀ (i : Fin m) (t : T), (Fin (lDim D A P ψ i t) → D.what₂.LL) ≃ₗ[D.what₂.LL] D.what₂.MtL (tup t) ((i : ℕ) + 1)) (s : ℕ), A.fam.Ok s → ∀ (S0 : IndefData (A.side P ψ Zs)) (jW : ∀ i : Fin m, (Fin (S0.dW i) → D.what₂.LL) →ₛₗ[D.what₂.embLL] D.what₂.Mj ((i : ℕ) + 1)) (i : Fin m) (t : T), FormsTie D.what₂.embLL ((D.what₂.jMt (tup t) ((i : ℕ) + 1)).comp (eMt i t).toLinearMap) (lH D A P ψ i t) (lE D A P ψ i t) (D.what₂.eMt (tup t) ((i : ℕ) + 1)) → (∀ x, D.what₂.thetaP (tup t) ((i : ℕ) + 1) (D.what₂.jMt (tup t) ((i : ℕ) + 1) (eMt i t x)) = jW i ((S0.θ i t).mulVec ((lPrj D A P ψ Zs i t).mulVec x))) → ThetaCut D (tup t) ((i : ℕ) + 1) := by
   intro D G _ _ Pl0 T m A P ψ Zs tup eMt s hOk S0 jW i t hF hθ

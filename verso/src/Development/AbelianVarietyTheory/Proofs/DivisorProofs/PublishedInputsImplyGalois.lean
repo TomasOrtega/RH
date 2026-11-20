@@ -36,11 +36,11 @@ open GlobalTheory.BigOn
 namespace GlobalTheory.BigOn
 
 /- English proof (translation)
-Introduce `hGreen hCoh hTemp hHecke hCheb hDisc hGal hBC hBS hAbove hDecay hLL hCover hCW`. Establish `hArtin : GlobalTheory.Published.GlobalArtinReciprocity` using `GlobalTheory.Published.HeckeLAdicCharacter.globalArtin hHecke`. Establish `hRay : GlobalTheory.Published.RayClassFieldSt` using `GlobalTheory.Published.GlobalArtinReciprocity.rayClassFieldSt hArtin`. Establish `hSer : GlobalTheory.SerStd.SeriesRatS` using `(GlobalTheory.seriesRatS_and_serInt_of_globalArtin hArtin).1`. Establish `hExport : ExportSt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `apply GlobalTheory.T.export_from_reciprocity_theorems <;> with_reducible assumption`. Establish `hPage : PageSt` using `GlobalTheory.BigOn.pageSt`. Establish `hGeo : GeoSt` using `GlobalTheory.BigOn.geoSt_of_pageSt hPage`. Establish `hRank` using `GlobalTheory.BigOn.rankLocSt_of GlobalTheory.BigOn.maxSt hGeo GlobalTheory.BigOn.compareOffOwn_atRuns`. Establish `hTwist : TwistSt` using `GlobalTheory.BigOn.TwistBoundAtPlace.twistSt_of hExport hGeo hRank`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hModel` using `GlobalTheory.ShareOn.modelSt`. Establish `hShare : ShareSt` using `GlobalTheory.ShareOn.shareSt_of_shareWSt (GlobalTheory.ShareOn.shareWSt_of_modelSt hModel)`. Establish `hBad : BadSt` using `GlobalTheory.BigOn.badSt_of_badW (GlobalTheory.BadWOn.badWSt_of hGreen hModel)`. Establish `hExp : ExpSt` using `GlobalTheory.T.exponent_estimate_from_langlands hCoh hTemp hHecke hCheb hDisc hGal hBC hBS hAbove hLL`. Conclude with `GlobalTheory.BigOn.ontoX_of_twist_shares_exp hExport hTwist hShare hBad hExp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ontoX_of_classicalTheorems : GlobalTheory.Published.GreenCuspidal → GlobalTheory.Published.ClozelCohomological → GlobalTheory.Published.CohomologicalCsdTempered → GlobalTheory.Published.HeckeLAdicCharacter → GlobalTheory.Published.ChebotarevDegreeOne → GlobalTheory.Published.DiscreteSpectrumGL → GlobalTheory.Published.GaloisRepOfPolarizedCuspidal → GlobalTheory.Published.BaseChangeDefiniteUnitary → GlobalTheory.Published.BhattScholzeCrystallineLattices → GlobalTheory.Published.HeckeLAdicCharacterAbove → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.LocalLanglandsGL → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → OntoX := by
   intro hGreen hCoh hTemp hHecke hCheb hDisc hGal hBC hBS hAbove hDecay hLL hCover hCW

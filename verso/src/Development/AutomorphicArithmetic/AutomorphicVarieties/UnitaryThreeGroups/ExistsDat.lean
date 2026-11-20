@@ -14,7 +14,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
 /- English proof (translation)
-Take `⟨σ, h⟩` from `exists_isConjOm (E := ℚ) (Ω := Ω)`. Conclude with `⟨AlgEquiv.ofRingEquiv (f := σ) fun x => by rw [eq_ratCast (algebraMap ℚ Ω), map_ratCast], h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem dx_cc (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] :
     ∃ σ : G ℚ Ω, ∃ φ : Ω →+* ℂ, ∀ x, φ (σ x) = starRingEnd ℂ (φ x) := by
@@ -22,7 +22,7 @@ private theorem dx_cc (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
   exact ⟨AlgEquiv.ofRingEquiv (f := σ) fun x => by rw [eq_ratCast (algebraMap ℚ Ω), map_ratCast], h⟩
 
 /- English proof (translation)
-Establish `h : ∀ x : K, algebraMap K Ω (AlgEquiv.restrictNormalHom (F` using `ℚ) K σ x) = σ (algebraMap K Ω x) := fun x => AlgEquiv.restrictNormal_commutes σ K x`. Use `⟨fun h1 x => ?_, fun h1 => AlgEquiv.ext fun x => (algebraMap K Ω).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← h, h1]`. Both sides reduce to the same expression. Rewrite using `[h, h1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -35,9 +35,9 @@ private theorem dx_ker (Ω : Type) [Field Ω] [CharZero Ω] (K : Type) [Field K]
   · rw [h, h1]; rfl
 
 /- English proof (translation)
-Establish `hc : Nat.card Gal(K/ℚ) = 2` using `by rw [IsGalois.card_aut_eq_finrank, h2]`. Establish `hz : Nat.card ℤˣ = 2` using `by rw [Nat.card_eq_fintype_card, Fintype.card_units_int]`. Set `e : Gal(K/ℚ) ≃* ℤˣ` to `mulEquivOfPrimeCardEq hc hz`. Use `⟨e.toMonoidHom.comp (AlgEquiv.restrictNormalHom (F := ℚ) K), Subgroup.ext fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[← dx_ker, MonoidHom.mem_ker, MonoidHom.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_eq_one_iff e e.injective`.
+A detailed English derivation is pending.
 -/
 private theorem dx_eta (Ω : Type) [Field Ω] [CharZero Ω] (K : Type) [Field K] [NumberField K] [Algebra K Ω]
     [IsGalois ℚ K] (h2 : Module.finrank ℚ K = 2) : ∃ η : G ℚ Ω →* ℤˣ, η.ker = galOf ℚ K Ω := by
@@ -49,11 +49,9 @@ private theorem dx_eta (Ω : Type) [Field Ω] [CharZero Ω] (K : Type) [Field K]
   exact map_eq_one_iff e e.injective
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic K Ω := Algebra.IsAlgebraic.tower_top (K := ℚ) K`. Use `haveI : IsAlgClosure K Ω := ⟨inferInstance, inferInstance⟩`. Take `⟨p1, p2, p3, -⟩` from `places K Ω l A`. Take `⟨w, hw⟩` from `p1 fun ht => (p2 ht).2 hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : ((l : ℕ) : 𝓞 K) ∈ w.asIdeal` using `(p3 w hw).1 hA`. Establish `hb` using `(CF.unramIff.1 K l hl.out).1 ((CF.unramIff.2.1 K l hl.out).2 h) w hm`. Introduce `σ hσ`. Establish `h1` using `Subgroup.mem_map_of_mem (CF.resTo ℚ K Ω) hσ`. Rewrite `h1` using `[CF.ineAbs ℚ K Ω A w hw, hb, Subgroup.mem_bot]`.
-
-Conclude with `(dx_ker Ω K σ).1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dx_unr (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K : Type) [Field K] [NumberField K]
     [Algebra K Ω] [IsGalois ℚ K] (l : ℕ) [hl : Fact l.Prime] (h : ¬ (l : ℤ) ∣ discr K) (A : ValuationSubring Ω)
@@ -71,9 +69,9 @@ private theorem dx_unr (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
   exact (dx_ker Ω K σ).1 h1
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hc : Continuous fun y : Γ => x⁻¹ * y` using `by fun_prop`. Establish `h1 : (fun y : Γ => x⁻¹ * y) ⁻¹' (f.ker : Set Γ) ∈ nhds x` using `(h.preimage hc).mem_nhds (by simp)`. Use `filter_upwards [h1] with y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : f (x⁻¹ * y) = 1` using `hy`. Rewrite `h2` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `h2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dx_lc {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group M] (f : Γ →* M)
     (h : IsOpen (f.ker : Set Γ)) : IsLocallyConstant f := by
@@ -88,9 +86,9 @@ private theorem dx_lc {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologi
   exact h2.symm
 
 /- English proof (translation)
-Introduce `N`. Establish `key : (fun g => Ideal.Quotient.mk (I ^ N) ((Ψ g ^ j : Rˣ) : R)) = (fun x : R ⧸ I ^ N => if hx : IsUnit x then ((hx.unit ^ j : (R ⧸ I ^ N)ˣ) : R ⧸ I ^ N) else 0) ∘ fun g => Ideal.Quotient.mk (I ^ N) (Ψ g : R)`. Use function extensionality and compare the values at `g`. Establish `hx : IsUnit (Ideal.Quotient.mk (I ^ N) (Ψ g : R))` using `(Ψ g).isUnit.map _`. Establish `e : hx.unit = Units.map (Ideal.Quotient.mk (I ^ N)).toMonoidHom (Ψ g)` using `Units.ext rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, dif_pos hx]`. Rewrite using `[e, ← map_zpow]`. Both sides reduce to the same expression. Rewrite using `[key]`. Conclude with `(h N).comp _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dx_zpow {Γ R : Type} [TopologicalSpace Γ] [CommRing R] (I : Ideal R)
     (Ψ : Γ → Rˣ) (h : AdicCont I fun g => (Ψ g : R)) (j : ℤ) : AdicCont I fun g => ((Ψ g ^ j : Rˣ) : R) := by
@@ -109,9 +107,9 @@ private theorem dx_zpow {Γ R : Type} [TopologicalSpace Γ] [CommRing R] (I : Id
   exact (h N).comp _
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hpos : (0 : ℝ) < (l : ℝ) ^ (-(n : ℤ))` using `zpow_pos (by exact_mod_cast (Fact.out : l.Prime).pos) _`. Use `filter_upwards [hf.continuousAt.eventually (Metric.closedBall_mem_nhds (f x) hpos)] with y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[dist_eq_norm, PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `hy`. Rewrite using `[Ideal.Quotient.eq, ← map_sub, ← ha, map_mul, map_pow, map_natCast]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hI n)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dx_alg {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {l : ℕ} [Fact l.Prime] [Algebra ℤ_[l] R]
     (I : Ideal R) (hI : (l : R) ∈ I) (f : Γ → ℤ_[l]) (hf : Continuous f) :
@@ -127,9 +125,7 @@ private theorem dx_alg {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {l : ℕ
   exact Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hI n)
 
 /- English proof (translation)
-Establish `h : (IsLocalRing.maximalIdeal O).comap (algebraMap ℤ_[l] O) = IsLocalRing.maximalIdeal ℤ_[l]` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal _)`. Establish `h1 : (l : ℤ_[l]) ∈ IsLocalRing.maximalIdeal ℤ_[l]`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite `h1` using `[← h, Ideal.mem_comap, map_natCast]`.
-
-Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dx_lmem (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
     [Module.Finite ℤ_[l] O] : (l : O) ∈ IsLocalRing.maximalIdeal O := by
@@ -141,16 +137,16 @@ private theorem dx_lmem (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsLoca
   exact h1
 
 /- English proof (translation)
-The claim follows from `(dx_lc _ (Chr.clsFacts ℚ Ω N).1).comp ψ.toUnitHom`.
+A detailed English derivation is pending.
 -/
 private theorem dx_dir (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {O : Type} [CommRing O] {N : ℕ} [NeZero N]
     (ψ : DirichletCharacter O N) : IsLocallyConstant (Chr.dirG ℚ Ω ψ) :=
   (dx_lc _ (Chr.clsFacts ℚ Ω N).1).comp ψ.toUnitHom
 
 /- English proof (translation)
-Use `dx_zpow _ _ fun n => ?_` and prove the remaining obligations. Establish `h1 : AdicCont (IsLocalRing.maximalIdeal O) fun g => (chiO ℚ Ω l O g : O)` using `dx_alg _ (dx_lmem l O) (fun g => (cycZ ℚ Ω l g : ℤ_[l])) (Units.continuous_val.comp (contTw ℚ Ω l).1)`. Establish `h2` using `dx_zpow _ _ h1 (e : ℤ) n`. Establish `h3` using `(dx_dir Ω ψ).comp fun u : Oˣ => Ideal.Quotient.mk (IsLocalRing.maximalIdeal O ^ n) (u : O)`. Establish `h4` using `h2.mul h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h4 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `only [Chr.Psi, MonoidHom.mul_apply, Units.val_mul, map_mul, Pi.mul_apply, Function.comp_apply]`. Both sides reduce to the same expression.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem dx_cont (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime]
     {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O]
@@ -167,9 +163,9 @@ private theorem dx_cont (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
   rfl
 
 /- English proof (translation)
-Establish `h0 : (l : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hl.out.ne_zero`. Establish `h1 : (l : Ω)⁻¹ ∉ Loc.placeJ j`. Introduce `h`. Establish `h2 : ‖j (l : Ω)⁻¹‖ ≤ 1` using `h`. Establish `h3 : j (l : Ω)⁻¹ = algebraMap ℚ_[l] (Om l) (l : ℚ_[l])⁻¹` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h3, PadicAlgCl.norm_extends, norm_inv, Padic.norm_p, inv_inv]`. Conclude with `absurd hl.out.one_lt (by exact_mod_cast h2.not_gt)`. Rewrite `h1` using `[← ValuationSubring.valuation_le_one_iff, map_inv₀, not_le, one_lt_inv₀ ((Valuation.pos_iff _).2 h0)]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dx_place {Ω : Type} [Field Ω] [CharZero Ω] {l : ℕ} [hl : Fact l.Prime] (j : Ω →+* Om l) :
     (Loc.placeJ j).valuation (l : Ω) < 1 := by
@@ -185,17 +181,13 @@ private theorem dx_place {Ω : Type} [Field Ω] [CharZero Ω] {l : ℕ} [hl : Fa
   exact h1
 
 /- English proof (translation)
-Introduce `Ω _ _ _ K _ _ _ l hl c N _ e ψ h`. Use `haveI : Algebra.IsQuadraticExtension ℚ K := ⟨h.quad⟩`. Use `haveI : IsGalois ℚ K := inferInstance`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic K Ω := Algebra.IsAlgebraic.tower_top (K := ℚ) K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsAlgClosure K Ω := ⟨inferInstance, inferInstance⟩`. Take `⟨η, hη⟩` from `dx_eta Ω K h.quad`. Take `⟨cc, hcc⟩` from `dx_cc Ω`. Take `⟨j⟩` from `Loc.exists_emb (Ω := Ω) (v := l)`. Take `⟨i1, -, i3, -, i5, -⟩` from `Loc.iotaFacts j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : (Loc.placeJ j).valuation (l : Ω) < 1` using `dx_place j`. Establish `hI : ∀ g ∈ Loc.Iq l, Loc.iota j g ∈ Ine (F` using `ℚ) (Loc.placeJ j) := fun g hg => by`. Rewrite `hg` using `[← i3]`. Conclude with `hg`. Establish `hopen : IsOpen (((η.comp (Loc.iota j)).ker : Subgroup (GQ l)) : Set (GQ l))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `h1` using `(galEmbTop ℚ K Ω).2.1`. Rewrite `h1` using `[← hη]`. Conclude with `h1.preimage i1.continuous`. Take `⟨Kv, -, -, -, -, hKv, -⟩` from `Loc.openField (η.comp (Loc.iota j)).ker.subtype hopen.isOpenEmbedding_subtypeVal`. Rewrite `hKv` using `[Subgroup.range_subtype]`.
-
-Establish `hd : ¬ (l : ℤ) ∣ discr K` using `fun hd => h.l_cop (Dvd.dvd.mul_right (Int.natCast_dvd.1 hd) _)`. Conclude with `⟨{ gd := h η := η η_ker := hη cc := cc conj := hcc j := j ι := Loc.iota j ι_cont := i1.continuous ι_spec := fun σ x => (Loc.iota_spec j σ x).symm Kv := Kv Kv_spec := fun g => by rw [← hKv]; rfl η_unr := fun g hg => by`. Establish `h1` using `dx_unr Ω K l hd _ hA (hI g hg)`. Rewrite `h1` using `[← hη]`. Conclude with `h1`.
-
-Use `τ_open := ((dx_dir Ω (comp l ψ)).comp_continuous i1.continuous).isOpen_fiber 1`. Use `Ψ_cont := dx_cont Ω e ψ`. Use `Ψ_I := fun g hg => by`. Rewrite using `[← ((compIne Ω N l hl.out _ hA).2 c.O ψ).1 _ (hI g hg), Chr.Psi, MonoidHom.mul_apply, zpow_natCast, MonoidHom.pow_apply, Loc.cycA, ← i5 l]`. Use `rfl }⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.exists_dat :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]

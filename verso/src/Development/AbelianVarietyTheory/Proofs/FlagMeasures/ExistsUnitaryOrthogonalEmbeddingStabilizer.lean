@@ -9,44 +9,38 @@ namespace GlobalTheory.StabRing
 open Formalism.UG
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add_rect {R : Type} [CommRing R] (σ : R →+* R) {a b : Type} (M N : Matrix a b R) :
     cT σ (M + N) = cT σ M + cT σ N := by
   ext i j; simp [cT]
 
 /- English proof (translation)
-Establish `hmul : ∀ g g' : Matrix m m R, (X * U + A * g * A') * (X * U + A * g' * A') = X * U + A * (g * g') * A'`. Introduce `g g'`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Use `_ = _ := by rw [h1, h2, h3, h4]; simp [Matrix.mul_assoc]`. Establish `hone : X * U + A * (1 : Matrix m m R) * A' = 1` using `by rw [Matrix.mul_one, h5]`. Establish `hform : ∀ g : Matrix m m R, cT σ (X * U + A * g * A') * J * (X * U + A * g * A') = cT σ U * (cT σ X * J * X) * U + cT σ A' * (cT σ g * J' * g) * A'`. Introduce `g`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [cT_add_rect, cT_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Use `_ = _ := by rw [hXA, hAX, hJ]; simp`. Establish `hJJ : cT σ U * (cT σ X * J * X) * U + cT σ A' * J' * A' = J`. Use `hform 1` as an intermediate fact.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[hone]`. Simplify `this.symm` using `[cT_one]`. Set `j0 : GL m R → GL n R` to `fun g => ⟨X * U + A * (g : Matrix m m R) * A', X * U + A * ((g⁻¹ : GL m R) : Matrix m m R) * A', by rw [hmul, Units.mul_inv, hone], by rw [hmul, Units.inv_mul, hone]⟩`. Establish `hmem : ∀ g : UJ σ J', j0 g ∈ UJ σ J`. Introduce `g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hg : cT σ ((g : GL m R) : Matrix m m R) * J' * ((g : GL m R) : Matrix m m R) = J'` using `g.2`. Express the relevant statement in the definitionally equal form `cT σ (X * U + A * ((g : GL m R) : Matrix m m R) * A') * J * (X * U + A * ((g : GL m R) : Matrix m m R) * A') = J`. Rewrite using `[hform, hg, hJJ]`. Set `j : UJ σ J' →* UJ σ J` to `{ toFun := fun g => ⟨j0 g, hmem g⟩ map_one' := by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `hone`. Use the proof step `map_mul' := by`. Introduce `g g'`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `(hmul _ _).symm }`. Use `⟨j, fun g => rfl, ?_⟩` and prove the remaining obligations. Establish `hXJ : cT σ X * J = cT σ X * J * X * U`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_add, Matrix.mul_assoc]`. Use `_ = _ := by rw [hXA]; simp`. Establish `key : ∀ h : Matrix n n R, cT σ h * J * h = J → h * X = X → A * (A' * h * A) = h * A`. Introduce `h hh hX`. Establish `e1 : cT σ X * J * X * (U * h * A) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT σ (h * X) * J * h * A := by rw [← hXJ, hX]`. Use `_ = cT σ X * (cT σ h * J * h) * A := by simp only [cT_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hh, hXA]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : U * h * A = 0`. Take `⟨b, hb⟩` from `hB`. Rewrite `e1` using `[← hb]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.inv_mul, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `_ = 0 := by rw [Matrix.mul_assoc, e1, Matrix.mul_zero]`. Combine the equalities or inequalities in the displayed calculation. Introduce `h hX`. Establish `hh : cT σ ((h : GL n R) : Matrix n n R) * J * ((h : GL n R) : Matrix n n R) = J` using `h.2`. Establish `hh' : cT σ (((h : GL n R)⁻¹ : GL n R) : Matrix n n R) * J * (((h : GL n R)⁻¹ : GL n R) : Matrix n n R) = J` using `(h⁻¹).2`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hX' : (((h : GL n R)⁻¹ : GL n R) : Matrix n n R) * X = X` using `by conv_lhs => rw [← hX]`. Rewrite using `[← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Establish `k1` using `key _ hh hX`. Establish `k2` using `key _ hh' hX'`. Set `g : GL m R` to `⟨A' * ((h : GL n R) : Matrix n n R) * A, A' * (((h : GL n R)⁻¹ : GL n R) : Matrix n n R) * A, by rw [Matrix.mul_assoc _ A, k2, Matrix.mul_assoc A', ← Matrix.mul_assoc _ _ A, Units.mul_inv, Matrix.one_mul, h1], by rw [Matrix.mul_assoc _ A, k1, Matrix.mul_assoc A', ← Matrix.mul_ass …`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hg : g ∈ UJ σ J'`. Express the relevant statement in the definitionally equal form `cT σ (A' * ((h : GL n R) : Matrix n n R) * A) * J' * (A' * ((h : GL n R) : Matrix n n R) * A) = J'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cT_mul σ A, ← hJ]`. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = cT σ A * (cT σ ((h : GL n R) : Matrix n n R) * J * ((h : GL n R) : Matrix n n R)) * A := by`. Rewrite using `[k1]`. Simplify using `only [cT_mul, Matrix.mul_assoc]`. Use `_ = J' := by rw [hh, hJ]`. Use `⟨⟨g, hg⟩, ?_⟩` and prove the remaining obligations.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `X * U + A * (A' * ((h : GL n R) : Matrix n n R) * A) * A' = ((h : GL n R) : Matrix n n R)`. Rewrite using `[k1]`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [Matrix.mul_add, Matrix.mul_assoc]`. Use `_ = _ := by rw [h5, Matrix.mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_emb_block {R : Type} [CommRing R] (σ : R →+* R) {n m k : Type}
     [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m] [Fintype k] [DecidableEq k]
@@ -156,13 +150,9 @@ theorem exists_emb_block {R : Type} [CommRing R] (σ : R →+* R) {n m k : Type}
     _ = _ := by rw [h5, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `R _ σ n m J J' x u A A' hB hXA hAX hJ h1 h2 h3 h4 h5`. Establish `hc : cT σ (replicateCol Unit x) = replicateRow Unit (fun i => σ (x i))`. Use extensionality with `i j`. Simplify using `[cT]`. Rewrite `h5`, the goal using `[vecMulVec_eq Unit]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨j, hj1, hj2⟩` from `exists_emb_block σ J J' (replicateCol Unit x) (replicateRow Unit u) A A' (by`. Rewrite using `[hc, Matrix.mul_assoc, ← replicateCol_mulVec, replicateRow_mul_replicateCol, Matrix.isUnit_iff_isUnit_det]`. Simplify using `using hB)`. Use the proof step `(by rw [hc, Matrix.mul_assoc, ← replicateRow_vecMul, hXA]; simp)`. Use the proof step `(by rw [Matrix.mul_assoc, ← replicateCol_mulVec, ← replicateCol_mulVec, hAX]; simp)`.
-
-Use `hJ h1`. Use the proof step `(by rw [← replicateCol_mulVec, h2]; simp)`. Use the proof step `(by rw [← replicateRow_vecMul, h3]; simp)`. Use the proof step `(by rw [replicateRow_mul_replicateCol, h4]; ext i j; simp)`. Use `h5`.
-
-Conclude with `⟨j, hj1, fun h hx => hj2 h (by rw [← replicateCol_mulVec, hx])⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_emb : ∀ (R : Type) [CommRing R] (σ : R →+* R) (n m : ℕ) (J : Matrix (Fin n) (Fin n) R) (J' : Matrix (Fin m) (Fin m) R) (x u : Fin n → R) (A : Matrix (Fin n) (Fin m) R) (A' : Matrix (Fin m) (Fin n) R), IsUnit ((fun i => σ (x i)) ⬝ᵥ (J *ᵥ x)) → (fun i => σ (x i)) ᵥ* (J * A) = 0 → Formalism.UG.cT σ A *ᵥ (J *ᵥ x) = 0 → Formalism.UG.cT σ A * J * A = J' → A' * A = 1 → A' *ᵥ x = 0 → u ᵥ* A = 0 → u ⬝ᵥ x = 1 → vecMulVec x u + A * A' = 1 → ∃ j : Formalism.UG.UJ σ J' →* Formalism.UG.UJ σ J, (∀ g, ((j g : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = vecMulVec x u + A * ((g : GL (Fin m) R) : Matrix (Fin m) (Fin m) R) * A') ∧ ∀ h : Formalism.UG.UJ σ J, ((h : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) *ᵥ x = x → h ∈ j.range := by
   intro R _ σ n m J J' x u A A' hB hXA hAX hJ h1 h2 h3 h4 h5

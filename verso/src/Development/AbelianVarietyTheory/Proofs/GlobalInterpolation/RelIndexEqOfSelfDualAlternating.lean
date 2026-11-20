@@ -5,25 +5,23 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 namespace GlobalTheory.MomT.DualCount
 
 /- English proof (translation)
-Establish `hadd' : ∀ x y z, ω x (y + z) = ω x y + ω x z`. Introduce `x y z`. Rewrite using `[hanti x (y + z), hadd, hanti x y, hanti x z]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsub : ∀ x y z, ω (x - y) z = ω x z - ω y z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `x y z`. Use `hadd (x - y) y z` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hint : ∀ r : ℝ, ((r : ℝ) : UnitAddCircle) = 0 ↔ ∃ n : ℤ, r = n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `r`. Rewrite using `[AddCircle.coe_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn⟩; exact ⟨n, by simpa using hn.symm⟩`. Introduce and unpack `⟨n, hn⟩; exact ⟨n, by simpa using hn.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Set `φ : H → (Λ₂ →+ UnitAddCircle)` to `fun x => AddMonoidHom.mk' (fun y => ((ω x y : ℝ) : UnitAddCircle)) (by`. Introduce `a b`. Simplify using `only [AddSubgroup.coe_add, hadd', AddCircle.coe_add])`. Establish `hφ : ∀ x : Λ₁, Λ₁.addSubgroupOf Λ₂ ≤ (φ x).ker`. Introduce `x y hy`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AddMonoidHom.mem_ker]`. Conclude with `(hint _).2 ((h₁ x).1 x.2 y (AddSubgroup.mem_addSubgroupOf.1 hy))`. Set `ψ : Λ₁ → (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂ →+ UnitAddCircle)` to `fun x => QuotientAddGroup.lift _ (φ x) (hφ x)`. Use `haveI : Fact ((0 : ℝ) < 1) := ⟨one_pos⟩`. Set `χ : Λ₁ → AddChar (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) Circle` to `fun x => (AddCircle.toCircle_addChar (T := 1)).compAddMonoidHom (ψ x)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hχ : ∀ a b : Λ₁, χ a = χ b → ((a : H) - b) ∈ Λ₂`. Introduce `a b hab`. Rewrite using `[h₂]`. Introduce `y hy`. Establish `h` using `DFunLike.congr_fun hab (QuotientAddGroup.mk ⟨y, hy⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : AddCircle.toCircle (((ω a y : ℝ)) : UnitAddCircle) = AddCircle.toCircle (((ω b y : ℝ)) : UnitAddCircle)` using `h`. Establish `h''` using `AddCircle.injective_toCircle (T := 1) one_ne_zero h'`. Rewrite using `[← hint, hsub, AddCircle.coe_sub, h'', sub_self]`. Use `haveI hG : Finite (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) := Nat.finite_of_card_ne_zero hfin`. Use `haveI : Fintype (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) := Fintype.ofFinite _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `f : (Λ₁ ⧸ Λ₂.addSubgroupOf Λ₁) → AddChar (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) ℂ` to `fun q => AddChar.circleEquivComplex (χ q.out)`. Establish `hf : Function.Injective f`. Introduce `p q hpq`. Establish `h` using `hχ _ _ (AddChar.circleEquivComplex.injective hpq)`. Rewrite using `[← QuotientAddGroup.out_eq' p, ← QuotientAddGroup.out_eq' q, QuotientAddGroup.eq_iff_sub_mem, AddSubgroup.mem_addSubgroupOf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `hle` using `Nat.card_le_card_of_injective f hf`. Establish `hc : Nat.card (AddChar (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) ℂ) = Nat.card (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂)`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, AddChar.card_eq]`. Rewrite `hle` using `[hc]`.
-
-Conclude with `hle`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_le_of_selfDual (H : Type) [AddCommGroup H] (ω : H → H → ℝ)
     (Λ₁ Λ₂ : AddSubgroup H) (hadd : ∀ x y z, ω (x + y) z = ω x z + ω y z)
@@ -86,7 +84,7 @@ theorem relIndex_le_of_selfDual (H : Type) [AddCommGroup H] (ω : H → H → �
   exact hle
 
 /- English proof (translation)
-Introduce `H _ ω Λ₁ Λ₂ hadd hanti h₁ h₂ f₁ f₂`. Conclude with `le_antisymm (relIndex_le_of_selfDual H ω Λ₂ Λ₁ hadd hanti h₂ h₁ f₂) (relIndex_le_of_selfDual H ω Λ₁ Λ₂ hadd hanti h₁ h₂ f₁)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem relIndex_eq_of_selfDual : ∀ (H : Type) [AddCommGroup H] (ω : H → H → ℝ)
     (Λ₁ Λ₂ : AddSubgroup H), (∀ x y z, ω (x + y) z = ω x z + ω y z) → (∀ x y, ω x y = -ω y x) →

@@ -43,7 +43,7 @@ theorem rtV_apply (V : HSp D) (g : GA D V) (f : GA D V → ℂ) (h : GA D V) : r
 variable {V : HSp D} {n : ℕ}
 
 /- English proof (translation)
-Establish `h : ∃ x, Q.ψ x = Q.ψ z` using `⟨z, rfl⟩`. Unfold `pre`. Rewrite using `[dif_pos h]`. Conclude with `Q.inj h.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre_psi (Q : RowPsi V n) (z : Formalism.AUTREP.GAf D.host.E n) : pre Q (Q.ψ z) = z := by
   have h : ∃ x, Q.ψ x = Q.ψ z := ⟨z, rfl⟩
@@ -52,7 +52,7 @@ theorem pre_psi (Q : RowPsi V n) (z : Formalism.AUTREP.GAf D.host.E n) : pre Q (
   exact Q.inj h.choose_spec
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `Q.onto γ hγ`. Establish `h' : ∃ x, Q.ψ x = γ` using `⟨h, hh⟩`. Unfold `pre`. Rewrite using `[dif_pos h']`. Conclude with `h'.choose_spec`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_pre (Q : RowPsi V n) {γ : GA D V} (hγ : γ ∈ GfC V) : Q.ψ (pre Q γ) = γ := by
   obtain ⟨h, hh⟩ := Q.onto γ hγ
@@ -67,7 +67,7 @@ def lift (Q : RowPsi V n) (x : Formalism.AUTREP.GAf D.host.E n → ℂ) : GA D V
   fun g => if g ∈ GfC V then x (pre Q g) else 0
 
 /- English proof (translation)
-Rewrite using `[rtV_apply]`. Establish `hmem : Q.ψ y * γ ∈ GfC V` using `(GfC V).mul_mem (Q.into y) hγ`. Establish `heq : Q.ψ y * γ = Q.ψ (y * pre Q γ)` using `by rw [map_mul, psi_pre Q hγ]`. Unfold `lift`. Rewrite using `[if_pos hmem, heq, pre_psi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rtV_lift_psi (Q : RowPsi V n) (x : Formalism.AUTREP.GAf D.host.E n → ℂ) {γ : GA D V} (hγ : γ ∈ GfC V)
     (y : Formalism.AUTREP.GAf D.host.E n) : rtV V γ (lift Q x) (Q.ψ y) = x (y * pre Q γ) := by
@@ -78,11 +78,11 @@ theorem rtV_lift_psi (Q : RowPsi V n) (x : Formalism.AUTREP.GAf D.host.E n → �
   rw [if_pos hmem, heq, pre_psi]
 
 /- English proof (translation)
-Introduce `k hk`. Establish `hkG : k ∈ GfC V` using `hK hk`. Use function extensionality and compare the values at `g`. Rewrite using `[rtV_apply]`. Distinguish the cases in `hg : g ∈ GfC V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hgk : g * k ∈ GfC V` using `(GfC V).mul_mem hg hkG`. Establish `heq : g * k = Q.ψ (pre Q g * pre Q k)` using `by rw [map_mul, psi_pre Q hg, psi_pre Q hkG]`. Establish `hfix` using `congrFun (hx (pre Q k) (by rw [psi_pre Q hkG]; exact hk)) (pre Q g)`. Unfold `lift`. Rewrite using `[if_pos hgk, if_pos hg, heq, pre_psi]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfix`. Establish `hgk : g * k ∉ GfC V` using `fun h => hg (by simpa using (GfC V).mul_mem h ((GfC V).inv_mem hkG))`. Unfold `lift`. Rewrite using `[if_neg hgk, if_neg hg]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_fixed (Q : RowPsi V n) (x : Formalism.AUTREP.GAf D.host.E n → ℂ) (K : Set (GA D V)) (hK : K ⊆ GfC V)
     (hx : ∀ κ, Q.ψ κ ∈ K → Formalism.L2.NG.rt D.host.E n κ x = x) : ∀ k ∈ K, rtV V k (lift Q x) = lift Q x := by
@@ -102,28 +102,28 @@ theorem lift_fixed (Q : RowPsi V n) (x : Formalism.AUTREP.GAf D.host.E n → ℂ
     rw [if_neg hgk, if_neg hg]
 
 /- English proof (translation)
-Simplify using `[Hecke₃, heckeG, LinearMap.sum_apply, Finset.sum_apply, Formalism.L2.NG.rt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckeOperator_apply' (Q : RowPsi V n) (B : Finset (GA D V)) (x : Formalism.AUTREP.GAf D.host.E n → ℂ) (y : Formalism.AUTREP.GAf D.host.E n) :
     Hecke₃ Q B x y = ∑ γ ∈ B, x (y * pre Q γ) := by
   simp [Hecke₃, heckeG, LinearMap.sum_apply, Finset.sum_apply, Formalism.L2.NG.rt]
 
 /- English proof (translation)
-Take `⟨e, f, ϖ, α, -, -, -, -, -, -, -, -, -, -, hR⟩` from `hB`. Conclude with `fun γ hγ => (hR.1 γ hγ).1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sph_mem_GfC {P : Pl D.host.E} {d : List ℤ} {B : Finset (GA D V)} (hB : SphOp V P d B) : ∀ γ ∈ B, γ ∈ GfC V := by
   obtain ⟨e, f, ϖ, α, -, -, -, -, -, -, -, -, -, -, hR⟩ := hB
   exact fun γ hγ => (hR.1 γ hγ).1
 
 /- English proof (translation)
-Introduce `k hk` and use `hk.1.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hyp_sub (P : Pl D.host.E) : hyp V P ⊆ GfC V := fun k hk => hk.1.1
 
 /- English proof (translation)
-Establish `hu` using `lift_fixed Q x (hyp V P) (hyp_sub P) hx`. Establish `e1` using `((GlobalTheory.SphLabelOps.label_operators V P).1 d B hB).2 (GA D V → ℂ) (rtV V) (lift Q x) hu`. Establish `e2` using `((GlobalTheory.SphLabelOps.label_operators V P).1 d B' hB').2 (GA D V → ℂ) (rtV V) (lift Q x) hu`. Establish `e` using `e1.trans e2.symm`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `ey` using `congrFun e (Q.ψ y)`. Rewrite `ey` using `[Finset.sum_apply, Finset.sum_apply]`. Rewrite using `[heckeOperator_apply', heckeOperator_apply']`. Rewrite `ey` using `[Finset.sum_congr rfl (fun γ hγ => rtV_lift_psi Q x (sph_mem_GfC hB γ hγ) y), Finset.sum_congr rfl (fun γ hγ => rtV_lift_psi Q x (sph_mem_GfC hB' γ hγ) y)]`. Conclude with `ey`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeOperator_eq_of_spherical (Q : RowPsi V n) (P : Pl D.host.E) (d : List ℤ) (B B' : Finset (GA D V)) (hB : SphOp V P d B)
     (hB' : SphOp V P d B') (x : Formalism.AUTREP.GAf D.host.E n → ℂ) (hx : ∀ κ, Q.ψ κ ∈ hyp V P → Formalism.L2.NG.rt D.host.E n κ x = x) :
@@ -141,9 +141,9 @@ theorem heckeOperator_eq_of_spherical (Q : RowPsi V n) (P : Pl D.host.E) (d : Li
   exact ey
 
 /- English proof (translation)
-Take `⟨e, f, ϖ, α, -, hPI, h1, h2, hd, hJ, -, hα, hdiv, hR, hcos⟩` from `h`. Establish `hset : {k | k ∈ J ∧ SuppF V f k} = {k | k ∈ KsphC V ∅ ∧ SuppF V f k}`. Use extensionality with `k`. Conclude with `⟨fun ⟨a, b⟩ => ⟨(hJ k b).1 a, b⟩, fun ⟨a, b⟩ => ⟨(hJ k b).2 a, b⟩⟩`. Rewrite `hcos` using `[hset]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨e, f, ϖ, α, fun v hv => absurd hv (Finset.notMem_empty v), hPI, h1, h2, hd, fun _ _ => Iff.rfl, fun _ _ _ => rfl, hα, hdiv, hR, hcos⟩`.
+Supply the required witnesses or components.
 -/
 theorem sph_of_full {J : Set (GA D V)} {χ : GA D V → ℂ} {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {P : Pl D.host.E}
     {d : List ℤ} {B : Finset (GA D V)} (h : Hecke₂ V J χ S P d B) : SphOp V P d B := by
@@ -164,19 +164,15 @@ open Formalism.IndefR.principalLevelFrame
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F s hOk hCore hX SF hSF n hF PY PW hPY hPW π hπ i0`. Establish `hsc : ∀ Pr d B, SphOp (Wc D i0) Pr d B → ∃ a : ℂ, ∀ x ∈ π.S, (∀ κ, (PW i0).ψ κ ∈ hyp (Wc D i0) Pr → Formalism.L2.NG.rt D.host.E n κ x = x) → Hecke₃ (PW i0) B x = a • x` using `fun Pr d B h => GlobalTheory.T.sphericalHecke_scalar_on_spherical_vectors hF (PW i0) (hPW i0) π Pr d B h`. Take `⟨c0, hBase⟩` from `hCore.lev.βW i0`. Rewrite `hBase` using `[one_pow]`. Establish `hfix : ∀ Pr d B, Hecke₂ (Wc D i0) (levS _ (R.βW i0) (R.datWp i0 (R.levL F false (sg0 D A)))) (levChi _ (R.βW i0) (R.datWp i0 (R.levL F false (sg0 D A)))) SF Pr d B → ∀ x, IsTypeVec ((PW i0).ψ ⁻¹' levS _ (R.βW i0) (R.datWp i0 (R.levL F false (sg0 D A)))) (fun κ => levChi _ (R.βW i …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `Pr d B hB x hx κ hκ`. Establish `hOff : OffS D SF Pr`. Take `⟨e, f, ϖ, α, h, -⟩` from `hB`. Conclude with `h`. Establish `hGood : Good R A.μ0 Pr` using `((GlobalTheory.GoodPrimes.good_primes R F hCore.lev).2.2.1 SF hSF Pr).mp hOff`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : ((1 : ℕ) : 𝓞 D.host.E) ∉ Pr.asIdeal`. Rewrite using `[Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).mp Pr.isPrime.ne_top`. Establish `hL` using `(GlobalTheory.LevOp.level_operators (Wc D i0) (R.βW i0) (R.ΛW i0) 1 (R.datWp i0 (R.levL F false (sg0 D A))) hBase Pr hN (fun PP hPP => by`. Break down `hPP with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hGood PP (Or.inl h)`. Conclude with `absurd h (Finset.notMem_empty PP))).1 _ hκ`. Use `hx κ hL.1` as an intermediate fact. Rewrite using `[this]`. Simplify using `only`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hL.2, one_smul]`. Use `⟨fun Pr d => if h : ∃ B, Hecke₂ (Wc D i0) (levS _ (R.βW i0) (R.datWp i0 (R.levL F false (sg0 D A)))) (levChi _ (R.βW i0) (R.datWp i0 (R.levL F false (sg0 D A)))) SF Pr d B then (hsc Pr d h.choose (sph_of_full h.choose_spec)).choose else 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.rowType_exists_baseLevel_vector R F hOk hCore hX hF PY PW hPY hPW π hπ i0`. Introduce `Pr d B hB x hxS hx`. Establish `hex : ∃ B, Hecke₂ (Wc D i0) (levS _ (R.βW i0) (R.datWp i0 (R.levL F false (sg0 D A)))) (levChi _ (R.βW i0) (R.datWp i0 (R.levL F false (sg0 D A)))) SF Pr d B` using `⟨B, hB⟩`.
-
-Establish `hxf` using `hfix Pr d B hB x hx`. Simplify using `only`. Rewrite using `[dif_pos hex, heckeOperator_eq_of_spherical (PW i0) Pr d B hex.choose (sph_of_full hB) (sph_of_full hex.choose_spec) x hxf]`. Conclude with `(hsc Pr d hex.choose (sph_of_full hex.choose_spec)).choose_spec x hxS hxf`. Introduce `Pr d hne`.
-
-Conclude with `dif_neg hne`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem row_type_eig : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) {s : ℕ}, A.fam.Ok s → Core R F → (∀ χ ∈ A.X, chiIdem χ * lvlIdem F.P0 F.ψ0 ≠ 0) → ∀ SF, IsSF R SF → ∀ {n : ℕ} (hF : D.host.F = maximalRealSubfield D.host.E) (PY : principalLevelFrame.RowPsi (Yc D 0) n) (PW : ∀ i, principalLevelFrame.RowPsi (Wc D i) n), StdPsi hF PY → (∀ i, StdPsi hF (PW i)) → ∀ π, π ∈ principalLevelFrame.OccRows R.θ PY (R.MY 0) (fun b => (levS _ (R.βY 0) (R.dat0 (R.levR F b)))) (fun b => (levChi _ (R.βY 0) (R.dat0 (R.levR F b)))) (fun _ => R.e0) → ∀ i0, ∃ c, principalLevelFrame.IsEigOf (PW i0) (levS _ (R.βW i0) (R.datWp i0 (R.levL F false (sg0 D A)))) (levChi _ (R.βW i0) (R.datWp i0 (R.levL F false (sg0 D A)))) SF π c := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F s hOk hCore hX SF hSF n hF PY PW hPY hPW π hπ i0

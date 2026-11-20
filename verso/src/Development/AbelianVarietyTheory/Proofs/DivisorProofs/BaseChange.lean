@@ -35,7 +35,7 @@ def BaseChange : Prop :=
     (∀ g ∈ dualWeyl O N N ν, MvPolynomial.map (Ideal.Quotient.mk (Ideal.span {ϖ})) g = 0 → ∃ h ∈ dualWeyl O N N ν, g = ϖ • h)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[res, extW, a.isLt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem res_extW {ι : Type} (w : ι → Fin N → ℕ) (τ : ι) : res N (extW N w τ) = w τ := by
   funext a

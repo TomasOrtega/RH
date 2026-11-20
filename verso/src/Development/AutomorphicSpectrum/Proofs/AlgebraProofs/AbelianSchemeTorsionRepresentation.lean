@@ -22,7 +22,7 @@ open GlobalTheory.CompanionTheory.Ar.GR
 namespace GlobalTheory.CompanionTheory.Ar.GR
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.HtPt.Rg.torsrep_ex`.
+A detailed English derivation is pending.
 -/
 theorem torsRep_nonempty_of_relAmple : ∀ (R : Type) [CommRing R] [IsLocalRing R] (p : ℕ), 1 ≤ p → ∀ (A : Over (Spec (CommRingCat.of R))) [GrpObj A] (L : LB A.left), IsAbelianScheme A → L.IsLB → Out.RelAmple A L → Nonempty (TorsRep A p) :=
   PositivityTheory.HtPt.Rg.torsrep_ex

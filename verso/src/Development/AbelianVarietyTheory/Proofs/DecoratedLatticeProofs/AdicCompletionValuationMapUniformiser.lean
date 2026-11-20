@@ -4,35 +4,31 @@ open ValuativeRel NumberField IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ v k _ _ _ _ φ hφ ϖ hϖ`. Establish `hnu : ∀ c : 𝒪[k], Valued.v (φ (c : k)) < 1 → ¬ IsUnit c`. Introduce `c hc hu`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `hw' : φ (c : k) * φ (w : k) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← map_one φ]`. Use `congr 1`. Conclude with `congrArg (fun t : 𝒪[k] => (t : k)) hw` after adjusting the coercions. Establish `h1 : Valued.v (φ (c : k)) * Valued.v (φ (w : k)) = 1`. Rewrite using `[← map_mul, hw', map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Valued.v (φ (w : k)) ≤ 1` using `(hφ _).2 w.2`. Establish `h3 : Valued.v (φ (c : k)) * Valued.v (φ (w : k)) ≤ Valued.v (φ (c : k)) * 1` using `by gcongr`. Rewrite `h3` using `[h1, mul_one]`. Conclude with `absurd hc (not_lt.2 h3)`. Use `set x := φ (ϖ : k) with hxdef`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hϖ0 : (ϖ : k) ≠ 0`. Introduce `h`. Conclude with `hϖ.ne_zero (Subtype.ext h)`. Establish `hx0 : x ≠ 0`. Simplify `hϖ0` using `[hxdef]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvx0 : Valued.v x ≠ 0`. Simplify using `using hx0`. Establish `hvx1 : Valued.v x < 1`. Establish `hle : Valued.v x ≤ 1` using `(hφ _).2 ϖ.2`. Use `lt_of_le_of_ne hle ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `heq`. Apply `hϖ.not_isUnit` to reduce the goal to its premises. Establish `hinv : ((ϖ : k))⁻¹ ∈ 𝒪[k]`. Use `(hφ _).1 ?_` and prove the remaining obligations. Rewrite using `[map_inv₀, map_inv₀, ← hxdef, heq, inv_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `IsUnit.of_mul_eq_one (b := (⟨_, hinv⟩ : 𝒪[k])) ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[mul_inv_cancel₀ hϖ0]`. Take `⟨π₀, hπ₀⟩` from `HeightOneSpectrum.valuedAdicCompletion_surjective F v ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Establish `hlt1 : ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) < 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← WithZero.coe_one, WithZero.coe_lt_coe]`. Use `show (-1 : ℤ) < 0`. Evaluate the numerical expressions. Establish `hvπ0 : Valued.v π₀ ≠ 0` using `by rw [hπ₀]; exact WithZero.coe_ne_zero`. Establish `hπ0 : π₀ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Apply `hvπ0` to reduce the goal to its premises. Rewrite using `[h, map_zero]`. Use `set a := φ.symm π₀ with hadef`. Establish `hφa : φ a = π₀` using `by simp [hadef]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `ha0 : a ≠ 0`. Introduce `h`. Apply `hπ0` to reduce the goal to its premises. Rewrite using `[← hφa, h, map_zero]`. Establish `ha : a ∈ 𝒪[k]` using `(hφ a).1 (by rw [hφa, hπ₀]; exact hlt1.le)`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `le_antisymm` to reduce the goal to its premises. Take `⟨m, hm⟩` from `WithZero.ne_zero_iff_exists.1 hvx0`. Rewrite `hvx1`, the goal using `[← hm]`. Rewrite `hvx1` using `[← WithZero.coe_one, WithZero.coe_lt_coe]`. Rewrite using `[WithZero.coe_le_coe]`.
+Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Multiplicative.toAdd m < 0` using `hvx1`. Use `show Multiplicative.toAdd m ≤ -1`. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `set b := (ϖ : k) / a with hbdef`. Establish `hφb : Valued.v (φ b) < 1`. Rewrite using `[hbdef, map_div₀, hφa, map_div₀, ← hxdef, div_lt_one₀ (pos_iff_ne_zero.2 hvπ0), hπ₀]`. Conclude with `hcon`. Establish `hb : b ∈ 𝒪[k]` using `(hφ b).1 hφb.le`.
-
-Establish `hprod : ϖ = (⟨a, ha⟩ : 𝒪[k]) * ⟨b, hb⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (ϖ : k) = a * ((ϖ : k) / a)`. Rewrite using `[mul_div_cancel₀ _ ha0]`. Break down `hϖ.isUnit_or_isUnit hprod with h | h` into its components or cases.
-
-Conclude with `hnu ⟨a, ha⟩ (by rw [hφa, hπ₀]; exact hlt1) h`. Conclude with `hnu ⟨b, hb⟩ hφb h`.
+A detailed English derivation is pending.
 -/
 theorem adicCompletion_valuation_map_uniformiser : ∀ (F : Type) [Field F] [NumberField F] (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (φ : k ≃+* v.adicCompletion F), (∀ a, Valued.v (φ a) ≤ 1 ↔ a ∈ 𝒪[k]) → ∀ ϖ : 𝒪[k], Irreducible ϖ → Valued.v (φ (ϖ : k)) = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
   intro F _ _ v k _ _ _ _ φ hφ ϖ hϖ

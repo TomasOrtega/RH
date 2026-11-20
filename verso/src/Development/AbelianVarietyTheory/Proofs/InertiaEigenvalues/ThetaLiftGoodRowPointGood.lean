@@ -10,11 +10,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.GoodLiftPoint
 
 /- English proof (translation)
-Introduce `D h42 i σ P x hg hth hpt`. Establish `hne : D.what₂.isot (D.nd.j i) σ ≠ ⊥`. Introduce `h`. Apply `hth.1` to reduce the goal to its premises. Rewrite using `[h, Submodule.map_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Sig, hW, hBC⟩` from `(h42 i σ hne).2.1`. Establish `hX : HasParamX D.nd D.naut i x Sig` using `⟨P, hpt, hBC P hth⟩`. Establish `hZ : x ∈ ZN D.nd D.naut i`. Use `⟨P, hpt, _, hBC P hth, ?_⟩` and prove the remaining obligations. Unfold `twistIso`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `List.mem_map.2 ⟨muPart D.nd D.naut i, by simp, rfl⟩`. Establish `hgood : x ∈ ZgoodN D.nd D.naut i` using `⟨hZ, Sig, hX, (GlobalTheory.LabelCompat.labCompat D i σ Sig hW).1 hg⟩`. Conclude with `⟨hgood, GlobalTheory.LiftLeaf.atMOfParam D i x hgood Sig hX σ hW⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem good_of_lift : ∀ (D : D7), SumRepresentations.Conclusion42 D → ∀ (i : D.nd.Loc) (σ : D.what₂.FT) (P : D.naut.AV i) (x : D.nd.X i), D.nd.goodRow σ → thetaOf D.nd D.naut i σ P → D.naut.ptV i P = some x → x ∈ ZgoodN D.nd D.naut i ∧ AtM D.nd D.naut i σ := by
   intro D h42 i σ P x hg hth hpt

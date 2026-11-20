@@ -9,7 +9,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT GlobalTheory.ZH
 open GlobalTheory.Poinc.Tors
 /- English proof (citation)
-Apply `GlobalTheory.Poinc.Tors.torsion_exhaust_geometric` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTorsionSectionsExhaustGeometricFibres.lean&line=13#L13)
 -/

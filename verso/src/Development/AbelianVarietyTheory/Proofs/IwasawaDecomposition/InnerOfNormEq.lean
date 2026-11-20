@@ -8,7 +8,7 @@ namespace GlobalTheory.ClosableSchur
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Establish `h` using `(LinearMap.norm_map_iff_inner_map_map R).mp hR`. Conclude with `h v w`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma inner_of_norm_eq (R : H →L[ℂ] H) (hR : ∀ v, ‖R v‖ = ‖v‖) (v w : H) :
     ⟪R v, R w⟫_ℂ = ⟪v, w⟫_ℂ := by
@@ -16,13 +16,13 @@ lemma inner_of_norm_eq (R : H →L[ℂ] H) (hR : ∀ v, ‖R v‖ = ‖v‖) (v 
   exact h v w
 
 /- English proof (translation)
-Set `uc : V →L[ℂ] K` to `u.mkContinuous 1 (fun v => by rw [hu, one_mul])`. Establish `hd : DenseRange V.subtypeL`. Establish `hr : Set.range (V.subtypeL : V → K) = (V : Set K)`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[DenseRange, hr]`. Conclude with `hV`. Establish `hi : IsUniformInducing V.subtypeL` using `isUniformEmbedding_subtype_val.isUniformInducing`. Establish `heq : ∀ v : V, uc.extend V.subtypeL v = u v` using `fun v => by`. Use `ContinuousLinearMap.extend_eq uc hd hi v` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[uc]`. Use `⟨uc.extend V.subtypeL, heq, fun γ => ?_⟩` and prove the remaining obligations. Establish `hfun` using `hd.equalizer (g := fun γ => ‖uc.extend V.subtypeL γ‖) (h := fun γ => ‖γ‖) (continuous_norm.comp (ContinuousLinearMap.continuous _)) continuous_norm (funext fun v => by`. Simplify using `only [Function.comp_apply]`. Rewrite using `[ContinuousLinearMap.extend_eq uc hd hi v]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[uc, hu])`. Conclude with `congr_fun hfun γ`.
+A detailed English derivation is pending.
 -/
 private lemma exists_isometry_extension_of_dense_of_norm_eq {K : Type} [NormedAddCommGroup K] [NormedSpace ℂ K] [CompleteSpace K]
     (V : Submodule ℂ K) (hV : Dense (V : Set K)) (u : V →ₗ[ℂ] K) (hu : ∀ v, ‖u v‖ = ‖v‖) :
@@ -48,39 +48,35 @@ private lemma exists_isometry_extension_of_dense_of_norm_eq {K : Type} [NormedAd
   exact congr_fun hfun γ
 
 /- English proof (translation)
-Establish `hadd : ∀ a b : D, s (a + b) = s a + s b` using `fun a b => hJ (by rw [map_add, hJs, hJs, hJs, Submodule.coe_add])`. Establish `hsmul : ∀ (c : ℂ) (a : D), s (c • a) = c • s a` using `fun c a => hJ (by rw [map_smul, hJs, hJs, Submodule.coe_smul])`. Set `sl : D →ₗ[ℂ] K` to `{ toFun := s, map_add' := hadd, map_smul' := hsmul }`. Establish `hinj : Function.Injective sl` using `fun a b hab => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hJs a, ← hJs b]`. Conclude with `congrArg J hab`. Set `e` to `LinearEquiv.ofInjective sl hinj`. Establish `he : ∀ w : D, e.symm ⟨s w, LinearMap.mem_range_self sl w⟩ = w` using `fun w => by`. Apply `e.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[e, sl]`. Establish `hVd : Dense ((LinearMap.range sl : Submodule ℂ K) : Set K)`. Rewrite using `[LinearMap.coe_range]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hs`. Establish `hU : ∀ i, ∃ U : K →L[ℂ] K, (∀ w : D, U (s w) = s ⟨ρ i w, hD i w w.2⟩) ∧ ∀ γ, ‖U γ‖ = ‖γ‖`. Introduce `i`. Set `r : D →ₗ[ℂ] D` to `(ρ i).toLinearMap.restrict (fun x hx => hD i x hx)`. Set `u : LinearMap.range sl →ₗ[ℂ] K` to `sl ∘ₗ r ∘ₗ e.symm.toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hu : ∀ w : D, u ⟨s w, LinearMap.mem_range_self sl w⟩ = s ⟨ρ i w, hD i w w.2⟩` using `fun w => by`. Simplify using `only [u, LinearMap.comp_apply, LinearEquiv.coe_coe, he]`. Both sides reduce to the same expression. Take `⟨U, hUeq, hUn⟩` from `exists_isometry_extension_of_dense_of_norm_eq _ hVd u (fun v => by`. Take `⟨w, hw⟩` from `LinearMap.mem_range.mp v.2`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : v = ⟨s w, LinearMap.mem_range_self sl w⟩` using `Subtype.ext hw.symm`. Rewrite using `[hv, hu, hsn]`. Use the proof step `rfl)`. Use `⟨U, fun w => ?_, hUn⟩` and prove the remaining obligations. Use `hUeq ⟨s w, LinearMap.mem_range_self sl w⟩` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hu]`. Conclude with `this`. Use `choose U hUs hUn using hU`. Establish `hUinv : ∀ i j, (∀ v, ρ i (ρ j v) = v) → ∀ γ, U i (U j γ) = γ`. Introduce `i j hij γ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `hs.equalizer (g := fun γ => U i (U j γ)) (h := id) ((U i).continuous.comp (U j).continuous) continuous_id (funext fun w => by` as an intermediate fact. Simplify using `only [Function.comp_apply, id]`. Rewrite using `[hUs j w, hUs i]`. Use `congr 1`. Conclude with `Subtype.ext (hij w))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congr_fun this γ`. Establish `hJU : ∀ i γ, J (U i γ) = ρ i (J γ)`. Introduce `i γ`. Use `hs.equalizer (g := fun γ => J (U i γ)) (h := fun γ => ρ i (J γ)) (J.continuous.comp (U i).continuous) ((ρ i).continuous.comp J.continuous) (funext fun w => by` as an intermediate fact. Simplify using `only [Function.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hUs i w, hJs, hJs])`. Conclude with `congr_fun this γ`. Establish `hadj : ∀ i x, ContinuousLinearMap.adjoint J (ρ i x) = U i (ContinuousLinearMap.adjoint J x)`. Introduce `i x`. Take `⟨j, _, hij⟩` from `hinv i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `ext_inner_right ℂ` to reduce the goal to its premises. Introduce `γ`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left]`. Use `conv_rhs => rw [← hUinv i j hij γ]`. Rewrite using `[inner_of_norm_eq (U i) (hUn i) (ContinuousLinearMap.adjoint J x) (U j γ), ContinuousLinearMap.adjoint_inner_left, hJU j, ← inner_of_norm_eq (ρ i) (hn i) x (ρ j (J γ)), hij]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hadjρ : ∀ i, ∃ i', ρ i' = ContinuousLinearMap.adjoint (ρ i)`. Introduce `i`. Take `⟨j, _, hij⟩` from `hinv i`. Use `⟨j, ?_⟩` and prove the remaining obligations. Use extensionality with `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `ext_inner_right ℂ` to reduce the goal to its premises. Introduce `w`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left, ← inner_of_norm_eq (ρ i) (hn i) (ρ j v) w, hij]`. Set `T : H →L[ℂ] H` to `J ∘L ContinuousLinearMap.adjoint J`. Establish `hcomm : ∀ i, T ∘L ρ i = ρ i ∘L T`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `i`. Use extensionality with `x`. Simplify using `only [T, ContinuousLinearMap.comp_apply]`. Rewrite using `[hadj, hJU]`. Take `⟨c, hc⟩` from `hilbert_schur_of_adjoint_closed ι H ρ hadjρ hirr T hcomm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJJ : ∀ γ, ContinuousLinearMap.adjoint J (J γ) = c • γ`. Introduce `γ`. Apply `hJ` to reduce the goal to its premises. Use `congrArg (fun T' : H →L[ℂ] H => T' (J γ)) hc` as an intermediate fact. Simplify using `only [T, ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply] at this`.
-
-Rewrite using `[this, map_smul]`. Use `⟨c.re, fun γ => ?_⟩` and prove the remaining obligations. Establish `h1 : (⟪γ, γ⟫_ℂ).re = ‖γ‖ ^ 2` using `inner_self_eq_norm_sq (𝕜 := ℂ) γ`. Establish `h2 : (⟪γ, γ⟫_ℂ).im = 0` using `inner_self_im (𝕜 := ℂ) γ`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ) (J γ), ← ContinuousLinearMap.adjoint_inner_left J γ (J γ), hJJ, inner_smul_left, RCLike.re_to_complex, Complex.mul_re, Complex.conj_re, Complex.conj_im, h1, h2]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma abstract {ι K : Type} [CompleteSpace H] [NormedAddCommGroup K] [InnerProductSpace ℂ K]
     [CompleteSpace K] (ρ : ι → (H →L[ℂ] H)) (D : Submodule ℂ H) (hn : ∀ i v, ‖ρ i v‖ = ‖v‖)
@@ -185,31 +181,31 @@ lemma abstract {ι K : Type} [CompleteSpace H] [NormedAddCommGroup K] [InnerProd
   ring
 
 /- English proof (translation)
-Introduce `ι H E _ _ _ _ _ _ ρ D hn hinv hirr hD A hA hcl`. Set `g : D →ₗ[ℂ] WithLp 2 (H × E)` to `(WithLp.linearEquiv 2 ℂ (H × E)).symm.toLinearMap ∘ₗ (D.subtype.prod (A ∘ₗ D.subtype))`. Establish `hg : ∀ w : D, g w = WithLp.toLp 2 ((w : H), A w)` using `fun w => rfl`. Set `G : Submodule ℂ (WithLp 2 (H × E))` to `LinearMap.range g`. Set `K : Submodule ℂ (WithLp 2 (H × E))` to `G.topologicalClosure`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: CompleteSpace K` using `G.isClosed_topologicalClosure.completeSpace_coe`. Set `J : K →L[ℂ] H` to `(WithLp.fstL 2 ℂ H E) ∘L K.subtypeL`. Establish `hJapp : ∀ γ : K, J γ = (γ : WithLp 2 (H × E)).fst` using `fun γ => rfl`. Set `s : D → K` to `fun w => ⟨g w, G.le_topologicalClosure (LinearMap.mem_range_self g w)⟩`. Establish `hJs : ∀ w, J (s w) = w` using `fun w => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hns : ∀ x : D, ‖s x‖ ^ 2 = ‖(x : H)‖ ^ 2 + ‖A x‖ ^ 2` using `fun x => WithLp.prod_norm_sq_eq_of_L2 (g x)`. Establish `hsn : ∀ i (w : D), ‖s ⟨ρ i w, hD i w w.2⟩‖ = ‖s w‖`. Introduce `i w`. Rewrite using `[← sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _), hns, hns]`. Use `show ‖ρ i w‖ ^ 2 + ‖A (ρ i w)‖ ^ 2 = _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn, hA i w w.2]`. Establish `hs : DenseRange s`. Rewrite using `[Metric.denseRange_iff]`. Introduce `γ ε hε`. Establish `hmem : (γ : WithLp 2 (H × E)) ∈ closure (G : Set (WithLp 2 (H × E)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.topologicalClosure_coe]`. Conclude with `γ.2`. Take `⟨b, hb, hd⟩` from `Metric.mem_closure_iff.mp hmem ε hε`. Take `⟨w, rfl⟩` from `LinearMap.mem_range.mp hb`. Conclude with `⟨w, hd⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ : Function.Injective J`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `γ hγ`. Establish `hmem : (γ : WithLp 2 (H × E)) ∈ closure (G : Set (WithLp 2 (H × E)))`. Rewrite using `[← Submodule.topologicalClosure_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `γ.2`. Take `⟨x, hxG, hx⟩` from `mem_closure_iff_seq_limit.mp hmem`. Use `choose w hw using fun n => LinearMap.mem_range.mp (hxG n)`. Establish `h1 : Tendsto (fun n => ((w n : D) : H)) atTop (𝓝 0)`. Use `((WithLp.fstL 2 ℂ H E).continuous.tendsto _).comp hx` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h0 : (WithLp.fstL 2 ℂ H E) (γ : WithLp 2 (H × E)) = 0` using `hγ`. Rewrite `this` using `[h0]`. Use `this.congr (fun n => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, ← hw n, hg]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h2 : Tendsto (fun n => A ((w n : D) : H)) atTop (𝓝 (γ : WithLp 2 (H × E)).snd)`. Use `((WithLp.sndL 2 ℂ H E).continuous.tendsto _).comp hx` as an intermediate fact. Use `this.congr (fun n => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, ← hw n, hg]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h3` using `hcl (fun n => ((w n : D) : H)) _ (fun n => (w n).2) h1 h2`. Establish `h4 : (γ : WithLp 2 (H × E)).fst = 0` using `hγ`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h5 : ‖(γ : WithLp 2 (H × E))‖ ^ 2 = 0`. Rewrite using `[WithLp.prod_norm_sq_eq_of_L2, h3, h4]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Simplify using `using h5`. Take `⟨c, hc⟩` from `abstract (H := H) ρ D hn hinv hirr hD J hJ s hs hJs hsn`. Use `⟨(1 - c) / c, fun w hw => ?_⟩` and prove the remaining obligations. Establish `h : ‖w‖ ^ 2 = c * (‖w‖ ^ 2 + ‖A w‖ ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hc (s ⟨w, hw⟩)` as an intermediate fact. Rewrite `this` using `[hJs, hns]`. Conclude with `this`. Distinguish the cases in `hc0 : c = 0`. Rewrite `h` using `[hc0, zero_mul]`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hw0 : w = 0` using `by simpa using h`. Substitute `hw0` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hc0]`. Take the linear combination `(-1 : ℝ) * h`.
+A detailed English derivation is pending.
 -/
 theorem norm_sq_eq : ∀ (ι H E : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E] (ρ : ι → (H →L[ℂ] H)) (D : Submodule ℂ H), (∀ i v, ‖ρ i v‖ = ‖v‖) → (∀ i, ∃ j, (∀ v, ρ j (ρ i v) = v) ∧ ∀ v, ρ i (ρ j v) = v) → (∀ S : Submodule ℂ H, IsClosed (S : Set H) → (∀ i, ∀ v ∈ S, ρ i v ∈ S) → S = ⊥ ∨ S = ⊤) → (∀ i, ∀ v ∈ D, ρ i v ∈ D) → ∀ A : H →ₗ[ℂ] E, (∀ i, ∀ w ∈ D, ‖A (ρ i w)‖ = ‖A w‖) → (∀ (u : ℕ → H) (f : E), (∀ i, u i ∈ D) → Tendsto u atTop (𝓝 0) → Tendsto (fun i => A (u i)) atTop (𝓝 f) → f = 0) → ∃ c : ℝ, ∀ w ∈ D, ‖A w‖ ^ 2 = c * ‖w‖ ^ 2 := by
   intro ι H E _ _ _ _ _ _ ρ D hn hinv hirr hD A hA hcl

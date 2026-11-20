@@ -6,23 +6,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.LMe
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.HV UpperTheory.V.Base IsLocalRing
 
 /- English proof (translation)
-Establish `hρ : ∀ g x, chRep κ g x = (κ g : E) * x` using `fun g x => by simp [chRep]`. Establish `hc : ReciprocityTheory.Gal.ContAction (chRep κ)`. Unfold `ReciprocityTheory.Gal.ContAction`. Simplify using `only [hρ]`. Conclude with `(hκ.comp continuous_fst).mul continuous_snd`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨f1, -, e1, e2⟩` from `tateRat hP (l := l) φ hφ (chRep κ) hc`. Take `⟨g, hg⟩` from `h0`. Establish `hz : ∀ m : E, chRep κ g m - m = 0 → m = 0`. Introduce `m hm`. Establish `h1 : ((κ g : E) - 1) * m = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_mul, one_mul, ← hρ, hm]`. Conclude with `(mul_eq_zero.1 h1).resolve_left fun h => hg (Units.val_eq_one.1 (sub_eq_zero.1 h))`. Establish `hH0 : ReciprocityTheory.Gal.H0 (chRep κ) = ⊥` using `eq_bot_iff.2 fun m hm => hz m (sub_eq_zero.2 ((mem_riemannRochSpace_iff_regularAt_everywhere _ _).1 hm g))`. Establish `hB : finrank E ↥(ReciprocityTheory.Gal.B1 (chRep κ)) = 1`. Unfold `ReciprocityTheory.Gal.B1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.finrank_range_of_inj, finrank_self]`. Rewrite using `[injective_iff_map_eq_zero]`. Conclude with `fun m hm => hz m (congrFun hm g)`. Establish `hD : H0dual ((cycA l l E).comp φ) (chRep κ) = ⊥`. Take `⟨s, hs⟩` from `h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `eq_bot_iff.2 fun F hF => LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `h1` using `hF s x`. Rewrite `h1` using `[hρ, ← smul_eq_mul, map_smul, smul_eq_mul, ← sub_eq_zero, ← sub_mul]`. Conclude with `(mul_eq_zero.1 h1).resolve_left fun h => hs (Units.ext (sub_eq_zero.1 h))`. Establish `hBZ : ReciprocityTheory.Gal.B1 (chRep κ) ≤ ReciprocityTheory.Gal.Z1 (chRep κ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨m, rfl⟩`. Use `⟨?_, fun g h => ?_⟩` and prove the remaining obligations. Use `show Continuous fun g => chRep κ g m - m`. Simplify using `only [hρ]`. Conclude with `(hκ.mul continuous_const).sub continuous_const`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [amitsur_d0_apply, hρ, map_mul κ, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `eB` using `Submodule.comapSubtypeEquivOfLe hBZ`. Rewrite `e2` using `[hD, finrank_bot]`. Rewrite `e1` using `[hH0, finrank_bot, e2, if_pos rfl, hr, Subgroup.index_top, finrank_self]`.
-
-Use `haveI : Module.Finite E ↥(ReciprocityTheory.Gal.B1 (chRep κ)) := finite_of_finrank_pos (by omega)`. Use `haveI := Module.Finite.equiv eB.symm`. Use `haveI : Module.Finite E ↥(ReciprocityTheory.Gal.Z1 (chRep κ)) := Module.Finite.of_submodule_quotient ((ReciprocityTheory.Gal.B1 (chRep κ)).comap (ReciprocityTheory.Gal.Z1 (chRep κ)).subtype)`. Establish `e3` using `Submodule.finrank_quotient_add_finrank ((ReciprocityTheory.Gal.B1 (chRep κ)).comap (ReciprocityTheory.Gal.Z1 (chRep κ)).subtype)`. Rewrite `e3` using `[eB.finrank_eq, hB, e1]`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem finrank_Z1_chRep_eq_two_of_ne_one_ne_cyc (hP : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {H : Type} [Group H] [TopologicalSpace H]
     [IsTopologicalGroup H] (φ : H →* Formalism.BasicNotions.Loc.GQ l) (hφ : Topology.IsOpenEmbedding φ) (hr : φ.range = ⊤)
@@ -76,7 +72,7 @@ private theorem finrank_Z1_chRep_eq_two_of_ne_one_ne_cyc (hP : LocalPublishedThe
   omega
 
 /- English proof (translation)
-Take `⟨w, hw, hAw⟩` from `GlobalTheory.DecLocal.exists_place_below (p := l) (F := ℚ) A hA`. Take `⟨j, rfl⟩` from `(decEmb (F := ℚ) (Ω := Ω) (v := l)).1 A w hAw hw`. Take `⟨-, φ, h1, -, h3, -, h5, -⟩` from `(decEmb (F := ℚ) (Ω := Ω) (v := l)).2 j`. Conclude with `⟨φ, h1, eq_top_iff.2 fun σ _ => (h3 σ).2 fun x => by simp, h5 l⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem dec_iso {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime]
     (A : ValuationSubring Ω) (hA : A.valuation (l : Ω) < 1) :
@@ -88,23 +84,21 @@ private theorem dec_iso {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
   exact ⟨φ, h1, eq_top_iff.2 fun σ _ => (h3 σ).2 fun x => by simp, h5 l⟩
 
 /- English proof (translation)
-Introduce `hP Ω _ _ _ l _ c D hD E _ _ _ _ _ _ _ _ a b hab`. Take `⟨-, F2, -, F4, -, -, F7, -, -, -, LargeParameterEstimates, -⟩` from `UpperTheory.V.GradeZeroInterpolatingElement.facts D hD`. Take `⟨φ, hφ, hr, hcy⟩` from `dec_iso l (D.pl l) (hD.pl_over l Fact.out)`. Use `letI : TopologicalSpace E := moduleTopology ℚ_[l] E`. Use `haveI : IsModuleTopology ℚ_[l] E := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsTopologicalRing E := IsModuleTopology.isTopologicalRing ℚ_[l] E`. Establish `hinj : Function.Injective (algebraMap c.O E)` using `IsFractionRing.injective _ _`. Set `f : (c.O)ˣ →* Eˣ` to `Units.map (algebraMap c.O E : c.O →* E)`. Establish `hf : Function.Injective f` using `Units.map_injective hinj`. Set `κ : D.Gp l →* Eˣ` to `f.comp ((D.ps a * (D.ps b)⁻¹).comp (D.Gp l).subtype)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκ : ∀ g : D.Gp l, κ g = f (D.ps a g * (D.ps b g)⁻¹)` using `fun _ => rfl`. Establish `hps : ∀ i, Continuous fun g : G ℚ Ω => algebraMap c.O E (D.ps i g : c.O)` using `fun i => (ptCont (l := l) (O := c.O) c.O E (Algebra.ofId c.O E)).1 _ _ (LargeParameterEstimates i)`. Establish `hκc : Continuous fun g => (κ g : E)`. Establish `: (fun g => (κ g : E)) = fun g : D.Gp l => algebraMap c.O E (D.ps a g : c.O) * algebraMap c.O E (D.ps b (g : G ℚ Ω)⁻¹ : c.O)` using `funext fun g => by`. Rewrite using `[hκ, map_inv (D.ps b), ← map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `((hps a).comp continuous_subtype_val).mul ((hps b).comp (continuous_subtype_val.inv))`. Establish `hce : ∀ g : D.Gp l, cycA l l E (φ g) = f (chiO ℚ Ω l c.O g)` using `fun g => Units.ext (by show algebraMap ℤ_[l] E (cyc l l (φ g) : ℤ_[l]ˣ) = algebraMap c.O E (algebraMap ℤ_[l] c.O (cycZ ℚ Ω l g : ℤ_[l]ˣ))`. Rewrite using `[hcy, ← IsScalarTower.algebraMap_apply])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hord : ¬ IsOfFinOrder (chiO ℚ Ω l c.O D.s0)`. Establish `hi : Function.Injective (algebraMap ℤ_[l] c.O)`. Use `Function.Injective.of_comp (f := algebraMap c.O E) ?_` and prove the remaining obligations. Rewrite using `[← RingHom.coe_comp, ← IsScalarTower.algebraMap_eq, IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] E]`. Conclude with `(algebraMap ℚ_[l] E).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `fun h => hD.decompSigma_ord ((Units.map_injective (f := (algebraMap ℤ_[l] c.O).toMonoidHom) hi).isOfFinOrder_iff.1 h)`. Use `⟨ReciprocityTheory.Gal.Z1 (chRep κ), fun z => Iff.rfl, finrank_Z1_chRep_eq_two_of_ne_one_ne_cyc hP φ hφ hr κ hκc ⟨D.s0, fun h => ?_⟩ ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hκ, map_eq_one_iff f hf, mul_inv_eq_one]`. Conclude with `hab.ne (F7 (congrArg Units.val h))`. Distinguish the cases in `hl : lamW a = lamW b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨D.s0, fun h => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hκ, hce]`. Establish `h1` using `hf h`. Rewrite `h1` using `[F4 a _ hD.decompSigma_mem, F4 b _ hD.decompSigma_mem, mul_inv_eq_iff_eq_mul, ← pow_succ']`. Establish `h2` using `injective_pow_iff_not_isOfFinOrder.2 hord h1`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hD.two_le` as an intermediate fact. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [lamW, Raw.wts4] at hab hl h2 <;> omega`. Take `⟨h1, -, h3⟩` from `F2 l (Finset.mem_insert_self _ _)`. Use `⟨⟨D.sg l, h1⟩, fun h => h3 a b hl ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hκ, hce]`.
-
-Establish `h4 : D.ps a (D.sg l) * (D.ps b (D.sg l))⁻¹ = 1` using `(hf h).trans (by show Units.map _ (cycZ ℚ Ω l (D.sg l)) = 1`. Rewrite using `[hD.sg_cyc, map_one])`. Rewrite `h4` using `[mul_inv_eq_one]`. Conclude with `congrArg (fun x : c.Oˣ => residue c.O (x : c.O)) h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_finrank_two_cocycles_char_ratio :
     LocalPublishedTheorems → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (hD : D.Good) (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra ↥c.O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ↥c.O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [IsFractionRing ↥c.O E] (a b : Fin 4), a < b → ∃ T : Submodule E (D.Gp l → E), (∀ z, z ∈ T ↔ QCont l z ∧ ∀ g h : D.Gp l, z (g * h) = z g + algebraMap c.O E ((D.ps a g * (D.ps b g)⁻¹ : c.Oˣ) : c.O) * z h) ∧ finrank E ↥T = 2 := by

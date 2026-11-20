@@ -20,9 +20,9 @@ open Formalism.L2.Indef Formalism.L2.Indef.Tree
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hp` using `Formalism.EigenvalueLevelCeiling.plc_prime w`. Establish `hrec` using `GlobalTheory.exponent_of_record_vs_formulas hcut P hN.1 hN.2.1 ι W hN.2.2.1 _ hp`. Distinguish the cases in `hR : W.WRange P (Formalism.EigenvalueLevelCeiling.plc w)`. Take `⟨fr, cj, I, X, hc, hX⟩` from `hin hR`. Establish `h1` using `GlobalTheory.T.primePowerLatticeInclusion_of_localModels K G Pl0 B ℓ Z w ι P W hN hp hR fr cj I X hc hX`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `(GlobalTheory.T.exponent_datum_le_of_primePowerLatticeInclusion K G Pl0 B ℓ Z w _ h1).2`. Rewrite `h2` using `[hrec.2 hR]`. Conclude with `h2`. Establish `h2` using `(GlobalTheory.T.exponent_datum_le_of_primePowerLatticeInclusion K G Pl0 B ℓ Z w _ (hoff hR)).2`. Conclude with `h2.trans (by exact_mod_cast hrec.1 hR)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jexpU_le_jrec7 (hcut : Formalism.CohomologicalDescent.E.ExCut) {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G]
     [Fintype G] {Pl0 : Type} (B : BlockDat K G Pl0) (ℓ : Lvl K G) (Z : Submodule K B.S.Forms) (w : HeightOneSpectrum (𝓞 K))
@@ -56,11 +56,11 @@ theorem splitPartNumbers_exponent_eq_liftExponent (C CH : ℝ) (t : p.P.T) (w : 
 open Classical in
 
 /- English proof (translation)
-Use `⟨fun w _ j => ?_, fun j l => ((Wj j).Jrec7 (Pj j) l : ℝ), fun j => ⟨fun l => Nat.cast_nonneg _, fun Q hQ => ?_⟩, fun w hw j => ?_⟩` and prove the remaining obligations. Establish `h` using `(GlobalTheory.T.exponent_datum_le_of_primePowerLatticeInclusion _ _ _ _ _ _ w _ (hS j ((S2 p).μ w) w)).1`. Rewrite using `[splitPartNumbers_exponent_eq_liftExponent]`. Conclude with `h` after adjusting the coercions. Take `⟨hHyp, hLarge, hOk, X', A, hRows, hBig⟩` from `hN j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card D.what₂.Tau = (Pj j).f` using `by rw [← Nat.card_eq_fintype_card]; exact (hD j).card`. Establish `h` using `UpperTheory.ExcSet.sum_exponent_log_le hcut D (Pj j) X' A hHyp hLarge hRows hBig D.what₂.Tau (Wj j) hOk hcard (hD j).f (hD j).special O.T2 (by rw [hT2]; exact (hD j).thick) Q hQ`. Establish `hxe : O.xe = (Pj j).L` using `by rw [(hD j).log]; show O.x ^ O.eps = _; rw [hx, heps]`. Establish `hb : O.b = (Pj j).b` using `by rw [(hD j).b]; show Real.exp O.xe = _; rw [hxe, (hD j).log]; rfl`. Establish `hm' : O.m = ((Pj j).m : ℝ)` using `by rw [hm, (hD j).m]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show _ ≤ 30 * (O.T2 : ℝ) * O.m * O.b * O.xe ^ 2 + 2 * O.m * O.b`. Rewrite using `[hxe, hb, hm']`. Conclude with `h`. Establish `hle` using `jexpU_le_jrec7 hcut (blk p j (p.R.mu w)) (lvlL p) (subZ p j (p.R.mu w)) w (Pj j) (Wj j) (hN j) (fun _ => hS j _ w) (fun hR => hM j w hw hR) show (((blk p j (p.R.mu w)).JexpU (lvlL p) (subZ p j (p.R.mu w)) w : ℚ) : ℝ) ≤ ((Wj j).Jrec7 (Pj j) (Formalism.EigenvalueLevelCeiling.plc w) …`. Conclude with `hle` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasExpBound_at (hcut : Formalism.CohomologicalDescent.E.ExCut) {c : OnConst} (O : Obj p c)
     (hm : O.m = (D.R.m : ℝ)) (hx : O.x = L.sc.x) (heps : O.eps = L.sc.eps) (hT2 : O.T2 = D.host.T2.card)
@@ -93,13 +93,11 @@ theorem hasExpBound_at (hcut : Formalism.CohomologicalDescent.E.ExCut) {c : OnCo
 end Point
 
 /- English proof (translation)
-Introduce `hcut hN hS hM`. Take `⟨a, ha, H⟩` from `(hN.and hS).and hM`. Use `⟨a, ha, fun e he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `H e he hle`. Use `⟨K, fun Fm CH hc hL => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨⟨x1, N1⟩, ⟨x2, S1⟩⟩, ⟨x3, M1⟩⟩` from `hK Fm CH hc hL`. Use `⟨0, fun c _ _ => ⟨max x1 (max x2 x3), fun x hx hle i p hp hMo r O hR => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : x1 ≤ x` using `(le_max_left _ _).trans hle`. Establish `h2 : x2 ≤ x` using `(le_max_left _ _).trans ((le_max_right _ _).trans hle)`. Establish `h3 : x3 ≤ x` using `(le_max_right _ _).trans ((le_max_right _ _).trans hle)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose Pj Wj hPW using N1 x hx h1 i p hp hMo`. Take `⟨st, hRT⟩` from `hR.1.depth`. Use `letI := st`. Use `letI := hostAlg (Fm.D x i)`. Introduce `C CH'`.
-
-Conclude with `hasExpBound_at p hcut O hRT.m_eq hRT.x_eq hRT.eps_eq hR.1.realisedChain_torus_eq Pj Wj (fun j => (hPW j).1) (fun j => (hPW j).2) (fun j t w => S1 x hx h2 i p hp hMo j (Pj j) (Wj j) (hPW j).1 (hPW j).2 t w) (fun j w hw hR' => M1 x hx h3 i p hp hMo j (Pj j) (Wj j) (hPW j).1 (hPW j) …`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem expSt_of : Formalism.CohomologicalDescent.E.ExCut → NumSt → SumExpSt → ModelSt → ExpSt := by
   intro hcut hN hS hM

@@ -15,7 +15,7 @@ open Ad3 Ad3.R
 namespace GlobalTheory.CompanionTheory.RSZeta
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [pri, dia2, AdelicGLn.diagonal]`. Simplify using `using (RingHom.map_det (algebraMap ℚ 𝔸[ℚ]) (γ : Matrix (Fin 2) (Fin 2) ℚ)).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_dia (γ : GL (Fin 2) ℚ) : GeneralLinearGroup.det (dia2 γ) = pri (GeneralLinearGroup.det γ) := by
   ext
@@ -23,169 +23,169 @@ theorem det_dia (γ : GL (Fin 2) ℚ) : GeneralLinearGroup.det (dia2 γ) = pri (
   simpa using (RingHom.map_det (algebraMap ℚ 𝔸[ℚ]) (γ : Matrix (Fin 2) (Fin 2) ℚ)).symm
 
 /- English proof (translation)
-The claim follows from `(IdeleGroup.ideleModule ℚ (GeneralLinearGroup.det g)).2`.
+A detailed English derivation is pending.
 -/
 theorem Dt_pos (g : G2) : 0 < Dt g := (IdeleGroup.ideleModule ℚ (GeneralLinearGroup.det g)).2
 
 /- English proof (translation)
-The claim follows from `Complex.ofReal_ne_zero.2 (Dt_pos g).ne'`.
+A detailed English derivation is pending.
 -/
 theorem Dt_ne (g : G2) : ((Dt g : ℝ) : ℂ) ≠ 0 := Complex.ofReal_ne_zero.2 (Dt_pos g).ne'
 
 /- English proof (translation)
-Simplify using `[md, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem md_mul (a b : Jd) : md (a * b) = md a * md b := by
   simp [md, map_mul]
 
 /- English proof (translation)
-Simplify using `[md, map_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem md_inv (a : Jd) : md a⁻¹ = (md a)⁻¹ := by
   simp [md, map_inv]
 
 /- English proof (translation)
-Simplify using `[Dt, md_mul, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Dt_mul (g h : G2) : Dt (g * h) = Dt g * Dt h := by
   simp [Dt, md_mul, map_mul]
 
 /- English proof (translation)
-Establish `: pri α = IdeleGroup.diagonal ℚ α` using `rfl`. Rewrite using `[md, this, IdeleGroup.ideleModule_diagonal]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem md_pri (α : ℚˣ) : md (pri α) = 1 := by
   have : pri α = IdeleGroup.diagonal ℚ α := rfl
   rw [md, this, IdeleGroup.ideleModule_diagonal]; rfl
 
 /- English proof (translation)
-Establish `: pri α = IdeleGroup.diagonal ℚ α` using `rfl`. Rewrite using `[this, HeckeCharacter.toIdele_diagonal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem toIdele_pri (c : HeckeCharacter ℚ) (α : ℚˣ) : c.toIdele (pri α) = 1 := by
   have : pri α = IdeleGroup.diagonal ℚ α := rfl
   rw [this, HeckeCharacter.toIdele_diagonal]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[dg2, Matrix.det_fin_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_dg (z : Jd) : GeneralLinearGroup.det (dg2 z z : G2) = z * z := by
   ext
   simp [dg2, Matrix.det_fin_two]
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp (IdeleGroup.continuous_ideleModule.comp (AdelicGLn.continuous_det ℚ 2))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_Dt : Continuous Dt :=
   continuous_subtype_val.comp (IdeleGroup.continuous_ideleModule.comp (AdelicGLn.continuous_det ℚ 2))
 
 /- English proof (translation)
-The claim follows from `continuous_Dt.measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_Dt : Measurable Dt := continuous_Dt.measurable
 
 /- English proof (translation)
-The claim follows from `continuous_induced_dom.comp ((c.continuous_toIdele).comp (AdelicGLn.continuous_det ℚ 2))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cdet (c : HeckeCharacter ℚ) : Continuous (cdet c) :=
   continuous_induced_dom.comp ((c.continuous_toIdele).comp (AdelicGLn.continuous_det ℚ 2))
 
 /- English proof (translation)
-The claim follows from `(continuous_cdet c).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_cdet (c : HeckeCharacter ℚ) : Measurable (cdet c) := (continuous_cdet c).measurable
 
 /- English proof (translation)
-Simplify using `[cdet, Circle.norm_coe]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_cdet (c : HeckeCharacter ℚ) (g : G2) : ‖cdet c g‖ = 1 := by
   simp [cdet, Circle.norm_coe]
 
 /- English proof (translation)
-Rewrite using `[Dt_mul, Dt, det_dia, md_pri, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Dt_dia (γ : GL (Fin 2) ℚ) (g : G2) : Dt (dia2 γ * g) = Dt g := by
   rw [Dt_mul, Dt, det_dia, md_pri, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Dt_mul, Dt, det_dg, md_mul, sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Dt_dg (z : Jd) (g : G2) : Dt (dg2 z z * g) = md z ^ 2 * Dt g := by
   rw [Dt_mul, Dt, det_dg, md_mul, sq]
 
 /- English proof (translation)
-Simplify using `[cdet, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cdet_mul (c : HeckeCharacter ℚ) (g h : G2) : cdet c (g * h) = cdet c g * cdet c h := by
   simp [cdet, map_mul]
 
 /- English proof (translation)
-Rewrite using `[cdet_mul, cdet, det_dia, toIdele_pri]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cdet_dia (c : HeckeCharacter ℚ) (γ : GL (Fin 2) ℚ) (g : G2) : cdet c (dia2 γ * g) = cdet c g := by
   rw [cdet_mul, cdet, det_dia, toIdele_pri]; simp
 
 /- English proof (translation)
-Rewrite using `[cdet_mul, cdet, det_dg, map_mul, hz]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cdet_dg (c : HeckeCharacter ℚ) (z : Jd) (hz : c.toIdele z = 1) (g : G2) : cdet c (dg2 z z * g) = cdet c g := by
   rw [cdet_mul, cdet, det_dg, map_mul, hz]; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_mul (a b : Jd) : (dg2 a a * dg2 b b : G2) = dg2 (a * b) (a * b) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_one : (dg2 1 1 : G2) = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg2]
 
 /- English proof (translation)
-Rewrite using `[inv2, map_mul, det_dg]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_det_inverse_twist (g : G2) : GeneralLinearGroup.det (inv2 g) = (GeneralLinearGroup.det g)⁻¹ := by
   rw [inv2, map_mul, det_dg]
   group
 
 /- English proof (translation)
-Rewrite using `[inv2, det_det_inverse_twist, inv_inv, inv2, ← mul_assoc, dg_mul]`. Simplify using `[dg_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_inverse_twist_involutive (g : G2) : inv2 (inv2 g) = g := by
   rw [inv2, det_det_inverse_twist, inv_inv, inv2, ← mul_assoc, dg_mul]
   simp [dg_one]
 
 /- English proof (translation)
-Rewrite using `[Dt, det_det_inverse_twist, md_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem module_det_inverse_twist (g : G2) : Dt (inv2 g) = (Dt g)⁻¹ := by
   rw [Dt, det_det_inverse_twist, md_inv]; rfl
 
 /- English proof (translation)
-Simplify using `only [cdet, det_det_inverse_twist, map_inv]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem character_det_inverse_twist (c : HeckeCharacter ℚ) (g : G2) : cdet c (inv2 g) = cdet c⁻¹ g := by
   simp only [cdet, det_det_inverse_twist, map_inv]
   rfl
 
 /- English proof (translation)
-Rewrite using `[module_det_inverse_twist, Complex.ofReal_inv, Complex.cpow_neg, Complex.inv_cpow _ _ (by rw [Complex.arg_ofReal_of_nonneg (Dt_pos g).le]; exact Real.pi_pos.ne)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem module_cpow_det_inverse_twist (s : ℂ) (g : G2) : ((Dt (inv2 g) : ℝ) : ℂ) ^ s = ((Dt g : ℝ) : ℂ) ^ (-s) := by
   rw [module_det_inverse_twist, Complex.ofReal_inv, Complex.cpow_neg,
     Complex.inv_cpow _ _ (by rw [Complex.arg_ofReal_of_nonneg (Dt_pos g).le]; exact Real.pi_pos.ne)]
 
 /- English proof (translation)
-Rewrite using `[Dt_dg, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (by positivity) (Dt_pos g).le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cpow_dg (s : ℂ) (z : Jd) (g : G2) :
     ((Dt (dg2 z z * g) : ℝ) : ℂ) ^ s = ((md z ^ 2 : ℝ) : ℂ) ^ s * ((Dt g : ℝ) : ℂ) ^ s := by
   rw [Dt_dg, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (by positivity) (Dt_pos g).le]
 
 /- English proof (translation)
-The claim follows from `hH.cen _ _`.
+A detailed English derivation is pending.
 -/
 theorem Aut.inv2 {H : G2 → ℂ} (hH : Aut H) (g : G2) : H (Ad3.R.inv2 g) = H g := hH.cen _ _
 
@@ -199,7 +199,7 @@ def Jl (μ : Measure G2) (𝓕 : Set G2) (H : G2 → ℂ) (c : HeckeCharacter �
   ∫ g in 𝓕 ∩ {g | Dt g < 1}, H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ s ∂μ
 
 /- English proof (translation)
-The claim follows from `(hH.cont.measurable.mul (measurable_cdet c)).mul ((Complex.measurable_ofReal.comp measurable_Dt).pow_const s)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_w {H : G2 → ℂ} (hH : Aut H) (c : HeckeCharacter ℚ) (s : ℂ) :
     Measurable fun g => H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ s :=
@@ -207,14 +207,14 @@ theorem measurable_w {H : G2 → ℂ} (hH : Aut H) (c : HeckeCharacter ℚ) (s :
     ((Complex.measurable_ofReal.comp measurable_Dt).pow_const s)
 
 /- English proof (translation)
-Introduce `γ g` and use `by simp only [hH.left γ g, cdet_dia, Dt_dia]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem linv_w {H : G2 → ℂ} (hH : Aut H) (c : HeckeCharacter ℚ) (s : ℂ) :
     LInv fun g => H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ s := fun γ g => by
   simp only [hH.left γ g, cdet_dia, Dt_dia]
 
 /- English proof (translation)
-Introduce `γ g` and use `by simp only [Set.indicator, Set.mem_setOf_eq, Dt_dia, hF γ g]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem linv_ind {X : Type} [Zero X] {F : G2 → X} (hF : LInv F) (A : Set ℝ) :
     LInv (Set.indicator {g | Dt g ∈ A} F) := fun γ g => by

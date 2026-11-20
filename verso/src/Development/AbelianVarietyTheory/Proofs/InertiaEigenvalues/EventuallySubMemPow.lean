@@ -26,14 +26,14 @@ open Filter Topology
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Apply `GlobalTheory.RingIface.sigO_coe` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result.
 -/
 private theorem sigO_coe_pt (g : Per.Gq l) (y : Per.OC l) :
     ((Per.σO g y : Per.OC l) : ℂ_[l]) = Per.σC g (y : ℂ_[l]) := by
   apply GlobalTheory.RingIface.sigO_coe
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = algebraMap (Per.Ainf l) (Per.Acris l) x`. Use `symm`. Apply `GlobalTheory.RingIface.tower` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 -/
 private theorem tower_pt (x : Per.Ainf l) : algebraMap (Per.Acris0 l) (Per.Acris l)
     (algebraMap (Per.Ainf l) (Per.Acris0 l) x) = ainfToAcris l x := by
@@ -42,9 +42,9 @@ private theorem tower_pt (x : Per.Ainf l) : algebraMap (Per.Acris0 l) (Per.Acris
   apply GlobalTheory.RingIface.tower
 
 /- English proof (translation)
-Establish `hd : DenseRange (fun x : Om l => (x : ℂ_[l]))` using `UniformSpace.Completion.denseRange_coe`. Take `⟨x, hx⟩` from `hd.exists_dist_lt y (half_pos hε)`. Rewrite `hx` using `[dist_eq_norm]`. Use `filter_upwards [GlobalTheory.Cyc.eventually_apply_eq x 1] with g hg`. Establish `e : Per.σC g y - y = Per.σC g (y - x) - (y - x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, GlobalTheory.RingBasics.σC_coe, hg, AlgEquiv.one_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eventually_norm_σC_sub_lt (y : ℂ_[l]) {ε : ℝ} (hε : 0 < ε) :
     ∀ᶠ g : GQ l in 𝓝 1, ‖Per.σC g y - y‖ < ε := by
@@ -59,9 +59,9 @@ theorem eventually_norm_σC_sub_lt (y : ℂ_[l]) {ε : ℝ} (hε : 0 < ε) :
     _ < ε := by rw [GlobalTheory.RingBasics.norm_σC]; linarith
 
 /- English proof (translation)
-Establish `h0 : ((l : ℕ) : ℂ_[l]) ≠ 0` using `GlobalTheory.RingBasics.p_ne_zero`. Use `⟨⟨(z : ℂ_[l]) / l, (GlobalTheory.RingBasics.mem_OC _).2 ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ hz (norm_nonneg _)`. Express the relevant statement in the definitionally equal form `(z : ℂ_[l]) = ((l : Per.OC l) : ℂ_[l]) * ((z : ℂ_[l]) / l)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `: ((l : Per.OC l) : ℂ_[l]) = l` using `by simp`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_eq_l_mul (z : Per.OC l) (hz : ‖(z : ℂ_[l])‖ ≤ ‖((l : ℕ) : ℂ_[l])‖) :
     ∃ c : Per.OC l, z = (l : Per.OC l) * c := by
@@ -75,11 +75,11 @@ theorem exists_eq_l_mul (z : Per.OC l) (hz : ‖(z : ℂ_[l])‖ ≤ ‖((l : �
 variable {ξ : Per.Ainf l}
 
 /- English proof (translation)
-Establish `hl0 : (0 : ℝ) < ‖((l : ℕ) : ℂ_[l])‖` using `norm_pos_iff.2 GlobalTheory.RingBasics.p_ne_zero`. Use `filter_upwards [eventually_norm_σC_sub_lt ((Per.θ l y : Per.OC l) : ℂ_[l]) hl0] with g hg`. Establish `h1 : Per.θ l (Per.σA g y - y) = Per.σO g (Per.θ l y) - Per.θ l y` using `by rw [map_sub, GlobalTheory.RingBasics.θ_σA]`. Take `⟨c, hc⟩` from `exists_eq_l_mul (Per.σO g (Per.θ l y) - Per.θ l y) (by rw [AddSubgroupClass.coe_sub, sigO_coe_pt]; exact hg.le)`. Take `⟨c', rfl⟩` from `GlobalTheory.MemLoc.ThetaD.θ_surj l c`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk : Per.σA g y - y - (l : Per.Ainf l) * c' ∈ RingHom.ker (Per.θ l)`. Rewrite using `[RingHom.mem_ker, map_sub, h1, hc, map_mul, map_natCast, sub_self]`. Rewrite `hk` using `[hξ, Ideal.mem_span_singleton']`. Take `⟨d, hd⟩` from `hk`. Rewrite using `[Ideal.mem_span_pair]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨c', d, by linear_combination hd⟩`.
+A detailed English derivation is pending.
 -/
 theorem eventually_sub_mem_one (hξ : RingHom.ker (Per.θ l) = Ideal.span {ξ}) (y : Per.Ainf l) :
     ∀ᶠ g : GQ l in 𝓝 1, Per.σA g y - y ∈ Ideal.span {((l : ℕ) : Per.Ainf l), ξ} := by
@@ -97,13 +97,11 @@ theorem eventually_sub_mem_one (hξ : RingHom.ker (Per.θ l) = Ideal.span {ξ}) 
   exact ⟨c', d, by linear_combination hd⟩
 
 /- English proof (translation)
-Use `set I : Ideal (Per.Ainf l) := Ideal.span {((l : ℕ) : Per.Ainf l), ξ} with hI`. Establish `hlI : ((l : ℕ) : Per.Ainf l) ∈ I` using `Ideal.subset_span (by simp)`. Establish `ht : ∀ z : Per.Fl l, ∀ᶠ g : GQ l in 𝓝 1, Per.σA g (WittVector.teichmuller l z) - WittVector.teichmuller l z ∈ I ^ (N + 1)`. Introduce `z`. Take `⟨w, rfl⟩` from `(iterateFrobeniusEquiv (Per.Fl l) l N).surjective z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `filter_upwards [eventually_sub_mem_one hξ (WittVector.teichmuller l w)] with g hg`. Use `SModEq.sub_mem.1 ((SModEq.sub_mem.2 hg).pow_pow_add_one hlI N)` as an intermediate fact. Rewrite using `[iterateFrobeniusEquiv_def, map_pow, map_pow]`. Conclude with `this`. Take `⟨c, hc⟩` from `WittVector.dvd_sub_sum_teichmuller_iterateFrobeniusEquiv_coeff y N`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hall` using `(Filter.eventually_all_finset (Finset.Iic N)).2 (fun i _ => ht ((((_root_.frobeniusEquiv (Per.Fl l) l).symm ^ i) (y.coeff i))))`. Use `filter_upwards [hall] with g hg`. Rewrite `hc` using `[sub_eq_iff_eq_add]`. Rewrite using `[hc, map_add, map_mul, map_pow, map_natCast, map_sum, add_sub_add_comm, ← mul_sub, ← Finset.sum_sub_distrib]`. Use `add_mem (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hlI _)) (sum_mem fun i hi => ?_)` and prove the remaining obligations.
-
-Rewrite using `[map_mul, map_pow, map_natCast, ← sub_mul]`. Conclude with `Ideal.mul_mem_right _ _ (hg i hi)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_sub_mem_pow (hξ : RingHom.ker (Per.θ l) = Ideal.span {ξ}) (N : ℕ) (y : Per.Ainf l) :
     ∀ᶠ g : GQ l in 𝓝 1, Per.σA g y - y ∈ Ideal.span {((l : ℕ) : Per.Ainf l), ξ} ^ (N + 1) := by
@@ -129,11 +127,11 @@ theorem eventually_sub_mem_pow (hξ : RingHom.ker (Per.θ l) = Ideal.span {ξ}) 
   exact Ideal.mul_mem_right _ _ (hg i hi)
 
 /- English proof (translation)
-Establish `hθ : Per.θ l ξ = 0` using `by rw [← RingHom.mem_ker, hξ]; exact Ideal.mem_span_singleton_self ξ`. Establish `hxl : (l : Per.Acris l) ∣ ainfToAcris l ξ ^ l`. Rewrite using `[← factorial_mul_dpow ξ hθ l]`. Take `⟨k, hk⟩` from `Nat.dvd_factorial hl.out.pos le_rfl`. Rewrite using `[hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Conclude with `Dvd.dvd.mul_right (dvd_mul_right _ _) _`. Rewrite `hz` using `[Ideal.span_insert]`. Establish `h1` using `Ideal.sup_pow_add_le_pow_sup_pow hz`. Rewrite `h1` using `[Ideal.span_singleton_pow, Ideal.span_singleton_pow, Submodule.mem_sup]`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `h1`. Take `⟨a', rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Take `⟨b', rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, map_natCast, pow_mul]`. Conclude with `dvd_add (Dvd.intro_left _ rfl) (Dvd.dvd.mul_left (pow_dvd_pow_of_dvd hxl N) _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_mem (hξ : RingHom.ker (Per.θ l) = Ideal.span {ξ}) (N : ℕ) {z : Per.Ainf l}
     (hz : z ∈ Ideal.span {((l : ℕ) : Per.Ainf l), ξ} ^ (N + l * N)) :
@@ -154,7 +152,7 @@ theorem dvd_of_mem (hξ : RingHom.ker (Per.θ l) = Ideal.span {ξ}) (N : ℕ) {z
   exact dvd_add (Dvd.intro_left _ rfl) (Dvd.dvd.mul_left (pow_dvd_pow_of_dvd hxl N) _)
 
 /- English proof (translation)
-Take `⟨ξ, hξ, -, -⟩` from `GlobalTheory.Prism.exists_generator l`. Use `filter_upwards [eventually_sub_mem_pow hξ (N + l * N) y] with g hg`. Establish `h` using `dvd_of_mem hξ N (Ideal.pow_le_pow_right (Nat.le_succ _) hg)`. Establish `e : galC g (ainfToAcris l y) = ainfToAcris l (Per.σA g y)` using `(GlobalTheory.CrisMaps.sigA_extends g).alg y`. Rewrite using `[e, ← map_sub]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eventually_dvd_ainf (N : ℕ) (y : Per.Ainf l) :
     ∀ᶠ g : GQ l in 𝓝 1, (l : Per.Acris l) ^ N ∣ galC g (ainfToAcris l y) - ainfToAcris l y := by
@@ -165,15 +163,13 @@ theorem eventually_dvd_ainf (N : ℕ) (y : Per.Ainf l) :
   rwa [e, ← map_sub]
 
 /- English proof (translation)
-Use `choose c hc using GlobalTheory.RingBasics.exists_pow_div_factorial l`. Establish `hc' : ∀ n : ℕ, (n.factorial : Per.Acris l) * algebraMap ℤ_[l] _ (c n) = (l : Per.Acris l) ^ n` using `fun n => by`. Simplify `congrArg (algebraMap ℤ_[l] (Per.Acris l)) (hc n)` using `only [map_mul, map_natCast, map_pow]`. Use `filter_upwards [eventually_dvd_ainf (N + 1) x] with g ⟨D, hD⟩`. Use `set X := ainfToAcris l x with hX`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set Y := ∑ m ∈ Finset.range (k + 1), dpow x hx m * (algebraMap ℤ_[l] (Per.Acris l) (c (k - m)) * (l : Per.Acris l) ^ (N * (k - m)) * D ^ (k - m)) with hYdef`. Establish `hY : (k.factorial : Per.Acris l) * Y = (X + (l : Per.Acris l) ^ (N + 1) * D) ^ k`. Rewrite using `[hYdef, add_pow, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hmk` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hm)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← Nat.choose_mul_factorial_mul_factorial hmk, ← factorial_mul_dpow x hx m, mul_pow, ← pow_mul, show (N + 1) * (k - m) = (k - m) + N * (k - m) by ring, pow_add, ← hc' (k - m)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hσ : galC g (dpow x hx k) = Y`. Establish `h1` using `congrArg (galC g) (factorial_mul_dpow x hx k)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_natCast, map_pow, ← hX, show galC g X = X + (l : Per.Acris l) ^ (N + 1) * D by`. Rewrite using `[← hD]`. Use the proof step `ring] at h1`. Conclude with `sub_eq_zero.1 (acris_nat_cancel k.factorial_ne_zero (by rw [mul_sub, h1, hY, sub_self]))`. Establish `hc0 : algebraMap ℤ_[l] (Per.Acris l) (c 0) = 1` using `by simpa using hc' 0`.
-
-Rewrite using `[hσ, hYdef, Finset.sum_range_succ, Nat.sub_self, hc0, pow_zero, mul_zero, pow_zero, mul_one, mul_one, mul_one, add_sub_cancel_right]`. Use `Finset.dvd_sum fun m hm => Dvd.dvd.mul_left (Dvd.dvd.mul_right (Dvd.dvd.mul_left (pow_dvd_pow _ (Nat.le_mul_of_pos_right N (by have := Finset.mem_range.1 hm; omega))) _) _) _` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eventually_dvd_dpow {x : Per.Ainf l} (hx : Per.θ l x = 0) (k N : ℕ) :
     ∀ᶠ g : GQ l in 𝓝 1, (l : Per.Acris l) ^ N ∣ galC g (dpow x hx k) - dpow x hx k := by
@@ -223,19 +219,17 @@ def fixNear : Subring (Per.Acris l) where
     exact ⟨-u, by rw [map_neg]; linear_combination -hu⟩
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.MemLoc.exists_isEps_for_inj l`. Establish `hx : Per.θ l (GlobalTheory.MemLoc.xi e) = 0` using `(GlobalTheory.T.fontaineTheta_eq_zero_iff_fontaineXiElement_dvd l e he _).2 dvd_rfl`. Take `⟨s, hs⟩` from `s`. Establish `key : ∀ y ∈ Submodule.span (Per.Ainf l) {y : Per.AinfP l | ∃ n : ℕ, ((n.factorial : ℕ) : Per.AinfP l) * y = algebraMap (Per.Ainf l) (Per.AinfP l) (GlobalTheory.MemLoc.xi e) ^ n}, ∀ hy : y ∈ Per.Acris0 l, algebraMap (Per.Acris0 l) (Per.Acris l) ⟨y, hy⟩ ∈ fixNear l`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Introduce `hy0`. Take `⟨n, hn⟩` from `hy`. Establish `h1 : (n.factorial : Per.Acris0 l) * ⟨y, hy0⟩ = algebraMap (Per.Ainf l) (Per.Acris0 l) (GlobalTheory.MemLoc.xi e) ^ n` using `Subtype.ext (by simpa using hn)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (algebraMap (Per.Acris0 l) (Per.Acris l)) h1`. Rewrite `h2` using `[map_mul, map_natCast, map_pow, tower_pt]`. Rewrite using `[eq_dpow hx h2]`. Conclude with `fun N => eventually_dvd_dpow hx n N`. Consider the case `zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately.
 
-Introduce `h0`. Establish `e0 : (⟨0, h0⟩ : Per.Acris0 l) = 0` using `Subtype.ext rfl`. Rewrite using `[e0, map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z hy hz ihy ihz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `hy0` using `(GlobalTheory.MemLoc.mem_Acris0_iff_span l e he y).2 hy`. Establish `hz0` using `(GlobalTheory.MemLoc.mem_Acris0_iff_span l e he z).2 hz`. Establish `e0 : (⟨y + z, h0⟩ : Per.Acris0 l) = ⟨y, hy0⟩ + ⟨z, hz0⟩` using `Subtype.ext rfl`. Rewrite using `[e0, map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `add_mem (ihy hy0) (ihz hz0)`. Consider the case `smul r y hy ihy`. Introduce `h0`. Establish `hy0` using `(GlobalTheory.MemLoc.mem_Acris0_iff_span l e he y).2 hy`. Establish `e0 : (⟨r • y, h0⟩ : Per.Acris0 l) = algebraMap (Per.Ainf l) (Per.Acris0 l) r * ⟨y, hy0⟩` using `Subtype.ext (Algebra.smul_def r y)`.
-
-Rewrite using `[e0, map_mul, tower_pt]`. Conclude with `mul_mem (fun N => eventually_dvd_ainf N r) (ihy hy0)`. Conclude with `key s ((GlobalTheory.MemLoc.mem_Acris0_iff_span l e he s).1 hs) hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_fixNear (s : Per.Acris0 l) :
     algebraMap (Per.Acris0 l) (Per.Acris l) s ∈ fixNear l := by
@@ -276,9 +270,9 @@ theorem algebraMap_mem_fixNear (s : Per.Acris0 l) :
   exact key s ((GlobalTheory.MemLoc.mem_Acris0_iff_span l e he s).1 hs) hs
 
 /- English proof (translation)
-Introduce `l _ x n`. Take `⟨s, z, rfl⟩` from `(GlobalTheory.MemLoc.acris_basic l).2.2.1 x n`. Use `filter_upwards [algebraMap_mem_fixNear s n] with g ⟨u, hu⟩`. Use `⟨u + (galC g z - z), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_pow, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hu`.
+A detailed English derivation is pending.
 -/
 theorem galC_sub_dvd_mem_nhds : ∀ (l : ℕ) [Fact l.Prime] (x : Per.Acris l) (n : ℕ),
     {g : GQ l | (l : Per.Acris l) ^ n ∣ galC g x - x} ∈ nhds (1 : GQ l) := by

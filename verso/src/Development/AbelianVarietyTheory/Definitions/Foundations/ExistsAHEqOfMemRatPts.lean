@@ -15,7 +15,7 @@ section Points
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {m n : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR`. Conclude with `blkMat_map _ _ (map_zero _) _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem JR_blkMat (J : Matrix (Fin m) (Fin m) E) (J' : Matrix (Fin n) (Fin n) E) :
     JR (F := F) R (blkMat finSumFinEquiv J J') = blkMat finSumFinEquiv (JR R J) (JR R J') := by
@@ -23,7 +23,7 @@ theorem JR_blkMat (J : Matrix (Fin m) (Fin m) E) (J' : Matrix (Fin n) (Fin n) E)
   exact blkMat_map _ _ (map_zero _) _ _
 
 /- English proof (translation)
-Unfold `dblGram Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR`. Rewrite using `[blkMat_map _ _ (map_zero _)]`. Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem JR_dblGram (J : Matrix (Fin n) (Fin n) E) :
     JR (F := F) R (dblGram finSumFinEquiv J) = dblGram finSumFinEquiv (JR R J) := by
@@ -68,15 +68,15 @@ theorem matHom_ioH (g g' : HA R σ J) :
     matHom R σ Q (ioH R σ h (g, g')) = blkGL finSumFinEquiv (matHom R σ J g, matHom R σ J g') := rfl
 
 /- English proof (translation)
-Conclude with `map_one (ioH R σ h)`.
+A detailed English derivation is pending.
 -/
 theorem ioH_one : ioH R σ h (1, 1) = 1 := by
   exact map_one (ioH R σ h)
 
 /- English proof (translation)
-Introduce and unpack `⟨g, g'⟩ ⟨k, k'⟩ hx`. Establish `e1` using `congrArg (matHom R σ Q) hx`. Rewrite `e1` using `[matHom_ioH, matHom_ioH]`. Establish `e2` using `blkGL_injective _ e1`. Simplify using `only [Prod.mk.injEq] at e2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Prod.ext (matHom_injective R σ J e2.1) (matHom_injective R σ J e2.2)`.
+A detailed English derivation is pending.
 -/
 theorem ioH_injective : Function.Injective (ioH R σ h) := by
   rintro ⟨g, g'⟩ ⟨k, k'⟩ hx
@@ -87,7 +87,7 @@ theorem ioH_injective : Function.Injective (ioH R σ h) := by
   exact Prod.ext (matHom_injective R σ J e2.1) (matHom_injective R σ J e2.2)
 
 /- English proof (translation)
-Rewrite using `[(isEmbedding_matHom R σ Q).continuous_iff]`. Establish `e1 : (matHom R σ Q) ∘ (ioH R σ h) = (blkGL finSumFinEquiv) ∘ (Prod.map (matHom R σ J) (matHom R σ J))`. Use function extensionality and compare the values at `fun x => matHom_ioH h x.1 x.2`. Rewrite using `[e1]`. Conclude with `(continuous_blkGL _).comp ((isEmbedding_matHom R σ J).continuous.prodMap (isEmbedding_matHom R σ J).continuous)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_ioH [TopologicalSpace R] : Continuous (ioH R σ h) := by
   rw [(isEmbedding_matHom R σ Q).continuous_iff]
@@ -99,9 +99,9 @@ theorem continuous_ioH [TopologicalSpace R] : Continuous (ioH R σ h) := by
     ((isEmbedding_matHom R σ J).continuous.prodMap (isEmbedding_matHom R σ J).continuous)
 
 /- English proof (translation)
-Rewrite using `[mem_siegelOf, matHom_ioH, val_blkGL, keepsDiag_blkMat]`. Prove the components needed by the constructor for the conclusion. Introduce `e1`. Conclude with `(matHom_injective R σ J (Units.ext e1)).symm`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ioH_mem_siegelH {g g' : HA R σ J} : ioH R σ h (g, g') ∈ siegelH R σ Q ↔ g = g' := by
   rw [mem_siegelOf, matHom_ioH, val_blkGL, keepsDiag_blkMat]
@@ -120,14 +120,14 @@ Both sides reduce to the same expression.
 theorem coe_ioDiag (g : HA R σ J) : (ioDiag h g : HA R σ Q) = ioH R σ h (g, g) := rfl
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[val_aOf, coe_ioDiag, matHom_ioH, val_blkGL, leviMat_blkMat, val_detH]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem aH_ioDiag (g : HA R σ J) : aH R σ Q (ioDiag h g) = detH R σ J g := by
   ext
   rw [val_aOf, coe_ioDiag, matHom_ioH, val_blkGL, leviMat_blkMat, val_detH]
 
 /- English proof (translation)
-Establish `e1 : (JR (F` using `F) R J).det = inclR (F := F) R J.det := by`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Conclude with `(isUnit_iff_ne_zero.2 hJ).map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_JR (hJ : J.det ≠ 0) : IsUnit (JR (F := F) R J).det := by
   have e1 : (JR (F := F) R J).det = inclR (F := F) R J.det := by
@@ -139,9 +139,7 @@ theorem isUnit_det_JR (hJ : J.det ≠ 0) : IsUnit (JR (F := F) R J).det := by
 include h in
 
 /- English proof (translation)
-Establish `hM : cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ) (matHom R σ Q (p : HA R σ Q)).1 * dblGram finSumFinEquiv (JR R J) * (matHom R σ Q (p : HA R σ Q)).1 = dblGram finSumFinEquiv (JR R J)`. Rewrite using `[← JR_dblGram, ← h]`. Conclude with `Subtype.prop (p : HA R σ Q)`. Establish `e1` using `det_quot_mul_det_levi finSumFinEquiv (isUnit_det_JR (R := R) hJ) hM (mem_siegelOf.1 p.2)`. Rewrite using `[val_aOf]`.
-
-Conclude with `e1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigR_det_quot_mul_aH (hJ : J.det ≠ 0) (p : siegelH R σ Q) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ (quotMat finSumFinEquiv (matHom R σ Q p).1).det * (aH R σ Q p).1 = 1 := by
@@ -154,7 +152,7 @@ theorem sigR_det_quot_mul_aH (hJ : J.det ≠ 0) (p : siegelH R σ Q) :
   exact e1
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, hσ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_invol (hσ : ∀ x, σ (σ x) = x) (y : R ⊗[F] E) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ y) = y := by
@@ -164,9 +162,9 @@ theorem sigR_invol (hσ : ∀ x, σ (σ x) = x) (y : R ⊗[F] E) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[eq_inv_iff_mul_eq_one]`. Use `ext`. Simplify using `only [Units.val_mul, Units.val_one]`. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ (matHom R σ J g).1.det * (matHom R σ J g).1.det = 1`. Establish `hg : ((matHom R σ J g).1.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ)).transpose * JR R J * (matHom R σ J g).1 = JR R J` using `Subtype.prop g`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hd : ((matHom R σ J g).1.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ)).det = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ (matHom R σ J g).1.det` using `(RingHom.map_det _ _).symm`. Establish `e1` using `congrArg Matrix.det hg`. Rewrite `e1` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hd]`. Apply `(isUnit_det_JR (R := R) hJ).mul_left_cancel` to reduce the goal to its premises. Take the linear combination `e1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem conjUnit_detH {J : Matrix (Fin m) (Fin m) E} (hJ : J.det ≠ 0) (g : HA R σ J) :
     conjUnit σ (detH R σ J g) = (detH R σ J g)⁻¹ := by
@@ -186,7 +184,7 @@ theorem conjUnit_detH {J : Matrix (Fin m) (Fin m) E} (hJ : J.det ≠ 0) (g : HA 
 variable {R' : Type} [CommRing R'] [Algebra F R'] (φ : R →ₐ[F] R')
 
 /- English proof (translation)
-Apply `matHom_injective` to reduce the goal to its premises. Establish `key : ∀ {k : ℕ} {K : Matrix (Fin k) (Fin k) E} (x : HA R σ K), matHom R' σ K (mapH σ K φ x) = bc (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom (matHom R σ K x)` using `fun _ => rfl`. Simplify using `only [key, matHom_ioH, bc_blkGL]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mapH_ioH (g g' : HA R σ J) : mapH σ Q φ (ioH R σ h (g, g')) = ioH R' σ h (mapH σ J φ g, mapH σ J φ g') := by
   apply matHom_injective
@@ -196,14 +194,14 @@ theorem mapH_ioH (g g' : HA R σ J) : mapH σ Q φ (ioH R σ h (g, g')) = ioH R'
   simp only [key, matHom_ioH, bc_blkGL]
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[mem_siegelOf]`. Conclude with `KeepsDiag.map (e := finSumFinEquiv) hg (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapH_mem_siegelH {g : HA R σ Q} (hg : g ∈ siegelH R σ Q) : mapH σ Q φ g ∈ siegelH R' σ Q := by
   rw [mem_siegelOf] at hg ⊢
   exact KeepsDiag.map (e := finSumFinEquiv) hg (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[Units.coe_map, val_aOf, val_aOf]`. Conclude with `(congrArg Matrix.det (leviMat_map finSumFinEquiv (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom _)).trans (RingHom.map_det _ _).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aH_mapH (p : siegelH R σ Q) : aH R' σ Q ⟨mapH σ Q φ p, mapH_mem_siegelH φ p.2⟩ =
     Units.map (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom.toMonoidHom (aH R σ Q p) := by
@@ -217,9 +215,9 @@ variable (σ Q) in
 abbrev siegelRat : Subgroup (UJ (σ : E →+* E) Q) := siegelOf finSumFinEquiv (UJ (σ : E →+* E) Q).subtype
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (inclR (F` using `F) R : E → R ⊗[F] E) := by`. Establish `: Nontrivial (R ⊗[F] E)` using `(Algebra.TensorProduct.includeLeft_injective (S := F) (FaithfulSMul.algebraMap_injective F E)).nontrivial`. Conclude with `RingHom.injective _`. Rewrite using `[mem_siegelOf, mem_siegelOf, keepsDiag_iff, keepsDiag_iff]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `inclR (F := F) R _ + inclR (F := F) R _ = inclR (F := F) R _ + inclR (F := F) R _ ↔ _`. Rewrite using `[← map_add, ← map_add, hinj.eq_iff]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagH_mem_siegelH [Nontrivial R] {γ : UJ (σ : E →+* E) Q} :
     diagH σ Q R γ ∈ siegelH R σ Q ↔ γ ∈ siegelRat σ Q := by
@@ -233,7 +231,7 @@ theorem diagH_mem_siegelH [Nontrivial R] {γ : UJ (σ : E →+* E) Q} :
   rw [← map_add, ← map_add, hinj.eq_iff]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[Units.coe_map, val_aOf, val_aOf]`. Conclude with `(congrArg Matrix.det (leviMat_map finSumFinEquiv (inclR (F := F) R) _)).trans (RingHom.map_det _ _).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aH_diagH {γ : UJ (σ : E →+* E) Q} (hγ : γ ∈ siegelRat σ Q) (hγ' : diagH σ Q R γ ∈ siegelH R σ Q) :
     aH R σ Q ⟨_, hγ'⟩ = Units.map (inclR (F := F) R).toMonoidHom (aOf finSumFinEquiv (UJ (σ : E →+* E) Q).subtype ⟨γ, hγ⟩) := by
@@ -242,7 +240,7 @@ theorem aH_diagH {γ : UJ (σ : E →+* E) Q} (hγ : γ ∈ siegelRat σ Q) (hγ
   exact (congrArg Matrix.det (leviMat_map finSumFinEquiv (inclR (F := F) R) _)).trans (RingHom.map_det _ _).symm
 
 /- English proof (translation)
-Apply `matHom_injective` to reduce the goal to its premises. Establish `key : ∀ {k : ℕ} {K : Matrix (Fin k) (Fin k) E} (x : UJ (σ : E →+* E) K), matHom R σ K (diagH σ K R x) = bc (inclR (F` using `F) R) x.1 := fun _ => rfl`. Rewrite using `[matHom_ioH, key, key, key, coe_ioU, bc_blkGL]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ioH_diagH (γ γ' : UJ (σ : E →+* E) J) :
     ioH R σ h (diagH σ J R γ, diagH σ J R γ') = diagH σ Q R (ioU (σ : E →+* E) finSumFinEquiv h (γ, γ')) := by
@@ -265,23 +263,23 @@ section
 omit [NumberField E]
 
 /- English proof (translation)
-Conclude with `mapH_ioH h (evFin F v) g g'`.
+A detailed English derivation is pending.
 -/
 theorem proj_ioH (v : HeightOneSpectrum (𝓞 F)) (g g' : GAd σ J) :
     proj σ Q v (ioH _ σ h (g, g')) = ioH _ σ h (proj σ J v g, proj σ J v g') := by
   exact mapH_ioH h (evFin F v) g g'
 
 /- English proof (translation)
-Conclude with `mapH_ioH h (evInf F w) g g'`.
+A detailed English derivation is pending.
 -/
 theorem projArch_ioH (w : InfinitePlace F) (g g' : GAd σ J) :
     projArch σ Q w (ioH _ σ h (g, g')) = ioH _ σ h (projArch σ J w g, projArch σ J w g') := by
   exact mapH_ioH h (evInf F w) g g'
 
 /- English proof (translation)
-Use `GAd_ext σ Q (fun w => ?_) (fun u => ?_)` and prove the remaining obligations. Simplify using `only [projArch_ioH, projArch_emb, ioH_one]`. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Simplify using `only [proj_ioH, proj_emb_self]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [proj_ioH, proj_emb_ne σ Q e, proj_emb_ne σ J e, ioH_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem emb_ioH (v : HeightOneSpectrum (𝓞 F)) (g g' : GLoc σ J v) :
     emb σ Q v (ioH _ σ h (g, g')) = ioH _ σ h (emb σ J v g, emb σ J v g') := by
@@ -293,7 +291,7 @@ theorem emb_ioH (v : HeightOneSpectrum (𝓞 F)) (g g' : GLoc σ J v) :
     · simp only [proj_ioH, proj_emb_ne σ Q e, proj_emb_ne σ J e, ioH_one]
 
 /- English proof (translation)
-Rewrite `hg`, `hg'` using `[← range_ratEmb σ J]`. Rewrite using `[← range_ratEmb σ Q]`. Take `⟨γ, rfl⟩` from `hg`. Take `⟨γ', rfl⟩` from `hg'`. Conclude with `⟨ioU (σ : E →+* E) finSumFinEquiv h (γ, γ'), (ioH_diagH h γ γ').symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ioH_mem_ratPts {g g' : GAd σ J} (hg : g ∈ AdelicU.ratPts σ J) (hg' : g' ∈ AdelicU.ratPts σ J) :
     ioH _ σ h (g, g') ∈ AdelicU.ratPts σ Q := by
@@ -322,14 +320,14 @@ Both sides reduce to the same expression.
     (projArchP w p : GArch σ Q w) = projArch σ Q w p := rfl
 
 /- English proof (translation)
-Conclude with `aH_mapH (evFin F v) p`.
+A detailed English derivation is pending.
 -/
 theorem aH_projP (v : HeightOneSpectrum (𝓞 F)) (p : siegelH (AF F) σ Q) :
     aH _ σ Q (projP v p) = unitFin F E v (aH _ σ Q p) := by
   exact aH_mapH (evFin F v) p
 
 /- English proof (translation)
-Conclude with `aH_mapH (evInf F w) p`.
+A detailed English derivation is pending.
 -/
 theorem aH_projArchP (w : InfinitePlace F) (p : siegelH (AF F) σ Q) :
     aH _ σ Q (projArchP w p) = unitInf F E w (aH _ σ Q p) := by
@@ -338,13 +336,13 @@ theorem aH_projArchP (w : InfinitePlace F) (p : siegelH (AF F) σ Q) :
 end
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Conclude with `⟨fun w => mapH_mem_siegelH _ hg, fun v => mapH_mem_siegelH _ hg⟩`. Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[mem_siegelOf, keepsDiag_iff]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Apply `adele_ext` to reduce the goal to its premises. Introduce `w`. Establish `e1` using `(keepsDiag_iff _).1 (mem_siegelOf.1 (h1 w)) i j`. Rewrite `e1` using `[matHom_projArch]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_add, map_add]`. Conclude with `e1`. Introduce `v`. Establish `e1` using `(keepsDiag_iff _).1 (mem_siegelOf.1 (h2 v)) i j`. Rewrite `e1` using `[matHom_proj]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add]`. Conclude with `e1`.
+A detailed English derivation is pending.
 -/
 theorem mem_siegelH_adelic {g : GAd σ Q} : g ∈ siegelH (AF F) σ Q ↔
     (∀ w, projArch σ Q w g ∈ siegelH _ σ Q) ∧ ∀ v, proj σ Q v g ∈ siegelH _ σ Q := by
@@ -393,11 +391,11 @@ Both sides reduce to the same expression.
     (embArchP w p : GAd σ Q) = embArch σ Q w p := rfl
 
 /- English proof (translation)
-Apply `idele_ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[unitInf_ideleAt, ← aH_projArchP]`. Establish `e1 : projArchP w (embP v p) = 1` using `Subtype.ext (by rw [coe_projArchP, coe_embP]; exact projArch_emb σ Q w v _)`. Rewrite using `[e1, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `u`. Rewrite using `[← aH_projP]`. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Rewrite using `[unitFin_ideleAt_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Subtype.ext (by rw [coe_projP, coe_embP, proj_emb_self])`. Rewrite using `[unitFin_ideleAt_ne e]`. Establish `e1 : projP u (embP v p) = 1` using `Subtype.ext (by rw [coe_projP, coe_embP]; exact proj_emb_ne σ Q e _)`. Rewrite using `[e1, map_one]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aH_embP (v : HeightOneSpectrum (𝓞 F)) (p : siegelH (Fv F v) σ Q) :
     aH _ σ Q (embP v p) = ideleAt F E v (aH _ σ Q p) := by
@@ -422,11 +420,11 @@ theorem aH_embP (v : HeightOneSpectrum (𝓞 F)) (p : siegelH (Fv F v) σ Q) :
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `: Nontrivial (AF F)` using `(show Nontrivial (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F) from inferInstance)`. Rewrite `hp` using `[← range_ratEmb σ Q]`. Take `⟨γ, hγ⟩` from `hp`. Establish `hγ' : diagH σ Q (AF F) γ ∈ siegelH (AF F) σ Q`. Establish `e1 : diagH σ Q (AF F) γ = (p : GAd σ Q)` using `hγ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `p.2`. Establish `hs : γ ∈ siegelRat σ Q` using `diagH_mem_siegelH.1 hγ'`. Use `⟨aOf finSumFinEquiv (UJ (σ : E →+* E) Q).subtype ⟨γ, hs⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← aH_diagH hs hγ']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Subtype.ext hγ.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_aH_eq_of_mem_ratPts (p : siegelH (AF F) σ Q) (hp : (p : GAd σ Q) ∈ AdelicU.ratPts σ Q) :
     ∃ x : Eˣ, aH _ σ Q p = Units.map (inclR (F := F) (AF F)).toMonoidHom x := by
@@ -466,25 +464,25 @@ instance isLattice_sumLat (L : Submodule (𝓞 E) (Fin m → E)) (L' : Submodule
 omit [NumberField E] in
 
 /- English proof (translation)
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Express the relevant statement in the definitionally equal form `w ∈ AddSubgroup.closure _ at hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Rewrite `hx`, the goal using `[mem_sumLat]`. Conclude with `⟨AddSubgroup.subset_closure ⟨a, ha, _, hx.1, rfl⟩, AddSubgroup.subset_closure ⟨a, ha, _, hx.2, rfl⟩⟩`. Consider the case `zero => exact zero_mem _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add _ _ _ _ h1 h2 => exact add_mem h1 h2`. Consider the case `neg _ _ h1 => exact neg_mem h1`. Introduce `hw`. Rewrite `hw` using `[mem_sumLat]`. Set `ℓ : (Fin m → Fv F v ⊗[F] E) →+ (Fin (m + n) → Fv F v ⊗[F] E)` to `AddMonoidHom.mk' (fun y => pairVec finSumFinEquiv y 0) (fun y y' => by`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use function extensionality and compare the values at `k`. Simplify using `only [pairVec, Function.comp_apply, Pi.add_apply]`. Apply the tactic sequence `cases finSumFinEquiv.symm k <;> simp)`. Set `ℓ' : (Fin n → Fv F v ⊗[F] E) →+ (Fin (m + n) → Fv F v ⊗[F] E)` to `AddMonoidHom.mk' (fun y => pairVec finSumFinEquiv 0 y) (fun y y' => by`. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [pairVec, Function.comp_apply, Pi.add_apply]`. Apply the tactic sequence `cases finSumFinEquiv.symm k <;> simp)`. Establish `hl : ℓ (fun i => w (finSumFinEquiv (.inl i))) ∈ latLoc F (sumLat finSumFinEquiv L L') v`. Establish `h1` using `AddSubgroup.mem_map_of_mem (K := AddSubgroup.closure {y | ∃ a ∈ v.adicCompletionIntegers F, ∃ x ∈ L, y = fun i => a ⊗ₜ[F] x i}) ℓ hw.1`. Rewrite `h1` using `[AddMonoidHom.map_closure]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `AddSubgroup.closure_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨a, ha, x, hx, rfl⟩, rfl⟩`. Use `⟨a, ha, pairVec finSumFinEquiv x 0, (pairVec_mem_sumLat _).2 ⟨hx, zero_mem _⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `only [ℓ, AddMonoidHom.mk'_apply, pairVec, Function.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `cases finSumFinEquiv.symm k <;> simp`. Establish `hr : ℓ' (fun i => w (finSumFinEquiv (.inr i))) ∈ latLoc F (sumLat finSumFinEquiv L L') v`. Establish `h1` using `AddSubgroup.mem_map_of_mem (K := AddSubgroup.closure {y | ∃ a ∈ v.adicCompletionIntegers F, ∃ x ∈ L', y = fun i => a ⊗ₜ[F] x i}) ℓ' hw.2`. Rewrite `h1` using `[AddMonoidHom.map_closure]`. Use `AddSubgroup.closure_mono ?_ h1` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨_, ⟨a, ha, x, hx, rfl⟩, rfl⟩`. Use `⟨a, ha, pairVec finSumFinEquiv 0 x, (pairVec_mem_sumLat _).2 ⟨zero_mem _, hx⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `only [ℓ', AddMonoidHom.mk'_apply, pairVec, Function.comp_apply]`. Apply the tactic sequence `cases finSumFinEquiv.symm k <;> simp`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e1 : w = ℓ (fun i => w (finSumFinEquiv (.inl i))) + ℓ' (fun i => w (finSumFinEquiv (.inr i)))` using `by conv_lhs => rw [← pairVec_eta finSumFinEquiv w]`. Use function extensionality and compare the values at `k`. Simplify using `only [ℓ, ℓ', AddMonoidHom.mk'_apply, Pi.add_apply, pairVec, Function.comp_apply]`. Apply the tactic sequence `cases finSumFinEquiv.symm k <;> simp`. Rewrite using `[e1]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hl hr`.
+A detailed English derivation is pending.
 -/
 theorem latLoc_sumLat (L : Submodule (𝓞 E) (Fin m → E)) (L' : Submodule (𝓞 E) (Fin n → E)) (v : HeightOneSpectrum (𝓞 F)) :
     latLoc F (sumLat finSumFinEquiv L L') v = sumLat finSumFinEquiv (latLoc F L v) (latLoc F L' v) := by
@@ -558,7 +556,7 @@ section
 omit [NumberField E]
 
 /- English proof (translation)
-Rewrite using `[mem_levelAll]`. Simplify using `only [bc_blkGL, KFin, KArch]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_KAd {g : GAd σ Q} : g ∈ KAd σ Q L a ↔
     (∀ v, proj σ Q v g ∈ KFin σ Q L v) ∧ ∀ w, projArch σ Q w g ∈ KArch σ Q w (bc (compInf F E w) a) := by
@@ -566,9 +564,9 @@ theorem mem_KAd {g : GAd σ Q} : g ∈ KAd σ Q L a ↔
   simp only [bc_blkGL, KFin, KArch]
 
 /- English proof (translation)
-Rewrite using `[mem_KAd]`. Use `⟨fun u => ?_, fun w => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Rewrite using `[proj_emb_self]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[proj_emb_ne σ Q e]`. Conclude with `one_mem _`. Rewrite using `[projArch_emb]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_mem_KAd {v : HeightOneSpectrum (𝓞 F)} {k : GLoc σ Q v} (hk : k ∈ KFin σ Q L v) :
     emb σ Q v k ∈ KAd σ Q L a := by
@@ -585,7 +583,7 @@ theorem emb_mem_KAd {v : HeightOneSpectrum (𝓞 F)} {k : GLoc σ Q v} (hk : k �
 variable (h : Q = dblGram finSumFinEquiv J)
 
 /- English proof (translation)
-Simplify using `only [KFin, stabLoc, Subgroup.mem_comap, matHom_ioH, latLoc_sumLat]`. Conclude with `blkGL_mem_stabGL _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ioH_mem_KFin {v : HeightOneSpectrum (𝓞 F)} {g g' : GLoc σ J v} :
     ioH _ σ h (g, g') ∈ KFin σ Q L v ↔ g ∈ stabLoc σ J L v ∧ g' ∈ stabLoc σ J L v := by
@@ -593,7 +591,7 @@ theorem ioH_mem_KFin {v : HeightOneSpectrum (𝓞 F)} {g g' : GLoc σ J v} :
   exact blkGL_mem_stabGL _
 
 /- English proof (translation)
-Rewrite using `[mem_stabArch, mem_stabArch, mem_stabArch, matHom_ioH, ← map_inv (blkGL finSumFinEquiv), ← map_mul (blkGL finSumFinEquiv), ← map_mul (blkGL finSumFinEquiv), ← blkMat_one finSumFinEquiv, blkGL_mem_UJ]`. Apply the tactic sequence `try exact Iff.rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ioH_mem_KArch {w : InfinitePlace F} {b : GL (Fin n) (w.Completion ⊗[F] E)} {g g' : GArch σ J w} :
     ioH _ σ h (g, g') ∈ KArch σ Q w b ↔ g ∈ stabArch σ J w b ∧ g' ∈ stabArch σ J w b := by
@@ -602,9 +600,9 @@ theorem ioH_mem_KArch {w : InfinitePlace F} {b : GL (Fin n) (w.Completion ⊗[F]
   try exact Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_KAd, mem_levelAll, mem_levelAll]`. Simplify using `only [proj_ioH, projArch_ioH, ioH_mem_KFin, ioH_mem_KArch]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨fun v => (h1 v).1, fun w => (h2 w).1⟩, ⟨fun v => (h1 v).2, fun w => (h2 w).2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨h1, h2⟩, h3, h4⟩`. Conclude with `⟨fun v => ⟨h1 v, h3 v⟩, fun w => ⟨h2 w, h4 w⟩⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem ioH_mem_KAd {g g' : GAd σ J} :
     ioH _ σ h (g, g') ∈ KAd σ Q L a ↔ g ∈ levelAll σ J L a ∧ g' ∈ levelAll σ J L a := by
@@ -617,13 +615,13 @@ theorem ioH_mem_KAd {g g' : GAd σ J} :
     exact ⟨fun v => ⟨h1 v, h3 v⟩, fun w => ⟨h2 w, h4 w⟩⟩
 
 /- English proof (translation)
-Introduce `v y`. Simplify using `only [bc_blkGL, val_blkGL, latLoc_sumLat]`. Rewrite using `[← pairVec_eta finSumFinEquiv y, blkMat_mulVec, pairVec_mem_sumLat, ← ha v, ← ha v]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `e1` using `hy (finSumFinEquiv (.inl i))`. Rewrite `e1` using `[pairVec_inl]`. Then use the resulting hypothesis. Establish `e1` using `hy (finSumFinEquiv (.inr i))`. Rewrite `e1` using `[pairVec_inr]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `⟨h1, h2⟩ k`. Take `⟨k, rfl⟩` from `finSumFinEquiv.surjective k`. Break down `k with i | i` into its components or cases. Rewrite using `[pairVec_inl]`. Conclude with `h1 i`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pairVec_inr]`. Conclude with `h2 i`.
+A detailed English derivation is pending.
 -/
 theorem isLatticeFrame_dbl (ha : IsLatticeFrame L a) :
     IsLatticeFrame (sumLat finSumFinEquiv L L) (blkGL finSumFinEquiv (a, a)) := by
@@ -648,11 +646,11 @@ theorem isLatticeFrame_dbl (ha : IsLatticeFrame L a) :
 include h in
 
 /- English proof (translation)
-Introduce `w`. Take `⟨ε, hε⟩` from `ha w`. Use `⟨Sum.elim ε (fun i => !ε i) ∘ finSumFinEquiv.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[h, JR_dblGram, bc_blkGL, val_blkGL]`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[dblGram, cT_blkMat, blkMat_mul, blkMat_mul, Matrix.mul_neg, Matrix.neg_mul, hε, Matrix.diagonal_neg, blkMat, Matrix.fromBlocks_diagonal, Matrix.submatrix_diagonal_equiv]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply]`. Take `⟨k, rfl⟩` from `finSumFinEquiv.surjective k`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases k with i | i <;> simp <;> split_ifs <;> simp_all`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isMajorantFrame_dbl (ha : IsMajorantFrame σ J a) : IsMajorantFrame σ Q (blkGL finSumFinEquiv (a, a)) := by
   intro w
@@ -672,17 +670,15 @@ theorem isMajorantFrame_dbl (ha : IsMajorantFrame σ J a) : IsMajorantFrame σ Q
 include h in
 
 /- English proof (translation)
-Establish `hz : ∀ y : Fin n → Fv F v ⊗[F] E, Formalism.UG.hform (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Fv F v) σ) (JR (Fv F v) J) 0 y = 0`. Introduce `y`. Simplify using `[Formalism.UG.hform]`. Unfold `IsSelfDualAt at hL ⊢`. Use extensionality with `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. By extensionality, compare the relevant components.
 
-Rewrite using `[← pairVec_eta finSumFinEquiv w]`. Rewrite using `[latLoc_sumLat, pairVec_mem_sumLat, hL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ x hx`. Rewrite `hx` using `[latLoc_sumLat, mem_sumLat]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← pairVec_eta finSumFinEquiv x]`. Establish `e1 : hLin σ J (Fv F v) _ _ ∈ intLoc F E v` using `h1 _ hx.1`. Establish `e2 : hLin σ J (Fv F v) _ _ ∈ intLoc F E v` using `h2 _ hx.2`. Express the relevant statement in the definitionally equal form `Formalism.UG.hform _ (JR _ Q) (pairVec _ _ _) (pairVec _ _ _) ∈ intLoc F E v`. Rewrite using `[h, JR_dblGram, hform_dblGram]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem e1 e2`. Introduce `hw`. Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e1` using `hw (pairVec finSumFinEquiv x 0) (by rw [latLoc_sumLat, pairVec_mem_sumLat]; exact ⟨hx, zero_mem _⟩)`. Express the relevant statement in the definitionally equal form `Formalism.UG.hform _ (JR _ Q) _ _ ∈ intLoc F E v at e1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[h, JR_dblGram, hform_dblGram, hz, sub_zero]`. Conclude with `e1`. Establish `e1` using `hw (pairVec finSumFinEquiv 0 x) (by rw [latLoc_sumLat, pairVec_mem_sumLat]; exact ⟨zero_mem _, hx⟩)`. Express the relevant statement in the definitionally equal form `Formalism.UG.hform _ (JR _ Q) _ _ ∈ intLoc F E v at e1`. Rewrite `e1` using `[h, JR_dblGram, hform_dblGram, hz, zero_sub]`.
-
-Conclude with `neg_mem_iff.1 e1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSelfDualAt_dbl {v : HeightOneSpectrum (𝓞 F)} (hL : IsSelfDualAt σ J L v) :
     IsSelfDualAt σ Q (sumLat finSumFinEquiv L L) v := by
@@ -719,17 +715,15 @@ theorem isSelfDualAt_dbl {v : HeightOneSpectrum (𝓞 F)} (hL : IsSelfDualAt σ 
 end
 
 /- English proof (translation)
-Establish `hA : IsCompact (Set.pi Set.univ fun w => (stabArch σ J w (bc (compInf F E w) a) : Set (GArch σ J w)))` using `isCompact_univ_pi fun w => GlobalTheory.AdelicU.Frames.isCompact_stabArch h J w _`. Establish `hK` using `hA.image ((continuous_ofInf σ J).comp (continuous_embArchPi σ J))`. Establish `hS` using `hK.mul (isCompact_levelFin (σ := σ) (J := J) (L := L))`. Use `hS using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Rewrite `hg` using `[SetLike.mem_coe, mem_levelAll]`. Rewrite using `[Set.mem_mul]`. Use `⟨ofInf σ J (projInf σ J g), ⟨fun w => projInfArch σ J w (projInf σ J g), fun w _ => ?_, ?_⟩, ofFin σ J (projFin σ J g), ?_, ofInf_projInf_mul_ofFin_projFin σ J g⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[projInfArch_projInf]`. Conclude with `hg.2 w`. Conclude with `congrArg (ofInf σ J) (GInf_ext σ J fun w => projInfArch_embArchPi σ J _ w)`. Rewrite using `[SetLike.mem_coe, mem_levelFin]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨mem_finPts.2 (projInf_ofFin σ J _), fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[proj_ofFin, projFinLoc_projFin]`. Conclude with `hg.1 v`. Introduce `hg`. Take `⟨x, ⟨k, hk, rfl⟩, y, hy, rfl⟩` from `Set.mem_mul.1 hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hy`, the goal using `[SetLike.mem_coe]`. Rewrite `hy` using `[mem_levelFin]`. Use `mul_mem (mem_levelAll.2 ⟨fun v => ?_, fun w => ?_⟩) (mem_levelAll.2 ⟨hy.2, fun w => ?_⟩)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, proj_ofInf]`. Conclude with `one_mem _`.
-
-Simplify using `only [Function.comp_apply, projArch_ofInf, projInfArch_embArchPi]`. Conclude with `hk w (Set.mem_univ w)`. Rewrite using `[mem_finPts_iff_forall.1 hy.1 w]`. Conclude with `one_mem _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_levelAll (h : IsCMExt F E σ) (J : Matrix (Fin m) (Fin m) E) (L : Submodule (𝓞 E) (Fin m → E))
     [Submodule.IsLattice E L] (a : GL (Fin m) (AF F ⊗[F] E)) : IsCompact (levelAll σ J L a : Set (GAd σ J)) := by

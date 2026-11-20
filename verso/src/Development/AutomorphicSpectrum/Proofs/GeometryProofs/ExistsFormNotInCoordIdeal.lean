@@ -20,17 +20,17 @@ open GlobalTheory.CompanionTheory.Ar.Flat.UnitChart
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C n`. Use `⟨0, C n, homog_C n, fun L _ v _ => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Consider the case `add a b ha hb`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨m, G, hG, ea⟩` from `ha`. Take `⟨n, G', hG', eb⟩` from `hb`. Use `⟨m + n, G * cMon c n + G' * cMon c m, homog_add (homog_mul hG (homog_cMon c n)) ?_, fun L _ v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm m n]`. Conclude with `homog_mul hG' (homog_cMon c m)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hadd : ∏ k, v ⟨k, c k⟩ ^ (m + n) k = (∏ k, v ⟨k, c k⟩ ^ m k) * ∏ k, v ⟨k, c k⟩ ^ n k`. Simplify using `[pow_add, Finset.prod_mul_distrib]`. Rewrite using `[hadd, map_add, map_add, map_mul, map_mul, aeval_cMon, aeval_cMon, ← ea L v hv, ← eb L v hv]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X a p ha`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m, G, hG, ea⟩` from `ha`. Use `⟨m + Pi.single p.1 1, G * X p, homog_mul hG (homog_X p), fun L _ v hv => ?_⟩` and prove the remaining obligations. Establish `h1 : ∏ k, v ⟨k, c k⟩ ^ (Pi.single p.1 1 : K → ℕ) k = v ⟨p.1, c p.1⟩`. Rewrite using `[Fintype.prod_eq_single p.1]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Simplify using `[Pi.single_apply, hk]`. Establish `hadd : ∏ k, v ⟨k, c k⟩ ^ (m + Pi.single p.1 1 : K → ℕ) k = (∏ k, v ⟨k, c k⟩ ^ m k) * v ⟨p.1, c p.1⟩`. Rewrite using `[← h1]`. Simplify using `[pow_add, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hadd, map_mul, map_mul, aeval_X, aeval_X, ← ea L v hv]`. Clear denominators, using `[hv p.1]` for the nonvanishing conditions.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_form (c : ∀ k, J k) (g : MRing J) :
     ∃ (m : K → ℕ) (G : MRing J), IsMultiHomog G m ∧ ∀ (L : Type) [Field L] (v : (Σ k, J k) → L),
@@ -67,15 +67,15 @@ theorem exists_form (c : ∀ k, J k) (g : MRing J) :
     field_simp [hv p.1]
 
 /- English proof (translation)
-Simplify using `[evC, MvPolynomial.aeval_def, MvPolynomial.eval_map, MvPolynomial.eval₂_eq']`.
+Simplify using the standard rewrite rules.
 -/
 theorem evC_eq_aeval (w : (Σ k, J k) → ℂ) (f : MRing J) : evC w f = aeval w f := by
   simp [evC, MvPolynomial.aeval_def, MvPolynomial.eval_map, MvPolynomial.eval₂_eq']
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using `only [← Finset.prod_div_distrib]`. Conclude with `Subalgebra.prod_mem _ fun k _ => Algebra.subset_adjoin ⟨⟨k, j k⟩, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, i⟩, rfl⟩`. Use `Algebra.subset_adjoin ⟨Function.update c k i, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.CompanionTheory.Ar.FlagBun.Sm.prod_update_div (β := J) (fun k (b : J k) => y ⟨k, b⟩) c hc k i` as an intermediate fact. Simplify using `using this`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem segre_chart {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : ∀ k, J k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) :
     Algebra.adjoin ℤ (Set.range fun j : (∀ k, J k) => (∏ k, y ⟨k, j k⟩) / ∏ k, y ⟨k, c k⟩) = chartRingZ y c := by
@@ -95,7 +95,7 @@ def ratMap {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : ∀ k, J k) : MR
   aeval fun p => ⟨y p / y ⟨p.1, c p.1⟩, Algebra.subset_adjoin ⟨p, rfl⟩⟩
 
 /- English proof (translation)
-Establish `: (chartRingZ y c).val.comp (ratMap y c) = aeval (fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[ratMap]`. Rewrite using `[← this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -109,9 +109,9 @@ theorem ratMap_coe {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : ∀ k, J
   rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨r, hr⟩`. Establish `h : r ∈ (aeval (fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) : MRing J →ₐ[ℤ] Ω).range`. Rewrite using `[← Algebra.adjoin_range_eq_range_aeval]`. Conclude with `hr`. Take `⟨g, rfl⟩` from `h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨g, Subtype.ext (ratMap_coe y c g)⟩`.
+A detailed English derivation is pending.
 -/
 theorem ratMap_surjective {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : ∀ k, J k) :
     Function.Surjective (ratMap y c) := by
@@ -123,13 +123,13 @@ theorem ratMap_surjective {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : �
   exact ⟨g, Subtype.ext (ratMap_coe y c g)⟩
 
 /- English proof (translation)
-Set `φw : MRing J →+* ℂ` to `(aeval (fun p : Σ k, J k => w p / w ⟨p.1, c p.1⟩) : MRing J →ₐ[ℤ] ℂ).toRingHom`. Establish `hker : RingHom.ker (ratMap y c).toRingHom ≤ RingHom.ker φw`. Introduce `g hg`. Take `⟨m, G, hG, e⟩` from `exists_form c g`. Establish `hy0 : aeval (fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) g = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← ratMap_coe]`. Establish `: ratMap y c g = 0` using `hg`. Simplify using `[this]`. Establish `hG0 : aeval y G = 0` using `by rw [← e Ω y hc, hy0, zero_mul]`. Establish `hmem : G ∈ mCoordIdeal y` using `mem_of_aeval_eq_zero hG hG0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwG : aeval w G = 0`. Rewrite using `[← evC_eq_aeval]`. Conclude with `hw.2 G hmem`. Establish `hprod : ∏ k, w ⟨k, c k⟩ ^ m k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hwc k)`. Rewrite `hwG` using `[← e ℂ w hwc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mul_eq_zero.1 hwG).resolve_right hprod`. Use `⟨(ratMap y c).toRingHom.liftOfSurjective (ratMap_surjective y c) ⟨φw, hker⟩, fun g => ?_⟩` and prove the remaining obligations. Conclude with `RingHom.liftOfRightInverse_comp_apply _ _ _ _ g`.
+A detailed English derivation is pending.
 -/
 theorem exists_chartEval {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : ∀ k, J k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (w : (Σ k, J k) → ℂ) (hw : w ∈ mcPts (mCoordIdeal y)) (hwc : ∀ k, w ⟨k, c k⟩ ≠ 0) :
@@ -164,22 +164,22 @@ def ev (ξ : Spec (CommRingCat.of Ω) ⟶ X) (U : X.Opens) (h : genPt ξ ∈ U) 
   (X.presheaf.germ U (genPt ξ) h ≫ Scheme.stalkClosedPointTo ξ).hom
 
 /- English proof (translation)
-The claim follows from `genMap_germ_eq_stalk_closed ξ q U hq h s`.
+A detailed English derivation is pending.
 -/
 theorem genMap_germ {ξ : Spec (CommRingCat.of Ω) ⟶ X} {U : X.Opens} (h : genPt ξ ∈ U) (q : Cpt ξ) (hq : q.1 ∈ U)
     (s : Γ(X, U)) : genMap ξ q (X.presheaf.germ U q.1 hq s) = ev ξ U h s :=
   genMap_germ_eq_stalk_closed ξ q U hq h s
 
 /- English proof (translation)
-Set `I : Ideal Γ(X, U)` to `{ carrier := {s | ∃ r, a * ev ξ U h s = ev ξ U h r} add_mem' := by`. Introduce and unpack `s t ⟨r, hr⟩ ⟨r', hr'⟩`. Conclude with `⟨r + r', by rw [map_add, map_add, mul_add, hr, hr']⟩`. Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `t s ⟨r, hr⟩`. Conclude with `⟨t * r, by rw [smul_eq_mul, map_mul, map_mul, ← hr]; ring⟩ }`. Distinguish the cases in `hd : I = ⊤`. Take `⟨r, hr⟩ : (1 : Γ(X, U)) ∈ I` from `hd ▸ Submodule.mem_top`. Conclude with `⟨r, by simpa using hr.symm⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-It suffices to derive a contradiction. Take `⟨P, hP, hIP⟩` from `Ideal.exists_le_maximal I hd`. Set `y : PrimeSpectrum Γ(X, U)` to `⟨P, hP.isPrime⟩`. Establish `hy : hU.fromSpec y ∈ U`. Establish `: hU.fromSpec y ∈ Set.range hU.fromSpec` using `⟨y, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Set `q : Cpt ξ` to `⟨hU.fromSpec y, sp _ hy⟩`. Use `letI := X.presheaf.algebra_section_stalk (⟨hU.fromSpec y, hy⟩ : U)`. Use `haveI : IsLocalization.AtPrime (X.presheaf.stalk (hU.fromSpec y)) y.asIdeal := hU.isLocalization_stalk' y hy`. Take `⟨t, ht⟩` from `ha q hy`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨r, s⟩, e⟩` from `IsLocalization.surj y.asIdeal.primeCompl t`. Use `s.2 (hIP ⟨r, ?_⟩)` and prove the remaining obligations. Rewrite using `[← genMap_germ h q hy, ← genMap_germ h q hy, ← ht, ← map_mul]`. Conclude with `congrArg _ e`.
+A detailed English derivation is pending.
 -/
 theorem exists_ev_eq {ξ : Spec (CommRingCat.of Ω) ⟶ X} {U : X.Opens} (hU : IsAffineOpen U) (h : genPt ξ ∈ U)
     (sp : ∀ q : X, q ∈ U → genPt ξ ⤳ q) (a : Ω) (ha : ∀ q : Cpt ξ, q.1 ∈ U → a ∈ regAt ξ q) :
@@ -212,7 +212,7 @@ theorem exists_ev_eq {ξ : Spec (CommRingCat.of Ω) ⟶ X} {U : X.Opens} (hU : I
     exact congrArg _ e
 
 /- English proof (translation)
-Rewrite using `[Scheme.germ_stalkClosedPointTo]`. Simplify using `[Iso.trans_hom, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem germ_closedPoint {R : CommRingCat.{0}} [IsLocalRing R] (f : Spec R ⟶ X) (U : X.Opens)
     (hU : f (IsLocalRing.closedPoint R) ∈ U) :
@@ -222,13 +222,13 @@ theorem germ_closedPoint {R : CommRingCat.{0}} [IsLocalRing R] (f : Spec R ⟶ X
   simp [Iso.trans_hom, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map_assoc]
 
 /- English proof (translation)
-Set `z : Spec (CommRingCat.of ℂ) ⟶ X` to `Spec.map (CommRingCat.ofHom ε) ≫ hU.fromSpec`. Establish `hz : z (IsLocalRing.closedPoint (CommRingCat.of ℂ)) ∈ U`. Establish `: z (IsLocalRing.closedPoint (CommRingCat.of ℂ)) ∈ Set.range hU.fromSpec` using `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Use `⟨z, hz, fun s => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfs : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U` using `by rw [hU.fromSpec_preimage_self]`. Establish `h1 : hU.fromSpec.appLE U ⊤ hfs = (Scheme.ΓSpecIso Γ(X, U)).inv`. Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Use `Category.comp_id _` and compare the differences between its conclusion and the goal. Conclude with `(Spec Γ(X, U)).presheaf.map_id _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Establish `h2 : z.appLE U ⊤ (Scheme.preimage_eq_top_of_closedPoint_mem z hz).ge = hU.fromSpec.appLE U ⊤ hfs ≫ (Spec.map (CommRingCat.ofHom ε)).appTop`. Use `Scheme.Hom.appLE_comp_appLE (Spec.map (CommRingCat.ofHom ε)) hU.fromSpec U ⊤ ⊤ hfs (fun _ _ => trivial)` as an intermediate fact. Rewrite using `[Scheme.Hom.appTop]`. Rewrite using `[← Scheme.Hom.appLE_eq_app (f := Spec.map (CommRingCat.ofHom ε)) (U := ⊤)]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : X.presheaf.germ U _ hz ≫ Scheme.stalkClosedPointTo z = CommRingCat.ofHom ε`. Rewrite using `[germ_closedPoint z U hz, h2, h1, Category.assoc, Scheme.ΓSpecIso_naturality]`. Conclude with `(Scheme.ΓSpecIso Γ(X, U)).inv_hom_id_assoc _`. Conclude with `congrArg (fun f => f.hom s) key`.
+A detailed English derivation is pending.
 -/
 theorem exists_pt {U : X.Opens} (hU : IsAffineOpen U) (ε : Γ(X, U) →+* ℂ) :
     ∃ (z : Spec (CommRingCat.of ℂ) ⟶ X) (hz : z (IsLocalRing.closedPoint (CommRingCat.of ℂ)) ∈ U), ∀ s,
@@ -264,11 +264,11 @@ open GlobalTheory.CompanionTheory.Ar.Flat.UnitChart
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
 /- English proof (translation)
-Establish `hunit : IsUnit (X.presheaf.germ U _ hz sv)` using `isUnit_of_map_unit (Scheme.stalkClosedPointTo z).hom _ (IsUnit.mk0 _ hv)`. Take `⟨t, ht⟩` from `hunit.exists_right_inv`. Set `q : Cpt ξ` to `⟨z (IsLocalRing.closedPoint (CommRingCat.of ℂ)), sp _ hz⟩`. Establish `h1 : ev ξ U hη sv * genMap ξ q t = 1`. Rewrite using `[← genMap_germ hη q hz, ← map_mul, ht, map_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (Scheme.stalkClosedPointTo z).hom (X.presheaf.germ U _ hz sv) * (Scheme.stalkClosedPointTo z).hom t = 1`. Rewrite using `[← map_mul, ht, map_one]`. Use `⟨sp _ hz, X.presheaf.germ U _ hz su * t, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `genMap ξ q _ = _`. Rewrite using `[map_mul, genMap_germ hη q hz, div_eq_mul_inv, inv_eq_of_mul_eq_one_right h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, div_eq_mul_inv, inv_eq_of_mul_eq_one_right h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt_quot {ξ : Spec (CommRingCat.of Ω) ⟶ X} {U : X.Opens} (hη : genPt ξ ∈ U)
     (sp : ∀ q : X, q ∈ U → genPt ξ ⤳ q) (z : Spec (CommRingCat.of ℂ) ⟶ X)
@@ -296,9 +296,9 @@ end Core
 section Main
 
 /- English proof (translation)
-Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `n hn`. Establish `h0 : r (algebraMap ℤ (𝓞 F) n) = 0` using `hn`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (n : ℂ) = 0` using `by simpa using h0`. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ringInt_injective {F : Type} [Field F] [NumberField F] (r : 𝓞 F →+* ℂ) : Function.Injective r := by
   rw [RingHom.injective_iff_ker_eq_bot]
@@ -310,7 +310,7 @@ theorem ringInt_injective {F : Type} [Field F] [NumberField F] (r : 𝓞 F →+*
   simpa using this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsFractionRing.lift (K := F) (ringInt_injective r), RingHom.ext fun a => by simp only [RingHom.comp_apply] exact IsFractionRing.lift_algebraMap (K := F) (ringInt_injective r) a⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ext_frac {F : Type} [Field F] [NumberField F] (r : 𝓞 F →+* ℂ) :
     ∃ r' : F →+* ℂ, r'.comp (algebraMap (𝓞 F) F) = r :=
@@ -319,9 +319,9 @@ theorem exists_ext_frac {F : Type} [Field F] [NumberField F] (r : 𝓞 F →+* �
     exact IsFractionRing.lift_algebraMap (K := F) (ringInt_injective r) a⟩
 
 /- English proof (translation)
-Set `r : 𝓞 F →+* ℂ` to `(Spec.preimage (z ≫ s)).hom`. Establish `hr : z ≫ s = spMap r`. Simplify using `[r, spMap]`. Take `⟨r', hr'⟩` from `exists_ext_frac r`. Use `⟨pullback.lift z (spMap r') ?_, pullback.lift_fst _ _ _⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hr, ← hr']`. Simplify using `[spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_lift_genFibre {F : Type} [Field F] [NumberField F] {W : Scheme.{0}}
     (s : W ⟶ Spec (CommRingCat.of (𝓞 F))) (z : Spec (CommRingCat.of ℂ) ⟶ W) :
@@ -335,7 +335,7 @@ theorem exists_lift_genFibre {F : Type} [Field F] [NumberField F] {W : Scheme.{0
   simp [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Set `p : Spec (CommRingCat.of Ω')` to `IsLocalRing.closedPoint Ω'`. Combine the equalities or inequalities in the displayed calculation.
+Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation.
 -/
 theorem genPt_dominates {X' X : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω']
     {ξ' : Spec (CommRingCat.of Ω') ⟶ X'} {ξ : Spec (CommRingCat.of Ω) ⟶ X} {f : X' ⟶ X} {i : Ω →+* Ω'}

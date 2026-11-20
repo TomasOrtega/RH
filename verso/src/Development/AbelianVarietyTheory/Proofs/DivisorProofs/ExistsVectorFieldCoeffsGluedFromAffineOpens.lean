@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.VertCoeffGlue
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hle⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ (O : Set X) from hx) O.isOpen`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, hU, fun y hy => hle hy⟩, hxU⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem affine_cover {X : Scheme.{0}} (O : X.Opens) :
     O ≤ ⨆ l : {V : X.Opens // IsAffineOpen V ∧ V ≤ O}, l.1 := by
@@ -33,19 +33,19 @@ theorem affine_cover {X : Scheme.{0}} (O : X.Opens) :
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, hU, fun y hy => hle hy⟩, hxU⟩
 
 /- English proof (translation)
-Introduce `X n W δ dd hδ hdd H`. Set `J : Type` to `{V : X.Opens // IsAffineOpen V ∧ V ≤ W}`. Use `choose c hc using fun j : J => (H j.1 j.1 j.2.1 j.2.1 j.2.2 le_rfl).exists`. Establish `hl : ∀ (l : J) (O : X.Opens) (h : l.1 ≤ O), O ≤ W → ∀ f : Γ(X, O), rsT (δ O f) l.1 = ∑ a, c l a * rsT (dd a O f) l.1`. Introduce `l O h hO f`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1` using `hδ.2.2 O l.1 h hO f`. Establish `e2` using `hc l (resG X h f)`. Simplify using `only [GlobalTheory.KS.rsT_self] at e2`. Rewrite using `[GlobalTheory.KS.rsT_of_le h, ← e1, e2]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hdd a).2.2 O l.1 h le_top f, GlobalTheory.KS.rsT_of_le h]`. Establish `sub : ∀ j l : J, l.1 ≤ j.1 → ∀ a, rsT (c j a) l.1 = c l a`. Introduce `j l h a`. Use `congrFun ((H j.1 l.1 j.2.1 l.2.1 j.2.2 h).unique (y₁ := fun a => rsT (c j a) l.1) (y₂ := c l) ?_ ?_) a` and prove the remaining obligations. Introduce `f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hc j f` as an intermediate fact. Simplify using `only [GlobalTheory.KS.rsT_self] at this`. Rewrite using `[this, GlobalTheory.KS.rsT_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.KS.rsT_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hl l j.1 h j.2.2`. Establish `glue : ∀ a, ∃ s : Γ(X, W), ∀ j : J, rsT s j.1 = c j a` using `fun a => by`. Use `GlobalTheory.KS.exists_rsT_eq (fun j : J => j.1) (fun j => j.2.2) (affine_cover W) (fun j => c j a) fun j k => ?_` and prove the remaining obligations. Use `GlobalTheory.KS.eq_of_rsT_eq (fun l : {V : X.Opens // IsAffineOpen V ∧ V ≤ j.1 ⊓ k.1} => l.1) (fun l => l.2.2) (affine_cover _) _ _ fun l => ?_` and prove the remaining obligations. Establish `hj : l.1 ≤ j.1` using `l.2.2.trans inf_le_left`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : l.1 ≤ k.1` using `l.2.2.trans inf_le_right`. Rewrite using `[GlobalTheory.KS.rsT_rsT inf_le_left l.2.2, GlobalTheory.KS.rsT_rsT inf_le_right l.2.2, sub j ⟨l.1, l.2.1, hj.trans j.2.2⟩ hj, sub k ⟨l.1, l.2.1, hk.trans k.2.2⟩ hk]`. Use `choose s hs using glue`. Use `⟨s, fun O hO f => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.KS.eq_of_rsT_eq (fun l : {V : X.Opens // IsAffineOpen V ∧ V ≤ O} => l.1) (fun l => l.2.2) (affine_cover O) _ _ fun l => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl ⟨l.1, l.2.1, l.2.2.trans hO⟩ O l.2.2 hO f, GlobalTheory.KS.rsT_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.KS.rsT_mul, GlobalTheory.KS.rsT_rsT hO l.2.2, hs a ⟨l.1, l.2.1, l.2.2.trans hO⟩]`.
+A detailed English derivation is pending.
 -/
 theorem exists_coeff : ∀ {X : Scheme.{0}} {n : ℕ} (W : X.Opens) (δ : Fld X) (dd : Fin n → Fld X), IsField W δ → (∀ a, IsField ⊤ (dd a)) →
     (∀ V V' : X.Opens, IsAffineOpen V → IsAffineOpen V' → V ≤ W → V' ≤ V →

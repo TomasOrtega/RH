@@ -38,9 +38,9 @@ def TopDensity (C₂ C CV : ℕ) : Prop :=
       (P (G.OmLong β (m' + 1) (U.PhiTop β σ d Φ0) z₀) = 0 → orbI D γ θ F' = 0)
 
 /- English proof (translation)
-Use `set S := G.rootSet (m + 2) ((-1) ^ (m + 3) * D')`. Unfold `G.mainTerm`. Rewrite using `[Finset.smul_sum, ← Finset.sum_coe_sort S, ← Equiv.sum_comp S.equivFin.symm]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, div_inv_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mainTerm_inv {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (β : ℂ) (m : ℕ)
     (Φ : G.Mat (m + 1 + 1) → V) (D' x : ℂ) :
@@ -60,11 +60,11 @@ theorem mainTerm_inv {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (β :
   ring
 
 /- English proof (translation)
-Unfold `AV`. Establish `h2 : ((CV / 2 : ℕ) : ℝ) * 2 ≤ (CV : ℝ)`. Establish `: CV / 2 * 2 ≤ CV` using `Nat.div_mul_le_self CV 2`. Conclude with `this` after adjusting the coercions. Establish `hn' : (3 : ℝ) ≤ n` using `by exact_mod_cast hn`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (0 : ℝ) ≤ ((CV / 2 : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hr : (0 : ℝ) ≤ (r : ℝ)` using `Nat.cast_nonneg _`. Establish `hX : (r : ℝ) ^ 3 * ((n + 1 : ℕ) : ℝ) + ((n + 1 : ℕ) : ℝ) ^ 2 + (r : ℝ) ^ 4 ≤ 2 * ((r : ℝ) ^ 3 * n + (n : ℝ) ^ 2 + (r : ℝ) ^ 4)`. Use `push_cast`. Establish `hr3 : (0 : ℝ) ≤ (r : ℝ) ^ 3` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr4 : (0 : ℝ) ≤ (r : ℝ) ^ 4` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hY : (0 : ℝ) ≤ (r : ℝ) ^ 3 * n + (n : ℝ) ^ 2 + (r : ℝ) ^ 4` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem av_shift (CV r n : ℕ) (hn : 3 ≤ n) : AV (CV / 2) r (n + 1) ≤ AV CV r n := by
   unfold AV
@@ -88,35 +88,31 @@ theorem av_shift (CV r n : ℕ) (hn : 3 ≤ n) : AV (CV / 2) r (n + 1) ≤ AV CV
     _ ≤ (CV : ℝ) * ((r : ℝ) ^ 3 * n + (n : ℝ) ^ 2 + (r : ℝ) ^ 4) := mul_le_mul_of_nonneg_right h2 hY
 
 /- English proof (translation)
-Take `⟨C₁, C₂, hU⟩` from `hU`. Take `⟨C, CV₀, hD⟩` from `hD C₂`. Take `⟨CV₁, hT⟩` from `hT ((C₁ : ℝ) + 1) (C : ℝ) C₂ (by positivity) (by positivity)`. Use `⟨max CV₀ (2 * CV₁), fun CV hCV => ?_⟩` and prove the remaining obligations. Introduce `hSA m hZ k r Wp Wq _ _ _ _ _ _ D A ε mm F' γ μR θ i hH hy hrel hG hz hrun hθ hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨β, p, m', σ, d, M, Φ0, e, K, Cp, P, D', z₀, hβ, hd, hps, hD', hz₀, hCp, hP, hdec, he, ⟨δ, hδ, hlow⟩, hslice⟩` from `hD CV (le_of_max_le_left hCV) hSA m hZ k r Wp Wq D A ε mm F' γ μR θ i hH hy hrel hG hz hrun hθ hi`. Establish `hr : 1 ≤ r` using `hy.1`. Establish `hA : (r : ℝ) * AV CV r (2 * r + k + 1) ≤ A` using `hy.2.2.1`. Establish `hA' : (r : ℝ) * AV (CV / 2) r (2 * r + k + 2) ≤ A` using `le_trans (mul_le_mul_of_nonneg_left (av_shift CV r (2 * r + k + 1) (by omega)) (Nat.cast_nonneg _)) hA`. Establish `hCV1 : CV₁ ≤ CV / 2` using `by have := le_of_max_le_right hCV; omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcast : ((p + (m' + 1 + 1) : ℕ) : ℝ) = (r : ℝ) + 1` using `by rw [hps]; push_cast; ring`. Establish `hexp : ∀ j ≤ C₂ * (m' + 2) ^ 2, ((C₁ : ℝ) + 1) * ((m' : ℝ) + 2) ^ 2 ≤ e j / (5 * ((p + (m' + 1 + 1) : ℕ) : ℝ)) ∧ 2 * ((p + (m' + 1 + 1) : ℕ) : ℝ) ^ 2 < e j / (5 * ((p + (m' + 1 + 1) : ℕ) : ℝ))`. Introduce `j hj`. Establish `h1` using `(hT (CV / 2) hCV1 r (2 * r + k + 2) (m' + 2) j A hr (by omega) (by omega) hj hA').1`. Establish `h2` using `he j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcast]`. Move the coercions through the operations in `at h1 h2`. Establish `hpos : (0 : ℝ) < ((C₁ : ℝ) + 1) * ((m' : ℝ) + 2) ^ 2` using `by positivity`. Establish `hq : (0 : ℝ) ≤ 2 * ((r : ℝ) + 1) ^ 2` using `by positivity`. Apply the tactic sequence `constructor <;> linarith`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hKc : (0 : ℂ) ∉ ({D'} : Set ℂ)` using `fun h => hD' (Set.mem_singleton_iff.mp h).symm`. Take `⟨Cst, hCst⟩` from `hU p m' β hβ σ d hd e (((C₁ : ℝ) + 1) * ((m' : ℝ) + 2) ^ 2) (by nlinarith [sq_nonneg ((m' : ℝ) + 2)]) hexp {D'} isCompact_singleton hKc`. Establish `hrem` using `hCst M.V Φ0 K hdec`. Use `set Φ := U.PhiTop β σ d Φ0`. Use `set S := G.rootSet (m' + 2) ((-1) ^ (m' + 3) * D')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm2 : ((m' : ℂ) + 2) ≠ 0`. Establish `: ((m' + 2 : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast (show m' + 2 ≠ 0 by omega)`. Simplify using `using this`. Establish `hw : Function.Injective (fun j : Fin S.card => ((m' : ℂ) + 2) * (S.equivFin.symm j : ℂ))`. Introduce `j₁ j₂ h`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h'` using `mul_left_cancel₀ hm2 h`. Conclude with `S.equivFin.symm.injective (Subtype.ext h')`. Establish `hbd : ∀ x : ℂ, 1 + δ⁻¹ ≤ ‖x‖ → P (∑ j : Fin S.card, G.psi β ((((m' : ℂ) + 2) * (S.equivFin.symm j : ℂ)) * x) • ((((m' : ℂ) + 2)⁻¹ * ((‖(S.equivFin.symm j : ℂ)‖ ^ ((m' + 1) ^ 2) : ℝ) : ℂ)) • G.OmLong β (m' + 1) Φ (S.equivFin.symm j : ℂ))) ≤ (Cp * (Cst * K)) / ‖x‖`. Introduce `x hx`. Establish `hδi : 0 < δ⁻¹` using `inv_pos.mpr hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx0 : x ≠ 0` using `by intro h; rw [h, norm_zero] at hx; linarith`. Establish `hxt : ‖x⁻¹‖ < δ` using `by rw [norm_inv]; exact inv_lt_of_inv_lt₀ hδ (by linarith)`. Rewrite using `[← mainTerm_inv]`. Establish `hc : (D' * x ^ (m' + 1)) * x⁻¹ ^ (m' + 1) = D'`. Rewrite using `[inv_pow, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hx0), mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hrem x⁻¹ (D' * x ^ (m' + 1)) (inv_ne_zero hx0) (by rw [hc]; exact Set.mem_singleton _)`. Establish `h0` using `hlow x⁻¹ (D' * x ^ (m' + 1)) (inv_ne_zero hx0) hxt hc`. Establish `hsplit : G.mainTerm β m' (fun _ => 1) Φ x⁻¹ D' = ((‖x⁻¹‖ ^ ((m' + 1) ^ 2) : ℝ) : ℂ) • G.OmBlock β (m' + 1) Φ x⁻¹ (D' * x ^ (m' + 1)) - G.remainder β m' (fun _ => 1) Φ x⁻¹ (D' * x ^ (m' + 1))`. Unfold `G.remainder`. Rewrite using `[hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_smul_eq_mul, h0, mul_zero, zero_add]`. Use `_ ≤ Cp * ‖G.remainder β m' (fun _ => 1) Φ x⁻¹ (D' * x ^ (m' + 1))‖ := hP _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `_ ≤ Cp * (Cst * K * ‖x⁻¹‖) := mul_le_mul_of_nonneg_left h1 hCp`. Use `_ = (Cp * (Cst * K)) / ‖x‖ := by rw [norm_inv, div_eq_mul_inv]; ring`. Establish `hzero` using `hAv β hβ M.V P S.card _ _ (Cp * (Cst * K)) (1 + δ⁻¹) hw hbd`. Establish `hz0 : z₀ ≠ 0`. Introduce `h0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `hz₀`. Simplify using `only [S, G.rootSet, Multiset.mem_toFinset] at hm`. Rewrite `hm` using `[Polynomial.mem_nthRoots (by omega), h0, zero_pow (by omega)]`. Establish `: D' = 0`. Establish `h3 : ((-1 : ℂ) ^ (m' + 3)) ≠ 0` using `pow_ne_zero _ (by norm_num)`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.mp hm.symm).resolve_left h3`. Conclude with `hD' this`. Establish `hj` using `hzero (S.equivFin ⟨z₀, hz₀⟩)`. Simplify using `only [Equiv.symm_apply_apply, map_smul_eq_mul] at hj`. Apply `hslice` to reduce the goal to its premises.
-
-Break down `mul_eq_zero.mp hj with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hnz : ((m' : ℂ) + 2)⁻¹ * ((‖z₀‖ ^ ((m' + 1) ^ 2) : ℝ) : ℂ) ≠ 0`. Use `mul_ne_zero (inv_ne_zero hm2) ?_` and prove the remaining obligations. Conclude with `pow_ne_zero _ (norm_ne_zero_iff.mpr hz0)` after adjusting the coercions.
-
-Conclude with `hnz (norm_eq_zero.mp h)`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem downTop_of_parts (hU : U.UseGermTop) (hAv : AveragingZero) (hT : DensThreshTop)
     (hD : ∀ C₂ : ℕ, ∃ C CV₀ : ℕ, ∀ CV, CV₀ ≤ CV → TopDensity C₂ C CV) :

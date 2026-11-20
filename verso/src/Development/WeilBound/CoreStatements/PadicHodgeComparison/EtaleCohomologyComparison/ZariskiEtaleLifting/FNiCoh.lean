@@ -13,14 +13,14 @@ section NiCoh
 variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C]
 
 /- English proof (translation)
-Rewrite using `[← ModuleCat.comp_apply, β.naturality, ModuleCat.comp_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ni_nat {F F' : C ⥤ ModuleCat.{w} R} (β : F ⟶ F') {T T' : C} (φ : T ⟶ T') (x : F.obj T) :
     (β.app T').hom ((F.map φ).hom x) = (F'.map φ).hom ((β.app T).hom x) := by
   rw [← ModuleCat.comp_apply, β.naturality, ModuleCat.comp_apply]
 
 /- English proof (translation)
-Establish `hb : d F' n (fun s => (β.app _).hom (a s)) = 0` using `((Mor.ofNatTrans β).d_pullC n a).trans (by rw [ha, map_zero])`. Conclude with `⟨hb, CrystallineSemistableComparison.P.mapH_cls (Mor.ofNatTrans β).hom n a ha hb⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ni_pull_cls {F F' : C ⥤ ModuleCat.{w} R} (β : F ⟶ F') (n : ℕ) (a : Cn F n) (ha : d F n a = 0) :
     ∃ hb, (Mor.ofNatTrans β).pull n ((cx F).cls a ha) = (cx F').cls (fun s => (β.app _).hom (a s)) hb := by
@@ -29,9 +29,9 @@ theorem ni_pull_cls {F F' : C ⥤ ModuleCat.{w} R} (β : F ⟶ F') (n : ℕ) (a 
   exact ⟨hb, CrystallineSemistableComparison.P.mapH_cls (Mor.ofNatTrans β).hom n a ha hb⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx F) n).1 x`. Take `⟨h1, e1⟩` from `ni_pull_cls (β + β') n a ha`. Take `⟨h2, e2⟩` from `ni_pull_cls β n a ha`. Take `⟨h3, e3⟩` from `ni_pull_cls β' n a ha`. Rewrite using `[e1, e2, e3, ← (CrystallineSemistableComparison.P.cls_surj (cx F') n).2.2.2.1 _ _ h2 h3 (by rw [map_add, h2, h3, add_zero])]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments.
 -/
 theorem ni_pull_add {F F' : C ⥤ ModuleCat.{w} R} (β β' : F ⟶ F') (n : ℕ) (x : H F n) :
     (Mor.ofNatTrans (β + β')).pull n x = (Mor.ofNatTrans β).pull n x + (Mor.ofNatTrans β').pull n x := by
@@ -43,9 +43,9 @@ theorem ni_pull_add {F F' : C ⥤ ModuleCat.{w} R} (β β' : F ⟶ F') (n : ℕ)
   congr 1
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx F) n).1 x`. Take `⟨h1, e1⟩` from `ni_pull_cls (0 : F ⟶ F') n a ha`. Rewrite using `[e1, (CrystallineSemistableComparison.P.cls_surj (cx F') n).2.1]`. Establish `: (fun s => ((0 : F ⟶ F').app _).hom (a s)) = (0 : Cn F' n)`. Use function extensionality and compare the values at `s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [NatTrans.app_zero, ModuleCat.hom_zero, LinearMap.zero_apply, Pi.zero_apply]`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ni_pull_zero {F F' : C ⥤ ModuleCat.{w} R} (n : ℕ) (x : H F n) :
     (Mor.ofNatTrans (0 : F ⟶ F')).pull n x = 0 := by
@@ -59,7 +59,7 @@ theorem ni_pull_zero {F F' : C ⥤ ModuleCat.{w} R} (n : ℕ) (x : H F n) :
   exact Submodule.zero_mem _
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, ni_pull_zero]`. Consider the case `insert k S hk ih => rw [Finset.sum_insert hk, Finset.sum_insert hk, ni_pull_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ni_pull_sum {ι : Type} {F F' : C ⥤ ModuleCat.{w} R} (β : ι → (F ⟶ F')) (S : Finset ι) (n : ℕ) (x : H F n) :
     (Mor.ofNatTrans (∑ k ∈ S, β k)).pull n x = ∑ k ∈ S, (Mor.ofNatTrans (β k)).pull n x := by
@@ -69,7 +69,7 @@ theorem ni_pull_sum {ι : Type} {F F' : C ⥤ ModuleCat.{w} R} (β : ι → (F �
   | insert k S hk ih => rw [Finset.sum_insert hk, Finset.sum_insert hk, ni_pull_add, ih]
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx F) n).1 x`. Take `⟨h1, e1⟩` from `ni_pull_cls (β ≫ β') n a ha`. Take `⟨h2, e2⟩` from `ni_pull_cls β n a ha`. Take `⟨h3, e3⟩` from `ni_pull_cls β' n _ h2`. Rewrite using `[e1, e2, e3]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -83,7 +83,7 @@ theorem ni_pull_comp {F F' F'' : C ⥤ ModuleCat.{w} R} (β : F ⟶ F') (β' : F
   rfl
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx F) n).1 x`. Take `⟨h1, e1⟩` from `ni_pull_cls (𝟙 F) n a ha`. Rewrite using `[e1]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ni_pull_id {F : C ⥤ ModuleCat.{w} R} (n : ℕ) (x : H F n) :
     (Mor.ofNatTrans (𝟙 F)).pull n x = x := by
@@ -99,7 +99,7 @@ def fixF {F : C ⥤ ModuleCat.{w} R} (e : F ⟶ F) : SubF F where
     rw [ni_nat, hx]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `x ∈ LinearMap.ker ((e.app T).hom - LinearMap.id) ↔ _`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_fixF {F : C ⥤ ModuleCat.{w} R} (e : F ⟶ F) (T : C) (x : F.obj T) :
     x ∈ (fixF e).S T ↔ (e.app T).hom x = x := by
@@ -116,7 +116,7 @@ def fixI {F : C ⥤ ModuleCat.{w} R} (S : SubF F) : S.fn ⟶ F where
   naturality _ _ _ := ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)
 
 /- English proof (translation)
-The claim follows from `NatTrans.ext (funext fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl))`.
+A detailed English derivation is pending.
 -/
 theorem fixP_fixI {F : C ⥤ ModuleCat.{w} R} (e : F ⟶ F) (he : e ≫ e = e) : fixP e he ≫ fixI (fixF e) = e :=
   NatTrans.ext (funext fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl))
@@ -129,7 +129,7 @@ def gNat {d : ℕ} (G : SingleObj (Gam d) ⥤ ModuleCat.{w} R) (g : Gam d) : G �
     exact mul_comm (g : Gam d) (a : Gam d)
 
 /- English proof (translation)
-Use `CrystallineSemistableComparison.P.prism (Mor.ofNatTrans (gNat G g)) (Mor.id G) { app := fun _ => (g : SingleObj.star (Gam d) ⟶ SingleObj.star (Gam d)), naturality := fun _ _ a => mul_comm (g : Gam d) (a : Gam d) } (fun T x => rfl) n x` as an intermediate fact. Rewrite using `[this]`. Conclude with `((CrystallineSemistableComparison.P.pull_comp (Mor.id G) (Mor.id G) n x).2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gNat_pull {d : ℕ} (G : SingleObj (Gam d) ⥤ ModuleCat.{w} R) (g : Gam d) (n : ℕ) (x : H G n) :
     (Mor.ofNatTrans (gNat G g)).pull n x = x := by
@@ -140,7 +140,7 @@ theorem gNat_pull {d : ℕ} (G : SingleObj (Gam d) ⥤ ModuleCat.{w} R) (g : Gam
   exact ((CrystallineSemistableComparison.P.pull_comp (Mor.id G) (Mor.id G) n x).2)
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `(CrystallineSemistableComparison.P.coef_upTo _ s hu n).2 z`. Rewrite using `[← hx]`. Establish `e1` using `ni_pull_add (gNat G g - 𝟙 G) (𝟙 G) n x`. Rewrite `e1` using `[sub_add_cancel, gNat_pull, ni_pull_id]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem killed_of {d : ℕ} (G : SingleObj (Gam d) ⥤ ModuleCat.{w} R) (g : Gam d) (s : R)
     (hu : ∀ T, UpTo s ((gNat G g - 𝟙 G).app T).hom) (n : ℕ) (z : H G n) : s ^ 2 • z = 0 := by
@@ -153,9 +153,9 @@ theorem killed_of {d : ℕ} (G : SingleObj (Gam d) ⥤ ModuleCat.{w} R) (g : Gam
     _ = 0 := sub_self x
 
 /- English proof (translation)
-Use `killed_of _ (gen k) s (fun T => ?_) n z` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `UpTo s ((gNat (fixF (h.π k)).fn (gen k) - 𝟙 _).app (SingleObj.star _)).hom`. Establish `hδ : ∀ y : (fixF (h.π k)).fn.obj (SingleObj.star _), ((gNat (fixF (h.π k)).fn (gen k) - 𝟙 _).app (SingleObj.star _)).hom y = ((fixF (h.π k)).fn.map (X` using `SingleObj.star _) (Y := SingleObj.star _) (gen k)).hom y - y := fun y => rfl`. Use `⟨fun y hy => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[hδ, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ((h.π k).app _).hom y.1 = y.1` using `(mem_fixF (h.π k) _ y.1).1 y.2`. Conclude with `Subtype.ext (h.inj k y.1 h1 (congrArg Subtype.val hy))`. Establish `h1 : ((h.π k).app _).hom y.1 = y.1` using `(mem_fixF (h.π k) _ y.1).1 y.2`. Take `⟨x, hx, hx2⟩` from `h.surj k y.1 h1`. Conclude with `⟨⟨x, (mem_fixF (h.π k) _ x).2 hx⟩, by rw [hδ]; exact Subtype.ext hx2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ni_killed {d : ℕ} (s : R) {M N : SingleObj (Gam d) ⥤ ModuleCat.{w} R} (α : M ⟶ N) (h : NI s α) (k : Fin d)
     (n : ℕ) (z : H (fixF (h.π k)).fn n) : s ^ 2 • z = 0 := by
@@ -176,11 +176,11 @@ end NiCoh
 end CrystallineSemistableComparison.B
 
 /- English proof (translation)
-Introduce `R _ d s M N α h n j _`. Use `⟨fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `e` using `ni_pull_comp α h.ρ j x`. Rewrite `e` using `[h.αρ, ni_pull_id, hx, map_zero]`. Rewrite using `[e, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(Mor.ofNatTrans h.ρ).pull j (s ^ 2 • y), ?_⟩` and prove the remaining obligations. Rewrite using `[← ni_pull_comp]`. Establish `e` using `ni_pull_add (h.ρ ≫ α) (∑ k, h.π k) j (s ^ 2 • y)`. Rewrite `e` using `[h.sum, ni_pull_id, ni_pull_sum]`. Establish `hk : ∀ k, (Mor.ofNatTrans (h.π k)).pull j (s ^ 2 • y) = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[← fixP_fixI (h.π k) (h.idem k), ni_pull_comp, map_smul, ni_killed s α h k, map_zero]`. Rewrite `e` using `[Finset.sum_eq_zero (fun k _ => hk k), add_zero]`. Conclude with `e.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CrystallineSemistableComparison.B.P.ni_coh : ∀ {R : Type} [CommRing R] {d : ℕ} (s : R) {M N : SingleObj (Gam d) ⥤ ModuleCat.{w} R} (α : M ⟶ N), NI s α → ∀ n, IsoLe (s ^ 2) n (Mor.ofNatTrans α) := by
   intro R _ d s M N α h n j _

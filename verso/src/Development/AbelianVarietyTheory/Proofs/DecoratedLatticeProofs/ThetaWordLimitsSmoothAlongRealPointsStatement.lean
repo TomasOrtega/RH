@@ -17,7 +17,7 @@ open GlobalTheory.ThetaDens
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ThetaDens.contDiff_of_tendstoUniformly_words` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FThetaWordLimitsSmoothAlongRealPoints.lean&line=75#L75)
 -/

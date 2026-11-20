@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
 theorem xp_J_locId (v : HeightOneSpectrum (𝓞 F)) (a : Eˣ) : ((locId E v a : (AfE F E)ˣ) : AfE F E) = xpJ (Formalism.L2.G.sgl F v 1) (a : E) := rfl
 
 /- English proof (translation)
-Unfold `xpJ`. Rewrite using `[TensorProduct.tmul_zero, zero_add, sub_zero]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem xp_J_zero (a : E) : xpJ (0 : FiniteAdeleRing (𝓞 F) F) a = 1 := by
   unfold xpJ
@@ -33,14 +33,14 @@ theorem xp_J_zero (a : E) : xpJ (0 : FiniteAdeleRing (𝓞 F) F) a = 1 := by
   rfl
 
 /- English proof (translation)
-Unfold `xpJ`. Rewrite using `[sub_self, TensorProduct.tmul_zero, add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem xp_J_one (a : E) : xpJ (1 : FiniteAdeleRing (𝓞 F) F) a = a ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F) := by
   unfold xpJ
   rw [sub_self, TensorProduct.tmul_zero, add_zero]
 
 /- English proof (translation)
-Establish `h1 : d * (1 - d') = d` using `by rw [mul_sub, mul_one, h, sub_zero]`. Establish `h2 : (1 - d) * d' = d'` using `by rw [_root_.sub_mul, one_mul, h, sub_zero]`. Establish `h3 : (1 - d) * (1 - d') = 1 - (d + d')` using `by rw [_root_.sub_mul, one_mul, h1]; ring`. Unfold `xpJ`. Rewrite using `[add_mul, mul_add, mul_add, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, h, h1, h2, h3, TensorProduct.tmul_zero, zero_add, mul_one, one_mul, one_mul, TensorProduct.tmul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -54,7 +54,7 @@ theorem xp_J_orth {d d' : FiniteAdeleRing (𝓞 F) F} (h : d * d' = 0) (a : E) :
   abel
 
 /- English proof (translation)
-Establish `h2 : d * (1 - d) = 0` using `by rw [mul_sub, mul_one, h, sub_self]`. Establish `h3 : (1 - d) * d = 0` using `by rw [_root_.sub_mul, one_mul, h, sub_self]`. Establish `h4 : (1 - d) * (1 - d) = 1 - d` using `by rw [mul_sub, mul_one, h3, sub_zero]`. Unfold `xpJ`. Rewrite using `[add_mul, mul_add, mul_add, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, h, h2, h3, h4, TensorProduct.tmul_zero, TensorProduct.tmul_zero, add_zero, zero_add, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem xp_J_same {d : FiniteAdeleRing (𝓞 F) F} (h : d * d = d) (a b : E) : xpJ d a * xpJ d b = xpJ d (a * b) := by
   have h2 : d * (1 - d) = 0 := by rw [mul_sub, mul_one, h, sub_self]
@@ -65,7 +65,7 @@ theorem xp_J_same {d : FiniteAdeleRing (𝓞 F) F} (h : d * d = d) (a b : E) : x
     Algebra.TensorProduct.tmul_mul_tmul, h, h2, h3, h4, TensorProduct.tmul_zero, TensorProduct.tmul_zero, add_zero, zero_add, one_mul]
 
 /- English proof (translation)
-Unfold `xpJ`. Rewrite using `[TensorProduct.tmul_sub, TensorProduct.sub_tmul, Algebra.TensorProduct.one_def]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem xp_J_sub (d : FiniteAdeleRing (𝓞 F) F) (a : E) : xpJ d a = 1 + (a - 1) ⊗ₜ[F] d := by
   unfold xpJ
@@ -73,7 +73,7 @@ theorem xp_J_sub (d : FiniteAdeleRing (𝓞 F) F) (a : E) : xpJ d a = 1 + (a - 1
   abel
 
 /- English proof (translation)
-Establish `h1 : ((n : ℕ) : FiniteAdeleRing (𝓞 F) F) * g = ((n : ℕ) : F) • g` using `by rw [Algebra.smul_def, map_natCast]`. Rewrite using `[h1, ← TensorProduct.smul_tmul, Algebra.smul_def, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem xp_scal (n : ℕ) (y : E) (g : FiniteAdeleRing (𝓞 F) F) :
     y ⊗ₜ[F] (((n : ℕ) : FiniteAdeleRing (𝓞 F) F) * g) = (((n : ℕ) : E) * y) ⊗ₜ[F] g := by
@@ -81,9 +81,9 @@ theorem xp_scal (n : ℕ) (y : E) (g : FiniteAdeleRing (𝓞 F) F) :
   rw [h1, ← TensorProduct.smul_tmul, Algebra.smul_def, map_natCast]
 
 /- English proof (translation)
-Use `⟨toRInt F E b * ⟨(1 : E) ⊗ₜ[F] g, qu_right g hg⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[xp_J_sub, hd, xp_scal]`. Use `push_cast`. Use `congr 1`. Use `show _ = (N : AfE F E) * ((algebraMap (𝓞 E) E b ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) * ((1 : E) ⊗ₜ[F] g))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Use `conv_rhs => rw [← nsmul_eq_mul, TensorProduct.smul_tmul', nsmul_eq_mul]`. Rewrite using `[mul_assoc, hb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xp_J_eq (N k : ℕ) (a : E) (b : 𝓞 E) (hb : ((k : ℕ) : E) * (a - 1) = (b : E)) (g : FiniteAdeleRing (𝓞 F) F) (hg : g ∈ intAd F)
     (d : FiniteAdeleRing (𝓞 F) F) (hd : d = ((N * k : ℕ) : FiniteAdeleRing (𝓞 F) F) * g) :
@@ -98,7 +98,7 @@ theorem xp_J_eq (N k : ℕ) (a : E) (b : 𝓞 E) (hb : ((k : ℕ) : E) * (a - 1)
   rw [mul_assoc, hb]
 
 /- English proof (translation)
-Unfold `xpJ`. Rewrite using `[← TensorProduct.tmul_add, add_sub_cancel]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem xp_J_at_one (d : FiniteAdeleRing (𝓞 F) F) : xpJ d (1 : E) = 1 := by
   unfold xpJ
@@ -106,11 +106,11 @@ theorem xp_J_at_one (d : FiniteAdeleRing (𝓞 F) F) : xpJ d (1 : E) = 1 := by
   rfl
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `xp_J_eq N k (a : E) b hb g hg d hd`. Take `⟨r', hr'⟩` from `xp_J_eq N k ((a⁻¹ : Eˣ) : E) b' hb' g hg d hd`. Set `u₀ : (RInt F E)ˣ` to `{ val := 1 + (N : RInt F E) * r inv := 1 + (N : RInt F E) * r' val_inv := Subtype.ext (by show ((1 + (N : RInt F E) * r : RInt F E) : AfE F E) * ((1 + (N : RInt F E) * r' : RInt F E) : AfE F E) = 1`. Rewrite using `[← hr, ← hr', xp_J_same hdd, Units.mul_inv, xp_J_at_one])`. Use `inv_val := Subtype.ext (by show ((1 + (N : RInt F E) * r' : RInt F E) : AfE F E) * ((1 + (N : RInt F E) * r : RInt F E) : AfE F E) = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hr, ← hr', xp_J_same hdd, Units.inv_mul, xp_J_at_one]) }`. Unfold `congN congU`. Rewrite using `[Subgroup.mem_map]`. Use `⟨u₀, (mem_kerRed _ u₀).2 ?_, Units.ext ?_⟩` and prove the remaining obligations. Use `show 1 + (N : RInt F E) * r - 1 ∈ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_sub_cancel_left]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Use `show ((1 + (N : RInt F E) * r : RInt F E) : AfE F E) = u`. Rewrite using `[← hr, hu]`.
+A detailed English derivation is pending.
 -/
 theorem xp_mem_congN (N k : ℕ) (a : Eˣ) (b b' : 𝓞 E) (hb : ((k : ℕ) : E) * ((a : E) - 1) = (b : E))
     (hb' : ((k : ℕ) : E) * (((a⁻¹ : Eˣ) : E) - 1) = (b' : E)) (g : FiniteAdeleRing (𝓞 F) F) (hg : g ∈ intAd F)
@@ -137,11 +137,11 @@ theorem xp_mem_congN (N k : ℕ) (a : Eˣ) (b b' : 𝓞 E) (hb : ((k : ℕ) : E)
     rw [← hr, hu]
 
 /- English proof (translation)
-Establish `hM0 : ((M : ℕ) : F) ≠ 0` using `by exact_mod_cast hM.ne'`. Use `⟨algebraMap F (FiniteAdeleRing (𝓞 F) F) ((M : ℕ) : F)⁻¹ * d, ?_, ?_⟩` and prove the remaining obligations. Introduce `v show algebraMap F (v.adicCompletion F) ((M : ℕ) : F)⁻¹ * d v ∈ v.adicCompletionIntegers F`. Distinguish the cases in `hv : ((M : ℕ) : 𝓞 F) ∈ v.asIdeal`. Establish `h0 : d v = 0` using `hT v hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[h0, mul_zero]`. Conclude with `zero_mem _`. Establish `hval : Valued.v (algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F ((M : ℕ) : 𝓞 F))) = 1`. Rewrite using `[Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.AdeleIntA.val_R, intValuation_eq_one_iff_mem_primeCompl]`. Conclude with `Ideal.mem_primeCompl_iff.mpr hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hval` using `[map_natCast]`. Rewrite using `[mem_adicCompletionIntegers, map_mul, map_inv₀, map_inv₀, hval, inv_one, one_mul]`. Conclude with `hd v`. Rewrite using `[← mul_assoc, ← map_natCast (algebraMap F (FiniteAdeleRing (𝓞 F) F)), ← map_mul, mul_inv_cancel₀ hM0, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xp_g (M : ℕ) (hM : 0 < M) (d : FiniteAdeleRing (𝓞 F) F) (hd : d ∈ intAd F)
     (hT : ∀ v : HeightOneSpectrum (𝓞 F), ((M : ℕ) : 𝓞 F) ∈ v.asIdeal → evalV F v d = 0) :
@@ -166,7 +166,7 @@ def xpE (T : Finset (HeightOneSpectrum (𝓞 F))) : FiniteAdeleRing (𝓞 F) F :
 
 open Classical in
 /- English proof (translation)
-Unfold `xpE`. Rewrite using `[map_sum]`. Use `split_ifs with hw`. Rewrite using `[Finset.sum_eq_single w (fun b _ hb => Formalism.L2.G.sgl_apply_ne F b 1 (Ne.symm hb)) (fun h => absurd hw h), Formalism.L2.G.sgl_apply_same]`. Conclude with `Finset.sum_eq_zero fun b hb => Formalism.L2.G.sgl_apply_ne F b 1 (fun h => hw (h ▸ hb))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xp_E_at (T : Finset (HeightOneSpectrum (𝓞 F))) (w : HeightOneSpectrum (𝓞 F)) :
     evalV F w (xpE T) = if w ∈ T then 1 else 0 := by
@@ -177,7 +177,7 @@ theorem xp_E_at (T : Finset (HeightOneSpectrum (𝓞 F))) (w : HeightOneSpectrum
   · exact Finset.sum_eq_zero fun b hb => Formalism.L2.G.sgl_apply_ne F b 1 (fun h => hw (h ▸ hb))
 
 /- English proof (translation)
-Apply `Formalism.L2.G.adele_ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_mul, xp_E_at]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem xp_E_idem (T : Finset (HeightOneSpectrum (𝓞 F))) : xpE T * xpE T = xpE T := by
   classical
@@ -187,21 +187,21 @@ theorem xp_E_idem (T : Finset (HeightOneSpectrum (𝓞 F))) : xpE T * xpE T = xp
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[mul_sub, mul_one, _root_.sub_mul, one_mul, xp_E_idem, sub_self, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xp_E_compl_idem (T : Finset (HeightOneSpectrum (𝓞 F))) : (1 - xpE T) * (1 - xpE T) = 1 - xpE T := by
   rw [mul_sub, mul_one, _root_.sub_mul, one_mul, xp_E_idem, sub_self, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[mul_sub, mul_one, xp_E_idem, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xp_E_orth (T : Finset (HeightOneSpectrum (𝓞 F))) : xpE T * (1 - xpE T) = 0 := by
   rw [mul_sub, mul_one, xp_E_idem, sub_self]
 
 /- English proof (translation)
-Apply `Formalism.L2.G.adele_ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[xp_E_at, if_neg hv, mul_zero]`. Rewrite using `[Formalism.L2.G.sgl_apply_ne F v 1 h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem xp_sgl_orth (T : Finset (HeightOneSpectrum (𝓞 F))) (v : HeightOneSpectrum (𝓞 F)) (hv : v ∉ T) :
     Formalism.L2.G.sgl F v 1 * xpE T = 0 := by
@@ -215,15 +215,15 @@ theorem xp_sgl_orth (T : Finset (HeightOneSpectrum (𝓞 F))) (v : HeightOneSpec
   · rw [Formalism.L2.G.sgl_apply_ne F v 1 h, zero_mul]
 
 /- English proof (translation)
-The claim follows from `Subring.sum_mem _ fun v _ => qu_sgl_int v 1 (one_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem xp_E_int (T : Finset (HeightOneSpectrum (𝓞 F))) : xpE T ∈ intAd F :=
   Subring.sum_mem _ fun v _ => qu_sgl_int v 1 (one_mem _)
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty, Units.val_one, xpE, Finset.sum_empty, xp_J_zero]`. Consider the case `insert v T hv ih`. Rewrite using `[Finset.prod_insert hv, Units.val_mul, ih, xp_J_locId, xp_J_orth (xp_sgl_orth T v hv)]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Unfold `xpE`. Rewrite using `[Finset.sum_insert hv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem xp_prod (T : Finset (HeightOneSpectrum (𝓞 F))) (x : Eˣ) :
     ((∏ v ∈ T, locId E v x : (AfE F E)ˣ) : AfE F E) = xpJ (xpE T) (x : E) := by
@@ -237,11 +237,11 @@ theorem xp_prod (T : Finset (HeightOneSpectrum (𝓞 F))) (x : Eˣ) :
     rw [Finset.sum_insert hv]
 
 /- English proof (translation)
-Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) a`. Establish `hq0 : q ≠ 0` using `nonZeroDivisors.ne_zero hq`. Establish `hI : Ideal.span {q} ≠ ⊥` using `by rwa [Ne, Ideal.span_singleton_eq_bot]`. Establish `hk : Ideal.absNorm (Ideal.span {q}) ≠ 0` using `fun h => hI (Ideal.absNorm_eq_zero_iff.1 h)`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {q}))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Ideal.absNorm (Ideal.span {q}), Nat.pos_of_ne_zero hk, t * p, ?_⟩` and prove the remaining obligations. Establish `hqE : algebraMap (𝓞 E) E q ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).2 hq0`. Rewrite using `[← map_natCast (algebraMap (𝓞 E) E), ← ht]`. Use `show algebraMap (𝓞 E) E (t * q) * _ = algebraMap (𝓞 E) E (t * p)`. Rewrite using `[map_mul, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem xp_den (a : E) : ∃ k : ℕ, 0 < k ∧ ∃ c : 𝓞 E, ((k : ℕ) : E) * a = (c : E) := by
   obtain ⟨p, q, hq, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 E) a
@@ -257,9 +257,9 @@ theorem xp_den (a : E) : ∃ k : ℕ, 0 < k ∧ ∃ c : 𝓞 E, ((k : ℕ) : E) 
   field_simp
 
 /- English proof (translation)
-Take `⟨k₁, hk₁, c₁, h₁⟩` from `xp_den (x : E)`. Take `⟨k₂, hk₂, c₂, h₂⟩` from `xp_den ((x⁻¹ : Eˣ) : E)`. Use `⟨k₁ * k₂, Nat.mul_pos hk₁ hk₂, (k₂ : 𝓞 E) * (c₁ - k₁), (k₁ : 𝓞 E) * (c₂ - k₂), ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `h₁`. Move the coercions through the operations in `at h ⊢`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(k₂ : E) * h`. Establish `h` using `h₂`. Move the coercions through the operations in `at h ⊢`. Take the linear combination `(k₁ : E) * h`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem unit_sub_one_bounded_denominator (x : Eˣ) : ∃ k : ℕ, 0 < k ∧ ∃ b b' : 𝓞 E, ((k : ℕ) : E) * ((x : E) - 1) = (b : E) ∧
     ((k : ℕ) : E) * (((x⁻¹ : Eˣ) : E) - 1) = (b' : E) := by
@@ -275,9 +275,7 @@ theorem unit_sub_one_bounded_denominator (x : Eˣ) : ∃ k : ℕ, 0 < k ∧ ∃ 
 
 variable (F) in
 /- English proof (translation)
-Establish `hI : Ideal.span {((M : ℕ) : 𝓞 F)} ≠ (0 : Ideal (𝓞 F))`. Rewrite using `[Ideal.zero_eq_bot, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hM.ne'` after adjusting the coercions. Use `(Ideal.finite_factors hI).subset ?_` and prove the remaining obligations. Introduce `v hv`.
-
-Conclude with `Ideal.dvd_span_singleton.2 hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem xp_T_finite (M : ℕ) (hM : 0 < M) : {v : HeightOneSpectrum (𝓞 F) | ((M : ℕ) : 𝓞 F) ∈ v.asIdeal}.Finite := by
   have hI : Ideal.span {((M : ℕ) : 𝓞 F)} ≠ (0 : Ideal (𝓞 F)) := by
@@ -288,21 +286,19 @@ theorem xp_T_finite (M : ℕ) (hM : 0 < M) : {v : HeightOneSpectrum (𝓞 F) | (
   exact Ideal.dvd_span_singleton.2 hv
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ L _ S ξ x`. Take `⟨⟨hrat, ⟨N, hN, hcong⟩, _⟩, -⟩` from `(mem_tupGrp (ξ : Chr F E L)).mp ξ.2`. Take `⟨k, hk, b, b', hb, hb'⟩` from `unit_sub_one_bounded_denominator x`. Establish `hM : 0 < N * k` using `Nat.mul_pos hN hk`. Use `set T : Finset (HeightOneSpectrum (𝓞 F)) := (xp_T_finite F (N * k) hM).toFinset with hTdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmemT : ∀ v, v ∈ T ↔ ((N * k : ℕ) : 𝓞 F) ∈ v.asIdeal` using `fun v => by`. Rewrite using `[hTdef, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression. Establish `hloc : ∀ v, v ∉ T → lamX (ξ : Chr F E L) v x = 1`. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hd⟩` from `xp_g (N * k) hM (Formalism.L2.G.sgl F v 1) (qu_sgl_int v 1 (one_mem _)) (fun w hw => by`. Establish `hwv : w ≠ v` using `fun h => hv ((hmemT v).2 (h ▸ hw))`. Conclude with `Formalism.L2.G.sgl_apply_ne F v 1 hwv)`. Establish `hdd : Formalism.L2.G.sgl F v 1 * Formalism.L2.G.sgl F v 1 = Formalism.L2.G.sgl F v 1` using `by rw [← Formalism.L2.G.sgl_mul, one_mul]`. Conclude with `hcong (xp_mem_congN N k x b b' hb hb' g hg _ hd hdd (locId E v x) rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hsupp : Function.mulSupport (fun v : HeightOneSpectrum (𝓞 F) => lamX (ξ : Chr F E L) v x) ⊆ (T : Set (HeightOneSpectrum (𝓞 F)))`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (hloc v h)`. Use `⟨T.finite_toSet.subset hsupp, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsupp]`. Establish `e1 : (∏ v ∈ T, lamX (ξ : Chr F E L) v x) = (ξ : Chr F E L) (∏ v ∈ T, locId E v x)`. Rewrite using `[map_prod]`. Both sides reduce to the same expression. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Set `U : (AfE F E)ˣ` to `{ val := xpJ (1 - xpE T) (x : E) inv := xpJ (1 - xpE T) ((x⁻¹ : Eˣ) : E) val_inv := by rw [xp_J_same (xp_E_compl_idem T), Units.mul_inv, xp_J_at_one] inv_val := by rw [xp_J_same (xp_E_compl_idem T), Units.inv_mul, xp_J_at_one] }`. Establish `hU : (ξ : Chr F E L) U = 1`. Take `⟨g, hg, hd⟩` from `xp_g (N * k) hM (1 - xpE T) (Subring.sub_mem _ (Subring.one_mem _) (xp_E_int T)) (fun w hw => by classical`. Rewrite using `[map_sub, map_one, xp_E_at, if_pos ((hmemT w).2 hw), sub_self])`. Conclude with `hcong (xp_mem_congN N k x b b' hb hb' g hg _ hd (xp_E_compl_idem T) U rfl)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hprod : (∏ v ∈ T, locId E v x) * U = ratId F E x`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, xp_prod]`. Use `show xpJ (xpE T) (x : E) * xpJ (1 - xpE T) (x : E) = _`. Rewrite using `[xp_J_orth (xp_E_orth T), add_sub_cancel, xp_J_one]`.
-
-Both sides reduce to the same expression. Establish `hr : (ξ : Chr F E L) (ratId F E x) = 1` using `hrat ⟨x, rfl⟩`. Rewrite `hr` using `[← hprod, map_mul, hU, mul_one]`. Conclude with `hr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_product_formula : XiProd := by
   intro F E _ _ _ _ _ L _ S ξ x

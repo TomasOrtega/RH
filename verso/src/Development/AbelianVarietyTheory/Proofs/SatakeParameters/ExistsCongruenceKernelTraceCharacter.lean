@@ -7,11 +7,11 @@ namespace GlobalTheory.CongChar
 variable {R : Type} [CommRing R] [IsDomain R] {a : ℕ} {c : R}
 
 /- English proof (translation)
-Establish `hg` using `g.2`. Rewrite `hg` using `[MonoidHom.mem_ker]`. Establish `h : ∀ i j, (g.1 : Matrix (Fin a) (Fin a) R) i j - (1 : Matrix (Fin a) (Fin a) R) i j ∈ Ideal.span {c}`. Introduce `i j`. Rewrite using `[← Ideal.Quotient.eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun M : GL (Fin a) (R ⧸ Ideal.span {c}) => M.1 i j) hg` as an intermediate fact. Simplify using `only [Matrix.GeneralLinearGroup.map_apply, Units.val_one] at this`. Rewrite using `[this]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Use `choose x hx using fun i j => Ideal.mem_span_singleton'.1 (h i j)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Matrix.of x, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.of_apply]`. Take the linear combination `(-1 : R) * hx i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_eq_one_add_smul
     (g : (Matrix.GeneralLinearGroup.map (n := Fin a) (Ideal.Quotient.mk (Ideal.span {c}))).ker) :
@@ -33,7 +33,7 @@ theorem exists_eq_one_add_smul
   linear_combination (-1 : R) * hx i j
 
 /- English proof (translation)
-Establish `h' : c • x = c • y` using `add_left_cancel h`. Use extensionality with `i j`. Use `congrArg (fun M => M i j) h'` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Conclude with `mul_left_cancel₀ hc this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_injective (hc : c ≠ 0) {x y : Matrix (Fin a) (Fin a) R}
     (h : (1 : Matrix (Fin a) (Fin a) R) + c • x = 1 + c • y) : x = y := by
@@ -46,7 +46,7 @@ theorem smul_injective (hc : c ≠ 0) {x y : Matrix (Fin a) (Fin a) R}
 variable {A : Type} [AddCommGroup A]
 
 /- English proof (translation)
-Simplify using `only [add_mul, mul_add, one_mul, mul_one, smul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem one_add_smul_mul (x y : Matrix (Fin a) (Fin a) R) :
     ((1 : Matrix (Fin a) (Fin a) R) + c • x) * (1 + c • y) = 1 + c • (x + y + c • (x * y)) := by
@@ -78,7 +78,7 @@ noncomputable def congChar (hc : c ≠ 0) (φ : R →+ A) (hφ : ∀ x, φ (c * 
         Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, hφ, add_zero])
 
 /- English proof (translation)
-Establish `hs` using `Classical.choose_spec (exists_eq_one_add_smul g)`. Establish `: Classical.choose (exists_eq_one_add_smul g) = x` using `smul_injective hc (hs.symm.trans hx)`. Simplify using `only [congChar, MonoidHom.mk'_apply, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem congChar_apply (hc : c ≠ 0) (φ : R →+ A) (hφ : ∀ x, φ (c * x) = 0)
     (B : Matrix (Fin a) (Fin a) R) (g) (x : Matrix (Fin a) (Fin a) R)
@@ -93,7 +93,7 @@ end GlobalTheory.CongChar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R A _ _ _ a c hc φ hφ B`. Conclude with `⟨CongChar.congChar hc φ hφ B, fun g x hx => CongChar.congChar_apply hc φ hφ B g x hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem congChar_exists : ∀ (R A : Type) [CommRing R] [IsDomain R] [AddCommGroup A] (a : ℕ) (c : R), c ≠ 0 → ∀ (φ : R →+ A), (∀ x, φ (c * x) = 0) → ∀ B : Matrix (Fin a) (Fin a) R, ∃ lam : (Matrix.GeneralLinearGroup.map (n := Fin a) (Ideal.Quotient.mk (Ideal.span {c}))).ker →* Multiplicative A, ∀ g (x : Matrix (Fin a) (Fin a) R), (g.1 : Matrix (Fin a) (Fin a) R) = 1 + c • x → lam g = Multiplicative.ofAdd (φ (B * x).trace) := by
   intro R A _ _ _ a c hc φ hφ B

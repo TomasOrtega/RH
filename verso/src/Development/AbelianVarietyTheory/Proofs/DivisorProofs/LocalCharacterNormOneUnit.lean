@@ -21,7 +21,7 @@ open scoped TensorProduct
 open GlobalTheory.AdelicU
 
 /- English proof (translation)
-Establish `h` using `hx a ha`. Rewrite `h` using `[Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]`. Establish `h2` using `congrArg (Algebra.TensorProduct.map f (AlgHom.id F E)) h`. Rewrite `h2` using `[map_mul, Algebra.TensorProduct.map_tmul, map_zero]`. Simplify `h2` using `[hf, ← Algebra.TensorProduct.one_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_eq_zero_of_at {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {B : Type} [CommRing B]
     [Algebra F B] {v : Pl F} {x : AE F E} (hx : At (evFin F v) x) {a : AF F}
@@ -34,21 +34,19 @@ theorem map_eq_zero_of_at {F E : Type} [Field F] [NumberField F] [Field E] [Alge
   simpa [hf, ← Algebra.TensorProduct.one_def] using h2
 
 /- English proof (translation)
-Use `GlobalTheory.LFun.eq_locIdele ?_ (FiniteAdeleRing.ext _ fun u => ?_)` and prove the remaining obligations. Establish `h` using `map_eq_zero_of_at hz (a := ((1 : Ainf F), (0 : Af F))) (by`. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v 0 = 0`. Conclude with `map_zero _) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F) rfl`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA F) (AlgHom.id F E) (z : AE F E) = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `h`. Distinguish the cases in `hu : u.under (𝓞 F) = v`. Rewrite using `[GlobalTheory.LFun.finAdEquiv_apply hu]`. Establish `e : Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F E) (GlobalTheory.LFun.finTens F E (z : AE F E)) = compFin F E v (z : AE F E)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map _ (AlgHom.id F E) (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA F) (AlgHom.id F E) _) = _`. Rewrite using `[← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, AlgHom.comp_id]`. Both sides reduce to the same expression. Rewrite using `[e]`. Take `⟨τ', rfl⟩` from `GlobalTheory.LFun.SplitChart.exists_splitPrime_eq hσ (GlobalTheory.LFun.SplitChart.isSplit_of_algHom hσ τ) hu`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.LFun.SplitTie.toCompl_eq_complMap τ' hu]`. Express the relevant statement in the definitionally equal form `_ = Neutral.B1.finiteSingle E (splitPrime τ) _ (splitPrime τ')`. Break down `eq_or_eq_comp_conj hσ τ τ' with rfl | rfl` into its components or cases. Rewrite using `[GlobalTheory.LFun.finSingle_self]`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.LFun.finSingle_ne (splitPrime_comp_ne hσ τ)]`. Express the relevant statement in the definitionally equal form `GlobalTheory.LFun.complMap hu (piW (τ.comp σ) (z : AE F E)) = 1`. Rewrite using `[h1, map_one]`. Rewrite using `[GlobalTheory.LFun.finAdEquiv_apply rfl]`. Establish `e : Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F (u.under (𝓞 F))) (AlgHom.id F E) (GlobalTheory.LFun.finTens F E (z : AE F E)) = compFin F E (u.under (𝓞 F)) (z : AE F E)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map _ (AlgHom.id F E) (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA F) (AlgHom.id F E) _) = _`. Rewrite using `[← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, AlgHom.comp_id]`. Both sides reduce to the same expression. Establish `h` using `map_eq_zero_of_at hz (a := GlobalTheory.LatVac.liftV (u.under (𝓞 F)) 1) (by`. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (singleFin (u.under (𝓞 F)) 1) = 0`.
+Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `evalV_singleFin_ne (Ne.symm hu) 1) (evFin F (u.under (𝓞 F))) (GlobalTheory.LatVac.evFin_liftV _ 1)`. Rewrite `h` using `[map_sub, map_one, sub_eq_zero]`. Establish `h' : compFin F E (u.under (𝓞 F)) (z : AE F E) = 1` using `h`. Rewrite using `[e, h', map_one]`. Express the relevant statement in the definitionally equal form `(1 : u.adicCompletion E) = Neutral.B1.finiteSingle E (splitPrime τ) _ u`.
-
-Conclude with `(GlobalTheory.LFun.finSingle_ne (fun e => hu (by rw [e]; exact splitPrime_under τ)) _).symm`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem eq_locIdele_splitPrime {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {v : Pl F} (τ : E →ₐ[F] Fv F v) (z : (AE F E)ˣ)
@@ -95,7 +93,7 @@ theorem eq_locIdele_splitPrime {F E : Type} [Field F] [NumberField F] [Field E] 
       exact (GlobalTheory.LFun.finSingle_ne (fun e => hu (by rw [e]; exact splitPrime_under τ)) _).symm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ χ v τ z hz h1`. Express the relevant statement in the definitionally equal form `Circle.toUnits (χ (GlobalTheory.LFun.locIdele F (splitPrime τ) _)) = _`. Rewrite using `[← eq_locIdele_splitPrime hσ τ z hz h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem chrW_piW_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (χ : Chr F E) (v : Pl F) (τ : E →ₐ[F] Fv F v) (z : (AE F E)ˣ), At (evFin F v) ((z : AE F E) - 1) →
     piW (τ.comp σ) (z : AE F E) = 1 → chrW χ τ (Units.map (piW τ).toMonoidHom z) = Circle.toUnits (χ z) := by

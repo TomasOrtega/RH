@@ -11,7 +11,7 @@ open NumberField IsDedekindDomain
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.DiscSpec PositivityTheory.Rg.Rs PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.F UpperTheory.V.Z.Tf.GOne
 
 /- English proof (translation)
-Introduce `E _ _ _ n _ π h`. Establish `hc : π.IsCsd` using `GlobalTheory.CsdBack.isCsd_of_paired UpperTheory.V.Af.formsFiniteGL E n π (PositivityTheory.JMult1.gelfandKazhdanDual_of_rigidity PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity GlobalTheory.CompanionTheory.CuspFinGL.cuspFormsBoundedGL E n π) h`. Conclude with `(CG.isUnitary_mk π).2 (GlobalTheory.SpehPair.isUnitary_of_isNormalised (GlobalTheory.BcSpehCompare.isNormalised_of_isCsd hc))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GOne.unitOf :
     UnitOf := by

@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.HeightCounting.Up.ParamsLayer
 
 /- English proof (translation)
-Introduce `_ hL`. Establish `e` using `(evG_of_ev GlobalTheory.Mem.RowsLed.ev_exists_sizeData_of_rows).inter (evG_of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev)`. Use `EvG.imp e fun K _ _ _ _ hK => ?_` and prove the remaining obligations. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, ?_⟩` and prove the remaining obligations. Introduce `B f T hO _ _ _ _ w Z Wt p0 t nch n xd c _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨L, -, hP⟩` from `hK.1 B f T w Z Wt p0 t hO`. Conclude with `⟨⟨L, hP⟩, (hK.2 (w.st Z) hO).1.gapR⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem params_gapR : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ _ _ _ _ => (∃ L : SizeData₂ (w.D Z), Nonempty (ParameterChoice' (w.D Z) L)) ∧ ∀ (τ : (w.D Z).what₂.Tau) (n : ℕ), n + 1 < (w.D Z).R.r → 100 * ((w.D Z).R.r : ℚ) ^ 4 ≤ Formalism.L2.NTheta.lamAt ((w.D Z).hc τ) n - Formalism.L2.NTheta.lamAt ((w.D Z).hc τ) (n + 1) := by
   intro _ hL

@@ -20,7 +20,7 @@ def pV {n : ℕ} {X : Scheme.{0}} (e : Sx E n X) : Fin (n + 1) ⥤ SingleObj (GL
   (V.app (op (SimplexCategory.mk n))).app (op X) e
 
 /- English proof (translation)
-Establish `h` using `ConcreteCategory.congr_hom (NatTrans.congr_app (pullback.condition (f := bsumOf V W) (g := PGL.pr (a + b))) (op (SimplexCategory.mk n)) |> fun h => NatTrans.congr_app h (op X)) x`. Establish `h2` using `Functor.hcongr_hom h f`. Conclude with `(eq_of_heq h2).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cond {n : ℕ} {X : Scheme.{0}} (x : Sx (PB (bsumOf V W)) n X) {i j : Fin (n + 1)} (f : i ⟶ j) :
     ((pv V W x).map f).1.1 = blockGL a b _ ((pV V (pe V W x)).map f) ((pw W (pe V W x)).map f) := by
@@ -32,7 +32,7 @@ theorem cond {n : ℕ} {X : Scheme.{0}} (x : Sx (PB (bsumOf V W)) n X) {i j : Fi
 def wb {A : Type} (v : Fin (a + b) → A) : Fin b → A := fun i => v (Fin.natAdd a i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[blockGL_val]`. Simplify using `only [wb, Matrix.mulVec, dotProduct, Matrix.reindex_apply, Matrix.submatrix_apply, Fin.sum_univ_add, finSumFinEquiv_symm_apply_natAdd, finSumFinEquiv_symm_apply_castAdd, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, zero …`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wb_mulVec {A : Type} [CommRing A] (g : GL (Fin a) A) (h : GL (Fin b) A) (v : Fin (a + b) → A) :
     wb (a := a) ((blockGL a b A g h).val.mulVec v) = h.val.mulVec (wb (a := a) v) := by
@@ -43,7 +43,7 @@ theorem wb_mulVec {A : Type} [CommRing A] (g : GL (Fin a) A) (h : GL (Fin b) A) 
     Matrix.zero_apply, zero_mul, Finset.sum_const_zero, zero_add]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← hw, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[h]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ (M i j) (Ideal.subset_span (Set.mem_range_self j))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem um_of {A : Type} [CommRing A] {m : ℕ} (w w' : Fin m → A) (M : Matrix (Fin m) (Fin m) A) (h : w = M.mulVec w')
     (hw : Ideal.span (Set.range w) = ⊤) : Ideal.span (Set.range w') = ⊤ := by
@@ -57,11 +57,11 @@ def AllSec {n : ℕ} {X : Scheme.{0}} (x : Sx (PB (bsumOf V W)) n X) : Prop :=
   ∀ i, Ideal.span (Set.range (wb (a := a) ((pv V W x).obj i).1)) = ⊤
 
 /- English proof (translation)
-Introduce `i`. Establish `f : (0 : Fin (n + 1)) ⟶ i` using `homOfLE (Fin.zero_le i)`. Establish `e` using `((pv V W x).map f).2`. Rewrite `e` using `[cond]`. Establish `e2` using `congrArg (wb (a := a)) e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e2` using `[wb_mulVec]`. Set `gh : GL (Fin b) (Scheme.Γ.obj (op X))` to `(pw W (pe V W x)).map f`. Use `um_of _ _ (gh⁻¹.val * (((pv V W x).map f).1.2 : Scheme.Γ.obj (op X)) • (1 : Matrix (Fin b) (Fin b) _)) ?_ h` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec]`. Establish `e3 : gh.val.mulVec (wb (a` using `a) ((pv V W x).obj 0).1) = (((pv V W x).map f).1.2 : Scheme.Γ.obj (op X)) • wb (a := a) ((pv V W x).obj i).1 := e2`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e3, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem allSec_of {n : ℕ} {X : Scheme.{0}} (x : Sx (PB (bsumOf V W)) n X) (h : Second V W x) : AllSec V W x := by
   intro i
@@ -79,7 +79,7 @@ theorem allSec_of {n : ℕ} {X : Scheme.{0}} (x : Sx (PB (bsumOf V W)) n X) (h :
   rfl
 
 /- English proof (translation)
-Establish `h` using `ConcreteCategory.congr_hom (((pullback.snd (bsumOf V W) (PGL.pr (a + b))).app (op (SimplexCategory.mk n))).naturality k.op) x`. Unfold `pv`. Use `erw [h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pv_res {n : ℕ} {X Y : Scheme.{0}} (k : Y ⟶ X) (x : Sx (PB (bsumOf V W)) n X) (i : Fin (n + 1)) :
     ((pv V W (((PB (bsumOf V W)).obj (op (SimplexCategory.mk n))).map k.op x)).obj i).1 =
@@ -90,7 +90,7 @@ theorem pv_res {n : ℕ} {X Y : Scheme.{0}} (k : Y ⟶ X) (x : Sx (PB (bsumOf V 
   rfl
 
 /- English proof (translation)
-Establish `h` using `ConcreteCategory.congr_hom (NatTrans.congr_app ((pullback.snd (bsumOf V W) (PGL.pr (a + b))).naturality θ.op) (op X)) x`. Unfold `pv`. Use `erw [h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pv_simp {n m : ℕ} {X : Scheme.{0}} (θ : SimplexCategory.mk m ⟶ SimplexCategory.mk n) (x : Sx (PB (bsumOf V W)) n X)
     (i : Fin (m + 1)) :
@@ -101,7 +101,7 @@ theorem pv_simp {n m : ℕ} {X : Scheme.{0}} (θ : SimplexCategory.mk m ⟶ Simp
   rfl
 
 /- English proof (translation)
-Introduce `i`. Establish `e : wb (a` using `a) ((pv V W (((PB (bsumOf V W)).obj (op (SimplexCategory.mk n))).map k.op x)).obj i).1 = (Scheme.Γ.map k.op).hom ∘ wb (a := a) ((pv V W x).obj i).1 := by`. Rewrite using `[pv_res]`. Both sides reduce to the same expression. Rewrite using `[e, Set.range_comp, ← Ideal.map_span, hx i, Ideal.map_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem allSec_res {n : ℕ} {X Y : Scheme.{0}} (k : Y ⟶ X) (x : Sx (PB (bsumOf V W)) n X) (hx : AllSec V W x) :
     AllSec V W (((PB (bsumOf V W)).obj (op (SimplexCategory.mk n))).map k.op x) := by
@@ -112,7 +112,7 @@ theorem allSec_res {n : ℕ} {X Y : Scheme.{0}} (k : Y ⟶ X) (x : Sx (PB (bsumO
   rw [e, Set.range_comp, ← Ideal.map_span, hx i, Ideal.map_top]
 
 /- English proof (translation)
-Introduce `i`. Rewrite using `[pv_simp]`. Conclude with `hx _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem allSec_simp {n m : ℕ} {X : Scheme.{0}} (θ : SimplexCategory.mk m ⟶ SimplexCategory.mk n) (x : Sx (PB (bsumOf V W)) n X)
     (hx : AllSec V W x) : AllSec V W ((((PB (bsumOf V W)).map θ.op).app (op X)) x) := by
@@ -151,7 +151,7 @@ def f2 : U2 V W ⟶ PB (bsumOf V W) where
   naturality _ _ _ := rfl
 
 /- English proof (translation)
-Use `@NatTrans.mono_of_mono_app _ _ _ _ _ _ _ fun n => ?_` and prove the remaining obligations. Use `@NatTrans.mono_of_mono_app _ _ _ _ _ _ _ fun X => ?_` and prove the remaining obligations. Rewrite using `[mono_iff_injective]`. Introduce `x y h`. Conclude with `Subtype.ext h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem secondBlockUnimodularLocus_inclusion_mono : Mono (f2 V W) := by
   refine @NatTrans.mono_of_mono_app _ _ _ _ _ _ _ fun n => ?_
@@ -169,9 +169,9 @@ def LeafMapW : Prop := ∀ {E : Spc} {a b : ℕ} (V : E ⟶ ofCat (glCat a)) (W 
     g ≫ PGL.line b = f2 V W ≫ pullback.snd (bsumOf V W) (PGL.pr (a + b)) ≫ PGL.line (a + b)
 
 /- English proof (translation)
-Introduce `E a b V W`. Take `⟨g, hg1, hg2⟩` from `hM V W`. Use `⟨U2 V W, f2 V W, pullback.lift (f2 V W ≫ PB.pr _) g (by rw [hg1, Category.assoc]), secondBlockUnimodularLocus_inclusion_mono V W, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `pullback.lift_fst _ _ _`. Rewrite using `[PB.line, ← Category.assoc, pullback.lift_snd, hg2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n X x h`. Conclude with `⟨⟨x, allSec_of V W x h⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem LeafHalf2_of (hM : LeafMapW) : LeafHalf2 := by
   intro E a b V W

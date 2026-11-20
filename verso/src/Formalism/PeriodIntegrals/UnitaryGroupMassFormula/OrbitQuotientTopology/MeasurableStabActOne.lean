@@ -12,13 +12,13 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S PI.AmpRootCommon
 variable {k r : ℕ}
 
 /- English proof (translation)
-The claim follows from `hf`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ofM {X : Type*} [TopologicalSpace X] {f : X → Mt k r} (hf : Continuous f) :
     Continuous (fun x => Matrix.of (f x)) := hf
 
 /- English proof (translation)
-The claim follows from `hM`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toMt {X : Type*} [TopologicalSpace X]
     {M : X → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hM : Continuous M) :
@@ -31,11 +31,11 @@ instance instBorelMtPair : BorelSpace (Mt k r × PairSp k r) := Prod.borelSpace
 def minv (x : Mt k r) : Mt k r := fun i j => (Matrix.of x)⁻¹ i j
 
 /- English proof (translation)
-Establish `hof : Continuous (fun x : Mt k r => Matrix.of x)` using `continuous_id`. Establish `hdet : Continuous (fun x : Mt k r => (Matrix.of x).det)` using `hof.matrix_det`. Rewrite using `[measurable_pi_iff]`. Introduce `i`. Rewrite using `[measurable_pi_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Establish `hadj : Continuous (fun x : Mt k r => (Matrix.of x).adjugate i j)` using `(hof.matrix_adjugate.matrix_elem i j)`. Establish `e : (fun x : Mt k r => minv x i j) = fun x => ((Matrix.of x).det)⁻¹ * (Matrix.of x).adjugate i j`. Use function extensionality and compare the values at `x`. Simplify using `only [minv, Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `(measurable_inv.comp hdet.measurable).mul hadj.measurable`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_minv : Measurable (minv (k := k) (r := r)) := by
   have hof : Continuous (fun x : Mt k r => Matrix.of x) := continuous_id
@@ -52,7 +52,7 @@ theorem measurable_minv : Measurable (minv (k := k) (r := r)) := by
   exact (measurable_inv.comp hdet.measurable).mul hadj.measurable
 
 /- English proof (translation)
-Establish `hof : Continuous (fun x : Mt k r => Matrix.of x)` using `continuous_id`. Unfold `stabAct`. Use `first`. Consider the case `fun_prop`. Consider the case `continuity`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_stabAct (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Continuous (fun p : Mt k r × PairSp k r => stabAct g (Matrix.of p.1) p.2) := by
@@ -63,13 +63,13 @@ theorem continuous_stabAct (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1
     | continuity
 
 /- English proof (translation)
-The claim follows from `(continuous_stabAct g).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_stabAct (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Measurable (fun p : Mt k r × PairSp k r => stabAct g (Matrix.of p.1) p.2) := (continuous_stabAct g).measurable
 
 /- English proof (translation)
-Establish `hf : Measurable (fun p : Mt k r × PairSp k r => (minv p.1, p.2))` using `by first`. Consider the case `exact (measurable_minv.comp measurable_fst).prodMk measurable_snd`. Consider the case `exact (measurable_minv.comp measurable_fst).prod_mk measurable_snd`. Conclude with `(measurable_stabAct g).comp hf`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem measurable_stabAct_inv (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Measurable (fun p : Mt k r × PairSp k r => stabAct g (Matrix.of p.1)⁻¹ p.2) := by
@@ -80,9 +80,9 @@ theorem measurable_stabAct_inv (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k
   exact (measurable_stabAct g).comp hf
 
 /- English proof (translation)
-Establish `hof : Continuous (fun x : Mt k r => Matrix.of x)` using `continuous_id`. Establish `hc : Continuous (stabAct (k` using `k) (r := r) g a) := by`. Unfold `stabAct`. Use `first`. Consider the case `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately.
 
-Consider the case `continuity`. Conclude with `hc.measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_stabAct_one (g a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Measurable (stabAct (k := k) (r := r) g a) := by
@@ -95,13 +95,13 @@ theorem measurable_stabAct_one (g a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r +
   exact hc.measurable
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Apply the tactic sequence `have hs : (if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val) < 2 * r + k + 1 := by split_ifs <;> omega`. Rewrite using `[Finset.sum_eq_single (⟨_, hs⟩ : Fin (2 * r + k + 1))]`. Distinguish the cases in `hij : i = j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Rewrite using `[if_pos rfl]`. Simplify using `only [Hpk, Fin.ext_iff, Fin.val_mk, eq_self_iff_true, and_true]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; (try simp only [Fin.val_mk] at *); omega) | (simp_all; done) | norm_num`. Rewrite using `[if_neg hij]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hij` using `[Fin.ext_iff]`. Simplify using `only [Hpk, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; (try simp only [Fin.val_mk] at *); omega) | (simp_all; done) | norm_num`. Introduce `l _ hl`. Rewrite `hl` using `[Ne, Fin.ext_iff, Fin.val_mk]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs at * <;> first | (exfalso; (try simp only [Fin.val_mk] at *); omega) | (simp_all; done) | norm_num`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem hpk_sq_lemma (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   ext i j
@@ -126,7 +126,7 @@ private theorem hpk_sq_lemma (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `h : Hpk k r * gᴴ * Hpk k r * g = 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Matrix.isUnit_det_of_left_inverse h`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem isUnit_det_of_mem_UH' {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r)) :
     IsUnit g.det := by
@@ -137,9 +137,9 @@ private theorem isUnit_det_of_mem_UH' {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 
   exact Matrix.isUnit_det_of_left_inverse h
 
 /- English proof (translation)
-Establish `hd` using `isUnit_det_of_mem_UH' hg`. Use `Prod.ext (Prod.ext rfl ?_) (Prod.ext rfl ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `i j show (b * (a * Matrix.of x.1.2)) i j = (b * a * Matrix.of x.1.2) i j`. Rewrite using `[Matrix.mul_assoc]`. Use function extensionality and compare the values at `i j show (g⁻¹ * b * g * (g⁻¹ * a * g * Matrix.of x.2.2)) i j = (g⁻¹ * (b * a) * g * Matrix.of x.2.2) i j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left g _ hd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem stabAct_comp {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r))
     (a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (x : PairSp k r) :
@@ -155,9 +155,9 @@ theorem stabAct_comp {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ
     rw [Matrix.mul_nonsing_inv_cancel_left g _ hd]
 
 /- English proof (translation)
-Establish `hd` using `isUnit_det_of_mem_UH' hg`. Use `Prod.ext (Prod.ext rfl ?_) (Prod.ext rfl ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `i j show ((1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) * Matrix.of x.1.2) i j = x.1.2 i j`. Rewrite using `[Matrix.one_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `i j show (g⁻¹ * (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) * g * Matrix.of x.2.2) i j = x.2.2 i j`. Rewrite using `[Matrix.mul_one, Matrix.nonsing_inv_mul g hd, Matrix.one_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem stabAct_one {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r))
     (x : PairSp k r) : stabAct g 1 x = x := by
@@ -173,7 +173,7 @@ theorem stabAct_one {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     rfl
 
 /- English proof (translation)
-Rewrite using `[stabAct_comp hg, Matrix.nonsing_inv_mul a (isUnit_det_of_mem_UH' ha), stabAct_one hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stabAct_inv_cancel {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r))
     {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (ha : a ∈ UH (Hpk k r)) (x : PairSp k r) :
@@ -181,7 +181,7 @@ theorem stabAct_inv_cancel {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1
   rw [stabAct_comp hg, Matrix.nonsing_inv_mul a (isUnit_det_of_mem_UH' ha), stabAct_one hg]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem stabAct_eq_map (g a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     stabAct (k := k) (r := r) g a = Prod.map (Prod.map id (lmulM a)) (Prod.map id (lmulM (g⁻¹ * a * g))) := by
@@ -189,13 +189,11 @@ theorem stabAct_eq_map (g a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1))
   rfl
 
 /- English proof (translation)
-Take `⟨⟨h1, -⟩, -⟩` from `L.hμW`. Take `⟨⟨h2, -⟩, -⟩` from `L.hμW'`. Establish `hof : Continuous (fun x : Mt k r => Matrix.of x)` using `continuous_id`. Establish `hl : ∀ s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, Measurable (lmulM (k` using `k) (r := r) s) := by`. Introduce `s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : Continuous (lmulM (k` using `k) (r := r) s) := by`. Unfold `lmulM`. Use `first`. Consider the case `fun_prop`. Consider the case `continuity`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `hc.measurable`. Establish `hp : ∀ s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, Measurable (Prod.map (id : Mt k r → Mt k r) (lmulM (k` using `k) (r := r) s)) := by`. Introduce `s`. Use `first`. Consider the case `exact measurable_id.prodMap (hl s)`.
-
-Consider the case `exact measurable_id.prod_map (hl s)`. Rewrite using `[stabAct_eq_map, pairMeas, ← Measure.map_prod_map _ _ (hp a) (hp _), ← Measure.map_prod_map _ _ measurable_id (hl a), ← Measure.map_prod_map _ _ measurable_id (hl _), Measure.map_id, Measure.map_id, hN a ha.1, hN _ ha.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairMeas_inv (L : LocBessel k r) [SFinite L.μN]
     (hN : ∀ s ∈ Nset k r, L.μN.map (lmulM s) = L.μN)
@@ -226,17 +224,15 @@ theorem pairMeas_inv (L : LocBessel k r) [SFinite L.μN]
 def NS (k r : ℕ) : Set (Mt k r) := {x | Matrix.of x ∈ Nset k r}
 
 /- English proof (translation)
-Establish `hof : Continuous (fun x : Mt k r => Matrix.of x)` using `continuous_id`. Establish `h1 : IsClosed {x : Mt k r | (Matrix.of x)ᴴ * Hpk k r * Matrix.of x = Hpk k r}` using `isClosed_eq (by fun_prop) continuous_const`. Establish `h2 : ∀ (a : Fin r) (i : Fin (2 * r + k + 1)), IsClosed {x : Mt k r | a.val ≤ i.val → x i (eI k r a) = if i = eI k r a then 1 else 0}`. Introduce `a i`. Distinguish the cases in `h : a.val ≤ i.val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [h, true_implies]`. Conclude with `isClosed_eq (by fun_prop) continuous_const`. Simplify using `only [h, false_implies, Set.setOf_true]`. Conclude with `isClosed_univ`. Establish `h3 : ∀ i j : Fin (2 * r + k + 1), IsClosed {x : Mt k r | r ≤ j.val → j.val ≤ r + k → r ≤ i.val → x i j = if i = j then 1 else 0}`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `i j`. Distinguish the cases in `h : r ≤ j.val ∧ j.val ≤ r + k ∧ r ≤ i.val`. Simplify using `only [h.1, h.2.1, h.2.2, true_implies]`. Conclude with `isClosed_eq (by fun_prop) continuous_const`. Establish `e : {x : Mt k r | r ≤ j.val → j.val ≤ r + k → r ≤ i.val → x i j = if i = j then 1 else 0} = Set.univ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_univ, iff_true]`. Introduce `h1 h2 h3`. Conclude with `absurd ⟨h1, h2, h3⟩ h`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `isClosed_univ`. Establish `e : NS k r = {x : Mt k r | (Matrix.of x)ᴴ * Hpk k r * Matrix.of x = Hpk k r} ∩ ((⋂ a : Fin r, ⋂ i : Fin (2 * r + k + 1), {x : Mt k r | a.val ≤ i.val → x i (eI k r a) = if i = eI k r a then 1 else 0}) ∩ (⋂ i : Fin (2 * r + k + 1), ⋂ j : Fin (2 * r + k + 1), {x : Mt k r | r ≤ j.val …`. Use extensionality with `x`. Simplify using `only [NS, Nset, UH, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter]`. Both sides reduce to the same expression.
-
-Rewrite using `[e]`. Conclude with `h1.inter ((isClosed_iInter fun a => isClosed_iInter fun i => h2 a i).inter (isClosed_iInter fun i => isClosed_iInter fun j => h3 i j))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_NS : IsClosed (NS k r) := by
   have hof : Continuous (fun x : Mt k r => Matrix.of x) := continuous_id
@@ -277,9 +273,9 @@ theorem isClosed_NS : IsClosed (NS k r) := by
     (isClosed_iInter fun i => isClosed_iInter fun j => h3 i j))
 
 /- English proof (translation)
-Take `⟨⟨h1, -⟩, -⟩` from `L.hμW`. Take `⟨⟨h2, -⟩, -⟩` from `L.hμW'`. Establish `e : {y : PairSp k r | y.1.2 ∉ NS k r} = (Set.univ ×ˢ (NS k r)ᶜ) ×ˢ Set.univ`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, pairMeas, Measure.prod_prod, Measure.prod_prod, hc, mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pairMeas_null (L : LocBessel k r) [SFinite L.μN] (hc : L.μN (NS k r)ᶜ = 0) :
     pairMeas L {y | y.1.2 ∉ NS k r} = 0 := by

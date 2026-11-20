@@ -13,31 +13,29 @@ noncomputable section
 namespace GlobalTheory.KapLat
 
 /- English proof (translation)
-Establish `key : ∀ k, k ≤ Module.finrank K.E V → ∃ f : Fin k → V, (∀ i, f i ∈ L) ∧ (∀ i j, i ≠ j → h (f i) (f j) = 0) ∧ ∀ i, ∃ t : K.O, IsUnit t ∧ h (f i) (f i) = algebraMap K.O K.E t`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _`. Conclude with `⟨Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `succ k ih`. Introduce `hk`. Take `⟨f, hfL, hfo, hfu⟩` from `ih (by omega)`. Take `⟨y, hyL, hyo, hyu⟩` from `GlobalTheory.T.selfDual_lattice_orthogonal_unit_norm_extension K V h hadd hsmul hsym L hfg hsp hsd k f hfL hfo hfu (by omega)`. Use `⟨Fin.snoc f y, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simpa using hyL`. Consider the case `cast i => simpa using hfL i`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd rfl hij`. Consider the case `cast j => simpa using hyo j`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp only [Fin.snoc_castSucc, Fin.snoc_last]`. Rewrite using `[hsym, hyo i, map_zero]`. Consider the case `cast j`.
+Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using `only [Fin.snoc_castSucc]`. Conclude with `hfo i j fun e => hij (by rw [e])`. Introduce `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simpa using hyu`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cast i => simpa using hfu i`. Take `⟨f, -, hfo, hfu⟩` from `key _ le_rfl`. Use `choose t ht hft using hfu`. Use `choose v hv using fun i => GlobalTheory.T.fixed_integral_unit_eq_norm_unramified K (t i) (ht i) (by rw [← hft, ← hsym])`. Establish `hsmul2 : ∀ (a : K.E) y z, h y (a • z) = K.c a * h y z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a y z`. Rewrite using `[hsym, hsmul, map_mul, hsym z y]`. Establish `ht0 : ∀ i, algebraMap K.O K.E (t i) ≠ 0` using `fun i => (map_ne_zero_iff _ (IsFractionRing.injective K.O K.E)).2 (ht i).ne_zero`. Establish `hv0 : ∀ i, v i ≠ 0`. Introduce `i h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Apply `ht0 i` to reduce the goal to its premises. Rewrite using `[← hv i, h0, zero_mul]`. Set `g : Fin (Module.finrank K.E V) → V` to `fun i => (v i)⁻¹ • f i`. Establish `hg : ∀ i j, h (g i) (g j) = if i = j then 1 else 0`. Introduce `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [g, hsmul, hsmul2]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[if_pos rfl, hft, ← hv i, map_inv₀]`. Establish `: K.c (v i) ≠ 0` using `by simpa using hv0 i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Clear the denominators using the available nonvanishing facts. Conclude with `div_self (hv0 i)`. Rewrite using `[if_neg hij, hfo i j hij, mul_zero, mul_zero]`. Set `φ : V → V →ₗ[K.E] K.E` to `fun z => { toFun := fun y => h y z map_add' := fun y y' => hadd y y' z map_smul' := fun a y => by simp [hsmul] }`. Establish `hli : LinearIndependent K.E g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`. Use `congrArg (φ (g i)) hc` as an intermediate fact. Simplify using `only [map_sum, map_smul, map_zero] at this`. Simplify `this` using `[φ, hg]`.
-
-Use `⟨Module.Basis.mk hli (hli.span_eq_top_of_card_eq_finrank' (by simp)).ge, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.mk_apply, Module.Basis.mk_apply]`. Conclude with `hg i j`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orthonormal_of_selfDual (K : GlobalTheory.UnitLemma.UQ) (V : Type) [AddCommGroup V] [Module K.E V]
     [Module K.O V] [IsScalarTower K.O K.E V] [FiniteDimensional K.E V] (h : V → V → K.E)
@@ -113,9 +111,9 @@ theorem exists_orthonormal_of_selfDual (K : GlobalTheory.UnitLemma.UQ) (V : Type
   exact hg i j
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hX`. Rewrite `hX` using `[Set.not_nonempty_iff_eq_empty]`. Apply `hN` to reduce the goal to its premises. Use `haveI : IsEmpty (GlobalTheory.UnitLemma.Orb K.O B.T (B.X x)) := ⟨fun o => by`. Proceed by induction on `o using Quot.ind with`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Proceed by induction. Treat this case separately.
 
-Consider the case `mk L => exact Set.eq_empty_iff_forall_notMem.1 hX L.1 L.2⟩`. Unfold `GlobalTheory.UnitLemma.InvAlg.N GlobalTheory.UnitLemma.orbSum`. Conclude with `finsum_of_isEmpty _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem X_nonempty_of_N_ne_zero {K : GlobalTheory.UnitLemma.UQ} (B : GlobalTheory.UnitLemma.InvAlg K) (x : B.A) (hN : B.N x ≠ 0) :
     (B.X x).Nonempty := by
@@ -130,9 +128,9 @@ theorem X_nonempty_of_N_ne_zero {K : GlobalTheory.UnitLemma.UQ} (B : GlobalTheor
   exact finsum_of_isEmpty _
 
 /- English proof (translation)
-Introduce `E _ _ _ w hw K e hB n Q B u x hF hn hσx _ hN`. Take `⟨L, hlat, -, hsd⟩` from `X_nonempty_of_N_ne_zero B x hN`. Take `⟨b, hb⟩` from `exists_orthonormal_of_selfDual K B.A (B.herm x) (fun y y' z => by unfold GlobalTheory.UnitLemma.InvAlg.herm; rw [mul_add, add_mul, map_add]) (fun a y z => GlobalTheory.UnitLemma.Basic.herm_smul_left B x y z a) (fun y z => GlobalTheory.UnitLemma.Basic.herm_symm B x hσx y z) L hlat …`. Establish `hd : Module.finrank K.E B.A = n` using `hF.2.2.1.trans hn`. Use `GlobalTheory.T.exists_hermitianModel_of_orthonormal_basis E w hw K e hB n B u x hF.2.2.2 (b.reindex (finCongr hd)) fun i j => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Module.Basis.reindex_apply, hb, EmbeddingLike.apply_eq_iff_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_model_of_N_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), Bridge w K e → ∀ (n : ℕ) (Q : (w.adicCompletion E)[X]) (B : GlobalTheory.UnitLemma.InvAlg K) (u x : B.A), Fits w e B Q u → Q.natDegree = n → B.σ x = x → IsUnit x → B.N x ≠ 0 → ∃ γ : GLw n w, γ ∈ UL n w ∧ IsModel w e B u x γ := by
   intro E _ _ _ w hw K e hB n Q B u x hF hn hσx _ hN

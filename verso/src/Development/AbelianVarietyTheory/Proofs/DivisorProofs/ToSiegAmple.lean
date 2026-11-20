@@ -32,7 +32,7 @@ Both sides reduce to the same expression.
     (o.toSieg hl).A = o.A := rfl
 
 /- English proof (translation)
-The claim follows from `o.ample`.
+A detailed English derivation is pending.
 -/
 theorem Obj.toSieg_ample {b : Base D R} {N : ℕ} {t : S ⟶ Sp R} (o : Obj b N t) {h M : ℕ} {B : Type} [CommRing B]
     {ζ : B} {t₁ : S ⟶ Sp B} {lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ o.A)} (hl : IsSympLev o.P h M ζ t₁ lev) :

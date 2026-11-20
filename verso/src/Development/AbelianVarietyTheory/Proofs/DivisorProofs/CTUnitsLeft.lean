@@ -22,45 +22,45 @@ section Gen
 variable {K : Type} [Field K] (σ : K →+* K) {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT (hσ : ∀ x, σ (σ x) = x) (M : Matrix (Fin n) (Fin n) K) : cT σ (cT σ M) = M := by
   ext i j; simp [cT, hσ]
 
 /- English proof (translation)
-Rewrite using `[← cT_mul, Units.mul_inv, cT_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_units (k : GL (Fin n) K) : cT σ (k⁻¹).val * cT σ k.val = 1 := by
   rw [← cT_mul, Units.mul_inv, cT_one]
 
 /- English proof (translation)
-Rewrite using `[← cT_mul, Units.inv_mul, cT_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_units' (k : GL (Fin n) K) : cT σ k.val * cT σ (k⁻¹).val = 1 := by
   rw [← cT_mul, Units.inv_mul, cT_one]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, cT_units, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_units_left (k : GL (Fin n) K) (X : Matrix (Fin n) (Fin n) K) : cT σ (k⁻¹).val * (cT σ k.val * X) = X := by
   rw [← Matrix.mul_assoc, cT_units, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, cT_units', Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_units_left' (k : GL (Fin n) K) (X : Matrix (Fin n) (Fin n) K) : cT σ k.val * (cT σ (k⁻¹).val * X) = X := by
   rw [← Matrix.mul_assoc, cT_units', Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `IsHerm`. Rewrite using `[cT_mul, cT_cT σ hσ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_of (hσ : ∀ x, σ (σ x) = x) (k : GL (Fin n) K) : IsHerm σ (cT σ (k⁻¹).val * (k⁻¹).val) := by
   unfold IsHerm; rw [cT_mul, cT_cT σ hσ]
 
 /- English proof (translation)
-Establish `h1 : ((k⁻¹).val).det ≠ 0` using `((k⁻¹).isUnit.map Matrix.detMonoidHom).ne_zero`. Establish `h2 : (cT σ (k⁻¹).val).det = σ ((k⁻¹).val).det`. Unfold `cT`. Rewrite using `[Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Matrix.det_mul, h2]`. Conclude with `mul_ne_zero ((map_ne_zero σ).2 h1) h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne (k : GL (Fin n) K) : (cT σ (k⁻¹).val * (k⁻¹).val).det ≠ 0 := by
   have h1 : ((k⁻¹).val).det ≠ 0 := ((k⁻¹).isUnit.map Matrix.detMonoidHom).ne_zero
@@ -70,15 +70,15 @@ theorem det_ne (k : GL (Fin n) K) : (cT σ (k⁻¹).val * (k⁻¹).val).det ≠ 
   exact mul_ne_zero ((map_ne_zero σ).2 h1) h1
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc, cT_units_left', Units.inv_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_of (k : GL (Fin n) K) : cT σ k.val * (cT σ (k⁻¹).val * (k⁻¹).val) * k.val = 1 := by
   simp only [Matrix.mul_assoc, cT_units_left', Units.inv_mul]
 
 /- English proof (translation)
-Establish `ha : a = k * (k⁻¹ * a * k) * k⁻¹` using `by group`. Rewrite using `[ha]`. Generalize the expression as in `k⁻¹ * a * k = y at hy ⊢`. Simplify using `only [Units.val_mul, cT_mul, Matrix.mul_assoc, Matrix.mul_one] at hy ⊢`. Simplify using `only [cT_units_left', Units.inv_mul_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc (cT σ y.val), hy, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_of_unit (k a : GL (Fin n) K) (hy : cT σ (k⁻¹ * a * k).val * 1 * (k⁻¹ * a * k).val = 1) :
     cT σ a.val * (cT σ (k⁻¹).val * (k⁻¹).val) * a.val = cT σ (k⁻¹).val * (k⁻¹).val := by
@@ -90,7 +90,7 @@ theorem inv_of_unit (k a : GL (Fin n) K) (hy : cT σ (k⁻¹ * a * k).val * 1 * 
   rw [← Matrix.mul_assoc (cT σ y.val), hy, Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [Units.val_mul, cT_mul, Matrix.mul_assoc, Matrix.mul_one]`. Establish `key` using `congrArg (· * (h⁻¹).val) hinv`. Simplify using `only [Matrix.mul_assoc] at key`. Rewrite using `[key, cT_units_left, Units.mul_inv]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_of_form (γ₀ h : GL (Fin n) K) (hinv : cT σ γ₀.val * (cT σ h.val * h.val) * γ₀.val = cT σ h.val * h.val) :
     cT σ (h * γ₀ * h⁻¹).val * 1 * (h * γ₀ * h⁻¹).val = 1 := by
@@ -100,7 +100,7 @@ theorem unit_of_form (γ₀ h : GL (Fin n) K) (hinv : cT σ γ₀.val * (cT σ h
   rw [key, cT_units_left, Units.mul_inv]
 
 /- English proof (translation)
-Simplify using `only [Units.val_mul, cT_mul, Matrix.mul_assoc, Matrix.mul_one]`. Establish `key` using `congrArg (· * (h⁻¹).val) (h1.symm.trans h2)`. Simplify using `only [Matrix.mul_assoc] at key`. Rewrite using `[key, cT_units_left, Units.mul_inv]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_of_two (k c h : GL (Fin n) K) (H' : Matrix (Fin n) (Fin n) K)
     (h1 : H' = cT σ c.val * (cT σ (k⁻¹).val * (k⁻¹).val) * c.val) (h2 : H' = cT σ h.val * h.val) :
@@ -113,7 +113,7 @@ theorem unit_of_two (k c h : GL (Fin n) K) (H' : Matrix (Fin n) (Fin n) K)
 end Gen
 
 /- English proof (translation)
-Establish `h` using `((GlobalTheory.ConjAtPlace.main E hU w).2.2.2.1 hw).1`. Use extensionality with `i j`. Simplify using `[cT, h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_map (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) {n : ℕ} (M : Matrix (Fin n) (Fin n) E) :
     (cT (IsCMField.complexConj E).toRingEquiv.toRingHom M).map (algebraMap E (w.adicCompletion E)) =
@@ -122,9 +122,9 @@ theorem cT_map (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) {n : ℕ} (M : Matr
   ext i j; simp [cT, h]
 
 /- English proof (translation)
-Establish `hm : GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ.1 ∈ UL n w`. Unfold `UL`. Use `split_ifs with hs`. Discharge the goal by the elementary cases of `trivial`. Establish `hγ : cT (IsCMField.complexConj E).toRingEquiv.toRingHom (γ.1 : Matrix (Fin n) (Fin n) E) * 1 * γ.1 = 1` using `γ.2 show cT (cj w) (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ.1).val * (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) * (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ.1).val = 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the elementary cases of the proposition. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (Matrix.map · (algebraMap E (w.adicCompletion E))) hγ` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _), cT_map hU w hs] at this`. Simplify using `using this`. Unfold `locPt toSub`. Rewrite using `[dif_pos hm]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locPt_val (hU : Unr E) {n : ℕ} (w : Pl E) (γ : UE E n) :
     ((locPt w γ : UL n w) : GLw n w) = GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ.1 := by
@@ -142,7 +142,7 @@ theorem locPt_val (hU : Unr E) {n : ℕ} (w : Pl E) (γ : UE E n) :
   rw [dif_pos hm]
 
 /- English proof (translation)
-Rewrite using `[atPl, aeval_map_algebraMap]`. Use `aeval_algHom_apply (AlgHom.mapMatrix (Algebra.ofId E (w.adicCompletion E))) M p` as an intermediate fact. Establish `e : (⇑(Algebra.ofId E (w.adicCompletion E)) : E → _) = algebraMap E _` using `rfl`. Simplify `this` using `[AlgHom.mapMatrix_apply, e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem aeval_map_mat {n : ℕ} (w : Pl E) (M : Matrix (Fin n) (Fin n) E) (p : E[X]) :
     aeval (M.map (algebraMap E (w.adicCompletion E))) (atPl w p) = (aeval M p).map (algebraMap E (w.adicCompletion E)) := by
@@ -152,7 +152,7 @@ theorem aeval_map_mat {n : ℕ} (w : Pl E) (M : Matrix (Fin n) (Fin n) E) (p : E
   simpa [AlgHom.mapMatrix_apply, e] using this
 
 /- English proof (translation)
-Unfold `kapSign sgnOn gramOn hform`. Rewrite using `[if_neg hw]`. Simplify using `[Matrix.one_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kapSign_eq {n : ℕ} (w : Pl E) (hw : ¬ IsSplitAt w) (Q : (w.adicCompletion E)[X]) (γ : GLw n w) :
     kapSign n w Q γ = sgnOn (cj w) 1 Q γ.val := by
@@ -161,7 +161,7 @@ theorem kapSign_eq {n : ℕ} (w : Pl E) (hw : ¬ IsSplitAt w) (Q : (w.adicComple
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Take `⟨u, ⟨hu, hu'⟩, -⟩` from `hS w`. Assume the negation of the conclusion as `h`. Conclude with `hw ⟨u, fun e => h (e ▸ hu), hu'⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem mem_S {S : Set (Pl E)} (hS : IsSection S) {w : Pl E} (hw : ¬ IsSplitAt w) : w ∈ S := by
   obtain ⟨u, ⟨hu, hu'⟩, -⟩ := hS w

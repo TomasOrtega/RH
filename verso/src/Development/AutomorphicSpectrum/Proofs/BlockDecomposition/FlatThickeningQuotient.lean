@@ -14,11 +14,11 @@ open TensorProduct in
 set_option backward.isDefEq.respectTransparency true in
 
 /- English proof (translation)
-Establish `f3 : (algebraMap (P ⧸ I₀) ((P ⧸ I₀) ⊗[P] B)).Flat` using `RingHom.flat_algebraMap_iff.2 inferInstance`. Set `e₂ : (B ⧸ I₀.map (algebraMap P B)) ≃+* (P ⧸ I₀) ⊗[P] B` to `(((Algebra.TensorProduct.quotIdealMapEquivTensorQuot B I₀).toRingEquiv).trans (Algebra.TensorProduct.comm P B (P ⧸ I₀)).toRingEquiv)`. Establish `f5 : (e₂.symm.toRingHom).Flat` using `RingHom.Flat.of_bijective e₂.symm.bijective`. Establish `f4` using `RingHom.Flat.comp f3 f5`. Use `f4 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun r => ?_)` and prove the remaining obligations. Use `e₂.injective ?_` and prove the remaining obligations. Establish `: e₂ (Ideal.Quotient.mk _ (algebraMap P B r)) = algebraMap (P ⧸ I₀) ((P ⧸ I₀) ⊗[P] B) (Ideal.Quotient.mk _ r)`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.comm P B (P ⧸ I₀) (Algebra.TensorProduct.quotIdealMapEquivTensorQuot B I₀ (Ideal.Quotient.mk _ (algebraMap P B r))) = _`. Rewrite using `[Algebra.TensorProduct.quotIdealMapEquivTensorQuot_mk]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Simplify using `using this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem flat_quotientMap {P B : Type} [CommRing P] [CommRing B] [Algebra P B] [Module.Flat P B] (I₀ : Ideal P) :
     (Ideal.quotientMap (I₀.map (algebraMap P B)) (algebraMap P B) Ideal.le_comap_map :
@@ -41,13 +41,13 @@ theorem flat_quotientMap {P B : Type} [CommRing P] [CommRing B] [Algebra P B] [M
   simpa using this
 
 /- English proof (translation)
-Use `letI : Algebra A B := f.toAlgebra`. Use `haveI : Module.Flat A B := hf`. Establish `hJ : (Ideal.span {a}).map (algebraMap A B) = Ideal.span {f a}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `e₁ : (A ⧸ Ideal.span {a}) ≃+* A'` to `(Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective hπ)`. Set `e₂ : (B ⧸ (Ideal.span {a}).map (algebraMap A B)) ≃+* (B ⧸ Ideal.span {f a})` to `Ideal.quotEquivOfEq hJ`. Establish `h0` using `flat_quotientMap (P := A) (B := B) (Ideal.span {a})`. Establish `h1 : (e₁.symm.toRingHom).Flat` using `RingHom.Flat.of_bijective e₁.symm.bijective`. Establish `h2 : (e₂.toRingHom).Flat` using `RingHom.Flat.of_bijective e₂.bijective`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `RingHom.Flat.comp (RingHom.Flat.comp h1 h0) h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨r, rfl⟩` from `hπ x`. Establish `hr : e₁.symm (π r) = Ideal.Quotient.mk _ r`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `g (π r) = e₂ (Ideal.quotientMap _ (algebraMap A B) Ideal.le_comap_map (e₁.symm (π r)))`. Rewrite using `[hr, hg]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem flat_of_surjective_ker {A A' B : Type} [CommRing A] [CommRing A'] [CommRing B] (f : A →+* B) (hf : f.Flat)
     (π : A →+* A') (hπ : Function.Surjective π) (a : A) (hker : RingHom.ker π = Ideal.span {a})
@@ -73,13 +73,13 @@ theorem flat_of_surjective_ker {A A' B : Type} [CommRing A] [CommRing A'] [CommR
   rfl
 
 /- English proof (translation)
-Use `flat_of_surjective_ker T.i hT (Wc.red l k n) ?_ (Ideal.Quotient.mk _ ((l : WittVector l k) ^ n)) ?_ (qi T) (qi_red T)` and prove the remaining obligations. Introduce `x`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `⟨Ideal.Quotient.mk _ w, red_mk' w⟩`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. By extensionality, compare the relevant components.
 
-Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[RingHom.mem_ker, red_mk', Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨Ideal.Quotient.mk _ c, (map_mul _ _ _)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨c, hc⟩`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Rewrite `hc` using `[← map_mul, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Take `⟨d, hd⟩` from `hc`. Use `⟨c + (l : WittVector l k) * d, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_add, ← mul_assoc, ← pow_succ, ← hd]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem flatT_qT (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] [PerfectRing k l] (O : Type) [CommRing O]
     (F : B.Fn O) (ρ : O →+* k) (n : ℕ) (hn : n ≠ 0) (T : Thick (Wc.L l F ρ (n + 1))) (hT : FlatT T) :

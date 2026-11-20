@@ -21,13 +21,13 @@ namespace GlobalTheory.FourierRealPart
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨e, he, hc, hc', -⟩` from `GlobalTheory.Mem.VolInfIso.exists_infAdele_equiv D.host.F D.host.E D.sp.cm.sig D.what₂.Tau (tauE D) θ (Formalism.MainNotions.UnusedSlot34.isCMExt_D D) (GlobalTheory.CMTypePlaces.mk_tauE_bijective D) hθ`. Take `⟨e1, he1, hc1, hc1'⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `hinf : ∀ a : AE D, (e1 a).1 = infPart D a` using `fun a => (he1 a).1`. Establish `hfin : ∀ a : AE D, (e1 a).2 = finPart D a` using `fun a => (he1 a).2`. Use `⟨fun w => e1.symm (e.symm w, 0), hc1'.comp (hc'.prodMk continuous_const), fun w => ?_, fun w τ => ?_, fun a => ?_, fun τ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hfin, RingEquiv.apply_symm_apply]`. Rewrite using `[← hinf, RingEquiv.apply_symm_apply, ← he, RingEquiv.apply_symm_apply]`. Rewrite using `[← hinf, RingEquiv.apply_symm_apply]`. Apply `e.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[RingEquiv.apply_symm_apply, he]`. Establish `h : (fun a : AE D => θ τ (infPart D a)) = fun a => e (e1 a).1 τ`. Use function extensionality and compare the values at `a`. Rewrite using `[he, hinf]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(continuous_apply τ).comp (hc.comp (continuous_fst.comp hc1))`.
+A detailed English derivation is pending.
 -/
 theorem exists_section (θ : InfFam D) (hθ : IsInfFam θ) :
     ∃ s : (D.what₂.Tau → ℂ) → AE D, Continuous s ∧ (∀ w, finPart D (s w) = 0) ∧
@@ -53,7 +53,7 @@ theorem exists_section (θ : InfFam D) (hθ : IsInfFam θ) :
     exact (continuous_apply τ).comp (hc.comp (continuous_fst.comp hc1))
 
 /- English proof (translation)
-Establish `h : (b ⬝ giA T).map (finPart D) = 0` using `by rw [Matrix.map_mul, hb, Matrix.zero_mul]`. Use function extensionality and compare the values at `i j`. Use `GlobalTheory.OrientedChar.finPart_cA_eq_zero (z := incA D D.host.xi0⁻¹ * (b ⬝ giA T) j i) ?_` and prove the remaining obligations. Rewrite using `[map_mul, show finPart D ((b ⬝ giA T) j i) = 0 from congrFun (congrFun h j) i, mul_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualPt_finPart {T : HSp D} {ρ : ℕ} {b : Mx D ρ T.rank} (hb : b.map (finPart D) = 0) :
     (GlobalTheory.Unf.DoubleSum.dualPt T ρ b).map (finPart D) = 0 := by
@@ -65,9 +65,9 @@ theorem dualPt_finPart {T : HSp D} {ρ : ℕ} {b : Mx D ρ T.rank} (hb : b.map (
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Unf.DoubleSum.symplO_dualPt]`. Establish `hfin : finPart D (z * b).trace = 0` using `GlobalTheory.PhaseReal.finPart_trace z b hb`. Establish `hT` using `GlobalTheory.PhaseReal.trace_real hfin`. Establish `h1 : ψ (Algebra.trace (AF D.host.F) (AE D) (z * b).trace) = psiInf D.host.F ψ (fstA D.host.F (Algebra.trace (AF D.host.F) (AE D) (z * b).trace))` using `congrArg ψ hT`. Rewrite using `[h1, hψ.2.2 θ hθ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.PhaseReal.theta_trace θ hθ τ]`. Use `congr 3`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, map_sum, map_mul]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem psi_dualPt {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (θ : InfFam D) (hθ : IsInfFam θ)
     {V V₀ W : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) (z : Mx D W.rank ρ) {b : Mx D ρ W.rank}
@@ -88,9 +88,9 @@ theorem psi_dualPt {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) 
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, map_sum, map_mul]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Finset.univ_sum_single Z]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e : Pi.single k (Z k) = (Z k).re • (Pi.single k (1 : ℂ) : K → ℂ) + (Z k).im • (Pi.single k Complex.I : K → ℂ)`. Use extensionality with `k'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality. Simplify using `[Complex.ext_iff]`. Simplify using `[h]`. Rewrite using `[e, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linear_expand {K : Type} [Fintype K] [DecidableEq K] (l : (K → ℂ) →L[ℝ] ℝ) (Z : K → ℂ) :
     l Z = ∑ k, ((Z k).re * l (Pi.single k 1) + (Z k).im * l (Pi.single k Complex.I)) := by
@@ -110,27 +110,25 @@ end GlobalTheory.FourierRealPart
 open GlobalTheory.FourierRealPart in
 
 /- English proof (translation)
-Introduce `D ψ hψ V V₀ W ρ d Y _ m F hF x hx hc S hS hsat`. Take `⟨θ, hθ⟩` from `hψ.2.1`. Take `⟨s, hsc, hsf, hsθ, hsinf, hcθ⟩` from `exists_section θ hθ`. Use `haveI : BorelSpace (Mx D W.rank ρ) := ⟨rfl⟩`. Set `P : Mx D W.rank ρ → (Fin W.rank × Fin ρ × D.what₂.Tau → ℂ)` to `fun z k => θ k.2.2 (infPart D (z k.1 k.2.1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `sec : (Fin W.rank × Fin ρ × D.what₂.Tau → ℂ) → Mx D W.rank ρ` to `fun w i j => s fun τ => w (i, j, τ)`. Establish `hP : Continuous P` using `continuous_pi fun k => (hcθ k.2.2).comp ((continuous_apply k.2.1).comp (continuous_apply k.1))`. Establish `hsec : Continuous sec` using `continuous_pi fun i => continuous_pi fun j => hsc.comp (continuous_pi fun τ => continuous_apply _)`. Establish `hmem : ∀ z, z ∈ S ↔ sec (P z) ∈ S` using `fun z => hsat _ _ (by`. Use function extensionality and compare the values at `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `(hsinf (z i j)).symm)`. Establish `hpre : x ⁻¹' S = (P ∘ x) ⁻¹' (sec ⁻¹' S)`. Use extensionality with `y`. Conclude with `hmem (x y)`. Rewrite using `[hpre]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `GlobalTheory.T.setIntegral_preimage_eq_zero_of_fourier_eq_zero Y m F hF _ (P ∘ x) (hP.measurable.comp hx) ?_ _ (hsec.measurable hS)` and prove the remaining obligations. Introduce `l`. Set `B : Fin W.rank × Fin ρ × D.what₂.Tau → ℂ` to `fun k => ((-(1 / (4 * Real.pi)) : ℝ) : ℂ) * ((l (Pi.single k 1) : ℂ) - (l (Pi.single k Complex.I) : ℂ) * Complex.I)`. Set `b : Mx D ρ W.rank` to `fun j i => s fun τ => B (i, j, τ)`. Establish `hb : b.map (finPart D) = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j i`. Conclude with `hsf _`. Establish `key` using `hc (GlobalTheory.Unf.DoubleSum.dualPt W ρ b) (dualPt_finPart hb)`. Establish `hpt : ∀ z : Mx D W.rank ρ, Complex.exp ((l (P z) : ℂ) * Complex.I) = ψ (symplO V W (d.extX W z) (d.extY W (GlobalTheory.Unf.DoubleSum.dualPt W ρ b)))`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[psi_dualPt hψ θ hθ d z hb]`. Use `congr 1`. Establish `hbθ : ∀ i j τ, θ τ (infPart D (b j i)) = B (i, j, τ)` using `fun i j τ => hsθ _ τ`. Simplify using `only [hbθ]`. Establish `hterm : ∀ k, (P z k).re * l (Pi.single k 1) + (P z k).im * l (Pi.single k Complex.I) = -(4 * Real.pi) * (P z k * B k).re`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Introduce `k`. Establish `hπ` using `Real.pi_ne_zero`. Simplify using `only [B, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.sub_re, Complex.sub_im, Complex.I_re, Complex.I_im]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : l (P z) = ∑ i, ∑ j, ∑ τ, -(4 * Real.pi) * (θ τ (infPart D (z i j)) * B (i, j, τ)).re`. Rewrite using `[linear_expand l (P z), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun τ _ => hterm _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : -(2 * Real.pi) * ∑ τ, 2 * (∑ i, ∑ j, θ τ (infPart D (z i j)) * B (i, j, τ)).re = ∑ τ, ∑ i, ∑ j, -(4 * Real.pi) * (θ τ (infPart D (z i j)) * B (i, j, τ)).re`. Simplify using `only [Complex.re_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Establish `hr : l (P z) = -(2 * Real.pi) * ∑ τ, 2 * (∑ i, ∑ j, θ τ (infPart D (z i j)) * B (i, j, τ)).re`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Rewrite using `[hr]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Function.comp_apply, hpt]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FourierRealPart.integral_preimage_eq_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V V₀ W : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (Y : Type) [MeasurableSpace Y] (m : Measure Y) (F : Y → ℂ), Integrable F m → ∀ x : Y → Mx D W.rank ρ, Measurable x → (∀ c : Mx D W.rank ρ, c.map (finPart D) = 0 → ∫ y, ψ (symplO V W (d.extX W (x y)) (d.extY W c)) * F y ∂m = 0) → ∀ S : Set (Mx D W.rank ρ), MeasurableSet S → (∀ z z' : Mx D W.rank ρ, z.map (infPart D) = z'.map (infPart D) → (z ∈ S ↔ z' ∈ S)) → ∫ y in x ⁻¹' S, F y ∂m = 0 := by
   intro D ψ hψ V V₀ W ρ d Y _ m F hF x hx hc S hS hsat

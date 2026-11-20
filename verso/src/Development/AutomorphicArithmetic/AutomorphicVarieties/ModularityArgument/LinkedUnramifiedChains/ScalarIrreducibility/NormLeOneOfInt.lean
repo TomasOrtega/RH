@@ -12,13 +12,13 @@ open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.
 namespace UpperTheory.V.J
 
 /- English proof (translation)
-Introduce `h`. Apply `hp` to reduce the goal to its premises. Use extensionality with `n`. Establish `h1` using `congrArg (MvPowerSeries.coeff (Finsupp.single i n)) h`. Establish `h2 : ∀ k, MvPowerSeries.coeff (Finsupp.single i n) (p.coeff k • (MvPowerSeries.X i : MvPowerSeries (Fin d) O) ^ k) = if k = n then p.coeff k else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[MvPowerSeries.coeff_smul, MvPowerSeries.coeff_X_pow]`. Distinguish the cases in `hk : k = n`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: Finsupp.single i n ≠ Finsupp.single i k` using `fun e => hk (Finsupp.single_injective i e).symm`. Simplify using `[hk, this]`. Rewrite `h1` using `[Polynomial.aeval_eq_sum_range, map_sum]`. Simplify using `only [h2] at h1`. Rewrite `h1` using `[Finset.sum_ite_eq', map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs at h1 with hn`. Simplify using `using h1`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by simpa [Nat.lt_succ_iff] using hn)]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem aeval_X_ne {O : Type} [CommRing O] {d : ℕ} (i : Fin d) {p : Polynomial O} (hp : p ≠ 0) :
     Polynomial.aeval (MvPowerSeries.X i : MvPowerSeries (Fin d) O) p ≠ 0 := by
@@ -45,9 +45,9 @@ private theorem aeval_X_ne {O : Type} [CommRing O] {d : ℕ} (i : Fin d) {p : Po
     simp
 
 /- English proof (translation)
-Take `⟨d, φ, hφ, -, -, hd⟩` from `(UpperTheory.V.CA.cl_nn O C hC).1 hinj`. Break down `Nat.eq_zero_or_pos d with rfl | hpos` into its components or cases. Conclude with `UpperTheory.V.CA.cl_norm0 O C hC (by simpa using hd) hinj`. It suffices to derive a contradiction. Take `⟨p, hp, h0⟩` from `halg (φ (MvPowerSeries.X ⟨0, hpos⟩))`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `aeval_X_ne (⟨0, hpos⟩ : Fin d) hp` to reduce the goal to its premises. Apply `hφ` to reduce the goal to its premises. Rewrite using `[← Polynomial.aeval_algHom_apply, h0, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fin_of_alg (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] (C : Type) [CommRing C] [Algebra O C] [IsLocalRing C] [IsDomain C]
@@ -63,18 +63,16 @@ private theorem fin_of_alg (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValua
     rw [← Polynomial.aeval_algHom_apply, h0, map_zero]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.NormLeOneOfIntegral.norm_le_one_of_int hA hx`.
+A detailed English derivation is pending.
 -/
 private theorem norm_le_one_of_int {A K : Type} [CommRing A] [NormedField K] [IsUltrametricDist K] [Algebra A K]
     (hA : ∀ a : A, ‖algebraMap A K a‖ ≤ 1) {x : K} (hx : IsIntegral A x) : ‖x‖ ≤ 1 :=
   _root_.UpperTheory.Reformulated.B.NormLeOneOfIntegral.norm_le_one_of_int hA hx
 
 /- English proof (translation)
-Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `p ⟨hle, hp⟩`. Establish `hq : (p.comap (algebraMap O C)).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hne : p.comap (algebraMap O C) ≠ ⊥` using `fun h => ht (by`. Establish `h1 : t ∈ p.comap (algebraMap O C)` using `hle (Ideal.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Ideal.mem_bot).1 (h ▸ h1))`. Use `haveI : IsPrincipalIdealRing O := IsDiscreteValuationRing.toIsPrincipalIdealRing`. Establish `hmax : (p.comap (algebraMap O C)).IsMaximal` using `IsPrime.to_maximal_ideal hne`. Establish `hpm : p.IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap p hmax`. Rewrite using `[IsLocalRing.eq_maximalIdeal hpm]`.
-
-Conclude with `ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_rad {O C : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing C]
     [IsLocalRing C] [Algebra O C] [Algebra.IsIntegral O C] {t : O} (ht : t ≠ 0) {a : C}
@@ -94,7 +92,7 @@ private theorem mem_rad {O C : Type} [CommRing O] [IsDomain O] [IsDiscreteValuat
 end UpperTheory.V.J
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.CoPoint.coPt`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.J.coPt :
     ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] (R : Type) [CommRing R] [Algebra c.O R] [IsCO c.O R] (y : R →ₐ[c.O] Qbar l),

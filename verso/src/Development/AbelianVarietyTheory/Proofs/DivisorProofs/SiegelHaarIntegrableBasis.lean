@@ -20,7 +20,7 @@ def basisLEquiv : (Fin n × Fin (Module.finrank F E) → AF F) ≃ₗ[AF F] (Fin
     (LinearEquiv.piCongrRight fun _ => (Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).equivFun.symm)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[basisLEquiv, basisMap, Module.Basis.equivFun_symm_apply, Algebra.TensorProduct.basis_apply, inclR]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem basisLEquiv_apply (t : Fin n × Fin (Module.finrank F E) → AF F) :
     basisLEquiv F E n t = basisMap F E n t := by
@@ -35,13 +35,11 @@ def basisCLEquiv : (Fin n × Fin (Module.finrank F E) → AF F) ≃L[AF F] (Fin 
   continuous_invFun := IsModuleTopology.continuous_of_linearMap (basisLEquiv F E n).symm.toLinearMap
 
 /- English proof (translation)
-Use `letI mX : MeasurableSpace (Fin n × Fin (Module.finrank F E) → AF F) := borel _`. Use `haveI : BorelSpace (Fin n × Fin (Module.finrank F E) → AF F) := ⟨rfl⟩`. Use `letI mY : MeasurableSpace (Fin n → AE F E) := borel _`. Use `haveI : BorelSpace (Fin n → AE F E) := ⟨rfl⟩`. Use `haveI : μ.IsAddHaarMeasure := hμ`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T := basisCLEquiv F E n with hT`. Establish `hTf : ∀ t, T t = basisMap F E n t` using `basisLEquiv_apply F E n`. Use `haveI hν : (μ.map T.symm).IsAddHaarMeasure := ContinuousLinearEquiv.isAddHaarMeasure_map T.symm μ`. Establish `h1` using `hf (μ.map T.symm) hν`. Establish `hme : MeasurableEmbedding T` using `T.toHomeomorph.measurableEmbedding`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap : (μ.map T.symm).map T = μ`. Rewrite using `[Measure.map_map T.continuous.measurable T.symm.continuous.measurable]`. Establish `: (T ∘ T.symm) = id` using `funext fun y => T.apply_symm_apply y`. Rewrite using `[this, Measure.map_id]`. Rewrite using `[← hmap, hme.integrable_map_iff]`.
-
-Simplify `h1` using `[Function.comp_def, hTf]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem integrable_of_basisMap (f : (Fin n → AE F E) → ℂ) (μ : @Measure (Fin n → AE F E) (borel _))
     (hμ : IsHaarB μ)
@@ -69,7 +67,7 @@ theorem integrable_of_basisMap (f : (Fin n → AE F E) → ℂ) (μ : @Measure (
 end GlobalTheory.SiegelConv
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n f μ hμ hf` and use `GlobalTheory.SiegelConv.integrable_of_basisMap F E n f μ hμ hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SiegelConv.integrable_basisMap_main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (f : (Fin n → AE F E) → ℂ) (μ : @Measure (Fin n → AE F E) (borel _)), GlobalTheory.SiegelAvg.IsHaarB μ →

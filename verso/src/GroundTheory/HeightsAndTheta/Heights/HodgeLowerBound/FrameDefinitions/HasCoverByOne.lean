@@ -21,7 +21,7 @@ def HasCoverBy (y : (Σ k, ι k) → Ω) (c : (k : K) → ι k) (Pr : Ω → Pro
 
 omit [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun _ => 1, fun _ => 1, fun _ => one_mem _, fun _ => one_mem _, by simp, fun _ => h⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasCoverBy_one (y : (Σ k, ι k) → Ω) (c : (k : K) → ι k) {Pr : Ω → Prop} (h : Pr 1) :
     HasCoverBy y c Pr :=
@@ -35,7 +35,7 @@ variable {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {Ω
   [Algebra ℚ Ω] {E : Ψ → Type} [∀ τ, AddCommGroup (E τ)] [∀ τ, Module Ω (E τ)]
 
 /- English proof (translation)
-Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem step_le {N : ℕ} (i : Fin (N - 1)) : (i : ℕ) + 1 ≤ N := by have := i.isLt; omega
 

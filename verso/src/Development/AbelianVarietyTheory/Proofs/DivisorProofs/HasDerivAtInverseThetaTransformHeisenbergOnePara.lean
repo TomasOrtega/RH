@@ -7,9 +7,7 @@ open scoped Matrix Classical
 namespace GlobalTheory.ThetaTransform
 
 /- English proof (translation)
-Unfold `heisV symV`. Establish `h1 : Continuous fun y : Fin N → AF F => (x, y).1 ⬝ᵥ u.2 - u.1 ⬝ᵥ (x, y).2`. Simplify using `only [dotProduct]`. Use `fun_prop`. Use `(hψ.comp (continuous_const.mul h1)).mul (hg.comp ?_)` and prove the remaining obligations.
-
-Use `fun_prop`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_heisV_snd {F : Type} [Field F] [NumberField F] {N : ℕ} [Invertible (2 : AF F)]
     (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) (u : VA F N) (g : VA F N → ℂ) (hg : Continuous g)
@@ -22,7 +20,7 @@ theorem continuous_heisV_snd {F : Type} [Field F] [NumberField F] {N : ℕ} [Inv
   fun_prop
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `[heisV, symV, AddChar.map_zero_eq_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heisV_zero {F : Type} [Field F] [NumberField F] {N : ℕ} [Invertible (2 : AF F)]
     (ψ : AddChar (AF F) ℂ) (g : VA F N → ℂ) : heisV ψ 0 g = g := by
@@ -31,13 +29,11 @@ theorem heisV_zero {F : Type} [Field F] [NumberField F] {N : ℕ} [Invertible (2
 
 open GlobalTheory.GaugeEx in
 /- English proof (translation)
-Introduce `F _ _ N _ ψ lam ν hC 𝓓 _ h1 f f' C hf hf' hfC hf'C M _ hM x`. Establish `hψ` using `hC.2.1`. Use `haveI : IsFiniteMeasure ((muV N ν).restrict 𝓓) := isFiniteMeasure_restrict.2 (by rw [h1]; simp)`. Establish `hcont : ∀ (u : VA F N) (g : VA F N → ℂ), Continuous g → Continuous fun y : Fin N → AF F => heisV ψ u g (x, y) * ψ (-(⅟(2 : AF F) * (x ⬝ᵥ y)))`. Introduce `u g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(continuous_heisV_snd ψ hψ.1 u g hg x).mul (hψ.1.comp ?_)` and prove the remaining obligations. Simplify using `only [dotProduct]`. Use `fun_prop`. Establish `hnorm : ∀ (u : VA F N) (g : VA F N → ℂ), (∀ w, ‖g w‖ ≤ C) → ∀ y : Fin N → AF F, ‖heisV ψ u g (x, y) * ψ (-(⅟(2 : AF F) * (x ⬝ᵥ y)))‖ ≤ C`. Introduce `u g hg y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [heisV, norm_mul, hψ.2.1, one_mul, mul_one]`. Conclude with `hg _`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := (muV N ν).restrict 𝓓) (F := fun t y => heisV ψ (M t) f (x, y) * ψ (-(⅟(2 : AF F) * (x ⬝ᵥ y)))) (F' := fun t y => heisV ψ (M t) f' (x, y) * ψ (-(⅟(2 : AF F) * (x ⬝ᵥ y)))) (x₀ := (0 : ℝ)) (bound := fun _ => C) (s := Set.univ) F …`. Establish `e : (fun y => heisV ψ (M 0) f' (x, y) * ψ (-(⅟(2 : AF F) * (x ⬝ᵥ y)))) = fun y => f' (x, y) * ψ (-(⅟(2 : AF F) * (x ⬝ᵥ y)))`. Rewrite using `[map_zero, heisV_zero]`.
-
-Establish `k2` using `key.2`. Simplify using `only [e] at k2`. Conclude with `k2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_invV_heisV : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) [Invertible (2 : AF F)] (ψ : AddChar (AF F) ℂ) (lam : InfinitePlace F → ℝ) (ν : Measure (AF F)), Ctx ψ lam ν (half F N) → ∀ 𝓓 : Set (Fin N → AF F), IsAddFundamentalDomain (ratSub F N) 𝓓 (muV N ν) → muV N ν 𝓓 = 1 → ∀ (f f' : VA F N → ℂ) (C : ℝ), Continuous f → Continuous f' → (∀ w, ‖f w‖ ≤ C) → (∀ w, ‖f' w‖ ≤ C) → ∀ M : ℝ →+ VA F N, Continuous M → (∀ w s, HasDerivAt (fun t : ℝ => heisV ψ (M t) f w) (heisV ψ (M s) f' w) s) → ∀ x, HasDerivAt (fun t : ℝ => invV ψ ν 𝓓 (heisV ψ (M t) f) x) (invV ψ ν 𝓓 f' x) 0 := by
   intro F _ _ N _ ψ lam ν hC 𝓓 _ h1 f f' C hf hf' hfC hf'C M _ hM x

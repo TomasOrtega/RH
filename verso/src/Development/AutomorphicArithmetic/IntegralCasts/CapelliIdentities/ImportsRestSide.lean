@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n g x m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ, ih, pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.Yhc6.main :
     ∀ {k : Type} [inst : Field k] [inst_1 : ValuativeRel k] [inst_2 : TopologicalSpace k] [IsNonarchimedeanLocalField k]

@@ -20,7 +20,7 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.chernCurvature_modelGram_conjMulTranspose_inv Z w ξ η hw`.
+A detailed English derivation is pending.
 -/
 theorem curv_tau {n p q : ℕ} (Z : ReciprocityTheory.L2DbarEstimates.V n →ₗ[ℂ] Matrix (Fin p) (Fin q) ℂ) (w ξ η : ReciprocityTheory.L2DbarEstimates.V n)
     (hw : (1 - (Z w)ᴴ * Z w).PosDef) :
@@ -28,7 +28,7 @@ theorem curv_tau {n p q : ℕ} (Z : ReciprocityTheory.L2DbarEstimates.V n →ₗ
       -(Z ξ * (1 - (Z w)ᴴ * Z w)⁻¹ * (Z η)ᴴ * (1 - Z w * (Z w)ᴴ)⁻¹) := GlobalTheory.T.chernCurvature_modelGram_conjMulTranspose_inv Z w ξ η hw
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.chernCurvature_modelGram_conjugateEmbedding Z w ξ η hw`.
+A detailed English derivation is pending.
 -/
 theorem curv_tauBar {n p q : ℕ} (Z : ReciprocityTheory.L2DbarEstimates.V n →ₗ[ℂ] Matrix (Fin p) (Fin q) ℂ) (w ξ η : ReciprocityTheory.L2DbarEstimates.V n)
     (hw : (1 - (Z w)ᴴ * Z w).PosDef) :
@@ -36,19 +36,19 @@ theorem curv_tauBar {n p q : ℕ} (Z : ReciprocityTheory.L2DbarEstimates.V n →
       -((1 - (Z w)ᴴ * Z w)⁻¹ * (Z η)ᴴ * (1 - Z w * (Z w)ᴴ)⁻¹ * Z ξ)ᵀ := GlobalTheory.T.chernCurvature_modelGram_conjugateEmbedding Z w ξ η hw
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_isUnit_det_conjTranspose_mul_eq_of_posDef P hP`.
+A detailed English derivation is pending.
 -/
 theorem exists_factor {p : ℕ} (P : Matrix (Fin p) (Fin p) ℂ) (hP : P.PosDef) :
     ∃ A : Matrix (Fin p) (Fin p) ℂ, IsUnit A.det ∧ Aᴴ * A = P := GlobalTheory.T.exists_isUnit_det_conjTranspose_mul_eq_of_posDef P hP
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.posDef_one_sub_mul_conjTranspose_of_posDef_swap z h`.
+A detailed English derivation is pending.
 -/
 theorem posDef_swap {p q : ℕ} (z : Matrix (Fin p) (Fin q) ℂ) (h : (1 - zᴴ * z).PosDef) :
     (1 - z * zᴴ).PosDef := GlobalTheory.T.posDef_one_sub_mul_conjTranspose_of_posDef_swap z h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.chernPoly_conj_linearSubst_curvature F v v' J S hS h k`.
+A detailed English derivation is pending.
 -/
 theorem chernPoly_conj {n r : ℕ} (F : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin r) (Fin r) ℂ) (v v' : ReciprocityTheory.L2DbarEstimates.V n)
     (J : Matrix (Fin n) (Fin n) ℂ) (S : Matrix (Fin r) (Fin r) ℂ) (hS : IsUnit S.det)
@@ -58,7 +58,7 @@ theorem chernPoly_conj {n r : ℕ} (F : ReciprocityTheory.L2DbarEstimates.V n �
       (chernPoly F v' k) := GlobalTheory.T.chernPoly_conj_linearSubst_curvature F v v' J S hS h k
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.chernFormPolyCoeff_reindex_frame e F v k`.
+A detailed English derivation is pending.
 -/
 theorem chernPoly_reindex {n a b : ℕ} (e : Fin a ≃ Fin b) (F : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin a) (Fin a) ℂ)
     (v : ReciprocityTheory.L2DbarEstimates.V n) (k : ℕ) : chernPoly (fun u => reindex e e (F u)) v k = chernPoly F v k := GlobalTheory.T.chernFormPolyCoeff_reindex_frame e F v k
@@ -83,7 +83,7 @@ def jMat {H : Host E} {Dw : Datum H} {n : ℕ} (ix : Fin n ≃ GlobalTheory.AllW
   (A (ix c).1 * coordOf ix (coordVec a) (ix c).1 * B (ix c).1) (ix c).2.1 (ix c).2.2
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(∑ c, jMat ix A B c a • coordVec c) (ix.symm (σ, i, j)) = _`. Simplify using `[WithLp.ofLp_sum, Finset.sum_apply, EuclideanSpace.single_apply, jMat, zLin_apply, Pi.single_apply]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem zLin_jMat {H : Host E} {Dw : Datum H} {n : ℕ} (ix : Fin n ≃ GlobalTheory.AllWt.Psi H × Fin Dw.p × Fin Dw.q)
     (A : GlobalTheory.AllWt.Psi H → Matrix (Fin Dw.p) (Fin Dw.p) ℂ) (B : GlobalTheory.AllWt.Psi H → Matrix (Fin Dw.q) (Fin Dw.q) ℂ)
@@ -94,11 +94,11 @@ theorem zLin_jMat {H : Host E} {Dw : Datum H} {n : ℕ} (ix : Fin n ≃ GlobalTh
   simp [WithLp.ofLp_sum, Finset.sum_apply, EuclideanSpace.single_apply, jMat, zLin_apply, Pi.single_apply]
 
 /- English proof (translation)
-Establish `h0 : (1 - (Z 0)ᴴ * Z 0).PosDef` using `by simpa using (PosDef.one : (1 : Matrix (Fin q) (Fin q) ℂ).PosDef)`. Establish `hsum : (∑ c, ∑ d, (J c a * starRingEnd ℂ (J d b)) • curv (fun u => (1 - (Z u).map (starRingEnd ℂ) * (Z u)ᵀ)⁻¹) 0 (coordVec c) (coordVec d)) = -(Z (∑ c, J c a • coordVec c) * (Z (∑ d, J d b • coordVec d))ᴴ)`. Establish `hc : ∀ ξ η, curv (fun u => (1 - (Z u).map (starRingEnd ℂ) * (Z u)ᵀ)⁻¹) 0 ξ η = -(Z ξ * (Z η)ᴴ)`. Introduce `ξ η`. Rewrite using `[curv_tau Z 0 ξ η h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [hc, map_sum, map_smul, conjTranspose_sum, conjTranspose_smul, Matrix.sum_mul, Matrix.mul_sum, Matrix.smul_mul, Matrix.mul_smul, smul_smul, smul_neg, Finset.sum_neg_distrib, neg_inj]`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => by rw [mul_comm]; rfl`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum, hJ, hJ, curv_tau Z w _ _ hw, ← hAA, ← hB]`. Simplify using `only [conjTranspose_mul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, nonsing_inv_mul_cancel_left _ _ hA]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_tau {n p q : ℕ} (Z : ReciprocityTheory.L2DbarEstimates.V n →ₗ[ℂ] Matrix (Fin p) (Fin q) ℂ) (w : ReciprocityTheory.L2DbarEstimates.V n)
     (A : Matrix (Fin p) (Fin p) ℂ) (B : Matrix (Fin q) (Fin q) ℂ) (J : Matrix (Fin n) (Fin n) ℂ)
@@ -126,11 +126,11 @@ theorem conj_tau {n p q : ℕ} (Z : ReciprocityTheory.L2DbarEstimates.V n →ₗ
     nonsing_inv_mul_cancel_left _ _ hA]
 
 /- English proof (translation)
-Establish `h0 : (1 - (Z 0)ᴴ * Z 0).PosDef` using `by simpa using (PosDef.one : (1 : Matrix (Fin q) (Fin q) ℂ).PosDef)`. Establish `hsum : (∑ c, ∑ d, (J c a * starRingEnd ℂ (J d b)) • curv (fun u => (1 - (Z u)ᴴ * Z u)⁻¹) 0 (coordVec c) (coordVec d)) = -((Z (∑ d, J d b • coordVec d))ᴴ * Z (∑ c, J c a • coordVec c))ᵀ`. Establish `hc : ∀ ξ η, curv (fun u => (1 - (Z u)ᴴ * Z u)⁻¹) 0 ξ η = -((Z η)ᴴ * Z ξ)ᵀ`. Introduce `ξ η`. Rewrite using `[curv_tauBar Z 0 ξ η h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [hc, map_sum, map_smul, conjTranspose_sum, conjTranspose_smul, Matrix.sum_mul, Matrix.mul_sum, Matrix.smul_mul, Matrix.mul_smul, smul_smul, smul_neg, Finset.sum_neg_distrib, neg_inj, transpose_sum, transpose_smul]`. Simplify using `only [Finset.smul_sum, smul_smul]`. Both sides reduce to the same expression. Rewrite using `[hsum, hJ, hJ, curv_tauBar Z w _ _ hw, ← hAA, ← hB, ← transpose_nonsing_inv, Matrix.mul_neg, Matrix.neg_mul, neg_inj, ← transpose_mul, ← transpose_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc, mul_nonsing_inv_cancel_right _ _ hB0]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem conj_tauBar {n p q : ℕ} (Z : ReciprocityTheory.L2DbarEstimates.V n →ₗ[ℂ] Matrix (Fin p) (Fin q) ℂ) (w : ReciprocityTheory.L2DbarEstimates.V n)
     (A : Matrix (Fin p) (Fin p) ℂ) (B : Matrix (Fin q) (Fin q) ℂ) (J : Matrix (Fin n) (Fin n) ℂ)
@@ -159,21 +159,19 @@ theorem conj_tauBar {n p q : ℕ} (Z : ReciprocityTheory.L2DbarEstimates.V n →
   simp only [conjTranspose_mul, Matrix.mul_assoc, mul_nonsing_inv_cancel_right _ _ hB0]
 
 /- English proof (translation)
-Establish `hP : ∀ σ, (1 - coordOf ix w σ * (coordOf ix w σ)ᴴ)⁻¹.PosDef` using `fun σ => (posDef_swap _ (hw σ)).inv`. Establish `hQ : ∀ σ, (1 - (coordOf ix w σ)ᴴ * coordOf ix w σ)⁻¹.PosDef` using `fun σ => (hw σ).inv`. Use `choose A hA hAA using fun σ => exists_factor _ (hP σ)`. Use `choose A' hA' hAA' using fun σ => exists_factor _ (hQ σ)`. Set `B : GlobalTheory.AllWt.Psi H → Matrix (Fin Dw.q) (Fin Dw.q) ℂ` to `fun σ => (A' σ)ᴴ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hB : ∀ σ, B σ * (B σ)ᴴ = (1 - (coordOf ix w σ)ᴴ * coordOf ix w σ)⁻¹` using `fun σ => by`. Simplify using `only [B, conjTranspose_conjTranspose]`. Conclude with `hAA' σ`. Establish `hB0 : ∀ σ, IsUnit (B σ).det` using `fun σ => by`. Simplify using `only [B, det_conjTranspose]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `(hA' σ).star`. Use `⟨jMat ix A B, fun τ k => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : τ (H.rt : E) = H.rt0`. Establish `e : (fun u => modelGram H Dw (coordOf ix u) τ) = fun u => reindex (finCongr (mult_of_mem Dw h).symm) (finCongr (mult_of_mem Dw h).symm) ((1 - (zLin ix ⟨τ, h⟩ u).map (starRingEnd ℂ) * (zLin ix ⟨τ, h⟩ u)ᵀ)⁻¹)`. Use function extensionality and compare the values at `u`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [modelGram, dif_pos h]`. Both sides reduce to the same expression. Rewrite using `[e, chernPoly_reindex, chernPoly_reindex]`. Conclude with `chernPoly_conj _ w 0 _ (A ⟨τ, h⟩) (hA _) (conj_tau (zLin ix ⟨τ, h⟩) w (A _) (B _) _ (hw _) (hA _) (hAA _) (hB _) (zLin_jMat ix A B _)) k`. Distinguish the cases in `h' : conjEmb τ (H.rt : E) = H.rt0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun u => modelGram H Dw (coordOf ix u) τ) = fun u => reindex (finCongr (mult_of_not_mem Dw h).symm) (finCongr (mult_of_not_mem Dw h).symm) ((1 - (zLin ix ⟨conjEmb τ, h'⟩ u)ᴴ * zLin ix ⟨conjEmb τ, h'⟩ u)⁻¹)`. Use function extensionality and compare the values at `u`. Simplify using `only [modelGram, dif_neg h, dif_pos h']`. Both sides reduce to the same expression. Rewrite using `[e, chernPoly_reindex, chernPoly_reindex]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `chernPoly_conj _ w 0 _ (B _)ᵀ (by rw [det_transpose]; exact hB0 _) (conj_tauBar (zLin ix ⟨conjEmb τ, h'⟩) w (A _) (B _) _ (hw _) (hB0 _) (hAA _) (hB _) (zLin_jMat ix A B _)) k`. Establish `e : (fun u => modelGram H Dw (coordOf ix u) τ) = fun _ => 1`. Use function extensionality and compare the values at `u`. Simplify using `only [modelGram, dif_neg h, dif_neg h']`. Establish `hc : ∀ v, chernPoly (fun _ : ReciprocityTheory.L2DbarEstimates.V n => (1 : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ)) v k = (1 : Polynomial (MvPolynomial (Fin n × Fin n) ℂ)).coeff k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Establish `h0 : curvPoly (fun _ : ReciprocityTheory.L2DbarEstimates.V n => (1 : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ)) v = 0`. Use extensionality with `i j`. Simplify using `[curvPoly]`. Simplify using `[chernPoly, h0, Matrix.charpolyRev]`.
-
-Rewrite using `[e, hc, hc, Polynomial.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem chernPoly_model_eq_subst {H : Host E} (Dw : Datum H) {n : ℕ}
     (ix : Fin n ≃ GlobalTheory.AllWt.Psi H × Fin Dw.p × Fin Dw.q) (w : ReciprocityTheory.L2DbarEstimates.V n) (hw : InDom (coordOf ix w)) :
@@ -224,11 +222,11 @@ end GlobalTheory.PointChernScale
 open GlobalTheory.PointChernScale in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw n ix w hw`. Take `⟨J, hJ⟩` from `chernPoly_model_eq_subst Dw ix w hw`. Use `⟨Complex.normSq J.det, fun R => ?_⟩` and prove the remaining obligations. Set `φ : MvPolynomial (Fin n × Fin n) ℂ →ₐ[ℂ] MvPolynomial (Fin n × Fin n) ℂ` to `aeval fun x : Fin n × Fin n => ∑ a, ∑ b, C (J x.1 a * starRingEnd ℂ (J x.2 b)) * X (a, b)`. Establish `hR : aeval (fun x : (E →+* ℂ) × ℕ => chernPoly (fun u => modelGram H Dw (coordOf ix u) x.1) w x.2) R = φ (aeval (fun x : (E →+* ℂ) × ℕ => chernPoly (fun u => modelGram H Dw (coordOf ix u) x.1) 0 x.2) R)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `congrArg (fun f => f R) (MvPolynomial.comp_aeval (R := ℝ) (fun x : (E →+* ℂ) × ℕ => chernPoly (fun u => modelGram H Dw (coordOf ix u) x.1) 0 x.2) (φ.restrictScalars ℝ))` as an intermediate fact. Simplify using `only [AlgHom.comp_apply, AlgHom.restrictScalars_apply] at this`. Rewrite using `[this]`. Conclude with `congrArg (fun f => (aeval f R : MvPolynomial (Fin n × Fin n) ℂ)) (funext fun x => hJ x.1 x.2)`. Simplify using `only [chernTop]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR, GlobalTheory.GoodMetric.topCoeff_subst_conj, Complex.mul_conj, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PointChern.chernTop_model_eq_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) {n : ℕ}
     (ix : Fin n ≃ GlobalTheory.AllWt.Psi H × Fin Dw.p × Fin Dw.q) (w : ReciprocityTheory.L2DbarEstimates.V n), InDom (coordOf ix w) →

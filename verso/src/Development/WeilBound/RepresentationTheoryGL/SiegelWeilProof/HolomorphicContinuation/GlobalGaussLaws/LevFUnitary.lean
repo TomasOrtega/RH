@@ -17,15 +17,15 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.Glob PositivityTheory.Rg.Sw.G
   PositivityTheory.Rg.Sw.Glob.VacD PositivityTheory.Rg.Sw.Glob.VacE PositivityTheory.Rg.Sw.Glob.VacF PositivityTheory.Rg.Sw.Glob.VacG
 
 /- English proof (translation)
-Establish `h1 : ∀ z : ℂ, ((‖z‖ ^ 2 : ℝ) : ℂ) = z * star z`. Introduce `z`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Simplify using `only [h1]`. Establish `hu2 : ∀ k l, ∑ j, u k j * star (u l j) = if k = l then 1 else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `k l`. Establish `h` using `congrFun (congrFun hu k) l`. Simplify `h` using `[Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.one_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[star_sum, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul']`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ k, ∑ l, x k * star (x l) * ∑ j, u k j * star (u l j) := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = ∑ k, x k * star (x k) := by`. Simplify using `only [hu2, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+A detailed English derivation is pending.
 -/
 theorem row_norm {n : ℕ} (u : Matrix (Fin n) (Fin n) ℂ) (hu : u * uᴴ = 1) (x : Fin n → ℂ) :
     ∑ j, ((‖∑ k, x k * u k j‖ ^ 2 : ℝ) : ℂ) = ∑ k, ((‖x k‖ ^ 2 : ℝ) : ℂ) := by
@@ -54,9 +54,9 @@ theorem row_norm {n : ℕ} (u : Matrix (Fin n) (Fin n) ℂ) (hu : u * uᴴ = 1) 
         simp only [hu2, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Establish `hu' : u * uᴴ = 1` using `mul_eq_one_comm.mp hu`. Establish `key : ∀ a : Fin m, ∏ j : Fin n, Complex.exp (-γ0 * ((‖(Matrix.of v * u) a j‖ ^ 2 : ℝ) : ℂ)) = ∏ j : Fin n, Complex.exp (-γ0 * ((‖v a j‖ ^ 2 : ℝ) : ℂ))`. Introduce `a`. Rewrite using `[← Complex.exp_sum, ← Complex.exp_sum, ← Finset.mul_sum, ← Finset.mul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Simplify `row_norm u hu' (v a)` using `[Matrix.mul_apply]`. Simplify using `only [levF, DG, key]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem levF_unitary {m n : ℕ} (e : ℤ) (u : Matrix (Fin n) (Fin n) ℂ) (hu : uᴴ * u = 1) (K γ0 : ℂ) :
     levF e u (DG (m := m) (n := n) K (fun _ _ => γ0)) =
@@ -73,11 +73,11 @@ theorem levF_unitary {m n : ℕ} (e : ℤ) (u : Matrix (Fin n) (Fin n) ℂ) (hu 
   ring
 
 /- English proof (translation)
-Establish `hc` using `Real.cos_two_mul (x / 2)`. Establish `hs` using `Real.sin_two_mul (x / 2)`. Establish `hp` using `Real.sin_sq_add_cos_sq (x / 2)`. Rewrite `hc`, `hs` using `[show 2 * (x / 2) = x by ring]`. Rewrite using `[hc, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `Real.cos (x / 2) = c at *`. Generalize the expression as in `Real.sin (x / 2) = s at *`. Use `push_cast`. Establish `hp' : (s : ℂ) ^ 2 + (c : ℂ) ^ 2 = 1` using `by exact_mod_cast hp`. Establish `hρ' : (ρ : ℂ) ^ 2 = 1` using `by exact_mod_cast hρ`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(-1 : ℂ) * hp' + (s : ℂ) ^ 2 * (ρ : ℂ) ^ 2 * Complex.I_sq - (s : ℂ) ^ 2 * hρ'`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dbl_angle (ρ x : ℝ) (hρ : ρ ^ 2 = 1) :
     ((Real.cos (x / 2) : ℂ) + Complex.I * (ρ : ℂ) * (Real.sin (x / 2) : ℂ)) *

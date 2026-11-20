@@ -6,9 +6,9 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.PowerSeriesCompositionMap.main`. Consider the case `exact _root_.GlobalTheory.PowerSeriesCompositionMap.main`. Consider the case `(apply _root_.GlobalTheory.PowerSeriesCompositionMap.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PowerSeriesCompositionMap.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.PowerSeriesCompositionMap.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PowerSeriesCompositionMap.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem powerSeries_extend_finite_free (O O₁ K : Type) [CommRing O] [CommRing O₁] [CommRing K]
     [Algebra O O₁] [Module.Free O O₁] [Module.Finite O O₁] (i : PowerSeries O →+* K)

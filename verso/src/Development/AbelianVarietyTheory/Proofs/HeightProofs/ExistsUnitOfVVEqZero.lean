@@ -24,15 +24,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Introduce `Z v la hd ho`. Take `⟨T, ψ, y, hψ, hy⟩` from `hv Z v hd (Or.inl ⟨la, ho⟩)`. Take `⟨hpos, hres⟩` from `restrict_eq hd ho`. Take `⟨e, he⟩` from `Int.eq_ofNat_of_zero_le hpos.le`. Establish `he0 : 0 < e` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hO : OverLa la T.V (ψ.comp (algebraMap c.F (Om Z))) e`. Use `⟨he0, fun a => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using `[vV, vLa]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `(hψ _ ((map_ne_zero (algebraMap c.F (Om Z))).2 ha)).trans (hres a ha)` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `this` after adjusting the coercions. Take `⟨η, hη⟩` from `hl la T _ e hO y trivial`. Use `⟨PtV.mk la hO y trivial η hη, fun a n f hf h0 => ?_, fun a n f hf h0 _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = _ * nval T.V e (evI y f)`. Rewrite using `[nval_of_ne (fun hz => h0 ((hy a n f hf).1.1 hz)), (hy a n f hf).2 h0, he, ← EReal.coe_mul, EReal.coe_eq_coe_iff]`. Establish `: (e : ℝ) ≠ 0` using `by exact_mod_cast he0.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `nval T.V e (evI y f) = ⊤`. Rewrite using `[(hy a n f hf).1.2 h0, nval_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordTieOn_of_valued {h : GenFrEx Xo c} {δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ}
     {PY : HeightOneSpectrum (𝓞 c.F) → Type}
@@ -71,17 +71,15 @@ theorem ordTieOn_of_valued {h : GenFrEx Xo c} {δ : ∀ Z : Comp Xo c, AddValuat
 end
 
 /- English proof (translation)
-Establish `hne : valV T.V x ≠ 0` using `valV_ne_zero hx`. Establish `h1 : valV T.V x = 1`. Establish `h2 : WithZero.log (valV T.V x) = 0` using `by simpa [vV] using h0`. Rewrite using `[← WithZero.exp_log hne, h2, WithZero.exp_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : T.V, algebraMap T.V T.Fr z = x := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz | hz⟩` from `ValuationRing.isInteger_or_isInteger T.V x |>.elim (fun ⟨z, hz⟩ => (⟨z, Or.inl hz⟩ : ∃ z : T.V, algebraMap T.V T.Fr z = x ∨ algebraMap T.V T.Fr z = x⁻¹)) (fun ⟨z, hz⟩ => ⟨z, Or.inr hz⟩)`. Conclude with `⟨z, hz⟩`. Establish `hz1 : (IsDiscreteValuationRing.maximalIdeal T.V).valuation T.Fr (algebraMap T.V T.Fr z) = 1`. Rewrite using `[hz, map_inv₀]`. Express the relevant statement in the definitionally equal form `(valV T.V x)⁻¹ = 1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1, inv_one]`. Establish `hzn` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem _).1 hz1`. Establish `hu : IsUnit z`. Assume the negation of the conclusion as `hn`. Conclude with `hzn ((IsLocalRing.mem_maximalIdeal z).2 hn)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `hu`. Use `⟨(u⁻¹ : T.Vˣ), ?_⟩` and prove the remaining obligations. Rewrite using `[map_units_inv, hz, inv_inv]`. Establish `hz1 : (IsDiscreteValuationRing.maximalIdeal T.V).valuation T.Fr (algebraMap T.V T.Fr z) = 1`. Rewrite using `[hz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `hzn` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem _).1 hz1`. Establish `hu : IsUnit z`. Assume the negation of the conclusion as `hn`. Conclude with `hzn ((IsLocalRing.mem_maximalIdeal z).2 hn)`.
-
-Take `⟨u, rfl⟩` from `hu`. Conclude with `⟨u, hz⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_vV_eq_zero (T : CDVR) {x : T.Fr} (hx : x ≠ 0) (h0 : vV T.V x = 0) :
     ∃ u : T.Vˣ, algebraMap T.V T.Fr (u : T.V) = x := by
@@ -115,15 +113,15 @@ theorem exists_unit_of_vV_eq_zero (T : CDVR) {x : T.Fr} (hx : x ≠ 0) (h0 : vV 
   exact ⟨u, hz⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hpq hgood hA _ h`. Take `⟨δ, hv, hfin⟩` from `exists_frameShift_frShFin E H Dw l Xo c hpq hgood hA h`. Establish `hQZ : OrdTieQZ h δ`. Introduce `Z v hd ht`. Take `⟨T, ψ, y, hψ, hy⟩` from `hv Z v hd (Or.inr ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `htriv : trivCls Xo c T _ y`. Introduce `a ha`. Establish `ha' : algebraMap c.F (Om Z) a ≠ 0` using `(map_ne_zero _).2 ha`. Use `exists_unit_of_vV_eq_zero T ((map_ne_zero _).2 ha) ?_` and prove the remaining obligations. Use `(hψ _ ha').trans (ht a ha)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Use `⟨⟨T, _, y, htriv⟩, fun a n f hf h0 => ?_, fun a n f hf h0 => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = nval T.V 1 (evI y f)`. Rewrite using `[nval_of_ne (fun hz => h0 ((hy a n f hf).1.1 hz)), (hy a n f hf).2 h0]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `nval T.V 1 (evI y f) = ⊤`. Rewrite using `[(hy a n f hf).1.2 h0, nval_zero]`. Use `⟨δ, fun Z v hd ht => ?_, hQZ, fun PY lies hl => ?_, fun d hD => hfin d hD⟩` and prove the remaining obligations. Take `⟨q, hq, -⟩` from `hQZ Z v hd ht`. Conclude with `⟨q, hq⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hOn` using `ordTieOn_of_valued hl hv`. Conclude with `⟨hOn, hOn.ordTie⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frameShift_ordTies : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → l.A = 1 → ∀ [Fintype (Comp Xo c)] (h : GenFrEx Xo c), ∃ δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ, OrdTieQ h δ ∧ OrdTieQZ h δ ∧ (∀ (PY : HeightOneSpectrum (𝓞 c.F) → Type) (lies : ∀ la (T' : CDVR) (ι : c.F →+* T'.Fr), IntFr Xo c T' ι → PY la → Prop), LiesTotal Xo c (trivialClassCondition Xo c) PY lies → OrdTieOn h δ (trivialClassCondition Xo c) PY lies ∧ OrdTie h δ (trivialClassCondition Xo c) PY lies) ∧ ∀ d : ReciprocityTheory.ChartRestriction.G.T0.Data c.F (Comp Xo c) (fun Z => Om Z) (WTZ E) (fun Z => AC Z), DivFin d → FrShFin d δ := by
   intro E _ _ _ H Dw l Xo c hpq hgood hA _ h
@@ -150,11 +148,11 @@ theorem exists_frameShift_ordTies : ∀ (E : Type) [Field E] [NumberField E] [Is
     exact ⟨hOn, hOn.ordTie⟩
 
 /- English proof (translation)
-Introduce `D Q hP j hj _ h`. Take `⟨hgood, hA, -, -, -, -, hrk⟩` from `GlobalTheory.PinNum.numerics_of_pins D Q hP`. Take `⟨hr, hr1, hdim⟩` from `hrk j hj`. Establish `h1 : 1 ≤ (Q.Dw j).p + (Q.Dw j).q` using `hr ▸ hr1`. Take `⟨hfg, htr⟩` from `kap_fg_trdeg _ _ (Q.Dw j) Q.l (Q.Xo j) Q.c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hq, hqz, hon, hfin⟩` from `exists_frameShift_ordTies _ _ (Q.Dw j) Q.l (Q.Xo j) Q.c h1 hgood hA h`. Establish `hl : LiesTotal (Q.Xo j) Q.c (trivialClassCondition (Q.Xo j) Q.c) (fun _ => Unit) (fun _ _ _ _ _ => True)`. Unfold `LiesTotal`. Use `intros`. Conclude with `⟨(), trivial⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume the hypotheses. Supply the required witnesses or components.
 
-Take `⟨ho, ht⟩` from `hon _ _ hl`. Conclude with `⟨hfg, ⟨_, htr, hdim⟩, hdim ▸ fnTrdeg_of _ _ _ htr, (GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ (Q.Dw j) Q.l (Q.Xo j) Q.c h1).1, δ, hq, hqz, ho, ht, hfin⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ordTies_of_pins : ∀ (D : D7) (Q : Par D), Q.Pins → ∀ j, InR D j → ∀ [Fintype (Comp (Q.Xo j) Q.c)] (h : GenFrEx (Q.Xo j) Q.c), KapFG (Q.Xo j) Q.c ∧ (∃ d, KapTrdeg (Q.Xo j) Q.c d ∧ d + Nat.card (FlagVar (Q.Dw j)) = WeightFamilies.dimY D j) ∧ FnTrdeg (Q.Xo j) Q.c (WeightFamilies.dimY D j) ∧ CompNe (Q.Xo j) Q.c ∧ ∃ δ : ∀ Z : Comp (Q.Xo j) Q.c, AddValuation (Om Z) (WithTop ℤ) → Ix (Q.Dw j) → ℤ, OrdTieQ h δ ∧ OrdTieQZ h δ ∧ OrdTieOn h δ (trivialClassCondition (Q.Xo j) Q.c) (fun _ => Unit) (fun _ _ _ _ _ => True) ∧ OrdTie h δ (trivialClassCondition (Q.Xo j) Q.c) (fun _ => Unit) (fun _ _ _ _ _ => True) ∧ ∀ d : ReciprocityTheory.ChartRestriction.G.T0.Data Q.c.F (Comp (Q.Xo j) Q.c) (fun Z => Om Z) (WTZ D.host.E) (fun Z => AC Z), DivFin d → FrShFin d δ := by
   intro D Q hP j hj _ h

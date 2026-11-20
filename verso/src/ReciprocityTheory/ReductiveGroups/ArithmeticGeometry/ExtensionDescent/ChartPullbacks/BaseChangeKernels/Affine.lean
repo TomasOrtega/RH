@@ -15,9 +15,9 @@ section Square
 variable {G B G' B' : Scheme.{u}} {g : G' ⟶ G} {q' : G' ⟶ B'} {q : G ⟶ B} {b : B' ⟶ B}
 
 /- English proof (translation)
-Establish `outer : IsPullback ((q' ⁻¹ᵁ V').ι ≫ g) (q' ∣_ V') q (V'.ι ≫ b)` using `(isPullback_morphismRestrict q' V').flip.paste_horiz sq`. Rewrite using `[Scheme.Hom.resLE_eq_morphismRestrict, Scheme.Hom.resLE_eq_morphismRestrict]`. Use `IsPullback.of_right (h₁₂ := (q ⁻¹ᵁ V).ι) (h₂₂ := V.ι) (v₁₃ := q) ?_ ?_ (isPullback_morphismRestrict q V).flip` and prove the remaining obligations. Rewrite using `[Scheme.Hom.resLE_comp_ι, Scheme.Hom.resLE_comp_ι]`. Conclude with `outer`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono V.ι]`. Simplify using `only [Category.assoc, morphismRestrict_ι, Scheme.Hom.resLE_comp_ι]`. Rewrite using `[← Category.assoc, Scheme.Hom.resLE_comp_ι, Category.assoc, sq.w, ← Category.assoc, ← morphismRestrict_ι, Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_resLE (sq : IsPullback g q' q b) (V : B.Opens) (V' : B'.Opens)
     (hle : V' ≤ b ⁻¹ᵁ V) (hleG : q' ⁻¹ᵁ V' ≤ g ⁻¹ᵁ (q ⁻¹ᵁ V)) :
@@ -36,9 +36,9 @@ theorem isPullback_resLE (sq : IsPullback g q' q b) (V : B.Opens) (V' : B'.Opens
       ← morphismRestrict_ι, Category.assoc]
 
 /- English proof (translation)
-Establish `: IsAffine V.toScheme` using `hV`. Establish `: IsAffine V'.toScheme` using `hV'`. Establish `: IsAffine (q ⁻¹ᵁ V).toScheme` using `hV.preimage q`. Establish `P` using `isPushout_appTop_of_isPullback (isPullback_resLE sq V V' hle hleG)`. Rewrite using `[← Scheme.Hom.appLE_eq_app, ← Scheme.Hom.appLE_eq_app]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `refine P.of_iso V.topIso (q ⁻¹ᵁ V).topIso V'.topIso (q' ⁻¹ᵁ V').topIso ?_ ?_ ?_ ?_ <;>`. Simplify using `only [Scheme.Hom.appTop, Scheme.Hom.resLE_app_top, Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem isPushout_appLE (sq : IsPullback g q' q b) (hq : IsAffineHom q) {V : B.Opens}
     (hV : IsAffineOpen V) {V' : B'.Opens} (hV' : IsAffineOpen V')
@@ -61,31 +61,29 @@ variable {R A R' A' : CommRingCat.{u}} {qa : R ⟶ A} {ba : R ⟶ R'} {ga : A �
   {X : Type u} [AddCommMonoid X]
 
 /- English proof (translation)
-Set `F : AddMonoidAlgebra R' X →+* A'` to `AddMonoidAlgebra.liftNCRingHom qa'.hom φ' (fun _ _ => Commute.all _ _)`. Set `e : AddMonoidAlgebra R X ≃+* A` to `RingEquiv.ofBijective _ hφ`. Set `Mp : AddMonoidAlgebra R X →+* AddMonoidAlgebra R' X` to `AddMonoidAlgebra.mapRingHom X ba.hom`. Establish `he : ∀ (x : X) (r : R), e (AddMonoidAlgebra.single x r) = qa.hom r * φ (Multiplicative.ofAdd x)`. Introduce `x r`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[e, AddMonoidAlgebra.liftNC_single]`. Establish `hF : ∀ (x : X) (r : R'), F (AddMonoidAlgebra.single x r) = qa'.hom r * φ' (Multiplicative.ofAdd x)`. Introduce `x r`. Simplify using `[F, AddMonoidAlgebra.liftNC_single]`. Establish `hM : ∀ (x : X) (r : R), Mp (AddMonoidAlgebra.single x r) = AddMonoidAlgebra.single x (ba.hom r)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x r`. Simplify using `[Mp]`. Establish `hw : ∀ r : R, ga.hom (qa.hom r) = qa'.hom (ba.hom r)` using `fun r => congrArg (fun f => f.hom r) hP.w`. Establish `hes0 : ∀ r : R, e.symm (qa.hom r) = AddMonoidAlgebra.single 0 r`. Introduce `r`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingEquiv.symm_apply_eq, he]`. Simplify using the standard rewrite rules. Establish `hes1 : ∀ x : X, e.symm (φ (Multiplicative.ofAdd x)) = AddMonoidAlgebra.single x 1`. Introduce `x`. Rewrite using `[RingEquiv.symm_apply_eq, he]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Set `u : A ⟶ CommRingCat.of (AddMonoidAlgebra R' X)` to `CommRingCat.ofHom (Mp.comp (e.symm : A →+* AddMonoidAlgebra R X))`. Set `v : R' ⟶ CommRingCat.of (AddMonoidAlgebra R' X)` to `CommRingCat.ofHom (algebraMap R' (AddMonoidAlgebra R' X))`. Establish `hcond : qa ≫ u = ba ≫ v`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Use `show Mp (e.symm (qa.hom r)) = algebraMap R' (AddMonoidAlgebra R' X) (ba.hom r)`. Rewrite using `[hes0, hM]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `G` to `hP.desc u v hcond`. Establish `hG1 : ∀ a : A, G.hom (ga.hom a) = Mp (e.symm a)` using `fun a => congrArg (fun f => f.hom a) (hP.inl_desc u v hcond)`. Establish `hG2 : ∀ r : R', G.hom (qa'.hom r) = AddMonoidAlgebra.single 0 r` using `fun r => congrArg (fun f => f.hom r) (hP.inr_desc u v hcond)`. Establish `hleft : (G.hom).comp F = RingHom.id _`. Apply `AddMonoidAlgebra.ringHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Rewrite using `[RingHom.comp_apply, hF]`. Simplify using `[hG2]`. Introduce `x`. Rewrite using `[RingHom.comp_apply, hF, map_one, one_mul, hφ', hG1, hes1, hM, map_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hright : ∀ a : A', F (G.hom a) = a`. Establish `h3 : G ≫ CommRingCat.ofHom F = 𝟙 A'`. Apply `hP.hom_ext` to reduce the goal to its premises. Use extensionality with `a show F (G.hom (ga.hom a)) = ga.hom a`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG1]`. Take `⟨p, rfl⟩` from `e.surjective a`. Rewrite using `[RingEquiv.symm_apply_apply]`. Establish `h4 : F.comp Mp = ga.hom.comp (e : AddMonoidAlgebra R X →+* A)`. Apply `AddMonoidAlgebra.ringHom_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, hM, hF]`. Simplify using `[he, hw]`. Introduce `x`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, hM, hF, map_one, map_one, one_mul, hφ']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[he]`. Conclude with `congrArg (fun f => f p) h4`. Use extensionality with `r show F (G.hom (qa'.hom r)) = qa'.hom r`. Rewrite using `[hG2, hF]`. Simplify using the standard rewrite rules.
-
-Introduce `a`. Conclude with `congrArg (fun f => f.hom a) h3`. Conclude with `Function.bijective_iff_has_inverse.mpr ⟨G.hom, fun p => congrArg (fun f => f p) hleft, hright⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bijective_liftNC_of_isPushout (hP : IsPushout qa ba ga qa')
     (φ : Multiplicative X →* A) (φ' : Multiplicative X →* A') (hφ' : ∀ x, φ' x = ga (φ x))
@@ -162,7 +160,7 @@ theorem bijective_liftNC_of_isPushout (hP : IsPushout qa ba ga qa')
 end Algebra
 
 /- English proof (translation)
-The claim follows from `bijective_liftNC_of_isPushout (isPushout_appLE sq hq hV hV' hle hleG) φ φ' hφ' hφ`.
+A detailed English derivation is pending.
 -/
 theorem coord_affineBC {G B G' B' : Scheme.{u}} {g : G' ⟶ G} {q' : G' ⟶ B'} {q : G ⟶ B}
     {b : B' ⟶ B}

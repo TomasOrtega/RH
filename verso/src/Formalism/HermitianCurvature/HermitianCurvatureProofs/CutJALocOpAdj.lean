@@ -18,19 +18,19 @@ namespace LocOp
 def lcChi (x : ℝ) : ℝ := Real.smoothTransition (2 * x - 1)
 
 /- English proof (translation)
-The claim follows from `Real.smoothTransition.zero_of_nonpos (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem lcChi_zero {x : ℝ} (hx : x < 1 / 2) : lcChi x = 0 :=
   Real.smoothTransition.zero_of_nonpos (by linarith)
 
 /- English proof (translation)
-The claim follows from `Real.smoothTransition.one_of_one_le (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem lcChi_one {x : ℝ} (hx : 1 ≤ x) : lcChi x = 1 :=
   Real.smoothTransition.one_of_one_le (by linarith)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Real.smoothTransition.contDiff.comp ((contDiff_const.mul contDiff_id).sub contDiff_const), ⟨1 / 2, by norm_num, fun _ hx => lcChi_zero hx⟩, fun _ hx => lcChi_one hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCut0_lcChi : C6.IsCut0 lcChi :=
   ⟨Real.smoothTransition.contDiff.comp ((contDiff_const.mul contDiff_id).sub contDiff_const),
@@ -42,14 +42,14 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Introduce `x hx` and use `Formalism.FourierDecayAlt.P.BetaSesquilinearity.lie_LR (u := []) (by simp) hw x (by simpa [Formalism.FourierDecayAlt.P.BetaSesquilinearity.wL] using hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wR_lie {w : List (B.Mat k r)} (hw : ∀ X ∈ w, B.inLie k r X) :
     ∀ x ∈ Formalism.FourierDecayAlt.P.BetaSesquilinearity.wR w, B.inLie k r x.2 :=
   fun x hx => Formalism.FourierDecayAlt.P.BetaSesquilinearity.lie_LR (u := []) (by simp) hw x (by simpa [Formalism.FourierDecayAlt.P.BetaSesquilinearity.wL] using hx)
 
 /- English proof (translation)
-Introduce `g hg hgO`. Rewrite using `[← Formalism.FourierDecayAlt.P.BetaSesquilinearity.Dw_wR, ← Formalism.FourierDecayAlt.P.BetaSesquilinearity.Dw_wR]`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.Dw_congr_loc (wR_lie hw) hO h g hg hgO`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rw_congr_GV {F₀ : Type} [NormedAddCommGroup F₀] [NormedSpace ℂ F₀] {O : Set (B.Mat k r)} (hO : IsOpen O)
     {f₁ f₂ : B.Mat k r → F₀} (h : ∀ g ∈ B.GV k r, g ∈ O → f₁ g = f₂ g) {w : List (B.Mat k r)}
@@ -59,7 +59,7 @@ theorem rw_congr_GV {F₀ : Type} [NormedAddCommGroup F₀] [NormedSpace ℂ F�
   exact Formalism.FourierDecayAlt.P.BetaSesquilinearity.Dw_congr_loc (wR_lie hw) hO h g hg hgO
 
 /- English proof (translation)
-Introduce `g hg hgO`. Unfold `B.opApply`. Use `congr 1`. Use `List.map_congr_left fun T _ => ?_` and prove the remaining obligations. Rewrite using `[rw_congr_GV hO h T.word_lie g hg hgO]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem opApply_congr_GV (Θ : B.DiffOp k r Wp Wq) {O : Set (B.Mat k r)} (hO : IsOpen O)
     {f₁ f₂ : B.Mat k r → (Wq →L[ℂ] Wp)} (h : ∀ g ∈ B.GV k r, g ∈ O → f₁ g = f₂ g) :
@@ -71,9 +71,9 @@ theorem opApply_congr_GV (Θ : B.DiffOp k r Wp Wq) {O : Set (B.Mat k r)} (hO : I
   rw [rw_congr_GV hO h T.word_lie g hg hgO]
 
 /- English proof (translation)
-Introduce `g hg hgO`. Unfold `B.opAdj`. Use `congr 1`. Use `List.map_congr_left fun T _ => ?_` and prove the remaining obligations. Establish `h' : ∀ x ∈ B.GV k r, x ∈ O → T.coefAdj x (f₁ x) = T.coefAdj x (f₂ x)` using `fun x hx hxO => by`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h x hx hxO]`. Establish `hrev : ∀ X ∈ T.word.reverse, B.inLie k r X` using `fun X hX => T.word_lie X (List.mem_reverse.1 hX)`. Rewrite using `[rw_congr_GV hO h' hrev g hg hgO]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem opAdj_congr_GV (Θ : B.DiffOp k r Wp Wq) {O : Set (B.Mat k r)} (hO : IsOpen O)
     {f₁ f₂ : B.Mat k r → (Wq →L[ℂ] Wp)} (h : ∀ g ∈ B.GV k r, g ∈ O → f₁ g = f₂ g) :
@@ -97,15 +97,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, FiniteDimensional ℂ (Wp x)] [∀ x, FiniteDimensional ℂ (Wq x)]
 
 /- English proof (translation)
-Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Establish `hTT : (D.parOf S v).TT = Tz S.G.k S.G.r (T v).base.z * Tz S.G.k S.G.r (T v).base.z'`. Rewrite using `[hPl.2.2.2.1, hPl.2.2.2.2.1]`. Both sides reduce to the same expression. Take `⟨F₀, hF₀c, hF₀g, hF₀e⟩` from `hJ.2 (δ / 4) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `hε : (0 : ℝ) < 3 * δ / 4` using `by positivity`. Take `⟨δ', -, hcut, -⟩` from `Formalism.FourierDecayAlt.P.JCTx6.Lev0.isCutG_div isCut0_lcChi hε`. Take `⟨hFc, hFg⟩` from `gcut_graded (T v).base.z (T v).base.z' (fun x => lcChi (x / (3 * δ / 4))) (δ' * (3 * δ / 4)) hcut hBg hF₀c hF₀g`. Use `⟨D.cutF (T v).base lcChi F₀ (3 * δ / 4), hFc, hFg, ?_, ?_⟩` and prove the remaining obligations. Introduce `g _ hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : Gf S.G.k S.G.r (T v).base.z (T v).base.z' g / (3 * δ / 4) < 1 / 2`. Rewrite using `[div_lt_iff₀ hε]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[D.cutF, lcChi_zero h1]`. Introduce `g hg hG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hAg _ _ _ _ (T v).base J _ (Set.Ioi (3 * δ / 4)) hJ.1 ?_ g hg hG` and prove the remaining obligations. Introduce `q hq hGq`. Establish `hGq' : 3 * δ / 4 < Gf S.G.k S.G.r (T v).base.z (T v).base.z' (B.gq (T v).base q)` using `hGq`. Establish `hx : q ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT` using `⟨hq.1, by rw [hTT]; exact hq.2⟩`. Rewrite using `[hF₀e q hx (by unfold GfP; linarith), Formalism.FourierDecayAlt.P.JCTx2.JF_cutF]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : 1 ≤ Gf S.G.k S.G.r (T v).base.z (T v).base.z' (B.gq (T v).base q) / (3 * δ / 4)`. Rewrite using `[le_div_iff₀ hε]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[lcChi_one h1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rep (hAg : LT.AgreeOm) {S : C.HidaSetting E Wp Wq}
     {T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v))}
@@ -144,7 +144,7 @@ theorem rep (hAg : LT.AgreeOm) {S : C.HidaSetting E Wp Wq}
     simp
 
 /- English proof (translation)
-The claim follows from `(Formalism.FourierDecayAlt.P.PositiveOrbitOpen.omPlus_open z z').inter (isOpen_lt continuous_const (Formalism.FourierDecayAlt.P.BetaSesquilinearity.Gf_cont z z'))`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_omPlus_inter_lt {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) (c : ℝ) :
     IsOpen (Q.OmPlus k r z z' ∩ {g | c < Gf k r z z' g}) :=
@@ -164,7 +164,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, FiniteDimensional ℂ (Wp x)] [∀ x, FiniteDimensional ℂ (Wq x)]
 
 /- English proof (translation)
-Establish `ho : (0 : ℝ) ≤ (o : ℝ)` using `Nat.cast_nonneg o`. Establish `hBo : 0 ≤ Bg * (o : ℝ)` using `mul_nonneg hBg ho`. Conclude with `jdc_thrW o (A - Bg * o) d hd (by nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thr_of {k r : ℕ} {o : ℕ} {A d Bg : ℝ} (hd : 0 ≤ d) (hBg : 0 ≤ Bg)
     (hA : 12 * ((r : ℝ) + 1) * nDim k r ^ 2 + 6 * (r : ℝ) * (o : ℝ) + d + 2 * Bg * ((o : ℝ) + 1) ≤ A) :
@@ -178,13 +178,13 @@ end place2
 end LocOp
 
 /- English proof (translation)
-Use `⟨12, 2, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top Cb A₀ hB v Θ d Bg A J hd hBg hAA hCut hA hJ hFF`. Establish `hBg0 : 0 ≤ Bg` using `le_trans (by positivity) hBg`. Establish `hBo : 0 ≤ Bg * (B.opOrder Θ : ℝ)` using `mul_nonneg hBg0 (Nat.cast_nonneg _)`. Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTT : (D.parOf S v).TT = Tz S.G.k S.G.r (T v).base.z * Tz S.G.k S.G.r (T v).base.z'`. Rewrite using `[hPl.2.2.2.1, hPl.2.2.2.2.1]`. Both sides reduce to the same expression. Use `⟨hFF, fun δ hδ => ?_⟩` and prove the remaining obligations. Take `⟨F, hFc, hFg, hFz, hFe⟩` from `LocOp.rep hAg hB v hBg hJ hδ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨hc, hg⟩, -⟩` from `hOp _ _ _ _ (T v).base Θ d Bg A (3 * δ / 8) F (by positivity) hBg0 hAA.1 hCut hFc hFg hFz`. Use `⟨B.opApply Θ F, hc, fun m => inCC_antiA (by linarith) (hg m), fun x hx hG => ?_⟩` and prove the remaining obligations. Establish `hq : x ∈ JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z'` using `⟨hx.1, hTT ▸ hx.2⟩`. Establish `hgO` using `Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom (T v).base hq`. Establish `hGx : 3 * δ / 4 < Gf S.G.k S.G.r (T v).base.z (T v).base.z' (B.gq (T v).base x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: δ ≤ Gf S.G.k S.G.r (T v).base.z (T v).base.z' (B.gq (T v).base x)` using `hG`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[LocOp.opApply_congr_GV Θ (LocOp.isOpen_omPlus_inter_lt (T v).base.z (T v).base.z' (3 * δ / 4)) (f₁ := J) (f₂ := B.JF (T v).base F) (fun g hg hgO => hFe g ⟨hg, hgO.1⟩ hgO.2) _ hgO.1 ⟨hgO.2, hGx⟩]`. Establish `hIn : B.InCC (A - Bg * (B.opOrder Θ : ℝ)) (B.opOrder Θ) F` using `hFg (B.opOrder Θ)`. Conclude with `hTh _ _ _ _ (T v).base Θ _ F (LocOp.thr_of hd hBg0 hA) hAA.1 hAA.2 hFc hIn _ hgO`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jALocOp_of_tools (hOp : LT.OpCCg) (hAg : LT.AgreeOm) (hTh : LT.ThetaJApply) : JALocOp := by
   refine ⟨12, 2, by norm_num, ?_⟩
@@ -210,17 +210,17 @@ theorem jALocOp_of_tools (hOp : LT.OpCCg) (hAg : LT.AgreeOm) (hTh : LT.ThetaJApp
   exact hTh _ _ _ _ (T v).base Θ _ F (LocOp.thr_of hd hBg0 hA) hAA.1 hAA.2 hFc hIn _ hgO
 
 /- English proof (translation)
-Use `⟨12, 2, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top Cb A₀ hB v Θ d Bg A J hd hBg hAA hCut hA hJ hFF`. Establish `hBg0 : 0 ≤ Bg` using `le_trans (by positivity) hBg`. Establish `hBo : 0 ≤ Bg * (B.opOrder Θ : ℝ)` using `mul_nonneg hBg0 (Nat.cast_nonneg _)`. Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTT : (D.parOf S v).TT = Tz S.G.k S.G.r (T v).base.z * Tz S.G.k S.G.r (T v).base.z'`. Rewrite using `[hPl.2.2.2.1, hPl.2.2.2.2.1]`. Both sides reduce to the same expression. Use `⟨hFF, fun δ hδ => ?_⟩` and prove the remaining obligations. Take `⟨F, hFc, hFg, hFz, hFe⟩` from `LocOp.rep hAg hB v hBg hJ hδ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨-, ⟨hc, hg⟩⟩` from `hOp _ _ _ _ (T v).base Θ d Bg A (3 * δ / 8) F (by positivity) hBg0 hAA.1 hCut hFc hFg hFz`. Use `⟨B.opAdj Θ F, hc, fun m => inCC_antiA (by linarith) (hg m), fun x hx hG => ?_⟩` and prove the remaining obligations. Establish `hq : x ∈ JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z'` using `⟨hx.1, hTT ▸ hx.2⟩`. Establish `hgO` using `Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom (T v).base hq`. Establish `hGx : 3 * δ / 4 < Gf S.G.k S.G.r (T v).base.z (T v).base.z' (B.gq (T v).base x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: δ ≤ Gf S.G.k S.G.r (T v).base.z (T v).base.z' (B.gq (T v).base x)` using `hG`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[LocOp.opAdj_congr_GV Θ (LocOp.isOpen_omPlus_inter_lt (T v).base.z (T v).base.z' (3 * δ / 4)) (f₁ := J) (f₂ := B.JF (T v).base F) (fun g hg hgO => hFe g ⟨hg, hgO.1⟩ hgO.2) _ hgO.1 ⟨hgO.2, hGx⟩]`. Establish `hIn : B.InCC (A - Bg * (B.opOrder Θ : ℝ)) (B.opOrder Θ) F` using `hFg (B.opOrder Θ)`. Use `set UU : Set (B.Mat S.G.k S.G.r) := {g | g ∈ JF.Om S.G.k S.G.r (T v).base.z (T v).base.z' ∧ 3 * δ / 4 < Gf S.G.k S.G.r (T v).base.z (T v).base.z' g} with hUU`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCkJ : B.CkOn ⊤ (JF.Om S.G.k S.G.r (T v).base.z (T v).base.z') J` using `jdc_ckOn_om _ _ hJ.1.1`. Establish `hCk : B.CkOn ⊤ UU (B.JF (T v).base F)`. Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hc', he⟩` from `hCkJ g₀ hg₀.1`. Use `⟨U ∩ (Q.OmPlus S.G.k S.G.r (T v).base.z (T v).base.z' ∩ {g | 3 * δ / 4 < Gf S.G.k S.G.r (T v).base.z (T v).base.z' g}), f', hU.inter (LocOp.isOpen_omPlus_inter_lt _ _ _), ⟨hgU, hg₀.1.2, hg₀.2⟩, hc'.mono Set.inter_subset_left, fun g hg hgG => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hFe g ⟨hgG, hg.2.1⟩ hg.2.2]`. Conclude with `he g hg.1 hgG`. Conclude with `(hTh _ _ _ _ (T v).base Θ _ F UU (LocOp.thr_of hd hBg0 hA) hAA.1 hAA.2 hFc hIn (fun g hg => hg.1) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.sCkOn_mono le_top hCk)).2 _ ⟨hgO, hGx⟩`.
+A detailed English derivation is pending.
 -/
 theorem jALocAdj_of_tools (hOp : LT.OpCCg) (hAg : LT.AgreeOm) (hTh : LT.ThetaJ) : JALocAdj := by
   refine ⟨12, 2, by norm_num, ?_⟩

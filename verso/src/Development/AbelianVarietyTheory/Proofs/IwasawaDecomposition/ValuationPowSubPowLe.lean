@@ -5,9 +5,9 @@ universe u_1 u_2
 namespace GlobalTheory.ValuationPowSubPow
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h : a ^ (n + 1) - b ^ (n + 1) = a * (a ^ n - b ^ n) + b ^ n * (a - b)` using `by ring`. Rewrite using `[h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `w.map_add_le ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' ha).trans ih`. Rewrite using `[map_mul, map_pow]`. Conclude with `mul_le_of_le_one_left' (pow_le_one' hb n)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_pow_sub_pow_le {K : Type u_1} {Γ : Type u_2} [Field K]
     [LinearOrderedCommGroupWithZero Γ] (w : Valuation K Γ) {a b : K}

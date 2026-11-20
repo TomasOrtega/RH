@@ -17,9 +17,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.PFl.PCont
 
 /- English proof (translation)
-Use `continuous_pi fun q => ?_` and prove the remaining obligations. Distinguish the cases in `hq : ∃ q', v q' = q`. Simplify using `only [upV, dif_pos hq]`. Conclude with `continuous_apply _`. Simplify using `only [upV, dif_neg hq]`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_upV {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Kk : Type} [Fintype Kk]
     {ιk : Kk → Type} [∀ k, Fintype (ιk k)] (v : (Σ k, ιk k) → (Σ k, ι k)) :
@@ -32,9 +30,9 @@ theorem continuous_upV {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype 
     exact continuous_const
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨-, -, hb, ha, hc⟩ := GlobalTheory.T.pMat_stepCols_entry Ψ N j keep q hj`. Establish `hX : IsLowerUni (pMat (j` using `j) keep (fun _ => (0 : ℂ)) q.1.1.1) := by`. Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Unfold `pMat lowMat`. Rewrite using `[dif_neg (fun h => lt_irrefl _ h.1), if_pos rfl]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `pMat lowMat`. Rewrite using `[dif_neg (fun h => lt_asymm hab h.1), if_neg hab.ne]`. Conclude with `(GlobalTheory.T.minorIJ_lowerUni_swap N _ _ _ _ hX ha hb q.1.2.1 (hc fun _ => 0).2).2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pSgn_ne_zero {Ψ : Type} {N j : ℕ} (hj : j ≤ N) (keep : Ψ × Fin N → Prop) (q : PIdx j keep) :
     pSgn (stepCols N j (pStep j keep q.1.1.1 q.1.1.2.2)) q.1.1.2.1 q.1.1.2.2 ≠ 0 := by
@@ -50,19 +48,17 @@ theorem pSgn_ne_zero {Ψ : Type} {N j : ℕ} (hj : j ≤ N) (keep : Ψ × Fin N 
 section Flag
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε H`. Take `⟨hv, hcov, hF, hB, horb, hr, hh⟩` from `H`. Take `⟨hVo, hVt, -, -, hbl⟩` from `hB`. Establish `hbase : Set.MapsTo (pBase M v) (pO M Rb keep v F kb V r h) (mcPts (mCoordIdeal M.x))` using `fun z hz => (GlobalTheory.T.blockMap_frame_restriction K ι Φ y Ψ N j M keep Kk ιk κ v hv hcov).1 z hz.1`. Establish `cU : Continuous (upV v)` using `continuous_upV v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cB : Continuous (pBase M v)` using `continuous_pi fun q => (continuous_apply (⟨q.1.1, q.2⟩ : Σ k, ι k)).comp cU`. Establish `hgood : ∀ z ∈ pO M Rb keep v F kb V r h, M.GoodAt F (mCoordIdeal (pBase M v z))`. Introduce `z hz`. Establish `h3` using `(hbl _ hz.2.2.1).2.2`. Rewrite `h3` using `[(Rb.A.chart kb).left_inv hz.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `orbit_trans (orbit_symm (horb _ (hbase hz))) h3.2`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.PB.CovMap.mCoordIdeal_eq_of_sameOrbit e]`. Conclude with `h3.1`. Introduce `z hz`. Establish `hz₄ : ∀ p k, keep p → M.blk p = some k → twMinor M F (pBase M v z) p.2 k (h p.1)⁻¹ (upV v z) (stepCols N j p.2) ≠ 0` using `hz.2.2.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuousWithinAt_pi.2 fun i => ?_` and prove the remaining obligations. Break down `e : ε.symm i with l | q` into its components or cases. Simplify using `only [pRho, e]`. Establish `c2 : ContinuousWithinAt (r ∘ pBase M v) (pO M Rb keep v F kb V r h) z` using `ContinuousWithinAt.comp (hr _ (hbase hz)) cB.continuousWithinAt hbase`. Establish `c3 : ContinuousAt (fun x => Rb.A.chart kb x l) ((r ∘ pBase M v) z)` using `(continuous_apply l).continuousAt.comp ((Rb.A.chart kb).continuousAt hz.2.1)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `ContinuousAt.comp_continuousWithinAt (g := fun x => Rb.A.chart kb x l) c3 c2`. Simplify using `only [pRho, e]`. Apply the tactic sequence `obtain ⟨hk, -, -, -, -⟩ := GlobalTheory.T.pMat_stepCols_entry Ψ N j keep q M.j_le`. Establish `cT` using `fun (k : K) (J : Finset (Fin N)) => twMinor_continuousWithinAt M F cB.continuousWithinAt hbase (hbase hz) (hgood z hz) cU.continuousWithinAt (pStep j keep q.1.1.1 q.1.1.2.2) k (h q.1.1.1)⁻¹ J`. Consider the cases of `e' : M.blk (q.1.1.1, pStep j keep q.1.1.1 q.1.1.2.2) with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `none`. Simplify using `only [pRead, e', Option.elim_none]`. Conclude with `continuousWithinAt_const`. Consider the case `some k`. Simplify using `only [pRead, e', Option.elim_some]`.
-
-Establish `hd` using `mul_ne_zero (pSgn_ne_zero M.j_le keep q) (hz₄ _ k hk e')`. Conclude with `ContinuousWithinAt.div (cT k _) (ContinuousWithinAt.mul continuousWithinAt_const (cT k _)) hd`.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n e : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (keep : Ψ × Fin N → Prop) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ε : Fin n ⊕ PIdx j keep ≃ Fin e), IsPCtx M Rb keep κ v F kb V bl r h → ContinuousOn (pRho M Rb keep v F kb r h ε) (pO M Rb keep v F kb V r h) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε H

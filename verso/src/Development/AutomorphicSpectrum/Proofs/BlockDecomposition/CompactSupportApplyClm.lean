@@ -22,7 +22,7 @@ namespace GlobalTheory.CompanionTheory.SobSecK
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `y hy hl`. Simplify using `only [Rd]`. Rewrite using `[RCalc.ByParts.fderiv_eq_zero_far GlobalTheory.CompanionTheory.LengthGL.lgFacts hR hy hl]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem far_Rd {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (X : Mat n) {f : Mat n → V} {R : ℝ}
     (hR : ∀ y ∈ GLs n, R < lg y → f y = 0) : ∀ y ∈ GLs n, R < lg y → Rd X f y = 0 := by
@@ -32,7 +32,7 @@ theorem far_Rd {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (X : Mat n)
   rfl
 
 /- English proof (translation)
-The claim follows from `hc.imp fun _ h => far_Rd X h`.
+A detailed English derivation is pending.
 -/
 theorem cpt_Rd {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (X : Mat n) {f : Mat n → V} (hc : Cpt f) :
     Cpt (Rd X f) :=
@@ -43,7 +43,7 @@ section Int
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `hz`. Establish `hcont : Continuous fun y : G n => h y.val` using `hc.comp_continuous Units.continuous_val fun y => RCalc.ByParts.val_mem_GLs y`. Use `hcont.integrable_of_hasCompactSupport (HasCompactSupport.intro ((GlobalTheory.CompanionTheory.LengthGL.lgFacts n).2.2.2.2.1 R) fun y hy => ?_)` and prove the remaining obligations. Conclude with `hR _ (RCalc.ByParts.val_mem_GLs y) (not_le.1 hy)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_of_cpt {W : Type} [NormedAddCommGroup W] {h : Mat n → W} (hc : ContinuousOn h (GLs n))
     (hz : Cpt h) : Integrable (fun y : G n => h y.val) μ := by
@@ -89,15 +89,15 @@ variable {μ}
 def Hs.fn (f : Hs μ V) : Mat n → V := Subtype.val (p := fun f => f ∈ Sp n V) f
 
 /- English proof (translation)
-The claim follows from `f.2.1`.
+A detailed English derivation is pending.
 -/
 theorem Hs.smooth (f : Hs μ V) : ContDiffOn ℝ ∞ f.fn (GLs n) := f.2.1
 /- English proof (translation)
-The claim follows from `f.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem Hs.cpt (f : Hs μ V) : Cpt f.fn := f.2.2.1
 /- English proof (translation)
-The claim follows from `f.2.2.2 y hy`.
+A detailed English derivation is pending.
 -/
 theorem Hs.off (f : Hs μ V) {y : Mat n} (hy : y ∉ GLs n) : f.fn y = 0 := f.2.2.2 y hy
 /- English proof (translation)
@@ -114,7 +114,7 @@ Both sides reduce to the same expression.
 @[simp] theorem Hs.zero_fn : (0 : Hs μ V).fn = 0 := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ GLs n`. Conclude with `e hy`. Conclude with `(f.off hy).trans (h.off hy).symm`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem Hs.ext_on {f h : Hs μ V} (e : Set.EqOn f.fn h.fn (GLs n)) : f = h := by
   apply Subtype.ext
@@ -129,7 +129,7 @@ def toH (μ : Measure (G n)) (f : Mat n → V) (hf : ContDiffOn ℝ ∞ f (GLs n
     fun _ hy => Set.indicator_of_notMem hy f⟩
 
 /- English proof (translation)
-The claim follows from `Set.indicator_of_mem hy f`.
+A detailed English derivation is pending.
 -/
 theorem toH_fn {f : Mat n → V} {hf : ContDiffOn ℝ ∞ f (GLs n)} {hc : Cpt f} {y : Mat n} (hy : y ∈ GLs n) :
     (toH μ f hf hc).fn y = f y :=
@@ -143,13 +143,13 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] {μ : Measure (G n)} [μ.IsHaarMeasure]
 
 /- English proof (translation)
-The claim follows from `f.smooth.continuousOn.comp_continuous Units.continuous_val fun y => RCalc.ByParts.val_mem_GLs y`.
+A detailed English derivation is pending.
 -/
 theorem Hs.continuous_val (f : Hs μ V) : Continuous fun y : G n => f.fn y.val :=
   f.smooth.continuousOn.comp_continuous Units.continuous_val fun y => RCalc.ByParts.val_mem_GLs y
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `f.cpt`. Use `integrable_of_cpt μ (h := fun y => ⟪f.fn y, h.fn y⟫_ℂ) (f.smooth.continuousOn.inner h.smooth.continuousOn) ⟨R, fun y hy hl => ?_⟩` and prove the remaining obligations. Simplify using `[hR y hy hl]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem integrable_inner (f h : Hs μ V) : Integrable (fun y : G n => ⟪f.fn y.val, h.fn y.val⟫_ℂ) μ := by
   obtain ⟨R, hR⟩ := f.cpt
@@ -158,7 +158,7 @@ theorem integrable_inner (f h : Hs μ V) : Integrable (fun y : G n => ⟪f.fn y.
   simp [hR y hy hl]
 
 /- English proof (translation)
-Simplify using `only [ip, inner_self_eq_norm_sq_to_K]`. Rewrite using `[← integral_complex_ofReal]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ip_self (f : Hs μ V) : ip μ f.fn f.fn = ((∫ y : G n, ‖f.fn y.val‖ ^ 2 ∂μ : ℝ) : ℂ) := by
   simp only [ip, inner_self_eq_norm_sq_to_K]
@@ -224,14 +224,14 @@ def Lh : Module.End ℂ (Hs μ V) := -∑ p : Ix n, Xop μ p * Xop μ p
 
 variable {μ} in
 /- English proof (translation)
-The claim follows from `(T.restrictScalars ℝ).contDiff.comp_contDiffOn f.smooth`.
+A detailed English derivation is pending.
 -/
 theorem smooth_alt (T : V →L[ℂ] V) (f : Hs μ V) : ContDiffOn ℝ ∞ (fun y => T (f.fn y)) (GLs n) :=
   (T.restrictScalars ℝ).contDiff.comp_contDiffOn f.smooth
 
 variable {μ} in
 /- English proof (translation)
-The claim follows from `f.cpt.imp fun _ h y hy hl => by show T (f.fn y) = 0; rw [h y hy hl, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem compact_support_apply_clm (T : V →L[ℂ] V) (f : Hs μ V) : Cpt (fun y => T (f.fn y)) :=
   f.cpt.imp fun _ h y hy hl => by show T (f.fn y) = 0; rw [h y hy hl, map_zero]

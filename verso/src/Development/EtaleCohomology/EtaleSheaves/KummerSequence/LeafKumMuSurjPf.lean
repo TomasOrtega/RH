@@ -14,7 +14,7 @@ def LeafKumMuSurjLoc : Prop := ∀ (q : ℕ) [NeZero q] (B : Type) [CommRing B],
 def LeafKumMuSurjInj : Prop := LeafKumMuInj
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun m => ModuleCat.Hom.hom m x) (F.obj.map_comp f.op g.op)`. Conclude with `h.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sec_res_comp {R : Type} [CommRing R] (F : Shv R) {W V U : Scheme.{0}} (g : W ⟶ V) (f : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.res f x) = Sec.res (g ≫ f) x := by
@@ -22,7 +22,7 @@ theorem sec_res_comp {R : Type} [CommRing R] (F : Shv R) {W V U : Scheme.{0}} (g
   exact h.symm
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun m => ModuleCat.Hom.hom m x) (κ.hom.naturality g.op)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sec_map_res {R : Type} [CommRing R] {F G : Shv R} (κ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.map κ (Sec.res g x) = Sec.res g (Sec.map κ x) := by
@@ -30,7 +30,7 @@ theorem sec_map_res {R : Type} [CommRing R] {F G : Shv R} (κ : F ⟶ G) {V U : 
   exact h
 
 /- English proof (translation)
-The claim follows from `(isSheaf_iff_isSheaf_of_type _ _).1 ((Presheaf.isSheaf_iff_isSheaf_forget _ F.obj (forget _)).1 F.property)`.
+A detailed English derivation is pending.
 -/
 theorem isSheaf_types {R : Type} [CommRing R] (F : Shv R) :
     Presieve.IsSheaf Scheme.etaleTopology (F.obj ⋙ forget _) :=
@@ -38,16 +38,16 @@ theorem isSheaf_types {R : Type} [CommRing R] (F : Shv R) :
     ((Presheaf.isSheaf_iff_isSheaf_forget _ F.obj (forget _)).1 F.property)
 
 /- English proof (translation)
-The claim follows from `((isSheaf_types F) S hS).isSeparatedFor.ext (fun _ f hf => h f hf)`.
+A detailed English derivation is pending.
 -/
 theorem sec_ext {R : Type} [CommRing R] (F : Shv R) {U : Scheme.{0}} (S : Sieve U) (hS : S ∈ Scheme.etaleTopology U)
     (a b : Sec F U) (h : ∀ ⦃V : Scheme.{0}⦄ (f : V ⟶ U), S f → Sec.res f a = Sec.res f b) : a = b :=
   ((isSheaf_types F) S hS).isSeparatedFor.ext (fun _ f hf => h f hf)
 
 /- English proof (translation)
-Set `x : Presieve.FamilyOfElements (F.obj ⋙ forget _) S.arrows` to `fun _ f hf => t f hf`. Establish `hx : x.Compatible`. Rewrite using `[Presieve.compatible_iff_sieveCompatible]`. Introduce `V W f g hf`. Conclude with `ht g f hf`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨((isSheaf_types F) S hS).amalgamate x hx, fun V f hf => ((isSheaf_types F) S hS).valid_glue hx f hf⟩`.
+A detailed English derivation is pending.
 -/
 theorem sec_glue {R : Type} [CommRing R] (F : Shv R) {U : Scheme.{0}} (S : Sieve U) (hS : S ∈ Scheme.etaleTopology U)
     (t : ∀ ⦃V : Scheme.{0}⦄ (f : V ⟶ U), S f → Sec F V)
@@ -72,9 +72,9 @@ def LeafKumMuSurjRoot : Prop := ∀ (q : ℕ) [NeZero q] (B : Type) [CommRing B]
         ∃ t, Sec.map κ t = Sec.res f (ofRings.sec unitsF U ⟨Additive.ofMul u⟩ : Sec Gm U)
 
 /- English proof (translation)
-Introduce `q _ B _ hq κ hg U hU s hs`. Take `⟨S, hS, h1⟩` from `hU' q U s hs`. Use `choose u hu1 hu2 using h1`. Establish `hsub : ∀ ⦃V : Scheme.{0}⦄ (f : V ⟶ U), Nonempty (Sx (sp B) 0 V)` using `fun V f => ⟨((sp B).obj (op (SimplexCategory.mk 0))).map f.op hU.some⟩`. Use `choose R hR1 hR2 using fun ⦃V : Scheme.{0}⦄ (f : V ⟶ U) (hf : S f) => hR q B hq κ hg V (hsub f) (u f hf) (hu1 f hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨Sieve.bind S.arrows R, Scheme.etaleTopology.bind_covering hS hR1, ?_⟩` and prove the remaining obligations. Introduce and unpack `W h ⟨V, g, f, hf, hg', rfl⟩`. Take `⟨t, ht⟩` from `hR2 f hf g hg'`. Conclude with `⟨t, by rw [ht, ← hu2 f hf]; exact sec_res_comp Gm g f s⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem LeafKumMuSurjLoc_of (hU' : LeafKumMuSurjUnit) (hR : LeafKumMuSurjRoot) : LeafKumMuSurjLoc := by
   intro q _ B _ hq κ hg U hU s hs
@@ -90,9 +90,9 @@ theorem LeafKumMuSurjLoc_of (hU' : LeafKumMuSurjUnit) (hR : LeafKumMuSurjRoot) :
   exact ⟨t, by rw [ht, ← hu2 f hf]; exact sec_res_comp Gm g f s⟩
 
 /- English proof (translation)
-Introduce `q _ B _ hq κ hg U hU s hs`. Take `⟨S, hS, hloc⟩` from `hL q B hq κ hg U hU s hs`. Use `choose t ht using hloc`. Establish `hsub : ∀ ⦃V : Scheme.{0}⦄ (f : V ⟶ U), Nonempty (Sx (sp B) 0 V)` using `fun V f => ⟨((sp B).obj (op (SimplexCategory.mk 0))).map f.op hU.some⟩`. Take `⟨a, ha⟩` from `sec_glue _ S hS (fun V f hf => t f hf) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W V g f hf`. Apply `hI q B hq κ hg W (hsub (g ≫ f))` to reduce the goal to its premises. Rewrite using `[ht, sec_map_res, ht, sec_res_comp])`. Use `⟨a, sec_ext Gm S hS _ _ (fun V f hf => ?_)⟩` and prove the remaining obligations. Rewrite using `[← sec_map_res, ha f hf, ht f hf]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafKumMuSurj_of (hL : LeafKumMuSurjLoc) (hI : LeafKumMuSurjInj) : LeafKumMuSurj := by
   intro q _ B _ hq κ hg U hU s hs
@@ -108,17 +108,17 @@ theorem LeafKumMuSurj_of (hL : LeafKumMuSurjLoc) (hI : LeafKumMuSurjInj) : LeafK
   rw [← sec_map_res, ha f hf, ht f hf]
 
 /- English proof (translation)
-Introduce `q U s hs`. Set `P : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} ℤ)` to `Scheme.Γ ⋙ unitsF`. Set `η` to `toSheafify Scheme.etaleTopology P`. Set `pw : P ⟶ P` to `Functor.whiskerLeft Scheme.Γ (LateralTheory.E.H2CurveOrder.LeafKumSeqPf.powNat q)`. Establish `hsurj : Presheaf.IsLocallySurjective Scheme.etaleTopology η` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Presheaf.IsLocallyInjective Scheme.etaleTopology η` using `inferInstance`. Establish `hS1 : Presheaf.imageSieve η s ∈ Scheme.etaleTopology U` using `Presheaf.imageSieve_mem Scheme.etaleTopology η (U := op U) s`. Establish `hnat : ∀ {V : Scheme.{0}} (x : P.obj (op V)), (LateralTheory.E.H2CurveOrder.LeafKumSeqPf.powGm q).hom.app (op V) (η.app (op V) x) = η.app (op V) (pw.app (op V) x)`. Introduce `V x`. Establish `h` using `congrArg (fun m => m.app (op V) x) (toSheafify_naturality Scheme.etaleTopology pw)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h.symm`. Establish `hx : ∀ {V : Scheme.{0}} (f : V ⟶ U) (hf : Presheaf.imageSieve η s f), η.app (op V) (pw.app (op V) (Presheaf.localPreimage η s f hf)) = η.app (op V) 0`. Introduce `V f hf`. Establish `h3 : η.app (op V) (Presheaf.localPreimage η s f hf) = Sec.res f s` using `Presheaf.app_localPreimage η s f hf`. Rewrite using `[← hnat, h3, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(sec_map_res (LateralTheory.E.H2CurveOrder.LeafKumSeqPf.powGm q) f s).trans (by rw [hs]; exact map_zero _)`. Use `⟨Sieve.bind (Presheaf.imageSieve η s).arrows (fun V f hf => Presheaf.equalizerSieve (F := P) (X := op V) (pw.app (op V) (Presheaf.localPreimage η s f hf)) 0), Scheme.etaleTopology.bind_covering hS1 (fun V f hf => Presheaf.equalizerSieve_mem Scheme.etaleTopology η _ _ (hx f hf)), …` and prove the remaining obligations. Introduce and unpack `W h ⟨V, g, f, hf, hg, rfl⟩`. Set `x` to `Presheaf.localPreimage η s f hf`. Use `⟨(P.map g.op x).down.toMul, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : P.map g.op (pw.app (op V) x) = P.map g.op 0` using `hg`. Rewrite `h1` using `[map_zero, ← NatTrans.naturality_apply]`. Establish `h2` using `congrArg (fun y => Additive.toMul y.down) h1`. Establish `h4 : Additive.toMul (q • (P.map g.op x).down) = 1` using `h2`. Rewrite `h4` using `[toMul_nsmul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : η.app (op V) x = Sec.res f s` using `Presheaf.app_localPreimage η s f hf`. Rewrite using `[← sec_res_comp Gm g f s, ← h3]`. Conclude with `(NatTrans.naturality_apply η g.op x).symm`.
+A detailed English derivation is pending.
 -/
 theorem LeafKumMuSurjUnit_pf : LeafKumMuSurjUnit := by
   intro q U s hs
@@ -155,7 +155,7 @@ theorem LeafKumMuSurjUnit_pf : LeafKumMuSurjUnit := by
     exact (NatTrans.naturality_apply η g.op x).symm
 
 /- English proof (translation)
-The claim follows from `LeafKumMuSurj_of (LeafKumMuSurjLoc_of hU' hR) hI`.
+A detailed English derivation is pending.
 -/
 theorem LeafKumMuSurj_of'' (hU' : LeafKumMuSurjUnit) (hR : LeafKumMuSurjRoot) (hI : LeafKumMuSurjInj) : LeafKumMuSurj :=
   LeafKumMuSurj_of (LeafKumMuSurjLoc_of hU' hR) hI
@@ -169,7 +169,7 @@ def LeafKumMuSurjPow : Prop := ∀ (q : ℕ) [NeZero q] (U : Scheme.{0}) (ζ : P
     ∃ a : ℕ, (Scheme.Γ.map f.op).hom (u : Γ(U, ⊤)) = ((Scheme.Γ.map f.op).hom ζ.1) ^ a
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ`. Establish `h` using `congrArg (Polynomial.aeval ζ.1) hp`. Rewrite `h` using `[map_mul, ζ.2.2, zero_mul, map_sub, map_pow, Polynomial.aeval_X, map_one]`. Conclude with `sub_eq_zero.1 h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_pow_q {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) : ζ.1 ^ q = 1 := by
   obtain ⟨p, hp⟩ := Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ
@@ -178,7 +178,7 @@ theorem prim_pow_q {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) 
   exact sub_eq_zero.1 h
 
 /- English proof (translation)
-The claim follows from `(NatTrans.naturality_apply (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)) f.op _).symm`.
+A detailed English derivation is pending.
 -/
 theorem secUnits_res {U V : Scheme.{0}} (f : V ⟶ U) (u : (Γ(U, ⊤))ˣ) :
     Sec.res f (ofRings.sec unitsF U ⟨Additive.ofMul u⟩ : Sec Gm U) =
@@ -186,21 +186,19 @@ theorem secUnits_res {U V : Scheme.{0}} (f : V ⟶ U) (u : (Γ(U, ⊤))ˣ) :
   (NatTrans.naturality_apply (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)) f.op _).symm
 
 /- English proof (translation)
-Introduce `q _ B _ hq κ hg U hU u hu`. Take `⟨S, hS, hS'⟩` from `hP q B hq U hU`. Establish `key : ∀ ⦃V : Scheme.{0}⦄ (f : V ⟶ U), S f → ∃ R ∈ Scheme.etaleTopology V, ∀ ⦃W : Scheme.{0}⦄ (g : W ⟶ V), R g → ∃ t, Sec.map κ t = Sec.res (g ≫ f) (ofRings.sec unitsF U ⟨Additive.ofMul u⟩ : Sec Gm U)`. Introduce `V f hf`. Take `⟨ζ⟩` from `hS' f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `uV` to `Units.map (Scheme.Γ.map f.op).hom.toMonoidHom u`. Establish `huV : uV ^ q = 1`. Rewrite using `[show uV ^ q = Units.map (Scheme.Γ.map f.op).hom.toMonoidHom (u ^ q) from (map_pow _ u q).symm, hu]`. Conclude with `map_one _`. Take `⟨R, hR, hR'⟩` from `hW q V ζ uV huV`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨R, hR, fun W g hgR => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hR' g hgR`. Set `ζW` to `Prim.map (Scheme.Γ.map g.op).hom ζ`. Establish `hζu : IsUnit ζW.1` using `IsUnit.of_pow_eq_one (prim_pow_q ζW) (NeZero.ne q)`. Establish `hgen` using `hg W ζW hζu.unit rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a • (twGen 1 ζW : Sec ((restr (Int.castRingHom (ZMod q))).obj (tw q 1)) W), ?_⟩` and prove the remaining obligations. Establish `e1 : Sec.map κ (a • (twGen 1 ζW : Sec ((restr (Int.castRingHom (ZMod q))).obj (tw q 1)) W)) = a • Sec.map κ (twGen 1 ζW)` using `map_nsmul (κ.hom.app (op W)).hom a _`. Rewrite using `[e1, hgen]`. Use `Eq.trans ?_ (secUnits_res (g ≫ f) u).symm` and prove the remaining obligations. Establish `e2 : a • (ofRings.sec unitsF W ⟨Additive.ofMul hζu.unit⟩ : Sec Gm W) = ofRings.sec unitsF W (a • (⟨Additive.ofMul hζu.unit⟩ : ULift.{1} (Additive (Γ(W, ⊤))ˣ)))` using `(map_nsmul ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op W)).hom a _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `e2.trans ?_` and prove the remaining obligations. Use `congr 1`. Apply `ULift.ext` to reduce the goal to its premises. Use `show a • Additive.ofMul hζu.unit = _`. Rewrite using `[← ofMul_pow]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_pow_eq_pow_val, IsUnit.unit_spec, Units.coe_map, MonoidHom.coe_coe]`. Use `show ((Scheme.Γ.map g.op).hom ζ.1) ^ a = _`. Rewrite using `[← ha]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[uV, op_comp]`. Both sides reduce to the same expression. Use `choose R hR1 hR2 using key`. Use `⟨Sieve.bind S.arrows R, Scheme.etaleTopology.bind_covering hS hR1, ?_⟩` and prove the remaining obligations. Introduce and unpack `W h ⟨V, g, f, hf, hgR, rfl⟩`.
-
-Conclude with `hR2 f hf g hgR`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem LeafKumMuSurjRoot_of (hP : LeafKumMuSurjPrim) (hW : LeafKumMuSurjPow) : LeafKumMuSurjRoot := by
   intro q _ B _ hq κ hg U hU u hu
@@ -245,13 +243,13 @@ theorem LeafKumMuSurjRoot_of (hP : LeafKumMuSurjPrim) (hW : LeafKumMuSurjPow) : 
   exact hR2 f hf g hgR
 
 /- English proof (translation)
-The claim follows from `LeafKumMuSurj_of'' LeafKumMuSurjUnit_pf hR hI`.
+A detailed English derivation is pending.
 -/
 theorem LeafKumMuSurj_of' (hR : LeafKumMuSurjRoot) (hI : LeafKumMuSurjInj) : LeafKumMuSurj :=
   LeafKumMuSurj_of'' LeafKumMuSurjUnit_pf hR hI
 
 /- English proof (translation)
-The claim follows from `LeafKumMuSurj_of' (LeafKumMuSurjRoot_of hP hW) hI`.
+A detailed English derivation is pending.
 -/
 theorem etale_mu_twist_sections_surj_of_prim_root_pow_inj (hP : LeafKumMuSurjPrim) (hW : LeafKumMuSurjPow) (hI : LeafKumMuSurjInj) : LeafKumMuSurj :=
   LeafKumMuSurj_of' (LeafKumMuSurjRoot_of hP hW) hI

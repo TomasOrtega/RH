@@ -12,7 +12,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.LocalFibre
 
 /- English proof (translation)
-Establish `h : _root_.IsConnected (Set.univ : Set (PrimeSpectrum R))`. Use `⟨⟨IsLocalRing.closedPoint R, trivial⟩, isPreconnected_of_forall (IsLocalRing.closedPoint R) fun x _ => ?_⟩` and prove the remaining obligations. Conclude with `⟨closure {x}, Set.subset_univ _, (IsLocalRing.specializes_closedPoint x).mem_closure, subset_closure rfl, isPreconnected_singleton.closure⟩`. Conclude with `(connectedSpace_iff_univ.2 h : ConnectedSpace (PrimeSpectrum R))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem connectedSpace_sp (R : Type) [CommRing R] [IsLocalRing R] : ConnectedSpace (Sp R) := by
   have h : _root_.IsConnected (Set.univ : Set (PrimeSpectrum R)) := by
@@ -22,11 +22,11 @@ theorem connectedSpace_sp (R : Type) [CommRing R] [IsLocalRing R] : ConnectedSpa
   exact (connectedSpace_iff_univ.2 h : ConnectedSpace (PrimeSpectrum R))
 
 /- English proof (translation)
-Use `t'.semi.smooth` as an intermediate fact. Use `t'.semi.geomConnected` as an intermediate fact. Take `⟨w, g, -⟩` from `m.lin`. Take `⟨U, hU, hc, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := y (IsLocalRing.closedPoint R)) trivial`. Establish `hy : ∀ x, y x ∈ U` using `fun x => (congrArg (fun V => x ∈ V) (Scheme.preimage_eq_top_of_closedPoint_mem y hc)).mpr trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `am` using `relAmple_pull m.cart.1 t.PP.isLB t'.PP.isLB ((isGen_iff w).1 g) U hU hy hA`. Establish `kt` using `kTriv_pull m.cart t.PP.isLB t'.PP.isLB ((isGen_iff w).1 g) hK`. Use `connectedSpace_sp R` as an intermediate fact. Establish `: ConnectedSpace t'.G.left` using `GeometricallyConnected.connectedSpace t'.G.hom t'.G.hom.isOpenMap`. Take `⟨d, hd⟩` from `exists_dim_of_preconnected t'.G.hom (eSec t'.G (IsLocalRing.closedPoint R))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, ws, gs', -⟩` from `t'.sym`. Conclude with `⟨{ A := t'.G, g := d, smoothDim := hd, L := t'.PP.L, isLB := t'.PP.isLB, ample := am, ktriv := kt isAb := ⟨inferInstance, inferInstance, MorphismProperty.of_isPullback (P := @IsProper) m.cart.1 hp, ‹_›⟩ rigid := ⟨t'.PP.rig, t'.PP.rigGen⟩ sym := fun _ => ⟨⊤, trivial, gen_of_iso (( …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_polAV_of_sabMap {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S : Scheme.{0}}
     {t : SAB H S} (hp : IsProper t.G.hom) (hA : Out.RelAmple t.G t.PP.L) (hK : Out.KTriv t.G t.PP.L)
@@ -57,7 +57,7 @@ end GlobalTheory.LocalFibre
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H S t hp hA hK R _ _ y`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull y t`. Conclude with `LocalFibre.exists_polAV_of_sabMap hp hA hK m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_polAV_pullback_of_isLocalRing :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S), IsProper t.G.hom →

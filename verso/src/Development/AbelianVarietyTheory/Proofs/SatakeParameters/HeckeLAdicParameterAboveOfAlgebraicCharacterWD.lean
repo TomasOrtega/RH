@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.Heck
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ P AI hT ι art hart χ n μ hχ hμ hL w A h O _ _ _ Bw hj ξ hξ rc hrc`. Take `⟨a, ha, ε, -, L⟩` from `hrc`. Rewrite using `[H E Ω l P AI hT ι art hart χ n μ hχ hμ hL w A h O Bw hj ξ hξ a ha]`. Conclude with `(L.one ξ hξ.1).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeLAdicParameterAbove_of_algebraicCharacterWD (H : GlobalTheory.Published.AlgebraicCharacterWD) :
     GlobalTheory.Published.HeckeLAdicParameterAbove := by

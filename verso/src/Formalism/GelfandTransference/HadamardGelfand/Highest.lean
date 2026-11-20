@@ -12,11 +12,11 @@ section Highest
 variable {A : Type} [Ring A] {n : ℕ}
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `a b`. Simplify using `only [epow, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Introduce `a b`. Rewrite using `[show epow E (k + 1 + 1) a b = ∑ c, E a c * epow E (k + 1) c b from rfl]`. Use `conv_lhs => enter [2, c]`. Rewrite using `[ih c b, Finset.mul_sum]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations. Rewrite using `[show epow E (k + 1) a d = ∑ c, E a c * epow E k c d from rfl, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl (fun c _ => (mul_assoc _ _ _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epow_succ_right (E : Fin n → Fin n → A) :
     ∀ (k : ℕ) (a b : Fin n), epow E (k + 1) a b = ∑ c, epow E k a c * E c b := by
@@ -38,13 +38,13 @@ theorem epow_succ_right (E : Fin n → Fin n → A) :
 variable {M : Type} [AddCommGroup M] [Module A M]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `a c hac`. Simplify using `[epow, ne_of_lt hac]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Introduce `a c hac`. Rewrite using `[epow, Finset.sum_smul]`. Use `Finset.sum_eq_zero (fun e _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_smul]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hec : e < c`. Rewrite using `[ih e c hec, smul_zero]`. Establish `hae : a < e` using `lt_of_lt_of_le hac (not_lt.mp hec)`. Establish `hcomm` using `comm_epow E hE k e c a e`. Simplify using `only [if_true, (ne_of_lt hac).symm, if_false, sub_zero] at hcomm`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : E a e * epow E k e c = epow E k e c * E a e + epow E k a c`. Rewrite using `[← hcomm]`. Normalize the expressions using the abelian group laws. Rewrite using `[← mul_smul, h1, add_smul, mul_smul, hv a e hae, smul_zero, zero_add, ih a c hac]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem epow_upper_kill (E : Fin n → Fin n → A) (hE : GlRel E) (v : M)
     (hv : ∀ a b : Fin n, a < b → E a b • v = 0) :
@@ -69,17 +69,17 @@ theorem epow_upper_kill (E : Fin n → Fin n → A) (hE : GlRel E) (v : M)
       rw [← mul_smul, h1, add_smul, mul_smul, hv a e hae, smul_zero, zero_add, ih a c hac]
 
 /- English proof (translation)
-Use `set X : M := epow E k a a • v with hX`. Establish `hterm : ∀ c : Fin n, epow E k a c • (E c a • v) = (if c = a then ν a • X else 0) + (if a < c then X - epow E k c c • v else 0)`. Introduce `c`. Break down `lt_trichotomy c a with hca | hca | hca` into its components or cases. Rewrite using `[hv c a hca, smul_zero, if_neg (ne_of_lt hca), if_neg (not_lt.mpr (le_of_lt hca)), add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hca` using the available equality. Rewrite using `[if_pos rfl, if_neg (lt_irrefl _), add_zero, hd, hX, smul_comm]`. Rewrite using `[if_neg (ne_of_gt hca), if_pos hca, zero_add]`. Establish `hcomm` using `comm_epow E hE k a c c a`. Simplify using `only [if_true] at hcomm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : epow E k a c * E c a = E c a * epow E k a c - epow E k c c + epow E k a a`. Establish `h2` using `congrArg (fun t => E c a * epow E k a c - t) hcomm`. Simplify using `only [sub_sub_cancel] at h2`. Rewrite using `[h2]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_smul, h1, add_smul, sub_smul, mul_smul, epow_upper_kill E hE v hv k a c hca, smul_zero, zero_sub, hX]`. Normalize the expressions using the abelian group laws. Rewrite using `[epow_succ_right, Finset.sum_smul]`. Repeatedly rewrite using `[mul_smul, hterm]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_eq' univ a, if_pos (Finset.mem_univ a), ← Finset.sum_filter, Finset.sum_sub_distrib, Finset.sum_const]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfil : univ.filter (fun b : Fin n => a < b) = Finset.Ioi a`. Use extensionality with `b`. Simplify using the standard rewrite rules. Establish `hcard : (((Finset.Ioi a).card : ℕ) : ℤ) = (n : ℤ) - 1 - (a : ℤ)`. Rewrite using `[Fin.card_Ioi]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hfil, ← natCast_zsmul, hcard]`. Simplify using `only [sub_smul, add_smul]`. Normalize the expressions using the abelian group laws.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem epow_diag_smul_highest_weight (E : Fin n → Fin n → A) (hE : GlRel E) (ν : Fin n → ℤ) (v : M)
     (hv : ∀ a b : Fin n, a < b → E a b • v = 0) (hd : ∀ a : Fin n, E a a • v = ν a • v)
@@ -122,7 +122,7 @@ theorem epow_diag_smul_highest_weight (E : Fin n → Fin n → A) (hE : GlRel E)
   abel
 
 /- English proof (translation)
-Introduce `A M _ _ _ n E hE ν v hv hd k a`. Conclude with `epow_diag_smul_highest_weight E hE ν v hv hd k a`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem highest_weight_diagonal_holds : Formalism.HadamardInequality.HighestDiag := by
   intro A M _ _ _ n E hE ν v hv hd k a

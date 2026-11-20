@@ -15,11 +15,11 @@ set_option autoImplicit false
 namespace GlobalTheory.LogKSDiv.LocSpan
 
 /- English proof (translation)
-Use `letI := φ.toAlgebra`. Use extensionality with `y`. Take `⟨⟨r, t⟩, e⟩` from `IsLocalization.surj M y`. Establish `hu : IsUnit (φ t)` using `IsLocalization.map_units A t`. Establish `e' : y * φ t = φ r` using `e`.
+Equip the data with the indicated structure. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg D₁ e'`. Establish `h2` using `congrArg D₂ e'`. Rewrite `h1`, `h2` using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Rewrite `h1` using `[h r, h t]`. Establish `: φ t * D₁ y = φ t * D₂ y` using `by linear_combination h1 - h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hu.mul_left_cancel this`.
+A detailed English derivation is pending.
 -/
 theorem deriv_ext {k R A : Type} [CommRing k] [CommRing R] [CommRing A] [Algebra k A] (φ : R →+* A)
     (M : Submonoid R) (hloc : letI := φ.toAlgebra; IsLocalization M A) (D₁ D₂ : Derivation k A A)
@@ -41,7 +41,7 @@ end GlobalTheory.LogKSDiv.LocSpan
 namespace GlobalTheory.LogKSDiv.LocSpan
 
 /- English proof (translation)
-Rewrite using `[← Derivation.coeFnAddMonoidHom_apply, map_sum, Finset.sum_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_apply {k R M : Type} [CommRing k] [CommRing R] [AddCommGroup M] [Algebra k R] [Module R M] [Module k M]
     {n : ℕ} (f : Fin n → Derivation k R M) (x : R) : (∑ j, f j) x = ∑ j, f j x := by
@@ -49,19 +49,17 @@ theorem sum_apply {k R M : Type} [CommRing k] [CommRing R] [AddCommGroup M] [Alg
   rfl
 
 /- English proof (translation)
-Use `letI := φ.toAlgebra`. Use `haveI : IsScalarTower k R A := IsScalarTower.of_algebraMap_eq fun c => (congrArg (· c) hk).symm`. Use `haveI : Algebra.FinitePresentation k R := Algebra.FinitePresentation.of_finiteType.mp inferInstance`. Rewrite using `[Submodule.eq_top_iff']`. Introduce `d`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `g : Derivation k R A` to `d.compAlgebraMap R`. Take `⟨h, s, hs⟩` from `Module.FinitePresentation.exists_lift_of_isLocalizedModule M (Algebra.linearMap R A) g.liftKaehlerDifferential`. Set `D' : Derivation k R R` to `h.compDer (KaehlerDifferential.D k R)`. Establish `hD' : ∀ r, φ (D' r) = φ s * d (φ r)`. Introduce `r`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun L : Ω[R⁄k] →ₗ[R] A => L (KaehlerDifferential.D k R r)) hs` as an intermediate fact. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Algebra.linearMap_apply, LinearMap.smul_apply, Derivation.liftKaehlerDifferential_comp_D] at this`. Rewrite `this` using `[Submonoid.smul_def, Algebra.smul_def]`. Conclude with `this`. Take `⟨cf, hcf⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 (hlog D')`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsu : IsUnit (φ s)` using `IsLocalization.map_units A s`. Establish `hu : IsUnit (φ a * φ s)` using `ha.mul hsu`. Establish `key : (φ a * φ s) • d = ∑ j, φ (cf j) • δ j`. Use `deriv_ext φ M hloc _ _ fun r => ?_` and prove the remaining obligations. Establish `e1` using `congrArg (fun D : Derivation ℤ R R => φ (D r)) hcf`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sum_apply, Derivation.coe_smul, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Derivation.coe_restrictScalars] at e1`. Simplify using `only [sum_apply, Derivation.coe_smul, Pi.smul_apply, smul_eq_mul, hδ]`. Rewrite using `[e1, hD']`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : (φ a * φ s) • d ∈ Submodule.span A (Set.range δ)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hmem' : ((hu.unit : Aˣ) : A) • d ∈ Submodule.span A (Set.range δ)`. Rewrite using `[hu.unit_spec]`. Conclude with `hmem`.
-
-Use `Submodule.smul_mem _ ((hu.unit⁻¹ : Aˣ) : A) hmem'` as an intermediate fact. Rewrite `this` using `[smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem span_eq_top {k R A : Type} [Field k] [CommRing R] [CommRing A] [Algebra k R] [Algebra k A]
     [Algebra.FiniteType k R] (φ : R →+* A) (hk : φ.comp (algebraMap k R) = algebraMap k A)
@@ -111,7 +109,7 @@ end GlobalTheory.LogKSDiv.LocSpan
 namespace GlobalTheory.LogKSDiv.LocSpan
 
 /- English proof (translation)
-Rewrite using `[← X.presheaf.germ_res (homOfLE (inf_le_left : V ⊓ T ≤ V)) x ⟨hxV, hxT⟩, ← X.presheaf.germ_res (homOfLE (inf_le_right : V ⊓ T ≤ T)) x ⟨hxV, hxT⟩, Scheme.Hom.appLE_map_assoc, Scheme.Hom.appLE_map_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_germ {X S : Scheme.{0}} (f : X ⟶ S) (W : S.Opens) (V T : X.Opens) (hV : V ≤ f ⁻¹ᵁ W)
     (hT : T ≤ f ⁻¹ᵁ W) (x : X) (hxV : x ∈ V) (hxT : x ∈ T) :
@@ -121,7 +119,7 @@ theorem appLE_germ {X S : Scheme.{0}} (f : X ⟶ S) (W : S.Opens) (V T : X.Opens
     Scheme.Hom.appLE_map_assoc, Scheme.Hom.appLE_map_assoc]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appLE_comp_appLE_assoc]`. Conclude with `appLE_germ _ _ _ _ _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_appLE_germ {X Y S : Scheme.{0}} (ι : X ⟶ Y) (s : Y ⟶ S) (W : S.Opens) (U : Y.Opens) (V T : X.Opens)
     (h1 : U ≤ s ⁻¹ᵁ W) (hV : V ≤ ι ⁻¹ᵁ U) (h2 : T ≤ (ι ≫ s) ⁻¹ᵁ W) (x : X) (hxV : x ∈ V) (hxT : x ∈ T) :
@@ -139,9 +137,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [stalkHom, stalkAlg, algX, RingHom.comp_apply]`. Establish `key : TF.Y.s.appLE ⊤ U.1 (by simp) ≫ (barComp TF.Y Z).ι.app U.1 ≫ (X₀ TF.Y Z).presheaf.germ ((barComp TF.Y Z).ι ⁻¹ᵁ U.1) x hx = (s₀ TF.Y Z).appLE ⊤ ⊤ (by simp) ≫ (X₀ TF.Y Z).presheaf.germ ⊤ x trivial`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `appLE_appLE_germ _ _ _ _ _ _ _ _ _ _ _ _`.
-
-Conclude with `congrArg (fun f => f.hom ((Scheme.ΓSpecIso (CommRingCat.of c.F)).inv.hom a)) key`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkHom_comp_algX (TF : TorFlag Xo c) (Z : Comp Xo c) (x : X₀ TF.Y Z) (U : TF.Y.X.affineOpens)
     (hx : (barComp TF.Y Z).ι x ∈ U.1) :
@@ -165,7 +161,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Use `haveI := TF.smooth`. Use `haveI : Smooth TF.Y.s := SmoothOfRelativeDimension.smooth Dw.dim _`. Establish `h1 : (TF.Y.s.appLE ⊤ U.1 (by simp)).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType TF.Y.s inferInstance ⟨⊤, isAffineOpen_top _⟩ U _`. Conclude with `h1.comp (RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of c.F)).symm.commRingCatIsoToRingEquiv.surjective)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteType_algX (TF : TorFlag Xo c) (U : TF.Y.X.affineOpens) : (algX TF.Y.s U.1).FiniteType := by
   haveI := TF.smooth
@@ -176,9 +172,9 @@ theorem finiteType_algX (TF : TorFlag Xo c) (U : TF.Y.X.affineOpens) : (algX TF.
     (Scheme.ΓSpecIso (CommRingCat.of c.F)).symm.commRingCatIsoToRingEquiv.surjective)
 
 /- English proof (translation)
-Use `letI := TopCat.Presheaf.algebra_section_stalk TF.Y.X.presheaf (⟨_, hx⟩ : U.1)`. Establish `h1` using `U.2.isLocalization_stalk ⟨_, hx⟩`. Set `e` to `(asIso ((barComp TF.Y Z).ι.stalkMap x)).commRingCatIsoToRingEquiv`. Establish `h2` using `(IsLocalization.isLocalization_iff_of_ringEquiv _ e).1 h1`. Establish `heq : stalkHom TF Z x U hx = e.toRingHom.comp (TF.Y.X.presheaf.germ U.1 _ hx).hom` using `RingHom.ext fun y => (Scheme.Hom.germ_stalkMap_apply _ _ _ hx y).symm`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Use `h2` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem isLocalization_stalkHom (TF : TorFlag Xo c) (Z : Comp Xo c) (x : X₀ TF.Y Z) (U : TF.Y.X.affineOpens)
     (hx : (barComp TF.Y Z).ι x ∈ U.1) :
@@ -194,11 +190,11 @@ theorem isLocalization_stalkHom (TF : TorFlag Xo c) (Z : Comp Xo c) (x : X₀ TF
   convert h2
 
 /- English proof (translation)
-Establish `hin : (barComp TF.Y Z).ι x ∈ LogKS.interior TF.Y`. Take `⟨y, rfl⟩` from `hint`. Use `⟨i₀ TF.Y Z y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← j₀_ι, Scheme.Hom.comp_apply]`. Take `⟨a, hle, hxa⟩` from `U.2.exists_basicOpen_le (V := U.1 ⊓ LogKS.interior TF.Y) ⟨_, hx, hin⟩ hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.vanishingIdeal_ideal, PrimeSpectrum.mem_vanishingIdeal]`. Introduce `p hp`. Assume the negation of the conclusion as `hpa`. Establish `h3 : p ∈ PrimeSpectrum.basicOpen a` using `hpa`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h3` using `[← U.2.fromSpec_preimage_basicOpen]`. Conclude with `hp (hle h3).2`. Establish `h4 : x ∈ (barComp TF.Y Z).ι ⁻¹ᵁ TF.Y.X.basicOpen a` using `hxa`. Rewrite `h4` using `[Scheme.preimage_basicOpen]`. Conclude with `((X₀ TF.Y Z).mem_basicOpen _ x hx).1 h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit (TF : TorFlag Xo c) (Z : Comp Xo c) (x : X₀ TF.Y Z) (U : TF.Y.X.affineOpens)
     (hx : (barComp TF.Y Z).ι x ∈ U.1) (hint : x ∈ (j₀ TF.Y Z).opensRange) :
@@ -223,13 +219,11 @@ theorem exists_unit (TF : TorFlag Xo c) (Z : Comp Xo c) (x : X₀ TF.Y Z) (U : T
 end GlobalTheory.LogKSDiv.LocSpan
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF Z _ _ x U _ hx b`. Introduce `δ hδ hint`. Use `letI := (GlobalTheory.LogKSDiv.stalkAlg TF Z x).toAlgebra`. Use `letI : Algebra c.F Γ(TF.Y.X, U.1) := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX TF.Y.s U.1).toAlgebra`. Use `haveI : Algebra.FiniteType c.F Γ(TF.Y.X, U.1) := LocSpan.finiteType_algX TF U`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨a, haI, hau⟩` from `LocSpan.exists_unit TF Z x U hx hint`. Use `LocSpan.span_eq_top (stalkHom TF Z x U hx) (LocSpan.stalkHom_comp_algX TF Z x U hx) _ (LocSpan.isLocalization_stalkHom TF Z x U hx) a hau (fun j => (b j).1) ?_ δ hδ` and prove the remaining obligations. Introduce `D`. Establish `hmem : a • D.restrictScalars ℤ ∈ LogKS.logDer TF.Y.s (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U`. Use `⟨fun a' => ?_, fun f _ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show a * D (constFn TF.Y.s U.1 a') = 0`. Rewrite using `[show constFn TF.Y.s U.1 a' = algebraMap c.F _ a' from rfl, D.map_algebraMap, mul_zero]`. Use `show a * D f ∈ _`. Conclude with `Ideal.mul_mem_right _ _ haI`. Establish `h7` using `congrArg Subtype.val (b.sum_repr ⟨_, hmem⟩)`.
-
-Rewrite `h7` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at h7`. Rewrite using `[← h7]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LogKSDiv.span_logDer_germs : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), ∀ [IsIntegral (X₀ TF.Y Z)] [SmoothOfRelativeDimension Dw.dim (s₀ TF.Y Z)] (x : X₀ TF.Y Z) (U : TF.Y.X.affineOpens), U.1 ≤ barComp TF.Y Z → ∀ (hx : (barComp TF.Y Z).ι x ∈ U.1) (b : Module.Basis (Fin Dw.dim) Γ(TF.Y.X, U.1) (LogKS.logDer TF.Y.s (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U)), letI := (GlobalTheory.LogKSDiv.stalkAlg TF Z x).toAlgebra; ∀ δ : Fin Dw.dim → Derivation c.F ((X₀ TF.Y Z).presheaf.stalk x) ((X₀ TF.Y Z).presheaf.stalk x), (∀ j r, δ j (GlobalTheory.LogKSDiv.stalkHom TF Z x U hx r) = GlobalTheory.LogKSDiv.stalkHom TF Z x U hx ((b j).1 r)) → x ∈ (j₀ TF.Y Z).opensRange → Submodule.span ((X₀ TF.Y Z).presheaf.stalk x) (Set.range δ) = ⊤ := by
   intro E _ _ _ H Dw l Xo c TF Z _ _ x U _ hx b

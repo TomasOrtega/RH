@@ -16,45 +16,45 @@ section Forms
 variable {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [hJ, star_add, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_add_l (ε : Fin n → Bool) (x y w : Fin n → ℂ) : hJ ε (x + y) w = hJ ε x w + hJ ε y w := by
   simp only [hJ, star_add, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [hJ, mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_add_r (ε : Fin n → Bool) (x y w : Fin n → ℂ) : hJ ε w (x + y) = hJ ε w x + hJ ε w y := by
   simp only [hJ, mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `only [hJ, star_sub, sub_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_sub_l (ε : Fin n → Bool) (x y w : Fin n → ℂ) : hJ ε (x - y) w = hJ ε x w - hJ ε y w := by
   simp only [hJ, star_sub, sub_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [hJ, mulVec_sub, dotProduct_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_sub_r (ε : Fin n → Bool) (x y w : Fin n → ℂ) : hJ ε w (x - y) = hJ ε w x - hJ ε w y := by
   simp only [hJ, mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-Simplify using `only [hJ, star_sum, star_smul, sum_dotProduct, smul_dotProduct, smul_eq_mul, Complex.star_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_sum_l {ι : Type*} [Fintype ι] (ε : Fin n → Bool) (x : ι → ℂ) (u : ι → Fin n → ℂ) (w : Fin n → ℂ) :
     hJ ε (∑ i, x i • u i) w = ∑ i, conj (x i) * hJ ε (u i) w := by
   simp only [hJ, star_sum, star_smul, sum_dotProduct, smul_dotProduct, smul_eq_mul, Complex.star_def]
 
 /- English proof (translation)
-Simplify using `only [hJ, mulVec_sum, dotProduct_sum, mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_sum_r {ι : Type*} [Fintype ι] (ε : Fin n → Bool) (y : ι → ℂ) (v : ι → Fin n → ℂ) (w : Fin n → ℂ) :
     hJ ε w (∑ j, y j • v j) = ∑ j, y j * hJ ε w (v j) := by
   simp only [hJ, mulVec_sum, dotProduct_sum, mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[hJ_sum_l]`. Simplify using `only [hJ_sum_r, hu, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_conj_mul_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -69,17 +69,15 @@ theorem hJ_comb_self {ι : Type*} [Fintype ι] [DecidableEq ι] (ε : Fin n → 
   ring
 
 /- English proof (translation)
-Establish `hli : LinearIndependent ℂ (Sum.elim u v)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set x := ∑ i, g (Sum.inl i) • u i with hx`. Use `set y := ∑ j, g (Sum.inr j) • v j with hy`. Establish `hxy : x = -y` using `eq_neg_of_add_eq_zero_left hg`. Establish `h1 : hJ ε x x = ((∑ i, dp i * Complex.normSq (g (Sum.inl i)) : ℝ) : ℂ)` using `hJ_comb_self ε (fun i => g (Sum.inl i)) u dp hu`. Establish `h2 : hJ ε y y = ((∑ j, dn j * Complex.normSq (g (Sum.inr j)) : ℝ) : ℂ)` using `hJ_comb_self ε (fun j => g (Sum.inr j)) v dn hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : hJ ε x x = hJ ε y y`. Rewrite using `[hxy]`. Simplify using `[hJ, Matrix.mulVec_neg]`. Rewrite `h3` using `[h1, h2]`. Establish `h4 : (∑ i, dp i * Complex.normSq (g (Sum.inl i))) = ∑ j, dn j * Complex.normSq (g (Sum.inr j))` using `by exact_mod_cast h3`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : 0 ≤ ∑ i, dp i * Complex.normSq (g (Sum.inl i))` using `Finset.sum_nonneg fun i _ => mul_nonneg (hdp i).le (Complex.normSq_nonneg _)`. Establish `hB : ∑ j, dn j * Complex.normSq (g (Sum.inr j)) ≤ 0` using `Finset.sum_nonpos fun j _ => mul_nonpos_of_nonpos_of_nonneg (hdn j).le (Complex.normSq_nonneg _)`. Establish `hA0 : ∑ i, dp i * Complex.normSq (g (Sum.inl i)) = 0` using `by linarith`. Establish `hB0 : ∑ j, dn j * Complex.normSq (g (Sum.inr j)) = 0` using `by linarith`. Introduce and unpack `(i | j)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h5` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => mul_nonneg (hdp i).le (Complex.normSq_nonneg (g (Sum.inl i))))).mp hA0 i (Finset.mem_univ _)`. Break down `mul_eq_zero.mp h5 with h | h` into its components or cases. Conclude with `absurd h (hdp i).ne'`. Conclude with `Complex.normSq_eq_zero.mp h`. Establish `h5` using `(Finset.sum_eq_zero_iff_of_nonpos (fun j _ => mul_nonpos_of_nonpos_of_nonneg (hdn j).le (Complex.normSq_nonneg (g (Sum.inr j))))).mp hB0 j (Finset.mem_univ _)`.
-
-Break down `mul_eq_zero.mp h5 with h | h` into its components or cases. Conclude with `absurd h (hdn j).ne`. Conclude with `Complex.normSq_eq_zero.mp h`. Establish `h` using `hli.fintype_card_le_finrank`. Simplify `h` using `[Fintype.card_sum, Module.finrank_fin_fun]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_le_of_signs {ι κ : Type*} [Fintype ι] [Fintype κ] [DecidableEq ι] [DecidableEq κ] (ε : Fin n → Bool)
     (u : ι → Fin n → ℂ) (dp : ι → ℝ) (hdp : ∀ i, 0 < dp i)
@@ -128,9 +126,9 @@ theorem card_le_of_signs {ι κ : Type*} [Fintype ι] [Fintype κ] [DecidableEq 
   simpa [Fintype.card_sum, Module.finrank_fin_fun] using h
 
 /- English proof (translation)
-Unfold `hJ bvec Formalism.REAL.Jm`. Simplify using `only [dotProduct, mulVec_diagonal, Pi.star_apply, Pi.single_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_bvec (ε : Fin n → Bool) (i j : Fin n) :
     hJ ε (bvec i) (bvec j) = if i = j then (if ε i then 1 else -1) else 0 := by
@@ -141,9 +139,9 @@ theorem hJ_bvec (ε : Fin n → Bool) (i j : Fin n) :
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Rewrite using `[hJ_bvec]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, i.2]`. Apply the tactic sequence `cases s <;> simp`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[if_neg (fun h' => h (Subtype.ext h')), if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_bvec_sub (ε : Fin n → Bool) (s : Bool) (i j : {i // ε i = s}) :
     hJ ε (bvec i.1) (bvec j.1) = if i = j then ((if s then 1 else -1 : ℝ) : ℂ) else 0 := by
@@ -172,9 +170,9 @@ def negF (e f : Fin r → Fin (2 * r + k + 1) → ℂ) (z0 : Fin (2 * r + k + 1)
   | Sum.inr _ => z0
 
 /- English proof (translation)
-Establish `hs : ∀ x y : Fin (2 * r + k + 1) → ℂ, hJ ε y x = conj (hJ ε x y)`. Introduce `x y`. Simplify using `only [hJ, dotProduct, Formalism.REAL.Jm, mulVec_diagonal, map_sum, map_mul, Pi.star_apply, Complex.star_def, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hs, hF.ef b a]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hJ_fe (hF : IsFrameJ ε e f wf z0) (a b : Fin r) : hJ ε (f a) (e b) = if a = b then 1 else 0 := by
   have hs : ∀ x y : Fin (2 * r + k + 1) → ℂ, hJ ε y x = conj (hJ ε x y) := by
@@ -189,13 +187,13 @@ theorem hJ_fe (hF : IsFrameJ ε e f wf z0) (a b : Fin r) : hJ ε (f a) (e b) = i
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Establish `hs : ∀ x y : Fin (2 * r + k + 1) → ℂ, hJ ε y x = conj (hJ ε x y)`. Introduce `x y`. Simplify using `only [hJ, dotProduct, Formalism.REAL.Jm, mulVec_diagonal, map_sum, map_mul, Pi.star_apply, Complex.star_def, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases i with a | c <;> rcases j with b | d`. Simplify using `only [posF, hJ_add_l, hJ_add_r, hF.ee, hF.ff, hF.ef, hJ_fe hF, Sum.inl.injEq]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions. Simplify using `[h]`. Simplify using `[posF, hJ_add_l, hF.ew, hF.fw]`. Simplify using `[posF, hJ_add_r, hs (e _) (wf c), hs (f _) (wf c), hF.ew, hF.fw]`. Simplify using `only [posF, hF.ww, Sum.inr.injEq]`.
+Evaluate the numerical expressions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : c = d`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem posF_gram (hF : IsFrameJ ε e f wf z0) (i j : Fin r ⊕ Fin k) :
     hJ ε (posF e f wf i) (posF e f wf j) =
@@ -219,11 +217,11 @@ theorem posF_gram (hF : IsFrameJ ε e f wf z0) (i j : Fin r ⊕ Fin k) :
     · simp [h]
 
 /- English proof (translation)
-Establish `hs : ∀ x y : Fin (2 * r + k + 1) → ℂ, hJ ε y x = conj (hJ ε x y)`. Introduce `x y`. Simplify using `only [hJ, dotProduct, Formalism.REAL.Jm, mulVec_diagonal, map_sum, map_mul, Pi.star_apply, Complex.star_def, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases i with a | u <;> rcases j with b | w`. Simplify using `only [negF, hJ_sub_l, hJ_sub_r, hF.ee, hF.ff, hF.ef, hJ_fe hF, Sum.inl.injEq]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions. Simplify using `[h]`. Simplify using `[negF, hJ_sub_l, hF.ez, hF.fz]`. Simplify using `[negF, hJ_sub_r, hs (e _) z0, hs (f _) z0, hF.ez, hF.fz]`. Simplify using `[negF, hF.zz]`.
+Evaluate the numerical expressions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem negF_gram (hF : IsFrameJ ε e f wf z0) (i j : Fin r ⊕ Unit) :
     hJ ε (negF e f z0 i) (negF e f z0 j) =
@@ -244,7 +242,7 @@ theorem negF_gram (hF : IsFrameJ ε e f wf z0) (i j : Fin r ⊕ Unit) :
   · simp [negF, hF.zz]
 
 /- English proof (translation)
-Apply the tactic sequence `have h1 := card_le_of_signs ε (posF e f wf) (Sum.elim (fun _ => (2 : ℝ)) (fun _ => (1 : ℝ))) (by rintro (_ | _) <;> norm_num) (posF_gram hF) (fun i : {i // ε i = false} => bvec i.1) (fun _ => (-1 : ℝ)) (fun _ => by norm_num) (by intro i j; rw [hJ_bvec_sub]; simp)`. Apply the tactic sequence `have h2 := card_le_of_signs ε (fun i : {i // ε i = true} => bvec i.1) (fun _ => (1 : ℝ)) (fun _ => by norm_num) (by intro i j; rw [hJ_bvec_sub]; simp) (negF e f z0) (Sum.elim (fun _ => (-2 : ℝ)) (fun _ => (-1 : ℝ))) (by rintro (_ | _) <;> norm_num) (negF_gram hF)`. Simplify using `only [Fintype.card_sum, Fintype.card_fin, Fintype.card_unit, Fintype.card_subtype] at h1 h2`. Establish `h3` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin (2 * r + k + 1)))) (fun i => ε i = true)`. Simplify using `only [Bool.not_eq_true, Finset.card_univ, Fintype.card_fin] at h3`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -265,23 +263,21 @@ theorem sig_of_frame (hF : IsFrameJ ε e f wf z0) :
   omega
 
 /- English proof (translation)
-Establish `hs : ∀ x y : Fin (2 * r + k + 1) → ℂ, hJ ε y x = conj (hJ ε x y)`. Introduce `x y`. Simplify using `only [hJ, dotProduct, Formalism.REAL.Jm, mulVec_diagonal, map_sum, map_mul, Pi.star_apply, Complex.star_def, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hc1 : ∀ j : Fin (2 * r + k + 1), (hj : j.val < r) → colQ e f wf z0 j = e ⟨j.val, hj⟩`. Introduce `j hj`. Unfold `colQ`. Rewrite using `[dif_pos hj]`. Establish `hc2 : ∀ j : Fin (2 * r + k + 1), (h1 : r ≤ j.val) → (h2 : j.val < r + k) → colQ e f wf z0 j = wf ⟨j.val - r, by omega⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j h1 h2; unfold colQ; rw [dif_neg (by omega), dif_pos h2]`. Establish `hc3 : ∀ j : Fin (2 * r + k + 1), j.val = r + k → colQ e f wf z0 j = z0`. Introduce `j h; unfold colQ; rw [dif_neg (by omega), dif_neg (by omega), dif_pos h]`. Establish `hc4 : ∀ j : Fin (2 * r + k + 1), (h : r + k < j.val) → colQ e f wf z0 j = f ⟨2 * r + k - j.val, by omega⟩`. Introduce `j h; unfold colQ; rw [dif_neg (by omega), dif_neg (by omega), dif_neg (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQ : ∀ v : Fin (2 * r + k + 1) → ℂ, Qm e f wf z0 *ᵥ v = ∑ j, v j • colQ e f wf z0 j`. Introduce `v`. Use extensionality with `i`. Simplify using `[Qm, mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `hwe : ∀ c a, hJ ε (wf c) (e a) = 0` using `fun c a => by rw [hs, hF.ew]; simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hwf : ∀ c a, hJ ε (wf c) (f a) = 0` using `fun c a => by rw [hs, hF.fw]; simp`. Establish `hze : ∀ a, hJ ε z0 (e a) = 0` using `fun a => by rw [hs, hF.ez]; simp`. Establish `hzf : ∀ a, hJ ε z0 (f a) = 0` using `fun a => by rw [hs, hF.fz]; simp`. Establish `hwz : ∀ c, hJ ε (wf c) z0 = 0` using `fun c => by rw [hs, hF.zw]; simp`. Establish `hG : ∀ i j : Fin (2 * r + k + 1), hJ ε (colQ e f wf z0 i) (colQ e f wf z0 j) = Hpk k r i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j`. Establish `hH : Hpk k r i j = if i.val < r ∧ i.val + j.val = 2 * r + k then 1 else if j.val < r ∧ i.val + j.val = 2 * r + k then 1 else if r ≤ i.val ∧ i.val ≤ r + k ∧ i = j then (if i.val = r + k then -1 else 1) else 0` using `rfl`. Rewrite using `[hH]`. Establish `h4 : ∀ m : Fin (2 * r + k + 1), m.val < r ∨ (r ≤ m.val ∧ m.val < r + k) ∨ m.val = r + k ∨ r + k < m.val`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `rcases h4 i with hi | ⟨hi1, hi2⟩ | hi | hi <;> rcases h4 j with hj | ⟨hj1, hj2⟩ | hj | hj`. Apply the tactic sequence `all_goals first | rw [hc1 i hi] | rw [hc2 i hi1 hi2] | rw [hc3 i hi] | rw [hc4 i hi]`. Apply the tactic sequence `all_goals first | rw [hc1 j hj] | rw [hc2 j hj1 hj2] | rw [hc3 j hj] | rw [hc4 j hj]`. Apply the tactic sequence `all_goals simp only [hF.ee, hF.ff, hF.ef, hJ_fe hF, hF.ew, hF.fw, hF.ww, hF.ez, hF.fz, hF.zz, hF.zw, hwe, hwf, hze, hzf, hwz, Fin.ext_iff, Fin.mk.injEq]`.
+Use linear arithmetic over natural numbers and integers. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `all_goals split_ifs <;> first | rfl | (exfalso; omega) | norm_num | omega`. Establish `hX : hJ ε (Qm e f wf z0 *ᵥ zB) (Qm e f wf z0 *ᵥ zB) = herm (Hpk k r) zB zB`. Rewrite using `[hQ, hJ_sum_l]`. Simplify using `only [hJ_sum_r, hG, herm, dotProduct, mulVec, Pi.star_apply, Complex.star_def, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
-
-Establish `hreal : conj (hJ ε (Qm e f wf z0 *ᵥ zB) (Qm e f wf z0 *ᵥ zB)) = hJ ε (Qm e f wf z0 *ᵥ zB) (Qm e f wf z0 *ᵥ zB)` using `(hs _ _).symm`. Rewrite using `[show -((Tz k r zB : ℝ) : ℂ) = ((herm (Hpk k r) zB zB).re : ℂ) by simp [Tz], ← hX]`. Conclude with `(Complex.conj_eq_iff_re.mp hreal).symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hJ_Qm_self (hF : IsFrameJ ε e f wf z0) (zB : Fin (2 * r + k + 1) → ℂ) :
     hJ ε (Qm e f wf z0 *ᵥ zB) (Qm e f wf z0 *ᵥ zB) = -((Tz k r zB : ℝ) : ℂ) := by
@@ -334,17 +330,17 @@ theorem hJ_Qm_self (hF : IsFrameJ ε e f wf z0) (zB : Fin (2 * r + k + 1) → �
   exact (Complex.conj_eq_iff_re.mp hreal).symm
 
 /- English proof (translation)
-Establish `hc1 : ∀ j : Fin (2 * r + k + 1), (hj : j.val < r) → colQ e f wf z0 j = e ⟨j.val, hj⟩`. Introduce `j hj`. Unfold `colQ`. Rewrite using `[dif_pos hj]`. Establish `hc2 : ∀ j : Fin (2 * r + k + 1), (h1 : r ≤ j.val) → (h2 : j.val < r + k) → colQ e f wf z0 j = wf ⟨j.val - r, by omega⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j h1 h2; unfold colQ; rw [dif_neg (by omega), dif_pos h2]`. Establish `hc3 : ∀ j : Fin (2 * r + k + 1), j.val = r + k → colQ e f wf z0 j = z0`. Introduce `j h; unfold colQ; rw [dif_neg (by omega), dif_neg (by omega), dif_pos h]`. Establish `hc4 : ∀ j : Fin (2 * r + k + 1), (h : r + k < j.val) → colQ e f wf z0 j = f ⟨2 * r + k - j.val, by omega⟩`. Introduce `j h; unfold colQ; rw [dif_neg (by omega), dif_neg (by omega), dif_neg (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQ : ∀ v : Fin (2 * r + k + 1) → ℂ, Qm e f wf z0 *ᵥ v = ∑ j, v j • colQ e f wf z0 j`. Introduce `v`. Use extensionality with `i`. Simplify using `[Qm, mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Rewrite using `[hQ, hJ_sum_r]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Break down `lt_or_ge j.val r with h1 | h1` into its components or cases. Rewrite using `[hv j (Or.inl h1)]`. Simplify using the standard rewrite rules. Break down `lt_or_ge j.val (r + k) with h2 | h2` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hc2 j h1 h2, hF.ew]`. Simplify using the standard rewrite rules. Break down `eq_or_lt_of_le h2 with h3 | h3` into its components or cases. Rewrite using `[hc3 j h3.symm, hF.ez]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hv j (Or.inr h3)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hJ_e_Qm (hF : IsFrameJ ε e f wf z0) {v : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) (a : Fin r) :
     hJ ε (e a) (Qm e f wf z0 *ᵥ v) = 0 := by
@@ -371,7 +367,7 @@ theorem hJ_e_Qm (hF : IsFrameJ ε e f wf z0) {v : Fin (2 * r + k + 1) → ℂ} (
   · rw [hv j (Or.inr h3)]; simp
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc b`. Establish `h` using `congrArg (fun v => hJ ε v (f b)) hc`. Simplify using `only [hJ_sum_l, hF.ef, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true] at h`. Simplify `h` using `[hJ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem e_li (hF : IsFrameJ ε e f wf z0) : LinearIndependent ℂ e := by
   rw [Fintype.linearIndependent_iff]
@@ -382,7 +378,7 @@ theorem e_li (hF : IsFrameJ ε e f wf z0) : LinearIndependent ℂ e := by
   simpa [hJ] using h
 
 /- English proof (translation)
-Use `omega k_pos := hk sig := sig_of_frame hF e_li := e_li hF ee := hF.ee ez := hJ_e_Qm hF hz ez' := hJ_e_Qm hF hz' zz := hJ_Qm_self hF zB zz' := hJ_Qm_self hF zB' T_pos := hT T'_pos := hT'`.
+Use linear arithmetic over natural numbers and integers.
 -/
 theorem frameX_of (hF : IsFrameJ ε e f wf z0) (hk : 1 ≤ k) {zB zB' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r zB)
     (hz' : inWb k r zB') (hT : 0 < Tz k r zB) (hT' : 0 < Tz k r zB') :

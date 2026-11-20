@@ -27,11 +27,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
 /- English proof (translation)
-Take `⟨hinj, hr, hip⟩` from `hM.HW i (sg0 D A)`. Take `⟨a, rfl⟩ : S ∈ LinearMap.range (R.HW i (sg0 D A)).e` from `hr ▸ hS`. Take `⟨b, rfl⟩ : U ∈ LinearMap.range (R.HW i (sg0 D A)).e` from `hr ▸ hU`. Use `⟨?_, GlobalTheory.LiftLower.IsMultIP₂ (R.HW i (sg0 D A)) hip a b⟩` and prove the remaining obligations. Establish `he : ∀ x, (R.HW i (sg0 D A)).e (GlobalTheory.Hk3.eH R i x) = postOn _ (R.eWf i (sg0 D A)) ((R.HW i (sg0 D A)).e x)` using `fun x => GlobalTheory.LiftLower.e_projH hM.gW i (sg0 D A) x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ha : GlobalTheory.Hk3.eH R i a = a`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[he]`. Conclude with `MultilinearMap.ext fun v => hfix v`. Establish `h1 : ⟪a, GlobalTheory.Hk3.eH R i b⟫_ℂ = ⟪a, b⟫_ℂ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.adjoint_inner_left, GlobalTheory.LiftScalarL.adjoint_eH R hM hX i, ha]`. Rewrite `h1` using `[hip, hip, he]`. Establish `hN : (∏ ρ, ((dimK _ _ (kapAt (Wc D i) (sg0 D A) ρ) : ℚ) : ℂ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun ρ _ => by exact_mod_cast (GlobalTheory.Mem.EasyInputs.dimOK D i (sg0 D A) ρ).ne'`. Conclude with `mul_left_cancel₀ hN h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ipM_proj (hM : R.IsModels) (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (i : Fin D.R.m) {S U : MMap (R.MW i (sg0 D A))}
     (hS : S ∈ R.Wall i (sg0 D A)) (hU : U ∈ R.Wall i (sg0 D A)) (hfix : ∀ v, R.eWf i (sg0 D A) (S v) = S v) :
@@ -56,7 +56,7 @@ theorem ipM_proj (hM : R.IsModels) (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (i : F
   exact mul_left_cancel₀ hN h1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PartDims.mult_le R.θ _ fun k hk => by obtain ⟨h1, h2, h3⟩ := GlobalTheory.PartDims.mem_levi_flag_of_mem_parabolic (L := R.datWp i R.triv) rfl rfl (R.levL F b (sg0 D A)) hk exact ⟨h1, h2.trans h3.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem mult_le_wall (F : Face D A) (b : Bool) (i : Fin D.R.m) :
     Mult R.θ (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i (R.levL F b (sg0 D A))))
@@ -74,11 +74,11 @@ variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
 abbrev emb : LowT M →ₗ[ℂ] SmT M := PiTensorProduct.map fun τ => (lowT M τ).subtype
 
 /- English proof (translation)
-Establish `hu : ∀ τ, ∃ u : ↥(lowT M τ), ‖((u : M.sm τ) : M.H τ)‖ = 1`. Introduce `τ`. Take `⟨u, hu, hu0⟩` from `(Submodule.ne_bot_iff _).1 (hne τ)`. Establish `h0 : (u : M.H τ) ≠ 0` using `fun h => hu0 (Submodule.coe_eq_zero.1 h)`. Use `⟨((‖(u : M.H τ)‖⁻¹ : ℝ) : ℂ) • ⟨u, hu⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Submodule.coe_smul, norm_smul, Complex.norm_real, norm_inv, norm_norm]`. Conclude with `inv_mul_cancel₀ (norm_ne_zero_iff.2 h0)`. Set `v : M.Vec` to `fun τ => ((Classical.epsilon fun u : ↥(lowT M τ) => ‖((u : M.sm τ) : M.H τ)‖ = 1 : ↥(lowT M τ)) : M.sm τ)`. Establish `hv : ∀ τ, ‖(v τ : M.H τ)‖ = 1` using `fun τ => Classical.epsilon_spec (hu τ)`. Establish `hk : emb M (kUnit M) = PiTensorProduct.tprod ℂ v` using `PiTensorProduct.map_tprod _ _`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, PiTensorProduct.lift.tprod, PiTensorProduct.lift.tprod, (ipM_spec M μ 𝓕 T U h v v).2]`. Simplify using `[inner_self_eq_norm_sq_to_K, hv]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_kUnit (hne : ∀ τ, lowT M τ ≠ ⊥) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T U : MMap M)
     (h : ∃ c, IsMultIP M μ 𝓕 T U c) :
@@ -99,7 +99,7 @@ theorem integral_kUnit (hne : ∀ τ, lowT M τ ≠ ⊥) (μ : Measure (GA D V))
   simp [inner_self_eq_norm_sq_to_K, hv]
 
 /- English proof (translation)
-Use extensionality with `v`. Establish `: (lowT M τ).subtype (v τ) = 0` using `(Submodule.mem_bot ℂ).1 (h ▸ (v τ).2)`. Simplify using `only [LinearMap.compMultilinearMap_apply, PiTensorProduct.map_tprod, LinearMap.zero_apply]`. Conclude with `MultilinearMap.map_coord_zero _ τ this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem emb_eq_zero {τ : D.what₂.Tau} (h : lowT M τ = ⊥) : emb M = 0 := by
   classical
@@ -109,9 +109,9 @@ theorem emb_eq_zero {τ : D.what₂.Tau} (h : lowT M τ = ⊥) : emb M = 0 := by
   exact MultilinearMap.map_coord_zero _ τ this
 
 /- English proof (translation)
-Substitute `hU` using the available equality. Use `choose s hs using GlobalTheory.Mem.EasyInputs.smAll D V S M`. Establish `hs0 : ∏ τ, ⟪(s τ : M.H τ), (s τ : M.H τ)⟫_ℂ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => inner_self_ne_zero.2 fun h => hs τ (Submodule.coe_eq_zero.1 h)`. Establish `hz : IsMultIP M μ 𝓕 T 0 0`. Introduce `v v'`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hasPeterssonInner_unique _ _ _ _ _ s hs0 (ipM_spec _ _ _ _ _ ⟨_, hz⟩) hz]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_zero_right (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T U : MMap M) (hU : U = 0) (k : SmT M) :
     ipM M μ 𝓕 T U = ∫ g in 𝓕, star (PiTensorProduct.lift T k g) * PiTensorProduct.lift U k g ∂μ := by
@@ -127,7 +127,7 @@ theorem integral_zero_right (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T U :
 end Unit
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[postOn]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lift_post {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
     (L : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) (U : MMap M) :
@@ -142,17 +142,17 @@ variable {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch} (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hM` using `X.given.core.models`. Take `⟨w, hw1, hw2, hw3⟩` from `X.fire.2.1 μ hμ j x`. Establish `hth` using `X.recR.tied.lift.theta μ hμ j x w (X.fire.1 _ hμ j) hw1 hw2 hw3`. Take `⟨U, hU, hUw⟩` from `hw1`. Establish `hUw' : PiTensorProduct.lift U = w` using `hUw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T₀, hT₀, hT₀y⟩` from `(X.IL.jMj j y).2`. Establish `hTT : T₀ = T` using `PiTensorProduct.lift.injective (hT₀y.trans hT.symm)`. Substitute `hTT` using the available equality. Take `⟨hT1, hT2⟩` from `(mem_goodPart _ _ _ _ _ _).1 hT₀`. Establish `hT'U : T' = postOn (X.R.MW j (sg0 D X.A)) (X.R.eWf j (sg0 D X.A)) U`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `PiTensorProduct.lift.injective` to reduce the goal to its premises. Rewrite using `[hT', hth, ← hUw']`. Conclude with `(lift_post (X.R.MW j (sg0 D X.A)) _ U).symm`. Establish `hin : ∀ g, (∫ h in X.R.fdV j (X.tupT μ), thetaKO (X.R.ωP j (X.tupT μ)) h g (X.R.ptP j (X.tupT μ) (X.R.ioP j (kUnit (X.R.MW j (sg0 D X.A))) (X.fn hμ j x h))) ∂(X.R.νV j (X.tupT μ))) = PiTensorProduct.lift U (emb _ (kUnit (X.R.MW j (sg0 D X.A)))) g`. Introduce `g`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1` using `(X.fire.1 _ hμ j).eq (X.IL.jMt μ hμ j x) (kUnit (X.R.MW j (sg0 D X.A))) g`. Rewrite `e1` using `[← hw2, ← hUw']`. Conclude with `e1.symm`. Take `⟨p1, p2⟩` from `ipM_proj X.R hM X.given.irr j (mult_le_wall X.R X.F false j hT1) (mult_le_wall X.R X.F false j hU) hT2`. Simplify using `only [hin]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hT'U]`. Use `p1.trans ?_` and prove the remaining obligations. Distinguish the cases in `hne : ∀ τ, lowT (X.R.MW j (sg0 D X.A)) τ ≠ ⊥`. Conclude with `(integral_kUnit _ hne _ _ _ _ p2).symm`. Use `push Not at hne`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨τ, hτ⟩` from `hne`. Establish `h0` using `emb_eq_zero _ hτ`. Establish `hw0 : w = 0` using `X.fire.2.2 j w ⟨U, hU, hUw⟩ ((congrArg (fun e => w ∘ₗ e) h0).trans (LinearMap.comp_zero _))`. Establish `hU0 : U = 0` using `PiTensorProduct.lift.injective (by rw [hUw', hw0, map_zero])`. Conclude with `integral_zero_right (X.R.MW j (sg0 D X.A)) _ _ _ _ hU0 _`.
+A detailed English derivation is pending.
 -/
 theorem ipM_theta {μ : D.what₂.Tup} (hμ : Used0 D μ) (j : Fin D.R.m) (x : D.what₂.Mt μ (j.1 + 1)) (y : D.what₂.Mj (j.1 + 1))
     (T T' : MMap (X.R.MW j (sg0 D X.A))) (hT : PiTensorProduct.lift T = (X.IL.jMj j y).1)
@@ -204,11 +204,9 @@ variable {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch} {
   {M : MtFam D} {rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r}
 
 /- English proof (translation)
-Use `congrArg c.ext (funext fun k => ?_)` and prove the remaining obligations. Establish `hex : ∃ κ, (finHom V).rangeRestrict (PV.ψ κ) = k`. Take `⟨κ, hκ, e⟩` from `Formalism.IndefR.Eqv.Act.exists_finLift V k`. Take `⟨h, rfl⟩` from `PV.onto κ hκ`. Conclude with `⟨h, Subtype.ext e⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hp : (finHom V).rangeRestrict (PV.ψ (preF PV k)) = k`. Unfold `preF`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`. Use `show c.ρ (PV.ψ (preF PV k))⁻¹ (f ((finHom V).rangeRestrict (PV.ψ (preF PV k)))) = _`.
-
-Rewrite using `[hp, hc _ (inv_mem (PV.into _)), Module.End.one_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_pre {V : HSp D} {n : ℕ} (c : CoefA V) (hc : ∀ h ∈ GfC V, c.ρ h = 1) (PV : principalLevelFrame.RowPsi V n)
     (f : Bridge.Gf V → c.W) : c.ext (fun k => c.ext f (PV.ψ (preF PV k))) = c.ext f := by
@@ -227,9 +225,9 @@ theorem ext_pre {V : HSp D} {n : ℕ} (c : CoefA V) (hc : ∀ h ∈ GfC V, c.ρ 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨z, hz⟩ : X.fn hμ j x ∈ LinearMap.range (X.R.extV j (X.tupT μ))` from `(X.IL.jMt μ hμ j x).2.1`. Establish `hz' : (X.R.cV j).ext ((X.R.HV j (X.tupT μ)).e z) = X.fn hμ j x` using `hz`. Establish `e : (fun k => (A.eW μ hμ j).symm ((M μ (j.1 + 1) (by omega) (by omega)).real x (A.a j * preF (A.PV j) k))) = fun k => X.fn hμ j x ((A.PV j).ψ (preF (A.PV j) k))`. Use function extensionality and compare the values at `k`. Use `(LinearEquiv.symm_apply_eq _).2 ((A.real μ hμ j x _).trans ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inv_mul_cancel_left]`. Use `(congrArg (X.R.cV j).ext e).trans ?_` and prove the remaining obligations. Generalize the expression as in `X.fn hμ j x = φ at hz' ⊢`. Substitute `hz'` using the available equality. Conclude with `ext_pre _ (hV j).1 _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ext_real (hV : X.R.models_cV) (A : GlobalTheory.NJoin.Agree X M rep) {μ : D.what₂.Tup} (hμ : Used0 D μ) (j : Fin D.R.m)
     (x : D.what₂.Mt μ (j.1 + 1)) :
@@ -248,7 +246,7 @@ theorem ext_real (hV : X.R.models_cV) (A : GlobalTheory.NJoin.Agree X M rep) {μ
   exact ext_pre _ (hV j).1 _ _
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Conclude with `ext_real hV A hμ j x`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ext_real_cast (hV : X.R.models_cV) (A : GlobalTheory.NJoin.Agree X M rep) {μ : D.what₂.Tup} (hμ : Used0 D μ) (j : Fin D.R.m)
     (k : ℕ) (hk : j.1 + 1 = k) (p1 : 1 ≤ k) (p2 : k ≤ D.R.m) (x : D.what₂.Mt μ k) :
@@ -268,7 +266,7 @@ variable {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {P : Pin hL D} 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Take `⟨-, -, -, -, hB, hφ⟩` from `Classical.choose_spec (Classical.choose_spec hc)`. Use `(Y.φ_inner _ _).trans ((hB _ (Y.φ_mem _) _ (Y.φ_mem _)).trans (congrArg (fun z => (cC hc : ℂ) * z) ?_))` and prove the remaining obligations. Conclude with `ipM_theta X hμ j x y (eC hc (Y.φ y)) (eC hc (Y.φ (D.what₂.thetaP μ (j.1 + 1) x))) (hφ y) (hφ _)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem inner_theta {μ : D.what₂.Tup} (hμ : Used0 D μ) (j : Fin D.R.m) (k : ℕ) (hk : j.1 + 1 = k) (Y : RowMod D P.rep k)
     (hc : GlobalTheory.NJoin.IsCanon X j hk Y) (x : D.what₂.Mt μ k) (y : D.what₂.Mj k) :
@@ -284,9 +282,9 @@ theorem inner_theta {μ : D.what₂.Tup} (hμ : Used0 D μ) (j : Fin D.R.m) (k :
 end Canon
 
 /- English proof (translation)
-Introduce `hL D P X A i j hj Y hc hμ x y F hF`. Establish `hf : fV A i j hj hμ F = X.fn hμ j (hj.symm ▸ x)`. Use `Eq.trans ?_ (ext_real_cast X.given.core.models.cV A hμ j _ hj (D.nd.j_range i).1 (D.nd.j_range i).2 x)` and prove the remaining obligations. Use `show (X.R.cV j).ext (fun k => (eWloc A i j hj hμ).symm ((F : GAf D.host.E D.R.nV → (P.M.loc i).wt.W) (A.a j * preF (A.PV j) k))) = _`. Rewrite using `[hF]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[inner_theta X hμ j _ hj Y hc x y, ← hf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D) (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D.nd.Loc) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i) (Y : RowMod D P.rep (D.nd.j i)) (hc : GlobalTheory.NJoin.IsCanon X j hj Y) (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (x : D.what₂.Mt (D.nd.mu i) (D.nd.j i)) (y : D.what₂.Mj (D.nd.j i)) (F : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ)), (F : GAf D.host.E D.R.nV → (P.M.loc i).wt.W) = (P.M.loc i).real x → inner ℂ y (D.what₂.thetaP (D.nd.mu i) (D.nd.j i) x) = GlobalTheory.ThetaTri.lamI A i j hj hc hμ (GlobalTheory.ThetaTri.phi0 j (X.tupT (D.nd.mu i))) F ⟨Y.φ y, Y.φ_mem y⟩ := by
   intro hL D P X A i j hj Y hc hμ x y F hF

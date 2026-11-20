@@ -28,13 +28,11 @@ def entLc (a b : Fin (2 * r + k + 1)) : B.Mat k r →L[ℝ] ℂ :=
       map_smul' := fun c g => by simp [Matrix.smul_apply] }
 
 /- English proof (translation)
-Distinguish the cases in `hφ : DifferentiableAt ℝ φ 0`. Conclude with `deriv_smul_const hφ T`. Distinguish the cases in `hT : T = 0`. Simplify using `[hT]`. Rewrite using `[deriv_zero_of_not_differentiableAt hφ, zero_smul]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `deriv_zero_of_not_differentiableAt` to reduce the goal to its premises. Introduce `hd`. Apply `hφ` to reduce the goal to its premises. Take `⟨ℓ, -, hℓ⟩` from `exists_dual_vector ℂ T (norm_ne_zero_iff.2 hT)`. Establish `hℓT : ℓ T ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hℓ]`. Conclude with `Complex.ofReal_ne_zero.2 (norm_ne_zero_iff.2 hT)`. Establish `h2 : DifferentiableAt ℝ (fun t => ℓ (φ t • T) / ℓ T) 0` using `((ℓ.restrictScalars ℝ).differentiableAt.comp (0 : ℝ) hd).div_const _`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show φ t = ℓ (φ t • T) / ℓ T`.
-
-Rewrite using `[map_smul, smul_eq_mul, mul_div_cancel_right₀ _ hℓT]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem deriv_smul_const_at_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (φ : ℝ → ℂ) (T : E) :
     deriv (fun t => φ t • T) 0 = deriv φ 0 • T := by
@@ -58,13 +56,11 @@ private theorem deriv_smul_const_at_zero {E : Type*} [NormedAddCommGroup E] [Nor
   rw [map_smul, smul_eq_mul, mul_div_cancel_right₀ _ hℓT]
 
 /- English proof (translation)
-Establish `hR : ∀ v : List (B.Mat k r), B.Rw v (fun g => φ g • T) = fun g => B.Rw v φ g • T`. Introduce `v`. Proceed by induction on `v with`. Consider the case `nil => rfl`. Consider the case `cons X v ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use function extensionality and compare the values at `g`. Use `show Formalism.REAL.RdV X (B.Rw v fun g => φ g • T) g = Formalism.REAL.RdV X (B.Rw v φ) g • T`. Rewrite using `[ih]`. Conclude with `deriv_smul_const_at_zero _ T`. Unfold `B.dLR`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Rewrite using `[hR v]`. Proceed by induction on `u with`. Consider the case `nil => rfl`. Consider the case `cons X u ih`. Use function extensionality and compare the values at `g`.
-
-Use `show B.LdV X (u.foldr B.LdV fun g => B.Rw v φ g • T) g = B.LdV X (u.foldr B.LdV (B.Rw v φ)) g • T`. Rewrite using `[ih]`. Conclude with `deriv_smul_const_at_zero _ T`.
+Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dLR_smul_const_right {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (φ : B.Mat k r → ℂ) (T : E)
     (u v : List (B.Mat k r)) : B.dLR u v (fun g => φ g • T) = fun g => B.dLR u v φ g • T := by
@@ -88,7 +84,7 @@ private theorem dLR_smul_const_right {E : Type*} [NormedAddCommGroup E] [NormedS
     exact deriv_smul_const_at_zero _ T
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨Set.univ, f, isOpen_univ, Set.mem_univ _, (hf.of_le (WithTop.coe_le_coe.2 le_top)).contDiffOn, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private theorem ckOn_of_contDiff_infty {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (f : B.Mat k r → E)
     (hf : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f) (m : ℕ∞) (UU : Set (B.Mat k r)) : B.CkOn m UU f :=
@@ -96,15 +92,15 @@ private theorem ckOn_of_contDiff_infty {E : Type*} [NormedAddCommGroup E] [Norme
     (hf.of_le (WithTop.coe_le_coe.2 le_top)).contDiffOn, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨hcd, hwb⟩` from `PI.UnitaryCorollaryDerivatives.polynomial_bound k r κ c hc`. Use `⟨fun F hF => ?_, fun A m => ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', hfe⟩` from `hF g₀ hg₀`. Use `⟨U, fun g => c g • f' g, hU, hgU, hcd.contDiffOn.smul hf', fun g hg hgv => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hfe g hg hgv]`. Take `⟨C, hC⟩` from `hwb m`. Use `⟨2 ^ m * |C|, by positivity, fun F b hF => ?_⟩` and prove the remaining obligations. Establish `hab : ∀ u v : List (B.Mat k r), (∀ X ∈ u, B.unitLie k r X) → (∀ X ∈ v, B.unitLie k r X) → u.length + v.length ≤ m → ∀ g ∈ B.GV k r, g ∉ (∅ : Set (B.Mat k r)) → ‖B.dLR u v (fun g => c g • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)) g‖ ≤ C * B.gN g ^ (κ : ℝ)`. Introduce `u v hu hv hl g hg _`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hC u v hu hv hl g hg`. Simplify using `only [List.map_append, List.sum_append] at h1`. Simplify using `only [dLR_smul_const_right, norm_smul]`. Establish `h1' : ‖B.dLR u v c g‖ ≤ C * B.gN g ^ (κ : ℝ)` using `by simpa using h1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Take `⟨hP1, hP2⟩` from `Formalism.FourierDecayAlt.P.BetaSesquilinearity.prodBound (O := ∅) (UU := B.GV k r) (a := fun g => c g • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)) isOpen_empty (fun g hg => Or.inr hg) (ckOn_of_contDiff_infty _ (hcd.smul contDiff_const) _ _) hab hF (fun g _ h => by simp at h)`. Establish `hfun : Formalism.FourierDecayAlt.P.BetaSesquilinearity.ap (fun g => c g • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)) F = fun g => c g • F g`. Use function extensionality and compare the values at `g`. Simplify using `[Formalism.FourierDecayAlt.P.BetaSesquilinearity.ap]`. Rewrite `hP1`, `hP2` using `[hfun]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨hP1, fun u v hu hv hl g hg => ?_⟩` and prove the remaining obligations. Establish `hb0 : 0 ≤ b` using `le_trans (mul_nonneg (Real.rpow_nonneg (Real.sqrt_nonneg _) _) (norm_nonneg _)) (hF.2 [] [] (by simp) (by simp) (by simp) g hg)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem pdGood_of_isPolyDeg {κ : ℕ} {c : B.Mat k r → ℂ} (hc : U.IsPolyDeg κ c) : pdGood Wp Wq κ c := by
   obtain ⟨hcd, hwb⟩ := PI.UnitaryCorollaryDerivatives.polynomial_bound k r κ c hc
@@ -142,7 +138,7 @@ private theorem pdGood_of_isPolyDeg {κ : ℕ} {c : B.Mat k r → ℂ} (hc : U.I
       _ = 2 ^ m * |C| * b := by rw [abs_of_nonneg hb0]; ring
 
 /- English proof (translation)
-The claim follows from `| 0 => pd_good_congr (fun g _ => by simp) (pd_good_const (Wp := Wp) (Wq := Wq) (d * 0) (1 : ℂ)) | e + 1 => pd_good_congr (fun g _ => (pow_succ (c g) e).symm) (pd_good_mul (by rw [Nat.mul_succ]) (pd_good_pow hc e) hc)`.
+A detailed English derivation is pending.
 -/
 theorem pd_good_pow {d : ℕ} {c : B.Mat k r → ℂ} (hc : pdGood Wp Wq d c) :
     ∀ e : ℕ, pdGood Wp Wq (d * e) (fun g => c g ^ e)
@@ -151,7 +147,7 @@ theorem pd_good_pow {d : ℕ} {c : B.Mat k r → ℂ} (hc : pdGood Wp Wq d c) :
       (pd_good_mul (by rw [Nat.mul_succ]) (pd_good_pow hc e) hc)
 
 /- English proof (translation)
-The claim follows from `pdGood_of_isPolyDeg hc`.
+A detailed English derivation is pending.
 -/
 theorem pd_good_of_poly {κ : ℕ} {c : B.Mat k r → ℂ} (hc : U.IsPolyDeg κ c) : pdGood Wp Wq κ c :=
   pdGood_of_isPolyDeg hc
@@ -164,7 +160,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Use `pd_good_pow (Wp := Wp) (Wq := Wq) (pd_good_of_poly (Formalism.FourierDecayAlt.P.gram_function_polynomial k r z z')) q` as an intermediate fact. Simplify `this` using `only [Complex.ofReal_pow]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pd_good_Gpow (z z' : Fin (2 * r + k + 1) → ℂ) (q : ℕ) :
     pdGood Wp Wq ((2 * r + 2) * q) (fun g : B.Mat k r => ((Gf k r z z' g ^ q : ℝ) : ℂ)) := by
@@ -172,7 +168,7 @@ theorem pd_good_Gpow (z z' : Fin (2 * r + k + 1) → ℂ) (q : ℕ) :
   simpa only [Complex.ofReal_pow] using this
 
 /- English proof (translation)
-Introduce `m`. Take `⟨c, hc⟩` from `hf m`. Take `⟨K, -, hb⟩` from `(pd_good_Gpow (Wp := Wp) (Wq := Wq) z z' q).2 (A₀ - (((2 * r + 2) * q : ℕ) : ℝ)) m`. Conclude with `⟨K * c, hb f c (by rwa [sub_add_cancel])⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inCC_Gpow_smul (z z' : Fin (2 * r + k + 1) → ℂ) (q : ℕ) {A₀ : ℝ} {f : B.Mat k r → (Wq →L[ℂ] Wp)}
     (hf : ∀ m : ℕ, B.InCC A₀ m f) :
@@ -183,7 +179,7 @@ theorem inCC_Gpow_smul (z z' : Fin (2 * r + k + 1) → ℂ) (q : ℕ) {A₀ : �
   exact ⟨K * c, hb f c (by rwa [sub_add_cancel])⟩
 
 /- English proof (translation)
-The claim follows from `(pd_good_Gpow (Wp := Wp) (Wq := Wq) z z' q).1 f hf`.
+A detailed English derivation is pending.
 -/
 theorem ckOn_Gpow_smul (z z' : Fin (2 * r + k + 1) → ℂ) (q : ℕ) {f : B.Mat k r → (Wq →L[ℂ] Wp)}
     (hf : B.CkOn ⊤ (B.GV k r) f) : B.CkOn ⊤ (B.GV k r) (fun g => ((Gf k r z z' g ^ q : ℝ) : ℂ) • f g) :=
@@ -197,7 +193,7 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [TBBx4.fpm, ContinuousLinearMap.comp_id]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fpm_id (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (p₀ : ℕ) :
     TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀ =
@@ -206,7 +202,7 @@ theorem fpm_id (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (p�
   simp only [TBBx4.fpm, ContinuousLinearMap.comp_id]
 
 /- English proof (translation)
-Rewrite using `[fpm_id]`. Conclude with `inCC_Gpow_smul _ _ p₀ hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inCC_fpm_id (p : KB.Pl P Wp Wq) {f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} (p₀ : ℕ) {A₀ : ℝ}
     (hf : ∀ m : ℕ, B.InCC A₀ m f) :

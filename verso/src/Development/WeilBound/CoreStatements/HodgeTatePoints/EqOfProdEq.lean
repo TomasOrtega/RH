@@ -6,7 +6,7 @@ open Matrix
 namespace PositivityTheory.HtPt.Rh
 
 /- English proof (translation)
-Introduce `A B _ _ _ _ h`. Conclude with `Algebra.isEpi_iff_surjective_algebraMap_of_finite.mp ((Algebra.isEpi_iff_forall_one_tmul_eq A B).mpr fun b => (h b).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem epi : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Module.Finite A B], (∀ b : B, b ⊗ₜ[A] (1 : B) = (1 : B) ⊗ₜ[A] b) → Function.Surjective (algebraMap A B) := by
   intro A B _ _ _ _ h
@@ -14,7 +14,7 @@ theorem epi : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Module.F
     ((Algebra.isEpi_iff_forall_one_tmul_eq A B).mpr fun b => (h b).symm)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hpos : ∀ i ∈ Finset.univ, 0 < f i` using `fun i _ => pos_iff_ne_zero.mpr ((Finset.prod_ne_zero_iff.mp h0) i (Finset.mem_univ i))`. Establish `hlt` using `Finset.prod_lt_prod hpos (fun i _ => hle i) ⟨t, Finset.mem_univ t, lt_of_le_of_ne (hle t) hne⟩`. Conclude with `hlt.ne h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_prod_eq {T : Type} [Fintype T] (f g : T → NNReal) (hle : ∀ t, f t ≤ g t)
     (h : ∏ t, f t = ∏ t, g t) (h0 : ∏ t, f t ≠ 0) (t : T) : f t = g t := by
@@ -26,15 +26,13 @@ theorem eq_of_prod_eq {T : Type} [Fintype T] (f g : T → NNReal) (hle : ∀ t, 
   exact hlt.ne h
 
 /- English proof (translation)
-Introduce `T S _ _ a b ha hb x D d r cA cN cO hcN hxD hD hx hA hd hr hdx hOa`. Establish `hab : a * b ≠ 0` using `(Nat.mul_pos ha hb).ne'`. Establish `hX : ∏ t, ∏ s, x t s = ∏ t, ∏ s, D t s`. Rewrite using `[hD]`. Conclude with `(pow_left_inj₀ (by positivity) (by positivity) hab).mp (hx.trans hA.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hX0 : ∏ t, ∏ s, x t s ≠ 0`. Introduce `h0`. Rewrite `hx` using `[h0, zero_pow hab]`. Conclude with `pow_ne_zero 2 hcN hx.symm`. Establish `hrow : ∀ t, ∏ s, x t s = ∏ s, D t s` using `PositivityTheory.HtPt.Rh.eq_of_prod_eq (fun t => ∏ s, x t s) (fun t => ∏ s, D t s) (fun t => Finset.prod_le_prod' fun s _ => hxD t s) hX hX0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrow0 : ∀ t, ∏ s, x t s ≠ 0` using `fun t => (Finset.prod_ne_zero_iff.mp hX0) t (Finset.mem_univ t)`. Establish `hxD' : ∀ t s, D t s = x t s` using `fun t s => (PositivityTheory.HtPt.Rh.eq_of_prod_eq (x t) (D t) (hxD t) (hrow t) (hrow0 t) s).symm`. Establish `hO : cO = ∏ t, ∏ s, d t s`. Rewrite using `[hdx]`. Apply `(pow_left_inj₀ (by positivity) (by positivity) ha.ne').mp` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hOa, ← pow_mul, mul_comm b a, hx]`. Establish `hcol : ∏ s, ∏ t, d t s = ∏ s, r s`. Rewrite using `[hr, hO, Finset.prod_comm]`. Establish `hcol0 : ∏ s, ∏ t, d t s ≠ 0`. Rewrite using `[Finset.prod_comm, hdx]`.
-
-Conclude with `pow_ne_zero _ hX0`. Conclude with `⟨hxD', PositivityTheory.HtPt.Rh.eq_of_prod_eq (fun s => ∏ t, d t s) r hd hcol hcol0⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem grcount : ∀ (T S : Type) [Fintype T] [Fintype S] (a b : ℕ), 0 < a → 0 < b → ∀ (x D d : T → S → NNReal) (r : S → NNReal) (cA cN cO : NNReal), cN ≠ 0 → (∀ t s, x t s ≤ D t s) → ∏ t, ∏ s, D t s = cA → (∏ t, ∏ s, x t s) ^ (a * b) = cN ^ 2 → cA ^ (a * b) = cN ^ 2 → (∀ s, ∏ t, d t s ≤ r s) → ∏ s, r s = cO → ∏ t, ∏ s, d t s = (∏ t, ∏ s, x t s) ^ b → cO ^ a = cN ^ 2 → (∀ t s, D t s = x t s) ∧ ∀ s, ∏ t, d t s = r s := by
   intro T S _ _ a b ha hb x D d r cA cN cO hcN hxD hD hx hA hd hr hdx hOa

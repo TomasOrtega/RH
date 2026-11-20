@@ -4,7 +4,7 @@ import Development.EtaleCohomology.TateTwists.FreeExt
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `R _ I J K μ E n m k hk α β γ γ' h h'`. Conclude with `LateralTheory.EtaleFoundations.AwExPf.ev_ext _ _ fun N w hw U x => (h N w hw U x).trans (h' N w hw U x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.etale_cup_alexanderWhitney_uniqueness_holds : LateralTheory.EtaleFoundations.EtaleAlexanderWhitneyCupCochainUnique := by
   intro R _ I J K μ E n m k hk α β γ γ' h h'

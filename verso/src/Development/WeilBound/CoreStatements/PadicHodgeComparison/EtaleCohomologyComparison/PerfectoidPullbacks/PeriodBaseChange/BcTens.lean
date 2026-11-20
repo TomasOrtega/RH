@@ -14,7 +14,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct GroundTheory.PAdicHodge Glob
 namespace CrystallineSemistableComparison.Pb
 
 /- English proof (translation)
-Introduce `r M hM j n` and use `GlobalTheory.T.smooth_model_tensor_witt_comparison r M hM j n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bc_tens : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : Res l K) (M : Model l K), M.Sm →
     ∀ j n, Tens (WittVector l r.k) (N := fun _ : Unit => AW r) (M := fun _ => (HSW r M j).M n) (M' := Mid.HM r M n j)

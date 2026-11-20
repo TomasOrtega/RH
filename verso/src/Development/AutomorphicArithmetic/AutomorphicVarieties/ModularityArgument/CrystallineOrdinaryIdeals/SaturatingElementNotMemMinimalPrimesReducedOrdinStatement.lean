@@ -5,11 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg IsLocalRing Polynomial Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `l _ O _ _ _ D U P hP hdel`. Establish `hmem : ∀ a, a ∈ D.IY U ↔ ∃ n, D.del U.r.hom ^ n * a ∈ D.ordIdeal U.r.hom`. Introduce `a`. Rewrite using `[UpperTheory.V.Loc.Dat3.IY.eq_1]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨y, hy, hxy⟩` from `Ideal.exists_mul_mem_of_mem_minimalPrimes hP hdel`. Apply `hy` to reduce the goal to its premises. Rewrite `hxy`, the goal using `[UpperTheory.V.Loc.Dat3.Icr.eq_1]`. Take `⟨k, hk⟩` from `hxy`. Take `⟨n, hn⟩` from `(hmem _).1 hk`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨k, (hmem _).2 ⟨n + k, ?_⟩⟩` and prove the remaining obligations. Establish `e : D.del U.r.hom ^ (n + k) * y ^ k = D.del U.r.hom ^ n * (D.del U.r.hom * y) ^ k`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.saturatingElement_notMem_minimalPrimes_reducedOrdinaryIdeal : ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (D : Dat3 l O) (U : D.Univ), ∀ P ∈ (GlobalTheory.OrdLoc.Icr D U).minimalPrimes, GlobalTheory.OrdLoc.del D U.r.hom ∉ P := by
   intro l _ O _ _ _ D U P hP hdel

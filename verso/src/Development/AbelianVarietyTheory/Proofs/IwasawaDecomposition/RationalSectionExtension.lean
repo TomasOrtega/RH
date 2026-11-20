@@ -9,7 +9,7 @@ set_option autoImplicit false
 namespace GlobalTheory.RestrictRatSec
 
 /- English proof (translation)
-Introduce `x _` and use `by have : x = IsLocalRing.closedPoint K := Subsingleton.elim (α := PrimeSpectrum K) _ _ rw [this] exact hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_of_below {K : Type} [Field K] {Z : Scheme.{0}} (y : Sp K ⟶ Z) {U : Z.Opens}
     (hy : below y ∈ U) : ⊤ ≤ y ⁻¹ᵁ U := fun x _ => by
@@ -18,7 +18,7 @@ theorem top_le_of_below {K : Type} [Field K] {Z : Scheme.{0}} (y : Sp K ⟶ Z) {
   exact hy
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[OfModel.valAt_fnOf y hW (top_le_of_below y hW), ← Scheme.Hom.appLE_comp_appLE y j U W ⊤ l (top_le_of_below y hW)]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valAt_appLE {K : Type} [Field K] {X Y : Scheme.{0}} [IsIntegral Y] (j : Y ⟶ X) (y : Sp K ⟶ Y)
     (z : Sp K ⟶ X) (e : z = y ≫ j) {U : X.Opens} {W : Y.Opens} (l : W ≤ j ⁻¹ᵁ U) (hW : below y ∈ W)
@@ -31,21 +31,21 @@ theorem valAt_appLE {K : Type} [Field K] {X Y : Scheme.{0}} [IsIntegral Y] (j : 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Set.mem_iInter.1 h PUnit.unit, fun h => Set.mem_iInter.2 fun _ => h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_pullU {X Y : Scheme.{0}} (B : LB X) (j : Y ⟶ X) (c : (B.pull j).ι) (x : Y) :
     x ∈ (B.pull j).U c ↔ j x ∈ B.U (c PUnit.unit) :=
   ⟨fun h => Set.mem_iInter.1 h PUnit.unit, fun h => Set.mem_iInter.2 fun _ => h⟩
 
 /- English proof (translation)
-Introduce `x hx` and use `⟨(mem_pullU B j c x).1 hx.1, (mem_pullU B j c' x).1 hx.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem inf_le_pull {X Y : Scheme.{0}} (B : LB X) (j : Y ⟶ X) (c c' : (B.pull j).ι) :
     (B.pull j).U c ⊓ (B.pull j).U c' ≤ j ⁻¹ᵁ (B.U (c PUnit.unit) ⊓ B.U (c' PUnit.unit)) :=
   fun x hx => ⟨(mem_pullU B j c x).1 hx.1, (mem_pullU B j c' x).1 hx.2⟩
 
 /- English proof (translation)
-Establish `: (B.pull j).g c c' = res (inf_le_pull B j c c') (pullU j _ (B.g (c PUnit.unit) (c' PUnit.unit)))`. Express the relevant statement in the definitionally equal form `∏ _k : PUnit, _ = _`. Conclude with `(Fintype.prod_unique _).trans (zpow_one _)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem val_pull_g {X Y : Scheme.{0}} (B : LB X) (j : Y ⟶ X) (c c' : (B.pull j).ι) :
     ((B.pull j).g c c').val =
@@ -58,9 +58,9 @@ theorem val_pull_g {X Y : Scheme.{0}} (B : LB X) (j : Y ⟶ X) (c c' : (B.pull j
   rfl
 
 /- English proof (translation)
-Take `⟨b, -, hb⟩` from `id hf`. Take `⟨b', rfl⟩` from `j.stalkMap_surjective x b`. Take `⟨W, hx, a, rfl⟩` from `X.presheaf.exists_germ_eq b'`. Establish `e : fnOf (j ⁻¹ᵁ W) (gen_mem (x` using `x) hx) ((j.app W).hom a) = f := by`. Rewrite using `[← algebraMap_germ (x := x) hx, ← hb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (Scheme.Hom.germ_stalkMap_apply j W x hx a).symm`. Use `⟨W, hx, a, ?_, by rw [← Scheme.Hom.app_eq_appLE]; exact e⟩` and prove the remaining obligations. Use `(unitAt_fnOf_iff (U := j ⁻¹ᵁ W) (x := x) hx _ _).1 (e ▸ hf)` as an intermediate fact. Rewrite `this` using `[← Scheme.preimage_basicOpen]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {X Y : Scheme.{0}} [IsIntegral Y] (j : Y ⟶ X) [SurjectiveOnStalks j] (x : Y)
     {f : Y.functionField} (hf : UnitAt x f) :
@@ -78,19 +78,19 @@ theorem exists_lift {X Y : Scheme.{0}} [IsIntegral Y] (j : Y ⟶ X) [SurjectiveO
   exact this
 
 /- English proof (translation)
-Introduce `X Y Z _ _ j _ i x hi B hB r hr u hu`. Take `⟨c₀, hc₀⟩` from `exists_chart hB (j x)`. Establish `hx₀ : x ∈ (B.pull j).U (fun _ => c₀)` using `(mem_pullU B j _ x).2 hc₀`. Take `⟨W, hW, a, ha, e⟩` from `exists_lift j x (hu _ hx₀)`. Establish `hgW : genericPoint Z ∈ i ⁻¹ᵁ W` using `show i _ ∈ W from hi ▸ hW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg₀ : genericPoint Z ∈ (B.pull i).U (fun _ => c₀)` using `(mem_pullU B i _ _).2 (hi ▸ hc₀)`. Establish `hne : fnOf (i ⁻¹ᵁ W) hgW ((i.appLE W _ le_rfl).hom a) ≠ 0`. Use `UnitAt.ne_zero (x := genericPoint Z) ((unitAt_fnOf_iff hgW _ _).2 ?_)` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.app_eq_appLE, ← Scheme.preimage_basicOpen]`. Conclude with `show i _ ∈ X.basicOpen a from hi ▸ ha`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun c => frameRat (B.pull i) _ hg₀ c * Units.mk0 _ hne, fun c c' h => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, isRatSec_frameRat (LB.isLB_pull hB i) _ hg₀ c c' h, mul_assoc]`. Introduce `K _ y y' c hy hyx hy' hc`. Establish `hxc : x ∈ (B.pull j).U (fun _ => c)` using `(mem_pullU B j _ x).2 hc`. Establish `hgc : genericPoint Z ∈ (B.pull i).U (fun _ => c)` using `(mem_pullU B i _ _).2 (hi ▸ hc)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : below (y ≫ j) = j x` using `hyx ▸ rfl`. Establish `h₁ : ⊤ ≤ (y ≫ j) ⁻¹ᵁ (B.U c ⊓ B.U c₀)` using `top_le_of_below _ (hb ▸ memInf hc hc₀)`. Establish `h₂ : ⊤ ≤ (y ≫ j) ⁻¹ᵁ W` using `top_le_of_below _ (hb ▸ hW)`. Establish `hxx` using `memInf hxc hx₀`. Establish `hgg` using `memInf hgc hg₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : ((u * r (fun _ => c) : Y.functionFieldˣ) : Y.functionField) = fnOf _ (gen_mem hxx) ((B.pull j).g (fun _ => c) (fun _ => c₀)).val * ((u * r (fun _ => c₀) : Y.functionFieldˣ) : Y.functionField)`. Rewrite using `[Units.val_mul, Units.val_mul, hr _ _ (gen_mem hxx), mul_left_comm]`. Establish `hxW : x ∈ j ⁻¹ᵁ W` using `hW`. Rewrite `hxx`, `hxW` using `[← hyx]`. Rewrite `hgg`, `hgW` using `[← hy']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `v₁` using `valAt_appLE j y _ rfl (inf_le_pull B j (fun _ => c) (fun _ => c₀)) hxx (gen_mem hxx) h₁ (B.g c c₀).val`. Establish `v₂` using `valAt_appLE i y' _ hy (inf_le_pull B i (fun _ => c) (fun _ => c₀)) hgg (gen_mem hgg) h₁ (B.g c c₀).val`. Establish `w₁` using `congrArg (fun t => valAt y (fnOf _ (gen_mem hxx) t)) (val_pull_g B j (fun _ => c) (fun _ => c₀))`. Establish `w₂` using `congrArg (fun t => valAt y' (fnOf _ (gen_mem hgg) t)) (val_pull_g B i (fun _ => c) (fun _ => c₀))`. Establish `t₁` using `valAt_appLE j y _ rfl le_rfl hxW (gen_mem hxW) h₂ a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t₂` using `valAt_appLE i y' _ hy le_rfl hgW (gen_mem hgW) h₂ a`. Rewrite using `[e₁, ← e, OfModel.valAt_mul y (regAt_fnOf hxx _ _) (regAt_fnOf hxW _ _), Units.val_mul, Units.val_mk0]`. Use `(congrArg (fun t => valAt y' (t * _)) (val_frameRat _ hg₀ _ hgc)).trans ?_` and prove the remaining obligations. Use `(OfModel.valAt_mul y' (regAt_fnOf hgg _ _) (regAt_fnOf hgW _ _)).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) ((w₂.trans v₂).trans (w₁.trans v₁).symm) (t₂.trans t₁.symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_restriction : ∀ (X Y Z : Scheme.{0}) [IsIntegral Y] [IsIntegral Z] (j : Y ⟶ X) [SurjectiveOnStalks j] (i : Z ⟶ X) (x : Y), i (genericPoint Z) = j x → ∀ (B : LB X), B.IsLB → ∀ (r : (B.pull j).ι → Y.functionFieldˣ), IsRatSec (B.pull j) r → ∀ (u : Y.functionFieldˣ), (∀ c, x ∈ (B.pull j).U c → UnitAt x ((u * r c : Y.functionFieldˣ) : Y.functionField)) → ∃ s : (B.pull i).ι → Z.functionFieldˣ, IsRatSec (B.pull i) s ∧ ∀ (K : Type) [Field K] (y : Sp K ⟶ Y) (y' : Sp K ⟶ Z) (c : B.ι), y ≫ j = y' ≫ i → below y = x → below y' = genericPoint Z → j x ∈ B.U c → valAt y' (s (fun _ => c) : Z.functionField) = valAt y ((u * r (fun _ => c) : Y.functionFieldˣ) : Y.functionField) := by
   intro X Y Z _ _ j _ i x hi B hB r hr u hu

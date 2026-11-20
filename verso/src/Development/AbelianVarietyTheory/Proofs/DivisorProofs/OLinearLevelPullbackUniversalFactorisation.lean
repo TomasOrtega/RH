@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Hom.one_def, ← Category.assoc]`. Use `congr 1`. Conclude with `toUnit_unique _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem comp_one₂ {S : Scheme.{0}} {X Y M : Over S} [GrpObj M] (u : Y ⟶ X) : u ≫ (1 : X ⟶ M) = 1 := by
   rw [Hom.one_def, Hom.one_def, ← Category.assoc]
@@ -16,21 +16,19 @@ theorem comp_one₂ {S : Scheme.{0}} {X Y M : Over S} [GrpObj M] (u : Y ⟶ X) :
   exact toUnit_unique _ _
 
 /- English proof (translation)
-Introduce `p _ D N H AH _ actH Y u AE _ φE ηE hE hηu huniv T g AT _ φ act eta hT hact heta`. Set `Tg : Over H` to `Over.mk g`. Set `e : Tg ⟶ Over.mk ((𝟙_ (Over T)).hom ≫ g)` to `Over.homMk (𝟙 T) (by simp [Tg])`. Set `u' : D.La → (Tg ⟶ AH)` to `fun x => e ≫ pushHom hT (𝟙_ (Over T)) (eta x)`. Establish `hu'l : ∀ x, (u' x).left = (eta x).left ≫ φ` using `fun x => by show 𝟙 T ≫ (eta x).left ≫ φ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Category.id_comp]`. Establish `hadd : ∀ x y, u' (x + y) = u' x * u' y` using `fun x y => by show e ≫ pushHom hT _ (eta (x + y)) = (e ≫ pushHom hT _ (eta x)) * (e ≫ pushHom hT _ (eta y))`. Rewrite using `[heta.1, map_mul, MonObj.comp_mul]`. Establish `hlin : ∀ (c : D.O) x, u' (c • x) = u' x ≫ actH.act c` using `fun c x => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (u' (c • x)).left = (u' x ≫ actH.act c).left`. Rewrite using `[hu'l, Over.comp_left, hu'l, heta.2.1, Over.comp_left, Category.assoc, hact, Category.assoc]`. Establish `hker : ∀ x, u' (N • x) = 1` using `fun x => by show e ≫ pushHom hT _ (eta (N • x)) = 1`. Rewrite using `[heta.2.2, map_one, comp_one₂]`. Take `⟨h, hh, hun⟩` from `huniv Tg u' hadd hlin hker`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz : h.left ≫ Y.hom = g` using `Over.w h`. Establish `hw : φ ≫ AH.hom = (AT.hom ≫ h.left) ≫ Y.hom` using `by rw [hT.1.w, Category.assoc, hz]`. Set `ψ : AT.left ⟶ AE.left` to `hE.1.lift φ (AT.hom ≫ h.left) hw`. Establish `hψ₁ : ψ ≫ φE = φ` using `hE.1.lift_fst _ _ _`. Establish `hψ₂ : ψ ≫ AE.hom = AT.hom ≫ h.left` using `hE.1.lift_snd _ _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhl : ∀ y, h.left ≫ (u y).left = (eta y).left ≫ φ` using `fun y => by`. Rewrite using `[← Over.comp_left, hh y, hu'l]`. Use `⟨h.left, ⟨hz, ψ, ?_, hψ₁, fun y => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `IsGrpPullback.cancel hE (hT.congr hz.symm hψ₁.symm) hψ₂`. Apply `hE.1.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hψ₁, Category.assoc, hηu, hhl]`. Rewrite using `[Category.assoc, hψ₂, ← Category.assoc, Over.w (eta y), Category.assoc, Over.w (ηE y)]`. Both sides reduce to the same expression. Introduce and unpack `z₂ ⟨hz₂, ψ₂, -, hψ₂₁, he₂⟩`. Set `h₂ : Tg ⟶ Y` to `Over.homMk z₂ hz₂`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: h₂ = h` using `hun h₂ fun x => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, hu'l]`. Use `show z₂ ≫ (u x).left = _`. Rewrite using `[← hηu, ← Category.assoc, ← he₂, Category.assoc, hψ₂₁]`.
-
-Conclude with `congrArg (fun k => k.left) this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullUnivP : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (N : ℕ) (H : Scheme.{0}) (AH : Over H) [GrpObj AH] (actH : OActN D.O AH) (Y : Over H) (u : D.La → (Y ⟶ AH)) (AE : Over Y.left) [GrpObj AE] (φE : AE.left ⟶ AH.left) (ηE : D.La → (𝟙_ (Over Y.left) ⟶ AE)), IsGrpPullback AE AH Y.hom φE → (∀ y, (ηE y).left ≫ φE = (u y).left) → (∀ (T : Over H) (u' : D.La → (T ⟶ AH)), (∀ x y, u' (x + y) = u' x * u' y) → (∀ (c : D.O) x, u' (c • x) = u' x ≫ actH.act c) → (∀ x, u' (N • x) = 1) → ∃! h : T ⟶ Y, ∀ x, h ≫ u x = u' x) → ∀ (T : Scheme.{0}) (g : T ⟶ H) (AT : Over T) [GrpObj AT] (φ : AT.left ⟶ AH.left) (act : OActN D.O AT) (eta : D.La → (𝟙_ (Over T) ⟶ AT)), IsGrpPullback AT AH g φ → (∀ a : D.O, (act.act a).left ≫ φ = φ ≫ (actH.act a).left) → EtaOK D N act eta → ∃! z : T ⟶ Y.left, z ≫ Y.hom = g ∧ ∃ ψ : AT.left ⟶ AE.left, IsGrpPullback AT AE z ψ ∧ ψ ≫ φE = φ ∧ ∀ y, (eta y).left ≫ ψ = z ≫ (ηE y).left := by
   intro p _ D N H AH _ actH Y u AE _ φE ηE hE hηu huniv T g AT _ φ act eta hT hact heta

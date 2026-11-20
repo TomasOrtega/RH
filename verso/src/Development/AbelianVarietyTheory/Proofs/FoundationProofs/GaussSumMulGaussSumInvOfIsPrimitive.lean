@@ -9,11 +9,11 @@ open Formalism.PairingDivisionLocalBalance (Pl wt)
 namespace GlobalTheory.GaussInt
 
 /- English proof (translation)
-Establish `h1 : gaussSum χ ψ * gaussSum χ⁻¹ ψ⁻¹ = ∑ b : ZMod N, ∑ a : ZMod N, χ a * ψ (b * (a - 1))` using `by conv_lhs => rw [gaussSum.eq_1 χ⁻¹, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, mul_comm (gaussSum χ ψ), ← gaussSum_mulShift_of_isPrimitive ψ hχ b, gaussSum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[AddChar.mulShift_apply, AddChar.inv_apply, mul_assoc, ← AddChar.map_add_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.mul_sum, AddChar.sum_mulShift _ hψ, sub_eq_zero]`. Rewrite using `[Finset.sum_eq_single (1 : ZMod N)]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `a _ ha`. Simplify using `[ha]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gaussSum_mul_gaussSum_inv_of_isPrimitive {K : Type} [Field K] {N : ℕ} [NeZero N]
     {χ : DirichletCharacter K N} {ψ : AddChar (ZMod N) K} (hχ : χ.IsPrimitive)

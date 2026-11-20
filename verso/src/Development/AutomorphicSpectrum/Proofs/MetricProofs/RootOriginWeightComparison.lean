@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Small.Fund
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `e` using `sum_fundCo_mul_sum_Iic (f τ) fun k => B (τ, k)`. Simplify using `only [h, mul_neg, Finset.sum_neg_distrib, neg_mul]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_neg_mul_eq_sum_fundCo {Ψ : Type} [Fintype Ψ] {N : ℕ} (f : Ψ → Fin N → ℝ) (B R : Ψ × Fin N → ℝ)
     (h : ∀ τ i, R (τ, i) = -∑ k ∈ Finset.Iic i, B (τ, k)) :
@@ -22,17 +22,17 @@ theorem sum_neg_mul_eq_sum_fundCo {Ψ : Type} [Fintype Ψ] {N : ℕ} (f : Ψ →
   rw [e]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y S RM Sys Fx Or lam nu n' s x hn ht hop`. Establish `hw` using `Or.Re.R.mem x x (Or.Re.R.mem_U x)`. Establish `ht0 : 0 < scale s` using `Real.exp_pos _`. Establish `hreg : ∀ τ i, Real.log ((Or.Re.ref (some (τ, i))).h (Or.Re.R.lift x x)) + Sys.phT (some (τ, i)) (scale s) (Or.Re.π x) = -∑ k ∈ Finset.Iic i, Real.log ((RM.x (scale s) (τ, k)).h (Or.Re.R.lift x x))` using `fun τ i => by`. Rewrite using `[← Or.fund_reg τ i (scale s) ht0 ht _ hw, Or.Re.line_eq (some (τ, i)) (scale s) ht0 ht x]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsing : ∀ τ i, Real.log ((Or.Re.ref (some (τ, i))).h (Or.Re.R.lift x x)) + Sys.ph (some (τ, i)) (Or.Re.π x) = -∑ k ∈ Finset.Iic i, Real.log ((Or.sing (τ, k)).h (Or.Re.R.lift x x))` using `fun τ i => Or.fund_sing τ i x hop`. Establish `e1` using `sum_neg_mul_eq_sum_fundCo (lam - s • nu) (fun r => Real.log ((RM.x (scale s) r).h (Or.Re.R.lift x x))) (fun r => Real.log ((Or.Re.ref (some r)).h (Or.Re.R.lift x x)) + Sys.phT (some r) (scale s) (Or.Re.π x)) hreg`. Establish `e2` using `sum_neg_mul_eq_sum_fundCo lam (fun r => Real.log ((Or.sing r).h (Or.Re.R.lift x x))) (fun r => Real.log ((Or.Re.ref (some r)).h (Or.Re.R.lift x x)) + Sys.ph (some r) (Or.Re.π x)) hsing`. Establish `hlog : Real.log (∏ r, (Or.sing r).h (Or.Re.R.lift x x) ^ n' (some r)) = ∑ r : RootIx D, -lam r.1 r.2 * Real.log ((Or.sing r).h (Or.Re.R.lift x x))`. Rewrite using `[Real.log_prod fun r _ => zpow_ne_zero _ ((Or.sing r).pos _ hw.1).ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_zpow, hn (some r)]`. Both sides reduce to the same expression. Establish `hwt : RM.weight (scale s) (lam - s • nu) s (Or.Re.R.lift x x) = s / RM.kA * Real.log (RM.A.h (Or.Re.R.lift x x)) + ∑ r : RootIx D, -(lam - s • nu) r.1 r.2 * Real.log ((RM.x (scale s) r).h (Or.Re.R.lift x x))`. Unfold `RootModel.weight`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Fintype.sum_option]`. Both sides reduce to the same expression. Rewrite using `[hwt, hlog, e1, e2]`. Establish `hco : ∀ r : RootIx D, fundCo ((lam - s • nu) r.1) r.2 = fundCo (lam r.1) r.2 - s * fundCo (nu r.1) r.2`. Introduce `r`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (lam - s • nu) r.1 = lam r.1 - s • nu r.1` using `rfl`. Rewrite using `[this, fundCo_sub, fundCo_smul]`. Simplify using `only [mul_add, Finset.sum_add_distrib]`. Rewrite using `[Finset.mul_sum]`. Establish `hρ : ∑ r : RootIx D, fundCo ((lam - s • nu) r.1) r.2 * Real.log ((Or.Re.ref (some r)).h (Or.Re.R.lift x x)) = ∑ r : RootIx D, fundCo (lam r.1) r.2 * Real.log ((Or.Re.ref (some r)).h (Or.Re.R.lift x x)) - ∑ r : RootIx D, s * (fundCo (nu r.1) r.2 * Real.log ((Or.Re.ref (some r)).h …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hco]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hρ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

@@ -12,7 +12,7 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnEabGl
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnEabPres
 
 /- English proof (translation)
-The claim follows from `PI.QnHermHaar.qnHermHaar_of_alg PI.QnHermHaar.hermitian_algebra_generation qnRdSkew quantum_minor_star (PI.contractionsCovariant_iff.2 ⟨covariant_det_of_lin covariant_linear, covariant_hat_of_lin covariant_linear, covariant_hat_sq_of_lin covariant_linear⟩) quantum_minor_move.1 qu …`.
+A detailed English derivation is pending.
 -/
 theorem qnHermHaar : Formalism.FourierDecayAlt.Q.HermHaar :=
   PI.QnHermHaar.qnHermHaar_of_alg PI.QnHermHaar.hermitian_algebra_generation qnRdSkew quantum_minor_star

@@ -9,9 +9,9 @@ open CategoryTheory AlgebraicGeometry DividedPowers ReciprocityTheory.ChartRestr
 namespace GlobalTheory.Cris
 
 /- English proof (translation)
-Use `GlobalTheory.CatCoh.Desc.pull2_bijective (O κ s) ?_ (IsSmall κ s U) ?_ ?_` and prove the remaining obligations. Introduce `T b`. Take `⟨T', l, h1, h2, h3, h4⟩` from `GlobalTheory.ThickLoc.exists_localization R I κ X s T b`. Conclude with `⟨T', l, by simpa only [mp_O] using h1, by simpa only [mp_O] using h2, by simpa only [mp_O] using h3, by simpa only [mp_O] using h4⟩`. Introduce and unpack `S S' φ ⟨i, hi⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨i, Thick.Hom.le_preimage φ hi⟩`. Introduce `T`. Take `⟨n, b, hb, h⟩` from `exists_finite_small_cover R I κ X s K U hU T`. Conclude with `⟨n, b, hb, fun i S u hu => h i S u (by simpa only [mp_O] using hu)⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem small_descent_H2_bijective (R : Type) [CommRing R] (I : Ideal R) (κ : DividedPowers I)
     (X : Scheme.{0}) (s : X ⟶ Sp R) (K : Type) (U : K → X.Opens) (hU : ⨆ i, U i = ⊤) :

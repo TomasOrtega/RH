@@ -36,29 +36,25 @@ def zLE_k : (_root_.PositivityTheory.SiegelWeilFormula.KFP.Iw_k d → ℝ) ≃�
     funext w a j
     apply Complex.ext <;> simp [_root_.PositivityTheory.SiegelWeilFormula.KFP.zOf_k, _root_.PositivityTheory.SiegelWeilFormula.KFP.OswGen.zInv_k]
 /- English proof (translation)
-Take `⟨L, hL⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KFock.archEquiv_k d R`. Set `Zc : _root_.PositivityTheory.SiegelWeilFormula.KFP.Vw_k d ≃L[ℝ] (InfinitePlace F → Fin d.m → Fin d.n → ℂ)` to `(EuclideanSpace.equiv (_root_.PositivityTheory.SiegelWeilFormula.KFP.Iw_k d) ℝ).trans (_root_.PositivityTheory.SiegelWeilFormula.KFP.OswGen.zLE_k d).toContinuousLinearEquiv`. Set `c : _root_.PositivityTheory.SiegelWeilFormula.KFP.Vw_k d → _root_.PositivityTheory.SiegelWeilFormula.KFP.Yf_k d → (Fin d.m × Fin d.n × Fin 2 → AF F)` to `fun u y k => (Prod.mk ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (L.symm (Zc u) k)) (y k) : AF F)`. Establish `hc1 : ∀ u y, (fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F (c u y k).1) = L.symm (Zc u)`. Introduce `u y`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `k`. Conclude with `RingEquiv.apply_symm_apply _ _`. Establish `hjn : ∀ u y, _root_.PositivityTheory.SiegelWeilFormula.KFP.jn_k R u y = d.cmb (c u y)`. Introduce `u y`. Use `(_root_.PositivityTheory.SiegelWeilFormula.KFP.exists_jn_k R u y).unique ⟨_root_.PositivityTheory.SiegelWeilFormula.KFP.arc_jn_k R u y, _root_.PositivityTheory.SiegelWeilFormula.KFP.fin_jn_k R u y⟩ ⟨?_, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFP.arc_eq_iff_k]`. Introduce `w`. Rewrite using `[← hL (c u y) w, hc1, ContinuousLinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `k show (d.crd (d.cmb (c u y)) k).2 = y k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFock.crd_cmb'_k]`. Use `haveI := hνf`. Use `haveI : BorelSpace (Af F) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (Af F) := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Use `haveI : BorelSpace (_root_.PositivityTheory.SiegelWeilFormula.KFP.Yf_k d) := Pi.borelSpace`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hint : ∀ g' ∈ SB (_root_.PositivityTheory.SiegelWeilFormula.KFP.Yf_k d), Integrable (fun y => g' y * star (g y)) νf`. Introduce `g' hg''`. Establish `hc : Continuous (fun y => g' y * star (g y))` using `hg''.1.continuous.mul (continuous_star.comp hg'.1.continuous)`. Conclude with `hc.integrable_of_hasCompactSupport (hg''.2.mul_right (f' := fun y => star (g y)))`. Establish `key : ∀ Φ ∈ schA F (Fin d.m × Fin d.n × Fin 2), (∀ u, Integrable (fun y => Φ (c u y) * star (g y)) νf) ∧ ∃ h : 𝓢(_root_.PositivityTheory.SiegelWeilFormula.KFP.Vw_k d, ℂ), ∀ u, h u = ∫ y, Φ (c u y) * star (g y) ∂νf`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `Φ hΦ`. Unfold `schA at hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ hmem`. Take `⟨φ, g', hg'', rfl⟩` from `hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e : ∀ u y, pureA F φ g' (c u y) = φ (L.symm (Zc u)) * g' y`. Introduce `u y`. Simplify using `only [pureA]`. Rewrite using `[hc1]`. Use `⟨fun u => ?_, ⟨(∫ y, g' y * star (g y) ∂νf) • SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (Zc.trans L.symm) φ, fun u => ?_⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `only [e, mul_assoc]`. Conclude with `(hint g' hg'').const_mul _`. Simplify using `only [e, mul_assoc, integral_const_mul, SchwartzMap.smul_apply, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, ContinuousLinearEquiv.trans_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact ⟨fun u => by simp, 0, fun u => by simp⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add Φ₁ Φ₂ _ _ h₁ h₂`. Take `⟨i1, k1, e1⟩` from `h₁`. Take `⟨i2, k2, e2⟩` from `h₂`. Use `⟨fun u => ?_, k1 + k2, fun u => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, add_mul]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(i1 u).add (i2 u)`. Simplify using `only [Pi.add_apply, add_mul, SchwartzMap.add_apply, e1, e2]`. Rewrite using `[integral_add (i1 u) (i2 u)]`. Consider the case `smul a Φ _ h`. Take `⟨i1, k1, e1⟩` from `h`.
-
-Use `⟨fun u => ?_, a • k1, fun u => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `(i1 u).const_mul a`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc, SchwartzMap.smul_apply, e1, integral_const_mul]`. Take `⟨-, h, eh⟩` from `key (f ∘ d.cmb) hf`.
-
-Use `⟨h, funext fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[eh u]`. Use `show _ = ∫ y, f (_root_.PositivityTheory.SiegelWeilFormula.KFP.jn_k R u y) * star (g y) ∂νf`. Simplify using `only [hjn, Function.comp_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hg_sch_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {νf : Measure (_root_.PositivityTheory.SiegelWeilFormula.KFP.Yf_k d)} (hνf : νf.IsAddHaarMeasure) {f : Mx F E d.m d.n → ℂ} (hf : f ∈ d.schM)
     {g : _root_.PositivityTheory.SiegelWeilFormula.KFP.Yf_k d → ℂ} (hg' : g ∈ SB (_root_.PositivityTheory.SiegelWeilFormula.KFP.Yf_k d)) : ∃ h : 𝓢(_root_.PositivityTheory.SiegelWeilFormula.KFP.Vw_k d, ℂ), ⇑h = _root_.PositivityTheory.SiegelWeilFormula.KFP.hg_k R νf f g := by

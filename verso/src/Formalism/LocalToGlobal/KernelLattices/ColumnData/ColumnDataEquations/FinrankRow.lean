@@ -49,7 +49,7 @@ private theorem colE_apply' {N N' : ℕ} (z : TaylorLogMetric.VC D N N') (j : Fi
     colE D N N' z j τ a i = z τ i j := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ a j`. Rewrite using `[rowE_apply', phiU_apply, phiU_apply]`. Simplify using `[gM, Matrix.mul_apply, Matrix.one_apply, rowE_apply', Fin.fin_one_eq_zero a]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_row {N N' : ℕ} (γ : Matrix.unitaryGroup (Fin N) D.host.E) (x : TaylorLogMetric.VC D N N') (i : Fin N') :
     rowE D N N' (phiU γ 1 x) i = phiU γ 1 (rowE D N N' x i) := by
@@ -58,7 +58,7 @@ theorem map_row {N N' : ℕ} (γ : Matrix.unitaryGroup (Fin N) D.host.E) (x : Ta
   simp [gM, Matrix.mul_apply, Matrix.one_apply, rowE_apply', Fin.fin_one_eq_zero a]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ a i`. Rewrite using `[colE_apply', phiU_apply, phiU_apply]`. Simplify using `[gM, cjU, Matrix.mul_apply, Matrix.one_apply, Matrix.conjTranspose_apply, colE_apply', Fin.fin_one_eq_zero a, mul_comm, embT_star']`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_col {N N' : ℕ} (γ' : Matrix.unitaryGroup (Fin N') D.host.E) (x : TaylorLogMetric.VC D N N') (j : Fin N) :
     colE D N N' (phiU 1 γ' x) j = phiU (cjU γ') 1 (colE D N N' x j) := by
@@ -68,13 +68,13 @@ theorem map_col {N N' : ℕ} (γ' : Matrix.unitaryGroup (Fin N') D.host.E) (x : 
     Fin.fin_one_eq_zero a, mul_comm, embT_star']
 
 /- English proof (translation)
-The claim follows from `((TaylorLogMetric.embT D τ).map_det M).symm`.
+A detailed English derivation is pending.
 -/
 theorem det_gM {n : ℕ} (M : Matrix (Fin n) (Fin n) D.host.E) (τ : D.what₂.Tau) : (gM M τ).det = TaylorLogMetric.embT D τ M.det :=
   ((TaylorLogMetric.embT D τ).map_det M).symm
 
 /- English proof (translation)
-Simplify using `[cjU, Matrix.det_transpose, Matrix.star_eq_conjTranspose, Matrix.det_conjTranspose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_cjU {n : ℕ} (γ : Matrix.unitaryGroup (Fin n) D.host.E) :
     ((cjU γ : Matrix.unitaryGroup (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E).det =
@@ -82,9 +82,9 @@ theorem det_cjU {n : ℕ} (γ : Matrix.unitaryGroup (Fin n) D.host.E) :
   simp [cjU, Matrix.det_transpose, Matrix.star_eq_conjTranspose, Matrix.det_conjTranspose]
 
 /- English proof (translation)
-Introduce `h`. Apply `hγ` to reduce the goal to its premises. Establish `e : (1 - ((cjU γ : Matrix.unitaryGroup (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E)) = (star (1 - (γ : Matrix (Fin n) (Fin n) D.host.E)))ᵀ`. Simplify using `[cjU, Matrix.transpose_sub, star_sub]`. Rewrite `h` using `[e, Matrix.det_transpose, Matrix.star_eq_conjTranspose, Matrix.det_conjTranspose]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ne_cjU {n : ℕ} (γ : Matrix.unitaryGroup (Fin n) D.host.E)
     (hγ : (1 - (γ : Matrix (Fin n) (Fin n) D.host.E)).det ≠ 0) :
@@ -98,11 +98,11 @@ theorem ne_cjU {n : ℕ} (γ : Matrix.unitaryGroup (Fin n) D.host.E)
   simpa using h
 
 /- English proof (translation)
-Establish `h1 : ∀ τ : D.what₂.Tau, gM (((1 : Matrix.unitaryGroup (Fin 1) D.host.E)) : Matrix (Fin 1) (Fin 1) D.host.E) τ = 1`. Introduce `τ`. Simplify using `[gM]`. Establish `key : ((phiU γ 1 : TaylorLogMetric.VC D N 1 ≃ₗ[ℂ] TaylorLogMetric.VC D N 1) : TaylorLogMetric.VC D N 1 →ₗ[ℂ] TaylorLogMetric.VC D N 1) = LinearMap.pi (fun τ : D.what₂.Tau => (LinearMap.pi (fun a : Fin 1 => (Matrix.toLin' ((gM (γ : Matrix (Fin N) (Fin N) D.host.E) τ)ᴴ)ᵀ) ∘ₗ Linear …`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `z`. Use function extensionality and compare the values at `τ a j`. Rewrite using `[LinearEquiv.coe_coe, phiU_apply, h1, Matrix.one_mul]`. Simplify using `[Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Matrix.mul_apply, mul_comm]`. Rewrite using `[key, LinearMap.det_pi]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl (fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.det_pi, Fin.prod_univ_one, LinearMap.det_toLin', Matrix.det_transpose, Matrix.det_conjTranspose, det_gM, embT_star']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_row {N : ℕ} (γ : Matrix.unitaryGroup (Fin N) D.host.E) :
     LinearMap.det ((phiU γ 1 : TaylorLogMetric.VC D N 1 ≃ₗ[ℂ] TaylorLogMetric.VC D N 1) : TaylorLogMetric.VC D N 1 →ₗ[ℂ] TaylorLogMetric.VC D N 1) =
@@ -127,7 +127,7 @@ theorem det_row {N : ℕ} (γ : Matrix.unitaryGroup (Fin N) D.host.E) :
     Matrix.det_conjTranspose, det_gM, embT_star']
 
 /- English proof (translation)
-Simplify using `[Module.finrank_pi_fintype]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finrank_row (N : ℕ) : Module.finrank ℂ (TaylorLogMetric.VC D N 1) = Fintype.card D.what₂.Tau * N := by
   simp [Module.finrank_pi_fintype]

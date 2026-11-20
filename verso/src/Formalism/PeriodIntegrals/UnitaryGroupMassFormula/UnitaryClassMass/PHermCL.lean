@@ -30,13 +30,13 @@ def LatClose : Prop :=
       locS S (gmap (linOf b γ) L0) = locS S (gmap (linOf b g) L0)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ V _ _ _ _ _ M J b L0 hσσ hH hdet hL0 g hg`. Take `⟨δ, hδ, hTδ⟩` from `hT F E`. Take `⟨D, hD, hDcl⟩` from `hL F E σ V M J b L0 hσσ hH hdet hL0 g hg`. Use `⟨δ * D, mul_ne_zero hδ hD, fun D' hD' γ hγ t hcong => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `hD'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `hDcl (D * k) (dvd_mul_right D k) γ hγ (Sw F E t) ?_ ?_` and prove the remaining obligations. Introduce and unpack `r ⟨a, -, rfl⟩`. Express the relevant statement in the definitionally equal form `σ (algebraMap F E (a : F)) = algebraMap F E (a : F)`. Conclude with `σ.commutes _`. Introduce `i j`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, he⟩` from `hcong i j`. Take `⟨r, hr, y, hry⟩` from `hTδ t (((g : Matrix (Fin M) (Fin M) E) i j) - (γ : Matrix (Fin M) (Fin M) E) i j) (δ * D * k) ⟨s, hs, by rw [map_sub]; exact he⟩`. Use `⟨r, hr, y, ?_⟩` and prove the remaining obligations. Establish `hδF : (δ : F) ≠ 0` using `by simpa using hδ`. Establish `hδE : algebraMap F E (δ : F) ≠ 0` using `(map_ne_zero_iff _ (algebraMap F E).injective).2 hδF`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_left_cancel₀ hδE` to reduce the goal to its premises. Establish `e1 : ((δ * D * k : 𝓞 F) : F) = (δ : F) * ((D * k : 𝓞 F) : F)` using `by push_cast; ring`. Rewrite `hry` using `[e1, map_mul]`. Take the linear combination `hry`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem closeLoc_of (hT : TensLoc) (hL : LatClose) : CloseLoc := by
   intro F E _ _ _ _ _ σ V _ _ _ _ _ M J b L0 hσσ hH hdet hL0 g hg
@@ -61,7 +61,7 @@ theorem closeLoc_of (hT : TensLoc) (hL : LatClose) : CloseLoc := by
     linear_combination hry
 
 /- English proof (translation)
-The claim follows from `hermApprox_of hL (closeLoc_of hT hC) hW hB hG`.
+A detailed English derivation is pending.
 -/
 theorem hermitian_approximation_of_parts (hL : LocSw) (hT : TensLoc) (hC : LatClose) (hW : WPlace) (hB : BcU) (hG : GramOK) :
     HermApprox := hermApprox_of hL (closeLoc_of hT hC) hW hB hG

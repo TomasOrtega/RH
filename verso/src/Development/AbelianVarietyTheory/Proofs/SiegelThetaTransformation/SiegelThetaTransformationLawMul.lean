@@ -8,7 +8,7 @@ open scoped ComplexConjugate Real
 namespace GlobalTheory.SW.TransComp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[qm, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem qm_mul {α β γ : Type} [Fintype β] (A : Matrix α β ℚ) (B : Matrix β γ ℚ) :
     qm (A * B) = qm A * qm B := by
@@ -16,14 +16,14 @@ theorem qm_mul {α β γ : Type} [Fintype β] (A : Matrix α β ℚ) (B : Matrix
   simp [qm, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[qm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem qm_add {α β : Type} (A B : Matrix α β ℚ) : qm (A + B) = qm A + qm B := by
   ext i j
   simp [qm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[qm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem qm_sub {α β : Type} (A B : Matrix α β ℚ) : qm (A - B) = qm A - qm B := by
   ext i j
@@ -35,14 +35,14 @@ Both sides reduce to the same expression.
 theorem qm_transpose {α β : Type} (A : Matrix α β ℚ) : qm Aᵀ = (qm A)ᵀ := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[qm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem qm_zero {α β : Type} : qm (0 : Matrix α β ℚ) = 0 := by
   ext i j
   simp [qm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [qm, Matrix.one_apply, hij]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qm_one {α : Type} [DecidableEq α] : qm (1 : Matrix α α ℚ) = 1 := by
   ext i j
@@ -51,9 +51,9 @@ theorem qm_one {α : Type} [DecidableEq α] : qm (1 : Matrix α α ℚ) = 1 := b
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `h'` using `h`. Rewrite `h'` using `[← Matrix.fromBlocks_toBlocks σ]`. Take `⟨h1, -, h3⟩` from `SymplecticGroup.fromBlocks_mem_iff.1 h'`. Use `⟨sub_eq_zero.2 h1.symm, ?_⟩` and prove the remaining obligations. Establish `h4` using `congrArg Matrix.transpose h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `h4` using `[Matrix.transpose_sub, Matrix.transpose_mul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem blocks {σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ} (h : σ ∈ Matrix.symplecticGroup ι ℚ) :
     σ.toBlocks₂₁ᵀ * σ.toBlocks₁₁ - σ.toBlocks₁₁ᵀ * σ.toBlocks₂₁ = 0 ∧
@@ -67,7 +67,7 @@ theorem blocks {σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ} (h : σ ∈ Matrix.symp
   simpa [Matrix.transpose_sub, Matrix.transpose_mul] using h4
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₂₁, Matrix.toBlocks₁₁, Matrix.toBlocks₂₂, Matrix.mul_apply, Fintype.sum_sum_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mul_block (σ σ' : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ) :
     (σ' * σ).toBlocks₂₁ = σ'.toBlocks₂₁ * σ.toBlocks₁₁ + σ'.toBlocks₂₂ * σ.toBlocks₂₁ := by
@@ -76,13 +76,13 @@ theorem mul_block (σ σ' : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ) :
     Fintype.sum_sum_type]
 
 /- English proof (translation)
-Establish `hu : IsUnit (spDen σ τ).det` using `isUnit_iff_ne_zero.mpr hd`. Establish `h1 : (spDen σ τ)ᵀ * spAct σ τ = (qm σ.toBlocks₁₁ * τ + qm σ.toBlocks₁₂)ᵀ`. Establish `hs' : (spAct σ τ)ᵀ = spAct σ τ` using `hs`. Rewrite using `[← hs']`. Unfold `spAct`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.transpose_mul, ← Matrix.mul_assoc, ← Matrix.transpose_mul, Matrix.nonsing_inv_mul _ hu, Matrix.transpose_one, Matrix.one_mul]`. Establish `hτ' : τᵀ = τ` using `hτ`. Take `⟨b1, b2⟩` from `blocks h`. Establish `e1` using `congrArg qm b1`. Establish `e2` using `congrArg qm b2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[qm_sub, qm_mul, qm_mul, qm_transpose, qm_transpose, qm_zero]`. Rewrite `e2` using `[qm_sub, qm_mul, qm_mul, qm_transpose, qm_transpose, qm_one]`. Establish `h2 : (spDen σ τ)ᵀ * (qm σ.toBlocks₁₁ - spAct σ τ * qm σ.toBlocks₂₁) = 1`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, h1]`. Unfold `spDen`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.transpose_add, Matrix.transpose_add, Matrix.transpose_mul, Matrix.transpose_mul, hτ']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_nonsing_inv, Matrix.inv_eq_right_inv h2]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem key {σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ} (h : σ ∈ Matrix.symplecticGroup ι ℚ)
     {τ : Matrix ι ι ℂ} (hτ : τ.IsSymm) (hd : (spDen σ τ).det ≠ 0) (hs : (spAct σ τ).IsSymm) :
@@ -120,15 +120,15 @@ end GlobalTheory.SW.TransComp
 open GlobalTheory.SW.TransComp in
 
 /- English proof (translation)
-Introduce `κ ι _ _ _ σ σ' hσ hσ' φ ψ χ h1 h2 τ hτ ζ`. Take `⟨hd, hmem, -, -, hcomp⟩` from `GlobalTheory.T.symplecticSiegelAction_mem_upperHalfSpace_and_cocycle ι σ hσ τ hτ`. Take `⟨hden, hact⟩` from `hcomp σ' hσ'`. Establish `hd'` using `(GlobalTheory.T.symplecticSiegelAction_mem_upperHalfSpace_and_cocycle ι σ' hσ' _ hmem).1`. Rewrite using `[hden, hact]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk` using `key hσ hτ.1 hd hmem.1`. Establish `hD' : qm σ'.toBlocks₂₂ = spDen σ' (spAct σ τ) - qm σ'.toBlocks₂₁ * spAct σ τ`. Rewrite using `[spDen, add_sub_cancel_left]`. Establish `hinv' : (spDen σ' (spAct σ τ))⁻¹ * spDen σ' (spAct σ τ) = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hd')`. Establish `hM : (spDen σ τ)⁻¹ * ((spDen σ' (spAct σ τ))⁻¹ * qm σ'.toBlocks₂₁) * ((spDen σ τ)⁻¹)ᵀ + (spDen σ τ)⁻¹ * qm σ.toBlocks₂₁ = (spDen σ' (spAct σ τ) * spDen σ τ)⁻¹ * qm (σ' * σ).toBlocks₂₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_block, qm_add, qm_mul, qm_mul, hk, hD', Matrix.mul_inv_rev]`. Establish `inner : qm σ'.toBlocks₂₁ * (spAct σ τ * qm σ.toBlocks₂₁ + ((spDen σ τ)⁻¹)ᵀ) + (spDen σ' (spAct σ τ) - qm σ'.toBlocks₂₁ * spAct σ τ) * qm σ.toBlocks₂₁ = qm σ'.toBlocks₂₁ * ((spDen σ τ)⁻¹)ᵀ + spDen σ' (spAct σ τ) * qm σ.toBlocks₂₁` using `by noncomm_ring`. Rewrite using `[inner, Matrix.mul_add, Matrix.mul_assoc (spDen σ τ)⁻¹ (spDen σ' (spAct σ τ))⁻¹, Matrix.mul_assoc (spDen σ τ)⁻¹ (spDen σ' (spAct σ τ))⁻¹, ← Matrix.mul_assoc (spDen σ' (spAct σ τ))⁻¹ (spDen σ' (spAct σ τ)), hinv', Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hq : ∀ v : ι → ℂ, v ⬝ᵥ ((spDen σ' (spAct σ τ) * spDen σ τ)⁻¹ * qm (σ' * σ).toBlocks₂₁) *ᵥ v = (v ᵥ* (spDen σ τ)⁻¹) ⬝ᵥ ((spDen σ' (spAct σ τ))⁻¹ * qm σ'.toBlocks₂₁) *ᵥ (v ᵥ* (spDen σ τ)⁻¹) + v ⬝ᵥ ((spDen σ τ)⁻¹ * qm σ.toBlocks₂₁) *ᵥ v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `v`. Rewrite using `[← hM, Matrix.add_mulVec, dotProduct_add, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.mulVec_transpose]`. Establish `hfun : (fun k => ζ k ᵥ* (spDen σ' (spAct σ τ) * spDen σ τ)⁻¹) = fun k => (ζ k ᵥ* (spDen σ τ)⁻¹) ᵥ* (spDen σ' (spAct σ τ))⁻¹`. Use function extensionality and compare the values at `k`. Rewrite using `[Matrix.mul_inv_rev, Matrix.vecMul_vecMul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun, h2 _ hmem, h1 τ hτ ζ, Matrix.det_mul, mul_pow]`. Simplify using `only [hq, Finset.sum_add_distrib, mul_add, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem GlobalTheory.SW.transS_comp : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι] (σ σ' : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ), σ ∈ Matrix.symplecticGroup ι ℚ → σ' ∈ Matrix.symplecticGroup ι ℚ → ∀ φ ψ χ : Matrix κ ι ℚ → ℂ, TransS σ φ ψ → TransS σ' ψ χ → TransS (σ' * σ) φ χ := by
   intro κ ι _ _ _ σ σ' hσ hσ' φ ψ χ h1 h2 τ hτ ζ

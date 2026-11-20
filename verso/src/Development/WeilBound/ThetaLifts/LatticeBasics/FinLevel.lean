@@ -16,42 +16,40 @@ variable (F) in
 def epsF : AF F := mk 0 1
 
 /- English proof (translation)
-The claim follows from `Prod.ext (zero_mul _) (one_mul _)`.
+A detailed English derivation is pending.
 -/
 theorem epsF_mul (t : AF F) : epsF F * t = mk 0 (p2 t) := Prod.ext (zero_mul _) (one_mul _)
 
 /- English proof (translation)
-The claim follows from `epsF_mul _`.
+A detailed English derivation is pending.
 -/
 theorem epsF_sq : epsF F * epsF F = epsF F := epsF_mul _
 
 /- English proof (translation)
-Rewrite using `[epsF_mul]`. Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evI_epsF (t : AF F) : evI F (epsF F * t) = 0 := by
   rw [epsF_mul]; exact map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)
 
 /- English proof (translation)
-Rewrite using `[epsF_mul]`. Conclude with `Prod.ext ((InfiniteAdeleRing.ringEquiv_mixedSpace F).injective ((map_zero _).trans h.symm)) rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsF_of {t : AF F} (h : evI F t = 0) : epsF F * t = t := by
   rw [epsF_mul]
   exact Prod.ext ((InfiniteAdeleRing.ringEquiv_mixedSpace F).injective ((map_zero _).trans h.symm)) rfl
 
 /- English proof (translation)
-Rewrite `h` using `[sch_eq, schwartzBruhatPi_eq_cosetSpanPi]`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨f, J, b, rfl⟩` from `hG`. Establish `m` using `finiteTensor_mem fun i => cosetIndicator_mem_finiteSchwartzBruhat J (b i)`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `c` using `continuous_finPartPi (K := F) (ι := κ)`. Establish `h1 : ∀ᶠ w : (κ → AF F) × (κ → AF F) in 𝓝 0, ∀ i, finPartPi w.1 i ∈ idealFiniteAdeles J` using `eventually_all.2 fun i => ((continuous_apply i).comp (c.comp continuous_fst)).continuousAt.preimage_mem_nhds ((isOpen_idealFiniteAdeles J).mem_nhds (zero_mem _))`. Establish `h2 : ∀ᶠ w : (κ → AF F) × (κ → AF F) in 𝓝 0, ∀ z ∈ tsupport (finiteTensor fun i => cosetIndicator J (b i)), finChar ψ (z ⬝ᵥ finPartPi w.2 + p2 ⅟(2 : AF F) * (finPartPi w.1 ⬝ᵥ finPartPi w.2)) = 1` using `m.2.isCompact.eventually_forall_of_forall_eventually fun z _ => by`. Use `((finChar_isLocallyConstant ψ hψ).comp_continuous (f := fun y : ((κ → AF F) × (κ → AF F)) × (κ → Af F) => y.2 ⬝ᵥ finPartPi y.1.2 + p2 ⅟(2 : AF F) * (finPartPi y.1.1 ⬝ᵥ finPartPi y.1.2)) (by fun_prop)).eventually_eq (0, z)` as an intermediate fact. Simplify `this` using `[show finPartPi (0 : κ → AF F) = 0 from rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `filter_upwards [h1, h2] with w h1 h2`. Use function extensionality and compare the values at `x`. Establish `e1 : infPartPi (x + epsF F • w.1) = infPartPi x` using `funext fun i => by`. Use `evI_epsF (w.1 i)` as an intermediate fact. Conclude with `(map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) _ _).trans ((congrArg _ this).trans (add_zero _))`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : finiteTensor (fun i => cosetIndicator J (b i)) (finPartPi (x + epsF F • w.1)) = finiteTensor (fun i => cosetIndicator J (b i)) (finPartPi x)` using `Finset.prod_congr rfl fun i _ => by beta_reduce`. Rewrite using `[cosetIndicator_apply, cosetIndicator_apply, show finPartPi (x + epsF F • w.1) i - b i = finPartPi x i - b i + finPartPi w.1 i from by`. Rewrite using `[sub_add_eq_add_sub]`. Conclude with `congrArg (finPartPi x i + · - b i) (one_mul _)]`. Simplify using `only [AddSubgroup.add_mem_cancel_right _ (h1 i)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [schr, schwartzBruhatTensorPi, Prod.smul_fst, Prod.smul_snd, e1, e2]`. Distinguish the cases in `h0 : finiteTensor (fun i => cosetIndicator J (b i)) (finPartPi x) = 0`. Simplify using `[h0]`. Rewrite using `[dotProduct_smul, dotProduct_smul, smul_dotProduct, smul_smul, epsF_sq, smul_eq_mul, smul_eq_mul, mul_left_comm ⅟(2 : AF F), ← mul_add, epsF_mul, ← finChar_apply, map_add, map_mul, RingHom.map_dotProduct, RingHom.map_dotProduct]`. Conclude with `(congrArg (· * _) (h2 _ (subset_tsupport _ h0))).trans (one_mul _)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately.
 
-Consider the case `zero => exact .of_forall fun w => funext fun x => mul_zero _`. Consider the case `add G H _ _ hG hH => filter_upwards [hG, hH] with w hG hH`. Use function extensionality and compare the values at `x`. Conclude with `(mul_add _ _ _).trans (congrArg₂ _ (congrFun hG x) (congrFun hH x))`. Consider the case `smul c G _ hG => filter_upwards [hG] with w hG`.
-
-Use function extensionality and compare the values at `x`. Conclude with `(mul_left_comm _ _ _).trans (congrArg _ (congrFun hG x))`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem level (hψ : Continuous ψ) {Φ : (κ → AF F) → ℂ} (h : Φ ∈ schA F κ) :
     ∀ᶠ w : (κ → AF F) × (κ → AF F) in 𝓝 0, schr ψ (epsF F • w) Φ = Φ := by
@@ -99,17 +97,17 @@ theorem level (hψ : Continuous ψ) {Φ : (κ → AF F) → ℂ} (h : Φ ∈ sch
     exact (mul_left_comm _ _ _).trans (congrArg _ (congrFun hG x))
 
 /- English proof (translation)
-Take `⟨ξ, hξ, e⟩` from `std_eq hψ`. Take `⟨N₁, h₁, N₂, h₂, hN⟩` from `mem_nhds_prod_iff.1 hN`. Establish `cm : Continuous fun a : Af F => (mk 0 a : AF F)` using `continuous_const.prodMk continuous_id`. Establish `: ∀ᶠ a : Af F in 𝓝 0, ∀ i, (Pi.single i (mk 0 a) : κ → AF F) ∈ N₂` using `eventually_all.2 fun i => ((continuous_single i).comp cm).continuousAt.preimage_mem_nhds (by`. Rewrite using `[Function.comp_apply, show (mk 0 0 : AF F) = 0 from rfl, Pi.single_zero])` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨J, hJ⟩` from `exists_idealFiniteAdeles_subset this`. Establish `hC` using `(isCompact_univ_pi fun _ : κ => isCompact_idealFiniteAdeles (traceDualIdeal F J)).image (f := fun y i => (mk 0 (algebraMap F (Af F) ξ⁻¹ * y i) : AF F)) (continuous_pi fun i => cm.comp (continuous_const.mul (continuous_apply i)))`. Take `⟨s, hs, hc⟩` from `hC.elim_nhds_subcover (fun t => {y | y - t ∈ N₁}) fun t _ => (continuous_sub_right t).continuousAt.preimage_mem_nhds (by rwa [sub_self])`. Establish `hs' : ∀ y ∈ s, ∀ i, evI F (y i) = 0` using `fun y hy i => by`. Take `⟨z, -, rfl⟩` from `hs y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Use `⟨s, hs', fun Ψ hΨ x hx h0 y hy => by_contra fun hn => ?_⟩` and prove the remaining obligations. Establish `hx0 : epsF F • x = 0` using `hx _ (map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F))`. Use `(fun hm => ?_ : y ∈ _ → False) (hc ⟨fun i => algebraMap F (Af F) ξ * p2 (y i), fun i _ => ?_, ?_⟩)` and prove the remaining obligations. Take `⟨t, ht, hty⟩` from `Set.mem_iUnion₂.1 hm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrFun (hΨ (y - t, 0) (hN ⟨hty, mem_of_mem_nhds h₂⟩)) (x + t)` as an intermediate fact. Establish `e : epsF F • (y - t) = y - t` using `funext fun i => by`. Rewrite using `[Pi.smul_apply, Pi.sub_apply, smul_eq_mul, mul_sub, epsF_of (hy i), epsF_of (hs' t ht i)]`. Simplify using `[schr, e, h0 t ht, hn] at this`. Use `(forall_finiteAdelicChar_mul_eq_one_iff J _).1 fun a ha => Circle.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrFun (hΨ (0, Pi.single i (mk 0 a)) (hN ⟨mem_of_mem_nhds h₁, hJ ha i⟩)) (x + y)` as an intermediate fact. Simplify using `only [schr, Prod.smul_fst, Prod.smul_snd, smul_zero, zero_dotProduct, mul_zero, add_zero] at this`. Rewrite `this` using `[mul_eq_right₀ hn, dotProduct_smul, ← smul_dotProduct, smul_add, hx0, zero_add, dotProduct_single, e]`. Use `Eq.trans (congrArg (fun z => ((adelicChar F z : Circle) : ℂ)) (Prod.ext ?_ ?_)) this` and prove the remaining obligations. Conclude with `(mul_zero _).symm.trans (congrArg _ (mul_zero _).symm)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show a * (algebraMap F (Af F) ξ * p2 (y i)) = algebraMap F (Af F) ξ * (1 * p2 (y i) * a)`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `i beta_reduce`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hξ, map_one, one_mul, ← epsF_mul, epsF_of (hy i)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_values (hψ : IsStd ψ) {N : Set ((κ → AF F) × (κ → AF F))} (hN : N ∈ 𝓝 0) :
     ∃ s : Finset (κ → AF F), (∀ y ∈ s, ∀ i, evI F (y i) = 0) ∧ ∀ Ψ : (κ → AF F) → ℂ, (∀ w ∈ N, schr ψ (epsF F • w) Ψ = Ψ) →
@@ -150,13 +148,11 @@ theorem finite_values (hψ : IsStd ψ) {N : Set ((κ → AF F) × (κ → AF F))
     rw [← mul_assoc, ← map_mul, inv_mul_cancel₀ hξ, map_one, one_mul, ← epsF_mul, epsF_of (hy i)]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B m n A Y hB κ _ dd K hK Φ hΦ`. Establish `lin : ∀ (k : G2 σ Y) (u : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)), actB (cA σ) k (epsF F • u) = epsF F • actB (cA σ) k u` using `fun k u => Matrix.smul_mul _ _ _`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : ∀ {α β : Type} [Finite α] [Finite β], IsModuleTopology (AF F) (Matrix α β (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (_ → _ → AE F E))`. Establish `c : Continuous fun y : ((κ → AF F) × (κ → AF F)) × G2 σ Y => dd.e (actB (cA σ) y.2 (dd.e.symm y.1))` using `(IsModuleTopology.continuous_of_linearMap dd.e.toLinearMap).comp (((IsModuleTopology.continuous_of_linearMap dd.e.symm.toLinearMap).comp continuous_fst).matrix_mul (Units.continuous_val.comp (continuous_subtype_val.comp continuous_snd)).matrix_transpose)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, h⟩` from `finite_values hB.std (hK.eventually_forall_of_forall_eventually (P := fun w k => schr B.ψ (epsF F • dd.e (actB (cA σ) k (dd.e.symm w))) Φ = Φ) fun k _ => (c.tendsto' (0, k) 0 (by simp [actB])).eventually (level hB.std.1 hΦ))`. Use `⟨{u | epsF F • u = u ∧ ∀ k ∈ K, dd.rho B.ψ (actB (cA σ) k u) Φ = Φ}, fun u hu => ⟨fun i => ?_, fun i => ?_, fun k hk => ⟨by rw [← lin, hu.1], fun k' hk' => ?_⟩⟩, fun u hu => ?_, s, hs, fun Ψ hΨ => h Ψ fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← hu.1, map_smul]`. Conclude with `evI_epsF _`. Rewrite using `[← hu.1, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `evI_epsF _`. Use `hu.2 _ (mul_mem hk' hk)` as an intermediate fact. Simplify `this` using `[actB, Matrix.mul_assoc]`. Simplify `hu.2 1 (one_mem _)` using `[actB]`. Use `hΨ (epsF F • dd.e.symm w) ⟨by rw [smul_smul, epsF_sq], fun k hk => by` as an intermediate fact.
-
-Rewrite using `[lin, Darboux.rho, map_smul]`. Conclude with `hw k hk⟩`. Rewrite `this` using `[Darboux.rho, map_smul, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finLevel : FinLevel := by
   intro F E _ _ _ _ _ σ B m n A Y hB κ _ dd K hK Φ hΦ

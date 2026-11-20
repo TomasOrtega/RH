@@ -23,13 +23,13 @@ namespace GlobalTheory.ThK.LemF
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-The claim follows from `(UAtSub σ X ev).one_mem`.
+A detailed English derivation is pending.
 -/
 theorem coneA_one_mem_UAt {n : ℕ} (X : Spc F E n) {R : Type} [Zero R] (ev : AF F → R) : (1 : UA σ X.J) ∈ UAt σ X ev :=
   (UAtSub σ X ev).one_mem
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec, Units.val_one, one_smul]`. Rewrite using `[GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec, inv_one, Units.val_one, map_one, one_smul]`. Rewrite using `[GlobalTheory.StabHaar.mat_one, GlobalTheory.StabHaar.mat_one, Matrix.one_mul, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coneA_isLevi_one {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} (H' : Plane E d d₁) :
     IsLevi H' 1 (1 : UA σ W₁.J) (1 : UA σ W.J) := by
@@ -39,58 +39,54 @@ theorem coneA_isLevi_one {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} (H
   · rw [GlobalTheory.StabHaar.mat_one, GlobalTheory.StabHaar.mat_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `[fac]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coneA_fac_one (χ : Chr F E) (z : ℝ) : fac χ z 1 = 1 := by
   simp [fac]
 
 /- English proof (translation)
-The claim follows from `locOp_of_fix (fun Φ _ => by rw [show ((1 : UA σ X.J), (1 : UA σ W.J)) = 1 from rfl, map_one]; rfl) hφ`.
+A detailed English derivation is pending.
 -/
 theorem coneA_locOp_one {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (om : Rep σ X W) (v : Pl F)
     {φ : (Fin n × Fin d → Fv F v) → ℂ} (hφ : φ ∈ SB (Fin n × Fin d → Fv F v)) : locOp v (om (1, 1)) φ = φ :=
   locOp_of_fix (fun Φ _ => by rw [show ((1 : UA σ X.J), (1 : UA σ W.J)) = 1 from rfl, map_one]; rfl) hφ
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B b a' G G₁ H H' hc e he ei ev hev K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ`. Establish `hA : ActsEx` using `GlobalTheory.T.theta_action_exists hPr`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV hT`. Establish `hP₁` using `GlobalTheory.ThK.Inhab.pairV hT₁`. Establish `mul` using `GlobalTheory.T.local_operator_mul_of_classicalTheorems hPr F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hP v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `law` using `GlobalTheory.T.config_a_local_eigen_partition hPr F E σ B b a' G G₁ H H' hc e he ei ev hev X om om' om₁ om₁' hT hT₁ v`. Establish `cov` using `GlobalTheory.T.local_weil_action_compatibility hPr F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hP v`. Establish `FS` using `GlobalTheory.T.local_part_eval_stabilizer hPr F E σ B b a' G G₁ H H' hc e he ei ev hev K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ`. Establish `hSB : ∀ ψ ∈ SB (Fin (b + 2) × Fin (b + 2 + a') → Fv F v), ev v ψ ∈ SB (Fin b × Fin (b + a') → Fv F v)` using `fun ψ hψ => (hev.2.1 v).2 ▸ Submodule.mem_map_of_mem hψ`. Establish `h1V` using `coneA_one_mem_UAt (σ := σ) G.V (evFin F v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1W` using `coneA_one_mem_UAt (σ := σ) G.W (evFin F v)`. Establish `h1W₁` using `coneA_one_mem_UAt (σ := σ) G₁.W (evFin F v)`. Establish `hsum : ∀ φ ∈ SB (Fin (b + 2) × Fin (b + 2 + a') → Fv F v), ∃ (N : ℕ) (g : Fin N → (Fin b × Fin (b + a') → Fv F v) → ℂ) (c : Fin N → ℂ), (∀ i, g i ∈ SB (Fin b × Fin (b + a') → Fv F v)) ∧ coneFin B G.M om v (ev v) K μK μ (shiftA H H') X.ν ((b + 2 - a') / 2) φ = ∑ i, c i • g i ∧ ∀ ( …`. Introduce `φ hφ`. Take `⟨N, g, c, hg, hL⟩` from `FS φ hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨N, g, c, hg, ?_, hL⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Use `hL LinearMap.id y` as an intermediate fact. Simplify using `only [LinearMap.id_apply] at this`. Rewrite using `[Finset.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `this`. Establish `hconeSB : ∀ φ ∈ SB (Fin (b + 2) × Fin (b + 2 + a') → Fv F v), coneFin B G.M om v (ev v) K μK μ (shiftA H H') X.ν ((b + 2 - a') / 2) φ ∈ SB (Fin b × Fin (b + a') → Fv F v)`. Introduce `φ hφ`. Take `⟨N, g, c, hg, he, -⟩` from `hsum φ hφ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hg i)`. Establish `hcomm : ∀ k ∈ UAt σ G.V (evFin F v), ∀ h ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB (Fin (b + 2) × Fin (b + 2 + a') → Fv F v), locOp v (om (k, 1)) (locOp v (om (1, h)) φ) = locOp v (om (1, h)) (locOp v (om (k, 1)) φ)`. Introduce `k hk h hh φ hφ`. Rewrite using `[← mul (k, 1) (1, h) hk h1W h1V hh φ hφ, ← mul (1, h) (k, 1) h1V hh hk h1W φ hφ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[Prod.mk_mul_mk, Prod.mk_mul_mk, one_mul, mul_one, mul_one, one_mul]`. Use `⟨hconeSB, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu huv φ hφ`. Use function extensionality and compare the values at `y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `integral_congr_ae (Eventually.of_forall fun k => integral_congr_ae (Eventually.of_forall fun l => ?_))` and prove the remaining obligations. Establish `hk : k.1 ∈ UAt σ G.V (evFin F v)` using `k.2.2`. Simplify using `only [coneFinInt]`. Use `congr 2`. Rewrite using `[hcomm k.1 hk u huv φ hφ]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ψ := locOp v (om (k.1, 1)) φ with hψdef`. Establish `hψ : ψ ∈ SB _` using `locOp_mem v _ φ`. Establish `e2` using `cov 1 u h1V huv (shiftA H H' l.1 * (mat u⁻¹)ᵀ) ψ hψ`. Rewrite `e2` using `[GlobalTheory.StabHaar.mat_one, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, GlobalTheory.StabHaar.mat_mul_inv, Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[← e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e3` using `law 1 1 1 (coneA_isLevi_one H') h1W h1W₁ u hu huv _ (locOp_mem v (G.M.co.rho B.ψ (partFin v (shiftA H H' l.1 * (mat u⁻¹)ᵀ))) ψ)`. Rewrite `e3` using `[mul_one]`. Rewrite using `[e3, coneA_fac_one, one_smul, coneA_locOp_one om₁ v (hSB _ (locOp_mem v _ ψ))]`. Conclude with `congrFun (GlobalTheory.T.config_a_local_triple_place hPr F E σ B b a' G G₁ H H' hc e he ei ev hev X om om' hT v u⁻¹ (inv_mem hu) l.1 ψ hψ) y`. Introduce `t h₁ m hl hm hh₁ φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨htv, hτv⟩` from `GlobalTheory.T.levi_torus_mem_ideles_at_place F E σ B b a' G G₁ H H' hc v t h₁ m hl hm`. Use `set τ : idelesAt E (evFin F v) := ⟨Units.map (cA σ : AE F E →* AE F E) t, hτv⟩ with hτdef`. Establish `hex : ∀ ψ ∈ SB (Fin b × Fin (b + a') → Fv F v), ∃ ψ₁, ψ₁ ∈ SB (Fin b × Fin (b + a') → Fv F v) ∧ Acts (evFin F v) (om₁ (1, h₁)) ψ ψ₁` using `fun ψ hψ => ((hA F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hP₁ v).1 1 (coneA_one_mem_UAt G₁.V _) h₁ hh₁ ψ hψ).exists`. Set `f : SB (Fin b × Fin (b + a') → Fv F v) →ₗ[ℂ] ((Fin b × Fin (b + a') → Fv F v) → ℂ)` to `{ toFun := fun ψ => locOp v (om₁ (1, h₁)) ψ.1 map_add' := fun ψ ψ' => by`. Use `locOp_lin (om₁ (1, h₁)).isLinear hex 1 1 ψ.2 ψ'.2` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using this`. Use the proof step `map_smul' := fun c ψ => by`. Use `locOp_lin (om₁ (1, h₁)).isLinear hex c 0 ψ.2 ψ.2` as an intermediate fact. Simplify using `using this }`. Take `⟨L, hL⟩` from `LinearMap.exists_extend f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLe : ∀ ψ (hψ : ψ ∈ SB (Fin b × Fin (b + a') → Fv F v)), L ψ = locOp v (om₁ (1, h₁)) ψ` using `fun ψ hψ => LinearMap.congr_fun hL ⟨ψ, hψ⟩`. Take `⟨N, g, c, hg, heq, hLsum⟩` from `hsum φ hφ`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evFin F v)`. Use `haveI := hμ`. Establish `hν0 : (X.ν τ.1 : ℂ) ≠ 0` using `Circle.coe_ne_zero _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab0 : ((absE F E τ.1 : ℝ) : ℂ) ≠ 0`. Establish `: absE F E τ.1 ≠ 0` using `((Group.isUnit τ.1).map (absE F E)).ne_zero`. Conclude with `this` after adjusting the coercions. Use `set z := (b + 2 - a') / 2 with hz`. Use `set c₀ : ℂ := fac X.β (((b + 2 : ℕ) : ℝ) / 2) t * ((X.ν τ.1 : ℂ) * ((absE F E τ.1 : ℝ) : ℂ) ^ z)⁻¹ with hc₀`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : ∀ (k : KAt K (evFin F v)) (l : idelesAt E (evFin F v)) (y : Fin b × Fin (b + a') → Fv F v), coneFinInt B G.M om v (ev v) (shiftA H H') X.ν z (locOp v (om (1, m)) φ) k.1 l.1 y = c₀ * (L (ev v (locOp v (G.M.co.rho B.ψ (partFin v (shiftA H H' (l * τ).1))) (locOp v (om (k.1, 1 …`. Introduce `k l y`. Establish `hk : k.1 ∈ UAt σ G.V (evFin F v)` using `k.2.2`. Use `set ψ := locOp v (om (k.1, 1)) φ with hψdef`. Establish `hψ : ψ ∈ SB _` using `locOp_mem v _ φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `e2` using `cov 1 m h1V hm (shiftA H H' (l * τ).1) ψ hψ`. Rewrite `e2` using `[GlobalTheory.StabHaar.mat_one, Matrix.one_mul]`. Use `erw [GlobalTheory.T.levi_shift_transpose_relation F E σ _ _ _ _ G.W G₁.W H H' t h₁ m hl l.1] at e2`. Establish `e3` using `law t h₁ m hl hm hh₁ 1 (Subgroup.one_mem _) h1W _ (locOp_mem v (G.M.co.rho B.ψ (partFin v (shiftA H H' (l * τ).1))) ψ)`. Rewrite `e3` using `[one_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [coneFinInt]`. Rewrite using `[hcomm k.1 hk m hm φ hφ, ← hψdef, ← e2, e3, hLe _ (hSB _ (locOp_mem v _ ψ))]`. Establish `hmulν : (X.ν (l * τ).1 : ℂ) = (X.ν l.1 : ℂ) * (X.ν τ.1 : ℂ)`. Rewrite using `[Subgroup.coe_mul, map_mul, Circle.coe_mul]`. Establish `hmula : ((absE F E (l * τ).1 : ℝ) : ℂ) = ((absE F E l.1 : ℝ) : ℂ) * ((absE F E τ.1 : ℝ) : ℂ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Subgroup.coe_mul, map_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hmulν, hmula, Pi.smul_apply, smul_eq_mul, hc₀, mul_pow]`. Clear the denominators using the available nonvanishing facts.
-
-Use function extensionality and compare the values at `y`. Establish `hfin` using `hLsum L y`. Simplify using `only [coneFin]`. Repeatedly rewrite using `[hint]`. Repeatedly rewrite using `[integral_const_mul]`.
-
-Establish `hsub : ∀ k : KAt K (evFin F v), (∫ l, L (ev v (locOp v (G.M.co.rho B.ψ (partFin v (shiftA H H' (l * τ).1))) (locOp v (om (k.1, 1)) φ))) y * (X.ν (l * τ).1 : ℂ) * ((absE F E (l * τ).1 : ℝ) : ℂ) ^ z ∂μ) = ∫ l, L (ev v (locOp v (G.M.co.rho B.ψ (partFin v (shiftA H H' l.1))) (locOp v …` using `fun k => integral_mul_right_eq_self (fun l : idelesAt E (evFin F v) => L (ev v (locOp v (G.M.co.rho B.ψ (partFin v (shiftA H H' l.1))) (locOp v (om (k.1, 1)) φ))) y * (X.ν l.1 : ℂ) * ((absE F E l.1 : ℝ) : ℂ) ^ z) τ`. Repeatedly rewrite using `[hsub]`. Rewrite using `[hfin, Pi.smul_apply, smul_eq_mul, ← hLe _ (hconeSB φ hφ), heq, map_sum]`. Simplify using `only [map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hc₀, GlobalTheory.T.local_factor_character_identity F E σ B b a' G X om om' hT t]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coneLawA : GlobalTheory.FunPr.Hypotheses₂ → ConeLawA := by
   intro hPr F E _ _ _ _ _ σ B b a' G G₁ H H' hc e he ei ev hev K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ

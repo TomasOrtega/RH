@@ -27,11 +27,11 @@ section General
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hxA`. Set `I : Ideal (𝓞 K)` to `Submodule.comap (LinearMap.toSpanSingleton (𝓞 K) V x) A`. Establish `hmem : ∀ r : 𝓞 K, r ∈ I ↔ r • x ∈ A`. Introduce `r`. Simplify using `[I]`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hI : I ≠ ⊤`. Introduce `h`. Apply `hxA` to reduce the goal to its premises. Establish `h1 : (1 : 𝓞 K) ∈ I` using `h ▸ Submodule.mem_top`. Simplify using `using (hmem 1).mp h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨p, hp, hIp⟩` from `Ideal.exists_le_maximal I hI`. Establish `hp0 : p ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hp (RingOfIntegers.not_isField K)`. Take `⟨s, hs, hsx⟩` from `hx ⟨p, hp.isPrime, hp0⟩`. Conclude with `hs (hIp ((hmem s).mpr hsx))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_locP {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (A : Submodule (𝓞 K) V) (x : V)
     (hx : ∀ w : HeightOneSpectrum (𝓞 K), x ∈ localization₂ w.asIdeal A) : x ∈ A := by
@@ -51,7 +51,7 @@ theorem mem_of_forall_locP {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (A : 
   exact hs (hIp ((hmem s).mpr hsx))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Submonoid.one_mem _, by simpa using hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_localization_of_mem {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (w : HeightOneSpectrum (𝓞 K))
     {A : Submodule (𝓞 K) V} {x : V} (hx : x ∈ A) : x ∈ localization₂ w.asIdeal A :=
@@ -60,7 +60,7 @@ theorem mem_localization_of_mem {V : Type} [AddCommGroup V] [Module (𝓞 K) V] 
 variable [StarRing K]
 
 /- English proof (translation)
-Introduce `h`. Apply `ht` to reduce the goal to its premises. Establish `h1 : cO K (cO K t) ∈ (conjPl w).asIdeal` using `Ideal.mem_map_of_mem (cO K) h`. Establish `h2 : cO K (cO K t) = t` using `RingOfIntegers.ext (star_star (t : K))`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem conj_not_mem (w : HeightOneSpectrum (𝓞 K)) {t : 𝓞 K} (ht : t ∈ (conjPl w).asIdeal.primeCompl) :
     cO K t ∈ w.asIdeal.primeCompl := by
@@ -73,7 +73,7 @@ theorem conj_not_mem (w : HeightOneSpectrum (𝓞 K)) {t : 𝓞 K} (ht : t ∈ (
 variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul K t y, LinearMap.map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, smul_eq_mul, Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pair_smul_left (h : V →ₗ⋆[K] V →ₗ[K] K) (t : 𝓞 K) (y x : V) : h (t • y) x = cO K t • h y x := by
   rw [← algebraMap_smul K t y, LinearMap.map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, smul_eq_mul,
@@ -81,13 +81,13 @@ theorem pair_smul_left (h : V →ₗ⋆[K] V →ₗ[K] K) (t : 𝓞 K) (y x : V)
   rfl
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul K t x, map_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_smul_right (h : V →ₗ⋆[K] V →ₗ[K] K) (t : 𝓞 K) (y x : V) : h y (t • x) = t • h y x := by
   rw [← algebraMap_smul K t x, map_smul, algebraMap_smul]
 
 /- English proof (translation)
-Use `⟨fun H y hy => H y (mem_localization_of_mem _ hy), ?_⟩` and prove the remaining obligations. Introduce and unpack `H y ⟨t, ht, hy⟩`. Take `⟨s, hs, hsy⟩` from `H _ hy`. Use `⟨s * cO K t, Submonoid.mul_mem _ hs (conj_not_mem w ht), ?_⟩` and prove the remaining obligations. Rewrite `hsy` using `[pair_smul_left, smul_smul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pair_locP (h : V →ₗ⋆[K] V →ₗ[K] K) (w : HeightOneSpectrum (𝓞 K)) (T : Submodule (𝓞 K) V) (x : V) :
     (∀ y ∈ localization₂ (conjPl w).asIdeal T, h y x ∈ localization₂ w.asIdeal (1 : Submodule (𝓞 K) K)) ↔
@@ -99,13 +99,11 @@ theorem pair_locP (h : V →ₗ⋆[K] V →ₗ[K] K) (w : HeightOneSpectrum (�
   rwa [pair_smul_left, smul_smul] at hsy
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hT`. Establish `H' : ∀ y : S, ∃ s ∈ w.asIdeal.primeCompl, s • h y x ∈ (1 : Submodule (𝓞 K) K)` using `fun y => H y (Submodule.subset_span y.2)`. Use `choose s hs hsy using H'`. Use `⟨∏ y, s y, Submonoid.prod_mem _ fun y _ => hs y, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Rewrite using `[pair_smul_right, ← Finset.prod_erase_mul _ _ (Finset.mem_univ (⟨y, hy⟩ : S)), mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hsy ⟨y, hy⟩)`. Consider the case `zero => simp`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `add_mem hy hz`. Consider the case `smul r y _ hy`. Rewrite using `[pair_smul_left]`.
-
-Conclude with `Submodule.smul_mem _ _ hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_denom (h : V →ₗ⋆[K] V →ₗ[K] K) (w : HeightOneSpectrum (𝓞 K)) (T : Submodule (𝓞 K) V) (hT : T.FG)
     (x : V) (H : ∀ y ∈ T, h y x ∈ localization₂ w.asIdeal (1 : Submodule (𝓞 K) K)) :
@@ -130,11 +128,11 @@ theorem pair_denom (h : V →ₗ⋆[K] V →ₗ[K] K) (w : HeightOneSpectrum (�
     exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Rewrite using `[pair_locP]`. Establish `hU : ∀ s : 𝓞 K, s • x ∈ U` using `fun s => by`. Rewrite using `[← algebraMap_smul K s x]`. Conclude with `U.smul_mem _ hx`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨s, hs, hsx⟩ y hy`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← pair_smul_right]`. Conclude with `(hD _ (hU s)).1 hsx y hy`. Introduce `H`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨s, hs, hsy⟩` from `pair_denom h w T hT x H`. Conclude with `⟨s, hs, (hD _ (hU s)).2 hsy⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_localization_dual (h : V →ₗ⋆[K] V →ₗ[K] K) (w : HeightOneSpectrum (𝓞 K)) (U : Submodule K V)
     (T D : Submodule (𝓞 K) V) (hT : T.FG)
@@ -155,7 +153,7 @@ theorem mem_localization_dual (h : V →ₗ⋆[K] V →ₗ[K] K) (w : HeightOneS
     exact ⟨s, hs, (hD _ (hU s)).2 hsy⟩
 
 /- English proof (translation)
-Simplify using `only [pair_locP]`. Conclude with `⟨fun H w y hy => mem_localization_of_mem w (H y hy), fun H y hy => mem_of_forall_locP _ _ fun w => H w y hy⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem pair_integral_iff (h : V →ₗ⋆[K] V →ₗ[K] K) (T : Submodule (𝓞 K) V) (x : V) :
     (∀ y ∈ T, h y x ∈ (1 : Submodule (𝓞 K) K)) ↔ ∀ w : HeightOneSpectrum (𝓞 K),
@@ -178,11 +176,11 @@ def gramForm (G : Matrix (Fin n) (Fin n) K) : (Fin n → K) →ₗ⋆[K] (Fin n 
 
 omit [StarRing K] in
 /- English proof (translation)
-Unfold `colLat`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Establish `key : ∀ c : Fin n → 𝓞 K, (∑ j, c j • fun a : Fin n => (B : Matrix (Fin n) (Fin n) K) a j) = (B : Matrix (Fin n) (Fin n) K) *ᵥ fun j => algebraMap (𝓞 K) K (c j)`. Introduce `c`. Use function extensionality and compare the values at `a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, Matrix.mulVec, dotProduct, Algebra.smul_def]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩ j`. Rewrite using `[key, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.mem_one.2 ⟨c j, rfl⟩`. Introduce `H choose c hc using fun j => Submodule.mem_one.1 (H j)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[key, show (fun j => algebraMap (𝓞 K) K (c j)) = _ from funext hc, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_colLat (B : GL (Fin n) K) (x : Fin n → K) :
     x ∈ colLat B ↔ ∀ j, (((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x) j ∈ (1 : Submodule (𝓞 K) K) := by
@@ -206,20 +204,20 @@ theorem mem_colLat (B : GL (Fin n) K) (x : Fin n → K) :
 
 omit [StarRing K] in
 /- English proof (translation)
-The claim follows from `Submodule.fg_span (Set.finite_range _)`.
+A detailed English derivation is pending.
 -/
 theorem colLat_fg (B : GL (Fin n) K) : (colLat B).FG := Submodule.fg_span (Set.finite_range _)
 
 /- English proof (translation)
-Establish `e : ((B'⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = (B : Matrix (Fin n) (Fin n) K)ᴴ * G`. Rewrite using `[← Matrix.one_mul ((B'⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K), ← hB, Matrix.mul_assoc _ (B' : Matrix (Fin n) (Fin n) K), Units.mul_inv, Matrix.mul_one]`. Establish `e2 : ∀ j, (((B : Matrix (Fin n) (Fin n) K)ᴴ * G) *ᵥ x) j = gramForm G (fun a : Fin n => (B : Matrix (Fin n) (Fin n) K) a j) x`. Introduce `j`. Rewrite using `[← Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[mem_colLat, e]`. Simplify using `only [e2]`. Prove the components needed by the constructor for the conclusion. Introduce `H y hy`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `colLat at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`. Conclude with `H j`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `add_mem hy hz`. Consider the case `smul r y _ hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pair_smul_left]`. Conclude with `Submodule.smul_mem _ _ hy`. Introduce `H j`. Conclude with `H _ (Submodule.subset_span ⟨j, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mem_colLat_dual (G : Matrix (Fin n) (Fin n) K) (B B' : GL (Fin n) K)
     (hB : (B : Matrix (Fin n) (Fin n) K)ᴴ * G * (B' : Matrix (Fin n) (Fin n) K) = 1) (x : Fin n → K) :
@@ -252,7 +250,7 @@ theorem mem_colLat_dual (G : Matrix (Fin n) (Fin n) K) (B B' : GL (Fin n) K)
     exact H _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_localization_dual (gramForm G) w ⊤ M (hdualFr G M) hM (fun _ _ => Iff.rfl) Submodule.mem_top, mem_localization_dual (gramForm G) w ⊤ (colLat B) (colLat B') (colLat_fg B) (fun x _ => mem_colLat_dual G B B' hB x) Submodule.mem_top]`. Unfold `IsBasisAt at h`. Rewrite using `[h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isBasisAt_hdual (G : Matrix (Fin n) (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) (hM : M.FG)
     (w : HeightOneSpectrum (𝓞 K)) (B B' : GL (Fin n) K) (h : IsBasisAt (conjPl w) M B)
@@ -267,7 +265,7 @@ theorem isBasisAt_hdual (G : Matrix (Fin n) (Fin n) K) (M : Submodule (𝓞 K) (
 
 omit [NumberField K] in
 /- English proof (translation)
-Establish `hu : IsUnit ((B : Matrix (Fin n) (Fin n) K)ᴴ * G)`. Use `IsUnit.mul ?_ ((Matrix.isUnit_iff_isUnit_det G).2 hG)` and prove the remaining obligations. Conclude with `(Units.isUnit B).star`. Take `⟨u, hu⟩` from `hu`. Conclude with `⟨u⁻¹, by rw [← hu, Units.mul_inv]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dual_frame (G : Matrix (Fin n) (Fin n) K) (hG : IsUnit G.det) (B : GL (Fin n) K) :
     ∃ B' : GL (Fin n) K, (B : Matrix (Fin n) (Fin n) K)ᴴ * G * (B' : Matrix (Fin n) (Fin n) K) = 1 := by
@@ -284,23 +282,21 @@ section Main
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `h1 : x ∈ Formalism.HermitianLatticesTheory.dual (pairK lam G) (P.comap ((VV K lam).subtype.restrictScalars (𝓞 K))) ↔ ∀ y ∈ P, pairP lam G y x.1 ∈ (1 : Submodule (𝓞 K) K)`. Establish `h0 : x ∈ Formalism.HermitianLatticesTheory.dual (pairK lam G) (P.comap ((VV K lam).subtype.restrictScalars (𝓞 K))) ↔ ∀ y ∈ P.comap ((VV K lam).subtype.restrictScalars (𝓞 K)), pairK lam G y x ∈ (1 : Submodule (𝓞 K) K)`. Simplify using `[Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf]`. Rewrite using `[h0]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H y hy`. Use `H ⟨y, hP y hy⟩ hy` as an intermediate fact. Rewrite `this` using `[pairK_apply]`. Then use the resulting hypothesis. Introduce `H y hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pairK_apply]`. Conclude with `H _ hy`. Establish `h2 : ∀ w : HeightOneSpectrum (𝓞 K), (∀ y ∈ localization₂ (conjPl w).asIdeal P, pairP lam G y x.1 ∈ localization₂ w.asIdeal (1 : Submodule (𝓞 K) K)) ↔ x.1 ∈ localization₂ w.asIdeal P'`. Introduce `w`. Take `⟨B, B', hB, e1, e2⟩` from `hloc w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : actP lam B' (actP lam B'⁻¹ x.1) = x.1`. Rewrite using `[← polyAction_mul, mul_inv_cancel, polyAction_one₂]`. Establish `ht : ∀ y, pairP lam G (actP lam B y) x.1 = pairP lam (fun _ => 1) y (actP lam B'⁻¹ x.1)`. Introduce `y`. Use `conv_lhs => rw [← hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[pairTransport K ι n lam G B B']`. Simplify using `only [hB]`. Establish `h3 : x.1 ∈ localization₂ w.asIdeal P' ↔ actP lam B'⁻¹ x.1 ∈ localization₂ w.asIdeal T'`. Rewrite using `[e2]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨z, hz, hzx⟩`. Establish `hzx' : actP lam B' z = x.1` using `hzx`. Rewrite using `[← hzx', ← polyAction_mul, inv_mul_cancel, polyAction_one₂]`. Conclude with `hz`. Introduce `H`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `⟨_, H, hx⟩`. Rewrite using `[h3, mem_localization_dual (pairP lam fun _ => 1) w (VV K lam) T T' hT hD (polyAction_mem_VV lam _ x.2), e1]`. Prove the components needed by the constructor for the conclusion. Introduce `H y hy`. Rewrite using `[← ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `H _ ⟨y, hy, rfl⟩`. Introduce and unpack `H _ ⟨y, hy, rfl⟩`. Use `H y hy` as an intermediate fact. Rewrite `this` using `[← ht]`. Conclude with `this`.
-
-Rewrite using `[h1, pair_integral_iff]`. Simplify using `only [h2]`. Conclude with `⟨fun H => mem_of_forall_locP P' x.1 H, fun H w => mem_localization_of_mem w H⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dual_of_local (lam : ι → DomWeight n) (G : ι → Matrix (Fin n) (Fin n) K)
     (T T' P P' : Submodule (𝓞 K) (Pol K ι n)) (hT : T.FG)
@@ -363,17 +359,15 @@ theorem dual_of_local (lam : ι → DomWeight n) (G : ι → Matrix (Fin n) (Fin
 end Main
 
 /- English proof (translation)
-Introduce `K _ _ _ ι _ n lam G M _ hG hM`. Establish `hone : ∀ a : K, a ∈ (algebraMap (𝓞 K) K).range ↔ a ∈ (1 : Submodule (𝓞 K) K)` using `fun a => by`. Rewrite using `[Submodule.mem_one, RingHom.mem_range]`. Establish `hM' : ∀ τ, Submodule.IsLattice K (hdualFr (G τ) (M τ))` using `fun τ => (GlobalTheory.DualLat.dualFr_lattice_and_hdual.1 K n (G τ) (M τ) (hG τ) (hM τ)).2`. Establish `hfr : ∀ w : HeightOneSpectrum (𝓞 K), ∃ B B' : ι → GL (Fin n) K, (∀ τ, (B τ : Matrix (Fin n) (Fin n) K)ᴴ * G τ * (B' τ : Matrix (Fin n) (Fin n) K) = 1) ∧ (∀ τ, IsBasisAt (conjPl w) (M τ) (B τ)) ∧ ∀ τ, IsBasisAt w (hdualFr (G τ) (M τ)) (B' τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Use `choose B hB using fun τ => GlobalTheory.LatBasisAt.basisAtEx K n (M τ) (hM τ) (conjPl w)`. Use `choose B' hB' using fun τ => exists_dual_frame (G τ) (hG τ) (B τ)`. Conclude with `⟨B, B', hB', hB, fun τ => isBasisAt_hdual (G τ) (M τ) (Submodule.IsLattice.fg (self := hM τ)) w (B τ) (B' τ) (hB τ) (hB' τ)⟩`. Establish `hnab : ∀ F ∈ nabP lam M, F ∈ VV K lam` using `GlobalTheory.T.transportedLattice_localization_free_le_coefficientSpace.2.2 K ι n lam M hM`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hdel : ∀ F ∈ delP lam M, F ∈ VV K lam` using `fun F hF => hnab F (transLat_mono lam (delStd_le_nabStd K lam) M hF)`. Prove the components needed by the constructor for the conclusion. Use `dual_of_local lam G (nabStd K lam) (delStd K lam) _ _ (GlobalTheory.StdLatSpan.std_fg_span K ι n lam).1 ?_ hnab ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[← (GlobalTheory.T.standard_weyl_lattices_fock_dual K ι n lam x hx).2]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hone]`. Introduce `w`. Take `⟨B, B', h1, h2, h3⟩` from `hfr w`. Conclude with `⟨B, B', h1, (GlobalTheory.T.transportedLattice_localization_free_le_coefficientSpace.1 K ι n lam M hM _ B h2).1, (GlobalTheory.T.transportedLattice_localization_free_le_coefficientSpace.1 K ι n lam _ hM' _ B' h3).2⟩`. Use `dual_of_local lam G (delStd K lam) (nabStd K lam) _ _ (GlobalTheory.StdLatSpan.std_fg_span K ι n lam).2.1 ?_ hdel ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite using `[← (GlobalTheory.T.standard_weyl_lattices_fock_dual K ι n lam x hx).1]`. Simplify using `only [hone]`. Introduce `w`. Take `⟨B, B', h1, h2, h3⟩` from `hfr w`.
-
-Conclude with `⟨B, B', h1, (GlobalTheory.T.transportedLattice_localization_free_le_coefficientSpace.1 K ι n lam M hM _ B h2).2, (GlobalTheory.T.transportedLattice_localization_free_le_coefficientSpace.1 K ι n lam _ hM' _ B' h3).1⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nabDelDual : NabDelDual := by
   intro K _ _ _ ι _ n lam G M _ hG hM

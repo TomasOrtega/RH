@@ -20,14 +20,14 @@ def Cj (f : A →+* K) (P : GL (Fin n) K) (a a' : Matrix (Fin n) (Fin n) A) : Pr
 variable {f : A →+* K} {P : GL (Fin n) K} {a a' b b' : Matrix (Fin n) (Fin n) A}
 
 /- English proof (translation)
-Rewrite using `[show (P : Matrix (Fin n) (Fin n) K) * a.map f = _ from h, mul_assoc, Units.mul_inv, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem Cj.eq_conj (h : Cj f P a a') :
     a'.map f = (P : Matrix (Fin n) (Fin n) K) * a.map f * ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) := by
   rw [show (P : Matrix (Fin n) (Fin n) K) * a.map f = _ from h, mul_assoc, Units.mul_inv, mul_one]
 
 /- English proof (translation)
-Rewrite using `[h.eq_conj, ← mul_assoc, ← mul_assoc, Units.inv_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Cj.inv_mul (h : Cj f P a a') :
     ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * a'.map f =
@@ -35,7 +35,7 @@ theorem Cj.inv_mul (h : Cj f P a a') :
   rw [h.eq_conj, ← mul_assoc, ← mul_assoc, Units.inv_mul, one_mul]
 
 /- English proof (translation)
-Apply `Matrix.map_injective hf` to reduce the goal to its premises. Use `show a'.map f = b'.map f`. Rewrite using `[h.eq_conj, h'.eq_conj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Cj.unique (hf : Function.Injective f) (h : Cj f P a a') (h' : Cj f P a b') : a' = b' := by
   apply Matrix.map_injective hf
@@ -43,48 +43,48 @@ theorem Cj.unique (hf : Function.Injective f) (h : Cj f P a a') (h' : Cj f P a b
   rw [h.eq_conj, h'.eq_conj]
 
 /- English proof (translation)
-Unfold `Cj at *`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, ← mul_assoc, h, mul_assoc, h', mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Cj.mul (h : Cj f P a a') (h' : Cj f P b b') : Cj f P (a * b) (a' * b') := by
   unfold Cj at *
   rw [Matrix.map_mul, Matrix.map_mul, ← mul_assoc, h, mul_assoc, h', mul_assoc]
 
 /- English proof (translation)
-Unfold `Cj`. Rewrite using `[Matrix.map_one _ f.map_zero f.map_one, mul_one, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Cj.one : Cj f P 1 1 := by
   unfold Cj
   rw [Matrix.map_one _ f.map_zero f.map_one, mul_one, one_mul]
 
 /- English proof (translation)
-Unfold `Cj`. Rewrite using `[Matrix.map_zero _ f.map_zero, mul_zero, zero_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Cj.zero : Cj f P 0 0 := by
   unfold Cj
   rw [Matrix.map_zero _ f.map_zero, mul_zero, zero_mul]
 
 /- English proof (translation)
-Unfold `Cj at *`. Rewrite using `[Matrix.map_sub _ f.map_sub, Matrix.map_sub _ f.map_sub, mul_sub, sub_mul, h, h']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Cj.sub (h : Cj f P a a') (h' : Cj f P b b') : Cj f P (a - b) (a' - b') := by
   unfold Cj at *
   rw [Matrix.map_sub _ f.map_sub, Matrix.map_sub _ f.map_sub, mul_sub, sub_mul, h, h']
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_smul_eq (c : A) (a : Matrix (Fin n) (Fin n) A) : (c • a).map f = f c • a.map f := by
   ext i j; simp
 
 /- English proof (translation)
-Unfold `Cj at *`. Rewrite using `[map_smul_eq, map_smul_eq, Matrix.mul_smul, Matrix.smul_mul, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Cj.smul (c : A) (h : Cj f P a a') : Cj f P (c • a) (c • a') := by
   unfold Cj at *
   rw [map_smul_eq, map_smul_eq, Matrix.mul_smul, Matrix.smul_mul, h]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact Cj.one`. Consider the case `cons c l ih => simpa using (h c).mul ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem Cj.list_prod {ι : Type} (l : List ι) (u u' : ι → Matrix (Fin n) (Fin n) A)
     (h : ∀ c, Cj f P (u c) (u' c)) : Cj f P (l.map u).prod (l.map u').prod := by
@@ -93,16 +93,16 @@ theorem Cj.list_prod {ι : Type} (l : List ι) (u u' : ι → Matrix (Fin n) (Fi
   | cons c l ih => simpa using (h c).mul ih
 
 /- English proof (translation)
-Rewrite using `[h.eq_conj, Matrix.rank_mul_eq_left_of_isUnit_det _ _ (Matrix.isUnits_det_units _), Matrix.rank_mul_eq_right_of_isUnit_det _ _ (Matrix.isUnits_det_units _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Cj.rank (h : Cj f P a a') : (a'.map f).rank = (a.map f).rank := by
   rw [h.eq_conj, Matrix.rank_mul_eq_left_of_isUnit_det _ _ (Matrix.isUnits_det_units _),
     Matrix.rank_mul_eq_right_of_isUnit_det _ _ (Matrix.isUnits_det_units _)]
 
 /- English proof (translation)
-Apply `hf` to reduce the goal to its premises. Rewrite using `[RingHom.map_det, RingHom.map_det]`. Establish `h1` using `congrArg Matrix.det h`. Unfold `Cj at h`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((Matrix.isUnits_det_units P).mul_left_injective h1).symm`.
+A detailed English derivation is pending.
 -/
 theorem Cj.det (hf : Function.Injective f) (h : Cj f P a a') : a'.det = a.det := by
   apply hf
@@ -113,16 +113,16 @@ theorem Cj.det (hf : Function.Injective f) (h : Cj f P a a') : a'.det = a.det :=
   exact ((Matrix.isUnits_det_units P).mul_left_injective h1).symm
 
 /- English proof (translation)
-Unfold `Cj at *`. Rewrite using `[Matrix.map_add _ f.map_add, Matrix.map_add _ f.map_add, mul_add, add_mul, h, h']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Cj.add (h : Cj f P a a') (h' : Cj f P b b') : Cj f P (a + b) (a' + b') := by
   unfold Cj at *
   rw [Matrix.map_add _ f.map_add, Matrix.map_add _ f.map_add, mul_add, add_mul, h, h']
 
 /- English proof (translation)
-Unfold `Cj at *`. Establish `e : ∀ m : Matrix (Fin n) (Fin n) A, (m.map (Polynomial.C (R` using `A))).map (Polynomial.mapRingHom f) = (m.map f).map (Polynomial.C (R := K)) := by`. Introduce `m`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e2 : ((Matrix.GeneralLinearGroup.map (Polynomial.C (R` using `K)) P : GL (Fin n) (Polynomial K)) : Matrix (Fin n) (Fin n) (Polynomial K)) = (P : Matrix (Fin n) (Fin n) K).map (Polynomial.C (R := K)) := rfl`. Rewrite using `[e, e, e2, ← Matrix.map_mul, ← Matrix.map_mul, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Cj.toPoly (h : Cj f P a a') :
     Cj (Polynomial.mapRingHom f) (Matrix.GeneralLinearGroup.map (Polynomial.C (R := K)) P)
@@ -136,7 +136,7 @@ theorem Cj.toPoly (h : Cj f P a a') :
   rw [e, e, e2, ← Matrix.map_mul, ← Matrix.map_mul, h]
 
 /- English proof (translation)
-The claim follows from `Cj.det (f := Polynomial.mapRingHom f) (Polynomial.map_injective f hf) ((((h.toPoly.smul _).sub h'.toPoly).add Cj.one).sub h.toPoly)`.
+A detailed English derivation is pending.
 -/
 theorem Cj.blockDet (hf : Function.Injective f) (h : Cj f P a a') (h' : Cj f P b b') :
     Matrix.det ((Polynomial.X : Polynomial A) • a'.map (Polynomial.C (R := A)) -
@@ -147,7 +147,7 @@ theorem Cj.blockDet (hf : Function.Injective f) (h : Cj f P a a') (h' : Cj f P b
     ((((h.toPoly.smul _).sub h'.toPoly).add Cj.one).sub h.toPoly)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Cj.zero`. Consider the case `insert c s hc ih => rw [Finset.sum_insert hc, Finset.sum_insert hc]`. Conclude with `(h c).add ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Cj.sum {ι : Type} (s : Finset ι) (u u' : ι → Matrix (Fin n) (Fin n) A)
     (h : ∀ c, Cj f P (u c) (u' c)) : Cj f P (∑ c ∈ s, u c) (∑ c ∈ s, u' c) := by
@@ -157,13 +157,13 @@ theorem Cj.sum {ι : Type} (s : Finset ι) (u u' : ι → Matrix (Fin n) (Fin n)
   | insert c s hc ih => rw [Finset.sum_insert hc, Finset.sum_insert hc]; exact (h c).add ih
 
 /- English proof (translation)
-Establish `key : ∀ i x y j, ∃ c : A, f c = (P : Matrix (Fin n) (Fin n) K) i x * ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) y j`. Introduce `i x y j`. Take `⟨b', hb⟩` from `h (Matrix.single x y 1)`. Use `⟨b' i j, ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun hb.eq_conj i) j` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.map_apply]`. Rewrite using `[this, Matrix.map_single _ _ _ f, map_one, Matrix.mul_apply, Finset.sum_eq_single y]`. Rewrite using `[Matrix.mul_single_apply_same, mul_one]`. Introduce `z _ hz`. Rewrite using `[Matrix.mul_single_apply_of_ne _ _ _ _ _ hz, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `choose c hc using key`. Use `⟨Matrix.of fun y x => ∑ j, ∑ i, c i x y j * a' j i, ?_⟩` and prove the remaining obligations. Establish `: (Matrix.map (Matrix.of fun y x => ∑ j, ∑ i, c i x y j * a' j i) f : Matrix (Fin n) (Fin n) K) = ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * (a'.map f * (P : Matrix (Fin n) (Fin n) K))`. Use extensionality with `y x`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_apply, Matrix.of_apply, map_sum, map_mul, hc, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations. Unfold `Cj`. Rewrite using `[this, ← mul_assoc, Units.mul_inv, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cj_of_forall (h : ∀ b, ∃ b', Cj f P b b') (a' : Matrix (Fin n) (Fin n) A) :
     ∃ a, Cj f P a a' := by
@@ -216,7 +216,7 @@ theorem newE_apply (P : GL (Fin n) K) (Q : GL (Fin r) K) (e : (Fin n → K) ≃�
 variable {e : (Fin n → K) ≃ₗ[K] ((Fin r → K) × (Fin t → K))}
 
 /- English proof (translation)
-Introduce `u`. Rewrite using `[newE_apply, newE_apply, Matrix.mulVec_mulVec, ha.inv_mul, ← Matrix.mulVec_mulVec, h]`. Simplify using `only [Matrix.mulVec_mulVec]`. Rewrite using `[show (Q : Matrix (Fin r) (Fin r) K) * B.map f = _ from hB]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem Act.conj {Q : GL (Fin r) K} {B B' : Matrix (Fin r) (Fin r) A} {d : Fin t → A}
     (h : Act f e a B d) (ha : Cj f P a a') (hB : Cj f Q B B') : Act f (newE P Q e) a' B' d := by
@@ -226,7 +226,7 @@ theorem Act.conj {Q : GL (Fin r) K} {B B' : Matrix (Fin r) (Fin r) A} {d : Fin t
   rw [show (Q : Matrix (Fin r) (Fin r) K) * B.map f = _ from hB]
 
 /- English proof (translation)
-Apply `Matrix.map_injective hf` to reduce the goal to its premises. Use `show B.map f = B'.map f`. Use `Matrix.ext_of_mulVec_single fun j => ?_` and prove the remaining obligations. Use `congrArg Prod.fst ((h (e.symm (Pi.single j 1, 0))).symm.trans (h' _))` as an intermediate fact. Simplify using `using this`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Act.unique (hf : Function.Injective f) {B B' : Matrix (Fin r) (Fin r) A} {d d' : Fin t → A}
     (h : Act f e a B d) (h' : Act f e a B' d') : B = B' := by
@@ -237,9 +237,9 @@ theorem Act.unique (hf : Function.Injective f) {B B' : Matrix (Fin r) (Fin r) A}
   simpa using this
 
 /- English proof (translation)
-Introduce `u`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => ext <;> simp`. Consider the case `insert k s hk ih`. Simplify using `only [Finset.sum_insert hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.map_add _ f.map_add, Matrix.map_add _ f.map_add, Matrix.add_mulVec, Matrix.add_mulVec, map_add, ih, map_smul_eq, map_smul_eq, Matrix.smul_mulVec, Matrix.smul_mulVec, map_smul, h k u]`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `only [Prod.snd_add, Prod.smul_snd, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Act.sum {ι : Type} (s : Finset ι) (c : ι → A) (M : ι → Matrix (Fin n) (Fin n) A)
     (B : ι → Matrix (Fin r) (Fin r) A) (d : ι → Fin t → A) (h : ∀ k, Act f e (M k) (B k) (d k)) :
@@ -258,7 +258,7 @@ theorem Act.sum {ι : Type} (s : Finset ι) (c : ι → A) (M : ι → Matrix (F
     ring
 
 /- English proof (translation)
-Unfold `Act`. Rewrite using `[Matrix.map_zero _ f.map_zero]`. Simplify using `only [Matrix.zero_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_zero_iff {d : Fin t → A} : Act f e a 0 d ↔
     ∀ u, e ((a.map f).mulVec u) = (0, fun c => f (d c) * (e u).2 c) := by
@@ -273,7 +273,7 @@ section Record
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (i : N.Loc)
 
 /- English proof (translation)
-Take `⟨m, f, g, -, rfl⟩` from `ha`. Use `⟨m, fun k => f k y, g, fun j => ∑ k, f k y * d (g k) j, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_apply]`. Conclude with `Act.sum Finset.univ (fun k => f k y) _ _ _ fun k => h (g k)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_act {X' : Type} (T' : Subalgebra (N.O i) (X' → N.O i)) (rep : X' → (GE N →* MatN N i)) (y : X')
     (e : (Fin R.nV → KK N i) ≃ₗ[KK N i] ((Fin R.r → KK N i) × (Fin R.t → KK N i)))
@@ -289,33 +289,29 @@ theorem exists_act {X' : Type} (T' : Subalgebra (N.O i) (X' → N.O i)) (rep : X
 end Record
 
 /- English proof (translation)
-Introduce `R H what₂ N i r r' ρ ρ' π hP hQ S hS`. Use `choose P hP using hP`. Take `⟨Q, hQ⟩` from `hQ`. Establish `hf : Function.Injective (toK N i)` using `IsFractionRing.injective _ _`. Take `⟨⟨hB, h1, hBB, h11, hB1, h1B, rkB, rk1⟩, hdec, hact, honto, hg1, hg2, ⟨hX, hBX, hXB, hXe⟩, hT, hroot, ⟨hπ, hrr⟩, ⟨rkE, hEE, hEe, hv⟩, hL⟩` from `hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `sp` using `(GlobalTheory.Proof.BlockDeterminant.main N i r r' P hP (N.X i) id (N.T i)).1`. Take `⟨eB, hB', cB⟩` from `sp S.eB hB`. Take `⟨e1, h1', c1⟩` from `sp S.e1 h1`. Take `⟨X0, hX', cX⟩` from `sp S.X0 hX`. Use `replace cB : ∀ x, Cj (toK N i) (P x) (S.eB x) (eB x) := cB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `replace c1 : ∀ x, Cj (toK N i) (P x) (S.e1 x) (e1 x) := c1`. Use `replace cX : ∀ x, Cj (toK N i) (P x) (S.X0 x) (X0 x) := cX`. Take `⟨sp', hL'⟩` from `GlobalTheory.Proof.BlockDeterminant.main N i r r' P hP S.X' S.p S.T'`. Establish `hdec0 : ∀ g, Act (toK N i) S.e (rO N i r π g) (rhoO N i ρ π g) (fun c : Fin R.t => ((chiU N i ((c : ℕ) + 1) g : (N.O i)ˣ) : N.O i))` using `hdec`. Establish `hdec' : ∀ g, Act (toK N i) (newE (P π) Q S.e) (rO N i r' π g) (rhoO N i ρ' π g) (fun c : Fin R.t => ((chiU N i ((c : ℕ) + 1) g : (N.O i)ˣ) : N.O i))` using `fun g => (hdec0 g).conj (hP π g) (hQ g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hact0 : ∀ a, InR' N r S a → Act (toK N i) S.e (a S.π') (S.ψρ a) (fun c => S.ψχ c a)` using `hact`. Establish `ex : ∀ a : S.X' → MatN N i, ∃ (B : Matrix (Fin R.r) (Fin R.r) (N.O i)) (δ : Fin R.t → N.O i), InSpan N i S.T' (fun y => rO N i r' (S.p y)) a → Act (toK N i) (newE (P π) Q S.e) (a S.π') B δ`. Introduce `a`. Distinguish the cases in `ha : InSpan N i S.T' (fun y => rO N i r' (S.p y)) a`. Take `⟨m, c, g, δ, h⟩` from `exists_act N i S.T' _ S.π' (newE (P π) Q S.e) _ _ (fun g => by rw [hπ]; exact hdec' g) a ha`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, δ, fun _ => h⟩`. Conclude with `⟨0, 0, fun h => absurd h ha⟩`. Use `choose ψρ ψχ hψ using ex`. Establish `hint : ∀ b, ∃ b', Cj (toK N i) Q b b'`. Introduce `b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Take `⟨a, ha, rfl⟩` from `honto b`. Take `⟨m, c, g, δ, h⟩` from `exists_act N i S.T' _ S.π' S.e _ _ (fun g => by rw [hπ]; exact hdec0 g) a ha`. Rewrite using `[(hact0 a ha).unique hf h]`. Conclude with `⟨_, Cj.sum _ _ _ fun k => Cj.smul (c k) (hQ (g k))⟩`. Set `S' : IdempotentChoiceData N i` to `{ eB := eB, e1 := e1, g0 := S.g0, X0 := X0, X' := S.X', p := S.p, T' := S.T', rr := S.rr, π' := S.π', e := newE (P π) Q S.e, ψρ := ψρ, ψχ := fun c a => ψχ a c }`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `cE : ∀ y, Cj (toK N i) (P (S.p y)) (Eel N S y) (Eel N S' y)` using `fun y => Cj.list_prod _ _ _ fun c => (cX _).sub ((cB _).smul _)`. Establish `rel : ∀ {a a' b b' c c' : N.X i → MatN N i}, (∀ x, Cj (toK N i) (P x) (a x) (a' x)) → (∀ x, Cj (toK N i) (P x) (b x) (b' x)) → (∀ x, Cj (toK N i) (P x) (c x) (c' x)) → a * b = c → a' * b' = c'`. Introduce `a a' b b' c c' ha hb hc h`. Use function extensionality and compare the values at `x`. Establish `h2` using `(ha x).mul (hb x)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `h2` using `[show a x * b x = c x from congrFun h x]`. Conclude with `h2.unique hf (hc x)`. Establish `c0 : ∀ x, Cj (toK N i) (P x) ((0 : N.X i → MatN N i) x) ((0 : N.X i → MatN N i) x)` using `fun _ => Cj.zero`. Use `⟨S', rfl, ⟨hB', h1', rel cB cB cB hBB, rel c1 c1 c1 h11, rel cB c1 c0 hB1, rel c1 cB c0 h1B, fun x => (cB x).rank.trans (rkB x), fun x => (c1 x).rank.trans (rk1 x)⟩, hdec', hψ, ?_, hg1, hg2, ⟨hX', rel cB cX cX hBX, rel cX cB cX hXB, ?_⟩, hT, fun y => ?_, ⟨hπ, hrr⟩, ⟨fun y => (cE …` and prove the remaining obligations. Introduce `A`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `exists_cj_of_forall hint A`. Take `⟨a, ha, rfl⟩` from `honto b`. Take `⟨a', ha', ca⟩` from `sp' a ha`. Use `⟨a', ha', ?_⟩` and prove the remaining obligations. Establish `ca' : Cj (toK N i) (P π) (a S.π') (a' S.π')`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ca S.π'` as an intermediate fact. Rewrite `this` using `[hπ]`. Then use the resulting hypothesis. Conclude with `(hψ a' ha').unique hf ((hact0 a ha).conj ca' hb)`. Conclude with `act_zero_iff.1 ((act_zero_iff.2 hXe).conj (cX π) Cj.zero)`. Conclude with `(hroot y).trans (Cj.blockDet hf (cB _) (cX _)).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2` using `(cE y).mul (cE y)`. Rewrite `h2` using `[hEE y]`. Conclude with `h2.unique hf ((cE y).smul _)`. Establish `cE' : Cj (toK N i) (P π) (Eel N S S.π') (Eel N S' S.π')`. Use `cE S.π'` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `this` using `[hπ]`. Then use the resulting hypothesis. Establish `h0 : Act (toK N i) S.e (Eel N S S.π') (0 : Matrix (Fin R.r) (Fin R.r) (N.O i)) (fun c : Fin R.t => if (c : ℕ) = 0 then del51 N S S.π' else 0)`. Use `act_zero_iff.2 fun u => (hEe u).trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `c`.
-
-Apply the tactic sequence `split_ifs <;> simp`. Introduce `u`. Use `(act_zero_iff.1 (h0.conj (Q := Q) cE' Cj.zero) u).trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `c`.
-
-Use `split_ifs`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (i : N.Loc) (r r' : (N.X i → (GE N →* GL (Fin R.nV) (N.O i)))) (ρ ρ' : (N.X i → (GE N →* GL (Fin R.r) (N.O i)))) (π : N.X i), (∀ x, (∃ Pm : GL (Fin R.nV) (KK N i), ∀ g, (Pm : Matrix (Fin R.nV) (Fin R.nV) (KK N i)) * (rO N i r x g).map (toK N i) = (rO N i r' x g).map (toK N i) * (Pm : Matrix (Fin R.nV) (Fin R.nV) (KK N i)))) → (∃ Pm : GL (Fin R.r) (KK N i), ∀ g, (Pm : Matrix (Fin R.r) (Fin R.r) (KK N i)) * (rhoO N i ρ π g).map (toK N i) = (rhoO N i ρ' π g).map (toK N i) * (Pm : Matrix (Fin R.r) (Fin R.r) (KK N i))) → ∀ S : IdempotentChoiceData N i, GoodCongruenceObjects N r ρ π S → ∃ S' : IdempotentChoiceData N i, S'.g0 = S.g0 ∧ GoodCongruenceObjects N r' ρ' π S' := by
   intro R H what₂ N i r r' ρ ρ' π hP hQ S hS

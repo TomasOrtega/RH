@@ -12,11 +12,11 @@ open GlobalTheory.GalCut
 namespace GlobalTheory.RoadW
 
 /- English proof (translation)
-Consider the cases of `c with`. Consider the case `unr`. Take `⟨p, hp⟩` from `hiso`. Introduce `hl A hA`. Take `⟨h1, h2⟩` from `hc hl A hA`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨fun s hs => by rw [hp, h1 s hs]; group, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[← h2 σ hσ, hp, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`. Consider the case `dR => exact clauseAt_of_repIso E Ω l ι a π r r' hr hiso .dR w hc`. Consider the case `crys => exact clauseAt_of_repIso E Ω l ι a π r r' hr hiso .crys w hc`. Consider the case `phi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨p, hp⟩` from `hiso`. Establish `hcd : ∀ (A : ValuationSubring Ω) (g : ↥(Dec (F` using `E) A)), r'.comp (Dec (F := E) A).subtype g = p * r.comp (Dec (F := E) A).subtype g * p⁻¹ := fun A g => hp g`. Introduce `P AI hT A h O _ _ _ Bw hj g`. Establish `e` using `GlobalTheory.AboveL.RepConj.wdAt_conj P ι Bw h hj p (hcd A)`. Conclude with `(congrArg (fun x => WD.charPol x g) e).trans (hc P AI hT A h O Bw hj g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sphAt_of_repIso {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a : ℕ} (π : CuspSub E a) {r r' : G E Ω →* GL (Fin a) (Qbar l)}
@@ -40,11 +40,11 @@ theorem sphAt_of_repIso {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [F
     exact (congrArg (fun x => WD.charPol x g) e).trans (hc P AI hT A h O Bw hj g)
 
 /- English proof (translation)
-Introduce `h`. Use `⟨fun E Ω _ _ _ _ _ _ l _ ι a ha π χ hs => ?_, fun c E Ω _ _ _ _ _ _ l _ ι a ha π χ hs r hr w _ B hB => ?_⟩` and prove the remaining obligations. Take `rfl : χ = quadChar E ^ a` from `hs.2.2.2`. Take `⟨r, hr, -⟩` from `h E Ω l ι a ha π hs`. Conclude with `⟨r, hr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `rfl : χ = quadChar E ^ a` from `hs.2.2.2`. Take `⟨r₀, hr₀, hc⟩` from `h E Ω l ι a ha π hs`. Use `sphAt_of_repIso ι π hr₀.1 (weak_repIso E Ω l ι a π r₀ r hr₀ hr) c w B ?_` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `hc w B hB`. Consider the cases of `c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Use `exacts [h1, h2, h3, h4]`.
+A detailed English derivation is pending.
 -/
 theorem core_of_rowStarCore : GlobalTheory.RoadW.RowStarCore → GlobalTheory.RoadU.Core := by
   intro h

@@ -12,11 +12,11 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ComplexSets Function
 open scoped ContDiff
 
 /- English proof (translation)
-Unfold `varInt`. Use `split_ifs with h`. Establish `h0 : chartDens W h.choose f φ = fun _ => 0`. Use function extensionality and compare the values at `y`. Unfold `chartDens sheetSum`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_eq_zero_of_forall_eq_zero fun x => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_dif]`. Distinguish the cases in `hx : x ∈ fibre W h.choose y`. Rewrite using `[dif_pos hx] split_ifs`. Use `show f x * _ = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hf x hx.1, zero_mul]`. Both sides reduce to the same expression. Rewrite using `[dif_neg hx]`. Simplify using `[chartInt, h0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem varInt_eq_zero_of_vanish {n k : ℕ} (W : Ideal (MvPolynomial (Fin n) ℂ))
     (f : (Fin n → ℂ) → ℝ) (φ : Fin k → (Fin n → ℂ) → ℝ) (hf : ∀ x ∈ zeroSet W, f x = 0) :
@@ -40,23 +40,21 @@ theorem varInt_eq_zero_of_vanish {n k : ℕ} (W : Ideal (MvPolynomial (Fin n) �
   · rfl
 
 /- English proof (translation)
-Introduce `n d J u f φ hJ hdim hu hf hfc hφ`. Use `set S := (J ⊔ Ideal.span {linForm u}).minimalPrimes with hS`. Establish `hW : ∀ W ∈ S, W.IsPrime ∧ zeroSet W ⊆ zeroSet J ∧ ∀ x ∈ zeroSet W, linEval u x = 0`. Introduce `W hWm`. Establish `hle : J ⊔ Ideal.span {linForm u} ≤ W` using `hWm.1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hWm.1.1, fun x hx q hq => hx q (hle (Ideal.mem_sup_left hq)), fun x hx => ?_⟩` and prove the remaining obligations. Use `hx _ (hle (Ideal.mem_sup_right (Ideal.subset_span rfl)))` as an intermediate fact. Simplify `this` using `[linForm, linEval]`. Establish `hφW : ∀ W ∈ S, ∀ i, SmoothNear (zeroSet W) (φ i)` using `fun W hWm i => by`. Take `⟨U, hU, hSU, hC⟩` from `hφ i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨U, hU, (hW W hWm).2.1.trans hSU, hC⟩`. Establish `hclosed : IsClosed (zeroSet J ∩ {x | linEval u x = 0})`. Use `IsClosed.inter ?_ (isClosed_eq ?_ continuous_const)` and prove the remaining obligations. Establish `: zeroSet J = ⋂ q ∈ J, {x : Fin n → ℂ | MvPolynomial.eval x q = 0}`. Use extensionality with `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[zeroSet]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun q _ => isClosed_eq (MvPolynomial.continuous_eval q) continuous_const`. Conclude with `continuous_finsetSum _ fun j _ => continuous_const.mul (continuous_apply j)`. Use `tendsto_of_forall_local (fun ε g => varInt J (d + 1) g (vecCons (logReg u ε) φ)) (fun g => ∑ᶠ (W : Ideal (MvPolynomial (Fin n) ℂ)) (_ : W ∈ S), (localMult (J ⊔ Ideal.span {linForm u}) W : ℝ) * varInt W d g φ) ?_ ?_ ?_ f hf hfc` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g₁ g₂ h1 h1c h2 h2c filter_upwards [self_mem_nhdsWithin] with ε (hε : 0 < ε)`. Use `hAdd n (d + 1) J g₁ g₂ _ hJ h1.continuous h1c h2.continuous h2c fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using smoothNear_of_contDiff (S := zeroSet J) (contDiff_logReg u hε)`. Simplify using `using hφ j`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g₁ g₂ h1 h1c h2 h2c`. Rewrite using `[← finsum_mem_add_distrib (Ideal.finite_minimalPrimes_of_isNoetherianRing _ _)]`. Use `finsum_mem_congr rfl fun W hWm => ?_` and prove the remaining obligations. Rewrite using `[hAdd n d W g₁ g₂ φ (hW W hWm).1 h1.continuous h1c h2.continuous h2c (hφW W hWm), mul_add]`. Introduce `p`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `hp : p ∈ zeroSet J ∩ {x | linEval u x = 0}`. Conclude with `hOn n d J u φ p hJ hdim hu hφ hp.1 hp.2`. Use `⟨_, hclosed.isOpen_compl.mem_nhds hp, fun g hg hgc hgN => ?_⟩` and prove the remaining obligations. Establish `h0 : (∑ᶠ (W : Ideal (MvPolynomial (Fin n) ℂ)) (_ : W ∈ S), (localMult (J ⊔ Ideal.span {linForm u}) W : ℝ) * varInt W d g φ) = 0`. Use `finsum_eq_zero_of_forall_eq_zero fun W => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_dif]`. Distinguish the cases in `hWm : W ∈ S`. Rewrite using `[dif_pos hWm, varInt_eq_zero_of_vanish W g φ fun x hx => image_eq_zero_of_notMem_tsupport fun hxs => hgN hxs ⟨(hW W hWm).2.1 hx, (hW W hWm).2.2 x hx⟩, mul_zero]`. Rewrite using `[dif_neg hWm]`. Simplify using `only [h0]`.
-
-Conclude with `hOff n d J u g φ hJ hdim hu hg hgc hφ (Set.disjoint_left.2 fun x hx hx' => hgN hx hx')`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LelongLimit.proof (hOff : LelongLimitOffZero.Statement) (hOn : LelongLimitOnZero.Statement)
     (hAdd : VarIntAdd.Statement) : LelongLimit.Statement := by

@@ -7,7 +7,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ProjectionRows.LatticeF
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ProjectionRows.LocalPairingPerfect
 
 /- English proof (translation)
-The claim follows from `PI.DvRows.dvProjRows_of_pieces PI.DvRows.lattice_finitely_generated PI.DvRows.adapted_bases_exist PI.DvRows.gram_cauchy_schwarz PI.DvRows.archimedean_identity (PI.DvRows.localGamma_of_gramCS PI.DvRows.gram_cauchy_schwarz) PI.DvRows.local_pairing_perfect PI.DvRows.conjugate_prime …`.
+A detailed English derivation is pending.
 -/
 theorem projection_rows_bound : PI.Dv.division_rows_base_level :=
   PI.DvRows.dvProjRows_of_pieces PI.DvRows.lattice_finitely_generated PI.DvRows.adapted_bases_exist PI.DvRows.gram_cauchy_schwarz

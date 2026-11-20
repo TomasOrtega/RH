@@ -6,12 +6,12 @@ namespace Formalism.MainNotions.UnusedSlot80
 open Formalism.BasicNotions
 
 /- English proof (translation)
-The claim follows from `BCF.base_change_statement_of_jump Formalism.MainNotions.N.GlobalTheory.coefficient_jump_general D`.
+A detailed English derivation is pending.
 -/
 theorem base_change_statement (D : D7) : H1fBaseChangeTheorem D := BCF.base_change_statement_of_jump Formalism.MainNotions.N.GlobalTheory.coefficient_jump_general D
 
 /- English proof (translation)
-The claim follows from `BCF.base_change_of_coefficient_jump Formalism.MainNotions.N.GlobalTheory.coefficient_jump_general Th`.
+A detailed English derivation is pending.
 -/
 theorem base_change_every_theory (Th : LocTheory) : Formalism.MainNotions.WachCoordinates.admBC Th := BCF.base_change_of_coefficient_jump Formalism.MainNotions.N.GlobalTheory.coefficient_jump_general Th
 

@@ -23,11 +23,11 @@ open GlobalTheory.Models GlobalTheory.ZM
 namespace GlobalTheory.ValuativeGeneric
 
 /- English proof (translation)
-Take `⟨⟨z, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K Z).symm.surjective t`. Take `rfl : z = j x` from `(Scheme.fromSpecResidueField_apply z (Spec.map φ (IsLocalRing.closedPoint K))).symm.trans hx`. Establish `: IsIso (j.residueFieldMap x)`. Use `(ConcreteCategory.isIso_iff_bijective _).mpr ⟨(j.residueFieldMap x).hom.injective, ?_⟩` and prove the remaining obligations. Introduce `a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, rfl⟩` from `X.residue_surjective x a`. Take `⟨c, rfl⟩` from `j.stalkMap_surjective x b`. Use `⟨Z.residue _ c, ?_⟩` and prove the remaining obligations. Rewrite using `[← CommRingCat.comp_apply, Scheme.residue_residueFieldMap]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨Spec.map (inv (j.residueFieldMap x) ≫ φ) ≫ X.fromSpecResidueField x, ?_, fun p => by simp⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField, ← Spec.map_comp_assoc, IsIso.hom_inv_id_assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_lift_of_surjectiveOnStalks {X Z : Scheme.{0}} (j : X ⟶ Z) [SurjectiveOnStalks j]
     (K : Type) [Field K] (t : Spec (.of K) ⟶ Z) (x : X)
@@ -50,15 +50,15 @@ theorem exists_lift_of_surjectiveOnStalks {X Z : Scheme.{0}} (j : X ⟶ Z) [Surj
   rfl
 
 /- English proof (translation)
-Use `.of_isPreimmersion j (IsClosedMap.isClosed_range ?_)` and prove the remaining obligations. Rewrite using `[isClosedMap_iff_specializingMap]`. Use `j.isEmbedding.isInducing.specializingMap ?_` and prove the remaining obligations. Introduce and unpack `_ z hz ⟨x, rfl⟩`. Take `⟨x₀, hx₀, hs⟩` from `exists_mem_genericPoints_specializes x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hs' : j x₀ ⤳ z` using `(hs.map j.continuous).trans hz`. Distinguish the cases in `hne : j x₀ = z`. Conclude with `⟨x₀, hne⟩`. Take `⟨O, _, _, _, g, hg₀, hg₁⟩` from `exists_complete_discreteValuationRing_of_specializes hs' hne`. Establish `hinj : Function.Injective (algebraMap O (FractionRing O))` using `IsFractionRing.injective _ _`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpt : (spMap (algebraMap O (FractionRing O)) ≫ g) (IsLocalRing.closedPoint (FractionRing O)) = j x₀`. Use `Eq.trans (congrArg g (PrimeSpectrum.ext ?_)) hg₀` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap O (FractionRing O)) (IsLocalRing.maximalIdeal _) = ⊥`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot]`. Conclude with `Ideal.comap_bot_of_injective _ hinj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hux⟩` from `exists_lift_of_surjectiveOnStalks j (FractionRing O) _ x₀ hpt`. Take `⟨x', hx'⟩` from `h O (FractionRing O) u g (by rintro _ ⟨p, rfl⟩; rw [hux]; exact hx₀) hu`. Establish `: IsDominant (spMap (algebraMap O (FractionRing O)))`. Use `⟨?_⟩` and prove the remaining obligations. Use `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).mpr ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `((RingHom.injective_iff_ker_eq_bot _).mp hinj).le.trans bot_le`. Establish `e : x' ≫ j = g` using `ext_of_isDominant (spMap (algebraMap O (FractionRing O))) (by rw [← Category.assoc, hx', hu])`. Conclude with `⟨x' (IsLocalRing.closedPoint O), by rw [← hg₁, ← e]; rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_of_lift {X Z : Scheme.{0}} [IsLocallyNoetherian Z] [Z.IsSeparated]
     (j : X ⟶ Z) [IsPreimmersion j] [QuasiCompact j]
@@ -94,13 +94,13 @@ theorem isClosedImmersion_of_lift {X Z : Scheme.{0}} [IsLocallyNoetherian Z] [Z.
   exact ⟨x' (IsLocalRing.closedPoint O), by rw [← hg₁, ← e]; rfl⟩
 
 /- English proof (translation)
-Introduce `R _ _ X Y _ f s hs ⟨N, i, hi, hq, e⟩ h`. Use `isProper_str R N` as an intermediate fact. Set `j : X ⟶ pullback s (PSpace.str R N)` to `pullback.lift f i e.symm`. Establish `hj₁ : j ≫ pullback.fst _ _ = f` using `pullback.lift_fst _ _ _`. Establish `hj₂ : j ≫ pullback.snd _ _ = i` using `pullback.lift_snd _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsImmersion (j ≫ pullback.snd _ _)` using `hj₂ ▸ hi`. Establish `: QuasiCompact (j ≫ pullback.snd _ _)` using `hj₂ ▸ hq`. Establish `: IsImmersion j` using `IsImmersion.of_comp j (pullback.snd _ _)`. Establish `: QuasiCompact j` using `QuasiCompact.of_comp j (pullback.snd _ _)`. Establish `: IsLocallyNoetherian (pullback s (PSpace.str R N))` using `LocallyOfFiniteType.isLocallyNoetherian (pullback.fst _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (pullback s (PSpace.str R N)).IsSeparated`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← terminal.comp_from (pullback.fst s (PSpace.str R N) ≫ s)]`. Use `infer_instance`. Establish `: IsClosedImmersion j` using `isClosedImmersion_of_lift j fun V K _ _ _ _ _ _ _ x y hx hy => h V K x (y ≫ pullback.fst _ _) hx (by rw [← hj₁, ← Category.assoc, hy, Category.assoc])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hj₁]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isProper_of_lift_generic : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (X Y : Scheme.{0}) [IsLocallyNoetherian Y] (f : X ⟶ Y) (s : Y ⟶ Sp R), IsSeparated s → IsQProjOver (f ≫ s) → (∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] [Field K] [Algebra V K] [IsFractionRing V K] (x : Sp K ⟶ X) (y : Sp V ⟶ Y), Set.range x ⊆ genericPoints X → x ≫ f = spMap (algebraMap V K) ≫ y → ∃ x' : Sp V ⟶ X, spMap (algebraMap V K) ≫ x' = x) → IsProper f := by
   intro R _ _ X Y _ f s hs ⟨N, i, hi, hq, e⟩ h

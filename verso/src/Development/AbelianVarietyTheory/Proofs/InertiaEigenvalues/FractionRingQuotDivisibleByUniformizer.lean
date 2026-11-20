@@ -8,7 +8,7 @@ open ReciprocityTheory.Gal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h0 : algebraMap O (FractionRing O) ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).mpr hϖ.ne_zero`. Use `⟨Submodule.Quotient.mk (z / algebraMap O (FractionRing O) ϖ), ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Algebra.smul_def, mul_div_cancel₀ _ h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem KO_divisible_by_uniformiser : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}, Irreducible ϖ →
     ∀ x : Formalism.NG.KO O, ∃ y : Formalism.NG.KO O, ϖ • y = x := by

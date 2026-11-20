@@ -19,7 +19,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberFie
 namespace GlobalTheory.RefSum.ToWeight
 
 /- English proof (translation)
-Rewrite using `[Real.log_nat_eq_sum_factorization, Finsupp.sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finsupp.notMem_support_iff.1 hq]`. Use the proof step `simp).symm`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_padicValNat_log_le (N : ℕ) (S : Finset ℕ) (hS : ∀ q ∈ S, q.Prime) :
     ∑ q ∈ S, (padicValNat q N : ℝ) * Real.log q ≤ Real.log N := by
@@ -33,9 +33,9 @@ theorem sum_padicValNat_log_le (N : ℕ) (S : Finset ℕ) (hS : ∀ q ∈ S, q.P
           rw [Finsupp.notMem_support_iff.1 hq]; simp).symm
 
 /- English proof (translation)
-Establish `hn : (0 : ℝ) < Module.finrank ℚ E` using `by exact_mod_cast Module.finrank_pos`. Establish `h` using `sum_padicValNat_log_le (discr E).natAbs S hS`. Establish `e1 : lrd E = Real.log ((discr E).natAbs : ℝ) / Module.finrank ℚ E`. Unfold `lrd`. Rewrite using `[rootDiscr_def, Real.log_rpow (by exact_mod_cast abs_pos.2 (discr_ne_zero E)), Nat.cast_natAbs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, le_div_iff₀ hn, Finset.sum_mul]`. Use `le_of_eq_of_le (Finset.sum_congr rfl fun q _ => ?_) h` and prove the remaining obligations. Unfold `different_vp`. Use `push_cast`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -54,7 +54,7 @@ theorem sum_different_le (E : Type) [Field E] [NumberField E] (S : Finset ℕ) (
   field_simp
 
 /- English proof (translation)
-Unfold `different_vp`. Use `push_cast`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Check the signs of the components of the expression.
 -/
 theorem different_nonneg (E : Type) [Field E] [NumberField E] (q : ℕ) : (0 : ℝ) ≤ (different_vp E q : ℝ) := by
   unfold different_vp
@@ -62,11 +62,11 @@ theorem different_nonneg (E : Type) [Field E] [NumberField E] (q : ℕ) : (0 : �
   positivity
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨fun q hq => (Finset.mem_union.1 hq).elim (h1 q) (hB q), fun q => add_nonneg (h2 q) ?_, fun q hq => ?_, ?_⟩` and prove the remaining obligations. Use `different_nonneg E q split_ifs` as an intermediate fact. Check the signs of the components of the expression. Conclude with `le_rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq` using `[Finset.mem_union, not_or]`. Simplify using `[h3 q hq.1, hq.2]`. Simplify using `only [add_mul, Finset.sum_add_distrib]`. Use `add_le_add ?_ ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_subset Finset.subset_union_left fun q _ hq => by rw [h3 q hq, zero_mul]]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h4`. Rewrite using `[← Finset.sum_subset Finset.subset_union_right fun q _ hq => by rw [if_neg hq, zero_mul]]`. Rewrite using `[Finset.sum_congr rfl fun q hq => show (if q ∈ B then a * (different_vp E q : ℝ) + 1 else 0) * Real.log q = a * ((different_vp E q : ℝ) * Real.log q) + Real.log q by rw [if_pos hq]; ring, Finset.sum_add_distrib, ← Finset.mul_sum]`. Conclude with `add_le_add (mul_le_mul_of_nonneg_left (sum_different_le E B hB) ha) le_rfl`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeSum_add (E : Type) [Field E] [NumberField E] {S B : Finset ℕ} {e : ℕ → ℝ} {s a : ℝ} (h : PrimeSum S e s)
     (hB : ∀ q ∈ B, q.Prime) (ha : 0 ≤ a) :
@@ -90,9 +90,9 @@ theorem primeSum_add (E : Type) [Field E] [NumberField E] {S B : Finset ℕ} {e 
       exact add_le_add (mul_le_mul_of_nonneg_left (sum_different_le E B hB) ha) le_rfl
 
 /- English proof (translation)
-Establish `hz : 1 ≤ f * r * l` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hf hr) hl`. Establish `h1 : f * r * l ≤ (f * r * l) ^ 12` using `le_self_pow₀ hz (by norm_num)`. Establish `h3 : (f * r * l) ^ 3 ≤ (f * r * l) ^ 12` using `pow_le_pow_right₀ hz (by norm_num)`. Establish `h4 : f ^ 2 * r ^ 3 * l ≤ f ^ 3 * r ^ 3 * l ^ 3` using `mul_le_mul (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hf (by norm_num)) (by positivity)) (le_self_pow₀ hl (by norm_num)) (by positivity) (by positivity)`. Establish `h5 : m * (f * r) * d ≤ m * (f * r) * (3 * l)` using `mul_le_mul_of_nonneg_left hd (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : m * (f * r * (3 * l)) ≤ 10 * f * r ^ 2 * (f * r * (3 * l))` using `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`. Establish `h7` using `mul_le_mul_of_nonneg_left h1 hc`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem size_le {f r l n m d σ c : ℝ} (hf : 1 ≤ f) (hr : 1 ≤ r) (hl : 1 ≤ l) (hm0 : 0 ≤ m) (hm : 2 * m ≤ n)
     (hn : n ≤ 20 * f * r ^ 2) (hd : d ≤ 3 * l) (hc : 0 ≤ c) (hσ : σ ≤ c * (f * r * l)) :
@@ -110,7 +110,7 @@ theorem size_le {f r l n m d σ c : ℝ} (hf : 1 ≤ f) (hr : 1 ≤ r) (hl : 1 �
   nlinarith
 
 /- English proof (translation)
-Introduce `hP hS hF hT` and use `Closed.imp (Closed.and (Closed.and hT (GlobalTheory.BadLog.logSum_badPrimes_le hS)) (Closed.and hF (Closed.and (GlobalTheory.T.length_unit_size_bounds hS) (GlobalTheory.T.quotient_weight_gap_bounds hS)))) fun Fm _ _ ⟨⟨⟨C₁, h₁, hT⟩, C₂, h₂, hB⟩, ⟨_, _, hF⟩, ⟨_, _, hZ⟩, _, _, hW⟩ = …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem refW_of_refTheta : Hypotheses2 → Size → FlatDeg → RefTheta → RefW := fun hP hS hF hT =>
   Closed.imp (Closed.and (Closed.and hT (GlobalTheory.BadLog.logSum_badPrimes_le hS))

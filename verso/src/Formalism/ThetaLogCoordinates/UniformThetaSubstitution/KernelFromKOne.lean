@@ -11,11 +11,11 @@ namespace Formalism.InvariantFactorPaths.G7.Top
 open Formalism.InvariantFactorPaths.G7
 
 /- English proof (translation)
-The claim follows from `g_c_is_beta`.
+A detailed English derivation is pending.
 -/
 theorem gcIsBeta : GcIsBeta := g_c_is_beta
 /- English proof (translation)
-The claim follows from `g_c_unique`.
+A detailed English derivation is pending.
 -/
 theorem gcUnique : GcUnique := g_c_unique
 

@@ -11,13 +11,13 @@ open scoped Pointwise
 namespace GlobalTheory.TwistIntegral
 
 /- English proof (translation)
-Introduce `g M hM D hD V _ _ _ ψ l₀ a hper htw ha`. Take `⟨hdisc, hlat⟩` from `hM`. Use `haveI : MeasurableVAdd M (Fl g) := (inferInstance : MeasurableVAdd M.toAddSubgroup (Fl g))`. Use `haveI : VAddInvariantMeasure M (Fl g) volume := (inferInstance : VAddInvariantMeasure M.toAddSubgroup (Fl g) volume)`. Use `haveI : Countable M := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `ht : IsAddFundamentalDomain M (l₀ +ᵥ D) volume` using `hD.vadd_of_comm l₀`. Establish `e1 : ∫ y in D, ψ y = ∫ y in l₀ +ᵥ D, ψ y` using `hD.setIntegral_eq ht (fun m y => by`. Break down `m with ⟨m, hm⟩` into its components or cases. Simplify `hper m hm y)` using `[Submodule.vadd_def, add_comm]`. Establish `e2 : ∫ y in l₀ +ᵥ D, ψ y = ∫ y in D, ψ (y + l₀)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `(measurePreserving_add_right (volume : Measure (Fl g)) l₀).setIntegral_preimage_emb (measurableEmbedding_addRight l₀) ψ (l₀ +ᵥ D)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 2`. Use extensionality with `y`. Simplify using `[Set.mem_vadd_set_iff_neg_vadd_mem, add_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : ∫ y in D, ψ (y + l₀) = a • ∫ y in D, ψ y`. Repeatedly rewrite using `[htw]`. Conclude with `integral_smul a _`. Establish `h0 : (1 - a) • ∫ y in D, ψ y = 0` using `by rw [sub_smul, one_smul, ← e3, ← e2, ← e1, sub_self]`. Conclude with `(smul_eq_zero.mp h0).resolve_left (sub_ne_zero.mpr (Ne.symm ha))`.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_eq_zero_of_twist : ∀ {g : ℕ} (M : Submodule ℤ (Fl g)), IsLat M → ∀ (D : Set (Fl g)),
     IsAddFundamentalDomain M D volume → ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]

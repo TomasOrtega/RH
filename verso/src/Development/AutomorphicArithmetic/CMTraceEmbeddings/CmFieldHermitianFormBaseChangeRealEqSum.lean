@@ -8,7 +8,7 @@ private noncomputable def R {K : Type} [Fintype K] (c u v : K → ℂ) : ℝ :=
   ∑ k, 2 * (c k * u k * (starRingEnd ℂ) (v k)).re
 
 /- English proof (translation)
-Unfold `R`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, mul_add, add_mul, Complex.add_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem R_add_l {K : Type} [Fintype K] (c u u' v : K → ℂ) :
     R c (u + u') v = R c u v + R c u' v := by
@@ -18,7 +18,7 @@ private theorem R_add_l {K : Type} [Fintype K] (c u u' v : K → ℂ) :
   simp only [Pi.add_apply, mul_add, add_mul, Complex.add_re]
 
 /- English proof (translation)
-Unfold `R`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, map_add, mul_add, add_mul, Complex.add_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem R_add_r {K : Type} [Fintype K] (c u v v' : K → ℂ) :
     R c u (v + v') = R c u v + R c u v' := by
@@ -28,9 +28,9 @@ private theorem R_add_r {K : Type} [Fintype K] (c u v v' : K → ℂ) :
   simp only [Pi.add_apply, map_add, mul_add, add_mul, Complex.add_re]
 
 /- English proof (translation)
-Simplify using `only [R, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h : c k * (r • u) k * (starRingEnd ℂ) (v k) = (r : ℂ) * (c k * u k * (starRingEnd ℂ) (v k))`. Simplify using `only [Pi.smul_apply, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem R_smul_l {K : Type} [Fintype K] (c u v : K → ℂ) (r : ℝ) :
     R c (r • u) v = r * R c u v := by
@@ -41,9 +41,9 @@ private theorem R_smul_l {K : Type} [Fintype K] (c u v : K → ℂ) (r : ℝ) :
   rw [h, Complex.re_ofReal_mul]; ring
 
 /- English proof (translation)
-Simplify using `only [R, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h : c k * u k * (starRingEnd ℂ) ((r • v) k) = (r : ℂ) * (c k * u k * (starRingEnd ℂ) (v k))`. Simplify using `only [Pi.smul_apply, Complex.real_smul, map_mul, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem R_smul_r {K : Type} [Fintype K] (c u v : K → ℂ) (r : ℝ) :
     R c u (r • v) = r * R c u v := by
@@ -54,9 +54,9 @@ private theorem R_smul_r {K : Type} [Fintype K] (c u v : K → ℂ) (r : ℝ) :
   rw [h, Complex.re_ofReal_mul]; ring
 
 /- English proof (translation)
-Rewrite using `[Arith.EF_apply, ← Rat.cast_intCast, Arith.trd_spec, (hT E A).1, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, ← Complex.re_sum]`. Use `congr 2`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [Arith.bar_eq, Finset.mul_sum, map_sum, map_mul, IsCMField.complexEmbedding_complexConj]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem core0 (hT : TraceType) {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ)
     (a b : Fin n → 𝓞 E) :
@@ -72,7 +72,7 @@ private theorem core0 (hT : TraceType) {E : Type} [Field E] [NumberField E] [IsC
   ring
 
 /- English proof (translation)
-Rewrite using `[show (q ⊗ₜ[ℤ] a : ℚ ⊗[ℤ] (Fin n → 𝓞 E)) = q • ((1 : ℚ) ⊗ₜ[ℤ] a) by`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one],`. Use the proof step `← TensorProduct.smul_tmul, TensorProduct.smul_tmul', smul_eq_mul, mul_one, Rat.smul_one_eq_cast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem e1 {E : Type} [Field E] [NumberField E] {n : ℕ} (q : ℚ) (a : Fin n → 𝓞 E) :
     (1 : ℝ) ⊗ₜ[ℚ] (q ⊗ₜ[ℤ] a) = (q : ℝ) • ((1 : ℝ) ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] a)) := by
@@ -81,13 +81,13 @@ private theorem e1 {E : Type} [Field E] [NumberField E] {n : ℕ} (q : ℚ) (a :
     ← TensorProduct.smul_tmul, TensorProduct.smul_tmul', smul_eq_mul, mul_one, Rat.smul_one_eq_cast]
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp [R]`. Consider the case `add a b ha hb`. Rewrite using `[TensorProduct.tmul_add, map_add, map_add, LinearMap.add_apply, Rat.cast_add, ha, hb, R_add_l]`. Consider the case `tmul q a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Proceed by induction on `w' using TensorProduct.induction_on with`. Consider the case `zero => simp [R]`. Consider the case `add a b ha hb`. Rewrite using `[TensorProduct.tmul_add, map_add, map_add, Rat.cast_add, ha, hb, R_add_r]`. Consider the case `tmul t b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[LinearMap.BilinForm.baseChange_tmul, e1 q a, e1 t b, map_smul, map_smul, R_smul_l, R_smul_r]`. Establish `h : R (fun k : Phi A × Fin n => k.1.1 A.δ * k.1.1 (A.hd n k.2 : E)) (Th (fun τ : Phi A => τ.1) β ((1 : ℝ) ⊗ₜ ((1 : ℚ) ⊗ₜ a))) (Th (fun τ : Phi A => τ.1) β ((1 : ℝ) ⊗ₜ ((1 : ℚ) ⊗ₜ b))) = ((A.EF n a b : ℤ) : ℝ)`. Rewrite using `[core0 hT A n a b]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Th_tmul, one_smul, hβ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Simplify using `[Rat.smul_def, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem core1 (hT : TraceType) {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ)
     (β : ℚ ⊗[ℤ] (Fin n → 𝓞 E) →ₗ[ℚ] (Fin n → E)) (hβ : ∀ (v : Fin n → 𝓞 E) i, β (1 ⊗ₜ v) i = (v i : E))
@@ -117,11 +117,11 @@ private theorem core1 (hT : TraceType) {E : Type} [Field E] [NumberField E] [IsC
       ring
 
 /- English proof (translation)
-Introduce `hT E _ _ _ A n β hβ x y`. Express the relevant statement in the definitionally equal form `_ = R (fun k : Phi A × Fin n => k.1.1 A.δ * k.1.1 (A.hd n k.2 : E)) (Th (fun τ : Phi A => τ.1) β x) (Th (fun τ : Phi A => τ.1) β y)`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp [R]`. Consider the case `add a b ha hb => rw [map_add, map_add, LinearMap.add_apply, ha, hb, R_add_l]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul r w`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp [R]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, R_add_r]`. Consider the case `tmul s w'`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `e : ∀ (r : ℝ) (w : ℚ ⊗[ℤ] (Fin n → 𝓞 E)), r ⊗ₜ[ℚ] w = r • ((1 : ℝ) ⊗ₜ[ℚ] w)`. Introduce `r w`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[LinearMap.BilinForm.baseChange_tmul, e r w, e s w', map_smul, map_smul, R_smul_l, R_smul_r, ← core1 hT A n β hβ w w', Rat.smul_def]`. Simplify using `only [mul_comm, mul_left_comm, mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.cmField_hermitianForm_baseChange_real_eq_sum :
     TraceType → ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ) (β : ℚ ⊗[ℤ] (Fin n → 𝓞 E) →ₗ[ℚ] (Fin n → E)), (∀ (v : Fin n → 𝓞 E) i, β (1 ⊗ₜ v) i = (v i : E)) → ∀ x y : ℝ ⊗[ℚ] (ℚ ⊗[ℤ] (Fin n → 𝓞 E)), ((A.EF n).baseChange ℚ).baseChange ℝ x y = ∑ k : Phi A × Fin n, 2 * (k.1.1 A.δ * k.1.1 (A.hd n k.2 : E) * Th (fun τ : Phi A => τ.1) β x k * (starRingEnd ℂ) (Th (fun τ : Phi A => τ.1) β y k)).re := by

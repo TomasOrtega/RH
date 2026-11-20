@@ -13,7 +13,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {N : ℕ}
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun s : ℂ => y + s • v) v 0`. Simplify using `using ((hasDerivAt_id (0:ℂ)).smul_const v).const_add y`. Establish `h2 : HasFDerivAt G (fderiv ℂ G y) ((fun s : ℂ => y + s • v) 0)`. Simplify using `using hG.hasFDerivAt`. Conclude with `h2.comp_hasDerivAt (0:ℂ) h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fderiv_line {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F] (G : F → ℂ) (y v : F)
     (hG : DifferentiableAt ℂ G y) : HasDerivAt (fun s : ℂ => G (y + s • v)) (fderiv ℂ G y v) 0 := by
@@ -24,9 +24,9 @@ theorem fderiv_line {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F] (G : F
   exact h2.comp_hasDerivAt (0:ℂ) h1
 
 /- English proof (translation)
-Establish `h0 : ∀ j : Fin (N+1), (1 + phiF X) 0 j = if j = 0 then 1 else 0`. Introduce `j`. Break down `Fin.eq_zero_or_eq_succ j with rfl | ⟨j, rfl⟩` into its components or cases. Simplify using `[phiF_zero_row]`. Simplify using `[phiF_zero_row, Matrix.one_apply, Fin.succ_ne_zero, (Fin.succ_ne_zero j).symm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[det_first_row_expansion _ 1 h0, one_mul]`. Use `congr 1`. Use extensionality with `k l`. Simplify using `[Matrix.one_apply, phiF_succ_row, piF]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_phiF (X : Matrix (Fin N) (Fin (N + 1)) ℂ) : (1 + phiF X).det = (1 + piF X).det := by
   have h0 : ∀ j : Fin (N+1), (1 + phiF X) 0 j = if j = 0 then 1 else 0 := by
@@ -40,15 +40,15 @@ theorem det_phiF (X : Matrix (Fin N) (Fin (N + 1)) ℂ) : (1 + phiF X).det = (1 
   simp [Matrix.one_apply, phiF_succ_row, piF]
 
 /- English proof (translation)
-Use `set d := (1 + piF X).det with hd`. Establish `hdiff : DifferentiableAt ℂ (H (N + 1) t) (phiF X)` using `(analyticAt_H (N + 1) t (phiF X) (by rw [det_phiF]; exact hX)).differentiableAt`. Establish `hl` using `fderiv_line (H (N + 1) t) (phiF X) (Matrix.single 0 0 1) hdiff`. Establish `heq : (fun s : ℂ => H (N + 1) t (phiF X + s • Matrix.single 0 0 1)) = fun s => ((1 + s) * d) ^ t`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [H]`. Use `congr 1`. Establish `h0 : ∀ j : Fin (N + 1), ((1 : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ) + (phiF X + s • (Matrix.single 0 0 1 : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ))) 0 j = if j = 0 then 1 + s else 0`. Introduce `j`. Break down `Fin.eq_zero_or_eq_succ j with rfl | ⟨j, rfl⟩` into its components or cases.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[phiF_zero_row]`. Simplify using `[phiF_zero_row, Matrix.one_apply, (Fin.succ_ne_zero j).symm, Matrix.single_apply]`. Rewrite using `[det_first_row_expansion _ (1 + s) h0]`. Use `congr 2`. Use extensionality with `k l`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply, phiF_succ_row, piF, Matrix.single_apply, (Fin.succ_ne_zero k).symm]`. Rewrite `hl` using `[heq]`. Establish `hf : HasDerivAt (fun s : ℂ => (1 + s) * d) d 0`. Simplify using `using ((hasDerivAt_id (0:ℂ)).const_add 1).mul_const d`. Establish `hz` using `(hasDerivAt_zpow t ((1 + 0) * d) (Or.inl (by simpa using hX))).comp (0:ℂ) hf`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hl.unique hz).trans ?_` and prove the remaining obligations. Simplify using `only [H, ← hd, add_zero, one_mul]`. Rewrite using `[zpow_sub_one₀ hX]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem fderiv_determinant_power_corner_int (t : ℤ) (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (hX : (1 + piF X).det ≠ 0) :
     fderiv ℂ (H (N + 1) t) (phiF X) (Matrix.single 0 0 1) = (t : ℂ) * H N t (piF X) := by
@@ -83,17 +83,17 @@ theorem fderiv_determinant_power_corner_int (t : ℤ) (X : Matrix (Fin N) (Fin (
   field_simp
 
 /- English proof (translation)
-Establish `hdiff : DifferentiableAt ℂ (H (N + 1) t) (phiF X)` using `(analyticAt_H (N + 1) t (phiF X) (by rw [det_phiF]; exact hX)).differentiableAt`. Establish `hl` using `fderiv_line (H (N + 1) t) (phiF X) (Matrix.single 0 c.succ 1) hdiff`. Establish `hl'` using `fderiv_line (H N t) (piF X) (-colQ X c) (analyticAt_H N t (piF X) hX).differentiableAt`. Establish `heq : (fun s : ℂ => H (N + 1) t (phiF X + s • Matrix.single 0 c.succ 1)) = fun s => H N t (piF X + s • -colQ X c)`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [H]`. Use `congr 1`. Use `set A : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ := 1 + (phiF X + s • (Matrix.single 0 c.succ 1 : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ)) with hA`. Rewrite using `[← Matrix.det_updateCol_add_smul_self A (i := c.succ) (j := 0) (Fin.succ_ne_zero c) (-s)]`. Establish `h0 : ∀ j : Fin (N + 1), (A.updateCol c.succ (fun k => A k c.succ + (-s) • A k 0)) 0 j = if j = 0 then 1 else 0`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Break down `Fin.eq_zero_or_eq_succ j with rfl | ⟨j, rfl⟩` into its components or cases. Simplify using `[hA, Matrix.updateCol_apply, phiF_zero_row, Matrix.single_apply, (Fin.succ_ne_zero c).symm]`. Distinguish the cases in `hj : j = c`. Substitute `hj` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hA, Matrix.updateCol_apply, phiF_zero_row, Matrix.single_apply, Matrix.one_apply, (Fin.succ_ne_zero j).symm]`. Simplify using `[hA, Matrix.updateCol_apply, phiF_zero_row, Matrix.single_apply, Matrix.one_apply, (Fin.succ_ne_zero j).symm, hj, Ne.symm hj, Fin.succ_inj]`. Rewrite using `[det_first_row_expansion _ 1 h0, one_mul]`. Use `congr 1`. Use extensionality with `k l`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hlc : l = c`. Substitute `hlc` using the available equality. Simplify using `[hA, Matrix.updateCol_apply, phiF_succ_row, piF, colQ, Matrix.single_apply, Matrix.one_apply, (Fin.succ_ne_zero k).symm, sub_eq_add_neg]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hA, Matrix.updateCol_apply, phiF_succ_row, piF, colQ, Matrix.single_apply, Matrix.one_apply, (Fin.succ_ne_zero k).symm, hlc, Fin.succ_inj]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hl` using `[heq]`. Use `(hl.unique hl').trans ?_` and prove the remaining obligations. Apply the tactic sequence `simp <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem fderiv_determinant_power_column_int (t : ℤ) (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (hX : (1 + piF X).det ≠ 0) (c : Fin N) :
     fderiv ℂ (H (N + 1) t) (phiF X) (Matrix.single 0 c.succ 1) = -fderiv ℂ (H N t) (piF X) (colQ X c) := by

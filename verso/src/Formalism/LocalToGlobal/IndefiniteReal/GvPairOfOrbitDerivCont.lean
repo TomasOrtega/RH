@@ -20,18 +20,16 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   [CompleteSpace H]
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, ← neg_add, hZ, neg_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gp_lie_neg {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : Zᴴ * Jm ε + Jm ε * Z = 0) :
     (-Z)ᴴ * Jm ε + Jm ε * (-Z) = 0 := by
   rw [Matrix.conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, ← neg_add, hZ, neg_zero]
 
 /- English proof (translation)
-Establish `hm` using `expS_mem (-Z) (gp_lie_neg hZ) t`. Establish `hp` using `expS_mem Z hZ t`. Set `Li : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (τ (NormedSpace.exp (t • -Z))).toLinearMap, norm_map' := hτ.2.1 _ hm }`. Establish `h1` using `Li.inner_map_map u (τ (NormedSpace.exp (t • Z)) v)`. Establish `h2 : τ (NormedSpace.exp (t • -Z)) (τ (NormedSpace.exp (t • Z)) v) = v`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hτ.1.2 _ hm _ hp`. Rewrite `h3` using `[expS_neg_mul, hτ.1.1]`. Conclude with `(congrArg (fun T : H →L[ℂ] H => T v) h3).symm`. Rewrite using `[← h1]`. Use `show ⟪τ (NormedSpace.exp (t • -Z)) u, τ (NormedSpace.exp (t • -Z)) (τ (NormedSpace.exp (t • Z)) v)⟫_ℂ = _`.
-
-Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_inner_inv {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hτ : IsURepOn (UJset ε) τ)
     {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : Zᴴ * Jm ε + Jm ε * Z = 0) (t : ℝ) (u v : H) :
@@ -49,11 +47,11 @@ theorem gp_inner_inv {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hτ 
   rw [h2]
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun t : ℝ => ⟪gv ε τ Ψ x, τ (NormedSpace.exp (t • Z)) v⟫_ℂ) ⟪gv ε τ Ψ x, d⟫_ℂ 0` using `((innerSL ℂ (gv ε τ Ψ x)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 hd`. Establish `hf` using `hasDerivAt_tau_gv hτ hΨ hΨc (gp_lie_neg hZ) x`. Establish `h2'` using `(((innerSL ℂ v).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 hf).star`. Establish `e2 : ∀ a : H, star ⟪v, a⟫_ℂ = ⟪a, v⟫_ℂ` using `fun a => by rw [← starRingEnd_apply, inner_conj_symm]`. Establish `h2 : HasDerivAt (fun t : ℝ => ⟪τ (NormedSpace.exp (t • -Z)) (gv ε τ Ψ x), v⟫_ℂ) ⟪gv ε τ (dKer (-Z) Ψ) x, v⟫_ℂ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : HasDerivAt (fun t : ℝ => star ⟪v, τ (NormedSpace.exp (t • -Z)) (gv ε τ Ψ x)⟫_ℂ) (star ⟪v, gv ε τ (dKer (-Z) Ψ) x⟫_ℂ) 0` using `h2'`. Simplify `h3` using `only [e2]`. Establish `e : (fun t : ℝ => ⟪gv ε τ Ψ x, τ (NormedSpace.exp (t • Z)) v⟫_ℂ) = fun t : ℝ => ⟪τ (NormedSpace.exp (t • -Z)) (gv ε τ Ψ x), v⟫_ℂ`. Use function extensionality and compare the values at `fun t => gp_inner_inv hτ hZ t _ _`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.unique h2`.
+A detailed English derivation is pending.
 -/
 theorem gp_pair_deriv {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hτ : IsURepOn (UJset ε) τ)
     {Ψ : Matrix (Fin n) (Fin n) ℂ → ℂ} (hΨ : ContDiff ℝ ∞ Ψ) (hΨc : HasCompactSupport Ψ)
@@ -77,7 +75,7 @@ theorem gp_pair_deriv {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hτ
   exact h1.unique h2
 
 /- English proof (translation)
-Unfold `gv`. Rewrite using `[← integral_add (gvS_integrable hτ hA hAc x) (gvS_integrable hτ hB hBc x)]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[add_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem gp_gv_add {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hτ : IsURepOn (UJset ε) τ)
     {A B : Matrix (Fin n) (Fin n) ℂ → ℂ} (hA : Continuous A) (hAc : HasCompactSupport A)
@@ -90,15 +88,15 @@ theorem gp_gv_add {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hτ : I
   rw [add_smul]
 
 /- English proof (translation)
-Establish `h12 : (Z₁ + Z₂)ᴴ * Jm ε + Jm ε * (Z₁ + Z₂) = 0`. Rewrite using `[conjTranspose_add, Matrix.add_mul, Matrix.mul_add, add_add_add_comm, h₁, h₂, add_zero]`. Establish `hker : ∀ {Ψ : Matrix (Fin n) (Fin n) ℂ → ℂ}, ContDiff ℝ ∞ Ψ → HasCompactSupport Ψ → ∀ x : H, ⟪gv ε τ Ψ x, d - (d₁ + d₂)⟫_ℂ = 0`. Introduce `Ψ hΨ hΨc x`. Establish `e : dKer (-(Z₁ + Z₂)) Ψ = fun m => dKer (-Z₁) Ψ m + dKer (-Z₂) Ψ m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `m`. Simplify using `only [dKer, neg_neg, Matrix.add_mul, map_add]`. Establish `hc1` using `dKer_contDiff (Z := -Z₁) hΨ`. Establish `hc2` using `dKer_contDiff (Z := -Z₂) hΨ`. Rewrite using `[inner_sub_right, inner_add_right, gp_pair_deriv hτ hΨ hΨc h12 x v d hd, gp_pair_deriv hτ hΨ hΨc h₁ x v d₁ hd₁, gp_pair_deriv hτ hΨ hΨc h₂ x v d₂ hd₂, e, gp_gv_add hτ hc1.continuous (dKer_hasCompactSupport hΨc) hc2.continuous (dKer_hasCompactSupport hΨc), inner_add_left, sub_self …`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set a := d - (d₁ + d₂) with ha`. Take `⟨Φ, hΦ, hΦc, -, hle⟩` from `PI.KFinSmoothW.dense_weak_vectors n ε H τ hτ (ℂ ∙ a) inferInstance`. Establish `h0` using `hker hΦ hΦc a`. Establish `h1` using `hle a (Submodule.mem_span_singleton_self a)`. Establish `h2 : ‖gv ε τ Φ a - a‖ ^ 2 = ‖gv ε τ Φ a‖ ^ 2 + ‖a‖ ^ 2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[@norm_sub_sq ℂ, h0]`. Simplify using the standard rewrite rules. Establish `h3 : ‖a‖ ^ 2 ≤ 0`. Use polynomial arithmetic with `[norm_nonneg (gv ε τ Φ a - a), norm_nonneg a, sq_nonneg ‖gv ε τ Φ a‖]`. Establish `h4 : a = 0` using `norm_eq_zero.1 ((pow_eq_zero_iff two_ne_zero).1 (le_antisymm h3 (sq_nonneg _)))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[ha]`. Conclude with `(sub_eq_zero.1 h4)`.
+A detailed English derivation is pending.
 -/
 theorem gp_deriv_add {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hτ : IsURepOn (UJset ε) τ)
     {Z₁ Z₂ : Matrix (Fin n) (Fin n) ℂ} (h₁ : Z₁ᴴ * Jm ε + Jm ε * Z₁ = 0) (h₂ : Z₂ᴴ * Jm ε + Jm ε * Z₂ = 0)
@@ -140,7 +138,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar Matrix.normedAddCo
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Establish `hl : (t • X)ᴴ * gramAt D V τ + gramAt D V τ * (t • X) = 0`. Establish `h` using `CCRuleCW.lie_smul (gramAt D V τ) X hX t`. Simplify `h` using `only [Complex.coe_smul]`. Conclude with `CCRuleCW.exp_mem_UH (gramAt D V τ) (t • X) hl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gp_exp_mem (τ : D.what₂.Tau) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) := by
@@ -150,14 +148,14 @@ theorem gp_exp_mem (τ : D.what₂.Tau) {X : Matrix (Fin V.rank) (Fin V.rank) �
   exact CCRuleCW.exp_mem_UH (gramAt D V τ) (t • X) hl
 
 /- English proof (translation)
-Conclude with `(M.ds τ).2.2.1.2.1 _ (conj_mem M τ ha) x`.
+A detailed English derivation is pending.
 -/
 theorem gp_rep_norm (M : DSModel V S) (τ : D.what₂.Tau) {a : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (ha : a ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (x : M.H τ) : ‖M.rep τ a x‖ = ‖x‖ := by
   exact (M.ds τ).2.2.1.2.1 _ (conj_mem M τ ha) x
 
 /- English proof (translation)
-Use `show M.σ τ (M.fr τ * 1 * (M.fr τ)⁻¹) = 1`. Rewrite using `[Matrix.mul_one, fr_mul_inv]`. Conclude with `(M.ds τ).2.2.1.1.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_rep_one (M : DSModel V S) (τ : D.what₂.Tau) : M.rep τ 1 = 1 := by
   show M.σ τ (M.fr τ * 1 * (M.fr τ)⁻¹) = 1
@@ -165,7 +163,7 @@ theorem gp_rep_one (M : DSModel V S) (τ : D.what₂.Tau) : M.rep τ 1 = 1 := by
   exact (M.ds τ).2.2.1.1.1
 
 /- English proof (translation)
-Rewrite using `[add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left a).smul_right b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_exp_split {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (a b : ℝ) :
     NormedSpace.exp ((a + b) • X) = NormedSpace.exp (a • X) * NormedSpace.exp (b • X) := by
@@ -173,7 +171,7 @@ theorem gp_exp_split {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (a b : ℝ) :
   exact Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left a).smul_right b)
 
 /- English proof (translation)
-Establish `h` using `(hv 1 ![X] (fun i => by rw [Fin.fin_one_eq_zero i]; simpa using hX)).comp (contDiff_pi.2 fun _ : Fin 1 => contDiff_id : ContDiff ℝ ∞ fun s : ℝ => fun _ : Fin 1 => s)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem gp_sv_contDiff1 {M : DSModel V S} {τ : D.what₂.Tau} {v : M.H τ}
     (hv : SmoothVec (lieAt V τ) (M.rep τ) v) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) :
@@ -185,9 +183,9 @@ theorem gp_sv_contDiff1 {M : DSModel V S} {τ : D.what₂.Tau} {v : M.H τ}
   simp
 
 /- English proof (translation)
-Establish `h` using `(M.ds τ).2.2.1.1.2 _ (conj_mem M τ ha) _ (conj_mem M τ hb)`. Establish `e : M.fr τ * (a * b) * (M.fr τ)⁻¹ = (M.fr τ * a * (M.fr τ)⁻¹) * (M.fr τ * b * (M.fr τ)⁻¹)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (M.fr τ)⁻¹ (M.fr τ), fr_inv_mul, Matrix.one_mul]`. Use `show M.σ τ (M.fr τ * (a * b) * (M.fr τ)⁻¹) x = M.σ τ (M.fr τ * a * (M.fr τ)⁻¹) (M.σ τ (M.fr τ * b * (M.fr τ)⁻¹) x)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, h, ContinuousLinearMap.comp_apply]`.
+A detailed English derivation is pending.
 -/
 private theorem rep_mul_of_mem_UH (M : DSModel V S) (τ : D.what₂.Tau) {a b : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (ha : a ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (hb : b ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (x : M.H τ) :
@@ -201,9 +199,9 @@ private theorem rep_mul_of_mem_UH (M : DSModel V S) (τ : D.what₂.Tau) {a b : 
   rw [e, h, ContinuousLinearMap.comp_apply]
 
 /- English proof (translation)
-Establish `hd : HasDerivAt (fun s : ℝ => M.rep τ (NormedSpace.exp (s • X)) v) (dRep (M.rep τ) X v) 0` using `((gp_sv_contDiff1 hv hX).differentiable (by simp) 0).hasDerivAt`. Establish `hd2 : HasDerivAt (fun s : ℝ => M.rep τ (NormedSpace.exp ((s - t0) • X)) v) (dRep (M.rep τ) X v) t0` using `HasDerivAt.comp_sub_const (f := fun s : ℝ => M.rep τ (NormedSpace.exp (s • X)) v) t0 t0 (by rw [sub_self]; exact hd)`. Establish `hd3` using `((M.rep τ (NormedSpace.exp (t0 • X))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t0 hd2`. Use `hd3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `show M.rep τ (NormedSpace.exp (s • X)) v = M.rep τ (NormedSpace.exp (t0 • X)) (M.rep τ (NormedSpace.exp ((s - t0) • X)) v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← rep_mul_of_mem_UH M τ (gp_exp_mem τ hX t0) (gp_exp_mem τ hX (s - t0)), ← gp_exp_split X t0 (s - t0), add_sub_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem gp_sv_hasDerivAt {M : DSModel V S} {τ : D.what₂.Tau} {v : M.H τ}
     (hv : SmoothVec (lieAt V τ) (M.rep τ) v) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ)
@@ -223,14 +221,14 @@ theorem gp_sv_hasDerivAt {M : DSModel V S} {τ : D.what₂.Tau} {v : M.H τ}
     add_sub_cancel]
 
 /- English proof (translation)
-The claim follows from `(gp_sv_contDiff1 hv hX).differentiable (by simp) 0`.
+A detailed English derivation is pending.
 -/
 theorem gp_sv_diffAt {M : DSModel V S} {τ : D.what₂.Tau} {v : M.H τ}
     (hv : SmoothVec (lieAt V τ) (M.rep τ) v) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) :
     DifferentiableAt ℝ (fun s : ℝ => M.rep τ (NormedSpace.exp (s • X)) v) 0 := (gp_sv_contDiff1 hv hX).differentiable (by simp) 0
 
 /- English proof (translation)
-Introduce `k Xs hXs`. Simplify `(hv k Xs hXs).add (hw k Xs hXs)` using `only [map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gp_sv_add {M : DSModel V S} {τ : D.what₂.Tau} {v w : M.H τ}
     (hv : SmoothVec (lieAt V τ) (M.rep τ) v) (hw : SmoothVec (lieAt V τ) (M.rep τ) w) :
@@ -239,7 +237,7 @@ theorem gp_sv_add {M : DSModel V S} {τ : D.what₂.Tau} {v w : M.H τ}
   simpa only [map_add] using (hv k Xs hXs).add (hw k Xs hXs)
 
 /- English proof (translation)
-Introduce `k Xs hXs`. Simplify `(hv k Xs hXs).const_smul c` using `only [map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gp_sv_smul {M : DSModel V S} {τ : D.what₂.Tau} (c : ℂ) {v : M.H τ}
     (hv : SmoothVec (lieAt V τ) (M.rep τ) v) : SmoothVec (lieAt V τ) (M.rep τ) (c • v) := by
@@ -247,7 +245,7 @@ theorem gp_sv_smul {M : DSModel V S} {τ : D.what₂.Tau} (c : ℂ) {v : M.H τ}
   simpa only [map_smul] using (hv k Xs hXs).const_smul c
 
 /- English proof (translation)
-Introduce `k Xs hXs`. Simplify using `only [map_zero]`. Conclude with `contDiff_const`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gp_sv_zero {M : DSModel V S} {τ : D.what₂.Tau} : SmoothVec (lieAt V τ) (M.rep τ) (0 : M.H τ) := by
   intro k Xs hXs
@@ -255,9 +253,9 @@ theorem gp_sv_zero {M : DSModel V S} {τ : D.what₂.Tau} : SmoothVec (lieAt V �
   exact contDiff_const
 
 /- English proof (translation)
-Establish `hw' : w ∈ Submodule.span ℂ {w | SmoothVec (lieAt V τ) (M.rep τ) w}` using `hw`. Use `clear hw`. Proceed by induction on `hw' using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact gp_sv_zero`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact gp_sv_add hx hy`. Consider the case `smul c x _ hx => exact gp_sv_smul c hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gp_sv_of_mem {M : DSModel V S} {τ : D.what₂.Tau} {w : M.H τ} (hw : w ∈ M.sm τ) :
     SmoothVec (lieAt V τ) (M.rep τ) w := by
@@ -270,7 +268,7 @@ theorem gp_sv_of_mem {M : DSModel V S} {τ : D.what₂.Tau} {w : M.H τ} (hw : w
   | smul c x _ hx => exact gp_sv_smul c hx
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_gt_of_UJ M τ (PI.KFinSmoothW.umat_mem_UJset h)`. Establish `h1` using `smoothVec_rep M τ g hw`. Rewrite `h1` using `[hg]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gp_sv_sigma (M : DSModel V S) (τ : D.what₂.Tau) (h : PI.UpqRep.UJ (M.ε τ)) {w : M.H τ}
     (hw : SmoothVec (lieAt V τ) (M.rep τ) w) :
@@ -280,7 +278,7 @@ theorem gp_sv_sigma (M : DSModel V S) (τ : D.what₂.Tau) (h : PI.UpqRep.UJ (M.
   rwa [hg] at h1
 
 /- English proof (translation)
-Rewrite using `[List.ofFn_succ', List.prod_concat]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gp_prod_snoc {n k : ℕ} (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ) (X : Matrix (Fin n) (Fin n) ℂ)
     (t : Fin k → ℝ) (s : ℝ) :
@@ -291,9 +289,9 @@ theorem gp_prod_snoc {n k : ℕ} (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ) (X 
   simp only [Fin.snoc_castSucc, Fin.snoc_last]
 
 /- English proof (translation)
-Rewrite using `[hasDerivAt_pi]`. Introduce `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Simplify using `only [Fin.snoc_last, Pi.single_eq_same]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `hasDerivAt_id' s`. Consider the case `cast j`. Simplify using `only [Fin.snoc_castSucc]`. Rewrite using `[Pi.single_eq_of_ne (Fin.castSucc_lt_last j).ne]`. Conclude with `hasDerivAt_const s (t j)`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_snoc_hasDerivAt {k : ℕ} (t : Fin k → ℝ) (s : ℝ) :
     HasDerivAt (fun u : ℝ => (Fin.snoc t u : Fin (k + 1) → ℝ)) (Pi.single (Fin.last k) 1) s := by
@@ -309,9 +307,9 @@ theorem gp_snoc_hasDerivAt {k : ℕ} (t : Fin k → ℝ) (s : ℝ) :
     exact hasDerivAt_const s (t j)
 
 /- English proof (translation)
-Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Simplify using `only [Fin.snoc_last]`. Conclude with `contDiff_const`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `cast j`. Simplify using `only [Fin.snoc_castSucc]`. Conclude with `contDiff_pi.1 contDiff_id j`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gp_snoc_contDiff {k : ℕ} : ContDiff ℝ ∞ (fun t : Fin k → ℝ => (Fin.snoc t 0 : Fin (k + 1) → ℝ)) := by
   refine contDiff_pi.2 fun i => ?_
@@ -324,9 +322,7 @@ theorem gp_snoc_contDiff {k : ℕ} : ContDiff ℝ ∞ (fun t : Fin k → ℝ => 
     exact contDiff_pi.1 contDiff_id j
 
 /- English proof (translation)
-Establish `ha' : aᴴ * gramAt D V τ * a = gramAt D V τ` using `ha`. Establish `hb' : bᴴ * gramAt D V τ * b = gramAt D V τ` using `hb`. Use `show (a * b)ᴴ * gramAt D V τ * (a * b) = gramAt D V τ`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
-
-Use `_ = gramAt D V τ := by rw [ha', hb']`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mul_mem_UH_indefinite_real {τ : D.what₂.Tau} {a b : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (ha : a ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (hb : b ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) :
@@ -339,9 +335,9 @@ private theorem mul_mem_UH_indefinite_real {τ : D.what₂.Tau} {a b : Matrix (F
     _ = gramAt D V τ := by rw [ha', hb']
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_`. Use `show (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ)ᴴ * gramAt D V τ * 1 = gramAt D V τ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `cons a l ih`. Introduce `h`. Rewrite using `[List.prod_cons]`. Conclude with `mul_mem_UH_indefinite_real (h a (by simp)) (ih fun b hb => h b (by simp [hb]))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem list_prod_mem_UH {τ : D.what₂.Tau} :
     ∀ l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ a ∈ l, a ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) →
@@ -358,15 +354,15 @@ private theorem list_prod_mem_UH {τ : D.what₂.Tau} :
     exact mul_mem_UH_indefinite_real (h a (by simp)) (ih fun b hb => h b (by simp [hb]))
 
 /- English proof (translation)
-Introduce `k Xs hXs`. Establish `hXs' : ∀ i, (Fin.snoc Xs X : Fin (k + 1) → Matrix (Fin V.rank) (Fin V.rank) ℂ) i ∈ lieAt V τ`. Introduce `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simpa only [Fin.snoc_last] using hX`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `cast j => simpa only [Fin.snoc_castSucc] using hXs j`. Establish `hF` using `hv (k + 1) (Fin.snoc Xs X) hXs'`. Establish `hdF` using `(contDiff_infty_iff_fderiv.1 hF).2`. Establish `key : ∀ t : Fin k → ℝ, M.rep τ ((List.ofFn fun i : Fin k => NormedSpace.exp (t i • Xs i)).prod) (dRep (M.rep τ) X v) = fderiv ℝ (fun u : Fin (k + 1) → ℝ => M.rep τ ((List.ofFn fun i : Fin (k + 1) => NormedSpace.exp (u i • (Fin.snoc Xs X : Fin (k + 1) → Matrix (Fin V.rank) (Fin V. …`. Introduce `t`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPm : (List.ofFn fun i : Fin k => NormedSpace.exp (t i • Xs i)).prod ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)`. Use `list_prod_mem_UH _ ?_` and prove the remaining obligations. Introduce `a ha`. Simplify using `only [List.mem_ofFn] at ha`. Take `⟨i, rfl⟩` from `ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `gp_exp_mem τ (hXs i) (t i)`. Establish `h1` using `((hF.differentiable (by simp)) (Fin.snoc t 0)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (gp_snoc_hasDerivAt t 0)`. Establish `h3` using `((M.rep τ ((List.ofFn fun i : Fin k => NormedSpace.exp (t i • Xs i)).prod)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (gp_sv_diffAt hv hX).hasDerivAt`. Establish `h2` using `h3.congr_of_eventuallyEq (f₁ := fun s : ℝ => M.rep τ ((List.ofFn fun i : Fin (k + 1) => NormedSpace.exp ((Fin.snoc t s : Fin (k + 1) → ℝ) i • (Fin.snoc Xs X : Fin (k + 1) → Matrix (Fin V.rank) (Fin V.rank) ℂ) i)).prod) v) (Filter.Eventually.of_forall fun s => by show _ = M.rep τ …`. Rewrite using `[gp_prod_snoc, ← rep_mul_of_mem_UH M τ hPm (gp_exp_mem τ hX s)])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `h2.unique h1`. Use `(hdF.comp gp_snoc_contDiff).clm_apply (contDiff_const (c := (Pi.single (Fin.last k) 1 : Fin (k + 1) → ℝ))) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Conclude with `key t`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem gp_sv_dRep {M : DSModel V S} {τ : D.what₂.Tau} {v : M.H τ}
     (hv : SmoothVec (lieAt V τ) (M.rep τ) v) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) :
@@ -409,7 +405,7 @@ theorem gp_sv_dRep {M : DSModel V S} {τ : D.what₂.Tau} {v : M.H τ}
   exact key t
 
 /- English proof (translation)
-The claim follows from `| [], _, _, hv => hv | X :: l, hl, _, hv => by rw [List.foldr_cons] exact gp_sv_dRep (gp_sv_foldr l (fun Y hY => hl Y (List.mem_cons_of_mem _ hY)) hv) (hl X (by simp))`.
+A detailed English derivation is pending.
 -/
 theorem gp_sv_foldr {M : DSModel V S} {τ : D.what₂.Tau} :
     ∀ (l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ)), (∀ X ∈ l, X ∈ lieAt V τ) → ∀ {v : M.H τ},
@@ -420,7 +416,7 @@ theorem gp_sv_foldr {M : DSModel V S} {τ : D.what₂.Tau} :
     exact gp_sv_dRep (gp_sv_foldr l (fun Y hY => hl Y (List.mem_cons_of_mem _ hY)) hv) (hl X (by simp))
 
 /- English proof (translation)
-Use `show deriv (fun t : ℝ => M.rep τ (NormedSpace.exp (t • X)) (v + w)) 0 = _`. Simplify using `only [map_add]`. Conclude with `deriv_add (gp_sv_diffAt hv hX) (gp_sv_diffAt hw hX)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gp_dRep_add {M : DSModel V S} {τ : D.what₂.Tau} {v w : M.H τ}
     (hv : SmoothVec (lieAt V τ) (M.rep τ) v) (hw : SmoothVec (lieAt V τ) (M.rep τ) w)
@@ -431,7 +427,7 @@ theorem gp_dRep_add {M : DSModel V S} {τ : D.what₂.Tau} {v w : M.H τ}
   exact deriv_add (gp_sv_diffAt hv hX) (gp_sv_diffAt hw hX)
 
 /- English proof (translation)
-Use `show deriv (fun t : ℝ => M.rep τ (NormedSpace.exp (t • X)) (c • v)) 0 = _`. Simplify using `only [map_smul]`. Conclude with `deriv_const_smul c (gp_sv_diffAt hv hX)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gp_dRep_smul {M : DSModel V S} {τ : D.what₂.Tau} (c : ℂ) {v : M.H τ}
     (hv : SmoothVec (lieAt V τ) (M.rep τ) v) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) :
@@ -441,7 +437,7 @@ theorem gp_dRep_smul {M : DSModel V S} {τ : D.what₂.Tau} (c : ℂ) {v : M.H �
   exact deriv_const_smul c (gp_sv_diffAt hv hX)
 
 /- English proof (translation)
-The claim follows from `| [], _, _, _, _, _ => rfl | X :: l, hl, _, _, hv, hw => by have hl' : ∀ Y ∈ l, Y ∈ lieAt V τ := fun Y hY => hl Y (List.mem_cons_of_mem _ hY) rw [List.foldr_cons, List.foldr_cons, List.foldr_cons, gp_foldr_add l hl' hv hw] exact gp_dRep_add (gp_sv_foldr l hl' hv) (gp_sv_foldr l h …`.
+A detailed English derivation is pending.
 -/
 theorem gp_foldr_add {M : DSModel V S} {τ : D.what₂.Tau} :
     ∀ (l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ)), (∀ X ∈ l, X ∈ lieAt V τ) → ∀ {v w : M.H τ},
@@ -454,7 +450,7 @@ theorem gp_foldr_add {M : DSModel V S} {τ : D.what₂.Tau} :
     exact gp_dRep_add (gp_sv_foldr l hl' hv) (gp_sv_foldr l hl' hw) (hl X (by simp))
 
 /- English proof (translation)
-The claim follows from `| [], _, _, _ => rfl | X :: l, hl, _, hv => by have hl' : ∀ Y ∈ l, Y ∈ lieAt V τ := fun Y hY => hl Y (List.mem_cons_of_mem _ hY) rw [List.foldr_cons, List.foldr_cons, gp_foldr_smul c l hl' hv] exact gp_dRep_smul c (gp_sv_foldr l hl' hv) (hl X (by simp))`.
+A detailed English derivation is pending.
 -/
 theorem gp_foldr_smul {M : DSModel V S} {τ : D.what₂.Tau} (c : ℂ) :
     ∀ (l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ)), (∀ X ∈ l, X ∈ lieAt V τ) → ∀ {v : M.H τ},
@@ -478,21 +474,19 @@ def gpWords (M : DSModel V S) (τ : D.what₂.Tau) (L : List (List (Matrix (Fin 
   map_smul' c v := funext fun i => gp_foldr_smul c (L.get i) (hL _ (List.get_mem L i)) v.2
 
 /- English proof (translation)
-Take `⟨L, C, hL, hC⟩` from `hℓ`. Use `set T := gpWords M τ L hL with hT`. Use `set ℓW : gpSv M τ →ₗ[ℂ] ℂ := ℓ.comp (gpSv M τ).subtype with hℓW`. Establish `hbd : ∀ v : gpSv M τ, ‖ℓW v‖ ≤ (|C| * L.length) * ‖T v‖`. Introduce `v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hC (v : M.H τ) v.2`. Establish `hs : (L.map fun l => ‖l.foldr (dRep (M.rep τ)) (v : M.H τ)‖).sum ≤ L.length * ‖T v‖`. Establish `h3` using `List.sum_le_card_nsmul (L.map fun l => ‖l.foldr (dRep (M.rep τ)) (v : M.H τ)‖) ‖T v‖ (by`. Introduce `x hx`. Take `⟨l, hl, rfl⟩` from `List.mem_map.1 hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨i, rfl⟩` from `List.mem_iff_get.1 hl`. Conclude with `norm_le_pi_norm (T v) i)`. Simplify `h3` using `[nsmul_eq_mul]`. Establish `h0` using `sum_map_norm_nonneg (σ := M.rep τ) L (v : M.H τ)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hker : LinearMap.ker T ≤ LinearMap.ker ℓW`. Introduce `v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Establish `h1` using `hbd v`. Rewrite `h1` using `[hv, norm_zero, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_le_zero_iff.1 h1`. Use `set f0 : LinearMap.range T →ₗ[ℂ] ℂ := ((LinearMap.ker T).liftQ ℓW hker).comp T.quotKerEquivRange.symm.toLinearMap with hf0def`. Establish `hf0 : ∀ v : gpSv M τ, f0 ⟨T v, LinearMap.mem_range_self T v⟩ = ℓW v`. Introduce `v`. Rewrite using `[hf0def, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.quotKerEquivRange_symm_apply_image]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hf0b : ∀ y : LinearMap.range T, ‖f0 y‖ ≤ (|C| * L.length) * ‖y‖`. Introduce `y`. Take `⟨v, hv⟩` from `LinearMap.mem_range.1 y.2`. Establish `ey : y = ⟨T v, LinearMap.mem_range_self T v⟩` using `Subtype.ext hv.symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ey, hf0 v]`. Conclude with `hbd v`. Take `⟨g, hg, -⟩` from `exists_extension_norm_eq (LinearMap.range T) (f0.mkContinuous _ hf0b)`. Use `⟨L, hL, g, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1` using `hg ⟨T ⟨v, hv⟩, LinearMap.mem_range_self T _⟩`.
-
-Use `show ℓ v = g (T ⟨v, hv⟩)`. Rewrite using `[h1, LinearMap.mkContinuous_apply, hf0]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gp_sob_rep (M : DSModel V S) (τ : D.what₂.Tau) {ℓ : M.H τ →ₗ[ℂ] ℂ}
     (hℓ : Sobolev₂ (lieAt V τ) (M.rep τ) ℓ) :
@@ -545,15 +539,15 @@ theorem gp_sob_rep (M : DSModel V S) (τ : D.what₂.Tau) {ℓ : M.H τ →ₗ[�
   rfl
 
 /- English proof (translation)
-Establish `: CompleteSpace (M.H τ)` using `(M.ds τ).1`. Establish `hum : Continuous (PI.UpqRep.umat : PI.UpqRep.UJ (M.ε τ) → Matrix (Fin V.rank) (Fin V.rank) ℂ)` using `(PI.KFinSmoothW.Gard.umat_closedEmb (M.ε τ)).continuous`. Establish `hΦu : Continuous (fun h : PI.UpqRep.UJ (M.ε τ) => Φ (PI.UpqRep.umat h))` using `hΦ.comp hum`. Establish `hΦuc : HasCompactSupport (fun h : PI.UpqRep.UJ (M.ε τ) => Φ (PI.UpqRep.umat h))` using `hΦc.comp_isClosedEmbedding (PI.KFinSmoothW.Gard.umat_closedEmb (M.ε τ))`. Establish `hint : Integrable (fun h => Φ (PI.UpqRep.umat h) • G h) (PI.UpqRep.muG (M.ε τ))` using `(hΦu.smul hG).integrable_of_hasCompactSupport (hΦuc.smul_right (f' := G))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (fun t : ℝ => M.rep τ (NormedSpace.exp (t • X)) (∫ h, Φ (PI.UpqRep.umat h) • G h ∂(PI.UpqRep.muG (M.ε τ)))) = fun t => ∫ h, Φ (PI.UpqRep.umat h) • M.rep τ (NormedSpace.exp (t • X)) (G h) ∂(PI.UpqRep.muG (M.ε τ))`. Use function extensionality and compare the values at `t`. Rewrite using `[← (M.rep τ (NormedSpace.exp (t • X))).integral_comp_comm hint]`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `map_smul _ _ _`. Establish `hbi : Integrable (fun h => ‖Φ (PI.UpqRep.umat h)‖ * ‖dRep (M.rep τ) X (G h)‖) (PI.UpqRep.muG (M.ε τ))` using `(hΦu.norm.mul hG'.norm).integrable_of_hasCompactSupport (hΦuc.norm.mul_right)`. Establish `hFm : ∀ᶠ t in 𝓝 (0 : ℝ), AEStronglyMeasurable (fun h => Φ (PI.UpqRep.umat h) • M.rep τ (NormedSpace.exp (t • X)) (G h)) (PI.UpqRep.muG (M.ε τ))` using `Eventually.of_forall fun t => (hΦu.smul ((M.rep τ (NormedSpace.exp (t • X))).continuous.comp hG)).aestronglyMeasurable`. Establish `hFi : Integrable (fun h => Φ (PI.UpqRep.umat h) • M.rep τ (NormedSpace.exp ((0 : ℝ) • X)) (G h)) (PI.UpqRep.muG (M.ε τ))` using `(hΦu.smul ((M.rep τ (NormedSpace.exp ((0 : ℝ) • X))).continuous.comp hG)).integrable_of_hasCompactSupport (hΦuc.smul_right (f' := fun h => M.rep τ (NormedSpace.exp ((0 : ℝ) • X)) (G h)))`. Establish `hF'm : AEStronglyMeasurable (fun h => Φ (PI.UpqRep.umat h) • M.rep τ (NormedSpace.exp ((0 : ℝ) • X)) (dRep (M.rep τ) X (G h))) (PI.UpqRep.muG (M.ε τ))` using `(hΦu.smul ((M.rep τ (NormedSpace.exp ((0 : ℝ) • X))).continuous.comp hG')).aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbd : ∀ᵐ h ∂(PI.UpqRep.muG (M.ε τ)), ∀ t ∈ ball (0 : ℝ) 1, ‖Φ (PI.UpqRep.umat h) • M.rep τ (NormedSpace.exp (t • X)) (dRep (M.rep τ) X (G h))‖ ≤ ‖Φ (PI.UpqRep.umat h)‖ * ‖dRep (M.rep τ) X (G h)‖`. Use `Eventually.of_forall fun h t _ => le_of_eq ?_` and prove the remaining obligations. Rewrite using `[norm_smul, gp_rep_norm M τ (gp_exp_mem τ hX t)]`. Establish `hdiff : ∀ᵐ h ∂(PI.UpqRep.muG (M.ε τ)), ∀ t ∈ ball (0 : ℝ) 1, HasDerivAt (fun u : ℝ => Φ (PI.UpqRep.umat h) • M.rep τ (NormedSpace.exp (u • X)) (G h)) (Φ (PI.UpqRep.umat h) • M.rep τ (NormedSpace.exp (t • X)) (dRep (M.rep τ) X (G h))) t` using `Eventually.of_forall fun h t _ => (gp_sv_hasDerivAt (hsv h) hX t).const_smul (Φ (PI.UpqRep.umat h))`. Establish `hD` using `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := PI.UpqRep.muG (M.ε τ)) (F := fun (t : ℝ) h => Φ (PI.UpqRep.umat h) • M.rep τ (NormedSpace.exp (t • X)) (G h)) (F' := fun (t : ℝ) h => Φ (PI.UpqRep.umat h) • M.rep τ (NormedSpace.exp (t • X)) (dRep (M.rep τ) X (G h))) (x₀ := …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : M.rep τ (NormedSpace.exp ((0 : ℝ) • X)) = 1`. Rewrite using `[zero_smul, NormedSpace.exp_zero, gp_rep_one]`. Use `show deriv (fun t : ℝ => M.rep τ (NormedSpace.exp (t • X)) (∫ h, Φ (PI.UpqRep.umat h) • G h ∂(PI.UpqRep.muG (M.ε τ)))) 0 = _`. Rewrite using `[e1, hD.deriv, e0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gp_dRep_int (M : DSModel V S) (τ : D.what₂.Tau) {Φ : Matrix (Fin V.rank) (Fin V.rank) ℂ → ℂ}
     (hΦ : Continuous Φ) (hΦc : HasCompactSupport Φ) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
@@ -619,7 +613,7 @@ def OrbitDerivCont : Prop :=
         Continuous fun h : PI.UpqRep.UJ (M.ε τ) => l.foldr (dRep (M.rep τ)) (M.σ τ (PI.UpqRep.umat h) w)
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | X :: l, hl => by have hl' : ∀ Y ∈ l, Y ∈ lieAt V τ := fun Y hY => hl Y (List.mem_cons_of_mem _ hY) have hX : X ∈ lieAt V τ := hl X (by simp) rw [List.foldr_cons, gp_foldr_gvT hK M τ hΦ hΦc hw l hl'] exact gp_dRep_int M τ hΦ hΦc hX (hK M τ w hw l hl') (hK M τ w hw …`.
+A detailed English derivation is pending.
 -/
 theorem gp_foldr_gvT (hK : OrbitDerivCont) (M : DSModel V S) (τ : D.what₂.Tau)
     {Φ : Matrix (Fin V.rank) (Fin V.rank) ℂ → ℂ} (hΦ : Continuous Φ) (hΦc : HasCompactSupport Φ) {w : M.H τ}
@@ -637,15 +631,15 @@ theorem gp_foldr_gvT (hK : OrbitDerivCont) (M : DSModel V S) (τ : D.what₂.Tau
       (fun h => gp_sv_foldr l hl' (gp_sv_sigma M τ h hw))
 
 /- English proof (translation)
-Unfold `GvPair`. Introduce `D V S M τ Φ hΦ hΦc ℓ hℓ w hw`. Establish `: CompleteSpace (M.H τ)` using `(M.ds τ).1`. Establish `hsw : SmoothVec (lieAt V τ) (M.rep τ) w` using `gp_sv_of_mem hw`. Take `⟨L, hL, g, hg⟩` from `gp_sob_rep M τ hℓ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hum : Continuous (PI.UpqRep.umat : PI.UpqRep.UJ (M.ε τ) → Matrix (Fin V.rank) (Fin V.rank) ℂ)` using `(PI.KFinSmoothW.Gard.umat_closedEmb (M.ε τ)).continuous`. Establish `hΦu : Continuous (fun h : PI.UpqRep.UJ (M.ε τ) => Φ (PI.UpqRep.umat h))` using `hΦ.continuous.comp hum`. Establish `hΦuc : HasCompactSupport (fun h : PI.UpqRep.UJ (M.ε τ) => Φ (PI.UpqRep.umat h))` using `hΦc.comp_isClosedEmbedding (PI.KFinSmoothW.Gard.umat_closedEmb (M.ε τ))`. Use `set T : M.H τ → (Fin L.length → M.H τ) := fun v i => (L.get i).foldr (dRep (M.rep τ)) v with hT`. Establish `hTc : Continuous fun h : PI.UpqRep.UJ (M.ε τ) => T (M.σ τ (PI.UpqRep.umat h) w)` using `continuous_pi fun i => hK M τ w hsw (L.get i) (hL _ (List.get_mem L i))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : Integrable (fun h => Φ (PI.UpqRep.umat h) • T (M.σ τ (PI.UpqRep.umat h) w)) (PI.UpqRep.muG (M.ε τ))` using `(hΦu.smul hTc).integrable_of_hasCompactSupport (hΦuc.smul_right (f' := fun h => T (M.σ τ (PI.UpqRep.umat h) w)))`. Establish `e1 : T (gvT M τ Φ w) = ∫ h, Φ (PI.UpqRep.umat h) • T (M.σ τ (PI.UpqRep.umat h) w) ∂(PI.UpqRep.muG (M.ε τ))`. Use function extensionality and compare the values at `i`. Establish `h1` using `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin L.length => M.H τ) i).integral_comp_comm hint`. Rewrite using `[hT]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[gp_foldr_gvT hK M τ hΦ.continuous hΦc hsw (L.get i) (hL _ (List.get_mem L i))]`. Conclude with `h1`. Rewrite using `[hg _ (gvT_smooth M τ hΦ hΦc w)]`. Use `show g (T (gvT M τ Φ w)) = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e1, ← g.integral_comp_comm hint]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[map_smul, smul_eq_mul, hg _ (gp_sv_sigma M τ h hsw)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gvPair_of_orbitDerivCont (hK : OrbitDerivCont) : GvPair := by
   unfold GvPair
@@ -696,11 +690,11 @@ def gpTan (V : HSp D) (τ : D.what₂.Tau) : Submodule ℝ (Matrix (Fin V.rank) 
     simpa only [Complex.coe_smul] using h
 
 /- English proof (translation)
-Establish `: CompleteSpace (M.H τ)` using `(M.ds τ).1`. Establish `hXY : X + Y ∈ lieAt V τ` using `(gpTan V τ).add_mem hX hY`. Establish `hd : ∀ W, W ∈ lieAt V τ → HasDerivAt (fun t : ℝ => M.σ τ (NormedSpace.exp (t • (M.fr τ * W * (M.fr τ)⁻¹))) v) (dRep (M.rep τ) W v) 0`. Introduce `W hW`. Establish `e : (fun t : ℝ => M.σ τ (NormedSpace.exp (t • (M.fr τ * W * (M.fr τ)⁻¹))) v) = fun t : ℝ => M.rep τ (NormedSpace.exp (t • W)) v` using `funext fun t => by rw [rep_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(gp_sv_diffAt hv hW).hasDerivAt`. Establish `hsum : M.fr τ * (X + Y) * (M.fr τ)⁻¹ = M.fr τ * X * (M.fr τ)⁻¹ + M.fr τ * Y * (M.fr τ)⁻¹`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`. Establish `h3` using `hd (X + Y) hXY`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hsum]`. Conclude with `gp_deriv_add (urep M τ) (conj_lie M τ hX) (conj_lie M τ hY) (hd X hX) (hd Y hY) h3`.
+A detailed English derivation is pending.
 -/
 theorem gp_dRep_addX {M : DSModel V S} {τ : D.what₂.Tau} {v : M.H τ}
     (hv : SmoothVec (lieAt V τ) (M.rep τ) v) {X Y : Matrix (Fin V.rank) (Fin V.rank) ℂ}
@@ -722,9 +716,7 @@ theorem gp_dRep_addX {M : DSModel V S} {τ : D.what₂.Tau} {v : M.H τ}
   exact gp_deriv_add (urep M τ) (conj_lie M τ hX) (conj_lie M τ hY) (hd X hX) (hd Y hY) h3
 
 /- English proof (translation)
-Use `show deriv (fun t : ℝ => M.rep τ (NormedSpace.exp (t • (c • X))) v) 0 = c • deriv (fun t : ℝ => M.rep τ (NormedSpace.exp (t • X)) v) 0`. Establish `e : (fun t : ℝ => M.rep τ (NormedSpace.exp (t • (c • X))) v) = fun t : ℝ => (fun s : ℝ => M.rep τ (NormedSpace.exp (s • X)) v) (c * t)`. Use function extensionality and compare the values at `t`. Rewrite using `[smul_smul, mul_comm t c]`. Rewrite using `[e]`.
-
-Conclude with `(deriv_comp_mul_left c (fun s : ℝ => M.rep τ (NormedSpace.exp (s • X)) v) 0).trans (by rw [mul_zero])`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_dRep_smulR {M : DSModel V S} {τ : D.what₂.Tau} {v : M.H τ}
     (hv : SmoothVec (lieAt V τ) (M.rep τ) v) (c : ℝ) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
@@ -745,9 +737,9 @@ def gpA (M : DSModel V S) (τ : D.what₂.Tau) (u : M.H τ) (hu : SmoothVec (lie
   map_smul' c X := gp_dRep_smulR hu c X.2
 
 /- English proof (translation)
-Establish `h1 : dRep (M.rep τ) Y u = gpA M τ u hu ⟨Y, hY⟩` using `rfl`. Rewrite using `[h1]`. Use `conv_lhs => rw [← (Module.finBasis ℝ (gpTan V τ)).sum_repr ⟨Y, hY⟩]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Complex.coe_smul]`. Apply the tactic sequence `all_goals rfl`.
+A detailed English derivation is pending.
 -/
 theorem gp_dRep_expand {M : DSModel V S} {τ : D.what₂.Tau} {u : M.H τ}
     (hu : SmoothVec (lieAt V τ) (M.rep τ) u) {Y : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hY : Y ∈ lieAt V τ) :
@@ -762,9 +754,7 @@ theorem gp_dRep_expand {M : DSModel V S} {τ : D.what₂.Tau} {u : M.H τ}
   all_goals rfl
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty]`. Conclude with `gp_sv_zero`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
-
-Conclude with `gp_sv_add (gp_sv_smul _ (hx a)) ih`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_sv_sum {M : DSModel V S} {τ : D.what₂.Tau} {ι : Type*} (s : Finset ι) (c : ι → ℂ) (x : ι → M.H τ)
     (hx : ∀ i, SmoothVec (lieAt V τ) (M.rep τ) (x i)) :
@@ -778,9 +768,9 @@ theorem gp_sv_sum {M : DSModel V S} {τ : D.what₂.Tau} {ι : Type*} (s : Finse
     exact gp_sv_add (gp_sv_smul _ (hx a)) ih
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty]`. Establish `h0` using `gp_foldr_smul (M := M) (τ := τ) (0 : ℂ) l hl (v := 0) gp_sv_zero`. Simplify using `using h0`. Introduce `a s ha ih`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, gp_foldr_add l hl (gp_sv_smul _ (hx a)) (gp_sv_sum s c x hx), gp_foldr_smul _ l hl (hx a), ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gp_foldr_sum {M : DSModel V S} {τ : D.what₂.Tau} (l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ))
     (hl : ∀ X ∈ l, X ∈ lieAt V τ) {ι : Type*} (s : Finset ι) (c : ι → ℂ) (x : ι → M.H τ)
@@ -796,15 +786,15 @@ theorem gp_foldr_sum {M : DSModel V S} {τ : D.what₂.Tau} (l : List (Matrix (F
       gp_foldr_add l hl (gp_sv_smul _ (hx a)) (gp_sv_sum s c x hx), gp_foldr_smul _ l hl (hx a), ih]
 
 /- English proof (translation)
-Proceed by induction on `ls using List.reverseRecOn with`. Consider the case `nil => intro _ _ u _`. Conclude with `continuous_const`. Consider the case `append_singleton ls Y ih`. Introduce `hc hm u hu`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcl : ∀ Z ∈ ls, Continuous Z` using `fun Z hZ => hc Z (List.mem_append_left _ hZ)`. Establish `hml : ∀ Z ∈ ls, ∀ p, Z p ∈ lieAt V τ` using `fun Z hZ => hm Z (List.mem_append_left _ hZ)`. Establish `hYc : Continuous Y` using `hc Y (by simp)`. Establish `hYm : ∀ p, Y p ∈ lieAt V τ` using `hm Y (by simp)`. Establish `hwl : ∀ p, ∀ Z ∈ ls.map (fun Y => Y p), Z ∈ lieAt V τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p Z hZ`. Take `⟨Z', hZ', rfl⟩` from `List.mem_map.1 hZ`. Conclude with `hml Z' hZ' p`. Establish `e : (fun p => ((ls ++ [Y]).map fun Y => Y p).foldr (dRep (M.rep τ)) u) = fun p => ∑ j, (((Module.finBasis ℝ (gpTan V τ)).repr ⟨Y p, hYm p⟩ j : ℝ) : ℂ) • (ls.map fun Y => Y p).foldr (dRep (M.rep τ)) (dRep (M.rep τ) ((Module.finBasis ℝ (gpTan V τ)) j : Matrix (Fin V.rank) (Fin V.ra …`. Use function extensionality and compare the values at `p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[List.map_append, List.foldr_append]`. Simplify using `only [List.map_cons, List.map_nil, List.foldr_cons, List.foldr_nil]`. Rewrite using `[gp_dRep_expand hu (hYm p), gp_foldr_sum _ (hwl p) Finset.univ _ _ (fun j => gp_sv_dRep hu ((Module.finBasis ℝ (gpTan V τ)) j).2)]`. Rewrite using `[e]`. Use `continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hco : Continuous fun p => (((Module.finBasis ℝ (gpTan V τ)).repr ⟨Y p, hYm p⟩ j : ℝ) : ℂ)`. Establish `hl : Continuous ((Module.finBasis ℝ (gpTan V τ)).coord j)` using `LinearMap.continuous_of_finiteDimensional _`. Conclude with `Complex.continuous_ofReal.comp (hl.comp (hYc.subtype_mk hYm))`. Conclude with `hco.smul (ih hcl hml _ (gp_sv_dRep hu ((Module.finBasis ℝ (gpTan V τ)) j).2))`.
+A detailed English derivation is pending.
 -/
 theorem gp_words_cont {Ω : Type*} [TopologicalSpace Ω] (M : DSModel V S) (τ : D.what₂.Tau)
     (ls : List (Ω → Matrix (Fin V.rank) (Fin V.rank) ℂ)) :
@@ -841,11 +831,11 @@ theorem gp_words_cont {Ω : Type*} [TopologicalSpace Ω] (M : DSModel V S) (τ :
     exact hco.smul (ih hcl hml _ (gp_sv_dRep hu ((Module.finBasis ℝ (gpTan V τ)) j).2))
 
 /- English proof (translation)
-Establish `hX' : Xᴴ * gramAt D V τ + gramAt D V τ * X = 0` using `hX`. Establish `hg0 : gᴴ * gramAt D V τ * g = gramAt D V τ` using `hg`. Establish `h1 : gramAt D V τ * g' = gᴴ * gramAt D V τ`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : g'ᴴ * gramAt D V τ = gramAt D V τ * g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `show (g' * X * g)ᴴ * gramAt D V τ + gramAt D V τ * (g' * X * g) = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = gᴴ * (Xᴴ * gramAt D V τ + gramAt D V τ * X) * g := by`. Rewrite using `[h2, h1]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hX', Matrix.mul_zero, Matrix.zero_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gp_lie_conj {τ : D.what₂.Tau} {g g' : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (hgg' : g * g' = 1)
@@ -868,13 +858,13 @@ theorem gp_lie_conj {τ : D.what₂.Tau} {g g' : Matrix (Fin V.rank) (Fin V.rank
     _ = 0 := by rw [hX', Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Establish `hY` using `gp_lie_conj hg hgg' hX`. Establish `hu : IsUnit g'` using `(Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_left_inverse hgg')`. Establish `hinv : g'⁻¹ = g` using `Matrix.inv_eq_left_inv hgg'`. Establish `hexp : ∀ t : ℝ, NormedSpace.exp (t • X) * g = g * NormedSpace.exp (t • (g' * X * g))`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `Matrix.exp_conj g' (t • X) hu`. Rewrite `h1` using `[hinv]`. Establish `h2 : g' * (t • X) * g = t • (g' * X * g)` using `by rw [Matrix.mul_smul, Matrix.smul_mul]`. Rewrite `h1` using `[h2]`. Rewrite using `[h1, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hgg', Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun t : ℝ => M.rep τ (NormedSpace.exp (t • X)) (M.rep τ g x)) = fun t : ℝ => M.rep τ g (M.rep τ (NormedSpace.exp (t • (g' * X * g))) x)`. Use function extensionality and compare the values at `t`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← rep_mul M τ (gp_exp_mem τ hX t) hg, hexp t, rep_mul M τ hg (gp_exp_mem τ hY t), ContinuousLinearMap.comp_apply]`. Unfold `dRep`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(((M.rep τ g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 (gp_sv_diffAt hx hY).hasDerivAt).deriv`.
+A detailed English derivation is pending.
 -/
 theorem gp_dRep_conj (M : DSModel V S) (τ : D.what₂.Tau) {g g' : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (hgg' : g * g' = 1)
@@ -901,7 +891,7 @@ theorem gp_dRep_conj (M : DSModel V S) (τ : D.what₂.Tau) {g g' : Matrix (Fin 
   exact (((M.rep τ g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 (gp_sv_diffAt hx hY).hasDerivAt).deriv
 
 /- English proof (translation)
-The claim follows from `| [], _, _, _ => rfl | X :: l, hl, x, hx => by have hl' : ∀ Y ∈ l, Y ∈ lieAt V τ := fun Y hY => hl Y (List.mem_cons_of_mem _ hY) have hlm : ∀ Y ∈ l.map (fun X => g' * X * g), Y ∈ lieAt V τ := by intro Y hY obtain ⟨Z, hZ, rfl⟩ := List.mem_map.1 hY exact gp_lie_conj hg hgg' (hl' Z …`.
+A detailed English derivation is pending.
 -/
 theorem gp_foldr_conj (M : DSModel V S) (τ : D.what₂.Tau) {g g' : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (hgg' : g * g' = 1) :
@@ -920,11 +910,11 @@ theorem gp_foldr_conj (M : DSModel V S) (τ : D.what₂.Tau) {g g' : Matrix (Fin
     exact gp_dRep_conj M τ hg hgg' (hl X (by simp)) (gp_sv_foldr _ hlm hx)
 
 /- English proof (translation)
-Establish `: CompleteSpace (M.H τ)` using `(M.ds τ).1`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `h0`. Establish `h1 : Tendsto (fun h => M.σ τ (PI.UpqRep.umat h) (F h0)) (𝓝 h0) (𝓝 (M.σ τ (PI.UpqRep.umat h0) (F h0)))` using `(PI.KFinSmoothW.Gard.cont_orbit (urep M τ) (F h0)).continuousAt`. Establish `h2 : Tendsto (fun h => M.σ τ (PI.UpqRep.umat h) (F h) - M.σ τ (PI.UpqRep.umat h) (F h0)) (𝓝 h0) (𝓝 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `e : ∀ h : PI.UpqRep.UJ (M.ε τ), ‖M.σ τ (PI.UpqRep.umat h) (F h) - M.σ τ (PI.UpqRep.umat h) (F h0)‖ = ‖F h - F h0‖` using `fun h => by`. Rewrite using `[← map_sub, (urep M τ).2.1 _ h.2]`. Simplify using `only [e]`. Establish `h3` using `(hF.tendsto h0).sub_const (F h0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h3` using `[sub_self]`. Conclude with `tendsto_norm_zero.comp h3`. Establish `h4` using `h2.add h1`. Simplify using `only [sub_add_cancel, zero_add] at h4`. Conclude with `h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gp_cont_apply (M : DSModel V S) (τ : D.what₂.Tau) {F : PI.UpqRep.UJ (M.ε τ) → M.H τ}
     (hF : Continuous F) : Continuous fun h => M.σ τ (PI.UpqRep.umat h) (F h) := by
@@ -947,15 +937,15 @@ theorem gp_cont_apply (M : DSModel V S) (τ : D.what₂.Tau) {F : PI.UpqRep.UJ (
   exact h4
 
 /- English proof (translation)
-Unfold `OrbitDerivCont`. Introduce `D V S M τ w hw l hl`. Establish `: CompleteSpace (M.H τ)` using `(M.ds τ).1`. Establish `hum : Continuous (PI.UpqRep.umat : PI.UpqRep.UJ (M.ε τ) → Matrix (Fin V.rank) (Fin V.rank) ℂ)` using `(PI.KFinSmoothW.Gard.umat_closedEmb (M.ε τ)).continuous`. Establish `hmul : ∀ h : PI.UpqRep.UJ (M.ε τ), ((M.fr τ)⁻¹ * PI.UpqRep.umat h * M.fr τ) * ((M.fr τ)⁻¹ * PI.UpqRep.umat h⁻¹ * M.fr τ) = 1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (M.fr τ)⁻¹ * (PI.UpqRep.umat h * PI.UpqRep.umat h⁻¹) * M.fr τ := by`. Rewrite using `[fr_mul_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = 1 := by rw [PI.KFinSmoothW.Gard.umat_mul_inv, Matrix.mul_one, fr_inv_mul]`. Establish `e : (fun h : PI.UpqRep.UJ (M.ε τ) => l.foldr (dRep (M.rep τ)) (M.σ τ (PI.UpqRep.umat h) w)) = fun h => M.σ τ (PI.UpqRep.umat h) (((l.map fun X (h : PI.UpqRep.UJ (M.ε τ)) => ((M.fr τ)⁻¹ * PI.UpqRep.umat h⁻¹ * M.fr τ) * X * ((M.fr τ)⁻¹ * PI.UpqRep.umat h * M.fr τ)).map fun Y => Y h …`. Use function extensionality and compare the values at `h`. Rewrite using `[← rep_conj_back M τ h, gp_foldr_conj M τ (conj_back_mem M τ h) (hmul h) l hl hw, List.map_map]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Use `gp_cont_apply M τ (gp_words_cont M τ _ ?_ ?_ w hw)` and prove the remaining obligations. Introduce `Y hY`. Take `⟨X, -, rfl⟩` from `List.mem_map.1 hY`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(((continuous_const.mul (hum.comp continuous_inv)).mul continuous_const).mul continuous_const).mul ((continuous_const.mul hum).mul continuous_const)`. Introduce `Y hY h`. Take `⟨X, hX, rfl⟩` from `List.mem_map.1 hY`. Conclude with `gp_lie_conj (conj_back_mem M τ h) (hmul h) (hl X hX)`.
+A detailed English derivation is pending.
 -/
 theorem orbitDerivCont_holds : OrbitDerivCont := by
   unfold OrbitDerivCont
@@ -990,7 +980,7 @@ theorem orbitDerivCont_holds : OrbitDerivCont := by
     exact gp_lie_conj (conj_back_mem M τ h) (hmul h) (hl X hX)
 
 /- English proof (translation)
-The claim follows from `gvPair_of_orbitDerivCont orbitDerivCont_holds`.
+A detailed English derivation is pending.
 -/
 theorem gvPair_holds : GvPair := gvPair_of_orbitDerivCont orbitDerivCont_holds
 

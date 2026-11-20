@@ -7,7 +7,7 @@ namespace UpperTheory.NonzeroTypeTheory
 namespace TwistedSphericalEquivalence
 
 /- English proof (translation)
-Take `⟨X, i1, i2, σ, hs, hi, hv, ⟨φ⟩⟩` from `h`. Conclude with `⟨X, i1, i2, σ, hs, hi, hv, ⟨Representation.Equiv.trans e φ⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isTwSphProd_of_equiv {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
@@ -20,7 +20,7 @@ theorem isTwSphProd_of_equiv {k : Type} [Field k] [ValuativeRel k] [TopologicalS
 end TwistedSphericalEquivalence
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ ρ h1 h2 s d hd η`. Establish `e` using `GlobalTheory.LocGL.IrrGL.equivOf ρ h1 h2`. Conclude with `⟨fun h => TwistedSphericalEquivalence.isTwSphProd_of_equiv e h, fun h => TwistedSphericalEquivalence.isTwSphProd_of_equiv (Representation.Equiv.symm e) h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem twistedSphericalRepresentative_holds : TwistedSphericalRepresentative := by
   intro k _ _ _ _ n V _ _ ρ h1 h2 s d hd η

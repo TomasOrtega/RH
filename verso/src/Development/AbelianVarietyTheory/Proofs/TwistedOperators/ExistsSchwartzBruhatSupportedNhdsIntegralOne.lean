@@ -7,9 +7,9 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 namespace GlobalTheory.RootEx
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Distinguish the cases in `hx : x ∈ B`. Use `⟨B, hB.isOpen, hx, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Bᶜ, hB.isClosed.isOpen_compl, hx, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isLocallyConstant_indicator_const_of_isClopen {X : Type} [TopologicalSpace X] {B : Set X}
     (hB : IsClopen B) (c : ℂ) : IsLocallyConstant (B.indicator fun _ => c) := by
@@ -22,11 +22,11 @@ private theorem isLocallyConstant_indicator_const_of_isClopen {X : Type} [Topolo
     rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `IsCyclic.exists_generator (α := (ValueGroupWithZero k)ˣ)`. Use `SigmaCompactSpace.of_countable (Set.range fun m : ℤ => {x : k | valuation k x ≤ ((g ^ m : (ValueGroupWithZero k)ˣ) : ValueGroupWithZero k)}) (Set.countable_range _) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `IsNonarchimedeanLocalField.isCompact_closedBall k _`. Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Use `Set.mem_sUnion.mpr ⟨_, ⟨0, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_ofPred_eq, map_zero]`. Conclude with `zero_le`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm⟩` from `Subgroup.mem_zpowers_iff.mp (hg (Units.mk0 (valuation k x) ((map_ne_zero (valuation k)).mpr hx)))`. Use `Set.mem_sUnion.mpr ⟨_, ⟨m, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_ofPred_eq, hm, Units.val_mk0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sigmaCompactSpace_of_isNonarchimedeanLocalField (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] : SigmaCompactSpace k := by
@@ -50,15 +50,13 @@ private theorem sigmaCompactSpace_of_isNonarchimedeanLocalField (k : Type) [Fiel
 open GlobalTheory.SplitWeil.FourierPi in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ ν _ U hU`. Use `sigmaCompactSpace_of_isNonarchimedeanLocalField k` as an intermediate fact. Take `⟨s, hsU⟩` from `exists_box_subset (k := k) (n := n) hU`. Establish `hBo : IsOpen (box (k` using `k) n s) := isOpen_box s`. Establish `hBc : IsCompact (box (k` using `k) n s) := isCompact_box s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBcl : IsClosed (box (k` using `k) n s) := isClosed_set_pi fun _ _ => AddSubgroup.isClosed_of_isOpen { carrier := cball s zero_mem' := by show valuation k (0 : k) ≤ valuation k (s : k)`. Rewrite using `[map_zero]`. Conclude with `zero_le`. Use the proof step `add_mem' := add_mem_cball`. Use the proof step `neg_mem' := neg_mem_cball } (isOpen_cball s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hBm : MeasurableSet (box (k` using `k) n s) := MeasurableSet.univ_pi fun _ => (isOpen_cball s).measurableSet`. Establish `h0 : (0 : n → k) ∈ box (k` using `k) n s := by`. Introduce `i _`. Use `show valuation k (0 : k) ≤ valuation k (s : k)`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_le`. Establish `hpos : 0 < (Measure.pi fun _ : n => ν) (box n s)` using `hBo.measure_pos _ ⟨0, h0⟩`. Establish `hfin : (Measure.pi fun _ : n => ν) (box n s) < ⊤` using `hBc.measure_lt_top`. Establish `hreal : (Measure.pi fun _ : n => ν).real (box n s) ≠ 0` using `(ENNReal.toReal_pos hpos.ne' hfin.ne).ne'`. Use `set c : ℂ := (((Measure.pi fun _ : n => ν).real (box n s) : ℝ) : ℂ)⁻¹ with hc`.
-
-Use `⟨⟨(box (k := k) n s).indicator fun _ => c, isLocallyConstant_indicator_const_of_isClopen ⟨hBcl, hBo⟩ c, HasCompactSupport.intro' hBc hBcl fun y hy => Set.indicator_of_notMem hy _⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy show (box (k := k) n s).indicator (fun _ => c) y = 0`. Conclude with `Set.indicator_of_notMem (fun hb => hy (hsU hb)) _`. Use `show ∫ y, (box (k := k) n s).indicator (fun _ => c) y ∂(Measure.pi fun _ => ν) = 1`. Rewrite using `[integral_indicator_const c hBm, Complex.real_smul, hc, mul_inv_cancel₀ (Complex.ofReal_ne_zero.mpr hreal)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_SB_supported_integral_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (ν : Measure k) [ν.IsAddHaarMeasure] (U : Set (n → k)) (_ : U ∈ nhds (0 : n → k)), ∃ Ψ : SB (n → k), (∀ y, y ∉ U → Ψ.1 y = 0) ∧ ∫ y, Ψ.1 y ∂(Measure.pi fun _ => ν) = 1 := by
   intro k _ _ _ _ _ _ n _ _ ν _ U hU

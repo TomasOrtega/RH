@@ -26,11 +26,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨κ, h₁, h₂, -, -, -, h₃, -⟩` from `GlobalTheory.KeyFamClosing.keyFam_one`. Set `e` to `(Fintype.equivFin (Σ τ : E →+* ℂ, Fin (Dw.mult τ))).symm`. Establish `hc : ∀ Z : Comp Xo c, CharZero (Om Z)` using `fun Z => charZero_of_injective_algebraMap (algebraMap c.F (Om Z)).injective`. Use `choose Ψ hΨ using fun Z : Comp Xo c => exists_tied E H Dw l Xo c _ e (Om Z) (genFr h Z) hpq`. Use `⟨fun Z => κ (Om Z) (Ψ Z).key, fun C => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI := C.sm`. Use `haveI : IsIntegrallyClosed C.R := isIntegrallyClosed_of_smooth c.F C.R`. Use `haveI : IsNoetherianRing C.R := Algebra.FiniteType.isNoetherianRing c.F C.R`. Use `haveI : CharZero C.R := charZero_of_injective_algebraMap (algebraMap c.F C.R).injective`. Take `⟨Φ, hΦ⟩` from `exists_tied E H Dw l Xo c _ e C.R C.y hpq`.
-
-Take `⟨Φ', hΦ'⟩` from `exists_tied E H Dw l Xo c _ e (Om C.Z) C.yg hpq`. Take `⟨u, hu⟩` from `h₃ C.R Φ.key`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[← rule_frBor κ h₁ h₂ E H Dw l Xo c _ e (Om C.Z) C.t _ _ (Ψ C.Z) Φ' C.bor (hΨ _) hΦ']`. Conclude with `(hu (Om C.Z) _ _ (tied_keyPB E H Dw l Xo c _ e _ _ C.R.val C.y C.yg Φ Φ' C.gen hΦ hΦ')).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generic_units (hpq : 1 ≤ Dw.p + Dw.q) (h : GenFrEx Xo c) :
     ∃ v : ∀ Z : Comp Xo c, (Om Z)ˣ, ∀ C : FChart h,
@@ -53,13 +51,13 @@ theorem exists_generic_units (hpq : 1 ≤ Dw.p + Dw.q) (h : GenFrEx Xo c) :
   exact (hu (Om C.Z) _ _ (tied_keyPB E H Dw l Xo c _ e _ _ C.R.val C.y C.yg Φ Φ' C.gen hΦ hΦ')).symm
 
 /- English proof (translation)
-Take `⟨-, -, h, hA⟩` from `evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨v, hv⟩` from `exists_generic_units hpq h`. Establish `hk : ∀ C : FChart h, (∏ i, C.t i ^ (keyEx Dw i * 4) : (Om C.Z)ˣ) = kch C.t ^ 4` using `fun C => by`. Rewrite using `[kch, ← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [zpow_mul]; rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ, hρv⟩` from `GlobalTheory.SecGlueInt.exists_secZ_of_regular E H Dw l Xo c h (fun i => keyEx Dw i * 4) (fun Z => v Z) fun C => by`. Take `⟨u, hu⟩` from `hv C`. Rewrite using `[hk, ← Units.val_mul, ← hu]`. Conclude with `u.1.2`. Use `⟨ρ, hρ, fun y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Take `⟨C, ψ, z, t, hz, hb⟩` from `hA h (CAt σ) y`. Take `⟨u, hu⟩` from `hv C`. Take `⟨b, hb₁, hb₂⟩` from `GlobalTheory.DegCmp.fChart_exists_val C hρ`. Establish `hbu : b = u` using `Subtype.ext (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb₁, hu, hk, GlobalTheory.CompHt.genVal_apply h, hρv, Units.val_mul])`. Use `show evR Xo c ρ y ≠ 0`. Rewrite using `[GlobalTheory.FlagTan.evR_frBor hρ hb, hb₂ _ ψ z hz, hbu]`. Conclude with `mul_ne_zero (Units.ne_zero _) (u.isUnit.map ψ).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem exists_key_four (hpq : 1 ≤ Dw.p + Dw.q) (σ : c.F →+* ℂ) :
     ∃ ρ ∈ secZ Xo c (fun i => keyEx Dw i * 4), ∀ y : FrPt Xo c (CAt σ), toC (evR Xo c ρ y) ≠ 0 := by
@@ -85,13 +83,13 @@ theorem exists_key_four (hpq : 1 ≤ Dw.p + Dw.q) (σ : c.F →+* ℂ) :
   exact mul_ne_zero (Units.ne_zero _) (u.isUnit.map ψ).ne_zero
 
 /- English proof (translation)
-Take `⟨ρ, hρ, h0⟩` from `exists_key_four (Xo := Xo) hpq σ`. Take `⟨n, hn, ⟨m, rfl⟩, η, hη, hη0⟩` from `exists_even_sec_evR_ne_zero E H Dw l Xo c σ y`. Rewrite `hη` using `[← secZ_nat]`. Establish `h2` using `mul_mem_secZ hη hη`. Establish `h3` using `mul_mem_secZ (mul_mem_secZ h2 h2) hρ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨2 * (4 * m - 4), even_two_mul _, η * η * (η * η) * ρ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← secZ_nat]`. Use `h3 using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Consider the cases of `i with`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Consider the case `none => simp only [ex, keyEx, Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Consider the case `some i => simp [ex, keyEx]`. Establish `h1 : toC (evR Xo c η y) ≠ 0` using `hη0`. Simplify using `only [CompSplitPfB.cspB_evR_mul]`.
+Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_ne_zero (M₀ := ℂ) (mul_ne_zero (M₀ := ℂ) (mul_ne_zero (M₀ := ℂ) h1 h1) (mul_ne_zero (M₀ := ℂ) h1 h1)) (h0 y)`.
+A detailed English derivation is pending.
 -/
 theorem exists_sec_four (hpq : 1 ≤ Dw.p + Dw.q) {σ : c.F →+* ℂ} (y : FrPt Xo c (CAt σ)) :
     ∃ n, Even n ∧ ∃ g ∈ sec Xo c (fun _ => 4) n, toC (evR Xo c g y) ≠ 0 := by

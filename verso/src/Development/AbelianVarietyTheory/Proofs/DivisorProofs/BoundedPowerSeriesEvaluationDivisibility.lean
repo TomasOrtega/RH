@@ -20,11 +20,9 @@ noncomputable def ev [CompleteSpace C] (π : C) (h : ‖π‖ < 1) : bdd C →+*
   GlobalTheory.BoundedPowerSeriesDisc.evalBounded π h
 
 /- English proof (translation)
-Use `first`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `@_root_.GlobalTheory.SummableSeriesBounds.main`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `_root_.GlobalTheory.SummableSeriesBounds.main`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact @_root_.GlobalTheory.SummableSeriesBounds.main`. Consider the case `exact _root_.GlobalTheory.SummableSeriesBounds.main`. Consider the case `(apply _root_.GlobalTheory.SummableSeriesBounds.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SummableSeriesBounds.main <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.SummableSeriesBounds.main <;> first | assumption | infer_instance)`.
-
-Consider the case `(intros; exact _root_.GlobalTheory.SummableSeriesBounds.main ..)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem main : ∀ (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C] (π : C), ‖π‖ < 1 → ∃ (B : Subring (PowerSeries C)) (ev : B →+* C) (t : B), (∀ Φ, Φ ∈ B ↔ ∃ b : ℝ, ∀ n, ‖PowerSeries.coeff n Φ‖ ≤ b) ∧ (∀ Φ : B, ev Φ = ∑' n, PowerSeries.coeff n (Φ : PowerSeries C) * π ^ n) ∧ t ≠ 0 ∧ (∀ Φ, ev Φ = 0 ↔ t ∣ Φ) ∧ ∀ Φ : B, Φ ≠ 0 → ∃ n : ℕ, ¬ t ^ n ∣ Φ := by
   first

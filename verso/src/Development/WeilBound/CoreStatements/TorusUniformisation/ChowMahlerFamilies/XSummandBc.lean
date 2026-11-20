@@ -3,27 +3,23 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LieLattice
 open GlobalTheory.CompanionTheory.Ar.Num
 
 /- English proof (translation)
-Introduce `o Ω C _ _ _ _ _ _ _ R RC hR V Vc _ _ _ _ _ _ b hb L U hL hS`. Take `⟨ρ, hρU, hρid, hρL⟩` from `hS`. Set `ρC : Vc →ₗ[C] Vc` to `hb.lift (b ∘ₗ ρ)`. Establish `hρC : ∀ v, ρC (b v) = b (ρ v)` using `fun v => hb.lift_eq _ v`. Establish `hmap : ∀ {S T : Set V}, (∀ e ∈ S, ρ e ∈ T) → ∀ x ∈ spanOver RC (b '' S), ρC x ∈ spanOver RC (b '' T)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `S T hST x hx`. Unfold `spanOver at hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, _, ⟨e, he, rfl⟩, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_smul, hρC]`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, _, ⟨ρ e, hST e he, rfl⟩, rfl⟩`. Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy`. Rewrite using `[map_neg]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `neg_mem hy`. Establish `hid : ∀ u ∈ Submodule.span C (b '' U), ρC u = u`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Take `⟨e, he, rfl⟩` from `hx`. Rewrite using `[hρC, hρid e he]`. Consider the case `zero => exact map_zero _`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul a x _ hx => rw [map_smul, hx]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨ρC, fun v => ?_, hid, hmap hρL⟩, ?_⟩` and prove the remaining obligations. Use `hb.inductionOn v (fun v => ρC v ∈ Submodule.span C (b '' U)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `show ρC 0 ∈ _`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m show ρC (b m) ∈ _`. Rewrite using `[hρC]`. Conclude with `Submodule.subset_span ⟨ρ m, hρU m, rfl⟩`. Introduce `s n hn show ρC (s • n) ∈ _`. Rewrite using `[map_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.smul_mem _ s hn`. Introduce `n₁ n₂ h₁ h₂ show ρC (n₁ + n₂) ∈ _`. Rewrite using `[map_add]`. Conclude with `add_mem h₁ h₂`. Apply `le_antisymm` to reduce the goal to its premises.
-
-Introduce and unpack `x ⟨hx1, hx2⟩`. Rewrite using `[← hid x hx2]`. Conclude with `hmap (S := (L : Set V)) (T := ((L ⊓ U.toAddSubgroup : AddSubgroup V) : Set V)) (fun e he => ⟨hρL e he, hρU e⟩) x hx1`. Apply `(AddSubgroup.closure_le _).2` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, ha, _, ⟨e, he, rfl⟩, rfl⟩`.
-
-Prove the components needed by the constructor for the conclusion. Conclude with `AddSubgroup.subset_closure ⟨a, ha, _, ⟨e, he.1, rfl⟩, rfl⟩`. Conclude with `Submodule.smul_mem _ a (Submodule.subset_span ⟨e, he.2, rfl⟩)`.
+Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_summand_bc : ∀ {o Ω C : Type} [CommRing o] [Field Ω] [Field C] [Algebra o Ω] [Algebra o C] [Algebra Ω C] [IsScalarTower o Ω C] (R : Subalgebra o Ω) (RC : Subalgebra o C), (∀ a ∈ R, algebraMap Ω C a ∈ RC) → ∀ {V Vc : Type} [AddCommGroup V] [Module Ω V] [AddCommGroup Vc] [Module C Vc] [Module Ω Vc] [IsScalarTower Ω C Vc] (b : V →ₗ[Ω] Vc), IsBaseChange C b → ∀ (L : AddSubgroup V) (U : Submodule Ω V), (∀ a ∈ R, ∀ v ∈ L, a • v ∈ L) → Summand L U → Summand (spanOver RC (b '' L)) (Submodule.span C (b '' U)) ∧ spanOver RC (b '' L) ⊓ (Submodule.span C (b '' U)).toAddSubgroup = spanOver RC (b '' (L ⊓ U.toAddSubgroup : AddSubgroup V)) := by
   intro o Ω C _ _ _ _ _ _ _ R RC hR V Vc _ _ _ _ _ _ b hb L U hL hS

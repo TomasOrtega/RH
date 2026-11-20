@@ -9,19 +9,19 @@ open CategoryTheory Limits AlgebraicGeometry
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hz' : t ≫ pullback.snd b ι' ≫ cokernel.π s = 0`. Rewrite using `[← Category.assoc, ht2, Category.assoc, cokernel.condition, comp_zero]`. Use `⟨hz', ?_⟩` and prove the remaining obligations. Establish `hmf : Mono f` using `hS.mono_f`. Establish `hmt : Mono t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `ht1` using the available equality. Conclude with `mono_of_mono t (pullback.fst b ι')`. Establish `hsnd : Epi (pullback.snd b ι')` using `Abelian.epi_pullback_of_epi_f b ι'`. Use `ShortComplex.ShortExact.mk' ?_ hmt (epi_comp _ _)` and prove the remaining obligations. Rewrite using `[ShortComplex.exact_iff_exact_up_to_refinements]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T x hx`. Simplify using `only at x hx`. Establish `hc` using `(ShortComplex.exact_cokernel s)`. Rewrite `hc` using `[ShortComplex.exact_iff_exact_up_to_refinements]`. Take `⟨T₁, π₁, hπ₁, y, hy⟩` from `hc (x ≫ pullback.snd b ι') (by simpa using hx)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only at hy`. Establish `hex` using `hS.exact`. Rewrite `hex` using `[ShortComplex.exact_iff_exact_up_to_refinements]`. Establish `hb : (π₁ ≫ x ≫ pullback.fst b ι') ≫ b ≫ cokernel.π ιF = 0`. Establish `: π₁ ≫ x ≫ pullback.fst b ι' ≫ b = y ≫ ιF`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullback.condition, ← Category.assoc, ← Category.assoc, ← hs, Category.assoc π₁, hy, Category.assoc]`. Establish `h2` using `this =≫ cokernel.π ιF`. Simplify using `only [Category.assoc] at h2 ⊢`. Rewrite using `[h2, cokernel.condition, comp_zero]`. Take `⟨T₂, π₂, hπ₂, z, hz2⟩` from `hex (π₁ ≫ x ≫ pullback.fst b ι') hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only at hz2`. Use `⟨T₂, π₂ ≫ π₁, epi_comp _ _, z, ?_⟩` and prove the remaining obligations. Simplify using `only`. Apply `(cancel_mono (pullback.fst b ι')).1` to reduce the goal to its premises. Simplify using `only [Category.assoc, ht1]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hz2` using `[Category.assoc]`.
+A detailed English derivation is pending.
 -/
 theorem shortExact_pullback_cokernel_of_shortExact {C : Type*} [Category C] [Abelian C]
     {A E₂ E₃ F F' : C} (b : E₂ ⟶ E₃) [Epi b] (ιF : F ⟶ E₃)
@@ -68,7 +68,7 @@ end GlobalTheory
 
 open GlobalTheory in
 /- English proof (translation)
-Introduce `X A E₂ E₃ F F' b _ ιF ι' _ s hs f hz hS t τ ht1 ht2`. Conclude with `shortExact_pullback_cokernel_of_shortExact b ιF ι' s hs f hz hS t τ ht1 ht2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.shortExact_pullback_cokernel_modules : ∀ (X : Scheme.{0}) {A E₂ E₃ F F' : X.Modules} (b : E₂ ⟶ E₃) [Epi b] (ιF : F ⟶ E₃)
     (ι' : F' ⟶ E₃) [Mono ι'] (s : F ⟶ F'), s ≫ ι' = ιF → ∀ (f : A ⟶ E₂)

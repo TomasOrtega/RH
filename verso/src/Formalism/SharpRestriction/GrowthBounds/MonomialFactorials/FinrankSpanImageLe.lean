@@ -11,13 +11,11 @@ section Dim
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Rewrite using `[g.as_sum]`. Use `Submodule.sum_mem _ fun μ hμ => ?_` and prove the remaining obligations. Establish `hsupp` using `((mem_restrictSupport_iff _).1 hg.1) (Finset.mem_coe.2 hμ)`. Establish `h1 : monomial μ (1 : ℚ_[p]) ∈ Formalism.GM.M.XiPolZ p N r t b`. Use `⟨?_, ⟨monomial μ 1, by simp⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show monomial μ (1 : ℚ_[p]) ∈ restrictSupport ℚ_[p] _`. Rewrite using `[mem_restrictSupport_iff]`. Introduce `m hm`. Establish `: m = μ`. Use `support_monomial_subset hm` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Rewrite using `[this]`. Conclude with `hsupp`. Establish `h2 : monomial μ (g.coeff μ) = g.coeff μ • map ι (monomial μ (1 : ℚ_[p]))`. Rewrite using `[map_monomial, map_one, smul_monomial, smul_eq_mul, mul_one]`.
-
-Rewrite using `[h2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, h1, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xi_span (ι : ℚ_[p] →+* KK O) {N r t b : ℕ} (g : MvPolynomial (BVar N r t) (KK O))
     (hg : g ∈ XiPolZ O N r t b) :
@@ -48,15 +46,13 @@ def PG {N r : ℕ} (D : BlockData N) (j : Fin (gmB D).T.t → ℕ) (jp : ℕ) :
     X (Formalism.GM.M.scalZ N r (gmB D).T.t (Fin.last (gmB D).T.t)) ^ (gmB D).zPlus
 
 /- English proof (translation)
-Use `set bW := Module.finBasis ℚ_[p] W`. Establish `h0 : f 0 = 0`. Use `hsm 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, map_zero, zero_smul]`. Then use the resulting hypothesis. Establish `hsum : ∀ (s : Finset (Fin (Module.finrank ℚ_[p] W))) (c : Fin (Module.finrank ℚ_[p] W) → ℚ_[p]), f (∑ i ∈ s, c i • (bW i : V₁)) = ∑ i ∈ s, ι (c i) • f (bW i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s c`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [h0]`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hadd, hsm, ih]`. Establish `hle : Submodule.span (KK O) (f '' (W : Set V₁)) ≤ Submodule.span (KK O) (Set.range fun i => f (bW i))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hw' : (⟨w, hw⟩ : W) = ∑ i, (bW.repr ⟨w, hw⟩ i) • bW i` using `(bW.sum_repr _).symm`. Establish `hw'' : w = ∑ i, (bW.repr ⟨w, hw⟩ i) • (bW i : V₁)`. Establish `h3` using `congrArg (Submodule.subtype W) hw'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[map_sum]`. Simplify `h3` using `only [Submodule.subtype_apply, map_smul]`. Rewrite using `[hw'', hsum]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `haveI : FiniteDimensional (KK O) (Submodule.span (KK O) (Set.range fun i => f (bW i))) := FiniteDimensional.span_of_finite (KK O) (Set.finite_range _)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem finrank_span_image_le (ι : ℚ_[p] →+* KK O) {V₁ V₂ : Type} [AddCommGroup V₁] [Module ℚ_[p] V₁]
     [AddCommGroup V₂] [Module (KK O) V₂] (f : V₁ → V₂) (hadd : ∀ u v, f (u + v) = f u + f v)
@@ -92,9 +88,9 @@ theorem finrank_span_image_le (ι : ℚ_[p] →+* KK O) {V₁ V₂ : Type} [AddC
     _ = Module.finrank ℚ_[p] W := Fintype.card_fin _
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[show (⨆ i ∈ (∅ : Finset ι), U i) = (⊥ : Submodule K V) by simp]`. Conclude with `⟨inferInstance, by simp⟩`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨h1, h2⟩` from `ih fun i hi => hU i (Finset.mem_insert_of_mem hi)`. Establish `ha'` using `hU a (Finset.mem_insert_self a s)`. Rewrite using `[Finset.iSup_insert, Finset.sum_insert ha]`. Use `⟨Submodule.finiteDimensional_sup _ _, ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.finrank_add_le_finrank_add_finrank _ _).trans (Nat.add_le_add_left h2 _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finrank_biSup_le {K V ι : Type} [Field K] [AddCommGroup V] [Module K V] (U : ι → Submodule K V)
     (s : Finset ι) (hU : ∀ i ∈ s, FiniteDimensional K (U i)) :

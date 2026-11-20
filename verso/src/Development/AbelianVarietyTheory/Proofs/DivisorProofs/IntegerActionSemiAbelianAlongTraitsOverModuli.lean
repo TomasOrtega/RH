@@ -17,11 +17,11 @@ open Classical
 namespace GlobalTheory.UPoinc
 
 /- English proof (translation)
-Take `⟨⟨p, φ⟩, hy⟩` from `(Scheme.SpecToEquivOfField K X).symm.surjective y`. Establish `hp : p = j ξ`. Rewrite using `[← h, ← hy]`. Conclude with `(X.fromSpecResidueField_apply p _).symm`. Substitute `hp` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `: IsIso (j.residueFieldMap ξ)`. Use `(ConcreteCategory.isIso_iff_bijective _).2 ⟨(j.residueFieldMap ξ).hom.injective, fun a => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `X'.residue_surjective ξ a`. Take `⟨b, rfl⟩` from `j.stalkMap_surjective ξ a`. Conclude with `⟨X.residue _ b, congr($(Scheme.residue_residueFieldMap j ξ).hom b)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Spec.map (inv (j.residueFieldMap ξ) ≫ φ) ≫ X'.fromSpecResidueField ξ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, Scheme.SpecToEquivOfField_symm_apply, Category.assoc, ← Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField, ← Category.assoc, ← Spec.map_comp, IsIso.hom_inv_id_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fieldPt_lift_preimm {X' X : Scheme.{0}} (j : X' ⟶ X) [IsPreimmersion j] {K : Type} [Field K]
     (y : Sp K ⟶ X) (ξ : X') (h : y (IsLocalRing.closedPoint K) = j ξ) : ∃ z : Sp K ⟶ X', z ≫ j = y := by
@@ -41,17 +41,15 @@ private theorem fieldPt_lift_preimm {X' X : Scheme.{0}} (j : X' ⟶ X) [IsPreimm
     IsIso.hom_inv_id_assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c C X₁ Y U₀ EE out r hO hpt`. Take `⟨wi⟩` from `nonempty_uWit X₁`. Take `⟨f, ψ, hfm, -, -, -, H0⟩` from `GlobalTheory.T.semiAbelianAction_eq_universal_at_fieldPoints_of_thetaModel E H Dw l Xo c C X₁ Y U₀ EE out r hO hpt wi`. Use `⟨f, hfm, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨x, hx⟩ K _ _ t ⟨p, hp⟩ haveI := C.isPreimmersion_i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨y, hy⟩` from `fieldPt_lift_preimm C.i (t ≫ r) x (by`. Establish `e : (t ≫ r) (IsLocalRing.closedPoint K) = r (t p)`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum K) (IsLocalRing.closedPoint K) p]`. Conclude with `Scheme.Hom.comp_apply _ _ _`. Rewrite using `[e, hp, hx])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨tK, ⟨m⟩⟩` from `GlobalTheory.ModFam.exists_sabPull (y ≫ pullback.fst _ _) Xo.univ.t`. Take `⟨γ, hγ, -, -⟩` from `H0 K t y hy.symm tK ⟨m⟩`. Use `haveI : IsProper Xo.univ.t.G.hom := Xo.univ.proper`. Use `haveI : IsProper tK.G.hom := MorphismProperty.of_isPullback m.cart.1 inferInstance`. Rewrite using `[← hγ.1.isoPullback_inv_snd]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `infer_instance`. Introduce `T ξ hξ`. Take `⟨tK, ⟨m₁⟩, ⟨m₂⟩⟩` from `T.gen`. Take `⟨γ, hγ, hγL, hγa⟩` from `H0 (FractionRing T.V) (jK T.V ≫ ξ) T.y (by rw [Category.assoc]; exact hξ) tK ⟨m₂⟩`. Take `⟨β, hβ, hφβ, hβa⟩` from `GlobalTheory.T.exists_grpPullback_completeDVR_of_generic_compat T.V T.cdvr T.t.G T.t.semi Y.Z out.G out.semi ξ tK.G m₁.φ γ m₁.cart hγ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨β, hβ, ?_, fun a => hβa (T.t.act.act a) (f a) (tK.act.act a) (m₁.act a) (hγa a)⟩` and prove the remaining obligations. Establish `h₁ : LBIso tK.PP.L (T.t.PP.L.pull m₁.φ)`. Take `⟨w, hw, -⟩` from `m₁.lin`. Conclude with `⟨w, hw⟩`. Establish `hL` using `out.L.isLB`.
-
-Use `GlobalTheory.T.lineBundleIso_of_generic_semiAbelian_completeDVR T.V T.cdvr T.t.G T.t.semi tK.G m₁.φ m₁.cart _ _ T.t.PP.isLB (pull_isLB hL β) ?_` and prove the remaining obligations. Conclude with `LBIso.trans (pull_isLB T.t.PP.isLB _) tK.PP.isLB (pull_isLB (pull_isLB hL β) _) (LBIso.symm h₁) (LBIso.trans tK.PP.isLB (pull_isLB hL γ) (pull_isLB (pull_isLB hL β) _) hγL (GenSpread.lbIso_pull_pull hL m₁.φ hφβ.symm))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem oAct_along_traits_of_over : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (Y : RatModel X₁.o₁ X₁.Ω₁) (U₀ : Y.Z.Opens) (EE : Y.Lat X₁.S.J) (out : ZHOut X₁.ρ Y U₀ EE) (r : Y.Z ⟶ C.Z), X₁.S.Over₀ Y U₀ → Y.pt ≫ r = X₁.uΩ ≫ C.i → ∃ f : 𝓞 E → (out.G ⟶ out.G), (∀ a, IsMonHom (f a)) ∧ (∀ z : Y.Z, r z ∈ Set.range C.i → z ∈ abLocus out.G) ∧ (∀ (T : UTrait Xo c) (ξ : Sp T.V ⟶ Y.Z), jK T.V ≫ ξ ≫ r = T.y ≫ C.i → ∃ β : T.t.G.left ⟶ out.G.left, IsGrpPullback T.t.G out.G ξ β ∧ LBIso T.t.PP.L (out.L.L.pull β) ∧ ∀ a, (T.t.act.act a).left ≫ β = β ≫ (f a).left) := by
   intro E _ _ _ H Dw l Xo c C X₁ Y U₀ EE out r hO hpt

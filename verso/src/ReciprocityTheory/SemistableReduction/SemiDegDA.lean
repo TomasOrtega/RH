@@ -8,7 +8,7 @@ open Matrix NumberField
 open scoped ComplexOrder MatrixOrder
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, dotProduct_mulVec, star_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sdd_quad_conj {n m : ℕ} (P : Matrix (Fin n) (Fin m) ℂ) (Q : Matrix (Fin n) (Fin n) ℂ)
     (w : Fin m → ℂ) :
@@ -16,9 +16,9 @@ theorem sdd_quad_conj {n m : ℕ} (P : Matrix (Fin n) (Fin m) ℂ) (Q : Matrix (
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, dotProduct_mulVec, star_mulVec]
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp (Matrix.nonneg_iff_posSemidef.mpr hA.posSemidef)`. Use `⟨B, hB, ?_⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `hp` using `hA.det_pos`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hp` using `[hB, star_eq_conjTranspose, det_mul, h0, mul_zero]`. Conclude with `lt_irrefl _ hp`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sdd_factor {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.PosDef) :
     ∃ B : Matrix (Fin n) (Fin n) ℂ, A = Bᴴ * B ∧ IsUnit B.det := by
@@ -32,9 +32,9 @@ theorem sdd_factor {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.PosDef) :
   exact lt_irrefl _ hp
 
 /- English proof (translation)
-Establish `h` using `orthonormal_iff_ite.mp hD.eigenvectorBasis.orthonormal i i`. Rewrite `h` using `[if_pos rfl, PiLp.inner_apply]`. Rewrite using `[← h]`. Simplify using `only [dotProduct, Pi.star_apply, RCLike.inner_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Complex.star_def, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sdd_star_self_eig {n : ℕ} {D : Matrix (Fin n) (Fin n) ℂ} (hD : D.IsHermitian) (i : Fin n) :
     star (⇑(hD.eigenvectorBasis i)) ⬝ᵥ (⇑(hD.eigenvectorBasis i)) = 1 := by
@@ -46,7 +46,7 @@ theorem sdd_star_self_eig {n : ℕ} {D : Matrix (Fin n) (Fin n) ℂ} (hD : D.IsH
   simp [Complex.star_def, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[hD.mulVec_eigenvectorBasis, dotProduct_smul, sdd_star_self_eig hD i]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sdd_quad_eig {n : ℕ} {D : Matrix (Fin n) (Fin n) ℂ} (hD : D.IsHermitian) (i : Fin n) :
     star (⇑(hD.eigenvectorBasis i)) ⬝ᵥ (D *ᵥ ⇑(hD.eigenvectorBasis i)) = (hD.eigenvalues i : ℂ) := by
@@ -54,7 +54,7 @@ theorem sdd_quad_eig {n : ℕ} {D : Matrix (Fin n) (Fin n) ℂ} (hD : D.IsHermit
   simp
 
 /- English proof (translation)
-Rewrite using `[hD.det_eq_prod_eigenvalues, norm_prod]`. Apply `Finset.prod_le_one (fun i _ => norm_nonneg _)` to reduce the goal to its premises. Introduce `i _`. Establish `hi` using `h (hD.eigenvectorBasis i)`. Rewrite `hi` using `[sdd_quad_eig hD i, sdd_star_self_eig hD i, Complex.one_re]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sdd_det_abs_le_one {n : ℕ} {D : Matrix (Fin n) (Fin n) ℂ} (hD : D.IsHermitian)
     (h : ∀ w : Fin n → ℂ, ‖star w ⬝ᵥ (D *ᵥ w)‖ ≤ (star w ⬝ᵥ w).re) : ‖D.det‖ ≤ 1 := by
@@ -65,9 +65,9 @@ theorem sdd_det_abs_le_one {n : ℕ} {D : Matrix (Fin n) (Fin n) ℂ} (hD : D.Is
   rwa [sdd_quad_eig hD i, sdd_star_self_eig hD i, Complex.one_re] at hi
 
 /- English proof (translation)
-Establish `hev : ∀ i, 1 ≤ hD.eigenvalues i`. Introduce `i`. Establish `hi` using `h (hD.eigenvectorBasis i)`. Rewrite `hi` using `[sdd_quad_eig hD i, sdd_star_self_eig hD i, Complex.one_re, Complex.ofReal_re]`. Then use the resulting hypothesis. Establish `hdet : D.det = ((∏ i, hD.eigenvalues i : ℝ) : ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[hD.det_eq_prod_eigenvalues, Complex.ofReal_prod]`. Both sides reduce to the same expression. Rewrite using `[hdet, Complex.ofReal_re]`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem sdd_det_ge_one {n : ℕ} {D : Matrix (Fin n) (Fin n) ℂ} (hD : D.IsHermitian)
     (h : ∀ w : Fin n → ℂ, (star w ⬝ᵥ w).re ≤ (star w ⬝ᵥ (D *ᵥ w)).re) :
@@ -85,7 +85,7 @@ theorem sdd_det_ge_one {n : ℕ} {D : Matrix (Fin n) (Fin n) ℂ} (hD : D.IsHerm
     _ ≤ _ := Finset.prod_le_prod (fun _ _ => zero_le_one) (fun i _ => hev i)
 
 /- English proof (translation)
-Use `⟨?_, fun w => sdd_quad_conj B⁻¹ X w⟩` and prove the remaining obligations. Establish `h1 : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul B hu`. Establish `h2 : Bᴴ * (B⁻¹)ᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem sdd_congr {n : ℕ} (B X : Matrix (Fin n) (Fin n) ℂ) (hu : IsUnit B.det) :
     X = Bᴴ * ((B⁻¹)ᴴ * X * B⁻¹) * B ∧
@@ -98,7 +98,7 @@ theorem sdd_congr {n : ℕ} (B X : Matrix (Fin n) (Fin n) ℂ) (hu : IsUnit B.de
     _ = _ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hw : B *ᵥ (B⁻¹ *ᵥ w) = w`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv B hu, Matrix.one_mulVec]`. Establish `e` using `sdd_quad_conj B 1 (B⁻¹ *ᵥ w)`. Rewrite `e` using `[Matrix.mul_one, hw, Matrix.one_mulVec]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sdd_quad_self {n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (hu : IsUnit B.det) (w : Fin n → ℂ) :
     star w ⬝ᵥ w = star (B⁻¹ *ᵥ w) ⬝ᵥ ((Bᴴ * B) *ᵥ (B⁻¹ *ᵥ w)) := by
@@ -109,7 +109,7 @@ theorem sdd_quad_self {n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (hu : IsUnit B.
   exact e.symm
 
 /- English proof (translation)
-Rewrite using `[det_mul, det_conjTranspose, Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sdd_norm_det_sq {n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) :
     (Bᴴ * B).det = ((‖B.det‖ ^ 2 : ℝ) : ℂ) := by
@@ -118,7 +118,7 @@ theorem sdd_norm_det_sq {n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[det_mul, det_mul, ← sdd_norm_det_sq B, det_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sdd_det_congr {n : ℕ} (B D : Matrix (Fin n) (Fin n) ℂ) :
     (Bᴴ * D * B).det = ((‖B.det‖ ^ 2 : ℝ) : ℂ) * D.det := by
@@ -126,11 +126,11 @@ theorem sdd_det_congr {n : ℕ} (B D : Matrix (Fin n) (Fin n) ℂ) :
   ring
 
 /- English proof (translation)
-Take `⟨B, hAB, hu⟩` from `sdd_factor hA`. Take `⟨hCe, hq⟩` from `sdd_congr B C hu`. Establish `hDh : ((B⁻¹)ᴴ * C * B⁻¹).IsHermitian`. Simplify using `only [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose, hC.eq, Matrix.mul_assoc]`. Establish `hD1 : ‖((B⁻¹)ᴴ * C * B⁻¹).det‖ ≤ 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `sdd_det_abs_le_one hDh` to reduce the goal to its premises. Introduce `w`. Rewrite using `[hq w, sdd_quad_self B hu w, ← hAB]`. Conclude with `h _`. Establish `hdetA : A.det = ((‖B.det‖ ^ 2 : ℝ) : ℂ)` using `by rw [hAB, sdd_norm_det_sq]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hCe, sdd_det_congr, hdetA, Complex.ofReal_re, norm_mul, Complex.norm_real, Real.norm_of_nonneg (sq_nonneg _)]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sdd_absDet {n : ℕ} (A C : Matrix (Fin n) (Fin n) ℂ) (hA : A.PosDef) (hC : C.IsHermitian)
     (h : ∀ v : Fin n → ℂ, ‖star v ⬝ᵥ (C *ᵥ v)‖ ≤ (star v ⬝ᵥ (A *ᵥ v)).re) :
@@ -151,11 +151,11 @@ theorem sdd_absDet {n : ℕ} (A C : Matrix (Fin n) (Fin n) ℂ) (hA : A.PosDef) 
     _ = _ := mul_one _
 
 /- English proof (translation)
-Take `⟨B, hXB, hu⟩` from `sdd_factor hX`. Take `⟨hYe, hq⟩` from `sdd_congr B Y hu`. Establish `hDh : ((B⁻¹)ᴴ * Y * B⁻¹).IsHermitian`. Simplify using `only [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose, hY.eq, Matrix.mul_assoc]`. Take `⟨hDr, hD1⟩` from `sdd_det_ge_one hDh (fun w => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hq w, sdd_quad_self B hu w, ← hXB]`. Conclude with `h _)`. Establish `hdetX : X.det = ((‖B.det‖ ^ 2 : ℝ) : ℂ)` using `by rw [hXB, sdd_norm_det_sq]`. Establish `hBpos : 0 < ‖B.det‖ ^ 2` using `pow_pos (norm_pos_iff.mpr hu.ne_zero) 2`. Rewrite using `[hdetX, hYe, sdd_det_congr, hDr, Complex.ofReal_re, ← Complex.ofReal_mul, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hBpos, le_mul_of_one_le_right hBpos.le hD1⟩`.
+A detailed English derivation is pending.
 -/
 theorem sdd_det_mono {n : ℕ} (X Y : Matrix (Fin n) (Fin n) ℂ) (hX : X.PosDef) (hY : Y.IsHermitian)
     (h : ∀ v : Fin n → ℂ, (star v ⬝ᵥ (X *ᵥ v)).re ≤ (star v ⬝ᵥ (Y *ᵥ v)).re) :
@@ -177,7 +177,7 @@ def embM {K : Type} [Field K] [NumberField K] {r k : ℕ} (σ : K →+* ℂ) (b 
   Matrix.of fun l i => σ (b i l)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [gramX, embM, embVec, Matrix.of_apply, Matrix.mul_apply, conjTranspose_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sdd_gramX_eq {K : Type} [Field K] [NumberField K] {r k m : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) (b : Fin k → Fin r → K) (c : Fin m → Fin r → K) :
@@ -189,20 +189,20 @@ theorem sdd_gramX_eq {K : Type} [Field K] [NumberField K] {r k m : ℕ}
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-The claim follows from `sdd_gramX_eq H σ b b`.
+A detailed English derivation is pending.
 -/
 theorem sdd_gramC_eq {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) (b : Fin k → Fin r → K) :
     gramC H σ b = (embM σ b)ᴴ * H * embM σ b := sdd_gramX_eq H σ b b
 
 /- English proof (translation)
-Set `M : Matrix (Fin r) (Fin k) K` to `Matrix.of fun l i => b i l`. Establish `hM : Function.Injective M.mulVecLin`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `hs : ∑ i, x i • b i = M.mulVecLin x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `l`. Simplify using `[M, Matrix.mulVec, dotProduct, mul_comm, Finset.sum_apply]`. Rewrite `hs` using `[hx]`. Conclude with `funext (Fintype.linearIndependent_iff.mp hb x hs)`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective M.mulVecLin (LinearMap.ker_eq_bot.mpr hM)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLM : LinearMap.toMatrix' g * M = 1`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, LinearMap.toMatrix'_mulVec]`. Conclude with `LinearMap.congr_fun hg x`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hE : embM σ b = M.map σ` using `rfl`. Introduce `x y hxy`. Establish `e` using `congrArg ((LinearMap.toMatrix' g).map σ).mulVec hxy`. Simplify using `only [hE, Matrix.mulVec_mulVec, ← Matrix.map_mul, hLM, Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.one_mulVec] at e`. Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sdd_embM_inj {K : Type} [Field K] [NumberField K] {r k : ℕ} (σ : K →+* ℂ)
     (b : Fin k → Fin r → K) (hb : LinearIndependent K b) : Function.Injective (embM σ b).mulVec := by
@@ -231,9 +231,9 @@ theorem sdd_embM_inj {K : Type} [Field K] [NumberField K] {r k : ℕ} (σ : K �
   exact e
 
 /- English proof (translation)
-Establish `e : star x ⬝ᵥ (diagonal (fun l => (d l : ℂ)) *ᵥ x) = ∑ l, ((d l * ‖x l‖ ^ 2 : ℝ) : ℂ)`. Simplify using `only [dotProduct, mulVec_diagonal, Pi.star_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, ← mul_assoc, mul_comm ((starRingEnd ℂ) (x l)), mul_assoc, Complex.conj_mul']`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← Complex.ofReal_sum, Complex.ofReal_re]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem sdd_diag_quad {r : ℕ} (d : Fin r → ℝ) (x : Fin r → ℂ) :
     (star x ⬝ᵥ (diagonal (fun l => (d l : ℂ)) *ᵥ x)).re = ∑ l, d l * ‖x l‖ ^ 2 := by
@@ -246,9 +246,9 @@ theorem sdd_diag_quad {r : ℕ} (d : Fin r → ℝ) (x : Fin r → ℂ) :
   rw [e, ← Complex.ofReal_sum, Complex.ofReal_re]
 
 /- English proof (translation)
-Rewrite using `[sdd_quad_conj, sdd_quad_conj, sdd_diag_quad, sdd_diag_quad]`. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Establish `hrow : (B1 *ᵥ v) l = if e ≤ (l : ℕ) then (E *ᵥ v) l else 0`. Apply the tactic sequence `by_cases hc : e ≤ (l : ℕ) <;> simp [Matrix.mulVec, dotProduct, hB1, hc]`. Rewrite using `[hrow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `le_rfl`. Rewrite using `[norm_zero]`. Use polynomial arithmetic with `[hd l, sq_nonneg ‖(E *ᵥ v) l‖]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sdd_cut_quad {r k : ℕ} (d : Fin r → ℝ) (hd : ∀ l, 0 ≤ d l) (e : ℕ)
     (E B1 : Matrix (Fin r) (Fin k) ℂ) (hB1 : ∀ l j, B1 l j = if e ≤ (l : ℕ) then E l j else 0)
@@ -266,11 +266,11 @@ theorem sdd_cut_quad {r k : ℕ} (d : Fin r → ℝ) (hd : ∀ l, 0 ≤ d l) (e 
     nlinarith [hd l, sq_nonneg ‖(E *ᵥ v) l‖]
 
 /- English proof (translation)
-Use `set G := Bᴴ * H * B with hGdef`. Establish `hGG : G⁻¹ * G = 1` using `Matrix.nonsing_inv_mul G hu`. Establish `hGinvH : (G⁻¹)ᴴ = G⁻¹` using `by rw [conjTranspose_nonsing_inv, hG.eq]`. Establish `hYH : (Bᴴ * H * C)ᴴ = Cᴴ * H * B`. Rewrite using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hH, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hXh : (G⁻¹ * (Bᴴ * H * C))ᴴ = (Cᴴ * H * B) * G⁻¹`. Rewrite using `[conjTranspose_mul, hYH, hGinvH]`. Establish `hcanc : ∀ Z : Matrix (Fin k₀) (Fin k₁) ℂ, G⁻¹ * (Bᴴ * (H * (B * Z))) = Z`. Introduce `Z`. Establish `hz : Bᴴ * (H * (B * Z)) = G * Z` using `by simp only [hGdef, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, ← Matrix.mul_assoc, hGG, Matrix.one_mul]`. Rewrite using `[conjTranspose_sub, conjTranspose_mul, hXh]`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, hcanc]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem sdd_schur {r k₀ k₁ : ℕ} (B : Matrix (Fin r) (Fin k₀) ℂ) (C : Matrix (Fin r) (Fin k₁) ℂ)
     (H : Matrix (Fin r) (Fin r) ℂ) (hH : Hᴴ = H) (hG : (Bᴴ * H * B).IsHermitian)

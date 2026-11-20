@@ -41,7 +41,7 @@ theorem eA_apply (Z : Fin s → Fin s → ℂ) (v : Fin s → ℂ) : eA s Z v = 
 def invF (Z : Fin s → Fin s → ℂ) : Fin s → Fin s → ℂ := Matrix.of.symm (Matrix.of Z)⁻¹
 
 /- English proof (translation)
-Establish `hu : IsUnit (Matrix.of Z).det` using `isUnit_iff_ne_zero.mpr h`. Establish `hinv : Matrix.of (invF s Z) = (Matrix.of Z)⁻¹` using `by simp [invF]`. Apply the tactic sequence `constructor <;> ext1 v <;>`. Simplify using `only [ContinuousLinearMap.mul_apply, eA_apply, ContinuousLinearMap.one_apply, Matrix.mulVec_mulVec, hinv, Matrix.mul_nonsing_inv _ hu, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem eA_mul_inv {Z : Fin s → Fin s → ℂ} (h : (Matrix.of Z).det ≠ 0) :
     eA s Z * eA s (invF s Z) = 1 ∧ eA s (invF s Z) * eA s Z = 1 := by
@@ -53,13 +53,13 @@ theorem eA_mul_inv {Z : Fin s → Fin s → ℂ} (h : (Matrix.of Z).det ≠ 0) :
       Matrix.one_mulVec]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨eA s Z, eA s (invF s Z), (eA_mul_inv s h).1, (eA_mul_inv s h).2⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnit_eA {Z : Fin s → Fin s → ℂ} (h : (Matrix.of Z).det ≠ 0) : IsUnit (eA s Z) :=
   ⟨⟨eA s Z, eA s (invF s Z), (eA_mul_inv s h).1, (eA_mul_inv s h).2⟩, rfl⟩
 
 /- English proof (translation)
-Conclude with `Ring.inverse_unit ⟨eA s Z, eA s (invF s Z), (eA_mul_inv s h).1, (eA_mul_inv s h).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem inverse_eA {Z : Fin s → Fin s → ℂ} (h : (Matrix.of Z).det ≠ 0) :
     Ring.inverse (eA s Z) = eA s (invF s Z) := by
@@ -97,9 +97,9 @@ def cF (i : Fin s × Fin s × Bool) (Z : Fin s → Fin s → ℂ) : (Fin s → F
   lamF s i (Ring.inverse (eA s Z))
 
 /- English proof (translation)
-Establish `hinv : Matrix.of (invF s Z) = (Matrix.of Z)⁻¹` using `by simp [invF]`. Rewrite using `[cF, inverse_eA s h]`. Use `show lamL s i.1 i.2.1 i.2.2 (eA s (invF s Z)) W = _`. Rewrite using `[lamL_apply, eA_apply, hinv]`. Establish `e : ((Matrix.of Z)⁻¹.mulVec fun c => W c i.2.1) i.1 = ((Matrix.of Z)⁻¹ * Matrix.of W) i.1 i.2.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec, Matrix.mul_apply, dotProduct]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cF_apply (i : Fin s × Fin s × Bool) {Z : Fin s → Fin s → ℂ} (h : (Matrix.of Z).det ≠ 0)
     (W : Fin s → Fin s → ℂ) :
@@ -115,13 +115,13 @@ theorem cF_apply (i : Fin s × Fin s × Bool) {Z : Fin s → Fin s → ℂ} (h :
   rw [e]
 
 /- English proof (translation)
-The claim follows from `isOpen_ne_fun (Continuous.matrix_det (by exact continuous_id)) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_det : IsOpen {Z : Fin s → Fin s → ℂ | (Matrix.of Z).det ≠ 0} :=
   isOpen_ne_fun (Continuous.matrix_det (by exact continuous_id)) continuous_const
 
 /- English proof (translation)
-Establish `hinv : ContDiffOn ℝ n (Ring.inverse : En s → En s) {x | IsUnit x}` using `fun x hx => by`. Take `⟨u, rfl⟩` from `hx`. Conclude with `(contDiffAt_ringInverse ℝ u).contDiffWithinAt`. Conclude with `(lamF s i).contDiff.comp_contDiffOn (hinv.comp (eA s).contDiff.contDiffOn (fun Z hZ => isUnit_eA s hZ))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem contDiffOn_cF (i : Fin s × Fin s × Bool) (n : ℕ) :
     ContDiffOn ℝ n (cF s i) {Z : Fin s → Fin s → ℂ | (Matrix.of Z).det ≠ 0} := by
@@ -132,7 +132,7 @@ theorem contDiffOn_cF (i : Fin s × Fin s × Bool) (n : ℕ) :
     (hinv.comp (eA s).contDiff.contDiffOn (fun Z hZ => isUnit_eA s hZ))
 
 /- English proof (translation)
-Introduce `x hx` and use `by obtain ⟨u, rfl⟩ := hx exact (contDiffAt_ringInverse ℝ u).contDiffWithinAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem contDiffOn_inv (n : ℕ) : ContDiffOn ℝ n (Ring.inverse : En s → En s) {x : En s | IsUnit x} :=
   fun x hx => by
@@ -140,7 +140,7 @@ theorem contDiffOn_inv (n : ℕ) : ContDiffOn ℝ n (Ring.inverse : En s → En 
     exact (contDiffAt_ringInverse ℝ u).contDiffWithinAt
 
 /- English proof (translation)
-Rewrite using `[inverse_eA s h]`. Conclude with `(eA s).le_opNorm _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_inverse_le {Z : Fin s → Fin s → ℂ} (h : (Matrix.of Z).det ≠ 0) :
     ‖Ring.inverse (eA s Z)‖ ≤ ‖eA s‖ * ‖invF s Z‖ := by
@@ -148,21 +148,19 @@ theorem norm_inverse_le {Z : Fin s → Fin s → ℂ} (h : (Matrix.of Z).det ≠
   exact (eA s).le_opNorm _
 
 /- English proof (translation)
-Use `set U := {Z : Fin s → Fin s → ℂ | (Matrix.of Z).det ≠ 0} with hU_def`. Establish `hUo : IsOpen U` using `isOpen_det s`. Set `φ : (Fin s → Fin s → ℂ) → En s` to `fun Z => Ring.inverse (eA s Z)`. Set `P : (En s →L[ℝ] En s) →L[ℝ] ((Fin s → Fin s → ℂ) →L[ℝ] En s)` to `(ContinuousLinearMap.compL ℝ (Fin s → Fin s → ℂ) (En s) (En s)).flip (eA s)`. Set `Bi : En s →L[ℝ] En s →L[ℝ] ((Fin s → Fin s → ℂ) →L[ℝ] En s)` to `(ContinuousLinearMap.compL ℝ (En s) (En s →L[ℝ] En s) _ (-P)).comp (ContinuousLinearMap.mulLeftRight ℝ (En s))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : ∀ m : ℕ, ContDiffOn ℝ m φ U` using `fun m => (contDiffOn_inv s m).comp (eA s).contDiff.contDiffOn (fun Z hZ => isUnit_eA s hZ)`. Establish `hd : ∀ Z ∈ U, fderiv ℝ φ Z = Bi (φ Z) (φ Z)`. Introduce `Z hZ`. Take `⟨u, hu⟩` from `isUnit_eA s hZ`. Establish `h0` using `hasFDerivAt_ringInverse (𝕜 := ℝ) u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[hu]`. Establish `h1` using `h0.comp Z (eA s).hasFDerivAt`. Establish `hinv : ((u⁻¹ : (En s)ˣ) : En s) = φ Z` using `by show _ = Ring.inverse (eA s Z)`. Rewrite using `[← hu, Ring.inverse_unit u]`. Rewrite using `[show φ = Ring.inverse ∘ (eA s) from rfl, h1.fderiv, hinv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `W : 1`. Simplify using `[Bi, P, φ]`. Take `⟨K0, hK0, hb⟩` from `quad_bound Bi hUo hφ hd n`. Use `⟨(∑ j, ‖lamF s j‖) * K0, mul_nonneg (Finset.sum_nonneg fun _ _ => norm_nonneg _) hK0, ?_⟩` and prove the remaining obligations. Introduce `Z hZ i a ha`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hZU : Z ∈ U` using `hZ`. Establish `hcf : cF s i = (lamF s i) ∘ φ` using `rfl`. Establish `e1 : iteratedFDeriv ℝ a (cF s i) Z = iteratedFDerivWithin ℝ a (cF s i) U Z` using `(iteratedFDerivWithin_of_isOpen a hUo hZU).symm`. Establish `e2 : iteratedFDeriv ℝ a φ Z = iteratedFDerivWithin ℝ a φ U Z` using `(iteratedFDerivWithin_of_isOpen a hUo hZU).symm`. Establish `h3 : ‖iteratedFDerivWithin ℝ a (cF s i) U Z‖ ≤ ‖lamF s i‖ * ‖iteratedFDerivWithin ℝ a φ U Z‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcf]`. Conclude with `(lamF s i).norm_iteratedFDerivWithin_comp_left (hφ a Z hZU) hUo.uniqueDiffOn hZU le_rfl`. Establish `hLi : ‖lamF s i‖ ≤ ∑ j, ‖lamF s j‖` using `Finset.single_le_sum (f := fun j => ‖lamF s j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)`. Establish `hM0 : 0 ≤ max 1 ‖φ Z‖` using `le_trans zero_le_one (le_max_left _ _)`. Establish `hM : max 1 ‖φ Z‖ ≤ max 1 ‖eA s‖ * max 1 ‖φ Z‖` using `le_mul_of_one_le_left hM0 (le_max_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL0 : 0 ≤ ∑ j, ‖lamF s j‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e2]`. Conclude with `mul_le_mul hLi (hb Z hZU a ha) (norm_nonneg _) hL0`.
-
-Use `_ ≤ (∑ j, ‖lamF s j‖) * (K0 * (max 1 ‖eA s‖ * max 1 ‖φ Z‖) ^ (a + 1)) := by gcongr`. Use `_ = (∑ j, ‖lamF s j‖) * K0 * (max 1 ‖eA s‖ * max 1 ‖Ring.inverse (eA s Z)‖) ^ (a + 1) := by`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cF_bound (n : ℕ) : ∃ K : ℝ, 0 ≤ K ∧ ∀ Z : Fin s → Fin s → ℂ, (Matrix.of Z).det ≠ 0 → ∀ i, ∀ a ≤ n,
     ‖iteratedFDeriv ℝ a (cF s i) Z‖ ≤ K * (max 1 ‖eA s‖ * max 1 ‖Ring.inverse (eA s Z)‖) ^ (a + 1) := by

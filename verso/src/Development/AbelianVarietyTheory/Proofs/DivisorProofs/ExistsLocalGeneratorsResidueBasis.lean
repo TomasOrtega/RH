@@ -11,19 +11,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FibreBasisSpread
 
 /- English proof (translation)
-Introduce `R _ M _ _ _ _ J _ v p _ hbij`. Use `haveI : Module.FinitePresentation R M := Module.finitePresentation_of_projective R M`. Set `Rp` to `Localization.AtPrime p`. Establish `hloc : Function.Bijective (IsLocalizedModule.map p.primeCompl (Finsupp.mapRange.linearMap (Algebra.linearMap R Rp)) (TensorProduct.mk R Rp M 1) (Finsupp.linearCombination R v))`. Rewrite using `[IsLocalizedModule.map_linearCombination, LinearMap.coe_restrictScalars]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Module.IsLocalRing.linearCombination_bijective_of_flat` to reduce the goal to its premises. Rewrite using `[← (AlgebraTensorModule.cancelBaseChange R Rp p.ResidueField p.ResidueField M).comp_bijective]`. Establish `heq : (AlgebraTensorModule.cancelBaseChange R Rp p.ResidueField p.ResidueField M).toLinearMap ∘ₗ Finsupp.linearCombination p.ResidueField (TensorProduct.mk Rp p.ResidueField (Rp ⊗[R] M) 1 ∘ (TensorProduct.mk R Rp M 1 ∘ v)) = Finsupp.linearCombination p.ResidueField (fun i => (1 : …`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hbij using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← heq, LinearMap.coe_comp]`. Both sides reduce to the same expression. Take `⟨g, hg, h⟩` from `Module.FinitePresentation.exists_notMem_bijective (Finsupp.linearCombination R v) p _ _ hloc`. Use `⟨g, hg, fun x => ?_, fun c hc => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `h.2 (LocalizedModule.mk x 1)`. Proceed by induction on `y using LocalizedModule.induction_on with`. Consider the case `h c s`. Rewrite `hy` using `[LocalizedModule.map_mk, LocalizedModule.mk_eq]`. Take `⟨⟨u, hu⟩, hu'⟩` from `hy`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hu`. Take `⟨b, hb⟩` from `s.2`. Use `⟨a + b, g ^ a • c, ?_⟩` and prove the remaining obligations. Establish `hb' : (s : R) = g ^ b` using `hb.symm`. Simplify using `only [Submonoid.smul_def, one_smul] at hu'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, hu', hb', smul_smul, pow_add]`. Establish `h0 : LocalizedModule.map (Submonoid.powers g) (Finsupp.linearCombination R v) (LocalizedModule.mk c 1) = LocalizedModule.map (Submonoid.powers g) (Finsupp.linearCombination R v) 0`. Rewrite using `[LocalizedModule.map_mk, hc, map_zero, LocalizedModule.zero_mk]`. Establish `h1` using `h.1 h0`. Rewrite `h1` using `[← LocalizedModule.zero_mk 1, LocalizedModule.mk_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨u, hu⟩, hu'⟩` from `h1`. Take `⟨a, rfl⟩` from `hu`. Conclude with `⟨a, by simpa [Submonoid.smul_def] using hu'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_away_linearCombination_bijective : ∀ (R : Type) [CommRing R] (M : Type) [AddCommGroup M] [Module R M] [Module.Finite R M]
     [Module.Projective R M] (J : Type) [Fintype J] (v : J → M) (p : Ideal R) [p.IsPrime],

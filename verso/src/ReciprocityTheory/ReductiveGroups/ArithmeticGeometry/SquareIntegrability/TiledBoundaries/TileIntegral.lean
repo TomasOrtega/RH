@@ -15,7 +15,7 @@ def reps (bA bB : Basis ι ℝ V) : Finset V :=
   (ZSpan.setFinite_inter bB (ZSpan.fundamentalDomain_isBounded bA)).toFinset
 
 /- English proof (translation)
-Unfold `reps`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `Iff.intro (fun h => ⟨h.1, h.2⟩) (fun h => ⟨h.1, h.2⟩)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove both required implications or components.
 -/
 theorem mem_reps {bA bB : Basis ι ℝ V} {c : V} :
     c ∈ reps bA bB ↔ c ∈ ZSpan.fundamentalDomain bA ∧ c ∈ span ℤ (range bB) := by
@@ -24,7 +24,7 @@ theorem mem_reps {bA bB : Basis ι ℝ V} {c : V} :
   exact Iff.intro (fun h => ⟨h.1, h.2⟩) (fun h => ⟨h.1, h.2⟩)
 
 /- English proof (translation)
-Use `(ZSpan.exist_unique_vadd_mem_fundamentalDomain (b := b) x).unique (y₁ := ⟨β1, h1⟩) (y₂ := ⟨β2, h2⟩) hx1 hx2` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fd_uniq (b : Basis ι ℝ V) {x β1 β2 : V} (h1 : β1 ∈ span ℤ (range b))
     (h2 : β2 ∈ span ℤ (range b)) (hx1 : β1 + x ∈ ZSpan.fundamentalDomain b)
@@ -34,7 +34,7 @@ theorem fd_uniq (b : Basis ι ℝ V) {x β1 β2 : V} (h1 : β1 ∈ span ℤ (ran
   exact congrArg Subtype.val this
 
 /- English proof (translation)
-Take `⟨v, hv, -⟩` from `ZSpan.exist_unique_vadd_mem_fundamentalDomain (b := b) x`. Conclude with `⟨v, v.2, hv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fd_exists (b : Basis ι ℝ V) (x : V) :
     ∃ β ∈ span ℤ (range b), β + x ∈ ZSpan.fundamentalDomain b := by
@@ -42,9 +42,9 @@ theorem fd_exists (b : Basis ι ℝ V) (x : V) :
   exact ⟨v, v.2, hv⟩
 
 /- English proof (translation)
-Take `⟨β, hβ, hβb⟩` from `fd_exists bA b`. Use `⟨β + b, ⟨mem_reps.2 ⟨hβb, add_mem (hAB hβ) hb⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e : b - (β + b) = -β` using `by abel`. Rewrite using `[e]`. Conclude with `neg_mem hβ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `c' ⟨hc'R, hc'A⟩`. Establish `hc'F` using `(mem_reps.1 hc'R).1`. Establish `e` using `fd_uniq bA (neg_mem hc'A) hβ (x := b) (by convert hc'F using 1; abel) hβb`. Rewrite using `[← e]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem reps_unique (bA bB : Basis ι ℝ V) (hAB : span ℤ (range bA) ≤ span ℤ (range bB))
     (b : V) (hb : b ∈ span ℤ (range bB)) :
@@ -62,7 +62,7 @@ theorem reps_unique (bA bB : Basis ι ℝ V) (hAB : span ℤ (range bA) ≤ span
     abel
 
 /- English proof (translation)
-Use `mem_reps.2 ⟨?_, zero_mem _⟩` and prove the remaining obligations. Simplify using `[ZSpan.mem_fundamentalDomain]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem reps_zero (bA bB : Basis ι ℝ V) : (0 : V) ∈ reps bA bB := by
   refine mem_reps.2 ⟨?_, zero_mem _⟩
@@ -75,7 +75,7 @@ instance cntA (bA : Basis ι ℝ V) : Countable (span ℤ (range bA)).toAddSubgr
   inferInstanceAs (Countable (span ℤ (range bA)))
 
 /- English proof (translation)
-Unfold `tileT`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, exists_prop]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem mem_tileT_iff_exists_rep_sub_mem_fundamentalDomain {bA bB : Basis ι ℝ V} {x : V} :
     x ∈ tileT bA bB ↔ ∃ c ∈ reps bA bB, x - c ∈ ZSpan.fundamentalDomain bB := by
@@ -83,7 +83,7 @@ private theorem mem_tileT_iff_exists_rep_sub_mem_fundamentalDomain {bA bB : Basi
   simp only [Set.mem_iUnion, Set.mem_preimage, exists_prop]
 
 /- English proof (translation)
-Unfold `tileT`. Conclude with `Finset.measurableSet_biUnion _ fun c _ => (ZSpan.fundamentalDomain_measurableSet bB).preimage (continuous_sub_right c).measurable`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem measurableSet_tileT (bA bB : Basis ι ℝ V) :
     MeasurableSet (tileT bA bB) := by
@@ -92,17 +92,17 @@ private theorem measurableSet_tileT (bA bB : Basis ι ℝ V) :
     (ZSpan.fundamentalDomain_measurableSet bB).preimage (continuous_sub_right c).measurable
 
 /- English proof (translation)
-Establish `hv : ∀ (g : (span ℤ (range bA)).toAddSubgroup) (y : V), g +ᵥ y = (g : V) + y` using `fun _ _ => rfl`. Use `IsAddFundamentalDomain.mk' (measurableSet_tileT bA bB).nullMeasurableSet ?_` and prove the remaining obligations. Introduce `x`. Take `⟨β, hβ, hβx⟩` from `fd_exists bB x`. Take `⟨c, ⟨hc, hc'⟩, huniq⟩` from `reps_unique bA bB hAB (-β) (neg_mem hβ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hg : c + β ∈ span ℤ (range bA)`. Use `neg_mem hc'` as an intermediate fact. Rewrite `this` using `[neg_sub, sub_neg_eq_add]`. Then use the resulting hypothesis. Use `⟨⟨c + β, hg⟩, ?_, ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, mem_tileT_iff_exists_rep_sub_mem_fundamentalDomain]`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c + β + x - c ∈ _`. Use `hβx using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨g, hgA⟩ hgx`. Rewrite `hgx` using `[hv, mem_tileT_iff_exists_rep_sub_mem_fundamentalDomain]`. Take `⟨c', hc'R, hc'x⟩` from `hgx`. Express the relevant statement in the definitionally equal form `g + x - c' ∈ _ at hc'x`. Establish `hgA' : g ∈ span ℤ (range bA)` using `hgA`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc'B : c' ∈ span ℤ (range bB)` using `(mem_reps.1 hc'R).2`. Establish `h1 : g - c' = β` using `fd_uniq bB (sub_mem (hAB hgA') hc'B) hβ (by convert hc'x using 1; abel) hβx`. Establish `h2 : c' = c` using `huniq c' ⟨hc'R, by`. Establish `e : -β - c' = -g` using `by rw [← h1]; abel`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `neg_mem hgA'⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `g = c + β`. Rewrite using `[← h2, ← h1]`. Normalize the expressions using the abelian group laws.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem tile_fund (bA bB : Basis ι ℝ V) (hAB : span ℤ (range bA) ≤ span ℤ (range bB))
     (μ : Measure V) :
@@ -141,7 +141,7 @@ theorem tile_fund (bA bB : Basis ι ℝ V) (hAB : span ℤ (range bA) ≤ span �
     abel
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `isBounded_iff_forall_norm_le.1 hs`. Use `isBounded_iff_forall_norm_le.2 ⟨R + ‖c‖, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxc : ‖x - c‖ ≤ R` using `hR _ hx`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem bdd_trans {s : Set V} (hs : Bornology.IsBounded s) (c : V) :
     Bornology.IsBounded ((fun x => x - c) ⁻¹' s) := by
@@ -155,9 +155,9 @@ theorem bdd_trans {s : Set V} (hs : Bornology.IsBounded s) (c : V) :
 variable (μ : Measure V) [μ.IsAddHaarMeasure]
 
 /- English proof (translation)
-Use `IsAddFundamentalDomain.mk' (ZSpan.fundamentalDomain_measurableSet b).nullMeasurableSet ?_` and prove the remaining obligations. Introduce `x`. Take `⟨β, hβ, hβx⟩` from `fd_exists b x`. Use `⟨⟨β, hβ⟩, hβx, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨g, hg⟩ hgx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Subtype.ext (fd_uniq b hg hβ hgx hβx)`.
+A detailed English derivation is pending.
 -/
 private theorem isAddFundamentalDomain_zspan_fundamentalDomain (b : Basis ι ℝ V) (μ : Measure V) :
     IsAddFundamentalDomain (span ℤ (range b)).toAddSubgroup (ZSpan.fundamentalDomain b) μ := by
@@ -169,11 +169,9 @@ private theorem isAddFundamentalDomain_zspan_fundamentalDomain (b : Basis ι ℝ
   exact Subtype.ext (fd_uniq b hg hβ hgx hβx)
 
 /- English proof (translation)
-Establish `hf : (fun x : V => x - c) = fun x => -c + x` using `funext fun x => sub_eq_neg_add x c`. Rewrite using `[hf]`. Establish `hmp : MeasurePreserving (fun x : V => -c + x) μ μ` using `measurePreserving_add_left μ (-c)`. Establish `he : MeasurableEmbedding (fun x : V => -c + x)` using `measurableEmbedding_addLeft (-c)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `congr 1`. Use extensionality with `x`. Use `congr 1`. Normalize the expressions using the abelian group laws. Use `_ = ∫ y in s, h (y + c) ∂μ := hmp.setIntegral_preimage_emb he (fun y => h (y + c)) s`.
-
-Use `_ = ∫ y in s, h y ∂μ := by simp only [hper]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem setIntegral_preimage_sub_of_periodic (h : V → ℝ) (s : Set V) (c : V)
     (hper : ∀ x, h (x + c) = h x) :
@@ -189,11 +187,11 @@ private theorem setIntegral_preimage_sub_of_periodic (h : V → ℝ) (s : Set V)
     _ = ∫ y in s, h y ∂μ := by simp only [hper]
 
 /- English proof (translation)
-Introduce `t`. Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Introduce `_ _ _`. Simplify using the standard rewrite rules. Introduce `a t ha ih hs hd hf`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs' : ∀ i ∈ t, MeasurableSet (s i)` using `fun i hi => hs i (Finset.mem_insert_of_mem hi)`. Establish `hf' : ∀ i ∈ t, IntegrableOn h (s i) μ` using `fun i hi => hf i (Finset.mem_insert_of_mem hi)`. Establish `hd' : Set.Pairwise ↑t (Function.onFun Disjoint s)` using `hd.mono (Finset.coe_subset.2 (Finset.subset_insert a t))`. Establish `hdisj : Disjoint (s a) (⋃ i ∈ t, s i)`. Use `Set.disjoint_iUnion₂_right.2 fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : a ≠ i` using `fun e => ha (e ▸ hi)`. Conclude with `hd (Finset.mem_coe.2 (Finset.mem_insert_self a t)) (Finset.mem_coe.2 (Finset.mem_insert_of_mem hi)) hne`. Establish `hint_r : IntegrableOn h (⋃ i ∈ t, s i) μ` using `integrableOn_finset_iUnion.2 hf'`. Rewrite using `[Finset.set_biUnion_insert, Finset.sum_insert ha, setIntegral_union hdisj (Finset.measurableSet_biUnion t hs') (hf a (Finset.mem_insert_self a t)) hint_r, ih hs' hd' hf']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem setIntegral_finset_biUnion_of_pairwise_disjoint (h : V → ℝ) (s : V → Set V) :
     ∀ t : Finset V, (∀ i ∈ t, MeasurableSet (s i)) → Set.Pairwise ↑t (Function.onFun Disjoint s) →
@@ -220,17 +218,17 @@ private theorem setIntegral_finset_biUnion_of_pairwise_disjoint (h : V → ℝ) 
         hint_r, ih hs' hd' hf']
 
 /- English proof (translation)
-Establish `: VAddInvariantMeasure (span ℤ (range bA)).toAddSubgroup V μ` using `⟨fun g s _ => measure_preimage_add μ (g : V) s⟩`. Establish `hA` using `isAddFundamentalDomain_zspan_fundamentalDomain bA μ`. Establish `hT` using `tile_fund bA bB hAB μ`. Establish `hperA : ∀ (g : (span ℤ (range bA)).toAddSubgroup) (x : V), h (g +ᵥ x) = h x`. Introduce `g x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : (g : V) ∈ span ℤ (range bA)` using `g.2`. Express the relevant statement in the definitionally equal form `h ((g : V) + x) = h x`. Rewrite using `[add_comm]`. Conclude with `hper _ (hAB hg) x`. Rewrite using `[hA.setIntegral_eq hT hperA]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `tileT`. Rewrite using `[setIntegral_finset_biUnion_of_pairwise_disjoint μ h (fun c => (fun x => x - c) ⁻¹' ZSpan.fundamentalDomain bB) (reps bA bB) ?_ ?_ ?_]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => ∫ x in ZSpan.fundamentalDomain bB, h x ∂μ) fun c hc => setIntegral_preimage_sub_of_periodic μ h (ZSpan.fundamentalDomain bB) c (hper c (mem_reps.1 hc).2), Finset.sum_const, nsmul_eq_mul]`. Introduce `c _`. Conclude with `(ZSpan.fundamentalDomain_measurableSet bB).preimage (continuous_sub_right c).measurable`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c1 hc1 c2 hc2 hne`. Use `Set.disjoint_left.2 fun x hx1 hx2 => hne ?_` and prove the remaining obligations. Establish `e` using `fd_uniq bB (neg_mem (mem_reps.1 (Finset.mem_coe.1 hc1)).2) (neg_mem (mem_reps.1 (Finset.mem_coe.1 hc2)).2) (x := x) (by rw [neg_add_eq_sub]; exact hx1) (by rw [neg_add_eq_sub]; exact hx2)`. Conclude with `neg_inj.1 e`. Introduce `c _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Establish `hb` using `bdd_trans (ZSpan.fundamentalDomain_isBounded bB) c`. Establish `hK : IsCompact (closure ((fun x => x - c) ⁻¹' ZSpan.fundamentalDomain bB))` using `by first`. Consider the case `exact hb.isCompact_closure`. Consider the case `exact Metric.isCompact_of_isClosed_isBounded isClosed_closure hb.closure`. Use `first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact ((hc.locallyIntegrable (μ := μ)).integrableOn_isCompact hK).mono_set subset_closure`. Consider the case `exact (hc.continuousOn.integrableOn_compact hK).mono_set subset_closure`. Consider the case `exact (hc.integrableOn_isCompact hK).mono_set subset_closure`. Consider the case `exact (hc.continuousOn.integrableOn_isCompact hK).mono_set subset_closure`.
+A detailed English derivation is pending.
 -/
 theorem tile_integral (bA bB : Basis ι ℝ V) (hAB : span ℤ (range bA) ≤ span ℤ (range bB))
     (h : V → ℝ) (hc : Continuous h)
@@ -276,7 +274,7 @@ theorem tile_integral (bA bB : Basis ι ℝ V) (hAB : span ℤ (range bA) ≤ sp
       | exact (hc.continuousOn.integrableOn_isCompact hK).mono_set subset_closure
 
 /- English proof (translation)
-Use `tile_integral μ bA bB hAB (fun _ => (1 : ℝ)) continuous_const (fun _ _ _ => rfl)` as an intermediate fact. Simplify `this` using `[setIntegral_const]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tile_measure (bA bB : Basis ι ℝ V) (hAB : span ℤ (range bA) ≤ span ℤ (range bB)) :
     μ.real (ZSpan.fundamentalDomain bA) =
@@ -286,7 +284,7 @@ theorem tile_measure (bA bB : Basis ι ℝ V) (hAB : span ℤ (range bA) ≤ spa
   simpa [setIntegral_const] using this
 
 /- English proof (translation)
-Establish `hcard : ((reps bA bB).card : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 ⟨0, reps_zero bA bB⟩)`. Rewrite using `[setAverage_eq, setAverage_eq, tile_integral μ bA bB hAB h hc hper, tile_measure μ bA bB hAB, smul_eq_mul, smul_eq_mul, mul_inv, mul_mul_mul_comm, inv_mul_cancel₀ hcard, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tile_average (bA bB : Basis ι ℝ V) (hAB : span ℤ (range bA) ≤ span ℤ (range bB))
     (h : V → ℝ) (hc : Continuous h)

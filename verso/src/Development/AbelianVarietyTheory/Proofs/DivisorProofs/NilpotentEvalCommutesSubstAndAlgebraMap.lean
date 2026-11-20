@@ -9,13 +9,13 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ σ _ A _ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `τ _ φ _ a ha y hy hφa f`. Establish `hs : HasSubst a` using `hasSubst_of_constantCoeff_zero ha`. Establish `key : evA k y hy = φ.comp (substAlgHom hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.T.mvPowerSeries_algHom_ext_of_isNilpotent_X k σ A _ _ (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k σ A y hy i]`. Conclude with `hy i`. Rewrite using `[GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k σ A y hy i, AlgHom.comp_apply, coe_substAlgHom, subst_X hs, hφa]`. Rewrite using `[key, AlgHom.comp_apply, coe_substAlgHom]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `B _ _ g x hx y hy hg f`. Establish `key : evA k y hy = g.comp (evA k x hx)`. Use `GlobalTheory.T.mvPowerSeries_algHom_ext_of_isNilpotent_X k σ B _ _ (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k σ B y hy i]`. Conclude with `hy i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k σ B y hy i, AlgHom.comp_apply, GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k σ A x hx i, hg]`. Rewrite using `[key, AlgHom.comp_apply]`.
+A detailed English derivation is pending.
 -/
 theorem evA_subst_and_map : ∀ (k : Type) [CommRing k] (σ : Type) [Finite σ] (A : Type) [CommRing A] [Algebra k A], (∀ (τ : Type) [Finite τ] (φ : MvPowerSeries τ k →ₐ[k] A), (∀ t, IsNilpotent (φ (X t))) → ∀ a : σ → MvPowerSeries τ k, (∀ i, constantCoeff (a i) = 0) → ∀ (y : σ → A) (hy : ∀ i, IsNilpotent (y i)), (∀ i, φ (a i) = y i) → ∀ f : MvPowerSeries σ k, φ (subst a f) = evA k y hy f) ∧ ∀ (B : Type) [CommRing B] [Algebra k B] (g : A →ₐ[k] B) (x : σ → A) (hx : ∀ i, IsNilpotent (x i)) (y : σ → B) (hy : ∀ i, IsNilpotent (y i)), (∀ i, g (x i) = y i) → ∀ f : MvPowerSeries σ k, g (evA k x hx f) = evA k y hy f := by
   intro k _ σ _ A _ _

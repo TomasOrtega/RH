@@ -11,7 +11,7 @@ namespace GlobalTheory.FlagPoly.TestClass
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ}
 
 /- English proof (translation)
-Unfold `shF`. Simplify using `only [map_sum]`. Rewrite using `[Finset.sum_comm, PPowSum.degFl_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem shF_sum (j : ℕ) (σ : ι) (F : ι → Pol ι N) :
     shF j σ (∑ τ, F τ) = ∑ τ, shF j σ (F τ) := by
@@ -20,7 +20,7 @@ theorem shF_sum (j : ℕ) (σ : ι) (F : ι → Pol ι N) :
   rw [Finset.sum_comm, PPowSum.degFl_sum]
 
 /- English proof (translation)
-Unfold `totF`. Simplify using `only [map_sum]`. Rewrite using `[Finset.sum_comm, PPowSum.degFl_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem totF_sum (σ : ι) (F : ι → Pol ι N) :
     totF σ (∑ τ, F τ) = ∑ τ, totF σ (F τ) := by
@@ -29,7 +29,7 @@ theorem totF_sum (σ : ι) (F : ι → Pol ι N) :
   rw [Finset.sum_comm, PPowSum.degFl_sum]
 
 /- English proof (translation)
-Unfold `pLow pHigh pSum`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun i : Fin N => (i : ℕ) < j)]`. Simplify using `only [not_lt]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pLow_add_pHigh (j : ℕ) (τ : ι) (k : ℕ) :
     (pLow j τ k + pHigh j τ k : Pol ι N) = pSum τ k := by
@@ -38,9 +38,9 @@ theorem pLow_add_pHigh (j : ℕ) (τ : ι) (k : ℕ) :
   simp only [not_lt]
 
 /- English proof (translation)
-Unfold `lamA`. Rewrite using `[Finset.sum_mul, PPowSum.degFl_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h : (pHigh j τ 1 - pLow j τ 1) * Q = pSum τ 1 * Q + C (-2 : ℝ) * (pLow j τ 1 * Q)`. Rewrite using `[← pLow_add_pHigh j τ 1, map_neg, map_ofNat]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 : degFl ι N (pSum τ 1 * Q) = 0` using `degreePowerSumMulEqZero ι N τ 1 Q le_rfl`. Rewrite using `[h, PPowSum.degFl_add, PPowSum.degFl_C_mul, h0, zero_add]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem degFl_lamA_mul (j : ℕ) (Q : Pol ι N) :
     degFl ι N (lamA ι N j * Q) = -2 * ∑ τ : ι, degFl ι N (pLow j τ 1 * Q) := by
@@ -53,7 +53,7 @@ theorem degFl_lamA_mul (j : ℕ) (Q : Pol ι N) :
   rw [h, PPowSum.degFl_add, PPowSum.degFl_C_mul, h0, zero_add]
 
 /- English proof (translation)
-Unfold `lamA pHigh pLow`. Apply the tactic sequence `refine IsHomogeneous.sum _ _ _ fun τ _ => IsHomogeneous.sub ?_ ?_ <;>`. Conclude with `IsHomogeneous.sum _ _ _ fun i _ => by simpa using isHomogeneous_X ℝ (τ, i)`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lamA_homog (j : ℕ) : (lamA ι N j).IsHomogeneous 1 := by
   unfold lamA pHigh pLow
@@ -61,7 +61,7 @@ theorem lamA_homog (j : ℕ) : (lamA ι N j).IsHomogeneous 1 := by
   exact IsHomogeneous.sum _ _ _ fun i _ => by simpa using isHomogeneous_X ℝ (τ, i)
 
 /- English proof (translation)
-Establish `h1 : ∑ i : Fin N, (if (i : ℕ) < j then N - j else 0) = j * (N - j)`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, smul_eq_mul, Fin.card_filter_val_lt, min_eq_right hj]`. Rewrite using `[← h1, ← Finset.sum_add_distrib, ← PermutationPointDegree.sum_delta N]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_fibExp (j : ℕ) (hj : j ≤ N) :
     (∑ i : Fin N, (if (i : ℕ) < j then j - 1 - (i : ℕ) else N - 1 - (i : ℕ))) + j * (N - j)
@@ -73,7 +73,7 @@ theorem sum_fibExp (j : ℕ) (hj : j ≤ N) :
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `fibPt`. Use `IsHomogeneous.prod (Finset.univ : Finset (ι × Fin N)) (fun x => ((-X x : Pol ι N)) ^ (if (x.2 : ℕ) < j then j - 1 - (x.2 : ℕ) else N - 1 - (x.2 : ℕ))) (fun x => 1 * (if (x.2 : ℕ) < j then j - 1 - (x.2 : ℕ) else N - 1 - (x.2 : ℕ))) (fun x _ => (isHomogeneous_X ℝ x).neg.pow _)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Fintype.sum_prod_type]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fibPt_homog (j : ℕ) : (fibPt ι N j).IsHomogeneous
     (Fintype.card ι * ∑ i : Fin N, (if (i : ℕ) < j then j - 1 - (i : ℕ) else N - 1 - (i : ℕ))) := by
@@ -87,19 +87,19 @@ theorem fibPt_homog (j : ℕ) : (fibPt ι N j).IsHomogeneous
   simp
 
 /- English proof (translation)
-Introduce `ι _ _ N _ j hj hjN I`. Establish `hpos : 1 ≤ dimGr ι N j`. Unfold `dimGr`. Conclude with `Nat.mul_pos Fintype.card_pos (Nat.mul_pos hj (by omega))`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[shF_sum, Finset.sum_congr rfl (fun τ _ => (GlobalTheory.T.shift_functional_power_sum ι N j 2 (curveCl ι N j) σ τ (by norm_num)).1)]`. Simplify using the standard rewrite rules. Introduce `σ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[totF_sum]`. Use `Finset.sum_eq_zero fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.shift_functional_power_sum ι N j 2 (curveCl ι N j) σ τ (by norm_num)).2]`. Simplify using the standard rewrite rules. Establish `: lamA ι N j ^ dimGr ι N j * fibPt ι N j = lamA ι N j * curveCl ι N j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `curveCl`. Rewrite using `[← mul_assoc, ← pow_succ', Nat.sub_add_cancel hpos]`. Rewrite using `[this, degFl_lamA_mul]`. Establish `: -lamA ι N j * curveCl ι N j = C (-1 : ℝ) * (lamA ι N j * curveCl ι N j)`. Rewrite using `[map_neg, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, PPowSum.degFl_C_mul, degFl_lamA_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `curveCl`. Use `((lamA_homog (ι := ι) (N := N) j).pow (dimGr ι N j - 1)).mul (fibPt_homog j)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Establish `h` using `congrArg (Fintype.card ι * ·) (sum_fibExp (N := N) j hjN.le)`. Simplify using `only [mul_add] at h`. Unfold `dimFl`. Unfold `dimGr at hpos ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem testClass : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) [Nonempty ι] (j : ℕ), 1 ≤ j → j < N → let I : ℝ := ∑ τ : ι, degFl ι N (pLow j τ 1 * curveCl ι N j); (∑ σ : ι, shF j σ (∑ τ : ι, pSum τ 2 * curveCl ι N j)) = 2 * I ∧ (∀ σ : ι, totF σ (∑ τ : ι, pSum τ 2 * curveCl ι N j) = 0) ∧ degFl ι N (lamA ι N j ^ dimGr ι N j * fibPt ι N j) = -2 * I ∧ degFl ι N (-lamA ι N j * curveCl ι N j) = 2 * I ∧ (curveCl ι N j).IsHomogeneous (dimFl ι N - 1) := by
   intro ι _ _ N _ j hj hjN I

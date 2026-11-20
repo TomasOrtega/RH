@@ -32,9 +32,9 @@ def MuVal (V : HSp D) (χ : (AE D)ˣ →* Circle) (mu : GA D V → ℂ) : Prop :
   (∀ g, ∃ x, IsDetRoot V g x) ∧ ∀ g x, IsDetRoot V g x → mu g = ((χ x : Circle) : ℂ)
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `h.1 g`. Rewrite using `[h.2 g x hx]`. Use `first`. Consider the case `exact Circle.norm_coe _`. Consider the case `exact Circle.abs_coe _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact mem_sphere_zero_iff_norm.mp (χ x).2`.
+A detailed English derivation is pending.
 -/
 theorem MuVal.norm {V : HSp D} {χ : (AE D)ˣ →* Circle} {mu : GA D V → ℂ} (h : MuVal V χ mu) (g : GA D V) :
     ‖mu g‖ = 1 := by
@@ -142,7 +142,7 @@ def phiJ (j : ℕ) (σ : T.Q.c.F →+* ℂ) (a : (D.host.E →+* ℂ) × ℕ →
     adel (T.V j σ) (T.dict j σ) (muPin (T.V j σ) (T.dict j σ) (T.mu j σ) (T.cE j σ)) (rdU (T.U j σ) f)
 
 /- English proof (translation)
-Establish `h1 : adel (T.V j σ) (T.dict j σ) (T.mu j σ) (rdU (T.U j σ) f) g = T.mu j σ g * rdU (T.U j σ) f (T.dict j σ g).1 (T.dict j σ g).2` using `rfl`. Simplify using `only [phiJ, Core.phiAd, Pi.smul_apply, smul_eq_mul, adel_muPin, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem phiJ_apply (j : ℕ) (σ : T.Q.c.F →+* ℂ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f : T.R j) (g : GA D (T.V j σ)) :
     T.phiJ j σ a f g = T.cE j σ (T.dict j σ g).1 * T.toCore.phiAd j σ a f g := by

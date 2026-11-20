@@ -17,7 +17,7 @@ Both sides reduce to the same expression.
 theorem mat_mul' (g h : UA σ W.J) : mat (g * h) = mat g * mat h := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext e)`.
+A detailed English derivation is pending.
 -/
 theorem mat_inj {g h : UA σ W.J} (e : mat g = mat h) : g = h := Subtype.ext (Units.ext e)
 
@@ -30,7 +30,7 @@ variable (F) in
 def eFin : AF F := (0, 1)
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (1 : InfiniteAdeleRing F) + 0 = 1`. Conclude with `add_zero _`. Use `show (0 : FiniteAdeleRing (𝓞 F) F) + 1 = 1`. Conclude with `zero_add _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unit_split : eInf F + eFin F = 1 := by
   refine Prod.ext ?_ ?_
@@ -40,7 +40,7 @@ theorem unit_split : eInf F + eFin F = 1 := by
     exact zero_add _
 
 /- English proof (translation)
-Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0`. Conclude with `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem evI_eFin : evI F (eFin F) = 0 := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0
@@ -58,19 +58,15 @@ namespace GlobalTheory
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d W τ`. Use `⟨⟨fun u _ => ?_, fun w => ?_⟩, fun k hk k' hk' => ⟨fun u hu => ?_, fun w => ?_⟩, fun l hl k hk => ?_⟩` and prove the remaining obligations. Use `show u • (mat (1 : UA σ W.J) - 1) = 0`. Rewrite using `[show mat (1 : UA σ W.J) = 1 from rfl, sub_self, smul_zero]`. Use `show Commute ((mat (1 : UA σ W.J)).map (piInf (τ w))) (W.θ w)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show mat (1 : UA σ W.J) = 1 from rfl, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Commute.one_left _`. Use `show u • (mat (k * k') - 1) = 0`. Establish `e : mat (k * k') - 1 = (mat k - 1) * mat k' + (mat k' - 1)`. Rewrite using `[GlobalTheory.KInfGroup.mat_mul', Matrix.sub_mul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_add, ← Matrix.smul_mul, hk.1 u hu, hk'.1 u hu, Matrix.zero_mul, add_zero]`. Use `show Commute ((mat (k * k')).map (piInf (τ w))) (W.θ w)`. Rewrite using `[GlobalTheory.KInfGroup.mat_mul', Matrix.map_mul]`. Conclude with `(hk.2 w).mul_left (hk'.2 w)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `GlobalTheory.KInfGroup.mat_inj` to reduce the goal to its premises. Rewrite using `[GlobalTheory.KInfGroup.mat_mul', GlobalTheory.KInfGroup.mat_mul']`. Use `set A := mat l - 1 with hA`. Use `set B := mat k - 1 with hB`. Establish `hlA : GlobalTheory.KInfGroup.eInf F • A = 0` using `hl _ GlobalTheory.KInfGroup.eInf_fin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hkB : GlobalTheory.KInfGroup.eFin F • B = 0` using `hk.1 _ GlobalTheory.KInfGroup.evI_eFin`. Establish `hA' : A = GlobalTheory.KInfGroup.eFin F • A` using `by conv_lhs => rw [← one_smul (AF F) A, ← GlobalTheory.KInfGroup.unit_split, add_smul, hlA, zero_add]`. Establish `hB' : B = GlobalTheory.KInfGroup.eInf F • B` using `by conv_lhs => rw [← one_smul (AF F) B, ← GlobalTheory.KInfGroup.unit_split, add_smul, hkB, add_zero]`. Establish `hAB : A * B = 0`. Rewrite using `[hB', Matrix.mul_smul, ← Matrix.smul_mul, hlA, Matrix.zero_mul]`.
-
-Establish `hBA : B * A = 0`. Rewrite using `[hA', Matrix.mul_smul, ← Matrix.smul_mul, hkB, Matrix.zero_mul]`. Establish `el : mat l = A + 1` using `by rw [hA]; abel`. Establish `ek : mat k = B + 1` using `by rw [hB]; abel`. Rewrite using `[el, ek, add_mul, mul_add, mul_add, hAB, add_mul, mul_add, hBA]`.
-
-Simplify using `only [mul_one, one_mul, zero_add]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem kInf_one_mul_commute_finPt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : ℕ) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d) (τ : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver E w), (1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ W.J) ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf σ W τ ∧ (∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf σ W τ, ∀ k' ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf σ W τ, k * k' ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf σ W τ) ∧ ∀ l ∈ GlobalTheory.ThKAdm.FinPt σ W, ∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf σ W τ, l * k = k * l := by
   intro F E _ _ _ _ _ σ d W τ

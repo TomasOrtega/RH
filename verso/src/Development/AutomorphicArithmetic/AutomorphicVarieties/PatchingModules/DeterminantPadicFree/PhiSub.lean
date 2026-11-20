@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `l G _ _ _ H hH hG`. Unfold `PhiCond at *`. Introduce `K hK`. Establish `hK' : IsOpen ((K.map H.subtype : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hH.isOpenMap_subtype_val _ hK`. Use `haveI := hG (K.map H.subtype) hK'`. Set `e` to `Subgroup.equivMapOfInjective K H.subtype H.subtype_injective`. Establish `he : ∀ y : K.map H.subtype, (((e.symm y : K) : H) : G) = (y : G)` using `fun y => congrArg Subtype.val (e.apply_symm_apply y)`. Establish `hc : Continuous fun y : K.map H.subtype => (e.symm y : K)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `continuous_induced_rng.2` to reduce the goal to its premises. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Conclude with `continuous_subtype_val.congr fun y => (he y).symm`. Use `Finite.of_injective (β := {ψ : K.map H.subtype →* Multiplicative (ZMod l) // IsOpen (ψ.ker : Set (K.map H.subtype))}) (fun φ => ⟨φ.1.comp e.symm.toMonoidHom, by show IsOpen ((fun y => (e.symm y : K)) ⁻¹' (φ.1.ker : Set K))` and prove the remaining obligations. Conclude with `φ.2.preimage hc⟩) ?_`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Introduce `φ ψ h`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `k`. Establish `h'` using `congrArg (fun χ : {ψ : K.map H.subtype →* Multiplicative (ZMod l) // IsOpen (ψ.ker : Set (K.map H.subtype))} => χ.1 (e k)) h`. Simplify using `using h'`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.phiSub :
     ∀ (l : ℕ) {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (H : Subgroup G), IsOpen (H : Set G) → PhiCond G l → PhiCond H l := by

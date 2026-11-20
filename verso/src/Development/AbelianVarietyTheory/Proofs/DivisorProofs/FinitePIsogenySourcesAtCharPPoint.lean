@@ -28,9 +28,9 @@ def scaleMap {S S' : Scheme.{0}} {s : S ⟶ Sp R} {s' : S' ⟶ Sp R} {o : Obj b 
   eta y := m.eta _
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_inv_exp hN hp e`. Take `⟨τ, ⟨hτ, ⟨m⟩⟩, -⟩` from `M.rep _ _ (scale M.univ e rfl)`. Take `⟨τ', ⟨hτ', ⟨m'⟩⟩, -⟩` from `M.rep _ _ (scale M.univ f rfl)`. Establish `n : ObjMap (scale (scale M.univ e rfl) f rfl) M.univ (𝟙 M.X)` using `{ φ := (idMap M.univ).φ φ₂ := (idMap M.univ).φ₂ cart := (idMap M.univ).cart sq := (idMap M.univ).sq act := (idMap M.univ).act pol := (idMap M.univ).pol eta := fun y => by`. Establish `h : (scale (scale M.univ e rfl) f rfl).eta y = M.univ.eta y` using `by show M.univ.eta (p ^ e • p ^ f • y) = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, ← pow_add, eta_congr M.univ hf (pow_pos (Fact.out : p.Prime).pos _)]`. Rewrite using `[h]`. Conclude with `(idMap M.univ).eta y }`. Establish `h1 : τ ≫ τ' = 𝟙 M.X` using `(M.rep _ _ (scale (scale M.univ e rfl) f rfl)).unique ⟨by rw [Category.assoc, hτ', hτ], ⟨compMap (scaleMap m f) m'⟩⟩ ⟨Category.id_comp _, ⟨n⟩⟩`. Conclude with `⟨τ, mono_of_mono_fac h1, hτ, ⟨m⟩⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_scale_mono (hN : 0 < N) (hp : N.Coprime p) (M : Model b N) (e : ℕ) :
     ∃ τ : M.X ⟶ M.X, Mono τ ∧ τ ≫ M.s = M.s ∧ Nonempty (ObjMap (scale M.univ e rfl) M.univ τ) := by
@@ -56,7 +56,7 @@ theorem exists_scale_mono (hN : 0 < N) (hp : N.Coprime p) (M : Model b N) (e : �
   exact ⟨τ, mono_of_mono_fac h1, hτ, ⟨m⟩⟩
 
 /- English proof (translation)
-Take `⟨ψ', hm, h₁, h₂⟩` from `hψ.2.2.2.2.2`. Take `⟨a, l, P⟩` from `dual_clauses hψ h₁ h₂`. Conclude with `⟨ψ', ⟨e, rfl⟩, hm, a, l, P, ψ, hψ.2.1, h₂, h₁⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isPIsog_scale {S : Scheme.{0}} {s : S ⟶ Sp R} {e : ℕ} {o o' : Obj b N s} {ψ : o.A ⟶ o'.A}
     (hψ : IsPIsog (p ^ e) o o' ψ) : ∃ ψ' : o'.A ⟶ (scale o e rfl).A, IsPIsog (p ^ e) o' (scale o e rfl) ψ' := by
@@ -65,7 +65,7 @@ theorem exists_isPIsog_scale {S : Scheme.{0}} {s : S ⟶ Sp R} {e : ℕ} {o o' :
   exact ⟨ψ', ⟨e, rfl⟩, hm, a, l, P, ψ, hψ.2.1, h₂, h₁⟩
 
 /- English proof (translation)
-Rewrite using `[Scheme.mem_basicOpen_top, map_natCast]`. Introduce `hu`. Use `hu.map (h.comp (X.residue z).hom)` as an intermediate fact. Rewrite `this` using `[map_natCast, CharP.cast_eq_zero]`. Conclude with `not_isUnit_zero this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mem_basicOpen {X : Scheme.{0}} (z : X) {k : Type} [Field k] [CharP k p]
     (h : X.residueField z →+* k) : z ∉ X.basicOpen ((p : ℕ) : Γ(X, ⊤)) := by
@@ -76,7 +76,7 @@ theorem not_mem_basicOpen {X : Scheme.{0}} (z : X) {k : Type} [Field k] [CharP k
   exact not_isUnit_zero this
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Conclude with `⟨(X.descResidueField (Scheme.stalkClosedPointTo ζ)).hom, Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField k X ζ⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_residueField_hom {X : Scheme.{0}} {k : Type} [Field k] (ζ : Sp k ⟶ X) {z : X}
     (hz : ζ (IsLocalRing.closedPoint k) = z) :
@@ -86,19 +86,17 @@ theorem exists_residueField_hom {X : Scheme.{0}} {k : Type} [Field k] (ζ : Sp k
     Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField k X ζ⟩
 
 /- English proof (translation)
-Introduce `p _ D R _ _ _ _ b N hN hNp _ c hm M z`. Use `set Z := {u : M.X | ∃ (k : Type) (_ : Field k) (_ : IsAlgClosed k) (_ : CharP k p) (ζ υ : Sp k ⟶ M.X) (ou oz : Obj b N (ζ ≫ M.s)) (_ : ObjMap ou M.univ υ) (_ : ObjMap oz M.univ ζ) (ψ : ou.A ⟶ oz.A), υ ≫ M.s = ζ ≫ M.s ∧ IsPIsog c ou oz ψ ∧ ζ (IsLocalRing.closedPoint k) = z ∧ υ (Is …`. Break down `Z.eq_empty_or_nonempty with h0 | ⟨u₀, k₀, _, _, _, ζ₀, _, _, _, -, -, _, -, hψ₀, hz₀, -⟩` into its components or cases. Rewrite using `[h0]`. Conclude with `Set.finite_empty`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, rfl⟩` from `hψ₀.1`. Take `⟨h₀, -⟩` from `exists_residueField_hom ζ₀ hz₀`. Establish `hz` using `not_mem_basicOpen (p := p) z h₀`. Take `⟨τ, hmono, hτ, ⟨mτ⟩⟩` from `exists_scale_mono (by omega) hNp M e`. Establish `key : ∀ u : Z, ∃ (k : Type) (_ : Field k) (σ : M.X.residueField z →+* k) (υ : Sp k ⟶ M.X), (∀ q, υ q = u.1) ∧ IsogTarget M (p ^ e) (spMap σ ≫ M.X.fromSpecResidueField z) (υ ≫ τ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨u, k, _, _, _, ζ, υ, ou, oz, mu, mz, ψ, hs, hψ, hζ, hu⟩`. Take `⟨σ, hσ⟩` from `exists_residueField_hom ζ hζ`. Take `⟨ψ', hψ'⟩` from `exists_isPIsog_scale hψ`. Use `⟨k, inferInstance, σ, υ, fun q => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim q (IsLocalRing.closedPoint k)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hu`. Rewrite using `[hσ]`. Conclude with `⟨by rw [Category.assoc, hτ, hs], oz, scale ou e rfl, ψ', ⟨mz⟩, ⟨compMap (scaleMap mu e) mτ⟩, hψ'⟩`. Use `choose k hk σ υ hυ hT using key`. Take `⟨L, _, _, g, h, hg⟩` from `GlobalTheory.T.exists_isAlgClosed_compatible_embeddings_of_family (M.X.residueField z) Z k σ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfin` using `(GlobalTheory.T.finite_pIsogenyTargets_at_charP_point p D R b N hN hNp hm (p ^ e) M z hz L h).preimage (f := fun υ' : Sp L ⟶ M.X => υ' ≫ τ) (fun x _ y _ hxy => (cancel_mono τ).1 hxy)`. Use `(Set.Finite.biUnion hfin fun υ' _ => Set.finite_range (fun q : Sp L => υ' q)).subset ?_` and prove the remaining obligations. Introduce `u hu`. Establish `h1` using `isogTarget_spMap p D R b N M (p ^ e) (k ⟨u, hu⟩) L (g ⟨u, hu⟩) _ _ (hT ⟨u, hu⟩)`. Establish `e1 : spMap (g ⟨u, hu⟩) ≫ spMap (σ ⟨u, hu⟩) ≫ M.X.fromSpecResidueField z = spMap h ≫ M.X.fromSpecResidueField z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc, ← hg ⟨u, hu⟩]`. Simplify using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Rewrite `h1` using `[e1, ← Category.assoc]`. Simplify using `only [Set.mem_iUnion, Set.mem_range]`. Use `⟨spMap (g ⟨u, hu⟩) ≫ υ ⟨u, hu⟩, h1, Classical.arbitrary _, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Scheme.Hom.comp_apply, hυ ⟨u, hu⟩ _]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_isogSource : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [CharZero R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → (p : R) ∈ IsLocalRing.maximalIdeal R → ∀ (c : ℕ), D.m = 1 → ∀ (M : Model b N) (z : M.X), {u : M.X | ∃ (k : Type) (_ : Field k) (_ : IsAlgClosed k) (_ : CharP k p) (ζ υ : Sp k ⟶ M.X) (ou oz : Obj b N (ζ ≫ M.s)) (_ : ObjMap ou M.univ υ) (_ : ObjMap oz M.univ ζ) (ψ : ou.A ⟶ oz.A), υ ≫ M.s = ζ ≫ M.s ∧ IsPIsog c ou oz ψ ∧ ζ (IsLocalRing.closedPoint k) = z ∧ υ (IsLocalRing.closedPoint k) = u}.Finite := by
   intro p _ D R _ _ _ _ b N hN hNp _ c hm M z

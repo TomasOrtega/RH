@@ -9,9 +9,9 @@ open scoped ComplexOrder
 namespace PositivityTheory.KB.SmoothPartitionUnityBasic
 
 /- English proof (translation)
-Use `show ∑ w, (star ((c • z) w) ⬝ᵥ mat h w *ᵥ (c • z) w).re = c ^ 2 * ∑ w, (star (z w) ⬝ᵥ mat h w *ᵥ z w).re`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `e : (c • z) w = (c : ℂ) • z w`. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Complex.real_smul]`. Rewrite using `[e, star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul]`. Simplify using `[smul_eq_mul, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem qR_smul_VR {L : Type} [Field L] [NumberField L] {N : ℕ} (h : HS L N) (c : ℝ)
     (z : VR L N) : qR h (c • z) = c ^ 2 * qR h z := by
@@ -26,9 +26,9 @@ private theorem qR_smul_VR {L : Type} [Field L] [NumberField L] {N : ℕ} (h : H
   ring
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨w0, hw0⟩ : ∃ w, z w ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hz (funext hc)`. Use `show 0 < ∑ w, (star (z w) ⬝ᵥ mat h w *ᵥ z w).re`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnn : ∀ w, 0 ≤ (star (z w) ⬝ᵥ mat h w *ᵥ z w).re` using `fun w => by`. Use `(hp w).posSemidef.dotProduct_mulVec_nonneg (z w)` as an intermediate fact. Conclude with `(Complex.nonneg_iff.mp this).1`. Establish `hpos : 0 < (star (z w0) ⬝ᵥ mat h w0 *ᵥ z w0).re` using `(hp w0).re_dotProduct_pos hw0`. Conclude with `Finset.sum_pos' (fun w _ => hnn w) ⟨w0, Finset.mem_univ _, hpos⟩`.
+A detailed English derivation is pending.
 -/
 private theorem qR_pos_of_mem_Pos_of_VR_ne_zero {L : Type} [Field L] [NumberField L] {N : ℕ} (h : HS L N)
     (hp : h ∈ Pos L N) (z : VR L N) (hz : z ≠ 0) : 0 < qR h z := by
@@ -42,7 +42,7 @@ private theorem qR_pos_of_mem_Pos_of_VR_ne_zero {L : Type} [Field L] [NumberFiel
   exact Finset.sum_pos' (fun w _ => hnn w) ⟨w0, Finset.mem_univ _, hpos⟩
 
 /- English proof (translation)
-Use `show Continuous fun x => ∑ w, (star (g x w) ⬝ᵥ mat (f x) w *ᵥ g x w).re`. Use `continuous_finset_sum _ fun w _ => Complex.continuous_re.comp ?_` and prove the remaining obligations. Establish `h1 : Continuous fun x => g x w` using `(continuous_apply w).comp hg`. Establish `h2 : Continuous fun x => mat (f x) w` using `(continuous_apply w).comp (continuous_subtype_val.comp hf)`. Conclude with `h1.star.dotProduct (h2.matrix_mulVec h1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem continuous_qR_comp {L : Type} [Field L] [NumberField L] {N : ℕ} {X : Type*}
     [TopologicalSpace X] {f : X → HS L N} {g : X → VR L N} (hf : Continuous f)
@@ -55,14 +55,14 @@ private theorem continuous_qR_comp {L : Type} [Field L] [NumberField L] {N : ℕ
   exact h1.star.dotProduct (h2.matrix_mulVec h1)
 
 /- English proof (translation)
-Simplify using `using qR_smul_VR h 0 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem qR_zero_right {L : Type} [Field L] [NumberField L] {N : ℕ} (h : HS L N) :
     qR h 0 = 0 := by
   simpa using qR_smul_VR h 0 0
 
 /- English proof (translation)
-Use `⟨‖z‖, norm_pos_iff.mpr hz, ‖z‖⁻¹ • z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.mpr hz)]`. Rewrite using `[smul_smul, mul_inv_cancel₀ (norm_ne_zero_iff.mpr hz), one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_pos_smul_unit_sphere_eq_of_ne_zero {L : Type} [Field L] [NumberField L] {N : ℕ} (z : VR L N)
     (hz : z ≠ 0) : ∃ r : ℝ, 0 < r ∧ ∃ u ∈ Metric.sphere (0 : VR L N) 1, z = r • u := by
@@ -72,7 +72,7 @@ private theorem exists_pos_smul_unit_sphere_eq_of_ne_zero {L : Type} [Field L] [
   · rw [smul_smul, mul_inv_cancel₀ (norm_ne_zero_iff.mpr hz), one_smul]
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Simplify using `at hu`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 private theorem ne_zero_of_mem_unit_sphere_VR {L : Type} [Field L] [NumberField L] {N : ℕ}
     (u : VR L N) (hu : u ∈ Metric.sphere (0 : VR L N) 1) : u ≠ 0 := by
@@ -80,13 +80,13 @@ private theorem ne_zero_of_mem_unit_sphere_VR {L : Type} [Field L] [NumberField 
   simp at hu
 
 /- English proof (translation)
-Establish `hS : IsCompact (Metric.sphere (0 : VR L N) 1)` using `isCompact_sphere 0 1`. Establish `hc : ContinuousOn (fun p : HS L N × VR L N => qR h0 p.2 / qR p.1 p.2) (K ×ˢ Metric.sphere (0 : VR L N) 1)`. Use `ContinuousOn.div ?_ (continuous_qR_comp continuous_fst continuous_snd).continuousOn ?_` and prove the remaining obligations. Conclude with `(continuous_qR_comp continuous_const continuous_snd).continuousOn`. Introduce and unpack `⟨h, z⟩ ⟨hh, hz⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `(qR_pos_of_mem_Pos_of_VR_ne_zero h (hKP hh) z (ne_zero_of_mem_unit_sphere_VR z hz)).ne'`. Take `⟨C, hC⟩` from `(hK.prod hS).bddAbove_image hc`. Use `⟨max C 0, le_max_right _ _, fun h hh z => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne z 0 with rfl | hz` into its components or cases. Simplify using `[qR_zero_right]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, -, u, hu, rfl⟩` from `exists_pos_smul_unit_sphere_eq_of_ne_zero z hz`. Establish `hpu : 0 < qR h u` using `qR_pos_of_mem_Pos_of_VR_ne_zero h (hKP hh) u (ne_zero_of_mem_unit_sphere_VR u hu)`. Establish `hb : qR h0 u / qR h u ≤ C` using `hC ⟨(h, u), ⟨hh, hu⟩, rfl⟩`. Establish `h1 : qR h0 u ≤ max C 0 * qR h u`. Rewrite `hb` using `[div_le_iff₀ hpu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hb.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hpu.le)`. Rewrite using `[qR_smul_VR, qR_smul_VR]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem exists_qR_le_mul_qR_on_compact_subset_Pos {L : Type} [Field L] [NumberField L] {N : ℕ} (K : Set (HS L N))
     (hK : IsCompact K) (hKP : K ⊆ Pos L N) (h0 : HS L N) :
@@ -113,7 +113,7 @@ private theorem exists_qR_le_mul_qR_on_compact_subset_Pos {L : Type} [Field L] [
     _ = max C 0 * (r ^ 2 * qR h u) := by ring
 
 /- English proof (translation)
-The claim follows from `|qR k u - qR h u| - 1 / 2 * qR h u < 0 := by have hS : IsCompact (Metric.sphere (0 : VR L N) 1) := isCompact_sphere 0 1 have c1 : Continuous fun p : HS L N × VR L N => qR p.1 p.2 := continuous_qR_comp continuous_fst continuous_snd have c2 : Continuous fun p : HS L N × VR L N => q …`.
+A detailed English derivation is pending.
 -/
 private theorem eventually_nhds_unit_sphere_of_mem_Pos {L : Type} [Field L] [NumberField L] {N : ℕ} (h : HS L N)
     (hp : h ∈ Pos L N) :
@@ -138,9 +138,9 @@ private theorem eventually_nhds_unit_sphere_of_mem_Pos {L : Type} [Field L] [Num
   exact hp'
 
 /- English proof (translation)
-Use `filter_upwards [eventually_nhds_unit_sphere_of_mem_Pos h hp] with k hk z`. Break down `eq_or_ne z 0 with rfl | hz` into its components or cases. Rewrite using `[qR_zero_right, qR_zero_right]`. Evaluate the numerical expressions. Take `⟨r, -, u, hu, rfl⟩` from `exists_pos_smul_unit_sphere_eq_of_ne_zero z hz`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[qR_smul_VR, qR_smul_VR, ← mul_sub, abs_mul, abs_of_nonneg (sq_nonneg r)]`. Establish `h1 : |qR k u - qR h u| ≤ 1 / 2 * qR h u` using `by linarith [hk u hu]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem eventually_nhds_abs_qR_sub_le_half_of_mem_Pos {L : Type} [Field L] [NumberField L] {N : ℕ} (h : HS L N)
     (hp : h ∈ Pos L N) :
@@ -157,23 +157,21 @@ private theorem eventually_nhds_abs_qR_sub_le_half_of_mem_Pos {L : Type} [Field 
     _ = 1 / 2 * (r ^ 2 * qR h u) := by ring
 
 /- English proof (translation)
-Introduce `hB L _ _ N`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hu : Pos L 0 = Set.univ`. Use extensionality with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_univ, iff_true]`. Introduce `w`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos ?_ fun x hx => absurd (Subsingleton.elim x 0) hx` and prove the remaining obligations. Conclude with `h.2 w`. Rewrite using `[hu]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isOpen_univ`. Introduce `K _ _`. Apply `Set.Subsingleton.finite` to reduce the goal to its premises. Introduce `a _ b _`. Conclude with `Units.ext (Subsingleton.elim _ _)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hPos, hEq, -, hCl, -, -⟩` from `hB L N hN`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `isOpen_iff_mem_nhds.mpr fun h hh => ?_ filter_upwards [eventually_nhds_abs_qR_sub_le_half_of_mem_Pos h hh] with k hk` and prove the remaining obligations. Conclude with `(hCl (1 / 2) (by norm_num) le_rfl h hh k hk).1`. Introduce `K hK hKP`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `K.eq_empty_or_nonempty with rfl | ⟨h0, hh0⟩` into its components or cases. Simplify using the standard rewrite rules. Take `⟨C, hC0, hC⟩` from `exists_qR_le_mul_qR_on_compact_subset_Pos K hK hKP h0`. Establish `hbd : ∀ i : Fin N, ∃ B : ℝ, ∀ h ∈ K, q h (Pi.single i 1 : UpperTheory.V.KT.Lat L N) ≤ B`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hc : Continuous fun h : HS L N => qR h (toR (Pi.single i 1 : UpperTheory.V.KT.Lat L N))` using `continuous_qR_comp continuous_id continuous_const`. Take `⟨B, hB'⟩` from `hK.bddAbove_image hc.continuousOn`. Conclude with `⟨B, fun h hh => hB' ⟨h, hh, rfl⟩⟩`. Use `choose B hBd using hbd`. Establish `hF : (⋃ i, {v : UpperTheory.V.KT.Lat L N | q h0 v ≤ C * B i}).Finite` using `Set.finite_iUnion fun i => (hPos h0 (hKP hh0)).2.2.2.2 _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hmaps : ∀ γ ∈ {γ : Gm L N | ∃ h ∈ K, ac γ h ∈ K}, (fun i : Fin N => γ⁻¹ • (Pi.single i 1 : UpperTheory.V.KT.Lat L N)) ∈ Set.pi Set.univ (fun _ => ⋃ i, {v : UpperTheory.V.KT.Lat L N | q h0 v ≤ C * B i})`. Introduce and unpack `γ ⟨h, hh, hγ⟩ i -`. Use `Set.mem_iUnion.mpr ⟨i, ?_⟩` and prove the remaining obligations. Use `show q h0 (γ⁻¹ • (Pi.single i 1 : UpperTheory.V.KT.Lat L N)) ≤ C * B i`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hinj : Set.InjOn (fun γ : Gm L N => fun i : Fin N => γ⁻¹ • (Pi.single i 1 : UpperTheory.V.KT.Lat L N)) {γ : Gm L N | ∃ h ∈ K, ac γ h ∈ K}`. Introduce `a _ b _ hab`. Establish `hinv : (a⁻¹ : Gm L N) = b⁻¹`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `j i`.
-
-Establish `e` using `congrFun (congrFun hab i) j`. Express the relevant statement in the definitionally equal form `((↑(a⁻¹ : GL (Fin N) (𝓞 L)) : Matrix (Fin N) (Fin N) (𝓞 L)) *ᵥ Pi.single i 1) j = ((↑(b⁻¹ : GL (Fin N) (𝓞 L)) : Matrix (Fin N) (Fin N) (𝓞 L)) *ᵥ Pi.single i 1) j at e`. Simplify `e` using `[Matrix.mulVec_single_one]`. Conclude with `inv_injective hinv`. Conclude with `Set.Finite.of_finite_image ((Set.Finite.pi fun _ => hF).subset (Set.image_subset_iff.mpr hmaps)) hinj`.
+Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pf_GProper : GProper := by
   intro hB L _ _ N

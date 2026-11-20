@@ -19,7 +19,7 @@ end General
 section Host
 
 /- English proof (translation)
-Introduce `D n`. Establish `hcm` using `D.host.isCMField_hostE`. Conclude with `UpperTheory.Mu.unitary_integral_finite_and_ncard_le (fun φ x => IsCMField.complexEmbedding_complexConj D.host.E φ x) n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_and_ncard_le : ∀ (D : D7) (n : ℕ),
     {g : Matrix (Fin n) (Fin n) D.host.E | gᴴ * g = 1 ∧ ∀ a b, IsIntegral ℤ (g a b)}.Finite ∧

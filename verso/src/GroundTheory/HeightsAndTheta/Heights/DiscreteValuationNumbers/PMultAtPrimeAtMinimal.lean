@@ -9,9 +9,9 @@ section General
 variable {A : Type*} [CommRing A]
 
 /- English proof (translation)
-Take `⟨q, hqQ, hqW⟩` from `Set.not_subset.mp h`. Rewrite using `[LocalizedModule.subsingleton_iff]`. Introduce `m`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Use `⟨q, hqW, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Q.mul_mem_right a hqQ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localizedQuotient_subsingleton_of_not_le (Q W : Ideal A) [W.IsPrime] (h : ¬ Q ≤ W) :
     Subsingleton (LocalizedModule W.primeCompl (A ⧸ Q)) := by
@@ -24,7 +24,7 @@ theorem localizedQuotient_subsingleton_of_not_le (Q W : Ideal A) [W.IsPrime] (h 
   exact Q.mul_mem_right a hqQ
 
 /- English proof (translation)
-Rewrite `h` using `[← LocalizedModule.zero_mk (1 : W.primeCompl), LocalizedModule.mk_eq]`. Take `⟨u, hu⟩` from `h`. Rewrite `hu` using `[smul_zero, smul_zero, one_smul, Submonoid.smul_def, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `(‹W.IsPrime›.mem_or_mem hu).resolve_left u.2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localizedQuotient_mk_eq_zero (W : Ideal A) [W.IsPrime] (a : A) (s : W.primeCompl)
     (h : LocalizedModule.mk (Ideal.Quotient.mk W a) s = 0) : a ∈ W := by
@@ -35,13 +35,13 @@ theorem localizedQuotient_mk_eq_zero (W : Ideal A) [W.IsPrime] (a : A) (s : W.pr
   exact (‹W.IsPrime›.mem_or_mem hu).resolve_left u.2
 
 /- English proof (translation)
-Rewrite using `[isSimpleModule_iff_toSpanSingleton_surjective]`. Use `⟨⟨LocalizedModule.mk (Ideal.Quotient.mk W 1) 1, 0, fun h => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `‹W.IsPrime›.ne_top ((Ideal.eq_top_iff_one W).mpr (localizedQuotient_mk_eq_zero W 1 1 h))`. Introduce `x hx z`. Proceed by induction on `x using LocalizedModule.induction_on with | h m s => ?_`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction.
 
-Proceed by induction on `z using LocalizedModule.induction_on with | h m' t => ?_`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective m'`. Establish `ha : a ∈ W.primeCompl` using `fun haW => hx (by`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr haW, LocalizedModule.zero_mk])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Localization.mk ((s : A) * b) (⟨a, ha⟩ * t), ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toSpanSingleton_apply, LocalizedModule.mk_smul_mk, LocalizedModule.mk_eq]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [one_smul, Submonoid.smul_def, Submonoid.coe_mul, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem localizedQuotient_isSimpleModule (W : Ideal A) [W.IsPrime] :
     IsSimpleModule (Localization.AtPrime W) (LocalizedModule W.primeCompl (A ⧸ W)) := by
@@ -66,9 +66,9 @@ theorem localizedQuotient_isSimpleModule (W : Ideal A) [W.IsPrime] :
 end General
 
 /- English proof (translation)
-Introduce `R _ K ι J Q W _ _ hJQ hW`. Unfold `multAt`. Distinguish the cases in `hQW : Q ≤ W`. Establish `hEq : Q = W` using `le_antisymm hQW (hW.2 ⟨‹Q.IsPrime›, hJQ⟩ hQW)`. Substitute `hEq` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl, Module.length_eq_one_iff]`. Conclude with `localizedQuotient_isSimpleModule Q`. Establish `hne : Q ≠ W` using `fun h => hQW h.le`. Rewrite using `[if_neg hne, Module.length_eq_zero_iff]`. Conclude with `localizedQuotient_subsingleton_of_not_le Q W hQW`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MultAtPrimeAtMinimal.proof : MultAtPrimeAtMinimal.Statement := by
   intro R _ K ι J Q W _ _ hJQ hW

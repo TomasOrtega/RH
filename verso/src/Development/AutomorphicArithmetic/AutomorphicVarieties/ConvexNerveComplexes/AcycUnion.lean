@@ -5,19 +5,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConvexNerveComplex
 open Set UpperTheory.V.ConeExtensionAcyclic
 
 /- English proof (translation)
-Introduce `I A B hA hB hAc hBc hABc`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Rewrite `hc` using `[Finsupp.supported_union, Submodule.mem_sup]`. Take `⟨y, hy, z, hz, rfl⟩` from `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, rfl⟩` from `hAc.1 y hy`. Take `⟨g, hg, rfl⟩` from `hBc.1 z hz`. Use `⟨f + g, ?_, map_add _ _ _⟩` and prove the remaining obligations. Rewrite using `[Finsupp.supported_union]`. Conclude with `Submodule.add_mem_sup hf hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n c hc hcyc`. Rewrite `hc` using `[Finsupp.supported_union, Submodule.mem_sup]`. Take `⟨y, hy, z, hz, rfl⟩` from `hc`. Rewrite `hcyc` using `[map_add]`. Establish `hdA : bd I n y ∈ Finsupp.supported ℤ ℤ (A n)` using `bd_mem hA n y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdB : bd I n y ∈ Finsupp.supported ℤ ℤ (B n)`. Rewrite using `[eq_neg_of_add_eq_zero_left hcyc]`. Conclude with `Submodule.neg_mem _ (bd_mem hB n z hz)`. Establish `hd : bd I n y ∈ Finsupp.supported ℤ ℤ (A n ∩ B n)`. Rewrite using `[Finsupp.supported_inter]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hdA, hdB⟩`. Choose the witnesses or unpack the hypotheses as in `⟨e, he, hee⟩ : ∃ e ∈ Finsupp.supported ℤ ℤ (A (n + 1) ∩ B (n + 1)), bd I n e = bd I n y := by`. Consider the cases of `n with`. Consider the case `zero => exact hABc.1 _ hd`. Consider the case `succ m => exact hABc.2 m _ hd (bd_bd I m y)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `he` using `[Finsupp.supported_inter]`. Take `⟨f, hf, hfe⟩` from `hAc.2 n (y - e) (Submodule.sub_mem _ hy he.1) (by rw [map_sub, hee, sub_self])`. Take `⟨g, hg, hge⟩` from `hBc.2 n (z + e) (Submodule.add_mem _ hz he.2) (by rw [map_add, hee, add_comm]; exact hcyc)`. Use `⟨f + g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.supported_union]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Conclude with `Submodule.add_mem_sup hf hg`. Rewrite using `[map_add, hfe, hge]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ConeExtensionAcyclic.acyc_union :
     ∀ {I : Type} (A B : ∀ n, Set (Fin n → I)), FaceClosed A → FaceClosed B → Acyc A → Acyc B → Acyc (fun n => A n ∩ B n) → Acyc (fun n => A n ∪ B n) := by

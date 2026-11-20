@@ -18,7 +18,7 @@ variable {R : Type} [CommRing R] {q : PrimeSpectrum R}
   {X X' : Scheme.{0}} {p : X ⟶ Sp R} {φ : X' ⟶ X} {π : X' ⟶ Sp (Localization.AtPrime q.asIdeal)}
 
 /- English proof (translation)
-Set `_` to `(φ.app U).hom.toAlgebra`. Establish `hl` using `GlobalTheory.QCoh.Qcqs.isLocalization_app (R := .of R) (L := .of (Localization.AtPrime q.asIdeal)) q.asIdeal.primeCompl H hU`. Take `⟨⟨a, ⟨_, d, hd, rfl⟩⟩, e⟩` from `@IsLocalization.surj _ _ _ _ _ _ hl t`. Conclude with `⟨d, hd, a, (mul_comm _ _).trans e⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_denom (H : IsPullback φ π p (spMap (algebraMap R (Localization.AtPrime q.asIdeal)))) {U : X.Opens}
     (hU : IsAffineOpen U) (t : Γ(X', φ ⁻¹ᵁ U)) :
@@ -30,9 +30,9 @@ theorem exists_denom (H : IsPullback φ π p (spMap (algebraMap R (Localization.
   exact ⟨d, hd, a, (mul_comm _ _).trans e⟩
 
 /- English proof (translation)
-Establish `e : (φ.app U).hom a = 0` using `fn_ext fun z hz => by`. Establish `hz' : φ z ∈ U` using `hz`. Use `(gs_pull (𝟙 X') φ z U hz' _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, h z hz', gs_zero (𝟙 X') z _ hz]`. Set `_` to `(φ.app U).hom.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hl` using `GlobalTheory.QCoh.Qcqs.isLocalization_app (R := .of R) (L := .of (Localization.AtPrime q.asIdeal)) q.asIdeal.primeCompl H hU`. Take `⟨⟨_, d, hd, rfl⟩, hm⟩` from `(@IsLocalization.map_eq_zero_iff _ _ _ _ _ _ hl a).1 e`. Use `⟨d, hd, fun y hy => ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg (gs (𝟙 X) y U) (show constFn p U d * a = 0 from hm)`. Rewrite `e'` using `[gs_mul _ y _ hy, gs_constFn p U _ y hy, Category.id_comp, gs_zero _ y _ hy]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_const_mul_eq_zero (H : IsPullback φ π p (spMap (algebraMap R (Localization.AtPrime q.asIdeal))))
     {U : X.Opens} (hU : IsAffineOpen U) (a : Γ(X, U)) (h : ∀ z, φ z ∈ U → gs φ z U a = 0) :
@@ -50,9 +50,9 @@ theorem exists_const_mul_eq_zero (H : IsPullback φ π p (spMap (algebraMap R (L
   rwa [gs_mul _ y _ hy, gs_constFn p U _ y hy, Category.id_comp, gs_zero _ y _ hy] at e'
 
 /- English proof (translation)
-Establish `hu : IsUnit (algebraMap R (Localization.AtPrime q.asIdeal) d)` using `IsLocalization.map_units (Localization.AtPrime q.asIdeal) (⟨d, hd⟩ : q.asIdeal.primeCompl)`. Rewrite using `[hw, cst, ← gs_pull π _ z ⊤ trivial]`. Establish `e` using `congrArg (gs π z ⊤) (spMap_appTop (algebraMap R (Localization.AtPrime q.asIdeal)) d)`. Use `(congrArg IsUnit e).mpr ?_` and prove the remaining obligations. Rewrite using `[gs_eq π z ⊤ trivial]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hu.map _).map _).map _`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_cst (hw : φ ≫ p = π ≫ spMap (algebraMap R (Localization.AtPrime q.asIdeal))) (z : X') {d : R}
     (hd : d ∈ q.asIdeal.primeCompl) : IsUnit (cst (φ ≫ p) z d) := by
@@ -65,19 +65,19 @@ theorem isUnit_cst (hw : φ ≫ p = π ≫ spMap (algebraMap R (Localization.AtP
   exact ((hu.map _).map _).map _
 
 /- English proof (translation)
-Take `⟨α, _, V, c, hV, hle, hc⟩` from `exists_finite_affine_refinement hL`. Establish `loc : ∀ x : α, ∃ (d : R) (_ : d ∈ q.asIdeal.primeCompl) (a : Γ(X, V x)), ∀ z, φ z ∈ V x → gs φ z (V x) a = cst (φ ≫ p) z d * gs (𝟙 X') z ((L.pull φ).U (fun _ => c x)) (s.f (fun _ => c x))`. Introduce `x`. Establish `hle' : φ ⁻¹ᵁ V x ≤ (L.pull φ).U (fun _ => c x)` using `fun z hz => mem_pull.2 (hle x hz)`. Take `⟨d, hd, a, ha⟩` from `exists_denom H (hV x) (resG X' hle' (s.f (fun _ => c x)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨d, hd, a, fun z hz => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (gs (𝟙 X') z _) ha`. Establish `hz' : (𝟙 X' : X' ⟶ X') z ∈ φ ⁻¹ᵁ V x` using `hz`. Rewrite `e` using `[gs_mul _ z _ hz', gs_res _ z hle' hz', gs_pull (𝟙 X') φ z _ hz, gs_pull (𝟙 X') φ z _ hz, Category.id_comp, gs_constFn p _ φ z hz]`. Conclude with `e.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `choose d hd a ha using loc`. Take `⟨b, hb⟩ : ∃ b : ∀ x, Γ(X, V x), ∀ x z, φ z ∈ V x → gs φ z (V x) (b x) = cst (φ ≫ p) z (∏ x, d x) * gs (𝟙 X') z ((L.pull φ).U (fun _ => c x)) (s.f (fun _ => c x))` from `⟨fun x => constFn p _ (∏ w ∈ Finset.univ.erase x, d w) * a x, fun x z hz => by`. Rewrite using `[gs_mul φ z _ hz, gs_constFn p _ φ z hz, ha x z hz, ← Finset.mul_prod_erase _ d (Finset.mem_univ x), cst_mul]`. Use the proof step `ring⟩`. Establish `kill : ∀ xw : α × α, ∃ e : R, e ∈ q.asIdeal.primeCompl ∧ ∀ y ∈ V xw.1 ⊓ V xw.2, cst p y e * (gs (𝟙 X) y _ (b xw.1) - (gm (𝟙 X) y (L.U (c xw.1) ⊓ L.U (c xw.2)) (L.g (c xw.1) (c xw.2))).val * gs (𝟙 X) y _ (b xw.2)) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, w⟩`. Establish `l : V x ⊓ V w ≤ L.U (c x) ⊓ L.U (c w)` using `inf_le_inf (hle x) (hle w)`. Establish `hx : ∀ {Z : Scheme.{0}} (r : Z ⟶ X) (y : Z), r y ∈ V x ⊓ V w → gs r y (V x ⊓ V w) (resG X inf_le_left (b x) - resG X l (L.g (c x) (c w)).val * resG X inf_le_right (b w)) = gs r y _ (b x) - (gm r y (L.U (c x) ⊓ L.U (c w)) (L.g (c x) (c w))).val * gs r y _ (b w)` using `fun r y hy => by`. Rewrite using `[gs_sub _ y _ hy, gs_mul _ y _ hy, gs_res _ y _ hy, gs_res _ y _ hy, gs_res _ y _ hy, gs_unit r y _ (l hy)]`. Take `⟨e, he, h⟩` from `exists_const_mul_eq_zero H ((hV x).inf (hV w)) _ fun z hz => (hx φ z hz).trans (by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hb x z hz.1, hb w z hz.2, pull_sec_trans s z (l hz).1 (l hz).2]`. Use the proof step `ring)`. Conclude with `⟨e, he, fun y hy => (congrArg _ (hx (𝟙 X) y hy)).symm.trans (h y hy)⟩`. Use `choose e he hk using kill`. Take `⟨θ, hθ⟩` from `exists_sec_of_refinement hL V c hle hc (fun x => constFn p _ (∏ xw, e xw) * b x) fun y x w hx hw => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h` using `hk (x, w) y ⟨hx, hw⟩`. Rewrite using `[gs_mul _ y _ hx, gs_mul _ y _ hw, gs_constFn p _ _ y hx, gs_constFn p _ _ y hw, Category.id_comp, ← Finset.mul_prod_erase _ e (Finset.mem_univ (x, w)), cst_mul]`. Take the linear combination `cst p y (∏ xw ∈ Finset.univ.erase (x, w), e xw) * h`. Use `⟨θ, Opens.ext (Set.ext fun z => ?_)⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hc (φ z)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h₁` using `congrArg (φ.stalkMap z).hom (hθ (φ z) (c x) x (hle x hx) hx)`. Rewrite `h₁` using `[map_mul, ← gs_stalkMap φ z _ (hle x hx), ← gs_stalkMap φ z _ hx, gs_mul φ z _ hx, gs_constFn p _ φ z hx, hb x z hx]`. Use `(mem_nonzeroLocus_iff_pull θ φ z (hle x hx)).trans (Iff.trans ?_ (mem_nonzeroLocus_iff_isUnit s (k := fun _ => c x) (mem_pull.2 (hle x hx))).symm)` and prove the remaining obligations. Rewrite using `[h₁, IsUnit.mul_iff, IsUnit.mul_iff, IsUnit.mul_iff]`. Conclude with `⟨fun h => h.2.2.2, fun h => ⟨(Units.isUnit _).map _, isUnit_cst H.w z (Submonoid.prod_mem _ fun xw _ => he xw), isUnit_cst H.w z (Submonoid.prod_mem _ fun x _ => hd x), h⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_sec_preimage_nonzeroLocus_eq
     (H : IsPullback φ π p (spMap (algebraMap R (Localization.AtPrime q.asIdeal)))) [CompactSpace X]
@@ -134,7 +134,7 @@ theorem exists_sec_preimage_nonzeroLocus_eq
     isUnit_cst H.w z (Submonoid.prod_mem _ fun x _ => hd x), h⟩⟩
 
 /- English proof (translation)
-Take `⟨_, ⟨f, rfl⟩, hf, hle⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hV V.isOpen`. Conclude with `⟨f, hf, hle⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_basicOpen_le' {x : Sp R} {V : (Sp R).Opens} (hV : x ∈ V) :
     ∃ f : R, x ∈ (PrimeSpectrum.basicOpen f : (Sp R).Opens) ∧ (PrimeSpectrum.basicOpen f : (Sp R).Opens) ≤ V := by
@@ -142,7 +142,7 @@ theorem exists_basicOpen_le' {x : Sp R} {V : (Sp R).Opens} (hV : x ∈ V) :
   exact ⟨f, hf, hle⟩
 
 /- English proof (translation)
-Take `⟨f, hf, hle⟩` from `exists_basicOpen_le' hV`. Conclude with `⟨f, hf, hle⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_basicOpen_le {V : (Sp R).Opens} (hV : (q : Sp R) ∈ V) :
     ∃ f : R, f ∉ q.asIdeal ∧ PrimeSpectrum.basicOpen f ≤ V := by
@@ -152,9 +152,9 @@ theorem exists_basicOpen_le {V : (Sp R).Opens} (hV : (q : Sp R) ∈ V) :
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Establish `e : (Sp R).fromSpecStalk (q : Sp R) = Spec.map (Spec.stalkIso (CommRingCat.of R) (q : Sp R)).inv ≫ spMap (algebraMap R (Localization.AtPrime q.asIdeal))`. Use `(Spec.fromSpecStalk_eq (CommRingCat.of R) (q : Sp R)).trans ?_` and prove the remaining obligations. Rewrite using `[spMap, ← Spec.map_comp]`. Conclude with `congrArg Spec.map (Spec.algebraMap_stalkIso_inv (R := CommRingCat.of R) (x := q)).symm`. Use `(congrArg (Spec.map (Spec.stalkIso (CommRingCat.of R) (q : Sp R)).hom ≫ ·) e).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+A detailed English derivation is pending.
 -/
 theorem spMap_eq_fromSpecStalk (q : PrimeSpectrum R) :
     Spec.map (Spec.stalkIso (CommRingCat.of R) (q : Sp R)).hom ≫ (Sp R).fromSpecStalk (q : Sp R) =
@@ -170,11 +170,11 @@ theorem spMap_eq_fromSpecStalk (q : PrimeSpectrum R) :
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Take `⟨hc⟩` from `StalkLimit.nonempty_isLimit H'`. Establish `(V : StalkLimit.AffNhd x) : CompactSpace ((StalkLimit.diagram _ p).obj V)`. Establish `: IsAffine V.1.toScheme` using `V.2.2`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (pullback.snd p V.1.ι)`. Establish `(V : StalkLimit.AffNhd x) : QuasiSeparatedSpace ((StalkLimit.diagram _ p).obj V)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsAffine V.1.toScheme` using `V.2.2`. Conclude with `quasiSeparatedSpace_of_quasiSeparated (pullback.snd p V.1.ι)`. Establish `: IsAffine (StalkLimit.cone H').pt` using `‹IsAffine X'›`. Take `⟨V, hV⟩` from `Scheme.exists_isAffine_of_isLimit _ _ hc`. Establish `: IsAffine (pullback p V.1.ι)` using `hV`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h₁ : IsAffineOpen (p ⁻¹ᵁ V.1)` using `IsAffine.of_isIso (pullbackRestrictIsoRestrict p V.1).inv`. Take `⟨f, hf, hle⟩` from `exists_basicOpen_le' V.2.1`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Establish `h₂` using `GlobalTheory.AmpleSpread.isAffineOpen_inf_preimage_basicOpen p h₁ f`. Rewrite `h₂` using `[inf_eq_right.2 (p.preimage_mono hle)]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_isAffineOpen_preimage_basicOpen_of_stalk {x : Sp R} {p' : X' ⟶ Spec ((Sp R).presheaf.stalk x)}
     (H' : IsPullback φ p' p ((Sp R).fromSpecStalk x)) [QuasiCompact p] [QuasiSeparated p] [IsAffine X'] :
@@ -196,7 +196,7 @@ theorem exists_isAffineOpen_preimage_basicOpen_of_stalk {x : Sp R} {p' : X' ⟶ 
   rwa [inf_eq_right.2 (p.preimage_mono hle)] at h₂
 
 /- English proof (translation)
-Establish `h₀ : IsPullback (spMap (algebraMap R (Localization.AtPrime q.asIdeal))) (Spec.map (Spec.stalkIso (CommRingCat.of R) (q : Sp R)).hom) (𝟙 _) ((Sp R).fromSpecStalk (q : Sp R))` using `IsPullback.of_vert_isIso ⟨(Category.comp_id _).trans (spMap_eq_fromSpecStalk q).symm⟩`. Establish `H'` using `H.paste_vert h₀`. Rewrite `H'` using `[Category.comp_id]`. Take `⟨f, hf, h⟩` from `exists_isAffineOpen_preimage_basicOpen_of_stalk H'`. Conclude with `⟨f, hf, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isAffineOpen_preimage_basicOpen
     (H : IsPullback φ π p (spMap (algebraMap R (Localization.AtPrime q.asIdeal)))) [QuasiCompact p]
@@ -210,9 +210,9 @@ theorem exists_isAffineOpen_preimage_basicOpen
   exact ⟨f, hf, h⟩
 
 /- English proof (translation)
-Establish `hc : IsClosed (p '' (U : Set X)ᶜ)` using `p.isClosedMap _ U.isOpen.isClosed_compl`. Take `⟨f, hf, hle⟩` from `exists_basicOpen_le (q := q) (V := ⟨_, hc.isOpen_compl⟩) (by`. Introduce and unpack `⟨x, hx, e⟩`. Establish `hy : spMap (algebraMap R (Localization.AtPrime q.asIdeal)) (IsLocalRing.closedPoint (Localization.AtPrime q.asIdeal)) = q` using `PrimeSpectrum.ext (Localization.AtPrime.under_maximalIdeal (I := q.asIdeal))`. Take `⟨z, rfl, -⟩` from `Scheme.exists_preimage_of_isPullback H x _ (e.trans hy.symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hx (hU.ge (Set.mem_univ z)))`. Conclude with `⟨f, hf, fun x hx => by_contra fun h => hle hx ⟨x, h, rfl⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_preimage_basicOpen_le
     (H : IsPullback φ π p (spMap (algebraMap R (Localization.AtPrime q.asIdeal)))) [UniversallyClosed p]
@@ -228,17 +228,15 @@ theorem exists_preimage_basicOpen_le
   exact ⟨f, hf, fun x hx => by_contra fun h => hle hx ⟨x, h, rfl⟩⟩
 
 /- English proof (translation)
-Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace p`. Establish `: X.IsSeparated` using `⟨by rw [← terminal.comp_from p]; infer_instance⟩`. Take `⟨n, hn, N, s, hs, ha⟩` from `h.exists_cover`. Establish `hP` using `isLB_lbPow hL n`. Use `choose t ht using fun i => exists_sec_nonzeroLocus_eq_of_lbIso (LB.isLB_pull hP φ) (isLB_lbPow h.isLB n) (lbIso_lbPow_pull hL φ n).symm (s i)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose θ hθ using fun i => exists_sec_preimage_nonzeroLocus_eq H hP (t i)`. Take `⟨f₀, hf₀, h₀⟩` from `exists_preimage_basicOpen_le H (U := ⨆ i, Out.nonzeroLocus (θ i)) (by`. Rewrite using `[Scheme.Hom.preimage_iSup, ← hs]`. Conclude with `iSup_congr fun i => (hθ i).trans (ht i))`. Establish `aff : ∀ i, ∃ g : R, g ∉ q.asIdeal ∧ IsAffineOpen (Out.nonzeroLocus (θ i) ⊓ p ⁻¹ᵁ PrimeSpectrum.basicOpen g)` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `isAffineHom_nonzeroLocus_ι hP (θ i)` as an intermediate fact. Establish `: IsAffine (φ ⁻¹ᵁ Out.nonzeroLocus (θ i))`. Rewrite using `[hθ, ht]`. Conclude with `ha i`. Take `⟨g, hg, h₁⟩` from `exists_isAffineOpen_preimage_basicOpen ((isPullback_morphismRestrict φ (Out.nonzeroLocus (θ i))).paste_vert H)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Establish `h₂ : IsAffineOpen ((Out.nonzeroLocus (θ i)).ι ''ᵁ (Out.nonzeroLocus (θ i)).ι ⁻¹ᵁ p ⁻¹ᵁ PrimeSpectrum.basicOpen g)` using `h₁.image_of_isOpenImmersion (Out.nonzeroLocus (θ i)).ι`. Rewrite `h₂` using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Then use the resulting hypothesis. Use `choose g hg hga using aff`. Establish `hm : f₀ * ∏ i, g i ∈ q.asIdeal.primeCompl` using `q.asIdeal.primeCompl.mul_mem hf₀ (Submonoid.prod_mem _ fun i _ => hg i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨f₀ * ∏ i, g i, hm, n, hn, N, θ, (p.preimage_mono (PrimeSpectrum.basicOpen_mul_le_left _ _)).trans h₀, fun i => ?_⟩` and prove the remaining obligations. Establish `h₁` using `GlobalTheory.AmpleSpread.isAffineOpen_inf_preimage_basicOpen p (hga i) (f₀ * ∏ i, g i)`. Establish `hle : PrimeSpectrum.basicOpen (f₀ * ∏ i, g i) ≤ PrimeSpectrum.basicOpen (g i)`. Rewrite using `[← Finset.mul_prod_erase _ g (Finset.mem_univ i), mul_left_comm]`. Conclude with `PrimeSpectrum.basicOpen_mul_le_left _ _`.
-
-Rewrite `h₁` using `[inf_assoc, inf_eq_right.2 (p.preimage_mono hle)]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_cover (H : IsPullback φ π p (spMap (algebraMap R (Localization.AtPrime q.asIdeal)))) [IsProper p]
     {L : LB X} (hL : L.IsLB) (h : IsAmpleLB (L.pull φ)) :
@@ -283,13 +281,11 @@ end GlobalTheory.AmpleSpreadAt
 namespace GlobalTheory.AmpleSpreadAt
 
 /- English proof (translation)
-Introduce `R _ _ q A M _ hM B φ N H hN hNM h`. Establish `h₁ : IsAmpleLB (M.pull φ)` using `(isAmpleLB_of_relAmple_of_isAffine B hN h).of_lbIso (LB.isLB_pull hM φ) hNM.symm`. Take `⟨f, hf, n, hn, N', θ, hc, ha⟩` from `exists_cover H hM h₁`. Set `U : (Sp R).Opens` to `PrimeSpectrum.basicOpen f`. Use `⟨U, hf, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb : (Sp R).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom f) = U` using `basicOpen_eq_of_affine (R := CommRingCat.of R) f`. Establish `hU : IsAffineOpen U` using `by have := (isAffineOpen_top (Sp R)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom f); rwa [hb] at this`. Establish `: IsAffine U.toScheme` using `hU`. Establish `: IsProper (Over.mk (A.hom ∣_ U)).hom` using `inferInstanceAs (IsProper (A.hom ∣_ _))`. Set `ψ` to `(A.hom ⁻¹ᵁ U).ι`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: IsAffineHom ψ` using `MorphismProperty.of_isPullback (P := @IsAffineHom) (isPullback_morphismRestrict A.hom U) inferInstance`. Use `(relAmple_iff_isAmpleLB_of_isAffine _ (LB.isLB_pull hM _)).2 (isAmpleLB_of_cover (LB.isLB_pull hM _) hn (fun i => secPowPull (θ i) ψ) (top_le_iff.1 fun z _ => ?_) fun i => ?_)` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hc z.2)`. Conclude with `Opens.mem_iSup.2 ⟨i, (nonzeroLocus_secPowPull (θ i) ψ).ge hi⟩`. Establish `e : ψ ⁻¹ᵁ (Out.nonzeroLocus (θ i) ⊓ A.hom ⁻¹ᵁ PrimeSpectrum.basicOpen f) = Out.nonzeroLocus (secPowPull (θ i) ψ)` using `(le_antisymm (fun z hz => hz.1) fun z hz => ⟨hz, z.2⟩).trans (nonzeroLocus_secPowPull (θ i) ψ).symm`.
-
-Conclude with `e ▸ (ha i).preimage ψ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relAmple_spread_at : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (q : PrimeSpectrum R) (A : Over (Sp R)) (M : LB A.left), IsProper A.hom → M.IsLB → ∀ (B : Over (Sp (Localization.AtPrime q.asIdeal))) (φ : B.left ⟶ A.left) (N : LB B.left), IsPullback φ B.hom A.hom (spMap (algebraMap R (Localization.AtPrime q.asIdeal))) → N.IsLB → LBIso N (M.pull φ) → Out.RelAmple B N → ∃ (U : (Sp R).Opens) (_ : q ∈ U), Out.RelAmple (Over.mk (A.hom ∣_ U)) (M.pull (A.hom ⁻¹ᵁ U).ι) := by
   intro R _ _ q A M _ hM B φ N H hN hNM h

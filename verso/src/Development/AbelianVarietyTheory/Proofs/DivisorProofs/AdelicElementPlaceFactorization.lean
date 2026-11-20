@@ -17,7 +17,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def idemInf : AF F := LinearMap.inl F (Ainf F) (Af F) 1
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_one, evFin_idemAt, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evFin_one_sub_idemAt (w : Pl F) : evFin F w (1 - idemAt w) = 0 := by
   rw [map_sub, map_one, evFin_idemAt, sub_self]
@@ -41,9 +41,9 @@ open Matrix GlobalTheory.UnitaryPlaceSplit
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Introduce `γ hγ`. Proceed by induction on `hγ using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, -, x, -, y, -, rfl⟩` from `hz`. Establish `h1 : (1 - idemAt w) • a = 0` using `ha _ (evFin_one_sub_idemAt w)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[smul_eq_mul, sub_mul, one_mul, sub_eq_zero]`. Rewrite using `[smul_smul, ← h1]`. Consider the case `zero => rw [smul_zero]`. Consider the case `add x y _ _ hx hy => rw [smul_add, hx, hy]`. Consider the case `neg x _ hx => rw [smul_neg, hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem idemAt_smul_of_mem_latAtV {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (w : Pl F) :
     ∀ γ ∈ latAtV X Y w, idemAt w • γ = γ := by
@@ -59,9 +59,9 @@ theorem idemAt_smul_of_mem_latAtV {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (w
   | neg x _ hx => rw [smul_neg, hx]
 
 /- English proof (translation)
-Establish `hK' : K = s • (H - 1) + 1` using `sub_eq_iff_eq_add.1 hK`. Establish `hY : e • (δ * (H - 1)ᵀ) = δ * (H - 1)ᵀ` using `by rw [← Matrix.smul_mul, hδ]`. Establish `h2 : s • (δ * (H - 1)ᵀ) = δ * (H - 1)ᵀ` using `by rw [← hY, smul_smul, hs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hK', transpose_add, transpose_smul, transpose_one, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = δ * (H - 1)ᵀ + δ := by rw [h2]`. Use `_ = δ * Hᵀ := by rw [transpose_sub, transpose_one, Matrix.mul_sub, Matrix.mul_one, sub_add_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem mul_transpose_eq {n d : ℕ} {e s : AF F} (hs : s * e = e) {δ : Matrix (Fin n) (Fin d) (AE F E)}
     (hδ : e • δ = δ) {K H : Matrix (Fin d) (Fin d) (AE F E)} (hK : K - 1 = s • (H - 1)) : δ * Kᵀ = δ * Hᵀ := by
@@ -74,9 +74,9 @@ theorem mul_transpose_eq {n d : ℕ} {e s : AF F} (hs : s * e = e) {δ : Matrix 
     _ = δ * Hᵀ := by rw [transpose_sub, transpose_one, Matrix.mul_sub, Matrix.mul_one, sub_add_cancel]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hγ`. Establish `h` using `s2 _ hγ`. Rewrite `h` using `[← mul_transpose_eq hs (idemAt_smul_of_mem_latAtV X Y w _ hγ) hKi, Matrix.mul_assoc, ← transpose_mul, hKK, transpose_one, Matrix.mul_one]`. Then use the resulting hypothesis. Introduce `hγ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_transpose_eq hs (idemAt_smul_of_mem_latAtV X Y w _ hγ) hK]`. Conclude with `s1 _ hγ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_transpose_mem_iff {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (w : Pl F) {s : AF F}
     (hs : s * idemAt w = idemAt w) {K Ki H Hi : Matrix (Fin d) (Fin d) (AE F E)} (hK : K - 1 = s • (H - 1))

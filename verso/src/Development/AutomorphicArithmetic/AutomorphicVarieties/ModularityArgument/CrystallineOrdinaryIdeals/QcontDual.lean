@@ -15,7 +15,7 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscre
 
 omit [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] in
 /- English proof (translation)
-Unfold `Dat3.rz`. Rewrite using `[← show push x U.r.hom = r0 D.η D.Ψ from hx]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_base (E : Type) [Field E] [Algebra O E] {x : U.R →ₐ[O] O} (hx : IsBase D.η D.Ψ U.r.hom x) :
     push ((Algebra.ofId O E).comp x) U.r.hom = D.rz E := by
@@ -24,7 +24,7 @@ theorem push_base (E : Type) [Field E] [Algebra O E] {x : U.R →ₐ[O] O} (hx :
   rfl
 
 /- English proof (translation)
-The claim follows from `(ptCont (l := l) U.R B f).1 (GQ l) (fun g => (U.r.hom g).mat a b) (U.r.cont a b)`.
+A detailed English derivation is pending.
 -/
 theorem cont_push (B : Type) [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [Algebra O B]
     [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] O B] [IsScalarTower ℤ_[l] ℚ_[l] B] (f : U.R →ₐ[O] B) (a b : Fin 3) :
@@ -33,9 +33,9 @@ theorem cont_push (B : Type) [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ
 
 omit [IsDomain O] in
 /- English proof (translation)
-Establish `e : f = fun x => ((TrivSqZeroExt.inlAlgHom ℚ_[l] E E).toLinearMap (f x).fst) + (((TrivSqZeroExt.inrHom E E).restrictScalars ℚ_[l]) (f x).snd)`. Use function extensionality and compare the values at `fun x => (TrivSqZeroExt.inl_fst_add_inr_snd_eq _).symm`. Unfold `QCont`. Use `letI : TopologicalSpace (DualNumber E) := moduleTopology ℚ_[l] _`. Use `haveI : IsModuleTopology ℚ_[l] (DualNumber E) := ⟨rfl⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := IsModuleTopology.toContinuousAdd ℚ_[l] (DualNumber E)`. Rewrite using `[e]`. Conclude with `((IsModuleTopology.continuous_of_linearMap _).comp h1).add ((IsModuleTopology.continuous_of_linearMap _).comp h2)`.
+A detailed English derivation is pending.
 -/
 theorem qcont_dual {X E : Type} [TopologicalSpace X] [Field E] [Algebra ℚ_[l] E]
     [TopologicalSpace E] [IsModuleTopology ℚ_[l] E] (f : X → DualNumber E) (h1 : Continuous fun x => (f x).fst)
@@ -56,15 +56,13 @@ end GlobalTheory.OrdLoc.TangentDual
 open GlobalTheory.OrdLoc.TangentDual in
 
 /- English proof (translation)
-Introduce `hP l _ O _ _ _ _ _ _ _ D U E _ _ _ _ _ _ _ _ _ _ γ hγ r' hr'`. Take `⟨x, hx, -⟩` from `univEx D U`. Establish `hc : Continuous fun g => (D.rz E g).mat`. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Establish `h` using `cont_push D U E ((Algebra.ofId O E).comp x) a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[push_base D U E hx]`. Unfold `QCont at h`. Rewrite `h` using `[← eq_moduleTopology ℚ_[l] E]`. Then use the resulting hypothesis. Establish `hm : HasMult D.η (D.rz E)` using `fun g => rfl`. Establish `hdc` using `dualCr D E (D.rz E) hm hc γ hγ r' hr'`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Module.Finite E (DualNumber E) := inferInstanceAs (Module.Finite E (E × E))`. Use `haveI : Module.Finite ℚ_[l] (DualNumber E) := inferInstanceAs (Module.Finite ℚ_[l] (E × E))`. Establish `hred : (GG.map (TrivSqZeroExt.fstHom E E E : DualNumber E →+* E)).comp r' = D.rz E`. Use `MonoidHom.ext fun g => SemidirectProduct.ext (Units.ext (Matrix.ext fun a b => ?_)) (hr' g).1` and prove the remaining obligations. Conclude with `congrArg TrivSqZeroExt.fst ((hr' g).2 a b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.T.onOrdinaryComponent_iff_continuous_crystalline_lift hP D U E (DualNumber E) (TrivSqZeroExt.fstHom E E E) (fun a ha => TrivSqZeroExt.isNilpotent_iff_isNilpotent_fst.2 (by rw [show a.fst = 0 from ha]; exact IsNilpotent.zero)) r' hred]`. Use `⟨fun h => (hdc.1 h.cr).2, fun h => ⟨fun g => (hr' g).1, hred, fun a b => ?_, hdc.2 ⟨(isType_and_isLocallyCrystalline_rz D E).2, h⟩⟩⟩` and prove the remaining obligations. Use `qcont_dual _ ?_ ?_` and prove the remaining obligations. Simplify using `only [(hr' _).2]`. Conclude with `hc.matrix_elem a b`.
-
-Simplify using `only [(hr' _).2]`. Conclude with `(hγ.1.matrix_mul hc).matrix_elem a b`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.OrdLoc.rtTangent :
     LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (U : D.Univ) (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [TopologicalSpace E] [IsModuleTopology ℚ_[l] E] [IsTopologicalRing E], ∀ γ ∈ Z1 (adRep (D.rz E)), ∀ r' : GQ l →* GG 3 (DualNumber E), DualDef (D.rz E) γ r' → (GlobalTheory.OrdLoc.On D U r' ↔ γ ∈ finiteCocycles (MonoidHom.id _) (adRep (D.rz E))) := by

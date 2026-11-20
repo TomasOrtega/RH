@@ -13,13 +13,11 @@ set_option autoImplicit false
 namespace GlobalTheory.H1Rank
 
 /- English proof (translation)
-Introduce `l _ K LL _ _ _ O _ _ hG A LA x`. Take `⟨-, -, hmod, htop, hopen⟩` from `hG`. Use `haveI := hmod`. Use `haveI := htop`. Establish `hT : IsOpen (LA.T : Set A.V)` using `GlobalTheory.Cyc.isOpen_of_fg_of_span_eq_top hopen LA.T LA.fg LA.span`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := IsModuleTopology.toContinuousSMul LL A.V`. Establish `h1 : Filter.Tendsto (fun n : ℕ => (l : ℚ_[l]) ^ n) Filter.atTop (nhds 0)` using `tendsto_pow_atTop_nhds_zero_of_norm_lt_one Padic.norm_p_lt_one`. Establish `h2 : Filter.Tendsto (fun n : ℕ => algebraMap ℚ_[l] LL ((l : ℚ_[l]) ^ n) • x) Filter.atTop (nhds 0)`. Use `((GlobalTheory.GoodCoeff.continuous_algebraMap_padic (l := l) (LL := LL)).tendsto 0).comp h1` as an intermediate fact. Rewrite `this` using `[map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this.smul_const x`. Establish `h3 : ∀ n : ℕ, ((l : ℕ) : O) ^ n • x = algebraMap ℚ_[l] LL ((l : ℚ_[l]) ^ n) • x`. Introduce `n`. Rewrite using `[← algebraMap_smul LL, map_pow, map_pow, map_natCast, map_natCast]`. Take `⟨n, hn⟩` from `(h2.eventually (hT.mem_nhds LA.T.zero_mem)).exists`.
-
-Conclude with `⟨n, by rw [h3]; exact hn⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pow_smul_mem_lattice : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (x : A.V), ∃ n : ℕ, ((l : ℕ) : O) ^ n • x ∈ LA.T := by
   intro l _ K LL _ _ _ O _ _ hG A LA x
@@ -45,17 +43,15 @@ end GlobalTheory.H1Rank
 namespace GlobalTheory.H1Rank
 
 /- English proof (translation)
-Introduce `l _ LL _ _ _ O _ _ hG hu`. Take `⟨u, hu⟩` from `hu`. Establish `hint` using `((GlobalTheory.GoodCoeff.good_coeff_integers l LL O hG).1 (algebraMap O LL (↑u⁻¹ : O))).1 ⟨_, rfl⟩`. Establish `hl0 : (l : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hx : algebraMap O LL (↑u⁻¹ : O) = algebraMap ℚ_[l] LL ((l : ℚ_[l])⁻¹)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : algebraMap O LL (↑u⁻¹ : O) * algebraMap O LL (u : O) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `h2 : algebraMap O LL (u : O) = algebraMap ℚ_[l] LL (l : ℚ_[l])`. Rewrite using `[hu, map_natCast, map_natCast]`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, mul_inv_cancel₀ hl0, map_one, mul_one]`. Use `_ = algebraMap ℚ_[l] LL ((l : ℚ_[l])⁻¹) := by rw [← mul_assoc, h1, one_mul]`. Rewrite `hint` using `[hx]`. Take `⟨p, hpm, hp⟩` from `hint`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp' : Polynomial.eval₂ (algebraMap ℤ_[l] ℚ_[l]) ((l : ℚ_[l])⁻¹) p = 0`. Apply `(algebraMap ℚ_[l] LL).injective` to reduce the goal to its premises. Rewrite using `[map_zero, Polynomial.hom_eval₂]`. Conclude with `hp`. Establish `hI : IsIntegral ℤ_[l] ((l : ℚ_[l])⁻¹)` using `⟨p, hpm, hp'⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hI`. Establish `h1 : ‖(z : ℚ_[l])‖ ≤ 1` using `PadicInt.norm_le_one z`. Establish `h3 : algebraMap ℤ_[l] ℚ_[l] z = (z : ℚ_[l])` using `rfl`. Rewrite `h1` using `[← h3, hz, norm_inv, Padic.norm_p, inv_inv]`. Establish `: (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem not_isUnit_l : ∀ (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ¬ IsUnit ((l : ℕ) : O) := by
   intro l _ LL _ _ _ O _ _ hG hu
@@ -90,15 +86,13 @@ end GlobalTheory.H1Rank
 namespace GlobalTheory.H1Rank
 
 /- English proof (translation)
-Introduce `O LL M N _ _ _ _ _ _ _ _ _ _ _ _ f t ht hs hk`. Establish `htn : ∀ n : ℕ, t ^ n ∈ nonZeroDivisors O` using `fun n => pow_mem (mem_nonZeroDivisors_of_ne_zero ht) n`. Use `haveI : IsLocalizedModule (nonZeroDivisors O) f := { map_units := by`. Introduce `s`. Rewrite using `[Module.End.isUnit_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : algebraMap O LL (s : O) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O LL)).2 (nonZeroDivisors.ne_zero s.2)`. Establish `he : ∀ y : N, (algebraMap O (Module.End O N) (s : O)) y = algebraMap O LL (s : O) • y` using `fun y => by`. Rewrite using `[Module.algebraMap_end_apply, algebraMap_smul]`. Use `⟨fun y z h => ?_, fun y => ⟨(algebraMap O LL (s : O))⁻¹ • y, ?_⟩⟩` and prove the remaining obligations. Rewrite `h` using `[he, he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smul_right_injective N ha h`. Rewrite using `[he, smul_smul, mul_inv_cancel₀ ha, one_smul]`. Use `surj := by`. Introduce `y`. Take `⟨n, x, hx⟩` from `hs y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(x, ⟨t ^ n, htn n⟩), hx.symm⟩`. Use `exists_of_eq := by`. Introduce `x₁ x₂ h`. Take `⟨n, hn⟩` from `hk (x₁ - x₂) (by rw [map_sub, h, sub_self])`. Conclude with `⟨⟨t ^ n, htn n⟩, by rw [Submonoid.smul_def]; rw [smul_sub, sub_eq_zero] at hn; exact hn⟩ }`.
-
-Use `⟨Module.Finite.of_isLocalizedModule (nonZeroDivisors O) (Rₚ := LL) f, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalization.finrank_eq LL (nonZeroDivisors O) le_rfl, IsLocalizedModule.finrank_eq (nonZeroDivisors O) f le_rfl]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_finrank_of_localizes : ∀ (O LL M N : Type) [CommRing O] [IsDomain O] [Field LL] [Algebra O LL] [IsFractionRing O LL] [AddCommGroup M] [Module O M] [Module.Finite O M] [AddCommGroup N] [Module LL N] [Module O N] [IsScalarTower O LL N] (f : M →ₗ[O] N) (t : O), t ≠ 0 → (∀ y : N, ∃ n : ℕ, ∃ x : M, f x = t ^ n • y) → (∀ x : M, f x = 0 → ∃ n : ℕ, t ^ n • x = 0) → Module.Finite LL N ∧ finrank LL N = finrank O M := by
   intro O LL M N _ _ _ _ _ _ _ _ _ _ _ _ f t ht hs hk
@@ -130,7 +124,7 @@ end GlobalTheory.H1Rank
 namespace GlobalTheory.H1Rank
 
 /- English proof (translation)
-Introduce `l _ K LL _ _ _ O _ _ hG A LA c _ hc`. Take `⟨x, rfl⟩` from `hc`. Take `⟨n, hn⟩` from `pow_smul_mem_lattice l K LL O hG A LA x`. Conclude with `⟨n, _, hn, by rw [LinearMap.map_smul_of_tower]; rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pow_smul_mem_B1T : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ), ∀ c ∈ latticeCocycles LA, c ∈ B1 A.ρ → ∃ n : ℕ, ((l : ℕ) : O) ^ n • c ∈ latticeCoboundaries LA := by
   intro l _ K LL _ _ _ O _ _ hG A LA c _ hc
@@ -139,15 +133,13 @@ theorem pow_smul_mem_B1T : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : Typ
   exact ⟨n, _, hn, by rw [LinearMap.map_smul_of_tower]; rfl⟩
 
 /- English proof (translation)
-Introduce `l _ K LL _ _ _ O _ _ hG A LA c hc`. Use `haveI : CompactSpace ↥(GK K) := by haveI := K.2`. Conclude with `isCompact_iff_compactSpace.1 (IntermediateField.fixingSubgroup_isClosed K.1).isCompact`. Establish `hG'` using `hG`. Take `⟨-, -, hmod, htop, hopen⟩` from `hG'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI := hmod`. Use `haveI := htop`. Establish `hT : IsOpen (LA.T : Set A.V)` using `GlobalTheory.Cyc.isOpen_of_fg_of_span_eq_top hopen LA.T LA.fg LA.span`. Set `U : ℕ → Set A.V` to `fun n => (fun v : A.V => ((l : ℕ) : O) ^ n • v) ⁻¹' (LA.T : Set A.V)`. Establish `hUo : ∀ n, IsOpen (U n)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `n`. Use `hT.preimage ?_` and prove the remaining obligations. Establish `: (fun v : A.V => ((l : ℕ) : O) ^ n • v) = fun v : A.V => algebraMap O LL (((l : ℕ) : O) ^ n) • v`. Use function extensionality and compare the values at `fun v => (algebraMap_smul LL _ v).symm`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `continuous_const_smul _`. Establish `hUm : Monotone U`. Use `monotone_nat_of_le_succ fun n v hv => ?_` and prove the remaining obligations. Use `show ((l : ℕ) : O) ^ (n + 1) • v ∈ LA.T`. Rewrite using `[pow_succ', mul_smul]`.
-
-Conclude with `LA.T.smul_mem _ hv`. Establish `hcov : Set.range c ⊆ ⋃ n, U n` using `fun v _ => Set.mem_iUnion.2 (pow_smul_mem_lattice l K LL O hG A LA v)`. Take `⟨n, hn⟩` from `(isCompact_range hc.1).elim_directed_cover U hUo hcov hUm.directed_le`. Use `⟨n, ⟨(continuousCocycles A.ρ).smul_of_tower_mem _ hc, fun g _ => hn ⟨g, rfl⟩⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pow_smul_mem_Z1T : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ), ∀ c ∈ continuousCocycles A.ρ, ∃ n : ℕ, ((l : ℕ) : O) ^ n • c ∈ latticeCocycles LA := by
   intro l _ K LL _ _ _ O _ _ hG A LA c hc

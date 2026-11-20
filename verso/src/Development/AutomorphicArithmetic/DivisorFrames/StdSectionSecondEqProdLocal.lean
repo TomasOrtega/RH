@@ -12,9 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 open Classical in
 /- English proof (translation)
-Unfold `GlobalTheory.StdPairCone.stdB GlobalTheory.StdPairCone.unitInd`. Use `split_ifs with h1 h2 h3 h4 h5`. Both sides reduce to the same expression. Conclude with `absurd ⟨h1.1, h1.2.1.2⟩ h3`. Conclude with `absurd ⟨h1.2.1.1, h1.2.2⟩ h2`.
-
-Conclude with `absurd ⟨h5.1, ⟨h4.1, h5.2⟩, h4.2⟩ h1`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem stdB_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ) (Y : Matrix (Fin a') (Fin (a + a')) k) :
@@ -31,7 +29,7 @@ private theorem stdB_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
   · rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero]`. Consider the case `tmul a x => exact congrArg (fun y : D.host.E => a ⊗ₜ[D.host.F] y) (star_star x)`. Consider the case `add a b ha hb => rw [RingHom.map_add, RingHom.map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem cA_invol {D : D7} (z : AE D) : cA D (cA D z) = z := by
   induction z using TensorProduct.induction_on with
@@ -40,9 +38,7 @@ private theorem cA_invol {D : D7} (z : AE D) : cA D (cA D z) = z := by
   | add a b ha hb => rw [RingHom.map_add, RingHom.map_add, ha, hb]
 
 /- English proof (translation)
-Establish `h1 : f e • (G * M * H).map f = (G * M * H).map f` using `by conv_rhs => rw [← h, Matrix.mul_smul, Matrix.smul_mul]`. Use extensionality with `i j`. Conclude with `(RingHom.map_mul f e _).symm`. Establish `h2 : f e • (x • (P * (G * M * H).map f * Q)) = x • (P * (G * M * H).map f * Q)`. Rewrite using `[smul_comm, ← Matrix.smul_mul (f e), ← Matrix.mul_smul P (f e), h1]`.
-
-Conclude with `congrFun (congrFun h2 i) j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem half_alg {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (e : R) (x : S) {m n : ℕ}
     (P : Matrix (Fin m) (Fin m) S) (G : Matrix (Fin m) (Fin m) R) (M : Matrix (Fin m) (Fin n) R)
@@ -57,7 +53,7 @@ private theorem half_alg {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) 
   exact congrFun (congrFun h2 i) j
 
 /- English proof (translation)
-Use `half_alg (toEAf D) ε _ _ _ _ _ _ ?_ i j` and prove the remaining obligations. Use extensionality with `i j`. Use `congrArg (cA D) (hy j i)` as an intermediate fact. Rewrite `this` using `[RingHom.map_mul, cA_invol]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dualCoord_half {D : D7} (ε : AE D) (A' WW : HSp D) (βA' : GL (Fin A'.rank) (Lev.EAf D))
     (βW : GL (Fin WW.rank) (Lev.EAf D)) (y : WO A' WW) (hy : IsHalf (cA D ε) y) (i : Fin A'.rank) (j : Fin WW.rank) :
@@ -69,7 +65,7 @@ private theorem dualCoord_half {D : D7} (ε : AE D) (A' WW : HSp D) (βA' : GL (
   exact this
 
 /- English proof (translation)
-Establish `h : valuation (Fv F v) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt v : Fv F v) = uniformizer (Fv F v)` using `(GlobalTheory.SplitFlip.exists_isUnif (k := Fv F v)).choose_spec`. Rewrite using `[Valuation.mem_integer_iff]`. Use `le_trans (show valuation (Fv F v) x ≤ valuation (Fv F v) ((GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt v ^ c : (Fv F v)ˣ) : Fv F v) from hx) ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, h]`. Conclude with `pow_le_one₀ zero_le' uniformizer_lt_one.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cball_sub {F : Type} [Field F] [NumberField F] (v : Pl F) (c : ℕ) (x : Fv F v)
     (hx : x ∈ GlobalTheory.SplitWeil.cball (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt v ^ c)) : x ∈ 𝒪[Fv F v] := by
@@ -83,17 +79,15 @@ private theorem cball_sub {F : Type} [Field F] [NumberField F] (v : Pl F) (c : �
 
 open Classical in
 /- English proof (translation)
-Substitute `hk` using the available equality. Establish `hI` using `fun i j => UpperTheory.mem_intAdeles_and_ideal_iff_splitEmbeddings D ε Pw hε ι pl τ hP hinj c (Y i j) (hY i j)`. Establish `hb : ∀ l, GlobalTheory.StdPairCone.blk₂ ((Y.map (GlobalTheory.BotMatch.evW (τ l))).submatrix id (finCongr rfl)) = (GlobalTheory.BotMatch.evW (τ l)).mapMatrix (GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.rightBlock a Y)` using `fun l => by`. Use function extensionality and compare the values at `i j`. Establish `h : a + j.1 < a + k` using `by omega`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `show _ = GlobalTheory.BotMatch.evW (τ l) (if h : a + j.1 < a + k then Y i ⟨a + j.1, h⟩ else 0)`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression. Simplify using `only [stdB_eq, hb, ← RingHom.map_det]`. Distinguish the cases in `h : IsIntM Y ∧ ∀ i j, j.1 < a → GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId (∏ w ∈ Pw, w.asIdeal ^ c w) (Y i j)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h, UpperTheory.unitChar_idempotentSum_eq_prod_unitInd D ε Pw hε ι pl τ hP hinj ν k]`. Use `Finset.prod_congr rfl fun l _ => (if_pos ⟨fun i j => ?_, fun i j => ?_⟩).symm` and prove the remaining obligations. Conclude with `(hI i _).1.1 (h.1 i _) l`. Conclude with `(hI i _).2.1 (h.2 i (Fin.castAdd k j) j.2) l`. Introduce `l`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det, ← hb, Matrix.det_apply']`. Use `sum_mem fun σ _ => mul_mem (intCast_mem _ _) (prod_mem fun i _ => ?_)` and prove the remaining obligations. Conclude with `(hI _ _).1.1 (h.1 _ _) l`. Rewrite using `[if_neg h]`. Use `symm`.
+Use symmetry to reverse the relation. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Establish `hall : ∀ l, (∀ i j, GlobalTheory.BotMatch.evW (τ l) (Y i (Fin.natAdd a j)) ∈ 𝒪[Fv D.host.F (pl l)]) ∧ ∀ i j, GlobalTheory.BotMatch.evW (τ l) (Y i (Fin.castAdd k j)) ∈ GlobalTheory.SplitWeil.cball (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt (pl l) ^ c (splitPr …` using `fun l => by`. Assume the negation of the conclusion as `hl`. Conclude with `hne (Finset.prod_eq_zero (Finset.mem_univ l) (if_neg hl))`. Use `h ⟨fun i j => (hI i j).1.2 fun l => ?_, fun i j hj => (hI i j).2.2 fun l => (hall l).2 i ⟨j.1, hj⟩⟩` and prove the remaining obligations.
-
-Proceed by induction on `j using Fin.addCases with`. Consider the case `left j => exact cball_sub _ _ _ ((hall l).2 i j)`. Consider the case `right j => exact (hall l).1 i j`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem core (D : D7) (ε : AE D) (Pw : Finset (Pl D.host.E)) (hε : IsIdemSum ε Pw) (ι : Type) [Fintype ι]
     (pl : ι → Pl D.host.F) (τ : ∀ i, D.host.E →ₐ[D.host.F] Fv D.host.F (pl i))
@@ -137,7 +131,7 @@ private theorem core (D : D7) (ε : AE D) (Pw : Finset (Pl D.host.E)) (hε : IsI
     | right j => exact (hall l).1 i j
 
 /- English proof (translation)
-Introduce `D ε Pw hε ι _ pl τ hP hinj c ν a A' WW βA' βW hk y hy`. Rewrite using `[← core D ε Pw hε ι pl τ hP hinj c ν a A'.rank WW.rank hk _ (dualCoord_half ε A' WW βA' βW y hy)]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdSnd`. Simplify using `only [hy, true_and]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.stdSectionSecond_eq_prod_local :
     ∀ (D : D7) (ε : AE D) (Pw : Finset (Pl D.host.E)), IsIdemSum ε Pw → ∀ (ι : Type) [Fintype ι] (pl : ι → Pl D.host.F)

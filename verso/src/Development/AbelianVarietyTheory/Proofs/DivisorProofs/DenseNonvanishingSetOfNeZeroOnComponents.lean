@@ -10,29 +10,25 @@ open scoped ENNReal ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ ι La _ A Λ τ T hs hT hP`. Use `set Zs : Set Y := {y | τ (A.pick y) y = 0} with hZs`. Establish `hc : (nz A τ)ᶜ = Zs`. Use extensionality with `y`. Simplify using `[nz, Zs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `toI : ∀ i x, x ∈ (A.chart i).source → τ (A.pick x) x = 0 → τ i x = 0`. Introduce `i x hx h0`. Rewrite using `[hs.2 i (A.pick x) x (Set.mem_univ _) hx (A.mem_pick x), h0, mul_zero]`. Establish `toP : ∀ i x, x ∈ (A.chart i).source → τ i x = 0 → τ (A.pick x) x = 0`. Introduce `i x hx h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs.2 (A.pick x) i x (Set.mem_univ _) (A.mem_pick x) hx, h0, mul_zero]`. Use `set Z := interior Zs with hZ`. Establish `hZo : IsOpen Z` using `isOpen_interior`. Establish `hZc : IsClosed Z`. Rewrite using `[← closure_subset_iff_isClosed]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Use `set i := A.pick y`. Use `set e := A.chart i`. Establish `hyv : e y ∈ e.target` using `e.map_source (A.mem_pick y)`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp e.open_target (e y) hyv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set W : Set Y := e.source ∩ e ⁻¹' ball (e y) r`. Establish `hWo : IsOpen W` using `e.isOpen_inter_preimage isOpen_ball`. Establish `hyW : y ∈ W` using `⟨A.mem_pick y, mem_ball_self hr⟩`. Take `⟨x, hxW, hxZ⟩` from `(mem_closure_iff.mp hy) W hWo hyW`. Use `set F : V n → ℂ := τ i ∘ e.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hF : DifferentiableOn ℂ F (ball (e y) r)`. Use `hs.1 i` as an intermediate fact. Use `this.mono ?_` and prove the remaining obligations. Introduce `w hw`. Conclude with `⟨hball hw, Set.mem_univ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxs : e x ∈ ball (e y) r` using `hxW.2`. Establish `hev : F =ᶠ[𝓝 (e x)] 0`. Establish `hxt : e x ∈ e.target` using `e.map_source hxW.1`. Establish `h1 : ∀ᶠ w in 𝓝 (e x), e.symm w ∈ Z`. Establish `hca : ContinuousAt e.symm (e x)` using `e.continuousAt_symm hxt`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: e.symm (e x) = x` using `e.left_inv hxW.1`. Use `hca.preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[this]`. Conclude with `hZo.mem_nhds hxZ`. Establish `h2 : ∀ᶠ w in 𝓝 (e x), w ∈ e.target` using `e.open_target.mem_nhds hxt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `filter_upwards [h1, h2] with w hw1 hw2`. Establish `hsrc : e.symm w ∈ e.source` using `e.map_target hw2`. Conclude with `toI i _ hsrc (interior_subset (s := Zs) hw1)`. Establish `hEq` using `ReciprocityTheory.L2DbarEstimates.C.ident n (ball (e y) r) F (e x) isOpen_ball (convex_ball _ _) hF hxs hev`. Establish `hWZs : W ⊆ Zs`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `h0 : F (e z) = 0` using `hEq hz.2`. Establish `: τ i z = 0`. Simplify `h0` using `[F, e.left_inv hz.1]`. Conclude with `toP i z hz.1 this`.
-
-Conclude with `interior_maximal hWZs hWo hyW`. Establish `hempty : Z = ∅`. Assume the negation of the conclusion as `hne`. Take `⟨y, hy⟩` from `Set.nonempty_iff_ne_empty.mpr hne`. Take `⟨P, hPT, hPc⟩` from `hT y`.
-
-Establish `hsub` using `(IsClopen.connectedComponent_subset ⟨hZc, hZo⟩ hy)`. Conclude with `hP P hPT (interior_subset (s := Zs) (hsub hPc))`. Establish `hd` using `interior_eq_empty_iff_dense_compl.mp hempty`. Rewrite `hd` using `[← hc, compl_compl]`. Conclude with `hd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nz_dense_of_ne_zero_on_components : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y]
     [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La]

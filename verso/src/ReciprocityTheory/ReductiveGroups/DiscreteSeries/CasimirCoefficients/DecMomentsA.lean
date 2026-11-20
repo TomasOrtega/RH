@@ -22,11 +22,11 @@ def dmK (U : Matrix (Fin n) (Fin n) ℂ) (i : ℕ) (k l : Fin n) : ℂ :=
 def dmInd (J : Finset (Fin n)) (k : Fin n) : ℂ := if k ∈ J then 1 else 0
 
 /- English proof (translation)
-Simplify using `only [dmChi, ite_mul, one_mul, zero_mul]`. Rewrite using `[← Finset.sum_filter]`. Use `Finset.sum_bij (fun a _ => Fin.castLE hi a) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a _`. Simplify using `[Finset.mem_filter, a.isLt]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a _ b _ h`. Conclude with `Fin.castLE_injective hi h`. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Conclude with `⟨⟨b, hb⟩, Finset.mem_univ _, Fin.ext rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma dm_sum_castLE {i : ℕ} (hi : i ≤ n) (f : Fin n → ℂ) :
     ∑ a : Fin i, f (Fin.castLE hi a) = ∑ a : Fin n, dmChi i a * f a := by
@@ -44,7 +44,7 @@ lemma dm_sum_castLE {i : ℕ} (hi : i ≤ n) (f : Fin n → ℂ) :
     rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, Matrix.conjTranspose_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma dm_entry (U : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → ℂ) (a b : Fin n) :
     (U * Matrix.diagonal d * Uᴴ) a b = ∑ j, U a j * d j * star (U b j) := by
@@ -52,19 +52,19 @@ lemma dm_entry (U : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → ℂ) (a b : Fin n
   simp only [Matrix.mul_diagonal, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Simplify `Matrix.mem_unitaryGroup_iff.mp hU` using `[Matrix.star_eq_conjTranspose]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma dm_UUh {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) : U * Uᴴ = 1 := by
   simpa [Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff.mp hU
 
 /- English proof (translation)
-Simplify `Matrix.mem_unitaryGroup_iff'.mp hU` using `[Matrix.star_eq_conjTranspose]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma dm_UhU {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) : Uᴴ * U = 1 := by
   simpa [Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff'.mp hU
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun (dm_UUh hU) a) b`. Rewrite `h` using `[Matrix.mul_apply]`. Simplify `h` using `only [Matrix.conjTranspose_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma dm_unit {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (a b : Fin n) :
     ∑ j, U a j * star (U b j) = (1 : Matrix (Fin n) (Fin n) ℂ) a b := by
@@ -73,7 +73,7 @@ lemma dm_unit {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ Matrix.unitaryGroup (
   simpa only [Matrix.conjTranspose_apply] using h
 
 /- English proof (translation)
-Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne]`. Conclude with `fun e => h (Fin.castLE_injective hi e)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma dm_one_sub {i : ℕ} (hi : i ≤ n) (a b : Fin i) :
     (1 : Matrix (Fin n) (Fin n) ℂ) (Fin.castLE hi a) (Fin.castLE hi b) = (1 : Matrix (Fin i) (Fin i) ℂ) a b := by
@@ -84,15 +84,15 @@ lemma dm_one_sub {i : ℕ} (hi : i ≤ n) (a b : Fin i) :
     exact fun e => h (Fin.castLE_injective hi e)
 
 /- English proof (translation)
-Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma dm_normsq (z : ℂ) : ((‖z‖ ^ 2 : ℝ) : ℂ) = z * star z := by
   rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Establish `h` using `lead_unitary_diag (U := U) (fun _ => (1 : ℂ)) i hi`. Simplify using `only [Finset.prod_const_one, mul_one] at h`. Simplify using `only [dmW]`. Rewrite using `[← h, lead, dif_pos hi, Matrix.diagonal_one, Matrix.mul_one, dm_UUh hU]`. Establish `h2 : (1 : Matrix (Fin n) (Fin n) ℂ).submatrix (Fin.castLE hi) (Fin.castLE hi) = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `a b`. Rewrite using `[Matrix.submatrix_apply, dm_one_sub]`. Rewrite using `[h2, Matrix.det_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma dm_mass {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) {i : ℕ} (hi : i ≤ n) :
     ∑ J : {J : Finset (Fin n) // J.card = i}, ((dmW U hi J : ℝ) : ℂ) = 1 := by
@@ -105,17 +105,17 @@ lemma dm_mass {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ Matrix.unitaryGroup (
   rw [h2, Matrix.det_one]
 
 /- English proof (translation)
-Establish `h` using `lead_unitary_diag (U := U) (fun j => if j = k then (2 : ℂ) else 1) i hi`. Establish `hprod : ∀ J : Finset (Fin n), ∏ j ∈ J, (if j = k then (2 : ℂ) else 1) = 1 + dmInd J k`. Apply the tactic sequence `intro J; rw [Finset.prod_ite_eq']; unfold dmInd; split_ifs <;> norm_num`. Simplify using `only [hprod, mul_add, mul_one, Finset.sum_add_distrib] at h`. Establish `hm` using `dm_mass hU hi`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [dmW] at hm ⊢`. Rewrite `h` using `[hm]`. Set `v : Fin i → ℂ` to `fun a => U (Fin.castLE hi a) k`. Establish `hsub : (U * Matrix.diagonal (fun j => if j = k then (2 : ℂ) else 1) * Uᴴ).submatrix (Fin.castLE hi) (Fin.castLE hi) = 1 + Matrix.replicateCol Unit v * Matrix.replicateRow Unit (star v)`. Use extensionality with `a b`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.submatrix_apply, dm_entry]`. Establish `hj : ∀ j, U (Fin.castLE hi a) j * (if j = k then (2 : ℂ) else 1) * star (U (Fin.castLE hi b) j) = U (Fin.castLE hi a) j * star (U (Fin.castLE hi b) j) + if k = j then U (Fin.castLE hi a) k * star (U (Fin.castLE hi b) k) else 0`. Introduce `j`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hjk, if_neg (Ne.symm hjk)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hj, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true, dm_unit hU, dm_one_sub]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mul_apply, v]`. Rewrite `h` using `[lead, dif_pos hi, hsub, Matrix.det_one_add_replicateCol_mul_replicateRow]`. Establish `hdot : star v ⬝ᵥ v = dmK U i k k`. Rewrite using `[dotProduct, dmK, ← dm_sum_castLE hi (fun a => star (U a k) * U a k)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h` using `[hdot]`. Take the linear combination `-h`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma sum_minorWeights_indicator {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) {i : ℕ} (hi : i ≤ n)
     (k : Fin n) :
@@ -149,21 +149,21 @@ lemma sum_minorWeights_indicator {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ Ma
   linear_combination -h
 
 /- English proof (translation)
-Establish `h` using `lead_unitary_diag (U := U) (fun j => (if j = k then (2 : ℂ) else 1) * (if j = l then (2 : ℂ) else 1)) i hi`. Establish `hprod : ∀ J : Finset (Fin n), ∏ j ∈ J, ((if j = k then (2 : ℂ) else 1) * (if j = l then (2 : ℂ) else 1)) = 1 + dmInd J k + dmInd J l + dmInd J k * dmInd J l`. Introduce `J`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.prod_ite_eq']`. Apply the tactic sequence `unfold dmInd; split_ifs <;> norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [hprod, mul_add, mul_one, Finset.sum_add_distrib] at h`. Establish `hm` using `dm_mass hU hi`. Establish `h1` using `sum_minorWeights_indicator hU hi k`. Establish `h2` using `sum_minorWeights_indicator hU hi l`. Simplify using `only [dmW] at hm h1 h2 ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hm, h1, h2]`. Set `W : Matrix (Fin i) (Fin 2) ℂ` to `Matrix.of fun a c => if c = 0 then U (Fin.castLE hi a) k else U (Fin.castLE hi a) l`. Establish `hsub : (U * Matrix.diagonal (fun j => (if j = k then (2 : ℂ) else 1) * (if j = l then (2 : ℂ) else 1)) * Uᴴ).submatrix (Fin.castLE hi) (Fin.castLE hi) = 1 + W * Wᴴ`. Use extensionality with `a b`. Rewrite using `[Matrix.submatrix_apply, dm_entry]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : ∀ j, U (Fin.castLE hi a) j * ((if j = k then (2 : ℂ) else 1) * (if j = l then (2 : ℂ) else 1)) * star (U (Fin.castLE hi b) j) = U (Fin.castLE hi a) j * star (U (Fin.castLE hi b) j) + ((if k = j then U (Fin.castLE hi a) k * star (U (Fin.castLE hi b) k) else 0) + (if l = j the …`. Introduce `j`. Distinguish the cases in `hjk : j = k`. Establish `hjl : j ≠ l` using `hjk ▸ hkl`. Rewrite using `[if_pos hjk, if_neg hjl, if_pos hjk.symm, if_neg (Ne.symm hjl), hjk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hjl : j = l`. Rewrite using `[if_neg hjk, if_pos hjl, if_neg (Ne.symm hjk), if_pos hjl.symm, hjl]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hjk, if_neg hjl, if_neg (Ne.symm hjk), if_neg (Ne.symm hjl)]`.
+Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hj, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true, dm_unit hU, dm_one_sub]`. Simplify using `[Matrix.mul_apply, W, Fin.sum_univ_two]`. Establish `hK : ∀ c c' : Fin 2, (Wᴴ * W) c c' = dmK U i (![k, l] c) (![k, l] c')`. Introduce `c c'`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mul_apply, dmK, ← dm_sum_castLE hi (fun a => star (U a (![k, l] c)) * U a (![k, l] c'))]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases c <;> fin_cases c' <;> simp [W]`. Rewrite `h` using `[lead, dif_pos hi, hsub, Matrix.det_one_add_mul_comm, Matrix.det_fin_two]`. Simplify using `only [Matrix.add_apply, hK, Matrix.one_apply_eq, Matrix.one_apply_ne (show (0 : Fin 2) ≠ 1 by decide), Matrix.one_apply_ne (show (1 : Fin 2) ≠ 0 by decide), Matrix.cons_val_zero, Matrix.cons_val_one, zero_add] at h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `-h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma sum_minorWeights_indicator_pair {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) {i : ℕ} (hi : i ≤ n)
     (k l : Fin n) (hkl : k ≠ l) :
@@ -216,9 +216,9 @@ lemma sum_minorWeights_indicator_pair {U : Matrix (Fin n) (Fin n) ℂ} (hU : U �
   linear_combination -h
 
 /- English proof (translation)
-Distinguish the cases in `hkl : k = l`. Substitute `hkl` using the available equality. Establish `hsq : ∀ (m : Fin n) (J : Finset (Fin n)), dmInd J m * dmInd J m = dmInd J m`. Introduce `m J`. Unfold `dmInd`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[if_pos rfl]`. Simplify using `only [hsq, sum_minorWeights_indicator hU hi]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sum_minorWeights_indicator_pair hU hi k l hkl, if_neg hkl, add_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 lemma dm_m {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) {i : ℕ} (hi : i ≤ n)
     (k l : Fin n) :

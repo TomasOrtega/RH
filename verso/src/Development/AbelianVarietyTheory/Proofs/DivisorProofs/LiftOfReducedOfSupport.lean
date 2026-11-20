@@ -4,11 +4,11 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Limits
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 
 /- English proof (translation)
-Establish `hle : i.ker ≤ g.ker`. Use `(Scheme.IdealSheafData.le_ofIdeals_iff (I := i.ker)).mpr ?_` and prove the remaining obligations. Introduce `U a ha`. Rewrite using `[RingHom.mem_ker]`. Apply `eq_zero_of_basicOpen_eq_bot` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Scheme.preimage_basicOpen]`. Use extensionality with `t`. Simplify using `only [Scheme.Hom.mem_preimage, Opens.coe_bot, Set.mem_empty_iff_false, iff_false]`. Introduce `ht`. Establish `h1` using `(Scheme.IdealSheafData.mem_support_iff.mp (hg t)) U`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Y.mem_zeroLocus_iff _ _).mp h1 a ha ht`. Conclude with `⟨IsClosedImmersion.lift i g hle, IsClosedImmersion.lift_fac _ _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.lift_of_reduced_of_support {X Y T : Scheme.{0}} (i : X ⟶ Y) [IsClosedImmersion i]
     [IsReduced T] (g : T ⟶ Y) (hg : ∀ t, g t ∈ i.ker.support) : ∃ h : T ⟶ X, h ≫ i = g := by

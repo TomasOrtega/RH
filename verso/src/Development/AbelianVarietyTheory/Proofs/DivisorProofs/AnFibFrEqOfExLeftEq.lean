@@ -14,25 +14,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ r g X bas idx e x L y y' A A' hs hx hL he j z hj`. Establish `hch : ∀ z, ∃ i, ⊤ ≤ (A.ex z).left ⁻¹ᵁ Xo.univ.t.PP.L.U i` using `fun z => by`. Establish `h : (A.ex z).left (default : PrimeSpectrum ℂ) ∈ ⨆ i, Xo.univ.t.PP.L.U i`. Rewrite using `[Xo.univ.t.PP.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Conclude with `⟨i, (GlobalTheory.top_le_preimage_iff_mem _ _).2 hi⟩`. Use `choose ch hc using hch`. Establish `hyx : y'.x = y.x`. Establish `h1 : (A.ex 0).left ≫ Xo.univ.t.G.hom = y.x` using `Over.w (A.ex 0)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (A'.ex 0).left ≫ Xo.univ.t.G.hom = y'.x` using `Over.w (A'.ex 0)`. Rewrite using `[← h1, ← h2, he]`. Establish `ne' : ∀ j z, ⊤ ≤ (A.ex z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → A'.fr j z ≠ 0` using `fun j z h => A'.fr_ne j z (by rw [he]; exact h)`. Set `q : (Fin g → ℂ) → ℂ` to `fun z => A.fr (ch z) z / A'.fr (ch z) z`. Establish `key : ∀ j z, ⊤ ≤ (A.ex z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → q z = A.fr j z / A'.fr j z` using `fun j z h => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ⊤ ≤ (A.ex z).left ⁻¹ᵁ (Xo.univ.t.PP.L.U j ⊓ Xo.univ.t.PP.L.U (ch z))` using `fun p hp => ⟨h hp, hc z hp⟩`. Establish `h1` using `A.fr_g j (ch z) z hz`. Establish `h2` using `A'.fr_g j (ch z) z (by rw [he]; exact hz)`. Rewrite `h2` using `[he]`. Rewrite using `[h1, h2, mul_div_mul_left _ _ (left_ne_zero_of_mul (h1 ▸ A.fr_ne j z h))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : Differentiable ℂ q` using `fun z0 => by`. Establish `hO : IsOpen {z | ⊤ ≤ (A.ex z).left ⁻¹ᵁ Xo.univ.t.PP.L.U (ch z0)}`. Simplify using `using (A.hol (Xo.univ.t.PP.L.U (ch z0)) 0).1`. Establish `h' : DifferentiableOn ℂ (A'.fr (ch z0)) {z | ⊤ ≤ (A.ex z).left ⁻¹ᵁ Xo.univ.t.PP.L.U (ch z0)}`. Simplify `A'.fr_hol (ch z0)` using `only [he]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hd : DifferentiableOn ℂ q {z | ⊤ ≤ (A.ex z).left ⁻¹ᵁ Xo.univ.t.PP.L.U (ch z0)}` using `((A.fr_hol (ch z0)).mul (h'.inv fun z hz => ne' _ z hz)).congr fun z hz => (key _ z hz).trans (div_eq_mul_inv _ _)`. Conclude with `hd.differentiableAt (hO.mem_nhds (hc z0))`. Set `pvh : (Fin r → E) →+ (Fin g → ℂ)` to `AddMonoidHom.mk' (pv X idx x) GlobalTheory.Dict.FrameSign.pv_add`. Set `P : L →+ (Fin g → ℂ)` to `pvh.comp L.subtype.toAddMonoidHom`. Establish `hP : Submodule.span ℝ (Set.range P) = ⊤`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← span_image_pv idx hs hx L (TensLat.span_of_selfD X hL)]`. Use `congr 1`. Use extensionality with `w`. Conclude with `⟨fun ⟨a, ha⟩ => ⟨a.1, a.2, ha⟩, fun ⟨a, ha, h⟩ => ⟨⟨a, ha⟩, h⟩⟩`. Establish `hper : ∀ z (a : L), ‖q (z + P a)‖ = ‖q z‖` using `fun z a => by`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ⊤ ≤ (A.ex (z + pv X idx x a)).left ⁻¹ᵁ Xo.univ.t.PP.L.U (ch z)`. Rewrite using `[GlobalTheory.Dict.FrameSign.ex_add_pv A z a.2]`. Conclude with `hc z`. Establish `h1` using `A.fr_per a a.2 (ch z) z (hc z)`. Establish `h2` using `A'.fr_per a a.2 (ch z) z (by rw [he]; exact hc z)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `‖q (z + pv X idx x a)‖ = _`. Rewrite using `[key _ _ h, key _ _ (hc z), h1, h2, norm_div, norm_div, norm_mul, norm_mul, norm_mul, norm_mul, A.χ_norm _ a.2, A'.χ_norm _ a.2, mul_div_mul_left _ _ (mul_ne_zero one_ne_zero (norm_ne_zero_iff.2 (Complex.exp_ne_zero _)))]`. Establish `hc0` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.norm_periodic_const_range P hP q hq hper z 0`. Establish `h0 : q 0 = 1`. Use `A'.fr_0 (ch 0) (by rw [he]; exact hc 0)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hyx, ← A.fr_0 (ch 0) (hc 0)]`. Express the relevant statement in the definitionally equal form `A.fr (ch 0) 0 / A'.fr (ch 0) 0 = 1`. Rewrite using `[this, div_self (A.fr_ne _ _ (hc 0))]`. Rewrite `hc0` using `[h0, key j z hj]`. Conclude with `((div_eq_one_iff_eq (ne' j z hj)).1 hc0).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FrameEquiv.anFib_fr_eq_of_ex_left_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] (r g : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (e : Fin g ≃ Lt1 Dw) (x : Frame X.Ψ r) (L : Lt E r) (y y' : FrPt Xo c ℂ) (A : AnFib X bas idx e x L y) (A' : AnFib X bas idx e x L y'), IsSympl X bas → x ∈ X.dom → SelfD X L → (∀ z, (A'.ex z).left = (A.ex z).left) → ∀ j z, ⊤ ≤ (A.ex z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → A'.fr j z = A.fr j z := by
   intro E _ _ _ H Dw l Xo c _ r g X bas idx e x L y y' A A' hs hx hL he j z hj

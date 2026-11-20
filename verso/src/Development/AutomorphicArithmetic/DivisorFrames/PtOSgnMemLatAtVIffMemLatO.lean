@@ -26,7 +26,7 @@ private noncomputable def ptH {D : D7} (S : HSp D) {d n : ℕ} (e : Fin d ≃ Fi
     rfl
 
 /- English proof (translation)
-Establish `h1 : GlobalTheory.BigDat.divG S x = GlobalTheory.BigDat.divG S y`. Use extensionality with `q p`. Take `⟨q, rfl⟩` from `e.surjective q`. Rewrite using `[← ptO_eq, ← ptO_eq, h]`. Rewrite using `[← GlobalTheory.BigDat.mulG_divG S x, h1, GlobalTheory.BigDat.mulG_divG]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ptO_inj {D : D7} (S : HSp D) {d n : ℕ} (e : Fin d ≃ Fin n) {x y : Matrix (Fin n) (Fin S.rank) (AE D)}
     (h : ptO S.gram e x = ptO S.gram e y) : x = y := by
@@ -37,7 +37,7 @@ private theorem ptO_inj {D : D7} (S : HSp D) {d n : ℕ} (e : Fin d ≃ Fin n) {
   rw [← GlobalTheory.BigDat.mulG_divG S x, h1, GlobalTheory.BigDat.mulG_divG]
 
 /- English proof (translation)
-Use extensionality with `p q`. Use `(ptO_eq S e _ p q).trans ((GlobalTheory.BigDat.divG_gen S β a s t (e q) p).trans ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.BigDat.smul_incM_apply, vecMulVec_apply, mul_comm]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ptO_gen {D : D7} (S : HSp D) {d n : ℕ} (e : Fin d ≃ Fin n) (β : AF D.host.F) (a : D.host.E)
     (s : Fin S.rank → D.host.E) (t : Fin n → D.host.E) :
@@ -49,9 +49,9 @@ private theorem ptO_gen {D : D7} (S : HSp D) {d n : ℕ} (e : Fin d ≃ Fin n) (
   rfl
 
 /- English proof (translation)
-Use `⟨GlobalTheory.AdelicU.singleFin v (evFin F v b), fun w => ?_, GlobalTheory.VacAny.eq_atPlace_of_at v b hb⟩` and prove the remaining obligations. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_self]`. Conclude with `hi`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_ne h]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 private theorem at_eq_pairA {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} {b : AF F}
     (hb : At (evFin F v) b) (hi : evFin F v b ∈ v.adicCompletionIntegers F) : ∃ α ∈ intAf F, b = pairA F 0 α := by
@@ -64,21 +64,19 @@ private theorem at_eq_pairA {F : Type} [Field F] [NumberField F] {v : HeightOneS
     exact zero_mem _
 
 /- English proof (translation)
-Use `⟨fun v x hx => ?_, fun v b hb hi x hx => ?_⟩` and prove the remaining obligations. Establish `key : latAtV Vs Ws v ≤ (latO S X (ΛS : Set (Fin S.rank → D.host.E)) (ΛX : Set (Fin X.rank → D.host.E)) fun _ => True).map (ptH S e)`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, hi, x, hx, y, hy, rfl⟩`. Take `⟨α, hα, rfl⟩` from `at_eq_pairA hb hi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (1 : D.host.E) ∈ ((D.host.AA : Submodule (𝓞 D.host.E) D.host.E) * ((D.host.AA⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E))`. Rewrite using `[← FractionalIdeal.coe_mul, mul_inv_cancel₀ GlobalTheory.SkewLat.DualPair.AA_ne]`. Conclude with `FractionalIdeal.one_mem_one _`. Establish `h2 : ∀ z ∈ ((D.host.AA : Submodule (𝓞 D.host.E) D.host.E) * ((D.host.AA⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E)), pairA D.host.F 0 α • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (vecMulVec x (z • …`. Introduce `z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mul_induction_on hz (fun a ha c hc => ?_) (fun z z' hz hz' => ?_)` and prove the remaining obligations. Use `⟨_, AddSubgroup.subset_closure ⟨α, hα, fun _ h => (h trivial).elim, a, ha, star x, (hL.1 x).1 hx, c • fun k => y (e.symm k), (hL.2 y).1 hy c hc, rfl⟩, ?_⟩` and prove the remaining obligations. Use `(ptO_gen S e _ a _ _).trans ?_` and prove the remaining obligations. Rewrite using `[star_star]`. Use `congr 3`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `q`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Equiv.symm_apply_apply, mul_assoc]`. Establish `h3 : pairA D.host.F 0 α • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (vecMulVec x ((z + z') • y)) = pairA D.host.F 0 α • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (vecMulVec x (z • y)) + pairA D.host.F 0 α • GlobalTheory.In …`. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, GlobalTheory.BigDat.smul_incM_apply, GlobalTheory.BigDat.smul_incM_apply, GlobalTheory.BigDat.smul_incM_apply, ← TensorProduct.tmul_add]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [vecMulVec_apply, Pi.smul_apply, smul_eq_mul, add_mul, mul_add]`. Rewrite using `[h3]`. Conclude with `add_mem hz hz'`. Establish `h4` using `h2 1 h1`. Rewrite `h4` using `[one_smul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨x', hx', h⟩` from `key hx`. Rewrite using `[← ptO_inj S e h]` and apply the resulting hypothesis. Use `GlobalTheory.BigDat.map_mem_of_closure ((DistribMulAction.toAddMonoidHom _ b).comp (ptH S e)) ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩`. Use `(congrArg (fun z => b • z ∈ latAtV Vs Ws v) (ptO_gen S e (pairA _ 0 α) a s t)).mpr ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_smul]`. Use `AddSubgroup.subset_closure ⟨_, ?_, ?_, _, (hL.1 _).2 (by rw [star_star]; exact hs), _, (hL.2 _).2 ?_, rfl⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[smul_eq_mul, ← mul_assoc, ← smul_eq_mul u, hb u hu, zero_mul]`. Rewrite using `[map_mul]`.
-
-Conclude with `mul_mem hi (hα v)`. Simplify using `only [Equiv.apply_symm_apply]`. Conclude with `GlobalTheory.BigDat.smul_mem_scLat_of_mem ha ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem finiteRing_sq_sub_mul_sq_eq_of_card {D : D7} (S X : HSp D) {d : ℕ} (e : Fin d ≃ Fin X.rank)
     (Vs : Spc D.host.F D.host.E S.rank) (Ws : Spc D.host.F D.host.E d)
@@ -136,7 +134,7 @@ private theorem finiteRing_sq_sub_mul_sq_eq_of_card {D : D7} (S X : HSp D) {d : 
       exact GlobalTheory.BigDat.smul_mem_scLat_of_mem ha ht
 
 /- English proof (translation)
-Introduce `D ψ ε S X d e Bs Vs Ws M _ ΛS ΛX hL`. Conclude with `finiteRing_sq_sub_mul_sq_eq_of_card (sgn ε S) X e Vs Ws ΛS ΛX hL`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ptO_sgn_mem_latAtV_iff_mem_latO :
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ε : Bool) (S X : HSp D) (d : ℕ) (e : Fin d ≃ Fin X.rank)

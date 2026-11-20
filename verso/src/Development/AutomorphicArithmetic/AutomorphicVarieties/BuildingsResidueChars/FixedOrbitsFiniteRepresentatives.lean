@@ -1,9 +1,9 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TupleActions.InstMulActionTup
 
 /- English proof (translation)
-Break down `W.eq_empty_or_nonempty with hW | ⟨w, hw⟩` into its components or cases. Conclude with `⟨∅, by simp, Set.finite_empty, by simp [hW]⟩`. Use `haveI : Nonempty Z := ⟨w⟩`. Use `⟨Function.invFunOn f W '' (f '' W), ?_, h.image _, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨z, hz, rfl⟩, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Function.invFunOn_mem ⟨z, hz, rfl⟩`. Introduce `z hz`. Conclude with `⟨Function.invFunOn f W (f z), ⟨f z, ⟨z, hz, rfl⟩, rfl⟩, Function.invFunOn_eq ⟨z, hz, rfl⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem fixOrb_reps {Z T : Type} (f : Z → T) (W : Set Z) (h : (f '' W).Finite) :
     ∃ B : Set Z, B ⊆ W ∧ B.Finite ∧ ∀ z ∈ W, ∃ z' ∈ B, f z' = f z := by
@@ -19,25 +19,23 @@ private theorem fixOrb_reps {Z T : Type} (f : Z → T) (W : Set Z) (h : (f '' W)
         Function.invFunOn_eq ⟨z, hz, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `G Z _ _ σ s hs W hfix hstab ⟨R, hR, hRW⟩`. Establish `himg : ((fun z => MulAction.orbit G z) '' W).Finite`. Use `(hR.image (fun z => MulAction.orbit G z)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨g, hg⟩` from `hRW z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g • z, hg, MulAction.orbit_smul g z⟩`. Take `⟨B1, hB1W, hB1, hB1r⟩` from `fixOrb_reps _ W himg`. Establish `hb : ∀ z ∈ W, ∃ b ∈ B1, ∃ h : G, h • b = z`. Introduce `z hz`. Take `⟨b, hbB, hbo⟩` from `hB1r z hz`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hbo' : MulAction.orbit G b = MulAction.orbit G z` using `hbo`. Establish `hm : z ∈ MulAction.orbit G b`. Rewrite using `[hbo']`. Conclude with `MulAction.mem_orbit_self z`. Take `⟨h, hh⟩` from `hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨b, hbB, h, hh⟩`. Set `bb : Z → Z` to `fun z => if hz : z ∈ W then (hb z hz).choose else z`. Set `hh : Z → G` to `fun z => if hz : z ∈ W then (hb z hz).choose_spec.2.choose else 1`. Establish `bbB : ∀ z ∈ W, bb z ∈ B1` using `fun z hz => by`. Simplify using `only [bb, dif_pos hz]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(hb z hz).choose_spec.1`. Establish `hhb : ∀ z ∈ W, hh z • bb z = z` using `fun z hz => by`. Simplify using `only [bb, hh, dif_pos hz]`. Conclude with `(hb z hz).choose_spec.2.choose_spec`. Establish `hcoc : ∀ z ∈ W, (hh z)⁻¹ * σ (hh z) ∈ MulAction.stabilizer G (bb z)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Establish `hbW : bb z ∈ W` using `hB1W (bbB z hz)`. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, inv_smul_eq_iff]`. Combine the equalities or inequalities in the displayed calculation. Set `key : Z → Z × G` to `fun z => (bb z, (hh z)⁻¹ * σ (hh z))`.
+Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hkey : (key '' W).Finite`. Use `(hB1.prod (hB1.biUnion (fun b hbB => (haveI := hstab b (hB1W hbB); Set.toFinite (MulAction.stabilizer G b : Set G))))).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨bbB z hz, Set.mem_biUnion (bbB z hz) (hcoc z hz)⟩`. Take `⟨B, hBW, hB, hBr⟩` from `fixOrb_reps key W hkey`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨B, hB, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨z', hz'B, hk⟩` from `hBr z hz`. Establish `hz'W` using `hBW hz'B`. Simplify using `only [key, Prod.mk.injEq] at hk`. Take `⟨h1, h2⟩` from `hk`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hh z' * (hh z)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Establish `: σ (hh z') = hh z' * ((hh z)⁻¹ * σ (hh z))`. Rewrite using `[← h2, mul_inv_cancel_left]`. Rewrite using `[map_mul, map_inv, this]`. Use `group`.
-
-Rewrite using `[mul_smul, inv_smul_eq_iff.mpr (hhb z hz).symm, ← h1, hhb z' hz'W]`. Conclude with `hz'B`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.fixedOrbits_finite_representatives :
     UpperTheory.V.Af.BA.FixOrb := by

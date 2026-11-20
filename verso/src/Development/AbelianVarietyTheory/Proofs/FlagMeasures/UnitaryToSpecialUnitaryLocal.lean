@@ -9,7 +9,7 @@ namespace GlobalTheory.SUSplit
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.det (Jm_mul_self ε)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one]`. Introduce `h0`. Rewrite `h` using `[h0, zero_mul]`. Conclude with `zero_ne_one h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma det_Jm_ne_zero (ε : Fin n → Bool) : (Jm ε).det ≠ 0 := by
   have h := congrArg Matrix.det (Jm_mul_self ε)
@@ -19,14 +19,14 @@ lemma det_Jm_ne_zero (ε : Fin n → Bool) : (Jm ε).det ≠ 0 := by
   exact zero_ne_one h
 
 /- English proof (translation)
-Rewrite `h` using `[norm_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg c) hn).1 h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_eq_one_of_pow {c : ℂ} (hn : n ≠ 0) (h : ‖c ^ n‖ = 1) : ‖c‖ = 1 := by
   rw [norm_pow] at h
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg c) hn).1 h
 
 /- English proof (translation)
-Establish `h` using `Complex.normSq_eq_conj_mul_self (z := c)`. Rewrite `h` using `[Complex.normSq_eq_norm_sq, hc]`. Simplify using `using h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma star_mul_self_of_norm {c : ℂ} (hc : ‖c‖ = 1) : star c * c = 1 := by
   have h := Complex.normSq_eq_conj_mul_self (z := c)
@@ -34,11 +34,9 @@ lemma star_mul_self_of_norm {c : ℂ} (hc : ‖c‖ = 1) : star c * c = 1 := by
   simpa using h.symm
 
 /- English proof (translation)
-Establish `h : gᴴ * Jm ε * g = Jm ε` using `hg`. Establish `h2` using `congrArg Matrix.det h`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `h3 : star g.det * g.det = 1`. Establish `: (star g.det * g.det) * (Jm ε).det = 1 * (Jm ε).det` using `by rw [one_mul]; linear_combination h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel₀ (det_Jm_ne_zero ε) this`. Establish `h4` using `Complex.normSq_eq_conj_mul_self (z := g.det)`. Rewrite `h4` using `[Complex.normSq_eq_norm_sq]`. Establish `h5 : ‖g.det‖ ^ 2 = 1`. Establish `: ((‖g.det‖ ^ 2 : ℝ) : ℂ) = 1` using `by rw [h4]; simpa using h3`.
-
-Conclude with `this` after adjusting the coercions. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h5`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma norm_det_of_mem {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
     ‖g.det‖ = 1 := by
@@ -56,9 +54,9 @@ lemma norm_det_of_mem {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h5
 
 /- English proof (translation)
-Establish `hcc` using `star_mul_self_of_norm hc`. Use `show inUJ ε (c • x) ↔ inUJ ε x`. Unfold `inUJ`. Establish `: (c • x)ᴴ * Jm ε * (c • x) = (star c * c) • (xᴴ * Jm ε * x)`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hcc, one_smul]`.
+A detailed English derivation is pending.
 -/
 lemma smul_mem_UJset_iff {ε : Fin n → Bool} {x : Matrix (Fin n) (Fin n) ℂ} {c : ℂ} (hc : ‖c‖ = 1) :
     c • x ∈ UJset ε ↔ x ∈ UJset ε := by
@@ -70,9 +68,9 @@ lemma smul_mem_UJset_iff {ε : Fin n → Bool} {x : Matrix (Fin n) (Fin n) ℂ} 
   rw [this, hcc, one_smul]
 
 /- English proof (translation)
-Establish `hcc` using `star_mul_self_of_norm hc`. Establish `hc0 : c ≠ 0` using `by intro h; rw [h, norm_zero] at hc; exact zero_ne_one hc`. Use `show (c • x ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ c • x * Jm ε = Jm ε * (c • x)) ↔ (x ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ x * Jm ε = Jm ε * x)`. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.mem_unitaryGroup_iff]`. Establish `e1 : c • x * star (c • x) = (c * star c) • (x * star x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Establish `e2 : c • x * Jm ε = c • (x * Jm ε)` using `Matrix.smul_mul _ _ _`. Establish `e3 : Jm ε * (c • x) = c • (Jm ε * x)` using `Matrix.mul_smul _ _ _`. Rewrite using `[e1, e2, e3, mul_comm, hcc, one_smul, smul_right_inj hc0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma smul_mem_Kset_iff {ε : Fin n → Bool} {x : Matrix (Fin n) (Fin n) ℂ} {c : ℂ} (hc : ‖c‖ = 1) :
     c • x ∈ Kset ε ↔ x ∈ Kset ε := by
@@ -88,7 +86,7 @@ lemma smul_mem_Kset_iff {ε : Fin n → Bool} {x : Matrix (Fin n) (Fin n) ℂ} {
   rw [e1, e2, e3, mul_comm, hcc, one_smul, smul_right_inj hc0]
 
 /- English proof (translation)
-Establish `hc0 : c ≠ 0` using `by intro h; rw [h, norm_zero] at hc; exact zero_ne_one hc`. Use `⟨(smul_mem_UJset_iff (by rw [norm_inv, hc, inv_one])).2 hx, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_smul, Fintype.card_fin, inv_pow, hpow]`. Conclude with `inv_mul_cancel₀ (by rw [← hpow]; exact pow_ne_zero _ hc0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma inv_smul_mem_SUset {ε : Fin n → Bool} {x : Matrix (Fin n) (Fin n) ℂ} {c : ℂ} (hx : x ∈ UJset ε)
     (hc : ‖c‖ = 1) (hpow : c ^ n = x.det) : c⁻¹ • x ∈ SUset ε := by
@@ -98,21 +96,21 @@ lemma inv_smul_mem_SUset {ε : Fin n → Bool} {x : Matrix (Fin n) (Fin n) ℂ} 
   exact inv_mul_cancel₀ (by rw [← hpow]; exact pow_ne_zero _ hc0)
 
 /- English proof (translation)
-Introduce `n hn ε`. Establish `hn0 : n ≠ 0` using `by omega`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq g.det (by omega : 0 < n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hzn : ‖z‖ = 1` using `norm_eq_one_of_pow hn0 (by rw [hz]; exact norm_det_of_mem hg)`. Establish `hz0 : z ≠ 0` using `by intro h; rw [h, norm_zero] at hzn; exact zero_ne_one hzn`. Establish `hmem` using `inv_smul_mem_SUset hg hzn hz`. Use `⟨z, hzn, z⁻¹ • g, hmem, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, mul_inv_cancel₀ hz0, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hzi : ‖z⁻¹‖ = 1` using `by rw [norm_inv, hzn, inv_one] show g ∈ Kset ε ↔ (z⁻¹ • g ∈ Kset ε ∧ (z⁻¹ • g).det = 1)`. Rewrite using `[smul_mem_Kset_iff hzi]`. Conclude with `⟨fun h => ⟨h, hmem.2⟩, fun h => h.1⟩`. Introduce `z hz g₀ hg₀`. Conclude with `⟨(smul_mem_UJset_iff hz).2 hg₀.1, fun h => (smul_mem_Kset_iff hz).2 h.1⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `g hg`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq g.det (by omega : 0 < n)`. Establish `hdg : g.det ≠ 0`. Introduce `h`. Use `norm_det_of_mem hg` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Establish `hcont : Continuous fun x : Matrix (Fin n) (Fin n) ℂ => x.det / g.det` using `(continuous_id.matrix_det).div_const _`. Use `⟨{x | 0 < (x.det / g.det).re}, fun x => z * Complex.exp (Complex.log (x.det / g.det) / n), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isOpen_lt continuous_const (Complex.continuous_re.comp hcont)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show 0 < (g.det / g.det).re`. Rewrite using `[div_self hdg]`. Simplify using the standard rewrite rules. Use `continuousOn_const.mul (Complex.continuous_exp.comp_continuousOn ?_)` and prove the remaining obligations. Conclude with `(ContinuousOn.clog hcont.continuousOn (fun x hx => Complex.mem_slitPlane_iff.2 (Or.inl hx))).div_const _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hxU hx`. Establish `hw0 : x.det / g.det ≠ 0`. Introduce `h`. Establish `hxU' : 0 < (x.det / g.det).re` using `hxU`. Rewrite `hxU'` using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `at hxU'`. Establish `hpow : (z * Complex.exp (Complex.log (x.det / g.det) / n)) ^ n = x.det`. Rewrite using `[mul_pow, ← Complex.exp_nat_mul, mul_div_cancel₀ _ (by exact_mod_cast hn0 : (n : ℂ) ≠ 0), Complex.exp_log hw0, hz, mul_div_cancel₀ _ hdg]`. Establish `hnorm : ‖z * Complex.exp (Complex.log (x.det / g.det) / n)‖ = 1` using `norm_eq_one_of_pow hn0 (by rw [hpow]; exact norm_det_of_mem hx)`. Conclude with `⟨hnorm, inv_smul_mem_SUset hx hnorm hpow⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unit_scalar_split : ∀ (n : ℕ), 1 ≤ n → ∀ (ε : Fin n → Bool), (∀ g ∈ UJset ε, ∃ z : ℂ, ‖z‖ = 1 ∧ ∃ g₀ ∈ SUset ε, g = z • g₀ ∧ (g ∈ Kset ε ↔ g₀ ∈ KS ε)) ∧ (∀ z : ℂ, ‖z‖ = 1 → ∀ g₀ ∈ SUset ε, z • g₀ ∈ UJset ε ∧ (g₀ ∈ KS ε → z • g₀ ∈ Kset ε)) ∧ ∀ g ∈ UJset ε, ∃ (U : Set (Matrix (Fin n) (Fin n) ℂ)) (ζ : Matrix (Fin n) (Fin n) ℂ → ℂ), IsOpen U ∧ g ∈ U ∧ ContinuousOn ζ U ∧ ∀ x ∈ U, x ∈ UJset ε → ‖ζ x‖ = 1 ∧ (ζ x)⁻¹ • x ∈ SUset ε := by
   intro n hn ε

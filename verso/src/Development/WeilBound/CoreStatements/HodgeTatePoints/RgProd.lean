@@ -27,7 +27,7 @@ section
 variable {R : Type} [CommRing R] {G G' : Over (Spec (CommRingCat.of R))} [GrpObj G] [GrpObj G']
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[MonObj.mul_comp]`. Simplify using `[MonObj.mul_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lift_mul' {X : Over (Spec (CommRingCat.of R))} (a b : X ⟶ G) (a' b' : X ⟶ G') :
     lift (a * b) (a' * b') = lift a a' * lift b b' := by
@@ -36,9 +36,9 @@ theorem lift_mul' {X : Over (Spec (CommRingCat.of R))} (a b : X ⟶ G) (a' b' : 
   · simp [MonObj.mul_comp]
 
 /- English proof (translation)
-Establish `key : z ^ p = lift ((z ≫ fst G G') ^ p) ((z ≫ snd G G') ^ p)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.pow_comp]`. Establish `one : (1 : X ⟶ G ⊗ G') = lift 1 1`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.one_comp]`. Rewrite using `[key, one]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨by simpa using congrArg (· ≫ fst G G') h, by simpa using congrArg (· ≫ snd G G') h⟩`. Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[h1, h2]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_one_iff' {X : Over (Spec (CommRingCat.of R))} (z : X ⟶ G ⊗ G') (p : ℕ) :
     z ^ p = 1 ↔ (z ≫ fst G G') ^ p = 1 ∧ (z ≫ snd G G') ^ p = 1 := by
@@ -54,7 +54,7 @@ theorem pow_eq_one_iff' {X : Over (Spec (CommRingCat.of R))} (z : X ⟶ G ⊗ G'
     rw [h1, h2]
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.lift_comp_includeRight f g h`.
+A detailed English derivation is pending.
 -/
 theorem lift_right {A B S : Type} [CommRing A] [CommRing B] [CommRing S] [Algebra R A] [Algebra R B]
     [Algebra R S] (f : A →ₐ[R] S) (g : B →ₐ[R] S) (h : ∀ x y, Commute (f x) (g y)) :
@@ -68,9 +68,9 @@ def prodPt (T : TorsRep G p) (T' : TorsRep G' p) : sp (R₀ := R) (T.A ⊗[R] T'
     (spMap (Algebra.TensorProduct.includeRight : T'.A →ₐ[R] T.A ⊗[R] T'.A) ≫ T'.y)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[prodPt, Category.assoc, lift_fst, ← Category.assoc, Chart.spMap_comp]`. Rewrite using `[prodPt, Category.assoc, lift_snd, ← Category.assoc, Chart.spMap_comp]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h1, h2⟩`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[prodPt, Category.assoc, lift_fst, ← Category.assoc, Chart.spMap_comp, h1]`. Rewrite using `[prodPt, Category.assoc, lift_snd, ← Category.assoc, Chart.spMap_comp, h2]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodPt_iff (T : TorsRep G p) (T' : TorsRep G' p) {S : Type} [CommRing S] [Algebra R S]
     (φ : T.A ⊗[R] T'.A →ₐ[R] S) (z : sp (R₀ := R) S ⟶ G ⊗ G') :
@@ -118,13 +118,13 @@ def prodRep (T : TorsRep G p) (T' : TorsRep G' p) : TorsRep (G ⊗ G') p where
       · exact (uψ _ h').trans (Algebra.TensorProduct.lift_comp_includeRight _ _ _).symm
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, a'⟩ ⟨b, b'⟩ e`. Establish `e1` using `congrArg (· ≫ fst G G') e`. Establish `e2` using `congrArg (· ≫ snd G G') e`. Simplify using `only [lift_fst, lift_snd] at e1 e2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Prod.ext (h.inj e1) (h'.inj e2)`. Introduce and unpack `⟨a, a'⟩ ⟨b, b'⟩`. Simplify using `only [Prod.fst_add, Prod.snd_add, h.add, h'.add]`. Conclude with `lift_mul' _ _ _ _`. Introduce `z`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[pow_eq_one_iff', h.range, h'.range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`. Use `⟨(a, b), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [ha, hb]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨a, b⟩, rfl⟩`. Conclude with `⟨⟨a, by simp⟩, ⟨b, by simp⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem isTorsPts_prod {N N' : Type} [AddCommGroup N] [AddCommGroup N']
     {pt : N → (sp (R₀ := R) R ⟶ G)} {pt' : N' → (sp (R₀ := R) R ⟶ G')}
@@ -149,7 +149,7 @@ theorem isTorsPts_prod {N N' : Type} [AddCommGroup N] [AddCommGroup N']
       exact ⟨⟨a, by simp⟩, ⟨b, by simp⟩⟩
 
 /- English proof (translation)
-Use `choose e he ue using fun x => T.univ R (pt x) ((h.range _).2 ⟨x, rfl⟩)`. Conclude with `⟨e, he, ue⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ev (T : TorsRep G p) {N : Type} [AddCommGroup N] {pt : N → (sp (R₀ := R) R ⟶ G)}
     (h : IsTorsPts G p pt) : ∃ e : N → (T.A →ₐ[R] R), (∀ x, spMap (e x) ≫ T.y = pt x) ∧
@@ -158,9 +158,9 @@ theorem exists_ev (T : TorsRep G p) {N : Type} [AddCommGroup N] {pt : N → (sp 
   exact ⟨e, he, ue⟩
 
 /- English proof (translation)
-Use `show (∃ a : T.A, ∀ x φ, spMap φ ≫ T.y = pt x → f x = algebraMap R C (φ a)) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Conclude with `⟨a, funext fun x => ha x (e x) (he x)⟩`. Introduce and unpack `⟨a, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, fun x φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[ue x φ hφ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_torsFun_iff {C : Type} [Field C] [Algebra R C] (T : TorsRep G p) {N : Type}
     {pt : N → (sp (R₀ := R) R ⟶ G)} {e : N → (T.A →ₐ[R] R)} (he : ∀ x, spMap (e x) ≫ T.y = pt x)
@@ -175,29 +175,27 @@ theorem mem_torsFun_iff {C : Type} [Field C] [Algebra R C] (T : TorsRep G p) {N 
     rw [ue x φ hφ]
 
 /- English proof (translation)
-Take `⟨e, he, ue⟩` from `exists_ev T h`. Take `⟨e', he', ue'⟩` from `exists_ev T' h'`. Set `E : N × N' → (T.A ⊗[R] T'.A →ₐ[R] R)` to `fun z => Algebra.TensorProduct.lift (e z.1) (e' z.2) (fun _ _ => Commute.all _ _)`. Establish `hE : ∀ z, spMap (E z) ≫ (prodRep T T').y = lift (pt z.1) (pt' z.2)`. Introduce `z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show spMap (E z) ≫ prodPt T T' = _`. Rewrite using `[prodPt_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [E]`. Rewrite using `[Algebra.TensorProduct.lift_comp_includeLeft, he, lift_fst]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [E]`. Rewrite using `[lift_right, he', lift_snd]`. Establish `uE : ∀ z (φ : T.A ⊗[R] T'.A →ₐ[R] R), spMap φ ≫ (prodRep T T').y = lift (pt z.1) (pt' z.2) → φ = E z`. Introduce `z φ hφ`. Take `⟨h1, h2⟩` from `(prodPt_iff T T' φ _).1 hφ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[lift_fst]`. Rewrite `h2` using `[lift_snd]`. Apply `Algebra.TensorProduct.ext` to reduce the goal to its premises. Simplify using `only [E]`. Rewrite using `[Algebra.TensorProduct.lift_comp_includeLeft]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ue _ _ h1`. Conclude with `(ue' _ _ h2).trans (lift_right (e z.1) (e' z.2) (fun _ _ => Commute.all _ _)).symm`. Establish `hS` using `mem_torsFun_iff (C := C) T he ue`. Establish `hS'` using `mem_torsFun_iff (C := C) T' he' ue'`. Establish `hP` using `mem_torsFun_iff (C := C) (prodRep T T') hE uE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hten : ∀ (z : N × N') (a : T.A) (b : T'.A), algebraMap R C (E z (a ⊗ₜ[R] b)) = algebraMap R C (e z.1 a) * algebraMap R C (e' z.2 b)`. Introduce `z a b`. Simplify using `[E]`. Establish `aux : ∀ t : T.A ⊗[R] T'.A, (fun z : N × N' => algebraMap R C (E z t)) ∈ tens (torsFun C T pt) (torsFun C T' pt')`. Introduce `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero`. Establish `h0 : (fun z : N × N' => algebraMap R C (E z 0)) = 0`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h0]`. Conclude with `zero_mem _`. Consider the case `tmul a b`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun x => algebraMap R C (e x a), (hS _).2 ⟨a, rfl⟩, fun x => algebraMap R C (e' x b), (hS' _).2 ⟨b, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Conclude with `hten z a b`. Consider the case `add s t hs ht`. Establish `h2 : (fun z : N × N' => algebraMap R C (E z (s + t))) = (fun z => algebraMap R C (E z s)) + (fun z => algebraMap R C (E z t))`. Use function extensionality and compare the values at `z`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Rewrite using `[h2]`. Conclude with `add_mem hs ht`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `(hP f).1 hf`. Conclude with `aux t`. Unfold `tens`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `F ⟨g, hg, k, hk, rfl⟩`.
-
-Take `⟨a, rfl⟩` from `(hS g).1 hg`. Take `⟨b, rfl⟩` from `(hS' k).1 hk`. Conclude with `(hP _).2 ⟨(a ⊗ₜ[R] b : T.A ⊗[R] T'.A), funext fun z => (hten z a b).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem torsFun_prod (C : Type) [Field C] [Algebra R C] (T : TorsRep G p) (T' : TorsRep G' p)
     {N N' : Type} [AddCommGroup N] [AddCommGroup N']

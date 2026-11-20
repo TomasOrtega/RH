@@ -18,9 +18,9 @@ open ReciprocityTheory.Aut Formalism.AUTREP
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 namespace GlobalTheory.LiftRef
 /- English proof (translation)
-Introduce `hP hL`. Establish `h` using `overRows_and_mono (_root_.GlobalTheory.T.infG_embTau_eq_neg_half_and_embTauBar_eq_half hP hL) (_root_.GlobalTheory.T.baseChange_localLanglands_at_trivial_twist_alt hP hL) (fun _ _ _ _ _ _ _ _ _ _ _ a b => And.intro a b)`. Establish `h'` using `overRows_and_mono h (_root_.GlobalTheory.T.sph_inert_cls_of_iso_typ_comap_ne_bot hP hL) (fun _ _ _ _ _ _ _ _ _ _ _ a b => And.intro a b)`. Use `overRows_and_mono h' (_root_.GlobalTheory.T.baseChange_infinitesimalCharacter_alt hP hL) ?_` and prove the remaining obligations. Introduce and unpack `K B f T w Z Wt hX z p0 Y ⟨⟨hc, hl⟩, hs⟩ hi Rw a M tup Q hA hI j h1 h2 σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨S, hS, hm, hloc⟩` from `hl Rw a M tup Q hA hI j h1 h2 σ hσ`. Take `⟨μ, hμ, hcsd, hunr, heta⟩` from `hc Rw a M tup Q hA hI ⟨j - 1, by omega⟩`. Conclude with `⟨_, μ, ⟨hcsd, hunr, hs Rw a M tup Q hA hI j h1 h2 S hS hm, hloc μ hμ, heta, hi Rw a M tup Q hA hI j h1 h2 S hS μ hμ⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem baseChange_local_compatible_all_places_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, OverRows fun _ _ _ _ w Z _ _ z _ Y => ∀ Rw, _root_.GlobalTheory.HeightCounting.Up.ParityConditions hL (w.st Z).toD7 (TC.cf w.I w.l Z) (repOf Y) Rw → ∀ (M : MtFam (w.st Z).toD7) tup Q, MtAd Y M → MtInput (w.st Z).toD7 M tup Q → LiftAll (w.st Z).toD7 Rw := by
   intro hP hL
@@ -38,7 +38,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.LiftRef.baseChange_local_compatible_all_places_alt | exact _root_.GlobalTheory.LiftRef.baseChange_local_compatible_all_places_alt | (intros; apply _root_.GlobalTheory.LiftRef.baseChange_local_compatible_all_places_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.liftAll_of_parIn_of_mtInput : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, OverRows fun _ _ _ _ w Z _ _ z _ Y => ∀ Rw, _root_.GlobalTheory.HeightCounting.Up.ParityConditions hL (w.st Z).toD7 (TC.cf w.I w.l Z) (repOf Y) Rw → ∀ (M : MtFam (w.st Z).toD7) tup Q, MtAd Y M → MtInput (w.st Z).toD7 M tup Q → LiftAll (w.st Z).toD7 Rw := by
   first | exact @_root_.GlobalTheory.LiftRef.baseChange_local_compatible_all_places_alt | exact _root_.GlobalTheory.LiftRef.baseChange_local_compatible_all_places_alt | (intros; apply _root_.GlobalTheory.LiftRef.baseChange_local_compatible_all_places_alt <;> assumption)

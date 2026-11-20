@@ -9,33 +9,31 @@ open Formalism.MainNotions.S Module
 open ValuativeRel
 
 /- English proof (translation)
-Conclude with `(L.O_def _).2 isIntegral_algebraMap`.
+A detailed English derivation is pending.
 -/
 theorem flb_int_mem {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) (a : 𝒪[F]) : algebraMap F E a ∈ L.O := by
   exact (L.O_def _).2 isIntegral_algebraMap
 
 /- English proof (translation)
-Conclude with `(L.O_def _).2 (((L.O_def x).1 hx).map ((L.cj : E →ₐ[F] E).restrictScalars 𝒪[F]))`.
+A detailed English derivation is pending.
 -/
 theorem flb_cj_mem {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) {x : E} (hx : x ∈ L.O) : L.cj x ∈ L.O := by
   exact (L.O_def _).2 (((L.O_def x).1 hx).map ((L.cj : E →ₐ[F] E).restrictScalars 𝒪[F]))
 
 /- English proof (translation)
-Use `⟨fun I => ?_⟩` and prove the remaining obligations. Establish `hget : ∀ x : S, x ∈ I → ∀ (j : ℕ) (u : E), u ∈ S → (∃ w ∈ S, u * w = 1) → (x : E) = p ^ j * u → (⟨p, hp⟩ : S) ^ j ∈ I`. Introduce and unpack `x hxI j u hu ⟨w, hw, huw⟩ hxe`. Establish `h : (⟨p, hp⟩ : S) ^ j = x * ⟨w, hw⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [SubmonoidClass.coe_pow, Subring.coe_mul, hxe]`. Rewrite using `[mul_assoc, huw, mul_one]`. Rewrite using `[h]`. Conclude with `I.mul_mem_right _ hxI`. Distinguish the cases in `hI : ∃ x ∈ I, x ≠ 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hex : ∃ k : ℕ, (⟨p, hp⟩ : S) ^ k ∈ I`. Take `⟨x, hxI, hx0⟩` from `hI`. Take `⟨k, u, hu, huw, hxe⟩` from `hfac x x.2 (fun h => hx0 (Subtype.ext h))`. Conclude with `⟨k, hget x hxI k u hu huw hxe⟩`. Use `⟨⟨(⟨p, hp⟩ : S) ^ Nat.find hex, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hxI`. Distinguish the cases in `hx0 : x = 0`. Rewrite using `[hx0]`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, u, hu, huw, hxe⟩` from `hfac x x.2 (fun h => hx0 (Subtype.ext h))`. Establish `hkj : Nat.find hex ≤ j` using `Nat.find_min' hex (hget x hxI j u hu huw hxe)`. Rewrite using `[Ideal.submodule_span_eq, Ideal.mem_span_singleton']`. Use `⟨(⟨p, hp⟩ : S) ^ (j - Nat.find hex) * ⟨u, hu⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [SubmonoidClass.coe_pow, Subring.coe_mul, hxe]`. Rewrite using `[mul_comm, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' hkj]`. Rewrite using `[Ideal.submodule_span_eq, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Nat.find_spec hex`. Use `push Not at hI`.
-
-Use `⟨⟨0, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_eq_bot.mpr rfl]`. Conclude with `(Submodule.eq_bot_iff I).mpr hI`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flb_pid {E : Type} [CommRing E] (S : Subring E) (p : E) (hp : p ∈ S)
     (hfac : ∀ x ∈ S, x ≠ 0 → ∃ k : ℕ, ∃ u ∈ S, (∃ w ∈ S, u * w = 1) ∧ x = p ^ k * u) :
@@ -82,21 +80,21 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
 /- English proof (translation)
-Rewrite using `[H.h_herm (y + y') x, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flb_h_add_right {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
     (H : Loc.HermSp M V) (x y y' : V) : H.h x (y + y') = H.h x y + H.h x y' := by
   rw [H.h_herm (y + y') x, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm]
 
 /- English proof (translation)
-Rewrite using `[H.h_herm (a • y) x, H.h_smul_left, map_mul, ← H.h_herm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flb_h_smul_right {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
     (H : Loc.HermSp M V) (x : V) (a : E) (y : V) : H.h x (a • y) = M.L.cj a * H.h x y := by
   rw [H.h_herm (a • y) x, H.h_smul_left, map_mul, ← H.h_herm]
 
 /- English proof (translation)
-Establish `hs` using `map_sum (AddMonoidHom.mk' (H.h x) (flb_h_add_right H x)) (fun i => c i • v i) Finset.univ`. Simplify using `only [AddMonoidHom.mk'_apply] at hs`. Rewrite using `[hs]`. Conclude with `Finset.sum_congr rfl fun i _ => flb_h_smul_right H x (c i) (v i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flb_h_sum_right {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
     (H : Loc.HermSp M V) {ι : Type} [Fintype ι] (x : V) (c : ι → E) (v : ι → V) :
@@ -107,7 +105,7 @@ theorem flb_h_sum_right {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module 
   exact Finset.sum_congr rfl fun i _ => flb_h_smul_right H x (c i) (v i)
 
 /- English proof (translation)
-Establish `hs` using `map_sum (AddMonoidHom.mk' (fun z => H.h z y) (fun a b => H.h_add_left a b y)) (fun i => c i • v i) Finset.univ`. Simplify using `only [AddMonoidHom.mk'_apply] at hs`. Rewrite using `[hs]`. Conclude with `Finset.sum_congr rfl fun i _ => H.h_smul_left (c i) (v i) y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flb_h_sum_left {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
     (H : Loc.HermSp M V) {ι : Type} [Fintype ι] (y : V) (c : ι → E) (v : ι → V) :

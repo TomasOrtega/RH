@@ -10,11 +10,11 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Use `set g : (Fin n → Fin n → ℂ) → ℂ := fun A => ∑ σ : Equiv.Perm (Fin n), Equiv.Perm.sign σ • ∏ i, A (σ i) i with hg`. Establish `hgc : Continuous g` using `by rw [hg]; fun_prop`. Establish `hgdet : ∀ A : Matrix (Fin n) (Fin n) ℂ, A.det = g A` using `fun A => Matrix.det_apply A`. Use `set I : Fin n → Fin n → ℂ := (1 : Matrix (Fin n) (Fin n) ℂ) with hI`. Establish `hgI : g I = 1` using `by rw [← hgdet]; exact Matrix.det_one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨η, hη, h⟩` from `Metric.continuousAt_iff.1 hgc.continuousAt (1 / 2 : ℝ) (by norm_num)`. Use `⟨η, hη, fun A hA => ?_⟩` and prove the remaining obligations. Establish `hd : dist (Matrix.of.symm A) I < η` using `(dist_pi_lt_iff hη).2 fun i => (dist_pi_lt_iff hη).2 fun j => by rw [dist_eq_norm]; exact hA i j`. Establish `h2` using `h hd`. Establish `h4 : g (Matrix.of.symm A) = A.det` using `(hgdet A).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[hgI, h4, dist_eq_norm]`. Establish `h3` using `norm_sub_norm_le (1 : ℂ) A.det`. Rewrite `h3` using `[norm_sub_rev, norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem det_near_one (n : ℕ) : ∃ η > 0, ∀ A : Matrix (Fin n) (Fin n) ℂ,
     (∀ i j, ‖A i j - (1 : Matrix (Fin n) (Fin n) ℂ) i j‖ < η) → 1 / 2 ≤ ‖A.det‖ := by
@@ -36,7 +36,7 @@ theorem det_near_one (n : ℕ) : ∃ η > 0, ∀ A : Matrix (Fin n) (Fin n) ℂ,
   linarith
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show star (C i j) = (starRingEnd ℂ) (C i j) from rfl, Complex.mul_conj, Complex.ofReal_re]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem diag_re {m n : Type*} [Fintype n] (C : Matrix m n ℂ) (i : m) :
     ((C * Cᴴ) i i).re = ∑ j, Complex.normSq (C i j) := by
@@ -45,15 +45,13 @@ theorem diag_re {m n : Type*} [Fintype n] (C : Matrix m n ℂ) (i : m) :
   rw [show star (C i j) = (starRingEnd ℂ) (C i j) from rfl, Complex.mul_conj, Complex.ofReal_re]
 
 /- English proof (translation)
-Use `set A := M.toBlocks₂₂ with hA`. Use `set B := M.toBlocks₂₁ with hB`. Establish `hAB : A * Aᴴ = 1 + B * Bᴴ` using `(sumBdIsUpq_blocks h).2.2.2`. Establish `hU : IsUnit A.det` using `isUnit_iff_ne_zero.2 (sumBd_weight h).1`. Establish `hK : (A⁻¹ * B) * (A⁻¹ * B)ᴴ = 1 - A⁻¹ * (A⁻¹)ᴴ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : B * Bᴴ = A * Aᴴ - 1` using `by rw [hAB]; abel`. Establish `e2 : Aᴴ * (A⁻¹)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.nonsing_inv_mul _ hU, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = A⁻¹ * A * (Aᴴ * (A⁻¹)ᴴ) - A⁻¹ * (A⁻¹)ᴴ := by`. Rewrite using `[e1, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 - A⁻¹ * (A⁻¹)ᴴ := by rw [e2, Matrix.nonsing_inv_mul _ hU, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiag` using `congrArg (fun C => (C i i).re) hK`. Rewrite `hdiag` using `[diag_re, Matrix.sub_apply, Complex.sub_re, diag_re, Matrix.one_apply_eq, Complex.one_re]`. Establish `hnn : 0 ≤ ∑ l, Complex.normSq ((A⁻¹) i l)` using `Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _`. Establish `hle : Complex.normSq ((A⁻¹ * B) i j) ≤ ∑ l, Complex.normSq ((A⁻¹ * B) i l)` using `Finset.single_le_sum (f := fun l => Complex.normSq ((A⁻¹ * B) i l)) (fun _ _ => Complex.normSq_nonneg _) (Finset.mem_univ j)`. Establish `h1 : ‖(A⁻¹ * B) i j‖ ^ 2 ≤ 1` using `by rw [← Complex.normSq_eq_norm_sq]; linarith`.
-
-Use polynomial arithmetic with `[norm_nonneg ((A⁻¹ * B) i j)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem Kc_entry {p q : ℕ} {M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq M) (i : Fin q)
     (j : Fin p) : ‖((M.toBlocks₂₂)⁻¹ * M.toBlocks₂₁) i j‖ ≤ 1 := by
@@ -80,7 +78,7 @@ theorem Kc_entry {p q : ℕ} {M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ
   nlinarith [norm_nonneg ((A⁻¹ * B) i j)]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks M, ← Matrix.fromBlocks_toBlocks N]`. Rewrite using `[Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₂₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toBlocks_lowerRight_mul {α β : Type*} [Fintype α] [Fintype β] (M N : Matrix (α ⊕ β) (α ⊕ β) ℂ) :
     (M * N).toBlocks₂₂ = M.toBlocks₂₁ * N.toBlocks₁₂ + M.toBlocks₂₂ * N.toBlocks₂₂ := by
@@ -88,7 +86,7 @@ theorem toBlocks_lowerRight_mul {α β : Type*} [Fintype α] [Fintype β] (M N :
   rw [Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₂₂]
 
 /- English proof (translation)
-Rewrite using `[toBlocks_lowerRight_mul, ← Matrix.det_mul, Matrix.mul_add]`. Use `congr 2`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hM), Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_split {α β : Type*} [Fintype α] [Fintype β] [DecidableEq β] (M N : Matrix (α ⊕ β) (α ⊕ β) ℂ)
     (hM : M.toBlocks₂₂.det ≠ 0) :
@@ -100,7 +98,7 @@ theorem det_split {α β : Type*} [Fintype α] [Fintype β] [DecidableEq β] (M 
     Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [mat, nmat, Matrix.of_apply, Matrix.one_apply]`. Distinguish the cases in `h : b < a`. Rewrite using `[dif_pos h, if_neg (ne_of_lt h).symm, sub_zero]`. Conclude with `PiLp.norm_apply_le w _`. Apply the tactic sequence `rw [dif_neg h] split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem nmat_entry (X : Data E r) (w : V (nd X)) (τ : X.Ψ) (a b : Fin r) :
     ‖mat (nmat X w) τ a b - (1 : Matrix (Fin r) (Fin r) ℂ) a b‖ ≤ ‖w‖ := by
@@ -112,7 +110,7 @@ theorem nmat_entry (X : Data E r) (w : V (nd X)) (τ : X.Ψ) (a b : Fin r) :
     split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Mq`. Rewrite using `[show cpt X x w = rmul x (nmat X w) from rfl, gM_rmul, Matrix.map_mul, ← Matrix.submatrix_mul_equiv _ _ _ (eS X) _]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Mq_cpt (X : Data E r) (x0 x : Frame X.Ψ r) (w : V (nd X)) (τ : X.Ψ) :
     Mq X x0 (cpt X x w) τ =
@@ -139,13 +137,13 @@ def Nw (X : Data E r) (w : V (nd X)) (τ : X.Ψ) :
   ((mat (nmat X w) τ).map (starRingEnd ℂ)).submatrix (eS X) (eS X)
 
 /- English proof (translation)
-The claim follows from `Mq_cpt X x0 x w τ`.
+A detailed English derivation is pending.
 -/
 theorem Mq_cpt' (X : Data E r) (x0 x : Frame X.Ψ r) (w : V (nd X)) (τ : X.Ψ) :
     Mq X x0 (cpt X x w) τ = Mq X x0 x τ * Nw X w τ := Mq_cpt X x0 x w τ
 
 /- English proof (translation)
-Establish `h1 : (1 : Matrix (Fin (r - X.p0) ⊕ Fin X.p0) (Fin (r - X.p0) ⊕ Fin X.p0) ℂ) u v = starRingEnd ℂ ((1 : Matrix (Fin r) (Fin r) ℂ) (eS X u) (eS X v))`. Simplify using `[Matrix.one_apply, apply_ite]`. Rewrite using `[Nw, Matrix.submatrix_apply, Matrix.map_apply, h1, ← map_sub, Complex.norm_conj]`. Apply the tactic sequence `exact nmat_entry X w τ _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem N_entries (X : Data E r) (w : V (nd X)) (τ : X.Ψ) (u v : Fin (r - X.p0) ⊕ Fin X.p0) :
     ‖Nw X w τ u v - (1 : Matrix (Fin (r - X.p0) ⊕ Fin X.p0) (Fin (r - X.p0) ⊕ Fin X.p0) ℂ) u v‖ ≤ ‖w‖ := by
@@ -156,13 +154,13 @@ theorem N_entries (X : Data E r) (w : V (nd X)) (τ : X.Ψ) (u v : Fin (r - X.p0
   exact nmat_entry X w τ _ _
 
 /- English proof (translation)
-Use `set K := ((Mq X x0 x τ).toBlocks₂₂)⁻¹ * (Mq X x0 x τ).toBlocks₂₁ with hKdef`. Apply the tactic sequence `have hK : ∀ i l, ‖K i l‖ ≤ 1 := fun i l => Kc_entry (Mq_isUpq X hx0 hx τ) i l`. Establish `hN12 : ∀ l j, ‖(Nw X w τ).toBlocks₁₂ l j‖ ≤ ‖w‖` using `fun l j => by`. Use `N_entries X w τ (Sum.inl l) (Sum.inr j)` as an intermediate fact. Simplify `this` using `[Matrix.toBlocks₁₂, Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hN22 : ‖(Nw X w τ).toBlocks₂₂ i j - (1 : Matrix (Fin X.p0) (Fin X.p0) ℂ) i j‖ ≤ ‖w‖`. Use `N_entries X w τ (Sum.inr i) (Sum.inr j)` as an intermediate fact. Simplify `this` using `[Matrix.toBlocks₂₂, Matrix.one_apply]`. Rewrite using `[Matrix.add_apply, add_sub_assoc, Matrix.mul_apply]`. Establish `hr : ((r - X.p0 : ℕ) : ℝ) ≤ r` using `by exact_mod_cast Nat.sub_le r X.p0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `add_le_add ((norm_sum_le _ _).trans (Finset.sum_le_sum fun l _ => ?_)) hN22` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `_ ≤ ((r : ℝ) + 1) * ‖w‖ := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use polynomial arithmetic with `[norm_nonneg w]`.
+A detailed English derivation is pending.
 -/
 theorem pert_entry (X : Data E r) {x0 x : Frame X.Ψ r} (hx0 : IsOrth X x0) (hx : IsOrth X x)
     (w : V (nd X)) (τ : X.Ψ) (i j : Fin X.p0) :
@@ -193,25 +191,23 @@ theorem pert_entry (X : Data E r) {x0 x : Frame X.Ψ r} (hx0 : IsOrth X x0) (hx 
         nlinarith [norm_nonneg w]
 
 /- English proof (translation)
-Take `⟨η, hη, hdet⟩` from `det_near_one X.p0`. Establish `e1 : ∀ᶠ w in 𝓝 (0 : V (nd X)), ∀ τ, ‖lminor (Gw X w τ) (i0 X)‖ < 2`. Rewrite using `[Filter.eventually_all]`. Introduce `τ`. Conclude with `(cont_lminor X τ (i0 X)).norm.continuousAt.eventually_lt continuousAt_const (by rw [norm_lminor_zero]; norm_num)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨R1, hR1, hR1b⟩` from `Metric.eventually_nhds_iff_ball.1 e1`. Use `⟨min R1 (η / ((r : ℝ) + 1)), lt_min hR1 (by positivity), fun x hx w hw => ?_⟩` and prove the remaining obligations. Establish `hwR : w ∈ Metric.ball (0 : V (nd X)) R1` using `mem_ball_zero_iff.2 (lt_of_lt_of_le hw (min_le_left _ _))`. Establish `hwη : ((r : ℝ) + 1) * ‖w‖ < η`. Use `lt_of_lt_of_le hw (min_le_right _ _)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[lt_div_iff₀ (by positivity), mul_comm]`. Then use the resulting hypothesis. Establish `hterm : ∀ τ, Real.log ‖dmin X.Gm (cpt X x w) τ (i0 X)‖ - 2 * Real.log ‖lminor (gM X x0 (cpt X x w) τ) (i0 X)‖ ≤ 3 * Real.log 2 - 2 * Real.log ‖lminor (gM X x0 x τ) (i0 X)‖`. Introduce `τ`. Establish `hA : Real.log ‖dmin X.Gm (cpt X x w) τ (i0 X)‖ ≤ Real.log 2`. Rewrite using `[dmin_cpt_orth X hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_lt_of_le (norm_nonneg (lminor (Gw X w τ) (i0 X))) with h0 | h0` into its components or cases. Rewrite using `[← h0, Real.log_zero]; exact (Real.log_pos (by norm_num)).le`. Conclude with `Real.log_le_log h0 (hR1b w hwR τ).le`. Establish `hM22` using `(sumBd_weight (Mq_isUpq X hx0 hx τ)).1`. Establish `hnorm : ∀ y, ‖lminor (gM X x0 y τ) (i0 X)‖ = ‖(Mq X x0 y τ).toBlocks₂₂.det‖` using `fun y => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[det_lowerBlock_eq_conj_minor, Complex.norm_conj]`. Both sides reduce to the same expression. Apply the tactic sequence `have hP : 1 / 2 ≤ ‖(((Mq X x0 x τ).toBlocks₂₂)⁻¹ * (Mq X x0 x τ).toBlocks₂₁ * (Nw X w τ).toBlocks₁₂ + (Nw X w τ).toBlocks₂₂).det‖ := hdet _ (fun i j => lt_of_le_of_lt (pert_entry X hx0 hx w τ i j) hwη)`. Establish `hpos : 0 < ‖(Mq X x0 x τ).toBlocks₂₂.det‖` using `norm_pos_iff.2 hM22`. Establish `hB : Real.log ‖lminor (gM X x0 x τ) (i0 X)‖ - Real.log 2 ≤ Real.log ‖lminor (gM X x0 (cpt X x w) τ) (i0 X)‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hnorm, hnorm, Mq_cpt', det_split _ _ hM22, norm_mul, Real.log_mul hpos.ne' (by linarith)]`. Establish `h2 : Real.log (1 / 2) ≤ Real.log ‖(((Mq X x0 x τ).toBlocks₂₂)⁻¹ * (Mq X x0 x τ).toBlocks₂₁ * (Nw X w τ).toBlocks₁₂ + (Nw X w τ).toBlocks₂₂).det‖` using `Real.log_le_log (by norm_num) hP`. Rewrite `h2` using `[one_div, Real.log_inv]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hrh : rhY X x0 x - 3 * X.Ψ.card * Real.log 2 ≤ rhY X x0 (cpt X x w)`. Unfold `rhY`. Simplify using `only [norm_dmin_orth' X hx, Real.log_one, zero_sub]`. Establish `hs : ∑ τ, (Real.log ‖dmin X.Gm (cpt X x w) τ (i0 X)‖ - 2 * Real.log ‖lminor (gM X x0 (cpt X x w) τ) (i0 X)‖) ≤ ∑ τ, (3 * Real.log 2 - 2 * Real.log ‖lminor (gM X x0 x τ) (i0 X)‖)` using `Finset.sum_le_sum fun τ _ => hterm τ`. Establish `e2 : ∑ τ : X.Ψ, (3 * Real.log 2 - 2 * Real.log ‖lminor (gM X x0 x τ) (i0 X)‖) = (X.Ψ.card : ℝ) * (3 * Real.log 2) - ∑ τ, 2 * Real.log ‖lminor (gM X x0 x τ) (i0 X)‖`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_coe, nsmul_eq_mul]`. Rewrite using `[Finset.sum_neg_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `kaY`. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left hrh hbb` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = Real.exp (bb * (3 * X.Ψ.card * Real.log 2)) * Real.exp (-bb * rhY X x0 x) := by`. Rewrite using `[← Real.exp_add]`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ka_comp (X : Data E r) {x0 : Frame X.Ψ r} (hx0 : IsOrth X x0) {bb : ℝ} (hbb : 0 ≤ bb) :
     ∃ ρ1 > 0, ∀ x, IsOrth X x → ∀ w : V (nd X), ‖w‖ < ρ1 →

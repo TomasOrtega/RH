@@ -16,7 +16,7 @@ variable (d : ColDat) (S : Set ℕ) (m0 : Fin d.R.m → Formalism.L2.Host.HChar 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-The claim follows from `{ sig := sig T_pos := (d.hPr.T_prime u).pos smooth := smooth rat := rat u chi_ne := chi_ne u rho := rho u above := fun i hi p p' x => refXi1_above d.Ch (selD d) _ (cstD d S m0 n) (idxD d S m2) (qe_one (selD d)) m2 (alD d S m2) u hm i hi p p' x }`.
+A detailed English derivation is pending.
 -/
 theorem xiHypD {n m2 : ℕ} (hm : d.R.m = m2 + 2) (G : ChainGlob (Pr := d.Pr) d.W d.σ₀) (Am : Amb d.X) (sig : Am.σ₀ = d.σ₀)
     (smooth : ∀ i, i < d.R.m → Am.ESmooth (d.R.N i) (d.R.N (i + 1)))

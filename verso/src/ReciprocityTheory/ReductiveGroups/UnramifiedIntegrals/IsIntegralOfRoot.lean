@@ -16,11 +16,11 @@ open ModularForm EisensteinSeries ModularFormClass UpperHalfPlane Formalism.L2.T
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Establish `hmon : (Polynomial.C (P.leadingCoeff)⁻¹ * P).Monic` using `Polynomial.monic_C_mul_of_mul_leadingCoeff_eq_one (inv_mul_cancel₀ h0)`. Establish `hdeg : (Polynomial.C (P.leadingCoeff)⁻¹ * P).natDegree ≠ 0`. Rewrite using `[Polynomial.natDegree_C_mul (inv_ne_zero h0)]`. Introduce `hd`. Rewrite `hx` using `[Polynomial.eq_C_of_natDegree_eq_zero hd, Polynomial.eval_C]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `h0` to reduce the goal to its premises. Rewrite using `[Polynomial.leadingCoeff, hd]`. Conclude with `hx`. Use `IsIntegral.of_aeval_monic_of_isIntegral_coeff hmon hdeg ?_ ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval_mul, hx, mul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isIntegral_zero`. Introduce `i`. Rewrite using `[Polynomial.coeff_C_mul]`. Conclude with `hu.mul (hP i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_root {P : Polynomial ℂ} (hP : ∀ i, IsIntegral ℤ (P.coeff i))
     (hu : IsIntegral ℤ (P.leadingCoeff)⁻¹) (h0 : P.leadingCoeff ≠ 0) {x : ℂ} (hx : P.eval x = 0) :
@@ -42,9 +42,9 @@ theorem isIntegral_of_root {P : Polynomial ℂ} (hP : ∀ i, IsIntegral ℤ (P.c
     exact hu.mul (hP i)
 
 /- English proof (translation)
-Take `⟨n0, u, hu1, hu2, hu3, hlow, hcoef⟩` from `gmQ_low hm hsq`. Establish `hmf : IsMF (12 * ((2 * (Tm m).card : ℕ) : ℤ)) (Gm m)` using `(gmForm hm).congr_weight (by push_cast; ring)`. Take `⟨P, hPR, -, hlead, hval⟩` from `qPrin_low (Rm m) _ (Gm m) hmf (gmQ_coeffIn hm) n0 u hu3 hlow hcoef`. Establish `h1` using `hval τ`. Rewrite `h1` using `[h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : P.eval (jT τ) = 0`. Break down `mul_eq_zero.mp h1.symm with h3 | h3` into its components or cases. Conclude with `absurd h3 (pow_ne_zero _ (DD_ne_zero τ))`. Conclude with `h3`. Conclude with `isIntegral_of_root (fun i => Rm_isIntegral hm (hPR i)) (by rw [hlead]; exact Rm_isIntegral hm hu2) (by rw [hlead]; exact hu3) h2`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem jT_isIntegral {m : ℕ} (hm : 0 < m) (hsq : ¬ IsSquare m) {τ : ℍ} (h : Gm m τ = 0) :
     IsIntegral ℤ (jT τ) := by
@@ -62,9 +62,9 @@ theorem jT_isIntegral {m : ℕ} (hm : 0 < m) (hsq : ¬ IsSquare m) {τ : ℍ} (h
     (by rw [hlead]; exact hu3) h2
 
 /- English proof (translation)
-Introduce `d L hsf hd4 hL`. Take `⟨c, τ, hτ⟩` from `latTau L`. Establish `hd : 0 < d` using `by omega`. Take `⟨A, B, C, D, h1, h2, h3⟩` from `cmPoint hd hL hτ (-1) 2`. Rewrite using `[jInv_eq_jT hτ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `jT_isIntegral hd ?_ (Gm_vanish hd τ A B C D (by linarith) ?_)` and prove the remaining obligations. Introduce and unpack `⟨r, hr⟩`. Establish `: r % 4 = 0 ∨ r % 4 = 1 ∨ r % 4 = 2 ∨ r % 4 = 3` using `by omega`. Apply the tactic sequence `rcases this with h | h | h | h <;> simp [hr, Nat.mul_mod, h] at hd4`. Rewrite using `[← h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

@@ -6,11 +6,9 @@ open GlobalTheory.LKInvGood
 namespace GlobalTheory.SepModel
 
 /- English proof (translation)
-Establish `hu : IsUnit (N : ℤ_[ℓ])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd Fact.out).2 hN`. Take `⟨u, hu⟩` from `hu`. Establish `hmem : (1 : ℚ_[ℓ]) ⊗ₜ[ℚ] ((N : F) * c) ∈ cenOrder ℓ F` using `Algebra.subset_adjoin ⟨⟨_, hc⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : (1 : ℚ_[ℓ]) ⊗ₜ[ℚ] c = (↑u⁻¹ : ℤ_[ℓ]) • ((1 : ℚ_[ℓ]) ⊗ₜ[ℚ] ((N : F) * c))`. Establish `h1 : (u : ℤ_[ℓ]) • ((1 : ℚ_[ℓ]) ⊗ₜ[ℚ] c) = (1 : ℚ_[ℓ]) ⊗ₜ[ℚ] ((N : F) * c)`. Rewrite using `[hu, Nat.cast_smul_eq_nsmul, ← TensorProduct.tmul_smul, nsmul_eq_mul]`. Rewrite using `[← h1, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Rewrite using `[heq]`.
-
-Conclude with `Subalgebra.smul_mem _ hmem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmul_mem_cenOrder {F : Type} [Field F] [NumberField F] (ℓ : ℕ) [Fact ℓ.Prime] {N : ℕ}
     (hN : ¬ ℓ ∣ N) {c : F} (hc : IsIntegral ℤ ((N : F) * c)) :
@@ -29,9 +27,9 @@ theorem tmul_mem_cenOrder {F : Type} [Field F] [NumberField F] (ℓ : ℕ) [Fact
   exact Subalgebra.smul_mem _ hmem _
 
 /- English proof (translation)
-Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (L := F) s`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy0, fun c hc => ?_⟩` and prove the remaining obligations. Establish `h` using `hy c hc`. Rewrite `h` using `[zsmul_eq_mul]`. Break down `Int.natAbs_eq y with e | e` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h` using `[e]`. Simplify using `using h`. Rewrite `h` using `[e]`. Use `h.neg` as an intermediate fact. Simplify `this` using `[neg_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_nat_integral {F : Type} [Field F] [NumberField F] (s : Finset F) :
     ∃ N : ℕ, 0 < N ∧ ∀ c ∈ s, IsIntegral ℤ ((N : F) * c) := by
@@ -50,9 +48,9 @@ end GlobalTheory.SepModel
 namespace GlobalTheory.SepModel
 
 /- English proof (translation)
-Establish `hl : r.map (Algebra.TensorProduct.includeRight : F →ₐ[ℚ] ℚ_[ℓ] ⊗[ℚ] F).toRingHom ∈ Polynomial.lifts ((cenOrder ℓ F).val : cenOrder ℓ F →+* ℚ_[ℓ] ⊗[ℚ] F)`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Rewrite using `[Polynomial.coeff_map]`. Conclude with `⟨⟨_, tmul_mem_cenOrder ℓ hN (hr n)⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨q, hq⟩` from `hl`. Conclude with `⟨q, hq⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lift {F : Type} [Field F] [NumberField F] (ℓ : ℕ) [Fact ℓ.Prime] {N : ℕ}
     (hN : ¬ ℓ ∣ N) (r : Polynomial F) (hr : ∀ n, IsIntegral ℤ ((N : F) * r.coeff n)) :
@@ -68,11 +66,11 @@ theorem exists_lift {F : Type} [Field F] [NumberField F] (ℓ : ℕ) [Fact ℓ.P
   exact ⟨q, hq⟩
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `hp`. Take `⟨N, hN0, hN⟩` from `exists_nat_integral (p.coeffs ∪ a.coeffs ∪ b.coeffs)`. Establish `hcoef : ∀ r : Polynomial F, r.coeffs ⊆ p.coeffs ∪ a.coeffs ∪ b.coeffs → ∀ n, IsIntegral ℤ ((N : F) * r.coeff n)`. Introduce `r hs n`. Distinguish the cases in `h0 : r.coeff n = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h0, mul_zero]`. Conclude with `isIntegral_zero`. Conclude with `hN _ (hs (Polynomial.coeff_mem_coeffs h0))`. Use `⟨N, hN0, fun ℓ _ hℓ => ?_⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `exists_lift ℓ hℓ p (hcoef p (fun x hx => by simp [hx]))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha'⟩` from `exists_lift ℓ hℓ a (hcoef a (fun x hx => by simp [hx]))`. Take `⟨b', hb'⟩` from `exists_lift ℓ hℓ b (hcoef b (fun x hx => by simp [hx]))`. Use `⟨q, hq, a', b', ?_⟩` and prove the remaining obligations. Apply `Polynomial.map_injective ((cenOrder ℓ F).val : cenOrder ℓ F →+* ℚ_[ℓ] ⊗[ℚ] F) Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, ← Polynomial.derivative_map, ha', hb', hq, Polynomial.derivative_map, ← Polynomial.map_mul, ← Polynomial.map_mul, ← Polynomial.map_add, hab, Polynomial.map_one, Polynomial.map_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem separable_model (F : Type) [Field F] [NumberField F] (p : Polynomial F) (hp : p.Separable) :
     ∃ N : ℕ, 0 < N ∧ ∀ (ℓ : ℕ) [Fact ℓ.Prime], ¬ ℓ ∣ N →

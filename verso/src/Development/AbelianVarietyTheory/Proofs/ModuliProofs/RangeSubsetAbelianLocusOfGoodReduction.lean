@@ -22,15 +22,15 @@ open GlobalTheory.Models
 namespace GlobalTheory.GoodVal
 
 /- English proof (translation)
-Set `i` to `X.affineOpenCover.idx (y (IsLocalRing.closedPoint V))`. Set `j` to `X.affineOpenCover.f i`. Establish `hr : Set.range y ⊆ Set.range j`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `h₁ : y x ⤳ y (IsLocalRing.closedPoint V)` using `(IsLocalRing.specializes_closedPoint x).map y.continuous`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `h₁.mem_open j.isOpenEmbedding.isOpen_range (X.affineOpenCover.covers _)`. Set `a` to `Spec.preimage (IsOpenImmersion.lift j y hr)`. Establish `ha : Spec.map a ≫ j = y` using `by rw [Spec.map_preimage, IsOpenImmersion.lift_fac]`. Establish `hft : (Spec.preimage (j ≫ z)).hom.FiniteType`. Rewrite using `[← HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType), Spec.map_preimage]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `hft' : Algebra.FiniteType ℤ (X.affineOpenCover.X i)`. Rewrite using `[← RingHom.finiteType_algebraMap]`. Use `hft using 1` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext_int _ _`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `hft'.out`. Use `⟨s.image a.hom, fun R hR => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ x, a.hom x ∈ R` using `fun x => by`. Establish `hx : x ∈ Algebra.adjoin ℤ (s : Set (X.affineOpenCover.X i))` using `hs ▸ Algebra.mem_top`. Establish `hle : Algebra.adjoin ℤ (s : Set (X.affineOpenCover.X i)) ≤ subalgebraOfSubring (R.comap a.hom)` using `Algebra.adjoin_le fun t ht => hR (by simpa using ⟨t, ht, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hle hx`. Use `⟨Spec.map (CommRingCat.ofHom (a.hom.codRestrict R hmem)) ≫ j, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_finset_factor {X : Scheme.{0}} (z : X ⟶ Sp ℤ) [LocallyOfFiniteType z] {V : Type} [CommRing V]
     [IsLocalRing V] (y : Sp V ⟶ X) :
@@ -63,11 +63,11 @@ theorem exists_finset_factor {X : Scheme.{0}} (z : X ⟶ Sp ℤ) [LocallyOfFinit
   rfl
 
 /- English proof (translation)
-Set `S` to `Localization.subalgebra.ofField K p.primeCompl p.primeCompl_le_nonZeroDivisors`. Establish `: IsLocalization.AtPrime S p` using `inferInstance`. Establish `: IsLocalRing S` using `IsLocalization.AtPrime.isLocalRing S p`. Establish `: IsNoetherianRing S` using `IsLocalization.isNoetherianRing p.primeCompl S ‹_›`. Establish `: IsFractionRing S K` using `inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.EssFiniteType S K` using `Algebra.EssFiniteType.of_isLocalization K (nonZeroDivisors S)`. Establish `: Algebra.EssFiniteType S L` using `Algebra.EssFiniteType.comp S K L`. Establish `: FaithfulSMul S L` using `(faithfulSMul_iff_algebraMap_injective S L).2 ((algebraMap K L).injective.comp Subtype.val_injective)`. Establish `hS : ¬ IsField S` using `IsLocalization.AtPrime.not_isField R hp S`. Take `⟨T, hT, h⟩` from `exists_discreteValuationSubring_dominating_of_essFiniteType (L := L) hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, h₂⟩` from `(localSubring_range_le_valuationSubring_iff_isLocalHom _ _).1 h`. Use `⟨T, hT, ((algebraMap S L).codRestrict T h₁).comp (algebraMap R S), rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.comap_comap, IsLocalRing.maximalIdeal_comap]`. Conclude with `IsLocalization.AtPrime.under_maximalIdeal S p`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dvr_centre {R K L : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] [Field L] [Algebra K L] [Algebra.EssFiniteType K L] (p : Ideal R) [p.IsPrime]
@@ -91,11 +91,11 @@ theorem exists_dvr_centre {R K L : Type} [CommRing R] [IsDomain R] [IsNoetherian
   exact IsLocalization.AtPrime.under_maximalIdeal S p
 
 /- English proof (translation)
-Establish `: Subsingleton (Sp Ω)` using `inferInstanceAs (Subsingleton (PrimeSpectrum Ω))`. Establish `x : Sp Ω` using `(default : PrimeSpectrum Ω)`. Take `⟨x', hx'⟩` from `hp ⟨x, rfl⟩`. Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := p) (g := s) x x' hx'.symm`. Set `j` to `(pullback p s).fromSpecResidueField z`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `u` to `j ≫ pullback.fst p s`. Set `u'` to `j ≫ pullback.snd p s`. Establish `e : u' ≫ s = u ≫ p` using `by simp only [u, u', Category.assoc, pullback.condition]`. Establish `P` using `(IsPullback.of_hasPullback f u').paste_horiz h`. Rewrite `P` using `[e]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `Q` using `IsPullback.of_hasPullback g p`. Establish `P'` using `IsPullback.of_right (by rw [Q.lift_fst]; exact P) (Q.lift_snd _ _ (by simpa using P.w)) Q`. Establish `: Surjective u` using `inferInstance`. Establish `: Flat u` using `inferInstance`. Conclude with `⟨GrpFlatDesc.isProper_of_isPullback P', GrpFlatDesc.geometricallyConnected_of_isPullback P'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem fibre_of_range_subset {S S' A₀ A : Scheme.{0}} {g : A₀ ⟶ S} {f : A ⟶ S'} {φ : A ⟶ A₀} {s : S' ⟶ S}
     (h : IsPullback φ f g s) [IsProper f] [GeometricallyConnected f] {Ω : Type} [Field Ω] (p : Sp Ω ⟶ S)
@@ -118,7 +118,7 @@ theorem fibre_of_range_subset {S S' A₀ A : Scheme.{0}} {g : A₀ ⟶ S} {f : A
   exact ⟨GrpFlatDesc.isProper_of_isPullback P', GrpFlatDesc.geometricallyConnected_of_isPullback P'⟩
 
 /- English proof (translation)
-Use `⟨‹_›, ‹_›, ‹_›, ‹_›, ⟨fun L _ y W a b hW => ?_⟩, fun Ω _ _ p => ⟨torusExtensionOfAbelian _ ⟨inferInstance, inferInstanceAs (Smooth (pullback.snd B.hom p)), (h Ω p).1, (h Ω p).2⟩⟩⟩` and prove the remaining obligations. Conclude with `(h L y).2.geometrically_connectedSpace (K := L) (𝟙 _) hW.isoPullback.hom b (IsPullback.of_horiz_isIso ⟨by simp⟩)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSemiAbelian_of_fibres {S : Scheme.{0}} (B : Over S) [GrpObj B] [IsCommMonObj B] [Smooth B.hom]
     [IsSeparated B.hom] [QuasiCompact B.hom]
@@ -130,19 +130,19 @@ theorem isSemiAbelian_of_fibres {S : Scheme.{0}} (B : Over S) [GrpObj B] [IsComm
     (IsPullback.of_horiz_isIso ⟨by simp⟩)
 
 /- English proof (translation)
-Take `⟨a, ha, ha'⟩` from `grpPullback_iso (isGrpPullback_pullback A₁ (spMap (algebraMap K C))) hφ`. Take `⟨b, hb, hb'⟩` from `grpPullback_iso hψ (isGrpPullback_pullback B₁ (spMap (algebraMap K C)))`. Take `⟨L, f₀, hL, hf₀, hf⟩` from `GlobalTheory.hom_descends_to_fg_intermediateField K C A₁ B₁ (a ≪≫ b).hom ‹_› ‹_› ‹_› ‹_›`. Establish `hc : spMap (algebraMap L C) ≫ spMap (algebraMap K L) = spMap (algebraMap K C)`. Rewrite using `[← Spec.map_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `FieldBaseChange.flat_spMap (algebraMap L C)` as an intermediate fact. Use `FieldBaseChange.surjective_spMap (algebraMap L C)` as an intermediate fact. Establish `key : ∀ (D : Over (Sp K)) [GrpObj D], ∃ i : pullback D.hom (spMap (algebraMap K C)) ⟶ pullback D.hom (spMap (algebraMap K L)), i ≫ pullback.fst _ _ = pullback.fst _ _ ∧ i ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap (algebraMap L C) ∧ IsGrpPullback ((Over.pullback (spMap (algebr …` using `fun D _ => by`. Establish `w : pullback.fst D.hom (spMap (algebraMap K C)) ≫ D.hom = (pullback.snd _ _ ≫ spMap (algebraMap L C)) ≫ spMap (algebraMap K L)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hc, pullback.condition]`. Conclude with `⟨pullback.lift _ _ w, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _, (isGrpPullback_pullback D _).cancel ((isGrpPullback_pullback D _).congr hc.symm (pullback.lift_fst _ _ w).symm) (pullback.lift_snd _ _ _)⟩`. Take `⟨i, hi₁, hi₂, hi⟩` from `key A₁`. Take `⟨k, hk₁, hk₂, hk⟩` from `key B₁`. Set `g : (Over.pullback (spMap (algebraMap K L))).obj A₁ ⟶ (Over.pullback (spMap (algebraMap K L))).obj B₁` to `Over.homMk (pullback.lift f₀ (pullback.snd _ _) (hf₀.trans pullback.condition)) (pullback.lift_snd _ _ _)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hg₁ : g.left ≫ pullback.fst B₁.hom (spMap (algebraMap K L)) = f₀` using `pullback.lift_fst _ _ _`. Establish `hg : i ≫ g.left = (a ≪≫ b).hom.left ≫ k`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(Category.assoc _ _ _).trans ((congrArg (i ≫ ·) hg₁).trans ((hf i hi₁ hi₂).trans ((congrArg ((a ≪≫ b).hom.left ≫ ·) hk₁.symm).trans (Category.assoc _ _ _).symm)))`. Use `(Category.assoc _ _ _).trans ((congrArg (i ≫ ·) (Over.w g)).trans (hi₂.trans ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.symm ((Category.assoc _ _ _).trans ((congrArg ((a ≪≫ b).hom.left ≫ ·) hk₂).trans ?_))` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ spMap (algebraMap L C)) (Over.w (a ≪≫ b).hom))`. Establish `hm : IsMonHom g` using `(FieldBaseChange.isMonHom_iff_of_isGrpPullback hi hk (a ≪≫ b).hom g hg).1 (inferInstanceAs (IsMonHom (a.hom ≫ b.hom)))`. Establish `hsq : IsPullback (a ≪≫ b).hom.left i k g.left` using `IsPullback.of_bot (by rw [Over.w g, Over.w (a ≪≫ b).hom]; exact hi.1) hg hk.1 |>.flip`. Establish `: Flat k` using `MorphismProperty.of_isPullback (P := @Flat) hk.1.flip ‹_›`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Surjective k` using `MorphismProperty.of_isPullback (P := @Surjective) hk.1.flip ‹_›`. Establish `: QuasiCompact k` using `MorphismProperty.of_isPullback (P := @QuasiCompact) hk.1.flip inferInstance`. Establish `hq : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) k` using `⟨⟨‹_›, ‹_›⟩, ‹_›⟩`. Establish `: IsIso g.left` using `MorphismProperty.of_isPullback_of_descendsAlong (P := .isomorphisms Scheme.{0}) hsq hq (inferInstanceAs (IsIso ((Over.forget _).map (a ≪≫ b).hom)))`. Establish `: IsIso ((Over.forget _).map g)` using `‹_›`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `: IsIso g` using `isIso_of_reflects_iso g (Over.forget _)`. Conclude with `⟨L, asIso g, hL, hm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_fg_isGrpPullback {K C : Type} [Field K] [Field C] [Algebra K C] (A₁ B₁ : Over (Sp K)) [GrpObj A₁]
     [GrpObj B₁] [LocallyOfFiniteType A₁.hom] [QuasiCompact A₁.hom] [IsSeparated A₁.hom] [LocallyOfFiniteType B₁.hom]
@@ -195,11 +195,11 @@ theorem exists_fg_isGrpPullback {K C : Type} [Field K] [Field C] [Algebra K C] (
   exact ⟨L, asIso g, hL, hm⟩
 
 /- English proof (translation)
-Set `B` to `(Over.pullback g).obj A₀`. Establish `hfib : ∀ (Ω : Type) [Field Ω] (t : Sp Ω ⟶ T), IsProper (pullback.snd B.hom t) ∧ GeometricallyConnected (pullback.snd B.hom t)` using `fun Ω _ t => by`. Take `⟨h₁, h₂⟩` from `fibre_of_range_subset h (t ≫ g) (by`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hg ⟨t x, rfl⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hp` using `(IsPullback.of_hasPullback B.hom t).paste_horiz (isGrpPullback_pullback A₀ g).1`. Establish `hq : IsPullback hp.isoPullback.hom (pullback.snd B.hom t) (pullback.snd A₀.hom (t ≫ g)) (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by rw [hp.isoPullback_hom_snd, Category.comp_id]⟩`. Conclude with `⟨MorphismProperty.of_isPullback (P := @IsProper) hq h₁, MorphismProperty.of_isPullback (P := @GeometricallyConnected) hq h₂⟩`. Establish `: Smooth B.hom` using `inferInstanceAs (Smooth (pullback.snd _ _))`. Establish `: IsSeparated B.hom` using `inferInstanceAs (IsSeparated (pullback.snd _ _))`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact B.hom` using `inferInstanceAs (QuasiCompact (pullback.snd _ _))`. Conclude with `⟨isSemiAbelian_of_fibres B hfib, fun _ Ω _ _ t _ => (hfib Ω t).1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isSemiAbelian_pullback_of_range_subset {S S' T : Scheme.{0}} (A₀ : Over S) [GrpObj A₀] [IsCommMonObj A₀]
     [Smooth A₀.hom] [IsSeparated A₀.hom] [QuasiCompact A₀.hom] {A : Scheme.{0}} {f : A ⟶ S'} {φ : A ⟶ A₀.left}
@@ -222,7 +222,7 @@ theorem isSemiAbelian_pullback_of_range_subset {S S' T : Scheme.{0}} (A₀ : Ove
   exact ⟨isSemiAbelian_of_fibres B hfib, fun _ Ω _ _ t _ => (hfib Ω t).1⟩
 
 /- English proof (translation)
-Establish `w : ψ ≫ D.hom = (B.hom ≫ u) ≫ t` using `by rw [h.1.w, Category.assoc]`. Conclude with `⟨pullback.lift _ _ w, (isGrpPullback_pullback D t).cancel (h.congr rfl (pullback.lift_fst _ _ w).symm) (pullback.lift_snd _ _ _)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_isGrpPullback_of_comp {S U W : Scheme.{0}} (D : Over S) [GrpObj D] {B : Over W} [GrpObj B] (t : U ⟶ S)
     (u : W ⟶ U) {ψ : B.left ⟶ D.left} (h : IsGrpPullback B D (u ≫ t) ψ) :
@@ -232,7 +232,7 @@ theorem exists_isGrpPullback_of_comp {S U W : Scheme.{0}} (D : Over S) [GrpObj D
     (pullback.lift_snd _ _ _)⟩
 
 /- English proof (translation)
-Take `⟨a, ha, -⟩` from `grpPullback_iso ((isGrpPullback_pullback _ j).comp (isGrpPullback_pullback D g)) (((isGrpPullback_pullback _ l).comp (isGrpPullback_pullback D k)).congr h rfl)`. Conclude with `⟨a, ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_iso_of_comp_eq {S U T W : Scheme.{0}} (D : Over S) [GrpObj D] {k : U ⟶ S} {l : W ⟶ U} {g : T ⟶ S}
     {j : W ⟶ T} (h : l ≫ k = j ≫ g) : ∃ e : (Over.pullback j).obj ((Over.pullback g).obj D) ≅
@@ -242,9 +242,9 @@ theorem exists_iso_of_comp_eq {S U T W : Scheme.{0}} (D : Over S) [GrpObj D] {k 
   exact ⟨a, ha⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨q, rfl⟩`. Distinguish the cases in `hq : PrimeSpectrum.asIdeal q = ⊥`. Use `⟨(⊥ : PrimeSpectrum V), PrimeSpectrum.ext ?_⟩` and prove the remaining obligations. Conclude with `(Ideal.comap_bot_of_injective R.subtype Subtype.val_injective).trans ((congrArg (Ideal.comap g) hq).trans (Ideal.comap_bot_of_injective _ hg)).symm`. Establish `hq' : q = IsLocalRing.closedPoint T` using `PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal (Ring.DimensionLEOne.maximalOfPrime hq q.isPrime))`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨P, by rw [hq', hcl]⟩`.
+A detailed English derivation is pending.
 -/
 theorem range_subset_of_centre {V T : Type} [CommRing V] [IsDomain V] [CommRing T] [IsDomain T]
     [IsDiscreteValuationRing T] (R : Subring V) {g : R →+* T} (hg : Function.Injective g) (P : Sp V)
@@ -260,9 +260,9 @@ theorem range_subset_of_centre {V T : Type} [CommRing V] [IsDomain V] [CommRing 
     exact ⟨P, by rw [hq', hcl]⟩
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `ExtUnique.flat_and_isSeparated_of_isSemiAbelian B hB`. Take `⟨_, _⟩` from `ExtUnique.flat_and_isSeparated_of_isSemiAbelian H hH`. Take `⟨_, _⟩` from `ExtUnique.spec_fractionRing T L`. Establish `: IsIso Φ` using `ExtUnique.isIso_of_pullback (spMap (algebraMap T L)) E Φ Ψ hΦ hΨ`. Establish `: IsIso Φ.left` using `inferInstanceAs (IsIso ((Over.forget _).map Φ))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : IsPullback Φ.left B.hom H.hom (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by rw [Over.w, Category.comp_id]⟩`. Conclude with `fun x hx => (abLocus_pullback abLocusOne hH hsq x).2 hx`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem abLocus_subset_of_extends {T L : Type} [CommRing T] [Field L] [Algebra T L] [IsFractionRing T L]
     {B H : Over (Sp T)} [GrpObj B] [GrpObj H] (hB : IsSemiAbelian B) (hH : IsSemiAbelian H)
@@ -286,27 +286,25 @@ open GoodVal
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `hext X z G _ V C _ _ _ _ _ _ y 𝒜 _ A _ φ₁ φ₂ hz hG h𝒜 h₁ h₂`. Take `⟨F, hF⟩` from `exists_finset_factor z y`. Use `h𝒜.comm` as an intermediate fact. Use `h𝒜.proper` as an intermediate fact. Use `h𝒜.geomConnected` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨R, A₀, _, _, φ, hFR, hR, _, _, _, hφ⟩` from `GlobalTheory.smooth_grpScheme_descends_to_fg_subring V 𝒜 F h𝒜.smooth inferInstance inferInstance`. Take `⟨y₀, rfl⟩` from `hF R hFR`. Establish `: IsNoetherianRing R` using `Algebra.FiniteType.isNoetherianRing ℤ R`. Introduce and unpack `_ ⟨P, rfl⟩`. Set `p : Ideal R` to `P.asIdeal.comap R.subtype`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Establish `: p.IsPrime` using `Ideal.comap_isPrime _ _ (H := P.isPrime)`. Establish `hinj : Function.Injective ((algebraMap V C).comp R.subtype)` using `(IsFractionRing.injective V C).comp Subtype.val_injective`. Distinguish the cases in `hp : p = ⊥`. Establish `hpr : IsProper A.hom` using `MorphismProperty.of_isPullback (P := @IsProper) h₁.1 h𝒜.proper`. Use `abLocusOne X G hG C _ (by rw [← h₂.1.isoPullback_inv_snd]; infer_instance) ⟨(⊥ : PrimeSpectrum C), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `y₀ (spMap R.subtype (spMap (algebraMap V C) (⊥ : PrimeSpectrum C))) = y₀ (spMap R.subtype P)`. Use `congrArg y₀ ?_` and prove the remaining obligations. Conclude with `PrimeSpectrum.ext ((Ideal.comap_comap _ _).trans ((Ideal.comap_bot_of_injective _ hinj).trans hp.symm))`. Set `K` to `FractionRing R`. Use `letI : Algebra K C := (IsFractionRing.lift hinj).toAlgebra`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hc : spMap (algebraMap K C) ≫ spMap (algebraMap R K) = spMap (algebraMap V C) ≫ spMap R.subtype`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `r`. Conclude with `IsFractionRing.lift_algebraMap hinj r`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ₁, k₁⟩` from `exists_isGrpPullback_of_comp A₀ (spMap (algebraMap R K)) _ ((h₁.comp hφ).congr hc.symm rfl)`. Take `⟨ψ₂, k₂⟩` from `exists_isGrpPullback_of_comp G (spMap (algebraMap R K) ≫ y₀) (spMap (algebraMap K C)) (h₂.congr (by rw [← Category.assoc, ← hc, Category.assoc]) rfl)`. Use `hG.smooth` as an intermediate fact. Establish `: LocallyOfFiniteType ((Over.pullback (spMap (algebraMap R K))).obj A₀).hom` using `inferInstanceAs (LocallyOfFiniteType (pullback.snd _ _))`. Establish `: QuasiCompact ((Over.pullback (spMap (algebraMap R K))).obj A₀).hom` using `inferInstanceAs (QuasiCompact (pullback.snd _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsSeparated ((Over.pullback (spMap (algebraMap R K))).obj A₀).hom` using `inferInstanceAs (IsSeparated (pullback.snd _ _))`. Establish `: LocallyOfFiniteType ((Over.pullback (spMap (algebraMap R K) ≫ y₀)).obj G).hom` using `inferInstanceAs (LocallyOfFiniteType (pullback.snd _ _))`. Take `⟨L, e, hL, he⟩` from `exists_fg_isGrpPullback _ _ k₁ k₂`. Establish `: Algebra.EssFiniteType K L` using `IntermediateField.essFiniteType_iff.2 hL`. Take `⟨T, _, g, hg, hgp⟩` from `exists_dvr_centre (K := K) (L := L) p hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : spMap (algebraMap T L) ≫ spMap g = spMap (algebraMap K L) ≫ spMap (algebraMap R K)`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Conclude with `congrArg (fun f => Spec.map (CommRingCat.ofHom f)) hg`. Establish `hginj : Function.Injective g`. Use `Function.Injective.of_comp (f := algebraMap T L) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← RingHom.coe_comp, hg]`. Conclude with `(algebraMap K L).injective.comp (IsFractionRing.injective R K)`. Establish `hcl : spMap g (IsLocalRing.closedPoint T) = spMap R.subtype P` using `PrimeSpectrum.ext hgp`. Take `⟨hB, hB'⟩` from `isSemiAbelian_pullback_of_range_subset A₀ hφ.1 (spMap g) (range_subset_of_centre R hginj P hcl)`. Establish `hH` using `IsSemiAbelian.pullback (spMap g ≫ y₀) G hG`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `exists_iso_of_comp_eq A₀ hc'.symm`. Take `⟨b, hb⟩` from `exists_iso_of_comp_eq G (k := spMap g ≫ y₀) (l := spMap (algebraMap T L)) (g := spMap (algebraMap R K) ≫ y₀) (j := spMap (algebraMap K L)) (by rw [← Category.assoc, hc', Category.assoc])`. Establish `hE : IsMonHom (a ≪≫ e ≪≫ b).hom` using `inferInstanceAs (IsMonHom (a.hom ≫ e.hom ≫ b.hom))`. Take `⟨Φ, ⟨-, hΦ⟩, -⟩` from `hext T L _ _ hB hH (a ≪≫ e ≪≫ b).hom hE`. Take `⟨Ψ, ⟨-, hΨ⟩, -⟩` from `hext T L _ _ hH hB (a ≪≫ e ≪≫ b).inv inferInstance`.
-
-Establish `hx` using `(abLocus_pullback abLocusOne hG (isGrpPullback_pullback G (spMap g ≫ y₀)).1 (IsLocalRing.closedPoint T)).2 (abLocus_subset_of_extends hB hH _ Φ Ψ hΦ hΨ (hB' _))`. Express the relevant statement in the definitionally equal form `y₀ (spMap g (IsLocalRing.closedPoint T)) ∈ abLocus G at hx`. Rewrite `hx` using `[hcl]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_subset_abLocus_of_goodReduction : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (X : Scheme.{0}) (z : X ⟶ Sp ℤ) (G : Over X) [GrpObj G] (V C : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field C] [Algebra V C] [IsFractionRing V C] (y : Sp V ⟶ X) (𝒜 : Over (Sp V)) [GrpObj 𝒜] (A : Over (Sp C)) [GrpObj A] (φ₁ : A.left ⟶ 𝒜.left) (φ₂ : A.left ⟶ G.left), LocallyOfFiniteType z → IsSemiAbelian G → IsAbelianScheme 𝒜 → IsGrpPullback A 𝒜 (spMap (algebraMap V C)) φ₁ → IsGrpPullback A G (spMap (algebraMap V C) ≫ y) φ₂ → Set.range y ⊆ abLocus G := by
   intro hext X z G _ V C _ _ _ _ _ _ y 𝒜 _ A _ φ₁ φ₂ hz hG h𝒜 h₁ h₂

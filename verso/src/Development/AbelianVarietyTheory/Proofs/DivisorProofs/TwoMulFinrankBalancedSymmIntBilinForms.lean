@@ -11,7 +11,7 @@ namespace GlobalTheory.BalRankSym
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq, H.bar_eq]`. Conclude with `IsCMField.complexConj_apply_apply E _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem host_bar_bar (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a := by
   apply RingOfIntegers.ext
@@ -19,13 +19,13 @@ theorem host_bar_bar (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a := by
   exact IsCMField.complexConj_apply_apply E _
 
 /- English proof (translation)
-Establish `h1 : (H.bar H.rt) ^ 2 = H.rt ^ 2` using `by rw [← map_pow, H.rt_sq]; simp`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h2 : IsCMField.complexConj E (H.rt : E) = (H.rt : E)` using `by rw [← H.bar_eq, h]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3` using `IsCMField.complexEmbedding_complexConj E φ (H.rt : E)`. Rewrite `h3` using `[h2]`. Establish `h4 : (φ (H.rt : E)) ^ 2 = -(H.d : ℂ)`. Use `congrArg (fun x : 𝓞 E => φ (x : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h5 : (φ (H.rt : E)).im = 0` using `Complex.conj_eq_iff_im.1 h3.symm`. Establish `h6` using `congrArg Complex.re h4`. Simplify using `[sq, h5] at h6`. Establish `h7 : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[mul_self_nonneg (φ (H.rt : E)).re]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem host_bar_rt (H : Host E) : H.bar H.rt = -H.rt := by
   have h1 : (H.bar H.rt) ^ 2 = H.rt ^ 2 := by rw [← map_pow, H.rt_sq]; simp
@@ -57,13 +57,13 @@ Both sides reduce to the same expression.
 theorem rtMul_apply (y : X) : rtMul H X y = H.rt • y := rfl
 
 /- English proof (translation)
-Rewrite using `[smul_smul, ← sq, H.rt_sq, neg_smul, ← Int.cast_natCast, Int.cast_smul_eq_zsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rt_smul_rt_smul (y : X) : H.rt • H.rt • y = -((H.d : ℤ) • y) := by
   rw [smul_smul, ← sq, H.rt_sq, neg_smul, ← Int.cast_natCast, Int.cast_smul_eq_zsmul]
 
 /- English proof (translation)
-Introduce `a y z`. Use `show β z (a • y) = β (H.bar a • z) y`. Rewrite using `[hβ (H.bar a) z y, host_bar_bar]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flip_mem_balBil {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ GlobalTheory.BalRank.balBil H.bar X) :
     β.flip ∈ GlobalTheory.BalRank.balBil H.bar X := by
@@ -72,7 +72,7 @@ theorem flip_mem_balBil {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ GlobalThe
   rw [hβ (H.bar a) z y, host_bar_bar]
 
 /- English proof (translation)
-Introduce `a y z`. Simplify using `only [LinearMap.comp_apply, rtMul_apply]`. Rewrite using `[smul_comm, hβ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_rt_mem_balBil {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ GlobalTheory.BalRank.balBil H.bar X) :
     β ∘ₗ rtMul H X ∈ GlobalTheory.BalRank.balBil H.bar X := by
@@ -81,14 +81,14 @@ theorem comp_rt_mem_balBil {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ Global
   rw [smul_comm, hβ]
 
 /- English proof (translation)
-Rewrite using `[hβ, host_bar_rt, neg_smul, map_neg, hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_rt_antisymm {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ GlobalTheory.BalRank.balBil H.bar X)
     (hs : ∀ y z, β y z = β z y) (y z : X) : β (H.rt • y) z = -β (H.rt • z) y := by
   rw [hβ, host_bar_rt, neg_smul, map_neg, hs]
 
 /- English proof (translation)
-Rewrite using `[hβ, host_bar_rt, neg_smul, map_neg, hs, neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_rt_symm {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ GlobalTheory.BalRank.balBil H.bar X)
     (hs : ∀ y z, β y z = -β z y) (y z : X) : β (H.rt • y) z = β (H.rt • z) y := by
@@ -155,15 +155,15 @@ def rtPart : balForms H.bar X →ₗ[ℤ] GlobalTheory.BalRank.balBil H.bar X wh
 variable {H X}
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `β hβ`. Rewrite `hβ` using `[LinearMap.mem_ker, LinearMap.prod_apply, Prod.mk_eq_zero]`. Take `⟨h1, h2⟩` from `hβ`. Establish `e1 : ∀ y z, β.1 y z + β.1 z y = 0` using `fun y z => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (fun γ : balForms H.bar X => γ.1 y z) h1` as an intermediate fact. Simplify `this` using `[symPart]`. Establish `e2 : ∀ y z, β.1 (H.rt • y) z - β.1 z (H.rt • y) = 0` using `fun y z => by`. Use `congrArg (fun γ : balForms H.bar X => γ.1 y z) h2` as an intermediate fact. Simplify `this` using `[antiPart, rtMul_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hd : (H.d : ℤ) ≠ 0` using `by exact_mod_cast H.d_prime.ne_zero`. Establish `e3 : ∀ y z, β.1 y z - β.1 z y = 0` using `fun y z => by`. Use `e2 (H.rt • y) z` as an intermediate fact. Rewrite `this` using `[rt_smul_rt_smul, map_neg, map_zsmul, LinearMap.neg_apply, LinearMap.smul_apply, map_neg, map_zsmul]`. Simplify using `only [smul_eq_mul] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: (H.d : ℤ) * (β.1 y z - β.1 z y) = 0` using `by linear_combination -this`. Conclude with `(mul_eq_zero.1 this).resolve_left hd`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `y z`. Use `e1 y z` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `e3 y z` as an intermediate fact. Simplify using `only [ZeroMemClass.coe_zero, LinearMap.zero_apply]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem symPart_antiPart_injective :
     Function.Injective (LinearMap.prod (symPart H X) (antiPart H X)) := by
@@ -192,15 +192,15 @@ theorem symPart_antiPart_injective :
   omega
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce and unpack `⟨s, t⟩ hst`. Rewrite `hst` using `[LinearMap.mem_ker, LinearMap.coprod_apply]`. Establish `e : ∀ y z, s.1 y z + t.1 (H.rt • y) z = 0` using `fun y z => by`. Use `congrArg (fun γ : GlobalTheory.BalRank.balBil H.bar X => γ.1 y z) hst` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[symIncl, rtPart, rtMul_apply, Submodule.coe_inclusion]`. Establish `hd : (H.d : ℤ) ≠ 0` using `by exact_mod_cast H.d_prime.ne_zero`. Establish `et : ∀ y z, t.1 (H.rt • y) z = 0` using `fun y z => by`. Establish `a1` using `e y z`. Establish `a2` using `e z y`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `s.2.1 y z`. Establish `a4` using `comp_rt_antisymm t.2.2 t.2.1 y z`. Use linear arithmetic over natural numbers and integers. Establish `ht : ∀ y z, t.1 y z = 0` using `fun y z => by`. Use `et (H.rt • y) z` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[rt_smul_rt_smul, map_neg, map_zsmul, LinearMap.neg_apply, LinearMap.smul_apply]`. Simplify using `only [smul_eq_mul] at this`. Establish `: (H.d : ℤ) * t.1 y z = 0` using `by linear_combination -this`. Conclude with `(mul_eq_zero.1 this).resolve_left hd`. Establish `hs : ∀ y z, s.1 y z = 0` using `fun y z => by`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `e y z` as an intermediate fact. Rewrite `this` using `[et]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Prod.mk_eq_zero]`. Conclude with `⟨Subtype.ext (LinearMap.ext fun y => LinearMap.ext fun z => hs y z), Subtype.ext (LinearMap.ext fun y => LinearMap.ext fun z => ht y z)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem symIncl_rtPart_injective :
     Function.Injective (LinearMap.coprod (symIncl H X) (rtPart H X)) := by
@@ -232,7 +232,7 @@ theorem symIncl_rtPart_injective :
     Subtype.ext (LinearMap.ext fun y => LinearMap.ext fun z => ht y z)⟩
 
 /- English proof (translation)
-Establish `h1` using `LinearMap.finrank_le_finrank_of_injective (symPart_antiPart_injective (H := H) (X := X))`. Establish `h2` using `LinearMap.finrank_le_finrank_of_injective (symIncl_rtPart_injective (H := H) (X := X))`. Rewrite `h1`, `h2` using `[Module.finrank_prod]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_mul_finrank_balForms (H : Host E) (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X]
     [Module.Finite ℤ X] :

@@ -2,23 +2,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open UpperTheory.V.Z.Sym MulAction in
 /- English proof (translation)
-Introduce `T G _ _ ι C θ U f δ hf hδ J S x hx hs`. Use `letI : MulAction T (G ⧸ U) := MulAction.compHom _ ι`. Establish `sm : ∀ (t : T) (g : G), t • (g : G ⧸ U) = ((ι t * g : G) : G ⧸ U)` using `fun _ _ => rfl`. Establish `k1 : ∀ (t : T) (g : G), ∀ u ∈ U, f ((ι t * g * u)⁻¹ * δ * θ (ι t * g * u)) = f (g⁻¹ * δ * θ g)` using `fun t g u hu => by`. Rewrite using `[← hf u hu (g⁻¹ * δ * θ g)]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Use `conv_rhs => rw [← hδ t]`. Simplify using `[mul_assoc]`. Establish `st : ∀ (t : T) (y : G ⧸ U), stabilizer T (t • y) = stabilizer T y` using `fun t y => by`. Use extensionality with `a`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [mem_stabilizer_iff]`. Rewrite using `[smul_smul, mul_comm, mul_smul, smul_left_cancel_iff]`. Set `q : J → orbitRel.Quotient T (G ⧸ U)` to `fun i => Quotient.mk'' (x i : G ⧸ U)`. Establish `rel : ∀ (o : orbitRel.Quotient T (G ⧸ U)) (i : J), o = q i ↔ ∃ t, ∃ u ∈ U, o.out.out = ι t * x i * u` using `fun o i => by`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `: orbitRel T _ o.out (x i : G ⧸ U)` using `Quotient.exact (by rw [Quotient.out_eq]; exact h)`. Take `⟨t, ht⟩` from `this`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul U (ι t * x i)`. Conclude with `⟨t, u, u.2, by rw [← hu, ← sm]; exact congrArg _ ht.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨t, u, hu, h⟩`. Rewrite using `[← o.out_eq]`. Use `Quotient.sound ⟨t, ?_⟩` and prove the remaining obligations. Use `show t • _ = _`. Rewrite using `[sm, ← o.out.out_eq', h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(QuotientGroup.mk_mul_of_mem _ hu).symm`. Unfold `orb wcount`. Rewrite using `[finsum_eq_sum_of_support_subset (s := S.image q) _ fun o ho => ?_, Finset.sum_image fun i hi j hj h => ?_]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨t, u, hu, h⟩` from `(rel (q i) i).1 rfl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (q i).out = t • (x i : G ⧸ U)`. Rewrite using `[sm, ← (q i).out.out_eq', h]`. Conclude with `QuotientGroup.mk_mul_of_mem _ hu`. Use `beta_reduce`. Rewrite using `[h, k1 t _ u hu, e, st]`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Take `⟨t, u, hu, h1⟩` from `(rel (q i) i).1 rfl`. Take `⟨t', u', hu', h2⟩` from `(rel (q i) j).1 h`. Use `hx i hi j hj (t'⁻¹ * t) (u * u'⁻¹) (mul_mem hu (inv_mem hu')) ?_` and prove the remaining obligations. Use `h1.symm.trans h2` as an intermediate fact.
-
-Rewrite using `[map_mul, map_inv, mul_assoc (ι t')⁻¹, mul_assoc (ι t')⁻¹, ← mul_assoc _ u, this]`. Simplify using `[mul_assoc]`. Take `⟨t, i, hi, u, hu, h⟩` from `hs o.out.out (right_ne_zero_of_mul ho)`. Conclude with `Finset.mem_coe.2 (Finset.mem_image.2 ⟨i, hi, ((rel o i).2 ⟨t, u, hu, h⟩).symm⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Tf.orbReps :
     UpperTheory.V.Z.Sym.Tf.OrbReps := by

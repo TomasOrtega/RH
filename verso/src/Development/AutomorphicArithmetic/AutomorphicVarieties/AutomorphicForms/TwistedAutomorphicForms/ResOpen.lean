@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open ReciprocityTheory.Gal GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V.Af Formalism.ConjugateSelfDual UpperTheory.V.Base
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Af.Tw.ResOpen`. Introduce `F L Ω _ _ _ _ _ _ _ _ _ _ _`. Establish `hre : resG F L Ω = UpperTheory.V.Base.galEmb F L Ω` using `rfl`. Take `⟨hemb, hop, hidx⟩` from `UpperTheory.V.Base.galEmbTop F L Ω`. Rewrite using `[hre]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨hemb, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← MonoidHom.coe_range, UpperTheory.V.Base.range_galEmb]`. Conclude with `hop`. Rewrite using `[UpperTheory.V.Base.range_galEmb]`. Conclude with `hidx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Tw.resOpen :
     UpperTheory.V.Af.Tw.ResOpen := by

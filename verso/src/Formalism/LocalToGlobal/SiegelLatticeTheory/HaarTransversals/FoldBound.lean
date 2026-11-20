@@ -32,15 +32,15 @@ def FoldBound (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     ∑' δ : D, ‖Ph ((δ : G) * x)‖ₑ ≤ (a : ℝ≥0∞) * mult Γ Ω x * quotientLIntegral μ F Ph
 
 /- English proof (translation)
-Establish `hmem : ∀ (δ : D) (s : S), (δ : G)⁻¹ * (s : G) ∈ Γ` using `fun δ s => Γ.mul_mem (Γ.inv_mem (hD.1 δ.2)) (hSΓ s.2)`. Set `f : D × S → Γ` to `fun p => ⟨(p.1 : G)⁻¹ * (p.2 : G), hmem p.1 p.2⟩`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨δ, s⟩ ⟨δ', s'⟩ h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h' : (δ : G)⁻¹ * (s : G) = (δ' : G)⁻¹ * (s' : G)` using `congrArg Subtype.val h`. Establish `hγ : (s : G)⁻¹ * (δ : G) ∈ Γ` using `Γ.mul_mem (Γ.inv_mem (hSΓ s.2)) (hD.1 δ.2)`. Take `⟨p, -, hp⟩` from `hD.2 _ hγ`. Establish `e1` using `hp (s⁻¹, δ) (by simp)`. Establish `h'' : (s' : G)⁻¹ * (δ' : G) = (s : G)⁻¹ * (δ : G)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (·⁻¹) h'` as an intermediate fact. Simplify using `only [mul_inv_rev, inv_inv] at this`. Conclude with `this.symm`. Establish `e2` using `hp (s'⁻¹, δ') (by simpa using h'')`. Use `e1.trans e2.symm` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.mk.injEq, inv_inj] at this`. Take `⟨rfl, rfl⟩` from `this`. Both sides reduce to the same expression. Introduce and unpack `⟨γ, hγ⟩`. Take `⟨p, hp, -⟩` from `hD.2 _ (Γ.inv_mem hγ)`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(p.2, p.1⁻¹), Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [f, Subgroup.coe_inv]`. Rewrite using `[← mul_inv_rev, hp, inv_inv]`. Rewrite using `[← ENNReal.tsum_prod]`. Conclude with `(Equiv.ofBijective f hf).tsum_eq (fun γ : Γ => φ (γ : G))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_transversal {G : Type*} [Group G] (Γ S : Subgroup G) (hSΓ : S ≤ Γ) (D : Set G)
     (hD : IsRightTransversal Γ S D) (φ : G → ℝ≥0∞) :
@@ -74,27 +74,21 @@ theorem tsum_transversal {G : Type*} [Group G] (Γ S : Subgroup G) (hSΓ : S ≤
   exact (Equiv.ofBijective f hf).tsum_eq (fun γ : Γ => φ (γ : G))
 
 /- English proof (translation)
-Introduce `Γ S hΓ hSΓ Ω hΩ a Ph hPh hS hbd F hF D hD x`. Use `haveI := hΓ`. Use `haveI : Countable Γ := by`. Take `⟨s, hs, hd⟩` from `TopologicalSpace.exists_countable_dense Γ`. Establish `hu : s = Set.univ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hd.closure_eq` as an intermediate fact. Rewrite `this` using `[closure_discrete]`. Then use the resulting hypothesis. Rewrite `hs` using `[hu]`. Conclude with `Set.countable_univ_iff.mp hs`. Use `haveI : Countable D := ((Set.countable_range ((↑) : Γ → G)).mono (show D ⊆ Set.range ((↑) : Γ → G) from fun y hy => ⟨⟨y, hD.1 hy⟩, rfl⟩)).to_subtype`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Countable S := ((Set.countable_range ((↑) : Γ → G)).mono (show (S : Set G) ⊆ Set.range ((↑) : Γ → G) from fun y hy => ⟨⟨y, hSΓ hy⟩, rfl⟩)).to_subtype`. Use `set ind : G → ℝ≥0∞ := Ω.indicator (fun _ => 1) with hind`. Establish `hindm : Measurable ind` using `measurable_const.indicator hΩ`. Use `set Fd : G → G → ℝ≥0∞ := fun g y => ind (g⁻¹ * y) * ‖Ph y‖ₑ with hFd`. Establish `hFdm : ∀ g, Measurable (Fd g)` using `fun g => (hindm.comp (measurable_const_mul _)).mul hPh.enorm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `step1 : ∀ g : G, ‖Ph g‖ₑ ≤ (a : ℝ≥0∞) * ∫⁻ y, Fd g y ∂μ`. Introduce `g`. Use `(hbd g).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Establish `e1 : ∫⁻ y, Fd g y ∂μ = ∫⁻ ω, Fd g (g * ω) ∂μ` using `(lintegral_mul_left_eq_self (Fd g) g).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, ← lintegral_indicator hΩ]`. Use `lintegral_congr fun ω => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hω : ω ∈ Ω <;> simp [hFd, hind, hω]`. Establish `step2 : ∑' δ : D, ‖Ph ((δ : G) * x)‖ₑ ≤ (a : ℝ≥0∞) * ∫⁻ y, ∑' δ : D, Fd ((δ : G) * x) y ∂μ`. Rewrite using `[lintegral_tsum (fun δ => (hFdm _).aemeasurable), ← ENNReal.tsum_mul_left]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `ENNReal.tsum_le_tsum fun δ => step1 _`. Establish `step3 : ∫⁻ y, ∑' δ : D, Fd ((δ : G) * x) y ∂μ = ∫⁻ y in F, ∑' s : S, ∑' δ : D, Fd ((δ : G) * x) ((s : G) * y) ∂μ`. Use `(hF.lintegral_eq_tsum'' _).trans (lintegral_tsum fun s => ?_).symm` and prove the remaining obligations. Conclude with `(Measurable.ennreal_tsum fun δ => (hFdm _).comp (measurable_const_mul _)).aemeasurable`. Establish `step4 : ∀ y, ∑' s : S, ∑' δ : D, Fd ((δ : G) * x) ((s : G) * y) ≤ mult Γ Ω x * ‖Ph y‖ₑ`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Establish `e : ∀ (s : S) (δ : D), Fd ((δ : G) * x) ((s : G) * y) = ind (x⁻¹ * (((δ : G)⁻¹ * (s : G)) * y)) * ‖Ph y‖ₑ`. Introduce `s δ`. Simplify using `only [hFd, hS s s.2 y, mul_inv_rev, mul_assoc]`. Repeatedly rewrite using `[e, ENNReal.tsum_mul_right]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `ht` using `tsum_transversal Γ S hSΓ D hD (fun g => ind (x⁻¹ * (g * y)))`. Use `beta_reduce at ht`. Rewrite using `[ENNReal.tsum_comm, ht]`. Use `gcongr`. Establish `hsum : ∑' γ : Γ, ind (x⁻¹ * ((γ : G) * y)) = ((({γ : Γ | x⁻¹ * ((γ : G) * y) ∈ Ω} : Set Γ).encard : ℕ∞) : ℝ≥0∞)`.
-
-Rewrite using `[← ENNReal.tsum_set_one, tsum_subtype _ (fun _ : Γ => (1 : ℝ≥0∞))]`. Use `congr 1`. Rewrite using `[hsum]`. Conclude with `le_iSup (fun y' => ((({γ : Γ | x⁻¹ * ((γ : G) * y') ∈ Ω} : Set Γ).encard : ℕ∞) : ℝ≥0∞)) y`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[step3]`. Use `_ ≤ (a : ℝ≥0∞) * ∫⁻ y in F, mult Γ Ω x * ‖Ph y‖ₑ ∂μ := by gcongr with y`. Conclude with `step4 y`. Use `_ = (a : ℝ≥0∞) * mult Γ Ω x * quotientLIntegral μ F Ph := by`. Unfold `quotientLIntegral`.
-
-Rewrite using `[lintegral_const_mul _ hPh.enorm, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem foldBound_holds (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]

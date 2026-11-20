@@ -7,9 +7,9 @@ open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ r h x`. Establish `hs : Algebra.Smooth R (MvPolynomial (Fin r) R)` using `⟨inferInstance, inferInstance⟩`. Set `f : Sp (MvPolynomial (Fin r) R) ⟶ Sp R` to `Spec.map (CommRingCat.ofHom (algebraMap R (MvPolynomial (Fin r) R)))`. Establish `: Smooth f`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Smooth)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.smooth_algebraMap.mpr hs`. Conclude with `forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth f h x`.
+A detailed English derivation is pending.
 -/
 theorem isNormalScheme_sp_mvPolynomial :
     ∀ (R : Type) [CommRing R] (r : ℕ), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Sp R) →

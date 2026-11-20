@@ -11,7 +11,7 @@ section
 variable {X : Scheme.{u}}
 
 /- English proof (translation)
-Rewrite using `[← Skeleton.toSkeleton_tensorObj, Skeleton.one_eq]`. Use `isIso_dualEval hL` as an intermediate fact. Conclude with `congr_toSkeleton_of_iso (asIso (dualEval L))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma toSkeleton_dualSheaf_mul {L : X.Modules} (hL : IsInvertibleSheaf L) :
     toSkeleton (dualSheaf L) * toSkeleton L = 1 := by
@@ -56,9 +56,9 @@ noncomputable def mk (L : X.Modules) (hL : IsInvertibleSheaf L) : Pic X :=
 def toClass (p : Pic X) : Skeleton X.Modules := ((p : ↥(picardSubgroup X)) : (Skeleton X.Modules)ˣ)
 
 /- English proof (translation)
-Rewrite using `[← toSkeleton_eq_toSkeleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `congrArg toClass h`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem mk_eq_mk_iff {L M : X.Modules} (hL : IsInvertibleSheaf L) (hM : IsInvertibleSheaf M) :
     mk L hL = mk M hM ↔ Nonempty (L ≅ M) := by
@@ -72,7 +72,7 @@ theorem mk_eq_mk_iff {L M : X.Modules} (hL : IsInvertibleSheaf L) (hM : IsInvert
     exact h
 
 /- English proof (translation)
-Take `⟨v, L, hL, hv⟩` from `p`. Use `⟨L, hL, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Conclude with `hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_mk (p : Pic X) : ∃ (L : X.Modules) (hL : IsInvertibleSheaf L), mk L hL = p := by
   obtain ⟨v, L, hL, hv⟩ := p
@@ -80,7 +80,7 @@ theorem exists_mk (p : Pic X) : ∃ (L : X.Modules) (hL : IsInvertibleSheaf L), 
   exact hv
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `Skeleton.toSkeleton_tensorObj L M`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem mk_tensor {L M : X.Modules} (hL : IsInvertibleSheaf L) (hM : IsInvertibleSheaf M) :
     mk (L ⊗ M) (hL.tensor hM) = mk L hL * mk M hM := by
@@ -89,7 +89,7 @@ theorem mk_tensor {L M : X.Modules} (hL : IsInvertibleSheaf L) (hM : IsInvertibl
   exact Skeleton.toSkeleton_tensorObj L M
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 -/
 theorem mk_unit : mk (𝟙_ X.Modules) isInvertibleSheaf_unit = 1 := by
   apply Subtype.ext
@@ -97,7 +97,7 @@ theorem mk_unit : mk (𝟙_ X.Modules) isInvertibleSheaf_unit = 1 := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[eq_inv_iff_mul_eq_one, ← mk_tensor, ← mk_unit, mk_eq_mk_iff]`. Use `isIso_dualEval hL` as an intermediate fact. Conclude with `⟨asIso (dualEval L)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem mk_dualSheaf {L : X.Modules} (hL : IsInvertibleSheaf L) :
     mk (dualSheaf L) hL.dual = (mk L hL)⁻¹ := by
@@ -106,7 +106,7 @@ theorem mk_dualSheaf {L : X.Modules} (hL : IsInvertibleSheaf L) :
   exact ⟨asIso (dualEval L)⟩
 
 /- English proof (translation)
-Rewrite using `[← mk_unit, mk_eq_mk_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mk_eq_one_iff {L : X.Modules} (hL : IsInvertibleSheaf L) :
     mk L hL = 1 ↔ Nonempty (L ≅ 𝟙_ X.Modules) := by

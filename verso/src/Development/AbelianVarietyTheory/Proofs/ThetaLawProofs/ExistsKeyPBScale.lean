@@ -21,11 +21,9 @@ noncomputable section
 namespace GlobalTheory.KeyScaleLift
 
 /- English proof (translation)
-Introduce `R R' _ _ f y x a M h hM`. Choose the witnesses or unpack the hypotheses as in `⟨e⟩ : Nonempty (x.P.g = y.P.g) := by`. Take `⟨_, _, _, hg, _⟩` from `h`. Conclude with `⟨hg⟩`. Use `haveI := y.P.isAb.comm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `N : Matrix (Fin y.P.g) (Fin y.P.g) R` to `Matrix.reindex (finCongr e) (finCongr e) M`. Establish `hN : IsUnit N.det` using `by rwa [Matrix.det_reindex_self]`. Take `⟨ex, -, -, -, bas⟩` from `GlobalTheory.LieComb.lieComb_algebra R y.P.A y.P.g y.v y.basis.1`. Use `choose v₁ hv₁ using fun i => (ex (N i)).exists`. Take `⟨s, hs, -, hle⟩` from `exists_sec_div y.P.A.hom a.inv_mul y.th`.
-
-Use `⟨⟨y.P, y.g_pos, y.rig, y.rig_gen, s, fun p => (y.th_ne p).imp fun z hz => ⟨hz.1, hle hz.2⟩, v₁, (bas N v₁ y.basis hv₁).2 hN⟩, fun t ht v hv h₁ h₂ => ?_⟩` and prove the remaining obligations. Conclude with `KeyPBScale.keyPB_scale R R' f y.P y.g_pos y.rig y.rig_gen y.th y.th_ne y.v y.basis s _ v₁ _ a N x.P e x.g_pos x.rig x.rig_gen x.th x.th_ne x.v x.basis t ht v hv hs hv₁ h₁ h₂ h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_keyPB_scale : ∀ (R R' : Type) [CommRing R] [CommRing R'] (f : R →+* R') (y : KeyIn R) (x : KeyIn R') (a : Rˣ) (M : Matrix (Fin x.P.g) (Fin x.P.g) R), KeyPB x y f → IsUnit M.det → ∃ y₁ : KeyIn R, ∀ (t : x.P.L.Sec) (ht : _) (v : Fin x.P.g → (epsR R' ⟶ x.P.A)) (hv : _), (∀ i, t.f i = constFn x.P.A.hom _ (f a) * x.th.f i) → (∀ i, IsLieComb (fun k => f (M i k)) x.v (v i)) → KeyPB ⟨x.P, x.g_pos, x.rig, x.rig_gen, t, ht, v, hv⟩ y₁ f := by
   intro R R' _ _ f y x a M h hM

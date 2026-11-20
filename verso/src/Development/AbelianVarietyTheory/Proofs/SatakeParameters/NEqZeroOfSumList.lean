@@ -36,7 +36,7 @@ variable {V V' W W' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional �
   [AddCommGroup W'] [Module ℂ W'] [FiniteDimensional ℂ W']
 
 /- English proof (translation)
-Introduce `σ v`. Establish `: LinearMap.inl ℂ V V2 ((((normV w : ℕ) : ℂ) ^ deg σ) • a1.ρ σ v) = (((normV w : ℕ) : ℂ) ^ deg σ) • (a1.sum a2).ρ σ (LinearMap.inl ℂ V V2 v)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[LinearMap.comp_apply, this, hg]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsTw.inl {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensional ℂ V2]
     {a1 : WDRep h V} {a2 : WDRep h V2} {b : WDRep h V'} {g : V × V2 →ₗ[ℂ] V'}
@@ -48,7 +48,7 @@ theorem IsTw.inl {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensiona
   rw [LinearMap.comp_apply, this, hg]; rfl
 
 /- English proof (translation)
-Introduce `σ v`. Establish `: LinearMap.inr ℂ V V2 ((((normV w : ℕ) : ℂ) ^ deg σ) • a2.ρ σ v) = (((normV w : ℕ) : ℂ) ^ deg σ) • (a1.sum a2).ρ σ (LinearMap.inr ℂ V V2 v)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[LinearMap.comp_apply, this, hg]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsTw.inr {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensional ℂ V2]
     {a1 : WDRep h V} {a2 : WDRep h V2} {b : WDRep h V'} {g : V × V2 →ₗ[ℂ] V'}
@@ -60,7 +60,7 @@ theorem IsTw.inr {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensiona
   rw [LinearMap.comp_apply, this, hg]; rfl
 
 /- English proof (translation)
-Introduce `σ v`. Rewrite using `[LinearMap.comp_apply, hg]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsTw.fst {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensional ℂ V2]
     {a : WDRep h W} {b1 : WDRep h V} {b2 : WDRep h V2} {g : W →ₗ[ℂ] V × V2}
@@ -69,7 +69,7 @@ theorem IsTw.fst {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensiona
   rw [LinearMap.comp_apply, hg]; rfl
 
 /- English proof (translation)
-Introduce `σ v`. Rewrite using `[LinearMap.comp_apply, hg]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsTw.snd {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensional ℂ V2]
     {a : WDRep h W} {b1 : WDRep h V} {b2 : WDRep h V2} {g : W →ₗ[ℂ] V × V2}

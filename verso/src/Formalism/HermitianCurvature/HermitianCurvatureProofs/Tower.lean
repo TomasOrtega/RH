@@ -14,7 +14,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [D.castV, liftVec, Fin.coe_cast]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff, Fin.val_mk, Fin.coe_cast] at *) <;> first | rfl | omega | (congr 1 <;> ext <;> simp only [Fin.val_mk, Fin.coe_cast] <;> omega)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_lift_V (j ρ n r : ℕ) (hn : 1 + ρ = n) (h1 : j + n = r) (h2 : j + 1 + ρ = r)
     (v : Fin (2 * ρ + k + 1) → ℂ) :
@@ -24,7 +24,7 @@ theorem lift_lift_V (j ρ n r : ℕ) (hn : 1 + ρ = n) (h1 : j + n = r) (h2 : j 
   split_ifs <;> (try simp only [Fin.ext_iff, Fin.val_mk, Fin.coe_cast] at *) <;> first | rfl | omega | (congr 1 <;> ext <;> simp only [Fin.val_mk, Fin.coe_cast] <;> omega)
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [D.castM, Matrix.reindex_apply, Matrix.submatrix_apply, finCongr_symm, finCongr_apply, Fin.coe_cast, ιLev]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff, Fin.val_mk, Fin.coe_cast] at *) <;> first | rfl | omega | (congr 1 <;> ext <;> simp only [Fin.val_mk, Fin.coe_cast] <;> omega)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_lift_M (j ρ n r : ℕ) (hn : 1 + ρ = n) (h1 : j + n = r) (h2 : j + 1 + ρ = r) (y : B.Mat k ρ) :
     D.castM h1 (ιLev k j n (D.castM hn (ιLev k 1 ρ y))) = D.castM h2 (ιLev k (j + 1) ρ y) := by
@@ -33,7 +33,7 @@ theorem lift_lift_M (j ρ n r : ℕ) (hn : 1 + ρ = n) (h1 : j + n = r) (h2 : j 
   split_ifs <;> (try simp only [Fin.ext_iff, Fin.val_mk, Fin.coe_cast] at *) <;> first | rfl | omega | (congr 1 <;> ext <;> simp only [Fin.val_mk, Fin.coe_cast] <;> omega)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use function extensionality and compare the values at `i`. Simplify `congrFun e i` using `[D.castV]`.
+Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem castV_inj {a b : ℕ} (h : a = b) {v w : Fin (2 * a + k + 1) → ℂ} (e : D.castV h v = D.castV h w) : v = w := by
   subst h
@@ -46,9 +46,9 @@ variable {r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Establish `e1` using `T.z_lev j (by omega)`. Establish `e2` using `T.z_lev (j + 1) hj`. Rewrite `e2` using `[← lift_lift_V j (r - (j + 1)) (r - j) r (by omega) (by omega) (by omega)]`. Establish `e3` using `castV_inj _ (e1.trans e2.symm)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hi` using `i.isLt`. Establish `hi' : i.val ≤ 2 * (r - j) + k` using `by omega`. Use `congrFun e3 ⟨i.val + j, by omega⟩` as an intermediate fact. Simplify `this` using `[liftVec, hi']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem levTower_bs_z_eq_castV_liftVec (T : D.LevTower k r Wp Wq) (j : ℕ) (hj : j + 1 ≤ r) :
     (T.bs j).z = D.castV (by omega : 1 + (r - (j + 1)) = r - j) (liftVec k 1 (r - (j + 1)) (T.bs (j + 1)).z) := by
@@ -63,9 +63,9 @@ theorem levTower_bs_z_eq_castV_liftVec (T : D.LevTower k r Wp Wq) (j : ℕ) (hj 
   simpa [liftVec, hi'] using this
 
 /- English proof (translation)
-Establish `e1` using `T.z'_lev j (by omega)`. Establish `e2` using `T.z'_lev (j + 1) hj`. Rewrite `e2` using `[← lift_lift_V j (r - (j + 1)) (r - j) r (by omega) (by omega) (by omega)]`. Establish `e3` using `castV_inj _ (e1.trans e2.symm)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hi` using `i.isLt`. Establish `hi' : i.val ≤ 2 * (r - j) + k` using `by omega`. Use `congrFun e3 ⟨i.val + j, by omega⟩` as an intermediate fact. Simplify `this` using `[liftVec, hi']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem levTower_bs_z'_eq_castV_liftVec (T : D.LevTower k r Wp Wq) (j : ℕ) (hj : j + 1 ≤ r) :
     (T.bs j).z' = D.castV (by omega : 1 + (r - (j + 1)) = r - j) (liftVec k 1 (r - (j + 1)) (T.bs (j + 1)).z') := by
@@ -80,7 +80,7 @@ theorem levTower_bs_z'_eq_castV_liftVec (T : D.LevTower k r Wp Wq) (j : ℕ) (hj
   simpa [liftVec, hi'] using this
 
 /- English proof (translation)
-Rewrite using `[T.π_lev (j + 1) hj y, T.π_lev j (by omega), lift_lift_M j (r - (j + 1)) (r - j) r (by omega) (by omega) (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tower_π (T : D.LevTower k r Wp Wq) (j : ℕ) (hj : j + 1 ≤ r) (y : B.Mat k (r - (j + 1))) :
     (T.bs (j + 1)).π y = (T.bs j).π (D.castM (by omega : 1 + (r - (j + 1)) = r - j) (ιLev k 1 (r - (j + 1)) y)) := by
@@ -88,7 +88,7 @@ theorem tower_π (T : D.LevTower k r Wp Wq) (j : ℕ) (hj : j + 1 ≤ r) (y : B.
     lift_lift_M j (r - (j + 1)) (r - j) r (by omega) (by omega) (by omega)]
 
 /- English proof (translation)
-Rewrite using `[T.π'_lev (j + 1) hj y, T.π'_lev j (by omega), lift_lift_M j (r - (j + 1)) (r - j) r (by omega) (by omega) (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tower_π' (T : D.LevTower k r Wp Wq) (j : ℕ) (hj : j + 1 ≤ r) (y : B.Mat k (r - (j + 1))) :
     (T.bs (j + 1)).π' y = (T.bs j).π' (D.castM (by omega : 1 + (r - (j + 1)) = r - j) (ιLev k 1 (r - (j + 1)) y)) := by

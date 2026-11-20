@@ -13,9 +13,9 @@ namespace PositivityTheory.SiegelWeilFormula.AStep
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `haveI := h.1`. Break down `k with j | j` into its components or cases. Establish `hj : j ≠ i₀` using `fun hj => hk (by subst hj; simp) show (if j = i₀ then _ else (1 : AE F E)) = 1`. Rewrite using `[if_neg hj]`. Establish `hj : j ≠ i₀` using `fun hj => hk (by subst hj; simp) show (if j = i₀ then _ else (1 : AE F E)) = 1`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hj]`.
+A detailed English derivation is pending.
 -/
 theorem dilV_off (h : IsCMExt F E σ) {n : ℕ} (w : InfinitePlace F) (i₀ : Fin n) (τ : ℝ) (k : Fin n ⊕ Fin n)
     (hk : k ∉ ({Sum.inl i₀, Sum.inr i₀} : Set (Fin n ⊕ Fin n))) : dilV h w i₀ τ k = 1 := by
@@ -29,17 +29,17 @@ theorem dilV_off (h : IsCMExt F E σ) {n : ℕ} (w : InfinitePlace F) (i₀ : Fi
     rw [if_neg hj]
 
 /- English proof (translation)
-Establish `hPQ` using `GlobalTheory.EisBL.DoubledParabolic.incM_mul_inv (F := F) d.b`. Establish `hQP` using `GlobalTheory.EisBL.DoubledParabolic.incM_inv_mul (F := F) d.b`. Establish `key : ∀ x : d.G, mat2 x = incM F ((d.b : GL (Fin d.n ⊕ Fin d.n) E) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) * inFrame d.b x * incM F ((d.b⁻¹ : GL (Fin d.n ⊕ Fin d.n) E) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E)`. Introduce `x`. Use `show mat2 x = incM F ((d.b : GL (Fin d.n ⊕ Fin d.n) E) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) * (incM F ((d.b⁻¹ : GL (Fin d.n ⊕ Fin d.n) E) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) * mat2 x * incM F ((d.b : GL (Fin d.n ⊕ Fin d.n) E) : Matrix (Fin d.n ⊕ Fin …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc, hPQ, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, hPQ, Matrix.one_mul]`. Establish `hM` using `L.j_out g`. Establish `hcomm : inFrame d.b (L.j g) * inFrame d.b (R.ι w y) = inFrame d.b (R.ι w y) * inFrame d.b (L.j g)`. Rewrite using `[inFrame_dil R w L.i₀ τ y hy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `u v`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `hS : u ∈ ({Sum.inl L.i₀, Sum.inr L.i₀} : Set (Fin d.n ⊕ Fin d.n)) ∨ v ∈ ({Sum.inl L.i₀, Sum.inr L.i₀} : Set (Fin d.n ⊕ Fin d.n))`. Establish `h1 : inFrame d.b (L.j g) u v = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) u v`. Break down `hS with hu | hv` into its components or cases.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hM u hu v).1`. Conclude with `(hM v hv u).2`. Rewrite using `[h1]`. Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_comm _ _`. Rewrite using `[Matrix.one_apply_ne huv, zero_mul, mul_zero]`. Take `⟨hu, hv⟩` from `not_or.mp hS`. Rewrite using `[dilV_off _ w L.i₀ τ u hu, dilV_off _ w L.i₀ τ v hv, mul_one, one_mul]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Use `show mat2 (L.j g) * mat2 (R.ι w y) = mat2 (R.ι w y) * mat2 (L.j g)`. Rewrite using `[key (L.j g), key (R.ι w y)]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incM F ((d.b⁻¹ : GL (Fin d.n ⊕ Fin d.n) E) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E)) (incM F ((d.b : GL (Fin d.n ⊕ Fin d.n) E) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E)), hQP, Matrix.one_mul, ← Matrix.mul_assoc (incM F ((d.b⁻¹ : GL (Fin d …`.
+A detailed English derivation is pending.
 -/
 theorem j_comm_dil {d : SD σ} (R : RD d) (L : LD d) (w : InfinitePlace F) (τ : ℝ) (y : GR d.n)
     (hy : IsDil (Pi.single L.i₀ 1) τ y) (g : L.sd.G) : L.j g * R.ι w y = R.ι w y * L.j g := by
@@ -77,7 +77,7 @@ theorem j_comm_dil {d : SD σ} (R : RD d) (L : LD d) (w : InfinitePlace F) (τ :
     ← Matrix.mul_assoc (inFrame d.b (L.j g)), hcomm, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hk` using `d.ok.dbl.kill 0 Ψ hΨ`. Use `show d.l Ψ = d.l (d.dd.rho d.B.ψ (0 * (incM F (↑d.b : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E).toCols₂).transpose) Ψ)`. Use `hk.symm using 3` and compare the differences between its conclusion and the goal. Conclude with `(Matrix.zero_mul _).trans (Matrix.zero_mul _).symm`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem l_eq_T_zero (d : SD σ) (Ψ : d.Fn) (hΨ : Ψ ∈ d.sch) : d.l Ψ = d.T Ψ 0 := by
   have hk := d.ok.dbl.kill 0 Ψ hΨ
@@ -86,7 +86,7 @@ theorem l_eq_T_zero (d : SD σ) (Ψ : d.Fn) (hΨ : Ψ ∈ d.sch) : d.l Ψ = d.T 
   exact (Matrix.zero_mul _).trans (Matrix.zero_mul _).symm
 
 /- English proof (translation)
-Use `haveI := h.1`. Use `show (if j = i₀ then _ else (1 : AE F E)) * (if j = i₀ then _ else (1 : AE F E)) = 1`. Distinguish the cases in `hj : j = i₀`. Rewrite using `[if_pos hj, if_pos hj, ← map_mul, adr_mul, ← Real.exp_add, add_neg_cancel, Real.exp_zero, adr_one, map_one]`. Rewrite using `[if_neg hj, if_neg hj, mul_one]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dilV_mul (h : IsCMExt F E σ) {n : ℕ} (w : InfinitePlace F) (i₀ : Fin n) (τ : ℝ) (j : Fin n) :
     dilV h w i₀ τ (Sum.inl j) * dilV h w i₀ τ (Sum.inr j) = 1 := by
@@ -98,7 +98,7 @@ theorem dilV_mul (h : IsCMExt F E σ) {n : ℕ} (w : InfinitePlace F) (i₀ : Fi
   · rw [if_neg hj, if_neg hj, mul_one]
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `dilV_mul h w i₀ τ j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dilV_mul' (h : IsCMExt F E σ) {n : ℕ} (w : InfinitePlace F) (i₀ : Fin n) (τ : ℝ) (j : Fin n) :
     dilV h w i₀ τ (Sum.inr j) * dilV h w i₀ τ (Sum.inl j) = 1 := by
@@ -111,7 +111,7 @@ def dilT (h : IsCMExt F E σ) {n : ℕ} (w : InfinitePlace F) (i₀ : Fin n) (τ
     rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]; congr 1; funext j; exact dilV_mul' h w i₀ τ j⟩
 
 /- English proof (translation)
-The claim follows from `h.1 Matrix.GeneralLinearGroup.det (dilT h w i₀ τ) = Units.map (algebraMap (AF F) (AE F E)).toMonoidHom (adrU w τ) := by haveI := h.1 apply Units.ext show (Matrix.diagonal fun j => dilV h w i₀ τ (Sum.inl j)).det = algebraMap (AF F) (AE F E) (adr w (Real.exp τ)) rw [Matrix.det_diag …`.
+A detailed English derivation is pending.
 -/
 theorem det_dilT (h : IsCMExt F E σ) {n : ℕ} (w : InfinitePlace F) (i₀ : Fin n) (τ : ℝ) :
     haveI := h.1
@@ -130,7 +130,7 @@ theorem det_dilT (h : IsCMExt F E σ) {n : ℕ} (w : InfinitePlace F) (i₀ : Fi
     exact absurd (Finset.mem_univ i₀) hi
 
 /- English proof (translation)
-Rewrite using `[inFrame_dil R w i₀ τ y hy]`. Use `show _ = Matrix.fromBlocks (Matrix.diagonal fun j => dilV d.cm w i₀ τ (Sum.inl j)) 0 0 (Matrix.diagonal fun j => dilV d.cm w i₀ (-τ) (Sum.inl j))`. Rewrite using `[Matrix.fromBlocks_diagonal]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem inFrame_dil' {d : SD σ} (R : RD d) (w : InfinitePlace F) (i₀ : Fin d.n) (τ : ℝ) (y : GR d.n)
     (hy : IsDil (Pi.single i₀ 1) τ y) :
@@ -142,11 +142,9 @@ theorem inFrame_dil' {d : SD σ} (R : RD d) (w : InfinitePlace F) (i₀ : Fin d.
   congr 1
 
 /- English proof (translation)
-Use `haveI := d.cm.1`. Establish `hφ : d.om h Φ ∈ d.sch` using `d.ok.dbl.weil.2.1.toIsSplitting.pres h Φ hΦ`. Establish `hφ' : d.om (R.ι w y) (d.om h Φ) ∈ d.sch` using `d.ok.dbl.weil.2.1.toIsSplitting.pres _ _ hφ`. Establish `hT` using `(H.tAll.2.1 F E σ d (d.om h Φ) hφ).2.1 (R.ι w y) (dilT d.cm w i₀ τ) (dilT d.cm w i₀ (-τ)) (inFrame_dil' R w i₀ τ y hy) 0`. Use `show d.l (d.om (R.ι w y * h) Φ) = Complex.exp (↑τ * ↑d.m) * d.l (d.om h Φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, Module.End.mul_apply, l_eq_T_zero d _ hφ', hT, Matrix.zero_mul, ← l_eq_T_zero d _ hφ, det_dilT]`. Use `erw [chi_adrU d w τ]`. Use `erw [absE_adrU d.cm w τ]`. Rewrite using `[one_mul, ← Real.exp_mul, Complex.ofReal_exp]`. Use `congr 2`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem section_dilation_exp (H : Hyps) {d : SD σ} (R : RD d) (w : InfinitePlace F) (i₀ : Fin d.n) (τ : ℝ) (y : GR d.n)
     (hy : IsDil (Pi.single i₀ 1) τ y) {Φ : d.Fn} (hΦ : Φ ∈ d.sch) (h : d.G) :

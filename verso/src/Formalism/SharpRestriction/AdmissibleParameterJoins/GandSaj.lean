@@ -11,16 +11,16 @@ open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions.G Fo
 variable {D : D7} {L : SizeData₂ D}
 
 /- English proof (translation)
-Introduce `i w hwi u hw` and use `sumFE_atG_le hF hE hC1 hC i w hwi u hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sgAtG_of {K : Consts} {lev : LevelData D} {Xe : ErrX D} {ce : ErrC} {C1 : ℝ} (hF : L.FDef)
     (hE : ErrDefs D L Xe lev K ce) (hC1 : 0 ≤ C1) (hC : 2 * C1 ≤ ce.g) : Formalism.MainNotions.WeightDegreeSizes.SgAtG D L Xe C1 :=
   fun i w hwi u hw => sumFE_atG_le hF hE hC1 hC i w hwi u hw
 
 /- English proof (translation)
-Introduce `u w hw hgm φ hφ F hF1 _`. Choose the witnesses or unpack the hypotheses as in `⟨i, hwi⟩ : ∃ i : Fin 2, D.what₂.places.resChar w = D.host.g i := by`. Break down `Finset.mem_insert.1 hgm with h0 | h1` into its components or cases. Conclude with `⟨0, h0⟩`. Conclude with `⟨1, Finset.mem_singleton.1 h1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `Formalism.MainNotions.WeightDegreeSizes.period_integral_at_typePrime h (sgAtG_of hF hE hC1 hC) hN (Formalism.MainNotions.DIV.perColSmul D) u w i hwi hw φ hφ F hF1`.
+A detailed English derivation is pending.
 -/
 theorem periodBound_at_type_of_local {K : Consts} {lev : LevelData D} {Xe : ErrX D} {ce : ErrC} {C1 C2 : ℝ} (hF : L.FDef)
     (hE : ErrDefs D L Xe lev K ce) (hC1 : 0 ≤ C1) (hC : 2 * C1 ≤ ce.g) (h : Formalism.MainNotions.LiftErrorLocal.PropositionCLatticeBound D L Xe C1 C2)
@@ -33,7 +33,7 @@ theorem periodBound_at_type_of_local {K : Consts} {lev : LevelData D} {Xe : ErrX
   exact Formalism.MainNotions.WeightDegreeSizes.period_integral_at_typePrime h (sgAtG_of hF hE hC1 hC) hN (Formalism.MainNotions.DIV.perColSmul D) u w i hwi hw φ hφ F hF1
 
 /- English proof (translation)
-The claim follows from `period_conditions_of_pairing hP hE hET ht hS hNT hN hGI hF hcs hG h1 h5 hCL (sgAtG_of ht.fdef hE hC1 hC) (Formalism.MainNotions.DIV.perColSmul D)`.
+A detailed English derivation is pending.
 -/
 theorem period_conditions_of_pairing_twist {X : Inst D L} {Y : LatInst D} {K : Consts} {c : LatCmp D} {Dx : DivX D} {T : TwForms D}
     {lev : LevelData D} {Xe : ErrX D} {ce : ErrC}
@@ -46,7 +46,7 @@ theorem period_conditions_of_pairing_twist {X : Inst D L} {Y : LatInst D} {K : C
   period_conditions_of_pairing hP hE hET ht hS hNT hN hGI hF hcs hG h1 h5 hCL (sgAtG_of ht.fdef hE hC1 hC) (Formalism.MainNotions.DIV.perColSmul D)
 
 /- English proof (translation)
-The claim follows from `no_gain_condition_of_pairing_sign hP hE hF h hCL (sgAtG_of hF hE hC1 hC)`.
+A detailed English derivation is pending.
 -/
 theorem no_gain_condition_of_local {K : Consts} {Dx : DivX D} {T : TwForms D} {lev : LevelData D} {Xe : ErrX D} {ce : ErrC}
     (hP : Formalism.MainNotions.WeightDegreeSizes.PairingAtEveryPlace D Dx T) (hE : ErrDefs D L Xe lev K ce) (hF : L.FDef)
@@ -55,7 +55,7 @@ theorem no_gain_condition_of_local {K : Consts} {Dx : DivX D} {T : TwForms D} {l
   no_gain_condition_of_pairing_sign hP hE hF h hCL (sgAtG_of hF hE hC1 hC)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun x hx _ i => sgAtG_of (local_compatibility_family Fm x hx i).fdef (Fm.ex x hx i).err hC1 hC⟩`.
+Supply the required witnesses or components.
 -/
 theorem family_type_prime_loss {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) {C1 : ℝ} (hC1 : 0 ≤ C1) (hC : 2 * C1 ≤ Fm.cX.err.g) :
     Formalism.MainNotions.WeightDegreeSizes.familySizeBoundAtTypePrime Fm C1 :=

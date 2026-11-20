@@ -10,7 +10,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun n₀ => by let φ := Homeomorph.mulRight n₀ haveI : (ν.map φ).IsHaarMeasure := Measure.isHaarMeasure_map_mul_right ν n₀ have hc := Measure.isMulLeftInvariant_eq_smul (ν.map φ) ν set c := Measure.haarScalarFactor (ν.map φ) ν have hq : Measure.QuasiMeasurePreserving φ ν ν := ⟨φ.c …`.
+Supply the required witnesses or components.
 -/
 theorem rightInv (Γ : Subgroup G) [Countable Γ] (ν : Measure G) [ν.IsHaarMeasure] {𝓝 : Set G}
     (h𝓝 : IsFundamentalDomain Γ 𝓝 ν) (hfin : ν 𝓝 ≠ ⊤) : ν.IsMulRightInvariant := ⟨fun n₀ => by
@@ -36,11 +36,11 @@ theorem rightInv (Γ : Subgroup G) [Countable Γ] (ν : Measure G) [ν.IsHaarMea
   rw [hc, hc1, one_smul]⟩
 
 /- English proof (translation)
-Establish `hmp : MeasurePreserving (· * k) ν ν` using `measurePreserving_mul_right ν k`. Establish `hme : MeasurableEmbedding (· * k)` using `(MeasurableEquiv.mulRight k).measurableEmbedding`. Establish `hfd' : IsFundamentalDomain Γ ((· * k⁻¹) ⁻¹' fd) ν`. Use `hfd.preimage_of_equiv (measurePreserving_mul_right ν k⁻¹).quasiMeasurePreserving (e := id) Function.bijective_id ?_` and prove the remaining obligations. Introduce `g x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Establish `hinv : ∀ g : Γ, ∀ x, φ (g • x) = φ x` using `fun g x => hφ g g.2 x`. Establish `hpre : (· * k) ⁻¹' ((· * k⁻¹) ⁻¹' fd) = fd`. Use extensionality with `u`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h3` using `hmp.setIntegral_preimage_emb hme φ ((· * k⁻¹) ⁻¹' fd)`. Rewrite `h3` using `[hpre]`. Rewrite using `[h3]`. Conclude with `hfd'.setIntegral_eq hfd hinv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_mul_right (Γ : Subgroup G) [Countable Γ] (ν : Measure G)
     [ν.IsMulLeftInvariant] [ν.IsMulRightInvariant] {fd : Set G} (hfd : IsFundamentalDomain Γ fd ν) {φ : G → ℂ}

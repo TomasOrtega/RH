@@ -24,11 +24,11 @@ private theorem actOp_apply (V : Type) [AddCommGroup V] [Module ℂ V] (d : ℕ)
     actOp V d N = MulOpposite.op (actAlg V d Nᵀ) := rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ a π Ξ`. Establish `hB : ∀ X, lieB π Ξ X = actAlg π.V Ξ.d (Ξ.dmat X)` using `fun _ => rfl`. Use `⟨fun X Y => ?_, fun k X => ?_, fun τ m hm u => ?_⟩` and prove the remaining obligations. Rewrite using `[hB, hB, hB, ← GlobalTheory.AlgInfChar.dmat_bracket, map_sub, map_mul, map_mul]`. Use `TensorProduct.ext' fun φ v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : Ξ.mat (Unitary.toUnits k) * Ξ.dmat (toL X) = Ξ.dmat (toL (k.1 * X * star k.1)) * Ξ.mat (Unitary.toUnits k)` using `Ξ.mat_mul_dmat (Unitary.toUnits k) X`. Simplify using `only [Module.End.mul_apply, tensorK, lieB_apply, LinearMap.lTensor_tmul, TensorProduct.map_tmul, Matrix.toLin'_apply, Matrix.mulVec_mulVec, h2]`. Establish `h0` using `map_qdet (A := Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ) (B := (Module.End ℂ (π.V ⊗[ℂ] (Fin Ξ.d → ℂ)))ᵐᵒᵖ) (actOp π.V Ξ.d) (GlobalTheory.WignerGL.dualE Ξ τ) (u + ((a : ℂ) - 1) / 2)`. Establish `h` using `h0.symm.trans (congrArg (actOp π.V Ξ.d) (hm.2 u))`. Rewrite `h` using `[map_smul, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ∀ i j, actOp π.V Ξ.d (GlobalTheory.WignerGL.dualE Ξ τ i j) = -MulOpposite.op (eL (N` using `Module.End ℂ (π.V ⊗[ℂ] (Fin Ξ.d → ℂ))) (lieB π Ξ) τ i j) := fun i j => by`. Rewrite using `[dualE_eq, map_neg, actOp_apply, Matrix.transpose_transpose]`. Simplify using `only [eL, hB, map_smul, map_sub]`. Simplify using `only [e] at h`. Rewrite using `[h, MulOpposite.op_smul, MulOpposite.op_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.tensB :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a) (Ξ : AlgRep E a), IsLieHom (A := Module.End ℂ (π.V ⊗[ℂ] (Fin Ξ.d → ℂ))) (lieB π Ξ) ∧

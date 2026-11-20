@@ -15,23 +15,23 @@ variable {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
   {μ : Measure V} {ν : Measure X} {f : V → Y} {ι : X → Y} {U : Set V} {fib : X → Measure V}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hfib`. Establish `hme : ⇑e.toMeasurableEquiv = ⇑e` using `rfl`. Establish `hμ' : μ.map e.toMeasurableEquiv = cμ • μ` using `hμ`. Establish `hν' : ν.map h.symm.toMeasurableEquiv = cν • ν` using `hν`. Establish `hpre : ∀ b, e ⁻¹' (f ⁻¹' {ι b} ∩ U) = f ⁻¹' {ι (h.symm b)} ∩ U`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b`. Use extensionality with `v`. Establish `hUv : e v ∈ U ↔ v ∈ U` using `by conv_rhs => rw [← hU]`. Conclude with `Iff.rfl`. Simplify using `only [mem_preimage, mem_inter_iff, mem_singleton_iff, hff', heh, hι.eq_iff, hUv]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Unfold both sides to obtain the same proposition, which implies itself. Simplify using the standard rewrite rules.
 
-Rewrite using `[h.eq_symm_apply]`. Use `⟨fun b => ?_, fun φ hφ => ?_, fun φ hφc hφs hφU => ?_⟩` and prove the remaining obligations. Rewrite using `[MeasurableEquiv.map_apply, preimage_compl, hme, hpre]`. Conclude with `h1 (h.symm b)`. Rewrite using `[Measure.restrict_smul, lintegral_smul_measure]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφe : Measurable (φ ∘ e)` using `hφ.comp e.continuous.measurable`. Establish `key1 : ∫⁻ v in U, (φ ∘ e) v ∂μ = cμ * ∫⁻ v in U, φ v ∂μ`. Establish `h0 : ∫⁻ v in U, φ v ∂(μ.map e.toMeasurableEquiv) = ∫⁻ v in U, (φ ∘ e) v ∂μ`. Rewrite using `[MeasurableEquiv.restrict_map, lintegral_map_equiv, hme, hU]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h0, hμ', Measure.restrict_smul, lintegral_smul_measure, smul_eq_mul]`. Establish `key2 : ∫⁻ b, ∫⁻ v, φ v ∂(fib (h.symm b)).map e.toMeasurableEquiv ∂ν = cν * ∫⁻ b, ∫⁻ v, (φ ∘ e) v ∂fib b ∂ν`. Simplify using `only [lintegral_map_equiv]`. Rewrite using `[← smul_eq_mul, ← lintegral_smul_measure, ← hν', lintegral_map_equiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key2, ← h2 _ hφe, key1, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hφe_c : Continuous (φ ∘ e)` using `hφc.comp e.continuous`. Establish `hφe_s : HasCompactSupport (φ ∘ e)` using `hφs.comp_homeomorph e`. Establish `hsub : tsupport (φ ∘ e) ⊆ e ⁻¹' tsupport φ` using `closure_minimal (fun v hv => subset_tsupport φ hv) ((isClosed_tsupport φ).preimage e.continuous)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφe_U : tsupport (φ ∘ e) ⊆ U`. Introduce `v hv`. Rewrite using `[← hU]`. Conclude with `hφU (hsub hv)`. Take `⟨hi, hcont⟩` from `h3 _ hφe_c hφe_s hφe_U`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun b _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[integrable_map_equiv]`. Conclude with `hi _ (mem_univ _)`. Establish `hfun : (fun b => ∫ v, φ v ∂(fib (h.symm b)).map e.toMeasurableEquiv) = (fun b' => ∫ v, (φ ∘ e) v ∂fib b') ∘ h.symm`. Use function extensionality and compare the values at `b`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_apply, integral_map_equiv]`. Both sides reduce to the same expression. Rewrite using `[hfun]`. Conclude with `((continuousOn_univ.1 hcont).comp h.symm.continuous).continuousOn`.
+A detailed English derivation is pending.
 -/
 theorem isFibreFamily_reindex (e : V ≃ₜ V) (h : X ≃ₜ X) {f' : V → X}
     (hff' : ∀ v, f v = ι (f' v)) (hι : Function.Injective ι)
@@ -90,9 +90,9 @@ theorem isFibreFamily_reindex (e : V ≃ₜ V) (h : X ≃ₜ X) {f' : V → X}
       exact ((continuousOn_univ.1 hcont).comp h.symm.continuous).continuousOn
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hfib`. Use `⟨fun b => ?_, fun φ hφ => ?_, fun φ hφc hφs hφU => ?_⟩` and prove the remaining obligations. Simplify using `[h1 b]`. Rewrite using `[Measure.restrict_smul, lintegral_smul_measure, h2 φ hφ, smul_eq_mul, ← lintegral_const_mul' _ _ hc]`. Simplify using `only [lintegral_smul_measure, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨hi, hcont⟩` from `h3 φ hφc hφs hφU`. Use `⟨fun b hb => (hi b hb).smul_measure hc, ?_⟩` and prove the remaining obligations. Simplify using `only [integral_smul_measure, smul_eq_mul]`. Conclude with `continuousOn_const.mul hcont`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isFibreFamily_smul {B : Set X} {c : ℝ≥0∞} (hc : c ≠ ⊤)
     (hfib : IsFibreFamily μ f ι U ν B fib) :
@@ -120,7 +120,7 @@ variable {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V] 
   {f : V → Y} {ι : X → Y} {U : Set V} {fib : X → Measure V}
 
 /- English proof (translation)
-Establish `hc : cμ * cν ≠ ⊤` using `ENNReal.mul_ne_top hcμ hcν`. Use `haveI : IsFiniteMeasureOnCompacts ((cμ * cν) • μ) := IsFiniteMeasureOnCompacts.smul μ hc`. Use `PI.DegenerateSiegelWeil.FibUniq.fib_eq (isFibreFamily_reindex e h hff' hι heh hU hμ hν hfib) (isFibreFamily_smul hc hfib) hf' hff' hι hUo` as an intermediate fact. Conclude with `congrFun this b`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fib_reindex_eq (e : V ≃ₜ V) (h : X ≃ₜ X) {f' : V → X} (hf' : Continuous f')
     (hff' : ∀ v, f v = ι (f' v)) (hι : Function.Injective ι) (hUo : IsOpen U)
@@ -135,7 +135,7 @@ theorem fib_reindex_eq (e : V ≃ₜ V) (h : X ≃ₜ X) {f' : V → X} (hf' : C
   exact congrFun this b
 
 /- English proof (translation)
-Establish `hb' : h.symm b = b` using `h.symm_apply_eq.2 hb.symm`. Use `fib_reindex_eq e h hf' hff' hι hUo heh hU hcμ hcν hμ hν hfib b` as an intermediate fact. Rewrite `this` using `[hb']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fib_map_fixed (e : V ≃ₜ V) (h : X ≃ₜ X) {f' : V → X} (hf' : Continuous f')
     (hff' : ∀ v, f v = ι (f' v)) (hι : Function.Injective ι) (hUo : IsOpen U)

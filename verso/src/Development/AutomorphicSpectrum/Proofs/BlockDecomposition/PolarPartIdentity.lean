@@ -18,21 +18,21 @@ namespace GlobalTheory.CompanionTheory.RswPolar
 variable {D : D7} {n ρ p : ℕ}
 
 /- English proof (translation)
-Simplify using `only [npow, NNReal.coe_mul, Complex.ofReal_mul]`. Conclude with `Complex.mul_cpow_ofReal_nonneg a.2 b.2 w`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem npow_mul' {a b : ℝ≥0} (w : ℂ) : npow (a * b) w = npow a w * npow b w := by
   simp only [npow, NNReal.coe_mul, Complex.ofReal_mul]
   exact Complex.mul_cpow_ofReal_nonneg a.2 b.2 w
 
 /- English proof (translation)
-Simplify using `only [npow]`. Conclude with `Complex.cpow_add _ _ (by exact_mod_cast ha)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem npow_add' {a : ℝ≥0} (ha : a ≠ 0) (v w : ℂ) : npow a (v + w) = npow a v * npow a w := by
   simp only [npow]
   exact Complex.cpow_add _ _ (by exact_mod_cast ha)
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `hH.2.1 (q * 1)`. Rewrite `h1` using `[hH.2.2 q hq a ha 1, h0, zero_mul]`. Conclude with `lt_irrefl _ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absA_ne_zero_of_ht {H : G D n → ℝ≥0} (hH : IsHt H) {q : G D n} (hq : q ∈ P D n)
     {a : GL (Fin n) (AE D)} (ha : blkA (mat q) = a.1) :
@@ -43,9 +43,9 @@ theorem absA_ne_zero_of_ht {H : G D n → ℝ≥0} (hH : IsHt H) {q : G D n} (hq
   exact lt_irrefl _ h1
 
 /- English proof (translation)
-Introduce `q hq a ha g`. Establish `hA` using `absA_ne_zero_of_ht hH hq ha`. Establish `e : npow (absA D (Matrix.GeneralLinearGroup.det a)) (z + (n : ℂ) / 2) = npow (absA D (Matrix.GeneralLinearGroup.det a)) (z - s₁) * npow (absA D (Matrix.GeneralLinearGroup.det a)) (s₁ + (n : ℂ) / 2)`. Rewrite using `[← npow_add' hA]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [fam]`. Rewrite using `[hH.2.2 q hq a ha g, hφ q hq a ha g, npow_mul', e]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isLaw_fam {H : G D n → ℝ≥0} (hH : IsHt H) {χ : (AE D)ˣ →* Circle} {s₁ : ℂ} {φ : G D n → ℂ}
     (hφ : IsLaw χ s₁ φ) (z : ℂ) : IsLaw χ z (fam H φ s₁ z) := by
@@ -62,7 +62,7 @@ theorem isLaw_fam {H : G D n → ℝ≥0} (hH : IsHt H) {χ : (AE D)ˣ →* Circ
   ring
 
 /- English proof (translation)
-Establish `h1 : Continuous fun g => ((H g : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp hH.1)`. Use `Continuous.mul (h1.cpow continuous_const fun g => ?_) hφ` and prove the remaining obligations. Conclude with `Complex.ofReal_mem_slitPlane.2 (by exact_mod_cast hH.2.1 g)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_fam {H : G D n → ℝ≥0} (hH : IsHt H) {φ : G D n → ℂ} (hφ : Continuous φ) (s₁ z : ℂ) :
     Continuous (fam H φ s₁ z) := by
@@ -72,7 +72,7 @@ theorem continuous_fam {H : G D n → ℝ≥0} (hH : IsHt H) {φ : G D n → ℂ
   exact Complex.ofReal_mem_slitPlane.2 (by exact_mod_cast hH.2.1 g)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[fam, npow]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fam_self (H : G D n → ℝ≥0) (φ : G D n → ℂ) (s₁ : ℂ) : fam H φ s₁ s₁ = φ := by
   funext g
@@ -83,7 +83,7 @@ section Homog
 variable {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ)
 
 /- English proof (translation)
-Simplify using `only [zc, mul_assoc]`. Conclude with `integral_const_mul _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zc_const_mul (c : ℂ) (F : G D n → ℂ) (g : G D n) :
     zc M m ψ b₀ (fun x => c * F x) g = c * zc M m ψ b₀ F g := by
@@ -91,7 +91,7 @@ theorem zc_const_mul (c : ℂ) (F : G D n → ℂ) (g : G D n) :
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Simplify using `only [PositivityTheory.Rg.Rsw.pc, zc_const_mul]`. Conclude with `integral_const_mul _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pc_const_mul (c : ℂ) (F : G D n → ℂ) (g : G D n) :
     pc M m ψ b₀ (fun x => c * F x) g = c * pc M m ψ b₀ F g := by
@@ -99,7 +99,7 @@ theorem pc_const_mul (c : ℂ) (F : G D n → ℂ) (g : G D n) :
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Simplify using `only [FJ, pc_const_mul, mul_assoc]`. Conclude with `integral_const_mul _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem FJ_const_mul (c : ℂ) (F : G D n → ℂ) (g : G D n) (η : Mx D ρ p → ℂ) :
     FJ M m ψ b₀ (fun x => c * F x) g η = c * FJ M m ψ b₀ F g η := by
@@ -109,7 +109,7 @@ theorem FJ_const_mul (c : ℂ) (F : G D n → ℂ) (g : G D n) (η : Mx D ρ p �
 end Homog
 
 /- English proof (translation)
-Use `haveI := m.hμ.1`. Conclude with `GlobalTheory.CompanionTheory.WSum.integrable_schwartzA_haar D θ hθ ρ p m.μ _ (hΩ.mem 1)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_th {ψ : AddChar (AF D.host.F) ℂ} {χ' : (AE D)ˣ →* Circle} {θ : InfFam D} (hθ : IsInfFam θ)
     {b₀ : HermE D ρ} (m : Meas D ρ p) {Ω : G D p → Mx D ρ p → ℂ} (hΩ : IsTh ψ χ' θ b₀ m.μ Ω) :
@@ -118,7 +118,7 @@ theorem integrable_th {ψ : AddChar (AF D.host.F) ℂ} {χ' : (AE D)ˣ →* Circ
   exact GlobalTheory.CompanionTheory.WSum.integrable_schwartzA_haar D θ hθ ρ p m.μ _ (hΩ.mem 1)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.mul h'.1.inv, fun x => by show χ _ * (χ' _)⁻¹ = 1 rw [h.2 x, h'.2 x] simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem hecke_mul_inv {χ χ' : (AE D)ˣ →* Circle} (h : IsHeckeChar D χ) (h' : IsHeckeChar D χ') :
     IsHeckeChar D (χ * χ'⁻¹) :=
@@ -128,11 +128,11 @@ theorem hecke_mul_inv {χ χ' : (AE D)ˣ →* Circle} (h : IsHeckeChar D χ) (h'
     simp⟩
 
 /- English proof (translation)
-Take `⟨hRc, hRd, hRl⟩` from `hRS D n ρ p hn M m ψ hψ b₀ hb χ χ' hχ hχ' θ hθ Ω hΩ H hH s₀ φ hφ hlaw g`. Establish `hGd : DifferentiableOn ℂ (fun z => eisS (Rsec M m ψ b₀ (fam H φ s₀ z) g Ω) 1) {z : ℂ | max (((ρ : ℝ) - p) / 2) ((p : ℝ) / 2) < z.re}` using `(hEH D p (χ * χ'⁻¹) (hecke_mul_inv hχ hχ') (((ρ : ℝ) - p) / 2) (fun z => Rsec M m ψ b₀ (fam H φ s₀ z) g Ω) hRc hRd hRl 1).mono fun z hz => ⟨(le_max_left _ _).trans_lt hz, (le_max_right _ _).trans_lt hz⟩`. Establish `hHd : DifferentiableOn ℂ (fun z => FJ M m ψ b₀ (E z) g (Ω 1)) U` using `((hCf D n H φ s₀ U d E σ hc ε hrad).2.2 ρ p hn M m ψ hψ b₀ g (Ω 1) (integrable_th hθ m hΩ)).1`. Use `⟨hHd, hGd, ?_⟩` and prove the remaining obligations. Introduce `z hz hzc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hId U _ (fun z => d.eval z * eisS (Rsec M m ψ b₀ (fam H φ s₀ z) g Ω) 1) (max (((ρ : ℝ) - p) / 2) ((p : ℝ) / 2)) (max σ ((n : ℝ) / 2)) hc.isOpen hc.right hHd (d.differentiable.differentiableOn.mul hGd) ?_ z hz hzc` and prove the remaining obligations. Introduce `w hw`. Establish `h1 : σ < w.re` using `(le_max_left _ _).trans_lt hw`. Establish `h2 : (n : ℝ) / 2 < w.re` using `(le_max_right _ _).trans_lt hw`. Establish `e : E w = fun x => d.eval w * eisS (fam H φ s₀ w) x` using `funext fun x => hc.eq w h1 x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [e]`. Rewrite using `[FJ_const_mul, hFJ D n ρ p hn M m ψ hψ b₀ hb χ χ' hχ hχ' θ hθ Ω hΩ w _ (continuous_fam hH hφ s₀ w) (isLaw_fam hH hlaw w) h2 g]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fj_eq (hFJ : FJEis) (hRS : RSec) (hEH : EisHol) (hId : RightId) (hCf : CfFJ)
     {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
@@ -168,11 +168,11 @@ theorem fj_eq (hFJ : FJEis) (hRS : RSec) (hEH : EisHol) (hId : RightId) (hCf : C
     hFJ D n ρ p hn M m ψ hψ b₀ hb χ χ' hχ hχ' θ hθ Ω hΩ w _ (continuous_fam hH hφ s₀ w) (isLaw_fam hH hlaw w) h2 g]
 
 /- English proof (translation)
-Use `(hPc D n ρ p hn M m ψ hψ F hF hl).1 ?_` and prove the remaining obligations. Introduce `b₀ hb g`. Take `⟨hc, hbd⟩` from `hPB D n ρ p hn M m ψ hψ b₀`. Establish `key : ∀ g', (fun y => pc M m ψ b₀ F (M.sh y * g')) = 0`. Introduce `g'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨C, hC, -, hB⟩` from `hbd g'`. Take `⟨B, hBC⟩` from `hC.exists_bound_of_continuousOn hF.continuousOn`. Use `hTh D ρ p m ψ hψ b₀ hb χ' hχ' hres h0 θ hθ _ ?_ ⟨B, fun y => hB F hF hl B hBC y⟩ ?_` and prove the remaining obligations. Conclude with `(hc F hF hl).comp (M.sh_cont.mul continuous_const)`. Introduce `Ω hΩ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hv b₀ hb Ω hΩ g'`. Establish `h1` using `congrFun (key ((M.sh 0)⁻¹ * g)) 0`. Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rank_of_FJ (hPB : PcBound) (hTh : ThTotal) (hPc : PcFc)
     {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
@@ -195,21 +195,19 @@ theorem rank_of_FJ (hPB : PcBound) (hTh : ThTotal) (hPc : PcFc)
   simpa using h1
 
 /- English proof (translation)
-Take `⟨⟨H', hH'⟩, C, hCc, hPC⟩` from `hHt D p`. Take `⟨B₁, hB₁⟩` from `hS D p hp H' hH' {1} isCompact_singleton`. Establish `hHpos : ∀ x, 0 < (H' x : ℝ)` using `fun x => by exact_mod_cast hH'.2.1 x`. Establish `hden : Continuous fun u : ℝ × G D p => (H' u.2 : ℝ) ^ (u.1 + (p : ℝ) / 2)` using `Continuous.rpow (NNReal.continuous_coe.comp (hH'.1.comp continuous_snd)) (continuous_fst.add continuous_const) fun u => Or.inl (hHpos _).ne'`. Establish `hRc : ContinuousOn (fun u : ℝ × G D p => ‖f u.1 u.2‖ / (H' u.2 : ℝ) ^ (u.1 + (p : ℝ) / 2)) (Set.Icc ((p : ℝ) / 2) (p / 2 + 1) ×ˢ C)` using `ContinuousOn.div ((hcont.mono (Set.prod_mono subset_rfl (Set.subset_univ _))).norm) hden.continuousOn fun u _ => (Real.rpow_pos_of_pos (hHpos _) _).ne'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨B₀, hB₀⟩` from `(isCompact_Icc.prod hCc).exists_bound_of_continuousOn hRc`. Establish `hpt : ∀ σ ∈ Set.Icc ((p : ℝ) / 2) (p / 2 + 1), ∀ x, ‖f σ x‖ ≤ |B₀| * (H' x : ℝ) ^ (σ + (p : ℝ) / 2)`. Introduce `σ hσ x`. Take `⟨q, hq, c, hc, rfl⟩` from `hPC x`. Take `⟨a, ha⟩` from `GlobalTheory.StdUnn.LeftInvSect.exists_blkA hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hA0` using `absA_ne_zero_of_ht hH' hq ha`. Establish `hA : 0 < (absA D (Matrix.GeneralLinearGroup.det a) : ℝ)`. Conclude with `pos_iff_ne_zero.2 hA0` after adjusting the coercions. Establish `hc1 : ‖f σ c‖ ≤ |B₀| * (H' c : ℝ) ^ (σ + (p : ℝ) / 2)`. Establish `h1` using `(hB₀ (σ, c) ⟨hσ, hc⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos` using `Real.rpow_pos_of_pos (hHpos c) (σ + (p : ℝ) / 2)`. Establish `h2 : ‖f σ c‖ / (H' c : ℝ) ^ (σ + (p : ℝ) / 2) ≤ |B₀|` using `(le_abs_self _).trans (h1.trans (le_abs_self _))`. Conclude with `(div_le_iff₀ hpos).1 h2`. Establish `hn : ‖npow (absA D (Matrix.GeneralLinearGroup.det a)) ((σ : ℂ) + (p : ℂ) / 2)‖ = (absA D (Matrix.GeneralLinearGroup.det a) : ℝ) ^ (σ + (p : ℝ) / 2)`. Simplify using `only [npow]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos hA]`. Simplify using the standard rewrite rules. Rewrite using `[hlaw σ hσ q hq a ha c, hH'.2.2 q hq a ha c, NNReal.coe_mul, Real.mul_rpow hA.le (hHpos c).le, norm_mul, norm_mul, hn]`. Establish `hone : ‖(((1 : (AE D)ˣ →* Circle) (Matrix.GeneralLinearGroup.det a) : Circle) : ℂ)‖ = 1` using `by simp`. Rewrite using `[hone, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hAp` using `Real.rpow_pos_of_pos hA (σ + (p : ℝ) / 2)`. Combine the equalities or inequalities in the displayed calculation. Use `⟨|B₀| * B₁, fun σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨hsum, hle⟩` from `hB₁ σ hσ 1 rfl`. Establish `hσ' : σ ∈ Set.Icc ((p : ℝ) / 2) (p / 2 + 1)` using `⟨hσ.1.le, hσ.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 ≤ σ - (p : ℝ) / 2` using `by linarith [hσ.1]`. Establish `hE : ‖eisS (f σ) 1‖ ≤ |B₀| * ∑' q : GlobalTheory.Eis.Cosets (P D p) (GF D p), (H' ((q.out : GF D p) * 1) : ℝ) ^ (σ + (p : ℝ) / 2)`. Rewrite using `[← tsum_mul_left]`. Conclude with `tsum_of_norm_bounded (hsum.mul_left _).hasSum fun q => hpt σ hσ' _`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hpos]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sph_bound (hHt : HtExist) (hS : SphBound) (hp : 1 ≤ p) (f : ℝ → G D p → ℂ)
     (hcont : ContinuousOn (fun u : ℝ × G D p => f u.1 u.2) (Set.Icc ((p : ℝ) / 2) (p / 2 + 1) ×ˢ Set.univ))
@@ -269,11 +267,11 @@ theorem sph_bound (hHt : HtExist) (hS : SphBound) (hp : 1 ≤ p) (f : ℝ → G 
     _ ≤ _ := mul_le_mul_of_nonneg_left hle (abs_nonneg _)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx1 : x - s ≤ ε` using `by linarith [hx.2, min_le_left ε 1]`. Establish `hmem : (x : ℂ) ∈ Metric.closedBall (s : ℂ) ε`. Rewrite using `[Metric.mem_closedBall, Complex.dist_eq, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_of_nonneg (by linarith [hx.1])]`. Conclude with `hx1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : (x : ℂ) ≠ s`. Introduce `e`. Use `Complex.ofReal_injective e` as an intermediate fact. Combine the linear relations using `[hx.1]`. Establish `hd` using `hrad.2.2 _ hmem hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hid _ (hrad.2.1 hmem) (by simpa using hcs.trans_lt hx.1), mul_div_cancel_left₀ _ hd]`.
+A detailed English derivation is pending.
 -/
 theorem quot_eq {U : Set ℂ} {d : Polynomial ℂ} {s ε c : ℝ} (hrad : IsRad U d (s : ℂ) ε) (hcs : c ≤ s) {h G' : ℂ → ℂ}
     (hid : ∀ z ∈ U, c < z.re → h z = d.eval z * G' z) :
@@ -292,13 +290,13 @@ theorem quot_eq {U : Set ℂ} {d : Polynomial ℂ} {s ε c : ℝ} (hrad : IsRad 
   rw [hid _ (hrad.2.1 hmem) (by simpa using hcs.trans_lt hx.1), mul_div_cancel_left₀ _ hd]
 
 /- English proof (translation)
-The claim follows from `Ioc_mem_nhdsGT (by have := lt_min hε one_pos; linarith)`.
+A detailed English derivation is pending.
 -/
 theorem ev_Ioc {s ε : ℝ} (hε : 0 < ε) : ∀ᶠ x : ℝ in 𝓝[>] s, x ∈ Set.Ioc s (s + min ε 1) :=
   Ioc_mem_nhdsGT (by have := lt_min hε one_pos; linarith)
 
 /- English proof (translation)
-The claim follows from `hPR h d s ε hrad.1 hd (hh.mono hrad.2.1) (fun z hz => (hh z (hrad.2.1 (Metric.sphere_subset_closedBall hz))).differentiableAt (hU.mem_nhds (hrad.2.1 (Metric.sphere_subset_closedBall hz)))) hrad.2.2`.
+A detailed English derivation is pending.
 -/
 theorem pole_at (hPR : PoleReal) {U : Set ℂ} {d : Polynomial ℂ} {s ε : ℝ} (hU : IsOpen U) (hd : d ≠ 0)
     (hrad : IsRad U d (s : ℂ) ε) {h : ℂ → ℂ} (hh : DifferentiableOn ℂ h U) :
@@ -313,7 +311,7 @@ theorem pole_at (hPR : PoleReal) {U : Set ℂ} {d : Polynomial ℂ} {s ε : ℝ}
       (hU.mem_nhds (hrad.2.1 (Metric.sphere_subset_closedBall hz)))) hrad.2.2
 
 /- English proof (translation)
-Establish `hop : IsOpen {z : ℂ | c < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hc : ContinuousAt G' (s : ℂ)` using `(hG _ (by simpa using hcs)).differentiableAt (hop.mem_nhds (by simpa using hcs)) |>.continuousAt`. Establish `h1 : ∀ᶠ z in 𝓝 (s : ℂ), ‖G' z‖ < ‖G' (s : ℂ)‖ + 1` using `Filter.Tendsto.eventually_lt_const (lt_add_one _) hc.norm`. Establish `h2 : ∀ᶠ x : ℝ in 𝓝 s, ‖G' (x : ℂ)‖ < ‖G' (s : ℂ)‖ + 1` using `(Complex.continuous_ofReal.tendsto s).eventually h1`. Conclude with `⟨_, (h2.filter_mono nhdsWithin_le_nhds).mono fun x hx => hx.le⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem bdd_right {c s : ℝ} (hcs : c < s) {G' : ℂ → ℂ} (hG : DifferentiableOn ℂ G' {z : ℂ | c < z.re}) :
     ∃ B : ℝ, ∀ᶠ x : ℝ in 𝓝[>] s, ‖G' (x : ℂ)‖ ≤ B := by
@@ -327,11 +325,11 @@ theorem bdd_right {c s : ℝ} (hcs : c < s) {G' : ℂ → ℂ} (hG : Differentia
   exact ⟨_, (h2.filter_mono nhdsWithin_le_nhds).mono fun x hx => hx.le⟩
 
 /- English proof (translation)
-Take `⟨hRc, -, hRl⟩` from `hRS D n ρ p hn M m ψ hψ b₀ hb χ χ hχ hχ θ hθ Ω hΩ H hH s₀ φ hφ hlaw g`. Establish `hlt : ((ρ : ℝ) - p) / 2 < (p : ℝ) / 2`. Establish `: (ρ : ℝ) < 2 * p` using `by exact_mod_cast hρp`. Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion.
 
-Use `hRc.comp (f := fun u : ℝ × G D p => ((u.1 : ℂ), u.2)) ((Complex.continuous_ofReal.comp continuous_fst).prodMk continuous_snd).continuousOn ?_` and prove the remaining obligations. Introduce `u hu`. Conclude with `⟨by simpa using hlt.trans_le hu.1.1, Set.mem_univ _⟩`. Introduce `σ hσ`. Use `hRl (σ : ℂ) (by simpa using hlt.trans_le hσ.1)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_inv_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem rsec_real (hRS : RSec) {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) {ψ : AddChar (AF D.host.F) ℂ}
     (hψ : IsCharAF D.host.F ψ) {b₀ : HermE D ρ} (hb : b₀.1.det ≠ 0) {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ)
@@ -355,35 +353,33 @@ theorem rsec_real (hRS : RSec) {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ 
     rwa [mul_inv_cancel] at this
 
 /- English proof (translation)
-Introduce `hMaps hHt hEta hId hPR hFJ hPB hRS hEH hTh hCf hPc hS`. Introduce `D n r t hn hrt ψ hψ χ hχ hres hr0 θ hθ H hH φ hφ hlaw U d E σ hc ε hrad`. Take `⟨s, hs, hs'⟩ : ∃ s : ℝ, s = (t : ℝ) / 2 ∧ (t : ℂ) / 2 = (s : ℂ)` from `⟨_, rfl, by push_cast; rfl⟩`. Rewrite `hlaw`, `hc`, `hrad`, the goal using `[hs']`. Establish `ht : 2 ≤ t` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htR : (r : ℝ) + 2 < 2 * t` using `by exact_mod_cast hrt`. Take `⟨hcf, -, hfj⟩` from `hCf D n H φ _ U d E σ hc ε hrad`. Establish `hR : ∀ (M : Maps D hn) (m : Meas D r t) (b₀ : HermE D r), b₀.1.det ≠ 0 → ∀ Ω, IsTh ψ χ θ b₀ m.μ Ω → ∀ g, (∀ k : ℕ, 2 ≤ k → ∮ z in C((s : ℂ), ε), (z - s) ^ (k - 1) * (FJ M m ψ b₀ (E z) g (Ω 1) / d.eval z) = 0) ∧ Tendsto (fun x : ℝ => ((x - s : ℝ) : ℂ) * eisS (Rsec M m ψ b₀ (fam H …`. Introduce `M m b₀ hb Ω hΩ g`. Take `⟨hHd, -, hid⟩` from `fj_eq hFJ hRS hEH hId hCf M m hψ hb hχ hχ hθ hΩ hH hφ hlaw hc hrad g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hmax : max (((r : ℝ) - t) / 2) ((t : ℝ) / 2) ≤ s`. Rewrite using `[hs]`. Conclude with `max_le (by linarith) le_rfl`. Establish `hq` using `quot_eq hrad hmax hid`. Take `⟨hcr, hlw⟩` from `rsec_real hRS M m hψ hb hχ hθ hΩ hH hφ hlaw (by omega) g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `sph_bound hHt hS (by omega) (fun x => Rsec M m ψ b₀ (fam H φ (s : ℂ) (x : ℂ)) g Ω) hcr hlw`. Establish `hpole` using `(pole_at hPR hc.isOpen hc.ne hrad hHd).1 ⟨B, (ev_Ioc hrad.1).mono fun x hx => by`. Rewrite using `[hq x hx]`. Establish `h1` using `min_le_right ε 1`. Establish `h2` using `hx.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hB x ⟨by rw [← hs]; exact hx.1, by rw [← hs]; linarith⟩`. Rewrite using `[← hs] at h3⟩` and apply the resulting hypothesis. Conclude with `⟨hpole.1, hpole.2.congr' ((ev_Ioc hrad.1).mono fun x hx => by simp only; rw [hq x hx])⟩`. Establish `P1 : ∀ k, 1 ≤ k → RankLT ψ (cf d E (s : ℂ) ε k) (r + 1)`. Introduce `k hk`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨χ', hχ', hres'⟩` from `hEta D (r + 1)`. Establish `hn' : (r + 1) + (t - 1) = n` using `by omega`. Take `⟨⟨M⟩, ⟨m⟩⟩` from `hMaps D n (r + 1) (t - 1) hn'`. Use `rank_of_FJ hPB hTh hPc M m hψ hχ' hres' (by omega) hθ (hcf k).1 (hcf k).2 ?_` and prove the remaining obligations. Introduce `b₀ hb Ω hΩ g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hHd, hGd, hid⟩` from `fj_eq hFJ hRS hEH hId hCf M m hψ hb.2 hχ hχ' hθ hΩ hH hφ hlaw hc hrad g`. Establish `hcast : ((t - 1 : ℕ) : ℝ) = (t : ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega)]`. Simplify using the standard rewrite rules. Establish `hmax : max ((((r + 1 : ℕ) : ℝ) - ((t - 1 : ℕ) : ℝ)) / 2) (((t - 1 : ℕ) : ℝ) / 2) < s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, hcast]`. Use `push_cast`. Conclude with `max_lt (by linarith) (by linarith)`. Take `⟨B, hB⟩` from `bdd_right hmax hGd`. Establish `hq` using `quot_eq hrad hmax.le hid`.
+Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `(pole_at hPR hc.isOpen hc.ne hrad hHd).2 ⟨B, (hB.and (ev_Ioc hrad.1)).mono fun x hx => by rw [hq x hx.2]; exact hx.1⟩ k hk`. Rewrite using `[((hfj (r + 1) (t - 1) hn' M m ψ hψ b₀ g (Ω 1) (integrable_th hθ m hΩ)).2 k), h0, mul_zero]`. Establish `P2 : ∀ k, 2 ≤ k → RankLT ψ (cf d E (s : ℂ) ε k) r`. Introduce `k hk`. Take `⟨⟨M⟩, ⟨m⟩⟩` from `hMaps D n r t hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `rank_of_FJ hPB hTh hPc M m hψ hχ hres hr0 hθ (hcf k).1 (hcf k).2 ?_` and prove the remaining obligations. Introduce `b₀ hb Ω hΩ g`. Rewrite using `[((hfj r t hn M m ψ hψ b₀ g (Ω 1) (integrable_th hθ m hΩ)).2 k), (hR M m b₀ hb.2 Ω hΩ g).1 k hk, mul_zero]`. Use `⟨P1, P2, ?_⟩` and prove the remaining obligations. Introduce `mu hmu M m b₀ hb β hβ nb lam 𝓖 hcd Ω hΩ g`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hcr, hlw⟩` from `rsec_real hRS M m hψ hb hχ hθ hΩ hH hφ hlaw (by omega) g`. Establish `hT` using `(hR M m b₀ hb Ω hΩ g).2`. Establish `hsm : s ∈ Set.Icc ((t : ℝ) / 2) (t / 2 + 1)`. Rewrite using `[hs]`. Conclude with `⟨le_rfl, by linarith⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hfs : Rsec M m ψ b₀ (fam H φ (s : ℂ) (s : ℂ)) g Ω = Rsec M m ψ b₀ φ g Ω` using `by rw [fam_self]`. Prove the components needed by the constructor for the conclusion. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hcr.comp_continuous (f := fun x : G D t => (s, x)) (continuous_const.prodMk continuous_id) (fun x => ⟨hsm, Set.mem_univ _⟩)`. Establish `h2 : Continuous (Rsec M m ψ b₀ (fam H φ (s : ℂ) (s : ℂ)) g Ω)` using `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h2` using `[hfs]`. Then use the resulting hypothesis. Establish `h1` using `hlw s hsm`. Rewrite `h1` using `[hfs]`. Rewrite using `[hs']`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hpf` using `(hPc D n r t hn M m ψ hψ _ (hcf 1).1 (hcf 1).2).2 (P1 1 le_rfl) b₀ hb β hβ nb lam 𝓖 hcd`. Establish `hE : ∫ y, fc ψ lam 𝓖 nb (cf d E (s : ℂ) ε 1) β (M.sh y * g) * conj (Ω 1 y) ∂m.μ = FJ M m ψ b₀ (cf d E (s : ℂ) ε 1) g (Ω 1)`. Simplify using `only [FJ, hpf]`. Rewrite using `[hE, (hfj r t hn M m ψ hψ b₀ g (Ω 1) (integrable_th hθ m hΩ)).2 1, ← hfs]`. Substitute `hs` using the available equality.
-
-Conclude with `hmu.lim (fun x : ℝ => Rsec M m ψ b₀ (fam H φ (((t : ℝ) / 2 : ℝ) : ℂ) (x : ℂ)) g Ω) hcr hlw _ hT`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem polar : MapsExist → HtExist → HeckeEta → RightId → PoleReal → FJEis → PcBound → RSec → EisHol → ThTotal → CfFJ →
     PcFc → SphBound → Polar := by

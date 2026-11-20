@@ -20,19 +20,19 @@ theorem log_interp (a b c : ℝ) (h : b - a ≠ 0) :
   ring
 
 /- English proof (translation)
-Introduce `l _ x hx ρ hρ0 hρ1`. Establish `hN : ∀ r : ℝ, (l : ℝ)⁻¹ ≤ r → r < 1 → IsGauss l r (gC l r)` using `fun r h0 h1 => isGauss_gC_target l r h0 h1`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hi0 : (0 : ℝ) < (l : ℝ)⁻¹` using `by positivity`. Establish `hi1 : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnn : ∀ r, (l : ℝ)⁻¹ ≤ r → r < 1 → 0 ≤ gC l r x` using `fun r h0 h1 => ((hN r h0 h1).1 x).1`. Establish `h0 : gC l (l : ℝ)⁻¹ x ≠ 0` using `GlobalTheory.MemLoc.gauss_ne_zero l (fun r => gC l r) hN x hx`. Break down `hρ0.eq_or_lt with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `lt_of_le_of_ne (hnn _ le_rfl hi1) h0.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hneg`. Establish `hz : gC l ρ x = 0` using `le_antisymm (not_lt.1 hneg) (hnn ρ hρ0 hρ1)`. Take `⟨r₁, c, k, hr₁, -, hc, hmon⟩` from `GlobalTheory.MemLoc.gauss_slope l (fun r => gC l r) hN x h0`. Take `⟨ρ', h1', h2'⟩` from `exists_between (lt_min hr₁ h)`. Establish `hρ'0 : 0 < ρ'` using `hi0.trans h1'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ'r : ρ' < r₁` using `h2'.trans_le (min_le_left _ _)`. Establish `hρ'ρ : ρ' < ρ` using `h2'.trans_le (min_le_right _ _)`. Establish `hρpos : 0 < ρ` using `hi0.trans h`. Establish `hpos : 0 < gC l ρ' x`. Establish `e : gC l ρ' x = c * ρ' ^ k` using `hmon ρ' h1' hρ'r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `mul_pos hc (zpow_pos hρ'0 k)`. Establish `hL1 : Real.log (l : ℝ)⁻¹ < Real.log ρ'` using `Real.log_lt_log hi0 h1'`. Establish `hL2 : Real.log ρ' < Real.log ρ` using `Real.log_lt_log hρ'0 hρ'ρ`. Establish `hd : 0 < Real.log ρ - Real.log (l : ℝ)⁻¹` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : 0 ≤ (Real.log ρ - Real.log ρ') / (Real.log ρ - Real.log (l : ℝ)⁻¹)` using `div_nonneg (by linarith) hd.le`. Establish `ht1 : (Real.log ρ - Real.log ρ') / (Real.log ρ - Real.log (l : ℝ)⁻¹) < 1` using `(div_lt_one hd).2 (by linarith)`. Establish `he : (l : ℝ)⁻¹ ^ ((Real.log ρ - Real.log ρ') / (Real.log ρ - Real.log (l : ℝ)⁻¹)) * ρ ^ (1 - (Real.log ρ - Real.log ρ') / (Real.log ρ - Real.log (l : ℝ)⁻¹)) = ρ'`. Rewrite using `[Real.rpow_def_of_pos hi0, Real.rpow_def_of_pos hρpos, ← Real.exp_add, log_interp _ _ _ hd.ne', Real.exp_log hρ'0]`. Establish `hcv` using `GlobalTheory.T.gaussNormAcris_logConvex_in_radius l x (l : ℝ)⁻¹ ρ _ le_rfl h.le hρ1 ht0 ht1.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hcv` using `[he, hz, Real.zero_rpow (sub_pos.2 ht1).ne', mul_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem gC_pos_of_ne_zero : ∀ (l : ℕ) [Fact l.Prime] (x : Formalism.Per.Acris l), x ≠ 0 → ∀ ρ : ℝ, (l : ℝ)⁻¹ ≤ ρ →
     ρ < 1 → 0 < gC l ρ x := by
@@ -75,7 +75,7 @@ theorem gC_pos_of_ne_zero : ∀ (l : ℕ) [Fact l.Prime] (x : Formalism.Per.Acri
   linarith
 
 /- English proof (translation)
-The claim follows from `gC_pos_of_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem gC_pos_target : ∀ (l : ℕ) [Fact l.Prime] (x : Formalism.Per.Acris l), x ≠ 0 → ∀ ρ : ℝ, (l : ℝ)⁻¹ ≤ ρ → ρ < 1 →
     0 < gC l ρ x :=

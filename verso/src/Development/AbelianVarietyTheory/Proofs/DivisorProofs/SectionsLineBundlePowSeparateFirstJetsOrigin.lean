@@ -19,25 +19,25 @@ noncomputable section
 namespace GlobalTheory.MBLow.JetSep
 
 /- English proof (translation)
-Introduce `K _ x g hg N hN i₀ hi₀ j₀ a c H`. Substitute `hg` using the available equality. Use `x.P.isAb.comm` as an intermediate fact. Establish `k₀ : ⊤ ≤ eSec x.P.A ⁻¹ᵁ x.P.L.U i₀` using `by simpa using hi₀`. Set `U' : x.P.A.left.Opens` to `(lbPow x.P.L N).U fun _ => i₀`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hU' : ⊤ ≤ eSec x.P.A ⁻¹ᵁ U'` using `(GlobalTheory.ThetaFn.le_wchart_unique x.P.L (K := PUnit) (eSec x.P.A) (𝟙 _) (fun _ => i₀)).2 (by simpa using k₀)`. Set `pb : (lbPow x.P.L N).Sec → LB.Sec (LPow x.P.A x.P.L (N : ℤ) (baseOver (Sp K)))` to `fun s => GlobalTheory.ThetaFn.pullPow x.P.L (K := PUnit) (K' := Fin 1) (snd (baseOver (Sp K)) x.P.A).left (Category.comp_id _) (N : ℤ) s`. Establish `hval : ∀ (s : (lbPow x.P.L N).Sec) (w : epsR K ⟶ x.P.A), IsTangent w → valR (epsLift w) ((LPow x.P.A x.P.L (N : ℤ) (baseOver (Sp K))).U fun _ => i₀) ((pb s).f fun _ => i₀) = valR w.left U' (s.f fun _ => i₀)`. Introduce `s w hw`. Establish `h1 : ⊤ ≤ epsLift w ⁻¹ᵁ ((LPow x.P.A x.P.L (N : ℤ) (baseOver (Sp K))).U fun _ => i₀)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(GlobalTheory.ThetaFn.le_wchart_unique x.P.L (K := Fin 1) (epsLift w) _ (fun _ => i₀)).2 ?_` and prove the remaining obligations. Rewrite using `[JetUniq.epsLift_snd]`. Conclude with `JetUniq.tan_le hw k₀`. Use `(GlobalTheory.HolHom.valR_appLE _ _ _ _ _ _ h1).trans ?_` and prove the remaining obligations. Rewrite using `[JetUniq.epsLift_snd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `Hs : ∀ s : (lbPow x.P.L N).Sec, a * valR (eSec x.P.A) U' (s.f fun _ => i₀) + (valR (tanComb c x.v).left U' (s.f fun _ => i₀)).snd = 0`. Introduce `s`. Establish `e` using `H (pb s)`. Simplify using `only [Fin.cast_eq_self] at e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hval s _ (x.basis.1 j₀), JetUniq.fst_valR (x.basis.1 j₀) hU']`. Rewrite using `[JetUniq.snd_valR x.basis.1 (isLieComb_tanComb c x.v) hU']`. Use `Eq.trans ?_ e` and prove the remaining obligations. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval s _ (x.basis.1 j)]`. Take `⟨M, sec, hsec⟩` from `GlobalTheory.ZH.CrdMove.immBy_lbPow GlobalTheory.allSixLaws.1.ample K x.P N hN`. Establish `key : ∀ d : Fin x.P.g → K, d ≠ 0 → ∃ s₀ s₁ : (lbPow x.P.L N).Sec, valR (eSec x.P.A) U' (s₀.f fun _ => i₀) ≠ 0 ∧ valR (eSec x.P.A) U' (s₁.f fun _ => i₀) = 0 ∧ (valR (tanComb d x.v).left U' (s₁.f fun _ => i₀)).snd ≠ 0`. Introduce `d hd`. Establish `hy` using `isTangent_tanComb K x.P.A _ x.v d x.basis.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s₀, s₁, h0, h1, h2⟩` from `Orders.exists_sep sec hsec hy (Orders.tanComb_ne_one x.basis hd) (fun _ => i₀) hU'`. Use `⟨s₀, s₁, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Orders.valR_eq _ _ hU']` and apply the resulting hypothesis. Rewrite using `[Orders.valR_eq _ _ hU']` and apply the resulting hypothesis. Rewrite using `[Orders.valR_eq _ _ (Orders.top_le_tangent hy hU')]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hc : c = 0`. Assume the negation of the conclusion as `hc`. Take `⟨-, s₁, -, h1, h2⟩` from `key c hc`. Establish `e` using `Hs s₁`. Rewrite `e` using `[h1, mul_zero, zero_add]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h2 e`. Use `⟨?_, hc⟩` and prove the remaining obligations. Establish `hd : (Pi.single j₀ 1 : Fin x.P.g → K) ≠ 0` using `fun h => by simpa using congrFun h j₀`. Take `⟨s₀, -, h0, -, -⟩` from `key _ hd`. Establish `e` using `Hs s₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hc` using the available equality. Rewrite `e` using `[JetUniq.snd_valR x.basis.1 (isLieComb_tanComb 0 x.v) hU']`. Simplify using `only [Pi.zero_apply, zero_mul, Finset.sum_const_zero, add_zero] at e`. Conclude with `(mul_eq_zero.1 e).resolve_right h0`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sep : ∀ (K : Type) [Field K] (x : KeyIn K) (g : ℕ) (hg : x.P.g = g) (N : ℕ), 4 ≤ N → ∀ (i₀ : x.P.L.ι),
     ⊤ ≤ (𝟙 (Sp K) ≫ eSec x.P.A) ⁻¹ᵁ x.P.L.U i₀ → ∀ (j₀ : Fin g) (a : K) (c : Fin g → K),

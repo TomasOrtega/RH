@@ -6,14 +6,14 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.KummerTheory.LHCut
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `(hD R I X n).1 a ha`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem lcv_cls_of_d {R : Type} [CommRing R] (hD : Dict) {I : Cx R} {X : Scheme.{0}} (n n' : ℤ) (h : n + 1 = n')
     (a : Sec (I.X n) X) (ha : Sec.map (I.d n n') a = 0) : ∃ x, IsCls x a := by
   subst h; exact (hD R I X n).1 a ha
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `((hD R I X n).2.2.1 x a ha).1`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem lcv_d_of_cls {R : Type} [CommRing R] (hD : Dict) {I : Cx R} {X : Scheme.{0}} {n : ℤ} (n' : ℤ) (h : n + 1 = n')
     x (a : Sec (I.X n) X) (ha : IsCls x a) : Sec.map (I.d n n') a = 0 := by
@@ -49,13 +49,11 @@ theorem lcv_cres_snd {j : ℤ} {V U : Over S} (g : V ⟶ U) (x : Cone J K p r M 
 end
 
 /- English proof (translation)
-Establish `hCM` using `clsMore_of hD`. Establish `hb : ∀ (a : Fin (M + 1)) (s : Fin (r a)), Sec.map ((res _ (tw q 0)).d (j₀ + 1 + 1 - ((a : ℕ) : ℤ)) (j₀ + 1 + 1 + 1 - ((a : ℕ) : ℤ))) (x1 a s) = 0`. Introduce `a s`. Establish `h0` using `congrFun (congrFun hx1 a) s`. Use `congrArg (fun v => ((a : ℕ) : ℤ).negOnePow • v) h0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [dS, Pi.zero_apply, smul_smul, Int.units_mul_self, one_smul, smul_zero]`. Use `choose y hy using fun a s => lcv_cls_of_d hD _ _ (by omega) _ (hb a s)`. Establish `hl` using `hL q p i r c γ hc M (j₀ + 1 + 1) U y x1 hy`. Establish `hly : lh q p U.hom i r c M (j₀ + 1 + 1) y = 0` using `((hCM _ _ _ _).2.2.2 (j₀ + 1) rfl _ 0 _ 0 hl (hCM _ _ _ _).1).2 ⟨k, by rw [sub_zero]; exact hx2.symm⟩`. Take `⟨V1, g1, hg1, hk1⟩` from `hK U u y hly`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcl1 : ∀ (a : Fin (M + 1)) (s : Fin (r a)), IsCls (N • pull _ (sch.map g1.left) _ _ (y a s)) (N • Sec.res g1.left (x1 a s))` using `fun a s => (hCM _ _ _ _).2.1 N _ _ ((hD _ _ _ _).2.2.2.2 g1.left _ _ (hy a s))`. Use `choose b1 hb1 using fun (a : Fin (M + 1)) (s : Fin (r a)) => ((hCM _ _ _ _).2.2.2 (j₀ + 1 - ((a : ℕ) : ℤ)) (by omega) _ 0 _ 0 (hcl1 a s) (hCM _ _ _ _).1).1 (hk1 a s)`. Use `⟨V1, g1, hg1, fun a s => ((a : ℕ) : ℤ).negOnePow • b1 a s, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a s`. Simplify using `only [dS, Units.smul_def, map_zsmul, smul_smul, ← Units.val_mul, Int.units_mul_self, Units.val_one, one_smul]`.
-
-Conclude with `(hb1 a s).trans (sub_zero _)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lcv_step1 (hD : Dict) (hL : LhSec) (q : ℕ) {X S : Scheme.{0}} (p : X ⟶ S) (i : ℤ)
     (r : ℕ → ℕ) (c : ∀ a : ℕ, Fin (r a) → Ht q (sch.obj X) a i)
@@ -89,11 +87,11 @@ theorem lcv_step1 (hD : Dict) (hL : LhSec) (q : ℕ) {X S : Scheme.{0}} (p : X �
   exact (hb1 a s).trans (sub_zero _)
 
 /- English proof (translation)
-Establish `hCM` using `clsMore_of hD`. Take `⟨κ, hκ⟩` from `(hD _ _ _ _).1 k hk`. Take `⟨V2, g2, hg2, y2, hy2⟩` from `hC V1 v1 κ`. Use `choose b2 hb2 using fun (a : Fin (M + 1)) (s : Fin (r a)) => (hD _ _ _ _).2.1 (y2 a s)`. Establish `hl2` using `hL q p i r c γ hc M (j₀ + 1) V2 y2 b2 hb2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl2 : IsCls (N • pull _ (sch.map (rst p g2)) _ _ κ) (N • Sec.res (rst p g2) k)` using `(hCM _ _ _ _).2.1 N _ _ ((hD _ _ _ _).2.2.2.2 (rst p g2) _ _ hκ)`. Take `⟨k', hk'⟩` from `((hCM _ _ _ _).2.2.2 j₀ rfl _ _ _ _ hl2 hcl2).1 hy2`. Use `⟨V2, g2, hg2, b2, k', ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a s`. Simplify using `only [dS, Pi.zero_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lcv_d_of_cls hD _ (by omega) _ _ (hb2 a s), smul_zero]`. Rewrite using `[hk', sub_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lcv_step2 (hD : Dict) (hL : LhSec) (q : ℕ) {X S : Scheme.{0}} (p : X ⟶ S) (i : ℤ)
     (r : ℕ → ℕ) (c : ∀ a : ℕ, Fin (r a) → Ht q (sch.obj X) a i)
@@ -124,13 +122,13 @@ variable {Λ : Type} [CommRing Λ] {I J K : Cx Λ} {X S : Scheme.{0}} {r : ℕ �
   (μ : Pair I J K) (p : X ⟶ S) (γ : ∀ a : ℕ, Fin (r a) → Sec (I.X (a : ℤ)) X)
 
 /- English proof (translation)
-Simplify using `[Phi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem etale_leray_hirsch_cone_comparison_map_degree_cast (n w : ℤ) (h : n = w) (U : Over S) : Phi (J := J) (M := M) μ p γ n w h U 0 = 0 := by
   simp [Phi]
 
 /- English proof (translation)
-Rewrite using `[Prod.fst_sub, Prod.smul_fst, lcv_cres_fst, lcv_cD_fst, hb1]`. Use function extensionality and compare the values at `a s`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, sub_self, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem etale_leray_hirsch_cone_source_component_vanishes_after_correction (j₀ : ℤ) {U V1 : Over S} (g1 : V1 ⟶ U) (x : Cone J K p r M (j₀ + 1) U) (N : ℕ)
     (b1 : FinalTheorems J r M (j₀ + 1) V1.left) (hb1 : dS (j₀ + 1) (j₀ + 1 + 1) b1 = fun a s => N • Sec.res g1.left (x.1 a s)) :
@@ -140,7 +138,7 @@ theorem etale_leray_hirsch_cone_source_component_vanishes_after_correction (j₀
   simp only [Pi.sub_apply, Pi.smul_apply, sub_self, Pi.zero_apply]
 
 /- English proof (translation)
-Use `congrArg Prod.snd hzc` as an intermediate fact. Rewrite `this` using `[lcv_cD_snd, hz1, etale_leray_hirsch_cone_comparison_map_degree_cast, zero_sub, Prod.snd_zero, neg_eq_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_leray_hirsch_cone_cycle_with_zero_source_has_closed_complex_part (j₀ : ℤ) {V1 : Over S} (z : Cone J K p r M (j₀ + 1) V1) (hz1 : z.1 = 0)
     (hzc : cD μ p γ (j₀ + 1) (j₀ + 1 + 1) rfl V1 z = 0) : Sec.map (K.d (j₀ + 1) (j₀ + 1 + 1)) z.2 = 0 := by
@@ -149,7 +147,7 @@ theorem etale_leray_hirsch_cone_cycle_with_zero_source_has_closed_complex_part (
   exact this
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[lcv_cD_fst, Prod.smul_fst, lcv_cres_fst, hz1]`. Conclude with `hdb2.trans (by funext a s; simp)`. Rewrite using `[lcv_cD_snd, Prod.smul_snd, lcv_cres_snd]`. Conclude with `hk'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lcv_bk (j₀ : ℤ) {V1 V2 : Over S} (g2 : V2 ⟶ V1) (z : Cone J K p r M (j₀ + 1) V1) (hz1 : z.1 = 0) (N : ℕ)
     (b2 : FinalTheorems J r M (j₀ + 1) V2.left) (k' : Sec (K.X j₀) (pullback p V2.hom)) (hdb2 : dS (j₀ + 1) (j₀ + 1 + 1) b2 = 0)
@@ -162,9 +160,9 @@ theorem lcv_bk (j₀ : ℤ) {V1 V2 : Over S} (g2 : V2 ⟶ V1) (z : Cone J K p r 
     exact hk'
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hg1.1` as an intermediate fact. Use `hg2.1` as an intermediate fact. Rewrite using `[Over.comp_left]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v2, hv2⟩` from `hg2.2`. Conclude with `⟨v2, by simp [hv2, hv1]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lcv_nbhd {U V1 V2 : Over S} (g1 : V1 ⟶ U) (g2 : V2 ⟶ V1) (u : U.left) (hg1 : Nbhd g1 u) (v1 : V1.left)
     (hv1 : g1.left v1 = u) (hg2 : Nbhd g2 v1) : Nbhd (g2 ≫ g1) u := by
@@ -175,9 +173,9 @@ theorem lcv_nbhd {U V1 V2 : Over S} (g1 : V1 ⟶ U) (g2 : V2 ⟶ V1) (u : U.left
     exact ⟨v2, by simp [hv2, hv1]⟩
 
 /- English proof (translation)
-Take `⟨-, -, nat1⟩` from `hA _ μ p r M γ hγ j₀ (j₀ + 1) rfl V1`. Take `⟨-, -, nat2⟩` from `hA _ μ p r M γ hγ (j₀ + 1) (j₀ + 1 + 1) rfl V1`. Take `⟨-, -, natU⟩` from `hA _ μ p r M γ hγ (j₀ + 1) (j₀ + 1 + 1) rfl U`. Take `⟨linV2, -, -⟩` from `hA _ μ p r M γ hγ j₀ (j₀ + 1) rfl V2`. Establish `e1` using `(map_add (IsLinearMap.mk' _ linV2) (N • cres g2 w0) y2).trans (congrArg (· + _) (map_nsmul (IsLinearMap.mk' _ linV2) N (cres g2 w0)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [IsLinearMap.mk'_apply] at e1`. Establish `e2` using `map_sub (IsLinearMap.mk' _ (nat2 V2 g2).1) (N • cres g1 x) (cD μ p γ j₀ (j₀ + 1) rfl V1 w0)`. Establish `e3` using `map_nsmul (IsLinearMap.mk' _ (nat2 V2 g2).1) N (cres g1 x)`. Simplify using `only [IsLinearMap.mk'_apply] at e2 e3`. Rewrite using `[e1, hy2, e2, e3, (nat1 V2 g2).2.1 w0, smul_sub, add_sub_cancel, smul_smul, ← pow_two, (natU V1 g1).2.2 V2 g2 x]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lcv_alg (hA : ConeAlg) (hγ : Closed γ) (j₀ : ℤ) {U V1 V2 : Over S} (g1 : V1 ⟶ U) (g2 : V2 ⟶ V1)
     (x : Cone J K p r M (j₀ + 1) U) (N : ℕ)
@@ -198,9 +196,9 @@ theorem lcv_alg (hA : ConeAlg) (hγ : Closed γ) (j₀ : ℤ) {U V1 V2 : Over S}
     (natU V1 g1).2.2 V2 g2 x]
 
 /- English proof (translation)
-Take `⟨-, sq1, -⟩` from `hA _ μ p r M γ hγ j₀ (j₀ + 1) rfl V1`. Take `⟨lin2, -, -⟩` from `hA _ μ p r M γ hγ (j₀ + 1) (j₀ + 1 + 1) rfl V1`. Take `⟨-, -, natU⟩` from `hA _ μ p r M γ hγ (j₀ + 1) (j₀ + 1 + 1) rfl U`. Establish `c0 : cres g1 (0 : Cone J K p r M (j₀ + 1 + 1) U) = 0` using `map_zero (IsLinearMap.mk' _ ((hA _ μ p r M γ hγ (j₀ + 1 + 1) (j₀ + 1 + 1 + 1) rfl U).2.2 V1 g1).1)`. Establish `e` using `(map_sub (IsLinearMap.mk' _ lin2) (N • cres g1 x) (cD μ p γ j₀ (j₀ + 1) rfl V1 w0)).trans (congrArg (· - _) (map_nsmul (IsLinearMap.mk' _ lin2) N (cres g1 x)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [IsLinearMap.mk'_apply] at e`. Rewrite using `[e, sq1 _ rfl w0, ← (natU V1 g1).2.1 x, hx, c0, smul_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lcv_zc (hA : ConeAlg) (hγ : Closed γ) (j₀ : ℤ) {U V1 : Over S} (g1 : V1 ⟶ U)
     (x : Cone J K p r M (j₀ + 1) U) (hx : cD μ p γ (j₀ + 1) (j₀ + 1 + 1) rfl U x = 0) (N : ℕ)
@@ -218,11 +216,11 @@ theorem lcv_zc (hA : ConeAlg) (hγ : Closed γ) (j₀ : ℤ) {U V1 : Over S} (g1
 end
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hγ : Closed γ` using `fun a s => ((hD _ _ X _).2.2.1 _ _ (hc a s)).1`. Establish `hx1 : dS (J` using `res _ (tw q 0)) (r := r) (M := M) (j₀ + 1 + 1) (j₀ + 1 + 1 + 1) x.1 = 0 := ((lcv_cD_fst (mu q i) p γ (j₀ + 1) (j₀ + 1 + 1) rfl U x).symm.trans (congrArg Prod.fst hx)).trans Prod.fst_zero`. Establish `hx2 : Phi (mu q i) p γ (j₀ + 1 + 1) (j₀ + 1 + 1) rfl U x.1 = Sec.map ((res _ (tw q i)).d (j₀ + 1) (j₀ + 1 + 1)) x.2` using `sub_eq_zero.1 (((lcv_cD_snd (mu q i) p γ (j₀ + 1) (j₀ + 1 + 1) rfl U x).symm.trans (congrArg Prod.snd hx)).trans Prod.snd_zero)`. Take `⟨V1, g1, hg1, b1, hb1⟩` from `lcv_step1 hD hL q p i r c γ hc M N j₀ hK U x.1 x.2 hx1 hx2 u`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz1` using `etale_leray_hirsch_cone_source_component_vanishes_after_correction (mu q i) p γ j₀ g1 x N b1 hb1`. Establish `hzc` using `lcv_zc (mu q i) p γ hA hγ j₀ g1 x hx N (b1, 0)`. Establish `hz2` using `etale_leray_hirsch_cone_cycle_with_zero_source_has_closed_complex_part (mu q i) p γ j₀ _ hz1 hzc`. Take `⟨v1, hv1⟩` from `hg1.2`. Take `⟨V2, g2, hg2, b2, k', hdb2, hk'⟩` from `lcv_step2 hD hL q p i r c γ hc M N j₀ hC V1 v1 _ hz2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨V2, g2 ≫ g1, lcv_nbhd g1 g2 u hg1 v1 hv1 hg2, N • cres g2 (b1, 0) + (b2, k'), lcv_alg (mu q i) p γ hA hγ j₀ g1 g2 x N (b1, 0) (b2, k') (lcv_bk (mu q i) p γ j₀ g2 _ hz1 N b2 k' hdb2 hk')⟩`.
+Supply the required witnesses or components.
 -/
 theorem etale_leray_hirsch_cone_cycle_locally_bounded_boundary (hD : Dict) (hL : LhSec) (hA : ConeAlg) (q : ℕ) {X S : Scheme.{0}} (p : X ⟶ S) (i : ℤ)
     (r : ℕ → ℕ) (c : ∀ a : ℕ, Fin (r a) → Ht q (sch.obj X) a i)
@@ -250,7 +248,7 @@ theorem etale_leray_hirsch_cone_cycle_locally_bounded_boundary (hD : Dict) (hL :
     lcv_alg (mu q i) p γ hA hγ j₀ g1 g2 x N (b1, 0) (b2, k') (lcv_bk (mu q i) p γ j₀ g2 _ hz1 N b2 k' hdb2 hk')⟩
 
 /- English proof (translation)
-Introduce `q X S p i r c γ hc M N j hK hC U x hx u`. Conclude with `etale_leray_hirsch_cone_cycle_locally_bounded_boundary hD hL hA q p i r c γ hc M N (j - 1) j (by omega) hK hC U x hx u`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem locCone_of (hD : Dict) (hL : LhSec) (hA : ConeAlg) : LocCone := by
   intro q X S p i r c γ hc M N j hK hC U x hx u

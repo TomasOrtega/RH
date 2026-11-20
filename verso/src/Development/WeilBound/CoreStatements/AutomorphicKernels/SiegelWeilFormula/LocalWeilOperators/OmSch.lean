@@ -17,13 +17,13 @@ namespace SD
 variable (d : SD σ)
 
 /- English proof (translation)
-Introduce `x Φ hΦ` and use `d.ok.dbl.weil.2.1.pres x Φ hΦ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem om_sch : ∀ (x : d.G), ∀ Φ ∈ d.sch, d.om x Φ ∈ d.sch := fun x Φ hΦ =>
   d.ok.dbl.weil.2.1.pres x Φ hΦ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Establish `h : ∀ p : (d.κ → AF F) × (d.κ → AF F), schr d.B.ψ p (0 : d.Fn) = 0` using `fun p => by`. Use function extensionality and compare the values at `x`. Simplify using `[schr]`. Simplify using `only [SD.T, Darboux.rho, h, map_zero, Pi.zero_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem T_zero : d.T 0 = 0 := by
   funext X
@@ -33,7 +33,7 @@ theorem T_zero : d.T 0 = 0 := by
   simp only [SD.T, Darboux.rho, h, map_zero, Pi.zero_apply]
 
 /- English proof (translation)
-Introduce `Φ hΦ h` and use `(hT.1 F E σ d).2.2 Φ hΦ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem T_inj (hT : TAll) : ∀ Φ ∈ d.sch, d.T Φ = 0 → Φ = 0 := fun Φ hΦ h => (hT.1 F E σ d).2.2 Φ hΦ h
 
@@ -44,15 +44,15 @@ namespace RD
 variable {d : SD σ} (R : RD d)
 
 /- English proof (translation)
-Introduce `X u`. Take `⟨ins, h1, h2, h3⟩` from `d.exists_insW w`. Use `set M : Matrix (Fin d.m) (Fin d.n) ℂ := (R.fr w).1 * (Matrix.of u).map star - d.cw w X with hM`. Use `⟨M.map ins, fun w' hw' => ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[SD.cw, h2 w' hw']`. Use extensionality with `i j`. Simplify using `[h3]`. Establish `hc : d.cw w (X + M.map ins) = (R.fr w).1 * (Matrix.of u).map star`. Establish `: d.cw w (M.map ins) = M`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[SD.cw, h1]`. Rewrite using `[show d.cw w (X + M.map ins) = d.cw w X + d.cw w (M.map ins) from by`. Use extensionality with `i j`. Simplify using `[SD.cw], this, hM]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Simplify using `only [RD.loc, hc, ← Matrix.mul_assoc]`. Rewrite using `[show ((R.fr w)⁻¹).1 * (R.fr w).1 = 1 from by`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one], Matrix.one_mul]`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem loc_surj (w : InfinitePlace F) : ∀ (X : Mx F E d.m d.n) (u : Fin d.m → Fin d.n → ℂ), ∃ Z : Mx F E d.m d.n,
     (∀ w', w' ≠ w → d.cw w' Z = 0) ∧ finOne F • Z = 0 ∧ R.loc w (X + Z) = u := by

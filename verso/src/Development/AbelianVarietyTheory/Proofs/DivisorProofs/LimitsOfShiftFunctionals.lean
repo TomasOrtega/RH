@@ -10,7 +10,7 @@ open MvPolynomial Formalism.DegreeFormula GlobalTheory.FlagPoly
 namespace GlobalTheory.FlagPoly
 
 /- English proof (translation)
-Unfold `pSum`. Use `IsHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations. Simplify using `using (isHomogeneous_X ℝ (τ, i)).pow k`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pSum_isHomogeneous' {ι : Type} {N : ℕ} (τ : ι) (k : ℕ) :
     (pSum τ k : Pol ι N).IsHomogeneous k := by
@@ -19,7 +19,7 @@ theorem pSum_isHomogeneous' {ι : Type} {N : ℕ} (τ : ι) (k : ℕ) :
   simpa using (isHomogeneous_X ℝ (τ, i)).pow k
 
 /- English proof (translation)
-Unfold `pLow`. Use `IsHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations. Simplify using `using (isHomogeneous_X ℝ (τ, i)).pow k`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pLow_isHomogeneous' {ι : Type} {N : ℕ} (j : ℕ) (τ : ι) (k : ℕ) :
     (pLow j τ k : Pol ι N).IsHomogeneous k := by
@@ -28,23 +28,23 @@ theorem pLow_isHomogeneous' {ι : Type} {N : ℕ} (j : ℕ) (τ : ι) (k : ℕ) 
   simpa using (isHomogeneous_X ℝ (τ, i)).pow k
 
 /- English proof (translation)
-Take `⟨σ⟩` from `‹Nonempty ι›`. Take `⟨Q, hQ, hQ1⟩` from `GlobalTheory.T.exists_class_degree_one ι N j σ hj hjN`. Establish `hd : 1 ≤ dimFl ι N`. Establish `h1 : 1 ≤ Fintype.card ι` using `Fintype.card_pos`. Establish `h2 : 1 ≤ N * (N - 1) / 2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 2 * 1 ≤ N * (N - 1)` using `Nat.mul_le_mul (by omega) (by omega)`. Use linear arithmetic over natural numbers and integers. Unfold `dimFl`. Conclude with `Nat.mul_pos h1 h2`. Establish `hF2 : (pSum σ 2 * Q).IsHomogeneous (dimFl ι N + 1)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(pSum_isHomogeneous' (N := N) σ 2).mul hQ` as an intermediate fact. Rewrite `this` using `[show 2 + (dimFl ι N - 1) = dimFl ι N + 1 by omega]`. Then use the resulting hypothesis. Establish `hF1 : (pSum σ 1 * (pLow j σ 1 * Q)).IsHomogeneous (dimFl ι N + 1)`. Use `(pSum_isHomogeneous' (N := N) σ 1).mul ((pLow_isHomogeneous' (N := N) j σ 1).mul hQ)` as an intermediate fact. Rewrite `this` using `[show 1 + (1 + (dimFl ι N - 1)) = dimFl ι N + 1 by omega]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `s2 : ∑ τ, shF j τ (pSum σ 2 * Q) = 2`. Rewrite using `[Finset.sum_eq_single σ]`. Rewrite using `[(GlobalTheory.T.shift_functional_power_sum ι N j 2 Q σ σ (by norm_num)).1, if_pos rfl]`. Evaluate the numerical expressions using `[hQ1]`. Introduce `τ _ hτ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(GlobalTheory.T.shift_functional_power_sum ι N j 2 Q τ σ (by norm_num)).1, if_neg hτ]`. Simplify using the standard rewrite rules. Establish `t2 : ∑ τ, totF τ (pSum σ 2 * Q) = 0`. Use `Finset.sum_eq_zero fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.shift_functional_power_sum ι N j 2 Q τ σ (by norm_num)).2, if_neg (by simp)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `t1 : ∑ τ, totF τ (pSum σ 1 * (pLow j σ 1 * Q)) = N`. Rewrite using `[Finset.sum_eq_single σ]`. Rewrite using `[(GlobalTheory.T.shift_functional_power_sum ι N j 1 _ σ σ le_rfl).2, if_pos ⟨rfl, rfl⟩, hQ1, mul_one]`. Introduce `τ _ hτ`. Rewrite using `[(GlobalTheory.T.shift_functional_power_sum ι N j 1 _ τ σ le_rfl).2, if_neg (fun h => hτ h.1)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨L2, hL2⟩` from `h _ hF2`. Take `⟨L1, hL1⟩` from `h _ hF1`. Rewrite `hL2` using `[s2, t2]`. Rewrite `hL1` using `[t1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set s := ∑ τ, shF j τ (pSum σ 1 * (pLow j σ 1 * Q))`. Establish `ha : Filter.Tendsto a Filter.atTop (nhds (L2 / 2))` using `(hL2.div_const 2).congr fun B => by ring`. Establish `hN : (N : ℝ) ≠ 0` using `by exact_mod_cast (by omega : N ≠ 0)`. Use `⟨_, (L1 - L2 / 2 * s) / N, ha, ?_⟩` and prove the remaining obligations. Use `((hL1.sub (ha.mul_const s)).div_const (N : ℝ)).congr fun B => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem coefficients_converge (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) [Nonempty ι] (j : ℕ)
     (a b : ℕ → ℝ) (hj : 1 ≤ j) (hjN : j < N)

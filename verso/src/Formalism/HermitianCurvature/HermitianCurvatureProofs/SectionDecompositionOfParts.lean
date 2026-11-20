@@ -8,41 +8,39 @@ open C2x5 C2x7
 
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `_ hC1iii hURI hUp _ hUM _ hTM k r z z' γ hstd hpos hmono s hs`. Establish `hz` using `hstd.2.1`. Establish `hU` using `hUM k r z hz`. Establish `hSg` using `symmetric_group_holds k r z hz.1`. Establish `hNg` using `unipotent_subgroup_holds k r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu1 : C2.uMap k r z 1 = 1` using `hU.2 1 (one_mem_UW z)`. Establish `huinv : ∀ x ∈ Sset k r z, C2.uMap k r z x⁻¹ = (C2.uMap k r z x)⁻¹`. Introduce `x hx`. Establish `hxi` using `hSg.2.2 x hx`. Establish `hxu : IsUnit x.det` using `WeylGroupFacts.isUnit_of_uh (Sset_UH hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: C2.uMap k r z x * C2.uMap k r z x⁻¹ = 1`. Rewrite using `[← (hU.1 x hx).2.2 _ hxi, Matrix.mul_nonsing_inv _ hxu, hu1]`. Conclude with `(Matrix.inv_eq_right_inv this).symm`. Establish `huSg : ∀ σ ∈ C2.Sg k r z z' γ, σ ∈ Sset k r z ∧ ∃ v, v ∈ C2.UTset (r + 1) ∧ vᴴ ∈ C2.LPg (Zhat k r z z' γ) ∧ C2.uMap k r z σ = v`. Introduce and unpack `σ ⟨n0, hn0, v, hv, hvL, h, hh, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨hτN, _, hτu⟩` from `hTM k r z hz v hv`. Establish `hn0S : n0 ∈ Sset k r z` using `N_sub_S hn0.1`. Establish `hτS : C2.tauM k r z v ∈ Sset k r z` using `N_sub_S hτN`. Establish `hhS : h ∈ Sset k r z` using `UW_sub_S hh`. Establish `hs1` using `hSg.2.1 _ hn0S _ hτS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hSg.2.1 _ hs1 _ hhS, v, hv, hvL, ?_⟩` and prove the remaining obligations. Rewrite using `[(hU.1 _ hs1).2.2 h hhS, (hU.1 _ hn0S).2.2 _ hτS, hn0.2, hτu, hU.2 h hh, Matrix.one_mul, Matrix.mul_one]`. Establish `hRimg : ∀ ρ ∈ C2.Rst k r z z' γ, C2.uMap k r z ρ ∈ C2.UTset (r + 1) ∧ (C2.uMap k r z ρ)ᴴ ∈ C2.Lstg (Zhat k r z z' γ)`. Introduce `ρ hρ`. Establish `hmap` using `(hC1iii k r z z' γ hstd hpos).1.mapsTo hρ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3⟩` from `hmap`. Establish `: C2.uMap k r z ρ ∈ {u | u ∈ C2.UTset (r + 1) ∧ ∃ u' ∈ C2.UTset (r + 1), uᴴ * Zhat k r z z' γ * u' = Zhat k r z z' γ}` using `⟨h1, _, h2, h3⟩`. Rewrite `this` using `[hURI (r + 1) (Zhat k r z z' γ) hmono]`. Conclude with `this`. Establish `hRS : ∀ ρ ∈ C2.Rst k r z z' γ, ρ ∈ Sset k r z` using `fun ρ hρ => hρ.1.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hus, husUT, _⟩` from `hU.1 s hs`. Take `⟨⟨uρ, v⟩, ⟨huρ, hv, huρL, hvL, hue⟩, huniq⟩` from `hUp (r + 1) (Zhat k r z z' γ) hmono _ husUT`. Simplify using `only at huρ hv huρL hvL hue`. Establish `huρR : uρ ∈ {u | u ∈ C2.UTset (r + 1) ∧ ∃ u' ∈ C2.UTset (r + 1), uᴴ * Zhat k r z z' γ * u' = Zhat k r z z' γ}`. Rewrite using `[hURI (r + 1) (Zhat k r z z' γ) hmono]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨huρ, huρL⟩`. Take `⟨u', hu', hu'e⟩` from `huρR.2`. Establish `hmemT : (uρ, u') ∈ {p : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ × Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ | p.1 ∈ C2.UTset (r + 1) ∧ p.2 ∈ C2.UTset (r + 1) ∧ p.1ᴴ * Zhat k r z z' γ * p.2 = Zhat k r z z' γ}` using `⟨huρ, hu', hu'e⟩`. Take `⟨ρ, hρ, hρe⟩` from `(hC1iii k r z z' γ hstd hpos).1.surjOn hmemT`. Establish `hρu : C2.uMap k r z ρ = uρ` using `congrArg Prod.fst hρe`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρS` using `hRS ρ hρ`. Establish `hρu' : IsUnit ρ.det` using `WeylGroupFacts.isUnit_of_uh (Sset_UH hρS)`. Take `⟨σ, hσ⟩ : ∃ σ, σ = ρ⁻¹ * s` from `⟨_, rfl⟩`. Establish `hσS : σ ∈ Sset k r z` using `by rw [hσ]; exact hSg.2.1 _ (hSg.2.2 _ hρS) _ hs`. Establish `hσu : C2.uMap k r z σ = v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hσ, (hU.1 _ (hSg.2.2 _ hρS)).2.2 s hs, huinv ρ hρS, hρu, hue, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (C2x2.ut_unit huρ), Matrix.one_mul]`. Take `⟨h1, hh1, n1, hn1, hσe⟩` from `hσS`. Establish `hh1S` using `UW_sub_S hh1`. Establish `hn1S` using `N_sub_S (z := z) hn1`. Establish `hn1u : C2.uMap k r z n1 = v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hσu, hσe, (hU.1 _ hh1S).2.2 _ hn1S, hU.2 _ hh1, Matrix.one_mul]`. Establish `hh1inv` using `WeylGroupFacts.uw_inv hh1`. Establish `hh1u : IsUnit h1.det` using `WeylGroupFacts.isUnit_of_uh hh1.1`. Establish `hn2 : h1 * n1 * h1⁻¹ ∈ Nset k r` using `(unitary_weyl_normal_holds k r z hz.1 h1 hh1 n1 hn1).1`. Establish `hn2u : C2.uMap k r z (h1 * n1 * h1⁻¹) = v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(hU.1 _ (hSg.2.1 _ hh1S _ hn1S)).2.2 _ (UW_sub_S hh1inv), (hU.1 _ hh1S).2.2 _ hn1S, hU.2 _ hh1, hU.2 _ hh1inv, hn1u, Matrix.one_mul, Matrix.mul_one]`. Take `⟨hτN, _, hτu⟩` from `hTM k r z hz v hv`. Take `⟨τv, hτv⟩ : ∃ τv, τv = C2.tauM k r z v` from `⟨_, rfl⟩`. Rewrite `hτN`, `hτu` using `[← hτv]`. Establish `hτS : τv ∈ Sset k r z` using `N_sub_S hτN`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hτunit : IsUnit τv.det` using `WeylGroupFacts.isUnit_of_uh hτN.1`. Take `⟨n0, hn0⟩ : ∃ n0, n0 = h1 * n1 * h1⁻¹ * τv⁻¹` from `⟨_, rfl⟩`. Establish `hn0N : n0 ∈ Nset k r` using `by rw [hn0]; exact hNg.2.1 _ hn2 _ (hNg.2.2 _ hτN)`. Establish `hn0u : C2.uMap k r z n0 = 1`. Rewrite using `[hn0, (hU.1 _ (N_sub_S hn2)).2.2 _ (hSg.2.2 _ hτS), huinv _ hτS, hn2u, hτu, Matrix.mul_nonsing_inv _ (C2x2.ut_unit hv)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hσdec : σ = n0 * τv * h1`. Rewrite using `[hσe, hn0, Matrix.mul_assoc (h1 * n1 * h1⁻¹), Matrix.nonsing_inv_mul _ hτunit, Matrix.mul_one, Matrix.mul_assoc (h1 * n1), Matrix.nonsing_inv_mul _ hh1u, Matrix.mul_one]`. Establish `hσSg : σ ∈ C2.Sg k r z z' γ` using `⟨n0, ⟨hn0N, hn0u⟩, v, hv, hvL, h1, hh1, by rw [hσdec, hτv]⟩`. Use `⟨(ρ, σ), ⟨hρ, hσSg, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show s = ρ * σ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hσ, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hρu', Matrix.one_mul]`. Introduce and unpack `⟨ρ', σ'⟩ ⟨hρ', hσ', hse⟩`. Simplify using `only at hρ' hσ' hse`. Take `⟨hσ'S, v', hv', hv'L, hσ'u⟩` from `huSg σ' hσ'`. Take `⟨hρ'U, hρ'L⟩` from `hRimg ρ' hρ'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hus' : C2.uMap k r z s = C2.uMap k r z ρ' * v'`. Rewrite using `[hse, (hU.1 _ (hRS ρ' hρ')).2.2 _ hσ'S, hσ'u]`. Use `huniq (C2.uMap k r z ρ', v') ⟨hρ'U, hv', hρ'L, hv'L, hus'⟩` as an intermediate fact. Rewrite `this` using `[Prod.ext_iff]`. Simplify using `only at this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hρρ : ρ' = ρ` using `(hC1iii k r z z' γ hstd hpos).2.1 hρ' hρ (this.1.trans hρu.symm)`. Substitute `hρρ` using the available equality. Establish `hρ'u : IsUnit ρ'.det` using `hρu'`. Establish `: σ' = ρ'⁻¹ * s`. Rewrite using `[hse, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hρ'u, Matrix.one_mul]`.
-
-Rewrite using `[this, hσ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c2_section_decomp_of_pieces : C2.SectionDecompOfParts := by
   intro _ hC1iii hURI hUp _ hUM _ hTM k r z z' γ hstd hpos hmono s hs

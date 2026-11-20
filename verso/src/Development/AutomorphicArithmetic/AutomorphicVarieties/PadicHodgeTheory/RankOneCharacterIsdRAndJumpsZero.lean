@@ -13,17 +13,15 @@ import Formalism.AdmissibleDesigns.InvariantsEqBotIff
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.WeilDeligne GlobalTheory.GalOfCusp GlobalTheory.HeckeGal GlobalTheory.LocLanglands GlobalTheory.Published UpperTheory.V.W
 
 /- English proof (translation)
-Take `⟨U, hU, hUe⟩` from `isOpen_induced_iff.1 hκ`. Establish `h1 : (1 : G F Ω) ∈ U`. Establish `: (1 : ↥(Ine (F` using `F) A)) ∈ Subtype.val ⁻¹' U := by`. Rewrite using `[hUe]`. Conclude with `map_one (κ.comp (Subgroup.inclusion (Ine_le_Dec A)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hU1 : IsOpen {g : ↥(GK Bw.Kw) | ((Bw.e.symm g : ↥(Dec (F` using `F) A)) : G F Ω) ∈ U} := hU.preimage (continuous_subtype_val.comp Bw.e_symm_cont)`. Take `⟨U', hU', hUe'⟩` from `isOpen_induced_iff.1 hU1`. Establish `h1' : (1 : GQ l) ∈ U'`. Establish `: (1 : ↥(GK Bw.Kw)) ∈ Subtype.val ⁻¹' U'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hUe']`. Express the relevant statement in the definitionally equal form `((Bw.e.symm 1 : ↥(Dec (F := F) A)) : G F Ω) ∈ U`. Rewrite using `[map_one]`. Conclude with `h1`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨E, hE, hEU⟩` from `(krullTopology_mem_nhds_one_iff ℚ_[l] (Om l) U').1 (hU'.mem_nhds h1')`. Use `⟨GlobalTheory.Pst.supExt Bw.Kw ⟨E, hE⟩, le_sup_left, fun g hg => ?_⟩` and prove the remaining obligations. Use `set g' : ↥(GK Bw.Kw) := Subgroup.inclusion (GK_le (K' := GlobalTheory.Pst.supExt Bw.Kw ⟨E, hE⟩) le_sup_left) g with hg'`. Establish `hgU : g' ∈ Subtype.val ⁻¹' U'` using `hEU (GK_le (K := ⟨E, hE⟩) (K' := GlobalTheory.Pst.supExt Bw.Kw ⟨E, hE⟩) le_sup_right g.2)`. Rewrite `hgU` using `[hUe']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hI : ((Bw.e.symm g' : ↥(Dec (F` using `F) A)) : G F Ω) ∈ Ine (F := F) A := by`. Use `⟨(Bw.e.symm g').2, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hj.valuation_lt_one_iff, map_sub, ← Bw.e_comm, MulEquiv.apply_symm_apply]`. Conclude with `GlobalTheory.FrobGen.norm_sub_lt ((UpperTheory.V.Loc.memIK _ g).1 hg) _ ((hj x).1 ((A.valuation_le_one_iff x).1 hx))`. Establish `h2 : (⟨_, hI⟩ : ↥(Ine (F` using `F) A)) ∈ Subtype.val ⁻¹' U := hgU`.
-
-Rewrite `h2` using `[hUe]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 private theorem exists_ext {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : ℕ} [Fact l.Prime]
     {A : ValuationSubring Ω} (κ : ↥(Dec (F := F) A) →* (Qbar l)ˣ)
@@ -63,29 +61,25 @@ private theorem exists_ext {F Ω : Type} [Field F] [NumberField F] [Field Ω] [A
   exact h2
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ A κ hc hκ O _ _ _ Bw hj`. Take `⟨K, h, hK⟩` from `exists_ext κ hκ Bw hj`. Take `⟨T⟩` from `UpperTheory.V.Loc.tiedP l`. Use `haveI : CompactSpace ↥(GK Bw.Kw) := GlobalTheory.UnramifiedCrys.compactSpace_GK _`. Use `haveI : CompactSpace ↥(Dec (F := F) A) := Bw.e.symm.surjective.compactSpace Bw.e_symm_cont`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : T2Space ↥(Dec (F := F) A) := inferInstance`. Establish `hv : ∀ g a b, ((GlobalTheory.TripleGal.rk1 κ g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)) a b = κ g`. Introduce `g a b`. Rewrite using `[Subsingleton.elim a b]`. Conclude with `Matrix.diagonal_apply_eq _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hc0 : Continuous fun g => ((GlobalTheory.TripleGal.rk1 κ g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l))` using `continuous_pi fun a => continuous_pi fun b => by`. Simplify using `only [hv]`. Conclude with `Units.continuous_val.comp hc`. Use `haveI := K.2`. Set `N : FinExt l` to `⟨IntermediateField.normalClosure ℚ_[l] K.1 (PadicAlgCl l), inferInstance⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨LL, hL, hent⟩` from `GlobalTheory.CompactRepField.exists_finExt_entries_mem l _ 1 _ hc0 (GlobalTheory.Pst.supExt Bw.LL N)`. Take `⟨r, hr⟩` from `GlobalTheory.CompactRepField.exists_hom_of_entries_mem _ LL.1 hent`. Establish `l₁ : Bw.LL.1 ≤ LL.1` using `le_trans le_sup_left hL`. Establish `l₂ : N.1 ≤ LL.1` using `le_trans le_sup_right hL`. Establish `hM : GlobalTheory.Pst.IsModel Bw (GlobalTheory.TripleGal.rk1 κ) LL r` using `⟨l₁, by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `g a b`. Conclude with `hr g a b⟩`. Set `μ : ↥(GK K) →* (↥LL.1)ˣ` to `(Matrix.GeneralLinearGroup.det.comp r).comp (Bw.e.symm.toMonoidHom.comp (Subgroup.inclusion (GK_le h)))`. Establish `hμr : ∀ g, ((μ g : (↥LL.1)ˣ) : ↥LL.1) = (r (Bw.e.symm (Subgroup.inclusion (GK_le h) g)) : Matrix (Fin 1) (Fin 1) ↥LL.1) 0 0` using `fun g => Matrix.det_fin_one _`. Establish `hμ : ∀ g, (((μ g : (↥LL.1)ˣ) : ↥LL.1) : Om l) = κ (Bw.e.symm (Subgroup.inclusion (GK_le h) g))` using `fun g => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hμr, ← hv _ 0 0]`. Conclude with `hr _ 0 0`. Establish `hμc : Continuous fun g => ((μ g : (↥LL.1)ˣ) : ↥LL.1)`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Establish `: Continuous fun g : ↥(GK K) => ((κ (Bw.e.symm (Subgroup.inclusion (GK_le h) g)) : (Qbar l)ˣ) : Qbar l)` using `Units.continuous_val.comp (hc.comp (Bw.e_symm_cont.comp (continuous_inclusion (GK_le h))))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this.congr fun g => (hμ g).symm`. Take `⟨hcr, hm⟩` from `GlobalTheory.UnramifiedChar.isCrys_and_multV_eq l _ _ T K LL μ hμc fun g hg => by`. Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hμ, hK g hg]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Set `e : ↥LL.1 ≃ₗ[↥LL.1] (Fin 1 → ↥LL.1)` to `(LinearEquiv.funUnique (Fin 1) ↥LL.1 ↥LL.1).symm`. Establish `he : ∀ g x, e (Formalism.WeaklyAdmissibleFiltrations.charRep μ g x) = ((Bw.repE LL r).comp (Subgroup.inclusion (GK_le h)) : Representation ↥LL.1 ↥(GK K) _) g (e x)`. Introduce `g x`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `((μ g : (↥LL.1)ˣ) : ↥LL.1) * x = Matrix.mulVec (r (Bw.e.symm (Subgroup.inclusion (GK_le h) g)) : Matrix (Fin 1) (Fin 1) ↥LL.1) (fun _ => x) a`. Rewrite using `[hμr, Subsingleton.elim a 0]`. Simplify using `[Matrix.mulVec, dotProduct]`. Establish `hcr'` using `Formalism.MainNotions.N.K.Norm.isCrys_congr _ e he hcr`. Establish `hd : Formalism.MainNotions.N.IsDR ((UpperTheory.V.Loc.PP l).PD Bw.Kw) (Bw.repE LL r)` using `(GlobalTheory.Per.TiedRestrict.restrict_crys_deRham l _ _ T _ K LL h _ _).2.2 (GlobalTheory.Per.CrisDR.isDR_of_isCrys l _ _ T K LL _ _ hcr').1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hD : Bw.IsdRE (UpperTheory.V.Loc.PP l) LL r`. Unfold `Formalism.MainNotions.N.IsDR at hd`. Rewrite `hd` using `[Module.finrank_fin_fun]`. Conclude with `hd`. Use `⟨⟨_, _, hM, hD⟩, fun τ LL' τ' hτ => ?_⟩` and prove the remaining obligations.
-
-Take `⟨σ, hσ⟩` from `IsAlgClosed.surjective_restrictDomain_of_isAlgebraic (K := ℚ_[l]) (L := ↥Bw.Kw.1) (M := Om l) (E := Om l) (LL'.1.val.comp τ')`. Set `τ₂ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1` to `(σ.comp K.1.val).codRestrict LL.1.toSubalgebra fun x => l₂ (AlgHom.fieldRange_le_normalClosure (σ.comp K.1.val) ⟨x, rfl⟩)`. Use `⟨LL, r, hM, hD, τ₂.comp (IntermediateField.inclusion h), fun x => ?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[hτ x]`. Conclude with `(AlgHom.congr_fun hσ _).symm`.
-
-Apply the tactic sequence `rw [LocBridge.multE, ← GlobalTheory.JumpRestrict.multV_restrict l _ _ T _ K LL h _ _ hd, ← Formalism.MainNotions.N.K.Norm.multV_congr _ e he, hm, Multiset.count_singleton] split_ifs <;> rfl`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.rankOne_character_isdR_and_jumps_zero :
     ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} (κ : ↥(Dec (F := F) A) →* (Qbar l)ˣ), Continuous κ → IsOpen {σ : ↥(Ine (F := F) A) | κ (Subgroup.inclusion (Ine_le_Dec A) σ) = 1} → ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O), GlobalTheory.Pst.Induces Bw → GlobalTheory.Pst.IsdRAt (UpperTheory.V.Loc.PP l) Bw (GlobalTheory.TripleGal.rk1 κ) ∧ ∀ (τ : F →+* Qbar l) (LL' : FinExt l) (τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL'.1), GlobalTheory.Pst.IsInduced Bw τ τ' → GlobalTheory.Pst.IsJumpsAt (UpperTheory.V.Loc.PP l) Bw (GlobalTheory.TripleGal.rk1 κ) τ {0} := by

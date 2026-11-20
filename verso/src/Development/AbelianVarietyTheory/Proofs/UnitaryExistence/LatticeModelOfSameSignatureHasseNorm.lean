@@ -22,17 +22,17 @@ open scoped Matrix nonZeroDivisors
 namespace GlobalTheory.FrameUnif
 
 /- English proof (translation)
-Distinguish the cases in `hξ0 : ξ = 0`. Establish `hz : ∀ z : D.La, z = 0` using `fun z => by`. Apply `D.unimod.1` to reduce the goal to its premises. Use extensionality with `y`. Use `h.2.2.2.2 z y` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `this` using `[hξ0, zero_mul, map_zero]`. Simplify using `using this`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Rewrite using `[hz y, map_zero, GlobalTheory.HermModel.herm_zero_right, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntegral_zero`. Establish `hint` using `(GlobalTheory.HermModel.rank_integral_selfDual E H D r ξ Gm φ hξ h).2.2.1`. Establish `halg : IsAlgebraic ℤ ξ` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic ξ)`. Take `⟨n, hn0, hn⟩` from `halg.exists_integral_multiple`. Establish `hd : IsIntegral ℤ ((NumberField.discr E : E) * (n • ξ))` using `(isIntegral_algebraMap (R := ℤ) (A := E) (x := NumberField.discr E)).mul hn`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, hd⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1 : (NumberField.discr E : E) * (n • ξ) = 0` using `congrArg Subtype.val h0`. Rewrite `h1` using `[zsmul_eq_mul]`. Conclude with `mul_ne_zero (Int.cast_ne_zero.2 (NumberField.discr_ne_zero E)) (mul_ne_zero (Int.cast_ne_zero.2 hn0) hξ0) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Establish `h2` using `(isIntegral_algebraMap (R := ℤ) (A := E) (x := n)).mul (hint x y)`. Establish `e : (NumberField.discr E : E) * (n • ξ) * herm Gm (φ x) (φ y) = algebraMap ℤ E n * ((NumberField.discr E : E) * (ξ * herm Gm (φ x) (φ y)))`. Rewrite using `[zsmul_eq_mul, eq_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `IsIntegral ℤ ((NumberField.discr E : E) * (n • ξ) * herm Gm (φ x) (φ y))`. Rewrite using `[e]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_den_herm_model (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (r : ℕ) (ξ : E) (Gm : Matrix (Fin r) (Fin r) E)
@@ -74,9 +74,9 @@ theorem exists_den_herm_model (E : Type) [Field E] [NumberField E] [IsCMField E]
       rw [e]; exact h2
 
 /- English proof (translation)
-Introduce `hN E _ _ _ H l Dw Di r Ψ ξ₀ Gm φ hp hq hΨ hξ h`. Establish `hξ' : cc (-ξ₀) = -(-ξ₀)`. Establish `: cc (-ξ₀) = -cc ξ₀` using `by simp [cc]`. Rewrite using `[this, hξ]`. Take `⟨φ0, h0⟩` from `GlobalTheory.model_in_same_space (GlobalTheory.LocalQuad.landherrSt_of_hasseNormSt hN) hN E H Dw Di r (-ξ₀) Gm φ hp hq hξ' h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨φ0, h0.1, h0.2.2.2.2, ?_, exists_den_herm_model E H Di r (-ξ₀) Gm φ0 hξ' h0, GlobalTheory.T.principalLevelGroup_finiteIndex_unitaryStabiliser E H l Di r ξ₀ Gm φ0 hξ h0, GlobalTheory.T.principalGroup_acts_freely_on_flags E H l Di r ξ₀ Gm φ0 hξ h0 Ψ Dw.q hΨ, GlobalTheory.T.transve …` and prove the remaining obligations. Rewrite using `[LinearMap.coe_range]`. Conclude with `h0.2.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latModel_of_same_signature : GlobalTheory.Published.HasseNormSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Level H) (Dw Di : Datum H) (r : ℕ) (Ψ : Finset (E →+* ℂ)) (ξ₀ : E) (Gm : Matrix (Fin r) (Fin r) E) (φ : Dw.La →ₗ[𝓞 E] (Fin r → E)), Di.p = Dw.p → Di.q = Dw.q → (∀ τ, τ ∈ Ψ ↔ τ (H.rt : E) = H.rt0) → cc ξ₀ = -ξ₀ → (Function.Injective φ ∧ Submodule.span E (Set.range φ) = ⊤ ∧ (∀ a b, cc (Gm a b) = Gm b a) ∧ Gm.det ≠ 0 ∧ ∀ x y, ((Dw.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (-ξ₀ * herm Gm (φ x) (φ y))) → LatModel l Ψ Gm ξ₀ Dw.q Di := by
   intro hN E _ _ _ H l Dw Di r Ψ ξ₀ Gm φ hp hq hΨ hξ h

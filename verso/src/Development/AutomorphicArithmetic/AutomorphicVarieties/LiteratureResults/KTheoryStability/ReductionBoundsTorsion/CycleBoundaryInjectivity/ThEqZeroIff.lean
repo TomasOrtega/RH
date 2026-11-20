@@ -20,7 +20,7 @@ def jz : ℝ ⊗[ℤ] LinearMap.ker d0 →ₗ[ℝ] V1 :=
   e1.toLinearMap ∘ₗ (LinearMap.ker d0).subtype.baseChange ℝ
 
 /- English proof (translation)
-Unfold `jz`. Rewrite using `[LinearMap.coe_comp]`. Use `e1.injective.comp ?_` and prove the remaining obligations. Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ Subtype.val_injective`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jz_injective : Function.Injective (jz d0 e1) := by
   unfold jz
@@ -30,15 +30,15 @@ theorem jz_injective : Function.Injective (jz d0 e1) := by
   exact Module.Flat.lTensor_preserves_injective_linearMap _ Subtype.val_injective
 
 /- English proof (translation)
-Establish `hex` using `Module.Flat.lTensor_exact ℝ (LinearMap.exact_subtype_ker_map d0)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `congrArg (fun f => f (((LinearMap.ker d0).subtype.baseChange ℝ) w)) h0`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe] at h1`. Simplify using `only [jz, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[h1, LinearMap.baseChange_eq_ltensor, LinearMap.baseChange_eq_ltensor, hex.apply_apply_eq_zero w, map_zero]`. Introduce `hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[LinearMap.mem_ker]`. Take `⟨y, rfl⟩` from `e1.surjective x`. Establish `h1` using `congrArg (fun f => f y) h0`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe] at h1`. Rewrite `hx` using `[h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy : (d0.baseChange ℝ) y = 0`. Rewrite `hx` using `[← map_zero e0]`. Conclude with `e0.injective hx`. Rewrite `hy` using `[LinearMap.baseChange_eq_ltensor]`. Take `⟨w, hw⟩` from `(hex y).mp hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w, ?_⟩` and prove the remaining obligations. Simplify using `only [jz, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[LinearMap.baseChange_eq_ltensor, hw]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_jz (h0 : D0 ∘ₗ e1.toLinearMap = e0.toLinearMap ∘ₗ d0.baseChange ℝ) :
     LinearMap.range (jz d0 e1) = LinearMap.ker D0 := by
@@ -73,7 +73,7 @@ def th (h0 : D0 ∘ₗ e1.toLinearMap = e0.toLinearMap ∘ₗ d0.baseChange ℝ)
     (LinearEquiv.ofEq _ _ (range_jz d0 e1 e0 D0 h0).symm).toLinearMap
 
 /- English proof (translation)
-Simplify using `only [th, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe]`. Use `congr 1`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem th_jz (h0 : D0 ∘ₗ e1.toLinearMap = e0.toLinearMap ∘ₗ d0.baseChange ℝ)
     (w : ℝ ⊗[ℤ] LinearMap.ker d0) (hw : jz d0 e1 w ∈ LinearMap.ker D0) :
@@ -84,7 +84,7 @@ theorem th_jz (h0 : D0 ∘ₗ e1.toLinearMap = e0.toLinearMap ∘ₗ d0.baseChan
   rfl
 
 /- English proof (translation)
-Establish `hz : z.1 ∈ LinearMap.range (jz d0 e1)`. Rewrite using `[range_jz d0 e1 e0 D0 h0]`. Conclude with `z.2`. Conclude with `LinearMap.mem_range.mp hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_jz (h0 : D0 ∘ₗ e1.toLinearMap = e0.toLinearMap ∘ₗ d0.baseChange ℝ)
     (z : LinearMap.ker D0) : ∃ w, jz d0 e1 w = z.1 := by
@@ -94,9 +94,9 @@ theorem exists_jz (h0 : D0 ∘ₗ e1.toLinearMap = e0.toLinearMap ∘ₗ d0.base
   exact LinearMap.mem_range.mp hz
 
 /- English proof (translation)
-Introduce `y`. Establish `hs : Function.Surjective (p.baseChange ℝ)`. Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `LinearMap.lTensor_surjective _ hp`. Take `⟨w, rfl⟩` from `hs y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw : jz d0 e1 w ∈ LinearMap.ker D0`. Rewrite using `[← range_jz d0 e1 e0 D0 h0]`. Conclude with `LinearMap.mem_range_self _ w`. Conclude with `⟨⟨jz d0 e1 w, hw⟩, th_jz d0 p e1 e0 D0 h0 w hw⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem th_surjective (hp : Function.Surjective p)
     (h0 : D0 ∘ₗ e1.toLinearMap = e0.toLinearMap ∘ₗ d0.baseChange ℝ) :
@@ -112,21 +112,21 @@ theorem th_surjective (hp : Function.Surjective p)
   exact ⟨⟨jz d0 e1 w, hw⟩, th_jz d0 p e1 e0 D0 h0 w hw⟩
 
 /- English proof (translation)
-Take `⟨zv, hzv⟩` from `z`. Take `⟨w, hw⟩` from `exists_jz d0 e1 e0 D0 h0 ⟨zv, hzv⟩`. Simplify using `only at hw`. Substitute `hw` using the available equality. Rewrite using `[th_jz d0 p e1 e0 D0 h0 w hzv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ∀ c, d1 c ∈ LinearMap.ker d0` using `fun c => by`. Rewrite using `[LinearMap.mem_ker]`. Simplify using `using LinearMap.congr_fun hdd c`. Take `⟨g, hg⟩ : ∃ g : C2 →ₗ[ℤ] LinearMap.ker d0, (LinearMap.ker d0).subtype ∘ₗ g = d1` from `⟨d1.codRestrict _ hmem, LinearMap.subtype_comp_codRestrict _ _ _⟩`. Establish `hgx : ∀ c, ((g c : LinearMap.ker d0) : C1) = d1 c` using `fun c => LinearMap.congr_fun hg c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hexZ : Function.Exact g p`. Introduce `x`. Rewrite using `[hker x]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨c, Subtype.ext ((hgx c).trans hc)⟩`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨c, (hgx c).symm⟩`. Establish `hexR` using `lTensor_exact ℝ hexZ hp`. Establish `key : ∀ u, jz d0 e1 (g.baseChange ℝ u) = D1 (e2 u)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u`. Simplify using `only [jz, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← LinearMap.comp_apply ((LinearMap.ker d0).subtype.baseChange ℝ), ← LinearMap.baseChange_comp, hg]`. Use `LinearMap.congr_fun h1 u` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this.symm`. Rewrite using `[LinearMap.baseChange_eq_ltensor, hexR w]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Use `⟨e2 u, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key u, LinearMap.baseChange_eq_ltensor]`. Introduce and unpack `⟨v, hv⟩`. Take `⟨u, rfl⟩` from `e2.surjective v`. Use `⟨u, ?_⟩` and prove the remaining obligations. Apply `jz_injective d0 e1` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.baseChange_eq_ltensor, key u, hv]`.
+A detailed English derivation is pending.
 -/
 theorem th_eq_zero_iff (hdd : d0 ∘ₗ d1 = 0) (hker : ∀ x, p x = 0 ↔ x.1 ∈ LinearMap.range d1)
     (hp : Function.Surjective p)
@@ -187,13 +187,13 @@ variable {C1 C0 H V1 V0 C1' C0' H' V1' V0' : Type} [AddCommGroup C1] [AddCommGro
   (e1' : ℝ ⊗[ℤ] C1' ≃ₗ[ℝ] V1') (e0' : ℝ ⊗[ℤ] C0' ≃ₗ[ℝ] V0') (D0' : V1' →ₗ[ℝ] V0')
 
 /- English proof (translation)
-Take `⟨zv, hzv⟩` from `z`. Take `⟨w, hw⟩` from `exists_jz d0 e1 e0 D0 h0 ⟨zv, hzv⟩`. Simplify using `only at hw`. Substitute `hw` using the available equality. Take `⟨zv', hzv'⟩` from `z'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Simplify using `only at hz`. Substitute `hz` using the available equality. Rewrite using `[th_jz d0 p e1 e0 D0 h0 w hzv]`. Establish `hcomp : c1 ∘ₗ (LinearMap.ker d0).subtype = (LinearMap.ker d0').subtype ∘ₗ c1.restrict hc` using `LinearMap.ext fun x => rfl`. Establish `hj : F (jz d0 e1 w) = jz d0' e1' ((c1.restrict hc).baseChange ℝ w)`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [jz, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Use `LinearMap.congr_fun hF ((LinearMap.ker d0).subtype.baseChange ℝ w)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe] at this`. Rewrite using `[this, ← LinearMap.comp_apply (c1.baseChange ℝ), ← LinearMap.baseChange_comp, hcomp, LinearMap.baseChange_comp, LinearMap.comp_apply]`. Establish `hmem : jz d0' e1' ((c1.restrict hc).baseChange ℝ w) ∈ LinearMap.ker D0'` using `hj ▸ hzv'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heq : (⟨F (jz d0 e1 w), hzv'⟩ : LinearMap.ker D0') = ⟨jz d0' e1' ((c1.restrict hc).baseChange ℝ w), hmem⟩` using `Subtype.ext hj`. Rewrite using `[heq, th_jz d0' p' e1' e0' D0' h0' _ hmem, ← LinearMap.comp_apply (p'.baseChange ℝ), ← LinearMap.baseChange_comp, ← LinearMap.comp_apply (q.baseChange ℝ), ← LinearMap.baseChange_comp]`. Rewrite using `[show p' ∘ₗ c1.restrict hc = q ∘ₗ p from LinearMap.ext fun x => hq x]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem th_natural (h0 : D0 ∘ₗ e1.toLinearMap = e0.toLinearMap ∘ₗ d0.baseChange ℝ)
     (h0' : D0' ∘ₗ e1'.toLinearMap = e0'.toLinearMap ∘ₗ d0'.baseChange ℝ)

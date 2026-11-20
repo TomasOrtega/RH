@@ -6,11 +6,11 @@ open scoped ComplexConjugate BigOperators Topology
 namespace GlobalTheory.MomOne
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add p r hp hr`. Use `dvd_add hp hr` as an intermediate fact. Simplify using `only [map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p i hp`. Establish `hi : a ∣ (![u, w] i) - (![u', w'] i)` using `by fin_cases i`. Simplify using `using hu`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hw`. Use `dvd_add (hp.mul_right (![u, w] i)) (hi.mul_left (MvPolynomial.aeval ![u', w'] p))` as an intermediate fact. Simplify using `only [map_mul, MvPolynomial.aeval_X]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dvd_aeval_sub_aeval_two {K A : Type*} [CommRing K] [CommRing A] [Algebra K A]
     (a u w u' w' : A) (hu : a ∣ u - u') (hw : a ∣ w - w') (P : MvPolynomial (Fin 2) K) :
@@ -33,11 +33,11 @@ theorem dvd_aeval_sub_aeval_two {K A : Type*} [CommRing K] [CommRing A] [Algebra
     ring
 
 /- English proof (translation)
-Establish `hu : IsUnit (1 + X : ℂ_[q]⟦X⟧)`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff]`. Simplify using the standard rewrite rules. Unfold `DT at hD`. Rewrite `hD` using `[hu.dvd_mul_left, X_pow_dvd_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[X_pow_dvd_iff]`. Introduce `m hm`. Consider the cases of `m with`. Consider the case `zero => simpa using h0`. Consider the case `succ k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Use `hD k (by omega)` as an intermediate fact. Rewrite `this` using `[coeff_derivative]`. Establish `hk : ((k : ℂ_[q]) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero k`. Conclude with `(mul_eq_zero.mp this).resolve_right hk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem X_pow_succ_dvd_of_DT {q : ℕ} [Fact q.Prime] (f : ℂ_[q]⟦X⟧) (n : ℕ)
     (h0 : constantCoeff f = 0) (hD : (X : ℂ_[q]⟦X⟧) ^ n ∣ DT f) :
@@ -57,17 +57,15 @@ theorem X_pow_succ_dvd_of_DT {q : ℕ} [Fact q.Prime] (f : ℂ_[q]⟦X⟧) (n : 
     exact (mul_eq_zero.mp this).resolve_right hk
 
 /- English proof (translation)
-Introduce `q _ P₁ P₂ u w u' w' h1 h2 h3 h4 hu hw`. Establish `hsub : ∀ f g : ℂ_[q]⟦X⟧, DT (f - g) = DT f - DT g`. Introduce `f g`. Unfold `DT`. Rewrite using `[map_sub, mul_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ n : ℕ, (X : ℂ_[q]⟦X⟧) ^ n ∣ u - u' ∧ (X : ℂ_[q]⟦X⟧) ^ n ∣ w - w'`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Prove the components needed by the constructor for the conclusion. Apply `X_pow_succ_dvd_of_DT` to reduce the goal to its premises. Rewrite using `[map_sub, hu, sub_self]`. Rewrite using `[hsub, h1, h3]`. Conclude with `dvd_aeval_sub_aeval_two _ _ _ _ _ ih.1 ih.2 _`.
+Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `X_pow_succ_dvd_of_DT` to reduce the goal to its premises. Rewrite using `[map_sub, hw, sub_self]`. Rewrite using `[hsub, h2, h4]`. Conclude with `dvd_aeval_sub_aeval_two _ _ _ _ _ ih.1 ih.2 _`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← sub_eq_zero]`. Use extensionality with `n`. Simplify using `using X_pow_dvd_iff.mp (key (n + 1)).1 n (by omega)`. Rewrite using `[← sub_eq_zero]`. Use extensionality with `n`.
-
-Simplify using `using X_pow_dvd_iff.mp (key (n + 1)).2 n (by omega)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ode_unique : ∀ (q : ℕ) [Fact q.Prime] (P₁ P₂ : MvPolynomial (Fin 2) ℂ_[q]) (u w u' w' : ℂ_[q]⟦X⟧), DT u = MvPolynomial.aeval ![u, w] P₁ → DT w = MvPolynomial.aeval ![u, w] P₂ → DT u' = MvPolynomial.aeval ![u', w'] P₁ → DT w' = MvPolynomial.aeval ![u', w'] P₂ → constantCoeff u = constantCoeff u' → constantCoeff w = constantCoeff w' → u = u' ∧ w = w' := by
   intro q _ P₁ P₂ u w u' w' h1 h2 h3 h4 hu hw

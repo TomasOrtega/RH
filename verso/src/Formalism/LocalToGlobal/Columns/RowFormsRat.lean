@@ -16,7 +16,7 @@ section Mat
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Set `A0 : Matrix (Fin d) (Fin d) K0` to `fun i j => ⟨A i j, hA i j⟩`. Establish `e : A = A0.map K0.subtype` using `rfl`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv', e, ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← RingHom.map_adjugate]`. Conclude with `mul_mem (inv_mem (A0.det).2) ((A0.adjugate i j).2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rf_inv_entries_mem (K0 : Subfield K) {d : ℕ} (A : Matrix (Fin d) (Fin d) K) (hA : ∀ i j, A i j ∈ K0) (i j : Fin d) :
     A⁻¹ i j ∈ K0 := by
@@ -33,7 +33,7 @@ namespace CSDRat
 variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K)
 
 /- English proof (translation)
-Rewrite using `[← S.bV.sum_repr x, ← S.bV.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply]`. Use `sum_mem fun j _ => mul_mem (hy j) (sum_mem fun i _ => ?_)` and prove the remaining obligations. Conclude with `mul_mem (Formalism.L2.DIV.star_mem_cmMax (hx i)) (R.pair_rat i j)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pair_mem (R : S.Rat) (x y : S.V) (hx : ∀ i, S.bV.repr x i ∈ cmMax K) (hy : ∀ i, S.bV.repr y i ∈ cmMax K) :
     S.pair x y ∈ cmMax K := by
@@ -44,24 +44,24 @@ theorem pair_mem (R : S.Rat) (x y : S.V) (hx : ∀ i, S.bV.repr x i ∈ cmMax K)
   exact mul_mem (Formalism.L2.DIV.star_mem_cmMax (hx i)) (R.pair_rat i j)
 
 /- English proof (translation)
-Unfold `CSD.csum`. Conclude with `sum_mem fun c _ => mul_mem (inv_mem (natCast_mem _ _)) (pair_mem S R _ _ (hf c) (hg c))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem csum_mem (R : S.Rat) (f g : S.Cl → S.V) (hf : S.IsRat f) (hg : S.IsRat g) : S.csum f g ∈ cmMax K := by
   unfold CSD.csum
   exact sum_mem fun c _ => mul_mem (inv_mem (natCast_mem _ _)) (pair_mem S R _ _ (hf c) (hg c))
 
 /- English proof (translation)
-The claim follows from `csum_mem S R _ _ (S.basis_rat hb i) (S.basis_rat hb j)`.
+A detailed English derivation is pending.
 -/
 theorem H_mem (R : S.Rat) (hb : S.HasRatBasis) (i j : Fin S.dim) : S.H i j ∈ cmMax K :=
   csum_mem S R _ _ (S.basis_rat hb i) (S.basis_rat hb j)
 
 /- English proof (translation)
-Establish `h` using `S.csum_sum (Pi.single i 1) x`. Establish `e : S.I (Pi.single i 1) = (S.basis i : S.Cl → S.V)`. Rewrite using `[S.I_eq_sum, Finset.sum_eq_single i]`. Rewrite using `[Pi.single_eq_same, one_smul]`. Introduce `b _ hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_eq_of_ne hb, zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Rewrite `h` using `[e, Finset.sum_eq_single i]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec, dotProduct]`. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem csum_basis (i : Fin S.dim) (x : Fin S.dim → K) :
     S.csum (S.basis i : S.Cl → S.V) (S.I x) = (S.H *ᵥ x) i := by
@@ -82,11 +82,9 @@ theorem csum_basis (i : Fin S.dim) (x : Fin S.dim → K) :
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Use `set x : Fin S.dim → K := S.basis.equivFun f with hx`. Establish `hI : S.I x = (f : S.Cl → S.V)`. Rewrite using `[S.I_apply, hx, LinearEquiv.symm_apply_apply]`. Establish `h1 : S.H *ᵥ x = fun i => S.csum (S.basis i : S.Cl → S.V) (f : S.Cl → S.V)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← csum_basis, hI]`. Establish `h2 : x = S.H⁻¹ *ᵥ fun i => S.csum (S.basis i : S.Cl → S.V) (f : S.Cl → S.V)`. Rewrite using `[← h1, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hdet), Matrix.one_mulVec]`. Use `show x i ∈ cmMax K`. Rewrite using `[h2]`.
-
-Use `show ∑ j, S.H⁻¹ i j * S.csum (S.basis j : S.Cl → S.V) (f : S.Cl → S.V) ∈ cmMax K`. Conclude with `sum_mem fun j _ => mul_mem (rf_inv_entries_mem _ _ (H_mem S R hb) i j) (csum_mem S R _ _ (S.basis_rat hb j) hf)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_mem (R : S.Rat) (hb : S.HasRatBasis) (hdet : S.H.det ≠ 0) (f : S.Forms) (hf : S.IsRat (f : S.Cl → S.V))
     (i : Fin S.dim) : S.basis.repr f i ∈ cmMax K := by
@@ -104,7 +102,7 @@ theorem repr_mem (R : S.Rat) (hb : S.HasRatBasis) (hdet : S.H.det ≠ 0) (f : S.
   exact sum_mem fun j _ => mul_mem (rf_inv_entries_mem _ _ (H_mem S R hb) i j) (csum_mem S R _ _ (S.basis_rat hb j) hf)
 
 /- English proof (translation)
-Introduce `t i j`. Unfold `CSD.actMat`. Rewrite using `[LinearMap.toMatrix_apply]`. Conclude with `repr_mem S R hb hdet _ (hr t _ (S.basis_rat hb j)) i`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actRat_of (R : S.Rat) (hb : S.HasRatBasis) (hdet : S.H.det ≠ 0) {G : Type} [Group G] [Fintype G]
     (r : Representation K G S.Forms)
@@ -121,7 +119,7 @@ section GSDRat
 variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : GSD K)
 
 /- English proof (translation)
-Establish `e : S.ρ g x = S.ρ g (∑ j, S.bV.repr x j • S.bV j)` using `by rw [S.bV.sum_repr x]`. Rewrite using `[e]`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finsetSum, Finsupp.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `sum_mem fun j _ => mul_mem (hx j) (R.act_rat g i j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GSD.rho_mem (R : S.Rat) (g : S.G) (x : S.V) (hx : ∀ i, S.bV.repr x i ∈ cmMax K) (i : S.ιV) :
     S.bV.repr (S.ρ g x) i ∈ cmMax K := by
@@ -131,9 +129,9 @@ theorem GSD.rho_mem (R : S.Rat) (g : S.G) (x : S.V) (hx : ∀ i, S.bV.repr x i �
   exact sum_mem fun j _ => mul_mem (hx j) (R.act_rat g i j)
 
 /- English proof (translation)
-Take `⟨v⟩ : Nonempty (InfinitePlace K)` from `inferInstance`. Establish `hp` using `(R.posH h v).det_pos`. Introduce `h0`. Establish `e : ((S.toCSD h).H.map v.embedding).det = v.embedding (S.toCSD h).H.det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp' : 0 < ((S.toCSD h).H.map v.embedding).det` using `hp`. Rewrite `hp'` using `[e, h0, map_zero]`. Conclude with `lt_irrefl _ hp'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GSD.det_H_ne_zero (R : S.Rat) (h : S.Ok) : (S.toCSD h).H.det ≠ 0 := by
   obtain ⟨v⟩ : Nonempty (InfinitePlace K) := inferInstance
@@ -146,9 +144,7 @@ theorem GSD.det_H_ne_zero (R : S.Rat) (h : S.Ok) : (S.toCSD h).H.det ≠ 0 := by
   exact lt_irrefl _ hp'
 
 /- English proof (translation)
-Use `CSDRat.actRat_of _ (S.toCSDOf_rat h R _) (csd_hasRatBasis _ (S.toCSDOf_rat h R _)) (S.det_H_ne_zero R h) _ ?_` and prove the remaining obligations. Introduce `t f hf c i`. Take `⟨d', hd'⟩` from `hr t ((S.res h).symm f) (S.outSec.rep c)`. Use `show S.bV.repr ((r t ((S.res h).symm f) : S.D → S.V) (S.outSec.rep c)) i ∈ cmMax K`. Rewrite using `[hd']`.
-
-Use `show S.bV.repr (S.ρ (S.outSec.mv d') ((f.1 : S.Cl → S.V) (S.cls d'))) i ∈ cmMax K`. Conclude with `S.rho_mem R _ _ (hf _) i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GSD.repCSD_actRat (h : S.Ok) (R : S.Rat) {A : Type} [Group A] [Fintype A] (r : Representation K A S.EqFun)
     (hr : ∀ (a : A) (φ : S.EqFun) (d : S.D), ∃ d' : S.D, (r a φ : S.D → S.V) d = (φ : S.D → S.V) d') :
@@ -169,14 +165,14 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
 
 /- English proof (translation)
-The claim follows from `GSD.repCSD_actRat _ h (mtildeK_rat W Ch sel mu hX) _ fun _ _ _ => ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem unipotentActionForms_rational (hX : X.Ok) (h : (mtildeKGSD W Ch sel mu).Ok) :
     (MtildeKCSD W Ch sel mu h).ActRat (g0Act W Ch sel mu h) :=
   GSD.repCSD_actRat _ h (mtildeK_rat W Ch sel mu hX) _ fun _ _ _ => ⟨_, rfl⟩
 
 /- English proof (translation)
-The claim follows from `GSD.repCSD_actRat _ h (mtK_rat W Ch sel mu hX j) _ fun _ _ _ => ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem unipotentActionClassSum_rational (hX : X.Ok) (j : ℕ) (h : (mtKGSD W Ch sel mu j).Ok) :
     (MtKCSD W Ch sel mu j h).ActRat (unipotentRightActionOnForms W Ch sel mu j h) :=

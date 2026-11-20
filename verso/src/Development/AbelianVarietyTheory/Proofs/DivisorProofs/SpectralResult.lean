@@ -19,21 +19,21 @@ namespace GlobalTheory.HalfGeo.SpecProof
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z R K k _ _ _ u ψ hu x₀ ξ₀ y₀ q hq a b a₁ b₁ a₂ b₂ ha hb ha₁ hb₁ ha₂ hb₂ r hr`. Set `P` to `GlobalTheory.Obj.toPolAV Z.oF`. Establish `hK : spMap u ≫ x₀ = ξ₀`. Establish `h1` using `Over.w a₁`. Establish `h2` using `Over.w a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Over.mk_hom, Functor.id_obj, Functor.const_obj_obj] at h1 h2`. Rewrite using `[← h1, ha₁, Category.assoc, h2]`. Establish `hC : spMap ψ ≫ x₀ = y₀`. Establish `h1` using `Over.w a₂`. Establish `h2` using `Over.w a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Over.mk_hom, Functor.id_obj, Functor.const_obj_obj] at h1 h2`. Rewrite using `[← h1, ha₂, Category.assoc, h2]`. Take `⟨cc, hcc, -⟩` from `GlobalTheory.LevelCompare.weil_existsUnique P q a b ha hb`. Take `⟨r', rfl⟩` from `GlobalTheory.Ex.Specialise.unitOn_bijective.2 cc`. Set `hKo : Over.mk ξ₀ ⟶ Over.mk x₀` to `Over.homMk (spMap u) hK`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `hCo : Over.mk y₀ ⟶ Over.mk x₀` to `Over.homMk (spMap ψ) hC`. Establish `hKl : hKo.left = spMap u` using `rfl`. Establish `hCl : hCo.left = spMap ψ` using `rfl`. Establish `e1 : hKo ≫ a = a₁` using `Over.OverMorphism.ext (by rw [Over.comp_left, hKl, ha₁])`. Establish `f1 : hKo ≫ b = b₁` using `Over.OverMorphism.ext (by rw [Over.comp_left, hKl, hb₁])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : hCo ≫ a = a₂` using `Over.OverMorphism.ext (by rw [Over.comp_left, hCl, ha₂])`. Establish `f2 : hCo ≫ b = b₂` using `Over.OverMorphism.ext (by rw [Over.comp_left, hCl, hb₂])`. Establish `hN` using `(GlobalTheory.LevelCompare.weil_skew_natural P q (Over.mk x₀)).2 (Over.mk ξ₀) hKo a b (unitOn r') hcc`. Rewrite `hN` using `[hKl, GlobalTheory.Ex.Specialise.map_unitOn]`. Establish `t1 : (hKo ≫ a) ^ q = 1` using `by rw [← MonObj.comp_pow, ha, MonObj.comp_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `t2 : (hKo ≫ b) ^ q = 1` using `by rw [← MonObj.comp_pow, hb, MonObj.comp_one]`. Rewrite `hr` using `[← e1, ← f1]`. Establish `huK` using `(GlobalTheory.LevelCompare.weil_existsUnique P q (hKo ≫ a) (hKo ≫ b) t1 t2).unique hN hr`. Establish `huK'` using `GlobalTheory.Ex.Specialise.unitOn_bijective.1 huK`. Establish `hrr : r' = r`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ext`. Apply `hu` to reduce the goal to its premises. Use `congrArg (fun v : Kˣ => (v : K)) huK'` as an intermediate fact. Simplify `this` using `only [Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]`. Substitute `hrr` using the available equality.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality.
 
-Establish `hN2` using `(GlobalTheory.LevelCompare.weil_skew_natural P q (Over.mk x₀)).2 (Over.mk y₀) hCo a b (unitOn r') hcc`. Rewrite `hN2` using `[hCl, GlobalTheory.Ex.Specialise.map_unitOn]`. Rewrite using `[← e2, ← f2]`. Conclude with `hN2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem specSt : SpecSt := by
   intro E _ _ _ H Dw l Xo c O _ β Z R K k _ _ _ u ψ hu x₀ ξ₀ y₀ q hq a b a₁ b₁ a₂ b₂ ha hb ha₁ hb₁ ha₂ hb₂ r hr

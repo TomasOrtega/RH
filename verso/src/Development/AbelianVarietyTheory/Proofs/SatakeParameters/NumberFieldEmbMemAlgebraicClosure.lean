@@ -5,7 +5,7 @@ namespace GlobalTheory
 open IntermediateField
 
 /- English proof (translation)
-Rewrite using `[mem_algebraicClosure_iff]`. Establish `hz : IsAlgebraic ℚ z` using `Algebra.IsAlgebraic.isAlgebraic z`. Simplify using `using hz.algHom e.toRatAlgHom`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem numberField_emb_mem_algebraicClosure {LL : Type} [Field LL] [NumberField LL]
     (e : LL →+* ℂ) (z : LL) : e z ∈ algebraicClosure ℚ ℂ := by
@@ -14,11 +14,9 @@ theorem numberField_emb_mem_algebraicClosure {LL : Type} [Field LL] [NumberField
   simpa using hz.algHom e.toRatAlgHom
 
 /- English proof (translation)
-Set `e' : LL →+* algebraicClosure ℚ ℂ` to `(e.codRestrict (algebraicClosure ℚ ℂ).toSubring (fun z => numberField_emb_mem_algebraicClosure e z))`. Use `letI : Algebra LL (algebraicClosure ℚ ℂ) := e'.toAlgebra`. Use `letI : Algebra LL ℂ_[p] := i.toAlgebra`. Use `haveI : IsScalarTower ℚ LL (algebraicClosure ℚ ℂ) := IsScalarTower.of_algebraMap_eq (fun x => (RingHom.congr_fun (Subsingleton.elim ((algebraMap LL (algebraicClosure ℚ ℂ)).comp (algebraMap ℚ LL)) (algebraMap ℚ (algebraicClosure ℚ ℂ))) x).symm)`. Use `haveI : Algebra.IsAlgebraic ℚ (algebraicClosure ℚ ℂ) := algebraicClosure.isAlgebraic ℚ ℂ`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Algebra.IsAlgebraic LL (algebraicClosure ℚ ℂ) := Algebra.IsAlgebraic.tower_top (K := ℚ) LL`. Set `lamA : algebraicClosure ℚ ℂ →ₐ[LL] ℂ_[p]` to `IsAlgClosed.lift`. Use `⟨lamA.toRingHom, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h1 : (⟨e z, hz⟩ : algebraicClosure ℚ ℂ) = algebraMap LL (algebraicClosure ℚ ℂ) z` using `rfl`. Rewrite using `[h1]`.
-
-Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem padic_emb_extends_algebraicClosure (p : ℕ) [Fact p.Prime] (LL : Type) [Field LL]
     [NumberField LL] (e : LL →+* ℂ) (i : LL →+* ℂ_[p]) :

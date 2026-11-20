@@ -11,11 +11,11 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers GlobalT
 namespace GlobalTheory.CompanionTheory.SiteNil
 
 /- English proof (translation)
-Introduce `O R _ _ I γ p X q κ T x hx`. Distinguish the cases in `hp : p = 0`. Take `⟨n, hn⟩` from `T.adm.2 hp`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h : x ^ n ∈ T.J ^ n` using `Ideal.pow_mem_pow hx n`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[hn]`. Conclude with `h`. Take `⟨n, hn⟩ : IsNilpotent ((p : ℕ) : T.B)` from `T.adm.1 hp`. Use `⟨p * n, ?_⟩` and prove the remaining obligations. Establish `h1 : x ^ p = (p.factorial : T.B) * T.δ.dpow p x` using `(T.δ.factorial_mul_dpow_eq_pow hx).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (p.factorial : T.B) = (p : T.B) * ((p - 1).factorial : T.B)`. Rewrite using `[← Nat.cast_mul, Nat.mul_factorial_pred hp]`. Rewrite using `[pow_mul, h1, h2, mul_assoc, mul_pow, hn, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thick_J_isNilpotent : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R}
     {γ : DividedPowers I} {p : ℕ} {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}

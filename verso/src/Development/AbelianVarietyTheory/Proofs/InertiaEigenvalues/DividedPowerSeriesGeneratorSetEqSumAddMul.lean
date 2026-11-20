@@ -9,21 +9,19 @@ open scoped Formalism.Per
 namespace GlobalTheory.CrysPrism
 
 /- English proof (translation)
-Introduce and unpack `F ⟨w, hw, hF⟩`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`. Establish `hl0 : (l : Wq l a) ≠ 0`. Establish `h` using `WittVector.p_nonzero l (Fq l a)`. Conclude with `h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hw 1`. Rewrite `h1` using `[Nat.cofinite_eq_atTop, Filter.eventually_atTop]`. Take `⟨N, hN⟩` from `h1`. Establish `h2 : ∀ n, ∃ z : Wq l a, (n < N → z = 0) ∧ (¬ n < N → w n = l * z)`. Introduce `n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Distinguish the cases in `h : n < N`. Conclude with `⟨0, fun _ => rfl, fun h' => absurd h h'⟩`. Take `⟨z, hz⟩` from `hN n (not_lt.1 h)`. Conclude with `⟨z, fun h' => absurd h' h, fun _ => by rw [hz, pow_one]⟩`. Use `choose z hz0 hz using h2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hfac : ∀ n : ℕ, ((n / e).factorial : K) ≠ 0` using `fun n => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Use `⟨N, w, fun τ => PowerSeries.mk fun n => ((n / e).factorial : K)⁻¹ * algebraMap O K (emb t τ (z n)), ⟨z, fun r => ?_, fun τ n => ?_⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hw (r + 1)] with n hn`. Distinguish the cases in `h : n < N`. Rewrite using `[hz0 n h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Conclude with `dvd_zero _`. Rewrite `hn` using `[hz n h, pow_succ']`. Conclude with `(mul_dvd_mul_iff_left hl0).1 hn`. Rewrite using `[coeff_mk, mul_inv_cancel_left₀ (hfac n)]`. Use function extensionality and compare the values at `τ`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `m`. Apply `mul_left_cancel₀ (hfac m)` to reduce the goal to its premises. Rewrite using `[hF]`. Establish `hc : (l : K⟦X⟧) = C (l : K)` using `(map_natCast (C : K →+* K⟦X⟧) l).symm`. Simplify using `only [Pi.add_apply, Finset.sum_apply, Pi.mul_apply, Pi.natCast_apply, map_add, map_sum, cstS_apply, dpS, hc, coeff_C_mul, coeff_monomial, coeff_mk, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_range]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Distinguish the cases in `h : m < N`. Rewrite using `[if_pos h, hz0 m h, map_zero, map_zero]`. Clear denominators, using `[hfac m]` for the nonvanishing conditions. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, hz m h, map_mul, map_mul, map_natCast, map_natCast]`.
-
-Clear denominators, using `[hfac m]` for the nonvanishing conditions. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sdSet_eq_sum_add_mul (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O]
     [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K]

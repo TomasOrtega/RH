@@ -11,29 +11,27 @@ open scoped IntermediateField BigOperators Topology
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Introduce `L a b t ha hb hc h2a h2b h2t`. Establish `h2c : 2 * (a + b) ∈ L.lattice`. Rewrite using `[mul_add]`. Conclude with `L.lattice.add_mem h2a h2b`. Establish `hshift : ∀ u : ℂ, 2 * u ∈ L.lattice → t + u ∉ L.lattice`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu htu`. Apply `h2t` to reduce the goal to its premises. Use `L.lattice.sub_mem (L.lattice.add_mem htu htu) hu` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `ht : t ∉ L.lattice` using `by simpa using hshift 0 (by simp)`. Establish `hroot : ∀ u : ℂ, u ∉ L.lattice → 2 * u ∈ L.lattice → 4 * L.weierstrassP u ^ 3 - L.g₂ * L.weierstrassP u - L.g₃ = 0`. Introduce `u hu h2u`. Rewrite using `[← L.derivWeierstrassP_sq u hu, (derivWeierstrassP_eq_zero_iff L hu).2 (by rwa [← two_mul])]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hne : ∀ u v : ℂ, u ∉ L.lattice → v ∉ L.lattice → 2 * v ∈ L.lattice → u + v ∉ L.lattice → L.weierstrassP u ≠ L.weierstrassP v`. Introduce `u v hu hv h2v huv h`. Break down `(weierstrassP_eq_iff L hu hv).1 h with h' | h'` into its components or cases. Apply `huv` to reduce the goal to its premises. Use `L.lattice.add_mem h' h2v` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Conclude with `huv h'`. Establish `h12` using `hne a b ha hb h2b hc`. Establish `h13` using `hne a (a + b) ha hc h2c (by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hb` to reduce the goal to its premises. Use `L.lattice.sub_mem h h2a` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use the proof step `ring)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h23` using `hne b (a + b) hb hc h2c (by`. Introduce `h`. Apply `ha` to reduce the goal to its premises. Use `L.lattice.sub_mem h h2b` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `ring)`. Take `⟨hfac, hdisc⟩` from `GlobalTheory.T.cubic_factor_and_discriminant_of_three_distinct_roots L.g₂ L.g₃ _ _ _ (hroot a ha h2a) (hroot b hb h2b) (hroot _ hc h2c) h12 h13 h23`. Establish `e1` using `GlobalTheory.T.derivWeierstrassP_add_half_period' L a t ha h2a ht (hshift a h2a)`. Establish `e2` using `GlobalTheory.T.derivWeierstrassP_add_half_period' L b t hb h2b ht (hshift b h2b)`. Establish `e3` using `GlobalTheory.T.derivWeierstrassP_add_half_period' L (a + b) t hc h2c ht (hshift _ h2c)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq` using `L.derivWeierstrassP_sq t ht`. Rewrite `hsq` using `[hfac]`. Establish `hd : L.derivWeierstrassP t ≠ 0` using `fun h => h2t (by rw [two_mul]; exact (derivWeierstrassP_eq_zero_iff L ht).1 h)`. Rewrite using `[latticeCurve_Δ]`. Generalize the expression as in `L.derivWeierstrassP t = d at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `L.derivWeierstrassP (t + a) = d₁ at *`. Generalize the expression as in `L.derivWeierstrassP (t + b) = d₂ at *`. Generalize the expression as in `L.derivWeierstrassP (t + (a + b)) = d₃ at *`. Generalize the expression as in `L.weierstrassP t = x at *`. Generalize the expression as in `L.weierstrassP a = e₁ at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Generalize the expression as in `L.weierstrassP b = e₂ at *`. Generalize the expression as in `L.weierstrassP (a + b) = e₃ at *`. Apply `mul_left_cancel₀ (pow_ne_zero 3 hd)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsq]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ = -(16 * ((3 * e₁ ^ 2 - L.g₂ / 4) * (3 * e₂ ^ 2 - L.g₂ / 4) * (3 * e₃ ^ 2 - L.g₂ / 4))) * d ^ 3 := by`. Rewrite using `[e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = d ^ 3 * (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) := by rw [hdisc]; ring`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem prod_derivWeierstrassP_translates_eq_Δ : ∀ (L : PeriodPair) (a b t : ℂ),
     a ∉ L.lattice → b ∉ L.lattice → a + b ∉ L.lattice → 2 * a ∈ L.lattice →

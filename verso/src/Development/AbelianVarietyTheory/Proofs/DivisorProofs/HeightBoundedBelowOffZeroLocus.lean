@@ -12,7 +12,7 @@ open GlobalTheory.CxPts
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
 
 /- English proof (translation)
-Establish `hJ : y ∈ ptsIn p σ ((lbPow B 1).U J)` using `mem_pow_iff.2 hy`. Express the relevant statement in the definitionally equal form `ev p σ _ (resG X _ (s.f (J PUnit.unit) ^ 1)) y = _`. Conclude with `(ev_res _ hJ _).trans (congrArg (ev p σ _ · y) (pow_one _))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem ev_secToPow_one {B : LB X} (s : B.Sec) {σ : k →+* ℂ} (J : PUnit → B.ι) (y : CxPts p σ)
     (hy : y ∈ ptsIn p σ (B.U (J PUnit.unit))) :
@@ -22,7 +22,7 @@ theorem ev_secToPow_one {B : LB X} (s : B.Sec) {σ : k →+* ℂ} (J : PUnit →
   exact (ev_res _ hJ _).trans (congrArg (ev p σ _ · y) (pow_one _))
 
 /- English proof (translation)
-Establish `hi` using `mem_pick φ.isLB y`. Rewrite using `[(φ.pow 1).nsq_eq (secVal_mem _) (i := fun _ => pick φ.isLB y) (mem_pow_iff.2 hi), φ.nsq_eq (secVal_mem _) hi, Weight.zpow_φ]`. Use `congrArg₂ (fun a b => ‖a‖ ^ 2 * Real.exp b) (ev_secToPow_one s _ y hi) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem nsq_pow_one_secToPow {B : LB X} {σ : k →+* ℂ} (φ : Weight p σ B) (s : B.Sec) (y : CxPts p σ) :
     (φ.pow 1).nsq (secVal p σ (secToPow s 1)) y = φ.nsq (secVal p σ s) y := by
@@ -33,13 +33,11 @@ theorem nsq_pow_one_secToPow {B : LB X} {σ : k →+* ℂ} (φ : Weight p σ B) 
   simp
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX N s`. Use `hX.finite_emb` as an intermediate fact. Establish `hc : ∀ σ, ∃ M : ℝ, ∀ y : CxPts p σ, (N.φ σ).nsq (secVal p σ s) y ≤ M` using `fun σ => by`. Use `hX.compactSpace σ` as an intermediate fact. Take `⟨M, hM⟩` from `(isCompact_range ((N.cInf σ).continuous_nsq s)).bddAbove`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨M, fun y => hM ⟨y, rfl⟩⟩`. Use `choose M hM using hc`. Take `⟨B, hB⟩` from `Finite.exists_le M`. Use `⟨Real.log (max B 1) / 2, fun x hx hxa b hb => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.SmallSecHeight.le_ptHt k X p D hX N 1 (-(Real.log (max B 1) / 2)) b x (secToPow s 1) le_rfl (fun σ y => ?_) ((nonzeroLocus_secToPow s le_rfl).symm ▸ hx) hxa hb` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(nsq_pow_one_secToPow ((N.shift _ _).φ σ) s y).trans_le ((N.nsq_shift _ _ (secVal p σ s) y).trans_le ?_)` and prove the remaining obligations. Establish `hpos : (0 : ℝ) < max B 1` using `lt_max_of_lt_right one_pos`. Establish `e : Real.exp (-(2 * -(-(Real.log (max B 1) / 2)))) = (max B 1)⁻¹`. Rewrite using `[show -(2 * -(-(Real.log (max B 1) / 2))) = -Real.log (max B 1) by ring, Real.exp_neg, Real.exp_log hpos]`. Rewrite using `[e, ← div_eq_mul_inv, div_le_one hpos]`.
-
-Conclude with `((hM σ y).trans (hB σ)).trans (le_max_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lower_bound : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D →
     ∀ (N : HermLB p) (s : N.B.Sec), ∃ c : ℝ, ∀ x : X, x ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s → IsAlgPt x →

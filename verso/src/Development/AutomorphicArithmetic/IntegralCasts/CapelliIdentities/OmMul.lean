@@ -21,13 +21,13 @@ noncomputable def UpperTheory.Reformulated.B.Qe48.omB :
                       (KaehlerDifferential.D k K : K → Ω[K⁄k]) (v j)}
 
 /- English proof (translation)
-Introduce `L _ _ B p q u w hu hw`. Unfold `UpperTheory.Reformulated.B.Qe48.omB at hu hw ⊢`. Establish `h` using `Submodule.mul_mem_mul hu hw`. Rewrite `h` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨_, ⟨b, hb, v, hv, rfl⟩, _, ⟨c, hc, v', hv', rfl⟩, rfl⟩`. Use `⟨b * c, B.mul_mem hb hc, Fin.append v v', ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv i`. Rewrite using `[Fin.append_right]`. Conclude with `hv' i`. Use `show _ * _ = _`. Rewrite using `[smul_mul_smul_comm, ExteriorAlgebra.ιMulti_mul_ιMulti]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Use function extensionality and compare the values at `j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Simplify using `only [Fin.append_left]`. Simplify using `only [Fin.append_right]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qe48.om_mul :
     ∀ {L : Type} [inst : Field L] [inst_1 : Algebra ℂ L] (B : Subalgebra ℂ L) {p q : ℕ} {u w : UpperTheory.Reformulated.B.Qe48.DR ℂ L},

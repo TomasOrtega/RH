@@ -25,9 +25,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `GlobalTheory.FlagTan.exists_frPt (Xo := Xo) (c := c) (S := K) (t ≫ pullback.fst _ _) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, ht, sOf, ← Spec.map_comp]`. Use the proof step `rfl)`. Use `⟨y, pullback.hom_ext ?_ ?_⟩` and prove the remaining obligations. Simplify using `only [ptF, pullback.lift_fst]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hy`. Simplify using `only [ptF, pullback.lift_snd]`. Conclude with `ht.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_frPt_ptF {K : Type} [Field K] [Algebra c.F K] (t : Sp K ⟶ Xo.XF c)
     (ht : t ≫ pullback.snd _ _ = spMap (algebraMap c.F K)) : ∃ y : FrPt Xo c K, ptF y = t := by
@@ -38,13 +38,11 @@ theorem exists_frPt_ptF {K : Type} [Field K] [Algebra c.F K] (t : Sp K ⟶ Xo.XF
   · simp only [ptF, pullback.lift_snd]; exact ht.symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF Z hpq hA Γ _ ι ρ hρ γ`. Use `haveI : IsSeparated Xo.s := Formalism.L2.Pj.sepX Xo`. Use `haveI : IsReduced (Xo.XF c) := GlobalTheory.TransitionUnique.isReduced_XF Xo c`. Use `ext_of_fromSpecResidueField_eq _ _ (pullback.snd _ _) Set.univ dense_univ (fun x _ => ?_) ?_` and prove the remaining obligations. Set `t : Spec ((V₀ TF.Y Z).residueField x) ⟶ Sp c.F` to `(V₀ TF.Y Z).fromSpecResidueField x ≫ i₀ TF.Y Z ≫ pullback.snd _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI : Algebra c.F ((V₀ TF.Y Z).residueField x) := (Spec.preimage t).hom.toAlgebra`. Take `⟨y, hy⟩` from `exists_frPt_ptF (K := (V₀ TF.Y Z).residueField x) ((V₀ TF.Y Z).fromSpecResidueField x ≫ i₀ TF.Y Z) (by`. Rewrite using `[Category.assoc]`. Conclude with `(Spec.map_preimage t).symm)`. Establish `h1` using `hρ.2 γ ((V₀ TF.Y Z).residueField x) y ((V₀ TF.Y Z).fromSpecResidueField x) hy.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, GlobalTheory.CompLevelStab.ptF_move hpq hA Xo c, hy, Category.assoc]`. Establish `hid : spMap (RingHom.id c.F) = 𝟙 _` using `Spec.map_id _`. Establish `h0` using `hρ.1 γ`. Rewrite `h0` using `[GlobalTheory.CompLevelStab.j₀_s₀, hid, Category.comp_id]`. Rewrite using `[Category.assoc, Category.assoc, GlobalTheory.CompLevelStab.mvF_snd]`.
-
-Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restr_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M) (Γ : Type) [Group Γ] (ι : Γ →* LevelAut Dw l) (ρ : Γ →* Aut (V₀ TF.Y Z)), ActsBy ι ρ → ∀ γ : Γ, (ρ γ).hom ≫ i₀ TF.Y Z = i₀ TF.Y Z ≫ GlobalTheory.CompLevelStab.mvF hpq hA Xo c (ι γ)⁻¹ := by
   intro E _ _ _ H Dw l Xo c TF Z hpq hA Γ _ ι ρ hρ γ

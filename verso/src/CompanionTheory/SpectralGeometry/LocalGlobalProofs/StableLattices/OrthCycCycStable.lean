@@ -9,7 +9,7 @@ namespace GlobalTheory.CompanionTheory.LowKType
 open CompanionTheory.D.LK CompanionTheory.D.DSIC Formalism.REAL
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `hx`. Use `⟨FreeAlgebra.ι ℂ (a, b) * t, ?_⟩` and prove the remaining obligations. Simplify using `[ev]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem orthCyc_cyc_stable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V) (v : V) (a b : Fin n) {x : V} (hx : x ∈ Cyc E v) :
@@ -19,19 +19,17 @@ theorem orthCyc_cyc_stable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   simp [ev]
 
 /- English proof (translation)
-Introduce `n ε V _ _ E μ v u _ hU hL h1 hu hvu m hm`. Take `⟨S, hS, hSst, hmS⟩` from `hL m`. Use `set W : Submodule ℂ V := S ⊓ Cyc E v with hW`. Use `haveI : FiniteDimensional ℂ W := Submodule.finiteDimensional_of_le (inf_le_left : W ≤ S)`. Establish `hWst : ∀ a b, ε a = ε b → ∀ x ∈ W, E a b x ∈ W` using `fun a b hab x hx => ⟨hSst a b hab x hx.1, orthCyc_cyc_stable E v a b hx.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hOst : ∀ a b, ε a = ε b → ∀ x ∈ Wᗮ, E a b x ∈ Wᗮ`. Introduce `a b hab x hx`. Rewrite `hx`, the goal using `[Submodule.mem_orthogonal]`. Introduce `w hw`. Rewrite using `[← hU b a hab.symm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hx _ (hWst b a hab.symm w hw)`. Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.exists_add_mem_mem_orthogonal (K := W) u`. Establish `key : ∀ a b, ε a = ε b → ∀ c : ℂ, E a b u = c • u → E a b p = c • p`. Introduce `a b hab c hc`. Establish `h : E a b p - c • p ∈ W ⊓ Wᗮ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨W.sub_mem (hWst a b hab p hp) (W.smul_mem c hp), ?_⟩` and prove the remaining obligations. Establish `: E a b p - c • p = c • q - E a b q`. Rewrite `hc` using `[hpq, map_add, smul_add]`. Rewrite using `[sub_eq_sub_iff_add_eq_add, hc, add_comm]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Wᗮ.sub_mem (Wᗮ.smul_mem c hq) (hOst a b hab q hq)`. Rewrite `h` using `[Submodule.inf_orthogonal_eq_bot, Submodule.mem_bot, sub_eq_zero]`. Conclude with `h`. Establish `hpH : KHighest ε E μ p`. Use `⟨fun a => key a a rfl _ (hu.1 a), fun a b hab hε => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `key a b hε 0 (by rw [zero_smul]; exact hu.2 a b hab hε)` as an intermediate fact. Simplify using `using this`. Take `⟨c, hc⟩` from `h1 p hp.2 hpH`. Establish `hq'` using `(Submodule.mem_orthogonal W q).1 hq`. Establish `hpu : ⟪p, u⟫_ℂ = 0` using `by rw [hc, inner_smul_left, hvu, mul_zero]`.
-
-Establish `hp0 : p = 0`. Rewrite `hpu` using `[hpq, inner_add_right, hq' p hp, add_zero]`. Conclude with `inner_self_eq_zero.1 hpu`. Rewrite using `[hpq, hp0, zero_add]`. Conclude with `hq' m ⟨hmS, hm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthCyc : CompanionTheory.D.LK.OrthCyc := by
   intro n ε V _ _ E μ v u _ hU hL h1 hu hvu m hm

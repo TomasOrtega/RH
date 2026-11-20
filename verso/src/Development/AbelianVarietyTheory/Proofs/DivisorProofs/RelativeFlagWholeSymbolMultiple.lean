@@ -16,11 +16,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 
 /- English proof (translation)
-Establish `key : ∀ (k : Fin g) (x : Y.Y.X), genAt (adlOf Y hm (w' k)).D x * genAt (adlOf Y hm (w (Fin.rev k))).D x = ((GlobalTheory.TrueGeo.eqn (divOf Y (expo Dw (w k.rev))) x * GlobalTheory.TrueGeo.eqn (divOf Y (expo Dw (-w k.rev))) x : Y.Y.Fnˣ) : Y.Y.Fn)⁻¹`. Introduce `k x`. Rewrite using `[h k]`. Simplify using `only [genAt, adlOf, Units.val_inv_eq_inv_val, Units.val_mul, mul_inv]`. Conclude with `mul_comm _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k x => ?_, fun k v _ ε y => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[key]`. Conclude with `(GlobalTheory.CombInd.DualComb.unitAt_eqn_mul Y _ x).inv`. Use `beta_reduce`.
-
-Rewrite using `[key, GlobalTheory.LineNorm.Neg.valAt_inv (GlobalTheory.CombInd.DualComb.unitAt_eqn_mul Y _ _), map_inv₀, Real.log_inv, h k]`. Conclude with `(GlobalTheory.CombInd.DualComb.lgOf_neg Y _ v ε y).trans (sub_eq_add_neg _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dualAt_neg {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
@@ -44,7 +42,7 @@ private theorem dualAt_neg {E : Type} [Field E] [NumberField E] [IsCMField E] {H
     exact (GlobalTheory.CombInd.DualComb.lgOf_neg Y _ v ε y).trans (sub_eq_add_neg _ _)
 
 /- English proof (translation)
-Unfold `eigAt`. Consider the cases of `(letters Dw)[k]? with`. Consider the case `none => simp`. Consider the case `some z => exact Finsupp.single_neg _ _`.
+Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 private theorem eigAt_neg {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) (a : ℕ → Bool) (R : Option ℝ) (k : ℕ) : eigAt Dw a R (-1) k = -eigAt Dw a R 1 k := by
@@ -54,9 +52,9 @@ private theorem eigAt_neg {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   | some z => exact Finsupp.single_neg _ _
 
 /- English proof (translation)
-Introduce `h2 hH hR hS hP D O hO T R hR2 p hp hT c`. Take `⟨bar, Φ, β, ρ, J, hΦ, hJ, hρ, hEq⟩` from `GlobalTheory.T.exists_cm_lattice_embedding_data h2 hH hR hS hP D O hO T R hR2 p hp hT c`. Use `haveI : IsGalois ℚ D.host.E := D.host.hostE_isGalois`. Take `⟨n, P, Q, hn, hB⟩` from `GlobalTheory.T.cm_type_lattice_symplectic_basis D.host.E D.what₂.LL ⟨D.embE⟩ bar Φ hΦ ρ J hJ hρ p hp`. Establish `hrel` using `GlobalTheory.T.eigenbasis_equation_data_prime_power _ _ β _ ρ J p n P Q hp hn hJ hB hEq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `dualAt_neg (O.Φ.C c) (O.met.hm c) (fun i : Fin (D.R.f * O.N) => wholeSym (ArIn.ind T) (some R) (Sum.inl i : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N))) (fun i : Fin (D.R.f * O.N) => wholeSym (ArIn.ind T) (some R) (Sum.inr i : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N))) (fun k => Finsupp. …`. Establish `hA'` using `dualAt_neg (O.Φ.C c) (O.met.hm c) (fun i : Fin (D.R.f * O.N) => eigSym O.S.Dw (ArIn.ind T) (some R) (Sum.inl i : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N))) (fun i : Fin (D.R.f * O.N) => eigSym O.S.Dw (ArIn.ind T) (some R) (Sum.inr i : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N))) (fun k = …`. Use `⟨n, hn, fun k => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.relation_flags_dual_adeles _ _ _ _ p n hp hn hA hA' hrel k`. Apply the tactic sequence `convert h using 2 with i i <;> cases finSumFinEquiv.symm i <;> rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.relative_flag_whole_symbol_multiple : Hypotheses2 → HypothesesH → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.PrismaticDieudonnePerfd → ∀ (D : D7) (O : Setup D), O.Core → ∀ (T : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → p ∈ T → ∀ c : O.s.Comp, ∃ n : ℕ, n ≠ 0 ∧ ∀ k : ℕ, RelFlag (fun i : Fin (D.R.f * O.N + D.R.f * O.N) => adlOf (O.Φ.C c) (O.met.hm c) (wholeSym (ArIn.ind T) (some R) (finSumFinEquiv.symm i))) (fun i => adlOf (O.Φ.C c) (O.met.hm c) (eigSym O.S.Dw (ArIn.ind T) (some R) (finSumFinEquiv.symm i))) p n k := by
   intro h2 hH hR hS hP D O hO T R hR2 p hp hT c

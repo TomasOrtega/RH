@@ -31,22 +31,22 @@ def archIncl : ArchUnits K n →* AdelicGLn.AdelicGL K n :=
   (infEmb K n).comp (Subgroup.topEquiv (G := ArchUnits K n)).symm.toMonoidHom
 
 /- English proof (translation)
-The claim follows from `continuous_infEmb.comp (continuous_id.subtype_mk _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_archIncl : Continuous (archIncl K n) :=
   continuous_infEmb.comp (continuous_id.subtype_mk _)
 
 /- English proof (translation)
-The claim follows from `infEmb_mul_finEmb_comm _ u`.
+A detailed English derivation is pending.
 -/
 theorem archIncl_mul_finEmb_comm (A : ArchUnits K n) (u : AdelicGLn.FiniteAdelicGL K n) :
     archIncl K n A * finEmb K n u = finEmb K n u * archIncl K n A :=
   infEmb_mul_finEmb_comm _ u
 
 /- English proof (translation)
-Rewrite using `[mem_normOneGL_iff_detModule, map_mul, map_inv]`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `: Subsingleton (AdelicGLn.AdelicGL K 0)` using `⟨fun x y => Units.ext (Subsingleton.elim _ _)⟩`. Rewrite using `[Subsingleton.elim (archIncl K 0 A) 1, Subsingleton.elim (centralSection K 0 _) 1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[detModule_centralSection hn, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem archIncl_mul_centralSection_inv_mem (A : ArchUnits K n) :
     archIncl K n A * (centralSection K n (detModule K n (archIncl K n A)))⁻¹ ∈ normOneGL K n := by
@@ -59,14 +59,14 @@ theorem archIncl_mul_centralSection_inv_mem (A : ArchUnits K n) :
   · rw [detModule_centralSection hn, mul_inv_cancel]
 
 /- English proof (translation)
-Rewrite using `[← map_inv, centralSection_mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem centralSection_inv_mul_comm (s : {r : ℝ // 0 < r}) (g : AdelicGLn.AdelicGL K n) :
     (centralSection K n s)⁻¹ * g = g * (centralSection K n s)⁻¹ := by
   rw [← map_inv, centralSection_mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← map_inv, ← map_inv, ← map_mul, ← map_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem centralSection_inv_mul_inv_comm (s t : {r : ℝ // 0 < r}) :
     (centralSection K n s)⁻¹ * (centralSection K n t)⁻¹ =
@@ -79,13 +79,13 @@ def archProjFun (A : ArchUnits K n) : AdelicGLn.AdelicGL K n :=
   archIncl K n A * (centralSection K n (detModule K n (archIncl K n A)))⁻¹
 
 /- English proof (translation)
-Simplify using `[archProjFun]`.
+Simplify using the standard rewrite rules.
 -/
 theorem archProjFun_one : archProjFun K n 1 = 1 := by
   simp [archProjFun]
 
 /- English proof (translation)
-Unfold `archProjFun`. Simplify using `only [map_mul, mul_inv_rev]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (centralSection K n (detModule K n (archIncl K n A)))⁻¹ (archIncl K n B), centralSection_inv_mul_comm (detModule K n (archIncl K n A)) (archIncl K n B), mul_assoc (archIncl K n B), centralSection_inv_mul_inv_comm (detModule K n (archIncl K n A))]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem archProjFun_mul (A B : ArchUnits K n) :
     archProjFun K n (A * B) = archProjFun K n A * archProjFun K n B := by
@@ -111,7 +111,7 @@ Both sides reduce to the same expression.
       archIncl K n A * (centralSection K n (detModule K n (archIncl K n A)))⁻¹ := rfl
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun A : ArchUnits K n => archIncl K n A * (centralSection K n (detModule K n (archIncl K n A)))⁻¹`. Conclude with `continuous_archIncl.mul ((continuous_centralSection.comp (continuous_detModule.comp continuous_archIncl)).inv)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_archProj : Continuous (archProj K n) := by
   refine continuous_induced_rng.2 ?_
@@ -121,7 +121,7 @@ theorem continuous_archProj : Continuous (archProj K n) := by
     (continuous_detModule.comp continuous_archIncl)).inv)
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[coe_archProj, (mem_normOneGL_iff_detModule).1 hA, map_one, inv_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archProj_of_mem {A : ArchUnits K n} (hA : archIncl K n A ∈ normOneGL K n) :
     archProj K n A = ⟨archIncl K n A, hA⟩ := by
@@ -129,7 +129,7 @@ theorem archProj_of_mem {A : ArchUnits K n} (hA : archIncl K n A ∈ normOneGL K
   rw [coe_archProj, (mem_normOneGL_iff_detModule).1 hA, map_one, inv_one, mul_one]
 
 /- English proof (translation)
-Rewrite using `[coe_archProj, mul_assoc, centralSection_inv_mul_comm, ← mul_assoc, archIncl_mul_finEmb_comm, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem archProj_mul_finEmb_comm (A : ArchUnits K n) (u : AdelicGLn.FiniteAdelicGL K n) :
     (archProj K n A : AdelicGLn.AdelicGL K n) * finEmb K n u =
@@ -151,13 +151,13 @@ Both sides reduce to the same expression.
     (finOne K n u : AdelicGLn.AdelicGL K n) = finEmb K n u := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_induced_rng.2 (continuous_finEmb.comp continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finOne : Continuous (finOne K n) :=
   continuous_induced_rng.2 (continuous_finEmb.comp continuous_subtype_val)
 
 /- English proof (translation)
-Establish `h : archProj K n A * finOne K n u = finOne K n u * archProj K n A` using `Subtype.ext (archProj_mul_finEmb_comm A u)`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, h, mul_inv_cancel_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem archProj_inv_mul_finOne (A : ArchUnits K n) (u : AdelicGLn.integralFiniteGL K n) :
     (archProj K n A)⁻¹ * finOne K n u = finOne K n u * (archProj K n A)⁻¹ := by
@@ -175,7 +175,7 @@ def archConvFun (β : ArchMatrix K n → ℝ) (g : normOneGL K n → ℂ) (x : n
 variable {β : ArchMatrix K n → ℝ}
 
 /- English proof (translation)
-The claim follows from `Units.isOpenEmbedding_val.isInducing.isCompact_preimage' hβc hβu`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_unitsSupport (hβc : HasCompactSupport β)
     (hβu : tsupport β ⊆ range (Units.val : ArchUnits K n → ArchMatrix K n)) :
@@ -183,7 +183,7 @@ theorem isCompact_unitsSupport (hβc : HasCompactSupport β)
   Units.isOpenEmbedding_val.isInducing.isCompact_preimage' hβc hβu
 
 /- English proof (translation)
-Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun A hA => ?_).symm` and prove the remaining obligations. Rewrite using `[image_eq_zero_of_notMem_tsupport hA, Complex.ofReal_zero, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem archConvFun_eq_setIntegral (g : normOneGL K n → ℂ) (x : normOneGL K n) :
     archConvFun ν β g x = ∫ A in (Units.val : ArchUnits K n → ArchMatrix K n) ⁻¹' tsupport β,
@@ -192,7 +192,7 @@ theorem archConvFun_eq_setIntegral (g : normOneGL K n → ℂ) (x : normOneGL K 
   rw [image_eq_zero_of_notMem_tsupport hA, Complex.ofReal_zero, zero_mul]
 
 /- English proof (translation)
-Establish `: archConvFun ν β g = fun x => ∫ A in (Units.val : ArchUnits K n → ArchMatrix K n) ⁻¹' tsupport β, (β A : ℂ) * g ((archProj K n A)⁻¹ * x) ∂ν`. Use function extensionality and compare the values at `(archConvFun_eq_setIntegral ν g)`. Rewrite using `[this]`. Use `continuous_parametric_integral_of_continuous ?_ (isCompact_unitsSupport hβc hβu)` and prove the remaining obligations. Conclude with `((Complex.continuous_ofReal.comp (hβ.comp Units.continuous_val)).comp continuous_snd).mul (g.continuous.comp (((continuous_archProj.comp continuous_snd).inv).mul continuous_fst))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_archConvFun (hβ : Continuous β) (hβc : HasCompactSupport β)
     (hβu : tsupport β ⊆ range (Units.val : ArchUnits K n → ArchMatrix K n))
@@ -207,7 +207,7 @@ theorem continuous_archConvFun (hβ : Continuous β) (hβc : HasCompactSupport �
     (g.continuous.comp (((continuous_archProj.comp continuous_snd).inv).mul continuous_fst))
 
 /- English proof (translation)
-Use `integral_eq_zero_of_ae (Eventually.of_forall fun A => ?_)` and prove the remaining obligations. Distinguish the cases in `hA : (A : ArchMatrix K n) ∈ tsupport β`. Establish `: (archProj K n A)⁻¹ * x ∉ tsupport (g : normOneGL K n → ℂ)` using `fun h => hx ⟨archProj K n A, ⟨A, hA, rfl⟩, _, h, mul_inv_cancel_left _ _⟩`. Simplify using `[image_eq_zero_of_notMem_tsupport this]`. Simplify using `[image_eq_zero_of_notMem_tsupport hA]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem archConvFun_eq_zero_of_notMem (g : CompactlySupportedContinuousMap (normOneGL K n) ℂ)
     {x : normOneGL K n} (hx : x ∉ archProj K n '' ((Units.val : ArchUnits K n → ArchMatrix K n) ⁻¹'
@@ -236,7 +236,7 @@ Both sides reduce to the same expression.
     archConv ν hβ hβc hβu g x = archConvFun ν β g x := rfl
 
 /- English proof (translation)
-Rewrite using `[archConvFun, ← integral_mul_left_eq_self _ C]`. Use `integral_congr_ae (Eventually.of_forall fun A => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(β ((C * A : ArchUnits K n) : ArchMatrix K n) : ℂ) * g ((archProj K n (C * A))⁻¹ * (archProj K n C * w)) = _`. Rewrite using `[map_mul, mul_inv_rev, mul_assoc, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem archConvFun_archProj_mul (C : ArchUnits K n) (g : normOneGL K n → ℂ) (w : normOneGL K n) :
     archConvFun ν β g (archProj K n C * w) =
@@ -249,7 +249,7 @@ theorem archConvFun_archProj_mul (C : ArchUnits K n) (g : normOneGL K n → ℂ)
   rw [map_mul, mul_inv_rev, mul_assoc, inv_mul_cancel_left]
 
 /- English proof (translation)
-Unfold `archConvFun`. Use `integral_congr_ae (Eventually.of_forall fun A => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(β A : ℂ) * g ((archProj K n A)⁻¹ * (finOne K n u * x)) = (β A : ℂ) * g ((archProj K n A)⁻¹ * x)`. Rewrite using `[← mul_assoc, archProj_inv_mul_finOne, mul_assoc, hg]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem archConvFun_finOne_mul (g : normOneGL K n → ℂ) (u : AdelicGLn.integralFiniteGL K n)
     (hg : ∀ x, g (finOne K n u * x) = g x) (x : normOneGL K n) :
@@ -261,7 +261,7 @@ theorem archConvFun_finOne_mul (g : normOneGL K n → ℂ) (u : AdelicGLn.integr
   rw [← mul_assoc, archProj_inv_mul_finOne, mul_assoc, hg]
 
 /- English proof (translation)
-Use `(hβ.comp Units.continuous_val).integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Conclude with `HasCompactSupport.intro (isCompact_unitsSupport hβc hβu) fun A hA => image_eq_zero_of_notMem_tsupport (f := β) hA`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_bump (hβ : Continuous β) (hβc : HasCompactSupport β)
     (hβu : tsupport β ⊆ range (Units.val : ArchUnits K n → ArchMatrix K n)) :
@@ -271,11 +271,9 @@ theorem integrable_bump (hβ : Continuous β) (hβc : HasCompactSupport β)
     image_eq_zero_of_notMem_tsupport (f := β) hA
 
 /- English proof (translation)
-Establish `hint : Integrable (fun A : ArchUnits K n => β A) ν` using `integrable_bump ν hβ hβc hβu`. Establish `hi : ∀ g' : CompactlySupportedContinuousMap (normOneGL K n) ℂ, Integrable (fun A : ArchUnits K n => (β A : ℂ) * g' ((archProj K n A)⁻¹ * x)) ν`. Introduce `g'`. Take `⟨M, hM⟩` from `g'.continuous.bounded_above_of_compact_support g'.hasCompactSupport`. Conclude with `(hint.ofReal (𝕜 := ℂ)).mul_bdd (g'.continuous.comp ((continuous_archProj.inv).mul continuous_const)).aestronglyMeasurable (Eventually.of_forall fun A => hM _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[archConvFun, archConvFun, ← integral_sub (hi h) (hi g)]`. Combine the equalities or inequalities in the displayed calculation. Use `norm_integral_le_of_norm_le (hint.mul_const B) (Eventually.of_forall fun A => ?_)` and prove the remaining obligations. Rewrite using `[← mul_sub, norm_mul, Complex.norm_real, Real.norm_of_nonneg (hβ0 _)]`. Conclude with `mul_le_mul_of_nonneg_left (hB _) (hβ0 _)`.
-
-Use `_ = B := by rw [integral_mul_const, hβ1, one_mul]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_archConvFun_sub_archConvFun_le (hβ : Continuous β) (hβc : HasCompactSupport β)
     (hβu : tsupport β ⊆ range (Units.val : ArchUnits K n → ArchMatrix K n))
@@ -300,11 +298,11 @@ theorem norm_archConvFun_sub_archConvFun_le (hβ : Continuous β) (hβc : HasCom
     _ = B := by rw [integral_mul_const, hβ1, one_mul]
 
 /- English proof (translation)
-Establish `hint : Integrable (fun A : ArchUnits K n => β A) ν` using `integrable_bump ν hβ hβc hβu`. Establish `hi1 : Integrable (fun A : ArchUnits K n => (β A : ℂ) * g ((archProj K n A)⁻¹ * x)) ν`. Take `⟨M, hM⟩` from `g.continuous.bounded_above_of_compact_support g.hasCompactSupport`. Conclude with `(hint.ofReal (𝕜 := ℂ)).mul_bdd (g.continuous.comp ((continuous_archProj.inv).mul continuous_const)).aestronglyMeasurable (Eventually.of_forall fun A => hM _)`. Establish `hi2 : Integrable (fun A : ArchUnits K n => (β A : ℂ) * g x) ν` using `(hint.ofReal (𝕜 := ℂ)).mul_const _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgx : g x = ∫ A, (β A : ℂ) * g x ∂ν`. Rewrite using `[integral_mul_const, integral_complex_ofReal, hβ1, Complex.ofReal_one, one_mul]`. Rewrite using `[hgx, archConvFun, ← integral_sub hi1 hi2]`. Combine the equalities or inequalities in the displayed calculation. Use `norm_integral_le_of_norm_le (hint.mul_const ε) (Eventually.of_forall fun A => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_sub, norm_mul, Complex.norm_real, Real.norm_of_nonneg (hβ0 _)]`. Distinguish the cases in `hA : (A : ArchMatrix K n) ∈ tsupport β`. Conclude with `mul_le_mul_of_nonneg_left (hg _ (hV A hA) x) (hβ0 _)`. Rewrite using `[image_eq_zero_of_notMem_tsupport hA, zero_mul, zero_mul]`. Use `_ = ε := by rw [integral_mul_const, hβ1, one_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_archConvFun_sub_le (hβ : Continuous β) (hβc : HasCompactSupport β)
     (hβu : tsupport β ⊆ range (Units.val : ArchUnits K n → ArchMatrix K n))

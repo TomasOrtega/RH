@@ -11,17 +11,17 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 open Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.SumSize GlobalTheory.KerConjMean
 namespace GlobalTheory.KerConjMean
 /- English proof (translation)
-Introduce `hP hI hD hDp`. Take `⟨C1, hC1, hmean⟩` from `GlobalTheory.T.exists_const_mean_logArea_logThetaNorm_le`. Take `⟨CF0, hCF⟩` from `_root_.GlobalTheory.T.kernel_conjugation_average hP hI hD hDp C1 hC1`. Take `⟨CF0', hCF'⟩` from `GlobalTheory.T.rationalEqualSignKernels_largeConstants`. Use `⟨max CF0 CF0', fun CF hCF0 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C0, hC0⟩` from `hCF CF (le_trans (le_max_left _ _) hCF0)`. Take `⟨C0', hC0'⟩` from `hCF' CF (le_trans (le_max_right _ _) hCF0)`. Use `⟨max C0 C0', fun ε C hC => ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `hC0 ε C (le_trans (le_max_left _ _) hC)`. Take `⟨x0', hx0'⟩` from `hC0' ε C (le_trans (le_max_right _ _) hC)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max x0 x0', fun D large₂ hε hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hIs hAt hF => ?_⟩` and prove the remaining obligations. Take `⟨a0, nD, Gd, ha0, hnD, hGd, hsum, hbound⟩` from `hx0 D large₂ hε (le_trans (le_max_left _ _) hx) Γ Pl0 T A Ks R F hS ch hIs hAt hF`. Establish `hrat` using `hx0' D large₂ hε (le_trans (le_max_right _ _) hx) Γ Pl0 T A Ks R F hS ch hIs hAt hF`. Take `⟨hL1, hLrd, hLd⟩` from `sizes D large₂ Γ Pl0 T A Ks R F hS`. Take `⟨hmA, hmT⟩` from `hmean D (hI D) ch.S.Z.δ ch.S.Z.t0 ch.S.Z.crv ch.S.Z.pt0 _ hL1 hLrd hLd`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun p => a0 + nD * avg D ch.S.Z.δ ch.S.Z.t0 p.embedding (hArea D ch.S.Z.δ ch.S.Z.t0) + Gd * avg D ch.S.Z.δ ch.S.Z.t0 p.embedding (hTh D ch.S.Z.δ ch.S.Z.t0), ?_, ?_⟩` and prove the remaining obligations. Use `(meanInf_affine _ a0 nD Gd _ _ ha0).trans (le_trans ?_ hsum)` and prove the remaining obligations. Establish `e1` using `mul_le_mul_of_nonneg_left hmA hnD`. Establish `e2` using `mul_le_mul_of_nonneg_left hmT hGd`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Introduce `p Φ β d hocc c j B v hv`. Take `⟨f, hf⟩` from `hrat Φ β d hocc c j`. Take `⟨u, rfl, hu⟩` from `hv`. Use `⟨f u, (hf u).symm, ?_⟩` and prove the remaining obligations. Take `⟨hfin, hne⟩` from `GlobalTheory.T.embeddingsCurveFieldAbove_finite_nonempty D (hI D) ch.S.Z.δ ch.S.Z.t0 ch.S.Z.crv ch.S.Z.pt0 p.embedding`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨ρ₁, hρ₁, h₁⟩, ⟨ρ₂, hρ₂, h₂⟩⟩` from `exists_avg _ hfin hne a0 nD Gd (hArea D ch.S.Z.δ ch.S.Z.t0) (hTh D ch.S.Z.δ ch.S.Z.t0)`. Break down `le_or_gt 0 B with hB | hB` into its components or cases. Conclude with `(hbound Φ β d hocc c j f hf p.embedding ρ₁ hρ₁ u B hu).trans (mul_le_mul_of_nonneg_right (Real.exp_le_exp.2 h₁) hB)`. Conclude with `(hbound Φ β d hocc c j f hf p.embedding ρ₂ hρ₂ u B hu).trans (mul_le_mul_of_nonpos_right (Real.exp_le_exp.2 h₂) hB.le)`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem archimedean_top_term_kernel_conj_mean : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → InfTopK := by
   intro hP hI hD hDp
@@ -66,7 +66,7 @@ section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.KerConjMean.archimedean_top_term_kernel_conj_mean | exact _root_.GlobalTheory.KerConjMean.archimedean_top_term_kernel_conj_mean | (intros; apply _root_.GlobalTheory.KerConjMean.archimedean_top_term_kernel_conj_mean <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.kernel_conjugation_mean_archimedean_top_term : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → InfTopK := by
   first | exact @_root_.GlobalTheory.KerConjMean.archimedean_top_term_kernel_conj_mean | exact _root_.GlobalTheory.KerConjMean.archimedean_top_term_kernel_conj_mean | (intros; apply _root_.GlobalTheory.KerConjMean.archimedean_top_term_kernel_conj_mean <;> assumption)

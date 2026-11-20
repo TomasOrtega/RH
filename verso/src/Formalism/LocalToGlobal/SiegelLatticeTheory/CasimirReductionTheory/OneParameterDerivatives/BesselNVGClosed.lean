@@ -3,7 +3,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CasimirReductionTheory.OnePar
 namespace Formalism.L2.SG.LitS.PfNVG
 
 /- English proof (translation)
-The claim follows from `Fact.out`.
+A detailed English derivation is pending.
 -/
 theorem besselNVG [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] : BesselNVG := Fact.out
 

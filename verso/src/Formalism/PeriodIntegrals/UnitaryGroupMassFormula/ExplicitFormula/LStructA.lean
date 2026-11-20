@@ -7,13 +7,13 @@ namespace PI.EF
 open Complex Filter Topology Set
 
 /- English proof (translation)
-Establish `hn : analyticOrderAt f ρ = (analyticOrderNatAt f ρ : ℕ∞)` using `(Nat.cast_analyticOrderNatAt hfin).symm`. Take `⟨g, hg, hg0, hfg⟩` from `(hf.analyticOrderAt_eq_natCast).1 hn`. Use `⟨fun s => deriv g s / g s, hg.deriv.div hg hg0, ?_⟩` and prove the remaining obligations. Establish `hU : ∀ᶠ z in 𝓝 ρ, (∀ᶠ w in 𝓝 z, f w = (w - ρ) ^ analyticOrderNatAt f ρ • g w) ∧ g z ≠ 0 ∧ AnalyticAt ℂ g z` using `hfg.eventually_nhds.and ((hg.continuousAt.eventually_ne hg0).and hg.eventually_analyticAt)`. Use `filter_upwards [nhdsWithin_le_nhds hU, self_mem_nhdsWithin] with s hs hsne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hfs, hgs, hga⟩` from `hs`. Establish `hsr : s - ρ ≠ 0` using `sub_ne_zero.2 hsne`. Establish `hpow : (s - ρ) ^ analyticOrderNatAt f ρ ≠ 0` using `pow_ne_zero _ hsr`. Establish `hfs' : f s = (s - ρ) ^ analyticOrderNatAt f ρ * g s` using `by rw [hfs.self_of_nhds, smul_eq_mul]`. Use `⟨by rw [hfs']; exact mul_ne_zero hpow hgs, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd : DifferentiableAt ℂ (fun w : ℂ => w - ρ) s` using `differentiableAt_id.sub_const ρ`. Establish `hld : logDeriv f s = logDeriv (fun w => (w - ρ) ^ analyticOrderNatAt f ρ * g w) s`. Rewrite using `[logDeriv_apply, logDeriv_apply, Filter.EventuallyEq.deriv_eq (hfs.mono fun w hw => by rw [hw, smul_eq_mul]), hfs']`. Establish `hl : logDeriv (fun w : ℂ => w - ρ) s = 1 / (s - ρ)`. Rewrite using `[logDeriv_apply, deriv_sub_const, deriv_id'']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hld, logDeriv_mul (f := fun w => (w - ρ) ^ analyticOrderNatAt f ρ) s hpow hgs (hd.pow _) hga.differentiableAt, logDeriv_fun_pow hd, hl, logDeriv_apply]`. Use `beta_reduce`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma logDeriv_local {f : ℂ → ℂ} {ρ : ℂ} (hf : AnalyticAt ℂ f ρ)
     (hfin : analyticOrderAt f ρ ≠ ⊤) :
@@ -43,21 +43,21 @@ lemma logDeriv_local {f : ℂ → ℂ} {ρ : ℂ} (hf : AnalyticAt ℂ f ρ)
   ring
 
 /- English proof (translation)
-Establish `hloc : ∀ ρ, ρ ∈ K → ∃ k : ℂ → ℂ, AnalyticAt ℂ k ρ ∧ ∀ᶠ s in 𝓝[≠] ρ, f s ≠ 0 ∧ logDeriv f s = (analyticOrderNatAt f ρ : ℂ) / (s - ρ) + k s` using `fun ρ hρ => logDeriv_local (hf ρ hρ) (hfin ρ hρ)`. Use `choose! k hk hkev using hloc`. Establish `hsumA : ∀ (W : Finset ℂ) (s0 : ℂ), s0 ∉ W → AnalyticAt ℂ (fun s => ∑ ρ ∈ W, (analyticOrderNatAt f ρ : ℂ) / (s - ρ)) s0`. Introduce `W s0 hW`. Establish `h` using `Finset.analyticAt_sum (𝕜 := ℂ) (c := s0) W (f := fun ρ (s : ℂ) => (analyticOrderNatAt f ρ : ℂ) / (s - ρ)) (fun ρ hρ => analyticAt_const.div (analyticAt_id.sub analyticAt_const) (sub_ne_zero.2 fun h => hW (h ▸ hρ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `s`. Simplify using `[Finset.sum_apply]`. Set `H : ℂ → ℂ` to `fun s => if s ∈ Z ∧ s ∈ K then k s s - ∑ ρ ∈ Z.erase s, (analyticOrderNatAt f ρ : ℂ) / (s - ρ) else logDeriv f s - ∑ ρ ∈ Z, (analyticOrderNatAt f ρ : ℂ) / (s - ρ)`. Use `⟨H, ?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s0 hs0`. Distinguish the cases in `hz : s0 ∈ Z`. Establish `hRa : AnalyticAt ℂ (fun s => k s0 s - ∑ ρ ∈ Z.erase s0, (analyticOrderNatAt f ρ : ℂ) / (s - ρ)) s0` using `(hk s0 hs0).sub (hsumA _ s0 (by simp))`. Establish `h1` using `hkev s0 hs0`. Rewrite `h1` using `[eventually_nhdsWithin_iff]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ᶠ s in 𝓝 s0, s ∉ Z.erase s0` using `(Z.erase s0).finite_toSet.isClosed.isOpen_compl.mem_nhds (by simp)`. Use `hRa.congr ?_` and prove the remaining obligations. Use `filter_upwards [h1, h2] with s hs1 hs2`. Distinguish the cases in `hss : s = s0`. Substitute `hss` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [H, if_pos (And.intro hz hs0)]`. Establish `hsZ : s ∉ Z` using `fun h => hs2 (Finset.mem_erase.2 ⟨hss, h⟩)`. Take `⟨_, hl⟩` from `hs1 hss`. Simplify using `only [H, hsZ, false_and, if_false]`. Rewrite using `[hl, ← Finset.add_sum_erase Z _ hz]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hf0 : f s0 ≠ 0` using `fun h => hz (hK s0 hs0 h)`. Establish `h2 : ∀ᶠ s in 𝓝 s0, s ∉ Z` using `Z.finite_toSet.isClosed.isOpen_compl.mem_nhds (by simpa using hz)`. Establish `hA : AnalyticAt ℂ (fun s => logDeriv f s - ∑ ρ ∈ Z, (analyticOrderNatAt f ρ : ℂ) / (s - ρ)) s0`. Use `AnalyticAt.sub ?_ (hsumA Z s0 hz)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : logDeriv f = fun s => deriv f s / f s` using `funext fun s => logDeriv_apply f s`. Rewrite using `[e]`. Conclude with `(hf s0 hs0).deriv.div (hf s0 hs0) hf0`. Use `hA.congr ?_` and prove the remaining obligations. Use `filter_upwards [h2] with s hs`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [H, hs, false_and, if_false]`. Introduce `s _ hfs`. Establish `hsZ : s ∉ Z` using `fun h => hfs (hZ0 s h)`. Simplify using `only [H, hsZ, false_and, if_false]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_regular_part {f : ℂ → ℂ} {K : Set ℂ} (hf : AnalyticOnNhd ℂ f K) (Z : Finset ℂ)
     (hZ0 : ∀ ρ ∈ Z, f ρ = 0) (hK : ∀ s ∈ K, f s = 0 → s ∈ Z)
@@ -119,11 +119,9 @@ theorem exists_regular_part {f : ℂ → ℂ} {K : Set ℂ} (hf : AnalyticOnNhd 
     ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hinf`. Take `⟨z, _, hacc⟩` from `Set.Infinite.exists_accPt_of_subset_isCompact hinf hK Set.inter_subset_left`. Establish `hfr : ∃ᶠ w in 𝓝[≠] z, f w = 0`. Rewrite `hacc` using `[accPt_iff_frequently]`. Rewrite using `[Filter.Frequently, eventually_nhdsWithin_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hacc` to reduce the goal to its premises. Use `filter_upwards [h] with w hw`. Introduce and unpack `⟨hne, hw'⟩`. Conclude with `hw hne hw'.2`.
-
-Establish `h0` using `AnalyticOnNhd.eqOn_zero_of_preconnected_of_frequently_eq_zero (fun w _ => hf.analyticAt w) isPreconnected_univ (Set.mem_univ z) hfr`. Conclude with `hx (h0 (Set.mem_univ x))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma finite_zeros_of_compact {f : ℂ → ℂ} (hf : Differentiable ℂ f) {x : ℂ} (hx : f x ≠ 0)
     {K : Set ℂ} (hK : IsCompact K) : (K ∩ f ⁻¹' {0}).Finite := by
@@ -142,7 +140,7 @@ lemma finite_zeros_of_compact {f : ℂ → ℂ} (hf : Differentiable ℂ f) {x :
   exact hx (h0 (Set.mem_univ x))
 
 /- English proof (translation)
-Introduce `htop`. Rewrite `htop` using `[analyticOrderAt_eq_top]`. Establish `h0` using `AnalyticOnNhd.eqOn_zero_of_preconnected_of_eventuallyEq_zero (fun w _ => hf.analyticAt w) isPreconnected_univ (Set.mem_univ y) htop`. Conclude with `hx (h0 (Set.mem_univ x))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma order_ne_top_of_entire {f : ℂ → ℂ} (hf : Differentiable ℂ f) {x : ℂ} (hx : f x ≠ 0)
     (y : ℂ) : analyticOrderAt f y ≠ ⊤ := by

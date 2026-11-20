@@ -9,14 +9,14 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.Base.LieExponentialMajorant
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[trace_conj hV1, trace_diagonal, Complex.re_sum]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem re_trace_conj_diag {V : Matrix (Fin n) (Fin n) ℂ} (hV1 : star V * V = 1) (d : Fin n → ℝ) :
     (trace (V * diagonal (fun i => (d i : ℂ)) * star V)).re = ∑ i, d i := by
   rw [trace_conj hV1, trace_diagonal, Complex.re_sum]; simp
 
 /- English proof (translation)
-Rewrite using `[diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem diag_mul' (a b : Fin n → ℝ) :
     diagonal (fun i => (a i : ℂ)) * diagonal (fun i => (b i : ℂ)) =
@@ -24,14 +24,14 @@ theorem diag_mul' (a b : Fin n → ℝ) :
   rw [diagonal_mul_diagonal]; congr 1; funext i; push_cast; rfl
 
 /- English proof (translation)
-Rewrite using `[diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem diag_herm (a : Fin n → ℝ) :
     (diagonal (fun i => (a i : ℂ)))ᴴ = diagonal (fun i => (a i : ℂ)) := by
   rw [diagonal_conjTranspose]; congr 1; funext i; simp
 
 /- English proof (translation)
-Rewrite using `[conjTranspose_mul, conjTranspose_mul, diag_herm, star_eq_conjTranspose, conjTranspose_conjTranspose]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_herm (V : Matrix (Fin n) (Fin n) ℂ) (a : Fin n → ℝ) :
     (V * diagonal (fun i => (a i : ℂ)) * star V)ᴴ = V * diagonal (fun i => (a i : ℂ)) * star V := by
@@ -40,11 +40,9 @@ theorem conj_herm (V : Matrix (Fin n) (Fin n) ℂ) (a : Fin n → ℝ) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hab : ∀ i, |l i| ≤ Real.sqrt (∑ j, l j ^ 2)`. Introduce `i`. Rewrite using `[← Real.sqrt_sq_eq_abs]`. Conclude with `Real.sqrt_le_sqrt (Finset.single_le_sum (fun j _ => sq_nonneg (l j)) (Finset.mem_univ i))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun i _ => (phi_le (l i)).trans ?_` and prove the remaining obligations. Use `Real.exp_le_exp.mpr (show 2 * |l i| ≤ 2 * Real.sqrt (∑ j, l j ^ 2) by` as an intermediate fact. Combine the linear relations using `[hab i])`. Establish `h0 : 0 ≤ 4 * l i ^ 2` using `by positivity`. Conclude with `mul_le_mul_of_nonneg_left this h0`.
-
-Use `_ = 4 * (∑ i, l i ^ 2) * Real.exp (2 * Real.sqrt (∑ i, l i ^ 2)) := by`. Rewrite using `[← Finset.sum_mul, ← Finset.mul_sum]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_bound (l : Fin n → ℝ) :
     ∑ i, (Real.exp (2 * l i) + Real.exp (-(2 * l i)) - 2) ≤
@@ -64,29 +62,27 @@ theorem sum_bound (l : Fin n → ℝ) :
         rw [← Finset.sum_mul, ← Finset.mul_sum]
 
 /- English proof (translation)
-Use `set E := diagonal (fun i => (Real.exp (l i) : ℂ)) with hE`. Establish `hgg : gᴴ * g = V * diagonal (fun i => ((Real.exp (l i) * Real.exp (l i) : ℝ) : ℂ)) * star V`. Establish `e1 : gᴴ = V * E * star V * κᴴ`. Rewrite using `[hgE, conjTranspose_mul, conj_herm]`. Establish `hk' : κᴴ * κ = 1` using `hk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, hgE]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = V * E * (star V * V) * E * star V := by`. Rewrite using `[hk', Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = V * (E * E) * star V := by rw [hV1, Matrix.mul_one]; simp only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hE, diag_mul']`. Use `set M := V * diagonal (fun i => ((Real.exp (-l i) * Real.exp (-l i) : ℝ) : ℂ)) * star V with hM`. Establish `hgM : gᴴ * g * M = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hdd : diagonal (fun i => ((Real.exp (l i) * Real.exp (l i) : ℝ) : ℂ)) * diagonal (fun i => ((Real.exp (-l i) * Real.exp (-l i) : ℝ) : ℂ)) = 1`. Rewrite using `[diag_mul', ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `: Real.exp (l i) * Real.exp (l i) * (Real.exp (-l i) * Real.exp (-l i)) = 1`.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hgg, hM]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = V * star V := by rw [hV1, Matrix.mul_one, Matrix.mul_assoc V, hdd, Matrix.mul_one]`. Use `_ = 1 := mul_eq_one_comm.mp hV1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hgh : g * h = 1` using `mul_eq_one_comm.mp hhg`. Establish `hhh : h * hᴴ = M`. Establish `h1 : gᴴ * g * (h * hᴴ) = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : M * (gᴴ * g) = 1` using `mul_eq_one_comm.mp hgM`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hA` using `hs_sub_one g htg`. Establish `hB` using `hs_sub_one h hth`. Rewrite `hA` using `[hgg, re_trace_conj_diag hV1]`. Rewrite `hB` using `[trace_mul_comm, hhh, hM, re_trace_conj_diag hV1]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Establish `hB0 : 0 ≤ S7.hs (h - 1)`. Unfold `S7.hs`. Check the signs of the components of the expression. Establish `hn : (n : ℝ) = ∑ _i : Fin n, (1 : ℝ)` using `by simp`. Establish `e2 : ∀ i, Real.exp (2 * l i) = Real.exp (l i) * Real.exp (l i)` using `fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Establish `e3 : ∀ i, Real.exp (-(2 * l i)) = Real.exp (-l i) * Real.exp (-l i)` using `fun i => by`. Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [e2, e3]`. Establish `: ∑ i, (Real.exp (l i) * Real.exp (l i) + Real.exp (-l i) * Real.exp (-l i) - 2) = (∑ i, Real.exp (l i) * Real.exp (l i) - n) + (∑ i, Real.exp (-l i) * Real.exp (-l i) - n)`. Rewrite using `[hn, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem hs_polar {g h κ V : Matrix (Fin n) (Fin n) ℂ} {l : Fin n → ℝ}
     (hV1 : star V * V = 1) (hk : star κ * κ = 1)
@@ -152,7 +148,7 @@ theorem hs_polar {g h κ V : Matrix (Fin n) (Fin n) ℂ} {l : Fin n → ℝ}
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Introduce `t`. Use `hY (-t)` as an intermediate fact. Rewrite `this` using `[Complex.ofReal_neg, neg_smul]`. Rewrite using `[smul_neg]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem neg_mem_lie {k r : ℕ} {Y : Mat k r} (hY : Y ∈ Formalism.MainNotions.S.lieOf (Formalism.QuantumDeterminants.Nset k r)) :
     -Y ∈ Formalism.MainNotions.S.lieOf (Formalism.QuantumDeterminants.Nset k r) := by
@@ -162,7 +158,7 @@ theorem neg_mem_lie {k r : ℕ} {Y : Mat k r} (hY : Y ∈ Formalism.MainNotions.
   rwa [smul_neg]
 
 /- English proof (translation)
-Rewrite using `[hs_eq_re_trace, hXh.eq, hXV]`. Establish `: V * diagonal (fun i => (l i : ℂ)) * star V * (V * diagonal (fun i => (l i : ℂ)) * star V) = V * diagonal (fun i => ((l i * l i : ℝ) : ℂ)) * star V`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, re_trace_conj_diag hV1]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hs_X_eq {n : ℕ} {X V : Matrix (Fin n) (Fin n) ℂ} {l : Fin n → ℝ} (hXh : X.IsHermitian)
     (hV1 : star V * V = 1) (hXV : X = V * diagonal (fun i => (l i : ℂ)) * star V) :
@@ -177,15 +173,13 @@ theorem hs_X_eq {n : ℕ} {X V : Matrix (Fin n) (Fin n) ℂ} {l : Fin n → ℝ}
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Establish `htg : trace (P * NormedSpace.exp Y * P⁻¹) = ((2 * r + k + 1 : ℕ) : ℂ)`. Rewrite using `[trace_conj hPP]`. Conclude with `trace_exp_lie hY`. Establish `hth : trace (P * NormedSpace.exp (-Y) * P⁻¹) = ((2 * r + k + 1 : ℕ) : ℂ)`. Rewrite using `[trace_conj hPP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `trace_exp_lie (neg_mem_lie hY)`. Establish `hhg : P * NormedSpace.exp (-Y) * P⁻¹ * (P * NormedSpace.exp Y * P⁻¹) = 1`. Establish `hx : NormedSpace.exp (-Y) * NormedSpace.exp Y = 1`. Rewrite using `[Matrix.exp_neg]`. Conclude with `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp (Matrix.isUnit_exp Y))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hPP, Matrix.mul_one, hx, Matrix.mul_one, hPP']`. Establish `hk : star (S7.toMK κ) * S7.toMK κ = 1` using `Unitary.star_mul_self_of_mem (show S7.toMK κ ∈ Kset ε from κ.2).1`. Establish `hXh` using `herm_of_inP hX`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨V, l, hV1, _, hXV, hEV⟩` from `herm_decomp hXh`. Establish `hgE : P * NormedSpace.exp Y * P⁻¹ = S7.toMK κ * (V * diagonal (fun i => (Real.exp (l i) : ℂ)) * star V)`. Rewrite using `[heq, hEV]`. Establish `ha` using `hs_polar hV1 hk hgE hhg htg hth`. Rewrite using `[hs_X_eq hXh hV1 hXV]`.
-
-Conclude with `ha.trans (sum_bound l)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polar_a {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hPP : P⁻¹ * P = 1)
     (hPP' : P * P⁻¹ = 1) {Y : Mat k r} (hY : Y ∈ Formalism.MainNotions.S.lieOf (Formalism.QuantumDeterminants.Nset k r))
@@ -217,17 +211,15 @@ theorem polar_a {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (h
   exact ha.trans (sum_bound l)
 
 /- English proof (translation)
-Take `⟨K1, hK1⟩ : ∃ K1, K1 = max (Real.sqrt (S7.hs P⁻¹) * Real.sqrt (S7.hs P)) 1` from `⟨_, rfl⟩`. Take `⟨a, had⟩ : ∃ a, a = S7.hs (P * NormedSpace.exp Y * P⁻¹ - 1)` from `⟨_, rfl⟩`. Rewrite using `[← hK1, ← had]`. Establish `hK11 : 1 ≤ K1` using `hK1 ▸ le_max_right _ _`. Establish `hKK : Real.sqrt (S7.hs P⁻¹) * Real.sqrt (S7.hs P) ≤ K1` using `hK1 ▸ le_max_left _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : 0 ≤ a` using `by rw [had]; unfold S7.hs; positivity`. Establish `hexp : NormedSpace.exp Y - 1 = P⁻¹ * (P * NormedSpace.exp Y * P⁻¹ - 1) * P`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hPP]`. Use `congr 1`. Simplify using `only [← Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[hPP, Matrix.one_mul, Matrix.mul_assoc, hPP, Matrix.mul_one]`. Establish `hb : Real.sqrt (S7.hs (NormedSpace.exp Y - 1)) ≤ K1 * Real.sqrt a`. Rewrite using `[hexp]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[had]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (sqrt_hs_mul _ _) (Real.sqrt_nonneg _)`. Use `_ = Real.sqrt (S7.hs P⁻¹) * Real.sqrt (S7.hs P) * Real.sqrt a := by ring`. Use `_ ≤ K1 * Real.sqrt a := mul_le_mul_of_nonneg_right hKK (Real.sqrt_nonneg _)`. Establish `hsa0 : 0 ≤ Real.sqrt a` using `Real.sqrt_nonneg a`. Establish `hb0 : 0 ≤ Real.sqrt (S7.hs (NormedSpace.exp Y - 1))` using `Real.sqrt_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hYb : Real.sqrt (S7.hs Y) ≤ C * K1 ^ (m + 1) * Real.sqrt a * (1 + Real.sqrt a) ^ m`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities. Use `_ = C * K1 ^ (m + 1) * Real.sqrt a * (1 + Real.sqrt a) ^ m := by rw [mul_pow, pow_succ]; ring`. Establish `hY0 : 0 ≤ S7.hs Y` using `by unfold S7.hs; positivity`.
-
-Rewrite using `[← Real.sq_sqrt hY0]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_pow, Real.sq_sqrt ha0, ← pow_mul, mul_comm m 2, mul_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem growth_a {k r : ℕ} {P : Mat k r} (hPP : P⁻¹ * P = 1) {C : ℝ} {m : ℕ} (hC : 0 ≤ C)
     {Y : Mat k r}
@@ -274,13 +266,13 @@ theorem growth_a {k r : ℕ} {P : Mat k r} (hPP : P⁻¹ * P = 1) {C : ℝ} {m :
         rw [mul_pow, mul_pow, Real.sq_sqrt ha0, ← pow_mul, mul_comm m 2, mul_pow]
 
 /- English proof (translation)
-Take `⟨μ, hμ⟩ : ∃ μ, μ = min s (Real.sqrt s)` from `⟨_, rfl⟩`. Rewrite `hL` using `[← hμ]`. Establish `hμ0 : 0 ≤ μ` using `by rw [hμ]; exact le_min hs (Real.sqrt_nonneg _)`. Establish `hA1 : 0 < A + 1` using `by linarith`. Establish `h1q : 0 < 1 + q` using `by linarith`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : 1 / ((A + 1) * (1 + q)) * L ≤ μ / (1 + q)`. Establish `hc0 : 0 ≤ 1 / ((A + 1) * (1 + q))` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hμs : μ / (1 + q) ≤ s` using `(div_le_self hμ0 (by linarith)).trans (hμ ▸ min_le_left _ _)`. Use `le_min (hc.trans hμs) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `eq_or_lt_of_le hq with h0 | h0` into its components or cases. Establish `hs0 : s = 0` using `hq0 h0.symm`. Establish `: μ = 0` using `by rw [hμ, hs0]; simp`. Rewrite `hc` using `[this]`. Rewrite using `[hs0]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hc`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 -/
 theorem final_ineq {A q s L : ℝ} (hA : 0 ≤ A) (hq : 0 ≤ q) (hs : 0 ≤ s) (hL : L ≤ A * min s (Real.sqrt s))
     (hq0 : q = 0 → s = 0) :
@@ -311,15 +303,15 @@ theorem final_ineq {A q s L : ℝ} (hA : 0 ≤ A) (hq : 0 ≤ q) (hs : 0 ≤ s) 
       _ ≤ Real.sqrt s / q := div_le_div_of_nonneg_left (Real.sqrt_nonneg _) h0 (by linarith)
 
 /- English proof (translation)
-Introduce `k r ε P hP`. Take `⟨C, m, hC, hgr⟩` from `(b4 k r).2.2.2.2`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1`. Establish `hPP : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hdet`. Establish `hPP' : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨A, hA, hlog⟩` from `log_bound (C * (max (Real.sqrt (S7.hs P⁻¹) * Real.sqrt (S7.hs P)) 1) ^ (m + 1)) m`. Establish `hq : 0 ≤ Real.sqrt (2 * (S7.q0 ε : ℝ))` using `Real.sqrt_nonneg _`. Use `⟨1 / ((A + 1) * (1 + Real.sqrt (2 * (S7.q0 ε : ℝ)))), by positivity, fun Y hY κ X hX heq => ?_⟩` and prove the remaining obligations. Establish `hs0 : 0 ≤ S7.hs X` using `by unfold S7.hs; positivity`. Establish `ha0 : 0 ≤ S7.hs (P * NormedSpace.exp Y * P⁻¹ - 1)` using `by unfold S7.hs; positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY0 : 0 ≤ S7.hs Y` using `by unfold S7.hs; positivity`. Establish `hL` using `hlog _ _ _ hs0 ha0 hY0 (polar_a hPP hPP' hY κ hX heq) (growth_a hPP hC (hgr Y hY))`. Use `final_ineq hA hq hs0 hL fun h0 => ?_` and prove the remaining obligations. Establish `hq0 : S7.q0 ε = 0`. Establish `h2 : (2 * (S7.q0 ε : ℝ)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.sqrt_eq_zero'.mp h0` as an intermediate fact. Establish `h3 : (0 : ℝ) ≤ 2 * (S7.q0 ε : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(by linarith : (S7.q0 ε : ℝ) = 0)` after adjusting the coercions. Rewrite using `[eq_zero_of_noncompactPart_of_noncompactRank_zero hX hq0]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[S7.hs]`.
+A detailed English derivation is pending.
 -/
 theorem lieExponentialMajorant_holds : CayleyMajorantBound := by
   intro k r ε P hP

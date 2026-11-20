@@ -14,17 +14,15 @@ section Gen
 variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
 
 /- English proof (translation)
-Establish `hmeas : ∀ s : Γ0, MeasurableSet (P ∩ (fun x => (s : G) * x) ⁻¹' Q)` using `fun s => hP.inter (measurable_const_mul (s : G) hQ)`. Establish `hdisj : Pairwise (Function.onFun (AEDisjoint μR) (fun s : Γ0 => P ∩ (fun x => (s : G) * x) ⁻¹' Q))`. Introduce `s t hst`. Use `show μR ((P ∩ (fun x => (s : G) * x) ⁻¹' Q) ∩ (P ∩ (fun x => (t : G) * x) ⁻¹' Q)) = 0`. Use `measure_mono_null ?_ hR` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[Set.mem_compl_iff]`. Introduce `hxR`. Take `⟨y, _, huniq⟩` from `hQu x hxR`. Apply `hst` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e1 : (s : G) = y` using `huniq s ⟨s.2, hx.1.2⟩`. Establish `e2 : (t : G) = y` using `huniq t ⟨t.2, hx.2.2⟩`. Conclude with `Subtype.ext (e1.trans e2.symm)`. Establish `hRae : ∀ᵐ x ∂μR, x ∈ R` using `by first`. Consider the case `exact ae_iff.2 hR`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (mem_ae_iff.2 hR : R ∈ ae μR)`. Consider the case `simpa [ae_iff] using hR`. Establish `hae : P =ᵐ[μR] ⋃ s : Γ0, (P ∩ (fun x => (s : G) * x) ⁻¹' Q)` using `by filter_upwards [hRae] with x hx`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hxP`. Take `⟨s, hs, hsQ⟩` from `(hQu x hx).exists`. Conclude with `Set.mem_iUnion.2 ⟨⟨s, hs⟩, hxP, hsQ⟩`. Introduce `h`. Take `⟨s, hs⟩` from `Set.mem_iUnion.1 h`.
-
-Conclude with `hs.1`. Rewrite using `[measure_congr hae, measure_iUnion₀ hdisj fun s => (hmeas s).nullMeasurableSet]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decomp (μR : Measure G) (R : Set G) (hR : μR Rᶜ = 0) (Γ0 : Subgroup G) [Countable Γ0]
     (P Q : Set G) (hP : MeasurableSet P) (hQ : MeasurableSet Q) (hQu : ∀ r ∈ R, ∃! s, s ∈ Γ0 ∧ s * r ∈ Q) :
@@ -63,9 +61,9 @@ theorem decomp (μR : Measure G) (R : Set G) (hR : μR Rᶜ = 0) (Γ0 : Subgroup
   rw [measure_congr hae, measure_iUnion₀ hdisj fun s => (hmeas s).nullMeasurableSet]
 
 /- English proof (translation)
-Rewrite using `[decomp μR R hR Γ0 A K hA hK hKu, decomp μR R hR Γ0 K A hK hA hAu, ← (Equiv.inv Γ0).tsum_eq (fun s : Γ0 => μR (K ∩ (fun x => (s : G) * x) ⁻¹' A))]`. Use `tsum_congr fun s => ?_` and prove the remaining obligations. Use `show μR (A ∩ (fun x => (s : G) * x) ⁻¹' K) = μR (K ∩ (fun x => ((s : G))⁻¹ * x) ⁻¹' A)`. Establish `hB : MeasurableSet (K ∩ (fun x => ((s : G))⁻¹ * x) ⁻¹' A)` using `hK.inter (measurable_const_mul _ hA)`. Establish `hpre : (fun x => (s : G) * x) ⁻¹' (K ∩ (fun x => ((s : G))⁻¹ * x) ⁻¹' A) = A ∩ (fun x => (s : G) * x) ⁻¹' K`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_inter_iff, inv_mul_cancel_left]`. Conclude with `and_comm`. Rewrite using `[← hpre, ← Measure.map_apply (measurable_const_mul _) hB, hinv s s.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fd_meas_eq (μR : Measure G) (R : Set G) (hR : μR Rᶜ = 0) (Γ0 : Subgroup G) [Countable Γ0]
     (hinv : ∀ s ∈ Γ0, μR.map (fun x => s * x) = μR) (A K : Set G) (hA : MeasurableSet A) (hK : MeasurableSet K)
@@ -91,11 +89,9 @@ def invSigma {G : Type*} [Group G] (m0 : MeasurableSpace G) (R : Set G) : Measur
     fun r hr => by rw [preimage_iUnion]; exact iUnion_congr fun i => (hB i).2 r hr⟩
 
 /- English proof (translation)
-Establish `hm : invSigma ‹MeasurableSpace G› R ≤ ‹MeasurableSpace G›`. Introduce `B hB`. Conclude with `And.left hB`. Establish `hfm : Measurable[invSigma ‹MeasurableSpace G› R] f`. Introduce `B hB`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(⟨hf hB, fun r hr => by ext x; simp [hfi r hr x]⟩ : MeasurableSet[‹MeasurableSpace G›] (f ⁻¹' B) ∧ ∀ r ∈ R, (fun x => r * x) ⁻¹' (f ⁻¹' B) = f ⁻¹' B)`. Establish `hsm : StronglyMeasurable[invSigma ‹MeasurableSpace G› R] f` using `hfm.stronglyMeasurable`. Establish `htrim : μ.trim hm = μ'.trim hm`. Use `@Measure.ext G (invSigma ‹MeasurableSpace G› R) _ _ fun B hB => ?_` and prove the remaining obligations. Rewrite using `[trim_measurableSet_eq hm hB, trim_measurableSet_eq hm hB]`.
-
-Conclude with `hmeas B (And.left hB) (And.right hB)`. Rewrite using `[integral_trim hm hsm, integral_trim hm hsm, htrim]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_eq_of_inv {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [MeasurableSpace V] [BorelSpace V]
     [SecondCountableTopology V] [CompleteSpace V] (μ μ' : Measure G) (R : Set G) (f : G → V) (hf : Measurable f)
@@ -138,37 +134,31 @@ def FormAllC : Prop :=
     OOt t = (μR K).toReal • OO ν Set.univ (X.Wu u) (X.Wu u') t.pt.1
 
 /- English proof (translation)
-Introduce `D X Y u u' t μR ν K hchi hH hQ hKm hKu`. Use `haveI := FiniteDimensional.complete ℂ (X.Vpi u)`. Establish `hFE : ∃ Ω, IsSFund X.B.I (ROinf t) Ω` using `fundExistsC_holds D X Y u u' t`. Establish `hFO : IsSFund X.B.I (ROinf t) (FundOf t)`. Unfold `FundOf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hFE]`. Conclude with `hFE.choose_spec`. Use `set Γ0 := ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin with hΓ0`. Establish `hΓc : Countable Γ0`. Use `ROsub_discrete X (X.Fu u) (X.Fu u') t.lam t.lam' ((Y.rowsOK u).1 t.lam t.mem).1.1 t.lin` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `countable_of_discrete Γ0`. Establish `hΓR : ∀ s ∈ Γ0, s ∈ Rset t`. Introduce and unpack `_ ⟨x, n, hxn, rfl, hn, hn'⟩`. Use `⟨nLamNinf_holds D X u _ x n hxn hn, ?_⟩` and prove the remaining obligations. Establish `hrep : RatLink X t.pt t.lin` using `t.rep.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2` using `ratLink_mul X (ratLink_mul X (ratLink_inv X hrep) hxn) hrep`. Establish `h3` using `nLamNinf_holds D X u' _ _ _ h2 hn'`. Simplify `h3` using `[Prod.fst_mul, Prod.fst_inv]`. Establish `hμinv : ∀ s ∈ Γ0, μR.map (fun x => s * x) = μR` using `fun s hs => hH.2.2.2 s (hΓR s hs)`. Establish `hsec : ∀ x, μR ((fun s => s * x) ⁻¹' FundOf t) = μR K`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Use `FormAllPf.fd_meas_eq μR (Rset t) hH.2.2.1 Γ0 hμinv _ K (hFO.1.preimage (measurable_mul_const x)) hKm (fun r _ => ?_) hKu` and prove the remaining obligations. Take `⟨s, hs, hsx⟩` from `hFO.2.1 (r * x)`. Use `⟨s, ⟨hs, by simpa [mul_assoc] using hsx⟩, fun s' ⟨hs', hs'x⟩ => ?_⟩` and prove the remaining obligations. Establish `h1 : s' * r * x ∈ FundOf t` using `hs'x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (s * s'⁻¹) * (s' * r * x) ∈ FundOf t` using `by simpa [mul_assoc] using hsx`. Use `hFO.2.2 _ h1 _ (Γ0.mul_mem hs (Γ0.inv_mem hs')) h2` as an intermediate fact. Conclude with `(mul_inv_eq_one.1 this).symm`. Use `set f : X.B.I.Ginf → (X.Vpi u' →L[ℂ] X.Vpi u) := fun x => rk1 (X.Wu u x) (X.Wu u' (t.pt.1⁻¹ * x)) with hfdef`. Establish `hfc : Continuous f` using `Formalism.L2.SG.RealObj.RankOneTensors.continuous_rankOneOperator (X.Wu_spec u).2.2.1 ((X.Wu_spec u').2.2.1.comp (continuous_const.mul continuous_id))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hfi : ∀ r ∈ Rset t, ∀ x, f (r * x) = f x`. Introduce `r hr x`. Simplify using `only [hfdef]`. Rewrite using `[wu_N X u hr.1 x, show t.pt.1⁻¹ * (r * x) = (t.pt.1⁻¹ * r * t.pt.1) * (t.pt.1⁻¹ * x) by group, wu_N X u' hr.2 _, ← hchi r hr]`. Conclude with `rankOneInnerOperator_smul_smul_eq_mul_conj_smul _ (Formalism.L2.SG.RealObj.InfCut.norm_psiInfU X u r) _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `letI : MeasurableSpace (X.Vpi u' →L[ℂ] X.Vpi u) := borel _`. Use `haveI : BorelSpace (X.Vpi u' →L[ℂ] X.Vpi u) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (X.Vpi u' →L[ℂ] X.Vpi u) := inferInstance`. Establish `hfm : Measurable f` using `hfc.measurable`. Establish `hB : ∀ B, MeasurableSet B → (∀ r ∈ Rset t, (fun x => r * x) ⁻¹' B = B) → ((Formalism.L2.SG.ProjRows.muInf X.B.I).restrict (FundOf t)) B = ((μR K) • ν) B`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Introduce `B hBm hBi`. Rewrite using `[Measure.restrict_apply hBm, Measure.smul_apply, smul_eq_mul]`. Establish `hq` using `hQ ((B ∩ FundOf t).indicator 1) ((measurable_const).indicator (hBm.inter hFO.1))`. Rewrite `hq` using `[lintegral_indicator_one (hBm.inter hFO.1)]`. Rewrite using `[hq, ← lintegral_indicator_const hBm]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `e1 : (fun s => (B ∩ FundOf t).indicator (1 : X.B.I.Ginf → ℝ≥0∞) (s * x)) = ((fun s => s * x) ⁻¹' (B ∩ FundOf t)).indicator 1`. Use function extensionality and compare the values at `s`. Both sides reduce to the same expression. Rewrite using `[e1, lintegral_indicator_one ((hBm.inter hFO.1).preimage (measurable_mul_const x)), ← measure_inter_conull (t := Rset t) hH.2.2.1]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `hx : x ∈ B`. Rewrite using `[Set.indicator_of_mem hx, ← hsec x, ← measure_inter_conull (s := (fun s => s * x) ⁻¹' FundOf t) hH.2.2.1]`. Use `congr 1`. Use extensionality with `s`. Simplify using `only [mem_inter_iff, mem_preimage]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨-, h2⟩, h3⟩`. Conclude with `⟨h2, h3⟩`. Introduce and unpack `⟨h2, h3⟩`. Use `⟨⟨?_, h2⟩, h3⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun S => x ∈ S) (hBi s h3)` as an intermediate fact. Simplify using `only [mem_preimage] at this`. Conclude with `this ▸ hx`. Rewrite using `[Set.indicator_of_notMem hx]`. Establish `hempty : (fun s => s * x) ⁻¹' (B ∩ FundOf t) ∩ Rset t = ∅`.
-
-Use extensionality with `s`. Use `⟨fun hs => ?_, fun h => h.elim⟩` and prove the remaining obligations. Take `⟨⟨h1, -⟩, h3⟩` from `hs`. Use `congrArg (fun S => x ∈ S) (hBi s h3)` as an intermediate fact. Simplify using `only [mem_preimage] at this`.
-
-Conclude with `absurd (this ▸ h1) hx`. Rewrite using `[hempty, measure_empty]`. Use `show OO (Formalism.L2.SG.ProjRows.muInf X.B.I) (FundOf t) (X.Wu u) (X.Wu u') t.pt.1 = _`. Unfold `OO`. Rewrite using `[Measure.restrict_univ, ← integral_smul_measure]`.
-
-Conclude with `FormAllPf.integral_eq_of_inv _ _ (Rset t) f hfm hfi hB`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formAllC_holds : FormAllC := by
   intro D X Y u u' t μR ν K hchi hH hQ hKm hKu

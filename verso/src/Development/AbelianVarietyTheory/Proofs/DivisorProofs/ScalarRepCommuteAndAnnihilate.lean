@@ -6,11 +6,11 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `Φ : Λ →+* Module.End C (Fin h → C)` to `((Matrix.toLinAlgEquiv' (R := C) (n := Fin h)).toRingEquiv.toRingHom).comp (((algebraMap O C).mapMatrix).comp ρ)`. Establish `hΦ : ∀ a, Matrix.toLin' ((ρ a).map (algebraMap O C)) = Φ a` using `fun a => by`. Use extensionality with `i j`. Simplify using `[Φ, Matrix.toLinAlgEquiv'_apply, Matrix.toLin'_apply]`. Establish `hscal : (algebraMap C (Module.End C (Fin h → C))).comp ((algebraMap O C).comp φ) = Φ.comp (algebraMap R Λ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `c : 1`. Use `show _ = Φ (algebraMap R Λ c)`. Rewrite using `[RingHom.comp_apply, ← hΦ, hρ]`. Use extensionality with `i j`. Simplify using `[Matrix.toLin'_apply, Matrix.one_apply, Pi.single_apply, Module.algebraMap_end_apply, Matrix.map_apply, Matrix.mulVec]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Use `⟨fun a b => ?_, fun a f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ, hΦ]`. Conclude with `(Commute.all a b).map Φ`. Rewrite using `[hΦ, Polynomial.aeval_def, Polynomial.eval₂_map, hscal, ← Polynomial.hom_eval₂, ← Polynomial.aeval_def, hf, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem action_commute_and_killed_by_polynomials
     (C : Type) [Field C] (O : Type) [CommRing O] [Algebra O C] (Λ : Type) [CommRing Λ] (h : ℕ)

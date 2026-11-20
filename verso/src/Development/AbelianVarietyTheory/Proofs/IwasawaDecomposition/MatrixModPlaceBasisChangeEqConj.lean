@@ -7,9 +7,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.SymFrame
 
 /- English proof (translation)
-Establish `h1 : (∑ i, x i * y i) = ((∑ i, (x i).val * (y i).val : ℕ) : ZMod g)`. Use `push_cast`. Simplify using the standard rewrite rules. Rewrite using `[h1, ZMod.val_natCast]`. Establish `h2 : ∀ n : ℕ, (n % g) • β = n • β` using `fun n => by conv_rhs => rw [← Nat.mod_add_div n g, add_nsmul, mul_comm, mul_nsmul', hβ, nsmul_zero, add_zero]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2, ← Finset.sum_nsmul_assoc]`. Simplify using `[mul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem val_mul_nsmul {Q ι : Type} [AddCommGroup Q] [Fintype ι] {g : ℕ} [NeZero g] (β : Q) (hβ : g • β = 0)
     (x y : ι → ZMod g) : (∑ i, x i * y i).val • β = ∑ i, (x i).val • (y i).val • β := by
@@ -23,11 +23,11 @@ theorem val_mul_nsmul {Q ι : Type} [AddCommGroup Q] [Fintype ι] {g : ℕ} [NeZ
   simp [mul_smul]
 
 /- English proof (translation)
-Establish `e1 : f (υ j) = ∑ l, ((M * P) l j).val • β l`. Rewrite using `[hυ, map_sum]`. Simplify using `only [map_nsmul, hf, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_apply, val_mul_nsmul _ (hβ l)]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`. Rewrite using `[e1, ← hPN]`. Simplify using `only [hυ, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, val_mul_nsmul _ (hβ l)]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basisChange_quot {Q ι : Type} [AddCommGroup Q] [Fintype ι] [DecidableEq ι] {g : ℕ} [NeZero g] (f : Q →+ Q)
     (β υ : ι → Q) (hβ : ∀ i, g • β i = 0) (M P N : Matrix ι ι (ZMod g)) (hPN : P * N = M * P)
@@ -48,13 +48,11 @@ theorem basisChange_quot {Q ι : Type} [AddCommGroup Q] [Fintype ι] [DecidableE
   exact Finset.sum_congr rfl fun i _ => smul_comm _ _ _
 
 /- English proof (translation)
-Establish `key : ∀ a b : V, a - b ∈ W ↔ QuotientAddGroup.mk' W a = QuotientAddGroup.mk' W b` using `fun a b => by`. Rewrite using `[← sub_eq_zero, ← map_sub, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]`. Establish `h` using `basisChange_quot (QuotientAddGroup.map W W f (fun v hv => hW v hv)) (fun i => QuotientAddGroup.mk' W (β i)) (fun i => QuotientAddGroup.mk' W (υ i)) (fun i => by rw [← map_nsmul, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]; exact hβ i) M P N hPN (fun j => by`. Use `(key _ _).1 (hυ j)` as an intermediate fact. Rewrite using `[this, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_nsmul])`. Use the proof step `(fun i => by`. Use `(key _ _).1 (hf i)` as an intermediate fact. Rewrite `this` using `[map_sum]`. Simplify using `only [map_nsmul] at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Use the proof step `rfl) j`. Rewrite using `[key, map_sum]`. Simplify using `only [map_nsmul]`. Rewrite using `[← h]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem basisChange_mod {V ι : Type} [AddCommGroup V] [Fintype ι] [DecidableEq ι] {g : ℕ} [NeZero g]
     (W : AddSubgroup V) (f : V →+ V) (hW : ∀ v ∈ W, f v ∈ W)
@@ -82,11 +80,11 @@ theorem basisChange_mod {V ι : Type} [AddCommGroup V] [Fintype ι] [DecidableEq
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨⟨l, hl⟩, rfl⟩` from `hz`. Establish `hm : (a : X.B.I.E) • l ∈ wLat X w` using `Submodule.subset_span ⟨a, ha, l, hl, rfl⟩`. Establish `e : Formalism.UG.inclE (F` using `X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (a : X.B.I.E) • (fun i => Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (l i)) = fun i => Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (((a : X.B.I.E) • l) i) := by`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul]`. Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨⟨_, hm⟩, rfl⟩`. Consider the case `zero => simp`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ c ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inclE_smul_mem_wLf (w : HeightOneSpectrum (𝓞 D.host.E)) (a : 𝓞 X.B.I.E)
     (ha : ∃ b ∈ w.asIdeal, X.ιE (a : X.B.I.E) = (b : D.host.E)) {y : VA X.B.I} (hy : y ∈ X.B.I.Lf) :
@@ -107,25 +105,21 @@ theorem inclE_smul_mem_wLf (w : HeightOneSpectrum (𝓞 D.host.E)) (a : 𝓞 X.B
   | smul c a _ ha => rw [smul_comm]; exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Establish `hz : ∀ z ∈ wLat X w, ∀ c : 𝓞 X.B.I.E, X.B.I.fmat k *ᵥ incl X.B.I (c • z) ∈ wLf X w`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, l, hl, rfl⟩` from `hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `c`. Establish `e : incl X.B.I (c • (a : X.B.I.E) • l) = Formalism.UG.inclE (F` using `X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (a : X.B.I.E) • incl X.B.I (c • l) := by`. Rewrite using `[smul_comm]`. Use function extensionality and compare the values at `i`. Conclude with `map_mul (Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F)) (a : X.B.I.E) ((c • l) i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.mulVec_smul]`. Use `inclE_smul_mem_wLf X w a ha ((hk _).1 ?_)` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨⟨_, X.B.I.L.smul_mem c hl⟩, rfl⟩`. Consider the case `zero`. Introduce `c`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : incl X.B.I (c • (0 : Fin X.B.I.n → X.B.I.E)) = 0`. Rewrite using `[smul_zero]`. Use function extensionality and compare the values at `i`. Simplify using `[incl]`. Rewrite using `[e, Matrix.mulVec_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`. Introduce `c`. Establish `e : incl X.B.I (c • (a + b)) = incl X.B.I (c • a) + incl X.B.I (c • b)`. Rewrite using `[smul_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [incl, Pi.add_apply, map_add]`. Rewrite using `[e, Matrix.mulVec_add]`. Conclude with `add_mem (ha c) (hb c)`. Consider the case `smul d a _ ha`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Introduce `c`. Rewrite using `[smul_smul]`. Conclude with `ha _`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately.
 
-Take `⟨⟨l, hl⟩, rfl⟩` from `h`. Use `hz l hl 1` as an intermediate fact. Rewrite `this` using `[one_smul]`. Conclude with `this`. Consider the case `zero => rw [Matrix.mulVec_zero]`.
-
-Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [Matrix.mulVec_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`. Establish `e : X.B.I.fmat k *ᵥ (c • a) = c • (X.B.I.fmat k *ᵥ a)` using `Matrix.mulVec_smul _ (c : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) a`.
-
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ c ha`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fmat_mulVec_mem_wLf (w : HeightOneSpectrum (𝓞 D.host.E)) {k : X.B.I.Gf} (hk : k ∈ X.B.I.Kset)
     {y : VA X.B.I} (hy : y ∈ wLf X w) : X.B.I.fmat k *ᵥ y ∈ wLf X w := by
@@ -170,15 +164,11 @@ theorem fmat_mulVec_mem_wLf (w : HeightOneSpectrum (𝓞 D.host.E)) {k : X.B.I.G
     rw [e]; exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Introduce `D X red b hf kv hg P u hu k hk j`. Use `haveI : NeZero (D.host.g kv.1) := ⟨(D.host.g_prime kv.1).ne_zero⟩`. Establish `h` using `basisChange_mod (g := D.host.g kv.1) (wLf X (D.naut.plGw kv.1 kv.2)).toAddSubgroup (Matrix.mulVecLin (X.B.I.fmat k)).toAddMonoidHom (fun v hv => fmat_mulVec_mem_wLf X _ hk hv) (fun i => incl X.B.I (b kv i)) u (fun i => by`. Establish `h1` using `inclE_smul_mem_wLf X (D.naut.plGw kv.1 kv.2) ((D.host.g kv.1 : ℕ) : 𝓞 X.B.I.E) ⟨_, hg, by simp⟩ (y := incl X.B.I (b kv i)) (Submodule.subset_span ⟨⟨_, (hf kv).1.1 i⟩, rfl⟩)`. Establish `e : Formalism.UG.inclE (F` using `X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (((D.host.g kv.1 : ℕ) : 𝓞 X.B.I.E) : X.B.I.E) = ((D.host.g kv.1 : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[map_natCast]`. Rewrite `h1` using `[e, Nat.cast_smul_eq_nsmul]`. Conclude with `h1)`. Use the proof step `((red k kv : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix _ _ _) (P : Matrix _ _ _)`. Use the proof step `(((P⁻¹ * red k kv * P) : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix _ _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the proof step `(by rw [← Units.val_mul, ← Units.val_mul]; congr 1; group)`. Use the proof step `(fun j => by`. Use `hu j` as an intermediate fact. Simplify using `only [Nat.cast_smul_eq_nsmul] at this`. Conclude with `this)`.
-
-Use the proof step `(fun i => by`. Use `(hf kv).2 k hk i` as an intermediate fact. Simplify using `only [Nat.cast_smul_eq_nsmul] at this`. Conclude with `this) j`. Simplify using `only [Nat.cast_smul_eq_nsmul]`.
-
-Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMatIn_basisChange : ∀ (D : D7) (X : HidaSetting D) (red : X.B.I.Gf → G0g D.nd) (b : (Σ k : Fin 2, D.nd.PlG k) → Fin D.R.r → Fin X.B.I.n → X.B.I.E), FixRed X red b → ∀ kv : (Σ k : Fin 2, D.nd.PlG k), ((D.host.g kv.1 : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal → ∀ (P : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) (u : Fin D.R.r → VA X.B.I), (∀ j, u j - ∑ i, ((((((P : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1)))) i j).val : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) • incl X.B.I (b kv i) ∈ wLf X (D.naut.plGw kv.1 kv.2)) → ∀ k ∈ X.B.I.Kset, GlobalTheory.Mem.SymFrame.IsMatIn X (D.naut.plGw kv.1 kv.2) u k ((((P⁻¹ * red k kv * P) : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1)))) := by
   intro D X red b hf kv hg P u hu k hk j

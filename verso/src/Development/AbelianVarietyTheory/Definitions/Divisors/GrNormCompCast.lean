@@ -57,13 +57,13 @@ def StepNorms (Dw : Datum H) (p : ℕ) {r : ℕ} (st : Fin r → ((E →+* ℂ) 
     lnStep t w u p b (st i) = Real.log (GlobalTheory.ShFam.Pad.grNorm t w (lat t p w b) (fun k => u (x k).1 (x k).2) i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun i => i.elim0, fun i => i.elim0⟩, fun _ _ _ _ _ _ _ _ i => i.elim0⟩`.
+Supply the required witnesses or components.
 -/
 example : Initial (Dw := Dw) (r := 0) finZeroElim ∧ StepNorms Dw p (r := 0) finZeroElim finZeroElim :=
   ⟨⟨fun i => i.elim0, fun i => i.elim0⟩, fun _ _ _ _ _ _ _ _ i => i.elim0⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem grNorm_comp_cast {X : Scheme.{0}} {t : SAB H X} {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
     (w : Sp C ⟶ X) (Λ : Set (Sp (DualNumber C) ⟶ t.G.left)) {m n : ℕ} (e : m = n)
@@ -73,15 +73,15 @@ theorem grNorm_comp_cast {X : Scheme.{0}} {t : SAB H X} {C : Type} [Nontrivially
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ h => Fin.ext (congrArg (fun x : Letter Dw => (x.2 : ℕ)) h), fun _ k hk => ⟨k.cast e.symm, hk, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem initial_cast {m : ℕ} (τ : E →+* ℂ) (e : m = Dw.mult τ) : Initial fun i : Fin m => (⟨τ, i.cast e⟩ : Letter Dw) :=
   ⟨fun _ _ h => Fin.ext (congrArg (fun x : Letter Dw => (x.2 : ℕ)) h), fun _ k hk => ⟨k.cast e.symm, hk, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `X t C _ _ w u b i`. Establish `h₀ : (if b = true ∧ τ (H.rt : E) = H.rt0 then vDiff E p * Real.log p else 0) = 0` using `by split_ifs with h'`. Rewrite using `[h h'.2, zero_mul]`. Both sides reduce to the same expression. Simplify using `only [lnStep]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos (show (i : ℕ) < _ from (i.cast e).2), h₀, sub_zero]`. Conclude with `congrArg Real.log (grNorm_comp_cast w _ e (u τ) i).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepNorms_cast {m : ℕ} (τ : E →+* ℂ) (e : m = Dw.mult τ) (h : τ (H.rt : E) = H.rt0 → vDiff E p = 0) :
     StepNorms Dw p (fun i : Fin m => .inl (τ, i)) fun i => ⟨τ, i.cast e⟩ := by
@@ -95,9 +95,9 @@ theorem stepNorms_cast {m : ℕ} (τ : E →+* ℂ) (e : m = Dw.mult τ) (h : τ
   exact congrArg Real.log (grNorm_comp_cast w _ e (u τ) i).symm
 
 /- English proof (translation)
-Use `List.pairwise_flatMap.2 ⟨fun a _ => ?_, (List.nodup_finRange _).imp fun hne x hx y hy e => ?_⟩` and prove the remaining obligations. Use `List.pairwise_map.2 ((List.pairwise_lt_finRange _).imp ?_)` and prove the remaining obligations. Conclude with `fun h _ => h`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hx`. Take `⟨k, -, rfl⟩` from `List.mem_map.1 hy`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd ((Fintype.equivFin (E →+* ℂ)).symm.injective e) hne`.
+A detailed English derivation is pending.
 -/
 theorem pairwise_letters : (letters Dw).Pairwise fun x y => x.1 = y.1 → (x.2 : ℕ) < y.2 := by
   refine List.pairwise_flatMap.2 ⟨fun a _ => ?_, (List.nodup_finRange _).imp fun hne x hx y hy e => ?_⟩
@@ -108,7 +108,7 @@ theorem pairwise_letters : (letters Dw).Pairwise fun x y => x.1 = y.1 → (x.2 :
     exact absurd ((Fintype.equivFin (E →+* ℂ)).symm.injective e) hne
 
 /- English proof (translation)
-Introduce `H'` and use `by obtain ⟨i, hi, -⟩ := H'.2 0 ⟨0, zero_lt_one.trans h⟩ Nat.zero_lt_one exact absurd hi (Fin.not_lt_zero i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (τ : E →+* ℂ) (h : 1 < Dw.mult τ) : ¬ Initial fun _ : Fin 1 => (⟨τ, ⟨1, h⟩⟩ : Letter Dw) := fun H' => by
   obtain ⟨i, hi, -⟩ := H'.2 0 ⟨0, zero_lt_one.trans h⟩ Nat.zero_lt_one
@@ -130,28 +130,28 @@ def xOm (jc : KW p →+* ℂ) (τ : Emb D p) (i : Fin (N - rkOf (PsiOf D jc) N j
 def xAll (k : Fin (D.R.f * N)) : Letter S.Dw := (letters S.Dw).get (k.cast (length_letters S).symm)
 
 /- English proof (translation)
-The claim follows from `initial_cast _ _`.
+A detailed English derivation is pending.
 -/
 theorem xLie_initial (jc : KW p →+* ℂ) (τ : Emb D p) : Initial (xLie S jc τ) := initial_cast _ _
 
 /- English proof (translation)
-Simplify using `only [xOm, Fin.rev_rev]`. Conclude with `initial_cast _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xOm_initial (jc : KW p →+* ℂ) (τ : Emb D p) : Initial fun i => xOm S jc τ (Fin.rev i) := by
   simp only [xOm, Fin.rev_rev]
   exact initial_cast _ _
 
 /- English proof (translation)
-The claim follows from `(List.Nodup.getBijectionOfForallMemList _ (GlobalTheory.Proof.LetterConjugation.nodup_letters S.Dw) (GlobalTheory.Proof.LetterConjugation.mem_letters S.Dw)).2.comp (finCongr (length_letters S).symm).bijective`.
+A detailed English derivation is pending.
 -/
 theorem xAll_bijective : Function.Bijective (xAll S) :=
   (List.Nodup.getBijectionOfForallMemList _ (GlobalTheory.Proof.LetterConjugation.nodup_letters S.Dw) (GlobalTheory.Proof.LetterConjugation.mem_letters S.Dw)).2.comp
     (finCongr (length_letters S).symm).bijective
 
 /- English proof (translation)
-Use `⟨(xAll_bijective S).1, fun i k hk => ?_⟩` and prove the remaining obligations. Take `⟨i', hi'⟩` from `(xAll_bijective S).2 ⟨(xAll S i).1, k⟩`. Use `⟨i', lt_of_not_ge fun h => ?_, hi'⟩` and prove the remaining obligations. Establish `e : ((xAll S i').2 : ℕ) = k` using `congrArg (fun x : Letter S.Dw => (x.2 : ℕ)) hi'`. Establish `hk' : (k : ℕ) < (xAll S i).2` using `hk`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `h.eq_or_lt with rfl | h` into its components or cases. Use linear arithmetic over natural numbers and integers. Establish `: ((xAll S i).2 : ℕ) < (xAll S i').2` using `List.pairwise_iff_get.1 pairwise_letters _ _ (show i.cast (length_letters S).symm < i'.cast _ from h) (congrArg Sigma.fst hi').symm`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem xAll_initial : Initial (xAll S) := by
   refine ⟨(xAll_bijective S).1, fun i k hk => ?_⟩
@@ -167,13 +167,13 @@ theorem xAll_initial : Initial (xAll S) := by
     omega
 
 /- English proof (translation)
-The claim follows from `stepNorms_cast _ _ fun _ => h`.
+A detailed English derivation is pending.
 -/
 theorem xLie_stepNorms (jc : KW p →+* ℂ) (τ : Emb D p) (h : vDiff D.host.E p = 0) :
     StepNorms S.Dw p (fun i => .inl (jc.comp τ, i)) (xLie S jc τ) := stepNorms_cast _ _ fun _ => h
 
 /- English proof (translation)
-Simplify using `only [xOm, Fin.rev_rev]`. Conclude with `stepNorms_cast _ _ fun _ => h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xOm_stepNorms (jc : KW p →+* ℂ) (τ : Emb D p) (h : vDiff D.host.E p = 0) :
     StepNorms S.Dw p (fun i => .inl (conjEmb (jc.comp τ), (Fin.rev (Fin.rev i) : Fin _))) fun i => xOm S jc τ (Fin.rev i) := by
@@ -181,7 +181,7 @@ theorem xOm_stepNorms (jc : KW p →+* ℂ) (τ : Emb D p) (h : vDiff D.host.E p
   exact stepNorms_cast _ _ fun _ => h
 
 /- English proof (translation)
-Introduce `X t C _ _ w u b i`. Simplify using `only [lnStep]`. Rewrite using `[dif_pos (show (i : ℕ) < _ from (i.cast (length_letters S).symm).2)]`. Conclude with `congrArg Real.log (grNorm_comp_cast w _ (length_letters S).symm (fun i => u ((letters S.Dw).get i).1 ((letters S.Dw).get i).2) i).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xAll_stepNorms (p : ℕ) : StepNorms S.Dw p (fun k : Fin (D.R.f * N) => .inr k) (xAll S) := by
   intro X t C _ _ w u b i

@@ -12,7 +12,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Host Formalism.L2
 namespace GlobalTheory.Mem.CyclotomicFieldContainment
 
 /- English proof (translation)
-Establish `: ∀ k, NeZero (X.toD7.host.g k)` using `fun k => ⟨(X.toD7.host.g_prime k).ne_zero⟩`. Rewrite using `[Nat.card_pi, Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∏ _y : X.toD7.nd.PlG k, Nat.card (GL (Fin X.toD7.R.r) (ZMod (X.toD7.host.g k))) = _`. Rewrite using `[Finset.prod_const, Finset.card_univ, X.toD7.nd.card_PlG k]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -25,7 +25,7 @@ theorem natCard_codeWordStages_finiteGroup_eq (X : Stages) : Nat.card (G0g X.toD
   rfl
 
 /- English proof (translation)
-Simplify using `only [rootsField, rootOrders, natCard_codeWordStages_finiteGroup_eq, sup_le_iff, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq, and_assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem rootsField_le_iff (X : Stages) {N : IntermediateField ℚ ℂ} :
     rootsField X.B.toPre ≤ N ↔ ∀ n ∈ rootOrders X.toD7, cycField n ≤ N := by
@@ -34,7 +34,7 @@ theorem rootsField_le_iff (X : Stages) {N : IntermediateField ℚ ℂ} :
   rfl
 
 /- English proof (translation)
-Establish `hg : ∀ k, X.toD7.host.g k * (X.toD7.host.g k - 1) ≠ 0` using `fun k => by`. Establish `hp` using `X.toD7.host.g_prime k`. Conclude with `mul_ne_zero hp.ne_zero (by have := hp.two_le; omega)`. Simplify using `only [rootOrders, natCard_codeWordStages_finiteGroup_eq, List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq]`. Conclude with `⟨X.B.restRowsFiniteGroupCard_pos.ne', hg 0, hg 1, by norm_num, by norm_num⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rootOrders_ne_zero (X : Stages) : ∀ n ∈ rootOrders X.toD7, n ≠ 0 := by
   have hg : ∀ k, X.toD7.host.g k * (X.toD7.host.g k - 1) ≠ 0 := fun k => by
@@ -46,7 +46,7 @@ theorem rootOrders_ne_zero (X : Stages) : ∀ n ∈ rootOrders X.toD7, n ≠ 0 :
 variable (ι : Qb →+* ℂ)
 
 /- English proof (translation)
-Introduce `z hz` and use `by obtain ⟨x, rfl⟩ := hA z hz exact ⟨x, h (mem_qb.2 hz), rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_map_of_qb_le {A : IntermediateField ℚ ℂ} {Y : Fld} (hA : ∀ z ∈ A, ∃ x, ι x = z) (h : qb ι A ≤ Y) :
     A ≤ Y.map ι.toRatAlgHom := fun z hz => by
@@ -54,7 +54,7 @@ theorem le_map_of_qb_le {A : IntermediateField ℚ ℂ} {Y : Fld} (hA : ∀ z �
   exact ⟨x, h (mem_qb.2 hz), rfl⟩
 
 /- English proof (translation)
-Rewrite using `[muFld, IntermediateField.adjoin_le_iff]`. Introduce `x hx`. Use `mem_qb.2 (h (mem_cycField hn ?_))` and prove the remaining obligations. Rewrite using `[← map_pow, show x ^ n = 1 from hx, map_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem muFld_le_qb {n : ℕ} (hn : n ≠ 0) {N : IntermediateField ℚ ℂ} (h : cycField n ≤ N) : muFld n ≤ qb ι N := by
   rw [muFld, IntermediateField.adjoin_le_iff]
@@ -63,7 +63,7 @@ theorem muFld_le_qb {n : ℕ} (hn : n ≠ 0) {N : IntermediateField ℚ ℂ} (h 
   rw [← map_pow, show x ^ n = 1 from hx, map_one]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hz`. Use `cycField_le_iff.2 ⟨x, hY (IntermediateField.subset_adjoin ℚ _ ?_), hx⟩` and prove the remaining obligations. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[map_pow, hx, map_one]`. Conclude with `(Complex.isPrimitiveRoot_exp n hn).pow_eq_one`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycField_le_map {n : ℕ} (hn : n ≠ 0) {Y : Fld} (hY : muFld n ≤ Y) (hz : ∃ x, ι x = rootOne n) :
     cycField n ≤ Y.map ι.toRatAlgHom := by
@@ -76,14 +76,14 @@ theorem cycField_le_map {n : ℕ} (hn : n ≠ 0) {Y : Fld} (hY : muFld n ≤ Y) 
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Introduce `_ ⟨v, hv, e⟩` and use `mem_qb.2 (h (IntermediateField.subset_adjoin ℚ _ ⟨v, hv, e⟩))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem valsOf_subset_qb {χ : HChar E} {s : ℝ} {N : IntermediateField ℚ ℂ} (h : valueField χ s ≤ N) :
     valsOf ι s χ ⊆ qb ι N := fun _ ⟨v, hv, e⟩ =>
   mem_qb.2 (h (IntermediateField.subset_adjoin ℚ _ ⟨v, hv, e⟩))
 
 /- English proof (translation)
-Rewrite using `[valueField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `z ⟨v, hv, rfl⟩`. Take `⟨x, hx⟩` from `hz _ (IntermediateField.subset_adjoin ℚ _ ⟨v, hv, rfl⟩)`. Conclude with `⟨x, hY ⟨v, hv, hx⟩, hx⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem valueField_le_map {χ : HChar E} {s : ℝ} {Y : Fld} (hY : valsOf ι s χ ⊆ Y)
     (hz : ∀ z ∈ valueField χ s, ∃ x, ι x = z) : valueField χ s ≤ Y.map ι.toRatAlgHom := by
@@ -93,31 +93,27 @@ theorem valueField_le_map {χ : HChar E} {s : ℝ} {Y : Fld} (hY : valsOf ι s �
   exact ⟨x, hY ⟨v, hv, hx⟩, hx⟩
 
 /- English proof (translation)
-Establish `hran : ∀ z ∈ listField δ f, ∃ x, T.fr.ι x = z`. Introduce `z hz`. Establish `hz' : z ∈ X.B.KsC` using `by rw [show X.B.KsC = listField δ f from hx]; exact hz`. Take `⟨x, -, rfl⟩` from `hz'`. Conclude with `⟨T.jLL x, T.embLL x⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hle : ∀ {A : IntermediateField ℚ ℂ}, A ≤ listField δ f → ∀ z ∈ A, ∃ x, T.fr.ι x = z` using `fun h z hz => hran z (h hz)`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `(listField_le_iff δ f).1 le_rfl`. Establish `hKP : (⨆ j ∈ Set.Icc 1 X.B.R.m, δ.KPsi j) ≤ listField δ f` using `iSup₂_le fun j hj => h6 j hj.1 hj.2`. Establish `hroots` using `(rootsField_le_iff X).1 h4`. Establish `hne` using `rootOrders_ne_zero X`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [charField, sup_le_iff, iSup_le_iff] at h5`. Take `⟨⟨⟨⟨hmu, heta⟩, hdel⟩, hdel'⟩, hom⟩` from `h5`. Apply `le_antisymm` to reduce the goal to its premises. Establish `hM' : P.M ≤ qb T.fr.ι (listField δ f)`. Rewrite using `[hM]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun x hx => mem_qb.2 (h2 (δ.M_le_M' hx))`. Simplify using `only [KsQ, sup_le_iff, iSup_le_iff]`. Use `⟨⟨⟨⟨⟨⟨?_, ?_⟩, ?_⟩, ?_⟩, hM'⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `mem_qb.2 (h1 ⟨a, (T.fr.phi0 a).symm⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun n hn => muFld_le_qb _ (hne n hn) (hroots n hn)`. Rewrite using `[valsFld, IntermediateField.adjoin_le_iff]`. Introduce and unpack `x (((hx | hx) | hx) | hx)`. Take `⟨j, hx⟩` from `Set.mem_iUnion.1 hx`. Conclude with `valsOf_subset_qb _ (hmu j) hx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `valsOf_subset_qb _ heta hx`. Conclude with `valsOf_subset_qb _ hdel hx`. Conclude with `valsOf_subset_qb _ hdel' hx`. Rewrite using `[hR]`. Conclude with `fun x hx => mem_qb.2 (h3 hx)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hD]`. Conclude with `fun x hx => mem_qb.2 (h2 hx)`. Rewrite using `[hK]`. Conclude with `fun x hx => mem_qb.2 (hKP hx)`. Take `⟨Y, hYe⟩ : ∃ Y, Y = KsQ X.toD7 T (Fr.at X f) P` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hY : KsQ X.toD7 T (Fr.at X f) P ≤ Y` using `hYe.ge`. Rewrite using `[← hYe]`. Simplify using `only [KsQ, sup_le_iff, iSup_le_iff] at hY`. Take `⟨⟨⟨⟨⟨⟨a1, a2⟩, a3⟩, a4⟩, -⟩, a6⟩, a7⟩` from `hY`. Establish `ha3 : ∀ {A : Set Qb}, A ⊆ valsFld X.toD7 T (Fr.at X f) → A ⊆ Y` using `fun h _ hx => a3 (h hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hv : (⋃ j, valsOf T.fr.ι 0 ((Fr.at X f).mu0 j)) ∪ valsOf T.fr.ι (1 / 2) (Fr.at X f).eta ∪ valsOf T.fr.ι 0 (Fr.at X f).del ∪ valsOf T.fr.ι 0 (Fr.at X f).del' ⊆ Y` using `ha3 (IntermediateField.subset_adjoin ℚ _)`. Establish `hr : rootsField X.B.toPre ≤ Y.map T.fr.ι.toRatAlgHom` using `(rootsField_le_iff X).2 fun n hn => cycField_le_map _ (hne n hn) (a2 n hn) (hran _ (hroots n hn (IntermediateField.mem_adjoin_simple_self ℚ _)))`. Establish `hmap : listField δ f ≤ Y.map T.fr.ι.toRatAlgHom`. Use `(listField_le_iff δ f).2 ⟨?_, ?_, ?_, hr, ?_, fun j hj hj' => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨T.fr.j a, a1 ⟨a, rfl⟩, T.fr.phi0 a⟩`. Conclude with `le_map_of_qb_le _ (hle h2) (hD ▸ a6)`. Conclude with `le_map_of_qb_le _ (hle h3) (hR ▸ a4)`. Simplify using `only [charField, sup_le_iff, iSup_le_iff]`. Use `⟨⟨⟨⟨fun j => ?_, ?_⟩, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `valueField_le_map _ (fun x hx => hv (Or.inl (Or.inl (Or.inl (Set.mem_iUnion.2 ⟨j, hx⟩))))) (hle (hmu j))`. Conclude with `valueField_le_map _ (fun x hx => hv (Or.inl (Or.inl (Or.inr hx)))) (hle heta)`. Conclude with `valueField_le_map _ (fun x hx => hv (Or.inl (Or.inr hx))) (hle hdel)`. Conclude with `valueField_le_map _ (fun x hx => hv (Or.inr hx)) (hle hdel')`. Rewrite using `[IntermediateField.adjoin_le_iff]`.
-
-Introduce and unpack `_ ⟨k, a, rfl⟩`. Conclude with `hr (om_mem_rootsField f k a)`. Use `le_map_of_qb_le _ (hle (h6 j hj hj')) fun x hx => a7 ?_` and prove the remaining obligations. Rewrite using `[hK]`. Conclude with `mem_qb.2 ((le_iSup₂_of_le j ⟨hj, hj'⟩ le_rfl : δ.KPsi j ≤ ⨆ j ∈ Set.Icc 1 X.B.R.m, δ.KPsi j) hx)`.
-
-Introduce `x hx`. Take `⟨y, hy, e⟩` from `hmap hx`. Establish `hyx : y = x` using `T.fr.ι.injective e`. Conclude with `hyx ▸ hy`.
+A detailed English derivation is pending.
 -/
 theorem ksQ_eq (X : Stages) (f : Fr X.B.toPre) (δ : FieldDat X.B.toPre) (hx : X.B.KsExact δ f) (T : HostTied X.toD7)
     (P : KsPieces X.toD7 T) (hR : P.rcf = qb T.fr.ι δ.ray) (hM : P.M = qb T.fr.ι δ.M) (hD : P.MDel = qb T.fr.ι δ.M')
@@ -191,13 +187,13 @@ theorem ksQ_eq (X : Stages) (f : Fr X.B.toPre) (δ : FieldDat X.B.toPre) (hx : X
     exact hyx ▸ hy
 
 /- English proof (translation)
-Introduce `hA hW X f δ hx T`. Take `⟨P, -, hR, hM, hD, hK⟩` from `GlobalTheory.T.exists_smallField_classFieldPieces hA hW X f δ T`. Establish `hq` using `ksQ_eq X f δ hx T P hR hM hD hK`. Use `⟨⟨P, X.B.OtoLL_injective, fun x => ?_⟩, hR, hD⟩` and prove the remaining obligations. Rewrite using `[hq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Use `⟨mem_qb.2 ?_, (X.toD7.O_int y).map T.jLL.toIntAlgHom⟩` and prove the remaining obligations. Rewrite using `[T.embLL, ← show X.B.KsC = listField δ f from hx]`. Conclude with `⟨_, (algebraMap (𝓞 X.B.Ks) X.B.Ks y).2, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hxq, hi⟩`. Establish `hz : T.fr.ι x ∈ X.B.KsC`. Rewrite using `[show X.B.KsC = listField δ f from hx]`. Conclude with `hxq`. Take `⟨w, hw, e⟩` from `hz`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwx : T.jLL w = x` using `T.fr.ι.injective ((T.embLL w).trans e)`. Substitute `hwx` using the available equality. Establish `hwi : IsIntegral ℤ w` using `(isIntegral_algHom_iff T.jLL.toIntAlgHom T.jLL.injective).1 hi`. Take `⟨y, hy⟩` from `X.B.O_full w hw hwi`. Conclude with `⟨y, congrArg T.jLL hy⟩`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem oTied_of_ksExact : GlobalArtinReciprocity → WeberRayFieldSt → ∀ (X : Stages) (f : Fr X.B.toPre)
     (δ : FieldDat X.B.toPre), X.B.KsExact δ f → ∀ T : HostTied X.toD7, ∃ O : OTied X.toD7 T (Fr.at X f),

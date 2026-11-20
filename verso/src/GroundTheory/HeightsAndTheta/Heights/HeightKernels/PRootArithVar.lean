@@ -12,14 +12,14 @@ noncomputable section
 namespace RootArithmeticVariety
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Polynomial.X ^ k - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hk.ne', by simp [Polynomial.eval₂_sub, h]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIntegral_of_pow_eq_one {x : ℂ} {k : ℕ} (hk : 0 < k) (h : x ^ k = 1) : IsIntegral ℤ x :=
   ⟨Polynomial.X ^ k - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hk.ne', by
     simp [Polynomial.eval₂_sub, h]⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `Subalgebra.sum_mem (integralClosure ℤ ℂ) fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `Subalgebra.zsmul_mem _ (Subalgebra.prod_mem _ fun i _ => hM (σ i) i) _` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isIntegral_det {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ a b, IsIntegral ℤ (M a b)) :
     IsIntegral ℤ M.det := by
@@ -29,9 +29,7 @@ theorem isIntegral_det {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ a b,
   refine Subalgebra.zsmul_mem _ (Subalgebra.prod_mem _ fun i _ => hM (σ i) i) _
 
 /- English proof (translation)
-Simplify using `only [onePipe, Matrix.of_apply]`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) b` and prove the remaining obligations. Rewrite using `[Fin.append_left, Matrix.one_apply] split_ifs`. Conclude with `isIntegral_one`. Conclude with `isIntegral_zero`.
-
-Rewrite using `[Fin.append_right]`. Conclude with `hZ a i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_onePipe {j m : ℕ} (Z : Matrix (Fin j) (Fin m) ℂ) (hZ : ∀ a b, IsIntegral ℤ (Z a b))
     (a : Fin j) (b : Fin (j + m)) : IsIntegral ℤ (onePipe Z a b) := by
@@ -45,7 +43,7 @@ theorem isIntegral_onePipe {j m : ℕ} (Z : Matrix (Fin j) (Fin m) ℂ) (hZ : �
     exact hZ a i
 
 /- English proof (translation)
-Use `isIntegral_det _ fun a b => ?_` and prove the remaining obligations. Simplify using `only [colsOf, Matrix.submatrix_apply, id]`. Use `isIntegral_onePipe _ (fun a b => ?_) _ _` and prove the remaining obligations. Take `⟨k, hk, h⟩` from `hζ p.1 a b`. Conclude with `isIntegral_of_pow_eq_one hk h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIntegral_rootCoord {f j m : ℕ} (ζ : Fin f → Matrix (Fin j) (Fin m) ℂ) (hζ : IsRootMatrix ζ)
     (p : Σ _ : Fin f, PlIdx j m) : IsIntegral ℤ (rootCoord ζ p) := by
@@ -60,9 +58,9 @@ end RootArithmeticVariety
 open RootArithmeticVariety in
 
 /- English proof (translation)
-Introduce `f j m ζ hf hζ`. Establish `hK : Nonempty (Fin f)` using `⟨⟨0, hf⟩⟩`. Use `h (Fin f) (plBlocks f j m) ℂ (rootCoord ζ) (fun _ => plAnchor j m) 0 Fin.elim0 hK (fun k => by simp [rootCoord, anchor_minor]) (algebraicIndependent_empty_type) (fun i => Fin.elim0 i) ?_` as an intermediate fact. Simplify `this` using `[rootPointIdeal]`. Introduce and unpack `r ⟨p, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Establish `h1 : IsIntegral ℚ (rootCoord ζ p / rootCoord ζ ⟨p.1, plAnchor j m⟩)`. Simplify using `only [rootCoord, anchor_minor, div_one]`. Conclude with `(isIntegral_rootCoord ζ hζ p).tower_top`. Conclude with `(h1.tower_top (A := IntermediateField.adjoin ℚ (Set.range (Fin.elim0 : Fin 0 → ℂ)))).isAlgebraic`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem RootArithVar.proof (h : CoordConeArithVar.Statement) : RootArithVar.Statement := by
   intro f j m ζ hf hζ

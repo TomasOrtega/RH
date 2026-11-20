@@ -24,7 +24,7 @@ Both sides reduce to the same expression.
 theorem jK_ι (t : 𝓞 F) : jK (ι t) = algebraMap F K (t : F) := rfl
 
 /- English proof (translation)
-Rewrite using `[jK_ι]`. Introduce `h`. Apply `ht` to reduce the goal to its premises. Establish `h1 : ((t : F)) = 0` using `(map_eq_zero_iff _ (algebraMap F K).injective).1 h`. Conclude with `h1` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jK_ι_ne_zero {t : 𝓞 F} (ht : t ≠ 0) : jK (ι t) ≠ 0 := by
   rw [jK_ι]
@@ -34,16 +34,16 @@ theorem jK_ι_ne_zero {t : 𝓞 F} (ht : t ≠ 0) : jK (ι t) ≠ 0 := by
   exact_mod_cast h1
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `ht 𝔭.zero_mem`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_notMem {𝔭 : Ideal (𝓞 F)} {t : 𝓞 F} (ht : t ∉ 𝔭) : t ≠ 0 := by
   rintro rfl
   exact ht 𝔭.zero_mem
 
 /- English proof (translation)
-Take `⟨y, i, hi, hyi⟩` from `h𝔭.exists_inv ht`. Use `⟨y * ∑ k ∈ Finset.range e, i ^ k, ?_⟩` and prove the remaining obligations. Establish `h1 : t * (y * ∑ k ∈ Finset.range e, i ^ k) = 1 - i ^ e`. Rewrite using `[← mul_neg_geom_sum, ← hyi]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h1, sub_sub_cancel]`. Conclude with `Ideal.pow_mem_pow hi e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv_mod {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {t : 𝓞 F} (ht : t ∉ 𝔭) (e : ℕ) :
     ∃ u : 𝓞 F, 1 - t * u ∈ 𝔭 ^ e := by
@@ -56,11 +56,11 @@ theorem exists_inv_mod {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {t : �
   exact Ideal.pow_mem_pow hi e
 
 /- English proof (translation)
-Establish `hle : Ideal.span {a} ≤ 𝔭 ^ vF 𝔭 a` using `(Ideal.span_singleton_le_iff_mem _).2 (localValuationFiltration.mem_pow_vF h𝔭 ha)`. Take `⟨J, hJ⟩` from `Ideal.dvd_iff_le.2 hle`. Establish `hJp : ¬ J ≤ 𝔭`. Introduce `hJ𝔭`. Apply `localValuationFiltration.notMem_pow_vF h𝔭 ha` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: Ideal.span {a} ≤ 𝔭 ^ (vF 𝔭 a + 1)`. Rewrite using `[hJ, pow_succ]`. Conclude with `Ideal.mul_mono_right hJ𝔭`. Conclude with `this (Ideal.mem_span_singleton_self a)`. Take `⟨t, htJ, ht𝔭⟩` from `SetLike.not_le_iff_exists.1 hJp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨t, ht𝔭, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hJ, mul_comm t x]`. Conclude with `Ideal.mul_mem_mul hx htJ`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_span {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : 𝓞 F} (ha : a ≠ 0) :
     ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ∀ x ∈ 𝔭 ^ vF 𝔭 a, t * x ∈ Ideal.span {a} := by
@@ -80,7 +80,7 @@ theorem exists_mul_mem_span {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a 
   exact Ideal.mul_mem_mul hx htJ
 
 /- English proof (translation)
-The claim follows from `h𝔭.isPrime jK z / jK (ι a) ∈ HU.SP K 𝔭 ↔ z ∈ extP K 𝔭 ^ vF 𝔭 a := by have := h𝔭.isPrime have ha' := jK_ι_ne_zero (K := K) ha rw [HU.mem_SP] constructor · rintro ⟨t, ht, w, hw⟩ have e1 : ι t * z = w * ι a := by apply FaithfulSMul.algebraMap_injective (𝓞 K) K rw [map_mul, map_mul, …`.
+A detailed English derivation is pending.
 -/
 theorem div_mem_SP_iff {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : 𝓞 F} (ha : a ≠ 0) (z : 𝓞 K) :
     haveI := h𝔭.isPrime
@@ -131,7 +131,7 @@ theorem div_mem_SP_iff {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : �
     rw [this]
 
 /- English proof (translation)
-The claim follows from `h𝔭.isPrime ∃ z : 𝓞 K, (r - jK z) / jK (ι a) ∈ HU.SP K 𝔭 := by have := h𝔭.isPrime obtain ⟨t, ht, w, hw⟩ := HU.mem_SP.1 hr obtain ⟨u, hu⟩ := exists_inv_mod h𝔭 ht (vF 𝔭 a) refine ⟨ι u * w, ?_⟩ have h1 : jK (ι (1 - t * u)) / jK (ι a) ∈ HU.SP K 𝔭 := (div_mem_SP_iff h𝔭 ha _).2 (localiz …`.
+A detailed English derivation is pending.
 -/
 theorem exists_sub_div_mem_SP {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : 𝓞 F} (ha : a ≠ 0) {r : K}
     (hr : haveI := h𝔭.isPrime; r ∈ HU.SP K 𝔭) :
@@ -150,22 +150,22 @@ theorem exists_sub_div_mem_SP {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {
   exact Subring.mul_mem _ hr h1
 
 /- English proof (translation)
-The claim follows from `StandardSymmetricSums.star_int w`.
+A detailed English derivation is pending.
 -/
 theorem star_jK (w : 𝓞 K) : ∃ w' : 𝓞 K, jK w' = star (jK w) := StandardSymmetricSums.star_int w
 
 /- English proof (translation)
-The claim follows from `(hF _).2 ⟨(t : F), rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem star_jK_ι (hF : IsFixF K F) (t : 𝓞 F) : star (jK (ι t)) = jK (ι t) :=
   (hF _).2 ⟨(t : F), rfl⟩
 
 /- English proof (translation)
-Use `h𝔭.isPrime` as an intermediate fact. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, fun h => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h), by simp⟩`. Consider the case `insert j s hj ih`. Take `⟨t, ht, hts⟩` from `ih (fun i hi => hr i (Finset.mem_insert_of_mem hi))`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht', w', hw'⟩` from `HU.mem_SP.1 (hr j (Finset.mem_insert_self j s))`. Use `⟨t * t', fun hm => (h𝔭.isPrime.mem_or_mem hm).elim ht ht', fun i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Use `⟨ι t * w', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hw', map_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨w, hw⟩` from `hts i hi`. Use `⟨ι t' * w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hw, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_common {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {ι' : Type} (s : Finset ι') (r : ι' → K)
     (hr : haveI := h𝔭.isPrime; ∀ i ∈ s, r i ∈ HU.SP K 𝔭) :

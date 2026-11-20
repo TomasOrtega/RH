@@ -9,11 +9,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.EtaTildeOfComponents
 
 /- English proof (translation)
-Introduce `D C η hc hres`. Establish `hE` using `C.isEta`. Establish `hInf : C.eta.HasInfQ (tauE D) (fun _ => (1 / 2 : ℚ))`. Use `⟨fun _ => 1, fun _ => by norm_num, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[hE.inf k]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Fintype.prod_equiv D.eTau _ _ (fun _ => rfl)).symm`. Establish `h1 : 1 ∈ intAE D`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨1, fun v => ?_, 1, rfl⟩` and prove the remaining obligations. Simplify using `[evalV, (v.adicCompletionIntegers D.host.F).one_mem]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hc.1, ?_, hres, fun τ => GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D η C.eta _ hc hInf τ⟩` and prove the remaining obligations. Introduce `x hx1 hx2 hx3`. Use `GlobalTheory.tame_heckeChar_eq_one_of_finUnit D η C.eta hc ?_ 1 (fun P _ => hE.unr P) x ⟨hx1, hx2, hx3⟩ ⟨finPart D (x : AE D) - 1, sub_mem hx2 h1, (one_nsmul _).symm⟩` and prove the remaining obligations. Introduce `P y hy _`. Conclude with `hE.unr P y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isEtaTilde_of_chrEq : ∀ (D : D7) (C : Formalism.L2.Host.CharFrame D) (η : (AE D)ˣ →* Circle), ChrEq η C.eta → ResEta D η 1 → IsEtaTilde D η := by
   intro D C η hc hres

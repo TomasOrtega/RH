@@ -37,9 +37,9 @@ noncomputable def UpperTheory.Reformulated.B.Re3.inUJ :
         (@UpperTheory.Reformulated.B.Re3.Jm n ε)
 
 /- English proof (translation)
-Introduce `n ε g h hg hh`. Establish `hg' : (g : Matrix (Fin n) (Fin n) ℂ).conjTranspose * UpperTheory.Reformulated.B.Re3.Jm ε * g = UpperTheory.Reformulated.B.Re3.Jm ε` using `hg`. Establish `hh' : (h : Matrix (Fin n) (Fin n) ℂ).conjTranspose * UpperTheory.Reformulated.B.Re3.Jm ε * h = UpperTheory.Reformulated.B.Re3.Jm ε` using `hh`. Use `show ((g * h : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ).conjTranspose * UpperTheory.Reformulated.B.Re3.Jm ε * ((g * h : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = UpperTheory.Reformulated.B.Re3.Jm ε`. Rewrite using `[Units.val_mul, Matrix.conjTranspose_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hg', hh']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Re3.aux3 :
     ∀ {n : Nat} (ε : Fin n → Bool)
@@ -179,7 +179,7 @@ theorem UpperTheory.Reformulated.B.Re3.aux3 :
     _ = _ := by rw [hg', hh']
 
 /- English proof (translation)
-Introduce `n ε`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.Re3.aux4 :
     ∀ {n : Nat} (ε : Fin n → Bool),
@@ -285,9 +285,7 @@ theorem UpperTheory.Reformulated.B.Re3.aux4 :
   simp
 
 /- English proof (translation)
-Introduce `n ε g hg`. Establish `hg' : (g : Matrix (Fin n) (Fin n) ℂ).conjTranspose * UpperTheory.Reformulated.B.Re3.Jm ε * g = UpperTheory.Reformulated.B.Re3.Jm ε` using `hg`. Use `show ((g⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ).conjTranspose * UpperTheory.Reformulated.B.Re3.Jm ε * ((g⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = UpperTheory.Reformulated.B.Re3.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
-
-Use `_ = _ := by rw [Units.mul_inv, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Re3.aux5 :
     ∀ {n : Nat} (ε : Fin n → Bool)
@@ -524,7 +522,7 @@ noncomputable def UpperTheory.Reformulated.B.Re3.UJ :
 attribute [local instance] UpperTheory.Reformulated.B.Re3.instMeasurableSpaceUJ
 
 /- English proof (translation)
-Introduce `n ε`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Re3.aux8 :
     ∀ {n : Nat} (ε : Fin n → Bool),
@@ -590,7 +588,7 @@ theorem UpperTheory.Reformulated.B.Re3.aux8 :
   infer_instance
 
 /- English proof (translation)
-Introduce `n ε`. Conclude with `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.Re3.aux9 :
     ∀ (n : Nat) (ε : Fin n → Bool),
@@ -649,7 +647,7 @@ theorem UpperTheory.Reformulated.B.Re3.aux9 :
   exact ⟨rfl⟩
 
 /- English proof (translation)
-Introduce `n ε`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))`. Establish `hc : IsClosed (UpperTheory.Reformulated.B.Re3.UJ ε : Set (Matrix (Fin n) (Fin n) ℂ)ˣ)` using `by show IsClosed {g : (Matrix (Fin n) (Fin n) ℂ)ˣ | (g : Matrix (Fin n) (Fin n) ℂ).conjTranspose * UpperTheory.Reformulated.B.Re3.Jm ε * g = UpperTheory.Reformulated.B.Re3.Jm ε}`. Conclude with `isClosed_eq ((Units.continuous_val.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul Units.continuous_val) continuous_const`. Conclude with `hc.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Re3.laurent_T_neg_one_mul_T_one :
     ∀ (n : Nat) (ε : Fin n → Bool),
@@ -780,7 +778,7 @@ noncomputable def UpperTheory.Reformulated.B.Re3.muG :
         (UpperTheory.Reformulated.B.Re3.laurent_T_neg_one_mul_T_one n ε)
 
 /- English proof (translation)
-Conclude with `⟨le_refl 2⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.Re3.algebra_smulCommClass_complex :
     (@HAdd.hAdd Nat Nat Nat (@instHAdd Nat instAddNat) (@OfNat.ofNat Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
@@ -847,7 +845,7 @@ noncomputable def UpperTheory.Reformulated.B.Re3.Kset :
               (@UpperTheory.Reformulated.B.Re3.d15 n ε) g))
 
 /- English proof (translation)
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Re3.complex_normed_instance_compat :
     @IsBoundedSMul Complex Complex
@@ -2478,19 +2476,17 @@ noncomputable def UpperTheory.Reformulated.B.Re3.IsKTypeOf.{u_1} :
                       @UpperTheory.Reformulated.B.Re3.CDom n ε μ Λ))))
 
 /- English proof (translation)
-Take `⟨hfd, hst, hirr, ⟨v, hvS, hv0, hvw⟩, hdom⟩` from `hS`. Use `⟨inferInstance, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg _ ⟨w, hw, rfl⟩`. Conclude with `⟨σ g w, hst g hg w hw, hA g hg w⟩`. Introduce `S' hS' hst'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : UpperTheory.Reformulated.B.Re3.IsKStableOn ε σ (S ⊓ Submodule.comap A S')`. Introduce `g hg w hw`. Use `⟨hst g hg w hw.1, ?_⟩` and prove the remaining obligations. Use `show A (σ g w) ∈ S'`. Rewrite using `[hA g hg w]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hst' g hg _ hw.2`. Break down `hirr _ inf_le_left hT with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, hw, rfl⟩` from `hS' hx`. Establish `hw0 : w ∈ S ⊓ Submodule.comap A S'` using `⟨hw, hx⟩`. Rewrite `hw0` using `[h, Submodule.mem_bot]`. Simplify using `[hw0]`. Use `right`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm hS' ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hw1 : w ∈ S ⊓ Submodule.comap A S'` using `by rw [h]; exact hw`. Conclude with `hw1.2`. Use `⟨A v, ⟨v, hvS, rfl⟩, fun h => hv0 (hinj v hvS h), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `θ hθ`. Rewrite using `[← hA _ hθ, hvw θ hθ, map_smul]`. Introduce and unpack `μ _ ⟨w, hw, rfl⟩ hw0 hwt`. Use `hdom μ w hw (fun h => hw0 (by simp [h])) ?_` and prove the remaining obligations. Introduce `θ hθ`.
-
-Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `hinj _ (S.sub_mem (hst _ hθ w hw) (S.smul_mem _ hw))` to reduce the goal to its premises. Rewrite using `[map_sub, map_smul, hA _ hθ, hwt θ hθ, sub_self]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Re3.transfer_gen {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {ε : Fin n → Bool} {Λ : Fin n → ℝ} (σ : Matrix (Fin n) (Fin n) ℂ → H →L[ℂ] H) (A : H →ₗ[ℂ] H)
@@ -2533,7 +2529,7 @@ private theorem UpperTheory.Reformulated.B.Re3.transfer_gen {n : ℕ} {H : Type}
     rw [map_sub, map_smul, hA _ hθ, hwt θ hθ, sub_self]
 
 /- English proof (translation)
-Introduce `n ε Λ A hA S hinj hS`. Conclude with `UpperTheory.Reformulated.B.Re3.transfer_gen (UpperTheory.Reformulated.B.Re3.rreg ε) A hA hinj hS`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Re3.hloweq_transfer :
     ∀ {n : Nat} {ε : Fin n → Bool} {Λ : Fin n → Real}

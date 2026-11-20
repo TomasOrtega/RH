@@ -17,19 +17,19 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.AmpleGen
 
 /- English proof (translation)
-Use `hA.proper` as an intermediate fact. Use `letI := algebraΓOfHom A.hom`. Establish `hLa : IsAmpleLB L` using `isAmpleLB_of_relAmple_of_isAffine A hL hamp`. Establish `hι : IsIso (GrpObj.inv : A ⟶ A)` using `⟨⟨GrpObj.inv, by simp, by simp⟩⟩`. Establish `: IsIso (GrpObj.inv : A ⟶ A).left` using `(Over.forget _).map_isIso GrpObj.inv`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : IsAmpleLB (L.pull (GrpObj.inv : A ⟶ A).left)` using `hLa.pull_of_isAffineHom _`. Establish `hM : (mix A L 1 1).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hMa : IsAmpleLB (mix A L 1 1)`. Use `hLa.tensor hinv hM ((cls_eq_zero_iff (LB.isLB_div (LB.isLB_div hM hL) (LB.isLB_pull hL _))).1 ?_)` and prove the remaining obligations. Unfold `mix at hM ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[cls_div (LB.isLB_div hM hL) (LB.isLB_pull hL _), cls_div hM hL, cls_pull hL, cls_linComb hL]`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, pull_id, one_smul]`. Normalize the expressions using the abelian group laws. Establish `hP : (mix A L d 0).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hF` using `Twist.isFiniteQC_twist (F := structureModule A.left) hP`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n₀, hn₀⟩` from `eventually_atTop.1 (hMa.eventually_subsingleton_coh_twistZ (f := A.hom) (fun _ => rfl) (twist (structureModule A.left) (mix A L d 0)))`. Establish `hsep : A.left.IsSeparated`. Rewrite using `[Scheme.isSeparated_iff, ← Limits.terminal.comp_from A.hom]`. Use `infer_instance`. Use `⟨(2 * n₀ + d).toNat, fun a b hN hd j ⟨κ, _, _, W, hW, hc, hne⟩ => hne ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hI : ∀ s : Finset κ, s.Nonempty → IsAffineOpen (⨅ i ∈ s, W i)` using `fun s hs => IsAffineOpen.biInf _ (Finset.finite_toSet _) (by exact_mod_cast hs) fun i _ => hW i`. Establish `hQ : (mix A L a b).IsLB` using `LB.isLB_linComb hL _ _`. Take `⟨e⟩` from `FieldChangeInter.nonempty_coh_equiv A.hom hQ hc hI (j + 1)`. Take `⟨e₂⟩` from `nonempty_twist_twist_iso_of_cls_eq (structureModule A.left) hP (Twist.isLB_lbZPow hM b) hQ (by`. Rewrite using `[cls_lbZPow hM]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `mix at hP hQ hM ⊢`. Rewrite using `[cls_linComb hL, cls_linComb hL, cls_linComb hL]`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, pull_id, one_smul, zero_smul, add_zero]`. Establish `ha : (a : ℤ) = d + b` using `by omega`. Rewrite using `[ha, add_smul, smul_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `abel)`. Use `haveI := hn₀ b (by omega) (j + 1) j.succ_pos`. Rewrite using `[HomologicalComplex.exactAt_iff_isZero_homology, ModuleCat.isZero_iff_subsingleton]`. Conclude with `(e.trans (cohOn.mapIso K ⊤ (j + 1) e₂).symm).injective.subsingleton`.
+A detailed English derivation is pending.
 -/
 theorem exists_not_NV_mix (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A]
     (hA : IsAbelianScheme A) (L : LB A.left) (hL : L.IsLB) (hamp : Out.RelAmple A L) (d : ℤ) :

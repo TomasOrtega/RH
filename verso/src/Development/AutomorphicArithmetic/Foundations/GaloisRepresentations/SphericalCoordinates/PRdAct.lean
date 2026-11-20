@@ -10,7 +10,7 @@ open scoped Matrix TensorProduct Classical
 namespace UpperTheory.Gal.W2
 
 /- English proof (translation)
-Simplify using `only [actOn, inC, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply]`. Use `erw [Algebra.TensorProduct.lift_tmul]`. Simplify using `only [map_one, one_mul, Module.End.baseChangeHom, AlgHom.comp_apply]`. Conclude with `LinearMap.baseChange_tmul _ _ _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem actOn_inC {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G) (c : G.C) (w : VQ D) :
     actOn L.rep (AfP p) (inC G (AfP p) c) ((1 : AfP p) ⊗ₜ w) = (1 : AfP p) ⊗ₜ (L.rep c w) := by
@@ -20,7 +20,7 @@ private theorem actOn_inC {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p}
   exact LinearMap.baseChange_tmul _ _ _
 
 /- English proof (translation)
-Establish `hval : (L.actG (B.toAf y) : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)) = actOn L.rep (AfP p) ((trivX B : AfP p ⊗[ℚ] G.C) * inC G (AfP p) (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) * (((trivX B)⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C))` using `rfl`. Rewrite using `[hval, ← Module.End.mul_apply, ← map_mul, show (trivX B : AfP p ⊗[ℚ] G.C) * inC G (AfP p) (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) * (((trivX B)⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C) * (trivX B : AfP p ⊗[ℚ] G.C) = (trivX B : AfP p ⊗[ℚ] G.C) * inC G (AfP p) (((y : G.Cˣ × ℚˣ).1 : G.Cˣ …`. Simplify using `[mul_assoc],`. Use the proof step `map_mul, Module.End.mul_apply, actOn_inC]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem actG_toAf {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G) (B : GlobalTheory.LKCx.Form G)
     (y : GlobalTheory.LKCx.grp G B.β) (w : VQ D) :
@@ -37,7 +37,7 @@ private theorem actG_toAf {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p}
     map_mul, Module.End.mul_apply, actOn_inC]
 
 /- English proof (translation)
-Introduce `p _ D G L B y h₁ h₂ w`. Simplify using `only [rd, actY]`. Use `conv_rhs =>`. Rewrite using `[← Module.End.mul_apply, ← map_mul, _root_.mul_assoc, _root_.mul_assoc, _root_.mul_inv_cancel, _root_.mul_one, map_mul, Module.End.mul_apply, actG_toAf]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rdAct_of : RdAct := by
   intro p _ D G L B y h₁ h₂ w

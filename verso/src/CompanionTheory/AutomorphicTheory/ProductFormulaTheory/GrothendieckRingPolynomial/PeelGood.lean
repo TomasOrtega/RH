@@ -34,15 +34,15 @@ namespace CompanionTheory.Groth.ClsOfF
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.unlinked_commute_of_irreducible k CompanionTheory.Tls2.BZGL.irreducibleAdmissibleGL_top hI`.
+A detailed English derivation is pending.
 -/
 theorem comm_of (hI : Zc.Cos.LUnlinkedIrr k) : Zc.Cos.LUnlinkedComm k :=
   GlobalTheory.T.unlinked_commute_of_irreducible k CompanionTheory.Tls2.BZGL.irreducibleAdmissibleGL_top hI
 
 /- English proof (translation)
-Establish `hA` using `CompanionTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`. Introduce `𝔪 h N x hd hx`. Take `⟨Γ, hΓ, hL⟩` from `GlobalTheory.T.langlands_factors_dual_reverse_ordered hA (GlobalTheory.T.langlands_segment_dual hA hZ) 𝔪 x hx`. Take `⟨hd', ⟨e⟩⟩` from `GlobalTheory.T.contragredient_product_irreducible hA x hd`. Take `⟨τ, hτ⟩` from `GlobalTheory.T.reverse_ordered_product_has_socle hA (GlobalTheory.T.segment_jacquet_all hA hZ) hI (comm_of hI) Γ (fun a => dualCl (x a)) hd' hΓ hL`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.cosocle_of_contragredient_socle hA (prodIrr x hd) (isSmooth_prodIrr x hd) (GlobalTheory.T.product_irreducible_finite_length hA x hd) τ (hτ.of_equiv (Representation.Equiv.refl _) e.symm)`.
+A detailed English derivation is pending.
 -/
 theorem stdCos (hZ : GlobalTheory.Published.SegmentRepresentation) (hI : Zc.Cos.LUnlinkedIrr k) :
     ∀ (𝔪 : Multiset (Segment k)) (h N : ℕ) (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N), LFactors 𝔪 x →
@@ -56,16 +56,16 @@ theorem stdCos (hZ : GlobalTheory.Published.SegmentRepresentation) (hI : Zc.Cos.
     (hτ.of_equiv (Representation.Equiv.refl _) e.symm)
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `GlobalTheory.T.exists_segment_representation CompanionTheory.Tls2.BZGL.irreducibleAdmissibleGL_top Δ`. Conclude with `⟨IrrGL.of π.ρ π.smooth π.irr, hπ.of_equiv (IrrGL.equivOf π.ρ π.smooth π.irr)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem segCl (Δ : Segment k) : ∃ x : IrrGL k, IsLSeg Δ x.rep := by
   obtain ⟨π, hπ⟩ := GlobalTheory.T.exists_segment_representation CompanionTheory.Tls2.BZGL.irreducibleAdmissibleGL_top Δ
   exact ⟨IrrGL.of π.ρ π.smooth π.irr, hπ.of_equiv (IrrGL.equivOf π.ρ π.smooth π.irr)⟩
 
 /- English proof (translation)
-Take `⟨Δ, hΔ⟩` from `GlobalTheory.LocGL.exists_isOrderedForm 𝔪`. Use `choose y hy using (segCl (k := k))`. Set `x : Fin 𝔪.card → IrrGL k` to `fun i => y (Δ i)`. Establish `hx : LFactors 𝔪 x` using `⟨Δ, hΔ, fun i => hy (Δ i)⟩`. Take `⟨π, hπ⟩` from `HS 𝔪 𝔪.card _ x rfl hx`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨IrrGL.of π.ρ π.smooth π.irr, 𝔪.card, x, rfl, hx, ?_⟩` and prove the remaining obligations. Conclude with `hπ.of_equiv (IrrGL.equivOf π.ρ π.smooth π.irr) (.refl _)`.
+A detailed English derivation is pending.
 -/
 theorem ex_of (HS : ∀ (𝔪 : Multiset (Segment k)) (h N : ℕ) (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N), LFactors 𝔪 x →
       ∃ π : IrrRep (GL (Fin N) k), IsCosocle π.ρ (prodIrr x hd)) (𝔪 : Multiset (Segment k)) :
@@ -79,17 +79,17 @@ theorem ex_of (HS : ∀ (𝔪 : Multiset (Segment k)) (h N : ℕ) (x : Fin h →
   exact hπ.of_equiv (IrrGL.equivOf π.ρ π.smooth π.irr) (.refl _)
 
 /- English proof (translation)
-Introduce `x y hd s 𝔫 hs hn hf hp`. Take `⟨f, hf⟩` from `hf`. Establish `hn'` using `hn`. Take `⟨h, z, hz, ⟨Δ, hΔ, hzL⟩, -⟩` from `hn'`. Set `w : Fin (h + 1) → IrrGL k` to `Fin.snoc (α := fun _ => IrrGL k) z (y 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hwL : LFactors (𝔫 + {s}) w`. Use `⟨_, isOrderedForm_snoc hΔ s hp, fun i => ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Establish `e : w (Fin.last h) = y 0` using `Fin.snoc_last (α := fun _ => IrrGL k) _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[e, Fin.snoc_last]`. Conclude with `hs`. Consider the case `cast i`. Establish `e : w i.castSucc = z i` using `Fin.snoc_castSucc (α := fun _ => IrrGL k) _ _ _`. Rewrite using `[e, Fin.snoc_castSucc]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hzL i`. Establish `hwd : ∑ a, (w a).1 = x.1`. Rewrite using `[Fin.sum_univ_castSucc, ← hd, Fin.sum_univ_two, add_comm, ← hz]`. Simplify using `[w]`. Establish `hwr : ∑ a, (w (Fin.rev a)).1 = x.1` using `(Equiv.sum_comp Fin.revPerm fun a => (w a).1).trans hwd`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hzr : ∑ a, (z (Fin.rev a)).1 = (y 1).1` using `(Equiv.sum_comp Fin.revPerm fun a => (z a).1).trans hz`. Take `⟨π, hπ⟩` from `HS (𝔫 + {s}) (h + 1) x.1 w hwd hwL`. Establish `hπL : IsL (𝔫 + {s}) π.ρ` using `⟨_, w, hwd, hwL, hπ⟩`. Establish `hsoc` using `HL (𝔫 + {s}) (h + 1) x.1 w hwr hwL π.ρ hπL`. Establish `hsoc₁` using `HL 𝔫 h (y 1).1 z hzr ⟨Δ, hΔ, hzL⟩ (y 1).rep hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, g, hg, -⟩` from `hsoc₁`. Take `⟨F, hF⟩` from `embed_family y (w ∘ Fin.rev) (z ∘ Fin.rev) (by simp [w, Function.comp]) (fun i => by simp [w, Function.comp, Fin.rev_succ]) hd hwr hzr g hg`. Take `⟨e⟩` from `hsoc.equiv_of_embeds x.2.rep.irr ⟨F.comp f, hF.comp hf⟩`. Conclude with `hπL.of_equiv e.symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem peelGood (HS : ∀ (𝔪 : Multiset (Segment k)) (h N : ℕ) (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N), LFactors 𝔪 x →
       ∃ π : IrrRep (GL (Fin N) k), IsCosocle π.ρ (prodIrr x hd)) (HL : LSocleGL k) : Zc.PeelGoodP k := by
@@ -125,15 +125,15 @@ theorem peelGood (HS : ∀ (𝔪 : Multiset (Segment k)) (h N : ℕ) (x : Fin h 
   exact hπL.of_equiv e.symm
 
 /- English proof (translation)
-It suffices to establish `H : ∀ n : ℕ, ∀ x : IrrGL k, x.1 = n → ∃ 𝔪 : Multiset (Segment k), IsL 𝔪 x.rep from H _ x rfl`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `x hn`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Nat.eq_zero_or_pos n with h0 | hpos` into its components or cases. Conclude with `GlobalTheory.LocGL.exh_le_one x (by omega)`. Take `⟨l, hl, hx⟩` from `hC x`. Establish `hne : l ≠ []`. Introduce and unpack `rfl`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨hd, -⟩` from `hx`. Simplify using `at hd`. Use linear arithmetic over natural numbers and integers. Take `⟨ρ, hρ, hmin⟩` from `hm l hne hl`. Take `⟨A, B, rfl⟩` from `List.append_of_mem hρ`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Γ, c, y, e, hc, hy⟩` from `move_left hM hR hS hJ hL x ρ A (fun a ha => ⟨hl a (List.mem_append_left _ ha), by simpa using hmin a (List.mem_append_left _ ha) 1 one_pos⟩) (Segment.single ρ (hl ρ hρ)) ρ B rfl (single_spec (hl ρ hρ)).2.1 (by simpa using hx)`. Take `⟨hd, f, hf⟩` from `id hy`. Establish `hdeg : Γ.deg = c.1` using `hc.deg_eq`. Establish `hpos' : 0 < Γ.deg` using `Nat.mul_pos Γ.len_pos Γ.d_pos`. Establish `hd2 : c.1 + y.1 = x.1` using `(Fin.sum_univ_two fun a => ([c, y].get a).1).symm.trans hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨𝔫, h𝔫⟩` from `ih y.1 (by omega) y rfl`. Use `⟨_, hG x [c, y].get hd Γ 𝔫 hc h𝔫 ⟨f, hf⟩ fun Δ' hΔ' hp => ?_⟩` and prove the remaining obligations. Take `⟨j, hj, ej⟩` from `hp.2`. Conclude with `hmin _ (hP x c y _ 𝔫 hl hx hy h𝔫 Δ' hΔ') j hj (e.symm.trans ej)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exh_at (hM : MidP k) (hR : RefineP k) (hS : SwapP k) (hC : CuspEmbP k) (hP : SuppP k) (hJ : JuxtP k)
     (hL : LinkP k) (hm : MinP k) (hG : Zc.PeelGoodP k) (x : IrrGL k) : ∃ 𝔪 : Multiset (Segment k), IsL 𝔪 x.rep := by
@@ -171,9 +171,9 @@ namespace CompanionTheory.Groth
 open ClsOfF in
 
 /- English proof (translation)
-Establish `hA` using `CompanionTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`. Take `⟨hM, hR, hS⟩` from `H`. Establish `hCm : Zc.Cos.LUnlinkedComm k` using `comm_of hI`. Establish `hF : Zc.LOrderFree k` using `CompanionTheory.PfEss.Zc2.cs_orderfree hA hCm`. Establish `hSoc : Zc.LSocleGL k` using `GlobalTheory.T.langlands_socle_of_order_free hA (GlobalTheory.T.local_langlands_of_irreducible_admissible hA) hF`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `HS` using `stdCos hZ hI`. Establish `hC : CuspEmbP k` using `cuspEmbP k hA hR`. Conclude with `{ ex := ex_of HS exh := exh_at hM hR hS hC (suppP k) (juxtP_of_fineUniq hA hM hR hS hC (GlobalTheory.T.segment_product_word_in_shuffle hA (GlobalTheory.T.segment_jacquet_all hA hZ)) (GlobalTheory.T.irreducible_sub_segment_product hA hZ)) linkP minP (peelGood HS hSoc) free := hF s …`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cls_of (hZ : GlobalTheory.Published.SegmentRepresentation) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hI : Zc.Cos.LUnlinkedIrr k)

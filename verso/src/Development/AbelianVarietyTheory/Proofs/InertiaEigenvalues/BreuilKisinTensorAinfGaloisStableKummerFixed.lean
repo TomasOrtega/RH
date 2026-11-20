@@ -12,9 +12,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.BKGal.StableFix
 
 /- English proof (translation)
-Establish `h1 : (Submodule.span B (Set.range u)).mkQ = 0` using `h.hom_ext fun x => by`. Rewrite using `[LinearMap.zero_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.subset_span ⟨x, rfl⟩`. Conclude with `Submodule.eq_top_iff'.2 fun y => by`. Use `LinearMap.congr_fun h1 y` as an intermediate fact.
-
-Rewrite `this` using `[LinearMap.zero_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem SemiBC.span_eq {A B M N : Type} [CommRing A] [CommRing B] [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module B N] {f : A →+* B} {u : M →ₛₗ[f] N} (h : SemiBC u) :
@@ -32,9 +30,9 @@ variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a] {e : ℕ} [NeZero e]
   {t : Wq l a →ₐ[ℤ_[l]] O} {ϖ : PiSys l e} {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Use `letI := zlLat T`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul w x => rfl`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem kappa_act {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[l] K O) (s : GQ l) (g : G) :
     letI := zlLat T
@@ -48,9 +46,9 @@ theorem kappa_act {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[l
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `letI := zlLat T`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `tmul w' x`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[smul_tmul', kappa_tmul, kappa_tmul, smul_tmul', smul_eq_mul, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem kappa_smul' {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[l] K O) (w : WCb l) :
     letI := zlLat T
@@ -67,14 +65,14 @@ theorem kappa_smul' {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_
 variable (P : PhiMod O K l e a ι)
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `hv`. Conclude with `⟨r • c, funext fun i => (map_mul (inclO l O) r (c i))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inclO_smul_mem_MA (r : OA l O) {v : ι → OW l O} (hv : v ∈ MA P) : inclO l O r • v ∈ MA P := by
   obtain ⟨c, rfl⟩ := hv
   exact ⟨r • c, funext fun i => (map_mul (inclO l O) r (c i))⟩
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `hv`. Use `⟨r • c, ?_⟩` and prove the remaining obligations. Rewrite using `[inclL_apply, inclL_apply, ← Matrix.mulVec_smul]`. Conclude with `congrArg _ (funext fun i => map_mul (inclO l O) r (c i))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inclO_smul_mem_LA (r : OA l O) {v : ι → OW l O} (hv : v ∈ LA t ϖ P) : inclO l O r • v ∈ LA t ϖ P := by
   obtain ⟨c, rfl⟩ := hv
@@ -85,7 +83,7 @@ theorem inclO_smul_mem_LA (r : OA l O) {v : ι → OW l O} (hv : v ∈ LA t ϖ P
 abbrev eb (i : ι) : ι → OW l O := fun j => if i = j then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[phiW_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `show frobOW l O (if i = j then 1 else 0) = if i = j then 1 else 0`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem phiW_eb (i : ι) : phiW t ϖ P (eb i) = frobMat t ϖ P *ᵥ eb i := by
   rw [phiW_apply]
@@ -95,7 +93,7 @@ theorem phiW_eb (i : ι) : phiW t ϖ P (eb i) = frobMat t ϖ P *ᵥ eb i := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[phiW_apply, inclL_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `frobOW_inclO (c j)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem phiW_inclV (c : ι → OA l O) : phiW t ϖ P (inclV l O ι c) = inclL t ϖ P (fun i => frobOA l O (c i)) := by
   rw [phiW_apply, inclL_apply]
@@ -106,7 +104,7 @@ theorem phiW_inclV (c : ι → OA l O) : phiW t ϖ P (inclV l O ι c) = inclL t 
 def mb (i : ι) : Vec K a ι := fun _ j => if i = j then 1 else 0
 
 /- English proof (translation)
-The claim follows from `mem_tot.2 fun τ j => by change (if i = j then (1 : K⟦X⟧) else 0) ∈ A O K split_ifs · exact one_mem _ · exact zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem mb_mem (i : ι) : (mb i : Vec K a ι) ∈ P.M :=
   mem_tot.2 fun τ j => by
@@ -116,11 +114,11 @@ theorem mb_mem (i : ι) : (mb i : Vec K a ι) ∈ P.M :=
     · exact zero_mem _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Rewrite using `[toW_apply]`. Use `show _ = (if i = j then (1 : OW l O) else 0)`. Use `split_ifs with h`. Use `map_one (ϖ.iW t K) using 2` and compare the differences between its conclusion and the goal.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `τ`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[mb, h]`. Use `map_zero (ϖ.iW t K) using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[mb, h]`.
+A detailed English derivation is pending.
 -/
 theorem toW_mb (i : ι) : toW t ϖ P ⟨mb i, mem_ME_of_mem_M (mb_mem P i)⟩ = eb i := by
   funext j
@@ -146,7 +144,7 @@ variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a] {e : ℕ} [NeZero e]
   {t : Wq l a →ₐ[ℤ_[l]] O} {ϖ : PiSys l e} {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Use `letI := zlLat T`. Introduce `j z z' v v' hv hw`. Rewrite using `[I.j.map_add, hv, hw, j.map_add, (kappa T).map_add]`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem add_step {P : PhiMod O K l e a ι} {T : Lat a O K ϖ} (I : Ident t ϖ P T) (E : FCrys l ↥(OL (ϖ.field a))) :
     letI := zlLat T
@@ -158,7 +156,7 @@ theorem add_step {P : PhiMod O K l e a ι} {T : Lat a O K ϖ} (I : Ident t ϖ P 
   rw [I.j.map_add, hv, hw, j.map_add, (kappa T).map_add]
 
 /- English proof (translation)
-Use `letI := zlLat T`. Introduce `j c z v hv`. Establish `e1 : j (c • z) = inclW l (ainfId (ϖ.field a) c) • j z` using `j.map_smulₛₗ c z`. Rewrite using `[e1, kappa_smul', LinearEquiv.map_smul, hv, inclO_tmul]`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_step {P : PhiMod O K l e a ι} {T : Lat a O K ϖ} (I : Ident t ϖ P T) (E : FCrys l ↥(OL (ϖ.field a))) :
     letI := zlLat T
@@ -171,13 +169,13 @@ theorem smul_step {P : PhiMod O K l e a ι} {T : Lat a O K ϖ} (I : Ident t ϖ P
   rw [e1, kappa_smul', LinearEquiv.map_smul, hv, inclO_tmul]
 
 /- English proof (translation)
-Use `letI := zlLat T`. Introduce `j hE z`. Establish `hz : z ∈ Submodule.span (ainfObj (ϖ.field a)).A (Set.range (E.tr (ϖ.toAinf a)))`. Rewrite using `[SemiBC.span_eq (E.tr_bc (ϖ.toAinf a))]`. Conclude with `Submodule.mem_top`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨y, rfl⟩` from `hz`. Take `⟨m', hm', h'⟩` from `(hE (kappa T (j (E.tr (ϖ.toAinf a) y)))).1 ⟨y, rfl⟩`. Conclude with `⟨_, toW_mem_MA t ϖ P hm', h'.symm⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, zero_mem _, by rw [I.j.map_zero, j.map_zero, (kappa T).map_zero]⟩`. Consider the case `add z z' _ _ h h'`. Take `⟨v, hv, hv'⟩` from `h`. Take `⟨v', hw, hw'⟩` from `h'`. Conclude with `⟨v + v', add_mem hv hw, add_step I E j z z' v v' hv' hw'⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `smul c z _ h`. Take `⟨v, hv, hv'⟩` from `h`. Conclude with `⟨_, inclO_smul_mem_MA P _ hv, smul_step I E j c z v hv'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem span_step {P : PhiMod O K l e a ι} {T : Lat a O K ϖ} (I : Ident t ϖ P T) (E : FCrys l ↥(OL (ϖ.field a))) :
     letI := zlLat T
@@ -205,11 +203,11 @@ theorem span_step {P : PhiMod O K l e a ι} {T : Lat a O K ϖ} (I : Ident t ϖ P
     exact ⟨_, inclO_smul_mem_MA P _ hv, smul_step I E j c z v hv'⟩
 
 /- English proof (translation)
-Use `letI := zlLat T`. Take `⟨E, j, H, hE⟩` from `hI`. Take `⟨x, hx⟩` from `(hE (I.j (toW t ϖ P ⟨m, mem_ME_of_mem_M hm⟩))).2 ⟨m, hm, rfl⟩`. Establish `hact : I.j (I.act (g : GQ l) g (toW t ϖ P ⟨m, mem_ME_of_mem_M hm⟩)) = kappa T (j (E.tr (ainfHom (ϖ.field a) g) (E.tr (ϖ.toAinf a) x)))`. Rewrite using `[Ident.j_act, hx, kappa_act]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (kappa T) (H.j_act g _).symm`. Use `⟨?_, fun hg => I.j.injective ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hv'⟩` from `span_step I E j hE (E.tr (ainfHom (ϖ.field a) g) (E.tr (ϖ.toAinf a) x))`. Rewrite `hv'` using `[← hact, I.j.injective.eq_iff]`. Conclude with `hv' ▸ hv`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (ainfHom (ϖ.field a) g).comp (ϖ.toAinf a) = ϖ.toAinf a` using `Hom.ext' (RingHom.ext fun y => PiSys.gal_ev l a ϖ hg y)`. Rewrite using `[hact, ← E.tr_comp, h1, ← hx]`.
+A detailed English derivation is pending.
 -/
 theorem core {P : PhiMod O K l e a ι} {T : Lat a O K ϖ} (I : Ident t ϖ P T) (hI : IsBK I)
     (g : ↥(GK (ϖ.field a))) (m : Vec K a ι) (hm : m ∈ P.M) :
@@ -242,7 +240,7 @@ variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a] {e : ℕ} [NeZero e]
   {P : PhiMod O K l e a ι} {T : Lat a O K ϖ}
 
 /- English proof (translation)
-Rewrite using `[← toW_mb P i]`. Conclude with `(core I hI g _ (mb_mem P i)).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_eb_mem (I : Ident t ϖ P T) (hI : IsBK I) (g : ↥(GK (ϖ.field a))) (i : ι) :
     I.act (g : GQ l) g (eb i) ∈ MA P := by
@@ -250,9 +248,9 @@ theorem act_eb_mem (I : Ident t ϖ P T) (hI : IsBK I) (g : ↥(GK (ϖ.field a)))
   exact (core I hI g _ (mb_mem P i)).1
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨c, rfl⟩`. Rewrite using `[pi_eq_sum_univ (inclV l O ι c), map_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Ident.act_smul]`. Express the relevant statement in the definitionally equal form `galOW O (g : GQ l) (inclO l O (c i)) • _ ∈ _`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[galOW_inclO]`. Conclude with `inclO_smul_mem_MA P _ (act_eb_mem I hI g i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_MA (I : Ident t ϖ P T) (hI : IsBK I) (g : ↥(GK (ϖ.field a))) :
     ∀ v ∈ MA P, I.act (g : GQ l) g v ∈ MA P := by
@@ -265,11 +263,11 @@ theorem act_MA (I : Ident t ϖ P T) (hI : IsBK I) (g : ↥(GK (ϖ.field a))) :
   exact inclO_smul_mem_MA P _ (act_eb_mem I hI g i)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨c, rfl⟩`. Establish `h1 : inclL t ϖ P c = ∑ i, inclO l O (c i) • phiW t ϖ P (eb i)`. Rewrite using `[inclL_apply]`. Use `conv_lhs => rw [pi_eq_sum_univ (fun i => inclO l O (c i)), Matrix.mulVec_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_smul, phiW_eb]`. Rewrite using `[h1, map_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Ident.act_smul, galOW_inclO, Ident.act_phiW]`. Use `inclO_smul_mem_LA P _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `act_eb_mem I hI g i`. Rewrite using `[← hd, phiW_inclV]`. Conclude with `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem act_LA (I : Ident t ϖ P T) (hI : IsBK I) (g : ↥(GK (ϖ.field a))) :
     ∀ v ∈ LA t ϖ P, I.act (g : GQ l) g v ∈ LA t ϖ P := by
@@ -288,9 +286,9 @@ theorem act_LA (I : Ident t ϖ P T) (hI : IsBK I) (g : ↥(GK (ϖ.field a))) :
   exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Use `conv_lhs => rw [pi_eq_sum_univ (toW t ϖ P v), map_sum]`. Use `conv_rhs => rw [pi_eq_sum_univ (toW t ϖ P v)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Ident.act_smul, toW_apply, ϖ.galOW_iW t K hg]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `(core I hI g _ (mb_mem P i)).2 hg`. Rewrite `h` using `[toW_mb P i]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem act_fix (I : Ident t ϖ P T) (hI : IsBK I) (g : ↥(GK (ϖ.field a))) (hg : (g : GQ l) ∈ ϖ.GfieldInf a)
     (v : ME P) : I.act (g : GQ l) g (toW t ϖ P v) = toW t ϖ P v := by
@@ -308,7 +306,7 @@ end GlobalTheory.BKGal.StableFix
 namespace GlobalTheory.BKGal.StableFix
 
 /- English proof (translation)
-Introduce `l _ a e _ _ ϖ LL _ _ ι _ _ P T I hBK`. Use `⟨fun g => ⟨act_LA _ hBK g, act_MA _ hBK g⟩, fun g hg v => ?_⟩` and prove the remaining obligations. Conclude with `act_fix (I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)) hBK ⟨sQ l g, PiSys.fixing_fieldInf_le a ϖ hg⟩ hg v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL) (I : Ident (thetaW a LL) ϖ P T), IsBK (T := resF T (ϖ.field a)) (I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)) → Ident.Stable (T := resF T (ϖ.field a)) (I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)) ∧ ∀ g : Gl l, sQ l g ∈ ϖ.GfieldInf a → ∀ v : ME P, I.act (sQ l g) g (toW (thetaW a LL) ϖ P v) = toW (thetaW a LL) ϖ P v := by
   intro l _ a e _ _ ϖ LL _ _ ι _ _ P T I hBK

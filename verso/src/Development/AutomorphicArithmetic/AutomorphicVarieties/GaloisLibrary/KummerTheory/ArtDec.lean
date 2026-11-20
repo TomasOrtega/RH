@@ -7,11 +7,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _ A v hA`. Take `⟨σ, hσ⟩` from `ReciprocityTheory.Gal.exists_isFrob hA`. Establish `hσv : artCl K Ω σ = primeCl v` using `artFrob K Ω A v σ hA hσ`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Subgroup.map_le_iff_le_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `decGen K Ω A v σ _ hA hσ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `(artSurj K Ω).2 (Subgroup.zpowers (primeCl v) : Set (ClassGroup (𝓞 K)))`. Introduce `g hg`. Rewrite using `[Subgroup.mem_comap, (artIne K Ω).1 A g hg]`. Conclude with `one_mem _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_comap, hσv]`. Conclude with `Subgroup.mem_zpowers _`. Rewrite using `[Subgroup.zpowers_le]`. Conclude with `⟨σ, hσ.1, hσv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.artDec :
     ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)), IsPlaceOver A v → (Dec (F := K) A).map (artCl K Ω) = Subgroup.zpowers (primeCl v) := by

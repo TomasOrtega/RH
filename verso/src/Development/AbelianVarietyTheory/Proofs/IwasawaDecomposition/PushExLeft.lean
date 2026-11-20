@@ -28,14 +28,14 @@ def pushEx (hu : Fu.u i P = y ≫ pullback.fst Xo.s (spMap (IntermediateField.in
     rw [Category.assoc, Z.m.cart.1.w, ← Category.assoc, liftEx, IsPullback.lift_snd, ← hp])
 
 /- English proof (translation)
-The claim follows from `IsPullback.lift_fst _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem liftEx_fst (hu : Fu.u i P = y ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom))
     (z : Fin g → ℂ) : liftEx Z Fu y i P hu z ≫ Z.m0.toSABMap.φ = (Fu.ex i P z).left :=
   IsPullback.lift_fst _ _ _ _
 
 /- English proof (translation)
-The claim follows from `IsPullback.lift_snd _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem liftEx_snd (hu : Fu.u i P = y ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom))
     (z : Fin g → ℂ) : liftEx Z Fu y i P hu z ≫ Z.oF.t.G.hom = y :=

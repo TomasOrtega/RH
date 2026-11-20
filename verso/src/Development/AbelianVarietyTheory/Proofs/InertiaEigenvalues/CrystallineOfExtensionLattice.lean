@@ -15,13 +15,13 @@ noncomputable section
 namespace GlobalTheory.ExtLatCrys
 
 /- English proof (translation)
-Set `ρ' : Representation LL ↥(GK K) V` to `ρ.comp (inclG K)`. Establish `hρ' : ∀ g, ρ' g = ρ (inclG K g)` using `fun _ => rfl`. Establish `hc : (fun g => (z : Gl l → V) (inclG K g)) ∈ continuousCocycles ρ'` using `⟨z.2.1.comp (continuous_subtype_val.subtype_mk _), fun g k => by`. Use `z.2.2 (inclG K g) (inclG K k)` as an intermediate fact. Rewrite `this` using `[← map_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this⟩`. Establish `h0` using `GlobalTheory.IndefiniteRowSideFullHecke.CrystallineExtensions.extRep_isExt ρ' ⟨_, hc⟩`. Establish `h2 : ∀ (g : ↥(GK K)) (y : V ⊗[ℚ_[l]] Pl.R.B), actVB (Pl.PD K) ρ' g y = actVB (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) ρ (inclG K g) y`. Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, Pl.PD_actB, hρ']`. Both sides reduce to the same expression. Consider the case `add u w hu hw => rw [map_add, map_add, hu, hw]`. Establish `h1` using `(GlobalTheory.CrysExt.isCrystalline_iff_mem_H1f (Pl.PD K) (ρ := ρ') hT h0.1 ⟨_, hc⟩ h0.2).mpr ((GlobalTheory.IndefiniteRowSideFullHecke.CrystallineExtensions.mk_mem_H1fSub (Pl.PD K) ρ' ⟨_, hc⟩).mpr (by`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, x, hx⟩` from `hz`. Use `⟨hc, x, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `hx (inclG K g)))`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCrys_comp_extRep {l : ℕ} [Fact l.Prime] {LL : Type} [Field LL] [Algebra ℚ_[l] LL]
     [FiniteDimensional ℚ_[l] LL] (K : FinExt l) (Pl : LocPrime l)
@@ -54,7 +54,7 @@ theorem isCrys_comp_extRep {l : ℕ} [Fact l.Prime] {LL : Type} [Field LL] [Alge
   exact h1
 
 /- English proof (translation)
-The claim follows from `isCrys_comp_extRep K Pl T.ρ hT z hz`.
+A detailed English derivation is pending.
 -/
 theorem isCrys_comp_extRep_lat {l : ℕ} [Fact l.Prime] {LL O : Type} [Field LL] [Algebra ℚ_[l] LL]
     [FiniteDimensional ℚ_[l] LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] (K : FinExt l) (Pl : LocPrime l)
@@ -65,7 +65,7 @@ theorem isCrys_comp_extRep_lat {l : ℕ} [Fact l.Prime] {LL O : Type} [Field LL]
   isCrys_comp_extRep K Pl T.ρ hT z hz
 
 /- English proof (translation)
-Introduce `l _ a e _ _ ϖ LL _ _ Pl T hT z hz`. Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Conclude with `isCrys_comp_extRep_lat (ϖ.field a) Pl T hT ⟨z, z.2.1⟩ hz`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isCrys_resF_extLat : ∀ {l : ℕ} [Fact l.Prime] {a e : ℕ} [NeZero a] [NeZero e] (ϖ : PiSys l e) {LL : FinExt l} [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (Pl : LocPrime l) (T : QLat LL), IsCrys (Pl.PD (ϖ.field a)) (resF T (ϖ.field a)).ρ → ∀ z : ↥(latticeCocycles T.L), (z : Gl l → T.V) ∈ finiteCocycles (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) T.ρ → IsCrys (Pl.PD (ϖ.field a)) (resF (GlobalTheory.FiniteAdm.extLat (O := ↥(OL LL)) Subtype.val_injective T z) (ϖ.field a)).ρ := by
   intro l _ a e _ _ ϖ LL _ _ Pl T hT z hz

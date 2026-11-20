@@ -13,15 +13,13 @@ noncomputable section
 namespace GlobalTheory.WeilTypeChar
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB`. Use `haveI : IsCMField E := isCMField_of_cmExt hB.cm`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Take `⟨q, hq1, hq⟩` from `Nat.exists_infinite_primes (max 3 (Nat.card (Units.torsion E) + 1))`. Establish `hq2 : 2 < q` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htq : Nat.card (Units.torsion E) < q` using `by omega`. Establish `ht : ¬ q ∣ Nat.card (Units.torsion E)` using `fun h => absurd (Nat.le_of_dvd Nat.card_pos h) (by omega)`. Take `⟨U, hU, hUinf, hUk⟩` from `GlobalTheory.T.exists_open_idele_subgroup_congruence_mod_q F E q hq.ne_zero`. Take `⟨χ, hχc, hχ1, hχU, hχk⟩` from `GlobalTheory.exists_unitary_char_of_open_subgroup_and_hom (AF F ⊗[F] E)ˣ Eˣ U hU (Units.map (incAF F E).toMonoidHom) 1 (chiInf B.emb) (continuous_chiInf B.emb) (norm_chiInf B.emb) (fun _ => by simp) (fun k hk => by`. Take `⟨u, hu, hu1⟩` from `hUk k hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[chiInf_apply, MonoidHom.one_apply, Units.val_one]`. Establish `e : ∀ w, piInf (B.emb w) ((Units.map (incAF F E).toMonoidHom k : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = (B.emb w).1 ((u : 𝓞 E) : E)` using `fun w => by`. Rewrite using `[hu]`. Conclude with `GlobalTheory.ThK.EvAt0.ZPartArc.piInf_inclR' (B.emb w) (k : E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [e]`. Conclude with `(GlobalTheory.T.cmType_unit_phase_prod_eq_one_of_congruent_one F E σ hB.cm B.emb q hq hq2 ht u hu1).symm)`. Use `⟨GlobalTheory.unitaryCharToCircle χ hχ1, ⟨?_, fun k => ?_⟩, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `Continuous.subtype_mk (Units.continuous_val.comp hχc) _`. Apply `Circle.ext show ((χ (Units.map (incAF F E).toMonoidHom k) : ℂˣ) : ℂ) = 1` to reduce the goal to its premises.
-
-Rewrite using `[hχk]`. Both sides reduce to the same expression. Use `show ((χ z : ℂˣ) : ℂ) = _`. Rewrite using `[hχU z (hUinf z hz), chiInf_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_weil_char_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∃ ξ : (AF F ⊗[F] E)ˣ →* Circle, IsHeckeCharF ξ ∧ HasExp B.emb ξ (fun _ => 1) := by

@@ -17,7 +17,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P J :
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Use `⟨∏ k, c k, Finset.prod_ne_zero_iff.mpr fun k _ => hc k, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[segre, Finset.prod_mul_distrib]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem segre_of_sameOrbit {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') :
     ∃ c : ℂ, c ≠ 0 ∧ segre z = c • (segre z' : ((k : K) → ι k) → ℂ) := by
@@ -27,14 +27,14 @@ theorem segre_of_sameOrbit {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') :
   simp [segre, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-The claim follows from `segre_of_sameOrbit (R.compat x x₀ x ⟨R.mem_U x, hx⟩)`.
+A detailed English derivation is pending.
 -/
 theorem segre_lift_eq_smul {e : ℕ} (R : AnLogRes P J e) (x₀ : R.X) {x : R.X} (hx : x ∈ R.U x₀) :
     ∃ c : ℂ, c ≠ 0 ∧ segre (R.lift x x) = c • (segre (R.lift x₀ x) : ((k : K) → ι k) → ℂ) :=
   segre_of_sameOrbit (R.compat x x₀ x ⟨R.mem_U x, hx⟩)
 
 /- English proof (translation)
-Establish `hl : ContinuousOn (fun x => R.lift x₀ x) (R.U x₀)` using `continuousOn_pi.mpr fun p => continuousOn_lift R x₀ p`. Establish `hs : Continuous (segre : ((Σ k, ι k) → ℂ) → ((k : K) → ι k) → ℂ)` using `continuous_pi fun i => continuous_finsetProd Finset.univ fun k _ => continuous_apply _`. Conclude with `(LinearMap.continuous_of_finiteDimensional Ψ).comp_continuousOn (hs.comp_continuousOn hl)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousOn_segre_lift {e n : ℕ} (R : AnLogRes P J e)
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) (x₀ : R.X) :
@@ -46,19 +46,17 @@ theorem continuousOn_segre_lift {e n : ℕ} (R : AnLogRes P J e)
   exact (LinearMap.continuous_of_finiteDimensional Ψ).comp_continuousOn (hs.comp_continuousOn hl)
 
 /- English proof (translation)
-Use `isClosed_of_closure_subset fun x hx => ?_` and prove the remaining obligations. Use `set F := {x | x ∈ V ∧ Ψ (segre (R.lift x x)) 0 ≠ 0 ∧ projCoord R Ψ x = y} with hFdef`. Establish `hxV : x ∈ V` using `closure_minimal (fun z hz => hz.1) hV hx`. Use `set w : R.X → Fin (n + 1) → ℂ := fun z => Ψ (segre (R.lift x z)) with hwdef`. Establish `hw : ContinuousAt w x` using `(continuousOn_segre_lift R Ψ x).continuousAt ((R.isOpen_U x).mem_nhds (R.mem_U x))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set h : R.X → Fin n → ℂ := fun z i => w z i.succ - y i * w z 0 with hhdef`. Establish `hh : ContinuousAt h x` using `continuousAt_pi.mpr fun i => ((continuous_apply _).continuousAt.comp hw).sub (continuousAt_const.mul ((continuous_apply _).continuousAt.comp hw))`. Establish `hev : ∀ᶠ z in 𝓝[F] x, h z = 0` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds ((R.isOpen_U x).mem_nhds (R.mem_U x))] with z hz hzU`. Take `⟨c, hc, hcz⟩` from `segre_lift_eq_smul R x hzU`. Establish `h0 : Ψ (segre (R.lift z z)) = c • w z` using `by simp [w, hcz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hw0 : w z 0 ≠ 0` using `fun h' => hz.2.1 (by rw [h0]; simp [h'])`. Use function extensionality and compare the values at `i`. Establish `hi` using `congrFun hz.2.2 i`. Simplify using `only [projCoord, h0, Pi.smul_apply, smul_eq_mul] at hi`. Rewrite `hi` using `[mul_div_mul_left _ _ hc, div_eq_iff hw0]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h, hi]`. Establish `: (𝓝[F] x).NeBot` using `mem_closure_iff_nhdsWithin_neBot.mp hx`. Establish `hlim : h x = 0` using `tendsto_nhds_unique (hh.tendsto.mono_left nhdsWithin_le_nhds) (tendsto_const_nhds.congr' (hev.mono fun z hz => hz.symm))`. Establish `hi : ∀ i : Fin n, w x i.succ = y i * w x 0` using `fun i => by`. Use `congrFun hlim i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[h, sub_eq_zero]`. Establish `hw0 : w x 0 ≠ 0`. Introduce `h0`. Apply `hΨ x hxV` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the cases of `i using Fin.cases with`. Consider the case `zero => simpa [w] using h0`. Consider the case `succ i => simpa [w, h0] using hi i`. Use `⟨hxV, hw0, funext fun i => ?_⟩` and prove the remaining obligations. Use `show w x i.succ / w x 0 = y i`.
-
-Rewrite using `[div_eq_iff hw0]`. Conclude with `hi i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_projFibre {n : ℕ} (R : AnLogRes P J (n + 1))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) {V : Set R.X} (hV : IsClosed V)
@@ -106,23 +104,17 @@ theorem isClosed_projFibre {n : ℕ} (R : AnLogRes P J (n + 1))
   exact hi i
 
 /- English proof (translation)
-Introduce `K _ ι _ P J n R Ψ V BV hBV hV hΨ`. Establish `hAn` using `(hReg K ι P J n R Ψ V BV hBV).2.1`. Establish `: CompactSpace V` using `isCompact_iff_compactSpace.mp hV.isCompact`. Use `set q : V → Fin n → ℂ := projCoord R Ψ ∘ Subtype.val with hqdef`. Use `set f : Fin BV.n → (Fin n → ℂ) → Fin n → ℂ := fun j => q ∘ (BV.chart j).symm with hfdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set C : Fin BV.n → Set (Fin n → ℂ) := fun j => {u | u ∈ (BV.chart j).target ∧ Ψ (segre (R.lift ((BV.chart j).symm u).1 ((BV.chart j).symm u).1)) 0 ≠ 0 ∧ LinearMap.det (fderiv ℂ (f j) u : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) = 0} with hCdef`. Establish `hnull : ∀ j, volume (f j '' C j) = 0` using `fun j => by`. Use `addHaar_image_eq_zero_of_det_fderivWithin_eq_zero volume (f' := fun u => (fderiv ℂ (f j) u).restrictScalars ℝ) (fun u hu => ?_) (fun u hu => ?_)` and prove the remaining obligations. Establish `ha` using `hAn _ hu.2.1 j ((BV.chart j).map_target hu.1)`. Rewrite `ha` using `[(BV.chart j).right_inv hu.1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(ha.differentiableAt.hasFDerivAt.restrictScalars ℝ).hasFDerivWithinAt`. Use `show LinearMap.det ((fderiv ℂ (f j) u : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)).restrictScalars ℝ) = 0`. Rewrite using `[ReciprocityTheory.AnForm.A.det_restrictScalars_real, hu.2.2, map_zero]`. Use `filter_upwards [compl_mem_ae_iff.mpr (measure_iUnion_null hnull)] with y hy`. Use `set F : Set V := Subtype.val ⁻¹' {x | x ∈ V ∧ Ψ (segre (R.lift x x)) 0 ≠ 0 ∧ projCoord R Ψ x = y} with hFdef`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hFc : IsCompact F` using `((isClosed_projFibre R Ψ hV hΨ y).preimage continuous_subtype_val).isCompact`. Establish `hFreg : ∀ x ∈ F, x ∈ projRegular R Ψ BV`. Introduce `x hx`. Use `⟨hx.2.1, fun j hj hd => hy (Set.mem_iUnion.mpr ⟨j, BV.chart j x, ⟨(BV.chart j).map_source hj, ?_, hd⟩, ?_⟩)⟩` and prove the remaining obligations. Rewrite using `[(BV.chart j).left_inv hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hx.2.1`. Use `show projCoord R Ψ ((BV.chart j).symm (BV.chart j x)).1 = y`. Rewrite using `[(BV.chart j).left_inv hj]`. Conclude with `hx.2.2`. Establish `hloc : ∀ x ∈ F, ∃ N ∈ 𝓝 x, Set.InjOn q N`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨j, hj⟩` from `BV.cover x`. Take `⟨W, hWo, hxW, hinj⟩` from `pushA_locInj (hAn x (hFreg x hx).1 j hj) ((hFreg x hx).2 j hj)`. Use `⟨(BV.chart j).source ∩ BV.chart j ⁻¹' W, ((BV.chart j).isOpen_inter_preimage hWo).mem_nhds ⟨hj, hxW⟩, fun a ha b hb hab => ?_⟩` and prove the remaining obligations. Use `(BV.chart j).injOn ha.1 hb.1 (hinj ha.2 hb.2 ?_)` and prove the remaining obligations.
-
-Use `show projCoord R Ψ ((BV.chart j).symm (BV.chart j a)).1 = projCoord R Ψ ((BV.chart j).symm (BV.chart j b)).1`. Rewrite using `[(BV.chart j).left_inv ha.1, (BV.chart j).left_inv hb.1]`. Conclude with `hab`. Use `choose! N hN hNinj using hloc`. Take `⟨t, htF, hcov⟩` from `hFc.elim_nhds_subcover N hN`.
-
-Use `t.finite_toSet.subset fun z hz => ?_` and prove the remaining obligations. Establish `hzy : projCoord R Ψ z.1 = y` using `hz.1`. Establish `hzF : z ∈ F` using `⟨z.2, hz.2.1, hzy⟩`. Take `⟨x, hxt, hzx⟩` from `Set.mem_iUnion₂.mp (hcov hzF)`. Establish `hxF` using `htF x hxt`.
-
-Establish `: z = x` using `hNinj x hxF hzx (mem_of_mem_nhds (hN x hxF)) (hzy.trans hxF.2.2.symm)`. Conclude with `this ▸ hxt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ProjRegularFibre.of_found (hReg : ProjRegular.Statement) : ProjRegularFibre.Statement := by
   intro K _ ι _ P J n R Ψ V BV hBV hV hΨ

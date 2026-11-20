@@ -16,21 +16,21 @@ variable {k : Type} [CommRing k] {d : ℕ}
 def embP {n' n : ℕ} (e : Fin n' → Fin n) : Fin n' → Pt k n d := fun b => pt k d (e b)
 
 /- English proof (translation)
-Introduce `j i`. Simplify using `[embP, pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem cz_embP {n' n : ℕ} (e : Fin n' → Fin n) : LogPf.CZ (embP (k := k) (d := d) e) := by
   intro j i
   simp [embP, pt]
 
 /- English proof (translation)
-Introduce `j i`. Apply the tactic sequence `fin_cases j <;> simp [pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cz_ptz {n : ℕ} (b : Fin n) : LogPf.CZ (![pt k d b, 0] : Fin 2 → Pt k n d) := by
   intro j i
   fin_cases j <;> simp [pt]
 
 /- English proof (translation)
-Establish `h0 : constantCoeff (f - C (constantCoeff f)) = 0` using `by simp`. Establish `e1 : f = C (constantCoeff f) + (f - C (constantCoeff f))` using `by ring`. Use `conv_lhs => rw [e1]`. Rewrite using `[LogPf.ev_add ha, LogPf.ev_C ha, map_add, LogPf.constantCoeff_ev ha h0, add_zero, constantCoeff_C]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_ev {m n : ℕ} {a : Fin m → Pt k n d} (ha : LogPf.CZ a) (f : PS k m d) :
     constantCoeff (ev a f) = constantCoeff f := by
@@ -40,9 +40,9 @@ theorem cc_ev {m n : ℕ} {a : Fin m → Pt k n d} (ha : LogPf.CZ a) (f : PS k m
   rw [LogPf.ev_add ha, LogPf.ev_C ha, map_add, LogPf.constantCoeff_ev ha h0, add_zero, constantCoeff_C]
 
 /- English proof (translation)
-Rewrite using `[LogPf.pderiv_ev (cz_embP e), Finset.sum_eq_single (b, j)]`. Simplify using `[embP, LogPf.pderiv_pt]`. Introduce `p _ hp`. Rewrite using `[show embP (k := k) (d := d) e p.1 p.2 = pt k d (e p.1) p.2 from rfl, LogPf.pderiv_pt, if_neg, mul_zero]`. Introduce `hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hp` to reduce the goal to its premises. Establish `h1 : e p.1 = e b` using `congrArg Prod.fst hc`. Establish `h2 : p.2 = j` using `congrArg Prod.snd hc`. Conclude with `Prod.ext (he h1) h2`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pderiv_embP {n' n : ℕ} (e : Fin n' → Fin n) (he : Function.Injective e) (g : PS k n' d) (b : Fin n')
     (j : Fin d) : pderiv k (e b, j) (ev (embP e) g) = ev (embP e) (pderiv k (b, j) g) := by
@@ -59,7 +59,7 @@ theorem pderiv_embP {n' n : ℕ} (e : Fin n' → Fin n) (he : Function.Injective
   · simp
 
 /- English proof (translation)
-Use `LogPf.pderiv_ev_zero (cz_embP e) g (c, j) fun b i => ?_` and prove the remaining obligations. Rewrite using `[show embP (k := k) (d := d) e b i = pt k d (e b) i from rfl, LogPf.pderiv_pt, if_neg]`. Introduce `h`. Conclude with `hc b (congrArg Prod.fst h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pderiv_ev_embP_of_notMem_range {n' n : ℕ} (e : Fin n' → Fin n) (g : PS k n' d) (c : Fin n) (hc : ∀ b, e b ≠ c)
     (j : Fin d) : pderiv k (c, j) (ev (embP e) g) = 0 := by
@@ -70,9 +70,9 @@ theorem pderiv_ev_embP_of_notMem_range {n' n : ℕ} (e : Fin n' → Fin n) (g : 
   exact hc b (congrArg Prod.fst h)
 
 /- English proof (translation)
-Rewrite using `[LogPf.ev_ev (cz_embP e) (cz_ptz b)]`. Use `congr 1`. Use function extensionality and compare the values at `q i`. Use `fin_cases q`. Simplify using `[LogPf.ev_X (cz_embP e), embP, pt]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[LogPf.ev_zero' (cz_embP e)]`.
+A detailed English derivation is pending.
 -/
 theorem ev_ptz {n' n : ℕ} (e : Fin n' → Fin n) (b : Fin n') (X : PS k 2 d) :
     ev ![pt k d (e b), 0] X = ev (embP e) (ev ![pt k d b, 0] X) := by
@@ -84,9 +84,9 @@ theorem ev_ptz {n' n : ℕ} (e : Fin n' → Fin n) (b : Fin n') (X : PS k 2 d) :
   · simp [LogPf.ev_zero' (cz_embP e)]
 
 /- English proof (translation)
-Unfold `DofN`. Rewrite using `[LogPf.ev_sum (cz_embP e)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LogPf.ev_mul (cz_embP e), LogPf.ev_sum (cz_embP e), pderiv_embP e he]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LogPf.ev_mul (cz_embP e), LogPf.ev_C (cz_embP e), ev_ptz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dofN_embP (F : Fin d → PS k 2 d) {n' n : ℕ} (e : Fin n' → Fin n) (he : Function.Injective e) (b : Fin n')
     (u : Fin d → k) (g : PS k n' d) : DofN F (e b) u (ev (embP e) g) = ev (embP e) (DofN F b u g) := by
@@ -104,18 +104,18 @@ def cB (G : FGLaw k d) {n : ℕ} (b : Fin n) (u : Fin d → k) : Fin n × Fin d 
   if t.1 = b then ev (embP (fun _ : Fin 1 => b)) (WickVanishing.Nab.co G u ((0 : Fin 1), t.2)) else 0
 
 /- English proof (translation)
-Introduce `x y _`. Conclude with `Subsingleton.elim x y`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inj1 {n : ℕ} (b : Fin n) : Function.Injective (fun _ : Fin 1 => b) := by
   intro x y _
   exact Subsingleton.elim x y
 
 /- English proof (translation)
-Unfold `DofN WickVanishing.Nab.vf cB`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single b]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos rfl]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `WickVanishing.Nab.co`. Rewrite using `[LogPf.ev_sum (cz_embP _)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LogPf.ev_mul (cz_embP _), LogPf.ev_C (cz_embP _)]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `ev_ptz (fun _ : Fin 1 => b) 0 _`. Introduce `c _ hc`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [if_neg hc, zero_mul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dofN_vf (G : FGLaw k d) {n : ℕ} (b : Fin n) (u : Fin d → k) (g : PS k n d) :
     DofN G.F b u g = WickVanishing.Nab.vf (cB G b u) g := by
@@ -136,9 +136,9 @@ theorem dofN_vf (G : FGLaw k d) {n : ℕ} (b : Fin n) (u : Fin d → k) (g : PS 
   · simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `h1 : t.1 = 0` using `Subsingleton.elim _ _`. Establish `hp : (embP (k` using `k) (d := d) (fun _ : Fin 1 => (0 : Fin 1))) = fun j => pt k (n := 1) d j := by`. Use function extensionality and compare the values at `j`. Rewrite using `[Subsingleton.elim j 0]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [cB, if_pos h1, hp, LogPf.ev_pt]`. Rewrite using `[show t = ((0 : Fin 1), t.2) from Prod.ext h1 rfl]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cB_one (G : FGLaw k d) (u : Fin d → k) : cB G (0 : Fin 1) u = WickVanishing.Nab.co G u := by
   funext t
@@ -151,9 +151,9 @@ theorem cB_one (G : FGLaw k d) (u : Fin d → k) : cB G (0 : Fin 1) u = WickVani
   rw [show t = ((0 : Fin 1), t.2) from Prod.ext h1 rfl]
 
 /- English proof (translation)
-Unfold `cB`. Use `split_ifs`. Unfold `DofN`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_ev_embP_of_notMem_range _ _ b (fun _ => Ne.symm hbc) j, mul_zero]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `DofN`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dofN_cB_ne (G : FGLaw k d) {n : ℕ} (b c : Fin n) (hbc : b ≠ c) (u v : Fin d → k) (t : Fin n × Fin d) :
     DofN G.F b u (cB G c v t) = 0 := by
@@ -166,11 +166,11 @@ theorem dofN_cB_ne (G : FGLaw k d) {n : ℕ} (b c : Fin n) (hbc : b ≠ c) (u v 
     simp
 
 /- English proof (translation)
-Rewrite using `[dofN_vf G b, dofN_vf G b', dofN_vf G b', dofN_vf G b, ← sub_eq_zero, WickVanishing.Nab.vf_comm]`. Establish `hz : (fun t => WickVanishing.Nab.vf (cB G b u) (cB G b' v t) - WickVanishing.Nab.vf (cB G b' v) (cB G b u t)) = fun _ => (0 : PS k n d)`. Use function extensionality and compare the values at `t`. Rewrite using `[← dofN_vf G b, ← dofN_vf G b']`. Distinguish the cases in `hb : b = b'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← hb]`. Establish `hE : ∀ (w : Fin d → k) (X : PS k 1 d), DofN G.F b w (ev (embP (fun _ : Fin 1 => b)) X) = ev (embP (fun _ : Fin 1 => b)) (DofN G.F 0 w X)` using `fun w X => dofN_embP G.F (fun _ : Fin 1 => b) (inj1 b) 0 w X`. Unfold `cB`. Distinguish the cases in `ht : t.1 = b`. Rewrite using `[if_pos ht, if_pos ht, hE, hE, ← LogPf.ev_sub (cz_embP _), dofN_vf G (0 : Fin 1), dofN_vf G (0 : Fin 1), cB_one, cB_one, WickVanishing.Nab.co_bracket G u v, LogPf.ev_zero' (cz_embP _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg ht, if_neg ht]`. Unfold `DofN`. Simplify using the standard rewrite rules. Rewrite using `[dofN_cB_ne G b b' hb, dofN_cB_ne G b' b (Ne.symm hb), sub_zero]`. Rewrite using `[hz, WickVanishing.Nab.vf_zeroc]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dofN_comm (G : FGLaw k d) {n : ℕ} (b b' : Fin n) (u v : Fin d → k) (g : PS k n d) :
     DofN G.F b u (DofN G.F b' v g) = DofN G.F b' v (DofN G.F b u g) := by

@@ -14,7 +14,7 @@ variable {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R}
 open AlgebraicGeometry CategoryTheory IsLocalRing in
 variable {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R} in
 /- English proof (translation)
-The claim follows from `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.projProper R X f h`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SchemeWords.isProper_of_isProjOver (h : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver f) : IsProper f :=
   _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.projProper R X f h
@@ -22,14 +22,14 @@ theorem _root_.GlobalTheory.SchemeWords.isProper_of_isProjOver (h : _root_.Recip
 open AlgebraicGeometry CategoryTheory IsLocalRing in
 variable {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R} in
 /- English proof (translation)
-Take `⟨N, i, hi, rfl⟩` from `h`. Conclude with `⟨N, i, inferInstance, inferInstance, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.SchemeWords.isQProjOver_of_isProjOver (h : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver f) : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsQProjOver f := by
   obtain ⟨N, i, hi, rfl⟩ := h
   exact ⟨N, i, inferInstance, inferInstance, rfl⟩
 
 /- English proof (translation)
-Take `⟨N, i, hi, hq, rfl⟩` from `h`. Use `isProper_str R N` as an intermediate fact. Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem finiteType_of_isQProjOver (h : IsQProjOver f) :
     LocallyOfFiniteType f ∧ QuasiCompact f ∧ IsSeparated f := by
@@ -41,7 +41,7 @@ open AlgebraicGeometry CategoryTheory IsLocalRing in
 variable {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R} in
 
 /- English proof (translation)
-Use `⟨fun h => ⟨_root_.GlobalTheory.SchemeWords.isQProjOver_of_isProjOver h, _root_.GlobalTheory.SchemeWords.isProper_of_isProjOver h⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨N, i, hi, hq, rfl⟩, hp⟩`. Use `haveI := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str R N`. Use `haveI : IsProper i := IsProper.of_comp i (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str R N)`. Conclude with `⟨N, i, .of_isPreimmersion i i.isClosedMap.isClosed_range, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SchemeWords.isProjOver_iff : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver f ↔ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsQProjOver f ∧ IsProper f := by
   refine ⟨fun h => ⟨_root_.GlobalTheory.SchemeWords.isQProjOver_of_isProjOver h, _root_.GlobalTheory.SchemeWords.isProper_of_isProjOver h⟩, ?_⟩
@@ -57,14 +57,14 @@ variable {A R : Type} [CommRing A] [IsLocalRing A] [CommRing R] [IsLocalRing R]
   [Algebra A R] [IsLocalHom (algebraMap A R)]
 
 /- English proof (translation)
-The claim follows from `have := h.flat Module.FaithfullyFlat.of_flat_of_isLocalHom`.
+A detailed English derivation is pending.
 -/
 theorem faithfullyFlat (h : IsCompletedStrictHens A R) : Module.FaithfullyFlat A R :=
   have := h.flat
   Module.FaithfullyFlat.of_flat_of_isLocalHom
 
 /- English proof (translation)
-The claim follows from `have := faithfullyFlat h FaithfulSMul.algebraMap_injective A R`.
+A detailed English derivation is pending.
 -/
 theorem injective (h : IsCompletedStrictHens A R) : Function.Injective (algebraMap A R) :=
   have := faithfullyFlat h

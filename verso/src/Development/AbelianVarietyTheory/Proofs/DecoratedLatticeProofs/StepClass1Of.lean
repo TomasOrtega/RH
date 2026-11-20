@@ -7,17 +7,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.One
 
 /- English proof (translation)
-Introduce `D X Y u hc νL νB ng`. Take `⟨hR, hS, hT⟩` from `h D X Y u u hc`. Establish `hsub : ∀ t ∈ (Y.tO u u).genSet, t ∈ (Y.tO u u).nzSet` using `fun t ht => ht.1`. Introduce `t ht t' ht'`. Rewrite `ht`, `ht'` using `[genT_ngSet]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `t ∈ (Y.tO u u).genSet at ht`. Express the relevant statement in the definitionally equal form `t' ∈ (Y.tO u u).genSet at ht'`. Establish `es : (genT (scT (Y.tO u u))).s0 t t' = 1 ↔ (Y.tO u u).s0 t t' = 1`. Simplify using `only [genT, scT, and_true]`. Distinguish the cases in `hc : (Y.tO u u).s0 t t' = 1`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hc]`. Simplify using `[hc]`. Use `show ((scT (Y.tO u u)).rowOf t = (scT (Y.tO u u)).rowOf t' ∧ (genT (scT (Y.tO u u))).s0 t t' = 1) ↔ cls1 Y u t = cls1 Y u t'`. Rewrite using `[es]`. Express the relevant statement in the definitionally equal form `((Y.tO u u).rowOf t = (Y.tO u u).rowOf t' ∧ (Y.tO u u).s0 t t' = 1) ↔ cls1 Y u t = cls1 Y u t'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hr, h1⟩`. Establish `b1` using `hS t (hsub t ht) t' (hsub t' ht') hr h1`. Use extensionality with `x`. Simplify using `only [cls1, Set.mem_setOf_eq]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hrx, hx1⟩`. Conclude with `⟨hx, hrx.trans hr, hT t' (hsub t' ht') t (hsub t ht) x (hsub x hx) hr.symm hrx.symm b1 hx1⟩`. Introduce and unpack `⟨hx, hrx, hx1⟩`. Conclude with `⟨hx, hrx.trans hr.symm, hT t (hsub t ht) t' (hsub t' ht') x (hsub x hx) hr hrx.symm h1 hx1⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hc`. Establish `hm : t' ∈ cls1 Y u t'` using `⟨ht', rfl, hR t' (hsub t' ht')⟩`. Rewrite `hm` using `[← hc]`. Conclude with `⟨hm.2.1.symm, hm.2.2⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stepClass1_of (h : CorankOneIsEquivalenceOnRow) : StepClass1 := by
   intro D X Y u hc νL νB ng

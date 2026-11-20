@@ -16,17 +16,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.SncRefine
 
 /- English proof (translation)
-Establish `hmap : ∀ a : A, algebraMap A (Localization.AtPrime q) a = algebraMap B (Localization.AtPrime q) (algebraMap A B a)` using `fun a => by`. Rewrite using `[IsScalarTower.algebraMap_apply A B (Localization.AtPrime q)]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Rewrite using `[hmap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsLocalization.map_units (Localization.AtPrime q) (⟨algebraMap A B y, hy⟩ : q.primeCompl)`. Introduce `z`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj q.primeCompl z`. Take `⟨u₁, v₁, hu₁, hv₁⟩` from `hden a`. Take `⟨u₂, v₂, hu₂, hv₂⟩` from `hden b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : u₁ * v₂ ∈ (q.comap (algebraMap A B)).primeCompl`. Express the relevant statement in the definitionally equal form `algebraMap A B (u₁ * v₂) ∉ q`. Rewrite using `[map_mul, hv₂]`. Introduce `hmem`. Break down `Ideal.IsPrime.mem_or_mem ‹_› hmem with h | h` into its components or cases.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hu₁ h`. Break down `Ideal.IsPrime.mem_or_mem ‹_› h with h | h` into its components or cases. Conclude with `hu₂ h`. Conclude with `b.2 h`. Use `⟨⟨u₂ * v₁, ⟨u₁ * v₂, hd⟩⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hmap, map_mul, hv₁, hv₂]`. Simplify using `only at hab`. Take the linear combination `(algebraMap B (Localization.AtPrime q) (algebraMap A B u₁) * algebraMap B (Localization.AtPrime q) (algebraMap A B u₂)) * hab`. Introduce `x y hxy`. Rewrite `hxy` using `[hmap, hmap]`.
-
-Use `IsLocalization.injective (Localization.AtPrime q) (Ideal.primeCompl_le_nonZeroDivisors q) hxy` as an intermediate fact. Conclude with `⟨1, by rw [hinj this]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isLocalization_atPrime {A B : Type} [CommRing A] [CommRing B] [IsDomain B] [Algebra A B]
     (hinj : Function.Injective (algebraMap A B)) (q : Ideal B) [q.IsPrime]
@@ -63,9 +61,9 @@ theorem isLocalization_atPrime {A B : Type} [CommRing A] [CommRing B] [IsDomain 
     exact ⟨1, by rw [hinj this]⟩
 
 /- English proof (translation)
-Establish `: Algebra.FinitePresentation A B` using `Algebra.FinitePresentation.of_finiteType.mp inferInstance`. Establish `hloc : ∀ q : PrimeSpectrum B, Algebra.FormallyEtale A (Localization.AtPrime q.asIdeal)` using `fun q => by`. Use `isLocalization_atPrime hinj q.asIdeal (hden q.asIdeal q.2)` as an intermediate fact. Conclude with `Algebra.FormallyEtale.of_isLocalization (q.asIdeal.comap (algebraMap A B)).primeCompl`. Rewrite using `[Algebra.FormallyEtale.iff_formallyUnramified_and_formallySmooth]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Algebra.formallyUnramified_iff_forall.mpr fun q => ?_, Algebra.smoothLocus_eq_univ_iff.mp (Set.eq_univ_iff_forall.mpr fun q => ?_)⟩` and prove the remaining obligations. Use `hloc q` as an intermediate fact. Conclude with `(Algebra.FormallyEtale.iff_formallyUnramified_and_formallySmooth.mp this).1`. Use `hloc q` as an intermediate fact. Conclude with `(Algebra.FormallyEtale.iff_formallyUnramified_and_formallySmooth.mp this).2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formallyEtale_of_denominators {A B : Type} [CommRing A] [CommRing B] [IsDomain B] [Algebra A B]
     [IsNoetherianRing A] [Algebra.FiniteType A B] (hinj : Function.Injective (algebraMap A B))
@@ -85,11 +83,9 @@ theorem formallyEtale_of_denominators {A B : Type} [CommRing A] [CommRing B] [Is
     exact (Algebra.FormallyEtale.iff_formallyUnramified_and_formallySmooth.mp this).2
 
 /- English proof (translation)
-Use `letI : Algebra S S' := RingHom.toAlgebra (Subalgebra.inclusion hle : S →+* S')`. Use `haveI : IsScalarTower ℚ S S' := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Algebra.FiniteType ℚ S' := (Subalgebra.fg_iff_finiteType S').mp hfg`. Use `haveI : Algebra.FiniteType S S' := Algebra.FiniteType.of_restrictScalars_finiteType ℚ S S'`. Use `haveI : Algebra.FinitePresentation ℚ S := hS.finitePresentation`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `haveI : Algebra.FormallySmooth ℚ S := hS.formallySmooth`. Use `haveI : IsNoetherianRing S := Algebra.FiniteType.isNoetherianRing ℚ S`. Establish `hinj : Function.Injective (algebraMap S S')` using `fun a b h => Subtype.ext (show (a : Ω) = b from congrArg (fun w : S' => (w : Ω)) h)`. Use `haveI : Algebra.FormallyEtale S S' := formallyEtale_of_denominators hinj fun q hq t => by`. Take `⟨u, v, hu, hv⟩` from `hden q hq t`.
-
-Conclude with `⟨u, v, hu, Subtype.ext hv⟩`. Use `haveI : Algebra.FormallySmooth S S' := (Algebra.FormallyEtale.iff_formallyUnramified_and_formallySmooth.mp inferInstance).2`. Conclude with `⟨⟨Algebra.FormallySmooth.comp ℚ S S', Algebra.FinitePresentation.of_finiteType.mp inferInstance⟩, SncRes.coords_of_formallyEtale z h₁ h₂⟩`.
+A detailed English derivation is pending.
 -/
 theorem smooth_coords_of_denominators {Ω : Type} [Field Ω] [Algebra ℚ Ω] {S S' : Subalgebra ℚ Ω} (hle : S ≤ S')
     (hfg : S'.FG) (hS : Algebra.Smooth ℚ S)
@@ -128,7 +124,7 @@ section Ratios
 variable {K : Type} [Fintype K] {J : K → Type} {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Simplify using `only [seg]`. Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `prod_mem fun k _ => h ⟨k, d k⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seg_ratio_mem (y : (Σ k, J k) → Ω) (c : (k : K) → J k) (T : Subring Ω)
     (h : ∀ p, bratio y c p ∈ T) (d : (k : K) → J k) : seg y d / seg y c ∈ T := by
@@ -137,9 +133,9 @@ theorem seg_ratio_mem (y : (Σ k, J k) → Ω) (c : (k : K) → J k) (T : Subrin
   exact prod_mem fun k _ => h ⟨k, d k⟩
 
 /- English proof (translation)
-Take `⟨k, i⟩` from `p`. Use `⟨Function.update c k i, ?_⟩` and prove the remaining obligations. Simplify using `only [seg, bratio]`. Rewrite using `[← Finset.prod_div_distrib, Finset.prod_eq_single k]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[Function.update_of_ne hb, div_self (hc b)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_seg_ratio (y : (Σ k, J k) → Ω) (c : (k : K) → J k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (p : Σ k, J k) : ∃ d : (k : K) → J k, bratio y c p = seg y d / seg y c := by
@@ -156,17 +152,17 @@ theorem exists_seg_ratio (y : (Σ k, J k) → Ω) (c : (k : K) → J k) (hc : �
 end Ratios
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using Algebra.subset_adjoin hx⟩`. Consider the case `algebraMap r`. Use `⟨r.den, r.den_ne_zero, ?_⟩` and prove the remaining obligations. Establish `: (r.den : Ω) * algebraMap ℚ Ω r = (r.num : Ω)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd : (r.den : Ω) ≠ 0` using `Nat.cast_ne_zero.mpr r.den_ne_zero`. Rewrite using `[eq_ratCast, Rat.cast_def]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `intCast_mem _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨N, hN, hx⟩` from `hx`. Take `⟨M, hM, hy⟩` from `hy`. Use `⟨N * M, mul_ne_zero hN hM, ?_⟩` and prove the remaining obligations. Establish `: ((N * M : ℕ) : Ω) * (x + y) = (M : Ω) * ((N : Ω) * x) + (N : Ω) * ((M : Ω) * y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `add_mem (mul_mem (natCast_mem _ _) hx) (mul_mem (natCast_mem _ _) hy)`. Consider the case `mul x y _ _ hx hy`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, hx⟩` from `hx`. Take `⟨M, hM, hy⟩` from `hy`. Use `⟨N * M, mul_ne_zero hN hM, ?_⟩` and prove the remaining obligations. Establish `: ((N * M : ℕ) : Ω) * (x * y) = ((N : Ω) * x) * ((M : Ω) * y)`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `mul_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem_adjoin {Ω : Type} [Field Ω] [CharZero Ω] {W : Set Ω} {a : Ω}
     (ha : a ∈ Algebra.adjoin ℚ W) : ∃ N : ℕ, N ≠ 0 ∧ (N : Ω) * a ∈ Algebra.adjoin ℤ W := by
@@ -200,7 +196,7 @@ theorem exists_nat_mul_mem_adjoin {Ω : Type} [Field Ω] [CharZero Ω] {W : Set 
     exact mul_mem hx hy
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simpa using intCast_mem T a`. Consider the case `add p q hp hq => simpa using add_mem hp hq`. Consider the case `mul_X p i hp => simpa using mul_mem hp (h i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem aeval_mem_subring {Ω σ : Type} [Field Ω] (T : Subring Ω) (r : σ → Ω) (h : ∀ p, r p ∈ T)
     (g : MvPolynomial σ ℤ) : MvPolynomial.aeval r g ∈ T := by
@@ -210,41 +206,33 @@ theorem aeval_mem_subring {Ω σ : Type} [Field Ω] (T : Subring Ω) (r : σ →
   | mul_X p i hp => simpa using mul_mem hp (h i)
 
 /- English proof (translation)
-Establish `hc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => by`. Rewrite using `[← hy, hcc]`. Conclude with `hc' _`. Establish `hxc' : seg y' c' ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc' k`. Establish `hxc : seg y c ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrat : ∀ p : Σ k, J k, bratio y c p = bratio y' c' ⟨bk p.1, bx p.1 p.2⟩` using `fun p => by`. Simplify using `only [bratio]`. Rewrite using `[hy p.1 p.2, ← hcc p.1, hy]`. Set `B' : Subalgebra ℤ Ω` to `Algebra.adjoin ℤ (Set.range fun d => seg y' d / seg y' c')`. Set `B : Subalgebra ℤ Ω` to `Algebra.adjoin ℤ (Set.range fun d => seg y d / seg y c)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hblk' : ∀ p, bratio y' c' p ∈ B'` using `fun p => by`. Take `⟨d, hd⟩` from `exists_seg_ratio y' c' hc' p`. Rewrite using `[hd]`. Conclude with `Algebra.subset_adjoin ⟨d, rfl⟩`. Establish `hblk : ∀ p, bratio y c p ∈ B'` using `fun p => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hrat]`. Conclude with `hblk' _`. Establish `hBB' : B ≤ B'` using `Algebra.adjoin_le (by`. Introduce and unpack `_ ⟨d, rfl⟩`. Conclude with `seg_ratio_mem y c B'.toSubring hblk d)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrS' : ∀ p, bratio y' c' p ∈ S'` using `fun p => by`. Rewrite using `[hS']`. Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ ⟨p, rfl⟩)`. Establish `hrS : ∀ p, bratio y c p ∈ S` using `fun p => by`. Rewrite using `[hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ ⟨p, rfl⟩)`. Establish `hB'S' : ∀ b ∈ B', b ∈ S'` using `fun b hb => by`. Establish `h : B' ≤ S'.restrictScalars ℤ` using `Algebra.adjoin_le (by`. Introduce and unpack `_ ⟨d, rfl⟩`. Conclude with `seg_ratio_mem y' c' S'.toSubring hrS' d)`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h hb`. Establish `hBS : ∀ b ∈ B, b ∈ S` using `fun b hb => by`. Establish `h : B ≤ S.restrictScalars ℤ` using `Algebra.adjoin_le (by`. Introduce and unpack `_ ⟨d, rfl⟩`. Conclude with `seg_ratio_mem y c S.toSubring hrS d)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h hb`. Set `φ : B' →+* S'` to `(B'.val : B' →+* Ω).codRestrict S' fun b => hB'S' b b.2`. Use `haveI := hq`. Take `⟨p', ⟨hpc, hpu⟩, -⟩` from `GlobalTheory.T.prime_chart_existsUnique_point X' Ω ξ' ℤ _ (seg y') tie' c' hxc' (q.comap φ) inferInstance`. Establish `hu' : ∀ b (hb : b ∈ B'), (⟨b, hB'S' b hb⟩ : S') ∉ q ↔ unitAt ξ' p' b` using `fun b hb => hpu ⟨b, hb⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnot : ∀ (b b' : Ω) (hb : b ∈ S') (hb' : b' ∈ S'), b * b' = 1 → (⟨b, hb⟩ : S') ∉ q` using `fun b b' hb hb' h hmem => hq.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem (IsUnit.of_mul_eq_one ⟨b', hb'⟩ (Subtype.ext h)))`. Establish `hinvS' : ∀ n : ℕ, (n : Ω)⁻¹ ∈ S'` using `fun n => by`. Use `S'.algebraMap_mem ((n : ℚ)⁻¹)` as an intermediate fact. Simplify using `using this`. Establish `hnat : ∀ n : ℕ, n ≠ 0 → unitAt ξ' p' (n : Ω)` using `fun n hn => (hu' _ (natCast_mem B' n)).1 (hnot _ _ _ (hinvS' n) (mul_inv_cancel₀ (Nat.cast_ne_zero.mpr hn)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hchar : ∀ r : ℕ, r.Prime → ¬ InFibre ξ' r p'` using `fun r hr h => h (hnat r hr.ne_zero)`. Establish `hR : regAt ξ' p' = regAt ξ ⟨g p'.1, hspec _⟩` using `hreg p' hchar (hspec _)`. Establish `hB'reg : ∀ b ∈ B', b ∈ regAt ξ' p'` using `fun b hb => (tie'.ring c' hxc' b).1 hb p' hpc`. Establish `hratreg : ∀ a : ℚ, algebraMap ℚ Ω a ∈ regAt ξ' p'` using `fun a => by`. Establish `h : algebraMap ℚ Ω a = (a.num : Ω) * (a.den : Ω)⁻¹`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[eq_ratCast, Rat.cast_def, div_eq_mul_inv]`. Rewrite using `[h]`. Conclude with `mul_mem (intCast_mem _ _) (hnat _ a.den_ne_zero).2.2`. Establish `hfS' : f ∈ S'`. Establish `h : Algebra.adjoin ℚ (Set.range (bratio y c)) ≤ S'` using `Algebra.adjoin_le (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `hB'S' _ (hblk p))`. Conclude with `h hf`. Establish `hfinvS' : f⁻¹ ∈ S'`. Rewrite using `[hS']`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Algebra.subset_adjoin (Set.mem_insert _ _)`. Take `⟨N, hN, hNf⟩` from `exists_nat_mul_mem_adjoin hf`. Establish `hNfB' : (N : Ω) * f ∈ B'`. Establish `h : Algebra.adjoin ℤ (Set.range (bratio y c)) ≤ B'` using `Algebra.adjoin_le (by`. Introduce and unpack `_ ⟨p, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hblk p)`. Conclude with `h hNf`. Establish `hN0 : (N : Ω) ≠ 0` using `Nat.cast_ne_zero.mpr hN`. Establish `hfu : unitAt ξ' p' ((N : Ω) * f)` using `(hu' _ hNfB').1 (hnot _ ((N : Ω)⁻¹ * f⁻¹) _ (mul_mem (hinvS' N) hfinvS') (by field_simp))`. Establish `hfinv : f⁻¹ ∈ regAt ξ' p'`.
-
-Establish `h` using `mul_mem (natCast_mem (regAt ξ' p') N) hfu.2.2`. Establish `h2 : (N : Ω) * ((N : Ω) * f)⁻¹ = f⁻¹` using `by field_simp`. Rewrite `h` using `[h2]`. Then use the resulting hypothesis. Set `T : Subalgebra ℚ Ω` to `{ (regAt ξ' p').toSubsemiring with algebraMap_mem' := hratreg }`. Establish `hS'T : S' ≤ T`.
-
-Rewrite using `[hS']`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ (rfl | ⟨p, rfl⟩)`. Conclude with `hfinv`. Conclude with `hB'reg _ (hblk' p)`.
-
-Establish `ht : (t : Ω) ∈ regAt ξ ⟨g p'.1, hspec _⟩` using `hR ▸ hS'T t.2`. Establish `hp : InChart ξ (seg y) c ⟨g p'.1, hspec _⟩` using `⟨hxc, fun d => hR ▸ hB'reg _ (hBB' (Algebra.subset_adjoin ⟨d, rfl⟩))⟩`. Take `⟨s, hs, hsu, hst⟩` from `(GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ _ (seg y) tie c _ hp t).1 ht`. Use `⟨⟨s, hBS s hs⟩, ⟨s * t, hBS _ hst⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `hsu' : unitAt ξ' p' s`.
-
-Unfold `unitAt at *`. Rewrite using `[hR]`. Conclude with `hsu`. Conclude with `(hu' s (hBB' hs)).2 hsu'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_denominator {X X' : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero Ω]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat.of Ω) ⟶ X'} (g : X' ⟶ X)
@@ -359,29 +347,27 @@ theorem exists_denominator {X X' : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero 
   exact (hu' s (hBB' hs)).2 hsu'
 
 /- English proof (translation)
-Introduce `X X' Ω _ _ ξ ξ' g K _ J _ y K' _ J' _ y' bk bx e bd hq₀ _ tie tie' _ hy hreg _ hsnc c' hc'`. Set `c : (k : K) → J k` to `fun k => (bx k).symm (c' (bk k))`. Establish `hcc : ∀ k, bx k (c k) = c' (bk k)` using `fun k => (bx k).apply_symm_apply _`. Establish `hc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => by`. Rewrite using `[← hy, hcc]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc' _`. Establish `hrat : ∀ p : Σ k, J k, bratio y c p = bratio y' c' ⟨bk p.1, bx p.1 p.2⟩` using `fun p => by`. Simplify using `only [bratio]`. Rewrite using `[hy p.1 p.2, ← hcc p.1, hy]`. Establish `hrr : Set.range (bratio y c) ⊆ Set.range (bratio y' c')`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `⟨_, (hrat p).symm⟩`. Take `⟨m, f, a, hf, ha, hsum, H⟩` from `hsnc c hc`. Use `⟨m, f, a, fun l => Algebra.adjoin_mono hrr (hf l), fun l => Algebra.adjoin_mono hrr (ha l), hsum, fun l hfl S' hS' => ?_⟩` and prove the remaining obligations. Take `⟨hsm, z, n, hn, hli, hspan, hbd⟩` from `H l hfl _ rfl`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : Algebra.adjoin ℚ (insert (f l)⁻¹ (Set.range (bratio y c))) ≤ S'`. Rewrite using `[hS']`. Conclude with `Algebra.adjoin_mono (Set.insert_subset_insert hrr)`. Establish `hfg : S'.FG`. Rewrite using `[hS']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hfin : (insert (f l)⁻¹ (Set.range (bratio y' c'))).Finite` using `(Set.finite_range _).insert _`. Conclude with `⟨hfin.toFinset, by rw [Set.Finite.coe_toFinset]⟩`. Take `⟨hsm', hli', hspan'⟩` from `smooth_coords_of_denominators hle hfg hsm (fun q hq t => exists_denominator g bk bx hq₀ tie tie' hy hreg c' hc' c hcc (hf l) hfl rfl hS' hle q hq t) z hli hspan`. Use `⟨hsm', ⟨fun i => Subalgebra.inclusion hle (z i), n, hn, hli', hspan', fun q hq => ?_⟩⟩` and prove the remaining obligations. Use `haveI := hq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `hbd (q.comap (Subalgebra.inclusion hle : _ →+* S')) inferInstance`. Establish `hv : ∀ w : MRing J, MvPolynomial.aeval (bratio y' c') (MvPolynomial.rename (fun p : (Σ k, J k) => (⟨bk p.1, bx p.1 p.2⟩ : Σ k, J' k)) w) = MvPolynomial.aeval (bratio y c) w` using `fun w => by`. Rewrite using `[MvPolynomial.aeval_rename]`. Use `congr 2`. Use function extensionality and compare the values at `p`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(hrat p).symm`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨i, hi, hz⟩` from `key.1 fun w hw s hs => h _ (Ideal.mem_map_of_mem _ hw) (Subalgebra.inclusion hle s) (hs.trans (hv w).symm)`. Conclude with `⟨i, hi, hz⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨i, hi, hz⟩`. Establish `h0` using `key.2 ⟨i, hi, hz⟩`. Establish `hall : ∀ w ∈ bd.map (MvPolynomial.rename fun p : (Σ k, J k) => (⟨bk p.1, bx p.1 p.2⟩ : Σ k, J' k)), ∃ s : S', s ∈ q ∧ (s : Ω) = MvPolynomial.aeval (bratio y' c') w`. Introduce `w hw`. Use `Submodule.span_induction (p := fun w _ => ∃ s : S', s ∈ q ∧ (s : Ω) = MvPolynomial.aeval (bratio y' c') w) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hwS : MvPolynomial.aeval (bratio y c) w ∈ Algebra.adjoin ℚ (insert (f l)⁻¹ (Set.range (bratio y c)))` using `aeval_mem_subring (Algebra.adjoin ℚ (insert (f l)⁻¹ (Set.range (bratio y c)))).toSubring _ (fun p => Algebra.subset_adjoin (Set.mem_insert_of_mem _ ⟨p, rfl⟩)) w`. Conclude with `⟨Subalgebra.inclusion hle ⟨_, hwS⟩, h0 w hw ⟨_, hwS⟩ rfl, (hv w).symm⟩`. Conclude with `⟨0, q.zero_mem, by simp⟩`. Introduce and unpack `u v _ _ ⟨s₁, h₁, e₁⟩ ⟨s₂, h₂, e₂⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨s₁ + s₂, q.add_mem h₁ h₂, by simp [e₁, e₂]⟩`. Introduce and unpack `u v _ ⟨s₁, h₁, e₁⟩`. Establish `hu : MvPolynomial.aeval (bratio y' c') u ∈ S'`. Use `aeval_mem_subring S'.toSubring _ (fun p => ?_) u` and prove the remaining obligations. Rewrite using `[hS']`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ ⟨p, rfl⟩)`. Conclude with `⟨⟨_, hu⟩ * s₁, q.mul_mem_left _ h₁, by simp [e₁]⟩`. Introduce `w hw s hs`. Take `⟨s', h₁, h₂⟩` from `hall w hw`. Establish `: s = s'` using `Subtype.ext (hs.trans h₂.symm)`.
-
-Rewrite using `[this]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isSncModel_refine : ∀ (X X' : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (g : X' ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (K' : Type) [Fintype K'] (J' : K' → Type) [∀ k, Fintype (J' k)] (y' : (Σ k, J' k) → Ω) (bk : K → K') (bx : ∀ k, J k ≃ J' (bk k)) (e : ℕ) (bd : Ideal (MRing J)), (∀ q : X, genPt ξ ⤳ q) → (∀ q : X', genPt ξ' ⤳ q) → CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → CoordTie ℤ ξ' (fun c' : (k : K') → J' k => ∏ k, y' ⟨k, c' k⟩) → ξ' ≫ g = ξ → (∀ k a, y' ⟨bk k, bx k a⟩ = y ⟨k, a⟩) → (∀ q' : Cpt ξ', (∀ r : ℕ, r.Prime → ¬ InFibre ξ' r q') → ∀ h : genPt ξ ⤳ g q'.1, regAt ξ' q' = regAt ξ ⟨g q'.1, h⟩) → (∀ q₁ q₂ : Cpt ξ', (∀ r : ℕ, r.Prime → ¬ InFibre ξ' r q₁) → g q₁.1 = g q₂.1 → q₁ = q₂) → Cmp.IsSncModel y e bd → Cmp.IsSncModel y' e (bd.map (MvPolynomial.rename fun p : (Σ k, J k) => (⟨bk p.1, bx p.1 p.2⟩ : Σ k, J' k))) := by
   intro X X' Ω _ _ ξ ξ' g K _ J _ y K' _ J' _ y' bk bx e bd hq₀ _ tie tie' _ hy hreg _ hsnc c' hc'

@@ -7,11 +7,9 @@ open ReciprocityTheory.Ty.Fin GlobalTheory.CompanionTheory.TyFin.ColStep
 namespace GlobalTheory.CompanionTheory.TyFin.Orth
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hx]`. Establish `hbij : Function.Bijective (fun t : K => -(t * x))`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun a b h => ?_, fun b => ⟨-(b * x⁻¹), ?_⟩⟩` and prove the remaining obligations. Conclude with `mul_right_cancel₀ hx (neg_injective h)`. Simplify using `[hx]`. Establish `h1 : (∑ t : K, (ψ₀ (t * x))⁻¹) = ∑ t : K, ψ₀ (-(t * x))` using `Finset.sum_congr rfl fun t _ => (AddChar.map_neg_eq_inv ψ₀ (t * x)).symm`. Rewrite using `[h1, hbij.sum_comp (fun u => ψ₀ u)]`.
-
-Conclude with `AddChar.sum_eq_zero_of_ne_one hψ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_inv_addChar_mul_left (K : Type) [Field K] [Fintype K] [DecidableEq K]
     (ψ₀ : AddChar K ℂ) (hψ : ψ₀ ≠ 1) (x : K) :
@@ -30,13 +28,13 @@ theorem sum_inv_addChar_mul_left (K : Type) [Field K] [Fintype K] [DecidableEq K
     exact AddChar.sum_eq_zero_of_ne_one hψ
 
 /- English proof (translation)
-Establish `h1 : ∀ r : Fin j → K, (ψ₀ (∑ i, r i * x i))⁻¹ = ∏ i, (ψ₀ (r i * x i))⁻¹`. Introduce `r`. Establish `hs : ∀ s : Finset (Fin j), ψ₀ (∑ i ∈ s, r i * x i) = ∏ i ∈ s, ψ₀ (r i * x i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]`. Rewrite using `[hs, Finset.prod_inv_distrib]`. Establish `h2 : (∑ r : Fin j → K, ∏ i, (ψ₀ (r i * x i))⁻¹) = ∏ i, ∑ t : K, (ψ₀ (t * x i))⁻¹`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Repeatedly rewrite using `[h1]`. Rewrite using `[h2]`. Repeatedly rewrite using `[sum_inv_addChar_mul_left K ψ₀ hψ]`. Distinguish the cases in `hx : x = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hx]`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hx`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (if_neg hi)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sum_inv_addChar_dot (K : Type) [Field K] [Fintype K] [DecidableEq K] (j : ℕ)
     (ψ₀ : AddChar K ℂ) (hψ : ψ₀ ≠ 1) (x : Fin j → K) :
@@ -65,7 +63,7 @@ theorem sum_inv_addChar_dot (K : Type) [Field K] [Fintype K] [DecidableEq K] (j 
     exact Finset.prod_eq_zero (Finset.mem_univ i) (if_neg hi)
 
 /- English proof (translation)
-Introduce `K _ _ _ j ψ₀ hψ x` and use `sum_inv_addChar_dot K j ψ₀ hψ x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem orth : ∀ (K : Type) [Field K] [Fintype K] [DecidableEq K] (j : ℕ) (ψ₀ : AddChar K ℂ),
     ψ₀ ≠ 1 → ∀ x : Fin j → K,

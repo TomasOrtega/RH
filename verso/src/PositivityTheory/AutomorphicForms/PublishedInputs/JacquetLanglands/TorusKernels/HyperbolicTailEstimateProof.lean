@@ -11,11 +11,11 @@ section Z
 open NumberField Neutral.B1 Formalism.L2.Host GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.TR Matrix
 
 /- English proof (translation)
-Establish `h : ∀ x, pInf F (sInf F x) = x` using `fun x => (infEq F).symm_apply_apply x`. Establish `h1 : pInf F (infId F u : Ideles F) = u`. Express the relevant statement in the definitionally equal form `pInf F (1 - sInf F 1 + sInf F _) = _`. Simplify using `[h]`. Establish `h2 : pFin F (infId F u : Ideles F) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(1 : Af F) - 0 + 0 = 1`. Simplify using the standard rewrite rules. Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[TR.pInf_infGL]`. Use extensionality with `i j`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h1]`. Rewrite using `[TR.pFin_infGL]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h2]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem infGL_scalar {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (u : (Rinf F)ˣ) :
     infGL F 2 (GeneralLinearGroup.scalar (Fin 2) u) = GeneralLinearGroup.scalar (Fin 2) (infId F u) := by
@@ -35,9 +35,9 @@ private theorem infGL_scalar {F : Type} [Field F] [NumberField F] [IsTotallyReal
     by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h2]
 
 /- English proof (translation)
-Take `⟨n, hn, e⟩` from `isOfFinOrder_iff_pow_eq_one.1 h`. Establish `e1 : expU z = expU ((n : ℝ)⁻¹ • z) ^ n`. Use `Units.ext (funext fun i => ?_)` and prove the remaining obligations. Establish `: (n : ℝ) ≠ 0` using `by positivity`. Simplify using `only [Units.val_pow_eq_pow_val, Pi.pow_apply, expU_val, ← Real.exp_nat_mul, Pi.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, map_pow, map_pow]`. Establish `e2 : ω.1 ^ n = 1` using `congrArg Subtype.val e`. Conclude with `DFunLike.congr_fun e2 _`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fin_expU {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {ω : HChar F} (h : IsOfFinOrder ω)
     (z : Rinf F) : ω.1 (infId F (expU z)) = 1 := by
@@ -53,11 +53,11 @@ private theorem fin_expU {F : Type} [Field F] [NumberField F] [IsTotallyReal F] 
   exact DFunLike.congr_fun e2 _
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `h1` using `hasDerivAt_curve φ g (fun t => GeneralLinearGroup.scalar (Fin 2) (expU (t • z))) (toL (Matrix.scalar (Fin 2) z)) (by simp [TR.expU_zero]) (by`. Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun v => ?_` and prove the remaining obligations. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `((hasDerivAt_id (0 : ℝ)).mul_const (z v)).exp` as an intermediate fact. Simplify using `using this`. Simplify `hasDerivAt_const (0 : ℝ) (0 : ℝ))` using `[Matrix.diagonal_apply, e]`. Establish `h2 : (fun t : ℝ => φ.1 (g * infGL F 2 (GeneralLinearGroup.scalar (Fin 2) (expU (t • z))))) = fun _ => φ.1 g`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[infGL_scalar, ← GeneralLinearGroup.scalar_commute, hφ, fin_expU h]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2]`. Conclude with `h1.unique (hasDerivAt_const _ _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lie_scalar {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {ω : HChar F} (h : IsOfFinOrder ω)
     {φ : Sm F 2} (hφ : ∀ (z : Ideles F) (g : GA F 2), φ.1 (GeneralLinearGroup.scalar (Fin 2) z * g) = ((ω.1 z : ℂˣ) : ℂ) * φ.1 g) (z : Rinf F) : lie F 2 (toL (Matrix.scalar (Fin 2) z)) φ = 0 := by
@@ -78,7 +78,7 @@ private theorem lie_scalar {F : Type} [Field F] [NumberField F] [IsTotallyReal F
   exact h1.unique (hasDerivAt_const _ _)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qf10.casimir E hE k φ h0 h1 h2 u`.
+A detailed English derivation is pending.
 -/
 private theorem casimir {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin 2 → Fin 2 → Module.End ℂ V)
     (hE : Formalism.REAL.GlRel E) (k : ℂ) (φ : V) (h0 : E 0 0 φ + E 1 1 φ = 0)
@@ -87,15 +87,15 @@ private theorem casimir {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin 2 �
   _root_.UpperTheory.Reformulated.B.Qf10.casimir E hE k φ h0 h1 h2 u
 
 /- English proof (translation)
-Establish `hcap : ∀ v u, ∃ c : ℂ, TR.cap v u φ = c • φ` using `fun v u => by`. Establish `h0 : Eop v 0 0 φ + Eop v 1 1 φ = 0` using `by classical`. Rewrite using `[← lie_scalar hω hc (Pi.single v 1), TR.Eop, TR.Eop, ← LinearMap.add_apply, ← map_add]`. Use `congr 2`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Use `casimir _ (TR.glRel_Eop v) (k v) φ h0 (hw v) (hl v) u` as an intermediate fact. Use `⟨_, Eq.trans ?_ this⟩` and prove the remaining obligations. Rewrite using `[TR.cap]`. Evaluate the numerical expressions.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {φ}) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨v, u, rfl⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, e⟩` from `hcap v u`. Conclude with `Submodule.mem_span_singleton.2 ⟨c, e.symm⟩`. Consider the case `algebraMap c => exact Submodule.mem_span_singleton.2 ⟨c, rfl⟩`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, e⟩` from `Submodule.mem_span_singleton.1 hy`. Establish `e' : c • φ = y φ` using `e`. Express the relevant statement in the definitionally equal form `x (y φ) ∈ Submodule.span ℂ {φ}`. Rewrite using `[← e', map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zfinV {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (k : InfinitePlace F → ℕ) (ω : HChar F)
     (hω : IsOfFinOrder ω) (φ : Sm F 2)
@@ -138,9 +138,9 @@ open scoped Matrix
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_smul]`. Establish `hI : (iP : P).1 = Complex.I` using `rfl`. Rewrite using `[hI, div_eq_iff (den_ne m (by simp))]`. Simplify using `only [num, den]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(m.val 0 0 : ℂ) * Complex.I + (m.val 0 1 : ℂ) = Complex.I * ((m.val 1 0 : ℂ) * Complex.I + (m.val 1 1 : ℂ))`. Rewrite using `[h00, h01, h10, h11]`. Use `push_cast`. Take the linear combination `(b : ℂ) * Complex.I_sq`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rot_fix (m : GL (Fin 2) ℝ) (a b : ℝ) (h00 : m.val 0 0 = a) (h01 : m.val 0 1 = b) (h10 : m.val 1 0 = -b)
     (h11 : m.val 1 1 = a) : m • iP = iP := by
@@ -155,13 +155,13 @@ theorem rot_fix (m : GL (Fin 2) ℝ) (a b : ℝ) (h00 : m.val 0 0 = a) (h01 : m.
   linear_combination (b : ℂ) * Complex.I_sq
 
 /- English proof (translation)
-Use `⟨∏ v, (j1 (k v) (gv v y) iP)⁻¹, Subtype.ext (funext fun g => ?_)⟩` and prove the remaining obligations. Rewrite using `[TR.rt_apply]`. Express the relevant statement in the definitionally equal form `_ = (∏ v, (j1 (k v) (gv v y) iP)⁻¹) * φ.1 g`. Take `⟨a, b, rfl⟩ : ∃ a b, g = TR.infGL F 2 a * finGL F 2 b` from `⟨_, _, (TR.infGL_mul_finGL g).symm⟩`. Establish `e : TR.infGL F 2 a * finGL F 2 b * TR.infGL F 2 y = TR.infGL F 2 (a * y) * finGL F 2 b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← TR.infGL_comm, ← mul_assoc, map_mul]`. Establish `h1` using `hrel (a * y) b`. Establish `h2` using `hrel a b`. Rewrite using `[e]`. Establish `e3 : (fun v => gv v (a * y) • iP) = fun v => gv v a • iP` using `funext fun v => by rw [map_mul, mul_smul, hy v]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[e3, ← h2]`. Establish `hc : ∀ v, j1 (k v) (gv v (a * y)) iP = j1 (k v) (gv v a) iP * j1 (k v) (gv v y) iP` using `fun v => by`. Rewrite using `[map_mul, hB.1, hy v]`. Simplify using `only [hc, Finset.prod_mul_distrib] at h1`. Establish `hA : ∏ v, j1 (k v) (gv v a) iP ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => hB.2.1 _ _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hB' : ∏ v, j1 (k v) (gv v y) iP ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => hB.2.1 _ _ _`. Rewrite using `[Finset.prod_inv_distrib, eq_inv_mul_iff_mul_eq₀ hB']`. Apply `mul_right_cancel₀ hA` to reduce the goal to its premises. Take the linear combination `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rot_rt (hB : B1b) (k : InfinitePlace F → ℕ) (f : X (InfinitePlace F) × GF F → ℂ) (φ : TR.Sm F 2)
     (hrel : Rel k f φ.1) (y : GL (Fin 2) (TR.Rinf F)) (hy : ∀ v, gv v y • iP = iP) :
@@ -187,7 +187,7 @@ theorem rot_rt (hB : B1b) (k : InfinitePlace F → ℕ) (f : X (InfinitePlace F)
   linear_combination h1
 
 /- English proof (translation)
-Establish `hD : (a * d - b * c - 1) * (a * d - b * c + 1) = 0`. Take the linear combination `(c ^ 2 + d ^ 2) * h1 + h2 - (a * c + b * d) * h3`. Break down `mul_eq_zero.1 hD with h | h` into its components or cases. Conclude with `Or.inl ⟨by linear_combination (-c) * h1 + a * h3 - b * h, by linear_combination (-d) * h1 + b * h3 + a * h⟩`. Conclude with `Or.inr ⟨by linear_combination (-c) * h1 + a * h3 - b * h, by linear_combination (-d) * h1 + b * h3 + a * h⟩`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 private theorem orth_cases {a b c d : ℝ} (h1 : a ^ 2 + b ^ 2 = 1) (h2 : c ^ 2 + d ^ 2 = 1)
     (h3 : a * c + b * d = 0) : (c = -b ∧ d = a) ∨ (c = b ∧ d = -a) := by
@@ -202,15 +202,15 @@ open Classical in
 def sg (S : Set (InfinitePlace F)) : InfinitePlace F → ℝ := fun v => if v ∈ S then -1 else 1
 
 /- English proof (translation)
-Apply the tactic sequence `unfold sg; split_ifs <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_sq (S : Set (InfinitePlace F)) (v : InfinitePlace F) : sg S v * sg S v = 1 := by
   unfold sg; split_ifs <;> norm_num
 
 /- English proof (translation)
-Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `sg_sq S v`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem diag_sq (S : Set (InfinitePlace F)) :
     (Matrix.diagonal ![(sg S : TR.Rinf F), 1]) * Matrix.diagonal ![(sg S : TR.Rinf F), 1] = 1 := by
@@ -225,12 +225,12 @@ def eS (S : Set (InfinitePlace F)) : GL (Fin 2) (TR.Rinf F) :=
   ⟨Matrix.diagonal ![(sg S : TR.Rinf F), 1], Matrix.diagonal ![(sg S : TR.Rinf F), 1], diag_sq S, diag_sq S⟩
 
 /- English proof (translation)
-The claim follows from `Units.ext (diag_sq S)`.
+A detailed English derivation is pending.
 -/
 theorem eS_sq (S : Set (InfinitePlace F)) : eS S * eS S = 1 := Units.ext (diag_sq S)
 
 /- English proof (translation)
-Simplify using `[gv, eS, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gv_eS_mul (S : Set (InfinitePlace F)) (x : GL (Fin 2) (TR.Rinf F)) (v : InfinitePlace F) :
     (gv v (eS S * x)).val 0 0 = sg S v * (gv v x).val 0 0 ∧ (gv v (eS S * x)).val 0 1 = sg S v * (gv v x).val 0 1 ∧
@@ -238,27 +238,27 @@ theorem gv_eS_mul (S : Set (InfinitePlace F)) (x : GL (Fin 2) (TR.Rinf F)) (v : 
   simp [gv, eS, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal]
 
 /- English proof (translation)
-Set `T` to `Submodule.span ℂ (Set.range fun S : Set (InfinitePlace F) => TR.rt F 2 (TR.infGL F 2 (eS S)) φ)`. Use `haveI : FiniteDimensional ℂ T := FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Use `Submodule.finiteDimensional_of_le (S₂ := T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨r, rfl⟩`. Establish `e : TR.cptRep F 2 r φ = TR.rt F 2 (TR.infGL F 2 (Unitary.toUnits r)) φ` using `rfl`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `TR.cptRep F 2 r φ ∈ T`. Rewrite using `[e]`. Establish `hr : ∀ v (i j : Fin 2), (gv v (Unitary.toUnits r)).val i 0 * (gv v (Unitary.toUnits r)).val j 0 + (gv v (Unitary.toUnits r)).val i 1 * (gv v (Unitary.toUnits r)).val j 1 = if i = j then 1 else 0`. Introduce `v i j`. Establish `h` using `congrArg (fun m => (Pi.evalRingHom (fun _ : InfinitePlace F => ℝ) v) (m i j)) r.2.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.star_apply, map_add, map_mul, Matrix.one_apply] at h`. Rewrite `h` using `[apply_ite (Pi.evalRingHom (fun _ : InfinitePlace F => ℝ) v), map_one, map_zero]`. Conclude with `h`. Generalize the expression as in `Unitary.toUnits r = x at hr ⊢`. Set `S : Set (InfinitePlace F)` to `{v | ¬ ((gv v x).val 1 0 = -(gv v x).val 0 1 ∧ (gv v x).val 1 1 = (gv v x).val 0 0)}`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : ∀ v, gv v (eS S * x) • iP = iP`. Introduce `v`. Establish `h1 : (gv v x).val 0 0 ^ 2 + (gv v x).val 0 1 ^ 2 = 1`. Use `hr v 0 0` as an intermediate fact. Simplify using `only [if_true] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `this`. Establish `h2 : (gv v x).val 1 0 ^ 2 + (gv v x).val 1 1 ^ 2 = 1`. Use `hr v 1 1` as an intermediate fact. Simplify using `only [if_true] at this`. Take the linear combination `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3 : (gv v x).val 0 0 * (gv v x).val 1 0 + (gv v x).val 0 1 * (gv v x).val 1 1 = 0` using `by simpa using hr v 0 1`. Take `⟨e00, e01, e10, e11⟩` from `gv_eS_mul S x v`. Distinguish the cases in `hv : v ∈ S`. Establish `hs : sg S v = -1` using `if_pos hv`. Establish `hcase : (gv v x).val 1 0 = (gv v x).val 0 1 ∧ (gv v x).val 1 1 = -(gv v x).val 0 0` using `(orth_cases h1 h2 h3).resolve_left hv`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `rot_fix _ (-(gv v x).val 0 0) (-(gv v x).val 0 1) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[e00, hs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e01, hs]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e10, hcase.1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e11, hcase.2]`. Establish `hs : sg S v = 1` using `if_neg hv`. Establish `hcase : (gv v x).val 1 0 = -(gv v x).val 0 1 ∧ (gv v x).val 1 1 = (gv v x).val 0 0` using `not_not.1 hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `rot_fix _ ((gv v x).val 0 0) ((gv v x).val 0 1) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[e00, hs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e01, hs]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e10, hcase.1]`. Rewrite using `[e11, hcase.2]`. Take `⟨c, hc⟩` from `rot_rt hB k f φ hrel (eS S * x) hy`. Establish `e2 : x = eS S * (eS S * x)` using `by rw [← mul_assoc, eS_sq, one_mul]`. Establish `e3 : TR.rt F 2 (TR.infGL F 2 x) φ = c • TR.rt F 2 (TR.infGL F 2 (eS S)) φ` using `by conv_lhs => rw [e2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, Module.End.mul_apply, hc, map_smul]`. Rewrite using `[e3]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨S, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem kfin (hB : B1b) (k : InfinitePlace F → ℕ) (f : X (InfinitePlace F) × GF F → ℂ) (φ : TR.Sm F 2)
     (hrel : Rel k f φ.1) : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun r => TR.cptRep F 2 r φ)) := by
@@ -312,11 +312,9 @@ theorem kfin (hB : B1b) (k : InfinitePlace F → ℕ) (f : X (InfinitePlace F) �
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨S, rfl⟩)
 
 /- English proof (translation)
-Set `S : Subgroup (GF F)` to `{ carrier := {u | TR.finRep F 2 u ψ = ψ} one_mem' := by show TR.finRep F 2 1 ψ = ψ`. Rewrite using `[map_one, Module.End.one_apply]`. Use the proof step `mul_mem' := fun {a b} ha hb => by`. Establish `ha' : TR.finRep F 2 a ψ = ψ` using `ha`. Establish `hb' : TR.finRep F 2 b ψ = ψ` using `hb`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show TR.finRep F 2 (a * b) ψ = ψ`. Rewrite using `[map_mul, Module.End.mul_apply, hb', ha']`. Use the proof step `inv_mem' := fun {a} ha => by`. Establish `ha' : TR.finRep F 2 a ψ = ψ` using `ha`. Use `show TR.finRep F 2 a⁻¹ ψ = ψ`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `Subgroup.isOpen_mono (H₁ := Kc c) (H₂ := S) h ((UpperTheory.V.Sd.Wc.kcTop F).1 c hc).1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isOpen_fix (c : Pl F → ℕ) (hc : {w | c w ≠ 0}.Finite) (ψ : TR.Sm F 2)
     (h : ∀ u ∈ Kc c, TR.finRep F 2 u ψ = ψ) : IsOpen {u | TR.finRep F 2 u ψ = ψ} := by
@@ -341,9 +339,9 @@ end UpperTheory.Esk.FixedPointOrthogonalCases
 
 open NumberField IsDedekindDomain GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd UpperTheory.V.Sd.Wc in
 /- English proof (translation)
-Introduce `hB hA hS hC F _ _ _ k c hc ω χ hω hχ hsg hk f φ hf hrel`. Take `⟨hl, hK, hcent, C, hC'⟩` from `hA F k c hc ω χ hω hχ hsg hk f φ hf hrel`. Establish `hs : φ ∈ TR.Sm F 2` using `hS F k c hc ω χ hω hχ hsg hk f φ hf hrel`. Establish `hwl` using `hC F k c hc ω χ hω hχ hsg hk f φ hf hrel hs`. Establish `hfix : ∀ u ∈ Kc c, TR.finRep F 2 u ⟨φ, hs⟩ = ⟨φ, hs⟩` using `fun u hu => Subtype.ext (funext fun g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `((TR.rt F 2 (finGL F 2 u)) ⟨φ, hs⟩).1 g = φ g`. Rewrite using `[TR.rt_apply]`. Conclude with `hK u hu g)`. Use `⟨hs, ⟨⟨hl, UpperTheory.Esk.FixedPointOrthogonalCases.isOpen_fix c hc _ hfix, UpperTheory.Esk.FixedPointOrthogonalCases.kfin hB k f ⟨φ, hs⟩ hrel, UpperTheory.Esk.FixedPointOrthogonalCases.zfinV k ω hω ⟨φ, hs⟩ hcent (fun v => (hwl v).1) (fun v => (hwl v).2), fun g => ⟨C, 0, fun y = …` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.hyperbolic_tail_estimate_proof : UpperTheory.Esk.B1b → UpperTheory.Esk.H2a → UpperTheory.Esk.H2b → UpperTheory.Esk.H2c → UpperTheory.Esk.H2d := by
   intro hB hA hS hC F _ _ _ k c hc ω χ hω hχ hsg hk f φ hf hrel

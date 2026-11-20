@@ -9,17 +9,17 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 namespace UpperTheory.Gal.TypesAndIwahori
 
 /- English proof (translation)
-Introduce `k _ _ _ _ α n m _ _ _ _ _ _ e`. Prove the components needed by the constructor for the conclusion. Introduce `g`. Take `⟨x, hx⟩` from `redLevi_surjective (k := k) (m := m) (parahoricProj k e g)`. Establish `hq` using `leviEmb_mem_parahoric (k := k) e x`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hqp` using `parahoricProj_leviEmb (k := k) e x`. Use `set q : parahoric k e := ⟨leviEmb k e (x : Levi k m), hq⟩ with hqdef`. Establish `hr : ((q⁻¹ * g : parahoric k e) : GL n k) ∈ proRad k e`. Rewrite using `[← parahoricProj_eq_one_iff, map_mul, map_inv, hqp, hx, inv_mul_cancel]`. Take `⟨u, hu, c, hc, hrc⟩` from `IwahoriFactor.exists_jPlus_mul_KOne e hr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `huR : u ∈ unipRad k e` using `hu.1`. Establish `huP : u ∈ parab k e` using `unipRad_le_parab k e huR`. Establish `hqP : (q : GL n k) ∈ parab k e` using `leviEmb_mem_parab k e _`. Use `⟨⟨(q : GL n k) * u, mul_mem hqP huP⟩, x, ?_, ?_, hx, c, hc, ?_⟩` and prove the remaining obligations. Conclude with `mul_mem (leviEmb_mem_KO e x.2) hu.2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : (⟨(q : GL n k) * u, mul_mem hqP huP⟩ : parab k e) = ⟨q, hqP⟩ * ⟨u, huP⟩` using `rfl`. Rewrite using `[hsplit, map_mul, (coe_mem_unipRad k ⟨u, huP⟩).1 huR, mul_one]`. Conclude with `leviProj_leviEmb k e _`. Establish `h2 : (g : GL n k) = (q : GL n k) * ((q⁻¹ * g : parahoric k e) : GL n k)`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h2, hrc, mul_assoc]`. Introduce `p hp`. Take `⟨d, hd, u, hu, hpdu⟩` from `IwahoriFactor.exists_jLevi_mul_jPlus e p.2 hp`. Take `⟨y, hy, rfl⟩` from `Subgroup.mem_map.1 hd`. Establish `huR : u ∈ unipRad k e` using `hu.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huP : u ∈ parab k e` using `unipRad_le_parab k e huR`. Establish `hdP : leviEmb k e y ∈ parab k e` using `leviEmb_mem_parab k e y`. Establish `hsplit : p = ⟨leviEmb k e y, hdP⟩ * ⟨u, huP⟩` using `Subtype.ext hpdu`. Rewrite using `[hsplit, map_mul, (coe_mem_unipRad k ⟨u, huP⟩).1 huR, mul_one, leviProj_leviEmb]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem paraFactor : ParaFactor := by
   intro k _ _ _ _ α n m _ _ _ _ _ _ e

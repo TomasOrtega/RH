@@ -19,9 +19,9 @@ def secF : Af F ⊗[F] E →ₗ[F] AF F ⊗[F] E := TensorProduct.map (incF F) L
 def secI : Ainf F ⊗[F] E →ₗ[F] AF F ⊗[F] E := TensorProduct.map (incI F) LinearMap.id
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, smul_zero]`. Consider the case `tmul a b`. Establish `h1 : Formalism.IndefR.DatumF.finPartF F E (a ⊗ₜ b) = sndA F a ⊗ₜ b` using `rfl`. Rewrite using `[h1, secF, TensorProduct.map_tmul, LinearMap.id_apply, incF_sndA, TensorProduct.smul_tmul', smul_eq_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]`.
+Treat this case separately.
 -/
 theorem secF_finPart (z : AF F ⊗[F] E) :
     secF F E (Formalism.IndefR.DatumF.finPartF F E z) = pairA F 0 1 • z := by
@@ -33,9 +33,9 @@ theorem secF_finPart (z : AF F ⊗[F] E) :
   | add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, smul_zero]`. Consider the case `tmul a b`. Establish `h1 : Formalism.IndefR.DatumF.infPartF F E (a ⊗ₜ b) = fstA F a ⊗ₜ b` using `rfl`. Rewrite using `[h1, secI, TensorProduct.map_tmul, LinearMap.id_apply, incI_fstA, TensorProduct.smul_tmul', smul_eq_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]`.
+Treat this case separately.
 -/
 theorem secI_infPart (z : AF F ⊗[F] E) :
     secI F E (Formalism.IndefR.DatumF.infPartF F E z) = pairA F 1 0 • z := by
@@ -47,9 +47,9 @@ theorem secI_infPart (z : AF F ⊗[F] E) :
   | add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul]`. Establish `: Formalism.IndefR.DatumF.finPartF F E (algebraMap (AF F) (AF F ⊗[F] E) (pairA F 0 1)) = 1`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Use `show sndA F (algebraMap (AF F) (AF F) (pairA F 0 1)) ⊗ₜ[F] (1 : E) = 1`. Rewrite using `[Algebra.algebraMap_self, RingHom.id_apply, GlobalTheory.AdelicCoord.sndA_pairA]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPartF_smul (z : AF F ⊗[F] E) :
     Formalism.IndefR.DatumF.finPartF F E (pairA F 0 1 • z) = Formalism.IndefR.DatumF.finPartF F E z := by
@@ -62,9 +62,9 @@ theorem finPartF_smul (z : AF F ⊗[F] E) :
   rw [this, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul]`. Establish `: Formalism.IndefR.DatumF.infPartF F E (algebraMap (AF F) (AF F ⊗[F] E) (pairA F 1 0)) = 1`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Use `show fstA F (algebraMap (AF F) (AF F) (pairA F 1 0)) ⊗ₜ[F] (1 : E) = 1`. Rewrite using `[Algebra.algebraMap_self, RingHom.id_apply, GlobalTheory.AdelicCoord.fstA_pairA]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPartF_smul (z : AF F ⊗[F] E) :
     Formalism.IndefR.DatumF.infPartF F E (pairA F 1 0 • z) = Formalism.IndefR.DatumF.infPartF F E z := by
@@ -77,7 +77,7 @@ theorem infPartF_smul (z : AF F ⊗[F] E) :
   rw [this, one_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← secF_finPart, h, map_zero]`. Introduce `h`. Rewrite using `[← finPartF_smul, h, map_zero]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem finPartF_eq_zero_iff (z : AF F ⊗[F] E) :
     Formalism.IndefR.DatumF.finPartF F E z = 0 ↔ pairA F 0 1 • z = 0 := by
@@ -86,7 +86,7 @@ theorem finPartF_eq_zero_iff (z : AF F ⊗[F] E) :
   · intro h; rw [← finPartF_smul, h, map_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← secI_infPart, h, map_zero]`. Introduce `h`. Rewrite using `[← infPartF_smul, h, map_zero]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem infPartF_eq_zero_iff (z : AF F ⊗[F] E) :
     Formalism.IndefR.DatumF.infPartF F E z = 0 ↔ pairA F 1 0 • z = 0 := by
@@ -95,34 +95,32 @@ theorem infPartF_eq_zero_iff (z : AF F ⊗[F] E) :
   · intro h; rw [← infPartF_smul, h, map_zero]
 
 /- English proof (translation)
-Rewrite using `[funext_iff, funext_iff]`. Conclude with `forall_congr' fun l => pairA_mul_eq_zero_iff_snd F (u l)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_vec_fin {N : ℕ} (u : Fin N → AF F) : pairA F 0 1 • u = 0 ↔ GlobalTheory.SWQ.fin u = 0 := by
   rw [funext_iff, funext_iff]
   exact forall_congr' fun l => pairA_mul_eq_zero_iff_snd F (u l)
 
 /- English proof (translation)
-Rewrite using `[funext_iff, funext_iff]`. Conclude with `forall_congr' fun l => pairA_mul_eq_zero_iff_fst F (u l)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_vec_inf {N : ℕ} (u : Fin N → AF F) : pairA F 1 0 • u = 0 ↔ GlobalTheory.SWQ.inf u = 0 := by
   rw [funext_iff, funext_iff]
   exact forall_congr' fun l => pairA_mul_eq_zero_iff_fst F (u l)
 
 /- English proof (translation)
-The claim follows from `Prod.ext_iff`.
+A detailed English derivation is pending.
 -/
 theorem smul_pair_eq_zero {N : ℕ} (c : AF F) (w : GlobalTheory.ThetaTransform.VA F N) :
     c • w = 0 ↔ c • w.1 = 0 ∧ c • w.2 = 0 :=
   Prod.ext_iff
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ nS nT N e`. Use `haveI h0 : IsModuleTopology (AF F) (AF F ⊗[F] E) := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.modTop`. Use `haveI hA : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) (AF F ⊗[F] E)`. Use `haveI h1 : IsModuleTopology (AF F) (Fin nS → AF F ⊗[F] E) := IsModuleTopology.instPi`. Use `haveI h2 : IsModuleTopology (AF F) (Matrix (Fin nT) (Fin nS) (AF F ⊗[F] E)) := IsModuleTopology.instPi`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨IsModuleTopology.continuous_of_linearMap e.toLinearMap, IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `key : x.map (Formalism.IndefR.DatumF.finPartF F E) = 0 ↔ pairA F 0 1 • x = 0`. Rewrite using `[← Matrix.ext_iff, ← Matrix.ext_iff]`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply, Matrix.smul_apply]`. Conclude with `forall_congr' fun i => forall_congr' fun j => finPartF_eq_zero_iff F E (x i j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, ← smul_vec_fin, ← smul_vec_fin, ← smul_pair_eq_zero, ← LinearEquiv.map_smul, LinearEquiv.map_eq_zero_iff]`. Establish `key : x.map (Formalism.IndefR.DatumF.infPartF F E) = 0 ↔ pairA F 1 0 • x = 0`. Rewrite using `[← Matrix.ext_iff, ← Matrix.ext_iff]`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply, Matrix.smul_apply]`. Conclude with `forall_congr' fun i => forall_congr' fun j => infPartF_eq_zero_iff F E (x i j)`.
-
-Rewrite using `[key, ← smul_vec_inf, ← smul_vec_inf, ← smul_pair_eq_zero, ← LinearEquiv.map_smul, LinearEquiv.map_eq_zero_iff]`.
+A detailed English derivation is pending.
 -/
 theorem coord : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (nS nT N : ℕ)
     (e : Formalism.IndefR.DatumF.WOF F E nS nT ≃ₗ[AF F] GlobalTheory.ThetaTransform.VA F N),

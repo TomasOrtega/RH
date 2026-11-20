@@ -10,9 +10,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.PtIntCoord
 
 /- English proof (translation)
-Establish `e : GlobalTheory.Mem.Col2.shW l c = Formalism.MainNotions.product_first_zeroth_parts.wSh l (-c)`. Unfold `GlobalTheory.Mem.Col2.shW Formalism.MainNotions.product_first_zeroth_parts.wSh`. Use `congr 1`. Use function extensionality and compare the values at `i`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, Formalism.MainNotions.product_first_zeroth_parts.natW_wSh]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natW_shW {n : ℕ} (l : DomWeight n) (c : ℤ) : (GlobalTheory.Mem.Col2.shW l c).natW = l.natW := by
   have e : GlobalTheory.Mem.Col2.shW l c = Formalism.MainNotions.product_first_zeroth_parts.wSh l (-c) := by
@@ -23,13 +23,13 @@ theorem natW_shW {n : ℕ} (l : DomWeight n) (c : ℤ) : (GlobalTheory.Mem.Col2.
   rw [e, Formalism.MainNotions.product_first_zeroth_parts.natW_wSh]
 
 /- English proof (translation)
-Introduce `B X I hI l Z l0 u a w z _hz hyz c`. Take `⟨y, hy, rfl⟩` from `hyz`. Use `clear _hz`. Establish `hQ : (I.perIn u a).Ok` using `l.per u a`. Establish `hA : y.1 c ∈ locW B.places w (delAtr B.fields.emb (I.perIn u a).sgT ((I.perIn u a).S'.Lsh c.1 ((I.perIn u a).S'.rep c)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (hx c)`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x x' _ _ hx hx' => exact Submodule.add_mem _ hx hx'`. Consider the case `smul r x _ hx => exact Submodule.smul_mem _ r hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hB` using `(GlobalTheory.T.localBasisRepLattice_integralCoords_spec I hI l u a w c).1`. Establish `key` using `(GlobalTheory.T.mem_locW_delAtr_iff' B.fields.emb B.embLL B.places (I.rec7 l Z).plEq (I.rec7 l Z).val_eq (I.perIn u a).sgT (I.perIn u a).sg (fun τ => natW_shW _ _) _ (hQ.step.lsh_lat c.1 _) w _ hB (y.1 c)).1 hA`. Establish `e : GlobalTheory.PerQ.Co.coP I u a w (((I.tw l l0 Z).fm u a).ptEmb y) c = MvPolynomial.map B.embLL (rhoVr B.fields.emb (I.perIn u a).sgT (GlobalTheory.PerQ.Co.bP I u a w c)⁻¹ (y.1 c)).1` using `by show actP _ _ (polOf _ _ _ (evV B.fields.emb 1 (I.perIn u a).sgT B.embLL (y.1 c))) = _`. Rewrite using `[GlobalTheory.LvT.BuiltChain.polOf_evV]`. Use `show _ = MvPolynomial.map B.embLL (actP (I.perIn u a).sgT (invTrK (Formalism.L2.DIV.embGL B.fields.emb (GlobalTheory.PerQ.Co.bP I u a w c)⁻¹)) (y.1 c).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[GlobalTheory.ValCmp.use₂]`. Use `congr 2`. Rewrite using `[e]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coP_mem_intSpan : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (l0 : I.Law0 l) (u : B.Word) (a : I.ι) (w : B.places.Pl), ∀ z ∈ ((I.tw l l0 Z).fm u a).ptC, (∃ y ∈ ((I.tw l l0 Z).fm u a).SP w, ((I.tw l l0 Z).fm u a).ptEmb y = z) → ∀ c, GlobalTheory.PerQ.Co.coP I u a w z c ∈ Formalism.MainNotions.product_first_zeroth_parts.IntSpan (I.rec7 l Z) w ((I.rec7 l Z).fm u).sg := by
   intro B X I hI l Z l0 u a w z _hz hyz c

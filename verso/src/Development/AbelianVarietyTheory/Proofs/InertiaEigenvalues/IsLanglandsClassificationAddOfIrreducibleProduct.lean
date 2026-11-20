@@ -23,7 +23,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {V : Type} [AddCommGroup V] [Module ℂ V] {N : ℕ}
 
 /- English proof (translation)
-Take `⟨Δ, ⟨rfl, -⟩, hΔ⟩` from `hx`. Rewrite using `[Multiset.map_map, ← Finset.sum_eq_multiset_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => (hΔ a).deg_eq.symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_fst_of_lFactors {𝔪 : Multiset (Segment k)} {h : ℕ} {x : Fin h → IrrGL k} (hx : LFactors 𝔪 x) :
     ∑ a, (x a).1 = (𝔪.map Segment.deg).sum := by
@@ -32,7 +32,7 @@ theorem sum_fst_of_lFactors {𝔪 : Multiset (Segment k)} {h : ℕ} {x : Fin h �
   exact Finset.sum_congr rfl fun a _ => (hΔ a).deg_eq.symm
 
 /- English proof (translation)
-Take `⟨_, x, hd, hx, -⟩` from `h`. Conclude with `(sum_fst_of_lFactors hx).symm.trans hd`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem deg_of_isL {𝔪 : Multiset (Segment k)} {π : Representation ℂ (GL (Fin N) k) V} (h : IsL 𝔪 π) :
     (𝔪.map Segment.deg).sum = N := by
@@ -40,7 +40,7 @@ theorem deg_of_isL {𝔪 : Multiset (Segment k)} {π : Representation ℂ (GL (F
   exact (sum_fst_of_lFactors hx).symm.trans hd
 
 /- English proof (translation)
-Take `⟨_, x, -, ⟨D, ⟨rfl, -⟩, hD⟩, -⟩` from `h`. Take `⟨a, -, rfl⟩` from `Multiset.mem_map.1 hΔ`. Conclude with `⟨x a, hD a⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isLSeg_of_isL {𝔪 : Multiset (Segment k)} {π : Representation ℂ (GL (Fin N) k) V} (h : IsL 𝔪 π)
     {Δ : Segment k} (hΔ : Δ ∈ 𝔪) : ∃ y : IrrGL k, IsLSeg Δ y.rep := by
@@ -49,9 +49,9 @@ theorem exists_isLSeg_of_isL {𝔪 : Multiset (Segment k)} {π : Representation 
   exact ⟨x a, hD a⟩
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `exists_isOrderedForm 𝔪`. Establish `hm : ∀ i, D i ∈ 𝔪` using `fun i => hD.1 ▸ Multiset.mem_map_of_mem D (Finset.mem_univ i)`. Use `choose x hx using fun i => h _ (hm i)`. Establish `hF : LFactors 𝔪 x` using `⟨D, hD, hx⟩`. Establish `hd : ∑ a, (x a).1 = N` using `(sum_fst_of_lFactors hF).trans hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨π, hπ⟩` from `hS k 𝔪 _ _ x hd hF`. Conclude with `⟨π, _, x, hd, hF, hπ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isL [CharZero k] (hS : StandardCosocleGL) {𝔪 : Multiset (Segment k)}
     (h : ∀ Δ ∈ 𝔪, ∃ y : IrrGL k, IsLSeg Δ y.rep) (hN : (𝔪.map Segment.deg).sum = N) :
@@ -65,11 +65,11 @@ theorem exists_isL [CharZero k] (hS : StandardCosocleGL) {𝔪 : Multiset (Segme
   exact ⟨π, _, x, hd, hF, hπ⟩
 
 /- English proof (translation)
-Introduce and unpack `hM hS k _ _ _ _ _ r t σ τ π 𝔪 𝔫 h1 h2 ⟨e⟩`. Take `⟨y, hy⟩` from `exists_isL (N := r + t) hS (𝔪 := 𝔪 + 𝔫) (fun Δ hΔ => (Multiset.mem_add.1 hΔ).elim (exists_isLSeg_of_isL h1) (exists_isLSeg_of_isL h2)) (by rw [Multiset.map_add, Multiset.sum_add, deg_of_isL h1, deg_of_isL h2])`. Establish `hd : ∑ a, (![IrrGL.of σ.ρ σ.smooth σ.irr, IrrGL.of τ.ρ τ.smooth τ.irr] a).1 = r + t` using `Fin.sum_univ_two _`. Take `⟨φ⟩` from `nonempty_prod₂_equiv_prodIrr σ.ρ σ.smooth σ.irr τ.ρ τ.smooth τ.irr hd`. Establish `ψ` using `IrrGL.equivOf y.ρ y.smooth y.irr`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a1 : IsL 𝔪 (IrrGL.of σ.ρ σ.smooth σ.irr).rep` using `h1.of_equiv (IrrGL.equivOf _ _ _)`. Establish `a2 : IsL 𝔫 (IrrGL.of τ.ρ τ.smooth τ.irr).rep` using `h2.of_equiv (IrrGL.equivOf _ _ _)`. Establish `a3 : IsL (𝔪 + 𝔫) (IrrGL.of y.ρ y.smooth y.irr).rep` using `hy.of_equiv ψ`. Establish `hs` using `(hM k).2 𝔪 𝔫 ![IrrGL.of σ.ρ σ.smooth σ.irr, IrrGL.of τ.ρ τ.smooth τ.irr] (IrrGL.of y.ρ y.smooth y.irr) hd a1 a2 a3`. Establish `E` using `(e.trans φ).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨θ⟩` from `IsSubquotient.nonempty_equiv (hs.trans (.of_injective E.toIntertwiningMap E.toLinearEquiv.injective)) (IrrRep.irr _) π.irr`. Conclude with `a3.of_equiv θ.symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isL_add_of_equiv_prod₂ : LanglandsMultisegments → StandardCosocleGL → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (r t : ℕ) (σ : IrrRep (GL (Fin r) k)) (τ : IrrRep (GL (Fin t) k)) (π : IrrRep (GL (Fin (r + t)) k)) (𝔪 𝔫 : Multiset (Segment k)), IsL 𝔪 σ.ρ → IsL 𝔫 τ.ρ → Nonempty (π.ρ.Equiv (prod₂ σ.ρ τ.ρ)) → IsL (𝔪 + 𝔫) π.ρ := by
   rintro hM hS k _ _ _ _ _ r t σ τ π 𝔪 𝔫 h1 h2 ⟨e⟩

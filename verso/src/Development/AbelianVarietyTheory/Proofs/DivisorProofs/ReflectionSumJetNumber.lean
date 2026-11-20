@@ -40,9 +40,9 @@ noncomputable section
 namespace GlobalTheory.JetsCharZero
 
 /- English proof (translation)
-Establish `hX : 0 ≤ R * N ^ 3` using `by positivity`. Use `le_trans ?_ h` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `div_le_div_of_nonneg_right _ hg0.le` to reduce the goal to its premises. Establish `: dF ^ 2 ≤ r * N / 4 + 2 * dF ^ 2` using `by nlinarith [sq_nonneg dF, mul_nonneg hr hN]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left this hX]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem num_le (dF R N r g0 g1 cst : ℝ) (hR : 0 ≤ R) (hN : 0 ≤ N) (hr : 0 ≤ r) (hg0 : 0 < g0) (hle : g0 ≤ g1)
     (h : R * N ^ 3 * (r * N / 4 + 2 * dF ^ 2) / g0 ≤ cst) : dF ^ 2 * (R * N ^ 3) / g1 ≤ cst := by
@@ -55,23 +55,21 @@ theorem num_le (dF R N r g0 g1 cst : ℝ) (hR : 0 ≤ R) (hN : 0 ≤ N) (hr : 0 
         nlinarith [mul_le_mul_of_nonneg_left this hX]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `nab hnab T io y C hTr P hP hch φ hφ α q hα hq hMb a n hanti hs hn N cst hρN h4 hM0 hcst`. Take `⟨P₁, hP₁, hB⟩` from `GlobalTheory.T.exists_harmonicPoly_localInvariant_nonpos_char0 E H Dw l Xo c a n hanti hs`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T.V`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨Q, hQ⟩, -⟩` from `GlobalTheory.PowData.exists_powData E H Dw l Xo c T io y C P ϖ hϖ`. Take `⟨ρ, hρ, hSB⟩` from `GlobalTheory.ShortPhi.exists_shortBasis E H Dw l Xo c T io y φ hφ C P ϖ hϖ Q hQ`. Use `set R : ℝ := |(discr E : ℝ)| ^ ((2 : ℝ) / Module.finrank ℚ E) / (2 * Module.finrank ℚ E) with hR`. Establish `hR0 : 0 ≤ R` using `by positivity`. Establish `hρN' : (ρ : ℝ) ≤ N` using `le_trans (by exact_mod_cast hρ) hρN`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ0 : (0 : ℝ) ≤ ρ` using `Nat.cast_nonneg _`. Establish `hN0 : (0 : ℝ) ≤ N` using `hρ0.trans hρN'`. Establish `hM0' : (DF Dw a : ℝ) * (2 * Real.sqrt ρ) < q` using `lt_of_le_of_lt (by gcongr) hM0`. Establish `hup` using `GlobalTheory.T.iInf_thetaRule_le_localValue_charZero E H Dw l Xo c nab hnab T io y C hTr P hP hch ϖ hϖ Q hQ ρ _ _ hSB α q hα hq hMb a n 1 hn one_pos h4 hM0' P₁ hP₁`. Establish `hloc` using `hB T io y C hch 1 l.M one_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ0` using `hφ.nonneg`. Establish `hq0 : (0 : ℝ) < q`. Establish `h : 0 < q` using `by omega`. Conclude with `h` after adjusting the coercions. Use `set B : ℝ := (DF Dw a : ℝ) ^ 2 * (R * (ρ : ℝ) ^ 3 * φ) / q / ((1 : ℕ) : ℝ) with hBdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hBle : B ≤ cst * φ`. Rewrite using `[hBdef, Nat.cast_one, div_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hinf : (⨅ (f : Rul Xo c) (_ : ∃ x : Fin n → Dw.La, IsThRule Xo c nab x P₁ f), nval T.V 1 (evI y f)) ≤ ((B : ℝ) : EReal)`. Use `hup.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hlow : (((⌊B⌋ + 1 : ℤ) : ℝ) : EReal) ≤ ⨅ (f : Rul Xo c) (_ : ∃ x : Fin n → Dw.La, IsThRule Xo c nab x P₁ f), nval T.V 1 (evI y f)`. Use `le_iInf₂ fun f ⟨x, hx⟩ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : f ∈ thGen Xo c nab a n` using `⟨x, P₁, hP₁, hx⟩`. Distinguish the cases in `h0 : evI y f = 0`. Rewrite using `[h0, nval_zero]`. Conclude with `le_top`. Establish `h1` using `hne f hf h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[nval_of_ne h0, Nat.cast_one, div_one, EReal.coe_le_coe_iff]`. Establish `h2 : B < (vV T.V (evI y f) : ℝ)` using `lt_of_le_of_lt hBle h1`. Establish `h3 : ⌊B⌋ < vV T.V (evI y f)` using `Int.floor_lt.2 h2`. Conclude with `h3` after adjusting the coercions. Establish `h5` using `EReal.coe_le_coe_iff.1 (hlow.trans hinf)`.
-
-Move the coercions through the operations in `at h5`. Combine the linear relations using `[Int.lt_floor_add_one B]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_thRule_value_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (nab : NabV Xo c), IsNab Xo c nab → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y), FrTrunc C.I.G (𝟙 (Sp T.V)) (chD C.ch) C.xT C.eT → ∀ (P : PELUnif (IsLocalRing.maximalIdeal T.V) C.I.G), P.TorsionIso → CharZero (IsLocalRing.ResidueField T.V) → ∀ (φ : ℝ), GlobalTheory.SlopeRec.HasPhi y φ → ∀ (α : 𝓞 E) (q : ℕ), α * star α = ((q : ℕ) : 𝓞 E) → q ∣ l.M → l.Mb ≤ Ideal.span {star α} → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), (∀ τ, Antitone fun i => a (τ, i)) → ∑ f : Lt1 Dw, 2 * rk f ≤ n → 1 ≤ n → ∀ (N cst : ℝ), ((Module.finrank ℚ E * Dw.q : ℕ) : ℝ) ≤ N → 4 * DF Dw a + 4 ≤ q → (DF Dw a : ℝ) * (2 * Real.sqrt N) < q → (DF Dw a : ℝ) ^ 2 * ((|(discr E : ℝ)| ^ ((2 : ℝ) / Module.finrank ℚ E)) / (2 * Module.finrank ℚ E) * N ^ 3) / q ≤ cst → ∃ f ∈ thGen Xo c nab a n, evI y f ≠ 0 ∧ (vV T.V (evI y f) : ℝ) ≤ cst * φ := by
   intro E _ _ _ H Dw l Xo c
@@ -123,21 +121,21 @@ theorem exists_thRule_value_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
   linarith [Int.lt_floor_add_one B]
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4`. Establish `hA` using `GlobalTheory.T.host_field_degree_divisibility h1 h2 h3 h4`. Establish `hG` using `GlobalTheory.LiftGaps.lift_gaps h3`. Unfold `Covers Lifts Formalism.MainNotions.Closed at hA hG ⊢`. Take `⟨ε1, hε1, hA⟩` from `hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨ε2, hε2, hG⟩` from `hG`. Use `⟨min ε1 ε2, lt_min hε1 hε2, fun eps he hle => ?_⟩` and prove the remaining obligations. Take `⟨K1, hK1⟩` from `hA eps he (hle.trans (min_le_left _ _))`. Take `⟨K2, hK2⟩` from `hG eps he (hle.trans (min_le_right _ _))`. Use `⟨⟨max K1.pre K2.pre, fun l => max (K1.t l) (K2.t l), fun l => max (K1.mid l) (K2.mid l), fun l => max (K1.last l) (K2.last l)⟩, fun Fm CH hF hL => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hL1 : Fm.Large K1 CH` using `⟨fun c hc => (le_max_left _ _).trans (hL.1 c hc), trivial, fun c hc => (le_max_left _ _).trans (hL.2.2.1 c hc), fun c hc => (le_max_left _ _).trans (hL.2.2.2 c hc)⟩`. Establish `hL2 : Fm.Large K2 CH` using `⟨fun c hc => (le_max_right _ _).trans (hL.1 c hc), trivial, fun c hc => (le_max_right _ _).trans (hL.2.2.1 c hc), fun c hc => (le_max_right _ _).trans (hL.2.2.2 c hc)⟩`. Take `⟨C1, hC1, hE1⟩` from `hK1 Fm CH hF hL1`. Take `⟨C2, -, hE2⟩` from `hK2 Fm CH hF hL2`. Use `⟨C1, hC1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x1, hx1⟩` from `hE1.and hE2`. Use `⟨x1, fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations. Take `⟨hAi, hGi⟩` from `hx1 x hx hle ι p hp`. Take `⟨α, hα, hdvd, hMb, hρq⟩` from `hAi i hi Y hY`. Take `⟨hp1, hgap⟩` from `hGi i hi Y hY`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `la hla cst hJ nab hnab T io y' C P φT hch hTr hP hφ`. Take `⟨hanti, hgp⟩` from `hgap la hla`. Establish `hbd : ∀ (τ : AllWt.Psi p.T.Q.H) (k : Fin ((dat p i).p + (dat p i).q)), |((la τ k : ℤ) : ℝ)| ≤ ∑ τ' : AllWt.Psi p.T.Q.H, ∑ k' : Fin ((dat p i).p + (dat p i).q), |((la τ' k' : ℤ) : ℝ)|` using `fun τ k => (Finset.single_le_sum (f := fun k' => |((la τ k' : ℤ) : ℝ)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ k)).trans (Finset.single_le_sum (f := fun τ' => ∑ k' : Fin ((dat p i).p + (dat p i).q), |((la τ' k' : ℤ) : ℝ)|) (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _ …`. Establish `hEven : Even (GlobalTheory.RefSum.nCol (dat p i))`. Unfold `GlobalTheory.RefSum.nCol`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `⟨4 * ((∑ f : Lt1 (dat p i), 2 * rk f) / 8 + Fintype.card (Lt1 (dat p i)) + 1), by ring⟩`. Establish `hn1 : 1 ≤ GlobalTheory.RefSum.nCol (dat p i)` using `by unfold GlobalTheory.RefSum.nCol; omega`. Take `⟨hDom, -⟩` from `GlobalTheory.RefSum.thA_dominant_lastPos_degree _ _ (dat p i) la (GlobalTheory.RefSum.nCol (dat p i)) _ hp1 hEven hanti hgp hbd`. Establish `hg0 : 2 ≤ (Fm.D x ι).host.g 0` using `((Fm.D x ι).host.g_prime 0).two_le`. Establish `hg1 : 2 ≤ (Fm.D x ι).host.g 1` using `((Fm.D x ι).host.g_prime 1).two_le`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j1, j2, j3⟩` from `hJ 0`. Establish `hle0 : (Fm.D x ι).host.g 0 ≤ (Fm.D x ι).host.g 0 * (Fm.D x ι).host.g 1` using `Nat.le_mul_of_pos_right _ (by omega)`. Establish `hle0' : ((Fm.D x ι).host.g 0 : ℝ) ≤ (((Fm.D x ι).host.g 0 * (Fm.D x ι).host.g 1 : ℕ) : ℝ)` using `by exact_mod_cast hle0`. Establish `hg0' : (0 : ℝ) < (Fm.D x ι).host.g 0` using `by exact_mod_cast (show 0 < (Fm.D x ι).host.g 0 by omega)`. Establish `hN0 : (0 : ℝ) ≤ 2 * ((Fm.D x ι).R.f : ℝ) * (Fm.D x ι).R.m` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR0 : 0 ≤ GlobalTheory.PtTie.rr0 (Fm.D x ι)` using `by unfold GlobalTheory.PtTie.rr0; positivity`. Conclude with `exists_thRule_value_le _ _ _ _ Y.d.Xo₂ Y.d.c₂ nab hnab T io y' C hTr P hP hch φT hφ α _ hα hdvd hMb _ _ hDom.1 GlobalTheory.RefSum.sum_le_nCol hn1 (2 * ((Fm.D x ι).R.f : ℝ) * (Fm.D x ι).R.m) cst (by exact_mod_cast hρq) (j1.trans hle0) (lt_of_lt_of_le j2 hle0') (num_le _ _ _ _ _ _ …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_thRule_value_le_cover : Hypotheses2 → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ la ∈ ({(⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁, (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).ub} : Set (AllWt.Weight (dat p i))), ∀ cst : ℝ, GlobalTheory.RefSum.JetNum (Fm.D x ι) (DF (dat p i) (GlobalTheory.RefSum.thA (dat p i) la (GlobalTheory.RefSum.nCol (dat p i)))) cst → letI := p.T.Q.H.starRing; ∀ (nab : NabV Y.d.Xo₂ Y.d.c₂), IsNab Y.d.Xo₂ Y.d.c₂ nab → ∀ (T : CDVR) (io : Y.d.c₂.F →+* T.Fr) (y' : IntFr Y.d.Xo₂ Y.d.c₂ T io) (C : IntegralChartA3 Y.d.Xo₂ Y.d.c₂ T io y') (P : PELUnif (IsLocalRing.maximalIdeal T.V) C.I.G) (φT : ℝ), CharZero (IsLocalRing.ResidueField T.V) → Formalism.MainNotions.ModuliIntegralCharts.H1.FrTrunc C.I.G (𝟙 (Sp T.V)) (chD C.ch) C.xT C.eT → P.TorsionIso → GlobalTheory.SlopeRec.HasPhi y' φT → ∃ f ∈ thGen Y.d.Xo₂ Y.d.c₂ nab (GlobalTheory.RefSum.thA (dat p i) la (GlobalTheory.RefSum.nCol (dat p i))) (GlobalTheory.RefSum.nCol (dat p i)), evI y' f ≠ 0 ∧ (vV T.V (evI y' f) : ℝ) ≤ cst * φT := by
   intro h1 h2 h3 h4

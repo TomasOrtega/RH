@@ -16,11 +16,11 @@ namespace GlobalTheory
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL hF hS hU i`. Take `⟨th, hth⟩` from `hL.exists_isRaw i A.μ0`. Establish `hsurj` using `(GlobalTheory.adjoint_injective_surjective_and_positive_scalar _ _ th).1 (hU i th hth)`. Rewrite using `[hS i A.μ0, Submodule.map_top]`. Apply `le_antisymm` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hL.thP.thF_mem i A.μ0 x`. Introduce `w hw`. Rewrite `hw` using `[← (hL.models.HW i (sg0 D A)).2.1]`. Take `⟨y, rfl⟩` from `hw`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `hsurj y`. Conclude with `⟨x, (hth x).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rawLift_onto_of_upInj : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → RatSpan R → (∀ i, UpInj R i A.μ0) → ThOnto R := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL hF hS hU i

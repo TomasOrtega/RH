@@ -11,7 +11,7 @@ namespace Formalism.MainNotions.Proposition5Numerics
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.SourceCleaning Formalism.MainNotions.Pf14 Formalism.MainNotions.PlaneGramData Formalism.MainNotions.TestSideCounting Formalism.MainNotions.TestSideWords Formalism.MainNotions.G.GLWeightTheory
 
 /- English proof (translation)
-Take `⟨ee, hee, _⟩` from `Formalism.MainNotions.G.Joints.polIsoDecompB_of D (weight_condition_from_integral_form D) R ι LL n S`. Use `(((valuation_field D).2 R ι LL n S ee hee).2 F (lam 0)).2 fun mu hmu => ?_` and prove the remaining obligations. Distinguish the cases in `h : lam = mu`. Rewrite using `[h]`. Conclude with `absurd ((hee mu).2 lam h F hF) hmu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowest_weight_le_of_isotypic (D : Formalism.BasicNotions.D7) {R : Type} [Field R] [CharZero R] {ι : Type} [Fintype ι] (LL : Letters ι)
     {n : ℕ} [NeZero n] (S : Set ι) (lam : Fin n → ℤ) (F : MvPolynomial (ι × Fin n) R)
@@ -27,17 +27,17 @@ section DD
 variable {σ Kf : Type} [Field Kf]
 
 /- English proof (translation)
-Rewrite using `[coeff_monomial_mul']`. Use `split_ifs with hma`. Rewrite using `[one_mul]`. Unfold `divDer`. Rewrite using `[coeff_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsingle : ∀ b ∈ F.support, b ≠ a → coeff (a - m) (if m ≤ b then monomial (b - m) (F.coeff b * ((m.prod fun k j => (b k).choose j : ℕ) : Kf)) else 0) = 0`. Introduce `b _ hb`. Use `split_ifs with hmb`. Rewrite using `[coeff_monomial, if_neg]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hb` to reduce the goal to its premises. Establish `h1 : b - m + m = a - m + m` using `by rw [h]`. Rewrite `h1` using `[tsub_add_cancel_of_le hmb, tsub_add_cancel_of_le hma]`. Then use the resulting hypothesis. Rewrite using `[coeff_zero]`. Distinguish the cases in `ha : a ∈ F.support`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.sum_eq_single a hsingle (fun h => absurd ha h), if_pos hma, coeff_monomial, if_pos rfl]`. Unfold `Finsupp.prod`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_eq_zero (fun b hb => hsingle b hb (fun h => ha (h ▸ hb))), notMem_support_iff.1 ha, mul_zero]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `: ∃ v, a v < m v`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hma hcon`. Take `⟨v, hv⟩` from `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `hvs : v ∈ m.support`. Rewrite using `[Finsupp.mem_support_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.prod_eq_zero hvs (by rw [Nat.choose_eq_zero_of_lt hv, Nat.cast_zero]), zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_mon_divDer (m a : σ →₀ ℕ) (F : MvPolynomial σ Kf) :
     (monomial m (1 : Kf) * divDer m F).coeff a = (∏ v ∈ m.support, (((a v).choose (m v) : ℕ) : Kf)) * F.coeff a := by
@@ -80,9 +80,9 @@ section BC
 variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {σ : Type}
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[coeff_diagK, coeff_sum]`. Unfold `binomCombF`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coeff_smul, coeff_mon_divDer, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diagK_binomCombF (lam : (σ →₀ ℕ) →₀ O) (F : MvPolynomial σ (KK O)) :
     diagK (fun a => binomCombF (K := KK O) lam a) F =
@@ -96,9 +96,9 @@ theorem diagK_binomCombF (lam : (σ →₀ ℕ) →₀ O) (F : MvPolynomial σ (
   ring
 
 /- English proof (translation)
-Unfold `binomCombF`. Use `geQ_sum _ _ fun m _ => ?_` and prove the remaining obligations. Establish `h : algebraMap O (KK O) (lam m) * ∏ v ∈ m.support, (((a v).choose (m v) : ℕ) : KK O) = algebraMap O (KK O) (lam m * ∏ v ∈ m.support, (((a v).choose (m v) : ℕ) : O))`. Rewrite using `[map_mul, map_prod]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Conclude with `geQ_alg S _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geQ_binomCombF (S : UniformizedDVR p O) (lam : (σ →₀ ℕ) →₀ O) (a : σ →₀ ℕ) :
     geQ (vK p (binomCombF (K := KK O) lam a)) 0 := by
@@ -114,13 +114,11 @@ theorem geQ_binomCombF (S : UniformizedDVR p O) (lam : (σ →₀ ℕ) →₀ O)
 end BC
 
 /- English proof (translation)
-Establish `h1 : ∀ s, (d s).factorial = Nat.multinomial Finset.univ (fun c : Fin k => α (s, c)) * ∏ c : Fin k, (α (s, c)).factorial`. Introduce `s`. Rewrite using `[mul_comm, Nat.multinomial_spec, ← hα s]`. Both sides reduce to the same expression. Establish `h2 : expFact α = ∏ s : ι, ∏ c : Fin k, (α (s, c)).factorial`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `expFact`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => rfl), Fintype.prod_prod_type]`. Establish `h3 : (∏ s, (d s).factorial) = (∏ s : ι, Nat.multinomial Finset.univ (fun c : Fin k => α (s, c))) * expFact α`. Rewrite using `[h2, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun s _ => h1 s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hMn0 : (∏ s : ι, Nat.multinomial Finset.univ (fun c : Fin k => α (s, c))) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s _ => (Nat.multinomial_pos _ _).ne'`. Establish `hE0 : expFact α ≠ 0`. Rewrite using `[h2]`. Conclude with `Finset.prod_ne_zero_iff.2 fun s _ => Finset.prod_ne_zero_iff.2 fun c _ => Nat.factorial_ne_zero _`. Rewrite using `[h3, padicValNat.mul hMn0 hE0]`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem padicVal_expFact_le' (p : ℕ) [hp : Fact p.Prime] {ι : Type} [Fintype ι] {k : ℕ} (d : ι → ℕ)
     (α : ι × Fin k →₀ ℕ) (hα : ∀ s, multideg α s = d s) :
@@ -149,13 +147,13 @@ section St
 variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Introduce `bn`. Rewrite using `[coeff_smul, smul_eq_mul]`. Distinguish the cases in `hbn : bn ∈ Z.support`. Establish `hdeg : ∀ s, multideg bn s = d s` using `((mem_restrictSupport_iff (KK O)).1 hZ) hbn`. Establish `h1` using `padicVal_expFact_le' p d bn hdeg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (0 : WithTop ℚ) ≤ vK p (Z.coeff bn) + (((padicValNat p (expFact bn) : ℚ) / 2 : ℚ) : WithTop ℚ)` using `le_trans hBB (vBB_le_coeff Z bn)`. Introduce `q hq`. Rewrite `hq` using `[valuation_mul_alt, vK_w_pow hp.out S w hw2]`. Take `⟨a, b, ha, hb, hab⟩` from `WithTop.add_eq_coe.1 hq`. Rewrite `h2` using `[← hb, ← WithTop.coe_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (0 : ℚ) ≤ b + (padicValNat p (expFact bn) : ℚ) / 2` using `by exact_mod_cast h2`. Establish `h4 : a = ((padicValNat p (∏ s, (d s).factorial) : ℕ) : ℚ) / 2` using `by exact_mod_cast ha`. Establish `h5 : ((padicValNat p (expFact bn) : ℕ) : ℚ) ≤ ((padicValNat p (∏ s, (d s).factorial) : ℕ) : ℚ)`. Conclude with `h1` after adjusting the coercions. Establish `h6 : (0 : ℚ) ≤ q` using `by rw [← hab, h4]; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h6` after adjusting the coercions. Rewrite using `[notMem_support_iff.1 hbn, mul_zero]`. Conclude with `geQ_zero 0`.
+A detailed English derivation is pending.
 -/
 theorem coefGe_of_inBB [hp : Fact p.Prime] (S : UniformizedDVR p O) (w : O) (hw2 : w ^ 2 = (p : O)) {ι : Type} [Fintype ι]
     {k : ℕ} (d : ι → ℕ) (Z : MvPolynomial (ι × Fin k) (KK O)) (hZ : Z ∈ Pol (KK O) k d) (hBB : InBB (O := O) p Z) :

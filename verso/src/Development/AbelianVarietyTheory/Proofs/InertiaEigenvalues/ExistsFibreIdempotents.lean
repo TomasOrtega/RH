@@ -17,25 +17,25 @@ namespace GlobalTheory.FibreIdem
 variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.openKernel_ideleCharacter_trivial_finitePart_one`.
+A detailed English derivation is pending.
 -/
 theorem chi_eq_one_of_finPart : ∀ (D : D7) {A : Type} [Group A] (χ : (AE D)ˣ →* A), IsOpen (χ.ker : Set (AE D)ˣ) → ∀ x : (AE D)ˣ, finPart D (x : AE D) = 1 → χ x = 1 := GlobalTheory.T.openKernel_ideleCharacter_trivial_finitePart_one
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.onePlaceTwist_trivial_on_congruent_units`.
+A detailed English derivation is pending.
 -/
 theorem chi_eq_one_of_cong : ∀ (D : D7) {A : Type} [CommGroup A] (PP : Pl D.host.E) (χ : (AE D)ˣ →* A) (κ : GlobalTheory.ExportSeries.ResChars D A), (⟨{PP}, χ, κ⟩ : GlobalTheory.ExportSeries.Twist D A).Good → ∀ N : ℕ, ((N : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal → ∀ x : (AE D)ˣ, FinUnit x → (∃ y ∈ intAE D, finPart D (x : AE D) - 1 = N • y) → χ x = 1 := GlobalTheory.T.onePlaceTwist_trivial_on_congruent_units
 
 /- English proof (translation)
-Take `⟨w, hw, hwe⟩` from `hg`. Establish `hσ : ∀ x, D.sp.cm.sig (D.sp.cm.sig x) = x` using `fun x => star_star x`. Establish `htr : ∀ x : D.host.E, ∃ t : D.host.F, algebraMap _ _ t = x + D.sp.cm.sig x`. Introduce `x`. Apply `(D.sp.cm.fixed _).1` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `D.sp.cm.sig _ = _`. Rewrite using `[map_add, hσ, add_comm]`. Rewrite `hwe` using `[Matrix.GeneralLinearGroup.val_det_apply]`. Establish `hn` using `GlobalTheory.RecDict.det_finHom_norm V g`. Take `⟨y, y', hy, hy', hyy, hroot, p, hp, hpe⟩` from `GlobalTheory.T.exists_normOne_root_congruent_odd_hostField D N hN _ w hw hwe hn`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, hY1, hY2, hY3⟩` from `GlobalTheory.DetRootCong.exists_idele D y y' hyy`. Establish `hcY : c Y = 1` using `hcong Y ⟨hY1, hY2 ▸ hy, hY3 ▸ hy'⟩ ⟨p, hp, hY2 ▸ hpe⟩`. Establish `hdet : (finHom V g).1.det = finPart D (matHom V g).1.det` using `((finPart D).map_det _).symm`. Establish `hxf : finPart D (x : AE D) = (finHom V g).1.det * sigR (Af D.host.F) D.sp.cm.sig (finPart D (x : AE D))`. Rewrite using `[hdet, ← GlobalTheory.DetRootCong.finPart_sigR, ← RingHom.map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ hx`. Take `⟨b, hb⟩` from `GlobalTheory.Member.exists_unit_of_sigR_fixed (Af D.host.F) D.sp.cm.sig htr (Units.map (finPart D).toMonoidHom (x * Y⁻¹)) (GlobalTheory.DetRootCong.quot_fixed (finPart D) _ x Y _ y y' hxf hroot hyy hY3)`. Take `⟨a, ha⟩` from `GlobalTheory.DetRootCong.exists_idF D b`. Establish `hb' : finPart D (idF D a : AE D) = finPart D ((x * Y⁻¹ : (AE D)ˣ) : AE D)` using `ha.trans (congrArg Units.val hb)`. Establish `h1` using `hinf (x * Y⁻¹ * (idF D a)⁻¹) (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, RingHom.map_mul, ← hb', ← RingHom.map_mul, Units.mul_inv, RingHom.map_one])`. Simplify `h1` using `[hcY, hF a]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem char_root_eq_one' (V : HSp D) {A : Type} [CommGroup A] (c : (AE D)ˣ →* A) (N : ℕ) (hN : Odd N)
     (hF : ∀ a, c (idF D a) = 1) (hinf : ∀ x : (AE D)ˣ, finPart D (x : AE D) = 1 → c x = 1)

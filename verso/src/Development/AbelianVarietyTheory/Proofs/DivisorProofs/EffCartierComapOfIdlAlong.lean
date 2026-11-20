@@ -13,15 +13,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.NormBlLift
 
 /- English proof (translation)
-Rewrite `hJ` using `[idlAlong_eq_idealAlong, GlobalTheory.IndefiniteRowSideFullHecke.NormalisedBlowupCone.idealAlong]`. Use `set e := (Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv with he`. Establish `hI : (J.comap a).ideal ⟨⊤, isAffineOpen_top _⟩ = Ideal.span {e.symm f}`. Establish `h2` using `congrArg (Ideal.map e.symm.toRingHom) hJ`. Rewrite `h2` using `[Ideal.map_span, Set.image_singleton, Ideal.map_map]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: e.symm.toRingHom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom = RingHom.id _`. Use extensionality with `x`. Conclude with `e.symm_apply_apply x`. Rewrite `h2` using `[this, Ideal.map_id]`. Conclude with `h2`.
+By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Use `⟨⟨⊤, isAffineOpen_top _⟩, e.symm f, trivial, ?_, hI⟩` and prove the remaining obligations. Rewrite using `[mem_nonZeroDivisors_iff]`. Use `⟨fun z hz => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg e hz` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero, e.apply_symm_apply]`. Rewrite using `[map_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_left hf`. Apply `e.injective` to reduce the goal to its premises.
-
-Use `congrArg e hz` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero, e.apply_symm_apply]`. Rewrite using `[map_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_right hf`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem effCartier_comap_of_idlAlong {X : Scheme.{0}} (J : X.IdealSheafData) {R : Type} [CommRing R] [IsDomain R]
     [IsLocalRing R] (a : Sp R ⟶ X) (f : R) (hf : f ≠ 0) (hJ : idlAlong J a = Ideal.span {f}) :
@@ -53,17 +51,17 @@ end GlobalTheory.NormBlLift
 namespace GlobalTheory.NormBlLift
 
 /- English proof (translation)
-Introduce `g n F Z S i π j _ _ J hN hji hpre R _ _ _ _ _ a y hy f hf hJ`. Take `⟨-, S₀, π₀, ν, U, hB, hνπ, hfin, -, -, -⟩` from `hN`. Establish `hE : FinalTheorems.EffCartier (J.comap a)` using `effCartier_comap_of_idlAlong J a f hf hJ`. Establish `hEK : FinalTheorems.EffCartier (J.comap (jK R ≫ a))`. Use `effCartier_comap_of_idlAlong J (jK R ≫ a) (algebraMap R (FractionRing R) f) ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hf`. Rewrite using `[show jK R = spMap (algebraMap R (FractionRing R)) from rfl, GlobalTheory.TraitOrder.idlAlong_comp, hJ, Ideal.map_span, Set.image_singleton]`. Take `⟨b, hb, hbu⟩` from `hB.2 _ a hE`. Establish `hK : (y ≫ j) ≫ ν = jK R ≫ b`. Use `(hB.2 _ _ hEK).unique ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, hνπ, hji, hy]`. Rewrite using `[Category.assoc, hb]`. Establish `L` using `GlobalTheory.existsUnique_lift_spec_of_isLocalization (nonZeroDivisors R) le_rfl ν (y ≫ j) b hK`. Take `⟨c, ⟨hc1, hc2⟩, -⟩` from `L`. Use `⟨c, by show c ≫ π = a; rw [← hνπ, ← Category.assoc, hc2, hb], fun c' hc' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : c' ≫ ν = b` using `hbu _ (by show (c' ≫ ν) ≫ π₀ = a; rw [Category.assoc, hνπ]; exact hc')`. Establish `hr : Set.range (jK R ≫ c') ⊆ Set.range j`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[← hpre]`. Use `show π ((jK R ≫ c') w) ∈ Set.range i`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, hc', hy, Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`. Establish `h2 : jK R ≫ c' = y ≫ j`. Establish `hl` using `IsOpenImmersion.lift_fac j (jK R ≫ c') hr`. Rewrite using `[← hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← cancel_mono i, ← hji, ← Category.assoc, hl, Category.assoc, hc', hy, hji]`. Conclude with `(GlobalTheory.existsUnique_lift_spec_of_isLocalization (nonZeroDivisors R) le_rfl ν (y ≫ j) b hK).unique ⟨h2, h1⟩ ⟨hc1, hc2⟩`.
+A detailed English derivation is pending.
 -/
 theorem lift_normBl : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (Z S : Scheme.{0}) (i : F.X ⟶ Z) (π : S ⟶ Z) (j : F.X ⟶ S) [IsOpenImmersion j] [IsOpenImmersion i] (J : Z.IdealSheafData), IsNormBl π J → j ≫ π = i → π ⁻¹' Set.range i = Set.range j → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsIntegrallyClosed R] (a : Sp R ⟶ Z) (y : Sp (FractionRing R) ⟶ F.X), jK R ≫ a = y ≫ i → ∀ f : R, f ≠ 0 → idlAlong J a = Ideal.span {f} → ∃! ξ : Sp R ⟶ S, ξ ≫ π = a := by
   intro g n F Z S i π j _ _ J hN hji hpre R _ _ _ _ _ a y hy f hf hJ

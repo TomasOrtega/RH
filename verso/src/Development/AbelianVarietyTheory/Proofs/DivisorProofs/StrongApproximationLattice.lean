@@ -8,13 +8,13 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 namespace GlobalTheory.LatticeOnePlaceApprox
 
 /- English proof (translation)
-Set `t : ∀ u : HeightOneSpectrum (𝓞 F), u.adicCompletion F` to `Pi.single v a`. Establish `ht : ∀ u, t u ∈ u.adicCompletionIntegers F` using `fun u => by`. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Simplify `ha` using `[t]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[t, e]`. Set `A : FiniteAdeleRing (𝓞 F) F` to `⟨t, Filter.Eventually.of_forall ht⟩`. Take `⟨ρ, w, hw, e⟩` from `Formalism.UG.P.csGlob_intAdApprox F (M : 𝓞 F) (by exact_mod_cast hM) A ht`. Rewrite `e` using `[map_natCast, ← nsmul_eq_mul]`. Establish `h : ∀ u, t u = algebraMap F (u.adicCompletion F) (ρ : F) + M • w u` using `fun u => by`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h : A u = (algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) ρ + M • w) u` using `by rw [← e]`. Conclude with `h`. Use `⟨ρ, ⟨-w v, neg_mem (hw v), ?_⟩, fun u hu => ⟨-w u, neg_mem (hw u), ?_⟩⟩` and prove the remaining obligations. Establish `h1 : a = _` using `(Pi.single_eq_same v a).symm.trans (h v)`. Rewrite using `[h1, smul_neg, add_neg_cancel_right]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (0 : u.adicCompletion F) = _` using `(Pi.single_eq_of_ne hu a).symm.trans (h u)`. Rewrite using `[smul_neg]`. Conclude with `eq_neg_of_add_eq_zero_left h1.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int (F : Type) [Field F] [NumberField F] (M : ℕ) (hM : M ≠ 0) (v : HeightOneSpectrum (𝓞 F))
     (a : v.adicCompletion F) (ha : a ∈ v.adicCompletionIntegers F) :
@@ -41,19 +41,19 @@ theorem exists_int (F : Type) [Field F] [NumberField F] (M : ℕ) (hM : M ≠ 0)
     exact eq_neg_of_add_eq_zero_left h1.symm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n L M hM v y hy`. Establish `hadd : ∀ (u : HeightOneSpectrum (𝓞 F)) (x x' : Fin n → E), (fun i => (1 : Fv F u) ⊗ₜ[F] (x + x') i) = (fun i => (1 : Fv F u) ⊗ₜ[F] x i) + fun i => (1 : Fv F u) ⊗ₜ[F] x' i` using `fun u x x' =>`. Use function extensionality and compare the values at `fun i => TensorProduct.tmul_add _ _ _`. Establish `hneg : ∀ (u : HeightOneSpectrum (𝓞 F)) (x : Fin n → E), (fun i => (1 : Fv F u) ⊗ₜ[F] (-x) i) = -fun i => (1 : Fv F u) ⊗ₜ[F] x i` using `fun u x =>`. Use function extensionality and compare the values at `fun i => TensorProduct.tmul_neg _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsm : ∀ (u : HeightOneSpectrum (𝓞 F)) (ρ : 𝓞 F) (x : Fin n → E) (i : Fin n), (1 : Fv F u) ⊗ₜ[F] (algebraMap (𝓞 F) (𝓞 E) ρ • x) i = algebraMap F (Fv F u) (ρ : F) ⊗ₜ[F] x i` using `fun u ρ x i => by`. Establish `h1 : (algebraMap (𝓞 F) (𝓞 E) ρ • x) i = (ρ : F) • x i`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[h1, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ∀ (u : HeightOneSpectrum (𝓞 F)) (w : Fv F u) (e : E), (M • w) ⊗ₜ[F] e = M • (w ⊗ₜ[F] e)` using `fun u w e => map_nsmul ((TensorProduct.mk F (Fv F u) E).flip e) M w`. Use `latLoc_induction (p := fun y => ∃ x ∈ L, (∃ z ∈ latLoc F L v, (fun i => (1 : Fv F v) ⊗ₜ[F] x i) = y + M • z) ∧ ∀ u : HeightOneSpectrum (𝓞 F), u ≠ v → ∃ z ∈ latLoc F L u, (fun i => (1 : Fv F u) ⊗ₜ[F] x i) = M • z) (fun a ha x hx => ?_) ?_ ?_ ?_ hy` and prove the remaining obligations. Take `⟨ρ, ⟨w, hw, e⟩, h⟩` from `exists_int F M hM.ne' v a ha`. Use `⟨algebraMap (𝓞 F) (𝓞 E) ρ • x, L.smul_mem _ hx, ⟨_, tmul_mem_latLoc hw hx, funext fun i => ?_⟩, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[hsm, e, TensorProduct.add_tmul, hn]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨w, hw, e⟩` from `h u hu`. Use `⟨_, tmul_mem_latLoc hw hx, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hsm, e, hn]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `⟨0, zero_mem _, ⟨0, zero_mem _, funext fun i => by simp⟩, fun u _ => ⟨0, zero_mem _, funext fun i => by simp⟩⟩`. Introduce and unpack `y y' ⟨x, hx, ⟨z, hz, e⟩, h⟩ ⟨x', hx', ⟨z', hz', e'⟩, h'⟩`. Use `⟨x + x', add_mem hx hx', ⟨z + z', add_mem hz hz', ?_⟩, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[hadd, e, e', smul_add]`. Normalize the expressions using the abelian group laws.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Take `⟨s, hs, f⟩` from `h u hu`. Take `⟨s', hs', f'⟩` from `h' u hu`. Conclude with `⟨s + s', add_mem hs hs', by rw [hadd, f, f', smul_add]⟩`. Introduce and unpack `y ⟨x, hx, ⟨z, hz, e⟩, h⟩`. Use `⟨-x, neg_mem hx, ⟨-z, neg_mem hz, ?_⟩, fun u hu => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hneg, e, smul_neg]`. Normalize the expressions using the abelian group laws. Take `⟨s, hs, f⟩` from `h u hu`. Conclude with `⟨-s, neg_mem hs, by rw [hneg, f, smul_neg]⟩`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_approx : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (M : ℕ), 0 < M → ∀ (v : HeightOneSpectrum (𝓞 F)), ∀ y ∈ latLoc F L v,
     ∃ x ∈ L, (∃ z ∈ latLoc F L v, (fun i => (1 : Fv F v) ⊗ₜ[F] x i) = y + M • z) ∧

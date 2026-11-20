@@ -9,15 +9,15 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset
 
 /- English proof (translation)
-Introduce `k nu hk hanti hsum`. Establish `hV` using `h6 k hk`. Establish `hB` using `h1 k nu hk`. Establish `hstair : (Matrix.of fun i j : Fin k => rootOfUnity k ^ ((j : ℕ) * (k - 1 - (i : ℕ)))).det = vandermondeOf (fun i : Fin k => rootOfUnity k ^ (i : ℕ))`. Rewrite using `[← Schur.det_pow_staircase_eq_vandermondeOf (fun j : Fin k => rootOfUnity k ^ (j : ℕ))]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.of_apply, pow_mul]`. Use `split_ifs with hhook`. Take `⟨π, hres, hsign⟩` from `h4 k nu hk hanti hsum hhook`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP` using `h2 k (fun i => nu i + (k - 1 - (i : ℕ))) π hk hres`. Rewrite `hP` using `[hstair]`. Establish `hP' : (Matrix.of fun i j : Fin k => rootOfUnity k ^ ((j : ℕ) * (nu i + (k - 1 - (i : ℕ))))).det = (((Equiv.Perm.sign π : ℤ) : ℂ)) * vandermondeOf (fun i : Fin k => rootOfUnity k ^ (i : ℕ))` using `hP`. Rewrite `hP'` using `[hB]`. Use `mul_right_cancel₀ hV hP'` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hsign]`. Use `push_cast`. Both sides reduce to the same expression. Take `⟨i, i', hne, hres⟩` from `h5 k nu hk hanti hsum hhook`. Establish `hZ : (Matrix.of fun i j : Fin k => rootOfUnity k ^ ((j : ℕ) * (nu i + (k - 1 - (i : ℕ))))).det = 0` using `h3 k (fun i => nu i + (k - 1 - (i : ℕ))) i i' hne hres`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hZ` using `[hB]`. Conclude with `(mul_eq_zero.mp hZ).resolve_right hV`.
+A detailed English derivation is pending.
 -/
 theorem SchJTMatrixDetAtRoots.proof (h1 : SchRootOfUnityBialternant.Statement)
     (h2 : SchRootOfUnityRowsPerm.Statement) (h3 : SchRootOfUnityRowsEq.Statement)

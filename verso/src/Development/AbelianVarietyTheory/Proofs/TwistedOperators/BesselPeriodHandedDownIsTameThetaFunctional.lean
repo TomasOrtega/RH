@@ -21,9 +21,9 @@ noncomputable section
 namespace GlobalTheory.HandTame
 
 /- English proof (translation)
-Rewrite using `[integral_prod _ hF]`. Use `integral_congr_ae (hF.prod_right_ae.mono fun a ha => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[integral_prod _ ha]`. Use `integral_congr_ae (ha.prod_right_ae.mono fun b hb => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[integral_prod _ hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_prod_four {α β γ δ : Type} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ] [MeasurableSpace δ]
     (μ₁ : Measure α) (μ₂ : Measure β) (μ₃ : Measure γ) (μ₄ : Measure δ) [IsFiniteMeasure μ₁] [IsFiniteMeasure μ₂]
@@ -39,18 +39,16 @@ theorem integral_prod_four {α β γ δ : Type} [MeasurableSpace α] [Measurable
   rw [integral_prod _ hb]
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem sfinite_of_finite {α : Type} [MeasurableSpace α] (μ : Measure α) [IsFiniteMeasure μ] : SFinite μ := inferInstance
 
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hh : ∀ f, IsThetaFunO ψ S T f → ∀ w, ℓ' (heisO ψ S T w f) = ℓ (heisO ψ S T w f)` using `fun f hf w => e _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf w)`. Use `⟨fun f f' hf hf' => ?_, fun c f hf => ?_, fun f hf => ?_, fun f hf => ?_, fun f hf m _ α hα hI => ?_⟩` and prove the remaining obligations. Rewrite using `[e _ (GlobalTheory.WeilVacMove.isTheta_add hf hf'), e _ hf, e _ hf', h.add f f' hf hf']`. Rewrite using `[e _ (GlobalTheory.WeilVacMove.isTheta_smul c hf), e _ hf, h.smul c f hf]`. Simplify using `only [hh f hf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h.cont f hf`. Simplify using `only [hh f hf]`. Conclude with `h.bdd f hf`. Simplify using `only [hh f hf]`. Rewrite using `[e _ hI]`.
-
-Conclude with `h.sup f hf m α hα hI`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tame_congr {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {ℓ ℓ' : (WO S T → ℂ) → ℂ}
     (h : Tame ψ S T ℓ) (e : ∀ f, IsThetaFunO ψ S T f → ℓ' f = ℓ f) : Tame ψ S T ℓ' := by
@@ -64,7 +62,7 @@ theorem tame_congr {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) 
   · simp only [hh f hf]; rw [e _ hI]; exact h.sup f hf m α hα hI
 
 /- English proof (translation)
-Take `⟨C, a, hC⟩` from `GlobalTheory.T.unitaryQuotientHeight_comparable_wittDecomposition D S S₀ ρ d`. Take `⟨C', hC'⟩` from `hG.decay (a * k)`. Use `⟨|C| ^ k * C', fun n hn h => ?_⟩` and prove the remaining obligations. Establish `h1 : quotHeight S₀ h ≤ |C| * quotHeight S (n * d.emb0 h) ^ a` using `(hC n hn h).1.trans (mul_le_mul_of_nonneg_right (le_abs_self C) (pow_pos (quotHeight_pos S _) a).le)`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem rapid_core {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {G : GA D S → ℂ} (hG : RapidDec S G) (k : ℕ) :
     ∃ C : ℝ, ∀ n ∈ flagN d, ∀ h, ‖G (n * d.emb0 h)‖ * quotHeight S₀ h ^ k ≤ C := by
@@ -80,9 +78,9 @@ theorem rapid_core {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {G : GA D 
     _ ≤ |C| ^ k * C' := mul_le_mul_of_nonneg_left (hC' _) (by positivity)
 
 /- English proof (translation)
-Take `⟨C, a, hC⟩` from `GlobalTheory.SupThetaGrowth.om_sup_quotHeight D ψ S L χ χz om hom Φ₀ hΦ`. Take `⟨C', hC'⟩` from `hφ.decay (a + k)`. Use `⟨|C| * C', fun h v => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖om (h, 1) Φ₀ v‖ ≤ |C| * quotHeight S h ^ a`. Use `hC h 1 v` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[quotHeight_of_mem L (one_mem _), mul_one]`. Conclude with `this.trans (mul_le_mul_of_nonneg_right (le_abs_self C) (pow_pos (quotHeight_pos S _) a).le)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rapid_theta {ψ : AddChar (AF D.host.F) ℂ} {S L : HSp D} {χ χz : (AE D)ˣ →* Circle} {om : Om S L}
     (hom : IsWeilDatumO ψ S L χ χz om) {φ : GA D S → ℂ} (hφ : RapidDec S φ) {Φ₀ : WO S L → ℂ} (hΦ : IsThetaFunO ψ S L Φ₀)
@@ -101,27 +99,23 @@ theorem rapid_theta {ψ : AddChar (AF D.host.F) ℂ} {S L : HSp D} {χ χz : (AE
     _ ≤ |C| * C' := mul_le_mul_of_nonneg_left (hC' _) (abs_nonneg _)
 
 /- English proof (translation)
-Introduce `D ψ σ J B s vL χ χz omz homz φ G Φ₀ hφ hG hΦ`. Establish `hψ` using `homz.std`. Use `haveI : ∀ V : HSp D, SecondCountableTopology (GA D V) := fun V => (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V).2.1`. Use `haveI : ∀ V : HSp D, BorelSpace (GA D V) := fun V => ⟨rfl⟩`. Take `⟨-, -, i3, -, -, -⟩` from `GlobalTheory.MixModel.lattice_Mx D B.L.rank J.W₀.rank`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : SecondCountableTopology (WO J.W₀ B.L) := i3`. Use `haveI : BorelSpace (WO J.W₀ B.L) := ⟨rfl⟩`. Use `haveI : IsFiniteMeasure (B.vA.μ.restrict B.vA.𝓕) := isFiniteMeasure_restrict.2 (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol B.A _ _ B.vA.haar B.vA.fund).ne`. Use `haveI : IsFiniteMeasure (J.v0.μ.restrict J.v0.𝓕) := isFiniteMeasure_restrict.2 (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol J.W₀ _ _ J.v0.haar J.v0.fund).ne`. Use `haveI : IsFiniteMeasure (B.vN.ν.restrict B.vN.𝓝) := isFiniteMeasure_restrict.2 (by rw [B.vN.unit.2.2]; exact ENNReal.one_ne_top)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsFiniteMeasure (vL.μ.restrict vL.𝓕) := isFiniteMeasure_restrict.2 (by rw [vL.covol.2.2]; exact ENNReal.one_ne_top)`. Set `Y : Type` to `GA D B.A × flagN B.d × GA D J.W₀ × WO J.W₀ B.L`. Set `m : Measure Y` to `(B.vA.μ.restrict B.vA.𝓕).prod ((B.vN.ν.restrict B.vN.𝓝).prod ((J.v0.μ.restrict J.v0.𝓕).prod (vL.μ.restrict vL.𝓕)))`. Use `haveI : IsFiniteMeasure m := by dsimp only [m]; infer_instance`. Use `haveI : SFinite m := sfinite_of_finite m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `c : Y → ℂ` to `fun y => G (y.2.1.1 * embA B.d B.o y.1) * star (psiBes ψ B.d 1 (vecB B.o B.ζ) y.2.1.1) * (φ y.2.2.1 * star (omz (y.2.2.1, 1) Φ₀ y.2.2.2))`. Establish `hn : Continuous fun y : Y => (y.2.1.1 : GA D B.V)` using `continuous_subtype_val.comp (continuous_fst.comp continuous_snd)`. Establish `h0 : Continuous fun y : Y => y.2.2.1` using `continuous_fst.comp (continuous_snd.comp continuous_snd)`. Establish `hv : Continuous fun y : Y => y.2.2.2` using `continuous_snd.comp (continuous_snd.comp continuous_snd)`. Establish `he : Continuous fun y : Y => B.o.emb (y.1, 1)` using `B.o.continuous_emb.comp (continuous_fst.prodMk continuous_const)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hw : Continuous fun y : Y => (B.o.resT J.W₀).symm (0, y.2.2.2)` using `(B.o.continuous_resT_symm J.W₀).comp (continuous_const.prodMk hv)`. Use `haveI := (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B.V).2.2.2.2.1`. Establish `hJ : Continuous fun p : (GA D J.W₀ × GA D B.L) × WO J.W₀ B.L => omz p.1 Φ₀ p.2` using `(@GlobalTheory.Unf.jointCont_all D) ψ _ _ χ χz omz homz Φ₀ hΦ`. Establish `hc : Continuous c` using `((hG.continuous.comp (hn.mul (B.d.continuous_embed.comp he))).mul (continuous_star.comp ((GlobalTheory.CharLaws.continuous_psiBes ψ B.d hψ.1.1 1 _).comp hn))).mul ((hφ.continuous.comp h0).mul (continuous_star.comp (hJ.comp ((h0.prodMk continuous_const).prodMk hv))))`. Establish `hint : ∀ k : ℕ, Integrable (fun y : Y => ‖c y‖ * (quotHeight J.W₀ y.2.2.1 * quotHeight B.V₀ (B.o.emb (y.1, 1))) ^ k) m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Take `⟨C₁, h₁⟩` from `rapid_core B.d hG k`. Take `⟨C₂, h₂⟩` from `rapid_theta homz hφ hΦ k`. Establish `hcc : Continuous fun y : Y => ‖c y‖ * (quotHeight J.W₀ y.2.2.1 * quotHeight B.V₀ (B.o.emb (y.1, 1))) ^ k` using `hc.norm.mul ((((continuous_quotHeight _).comp h0).mul ((continuous_quotHeight _).comp he)).pow k)`. Use `Integrable.of_bound hcc.measurable.aestronglyMeasurable (C₁ * C₂) (.of_forall fun y => ?_)` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `p1` using `quotHeight_pos J.W₀ y.2.2.1`. Establish `p2` using `quotHeight_pos B.V₀ (B.o.emb (y.1, 1))`. Establish `n1 : ‖psiBes ψ B.d 1 (vecB B.o B.ζ) y.2.1.1‖ = 1` using `hψ.1.2.1 _`. Rewrite using `[Real.norm_of_nonneg (by positivity)]`. Establish `a1` using `h₁ _ y.2.1.2 (B.o.emb (y.1, 1))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `a2` using `h₂ y.2.2.1 y.2.2.2`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [c, norm_mul, norm_star, n1, embA_apply, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ C₁ * C₂ := mul_le_mul a1 a2 (by positivity) (le_trans (by positivity) a1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hI, hT⟩` from `GlobalTheory.T.weilKernelFunctional_superposition_isTame D ψ J.W₀ B.V₀ s.χV s.χW s.om₀ s.weil₀ Y m c (fun y => y.2.2.1) (fun y => B.o.emb (y.1, 1)) (fun y => (B.o.resT J.W₀).symm (0, y.2.2.2)) hc.measurable h0 he hw hint`. Use `tame_congr hψ hT fun f hf => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (integral_prod_four _ _ _ _ _ (hI f hf)).symm` and prove the remaining obligations. Simplify using `only [BesL.per, besPer, GlobalTheory.MixPer.besFun, handP, contractT, thPair]`. Use `integral_congr_ae (.of_forall fun a => ?_)` and prove the remaining obligations.
-
-Use `integral_congr_ae (.of_forall fun b => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[mul_assoc, ← integral_mul_const]`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`.
-
-Rewrite using `[← integral_const_mul, ← integral_mul_const]`. Use `integral_congr_ae (.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `only [c]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem handP₂ : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (J : JacL D (σ + 1)) (B : BesL D σ) (s : StFB ψ J B),
     ∀ (vL : VolM D B.L.rank J.W₀.rank) (χ χz : (AE D)ˣ →* Circle) (omz : Om J.W₀ B.L), IsWeilDatumO ψ J.W₀ B.L χ χz omz →

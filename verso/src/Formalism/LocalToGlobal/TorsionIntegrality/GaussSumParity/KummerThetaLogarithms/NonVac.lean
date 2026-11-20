@@ -14,17 +14,15 @@ open Formalism.DworkPowerSeriesWeights (Integral Unram)
 open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog Simeq Gser BetaHyp)
 
 /- English proof (translation)
-Take `⟨σ, hσ, -⟩` from `hF l hl`. Establish `hl1 : 1 < l` using `by omega`. Establish `hnd : ∀ k : ℕ, 0 < k → 0 < l ^ k - 1 ∧ ¬ l ∣ l ^ k - 1`. Introduce `k hk`. Establish `h1 : 1 < l ^ k` using `Nat.one_lt_pow hk.ne' hl1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨by omega, fun hdv => ?_⟩` and prove the remaining obligations. Establish `h2 : l ∣ l ^ k` using `dvd_pow_self l hk.ne'`. Establish `h3 : l ∣ 1`. Use `(Nat.dvd_sub h2 hdv)` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub_self h1.le]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `absurd (Nat.le_of_dvd one_pos h3) (by omega)`. Establish `hν : 0 < ν` using `Nat.pos_of_ne_zero (NeZero.ne ν)`. Take `⟨ζ2, hζ2⟩` from `hR l (l ^ 2 - 1) (hnd 2 (by norm_num)).1 (hnd 2 (by norm_num)).2`. Take `⟨ζd, hζd⟩` from `hR l (l ^ (2 * ν) - 1) (hnd _ (by omega)).1 (hnd _ (by omega)).2`. Establish `hdual` using `hT (MaximalUnramifiedExtension l) l (2 * ν) σ hσ (even_two_mul ν) ζd hζd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdual` using `[Nat.mul_div_cancel_left ν two_pos]`. Take `⟨F, hFl⟩` from `(Formalism.InvariantFactorPaths.G7.Top.lawExists (MaximalUnramifiedExtension l) l hσ.1 hσ.2.2.1).1`. Establish `h1 : σ (σ (1 : MaximalUnramifiedExtension l)) = 1` using `by simp`. Establish `hbeta` using `Formalism.InvariantFactorPaths.G7.Top.gcIsBeta (MaximalUnramifiedExtension l) l σ hσ F hFl 1 (by simp) h1`. Establish `hFF` using `hB (MaximalUnramifiedExtension l) l σ hσ ⟨ζ2, hζ2⟩ F hFl _ hbeta`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨σ, hσ, hC l, fun _ => rfl, ⟨ζ2, hζ2⟩, ⟨ζd, hζd⟩, by omega, even_two_mul ν, ?_, hdual, F, hFl, _, hFF.1, hFF.2, ?_⟩` and prove the remaining obligations. Conclude with `IsAlgClosed.exists_pow_nat_eq _ (hnd 2 (by norm_num)).1`. Introduce `h0`. Establish `hz : (Gser l (0 : MaximalUnramifiedExtension l) (σ 0)) = 0` using `by simp [Gser]`. Use `Formalism.InvariantFactorPaths.G7.Top.gcUnique (MaximalUnramifiedExtension l) l σ hσ 1 0 h1 (by simp) (by rw [hz]; exact h0)` as an intermediate fact.
-
-Conclude with `one_ne_zero this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fieldWitness (hF : KurFrob) (hR : KurRoots) (hC : KurComplete) (hT : TrDualExists)
     (hB : FOfBetaHyp) (l : ℕ) [Fact l.Prime] (hl : 2 < l) (ν : ℕ) [NeZero ν] :
@@ -66,15 +64,13 @@ theorem fieldWitness (hF : KurFrob) (hR : KurRoots) (hC : KurComplete) (hT : TrD
     exact one_ne_zero this
 
 /- English proof (translation)
-Take `⟨σ, h1, h2, h3, h4, h5, h6, h7, h8, ⟨om, oms, h9, h10⟩, F, h11, be, h12, h13, h14⟩` from `fieldWitness hF hR hC hT hB l hl ν`. Establish `hbe0 : MvPowerSeries.constantCoeff be = 0`. Use `h12.1 0 (Or.inl rfl)` as an intermediate fact. Simplify using `using this`. Use `⟨σ, F, be, om, oms, 1, sumE (MvPowerSeries.map (MaximalUnramifiedExtension l).subtype be), PowerSeries.C ((2 : MaximalUnramifiedExtension l)⁻¹) * MvPowerSeries.subst (fun _ : Fin 2 => (PowerSeries.X : PowerSeries (MaximalUnramifiedExtension l))) be, h1, h2, h3, h4, h5, h6, h7, h8 …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n`. Rewrite using `[MvPowerSeries.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `sumE`. Rewrite using `[map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `e _`. Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero (by intro i; simp)) (by intro i; simp) (by rw [MvPowerSeries.constantCoeff_map, hbe0, map_zero])`. Conclude with `(Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[l] _).1 _`. Establish `: MvPowerSeries.C (2 : MaximalUnramifiedExtension l) * (PowerSeries.C ((2 : MaximalUnramifiedExtension l)⁻¹) * MvPowerSeries.subst (fun _ : Fin 2 => (PowerSeries.X : PowerSeries (MaximalUnramifiedExtension l))) be) = MvPowerSeries.subst (fun _ : Fin 2 => (PowerSeries.X : PowerSer …`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc]`. Establish `h2 : (MvPowerSeries.C (2 : MaximalUnramifiedExtension l) : MvPowerSeries Unit (MaximalUnramifiedExtension l)) * PowerSeries.C ((2 : MaximalUnramifiedExtension l)⁻¹) = 1`. Express the relevant statement in the definitionally equal form `(MvPowerSeries.C (2 : MaximalUnramifiedExtension l) : MvPowerSeries Unit (MaximalUnramifiedExtension l)) * MvPowerSeries.C ((2 : MaximalUnramifiedExtension l)⁻¹) = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ two_ne_zero, map_one]`. Rewrite using `[h2, one_mul]`.
-
-Rewrite using `[this]`. Conclude with `(Formalism.InvariantFactorPaths.G7.Top.simeqRules (MaximalUnramifiedExtension l) _).1 _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fullWitness (hF : KurFrob) (hR : KurRoots) (hC : KurComplete) (hT : TrDualExists)
     (hB : FOfBetaHyp) (l : ℕ) [Fact l.Prime] (hl : 2 < l) (ν r0 r1 : ℕ) [NeZero ν] :
@@ -127,7 +123,7 @@ end Formalism.L2.Th1.D.ChainWitness
 namespace Formalism.L2.Th1.D
 
 /- English proof (translation)
-Introduce `l _ hl ν r0 r1 _` and use `ChainWitness.fullWitness kurFrob kurRoots kurComplete trDualExists fOfBetaHyp l hl ν r0 r1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chain_nonvacuous : ChainNonVacuous := fun l _ hl ν r0 r1 _ =>
   ChainWitness.fullWitness kurFrob kurRoots kurComplete trDualExists fOfBetaHyp l hl ν r0 r1

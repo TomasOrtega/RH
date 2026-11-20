@@ -11,9 +11,9 @@ open scoped BigOperators
 namespace GlobalTheory.CosetCrit
 
 /- English proof (translation)
-Introduce `x hx`. Assume the negation of the conclusion as `h`. Establish `hinj : Function.Injective fun k : ℤ => k • x` using `smul_left_injective ℤ hx`. Establish `h1` using `(hq.comp hinj.tendsto_cofinite).eventually_gt_atTop 0`. Take `⟨k, hk⟩` from `h1.exists`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Function.comp, QuadraticMap.map_smul, zsmul_eq_mul] at hk`. Establish `: (0 : ℝ) ≤ ((k * k : ℤ) : ℝ)` using `by exact_mod_cast mul_self_nonneg k`. Use polynomial arithmetic with `[not_lt.1 h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem posDef_of_tendsto {X : Type} [AddCommGroup X] [Module.Free ℤ X] {q : QuadraticMap ℤ X ℝ}
     (hq : Filter.Tendsto q Filter.cofinite Filter.atTop) : q.PosDef := by
@@ -27,7 +27,7 @@ theorem posDef_of_tendsto {X : Type} [AddCommGroup X] [Module.Free ℤ X] {q : Q
   nlinarith [not_lt.1 h]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective fun χ : X => y + m • χ` using `fun a b h => by`. Establish `h1 : (m : ℤ) • a = (m : ℤ) • b` using `by simpa using h`. Conclude with `smul_right_injective X (by exact_mod_cast hm : (m : ℤ) ≠ 0) h1`. Conclude with `hq.comp hinj.tendsto_cofinite`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_class {X : Type} [AddCommGroup X] [Module.Free ℤ X] {q : QuadraticMap ℤ X ℝ}
     (hq : Filter.Tendsto q Filter.cofinite Filter.atTop) (y : X) {m : ℕ} (hm : m ≠ 0) :
@@ -38,11 +38,11 @@ theorem tendsto_class {X : Type} [AddCommGroup X] [Module.Free ℤ X] {q : Quadr
   exact hq.comp hinj.tendsto_cofinite
 
 /- English proof (translation)
-Establish `hroot : ∀ u : Cˣ, ∃ v : Cˣ, v ^ k = u` using `fun u => by`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (u : C) hk`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow hk.ne']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `u.ne_zero hz.symm`. Conclude with `⟨Units.mk0 z hz0, Units.ext (by simpa using hz)⟩`. Use `choose r hr using hroot`. Set `e` to `Module.Free.chooseBasis ℤ X`. Set `f : X →ₗ[ℤ] Additive Cˣ` to `e.constr ℤ fun i => Additive.ofMul (r (t (Multiplicative.ofAdd (e i))))`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hf : k • f = (MonoidHom.toAdditiveRight t).toIntLinearMap` using `e.ext fun i => by`. Simplify using `only [f, LinearMap.smul_apply, Module.Basis.constr_basis, ← ofMul_pow, hr]`. Both sides reduce to the same expression. Use `⟨AddMonoidHom.toMultiplicativeLeft f.toAddMonoidHom, MonoidHom.ext fun x => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Additive.toMul (LinearMap.congr_fun hf x.toAdd)`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_char_pow {C X : Type} [Field C] [IsAlgClosed C] [AddCommGroup X] [Module.Free ℤ X]
     (t : Multiplicative X →* Cˣ) {k : ℕ} (hk : 0 < k) : ∃ t' : Multiplicative X →* Cˣ, t' ^ k = t := by
@@ -69,7 +69,7 @@ variable {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteS
 omit [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] in
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.T.norm_rep_generators_and_thetaSeriesTerm C N q hI).2 m hm p χ]`. Conclude with `mul_le_of_le_one_right (Real.exp_pos _).le (hI.th _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_txT_le (hI : N.Int q) {m : ℕ} (hm : Odd m) (p : N.QT (m ^ 2)) (χ : N.X) :
     ‖N.txT m p χ‖ ≤ Real.exp (-(q (p.1.1.toAdd + m • χ) / (m : ℝ) ^ 2)) := by
@@ -79,7 +79,7 @@ theorem norm_txT_le (hI : N.Int q) {m : ℕ} (hm : Odd m) (p : N.QT (m ^ 2)) (χ
 omit [CompleteSpace C] [IsAlgClosed C] in
 
 /- English proof (translation)
-Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (Real.exp_pos _).le fun χ => ?_` and prove the remaining obligations. Use `(norm_txT_le hI hm p χ).trans (Real.exp_le_exp.2 (neg_le_neg ?_))` and prove the remaining obligations. Conclude with `div_le_div_of_nonneg_right (h₀ χ) (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_tx_le (hI : N.Int q) {m : ℕ} (hm : Odd m) (p : N.QT (m ^ 2)) {χ₀ : N.X}
     (h₀ : ∀ χ, q (p.1.1.toAdd + m • χ₀) ≤ q (p.1.1.toAdd + m • χ)) :
@@ -91,9 +91,9 @@ theorem norm_tx_le (hI : N.Int q) {m : ℕ} (hm : Odd m) (p : N.QT (m ^ 2)) {χ�
 omit [IsUltrametricDist C] [CompleteSpace C] in
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `GlobalTheory.T.degenerationData_torsion_structure_algClosed C N n g hn hT j`. Establish `hn0 : 0 < n` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hn)`. Take `⟨γ₀, rfl⟩` from `h1 t`. Take `⟨s, hs⟩` from `(N.exists_tor_iff (γ₀ ^ n)).2 (by rw [NumD.Gt.pow_b, ht])`. Take `⟨s', rfl⟩` from `exists_char_pow s hn0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ⟩` from `h2 (γ₀ * (N.tor s')⁻¹)`. Use `⟨γ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, pow_mul, hγ, mul_pow, inv_pow, ← N.tor_pow, hs, mul_inv_cancel]`. Rewrite using `[← NumD.Gt.pow_b, hγ]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_lift {n g : ℕ} (hn : (n : C) ≠ 0) (hT : N.Tors n g) (j : ℕ) {t : N.A} (ht : t ^ n = 1) :
     ∃ γ : N.Gt, γ ^ n ^ (j + 1) = 1 ∧ γ.b ^ n ^ j = t := by
@@ -109,23 +109,21 @@ theorem exists_lift {n g : ℕ} (hn : (n : C) ≠ 0) (hT : N.Tors n g) (j : ℕ)
     simp
 
 /- English proof (translation)
-Establish `hn0 : (n : C) ≠ 0`. Introduce `h`. Rewrite `hn` using `[h, norm_zero]`. Conclude with `zero_ne_one hn`. Establish `hm : Odd (n ^ j)` using `ho.pow`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : 0 < n ^ j` using `hm.pos`. Establish `hP` using `posDef_of_tendsto hI.pos`. Establish `hQ : ∀ γ : N.Gt, γ ^ n ^ (j + 1) = 1 → (1, γ) ∈ N.QT ((n ^ j) ^ 2)` using `fun γ hγ => by`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : n ^ (j + 1) ∣ (n ^ j) ^ 2 := by`. Rewrite using `[← pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_dvd_pow n (by omega)`. Rewrite using `[NumD.mem_QT, hc, pow_mul, hγ, one_pow]`. Conclude with `N.io_zero.symm`. Take `⟨t, ht, hth⟩` from `hT.good (N.c χ₀ * p.1.2.b ^ n ^ j)`. Take `⟨γ, hγ, hγb⟩` from `exists_lift hn0 hT j ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set p₁ : N.QT ((n ^ j) ^ 2) := p * ⟨(1, γ), hQ γ hγ⟩ with hp₁`. Establish `hy : p₁.1.1 = p.1.1` using `mul_one _`. Establish `hb : p₁.1.2 = p.1.2 * γ` using `rfl`. Use `haveI : NeZero (n : C) := ⟨hn0⟩`. Use `haveI : NeZero n := ⟨hp.ne_zero⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot C n`. Establish `hr : ∀ x : ℝ, Real.exp (-1) ^ x = Real.exp (-x)` using `fun x => by`. Rewrite using `[← Real.exp_mul, neg_one_mul]`. Establish `hsq : (0 : ℝ) < ((n ^ j : ℕ) : ℝ) ^ 2` using `by positivity`. Take `⟨s, hs, hle⟩` from `GlobalTheory.exists_torsion_twist_tsum_norm_ge C N.X n ζ hp.pos hn hζ (N.txT (n ^ j) p₁) (fun χ => q (p.1.1.toAdd + n ^ j • χ) / ((n ^ j : ℕ) : ℝ) ^ 2) (Real.exp (-1)) (Real.exp_pos _) (by simpa using Real.exp_lt_exp.2 (show (-1 : ℝ) < 0 by norm_num)) ((tendsto_class hI.pos _ hm0 …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `div_lt_div_of_pos_right ?_ hsq` and prove the remaining obligations. Use `GlobalTheory.ClassMin.lt_of_min_class_of_ne_zero hP (N := ((n ^ j : ℕ) : ℤ)) (n := (n : ℤ)) (a := p.1.1.toAdd + n ^ j • χ₀) (by exact_mod_cast hm0.ne') (by exact_mod_cast hp.two_le) (fun w => by rw [natCast_zsmul, add_assoc, ← smul_add]; exact h₀ _) hμ` as an intermediate fact. Rewrite using `[mul_comm, mul_smul, natCast_zsmul, natCast_zsmul, add_assoc, ← smul_add] at this)` and apply the resulting hypothesis. Take `⟨s', rfl⟩` from `exists_char_pow s hm0`. Establish `hs' : s' ^ n ^ (j + 1) = 1` using `by rw [pow_succ, pow_mul, hs]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hγ' : (γ * N.tor s') ^ n ^ (j + 1) = 1`. Rewrite using `[mul_pow, hγ, ← N.tor_pow, hs', N.tor_one, mul_one]`. Use `⟨⟨(1, γ * N.tor s'), hQ _ hγ'⟩, rfl, hγ', ?_⟩` and prove the remaining obligations. Use `set p₂ : N.QT ((n ^ j) ^ 2) := p * ⟨(1, γ * N.tor s'), hQ _ hγ'⟩ with hp₂`. Establish `hone : ∀ x, ‖(s' x : C)‖ = 1` using `fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖(s' x : C)‖ ^ n ^ (j + 1) = 1`. Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, ← MonoidHom.pow_apply, hs', MonoidHom.one_apply, Units.val_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (pow_ne_zero _ hp.ne_zero)).1 h1`. Establish `hterm : ∀ χ, N.txT (n ^ j) p₂ χ = ((s' p₁.1.1 : C) ^ (((n ^ j) ^ 2 - 1) / 2) * (s' p₁.1.1 : C)) * (N.txT (n ^ j) p₁ χ * ((s' ^ n ^ j) (Multiplicative.ofAdd χ) : C))` using `fun χ => by`. Rewrite using `[(GlobalTheory.T.thetaConstantTerm_representative_dependence C N (n ^ j) hm p₁ p₂ χ).2 s' ((mul_one _).trans hy.symm) (mul_assoc _ _ _).symm, ofAdd_add, ofAdd_nsmul, map_mul, map_pow, ofAdd_toAdd, MonoidHom.pow_apply]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[NumD.tx, funext hterm, tsum_mul_left, norm_mul, norm_mul, norm_pow, hone, one_pow, one_mul, one_mul, ← hr]`. Conclude with `hle`.
+A detailed English derivation is pending.
 -/
 theorem exists_norm_tx_ge (hI : N.Int q) {n g : ℕ} (hp : n.Prime) (ho : Odd n) (hn : ‖(n : C)‖ = 1)
     (hT : N.Tors n g) {j : ℕ} (hj : 1 ≤ j) (p : N.QT ((n ^ j) ^ 2)) {χ₀ : N.X}
@@ -194,15 +192,15 @@ theorem exists_norm_tx_ge (hI : N.Int q) {n g : ℕ} (hp : n.Prime) (ho : Odd n)
 end GlobalTheory.CosetCrit
 
 /- English proof (translation)
-Introduce `C _ _ _ _ N q hI n g hp ho hn hT j hj`. Establish `hm : Odd (n ^ j)` using `ho.pow`. Establish `hP` using `GlobalTheory.CosetCrit.posDef_of_tendsto hI.pos`. Establish `hsq : (0 : ℝ) < ((n ^ j : ℕ) : ℝ) ^ 2` using `by have := hm.pos; positivity`. Establish `hmin : ∀ p : N.QT ((n ^ j) ^ 2), ∃ χ₀, ∀ χ, q (p.1.1.toAdd + n ^ j • χ₀) ≤ q (p.1.1.toAdd + n ^ j • χ)` using `fun p => (GlobalTheory.CosetCrit.tendsto_class hI.pos _ hm.pos.ne').exists_forall_le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ p : N.QT ((n ^ j) ^ 2), ‖N.tx (n ^ j) p‖ ≤ 1` using `fun p => by`. Take `⟨χ₀, h₀⟩` from `hmin p`. Use `(GlobalTheory.CosetCrit.norm_tx_le hI hm p h₀).trans (Real.exp_le_one_iff.2 (neg_nonpos.2 ?_))` and prove the remaining obligations. Conclude with `div_nonneg (hP.nonneg _) hsq.le`. Use `⟨fun p => ⟨h1 p, fun h => ?_⟩, fun p hp1 => ?_, fun p => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨χ₀, h₀⟩` from `hmin p`. Establish `h2` using `GlobalTheory.CosetCrit.norm_tx_le hI hm p h₀`. Rewrite `h2` using `[h, Real.one_le_exp_iff, neg_nonneg]`. Use `⟨-χ₀, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_neg, eq_neg_iff_add_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h3`. Conclude with `(div_pos (hP _ h3) hsq).not_ge h2`. Take `⟨h, ha, hb, hc⟩` from `GlobalTheory.CosetCrit.exists_norm_tx_ge hI hp ho hn hT hj p (χ₀ := 0) (fun χ => by`. Rewrite using `[hp1, toAdd_one, smul_zero, add_zero, map_zero]`. Conclude with `hP.nonneg _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨h, ha, hb, le_antisymm (h1 _) ?_⟩` and prove the remaining obligations. Simplify `hc` using `[hp1]`. Take `⟨χ₀, h₀⟩` from `hmin p`. Take `⟨h, ha, hb, hc⟩` from `GlobalTheory.CosetCrit.exists_norm_tx_ge hI hp ho hn hT hj p h₀`. Conclude with `⟨h, ha, hb, norm_pos_iff.1 ((Real.exp_pos _).trans_le hc)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.tx_coset_criterion : ∀ (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] (N : NumD C) (q : QuadraticMap ℤ N.X ℝ), N.Int q → ∀ n g : ℕ, n.Prime → Odd n → ‖(n : C)‖ = 1 → N.Tors n g → ∀ j : ℕ, 1 ≤ j → (∀ p : N.QT ((n ^ j) ^ 2), ‖N.tx (n ^ j) p‖ ≤ 1 ∧ (‖N.tx (n ^ j) p‖ = 1 → ∃ z, p.1.1.toAdd = n ^ j • z)) ∧ (∀ p : N.QT ((n ^ j) ^ 2), p.1.1 = 1 → ∃ h : N.QT ((n ^ j) ^ 2), h.1.1 = 1 ∧ h.1.2 ^ n ^ (j + 1) = 1 ∧ ‖N.tx (n ^ j) (p * h)‖ = 1) ∧ ∀ p : N.QT ((n ^ j) ^ 2), ∃ h : N.QT ((n ^ j) ^ 2), h.1.1 = 1 ∧ h.1.2 ^ n ^ (j + 1) = 1 ∧ N.tx (n ^ j) (p * h) ≠ 0 := by
   intro C _ _ _ _ N q hI n g hp ho hn hT j hj

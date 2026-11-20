@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.LevProd
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : B.Word} {a : _root_.GlobalTheory.Fam.GeometricFamily W u} {t : W.P.T}
 /- English proof (translation)
-Establish `h1` using `(J.G i).hs`. Establish `h2 : (I.rec7 l Z).R.m = B.R.m` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem step_index_le_s_alt (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t) (i : Fin J.r) {j : ℕ} (hj : j + 2 ≤ B.R.m) : j ≤ (J.G i).s := by
   have h1 := (J.G i).hs
@@ -39,7 +39,7 @@ def upperLevelSubgroup (a : _root_.GlobalTheory.Fam.GeometricFamily W u) (j : �
     _root_.GlobalTheory.LevProd.relaxedLevelSubgroup h.choose_spec.choose j hj h.choose_spec.choose_spec.2.some
   else ⊥
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.LevProd.upperLevelSubgroup`. Use `split_ifs`. Introduce `g hg`. Conclude with `(Subgroup.mem_inf.1 (Subgroup.mem_inf.1 hg).1).2`. Conclude with `bot_le`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem upperLevelSubgroup_le_GfC (a : _root_.GlobalTheory.Fam.GeometricFamily W u) (j : ℕ) (hj : j + 2 ≤ B.R.m) : _root_.GlobalTheory.LevProd.upperLevelSubgroup a j hj ≤ GfC _ := by
   unfold _root_.GlobalTheory.LevProd.upperLevelSubgroup
@@ -48,7 +48,7 @@ theorem upperLevelSubgroup_le_GfC (a : _root_.GlobalTheory.Fam.GeometricFamily W
     exact (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 hg).1).2
   · exact bot_le
 /- English proof (translation)
-The claim follows from `(J.E i).wt_mid j ((J.G i).s - j) (Nat.add_sub_cancel' (_root_.GlobalTheory.LevProd.step_index_le_s_alt J i hj)) (α i)`.
+A detailed English derivation is pending.
 -/
 theorem wt_eq_inv_measure_levelSubgroupAtPlace {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : B.Word} {a : _root_.GlobalTheory.Fam.GeometricFamily W u} {t : W.P.T} (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t) (j : ℕ) (hj : j + 2 ≤ B.R.m) (α : J.Ch j) (i : Fin J.r) :
     (J.E i).wt j (α i) = ((((J.E i).m j (_root_.GlobalTheory.LevProd.levelSubgroupAtPlace J j hj α i)).toReal⁻¹ : ℝ) : ℂ) :=

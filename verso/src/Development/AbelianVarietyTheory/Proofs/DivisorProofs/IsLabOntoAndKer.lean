@@ -12,27 +12,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ _ _ _ _ _ _ _ ε₁ _ p _ z₁ c yy hl`. Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', ε', -, -, hR', y₀, hy₀, u, l, j, -, hyy, -⟩` from `hl`. Establish `hm : NeZero (X₁.S.r * X₁.S.N)` using `⟨Nat.mul_ne_zero (by have := X₁.S.r_pos; omega) (by have := X₁.S.N_ge; omega)⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨χ', rfl⟩` from `QuotientAddGroup.mk_surjective m`. Take `⟨a, ha⟩` from `l.yy_onto (QuotientAddGroup.mk (j.symm χ'))`. Conclude with `⟨a, by rw [hyy a _ ha, j.apply_symm_apply]⟩`. Establish `hker : yy.ker = l.yy.ker`. Use extensionality with `a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [AddMonoidHom.mem_ker]`. Take `⟨χ, hχ⟩` from `QuotientAddGroup.mk_surjective (l.yy a)`. Rewrite using `[hyy a χ hχ.symm, ← hχ, QuotientAddGroup.eq_zero_iff, QuotientAddGroup.eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨j.symm v, ?_⟩` and prove the remaining obligations. Simplify using `only [nsmulAddMonoidHom_apply] at hv ⊢`. Rewrite using `[← map_nsmul, hv, j.symm_apply_apply]`. Introduce and unpack `⟨v, hv⟩`. Use `⟨j v, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [nsmulAddMonoidHom_apply] at hv ⊢`. Rewrite using `[← map_nsmul, hv]`. Establish `hint : ∀ a : X₁.o₁, ‖y₀ (algebraMap X₁.o₁ R' a)‖ ≤ 1` using `fun a => by`. Rewrite using `[hy₀]`. Conclude with `RatModel.norm_val_le_one c.cen ((X₁.M.O z₁).algebraMap_mem a)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcl` using `GlobalTheory.UnitTheta.closure_unit_theta GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 GlobalTheory.ZH.uTors_closed _ _ _ ρ' p y₀ u l hint`. Rewrite using `[hker, ← hcl.2]`. Take `⟨x₀, hx₀⟩` from `X₁.div z₁`. Use `set val := X₁.M.val (gPt p ≫ c.y) with hval`. Establish `hsp : ∀ w, (gPt p ≫ c.y) w ⤳ (gPt p ≫ c.y) (IsLocalRing.closedPoint (PadicAlgCl p))` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton _ _)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgz : (gPt p ≫ c.y) (IsLocalRing.closedPoint (PadicAlgCl p)) ⤳ z₁` using `RatModel.gPt_specializes c.cen _`. Establish `hy : ∀ x, y₀ ⟨c₀ * X₁.S.th x, hth x⟩ = val (c₀ * X₁.S.th x)` using `fun x => hy₀ _`. Establish `hmul : ∀ x, ‖val (c₀ * X₁.S.th x)‖ = ‖val (X₁.S.th x / X₁.S.th x₀)‖ * ‖val (c₀ * X₁.S.th x₀)‖`. Introduce `x`. Rewrite using `[← norm_mul, hval, ← RatModel.val_mul hsp (RatModel.O_le_of_specializes hgz (hx₀.2 x)) (hR' (hth x₀))]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 2`. Use `hx₀.1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `hδ : ‖val (c₀ * X₁.S.th x₀)‖ = (X₁.S.rechart c₀ hc R' fg frac hth hev).delta y₀`. Apply `le_antisymm` to reduce the goal to its premises.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hy]`. Conclude with `le_ciSup (f := fun x => ‖y₀ ⟨c₀ * X₁.S.th x, hth x⟩‖) (Set.finite_range _).bddAbove x₀`. Take `⟨x₁, hx₁⟩` from `exists_eq_ciSup_of_finite (f := fun x => ‖y₀ ⟨c₀ * X₁.S.th x, hth x⟩‖)`. Express the relevant statement in the definitionally equal form `⨆ x, ‖y₀ ⟨c₀ * X₁.S.th x, hth x⟩‖ ≤ _`. Rewrite using `[← hx₁, hy, hmul x₁]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `mul_le_of_le_one_left (norm_nonneg _) (RatModel.norm_val_le_one c.cen (hx₀.2 x₁))`. Establish `key : ∀ x, x ∈ X₁.S.supI X₁.M z₁ ↔ ‖y₀ ⟨c₀ * X₁.S.th x, hth x⟩‖ = (X₁.S.rechart c₀ hc R' fg frac hth hev).delta y₀`. Introduce `x`. Express the relevant statement in the definitionally equal form `X₁.M.Div X₁.S.th x z₁ ↔ _`. Rewrite using `[hx₀.div_iff_isUnit x, ← RatModel.norm_val_eq_one_iff c.cen (hx₀.2 x), hy, hmul x, hδ]`.
-
-Conclude with `(mul_eq_right₀ hcl.1.ne').symm`. Rewrite using `[ThetaSys.HH]`. Use `congr 1`. Use extensionality with `x`. Conclude with `(key x).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isLab_onto_and_ker : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i), 1 ≤ g → 3 ≤ n → Odd n → IsOpenImmersion i → IsE8 W → ThetaInt F W i → IsProjOver X₁.M.s → ∀ (ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsDiagEnd F W X₁.ρ.P X₁.u ε₁ → ∀ (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z) (c : CTrait X₁ p z₁) (yy : X₁.S.Gam →+ ModN (X₁.S.r * X₁.S.N) (Fin 8 → c.T.D.toPre.X)), IsLab X₁ ε₁ c yy → Function.Surjective yy ∧ yy.ker = X₁.S.HH X₁.M z₁ := by
   intro g n F W Z i X₁ _ _ _ _ _ _ _ ε₁ _ p _ z₁ c yy hl

@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Separ
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Use `show ∏ i, (((w (Fin.revPerm i)) ^ (-l (Fin.rev i)) : ℂˣ) : ℂ) = (starRingEnd ℂ) (∏ i, ((w i ^ l i : ℂˣ) : ℂ))`. Rewrite using `[map_prod, ← Equiv.prod_comp Fin.revPerm (fun k => (starRingEnd ℂ) ((w k ^ l k : ℂˣ) : ℂ))]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply, Units.val_zpow_eq_zpow_val, map_zpow₀]`. Rewrite using `[← Complex.inv_eq_conj (hw _), zpow_neg, inv_zpow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mono_term {n : ℕ} (l : Fin n → ℤ) (w : Fin n → ℂˣ) (hw : ∀ i, ‖(w i : ℂ)‖ = 1) :
     monomialChar (fun i => -l (Fin.rev i)) (w ∘ Fin.revPerm) =
@@ -16,17 +16,17 @@ private theorem mono_term {n : ℕ} (l : Fin n → ℤ) (w : Fin n → ℂˣ) (h
   rw [← Complex.inv_eq_conj (hw _), zpow_neg, inv_zpow]
 
 /- English proof (translation)
-Rewrite using `[map_prod]`. Use `Finset.prod_nbij' (fun p => (Fin.rev p.2, Fin.rev p.1)) (fun p => (Fin.rev p.2, Fin.rev p.1)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [prs, Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢`. Conclude with `Fin.rev_lt_rev.mpr hp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Simplify using `only [prs, Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢`. Conclude with `Fin.rev_lt_rev.mpr hp`. Introduce `p _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p _`. Simplify using the standard rewrite rules. Introduce `p hp`. Simplify using `only [prs, Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Establish `hne : Fin.rev p.2 ≠ Fin.rev p.1` using `fun h => (ne_of_lt hp) (Fin.rev_injective h).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : (w (Fin.rev p.2) : ℂ) ≠ (w (Fin.rev p.1) : ℂ)` using `fun h => hne (hinj (Units.val_injective h))`. Establish `ha : (w (Fin.rev p.2) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `hb : (w (Fin.rev p.1) : ℂ) ≠ 0` using `Units.ne_zero _`. Simplify using `only [map_div₀, map_sub, map_mul, Complex.conj_ofReal]`. Rewrite using `[← Complex.inv_eq_conj (hw _), ← Complex.inv_eq_conj (hw _)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(w (Fin.rev p.2) : ℂ) = a at *`. Generalize the expression as in `(w (Fin.rev p.1) : ℂ) = b at *`. Establish `h1 : b - a ≠ 0` using `sub_ne_zero.mpr (Ne.symm hab)`. Establish `h2 : a⁻¹ - b⁻¹ ≠ 0`. Rewrite using `[inv_sub_inv ha hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `div_ne_zero h1 (mul_ne_zero ha hb)`. Rewrite using `[div_eq_div_iff h1 h2]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 private theorem pair_term {n : ℕ} (t : ℝ) (w : Fin n → ℂˣ) (hinj : Function.Injective w)
     (hw : ∀ i, ‖(w i : ℂ)‖ = 1) :
@@ -66,11 +66,11 @@ private theorem pair_term {n : ℕ} (t : ℝ) (w : Fin n → ℂˣ) (hinj : Func
     field_simp
 
 /- English proof (translation)
-Introduce `hR n t l z hinj hz`. Rewrite using `[hR n t _ z hinj, hR n t l z hinj, map_sum]`. Use `(Fintype.sum_equiv (Equiv.mulRight (Fin.revPerm : Equiv.Perm (Fin n))) _ _ ?_).symm` and prove the remaining obligations. Introduce `σ`. Establish `hw : ∀ i, ‖((z ∘ σ) i : ℂ)‖ = 1` using `fun i => hz _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi : Function.Injective (z ∘ σ)` using `hinj.comp σ.injective`. Establish `h1` using `mono_term l (z ∘ σ) hw`. Establish `h2` using `pair_term t (z ∘ σ) hi hw`. Rewrite using `[map_mul]`. Simplify using `only [Function.comp_apply] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, ← h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.Gal.Gen.rConj_pf :
     UpperTheory.Gal.Gen.RFormula → UpperTheory.Gal.Gen.RConj := by

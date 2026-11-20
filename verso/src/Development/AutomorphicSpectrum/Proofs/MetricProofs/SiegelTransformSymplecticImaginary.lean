@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Univ
 
 /- English proof (translation)
-Simplify using `only [dotProduct, mulVec, Finset.sum_apply, star_sum, star_mul', Pi.star_apply, transpose_apply, conjTranspose_apply, Finset.mul_sum, RCLike.star_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_dotProduct_mulVec_eq {I : Type} [Fintype I] (M : Matrix I I ℂ) (a b : I → ℂ) :
     star (a ⬝ᵥ M *ᵥ b) = star a ⬝ᵥ (Mᴴ)ᵀ *ᵥ star b := by
@@ -19,29 +19,29 @@ theorem star_dotProduct_mulVec_eq {I : Type} [Fintype I] (M : Matrix I I ℂ) (a
     conjTranspose_apply, Finset.mul_sum, RCLike.star_def]
 
 /- English proof (translation)
-Take `⟨B, hBdef⟩ : ∃ B, B = Zᴴ` from `⟨_, rfl⟩`. Rewrite `hP`, the goal using `[← hBdef]`. Establish `hBt : Bᵀ = B`. Rewrite using `[hBdef]`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [transpose_apply, conjTranspose_apply]`. Rewrite using `[← transpose_apply Z i j, hZ]`. Establish `hBh : Bᴴ = Z` using `by rw [hBdef, conjTranspose_conjTranspose]`. Establish `hdet : IsUnit (1 - B * Z).det` using `(Matrix.isUnit_iff_isUnit_det _).1 hP.isUnit`. Take `⟨H, hHdef⟩ : ∃ H, H = (1 - B * Z)⁻¹` from `⟨_, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hHdef]`. Establish `h1 : H * (1 - B * Z) = 1` using `by rw [hHdef]; exact Matrix.nonsing_inv_mul _ hdet`. Establish `h2 : (1 - B * Z) * H = 1` using `by rw [hHdef]; exact Matrix.mul_nonsing_inv _ hdet`. Establish `hHh : Hᴴ = H` using `by rw [hHdef]; exact hP.inv.isHermitian.eq`. Establish `hT : (1 - B * Z)ᵀ = 1 - Z * B`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[transpose_sub, transpose_one, transpose_mul, hZ, hBt]`. Establish `h3 : Hᵀ * (1 - Z * B) = 1`. Use `congrArg transpose h2` as an intermediate fact. Rewrite `this` using `[transpose_mul, hT, transpose_one]`. Then use the resulting hypothesis. Establish `h4 : (1 - Z * B) * Hᵀ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `congrArg transpose h1` as an intermediate fact. Rewrite `this` using `[transpose_mul, hT, transpose_one]`. Then use the resulting hypothesis. Establish `c1 : B * (1 - Z * B) = (1 - B * Z) * B`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc]`. Establish `c2 : Z * (1 - B * Z) = (1 - Z * B) * Z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc]`. Establish `K : H * B = B * Hᵀ`. Combine the equalities or inequalities in the displayed calculation. Establish `K2 : Z * H = Hᵀ * Z`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hHB : H = 1 + H * B * Z`. Establish `: H * (1 - B * Z) = H - H * B * Z`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, Matrix.mul_assoc]`. Rewrite `h1` using `[this]`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hs : star (tz Z w) = star w - B *ᵥ w`. Unfold `tz`. Rewrite using `[star_sub, star_mulVec, star_star, ← hBdef, ← mulVec_transpose, hBt]`. Establish `dz : ∀ y : I → ℂ, (Z *ᵥ star z) ⬝ᵥ y = star z ⬝ᵥ Z *ᵥ y`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[dotProduct_mulVec (star z), ← mulVec_transpose, hZ]`. Establish `e1 : z ⬝ᵥ H *ᵥ star w = z ⬝ᵥ star w + z ⬝ᵥ (H * B * Z) *ᵥ star w` using `by conv_lhs => rw [hHB]`. Rewrite using `[add_mulVec, one_mulVec, dotProduct_add]`. Establish `e2 : z ⬝ᵥ H *ᵥ B *ᵥ w = z ⬝ᵥ (H * B) *ᵥ w` using `by rw [mulVec_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : (Z *ᵥ star z) ⬝ᵥ H *ᵥ star w = star z ⬝ᵥ (Z * H) *ᵥ star w`. Rewrite using `[dz, mulVec_mulVec]`. Establish `e4 : (Z *ᵥ star z) ⬝ᵥ H *ᵥ B *ᵥ w = star z ⬝ᵥ (Z * H * B) *ᵥ w`. Rewrite using `[dz, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`. Establish `s3 : star (z ⬝ᵥ (H * B) *ᵥ w) = star z ⬝ᵥ (Z * H) *ᵥ star w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[star_dotProduct_mulVec_eq, conjTranspose_mul, hBh, hHh, transpose_mul, hZ, ← K2]`. Establish `s4 : star (star z ⬝ᵥ (Z * H * B) *ᵥ w) = z ⬝ᵥ (H * B * Z) *ᵥ star w`. Rewrite using `[star_dotProduct_mulVec_eq, star_star, conjTranspose_mul, conjTranspose_mul, hBh, hHh, ← hBdef, transpose_mul, transpose_mul, hZ, hBt, ← K]`. Establish `main : tz Z z ⬝ᵥ H *ᵥ star (tz Z w) = z ⬝ᵥ star w + star (star z ⬝ᵥ (Z * H * B) *ᵥ w) - z ⬝ᵥ (H * B) *ᵥ w - star (z ⬝ᵥ (H * B) *ᵥ w) + star z ⬝ᵥ (Z * H * B) *ᵥ w`. Rewrite using `[hs, s3, s4]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `tz`. Rewrite using `[mulVec_sub, sub_dotProduct, dotProduct_sub, dotProduct_sub, e1, e2, e3, e4]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[main]`. Simplify using `only [Complex.add_im, Complex.sub_im, Complex.star_def, Complex.conj_im]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -118,7 +118,7 @@ theorem im_tz_form {I : Type} [Fintype I] [DecidableEq I] (Z : Matrix I I ℂ) (
   ring
 
 /- English proof (translation)
-Introduce `Z hZ hP z w` and use `im_tz_form Z hZ hP z w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem im_tz_form' : ∀ {I : Type} [Fintype I] [DecidableEq I] (Z : Matrix I I ℂ), Zᵀ = Z → (1 - Zᴴ * Z).PosDef → ∀ z w : I → ℂ, (tz Z z ⬝ᵥ (1 - Zᴴ * Z)⁻¹ *ᵥ star (tz Z w)).im = (z ⬝ᵥ star w).im :=
   fun Z hZ hP z w => im_tz_form Z hZ hP z w

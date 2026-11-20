@@ -8,21 +8,17 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.IdeleModBdd
 
 /- English proof (translation)
-Introduce `K _ _ C hC`. Set `U : Finset (HeightOneSpectrum (𝓞 K)) → Set (AdeleRing (𝓞 K) K)` to `fun S => {x | ∀ v, v ∉ S → x.2 v ∈ v.adicCompletionIntegers K}`. Establish `hUo : ∀ S, IsOpen (U S)` using `fun S => (RestrictedProduct.isOpen_forall_imp_mem (fun v => Valued.isOpen_valuationSubring _) (p := fun v : HeightOneSpectrum (𝓞 K) => v ∉ S)).preimage continuous_snd`. Establish `hcov : C ⊆ ⋃ S, U S`. Introduce `x _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfin : {v : HeightOneSpectrum (𝓞 K) | ¬ x.2 v ∈ v.adicCompletionIntegers K}.Finite` using `Filter.eventually_cofinite.1 x.2.2`. Conclude with `Set.mem_iUnion.2 ⟨hfin.toFinset, fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (hfin.mem_toFinset.2 h)⟩`. Establish `hdir : Directed (· ⊆ ·) U` using `fun S T => ⟨S ∪ T, fun x hx v hv => hx v fun h => hv (Finset.mem_union_left _ h), fun x hx v hv => hx v fun h => hv (Finset.mem_union_right _ h)⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨S, hS⟩` from `hC.elim_directed_cover U hUo hcov hdir`. Establish `hfinB : ∀ v : HeightOneSpectrum (𝓞 K), ∃ B : ℝ, ∀ x ∈ C, ‖x.2 v‖ ≤ B` using `fun v => by`. Establish `hc : Continuous fun x : AdeleRing (𝓞 K) K => ‖x.2 v‖` using `continuous_norm.comp ((RestrictedProduct.continuous_eval v).comp continuous_snd)`. Take `⟨B, hB⟩` from `(hC.image hc).bddAbove`. Conclude with `⟨B, fun x hx => hB ⟨x, hx, rfl⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinfB : ∀ w : InfinitePlace K, ∃ B : ℝ, ∀ x ∈ C, ‖x.1 w‖ ≤ B` using `fun w => by`. Establish `hc : Continuous fun x : AdeleRing (𝓞 K) K => ‖x.1 w‖` using `continuous_norm.comp ((continuous_apply w).comp continuous_fst)`. Take `⟨B, hB⟩` from `(hC.image hc).bddAbove`. Conclude with `⟨B, fun x hx => hB ⟨x, hx, rfl⟩⟩`. Use `choose Bf hBf using hfinB`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `choose Bi hBi using hinfB`. Use `⟨(∏ w : InfinitePlace K, max (Bi w) 0 ^ w.mult) * ∏ v ∈ S, max (Bf v) 1, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Rewrite using `[IdeleGroup.ideleModule_eq]`. Establish `h1 : ∏ w : InfinitePlace K, ‖(a : AdeleRing (𝓞 K) K).1 w‖ ^ w.mult ≤ ∏ w : InfinitePlace K, max (Bi w) 0 ^ w.mult` using `Finset.prod_le_prod (fun _ _ => by positivity) fun w _ => pow_le_pow_left₀ (norm_nonneg _) ((hBi w _ ha).trans (le_max_left _ _)) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∏ᶠ v : HeightOneSpectrum (𝓞 K), ‖(a : AdeleRing (𝓞 K) K).2 v‖ ≤ ∏ v ∈ S, max (Bf v) 1`. Establish `hfs` using `IdeleGroup.finite_mulSupport_norm a`. Establish `hsub : Function.mulSupport (fun v : HeightOneSpectrum (𝓞 K) => ‖(a : AdeleRing (𝓞 K) K).2 v‖) ⊆ ((hfs.toFinset ∪ S : Finset _) : Set _)` using `fun v hv => by`. Simplify using `only [Finset.coe_union, Set.Finite.coe_toFinset]`. Conclude with `Or.inl hv`.
-
-Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun v _ => ?_` and prove the remaining obligations. Use `split_ifs with hv`. Conclude with `(hBf v _ ha).trans (le_max_left _ _)`.
-
-Conclude with `(Valued.toNormedField.norm_le_one_iff).2 ((HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 K) K v).1 (hS ha v hv))`. Use `_ = ∏ v ∈ S, (if v ∈ S then max (Bf v) 1 else 1) := (Finset.prod_subset Finset.subset_union_right fun v _ hv => if_neg hv).symm`. Use `_ = ∏ v ∈ S, max (Bf v) 1 := Finset.prod_congr rfl fun v hv => if_pos hv`. Conclude with `mul_le_mul h1 h2 (IdeleGroup.finiteModule_pos a).le (Finset.prod_nonneg fun _ _ => by positivity)`.
+Prove the first alternative. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ideleModule_bounded_on_compact : ∀ (K : Type) [Field K] [NumberField K] (C : Set (AdeleRing (𝓞 K) K)), IsCompact C → ∃ R : ℝ, ∀ a : IdeleGroup K, (a : AdeleRing (𝓞 K) K) ∈ C → (IdeleGroup.ideleModule K a : ℝ) ≤ R := by
   intro K _ _ C hC

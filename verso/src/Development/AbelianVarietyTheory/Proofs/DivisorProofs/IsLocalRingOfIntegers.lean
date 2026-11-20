@@ -10,9 +10,9 @@ open WittVector CategoryTheory Opposite Matrix GlobalTheory GlobalTheory.PDivGro
 namespace GlobalTheory.ConstDatum
 
 /- English proof (translation)
-Use `haveI : Nontrivial O := (algebraMap O C).domain_nontrivial`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h1 : v (algebraMap O C a) < 1` using `lt_of_le_of_ne (hv.map_le_one a) (fun e => h.1 (hv.isUnit_of_one' e))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : v (algebraMap O C (1 - a)) < 1` using `lt_of_le_of_ne (hv.map_le_one _) (fun e => h.2 (hv.isUnit_of_one' e))`. Establish `h3` using `v.map_add (algebraMap O C a) (algebraMap O C (1 - a))`. Establish `h4 : algebraMap O C a + algebraMap O C (1 - a) = 1` using `by rw [← map_add]; simp`. Rewrite `h3` using `[h4, v.map_one]`. Conclude with `lt_irrefl _ (lt_of_le_of_lt h3 (max_lt h1 h2))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalRing_of_integers {C : Type} [Field C] {v : Valuation C NNReal} {O : Type}
     [CommRing O] [Algebra O C] (hv : v.Integers O) : IsLocalRing O := by
@@ -33,20 +33,20 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
   [IsAdicComplete (Ideal.span {(p : O)}) O]
 
 /- English proof (translation)
-Simplify using `[Datum.al, etale, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem etale_al (ε : PreTilt O p) (h : ℕ) (y : Fin h → O) : (etale ε h).al y = y := by
   simp [Datum.al, etale, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Rewrite using `[Sandwich.mu, map_sub, fontaineTheta_teichmuller, map_one, sub_eq_zero]`. Conclude with `hε.zeta_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_mu {ε : PreTilt O p} (hε : IsPrimitiveSystem ε) : fontaineTheta O p (Sandwich.mu ε) = 0 := by
   rw [Sandwich.mu, map_sub, fontaineTheta_teichmuller, map_one, sub_eq_zero]
   exact hε.zeta_zero
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Datum.bb, etale, Matrix.mulVec, dotProduct, theta_mu hε]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem etale_bb {ε : PreTilt O p} (hε : IsPrimitiveSystem ε) (h : ℕ) (y : Fin h → O) :
     (etale ε h).bb y = 0 := by
@@ -54,7 +54,7 @@ theorem etale_bb {ε : PreTilt O p} (hε : IsPrimitiveSystem ε) (h : ℕ) (y : 
   simp [Datum.bb, etale, Matrix.mulVec, dotProduct, theta_mu hε]
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun y _ => etale_bb hε h y`.
+A detailed English derivation is pending.
 -/
 theorem etale_Fil {ε : PreTilt O p} (hε : IsPrimitiveSystem ε) (h : ℕ) : (etale ε h).Fil = ⊤ :=
   eq_top_iff.2 fun y _ => etale_bb hε h y
@@ -64,19 +64,15 @@ end GlobalTheory.ConstDatum
 open GlobalTheory.ConstDatum in
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε G hG`. Use `haveI := GlobalTheory.PointGroup.isIntegrallyClosedIn_of_integers hv`. Use `haveI := isLocalRing_of_integers hv`. Take `⟨hω, hbij⟩` from `GlobalTheory.T.constantPDivGroup_omega_trivial_hodgeTate_basis p C v O hv G hG`. Use `haveI := GlobalTheory.PointGroup.finite_tate hv G`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI := GlobalTheory.PointGroup.free_tate hv G`. Establish `hrank : Module.finrank ℤ_[p] G.Tate = G.height` using `G.finrank_tate C`. Set `e : G.Tate ≃ₗ[ℤ_[p]] (Fin G.height → ℤ_[p])` to `LinearEquiv.ofFinrankEq _ _ (by rw [hrank, Module.finrank_fin_fun])`. Set `b : Module.Basis (Fin G.height) ℤ_[p] G.Tate` to `Module.Basis.ofEquivFun e`. Set `Φ` to `LinearEquiv.ofBijective _ (hbij G.height b)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `D` to `etale ε G.height`. Establish `hF : D.Fil = ⊤` using `etale_Fil hε G.height`. Set `fil : G.dual.omega ≃ₗ[O] D.Fil` to `Φ.symm ≪≫ₗ (LinearEquiv.ofTop _ hF).symm`. Use `haveI : Subsingleton G.Lie := ⟨fun f g => LinearMap.ext fun w => by rw [Subsingleton.elim w 0, map_zero, map_zero]⟩`. Use `haveI : Subsingleton ((Fin G.height → O) ⧸ D.Fil) := ⟨fun a b => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩` from `D.Fil.mkQ_surjective a`. Take `⟨b, rfl⟩` from `D.Fil.mkQ_surjective b`. Conclude with `(Submodule.Quotient.eq D.Fil).2 (by rw [hF]; exact Submodule.mem_top)⟩`. Use `⟨D, e, fil, LinearEquiv.ofSubsingleton _ _, fun t => ?_, fun x χ => ?_⟩` and prove the remaining obligations. Rewrite using `[etale_al]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `toO e t = ((LinearEquiv.ofTop _ hF).symm (Φ.symm (hodgeTate G t)) : Fin G.height → O)`. Rewrite using `[LinearEquiv.coe_ofTop_symm_apply, LinearEquiv.eq_symm_apply]`. Express the relevant statement in the definitionally equal form `Fintype.linearCombination O (fun i => hodgeTate G (b i)) (toO e t) = hodgeTate G t`. Rewrite using `[Fintype.linearCombination_apply]`. Establish `hb : b.equivFun = e` using `Module.Basis.equivFun_ofEquivFun e`.
-
-Use `conv_rhs => rw [← b.sum_equivFun t]`. Rewrite using `[map_sum, hb]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hodgeTate_smul (padicToO p O)]`. Both sides reduce to the same expression.
-
-Rewrite using `[Subsingleton.elim x 0]`. Simplify using `[pairingO]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PDivLat.hasDatum_of_isConst : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ G : PDivGroup p O, IsConst G → HasDatum hε G := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε G hG

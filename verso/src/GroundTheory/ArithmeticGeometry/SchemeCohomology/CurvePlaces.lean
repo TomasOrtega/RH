@@ -14,27 +14,27 @@ namespace GroundTheory.Arith.SchemeCoh
 section Valuation
 
 /- English proof (translation)
-Establish `disc : ∀ x : ℤᵐ⁰, x ≠ 0 → x < 1 → x ≤ WithZero.exp (-1)`. Introduce `x hx h1`. Rewrite `h1`, the goal using `[← WithZero.exp_log hx]`. Rewrite `h1` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `lt1 : ∀ x, v x < 1 ↔ w x < 1` using `fun x => by`. Establish `h1` using `h 1 x`. Simplify using `only [map_one] at h1`. Rewrite using `[← not_le, ← not_le, h1]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `eq1 : ∀ x, v x = 1 ↔ w x = 1` using `fun x => by`. Establish `h1` using `h 1 x`. Establish `h2` using `h x 1`. Simplify using `only [map_one] at h1 h2`. Rewrite using `[le_antisymm_iff, le_antisymm_iff, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨π, hπ⟩` from `hw (WithZero.exp (-1))`. Take `⟨ϖ, hϖ⟩` from `hv (WithZero.exp (-1))`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.exp_ne_zero hπ.symm`. Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hϖ` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hϖ.symm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hexp : WithZero.exp (-1 : ℤ) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Establish `hvπ : v π = WithZero.exp (-1)`. Use `le_antisymm ?_ ?_` and prove the remaining obligations.
+Evaluate the numerical expressions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `disc _ ((Valuation.ne_zero_iff _).mpr hπ0) ((lt1 π).mpr (hπ ▸ hexp))`. Rewrite using `[← hϖ]`. Use `(h ϖ π).mpr ?_` and prove the remaining obligations. Rewrite using `[hπ]`. Conclude with `disc _ ((Valuation.ne_zero_iff _).mpr hϖ0) ((lt1 ϖ).mp (hϖ ▸ hexp))`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `f`. Distinguish the cases in `hf : f = 0`. Simplify using `[hf]`. Establish `hwf : w f ≠ 0` using `(Valuation.ne_zero_iff _).mpr hf`. Use `set n := WithZero.log (w f) with hn`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hwf' : w f = WithZero.exp n` using `(WithZero.exp_log hwf).symm`. Establish `hpow : ∀ u : Valuation K ℤᵐ⁰, u π = WithZero.exp (-1) → u (f * π ^ n) = u f * WithZero.exp (-n)`. Introduce `u hu`. Rewrite using `[map_mul, map_zpow₀, hu, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg : w (f * π ^ n) = 1`. Rewrite using `[hpow w hπ, hwf', ← WithZero.exp_add]`. Simplify using the standard rewrite rules. Establish `hg'` using `(eq1 _).mpr hg`. Rewrite `hg'` using `[hpow v hvπ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hwf']`. Establish `: v f = v f * WithZero.exp (-n) * WithZero.exp n`. Rewrite using `[mul_assoc, ← WithZero.exp_add]`. Simplify using the standard rewrite rules. Rewrite using `[this, hg', one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem valuation_eq_of_isEquiv {K : Type*} [Field K] {v w : Valuation K ℤᵐ⁰}
     (hv : Function.Surjective v) (hw : Function.Surjective w) (h : v.IsEquiv w) : v = w := by
@@ -107,14 +107,14 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} [X.Over (Spec (.of k))] [IsInte
 namespace PrimeDivisor
 
 /- English proof (translation)
-Use `Z.isDedekindDomain_stalk` as an intermediate fact. Conclude with `IsDedekindDomain.HeightOneSpectrum.valuation_surjective _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma valuation_surjective (Z : PrimeDivisor X) : Function.Surjective Z.valuation := by
   have := Z.isDedekindDomain_stalk
   exact IsDedekindDomain.HeightOneSpectrum.valuation_surjective _ _
 
 /- English proof (translation)
-Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Simplify using `only [map_zero, zero_le, true_iff]`. Conclude with `⟨0, map_zero _⟩`. Rewrite using `[← Z.ord_nonneg_iff hf, ← WithZero.exp_zero, Z.valuation_le_exp_iff hf, neg_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 lemma valuation_le_one_iff (Z : PrimeDivisor X) (f : X.functionField) :
     Z.valuation f ≤ 1 ↔ f ∈ (algebraMap (X.presheaf.stalk Z.point) X.functionField).range := by
@@ -138,7 +138,7 @@ noncomputable def toPlace (Z : PrimeDivisor X) : Place k X.functionField where
     exact Z.valuation_algebraMap_le_one _
 
 /- English proof (translation)
-The claim follows from `Valuation.mem_valuationSubring_iff _ _`.
+A detailed English derivation is pending.
 -/
 lemma mem_toPlace_ring (Z : PrimeDivisor X) (f : X.functionField) :
     f ∈ (Z.toPlace (k := k)).ring ↔ Z.valuation f ≤ 1 :=
@@ -147,7 +147,7 @@ lemma mem_toPlace_ring (Z : PrimeDivisor X) (f : X.functionField) :
 variable [IsFunctionField k X.functionField]
 
 /- English proof (translation)
-Use `valuation_eq_of_isEquiv (Place.valuation_surjective _) Z.valuation_surjective ?_` and prove the remaining obligations. Use `Valuation.isEquiv_of_val_le_one fun f => ?_` and prove the remaining obligations. Rewrite using `[Place.valuation_le_one_iff, mem_toPlace_ring]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem toPlace_valuation (Z : PrimeDivisor X) : (Z.toPlace (k := k)).valuation = Z.valuation := by
   refine valuation_eq_of_isEquiv (Place.valuation_surjective _) Z.valuation_surjective ?_
@@ -165,7 +165,7 @@ open GroundTheory.FunctionField
 variable {k : Type u} [Field k] {X : Scheme.{u}} [X.Over (Spec (.of k))] [IsIntegral X]
 
 /- English proof (translation)
-Apply `ext_of_isAffine` to reduce the goal to its premises. Rewrite using `[Scheme.Hom.comp_appTop, Scheme.fromSpecStalk_appTop]`. Rewrite using `[← cancel_epi (Scheme.ΓSpecIso (.of k)).inv, ← Scheme.ΓSpecIso_inv_naturality]`. Establish `h1 : (homOfLE le_top : (⊤ : (Spec (X.presheaf.stalk (genericPoint X))).Opens) ⟶ ⊤) = 𝟙 _` using `Subsingleton.elim _ _`. Rewrite using `[h1, op_id, CategoryTheory.Functor.map_id, Category.comp_id]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -187,9 +187,9 @@ noncomputable def centerMorphism {x : X} (φ : X.presheaf.stalk x ⟶ CommRingCa
   Spec.map φ ≫ X.fromSpecStalk x
 
 /- English proof (translation)
-Unfold `centerMorphism`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Establish `h : φ ≫ CommRingCat.ofHom (algebraMap R X.functionField) = X.presheaf.stalkSpecializes (genericPoint_specializes x)`. Use extensionality with `a`. Conclude with `hφ a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`.
+A detailed English derivation is pending.
 -/
 lemma specMap_comp_centerMorphism {x : X} (φ : X.presheaf.stalk x ⟶ CommRingCat.of R)
     (hφ : ∀ a, ((φ a : R) : X.functionField) = algebraMap (X.presheaf.stalk x) X.functionField a) :
@@ -204,7 +204,7 @@ lemma specMap_comp_centerMorphism {x : X} (φ : X.presheaf.stalk x ⟶ CommRingC
   rw [h, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `X.fromSpecStalk x (Spec.map φ (IsLocalRing.closedPoint R)) = x`. Rewrite using `[Spec_closedPoint, Scheme.fromSpecStalk_closedPoint]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma centerMorphism_closedPoint {x : X} (φ : X.presheaf.stalk x ⟶ CommRingCat.of R)
     [IsLocalHom φ.hom] : centerMorphism R φ (IsLocalRing.closedPoint R) = x := by
@@ -214,9 +214,9 @@ lemma centerMorphism_closedPoint {x : X} (φ : X.presheaf.stalk x ⟶ CommRingCa
 omit [IsIntegral X] in
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[← Spec.map_preimage g₁, ← Spec.map_preimage g₂]`. Rewrite `h` using `[← Spec.map_comp, ← Spec.map_comp, Spec.map_inj]`. Use `congr 1`. Use extensionality with `a`. Establish `h'` using `congr($h a)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `hι h'`.
+A detailed English derivation is pending.
 -/
 lemma eq_of_specMap_comp_eq {A K : Type u} [CommRing A] [CommRing K] [Algebra A K]
     (hι : Function.Injective (algebraMap A K)) {g₁ g₂ : Spec (.of A) ⟶ Spec (.of k)}
@@ -230,9 +230,9 @@ lemma eq_of_specMap_comp_eq {A K : Type u} [CommRing A] [CommRing K] [Algebra A 
   exact hι h'
 
 /- English proof (translation)
-Set `S : ValuativeCommSq (X ↘ Spec (.of k))` to `{ R := R, K := X.functionField, i₁ := X.fromSpecStalk (genericPoint X), i₂ := centerMorphism R φ ≫ (X ↘ Spec (.of k)), commSq := ⟨by rw [← specMap_comp_centerMorphism R φ hφ, Category.assoc]⟩ }`. Establish `hU` using `IsSeparated.valuativeCriterion (X ↘ Spec (.of k)) S`. Set `l₁ : S.commSq.LiftStruct` to `{ l := centerMorphism R φ, fac_left := specMap_comp_centerMorphism R φ hφ, fac_right := rfl }`. Set `l₂ : S.commSq.LiftStruct` to `{ l := centerMorphism R ψ, fac_left := specMap_comp_centerMorphism R ψ hψ, fac_right := by`. Use `eq_of_specMap_comp_eq (A := R) (K := X.functionField) Subtype.val_injective ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ ≫ centerMorphism R ψ ≫ _ = _ ≫ centerMorphism R φ ≫ _`. Rewrite using `[← Category.assoc, ← Category.assoc, specMap_comp_centerMorphism R ψ hψ, specMap_comp_centerMorphism R φ hφ] }`. Establish `h` using `congrArg CommSq.LiftStruct.l (Subsingleton.elim l₁ l₂)`. Rewrite using `[← centerMorphism_closedPoint R φ, ← centerMorphism_closedPoint R ψ]`. Conclude with `congrArg (fun g : Spec (.of R) ⟶ X => g (IsLocalRing.closedPoint R)) h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem center_unique [IsSeparated (X ↘ Spec (.of k))] {x y : X}
     (φ : X.presheaf.stalk x ⟶ CommRingCat.of R) (ψ : X.presheaf.stalk y ⟶ CommRingCat.of R)
@@ -259,7 +259,7 @@ theorem center_unique [IsSeparated (X ↘ Spec (.of k))] {x y : X}
   exact congrArg (fun g : Spec (.of R) ⟶ X => g (IsLocalRing.closedPoint R)) h
 
 /- English proof (translation)
-Unfold `centerMorphism at h`. Rewrite `h` using `[← Category.assoc, ← Spec.map_comp, ← Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes x), cancel_mono, Spec.map_inj]`. Conclude with `congr($h a)`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma compatible_of_specMap_comp {x : X} (φ : X.presheaf.stalk x ⟶ CommRingCat.of R)
     (h : Spec.map (CommRingCat.ofHom (algebraMap R X.functionField)) ≫ centerMorphism R φ =
@@ -272,11 +272,11 @@ lemma compatible_of_specMap_comp {x : X} (φ : X.presheaf.stalk x ⟶ CommRingCa
   exact congr($h a)
 
 /- English proof (translation)
-Establish `hE : ValuativeCriterion.Existence (X ↘ Spec (.of k))`. Establish `h` using `‹UniversallyClosed (X ↘ Spec (.of k))›`. Rewrite `h` using `[UniversallyClosed.eq_valuativeCriterion]`. Conclude with `h.1`. Set `ρ : k →+* R` to `(algebraMap k X.functionField).codRestrict R hR`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `S : ValuativeCommSq (X ↘ Spec (.of k))` to `{ R := R, K := X.functionField, i₁ := X.fromSpecStalk (genericPoint X), i₂ := Spec.map (CommRingCat.ofHom ρ), commSq := ⟨by rw [fromSpecStalk_genericPoint_comp, ← Spec.map_comp]; rfl⟩ }`. Take `⟨l, hl₁, -⟩` from `(hE S).exists_lift`. Use `⟨l (IsLocalRing.closedPoint R), Scheme.stalkClosedPointTo l, inferInstance, ?_⟩` and prove the remaining obligations. Use `compatible_of_specMap_comp R _ ?_` and prove the remaining obligations. Unfold `centerMorphism`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`. Conclude with `hl₁`.
+A detailed English derivation is pending.
 -/
 theorem exists_center [UniversallyClosed (X ↘ Spec (.of k))]
     (hR : ∀ c : k, algebraMap k X.functionField c ∈ R) :
@@ -305,9 +305,9 @@ section PlaceEquiv
 open GroundTheory.FunctionField
 
 /- English proof (translation)
-Use `le_antisymm hAB fun b hb => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hbA`. Establish `hinv : b⁻¹ ∈ A` using `(A.mem_or_inv_mem b).resolve_left hbA`. Use `hloc _ hinv (by rwa [inv_inv])` as an intermediate fact. Rewrite `this` using `[inv_inv]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hbA this`.
+A detailed English derivation is pending.
 -/
 theorem valuationSubring_eq_of_le {K : Type*} [Field K] {A B : ValuationSubring K} (hAB : A ≤ B)
     (hloc : ∀ a ∈ A, a⁻¹ ∈ B → a⁻¹ ∈ A) : A = B := by
@@ -370,9 +370,9 @@ end PrimeDivisor
 variable [IsProper (X ↘ Spec (.of k))]
 
 /- English proof (translation)
-Introduce `Z W h`. Establish `hring : (Z.toPlace (k` using `k)).ring = (W.toPlace (k := k)).ring := congrArg Place.ring h`. Apply `PrimeDivisor.point_injective` to reduce the goal to its premises. Set `ψ : X.presheaf.stalk W.point ⟶ CommRingCat.of (Z.toPlace (k` to `k)).ring := W.stalkToPlaceRing (k := k) ≫ CommRingCat.ofHom (RingEquiv.subringCongr (congrArg ValuationSubring.toSubring hring.symm)).toRingHom`. Establish `: IsLocalHom ψ.hom` using `by dsimp [ψ] infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `center_unique (k := k) (Z.toPlace (k := k)).ring (Z.stalkToPlaceRing (k := k)) ψ (fun a => rfl) (fun a => rfl)`.
+Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 theorem PrimeDivisor.toPlace_injective :
     Function.Injective (PrimeDivisor.toPlace (k := k) (X := X)) := by
@@ -389,21 +389,19 @@ theorem PrimeDivisor.toPlace_injective :
     (fun a => rfl) (fun a => rfl)
 
 /- English proof (translation)
-Introduce `v`. Take `⟨x, φ, hφl, hφ⟩` from `exists_center (k := k) v.ring v.algebraMap_mem`. Establish `hx : x ≠ genericPoint X`. Introduce `hxη`. Apply `v.ne_top` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[eq_top_iff]`. Introduce `f _`. Establish `hs : x ⤳ genericPoint X` using `hxη ▸ specializes_rfl`. Establish `h2 : algebraMap (X.presheaf.stalk x) X.functionField (X.presheaf.stalkSpecializes hs f) = f`. Rewrite using `[RingHom.algebraMap_toAlgebra, ← CommRingCat.comp_apply, TopCat.Presheaf.stalkSpecializes_comp, TopCat.Presheaf.stalkSpecializes_refl]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h3` using `(φ (X.presheaf.stalkSpecializes hs f)).2`. Rewrite `h3` using `[hφ, h2]`. Conclude with `h3`. Set `Z : PrimeDivisor X` to `⟨x, ringKrullDim_stalk_eq_one hX hx⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Z, Place.ext ?_⟩` and prove the remaining obligations. Establish `hrange : ∀ f : X.functionField, f ∈ (Z.toPlace (k` using `k)).ring ↔ f ∈ (algebraMap (X.presheaf.stalk x) X.functionField).range := fun f => (Z.mem_toPlace_ring f).trans (Z.valuation_le_one_iff f)`. Use `valuationSubring_eq_of_le ?_ ?_` and prove the remaining obligations. Introduce `f hf`. Take `⟨a, rfl⟩` from `(hrange f).mp hf`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hφ a]`. Conclude with `(φ a).2`. Introduce `f hf hinv`. Take `⟨a, rfl⟩` from `(hrange f).mp hf`. Distinguish the cases in `ha : algebraMap (X.presheaf.stalk x) X.functionField a = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ha, inv_zero]`. Conclude with `zero_mem _`. Establish `hu : IsUnit (φ a)`. Use `isUnit_iff_exists_inv.mpr ⟨⟨_, hinv⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.val_injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `((φ a : v.ring) : X.functionField) * _ = 1`. Rewrite using `[hφ a]`. Conclude with `mul_inv_cancel₀ ha`. Establish `hau : IsUnit a` using `(isUnit_map_iff φ.hom a).mp hu`. Take `⟨u, rfl⟩` from `hau`.
-
-Rewrite using `[hrange]`. Conclude with `⟨((u⁻¹ : (X.presheaf.stalk x)ˣ) : X.presheaf.stalk x), map_units_inv (algebraMap (X.presheaf.stalk x) X.functionField) u⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PrimeDivisor.toPlace_surjective (hX : topologicalKrullDim X ≤ 1) :
     Function.Surjective (PrimeDivisor.toPlace (k := k) (X := X)) := by

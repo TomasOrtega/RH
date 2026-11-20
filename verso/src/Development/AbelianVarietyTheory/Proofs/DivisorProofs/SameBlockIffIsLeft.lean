@@ -5,7 +5,7 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 namespace GlobalTheory.HoweR
 
 /- English proof (translation)
-Unfold `Eab`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same, mul_one]`. Conclude with `Matrix.single_mul_single_of_ne _ _ _ _ h _`.
+Replace the relevant objects with their definitions. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eab_mul_eab {p q : ℕ} (a b c d : Ix p q) :
     Eab a b * Eab c d = if b = c then Eab a d else 0 := by
@@ -15,7 +15,7 @@ theorem eab_mul_eab {p q : ℕ} (a b c d : Ix p q) :
   · exact Matrix.single_mul_single_of_ne _ _ _ _ h _
 
 /- English proof (translation)
-Use `conv_lhs => rw [Matrix.matrix_eq_sum_single X]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Unfold `Eab`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_eq_sum_eab {p q : ℕ} (X : Mat p q) : X = ∑ a, ∑ b, X a b • Eab a b := by
   conv_lhs => rw [Matrix.matrix_eq_sum_single X]
@@ -23,7 +23,7 @@ theorem mat_eq_sum_eab {p q : ℕ} (X : Mat p q) : X = ∑ a, ∑ b, X a b • E
   unfold Eab; rw [Matrix.smul_single, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Use `conv_lhs => rw [mat_eq_sum_eab X]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, units]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_eq_sum_units {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (X : Mat p q) (v : V) :
@@ -32,21 +32,19 @@ theorem act_eq_sum_units {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   simp only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, units]
 
 /- English proof (translation)
-Apply the tactic sequence `cases a <;> cases b <;> simp [sameBlock]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sameBlock_iff_isLeft {p q : ℕ} (a b : Ix p q) : sameBlock a b ↔ a.isLeft = b.isLeft := by
   cases a <;> cases b <;> simp [sameBlock]
 
 /- English proof (translation)
-Introduce `p q V _ _ act`. Use `⟨fun hL a b c d => ?_, fun N => ⟨fun h X hX w hw => ?_, fun h a b hab u hu => ?_⟩, fun N h Z y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [units]`. Rewrite using `[← hL, eab_mul_eab, eab_mul_eab, map_sub]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `split_ifs <;> simp`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[act_eq_sum_units]`. Use `N.sum_mem fun a _ => N.sum_mem fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : a.isLeft = b.isLeft`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `N.smul_mem _ (h a b hab w hw)`. Rewrite using `[hX a b (fun hs => hab ((sameBlock_iff_isLeft a b).1 hs)), zero_smul]`. Conclude with `N.zero_mem`. Use `h (Eab a b) (fun c d hcd => ?_) u hu` and prove the remaining obligations. Unfold `Eab`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Matrix.single_apply]`. Use `split_ifs with h'`. Take `⟨rfl, rfl⟩` from `h'`. Conclude with `absurd ((sameBlock_iff_isLeft _ _).2 hab) hcd`. Both sides reduce to the same expression.
-
-Rewrite using `[act_eq_sum_units]`. Conclude with `N.sum_mem fun a _ => N.sum_mem fun b _ => N.smul_mem _ (h a b y hy)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_units_stab : ∀ (p q : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (act : Mat p q →ₗ[ℂ] Module.End ℂ V),
     (IsLieAct act → IsGl (units act)) ∧

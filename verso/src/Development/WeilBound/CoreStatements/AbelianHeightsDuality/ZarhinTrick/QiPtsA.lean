@@ -20,7 +20,7 @@ namespace PositivityTheory.PrwZar.QiP
 variable {R : Type} [CommRing R] {F : Type} [CommRing F] [Algebra R F]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left]`. Simplify using `[spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spMap_comp {S T : Type} [CommRing S] [Algebra R S] [CommRing T] [Algebra R T]
     (φ : F →ₐ[R] S) (ψ : S →ₐ[R] T) : spMap ψ ≫ spMap φ = spMap (ψ.comp φ) := by
@@ -35,7 +35,7 @@ def mulPt (hs : IsFinFlatSub G F h) {S : Type} [CommRing S] [Algebra R S] (φ φ
   (hs.mul S φ φ').choose
 
 /- English proof (translation)
-The claim follows from `(hs.mul S φ φ').choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mulPt_spec (hs : IsFinFlatSub G F h) {S : Type} [CommRing S] [Algebra R S] (φ φ' : F →ₐ[R] S) :
     spMap (mulPt hs φ φ') ≫ h = (spMap φ ≫ h) * (spMap φ' ≫ h) :=
@@ -45,14 +45,14 @@ def onePt (hs : IsFinFlatSub G F h) (S : Type) [CommRing S] [Algebra R S] : F �
   (hs.one S).choose
 
 /- English proof (translation)
-The claim follows from `(hs.one S).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem onePt_spec (hs : IsFinFlatSub G F h) (S : Type) [CommRing S] [Algebra R S] :
     spMap (onePt hs S) ≫ h = 1 :=
   (hs.one S).choose_spec
 
 /- English proof (translation)
-The claim follows from `hs.mono S φ φ' e`.
+A detailed English derivation is pending.
 -/
 theorem pt_ext (hs : IsFinFlatSub G F h) {S : Type} [CommRing S] [Algebra R S] {φ φ' : F →ₐ[R] S}
     (e : spMap φ ≫ h = spMap φ' ≫ h) : φ = φ' :=
@@ -63,7 +63,7 @@ def powPt (hs : IsFinFlatSub G F h) {S : Type} [CommRing S] [Algebra R S] (φ : 
   | n + 1 => mulPt hs (powPt hs φ n) φ
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `onePt_spec hs S`. Consider the case `succ n ih => rw [pow_succ, ← ih]`. Conclude with `mulPt_spec hs _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem powPt_spec (hs : IsFinFlatSub G F h) {S : Type} [CommRing S] [Algebra R S] (φ : F →ₐ[R] S) (n : ℕ) :
     spMap (powPt hs φ n) ≫ h = (spMap φ ≫ h) ^ n := by
@@ -74,7 +74,7 @@ theorem powPt_spec (hs : IsFinFlatSub G F h) {S : Type} [CommRing S] [Algebra R 
 variable {S T : Type} [CommRing S] [Algebra R S] [CommRing T] [Algebra R T]
 
 /- English proof (translation)
-Apply `pt_ext hs` to reduce the goal to its premises. Rewrite using `[mulPt_spec, ← spMap_comp, ← spMap_comp, ← spMap_comp, Category.assoc, Category.assoc, Category.assoc, mulPt_spec, MonObj.comp_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_mulPt (hs : IsFinFlatSub G F h) (ψ : S →ₐ[R] T) (φ φ' : F →ₐ[R] S) :
     ψ.comp (mulPt hs φ φ') = mulPt hs (ψ.comp φ) (ψ.comp φ') := by
@@ -83,14 +83,14 @@ theorem comp_mulPt (hs : IsFinFlatSub G F h) (ψ : S →ₐ[R] T) (φ φ' : F �
     mulPt_spec, MonObj.comp_mul]
 
 /- English proof (translation)
-Apply `pt_ext hs` to reduce the goal to its premises. Rewrite using `[onePt_spec, ← spMap_comp, Category.assoc, onePt_spec, MonObj.comp_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_onePt (hs : IsFinFlatSub G F h) (ψ : S →ₐ[R] T) : ψ.comp (onePt hs S) = onePt hs T := by
   apply pt_ext hs
   rw [onePt_spec, ← spMap_comp, Category.assoc, onePt_spec, MonObj.comp_one]
 
 /- English proof (translation)
-Apply `pt_ext hs` to reduce the goal to its premises. Rewrite using `[powPt_spec, ← spMap_comp, Category.assoc, powPt_spec, MonObj.comp_pow, ← Category.assoc, spMap_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_powPt (hs : IsFinFlatSub G F h) (ψ : S →ₐ[R] T) (φ : F →ₐ[R] S) (n : ℕ) :
     ψ.comp (powPt hs φ n) = powPt hs (ψ.comp φ) n := by
@@ -98,7 +98,7 @@ theorem comp_powPt (hs : IsFinFlatSub G F h) (ψ : S →ₐ[R] T) (φ : F →ₐ
   rw [powPt_spec, ← spMap_comp, Category.assoc, powPt_spec, MonObj.comp_pow, ← Category.assoc, spMap_comp]
 
 /- English proof (translation)
-Apply `pt_ext hs` to reduce the goal to its premises. Rewrite using `[powPt_spec, powPt_spec, powPt_spec, pow_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem powPt_mul (hs : IsFinFlatSub G F h) (φ : F →ₐ[R] S) (a b : ℕ) :
     powPt hs φ (a * b) = powPt hs (powPt hs φ a) b := by
@@ -106,14 +106,14 @@ theorem powPt_mul (hs : IsFinFlatSub G F h) (φ : F →ₐ[R] S) (a b : ℕ) :
   rw [powPt_spec, powPt_spec, powPt_spec, pow_mul]
 
 /- English proof (translation)
-Apply `pt_ext hs` to reduce the goal to its premises. Rewrite using `[mulPt_spec, onePt_spec, _root_.one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulPt_onePt (hs : IsFinFlatSub G F h) (φ : F →ₐ[R] S) : mulPt hs (onePt hs S) φ = φ := by
   apply pt_ext hs
   rw [mulPt_spec, onePt_spec, _root_.one_mul]
 
 /- English proof (translation)
-Apply `pt_ext hs` to reduce the goal to its premises. Rewrite using `[mulPt_spec, onePt_spec, _root_.mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulPt_onePt' (hs : IsFinFlatSub G F h) (φ : F →ₐ[R] S) : mulPt hs φ (onePt hs S) = φ := by
   apply pt_ext hs

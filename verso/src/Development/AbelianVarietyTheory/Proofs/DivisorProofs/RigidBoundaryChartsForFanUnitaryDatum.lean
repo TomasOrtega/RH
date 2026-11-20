@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RigChart
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.rigidBoundaryChartsForFan_of_unitarySeparation GlobalTheory.T.unitaryToroidalSeparation_of_base`.
+A detailed English derivation is pending.
 -/
 theorem rigidForFan_holds : GlobalTheory.RigChart.RigidForFan :=
   GlobalTheory.T.rigidBoundaryChartsForFan_of_unitarySeparation GlobalTheory.T.unitaryToroidalSeparation_of_base

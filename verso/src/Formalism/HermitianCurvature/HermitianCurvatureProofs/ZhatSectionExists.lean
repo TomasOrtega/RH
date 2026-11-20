@@ -9,19 +9,19 @@ namespace Formalism.FourierDecayAlt.P
 open C2x5 C2x6 FlagSpanVanishing HermitianXiVector UnipotentSums
 
 /- English proof (translation)
-Take `⟨hAu, hAc, hAw⟩` from `hA`. Take `⟨hBu, hBc, hBw⟩` from `hB`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hAu' : Aᴴ * Hpk k r * A = Hpk k r` using `hAu`. Establish `hBu' : Bᴴ * Hpk k r * B = Hpk k r` using `hBu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (A * B)ᴴ * Hpk k r * (A * B) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul, show Bᴴ * Aᴴ * Hpk k r * (A * B) = Bᴴ * (Aᴴ * Hpk k r * A) * B by`. Simplify using `only [Matrix.mul_assoc], hAu', hBu']`. Introduce `a i hai`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (eI k r a)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBc a (eI k r a) (le_refl a.val), if_pos rfl, mul_one]`. Conclude with `hAc a i hai`. Introduce `j _ hj`. Distinguish the cases in `hja : a.val ≤ j.val`. Rewrite using `[hBc a j hja, if_neg hj, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hja` using `[not_le]`. Establish `hjr : j.val < r` using `lt_trans hja a.isLt`. Establish `h1` using `hAc ⟨j.val, hjr⟩ i (show j.val ≤ i.val by omega)`. Rewrite `h1` using `[show eI k r ⟨j.val, hjr⟩ = j from Fin.ext rfl]`. Rewrite using `[h1, if_neg (by rintro rfl; omega), zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `i j hj1 hj2 hi`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite using `[hBw j j hj1 hj2 hj1, if_pos rfl, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hAw i j hj1 hj2 hi`. Introduce `l _ hl`. Distinguish the cases in `hlr : r ≤ l.val`. Rewrite using `[hBw l j hj1 hj2 hlr, if_neg hl, mul_zero]`. Rewrite `hlr` using `[not_le]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hAc ⟨l.val, hlr⟩ i (show l.val ≤ i.val by omega)`. Rewrite `h1` using `[show eI k r ⟨l.val, hlr⟩ = l from Fin.ext rfl]`. Rewrite using `[h1, if_neg (by rintro rfl; omega), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 private lemma mul_mem_Nset' {k r : ℕ} {A B : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hA : A ∈ Nset k r) (hB : B ∈ Nset k r) : A * B ∈ Nset k r := by
@@ -61,15 +61,15 @@ private lemma mul_mem_Nset' {k r : ℕ} {A B : Matrix (Fin (2 * r + k + 1)) (Fin
     · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, bvec, smul_eq_mul, Pi.single_apply]`. Use `split_ifs with hp`. Rewrite using `[Finset.sum_eq_single ⟨p.val, hp⟩]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (show p = eI k r ⟨p.val, hp⟩ from Fin.ext rfl), mul_one]`. Introduce `c _ hc`. Rewrite using `[if_neg, mul_zero]`. Introduce `h`. Apply `hc` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Fin.ext` to reduce the goal to its premises. Use `show c.val = p.val`. Rewrite using `[h]`. Both sides reduce to the same expression. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Rewrite using `[if_neg, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hp` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `c.isLt`.
+A detailed English derivation is pending.
 -/
 private lemma dite_lt_eq_sum_smul_bvec {k r : ℕ} (g : Fin r → ℂ) :
     (fun p : Fin (2 * r + k + 1) => if hp : p.val < r then g ⟨p.val, hp⟩ else 0) =
@@ -99,33 +99,29 @@ private lemma dite_lt_eq_sum_smul_bvec {k r : ℕ} (g : Fin r → ℂ) :
     exact c.isLt
 
 /- English proof (translation)
-Introduce `k r z hz v hv`. Use `set ξ : Fin r → ℂ := fun a => v a.castSucc (Fin.last r) with hξ`. Use `set vX := v.submatrix Fin.castSucc Fin.castSucc with hvX`. Establish `htau : C2.tauM k r z v = C2.nEich k r z ξ * C2.mX k r vX` using `rfl`. Establish `hvX_mem : vX ∈ C2.UTset r` using `⟨fun i j hij => hv.1 _ _ (Fin.castSucc_lt_castSucc_iff.mpr hij), fun i => hv.2 _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzW : ∀ i : Fin (2 * r + k + 1), r + k < i.val → z i = 0` using `fun i hi => hz.1 i (Or.inr hi)`. Establish `hxi : C2.xiV k r ξ = ∑ c, ξ c • bvec (eI k r c)`. Rewrite using `[← dite_lt_eq_sum_smul_bvec]`. Both sides reduce to the same expression. Establish `hfc : ∀ c : Fin r, fvec k r z c.castSucc = bvec (eI k r c)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `c`. Simplify using `[fvec]`. Establish `hfl : fvec k r z (Fin.last r) = z`. Simplify using `[fvec]`. Establish `hact : ∀ b, C2.tauM k r z v *ᵥ fvec k r z b = ∑ a, v a b • fvec k r z a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Rewrite using `[htau, ← Matrix.mulVec_mulVec, Fin.sum_univ_castSucc]`. Simplify using `only [hfc, hfl]`. Use `Fin.lastCases ?_ (fun b' => ?_) b` and prove the remaining obligations. Establish `hmz : C2.mX k r vX *ᵥ z = z`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `p`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single p]`. Distinguish the cases in `hp : r ≤ p.val ∧ p.val ≤ r + k`. Rewrite using `[unipotent_apply_middle_column vX p p hp.1 hp.2, if_pos rfl, one_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: z p = 0`. Apply `hz.1` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, mul_zero]`. Introduce `j _ hj`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hjW : r ≤ j.val ∧ j.val ≤ r + k`. Rewrite using `[unipotent_apply_middle_column vX p j hjW.1 hjW.2, if_neg (Ne.symm hj), zero_mul]`. Establish `: z j = 0`. Apply `hz.1` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[hfl, hmz, HermitianXiVector.nEich_apply]`. Establish `h1 : herm (Hpk k r) z (C2.xiV k r ξ) = 0` using `HermitianXiVector.herm_X_right (C2.xiV k r ξ) z (HermitianXiVector.xiV_X ξ) hzW`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : herm (Hpk k r) z z = ((-(Tz k r z) : ℝ) : ℂ)` using `hzz_real z`. Establish `hT : ((Tz k r z : ℝ) : ℂ) ≠ 0`. Conclude with `(ne_of_gt hz.2)` after adjusting the coercions. Establish `hll : v (Fin.last r) (Fin.last r) = 1` using `hv.2 _`. Rewrite using `[h1, h2, hll, one_smul, ← hxi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((1 : ℂ) / ((Tz k r z : ℝ) : ℂ)) * (-(((-(Tz k r z) : ℝ) : ℂ))) = 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[zero_smul, mul_zero, zero_smul, add_zero, add_zero, smul_smul, this, one_smul]`. Conclude with `add_comm _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmy : C2.mX k r vX *ᵥ bvec (eI k r b') = fun p => if hp : p.val < r then vX ⟨p.val, hp⟩ b' else 0`. Rewrite using `[FlagSpanVanishing.mulVec_bvec]`. Use function extensionality and compare the values at `p`. Conclude with `mX_col_X vX p b'`. Establish `hyX : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → (fun p : Fin (2 * r + k + 1) => if hp : p.val < r then vX ⟨p.val, hp⟩ b' else 0) i = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi`. Simplify using `only`. Rewrite using `[dif_neg (by omega)]`. Establish `h1` using `HermitianXiVector.herm_X_left _ z hyX hzW`. Establish `h2` using `HermitianXiVector.herm_X_left _ (C2.xiV k r ξ) hyX (HermitianXiVector.xiV_apply_last_block_zero ξ)`.
-
-Establish `hlow : v (Fin.last r) b'.castSucc = 0` using `hv.1 _ _ (Fin.castSucc_lt_last b')`. Rewrite using `[hfc, hmy, HermitianXiVector.nEich_apply, h1, h2, hlow, zero_smul, add_zero]`. Simplify using `only [neg_zero, zero_smul, mul_zero, add_zero, smul_zero]`. Conclude with `(dite_lt_eq_sum_smul_bvec (k := k) (fun c => vX c b')).trans rfl`. Use `⟨?_, hact, uMap_eq hz _ v hact⟩` and prove the remaining obligations.
-
-Rewrite using `[htau]`. Conclude with `mul_mem_Nset' (HermitianXiVector.nEich_mem hz ξ) (mX_mem vX hvX_mem)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c2_tau_mem : C2.TauMem := by
   intro k r z hz v hv
@@ -200,7 +196,7 @@ theorem c2_tau_mem : C2.TauMem := by
   exact mul_mem_Nset' (HermitianXiVector.nEich_mem hz ξ) (mX_mem vX hvX_mem)
 
 /- English proof (translation)
-The claim follows from `zhat_section_of_parts zhat_equivalence unipotent_map_frame c2_tau_mem standard_flag_property`.
+A detailed English derivation is pending.
 -/
 theorem zhat_section_exists : C2.ZhatSection :=
   zhat_section_of_parts zhat_equivalence unipotent_map_frame c2_tau_mem standard_flag_property

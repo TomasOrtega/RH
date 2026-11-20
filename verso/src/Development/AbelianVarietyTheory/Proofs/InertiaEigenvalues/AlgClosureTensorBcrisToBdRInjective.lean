@@ -18,9 +18,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc.TensorInj
 
 /- English proof (translation)
-Take `⟨p, hp, q, hq, e⟩` from `Subfield.mem_closure_iff.1 hy`. Establish `hr : Subring.closure (Set.range g) = g.range`. Rewrite using `[← RingHom.coe_range, Subring.closure_eq]`. Rewrite `hp`, `hq` using `[hr]`. Take `⟨a, rfl⟩` from `hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `hq`. Establish `hb : g b ≠ 0` using `fun h => h0 (by rw [← e, h, div_zero])`. Use `⟨a, b, fun h => hb (by rw [h, map_zero]), ?_⟩` and prove the remaining obligations. Rewrite using `[← e, div_mul_cancel₀ _ hb]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_div_of_mem_closure {A D : Type} [CommRing A] [Field D] (g : A →+* D) {y : D}
     (hy : y ∈ Subfield.closure (Set.range g)) (h0 : y ≠ 0) : ∃ a b : A, b ≠ 0 ∧ g a = y * g b := by
@@ -35,15 +35,13 @@ theorem exists_div_of_mem_closure {A D : Type} [CommRing A] [Field D] (g : A →
   rw [← e, div_mul_cancel₀ _ hb]
 
 /- English proof (translation)
-Use `letI : Field D := hD.toField`. Set `F : Subfield D` to `Subfield.closure (Set.range g)`. Establish `hg : ∀ a, g a ∈ F` using `fun a => Subfield.subset_closure ⟨a, rfl⟩`. Establish `hιF : ∀ b, ι b ∈ F` using `fun b => by`. Take `⟨a, a', h0, e⟩` from `hB b`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_div_of_mul_eq h0 e]`. Conclude with `F.div_mem (hg a) (hg a')`. Establish `hK : ∀ c : ↥(MaximalUnramifiedExtension l), o (c : Om l) ∈ F` using `fun c => by`. Take `⟨b, e⟩` from `hu c`. Conclude with `e ▸ hιF b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `E : IntermediateField ℚ_[l] (Om l)` to `(F.comap o).toIntermediateField fun q => hK (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) q)`. Establish `hE : ∀ y : Om l, o y ∈ F → y ∈ MaximalUnramifiedExtension l` using `fun y hy => by`. Establish `hint : IsIntegral ℚ_[l] y` using `Algebra.IsIntegral.isIntegral y`. Establish `hle : IntermediateField.adjoin ℚ_[l] {y} ≤ E` using `IntermediateField.adjoin_simple_le_iff.2 hy`. Use `GlobalTheory.UnramValue.le_Kur_of_norm l ⟨IntermediateField.adjoin ℚ_[l] {y}, IntermediateField.adjoin.finiteDimensional hint⟩ (fun z hz h0 => ?_) (IntermediateField.mem_adjoin_simple_self ℚ_[l] y)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, a', h1, e⟩` from `exists_div_of_mem_closure g (y := o z) (hle hz) ((map_ne_zero o).2 h0)`. Conclude with `hv a a' z h1 h0 e`. Use `haveI : IsGalois ℚ_[l] (Om l) := {}`. Use `haveI : IsGalois ↥(MaximalUnramifiedExtension l) (Om l) := IsGalois.tower_top_of_isGalois ℚ_[l] _ _`. Use `GlobalTheory.T.eq_zero_of_sum_map_mul_eq_zero_of_linearIndependent ↥(MaximalUnramifiedExtension l) (Om l) D o F (fun y => ⟨fun h => ⟨⟨y, hE y h⟩, rfl⟩, fun ⟨c, h⟩ => h ▸ hK c⟩) m x hx (fun i => ι (b i)) (fun i => hιF _) hb i` as an intermediate fact.
-
-Conclude with `hι (this.trans (map_zero ι).symm)`.
+A detailed English derivation is pending.
 -/
 theorem indep_of_fractions (l : ℕ) [Fact l.Prime] {A B D : Type} [CommRing A] [CommRing B] [CommRing D]
     (hD : IsField D) (g : A →+* D) (ι : B →+* D) (hι : Function.Injective ι) (o : Om l →+* D)
@@ -84,11 +82,9 @@ set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris Per.Bcris
 
 /- English proof (translation)
-Take `⟨-, hinj, hD, -⟩` from `BdRField.bdR_isField l`. Establish `hι : Function.Injective c.ι` using `(ULaws.u_laws l c).2.2.2.1`. Use `haveI : Nontrivial (Per.BdR l) := ⟨hD.exists_pair_ne⟩`. Use `indep_of_fractions l hD ((algebraMap (Per.BdRp l) (Per.BdR l)).comp c.j) c.ι hι c.oD (fun b => ?_) (fun x => ⟨c.u x, c.ι_u x⟩) (fun a b x hb hx e => ?_)` and prove the remaining obligations. Take `⟨r, a, e⟩` from `bcris_eq_acris_localization_periodT_alt l c b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, c.t ^ r, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ← c.ι_j, map_pow]`. Conclude with `((((core_t_unit_fil l c).1).pow r).map c.ι).ne_zero`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, ← c.ι_j, ← c.ι_j, ← map_mul, map_pow, e]`. Use `@GlobalTheory.MemLoc.GaussCore.norm_eq_zpow l _ c a b x hb hx (hinj ?_)` and prove the remaining obligations.
-
-Rewrite using `[map_mul]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensorInj (l : ℕ) [Fact l.Prime] (c : Core l) : c.TensorInj := by
   obtain ⟨-, hinj, hD, -⟩ := BdRField.bdR_isField l

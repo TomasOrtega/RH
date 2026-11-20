@@ -13,11 +13,11 @@ namespace GlobalTheory.CasimirEigen
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[gelfVal_succ χ 1, pow_one]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ a : Fin n, (if a = b then χ a + ((n : ℂ) - 1) / 2 else if a < b then -1 else 0) = (if a = b then χ a + ((n : ℂ) - 1) / 2 else 0) - (if a ∈ Finset.Iio b then 1 else 0)`. Introduce `a`. Distinguish the cases in `h1 : a = b`. Substitute `h1` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases h2 : a < b <;> simp [h1, h2]`. Simplify using `only [Amat, Matrix.of_apply, e, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, nsmul_eq_mul, Fin.card_Iio, Formalism.QuantumDeterminants.rhoStd]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gelfVal_two_eq (χ : Fin n → ℂ) :
     gelfVal χ 2 = ∑ a, χ a * χ a - ∑ a, (Formalism.QuantumDeterminants.rhoStd n a : ℂ) * (Formalism.QuantumDeterminants.rhoStd n a : ℂ) := by
@@ -38,7 +38,7 @@ theorem gelfVal_two_eq (χ : Fin n → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[gelfVal_two_eq]`. Simplify using `only [cvalR, nsq, dot, Pi.add_apply, half_sum_roots_standard n ε, Formalism.QuantumDeterminants.rhoStd]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem gelfVal_two_eq_cvalR (ε : Fin n → Bool) (lam : Fin n → ℝ) :
     gelfVal (fun a => (lam a : ℂ)) 2 = ((cvalR ε lam : ℝ) : ℂ) := by
@@ -48,7 +48,7 @@ theorem gelfVal_two_eq_cvalR (ε : Fin n → Bool) (lam : Fin n → ℝ) :
   rfl
 
 /- English proof (translation)
-Unfold `gelf`. Rewrite using `[← (finTwoArrowEquiv (Fin n)).symm.sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem gelf_one_eq (ε : Fin n → Bool) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (g : Matrix (Fin n) (Fin n) ℂ) :
     gelf ε 1 f g = ∑ a, ∑ b, Eab ε a b (Eab ε b a f) g := by
@@ -58,7 +58,7 @@ theorem gelf_one_eq (ε : Fin n → Bool) (f : Matrix (Fin n) (Fin n) ℂ → �
   rfl
 
 /- English proof (translation)
-Take `⟨h1, h2, -, -⟩` from `complex_parts_mem_lie_algebra_holds n ε (Matrix.single a b 1)`. Establish `k1` using `(rdVPair_of vector_right_derivative_extends n ε H ℂ (innerSL ℂ y) f _ g hf h1 hg).2`. Establish `k2` using `(rdVPair_of vector_right_derivative_extends n ε H ℂ (innerSL ℂ y) f _ g hf h2 hg).2`. Simplify using `only [innerSL_apply_apply, rdV_eq] at k1 k2`. Simplify using `only [Eab, Ec, EabV, EcV, inner_add_right, inner_smul_right, k1, k2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem inner_eabV {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {f : Matrix (Fin n) (Fin n) ℂ → H} (hf : SmoothOnGV ε f) (y : H) (a b : Fin n)
@@ -71,13 +71,13 @@ theorem inner_eabV {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   simp only [Eab, Ec, EabV, EcV, inner_add_right, inner_smul_right, k1, k2]
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ Vs E lam hσ ⟨hV, _, _, _, hE⟩ u hu`. Establish `hone : ∀ v, σ 1 v = v` using `fun v => by rw [hσ.1.1]; rfl`. Establish `h1 : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ)` using `GlobalTheory.SmoothVecMod.inUJ_one`. Establish `key : ∀ (y : H) (a b : Fin n) (v : Vs) (g : Matrix (Fin n) (Fin n) ℂ), inUJ ε g → Eab ε a b (fun x => ⟪y, σ x v⟫_ℂ) g = ⟪y, σ g (E a b v)⟫_ℂ`. Introduce `y a b v g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hE a b v g hg]`. Conclude with `inner_eabV ((hV v).1 v.2) y a b hg`. Apply `Subtype.ext` to reduce the goal to its premises. Use `ext_inner_left ℂ fun y => ?_` and prove the remaining obligations. Establish `h` using `(hu y).2 1 1 h1`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[gelf_one_eq, gelfVal_two_eq_cvalR ε lam]`. Establish `e : ∀ a b : Fin n, Eab ε a b (Eab ε b a (fun x => ⟪y, σ x u⟫_ℂ)) 1 = ⟪y, ((E a b (E b a u) : Vs) : H)⟫_ℂ`. Introduce `a b`. Use `GlobalTheory.SmoothVecMod.eabV_congr (E := ℂ) (key y b a u) a b h1` as an intermediate fact. Rewrite `this` using `[eabV_eq, eabV_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, key y a b _ 1 h1, hone]`. Simplify using `only [e, hone] at h`. Simplify using `only [Cas, LinearMap.sum_apply, Module.End.mul_apply, Submodule.coe_sum, inner_sum, Submodule.coe_smul, inner_smul_right]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cas_eq_of_isZEigen : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (Vs : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ Vs) (lam : Fin n → ℝ), IsURepOn (UJset ε) σ → ((∀ u, u ∈ Vs ↔ SmoothOnGV ε (fun g => σ g u)) ∧ GlRel E ∧ IsUnitary ε E ∧ (∀ X, inG ε X → ∀ u : Vs, HasDerivAt (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit σ X u) ((∑ a, ∑ b, X a b • E a b u : Vs) : H) 0) ∧ ∀ a b (u : Vs), ∀ g ∈ UJset ε, σ g (E a b u) = EabV ε a b (fun g => σ g u) g) → ∀ u : Vs, (∀ y : H, IsZEigen ε (fun a => (lam a : ℂ)) (fun g => ⟪y, σ g u⟫_ℂ)) → Cas E u = ((cvalR ε lam : ℝ) : ℂ) • u := by
   intro n ε H _ _ _ σ Vs E lam hσ ⟨hV, _, _, _, hE⟩ u hu

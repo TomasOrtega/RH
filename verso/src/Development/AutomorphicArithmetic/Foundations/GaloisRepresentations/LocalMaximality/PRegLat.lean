@@ -11,7 +11,7 @@ variable {F V V' : Type} [Field F] [Algebra ℂ F] [AddCommGroup V] [Module F V]
   [IsScalarTower ℂ F V] [AddCommGroup V'] [Module F V'] [Module ℂ V'] [IsScalarTower ℂ F V']
 
 /- English proof (translation)
-Simplify using `[actF, Module.endTensorEndAlgHom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma actF_tmul (a b : F) (v : V) (v' : V') :
     actF F V V' (a ⊗ₜ b) (v ⊗ₜ v') = (a • v) ⊗ₜ (b • v') := by
@@ -27,9 +27,9 @@ private lemma Ph_tmul (ψ : V →ₗ[F] F) (ψ' : V' →ₗ[F] F) (a : V) (b : V
     Ph ψ ψ' (a ⊗ₜ b) = ψ a ⊗ₜ ψ' b := rfl
 
 /- English proof (translation)
-Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, add_mul, ha, hb]`. Consider the case `tmul a b`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add c e hc he => simp only [map_add, mul_add, hc, he]`. Consider the case `tmul c e => simp [actF_tmul, Ph_tmul]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private lemma Ph_act (ψ : V →ₗ[F] F) (ψ' : V' →ₗ[F] F) (s : F ⊗[ℂ] F) (t : V ⊗[ℂ] V') :
     Ph ψ ψ' (actF F V V' s t) = s * Ph ψ ψ' t := by
@@ -43,7 +43,7 @@ private lemma Ph_act (ψ : V →ₗ[F] F) (ψ' : V' →ₗ[F] F) (s : F ⊗[ℂ]
     | tmul c e => simp [actF_tmul, Ph_tmul]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add c e hc he => simp only [map_add, hc, he]`. Consider the case `tmul c e => simp [Ph_tmul, ctrF]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private lemma Ph_lmul (ψ : V →ₗ[F] F) (ψ' : V' →ₗ[F] F) (t : V ⊗[ℂ] V') :
     Algebra.TensorProduct.lmul' ℂ (Ph ψ ψ' t) = ψ' (ctrF V' ψ t) := by
@@ -55,7 +55,7 @@ private lemma Ph_lmul (ψ : V →ₗ[F] F) (ψ' : V' →ₗ[F] F) (t : V ⊗[ℂ
 variable {A A' : Subalgebra ℂ F} {M : Submodule ℂ V} {M' : Submodule ℂ V'}
 
 /- English proof (translation)
-Establish `key : Submodule.map₂ (TensorProduct.mk ℂ V V') M M' ≤ (Subalgebra.toSubmodule (Algebra.TensorProduct.map A.val A'.val).range).comap (Ph ψ ψ')`. Use `Submodule.map₂_le.2 fun m hm m' hm' => ?_` and prove the remaining obligations. Conclude with `⟨(⟨ψ m, h m hm⟩ : A) ⊗ₜ (⟨ψ' m', h' m' hm'⟩ : A'), by simp [Ph_tmul]⟩`. Conclude with `key ht`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma Ph_mem {ψ : V →ₗ[F] F} {ψ' : V' →ₗ[F] F} (h : ∀ m ∈ M, ψ m ∈ A) (h' : ∀ m ∈ M', ψ' m ∈ A')
     {t : V ⊗[ℂ] V'} (ht : t ∈ Submodule.map₂ (TensorProduct.mk ℂ _ _) M M') :
@@ -67,9 +67,9 @@ private lemma Ph_mem {ψ : V →ₗ[F] F} {ψ' : V' →ₗ[F] F} (h : ∀ m ∈ 
   exact key ht
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `hs`. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a a'`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, Subalgebra.coe_val, actF_tmul]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.apply_mem_map₂ _ (hA _ a.2 _ hv) (hA' _ a'.2 _ hv')`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, LinearMap.add_apply]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma act_mem (hA : ∀ a ∈ A, ∀ m ∈ M, a • m ∈ M) (hA' : ∀ a ∈ A', ∀ m ∈ M', a • m ∈ M')
     {v : V} {v' : V'} (hv : v ∈ M) (hv' : v' ∈ M') {s : F ⊗[ℂ] F}
@@ -87,11 +87,11 @@ private lemma act_mem (hA : ∀ a ∈ A, ∀ m ∈ M, a • m ∈ M) (hA' : ∀ 
     exact add_mem hx hy
 
 /- English proof (translation)
-Rewrite `ht` using `[Submodule.map₂_eq_span_image2]`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem t ht`. Take `⟨a, ha, b, hb, rfl⟩` from `ht`. Simplify using `only [TensorProduct.mk_apply, Ph_tmul, actF_tmul]`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [h a ha, h' b hb]`. Simplify using `only [TensorProduct.sum_tmul, TensorProduct.tmul_sum]`. Rewrite using `[Finset.sum_comm]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => conv_lhs => rw [ha, hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, LinearMap.add_apply, Finset.sum_add_distrib]`. Consider the case `smul c a _ ha => conv_lhs => rw [ha]`. Simplify using `only [map_smul, LinearMap.smul_apply, Finset.smul_sum]`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma decomp {n n' : ℕ} {v : Fin n → V} {φ : Fin n → V →ₗ[F] F} {v' : Fin n' → V'}
     {φ' : Fin n' → V' →ₗ[F] F} (h : ∀ m ∈ M, m = ∑ k, φ k m • v k) (h' : ∀ m ∈ M', m = ∑ k, φ' k m • v' k)
@@ -114,9 +114,9 @@ private lemma decomp {n n' : ℕ} {v : Fin n → V} {φ : Fin n → V →ₗ[F] 
     simp only [map_smul, LinearMap.smul_apply, Finset.smul_sum]
 
 /- English proof (translation)
-Establish `hle : sm (actF F V V') (Submodule.map₂ (TensorProduct.mk ℂ V V') M M') T ≤ (sm (Algebra.lmul ℂ (F ⊗[ℂ] F)) (Subalgebra.toSubmodule (Algebra.TensorProduct.map A.val A'.val).range) T).comap (Ph ψ ψ')`. Unfold `sm`. Use `iSup₂_le fun r hr => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Rewrite using `[Submodule.mem_comap, Ph_act]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_iSup_of_mem r (Submodule.mem_iSup_of_mem hr ⟨_, Ph_mem h h' hu, by simp⟩)`. Conclude with `hle ht`.
+A detailed English derivation is pending.
 -/
 private lemma Ph_sm {ψ : V →ₗ[F] F} {ψ' : V' →ₗ[F] F} (h : ∀ m ∈ M, ψ m ∈ A) (h' : ∀ m ∈ M', ψ' m ∈ A')
     {T : Set (F ⊗[ℂ] F)} {t : V ⊗[ℂ] V'}
@@ -134,9 +134,9 @@ private lemma Ph_sm {ψ : V →ₗ[F] F} {ψ' : V' →ₗ[F] F} (h : ∀ m ∈ M
   exact hle ht
 
 /- English proof (translation)
-Set `L : (F ⊗[ℂ] F) →ₗ[ℂ] V ⊗[ℂ] V'` to `(LinearMap.applyₗ (v ⊗ₜ v')) ∘ₗ (actF F V V').toLinearMap`. Establish `hle : sm (Algebra.lmul ℂ (F ⊗[ℂ] F)) (Subalgebra.toSubmodule (Algebra.TensorProduct.map A.val A'.val).range) T ≤ (sm (actF F V V') (Submodule.map₂ (TensorProduct.mk ℂ V V') M M') T).comap L`. Unfold `sm`. Use `iSup₂_le fun r hr => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.mem_comap]`. Use `Submodule.mem_iSup_of_mem r (Submodule.mem_iSup_of_mem hr ⟨actF F V V' u (v ⊗ₜ v'), act_mem hA hA' hv hv' hu, ?_⟩)` and prove the remaining obligations. Simplify using `[L, Module.End.mul_apply]`. Conclude with `hle hs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma act_sm (hA : ∀ a ∈ A, ∀ m ∈ M, a • m ∈ M) (hA' : ∀ a ∈ A', ∀ m ∈ M', a • m ∈ M')
     {v : V} {v' : V'} (hv : v ∈ M) (hv' : v' ∈ M') {T : Set (F ⊗[ℂ] F)} {s : F ⊗[ℂ] F}
@@ -162,13 +162,13 @@ end
 end UpperTheory.Gal.productCup_of_system
 
 /- English proof (translation)
-Introduce `h0 hK F _ _ d x hx V V' _ _ _ _ _ _ _ _ I J M M' hL hL' j hjI hjJ`. Take `⟨hA, n, v, φ, hv, hφ, hdec⟩` from `hL`. Take `⟨hA', n', v', φ', hv', hφ', hdec'⟩` from `hL'`. Establish `back : ∀ (T : Set (F ⊗[ℂ] F)) (t : V ⊗[ℂ] V'), t ∈ Submodule.map₂ (TensorProduct.mk ℂ _ _) M M' → (∀ k l, Ph (φ k) (φ' l) t ∈ sm (Algebra.lmul ℂ (F ⊗[ℂ] F)) (Subalgebra.toSubmodule (R0 x I J)) T) → t ∈ sm (actF F V V') (Submodule.map₂ (TensorProduct.mk ℂ _ _) M M') T`. Introduce `T t ht h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[decomp hdec hdec' ht]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.sum_mem _ fun l _ => act_sm hA hA' (hv k) (hv' l) (h k l)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `k m hm hk`. Use `back _ m hm fun a b => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `h0 F d x hx I J j hjI hjJ k _ (Ph_mem (hφ a) (hφ' b) hm) ?_` and prove the remaining obligations. Use `Ph_sm (ψ := φ a) (ψ' := φ' b) (fun m hm => hφ a m hm) (fun m hm => hφ' b m hm) hk` as an intermediate fact. Rewrite `this` using `[Ph_act]`. Conclude with `this`. Introduce `m hm hψ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `back _ m hm fun a b => ?_` and prove the remaining obligations. Use `hK F d x hx I J j hjI hjJ _ (Ph_mem (hφ a) (hφ' b) hm) ?_` and prove the remaining obligations. Rewrite using `[Ph_lmul, hψ, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.regLat_of :
     Reg0 → Ker0 → RegLat := by

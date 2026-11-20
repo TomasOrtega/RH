@@ -29,14 +29,14 @@ theorem pu_sph_inr (w0 : Pl E) (h : UL n w0 → ℂ) (l : List (UGen E n)) (w : 
     UGen.sph (Sum.inr ⟨w0, h⟩ :: l) w = if hw : w0 = w then lconv (hw ▸ h) (UGen.sph l w) else UGen.sph l w := rfl
 
 /- English proof (translation)
-Rewrite using `[pu_sph_inr, dif_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pu_sph_self (w0 : Pl E) (h : UL n w0 → ℂ) (l : List (UGen E n)) :
     UGen.sph (Sum.inr ⟨w0, h⟩ :: l) w0 = lconv h (UGen.sph l w0) := by
   rw [pu_sph_inr, dif_pos rfl]
 
 /- English proof (translation)
-Rewrite using `[pu_sph_inr, dif_neg hw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pu_sph_ne (w0 : Pl E) (h : UL n w0 → ℂ) (l : List (UGen E n)) (w : Pl E) (hw : w0 ≠ w) :
     UGen.sph (Sum.inr ⟨w0, h⟩ :: l) w = UGen.sph l w := by

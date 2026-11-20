@@ -12,9 +12,9 @@ def LFocks_rowMat {r n : ℕ} (g : Matrix (Fin r) (Fin r) ℂ) :
   fun v w => if v.2 = w.2 then g v.1 w.1 else 0
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [rowAct, sub, aeval_X, LFocks_rowMat]`. Rewrite using `[Fintype.sum_prod_type]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b _`. Rewrite using `[Finset.sum_eq_single v.2]`. Simplify using the standard rewrite rules. Introduce `s _ hs`. Simplify using `[Ne.symm hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -32,7 +32,7 @@ lemma LFocks_rowAct_eq_sub {r n : ℕ} (g : Matrix (Fin r) (Fin r) ℂ) :
   · simp
 
 /- English proof (translation)
-Use extensionality with `v w`. Simplify using `only [Matrix.conjTranspose_apply, LFocks_rowMat]`. Distinguish the cases in `h : v.2 = w.2`. Rewrite using `[if_pos h.symm, if_pos h]`. Rewrite using `[if_neg (Ne.symm h), if_neg h, star_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma LFocks_rowMat_conjTranspose {r n : ℕ} (g : Matrix (Fin r) (Fin r) ℂ) :
     (LFocks_rowMat (n := n) g).conjTranspose = LFocks_rowMat g.conjTranspose := by
@@ -43,7 +43,7 @@ lemma LFocks_rowMat_conjTranspose {r n : ℕ} (g : Matrix (Fin r) (Fin r) ℂ) :
   · rw [if_neg (Ne.symm h), if_neg h, star_zero]
 
 /- English proof (translation)
-Introduce `r n g f h`. Rewrite using `[LFocks_rowAct_eq_sub, LFocks_rowAct_eq_sub, LFocks_subAdj, LFocks_rowMat_conjTranspose]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem fischerInnerRowActionAdjoint : FockRowAdj := by
   intro r n g f h

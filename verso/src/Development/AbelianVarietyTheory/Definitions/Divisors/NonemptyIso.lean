@@ -11,7 +11,7 @@ namespace GlobalTheory.UPel.HT.RepFamModel
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ φ := 𝟙 _, φ₂ := 𝟙 _, cart := GlobalTheory.SiegLower.isGrpPullback_id o.A, sq := ⟨by simp, by simp⟩, act := fun c => by simp, pol := GlobalTheory.SiegLower.lbIso_pull_id o.isLB, eta := fun y => by simp }⟩`.
+Supply the required witnesses or components.
 -/
 theorem objMap_refl {b : Base D R} {N : ℕ} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b N s) :
     Nonempty (ObjMap o o (𝟙 S)) :=
@@ -35,14 +35,14 @@ def comp (m₁ : ObjMap o₁ o₂ f) (m₂ : ObjMap o₂ o₃ g) : ObjMap o₁ o
   eta y := by rw [← Category.assoc, m₁.eta, Category.assoc, m₂.eta, Category.assoc]
 
 /- English proof (translation)
-The claim follows from `(F.rep F.X F.s F.univ).unique ⟨hf, h⟩ ⟨by simp, objMap_refl F.univ⟩`.
+A detailed English derivation is pending.
 -/
 theorem eq_id (F : RepFam b N) (f : F.X ⟶ F.X) (hf : f ≫ F.s = F.s)
     (h : Nonempty (ObjMap F.univ F.univ f)) : f = 𝟙 _ :=
   (F.rep F.X F.s F.univ).unique ⟨hf, h⟩ ⟨by simp, objMap_refl F.univ⟩
 
 /- English proof (translation)
-Take `⟨f, ⟨hf, ⟨mf⟩⟩, -⟩` from `G.rep F.X F.s F.univ`. Take `⟨g, ⟨hg, ⟨mg⟩⟩, -⟩` from `F.rep G.X G.s G.univ`. Use `⟨⟨f, g, eq_id F (f ≫ g) (by rw [Category.assoc, hg, hf]) ⟨comp mf mg⟩, eq_id G (g ≫ f) (by rw [Category.assoc, hf, hg]) ⟨comp mg mf⟩⟩, hf⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem nonempty_iso (F G : RepFam b N) : ∃ e : F.X ≅ G.X, e.hom ≫ G.s = F.s := by
   obtain ⟨f, ⟨hf, ⟨mf⟩⟩, -⟩ := G.rep F.X F.s F.univ

@@ -8,9 +8,9 @@ open scoped TensorProduct
 namespace GlobalTheory.Mem.Vol
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M J`. Establish `hd` using `GlobalTheory.RationalDiscrete.discreteTopology_HFinIn σ J`. Establish `h1 : ({1} : Set (HFinIn (AF F) σ J)) ∈ nhds (1 : HFinIn (AF F) σ J)` using `(isOpen_discrete _).mem_nhds rfl`. Take `⟨U, hU, hsub⟩` from `(mem_nhds_subtype _ _ _).1 h1`. Use `⟨U, hU, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `g hg ⟨γ, rfl⟩`. Establish `hγ : γ • (1 : HA (AF F) σ J) = (γ.1 : HR (AF F) σ J)` using `mul_one (γ.1 : HR (AF F) σ J)`. Rewrite `hg`, the goal using `[hγ]`. Establish `h2 : γ = 1` using `hsub hg`. Rewrite using `[h2]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

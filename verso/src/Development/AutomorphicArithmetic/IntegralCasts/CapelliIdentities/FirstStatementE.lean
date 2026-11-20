@@ -1,15 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `ι ν s f g m`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_ _ _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `insert a s ha ih`. Introduce `hf hg hfg`. Take `⟨h1, h2, h3⟩` from `ih (fun i hi => hf i (Finset.mem_insert_of_mem hi)) (fun i hi => hg i (Finset.mem_insert_of_mem hi)) (fun i hi => hfg i (Finset.mem_insert_of_mem hi))`. Establish `fa` using `hf a (Finset.mem_insert_self a s)`. Establish `ga` using `hg a (Finset.mem_insert_self a s)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fga` using `hfg a (Finset.mem_insert_self a s)`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `e : f a * ∏ i ∈ s, f i - g a * ∏ i ∈ s, g i = f a * (∏ i ∈ s, f i - ∏ i ∈ s, g i) + (f a - g a) * ∏ i ∈ s, g i` using `by ring`. Rewrite using `[e]`. Use `le_trans (Valuation.map_add ν _ _) (max_le ?_ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.Reformulated.B.ProdSubProdLeOfFactorsClose.main.{u_1} :
     ∀ {ι : Type u_1} (ν : Valuation ℂ NNReal) (s : Finset ι) (f g : ι → ℂ) (m : NNReal),

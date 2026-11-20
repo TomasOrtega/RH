@@ -7,9 +7,9 @@ open CategoryTheory AlgebraicGeometry LateralTheory.E.E4
 namespace LateralTheory.E.LeafDimBoundPf
 
 /- English proof (translation)
-Use `Order.krullDim_le_of_strictMono (PrimeSpectrum.comap (algebraMap A S)) ?_` and prove the remaining obligations. Introduce `P Q hPQ`. Establish `hle : P.asIdeal ≤ Q.asIdeal` using `hPQ.le`. Use `lt_of_le_of_ne (fun x hx => hle hx) ?_` and prove the remaining obligations. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hPQ.ne` to reduce the goal to its premises. Use `Algebra.QuasiFinite.eq_of_le_of_under_eq (R := A) P.asIdeal Q.asIdeal hle (congrArg PrimeSpectrum.asIdeal h)` as an intermediate fact. Conclude with `PrimeSpectrum.ext this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dim_le_of_quasiFinite (A S : Type) [CommRing A] [CommRing S] [Algebra A S]
     [Algebra.QuasiFinite A S] : ringKrullDim S ≤ ringKrullDim A := by
@@ -24,9 +24,9 @@ theorem dim_le_of_quasiFinite (A S : Type) [CommRing A] [CommRing S] [Algebra A 
   exact PrimeSpectrum.ext this
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `Algebra.IsStandardSmoothOfRelativeDimension.exists_etale_mvPolynomial (n := 1) R S`. Set `_ : Algebra (MvPolynomial (Fin 1) R) S` to `g.toRingHom.toAlgebra`. Establish `: Algebra.Etale (MvPolynomial (Fin 1) R) S` using `hg`. Establish `h1` using `dim_le_of_quasiFinite (MvPolynomial (Fin 1) R) S`. Rewrite `h1` using `[MvPolynomial.ringKrullDim_of_isNoetherianRing]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dim_le_of_stdSmooth1 (R S : Type) [CommRing R] [CommRing S] [Algebra R S] [IsNoetherianRing R]
     [Algebra.IsStandardSmoothOfRelativeDimension 1 R S] : ringKrullDim S ≤ ringKrullDim R + 1 := by
@@ -38,7 +38,7 @@ theorem dim_le_of_stdSmooth1 (R S : Type) [CommRing R] [CommRing S] [Algebra R S
   simpa using h1
 
 /- English proof (translation)
-Establish `h1 : topologicalKrullDim (V : Set X) = topologicalKrullDim (Spec Γ(X, V))` using `(Scheme.homeoOfIso hV.isoSpec).isHomeomorph.topologicalKrullDim_eq`. Rewrite using `[h1]`. Conclude with `PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_affineOpen {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) :
     topologicalKrullDim (V : Set X) = ringKrullDim Γ(X, V) := by
@@ -48,7 +48,7 @@ theorem dim_affineOpen {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) :
   exact PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim _
 
 /- English proof (translation)
-Rewrite using `[← dim_affineOpen hU, ← PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := A)]`. Conclude with `topologicalKrullDim_subspace_le _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_affineOpen_Spec_le (A : CommRingCat.{0}) {U : (Spec A).Opens} (hU : IsAffineOpen U) :
     ringKrullDim Γ(Spec A, U) ≤ ringKrullDim A := by
@@ -56,11 +56,11 @@ theorem dim_affineOpen_Spec_le (A : CommRingCat.{0}) {U : (Spec A).Opens} (hU : 
   exact topologicalKrullDim_subspace_le _ _
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ R hR D0 q hq`. Establish `: IsNoetherianRing R` using `isNoetherianRing_of_fg hR`. Apply `GlobalTheory.topologicalKrullDim_le_of_forall_exists_isOpen` to reduce the goal to its premises. Introduce `x`. Take `⟨U, hU, V, hV, hx, e, hs⟩` from `hq.exists_isStandardSmoothOfRelativeDimension x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: IsNoetherianRing Γ(Sp R, U)` using `IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Set `_ : Algebra Γ(Sp R, U) Γ(D0, V)` to `(q.appLE U V e).hom.toAlgebra`. Establish `: Algebra.IsStandardSmoothOfRelativeDimension 1 Γ(Sp R, U) Γ(D0, V)` using `hs`. Use `⟨(V : Set D0), V.isOpen, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[dim_affineOpen hV]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `dim_affineOpen_Spec_le (CommRingCat.of R) hU`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem LeafDimBound_of : LateralTheory.E.LeafDescendVCut.LeafDimBound := by
   intro k _ Ω _ _ R hR D0 q hq

@@ -18,23 +18,21 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
   {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule ℂ D}
 
 /- English proof (translation)
-Establish `hE` using `hD.glRep`. Establish `hU` using `isInfUnitary_of_isDerivedOn hσ hD`. Take `⟨w, hwV, hw0, hw⟩` from `hV.2.2.2`. Establish `hwG : w ∈ genSub E V` using `rorth_le_genSub hwV`. Distinguish the cases in `hVN : ∃ x ∈ N ⊓ V, x ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨x, hx, hx0⟩` from `hVN`. Conclude with `Or.inr (le_antisymm hN (schA_genSub_le hV N hNE hx.2 hx.1 hx0))`. Use `push Not at hVN`. Establish `hNk : IsKStableSub ε E N` using `fun a b _ x hx => hNE a b x hx`. Establish `hfd : ∀ a, ∀ y ∈ N, (innerₛₗ ℂ w) (E a a y) = (lowK ε lam a : ℂ) * (innerₛₗ ℂ w) y`.
+Extract witnesses or component facts from the available result. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a y _`. Establish `h1` using `hU a a w y`. Simplify using `only [hw.1 a, inner_smul_left, adjSign, if_true, one_mul, Complex.conj_ofReal] at h1`. Simplify using `only [innerₛₗ_apply_apply]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfl : ∀ a b, a < b → ε a = ε b → ∀ y ∈ N, (innerₛₗ ℂ w) (E b a y) = 0`. Introduce `a b hab h y _`. Establish `h1` using `hU a b w y`. Rewrite `h1` using `[hw.2 a b hab h, inner_zero_left, show adjSign ε a b = 1 by simp [adjSign, h], one_mul]`. Simplify using `only [innerₛₗ_apply_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1.symm`. Establish `horth : ∀ z ∈ N, inner ℂ z w = 0`. Introduce `z hz`. Rewrite using `[← inner_eq_zero_symm]`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, huN, hu, huz, -⟩` from `schA_riesz hE hU hV.1 hV.2.1 N hN hNk (innerₛₗ ℂ w) (lowK ε lam) hfd hfl hz`. Establish `huV : u ∈ V` using `khw_lowK_mem hE hU hV hc hgap (hN huN) hu`. Use `hVN u ⟨huN, huV⟩` as an intermediate fact. Rewrite `huz` using `[this, inner_zero_left, innerₛₗ_apply_apply]`. Conclude with `hne huz.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hY : ∀ a b, ∀ y ∈ genSub E V ⊓ Nᗮ, E a b y ∈ genSub E V ⊓ Nᗮ`. Introduce `a b y hy`. Use `⟨rorth_apply_mem_genSub a b hy.1, (Submodule.mem_orthogonal _ _).2 fun z hz => ?_⟩` and prove the remaining obligations. Establish `h1` using `hU b a z y`. Rewrite `h1` using `[(Submodule.mem_orthogonal _ _).1 hy.2 _ (hNE b a z hz)]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[schA_adjSign_sq, one_mul]`. Use `_ = adjSign ε b a * (adjSign ε b a * inner ℂ z (E a b y)) := by ring`. Use `_ = 0 := by rw [← h1, mul_zero]`. Establish `hle` using `schA_genSub_le hV _ hY hwV ⟨hwG, (Submodule.mem_orthogonal _ _).2 horth⟩ hw0`.
-
-Use `Or.inl ((Submodule.eq_bot_iff _).2 fun z hz => ?_)` and prove the remaining obligations. Conclude with `inner_self_eq_zero.1 ((Submodule.mem_orthogonal _ _).1 (hle (hN hz)).2 z hz)`.
+A detailed English derivation is pending.
 -/
 theorem data_genSub_irred (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
@@ -86,13 +84,13 @@ theorem data_genSub_irred (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) 
   exact inner_self_eq_zero.1 ((Submodule.mem_orthogonal _ _).1 (hle (hN hz)).2 z hz)
 
 /- English proof (translation)
-Establish `hE` using `hD.glRep`. Establish `hU` using `isInfUnitary_of_isDerivedOn hσ hD`. Take `⟨w, hwV, hw0, hw⟩` from `hV.2.2.2`. Establish `hwG : w ∈ genSub E V` using `rorth_le_genSub hwV`. Establish `hAw : IsKHWVec ε E (lowK ε lam) (A w)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun a => ?_, fun a b hab h => ?_⟩` and prove the remaining obligations. Rewrite using `[← hAE a a w hwG, hw.1 a, map_smul]`. Rewrite using `[← hAE a b w hwG, hw.2 a b hab h, map_zero]`. Establish `hAwV : A w ∈ V` using `khw_lowK_mem hE hU hV hc hgap (hA w hwG) hAw`. Take `⟨c, hc'⟩` from `khw_line_of_kIrrHW hE hU hV hAwV hwV hAw hw hw0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hk : ∀ x, x ∈ LinearMap.ker (A - c • (1 : Module.End ℂ D)) ↔ A x = c • x` using `fun x => by`. Simplify using `[sub_eq_zero]`. Establish `hX : ∀ a b, ∀ x ∈ genSub E V ⊓ LinearMap.ker (A - c • (1 : Module.End ℂ D)), E a b x ∈ genSub E V ⊓ LinearMap.ker (A - c • (1 : Module.End ℂ D))`. Introduce `a b x hx`. Use `⟨rorth_apply_mem_genSub a b hx.1, (hk _).2 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hAE a b x hx.1, (hk x).1 hx.2, map_smul]`. Establish `hle` using `schA_genSub_le hV _ hX hwV ⟨hwG, (hk w).2 hc'⟩ hw0`. Conclude with `⟨c, fun x hx => (hk x).1 (hle hx).2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem data_end_scalar (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
@@ -121,27 +119,25 @@ theorem data_end_scalar (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (h
   exact ⟨c, fun x hx => (hk x).1 (hle hx).2⟩
 
 /- English proof (translation)
-Establish `hE` using `hD.glRep`. Establish `hU` using `isInfUnitary_of_isDerivedOn hσ hD`. Take `⟨w, hwV, hw0, hw⟩` from `hV.2.2.2`. Establish `hwG : w ∈ genSub E V` using `rorth_le_genSub hwV`. Establish `hww : inner ℂ w w ≠ 0` using `inner_self_ne_zero.2 hw0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set cc : ℂ := b w w / inner ℂ w w with hcdef`. Use `set f : D →ₗ[ℂ] ℂ := b w - cc • innerₛₗ ℂ w with hf`. Establish `hfapp : ∀ y, f y = b w y - cc * inner ℂ w y` using `fun y => by simp [hf]`. Establish `hfw : f w = 0` using `by rw [hfapp, hcdef, div_mul_cancel₀ _ hww, sub_self]`. Establish `hfd : ∀ a, ∀ y ∈ genSub E V, f (E a a y) = (lowK ε lam a : ℂ) * f y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a y hy`. Establish `h1` using `hbE a a w hwG y hy`. Establish `h2` using `hU a a w y`. Simplify using `only [hw.1 a, adjSign, if_true, one_mul, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, Complex.conj_ofReal, inner_smul_left] at h1 h2`. Rewrite using `[hfapp, hfapp, ← h1, ← h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hfl : ∀ a b', a < b' → ε a = ε b' → ∀ y ∈ genSub E V, f (E b' a y) = 0`. Introduce `a b' hab h y hy`. Establish `h1` using `hbE a b' w hwG y hy`. Establish `h2` using `hU a b' w y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hw.2 a b' hab h, map_zero, LinearMap.zero_apply, show adjSign ε a b' = 1 by simp [adjSign, h], one_mul]`. Rewrite `h2` using `[hw.2 a b' hab h, inner_zero_left, show adjSign ε a b' = 1 by simp [adjSign, h], one_mul]`. Rewrite using `[hfapp, ← h1, ← h2]`. Simplify using the standard rewrite rules. Establish `hfz : ∀ y ∈ genSub E V, f y = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `y hy`. Assume the negation of the conclusion as `hne`. Take `⟨u, huG, hu, huy, huV'⟩` from `schA_riesz hE hU hV.1 hV.2.1 (genSub E V) le_rfl (fun a b _ x hx => rorth_apply_mem_genSub a b hx) f (lowK ε lam) hfd hfl hy`. Establish `huV : u ∈ V` using `khw_lowK_mem hE hU hV hc hgap huG hu`. Take `⟨c', hc'⟩` from `khw_line_of_kIrrHW hE hU hV huV hwV hu hw hw0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `huV' w ⟨hwG, hwV⟩`. Rewrite `h3` using `[hfw, hc', inner_smul_left]`. Establish `hc0 : c' = 0`. Break down `mul_eq_zero.1 h3 with h | h` into its components or cases. Simplify using `using h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `absurd h hww`. Rewrite `huy` using `[hc', hc0, zero_smul, inner_zero_left]`. Conclude with `hne huy.symm`. Set `X : Submodule ℂ D` to `{ carrier := {x | x ∈ genSub E V ∧ ∀ y ∈ genSub E V, b x y = cc * inner ℂ x y} add_mem' := fun {x x'} hx hx' => ⟨(genSub E V).add_mem hx.1 hx'.1, fun y hy => by`. Rewrite using `[map_add, LinearMap.add_apply, hx.2 y hy, hx'.2 y hy, inner_add_left, mul_add]⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `zero_mem' := ⟨(genSub E V).zero_mem, fun y _ => by simp⟩`. Use the proof step `smul_mem' := fun r x hx => ⟨(genSub E V).smul_mem r hx.1, fun y hy => by`. Rewrite using `[map_smulₛₗ, LinearMap.smul_apply, hx.2 y hy, inner_smul_left, smul_eq_mul]`. Use the proof step `ring⟩ }`. Establish `hX : ∀ a c, ∀ x ∈ X, E a c x ∈ X`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a c x hx`. Use `⟨rorth_apply_mem_genSub a c hx.1, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hbE a c x hx.1 y hy, hx.2 _ (rorth_apply_mem_genSub c a hy), hU]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwX : w ∈ X` using `⟨hwG, fun y hy => by`.
-
-Use `hfz y hy` as an intermediate fact. Rewrite `this` using `[hfapp, sub_eq_zero]`. Conclude with `this⟩`. Establish `hle` using `schA_genSub_le hV X hX hwV hwX hw0`. Conclude with `⟨cc, fun x hx y hy => (hle hx).2 y hy⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem data_form_scalar (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
@@ -223,39 +219,35 @@ variable {ε : Fin n → Bool}
   {E₂ : Fin n → Fin n → Module.End ℂ D₂} {V₂ : Submodule ℂ D₂}
 
 /- English proof (translation)
-Establish `hE₁` using `hD₁.glRep`. Establish `hU₁` using `isInfUnitary_of_isDerivedOn hσ₁ hD₁`. Establish `hE₂` using `hD₂.glRep`. Establish `hU₂` using `isInfUnitary_of_isDerivedOn hσ₂ hD₂`. Take `⟨w₁, hw₁V, hw₁0, hw₁⟩` from `hV₁.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w₂, hw₂V, hw₂0, hw₂⟩` from `hV₂.2.2.2`. Establish `hw₁G : w₁ ∈ genSub E₁ V₁` using `rorth_le_genSub hw₁V`. Establish `hw₂G : w₂ ∈ genSub E₂ V₂` using `rorth_le_genSub hw₂V`. Establish `hsg : ∀ a b', ε a = ε b' → adjSign ε a b' = 1` using `fun a b' h => by simp [adjSign, h]`. Set `X₁ : Submodule ℂ D₁` to `{ carrier := {x | x ∈ genSub E₁ V₁ ∧ ∀ y ∈ genSub E₂ V₂, b x y = 0} add_mem' := fun {x x'} hx hx' => ⟨(genSub E₁ V₁).add_mem hx.1 hx'.1, fun y hy => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[map_add, LinearMap.add_apply, hx.2 y hy, hx'.2 y hy, add_zero]⟩`. Use the proof step `zero_mem' := ⟨(genSub E₁ V₁).zero_mem, fun y _ => by simp⟩`. Use the proof step `smul_mem' := fun r x hx => ⟨(genSub E₁ V₁).smul_mem r hx.1, fun y hy => by`. Rewrite using `[map_smulₛₗ, LinearMap.smul_apply, hx.2 y hy, smul_zero]⟩ }`. Set `X₂ : Submodule ℂ D₂` to `{ carrier := {y | y ∈ genSub E₂ V₂ ∧ ∀ x ∈ genSub E₁ V₁, b x y = 0} add_mem' := fun {y y'} hy hy' => ⟨(genSub E₂ V₂).add_mem hy.1 hy'.1, fun x hx => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, hy.2 x hx, hy'.2 x hx, add_zero]⟩`. Use the proof step `zero_mem' := ⟨(genSub E₂ V₂).zero_mem, fun x _ => by simp⟩`. Use the proof step `smul_mem' := fun r y hy => ⟨(genSub E₂ V₂).smul_mem r hy.1, fun x hx => by`. Rewrite using `[map_smul, hy.2 x hx, smul_zero]⟩ }`. Establish `hX₁ : ∀ a c, ∀ x ∈ X₁, E₁ a c x ∈ X₁` using `fun a c x hx => ⟨rorth_apply_mem_genSub a c hx.1, fun y hy => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hbE a c x hx.1 y hy, hx.2 _ (rorth_apply_mem_genSub c a hy), mul_zero]⟩`. Establish `hX₂ : ∀ a c, ∀ y ∈ X₂, E₂ a c y ∈ X₂` using `fun a c y hy => ⟨rorth_apply_mem_genSub a c hy.1, fun x hx => by`. Establish `h` using `hbE c a x hx y hy.1`. Rewrite `h` using `[hy.2 _ (rorth_apply_mem_genSub c a hx)]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[schA_adjSign_sq, one_mul]`. Use `_ = adjSign ε c a * (adjSign ε c a * b x (E₂ a c y)) := by ring`. Use `_ = 0 := by rw [← h, mul_zero]⟩`. Distinguish the cases in `hL : ∀ y ∈ genSub E₂ V₂, b w₁ y = 0`. Establish `hle` using `schA_genSub_le hV₁ X₁ hX₁ hw₁V ⟨hw₁G, hL⟩ hw₁0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `fun x hx y hy => (hle hx).2 y hy`. Distinguish the cases in `hR : ∀ x ∈ genSub E₁ V₁, b x w₂ = 0`. Establish `hle` using `schA_genSub_le hV₂ X₂ hX₂ hw₂V ⟨hw₂G, hR⟩ hw₂0`. Conclude with `fun x hx y hy => (hle hy).2 x hx`. It suffices to derive a contradiction.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push Not at hL hR`. Take `⟨y₀, hy₀, hby⟩` from `hL`. Take `⟨x₀, hx₀, hbx⟩` from `hR`. Establish `hfd₂ : ∀ a, ∀ y ∈ genSub E₂ V₂, b w₁ (E₂ a a y) = (lowK ε lam₁ a : ℂ) * b w₁ y`. Introduce `a y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hbE a a w₁ hw₁G y hy`. Simplify using `only [hw₁.1 a, adjSign, if_true, one_mul, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, Complex.conj_ofReal] at h1`. Conclude with `h1.symm`. Establish `hfl₂ : ∀ a b', a < b' → ε a = ε b' → ∀ y ∈ genSub E₂ V₂, b w₁ (E₂ b' a y) = 0`. Introduce `a b' hab h y hy`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `hbE a b' w₁ hw₁G y hy`. Rewrite `h1` using `[hw₁.2 a b' hab h, map_zero, LinearMap.zero_apply, hsg a b' h, one_mul]`. Conclude with `h1.symm`. Take `⟨u₂, hu₂G, hu₂, hu₂y, -⟩` from `schA_riesz hE₂ hU₂ hV₂.1 hV₂.2.1 (genSub E₂ V₂) le_rfl (fun a b' _ x hx => rorth_apply_mem_genSub a b' hx) (b w₁) (lowK ε lam₁) hfd₂ hfl₂ hy₀`. Establish `hu₂0 : u₂ ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Rewrite `hu₂y` using `[inner_zero_left]`. Conclude with `hby hu₂y.symm`. Set `g : D₁ →ₗ[ℂ] ℂ` to `{ toFun := fun x => starRingEnd ℂ (b x w₂) map_add' := fun x x' => by simp map_smul' := fun r x => by simp }`. Establish `hgapp : ∀ x, g x = starRingEnd ℂ (b x w₂)` using `fun _ => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfd₁ : ∀ a, ∀ x ∈ genSub E₁ V₁, g (E₁ a a x) = (lowK ε lam₂ a : ℂ) * g x`. Introduce `a x hx`. Establish `h1` using `hbE a a x hx w₂ hw₂G`. Simplify using `only [hw₂.1 a, adjSign, if_true, one_mul, map_smul, smul_eq_mul] at h1`. Rewrite using `[hgapp, hgapp, h1, map_mul, Complex.conj_ofReal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfl₁ : ∀ a b', a < b' → ε a = ε b' → ∀ x ∈ genSub E₁ V₁, g (E₁ b' a x) = 0`. Introduce `a b' hab h x hx`. Establish `h1` using `hbE b' a x hx w₂ hw₂G`. Rewrite `h1` using `[hw₂.2 a b' hab h, map_zero, mul_zero]`. Rewrite using `[hgapp, h1, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨u₁, hu₁G, hu₁, hu₁x, -⟩` from `schA_riesz hE₁ hU₁ hV₁.1 hV₁.2.1 (genSub E₁ V₁) le_rfl (fun a b' _ x hx => rorth_apply_mem_genSub a b' hx) g (lowK ε lam₂) hfd₁ hfl₁ hx₀`. Establish `hu₁0 : u₁ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hu₁x` using `[inner_zero_left, hgapp]`. Conclude with `hbx (by simpa using hu₁x.symm)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hΛ : lowK ε lam₁ ≠ lowK ε lam₂`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Use `congrFun h a` as an intermediate fact.
-
-Simplify using `only [lowK, Pi.add_apply, Pi.sub_apply] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hmono₁, h₁, hh₁, hbig₁⟩` from `hgap₁`. Take `⟨hmono₂, h₂, hh₂, hbig₂⟩` from `hgap₂`. Take `⟨j₂, -, hpos₂, hle₂⟩` from `casimir_gap_at_noncompact_weight hE₂ hU₂ hV₂ hc₂ hmono₂ hh₂ hbig₂ hu₂G hu₂0 hu₂ hΛ`.
-
-Take `⟨j₁, -, hpos₁, hle₁⟩` from `casimir_gap_at_noncompact_weight hE₁ hU₁ hV₁ hc₁ hmono₁ hh₁ hbig₁ hu₁G hu₁0 hu₁ hΛ.symm`. Establish `p₁ : 0 < 2 * ((j₁ : ℝ) + 1) * (h₁ - n + 1)` using `mul_pos (by positivity) hpos₁`. Establish `p₂ : 0 < 2 * ((j₂ : ℝ) + 1) * (h₂ - n + 1)` using `mul_pos (by positivity) hpos₂`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem data_form_zero (hgap₁ : StdGap ε lam₁)
     (hσ₁ : IsURepOn (UJset ε) σ₁) (hD₁ : IsDerivedOn ε σ₁ D₁ E₁) (hV₁ : IsKIrrHW ε E₁ (lowK ε lam₁) V₁)

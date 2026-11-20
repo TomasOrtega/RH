@@ -28,11 +28,11 @@ namespace GlobalTheory.ZH.AbPol
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Rewrite `h` using `[← sub_eq_zero, ← map_sub]`. Establish `key : a - b = CechPic.pull P.hom (CechPic.pull e (a - b))`. Use `EndoExtend.pic_ext j hn P e he ?_ ?_` and prove the remaining obligations. Rewrite using `[← pull_comp, he, pull_id]`. Set `eU : U ⟶ pullback P.hom j` to `pullback.lift (j ≫ e) (𝟙 U) (by rw [Category.assoc, he, Category.comp_id, Category.id_comp])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h₁ : eU ≫ pullback.fst P.hom j = j ≫ e` using `pullback.lift_fst _ _ _`. Rewrite using `[h, ← pull_comp, pullback.condition, pull_comp, ← pull_comp j, ← h₁, pull_comp eU, h, map_zero, map_zero]`. Take `⟨D, hD, hc⟩` from `cls_surj (CechPic.pull e (a - b))`. Take `⟨i, hi⟩` from `exists_chart hD x`. Take `⟨V, hV, hx, hle⟩` from `exists_isAffineOpen_mem_and_subset hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨V, hV, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← map_sub, key, ← hc, ← pull_comp]`. Conclude with `(cls_eq_zero_iff (pull_isLB hD _)).2 (IsoExtend.exists_gen_of_chart hD _ i fun y => hle y.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pic_ext_local {X U : Scheme.{0}} [IsLocallyNoetherian X] (j : U ⟶ X) (hn : Geo.Tor.IsNormalScheme X)
     [IsPreimmersion j] [Flat j] [IsDominant j] [QuasiCompact j] (P : Over X) [Smooth P.hom]
@@ -56,9 +56,9 @@ theorem pic_ext_local {X U : Scheme.{0}} [IsLocallyNoetherian X] (j : U ⟶ X) (
   exact (cls_eq_zero_iff (pull_isLB hD _)).2 (IsoExtend.exists_gen_of_chart hD _ i fun y => hle y.2)
 
 /- English proof (translation)
-Use `AmpleLocal.relAmple_of_locally X P L hL inferInstance inferInstance fun x => ?_` and prove the remaining obligations. Take `⟨V, hV, hx, hc⟩` from `pic_ext_local j hn P e he h x`. Use `⟨V, hx, ?_⟩` and prove the remaining obligations. Establish `: IsAffine V` using `hV`. Establish `: IsProper (Over.mk (P.hom ∣_ V)).hom` using `inferInstanceAs (IsProper (P.hom ∣_ V))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL'` using `pull_isLB hL (P.hom ⁻¹ᵁ V).ι`. Use `(relAmple_iff_isAmpleLB_of_isAffine (Over.mk (P.hom ∣_ V)) hL').2 ?_` and prove the remaining obligations. Use `(isAmpleLB_pow_iff hL' hN).1 ((isAmpleLB_of_relAmple P hO ha V hV).of_lbIso (isLB_lbPow hL' N) ?_)` and prove the remaining obligations. Use `(cls_eq_iff (isLB_lbPow hL' N) (pull_isLB hO _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_lbPow hL', cls_pull hL, cls_pull hO, ← hc, map_nsmul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem relAmple_of_densePart {X U : Scheme.{0}} [IsLocallyNoetherian X] (j : U ⟶ X)
     (hn : Geo.Tor.IsNormalScheme X) [IsPreimmersion j] [Flat j] [IsDominant j] [QuasiCompact j] (P : Over X)
@@ -78,9 +78,9 @@ theorem relAmple_of_densePart {X U : Scheme.{0}} [IsLocallyNoetherian X] (j : U 
   rw [cls_lbPow hL', cls_pull hL, cls_pull hO, ← hc, map_nsmul]
 
 /- English proof (translation)
-Establish `hres : ∀ {U V : Y.Opens} (h : V ≤ U) (c : R), (Y.presheaf.map (homOfLE h).op).hom (constFn q U c) = constFn q V c` using `fun h c => by`. Conclude with `congrArg (fun z => z.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c)) (q.appLE_map (U := ⊤) (fun _ _ => trivial) (homOfLE h).op)`. Use `⟨⟨fun l => ∑ j, constFn q (H.U l) (a j) * (s j).f l, fun i k => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, hres, hres, (s j).compat i k]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_comb {R : Type} [CommRing R] {Y : Scheme.{0}} (q : Y ⟶ Sp R) {H : LB Y} {J : Type} [Fintype J]
     (s : J → H.Sec) (a : J → R) : ∃ σ : H.Sec, ∀ l, σ.f l = ∑ j, constFn q (H.U l) (a j) * (s j).f l := by
@@ -95,7 +95,7 @@ theorem exists_comb {R : Type} [CommRing R] {Y : Scheme.{0}} (q : Y ⟶ Sp R) {H
   ring
 
 /- English proof (translation)
-Rewrite using `[hσ, Points.valR_eq x _ hx, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← Points.valR_eq, ← Points.valR_eq, Points.valR_constFn q x _ hx]`. Conclude with `congrArg _ (Points.valR_appLE x r _ hx _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_comb {R K : Type} [CommRing R] [Field K] {X Y : Scheme.{0}} (q : Y ⟶ Sp R) (r : Y ⟶ X) {H : LB X}
     {J : Type} [Fintype J] (s : J → H.Sec) (a : J → R) (σ : (H.pull r).Sec)
@@ -113,21 +113,21 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω
   {U₀ : M.Z.Opens} (Q : ZHPre ρ M U₀)
 
 /- English proof (translation)
-Establish `hP` using `ρ.P.isLB`. Establish `hL` using `Q.L.isLB`. Establish `hr : Set.range M.pt ⊆ Set.range U₀.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(top_le_preimage_iff _ _).1 (M.top_le_preimage_pt hU)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `x₀ : Sp Ω ⟶ U₀` to `IsOpenImmersion.lift U₀.ι M.pt hr`. Establish `hx₀ : x₀ ≫ U₀.ι = M.pt` using `IsOpenImmersion.lift_fac _ _ _`. Establish `w' : (k ≫ i) ≫ Q.G.hom = (q ≫ x₀) ≫ U₀.ι` using `by rw [w, Category.assoc, hx₀]`. Set `g₀ : Y ⟶ pullback ρ.P.A.hom Q.u₀` to `Q.cart.1.lift (k ≫ i) (q ≫ x₀) w'`. Establish `g₁ : g₀ ≫ Q.φ = k ≫ i` using `Q.cart.1.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g₂ : g₀ ≫ pullback.snd _ _ = q ≫ x₀` using `Q.cart.1.lift_snd _ _ _`. Take `⟨r₀, hr₀⟩ : ∃ r₀ : Y ⟶ (baseOver (Sp S.R) ⊗ ρ.P.A).left, r₀ ≫ (snd (baseOver (Sp S.R)) ρ.P.A).left = g₀ ≫ pullback.fst _ _` from `⟨pullback.lift ((g₀ ≫ pullback.fst _ _) ≫ ρ.P.A.hom) (g₀ ≫ pullback.fst _ _) (Category.comp_id _), pullback.lift_snd _ _ _⟩`. Establish `hN : (LPow ρ.P.A ρ.P.L S.N (baseOver (Sp S.R))).IsLB` using `LB.isLB_linComb hP _ _`. Use `choose σ hσ using fun i => exists_comb q (fun l => GlobalTheory.secPull (ρ.s l) r₀) (b i)`. Take `⟨u, hu, -⟩` from `CrdIso.exists_iso_of_crd Y (O.pull k) _ S.J (fun i => GlobalTheory.secPull (τ i) k) σ (pull_isLB hO k) (pull_isLB hN r₀) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.nonzeroLocus_secPull]`. Rewrite using `[← Scheme.Hom.preimage_iSup, hτ]`. Use the proof step `rfl) (by`. Introduce and unpack `K _ x v ⟨l, c, hl, hv⟩`. Take `⟨jP, hj⟩` from `exists_chart hP ((x ≫ g₀ ≫ pullback.fst _ _) (IsLocalRing.closedPoint K))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj' : ⊤ ≤ (x ≫ g₀ ≫ pullback.fst _ _) ⁻¹ᵁ ρ.P.L.U jP` using `(Points.le_preimage_iff _ _).2 hj`. Establish `hβ : spMap (Spec.preimage (x ≫ q)).hom = x ≫ q` using `Spec.map_preimage _`. Establish `hl' : ⊤ ≤ (x ≫ k) ⁻¹ᵁ O.U (l PUnit.unit)` using `fun y _ => (mem_pull (L := O) (F := k) (J := l)).1 (hl (x := y) trivial)`. Take `⟨d, hd, e⟩` from `h K (Spec.preimage (x ≫ q)).hom (x ≫ g₀) (x ≫ k) (x ≫ r₀) jP (l PUnit.unit) (by rw [hβ, Category.assoc, reassoc_of% g₂, hx₀, Category.assoc]) (by rw [Category.assoc, Category.assoc, g₁]) (by rw [Category.assoc, Category.assoc, hr₀]) ((top_le_preimage_iff _ _).1 (by rwa [Category. …`. Establish `hx : ⊤ ≤ x ⁻¹ᵁ ((LPow ρ.P.A ρ.P.L S.N (baseOver (Sp S.R))).pull r₀).U (fun _ _ => jP)` using `fun y _ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mem_pull.2 (Set.mem_iInter.2 fun _ => ?_)` and prove the remaining obligations. Use `hj' (x := y) trivial` as an intermediate fact. Rewrite `this` using `[← hr₀]`. Conclude with `this`. Use `⟨fun _ _ => jP, c * (Units.mk0 d hd)⁻¹, hx, fun i => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : valR x _ ((GlobalTheory.secPull (τ i) k).f l) = valF (x ≫ k) _ ((τ i).f (l PUnit.unit))` using `Points.valR_appLE x k _ hl _`. Establish `e₂` using `valR_comb q r₀ ρ.s (b i) (σ i) (hσ i) x _ hx`. Rewrite using `[hv, e₁, e₂.trans (e i)]`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0, _root_.mul_assoc, inv_mul_cancel_left₀ hd])`. Establish `e₁` using `(cls_eq_iff (pull_isLB hO k) (pull_isLB hN r₀)).2 ⟨u, hu⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₂` using `(cls_eq_iff (pull_isLB hL Q.φ) (pull_isLB hP _)).2 ⟨Q.w, Q.w_gen⟩`. Establish `e₃ : cls _ hN = S.N • CechPic.pull (snd (baseOver (Sp S.R)) ρ.P.A).left (cls _ hP)` using `(cls_linComb hP _ _ _).trans (by rw [Fin.sum_univ_one, natCast_zsmul])`. Rewrite `e₂` using `[cls_pull hL, cls_pull hP]`. Rewrite `e₁` using `[cls_pull hO, cls_pull hN, e₃]`. Rewrite using `[e₁, map_nsmul, map_nsmul, ← pull_comp, ← pull_comp, ← g₁, hr₀, pull_comp, pull_comp, e₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_generic (hU : (U₀ : Set M.Z).Nonempty) {H Y : Scheme.{0}} [IsIntegral Y] (i : H ⟶ Q.G.left) (k : Y ⟶ H)
     (q : Y ⟶ Sp Ω) (w : (k ≫ i) ≫ Q.G.hom = q ≫ M.pt) (b : Matrix S.J S.J Ω) (O : LB H) (τ : S.J → LB.Sec O)
@@ -191,7 +191,7 @@ theorem cls_generic (hU : (U₀ : Set M.Z).Nonempty) {H Y : Scheme.{0}} [IsInteg
   rw [e₁, map_nsmul, map_nsmul, ← pull_comp, ← pull_comp, ← g₁, hr₀, pull_comp, pull_comp, e₂]
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨h₁, h₂⟩ := h x.1 have e := (V.stalkIso x).commRingCatIsoToRingEquiv exact ⟨e.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv e.symm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isNormalScheme_opens {X : Scheme.{0}} (h : Geo.Tor.IsNormalScheme X) (V : X.Opens) :
     Geo.Tor.IsNormalScheme V.toScheme := fun x => by
@@ -200,17 +200,17 @@ theorem isNormalScheme_opens {X : Scheme.{0}} (h : Geo.Tor.IsNormalScheme X) (V 
   exact ⟨e.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv e.symm⟩
 
 /- English proof (translation)
-Take `⟨O, τ, hO', hτ, h, -, ha⟩` from `hs V b hV hb`. Use `Q.semi.smooth` as an intermediate fact. Use `Q.semi.geomConnected` as an intermediate fact. Use `grpObj_geometricallyIntegral_of_smooth _ Q.G` as an intermediate fact. Establish `sq` using `(isPullback_morphismRestrict Q.G.hom V).flip`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Smooth (Over.mk (Q.G.hom ∣_ V)).hom` using `inferInstanceAs (Smooth (Q.G.hom ∣_ V))`. Establish `: GeometricallyIntegral (Over.mk (Q.G.hom ∣_ V)).hom` using `MorphismProperty.of_isPullback (P := @GeometricallyIntegral) sq ‹_›`. Establish `: IsProper (Over.mk (Q.G.hom ∣_ V)).hom`. Use `hA.2 V hab` as an intermediate fact. Express the relevant statement in the definitionally equal form `IsProper (Q.G.hom ∣_ V)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← sq.isoPullback_hom_snd]`. Use `infer_instance`. Establish `hr : Set.range M.pt ⊆ Set.range V.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(top_le_preimage_iff _ _).1 (M.top_le_preimage_pt hne)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `j : Sp Ω ⟶ V` to `IsOpenImmersion.lift V.ι M.pt hr`. Establish `hj : j ≫ V.ι = M.pt` using `IsOpenImmersion.lift_fac _ _ _`. Establish `sqj` using `(IsOpenImmersion.isPullback_lift_id M.pt V.ι hr).flip`. Establish `: IsPreimmersion j` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) sqj (EndoExtend.isPreimmersion_pt M)`. Establish `: Flat j` using `MorphismProperty.of_isPullback (P := @Flat) sqj (EndoExtend.flat_pt M)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDominant (j ≫ V.ι)` using `hj ▸ M.isDominant_pt`. Establish `: IsDominant j` using `IsDominant.of_comp_of_isOpenImmersion j V.ι`. Establish `he : eSec Q.G ≫ Q.G.hom = 𝟙 _` using `Over.w _`. Establish `: IsIntegral (pullback (Q.G.hom ∣_ V) j)` using `GeometricallyIntegral.geometrically_isIntegral _ _ _ (.of_hasPullback (Q.G.hom ∣_ V) j)`. Use `relAmple_of_densePart j (isNormalScheme_opens hO.normal V) (Over.mk (Q.G.hom ∣_ V)) (sq.lift (V.ι ≫ eSec Q.G) (𝟙 _) (by rw [Category.assoc, he, Category.id_comp]; exact Category.comp_id _)) (sq.lift_snd _ _ _) (pull_isLB Q.L.isLB _) hO' (N := S.N) (one_le_two.trans S.N_ge) (ha ha …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `cls_generic Q hO.ne (Q.G.hom ⁻¹ᵁ V).ι (pullback.fst (Q.G.hom ∣_ V) j) (pullback.snd _ _) ?_ b O τ hO' hτ h` and prove the remaining obligations. Rewrite using `[Category.assoc, sq.w, pullback.condition_assoc, hj]`.
+A detailed English derivation is pending.
 -/
 theorem relAmple_affine [IsLocallyNoetherian M.Z] (hO : S.Over₀ M U₀) {EE : M.Lat S.J} (hs : Q.SecO EE) (hA : Q.Ab)
     (V : M.Z.Opens) (hV : IsAffineOpen V) (hne : (V : Set M.Z).Nonempty) (hab : (V : Set M.Z) ⊆ abLocus Q.G)
@@ -250,15 +250,13 @@ theorem relAmple_affine [IsLocallyNoetherian M.Z] (hO : S.Over₀ M U₀) {EE : 
   rw [Category.assoc, sq.w, pullback.condition_assoc, hj]
 
 /- English proof (translation)
-Establish `hL` using `Q.L.isLB`. Establish `: IsProper ((Over.pullback W.ι).obj Q.G).hom` using `hA.2 W hW`. Use `AmpleLocal.relAmple_of_locally _ _ _ (pull_isLB hL _) inferInstance inferInstance fun s => ?_` and prove the remaining obligations. Take `⟨B, b, hz, -, hb⟩` from `EE.loc s.1`. Take `⟨V, hV, hx, hle⟩` from `exists_isAffineOpen_mem_and_subset (U := B ⊓ W) (x := s.1) ⟨hz, s.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ha` using `relAmple_affine Q hO hs hA V hV ⟨_, hx⟩ (fun z hz => hW (hle hz).2) b fun z hz => hb z (hle hz).1`. Use `⟨W.ι ⁻¹ᵁ V, hx, ?_⟩` and prove the remaining obligations. Establish `h` using `IsPullback.of_hasPullback Q.G.hom W.ι`. Establish `le' : pullback.snd Q.G.hom W.ι ⁻¹ᵁ (W.ι ⁻¹ᵁ V) ≤ pullback.fst Q.G.hom W.ι ⁻¹ᵁ (Q.G.hom ⁻¹ᵁ V)` using `fun y hy => (congrArg (fun q => q y ∈ V) h.w).mpr hy`. Set `ψ` to `(pullback.fst Q.G.hom W.ι).resLE _ _ le'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hψ : ψ ≫ (Q.G.hom ⁻¹ᵁ V).ι = _ ≫ pullback.fst Q.G.hom W.ι` using `Scheme.Hom.resLE_comp_ι _ le'`. Establish `H : IsPullback ψ (pullback.snd Q.G.hom W.ι ∣_ (W.ι ⁻¹ᵁ V)) (Q.G.hom ∣_ V) (W.ι ∣_ V)`. Use `IsPullback.of_right ?_ ?_ (isPullback_morphismRestrict Q.G.hom V).flip` and prove the remaining obligations. Rewrite using `[hψ, morphismRestrict_ι]`. Conclude with `(isPullback_morphismRestrict _ _).flip.paste_horiz h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono V.ι, Category.assoc, Category.assoc, morphismRestrict_ι, morphismRestrict_ι, reassoc_of% hψ, h.w, morphismRestrict_ι_assoc]`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : LBIso ((Q.L.L.pull (pullback.fst Q.G.hom W.ι)).pull (pullback.snd Q.G.hom W.ι ⁻¹ᵁ (W.ι ⁻¹ᵁ V)).ι) ((Q.L.L.pull (Q.G.hom ⁻¹ᵁ V).ι).pull ψ) := by`. Use `(cls_eq_iff (pull_isLB (pull_isLB hL _) _) (pull_isLB (pull_isLB hL _) _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull (pull_isLB hL _), cls_pull (pull_isLB hL _), cls_pull hL, cls_pull hL, ← pull_comp, ← pull_comp, hψ]`. Establish `: IsAffine V` using `hV`.
-
-Conclude with `relAmple_pull (A := Over.mk (Q.G.hom ∣_ V)) (A' := Over.mk (pullback.snd Q.G.hom W.ι ∣_ (W.ι ⁻¹ᵁ V))) H (pull_isLB hL _) (pull_isLB (pull_isLB hL _) _) ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top _) (fun _ => trivial) ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relAmple_open [IsLocallyNoetherian M.Z] (hO : S.Over₀ M U₀) {EE : M.Lat S.J} (hs : Q.SecO EE) (hA : Q.Ab)
     (W : M.Z.Opens) (hW : (W : Set M.Z) ⊆ abLocus Q.G) :
@@ -290,11 +288,11 @@ theorem relAmple_open [IsLocallyNoetherian M.Z] (hO : S.Over₀ M U₀) {EE : M.
     (pull_isLB hL _) (pull_isLB (pull_isLB hL _) _) ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top _) (fun _ => trivial) ha
 
 /- English proof (translation)
-Establish `hP` using `ρ.P.isLB`. Establish `hL` using `Q.L.isLB`. Set `ψ` to `Q.cart.1.lift φ (G'.hom ≫ f) (h.1.w.trans (Category.assoc _ _ _).symm)`. Establish `hψ : ψ ≫ Q.φ = φ` using `Q.cart.1.lift_fst _ _ _`. Establish `h₁` using `(Q.cart.cancel (h.congr rfl hψ.symm) (Q.cart.1.lift_snd _ _ _)).comp (isGrpPullback_pullback ρ.P.A Q.u₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : LBIso L' (ρ.P.L.pull (ψ ≫ pullback.fst ρ.P.A.hom Q.u₀)) := by`. Establish `e₁` using `(cls_eq_iff hL' (pull_isLB hL _)).2 e`. Establish `e₂` using `(cls_eq_iff (pull_isLB hL Q.φ) (pull_isLB hP _)).2 ⟨Q.w, Q.w_gen⟩`. Use `(cls_eq_iff hL' (pull_isLB hP _)).1 (e₁.trans ?_)` and prove the remaining obligations. Rewrite `e₂` using `[cls_pull hL, cls_pull hP]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[cls_pull hL, cls_pull hP, ← hψ]`. Conclude with `(pull_comp ψ Q.φ _).trans ((congrArg _ e₂).trans (pull_comp ψ _ _).symm)`. Conclude with `kTriv_pull h₁ hP hL' ((isGen_iff w).1 hw) ρ.P.ktriv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kTriv_of_factor {T : Scheme.{0}} (G' : Over T) [GrpObj G'] (f : T ⟶ U₀) (φ : G'.left ⟶ Q.G.left)
     (h : IsGrpPullback G' Q.G (f ≫ U₀.ι) φ) {L' : LB G'.left} (hL' : L'.IsLB) (e : LBIso L' (Q.L.L.pull φ)) :
@@ -317,17 +315,15 @@ theorem kTriv_of_factor {T : Scheme.{0}} (G' : Over T) [GrpObj G'] (f : T ⟶ U�
 end Model
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ hB S ρ M U₀ EE Q laws hO hs hA W hW`. Use `hB.ded` as an intermediate fact. Use `hB.char` as an intermediate fact. Use `M.lft` as an intermediate fact. Establish `: IsLocallyNoetherian M.Z` using `LocallyOfFiniteType.isLocallyNoetherian M.s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `relAmple_open Q hO hs hA W hW`. Use `⟨ha, ?_⟩` and prove the remaining obligations. Break down `(W : Set M.Z).eq_empty_or_nonempty with h0 | hne` into its components or cases. Introduce `R _ t x _`. Establish `: IsEmpty (Spec (CommRingCat.of R))` using `⟨fun p => (h0.le (t p).2 : False)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Over.OverMorphism.ext ((isInitialOfIsEmpty (X := Spec (CommRingCat.of R))).hom_ext _ _)`. Establish `: Nonempty W` using `hne.to_subtype`. Establish `hL` using `Q.L.isLB`. Use `Q.semi.smooth` as an intermediate fact. Use `Q.semi.geomConnected` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gp` using `isGrpPullback_pullback Q.G W.ι`. Take `⟨hL', hr, ⟨c, -⟩, -⟩` from `CubePf.cubePull _ _ Q.G _ (cubeMapOf gp) Q.L Q.cub`. Establish `hab : IsAbelianScheme ((Over.pullback W.ι).obj Q.G)` using `⟨inferInstance, MorphismProperty.of_isPullback (P := @Smooth) gp.1 ‹_›, hA.2 W hW, MorphismProperty.of_isPullback (P := @GeometricallyConnected) gp.1 ‹_›⟩`. Use `GlobalTheory.T.kTriv_of_kTriv_nonemptyOpen_normal_charZero laws W (isNormalScheme_opens hO.normal W) (fun n hn h => ?_) (W.ι ⁻¹ᵁ U₀) ?_ _ ((cubeMapOf gp).rigLB Q.L hL' hr) c hab ha ?_` and prove the remaining obligations. Establish `e` using `congrArg ((M.res W hne).comp W.topIso.hom.hom) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[map_natCast, map_zero]`. Conclude with `hn (Nat.cast_eq_zero.1 e)`. Take `⟨z, hz⟩` from `M.nonempty_inf hne hO.ne`. Conclude with `⟨⟨z, hz.1⟩, hz.2⟩`. Use `kTriv_of_factor Q _ (W.ι ∣_ U₀) _ (((isGrpPullback_pullback _ (W.ι ⁻¹ᵁ U₀).ι).comp gp).congr (morphismRestrict_ι _ _).symm rfl) (pull_isLB hL' _) ?_` and prove the remaining obligations.
-
-Conclude with `(cls_eq_iff (pull_isLB hL' _) (pull_isLB hL _)).1 (pull_comp _ _ (cls _ hL)).symm`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem relAmple_and_kTriv : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Q : ZHPre ρ M U₀), Laws → S.Over₀ M U₀ → Q.SecO EE → Q.Ab → ∀ W : M.Z.Opens, (W : Set M.Z) ⊆ abLocus Q.G → RelAmple ((Over.pullback W.ι).obj Q.G) (Q.L.L.pull (pullback.fst Q.G.hom W.ι)) ∧ KTriv ((Over.pullback W.ι).obj Q.G) (Q.L.L.pull (pullback.fst Q.G.hom W.ι)) := by
   intro o Ω _ _ _ hB S ρ M U₀ EE Q laws hO hs hA W hW

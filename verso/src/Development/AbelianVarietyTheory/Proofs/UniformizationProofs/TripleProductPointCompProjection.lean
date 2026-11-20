@@ -18,11 +18,9 @@ namespace WCub
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Establish `one : ∀ {X : Scheme.{0}} (m : T ⟶ X) (U : X.Opens) (V : T.Opens) (h : V ≤ m ⁻¹ᵁ U) (u : Γ(X, U)ˣ) (y : T), y ∈ V → gm (𝟙 T) y V (res h (pullU m U u)) = gm m y U u` using `fun m U V h u y hy => (gm_res (𝟙 T) y h hy _).trans ((gm_pull (𝟙 T) m y U (h hy) u).trans (by rw [Category.id_comp]))`. Establish `key : ∀ (V : T.Opens) (hG : V ≤ mG ⁻¹ᵁ UG) (hw : ∀ k, V ≤ p k ⁻¹ᵁ W k) (y : T), y ∈ V → gm (𝟙 T) y V ((∏ k, res (hw k) (pullU (p k) (W k) (c k)) ^ ε k) * res hG (pullU mG UG b)) = (∏ k, gm (p k) y (W k) (c k) ^ ε k) * gm mG y UG b` using `fun V hG hw y hy => (map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ ε k) (one _ _ V _ _ y hy)))) (one _ _ V _ _ y hy))`. Prove the components needed by the constructor for the conclusion. Introduce `H y hB hG hw`. Set `V : T.Opens` to `mB ⁻¹ᵁ UB ⊓ mG ⁻¹ᵁ UG ⊓ ⟨⋂ k, (p k ⁻¹ᵁ W k : Set T), isOpen_iInter_of_finite fun k => (p k ⁻¹ᵁ W k).isOpen⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hy : y ∈ V` using `⟨⟨hB, hG⟩, Set.mem_iInter.2 hw⟩`. Establish `l : ∀ k, V ≤ p k ⁻¹ᵁ W k` using `fun k z hz => Set.mem_iInter.1 hz.2 k`. Establish `e` using `congrArg (gm (𝟙 T) y V) (H V (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right) l)`. Conclude with `(one _ _ V _ _ y hy).symm.trans (e.trans (key V _ _ y hy))`. Introduce `H V hB hG hw`.
-
-Conclude with `unit_ext fun y hy => (one _ _ V _ _ y hy).trans ((H y (hB hy) (hG hy) fun k => hw k hy).trans (key V _ _ y hy).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem clause_iff {T XB XG E : Scheme.{0}} {K : Type} [Fintype K] (mB : T ⟶ XB) (mG : T ⟶ XG) (p : K → (T ⟶ E))
     (UB : XB.Opens) (UG : XG.Opens) (W : K → E.Opens) (a : Γ(XB, UB)ˣ) (b : Γ(XG, UG)ˣ) (c : ∀ k, Γ(E, W k)ˣ)
@@ -60,7 +58,7 @@ abbrev tri : T.left ⟶ (G3 G).left :=
   (lift ((Over.map f).map (x 0) ≫ p) (lift ((Over.map f).map (x 1) ≫ p) ((Over.map f).map (x 2) ≫ p))).left
 
 /- English proof (translation)
-Apply the tactic sequence `have : lift ((Over.map f).map (x 0) ≫ p) (lift ((Over.map f).map (x 1) ≫ p) ((Over.map f).map (x 2) ≫ p)) ≫ x3 G i = (Over.map f).map (x i) ≫ p := by fin_cases i <;> simp [x3]`. Conclude with `congrArg (fun q => q.left) this`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem tripleProductPoint_comp_projection (i : Fin 3) : tri f p x ≫ (x3 G i).left = (x i).left ≫ p.left := by
   have : lift ((Over.map f).map (x 0) ≫ p) (lift ((Over.map f).map (x 1) ≫ p) ((Over.map f).map (x 2) ≫ p)) ≫
@@ -69,9 +67,9 @@ theorem tripleProductPoint_comp_projection (i : Fin 3) : tri f p x ≫ (x3 G i).
   exact congrArg (fun q => q.left) this
 
 /- English proof (translation)
-Establish `h` using `isGrpPullback_pullback G f`. Establish `e₁` using `psum_push h (fun i => x i ≫ q) (x3 G) (lift ((Over.map f).map (x 0) ≫ p) (lift ((Over.map f).map (x 1) ≫ p) ((Over.map f).map (x 2) ≫ p))) (fun i => Over.OverMorphism.ext (by`. Use `Eq.trans ?_ (tripleProductPoint_comp_projection f p x i).symm` and prove the remaining obligations. Rewrite using `[hp]`. Conclude with `Category.assoc _ _ _)) k.down`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₂` using `psum_hom (MonoidHom.mk' (fun z : T ⟶ E => z ≫ q) fun a b => MonObj.mul_comp a b q) x k.down`. Use `e₁.symm.trans ?_` and prove the remaining obligations. Rewrite using `[hp, ← Category.assoc]`. Conclude with `congrArg (fun z => z.left ≫ pullback.fst G.hom f) e₂.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tri_thφ [GrpObj G] [IsCommMonObj G] [GrpObj E] [IsCommMonObj E] (q : E ⟶ (Over.pullback f).obj G)
     [IsMonHom q] (hp : p.left = q.left ≫ pullback.fst G.hom f) (k : thK) :
@@ -91,7 +89,7 @@ theorem tri_thφ [GrpObj G] [IsCommMonObj G] [GrpObj E] [IsCommMonObj E] (q : E 
 end Cube
 
 /- English proof (translation)
-Establish `: (∏ k, a k ^ ε k) * (∏ k, b k ^ ε k) = (∏ k, c k ^ ε k) * (∏ k, d k ^ ε k)`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [← mul_zpow, ← mul_zpow, h]`. Apply `mul_left_cancel (a := ∏ k, a k ^ ε k)` to reduce the goal to its premises. Rewrite using `[← e₁, e₂, e₃, ← _root_.mul_assoc, ← _root_.mul_assoc, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alg {U K : Type} [CommGroup U] [Fintype K] (ε : K → ℤ) (a b c d : K → U) (h : ∀ k, a k * b k = c k * d k)
     {tM tM' tL tL' : U} (e₁ : tM = (∏ k, a k ^ ε k) * tM') (e₂ : tM = (∏ k, c k ^ ε k) * tL)
@@ -108,35 +106,31 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor WCub in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `hG R R' _ _ _ _ I I' φ D D' hD A A' G _ _ G' _ _ bc _ _ U L' wL _ _ _ gt' w' _ _ H hgp c' hc e T x jL' jM' _ cM`. Take `⟨h, h₁, ⟨h₂, -⟩, sq⟩` from `H e`. Establish `hgB` using `pull_grp hD`. Use `(gt' e).q_hom` as an intermediate fact. Use `(U.gt e).q_hom` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mt : Mono (thick R I e)`. Establish `: IsClosedImmersion (thick R I e)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Use `infer_instance`. Establish `mf : Mono (fstG I e G).left` using `inferInstanceAs (Mono (pullback.fst G.hom (thick R I e)))`. Establish `hs : ∀ i, ((x i).left ≫ h ≫ (thickObj R I e G).hom) ≫ thick R I e = T.hom ≫ thick R' I' e ≫ specOf φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `a₁ : (thickObj R I e G).hom ≫ thick R I e = (fstG I e G).left ≫ G.hom` using `(Over.w (fstG I e G)).symm`. Establish `a₂ : (fstG I' e G').left ≫ G'.hom = (thickObj R' I' e G').hom ≫ thick R' I' e` using `Over.w (fstG I' e G')`. Establish `a₃` using `hgp.1.w`. Rewrite using `[Category.assoc, Category.assoc, a₁, ← Category.assoc h, h₁, Category.assoc, a₃, ← Category.assoc _ G'.hom, a₂, ← Over.w (x i), Category.assoc, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `T₀ : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))` to `Over.mk ((x 0).left ≫ h ≫ (thickObj R I e G).hom)`. Set `x₀ : Fin 3 → (T₀ ⟶ thickObj R I e G)` to `fun i => Over.homMk ((x i).left ≫ h) (by`. Rewrite using `[← cancel_mono (thick R I e)]`. Conclude with `((congrArg (· ≫ thick R I e) (Category.assoc _ _ _)).trans (hs i)).trans (hs 0).symm)`. Establish `f₁` using `tri_thφ (thick R' I' e) (fstG I' e G') x (𝟙 _) (Category.id_comp _).symm`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f₂` using `tri_thφ (thick R' I' e) (gt' e).pG x (gt' e).q rfl`. Establish `f₃` using `tri_thφ (thick R I e) (fstG I e G) x₀ (𝟙 _) (Category.id_comp _).symm`. Establish `f₄` using `tri_thφ (thick R I e) (U.gt e).pG x₀ (U.gt e).q rfl`. Establish `g₁ : tri (thick R' I' e) (fstG I' e G') x ≫ (cubeMapOf hgp).F3 = tri (thick R I e) (fstG I e G) x₀` using `hom_ext_triple _ fun i => by`. Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, tripleProductPoint_comp_projection, tripleProductPoint_comp_projection, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg ((x i).left ≫ ·) h₁.symm).trans (Category.assoc _ _ _).symm`. Establish `g₂ : tri (thick R' I' e) (gt' e).pG x ≫ (cubeMapOf hgB).F3 = tri (thick R I e) (U.gt e).pG x₀` using `hom_ext_triple _ fun i => by`. Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, tripleProductPoint_comp_projection, tripleProductPoint_comp_projection, Category.assoc]`. Conclude with `(congrArg ((x i).left ≫ ·) h₂).trans (Category.assoc _ _ _).symm`. Establish `k₁ : ∀ k : thK, (tri (thick R' I' e) (fstG I' e G') x ≫ thφ G' (x3 G') k) ≫ (cubeMapOf hgp).F = tri (thick R I e) (fstG I e G) x₀ ≫ thφ G (x3 G) k` using `fun k => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← g₁, Category.assoc, Category.assoc]`. Conclude with `congrArg (_ ≫ ·) ((cubeMapOf hgp).psum_comm k.down)`. Establish `k₂ : ∀ k : thK, (tri (thick R' I' e) (gt' e).pG x ≫ thφ D'.toPre.P.A (x3 D'.toPre.P.A) k) ≫ (cubeMapOf hgB).F = tri (thick R I e) (U.gt e).pG x₀ ≫ thφ D.toPre.P.A (x3 D.toPre.P.A) k` using `fun k => by`. Rewrite using `[← g₂, Category.assoc, Category.assoc]`. Conclude with `congrArg (_ ≫ ·) ((cubeMapOf hgB).psum_comm k.down)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `ph : ∀ k : thK, (psum (thickObj R I e G) x₀ k.down).left = (psum (thickObj R' I' e G') x k.down).left ≫ h` using `fun k => by`. Rewrite using `[← cancel_mono (fstG I e G).left]`. Use `(f₃ k).symm.trans ((k₁ k).symm.trans ?_)` and prove the remaining obligations. Rewrite using `[f₁ k, Category.assoc, Category.assoc]`. Conclude with `congrArg (_ ≫ ·) h₁.symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(clause_iff (tri (thick R' I' e) (gt' e).pG x) (tri (thick R' I' e) (fstG I' e G') x) (fun k : thK => (psum (thickObj R' I' e G') x k.down).left) _ _ _ (D'.toPre.cub.t.s jM') (c'.t.s jL') (fun k => (w' e).s (fun _ => jM' k, fun _ => jL' k)) thε).2 fun y hB hL hw => ?_` and prove the remaining obligations. Take `⟨J', hJ', eJ'⟩` from `exists_good D'.toPre.P.L D'.toPre.P.isLB y _ jM' cM (fun k => Set.mem_iInter.1 hB k)`. Use `choose J hJ using fun χ : T.left ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (χ y)`. Use `choose N hN using fun χ : T.left ⟶ G.left => exists_chart U.LG.isLB (χ y)`. Set `jM : thK → D.toPre.P.L.ι` to `fun k => J (tri (thick R I e) (U.gt e).pG x₀ ≫ thφ D.toPre.P.A (x3 D.toPre.P.A) k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `jL : thK → U.LG.L.ι` to `fun k => N (tri (thick R I e) (fstG I e G) x₀ ≫ thφ G (x3 G) k)`. Establish `mM : ∀ k, (tri (thick R I e) (U.gt e).pG x₀ ≫ thφ D.toPre.P.A (x3 D.toPre.P.A) k) y ∈ D.toPre.P.L.U (jM k)` using `fun k => hJ _`. Establish `mL : ∀ k, (tri (thick R I e) (fstG I e G) x₀ ≫ thφ G (x3 G) k) y ∈ U.LG.L.U (jL k)` using `fun k => hN _`. Establish `e₂` using `(clause_iff (tri (thick R I e) (U.gt e).pG x₀) (tri (thick R I e) (fstG I e G) x₀) (fun k : thK => (psum (thickObj R I e G) x₀ k.down).left) _ _ _ (D.toPre.cub.t.s jM) (U.cubG.t.s jL) (fun k => (U.w e).s (fun _ => jM k, fun _ => jL k)) thε).1 (U.w_cub e T₀ x₀ jL jM (fun a b e => …`. Use `mM k; rw [f₄ k] at this; exact this), mem_pull.2 (by` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mL k` as an intermediate fact. Rewrite `this` using `[f₃ k]`. Conclude with `this)⟩)`. Establish `mL' : ∀ k, ((tri (thick R' I' e) (fstG I' e G') x ≫ thφ G' (x3 G') k) ≫ (cubeMapOf hgp).F) y ∈ U.LG.L.U (jL k)` using `fun k => by rw [k₁ k]; exact mL k`. Establish `mM' : ∀ k, ((tri (thick R' I' e) (gt' e).pG x ≫ thφ D'.toPre.P.A (x3 D'.toPre.P.A) k) ≫ (cubeMapOf hgB).F) y ∈ D.toPre.P.L.U (jM k)` using `fun k => by rw [k₂ k]; exact mM k`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₃` using `hc _ (tri (thick R' I' e) (fstG I' e G') x) y jL jL' mL' (fun k => Set.mem_iInter.1 hL k)`. Rewrite `e₃` using `[g₁]`. Establish `e₁` using `cub_pull hG hD (T' := (Over.map (thick R' I' e)).obj T) (z := y) (J := J) (J' := J') hJ hJ' ((Over.map (thick R' I' e)).map (x 0) ≫ (gt' e).pG) ((Over.map (thick R' I' e)).map (x 1) ≫ (gt' e).pG) ((Over.map (thick R' I' e)).map (x 2) ≫ (gt' e).pG)`. Establish `v₁ : val (L` using `D.toPre.P.L) (φ := thφ D.toPre.P.A (x3 D.toPre.P.A)) (ε := thε) D.toPre.cub.t (tri (thick R' I' e) (gt' e).pG x ≫ (cubeMapOf hgB).F3) y J = gm (tri (thick R I e) (U.gt e).pG x₀) y (LB.wchart _ (thφ D.toPre.P.A (x3 D.toPre.P.A)) jM) (D.toPre.cub.t.s jM) := by`. Rewrite using `[g₂]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `v₂` using `val_of (L := D'.toPre.P.L) (φ := thφ D'.toPre.P.A (x3 D'.toPre.P.A)) (ε := thε) D'.toPre.cub.t (tri (thick R' I' e) (gt' e).pG x) y J' jM' eJ'`. Use `alg thε (fun k => gw hD.w ((psum (thickObj R' I' e G') x k.down).left ≫ (gt' e).pG.left) y (jM k) (jM' k)) (fun k => gw (w' e) (psum (thickObj R' I' e G') x k.down).left y (jM' k) (fun _ => jL' k)) (fun k => gw (U.w e) ((psum (thickObj R' I' e G') x k.down).left ≫ h) y (jM k) (fu …` and prove the remaining obligations. Use `mM' k` as an intermediate fact. Rewrite `this` using `[f₂ k]`.
-
-Conclude with `this`. Use `mL' k` as an intermediate fact. Rewrite `this` using `[f₁ k]`. Conclude with `this`. Use `show gw hD.w (tri (thick R' I' e) (gt' e).pG x ≫ thφ D'.toPre.P.A (x3 D'.toPre.P.A) k) y (J ((tri (thick R' I' e) (gt' e).pG x ≫ thφ D'.toPre.P.A (x3 D'.toPre.P.A) k) ≫ (cubeMapOf hgB).F)) (J' (tri (thick R' I' e) (gt' e).pG x ≫ thφ D'.toPre.P.A (x3 D'.toPre.P.A) k)) = _`.
-
-Rewrite using `[k₂ k, eJ' k, f₂ k]`. Rewrite using `[← ph k]`. Both sides reduce to the same expression. Rewrite using `[f₁ k]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem w_cub_pull : GlobalFnsSt → ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain
     R'] (I : Ideal R) (I' : Ideal R') (φ : R →+* R') (D : DegData R I) (D' : DegData R' I') (hD

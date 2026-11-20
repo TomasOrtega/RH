@@ -6,7 +6,7 @@ open scoped LaurentSeries
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[eTwoPi, Complex.norm_exp]`. Use `congr 1`. Simplify using `[Complex.mul_re, Complex.mul_im]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem norm_eTwoPi_I_mul (y : ℝ) : ‖eTwoPi (Complex.I * y)‖ = Real.exp (-(2 * Real.pi * y)) := by
   rw [eTwoPi, Complex.norm_exp]
@@ -14,37 +14,31 @@ theorem norm_eTwoPi_I_mul (y : ℝ) : ‖eTwoPi (Complex.I * y)‖ = Real.exp (-
   simp [Complex.mul_re, Complex.mul_im]
 
 /- English proof (translation)
-Introduce `F T C h m hm`. Assume the negation of the conclusion as `hne`. Establish `hF : F ≠ 0` using `by rintro rfl; exact hne (by simp)`. Establish `hm₀le : F.order ≤ m`. Assume the negation of the conclusion as `hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hlt`. Conclude with `hne (HahnSeries.coeff_eq_zero_of_lt_order hlt)`. Establish `hc : F.coeff F.order ≠ 0` using `fun h0 => hF (HahnSeries.coeff_order_eq_zero.1 h0)`. Take `⟨k, hk⟩` from `Int.exists_eq_neg_ofNat (le_of_lt (lt_of_le_of_lt hm₀le hm))`. Establish `hk0 : k ≠ 0` using `by rintro rfl; simp at hk; omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m₀ := F.order with hm₀`. Use `set y₁ : ℝ := max T 0 + 1 with hy₁`. Establish `hy₁T : T < y₁` using `by have := le_max_left T 0; linarith`. Establish `hy₁0 : 0 < y₁` using `by have := le_max_right T 0; linarith`. Take `⟨x₁, hx₁, -⟩` from `h (Complex.I * y₁) (by simpa using hy₁T)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set q₁ := eTwoPi (Complex.I * y₁) with hq₁`. Use `set ρ₁ := ‖q₁‖ with hρ₁`. Establish `hρ₁pos : 0 < ρ₁` using `by rw [hρ₁, hq₁, norm_eTwoPi_I_mul]; exact Real.exp_pos _`. Establish `hS : Summable (fun m : ℤ => ‖F.coeff m * q₁ ^ m‖)` using `hx₁.summable.norm`. Use `set S := ∑' m : ℤ, ‖F.coeff m * q₁ ^ m‖ * ρ₁ ^ k with hSdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ y : ℝ, y₁ ≤ y → ‖F.coeff m₀‖ ≤ C * Real.exp (-(2 * Real.pi * y)) ^ k + Real.exp (-(2 * Real.pi * y)) / ρ₁ * S`. Introduce `y hy`. Take `⟨x, hx, hxC⟩` from `h (Complex.I * y) (by simpa using lt_of_lt_of_le hy₁T hy)`. Use `set q := eTwoPi (Complex.I * y) with hq`. Use `set ρ := ‖q‖ with hρ`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hρe : ρ = Real.exp (-(2 * Real.pi * y))` using `norm_eTwoPi_I_mul y`. Establish `hq0 : q ≠ 0` using `Complex.exp_ne_zero _`. Establish `hρle : ρ ≤ ρ₁`. Rewrite using `[hρe, hρ₁, hq₁, norm_eTwoPi_I_mul, Real.exp_le_exp]`. Use polynomial arithmetic with `[Real.pi_pos]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hρ0 : 0 ≤ ρ` using `norm_nonneg _`. Use `set r : ℤ → ℂ := fun m => F.coeff m * q ^ m * q ^ k - (if m = m₀ then F.coeff m₀ else 0) with hr`. Establish `h2 : HasSum r (x * q ^ k - F.coeff m₀)` using `(hx.mul_right (q ^ k)).sub (hasSum_ite_eq m₀ _)`. Establish `hbd : ∀ m, ‖r m‖ ≤ ρ / ρ₁ * (‖F.coeff m * q₁ ^ m‖ * ρ₁ ^ k)`. Introduce `m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hRnn : 0 ≤ ρ / ρ₁ * (‖F.coeff m * q₁ ^ m‖ * ρ₁ ^ k)` using `by positivity`. Distinguish the cases in `hmm : m = m₀`. Substitute `hmm` using the available equality. Establish `: q ^ m₀ * q ^ k = 1`. Rewrite using `[hk, zpow_neg, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ hq0)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: r m₀ = 0` using `by simp only [hr, mul_assoc, this, mul_one]; simp`. Rewrite using `[this, norm_zero]`. Conclude with `hRnn`. Break down `lt_or_gt_of_ne hmm with hlt | hgt` into its components or cases. Establish `: r m = 0` using `by simp only [hr, if_neg hmm, HahnSeries.coeff_eq_zero_of_lt_order hlt, zero_mul, sub_zero]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this, norm_zero]`. Conclude with `hRnn`. Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le (show (0:ℤ) ≤ m - m₀ - 1 by omega)`. Establish `hm : m = (n + 1 : ℕ) - (k : ℤ)` using `by push_cast; omega`. Establish `e1 : ∀ t : ℝ, t ≠ 0 → t ^ m * t ^ k = t ^ (n + 1)` using `fun t ht => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← zpow_natCast t k, ← zpow_add₀ ht, ← zpow_natCast]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hρpos : 0 < ρ` using `by rw [hρe]; exact Real.exp_pos _`. Establish `hrm : ‖r m‖ = ‖F.coeff m‖ * (ρ ^ m * ρ ^ k)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hr, if_neg hmm, sub_zero, norm_mul, norm_pow, norm_zpow, ← hρ, mul_assoc]`. Establish `hq₁m : ‖F.coeff m * q₁ ^ m‖ * ρ₁ ^ k = ‖F.coeff m‖ * (ρ₁ ^ m * ρ₁ ^ k)`. Rewrite using `[norm_mul, norm_zpow, ← hρ₁, mul_assoc]`. Rewrite using `[hrm, hq₁m, e1 ρ hρpos.ne', e1 ρ₁ hρ₁pos.ne']`. Establish `hpow : ρ ^ n ≤ ρ₁ ^ n` using `pow_le_pow_left₀ hρ0 hρle n`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : 0 ≤ ‖F.coeff m‖` using `norm_nonneg _`. Rewrite using `[pow_succ, pow_succ]`. Combine the equalities or inequalities in the displayed calculation. Establish `hg : HasSum (fun m => ρ / ρ₁ * (‖F.coeff m * q₁ ^ m‖ * ρ₁ ^ k)) (ρ / ρ₁ * S)` using `(hS.mul_right (ρ₁ ^ k)).hasSum.mul_left _`. Establish `h3 : ‖x * q ^ k - F.coeff m₀‖ ≤ ρ / ρ₁ * S`.
-
-Rewrite using `[← h2.tsum_eq]`. Conclude with `tsum_of_norm_bounded hg hbd`. Establish `h4 : ‖x * q ^ k‖ ≤ C * ρ ^ k`. Rewrite using `[norm_mul, norm_pow]; exact mul_le_mul_of_nonneg_right hxC (by positivity)`. Rewrite using `[← hρe]`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hlim : Filter.Tendsto (fun y : ℝ => Real.exp (-(2 * Real.pi * y))) Filter.atTop (nhds 0)` using `Real.tendsto_exp_atBot.comp (Filter.tendsto_neg_atTop_atBot.comp (Filter.tendsto_id.const_mul_atTop (by positivity)))`. Establish `hlim2 : Filter.Tendsto (fun y : ℝ => C * Real.exp (-(2 * Real.pi * y)) ^ k + Real.exp (-(2 * Real.pi * y)) / ρ₁ * S) Filter.atTop (nhds 0)`. Use `((hlim.pow k).const_mul C).add ((hlim.div_const ρ₁).mul_const S)` as an intermediate fact. Simplify `this` using `[zero_pow hk0]`.
-
-Establish `hle : ‖F.coeff m₀‖ ≤ 0` using `ge_of_tendsto hlim2 (Filter.eventually_atTop.2 ⟨y₁, key⟩)`. Conclude with `hc (norm_le_zero_iff.1 hle)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem laurent_coeff_neg_eq_zero_of_bounded : ∀ (F : ℂ⸨X⸩) (T C : ℝ),
     (∀ w : ℂ, T < w.im → ∃ x : ℂ, HasSum (fun m : ℤ => F.coeff m * eTwoPi w ^ m) x ∧ ‖x‖ ≤ C) →

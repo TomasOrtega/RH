@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.Bound
 
 /- English proof (translation)
-Introduce `W _ n M N e he he' f`. Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (tupCoord.trans (e.toRealLinearEquiv he he')) f, fun x => rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_schwartz_coord : ∀ (W : Type) [Fintype W] (n M N : ℕ) (e : (W → Fin n → Fin M → ℂ) ≃+ (Fin N → ℝ)),
     Continuous e → Continuous e.symm → ∀ f : SchwartzMap (Fin N → ℝ) ℂ,
@@ -22,9 +22,9 @@ theorem exists_schwartz_coord : ∀ (W : Type) [Fintype W] (n M N : ℕ) (e : (W
     fun x => rfl⟩
 
 /- English proof (translation)
-Introduce `W _ n M μ hμ`. Establish `hν : (Measure.map tupCoord (volume : Measure (TupV W n M))).IsAddHaarMeasure` using `tupCoord.isAddHaarMeasure_map _`. Take `⟨c, hc⟩ : ∃ c : NNReal, μ = c • Measure.map tupCoord (volume : Measure (TupV W n M))` from `⟨_, Measure.isAddLeftInvariant_eq_smul μ (Measure.map tupCoord (volume : Measure (TupV W n M)))⟩`. Use `⟨(c : ℝ), NNReal.coe_nonneg _, fun F => ?_⟩` and prove the remaining obligations. Establish `hemb : MeasurableEmbedding (tupCoord : TupV W n M → (W → Fin n → Fin M → ℂ))` using `tupCoord.toHomeomorph.measurableEmbedding`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hc, integral_smul_nnreal_measure, hemb.integral_map, NNReal.smul_def, Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_eq_coord : ∀ (W : Type) [Fintype W] (n M : ℕ) (μ : Measure (W → Fin n → Fin M → ℂ)),
     μ.IsAddHaarMeasure → ∃ c : ℝ, 0 ≤ c ∧ ∀ F : (W → Fin n → Fin M → ℂ) → ℂ,
@@ -40,9 +40,9 @@ theorem integral_eq_coord : ∀ (W : Type) [Fintype W] (n M : ℕ) (μ : Measure
   rw [hc, integral_smul_nnreal_measure, hemb.integral_map, NNReal.smul_def, Complex.real_smul]
 
 /- English proof (translation)
-Establish `h1 : ∑ j, A⁻¹ p j * ∑ l, A j l * v l = v p`. Establish `h` using `congrFun (Matrix.mulVec_mulVec v A⁻¹ A) p`. Rewrite `h` using `[Matrix.nonsing_inv_mul A (isUnit_iff_ne_zero.mpr hA), Matrix.one_mulVec]`. Simplify `h` using `[Matrix.mulVec, dotProduct]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = v p := h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem two_mul_sum_quarter_inv_mul_two_mul_sum_eq {M : ℕ} (A : Matrix (Fin M) (Fin M) ℂ) (hA : A.det ≠ 0)
     (v : Fin M → ℂ) (p : Fin M) :
@@ -60,13 +60,11 @@ private theorem two_mul_sum_quarter_inv_mul_two_mul_sum_eq {M : ℕ} (A : Matrix
     _ = v p := h1
 
 /- English proof (translation)
-Introduce `W _ n M J hJ`. Establish `hinv : ∀ z : TupV W n M, mixOp (fun w => (4 : ℂ)⁻¹ • (J w)⁻¹) (mixOp J z) = z`. Introduce `z`. Use extensionality with `k a`. Take `⟨w, p⟩` from `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Simplify using `only [mixOp_apply]`. Simplify using the standard rewrite rules. Conclude with `two_mul_sum_quarter_inv_mul_two_mul_sum_eq (J w) (hJ w) (fun l => z (w, l) a) p`. Set `T : TupV W n M →L[ℝ] TupV W n M` to `LinearMap.toContinuousLinearMap ((mixOp (fun w => (4 : ℂ)⁻¹ • (J w)⁻¹)).restrictScalars ℝ)`. Use `⟨max 1 ‖T‖, le_max_left _ _, fun b y k => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← diagOp_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[polarOp_apply]`. Simplify using `only [T, LinearMap.coe_toContinuousLinearMap', LinearMap.coe_restrictScalars, hinv]`. Use `_ ≤ ‖T‖ * ‖polarOp J b y‖ := T.le_opNorm _`.
-
-Use `_ ≤ max 1 ‖T‖ * ‖polarOp J b y‖ := mul_le_mul_of_nonneg_right (le_max_right _ _) (norm_nonneg _)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_diag_le_polar : ∀ (W : Type) [Fintype W] (n M : ℕ) (J : W → Matrix (Fin M) (Fin M) ℂ),
     (∀ w, (J w).det ≠ 0) → ∃ C : ℝ, 1 ≤ C ∧ ∀ (b : W → Matrix (Fin n) (Fin n) ℂ) (y : TupV W n M)
@@ -93,11 +91,11 @@ theorem norm_diag_le_polar : ∀ (W : Type) [Fintype W] (n M : ℕ) (J : W → M
         mul_le_mul_of_nonneg_right (le_max_right _ _) (norm_nonneg _)
 
 /- English proof (translation)
-Introduce `W _ n M`. Set `L` to `PiLp.continuousLinearEquiv 2 ℝ (fun _ : W × Fin M => EuclideanSpace ℂ (Fin n))`. Establish `hν : (Measure.map L (volume : Measure (TupV W n M))).IsAddHaarMeasure` using `L.isAddHaarMeasure_map _`. Establish `hπ : (Measure.pi fun _ : W × Fin M => (volume : Measure (EuclideanSpace ℂ (Fin n)))).IsAddHaarMeasure` using `by haveI : ∀ _ : W × Fin M, (volume : Measure (EuclideanSpace ℂ (Fin n))).IsAddHaarMeasure := fun _ => inferInstance haveI : MeasurableAdd (EuclideanSpace ℂ (Fin n)) := inferInstance first`. Consider the case `exact Measure.pi.isAddHaarMeasure _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact Measure.pi.isAddHaarMeasure`. Consider the case `exact @Measure.pi.isAddHaarMeasure (W × Fin M) _ (fun _ => EuclideanSpace ℂ (Fin n)) _ (fun _ => volume) _ _ _ _ _`. Establish `hνπ` using `Measure.isAddLeftInvariant_eq_smul (Measure.map L (volume : Measure (TupV W n M))) (Measure.pi fun _ : W × Fin M => (volume : Measure (EuclideanSpace ℂ (Fin n))))`. Use `⟨(Measure.addHaarScalarFactor (Measure.map L (volume : Measure (TupV W n M))) (Measure.pi fun _ : W × Fin M => (volume : Measure (EuclideanSpace ℂ (Fin n)))) : ℝ), NNReal.coe_nonneg _, fun h hh => le_of_eq ?_⟩` and prove the remaining obligations. Establish `hm : Measurable fun Y : W × Fin M → EuclideanSpace ℂ (Fin n) => ∏ k, h k (Y k)` using `Finset.measurable_prod _ fun k _ => (hh k).comp (measurable_pi_apply k)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmap` using `lintegral_map hm L.continuous.measurable (μ := (volume : Measure (TupV W n M)))`. Rewrite `hmap` using `[hνπ]`. Rewrite `hmap` using `[lintegral_smul_measure, PI.AprimeInfG.lintegral_fintype_prod h hh]`. Rewrite using `[ENNReal.ofReal_coe_nnreal]`. Conclude with `hmap.symm.trans (by rw [ENNReal.smul_def, smul_eq_mul])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_prod_le : ∀ (W : Type) [Fintype W] (n M : ℕ), ∃ C : ℝ, 0 ≤ C ∧
     ∀ h : W × Fin M → EuclideanSpace ℂ (Fin n) → ENNReal, (∀ k, Measurable (h k)) →
@@ -129,7 +127,7 @@ theorem lintegral_prod_le : ∀ (W : Type) [Fintype W] (n M : ℕ), ∃ C : ℝ,
   exact hmap.symm.trans (by rw [ENNReal.smul_def, smul_eq_mul])
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_four_swap_pairs_alt {α β : Type} [Fintype α] [Fintype β] (t : α → β → α → β → ℂ) :
     ∑ i, ∑ c, ∑ j, ∑ a, t i c j a = ∑ j, ∑ a, ∑ i, ∑ c, t i c j a := by
@@ -145,7 +143,7 @@ def sesq {n M : ℕ} (J : Matrix (Fin M) (Fin M) ℂ) (b : Matrix (Fin n) (Fin n
   ∑ i, ∑ c, ∑ j, ∑ a, (starRingEnd ℂ) (X c i) * J i j * b a c * Y a j
 
 /- English proof (translation)
-Establish `h : Matrix.trace (b * gramC J X) = ∑ a, ∑ c, ∑ i, ∑ j, b a c * ((starRingEnd ℂ) (X c i) * J i j * X a j)`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, gramC, Finset.mul_sum]`. Rewrite using `[h]`. Unfold `sesq`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem trace_gram {n M : ℕ} (J : Matrix (Fin M) (Fin M) ℂ) (b : Matrix (Fin n) (Fin n) ℂ)
     (X : Fin n → Fin M → ℂ) : Matrix.trace (b * gramC J X) = sesq J b X X := by
@@ -165,23 +163,23 @@ theorem trace_gram {n M : ℕ} (J : Matrix (Fin M) (Fin M) ℂ) (b : Matrix (Fin
         Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [sesq, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sesq_add_left {n M : ℕ} (J : Matrix (Fin M) (Fin M) ℂ) (b : Matrix (Fin n) (Fin n) ℂ)
     (X X' Y : Fin n → Fin M → ℂ) : sesq J b (X + X') Y = sesq J b X Y + sesq J b X' Y := by
   simp only [sesq, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [sesq, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sesq_add_right {n M : ℕ} (J : Matrix (Fin M) (Fin M) ℂ) (b : Matrix (Fin n) (Fin n) ℂ)
     (X Y Y' : Fin n → Fin M → ℂ) : sesq J b X (Y + Y') = sesq J b X Y + sesq J b X Y' := by
   simp only [sesq, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `hJ' : ∀ i j, (starRingEnd ℂ) (J i j) = J j i` using `fun i j => by`. Rewrite using `[starRingEnd_apply]`. Conclude with `hJ.apply j i`. Establish `hb' : ∀ i j, (starRingEnd ℂ) (b i j) = b j i` using `fun i j => by`. Rewrite using `[starRingEnd_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hb.apply j i`. Simplify using `only [sesq, map_sum, map_mul, Complex.conj_conj, hJ', hb']`. Use `Eq.trans ?_ (sum_four_swap_pairs_alt _).symm` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sesq_conj {n M : ℕ} {J : Matrix (Fin M) (Fin M) ℂ} {b : Matrix (Fin n) (Fin n) ℂ}
     (hJ : J.IsHermitian) (hb : b.IsHermitian) (X Y : Fin n → Fin M → ℂ) :
@@ -196,7 +194,7 @@ theorem sesq_conj {n M : ℕ} {J : Matrix (Fin M) (Fin M) ℂ} {b : Matrix (Fin 
     Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Rewrite using `[sesq_add_left, sesq_add_right, sesq_add_right]`. Establish `h` using `congrArg Complex.re (sesq_conj hJ hb X Y)`. Rewrite `h` using `[Complex.conj_re]`. Simplify using `only [Complex.add_re]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -212,11 +210,11 @@ theorem sesq_re_add {n M : ℕ} {J : Matrix (Fin M) (Fin M) ℂ} {b : Matrix (Fi
   ring
 
 /- English proof (translation)
-Rewrite using `[polarOp_apply, PiLp.inner_apply, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hre : ∀ u v : EuclideanSpace ℂ (Fin n), inner ℝ u v = RCLike.re (inner ℂ u v)`. Introduce `u v`. Use `first`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `(simp only [PiLp.inner_apply, map_sum]`. Apply the tactic sequence `exact Finset.sum_congr rfl fun a _ => by first | rfl | exact Complex.real_inner_eq_re_inner _ _)`. Establish `key : ∑ p, inner ℂ (x (w, p)) (mixOp J (diagOp b y) (w, p)) = 2 * sesq (J w) (b w) (tupCoord x w) (tupCoord y w)`. Simplify using `only [PiLp.inner_apply, mixOp_apply, diagOp_apply, tupCoord_apply]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[sesq, Matrix.toEuclideanLin_apply, Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem inner_polarOp {W : Type} [Fintype W] {n M : ℕ} (J : W → Matrix (Fin M) (Fin M) ℂ)
     (b : W → Matrix (Fin n) (Fin n) ℂ) (x y : TupV W n M) :
@@ -243,7 +241,7 @@ theorem inner_polarOp {W : Type} [Fintype W] {n M : ℕ} (J : W → Matrix (Fin 
     _ = 2 * (sesq (J w) (b w) (tupCoord x w) (tupCoord y w)).re := by rw [key]; simp
 
 /- English proof (translation)
-Introduce `W _ n M J hJ b hb x y`. Simplify using `only [phaseM, trace_gram, map_add, Pi.add_apply, inner_polarOp]`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun w _ => sesq_re_add (hJ w) (hb w) _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phase_polar : ∀ (W : Type) [Fintype W] (n M : ℕ) (J : W → Matrix (Fin M) (Fin M) ℂ),
     (∀ w, (J w).IsHermitian) → ∀ b : W → Matrix (Fin n) (Fin n) ℂ, (∀ w, (b w).IsHermitian) →
@@ -255,7 +253,7 @@ theorem phase_polar : ∀ (W : Type) [Fintype W] (n M : ℕ) (J : W → Matrix (
   exact Finset.sum_congr rfl fun w _ => sesq_re_add (hJ w) (hb w) _ _
 
 /- English proof (translation)
-Establish `h : Continuous (fun X : W → Fin n → Fin M → ℂ => phaseM J b X)`. Simplify using `only [phaseM, trace_gram, sesq]`. Use `continuous_finsetSum _ fun w _ => Complex.continuous_re.comp ?_` and prove the remaining obligations. Use `fun_prop`. Conclude with `h.comp tupCoord.continuous`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_phase {W : Type} [Fintype W] {n M : ℕ} (J : W → Matrix (Fin M) (Fin M) ℂ)
     (b : W → Matrix (Fin n) (Fin n) ℂ) :
@@ -267,7 +265,7 @@ theorem continuous_phase {W : Type} [Fintype W] {n M : ℕ} (J : W → Matrix (F
   exact h.comp tupCoord.continuous
 
 /- English proof (translation)
-Unfold `detW`. Rewrite using `[show (1 : Matrix (Fin n) (Fin n) ℂ) + b.transpose * b.transpose = (1 + b * b).transpose by`. Rewrite using `[Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_mul], Matrix.det_transpose]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem detW_transpose {n : ℕ} (b : Matrix (Fin n) (Fin n) ℂ) : detW b.transpose = detW b := by
   unfold detW
@@ -275,22 +273,20 @@ theorem detW_transpose {n : ℕ} (b : Matrix (Fin n) (Fin n) ℂ) : detW b.trans
     rw [Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_mul], Matrix.det_transpose]
 
 /- English proof (translation)
-Rewrite using `[Vol.detW_eq hb]`. Conclude with `Finset.prod_pos fun i _ => by positivity`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detW_pos {n : ℕ} {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian) : 0 < detW b := by
   rw [Vol.detW_eq hb]
   exact Finset.prod_pos fun i _ => by positivity
 
 /- English proof (translation)
-Establish `hr1 : 0 < 1 + r` using `by linarith`. Establish `hs1 : 0 < 1 + s` using `by linarith`. Establish `hC0 : 0 < C` using `by linarith`. Establish `hD : C ^ L ≠ 0` using `pow_ne_zero _ hC0.ne'`. Establish `key : ∀ k, ((1 + r) ^ L)⁻¹ * ((C ^ L)⁻¹ * ((1 + s) ^ L)⁻¹) ≤ ((1 + u k) ^ L)⁻¹ * ((1 + v k) ^ L)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Establish `hu1 : 0 < 1 + u k` using `by linarith [hu k]`. Establish `hv1 : 0 < 1 + v k` using `by linarith [hv k]`. Establish `h1 : ((1 + r) ^ L)⁻¹ ≤ ((1 + u k) ^ L)⁻¹`. Apply `inv_anti₀ (pow_pos hu1 L)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `pow_le_pow_left₀ hu1.le (by linarith [hur k]) L`. Establish `h2 : (C ^ L)⁻¹ * ((1 + s) ^ L)⁻¹ ≤ ((1 + v k) ^ L)⁻¹`. Rewrite using `[← mul_inv, ← mul_pow]`. Apply `inv_anti₀ (pow_pos hv1 L)` to reduce the goal to its premises. Apply `pow_le_pow_left₀ hv1.le` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hvs k]`. Conclude with `mul_le_mul h1 h2 (mul_nonneg (inv_nonneg.mpr (pow_nonneg hC0.le L)) (inv_nonneg.mpr (pow_nonneg hs1.le L))) (inv_nonneg.mpr (pow_nonneg hu1.le L))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ, show ((1 + r) ^ L)⁻¹ * ((C ^ L)⁻¹ * ((1 + s) ^ L)⁻¹) = (C ^ L)⁻¹ * (((1 + r) ^ L)⁻¹ * ((1 + s) ^ L)⁻¹) by ring, mul_pow, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ hD, one_pow, one_mul, mul_pow, inv_pow, inv_pow, ← pow_mul, ← pow_mul, mul_comm L …`. Use `_ ≤ (C ^ L) ^ Fintype.card κ * ∏ k, (((1 + u k) ^ L)⁻¹ * ((1 + v k) ^ L)⁻¹) := by`.
-
-Apply `mul_le_mul_of_nonneg_left _ (pow_nonneg (pow_nonneg hC0.le L) _)` to reduce the goal to its premises. Conclude with `Finset.prod_le_prod (fun k _ => mul_nonneg (inv_nonneg.mpr (pow_nonneg hr1.le L)) (mul_nonneg (inv_nonneg.mpr (pow_nonneg hC0.le L)) (inv_nonneg.mpr (pow_nonneg hs1.le L)))) (fun k _ => key k)`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem weight_le (κ : Type) [Fintype κ] (L : ℕ) (C r s : ℝ) (u v : κ → ℝ) (hC : 1 ≤ C)
     (hr : 0 ≤ r) (hs : 0 ≤ s) (hu : ∀ k, 0 ≤ u k) (hv : ∀ k, 0 ≤ v k) (hur : ∀ k, u k ≤ r)
@@ -331,7 +327,7 @@ theorem weight_le (κ : Type) [Fintype κ] (L : ℕ) (C r s : ℝ) (u v : κ →
           (fun k _ => key k)
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_pow]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `w _`. Establish `h0` using `(hD w).le`. Rewrite using `[← Real.rpow_mul_natCast h0, show (-(M : ℝ) / 2 * ((2 : ℕ) : ℝ)) = -(M : ℝ) by push_cast; ring, Real.rpow_neg h0, Real.rpow_natCast, inv_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem sq_prod_rpow {W : Type} [Fintype W] (M : ℕ) (D : W → ℝ) (hD : ∀ w, 0 < D w) :
     (∏ w, D w ^ (-(M : ℝ) / 2)) ^ 2 = ∏ w, ((D w)⁻¹) ^ M := by
@@ -343,7 +339,7 @@ theorem sq_prod_rpow {W : Type} [Fintype W] (M : ℕ) (D : W → ℝ) (hD : ∀ 
     Real.rpow_neg h0, Real.rpow_natCast, inv_pow]
 
 /- English proof (translation)
-Unfold `coreC`. Rewrite using `[hc]`. Simplify using `only [hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem coreC_comp_eq_integral_tupCoord_phase {W : Type} [Fintype W] {n M N : ℕ} (J : W → Matrix (Fin M) (Fin M) ℂ)
     (μ : Measure (W → Fin n → Fin M → ℂ)) (e : (W → Fin n → Fin M → ℂ) ≃+ (Fin N → ℝ))
@@ -358,25 +354,23 @@ private theorem coreC_comp_eq_integral_tupCoord_phase {W : Type} [Fintype W] {n 
   simp only [hg]
 
 /- English proof (translation)
-Introduce `W _ n M J hJ hJd N e he he' f μ hμ`. Take `⟨c, hc0, hc⟩` from `integral_eq_coord W n M μ hμ`. Take `⟨g, hg⟩` from `exists_schwartz_coord W n M N e he he' f`. Take `⟨C2, hC2, hdiag⟩` from `norm_diag_le_polar W n M J hJd`. Take `⟨C3, hC3, hprod⟩` from `lintegral_prod_le W n M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C1, hC1, hweyl⟩` from `Weyl.weyl_differencing (TupV W n M) g (Fintype.card (W × Fin M) * (3 * n))`. Take `⟨C4, hC4, hvol⟩` from `Vol.volume_bound n (3 * n) le_rfl (volume : Measure (EuclideanSpace ℂ (Fin n))) inferInstance`. Establish `hA0 : 0 ≤ (C2 ^ (3 * n)) ^ Fintype.card (W × Fin M)` using `pow_nonneg (pow_nonneg (by linarith) _) _`. Establish `hK0 : 0 ≤ C1 * (C2 ^ (3 * n)) ^ Fintype.card (W × Fin M) * C3 * C4 ^ Fintype.card (W × Fin M)` using `mul_nonneg (mul_nonneg (mul_nonneg hC1 hA0) hC3) (pow_nonneg hC4 _)`. Use `⟨c * Real.sqrt (C1 * (C2 ^ (3 * n)) ^ Fintype.card (W × Fin M) * C3 * C4 ^ Fintype.card (W × Fin M)), fun b => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB : ∀ w, (b w : Matrix (Fin n) (Fin n) ℂ).IsHermitian` using `fun w => mem_hermC.mp (b w).2`. Establish `hd : ∀ w, 0 < detW (b w : Matrix (Fin n) (Fin n) ℂ)` using `fun w => detW_pos (hB w)`. Establish `hcore` using `coreC_comp_eq_integral_tupCoord_phase J μ e f g hg c hc b`. Establish `hhm : ∀ k : W × Fin M, Measurable fun z : EuclideanSpace ℂ (Fin n) => ENNReal.ofReal (((1 + ‖z‖) ^ (3 * n))⁻¹ * ((1 + ‖Matrix.toEuclideanLin (b k.1 : Matrix (Fin n) (Fin n) ℂ).transpose z‖) ^ (3 * n))⁻¹)`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlin : Continuous (Matrix.toEuclideanLin (b k.1 : Matrix (Fin n) (Fin n) ℂ).transpose)` using `LinearMap.continuous_of_finiteDimensional _`. Use `fun_prop`. Establish `hpt : ∀ y : TupV W n M, ENNReal.ofReal (((1 + ‖y‖) ^ (Fintype.card (W × Fin M) * (3 * n)))⁻¹ * ((1 + ‖polarOp J (fun w => (b w : Matrix (Fin n) (Fin n) ℂ)) y‖) ^ (Fintype.card (W × Fin M) * (3 * n)))⁻¹) ≤ ENNReal.ofReal ((C2 ^ (3 * n)) ^ Fintype.card (W × Fin M)) * ∏ k, ENNReal.o …`. Introduce `y`. Establish `hwl` using `weight_le (W × Fin M) (3 * n) C2 ‖y‖ ‖polarOp J (fun w => (b w : Matrix (Fin n) (Fin n) ℂ)) y‖ (fun k => ‖y k‖) (fun k => ‖Matrix.toEuclideanLin (b k.1 : Matrix (Fin n) (Fin n) ℂ).transpose (y k)‖) hC2 (norm_nonneg _) (norm_nonneg _) (fun _ => norm_nonneg _) (fun _ => norm_nonneg …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_prod_of_nonneg (fun k _ => by positivity), ← ENNReal.ofReal_mul hA0]`. Conclude with `ENNReal.ofReal_le_ofReal hwl`. Establish `hkv : ∀ k : W × Fin M, ∫⁻ z : EuclideanSpace ℂ (Fin n), ENNReal.ofReal (((1 + ‖z‖) ^ (3 * n))⁻¹ * ((1 + ‖Matrix.toEuclideanLin (b k.1 : Matrix (Fin n) (Fin n) ℂ).transpose z‖) ^ (3 * n))⁻¹) ≤ ENNReal.ofReal (C4 * (detW (b k.1 : Matrix (Fin n) (Fin n) ℂ))⁻¹)`. Introduce `k`. Establish `h` using `hvol _ (hB k.1).transpose`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h` using `[detW_transpose]`. Then use the resulting hypothesis. Establish `hP0 : ∀ k : W × Fin M, 0 ≤ C4 * (detW (b k.1 : Matrix (Fin n) (Fin n) ℂ))⁻¹` using `fun k => mul_nonneg hC4 (inv_nonneg.mpr (hd k.1).le)`. Establish `hint : ∫⁻ y : TupV W n M, ENNReal.ofReal (((1 + ‖y‖) ^ (Fintype.card (W × Fin M) * (3 * n)))⁻¹ * ((1 + ‖polarOp J (fun w => (b w : Matrix (Fin n) (Fin n) ℂ)) y‖) ^ (Fintype.card (W × Fin M) * (3 * n)))⁻¹) ≤ ENNReal.ofReal ((C2 ^ (3 * n)) ^ Fintype.card (W × Fin M) * (C3 * ∏ k : W …`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hprod (fun k z => ENNReal.ofReal (((1 + ‖z‖) ^ (3 * n))⁻¹ * ((1 + ‖Matrix.toEuclideanLin (b k.1 : Matrix (Fin n) (Fin n) ℂ).transpose z‖) ^ (3 * n))⁻¹)) hhm`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ ENNReal.ofReal ((C2 ^ (3 * n)) ^ Fintype.card (W × Fin M)) * (ENNReal.ofReal C3 * ∏ k : W × Fin M, ENNReal.ofReal (C4 * (detW (b k.1 : Matrix (Fin n) (Fin n) ℂ))⁻¹)) := by gcongr with k`. Conclude with `hkv k`. Use `_ = _ := by`. Rewrite using `[← ENNReal.ofReal_prod_of_nonneg (fun k _ => hP0 k), ← ENNReal.ofReal_mul hC3, ← ENNReal.ofReal_mul hA0]`. Establish `hP : ∏ k : W × Fin M, (C4 * (detW (b k.1 : Matrix (Fin n) (Fin n) ℂ))⁻¹) = C4 ^ Fintype.card (W × Fin M) * (∏ w, detW (b w : Matrix (Fin n) (Fin n) ℂ) ^ (-(M : ℝ) / 2)) ^ 2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, sq_prod_rpow M (fun w => detW (b w : Matrix (Fin n) (Fin n) ℂ)) hd, Fintype.prod_prod_type]`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `hQ : 0 ≤ ∏ w, detW (b w : Matrix (Fin n) (Fin n) ℂ) ^ (-(M : ℝ) / 2)` using `Finset.prod_nonneg fun w _ => Real.rpow_nonneg (hd w).le _`. Establish `hw` using `hweyl (fun x => phaseM J (fun w => (b w : Matrix (Fin n) (Fin n) ℂ)) (tupCoord x)) (polarOp J (fun w => (b w : Matrix (Fin n) (Fin n) ℂ))) (continuous_phase J _) (phase_polar W n M J hJ _ hB)`. Establish `hsqE` using `hw.trans (mul_le_mul' le_rfl hint)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hsqE` using `[← ENNReal.ofReal_mul hC1, ENNReal.ofReal_le_ofReal_iff (mul_nonneg hC1 (mul_nonneg hA0 (mul_nonneg hC3 (Finset.prod_nonneg fun k _ => hP0 k)))), hP]`. Establish `hsq : ‖∫ x, g x * Complex.exp (2 * Real.pi * Complex.I * ((phaseM J (fun w => (b w : Matrix (Fin n) (Fin n) ℂ)) (tupCoord x) : ℝ) : ℂ))‖ ^ 2 ≤ (C1 * (C2 ^ (3 * n)) ^ Fintype.card (W × Fin M) * C3 * C4 ^ Fintype.card (W × Fin M)) * (∏ w, detW (b w : Matrix (Fin n) (Fin n) ℂ) ^ (-( …`. Use `hsqE.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hcore, norm_mul, Complex.norm_of_nonneg hc0, mul_assoc c]`.
-
-Use `mul_le_mul_of_nonneg_left ?_ hc0` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem core_bound : ∀ (W : Type) [Fintype W] (n M : ℕ) (J : W → Matrix (Fin M) (Fin M) ℂ), (∀ w, (J w).IsHermitian) → (∀ w, (J w).det ≠ 0) →
   ∀ (N : ℕ) (e : (W → Fin n → Fin M → ℂ) ≃+ (Fin N → ℝ)), Continuous e → Continuous e.symm →

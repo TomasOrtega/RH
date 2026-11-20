@@ -26,19 +26,17 @@ noncomputable section
 namespace GlobalTheory.LieGenStep
 
 /- English proof (translation)
-Establish `hT` using `h.triple`. Establish `hψ : IsStd B.ψ` using `hT.base.std`. Establish `hw` using `hT.weil`. Establish `h1W : (1 : UA σ G.W.J) ∈ UAt σ G.W (evI F)`. Introduce `u _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[mat]`. Establish `hex : ∀ k : UA σ G.V.J, ∃ A : SInf F (Fin a × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a × Fin (a + a')), k ∈ KInf σ G.V B.emb → ∀ v : SInf F (Fin a × Fin (a + a')), Acts (evI F) (om (k, 1)) v (A v)`. Introduce `k`. Distinguish the cases in `hk : k ∈ KInf σ G.V B.emb`. Take `⟨A, hA⟩` from `GlobalTheory.FockCompactW.exists_op_of_UAt hψ hw (k, 1) hk.1 h1W`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨A, fun _ => hA⟩`. Conclude with `⟨0, fun h => absurd h hk⟩`. Use `choose A hA using hex`. Use `set V : Submodule ℂ (SInf F (Fin a × Fin (a + a'))) := fockDeg G.M B.ψ B.emb m with hVdef`. Establish `hVfin : FiniteDimensional ℂ V` using `GlobalTheory.T.fock_degree_space_finiteDimensional F E σ B a (a + a') G.V G.W G.M _ _ _ _ hT.base hT.geo.hV hT.geo.hW hT.geo.hM _`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hVst : ∀ k ∈ KInf σ G.V B.emb, ∀ v ∈ V, A k v ∈ V` using `fun k hk v hv => GlobalTheory.LowFixCover.fockDeg_stable_left hψ hw B.emb hk (A k) (hA k hk) _ hv`. Set `U : Submodule ℂ (SInf F (Fin a × Fin (a + a')))` to `Submodule.span ℂ {z | ∃ k ∈ KInf σ G.V B.emb, ∃ v ∈ V, z = A k v - v}`. Establish `hUV : U ≤ V` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, hk, v, hv, rfl⟩`. Conclude with `V.sub_mem (hVst k hk v hv) hv)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hU0 : U ≤ LinearMap.ker R.p` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, hk, v, hv, rfl⟩`. Use `show R.p (A k v - v) = 0`. Rewrite using `[map_sub, h.real.quot.cpt k hk v (fockDeg_le_pol _ _ _ _ hv) _ (hA k hk v), sub_self])`. Take `⟨u, hu, hfx⟩` from `GlobalTheory.KFixedVanish.exists_fixed (Measure.addHaar : Measure (Fin a × Fin (a + a') → mixedEmbedding.mixedSpace F)) U V hVfin hUV ((fun k => A k) '' KInf σ G.V B.emb) (by`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨k, hk, rfl⟩ v hv`. Conclude with `Submodule.subset_span ⟨k, hk, v, hv, rfl⟩)`. Use the proof step `(by`. Introduce and unpack `_ ⟨k, hk, rfl⟩ v`. Conclude with `GlobalTheory.T.weil_action_preserves_lintegral F E σ a (a + a') G.V G.W G.M B.ψ X.β (X.β / X.α) om hw (k, 1) v (A k v) (hA k hk v) _ inferInstance)`.
-
-Use `f hf`. Use `⟨f - u, V.sub_mem hf (hUV hu), fun k hk => ?_, ?_⟩` and prove the remaining obligations. Establish `h'` using `hA k hk (f - u)`. Rewrite `h'` using `[hfx (A k) ⟨k, hk, rfl⟩]`. Then use the resulting hypothesis. Rewrite using `[map_sub, LinearMap.mem_ker.1 (hU0 hu), sub_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_kFix_map_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
@@ -92,11 +90,11 @@ theorem exists_kFix_map_eq {F E : Type} [Field F] [NumberField F] [Field E] [Num
   · rw [map_sub, LinearMap.mem_ker.1 (hU0 hu), sub_zero]
 
 /- English proof (translation)
-Use `haveI := h.real.nontriv`. Take `⟨x, hx⟩` from `exists_ne (0 : R.Pi)`. Establish `hx' : x ∈ (G.M.Pol B.ψ B.emb).map R.p` using `by rw [h.real.quot.onto]; trivial`. Take `⟨f, hf, rfl⟩` from `hx'`. Rewrite `hf` using `[pol_eq_iSup_fockDeg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `(Submodule.mem_iSup_of_directed _ (fockDeg_mono G.M B.ψ B.emb).directed_le).1 hf`. Establish `hne : {k | ∃ f ∈ fockDeg G.M B.ψ B.emb k, R.p f ≠ 0}.Nonempty` using `⟨k, f, hk, hx⟩`. Take `⟨g, hg, hpg⟩` from `Nat.sInf_mem hne`. Take `⟨g₀, hg₀, hfix, hpe⟩` from `exists_kFix_map_eq h _ g hg`. Use `Nat.sInf_le ⟨g₀, hg₀, ?_, hfix⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hpg (by rw [← hpe, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem fixDeg_le_lowDegInf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
@@ -116,17 +114,15 @@ theorem fixDeg_le_lowDegInf {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   exact hpg (by rw [← hpe, map_zero])
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM j`. Use `set T := (fockDeg G.M B.ψ B.emb (lowDegInf B G.M R.p + 2 * j)).map R.p ⊔ Submodule.span ℂ {x : R.Pi | ∃ γ ∈ Lines σ G.W, ∃ f ∈ fockDeg G.M B.ψ B.emb (lowDegInf B G.M R.p + 2 * j), ∃ f₁ : SInf F (Fin a × Fin (a + a')), ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) f …`. Establish `hodd` using `GlobalTheory.T.fock_degree_odd_map_le hKP F E σ B a a' G X om om' R Rf hM j`. Establish `hpol` using `GlobalTheory.T.real_line_polynomial_equivariance hKP F E σ B a a' G X om om' hM.triple`. Establish `hpol'` using `GlobalTheory.T.theta_polynomial_lines_invariance hKP F E σ B a a' G X om om' hM.triple`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨f₀, hf₀, hfix, hpe⟩` from `exists_kFix_map_eq hM _ f hf`. Rewrite using `[← hpe]`. Establish `hm : fixDeg B G.M om ≤ lowDegInf B G.M R.p + 2 * j + 1`. Use `fixDeg_le_lowDegInf hM` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hf₀' : f₀ ∈ fockDeg G.M B.ψ B.emb (lowDegInf B G.M R.p + 2 * j + 1 + 1)` using `hf₀`. Establish `hspan` using `GlobalTheory.T.fixed_fock_degree_span hKP F E σ B a a' G X om om' R Rf hM _ hm f₀ hf₀' hfix`. Establish `hS : ({g | g ∈ fockDeg G.M B.ψ B.emb (lowDegInf B G.M R.p + 2 * j + 1) ∧ IsKFix B om g} ∪ {f₁ | ∃ γ ∈ Lines σ G.W, ∃ g ∈ fockDeg G.M B.ψ B.emb (lowDegInf B G.M R.p + 2 * j + 1), IsKFix B om g ∧ ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) g f₁}) ⊆ (T.comap R.p : Se …`. Introduce and unpack `y (⟨hy, -⟩ | ⟨γ, hγ, g, hg, -, hd⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_sup_left (hodd (Submodule.mem_map_of_mem hy))`. Take `⟨g', hg', hpg'⟩` from `hodd (Submodule.mem_map_of_mem hg)`. Take `⟨g₁', -, hd₁, -⟩` from `hpol.2.2.1 γ hγ g' (fockDeg_le_pol _ _ _ _ hg')`. Establish `hx : R.p g ∈ (G.M'.Pol B.ψ B.emb).map R.p'` using `by rw [hM.real.quot'.onto]; trivial`. Take `⟨f', hf', hpf'⟩` from `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f₁', -, hd', -⟩` from `hpol'.2.2.1 γ hγ f' hf'`. Establish `e1` using `hM.real.lie γ hγ g (fockDeg_le_pol _ _ _ _ hg) f' hf' y f₁' hd hd' hpf'.symm`. Establish `e2` using `hM.real.lie γ hγ g' (fockDeg_le_pol _ _ _ _ hg') f' hf' g₁' f₁' hd₁ hd' (hpg'.trans hpf'.symm)`. Use `show R.p y ∈ T`. Rewrite using `[e1, ← e2]`.
-
-Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨γ, hγ, g', hg', g₁', hd₁, rfl⟩)`. Conclude with `Submodule.span_le.2 hS hspan`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_fockDeg_add_two_le : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

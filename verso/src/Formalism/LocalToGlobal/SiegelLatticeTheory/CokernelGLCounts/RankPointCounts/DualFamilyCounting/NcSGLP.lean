@@ -7,19 +7,19 @@ namespace Formalism.L2.SG.Pf.NcS.LT.GLP
 variable {K : Type*} [Field K]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `LinearMap.exists_rightInverse_of_surjective L1 (LinearMap.range_eq_top.mpr h1)`. Take `⟨p, hp⟩` from `LinearMap.exists_leftInverse_of_injective (LinearMap.ker L2).subtype (LinearMap.ker L2).ker_subtype`. Establish `hdim : Module.finrank K (LinearMap.ker L2) = Module.finrank K (LinearMap.ker L1)`. Establish `e1` using `LinearMap.finrank_range_add_finrank_ker L1`. Establish `e2` using `LinearMap.finrank_range_add_finrank_ker L2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[LinearMap.range_eq_top.mpr h1, finrank_top]`. Rewrite `e2` using `[LinearMap.range_eq_top.mpr h2, finrank_top]`. Use linear arithmetic over natural numbers and integers. Set `e : LinearMap.ker L2 ≃ₗ[K] LinearMap.ker L1` to `by first`. Consider the case `exact LinearEquiv.ofFinrankEq _ _ hdim`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Treat this case separately.
 
-Consider the case `exact LinearEquiv.ofFinrankEq hdim`. Set `δ : C →ₗ[K] C` to `s ∘ₗ L2 + (LinearMap.ker L1).subtype ∘ₗ (e.toLinearMap ∘ₗ p)`. Establish `hδ : ∀ c, δ c = s (L2 c) + ((e (p c) : LinearMap.ker L1) : C)`. Introduce `c`. Use `first`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `simp [δ]`. Establish `hL1 : ∀ c, L1 (δ c) = L2 c`. Introduce `c`. Establish `h1' : L1 (s (L2 c)) = L2 c` using `by simpa using LinearMap.congr_fun hs (L2 c)`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : L1 ((e (p c) : LinearMap.ker L1) : C) = 0` using `LinearMap.mem_ker.mp (e (p c)).2`. Rewrite using `[hδ, map_add, h1', h2', add_zero]`. Establish `hinj : Function.Injective δ`. Use `(injective_iff_map_eq_zero δ).mpr fun c hc => ?_` and prove the remaining obligations. Establish `hc2 : L2 c = 0` using `by rw [← hL1 c, hc, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpc : p c = ⟨c, hc2⟩` using `by simpa using LinearMap.congr_fun hp ⟨c, hc2⟩`. Rewrite `hc` using `[hδ, hc2, map_zero, zero_add, hpc]`. Establish `hk : (⟨c, hc2⟩ : LinearMap.ker L2) = 0` using `by simpa using hc`. Use `first`. Consider the case `exact congrArg Subtype.val hk`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `simpa using congrArg Subtype.val hk`. Use `⟨LinearEquiv.ofInjectiveEndo δ hinj, fun c => ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `exact hL1 c`. Consider the case `simpa using hL1 c`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem surj_equiv {C W : Type*} [AddCommGroup C] [Module K C] [FiniteDimensional K C]
     [AddCommGroup W] [Module K W] (L1 L2 : C →ₗ[K] W) (h1 : Function.Surjective L1)
@@ -63,9 +63,9 @@ theorem surj_equiv {C W : Type*} [AddCommGroup C] [Module K C] [FiniteDimensiona
   | simpa using hL1 c
 
 /- English proof (translation)
-Establish `ht : t = ∑ i, t i • (Pi.single i 1 : Fin a → K)`. Use extensionality with `j`. Use `first`. Consider the case `simp [Finset.sum_apply, Pi.single_apply]`. Consider the case `simp [Finset.sum_apply, Pi.single_apply, eq_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem dual_apply_eq_sum_mul_single {a : ℕ} (μ : Module.Dual K (Fin a → K)) (t : Fin a → K) :
     μ t = ∑ i, t i * μ (Pi.single i 1) := by
@@ -78,13 +78,13 @@ private theorem dual_apply_eq_sum_mul_single {a : ℕ} (μ : Module.Dual K (Fin 
     _ = ∑ i, t i * μ (Pi.single i 1) := by simp [map_sum, map_smul]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.range_eq_top]`. Assume the negation of the conclusion as `hne`. Take `⟨μ, hμ0, hμ⟩ : ∃ μ : Module.Dual K (Fin a → K), μ ≠ 0 ∧ ∀ v, μ (LinearMap.pi ψ v) = 0` from `by first`. Consider the case `(obtain ⟨μ, hμ0, hμ⟩ := Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hne)`. Conclude with `⟨μ, hμ0, fun v => LinearMap.mem_ker.mp (hμ (LinearMap.mem_range_self _ v))⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `(obtain ⟨μ, hμ0, hμ⟩ := Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.mpr hne)`. Use `⟨μ, hμ0, fun v => ?_⟩` and prove the remaining obligations. Establish `hm : μ (LinearMap.pi ψ v) ∈ (LinearMap.range (LinearMap.pi ψ)).map μ` using `Submodule.mem_map_of_mem (LinearMap.mem_range_self _ v)`. Rewrite `hm` using `[hμ]`. Simplify using `using hm)`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hsum : ∑ i, μ (Pi.single i 1) • ψ i = 0`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `hv` using `hμ v`. Rewrite `hv` using `[dual_apply_eq_sum_mul_single]`. Simplify `hv` using `[LinearMap.sum_apply, mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hzero` using `Fintype.linearIndependent_iff.mp hψ _ hsum`. Conclude with `hμ0 (LinearMap.ext fun t => by rw [dual_apply_eq_sum_mul_single μ t]; simp [hzero])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pi_surj {V : Type*} [AddCommGroup V] [Module K V] {a : ℕ} (ψ : Fin a → Module.Dual K V)
     (hψ : LinearIndependent K ψ) : Function.Surjective (LinearMap.pi ψ) := by
@@ -109,21 +109,21 @@ theorem pi_surj {V : Type*} [AddCommGroup V] [Module K V] {a : ℕ} (ψ : Fin a 
   exact hμ0 (LinearMap.ext fun t => by rw [dual_apply_eq_sum_mul_single μ t]; simp [hzero])
 
 /- English proof (translation)
-Take `⟨CX, hX⟩` from `Submodule.exists_isCompl (Submodule.span K (Set.range x))`. Take `⟨CY, hY⟩` from `Submodule.exists_isCompl (Submodule.span K (Set.range y))`. Establish `hdim : Module.finrank K CX = Module.finrank K CY`. Establish `h1` using `Submodule.finrank_add_eq_of_isCompl hX`. Establish `h2` using `Submodule.finrank_add_eq_of_isCompl hY`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[finrank_span_eq_card hx]`. Rewrite `h2` using `[finrank_span_eq_card hy]`. Use linear arithmetic over natural numbers and integers. Set `bx` to `Module.Basis.span hx`. Set `bY` to `Module.Basis.span hy`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e1` to `bx.equiv bY (Equiv.refl (Fin a))`. Set `e2 : CX ≃ₗ[K] CY` to `by first`. Consider the case `exact LinearEquiv.ofFinrankEq _ _ hdim`. Consider the case `exact LinearEquiv.ofFinrankEq hdim`. Set `P : (Submodule.span K (Set.range x) × CX) ≃ₗ[K] (Submodule.span K (Set.range y) × CY)` to `by first`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Consider the case `exact LinearEquiv.prodCongr e1 e2`. Consider the case `exact LinearEquiv.prod e1 e2`. Establish `hsymm : ∀ j, (Submodule.prodEquivOfIsCompl _ _ hX).symm (x j) = (bx j, 0)`. Introduce `j`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `(rw [Submodule.coe_prodEquivOfIsCompl']; simp [bx, Module.Basis.span_apply])`. Consider the case `simp [bx, Module.Basis.span_apply]`. Consider the case `simp [bx]`. Use `⟨(Submodule.prodEquivOfIsCompl _ _ hX).symm.trans (P.trans (Submodule.prodEquivOfIsCompl _ _ hY)), fun j => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, hsymm j]`. Establish `hP : P (bx j, 0) = (bY j, 0)` using `by first`. Consider the case `(show (e1 (bx j), e2 0) = (bY j, 0)`. Rewrite using `[map_zero]`. Simplify using `[e1, Module.Basis.equiv_apply])`.
+Establish an intermediate fact. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `simp [P, e1, Module.Basis.equiv_apply]`. Consider the case `simp [P, e1]`. Rewrite using `[hP]`. Use `first`. Consider the case `(rw [Submodule.coe_prodEquivOfIsCompl']; simp [bY, Module.Basis.span_apply])`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [bY, Module.Basis.span_apply]`. Consider the case `simp [bY]`.
+A detailed English derivation is pending.
 -/
 theorem trans_tuple {V : Type*} [AddCommGroup V] [Module K V] [FiniteDimensional K V] {a : ℕ}
     (x y : Fin a → V) (hx : LinearIndependent K x) (hy : LinearIndependent K y) :
@@ -171,18 +171,18 @@ theorem trans_tuple {V : Type*} [AddCommGroup V] [Module K V] [FiniteDimensional
   | simp [bY]
 
 /- English proof (translation)
-The claim follows from `(Submodule.mem_bot K).mp (h.le_bot (Submodule.mem_inf.mpr ⟨hS, hT⟩))`.
+A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_mem_of_disjoint {V : Type*} [AddCommGroup V] [Module K V] {S T : Submodule K V}
     (h : Disjoint S T) {v : V} (hS : v ∈ S) (hT : v ∈ T) : v = 0 :=
   (Submodule.mem_bot K).mp (h.le_bot (Submodule.mem_inf.mpr ⟨hS, hT⟩))
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u, u ∉ U := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hU (Submodule.eq_top_iff'.mpr hcon)`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, w ∉ W := by`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hW (Submodule.eq_top_iff'.mpr hcon)`. Distinguish the cases in `huW : u ∈ W`. Distinguish the cases in `hwU : w ∈ U`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Use `⟨u + w, fun h => hu ?_, fun h => hw ?_⟩` and prove the remaining obligations. Simplify using `using U.sub_mem h hwU`. Simplify using `using W.sub_mem h huW`. Conclude with `⟨w, hwU, hw⟩`. Conclude with `⟨u, hu, huW⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_not_mem_of_ne_top_of_ne_top {V : Type*} [AddCommGroup V] [Module K V]
     (U W : Submodule K V) (hU : U ≠ ⊤) (hW : W ≠ ⊤) : ∃ v, v ∉ U ∧ v ∉ W := by
@@ -203,31 +203,29 @@ private theorem exists_not_mem_of_ne_top_of_ne_top {V : Type*} [AddCommGroup V] 
   · exact ⟨u, hu, huW⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `U W _ hn`. Use `⟨⊥, disjoint_bot_left, disjoint_bot_left, ?_⟩` and prove the remaining obligations. Rewrite using `[finrank_bot]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Introduce `U W hUW hn`. Establish `hU : U ≠ ⊤`. Introduce and unpack `rfl`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hn` using `[finrank_top]`. Use linear arithmetic over natural numbers and integers. Establish `hW : W ≠ ⊤`. Introduce and unpack `rfl`. Rewrite `hUW` using `[finrank_top]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨v, hvU, hvW⟩` from `exists_not_mem_of_ne_top_of_ne_top U W hU hW`. Establish `hv0 : v ≠ 0` using `fun h => hvU (by rw [h]; exact U.zero_mem)`. Establish `hback : ∀ S : Submodule K V, ∀ c : K, c ≠ 0 → c • v ∈ S → v ∈ S`. Introduce `S c hc hcv`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm` using `S.smul_mem c⁻¹ hcv`. Use `first`. Consider the case `(rwa [smul_smul, inv_mul_cancel₀ hc, one_smul] at hm)`. Consider the case `simpa [hc] using hm`. Establish `hinf : ∀ S : Submodule K V, v ∉ S → S ⊓ Submodule.span K {v} = ⊥`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S hvS`. Rewrite using `[eq_bot_iff]`. Introduce `z hz`. Rewrite using `[Submodule.mem_bot]`. Take `⟨hzS, hzv⟩` from `Submodule.mem_inf.mp hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hzv`. Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`. Conclude with `(hvS (hback S c hc hzS)).elim`. Establish `key : ∀ S : Submodule K V, v ∉ S → Module.finrank K ↥(S ⊔ Submodule.span K {v}) = Module.finrank K S + 1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `S hvS`. Establish `h` using `Submodule.finrank_sup_add_finrank_inf_eq S (Submodule.span K {v})`. Rewrite `h` using `[hinf S hvS, finrank_bot, finrank_span_singleton hv0]`. Use linear arithmetic over natural numbers and integers. Take `⟨T, hTU, hTW, hT⟩` from `ih (U ⊔ Submodule.span K {v}) (W ⊔ Submodule.span K {v}) (by rw [key U hvU, key W hvW, hUW]) (by rw [key U hvU]; omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvT : v ∉ T` using `fun h => hv0 (eq_zero_of_mem_of_disjoint hTU h (Submodule.mem_sup_right (Submodule.mem_span_singleton_self v)))`. Establish `disj : ∀ S : Submodule K V, v ∉ S → Disjoint T (S ⊔ Submodule.span K {v}) → Disjoint (T ⊔ Submodule.span K {v}) S`. Introduce `S hvS hTS`. Rewrite using `[disjoint_iff, eq_bot_iff]`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.mem_bot]`. Take `⟨hz1, hzS⟩` from `Submodule.mem_inf.mp hz`. Take `⟨t, ht, w', hw', rfl⟩` from `Submodule.mem_sup.mp hz1`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hw'`. Establish `ht0 : t = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `eq_zero_of_mem_of_disjoint hTS ht ?_` and prove the remaining obligations. Establish `htt : t = (t + c • v) - c • v` using `by abel`. Rewrite using `[htt]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left hzS) (Submodule.mem_sup_right (Submodule.smul_mem _ c (Submodule.mem_span_singleton_self v)))`. Substitute `ht0` using the available equality.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`. Conclude with `(hvS (hback S c hc (by simpa using hzS))).elim`. Use `⟨T ⊔ Submodule.span K {v}, disj U hvU hTU, disj W hvW hTW, ?_⟩` and prove the remaining obligations. Rewrite using `[key T hvT]`.
-
-Rewrite `hT` using `[key U hvU]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem exists_common_complement_of_finrank_eq {V : Type*} [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (n : ℕ) : ∀ U W : Submodule K V, Module.finrank K U = Module.finrank K W →
@@ -303,29 +301,27 @@ private theorem exists_common_complement_of_finrank_eq {V : Type*} [AddCommGroup
     omega
 
 /- English proof (translation)
-Set `Φ : V →ₗ[K] (Fin a → K)` to `LinearMap.pi φ`. Set `Ψ : V →ₗ[K] (Fin a → K)` to `LinearMap.pi ψ`. Establish `hΦ : Function.Surjective Φ` using `pi_surj φ hφ`. Establish `hΨ : Function.Surjective Ψ` using `pi_surj ψ hψ`. Establish `eΦ` using `LinearMap.finrank_range_add_finrank_ker Φ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eΨ` using `LinearMap.finrank_range_add_finrank_ker Ψ`. Rewrite `eΦ` using `[LinearMap.range_eq_top.mpr hΦ, finrank_top]`. Rewrite `eΨ` using `[LinearMap.range_eq_top.mpr hΨ, finrank_top]`. Take `⟨T, hTΦ, hTΨ, hT⟩` from `exists_common_complement_of_finrank_eq (Module.finrank K V - Module.finrank K (LinearMap.ker Φ)) (LinearMap.ker Φ) (LinearMap.ker Ψ) (by omega) (by omega)`. Establish `hTdim : Module.finrank K T = Module.finrank K (Fin a → K)` using `by omega`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `f : T →ₗ[K] (Fin a → K)` to `Ψ.domRestrict T`. Establish `hfinj : Function.Injective f`. Use `(injective_iff_map_eq_zero f).mpr fun t ht => ?_` and prove the remaining obligations. Establish `h0 : (t : V) = 0` using `eq_zero_of_mem_of_disjoint hTΨ t.2 (LinearMap.mem_ker.mpr ht)`. Use `first`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact Subtype.ext h0`. Consider the case `simpa using h0`. Establish `hfsurj : Function.Surjective f` using `by first`. Consider the case `exact (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hTdim).mp hfinj`. Consider the case `exact LinearMap.range_eq_top.mp ((LinearMap.ker_eq_bot_iff_range_eq_top_of_finrank_eq_finrank hTdim).mp (LinearMap.ker_eq_bot.mpr hfinj))`.
+Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Set `eT : T ≃ₗ[K] (Fin a → K)` to `LinearEquiv.ofBijective f ⟨hfinj, hfsurj⟩`. Set `s : (Fin a → K) →ₗ[K] V` to `T.subtype ∘ₗ eT.symm.toLinearMap`. Establish `hs : ∀ t, Ψ (s t) = t`. Introduce `t`. Establish `h1 : Ψ (s t) = eT (eT.symm t)` using `by first`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `exact (LinearEquiv.ofBijective_apply f _ (eT.symm t)).symm`. Rewrite using `[h1, LinearEquiv.apply_symm_apply]`. Establish `hsT : ∀ t, s t ∈ T` using `fun t => (eT.symm t).2`. Set `B : V →ₗ[K] V` to `LinearMap.id + s ∘ₗ (Φ - Ψ)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hBv : ∀ v, B v = v + s (Φ v - Ψ v)`. Introduce `v`. Use `first`. Consider the case `rfl`. Consider the case `simp [B]`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΨB : ∀ v, Ψ (B v) = Φ v`. Introduce `v`. Rewrite using `[hBv, map_add, hs]`. Normalize the expressions using the abelian group laws. Establish `hBx : ∀ j, B (x j) = x j`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j`. Establish `hM : Φ (x j) = Ψ (x j)` using `funext fun i => h i j`. Rewrite using `[hBv, hM, sub_self, map_zero, add_zero]`. Establish `hinj : Function.Injective B`. Use `(injective_iff_map_eq_zero B).mpr fun v hv => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦv : Φ v = 0` using `by rw [← hΨB v, hv, map_zero]`. Establish `hvT : v ∈ T`. Rewrite `hv` using `[hBv]`. Rewrite using `[eq_neg_of_add_eq_zero_left hv]`. Conclude with `T.neg_mem (hsT _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Conclude with `eq_zero_of_mem_of_disjoint hTΦ hvT (LinearMap.mem_ker.mpr hΦv)`. Use `⟨LinearEquiv.ofInjectiveEndo B hinj, fun j => ?_, fun i v => ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `exact hBx j`. Consider the case `simpa using hBx j`.
-
-Use `first`. Consider the case `exact congrFun (hΨB v) i`. Consider the case `simpa using congrFun (hΨB v) i`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fix_tuple {V : Type*} [AddCommGroup V] [Module K V] [FiniteDimensional K V] {a : ℕ}
     (x : Fin a → V) (hx : LinearIndependent K x) (φ ψ : Fin a → Module.Dual K V)
@@ -397,13 +393,11 @@ theorem fix_tuple {V : Type*} [AddCommGroup V] [Module K V] [FiniteDimensional K
     | simpa using congrFun (hΨB v) i
 
 /- English proof (translation)
-Take `⟨A0, hA0⟩` from `trans_tuple x y hx hy`. Establish `hψ' : LinearIndependent K (fun i => (η i).comp A0.toLinearMap)`. Rewrite `hη`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Apply `hη g` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `hgv` using `LinearMap.congr_fun hg (A0.symm v)`. Use `first`. Consider the case `simpa using hgv`. Consider the case `simpa [LinearMap.sum_apply] using hgv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB1, hB2⟩` from `fix_tuple x hx ξ (fun i => (η i).comp A0.toLinearMap) hξ hψ' (fun i j => by show ξ i (x j) = η i (A0 (x j))`. Rewrite using `[hA0 j, h i j])`. Use `⟨B.trans A0, fun j => ?_, fun i v => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.trans_apply, hB1 j, hA0 j]`. Rewrite using `[LinearEquiv.trans_apply]`.
-
-Conclude with `hB2 i v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glPair {V : Type*} [AddCommGroup V] [Module K V] [FiniteDimensional K V] {a : ℕ}
     (x y : Fin a → V) (ξ η : Fin a → Module.Dual K V) (hx : LinearIndependent K x)

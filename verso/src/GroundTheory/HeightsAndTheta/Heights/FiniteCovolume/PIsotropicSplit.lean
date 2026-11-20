@@ -6,19 +6,19 @@ namespace GroundTheory.Heights₂.Heights.FiniteCovolume
 open Matrix
 
 /- English proof (translation)
-Introduce `H P hM z hz`. Take `⟨hP, hH, hdet, hPHP⟩` from `hM`. Use `set A := majInvolution H P with hAdef`. Establish `hA2 : A * A = 1`. Rewrite using `[hAdef, majInvolution, show H⁻¹ * P * (H⁻¹ * P) = H⁻¹ * (P * H⁻¹ * P) by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc], hPHP, nonsing_inv_mul H hdet]`. Establish `hPA : P * A = H`. Rewrite using `[hAdef, majInvolution, ← Matrix.mul_assoc, hPHP]`. Establish `hAA (v : ι → ℂ) : A *ᵥ (A *ᵥ v) = v`. Rewrite using `[mulVec_mulVec, hA2, one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set a := plusPart H P z with hadef`. Use `set b := minusPart H P z with hbdef`. Establish `ha : A *ᵥ a = a`. Rewrite using `[hadef, plusPart, ← hAdef, mulVec_smul, mulVec_add, hAA, add_comm]`. Establish `hb : A *ᵥ b = -b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbdef, minusPart, ← hAdef, mulVec_smul, mulVec_sub, hAA, ← smul_neg, neg_sub]`. Establish `hzab : z = a + b`. Rewrite using `[hadef, hbdef, plusPart, minusPart, ← smul_add]`. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, Pi.add_apply, Pi.sub_apply, smul_eq_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hAzab : A *ᵥ z = a - b`. Rewrite using `[hadef, hbdef, plusPart, minusPart, ← hAdef, ← smul_sub]`. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, Pi.add_apply, Pi.sub_apply, smul_eq_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hab : star a ⬝ᵥ (P *ᵥ b) = 0` using `h₁ H P ⟨hP, hH, hdet, hPHP⟩ a b ha hb`. Establish `hba : star b ⬝ᵥ (P *ᵥ a) = 0`. Rewrite using `[star_dotProduct, star_mulVec, ← dotProduct_mulVec, hP.1.eq, hab, star_zero]`. Use `⟨ha, hb, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : star (a + b) ⬝ᵥ (P *ᵥ (a - b)) = 0`. Rewrite using `[← hAzab, ← hzab, mulVec_mulVec, hPA, hz]`. Rewrite `h0` using `[star_add, add_dotProduct, mulVec_sub, dotProduct_sub, dotProduct_sub, hab, hba]`. Take the linear combination `h0`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem IsotropicSplit.proof (ι : Type*) [Fintype ι] [DecidableEq ι]
     (h₁ : EigenspacesOrthogonal.Statement ι) : IsotropicSplit.Statement ι := by

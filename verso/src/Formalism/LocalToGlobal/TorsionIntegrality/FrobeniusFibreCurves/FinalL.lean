@@ -3,7 +3,7 @@ import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.Logarithm
 namespace Formalism.L2.Th1.B
 
 /- English proof (translation)
-The claim follows from `LCm.theta_zero_two_complex_mult`.
+A detailed English derivation is pending.
 -/
 theorem th0TwoCM : ThetaZeroTwoCM := LCm.theta_zero_two_complex_mult
 

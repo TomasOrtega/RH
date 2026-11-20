@@ -23,14 +23,14 @@ section Forms
 variable {κ' : Type*} [Fintype κ']
 
 /- English proof (translation)
-Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sesq_mul (H : Matrix ι ι ℂ) (M : Matrix ι κ ℂ) (N : Matrix ι κ' ℂ) (c : κ → ℂ)
     (d : κ' → ℂ) : star c ⬝ᵥ ((Mᴴ * H * N) *ᵥ d) = star (M *ᵥ c) ⬝ᵥ (H *ᵥ (N *ᵥ d)) := by
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[ext_iff_mulVec]`. Introduce `d`. Use function extensionality and compare the values at `i`. Use `h (Pi.single i 1) d` as an intermediate fact. Simplify `this` using `[dotProduct, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ext_sesq {M N : Matrix κ κ ℂ}
     (h : ∀ c d : κ → ℂ, star c ⬝ᵥ (M *ᵥ d) = star c ⬝ᵥ (N *ᵥ d)) : M = N := by
@@ -41,14 +41,14 @@ theorem ext_sesq {M N : Matrix κ κ ℂ}
   simpa [dotProduct, Pi.single_apply] using this
 
 /- English proof (translation)
-Rewrite using `[← star_dotProduct, star_mulVec, ← dotProduct_mulVec, hH]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ip_swap {H : Matrix ι ι ℂ} (hH : Hᴴ = H) (a b : ι → ℂ) :
     star b ⬝ᵥ (H *ᵥ a) = star (star a ⬝ᵥ (H *ᵥ b)) := by
   rw [← star_dotProduct, star_mulVec, ← dotProduct_mulVec, hH]
 
 /- English proof (translation)
-Rewrite using `[← sesq_mul, hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ip_unitary {H g : Matrix ι ι ℂ} (hg : gᴴ * H * g = H) (a b : ι → ℂ) :
     star (g *ᵥ a) ⬝ᵥ (H *ᵥ (g *ᵥ b)) = star a ⬝ᵥ (H *ᵥ b) := by
@@ -61,7 +61,7 @@ section Section
 variable {H : Matrix ι ι ℂ} {B : Matrix ι κ ℂ}
 
 /- English proof (translation)
-Use `nonsing_inv_mul _ hG` as an intermediate fact. Unfold `leftInv`. Simplify using `only [Matrix.mul_assoc] at this ⊢`. Conclude with `this`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leftInv_mul (hG : IsUnit (Bᴴ * H * B).det) : leftInv H B * B = 1 := by
   have := nonsing_inv_mul _ hG
@@ -70,14 +70,14 @@ theorem leftInv_mul (hG : IsUnit (Bᴴ * H * B).det) : leftInv H B * B = 1 := by
   exact this
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, leftInv_mul hG, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem leftInv_mul_mul (hG : IsUnit (Bᴴ * H * B).det) {α : Type*} (N : Matrix κ α ℂ) :
     leftInv H B * (B * N) = N := by
   rw [← Matrix.mul_assoc, leftInv_mul hG, Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `leftInv`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, mul_nonsing_inv _ hG, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_mul_leftInv (hG : IsUnit (Bᴴ * H * B).det) :
     Bᴴ * H * B * leftInv H B = Bᴴ * H := by
@@ -85,13 +85,13 @@ theorem gram_mul_leftInv (hG : IsUnit (Bᴴ * H * B).det) :
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, mul_nonsing_inv _ hG, Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [leftInv, ← mulVec_mulVec, hBX, mulVec_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem leftInv_mulVec_eq_zero {X : ι → ℂ} (hBX : Bᴴ *ᵥ (H *ᵥ X) = 0) : leftInv H B *ᵥ X = 0 := by
   simp only [leftInv, ← mulVec_mulVec, hBX, mulVec_zero]
 
 /- English proof (translation)
-Unfold `leviSec`. Simplify using `only [Matrix.add_mul, Matrix.sub_mul, Matrix.mul_add, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc, leftInv_mul_mul hG]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem leviSec_mul (hG : IsUnit (Bᴴ * H * B).det) (m m' : Matrix κ κ ℂ) :
     leviSec H B (m * m') = leviSec H B m * leviSec H B m' := by
@@ -101,13 +101,13 @@ theorem leviSec_mul (hG : IsUnit (Bᴴ * H * B).det) (m m' : Matrix κ κ ℂ) :
   abel
 
 /- English proof (translation)
-Simplify using `[leviSec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem leviSec_one : leviSec H B 1 = 1 := by
   simp [leviSec]
 
 /- English proof (translation)
-Establish `h2` using `leftInv_mul hG (H := H) (B := B)`. Unfold `leviProj leviSec`. Simplify using `only [Matrix.add_mul, Matrix.sub_mul, Matrix.mul_add, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc, leftInv_mul_mul hG, h2]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem leviProj_leviSec (hG : IsUnit (Bᴴ * H * B).det) (m : Matrix κ κ ℂ) :
     leviProj H B (leviSec H B m) = m := by
@@ -118,7 +118,7 @@ theorem leviProj_leviSec (hG : IsUnit (Bᴴ * H * B).det) (m : Matrix κ κ ℂ)
   abel
 
 /- English proof (translation)
-Establish `hAX` using `leftInv_mulVec_eq_zero hBX`. Simplify using `only [leviSec, add_mulVec, sub_mulVec, Matrix.one_mulVec, ← mulVec_mulVec, hAX, mulVec_zero, sub_zero, add_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem leviSec_mulVec_of {X : ι → ℂ} (hBX : Bᴴ *ᵥ (H *ᵥ X) = 0) (m : Matrix κ κ ℂ) :
     leviSec H B m *ᵥ X = X := by
@@ -127,7 +127,7 @@ theorem leviSec_mulVec_of {X : ι → ℂ} (hBX : Bᴴ *ᵥ (H *ᵥ X) = 0) (m :
     sub_zero, add_zero]
 
 /- English proof (translation)
-Establish `h2` using `leftInv_mul hG (H := H) (B := B)`. Unfold `leviSec`. Simplify using `only [Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, h2, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem leviSec_mul_B (hG : IsUnit (Bᴴ * H * B).det) (m : Matrix κ κ ℂ) :
     leviSec H B m * B = B * m := by
@@ -137,11 +137,11 @@ theorem leviSec_mul_B (hG : IsUnit (Bᴴ * H * B).det) (m : Matrix κ κ ℂ) :
   abel
 
 /- English proof (translation)
-Establish `K : Bᴴ * (H * (1 - B * leftInv H B)) = 0`. Rewrite using `[Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc H, ← Matrix.mul_assoc, ← Matrix.mul_assoc, gram_mul_leftInv hG, sub_self]`. Establish `K' : ∀ N : Matrix κ ι ℂ, (1 - B * leftInv H B)ᴴ * (H * (B * N)) = 0`. Introduce `N`. Use `congrArg conjTranspose K` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hH, conjTranspose_zero]`. Rewrite using `[← Matrix.mul_assoc H, ← Matrix.mul_assoc, ← Matrix.mul_assoc, this, Matrix.zero_mul]`. Establish `hmx : ∀ N : Matrix κ ι ℂ, mᴴ * (Bᴴ * (H * (B * (m * N)))) = Bᴴ * (H * (B * N))`. Introduce `N`. Use `congrArg (· * N) hm` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc] at this`. Conclude with `this`. Unfold `leviSec`. Rewrite using `[conjTranspose_add, conjTranspose_mul, conjTranspose_mul]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, K, K', hmx, Matrix.mul_zero, add_zero, zero_add]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviSection_unitary_identity (hH : Hᴴ = H) (hG : IsUnit (Bᴴ * H * B).det) (m : Matrix κ κ ℂ)
     (hm : mᴴ * (Bᴴ * H * B) * m = Bᴴ * H * B) :
@@ -168,7 +168,7 @@ theorem leviSection_unitary_identity (hH : Hᴴ = H) (hG : IsUnit (Bᴴ * H * B)
     add_zero, zero_add]
 
 /- English proof (translation)
-Establish `e1` using `leviSection_unitary_identity hH hG 1 (by simp)`. Rewrite `e1` using `[leviSec_one, conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[leviSection_unitary_identity hH hG m hm, ← e1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviSec_unitary (hH : Hᴴ = H) (hG : IsUnit (Bᴴ * H * B).det) (m : Matrix κ κ ℂ)
     (hm : mᴴ * (Bᴴ * H * B) * m = Bᴴ * H * B) :
@@ -184,23 +184,23 @@ section Projection
 variable {H : Matrix ι ι ℂ} {B : Matrix ι κ ℂ} {X Y : ι → ℂ}
 
 /- English proof (translation)
-Rewrite using `[star_mulVec, ← dotProduct_mulVec, hBX, dotProduct_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ip_B_left (hBX : Bᴴ *ᵥ (H *ᵥ X) = 0) (c : κ → ℂ) :
     star (B *ᵥ c) ⬝ᵥ (H *ᵥ X) = 0 := by
   rw [star_mulVec, ← dotProduct_mulVec, hBX, dotProduct_zero]
 
 /- English proof (translation)
-Rewrite using `[ip_swap hH, ip_B_left hBX, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ip_B_right (hH : Hᴴ = H) (hBX : Bᴴ *ᵥ (H *ᵥ X) = 0) (c : κ → ℂ) :
     star X ⬝ᵥ (H *ᵥ (B *ᵥ c)) = 0 := by
   rw [ip_swap hH, ip_B_left hBX, star_zero]
 
 /- English proof (translation)
-Take `⟨a, b, c, rfl⟩` from `hspan z`. Establish `hYX : star Y ⬝ᵥ (H *ᵥ X) = 1` using `by rw [ip_swap hH, hXY, star_one]`. Establish `hAX` using `leftInv_mulVec_eq_zero hBX`. Establish `hAY` using `leftInv_mulVec_eq_zero hBY`. Establish `h2` using `leftInv_mul hG (H := H) (B := B)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mulVec_add, mulVec_smul, dotProduct_add, dotProduct_smul, smul_eq_mul, hYX, hYY, hXX, hXY, ip_B_right hH hBX, ip_B_right hH hBY, hAX, hAY, smul_zero, zero_add, mul_one, mul_zero, add_zero]`. Rewrite using `[show leftInv H B *ᵥ (B *ᵥ c) = c by rw [mulVec_mulVec, h2, one_mulVec]]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem eq_decomp (hH : Hᴴ = H) (hG : IsUnit (Bᴴ * H * B).det) (hBX : Bᴴ *ᵥ (H *ᵥ X) = 0)
     (hBY : Bᴴ *ᵥ (H *ᵥ Y) = 0) (hXX : star X ⬝ᵥ (H *ᵥ X) = 0) (hYY : star Y ⬝ᵥ (H *ᵥ Y) = 0)
@@ -223,7 +223,7 @@ variable (hH : Hᴴ = H) (hG : IsUnit (Bᴴ * H * B).det) (hBX : Bᴴ *ᵥ (H *�
 include hH hG hBX hBY hXX hYY hXY hspan
 
 /- English proof (translation)
-Use `eq_decomp hH hG hBX hBY hXX hYY hXY hspan z` as an intermediate fact. Rewrite `this` using `[hz, zero_smul, add_zero]`. Rewrite using `[eq_sub_iff_add_eq, add_comm]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_leftInv_of (z : ι → ℂ) (hz : star X ⬝ᵥ (H *ᵥ z) = 0) :
     B *ᵥ (leftInv H B *ᵥ z) = z - (star Y ⬝ᵥ (H *ᵥ z)) • X := by
@@ -233,7 +233,7 @@ theorem mulVec_leftInv_of (z : ι → ℂ) (hz : star X ⬝ᵥ (H *ᵥ z) = 0) :
   exact this.symm
 
 /- English proof (translation)
-Use `conv_lhs => rw [← hgX]`. Rewrite using `[ip_unitary hg, ip_B_right hH hBX]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ip_X_unitary_B {g : Matrix ι ι ℂ} (hg : gᴴ * H * g = H) (hgX : g *ᵥ X = X) (c : κ → ℂ) :
     star X ⬝ᵥ (H *ᵥ (g *ᵥ (B *ᵥ c))) = 0 := by
@@ -241,9 +241,9 @@ theorem ip_X_unitary_B {g : Matrix ι ι ℂ} (hg : gᴴ * H * g = H) (hgX : g *
   rw [ip_unitary hg, ip_B_right hH hBX]
 
 /- English proof (translation)
-Rewrite using `[ext_iff_mulVec]`. Introduce `c`. Establish `hAX` using `leftInv_mulVec_eq_zero hBX`. Establish `e` using `mulVec_leftInv_of hH hG hBX hBY hXX hYY hXY hspan (g' *ᵥ (B *ᵥ c)) (ip_X_unitary_B hH hG hBX hBY hXX hYY hXY hspan hg' hgX' c)`. Simplify using `only [leviProj, ← mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, mulVec_sub, mulVec_smul, hgX, mulVec_sub, mulVec_smul, hAX, smul_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem leviProj_mul {g g' : Matrix ι ι ℂ} (hg : gᴴ * H * g = H) (hgX : g *ᵥ X = X)
     (hg' : g'ᴴ * H * g' = H) (hgX' : g' *ᵥ X = X) :
@@ -257,11 +257,11 @@ theorem leviProj_mul {g g' : Matrix ι ι ℂ} (hg : gᴴ * H * g = H) (hgX : g 
   rw [e, mulVec_sub, mulVec_smul, hgX, mulVec_sub, mulVec_smul, hAX, smul_zero, sub_zero]
 
 /- English proof (translation)
-Apply `ext_sesq` to reduce the goal to its premises. Introduce `c d`. Establish `ec` using `mulVec_leftInv_of hH hG hBX hBY hXX hYY hXY hspan (g *ᵥ (B *ᵥ c)) (ip_X_unitary_B hH hG hBX hBY hXX hYY hXY hspan hg hgX c)`. Establish `ed` using `mulVec_leftInv_of hH hG hBX hBY hXX hYY hXY hspan (g *ᵥ (B *ᵥ d)) (ip_X_unitary_B hH hG hBX hBY hXX hYY hXY hspan hg hgX d)`. Establish `h1 : star (g *ᵥ (B *ᵥ c)) ⬝ᵥ (H *ᵥ X) = 0` using `by conv_lhs => rw [← hgX]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ip_unitary hg, ip_B_left hBX]`. Establish `h2` using `ip_X_unitary_B hH hG hBX hBY hXX hYY hXY hspan hg hgX d`. Rewrite using `[sesq_mul, sesq_mul, sesq_mul]`. Simplify using `only [leviProj, ← mulVec_mulVec]`. Rewrite using `[ec, ed]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [star_sub, star_smul, mulVec_sub, mulVec_smul, sub_dotProduct, dotProduct_sub, smul_dotProduct, dotProduct_smul, h1, h2, hXX, smul_zero, sub_zero, smul_eq_mul]`. Rewrite using `[ip_unitary hg]`. Simplify using `only [mul_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem leviProj_unitary {g : Matrix ι ι ℂ} (hg : gᴴ * H * g = H) (hgX : g *ᵥ X = X) :
     (leviProj H B g)ᴴ * (Bᴴ * H * B) * leviProj H B g = Bᴴ * H * B := by
@@ -284,15 +284,15 @@ theorem leviProj_unitary {g : Matrix ι ι ℂ} (hg : gᴴ * H * g = H) (hgX : g
   simp only [mul_zero, sub_zero]
 
 /- English proof (translation)
-Establish `hAX` using `leftInv_mulVec_eq_zero hBX`. Prove the components needed by the constructor for the conclusion. Introduce `h1 z hz set u := leftInv H B *ᵥ z with hu`. Establish `e1 : z = (star Y ⬝ᵥ (H *ᵥ z)) • X + B *ᵥ u`. Rewrite using `[hu, mulVec_leftInv_of hH hG hBX hBY hXX hYY hXY hspan z hz]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `e2` using `mulVec_leftInv_of hH hG hBX hBY hXX hYY hXY hspan (g *ᵥ (B *ᵥ u)) (ip_X_unitary_B hH hG hBX hBY hXX hYY hXY hspan hg hgX u)`. Establish `e3 : leftInv H B *ᵥ (g *ᵥ (B *ᵥ u)) = u`. Rewrite using `[mulVec_mulVec, mulVec_mulVec]`. Express the relevant statement in the definitionally equal form `leviProj H B g *ᵥ u = u`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1, one_mulVec]`. Rewrite `e2` using `[e3, eq_sub_iff_add_eq]`. Use `⟨star Y ⬝ᵥ (H *ᵥ (g *ᵥ (B *ᵥ u))), ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [e1]`. Rewrite using `[mulVec_add, mulVec_smul, hgX]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [e1]`. Rewrite using `[add_assoc, e2]`. Introduce `h1`. Rewrite using `[ext_iff_mulVec]`. Introduce `d`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨c, hc⟩` from `h1 (B *ᵥ d) (ip_B_right hH hBX d)`. Simplify using `only [leviProj, ← mulVec_mulVec]`. Rewrite using `[hc, mulVec_add, mulVec_smul, hAX, smul_zero, add_zero, mulVec_mulVec, leftInv_mul hG, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviProj_eq_one_iff {g : Matrix ι ι ℂ} (hg : gᴴ * H * g = H) (hgX : g *ᵥ X = X) :
     leviProj H B g = 1 ↔
@@ -325,7 +325,7 @@ theorem leviProj_eq_one_iff {g : Matrix ι ι ℂ} (hg : gᴴ * H * g = H) (hgX 
       one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[ext_iff_mulVec]`. Introduce `z`. Rewrite using `[eq_decomp hH hG hBX hBY hXX hYY hXY hspan z]`. Simplify using `only [mulVec_add, mulVec_smul, hGX, hGY, leviSec_mulVec_of hBX, leviSec_mulVec_of hBY, mulVec_mulVec, ← Matrix.mul_assoc, hGB, leviSec_mul_B hG]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eq_leviSec {G : Matrix ι ι ℂ} {m : Matrix κ κ ℂ} (hGX : G *ᵥ X = X) (hGY : G *ᵥ Y = Y)
     (hGB : G * B = B * m) : G = leviSec H B m := by

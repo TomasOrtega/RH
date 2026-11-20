@@ -8,7 +8,7 @@ namespace GlobalTheory.WpFam.Act
 
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.WpFam.redGL`. Simplify using `[map_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.WpFam.Act.redGL_mul (N : ℕ) (γ δ : SL(2, ℤ)) :
     _root_.GlobalTheory.WpFam.redGL N (γ * δ) = _root_.GlobalTheory.WpFam.redGL N γ * _root_.GlobalTheory.WpFam.redGL N δ := by
@@ -17,7 +17,7 @@ theorem _root_.GlobalTheory.WpFam.Act.redGL_mul (N : ℕ) (γ δ : SL(2, ℤ)) :
 
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.WpFam.redGL`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.WpFam.Act.redGL_one (N : ℕ) : _root_.GlobalTheory.WpFam.redGL N 1 = 1 := by
   unfold _root_.GlobalTheory.WpFam.redGL
@@ -25,7 +25,7 @@ theorem _root_.GlobalTheory.WpFam.Act.redGL_one (N : ℕ) : _root_.GlobalTheory.
 
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.WpFam.vmul`. Simplify using `[Matrix.vecMul_vecMul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.WpFam.Act.vmul_vmul {N : ℕ} (x : Fin 2 → ZMod N) (α β : GL (Fin 2) (ZMod N)) :
     _root_.GlobalTheory.WpFam.vmul (_root_.GlobalTheory.WpFam.vmul x α) β = _root_.GlobalTheory.WpFam.vmul x (α * β) := by
@@ -34,22 +34,22 @@ theorem _root_.GlobalTheory.WpFam.Act.vmul_vmul {N : ℕ} (x : Fin 2 → ZMod N)
 
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.WpFam.vmul`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.WpFam.Act.vmul_one {N : ℕ} (x : Fin 2 → ZMod N) : _root_.GlobalTheory.WpFam.vmul x 1 = x := by
   unfold _root_.GlobalTheory.WpFam.vmul
   simp
 
 /- English proof (translation)
-Simplify using `only [vmul, Matrix.zero_vecMul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zero_vmul {N : ℕ} (α : GL (Fin 2) (ZMod N)) : vmul (0 : Fin 2 → ZMod N) α = 0 := by
   simp only [vmul, Matrix.zero_vecMul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x`. Simplify using `[gact, redGL_one]`. Introduce `x γ δ`. Simplify using `only [gact, redGL_mul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem isRAct_gact (N : ℕ) (D : GL (Fin 2) (ZMod N)) : IsRAct (gact N D) := by
   constructor
@@ -59,19 +59,19 @@ theorem isRAct_gact (N : ℕ) (D : GL (Fin 2) (ZMod N)) : IsRAct (gact N D) := b
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate in
 
 /- English proof (translation)
-Introduce `N`. Use `⟨?_, ?_, _root_.GlobalTheory.WpFam.Act.vmul_vmul, _root_.GlobalTheory.WpFam.Act.vmul_one, ?_, ?_, ?_, _root_.GlobalTheory.WpFam.Act.redGL_mul N, _root_.GlobalTheory.WpFam.Act.redGL_one N⟩` and prove the remaining obligations. Use `⟨fun x => ?_, fun x γ δ => ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.WpFam.vact`. Rewrite using `[_root_.GlobalTheory.WpFam.Act.redGL_one, _root_.GlobalTheory.WpFam.Act.vmul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `_root_.GlobalTheory.WpFam.vact`. Rewrite using `[_root_.GlobalTheory.WpFam.Act.vmul_vmul, _root_.GlobalTheory.WpFam.Act.redGL_mul]`. Introduce `D`. Use `⟨fun α => ?_, fun α γ δ => ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.WpFam.gact`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[_root_.GlobalTheory.WpFam.Act.redGL_one]`. Use `group`. Unfold `_root_.GlobalTheory.WpFam.gact`. Rewrite using `[_root_.GlobalTheory.WpFam.Act.redGL_mul]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `x α`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `key` using `congrArg (fun y => _root_.GlobalTheory.WpFam.vmul y α⁻¹) h`. Simplify using `only [_root_.GlobalTheory.WpFam.Act.vmul_vmul, mul_inv_cancel, _root_.GlobalTheory.WpFam.Act.vmul_one] at key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[key]`. Unfold `_root_.GlobalTheory.WpFam.vmul`. Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Unfold `_root_.GlobalTheory.WpFam.vmul`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `M x α`. Unfold `_root_.GlobalTheory.WpFam.vmul`. Rewrite using `[Matrix.smul_vecMul]`. Introduce `x a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. By extensionality, compare the relevant components.
 
-Unfold `_root_.GlobalTheory.WpFam.vmul _root_.GlobalTheory.WpFam.dg`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.WpFam.Act.rightActions : ∀ (N : ℕ), _root_.GlobalTheory.QFam.IsRAct (_root_.GlobalTheory.WpFam.vact N) ∧ (∀ D, _root_.GlobalTheory.QFam.IsRAct (_root_.GlobalTheory.WpFam.gact N D)) ∧ (∀ (x : Fin 2 → ZMod N) α β, _root_.GlobalTheory.WpFam.vmul (_root_.GlobalTheory.WpFam.vmul x α) β = _root_.GlobalTheory.WpFam.vmul x (α * β)) ∧ (∀ x : Fin 2 → ZMod N, _root_.GlobalTheory.WpFam.vmul x 1 = x) ∧ (∀ (x : Fin 2 → ZMod N) α, _root_.GlobalTheory.WpFam.vmul x α = 0 ↔ x = 0) ∧ (∀ (M : ℕ) (x : Fin 2 → ZMod N) α, _root_.GlobalTheory.WpFam.vmul (M • x) α = M • _root_.GlobalTheory.WpFam.vmul x α) ∧ (∀ (x : Fin 2 → ZMod N) (a : (ZMod N)ˣ), _root_.GlobalTheory.WpFam.vmul x (_root_.GlobalTheory.WpFam.dg a) = ![x 0, (a : ZMod N) * x 1]) ∧ (∀ γ δ, _root_.GlobalTheory.WpFam.redGL N (γ * δ) = _root_.GlobalTheory.WpFam.redGL N γ * _root_.GlobalTheory.WpFam.redGL N δ) ∧ _root_.GlobalTheory.WpFam.redGL N 1 = 1 := by
   intro N

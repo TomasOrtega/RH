@@ -16,98 +16,98 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.AnalyticLimit
 
 /- English proof (translation)
-The claim follows from `GreenMassStep.proof`.
+A detailed English derivation is pending.
 -/
 theorem GreenMassStep.full : GreenMassStep.Statement := GreenMassStep.proof
 
 /- English proof (translation)
-The claim follows from `GreenMassReplace.proof`.
+A detailed English derivation is pending.
 -/
 theorem GreenMassReplace.full : GreenMassReplace.Statement := GreenMassReplace.proof
 
 /- English proof (translation)
-The claim follows from `GreenMassError.proof`.
+A detailed English derivation is pending.
 -/
 theorem GreenMassError.full : GreenMassError.Statement := GreenMassError.proof
 
 /- English proof (translation)
-The claim follows from `UniformIntegrability.of_greenMass GreenMassStep.full GreenMassReplace.full GreenMassError.full`.
+A detailed English derivation is pending.
 -/
 theorem UniformIntegrability.full : UniformIntegrability.Statement :=
   UniformIntegrability.of_greenMass GreenMassStep.full GreenMassReplace.full GreenMassError.full
 
 /- English proof (translation)
-The claim follows from `WeightCocycle.proof`.
+A detailed English derivation is pending.
 -/
 theorem WeightCocycle.full : WeightCocycle.Statement := WeightCocycle.proof
 
 /- English proof (translation)
-The claim follows from `PolynomialInWeights.proof`.
+A detailed English derivation is pending.
 -/
 theorem PolynomialInWeights.full : PolynomialInWeights.Statement := PolynomialInWeights.proof
 
 /- English proof (translation)
-The claim follows from `Convergence.proof WeightCocycle.full`.
+A detailed English derivation is pending.
 -/
 theorem Convergence.full : Convergence.Statement := Convergence.proof WeightCocycle.full
 
 /- English proof (translation)
-The claim follows from `CoefficientLimit.proof WeightCocycle.full PolynomialInWeights.full`.
+A detailed English derivation is pending.
 -/
 theorem CoefficientLimit.full : CoefficientLimit.Statement :=
   CoefficientLimit.proof WeightCocycle.full PolynomialInWeights.full
 
 /- English proof (translation)
-The claim follows from `ArgumentConvergenceC2.proof`.
+A detailed English derivation is pending.
 -/
 theorem ArgumentConvergenceC2.full : ArgumentConvergenceC2.Statement := ArgumentConvergenceC2.proof
 
 /- English proof (translation)
-The claim follows from `PropertyF.proof GluedLocal.full ArgumentConvergenceC2.full`.
+A detailed English derivation is pending.
 -/
 theorem PropertyF.full : PropertyF.Statement := PropertyF.proof GluedLocal.full ArgumentConvergenceC2.full
 
 /- English proof (translation)
-The claim follows from `ListProductMass.proof`.
+A detailed English derivation is pending.
 -/
 theorem ListProductMass.full : ListProductMass.Statement := ListProductMass.proof
 
 /- English proof (translation)
-The claim follows from `ListTailLog.proof hE hM hC hS`.
+A detailed English derivation is pending.
 -/
 theorem ListTailLog.of_lemmaE (hE : LemmaETailLog.Statement) (hM : ListMono.Statement)
     (hC : RegSection.Statement) (hS : TailShift.Statement) : ListTailLog.Statement :=
   ListTailLog.proof hE hM hC hS
 
 /- English proof (translation)
-The claim follows from `TailBound.of_listTailLog (ListTailLog.of_lemmaE hE hM hC hS)`.
+A detailed English derivation is pending.
 -/
 theorem TailBound.of_lemmaE (hE : LemmaETailLog.Statement) (hM : ListMono.Statement)
     (hC : RegSection.Statement) (hS : TailShift.Statement) : TailBound.Statement :=
   TailBound.of_listTailLog (ListTailLog.of_lemmaE hE hM hC hS)
 
 /- English proof (translation)
-The claim follows from `ListTailLogSmooth.proof (ListTailLog.of_lemmaE hE hM hC hS)`.
+A detailed English derivation is pending.
 -/
 theorem ListTailLogSmooth.of_lemmaE (hE : LemmaETailLog.Statement) (hM : ListMono.Statement)
     (hC : RegSection.Statement) (hS : TailShift.Statement) : ListTailLogSmooth.Statement :=
   ListTailLogSmooth.proof (ListTailLog.of_lemmaE hE hM hC hS)
 
 /- English proof (translation)
-The claim follows from `ProductBounds.proof ListProductMass.full (ListTailLogSmooth.proof h)`.
+A detailed English derivation is pending.
 -/
 theorem ProductBounds.of_listTailLog (h : ListTailLog.Statement) : ProductBounds.Statement :=
   ProductBounds.proof ListProductMass.full (ListTailLogSmooth.proof h)
 
 /- English proof (translation)
-The claim follows from `ProductBounds.of_listTailLog (ListTailLog.of_lemmaE hE hM hC hS)`.
+A detailed English derivation is pending.
 -/
 theorem ProductBounds.of_lemmaE (hE : LemmaETailLog.Statement) (hM : ListMono.Statement)
     (hC : RegSection.Statement) (hS : TailShift.Statement) : ProductBounds.Statement :=
   ProductBounds.of_listTailLog (ListTailLog.of_lemmaE hE hM hC hS)
 
 /- English proof (translation)
-The claim follows from `SystemIndependence.of_productBounds (ProductBounds.of_lemmaE hE hM hC hS)`.
+A detailed English derivation is pending.
 -/
 theorem SystemIndependence.of_lemmaE (hE : LemmaETailLog.Statement) (hM : ListMono.Statement)
     (hC : RegSection.Statement) (hS : TailShift.Statement) : SystemIndependence.Statement :=

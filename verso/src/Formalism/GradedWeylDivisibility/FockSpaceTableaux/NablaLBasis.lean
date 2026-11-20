@@ -7,25 +7,25 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ hinj k n ν ι b μ hb g hg`. Establish `hid : ∀ x : MvPolynomial (Fin k × Fin n) K, rowAct K (1 : Matrix (Fin k) (Fin k) K) x = x`. Introduce `x`. Establish `e1 : rowAct K (n` using `n) (1 : Matrix (Fin k) (Fin k) K) = AlgHom.id K _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `v`. Simplify using `only [rowAct, aeval_X, AlgHom.coe_id, id_eq, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single v.1]`. Simplify using the standard rewrite rules. Introduce `c _ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Ne.symm hc]`. Simplify using the standard rewrite rules. Rewrite using `[e1]`. Both sides reduce to the same expression. Establish `hinvA : ∀ A : Matrix (Fin k) (Fin k) K, IsUnit A.det → ∀ x : MvPolynomial (Fin k × Fin n) K, rowAct K A (rowAct K A⁻¹ x) = x ∧ rowAct K A⁻¹ (rowAct K A x) = x`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `A hA x`. Establish `e1` using `congrArg (fun F => F x) (h K k n A A⁻¹)`. Establish `e2` using `congrArg (fun F => F x) (h K k n A⁻¹ A)`. Simplify using `only [AlgHom.comp_apply] at e1 e2`. Rewrite `e1` using `[Matrix.nonsing_inv_mul A hA]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[Matrix.mul_nonsing_inv A hA]`. Conclude with `⟨e1.trans (hid x), e2.trans (hid x)⟩`. Establish `hφinj : Function.Injective (map (algebraMap R K) : MvPolynomial (Fin k × Fin n) R → _)` using `MvPolynomial.map_injective _ hinj`. Set `L : MvPolynomial (Fin k × Fin n) R →ₗ[R] MvPolynomial (Fin k × Fin n) K` to `((rowAct K g⁻¹).toLinearMap.restrictScalars R).comp (mapAlgHom (Algebra.ofId R K)).toLinearMap`. Establish `hL : ∀ p, L p = rowAct K g⁻¹ (map (algebraMap R K) p)` using `fun p => rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hLinj : Function.Injective L`. Introduce `p q hpq`. Rewrite `hpq` using `[hL, hL]`. Establish `e` using `congrArg (rowAct K g) hpq`. Rewrite `e` using `[(hinvA g hg _).1, (hinvA g hg _).1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hφinj e`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `hb.1.map' L (LinearMap.ker_eq_bot.mpr hLinj)`. Establish `e1 : Set.range (fun i => rowAct K g⁻¹ (map (algebraMap R K) (b i))) = L '' Set.range b`. Rewrite using `[← Set.range_comp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e1, ← Submodule.map_span, hb.2.1]`. Use extensionality with `F`. Unfold `nablaL`. Rewrite using `[Submodule.mem_map, Submodule.mem_comap, Submodule.mem_map]`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Use `show map (algebraMap R K) p = rowAct K g (L p)`. Rewrite using `[hL, (hinvA g hg _).1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `⟨p, hp, hpF⟩`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Establish `e : map (algebraMap R K) p = rowAct K g F` using `hpF`. Rewrite using `[hL, e, (hinvA g hg _).2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nablaLBasis_of (h : RowActMul) : NablaLBasis := by
   intro R K _ _ _ _ hinj k n ν ι b μ hb g hg

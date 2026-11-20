@@ -28,11 +28,9 @@ def cpR (z : Dat a.st I hX T Wt) :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `@⟨Xg, tr, core, al, alg_eq, R, cG, geo, pins, lev, idG, good, mu, l1, l2⟩` from `z`. Simplify using `only at h1 h2 h3 h4`. Substitute `h1 h2` using the available equality. Take `rfl : core = coreJ b z₀.core` from `eq_of_heq h3`. Establish `e : al = (by with_unfolding_all exact ((alg b z₀.alg) :))`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Algebra.algebra_ext _ _ fun y => B.embLL.injective ?_` and prove the remaining obligations. Conclude with `(alg_eq y).trans ((by with_unfolding_all exact ((z₀.alg_eq ((y))).symm : _)))`. Substitute `e` using the available equality. Take `rfl : R = cpR b z₀` from `eq_of_heq (h4.trans ((by with_unfolding_all exact ((HEq.refl (cpR b z₀)) :))))`. Introduce `y jE' hj`.
-
-Conclude with `(by with_unfolding_all exact (((@rr_eta_tr B C a b _ _ _ _ _ _ _ _ _ z₀.alg _ z₀.R z₀.F).2 y₀ ((y)) bb E jE ((jE')) n c ((Xo)) ((hj)) h) : _))`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rrT_copy (z₀ : Dat a.st I hX T Wt) (z : Dat b.st I hX T Wt) (h1 : z.Xg = z₀.Xg) (h2 : z.tr = z₀.tr)
     (h3 : HEq z.core (coreJ b z₀.core)) (h4 : HEq z.R (real3 b (iK := z₀.alg) z₀.R)) (y₀ : Hd z₀.R.toRealDat) (bb : Bool) (E : Hs)
@@ -56,9 +54,9 @@ end Copy
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨rfl, a0, b0⟩` from `h`. Use `⟨Z.eRR0.symm, fun x => hinj ?_, fun v hv x x' => ?_⟩` and prove the remaining obligations. Establish `h` using `Z.jEE0 (Z.eRR0.symm x)`. Rewrite `h` using `[Z.eRR0.apply_symm_apply]`. Conclude with `(eq_of_heq (hz _)).symm.trans (h.trans (a0 (Z.eRR0.symm x)).symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `Z.met0 v hv (Z.eRR0.symm x) (Z.eRR0.symm x')`. Rewrite `h` using `[Z.eRR0.apply_symm_apply, Z.eRR0.apply_symm_apply]`. Conclude with `h.trans (GoodSideLattices.majAt_cast rfl _ Xo v (b0 v).1 _ _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coords {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3} {X0 : BaseLevelRowSide D}
@@ -84,9 +82,9 @@ variable {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z₀ : w.Lt
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `h : ∀ k, s.p0.s.downTo μ k = (by with_unfolding_all exact ((s'.p0.s.downTo ((μ)) k) : _))`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact (by with_unfolding_all exact ((Eq.refl (s.p0.s.downTo μ 0)) :))`. Consider the case `succ k ih => exact (by with_unfolding_all exact ((congrArg (fun φ : type_of% (s.p0.s.downTo μ k) => φ.comp (s.p0.s.io μ k)) ih) :))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hi` using `congrArg (fun φ : type_of% (s.p0.s.downTo μ (w.D o.Z).R.m) => (s.p0.s.multZero μ).toLinearEquiv.toLinearMap ∘ₗ φ ∘ₗ (s.p0.s.multTop μ).symm.toLinearEquiv.toLinearMap) (h (w.D o.Z).R.m)`. Conclude with `(by with_unfolding_all exact ((congrArg (fun φ : s.p0.s.Amb μ →ₗ[ℂ] (w.D o.Z).what₂.EE0 => φ '' ((fun x => (s.p0.s.V0 μ ⊓ (s.p0.s.V0 μ ⊓ LinearMap.ker φ)ᗮ).starProjection x) '' ((s.p0.s.Mtilde μ).carrier ∩ (s.p0.s.V0 μ : Set (s.p0.s.Amb μ))))) hi) :))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem RRset_two {o o' : q.Over} (s : Side0 o) (s' : Side0 o') (μ : (w.D o.Z).what₂.Tup) :
     s.p0.s.RRset μ = (s'.p0.s.RRset μ) := by
@@ -104,14 +102,14 @@ theorem RRset_two {o o' : q.Over} (s : Side0 o) (s' : Side0 o') (μ : (w.D o.Z).
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `rrT_copy (B := B) (C := w.C) (a := Z₀) o.Z z₀ m.z m.Xg m.tr ((by with_unfolding_all exact (hc.core :))) ((by with_unfolding_all exact (hc.R :))) q.y b _ _ n c Xo h m.y _ (hco.jE b)`.
+A detailed English derivation is pending.
 -/
 theorem rrT_moved {o : q.Over} (m : Moved o) (hc : m.Copy) (hco : m.Coh) (b : Bool) {n c Xo}
     (h : RrT z₀.F q.y b (q.t.ch b).jE n c Xo) : RrT m.z.F m.y b (m.t.ch b).jE n c Xo :=
   rrT_copy (B := B) (C := w.C) (a := Z₀) o.Z z₀ m.z m.Xg m.tr ((by with_unfolding_all exact (hc.core :))) ((by with_unfolding_all exact (hc.R :))) q.y b _ _ n c Xo h m.y _ (hco.jE b)
 
 /- English proof (translation)
-Substitute `hS hR` using the available equality. Consider the cases of `hj`. Conclude with `h`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem lat_tr {K : Type} [Field K] [NumberField K] [StarRing K] (e : K →+* ℂ) {V : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℂ V] {n : ℕ} (c : Module.Basis (Fin n) ℂ V) (Xo : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ)
@@ -132,9 +130,9 @@ theorem lat_tr {K : Type} [Field K] [NumberField K] [StarRing K] (e : K →+* �
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨n, c, Xo, h⟩` from `rrT_exists (w.st P.Z₀).toD7 (Gc B w.px) (PlS B w.px) (PlI B w.px) (TupU w.I (usedOf w.I T P.Wt)) (famR (w.st P.Z₀) w.I P.hX (usedOf w.I T P.Wt) P.z.Xg P.z.tr) P.z.core.Q.c.F P.z.R P.z.F P.z.cG P.z.pins P.intersectionNumber_baseChange P.q.y false (P.q.p.ch false).EE (P.q.t.ch fals …`. Establish `h0` using `rrT_moved x.m x.copy x.coh false h`. Establish `h1` using `rrT_moved m hc hco false h`. Establish `h2` using `coords x.r.Z x.m.y ((by with_unfolding_all exact ((x.m.t.ch false).jE :))) ((by with_unfolding_all exact ((x.m.t.ch false).jE_inj :))) n ((by with_unfolding_all exact (c :))) ((by with_unfolding_all exact (Xo :))) ((by with_unfolding_all exact (h0 :))) ((by with_unfolding_all exa …`. Take `⟨ε, h2, h3⟩` from `h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h4 : (fun u : B.places.Pl => ((by with_unfolding_all exact ((x.s.p0.s.RRset ((w.D x.o.Z).what₂.muAt u)) :)) : Set (P.q.p.ch false).EE.T)) = fun u => (by with_unfolding_all exact ((s.p0.s.RRset ((w.D (RowPk.Over.Z (⟨x.o.η, x.o.hη, x.o.V, x.o.S, N, x.o.G⟩ : P.q.Over))).what₂.muAt u …`. Use function extensionality and compare the values at `fun u => (by with_unfolding_all exact ((RRset_two x.s s ((w.D x.o.Z).what₂.muAt u)) :))`. Establish `h5` using `lat_tr (K := B.LL) B.embLL c Xo ((by with_unfolding_all exact ((fun u : B.places.Pl => (w.D x.o.Z).plEq u) :))) h4 hR hj ⟨(by with_unfolding_all exact (ε :)), (by with_unfolding_all exact (h2 :)), (by with_unfolding_all exact (h3 :)), (by with_unfolding_all exact (x.r.Z.rr0 :))⟩`. Take `⟨ε', k1, k2, k3⟩` from `h5`. Conclude with `⟨n, c, Xo, ε', h1, k1, k2, (by with_unfolding_all exact (k3 :))⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem good_copy {K : Ctx} {P : Pre2 K w} (x : St P) (N : NStage B w.C (P.q.W x.o.η x.o.hη)) (m : Moved (⟨x.o.η, x.o.hη, x.o.V, x.o.S, N, x.o.G⟩ : P.q.Over)) (hc : m.Copy)
     (hco : m.Coh) (s : Side0 (⟨x.o.η, x.o.hη, x.o.V, x.o.S, N, x.o.G⟩ : P.q.Over)) (hR : s.RR = x.s.RR) (hj : HEq s.jEE x.s.jEE) : GoodSideLattices.Good m s := by

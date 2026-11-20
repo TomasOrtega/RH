@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsAlgClosedResid
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `Ω _ _ V`. Establish `hclosed : IsAlgClosed (FractionRing V)` using `IsAlgClosed.of_ringEquiv Ω (FractionRing V) (IsLocalization.algEquiv (nonZeroDivisors V) Ω (FractionRing V)).toRingEquiv`. Establish `hA : AIC V` using `(GlobalTheory.T.monicPolynomialsHaveRoots_iff_integrallyClosed_algClosed V).2 ⟨inferInstance, hclosed⟩`. Conclude with `⟨hA, GlobalTheory.GenusTwoPureComparison.Cmp.sh_of_aic hA⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.Mod.spValsub :
     ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (V : ValuationSubring Ω), AIC V ∧ SH V := by

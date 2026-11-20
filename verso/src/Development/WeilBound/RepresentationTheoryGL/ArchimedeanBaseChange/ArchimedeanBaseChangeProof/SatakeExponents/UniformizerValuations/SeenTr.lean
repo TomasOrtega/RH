@@ -19,7 +19,7 @@ def SeenTr : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n :
       seen ((ls.foldr LM.mul (d.eL a)).tr d.P N) (ls.foldr LM.mul (d.eL a)).t w = (ls.foldr LM.mul (d.eL a)).tr d.P N w)
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons g w ih => cases g <;> simp [lmWd, List.filterMap_cons] at ih ⊢ <;> rw [ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lmWd_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {κ : Pl E → Type} [∀ w, Fintype (κ w)] {B : Block E}
     (Lo : PT B → LM κ B.a B.b) (w : List (BGen B)) (L₀ : LM κ B.a B.b) :

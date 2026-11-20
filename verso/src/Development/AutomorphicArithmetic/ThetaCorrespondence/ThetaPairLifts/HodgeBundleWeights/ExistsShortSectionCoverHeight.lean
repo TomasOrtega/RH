@@ -15,7 +15,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 end Point
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `hP _ _ hF` and use `by obtain ⟨C, hC, H3⟩ := _root_.GlobalTheory.T.short_generator_norm_comparison hP refine Closed.imp (Closed.and (Closed.and (Sizes.hostN 1) WtShape.wtN) hF) fun Fm _ _ h => ?_ obtain ⟨⟨⟨_, _, h1⟩, ⟨_, _, h2⟩⟩, ⟨_, _, h3⟩⟩ := h obtain ⟨x0, h⟩ := (h1.and h2).and h3 refine ⟨C * 693, …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cover_height_short_section : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → DeepGood → Size → FlatDeg → Short := fun hP _ _ hF => by
   obtain ⟨C, hC, H3⟩ := _root_.GlobalTheory.T.short_generator_norm_comparison hP
@@ -51,7 +51,7 @@ section
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.CovHt
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovHt.ShortPf.cover_height_short_section | exact _root_.GlobalTheory.CovHt.ShortPf.cover_height_short_section | (intros; apply _root_.GlobalTheory.CovHt.ShortPf.cover_height_short_section <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_short_section_cover_height : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → DeepGood → Size → FlatDeg → Short := by
   first | exact @_root_.GlobalTheory.CovHt.ShortPf.cover_height_short_section | exact _root_.GlobalTheory.CovHt.ShortPf.cover_height_short_section | (intros; apply _root_.GlobalTheory.CovHt.ShortPf.cover_height_short_section <;> assumption)

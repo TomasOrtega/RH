@@ -15,7 +15,7 @@ section JetAlg
 variable {K : Type} [Field K] {ι : Type} {m : ℕ}
 
 /- English proof (translation)
-Use `show (MvPolynomial.aeval fun _ : ι => (0 : K)) p = MvPolynomial.constantCoeff p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp => simp only [map_mul, hp, MvPolynomial.aeval_X, MvPolynomial.constantCoeff_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem jetAug_mk (p : MvPolynomial ι K) :
     (jetAug : Jet K ι m →ₐ[K] K) (Ideal.Quotient.mk _ p) = MvPolynomial.constantCoeff p := by
@@ -26,7 +26,7 @@ theorem jetAug_mk (p : MvPolynomial ι K) :
   | mul_X p i hp => simp only [map_mul, hp, MvPolynomial.aeval_X, MvPolynomial.constantCoeff_X]
 
 /- English proof (translation)
-Establish `hle : orig K ι ≤ RingHom.ker (MvPolynomial.constantCoeff : MvPolynomial ι K →+* K)`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using the standard rewrite rules. Conclude with `(RingHom.mem_ker).1 (hle hp)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_of_mem_orig {p : MvPolynomial ι K} (hp : p ∈ orig K ι) : MvPolynomial.constantCoeff p = 0 := by
   have hle : orig K ι ≤ RingHom.ker (MvPolynomial.constantCoeff : MvPolynomial ι K →+* K) := by
@@ -36,15 +36,13 @@ theorem constantCoeff_of_mem_orig {p : MvPolynomial ι K} (hp : p ∈ orig K ι)
   exact (RingHom.mem_ker).1 (hle hp)
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite `h` using `[jetAug_mk]`. Use `set c := MvPolynomial.constantCoeff p with hc`. Establish `hq : p - MvPolynomial.C c ∈ orig K ι`. Rewrite using `[orig, ← Set.image_univ, MvPolynomial.mem_ideal_span_X_image]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `mo hmo`. Establish `hmo0 : mo ≠ 0`. Introduce `h0`. Substitute `h0` using the available equality. Rewrite `hmo` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_sub, MvPolynomial.coeff_C, if_pos rfl, ← MvPolynomial.constantCoeff_eq, ← hc, sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hmo rfl`. Take `⟨i, hi⟩` from `Finsupp.ne_iff.1 hmo0`. Conclude with `⟨i, Set.mem_univ _, hi⟩`. Establish `hnil : IsNilpotent (Ideal.Quotient.mk (orig K ι ^ (m + 1)) (p - MvPolynomial.C c))`. Use `⟨m + 1, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow hq _`. Establish `hu : IsUnit (Ideal.Quotient.mk (orig K ι ^ (m + 1)) (MvPolynomial.C c))` using `(isUnit_iff_ne_zero.2 h).map (Ideal.Quotient.mk (orig K ι ^ (m + 1)) |>.comp MvPolynomial.C)`. Establish `hsplit : Ideal.Quotient.mk (orig K ι ^ (m + 1)) p = Ideal.Quotient.mk (orig K ι ^ (m + 1)) (MvPolynomial.C c) + Ideal.Quotient.mk (orig K ι ^ (m + 1)) (p - MvPolynomial.C c)`. Rewrite using `[← map_add, add_sub_cancel]`.
-
-Rewrite using `[hsplit]`. Conclude with `hnil.isUnit_add_left_of_commute hu (Commute.all _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_jetAug (a : Jet K ι m) (h : (jetAug : Jet K ι m →ₐ[K] K) a ≠ 0) : IsUnit a := by
   classical
@@ -77,9 +75,9 @@ theorem isUnit_of_jetAug (a : Jet K ι m) (h : (jetAug : Jet K ι m →ₐ[K] K)
   exact hnil.isUnit_add_left_of_commute hu (Commute.all _ _)
 
 /- English proof (translation)
-Establish `hcc : ∀ {ι' : Type} (φ : ι → MvPolynomial ι' K), (∀ i, φ i ∈ orig K ι') → ∀ q : MvPolynomial ι K, MvPolynomial.constantCoeff (MvPolynomial.aeval φ q) = MvPolynomial.constantCoeff q`. Introduce `ι' φ hφ q`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C c => simp [MvPolynomial.aeval_C]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p i hp`. Simplify using `only [map_mul, MvPolynomial.aeval_X, hp, MvPolynomial.constantCoeff_X, mul_zero, constantCoeff_of_mem_orig (hφ i)]`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `hmap : jetMap (m` using `m) φ hφ (Ideal.Quotient.mk _ p) = Ideal.Quotient.mk _ (MvPolynomial.aeval φ p) := rfl`. Rewrite using `[hmap, jetAug_mk, jetAug_mk, hcc φ hφ p]`.
+Treat this case separately. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetAug_jetMap {ι' : Type} (φ : ι → MvPolynomial ι' K) (hφ : ∀ i, φ i ∈ orig K ι') (a : Jet K ι m) :
     (jetAug : Jet K ι' m →ₐ[K] K) (jetMap φ hφ a) = (jetAug : Jet K ι m →ₐ[K] K) a := by
@@ -98,9 +96,9 @@ theorem jetAug_jetMap {ι' : Type} (φ : ι → MvPolynomial ι' K) (hφ : ∀ i
   rw [hmap, jetAug_mk, jetAug_mk, hcc φ hφ p]
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `hext : (Ideal.Quotient.mkₐ K (orig K ι' ^ (m + 1))).comp (MvPolynomial.aeval φ) = (Ideal.Quotient.mkₐ K (orig K ι' ^ (m + 1))).comp (MvPolynomial.aeval φ')`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `using h i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Use `show Ideal.Quotient.mk _ (MvPolynomial.aeval φ p) = Ideal.Quotient.mk _ (MvPolynomial.aeval φ' p)`. Conclude with `DFunLike.congr_fun hext p`.
+A detailed English derivation is pending.
 -/
 theorem jetMap_congr {ι' : Type} (φ φ' : ι → MvPolynomial ι' K) (hφ : ∀ i, φ i ∈ orig K ι')
     (hφ' : ∀ i, φ' i ∈ orig K ι')
@@ -116,7 +114,7 @@ theorem jetMap_congr {ι' : Type} (φ φ' : ι → MvPolynomial ι' K) (hφ : �
   exact DFunLike.congr_fun hext p
 
 /- English proof (translation)
-Use `⟨fun a ha => isUnit_of_jetAug a ?_⟩` and prove the remaining obligations. Rewrite using `[← jetAug_jetMap φ hφ a]`. Conclude with `(ha.map (jetAug : Jet K ι' m →ₐ[K] K)).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_jetMap {ι' : Type} (φ : ι → MvPolynomial ι' K) (hφ : ∀ i, φ i ∈ orig K ι') :
     IsLocalHom ((jetMap (m := m) φ hφ : Jet K ι m →ₐ[K] Jet K ι' m) : Jet K ι m →+* Jet K ι' m) := by
@@ -131,13 +129,13 @@ variable {g : ℕ} {Y : Scheme.{0}}
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Unfold `jetPt`. Rewrite using `[spMap, spec_comp_nbhdPt]`. Establish `hres : ∀ (U V : Y.Opens) (hU : e 0 cpt ∈ U) (hV : e 0 cpt ∈ V) (h : V ≤ U), Y.presheaf.map (homOfLE h).op ≫ (jetψ e hol m V hV ≫ CommRingCat.ofHom χ) = jetψ e hol m U hU ≫ CommRingCat.ofHom χ` using `fun U V hU hV h => by rw [← Category.assoc, jetψ_res]`. Establish `hloc : ∀ (U : Y.Opens) (hU : e 0 cpt ∈ U) (f : Γ(Y, U)), IsUnit ((jetψ e hol m U hU ≫ CommRingCat.ofHom χ) f) → e 0 cpt ∈ Y.basicOpen f`. Introduce `U hU f hf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hf` using `[CommRingCat.comp_apply]`. Conclude with `jetψ_loc e hol m U hU f (hχl.map_nonunit _ hf)`. Establish `hpt` using `nbhdPt_closedPoint _ hres hloc`. Establish `hpt'` using `nbhdPt_closedPoint (y₀ := e' 0 cpt) _ (jetψ_res e' hol' m) (jetψ_loc e' hol' m)`. Use `hom_ext_of_local (hpt.trans (by rw [hpt', h0])) fun U h₁ h₂ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hU : e 0 cpt ∈ U`. Establish `: nbhdPt _ hres (IsLocalRing.closedPoint _) ∈ U` using `h₁ (show IsLocalRing.closedPoint _ ∈ (⊤ : (Spec _).Opens) from trivial)`. Rewrite `this` using `[hpt]`. Then use the resulting hypothesis. Establish `hU' : e' 0 cpt ∈ U` using `by rw [h0]; exact hU`. Rewrite using `[nbhdPt_appLE _ hres hloc U hU h₁, nbhdPt_appLE _ (jetψ_res e' hol' m) (jetψ_loc e' hol' m) U hU' h₂]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `f`. Rewrite using `[CommRingCat.comp_apply, jetψ_apply, jetψ_apply]`. Conclude with `hχ U hU f`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetPt_precomp (e e' : (Fin g → ℂ) → (Sp ℂ ⟶ Y)) (hol : IsHolFam e) (hol' : IsHolFam e')
     (h0 : e' 0 = e 0) (m : ℕ) (χ : Jet ℂ (Fin 1 × Fin g) m →+* Jet ℂ (Fin 1 × Fin g) m) [hχl : IsLocalHom χ]
@@ -174,9 +172,9 @@ def jetScaleP (m : ℕ) (c : Fin g → ℂ) : Jet ℂ (Fin 1 × Fin g) m →ₐ[
     fun p => Ideal.mul_mem_left _ _ (X_mem_orig p)
 
 /- English proof (translation)
-Establish `ha : ∀ p : Fin 1 × Fin g, MvPowerSeries.constantCoeff (MvPowerSeries.C (c p.2) * MvPowerSeries.X p : MvPowerSeries (Fin 1 × Fin g) ℂ) = 0`. Introduce `p`. Simplify using the standard rewrite rules. Unfold `jetOf jetScaleP`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.PullbackSections.TCPf.partA θ hθ c, Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdJet.psJet_subst m _ ha]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `jetMap_congr _ _ _ _ (fun p => ?_) _` and prove the remaining obligations. Establish `hco : (MvPowerSeries.C (c p.2) * MvPowerSeries.X p : MvPowerSeries (Fin 1 × Fin g) ℂ) = ((MvPolynomial.C (c p.2) * MvPolynomial.X p : MvPolynomial (Fin 1 × Fin g) ℂ) : MvPowerSeries (Fin 1 × Fin g) ℂ)`. Simplify using the standard rewrite rules. Rewrite using `[hco, Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdJet.psTrunc_eq, Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdJet.mk_trunc_coe]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetOf_scale (m : ℕ) (c : Fin g → ℂ) {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) :
     jetOf m (fun z => θ fun i => c i * z i) = jetScaleP m c (jetOf m θ) := by

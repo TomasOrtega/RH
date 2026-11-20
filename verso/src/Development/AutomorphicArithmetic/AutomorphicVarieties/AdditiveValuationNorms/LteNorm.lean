@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Loca
 open UpperTheory.V UpperTheory.V.PropA
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `h`. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (PadicInt.norm_le_one z)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_le_of_dvd' {l : ℕ} [Fact l.Prime] {x y : ℤ_[l]} (h : x ∣ y) : ‖y‖ ≤ ‖x‖ := by
   obtain ⟨z, rfl⟩ := h
@@ -13,7 +13,7 @@ private theorem norm_le_of_dvd' {l : ℕ} [Fact l.Prime] {x y : ℤ_[l]} (h : x 
   exact mul_le_of_le_one_right (norm_nonneg _) (PadicInt.norm_le_one z)
 
 /- English proof (translation)
-Establish `h1 : x ∣ y` using `IsDiscreteValuationRing.addVal_le_iff_dvd.mp h.le`. Establish `h2 : y ∣ x` using `IsDiscreteValuationRing.addVal_le_iff_dvd.mp h.ge`. Conclude with `le_antisymm (norm_le_of_dvd' h2) (norm_le_of_dvd' h1)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem norm_eq_of_addVal {l : ℕ} [Fact l.Prime] {x y : ℤ_[l]}
     (h : IsDiscreteValuationRing.addVal ℤ_[l] x = IsDiscreteValuationRing.addVal ℤ_[l] y) :
@@ -23,33 +23,31 @@ private theorem norm_eq_of_addVal {l : ℕ} [Fact l.Prime] {x y : ℤ_[l]}
   exact le_antisymm (norm_le_of_dvd' h2) (norm_le_of_dvd' h1)
 
 /- English proof (translation)
-Introduce `l _ u c hc`. Take `⟨hv, hc1, hc2⟩` from `hc`. Establish `hval1 : IsDiscreteValuationRing.addVal ℤ_[l] (l : ℤ_[l]) = 1` using `IsDiscreteValuationRing.addVal_uniformizer PadicInt.irreducible_p`. Establish `hl : (l : ℤ_[l]) ∣ u - 1`. Rewrite using `[← IsDiscreteValuationRing.addVal_le_iff_dvd, hval1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [vl] at hv`. Rewrite using `[hv]`. Conclude with `hc1` after adjusting the coercions. Establish `hn1 : ‖u - 1‖ < 1` using `(PadicInt.norm_lt_one_iff_dvd _).2 hl`. Establish `hu : ‖u‖ = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `PadicInt.norm_eq_of_norm_add_lt_right (z1 := u) (z2 := -1) (by rw [norm_neg, norm_one, ← sub_eq_add_neg]; exact hn1)` as an intermediate fact. Rewrite `this` using `[norm_neg, norm_one]`. Then use the resulting hypothesis. Use `⟨hu, hl, ?_⟩` and prove the remaining obligations. Introduce `j a b`. Establish `hunit : IsUnit u` using `PadicInt.isUnit_iff.2 hu`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set v := hunit.unit with hvdef`. Establish `hvu : (v : ℤ_[l]) = u` using `hunit.unit_spec`. Establish `hvmem : v ∈ abelian₂.oneUnits ℤ_[l]` using `by show (v : ℤ_[l]) - 1 ∈ IsLocalRing.maximalIdeal ℤ_[l]`. Rewrite using `[IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits, hvu]`. Conclude with `hn1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `U : abelian₂.oneUnits ℤ_[l]` to `⟨v, hvmem⟩`. Use `set n : ℤ := ((l ^ j * a : ℕ) : ℤ) - ((l ^ j * b : ℕ) : ℤ) with hndef`. Establish `hlm : (l : ℤ_[l]) ∈ IsLocalRing.maximalIdeal ℤ_[l]`. Rewrite using `[IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits, PadicInt.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hptU : IsDiscreteValuationRing.addVal ℤ_[l] ↑(abelian₂.pt U) = c`. Rewrite using `[abelian₂.coe_pt]`. Simplify using `only [vl] at hv`. Rewrite using `[show ((U : ℤ_[l]ˣ) : ℤ_[l]) = u from hvu]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hcond : IsDiscreteValuationRing.addVal ℤ_[l] (l : ℤ_[l]) < ↑(l - 1) * IsDiscreteValuationRing.addVal ℤ_[l] ↑(abelian₂.pt U)`. Rewrite using `[hval1, hptU]`. Establish `hlt : 1 < (l - 1) * c`. Establish `hp` using `(Fact.out : l.Prime).two_le`. Break down `Nat.lt_or_ge l 3 with h | h` into its components or cases.
+Establish an intermediate fact. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : l = 2` using `by omega`. Use `hc2 h2` as an intermediate fact. Substitute `h2` using the available equality. Use linear arithmetic over natural numbers and integers. Establish `h3 : 2 ≤ l - 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `hlt` after adjusting the coercions. Establish `key` using `abelian₂.lte ℤ_[l] l Fact.out hlm U hcond n`. Establish `hfac : (u ^ l ^ j) ^ a - (u ^ l ^ j) ^ b = (u ^ l ^ j) ^ b * ↑(abelian₂.pt (U ^ n))`. Rewrite using `[abelian₂.coe_pt]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h1 : ((U ^ n : abelian₂.oneUnits ℤ_[l]) : ℤ_[l]ˣ) = v ^ n` using `rfl`. Establish `h2 : v ^ ((l ^ j * a : ℕ) : ℤ) = v ^ ((l ^ j * b : ℕ) : ℤ) * v ^ n`. Rewrite using `[← zpow_add]`. Use `congr 1`. Rewrite using `[hndef]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ∀ k : ℕ, (u ^ l ^ j) ^ k = ((v ^ ((l ^ j * k : ℕ) : ℤ) : ℤ_[l]ˣ) : ℤ_[l])`. Introduce `k`. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val, hvu, pow_mul]`. Rewrite using `[h1, h3 a, h3 b, h2, Units.val_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfac, norm_mul, norm_pow, norm_pow, hu, one_pow, one_pow, one_mul]`. Rewrite using `[norm_eq_of_addVal (y := (l : ℤ_[l]) ^ (j + c) * ((a : ℤ_[l]) - (b : ℤ_[l])))]`. Rewrite using `[norm_mul, PadicInt.norm_p_pow, zpow_neg, zpow_natCast]`. Establish `hcast : ((n : ℤ) : ℤ_[l]) = (l : ℤ_[l]) ^ j * ((a : ℤ_[l]) - (b : ℤ_[l]))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hndef]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, hptU, hcast, IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_pow, hval1]`. Simplify using `only [nsmul_eq_mul, mul_one]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.PropA.lteNorm :
     ∀ (l : ℕ) [Fact l.Prime] (u : ℤ_[l]) (c : ℕ), IsLevel l u c → ‖u‖ = 1 ∧ (l : ℤ_[l]) ∣ u - 1 ∧

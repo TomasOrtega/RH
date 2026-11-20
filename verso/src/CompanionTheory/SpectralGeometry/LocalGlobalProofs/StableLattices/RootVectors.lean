@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.BmuRootVec
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[Matrix.mul_single_apply_of_ne (hbj := hj), zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_single_mul_entry {n : ℕ} (A B : Mat n) (a b i l : Fin n) (c : ℂ) :
     (A * single a b c * B) i l = A i a * c * B b l := by
@@ -26,11 +26,11 @@ theorem mul_single_mul_entry {n : ℕ} (A B : Mat n) (a b i l : Fin n) (c : ℂ)
   · simp
 
 /- English proof (translation)
-Unfold `ex`. Establish `h2 : ((τ : ℂ) • Y) ^ 2 = 0`. Rewrite using `[pow_two, Matrix.smul_mul, Matrix.mul_smul, hY, smul_zero, smul_zero]`. Rewrite using `[NormedSpace.exp_eq_tsum ℂ]`. Use `beta_reduce`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tsum_eq_sum (s := Finset.range 2)]`. Simplify using `[Finset.sum_range_succ]`. Introduce `m hm`. Establish `: 2 ≤ m`. Use `Finset.mem_range.not.1 hm` as an intermediate fact.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[pow_eq_zero_of_le this h2, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_of_mul_self_eq_zero {n : ℕ} (Y : Mat n) (hY : Y * Y = 0) (τ : ℝ) :
     ex Y τ = 1 + (τ : ℂ) • Y := by
@@ -50,7 +50,7 @@ theorem ex_of_mul_self_eq_zero {n : ℕ} (Y : Mat n) (hY : Y * Y = 0) (τ : ℝ)
 variable {k r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Hq, hi, if_true, Fin.ext_iff]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Hq_row {i i' : Fin (2 * r + k + 1)} (hi : outer k r i) (h : i.val + i'.val = 2 * r + k)
     (l : Fin (2 * r + k + 1)) : Hq k r i l = if l = i' then 1 else 0 := by
@@ -59,7 +59,7 @@ theorem Hq_row {i i' : Fin (2 * r + k + 1)} (hi : outer k r i) (h : i.val + i'.v
   apply propext; omega
 
 /- English proof (translation)
-Simplify using `only [Hq, outer, Fin.ext_iff] at *`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hq_col {i i' : Fin (2 * r + k + 1)} (hi : outer k r i) (h : i.val + i'.val = 2 * r + k)
     (l : Fin (2 * r + k + 1)) : Hq k r l i = if l = i' then 1 else 0 := by
@@ -67,7 +67,7 @@ theorem Hq_col {i i' : Fin (2 * r + k + 1)} (hi : outer k r i) (h : i.val + i'.v
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Use extensionality with `p q`. Apply the tactic sequence `have := mul_single_mul_entry (Hq k r) 1 i l p q c`. Rewrite `this` using `[Matrix.mul_one]`. Rewrite using `[this, Hq_col hi h, Matrix.one_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases h1 : i' = p <;> by_cases h2 : l = q <;> simp [h1, h2, @eq_comm _ p i']`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hq_mul_single {i i' : Fin (2 * r + k + 1)} (hi : outer k r i) (h : i.val + i'.val = 2 * r + k)
     (l : Fin (2 * r + k + 1)) (c : ℂ) : Hq k r * single i l c = single i' l c := by
@@ -78,7 +78,7 @@ theorem Hq_mul_single {i i' : Fin (2 * r + k + 1)} (hi : outer k r i) (h : i.val
   by_cases h1 : i' = p <;> by_cases h2 : l = q <;> simp [h1, h2, @eq_comm _ p i']
 
 /- English proof (translation)
-Use extensionality with `p q`. Apply the tactic sequence `have := mul_single_mul_entry 1 (Hq k r) l i p q c`. Rewrite `this` using `[Matrix.one_mul]`. Rewrite using `[this, Hq_row hi h, Matrix.one_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases h1 : l = p <;> by_cases h2 : i' = q <;> simp [h1, h2, @eq_comm _ p l, @eq_comm _ q i']`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem single_mul_Hq {i i' : Fin (2 * r + k + 1)} (hi : outer k r i) (h : i.val + i'.val = 2 * r + k)
     (l : Fin (2 * r + k + 1)) (c : ℂ) : single l i c * Hq k r = single l i' c := by
@@ -89,9 +89,9 @@ theorem single_mul_Hq {i i' : Fin (2 * r + k + 1)} (hi : outer k r i) (h : i.val
   by_cases h1 : l = p <;> by_cases h2 : i' = q <;> simp [h1, h2, @eq_comm _ p l, @eq_comm _ q i']
 
 /- English proof (translation)
-Take `⟨-, h1, h2, -⟩` from `hd`. Use extensionality with `i j`. Simplify using `only [dg, diagonal_conjTranspose, mul_diagonal, diagonal_mul, Pi.star_apply, Complex.star_def, Complex.conj_ofReal, Hq]`. Use `split_ifs with a b c`. Use `h1 i j a b` as an intermediate fact.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one, ← Complex.ofReal_mul, this, Complex.ofReal_one]`. Simplify using the standard rewrite rules. Substitute `c` using the available equality. Simplify using `[h2 i a]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dg_Hq {d : Fin (2 * r + k + 1) → ℝ} (hd : IsTor k r d) :
     (dg d)ᴴ * Hq k r * dg d = Hq k r := by
@@ -112,7 +112,7 @@ def rootE (k r : ℕ) (a : Fin r) (κ : ℂ) : Mat (2 * r + k + 1) :=
   single (eI k r a) (nxt k r a) κ - single (nxtS k r a) (esI k r a) (conj κ)
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Unfold `Lie rootE`. Rewrite using `[conjTranspose_sub, conjTranspose_single, conjTranspose_single, Matrix.sub_mul, Matrix.mul_sub, single_mul_Hq (i := eI k r a) (i' := esI k r a) (by simp only [outer, eI]; omega) (by simp only [eI, esI]; omega), single_mul_Hq (i := nxtS k r a) (i' := nxt k r a) (by simp only [oute …`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rootE_lie (a : Fin r) (κ : ℂ) : Lie (Hq k r) (rootE k r a κ) := by
   have ha := a.isLt
@@ -129,7 +129,7 @@ theorem rootE_lie (a : Fin r) (κ : ℂ) : Lie (Hq k r) (rootE k r a κ) := by
   simp
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Unfold `rootE`. Rewrite using `[Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_sub, single_mul_single_of_ne (h := by simp only [nxt, eI, Ne, Fin.ext_iff]; omega), single_mul_single_of_ne (h := by simp only [nxt, nxtS, Ne, Fin.ext_iff]; omega), single_mul_single_of_ne (h := by simp only [esI, eI, Ne, Fin.ext_iff]; …`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rootE_sq (hk : 1 ≤ k) (a : Fin r) (κ : ℂ) : rootE k r a κ * rootE k r a κ = 0 := by
   have ha := a.isLt
@@ -142,15 +142,15 @@ theorem rootE_sq (hk : 1 ≤ k) (a : Fin r) (κ : ℂ) : rootE k r a κ * rootE 
   simp
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Take `⟨h0, h1, -, -⟩` from `hd`. Establish `e1` using `h1 (eI k r a) (esI k r a) (by simp only [outer, eI]; omega) (by simp only [eI, esI]; omega)`. Establish `e2` using `h1 (nxtS k r a) (nxt k r a) (by simp only [outer, nxtS]; omega) (by simp only [nxtS, nxt]; omega)`. Establish `hn` using `(h0 (nxt k r a)).ne'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f1 : d (eI k r a) = d (eI k r a) / d (nxt k r a) * d (nxt k r a)` using `by field_simp`. Establish `f2 : d (nxtS k r a) = d (eI k r a) / d (nxt k r a) * d (esI k r a)` using `by field_simp; rw [e1, e2]`. Generalize the expression as in `d (eI k r a) / d (nxt k r a) = α at f1 f2`. Use extensionality with `p q`. Simplify using `only [dg, rootE, diagonal_mul, mul_diagonal, Matrix.smul_apply, Matrix.sub_apply, single_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `g1 : (d p : ℂ) * (if eI k r a = p ∧ nxt k r a = q then κ else 0) = α * ((if eI k r a = p ∧ nxt k r a = q then κ else 0) * d q)` using `by split_ifs with h`. Rewrite using `[← h.1, ← h.2, f1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Establish `g2 : (d p : ℂ) * (if nxtS k r a = p ∧ esI k r a = q then conj κ else 0) = α * ((if nxtS k r a = p ∧ esI k r a = q then conj κ else 0) * d q)` using `by split_ifs with h`. Rewrite using `[← h.1, ← h.2, f2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_sub, g1, g2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dg_rootE {d : Fin (2 * r + k + 1) → ℝ} (hd : IsTor k r d) (a : Fin r) (κ : ℂ) :
     dg d * rootE k r a κ = ((d (eI k r a) / d (nxt k r a) : ℝ) : ℂ) • (rootE k r a κ * dg d) := by
@@ -180,11 +180,11 @@ theorem dg_rootE {d : Fin (2 * r + k + 1) → ℝ} (hd : IsTor k r d) (a : Fin r
   rw [mul_sub, g1, g2]; ring
 
 /- English proof (translation)
-Establish `hb : ∀ i j, ‖R i j‖ ≤ 1` using `fun i j => entry_norm_bound_of_unitary (Matrix.mem_unitaryGroup_iff'.2 hR) i j`. Establish `key : ∀ (p q i l : Fin (2 * r + k + 1)) (c : ℂ), ‖(Rᴴ * single p q c * R) i l‖ ≤ ‖c‖`. Introduce `p q i l c`. Rewrite using `[mul_single_mul_entry, norm_mul, norm_mul, conjTranspose_apply, norm_star]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.norm_le_iff (by positivity)]`. Introduce `i l`. Rewrite using `[rootE, Matrix.mul_sub, Matrix.sub_mul, Matrix.sub_apply]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Establish `h1` using `key (eI k r a) (nxt k r a) i l κ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `key (nxtS k r a) (esI k r a) i l (conj κ)`. Rewrite `h2` using `[Complex.norm_conj]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_conj_rootE {R : Mat (2 * r + k + 1)} (hR : Rᴴ * R = 1) (a : Fin r) (κ : ℂ) :
     ‖Rᴴ * rootE k r a κ * R‖ ≤ 2 * ‖κ‖ := by
@@ -205,7 +205,7 @@ theorem norm_conj_rootE {R : Mat (2 * r + k + 1)} (hR : Rᴴ * R = 1) (a : Fin r
   linarith
 
 /- English proof (translation)
-Use `congrFun h i` as an intermediate fact. Simplify `this` using `[bvec, Pi.single_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem col_of_mulVec {n : ℕ} {A : Mat n} {j : Fin n} (h : A *ᵥ bvec j = bvec j) (i : Fin n) :
     A i j = if i = j then 1 else 0 := by
@@ -213,13 +213,13 @@ theorem col_of_mulVec {n : ℕ} {A : Mat n} {j : Fin n} (h : A *ᵥ bvec j = bve
   simpa [bvec, Pi.single_apply] using this
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun hΓ i) l`. Rewrite `h1` using `[Hq_row (i' := i') (by simp only [outer]; omega) h, Matrix.mul_assoc, Matrix.mul_apply, Finset.sum_eq_single i, conjTranspose_apply, col_of_mulVec hf, if_pos rfl, star_one, one_mul, Matrix.mul_apply, Finset.sum_eq_single i']`. Rewrite using `[← h1]`. Establish `: Hpk k r i i' = 1`. Simplify using `only [Hpk]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Rewrite using `[this, one_mul]`. Introduce `b _ hb`. Establish `hb' : b.val ≠ i'.val` using `fun e => hb (Fin.ext e)`. Establish `: Hpk k r i b = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Hpk]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Rewrite using `[this, zero_mul]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[conjTranspose_apply, col_of_mulVec hf, if_neg hb, star_zero, zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frame_row {Γ : Mat (2 * r + k + 1)} (hΓ : Γᴴ * Hpk k r * Γ = Hq k r)
     {i i' : Fin (2 * r + k + 1)} (hi : i.val < r ∨ r + k < i.val) (h : i.val + i'.val = 2 * r + k)
@@ -245,7 +245,7 @@ theorem frame_row {Γ : Mat (2 * r + k + 1)} (hΓ : Γᴴ * Hpk k r * Γ = Hq k 
   · simp
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun (Matrix.mul_nonsing_inv Γ hu) i) l`. Rewrite `h1` using `[Matrix.mul_apply]`. Simplify using `only [h, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1`. Rewrite using `[h1, Matrix.one_apply]`. Simplify using `only [eq_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inv_row {n : ℕ} {Γ : Mat n} (hu : IsUnit Γ.det) {i : Fin n}
     (h : ∀ l, Γ i l = if l = i then 1 else 0) (l : Fin n) : Γ⁻¹ i l = if l = i then 1 else 0 := by
@@ -256,58 +256,54 @@ theorem inv_row {n : ℕ} {Γ : Mat n} (hu : IsUnit Γ.det) {i : Fin n}
   simp only [eq_comm]
 
 /- English proof (translation)
-Rewrite using `[mulVec_mulVec, Matrix.nonsing_inv_mul Γ hu, one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mulVec_fix {n : ℕ} {Γ : Mat n} (hu : IsUnit Γ.det) (v : Fin n → ℂ) :
     Γ⁻¹ *ᵥ (Γ *ᵥ v) = v := by
   rw [mulVec_mulVec, Matrix.nonsing_inv_mul Γ hu, one_mulVec]
 
 /- English proof (translation)
-Introduce `k r z Γ c hk hA hc`. Take `⟨hΓ, hfix, ρ, hρ, hz⟩` from `hA`. Set `κ : Fin r → ℂ` to `fun a => if a.val + 1 < r then (c a)⁻¹ else ((ρ : ℂ) * c a)⁻¹`. Use `⟨∑ a, 2 * ‖κ a‖, fun a d R hd hR hg => ?_⟩` and prove the remaining obligations. Establish `ha` using `a.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hHu : IsUnit (Hpk k r).det` using `Matrix.isUnit_det_of_right_inverse (hermitian_pos_facts_hold k r).2.1`. Take `⟨-, hmul, hinv⟩` from `unitary_group_holds _ _ hHu`. Establish `hgu` using `(hinv _ hg).1`. Establish `hΓu : IsUnit Γ.det`. Rewrite `hgu` using `[det_mul, det_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_left hgu)`. Establish `hR' : R * Rᴴ = 1` using `mul_eq_one_comm.1 hR`. Establish `hRq : Rᴴ * Hq k r * R = Hpk k r`. Establish `h1 : (Γ * dg d * R)ᴴ * Hpk k r * (Γ * dg d * R) = Hpk k r` using `hg`. Rewrite using `[← h1, ← dg_Hq hd, ← hΓ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `set E := rootE k r a (κ a) with hE`. Establish `hLie : Lie (Hpk k r) (Rᴴ * E * R)`. Establish `h1 : Eᴴ * Hq k r + Hq k r * E = 0` using `rootE_lie a (κ a)`. Unfold `Lie`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← hRq]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc, Matrix.mul_add, Matrix.add_mul]`. Use `_ = 0 := by rw [hR', Matrix.mul_one, Matrix.mul_one, h1, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hsq : Rᴴ * E * R * (Rᴴ * E * R) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨Rᴴ * E * R, hLie, (norm_conj_rootE hR a (κ a)).trans (Finset.single_le_sum (f := fun a => 2 * ‖κ a‖) (fun _ _ => by positivity) (Finset.mem_univ a)), fun τ => ?_⟩` and prove the remaining obligations. Establish `hmem : Γ * dg d * R * ex (Rᴴ * E * R) τ * (Γ * dg d * R)⁻¹ ∈ UH (Hpk k r)` using `hmul _ (hmul _ hg _ (ex_mem_of_lie hLie τ)) _ (hinv _ hg).2`. Use `set α : ℝ := d (eI k r a) / d (nxt k r a) with hα`. Establish `hform : Γ * dg d * R * ex (Rᴴ * E * R) τ * (Γ * dg d * R)⁻¹ = 1 + ((α * τ : ℝ) : ℂ) • (Γ * E * Γ⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Γ * dg d * R * (Rᴴ * E * R) = (α : ℂ) • (Γ * E * Γ⁻¹ * (Γ * dg d * R))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (α : ℂ) • (Γ * E * (Γ⁻¹ * Γ) * dg d * R) := by`. Rewrite using `[hR', Matrix.one_mul, hE, dg_rootE hd, Matrix.nonsing_inv_mul Γ hΓu, Matrix.mul_one, Matrix.mul_smul, Matrix.smul_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Matrix.mul_assoc, hα]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`. Rewrite using `[ex_of_mul_self_eq_zero _ hsq, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.mul_nonsing_inv _ hgu, Matrix.mul_smul, h1, smul_smul, Matrix.smul_mul, Matrix.mul_nonsing_inv_cancel_right _ _ hgu]`. Use `congr 2`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `rowS : ∀ (b : Fin r) l, Γ (esI k r b) l = if l = esI k r b then 1 else 0` using `fun b => frame_row hΓ (i := eI k r b) (by have := b.isLt; simp only [eI]; omega) (by have := b.isLt; simp only [eI, esI]; omega) (hfix b).1`. Establish `rowE : ∀ (b : Fin r) l, Γ (eI k r b) l = if l = eI k r b then 1 else 0` using `fun b => frame_row hΓ (i := esI k r b) (by have := b.isLt; simp only [esI]; omega) (by have := b.isLt; simp only [eI, esI]; omega) (hfix b).2`. Establish `colI : ∀ (b : Fin r) i, Γ⁻¹ i (eI k r b) = if i = eI k r b then 1 else 0` using `fun b => col_of_mulVec (by`. Use `inv_mulVec_fix hΓu (bvec (eI k r b))` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[(hfix b).1] at this)` and apply the resulting hypothesis. Establish `hent : ∀ i l, (Γ * E * Γ⁻¹) i l = (if i = eI k r a then κ a * Γ⁻¹ (nxt k r a) l else 0) - (if l = esI k r a then Γ i (nxtS k r a) * conj (κ a) else 0)`. Introduce `i l`. Rewrite using `[hE, rootE, Matrix.mul_sub, Matrix.sub_mul, Matrix.sub_apply, mul_single_mul_entry, mul_single_mul_entry, col_of_mulVec (hfix a).1, inv_row hΓu (rowS a)]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hmem`, the goal using `[hform]`. Generalize the expression as in `Γ * E * Γ⁻¹ = M at hent hmem ⊢`. Use `⟨⟨hmem, fun b i hbi => ?_, fun i j h1 h2 h3 => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hb` using `b.isLt`. Establish `: M i (eI k r b) = 0`.
+It suffices to derive a contradiction. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hent, colI, if_neg (c := eI k r b = esI k r a) (by simp only [eI, esI, Fin.ext_iff]; omega)]`. Use `split_ifs with p q`. It suffices to derive a contradiction. Simplify using `only [eI, nxt, Fin.ext_iff] at p q`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `[this, Matrix.one_apply]`. Establish `: M i j = 0`. Rewrite using `[hent, if_neg (by simp only [eI, Fin.ext_iff]; omega), if_neg (by simp only [esI, Fin.ext_iff]; omega), sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[this, Matrix.one_apply]`. Establish `hzr : ∀ i : Fin (2 * r + k + 1), (i.val < r ∨ r + k < i.val) → (∀ l, Γ i l = if l = i then 1 else 0) → z i = 0`. Introduce `i hi h`. Establish `n1 : i ≠ wI k r 0` using `by simp only [wI, Ne, Fin.ext_iff, Fin.val_zero]; omega`. Establish `n2 : i ≠ wI k r (Fin.last k)` using `by simp only [wI, Ne, Fin.ext_iff, Fin.val_last]; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hz]`. Simplify using `[mulVec, dotProduct, h, bvec, n1, n2]`. Establish `hzS : z (esI k r a) = 0` using `hzr _ (by simp only [esI]; omega) (rowS a)`. Establish `hell : ∀ b, c b * PI.BesselMapUniq.ellA k r z (1 + ((α * τ : ℝ) : ℂ) • M) b = if b = a then ((α * τ : ℝ) : ℂ) else 0`. Introduce `b`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hb` using `b.isLt`. Establish `hba : eI k r b = eI k r a ↔ b = a` using `by simp only [eI, Fin.ext_iff]`. Unfold `PI.BesselMapUniq.ellA`. Distinguish the cases in `h : b.val + 1 < r`. Rewrite using `[dif_pos h, Matrix.add_apply, Matrix.smul_apply, hent, colI, if_neg (c := _ = esI k r a) (by simp only [eI, esI, Fin.ext_iff]; omega), Matrix.one_apply_ne (by simp only [eI, Ne, Fin.ext_iff]; omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `e : b = a`. Substitute `e` using the available equality. Establish `hn : nxt k r b = eI k r ⟨b.val + 1, h⟩` using `rfl`. Use `hc b` as an intermediate fact. Simplify using `only [if_true, κ, if_pos h, if_pos hn, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Simplify using `[hba, e]`. Establish `hM : (M *ᵥ z) (eI k r b) = if b = a then κ a * (Γ⁻¹ *ᵥ z) (nxt k r a) else 0`. Simplify using `only [mulVec, dotProduct, hent, sub_mul, Finset.sum_sub_distrib, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, hzS, mul_zero, sub_zero, hba]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Use `split_ifs`. Rewrite using `[Finset.mul_sum]`. Simplify using `only [mul_assoc]`. Simplify using the standard rewrite rules. Rewrite using `[dif_neg h, add_mulVec, one_mulVec, smul_mulVec, Pi.add_apply, Pi.smul_apply, hM, hzr _ (by simp only [eI]; omega) (rowE b)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `e : b = a`. Substitute `e` using the available equality. Establish `n1 : nxt k r b = wI k r 0` using `by simp only [wI, nxt, Fin.ext_iff, Fin.val_zero]; omega`. Establish `n2 : wI k r 0 ≠ wI k r (Fin.last k)`. Simplify using `only [wI, Ne, Fin.ext_iff, Fin.val_last, Fin.val_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Use linear arithmetic over natural numbers and integers. Establish `hv : (Γ⁻¹ *ᵥ z) (nxt k r b) = ρ`. Rewrite using `[hz, mulVec_smul, inv_mulVec_fix hΓu, n1]`. Simplify using `[bvec, n2]`. Use `hc b` as an intermediate fact.
-
-Establish `hρ' : (ρ : ℂ) ≠ 0` using `by exact_mod_cast hρ.ne'`. Simplify using `only [if_true, κ, if_neg h, hv, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Simplify using `[e]`.
-
-Unfold `PI.BesselMapUniq.psiGen`. Simplify using `only [hell, Finset.sum_ite_eq', Finset.mem_univ, if_true, Complex.ofReal_re]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rootVec : RootVec := by
   intro k r z Γ c hk hA hc

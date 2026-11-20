@@ -65,14 +65,14 @@ abbrev π₀ (X : FlagCover Y) (Z : Comp Xo c) : Y₀ X Z ⟶ X₀ Y Z := X.π �
 variable {Y} in
 
 /- English proof (translation)
-Simplify using `only [π₀, s₀, str₀, inc₀, flagStr]`. Rewrite using `[← Category.assoc, morphismRestrict_ι, Category.assoc]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem π₀_s₀ (X : FlagCover Y) (Z : Comp Xo c) : π₀ X Z ≫ s₀ Y Z = str₀ X Z := by
   dsimp only [π₀, s₀, str₀, inc₀, flagStr]
   rw [← Category.assoc, morphismRestrict_ι, Category.assoc]
 
 /- English proof (translation)
-The claim follows from `morphismRestrict_ι _ _`.
+A detailed English derivation is pending.
 -/
 theorem j₀_ι : j₀ Y Z ≫ (barComp Y Z).ι = i₀ Y Z ≫ Y.j :=
   morphismRestrict_ι _ _
@@ -97,7 +97,7 @@ def NeatPrime (I : Ideal (𝓞 E)) (g r : ℕ) : Prop :=
   g.Prime ∧ Ideal.absNorm I = g ∧ (g : 𝓞 E) ∉ I ^ 2 ∧ r + 1 < g
 
 /- English proof (translation)
-Introduce `τ k hk`. Rewrite using `[gap_eq _ (i := ⟨k, by omega⟩) (j := ⟨k + 1, hk⟩) rfl]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, hodgeWt, GlobalTheory.CompHt.barWt, kapBase, smul_eq_mul]`. Move the coercions through the operations in `at ht ⊢`. Apply the tactic sequence `split_ifs <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gapGe_sub_kapBase (t : ℤ) (ht : ((Dw.p + Dw.q : ℕ) : ℤ) ≤ t) : GapGe 0 (t • hodgeWt Dw - kapBase Dw) := by
   intro τ k hk
@@ -107,7 +107,7 @@ theorem gapGe_sub_kapBase (t : ℤ) (ht : ((Dw.p + Dw.q : ℕ) : ℤ) ≤ t) : G
   split_ifs <;> omega
 
 /- English proof (translation)
-Introduce `τ k hk`. Rewrite using `[gap_eq _ (i := ⟨k, by omega⟩) (j := ⟨k + 1, hk⟩) rfl]`. Simplify using `only [hodgeWt, GlobalTheory.CompHt.barWt]`. Apply the tactic sequence `split_ifs <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gapGe_hodgeWt : GapGe 0 (hodgeWt Dw) := by
   intro τ k hk

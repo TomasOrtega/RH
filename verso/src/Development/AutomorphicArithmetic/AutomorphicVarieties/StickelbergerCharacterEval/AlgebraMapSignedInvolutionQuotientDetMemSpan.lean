@@ -6,15 +6,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.StickelbergerChara
 open Finset UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5
 
 /- English proof (translation)
-Introduce `A _ Γ _ _ c ε h1 h2 h3 z`. Take `⟨e, he⟩` from `UpperTheory.V.B5.exists_linearEquiv_quotientByOrderTwo_coords (A := A) c ε h1 h2 h3`. Establish `hsc : ∀ (d : A) (w : MonoidAlgebra A Γ), coord c ε (algebraMap A (MonoidAlgebra A Γ) d * w) = d • coord c ε w`. Introduce `d w`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[coord, Algebra.algebraMap_eq_smul_one]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨y, hy⟩` from `e.surjective ((mat c ε z).adjugate.mulVec (coord c ε 1))`. Take `⟨u, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `hu : coord c ε u = (mat c ε z).adjugate.mulVec (coord c ε 1)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← he]`. Conclude with `hy`. Establish `hcoord : coord c ε (z * u) = coord c ε (algebraMap A _ (detR c ε z) * 1)`. Rewrite using `[UpperTheory.V.B5.coords_mul_eq_quotientMatrix_mulVec c ε h1 h2 h3, hu, Matrix.mulVec_mulVec, Matrix.mul_adjugate, hsc, Matrix.smul_mulVec, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcoord` using `[mul_one]`. Establish `hcls : cls A c ε (algebraMap A _ (detR c ε z)) = cls A c ε (z * u)`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, he, hcoord]`. Establish `hmem : algebraMap A _ (detR c ε z) - z * u ∈ Ideal.span {rel A c ε}` using `Ideal.Quotient.eq.mp hcls`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : Ideal.span {rel A c ε} ≤ Ideal.span {rel A c ε, z}` using `Ideal.span_mono (by simp)`. Establish `hz : z * u ∈ Ideal.span {rel A c ε, z}` using `Ideal.mul_mem_right u _ (Ideal.subset_span (by simp))`. Use `Ideal.add_mem _ (hsub hmem) hz` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.B5.algebraMap_signedInvolutionQuotientDet_mem_span :
     ∀ {A : Type} [CommRing A] {Γ : Type} [CommGroup Γ] [Finite Γ] (c : Γ) (ε : ℤ), c * c = 1 → c ≠ 1 → ε * ε = 1 → ∀ z : MonoidAlgebra A Γ, algebraMap A (MonoidAlgebra A Γ) (detR c ε z) ∈ Ideal.span {rel A c ε, z} := by

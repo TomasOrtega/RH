@@ -84,39 +84,35 @@ variable {G : Type*} [CommGroup G] [TopologicalSpace G] [IsTopologicalGroup G] [
   [LocallyCompactSpace G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Take `⟨U, hUo, hU⟩ : ∃ U : Set G, IsOpen U ∧ Subtype.val ⁻¹' U = ({1} : Set Γ)` from `isOpen_induced_iff.1 (isOpen_discrete ({1} : Set Γ))`. Establish `h1U : (1 : G) ∈ U`. Establish `: (1 : Γ) ∈ Subtype.val ⁻¹' U` using `by rw [hU]; rfl`. Conclude with `this`. Establish `hUΓ : ∀ γ ∈ Γ, γ ∈ U → γ = 1` using `fun γ hγ hγU ↦ by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (⟨γ, hγ⟩ : Γ) ∈ Subtype.val ⁻¹' U` using `hγU`. Rewrite `this` using `[hU]`. Conclude with `congrArg Subtype.val (Set.mem_singleton_iff.1 this)`. Establish `hW : IsOpen {q : G × G | q.1 / q.2 ∈ U}` using `hUo.preimage continuous_div'`. Take `⟨u, v, hu, hv, hu1, hv1, huv⟩` from `isOpen_prod_iff.1 hW 1 1 (by simpa using h1U)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C, hC, hCn⟩` from `exists_compact_mem_nhds (1 : G)`. Use `set V : Set G := u ∩ v ∩ interior C with hVdef`. Establish `hVo : IsOpen V` using `(hu.inter hv).inter isOpen_interior`. Establish `hV1 : (1 : G) ∈ V` using `⟨⟨hu1, hv1⟩, mem_interior_iff_mem_nhds.2 hCn⟩`. Establish `hVdiv : ∀ a ∈ V, ∀ b ∈ V, a / b ∈ U` using `fun a ha b hb ↦ huv (Set.mk_mem_prod ha.1.1 hb.1.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hVC : V ⊆ C` using `fun a ha ↦ interior_subset ha.2`. Take `⟨t, ht⟩` from `hD.elim_finite_subcover (fun x : G ↦ (x * ·) '' V) (fun x ↦ (Homeomorph.mulLeft x).isOpenMap _ hVo) (fun x _ ↦ Set.mem_iUnion.2 ⟨x, 1, hV1, mul_one x⟩)`. Set `p : Fin t.card → G` to `fun i ↦ (t.equivFin.symm i : G)`. Set `B : Fin t.card → Set G` to `fun i ↦ (p i * ·) '' V`. Set `O : Fin t.card → Set G` to `fun j ↦ ⋃ γ : Γ, (· * (γ : G)) '' B j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `E : Set G` to `⋃ i, (B i \ ⋃ j, ⋃ (_h : j < i), O j)`. Establish `hBo : ∀ i, IsOpen (B i)` using `fun i ↦ (Homeomorph.mulLeft (p i)).isOpenMap _ hVo`. Establish `hOo : ∀ j, IsOpen (O j)` using `fun j ↦ isOpen_iUnion fun γ ↦ (Homeomorph.mulRight (γ : G)).isOpenMap _ (hBo j)`. Establish `hmemO : ∀ j y, y ∈ O j ↔ ∃ γ ∈ Γ, y * γ ∈ B j`. Introduce `j y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [O, Set.mem_iUnion, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, b, hb, rfl⟩`. Conclude with `⟨(γ : G)⁻¹, Γ.inv_mem γ.2, by rwa [mul_inv_cancel_right]⟩`. Introduce and unpack `⟨γ, hγ, hy⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨γ⁻¹, Γ.inv_mem hγ⟩, y * γ, hy, by simp⟩`. Establish `hDB : D ⊆ ⋃ i, B i`. Introduce `y hy`. Take `⟨z, hz⟩` from `Set.mem_iUnion₂.1 (ht hy)`. Take `⟨hzt, hyz⟩` from `hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.mem_iUnion.2 ⟨t.equivFin ⟨z, hzt⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [B, p, Equiv.symm_apply_apply]`. Conclude with `hyz`. Use `⟨E, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `MeasurableSet.iUnion fun i ↦ (hBo i).measurableSet.diff (MeasurableSet.iUnion fun j ↦ MeasurableSet.iUnion fun _ ↦ (hOo j).measurableSet)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hK : IsCompact (⋃ i, (p i * ·) '' C)` using `isCompact_iUnion fun i ↦ hC.image (continuous_const.mul continuous_id)`. Use `hK.of_isClosed_subset isClosed_closure (closure_minimal ?_ hK.isClosed)` and prove the remaining obligations. Introduce `y hy`. Take `⟨i, hi⟩` from `Set.mem_iUnion.1 hy`. Take `⟨a, ha, rfl⟩` from `hi.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Set.mem_iUnion.2 ⟨i, a, hVC ha, rfl⟩`. Introduce `x`. Establish `hsmul : ∀ γ : Γ.op, γ • x = x * ((γ : Gᵐᵒᵖ).unop)` using `fun _ ↦ rfl`. Establish `hmemE : ∀ y, y ∈ E ↔ ∃ i, y ∈ B i ∧ ∀ j < i, y ∉ O j`. Introduce `y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `only [E, Set.mem_iUnion, Set.mem_sdiff, not_exists]`. Set `S : Finset (Fin t.card)` to `Finset.univ.filter fun i ↦ ∃ γ ∈ Γ, x * γ ∈ B i`. Establish `hS : S.Nonempty`. Take `⟨γ, hγ, hxγ⟩` from `hcov x`. Take `⟨i, hi⟩` from `Set.mem_iUnion.1 (hDB hxγ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨i, Finset.mem_filter.2 ⟨Finset.mem_univ _, γ, hγ, hi⟩⟩`. Use `set i := S.min' hS`. Take `⟨γ, hγ, hγi⟩` from `(Finset.mem_filter.1 (S.min'_mem hS)).2`. Establish `hEi : ∀ j < i, x * γ ∉ O j` using `fun j hj hO ↦ by`. Take `⟨γ', hγ', hB⟩` from `(hmemO j _).1 hO`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hjS : j ∈ S` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, γ * γ', Γ.mul_mem hγ hγ', by rwa [← mul_assoc]⟩`. Conclude with `absurd (S.min'_le j hjS) (not_le.2 hj)`. Use `⟨⟨MulOpposite.op γ, Subgroup.mem_op.2 hγ⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show x * γ ∈ E`. Conclude with `(hmemE _).2 ⟨i, hγi, hEi⟩`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨g, hg⟩ hgE`. Establish `hg' : g.unop ∈ Γ` using `Subgroup.mem_op.1 hg`. Express the relevant statement in the definitionally equal form `x * g.unop ∈ E at hgE`. Take `⟨k, hk, hkO⟩` from `(hmemE _).1 hgE`. Establish `hba : g.unop = γ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Break down `lt_trichotomy i k with hik | rfl | hki` into its components or cases. Use `absurd ((hmemO i _).2 ⟨g.unop⁻¹ * γ, Γ.mul_mem (Γ.inv_mem hg') hγ, ?_⟩) (hkO i hik)` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_inv_cancel_left]` and apply the resulting hypothesis. Take `⟨v₁, hv₁, h₁⟩` from `hγi`. Take `⟨v₂, hv₂, h₂⟩` from `hk`.
-
-Establish `hdiv : g.unop / γ = v₂ / v₁`. Rewrite using `[← mul_div_mul_left_eq_div _ _ x, ← h₁, ← h₂, mul_div_mul_left_eq_div]`. Establish `h1` using `hUΓ _ (Γ.div_mem hg' hγ) (hdiv ▸ hVdiv v₂ hv₂ v₁ hv₁)`. Conclude with `div_eq_one.1 h1`. Use `absurd ((hmemO k _).2 ⟨γ⁻¹ * g.unop, Γ.mul_mem (Γ.inv_mem hγ) hg', ?_⟩) (hEi k hki)` and prove the remaining obligations.
-
-Rewrite using `[mul_assoc, mul_inv_cancel_left]` and apply the resulting hypothesis. Conclude with `Subtype.ext (MulOpposite.unop_injective hba)`.
+A detailed English derivation is pending.
 -/
 theorem exists_fundamentalDomain_of_discrete (Γ : Subgroup G) [DiscreteTopology Γ] {D : Set G}
     (hD : IsCompact D) (hcov : ∀ x : G, ∃ γ ∈ Γ, x * γ ∈ D) :
@@ -230,9 +226,9 @@ open IdeleGroup
 variable (K : Type*) [Field K] [NumberField K]
 
 /- English proof (translation)
-Take `⟨D, hD, hDJ, hxD⟩` from `exists_isCompact_normOneSubgroup K`. Use `exists_fundamentalDomain_of_discrete (diagonalNormOne K) (D := Subtype.val ⁻¹' D) ((isClosed_normOneSubgroup K).isClosedEmbedding_subtypeVal.isCompact_preimage hD) ?_` and prove the remaining obligations. Introduce `x`. Take `⟨k, hk⟩` from `hxD x x.2`. Use `⟨diagonalToNormOne K k, ⟨k, rfl⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(x : IdeleGroup K) * diagonal K k ∈ D`. Rewrite using `[mul_comm]` and apply the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_fundamentalDomain_normOne :
     ∃ E : Set (normOneSubgroup K), MeasurableSet E ∧ IsCompact (closure E) ∧
@@ -251,23 +247,23 @@ def normOneFundamentalDomain : Set (normOneSubgroup K) :=
   (exists_fundamentalDomain_normOne K).choose
 
 /- English proof (translation)
-The claim follows from `(exists_fundamentalDomain_normOne K).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_normOneFundamentalDomain :
     MeasurableSet (normOneFundamentalDomain K) :=
   (exists_fundamentalDomain_normOne K).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_fundamentalDomain_normOne K).choose_spec.2.1`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_closure_normOneFundamentalDomain :
     IsCompact (closure (normOneFundamentalDomain K)) :=
   (exists_fundamentalDomain_normOne K).choose_spec.2.1
 
 /- English proof (translation)
-Set `e : Kˣ ≃ (diagonalNormOne K).op` to `(diagonalNormOneEquiv K).trans (diagonalNormOne K).equivOp`. Establish `he : ∀ ξ : Kˣ, e ξ • u = u * diagonalToNormOne K ξ` using `fun _ ↦ rfl`. Take `⟨γ, hγ, huniq⟩` from `(exists_fundamentalDomain_normOne K).choose_spec.2.2 u`. Use `⟨e.symm γ, ?_, fun ξ hξ ↦ ?_⟩` and prove the remaining obligations. Use `show u * diagonalToNormOne K (e.symm γ) ∈ normOneFundamentalDomain K`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he, e.apply_symm_apply]`. Conclude with `hγ`. Express the relevant statement in the definitionally equal form `u * diagonalToNormOne K ξ ∈ normOneFundamentalDomain K at hξ`. Rewrite `hξ` using `[← he]`. Rewrite using `[← huniq _ hξ, e.symm_apply_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_mul_mem_normOneFundamentalDomain (u : normOneSubgroup K) :
     ∃! ξ : Kˣ, u * diagonalToNormOne K ξ ∈ normOneFundamentalDomain K := by
@@ -284,7 +280,7 @@ theorem existsUnique_mul_mem_normOneFundamentalDomain (u : normOneSubgroup K) :
     rw [← huniq _ hξ, e.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `IsFundamentalDomain.mk' (measurableSet_normOneFundamentalDomain K).nullMeasurableSet (exists_fundamentalDomain_normOne K).choose_spec.2.2`.
+A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_normOneFundamentalDomain (μ : Measure (normOneSubgroup K)) :
     IsFundamentalDomain (diagonalNormOne K).op (normOneFundamentalDomain K) μ :=
@@ -292,7 +288,7 @@ theorem isFundamentalDomain_normOneFundamentalDomain (μ : Measure (normOneSubgr
     (exists_fundamentalDomain_normOne K).choose_spec.2.2
 
 /- English proof (translation)
-The claim follows from `(measure_mono subset_closure).trans_lt (isCompact_closure_normOneFundamentalDomain K).measure_lt_top`.
+A detailed English derivation is pending.
 -/
 theorem normOneMeasure_normOneFundamentalDomain_lt_top :
     normOneMeasure K (normOneFundamentalDomain K) < ∞ :=
@@ -313,7 +309,7 @@ instance isFiniteMeasure_normOneClassMeasure : IsFiniteMeasure (normOneClassMeas
   infer_instance
 
 /- English proof (translation)
-The claim follows from `hF.quotientMeasure_eq _ (isFundamentalDomain_normOneFundamentalDomain K _)`.
+A detailed English derivation is pending.
 -/
 theorem map_restrict_eq_normOneClassMeasure {F : Set (normOneSubgroup K)}
     (hF : IsFundamentalDomain (diagonalNormOne K).op F (normOneMeasure K)) :
@@ -329,11 +325,11 @@ open IdeleGroup
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `h𝓕` using `isFundamentalDomain_normOneFundamentalDomain K (normOneMeasure K)`. Set `e : Kˣ ≃ (diagonalNormOne K).op` to `(diagonalNormOneEquiv K).trans (diagonalNormOne K).equivOp`. Establish `he : ∀ ξ : Kˣ, ∀ u, f (diagonalToNormOne K ξ * u) = f (e ξ • u)` using `fun ξ u ↦ by`. Express the relevant statement in the definitionally equal form `f (diagonalToNormOne K ξ * u) = f (u * diagonalToNormOne K ξ)`. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_tsum]`. Conclude with `fun γ ↦ (hf.1.comp_quasiMeasurePreserving (measurePreserving_smul γ (normOneMeasure K)).quasiMeasurePreserving).restrict`. Rewrite using `[← h𝓕.lintegral_eq_tsum'' (‖f ·‖ₑ)]`. Conclude with `ne_of_lt hf.2`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = ∫ u in normOneFundamentalDomain K, ∑' ξ : Kˣ, f (diagonalToNormOne K ξ * u) ∂normOneMeasure K := by`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u ↦ ?_)` and prove the remaining obligations. Simplify using `only [he]`. Conclude with `(e.tsum_eq (fun γ ↦ f (γ • u))).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_normOneMeasure_eq_setIntegral_tsum {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {f : normOneSubgroup K → E} (hf : Integrable f (normOneMeasure K)) :
@@ -362,11 +358,11 @@ theorem integral_normOneMeasure_eq_setIntegral_tsum {E : Type*} [NormedAddCommGr
         exact (e.tsum_eq (fun γ ↦ f (γ • u))).symm
 
 /- English proof (translation)
-Rewrite using `[integral_ideleMeasure_eq_integral_normOne w hF]`. Establish `hg : Integrable (fun p : normOneSubgroup K × {r : ℝ // 0 < r} ↦ F ((p.1 : IdeleGroup K) * moduleSection w p.2)) ((normOneMeasure K).prod posRealMeasure)`. Rewrite using `[← map_normOneSplitting_eq_prod w]`. Use `(integrable_map_equiv (normOneSplitting w).toHomeomorph.toMeasurableEquiv _).2 ?_` and prove the remaining obligations. Use `hF using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `x`. Conclude with `congrArg F ((normOneSplitting w).symm_apply_apply x)`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hg.prod_left_ae] with t ht`. Rewrite using `[integral_normOneMeasure_eq_setIntegral_tsum ht]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun u ↦ ?_)` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, coe_diagonalToNormOne]`. Use `congr 1`. Use function extensionality and compare the values at `ξ`. Rewrite using `[mul_right_comm]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_ideleMeasure_eq_integral_fundamentalDomain {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] (w : InfinitePlace K) {F : IdeleGroup K → E}
@@ -400,19 +396,19 @@ section Volume
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Use `set H := finiteIntegralUnits K`. Establish `hHm : MeasurableEmbedding (Subtype.val : H → (FiniteAdeleRing (𝓞 K) K)ˣ)` using `MeasurableEmbedding.subtype_coe (isOpen_finiteIntegralUnits K).measurableSet`. Use `set μ' : Measure H := Measure.comap Subtype.val (finiteIdeleMeasure K)`. Establish `hinv : μ'.IsMulLeftInvariant`. Use `⟨fun g ↦ Measure.ext fun s hs ↦ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_apply (measurable_const_mul g) hs, hHm.comap_apply, hHm.comap_apply]`. Establish `: Subtype.val '' ((fun x : H ↦ g * x) ⁻¹' s) = (fun x ↦ (g : (FiniteAdeleRing (𝓞 K) K)ˣ) * x) ⁻¹' (Subtype.val '' s)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨g * y, hy, rfl⟩`. Introduce and unpack `⟨y, hy, hyx⟩`. Use `⟨g⁻¹ * y, by simpa using hy, ?_⟩` and prove the remaining obligations. Simplify using `[hyx]`. Rewrite using `[this, measure_preimage_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : CompactSpace H` using `isCompact_iff_compactSpace.1 (isCompact_finiteIntegralUnits K)`. Establish `hWHo : IsOpen ((W.subgroupOf H : Subgroup H) : Set H)` using `hWo.preimage continuous_subtype_val`. Establish `: Finite (H ⧸ W.subgroupOf H)` using `Subgroup.quotient_finite_of_isOpen _ hWHo`. Establish `: (W.subgroupOf H).FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`. Establish `h` using `Subgroup.index_mul_measure (W.subgroupOf H) hWHo.measurableSet μ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : μ' Set.univ = 1`. Rewrite using `[hHm.comap_apply, Set.image_univ, Subtype.range_coe]`. Conclude with `finiteIdeleMeasure_finiteIntegralUnits K`. Establish `h2 : μ' (W.subgroupOf H : Set H) = finiteIdeleMeasure K W`. Rewrite using `[hHm.comap_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `hx`. Conclude with `⟨⟨x, hW hx⟩, hx, rfl⟩`. Rewrite `h` using `[h1, h2]`. Rewrite using `[Subgroup.relIndex]`. Conclude with `ENNReal.eq_inv_of_mul_eq_one_left (by rwa [mul_comm] at h)`.
+A detailed English derivation is pending.
 -/
 theorem finiteIdeleMeasure_eq_inv_relindex (W : Subgroup (FiniteAdeleRing (𝓞 K) K)ˣ)
     (hWo : IsOpen (W : Set (FiniteAdeleRing (𝓞 K) K)ˣ)) (hW : W ≤ finiteIntegralUnits K) :

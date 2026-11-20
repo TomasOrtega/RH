@@ -11,39 +11,35 @@ open Formalism.L2.Th1.CM Formalism.L2.Th1.F WeierstrassCurve
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Establish `n4 : ‖(4 : K)‖ = 1`. Rewrite using `[show (4 : K) = 2 * 2 by norm_num, norm_mul, h2]; norm_num`. Establish `h40 : (4 : K) ≠ 0`. Introduce `h0`. Rewrite `n4` using `[h0, norm_zero]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one n4`. Establish `h20 : (2 : K) ≠ 0`. Introduce `h0`. Rewrite `h2` using `[h0, norm_zero]`. Conclude with `zero_ne_one h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hW : Formalism.ELL.IntegralModel (Formalism.L2.Th1.A.shortW g2 g3)`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> simp [Formalism.L2.Th1.A.shortW, n4, hg2, hg3.le]`. Establish `hD : ‖(Formalism.L2.Th1.A.shortW g2 g3).Δ‖ = 1`. Establish `: (Formalism.L2.Th1.A.shortW g2 g3).Δ = g2 ^ 3 - 27 * g3 ^ 2`. Simplify using `only [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈, Formalism.L2.Th1.A.shortW]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hΔ]`. Establish `n27 : ‖(27 : K)‖ = 1`. Rewrite using `[show (27 : K) = 3 * 3 * 3 by norm_num, norm_mul, norm_mul, h3]; norm_num`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg2' : ‖g2‖ = 1`. Establish `hs : ‖27 * g3 ^ 2‖ < 1`. Rewrite using `[norm_mul, n27, one_mul, norm_pow]`. Conclude with `pow_lt_one₀ (norm_nonneg _) hg3 (by norm_num)`. Establish `h1 : ‖g2 ^ 3‖ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : g2 ^ 3 = (g2 ^ 3 - 27 * g3 ^ 2) + 27 * g3 ^ 2` using `by ring`. Rewrite using `[e, Formalism.ELL.FormalGroupPointsTorsion.dom (by rw [hΔ]; exact hs), hΔ]`. Rewrite `h1` using `[norm_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h1`. Take `⟨hx, -⟩` from `Formalism.ELL.torsionIntegral_of Formalism.ELL.formal_group_points_no_prime_to_p_torsion K _ hW hD n hn x y h hP`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hx1 : ‖x‖ < 1` using `lt_of_le_of_ne hx hne`. Establish `heq : y ^ 2 = x ^ 3 - g2 / 4 * x - g3 / 4`. Use `(Affine.equation_iff x y).1 h.1` as an intermediate fact. Simplify using `only [Formalism.L2.Th1.A.shortW] at this`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `this`. Establish `hy1 : ‖y‖ < 1`. Establish `: ‖y ^ 2‖ < 1`. Rewrite using `[heq]`. Use `Formalism.ELL.FormalGroupPointsTorsion.sub_lt (Formalism.ELL.FormalGroupPointsTorsion.sub_lt ?_ ?_) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_pow]; exact pow_lt_one₀ (norm_nonneg _) hx1 (by norm_num)`. Rewrite using `[norm_mul, norm_div, n4, hg2']`. Simplify using `using hx1`. Rewrite using `[norm_div, n4]`. Simplify using `using hg3`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite `this` using `[norm_pow]`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `absurd this (not_lt.2 (one_le_pow₀ hc))`. Establish `hQ : Formalism.ELL.InFormalGroupPoints (Affine.Point.some x y h + Affine.Point.some x y h)`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `hy : y = (Formalism.L2.Th1.A.shortW g2 g3).toAffine.negY x y`. Rewrite using `[Affine.Point.add_self_of_Y_eq hy, Affine.Point.zero_def]`. Discharge the goal by the elementary cases of `trivial`. Rewrite using `[Affine.Point.add_self_of_Y_ne hy] show 1 < ‖_‖`. Establish `hy0 : y ≠ 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `hy (by simp [Affine.negY, Formalism.L2.Th1.A.shortW])`. Rewrite using `[Affine.slope_of_Y_ne rfl hy]`. Simplify using `only [Affine.addX, Affine.negY, Formalism.L2.Th1.A.shortW]`. Establish `e : ((3 * x ^ 2 + 2 * 0 * x + -g2 / 4 - 0 * y) / (y - (-y - 0 * x - 0))) ^ 2 + 0 * ((3 * x ^ 2 + 2 * 0 * x + -g2 / 4 - 0 * y) / (y - (-y - 0 * x - 0))) - 0 - x - x = ((-(g2 / 4) + 3 * x ^ 2) / (2 * y)) ^ 2 + (-x - x)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: y - (-y - 0 * x - 0) = 2 * y` using `by ring`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `hnum : ‖-(g2 / 4) + 3 * x ^ 2‖ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : ‖-(g2 / 4)‖ = 1` using `by rw [norm_neg, norm_div, n4, hg2']; norm_num`. Rewrite using `[Formalism.ELL.FormalGroupPointsTorsion.dom, ha]`. Rewrite using `[ha, norm_mul, h3, one_mul, norm_pow]`. Conclude with `pow_lt_one₀ (norm_nonneg _) hx1 (by norm_num)`. Establish `hyp : 0 < ‖y‖` using `norm_pos_iff.2 hy0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hl : 1 < ‖((-(g2 / 4) + 3 * x ^ 2) / (2 * y)) ^ 2‖`. Rewrite using `[norm_pow, norm_div, hnum, norm_mul, h2, one_mul]`. Conclude with `one_lt_pow₀ ((one_lt_div hyp).2 hy1) (by norm_num)`. Establish `hs : ‖-x - x‖ < 1` using `Formalism.ELL.FormalGroupPointsTorsion.sub_lt (by rwa [norm_neg]) hx1`. Rewrite using `[Formalism.ELL.FormalGroupPointsTorsion.dom (hs.trans hl)]`.
-
-Conclude with `hl`. Establish `hQ0 : Affine.Point.some x y h + Affine.Point.some x y h = 0`. Use `Formalism.ELL.formal_group_points_no_prime_to_p_torsion K _ hW hD n hn _ hQ ?_` and prove the remaining obligations. Rewrite using `[nsmul_add, hP, add_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨k, rfl⟩ : ∃ k, n = 2 * k + 1 := by`.
-
-Use `Nat.odd_iff.2 (by omega : n % 2 = 1)` as an intermediate fact. Conclude with `this`. Use `Affine.Point.some_ne_zero h ?_` and prove the remaining obligations. Rewrite `hP` using `[add_nsmul, one_nsmul, mul_comm, mul_nsmul', two_nsmul, hQ0, nsmul_zero, zero_add]`. Conclude with `hP`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsUnit2 (K : Type) [NormedField K] [IsUltrametricDist K] (g2 g3 : K) (h2 : ‖(2 : K)‖ = 1)
     (h3 : ‖(3 : K)‖ = 1) (hg2 : ‖g2‖ ≤ 1) (hg3 : ‖g3‖ < 1) (hΔ : ‖g2 ^ 3 - 27 * g3 ^ 2‖ = 1)

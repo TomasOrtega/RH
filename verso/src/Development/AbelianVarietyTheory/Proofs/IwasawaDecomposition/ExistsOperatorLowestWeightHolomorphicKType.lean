@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.JointHarm.KTypeOp
 
 /- English proof (translation)
-Use `⟨Unitary.star_mem hk.1, ?_⟩` and prove the remaining obligations. Establish `hJ : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε`. Simplify using `only [Formalism.REAL.Jm, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `by_cases h : ε a = true <;> simp [h]`. Use `congrArg Matrix.conjTranspose hk.2` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hJ]`. Conclude with `this.symm`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_mem_K {n : ℕ} {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Formalism.REAL.Kset ε) :
     kᴴ ∈ Formalism.REAL.Kset ε := by
@@ -29,7 +29,7 @@ theorem star_mem_K {n : ℕ} {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) �
   exact this.symm
 
 /- English proof (translation)
-Use `⟨mul_mem ha.1 hb.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hb.2, ← Matrix.mul_assoc, ha.2, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_K {n : ℕ} {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ Formalism.REAL.Kset ε)
     (hb : b ∈ Formalism.REAL.Kset ε) : a * b ∈ Formalism.REAL.Kset ε := by
@@ -37,33 +37,33 @@ theorem mul_mem_K {n : ℕ} {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) 
   rw [Matrix.mul_assoc, hb.2, ← Matrix.mul_assoc, ha.2, Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨hτ, hbw⟩` from `isHolRep_of_isTau h`. Take `⟨-, ⟨h1, hm⟩, -, ha, hirr, hw, -, -⟩` from `h`. Establish `KC` using `@GlobalTheory.Dec.TauExt.mem_KC n ε`. Set `Φ : (Formalism.REAL.Kset ε →₀ ℂ) →ₗ[ℂ] W` to `Finsupp.linearCombination ℂ fun k => τ k.1 w`. Set `Ψ : (Formalism.REAL.Kset ε →₀ ℂ) →ₗ[ℂ] Module.End ℂ P` to `Finsupp.linearCombination ℂ fun k => π k.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hΦ : ∀ k a, Φ (Finsupp.single k a) = a • τ k.1 w` using `fun k a => Finsupp.linearCombination_single _ _ _`. Establish `hΨ : ∀ k a, Ψ (Finsupp.single k a) = a • π k.1` using `fun k a => Finsupp.linearCombination_single _ _ _`. Establish `hmul : ∀ a ∈ Formalism.REAL.Kset ε, ∀ b ∈ Formalism.REAL.Kset ε, τ a (τ b w) = τ (a * b) w` using `fun a ha' b hb => by`. Rewrite using `[hm a (KC ha') b (KC hb)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hw1 : Φ (Finsupp.single ⟨1, GlobalTheory.Dec.TauExt.one_mem_K⟩ 1) = w`. Rewrite using `[hΦ, one_smul, h1]`. Both sides reduce to the same expression. Establish `hsurj : LinearMap.range Φ = ⊤`. Use `(hirr _ ?_).resolve_left fun h0 => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `g hg _ ⟨c, rfl⟩`. Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add]`. Conclude with `add_mem ha hb`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `single k a => exact ⟨Finsupp.single ⟨g * k.1, mul_mem_K hg k.2⟩ a, by rw [hΦ, hΦ, map_smul, hmul g hg _ k.2]⟩`. Establish `: w ∈ LinearMap.range Φ` using `⟨_, hw1⟩`. Rewrite `this` using `[h0, Submodule.mem_bot]`. Simplify using `[this] at hw`. Take `⟨R, hR⟩` from `Φ.exists_rightInverse_of_surjective hsurj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hR' : ∀ s, Φ (R s) = s` using `fun s => LinearMap.congr_fun hR s`. Use `⟨Ψ ∘ₗ R, fun s => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.image_eq_range, ← Finsupp.range_linearCombination]`. Conclude with `⟨R s, rfl⟩`. Establish `gram0 : ∀ k k' : Formalism.REAL.Kset ε, B (π k.1 y) (π k'.1 y) = B y y * ⟪τ k.1 w, τ k'.1 w⟫_ℂ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k k'`. Establish `hk` using `star_mem_K k.2`. Establish `e` using `GlobalTheory.T.lowestWeight_matrixCoefficient_depends_on_weight n ε (-abelian₂) P B π W (innerₛₗ ℂ) (fun g => (τ g : W →ₗ[ℂ] W)) y y w w hπ hτ hy hy hbw hbw _ (mul_mem_K hk k'.2)`. Establish `hww : innerₛₗ ℂ w w = 1`. Rewrite using `[innerₛₗ_apply_apply, inner_self_eq_norm_sq_to_K, hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `e` using `[hww, mul_one]`. Rewrite using `[hπ.2.2.2.1 _ (KC k.2), ha _ (KC k.2), hmul _ hk _ k'.2, ← Module.End.mul_apply, ← hπ.2.2.1 _ (KC hk) _ (KC k'.2), e]`. Both sides reduce to the same expression. Establish `gram : ∀ c c', B (Ψ c y) (Ψ c' y) = B y y * ⟪Φ c, Φ c'⟫_ℂ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c c'`. Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, ha, hb, inner_add_left, mul_add]`. Consider the case `single k a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `c' using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, ha, hb, inner_add_right, mul_add]`. Consider the case `single k' a'`. Simplify using `only [hΦ, hΨ, LinearMap.smul_apply, map_smul, LinearMap.map_smulₛₗ, inner_smul_left, inner_smul_right, gram0, smul_eq_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ c, Ψ (R (Φ c)) y = Ψ c y`. Introduce `c`. Use `gram (R (Φ c) - c) (R (Φ c) - c)` as an intermediate fact. Rewrite `this` using `[map_sub Φ, hR', sub_self, inner_zero_left, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hπ.1 _ this` as an intermediate fact. Rewrite `this` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`. Then use the resulting hypothesis. Use `⟨?_, fun g hg s => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, ← hw1, key, hΨ, one_smul, hπ.2.1]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩ : s ∈ LinearMap.range Φ` from `hsurj ▸ Submodule.mem_top`. Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, ha, hb]`. Consider the case `single k a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e : τ g (Φ (Finsupp.single k a)) = Φ (Finsupp.single ⟨g * k.1, mul_mem_K hg k.2⟩ a)`. Rewrite using `[hΦ, hΦ, map_smul, hmul g hg _ k.2]`. Rewrite using `[e, LinearMap.comp_apply, LinearMap.comp_apply, key, key, hΨ, hΨ, hπ.2.2.1 _ (KC hg) _ (KC k.2)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_op_of_isTau {n : ℕ} {ε : Fin n → Bool} {abelian₂ : Fin n → ℝ} {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] {τ : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {w : W} (h : GlobalTheory.Dec.IsTau ε abelian₂ τ w)
@@ -140,13 +140,13 @@ theorem exists_op_of_isTau {n : ℕ} {ε : Fin n → Bool} {abelian₂ : Fin n �
       simp
 
 /- English proof (translation)
-Introduce `n ε abelian₂ H _ _ σ S hσ hS P _ _ B π hπ`. Take `⟨v, hvS, hv0, hv⟩` from `hS.2.2.2.1`. Set `w : S` to `⟨((‖v‖⁻¹ : ℝ) : ℂ) • v, S.smul_mem _ hvS⟩`. Establish `hw : ‖w‖ = 1`. Establish `: ‖v‖ ≠ 0` using `norm_ne_zero_iff.2 hv0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ‖((‖v‖⁻¹ : ℝ) : ℂ) • v‖ = 1`. Rewrite using `[norm_smul]`. Simplify using `[this]`. Establish `hwt : IsWtOn (Formalism.REAL.Kset ε) σ abelian₂ (w : H)` using `fun θ hθ => by show σ _ (_ • v) = _ • _ • v`. Rewrite using `[map_smul, hv θ hθ, smul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ, hτσ⟩` from `GlobalTheory.Dec.TauExt.tauExists n ε abelian₂ H σ S w hσ hS hw hwt`. Take `⟨T, hT1, hT2⟩` from `exists_op_of_isTau hτ hπ`. Use `⟨w, T, fun h0 => by simp [h0] at hw, hT1, fun y hy => ⟨(hT2 y hy).1, fun k hk s s' hs => ?_⟩⟩` and prove the remaining obligations. Establish `hk'` using `GlobalTheory.Dec.TauExt.conj_mem hk`. Rewrite using `[← (hT2 y hy).2 _ hk' s]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hτσ _ hk', GlobalTheory.Dec.TauExt.conj_conj, hs]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_op : ∀ (n : ℕ) (ε : Fin n → Bool) (abelian₂ : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (S : Submodule ℂ H), IsURepOn (Formalism.REAL.Kset ε) σ → IsKTypeOf ε σ abelian₂ S → ∀ (P : Type) [AddCommGroup P] [Module ℂ P] (B : P →ₗ⋆[ℂ] P →ₗ[ℂ] ℂ) (π : Matrix (Fin n) (Fin n) ℂ → Module.End ℂ P), IsHolRep ε B π → ∃ (w : S) (T : S →ₗ[ℂ] Module.End ℂ P), w ≠ 0 ∧ (∀ s, T s ∈ Submodule.span ℂ (π '' Formalism.REAL.Kset ε)) ∧ ∀ y, IsBottom ε π (-abelian₂) y → T w y = y ∧ ∀ k ∈ Formalism.REAL.Kset ε, ∀ s s' : S, (s' : H) = σ k s → T s' y = π (k.map star) (T s y) := by
   intro n ε abelian₂ H _ _ σ S hσ hS P _ _ B π hπ

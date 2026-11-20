@@ -10,23 +10,21 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ResidueEisenstein
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y L a h hD T hT g e he`. Take `⟨m, Z, J₀, hFr⟩` from `GlobalTheory.SphEis.exists_fr_of_isotropic F E σ hD.cm n J hD.herm (r + 1) X Y hD.witt.xx hD.witt.yy hD.witt.xy`. Establish `hinv` using `(GlobalTheory.T.isotropicEisensteinSeries_rationalPoints_permute_terms F E σ n J r X Y L a h hD T hT).2.2.1`. Establish `hnn : ∀ x, 0 ≤ h x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, β, hp, k, hk, rfl⟩` from `hD.iwa x`. Rewrite using `[hD.ht p β hp k hk]`. Conclude with `NNReal.coe_nonneg _`. Establish `hS` using `GlobalTheory.T.summable_height_rpow_parabolicCosets F E σ n J (r + 1) m X Y Z J₀ hFr L a hD.lat hD.iwa (fun x => Real.toNNReal (h x)) (fun p β hp k hk => by simp only [hD.ht p β hp k hk, Real.toNNReal_coe]) g e (by push_cast; linarith)`. Establish `hXinv : adMat F (Formalism.UG.cT (σ : E →+* E) Y * J) * adMat F X = 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [adMat, ← Matrix.map_mul, hFr.dc, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hsc : ∀ p ∈ GlobalTheory.UAut.parFlag σ J X (fun _ => 0), ∃ β : GL (Fin (r + 1)) (AF F ⊗[F] E), ScalesBy σ J X p β`. Introduce `p hp`. Take `⟨⟨B, -, hB⟩, B', -, hB'⟩` from `hp`. Establish `hX : adMat F X = adMat F X * (B * B')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mul]`. Use `_ = adMat F X * (B * B') := by rw [hB', ← Matrix.mul_assoc, hB, Matrix.mul_assoc]`. Establish `h1 : B * B' = 1`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Supply the required witnesses or components.
 
-Apply the tactic sequence `have h2 : B' * B = 1 := by first | exact mul_eq_one_comm.mp h1 | exact Matrix.mul_eq_one_comm.mp h1 | exact (Matrix.mul_eq_one_comm).1 h1 | exact Matrix.nonsing_inv_mul_cancel_left _ _ h1`. Conclude with `⟨⟨B, B', h1, h2⟩, hB⟩`. Set `φ : T → GlobalTheory.Eis.Cosets (GlobalTheory.UAut.parFlag σ J X (fun _ => 0)) (ratPts σ J)` to `fun t => GlobalTheory.AutomorphicL2Unitary.mk _ t.1`. Establish `hrel : ∀ t : T, ∃ γ : ((GlobalTheory.UAut.parFlag σ J X (fun _ => 0)).subgroupOf (ratPts σ J)), (γ : ratPts σ J) * (φ t).out = t.1` using `fun t => GlobalTheory.AutomorphicL2Unitary.mk_eq_iff.1 (Quotient.out_eq (φ t))`. Establish `hinj : Function.Injective φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `t t' htt`. Take `⟨γ, hγ⟩` from `GlobalTheory.AutomorphicL2Unitary.mk_eq_iff.1 htt`. Establish `hγP : ((γ : ratPts σ J) : GAd σ J) ∈ GlobalTheory.UAut.parFlag σ J X (fun _ => 0)` using `Subgroup.mem_subgroupOf.1 γ.2`. Take `⟨β, hβ⟩` from `hsc _ hγP`. Use `Subtype.ext ((hT t'.1).unique ⟨t.2, β, ?_⟩ ⟨t'.2, 1, ?_⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← eq_mul_inv_of_mul_eq hγ]`. Conclude with `hβ`. Simplify using `[ScalesBy]`. Use `(hS.comp_injective hinj).congr fun t => ?_` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `hrel t`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hγP : ((γ⁻¹ : ratPts σ J) : GAd σ J) ∈ GlobalTheory.UAut.parFlag σ J X (fun _ => 0)` using `Subgroup.mem_subgroupOf.1 (inv_mem γ.2)`. Take `⟨β, hβ⟩` from `hsc _ hγP`. Establish `hout : ((φ t).out : ratPts σ J) = γ⁻¹ * t.1` using `eq_inv_mul_of_mul_eq hγ`. Simplify using `only [Function.comp, Real.coe_toNNReal _ (hnn _)]`. Rewrite using `[hout, Subgroup.coe_mul, mul_assoc]`.
-
-Use `congrArg (· ^ e) (hinv _ ⟨?_, β, Subgroup.mem_top _, ?_⟩ _)` and prove the remaining obligations. Conclude with `SetLike.coe_mem _`. Conclude with `hβ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem summable_height_rpow_reps : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E)) (a : GL (Fin n) (AF F ⊗[F] E)) (h : GAd σ J → ℝ), DataJ σ J X Y L a h → ∀ T, IsRepsJ σ J X T → ∀ (g : GAd σ J) (e : ℝ), ((n : ℝ) - (r + 1)) < e → Summable fun t : T => h (t.1.1 * g) ^ e := by
   intro F E _ _ _ _ _ σ n J r X Y L a h hD T hT g e he

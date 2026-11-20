@@ -12,7 +12,7 @@ namespace GlobalTheory.UPel.HT.Gauss
 instance fact5 : Fact (Nat.Prime 5) := ⟨by norm_num⟩
 
 /- English proof (translation)
-The claim follows from `IsCyclotomicExtension.zeta_spec 4 ℚ Qi`.
+A detailed English derivation is pending.
 -/
 theorem hζ : IsPrimitiveRoot ii 4 := IsCyclotomicExtension.zeta_spec 4 ℚ Qi
 
@@ -21,12 +21,12 @@ def pbO : PowerBasis ℤ (𝓞 Qi) := hζ.integralPowerBasis
 def ζO : 𝓞 Qi := hζ.toInteger
 
 /- English proof (translation)
-The claim follows from `hζ.integralPowerBasis_gen`.
+A detailed English derivation is pending.
 -/
 theorem pbO_gen : pbO.gen = ζO := hζ.integralPowerBasis_gen
 
 /- English proof (translation)
-Rewrite using `[pbO, hζ.integralPowerBasis_dim]`. Evaluate the decidable proposition.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 -/
 theorem pbO_dim : pbO.dim = 2 := by
   rw [pbO, hζ.integralPowerBasis_dim]; decide
@@ -37,13 +37,13 @@ Both sides reduce to the same expression.
 theorem coe_ζO : (ζO : Qi) = ii := rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `[coe_ζO, ii_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ζO_sq : ζO * ζO = -1 := by
   ext; simp [coe_ζO, ii_mul]
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `pbO.exists_eq_aeval x`. Rewrite `hf` using `[pbO_dim]`. Rewrite using `[Polynomial.eq_X_add_C_of_natDegree_le_one (by omega : f.natDegree ≤ 1)]`. Use `⟨f.coeff 0, f.coeff 1, ?_⟩` and prove the remaining obligations. Simplify using `[pbO_gen]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -55,14 +55,14 @@ theorem coordO (x : 𝓞 Qi) : ∃ a b : ℤ, x = a + b * ζO := by
   simp [pbO_gen]; ring
 
 /- English proof (translation)
-Rewrite using `[pbO_gen, ← RingOfIntegers.minpoly_coe, coe_ζO]`. Conclude with `(cyclotomic_eq_minpoly hζ (by norm_num)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minpoly_ζO : minpoly ℤ pbO.gen = cyclotomic 4 ℤ := by
   rw [pbO_gen, ← RingOfIntegers.minpoly_coe, coe_ζO]
   exact (cyclotomic_eq_minpoly hζ (by norm_num)).symm
 
 /- English proof (translation)
-Rewrite using `[show (4 : ℕ) = 2 ^ (1 + 1) by norm_num, cyclotomic_prime_pow_eq_geom_sum Nat.prime_two]`. Simplify using `[Finset.sum_range_succ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cyc4 (R : Type) [CommRing R] : cyclotomic 4 R = 1 + X ^ 2 := by
   rw [show (4 : ℕ) = 2 ^ (1 + 1) by norm_num, cyclotomic_prime_pow_eq_geom_sum Nat.prime_two]
@@ -72,19 +72,19 @@ def red : 𝓞 Qi →+* ZMod 5 :=
   (pbO.lift (2 : ZMod 5) (by rw [minpoly_ζO, cyc4]; simp; decide)).toRingHom
 
 /- English proof (translation)
-Simplify using `[red, ← pbO_gen]`.
+Simplify using the standard rewrite rules.
 -/
 theorem red_ζO : red ζO = 2 := by
   simp [red, ← pbO_gen]
 
 /- English proof (translation)
-Simplify using `[red_ζO]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem red_coord (a b : ℤ) : red (a + b * ζO) = a + 2 * b := by
   simp [red_ζO]; ring
 
 /- English proof (translation)
-Introduce `y`. Take `⟨n, rfl⟩` from `ZMod.intCast_surjective y`. Conclude with `⟨n, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem red_surj : Function.Surjective red := by
   intro y
@@ -108,56 +108,54 @@ namespace GlobalTheory.UPel.HT.Gauss
 abbrev cO : 𝓞 Qi →+* 𝓞 Qi := (IsCMField.ringOfIntegersComplexConj Qi : 𝓞 Qi →+* 𝓞 Qi)
 
 /- English proof (translation)
-Use `ext`. Simplify using `[IsCMField.coe_ringOfIntegersComplexConj, coe_ζO, cc_ii]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cO_ζO : IsCMField.ringOfIntegersComplexConj Qi ζO = -ζO := by
   ext; simp [IsCMField.coe_ringOfIntegersComplexConj, coe_ζO, cc_ii]
 
 /- English proof (translation)
-Simplify using `[cO_ζO, red_ζO]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem red_cO_coord (a b : ℤ) : red (cO (a + b * ζO)) = a - 2 * b := by
   simp [cO_ζO, red_ζO]; ring
 
 /- English proof (translation)
-The claim follows from `RingHom.mem_ker`.
+A detailed English derivation is pending.
 -/
 theorem mem_u {x : 𝓞 Qi} : x ∈ u.asIdeal ↔ red x = 0 := RingHom.mem_ker
 
 /- English proof (translation)
-Use `push_cast`. Take the linear combination `ζO_sq`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem five_eq : ((5 : ℕ) : 𝓞 Qi) = (2 - ζO) * (2 + ζO) := by
   push_cast; linear_combination ζO_sq
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_ofNat, red_ζO, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem red_two_sub : red (2 - ζO) = 0 := by
   rw [map_sub, map_ofNat, red_ζO, sub_self]
 
 /- English proof (translation)
-Rewrite using `[map_add, map_ofNat, cO, RingHom.coe_coe, cO_ζO, map_add, map_neg, map_ofNat, red_ζO, add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem red_cO_two_add : red (cO (2 + ζO)) = 0 := by
   rw [map_add, map_ofNat, cO, RingHom.coe_coe, cO_ζO, map_add, map_neg, map_ofNat, red_ζO, add_neg_cancel]
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_ofNat, cO, RingHom.coe_coe, cO_ζO, map_sub, map_neg, map_ofNat, red_ζO]`. Evaluate the decidable proposition.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 -/
 theorem red_cO_two_sub : red (cO (2 - ζO)) = 4 := by
   rw [map_sub, map_ofNat, cO, RingHom.coe_coe, cO_ζO, map_sub, map_neg, map_ofNat, red_ζO]; decide
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `h1` using `Ideal.mul_le_inf hx`. Rewrite `h1` using `[Ideal.mem_inf, Ideal.mem_comap, mem_u, mem_u]`. Take `⟨a, b, rfl⟩` from `coordO x`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[red_coord, red_cO_coord]`. Take `⟨h1, h2⟩` from `h1`. Establish `h5 : (5 : ZMod 5) = 0` using `by decide`. Establish `ha : ((a : ℤ) : ZMod 5) = 0` using `by linear_combination 3 * h1 + 3 * h2 - (a : ZMod 5) * h5`. Establish `hb : ((b : ℤ) : ZMod 5) = 0` using `by linear_combination 4 * h1 - 4 * h2 - 3 * (b : ZMod 5) * h5`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ha`, `hb` using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Take `⟨a', rfl⟩` from `ha`. Take `⟨b', rfl⟩` from `hb`. Rewrite using `[Ideal.mem_span_singleton]`. Conclude with `⟨a' + b' * ζO, by push_cast; ring⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, five_eq]`. Apply `Ideal.mul_mem_mul` to reduce the goal to its premises. Rewrite using `[mem_u]`. Conclude with `red_two_sub`. Rewrite using `[Ideal.mem_comap, mem_u]`.
-
-Conclude with `red_cO_two_add`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u_split : u.asIdeal * u.asIdeal.comap cO = Ideal.span {((5 : ℕ) : 𝓞 Qi)} := by
   apply le_antisymm
@@ -181,7 +179,7 @@ theorem u_split : u.asIdeal * u.asIdeal.comap cO = Ideal.span {((5 : ℕ) : 𝓞
     · rw [Ideal.mem_comap, mem_u]; exact red_cO_two_add
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (2 - ζO) ∈ u.asIdeal` using `by rw [mem_u]; exact red_two_sub`. Rewrite `h1` using `[← h, Ideal.mem_comap, mem_u, red_cO_two_sub]`. Use `revert h1`. Evaluate the decidable proposition.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem u_split_ne : u.asIdeal.comap cO ≠ u.asIdeal := by
   intro h
@@ -194,14 +192,14 @@ end GlobalTheory.UPel.HT.Gauss
 namespace GlobalTheory.UPel.HT.Gauss
 
 /- English proof (translation)
-Rewrite using `[IsCyclotomicExtension.finrank (n := 4) Qi (Polynomial.cyclotomic.irreducible_rat (by norm_num))]`. Evaluate the decidable proposition.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 -/
 theorem finrank_Qi : Module.finrank ℚ Qi = 2 := by
   rw [IsCyclotomicExtension.finrank (n := 4) Qi (Polynomial.cyclotomic.irreducible_rat (by norm_num))]
   decide
 
 /- English proof (translation)
-Establish `h2 : ((a ^ 2 + b ^ 2 : ℚ) : Qi) = 0`. Use `push_cast`. Take the linear combination `((a : Qi) - b * ii) * h + (b : Qi) ^ 2 * ii_mul`. Establish `h3 : a ^ 2 + b ^ 2 = 0` using `by exact_mod_cast h2`. Apply the tactic sequence `constructor <;> nlinarith [sq_nonneg a, sq_nonneg b]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coord_zero {a b : ℚ} (h : (a : Qi) + b * ii = 0) : a = 0 ∧ b = 0 := by
   have h2 : ((a ^ 2 + b ^ 2 : ℚ) : Qi) = 0 := by
@@ -211,7 +209,7 @@ theorem coord_zero {a b : ℚ} (h : (a : Qi) + b * ii = 0) : a = 0 ∧ b = 0 := 
   constructor <;> nlinarith [sq_nonneg a, sq_nonneg b]
 
 /- English proof (translation)
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Apply `coord_zero` to reduce the goal to its premises. Simplify `hst` using `[Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem li : LinearIndependent ℚ ![(1 : Qi), ii] := by
   rw [LinearIndependent.pair_iff]
@@ -223,16 +221,16 @@ def bQ : Module.Basis (Fin 2) ℚ Qi :=
   basisOfLinearIndependentOfCardEqFinrank li (by rw [finrank_Qi]; simp)
 
 /- English proof (translation)
-Simplify using `[bQ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bQ_zero : bQ 0 = 1 := by simp [bQ]
 /- English proof (translation)
-Simplify using `[bQ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bQ_one : bQ 1 = ii := by simp [bQ]
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_eq_matrix_trace bQ, Matrix.trace_fin_two, Algebra.leftMulMatrix_apply, LinearMap.toMatrix_apply, LinearMap.toMatrix_apply]`. Establish `e1 : Algebra.lmul ℚ Qi ii (bQ 0) = bQ 1` using `by simp [bQ_zero, bQ_one]`. Establish `e2 : Algebra.lmul ℚ Qi ii (bQ 1) = -bQ 0` using `by simp [bQ_zero, bQ_one, ii_mul]`. Rewrite using `[e1, e2, map_neg, bQ.repr_self, bQ.repr_self]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_ii : Algebra.trace ℚ Qi ii = 0 := by
   rw [Algebra.trace_eq_matrix_trace bQ, Matrix.trace_fin_two, Algebra.leftMulMatrix_apply,
@@ -242,7 +240,7 @@ theorem trace_ii : Algebra.trace ℚ Qi ii = 0 := by
   rw [e1, e2, map_neg, bQ.repr_self, bQ.repr_self]; simp
 
 /- English proof (translation)
-Establish `ha : (a : Qi) = algebraMap ℚ Qi a` using `(eq_ratCast _ a).symm`. Establish `hb : (b : Qi) = algebraMap ℚ Qi b` using `(eq_ratCast _ b).symm`. Rewrite using `[map_add, ha, hb, ← Algebra.smul_def, map_smul, trace_ii, smul_zero, add_zero, Algebra.trace_algebraMap, finrank_Qi, nsmul_eq_mul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem trace_coord (a b : ℚ) : Algebra.trace ℚ Qi ((a : Qi) + b * ii) = 2 * a := by
   have ha : (a : Qi) = algebraMap ℚ Qi a := (eq_ratCast _ a).symm
@@ -251,7 +249,7 @@ theorem trace_coord (a b : ℚ) : Algebra.trace ℚ Qi ((a : Qi) + b * ii) = 2 *
     Algebra.trace_algebraMap, finrank_Qi, nsmul_eq_mul]; norm_num
 
 /- English proof (translation)
-Simplify using `[map_add, map_mul, map_ratCast, cc_ii]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cc_coord (a b : ℚ) : IsCMField.complexConj Qi ((a : Qi) + b * ii) = a - b * ii := by
   simp [map_add, map_mul, map_ratCast, cc_ii]; ring
@@ -282,7 +280,7 @@ Both sides reduce to the same expression.
 theorem ψ_apply (x y : Qi) : ψ x y = Algebra.trace ℚ Qi (-ii / 2 * x * IsCMField.complexConj Qi y) := rfl
 
 /- English proof (translation)
-Rewrite using `[ψ_apply, cc_coord]`. Establish `: -ii / 2 * ((a : Qi) + b * ii) * ((c : Qi) - d * ii) = (((b * c - a * d) / 2 : ℚ) : Qi) + ((-(a * c + b * d) / 2 : ℚ) : Qi) * ii`. Use `push_cast`. Take the linear combination `(-((b : Qi) * c - a * d) / 2 + (b : Qi) * d * ii / 2) * ii_mul`. Rewrite using `[this, trace_coord]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -295,25 +293,25 @@ theorem ψ_coord (a b c d : ℚ) : ψ ((a : Qi) + b * ii) ((c : Qi) + d * ii) = 
   rw [this, trace_coord]; ring
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `exists_coord x`. Rewrite using `[ψ_coord]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ψ_alt (x : Qi) : ψ x x = 0 := by
   obtain ⟨a, b, rfl⟩ := exists_coord x
   rw [ψ_coord]; ring
 
 /- English proof (translation)
-Rewrite using `[ψ_apply, ψ_apply, star_eq, map_mul (IsCMField.complexConj Qi), IsCMField.complexConj_apply_apply]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ψ_adj (b x y : Qi) : ψ (b * x) y = ψ x (star b * y) := by
   rw [ψ_apply, ψ_apply, star_eq, map_mul (IsCMField.complexConj Qi), IsCMField.complexConj_apply_apply]
   congr 1; ring
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `0 < Algebra.trace ℚ Qi (x * star x)`. Take `⟨a, b, rfl⟩` from `exists_coord x`. Establish `hab : ¬ (a = 0 ∧ b = 0)`. Introduce and unpack `⟨rfl, rfl⟩`. Simplify using `at hx`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `: ((a : Qi) + b * ii) * star ((a : Qi) + b * ii) = ((a ^ 2 + b ^ 2 : ℚ) : Qi) + ((0 : ℚ) : Qi) * ii`. Rewrite using `[star_eq, cc_coord]`. Use `push_cast`. Take the linear combination `(-(b : Qi) ^ 2) * ii_mul`. Rewrite using `[this, trace_coord]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ha : a = 0`. Establish `hb : b ≠ 0` using `fun hb => hab ⟨ha, hb⟩`. Check the signs of the components of the expression. Check the signs of the components of the expression.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Check the signs of the components of the expression. Check the signs of the components of the expression.
 -/
 theorem pos (x : Qi) (hx : x ≠ 0) :
     0 < LinearMap.trace ℚ Qi (LinearMap.mulLeft ℚ (x * star x)) := by
@@ -330,9 +328,9 @@ theorem pos (x : Qi) (hx : x ≠ 0) :
   · positivity
 
 /- English proof (translation)
-Set `σ : Qi →+* ℂ` to `Classical.choice inferInstance`. Establish `h : σ ii * σ ii = -1` using `by rw [← map_mul, ii_mul]; simp`. Establish `h' : σ ii = Complex.I ∨ σ ii = -Complex.I`. Rewrite using `[← mul_self_eq_mul_self_iff, h]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `h' with h' | h'` into its components or cases. Conclude with `⟨σ, h'⟩`. Conclude with `⟨(starRingEnd ℂ).comp σ, by simp [h']⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_τ : ∃ τ : Qi →+* ℂ, τ ii = Complex.I := by
   let σ : Qi →+* ℂ := Classical.choice inferInstance
@@ -346,12 +344,12 @@ theorem exists_τ : ∃ τ : Qi →+* ℂ, τ ii = Complex.I := by
 def τ₀ : Qi →+* ℂ := exists_τ.choose
 
 /- English proof (translation)
-The claim follows from `exists_τ.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem τ₀_ii : τ₀ ii = Complex.I := exists_τ.choose_spec
 
 /- English proof (translation)
-Apply the tactic sequence `apply Complex.ext <;> simp [τ₀_ii]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem τ₀_coord (a b : ℚ) : τ₀ ((a : Qi) + b * ii) = ⟨a, b⟩ := by
   apply Complex.ext <;> simp [τ₀_ii]
@@ -363,9 +361,9 @@ namespace GlobalTheory.UPel.HT.Gauss
 attribute [local instance] starQi
 
 /- English proof (translation)
-Rewrite using `[Algebra.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Take `⟨a, b, rfl⟩` from `coordO y`. Conclude with `⟨a, b, by simp [coe_ζO]⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, b, rfl⟩`. Conclude with `⟨a + b * ζO, by simp [coe_ζO]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_bot_iff (x : Qi) : x ∈ (⊥ : Subalgebra (𝓞 Qi) Qi) ↔ ∃ a b : ℤ, x = a + b * ii := by
   rw [Algebra.mem_bot]
@@ -377,7 +375,7 @@ theorem mem_bot_iff (x : Qi) : x ∈ (⊥ : Subalgebra (𝓞 Qi) Qi) ↔ ∃ a b
     exact ⟨a + b * ζO, by simp [coe_ζO]⟩
 
 /- English proof (translation)
-The claim follows from `Algebra.mem_bot.2 ⟨⟨x, hx⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_bot_of_isIntegral {x : Qi} (hx : IsIntegral ℤ x) : x ∈ (⊥ : Subalgebra (𝓞 Qi) Qi) :=
   Algebra.mem_bot.2 ⟨⟨x, hx⟩, rfl⟩
@@ -385,9 +383,9 @@ theorem mem_bot_of_isIntegral {x : Qi} (hx : IsIntegral ℤ x) : x ∈ (⊥ : Su
 def Λ : Submodule ℤ Qi := Submodule.span ℤ (Set.range ![(1 : Qi), ii])
 
 /- English proof (translation)
-Rewrite using `[Λ, Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨c 0, c 1, by simp [Fin.sum_univ_two]⟩`. Introduce and unpack `⟨a, b, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨![a, b], by simp [Fin.sum_univ_two]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_Λ (x : Qi) : x ∈ Λ ↔ ∃ a b : ℤ, x = a + b * ii := by
   rw [Λ, Submodule.mem_span_range_iff_exists_fun]
@@ -398,14 +396,14 @@ theorem mem_Λ (x : Qi) : x ∈ Λ ↔ ∃ a b : ℤ, x = a + b * ii := by
     exact ⟨![a, b], by simp [Fin.sum_univ_two]⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Submodule.restrictScalars_mem, Subalgebra.mem_toSubmodule, mem_bot_iff, mem_Λ]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem Λ_eq : (Subalgebra.toSubmodule (⊥ : Subalgebra (𝓞 Qi) Qi)).restrictScalars ℤ = Λ := by
   ext x
   rw [Submodule.restrictScalars_mem, Subalgebra.mem_toSubmodule, mem_bot_iff, mem_Λ]
 
 /- English proof (translation)
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h` using `coord_zero (a := s) (b := t) (by push_cast; simpa [zsmul_eq_mul] using hst)`. Conclude with `⟨by exact_mod_cast h.1, by exact_mod_cast h.2⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem liZ : LinearIndependent ℤ ![(1 : Qi), ii] := by
   rw [LinearIndependent.pair_iff]
@@ -416,13 +414,13 @@ theorem liZ : LinearIndependent ℤ ![(1 : Qi), ii] := by
 def bΛ : Module.Basis (Fin 2) ℤ Λ := Module.Basis.span liZ
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val (Module.Basis.span_apply liZ i)`.
+A detailed English derivation is pending.
 -/
 theorem coe_bΛ (i : Fin 2) : (bΛ i : Qi) = ![(1 : Qi), ii] i :=
   congrArg Subtype.val (Module.Basis.span_apply liZ i)
 
 /- English proof (translation)
-Establish `h` using `congrArg Subtype.val (bΛ.sum_repr x)`. Rewrite using `[← h]`. Simplify using `only [Fin.sum_univ_two, Submodule.coe_add, Submodule.coe_smul, coe_bΛ, zsmul_eq_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coe_eq_repr (x : Λ) : (x : Qi) = ((bΛ.repr x 0 : ℤ) : Qi) + ((bΛ.repr x 1 : ℤ) : Qi) * ii := by
   have h := congrArg Subtype.val (bΛ.sum_repr x)
@@ -443,7 +441,7 @@ Both sides reduce to the same expression.
 theorem E_apply (x y : Λ) : E x y = bΛ.repr x 1 * bΛ.repr y 0 - bΛ.repr x 0 * bΛ.repr y 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[coe_eq_repr x, coe_eq_repr y, E_apply]`. Use `ψ_coord (bΛ.repr x 0) (bΛ.repr x 1) (bΛ.repr y 0) (bΛ.repr y 1)` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem E_eq (x y : Λ) : ((E x y : ℤ) : ℚ) = ψ x y := by
   rw [coe_eq_repr x, coe_eq_repr y, E_apply]
@@ -452,15 +450,15 @@ theorem E_eq (x y : Λ) : ((E x y : ℤ) : ℚ) = ψ x y := by
   rw [this]
 
 /- English proof (translation)
-Establish `key : ∀ m j, B m (b j) = b.repr m 0 * B (b 0) (b j) + b.repr m 1 * B (b 1) (b j)`. Introduce `m j`. Use `conv_lhs => rw [← b.sum_repr m]`. Simplify using `only [Fin.sum_univ_two, map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m m' h`. Establish `e0` using `key m 0`. Establish `e1` using `key m 1`. Establish `e0'` using `key m' 0`. Establish `e1'` using `key m' 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e0`, `e1` using `[h]`. Rewrite `e0`, `e0'` using `[h00, h10]`. Rewrite `e1`, `e1'` using `[h01, h11]`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `fin_cases i`. Simplify using `only [Fin.zero_eta, Fin.isValue]`. Take the linear combination `e1 - e1'`. Simplify using `only [Fin.mk_one, Fin.isValue]`. Take the linear combination `e0' - e0`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `f`. Use `⟨-(f (b 1)) • b 0 + f (b 0) • b 1, b.ext fun j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases j <;> simp [h00, h01, h10, h11]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem bijective_of_gram {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     (b : Module.Basis (Fin 2) R M) (B : LinearMap.BilinForm R M) (h00 : B (b 0) (b 0) = 0)
@@ -489,14 +487,14 @@ theorem bijective_of_gram {R M : Type} [CommRing R] [AddCommGroup M] [Module R M
     fin_cases j <;> simp [h00, h01, h10, h11]
 
 /- English proof (translation)
-Rewrite using `[E_apply]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Module.Basis.repr_self, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem E_bΛ (i j : Fin 2) : E (bΛ i) (bΛ j) = ![![0, -1], ![1, 0]] i j := by
   rw [E_apply]
   fin_cases i <;> fin_cases j <;> simp [Module.Basis.repr_self, Finsupp.single_apply]
 
 /- English proof (translation)
-Set `b` to `Algebra.TensorProduct.basis ℤ_[5] bΛ`. Establish `hb : ∀ i j, E.baseChange ℤ_[5] (b i) (b j) = ((![![0, -1], ![1, 0]] i j : ℤ) : ℤ_[5])`. Introduce `i j`. Simplify using `only [b, Algebra.TensorProduct.basis_apply, LinearMap.BilinForm.baseChange_tmul, E_bΛ, mul_one, zsmul_eq_mul]`. Apply the tactic sequence `refine bijective_of_gram b _ ?_ ?_ ?_ ?_ <;> rw [hb] <;> simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem E_perfect : Function.Bijective (E.baseChange ℤ_[5]) := by
   let b := Algebra.TensorProduct.basis ℤ_[5] bΛ
@@ -515,13 +513,13 @@ attribute [local instance] starQi
 def c : ℂ := ((Real.sqrt (1 / 2) : ℝ) : ℂ)
 
 /- English proof (translation)
-Simplify using `[c]`.
+Simplify using the standard rewrite rules.
 -/
 theorem c_ne : c ≠ 0 := by
   simp [c]
 
 /- English proof (translation)
-Rewrite using `[c, Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]; norm_num`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem c_sq : c * (starRingEnd ℂ) c = 1 / 2 := by
   rw [c, Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]; norm_num
@@ -535,13 +533,13 @@ def hmat : Matrix (Fin 1) (Fin 1) ℂ :=
     (P : Matrix (Fin 1) (Fin 1) ℂ)ᴴ
 
 /- English proof (translation)
-Simplify using `[hmat, P, Matrix.mul_apply, c_sq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hmat_apply : hmat 0 0 = 1 / 2 := by
   simp [hmat, P, Matrix.mul_apply, c_sq]
 
 /- English proof (translation)
-Use extensionality with `τ`. Simplify using `[embOver, Algebra.algebraMap_self]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem embOver_self : embOver Qi Qi (τ₀.comp (algebraMap Qi Qi)) = {τ₀} := by
   ext τ; simp [embOver, Algebra.algebraMap_self]
@@ -550,11 +548,11 @@ def ρ (τ : Qi →+* ℂ) : Qi →+* Matrix (Fin 1) (Fin 1) ℂ := (Matrix.scal
 
 open Classical in
 /- English proof (translation)
-Use `⟨ρ, fun _ => hmat, fun τ a => rfl, fun τ b => ?_, fun τ hτ => ?_, fun x y => ?_⟩` and prove the remaining obligations. Use extensionality with `i j fin_cases i`. Use `fin_cases j`. Simplify using `[ρ, star_eq, IsCMField.complexEmbedding_complexConj]`. Rewrite `hτ` using `[embOver_self, Finset.mem_singleton]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hτ]`. Conclude with `⟨le_rfl, P, rfl⟩`. Rewrite using `[embOver_self, Finset.sum_singleton]`. Take `⟨a, b, rfl⟩` from `exists_coord x`. Take `⟨c', d, rfl⟩` from `exists_coord y`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ψ_coord]`. Simplify using `only [ρ, RingHom.coe_comp, Function.comp_apply, τ₀_coord, Matrix.trace_fin_one, Matrix.mul_apply, Finset.univ_unique, Finset.sum_singleton, Fin.default_eq_zero, Matrix.conjTranspose_apply, hmat_apply, Matrix.scalar_apply, Matrix.diagonal_apply_eq]`. Simplify using `[Complex.mul_im, Complex.mul_re]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sig : ∃ (ρ : (Qi →+* ℂ) → Qi →+* Matrix (Fin 1) (Fin 1) ℂ) (h : (Qi →+* ℂ) → Matrix (Fin 1) (Fin 1) ℂ),
     (∀ τ a, ρ τ (algebraMap Qi Qi a) = Matrix.scalar (Fin 1) (τ a)) ∧
@@ -591,9 +589,9 @@ def splitW : u.adicCompletionIntegers Qi ⊗[𝓞 Qi] (⊥ : Subalgebra (𝓞 Qi
     ((Algebra.TensorProduct.rid (𝓞 Qi) _ _).trans (m1 _))
 
 /- English proof (translation)
-Use `⟨1, Nat.coprime_one_left 5, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_one, one_mul]`. Apply `mem_bot_of_isIntegral` to reduce the goal to its premises. Use `IsIntegral.of_mem_of_fg (subalgebraOfSubring O) ?_ x (mem_subalgebraOfSubring.2 hx)` and prove the remaining obligations. Rewrite using `[Submodule.fg_iff_addSubgroup_fg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfg`.
+A detailed English derivation is pending.
 -/
 theorem OB_max (O : Subring Qi) (hO : ((⊥ : Subalgebra (𝓞 Qi) Qi) : Set Qi) ⊆ O) (hfg : O.toAddSubgroup.FG)
     (x : Qi) (hx : x ∈ O) : ∃ m : ℕ, m.Coprime 5 ∧ (m : Qi) * x ∈ (⊥ : Subalgebra (𝓞 Qi) Qi) := by
@@ -605,9 +603,9 @@ theorem OB_max (O : Subring Qi) (hO : ((⊥ : Subalgebra (𝓞 Qi) Qi) : Set Qi)
   exact hfg
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← bQ.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Rewrite using `[SetLike.mem_coe, mem_bot_iff]`. Use `fin_cases i`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨1, 0, by simp [bQ_zero]⟩`. Conclude with `⟨0, 1, by simp [bQ_one]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem OB_span : Submodule.span ℚ ((⊥ : Subalgebra (𝓞 Qi) Qi) : Set Qi) = ⊤ := by
   rw [eq_top_iff, ← bQ.span_eq, Submodule.span_le]
@@ -619,9 +617,9 @@ theorem OB_span : Submodule.span ℚ ((⊥ : Subalgebra (𝓞 Qi) Qi) : Set Qi) 
   · exact ⟨0, 1, by simp [bQ_one]⟩
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `(mem_bot_iff x).1 hx`. Rewrite using `[mem_bot_iff, star_eq]`. Use `⟨a, -b, ?_⟩` and prove the remaining obligations. Use `cc_coord a b` as an intermediate fact. Move the coercions through the operations in `at this ⊢`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem OB_star (x : Qi) (hx : x ∈ (⊥ : Subalgebra (𝓞 Qi) Qi)) : star x ∈ (⊥ : Subalgebra (𝓞 Qi) Qi) := by
   obtain ⟨a, b, rfl⟩ := (mem_bot_iff x).1 hx
@@ -684,7 +682,7 @@ Both sides reduce to the same expression.
 example : gaussDatum.n = 1 := rfl
 
 /- English proof (translation)
-Introduce `x hx` and use `(isUnit_iff_ne_zero (G₀ := Qi)).2 hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : gaussDatum.IsDivision := fun x hx => (isUnit_iff_ne_zero (G₀ := Qi)).2 hx
 

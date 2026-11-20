@@ -18,24 +18,24 @@ def piF (J : Fin e → FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) (Fin 
   Submodule.pi Set.univ (fun j => (J j : Submodule (𝓞 E) E))
 
 /- English proof (translation)
-Simplify using `[piF, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_piF {J : Fin e → FractionalIdeal (𝓞 E)⁰ E} {c : Fin e → E} : c ∈ piF J ↔ ∀ j, c j ∈ J j := by
   simp [piF, Submodule.mem_pi]
 
 /- English proof (translation)
-Introduce `c hc` and use `mem_piF.2 (fun j => h j (mem_piF.1 hc j))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem piF_mono {J K : Fin e → FractionalIdeal (𝓞 E)⁰ E} (h : ∀ j, J j ≤ K j) : piF J ≤ piF K := fun c hc => mem_piF.2 (fun j => h j (mem_piF.1 hc j))
 
 /- English proof (translation)
-Establish `hr : piF (fun _ : Fin e => (1 : FractionalIdeal (𝓞 E)⁰ E)) = LinearMap.range ((Algebra.linearMap (𝓞 E) E).compLeft (Fin e))`. Use extensionality with `c`. Rewrite using `[mem_piF, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose o ho using fun j => (FractionalIdeal.mem_one_iff _).1 (h j)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨o, funext fun j => ho j⟩`. Introduce and unpack `⟨o, rfl⟩ j`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨o j, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, LinearMap.range_eq_map]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Module.Finite.fg_top).map _`. Rewrite using `[eq_top_iff, ← (Pi.basisFun E (Fin e)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Rewrite using `[SetLike.mem_coe, mem_piF]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Use `(FractionalIdeal.mem_one_iff _).2 ⟨if i = j then 1 else 0, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.basisFun_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem jLat_piF_one : j_Lat (piF (fun _ : Fin e => (1 : FractionalIdeal (𝓞 E)⁰ E))) := by
   have hr : piF (fun _ : Fin e => (1 : FractionalIdeal (𝓞 E)⁰ E)) =
@@ -74,26 +74,26 @@ def diagC (a : Fin e → E) (ha : ∀ j, a j ≠ 0) : (Fin e → E) ≃ₗ[E] (F
       simp [Matrix.diagonal_apply, Matrix.one_apply, inv_mul_cancel₀ (ha _)])
 
 /- English proof (translation)
-Simplify using `[diagC, Matrix.toLin'_apply, Matrix.mulVec_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diagC_apply (a : Fin e → E) (ha : ∀ j, a j ≠ 0) (c : Fin e → E) (j : Fin e) :
     diagC a ha c j = a j * c j := by
   simp [diagC, Matrix.toLin'_apply, Matrix.mulVec_diagonal]
 
 /- English proof (translation)
-Simplify using `[diagC, LinearMap.det_toLin', Matrix.det_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_diagC (a : Fin e → E) (ha : ∀ j, a j ≠ 0) :
     LinearMap.det ((diagC a ha : (Fin e → E) ≃ₗ[E] (Fin e → E)) : (Fin e → E) →ₗ[E] (Fin e → E)) = ∏ j, a j := by
   simp [diagC, LinearMap.det_toLin', Matrix.det_diagonal]
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (J.den).2`.
+A detailed English derivation is pending.
 -/
 theorem den_ne (J : FractionalIdeal (𝓞 E)⁰ E) : algebraMap (𝓞 E) E (J.den : 𝓞 E) ≠ 0 := IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (J.den).2
 
 /- English proof (translation)
-Rewrite using `[← FractionalIdeal.mem_coe, FractionalIdeal.coe_coeIdeal, IsLocalization.coeSubmodule, ← FractionalIdeal.den_mul_self_eq_num]`. Express the relevant statement in the definitionally equal form `y ∈ (J.den : 𝓞 E) • (J : Submodule (𝓞 E) E) ↔ _`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists]`. Simplify using `only [Algebra.smul_def, FractionalIdeal.mem_coe]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_num_iff (J : FractionalIdeal (𝓞 E)⁰ E) (y : E) :
     y ∈ ((J.num : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E) ↔
@@ -105,9 +105,9 @@ theorem mem_num_iff (J : FractionalIdeal (𝓞 E)⁰ E) (y : E) :
   simp only [Algebra.smul_def, FractionalIdeal.mem_coe]
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[Submodule.mem_map, mem_piF]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩ j`. Conclude with `(mem_num_iff _ _).2 ⟨c j, mem_piF.1 hc j, by`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, diagC_apply]⟩`. Introduce `hy choose c hc hcy using fun j => (mem_num_iff _ _).1 (hy j)`. Use `⟨c, mem_piF.2 hc, funext fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, diagC_apply, hcy]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_diag_piF (J : Fin e → FractionalIdeal (𝓞 E)⁰ E) :
     (piF J).map (((diagC (fun j => algebraMap (𝓞 E) E ((J j).den : 𝓞 E)) fun j => den_ne (J j) :
@@ -125,7 +125,7 @@ theorem map_diag_piF (J : Fin e → FractionalIdeal (𝓞 E)⁰ E) :
     rw [LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, diagC_apply, hcy]
 
 /- English proof (translation)
-Establish `h1 : (1 : FractionalIdeal (𝓞 E)⁰ E) = ((⊤ : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E)`. Simplify using the standard rewrite rules. Unfold `piF`. Rewrite using `[PI.InvIdealIdxPiWork.submodule_pi_toAddSubgroup, PI.InvIdealIdxPiWork.submodule_pi_toAddSubgroup, h1]`. Conclude with `PI.InvIdealIdxPiWork.relIndex_pi_idS K`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_piF (K : Fin e → Ideal (𝓞 E)) :
     (piF (fun j => (K j : FractionalIdeal (𝓞 E)⁰ E))).toAddSubgroup.relIndex
@@ -137,9 +137,9 @@ theorem relIndex_piF (K : Fin e → Ideal (𝓞 E)) :
   exact PI.InvIdealIdxPiWork.relIndex_pi_idS K
 
 /- English proof (translation)
-Use `set C := diagC (fun j => algebraMap (𝓞 E) E ((J j).den : 𝓞 E)) fun j => den_ne (J j)`. Establish `hm` using `map_diag_piF J`. Establish `hfg : (piF (fun j => (((J j).num : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E))).FG` using `g_fg_le jLat_piF_one.1 (piF_mono fun _ => FractionalIdeal.coeIdeal_le_one)`. Rewrite `hfg` using `[← hm]`. Establish `h2` using `hfg.map (((C.symm : (Fin e → E) ≃ₗ[E] (Fin e → E)) : (Fin e → E) →ₗ[E] (Fin e → E)).restrictScalars (𝓞 E))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[← Submodule.map_comp, show ((((C.symm : (Fin e → E) ≃ₗ[E] (Fin e → E)) : (Fin e → E) →ₗ[E] (Fin e → E)).restrictScalars (𝓞 E)).comp (((C : (Fin e → E) ≃ₗ[E] (Fin e → E)) : (Fin e → E) →ₗ[E] (Fin e → E)).restrictScalars (𝓞 E))) = LinearMap.id by ext x; simp, Submodule.map_id]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem fg_piF (J : Fin e → FractionalIdeal (𝓞 E)⁰ E) : (piF J).FG := by
   set C := diagC (fun j => algebraMap (𝓞 E) E ((J j).den : 𝓞 E)) fun j => den_ne (J j)
@@ -153,15 +153,15 @@ theorem fg_piF (J : Fin e → FractionalIdeal (𝓞 E)⁰ E) : (piF J).FG := by
       LinearMap.id by ext x; simp, Submodule.map_id] at h2
 
 /- English proof (translation)
-Use `set a : Fin e → E := fun j => algebraMap (𝓞 E) E ((J j).den : 𝓞 E) with ha`. Use `set C := diagC a fun j => den_ne (J j)`. Establish `hm` using `map_diag_piF J`. Establish `hK : j_Lat (piF (fun j => (((J j).num : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E)))`. Rewrite using `[← hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `j_Lat_map hJ C`. Establish `e1` using `j_del_map hJ C`. Rewrite `e1` using `[hm, det_diagC]`. Establish `e2` using `j_del_nested jLat_piF_one hK (piF_mono fun _ => FractionalIdeal.coeIdeal_le_one)`. Rewrite `e2` using `[relIndex_piF, e1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hN : ∀ j, FractionalIdeal.absNorm (J j) = (Ideal.absNorm (J j).num : ℚ) / |Algebra.norm ℚ (a j)|`. Introduce `j`. Rewrite using `[FractionalIdeal.absNorm_eq, ha]`. Use `congr 1`. Rewrite using `[← Algebra.coe_norm_int]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hpos : ∀ j, 0 < |Algebra.norm ℚ (a j)|` using `fun j => abs_pos.2 (Algebra.norm_ne_zero_iff.2 (den_ne (J j)))`. Rewrite `e2` using `[map_prod, Finset.abs_prod]`. Move the coercions through the operations in `at e2`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[hN]`. Rewrite using `[Finset.prod_div_distrib]`. Establish `hP : 0 < ∏ j, |Algebra.norm ℚ (a j)|` using `Finset.prod_pos fun j _ => hpos j`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hP.ne']`. Take the linear combination `e2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem jdel_piF {J : Fin e → FractionalIdeal (𝓞 E)⁰ E} (hJ : j_Lat (piF J)) :
     j_del (piF J) = (∏ j, FractionalIdeal.absNorm (J j)) *
@@ -204,11 +204,11 @@ def psL (u : Fin e → S.V) (I : Fin e → FractionalIdeal (𝓞 E)⁰ E) : Subm
 def gramU (u : Fin e → S.V) : Matrix (Fin e) (Fin e) E := Matrix.of fun i j => S.hT (u i) (u j)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[psL, Submodule.span_le]`. Introduce and unpack `_ ⟨j, x, hx, rfl⟩`. Use `⟨Pi.single j x, mem_piF.2 fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.single_apply] split_ifs with h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Conclude with `hx`. Conclude with `FractionalIdeal.mem_coe.1 ((I i : Submodule (𝓞 E) E).zero_mem)`. Use `show j_iota u (Pi.single j x) = x • u j`. Rewrite using `[j_iota_apply]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Pi.single_apply]`. Introduce and unpack `_ ⟨c, hc, rfl⟩ show j_iota u c ∈ psL u I`. Rewrite using `[j_iota_apply]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨i, c i, mem_piF.1 hc i, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem psL_eq_map (u : Fin e → S.V) (I : Fin e → FractionalIdeal (𝓞 E)⁰ E) :
     psL u I = (piF I).map (j_iotaO u) := by
@@ -229,7 +229,7 @@ theorem psL_eq_map (u : Fin e → S.V) (I : Fin e → FractionalIdeal (𝓞 E)�
     exact Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨i, c i, mem_piF.1 hc i, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[psL_eq_map]`. Conclude with `Submodule.comap_map_eq_of_injective (f := j_iotaO u) (j_iota_inj hu) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coords_psL {u : Fin e → S.V} (hu : LinearIndependent E u) (I : Fin e → FractionalIdeal (𝓞 E)⁰ E) :
     (psL u I).comap (j_iotaO u) = piF I := by
@@ -237,11 +237,9 @@ theorem coords_psL {u : Fin e → S.V} (hu : LinearIndependent E u) (I : Fin e �
   exact Submodule.comap_map_eq_of_injective (f := j_iotaO u) (j_iota_inj hu) _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hJ` to reduce the goal to its premises. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Rewrite using `[h x hx]`. Conclude with `(FractionalIdeal.mem_zero_iff _).mpr rfl`. Introduce `hx`. Rewrite `hx` using `[FractionalIdeal.mem_zero_iff]`.
-
-Rewrite using `[hx]`. Conclude with `(J : Submodule (𝓞 E) E).zero_mem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_mem {J : FractionalIdeal (𝓞 E)⁰ E} (hJ : J ≠ 0) : ∃ x ∈ J, x ≠ 0 := by
   by_contra h
@@ -258,11 +256,11 @@ theorem exists_ne_mem {J : FractionalIdeal (𝓞 E)⁰ E} (hJ : J ≠ 0) : ∃ x
     exact (J : Submodule (𝓞 E) E).zero_mem
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Establish `: psL u I ≤ (Submodule.span E (Set.range u)).restrictScalars (𝓞 E)`. Rewrite using `[psL, Submodule.span_le]`. Introduce and unpack `_ ⟨j, x, -, rfl⟩`. Conclude with `Submodule.smul_mem _ x (Submodule.subset_span ⟨j, rfl⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[spanE, Submodule.span_le]`. Conclude with `fun y hy => this hy`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨x, hx, hx0⟩` from `exists_ne_mem (hI j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : x • u j ∈ spanE S (psL u I)` using `Submodule.subset_span (Submodule.subset_span ⟨j, x, hx, rfl⟩)`. Establish `h2` using `Submodule.smul_mem _ x⁻¹ h1`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hx0, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem spanE_psL (u : Fin e → S.V) {I : Fin e → FractionalIdeal (𝓞 E)⁰ E} (hI : ∀ j, I j ≠ 0) :
     spanE S (psL u I) = Submodule.span E (Set.range u) := by
@@ -281,14 +279,14 @@ theorem spanE_psL (u : Fin e → S.V) {I : Fin e → FractionalIdeal (𝓞 E)⁰
     rwa [smul_smul, inv_mul_cancel₀ hx0, one_smul] at h2
 
 /- English proof (translation)
-Simplify using `[j_iota, Fintype.linearCombination_apply, map_sum, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hT_iota (u : Fin e → S.V) (v : S.V) (c : Fin e → E) :
     S.hT v (j_iota u c) = ∑ j, c j * S.hT v (u j) := by
   simp [j_iota, Fintype.linearCombination_apply, map_sum, map_smul]
 
 /- English proof (translation)
-Simplify using `[LinearMap.map_smulₛₗ₂]`. Use `left`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hT_smul_left (x : E) (v w : S.V) : S.hT (x • v) w = star x * S.hT v w := by
   simp [LinearMap.map_smulₛₗ₂]
@@ -296,7 +294,7 @@ theorem hT_smul_left (x : E) (v w : S.V) : S.hT (x • v) w = star x * S.hT v w 
   rfl
 
 /- English proof (translation)
-Rewrite using `[hT_iota]`. Simplify using `[gramU, Matrix.mulVec, dotProduct, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hT_iota_gram (u : Fin e → S.V) (c : Fin e → E) (i : Fin e) :
     S.hT (u i) (j_iota u c) = (gramU u).mulVec c i := by
@@ -304,30 +302,28 @@ theorem hT_iota_gram (u : Fin e → S.V) (c : Fin e → E) (i : Fin e) :
   simp [gramU, Matrix.mulVec, dotProduct, mul_comm]
 
 /- English proof (translation)
-Simplify using `using Submodule.mul_mem_mul ha hb`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_mul_mem {a b : E} (ha : a ∈ (1 : Submodule (𝓞 E) E)) (hb : b ∈ (1 : Submodule (𝓞 E) E)) :
     a * b ∈ (1 : Submodule (𝓞 E) E) := by
   simpa using Submodule.mul_mem_mul ha hb
 
 /- English proof (translation)
-Rewrite using `[FractionalIdeal.mem_one_iff, Submodule.mem_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_one_frac {a : E} : a ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) ↔ a ∈ (1 : Submodule (𝓞 E) E) := by
   rw [FractionalIdeal.mem_one_iff, Submodule.mem_one]
 
 /- English proof (translation)
-Rewrite using `[i_mem_dual]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Rewrite using `[FractionalIdeal.mem_inv_iff (hI i)]`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `h (star y • u i) (Submodule.subset_span ⟨i, star y, hs i y hy, rfl⟩)`. Rewrite `h1` using `[hT_smul_left, star_star, hT_iota_gram]`. Rewrite using `[mem_one_frac, mul_comm]`. Conclude with `h1`. Introduce `h y hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, x, hx, rfl⟩` from `hy`. Rewrite using `[hT_smul_left, hT_iota_gram, mul_comm]`. Use `(FractionalIdeal.mem_inv_iff (hI j)).1 (h j) (star x) (hs j x hx)` as an intermediate fact.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `mem_one_frac.1 this`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ hy hz`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Consider the case `smul o y _ hy`. Rewrite using `[← IsScalarTower.algebraMap_smul E o y, hT_smul_left]`. Take `⟨o', ho'⟩` from `i_star_int o`. Use `one_mul_mem ?_ hy` and prove the remaining obligations. Rewrite using `[← ho']`.
-
-Conclude with `Submodule.mem_one.2 ⟨o', rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_dual_psL (u : Fin e → S.V) {I : Fin e → FractionalIdeal (𝓞 E)⁰ E} (hI : ∀ j, I j ≠ 0)
     (hs : ∀ j, ∀ x ∈ I j, star x ∈ I j) (c : Fin e → E) :
@@ -362,9 +358,9 @@ theorem mem_dual_psL (u : Fin e → S.V) {I : Fin e → FractionalIdeal (𝓞 E)
 def gramO (u : Fin e → S.V) : (Fin e → E) →ₗ[𝓞 E] (Fin e → E) := (Matrix.toLin' (gramU u)).restrictScalars (𝓞 E)
 
 /- English proof (translation)
-Use extensionality with `c`. Rewrite using `[Submodule.mem_comap, Submodule.mem_comap]`. Use `show j_iota u c ∈ dualInH S.hT (psL u I) ↔ _`. Rewrite using `[dualInH, Submodule.mem_inf, mem_piF]`. Establish `hsp : j_iota u c ∈ (Submodule.span E (psL u I : Set S.V)).restrictScalars (𝓞 E)` using `by show j_iota u c ∈ spanE S (psL u I)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[spanE_psL u hI, ← j_iota_range]`. Conclude with `⟨c, rfl⟩`. Simplify using `only [hsp, and_true, gramO, LinearMap.restrictScalars_apply, Matrix.toLin'_apply]`. Conclude with `mem_dual_psL u hI hs c`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coords_dual {u : Fin e → S.V} {I : Fin e → FractionalIdeal (𝓞 E)⁰ E}
     (hI : ∀ j, I j ≠ 0) (hs : ∀ j, ∀ x ∈ I j, star x ∈ I j) :
@@ -381,11 +377,11 @@ theorem coords_dual {u : Fin e → S.V} {I : Fin e → FractionalIdeal (𝓞 E)�
   exact mem_dual_psL u hI hs c
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨hx, hxo⟩`. Rewrite `hx` using `[← j_iota_range]`. Take `⟨c, rfl⟩` from `hx`. Establish `hc : (gramU u).mulVec c = 0` using `funext fun i => by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `Submodule.mem_iInf _ |>.1 hxo (u i)`. Establish `h2` using `Submodule.mem_iInf _ |>.1 h1 (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite `h2` using `[LinearMap.mem_ker, hT_iota_gram]`. Simplify using `using h2`. Establish `: c = 0` using `Matrix.eq_zero_of_mulVec_eq_zero hH hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem nondeg_span {u : Fin e → S.V} (hH : (gramU u).det ≠ 0) :
     Submodule.span E (Set.range u) ⊓ orth S (Submodule.span E (Set.range u)) = ⊥ := by
@@ -408,7 +404,7 @@ def gramC (u : Fin e → S.V) (hH : (gramU u).det ≠ 0) : (Fin e → E) ≃ₗ[
     (by rw [← Matrix.toLin'_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hH), Matrix.toLin'_one])
 
 /- English proof (translation)
-The claim follows from `|((Algebra.norm ℚ (gramU u).det : ℚ) : ℝ)| * ∏ j, ((FractionalIdeal.absNorm (I j) : ℚ) : ℝ) ^ 2 := by have hM : (psL u I).FG := by rw [psL_eq_map]; exact (fg_piF I).map _ have hsp := spanE_psL u hI obtain ⟨l1, l2, hg⟩ := j_genIdx_dual hu hM hsp (by rw [hsp]; exact nondeg_span hH) …`.
+A detailed English derivation is pending.
 -/
 theorem genIdx_psL {u : Fin e → S.V} (hu : LinearIndependent E u) {I : Fin e → FractionalIdeal (𝓞 E)⁰ E}
     (hI : ∀ j, I j ≠ 0) (hs : ∀ j, ∀ x ∈ I j, star x ∈ I j) (hH : (gramU u).det ≠ 0) :
@@ -463,13 +459,13 @@ open Formalism.MainNotions.S Formalism.L2.SG.DetUU
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D ι _ _ u I hu hI hs hH`. Set `σ` to `Fintype.equivFin ι`. Establish `hpl : pseudoLat u I = psL (u ∘ σ.symm) (I ∘ σ.symm)`. Unfold `pseudoLat psL`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, x, hx, rfl⟩`. Conclude with `⟨σ j, x, by simpa using hx, by simp⟩`. Introduce and unpack `⟨j, x, hx, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨σ.symm j, x, hx, rfl⟩`. Establish `hG : gramU (S` using `hS D) (u ∘ σ.symm) = (Matrix.of fun i j => (hS D).hT (u i) (u j)).submatrix σ.symm σ.symm := by`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hdet : (gramU (S` using `hS D) (u ∘ σ.symm)).det = (Matrix.of fun i j => (hS D).hT (u i) (u j)).det := by`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hG, Matrix.det_submatrix_equiv_self]`. Rewrite using `[hpl, genIdx_psL (I := I ∘ σ.symm) (hu.comp σ.symm σ.symm.injective) (fun j => hI _) (fun j => hs _) (by rwa [hdet]), hdet]`. Use `congr 1`. Conclude with `Equiv.prod_comp σ.symm (fun j => ((FractionalIdeal.absNorm (I j) : ℚ) : ℝ) ^ 2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem genIdxPseudo_holds : GenIdxPseudo := by
   intro D ι _ _ u I hu hI hs hH
@@ -494,7 +490,7 @@ theorem genIdxPseudo_holds : GenIdxPseudo := by
   exact Equiv.prod_comp σ.symm (fun j => ((FractionalIdeal.absNorm (I j) : ℚ) : ℝ) ^ 2)
 
 /- English proof (translation)
-The claim follows from `gram_determinant_of_generic_index genIdxPseudo_holds`.
+A detailed English derivation is pending.
 -/
 theorem gram_determinant_relation : Formalism.L2.SG.LoopsFinal.GramDeterminantCount := gram_determinant_of_generic_index genIdxPseudo_holds
 

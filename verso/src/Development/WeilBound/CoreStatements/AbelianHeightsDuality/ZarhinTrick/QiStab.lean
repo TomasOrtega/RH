@@ -10,9 +10,9 @@ open TensorProduct
 namespace PositivityTheory.PrwZar.Qi
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing H := isArtinian_of_tower K inferInstance`. Use `haveI : IsNoetherianRing H := isNoetherian_of_tower K inferInstance`. Take `⟨n, hn⟩` from `IsArtinian.monotone_stabilizes (R := H) (M := H) ⟨fun n => OrderDual.toDual (I ^ n), fun a b h => Ideal.pow_le_pow_right h⟩`. Establish `hst : ∀ j, n ≤ j → I ^ j = I ^ n` using `fun j hj => congrArg OrderDual.ofDual (hn j hj).symm`. Establish `hidem : IsIdempotentElem (I ^ n)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsIdempotentElem`. Rewrite using `[← pow_add]`. Conclude with `hst (n + n) (by omega)`. Take `⟨e, he, hI⟩` from `(Ideal.isIdempotentElem_iff_of_fg _ (IsNoetherian.noetherian _)).1 hidem`. Conclude with `⟨n, e, he, hI.trans Ideal.submodule_span_eq, hst⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_stable_pow {K H : Type} [Field K] [CommRing H] [Algebra K H] [FiniteDimensional K H]
     (I : Ideal H) : ∃ (k : ℕ) (e : H), IsIdempotentElem e ∧ I ^ k = Ideal.span {e} ∧ ∀ j, k ≤ j → I ^ j = I ^ k := by

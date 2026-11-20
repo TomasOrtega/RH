@@ -7,13 +7,13 @@ open Formalism.DivisionValues (vw lw)
 namespace GlobalTheory.FunObj.SqNum
 
 /- English proof (translation)
-Set `` to `σ.toAlgebra`. Establish `ep` using `hp.eq_minpoly`. Establish `eq` using `hq.eq_minpoly`. Establish `hr0 : (p.scaleRoots u).eval₂ σ (σ u * β) = 0` using `scaleRoots_eval₂_eq_zero σ hp.2.2`. Establish `hs0 : (q.scaleRoots u⁻¹).eval₂ σ β = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `scaleRoots_eval₂_eq_zero σ (s := u⁻¹) hq.2.2` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hu, map_one, one_mul]`. Then use the resulting hypothesis. Establish `d1 : q ∣ p.scaleRoots u`. Rewrite using `[eq]`. Conclude with `minpoly.dvd K (σ u * β) hr0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `d2 : p ∣ q.scaleRoots u⁻¹`. Rewrite using `[ep]`. Conclude with `minpoly.dvd K β hs0`. Establish `hq0 : q.scaleRoots u⁻¹ ≠ 0` using `scaleRoots_ne_zero hq.1.ne_zero _`. Establish `le1 : p.natDegree ≤ q.natDegree`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `natDegree_le_of_dvd d2 hq0` as an intermediate fact. Rewrite `this` using `[natDegree_scaleRoots]`. Then use the resulting hypothesis. Conclude with `(eq_of_monic_of_dvd_of_natDegree_le hq.1 ((monic_scaleRoots_iff u).2 hp.1) d1 (by rw [natDegree_scaleRoots]; exact le1)).symm`.
+A detailed English derivation is pending.
 -/
 theorem IsMinPol.scaleRoots_eq {K : Type} [Field K] {σ : K →+* ℂ} {β : ℂ} {u : K} {p q : K[X]}
     (hp : IsMinPol σ β p) (hq : IsMinPol σ (σ u * β) q) (hu : u ≠ 0) : q = p.scaleRoots u := by
@@ -38,11 +38,11 @@ theorem IsMinPol.scaleRoots_eq {K : Type} [Field K] {σ : K →+* ℂ} {β : ℂ
 end GlobalTheory.FunObj.SqNum
 
 /- English proof (translation)
-Introduce `K _ _ _ σ β u p q hp hq hβ hu w`. Take `⟨hc, hd⟩` from `hp.ne_zero hβ`. Rewrite using `[hp.scaleRoots_eq hq hu]`. Unfold `GlobalTheory.FunObj.SqNum.meanVal_vw`. Rewrite using `[natDegree_scaleRoots, coeff_scaleRoots, Nat.sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : vw w (p.coeff 0 * u ^ p.natDegree) = vw w (p.coeff 0) + p.natDegree * vw w u`. Unfold `vw`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul K w (mt FractionalIdeal.spanSingleton_eq_zero_iff.1 hc) (mt FractionalIdeal.spanSingleton_eq_zero_iff.1 (pow_ne_zero _ hu)), ← FractionalIdeal.spanSingleton_pow, FractionalIdeal.count_pow]`. Rewrite using `[hm]`. Establish `: (p.natDegree : ℝ) ≠ 0` using `by exact_mod_cast hd`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem GlobalTheory.FunObj.SqNum.meanVal_vw_smul : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (σ : K →+* ℂ) (β : ℂ) (u : K) (p q : K[X]), GlobalTheory.FunObj.SqNum.IsMinPol σ β p → GlobalTheory.FunObj.SqNum.IsMinPol σ (σ u * β) q → β ≠ 0 → u ≠ 0 → ∀ w : Formalism.PairingDivisionLocalBalance.Pl K, GlobalTheory.FunObj.SqNum.meanVal_vw w q = GlobalTheory.FunObj.SqNum.meanVal_vw w p + vw w u := by
   intro K _ _ _ σ β u p q hp hq hβ hu w

@@ -25,7 +25,7 @@ def EtaleMuTwistMonoExtendsToTorsorSheaf : Prop :=
         s U w = s U v + Sec.map j (twGen 1 ζ)
 
 /- English proof (translation)
-Introduce `q _`. Take `⟨T, τ, hm, hl⟩` from `h1 q`. Conclude with `h2 q T τ hm hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_etale_mono_muTwist_into_torsorSheaf (h1 : ExistsEtaleMonoMuTwistKillingRootRelations) (h2 : EtaleMuTwistMonoExtendsToTorsorSheaf) :
     EtaleKummerSectionsIntoTwistEmbeddingExist := by

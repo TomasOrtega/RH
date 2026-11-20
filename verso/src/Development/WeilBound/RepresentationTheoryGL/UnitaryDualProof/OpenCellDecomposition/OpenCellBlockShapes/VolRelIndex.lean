@@ -8,15 +8,15 @@ namespace PositivityTheory.RgUd.CellB
 
 @[to_additive addRelIndex_ne_zero  ]
 /- English proof (translation)
-Establish `h1 : (1 : G) ∈ O`. Establish `: (1 : G) ∈ O ∩ (U : Set G)` using `by rw [hOL]; exact L.one_mem`. Conclude with `this.1`. Take `⟨t, htL, htf, hcov⟩` from `hc.elim_finite_subcover_image (b := (L₀ : Set G)) (c := fun x => x • O) (fun x _ => hO.smul x) (fun y hy => Set.mem_iUnion₂.2 ⟨y, hy, ⟨1, h1, mul_one y⟩⟩)`. Establish `: Finite t` using `htf.to_subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ : t → L₀ ⧸ L.subgroupOf L₀` to `fun x => ((⟨x.1, htL x.2⟩ : L₀) : L₀ ⧸ L.subgroupOf L₀)`. Establish `hφ : Function.Surjective φ`. Introduce `q`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, o, ho, e⟩` from `Set.mem_iUnion₂.1 (hcov y.2)`. Use `⟨⟨x, hx⟩, QuotientGroup.eq.2 ?_⟩` and prove the remaining obligations. Use `show (⟨x, htL hx⟩ : L₀)⁻¹ * y ∈ L.subgroupOf L₀`. Rewrite using `[Subgroup.mem_subgroupOf]`. Establish `e' : ((⟨x, htL hx⟩ : L₀)⁻¹ * y : L₀).1 = o`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Rewrite using `[← e]`. Simplify using `[smul_eq_mul]`. Rewrite using `[e', ← SetLike.mem_coe, ← hOL]`. Use `⟨ho, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e']`. Conclude with `hL₀U (SetLike.coe_mem _)`. Establish `: Finite (L₀ ⧸ L.subgroupOf L₀)` using `Finite.of_surjective φ hφ`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero {G : Type*} [Group G] [TopologicalSpace G] [ContinuousMul G] {U L L₀ : Subgroup G}
     (hL : L ≤ L₀) (hL₀U : L₀ ≤ U) (hc : IsCompact (L₀ : Set G)) {O : Set G} (hO : IsOpen O)
@@ -52,27 +52,25 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hUB : unipU k d hd ≤ unipB k (Fin N)` using `inf_le_left`. Take `⟨O, hO, hOL⟩` from `hLO`. Establish `hfin` using `relIndex_ne_zero hLL₀ hL₀U hL₀c hO hOL`. Establish `: (L.subgroupOf L₀).FiniteIndex` using `⟨hfin⟩`. Set `_ : Fintype (L₀ ⧸ L.subgroupOf L₀)` to `Fintype.ofFinite _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `r : L₀ ⧸ L.subgroupOf L₀ → GL (Fin N) k` to `fun q => (q.out : L₀).1`. Establish `hr : ∀ q, r q ∈ L₀` using `fun q => (q.out).2`. Establish `hrB : ∀ q, r q ∈ unipB k (Fin N)` using `fun q => hUB (hL₀U (hr q))`. Set `F : L₀ ⧸ L.subgroupOf L₀ → openFns d hd ρ` to `fun q => ⟨parInd (stdBlocks d hd) ρ (r q) g.1, OpenCoinv.translate_mem d hd ρ (hrB q) g.2⟩`. Set `ev : GL (Fin N) k → openFns d hd ρ →+ W` to `fun y => { toFun := fun f => f.1.1.1 y, map_zero' := rfl, map_add' := fun _ _ => rfl }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hsum : ∀ y, (∑ q, F q).1.1.1 y = ∑ q, g.1.1.1 (y * r q)` using `fun y => map_sum (ev y) F Finset.univ`. Establish `hmem : ∀ (u : GL (Fin N) k) (hu : u ∈ L₀) (q : L₀ ⧸ L.subgroupOf L₀), u * r q ∈ L ↔ q = ((⟨u⁻¹, inv_mem hu⟩ : L₀) : L₀ ⧸ L.subgroupOf L₀)`. Introduce `u hu q`. Establish `e : (((⟨u⁻¹, inv_mem hu⟩ : L₀) : L₀ ⧸ L.subgroupOf L₀) = q) ↔ (((⟨u⁻¹, inv_mem hu⟩ : L₀) : L₀ ⧸ L.subgroupOf L₀) = ((q.out : L₀) : L₀ ⧸ L.subgroupOf L₀))`. Rewrite using `[QuotientGroup.out_eq']`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_comm, e, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `[r]`. Establish `hoff : ∀ u ∈ unipU k d hd, ∀ q, u * r q ∉ L → g.1.1.1 (pm k (wOpen d hd) * (u * r q)) = 0` using `fun u hu q hq => hg0 _ (mul_mem hu (hL₀U (hr q))) hq`. Establish `hin : ∀ u ∈ L₀, (∑ q, F q).1.1.1 (pm k (wOpen d hd) * u) = v`. Introduce `u hu`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsum, Finset.sum_eq_single ((⟨u⁻¹, inv_mem hu⟩ : L₀) : L₀ ⧸ L.subgroupOf L₀)]`. Rewrite using `[mul_assoc]`. Conclude with `hg1 _ ((hmem u hu _).2 rfl)`. Introduce `q _ hq`. Rewrite using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hoff u (hL₀U hu) q (fun h' => hq ((hmem u hu q).1 h'))`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Establish `hout : ∀ u ∈ unipU k d hd, u ∉ L₀ → (∑ q, F q).1.1.1 (pm k (wOpen d hd) * u) = 0`. Introduce `u hu hu0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `hoff u hu q fun h' => hu0 ?_` and prove the remaining obligations. Establish `: u = (u * r q) * (r q)⁻¹` using `by group`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `mul_mem (hLL₀ h') (inv_mem (hr q))`. Take `⟨-, hJ0⟩` from `hV L₀ hL₀U hL₀c hL₀O`. Take `⟨-, hJL⟩` from `hV L (hLL₀.trans hL₀U) hLc ⟨O, hO, hOL⟩`. Establish `e0` using `hJ0 (∑ q, F q) v (fun u hb hu => by rw [hin u hu, hθ u hb hu]; simp) hout`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `eL` using `hJL g v (fun u hb hu => by rw [hg1 u hu, hθ u hb (hLL₀ hu)]; simp) hg0`. Establish `eF : ∀ q, J (F q) = J g` using `fun q => by`. Rewrite using `[hU (r q) (hL₀U (hr q)) (hrB q) g (F q) rfl, hθ _ _ (hr q)]`. Simplify using the standard rewrite rules. Rewrite `e0` using `[map_sum, Finset.sum_congr rfl fun q _ => eF q, Finset.sum_const, eL, Finset.card_univ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ((Fintype.card (L₀ ⧸ L.subgroupOf L₀) : ℂ) * (vol L : ℂ) - (vol L₀ : ℂ)) • v = 0`. Rewrite using `[sub_smul, ← e0, mul_smul, Nat.cast_smul_eq_nsmul, sub_self]`. Establish `hc'` using `(smul_eq_zero.1 hc).resolve_right hv`. Establish `hcard : L.relIndex L₀ = Fintype.card (L₀ ⧸ L.subgroupOf L₀)`. Rewrite using `[Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card]`.
-
-Rewrite using `[hcard]`. Conclude with `(sub_eq_zero.1 hc').symm` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vol_relIndex (ψ : AddChar k Circle) {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) {W : Type} [AddCommGroup W]
     [Module ℂ W] (ρ : Representation ℂ (Levi k fun a => Fin (d a)) W) (J : openFns d hd ρ →ₗ[ℂ] W)

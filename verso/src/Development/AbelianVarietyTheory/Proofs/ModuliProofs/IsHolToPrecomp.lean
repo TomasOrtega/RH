@@ -10,11 +10,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.FrameHol
 
 /- English proof (translation)
-Unfold `IsHolTo at h ⊢`. Introduce `U f`. Take `⟨hO, hD⟩` from `h U f`. Use `beta_reduce`. Establish `hset : {w | w ∈ C ∧ ⊤ ≤ y (β w) ⁻¹ᵁ U} = C ∩ β ⁻¹' {b | b ∈ B ∧ ⊤ ≤ y b ⁻¹ᵁ U}`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, hU⟩`. Conclude with `⟨hw, hm hw, hU⟩`. Introduce and unpack `⟨hw, -, hU⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨hw, hU⟩`. Rewrite using `[hset]`. Conclude with `⟨hβ.continuousOn.isOpen_inter_preimage hC hO, hD.comp (hβ.mono Set.inter_subset_left) (fun w hw => hw.2)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isHolTo_precomp {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup W]
     [NormedSpace ℂ W] {X : Scheme.{0}} {B : Set V} {y : V → (Sp ℂ ⟶ X)} (h : IsHolTo B y) {C : Set W}

@@ -18,9 +18,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalThe
 namespace GlobalTheory.GlobalFunFinite
 
 /- English proof (translation)
-Introduce `F _ _ X p hX`. Establish `hq : IsFinite (spMap (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤))` using `GlobalTheory.ArithCurveFinite.isFinite _ _ _ hX`. Establish `hz : IsFinite (spMap (Int.castRingHom (𝓞 F)))` using `(IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 inferInstance)`. Establish `hf : IsFinite (spMap (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤) ≫ spMap (Int.castRingHom (𝓞 F)))` using `inferInstance`. Rewrite `hf` using `[← Spec.map_preimage (spMap (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤) ≫ _), IsFinite.SpecMap_iff, RingHom.ext_int (Spec.preimage (spMap (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤) ≫ spMap (Int.castRingHom (𝓞 F)))).hom (algebraMap ℤ Γ(X, ⊤)), RingHo …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hf`.
+A detailed English derivation is pending.
 -/
 theorem moduleFinite_int : ∀ (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) (p : X ⟶ Sp (𝓞 F)),
     IsArithVar (spMap (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤)) 0 → Module.Finite ℤ Γ(X, ⊤) := by

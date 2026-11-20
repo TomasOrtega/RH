@@ -18,7 +18,7 @@ namespace PositivityTheory.Rg.Rsw.L.LThBdd
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [blk4, ← Matrix.submatrix_map, Matrix.fromBlocks_map, Matrix.map_one _ f.map_zero f.map_one, Matrix.map_zero _ f.map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_upper_unipotent_block {R : Type} [CommRing R] (f : AE D →+* R) (b : Mx D n n) :
     (blk4 (1 : Mx D n n) b 0 1).map f = blk4 1 (b.map f) 0 1 := by
@@ -33,9 +33,9 @@ theorem val_bc_matHom {R : Type} [CommRing R] (f : AE D →+* R) (g : G D n) :
       (mat g).map f := rfl
 
 /- English proof (translation)
-Rewrite using `[← (matHom_injective _ D.sp.cm.sig (Jst D n)).eq_iff, matHom_proj, map_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg Units.val h` as an intermediate fact. Rewrite `this` using `[val_bc_matHom, Units.val_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_bc_matHom, Units.val_one]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_eq_one_iff {v : Pl D} {g : G D n} :
     GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v g = 1 ↔ (mat g).map (cv D v) = 1 := by
@@ -50,9 +50,9 @@ theorem proj_eq_one_iff {v : Pl D} {g : G D n} :
     exact h
 
 /- English proof (translation)
-Rewrite using `[← (matHom_injective _ D.sp.cm.sig (Jst D n)).eq_iff, matHom_projArch, map_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg Units.val h` as an intermediate fact. Rewrite `this` using `[val_bc_matHom, Units.val_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_bc_matHom, Units.val_one]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projArch_eq_one_iff {w : InfinitePlace D.host.F} {g : G D n} :
     projArch D.sp.cm.sig (Jst D n) w g = 1 ↔ (mat g).map (compInf D.host.F D.host.E w) = 1 := by
@@ -67,11 +67,11 @@ theorem projArch_eq_one_iff {w : InfinitePlace D.host.F} {g : G D n} :
     exact h
 
 /- English proof (translation)
-Rewrite using `[mem_atPts, mem_finPts_iff_forall]`. Use `⟨fun w => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[projArch_eq_one_iff, hnb x, map_upper_unipotent_block]`. Establish `: x.1.map (compInf D.host.F D.host.E w) = 0`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hinf w i j`. Rewrite using `[this]`. Conclude with `GlobalTheory.StdUnn.Model.block_matrix_one`. Rewrite using `[proj_eq_one_iff, hnb x, map_upper_unipotent_block]`. Establish `: x.1.map (cv D u) = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j; exact hoff u (by simpa using hu) i j`. Rewrite using `[this]`. Conclude with `GlobalTheory.StdUnn.Model.block_matrix_one`.
+A detailed English derivation is pending.
 -/
 theorem nb_mem_atPts {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D} (x : hermA D n)
     (hinf : ∀ w i j, compInf D.host.F D.host.E w (x.1 i j) = 0) (hoff : ∀ v' ≠ v, ∀ i j, cv D v' (x.1 i j) = 0) :
@@ -88,9 +88,9 @@ theorem nb_mem_atPts {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D} (x 
     rw [this]; exact GlobalTheory.StdUnn.Model.block_matrix_one
 
 /- English proof (translation)
-Rewrite `ha` using `[mem_atPts, mem_finPts_iff_forall]`. Apply `GAd_ext` to reduce the goal to its premises. Introduce `w`. Simplify using `[map_mul, ha.1 w]`. Introduce `u`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Simplify using `[hg]`. Simplify `h)]` using `[ha.2 u (by simpa`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem commute_of_atPts {v : Pl D} {a g : G D n} (ha : a ∈ atPts D.sp.cm.sig (Jst D n) {v})
     (hg : GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v g = 1) : a * g = g * a := by
@@ -103,9 +103,9 @@ theorem commute_of_atPts {v : Pl D} {a g : G D n} (ha : a ∈ atPts D.sp.cm.sig 
     · simp [ha.2 u (by simpa using h)]
 
 /- English proof (translation)
-Establish `key : ∀ N : Matrix ι ι A, (∀ i j, N i j ∈ R) → ∀ z : ι → A, (∀ i, z i ∈ R) → ∀ i, (N *ᵥ z) i ∈ R` using `fun N hN z hz i => by`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => R.mul_mem (hN i j) (hz j)`. Use `⟨key M hM y, fun hy => ?_⟩` and prove the remaining obligations. Establish `: y = M' *ᵥ (M *ᵥ y)` using `by rw [Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `key M' hM' _ hy`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_mem_iff {A : Type} [CommRing A] {ι : Type} [Fintype ι] [DecidableEq ι] (R : Subring A)
     {M M' : Matrix ι ι A} (hM : ∀ i j, M i j ∈ R) (hM' : ∀ i j, M' i j ∈ R) (h : M' * M = 1) (y : ι → A) :
@@ -119,9 +119,9 @@ theorem mulVec_mem_iff {A : Type} [CommRing A] {ι : Type} [Fintype ι] [Decidab
   rw [this]; exact key M' hM' _ hy
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [blk4, Matrix.submatrix_apply]`. Generalize the expression as in `finSumFinEquiv.symm i = x`. Generalize the expression as in `finSumFinEquiv.symm j = y`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `ha x y`. Conclude with `hb x y`. Conclude with `hc x y`. Conclude with `hd x y`.
+A detailed English derivation is pending.
 -/
 theorem block_matrix_entry_property {A : Type} (p : A → Prop) {a b c d : Matrix (Fin n) (Fin n) A}
     (ha : ∀ i j, p (a i j)) (hb : ∀ i j, p (b i j)) (hc : ∀ i j, p (c i j)) (hd : ∀ i j, p (d i j)) :
@@ -137,9 +137,9 @@ theorem block_matrix_entry_property {A : Type} (p : A → Prop) {a b c d : Matri
   · exact hd x y
 
 /- English proof (translation)
-Rewrite `hg` using `[mem_atPts, mem_finPts_iff_forall]`. Unfold `GlobalTheory.StdUnn.K levelAll`. Use `Subgroup.mem_inf.2 ⟨mem_levelOpen.2 fun u => ?_, Subgroup.mem_iInf.2 fun w => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `hv`. Rewrite using `[hg.2 u (by simpa using h)]; exact one_mem _`. Rewrite using `[Subgroup.mem_comap, hg.1 w]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_K_of_atPts {v : Pl D} {g : G D n} (hg : g ∈ atPts D.sp.cm.sig (Jst D n) {v})
     (hv : GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v g ∈ stabLoc D.sp.cm.sig (Jst D n) (stdLattice D.host.E (n + n)) v) :
@@ -153,9 +153,9 @@ theorem mem_K_of_atPts {v : Pl D} {g : G D n} (hg : g ∈ atPts D.sp.cm.sig (Jst
   · rw [Subgroup.mem_comap, hg.1 w]; exact one_mem _
 
 /- English proof (translation)
-Establish `e : ∀ (h : G D n) i j, (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig (Jst D n) (GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v h)).1 i j = cv D v (mat h i j)` using `fun h i j => by rw [matHom_proj]; rfl`. Rewrite using `[mem_stabLoc]`. Introduce `y`. Rewrite using `[mem_latLoc_stdLattice, mem_latLoc_stdLattice]`. Use `mulVec_mem_iff _ (M' := (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig (Jst D n) (GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v g⁻¹)).1) (fun i j => by rw [e]; exact hM i j) (fun i j => by rw [e]; exact hM' i j) ?_ y` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Units.val_mul, ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stab_of_entries {v : Pl D} (g : G D n) (hM : ∀ i j, cv D v (mat g i j) ∈ intLoc D.host.F D.host.E v)
     (hM' : ∀ i j, cv D v (mat g⁻¹ i j) ∈ intLoc D.host.F D.host.E v) :
@@ -171,14 +171,14 @@ theorem stab_of_entries {v : Pl D} (g : G D n) (hM : ∀ i j, cv D v (mat g i j)
   rw [← Units.val_mul, ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one, Units.val_one]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext e)`.
+A detailed English derivation is pending.
 -/
 theorem mat_inj {g h : G D n} (e : mat g = mat h) : g = h := Subtype.ext (Units.ext e)
 
 /- English proof (translation)
-Apply `mat_inj` to reduce the goal to its premises. Use `show mat (nb (-o)) * mat (nb o) = mat 1`. Rewrite using `[hnb, hnb, GlobalTheory.StdUnn.Model.submatrix_fromBlocks_mul]`. Simplify using `only [AddSubgroup.coe_neg, Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, neg_add_cancel, add_neg_cancel]`. Rewrite using `[GlobalTheory.StdUnn.Model.block_matrix_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem nb_neg_mul {nb : hermA D n → G D n} (hnb : IsNMap nb) (o : hermA D n) : nb (-o) * nb o = 1 := by
   apply mat_inj
@@ -190,13 +190,11 @@ theorem nb_neg_mul {nb : hermA D n → G D n} (hnb : IsNMap nb) (o : hermA D n) 
   rfl
 
 /- English proof (translation)
-Establish `ha` using `nb_mem_atPts hnb o ho.1 ho.2.1`. Establish `h1 : ∀ i j, cv D v ((1 : Mx D n n) i j) ∈ intLoc D.host.F D.host.E v` using `fun i j => by`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Establish `h0 : ∀ i j, cv D v ((0 : Mx D n n) i j) ∈ intLoc D.host.F D.host.E v` using `fun i j => by`. Rewrite using `[Matrix.zero_apply, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Establish `hinv : (nb o)⁻¹ = nb (-o)` using `(eq_inv_of_mul_eq_one_left (nb_neg_mul hnb o)).symm`. Establish `hst` using `stab_of_entries (v := v) (nb o) (by rw [hnb o]; exact block_matrix_entry_property (fun a => cv D v a ∈ intLoc D.host.F D.host.E v) h1 ho.2.2 h0 h1) (by`. Rewrite using `[hinv, hnb (-o)]`. Conclude with `block_matrix_entry_property (fun a => cv D v a ∈ intLoc D.host.F D.host.E v) h1 (fun i j => by rw [AddSubgroup.coe_neg, Matrix.neg_apply, map_neg]; exact neg_mem (ho.2.2 i j)) h0 h1)`.
-
-Conclude with `Subgroup.mem_inf.2 ⟨mem_K_of_atPts ha hst, ha⟩`.
+A detailed English derivation is pending.
 -/
 theorem nb_mem_KAt {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D} (o : hermA D n) (ho : IntAt v o) :
     nb o ∈ KAt D n v := by
@@ -221,7 +219,7 @@ def cjv (nb : hermA D n → G D n) (v : Pl D) (x : hermA D n) : G D n →* GLoc 
   (GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v).comp (MulAut.conj (nb x)⁻¹).toMonoidHom
 
 /- English proof (translation)
-Simplify using `[cjv, MulAut.conj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cjv_apply (nb : hermA D n → G D n) (v : Pl D) (x : hermA D n) (k : G D n) :
     cjv nb v x k = GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v ((nb x)⁻¹ * k * nb x) := by
@@ -234,7 +232,7 @@ def Ucut (nb : hermA D n → G D n) (v : Pl D) (s : Finset (hermA D n)) : Subgro
   inv_mem' := fun ha x hx => by rw [map_inv]; exact inv_mem (ha x hx)
 
 /- English proof (translation)
-Use `show (∀ x ∈ s, _) ↔ _`. Simplify using `only [cjv_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_Ucut {nb : hermA D n → G D n} {v : Pl D} {s : Finset (hermA D n)} {k : G D n} :
     k ∈ Ucut nb v s ↔ ∀ x ∈ s, GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v ((nb x)⁻¹ * k * nb x) ∈
@@ -243,9 +241,7 @@ theorem mem_Ucut {nb : hermA D n → G D n} {v : Pl D} {s : Finset (hermA D n)} 
   simp only [cjv_apply]
 
 /- English proof (translation)
-Establish `: (Ucut nb v s : Set (G D n)) = ⋂ x ∈ s, (fun k => GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v ((nb x)⁻¹ * k * nb x)) ⁻¹' (stabLoc D.sp.cm.sig (Jst D n) (stdLattice D.host.E (n + n)) v : Set _)`. Use extensionality with `k`. Simplify using `only [SetLike.mem_coe, mem_Ucut, Set.mem_iInter, Set.mem_preimage]`. Rewrite using `[this]`. Use `haveI : Submodule.IsLattice D.host.E (stdLattice D.host.E (n + n)) := isLattice_stdLattice`.
-
-Conclude with `isOpen_biInter_finset fun x _ => (isOpen_stabLoc _ _ _ v).preimage ((continuous_proj _ _ v).comp ((continuous_const.mul continuous_id).mul continuous_const))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_Ucut (nb : hermA D n → G D n) (v : Pl D) (s : Finset (hermA D n)) :
     IsOpen (Ucut nb v s : Set (G D n)) := by
@@ -259,7 +255,7 @@ theorem isOpen_Ucut (nb : hermA D n → G D n) (v : Pl D) (s : Finset (hermA D n
     ((continuous_proj _ _ v).comp ((continuous_const.mul continuous_id).mul continuous_const))
 
 /- English proof (translation)
-Rewrite `hk`, the goal using `[mem_Ucut]`. Introduce `x hx`. Use `hk x hx` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, h, ← map_mul, ← map_mul]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_Ucut_of_proj {nb : hermA D n → G D n} {v : Pl D} {s : Finset (hermA D n)} {k k' : G D n}
     (h : GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v k = GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v k')
@@ -270,7 +266,7 @@ theorem mem_Ucut_of_proj {nb : hermA D n → G D n} {v : Pl D} {s : Finset (herm
   rwa [map_mul, map_mul, h, ← map_mul, ← map_mul] at this
 
 /- English proof (translation)
-Establish `ha` using `nb_mem_atPts hnb x (C.inf x hx) (C.off x hx)`. Establish `hm : (nb x)⁻¹ * k * nb x ∈ atPts D.sp.cm.sig (Jst D n) {v}` using `mul_mem (mul_mem (inv_mem ha) hkv) ha`. Conclude with `Subgroup.mem_inf.2 ⟨mem_K_of_atPts hm ((mem_Ucut.1 hk) x hx), hm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conj_mem_KAt {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D} (C : Cut D n v) {k : G D n}
     (hk : k ∈ Ucut nb v C.s) (hkv : k ∈ atPts D.sp.cm.sig (Jst D n) {v}) {x : hermA D n} (hx : x ∈ C.s) :
@@ -283,21 +279,21 @@ def locPart (v : Pl D) (g : G D n) : G D n :=
   emb D.sp.cm.sig (Jst D n) v (GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v g)
 
 /- English proof (translation)
-Rewrite using `[mem_atPts, mem_finPts]`. Conclude with `⟨by simp [locPart], fun u hu => proj_emb_ne _ _ (by simpa using hu) _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem locPart_mem_atPts (v : Pl D) (g : G D n) : locPart v g ∈ atPts D.sp.cm.sig (Jst D n) {v} := by
   rw [mem_atPts, mem_finPts]
   exact ⟨by simp [locPart], fun u hu => proj_emb_ne _ _ (by simpa using hu) _⟩
 
 /- English proof (translation)
-The claim follows from `proj_emb_self _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem proj_locPart (v : Pl D) (g : G D n) :
     GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v (locPart v g) = GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v g :=
   proj_emb_self _ _ _ _
 
 /- English proof (translation)
-The claim follows from `(continuous_emb _ _ v).comp (continuous_proj _ _ v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_locPart (v : Pl D) : Continuous (locPart (n := n) v) :=
   (continuous_emb _ _ v).comp (continuous_proj _ _ v)

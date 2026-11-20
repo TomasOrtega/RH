@@ -102,7 +102,7 @@ def ChoiceOfP : Prop :=
     ColsExist Dw c p la ∧ ColsHarmonic Dw c p la ∧ LocalDepth Xo c p la
 
 /- English proof (translation)
-Take `⟨X⟩` from `nonempty_valExt_of_overLa (p := p) la ho`. Rewrite using `[← (h T io e ho y Ch X _ n B hB).2.2.2.1 k ep hp]`. Conclude with `nuLocC_le_nuLocOf Ch ep k ha hB`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example {p : ℕ} [Fact p.Prime] {la : PointsOfFlagModel.abelian₂ p c} (h : LocalDepth Xo c p la) {T : CDVR} {io : c.F →+* T.Fr} {e : ℕ}
     (ho : OverLa la.1 T.V io e) {y : IntFr Xo c T io} (Ch : IntegralChartA3 Xo c T io y) {a : (E →+* ℂ) × ℕ → ℕ}
@@ -116,7 +116,7 @@ example {p : ℕ} [Fact p.Prime] {la : PointsOfFlagModel.abelian₂ p c} (h : Lo
 omit [StarRing (𝓞 E)] in
 
 /- English proof (translation)
-Establish `: IsEmpty {f : Lt1 Dw // (fun _ => 0 : Lt1 Dw → ℕ) f ≠ 0}` using `⟨fun f => f.2 rfl⟩`. Simplify using `[polyH]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example (C : Type) [Field C] : polyH (Dw := Dw) C (fun _ => 0) = 1 := by
   have : IsEmpty {f : Lt1 Dw // (fun _ => 0 : Lt1 Dw → ℕ) f ≠ 0} := ⟨fun f => f.2 rfl⟩

@@ -19,11 +19,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `hs0 : (s : F) ≠ 0`. Introduce `h0`. Conclude with `hs (by rw [show s = 0 from Subtype.ext h0]; exact zero_mem _)`. Establish `hv : v.valuation F (s : F) = 1`. Conclude with `(v.valuation_of_algebraMap (K := F) s).trans (HeightOneSpectrum.intValuation_eq_one_iff.2 hs)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : algebraMap F (Fv F v) (s : F)⁻¹ ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Use `le_of_eq ((HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _).trans ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `v.valuation F (s : F)⁻¹ = 1`. Rewrite using `[map_inv₀, hv, inv_one]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Use `latLoc_induction (p := fun y => y ∈ latLoc F L' v) (fun a ha x hx => ?_) (zero_mem _) (fun _ _ => add_mem) (fun _ => neg_mem) hy` and prove the remaining obligations. Establish `h2` using `tmul_mem_latLoc (mul_mem hinv ha) (h x hx)`. Use `h2 using 2 with i` and compare the differences between its conclusion and the goal. Rewrite using `[Pi.smul_apply, algebraMap_smul, ← TensorProduct.smul_tmul, ← Algebra.smul_def, smul_smul, mul_inv_cancel₀ hs0, one_smul]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latLoc_le_of_smul_mem {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) (s : 𝓞 F) (hs : s ∉ v.asIdeal)
     (L L' : Submodule (𝓞 E) (Fin n → E)) (h : ∀ y ∈ L, algebraMap F E (s : F) • y ∈ L') :
@@ -47,7 +47,7 @@ theorem latLoc_le_of_smul_mem {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) (s : �
     mul_inv_cancel₀ hs0, one_smul]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.HermSelfDualLoc.hE_transpose]`. Simplify using `only [hE, Formalism.UG.hform, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hE_smul_transpose (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (δ : E) (x y : Fin n → E) :
     hE σ (δ • Jᵀ) x y = δ * form σ J y x := by
@@ -57,22 +57,20 @@ theorem hE_smul_transpose (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fi
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `[form, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (c : E) (x y : Fin n → E) :
     form σ J (c • y) x = c * form σ J y x := by
   simp [form, smul_dotProduct]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J L hJ0 hL hd v δ s hδ hs ha hb`. Establish `hJ : (δ • Jᵀ).det ≠ 0`. Rewrite using `[Matrix.det_smul, Matrix.det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ hδ) hJ0`. Establish `h1 : ∀ y ∈ L, algebraMap F E ((1 : 𝓞 F) : F) • y ∈ GlobalTheory.AdelicU.SelfDual.dualGlob σ (δ • Jᵀ) L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `e : algebraMap F E ((1 : 𝓞 F) : F) • y = y` using `by simp`. Rewrite using `[e]`. Introduce `x hx`. Rewrite using `[hE_smul_transpose, ← GlobalTheory.HermSelfDualLoc.isIntegral_iff_mem_range]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ha _ ((hd y).1 hy x hx)`. Establish `h2 : ∀ y ∈ GlobalTheory.AdelicU.SelfDual.dualGlob σ (δ • Jᵀ) L, algebraMap F E (s : F) • y ∈ L`. Introduce `y hy`. Use `(hd _).2 fun x hx o => ?_` and prove the remaining obligations. Establish `he` using `hy x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `he` using `[hE_smul_transpose, ← GlobalTheory.HermSelfDualLoc.isIntegral_iff_mem_range]`. Rewrite using `[form_smul_left]`. Conclude with `hb _ he o`. Unfold `IsSelfDualAt`. Rewrite using `[← GlobalTheory.AdelicU.SelfDual.latLoc_dualGlob hJ hL]`.
-
-Conclude with `le_antisymm (latLoc_le_of_smul_mem v 1 ((Ideal.ne_top_iff_one _).1 v.isPrime.ne_top) _ _ h1) (latLoc_le_of_smul_mem v s hs _ _ h2)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSelfDualAt_smul_transpose : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)), J.det ≠ 0 → L.IsLattice E →

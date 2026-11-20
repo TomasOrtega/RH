@@ -44,7 +44,7 @@ def pt : Spec (GA (X := X) (V := V)) ⟶ (splitTorus S X ⊗ Y).left :=
   pullback.lift (ptT hV) (ptY hV) (pullback.lift_snd _ _ _)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact pullback.lift_snd _ _ _`. Consider the case `simp [pt]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma pt_snd : pt hV ≫ (snd (splitTorus S X) Y).left = ptY hV := by
   first
@@ -52,7 +52,7 @@ lemma pt_snd : pt hV ≫ (snd (splitTorus S X) Y).left = ptY hV := by
   | simp [pt]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact pullback.lift_fst _ _ _`. Consider the case `simp [pt]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma pt_fst : pt hV ≫ (fst (splitTorus S X) Y).left = ptT hV := by
   first
@@ -60,7 +60,7 @@ lemma pt_fst : pt hV ≫ (fst (splitTorus S X) Y).left = ptT hV := by
   | simp [pt]
 
 /- English proof (translation)
-Apply `eq_top_iff.mpr` to reduce the goal to its premises. Introduce `p _`. Use `show hV.fromSpec.base ((Spec.map _).base p) ∈ V`. Rewrite using `[← SetLike.mem_coe, ← hV.range_fromSpec]`. Conclude with `Set.mem_range_self _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ptY_preimage : ptY (X := X) hV ⁻¹ᵁ V = ⊤ := by
   apply eq_top_iff.mpr
@@ -70,7 +70,7 @@ lemma ptY_preimage : ptY (X := X) hV ⁻¹ᵁ V = ⊤ := by
   exact Set.mem_range_self _
 
 /- English proof (translation)
-Introduce `p _`. Establish `h1 : (pt hV ≫ (snd (splitTorus S X) Y).left).base p ∈ V`. Rewrite using `[pt_snd]`. Conclude with `(ptY_preimage hV).ge (show p ∈ (⊤ : (Spec (GA (X := X) (V := V))).Opens) from trivial)`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pt_le : (⊤ : (Spec (GA (X := X) (V := V))).Opens) ≤
     pt hV ⁻¹ᵁ ((snd (splitTorus S X) Y).left ⁻¹ᵁ V) := by
@@ -86,14 +86,14 @@ def ev : Γ((splitTorus S X ⊗ Y).left, (snd (splitTorus S X) Y).left ⁻¹ᵁ 
     ((pt hV).appLE _ ⊤ (pt_le hV)).hom
 
 /- English proof (translation)
-Introduce `p _`. Discharge the goal by the elementary cases of `trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Check the elementary cases of the proposition.
 -/
 lemma tle {A B : Scheme.{0}} (f : A ⟶ B) : (⊤ : A.Opens) ≤ f ⁻¹ᵁ ⊤ := by
   intro p _
   trivial
 
 /- English proof (translation)
-Substitute `hfg` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma appLE_of_eq {A B : Scheme.{0}} {f g : A ⟶ B} (hfg : f = g) {U : B.Opens} {W : A.Opens}
     (e : W ≤ f ⁻¹ᵁ U) : f.appLE U W e = g.appLE U W (hfg ▸ e) := by
@@ -101,7 +101,7 @@ lemma appLE_of_eq {A B : Scheme.{0}} {f g : A ⟶ B} (hfg : f = g) {U : B.Opens}
   rfl
 
 /- English proof (translation)
-Establish `h1 : (Spec.map f).appLE ⊤ ⊤ e = (Spec.map f).appTop` using `by first`. Consider the case `(rw [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]; rfl)`. Consider the case `(simp only [Scheme.Hom.appLE] erw [show (homOfLE e).op = 𝟙 (Opposite.op (⊤ : (Spec R').Opens)) from Subsingleton.elim _ _, CategoryTheory.Functor.map_id, Category.comp_id] rfl)`. Rewrite using `[h1, Scheme.ΓSpecIso_naturality, ← Category.assoc, Iso.inv_hom_id, Category.id_comp]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma specMap_appLE_top {R R' : CommRingCat.{0}} (f : R ⟶ R') (e) :
     (Scheme.ΓSpecIso R).inv ≫ (Spec.map f).appLE ⊤ ⊤ e ≫ (Scheme.ΓSpecIso R').hom = f := by
@@ -115,9 +115,9 @@ lemma specMap_appLE_top {R R' : CommRingCat.{0}} (f : R ⟶ R') (e) :
   rw [h1, Scheme.ΓSpecIso_naturality, ← Category.assoc, Iso.inv_hom_id, Category.id_comp]
 
 /- English proof (translation)
-Establish `h1 : (Spec.map f ≫ hV.fromSpec).appLE V ⊤ e = hV.fromSpec.appLE V ⊤ (by simp) ≫ (Spec.map f).appLE ⊤ ⊤ (by simp)` using `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`. Establish `h2 : hV.fromSpec.appLE V ⊤ (by simp) = (Scheme.ΓSpecIso Γ(Y.left, V)).inv`. Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Use `conv_rhs => rw [← Category.comp_id (Scheme.ΓSpecIso Γ(Y.left, V)).inv]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, Category.assoc]`. Conclude with `specMap_appLE_top f _`.
+A detailed English derivation is pending.
 -/
 lemma specMap_fromSpec_appLE {R : CommRingCat.{0}} (f : Γ(Y.left, V) ⟶ R) (e) :
     (Spec.map f ≫ hV.fromSpec).appLE V ⊤ e ≫ (Scheme.ΓSpecIso R).hom = f := by
@@ -132,9 +132,9 @@ lemma specMap_fromSpec_appLE {R : CommRingCat.{0}} (f : Γ(Y.left, V) ⟶ R) (e)
   exact specMap_appLE_top f _
 
 /- English proof (translation)
-Establish `e1 : (snd (splitTorus S X) Y).left.app V ≫ (pt hV).appLE _ ⊤ (pt_le hV) ≫ (Scheme.ΓSpecIso (GA (X` using `X) (V := V))).hom = CommRingCat.ofHom (algebraMap Γ(Y.left, V) (AddMonoidAlgebra Γ(Y.left, V) X)) := by`. Rewrite using `[Scheme.Hom.app_eq_appLE, ← Category.assoc, Scheme.Hom.appLE_comp_appLE, appLE_of_eq (pt_snd hV)]`. Conclude with `specMap_fromSpec_appLE hV _ _`. Use `congrArg (fun φ => φ.hom h) e1` as an intermediate fact. Rewrite using `[ev, RingHom.comp_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[AddMonoidAlgebra.coe_algebraMap]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ev_snd (h : Γ(Y.left, V)) :
     ev hV (((snd (splitTorus S X) Y).left.app V).hom h) = AddMonoidAlgebra.single 0 h := by
@@ -149,7 +149,7 @@ lemma ev_snd (h : Γ(Y.left, V)) :
   simp [AddMonoidAlgebra.coe_algebraMap]
 
 /- English proof (translation)
-Simplify using `[charUnit, res, pullU, Scheme.Hom.appLE, AddMonoidAlgebra.of_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma charUnit_val (χ : X) :
     (charUnit S X χ).val = ((tFst (S := S) X).appLE ⊤ ⊤
@@ -159,11 +159,11 @@ lemma charUnit_val (χ : X) :
   rfl
 
 /- English proof (translation)
-Establish `hfst : (pt hV ≫ (fst (splitTorus S X) Y).left) ≫ tFst (S` using `S) X = ptZ (X := X) (V := V) := by`. Rewrite using `[pt_fst]`. Conclude with `pullback.lift_fst _ _ _`. Establish `key : (Scheme.ΓSpecIso (torusRing ZU X)).inv ≫ ((tFst (S` using `S) X).appLE ⊤ ⊤ (tle _) ≫ ((fst (splitTorus S X) Y).left.appTop ≫ ((splitTorus S X ⊗ Y).left.presheaf.map (homOfLE le_top).op ≫ ((pt hV).appLE _ ⊤ (pt_le hV) ≫ (Scheme.ΓSpecIso (GA (X := X) (V := V))).hom)))) = CommRingCat.ofHom (algebraMap (AddMonoidAlgebra ZU.{0} X) (AddMonoidA …`. Establish `hT : (fst (splitTorus S X) Y).left.appTop = (fst (splitTorus S X) Y).left.appLE ⊤ ⊤ (tle _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[hT, ← Category.assoc ((splitTorus S X ⊗ Y).left.presheaf.map _), Scheme.Hom.map_appLE, ← Category.assoc ((fst (splitTorus S X) Y).left.appLE _ _ _), Scheme.Hom.appLE_comp_appLE, ← Category.assoc ((tFst (S := S) X).appLE ⊤ ⊤ _), Scheme.Hom.appLE_comp_appLE, appLE_of_eq hfst]`. Conclude with `specMap_appLE_top _ _`. Use `congrArg (fun φ => φ.hom (AddMonoidAlgebra.single χ (1 : ULift.{0} ℤ))) key` as an intermediate fact.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Rewrite using `[ev, RingHom.comp_apply, chiP, charUnit_val]`. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[AddMonoidAlgebra.algebraMap_def]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ev_chi (χ : X) :
     ev hV (((splitTorus S X ⊗ Y).left.presheaf.map (homOfLE le_top).op).hom (chiP X Y χ)) =
@@ -193,7 +193,7 @@ lemma ev_chi (χ : X) :
 end Point
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [AddMonoidAlgebra.coeff, Finsupp.finset_sum_apply, Finsupp.single_apply, h]`. Consider the case `simp [Finsupp.finset_sum_apply, Finsupp.single_apply, h]`. Consider the case `simp [AddMonoidAlgebra.coeff_sum, AddMonoidAlgebra.coeff_single, h]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma coeff_sum_single {A : Type} [CommRing A] (s : Finset X) (g : X → A) (χ₀ : X) (h : χ₀ ∈ s) :
     (∑ c ∈ s, AddMonoidAlgebra.single c (g c)).coeff χ₀ = g χ₀ := by
@@ -204,15 +204,15 @@ lemma coeff_sum_single {A : Type} [CommRing A] (s : Finset X) (g : X → A) (χ�
   | simp [AddMonoidAlgebra.coeff_sum, AddMonoidAlgebra.coeff_single, h]
 
 /- English proof (translation)
-Introduce `χ₀ hχ₀`. Use `TopCat.Presheaf.section_ext Y.left.sheaf V (h χ₀) 0 fun x hx => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨W, hW, hxW, hWV⟩ : ∃ W : Y.left.Opens, IsAffineOpen W ∧ x ∈ W ∧ W ≤ V := by`. Take `⟨_, ⟨W, hW, rfl⟩, hxW, hWV⟩` from `(Y.left.isBasis_affineOpens).exists_subset_of_mem_open hx V.2`. Conclude with `⟨W, hW, hxW, hWV⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hle : (snd (splitTorus S X) Y).left ⁻¹ᵁ W ≤ (snd (splitTorus S X) Y).left ⁻¹ᵁ V` using `fun y hy => hWV hy`. Establish `e1 : ∀ χ : X, ((splitTorus S X ⊗ Y).left.presheaf.map (homOfLE hle).op).hom (((splitTorus S X ⊗ Y).left.presheaf.map (homOfLE le_top).op).hom (chiP X Y χ)) = ((splitTorus S X ⊗ Y).left.presheaf.map (homOfLE le_top).op).hom (chiP X Y χ)`. Introduce `c`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : ∀ c : Γ(Y.left, V), ((splitTorus S X ⊗ Y).left.presheaf.map (homOfLE hle).op).hom (((snd (splitTorus S X) Y).left.app V).hom c) = ((snd (splitTorus S X) Y).left.app W).hom ((Y.left.presheaf.map (homOfLE hWV).op).hom c)`. Introduce `c`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.app_eq_appLE, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`. Establish `hres` using `congrArg ((splitTorus S X ⊗ Y).left.presheaf.map (homOfLE hle).op).hom hs`. Simplify using `only [map_sum, map_mul, map_zero, e1, e2] at hres`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hev` using `congrArg (ev hW) hres`. Simplify using `only [map_sum, map_mul, map_zero, ev_chi, ev_snd, AddMonoidAlgebra.single_mul_single, add_zero, one_mul] at hev`. Establish `hc` using `congrArg (fun f => f.coeff χ₀) hev`. Rewrite `hc` using `[coeff_sum_single X s _ χ₀ hχ₀, AddMonoidAlgebra.coeff_zero, Finsupp.coe_zero, Pi.zero_apply]`. Establish `hg` using `TopCat.Presheaf.germ_res_apply Y.left.presheaf (homOfLE hWV) x hxW (h χ₀)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hg` using `[hc, map_zero]`. Conclude with `hg.symm.trans (map_zero _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sum {V : Y.left.Opens} (s : Finset X) (h : X → Γ(Y.left, V))
     (hs : ∑ χ ∈ s, ((splitTorus S X ⊗ Y).left.presheaf.map (homOfLE le_top).op).hom (chiP X Y χ) *

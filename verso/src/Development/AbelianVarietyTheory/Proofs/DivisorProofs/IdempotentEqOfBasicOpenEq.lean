@@ -4,11 +4,11 @@ open AlgebraicGeometry CategoryTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `key : ∀ c : R, c * c = c → (IsUnit c → c = 1) ∧ (¬ IsUnit c → c = 0)`. Introduce `c hc`. Use `⟨fun hu => ?_, fun hn => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `hu`. Establish `: (u : R) * u = u * 1` using `by rw [mul_one]; exact hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(Units.mul_right_inj u).mp this`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self c with h1 | h1` into its components or cases. Conclude with `absurd h1 hn`. Establish `: (1 - c) * c = 0` using `by rw [sub_mul, one_mul, hc, sub_self]`. Take `⟨u, hu⟩` from `h1`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[← hu]`. Simplify using `using this`. Distinguish the cases in `hau : IsUnit a`. Rewrite using `[(key a ha).1 hau, (key b hb).1 (h.mp hau)]`. Rewrite using `[(key a ha).2 hau, (key b hb).2 (fun hbu => hau (h.mpr hbu))]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_germ_eq_of_isUnit_iff {R : Type*} [CommRing R] [IsLocalRing R] {a b : R}
     (ha : a * a = a) (hb : b * b = b) (h : IsUnit a ↔ IsUnit b) : a = b := by
@@ -29,9 +29,9 @@ theorem idem_germ_eq_of_isUnit_iff {R : Type*} [CommRing R] [IsLocalRing R] {a b
   · rw [(key a ha).2 hau, (key b hb).2 (fun hbu => hau (h.mpr hbu))]
 
 /- English proof (translation)
-Introduce `X e e' he he' hb`. Use `TopCat.Presheaf.section_ext X.sheaf ⊤ e e' (fun x hx => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `X.presheaf.germ ⊤ x hx e = X.presheaf.germ ⊤ x hx e'`. Apply `idem_germ_eq_of_isUnit_iff (R := X.presheaf.stalk x)` to reduce the goal to its premises. Rewrite using `[← map_mul, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, he']`. Rewrite using `[← X.mem_basicOpen e x hx, ← X.mem_basicOpen e' x hx, hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem idempotent_eq_of_basicOpen_eq : ∀ (X : Scheme.{0}) (e e' : Γ(X, ⊤)), e * e = e → e' * e' = e' →
     X.basicOpen e = X.basicOpen e' → e = e' := by

@@ -13,39 +13,37 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.Indefinite
 open scoped ContDiff
 
 /- English proof (translation)
-Introduce `e X _ _ _ _ _ A P m D hO hP hcen hcmp`. Apply `GlobalTheory.T.monge_ampere_measure_finite A (fun _ => P) _ hO` to reduce the goal to its premises. Introduce `j x hx`. Take `⟨ψ, σ, had, hxs, hx0⟩` from `hcen x`. Take `⟨ρ, hρ, C, hC, hbd⟩` from `hcmp ψ σ had`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcompat : IsCompatChart A ψ` using `had.1`. Establish `htgt : Metric.ball (0 : Fin e → ℂ) 1 ⊆ ψ.target` using `had.2.1`. Establish `h0t : (0 : Fin e → ℂ) ∈ ψ.target` using `by rw [← hx0]; exact ψ.map_source hxs`. Establish `hsym0 : ψ.symm 0 = x` using `by rw [← hx0]; exact ψ.left_inv hxs`. Establish `hcont : ContinuousAt ψ.symm 0` using `ψ.continuousAt_symm h0t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨ε, hε, hεs⟩ : ∃ ε > 0, ∀ z ∈ Metric.ball (0 : Fin e → ℂ) ε, ψ.symm z ∈ (A.chart j).source := by`. Establish `hx' : ψ.symm 0 ∈ (A.chart j).source` using `by rw [hsym0]; exact hx`. Establish `: ψ.symm ⁻¹' (A.chart j).source ∈ nhds (0 : Fin e → ℂ)` using `hcont.preimage_mem_nhds ((A.chart j).open_source.mem_nhds hx')`. Take `⟨ε, hε, h⟩` from `Metric.mem_nhds_iff.mp this`. Conclude with `⟨ε, hε, fun z hz => h hz⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `set r : ℝ := min (min ρ ε) (1 / 2) with hr`. Establish `hr0 : 0 < r` using `lt_min (lt_min hρ hε) (by norm_num)`. Establish `hrρ : r ≤ ρ` using `(min_le_left _ _).trans (min_le_left _ _)`. Establish `hrε : r ≤ ε` using `(min_le_left _ _).trans (min_le_right _ _)`. Establish `hr2 : r ≤ 1 / 2` using `min_le_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hballt : Metric.ball (0 : Fin e → ℂ) r ⊆ ψ.target` using `(Metric.ball_subset_ball (by linarith)).trans htgt`. Establish `hballs : ∀ z ∈ Metric.ball (0 : Fin e → ℂ) r, ψ.symm z ∈ (A.chart j).source` using `fun z hz => hεs z (Metric.ball_subset_ball hrε hz)`. Use `⟨ψ.symm '' Metric.ball 0 r, ψ.isOpen_image_symm_of_subset_target Metric.isOpen_ball hballt, ⟨0, Metric.mem_ball_self hr0, hsym0⟩, ?_⟩` and prove the remaining obligations. Use `lt_of_le_of_lt (GlobalTheory.T.monge_ampere_local_integral A P _ ψ j r hO hP hcompat hballt hballs) ?_` and prove the remaining obligations. Use `set B : Finset (Fin e) := Finset.univ.filter (fun k => ∃ i, σ i = some k) with hB`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `set g : Fin e → ℂ → ℝ := fun k u => if k ∈ B then 1 / (‖u‖ ^ 2 * tOf u ^ 2) else 1 with hg`. Apply the tactic sequence `have hg0 : ∀ k u, 0 ≤ g k u := by intro k u; simp only [hg]; split_ifs <;> positivity`. Establish `hgm : ∀ k, Measurable (g k)`. Introduce `k`. Distinguish the cases in `hk : k ∈ B`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [hg, hk, if_true]`. Unfold `tOf`. Use `fun_prop`. Simplify using `only [hg, hk, if_false]`. Conclude with `measurable_const`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K : ℝ := (e.factorial : ℝ) * C ^ e with hK`. Establish `hpt : ∀ z ∈ Metric.ball (0 : Fin e → ℂ) r ∩ ψ.symm ⁻¹' (⋃ i, D i)ᶜ, ENNReal.ofReal (maDens (fun _ => P.φ (ψ.symm z) ∘ ψ.symm) z) ≤ ENNReal.ofReal K * ∏ k, ENNReal.ofReal (g k (z k))`. Introduce and unpack `z ⟨hz, hzO⟩`. Establish `hzρ : z ∈ Metric.ball (0 : Fin e → ℂ) ρ` using `Metric.ball_subset_ball hrρ hz`. Establish `hb` using `hbd z hzρ hzO`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hsm` using `GlobalTheory.T.potential_smooth_on_open A P _ ψ z hO hP hcompat (hballt hz) hzO`. Establish `hmodel : ∀ w, modelAt σ z w = ∑ k, g k (z k) * ‖w k‖ ^ 2`. Introduce `w`. Unfold `modelAt`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hg, hB, Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `split_ifs <;> first | ring | (exfalso; tauto)`. Establish `hmodel0 : ∀ w, 0 ≤ modelAt σ z w` using `fun w => by`. Rewrite using `[hmodel]; exact Finset.sum_nonneg fun k _ => mul_nonneg (hg0 k _) (by positivity)`. Establish `hpi` using `Real.pi_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlow : ∀ w, 0 ≤ levi (P.φ (ψ.symm z) ∘ ψ.symm) z w`. Introduce `w`. Establish `h2 : 0 ≤ formAt ψ P z w` using `le_trans (mul_nonneg (inv_nonneg.2 hC.le) (hmodel0 w)) (hb w).1`. Unfold `formAt at h2`. Conclude with `(mul_nonneg_iff_of_pos_left (by positivity)).mp h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hup : ∀ w, levi (P.φ (ψ.symm z) ∘ ψ.symm) z w ≤ ∑ k, (Real.pi / 2 * C * g k (z k)) * ‖w k‖ ^ 2`. Introduce `w`. Establish `h1` using `(hb w).2`. Unfold `formAt at h1`. Rewrite `h1` using `[hmodel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hs : ∑ k, (Real.pi / 2 * C * g k (z k)) * ‖w k‖ ^ 2 = Real.pi / 2 * (C * ∑ k, g k (z k) * ‖w k‖ ^ 2)`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]; exact Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[hs]`. Establish `h3` using `mul_le_mul_of_nonneg_left h1 (by positivity : (0:ℝ) ≤ Real.pi / 2)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Use `_ ≤ _ := h3`. Establish `hdet` using `GlobalTheory.T.monge_ampere_density_bound _ z _ hsm hlow hup`. Establish `hprod : (e.factorial : ℝ) * (2 / Real.pi) ^ e * ∏ k, (Real.pi / 2 * C * g k (z k)) = K * ∏ k, g k (z k)`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, hK, mul_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (2 / Real.pi) ^ e * (Real.pi / 2) ^ e = 1`. Rewrite using `[← mul_pow, div_mul_div_comm, mul_comm 2 Real.pi, div_self (by positivity), one_pow]`. Take the linear combination `((e.factorial : ℝ) * C ^ e * ∏ k, g k (z k)) * h2`. Rewrite `hdet` using `[hprod]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_prod_of_nonneg (fun k _ => hg0 k _)]`. Establish `hpm : Measurable fun z : Fin e → ℂ => ∏ k, ENNReal.ofReal (g k (z k))` using `Finset.measurable_prod _ fun k _ => ENNReal.measurable_ofReal.comp ((hgm k).comp (measurable_pi_apply k))`. Establish `hfin : ∀ k, ∫⁻ u in Metric.ball (0 : ℂ) r, ENNReal.ofReal (g k u) < ⊤`. Introduce `k`. Distinguish the cases in `hk : k ∈ B`.
-
-Simplify using `only [hg, hk, if_true]`. Conclude with `GlobalTheory.T.log_singular_integrable_disc r hr2`. Simplify using `only [hg, hk, if_false, ENNReal.ofReal_one, setLIntegral_const, one_mul]`. Conclude with `measure_ball_lt_top`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem maMeasure_compl_lt_top : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X] (A : FinHolAtlas e X) (P : LocPot X) {m : ℕ} (D : Fin m → Set X), IsOpen (⋃ i, D i)ᶜ → IsPotentialOn A (⋃ i, D i)ᶜ P → (∀ x : X, ∃ (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (σ : Fin m → Option (Fin e)), IsAdaptedPolydisc A D ψ σ ∧ x ∈ ψ.source ∧ ψ x = 0) → (∀ (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (σ : Fin m → Option (Fin e)), IsAdaptedPolydisc A D ψ σ → ∃ ρ : ℝ, 0 < ρ ∧ ∃ C : ℝ, 0 < C ∧ ∀ z ∈ Metric.ball (0 : Fin e → ℂ) ρ, ψ.symm z ∉ ⋃ i, D i → ∀ w, C⁻¹ * modelAt σ z w ≤ formAt ψ P z w ∧ formAt ψ P z w ≤ C * modelAt σ z w) → maMeasure A (fun _ => P) (⋃ i, D i)ᶜ < ⊤ := by
   intro e X _ _ _ _ _ A P m D hO hP hcen hcmp

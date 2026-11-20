@@ -16,13 +16,13 @@ section CyclicChar
 variable (Q : Type) [Group Q] [Finite Q] [IsCyclic Q]
 
 /- English proof (translation)
-Use `Fintype.ofFinite Q` as an intermediate fact. Take `⟨σ, hσ⟩` from `IsCyclic.exists_generator (α := Q)`. Use `⟨GroundTheory.GroupCoh.cyclicChar σ hσ, (injective_iff_map_eq_zero _).2 fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.1 (hσ (Additive.toMul x))`. Establish `hxk : x = k • Additive.ofMul σ` using `by rw [← ofMul_zpow, hk, ofMul_toMul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hx` using `[hxk, map_zsmul, GroundTheory.GroupCoh.cyclicChar_apply_gen]`. Establish `hn : (Nat.card Q : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `h' : (((k : ℚ) * (1 / Nat.card Q) : ℚ) : AddCircle (1 : ℚ)) = 0`. Rewrite using `[← zsmul_eq_mul]`. Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `(AddCircle.coe_eq_zero_iff _).1 h'`. Rewrite `hm` using `[zsmul_one]`. Establish `hkm : k = m * (Nat.card Q : ℤ)`. Establish `: (k : ℚ) = m * Nat.card Q`. Clear denominators, using `at hm` for the nonvanishing conditions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions. Rewrite using `[hxk, hkm, mul_comm, ← ofMul_zpow, zpow_mul, zpow_natCast, pow_card_eq_one', one_zpow, ofMul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_injective_addCircle_char : ∃ ψ : Additive Q →+ AddCircle (1 : ℚ), Function.Injective ψ := by
   have := Fintype.ofFinite Q
@@ -52,15 +52,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Compa
   [TotallyDisconnectedSpace G]
 
 /- English proof (translation)
-Establish `hNc : IsClosed (N : Set G)` using `Subgroup.isClosed_of_isOpen N hN`. Establish `hmem : x ∈ LinearMap.range (cohomologyInfl A N 2).hom`. Rewrite using `[range_cohomologyInfl_eq_ker_cohomologyRes hNc two_ne_zero]`. Conclude with `hx`. Introduce `i hi hi2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl : i = 1` from `by omega`. Conclude with `h1`. Take `⟨y, rfl⟩` from `hmem`. Establish `: DiscreteTopology (G ⧸ N)` using `QuotientGroup.discreteTopology hN`. Establish `: Finite (G ⧸ N)` using `Subgroup.quotient_finite_of_isOpen N hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Fintype.ofFinite (G ⧸ N)` as an intermediate fact. Take `⟨ψ, hψ⟩` from `exists_injective_addCircle_char (G ⧸ N)`. Set `χ₀ : Additive (G ⧸ N) →ₜ+ QZ` to `{ toAddMonoidHom := QZ.toAddCircle.symm.toAddMonoidHom.comp ψ continuous_toFun := continuous_of_discreteTopology }`. Establish `hχ₀ : Function.Injective χ₀` using `QZ.toAddCircle.symm.injective.comp hψ`. Take `⟨a, rfl⟩` from `cupCharClassProf_surjective (A.quotientToInvariants N) χ₀ hχ₀ y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : Rep.res (QuotientGroup.mk' N) (A.quotientToInvariants N) ⟶ A` to `Rep.ofHom (A.ρ.quotientToInvariants_lift N)`. Set `b : A.ρ.invariants` to `⟨f.hom (a : A.quotientToInvariants N), fun g => by`. Establish `hc` using `Rep.hom_comm_apply f g (a : A.quotientToInvariants N)`. Rewrite using `[← hc]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a.2 (QuotientGroup.mk' N g)⟩`. Use `⟨contCharComp χ₀ (QuotientGroup.mk' N) (continuous_quotientGroup_mk' N), b, fun n hn => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[contCharComp_apply, QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff n).2 hn, ofMul_one, map_zero]`. Rewrite using `[cohomologyInfl_eq]`. Conclude with `(cohomologyMapAlong_cupCharClassProf (QuotientGroup.mk' N) (continuous_quotientGroup_mk' N) f χ₀ a b rfl).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cupCharClassProf_eq_of_cohomologyRes_eq_zero (A : Rep ℤ G) [IsDiscreteRep A]
     (N : Subgroup G) [N.Normal] (hN : IsOpen (N : Set G)) [IsCyclic (G ⧸ N)]

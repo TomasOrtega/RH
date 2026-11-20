@@ -28,7 +28,7 @@ open GlobalTheory.PlaneLevi
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_skew {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = -J i j)
     (a b : Fin n → E) : form σ J a b = -σ (form σ J b a) := by
@@ -38,7 +38,7 @@ theorem form_skew {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hσ : ∀ x, σ (σ 
   ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.add_mulVec, Matrix.one_mulVec, Matrix.vecMulVec_mulVec, form, dotProduct_comm v]`. Use extensionality with `i`. Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem two_mulVec {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (p q a b v : Fin n → E) :
     (1 + Matrix.vecMulVec p (J *ᵥ fun i => σ (a i)) + Matrix.vecMulVec q (J *ᵥ fun i => σ (b i))) *ᵥ v =
@@ -48,11 +48,11 @@ theorem two_mulVec {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (p q a b v : Fin n �
   simp [mul_comm]
 
 /- English proof (translation)
-Establish `sk` using `form_skew hσ hJ`. Establish `hyx : form σ J y x = -1` using `by rw [sk, hxy, map_one]`. Establish `hpx : form σ J p x = -1` using `by rw [sk, hxp, map_one]`. Take `⟨k, hk⟩ : ∃ k, k = form σ J y p` from `⟨_, rfl⟩`. Establish `hpy : form σ J p y = -σ k` using `by rw [hk]; exact sk _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨1 + Matrix.vecMulVec ((-1 : E) • x) (J *ᵥ fun i => σ ((p + (-1 : E) • y) i)) + Matrix.vecMulVec ((-1 : E) • p + y + (-k) • x) (J *ᵥ fun i => σ (x i)), fun a b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[two_mulVec, two_mulVec]`. Simplify using `only [form_add_left, form_smul_left, form_add_right, form_smul_right, hxx, hyy, hxy, hyx, map_neg, map_one, hpx, hxp, hpp, hpy, ← hk, map_add, map_mul]`. Rewrite using `[sk x b, sk y b, sk p b]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[two_mulVec, form_add_right, form_smul_right, hyy, hyx, ← hk] module`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_eichler {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = -J i j)
     {x y p : Fin n → E} (hxx : form σ J x x = 0) (hyy : form σ J y y = 0) (hpp : form σ J p p = 0)
@@ -74,11 +74,11 @@ theorem exists_eichler {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hσ : ∀ x, σ
     module
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hz` to reduce the goal to its premises. Establish `h1 : J *ᵥ (fun i => σ (z i)) = 0`. Use function extensionality and compare the values at `i`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `hc (Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[form, single_one_dotProduct]`. Conclude with `this`. Establish `h2` using `Matrix.eq_zero_of_mulVec_eq_zero hd h1`. Use function extensionality and compare the values at `i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : σ (z i) = 0` using `congrFun h2 i`. Rewrite using `[← hσ (z i), h3, map_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_form_ne {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hσ : ∀ x, σ (σ x) = x) (hd : J.det ≠ 0)
     {z : Fin n → E} (hz : z ≠ 0) : ∃ u, form σ J u z ≠ 0 := by
@@ -97,17 +97,17 @@ theorem exists_form_ne {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hσ : ∀ x, σ
   rfl
 
 /- English proof (translation)
-Establish `sk` using `form_skew hσ hJ`. Establish `hyx : form σ J y x = -1` using `by rw [sk, hxy, map_one]`. Distinguish the cases in `hyz : form σ J y z = 0`. Use `swap`. Conclude with `⟨y, hyy, hyz, by rw [hyx]; simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hxz : form σ J x z = 0`. Use `swap`. Use `⟨x + y, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [form_add_left, form_add_right, hxx, hyy, hxy, hyx]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[form_add_left, hyz, add_zero]` and apply the resulting hypothesis. Rewrite using `[form_add_left, hxx, hyx]`. Simplify using the standard rewrite rules. Take `⟨u, hu⟩` from `exists_form_ne hσ hd hz`. Take `⟨q, hq⟩ : ∃ q, q = u + (form σ J u x + 1) • y` from `⟨_, rfl⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqx : form σ J q x = -1` using `by rw [hq, form_add_left, form_smul_left, hyx]; ring`. Establish `hqz : form σ J q z ≠ 0` using `by rwa [hq, form_add_left, form_smul_left, hyz, mul_zero, add_zero]`. Establish `hzx : form σ J z x = 0` using `by rw [sk, hxz, map_zero, neg_zero]`. Establish `hσz : σ (form σ J q z) ≠ 0` using `fun h => hqz (by rw [← hσ (form σ J q z), h, map_zero])`. Establish `hN : σ (form σ J q q) = -form σ J q q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `sk q q` as an intermediate fact. Take the linear combination `this`. Use `⟨q + (form σ J q q / (2 * σ (form σ J q z))) • z, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [form_add_left, form_add_right, form_smul_left, form_smul_right, hzz]`. Rewrite using `[sk z q, map_div₀, map_mul, hσ, hN, map_ofNat]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[form_add_left, form_smul_left, hzz, mul_zero, add_zero]` and apply the resulting hypothesis. Rewrite using `[form_add_left, form_smul_left, hzx, hqx]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_partner {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = -J i j)
     (hd : J.det ≠ 0) {x y z : Fin n → E} (hxx : form σ J x x = 0) (hyy : form σ J y y = 0) (hxy : form σ J x y = 1)
@@ -142,11 +142,11 @@ theorem exists_partner {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hσ : ∀ x, σ
   · rw [form_add_left, form_smul_left, hzx, hqx]; simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J x y z hσ hJ hd hxx hyy hxy hz hzz`. Take `⟨q, hqq, hqz, hqx⟩` from `exists_partner hσ hJ hd hxx hyy hxy hz hzz`. Establish `hne : ∀ a : E, a ≠ 0 → σ a ≠ 0` using `fun a ha h => ha (by rw [← hσ a, h, map_zero])`. Establish `hiso : ∀ (c : E) (w : Fin n → E), form σ J w w = 0 → form σ J (c • w) (c • w) = 0` using `fun c w hw => by`. Rewrite using `[form_smul_left, form_smul_right, hw, mul_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hone : ∀ w : Fin n → E, form σ J q w ≠ 0 → form σ J q ((σ (form σ J q w))⁻¹ • w) = 1` using `fun w hw => by`. Rewrite using `[form_smul_right, map_inv₀, hσ, inv_mul_cancel₀ hw]`. Take `⟨U, hU, hUz⟩` from `exists_eichler hσ hJ hqq (hiso _ _ hzz) (hiso _ _ hxx) (hone z hqz) (hone x hqx)`. Take `⟨g, hg, hm⟩` from `GlobalTheory.MidLineParam.exists_ratU_of_form (F := F) (σ := σ) hd U hU`. Use `⟨g, hg, σ (form σ J q z) * (σ (form σ J q x))⁻¹, mul_ne_zero (hne _ hqz) (inv_ne_zero (hne _ hqx)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hm, GlobalTheory.MidLineParam.incM_mulVec, mul_smul, ← hUz, Matrix.mulVec_smul, smul_smul, mul_inv_cancel₀ (hne _ hqz), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ratU_isotropic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (x y z : Fin n → E), (∀ e, σ (σ e) = e) → (∀ i j, σ (J j i) = -J i j) → J.det ≠ 0 →

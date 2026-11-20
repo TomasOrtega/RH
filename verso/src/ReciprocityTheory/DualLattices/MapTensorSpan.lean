@@ -7,9 +7,9 @@ namespace ReciprocityTheory.PGsh.L2.SecondCohomologyLattice
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-Rewrite using `[tensorSpan, tensorSpan, Submodule.map_span]`. Use `congr 1`. Use extensionality with `F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨g, hg, h, hh, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, Submodule.mem_map_of_mem hg, _, Submodule.mem_map_of_mem hh, by`. Use function extensionality and compare the values at `p`. Simplify using `[LinearMap.funLeft_apply]⟩`. Introduce and unpack `⟨_, ⟨g, hg, rfl⟩, _, ⟨h, hh, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨g, hg, h, hh, rfl⟩, by funext p; simp [LinearMap.funLeft_apply]⟩`.
+Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem map_tensorSpan {X Y : Type} (σ : Y → X) (M : Submodule R (X → C)) :
     (tensorSpan R M).map (LinearMap.funLeft R C (Prod.map σ σ)) =
@@ -51,9 +51,9 @@ def slice2 {X : Type} (E : (X → C) →ₗ[C] (X → C)) : (X × X → C) →�
     rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Use `show E (fun a => E (fun b => g a * h b) p.2) p.1 = E g p.1 * E h p.2`. Establish `h1 : (fun a => E (fun b => g a * h b) p.2) = E h p.2 • g`. Use function extensionality and compare the values at `a`. Rewrite using `[show (fun b => g a * h b) = g a • h from rfl, map_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_comm]`. Rewrite using `[h1, map_smul]`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem slice2_tmul {X : Type} (E : (X → C) →ₗ[C] (X → C)) (g h : X → C) :
     slice2 E (fun p => g p.1 * h p.2) = fun p => E g p.1 * E h p.2 := by
@@ -67,9 +67,9 @@ theorem slice2_tmul {X : Type} (E : (X → C) →ₗ[C] (X → C)) (g h : X → 
   simp [mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Use `show E (fun a => E (fun b => F (a, b)) p.2) p.1 = F p`. Establish `h3 : (fun a => E (fun b => F (a, b)) p.2) = fun a => F (a, p.2)`. Use function extensionality and compare the values at `a`. Rewrite using `[hE _ (h1 a)]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, hE _ (h2 p.2)]`.
+A detailed English derivation is pending.
 -/
 theorem slice2_eq_self {X : Type} (E : (X → C) →ₗ[C] (X → C)) (W : Submodule C (X → C))
     (hE : ∀ f ∈ W, E f = f) (F : X × X → C) (h1 : ∀ a, (fun b => F (a, b)) ∈ W)
@@ -82,11 +82,9 @@ theorem slice2_eq_self {X : Type} (E : (X → C) →ₗ[C] (X → C)) (W : Submo
   rw [h3, hE _ (h2 p.2)]
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨g, hg, h, hh, rfl⟩` from `hF`. Rewrite using `[slice2_tmul]`. Conclude with `Submodule.subset_span ⟨E g, hM g hg, E h, hM h hh, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add F G _ _ hF hG => rw [map_add]`. Conclude with `Submodule.add_mem _ hF hG`. Consider the case `smul r F _ hF`.
-
-Rewrite using `[← algebraMap_smul C r F, map_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ r hF`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice2_mem {X : Type} (E : (X → C) →ₗ[C] (X → C)) (M M' : Submodule R (X → C))
     (hM : ∀ f ∈ M, E f ∈ M') {F : X × X → C} (hF : F ∈ tensorSpan R M) :
@@ -103,9 +101,9 @@ theorem slice2_mem {X : Type} (E : (X → C) →ₗ[C] (X → C)) (M M' : Submod
     exact Submodule.smul_mem _ r hF
 
 /- English proof (translation)
-Establish `hf : f = ∑ a, f a • (fun j => if a = j then (1 : C) else 0)`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply]`. Use `conv_lhs => rw [hf]`. Rewrite using `[map_sum, Finset.sum_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem apply_eq_sum {X : Type} [Fintype X] [DecidableEq X] (E : (X → C) →ₗ[C] (X → C))
     (f : X → C) (y : X) :

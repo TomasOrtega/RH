@@ -17,25 +17,25 @@ variable {X Y Y' Z : Scheme.{0}}
 namespace LBGerm
 
 /- English proof (translation)
-Simplify using `only [gs_eq r z U h, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_pow (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a : Γ(X, U)) (n : ℕ) :
     gs r z U (a ^ n) = gs r z U a ^ n := by simp only [gs_eq r z U h, map_pow]
 
 /- English proof (translation)
-Simplify using `only [gs_eq r z U h, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_sub (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a b : Γ(X, U)) :
     gs r z U (a - b) = gs r z U a - gs r z U b := by simp only [gs_eq r z U h, map_sub]
 
 /- English proof (translation)
-Simplify using `only [gs_eq r z U h, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_zero (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) :
     gs r z U 0 = 0 := by simp only [gs_eq r z U h, map_zero]
 
 /- English proof (translation)
-Rewrite using `[gs_stalkMap r z U h, isUnit_map_iff (r.stalkMap z).hom, gs_eq (𝟙 X) (r z) U h]`. Conclude with `(X.mem_basicOpen a _ h).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_gs_iff (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a : Γ(X, U)) :
     IsUnit (gs r z U a) ↔ r z ∈ X.basicOpen a := by
@@ -51,7 +51,7 @@ def secOfGerm {M : LB X} (f : ∀ i, Γ(X, M.U i))
     exact h y i j hy.1 hy.2
 
 /- English proof (translation)
-Establish `hy : y ∈ V ⊓ M.U i ⊓ M.U j` using `⟨⟨hV, hi⟩, hj⟩`. Establish `e` using `congrArg (gs (𝟙 X) y _) (ht i j)`. Rewrite `e` using `[gs_res _ y _ hy, gs_mul _ y _ hy, gs_res _ y _ hy, gs_res _ y _ hy, gs_unit (𝟙 X) y (M.U i ⊓ M.U j) ⟨hi, hj⟩]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gs_secOn {M : LB X} {V : X.Opens} {t : ∀ i, Γ(X, V ⊓ M.U i)} (ht : t ∈ secOn M V) (y : X) (i j : M.ι)
     (hV : y ∈ V) (hi : y ∈ M.U i) (hj : y ∈ M.U j) :
@@ -62,7 +62,7 @@ theorem gs_secOn {M : LB X} {V : X.Opens} {t : ∀ i, Γ(X, V ⊓ M.U i)} (ht : 
     gs_unit (𝟙 X) y (M.U i ⊓ M.U j) ⟨hi, hj⟩] at e
 
 /- English proof (translation)
-Introduce `i j` and use `fn_ext fun y hy => by rw [gs_res _ y _ hy, gs_mul _ y _ hy, gs_res _ y _ hy, gs_res _ y _ hy, gs_unit (𝟙 X) y (M.U i ⊓ M.U j) ⟨hy.1.2, hy.2⟩] exact h y i j hy.1.1 hy.1.2 hy.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_secOn_of_germ {M : LB X} {V : X.Opens} (t : ∀ i, Γ(X, V ⊓ M.U i))
     (h : ∀ (y : X) i j, y ∈ V → y ∈ M.U i → y ∈ M.U j →
@@ -81,22 +81,22 @@ section Locus
 variable {M : LB Y}
 
 /- English proof (translation)
-The claim follows from `le_iSup (fun k => Y.basicOpen (s.f k)) k`.
+A detailed English derivation is pending.
 -/
 theorem basicOpen_le_nonzeroLocus (s : M.Sec) (k : M.ι) : Y.basicOpen (s.f k) ≤ nonzeroLocus s :=
   le_iSup (fun k => Y.basicOpen (s.f k)) k
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Opens.mem_iSup.1 h`. Conclude with `⟨k, Y.basicOpen_le _ hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart_of_mem_nonzeroLocus {s : M.Sec} {y : Y} (h : y ∈ nonzeroLocus s) : ∃ k, y ∈ M.U k := by
   obtain ⟨k, hk⟩ := Opens.mem_iSup.1 h
   exact ⟨k, Y.basicOpen_le _ hk⟩
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => basicOpen_le_nonzeroLocus s k ((isUnit_gs_iff r z _ hk _).1 h)⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 h`. Establish `hjU : r z ∈ M.U j` using `Y.basicOpen_le _ hj`. Establish `u` using `(isUnit_gs_iff r z _ hjU _).2 hj`. Rewrite `u` using `[gs_compat s r z hjU hk]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_of_mul_isUnit_right u`.
+A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_iff_pull (s : M.Sec) (r : Z ⟶ Y) (z : Z) {k : M.ι} (hk : r z ∈ M.U k) :
     r z ∈ nonzeroLocus s ↔ IsUnit (gs r z _ (s.f k)) := by
@@ -108,28 +108,28 @@ theorem mem_nonzeroLocus_iff_pull (s : M.Sec) (r : Z ⟶ Y) (z : Z) {k : M.ι} (
   exact isUnit_of_mul_isUnit_right u
 
 /- English proof (translation)
-The claim follows from `mem_nonzeroLocus_iff_pull s (𝟙 Y) y hk`.
+A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_iff_isUnit (s : M.Sec) {y : Y} {k : M.ι} (hk : y ∈ M.U k) :
     y ∈ nonzeroLocus s ↔ IsUnit (gs (𝟙 Y) y _ (s.f k)) :=
   mem_nonzeroLocus_iff_pull s (𝟙 Y) y hk
 
 /- English proof (translation)
-The claim follows from `le_antisymm (fun y hy => (isUnit_gs_iff (𝟙 Y) y _ hy.2 _).1 ((mem_nonzeroLocus_iff_isUnit s hy.2).1 hy.1)) (le_inf (basicOpen_le_nonzeroLocus s k) (Y.basicOpen_le _))`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_inf_chart (s : M.Sec) (k : M.ι) : nonzeroLocus s ⊓ M.U k = Y.basicOpen (s.f k) :=
   le_antisymm (fun y hy => (isUnit_gs_iff (𝟙 Y) y _ hy.2 _).1 ((mem_nonzeroLocus_iff_isUnit s hy.2).1 hy.1))
     (le_inf (basicOpen_le_nonzeroLocus s k) (Y.basicOpen_le _))
 
 /- English proof (translation)
-The claim follows from `(mem_nonzeroLocus_iff_isUnit s hk).trans (isUnit_gs_iff (𝟙 Y) y _ hk _)`.
+A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_iff_basicOpen (s : M.Sec) {y : Y} {k : M.ι} (hk : y ∈ M.U k) :
     y ∈ nonzeroLocus s ↔ y ∈ Y.basicOpen (s.f k) :=
   (mem_nonzeroLocus_iff_isUnit s hk).trans (isUnit_gs_iff (𝟙 Y) y _ hk _)
 
 /- English proof (translation)
-Use `le_antisymm (fun y hy => ?_) (fun y hy => ?_)` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart_of_mem_nonzeroLocus hy`. Conclude with `(h y k hk).1 ((mem_nonzeroLocus_iff_isUnit s hk).1 hy)`. Take `⟨k, hk⟩` from `hW y hy`. Conclude with `(mem_nonzeroLocus_iff_isUnit s hk).2 ((h y k hk).2 hy)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_eq_of (s : M.Sec) (W : Y.Opens) (hW : ∀ y ∈ W, ∃ k, y ∈ M.U k)
     (h : ∀ (y : Y) k, y ∈ M.U k → (IsUnit (gs (𝟙 Y) y _ (s.f k)) ↔ y ∈ W)) : nonzeroLocus s = W := by
@@ -140,13 +140,13 @@ theorem nonzeroLocus_eq_of (s : M.Sec) (W : Y.Opens) (hW : ∀ y ∈ W, ∃ k, y
     exact (mem_nonzeroLocus_iff_isUnit s hk).2 ((h y k hk).2 hy)
 
 /- English proof (translation)
-The claim follows from `le_bot_iff.1 (iSup_le fun k => (Y.basicOpen_zero (M.U k)).le)`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_secZero : nonzeroLocus (DVR.SecOps.secZero : M.Sec) = ⊥ :=
   le_bot_iff.1 (iSup_le fun k => (Y.basicOpen_zero (M.U k)).le)
 
 /- English proof (translation)
-Use `nonzeroLocus_eq_of _ _ (fun y hy => exists_chart_of_mem_nonzeroLocus hy.2) fun y k hk => ?_` and prove the remaining obligations. Establish `e : gs (𝟙 Y) y _ ((DVR.SecOps.secScale c s).f k) = gs (𝟙 Y) y ⊤ c * gs (𝟙 Y) y _ (s.f k)` using `(gs_mul _ y _ hk _ _).trans (congrArg (· * _) (gs_res _ y _ hk _))`. Rewrite using `[e, IsUnit.mul_iff, isUnit_gs_iff (𝟙 Y) y ⊤ trivial, ← mem_nonzeroLocus_iff_isUnit s hk]`. Conclude with `Iff.rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem nonzeroLocus_secScale (c : Γ(Y, ⊤)) (s : M.Sec) :
     nonzeroLocus (DVR.SecOps.secScale c s) = Y.basicOpen c ⊓ nonzeroLocus s := by
@@ -157,16 +157,16 @@ theorem nonzeroLocus_secScale (c : Γ(Y, ⊤)) (s : M.Sec) :
   exact Iff.rfl
 
 /- English proof (translation)
-The claim follows from `nonzeroLocus_eq_of _ _ (fun y _ => exists_chart hM y) fun y k hk => ⟨fun _ => trivial, fun _ => (gs_unit (𝟙 Y) y _ hk (t.s k)) ▸ Units.isUnit _⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_genSec (hM : M.IsLB) (t : M.Gen) (ht : t.IsGen) : nonzeroLocus (DVR.genSec t ht) = ⊤ :=
   nonzeroLocus_eq_of _ _ (fun y _ => exists_chart hM y) fun y k hk =>
     ⟨fun _ => trivial, fun _ => (gs_unit (𝟙 Y) y _ hk (t.s k)) ▸ Units.isUnit _⟩
 
 /- English proof (translation)
-Use `isAffineHom_of_forall_exists_isAffineOpen _ fun y => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart hM y`. Take `⟨W, hW, hy, hle⟩` from `exists_isAffineOpen_mem_and_subset hk`. Establish `hle' : W ≤ M.U k` using `hle`. Use `⟨W, hy, hW, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (nonzeroLocus s).ι.isAffineOpen_iff_of_isOpenImmersion, Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Establish `e : nonzeroLocus s ⊓ W = Y.basicOpen (resG Y hle' (s.f k))`. Rewrite using `[show Y.basicOpen (resG Y hle' (s.f k)) = W ⊓ Y.basicOpen (s.f k) from Y.basicOpen_res _ _, ← nonzeroLocus_inf_chart, inf_comm (nonzeroLocus s) (M.U k), ← inf_assoc, inf_eq_left.2 hle', inf_comm]`. Rewrite using `[e]`. Conclude with `hW.basicOpen _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAffineHom_nonzeroLocus_ι (hM : M.IsLB) (s : M.Sec) : IsAffineHom (nonzeroLocus s).ι := by
   refine isAffineHom_of_forall_exists_isAffineOpen _ fun y => ?_
@@ -183,7 +183,7 @@ theorem isAffineHom_nonzeroLocus_ι (hM : M.IsLB) (s : M.Sec) : IsAffineHom (non
   exact hW.basicOpen _
 
 /- English proof (translation)
-Use `isAffineHom_nonzeroLocus_ι hM s` as an intermediate fact. Establish `h` using `(hV.preimage (nonzeroLocus s).ι).image_of_isOpenImmersion (nonzeroLocus s).ι`. Rewrite `h` using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isAffineOpen_nonzeroLocus_inf (hM : M.IsLB) (s : M.Sec) {V : Y.Opens} (hV : IsAffineOpen V) :
     IsAffineOpen (nonzeroLocus s ⊓ V) := by
@@ -192,15 +192,15 @@ theorem isAffineOpen_nonzeroLocus_inf (hM : M.IsLB) (s : M.Sec) {V : Y.Opens} (h
   rwa [Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι] at h
 
 /- English proof (translation)
-Simplify using `using isAffineOpen_nonzeroLocus_inf hM s (isAffineOpen_top Y)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isAffineOpen_nonzeroLocus [IsAffine Y] (hM : M.IsLB) (s : M.Sec) : IsAffineOpen (nonzeroLocus s) := by
   simpa using isAffineOpen_nonzeroLocus_inf hM s (isAffineOpen_top Y)
 
 /- English proof (translation)
-Use `nonzeroLocus_eq_of _ _ (fun y _ => exists_chart hA y) fun y a ha => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `exists_chart hB y`. Establish `hy : y ∈ A.U a ⊓ B.U b` using `⟨ha, hb⟩`. Establish `e` using `congrArg (gs (𝟙 Y) y _) (DVR.secOfIso_spec t hu hA hB a b)`. Rewrite `e` using `[DVR.isoCand, gs_res _ y _ hy, gs_mul _ y _ hy, gs_res _ y _ hy, gs_unit _ y _ hy]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_nonzeroLocus_iff_isUnit t hb, e, Units.isUnit_units_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nonzeroLocus_secOfIso {A B : LB Y} {u : LB.Iso A B} (t : B.Sec) (hu : u.IsGen) (hA : A.IsLB) (hB : B.IsLB) :
     nonzeroLocus (DVR.secOfIso t hu hA hB) = nonzeroLocus t := by
@@ -212,7 +212,7 @@ theorem nonzeroLocus_secOfIso {A B : LB Y} {u : LB.Iso A B} (t : B.Sec) (hu : u.
   rw [mem_nonzeroLocus_iff_isUnit t hb, e, Units.isUnit_units_mul]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `H`. Conclude with `⟨_, nonzeroLocus_secOfIso t hu hA hB⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sec_nonzeroLocus_eq_of_lbIso {A B : LB Y} (hA : A.IsLB) (hB : B.IsLB) (H : LBIso A B) (t : B.Sec) :
     ∃ s : A.Sec, nonzeroLocus s = nonzeroLocus t := by

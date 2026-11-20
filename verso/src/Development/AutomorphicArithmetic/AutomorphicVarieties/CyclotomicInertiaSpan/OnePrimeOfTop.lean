@@ -16,7 +16,7 @@ variable (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
 
 include F in
 /- English proof (translation)
-Use `haveI := IsAlgClosure.isAlgClosed F (K := Ω)`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω N`. Conclude with `hζ.card_rootsOfUnity`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem natCard_roots : Nat.card (rootsOfUnity N Ω) = N := by
   haveI := IsAlgClosure.isAlgClosed F (K := Ω)
@@ -28,9 +28,9 @@ def cycN : G F Ω →* (ZMod N)ˣ :=
   (modularCyclotomicCharacter Ω (natCard_roots F Ω N)).comp (MulSemiringAction.toRingAut (G F Ω) Ω)
 
 /- English proof (translation)
-Establish `hz : ζ ≠ 0`. Introduce and unpack `rfl`. Simplify using `[NeZero.ne N] at h`. Establish `hu : Units.mk0 ζ hz ∈ rootsOfUnity N Ω`. Rewrite using `[mem_rootsOfUnity]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Simplify using `[h]`. Establish `key` using `modularCyclotomicCharacter.spec Ω (natCard_roots F Ω N) (MulSemiringAction.toRingAut (G F Ω) Ω g) hu`. Simplify `key` using `[cycN]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cycN_spec (g : G F Ω) {ζ : Ω} (h : ζ ^ N = 1) : g ζ = ζ ^ (cycN F Ω N g : ZMod N).val := by
   have hz : ζ ≠ 0 := by
@@ -45,11 +45,11 @@ theorem cycN_spec (g : G F Ω) {ζ : Ω} (h : ζ ^ N = 1) : g ζ = ζ ^ (cycN F 
   simpa [cycN] using key
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl ζ hζ`. Conclude with `cycN_spec F Ω N g hζ`. Introduce `hb`. Establish `hz : ∀ t ∈ rootsOfUnity N Ω, (MulSemiringAction.toRingAut (G F Ω) Ω g) (t : Ω) = (t : Ω) ^ (b : ZMod N).val`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Establish `ht' : (t : Ω) ^ N = 1`. Rewrite `ht` using `[mem_rootsOfUnity]`. Simplify using `using congrArg Units.val ht`. Simplify using `using hb t ht'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `modularCyclotomicCharacter.unique Ω (natCard_roots F Ω N) (MulSemiringAction.toRingAut (G F Ω) Ω g) hz` as an intermediate fact. Use `ext`. Conclude with `this.symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cycN_eq_iff (g : G F Ω) (b : (ZMod N)ˣ) :
     cycN F Ω N g = b ↔ ∀ ζ : Ω, ζ ^ N = 1 → g ζ = ζ ^ (b : ZMod N).val := by
@@ -88,17 +88,17 @@ instance : NeZero (lev n q d) :=
 
 omit [Fact q.Prime] [Fact d.Prime] in
 /- English proof (translation)
-The claim follows from `(dvd_mul_right _ _).mul_right _`.
+A detailed English derivation is pending.
 -/
 theorem two_dvd_lev : 2 ^ n ∣ lev n q d := (dvd_mul_right _ _).mul_right _
 omit [Fact q.Prime] [Fact d.Prime] in
 /- English proof (translation)
-The claim follows from `(dvd_mul_left _ _).mul_right _`.
+A detailed English derivation is pending.
 -/
 theorem q_dvd_lev : q ∣ lev n q d := (dvd_mul_left _ _).mul_right _
 omit [Fact q.Prime] [Fact d.Prime] in
 /- English proof (translation)
-The claim follows from `dvd_mul_left _ _`.
+A detailed English derivation is pending.
 -/
 theorem d_dvd_lev : d ∣ lev n q d := dvd_mul_left _ _
 

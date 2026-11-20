@@ -16,7 +16,7 @@ section One
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω)
 
 /- English proof (translation)
-Take `⟨-, k, φ, v, hvL, hφ, hv⟩` from `exists_dual R hL`. Use `locFree_of_dual R hA hr (fun i => φ i ∘ₗ j) (fun i => π (v i)) (fun i => h3 _ (hvL i)) (fun i e he => hφ i _ (h2 e he)) fun e => ?_` and prove the remaining obligations. Use `congrArg π (hv (j e))` as an intermediate fact. Rewrite `this` using `[h1]`. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem locFree_retract {V W : Type} [AddCommGroup V] [Module Ω V] [AddCommGroup W] [Module Ω W]
     {N r : ℕ} {L : AddSubgroup V} {A : AddSubgroup W} (hL : LocFree R N L)
@@ -31,7 +31,7 @@ theorem locFree_retract {V W : Type} [AddCommGroup V] [Module Ω V] [AddCommGrou
   simpa using this
 
 /- English proof (translation)
-Simplify using `only [stdLat, AddSubgroup.mem_pi, Set.mem_univ, forall_true_left]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_stdLat {ι : Type} (v : ι → Ω) : v ∈ stdLat R ι ↔ ∀ i, v i ∈ R := by
   simp only [stdLat, AddSubgroup.mem_pi, Set.mem_univ, forall_true_left]
@@ -40,21 +40,21 @@ theorem mem_stdLat {ι : Type} (v : ι → Ω) : v ∈ stdLat R ι ↔ ∀ i, v 
 variable {F : Type} [Zero F] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[vanSub, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_vanSub (i : ℕ) (g : (Fin n → F) → Ω) :
     g ∈ vanSub Ω F n i ↔ ∀ x : Fin n → F, (∀ j : Fin n, i ≤ (j : ℕ) → x j = 0) → g x = 0 := by
   simp [vanSub, Submodule.mem_pi]
 
 /- English proof (translation)
-Simplify using `[linMap, Fintype.linearCombination_apply, Finset.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linMap_apply (χ : F → Ω) (l : Fin n → Ω) (x : Fin n → F) :
     linMap n χ l x = ∑ i, l i * χ (x i) := by
   simp [linMap, Fintype.linearCombination_apply, Finset.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[linMap_apply, Finset.sum_eq_single j]`. Simplify using `[h1]`. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb, h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem linMap_single [One F] (χ : F → Ω) (h0 : χ 0 = 0) (h1 : χ 1 = 1) (l : Fin n → Ω) (j : Fin n) :
     linMap n χ l (Pi.single j 1) = l j := by
@@ -67,12 +67,12 @@ theorem linMap_single [One F] (χ : F → Ω) (h0 : χ 0 = 0) (h1 : χ 1 = 1) (l
 variable {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s) (p : ℕ)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_af (χ : F → Ω) (l : Fin n → Ω) : l ∈ D.af R p χ ↔ linMap n χ l ∈ D.l1 R p := Iff.rfl
 
 /- English proof (translation)
-Simplify using `only [LieLatticeData.xId, AddSubgroup.mem_comap, AddSubgroup.mem_sup]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_xId (χ : F → Ω) (i : Fin n) (c : Ω) : c ∈ D.xId χ i ↔
     ∃ m ∈ D.M, ∃ v ∈ vanSub Ω F n ((i : ℕ) + 1), m + v = c • fun x => χ (x i) := by
@@ -80,9 +80,9 @@ theorem mem_xId (χ : F → Ω) (i : Fin n) (c : Ω) : c ∈ D.xId χ i ↔
   rfl
 
 /- English proof (translation)
-Take `⟨ρ, a1, a2, a3⟩` from `hS`. Set `ev : ((Fin n → F) → Ω) →ₗ[Ω] (Fin n → Ω)` to `LinearMap.pi fun j => LinearMap.proj (Pi.single j (1 : F) : Fin n → F)`. Establish `hev : ∀ w, ev (linMap n χ w) = w` using `fun w => by`. Use function extensionality and compare the values at `j`. Conclude with `linMap_single χ h0 h1 w j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ev ∘ₗ ρ, fun w => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, a2 _ ⟨w, rfl⟩, hev]`. Take `⟨w, hw⟩` from `a1 v`. Rewrite using `[mem_af, LinearMap.comp_apply, ← hw, hev, hw]`. Conclude with `a3 v hv`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem af_retract [One F] (χ : F → Ω) (h0 : χ 0 = 0) (h1 : χ 1 = 1)
     (hS : Summand (D.l1 R p) (LinearMap.range (linMap n χ))) :
@@ -101,17 +101,17 @@ theorem af_retract [One F] (χ : F → Ω) (h0 : χ 0 = 0) (h1 : χ 1 = 1)
     exact a3 v hv
 
 /- English proof (translation)
-Take `⟨ρ, a1, a2, a3⟩` from `hV`. Take `⟨σ, b1, b2, b3⟩` from `hC`. Set `e : (Fin n → F) → Ω` to `fun x => χ (x i)`. Set `pt : Fin n → F` to `Pi.single i 1`. Establish `hpt : ∀ v ∈ vanSub Ω F n ((i : ℕ) + 1), v pt = 0` using `fun v hv => (mem_vanSub _ v).1 hv pt fun j hj => Pi.single_eq_of_ne (fun h => by subst h; omega) _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : e pt = 1` using `by simp [e, pt, h1]`. Establish `hle : ∀ v ∈ vanSub Ω F n ((i : ℕ) + 1), v ∈ charSub χ i` using `fun v hv => Submodule.mem_sup_left hv`. Establish `hec : e ∈ charSub χ i` using `Submodule.mem_sup_right (Submodule.subset_span rfl)`. Set `π : ((Fin n → F) → Ω) →ₗ[Ω] Ω` to `LinearMap.proj pt ∘ₗ σ`. Establish `hπ : ∀ v, π v = σ v pt` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hπ0 : ∀ v ∈ vanSub Ω F n ((i : ℕ) + 1), π v = 0` using `fun v hv => by`. Rewrite using `[hπ, b2 v (hle v hv), hpt v hv]`. Establish `hπ1 : π e = 1` using `by rw [hπ, b2 e hec, he]`. Use `⟨(LinearMap.id - ρ) ∘ₗ LinearMap.toSpanSingleton Ω _ e, π, fun c => ?_, fun c hc => ?_, fun v hv => ?_, hπ0, hπ1⟩` and prove the remaining obligations. Use `show π (c • e - ρ (c • e)) = c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, hπ0 _ (a1 _), map_smul, hπ1, sub_zero, smul_eq_mul, mul_one]`. Take `⟨m, hm, v, hv, h⟩` from `(mem_xId D χ i c).1 hc show c • e - ρ (c • e) ∈ D.M`. Establish `h' : c • e = m + v` using `h.symm`. Rewrite using `[h', map_add, a2 v hv, add_sub_add_right_eq_sub]`. Conclude with `D.M.sub_mem hm (a3 m hm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, z, hz, h⟩` from `Submodule.mem_sup.1 (b1 v)`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hz`. Establish `hc : π v = c`. Rewrite using `[hπ, ← h]`. Use `show y pt + c * e pt = c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hpt y hy, he, zero_add, mul_one]`. Rewrite using `[hc, mem_xId]`. Conclude with `⟨σ v, b3 v hv, -y, Submodule.neg_mem _ hy, by rw [← h]; abel⟩`.
+A detailed English derivation is pending.
 -/
 theorem xId_retract [One F] (χ : F → Ω) (h1 : χ 1 = 1) (i : Fin n)
     (hV : Summand D.M (vanSub Ω F n ((i : ℕ) + 1))) (hC : Summand D.M (charSub χ i)) :
@@ -164,15 +164,15 @@ Both sides reduce to the same expression.
 theorem bc_apply {ι : Type} (v : ι → Ω) (i : ι) : bcMap Ω C ι v i = algebraMap Ω C (v i) := rfl
 
 /- English proof (translation)
-The claim follows from `IsBaseChange.finitePow ι (IsBaseChange.linearMap Ω C)`.
+A detailed English derivation is pending.
 -/
 theorem isBC (ι : Type) [Finite ι] : IsBaseChange C (bcMap Ω C ι) :=
   IsBaseChange.finitePow ι (IsBaseChange.linearMap Ω C)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, bc_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single y]`. Simplify using `[mul_comm]`. Introduce `b _ hb`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pi.single_eq_of_ne hb.symm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eq_sum {ι : Type} [Fintype ι] [DecidableEq ι] (g : ι → C) (c : Ω) :
     algebraMap Ω C c • g = ∑ x, g x • bcMap Ω C ι (c • Pi.single x 1) := by
@@ -187,13 +187,13 @@ theorem eq_sum {ι : Type} [Fintype ι] [DecidableEq ι] (g : ι → C) (c : Ω)
 variable {F : Type} [Zero F] [Fintype F] {n : ℕ}
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `g hg`. Establish `h` using `eq_sum g (1 : Ω)`. Rewrite `h` using `[map_one, one_smul]`. Rewrite using `[h]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : g x = 0`. Rewrite using `[hx, zero_smul]`. Conclude with `Submodule.zero_mem _`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ?_, rfl⟩)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_vanSub _ _).2 fun y hy => ?_` and prove the remaining obligations. Establish `: y ≠ x` using `fun h => hx ((mem_vanSub _ _).1 hg x (h ▸ hy))`. Simplify using `[Pi.single_eq_of_ne this]`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_vanSub _ _).2 fun y hy => ?_` and prove the remaining obligations. Rewrite using `[bc_apply, (mem_vanSub _ _).1 hg y hy, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanSub_bc (i : ℕ) :
     vanSub C F n i = Submodule.span C (bcMap Ω C _ '' vanSub Ω F n i) := by
@@ -216,11 +216,11 @@ theorem vanSub_bc (i : ℕ) :
     rw [bc_apply, (mem_vanSub _ _).1 hg y hy, map_zero]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[vanSub_bc (Ω := Ω)]`. Conclude with `Submodule.span_mono (Set.image_mono fun v hv => Submodule.mem_sup_left hv)`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ rfl`. Conclude with `⟨fun x => χ (x i), Submodule.mem_sup_right (Submodule.subset_span rfl), rfl⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hg`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hz`. Rewrite using `[map_add, map_smul, ← algebraMap_smul C c]`. Use `Submodule.add_mem_sup ?_ (Submodule.smul_mem _ _ (Submodule.subset_span rfl))` and prove the remaining obligations. Rewrite using `[vanSub_bc (Ω := Ω)]`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charSub_bc (χ : F → Ω) (i : Fin n) :
     charSub (fun a => algebraMap Ω C (χ a)) i = Submodule.span C (bcMap Ω C _ '' charSub χ i) := by
@@ -242,7 +242,7 @@ theorem charSub_bc (χ : F → Ω) (i : Fin n) :
 
 omit [Zero F] [Fintype F] in
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[linMap, Fintype.linearCombination_apply, Finset.sum_apply, bc_apply, Algebra.smul_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem linMap_bc (χ : F → Ω) (l : Fin n → Ω) :
     linMap n (fun a => algebraMap Ω C (χ a)) (bcMap Ω C _ l) = bcMap Ω C _ (linMap n χ l) := by
@@ -251,11 +251,11 @@ theorem linMap_bc (χ : F → Ω) (l : Fin n → Ω) :
 
 omit [Zero F] [Fintype F] in
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, rfl⟩`. Establish `h` using `eq_sum g (1 : Ω)`. Rewrite `h` using `[map_one, one_smul]`. Rewrite using `[h, map_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, linMap_bc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ⟨_, rfl⟩, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨g, rfl⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨_, linMap_bc χ g⟩`.
+A detailed English derivation is pending.
 -/
 theorem range_bc (χ : F → Ω) :
     LinearMap.range (linMap n (fun a => algebraMap Ω C (χ a))) =
@@ -276,17 +276,15 @@ variable {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s) (p : 
 
 omit [Zero F] in
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Use `map_mem LinearMap.id ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `mem_span ⟨v, AddSubgroup.mem_sup_left hv, rfl⟩`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Establish `h` using `eq_sum g (p : Ω)`. Rewrite `h` using `[map_natCast]`. Use `show (p : C) • g ∈ _`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h]`. Use `AddSubgroup.sum_mem _ fun x _ => smul_mem ((mem_stdLat RC g).1 hg x) (mem_span ⟨_, AddSubgroup.mem_sup_right ⟨Pi.single x 1, ?_, rfl⟩, rfl⟩)` and prove the remaining obligations. Use `(mem_stdLat R _).2 fun y => ?_` and prove the remaining obligations. Rewrite using `[Pi.single_apply]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `R.one_mem`. Conclude with `R.zero_mem`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, _, ⟨v, hv, rfl⟩, rfl⟩`. Take `⟨y, hy, _, ⟨z, hz, rfl⟩, rfl⟩` from `AddSubgroup.mem_sup.1 hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_add, smul_add]`. Use `AddSubgroup.add_mem_sup (smul_mem ha (mem_span ⟨y, hy, rfl⟩)) ⟨a • bcMap Ω C _ z, (mem_stdLat RC _).2 fun x => ?_, ?_⟩` and prove the remaining obligations. Conclude with `RC.mul_mem ha (hR _ ((mem_stdLat R z).1 hz x))`. Use function extensionality and compare the values at `x show (p : C) * (a * algebraMap Ω C (z x)) = a * algebraMap Ω C ((p : Ω) * z x)`. Rewrite using `[map_mul, map_natCast]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem first_lattice_base_change (hR : ∀ a ∈ R, algebraMap Ω C a ∈ RC) :
     (D.bc RC).l1 RC p = spanOver RC (bcMap Ω C _ '' D.l1 R p) := by
@@ -321,15 +319,15 @@ theorem first_lattice_base_change (hR : ∀ a ∈ R, algebraMap Ω C a ∈ RC) :
       rw [map_mul, map_natCast]; ring
 
 /- English proof (translation)
-Take `⟨π, a1, a2⟩` from `af_retract R D p χ h0 h1 hS`. Take `⟨τ, hτ⟩ : ∃ τ : ((Fin n → F) → C) →ₗ[C] (Fin n → C), ∀ v, τ (bcMap Ω C _ v) = bcMap Ω C _ (π v)` from `⟨(isBC _).lift (bcMap Ω C _ ∘ₗ π), fun v => (isBC _).lift_eq _ v⟩`. Use extensionality with `w`. Rewrite using `[mem_af, first_lattice_base_change R RC D p hR]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hw`. Establish `hid : τ (linMap n (fun a => algebraMap Ω C (χ a)) w) = w`. Establish `h` using `eq_sum w (1 : Ω)`. Rewrite `h` using `[map_one, one_smul]`. Rewrite using `[h, map_sum, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, linMap_bc, hτ, a1]`. Rewrite using `[← hid]`. Use `map_mem τ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hτ]`. Conclude with `mem_span ⟨_, a2 v hv, rfl⟩`. Introduce `hw`. Use `map_mem _ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[linMap_bc]`. Conclude with `mem_span ⟨_, hv, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem af_bc [One F] (hR : ∀ a ∈ R, algebraMap Ω C a ∈ RC) (χ : F → Ω) (h0 : χ 0 = 0)
     (h1 : χ 1 = 1) (hS : Summand (D.l1 R p) (LinearMap.range (linMap n χ))) :
@@ -360,19 +358,17 @@ theorem af_bc [One F] (hR : ∀ a ∈ R, algebraMap Ω C a ∈ RC) (χ : F → �
     exact mem_span ⟨_, hv, rfl⟩
 
 /- English proof (translation)
-Take `⟨-, π, -, -, a1, a2, a3⟩` from `xId_retract D χ h1 i hV hC`. Take `⟨τ, hτ⟩ : ∃ τ : ((Fin n → F) → C) →ₗ[C] C, ∀ v, τ (bcMap Ω C _ v) = algebraMap Ω C (π v)` from `⟨(isBC _).lift (Algebra.linearMap Ω C ∘ₗ π), fun v => (isBC _).lift_eq _ v⟩`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `c hc`. Take `⟨m, hm, v, hv, h⟩` from `(mem_xId _ _ _ _).1 hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h0 : τ v = 0`. Rewrite `hv` using `[vanSub_bc (Ω := Ω)]`. Use `(Submodule.span_le (p := LinearMap.ker τ)).2 ?_ hv` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `show τ _ = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hτ, a2 y hy, map_zero]`. Establish `h1 : τ (fun x => algebraMap Ω C (χ (x i))) = 1`. Use `hτ (fun x => χ (x i))` as an intermediate fact. Rewrite `this` using `[a3, map_one]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg τ h`. Rewrite `h2` using `[map_add, h0, add_zero, map_smul, h1, smul_eq_mul, mul_one]`. Rewrite using `[← h2]`. Use `map_mem τ ?_ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hτ]`. Conclude with `mem_span ⟨_, a1 v hv, rfl⟩`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, _, ⟨c, hc, rfl⟩, rfl⟩`. Take `⟨m, hm, v, hv, h⟩` from `(mem_xId _ _ _ _).1 hc`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(mem_xId _ _ _ _).2 ⟨a • bcMap Ω C _ m, smul_mem ha (mem_span ⟨m, hm, rfl⟩), a • bcMap Ω C _ v, Submodule.smul_mem _ _ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[vanSub_bc (Ω := Ω)]`. Conclude with `Submodule.subset_span ⟨v, hv, rfl⟩`. Rewrite using `[← smul_add, ← map_add, h]`. Use function extensionality and compare the values at `x`.
-
-Use `show a * algebraMap Ω C (c * χ (x i)) = a * algebraMap Ω C c * algebraMap Ω C (χ (x i))`. Rewrite using `[map_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xId_bc [One F] (χ : F → Ω) (h1 : χ 1 = 1) (i : Fin n)
     (hV : Summand D.M (vanSub Ω F n ((i : ℕ) + 1))) (hC : Summand D.M (charSub χ i)) :
@@ -419,21 +415,17 @@ end PositivityTheory.Xgn.GoodLatticeBaseChange
 
 open PositivityTheory.Xgn.GoodLatticeBaseChange in
 /- English proof (translation)
-Introduce `o Ω _ _ _ F _ _ _ n Sg r s D R p w χ hχ hB hG`. Take `⟨-, -, -, -, hχ⟩` from `hχ`. Establish `haf : ∀ τ, LocFree R n (D.af R p (χ τ))` using `fun τ => by`. Take `⟨π, a1, a2⟩` from `af_retract R D p (χ τ) (hχ τ).1 (hχ τ).2.1 (hG.lin τ)`. Use `locFree_retract R hG.l1 (fun a ha e he => ?_) (by simp) (linMap n (χ τ)) π a1 (fun _ h => h) a2` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_af, map_smul]`. Conclude with `hG.l1.1 a ha _ he`. Use `⟨fun τ => ⟨haf τ, ?_, ?_, fun i => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(PositivityTheory.Xgn.t_dotdual_bc R R (fun _ h => h) n _ (haf τ)).1`. Introduce `l hl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(mem_stdLat R l).2 fun j => ?_` and prove the remaining obligations. Rewrite using `[← linMap_single (χ τ) (hχ τ).1 (hχ τ).2.1 l j]`. Establish `hle : D.l1 R p ≤ stdLat R _`. Use `sup_le hB.M_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mem_stdLat R _).2 fun x => R.mul_mem (natCast_mem R p) ((mem_stdLat R g).1 hg x)`. Conclude with `(mem_stdLat R _).1 (hle hl) _`. Take `⟨j, π, a1, a2, a3, -, -⟩` from `xId_retract D (χ τ) (hχ τ).2.1 i (hG.van _) (hG.char τ i)`. Use `locFree_retract R hB.freeM (fun a ha e he => ?_) (by simp) j π a1 a2 a3` and prove the remaining obligations. Take `⟨m, hm, v, hv, h⟩` from `(mem_xId _ _ _ _).1 he`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_xId _ _ _ _).2 ⟨a • m, hB.freeM.1 a ha m hm, a • v, Submodule.smul_mem _ _ hv, by rw [← smul_add, h, smul_smul, smul_eq_mul]⟩`. Introduce `C _ _ _ _ RC hR`. Use `⟨⟨?_, fun τ => ?_, fun i => ?_, fun τ i => ?_⟩, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[first_lattice_base_change R RC D p hR]`. Conclude with `LocFreeBC.locFree_baseChange R RC hR _ (isBC _) _ _ hG.l1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[first_lattice_base_change R RC D p hR, range_bc]`. Conclude with `(PositivityTheory.Xgn.t_summand_bc R RC hR _ (isBC _) _ _ hG.l1.1 (hG.lin τ)).1`. Rewrite using `[vanSub_bc (Ω := Ω)]`. Conclude with `(PositivityTheory.Xgn.t_summand_bc R RC hR _ (isBC _) _ _ hB.freeM.1 (hG.van i)).1`. Rewrite using `[charSub_bc]`.
-
-Conclude with `(PositivityTheory.Xgn.t_summand_bc R RC hR _ (isBC _) _ _ hB.freeM.1 (hG.char τ i)).1`. Establish `h` using `af_bc R RC D p hR (χ τ) (hχ τ).1 (hχ τ).2.1 (hG.lin τ)`. Use `⟨h, ?_, fun i => xId_bc RC D (χ τ) (hχ τ).2.1 i (hG.van _) (hG.char τ i)⟩` and prove the remaining obligations. Unfold `LieLatticeData.hh`. Rewrite using `[h]`.
-
-Conclude with `(PositivityTheory.Xgn.t_dotdual_bc R RC hR n _ (haf τ)).2.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.good_lattice_base_change : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (w : Ω) (χ : Sg → F → Ω), CharData R p w χ → D.Base R p w → D.Good₁ R p χ → (∀ τ, LocFree R n (D.af R p (χ τ)) ∧ LocFree R n (D.hh R p (χ τ)) ∧ D.af R p (χ τ) ≤ stdLat R _ ∧ ∀ i, LocFree R 1 (D.xId (χ τ) i)) ∧ ∀ (C : Type) [Field C] [Algebra o C] [Algebra Ω C] [IsScalarTower o Ω C] (RC : Subalgebra o C), (∀ a ∈ R, algebraMap Ω C a ∈ RC) → (D.bc RC).Good₁ RC p (fun τ a => algebraMap Ω C (χ τ a)) ∧ ∀ τ, (D.bc RC).af RC p (fun a => algebraMap Ω C (χ τ a)) = spanOver RC (bcMap Ω C _ '' D.af R p (χ τ)) ∧ (D.bc RC).hh RC p (fun a => algebraMap Ω C (χ τ a)) = spanOver RC (bcMap Ω C _ '' D.hh R p (χ τ)) ∧ ∀ i, (D.bc RC).xId (fun a => algebraMap Ω C (χ τ a)) i = spanOver RC (algebraMap Ω C '' D.xId (χ τ) i) := by
   intro o Ω _ _ _ F _ _ _ n Sg r s D R p w χ hχ hB hG

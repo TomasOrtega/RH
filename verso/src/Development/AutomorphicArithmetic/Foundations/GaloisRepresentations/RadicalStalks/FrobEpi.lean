@@ -6,7 +6,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp (a - b) b`. Rewrite `hr` using `[sub_add_cancel, e, h]`. Establish `h0 : (a - b) ^ p = 0`. Simplify using `using hr.symm`. Conclude with `sub_eq_zero.mp (IsReduced.pow_eq_zero h0)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem pow_inj {R : Type*} [CommRing R] [_root_.IsReduced R] {p : ℕ} (hp : p.Prime)
     (h : (p : R) = 0) {a b : R} (e : a ^ p = b ^ p) : a = b := by
@@ -17,7 +17,7 @@ private theorem pow_inj {R : Type*} [CommRing R] [_root_.IsReduced R] {p : ℕ} 
   exact sub_eq_zero.mp (IsReduced.pow_eq_zero h0)
 
 /- English proof (translation)
-Establish `ha` using `ConcreteCategory.congr_hom hU a`. Simplify using `only [ConcreteCategory.comp_apply, hB, hC, map_pow] at ha`. Simplify using `using ha.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem step {p : ℕ} {A B C : CommRingCat} (u : A ⟶ B) (v : A ⟶ C) (FB : B ⟶ B) (FC : C ⟶ C)
     (r : B ⟶ C) (hB : ∀ x, FB x = x ^ p) (hC : ∀ x, FC x = x ^ p)
@@ -27,11 +27,11 @@ private theorem step {p : ℕ} {A B C : CommRingCat} (u : A ⟶ B) (v : A ⟶ C)
   simpa using ha.symm
 
 /- English proof (translation)
-Establish `hV (V : X.Opens) : (p : Γ(X, V)) = 0`. Use `congrArg (X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op).hom h` as an intermediate fact. Simplify using `using this`. Use `⟨fun {Y} f g e => ?_⟩` and prove the remaining obligations. Establish `hx (x : X) : f x = g x`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (fun φ : X ⟶ Y => φ x) e` as an intermediate fact. Simplify using `using this`. Use `Scheme.Hom.ext (by ext x; exact hx x) fun U => ?_` and prove the remaining obligations. Establish `hU` using `Scheme.Hom.congr_app e.symm U`. Rewrite `hU` using `[Scheme.Hom.comp_app, Scheme.Hom.comp_app]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `a`. Apply `pow_inj (Fact.out : p.Prime) (hV _)` to reduce the goal to its premises. Conclude with `step (p := p) (f.app U) (g.app U) ((GlobalTheory.VB.frob X p h).app (f ⁻¹ᵁ U)) ((GlobalTheory.VB.frob X p h).app (g ⁻¹ᵁ U)) _ (GlobalTheory.VB.frob_app p h _) (GlobalTheory.VB.frob_app p h _) hU a`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem frob_epi (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) [IsReduced X]
     (h : (p : Γ(X, ⊤)) = 0) : Epi (GlobalTheory.VB.frob X p h) := by
@@ -51,9 +51,9 @@ private theorem frob_epi (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) [IsReduced X]
     ((GlobalTheory.VB.frob X p h).app (g ⁻¹ᵁ U)) _ (GlobalTheory.VB.frob_app p h _) (GlobalTheory.VB.frob_app p h _) hU a
 
 /- English proof (translation)
-Introduce `p _ X _ h`. Establish `hF` using `frob_epi p X h`. Use `⟨hF, fun j => ?_⟩` and prove the remaining obligations. Proceed by induction on `j with`. Consider the case `zero => exact (inferInstance : Epi (𝟙 X))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j ih`. Establish `: Epi (frobN p X h j)` using `ih`. Conclude with `epi_comp (GlobalTheory.VB.frob X p h) (frobN p X h j)`.
+Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Ord.epi :
     ∀ (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) [IsReduced X] (h : (p : Γ(X, ⊤)) = 0), Epi (GlobalTheory.VB.frob X p h) ∧ ∀ j, Epi (frobN p X h j) := by

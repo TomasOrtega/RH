@@ -11,17 +11,15 @@ variable {B : Type*} [CommRing B] [IsDomain B]
 variable [IsNoetherianRing B] [IsLocalRing B]
 
 /- English proof (translation)
-Use `or_iff_not_imp_left.mpr fun hp0 => ?_` and prove the remaining obligations. Establish `hfin` using `(Ideal.span {f}).finite_minimalPrimes_of_isNoetherianRing`. Establish `hmin : ∀ q : Ideal B, q.IsPrime → q ≠ ⊥ → ∃ P ∈ (Ideal.span {f}).minimalPrimes, P ≤ q` using `fun q hq hq0 => Ideal.exists_minimalPrimes_le ((Ideal.span_singleton_le_iff_mem q).mpr (H q hq hq0))`. Establish `hcover : ((maximalIdeal B : Ideal B) : Set B) ⊆ ⋃ P ∈ (hfin.toFinset : Set (Ideal B)), ((id P : Ideal B) : Set B)`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.Finite.coe_toFinset, id, Set.mem_iUnion, SetLike.mem_coe, exists_prop]`. Distinguish the cases in `hx0 : x = 0`. Take `⟨P, hP, -⟩` from `hmin p hp hp0`. Conclude with `⟨P, hP, hx0 ▸ P.zero_mem⟩`. Take `⟨Q, hQ, -⟩` from `Ideal.exists_minimalPrimes_le ((Ideal.span_singleton_le_iff_mem (maximalIdeal B)).mpr hx)`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `haveI hQp : Q.IsPrime := hQ.1.1`. Establish `hxQ : x ∈ Q` using `(Ideal.span_singleton_le_iff_mem Q).mp hQ.1.2`. Establish `hQ0 : Q ≠ ⊥` using `fun h => hx0 (by simpa [h] using hxQ)`. Establish `hQ1 : Q.height ≤ 1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ Q hQ`. Take `⟨P, hP, hPQ⟩` from `hmin Q hQp hQ0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI hPp : P.IsPrime := hP.1.1`. Establish `hfP : f ∈ P` using `(Ideal.span_singleton_le_iff_mem P).mp hP.1.2`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Break down `hPQ.eq_or_lt with h | h` into its components or cases. Conclude with `h ▸ hxQ`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : P.height < 1` using `(Ideal.height_strict_mono_of_isPrime h).trans_le hQ1`. Rewrite `h1` using `[ENat.lt_one_iff_eq_zero, Ideal.height_eq_zero_iff_eq_bot]`. Conclude with `absurd (by simpa [h1] using hfP) hf`. Take `⟨P, hP, hmP⟩` from `(Ideal.subset_union_prime (⊥ : Ideal B) ⊥ fun P hP _ _ => ((Set.Finite.mem_toFinset hfin).mp hP).1.1).mp hcover`. Establish `hP'` using `(Set.Finite.mem_toFinset hfin).mp hP`.
-
-Establish `hpm : p ≤ maximalIdeal B` using `le_maximalIdeal hp.ne_top`. Conclude with `le_antisymm hpm (hmP.trans (hP'.2 ⟨hp, (Ideal.span_singleton_le_iff_mem p).mpr (H p hp hp0)⟩ (hpm.trans hmP)))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prime_eq_bot_or_maximalIdeal_of_forall_mem {f : B} (hf : f ≠ 0)
     (H : ∀ p : Ideal B, p.IsPrime → p ≠ ⊥ → f ∈ p) {p : Ideal B} (hp : p.IsPrime) :

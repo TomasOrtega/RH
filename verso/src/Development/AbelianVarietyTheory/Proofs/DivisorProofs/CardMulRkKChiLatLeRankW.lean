@@ -15,9 +15,7 @@ set_option maxHeartbeats 800000
 namespace GlobalTheory.CovolRank
 
 /- English proof (translation)
-Set `f : C.comap A.val.toLinearMap →ₗ[K] C` to `LinearMap.codRestrict C (A.val.toLinearMap ∘ₗ (C.comap A.val.toLinearMap).subtype) fun y => Submodule.mem_comap.1 y.2`. Establish `hf : Function.Injective f` using `fun a b hab => by`. Establish `h` using `congrArg (fun z : C => (z : B)) hab`. Conclude with `Subtype.ext (Subtype.ext h)`. Use `haveI : FiniteDimensional K (C.comap A.val.toLinearMap) := Module.Finite.of_injective f hf`.
-
-Conclude with `⟨inferInstance, LinearMap.finrank_le_finrank_of_injective hf⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem comap_val_finite {K B : Type} [Field K] [CommRing B] [Algebra K B] (A : Subalgebra K B)
     (C : Submodule K B) [FiniteDimensional K C] :
@@ -33,11 +31,9 @@ theorem comap_val_finite {K B : Type} [Field K] [CommRing B] [Algebra K B] (A : 
   exact ⟨inferInstance, LinearMap.finrank_le_finrank_of_injective hf⟩
 
 /- English proof (translation)
-Set `Φ : C →ₗ[K] A` to `LinearMap.codRestrict (Subalgebra.toSubmodule A) C.subtype fun y => hC y.2`. Establish `hΦ : Function.Injective Φ` using `fun a b hab => by`. Establish `h` using `congrArg (fun z : A => (z : B)) hab`. Conclude with `Subtype.ext h`. Establish `hle : Submodule.span K (L : Set C) ≤ N.comap Φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce `F hF`. Conclude with `hL F hF`. Set `ψ : Submodule.span K (L : Set C) →ₗ[K] N` to `LinearMap.codRestrict N (Φ ∘ₗ (Submodule.span K (L : Set C)).subtype) fun y => hle y.2`. Establish `hψ : Function.Injective ψ` using `fun a b hab => Subtype.ext (hΦ (congrArg Subtype.val hab))`.
-
-Conclude with `LinearMap.finrank_le_finrank_of_injective hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_span_le_of_map {K B : Type} [Field K] [CommRing B] [Algebra K B] (A : Subalgebra K B)
     (C : Submodule K B) (hC : C ≤ Subalgebra.toSubmodule A) {O : Type} [CommRing O] [Module O C]
@@ -62,19 +58,17 @@ end GlobalTheory.CovolRank
 namespace GlobalTheory.CovolRank
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U D x V dict S hpq hA G W hG hW hKG hKW hgG hgGW χ u hdet`. Establish `hsec : ∀ G' : WTZ E, cuspW Xo c U G' ≤ Subalgebra.toSubmodule (secRing Xo c)` using `fun G' f hf => GlobalTheory.LevDesc.mem_secRing (GlobalTheory.AllWt.cuspW_le_secZ G' hf)`. Establish `hfin : ∀ G' : WTZ E, GlobalTheory.AllWt.GoodW U x V dict G' → FiniteDimensional c.F (cuspW Xo c U G')`. Introduce `G' hg`. Take `⟨n, ⟨b, _⟩, _⟩` from `hg.1.some`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Module.Finite.of_basis b`. Use `haveI := hfin G hgG`. Use `haveI := hfin (G + W) hgGW`. Take `⟨hVs, -⟩` from `comap_val_finite (secRing Xo c) (cuspW Xo c U G)`. Take `⟨hVp, hVp'⟩` from `comap_val_finite (secRing Xo c) (cuspW Xo c U (G + W))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `uR : secRing Xo c` to `⟨u, hsec W u.2⟩`. Establish `hact` using `GlobalTheory.LevDesc.isRightAct_pullSecOn (Xo := Xo) (c := c) (S := S) hpq hA`. Establish `hdet' : (Matrix.of fun h g : S => GlobalTheory.LevDesc.pullSecOn Xo c S hpq hA (h * g) uR).det ∈ nonZeroDivisors (secRing Xo c)`. Establish `hc` using `GlobalTheory.LevDesc.coe_det_pullSecOn (Xo := Xo) (c := c) (S := S) hpq hA uR`. Use `mem_nonZeroDivisors_iff_left.mpr fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `h0 : levDet Xo c S u * (y : Rul Xo c) = 0`. Rewrite using `[← hc]`. Conclude with `congrArg Subtype.val hy`. Conclude with `hdet _ y.2 h0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Set `ι : secRing Xo c →ₗ[c.F] Rul Xo c` to `(secRing Xo c).val.toLinearMap`. Set `N : Submodule c.F (secRing Xo c)` to `(cuspW Xo c U G).comap ι ⊓ GlobalTheory.LevDesc.eigen (GlobalTheory.LevDesc.pullSecOn Xo c S hpq hA) χ`. Establish `key` using `(GlobalTheory.finrank_le_card_mul_finrank_eigenspace_le S c.F (secRing Xo c) (GlobalTheory.LevDesc.pullSecOn Xo c S hpq hA) hact.1 hact.2 χ uR hdet' ⊥ ((cuspW Xo c U G).comap ι) ((cuspW Xo c U (G + W)).comap ι) N (fun h y hy => hKG h _ hy) (fun h y hy => by`. Rewrite `hy` using `[Submodule.mem_bot]`. Substitute `hy` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[zero_mul]`. Conclude with `Submodule.zero_mem _)`. Use the proof step `(fun h y hy => GlobalTheory.SlopeRec.mul_mem_cuspW hG hW hy (hKW h _ u.2))`. Use the proof step `(fun y => Submodule.mem_inf)).2`. Use `haveI : FiniteDimensional c.F N := Submodule.finiteDimensional_of_le inf_le_left`.
-
-Establish `h1 : Formalism.HN.rkK (GlobalTheory.LevDesc.chiLat S U G χ) ≤ Module.finrank c.F N` using `finrank_span_le_of_map (secRing Xo c) (cuspW Xo c U G) (hsec G) _ N fun F hF => ⟨F.2, fun h => Subtype.ext (hF.2 h)⟩`. Establish `e : rankW U (G + W) = Module.finrank c.F (cuspW Xo c U (G + W))`. Rewrite using `[rankW, Formalism.HN.rkK, hgGW.2.2, finrank_top]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem card_mul_rkK_chiLat_le_rankW : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) (c : Coeff l) {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) {D : D7} (x : ℝ) (V : (c.F →+* ℂ) → HSp D) (dict : ∀ σ, GA D (V σ) → Σ k, Frame ((U σ).X k).Ψ r) (S : Subgroup (LevelAut Dw l)), 1 ≤ Dw.p + Dw.q → l.A.Coprime l.M → ∀ (G W : WTZ E), Even G.2 → Even W.2 → KeepsCusp U G → KeepsCusp U W → GoodW U x V dict G → GoodW U x V dict (G + W) → ∀ (χ : S →* (c.F)ˣ) (u : cuspW Xo c U W), (∀ f ∈ secRing Xo c, levDet Xo c S u * f = 0 → f = 0) → Fintype.card S * Formalism.HN.rkK (GlobalTheory.LevDesc.chiLat S U G χ) ≤ rankW U (G + W) := by
   classical

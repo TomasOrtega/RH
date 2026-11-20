@@ -22,7 +22,7 @@ section lemmas
 variable {k : ℕ}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Simplify using `only [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`. Conclude with `contDiff_id`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_castM {a b : ℕ} (e : a = b) : ContDiff ℝ ∞ (fun g : B.Mat k a => D.castM e g) := by
   subst e
@@ -30,7 +30,7 @@ theorem contDiff_castM {a b : ℕ} (e : a = b) : ContDiff ℝ ∞ (fun g : B.Mat
   exact contDiff_id
 
 /- English proof (translation)
-Establish `hZ : MS (fun q : (Fin r → Fin r → ℂ) × Mt k (r - r) => Matrix.of q.1) q₀` using `Formalism.FourierDecayAlt.P.PBI.ms_ofC contDiffAt_fst`. Establish `hμ : MS (fun q : (Fin r → Fin r → ℂ) × Mt k (r - r) => Matrix.of q.2) q₀` using `Formalism.FourierDecayAlt.P.PBI.ms_ofC contDiffAt_snd`. Establish `hZi : MS (fun q : (Fin r → Fin r → ℂ) × Mt k (r - r) => (Matrix.of q.1)ᴴ⁻¹) q₀` using `ms_inv (ms_conjT hZ) (by rw [Matrix.det_conjTranspose]; exact star_ne_zero.mpr h₀)`. Unfold `U.mMap`. Conclude with `Formalism.FourierDecayAlt.P.PBI.measurable_block_three (ms_const _) (ms_const _) (ms_mul hZi (ms_const _)) (ms_const _) hμ (ms_const _) (ms_mul (ms_const _) hZ) (ms_const _) (ms_const _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ms_mMap {r : ℕ} (q₀ : (Fin r → Fin r → ℂ) × Mt k (r - r)) (h₀ : (Matrix.of q₀.1).det ≠ 0) :
     MS (fun q : (Fin r → Fin r → ℂ) × Mt k (r - r) => U.mMap k r (r - r) (Matrix.of q.1) (Matrix.of q.2)) q₀ := by
@@ -45,7 +45,7 @@ theorem ms_mMap {r : ℕ} (q₀ : (Fin r → Fin r → ℂ) × Mt k (r - r)) (h�
     (ms_mul (ms_const _) hZ) (ms_const _) (ms_const _)
 
 /- English proof (translation)
-Introduce `q₀ h₀`. Establish `hm` using `ms_mMap q₀ h₀`. Establish `hc : ContDiffAt ℝ ∞ (fun q : (Fin r → Fin r → ℂ) × Mt k (r - r) => U.mMap k r (r - r) (Matrix.of q.1) (Matrix.of q.2)) q₀` using `contDiffAt_pi.2 fun i => contDiffAt_pi.2 fun l => hm i l`. Conclude with `((contDiff_castM (k := k) (by omega : r + (r - r) = r)).contDiffAt.comp q₀ hc).contDiffWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffOn_xT (r : ℕ) :
     ContDiffOn ℝ ∞ (fun q : (Fin r → Fin r → ℂ) × Mt k (r - r) => xT k r (Matrix.of q.1) (Matrix.of q.2))
@@ -58,9 +58,9 @@ theorem contDiffOn_xT (r : ℕ) :
   exact ((contDiff_castM (k := k) (by omega : r + (r - r) = r)).contDiffAt.comp q₀ hc).contDiffWithinAt
 
 /- English proof (translation)
-Unfold `xT`. Rewrite using `[Formalism.FourierDecayAlt.P.PBI.dmin_castM (by omega) z z' _ r (by omega) (by omega), Formalism.FourierDecayAlt.P.hat_z_minimum_degree k r (r - r)]`. Establish `e` using `Formalism.FourierDecayAlt.P.hat_z_on_slice k r (r - r) 0 0 Z μ`. Rewrite `e` using `[Formalism.FourierDecayAlt.P.LeftFubiniLemmas.rn_zero, inv_one, Matrix.one_mul, Matrix.mul_one]`. Unfold `U.DjU`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dmin_xT (r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (Z : Matrix (Fin r) (Fin r) ℂ) (μ : B.Mat k (r - r)) :
     Dmin k r z z' (xT k r Z μ) ⟨r, by omega⟩ = Z.det := by
@@ -73,14 +73,14 @@ theorem dmin_xT (r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (Z : Matrix (Fin 
   rw [e]
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PBE.castM_GV _ ((Formalism.FourierDecayAlt.P.slice_membership k r (r - r)).1 Z μ hZ hμ)`.
+A detailed English derivation is pending.
 -/
 theorem xT_GV (r : ℕ) {Z : Matrix (Fin r) (Fin r) ℂ} {μ : B.Mat k (r - r)} (hZ : Z.det ≠ 0) (hμ : μ ∈ B.GV k (r - r)) :
     xT k r Z μ ∈ B.GV k r :=
   Formalism.FourierDecayAlt.P.PBE.castM_GV _ ((Formalism.FourierDecayAlt.P.slice_membership k r (r - r)).1 Z μ hZ hμ)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, Formalism.FourierDecayAlt.P.JCTx5.castV_rfl, Formalism.FourierDecayAlt.P.JCTx5.castV_rfl]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem gf_castM {a b : ℕ} (e : a = b) (z z' : Fin (2 * b + k + 1) → ℂ) (g : B.Mat k a) :
     Gf k b z z' (D.castM e g) = Gf k a (D.castV e.symm z) (D.castV e.symm z') g := by
@@ -88,7 +88,7 @@ theorem gf_castM {a b : ℕ} (e : a = b) (z z' : Fin (2 * b + k + 1) → ℂ) (g
   rw [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, Formalism.FourierDecayAlt.P.JCTx5.castV_rfl, Formalism.FourierDecayAlt.P.JCTx5.castV_rfl]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[Formalism.FourierDecayAlt.P.JCTx5.castV_rfl]` and apply the resulting hypothesis.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem inWb_castV {a b : ℕ} (e : a = b) {z : Fin (2 * a + k + 1) → ℂ} (h : inWb k a z) : inWb k b (D.castV e z) := by
   subst e
@@ -97,17 +97,17 @@ theorem inWb_castV {a b : ℕ} (e : a = b) {z : Fin (2 * a + k + 1) → ℂ} (h 
 end lemmas
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p G hG q₀ hq₀ hG₀`. Take `⟨⟨hsm, ⟨R, hR⟩, -⟩, -⟩` from `hG`. Establish `hCs : IsCompact {g : B.Mat P.k P.r | B.gN g ≤ R}` using `Formalism.FourierDecayAlt.P.PBE.isCompact_gN_le P.k P.r R`. Establish `hHC : ∀ g ∈ B.GV P.k P.r, g ∉ {g : B.Mat P.k P.r | B.gN g ≤ R} → G g = 0`. Introduce `g hg hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hn (hR g hg hne)`. Establish `hΩ` using `PBQ.isOpen_domP P.k P.r P.r p.T.base.z p.T.base.z'`. Establish `hP` using `proper_left_variables_domain Wp Wq P p P.r le_rfl _ hCs`. Establish `hG₀' : Matrix.of q₀.2 ∈ B.GV P.k (P.r - P.r)` using `hG₀.1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgf : 0 < Gf P.k P.r p.T.base.z p.T.base.z' (xT P.k P.r (Matrix.of q₀.1) (Matrix.of q₀.2))`. Unfold `xT`. Rewrite using `[gf_castM]`. Establish `e` using `Formalism.FourierDecayAlt.P.level_function_slice P.k P.r (P.r - P.r) (D.castV (by omega : P.r = P.r + (P.r - P.r)) p.T.base.z) (D.castV (by omega : P.r = P.r + (P.r - P.r)) p.T.base.z') (inWb_castV _ p.T.base.z_mem) (inWb_castV _ p.T.base.z'_mem) 0 0 (Matrix.of q₀.1) (Matrix.of q …`. Rewrite `e` using `[Formalism.FourierDecayAlt.P.LeftFubiniLemmas.rn_zero, inv_one, Matrix.one_mul, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, MkCptPf.lowV_top p.T _, MkCptPf.lowV_top' p.T _, MkCptPf.gf_eq_ggl (by omega)]`. Conclude with `mul_pos (Complex.normSq_pos.2 hq₀.1) hq₀.2`. Establish `hyΩ : xT P.k P.r (Matrix.of q₀.1) (Matrix.of q₀.2) ∈ PBQ.domP P.k P.r P.r p.T.base.z p.T.base.z'`. Use `⟨fun l hl1 hl2 => ?_, hgf⟩` and prove the remaining obligations. Establish `hl : l = ⟨P.r, by omega⟩` using `Fin.ext (by show (l : ℕ) = P.r; omega)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hl, dmin_xT]`. Conclude with `hq₀.1`. Establish `hyG` using `xT_GV P.r hq₀.1 hG₀'`. Establish `hz : p.T.base.z = D.castV (by omega : P.r + (P.r - P.r) = P.r) (liftVec P.k P.r (P.r - P.r) (p.T.bs P.r).z)` using `(p.T.z_lev P.r le_rfl).symm`. Take `⟨V, f', hV, hyV, hf', hag⟩` from `partial_bessel_smooth_compact_support P.k P.r (P.r - P.r) P.r Wp Wq (p.T.bs P.r) p.T.base (by omega) hz G _ hsm hCs hHC _ hΩ hP _ hyΩ hyG`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxc` using `contDiffOn_xT (k := P.k) P.r`. Establish `hOD : IsOpen {q : (Fin P.r → Fin P.r → ℂ) × Mt P.k (P.r - P.r) | (Matrix.of q.1).det ≠ 0}` using `isOpen_ne_fun (Continuous.matrix_det (continuous_fst)) continuous_const`. Use `⟨{q | (Matrix.of q.1).det ≠ 0} ∩ (fun q : (Fin P.r → Fin P.r → ℂ) × Mt P.k (P.r - P.r) => xT P.k P.r (Matrix.of q.1) (Matrix.of q.2)) ⁻¹' V, fun q => f' (xT P.k P.r (Matrix.of q.1) (Matrix.of q.2)), hxc.continuousOn.isOpen_inter_preimage hOD hV, ⟨hq₀.1, hyV⟩, hf'.comp (hxc.mono S …` and prove the remaining obligations. Conclude with `hag _ hq.2 (xT_GV P.r hq.1 hqG.1)`.
+A detailed English derivation is pending.
 -/
 theorem pullback_smooth_formula : PbSmooth := by
   intro Wp Wq _ _ _ _ _ _ P p G hG q₀ hq₀ hG₀
@@ -152,7 +152,7 @@ end Formalism.FourierDecayAlt.P.CutEX
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `CutEX.pullback_smooth_formula`.
+A detailed English derivation is pending.
 -/
 theorem pullback_smooth : CutEX.PbSmooth := CutEX.pullback_smooth_formula
 

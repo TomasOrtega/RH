@@ -12,7 +12,7 @@ variable {ι : Type} [LinearOrder ι] [Fintype ι] {R : Type} [CommRing R]
 omit [LinearOrder ι] in
 
 /- English proof (translation)
-The claim follows from `(Finset.eq_univ_of_card s.1 (s.2.trans hn.symm)).ge`.
+A detailed English derivation is pending.
 -/
 theorem univ_subset {n : ℕ} (hn : Fintype.card ι = n) (s : {s : Finset ι // s.card = n}) :
     (Finset.univ : Finset ι) ⊆ s.1 :=
@@ -25,7 +25,7 @@ def topTerm (A : Cube.{0} ι R) {n : ℕ} (hn : Fintype.card ι = n) :
 omit [LinearOrder ι] in
 
 /- English proof (translation)
-Introduce `x`. Use `⟨x ⟨Finset.univ, hn⟩, funext ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨s, hs⟩`. Take `rfl` from `Finset.eq_univ_of_card s (hs.trans hn.symm)`. Conclude with `Cube.res_self A _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem topTerm_surjective (A : Cube.{0} ι R) {n : ℕ} (hn : Fintype.card ι = n) :
     Function.Surjective (topTerm A hn) := by
@@ -36,11 +36,11 @@ theorem topTerm_surjective (A : Cube.{0} ι R) {n : ℕ} (hn : Fintype.card ι =
   exact Cube.res_self A _ _
 
 /- English proof (translation)
-Set `y : ∀ s, A.obj s` to `Pi.single (Finset.univ.erase i) (cubeSign Finset.univ i • x)`. Use `⟨fun s => y s.1, funext ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨s, hs⟩`. Take `rfl` from `Finset.eq_univ_of_card s (hs.trans hn.symm)`. Rewrite using `[Cube.d_apply_eq_totalD A _ y (fun _ => rfl), Cube.totalD_apply, Finset.sum_eq_single i]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [y, Pi.single_eq_same, map_zsmul, cubeSign_smul_smul]`. Conclude with `(Cube.res_self A _ _).symm`. Introduce `j _ hji`. Establish `: (Finset.univ.erase j : Finset ι) ≠ Finset.univ.erase i` using `fun h => by`. Establish `: j ∈ (Finset.univ.erase i : Finset ι)` using `by simp [hji]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← h]`. Simplify using `at this`. Simplify using `only [y, Pi.single_eq_of_ne this, map_zero, smul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem topTerm_res_mem (A : Cube.{0} ι R) {p : ℕ} (hn : Fintype.card ι = p + 1) (i : ι)
     (x : A.obj (Finset.univ.erase i)) :
@@ -61,7 +61,7 @@ theorem topTerm_res_mem (A : Cube.{0} ι R) {p : ℕ} (hn : Fintype.card ι = p 
   · simp
 
 /- English proof (translation)
-Rewrite using `[cubeComplex_d]`. Use `Cube.subsingleton_term A (Nat.lt_succ_self (Fintype.card ι))` as an intermediate fact. Conclude with `ModuleCat.hom_ext (LinearMap.ext fun _ => Subsingleton.elim _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem d_top (A : Cube.{0} ι R) :
     (cubeComplex A).d (Fintype.card ι) (Fintype.card ι + 1) = 0 := by
@@ -76,7 +76,7 @@ def topClass (A : Cube.{0} ι R) :
       (d_top A)).inv).hom ∘ₗ topTerm A rfl
 
 /- English proof (translation)
-The claim follows from `((ModuleCat.epi_iff_surjective ((cubeComplex A).pOpcycles (Fintype.card ι) ≫ ((cubeComplex A).isoHomologyι (Fintype.card ι) (Fintype.card ι + 1) (by simp) (d_top A)).inv)).1 inferInstance).comp (topTerm_surjective A rfl)`.
+A detailed English derivation is pending.
 -/
 theorem topClass_surjective (A : Cube.{0} ι R) : Function.Surjective (topClass A) :=
   ((ModuleCat.epi_iff_surjective ((cubeComplex A).pOpcycles (Fintype.card ι) ≫
@@ -84,11 +84,9 @@ theorem topClass_surjective (A : Cube.{0} ι R) : Function.Surjective (topClass 
       (d_top A)).inv)).1 inferInstance).comp (topTerm_surjective A rfl)
 
 /- English proof (translation)
-Establish `key : ∀ (n : ℕ) (hn : Fintype.card ι = n), ((cubeComplex A).pOpcycles n).hom (topTerm A hn (Cube.res A (Finset.erase_subset i _) x)) = 0`. Introduce `n hn`. Take `⟨p, rfl⟩ : ∃ p, n = p + 1` from `Nat.exists_eq_succ_of_ne_zero (hn ▸ (Fintype.card_pos_iff.2 ⟨i⟩).ne')`. Take `⟨y, hy⟩` from `topTerm_res_mem A hn i x`. Use `(cubeComplex A).d_pOpcycles p (p + 1)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[cubeComplex_d]`. Rewrite using `[← hy]`. Conclude with `congr(($this).hom y)`. Use `key _ rfl` as an intermediate fact. Set `g` to `((cubeComplex A).isoHomologyι (Fintype.card ι) (Fintype.card ι + 1) (by simp) (d_top A)).inv.hom`.
-
-Conclude with `(congrArg g this).trans (map_zero g)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem topClass_res (A : Cube.{0} ι R) (i : ι) (x : A.obj (Finset.univ.erase i)) :
     topClass A (Cube.res A (Finset.erase_subset i _) x) = 0 := by
@@ -108,9 +106,9 @@ theorem topClass_res (A : Cube.{0} ι R) (i : ι) (x : A.obj (Finset.univ.erase 
   exact (congrArg g this).trans (map_zero g)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← LinearMap.range_eq_top.2 (topClass_surjective A), LinearMap.range_eq_map, ← (b Finset.univ).span_eq, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨a, rfl⟩, rfl⟩`. Distinguish the cases in `h : T a.1 = Finset.univ`. Conclude with `Submodule.subset_span ⟨a.1, h, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, i ∉ T a.1 := by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[Finset.eq_univ_iff_forall]`. Use `topClass_res A i (b _ ⟨a.1, Finset.subset_erase.2 ⟨Finset.subset_univ _, hi⟩⟩)` as an intermediate fact. Rewrite `this` using `[hb]`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_topClass {κ : Type} (T : κ → Finset ι) (A : Cube.{0} ι R)
     (b : ∀ s : Finset ι, Module.Basis {a : κ // T a ⊆ s} R (A.obj s))
@@ -131,9 +129,9 @@ theorem span_topClass {κ : Type} (T : κ → Finset ι) (A : Cube.{0} ι R)
     exact zero_mem _
 
 /- English proof (translation)
-Introduce `ι _ _ R _ κ T A b hb`. Establish `h` using `span_topClass T A b hb`. Use `⟨fun hT => ?_, fun hT => ⟨h ▸ Submodule.fg_span (hT.image _)⟩⟩` and prove the remaining obligations. Rewrite `h` using `[Set.eq_empty_of_forall_notMem (s := {a | T a = Finset.univ}) hT, Set.image_empty, Submodule.span_empty]`. Rewrite using `[HomologicalComplex.exactAt_iff_isZero_homology]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(Submodule.subsingleton_iff R).1 (subsingleton_of_bot_eq_top h)` as an intermediate fact. Conclude with `ModuleCat.isZero_of_subsingleton _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type) [CommRing R] (κ : Type) (T : κ → Finset ι) (A : Cube.{0} ι R) (b : ∀ s : Finset ι, Module.Basis {a : κ // T a ⊆ s} R (A.obj s)), (∀ (s t : Finset ι) (h : s ⊆ t) (a : {a : κ // T a ⊆ s}), Cube.res A h (b s a) = b t ⟨a.1, a.2.trans h⟩) → ((∀ a, T a ≠ Finset.univ) → (cubeComplex A).ExactAt (Fintype.card ι)) ∧ ({a | T a = Finset.univ}.Finite → Module.Finite R ((cubeComplex A).homology (Fintype.card ι))) := by
   intro ι _ _ R _ κ T A b hb

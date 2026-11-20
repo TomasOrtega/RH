@@ -11,11 +11,9 @@ namespace UpperTheory.Gal.Seam
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `choose A B hm hAB hσ using h`. Establish `hz : (0 : P.R.BdR) ∈ Set.range P.ιB` using `⟨0, map_zero _⟩`. Establish `hmem : ∀ (C : ∀ n, Matrix (Fin (a n)) (Fin (a n)) P.R.BdR), (∀ n i j, C n i j ∈ Set.range P.ιB) → ∀ s t, Matrix.blockDiagonal' C s t ∈ Set.range P.ιB`. Introduce `C hC s t`. Rewrite using `[Matrix.blockDiagonal'_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with hst`. Conclude with `hC _ _ _`. Conclude with `hz`. Use `⟨(Matrix.blockDiagonal' A).submatrix e.symm e.symm, (Matrix.blockDiagonal' B).submatrix e.symm e.symm, fun i j => ⟨hmem A (fun n i j => (hm n i j).1) _ _, hmem B (fun n i j => (hm n i j).2) _ _⟩, ?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_mul_equiv, ← Matrix.blockDiagonal'_mul]`.
-
-Simplify using `only [hAB]`. Conclude with `(congrArg (fun X => Matrix.submatrix X e.symm e.symm) (Matrix.blockDiagonal'_one (m' := fun n => Fin (a n)))).trans (Matrix.submatrix_one_equiv _)`. Rewrite using `[← Matrix.submatrix_map, ← Matrix.submatrix_map, Matrix.submatrix_mul_equiv, Matrix.blockDiagonal'_map _ _ (map_zero _), Matrix.blockDiagonal'_map _ _ (map_zero _), ← Matrix.blockDiagonal'_mul]`. Simplify using `only [hσ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isAdmP_block (P : LocPrime l) (G : Subgroup (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)) {N D : ℕ} {a : Fin N → ℕ}
     (e : (Σ n, Fin (a n)) ≃ Fin D) (R : ∀ n, G → Matrix (Fin (a n)) (Fin (a n)) ℚ_[l])
@@ -46,19 +44,19 @@ end UpperTheory.Gal.Seam
 open UpperTheory.Gal.Seam in
 
 /- English proof (translation)
-Introduce `l _ P AI hT E Ω _ _ _ Gw O _ _ _ Bw N d a R r hR M hM hint`. Set `D` to `Fintype.card (Σ n, Fin (a n))`. Set `e : (Σ n, Fin (a n)) ≃ Fin D` to `Fintype.equivFin _`. Set `f : ↥(GK Bw.Kw) →* Matrix (Fin D) (Fin D) ℚ_[l]` to `{ toFun := fun σ => (Matrix.blockDiagonal' fun n => R n σ).submatrix e.symm e.symm map_one' := by`. Simplify using `only [fun n => (hR n).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Conclude with `(congrArg (fun X => Matrix.submatrix X e.symm e.symm) (Matrix.blockDiagonal'_one (m' := fun n => Fin (a n)))).trans (Matrix.submatrix_one_equiv _)`. Use the proof step `map_mul' := fun σ τ => by`. Rewrite using `[Matrix.submatrix_mul_equiv, ← Matrix.blockDiagonal'_mul]`. Simplify using `only [fun n => (hR n).2.1 σ τ] }`. Set `ρ : ↥(GK Bw.Kw) →* GL (Fin D) ℚ_[l]` to `f.toHomUnits`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρf : ∀ σ, (ρ σ : Matrix (Fin D) (Fin D) ℚ_[l]) = f σ` using `fun σ => MonoidHom.coe_toHomUnits f σ`. Establish `hadm : IsAdmP P (GK Bw.Kw) (fun σ => (ρ σ : Matrix (Fin D) (Fin D) ℚ_[l]))`. Establish `h0 : (fun σ => (ρ σ : Matrix (Fin D) (Fin D) ℚ_[l])) = fun σ => (Matrix.blockDiagonal' fun n => R n σ).submatrix e.symm e.symm` using `funext hρf`. Rewrite using `[h0]`. Conclude with `isAdmP_block P (GK Bw.Kw) e R (fun n => (hR n).2.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `L : FinExt l` to `Bw.LL`. Use `haveI := L.2`. Set `r' : ↥(GK Bw.Kw) →* GL (Fin D) ↥L.1` to `(Units.map (RingHom.mapMatrix (algebraMap ℚ_[l] ↥L.1)).toMonoidHom).comp ρ`. Establish `hr' : ∀ σ i j, (r' σ).val i j = algebraMap ℚ_[l] ↥L.1 ((ρ σ).val i j)` using `fun σ i j => rfl`. Take `⟨T⟩` from `hT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc` using `isCrys_of_isAdmP l P AI T Bw.Kw L D ρ r' hr' hadm`. Establish `hcρ : WeaklyAdmissibleFiltrations.IsCrys (P.PD Bw.Kw) (((Matrix.toLinAlgEquiv' : Matrix (Fin D) (Fin D) ℚ_[l] ≃ₐ[ℚ_[l]] _) : _ →* _).comp ((Units.coeHom _).comp ρ) : Representation ℚ_[l] ↥(GK Bw.Kw) (Fin D → ℚ_[l]))` using `(GlobalTheory.Pst.isCrys_ext_iff (P.PD Bw.Kw) (fun g => ⟨(ρ g : Matrix (Fin D) (Fin D) ℚ_[l]), fun x => rfl, fun x => rfl⟩)).1 hc`. Use `GlobalTheory.CrysSubRep.isCrysAt_of_sub l P AI ⟨T⟩ E Ω Gw O Bw D d ρ r hcρ (M.submatrix e.symm id) ?_ ?_` and prove the remaining obligations. Introduce `x y hxy`. Use `hM (funext fun s => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun hxy (e s)` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct]`. Introduce `g`. Establish `h1` using `hint g`. Establish `h3 : (ρ (Bw.e g) : Matrix (Fin D) (Fin D) ℚ_[l]) = (Matrix.blockDiagonal' fun n => R n (Bw.e g)).submatrix e.symm e.symm` using `hρf _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Establish `h2 : (M.submatrix e.symm id) * (r g : Matrix (Fin d) (Fin d) (Om l)) = (M * (r g : Matrix (Fin d) (Fin d) (Om l))).submatrix e.symm id` using `Matrix.ext fun _ _ => rfl`. Rewrite using `[h2, ← h1]`. Rewrite using `[← Matrix.submatrix_map, Matrix.submatrix_mul_equiv]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Seam.subAdm : UpperTheory.Gal.Seam.SubAdm := by
   intro l _ P AI hT E Ω _ _ _ Gw O _ _ _ Bw N d a R r hR M hM hint

@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.SnMass.VolN.IntU
 
 /- English proof (translation)
-Simplify using `only [Hpk, esI, eI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_row (k r : ℕ) (a : Fin r) (j : Fin (2 * r + k + 1)) :
     Hpk k r (esI k r a) j = if j = eI k r a then 1 else 0 := by
@@ -17,18 +17,18 @@ theorem hpk_row (k r : ℕ) (a : Fin r) (j : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, hpk_row]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hpk_mulVec_esI (k r : ℕ) (a : Fin r) (z : Fin (2 * r + k + 1) → ℂ) :
     (Hpk k r *ᵥ z) (esI k r a) = z (eI k r a) := by
   simp [Matrix.mulVec, dotProduct, hpk_row]
 
 /- English proof (translation)
-Establish `key : star (B *ᵥ (fun i => τ (y i))) ⬝ᵥ (Hpk k r *ᵥ (B *ᵥ fun i => τ (x i))) = star (fun i => τ (y i)) ⬝ᵥ (J.map τ *ᵥ fun i => τ (x i))`. Rewrite using `[← hB]`. Simplify using `only [Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Establish `lhs : star (B *ᵥ (fun i => τ (y i))) ⬝ᵥ (Hpk k r *ᵥ (B *ᵥ fun i => τ (x i))) = (s : ℂ)⁻¹ * (B *ᵥ fun i => τ (x i)) (eI k r a)`. Rewrite using `[hy, star_smul, bvec, ← hpk_mulVec_esI k r a (B *ᵥ fun i => τ (x i))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[Pi.star_def, dotProduct, Pi.single_apply, -Matrix.mulVec_mulVec]`. Establish `rhs : star (fun i => τ (y i)) ⬝ᵥ (J.map τ *ᵥ fun i => τ (x i)) = τ (form σ J x y)`. Simplify using `only [form, dotProduct, map_sum, map_mul, hτ, RingHom.map_mulVec]`. Both sides reduce to the same expression. Rewrite `key` using `[lhs, rhs]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← key, ← mul_assoc, mul_inv_cancel₀ (by exact_mod_cast hs), one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_eI {E : Type} [Field E] {k r : ℕ} (σ : E →+* E) (τ : E →+* ℂ)
     (hτ : ∀ x, τ (σ x) = star (τ x)) (J : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E)
@@ -56,7 +56,7 @@ end GlobalTheory.SnMass.VolN.IntU
 namespace GlobalTheory.SnMass.VolN.IntU
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_smul_smul {E : Type} [Field E] {n : ℕ} (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E)
     (c c' : E) (x y : Fin n → E) : form σ J (c • x) (c' • y) = c * σ c' * form σ J x y := by
@@ -65,11 +65,9 @@ theorem form_smul_smul {E : Type} [Field E] {n : ℕ} (σ : E →+* E) (J : Matr
   ring
 
 /- English proof (translation)
-Establish `hI : 𝔟 * 𝔞⁻¹ ≠ 0` using `mul_ne_zero h𝔟 (inv_ne_zero h𝔞)`. Establish `e : 𝔞 * 𝔟⁻¹ = (𝔟 * 𝔞⁻¹)⁻¹` using `by rw [mul_inv, inv_inv, mul_comm]`. Rewrite using `[e, FractionalIdeal.mem_inv_iff hI]`. Introduce `y hy`. Use `FractionalIdeal.mul_induction_on hy (fun c hc d hd => ?_) (fun y₁ y₂ h₁ h₂ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hu c hc (σ d) (hst d hd)` as an intermediate fact. Rewrite `this` using `[hσ]`. Take `⟨t, ht⟩` from `this`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨t, by rw [ht]; ring⟩`. Rewrite using `[mul_add]`.
-
-Conclude with `Submodule.add_mem (1 : FractionalIdeal (𝓞 E)⁰ E).coeToSubmodule h₁ h₂`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_pair {E : Type} [Field E] [NumberField E] (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x)
     (𝔞 𝔟 : FractionalIdeal (𝓞 E)⁰ E) (h𝔞 : 𝔞 ≠ 0) (h𝔟 : 𝔟 ≠ 0) (hst : FrameDual.Stab σ 𝔞⁻¹) (u : E)
@@ -90,25 +88,21 @@ end GlobalTheory.SnMass.VolN.IntU
 open GlobalTheory.SnMass.VolN.IntU in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ k r J Λ P f T A s hV γ hγ p`. Take `⟨hCM, -, hND, hSD, -, -, hTup, hMod, hs, hAd⟩` from `hV`. Take `⟨⟨a, b⟩, hab⟩` from `p`. Simplify using `only`. Establish `hconj : ∀ (τ : E →+* ℂ) (x : E), τ (σ x) = star (τ x)` using `hCM.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Establish `hσ : ∀ x, (σ : E →+* E) ((σ : E →+* E) x) = x`. Introduce `x`. Use `show σ (σ x) = x`. Conclude with `(Classical.arbitrary (InfinitePlace E)).embedding.injective (by rw [hconj, hconj, star_star])`. Use `set eb : Fin (2 * r + k + 1) → E := fun i => P i b.castSucc with heb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set fa : Fin (2 * r + k + 1) → E := fun i => f i a with hfa`. Use `⟨form (σ : E →+* E) J (γ *ᵥ eb) fa, ?_, fun w => ?_⟩` and prove the remaining obligations. Use `mem_of_pair (σ : E →+* E) hσ _ _ (FrameDual.dInv_ne_zero _) (FrameDual.dInv_ne_zero _) ((FrameDual.stab_dInv hσ _).inv hσ (FrameDual.dInv_ne_zero _)) _ ?_` and prove the remaining obligations. Introduce `c hc c' hc'`. Establish `h1 : c • eb ∈ Λ` using `hTup (Submodule.subset_span ⟨Fin.castAdd r b.castSucc, c, by rw [FrameDual.frameDualTupleIdeals_castAdd]; exact hc, by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[heb, sideM]⟩)`. Establish `h2 : c' • fa ∈ Λ` using `hTup (Submodule.subset_span ⟨Fin.natAdd (r + 1) a, c', by rw [FrameDual.frameDualTupleIdeals_natAdd]; exact hc', by`. Use function extensionality and compare the values at `i`. Simplify using `[hfa, sideM]⟩)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h3 : γ *ᵥ (c • eb) ∈ Λ`. Rewrite using `[← hγ.2]`. Conclude with `⟨_, h1, rfl⟩`. Establish `h4` using `(hSD.2 _).1 h3 _ h2`. Rewrite `h4` using `[Matrix.mulVec_smul, form_smul_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set τ := w.embedding with hτ`. Establish `hB` using `hMod w`. Establish `hdet : IsUnit (A w).det`. Use `Ne.isUnit fun h0 => hND.2 ?_` and prove the remaining obligations. Use `congrArg Matrix.det hB` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_eq_zero τ).1 this.symm`. Establish `hsb : (s b : ℂ) ≠ 0` using `by exact_mod_cast (hs b).ne'`. Establish `hbv : bvec (eI k r b) = (s b : ℂ)⁻¹ • (A w *ᵥ fun i => τ (eb i))`. Rewrite using `[(hAd w b).1, smul_smul, inv_mul_cancel₀ hsb, one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hmap : (γ.map τ *ᵥ fun i => τ (eb i)) = fun i => τ ((γ *ᵥ eb) i)`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec τ γ eb i).symm`. Establish `hent : gM A γ w (eI k r a) (eI k r b) = (s b : ℂ)⁻¹ * (A w *ᵥ fun i => τ ((γ *ᵥ eb) i)) (eI k r a)`. Establish `e1 : gM A γ w (eI k r a) (eI k r b) = (gM A γ w *ᵥ bvec (eI k r b)) (eI k r a)`.
-
-Simplify using `[bvec]`. Rewrite using `[e1, hbv, Matrix.mulVec_smul, gM, Matrix.mulVec_mulVec, Matrix.mul_assoc (A w * γ.map τ), Matrix.nonsing_inv_mul _ hdet, Matrix.mul_one, ← Matrix.mulVec_mulVec, hmap]`. Both sides reduce to the same expression. Use `show gM A γ w (eI k r a) (eI k r b) = _`. Rewrite using `[hent, coord_eI (σ : E →+* E) τ (hconj τ) J (A w) hB (γ *ᵥ eb) fa a (s a) (hs a).ne' (hAd w a).2]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SnMass.VolN.gM_entry_mem_ideLat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (k r : ℕ) (J : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E) (Λ : Submodule (𝓞 E) (Fin (2 * r + k + 1) → E)) (P : Matrix (Fin (2 * r + k + 1)) (Fin (r + 1)) E) (f : Matrix (Fin (2 * r + k + 1)) (Fin r) E) (T : F) (A : InfinitePlace E → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (s : Fin r → ℝ), IsVolData σ J Λ P f T A s → ∀ γ ∈ GN (σ : E →+* E) J Λ P, ∀ p : UTr r, (fun w => gM A γ w (eI k r p.1.1) (eI k r p.1.2)) ∈ ideLat (dInv E (r - p.1.1.val) * (dInv E (r - p.1.2.val))⁻¹) (s p.1.1 / s p.1.2) := by
   intro F E _ _ _ _ _ σ k r J Λ P f T A s hV γ hγ p

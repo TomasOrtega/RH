@@ -7,7 +7,7 @@ noncomputable section
 namespace Formalism.HermitianLattices.BoxCountUnconditional
 
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.boxCountHyp_outright`.
+A detailed English derivation is pending.
 -/
 theorem boxCountAll_statement : BoxCountAll := Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.boxCountHyp_outright
 

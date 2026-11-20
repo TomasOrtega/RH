@@ -11,7 +11,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `IntegralIndep.proof (PosPartIndep.proof (SheetOnlyNull.proof IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.proof IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.proof) PosPartLocal.proof PosPartSplit.proof)`.
+A detailed English derivation is pending.
 -/
 theorem IntegralIndep.closed : IntegralIndep.Statement :=
   IntegralIndep.proof

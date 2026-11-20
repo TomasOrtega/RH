@@ -8,13 +8,13 @@ open scoped Pointwise
 namespace Formalism.IndefR.Eqv
 
 /- English proof (translation)
-Introduce `H _ _ _ Γ _ ν _ _ 𝓕 h𝓕 ψ hψ k`. Establish `hψ' : ∀ (g : Γ) (x : H), ψ (g • x) = ψ x` using `fun g x => hψ g g.2 x`. Establish `h2 : IsFundamentalDomain Γ (MulOpposite.op k • 𝓕) ν` using `h𝓕.smul_of_comm (MulOpposite.op k)`. Establish `himg : MulOpposite.op k • 𝓕 = (fun h => h * k) '' 𝓕`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Set.mem_smul_set]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `hx`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨x * k⁻¹, hx, by simp⟩`. Establish `hmp` using `measurePreserving_mul_right ν k`. Establish `hme` using `measurableEmbedding_mulRight (G := H) k`. Prove the components needed by the constructor for the conclusion. Establish `e1` using `(hmp.integrableOn_image hme (f := ψ) (s := 𝓕)).symm`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Rewrite `e1` using `[← himg]`. Conclude with `e1.trans (h2.integrableOn_iff h𝓕 hψ')`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rightInv_holds : RightInv := by
   intro H _ _ _ Γ _ ν _ _ 𝓕 h𝓕 ψ hψ k
@@ -48,9 +48,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `hM hC hU K μ 𝓕 h ψ hψ k`. Use `hM` as an intermediate fact. Use `hC` as an intermediate fact. Establish `hH : μ.IsHaarMeasure` using `h.1.1`. Use `hU μ hH` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `rightInv_holds (GA D V) (GQ V) μ 𝓕 h.2 ψ hψ k`.
+A detailed English derivation is pending.
 -/
 theorem rightInvGA_holds (V : HSp D) : RightInvGA V := by
   intro hM hC hU K μ 𝓕 h ψ hψ k
@@ -63,17 +63,17 @@ theorem rightInvGA_holds (V : HSp D) : RightInvGA V := by
 end GA
 
 /- English proof (translation)
-Introduce `G H S Sinf Ds Dt _ _ _ _ _ _ _ ν 𝓕 th pt T CCs CCt hint hglob huniq`. Use `choose U hU using hglob`. Establish `key : ∀ (F : CCs) (u : CCt), (∀ φ v g, (u : Dt →ₗ[ℂ] (G → ℂ)) (T φ v) g = Lift.liftInt ν 𝓕 th (pt φ) ((F : Ds →ₗ[ℂ] (H → ℂ)) v) g) → u = U F`. Introduce `F u hu`. Use `sub_eq_zero.1 (huniq _ fun φ v => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Simplify using `[hu, hU]`. Use `⟨{ toFun := U, map_add' := ?_, map_smul' := ?_ }, ⟨hint, fun F φ v g => (hU F φ v g).symm⟩⟩` and prove the remaining obligations. Introduce `F1 F2`. Use `symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `key` to reduce the goal to its premises. Introduce `φ v g`. Simplify using `only [Submodule.coe_add, LinearMap.add_apply, Pi.add_apply, hU]`. Unfold `Lift.liftInt`. Rewrite using `[← integral_add (hint F1 φ v g) (hint F2 φ v g)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c F`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation.
 
-Use `symm`. Apply `key` to reduce the goal to its premises. Introduce `φ v g`. Simplify using `only [Submodule.coe_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, hU, RingHom.id_apply]`. Unfold `Lift.liftInt`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ioExistsOf_holds : IoExistsOf := by
   intro G H S Sinf Ds Dt _ _ _ _ _ _ _ ν 𝓕 th pt T CCs CCt hint hglob huniq

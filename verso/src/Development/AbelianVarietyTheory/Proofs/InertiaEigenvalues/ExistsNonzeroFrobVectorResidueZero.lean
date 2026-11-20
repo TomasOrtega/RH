@@ -16,13 +16,11 @@ namespace GlobalTheory.PMonII
 open GlobalTheory.PSer
 
 /- English proof (translation)
-Establish `hn0 : (n : ZMod l) ≠ 0` using `by rwa [Ne, ZMod.natCast_eq_zero_iff]`. Use `set m := ((n : ZMod l)⁻¹).val with hm`. Establish `hmnZ : ((m * n : ℕ) : ZMod l) = ((1 : ℕ) : ZMod l)`. Use `push_cast`. Rewrite using `[hm, ZMod.natCast_zmod_val, inv_mul_cancel₀ hn0]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmn : ((m * n : ℕ) : Formalism.Per.Fl l) = 1`. Rewrite using `[← Nat.cast_one, CharP.natCast_eq_natCast (Formalism.Per.Fl l) l]`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).1 hmnZ`. Establish `hy : y = (m : Formalism.Per.Fl l) * (n • y)`. Rewrite using `[nsmul_eq_mul, ← mul_assoc, ← Nat.cast_mul, hmn, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmul : ∀ a b : Formalism.Per.Fl l, sh (a * b) = sh a * sh b`. Introduce `a b`. Simplify using `[sh, map_mul]`. Establish `hle : ∀ x : Formalism.Per.Fl l, ‖sh x‖ ≤ 1` using `fun x => (GlobalTheory.RingBasics.mem_OC _).1 (PreTilt.untilt x).2`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hmul, norm_mul]`. Use `_ ≤ 1 * ‖sh (n • y)‖ := mul_le_mul_of_nonneg_right (hle _) (norm_nonneg _)`. Use `_ = ‖sh (n • y)‖ := one_mul _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sh_le_sh_nsmul {l : ℕ} [Fact l.Prime] (y : Formalism.Per.Fl l) (n : ℕ) (hn : ¬ l ∣ n) :
     ‖sh y‖ ≤ ‖sh (n • y)‖ := by
@@ -46,7 +44,7 @@ theorem sh_le_sh_nsmul {l : ℕ} [Fact l.Prime] (y : Formalism.Per.Fl l) (n : �
     _ = ‖sh (n • y)‖ := one_mul _
 
 /- English proof (translation)
-Rewrite using `[ev, ← AlgHom.coe_pow, AlgHom.commutes, AlgHom.commutes]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_algebraMap {l : ℕ} [Fact l.Prime] (P : LocPrime l) (m : ℕ) (q : ℚ_[l]) :
     ev P m (algebraMap ℚ_[l] P.R.B q) = algebraMap ℚ_[l] P.R.BdR q := by
@@ -59,45 +57,41 @@ namespace GlobalTheory.PMonII
 open GlobalTheory.PSer
 
 /- English proof (translation)
-Introduce `l _ P AI T h hh lam hlam hind`. Take `⟨S, θ, hS, hker, hQ, hser⟩` from `GlobalTheory.T.exists_BcrisPlus_series_with_theta_residues l P AI T`. Take `⟨-, hPev, hPring, hPq, -, -⟩` from `GlobalTheory.PMon.CrisPlus.plus_props l P AI T`. Establish `hθq : ∀ (c : ℚ_[l]) (hm : algebraMap ℚ_[l] P.R.BdR c ∈ S), θ ⟨_, hm⟩ = algebraMap ℚ_[l] ℂ_[l] c`. Introduce `c hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨_, h'⟩` from `hQ c`. Conclude with `h'`. Establish `hqS : ∀ c : ℚ_[l], algebraMap ℚ_[l] P.R.BdR c ∈ S` using `fun c => (hS _).2 (q_mem_Fil P c)`. Establish `hlS : ∀ j, lam j ∈ S` using `fun j => (hS _).2 (hlam j)`. Set `μ : Fin h → ℂ_[l]` to `fun j => θ ⟨lam j, hlS j⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hμind : ∀ c : Fin h → ℚ_[l], ∑ j, algebraMap ℚ_[l] ℂ_[l] (c j) * μ j = 0 → c = 0`. Introduce `c hc`. Apply `hind c` to reduce the goal to its premises. Establish `hm : ∑ j, c j • lam j ∈ S` using `S.sum_mem fun j _ => by`. Rewrite using `[Algebra.smul_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `S.mul_mem (hqS _) (hlS j)`. Establish `he : (⟨_, hm⟩ : S) = ∑ j, (⟨_, hqS (c j)⟩ : S) * ⟨lam j, hlS j⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Algebra.smul_def]`. Establish `h0 : θ ⟨_, hm⟩ = 0`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he, map_sum, ← hc]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hθq]`. Conclude with `(hker ⟨_, hm⟩).1 h0`. Take `⟨Pm, μ', hdet, hμ', hnorm, hanti, hlt, horth⟩` from `GlobalTheory.T.exists_sorted_normalized_orthBasis_complexPAdic l h μ hμind`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, j0, r, R, hr0, hr1, hR1, hyR, hyr, hy0, hzero⟩` from `GlobalTheory.T.exists_orthogonal_family_residue_zeros l h μ' hh hnorm hanti hlt horth`. Establish `hb : ∀ k : Fin h, ∃ b : P.R.B, Plus T b ∧ P.φB^[h] b = (l : P.R.B) * b ∧ ∀ j : ℕ, ∃ hm, θ ⟨ev P j b, hm⟩ = abelian₂ h j (y k)` using `fun k => hser h R (y k) hh hR1 (hyR k)`. Use `choose b hbP hbφ hbθ using hb`. Use `choose hbm hθb using hbθ`. Establish `hbne : b j0 ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `h0`. Establish `hc` using `GlobalTheory.T.untiltFrobeniusSeries_linearIndependent_of_firstTerms l h 1 r (fun _ => y j0) hh hr0 hr1 (fun _ k => hyr k) ?_ (fun _ => 1) ?_`. Conclude with `one_ne_zero (congrFun hc 0)`. Introduce `n hn a`. Assume the negation of the conclusion as `hd`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha : a = 0` using `Subsingleton.elim _ _`. Substitute `ha` using the available equality. Establish `hle` using `sh_le_sh_nsmul (y j0 0) (n 0) hd`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton] at hn`. Establish `: (default : Fin 1) = 0` using `rfl`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hn` using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `j _`. Establish `e : (⟨ev P j (b j0), hbm j0 j⟩ : S) = 0` using `Subtype.ext (by`. Simplify using `only [h0, ZeroMemClass.coe_zero, ← evHom_apply, map_zero])`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL : abelian₂ h j (y j0) = 0` using `by rw [← hθb j0 j, e, map_zero]`. Simplify using `[hL]`. Set `a : Fin h → P.R.B` to `fun j => ∑ k, algebraMap ℚ_[l] P.R.B (Pm k j) * b k`. Establish `hplus0 : Plus T (0 : P.R.B)` using `by simpa using hPq 0`. Establish `hev : ∀ (i : ℕ) (j : Fin h), ev P i (a j) = ∑ k, algebraMap ℚ_[l] P.R.BdR (Pm k j) * ev P i (b k)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Simplify using `only [a, ← evHom_apply, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[evHom_apply, evHom_apply, ev_algebraMap]`. Use `⟨a, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `ha`. Apply `hbne` to reduce the goal to its premises. Establish `hinv : Pm * Pm⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hdet)`. Establish `key : ∑ j, algebraMap ℚ_[l] P.R.B (Pm⁻¹ j j0) * a j = b j0`. Simplify using `only [a, Finset.mul_sum, ← mul_assoc, ← map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Establish `: ∀ k, ∑ j, algebraMap ℚ_[l] P.R.B (Pm⁻¹ j j0 * Pm k j) * b k = algebraMap ℚ_[l] P.R.B ((Pm * Pm⁻¹) k j0) * b k`. Introduce `k`. Rewrite using `[← Finset.sum_mul, ← map_sum, Matrix.mul_apply]`. Simplify using `only [mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [this, hinv, Matrix.one_apply]`. Simplify using the standard rewrite rules. Rewrite using `[← key]`. Simplify using `[ha]`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_induction _ (Plus T) (fun x y hx hy => (hPring x y hx hy).1) hplus0 fun k _ => ?_` and prove the remaining obligations. Conclude with `(hPring _ _ (hPq _) (hbP k)).2`. Introduce `j`. Simplify using `only [a]`. Rewrite using `[← AlgHom.coe_pow, map_sum, Finset.mul_sum]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, AlgHom.commutes, AlgHom.coe_pow, hbφ k]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i`. Establish `hX : ∑ j, lam j * ev P i (a j) ∈ S` using `S.sum_mem fun j _ => S.mul_mem (hlS j) (by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hev]`. Conclude with `S.sum_mem fun k _ => S.mul_mem (hqS _) (hbm k i))`. Apply `(hker ⟨_, hX⟩).1` to reduce the goal to its premises. Establish `he : (⟨_, hX⟩ : S) = ∑ j, ∑ k, (⟨lam j, hlS j⟩ : S) * ((⟨_, hqS (Pm k j)⟩ : S) * ⟨_, hbm k i⟩)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hev, Finset.mul_sum]`. Simplify using the standard rewrite rules. Rewrite using `[he]`. Simplify using `only [map_sum, map_mul, hθq, hθb]`. Rewrite using `[Finset.sum_comm]`.
-
-Rewrite using `[← hzero i]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hμ' k, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [μ]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exII : ExII := by
   intro l _ P AI T h hh lam hlam hind

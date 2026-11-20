@@ -174,7 +174,7 @@ abbrev classLevelData (Dst : ℝ)
     (shaExample_nonneg H) (exampleClassGroupCard H) (exampleClassGroupCard_pos H) with kaBig := kb, kaSmall := ks }
 
 /- English proof (translation)
-Introduce `p _ e _ _` and use `shaExample_eq H p e hcard := rfl hg := hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nHyp3 (Dst : ℝ)
     (kb : ∀ j, Tau2 R → Fin (R.sigW j).1 → ℤ) (ks : ∀ j, Tau2 R → Fin (R.sigW j).2 → ℤ)
@@ -460,7 +460,7 @@ theorem classRecord_lowerLevel (u) : ((classRecord H hc Del hDel hgap hlet cdS h
 omit kb ks in
 
 /- English proof (translation)
-Take `⟨kb, ks, h⟩` from `DV.exists_blocks (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G (fun _ _ _ => 0) (fun _ _ _ => 0))`. Conclude with `⟨kb, ks, fun j _ _ τ => h j τ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem classRecord_weights_defined : ∃ kb ks, DV.KapDef (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks) := by
   obtain ⟨kb, ks, h⟩ := DV.exists_blocks (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G (fun _ _ _ => 0) (fun _ _ _ => 0))

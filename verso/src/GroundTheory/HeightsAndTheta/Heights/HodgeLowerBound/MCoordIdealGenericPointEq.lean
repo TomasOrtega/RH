@@ -19,11 +19,11 @@ section Boundary
 def bdPts (Bd : Finset (Ideal (MRing ι))) : Set ((Σ k, ι k) → ℂ) := ⋃ B ∈ Bd, mcPts B
 
 /- English proof (translation)
-Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Conclude with `⟨i, mul_ne_zero (hc k) hi⟩`. Take `⟨S, hS, rfl⟩` from `hB`. Proceed by induction on `hf using Submodule.span_induction with`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `mem s hs`. Take `⟨a, ha⟩` from `hS s hs`. Rewrite using `[eval_map]`. Unfold `torusSmul`. Rewrite using `[IndefiniteRowSideFullHecke.HeightsSet.CurveComplexPoint.eval₂_smul_homog s a ha, ← eval_map, hz.2 s (Ideal.subset_span hs), mul_zero]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, eval_add, hx, hy, add_zero]`. Consider the case `smul r x _ hx => rw [smul_eq_mul, map_mul, eval_mul, hx, mul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mcPts_torus {B : Ideal (MRing ι)} (hB : IsMultiHomogIdeal B) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts B)
     {c : K → ℂ} (hc : ∀ k, c k ≠ 0) : torusSmul c z ∈ mcPts B := by

@@ -16,14 +16,14 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `Fin.ext (blockIndex_false_val m j a)`.
+A detailed English derivation is pending.
 -/
 theorem blockIndex_false_eq (m j : ℕ) (a : Fin m) :
     eGP m j ⟨false, a⟩ = Fin.castSucc (⟨a.1, by have := a.2; omega⟩ : Fin (m + j)) :=
   Fin.ext (blockIndex_false_val m j a)
 
 /- English proof (translation)
-The claim follows from `Fin.ext (blockIndex_true_val m (j + 1) _)`.
+A detailed English derivation is pending.
 -/
 theorem blockIndex_true_castSucc (m j : ℕ) (b : Fin (j + 1)) :
     eGP m (j + 1) ⟨true, Fin.castSucc b⟩ =
@@ -31,9 +31,9 @@ theorem blockIndex_true_castSucc (m j : ℕ) (b : Fin (j + 1)) :
   Fin.ext (blockIndex_true_val m (j + 1) _)
 
 /- English proof (translation)
-Rewrite using `[mem_mirabolicParabolic_iff]`. Introduce `b a`. Rewrite using `[blockIndex_false_eq]`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite using `[blockIndex_true_last, (mem_Mir_iff k _).1 x.2]`. Conclude with `Pi.single_eq_of_ne (Fin.castSucc_ne_last _) _`. Consider the case `cast b`. Rewrite using `[blockIndex_true_castSucc]`. Conclude with `h _ _ (by simp) (by simp)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_mirabolicParabolic_of (m j : ℕ) (x : Mir k (m + (j + 1)))
     (h : ∀ r c : Fin (m + j + 1), ¬ r.val < m → c.val < m →
@@ -51,7 +51,7 @@ theorem mem_mirabolicParabolic_of (m j : ℕ) (x : Mir k (m + (j + 1)))
     exact h _ _ (by simp) (by simp)
 
 /- English proof (translation)
-Use `mem_mirabolicParabolic_of m j x fun r c hr hc => ?_` and prove the remaining obligations. Rewrite using `[hx]`. Use `unip_castSucc_castSucc _ v _ _ ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hr hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem unip_mem_HGP (m j : ℕ) (x : Mir k (m + (j + 1))) (v : Fin (m + (j + 1)) → k)
     (hx : (x : GL (Fin (m + (j + 1) + 1)) k) = unip k (m + (j + 1)) (Multiplicative.ofAdd v)) :
@@ -63,9 +63,9 @@ theorem unip_mem_HGP (m j : ℕ) (x : Mir k (m + (j + 1))) (v : Fin (m + (j + 1)
   exact hr hc
 
 /- English proof (translation)
-Use `show (1 + colMat k n v) i c = _`. Rewrite using `[Matrix.add_apply]`. Distinguish the cases in `hc : c = Fin.last n`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp [colMat, hc]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cast r => simp [colMat, hc, h hc r rfl]`. Simplify using `[colMat, hc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unip_entry (n : ℕ) (v : Fin n → k) (i c : Fin (n + 1))
     (h : c = Fin.last n → ∀ r : Fin n, i = Fin.castSucc r → v r = 0) :
@@ -79,17 +79,15 @@ theorem unip_entry (n : ℕ) (v : Fin n → k) (i c : Fin (n + 1))
   · simp [colMat, hc]
 
 /- English proof (translation)
-Establish `hone : ∀ (x : Bool) (a b : Two (Fin m) (Fin (j + 1 + 1)) x), (1 : Matrix _ _ k) (eGP m (j + 1) ⟨x, a⟩) (eGP m (j + 1) ⟨x, b⟩) = (1 : Matrix (Two (Fin m) (Fin (j + 1 + 1)) x) _ k) a b`. Introduce `x a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.one_apply_ne hab, Matrix.one_apply_ne]`. Introduce `e`. Conclude with `hab (by simpa using (eGP m (j + 1)).injective e)`. Use `Prod.ext ?_ (Subtype.ext ?_)` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Use `show ((y : Mir k (m + (j + 1))) : GL (Fin (m + (j + 1) + 1)) k).val (eGP m (j + 1) ⟨false, a⟩) (eGP m (j + 1) ⟨false, b⟩) = _`. Rewrite using `[hy, unip_entry, hone]`. Both sides reduce to the same expression. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Conclude with `absurd e (blockIndex_false_ne_last m (j + 1) b)`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show ((y : Mir k (m + (j + 1))) : GL (Fin (m + (j + 1) + 1)) k).val (eGP m (j + 1) ⟨true, a⟩) (eGP m (j + 1) ⟨true, b⟩) = _`. Rewrite using `[hy, unip_entry, hone]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Introduce `_ r e`. Use `hv r ?_` and prove the remaining obligations. Use `congrArg Fin.val e` as an intermediate fact. Rewrite `this` using `[blockIndex_true_val]`.
-
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem gpProj_unip (m j : ℕ) (y : MirabolicParabolic k m (j + 1)) (v : Fin (m + (j + 1)) → k)
     (hv : ∀ r : Fin (m + (j + 1)), ¬ r.val < m → v r = 0)
@@ -134,11 +132,11 @@ section
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Take `⟨v, A, hp, hA⟩ : ∃ v A, (g : GL (Fin (n + 2)) k) = unip k (n + 1) v * glEmb k (n + 1) A ∧ A = mirabolicProjection k (n + 1) g` from `⟨_, _, eq_unip_glEmb g, rfl⟩`. Rewrite using `[map_inv (mirabolicProjection k (n + 1)), ← hA]`. Establish `e` using `glEmb_mul_unip' k (n + 1) A⁻¹ (Multiplicative.ofAdd w)`. Establish `c : (unip k (n + 1) v)⁻¹ * unip k (n + 1) (Multiplicative.ofAdd w) * unip k (n + 1) v = unip k (n + 1) (Multiplicative.ofAdd w)`. Rewrite using `[← map_inv, ← map_mul, ← map_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[mul_comm _ (Multiplicative.ofAdd w), mul_assoc]`. Simplify using the standard rewrite rules. Simplify using `only [Subgroup.coe_mul, InvMemClass.coe_inv, unipM_val, hp]`. Simplify using `only [toAdd_ofAdd] at e`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[c, map_inv]`. Use `_ = _ := by`. Rewrite using `[e, mul_assoc, ← map_mul, inv_mul_cancel, map_one, mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_unip (n : ℕ) (g : Mir k (n + 1)) (w : Fin (n + 1) → k) :
     ((g⁻¹ * unipM k n (Multiplicative.ofAdd w) * g : Mir k (n + 1)) : GL (Fin (n + 2)) k) =
@@ -168,27 +166,25 @@ theorem conj_unip (n : ℕ) (g : Mir k (n + 1)) (w : Fin (n + 1) → k) :
 end
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ m j g`. Distinguish the cases in `hl : ∃ l : Fin (m + j + 1), l.val < m ∧ rowQ k (m + j) g⁻¹ l ≠ 0`. Take `⟨l, hlm, hrl⟩` from `hl`. Take `⟨t, ht⟩` from `(AddChar.ne_one_iff).1 hψ`. Set `w : Fin (m + j + 1) → k` to `Pi.single l (t / rowQ k (m + j) g⁻¹ l)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `X : Mir k (m + j + 1)` to `unipM k (m + j) (Multiplicative.ofAdd w)`. Establish `hu` using `conj_unip (m + j) g w`. Establish `hmem : g⁻¹ * X * g ∈ MirUin k (m + j + 1)` using `⟨_, hu.symm⟩`. Establish `hgx : g * (g⁻¹ * X * g) * g⁻¹ = X` using `by group`. Establish `hX : X ∈ MirabolicParabolic k m (j + 1)` using `unip_mem_HGP m j X w rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : ∀ r : Fin (m + (j + 1)), ¬ r.val < m → w r = 0`. Introduce `r hr`. Use `Pi.single_eq_of_ne ?_ _` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hr hlm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inr ⟨⟨g⁻¹ * X * g, hmem⟩, hgx.symm ▸ hX, ?_, ?_⟩` and prove the remaining obligations. Use `gpProj_unip m j _ w hw ?_ show ((g * (g⁻¹ * X * g) * g⁻¹ : Mir k (m + j + 1)) : GL (Fin (m + j + 2)) k) = _` and prove the remaining obligations. Rewrite using `[hgx]`. Both sides reduce to the same expression. Rewrite using `[mirChar_eq k ψ (m + j) _ _ hu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (((mirabolicProjection k (m + j + 1) g⁻¹ : GL (Fin (m + j + 1)) k) : Matrix _ _ k).mulVec w) (Fin.last (m + j)) = t` using `by show rowQ k (m + j) g⁻¹ ⬝ᵥ w = t`. Simplify using `only [w, dotProduct_single]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [toAdd_ofAdd, e]`. Introduce `h`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ht` to reduce the goal to its premises. Use `congrArg Units.val h` as an intermediate fact. Conclude with `Circle.ext (by simpa using this)`. Establish `hr0 : ∀ l : Fin (m + j + 1), l.val < m → rowQ k (m + j) g⁻¹ l = 0`. Introduce `l hlm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Conclude with `hl ⟨l, hlm, h⟩`. Take `⟨c, hc⟩` from `row_ne_zero (mirabolicProjection k (m + j + 1) g⁻¹) (Fin.last (m + j))`. Establish `hc' : rowQ k (m + j) g⁻¹ c ≠ 0` using `hc`. Establish `hcs : ¬ c.val < m` using `fun h => hc' (hr0 c h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hlast : ¬ (Fin.last (m + j)).val < m` using `by simp`. Take `⟨B, hBj, hB⟩` from `exists_row (fun x : Fin (m + j + 1) => x.val < m) (rowQ k (m + j) g⁻¹) c (Fin.last (m + j)) hc' (by simp only [hcs, hlast]) (fun _ x hx => hr0 x hx)`. Set `d : Mir k (m + j + 1)` to `levi k (m + j + 1) B`. Establish `hd : d ∈ MirabolicParabolic k m (j + 1)`. Use `mem_mirabolicParabolic_of m j d fun r c hr hc => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `(glEmb_castSucc_castSucc _ B _ _).trans (hB _ _ hr hc)`. Establish `hrow : rowQ k (m + j) g⁻¹ = rowQ k (m + j) d`. Use function extensionality and compare the values at `c`. Conclude with `(congrFun hBj c).symm.trans (glEmb_castSucc_castSucc _ B _ _).symm`. Establish `hQ` using `mul_inv_mem_Q_of_rowQ_eq (m + j) g⁻¹ d hrow`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hQ' : d * g ∈ Q k (m + j)`. Use `(Q k (m + j)).inv_mem hQ` as an intermediate fact. Simplify using `using this`. Take `⟨v, hp⟩ : ∃ v, ((d * g : Mir k (m + j + 1)) : GL (Fin (m + j + 2)) k) = unip k (m + j + 1) (Multiplicative.ofAdd v) * glEmb k (m + j + 1) (mirabolicProjection k (m + j + 1) (d * g))` from `⟨_, eq_unip_glEmb (d * g)⟩`. Set `uM : Mir k (m + j + 1)` to `unipM k (m + j) (Multiplicative.ofAdd v)`.
-
-Establish `huM : uM ∈ MirabolicParabolic k m (j + 1)` using `unip_mem_HGP m j uM v rfl`. Use `Or.inl ⟨d⁻¹ * uM, (MirabolicParabolic k m (j + 1)).mul_mem ((MirabolicParabolic k m (j + 1)).inv_mem hd) huM, qProj k (m + j) ⟨d * g, hQ'⟩, ?_⟩` and prove the remaining obligations. Establish `e : d * g = uM * embedding₂ k (m + j) (qProj k (m + j) ⟨d * g, hQ'⟩)` using `Subtype.ext hp`. Rewrite using `[mul_assoc, ← e]`. Use `group`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dichotomy : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), ψ ≠ 1 → ∀ (m j : ℕ) (g : Mir k (m + (j + 1))),
     (∃ h ∈ MirabolicParabolic k m (j + 1), ∃ x : Mir k (m + j), g = h * embedding₂ k (m + j) x) ∨

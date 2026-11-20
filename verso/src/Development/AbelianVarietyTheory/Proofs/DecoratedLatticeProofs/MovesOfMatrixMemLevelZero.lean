@@ -29,7 +29,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {ι n : Type} [Fintype n] [DecidableEq n] {c : ℕ} in
 
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.StepData.typeFrame, _root_.GlobalTheory.StepData.LatFrame.bas, _root_.GlobalTheory.RootEx.embA, _root_.GlobalTheory.RootEx.embX, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.LevX.conj_embX_val (ϖ : kˣ) (ord : ι ≃ n ⊕ Fin c) (g : GL n k) :
     ((_root_.GlobalTheory.StepData.typeFrame ϖ ord).bas⁻¹ *
@@ -46,13 +46,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {ι n : Type} [Fintype n] [DecidableEq n] {c : ℕ} in
 
 /- English proof (translation)
-Use `set b := (_root_.GlobalTheory.StepData.typeFrame ϖ ord).bas with hb`. Establish `hconj : b⁻¹ * _root_.GlobalTheory.RootEx.embX c g * b ∈ _root_.GlobalTheory.SplitWeil.KO k (n ⊕ Fin c)`. Unfold `_root_.GlobalTheory.StepData.stabLat at h`. Simplify `Subgroup.mem_comap.1 h` using `[MulAut.conj_apply]`. Take `⟨h₁, h₂⟩` from `(_root_.GlobalTheory.SplitFlip.mem_KO_iff _).1 hconj`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinv : (b⁻¹ * _root_.GlobalTheory.RootEx.embX c g * b)⁻¹ = b⁻¹ * _root_.GlobalTheory.RootEx.embX c g⁻¹ * b`. Simplify using `[_root_.mul_inv_rev, mul_assoc]`. Rewrite using `[_root_.GlobalTheory.SplitFlip.mem_KO_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun (congrFun (_root_.GlobalTheory.LevX.conj_embX_val ϖ ord g) i) j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `h₁ (Sum.inl i) (Sum.inl j)`. Establish `e` using `congrFun (congrFun (_root_.GlobalTheory.LevX.conj_embX_val ϖ ord g⁻¹) i) j`. Rewrite using `[← e]`. Use `h₂ (Sum.inl i) (Sum.inl j)` as an intermediate fact.
-
-Rewrite `this` using `[hinv]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LevX.mem_KO_of_embX_mem_stabLat (ϖ : kˣ) (ord : ι ≃ n ⊕ Fin c) {g : GL n k}
     (h : _root_.GlobalTheory.RootEx.embX c g ∈
@@ -86,7 +84,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {ι n : Type} [Fintype n] [DecidableEq n] {c : ℕ} in
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hM i j) (hy j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma mulVec_apply_mem_integer_of_entries_mem_integer {M : Matrix n n k}
     (hM : ∀ i j, M i j ∈ (ValuativeRel.valuation k).integer) {y : n → k}
@@ -103,13 +101,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {ι n : Type} [Fintype n] [DecidableEq n] {c : ℕ} in
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `(_root_.GlobalTheory.SplitFlip.mem_KO_iff _).1 h`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `x ∈ (g : Matrix n n k) • _root_.GlobalTheory.SplitLat.stdLat k n ↔ _`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite `hy`, the goal using `[_root_.GlobalTheory.SplitLat.mem_std]`. Introduce `i`. Rewrite using `[Matrix.smul_eq_mulVec]`. Conclude with `mulVec_apply_mem_integer_of_entries_mem_integer h₁ hy i`.
+Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Use `⟨((g⁻¹ : GL n k) : Matrix n n k) • x, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[_root_.GlobalTheory.SplitLat.mem_std]`. Introduce `i`. Rewrite using `[Matrix.smul_eq_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mulVec_apply_mem_integer_of_entries_mem_integer h₂ hx i`. Rewrite using `[smul_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LevX.smul_stdLat_of_mem_KO {g : GL n k} (h : g ∈ _root_.GlobalTheory.SplitWeil.KO k n) :
     g • _root_.GlobalTheory.SplitLat.stdLat k n = _root_.GlobalTheory.SplitLat.stdLat k n := by

@@ -6,9 +6,9 @@ namespace GlobalTheory.WittMapUniq
 open WittVector
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro r; exact ⟨r, by simp⟩`. Consider the case `succ n ih`. Introduce `r`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, ht⟩` from `surjective_frobenius R l r`. Take `⟨s, hs⟩` from `ih t`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, pow_mul, hs, ← ht, frobenius_def]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pow_pow_eq (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] [CharP R l]
     [PerfectRing R l] : ∀ (n : ℕ) (r : R), ∃ s : R, s ^ l ^ n = r := by
@@ -23,19 +23,17 @@ theorem exists_pow_pow_eq (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] [Char
     rw [pow_succ, pow_mul, hs, ← ht, frobenius_def]
 
 /- English proof (translation)
-Introduce `l _ R O _ _ _ _ _ _ F ψ hF`. Establish `hdiff : ∀ x : WittVector l R, (l : WittVector l O) ∣ F x - WittVector.map ψ x`. Introduce `x`. Rewrite using `[← Ideal.mem_span_singleton, mem_span_p_iff_coeff_zero_eq_zero]`. Establish `h` using `(WittVector.constantCoeff : WittVector l O →+* O).map_sub (F x) (WittVector.map ψ x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [WittVector.constantCoeff_apply] at h`. Rewrite using `[h, hF, WittVector.map_coeff, sub_self]`. Establish `hteich : ∀ (n : ℕ) (r : R), (l : WittVector l O) ^ (n + 1) ∣ F (teichmuller l r) - teichmuller l (ψ r)`. Introduce `n r`. Take `⟨s, rfl⟩` from `exists_pow_pow_eq l R n r`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (l : WittVector l O) ∣ F (teichmuller l s) - teichmuller l (ψ s)`. Use `hdiff (teichmuller l s)` as an intermediate fact. Rewrite `this` using `[WittVector.map_teichmuller]`. Then use the resulting hypothesis. Establish `h2` using `dvd_sub_pow_of_dvd_sub h1 n`. Rewrite using `[map_pow, map_pow, map_pow, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Use extensionality with `x m`. Establish `key : ∀ n : ℕ, F x - WittVector.map ψ x ∈ Ideal.span {((l : WittVector l O) ^ n)}`. Introduce `n`. Set `I : Ideal (WittVector l O)` to `Ideal.span {((l : WittVector l O) ^ n)}`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfg : (Ideal.Quotient.mk I).comp F = (Ideal.Quotient.mk I).comp (WittVector.map ψ)`. Use `WittVector.eq_of_apply_teichmuller_eq _ _ ⟨n, ?_⟩ ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (Ideal.Quotient.mk I), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span rfl`. Introduce `r`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.comp_apply, WittVector.map_teichmuller]`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Conclude with `dvd_trans (pow_dvd_pow _ n.le_succ) (hteich n r)`. Use `congrArg (fun f => f x) hfg` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`.
-
-Conclude with `Ideal.Quotient.eq.mp this`. Establish `h` using `(mem_span_p_pow_iff_le_coeff_eq_zero _ (m + 1)).mp (key (m + 1))`. Establish `h'` using `(le_coeff_eq_iff_le_sub_coeff_eq_zero (n := m + 1)).mpr h`. Conclude with `h' m (Nat.lt_succ_self m)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_map_of_coeff_zero : ∀ (l : ℕ) [Fact l.Prime] (R O : Type) [CommRing R] [CharP R l]
     [PerfectRing R l] [CommRing O] [CharP O l] [PerfectRing O l]

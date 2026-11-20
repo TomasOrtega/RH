@@ -14,17 +14,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) (p : PlF D)
 
 /- English proof (translation)
-The claim follows from `(Submodule.mem_inf.1 hx).1`.
+A detailed English derivation is pending.
 -/
 theorem xi_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T : D.host.E} {F : LFlag (VS D) D.R.rS T} {x : (VS D).V}
     (hx : x ∈ XLam Λ F) : x ∈ Λ := (Submodule.mem_inf.1 hx).1
 
 /- English proof (translation)
-Take `⟨w, hw, w', -, he, -⟩` from `gS_typed Zd p g hs`. Use `⟨⟨_, hp2⟩, ⟨_, hp1⟩, ?_, ?_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hLam]`. Conclude with `BwdNP.baseChange_mem_localLattice Zd (add_mem hy' (xi_mem hξ')) p`. Rewrite using `[hLam]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `BwdNP.baseChange_mem_localLattice Zd (sub_mem hy (xi_mem hξ)) p`. Establish `hv : y - ξ - (y' + ξ') = ((gS D : ℕ) : D.host.E) • l`. Rewrite using `[show y - ξ - (y' + ξ') = (y - y') - ξ - ξ' by abel, heq]; abel`. Establish `e : baseChange₂ D p (y - ξ) - baseChange₂ D p (y' + ξ') = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) • (w • baseChange₂ D p l)`. Rewrite using `[← map_sub, hv, Formalism.L2.SG.Pf.LocalDenominators.baseChange_smul₂, he, mul_smul]`.
-
-Use `show baseChange₂ D p (y - ξ) - baseChange₂ D p (y' + ξ') ∈ _`. Rewrite using `[e, hLam]`. Conclude with `Submodule.subset_span ⟨w • baseChange₂ D p l, Formalism.L2.SG.Pf.LocalDenominators.smul_mem_localLattice Zd p hw (BwdNP.baseChange_mem_localLattice Zd hl p), rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g1 {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') (t : Loc.Term (Vp D p) (Zd.M p) D.R.rS) (hLam : t.abelian₂ = lattice₂ D Zd.M p Λ)
@@ -49,15 +47,15 @@ theorem g1 {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T T' : D.host.E} (F : LFla
     exact Submodule.subset_span ⟨w • baseChange₂ D p l, Formalism.L2.SG.Pf.LocalDenominators.smul_mem_localLattice Zd p hw (BwdNP.baseChange_mem_localLattice Zd hl p), rfl⟩
 
 /- English proof (translation)
-Take `⟨x'', x, hx''Λ, hxΛ, hdiff, heq⟩` from `hmem`. Take `⟨h1, h2⟩` from `Prod.mk.inj heq`. Rewrite `hx''Λ`, `hxΛ`, `hdiff` using `[hLam]`. Establish `d1 : baseChange₂ D p y' - (x'' : Vp D p) ∈ (locH Zd p).X t.f'`. Use `(Submodule.Quotient.eq _).1 h1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `d2 : baseChange₂ D p y - (x : Vp D p) ∈ (locH Zd p).X t.f`. Use `(Submodule.Quotient.eq _).1 h2` as an intermediate fact. Simplify using `using this`. Establish `hXA : XLam Λ F ≤ NgX Λ (gS D) F F'` using `le_sup_right.trans le_sup_left`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hXB : XLam Λ F' ≤ NgX Λ (gS D) F F'` using `le_sup_right`. Establish `a1` using `localLattice_mono Zd p hXA (hA _ (sub_mem (BwdNP.baseChange_mem_localLattice Zd hy p) hxΛ) d2)`. Establish `a2` using `localLattice_mono Zd p hXB (hB _ (sub_mem (BwdNP.baseChange_mem_localLattice Zd hy' p) hx''Λ) d1)`. Establish `a3 : (x : Vp D p) - x'' ∈ lattice₂ D Zd.M p (NgX Λ (gS D) F F')`. Use `(Submodule.span_le.2 ?_) hdiff` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `typed_q_mem Zd p g hs F F' hv`. Establish `e : baseChange₂ D p (y - y') = (baseChange₂ D p y - x) + ((x : Vp D p) - x'') - (baseChange₂ D p y' - x'')`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `sub_mem (add_mem a1 a3) a2`.
+A detailed English derivation is pending.
 -/
 theorem g2 {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') (t : Loc.Term (Vp D p) (Zd.M p) D.R.rS) (hLam : t.abelian₂ = lattice₂ D Zd.M p Λ)
@@ -92,9 +90,9 @@ theorem g2 {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T T' : D.host.E} (F : LFla
   exact sub_mem (add_mem a1 a3) a2
 
 /- English proof (translation)
-Take `⟨hξ1, hξ2⟩` from `inv_unitri _ (admissibility_witness_unitriangular γ.lam (lf D F0) (repF γ)).1 (admissibility_witness_unitriangular γ.lam (lf D F0) (repF γ)).2`. Take `⟨hC0, -, -⟩` from `Cm_props Zd p (admXi D γ.lam (lf D F0) (repF γ))⁻¹ hξ1 hξ2`. Establish `hf : ∀ b, (tLoc Zd p γ).f' b = GeneratorChange.comb (Cm Zd p (admXi D γ.lam (lf D F0) (repF γ))⁻¹) (locF' Zd p (repF γ)) b` using `fun b => (comb_Cm Zd p (repF γ) _ b).symm`. Rewrite using `[Loc.HermSp.X, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `only`. Rewrite using `[hf, GeneratorChange.comb, Fin.sum_univ_castSucc]`. Use `add_mem (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)) ?_` and prove the remaining obligations. Rewrite using `[hC0 _ _ (Fin.castSucc_lt_last i), zero_smul]`. Conclude with `zero_mem _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Xle_tLoc {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
     {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} (γ : TermDef.Term D u u' F0 what₂) :

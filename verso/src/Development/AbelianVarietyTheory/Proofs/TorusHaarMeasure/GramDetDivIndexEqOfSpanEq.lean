@@ -10,27 +10,25 @@ namespace GlobalTheory
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `h1 : ∀ a, ∃ c : ι → E, ∑ b, c b • w b = w' a` using `fun a => (Submodule.mem_span_range_iff_exists_fun E).1 (h ▸ Submodule.subset_span (Set.mem_range_self a))`. Use `choose B hB using h1`. Take `⟨c, hc⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 E)) (fun p : ι × ι => B p.1 p.2)`. Establish `hc' : ∀ a b, ∃ y : 𝓞 E, (y : E) = ((c : 𝓞 E) : E) * B a b`. Introduce `a b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hc (a, b)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `: (y : E) = algebraMap (𝓞 E) E y` using `rfl`. Rewrite using `[this, hy, Algebra.smul_def]`. Use `choose A hA using hc'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : (c : 𝓞 E) ≠ 0` using `nonZeroDivisors.coe_ne_zero c`. Establish `hcE : ((c : 𝓞 E) : E) ≠ 0`. Simplify using the standard rewrite rules. Establish `key : ∀ a, ∑ b, ((A a b : 𝓞 E) : E) • w b = ((c : 𝓞 E) : E) • w' a`. Introduce `a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hB a, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [hA, mul_smul]`. Use `⟨Matrix.of fun b a => A a b, Matrix.diagonal fun _ => (c : 𝓞 E), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hv0` to reduce the goal to its premises. Establish `h2 : ∑ a, (((v a : 𝓞 E) : E) * ((c : 𝓞 E) : E)) • w' a = 0`. Establish `: ∀ a, (((v a : 𝓞 E) : E) * ((c : 𝓞 E) : E)) • w' a = ∑ b, (((A a b * v a : 𝓞 E)) : E) • w b`. Introduce `a`. Rewrite using `[mul_smul, ← key, Finset.smul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_smul, mul_comm]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl fun a _ => this a, Finset.sum_comm]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_smul]`. Establish `hb : ∑ a, A a b * v a = 0`. Use `congrFun hv b` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct]`. Establish `hb' : ∑ a, (((A a b * v a : 𝓞 E)) : E) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (algebraMap (𝓞 E) E) hb` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Conclude with `this`. Rewrite using `[hb', zero_smul]`. Use function extensionality and compare the values at `a`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `Fintype.linearIndependent_iff.1 hw' _ h2 a`. Establish `h4 : ((v a : 𝓞 E) : E) = 0` using `(mul_eq_zero.1 h3).resolve_right hcE`. Simplify using `using h4`. Rewrite using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun _ _ => hc0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[key, Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
-
-Simplify using `[Matrix.diagonal_apply_ne _ hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_common_integral_refinement {V ι : Type} [AddCommGroup V] [Module E V]
     [Fintype ι] [DecidableEq ι] (w w' : ι → V) (hw' : LinearIndependent E w')
@@ -95,7 +93,7 @@ theorem exists_common_integral_refinement {V ι : Type} [AddCommGroup V] [Module
     · simp
 
 /- English proof (translation)
-Introduce `r X x ι _ _ w w' hw hΛ hw' hΛ' h`. Take `⟨A, A', hA, hA', he⟩` from `exists_common_integral_refinement w w' hw' h`. Establish `h1` using `GlobalTheory.ValMul.value_mul_eq r X x ι w hw hΛ A hA`. Establish `h2` using `GlobalTheory.ValMul.value_mul_eq r X x ι w' hw' hΛ' A' hA'`. Rewrite using `[← h1, ← h2, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_div_index_eq_of_span_eq [IsCMField E] : (∀ (r : ℕ) (X : Data E r) (x : Frame X.Ψ r) (ι : Type) [Fintype ι] [DecidableEq ι] (w w' : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → LinearIndependent E w' → (∀ a, w' a ∈ X.Λ) → Submodule.span E (Set.range w) = Submodule.span E (Set.range w') → ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ)) = ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w' a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w' a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w')).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w')).toAddSubgroup)) : ℝ))) := by
   intro r X x ι _ _ w w' hw hΛ hw' hΛ' h

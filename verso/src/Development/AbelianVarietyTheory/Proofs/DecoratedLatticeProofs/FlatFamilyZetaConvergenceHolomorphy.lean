@@ -12,7 +12,7 @@ variable {X : Type} [MeasurableSpace X]
 omit [MeasurableSpace X] in
 
 /- English proof (translation)
-Establish `h : ((a x : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (ha x).ne'`. Simplify using `only [flatIntegrand]`. Rewrite using `[mul_assoc, ← Complex.cpow_add _ _ h]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem flatIntegrand_rebase (f : X → ℂ) {a : X → ℝ} (ha : ∀ x, 0 < a x) (s₀ s₁ s : ℂ) (x : X) :
     flatIntegrand f a s₀ s x = flatIntegrand f a s₀ s₁ x * ((a x : ℝ) : ℂ) ^ (s - s₁) := by
@@ -25,7 +25,7 @@ theorem flatIntegrand_rebase (f : X → ℂ) {a : X → ℝ} (ha : ∀ x, 0 < a 
 omit [MeasurableSpace X] in
 
 /- English proof (translation)
-Rewrite using `[norm_flatIntegrand f s₀ s (ha x), norm_flatIntegrand f s₀ s₁ (ha x)]`. Conclude with `mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_ge (ha x) (ha1 x) (by linarith)) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_flatIntegrand_le (f : X → ℂ) {a : X → ℝ} (ha : ∀ x, 0 < a x) (ha1 : ∀ x, a x ≤ 1)
     (s₀ : ℂ) {s₁ s : ℂ} (hs : s₁.re ≤ s.re) (x : X) :
@@ -35,7 +35,7 @@ theorem norm_flatIntegrand_le (f : X → ℂ) {a : X → ℝ} (ha : ∀ x, 0 < a
     (Real.rpow_le_rpow_of_exponent_ge (ha x) (ha1 x) (by linarith)) (norm_nonneg _)
 
 /- English proof (translation)
-Establish `e : flatIntegrand f a s₀ s = fun x => flatIntegrand f a s₀ s₁ x * ((a x : ℝ) : ℂ) ^ (s - s₁)`. Use function extensionality and compare the values at `(flatIntegrand_rebase f ha s₀ s₁ s)`. Rewrite using `[e]`. Use `h.mul ?_` and prove the remaining obligations. Conclude with `((Complex.measurable_ofReal.comp hm).pow_const (s - s₁)).aestronglyMeasurable`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_flatIntegrand {μ : Measure X} {f : X → ℂ} {a : X → ℝ}
     (hm : Measurable a) (ha : ∀ x, 0 < a x) {s₀ s₁ : ℂ}
@@ -50,9 +50,9 @@ theorem aestronglyMeasurable_flatIntegrand {μ : Measure X} {f : X → ℂ} {a :
 
 omit [MeasurableSpace X] in
 /- English proof (translation)
-Establish `h : ((a x : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (ha x).ne'`. Establish `h1` using `(((hasDerivAt_id s).sub_const s₀).const_cpow (c := ((a x : ℝ) : ℂ)) (Or.inl h)).const_mul (f x)`. Simplify using `only [flatIntegrand]`. Use `h1.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_log (ha x).le]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [id, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hasDerivAt_flatIntegrand (f : X → ℂ) {a : X → ℝ} (ha : ∀ x, 0 < a x) (s₀ s : ℂ) (x : X) :
     HasDerivAt (fun z => flatIntegrand f a s₀ z x)
@@ -67,15 +67,13 @@ theorem hasDerivAt_flatIntegrand (f : X → ℂ) {a : X → ℝ} (ha : ∀ x, 0 
   ring
 
 /- English proof (translation)
-Introduce `X _ μ f a s₀ s₁ hm ha ha1 hint`. Establish `hmeas` using `aestronglyMeasurable_flatIntegrand hm ha hint.aestronglyMeasurable`. Establish `hI : ∀ s : ℂ, s₁.re ≤ s.re → Integrable (flatIntegrand f a s₀ s) μ` using `fun s hs => hint.norm.mono' (hmeas s) (Filter.Eventually.of_forall (norm_flatIntegrand_le f ha ha1 s₀ hs))`. Use `⟨⟨hI, fun s _ => ⟨_, self_mem_nhdsWithin, _, hint.norm, fun s' hs' x => norm_flatIntegrand_le f ha ha1 s₀ hs' x⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs' : s₁.re < s.re` using `hs`. Use `set ε : ℝ := (s.re - s₁.re) / 2 with hε`. Establish `hεpos : 0 < ε` using `by rw [hε]; linarith`. Establish `hU : {z : ℂ | s₁.re + ε < z.re} ∈ nhds s` using `(isOpen_lt continuous_const Complex.continuous_re).mem_nhds (by`. Express the relevant statement in the definitionally equal form `s₁.re + ε < s.re`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hε]`. Use the proof step `linarith)`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (F := fun z x => flatIntegrand f a s₀ z x) (F' := fun z x => flatIntegrand f a s₀ z x * ((Real.log (a x) : ℝ) : ℂ)) (x₀ := s) (bound := fun x => ‖flatIntegrand f a s₀ s₁ x‖ * (1 / ε)) hU (Filter.Eventually.of_forall hmeas) …`. Establish `hz' : s₁.re + ε < z.re` using `hz`. Rewrite using `[flatIntegrand_rebase f ha s₀ s₁ z x, mul_assoc, norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos (ha x), Complex.norm_real, Real.norm_eq_abs, Complex.sub_re]`. Establish `h1 : a x ^ (z.re - s₁.re) ≤ a x ^ ε` using `Real.rpow_le_rpow_of_exponent_ge (ha x) (ha1 x) (by linarith)`. Establish `h2` using `Real.abs_log_mul_self_rpow_lt (a x) ε (ha x) (ha1 x) hεpos`. Rewrite `h2` using `[abs_mul, abs_of_pos (Real.rpow_pos_of_pos (ha x) ε), mul_comm]`.
-
-Conclude with `(mul_le_mul_of_nonneg_right h1 (abs_nonneg _)).trans h2.le)`. Use the proof step `(hint.norm.mul_const _)`. Use the proof step `(Filter.Eventually.of_forall fun x z _ => hasDerivAt_flatIntegrand f ha s₀ z x)`. Conclude with `key.2.differentiableAt.differentiableWithinAt`. Conclude with `continuousOn_of_dominated (bound := fun x => ‖flatIntegrand f a s₀ s₁ x‖) (fun s _ => hmeas s) (fun s hs => Filter.Eventually.of_forall (norm_flatIntegrand_le f ha ha1 s₀ hs)) hint.norm (Filter.Eventually.of_forall fun x z _ => (hasDerivAt_flatIntegrand f ha s₀ z x).continuousAt. …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flatZetaHolomorphic : FlatZetaHolomorphic := by
   intro X _ μ f a s₀ s₁ hm ha ha1 hint

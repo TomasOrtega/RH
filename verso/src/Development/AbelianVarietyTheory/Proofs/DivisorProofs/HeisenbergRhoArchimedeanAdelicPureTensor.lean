@@ -12,7 +12,7 @@ namespace GlobalTheory.ArchHeisPure
 open scoped Classical Matrix
 
 /- English proof (translation)
-Use `⟨SchwartzMap.smulLeftCLM ℂ (GlobalTheory.LinPhaseSeminorm.phaseLine c 1 ∘ ⇑L) (SchwartzMap.compSubConstCLM ℂ (-a) f), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (GlobalTheory.LinPhaseSeminorm.hasTemperateGrowth_phase L c 1), ← GlobalTheory.LinPhaseSeminorm.phase_eq]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_phase_translate {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (L : V →L[ℝ] ℝ) (c : ℝ) (a : V)
     (f : SchwartzMap V ℂ) : ∃ g : SchwartzMap V ℂ, ∀ x,
@@ -48,15 +48,15 @@ theorem trForm_apply (c y : κ → mixedEmbedding.mixedSpace F) :
     trForm c y = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (y ⬝ᵥ c) := rfl
 
 /- English proof (translation)
-Take `⟨p, q⟩` from `w`. Take `⟨g, hg⟩` from `exists_phase_translate (trForm fun i => evI F (q i)) (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (⅟(2 : AF F) * (p ⬝ᵥ q)))) (fun i => evI F (p i)) f`. Use `⟨g, fun h => funext fun x => ?_⟩` and prove the remaining obligations. Establish `hfin : (fun i => ((x + p) i).2) = fun i => (x i).2`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h0 : evI F ((0, 1) : AF F) = 0` using `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Establish `h1 : (1 : Af F) * (p i).2 = 0` using `congrArg (fun z : (κ → AF F) × (κ → AF F) => (z.1 i).2) (hw _ h0)`. Express the relevant statement in the definitionally equal form `(x i).2 + (p i).2 = _`. Rewrite `h1` using `[one_mul]`. Rewrite using `[h1, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `harch : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + p) i).1) = (fun i => evI F (x i)) + fun i => evI F (p i)`. Use function extensionality and compare the values at `i`. Conclude with `map_add (evHom F) (x i) (p i)`. Establish `hAt : At (evI F) (x ⬝ᵥ q + ⅟(2 : AF F) * (p ⬝ᵥ q))`. Introduce `v hv`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq : v • q = 0` using `congrArg Prod.snd (hw v hv)`. Rewrite using `[smul_add, ← dotProduct_smul, smul_eq_mul, mul_left_comm, ← smul_eq_mul v, ← dotProduct_smul, hq]`. Simplify using the standard rewrite rules. Establish `htr : Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (x ⬝ᵥ q + ⅟(2 : AF F) * (p ⬝ᵥ q))) = trForm (fun i => evI F (q i)) (fun i => evI F (x i)) + Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (⅟(2 : AF F) * (p ⬝ᵥ q)))`. Rewrite using `[← evHom_apply, map_add, map_add, RingHom.map_dotProduct, trForm_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [schr, pureA]`. Rewrite using `[hψ.2.2 _ hAt, htr, hfin, harch, ← mul_assoc, ← hg]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem schr_pureA [Invertible (2 : AF F)] {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {w : (κ → AF F) × (κ → AF F)}
     (hw : At (evI F) w) (f : SInf F κ) :
@@ -91,7 +91,7 @@ theorem schr_pureA [Invertible (2 : AF F)] {ψ : AddChar (AF F) ℂ} (hψ : IsSt
   rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ ψ JA JB d hψ u hu f`. Use `schr_pureA hψ (fun r hr => ?_) f` and prove the remaining obligations. Rewrite using `[← map_smul, hu r hr, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_pureA : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (α β κ : Type) [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (ψ : AddChar (AF F) ℂ)

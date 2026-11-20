@@ -13,7 +13,7 @@ open scoped nonZeroDivisors IntermediateField
 namespace GlobalTheory.Mem.HD
 
 /- English proof (translation)
-Introduce `p`. Rewrite using `[hlev, hS]`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, hg, ha, hb, hc, Fin.exists_fin_two]`. The claim follows by propositional logic.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 private theorem levEx_of_levelPrimes_eq (D : D7) (S : Finset ℕ) (g : Fin 2 → ℕ) (a b c : ℕ) (hS : S = {g 0, g 1, a, b, c})
     (hlev : ∀ p, p ∈ D.host.levelPrimes ↔ p ∈ S ∨ ∃ u, p = (D.mem u).A.T)
@@ -24,11 +24,11 @@ private theorem levEx_of_levelPrimes_eq (D : D7) (S : Finset ℕ) (g : Fin 2 →
   tauto
 
 /- English proof (translation)
-Introduce `D P Lv hO hlev`. Take `⟨sp, hT, hY, hA, hV, hz, X, hX, rfl⟩` from `hO`. Use `(fun hD => ⟨hD, fun _ _ => hD⟩) ?_` and prove the remaining obligations. Take `⟨B, C, W, V, S, Ns, G⟩` from `X`. Consider the cases of `B`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Simplify using `only at hX`. Substitute `hX` using the available equality. Use `levEx_of_levelPrimes_eq _ P.H.levelPrimes P.H.g P.H.pde P.H.pde' (DC.q0H P.H) hlev ?_ (fun _ => rfl) rfl rfl ?_` and prove the remaining obligations. Introduce `p`. Establish `hT'` using `C.A_T`.
+Simplify by unfolding definitions. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show p ∈ P.H.levelPrimes ∪ Finset.univ.image Lv.T ↔ _`. Rewrite using `[Finset.mem_union, Finset.mem_image]`. Conclude with `or_congr Iff.rfl ⟨fun ⟨u, _, hu⟩ => ⟨u, hu.symm.trans (hT' u).symm⟩, fun ⟨u, hu⟩ => ⟨u, Finset.mem_univ _, (hT' u).symm.trans hu.symm⟩⟩`. Unfold `q0Av DC.q0H rPrAv DC.rPrH LevelStarExponents.condE`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem levEx_of_over : ∀ (D : D7) (P : PreCh) (Lv : LevCh P), Over D P Lv →
     P.H.levelPrimes = {P.H.g 0, P.H.g 1, P.H.pde, P.H.pde', DC.q0H P.H} → LevEx D ∧ ∀ N h, LevEx (setDiv D N h) := by

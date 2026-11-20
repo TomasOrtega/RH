@@ -11,41 +11,37 @@ open scoped ENNReal ContDiff
 namespace GlobalTheory.GlueDist
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ ι La _ A C la F0 u hF hu`. Use `set L := A.kap + la with hL`. Use `set D : Fin C.m → ι → Y → ℂ := fun a j y => F0 j y - A.g L j (C.idx a) y * u a (A.chart (C.idx a) y) with hD`. Use `set S : Fin C.m → Set Y := fun a => (A.chart (C.idx a)).source ∩ A.chart (C.idx a) ⁻¹' ball (C.c a) (C.r a) with hS`. Establish `hSo : ∀ a, IsOpen (S a)` using `fun a => (A.chart (C.idx a)).isOpen_inter_preimage isOpen_ball`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hsec : ∀ a, ∀ y ∈ (A.chart (C.idx a)).source, ∀ j, y ∈ (A.chart j).source → D a j y = A.g L j (C.idx a) y * D a (C.idx a) y`. Introduce `a y hy j hj`. Simplify using `only [hD]`. Rewrite using `[hF.2 j (C.idx a) y hj hy, A.g_self L (C.idx a) hy]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hchart : ∀ a, ∀ y ∈ (A.chart (C.idx a)).source, A.nsq L (D a) y = ‖F0 (C.idx a) y - u a (A.chart (C.idx a) y)‖ ^ 2 * Real.exp (-A.ph L (C.idx a) y)`. Introduce `a y hy`. Rewrite using `[A.nsq_chart L (D a) (C.idx a) hy (hsec a y hy _ (A.mem_pick y))]`. Simplify using `only [hD, A.g_self L (C.idx a) hy, one_mul]`. Establish `hsum1 : ∀ y, ∑ a, (C.chi a y : ℂ) = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[← Complex.ofReal_sum, C.sum_one y, Complex.ofReal_one]`. Establish `hG : F0 - glue C la u = fun j y => ∑ a, (C.chi a y : ℂ) * D a j y`. Use function extensionality and compare the values at `j y`. Simplify using `only [Pi.sub_apply, glue, hD, mul_sub, Finset.sum_sub_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_mul, hsum1 y, one_mul]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl (fun a _ => by ring)`. Establish `hchi1 : ∀ a y, C.chi a y ≤ 1`. Introduce `a y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← C.sum_one y]`. Conclude with `Finset.single_le_sum (fun b _ => C.nonneg b y) (Finset.mem_univ a)`. Establish `hpt : ∀ y, A.nsq L (F0 - glue C la u) y ≤ (C.m : ℝ) * ∑ a, (S a).indicator (A.nsq L (D a)) y`. Introduce `y`. Rewrite using `[hG]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `(A.nsq_sum_le L Finset.univ (fun a j y => (C.chi a y : ℂ) * D a j y) y).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.card_univ, Fintype.card_fin]`. Use `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun a _ => ?_) (Nat.cast_nonneg _)` and prove the remaining obligations. Establish `he : A.nsq L (fun j y => (C.chi a y : ℂ) * D a j y) y = C.chi a y ^ 2 * A.nsq L (D a) y`. Unfold `WeightedAtlas.nsq`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (C.nonneg a y)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Distinguish the cases in `h0 : C.chi a y = 0`. Rewrite using `[h0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_mul]`. Conclude with `Set.indicator_nonneg (fun x _ => A.nsq_nonneg L (D a) x) y`. Establish `hyS : y ∈ S a` using `C.supp a (subset_tsupport _ h0)`. Rewrite using `[Set.indicator_of_mem hyS]`. Establish `h2 : C.chi a y ^ 2 ≤ 1` using `pow_le_one₀ (C.nonneg a y) (hchi1 a y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use polynomial arithmetic with `[A.nsq_nonneg L (D a) y]`. Establish `hF0c : ∀ i, ContinuousOn (F0 i) (A.chart i).source`. Introduce `i`. Establish `h1 : ContinuousOn (F0 i ∘ (A.chart i).symm) (A.chart i).target` using `(hF.1 i).continuousOn`. Use `(h1.comp (A.chart i).continuousOn (fun x hx => (A.chart i).map_source hx)).congr (fun x hx => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Function.comp, (A.chart i).left_inv hx]`. Establish `hcont : ∀ a, ContinuousOn (fun y => ENNReal.ofReal (A.nsq L (D a) y)) (S a)`. Introduce `a`. Use `ENNReal.continuous_ofReal.comp_continuousOn ?_` and prove the remaining obligations. Establish `hu' : ContinuousOn (fun y => u a (A.chart (C.idx a) y)) (S a)` using `(hu a).continuousOn.comp ((A.chart (C.idx a)).continuousOn.mono Set.inter_subset_left) (fun y hy => hy.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ContinuousOn (fun y => ‖F0 (C.idx a) y - u a (A.chart (C.idx a) y)‖ ^ 2 * Real.exp (-A.ph L (C.idx a) y)) (S a)` using `((((hF0c (C.idx a)).mono Set.inter_subset_left).sub hu').norm.pow 2).mul ((A.continuousOn_ph L (C.idx a)).mono Set.inter_subset_left).neg.rexp`. Conclude with `hc.congr (fun y hy => hchart a y hy.1)`. Establish `hmeas : ∀ a, AEMeasurable ((S a).indicator (fun y => ENNReal.ofReal (A.nsq L (D a) y))) A.mu` using `fun a => (aemeasurable_indicator_iff (hSo a).measurableSet).2 ((hcont a).aemeasurable (hSo a).measurableSet)`. Establish `hpiece : ∀ a, ∫⁻ y in S a, ENNReal.ofReal (A.nsq L (D a) y) ∂A.mu = ∫⁻ v in ball (C.c a) (C.r a), ENNReal.ofReal (‖F0 (C.idx a) ((A.chart (C.idx a)).symm v) - u a v‖ ^ 2 * Real.exp (-A.ph la (C.idx a) ((A.chart (C.idx a)).symm v)))`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWt : ball (C.c a) (C.r a) ⊆ (A.chart (C.idx a)).target` using `ball_subset_closedBall.trans (C.sub a)`. Establish `heq : ∀ v ∈ ball (C.c a) (C.r a), D a (C.idx a) ((A.chart (C.idx a)).symm v) = F0 (C.idx a) ((A.chart (C.idx a)).symm v) - u a v`. Introduce `v hv`. Establish `hvt` using `hWt hv`. Simplify using `only [hD, A.g_self L (C.idx a) ((A.chart (C.idx a)).map_target hvt), (A.chart (C.idx a)).right_inv hvt, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Establish `hae : AEMeasurable (D a (C.idx a) ∘ (A.chart (C.idx a)).symm) (volume.restrict (ball (C.c a) (C.r a)))`. Establish `hc : ContinuousOn (fun v => F0 (C.idx a) ((A.chart (C.idx a)).symm v) - u a v) (ball (C.c a) (C.r a))` using `(((hF.1 (C.idx a)).continuousOn.mono hWt).sub (hu a).continuousOn)`. Conclude with `(hc.congr (fun v hv => heq v hv)).aemeasurable measurableSet_ball`. Rewrite using `[GlobalTheory.T.lintegral_nsq_canonical_add_chart_part n Y ι La A la (C.idx a) (ball (C.c a) (C.r a)) (D a) measurableSet_ball hWt (fun y hy _ => hsec a y hy _ (A.mem_pick y)) hae]`. Use `setLIntegral_congr_fun measurableSet_ball (fun v hv => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[heq v hv]`. Unfold `n0`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun y => ?_` and prove the remaining obligations. Use `(ENNReal.ofReal_le_ofReal (hpt y)).trans (le_of_eq ?_)` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_natCast, ENNReal.ofReal_sum_of_nonneg (fun a _ => Set.indicator_nonneg (fun x _ => A.nsq_nonneg L (D a) x) y)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ S a`. Simplify using `[Set.indicator_of_mem hy]`.
-
-Simplify using `[Set.indicator_of_notMem hy]`. Use `_ = (C.m : ℝ≥0∞) * ∑ a, ∫⁻ y in S a, ENNReal.ofReal (A.nsq L (D a) y) ∂A.mu := by`. Rewrite using `[lintegral_const_mul' _ _ (ENNReal.natCast_ne_top _), lintegral_finset_sum' _ (fun a _ => hmeas a)]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun a _ => lintegral_indicator (hSo a).measurableSet _`.
-
-Use `_ = _ := by`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun a _ => hpiece a`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sq_norm_smoothSection_sub_glued_le : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (C : Cover A) (la : La) (F0 : ι → Y → ℂ) (u : Fin C.m → V n → ℂ), A.IsSSec (A.kap + la) F0 → (∀ a, DifferentiableOn ℂ (u a) (ball (C.c a) (C.r a))) → n0 A la (F0 - glue C la u) ≤ (C.m : ℝ≥0∞) * ∑ a, ∫⁻ v in ball (C.c a) (C.r a), ENNReal.ofReal (‖F0 (C.idx a) ((A.chart (C.idx a)).symm v) - u a v‖ ^ 2 * Real.exp (-A.ph la (C.idx a) ((A.chart (C.idx a)).symm v))) := by
   intro n Y _ _ _ _ _ ι La _ A C la F0 u hF hu

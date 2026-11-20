@@ -8,15 +8,13 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.OrbFinAf
 
 /- English proof (translation)
-Introduce `p _ G v`. Use `haveI : IsSimpleRing G.C := G.simpleC`. Use `haveI : Nontrivial G.C := inferInstance`. Use `haveI : Module.Finite ℚ G.C := Module.Finite.trans G.F G.C`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf : Function.Injective ((IsScalarTower.toAlgHom ℚ G.F G.C).toLinearMap)` using `(algebraMap G.F G.C).injective`. Use `Module.Flat.lTensor_preserves_injective_linearMap (M := Qv v) _ hf` as an intermediate fact. Conclude with `this`. Introduce `z x`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `ha.add_left hb`. Consider the case `tmul a f`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => exact Commute.zero_right _`. Consider the case `add c d hc hd => exact hc.add_right hd`. Consider the case `tmul b c`. Rewrite using `[iotaF_tmul]`. Use `show (a ⊗ₜ[ℚ] algebraMap G.F G.C f) * (b ⊗ₜ[ℚ] c) = (b ⊗ₜ[ℚ] c) * (a ⊗ₜ[ℚ] algebraMap G.F G.C f)`.
-
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_comm a b, Algebra.commutes]`. Rewrite using `[Module.finrank_baseChange, Module.finrank_baseChange, ← Module.finrank_mul_finrank ℚ G.F G.C, G.rankC, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaF_props : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : AwayP p), Function.Injective (iotaF G v) ∧ (∀ z x, Commute (iotaF G v z) x) ∧ Module.finrank (Qv v) (Qv v ⊗[ℚ] G.C) = G.n ^ 2 * Module.finrank (Qv v) (Qv v ⊗[ℚ] G.F) := by
   intro p _ G v

@@ -31,7 +31,7 @@ def IsTransRep {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {G : 
 variable {V β L}
 
 /- English proof (translation)
-Take `⟨κ, hκ⟩` from `h₁.1`. Use function extensionality and compare the values at `h`. Rewrite using `[h₁.2 κ hκ h, h₂.2 κ hκ h]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsTranslate.unique {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {g₀ : G0 L.Pg L.r}
     {F F₁ F₂ : Bridge.Gf V → W} (h₁ : IsTranslate V β L g₀ F F₁) (h₂ : IsTranslate V β L g₀ F F₂) : F₁ = F₂ := by
@@ -40,7 +40,7 @@ theorem IsTranslate.unique {W : Type} [NormedAddCommGroup W] [InnerProductSpace 
   rw [h₁.2 κ hκ h, h₂.2 κ hκ h]
 
 /- English proof (translation)
-Use extensionality with `g x`. Conclude with `hM ((h₁ g x).unique (h₂ g x))`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem IsTransRep.unique {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {G : Type} [Group G]
     {eG : G ≃* G0 L.Pg L.r} {M : HMod (Bridge.Gf V → W)} (hM : Function.Injective M.e) {ρ₁ ρ₂ : Representation ℂ G M.H}
@@ -49,7 +49,7 @@ theorem IsTransRep.unique {W : Type} [NormedAddCommGroup W] [InnerProductSpace �
   exact hM ((h₁ g x).unique (h₂ g x))
 
 /- English proof (translation)
-The claim follows from `hM (hx.unique (h g x))`.
+A detailed English derivation is pending.
 -/
 theorem IsTransRep.eq_of_translate {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {G : Type} [Group G]
     {eG : G ≃* G0 L.Pg L.r} {M : HMod (Bridge.Gf V → W)} (hM : Function.Injective M.e) {ρ : Representation ℂ G M.H}
@@ -57,7 +57,7 @@ theorem IsTransRep.eq_of_translate {W : Type} [NormedAddCommGroup W] [InnerProdu
   hM (hx.unique (h g x))
 
 /- English proof (translation)
-The claim follows from `funext (h.2 κ hκ)`.
+A detailed English derivation is pending.
 -/
 theorem IsTranslate.eq_g0Act {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {g₀ : G0 L.Pg L.r}
     {F F' : Bridge.Gf V → W} (h : IsTranslate V β L g₀ F F') (κ : (levEnv V β L).Q) (hκ : LiftsTo V β L κ g₀) :
@@ -88,9 +88,9 @@ def GEquivAdj : Prop :=
     ∀ i t, ∃ ρ, IsActV R i t ρ ∧ Commutes (R.gW i (sg0 D A)) ρ (LinearMap.adjoint (R.thG i t))
 
 /- English proof (translation)
-Unfold `GEquiv at h`. Use `(h.1 t).elim fun ρ hh => ?_` and prove the remaining obligations. Establish `hρ` using `hh.1`. Establish `hc` using `hh.2`. Unfold `IsActX at hρ`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e : x' = ρ g x` using `IsTransRep.eq_of_translate (V := D.sp.X') (β := R.βX) (L := R.datXt t) (eG := R.eG) hinj hρ hx`. Rewrite using `[e]`. Conclude with `hc g x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GEquiv.th_of_translate (h : GEquiv R) (t : T) (hinj : Function.Injective (R.HX t).e) (g : G) (x x' : (R.HX t).H)
     (hx : IsTranslate D.sp.X' R.βX (R.datXt t) (R.eG g) ((R.HX t).e x) ((R.HX t).e x')) :

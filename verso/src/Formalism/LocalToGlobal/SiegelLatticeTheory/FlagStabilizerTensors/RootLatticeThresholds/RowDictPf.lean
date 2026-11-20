@@ -28,7 +28,7 @@ open Formalism.L2.SG.RowDict
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-The claim follows from `hHC X.B.I X.B.μf X.B.fund X.B.fund_spec X.B.R X.B.R_spec X.B.e X.B.Re X.B.e_adm.1 X.B.e_adm.2.2.2.2.1 X.B.Re_spec X.B.H X.B.σ (fun v => fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v)) X.B.w (fun v => (X.ds v).2.2.1) (fun v => (X.ds v).2.2.2.1) hF (fun v => (X.low v). …`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_HHX_of (hHC : Formalism.L2.SG.RowsDef.RowsFinDim)
     (hF : ∀ v, IsFdeg (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v)))
@@ -40,9 +40,9 @@ theorem finiteDimensional_HHX_of (hHC : Formalism.L2.SG.RowsDef.RowsFinDim)
     (fun v => (X.ds v).2.2.1) (fun v => (X.ds v).2.2.2.1) hF (fun v => (X.low v).1) hint X.Rph X.Rph_spec
 
 /- English proof (translation)
-Establish `e1 : Module.finrank ℚ X.B.I.E = Module.finrank ℚ D.host.E` using `(X.ιE.toRatAlgEquiv).toLinearEquiv.finrank_eq`. Establish `e2 : Module.finrank ℚ X.B.I.F * Module.finrank X.B.I.F X.B.I.E = Module.finrank ℚ X.B.I.E` using `Module.finrank_mul_finrank ℚ X.B.I.F X.B.I.E`. Establish `e3 : Module.finrank X.B.I.F X.B.I.E = 2` using `X.B.I.cm.deg2`. Establish `e4 : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.finrank_cmField]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Ranks.f Ranks.n`. Put the polynomial expressions in normal form. Rewrite `e2` using `[e3]`. Unfold `AutInst.f`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Put the polynomial expressions in normal form. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem f_eq : X.B.I.f = D.R.f := by
   have e1 : Module.finrank ℚ X.B.I.E = Module.finrank ℚ D.host.E :=
@@ -59,11 +59,11 @@ theorem f_eq : X.B.I.f = D.R.f := by
   omega
 
 /- English proof (translation)
-Establish `hd : discr X.B.I.E = discr D.host.E` using `NumberField.discr_eq_discr_of_algEquiv X.B.I.E X.ιE.toRatAlgEquiv`. Establish `e1 : Module.finrank ℚ X.B.I.E = Module.finrank ℚ D.host.E` using `(X.ιE.toRatAlgEquiv).toLinearEquiv.finrank_eq`. Establish `e2 : Module.finrank ℚ X.B.I.F * Module.finrank X.B.I.F X.B.I.E = Module.finrank ℚ X.B.I.E` using `Module.finrank_mul_finrank ℚ X.B.I.F X.B.I.E`. Establish `e3 : Module.finrank X.B.I.F X.B.I.E = 2` using `X.B.I.cm.deg2`. Establish `e4 : (Module.finrank ℚ D.host.E : ℝ) = 2 * (X.B.I.f : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `AutInst.f`. Establish `: Module.finrank ℚ D.host.E = 2 * Module.finrank ℚ X.B.I.F` using `by rw [← e1, ← e2, e3, mul_comm]`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `AutInst.rd Host.rdE`. Rewrite using `[hd, e4]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rd_eq : X.B.I.rd = D.host.rdE := by
   have hd : discr X.B.I.E = discr D.host.E := NumberField.discr_eq_discr_of_algEquiv X.B.I.E X.ιE.toRatAlgEquiv
@@ -84,9 +84,9 @@ section Real
 open Formalism.L2.SG.Pf Formalism.MainNotions.LeviCoordinates
 
 /- English proof (translation)
-Establish `h1 : MeasurePreserving (fun x : I.Gf => x * g) μf μf` using `measurePreserving_mul_right μf g`. Establish `h2` using `(MeasurePreserving.id (Measure.pi fun v => Formalism.REAL.muG (I.ε v))).prod h1`. Unfold `RPres AutInst.muA`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Prod.ext (mul_one _) rfl`.
+A detailed English derivation is pending.
 -/
 theorem rp_fin (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsMulRightInvariant] (g : I.Gf) :
     RPres (I.muA μf) ((1, g) : I.GA) := by
@@ -98,13 +98,13 @@ theorem rp_fin (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsMulRi
   exact Prod.ext (mul_one _) rfl
 
 /- English proof (translation)
-Establish `: X.B.μf.IsMulRightInvariant` using `Formalism.L2.SG.Closed.GfUnimod_holds X.B.I X.B.μf`. Use `rr_muA_left X.B.I X.B.μf` as an intermediate fact. Establish `hP : RPres (X.B.I.muA X.B.μf) ((1, g) : X.B.I.GA)` using `rp_fin X.B.I X.B.μf g`. Establish `hPi : RPres (X.B.I.muA X.B.μf) (((1, g) : X.B.I.GA)⁻¹)`. Establish `: ((1, g) : X.B.I.GA)⁻¹ = (1, g⁻¹)` using `Prod.ext inv_one rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `rp_fin X.B.I X.B.μf g⁻¹`. Take `⟨h1, h2⟩` from `rp_map (rr_FD_of X.B.I X.B.μf X.B.fund X.B.fund_spec) hP hPi`. Establish `e1` using `X.B.R_spec (1, g) (star φ)`. Establish `e2` using `X.B.R_spec (1, g) φ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : ∀ᵐ x ∂(muX X), ((star φ : L2X X) : X.B.I.GA → ℂ) (X.B.I.rep X.B.fund (x * (1, g))) = star ((φ : X.B.I.GA → ℂ) (X.B.I.rep X.B.fund (x * (1, g))))`. Use `ae_of_ae_map (p := fun y => ((star φ : L2X X) : X.B.I.GA → ℂ) y = star ((φ : X.B.I.GA → ℂ) y)) h1 ?_` and prove the remaining obligations. Rewrite using `[h2]`. Use `filter_upwards [Lp.coeFn_star φ] with y hy`. Rewrite using `[hy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Apply `Lp.ext` to reduce the goal to its premises. Use `filter_upwards [e1, e2, e3, Lp.coeFn_star (X.B.R (1, g) φ)] with x a1 a2 a3 a4`. Rewrite using `[a1, a4, Pi.star_apply, a2]`. Conclude with `a3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem R_star (g : X.B.I.Gf) (φ : L2X X) : X.B.R (1, g) (star φ) = star (X.B.R (1, g) φ) := by
   have : X.B.μf.IsMulRightInvariant := Formalism.L2.SG.Closed.GfUnimod_holds X.B.I X.B.μf
@@ -144,11 +144,11 @@ def wB (w : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) : IsDedekindDoma
     rw [← this, h, Ideal.map_bot]
 
 /- English proof (translation)
-Unfold `wLat wLat0`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ⟨b, hb, hab⟩, y, hy, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨a, ?_, y, hy, rfl⟩` and prove the remaining obligations. Use `show RingOfIntegers.mapRingEquiv X.ιE a ∈ w.asIdeal`. Establish `: RingOfIntegers.mapRingEquiv X.ιE a = b` using `RingOfIntegers.ext (by simpa using hab)`. Rewrite using `[this]`. Conclude with `hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, ha, y, hy, rfl⟩`. Conclude with `⟨a, ⟨RingOfIntegers.mapRingEquiv X.ιE a, ha, by simp⟩, y, hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem wLat_eq (w : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) : wLat X w = wLat0 X.B.I (wB X w) := by
   unfold wLat wLat0
@@ -165,9 +165,9 @@ theorem wLat_eq (w : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) : wLat 
     exact ⟨a, ⟨RingOfIntegers.mapRingEquiv X.ιE a, ha, by simp⟩, y, hy, rfl⟩
 
 /- English proof (translation)
-Establish `hp` using `D.host.g_prime k`. Use `span_isMaximal hp` as an intermediate fact. Establish `hspl : SplitsCompl D.host.E (D.host.g k)`. Apply `splitsCompl_of_ncard _ _ hp` to reduce the goal to its premises. Rewrite using `[← IsDedekindDomain.coe_primesOverFinset (span_ne_bot hp) (𝓞 D.host.E), ← image_plOver _ hp, (injOn_asIdeal _ _).ncard_image]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `D.nd.g_split k`. Take `⟨hN, -⟩` from `hspl _ ((D.naut.plGw k v).isPrime.isMaximal (D.naut.plGw k v).ne_bot) (D.naut.plGw_over k v)`. Rewrite using `[← hN, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_res_host (k : Fin 2) (v : D.nd.PlG k) :
     Nat.card (𝓞 D.host.E ⧸ (D.naut.plGw k v).asIdeal) = D.host.g k := by
@@ -182,7 +182,7 @@ theorem card_res_host (k : Fin 2) (v : D.nd.PlG k) :
   rw [← hN, Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr (Ideal.quotientEquiv (wB X w).asIdeal w.asIdeal (RingOfIntegers.mapRingEquiv X.ιE) (Ideal.map_comap_of_surjective _ (RingOfIntegers.mapRingEquiv X.ιE).surjective w.asIdeal).symm).toEquiv`.
+A detailed English derivation is pending.
 -/
 theorem card_wB (w : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) :
     Nat.card (𝓞 X.B.I.E ⧸ (wB X w).asIdeal) = Nat.card (𝓞 D.host.E ⧸ w.asIdeal) :=
@@ -190,7 +190,7 @@ theorem card_wB (w : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) :
     (Ideal.map_comap_of_surjective _ (RingOfIntegers.mapRingEquiv X.ιE).surjective w.asIdeal).symm).toEquiv
 
 /- English proof (translation)
-Unfold `RedMat RedMat0 IsRedBasis IsRedBasis0 wLf`. Rewrite using `[wLat_eq X w]`. Conclude with `Iff.rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem redMat_iff (w : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) (p : ℕ) (x : X.B.I.Gf)
     (M : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod p)) : RedMat X w p x M ↔ RedMat0 X.B.I (wB X w) p x M := by
@@ -199,7 +199,7 @@ theorem redMat_iff (w : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) (p :
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun t : MonoidAlgebra ℂ G => t.coeff (g * h)) (hz (MonoidAlgebra.single h 1))`. Simplify using `only [MonoidAlgebra.coeff_mul_single_apply, MonoidAlgebra.coeff_single_mul_apply, mul_one, one_mul, mul_inv_cancel_right] at e`. Rewrite using `[mul_assoc, ← e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_conj_of_central {G : Type*} [Group G] {z : MonoidAlgebra ℂ G} (hz : ∀ a, z * a = a * z)
     (g h : G) : z.coeff (h⁻¹ * g * h) = z.coeff g := by
@@ -209,9 +209,9 @@ theorem coeff_conj_of_central {G : Type*} [Group G] {z : MonoidAlgebra ℂ G} (h
   rw [mul_assoc, ← e]
 
 /- English proof (translation)
-Unfold `NTypes.e0`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm]`. Use `finsum_congr fun a => ?_` and prove the remaining obligations. Use `split_ifs`. Use `Finset.prod_congr rfl fun kv _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Conclude with `coeff_conj_of_central (D.ntypes.eSer_central kv.1 _) (γ kv) (P kv)`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem goodProjector_coeff_classFunction (γ P : G0g D.nd) : D.ntypes.e0.coeff (P⁻¹ * γ * P) = D.ntypes.e0.coeff γ := by
   unfold NTypes.e0
@@ -223,9 +223,9 @@ theorem goodProjector_coeff_classFunction (γ P : G0g D.nd) : D.ntypes.e0.coeff 
   · rfl
 
 /- English proof (translation)
-Introduce `x γ γ' h h'`. Establish `hP : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), ∃ P : GL (Fin D.R.r) (ZMod (D.host.g kv.1)), γ' kv = P⁻¹ * γ kv * P`. Introduce `kv`. Conclude with `hC X.B.I (wB X (D.naut.plGw kv.1 kv.2)) (D.host.g kv.1) (D.host.g_prime kv.1) (by rw [card_wB, card_res_host]) D.R.r X.n_eq.symm x (γ kv) (γ' kv) ((redMat_iff X _ _ x _).1 (h kv)) ((redMat_iff X _ _ x _).1 (h' kv))`. Use `choose P hP using hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : γ' = (P : G0g D.nd)⁻¹ * γ * P` using `funext fun kv => hP kv`. Rewrite using `[e, goodProjector_coeff_classFunction]`.
+A detailed English derivation is pending.
 -/
 theorem egWellDef_of (hC : RedConj0) : EgWellDef X := by
   intro x γ γ' h h'
@@ -240,7 +240,7 @@ theorem egWellDef_of (hC : RedConj0) : EgWellDef X := by
   rw [e, goodProjector_coeff_classFunction]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `: ∀ kv : (Σ k : Fin 2, D.nd.PlG k), ∃ M : GL (Fin D.R.r) (ZMod (D.host.g kv.1)), RedMat0 X.B.I (wB X (D.naut.plGw kv.1 kv.2)) (D.host.g kv.1) x (M : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1)))` using `fun kv => hR X.B.I _ _ (D.host.g_prime kv.1) (by rw [card_wB, card_res_host]) D.R.r X.n_eq.symm x hx`. Use `choose M hM using this`. Conclude with `⟨M, fun kv => (redMat_iff X _ _ x _).2 (hM kv)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem redExists_of (hR : RedExists0) : RedExists X := by
   intro x hx
@@ -258,9 +258,9 @@ section E0
 open Polynomial
 
 /- English proof (translation)
-Unfold `Formalism.CyclotomicNorms.monicOf`. Rewrite using `[coeff_add, coeff_X_pow, if_neg (Nat.ne_of_lt i.isLt), zero_add, finsetSum_coeff]`. Repeatedly rewrite using `[coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j _ hj`. Rewrite using `[if_neg]`. Conclude with `fun h => hj (Fin.ext h).symm`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules.
 -/
 theorem coeff_monicOf {K : Type} [Field K] {N : ℕ} (a : Fin N → K) (i : Fin N) :
     (Formalism.CyclotomicNorms.monicOf a).coeff i = a i := by
@@ -276,7 +276,7 @@ theorem coeff_monicOf {K : Type} [Field K] {N : ℕ} (a : Fin N → K) (i : Fin 
   · simp
 
 /- English proof (translation)
-Establish `hd : degree (∑ i : Fin N, C (a i) * X ^ (i : ℕ)) < N` using `degree_sum_fin_lt a`. Use `⟨monic_X_pow_add hd, ?_⟩` and prove the remaining obligations. Unfold `Formalism.CyclotomicNorms.monicOf`. Rewrite using `[natDegree_add_eq_left_of_degree_lt (by rwa [degree_X_pow]), natDegree_X_pow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem monicOf_monic {K : Type} [Field K] {N : ℕ} (a : Fin N → K) :
     (Formalism.CyclotomicNorms.monicOf a).Monic ∧ (Formalism.CyclotomicNorms.monicOf a).natDegree = N := by
@@ -286,9 +286,9 @@ theorem monicOf_monic {K : Type} [Field K] {N : ℕ} (a : Fin N → K) :
   rw [natDegree_add_eq_left_of_degree_lt (by rwa [degree_X_pow]), natDegree_X_pow]
 
 /- English proof (translation)
-Use extensionality with `j`. Break down `lt_trichotomy j N with hj | rfl | hj` into its components or cases. Conclude with `coeff_monicOf _ ⟨j, hj⟩`. Establish `h1` using `(monicOf_monic (fun i : Fin j => h.coeff i)).1.coeff_natDegree`. Rewrite `h1` using `[(monicOf_monic (fun i : Fin j => h.coeff i)).2]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← hd, hm.coeff_natDegree]`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by rw [(monicOf_monic _).2]; exact hj), coeff_eq_zero_of_natDegree_lt (by rw [hd]; exact hj)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monicOf_coeff {K : Type} [Field K] {N : ℕ} {h : K[X]} (hm : h.Monic) (hd : h.natDegree = N) :
     Formalism.CyclotomicNorms.monicOf (fun i : Fin N => h.coeff i) = h := by
@@ -314,7 +314,7 @@ section GoodOpEx
 open Formalism.L2.SG.Pf.unitaryCongruence
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem choose_congr {α : Sort*} {p q : α → Prop} (h : p = q) (hp : ∃ a, p a) (hq : ∃ a, q a) :
     Classical.choose hp = Classical.choose hq := by
@@ -322,17 +322,17 @@ theorem choose_congr {α : Sort*} {p q : α → Prop} (h : p = q) (hp : ∃ a, p
   rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨⟨y, hy⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem incl_mem_Lf {y : Fin X.B.I.n → X.B.I.E} (hy : y ∈ X.B.I.L) : incl X.B.I y ∈ X.B.I.Lf :=
   Submodule.subset_span ⟨⟨y, hy⟩, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨⟨l, hl⟩, rfl⟩` from `hz`. Establish `hm : (g : X.B.I.E) • l ∈ wLat X w` using `Submodule.subset_span ⟨(g : 𝓞 X.B.I.E), ⟨(g : 𝓞 D.host.E), hg, by simp⟩, l, hl, by simp⟩`. Establish `e : (g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (fun i => Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) (l i)) = fun i => Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (((g : X.B.I.E) • l) i) := by`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[map_natCast]`. Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨⟨_, hm⟩, rfl⟩`. Consider the case `zero => simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ c ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_Lf_wLf (w : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) (g : ℕ)
     (hg : ((g : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal) {y : Fin X.B.I.n → X.B.I.E ⊗[X.B.I.F] Af X.B.I.F}
@@ -353,9 +353,9 @@ theorem smul_Lf_wLf (w : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) (g 
   | smul c a _ ha => rw [smul_comm]; exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Establish `hgk : ((D.host.g kv.1 : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal` using `D.naut.plGw_over kv.1 kv.2`. Establish `hdvd : D.host.g kv.1 ∣ X.B.g`. Rewrite using `[X.g_eq]`. Break down `kv with ⟨k, v⟩` into its components or cases. Use `fin_cases k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `dvd_mul_right _ _`. Conclude with `dvd_mul_left _ _`. Take `⟨c, hc⟩` from `hdvd`. Rewrite using `[hc, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hgk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_mem (kv : Σ k : Fin 2, D.nd.PlG k) :
     ((X.B.g : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal := by
@@ -371,11 +371,11 @@ theorem level_mem (kv : Σ k : Fin 2, D.nd.PlG k) :
   exact Ideal.mul_mem_right _ _ hgk
 
 /- English proof (translation)
-Establish `key : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), ∀ y ∈ X.B.I.L, X.B.I.fmat (x * k) *ᵥ incl X.B.I y - X.B.I.fmat x *ᵥ incl X.B.I y ∈ wLf X (D.naut.plGw kv.1 kv.2)`. Introduce `kv y hy`. Take `⟨z, hz, hkz⟩` from `hk.2 _ (incl_mem_Lf X hy)`. Establish `e1 : X.B.I.fmat k *ᵥ incl X.B.I y - incl X.B.I y = (X.B.I.fmat k - 1) *ᵥ incl X.B.I y`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : X.B.I.fmat (x * k) *ᵥ incl X.B.I y - X.B.I.fmat x *ᵥ incl X.B.I y = (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat x *ᵥ z)`. Rewrite using `[fmat_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_sub, e1, hkz, Matrix.mulVec_smul]`. Rewrite using `[e]`. Conclude with `smul_Lf_wLf X _ _ (level_mem X kv) (K_mv _ hx hz)`. Establish `split : ∀ a c d : Fin X.B.I.n → X.B.I.E ⊗[X.B.I.F] Af X.B.I.F, a - d = (a - c) + (c - d)` using `by intros; abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [GoodAt, RedMat]`. Use `forall_congr' fun kv => exists_congr fun b => and_congr_right fun hb => forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[split _ (X.B.I.fmat x *ᵥ incl X.B.I (b i))]`. Conclude with `Submodule.add_mem_iff_right _ (key kv (b i) (hb.1 i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodAt_mul {x k : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (hk : k ∈ X.B.I.Kg X.B.g) (γ : G0g D.nd) :
     GoodAt X (x * k) γ ↔ GoodAt X x γ := by
@@ -398,13 +398,13 @@ theorem goodAt_mul {x k : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (hk : k ∈ X.B.I.Kg
   exact Submodule.add_mem_iff_right _ (key kv (b i) (hb.1 i))
 
 /- English proof (translation)
-Unfold `eg`. Distinguish the cases in `hx : x ∈ X.B.I.Kset`. Establish `hxk : x * k ∈ X.B.I.Kset` using `K_mul _ hx hk.1`. Establish `hpred : (fun γ => GoodAt X (x * k) γ) = (fun γ => GoodAt X x γ)`. Use function extensionality and compare the values at `fun γ => propext (goodAt_mul X hx hk γ)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hE : ∃ γ, GoodAt X x γ`. Establish `hE' : ∃ γ, GoodAt X (x * k) γ` using `by rw [hpred]; exact hE`. Rewrite using `[dif_pos ⟨hxk, hE'⟩, dif_pos ⟨hx, hE⟩, choose_congr hpred hE' hE]`. Establish `hE' : ¬ ∃ γ, GoodAt X (x * k) γ` using `by rw [hpred]; exact hE`. Rewrite using `[dif_neg (fun h => hE' h.2), dif_neg (fun h => hE h.2)]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxk : x * k ∉ X.B.I.Kset`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Use `K_mul _ h (K_inv _ hk.1)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[dif_neg (fun h => hxk h.1), dif_neg (fun h => hx h.1)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eg_mul (x : X.B.I.Gf) {k : X.B.I.Gf} (hk : k ∈ X.B.I.Kg X.B.g) : eg X (x * k) = eg X x := by
   unfold eg
@@ -425,18 +425,16 @@ theorem eg_mul (x : X.B.I.Gf) {k : X.B.I.Gf} (hk : k ∈ X.B.I.Kg X.B.g) : eg X 
     rw [dif_neg (fun h => hxk h.1), dif_neg (fun h => hx h.1)]
 
 /- English proof (translation)
-Rewrite using `[X.g_eq]`. Conclude with `Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_ne_zero : X.B.g ≠ 0 := by
   rw [X.g_eq]
   exact Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hopen : IsOpen (X.B.I.Kg X.B.g)` using `X.B.I.topf_open X.B.g (Nat.one_le_iff_ne_zero.2 (level_ne_zero X))`. Establish `h1 : (1 : X.B.I.Gf) ∈ X.B.I.Kg X.B.g` using `⟨K_one _, fun y _ => ⟨0, zero_mem _, by rw [fmat_one, sub_self, Matrix.zero_mulVec, smul_zero]⟩⟩`. Establish `hop : IsOpen ((fun y => x⁻¹ * y) ⁻¹' X.B.I.Kg X.B.g)` using `hopen.preimage (continuous_const.mul continuous_id)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : x ∈ (fun y => x⁻¹ * y) ⁻¹' X.B.I.Kg X.B.g` using `by show x⁻¹ * x ∈ X.B.I.Kg X.B.g`. Rewrite using `[inv_mul_cancel]`. Conclude with `h1`. Use `filter_upwards [hop.mem_nhds hmem] with y hy`. Use `eg_mul X x hy` as an intermediate fact.
-
-Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_eg : IsLocallyConstant (eg X) := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -453,9 +451,9 @@ theorem isLocallyConstant_eg : IsLocallyConstant (eg X) := by
   rwa [mul_inv_cancel_left] at this
 
 /- English proof (translation)
-Establish `h` using `X.B.I.topf_open 1 le_rfl`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨hx, fun y hy => ⟨_, K_sub_mv _ hx hy, by simp⟩⟩`. Introduce `hx`. Conclude with `hx.1`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isOpen_Kset : IsOpen X.B.I.Kset := by
   have h := X.B.I.topf_open 1 le_rfl
@@ -468,9 +466,9 @@ theorem isOpen_Kset : IsOpen X.B.I.Kset := by
     exact hx.1
 
 /- English proof (translation)
-Establish `hc : Continuous (eg X)` using `(isLocallyConstant_eg X).continuous`. Establish `hK : IsCompact X.B.I.Kset` using `Formalism.L2.SG.Closed.AutKCompact_holds X.B.I`. Establish `hon : IntegrableOn (eg X) X.B.I.Kset X.B.μf` using `hc.continuousOn.integrableOn_compact' hK (isOpen_Kset X).measurableSet`. Use `hon.integrable_of_forall_notMem_eq_zero fun x hx => ?_` and prove the remaining obligations. Unfold `eg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_neg (fun h => hx h.1)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integrable_eg : Integrable (eg X) X.B.μf := by
   have hc : Continuous (eg X) := (isLocallyConstant_eg X).continuous
@@ -482,7 +480,7 @@ theorem integrable_eg : Integrable (eg X) X.B.μf := by
   rw [dif_neg (fun h => hx h.1)]
 
 /- English proof (translation)
-Establish `hFR` using `Formalism.L2.SG.Pf.foldReady_holds X.B.I`. Take `⟨T, hT⟩` from `hR X.B.I X.B.μf (Formalism.L2.SG.Closed.GfUnimod_holds X.B.I X.B.μf) hFR.2.1 hFR.2.2.2.1 X.B.fund X.B.fund_spec X.B.R X.B.R_spec (eg X) (integrable_eg X)`. Conclude with `⟨⟨T, hT⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem goodOp_exists (hR : RConvFExists) : Nonempty (GoodOp X) := by
   have hFR := Formalism.L2.SG.Pf.foldReady_holds X.B.I
@@ -502,11 +500,9 @@ def DstarVol : Prop :=
     Formalism.MainNotions.StandardLattice.volY0 D * ∏ ρ, D.dsig ρ
 
 /- English proof (translation)
-Take `⟨h1, hmul, -, hχ, hn⟩` from `Formalism.L2.SG.Closed.level_subgroup_is_group X`. Establish `e` using `hχ 1 h1 1 h1`. Rewrite `e` using `[one_mul]`. Establish `hne : X.chi2 1 ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hn 1 h1` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Establish `: X.chi2 1 * (X.chi2 1 - 1) = 0` using `by rw [mul_sub, mul_one, ← e, sub_self]`. Break down `mul_eq_zero.1 this with h | h` into its components or cases.
-
-Conclude with `absurd h hne`. Conclude with `sub_eq_zero.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem chi2_apply_one : X.chi2 1 = 1 := by
   obtain ⟨h1, hmul, -, hχ, hn⟩ := Formalism.L2.SG.Closed.level_subgroup_is_group X
@@ -523,7 +519,7 @@ theorem chi2_apply_one : X.chi2 1 = 1 := by
   · exact sub_eq_zero.1 h
 
 /- English proof (translation)
-Establish `h1` using `(Formalism.L2.SG.Closed.level_subgroup_is_group X).1`. Rewrite using `[X.e_eq 1, if_pos (show (1 : X.B.I.Gf) ∈ K2set X.B.I X.B.g X.e0 X.z0 X.bw from h1)]`. Express the relevant statement in the definitionally equal form `star (X.chi2 1) / (X.volK2 : ℂ) = _`. Rewrite using `[chi2_apply_one, star_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem e_one : X.B.e 1 = 1 / (X.volK2 : ℂ) := by
   have h1 := (Formalism.L2.SG.Closed.level_subgroup_is_group X).1
@@ -543,13 +539,13 @@ def DSSchurOrth : Prop :=
     IsSqIntOn ε σ → ∃ d : ℝ, IsFdeg (Formalism.REAL.muG ε) σ d
 
 /- English proof (translation)
-Take `⟨hd, hS⟩` from `h`. Take `⟨-, hI⟩` from `hS w w w w`. Establish `e1 : ∀ g : Formalism.REAL.UJ ε, coefOn (ε` using `ε) σ w w g * star (coefOn (ε := ε) σ w w g) = ((‖coefOn (ε := ε) σ w w g‖ ^ 2 : ℝ) : ℂ) := fun g => by`. Rewrite using `[← starRingEnd_apply, RCLike.mul_conj]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite `hI` using `[e1]`. Rewrite `hI` using `[integral_complex_ofReal, inner_self_eq_norm_sq_to_K]`. Establish `hw' : ‖w‖ ≠ 0` using `norm_ne_zero_iff.2 hw`. Establish `hR : ∫ g, ‖coefOn (ε` using `ε) σ w w g‖ ^ 2 ∂(Formalism.REAL.muG ε) = ‖w‖ ^ 4 / d := by`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((∫ g, ‖coefOn (ε` using `ε) σ w w g‖ ^ 2 ∂(Formalism.REAL.muG ε) : ℝ) : ℂ) = ((‖w‖ ^ 4 / d : ℝ) : ℂ) := by`. Rewrite using `[hI]`. Express the relevant statement in the definitionally equal form `((‖w‖ : ℂ)) ^ 2 * ((‖w‖ : ℂ)) ^ 2 / (d : ℂ) = _`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `h2` after adjusting the coercions. Unfold `fdegOf`. Rewrite using `[hR]`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem fdegOf_eq {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {d : ℝ} (h : IsFdeg (Formalism.REAL.muG ε) σ d) {w : H} (hw : w ≠ 0) :
@@ -576,9 +572,9 @@ theorem fdegOf_eq {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup
   field_simp
 
 /- English proof (translation)
-Take `⟨hC, hN, hU, hIrr, hSq, -⟩` from `X.ds v`. Take `⟨d, hd⟩` from `hS _ _ (X.B.H v) (X.B.σ v) hN hU hIrr hSq`. Establish `hw : X.B.w v ≠ 0`. Introduce `h0`. Use `(X.low v).1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Rewrite using `[fdegOf_eq hd hw]`. Conclude with `hd`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fdeg_of_schur (hS : DSSchurOrth) (v : InfinitePlace X.B.I.F) :
     IsFdeg (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v)) := by
@@ -593,7 +589,7 @@ theorem fdeg_of_schur (hS : DSSchurOrth) (v : InfinitePlace X.B.I.F) :
   exact hd
 
 /- English proof (translation)
-The claim follows from `finiteDimensional_HHX_of X hHC (fdeg_of_schur X hS) hint`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_HHX_of_hypotheses (hHC : Formalism.L2.SG.RowsDef.RowsFinDim) (hS : DSSchurOrth)
     (hint : ∀ v, Integrable (Formalism.L2.SG.ProjRows.phLoc (ε := X.B.I.ε v) (X.B.σ v) (X.B.w v)
@@ -612,13 +608,13 @@ open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.RowDict
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-The claim follows from `RowDictPf.egWellDef_of X RedConj0Pf.reduction_conjugacy`.
+A detailed English derivation is pending.
 -/
 theorem rowDictEgWellDef_holds : EgWellDef X :=
   RowDictPf.egWellDef_of X RedConj0Pf.reduction_conjugacy
 
 /- English proof (translation)
-The claim follows from `RowDictPf.goodOp_exists X RConvFExistsPf.convergent_reduction_exists`.
+A detailed English derivation is pending.
 -/
 theorem rowDictGoodOp_exists : Nonempty (GoodOp X) :=
   RowDictPf.goodOp_exists X RConvFExistsPf.convergent_reduction_exists
@@ -630,7 +626,7 @@ namespace Formalism.L2.SG.Pf.RowDictPf
 open Formalism.MainNotions.S
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hN hU hI hS`. Conclude with `PIW.HCFdeg.formal_degree_abstract_form n ε H σ hU hI hS`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem schur_orthogonality_discrete_series : DSSchurOrth := by
   intro n ε H _ _ _ σ hN hU hI hS
@@ -641,7 +637,7 @@ variable {D : D7} (X : HidaSetting D)
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
 
 /- English proof (translation)
-Establish `h` using `Formalism.L2.SG.WuDecayPf.coef_integrable_of_weighted X (Formalism.L2.SG.Pf.WuDec.coefWeighted_of_gap X Formalism.MainNotions.BesselDiscreteSeries.coefWeightedLoc_of_fact hG) v`. Establish `h2 : Integrable (fun g => star (Formalism.L2.SG.WuDecayPf.coefV X v g)) (Formalism.REAL.muG (X.B.I.ε v))` using `Complex.conjCLE.toContinuousLinearMap.integrable_comp h`. Conclude with `h2.const_mul _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hint_of_gap (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D) (v : InfinitePlace X.B.I.F) :
     Integrable (Formalism.L2.SG.ProjRows.phLoc (ε := X.B.I.ε v) (X.B.σ v) (X.B.w v)
@@ -655,16 +651,16 @@ theorem hint_of_gap (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D) (v : I
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
 
 /- English proof (translation)
-The claim follows from `finiteDimensional_HHX_of_hypotheses X hHC schur_orthogonality_discrete_series (hint_of_gap X hG)`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_HHX_of_gap (hHC : Formalism.L2.SG.RowsDef.RowsFinDim) (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D) :
     FiniteDimensional ℂ (HHX X) :=
   finiteDimensional_HHX_of_hypotheses X hHC schur_orthogonality_discrete_series (hint_of_gap X hG)
 
 /- English proof (translation)
-Take `⟨hd, hS⟩` from `h`. Use `⟨div_pos hd (by exact_mod_cast hc), fun v w v' w' => ?_⟩` and prove the remaining obligations. Take `⟨hi, he⟩` from `hS v w v' w'`. Use `⟨hi.smul_measure ENNReal.coe_ne_top, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_smul_measure, he, ENNReal.coe_toReal, Complex.real_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hc0 : (c : ℝ) ≠ 0` using `ne_of_gt (by exact_mod_cast hc)`. Establish `hd0 : d ≠ 0` using `hd.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem isFdeg_smul {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {μ : Measure (Formalism.REAL.UJ ε)} {d : ℝ} {c : NNReal} (hc : 0 < c)
@@ -680,9 +676,9 @@ theorem isFdeg_smul {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGro
   field_simp
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hε' : ε = epsSH D.R` using `funext fun i => by rw [hε i]; rfl`. Establish `hl' : lam = lamSH D.R (D.hc τ)` using `funext fun i => by rw [hl i]; rfl`. Substitute `hε' hl'` using the available equality. Establish `h2` using `isFdeg_smul (D.s.cdScale_pos _ (epsSH D.R)) hd`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h3` using `hT τ H σ (d / D.s.cdScale _ (epsSH D.R)) hds h2`. Establish `hc0 : (D.s.cdScale _ (epsSH D.R) : ℝ) ≠ 0` using `ne_of_gt (by exact_mod_cast D.s.cdScale_pos _ _)`. Rewrite using `[← h3]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem fdeg_tie (hT : Formalism.BasicNotions.dsigTie D) (τ : D.what₂.Tau) {n : ℕ} (e : n = 2 * D.R.rS + D.R.k + 1)
     {ε : Fin n → Bool} {lam : Fin n → ℝ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -701,7 +697,7 @@ theorem fdeg_tie (hT : Formalism.BasicNotions.dsigTie D) (τ : D.what₂.Tau) {n
   field_simp
 
 /- English proof (translation)
-The claim follows from `fdeg_tie hT (X.pl v) (Formalism.L2.SG.Pf.WuDec.hdim X) (fun i => by rw [X.eps_eq]; rfl) (fun i => by rw [X.lam_eq]; rfl) (X.ds v) (fdeg_of_schur X schur_orthogonality_discrete_series v)`.
+A detailed English derivation is pending.
 -/
 theorem dv_eq (hT : Formalism.BasicNotions.dsigTie D) (v : InfinitePlace X.B.I.F) :
     X.dv v = (D.s.cdScale _ (epsSH D.R) : ℝ) * D.dsig (X.pl v) :=
@@ -716,9 +712,9 @@ def DstarVolCore : Prop :=
   ∀ (D : D7) (X : HidaSetting D), Formalism.MainNotions.StandardLattice.VolTie D → Formalism.BasicNotions.cdScaleTie D → DstarVolV X
 
 /- English proof (translation)
-Unfold `DstarVol`. Unfold `DstarVolV at hV`. Establish `hd : ∀ v, X.dv v = (D.s.cdScale _ (epsSH D.R) : ℝ) * D.dsig (X.pl v)` using `dv_eq X hT`. Repeatedly rewrite using `[hd]`. Rewrite using `[Finset.prod_mul_distrib]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : ∏ v, D.dsig (X.pl v) = ∏ ρ, D.dsig ρ` using `Fintype.prod_equiv X.pl _ _ (fun _ => rfl)`. Rewrite using `[hp, ← hV]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dstarVol_of (hT : Formalism.BasicNotions.dsigTie D) (hV : DstarVolV X) : DstarVol X := by
   unfold DstarVol

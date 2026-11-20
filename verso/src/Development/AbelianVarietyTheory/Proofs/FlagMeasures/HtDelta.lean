@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FinprodModKLocalGen
 namespace GlobalTheory.DiffModProd
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.NGHTie.HTDelta`. Conclude with `finprod_modK_localGen`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem htDelta : Formalism.L2.SG.NGHTie.HTDelta := by
   unfold Formalism.L2.SG.NGHTie.HTDelta

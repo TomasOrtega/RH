@@ -18,9 +18,9 @@ namespace GlobalTheory.CompanionTheory.SW.EulerDens
 section Real
 
 /- English proof (translation)
-Establish `hc : Continuous (fun r : S → ℝ => ∏ v : S, r v)` using `continuous_finset_prod _ (fun i _ => continuous_apply i)`. Take `⟨δ, hδ, h⟩` from `Metric.continuous_iff.1 hc (fun v => a v) ε hε`. Use `⟨δ / 2, half_pos hδ, fun r hr => ?_⟩` and prove the remaining obligations. Establish `hd : dist (fun v : S => r v) (fun v : S => a v) < δ`. Use `(dist_pi_lt_iff hδ).2 fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.dist_eq]`. Conclude with `lt_of_le_of_lt (hr v v.2) (half_lt_self hδ)`. Use `h _ hd` as an intermediate fact. Rewrite `this` using `[Real.dist_eq, Finset.prod_coe_sort S r, Finset.prod_coe_sort S a]`. Conclude with `this.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_close {ι : Type} (S : Finset ι) (a : ι → ℝ) {ε : ℝ} (hε : 0 < ε) :
     ∃ δ > 0, ∀ r : ι → ℝ, (∀ v ∈ S, |r v - a v| ≤ δ) → |∏ v ∈ S, r v - ∏ v ∈ S, a v| ≤ ε := by
@@ -37,7 +37,7 @@ theorem prod_close {ι : Type} (S : Finset ι) (a : ι → ℝ) {ε : ℝ} (hε 
   exact this.le
 
 /- English proof (translation)
-The claim follows from `|(∫⁻ y in U, ENNReal.ofReal (D y) ∂μ).toReal - c * (μ U).toReal| ≤ ε * (μ U).toReal := by have hup : ∫⁻ y in U, ENNReal.ofReal (D y) ∂μ ≤ ENNReal.ofReal (c + ε) * μ U := by calc ∫⁻ y in U, ENNReal.ofReal (D y) ∂μ ≤ ∫⁻ _ in U, ENNReal.ofReal (c + ε) ∂μ := setLIntegral_mono' hU fun …`.
+A detailed English derivation is pending.
 -/
 theorem avg_bound {α : Type} [MeasurableSpace α] (μ : Measure α) {U : Set α} (hU : MeasurableSet U)
     (hfin : μ U ≠ ∞) (D : α → ℝ) {c ε : ℝ} (hc : 0 ≤ c) (hε : 0 ≤ ε)
@@ -72,34 +72,30 @@ section Box
 variable (F : Type) [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `Valued.isOpen_valuationSubring _`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_int (v : HeightOneSpectrum (𝓞 F)) :
     IsOpen (v.adicCompletionIntegers F : Set (Fv F v)) :=
   Valued.isOpen_valuationSubring _
 
 /- English proof (translation)
-Set `mk : (∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletionIntegers F) → Af F` to `fun y => ⟨fun v => (y v : v.adicCompletion F), Filter.Eventually.of_forall fun v => (y v).2⟩`. Establish `hmk : Continuous mk` using `(RestrictedProduct.isEmbedding_structureMap (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => ((v.adicCompletionIntegers F : ValuationSubring _) : Set (v.adicCompletion F))) (𝓕 := Filter.cofinite)).continuous`. Establish `hW0 : (fun z => x + z) ⁻¹' W ∈ 𝓝 (0 : Af F)`. Establish `hc : Continuous (fun z : Af F => x + z)` using `continuous_const.add continuous_id`. Conclude with `hc.continuousAt.preimage_mem_nhds (by simpa using hW)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre : mk ⁻¹' ((fun z => x + z) ⁻¹' W) ∈ 𝓝 (0 : ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletionIntegers F)` using `hmk.continuousAt.preimage_mem_nhds (by`. Establish `h0 : mk 0 = 0` using `rfl`. Rewrite using `[h0]`. Conclude with `hW0)`. Rewrite `hpre` using `[nhds_pi, Filter.mem_pi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T, hT, t, ht, hsub⟩` from `hpre`. Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 F), ∃ u ∈ 𝓝 (0 : Fv F v), ∀ z : v.adicCompletionIntegers F, (z : Fv F v) ∈ u → z ∈ t v` using `fun v => by`. Take `⟨u, hu, hut⟩` from `(mem_nhds_subtype _ _ _).1 (ht v)`. Conclude with `⟨u, by simpa using hu, fun z hz => hut hz⟩`. Use `choose u hu hut using hloc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hx : {v : HeightOneSpectrum (𝓞 F) | ¬ x v ∈ v.adicCompletionIntegers F}.Finite` using `Filter.eventually_cofinite.1 x.2`. Use `⟨hT.toFinset ∪ hx.toFinset, fun v => if v ∈ hT.toFinset ∪ hx.toFinset then {y | y - x v ∈ u v ∧ y - x v ∈ (v.adicCompletionIntegers F : Set (Fv F v))} else (v.adicCompletionIntegers F : Set (Fv F v)), fun v => ?_, fun v hv => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ hT.toFinset ∪ hx.toFinset`. Simplify using `only [if_pos hv]`. Establish `hc : Continuous (fun y : Fv F v => y - x v)` using `continuous_id.sub continuous_const`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : x v - x v = 0` using `sub_self _`. Establish `hO : (v.adicCompletionIntegers F : Set (Fv F v)) ∈ 𝓝 (0 : Fv F v)` using `(isOpen_int F v).mem_nhds (zero_mem _)`. Conclude with `Filter.inter_mem (hc.continuousAt.preimage_mem_nhds (by rw [h0]; exact hu v)) (hc.continuousAt.preimage_mem_nhds (by rw [h0]; exact hO))`. Simplify using `only [if_neg hv]`. Establish `hxv : x v ∈ v.adicCompletionIntegers F`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hv (Finset.mem_union_right _ (hx.mem_toFinset.2 hc))`. Conclude with `(isOpen_int F v).mem_nhds hxv`. Simplify using `only [if_neg hv]`. Establish `hint : ∀ v, y v - x v ∈ v.adicCompletionIntegers F` using `fun v => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hv : v ∈ hT.toFinset ∪ hx.toFinset`. Use `hy v` as an intermediate fact. Simplify using `only [if_pos hv] at this`. Conclude with `this.2`. Establish `h1` using `hy v`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [if_neg hv] at h1`. Establish `hxv : x v ∈ v.adicCompletionIntegers F`. Assume the negation of the conclusion as `hc`. Conclude with `hv (Finset.mem_union_right _ (hx.mem_toFinset.2 hc))`. Conclude with `sub_mem h1 hxv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Set `zz : ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletionIntegers F` to `fun v => ⟨y v - x v, hint v⟩`. Establish `hzz : zz ∈ T.pi t` using `fun v hv => by`. Establish `hv' : v ∈ hT.toFinset ∪ hx.toFinset` using `Finset.mem_union_left _ (hT.mem_toFinset.2 hv)`. Use `hy v` as an intermediate fact. Simplify using `only [if_pos hv'] at this`.
-
-Conclude with `hut v _ this.1`. Use `hsub hzz` as an intermediate fact. Establish `hy' : x + mk zz = y`. Use `Subtype.ext (funext fun v => ?_)` and prove the remaining obligations. Use `show x v + (y v - x v) = y v`.
-
-Expand and normalize the polynomial expressions, which then agree. Simplify `this` using `[hy']`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_box (x : Af F) {W : Set (Af F)} (hW : W ∈ 𝓝 x) :
     ∃ (S₀ : Finset (HeightOneSpectrum (𝓞 F))) (N : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)),
@@ -180,7 +176,7 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h : Algebra.lmul R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] z) = (Algebra.lmul F E z).baseChange R`. Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `r e`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[Algebra.trace_apply, h, LinearMap.trace_baseChange, Algebra.trace_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_one_tmul' [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] (z : E) :
     Algebra.trace R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] z) = algebraMap F R (Algebra.trace F E z) := by
@@ -191,7 +187,7 @@ theorem trace_one_tmul' [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra
   rw [Algebra.trace_apply, h, LinearMap.trace_baseChange, Algebra.trace_apply]
 
 /- English proof (translation)
-Establish `h : r ⊗ₜ[F] e = r • ((1 : R) ⊗ₜ[F] e)` using `by simp [TensorProduct.smul_tmul']`. Rewrite using `[h, map_smul, trace_one_tmul', smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_tmul' [FiniteDimensional F E] {R : Type} [CommRing R] [Algebra F R] (r : R) (e : E) :
     Algebra.trace R (R ⊗[F] E) (r ⊗ₜ[F] e) = r * algebraMap F R (Algebra.trace F E e) := by
@@ -201,7 +197,7 @@ theorem trace_tmul' [FiniteDimensional F E] {R : Type} [CommRing R] [Algebra F R
 variable {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R']
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [trace_tmul']`. Consider the case `add a c ha hc => simp only [map_add, ha, hc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem trace_map [FiniteDimensional F E] (φ : R →ₐ[F] R') (y : R ⊗[F] E) :
     φ (Algebra.trace R (R ⊗[F] E) y) =
@@ -212,7 +208,7 @@ theorem trace_map [FiniteDimensional F E] (φ : R →ₐ[F] R') (y : R ⊗[F] E)
   | add a c ha hc => simp only [map_add, ha, hc]
 
 /- English proof (translation)
-Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR]`. Consider the case `add a c ha hc => simp only [map_add, ha, hc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_sigR (σ : E →ₐ[F] E) (φ : R →ₐ[F] R') (z : R ⊗[F] E) :
     Algebra.TensorProduct.map φ (AlgHom.id F E) (sigR R σ z) =
@@ -223,7 +219,7 @@ theorem map_sigR (σ : E →ₐ[F] E) (φ : R →ₐ[F] R') (z : R ⊗[F] E) :
   | add a c ha hc => simp only [map_add, ha, hc]
 
 /- English proof (translation)
-Simplify using `only [gramR, hR, hform, map_sum, map_mul, map_sigR, JR, Matrix.map_apply]`. Simplify using `[inclR]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_gram (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (φ : R →ₐ[F] R')
     (X : Fin n → Fin M → R ⊗[F] E) (a c : Fin n) :
@@ -237,7 +233,7 @@ def qF (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M : ℕ}
   algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (gramR R σ J X 0 0)
 
 /- English proof (translation)
-Simplify using `only [qF, map_mul, AlgHom.commutes, trace_map, map_gram]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_qF [FiniteDimensional F E] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (φ : R →ₐ[F] R') (X : Fin 1 → Fin M → R ⊗[F] E) :
@@ -246,11 +242,11 @@ theorem map_qF [FiniteDimensional F E] (σ : E →ₐ[F] E) {M : ℕ} (J : Matri
   simp only [qF, map_mul, AlgHom.commutes, trace_map, map_gram]
 
 /- English proof (translation)
-Establish `hX : ∀ y : R ⊗[F] E, ∑ k, ((Algebra.TensorProduct.basis R b).repr y k) ⊗ₜ[F] b k = y`. Introduce `y`. Use `conv_rhs => rw [← (Algebra.TensorProduct.basis R b).sum_repr y]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[sigR, inclR, Algebra.TensorProduct.tmul_mul_tmul]`.
+A detailed English derivation is pending.
 -/
 theorem sig_expand {d : ℕ} (b : Module.Basis (Fin d) F E) (σ : E →ₐ[F] E) (p q : R ⊗[F] E) (e : E) :
     sigR R σ p * inclR R e * q =
@@ -272,7 +268,7 @@ theorem sig_expand {d : ℕ} (b : Module.Basis (Fin d) F E) (σ : E →ₐ[F] E)
       simp [sigR, inclR, Algebra.TensorProduct.tmul_mul_tmul]
 
 /- English proof (translation)
-Simplify using `only [qF, gramR, hR, hform, JR, Matrix.map_apply, sig_expand b, map_sum, Finset.mul_sum, trace_tmul', map_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem q_expand [FiniteDimensional F E] {d M : ℕ} (b : Module.Basis (Fin d) F E) (σ : E →ₐ[F] E)
     (J : Matrix (Fin M) (Fin M) E) (X : Fin 1 → Fin M → R ⊗[F] E) :
@@ -286,7 +282,7 @@ theorem q_expand [FiniteDimensional F E] {d M : ℕ} (b : Module.Basis (Fin d) F
   ring
 
 /- English proof (translation)
-Rewrite using `[← nsmul_eq_mul, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_repr {d : ℕ} (b : Module.Basis (Fin d) F E) (a : ℕ) (y : R ⊗[F] E) (k : Fin d) :
     (Algebra.TensorProduct.basis R b).repr ((a : R ⊗[F] E) * y) k =
@@ -300,16 +296,14 @@ section Places
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `(algebraMap F (Af F) c).2`.
+A detailed English derivation is pending.
 -/
 theorem int_ev (c : F) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite,
     algebraMap F (Fv F v) c ∈ v.adicCompletionIntegers F :=
   (algebraMap F (Af F) c).2
 
 /- English proof (translation)
-Establish `h : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ i j k l, algebraMap F (Fv F v) (1 / 2 * Algebra.trace F E (σ (b k) * J i j * b l)) ∈ v.adicCompletionIntegers F`. Simplify using `only [Filter.eventually_all]`. Conclude with `fun i j k l => int_ev _`. Use `filter_upwards [h] with v hv X hX`. Rewrite using `[q_expand b]`.
-
-Conclude with `sum_mem fun i _ => sum_mem fun j _ => sum_mem fun k _ => sum_mem fun l _ => mul_mem (mul_mem (hX 0 i k) (hX 0 j l)) (hv i j k l)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_int_ev [FiniteDimensional F E] {d M : ℕ} (b : Module.Basis (Fin d) F E) (σ : E →ₐ[F] E)
     (J : Matrix (Fin M) (Fin M) E) :
@@ -331,11 +325,11 @@ def sA {d M : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F
   {X | (fun p i => (a : Fv F v ⊗[F] E) * X p i) ∈ latV b v}
 
 /- English proof (translation)
-Use `filter_upwards [int_ev ((a : F)⁻¹)] with v hv X`. Establish `haF : (a : F) ≠ 0` using `Nat.cast_ne_zero.2 ha.ne'`. Establish `hinv : algebraMap F (Fv F v) (a : F)⁻¹ * (a : Fv F v) = 1`. Rewrite using `[← map_natCast (algebraMap F (Fv F v)) a, ← map_mul, inv_mul_cancel₀ haF, map_one]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h p i k`. Establish `h1` using `h p i k`. Rewrite `h1` using `[scale_repr]`. Establish `h2` using `mul_mem hv h1`. Rewrite `h2` using `[← mul_assoc, hinv, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h p i k`. Rewrite using `[scale_repr]`. Conclude with `mul_mem (natCast_mem _ a) (h p i k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_ev {d M : ℕ} (b : Module.Basis (Fin d) F E) {a : ℕ} (ha : 0 < a) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite,
@@ -379,7 +373,7 @@ local instance instLCf : LocallyCompactSpace (Af F) := (GlobalTheory.T.adeles_lo
 local instance instSCf : SecondCountableTopology (Af F) := (GlobalTheory.T.adeles_locally_compact_second_countable F).2.2.1
 
 /- English proof (translation)
-Use `haveI := h.1`. Take `⟨K, hK, hKn, hKc⟩` from `local_compact_nhds hn`. Use `⟨interior K, isOpen_interior, interior_subset.trans hKn, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isOpen_interior.measure_pos lam ⟨s, mem_interior_iff_mem_nhds.2 hK⟩`. Conclude with `(measure_mono interior_subset).trans_lt hKc.measure_lt_top`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nice_nbhd {v : HeightOneSpectrum (𝓞 F)} {lam : Measure (Fv F v)} (h : IsStdV v lam)
     {s : Fv F v} {n : Set (Fv F v)} (hn : n ∈ 𝓝 s) :
@@ -391,17 +385,15 @@ theorem nice_nbhd {v : HeightOneSpectrum (𝓞 F)} {lam : Measure (Fv F v)} (h :
   · exact (measure_mono interior_subset).trans_lt hKc.measure_lt_top
 
 /- English proof (translation)
-Take `⟨hTR, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Fv F v)`. Use `haveI := hTR`. Establish `hlat` using `(GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 M).2.2.2.1 v`. Establish `hcont : ∀ c : Fv F v ⊗[F] E, Continuous (fun (X : Fin 1 → Fin M → Fv F v ⊗[F] E) (p : Fin 1) (i : Fin M) => c * X p i)` using `fun c => continuous_pi fun p => continuous_pi fun i => continuous_const.mul ((continuous_apply i).comp (continuous_apply p))`. Establish `haF : (a : Fv F v) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (algebraMap F (Fv F v)) a]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 ha.ne')`. Establish `hac : (a : Fv F v ⊗[F] E) * (((a : Fv F v)⁻¹) ⊗ₜ[F] (1 : E)) = 1`. Establish `h1 : (a : Fv F v ⊗[F] E) = (a : Fv F v) ⊗ₜ[F] (1 : E)`. Rewrite using `[← map_natCast (algebraMap (Fv F v) (Fv F v ⊗[F] E)) a]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1, Algebra.TensorProduct.tmul_mul_tmul, mul_inv_cancel₀ haF, one_mul]`. Both sides reduce to the same expression. Use `⟨?_, hlat.2.preimage (hcont _)⟩` and prove the remaining obligations. Establish `himg : sA (M` using `M) b v a = (fun (X : Fin 1 → Fin M → Fv F v ⊗[F] E) (p : Fin 1) (i : Fin M) => (((a : Fv F v)⁻¹) ⊗ₜ[F] (1 : E)) * X p i) '' latV b v := by`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce `hX`. Use `⟨_, hX, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `show (((a : Fv F v)⁻¹) ⊗ₜ[F] (1 : E)) * ((a : Fv F v ⊗[F] E) * X p i) = X p i`. Rewrite using `[← mul_assoc, mul_comm (((a : Fv F v)⁻¹) ⊗ₜ[F] (1 : E)), hac, one_mul]`. Introduce and unpack `⟨Y, hY, rfl⟩ show (fun p i => (a : Fv F v ⊗[F] E) * ((((a : Fv F v)⁻¹) ⊗ₜ[F] (1 : E)) * Y p i)) ∈ latV b v`. Simplify `hY` using `only [← mul_assoc, hac, one_mul]`. Rewrite using `[himg]`.
-
-Conclude with `hlat.1.image (hcont _)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sA_cpt_open (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {d M : ℕ}
     (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) {a : ℕ} (ha : 0 < a) :
@@ -439,7 +431,7 @@ theorem sA_cpt_open (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {d M : ℕ}
   exact hlat.1.image (hcont _)
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, htr, -, -, -, hgram⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Fv F v)`. Establish `h1` using `hgram 1 M J`. Conclude with `continuous_const.mul (htr.comp ((continuous_apply 0).comp ((continuous_apply 0).comp h1)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem qF_cont (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (v : HeightOneSpectrum (𝓞 F)) :
@@ -453,9 +445,9 @@ def box (S : Finset (HeightOneSpectrum (𝓞 F))) (V : ∀ v : HeightOneSpectrum
   {y | (∀ v ∈ S, y v ∈ V v) ∧ ∀ v, v ∉ S → y v ∈ v.adicCompletionIntegers F}
 
 /- English proof (translation)
-Establish `h1 : IsOpen {y : Af F | ∀ v, v ∉ S → y v ∈ v.adicCompletionIntegers F}` using `RestrictedProduct.isOpen_forall_imp_mem (fun v => isOpen_int F v)`. Establish `h2 : {y : Af F | ∀ v ∈ S, y v ∈ V v} = ⋂ v ∈ S, (fun y : Af F => y v) ⁻¹' V v`. Use extensionality with `y`. Simplify using the standard rewrite rules. Establish `h3 : IsOpen {y : Af F | ∀ v ∈ S, y v ∈ V v}`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `isOpen_biInter_finset fun v _ => (hV v).preimage (RestrictedProduct.continuous_eval v)`. Conclude with `h3.inter h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem box_open (S : Finset (HeightOneSpectrum (𝓞 F)))
     (V : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (hV : ∀ v, IsOpen (V v)) :
@@ -471,11 +463,11 @@ theorem box_open (S : Finset (HeightOneSpectrum (𝓞 F)))
   exact h3.inter h1
 
 /- English proof (translation)
-Establish `key` using `GlobalTheory.T.finite_adele_haar_pi_restricted_product F lam hlam lf hlf hlf1 Unit S (fun v => (fun f : Unit → Fv F v => f ()) ⁻¹' V v) (fun v => (measurable_pi_apply ()) (hV v).measurableSet)`. Establish `e1 : {x : Unit → Af F | (∀ v ∈ S, (fun i => evalV F v (x i)) ∈ (fun f : Unit → Fv F v => f ()) ⁻¹' V v) ∧ ∀ v, v ∉ S → ∀ i, evalV F v (x i) ∈ v.adicCompletionIntegers F} = (MeasurableEquiv.funUnique Unit (Af F)) ⁻¹' box S V`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun v hv => h1 v hv, fun v hv => h2 v hv ()⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun v hv => h1 v hv, fun v hv i => h2 v hv⟩`. Rewrite `key` using `[e1, (measurePreserving_funUnique lf Unit).measure_preimage_equiv]`. Rewrite using `[key]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Use `haveI := (hlam v).1`. Conclude with `(measurePreserving_funUnique (lam v) Unit).measure_preimage_equiv (V v)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem box_meas (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v))
     (hlam : ∀ v, IsStdV v (lam v)) (lf : Measure (Af F)) (hlf : lf.IsAddHaarMeasure)
@@ -503,15 +495,13 @@ theorem box_meas (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v))
   exact (measurePreserving_funUnique (lam v) Unit).measure_preimage_equiv (V v)
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`. Establish `hq : ∀ (X : Fin 1 → Fin M → Af F ⊗[F] E) v, (qF (Af F) σ J X) v = qF (Fv F v) σ J (projV v X)` using `fun X v => map_qF σ J (evalV F v) X`. Establish `hmeas : ∀ v, MeasurableSet (sA (M` using `M) b v a ∩ {X | qF (Fv F v) σ J X ∈ V v}) := fun v => by`. Take `⟨-, -, -, -, -, -, -, hB, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Fv F v)`. Use `haveI := hB 1 M`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `((sA_cpt_open σ hcm b v ha).2.inter ((hV v).preimage (qF_cont σ hcm J v))).measurableSet`. Rewrite using `[← GlobalTheory.T.finite_adele_haar_eq_product_local_measures F E σ hcm d b lam hlam lf hlf hlf1 1 M S _ hmeas]`. Use `congr 1`. Use extensionality with `X`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨fun v hv => ⟨h1 v, ?_⟩, fun v hv => (hun v hv _).1 (h1 v)⟩` and prove the remaining obligations. Use `show qF (Fv F v) σ J (projV v X) ∈ V v`. Rewrite using `[← hq]`. Conclude with `h2 v hv`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun v => ?_, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`. Conclude with `(h1 v hv).1`. Conclude with `(hun v hv _).2 (h2 v hv)`.
-
-Rewrite using `[hq]`. Conclude with `(h1 v hv).2`. Rewrite using `[hq]`. Conclude with `hint v hv _ (h2 v hv)`.
+A detailed English derivation is pending.
 -/
 theorem box_tuple (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     {d : ℕ} (b : Module.Basis (Fin d) F E)
@@ -552,31 +542,27 @@ theorem box_tuple (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {M : ℕ} (J : Mat
       exact hint v hv _ (h2 v hv)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm M J hJ d b lam hlam m hm lf hlf hlf1 a ha D hDc hD0 hUD β hβ`. Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`. Establish `hUD' : ∀ U : Set (Af F), MeasurableSet U → coordW (Af F) b lf 1 M {X | (∀ v, projV v X ∈ sA b v a) ∧ qF (Af F) σ J X ∈ U} = ∫⁻ y in U, ENNReal.ofReal (D y) ∂lf` using `hUD`. Rewrite using `[HasProd, SummationFilter.unconditional_filter, Metric.tendsto_atTop]`. Introduce `ε hε`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hε3 : 0 < ε / 3` using `by positivity`. Establish `hWn : {y : Af F | |D y - D (algebraMap F (Af F) β)| < ε / 3} ∈ 𝓝 (algebraMap F (Af F) β)` using `(isOpen_lt (hDc.sub continuous_const).abs continuous_const).mem_nhds (by simpa using hε3)`. Take `⟨S₀, N, hN, hNoff, hNW⟩` from `exists_box F _ hWn`. Establish `hev` using `(q_int_ev (M := M) b σ J).and (scale_ev (M := M) b ha)`. Establish `hbad` using `Filter.eventually_cofinite.1 hev`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨S₀ ∪ hbad.toFinset, fun S hS => ?_⟩` and prove the remaining obligations. Establish `hS' : ∀ v, v ∉ S → v ∉ S₀ ∧ ((∀ X : Fin 1 → Fin M → Fv F v ⊗[F] E, X ∈ latV b v → qF (Fv F v) σ J X ∈ v.adicCompletionIntegers F) ∧ ∀ X : Fin 1 → Fin M → Fv F v ⊗[F] E, X ∈ sA b v a ↔ X ∈ latV b v)` using `fun v hv => by`. Use `⟨fun h => hv (hS (Finset.mem_union_left _ h)), ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `hv (hS (Finset.mem_union_right _ (hbad.mem_toFinset.2 hc)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨δ, hδ, hclose⟩` from `prod_close S (fun v => (m v (hermScal (Fv F v) σ (algebraMap F _ β)) (sA b v a)).toReal) hε3`. Establish `hne : ∀ v : HeightOneSpectrum (𝓞 F), algebraMap F (Fv F v) β ≠ 0` using `fun v => (map_ne_zero (algebraMap F (Fv F v))).2 hβ`. Establish `hloc` using `fun v => GlobalTheory.T.local_gram_fiber_rank_one_set_formula F E σ hcm M J hJ d b v (lam v) (hlam v) (m v) (hm v) (sA b v a) (sA_cpt_open σ hcm b v ha).1 (sA_cpt_open σ hcm b v ha).2 (algebraMap F (Fv F v) β) (hne v) δ hδ`. Use `choose Uv hUv hUv' using hloc`. Establish `hVex` using `fun v => nice_nbhd (hlam v) (Filter.inter_mem (hUv v) (hN v))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `choose V hVo hVs hVpos hVfin using hVex`. Establish `hUW : ∀ y ∈ box S V, |D y - D (algebraMap F (Af F) β)| ≤ ε / 3` using `fun y hy => by`. Use `le_of_lt (hNW y fun v => ?_)` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`. Conclude with `(hVs v (hy.1 v hv)).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hNoff v (hS' v hv).1]`. Conclude with `hy.2 v hv`. Establish `hBo` using `box_open S V hVo`. Establish `hL` using `box_meas lam hlam lf hlf hlf1 S V hVo`. Establish `hP` using `box_tuple σ hcm J b lam hlam lf hlf hlf1 ha S V hVo (fun v hv => (hS' v hv).2.2) (fun v hv => (hS' v hv).2.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hP` using `[hUD' _ hBo.measurableSet]`. Establish `hLv : ∀ v, 0 < (lam v (V v)).toReal` using `fun v => ENNReal.toReal_pos (hVpos v).ne' (hVfin v).ne`. Establish `hLf : (lf (box S V)).toReal = ∏ v ∈ S, (lam v (V v)).toReal`. Rewrite using `[hL, ENNReal.toReal_prod]`. Establish `hLfpos : 0 < (lf (box S V)).toReal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hLf]`. Conclude with `Finset.prod_pos fun v _ => hLv v`. Establish `hfin : lf (box S V) ≠ ∞`. Rewrite using `[hL]`. Conclude with `ENNReal.prod_ne_top fun v _ => (hVfin v).ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hI : (∫⁻ y in box S V, ENNReal.ofReal (D y) ∂lf).toReal = ∏ v ∈ S, (coordW (Fv F v) b (lam v) 1 M (sA b v a ∩ {X | qF (Fv F v) σ J X ∈ V v})).toReal`. Rewrite using `[hP, ENNReal.toReal_prod]`. Establish `havg` using `avg_bound lf hBo.measurableSet hfin D (hD0 _) hε3.le hUW`. Establish `hcl` using `hclose (fun v => (coordW (Fv F v) b (lam v) 1 M (sA b v a ∩ {X | qF (Fv F v) σ J X ∈ V v})).toReal / (lam v (V v)).toReal) (fun v _ => by`. Establish `h1` using `hUv' v (V v) (hVo v).measurableSet (fun y hy => (hVs v hy).1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (coordW (Fv F v) b (lam v) 1 M (sA b v a ∩ {X | qF (Fv F v) σ J X ∈ V v})).toReal / (lam v (V v)).toReal - (m v (hermScal (Fv F v) σ (algebraMap F _ β)) (sA b v a)).toReal = ((coordW (Fv F v) b (lam v) 1 M (sA b v a ∩ {X | qF (Fv F v) σ J X ∈ V v})).toReal - (m v (hermScal ( …`. Use `(hLv v).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Use `show |_ - _| ≤ δ`. Rewrite using `[h2, abs_div, abs_of_pos (hLv v), div_le_iff₀ (hLv v)]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1)`. Rewrite `hcl` using `[Finset.prod_div_distrib, ← hI, ← hLf]`. Establish `h3 : |(∫⁻ y in box S V, ENNReal.ofReal (D y) ∂lf).toReal / (lf (box S V)).toReal - D (algebraMap F (Af F) β)| ≤ ε / 3`. Establish `h4 : (∫⁻ y in box S V, ENNReal.ofReal (D y) ∂lf).toReal / (lf (box S V)).toReal - D (algebraMap F (Af F) β) = ((∫⁻ y in box S V, ENNReal.ofReal (D y) ∂lf).toReal - D (algebraMap F (Af F) β) * (lf (box S V)).toReal) / (lf (box S V)).toReal`. Use `hLfpos.ne'` as an intermediate fact.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[h4, abs_div, abs_of_pos hLfpos, div_le_iff₀ hLfpos]`. Conclude with `havg`. Express the relevant statement in the definitionally equal form `dist (∏ v ∈ S, (m v (hermScal (Fv F v) σ (algebraMap F _ β)) (sA b v a)).toReal) _ < ε`. Rewrite using `[Real.dist_eq]`.
-
-Establish `h5` using `abs_le.1 hcl`. Establish `h6` using `abs_le.1 h3`. Rewrite using `[abs_lt]`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hasProd_fibre_mass : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), (∀ v, IsStdV v (lam v)) → ∀ (m : ∀ v : HeightOneSpectrum (𝓞 F), HermR (Fv F v) σ 1 → Measure (Fin 1 → Fin M → Fv F v ⊗[F] E)), (∀ v, IsGramFib (Fv F v) σ J 1 (coordW (Fv F v) b (lam v) 1 M) (coordHerm (Fv F v) σ b (lam v) 1) (m v)) → ∀ (lf : Measure (Af F)), lf.IsAddHaarMeasure → lf {x | ∀ v, x v ∈ v.adicCompletionIntegers F} = 1 → ∀ a : ℕ, 0 < a → ∀ D : Af F → ℝ, Continuous D → (∀ y, 0 ≤ D y) → (∀ U : Set (Af F), MeasurableSet U → coordW (Af F) b lf 1 M {X | (∀ v, projV v X ∈ {X : (Fin 1 → Fin M → Fv F v ⊗[F] E) | (fun p i => (a : Fv F v ⊗[F] E) * X p i) ∈ latV b v}) ∧ algebraMap F (Af F) (1 / 2) * Algebra.trace (Af F) (Af F ⊗[F] E) (gramR (Af F) σ J X 0 0) ∈ U} = ∫⁻ y in U, ENNReal.ofReal (D y) ∂lf) → ∀ β : F, β ≠ 0 → HasProd (fun v => (m v (hermScal (Fv F v) σ (algebraMap F _ β)) {X : (Fin 1 → Fin M → Fv F v ⊗[F] E) | (fun p i => (a : Fv F v ⊗[F] E) * X p i) ∈ latV b v}).toReal) (D (algebraMap F (Af F) β)) := by
   intro F E _ _ _ _ _ σ hcm M J hJ d b lam hlam m hm lf hlf hlf1 a ha D hDc hD0 hUD β hβ

@@ -16,14 +16,14 @@ variable {k r : ℕ} {E E' : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [
   [NormedSpace ℂ E']
 
 /- English proof (translation)
-The claim follows from `(Λ.restrictScalars ℝ).contDiff.comp hψ`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_clm_comp (Λ : E →L[ℂ] E') {ψ : B.Mat k r → E} (hψ : ContDiff ℝ ∞ ψ) :
     ContDiff ℝ ∞ (fun g => Λ (ψ g)) :=
   (Λ.restrictScalars ℝ).contDiff.comp hψ
 
 /- English proof (translation)
-Rewrite using `[rdV_global (contDiff_clm_comp Λ hψ) X, rdV_global hψ X]`. Use function extensionality and compare the values at `g`. Establish `hd : HasFDerivAt ψ (fderiv ℝ ψ g) g` using `((hψ.differentiable (by simp)) g).hasFDerivAt`. Establish `h` using `(Λ.restrictScalars ℝ).hasFDerivAt.comp g hd`. Conclude with `(DFunLike.congr_fun h.fderiv (g * X)).trans rfl`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rdV_clm (Λ : E →L[ℂ] E') {ψ : B.Mat k r → E} (hψ : ContDiff ℝ ∞ ψ) (X : B.Mat k r) :
     RdV X (fun g => Λ (ψ g)) = fun g => Λ (RdV X ψ g) := by
@@ -34,7 +34,7 @@ theorem rdV_clm (Λ : E →L[ℂ] E') {ψ : B.Mat k r → E} (hψ : ContDiff ℝ
   exact (DFunLike.congr_fun h.fderiv (g * X)).trans rfl
 
 /- English proof (translation)
-The claim follows from `| [] => rfl | X :: w => by show RdV X (B.Rw w (fun g => Λ (ψ g))) = fun g => Λ (RdV X (B.Rw w ψ) g) rw [rw_clm' Λ hψ w, rdV_clm Λ (rw_contDiff hψ w) X]`.
+A detailed English derivation is pending.
 -/
 theorem rw_clm' (Λ : E →L[ℂ] E') {ψ : B.Mat k r → E} (hψ : ContDiff ℝ ∞ ψ) :
     ∀ w : List (B.Mat k r), B.Rw w (fun g => Λ (ψ g)) = fun g => Λ (B.Rw w ψ g)
@@ -60,9 +60,9 @@ theorem lam_apply (i j) (A : Wq →L[ℂ] Wp) :
     lam i j A = inner ℂ (stdOrthonormalBasis ℂ Wp j) (A (stdOrthonormalBasis ℂ Wq i)) := rfl
 
 /- English proof (translation)
-Unfold `B.hsInner B.hsVec`. Rewrite using `[PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [PiLp.toLp_apply]`. Rewrite using `[← (stdOrthonormalBasis ℂ Wp).sum_inner_mul_inner]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[lam_apply, lam_apply, mul_comm]`. Use `congr 1`. Rewrite using `[← inner_conj_symm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hsInner_eq_sum (A C : Wq →L[ℂ] Wp) :
     B.hsInner A C = ∑ i, ∑ j, lam i j A * star (lam i j C) := by
@@ -85,7 +85,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-The claim follows from `| [], _, g => by simp | cw :: L, hL, g => by simp only [List.map_cons, List.sum_cons, map_add, mul_add] rw [lam_opAdj_tail i j s hψ L (fun cw' h => hL cw' (List.mem_cons_of_mem _ h)) g] congr 1 rw [TLB.cTerm_word (hL cw List.mem_cons_self)] have e : (fun x => (TLB.cTerm (Wp := Wp …`.
+A detailed English derivation is pending.
 -/
 theorem lam_opAdj_tail (i j) (s : ℂ) {ψ : B.Mat k r → (Wq →L[ℂ] Wp)} (hψ : ContDiff ℝ ∞ ψ) :
     ∀ (L : List (ℂ × List (B.Mat k r))), (∀ cw ∈ L, ∀ X ∈ cw.2, B.inLie k r X) → ∀ g,
@@ -108,7 +108,7 @@ theorem lam_opAdj_tail (i j) (s : ℂ) {ψ : B.Mat k r → (Wq →L[ℂ] Wp)} (h
     ring
 
 /- English proof (translation)
-The claim follows from `| [], _ => by simp | cw :: L, g => by simp only [List.map_cons, List.sum_cons, map_add, map_smul] rw [lam_wordSum i j hψ L g, congrFun (rw_clm' (lam i j) hψ cw.2) g]`.
+A detailed English derivation is pending.
 -/
 theorem lam_wordSum (i j) {ψ : B.Mat k r → (Wq →L[ℂ] Wp)} (hψ : ContDiff ℝ ∞ ψ) :
     ∀ (L : List (ℂ × List (B.Mat k r))) (g : B.Mat k r),
@@ -120,7 +120,7 @@ theorem lam_wordSum (i j) {ψ : B.Mat k r → (Wq →L[ℂ] Wp)} (hψ : ContDiff
     rw [lam_wordSum i j hψ L g, congrFun (rw_clm' (lam i j) hψ cw.2) g]
 
 /- English proof (translation)
-Unfold `wsAdj`. Conclude with `contDiff_listSum (fun (cw : ℂ × List (B.Mat k r)) x => conj cw.1 * (-1 : ℂ) ^ cw.2.length * B.Rw cw.2.reverse b x) L fun cw _ => contDiff_const.mul (rw_contDiff hb _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wsAdj_contDiff (L : List (ℂ × List (B.Mat k r))) {b : B.Mat k r → ℂ} (hb : ContDiff ℝ ∞ b) :
     ContDiff ℝ ∞ (wsAdj L b) := by
@@ -131,27 +131,25 @@ theorem wsAdj_contDiff (L : List (ℂ × List (B.Mat k r))) {b : B.Mat k r → �
 end terms
 
 /- English proof (translation)
-Introduce `hS k r Wp Wq _ _ _ _ _ _ s Y μ hμ φ ψ hφ hφc hψ hψc`. Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨hμ.finite_compact⟩`. Establish `hLw` using `(Classical.choose_spec (Formalism.FourierDecayAlt.P.capelli_word_sum k r Y)).1`. Take `⟨L', hL', hCV'⟩` from `Formalism.FourierDecayAlt.P.capelli_word_sum k r (conj Y)`. Use `set a : Fin (Module.finrank ℂ Wq) → Fin (Module.finrank ℂ Wp) → B.Mat k r → ℂ := fun i j g => lam i j (φ g) with ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set b : Fin (Module.finrank ℂ Wq) → Fin (Module.finrank ℂ Wp) → B.Mat k r → ℂ := fun i j g => lam i j (ψ g) with hb`. Establish `ha_s : ∀ i j, ContDiff ℝ ∞ (a i j)` using `fun i j => contDiff_clm_comp (lam i j) hφ`. Establish `hb_s : ∀ i j, ContDiff ℝ ∞ (b i j)` using `fun i j => contDiff_clm_comp (lam i j) hψ`. Establish `ha_c : ∀ i j, HasCompactSupport (a i j)` using `fun i j => hφc.comp_left (map_zero (lam i j))`. Establish `hb_c : ∀ i j, HasCompactSupport (b i j)` using `fun i j => hψc.comp_left (map_zero (lam i j))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `hAdj : ∀ i j g, lam i j (B.opAdj (capTh k r Wp Wq s Y) ψ g) = conj s * wsAdj (capLw k r Y) (b i j) g`. Introduce `i j g`. Unfold `B.opAdj`. Rewrite using `[capTh, TLB.capOp, List.map_cons, List.sum_cons, map_add]`. Establish `h0 : (fun x => (TLB.cTerm (Wp` using `Wp) (Wq := Wq) 0 (List.replicate (2 * r + k + 1) (0 : B.Mat k r))).coefAdj x (ψ x)) = (0 : ℂ) • ψ := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Simplify using `[TLB.cTerm]`. Rewrite using `[h0, Formalism.FourierDecayAlt.P.PositiveOrbitOpen.rw_smul, zero_smul]`. Rewrite using `[lam_opAdj_tail i j s hψ (capLw k r Y) (fun cw h X hX => ((hLw cw h).1 X hX).1) g]`. Simplify using `[wsAdj, b]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hCVc : ∀ i j, ∀ g ∈ B.GV k r, lam i j (Q.CV k r (conj Y) ψ g) = Q.CV k r (conj Y) (b i j) g`. Introduce `i j g hg`. Rewrite using `[hCV' _ (B.GV k r) ψ (ckOn_of_contDiff hψ _ _) g hg hg, hCV' _ (B.GV k r) (b i j) (ckOn_of_contDiff (hb_s i j) _ _) g hg hg]`. Conclude with `lam_wordSum i j hψ L' g`. Establish `hP1 : ∀ x : Mt k r, B.hsInner (φ (Matrix.of x)) (B.opAdj (capTh k r Wp Wq s Y) ψ (Matrix.of x)) = ∑ i, ∑ j, s * (a i j (Matrix.of x) * star (wsAdj (capLw k r Y) (b i j) (Matrix.of x)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[hsInner_eq_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hAdj, star_mul', Complex.star_def, Complex.conj_conj]`. Simplify using `only [ha]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hP2 : ∀ᵐ x ∂μ, B.hsInner (φ (Matrix.of x)) (conj s • Q.CV k r (conj Y) ψ (Matrix.of x)) = ∑ i, ∑ j, s * (a i j (Matrix.of x) * star (Q.CV k r (conj Y) (b i j) (Matrix.of x)))` using `by filter_upwards [Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.ae_mem hμ] with x hx`. Rewrite using `[hsInner_eq_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hCVc i j _ hx, smul_eq_mul, star_mul', Complex.star_def, Complex.conj_conj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [ha]`. Expand and normalize the polynomial expressions, which then agree. Establish `hI1 : ∀ i j, Integrable (fun x : Mt k r => s * (a i j (Matrix.of x) * star (wsAdj (capLw k r Y) (b i j) (Matrix.of x)))) μ`. Introduce `i j`. Establish `hc : Continuous (fun x : Mt k r => a i j (Matrix.of x) * star (wsAdj (capLw k r Y) (b i j) (Matrix.of x)))` using `(ha_s i j).continuous.mul (continuous_star.comp (wsAdj_contDiff _ (hb_s i j)).continuous)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcs : HasCompactSupport (fun x : Mt k r => a i j (Matrix.of x) * star (wsAdj (capLw k r Y) (b i j) (Matrix.of x)))` using `(ha_c i j).mul_right`. Conclude with `(hc.integrable_of_hasCompactSupport (μ := μ) hcs).const_mul s`. Establish `hI2 : ∀ i j, Integrable (fun x : Mt k r => s * (a i j (Matrix.of x) * star (Q.CV k r (conj Y) (b i j) (Matrix.of x)))) μ`. Introduce `i j`. Establish `hS' : ContDiff ℝ ∞ (fun g => (L'.map fun cw => cw.1 • B.Rw cw.2 (b i j) g).sum)` using `contDiff_listSum (fun cw g => cw.1 • B.Rw cw.2 (b i j) g) L' fun cw _ => (rw_contDiff (hb_s i j) _).const_smul _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : Continuous (fun x : Mt k r => a i j (Matrix.of x) * star ((L'.map fun cw => cw.1 • B.Rw cw.2 (b i j) (Matrix.of x)).sum))` using `(ha_s i j).continuous.mul (continuous_star.comp hS'.continuous)`. Establish `hcs : HasCompactSupport (fun x : Mt k r => a i j (Matrix.of x) * star ((L'.map fun cw => cw.1 • B.Rw cw.2 (b i j) (Matrix.of x)).sum))` using `(ha_c i j).mul_right`. Use `((hc.integrable_of_hasCompactSupport (μ := μ) hcs).const_mul s).congr ?_` and prove the remaining obligations. Use `filter_upwards [Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.ae_mem hμ] with x hx`. Rewrite using `[hCV' _ (B.GV k r) (b i j) (ckOn_of_contDiff (hb_s i j) _ _) _ hx hx]`.
-
-Rewrite using `[integral_congr_ae (Eventually.of_forall hP1), integral_congr_ae hP2, integral_finset_sum _ (fun i _ => integrable_finset_sum _ fun j _ => hI1 i j), integral_finset_sum _ (fun i _ => integrable_finset_sum _ fun j _ => hI2 i j)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ (fun j _ => hI1 i j), integral_finset_sum _ (fun j _ => hI2 i j)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_const_mul, hS k r Y μ hμ (a i j) (b i j) (ha_s i j) (ha_c i j) (hb_s i j) (hb_c i j)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem capacity_adjoint_integral_scalar : CapAdjIntOfScalar := by
   intro hS k r Wp Wq _ _ _ _ _ _ s Y μ hμ φ ψ hφ hφc hψ hψc
@@ -233,7 +231,7 @@ theorem capacity_adjoint_integral_scalar : CapAdjIntOfScalar := by
     hS k r Y μ hμ (a i j) (b i j) (ha_s i j) (ha_c i j) (hb_s i j) (hb_c i j)]
 
 /- English proof (translation)
-The claim follows from `capacity_adjoint_integral_scalar hS`.
+A detailed English derivation is pending.
 -/
 theorem capAdjInt_of_scalar (hS : CapAdjScalar) : CapAdjInt := capacity_adjoint_integral_scalar hS
 

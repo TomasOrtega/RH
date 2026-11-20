@@ -14,7 +14,7 @@ def lowLat {n n₁ : ℕ} (ι : Matrix (Fin n) (Fin n₁) E) (L : Submodule (�
   L.comap ((Matrix.mulVecLin ι).restrictScalars (𝓞 E))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lowLat {n n₁ : ℕ} {ι : Matrix (Fin n) (Fin n₁) E} {L : Submodule (𝓞 E) (Fin n → E)} {u : Fin n₁ → E} :
     u ∈ lowLat ι L ↔ ι *ᵥ u ∈ L := Iff.rfl

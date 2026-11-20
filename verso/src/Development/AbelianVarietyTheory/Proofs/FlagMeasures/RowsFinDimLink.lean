@@ -5,7 +5,7 @@ import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.FundamentalDo
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `CompanionTheory.D.gk.RF.automorphic_forms_finite_dimensional`.
+A detailed English derivation is pending.
 -/
 theorem rowsFinDim_link : Formalism.L2.SG.RowsDef.RowsFinDim :=
   CompanionTheory.D.gk.RF.automorphic_forms_finite_dimensional

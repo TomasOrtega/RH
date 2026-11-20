@@ -15,7 +15,7 @@ namespace GlobalTheory.ValuesSubfield
 open GlobalTheory.TorusExt GlobalTheory.ArcExt
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ N with th := fun x => sF th (ν.eA x).left ν.J / rigVal ν }, { ν with th := th, th_gen := hth, th_eq := fun _ => div_mul_cancel₀ _ (vF_ne_zero ν.good _ _) }, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_numOf_th {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] {N : NumD F} (ν : NumOf D F N) (th : H0 D.P.L 1)
@@ -25,9 +25,9 @@ theorem exists_numOf_th {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F :
     { ν with th := th, th_gen := hth, th_eq := fun _ => div_mul_cancel₀ _ (vF_ne_zero ν.good _ _) }, rfl, rfl⟩
 
 /- English proof (translation)
-Introduce `hG R _ _ D he hb F F' _ _ _ _ f hf N' ν'`. Take `⟨N₀, ν₀, h₀⟩` from `ValuesExist.exists_numOf D F hG he hb ν'.th ν'.th_gen (fun ψ => ν'.J (spMap f ≫ ψ)) fun ψ z _ => (Subsingleton.elim (α := PrimeSpectrum F) (spMap f (IsLocalRing.closedPoint F')) z) ▸ ν'.good (spMap f ≫ ψ) (Set.mem_univ (IsLocalRing.closedPoint F'))`. Take `⟨N, ν, h₁, h₂⟩` from `exists_numOf_th ν₀ ν'.th ν'.th_gen`. Establish `hJ : ∀ ψ, ν'.J (spMap f ≫ ψ) = ν.J ψ` using `fun ψ => by rw [h₁, h₀]`. Use `⟨N, ν, numHom f hf ν ν' hJ h₂.symm, eX_numHom f hf ν ν' hJ h₂.symm, fun k p p' c c' h hc hc' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl` from `(qkExt_iff hb f hf p p').1 h`. Conclude with `numHom_rel f hf ν ν' hJ h₂.symm hc hc'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_values_subfield : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R), D.PsiEven → D.TauBimult → ∀ (F F' : Type) [Field F] [Field F'] [Algebra (FractionRing R) F] [Algebra (FractionRing R) F'] (f : F →+* F'), f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F' → ∀ (N' : NumD F') (ν' : NumOf D F' N'), ∃ (N : NumD F) (ν : NumOf D F N) (I : NumD.Hom f N N'), (∀ y, ν'.eX (I.e y) = ν.eX y) ∧ ∀ (k : ℕ) (p : QkPt D F k) (p' : QkPt D F' k) (c : N.Gt) (c' : N'.Gt), QkExt f p p' → ν.Pt p.g c → ν'.Pt p'.g c' → I.Rel c c' := by
   intro hG R _ _ D he hb F F' _ _ _ _ f hf N' ν'

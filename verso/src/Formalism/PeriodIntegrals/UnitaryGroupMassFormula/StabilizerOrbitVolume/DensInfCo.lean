@@ -19,23 +19,21 @@ def QuadCoord : Prop :=
       ∀ x y, fderiv ℝ (fun y => eH (Q (eV.symm y))) (eV x) (eV y) = eH (β x y)
 
 /- English proof (translation)
-Introduce `V H _ _ _ _ n m eV eH Q β hV hH hβc hβa hβs hQ`. Establish `hVs : ∀ y z, eV.symm (y + z) = eV.symm y + eV.symm z`. Introduce `y z`. Apply `eV.injective` to reduce the goal to its premises. Rewrite using `[hV]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Set `b : (Fin n → ℝ) → (Fin n → ℝ) → (Fin m → ℝ)` to `fun y z => eH (β (eV.symm y) (eV.symm z))`. Establish `hb1 : ∀ y y' z, b y z + b y' z = b (y + y') z`. Introduce `y y' z`. Simplify using `only [b, hVs, hβa, hH]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hb2 : ∀ y z z', b y (z + z') = b y z + b y z'`. Introduce `y z z'`. Simplify using `only [b, hVs]`. Rewrite using `[hβs, hβa, hH, hβs (eV.symm z), hβs (eV.symm z')]`. Establish `hbc : Continuous (fun p : (Fin n → ℝ) × (Fin n → ℝ) => b p.1 p.2)` using `eH.continuous.comp (hβc.comp ((eV.symm.continuous.comp continuous_fst).prodMk (eV.symm.continuous.comp continuous_snd)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `L1 : (Fin n → ℝ) → (Fin n → ℝ) →L[ℝ] (Fin m → ℝ)` to `fun y => AddMonoidHom.toRealLinearMap (AddMonoidHom.mk' (b y) (hb2 y)) (hbc.comp (continuous_const.prodMk continuous_id))`. Establish `hL1 : ∀ y z, L1 y z = b y z` using `fun _ _ => rfl`. Establish `hsm1 : ∀ (c : ℝ) y z, b (c • y) z = c • b y z`. Introduce `c y z`. Establish `: b (c • y) z = c • b y z` using `(AddMonoidHom.toRealLinearMap (AddMonoidHom.mk' (fun y => b y z) (fun y y' => (hb1 y y' z).symm)) (hbc.comp (continuous_id.prodMk continuous_const))).map_smul c y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this`. Set `Bl : (Fin n → ℝ) →ₗ[ℝ] (Fin n → ℝ) →L[ℝ] (Fin m → ℝ)` to `{ toFun := L1 map_add' := fun y y' => by ext1 z; simp only [add_apply, hL1, hb1] map_smul' := fun c y => by ext1 z; simp only [smul_apply, hL1, hsm1, RingHom.id_apply] }`. Set `B : (Fin n → ℝ) →L[ℝ] (Fin n → ℝ) →L[ℝ] (Fin m → ℝ)` to `LinearMap.toContinuousLinearMap Bl`. Establish `hB : ∀ y z, B y z = b y z` using `fun _ _ => rfl`. Establish `hf : ∀ y, eH (Q (eV.symm y)) = (1/2 : ℝ) • B y y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Rewrite using `[hB]`. Simplify using `only [b, hQ, hH]`. Rewrite using `[← two_smul ℝ (eH (Q (eV.symm y))), smul_smul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hfe : (fun y => eH (Q (eV.symm y))) = fun y => (1/2 : ℝ) • B y y` using `funext hf`. Establish `hd : ∀ y, HasFDerivAt (fun y => (1/2 : ℝ) • B y y) ((1/2 : ℝ) • (B.precompR (Fin n → ℝ) y (ContinuousLinearMap.id ℝ _) + B.precompL (Fin n → ℝ) (ContinuousLinearMap.id ℝ _) y)) y` using `fun y => by`. Establish `h` using `(B.hasFDerivAt_of_bilinear (hasFDerivAt_id y) (hasFDerivAt_id y)).const_smul (1/2 : ℝ)`. Conclude with `h`. Use `⟨?_, fun x y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfe]`. Conclude with `(B.isBoundedBilinearMap.contDiff.comp (contDiff_id.prodMk contDiff_id)).const_smul (1/2 : ℝ)`. Rewrite using `[hfe, (hd _).fderiv] show (1/2 : ℝ) • (B (eV x) (eV y) + B (eV y) (eV x)) = eH (β x y)`. Rewrite using `[hB, hB]`. Simplify using `only [b, Homeomorph.symm_apply_apply]`.
-
-Rewrite using `[hβs y x, ← two_smul ℝ (eH (β x y)), smul_smul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem quadCoord_holds : QuadCoord := by
   intro V H _ _ _ _ n m eV eH Q β hV hH hβc hβa hβs hQ
@@ -100,25 +98,25 @@ def gramB (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
   fun i j => hR R σ J (X i) (Y j) + hR R σ J (Y i) (X j)
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hR_add_left (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (x y z : Fin M → R ⊗[F] E) : hR R σ J (x + y) z = hR R σ J x z + hR R σ J y z := by
   simp only [hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hR_add_right (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (x y z : Fin M → R ⊗[F] E) : hR R σ J x (y + z) = hR R σ J x y + hR R σ J x z := by
   simp only [hR, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `hinv : ∀ a : R ⊗[F] E, sigR R σ (sigR R σ a) = a`. Introduce `a`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR, hσ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `hJ' : ∀ i j, sigR R σ (JR R J i j) = JR R J j i`. Introduce `i j`. Simplify using `[JR, inclR, sigR, hJ]`. Simplify using `only [hR, Formalism.UG.hform, map_sum, map_mul, hinv, hJ']`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hR_herm (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin M → R ⊗[F] E) :
@@ -138,7 +136,7 @@ theorem hR_herm (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M : ℕ} (J :
   ring
 
 /- English proof (translation)
-Use `show ∀ a b, sigR R σ (gramB R σ J X Y b a) = gramB R σ J X Y a b`. Introduce `a b`. Simplify using `only [gramB, map_add, hR_herm R σ hσ J hJ]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gramB_mem (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M n : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hJ : ∀ i j, σ (J j i) = J i j)
@@ -157,9 +155,9 @@ variable (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologic
   [LocallyCompactSpace R] [T2Space R]
 
 /- English proof (translation)
-Use `show Continuous (fun p : (Fin n → Fin M → R ⊗[F] E) × (Fin n → Fin M → R ⊗[F] E) => hR R σ J (p.1 a) (p.2 b) + hR R σ J (p.2 a) (p.1 b))`. Establish `hc` using `continuous_hR R σ J`. Establish `e1 : Continuous (fun p : (Fin n → Fin M → R ⊗[F] E) × (Fin n → Fin M → R ⊗[F] E) => ((p.1 a, p.2 b) : (Fin M → R ⊗[F] E) × (Fin M → R ⊗[F] E)))` using `by fun_prop`. Establish `e2 : Continuous (fun p : (Fin n → Fin M → R ⊗[F] E) × (Fin n → Fin M → R ⊗[F] E) => ((p.2 a, p.1 b) : (Fin M → R ⊗[F] E) × (Fin M → R ⊗[F] E)))` using `by fun_prop`. Establish `h1` using `Continuous.comp (g := fun q : (Fin M → R ⊗[F] E) × (Fin M → R ⊗[F] E) => hR R σ J q.1 q.2) hc e1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Continuous.comp (g := fun q : (Fin M → R ⊗[F] E) × (Fin M → R ⊗[F] E) => hR R σ J q.1 q.2) hc e2`. Conclude with `h1.add h2`.
+A detailed English derivation is pending.
 -/
 theorem continuous_gramB_apply (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (a b : Fin n) : Continuous (fun p : (Fin n → Fin M → R ⊗[F] E) × (Fin n → Fin M → R ⊗[F] E) =>
@@ -178,7 +176,7 @@ theorem continuous_gramB_apply (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin
   exact h1.add h2
 
 /- English proof (translation)
-Conclude with `continuous_pi fun a => continuous_pi fun b => continuous_gramB_apply R σ J a b`.
+A detailed English derivation is pending.
 -/
 theorem continuous_gramB (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     Continuous (fun p : (Fin n → Fin M → R ⊗[F] E) × (Fin n → Fin M → R ⊗[F] E) =>
@@ -197,19 +195,19 @@ def FreeSurj : Prop := InCtx fun F E _ _ _ _ _ σ M J a _X0 _hT =>
     ∀ S : HermR (Ainf F) σ a, ∃ Y, gramB (Ainf F) σ J X Y = S
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a hA1 hA2 X0 hT0 hdet`. Take `⟨n, m, eV, eH, hV, hH⟩` from `h2 F E σ hCM M J hJ ha hc a hA1 hA2 X0 hT0 hdet`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_invol σ hCM.2.2.2`. Set `Q : (Fin a → Fin M → Ainf F ⊗[F] E) → HermR (Ainf F) σ a` to `gramH (Ainf F) σ hσ J hJ.1`. Set `β : (Fin a → Fin M → Ainf F ⊗[F] E) → (Fin a → Fin M → Ainf F ⊗[F] E) → HermR (Ainf F) σ a` to `fun X Y => ⟨gramB (Ainf F) σ J X Y, gramB_mem (Ainf F) σ hσ J hJ.1 X Y⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hβc : Continuous (fun p : (Fin a → Fin M → Ainf F ⊗[F] E) × (Fin a → Fin M → Ainf F ⊗[F] E) => β p.1 p.2)`. Conclude with `(continuous_gramB (Ainf F) σ J).subtype_mk _`. Establish `hβa : ∀ x y z, β (x + y) z = β x z + β y z`. Introduce `x y z`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i j`. Use `show gramB (Ainf F) σ J (x + y) z i j = gramB (Ainf F) σ J x z i j + gramB (Ainf F) σ J y z i j`. Simplify using `only [gramB, Pi.add_apply, hR_add_left, hR_add_right]`. Normalize the expressions using the abelian group laws. Establish `hβs : ∀ x y, β x y = β y x`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x y`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Simplify using `only [β, gramB]`. Conclude with `add_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hQ : ∀ x, β x x = Q x + Q x`. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨hC, hD⟩` from `h1 _ _ n m eV eH Q β hV hH hβc hβa hβs hQ`. Use `⟨n, m, eV, eH, fun y => eH (Q (eV.symm y)), hV, hH, hC, fun X => ?_, fun X hX => ?_⟩` and prove the remaining obligations. Simplify using `[Q, gramH]`. Introduce `t`. Take `⟨Y, hY⟩` from `h3 F E σ hCM M J hJ ha hc a hA1 hA2 X0 hT0 hdet X hX (eH.symm t)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨eV Y, ?_⟩` and prove the remaining obligations. Rewrite using `[hD X Y]`. Establish `: β X Y = eH.symm t` using `Subtype.ext hY`. Rewrite using `[this, Homeomorph.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordInf_of (h1 : QuadCoord) (h2 : TensR) (h3 : FreeSurj) : CoordInf := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a hA1 hA2 X0 hT0 hdet
@@ -242,7 +240,7 @@ theorem coordInf_of (h1 : QuadCoord) (h2 : TensR) (h3 : FreeSurj) : CoordInf := 
     rw [this, Homeomorph.apply_symm_apply]
 
 /- English proof (translation)
-Conclude with `densInf_of_coord (coordInf_of quadCoord_holds h2 h3)`.
+A detailed English derivation is pending.
 -/
 theorem densInf_of_tens (h2 : TensR) (h3 : FreeSurj) : DensInf := by
   exact densInf_of_coord (coordInf_of quadCoord_holds h2 h3)

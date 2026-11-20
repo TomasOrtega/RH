@@ -7,9 +7,9 @@ namespace Formalism.FourierDecayAlt.P
 namespace A6x1
 
 /- English proof (translation)
-Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), sum_inner, map_sum]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[inner_sum, Finset.sum_eq_single ρ]`. Rewrite using `[inner_self_eq_norm_sq (𝕜 := ℂ), norm_smul, he ρ, one_mul]`. Introduce `ρ' _ hne`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[inner_smul_left, inner_smul_right, h ρ ρ' (Ne.symm hne), mul_zero, mul_zero]`. Introduce `hρ`. Conclude with `absurd (Finset.mem_univ ρ) hρ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem norm_sq_sum_orth {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {A : Type}
     [Fintype A] (P : A → E) (e₁ : A → ℂ) (he : ∀ ρ, ‖e₁ ρ‖ = 1)
@@ -28,9 +28,9 @@ theorem norm_sq_sum_orth {E : Type} [NormedAddCommGroup E] [InnerProductSpace �
 end A6x1
 
 /- English proof (translation)
-Introduce `E _ _ A B _ _ u e₁ e₂`. Rewrite using `[Fintype.sum_prod_type, mul_inv, mul_smul]`. Use `congr 1`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_comm, Finset.smul_sum (r := e₁ ρ)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem doubleMeanSplit : Formalism.FourierDecayAlt.A6.MeanSplit := by
   intro E _ _ A B _ _ u e₁ e₂
@@ -44,7 +44,7 @@ theorem doubleMeanSplit : Formalism.FourierDecayAlt.A6.MeanSplit := by
   rw [mul_smul]
 
 /- English proof (translation)
-Introduce `E _ _ A B _ _ u e₂ h ρ ρ' hne`. Simplify using `only [inner_smul_left, inner_smul_right, sum_inner, inner_sum]`. Simplify using `[h ρ ρ' _ _ hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem partialMeansOrthogonal : Formalism.FourierDecayAlt.A6.POrth := by
   intro E _ _ A B _ _ u e₂ h ρ ρ' hne
@@ -52,14 +52,14 @@ theorem partialMeansOrthogonal : Formalism.FourierDecayAlt.A6.POrth := by
   simp [h ρ ρ' _ _ hne]
 
 /- English proof (translation)
-Introduce `E _ _ A _ P e₁ he h`. Rewrite using `[norm_smul, mul_pow, A6x1.norm_sq_sum_orth P e₁ he h, norm_inv, Complex.norm_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem orthogonalMeanNorm : Formalism.FourierDecayAlt.A6.OrthNorm := by
   intro E _ _ A _ P e₁ he h
   rw [norm_smul, mul_pow, A6x1.norm_sq_sum_orth P e₁ he h, norm_inv, Complex.norm_natCast]
 
 /- English proof (translation)
-Introduce `hM hP hO E _ _ A B _ _ u T e₁ e₂ hT he h`. Rewrite using `[hM E A B u e₁ e₂]`. Establish `h1` using `hO E A (fun ρ => (Fintype.card B : ℂ)⁻¹ • ∑ b, e₂ b • u (ρ, b)) e₁ he (hP E A B u e₂ h)`. Establish `h2` using `hT ((Fintype.card A : ℂ)⁻¹ • ∑ ρ, e₁ ρ • ((Fintype.card B : ℂ)⁻¹ • ∑ b, e₂ b • u (ρ, b)))`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem averageBoundOfSteps : Formalism.FourierDecayAlt.A6.AvgBoundAssemble := by
   intro hM hP hO E _ _ A B _ _ u T e₁ e₂ hT he h
@@ -74,7 +74,7 @@ theorem averageBoundOfSteps : Formalism.FourierDecayAlt.A6.AvgBoundAssemble := b
     _ = _ := by rw [h1]; ring
 
 /- English proof (translation)
-The claim follows from `averageBoundOfSteps doubleMeanSplit partialMeansOrthogonal orthogonalMeanNorm`.
+A detailed English derivation is pending.
 -/
 theorem averageBound : Formalism.FourierDecayAlt.A6.AvgBound :=
   averageBoundOfSteps doubleMeanSplit partialMeansOrthogonal orthogonalMeanNorm

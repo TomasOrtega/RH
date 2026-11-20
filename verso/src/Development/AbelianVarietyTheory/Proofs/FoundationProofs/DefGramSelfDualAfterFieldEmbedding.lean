@@ -15,13 +15,13 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory.TestLat
 
 /- English proof (translation)
-Take `⟨σ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Establish `h` using `congrFun (congrFun (hA (σ.comp f)).isHermitian.eq a) b`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply] at h ⊢`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf]`. Apply `σ.injective` to reduce the goal to its premises. Establish `h2` using `hc (σ.comp f) (A b a)`. Simplify using `only [RingHom.comp_apply] at h h2`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Introduce `a b ψ`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[hf]`. Conclude with `hc (ψ.comp f) _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `φ`. Rewrite using `[Matrix.map_map]`. Conclude with `hA (φ.comp f)`.
+A detailed English derivation is pending.
 -/
 theorem isDefGram_map {E K : Type} [Field E] [Field K] [NumberField K] [StarRing K] (cE : E →+* E)
     (hc : ∀ (φ : E →+* ℂ) (x : E), φ (cE x) = starRingEnd ℂ (φ x)) (f : E →+* K)
@@ -47,7 +47,7 @@ theorem isDefGram_map {E K : Type} [Field E] [Field K] [NumberField K] [StarRing
     exact hA (φ.comp f)
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hA]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_inv_of_isUnit_det {E K : Type} [Field E] [Field K] (f : E →+* K) {n : ℕ}
     (A : Matrix (Fin n) (Fin n) E) (hA : IsUnit A.det) : (A.map f)⁻¹ = A⁻¹.map f := by
@@ -56,7 +56,7 @@ theorem map_inv_of_isUnit_det {E K : Type} [Field E] [Field K] (f : E →+* K) {
   simp
 
 /- English proof (translation)
-Establish `: (A.map f).det = f A.det` using `by rw [RingHom.map_det]; rfl`. Rewrite using `[this, isUnit_iff_ne_zero, isUnit_iff_ne_zero, map_ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_det_map {E K : Type} [Field E] [Field K] (f : E →+* K) {n : ℕ}
     (A : Matrix (Fin n) (Fin n) E) : IsUnit (A.map f).det ↔ IsUnit A.det := by
@@ -64,13 +64,13 @@ theorem isUnit_det_map {E K : Type} [Field E] [Field K] (f : E →+* K) {n : ℕ
   rw [this, isUnit_iff_ne_zero, isUnit_iff_ne_zero, map_ne_zero]
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ _ cE hc ι emb hemb n J hJ τ`. Take `⟨φ₀⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hdet : IsUnit J.det` using `(isUnit_det_map φ₀ J).1 ((Matrix.isUnit_iff_isUnit_det _).1 (hJ φ₀).isUnit)`. Establish `h1 : IsDefGram (gramK emb J τ)` using `isDefGram_map cE hc (emb τ) (hemb τ) J hJ`. Establish `hdK : IsUnit (gramK emb J τ).det` using `(isUnit_det_map (emb τ) J).2 hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Establish `e : gramKd emb J τ = ((J⁻¹)ᵀ).map (emb τ)`. Unfold `gramKd`. Rewrite using `[map_inv_of_isUnit_det _ _ hdet, Matrix.transpose_map]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `isDefGram_map cE hc (emb τ) (hemb τ) _ fun φ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.transpose_map, ← map_inv_of_isUnit_det _ _ hdet]`. Conclude with `(hJ φ).inv.transpose`. Introduce `L hL`. Establish `hl : Submodule.IsLattice K (tauLat emb τ L)` using `GlobalTheory.T.lattice_extension_along_field_embedding_duals.1 E K ι n emb τ L hL.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : hdualFr (gramK emb J τ) (tauLat emb τ L) = tauLat emb τ L` using `GlobalTheory.T.lattice_extension_along_field_embedding_duals.2.1 E K ι n emb cE τ (hemb τ) J L L hdet hL.1 hL.2`. Use `⟨⟨hl, hd⟩, (GlobalTheory.T.dualLattice_isLattice_and_hermitianDual.1 K n _ _ hdK hl).1, ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.dualLattice_isLattice_and_hermitianDual.2 K n _ _ h1.1 hdK hl`. Rewrite `h` using `[hd]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem defGram_selfDual_of_embedding : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] [StarRing K] (cE : E →+* E), (∀ (φ : E →+* ℂ) (x : E), φ (cE x) = starRingEnd ℂ (φ x)) → ∀ (ι : Type) (emb : ι → E →+* K), (∀ τ x, star (emb τ x) = emb τ (cE x)) → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), (∀ φ : E →+* ℂ, (J.map φ).PosDef) → ∀ τ, IsDefGram (gramK emb J τ) ∧ IsDefGram (gramKd emb J τ) ∧ ∀ L : Submodule (𝓞 E) (Fin n → E), IsSelfDualE cE J L → IsSelfDualK (gramK emb J τ) (tauLat emb τ L) ∧ IsSelfDualK (gramKd emb J τ) (dualFr (tauLat emb τ L)) := by
   intro E K _ _ _ _ _ cE hc ι emb hemb n J hJ τ

@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.LiftBrg.ActQ
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[castGL]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem castGL_rfl_apply' {R : Type} [CommRing R] {m : ℕ} (x : GL (Fin m) R) : castGL (rfl : m = m) x = x := by
   apply Units.ext
@@ -22,7 +22,7 @@ theorem castGL_rfl_apply' {R : Type} [CommRing R] {m : ℕ} (x : GL (Fin m) R) :
   simp [castGL]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[castGL_rfl_apply', castGL_rfl_apply']`. Conclude with `⟨hx, rfl⟩`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem castGL_St_redFn (X : Stages) {m n : ℕ} (h : m = n) (x : GL (Fin m) (EA X)) (hx : x ∈ Formalism.L2.DIV.St 1)
     (PP : Pl X.toD7.host.E) :
@@ -33,13 +33,13 @@ theorem castGL_St_redFn (X : Stages) {m n : ℕ} (h : m = n) (x : GL (Fin m) (EA
   exact ⟨hx, rfl⟩
 
 /- English proof (translation)
-Introduce `X px I U L hL i t A k hF κ w`. Establish `hAk : A * k ∈ Formalism.L2.DIV.St (1 : GL (Fin X.B.R.nV) (EA X))` using `Subgroup.mul_mem _ hF.2.1 hF.2.2.2.2.1`. Establish `hred : Formalism.L2.DIV.redFn (1 : GL (Fin X.B.R.nV) (EA X)) w.1 (A * k) = 1` using `(Formalism.L2.DIV.mem_princAt.1 (hF.2.2.2.2.2 w.1 w.2)).2`. Establish `hy` using `Formalism.L2.DIV.parLev_St (mem_parLev_of_Q X I U L i t κ)`. Establish `hβ` using `hL.beta.1 i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show Formalism.L2.DIV.redFn (1 : GL (Fin X.B.R.nV) (EA X)) w.1 ((A * k)⁻¹ * castGL (rkEq X i).symm (Formalism.UG.bc (swapAE X.toD7) ((κ : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _)) * (A * k)) = _`. Generalize the expression as in `(Formalism.UG.bc (swapAE X.toD7) ((κ : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _)) = y at hy ⊢`. Generalize the expression as in `L.βV i = β at hy hβ ⊢`. Substitute `hβ` using the available equality. Take `⟨hc, hcr⟩` from `castGL_St_redFn X (rkEq X i).symm y hy w.1`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1` using `Formalism.L2.DIV.redFn_mul (Subgroup.mul_mem _ (Subgroup.inv_mem _ hAk) hc) hAk w.1`. Establish `e2` using `Formalism.L2.DIV.redFn_mul (Subgroup.inv_mem _ hAk) hc w.1`. Establish `e3` using `Formalism.L2.DIV.redFn_inv hAk w.1`. Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[e2, e3, hred, hcr]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem redZ_eq_castGL_redFn : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), LevOf X I U L →

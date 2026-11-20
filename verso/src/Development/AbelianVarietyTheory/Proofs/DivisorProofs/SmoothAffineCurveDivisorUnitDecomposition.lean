@@ -11,11 +11,11 @@ namespace GlobalTheory.KummerDiv
 variable {B : Type} [CommRing B] [IsDedekindDomain B]
 
 /- English proof (translation)
-Rewrite using `[isArtinianRing_iff_krullDimLE_zero, Ring.krullDimLE_zero_iff]`. Introduce `p hp`. Establish `h1 : (p.comap (Ideal.Quotient.mk I)).IsMaximal`. Use `Ring.DimensionLEOne.maximalOfPrime ?_ inferInstance` and prove the remaining obligations. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hI` to reduce the goal to its premises. Rewrite using `[eq_bot_iff, ← h]`. Introduce `x hx`. Simplify using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx]`. Establish `h2` using `Ideal.map_comap_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective p`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `Ideal.map_eq_top_or_isMaximal_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective h1 with h | h` into its components or cases. Conclude with `absurd (h2 ▸ h) hp.ne_top`. Conclude with `h2 ▸ h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem artinian_quot {I : Ideal B} (hI : I ≠ ⊥) : IsArtinianRing (B ⧸ I) := by
   rw [isArtinianRing_iff_krullDimLE_zero, Ring.krullDimLE_zero_iff]
@@ -34,17 +34,15 @@ theorem artinian_quot {I : Ideal B} (hI : I ≠ ⊥) : IsArtinianRing (B ⧸ I) 
   · exact h2 ▸ h
 
 /- English proof (translation)
-Use `haveI := artinian_quot (I := Ideal.span {b}) (by simpa using hb)`. Take `⟨N, y, hy⟩` from `IsArtinian.exists_pow_succ_smul_dvd (Ideal.Quotient.mk (Ideal.span {b}) f) (1 : B ⧸ Ideal.span {b})`. Take `⟨y', rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `hmem : f ^ N - f ^ (N + 1) * y' ∈ Ideal.span {b}`. Rewrite using `[← Ideal.Quotient.eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_eq_mul, mul_one, Nat.succ_eq_add_one] at hy`. Rewrite using `[map_mul, map_pow, map_pow, hy]`. Use `set P := Ideal.span {b} ⊔ Ideal.span {f ^ N} with hPdef`. Establish `hbP : Ideal.span {b} ≤ P` using `le_sup_left`. Take `⟨Q, hQ⟩` from `Ideal.dvd_iff_le.2 hbP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨N, Q, hQ, ?_⟩` and prove the remaining obligations. Establish `hP0 : P ≠ 0`. Introduce `h`. Apply `hb` to reduce the goal to its premises. Establish `: b ∈ P` using `hbP (Ideal.mem_span_singleton_self b)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[h]`. Simplify using `using this`. Establish `key : P * (Q ⊔ Ideal.span {f}) = P * ⊤`. Rewrite using `[Ideal.mul_top, Ideal.mul_sup, ← hQ]`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sup_le hbP Ideal.mul_le_left`. Apply `sup_le le_sup_left` to reduce the goal to its premises. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Establish `e : f ^ N = (f ^ N - f ^ (N + 1) * y') + f ^ N * y' * f` using `by ring`. Rewrite using `[e]`.
-
-Use `add_mem (Ideal.mem_sup_left hmem) (Ideal.mem_sup_right ?_)` and prove the remaining obligations. Conclude with `Ideal.mul_mem_mul (Ideal.mul_mem_right _ _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))) (Ideal.mem_span_singleton_self f)`. Conclude with `mul_left_cancel₀ hP0 key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_split (f b : B) (hb : b ≠ 0) :
     ∃ (N : ℕ) (Q : Ideal B), Ideal.span {b} = (Ideal.span {b} ⊔ Ideal.span {f ^ N}) * Q ∧
@@ -81,9 +79,9 @@ theorem exists_split (f b : B) (hb : b ≠ 0) :
   exact mul_left_cancel₀ hP0 key
 
 /- English proof (translation)
-Establish `h1 : (1 : B) ∈ I ⊔ Ideal.span {f}` using `h ▸ Submodule.mem_top`. Take `⟨a, ha, y, hy, hay⟩` from `Submodule.mem_sup.1 h1`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Distinguish the cases in `ha0 : a = 0`. Substitute `ha0` using the available equality.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Conclude with `⟨x, hx, hx0, ⟨c, 0, by simpa using hay⟩⟩`. Conclude with `⟨a, ha, ha0, ⟨c, 1, by linear_combination hay⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_mem_coprime {I : Ideal B} (hI : I ≠ ⊥) (f : B) (h : I ⊔ Ideal.span {f} = ⊤) :
     ∃ g ∈ I, g ≠ 0 ∧ IsCoprime f g := by
@@ -97,7 +95,7 @@ theorem exists_mem_coprime {I : Ideal B} (hI : I ≠ ⊥) (f : B) (h : I ⊔ Ide
   · exact ⟨a, ha, ha0, ⟨c, 1, by linear_combination hay⟩⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `eq_top_iff.2 (h ▸ sup_le_sup_left hle I)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCoprime_ideal_of_le {I J J' : Ideal B} (h : IsCoprime I J) (hle : J ≤ J') :
     IsCoprime I J' := by
@@ -111,35 +109,31 @@ namespace GlobalTheory.KummerDiv
 variable {B : Type} [CommRing B] [IsDedekindDomain B]
 
 /- English proof (translation)
-Take `⟨N, Q, hQ, hQf⟩` from `exists_split f b hb`. Use `set P := Ideal.span {b} ⊔ Ideal.span {f ^ N} with hPdef`. Establish `hQ0 : Q ≠ ⊥`. Introduce and unpack `rfl`. Apply `hb` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hQ`. Establish `hf0 : Ideal.span {f} ≠ ⊥` using `by simpa using hf`. Set `Q' : (Ideal B)⁰` to `⟨Q, mem_nonZeroDivisors_of_ne_zero hQ0⟩`. Take `⟨c, hc⟩` from `hdiv (ClassGroup.mk0 Q')⁻¹`. Take `⟨J, hJf, hJc⟩` from `GlobalTheory.SteinitzProd.classGroup_exists_integral_ideal_coprime hf0 c`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmemQJ : Q * (J : Ideal B) ^ q ∈ (Ideal B)⁰` using `(Q' * J ^ q).2`. Establish `h1 : ClassGroup.mk0 ⟨Q * (J : Ideal B) ^ q, hmemQJ⟩ = 1`. Establish `: (⟨Q * (J : Ideal B) ^ q, hmemQJ⟩ : (Ideal B)⁰) = Q' * J ^ q` using `Subtype.ext (by simp [Q'])`. Rewrite using `[this, map_mul, map_pow, hJc, hc, mul_inv_cancel]`. Take `⟨n, hn⟩` from `((ClassGroup.mk0_eq_one_iff hmemQJ).1 h1).principal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn' : Q * (J : Ideal B) ^ q = Ideal.span {n}` using `hn`. Establish `hJ0 : (J : Ideal B) ≠ ⊥` using `by simpa using nonZeroDivisors.coe_ne_zero J`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Establish `: Q * (J : Ideal B) ^ q = ⊥` using `by rw [hn']; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Ideal.mul_eq_bot.1 this with h | h` into its components or cases. Conclude with `hQ0 h`. Conclude with `hJ0 (pow_eq_zero_iff hq |>.1 h)`. Establish `cQ : IsCoprime (Ideal.span {f}) Q`. Rewrite using `[Ideal.isCoprime_iff_sup_eq, sup_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hQf`. Establish `cJ : IsCoprime (Ideal.span {f}) (J : Ideal B)`. Rewrite using `[Ideal.isCoprime_iff_sup_eq, sup_comm]`. Conclude with `hJf`. Establish `hfn : IsCoprime f n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Ideal.isCoprime_span_singleton_iff, ← hn']`. Conclude with `cQ.mul_right (cJ.pow_right)`. Establish `hQJ0 : Q * (J : Ideal B) ≠ ⊥` using `mul_ne_zero hQ0 hJ0`. Establish `hQJf : Q * (J : Ideal B) ⊔ Ideal.span {f} = ⊤`. Rewrite using `[← Ideal.isCoprime_iff_sup_eq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(cQ.mul_right cJ).symm`. Take `⟨g, hgQJ, hg0, hfg⟩` from `exists_mem_coprime hQJ0 f hQJf`. Establish `hg0' : Ideal.span {g} ≠ ⊥` using `by simpa using hg0`. Take `⟨J₂, hJ₂g, hJ₂c⟩` from `GlobalTheory.SteinitzProd.classGroup_exists_integral_ideal_coprime hg0' (ClassGroup.mk0 J)⁻¹`. Establish `hmemJJ : (J : Ideal B) * (J₂ : Ideal B) ∈ (Ideal B)⁰` using `(J * J₂).2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ClassGroup.mk0 ⟨(J : Ideal B) * (J₂ : Ideal B), hmemJJ⟩ = 1`. Establish `: (⟨(J : Ideal B) * (J₂ : Ideal B), hmemJJ⟩ : (Ideal B)⁰) = J * J₂` using `rfl`. Rewrite using `[this, map_mul, hJ₂c, mul_inv_cancel]`. Take `⟨t, ht⟩` from `((ClassGroup.mk0_eq_one_iff hmemJJ).1 h2).principal`. Establish `ht' : (J : Ideal B) * (J₂ : Ideal B) = Ideal.span {t}` using `ht`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hspan : Ideal.span {b * t ^ q} = Ideal.span {n} * (P * (J₂ : Ideal B) ^ q)`. Rewrite using `[← Ideal.span_singleton_mul_span_singleton, ← Ideal.span_singleton_pow, ← ht', hQ, ← hn', mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdvd : n ∣ b * t ^ q`. Rewrite using `[← Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : Ideal.span {b * t ^ q} ≤ Ideal.span {n}` using `hspan ▸ Ideal.mul_le_left`. Conclude with `hle (Ideal.mem_span_singleton_self _)`. Take `⟨w, hw⟩` from `hdvd`. Establish `hn0' : Ideal.span {n} ≠ 0` using `by simpa using hn0`. Establish `hwspan : Ideal.span {w} = P * (J₂ : Ideal B) ^ q`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ hn0'` to reduce the goal to its premises. Rewrite using `[Ideal.span_singleton_mul_span_singleton, ← hw, hspan]`. Establish `cgP : IsCoprime (Ideal.span {g}) P`. Apply `isCoprime_ideal_of_le _ (le_sup_right : Ideal.span {f ^ N} ≤ P)` to reduce the goal to its premises. Rewrite using `[Ideal.isCoprime_span_singleton_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hfg.symm.pow_right`. Establish `cgJ₂ : IsCoprime (Ideal.span {g}) (J₂ : Ideal B)`. Rewrite using `[Ideal.isCoprime_iff_sup_eq, sup_comm]`. Conclude with `hJ₂g`. Establish `hgw : IsCoprime g w`.
-
-Rewrite using `[← Ideal.isCoprime_span_singleton_iff, hwspan]`. Conclude with `cgP.mul_right cgJ₂.pow_right`. Use `⟨g, n, t, w, N, hg0, hfg, hfn, hgw, ?_, ?_, hw⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton, hQ]`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) ((Ideal.mul_le_left : Q * (J : Ideal B) ≤ Q) hgQJ)`.
-
-Rewrite using `[← Ideal.mem_span_singleton, ← hn']`. Establish `: g ^ q ∈ (Q * (J : Ideal B)) ^ q` using `Ideal.pow_mem_pow hgQJ q`. Rewrite `this` using `[mul_pow]`. Conclude with `Ideal.mul_mono_left (Ideal.pow_le_self hq) this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (q : ℕ) (hq : q ≠ 0) (hdiv : ∀ c : ClassGroup B, ∃ d : ClassGroup B, d ^ q = c)
     (f b : B) (hf : f ≠ 0) (hb : b ≠ 0) :
@@ -227,19 +221,17 @@ end GlobalTheory.KummerDiv
 namespace GlobalTheory.KummerDiv
 
 /- English proof (translation)
-Introduce `k B _ _ _ _ _ _ q hq f hf b hb m`. Establish `hqk : (q : k) ≠ 0` using `hq.ne_zero`. Establish `hq0 : q ≠ 0`. Introduce and unpack `rfl`. Conclude with `hqk (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hdiv : ∀ c : ClassGroup B, ∃ d : ClassGroup B, d ^ q = c` using `GlobalTheory.T.classGroup_dedekind_algClosed_divisible k B q hqk`. Take `⟨g, n, t, w, N, hg0, hfg, hfn, hgw, hbd, hnd, hw⟩` from `core q hq0 hdiv f b hf hb`. Use `⟨g, hg0, hfg, ?_⟩` and prove the remaining obligations. Use `set L := Localization.Away (f * g)`. Establish `hfgU : IsUnit (algebraMap B L (f * g))` using `IsLocalization.Away.algebraMap_isUnit (f * g)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hfgU` using `[map_mul]`. Establish `hfU : IsUnit (algebraMap B L f)` using `isUnit_of_mul_isUnit_left hfgU`. Establish `hgU : IsUnit (algebraMap B L g)` using `isUnit_of_mul_isUnit_right hfgU`. Establish `hbU : IsUnit (algebraMap B L b)`. Use `isUnit_of_dvd_unit (map_dvd (algebraMap B L) hbd) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_pow]`. Conclude with `(hfU.pow N).mul hgU`. Establish `hnU : IsUnit (algebraMap B L n)`. Use `isUnit_of_dvd_unit (map_dvd (algebraMap B L) hnd) ?_` and prove the remaining obligations. Rewrite using `[map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgU.pow q`. Use `set un := (hnU.mul (hfU.pow m)).unit with hun`. Establish `hv : (algebraMap B L n * algebraMap B L f ^ m) * ((un⁻¹ : Lˣ) : L) = 1`. Establish `: (un : L) = algebraMap B L n * algebraMap B L f ^ m` using `rfl`. Rewrite using `[← this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `Units.mul_inv un`. Use `⟨hbU.unit * un⁻¹, n, 1, t, w, f ^ m, hfn, isCoprime_one_right, hgw, hfg.symm.pow_right, ?_, ?_⟩` and prove the remaining obligations. Establish `hb' : ((hbU.unit : Lˣ) : L) = algebraMap B L b` using `rfl`. Rewrite using `[Units.val_mul, hb', map_mul, map_mul, map_one, map_pow]`. Take the linear combination `(-(algebraMap B L b)) * hv`.
-
-Establish `hb' : ((hbU.unit : Lˣ) : L) = algebraMap B L b` using `rfl`. Establish `hw'` using `congrArg (algebraMap B L) hw`. Simplify using `only [map_mul, map_pow] at hw'`. Rewrite using `[Units.val_mul, hb', map_mul, map_pow, map_pow]`. Take the linear combination `(((un⁻¹ : Lˣ) : L) * algebraMap B L f ^ m) * hw' + algebraMap B L w * hv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem divisor_step : ∀ (k B : Type) [Field k] [IsAlgClosed k] [CommRing B] [IsDedekindDomain B]
     [Algebra k B] [Algebra.FiniteType k B] (q : ℕ), IsUnit (q : k) → ∀ f : B, f ≠ 0 → ∀ b : B, b ≠ 0 →

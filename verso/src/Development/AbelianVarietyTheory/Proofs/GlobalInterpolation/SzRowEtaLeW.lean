@@ -9,11 +9,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Establish `hM1 : 1 ≤ M` using `by linarith`. Establish `hM0 : 0 ≤ M` using `by linarith`. Establish `hW1 : 1 ≤ W` using `le_trans (one_le_pow₀ hM1) hW`. Establish `h9 : M ^ 9 ≤ d * m * W`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h45 : 2 * M ^ 4 ≤ M ^ 10`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : 0 ≤ M ^ 4` using `by positivity`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem eta_rows_of_pow_bounds {M k m r N L S η d W : ℝ} (hM : 8 ≤ M) (hk : k ≤ M) (hm1 : 1 ≤ m) (hm : m ≤ M)
     (hr0 : 0 ≤ r) (hr : r ≤ M) (hN : N ≤ M) (hL1 : 1 ≤ L) (hL : L ≤ M) (hS0 : 0 ≤ S) (hS : S ≤ M ^ 3)
@@ -52,29 +52,29 @@ theorem eta_rows_of_pow_bounds {M k m r N L S η d W : ℝ} (hM : 8 ≤ M) (hk :
       _ ≤ W := by linarith
 
 /- English proof (translation)
-Introduce `eps h0 h1 C _`. Use `⟨0, fun cD hcD => ⟨0, fun ch hch => ?_⟩⟩` and prove the remaining obligations. Take `⟨x1, hx1⟩` from `GlobalTheory.T.scale_polynomial_quantities_comparison eps ((cD + ch + 402) * (10 : ℕ)) 1 h0 one_pos`. Take `⟨x2, hx2⟩` from `GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps h0 h1`. Use `⟨max 8 (max x1 x2), fun D L he hx hV => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h8 : 8 ≤ L.sc.x` using `le_trans (le_max_left _ _) hx`. Establish `hxa : x1 ≤ L.sc.x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `hxb : x2 ≤ L.sc.x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`. Take `⟨hf, hm, hr, hkr, -, hL, hL1, -, -, -, -, -, -, -, hN, -, -⟩` from `hx2 L.sc D.R he hxb hV.ranks`. Establish `hx1' : 1 ≤ L.sc.x` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hn1 : 1 ≤ D.R.n` using `D.R.ord_pos`. Establish `hn0 : (0 : ℝ) < D.R.n` using `by exact_mod_cast hn1`. Establish `hn3 : (D.R.n : ℝ) ≤ L.sc.x ^ (3 : ℝ)`. Use `le_trans ?_ hf` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Ranks.f]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hW` using `((hx1 L.sc he hxa).2.2.2.2.2.1 D.R.n hn1 hn3).1`. Rewrite `hW` using `[sub_self, Real.rpow_zero, one_mul, Real.rpow_mul_natCast hx0.le]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set M := L.sc.x ^ (cD + ch + 402) with hM`. Establish `key : ∀ a : ℝ, a ≤ cD + ch + 402 → L.sc.x ^ a ≤ M` using `fun a ha => Real.rpow_le_rpow_of_exponent_le hx1' ha`. Establish `hxM : L.sc.x ≤ M` using `by simpa using key 1 (by linarith)`. Establish `hM8 : 8 ≤ M` using `h8.trans hxM`. Establish `hrM : (D.R.r : ℝ) ≤ M` using `hr.trans (key _ (by linarith))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkM : (D.R.k : ℝ) ≤ M` using `le_trans (by exact_mod_cast hkr) hrM`. Establish `hceil : ∀ a : ℝ, 0 ≤ a → a ≤ cD + ch + 402 → (⌈L.sc.x ^ a⌉₊ : ℝ) ≤ 2 * M`. Introduce `a ha ha'`. Use `Nat.ceil_lt_add_one (Real.rpow_nonneg hx0.le a)` as an intermediate fact. Use `key a ha'` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hSc : L.Sc = (D.R.k : ℝ) * (4 * (⌈L.sc.x ^ cD⌉₊ : ℝ))`. Rewrite using `[L.Sc_eq, hV.Del_eq]`. Simplify using `[Delv]`. Establish `hEta : L.etaSz = (D.R.m : ℝ) * (2 * (⌈L.sc.x ^ ch⌉₊ : ℝ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hV.eta_eq]`. Simplify using `[h0v]`. Establish `hd : L.sc.x ^ (-L.sc.eps) ≤ L.de2`. Rewrite using `[L.typeDensity_eq_card_div, le_div_iff₀ hn0]`. Conclude with `hV.host.2.2.1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdp : 0 < L.sc.x ^ (-L.sc.eps)` using `Real.rpow_pos_of_pos hx0 _`. Use `eta_rows_of_pow_bounds hM8 hkM ?_ (hm.trans hxM) (Nat.cast_nonneg _) hrM (hN.trans (key _ (by linarith))) hL1 (hL.trans hxM) ?_ ?_ ?_ ?_ (hdp.le.trans hd) ?_ hW` and prove the remaining obligations. Use `D.R.two_le_m` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.m)` after adjusting the coercions. Rewrite using `[hSc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Rewrite using `[hSc]`. Use `hceil cD hcD (by linarith)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hEta]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Rewrite using `[hEta]`. Use `hceil ch hch (by linarith)` as an intermediate fact. Establish `hmM` using `hm.trans hxM`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hLM : L.sc.x ^ L.sc.eps ≤ M` using `hL.trans hxM`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_add hx0]`. Simplify using the standard rewrite rules. Use `_ ≤ L.de2 * M := by gcongr; exact hdp.le.trans hd`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem szRow_eta_le_w : SzRow (fun C D L => ((D.R.m : ℝ) * (L.Sc + L.etaSz) ≤ L.sc.w'' D.R.n * L.sc.L) ∧ ((D.R.N D.R.m : ℝ) * L.etaSz ≤ L.de2 * D.R.m * L.sc.w'' D.R.n) ∧ (L.etaSz ^ 2 * D.R.r * L.sc.L ≤ L.de2 * D.R.m * L.sc.w'' D.R.n ^ 2) ∧ ((D.R.k : ℝ) * L.Sc ≤ L.sc.w'' D.R.n)) := by
   intro eps h0 h1 C _

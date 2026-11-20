@@ -15,13 +15,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan.OrbMark
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.inRealCone_cell_of_linearPiece_through_cellPoint bar φ γ e hγ hem hen hel v t b ht hb hvt hvb`. Use `choose a ha he using h`. Establish `h1 : toReal v = ∑ i, (∑ l, b l * a l i) • toReal (γ i)`. Rewrite using `[hvb]`. Simplify using `only [he, Finset.smul_sum, smul_smul, Finset.sum_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Finset.sum_comm`. Establish `h2 : (fun i => (∑ l, b l * a l i) - t i) = 0`. Use `eq_zero_of_toReal_rel (u := γ) (v := (![] : Fin 0 → _)) (s := ![]) (fun d c hc => ?_) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.1 hind c (by simpa using hc) i`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [sub_smul, Finset.sum_sub_distrib, ← h1, ← hvt]`. Simplify using the standard rewrite rules. Use `⟨a j, ha j, fun i hi => ?_, he j⟩` and prove the remaining obligations. Establish `h3 : ∑ l, b l * a l i = 0`. Use `congrFun h2 i` as an intermediate fact.
-
-Simplify `this` using `[hi]`. Establish `h4` using `(Finset.sum_eq_zero_iff_of_nonneg fun l _ => mul_nonneg (hb l).le (ha l i)).1 h3 j (Finset.mem_univ _)`. Conclude with `(mul_eq_zero.1 h4).resolve_left (hb j).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_face_coord_of_linearOn {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {X : Type} [AddCommGroup X]
     [Module O X] [Module.Finite O X] {m k : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : IsCell bar φ γ)
@@ -50,9 +48,9 @@ theorem exists_face_coord_of_linearOn {O : Type} [CommRing O] {bar : O → O} {�
   exact (mul_eq_zero.1 h4).resolve_left (hb j).ne'
 
 /- English proof (translation)
-Use `⟨fun y z => ?_, fun a y z => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hf y`. Take `⟨z, rfl⟩` from `hf z`. Rewrite using `[hε, hε, hδ.1]`. Take `⟨y, rfl⟩` from `hf y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `hf z`. Take `⟨a, rfl⟩` from `τ.surjective a`. Rewrite using `[← GlobalTheory.T.ringOfIntegers_aut_comm_hostConjugation E H τ a, ← hsm, ← hsm, hε, hε, hδ.2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_balForms_of_descend {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {X Y : Type} [AddCommGroup X]
     [Module (𝓞 E) X] [AddCommGroup Y] [Module (𝓞 E) Y] (τ : 𝓞 E ≃+* 𝓞 E) {f : X →+ Y} (hf : Function.Surjective f)
@@ -68,29 +66,27 @@ theorem mem_balForms_of_descend {E : Type} [Field E] [NumberField E] [IsCMField 
     rw [← GlobalTheory.T.ringOfIntegers_aut_comm_hostConjugation E H τ a, ← hsm, ← hsm, hε, hε, hδ.2]
 
 /- English proof (translation)
-Introduce `E _ _ _ H φ htw X₀ _ _ _ m₀ δ₀ h₀ hind v t ht hvt X Y _ _ _ _ _ _ π hπ τ f hτ hf hsm u hu β hβ m δ hδ c hc hβc j hj`. Establish `hval : ∀ x y, (β x y : ℝ) = ∑ l, c l * (δ l x y : ℝ)` using `fun x y => by`. Simplify `LinearMap.congr_fun₂ hβc x y` using `[LinearMap.sum_apply]`. Establish `hvan : ∀ l, 0 < c l → ∀ x, f x = 0 → ∀ y, δ l x y = 0`. Introduce `l hl x hx y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : β x x = 0` using `by simpa using hβ x x 0 0 (by simp [hx]) (by simp [hx])`. Establish `hk` using `hval x x`. Rewrite `hk` using `[hb, Int.cast_zero]`. Establish `hall` using `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => mul_nonneg (hc i) (Int.cast_nonneg (hδ.nonneg i x))).1 hk.symm l (Finset.mem_univ _)`. Establish `h0 : δ l x x = 0` using `Int.cast_eq_zero.1 ((mul_eq_zero.1 hall).resolve_left hl.ne')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ConeSub.eq_zero_of_self_eq_zero (δ l) (hδ.mem l).1 (hδ.nonneg l) h0 y`. Use `set S : Finset (Fin m) := Finset.univ.filter fun l => 0 < c l with hS`. Set `s : Fin S.card ↪ Fin m` to `(S.orderEmbOfFin rfl).toEmbedding`. Establish `hs : Set.range s = ↑S` using `Finset.range_orderEmbOfFin S rfl`. Establish `hspos : ∀ i, 0 < c (s i)` using `fun i => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: s i ∈ (S : Set (Fin m))` using `hs ▸ Set.mem_range_self i`. Simplify `this` using `[hS]`. Establish `hdesc : ∀ i : Fin S.card, ∃ ε : LinearMap.BilinForm ℤ Y, ∀ x y, ε (f x) (f y) = δ (s i) x y` using `fun i => GlobalTheory.T.exists_intBilinForm_descend_along_surjective f hf _ (hvan _ (hspos i)) fun x hx y => by rw [(hδ.mem _).1]; exact hvan _ (hspos i) x hx y`. Use `choose ε hε using hdesc`. Establish `hεm : ∀ i, ε i ∈ balForms H.bar Y` using `fun i => mem_balForms_of_descend H τ hf hsm (hδ.mem _) (hε i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hεn : ∀ i y, 0 ≤ ε i y y` using `fun i y => by`. Take `⟨y, rfl⟩` from `hf y`. Rewrite using `[hε]`. Conclude with `hδ.nonneg _ _`. Establish `hsemi` using `eval_pull_semilinear_of_isTwInv E H φ htw τ hτ f hf hsm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hεl : φ.LinearOn ε`. Introduce `d hd`. Establish `h1` using `linearOn_comp hδ.linear s d hd`. Establish `h2 : ∀ i, φ.evalZ (δ (s i)) = φ.evalZ (ε i)` using `fun i => by`. Use `hsemi fun a b => (ε i a b : ℝ)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hε] at this`. Conclude with `this`. Establish `h3` using `hsemi fun a b => ∑ i, d i * (ε i a b : ℝ)`. Simplify using `only [hε] at h3`. Simplify using `only [h2] at h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3.symm.trans h1`. Establish `hvb : toReal v = ∑ i, c (s i) • toReal (pull π (ε i))` using `LinearMap.ext₂ fun x₀ y₀ => by`. Take `⟨x, hx⟩` from `hf (π x₀)`. Take `⟨y, hy⟩` from `hf (π y₀)`. Simplify using `only [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, pull_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hβ x y x₀ y₀ hx.symm hy.symm, hval, ← hx, ← hy]`. Simplify using `only [hε]`. Use `(Fintype.sum_of_injective s s.injective _ _ (fun l hl => ?_) fun i => rfl).symm` and prove the remaining obligations. Establish `: ¬ 0 < c l` using `by rw [hs] at hl; simpa [hS] using hl`. Rewrite using `[le_antisymm (not_lt.1 this) (hc l), zero_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, rfl⟩ : j ∈ Set.range s` from `by rw [hs]; simpa [hS] using hj`. Take `⟨a, ha, ha0, he⟩` from `exists_face_coord_of_linearOn h₀ hind (fun i => pull_mem π (hεm i)) (fun i y => hεn i _) ((linearOn_pull_iff hπ).2 hεl) ht hspos hvt hvb j`. Use `⟨a, ha, ha0, LinearMap.ext₂ fun x y => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `hπ (f x)`. Take `⟨y₀, hy⟩` from `hπ (f y)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1` using `LinearMap.congr_fun₂ he x₀ y₀`. Simplify using `only [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, pull_apply, pullAdd_apply] at h1 ⊢`. Rewrite `h1` using `[hx, hy, hε]`. Rewrite using `[h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Break down `(ht i).eq_or_lt with h | h` into its components or cases. Rewrite using `[ha0 i h.symm, zero_mul, zero_mul]`. Rewrite using `[← hu i h, pull_apply, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coord_pullAdd_of_pos : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (φ : InvFun (𝓞 E)), IsTwInv H φ →
   ∀ {X₀ : Type} [AddCommGroup X₀] [Module (𝓞 E) X₀] [Module.Finite (𝓞 E) X₀] {m₀ : ℕ} (δ₀ : Fin m₀ → LinearMap.BilinForm ℤ X₀),

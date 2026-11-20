@@ -10,9 +10,7 @@ open scoped TensorProduct
 open UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Establish `h : ((Nat.gcd x y : ℕ) : A) = (x : A) * (Nat.gcdA x y : A) + (y : A) * (Nat.gcdB x y : A)`. Use `congrArg (Int.cast : ℤ → A) (Nat.gcd_eq_gcd_ab x y)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[h]`.
-
-Conclude with `I.add_mem (I.mul_mem_right _ hx) (I.mul_mem_right _ hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem natCast_gcd_mem {A : Type} [CommRing A] {I : Ideal A} {x y : ℕ} (hx : (x : A) ∈ I) (hy : (y : A) ∈ I) :
     ((Nat.gcd x y : ℕ) : A) ∈ I := by
@@ -24,7 +22,7 @@ private theorem natCast_gcd_mem {A : Type} [CommRing A] {I : Ideal A} {x y : ℕ
   exact I.add_mem (I.mul_mem_right _ hx) (I.mul_mem_right _ hy)
 
 /- English proof (translation)
-Unfold `IsGen at h`. Establish `hN : (N : A) ∈ Ideal.span {(N : A)}` using `Ideal.mem_span_singleton_self _`. Rewrite `hN` using `[← h]`. Establish `hle : (Ideal.span {a} ⊔ Ideal.span {(N : A)}) * 𝔞 ≤ 𝔞` using `Ideal.mul_le_right`. Conclude with `hle hN`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem natCast_mem_of_isGen {A : Type} [CommRing A] {a : A} {N : ℕ} {𝔞 : Ideal A} (h : IsGen a N 𝔞) :
     (N : A) ∈ 𝔞 := by
@@ -35,21 +33,19 @@ private theorem natCast_mem_of_isGen {A : Type} [CommRing A] {a : A} {N : ℕ} {
   exact hle hN
 
 /- English proof (translation)
-Introduce `A _ _ _ 𝔟₁ 𝔟₂ M₁ M₂ Q a₁ a₂ hM₁ hM₂ hle h₁ h₂ hQ`. Establish `hgM₁ : Nat.gcd Q (Nat.gcd M₁ M₂) ∣ M₁` using `(Nat.gcd_dvd_right _ _).trans (Nat.gcd_dvd_left _ _)`. Establish `hgM₂ : Nat.gcd Q (Nat.gcd M₁ M₂) ∣ M₂` using `(Nat.gcd_dvd_right _ _).trans (Nat.gcd_dvd_right _ _)`. Establish `hgQ : Nat.gcd Q (Nat.gcd M₁ M₂) ∣ Q` using `Nat.gcd_dvd_left _ _`. Establish `hg_mem : ((Nat.gcd Q (Nat.gcd M₁ M₂) : ℕ) : A) ∈ 𝔟₂` using `natCast_gcd_mem (hle hQ) (natCast_gcd_mem (hle (natCast_mem_of_isGen h₁)) (natCast_mem_of_isGen h₂))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgpos : 0 < Nat.gcd Q (Nat.gcd M₁ M₂)` using `Nat.pos_of_dvd_of_pos hgM₂ hM₂`. Generalize the expression as in `Nat.gcd Q (Nat.gcd M₁ M₂) = g at hgM₁ hgM₂ hgQ hg_mem hgpos`. Take `⟨m₁, hm₁⟩` from `hgM₁`. Take `⟨m₂, hm₂⟩` from `hgM₂`. Establish `h1 : a₂ * (g : A) ∈ Ideal.span {(M₂ : A)}`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← h₂]`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_sup_left (Ideal.mem_span_singleton_self a₂)) hg_mem`. Rewrite `h1` using `[Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h1`. Establish `hg0 : (g : A) ≠ 0` using `by exact_mod_cast hgpos.ne'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm₂pos : 0 < m₂`. Break down `Nat.eq_zero_or_pos m₂ with h | h` into its components or cases. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm₂0 : (m₂ : A) ≠ 0` using `by exact_mod_cast hm₂pos.ne'`. Establish `hM₂c : (M₂ : A) = (g : A) * (m₂ : A)` using `by rw [hm₂]; push_cast; ring`. Establish `ha : a₂ = (m₂ : A) * c`. Apply `mul_right_cancel₀ hg0` to reduce the goal to its premises. Rewrite using `[hc, hM₂c]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨g, m₁, m₂, c, hgQ, hm₁, hm₂, ha, ?_⟩` and prove the remaining obligations. Unfold `IsGen at h₂ ⊢`. Establish `hs : Ideal.span {(m₂ : A)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hm₂0`. Apply `mul_left_cancel₀ hs` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← _root_.mul_assoc, Ideal.mul_sup]`. Use `_ = (Ideal.span {a₂} ⊔ Ideal.span {(M₂ : A)}) * 𝔟₂ := by`.
-
-Rewrite using `[Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_mul_span_singleton, ← ha, hM₂c, _root_.mul_comm (m₂ : A)]`. Use `_ = Ideal.span {(M₂ : A)} := h₂`. Use `_ = Ideal.span {(m₂ : A)} * Ideal.span {(g : A)} := by`. Rewrite using `[Ideal.span_singleton_mul_span_singleton, hM₂c, _root_.mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.numSplit_holds :
     NumSplit := by

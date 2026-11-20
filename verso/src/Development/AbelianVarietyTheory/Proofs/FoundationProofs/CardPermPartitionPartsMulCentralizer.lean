@@ -5,11 +5,11 @@ open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare
 
 /- English proof (translation)
-Use extensionality with `d`. Rewrite using `[Multiset.count_add, Multiset.count_filter, Multiset.count_replicate]`. Distinguish the cases in `h2 : 2 ≤ d`. Rewrite using `[if_pos h2, if_neg (by omega)]; rfl`. Rewrite using `[if_neg h2]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h1 : 1 = d`. Substitute `h1` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h1]`. Establish `: d ∉ μ` using `fun hd => by have := h d hd; omega`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma eq_filter_add_replicate (μ : Multiset ℕ) (h : ∀ d ∈ μ, 0 < d) :
     μ = μ.filter (fun n => 2 ≤ n) + Multiset.replicate (μ.count 1) 1 := by
@@ -25,23 +25,23 @@ private lemma eq_filter_add_replicate (μ : Multiset ℕ) (h : ∀ d ∈ μ, 0 <
       simpa using this
 
 /- English proof (translation)
-Introduce `N μ hpos hsum`. Use `set m := μ.filter (fun n => 2 ≤ n) with hm`. Establish `hμ : μ = m + Multiset.replicate (μ.count 1) 1` using `eq_filter_add_replicate μ hpos`. Establish `hs : m.sum + μ.count 1 = N`. Rewrite using `[← hsum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `conv_rhs => rw [hμ]`. Simplify using the standard rewrite rules. Establish `key` using `Equiv.Perm.card_of_cycleType_mul_eq (Fin N) m`. Rewrite `key` using `[if_pos ⟨by rw [Fintype.card_fin]; omega, fun a ha => (Multiset.mem_filter.1 ha).2⟩, Fintype.card_fin]`. Establish `hN : N - m.sum = μ.count 1` using `by omega`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[hN]`. Establish `hset : (Finset.univ.filter fun σ : Equiv.Perm (Fin N) => σ.partition.parts = μ) = Finset.univ.filter fun σ : Equiv.Perm (Fin N) => σ.cycleType = m`. Use extensionality with `σ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite using `[← Equiv.Perm.filter_parts_partition_eq_cycleType, h]`. Introduce `h`. Rewrite using `[Equiv.Perm.parts_partition, ← Equiv.Perm.sum_cycleType, h, Fintype.card_fin, hN]`. Conclude with `hμ.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hprod : ∏ d ∈ μ.toFinset, (d ^ μ.count d * (μ.count d).factorial) = (μ.count 1).factorial * m.prod * ∏ n ∈ m.toFinset, (m.count n).factorial`. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not μ.toFinset (fun n => 2 ≤ n)]`. Establish `h1 : μ.toFinset.filter (fun n => 2 ≤ n) = m.toFinset`. Use extensionality with `n`. Simplify using `[hm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∏ d ∈ μ.toFinset.filter (fun n => ¬ 2 ≤ n), (d ^ μ.count d * (μ.count d).factorial) = (μ.count 1).factorial`. Rewrite using `[Finset.prod_eq_single 1]`. Simplify using the standard rewrite rules. Introduce `b hb hb1`. Simplify using `only [Finset.mem_filter, Multiset.mem_toFinset] at hb`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hpos b hb.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `h`. Establish `: (1 : ℕ) ∉ μ` using `fun h1 => h (by simpa using h1)`. Simplify using `[Multiset.count_eq_zero_of_notMem this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, h2, Finset.prod_multiset_count m, mul_assoc, ← Finset.prod_mul_distrib, mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun n hn => ?_` and prove the remaining obligations. Establish `hn2 : 2 ≤ n` using `(Multiset.mem_filter.1 (Multiset.mem_toFinset.1 hn)).2`. Establish `: m.count n = μ.count n` using `by rw [hm, Multiset.count_filter, if_pos hn2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[this]`. Rewrite using `[hset, hprod]`. Use `key` and compare the differences between its conclusion and the goal.
+A detailed English derivation is pending.
 -/
 theorem card_perm_partition_parts_mul :
     ∀ (N : ℕ) (μ : Multiset ℕ), (∀ d ∈ μ, 0 < d) → μ.sum = N →

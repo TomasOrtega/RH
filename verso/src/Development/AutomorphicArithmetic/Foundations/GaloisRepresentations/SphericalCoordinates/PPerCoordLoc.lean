@@ -13,31 +13,27 @@ open GlobalTheory.PeriodCoord (realMap realMap_apply realMap_inj colMat)
 namespace UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `O _ bar g ρ D P₀ M₀ hP₀ hM₀ d co hco m B P b₀ hB hb₀ hHol hPb₀`. Take `⟨α, β, hαβ⟩` from `PerCoordU.exists_colMat_per hP₀`. Take `⟨A, hA⟩ : ∃ A : (Fin m → ℂ) → Matrix (Fin g) (Fin g) ℂ, ∀ b, A b = colMat α ⇑(P b)` from `⟨_, fun _ => rfl⟩`. Take `⟨Bm, hBm⟩ : ∃ Bm : (Fin m → ℂ) → Matrix (Fin g) (Fin g) ℂ, ∀ b, Bm b = colMat β ⇑(P b)` from `⟨_, fun _ => rfl⟩`. Establish `hrep : ∀ b ∈ B, ∀ x, P b x = realMap (A b) (Bm b) (P₀ x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `b hb x`. Rewrite using `[hA, hBm]`. Conclude with `hαβ _ (hHol.1 b hb) x`. Establish `hPd : ∀ (x : D.La) (i : Fin g), DifferentiableOn ℂ (fun b => P b x i) B` using `fun x i => differentiableOn_pi.1 (hHol.2 x) i`. Establish `hAd : ∀ i j, DifferentiableOn ℂ (fun b => A b i j) B`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Simplify using `only [hA, colMat, Matrix.of_apply]`. Conclude with `DifferentiableOn.fun_sum fun x _ => (hPd x i).const_mul _`. Establish `hBd : ∀ i j, DifferentiableOn ℂ (fun b => Bm b i j) B`. Introduce `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hBm, colMat, Matrix.of_apply]`. Conclude with `DifferentiableOn.fun_sum fun x _ => (hPd x i).const_mul _`. Establish `hAc : ContinuousOn A B` using `continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => (hAd i j).continuousOn`. Establish `hdet : ContinuousOn (fun b => (A b).det) B` using `(continuous_id.matrix_det).comp_continuousOn hAc`. Establish `hSo : IsOpen (B ∩ (fun b => (A b).det) ⁻¹' {0}ᶜ)` using `hdet.isOpen_inter_preimage hB isOpen_compl_singleton`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hAB0 : A b₀ = 1 ∧ Bm b₀ = 0`. Apply `realMap_inj` to reduce the goal to its premises. Apply `PerCoordU.ext_per hP₀` to reduce the goal to its premises. Introduce `x`. Establish `h1` using `hrep b₀ hb₀ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hPb₀]`. Rewrite using `[← h1, realMap_apply]`. Simplify using the standard rewrite rules. Establish `hb₀S : b₀ ∈ B ∩ (fun b => (A b).det) ⁻¹' {0}ᶜ`. Use `⟨hb₀, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hAB0.1]`. Establish `hnhds : B ∩ (fun b => (A b).det) ⁻¹' {0}ᶜ ∈ 𝓝 b₀` using `hSo.mem_nhds hb₀S`. Establish `hinvd : ∀ i j, DifferentiableOn ℂ (fun b => (A b)⁻¹ i j) (B ∩ (fun b => (A b).det) ⁻¹' {0}ᶜ)` using `RiemannRel.differentiableOn_left_inverse A (fun b => (A b)⁻¹) (fun i j => (hAd i j).mono Set.inter_subset_left) (fun b hb => Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (by simpa using hb.2)))`. Take `⟨gL, hgL⟩` from `LinearMap.exists_leftInverse_of_injective co (LinearMap.ker_eq_bot.mpr hco.1)`. Use `⟨fun b => gL ((A b)⁻¹ * Bm b), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[differentiableAt_pi]`. Introduce `k`. Establish `e : (fun b => gL ((A b)⁻¹ * Bm b) k) = fun b => ∑ i, ∑ j, ((A b)⁻¹ * Bm b) i j * gL (Matrix.single i j 1) k`. Use function extensionality and compare the values at `fun b => PerCoordU.coords_sum gL _ k`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `DifferentiableAt.fun_sum fun i _ => DifferentiableAt.fun_sum fun j _ => ?_` and prove the remaining obligations. Use `DifferentiableAt.mul_const ?_ _` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Use `DifferentiableAt.fun_sum fun l _ => DifferentiableAt.fun_mul ?_ ?_` and prove the remaining obligations. Conclude with `(hinvd i l).differentiableAt hnhds`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hBd l j).differentiableAt (hB.mem_nhds hb₀)`. Simplify using `only`. Rewrite using `[hAB0.1, hAB0.2, Matrix.mul_zero, map_zero]`. Use `filter_upwards [hnhds] with b hb`. Establish `hdetb : IsUnit (A b).det` using `isUnit_iff_ne_zero.mpr (by simpa using hb.2)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Establish `hCmem : (A b)⁻¹ * Bm b ∈ LinearMap.range co`. Rewrite using `[hco.2]`. Conclude with `PerCoordU.mem_Tsp_of_period hP₀ (hHol.1 b hb.1) hM₀.2.2 (hrep b hb.1) hdetb.ne_zero`. Take `⟨y, hy⟩` from `hCmem`. Establish `hcy : co (gL ((A b)⁻¹ * Bm b)) = (A b)⁻¹ * Bm b`.
-
-Rewrite using `[← hy, ← LinearMap.comp_apply gL co, hgL, LinearMap.id_apply]`. Use `letI := Matrix.invertibleOfIsUnitDet (A b) hdetb`. Use `⟨Matrix.toLinearEquiv' (A b) this, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [hcy, perC_apply]`. Rewrite using `[hrep b hb.1 x, realMap_apply]`.
-
-Use `show A b *ᵥ P₀ x + Bm b *ᵥ star (P₀ x) = A b *ᵥ (P₀ x + ((A b)⁻¹ * Bm b) *ᵥ star (P₀ x))`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv_cancel_left _ _ hdetb]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perCoordLoc_of : PerCoordLoc := by
   intro O _ bar g ρ D P₀ M₀ hP₀ hM₀ d co hco m B P b₀ hB hb₀ hHol hPb₀

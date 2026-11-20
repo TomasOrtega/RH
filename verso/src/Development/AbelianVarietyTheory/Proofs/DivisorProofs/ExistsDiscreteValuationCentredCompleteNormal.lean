@@ -6,15 +6,13 @@ open IsLocalRing GlobalTheory.TorRef
 namespace GlobalTheory.DivVal
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing V := hV.1`. Distinguish the cases in `hm : maximalIdeal V = ⊥`. Use `⟨1, fun v => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : algebraMap V (FractionRing V) v = 0`. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Valuation.one_apply_of_ne_zero h]`. Rewrite `hv` using `[hm, Ideal.mem_bot]`. Simplify using `[hv]`. Take `⟨T, hT, g, hg, hc⟩` from `GlobalTheory.GoodVal.exists_dvr_centre (R := V) (K := FractionRing V) (L := FractionRing V) (maximalIdeal V) hm`. Establish `hg' : ∀ v : V, algebraMap T (FractionRing V) (g v) = algebraMap V (FractionRing V) v` using `fun v => by`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using congrArg (fun f => f v) hg`. Establish `hne : maximalIdeal T ≠ ⊥` using `IsDiscreteValuationRing.not_a_field T`. Set `P : IsDedekindDomain.HeightOneSpectrum T` to `⟨maximalIdeal T, inferInstance, hne⟩`. Use `⟨P.valuation (FractionRing V), fun v => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[← hg']`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.valuation_le_one (g v)`. Rewrite using `[← hg']`. Use `(P.valuation_lt_one_iff_mem (g v)).2 ?_` and prove the remaining obligations. Use `show g v ∈ maximalIdeal T`. Rewrite using `[← Ideal.mem_comap, hc]`.
-
-Conclude with `hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_valuation_centre (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (hV : IsCN V) :
     ∃ ν : Valuation (FractionRing V) (WithZero (Multiplicative ℤ)),

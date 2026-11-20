@@ -16,9 +16,9 @@ namespace GlobalTheory.HeckeDatumExists
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `hP`. Take `⟨x, hx, hy⟩` from `h`. Use `hy (Formalism.DivisionValues.cO D.host.E x) ?_ ?_` and prove the remaining obligations. Use `show starRingAut (x : D.host.E) = D.host.conj (x : D.host.E)`. Rewrite using `[starRingAut_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Formalism.BasicNotions.bridge_star_holds D.R D.host _`. Establish `: Formalism.DivisionValues.cO _ x ∈ (Formalism.DivisionValues.conjPl P).asIdeal` using `Ideal.mem_map_of_mem _ hx`. Rewrite `this` using `[hP]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem conj_ne_of_split {P : Pl D.host.E} (h : IsSplitPl D.host P) : Formalism.DivisionValues.conjPl P ≠ P := by
   intro hP
@@ -31,9 +31,9 @@ theorem conj_ne_of_split {P : Pl D.host.E} (h : IsSplitPl D.host P) : Formalism.
     rwa [hP] at this
 
 /- English proof (translation)
-Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Establish `hle : Lev.levG V β L ≤ GfC V` using `fun k hk => hk.1`. Establish `hi` using `GlobalTheory.HeckeLabels.relIndex_conj_ne_zero (L := GfC V) (GlobalTheory.ParahoricCompact.isCompact_levG V β L) (GlobalTheory.ParahoricCompact.isOpen_comap_lev V β L) (fun k hk hk' => ⟨hk, hk'⟩) hα`. Rewrite `hi` using `[inf_eq_left.2 hle]`. Take `⟨R, r1, r2⟩` from `GlobalTheory.HeckeLabels.exists_reps hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨R, fun a ha => ?_, fun g ⟨k₁, k₂, hg⟩ => ?_⟩` and prove the remaining obligations. Take `⟨k₁, h₁, k₂, h₂, e⟩` from `r1 a ha`. Conclude with `⟨⟨k₁, h₁⟩, ⟨k₂, h₂⟩, e⟩`. Conclude with `r2 g ⟨k₁, k₁.2, k₂, k₂.2, hg⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isDC_levG (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) {α : GA D V}
     (hα : α ∈ GfC V) : ∃ R : Finset (GA D V), Bridge.IsDC (Lev.levG V β L) α R := by
@@ -49,13 +49,11 @@ theorem exists_isDC_levG (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : Lev
   · exact r2 g ⟨k₁, k₁.2, k₂, k₂.2, hg⟩
 
 /- English proof (translation)
-Introduce `D N X ρ _ i j b k P hk`. Take `⟨-, hkr, hsp, -⟩` from `hk`. Take `⟨e, he⟩` from `GlobalTheory.Hk3.SplitMatch.exists_isIdemAt (conj_ne_of_split hsp)`. Take `⟨ϖ, h1, h2⟩` from `SetLike.exists_of_lt (Ideal.pow_lt_self P.asIdeal P.ne_bot P.isPrime.ne_top 2 le_rfl)`. Take `⟨α, R₀, R₀', hα, -⟩` from `GlobalTheory.Hk3.SplitMatch.exists_data he h1 h2 (Wc D j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hA` using `(hα k (hkr.trans (r_le_rank_Wc j))).1`. Take `⟨R, hR⟩` from `exists_isDC_levG (Wc D j) _ _ hA.1`. Establish `hee : e * e = e` using `he.1.1`. Use `set u : (AE D)ˣ := Matrix.GeneralLinearGroup.det (matHom (Wc D j) (α k)) with hu`. Establish `huv : (u : AE D) * ((u⁻¹ : (AE D)ˣ) : AE D) = 1` using `Units.mul_inv u`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `z : (AE D)ˣ` to `Units.mkOfMulEqOne (e * u + (1 - e)) (e * ((u⁻¹ : (AE D)ˣ) : AE D) + (1 - e)) (by`. Take the linear combination `((u : AE D) * ((u⁻¹ : (AE D)ˣ) : AE D) - u - ((u⁻¹ : (AE D)ˣ) : AE D) + 1) * hee + e * huv)`. Use `⟨α k, R, z, ⟨e, ϖ, he, h1, h2, hA⟩, hR, ?_⟩` and prove the remaining obligations. Use `show (z : AE D) = idemAt P * (mt (Wc D j) (α k)).det + (1 - idemAt P)`. Rewrite using `[idemAt_eq he]`.
-
-Both sides reduce to the same expression.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isHeckeDatum : ∀ (D : D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (ρ : Setup X),
     ρ.Good → ∀ (i : X.Tw) (j : Fin D.R.m) (b : Bool), ∀ (k : ℕ) (P : Pl D.host.E), Formalism.MainNotions.IntegralHeckeForms.HkIdx i k P →

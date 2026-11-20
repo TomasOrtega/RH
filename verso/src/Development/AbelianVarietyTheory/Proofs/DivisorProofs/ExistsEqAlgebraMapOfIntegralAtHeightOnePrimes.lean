@@ -7,7 +7,7 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ _ _ _ t h`. Conclude with `ReciprocityTheory.ChartRestriction.G.T0.mem_of_mem_heightOne_localizations (K := FractionRing R) t (fun p hp h1 => @h p hp h1)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_of_forall_height_one :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R]

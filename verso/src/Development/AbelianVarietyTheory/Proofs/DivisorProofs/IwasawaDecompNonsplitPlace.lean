@@ -21,7 +21,7 @@ namespace GlobalTheory.IwLineInert
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_eq_sigR (σ : E →ₐ[F] E) (z : AE F E) : cA σ z = sigR (AF F) σ z := by
   induction z using TensorProduct.induction_on with
@@ -30,9 +30,9 @@ theorem cA_eq_sigR (σ : E →ₐ[F] E) (z : AE F E) : cA σ z = sigR (AF F) σ 
   | add y z hy hz => rw [map_add, map_add, hy, hz]
 
 /- English proof (translation)
-Establish `e : (G.map s)ᵀ * (c • Nᵀ) * G = c • (Gᵀ * N * G.map s)ᵀ`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `congrArg (fun M => (hc.unit⁻¹ : Aˣ) • M) h`. Simplify using `only [smul_smul, Units.smul_def, IsUnit.val_inv_mul, one_smul] at h2`. Simplify using `using congrArg Matrix.transpose h2`. Introduce `h`. Rewrite using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem transpose_cond {A : Type} [CommRing A] {n : ℕ} (s : A → A) (c : A) (hc : IsUnit c)
     (N G : Matrix (Fin n) (Fin n) A) :
@@ -49,9 +49,9 @@ theorem transpose_cond {A : Type} [CommRing A] {n : ℕ} (s : A → A) (c : A) (
   · intro h; rw [h]
 
 /- English proof (translation)
-Establish `hu : IsUnit (inclR (F` using `F) (AF F) δ) := (isUnit_iff_ne_zero.2 hδ).map _`. Establish `eJ : JR (AF F) (δ • Jᵀ) = inclR (F` using `F) (AF F) δ • (incM F J)ᵀ := by`. Use extensionality with `i j`. Simplify using `[JR, incM, Matrix.smul_apply, smul_eq_mul, map_mul]`. Establish `es : (g : Matrix (Fin d) (Fin d) (AE F E)).map (sigR (AF F) σ) = (g : Matrix (Fin d) (Fin d) (AE F E)).map (cA σ)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[cA_eq_sigR]`. Use `show (g : Matrix (Fin d) (Fin d) (AE F E))ᵀ * incM F J * (g : Matrix (Fin d) (Fin d) (AE F E)).map (cA σ) = incM F J ↔ Formalism.UG.cT (sigR (AF F) σ) (g : Matrix (Fin d) (Fin d) (AE F E)) * JR (AF F) (δ • Jᵀ) * (g : Matrix (Fin d) (Fin d) (AE F E)) = JR (AF F) (δ • Jᵀ)`. Rewrite using `[eJ, Formalism.UG.cT, es, transpose_cond _ _ hu]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_UG_iff (σ : E →ₐ[F] E) {d : ℕ} (J : Matrix (Fin d) (Fin d) E) {δ : E} (hδ : δ ≠ 0)
     (g : GL (Fin d) (AE F E)) : g ∈ UG (cA σ) (incM F J) ↔ g ∈ HR (AF F) σ (δ • Jᵀ) := by
@@ -71,33 +71,29 @@ end GlobalTheory.IwLineInert
 namespace GlobalTheory.IwLineInert
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hA v hv h hh`. Take `⟨δ, hδ0, hδσ, hsd⟩` from `GlobalTheory.T.exists_skew_scalar_self_dual_at_place F E σ B d r s W hB hW v hv`. Establish `hND : IsHermND σ (δ • W.Jᵀ)`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.transpose_apply, smul_eq_mul, map_mul, hδσ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hW.skew]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.det_smul, Matrix.det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ hδ0) (GlobalTheory.FinUniq.det_ne_zero_skew hW)`. Take `⟨θ, hθ⟩` from `GlobalTheory.LatVac.exists_integer_add_conj_eq_one_of_isGood σ B hB`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `(GlobalTheory.KFinLoc.split_or_inert F E σ B hB v).resolve_left (fun ⟨f⟩ => hv.false f)`. Establish `hun : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryLatticeOrthogonal.UnramAt F E v` using `by haveI := hB.unram`. Introduce `w _`. Conclude with `Ideal.ramificationIdx_eq_one w.asIdeal (𝓞 F)`. Use `haveI : Submodule.IsLattice E W.L := hW.lat`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : Matrix (Fin d) (Fin 1) E` to `Matrix.of fun i _ => H'.x i`. Set `pr : Matrix (Fin 1) (Fin d) E` to `Matrix.of fun _ j => (W.J *ᵥ fun i => σ (H'.y i)) j`. Establish `hpe : pr * e = 1`. Use extensionality with `a b`. Establish `h1` using `hA.xy`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [form, dotProduct] at h1`. Simplify using `only [pr, e, Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply, Subsingleton.elim a b, if_true]`. Rewrite using `[← h1]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hee : Formalism.UG.cT (σ : E →+* E) e * (δ • W.Jᵀ) * e = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use extensionality with `a b`. Establish `h1` using `hA.xx`. Simplify using `only [form, dotProduct, Matrix.mulVec] at h1`. Simplify using `only [Formalism.UG.cT, e, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply, Finset.sum_mul, RingHom.coe_coe]`. Use `(?_ : _ = δ * ∑ j, H'.x j * ∑ i, W.J j i * σ (H'.x i)).trans (by rw [h1, mul_zero])` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `first`. Consider the case `(rw [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use the proof step `ring)`. Consider the case `(rw [Finset.mul_sum] conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use the proof step `ring)`. Set `g₀ : GAd σ (δ • W.Jᵀ)` to `⟨h.1, (mem_UG_iff σ W.J hδ0 h.1).1 h.2⟩`. Take `⟨y, hy⟩` from `(GlobalTheory.T.local_embedding_range_characterization F E σ d (δ • W.Jᵀ) v g₀).2 (fun u hu => hh u hu)`. Take `⟨q, k, ⟨β, hβ⟩, hk, hyqk⟩` from `GlobalTheory.InertIwasawaIso.exists_of_inert hB.cm (c := θ) hθ hND hw hun hsd hpe hee y`. Set `P : UA σ W.J` to `⟨(emb σ (δ • W.Jᵀ) v q).1, (mem_UG_iff σ W.J hδ0 _).2 (emb σ (δ • W.Jᵀ) v q).2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `K : UA σ W.J` to `⟨(emb σ (δ • W.Jᵀ) v k).1, (mem_UG_iff σ W.J hδ0 _).2 (emb σ (δ • W.Jᵀ) v k).2⟩`. Establish `hsupp : ∀ x : GLoc σ (δ • W.Jᵀ) v, ∀ u : AF F, evFin F v u = 0 → u • (((emb σ (δ • W.Jᵀ) v x).1 : GL (Fin d) (AE F E)) - 1 : Matrix (Fin d) (Fin d) (AE F E)) = 0` using `fun x => (GlobalTheory.T.local_embedding_range_characterization F E σ d (δ • W.Jᵀ) v (emb σ (δ • W.Jᵀ) v x)).1 ⟨x, rfl⟩`. Establish `hPv : P ∈ UAt σ W (evFin F v)` using `fun u hu => hsupp q u hu`. Establish `hKv : K ∈ KAt σ W v`. Use `⟨fun u hu => hsupp k u hu, fun z hz => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.local_stabilizer_preserves_adelic_lattice F E σ d (δ • W.Jᵀ) W v k hk z hz`. Establish `e1 : mat K⁻¹ = (HA.mat (AF F) σ (δ • W.Jᵀ) (emb σ (δ • W.Jᵀ) v k⁻¹) : Matrix (Fin d) (Fin d) (AE F E))`. Rewrite using `[map_inv]`. Both sides reduce to the same expression. Rewrite using `[e1]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.local_stabilizer_preserves_adelic_lattice F E σ d (δ • W.Jᵀ) W v k⁻¹ (inv_mem hk) z hz`. Establish `hline : mat P *ᵥ incV F H'.x = β.1 0 0 • incV F H'.x`. Use function extensionality and compare the values at `i`. Establish `h1 : ∑ j, (HA.mat (AF F) σ (δ • W.Jᵀ) (emb σ (δ • W.Jᵀ) v q) : Matrix (Fin d) (Fin d) (AE F E)) i j * (e.map (inclR (AF F))) j 0 = ∑ c, (e.map (inclR (AF F))) i c * (β : Matrix (Fin 1) (Fin 1) (AE F E)) c 0` using `congrFun (congrFun hβ i) 0`. Rewrite `h1` using `[Fin.sum_univ_one]`.
-
-Simplify using `only [Matrix.mulVec, dotProduct, incV, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_comm]`. Simplify using `only [Matrix.map_apply, e, Matrix.of_apply] at h1`. Conclude with `h1`. Establish `hPK : h = P * K`.
-
-Establish `h2 : g₀ = emb σ (δ • W.Jᵀ) v q * emb σ (δ • W.Jᵀ) v k` using `by rw [← hy, hyqk, map_mul]`. Establish `h3 : g₀.1 = (emb σ (δ • W.Jᵀ) v q).1 * (emb σ (δ • W.Jᵀ) v k).1` using `by rw [h2]; rfl`. Conclude with `Subtype.ext h3`. Take `⟨n, m, t, h₁, hn, hnv, hmv, hh₁, hlev, hpnm⟩` from `GlobalTheory.T.unitary_stabilizer_isotropic_decomposition F E σ B d d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hA v P hPv (β.1 0 0) hline`. Conclude with `⟨n, m, K, t, h₁, hn, hnv, hmv, hh₁, hlev, hKv, by rw [hPK, hpnm]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iwasawa_line : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r s r₁ s₁ : ℕ), B.IsGood σ →

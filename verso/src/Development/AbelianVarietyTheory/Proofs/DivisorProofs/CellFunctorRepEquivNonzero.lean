@@ -34,7 +34,7 @@ private def valEquiv {β : Type} {n : β → ℕ} {t : ℕ} (a₀ : β) (ha₀ :
   right_inv x := rfl
 
 /- English proof (translation)
-Use `mem_parab_iff.2 fun a b i j hab => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = a₀`. Establish `hb : b ≠ a₀` using `fun e => by rw [e, ha] at hab; exact lt_irrefl _ hab`. Conclude with `absurd j.2 (by have := j.2; have := h0 b hb; omega)`. Conclude with `absurd i.2 (by have := i.2; have := h0 a ha; omega)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mem_parab_of_single {R : Type} [CommRing R] {β : Type} [LinearOrder β] {n : β → ℕ} {t : ℕ}
     (e : (Σ j, Fin (n j)) ≃ Fin t) (a₀ : β) (h0 : ∀ j, j ≠ a₀ → n j = 0) (x : GL (Fin t) R) :
@@ -46,9 +46,9 @@ private theorem mem_parab_of_single {R : Type} [CommRing R] {β : Type} [LinearO
   · exact absurd i.2 (by have := i.2; have := h0 a ha; omega)
 
 /- English proof (translation)
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul u w`. Rewrite using `[extTensor_tmul]`. Simplify using `only [detRep, ofChar_apply, detChar_apply, Units.val_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← smul_eq_mul, ← smul_eq_mul (a := ((ψ _ : ℂˣ) : ℂ)), TensorProduct.smul_tmul_smul]`. Consider the case `add u w hu hw => rw [map_add, hu, hw, smul_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 private theorem extTensor_detRep_apply {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
     (χ ψ : kˣ →* ℂˣ) (x : GL n k × GL n' k) (v : ℂ ⊗[ℂ] ℂ) :
@@ -86,9 +86,9 @@ private def sizeSecond (u v : ℕ) : SizeMatrix (Two (Fin (u + 1)) (Fin v)) (Two
     · cases j <;> simp [Fintype.sum_bool, card_two_false', card_two_true'] <;> omega⟩
 
 /- English proof (translation)
-Establish `r0` using `b.2.1 false`. Establish `r1` using `b.2.1 true`. Establish `c1` using `b.2.2 true`. Simplify using `only [Fintype.sum_bool, card_two_false', card_two_true', Fintype.card_fin] at r0 r1 c1`. Use `Subtype.ext (funext fun i => funext fun j => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `cases i <;> cases j <;> simp [sizeSecond] <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem eq_sizeSecond {u v : ℕ} (b : SizeMatrix (Two (Fin (u + 1)) (Fin v)) (Two (Fin (u + v)) (Fin 1)))
     (h : b.1 false true = 1) : b = sizeSecond u v := by
@@ -113,7 +113,7 @@ private def rowEq (u v : ℕ) : ∀ i, (Σ j, Fin ((sizeSecond u v).1 i j)) ≃ 
   (sizeSecond u v).nonempty_rows.some
 
 /- English proof (translation)
-Simplify using `only [blk, colFalse, Equiv.symm_trans_apply]`. Break down `(two (stdSum (rfl : u + v = u + v))).symm x with ⟨a, y⟩` into its components or cases. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 -/
 private theorem blk_colFalse (u v : ℕ) (x : Fin (u + v)) :
     blk (colFalse u v) x = blk (two (stdSum (rfl : u + v = u + v))) x := by
@@ -122,9 +122,9 @@ private theorem blk_colFalse (u v : ℕ) (x : Fin (u + v)) :
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : x false ∈ parab k (colFalse u v)` using `h false trivial`. Use `mem_parab.2 fun i j hij => mem_parab.1 h1 i j ?_` and prove the remaining obligations. Rewrite using `[blk_colFalse, blk_colFalse]` and apply the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Introduce `h j _`. Consider the cases of `j`. Use `mem_parab.2 fun i i' hij => mem_parab.1 h i i' ?_` and prove the remaining obligations. Rewrite using `[← blk_colFalse, ← blk_colFalse]` and apply the resulting hypothesis. Apply the tactic sequence `exact mem_parab_of_single _ false (fun i hi => by cases i <;> simp_all [sizeSecond]) _`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mem_relParab_colEq {u v : ℕ} (x : Levi k (Two (Fin (u + v)) (Fin 1))) :
     x ∈ relParab k (colEq u v) ↔ x false ∈ parab k (two (stdSum (rfl : u + v = u + v))) := by
@@ -140,7 +140,7 @@ private theorem mem_relParab_colEq {u v : ℕ} (x : Levi k (Two (Fin (u + v)) (F
     · exact mem_parab_of_single _ false (fun i hi => by cases i <;> simp_all [sizeSecond]) _
 
 /- English proof (translation)
-Use extensionality with `a b`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem relProj_colEq_ff {u v : ℕ} (p : relParab k (colEq u v)) :
     (relProj k (colEq u v) p false false : GL (Fin u) k) =
@@ -148,7 +148,7 @@ private theorem relProj_colEq_ff {u v : ℕ} (p : relParab k (colEq u v)) :
   ext a b; rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem relProj_colEq_ft {u v : ℕ} (p : relParab k (colEq u v)) :
     (relProj k (colEq u v) p false true : GL (Fin v) k) =
@@ -156,9 +156,9 @@ private theorem relProj_colEq_ft {u v : ℕ} (p : relParab k (colEq u v)) :
   ext a b; rfl
 
 /- English proof (translation)
-Establish `h` using `det_parab k (colEq u v true) ⟨p.1 true, p.2 true trivial⟩`. Rewrite using `[h, Fintype.prod_bool]`. Establish `h0 : GeneralLinearGroup.det (leviProj k (colEq u v true) ⟨p.1 true, p.2 true trivial⟩ true) = 1` using `by haveI : IsEmpty (Fin ((sizeSecond u v).1 true true)) := ⟨fun x => Fin.elim0 x⟩`. Use `ext`. Simplify using `[Matrix.det_isEmpty]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem det_relProj_tf {u v : ℕ} (p : relParab k (colEq u v)) :
     GeneralLinearGroup.det (relProj k (colEq u v) p true false : GL (Fin 1) k) =
@@ -178,7 +178,7 @@ private abbrev rhoM (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) :
     (leviTwo k (Fin (u + 1)) (Fin v)).symm.toMonoidHom
 
 /- English proof (translation)
-The claim follows from `extTensor_detRep_apply χ₁ χ₂ _ w`.
+A detailed English derivation is pending.
 -/
 private theorem rhoM_apply (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (y : Levi k (Two (Fin (u + 1)) (Fin v)))
     (w : ℂ ⊗[ℂ] ℂ) :
@@ -187,9 +187,9 @@ private theorem rhoM_apply (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (y : Levi 
   extTensor_detRep_apply χ₁ χ₂ _ w
 
 /- English proof (translation)
-Use `Submodule.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, w, rfl⟩`. Establish `hd : ∀ i, GeneralLinearGroup.det ((n : Levi k (Two (Fin (u + 1)) (Fin v))) i) = 1` using `fun i => det_eq_one_of_mem_unipRad k (n.2 i trivial)`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, sub_eq_zero]`. Use `(rhoM_apply χ₁ χ₂ u v (n : Levi k (Two (Fin (u + 1)) (Fin v))) w).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hd]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem twKer_rhoM (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) :
     twKer (rhoM (k := k) χ₁ χ₂ u v) (relUnip k (rowEq u v)) 1 = ⊥ := by
@@ -207,17 +207,17 @@ private abbrev sigmaC (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) :=
       (relDeltaHalf k (fun j i => Fin ((sizeSecond u v).1 i j)))).comp (relProj k (colEq u v))
 
 /- English proof (translation)
-Introduce `k _ _ _ _ χ₁ χ₂ u v p w`. Establish `hb : ¬ (true < false)` using `by decide`. Apply the tactic sequence `have m1 : modExp (fun i => Fin ((sizeSecond u v).1 i true)) true = -1 := by simp [modExp, Finset.sum_filter, sizeSecond, hb] <;> exact (Fintype.card_congr' rfl).trans (Fintype.card_fin _)`. Apply the tactic sequence `have m2 : modExp (fun i => Fin ((sizeSecond u v).1 i true)) false = 0 := by simp [modExp, Finset.sum_filter, sizeSecond, hb] <;> exact (Fintype.card_congr' rfl).trans (Fintype.card_fin _)`. Apply the tactic sequence `have m3 : modExp (fun i => Fin ((sizeSecond u v).1 i false)) true = -(u : ℤ) := by simp [modExp, Finset.sum_filter, sizeSecond, hb] <;> exact (Fintype.card_congr' rfl).trans (Fintype.card_fin _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have m4 : modExp (fun i => Fin ((sizeSecond u v).1 i false)) false = v := by simp [modExp, Finset.sum_filter, sizeSecond, hb] <;> exact (Fintype.card_congr' rfl).trans (Fintype.card_fin _)`. Apply the tactic sequence `have m5 : modExp (fun j => Fin ((sizeSecond u v).1 true j)) true = -(v : ℤ) := by simp [modExp, Finset.sum_filter, sizeSecond, hb] <;> exact (Fintype.card_congr' rfl).trans (Fintype.card_fin _)`. Apply the tactic sequence `have m6 : modExp (fun j => Fin ((sizeSecond u v).1 true j)) false = 0 := by simp [modExp, Finset.sum_filter, sizeSecond, hb] <;> exact (Fintype.card_congr' rfl).trans (Fintype.card_fin _)`. Apply the tactic sequence `have m7 : modExp (fun j => Fin ((sizeSecond u v).1 false j)) true = -(u : ℤ) := by simp [modExp, Finset.sum_filter, sizeSecond, hb] <;> exact (Fintype.card_congr' rfl).trans (Fintype.card_fin _)`. Apply the tactic sequence `have m8 : modExp (fun j => Fin ((sizeSecond u v).1 false j)) false = 1 := by simp [modExp, Finset.sum_filter, sizeSecond, hb] <;> exact (Fintype.card_congr' rfl).trans (Fintype.card_fin _)`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `m9 : modExp (Two (Fin u) (Fin v)) false = v` using `by simp [modExp, Finset.sum_filter]`. Establish `m10 : modExp (Two (Fin u) (Fin v)) true = -(u : ℤ)` using `by simp [modExp, Finset.sum_filter]`. Establish `hs : ∀ i j, swapBlocks k (fun i j => Fin ((sizeSecond u v).1 i j)) (relProj k (colEq u v) p) i j = relProj k (colEq u v) p j i` using `fun _ _ => rfl`. Establish `e0 : GeneralLinearGroup.det (relProj k (colEq u v) p true true) = 1` using `by haveI : IsEmpty (Fin ((sizeSecond u v).1 true true)) := ⟨fun x => Fin.elim0 x⟩`. Use `ext`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.det_isEmpty]`. Apply the tactic sequence `have d00 : GeneralLinearGroup.det (relProj k (colEq u v) p false false) = GeneralLinearGroup.det (leviProj k (two (stdSum (rfl : u + v = u + v))) ⟨p.1 false, (mem_relParab_colEq _).1 p.2⟩ false) := by first | exact congrArg GeneralLinearGroup.det (relProj_colEq_ff p) | (rw [relPr …`. Apply the tactic sequence `have d01 : GeneralLinearGroup.det (relProj k (colEq u v) p false true) = GeneralLinearGroup.det (leviProj k (two (stdSum (rfl : u + v = u + v))) ⟨p.1 false, (mem_relParab_colEq _).1 p.2⟩ true) := by first | exact congrArg GeneralLinearGroup.det (relProj_colEq_ft p) | (rw [relProj …`. Rewrite using `[MonoidHom.comp_apply, twist_apply, MonoidHom.comp_apply, relJac_mk, rhoM_apply, Submodule.Quotient.mk_smul, smul_smul, smul_smul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [← Units.val_mul]`. Use `congr 1`. Rewrite using `[relDeltaHalf_apply, relDeltaHalf_apply, Fintype.prod_bool, Fintype.prod_bool]`. Simplify using `only [deltaHalf_apply, Fintype.prod_bool, relEmb_apply, det_leviEmb, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, hs, e0, d00, d01, det_relProj_tf, map_one, mul_one, one_mul, map_mul, MonoidHom.mul_apply, Int.cast_zero, zero_div, absPow_zero, MonoidHom.one_apply, Int.cast_one, Int.ca …`. Simplify using `only [neg_div, absPow_neg, MonoidHom.inv_apply, mul_inv, inv_inv]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ (x y z q d f e : ℂˣ), x * y * (z * q) * (f * e * d) = f * z * (x * y) * (e * q * d)`. Introduce `x y z q d f e`. The two sides agree by associativity and commutativity. Conclude with `key _ _ _ _ _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. The two sides agree by associativity and commutativity. A detailed English derivation is pending.
 -/
 private theorem sigmaC_mk_scalar : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (p : relParab k (colEq u v)) (w : ℂ ⊗[ℂ] ℂ),
@@ -271,7 +271,7 @@ private theorem sigmaC_mk_scalar : ∀ {k : Type} [Field k] [ValuativeRel k] [To
   exact key _ _ _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `sigmaC_mk_scalar χ₁ χ₂ u v p w`.
+A detailed English derivation is pending.
 -/
 private theorem inducing_mk (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (p : relParab k (colEq u v)) (w : ℂ ⊗[ℂ] ℂ) :
     sigmaC χ₁ χ₂ u v p (Submodule.Quotient.mk w) =
@@ -297,11 +297,11 @@ private def toFun (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ)
     Submodule.Quotient.mk (φ.1.1 (x false))
 
 /- English proof (translation)
-Establish `hq` using `(mem_relParab_colEq (p : Levi k (Two (Fin (u + v)) (Fin 1)))).1 p.2`. Establish `h1` using `parInd_law (two (stdSum (rfl : u + v = u + v))) (rhoL χ₁ χ₂ u v) φ ⟨_, hq⟩ (x false)`. Establish `h2 : rhoL χ₁ χ₂ u v (leviProj k (two (stdSum (rfl : u + v = u + v))) ⟨_, hq⟩) (φ.1.1 (x false)) = (((χ₁ * absPow k (-(1 / 2))) (GeneralLinearGroup.det (leviProj k (two (stdSum (rfl : u + v = u + v))) ⟨_, hq⟩ false)) * χ₂ (GeneralLinearGroup.det (leviProj k (two (stdSum (rfl : u + …` using `extTensor_detRep_apply (χ₁ * absPow k (-(1 / 2))) χ₂ _ _`. Unfold `toFun`. Rewrite using `[map_smul, inducing_mk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show (((χ₁ * absPow k ((u : ℂ) / 2)) (GeneralLinearGroup.det (p.1 true * x true)) : ℂˣ) : ℂ) • Submodule.Quotient.mk (φ.1.1 (p.1 false * x false)) = _`. Rewrite using `[h1, h2]`. Rewrite using `[map_mul, map_mul, Submodule.Quotient.mk_smul, Submodule.Quotient.mk_smul, smul_smul, smul_smul, smul_smul]`. Use `congr 1`. Simplify using `only [Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem toFun_law (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ)
     (φ : IndSp (two (stdSum (rfl : u + v = u + v))) (rhoL (k := k) χ₁ χ₂ u v))
@@ -327,11 +327,11 @@ private theorem toFun_law (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ)
   ring
 
 /- English proof (translation)
-Establish `hc : IsSmoothChar (χ₁ * absPow k ((u : ℂ) / 2))` using `hχ₁.mul (isSmoothChar_of_isUnram (isUnram_absPow k _))`. Establish `hd` using `(hc.detChar (n := Fin 1)).comp (Pi.evalMonoidHom (fun j => GL (Two (Fin (u + v)) (Fin 1) j) k) true) (continuous_apply true)`. Establish `hφ : IsOpen {g : GL (Fin (u + v)) k | ind _ _ g φ.1 = φ.1}` using `φ.2`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset (((hφ.preimage (continuous_apply false)).inter hd).mem_nhds ⟨by simp, by simp⟩) ?_)` and prove the remaining obligations. Introduce and unpack `y ⟨hy1, hy2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hy2' : (χ₁ * absPow k ((u : ℂ) / 2)) (GeneralLinearGroup.det (y true)) = 1` using `MonoidHom.mem_ker.1 hy2`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Use `show toFun χ₁ χ₂ u v φ (x * y) = toFun χ₁ χ₂ u v φ x`. Establish `h3 : φ.1.1 (x false * y false) = φ.1.1 (x false)` using `congrArg (fun F => F.1 (x false)) (show ind _ _ (y false) φ.1 = φ.1 from hy1)`. Unfold `toFun`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.mul_apply, Pi.mul_apply, h3, map_mul, map_mul, hy2', mul_one]`.
+A detailed English derivation is pending.
 -/
 private theorem toFun_smooth {χ₁ χ₂ : kˣ →* ℂˣ} (hχ₁ : IsSmoothChar χ₁) (u v : ℕ)
     (φ : IndSp (two (stdSum (rfl : u + v = u + v))) (rhoL (k := k) χ₁ χ₂ u v)) :
@@ -377,11 +377,11 @@ private theorem toCell_apply {χ₁ χ₂ : kˣ →* ℂˣ} (hχ₁ : IsSmoothCh
     (toCell hχ₁ u v φ).1.1 x = toFun χ₁ χ₂ u v φ x := rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `φ hφ`. Use `Subtype.ext (Subtype.ext (funext fun x₁ => ?_))` and prove the remaining obligations. Establish `h` using `congrArg (fun F => F.1.1 (leviTwo k (Fin (u + v)) (Fin 1) (x₁, 1))) hφ`. Simplify using `only [toCell_apply] at h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h' : (Submodule.Quotient.mk (φ.1.1 x₁) : Jacquet (rhoM (k` using `k) χ₁ χ₂ u v) (relUnip k (rowEq u v))) = 0 := by`. Establish `e : toFun χ₁ χ₂ u v φ (leviTwo k (Fin (u + v)) (Fin 1) (x₁, 1)) = Submodule.Quotient.mk (φ.1.1 x₁)`. Unfold `toFun`. Use `show ((((χ₁ * absPow k ((u : ℂ) / 2)) (GeneralLinearGroup.det (1 : GL (Fin 1) k)) : ℂˣ) : ℂ) • _) = _`. Rewrite using `[map_one, map_one, Units.val_one, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `h`. Rewrite `h'` using `[Submodule.Quotient.mk_eq_zero, twKer_rhoM, Submodule.mem_bot]`. Conclude with `h'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem toCell_injective {χ₁ χ₂ : kˣ →* ℂˣ} (hχ₁ : IsSmoothChar χ₁) (u v : ℕ) :
     Function.Injective (toCell (k := k) (χ₂ := χ₂) hχ₁ u v) := by
@@ -424,7 +424,7 @@ private def restr (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (Φ : CellSp (k := 
   Submodule.quotEquivOfEqBot _ (twKer_rhoM (k := k) χ₁ χ₂ u v) (Φ.1.1 (incl u v x₁))
 
 /- English proof (translation)
-The claim follows from `(Submodule.quotEquivOfEqBot _ (twKer_rhoM (k := k) χ₁ χ₂ u v)).symm_apply_apply _`.
+A detailed English derivation is pending.
 -/
 private theorem mk_restr (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (Φ : CellSp (k := k) χ₁ χ₂ u v) (x₁ : GL (Fin (u + v)) k) :
     (Submodule.Quotient.mk (restr χ₁ χ₂ u v Φ x₁) :
@@ -432,9 +432,9 @@ private theorem mk_restr (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (Φ : CellSp
   (Submodule.quotEquivOfEqBot _ (twKer_rhoM (k := k) χ₁ χ₂ u v)).symm_apply_apply _
 
 /- English proof (translation)
-Establish `hmem : incl u v (q : GL (Fin (u + v)) k) ∈ relParab k (colEq u v)` using `(mem_relParab_colEq _).2 q.2`. Establish `h1 : Φ.1.1 (incl u v (q : GL (Fin (u + v)) k) * incl u v x₁) = sigmaC χ₁ χ₂ u v ⟨_, hmem⟩ (Φ.1.1 (incl u v x₁))` using `Φ.1.2 ⟨_, hmem⟩ (incl u v x₁)`. Establish `h2 : rhoL χ₁ χ₂ u v (leviProj k (two (stdSum (rfl : u + v = u + v))) q) (restr χ₁ χ₂ u v Φ x₁) = (((χ₁ * absPow k (-(1 / 2))) (GeneralLinearGroup.det (leviProj k (two (stdSum (rfl : u + v = u + v))) q false)) * χ₂ (GeneralLinearGroup.det (leviProj k (two (stdSum (rfl : u + v = u …` using `extTensor_detRep_apply (χ₁ * absPow k (-(1 / 2))) χ₂ _ _`. Rewrite using `[MonoidHom.comp_apply, twist_apply, h2, smul_smul]`. Unfold `restr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_mul, h1, ← mk_restr χ₁ χ₂ u v Φ x₁, inducing_mk, map_smul]`. Unfold `restr`. Rewrite using `[Submodule.quotEquivOfEqBot_apply_mk]`. Use `congr 1`. Simplify using `only [Subtype.coe_mk, incl_true, incl_false, Subtype.coe_eta, map_one, one_mul, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 private theorem restr_law (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (Φ : CellSp (k := k) χ₁ χ₂ u v)
     (q : parab k (two (stdSum (rfl : u + v = u + v)))) (x₁ : GL (Fin (u + v)) k) :
@@ -458,11 +458,11 @@ private theorem restr_law (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (Φ : CellS
   simp only [Subtype.coe_mk, incl_true, incl_false, Subtype.coe_eta, map_one, one_mul, Units.val_mul]
 
 /- English proof (translation)
-Establish `hΦ : IsOpen {y : Levi k (Two (Fin (u + v)) (Fin 1)) | ind (relParab k (colEq u v)) (sigmaC χ₁ χ₂ u v) y Φ.1 = Φ.1}` using `Φ.2`. Establish `hcont : Continuous (incl (k` using `k) u v) := (continuous_leviTwo k).comp (continuous_id.prodMk continuous_const)`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset ((hΦ.preimage hcont).mem_nhds ?_) ?_)` and prove the remaining obligations. Use `show ind (relParab k (colEq u v)) (sigmaC χ₁ χ₂ u v) (incl u v 1) Φ.1 = Φ.1`. Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show Φ.1.1 (y * incl u v 1) = Φ.1.1 y`. Rewrite using `[map_one, mul_one]`. Introduce `g₁ hg`. Use `Subtype.ext (funext fun x₁ => ?_)` and prove the remaining obligations. Use `show restr χ₁ χ₂ u v Φ (x₁ * g₁) = restr χ₁ χ₂ u v Φ x₁`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h` using `congrArg (fun F => F.1 (incl u v x₁)) (show ind (relParab k (colEq u v)) (sigmaC χ₁ χ₂ u v) (incl u v g₁) Φ.1 = Φ.1 from hg)`. Establish `h' : Φ.1.1 (incl u v (x₁ * g₁)) = Φ.1.1 (incl u v x₁)` using `(congrArg (fun y => Φ.1.1 y) (map_mul (incl (k := k) u v) x₁ g₁)).trans h`. Unfold `restr`. Conclude with `congrArg _ h'`.
+A detailed English derivation is pending.
 -/
 private theorem restr_smooth (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (Φ : CellSp (k := k) χ₁ χ₂ u v) :
     (⟨restr χ₁ χ₂ u v Φ, fun q x₁ => restr_law χ₁ χ₂ u v Φ q x₁⟩ :
@@ -489,13 +489,11 @@ private theorem restr_smooth (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (Φ : Ce
     exact congrArg _ h'
 
 /- English proof (translation)
-Introduce `Φ`. Use `⟨⟨⟨restr χ₁ χ₂ u v Φ, fun q x₁ => restr_law χ₁ χ₂ u v Φ q x₁⟩, restr_smooth χ₁ χ₂ u v Φ⟩, Subtype.ext (Subtype.ext (funext fun x => ?_))⟩` and prove the remaining obligations. Use `show toFun χ₁ χ₂ u v _ x = Φ.1.1 x`. Establish `hx : x = leviTwo k (Fin (u + v)) (Fin 1) (1, x true) * incl u v (x false)`. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `j`. Conclude with `(one_mul (x false)).symm`. Conclude with `(mul_one (x true)).symm`. Establish `hp : leviTwo k (Fin (u + v)) (Fin 1) (1, x true) ∈ relParab k (colEq u v)` using `(mem_relParab_colEq _).2 (one_mem _)`. Establish `h1 : Φ.1.1 (leviTwo k (Fin (u + v)) (Fin 1) (1, x true) * incl u v (x false)) = sigmaC χ₁ χ₂ u v ⟨_, hp⟩ (Φ.1.1 (incl u v (x false)))` using `Φ.1.2 ⟨_, hp⟩ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : leviProj k (two (stdSum (rfl : u + v = u + v))) ⟨(leviTwo k (Fin (u + v)) (Fin 1) (1, x true)) false, (mem_relParab_colEq _).1 hp⟩ = 1` using `map_one (leviProj k (two (stdSum (rfl : u + v = u + v))))`. Use `conv_rhs => rw [hx, h1, ← mk_restr χ₁ χ₂ u v Φ (x false), inducing_mk]`. Unfold `toFun`. Rewrite using `[hl]`. Simplify using `only [map_one, Pi.one_apply, Units.val_one, mul_one]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem toCell_surjective {χ₁ χ₂ : kˣ →* ℂˣ} (hχ₁ : IsSmoothChar χ₁) (u v : ℕ) :
     Function.Surjective (toCell (k := k) (χ₂ := χ₂) hχ₁ u v) := by
@@ -543,7 +541,7 @@ private def mapF {χ₁ χ₂ : kˣ →* ℂˣ} (hχ₁ : IsSmoothChar χ₁) (u
     ring))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(toCell_injective hχ₁ u v).comp (TensorProduct.rid ℂ _).injective, (toCell_surjective hχ₁ u v).comp (TensorProduct.rid ℂ _).surjective⟩`.
+Supply the required witnesses or components.
 -/
 private theorem mapF_bijective {χ₁ χ₂ : kˣ →* ℂˣ} (hχ₁ : IsSmoothChar χ₁) (u v : ℕ) :
     Function.Bijective (mapF (k := k) (χ₂ := χ₂) hχ₁ u v) :=
@@ -555,7 +553,7 @@ end GlobalTheory.CellDetSecond
 end
 
 /- English proof (translation)
-Introduce `k _ _ _ _ χ₁ χ₂ h₁ _ u v b hb`. Establish `e` using `GlobalTheory.CellDetSecond.eq_sizeSecond b hb`. Substitute `e` using the available equality. Conclude with `⟨GlobalTheory.CellDetSecond.rowEq u v, GlobalTheory.CellDetSecond.colEq u v, ⟨(GlobalTheory.CellDetSecond.equivOfBij (GlobalTheory.CellDetSecond.mapF h₁ u v) (GlobalTheory.CellDetSecond.mapF_bijective h₁ u v)).symm⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.T.cell_functor_rep_equiv_nonzero : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (χ₁ χ₂ : kˣ →* ℂˣ), IsSmoothChar χ₁ → IsSmoothChar χ₂ → ∀ (u v : ℕ)

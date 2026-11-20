@@ -23,7 +23,7 @@ open GlobalTheory.KTrivSpread
 namespace GlobalTheory.KTrivGenericPt
 
 /- English proof (translation)
-Rewrite using `[Out.jK, spMap, spMap, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `r`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem spMap_eq_lift_comp_jK {R : Type} [CommRing R] [IsDomain R] {F : Type} [Field F] (ψ : R →+* F)
     (hψ : Function.Injective ψ) :
@@ -34,7 +34,7 @@ theorem spMap_eq_lift_comp_jK {R : Type} [CommRing R] [IsDomain R] {F : Type} [F
   simp
 
 /- English proof (translation)
-Rewrite using `[spMap_eq_lift_comp_jK ψ hψ, Category.assoc]`. Conclude with `h.comp _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivAlong_field {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {R : Type} [CommRing R] [IsDomain R]
     {g : Sp R ⟶ S} (h : TrivAlong A L (Out.jK R ≫ g)) {F : Type} [Field F] (ψ : R →+* F)
@@ -47,17 +47,17 @@ end GlobalTheory.KTrivGenericPt
 open GlobalTheory.KTrivGenericPt in
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ _ t hP ha hpol`. Use `haveI : IsProper t.G.hom := hP`. Establish `hA : IsAbelianScheme t.G` using `AbelianSchemeGerms.isAbelianScheme_of_proper t.G t.semi`. Establish `hG : GlobalFnsSt` using `GlobalTheory.allSixLaws.1.globalFns`. Establish `hgen : TrivAlong t.G t.PP.L (Out.jK R)` using `trivAlong_of_kTriv (isGrpPullback_pullback t.G (Out.jK R)) t.PP.isLB hpol.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen' : TrivAlong t.G t.PP.L (Out.jK R ≫ 𝟙 (Sp R))` using `by rw [Category.comp_id]; exact hgen`. Use `kTriv_of_primes hG R t.G hA t.PP.L t.PP.isLB ha fun p => ?_` and prove the remaining obligations. Set `O` to `Localization.AtPrime p.asIdeal`. Establish `hO : Function.Injective (algebraMap R O)` using `IsLocalization.injective O p.asIdeal.primeCompl_le_nonZeroDivisors`. Establish `hp : PrimeSpectrum.comap (algebraMap R O) (IsLocalRing.closedPoint O) = p` using `PrimeSpectrum.ext Localization.AtPrime.under_maximalIdeal`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hf : IsField O`. Use `⟨O, inferInstance, algebraMap R O, ⟨_, hp⟩, ?_⟩` and prove the remaining obligations. Use `letI := hf.toField`. Use `trivAlong_field hgen' (algebraMap R O) hO` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨V, _, _, _, ρ, h1, h2⟩` from `exists_dvr O hf`. Establish `hρ : Function.Injective (ρ.comp (algebraMap R O))` using `h1.comp hO`. Establish `: CharZero V` using `charZero_of_injective_ringHom hρ`. Use `⟨V, inferInstance, ρ.comp (algebraMap R O), ⟨IsLocalRing.closedPoint V, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[PrimeSpectrum.comap_comp_apply, IsLocalRing.comap_closedPoint, hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `trivAlong_dvr hG (𝟙 (Sp R)) hA t.PP t.cub ha V (spMap (ρ.comp (algebraMap R O))) ?_`. Rewrite `key` using `[Category.comp_id]`. Then use the resulting hypothesis. Set `F` to `AlgebraicClosure (FractionRing V)`. Establish `H'` using `trivAlong_field hgen' ((algebraMap (FractionRing V) F).comp ((algebraMap V (FractionRing V)).comp (ρ.comp (algebraMap R O)))) ((algebraMap (FractionRing V) F).injective.comp ((IsFractionRing.injective V (FractionRing V)).comp hρ))`. Establish `e : (Out.TF (R` using `V) F).hom ≫ spMap (ρ.comp (algebraMap R O)) = spMap ((algebraMap (FractionRing V) F).comp ((algebraMap V (FractionRing V)).comp (ρ.comp (algebraMap R O)))) := (congrArg (· ≫ _) (Spec.map_comp _ _).symm).trans (Spec.map_comp _ _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `H'` using `[← e, Category.assoc]`. Conclude with `H'`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KTrivGenericPt.kTriv_of_polAt_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CharZero R] (t : SAB H (Sp R)), IsProper t.G.hom → RelAmple t.G t.PP.L → GlobalTheory.LN.PolAt t (jK R) → KTriv t.G t.PP.L := by
   intro E _ _ _ H R _ _ _ _ t hP ha hpol

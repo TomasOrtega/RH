@@ -17,11 +17,11 @@ noncomputable def UpperTheory.Reformulated.B.PlacewiseToOutsideS.wd :
       LinearMap.pi fun (t : Finset ι) ↦ ∑ i ∈ t, UpperTheory.Reformulated.B.PlacewiseToOutsideS.cubeSign t i • w i ∘ₗ LinearMap.proj (t.erase i)
 
 /- English proof (translation)
-Establish `h1 : (t.erase j).filter (fun x => x < i) = t.filter (fun x => x < i)`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_erase]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, h⟩, h'⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h, h'⟩`. Introduce and unpack `⟨h, h'⟩`. Conclude with `⟨⟨(h'.trans hij).ne, h⟩, h'⟩`. Establish `h2 : (t.filter (fun x => x < j)).card = ((t.erase i).filter (fun x => x < j)).card + 1`. Rewrite using `[Finset.filter_erase, Finset.card_erase_add_one]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.mem_filter.2 ⟨hi, hij⟩`. Simplify using `only [UpperTheory.Reformulated.B.PlacewiseToOutsideS.cubeSign]`. Rewrite using `[h1, h2, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.PlacewiseToOutsideS.sign_lt {ι : Type} [LinearOrder ι] (t : Finset ι) (i j : ι)
     (hi : i ∈ t) (hij : i < j) :
@@ -43,7 +43,7 @@ private theorem UpperTheory.Reformulated.B.PlacewiseToOutsideS.sign_lt {ι : Typ
   ring
 
 /- English proof (translation)
-Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `UpperTheory.Reformulated.B.PlacewiseToOutsideS.sign_lt t i j hi h`. Rewrite using `[UpperTheory.Reformulated.B.PlacewiseToOutsideS.sign_lt t j i hj h, neg_neg]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.PlacewiseToOutsideS.sign_ne {ι : Type} [LinearOrder ι] (t : Finset ι) (i j : ι)
     (hi : i ∈ t) (hj : j ∈ t) (hij : i ≠ j) :
@@ -54,7 +54,7 @@ private theorem UpperTheory.Reformulated.B.PlacewiseToOutsideS.sign_ne {ι : Typ
   · rw [UpperTheory.Reformulated.B.PlacewiseToOutsideS.sign_lt t j i hj h, neg_neg]
 
 /- English proof (translation)
-Simplify using `[UpperTheory.Reformulated.B.PlacewiseToOutsideS.wd, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.Reformulated.B.PlacewiseToOutsideS.wd_apply {σ E : Type} [LinearOrder σ] [AddCommGroup E]
     [_root_.Module ℂ E] (w : σ → Module.End ℂ E) (c : Finset σ → E) (t : Finset σ) :
@@ -62,17 +62,17 @@ private theorem UpperTheory.Reformulated.B.PlacewiseToOutsideS.wd_apply {σ E : 
   simp [UpperTheory.Reformulated.B.PlacewiseToOutsideS.wd, LinearMap.sum_apply]
 
 /- English proof (translation)
-Introduce `σ E _ _ _ w hw c`. Use function extensionality and compare the values at `t`. Rewrite using `[UpperTheory.Reformulated.B.PlacewiseToOutsideS.wd_apply, Pi.zero_apply]`. Simplify using `only [UpperTheory.Reformulated.B.PlacewiseToOutsideS.wd_apply, map_sum, map_zsmul, Finset.smul_sum, smul_smul]`. Use `set f : σ → σ → E := fun i j => (UpperTheory.Reformulated.B.PlacewiseToOutsideS.cubeSign t i * UpperTheory.Reformulated.B.PlacewiseToOutsideS.cubeSign (t.erase i) j) • w i (w j (c ((t.erase i).erase j))) with hf`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `∑ i ∈ t, ∑ j ∈ t.erase i, f i j = 0`. Establish `hanti : ∀ i ∈ t, ∀ j ∈ t.erase i, f j i = - f i j`. Introduce `i hi j hj`. Take `⟨hne, hj⟩` from `Finset.mem_erase.1 hj`. Simplify using `only [hf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[UpperTheory.Reformulated.B.PlacewiseToOutsideS.sign_ne t j i hj hi hne, neg_smul, Finset.erase_right_comm, ← Module.End.mul_apply, (hw j i).eq, Module.End.mul_apply]`. Establish `hswap : ∑ i ∈ t, ∑ j ∈ t.erase i, f i j = ∑ j ∈ t, ∑ i ∈ t.erase j, f i j`. Apply `Finset.sum_comm'` to reduce the goal to its premises. Introduce `x y`. Simplify using `only [Finset.mem_erase]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨⟨h2.symm, h1⟩, h3⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Conclude with `⟨h2, h1.symm, h3⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hneg : ∑ j ∈ t, ∑ i ∈ t.erase j, f i j = -∑ i ∈ t, ∑ j ∈ t.erase i, f i j`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun j hj => hanti i hi j hj`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (2 : ℂ) • ∑ i ∈ t, ∑ j ∈ t.erase i, f i j = 0`. Rewrite using `[two_smul]`. Conclude with `add_eq_zero_iff_eq_neg.2 (hswap.trans hneg)`. Conclude with `(smul_eq_zero.1 h2).resolve_left two_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.PlacewiseToOutsideS.wd_wd :
     ∀ {σ E : Type} [inst : LinearOrder σ] [inst_1 : AddCommGroup E] [inst_2 : _root_.Module ℂ E] (w : σ → Module.End ℂ E),

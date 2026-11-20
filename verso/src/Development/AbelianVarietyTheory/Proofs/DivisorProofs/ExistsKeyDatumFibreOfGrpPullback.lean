@@ -11,13 +11,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.MBLow
 
 /- English proof (translation)
-Introduce `R K _ _ f y P φ hp rig hr hg h hI`. Take `⟨w, hw0⟩` from `hI`. Establish `hw` using `(isGen_iff w).1 hw0`. Establish `he : eSec P.A ≫ φ = spMap f ≫ eSec y.P.A` using `PolBaseChange.eSec_comm h`. Use `P.isAb.comm` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `y.P.isAb.comm` as an intermediate fact. Use `y.P.isAb.smooth` as an intermediate fact. Take `⟨w', g', m'⟩` from `KeyPow.exists_rescale y.P.isLB P.isLB hw (p := P.A.hom) (Over.w η[P.A]) he hr y.rig_gen`. Take `⟨th', hth'⟩` from `sec_pull_down g' y.P.isLB P.isLB y.th`. Use `P.isAb.comm` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v', hb', hv'⟩` from `exists_isLieBasis_baseChange R K f y.P.A P.A φ h y.P.isAb.smooth y.P.g y.v y.basis`. Establish `hb : ∀ {n : ℕ} (e : n = y.P.g), IsLieBasis fun i : Fin n => v' (i.cast e)` using `fun e => by`. Substitute `e` using the available equality. Conclude with `hb'`. Use `⟨th', SectionBaseChange.fibre_nonzero_of_pull P.isLB hth' h.1 y.th_ne, _, hb hg, he, w', hg, Chart.dualMapR f, h, (isGen_iff _).2 g', (maps_iff w' _ (fun _ => eSec y.P.A) _ rig y.rig _ _ (rigPull_le φ _ he y.P.L) (fun _ => rfl)).2 m', KeyPow.appLE_eq_of_stalk _ y.th th' (hth' _ ( …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_keyAtMap_of_isGrpPullback : ∀ (R K : Type) [CommRing R] [Field K] (f : R →+* K) (y : KeyIn R)
     (P : PolAV (Sp K)) (φ : P.A.left ⟶ y.P.A.left) (hp : 1 ≤ P.g) (rig : LB.Gen (P.L.pull (eSec P.A)))

@@ -15,7 +15,7 @@ open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 namespace GlobalTheory.KeyFam
 
 /- English proof (translation)
-Establish `hK : GlobalTheory.IsNormalScheme (Spec (.of K))` using `inferInstance`. Establish `: GlobalTheory.IsNormalScheme Z` using `(GlobalTheory.isNormalScheme_iff Z).mpr (forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth g ((GlobalTheory.isNormalScheme_iff _).mp hK))`. Establish `: IsLocallyNoetherian Z` using `LocallyOfFiniteType.isLocallyNoetherian g`. Rewrite using `[GlobalTheory.IsNormalScheme.connectedComponent_eq_irreducibleComponent]`. Conclude with `isIrreducible_irreducibleComponent.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPreirreducible_connectedComponent_of_smooth {K : Type} [Field K] {Z : Scheme.{0}}
     (g : Z ⟶ Spec (.of K)) [Smooth g] (z : Z) : IsPreirreducible (connectedComponent z) := by
@@ -27,13 +27,11 @@ theorem isPreirreducible_connectedComponent_of_smooth {K : Type} [Field K] {Z : 
   exact isIrreducible_irreducibleComponent.2
 
 /- English proof (translation)
-Establish `hz : ∀ a : F, a ∈ z.asIdeal ↔ a = 0`. Introduce `a`. Establish `: z.asIdeal = ⊥` using `(Ideal.eq_bot_or_top _).resolve_right z.2.ne_top`. Rewrite using `[this, Ideal.mem_bot]`. Establish `key : ∀ (f g : T →+* F), PrimeSpectrum.comap f z ∈ C → PrimeSpectrum.comap g z ∈ C → f e = 0 → g e = 1 → False`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `f g hf hg h0 h1`. Take `⟨x, -, hx1, hx2⟩` from `hC (PrimeSpectrum.basicOpen (1 - e)) (PrimeSpectrum.basicOpen e) (PrimeSpectrum.basicOpen _).2 (PrimeSpectrum.basicOpen _).2 ⟨_, hf, by simp [hz, h0]⟩ ⟨_, hg, by simp [hz, h1]⟩`. Establish `h : (1 - e) * e ∈ x.asIdeal`. Rewrite using `[sub_mul, _root_.one_mul, he.eq, sub_self]`. Conclude with `x.asIdeal.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(x.2.mem_or_mem h).elim hx1 hx2`. Apply the tactic sequence `rcases IsIdempotentElem.iff_eq_zero_or_one.mp (he.map f) with h | h <;>`. Break down `IsIdempotentElem.iff_eq_zero_or_one.mp (he.map g) with h' | h'` into its components or cases. Rewrite using `[h, h']`. Conclude with `(key f g hf hg h h').elim`.
-
-Conclude with `(key g f hg hf h' h).elim`. Rewrite using `[h, h']`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_eq_of_isPreirreducible {T F : Type} [CommRing T] [Field F] (f g : T →+* F)
     (C : Set (PrimeSpectrum T)) (hC : IsPreirreducible C) (z : PrimeSpectrum F)
@@ -60,19 +58,19 @@ theorem apply_eq_of_isPreirreducible {T F : Type} [CommRing T] [Field F] (f g : 
   · rw [h, h']
 
 /- English proof (translation)
-Introduce `K _ _ X s R _ _ i p q hs hi his ⟨hp, hq, hpq⟩ e he`. Set `T` to `ℂ ⊗[K] R`. Apply the tactic sequence `let j : Sp T ⟶ pullback s (spMap (algebraMap K ℂ)) := (pullbackSpecIso K ℂ R).inv ≫ (pullbackSymmetry _ _).hom ≫ pullback.map (spMap (algebraMap K R)) (spMap (algebraMap K ℂ)) s (spMap (algebraMap K ℂ)) i (𝟙 _) (𝟙 _) (by rw [his, Category.comp_id]) (by rw [Category.comp_id, Categ …`. Use `haveI : IsOpenImmersion j := by dsimp only [j] infer_instance`. Set `iL : ℂ →+* T` to `Algebra.TensorProduct.includeLeftRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify by unfolding definitions. Introduce a local definition for the expression.
 
-Set `iR : R →+* T` to `(Algebra.TensorProduct.includeRight (R := K) (A := ℂ) (B := R) : R →+* T)`. Establish `hj1 : j ≫ pullback.fst _ _ = spMap iR ≫ i`. Simplify using `only [j, Category.assoc, pullback.lift_fst]`. Rewrite using `[pullbackSymmetry_hom_comp_fst_assoc, pullbackSpecIso_inv_snd_assoc]`. Establish `hj2 : j ≫ pullback.snd _ _ = spMap iL`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [j, Category.assoc, pullback.lift_snd, Category.comp_id]`. Rewrite using `[pullbackSymmetry_hom_comp_snd, pullbackSpecIso_inv_fst]`. Establish `hl : ∀ (r : R →ₐ[K] ℂ) (hr : (spMap r.toRingHom ≫ i) ≫ s = 𝟙 _ ≫ spMap (algebraMap K ℂ)), pullback.lift (spMap r.toRingHom ≫ i) (𝟙 _) hr = spMap (Algebra.TensorProduct.lift (AlgHom.id ℂ ℂ) r (fun _ _ => Commute.all _ _)).toRingHom ≫ j`. Introduce `r hr`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[pullback.lift_fst, Category.assoc, hj1, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 3`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `r x = Algebra.TensorProduct.lift (AlgHom.id ℂ ℂ) r (fun _ _ => Commute.all _ _) (1 ⊗ₜ[K] x)`. Rewrite using `[Algebra.TensorProduct.lift_tmul, map_one, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullback.lift_snd, Category.assoc, hj2, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← Spec.map_id]`. Use `congr 1`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(x : ℂ) = Algebra.TensorProduct.lift (AlgHom.id ℂ ℂ) r (fun _ _ => Commute.all _ _) ((x : ℂ) ⊗ₜ[K] 1)`. Rewrite using `[Algebra.TensorProduct.lift_tmul, map_one, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `z : PrimeSpectrum ℂ` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `h1` using `hpq z`. Establish `hC` using `isPreirreducible_connectedComponent_of_smooth (pullback.snd s (spMap (algebraMap K ℂ))) (pullback.lift (spMap q.toRingHom ≫ i) (𝟙 _) hq z)`. Establish `h2` using `mem_connectedComponent (x := pullback.lift (spMap q.toRingHom ≫ i) (𝟙 _) hq z)`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `connectedComponent (pullback.lift (spMap q.toRingHom ≫ i) (𝟙 _) hq z) = C at h1 h2 hC`. Rewrite `h1`, `h2` using `[hl]`. Conclude with `apply_eq_of_isPreirreducible _ _ (j ⁻¹' C) (hC.preimage j.isOpenEmbedding) z h1 h2 e he`.
+Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_eq_of_sameComp_of_isIdempotentElem :
     ∀ (K : Type) [Field K] [Algebra K ℂ] (X : Scheme.{0}) (s : X ⟶ Sp K) (R : Type) [CommRing R] [Algebra K R] (i : Sp R ⟶ X) (p q : R →ₐ[K] ℂ), Smooth s → IsOpenImmersion i → i ≫ s = spMap (algebraMap K R) → SameComp s (algebraMap K ℂ) (spMap p.toRingHom ≫ i) (spMap q.toRingHom ≫ i) → ∀ e : ℂ ⊗[K] R, IsIdempotentElem e → Algebra.TensorProduct.lift (AlgHom.id ℂ ℂ) p (fun _ _ => Commute.all _ _) e = Algebra.TensorProduct.lift (AlgHom.id ℂ ℂ) q (fun _ _ => Commute.all _ _) e := by

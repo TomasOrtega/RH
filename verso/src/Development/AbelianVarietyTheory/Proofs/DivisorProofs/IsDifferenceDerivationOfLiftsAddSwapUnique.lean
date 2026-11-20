@@ -12,7 +12,7 @@ set_option autoImplicit false
 namespace GlobalTheory.Obs
 
 /- English proof (translation)
-Establish `h` using `Ideal.mul_mem_mul hx hy`. Rewrite `h` using `[← sq, map_sq hI B', Ideal.zero_eq_bot, Ideal.mem_bot]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_eq_zero_of_mem_map_sq {R : Type} [CommRing R] {I : Ideal R} (hI : I ^ 2 = 0) {B' : Type} [CommRing B']
     [Algebra R B'] {x y : B'} (hx : x ∈ I.map (algebraMap R B')) (hy : y ∈ I.map (algebraMap R B')) : x * y = 0 := by
@@ -21,7 +21,7 @@ theorem mul_eq_zero_of_mem_map_sq {R : Type} [CommRing R] {I : Ideal R} (hI : I 
   exact h
 
 /- English proof (translation)
-Establish `hd : (a x - b x) * t = 0`. Rewrite using `[← h.der x]`. Conclude with `mul_eq_zero_of_mem_map_sq hI (h.mem _) ht`. Rewrite `hd` using `[sub_mul, sub_eq_zero]`. Conclude with `hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTheta_mul_eq {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} (hI : I ^ 2 = 0) {B B₀ B' : Type}
     [CommRing B] [Algebra R B] [CommRing B₀] [Algebra R₀ B₀] [CommRing B'] [Algebra R B'] {p : B →+* B₀}
@@ -33,17 +33,15 @@ theorem isTheta_mul_eq {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R
   exact hd
 
 /- English proof (translation)
-Introduce `R R₀ _ _ I hI π hπ hk B B₀ _ _ _ _ p hs hp hker B' _ _ a b c θ θ' h`. Use `⟨⟨fun x w ↦ ?_, fun x ↦ ?_, fun w ↦ ?_⟩, fun h' ↦ ⟨fun x w ↦ ?_, fun x ↦ ?_, fun w ↦ ?_⟩, fun h' ↦ ?_, fun h0 ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[AddMonoidHom.neg_apply, AddMonoidHom.neg_apply, h.smul, mul_neg, isTheta_mul_eq hI h x (h.mem w)]`. Rewrite using `[AddMonoidHom.neg_apply, h.der, neg_sub]`. Conclude with `(Ideal.neg_mem_iff _).2 (h.mem w)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddMonoidHom.add_apply, AddMonoidHom.add_apply, h.smul, h'.smul, mul_add, isTheta_mul_eq hI h x (h'.mem w)]`. Rewrite using `[AddMonoidHom.add_apply, h.der, h'.der]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Ideal.add_mem _ (h.mem w) (h'.mem w)`. Use extensionality with `w`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : w ∈ Submodule.span B₀ (Set.range (KaehlerDifferential.D R₀ B₀))`. Rewrite using `[KaehlerDifferential.span_range_derivation]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, rfl⟩` from `hy`. Take `⟨x, rfl⟩` from `hp y`. Rewrite using `[h.der, h'.der]`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [map_add, map_add, hu, hv]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul r u _ hu`. Take `⟨x, rfl⟩` from `hp r`. Rewrite using `[h.smul, h'.smul, hu]`. Use extensionality with `x`. Use `h.der x` as an intermediate fact.
-
-Rewrite `this` using `[h0, AddMonoidHom.zero_apply]`. Conclude with `(sub_eq_zero.1 this.symm)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTheta_add : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (B B₀ : Type) [CommRing B] [Algebra R B] [CommRing B₀] [Algebra R₀ B₀] (p : B →+* B₀) (hs : SemiHom π p) (hp : Function.Surjective p) (hker : ∀ b, p b = 0 ↔ b ∈ I.map (algebraMap R B)) (B' : Type) [CommRing B'] [Algebra R B'] (a b c : B →ₐ[R] B') (θ θ' : Ω[B₀⁄R₀] →+ B'), IsTheta I p a b θ → (IsTheta I p b a (-θ) ∧ (IsTheta I p b c θ' → IsTheta I p a c (θ + θ')) ∧ (IsTheta I p a b θ' → θ = θ') ∧ (θ = 0 → a = b)) := by
   intro R R₀ _ _ I hI π hπ hk B B₀ _ _ _ _ p hs hp hker B' _ _ a b c θ θ' h

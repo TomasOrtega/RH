@@ -20,15 +20,13 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 namespace GlobalTheory.CovHt.HTDiag
 
 /- English proof (translation)
-Establish `hp2 : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Establish `hd : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Use `set d := Module.finrank ℚ E with hdd`. Use `set m := padicValNat p (discr E).natAbs with hmm`. Use `set N : ℕ := d + 40 * m * (p - 1) with hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set D : ℕ := (p - 1) * d with hD`. Establish `hD0 : 0 < D` using `Nat.mul_pos (by omega) hd`. Take `⟨b, hb⟩` from `IsAlgClosed.exists_pow_nat_eq ((p : ℂ_[p]) ^ N) hD0`. Use `⟨b, ?_⟩` and prove the remaining obligations. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : ‖b‖ ^ (D : ℝ) = (p : ℝ) ^ (-(N : ℝ))`. Rewrite using `[Real.rpow_natCast, ← norm_pow, hb, norm_pow, GlobalTheory.PadicComplexHost.norm_p, inv_pow, Real.rpow_neg hp0.le, Real.rpow_natCast]`. Establish `hD' : (D : ℝ) ≠ 0` using `by exact_mod_cast hD0.ne'`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hp1 : ((p - 1 : ℕ) : ℝ) = (p : ℝ) - 1` using `by rw [Nat.cast_sub (by omega)]; simp`. Establish `hp1' : (p : ℝ) - 1 ≠ 0`. Establish `: (2 : ℝ) ≤ p` using `by exact_mod_cast hp2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdR : (d : ℝ) ≠ 0` using `by exact_mod_cast hd.ne'`.
-
-Rewrite using `[htEx, ← hdd, ← hmm, hN, hD]`. Move the coercions through the operations in `[hp1]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_norm_eq_htEx (E : Type) [Field E] [NumberField E] (p : ℕ) [Fact p.Prime] :
     ∃ a : ℂ_[p], ‖a‖ = (p : ℝ) ^ (-htEx E p) := by
@@ -60,23 +58,21 @@ theorem exists_norm_eq_htEx (E : Type) [Field E] [NumberField E] (p : ℕ) [Fact
       field_simp
 
 /- English proof (translation)
-Introduce `E _ _ _ _ H Dw l Xo c p _ _ T io y₀ hy₀ k y z hH hz`. Use `letI := H.starRing`. Use `letI := io.toAlgebra`. Take `⟨-, kO, P, ψ, z', hP, hz', g, a, x, hc, hg, ha, hx, hb⟩` from `hH`. Take `rfl : z = z'` from `(FlagTan.frMap_unique hz' hz).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hd` using `fun τ => diag_ne_zero_of_linearIndependent (hg τ) (hb τ).1`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at ha`. Set `t : Ix Dw → ℂ_[p]ˣ` to `fun i => Option.rec (Units.mk0 a ha0) (fun s => Units.mk0 _ (hd s.1 s.2)) i`. Establish `hnorm : ∀ u : ℂ_[p], ‖u‖ = ((Valued.v u : ℝ≥0) : ℝ)` using `fun u => (GlobalTheory.PadicComplexHost.valuation_coe_eq_norm p u).symm`. Establish `hspan` using `fun τ => RecSpan.span_bLie_eq_wRec E H Dw l Xo c p ℂ_[p] Valued.v 𝓞_ℂ_[p] T io y₀ k kO P ψ z hP hz' τ (x τ) (hx τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : ∀ τ j, P.bLie (x τ j) ∈ P.wRec (embInt c P.integers τ)` using `fun τ j => (hspan τ).le (Submodule.subset_span ⟨j, rfl⟩)`. Take `⟨a₀, ha₀⟩` from `exists_norm_eq_htEx E p`. Use `⟨t, (frBor_iff_frChg z y t).2 ⟨g, hg, fun _ _ => rfl, hc⟩, ?_, fun s => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show ‖a‖ = 1`. Rewrite using `[hnorm, ha, NNReal.coe_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, i⟩` from `s show 1 ≤ ‖g τ i i‖`. Establish `hmem : ∑ j, (1 : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ_[p]) i j • P.bLie (x τ j) ∈ htLat c P τ`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [Matrix.one_apply_ne' hj, zero_smul]) (by simp), Matrix.one_apply_eq, one_smul]`. Conclude with `wRec_le_htLat P τ (hw τ i)`. Establish `h` using `IsLatBasis.diag_le P.integers (hg τ) (fun i j h => Matrix.one_apply_ne h.ne) (hb τ) i hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Matrix.one_apply_eq, map_one]`. Rewrite using `[hnorm]`. Conclude with `h` after adjusting the coercions. Take `⟨τ, i⟩` from `s show ‖g τ i i‖ ≤ _`. Establish `hli : LinearIndependent ℂ_[p] fun j => P.bLie (x τ j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[linearIndependent_iff_card_le_finrank_span]`. Establish `h1` using `linearIndependent_iff_card_eq_finrank_span.1 (hb τ).1`. Rewrite using `[h1]`. Use `haveI : FiniteDimensional ℂ_[p] (Submodule.span ℂ_[p] (Set.range fun j => P.bLie (x τ j))) := FiniteDimensional.span_of_finite ℂ_[p] (Set.finite_range _)`. Use `Submodule.finrank_mono (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `_ ⟨r, rfl⟩`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hrow : ∑ j, g τ i j • P.bLie (x τ j) ∈ Submodule.span ℂ_[p] (P.wRec (embInt c P.integers τ) : Set P.V)` using `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span (hw τ j))`. Establish `h1` using `hL E H Dw l Xo c p T io y₀ hy₀ k.toRingHom kO P ψ hP τ _ ((hb τ).mem i) hrow a₀ ha₀.le`. Rewrite `h1` using `[← hspan τ, Finset.smul_sum]`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[smul_smul]`. Take `⟨b, hb'⟩` from `((isLatBasis_span hli).sum_mem_iff (fun j => a₀ * g τ i j)).1 h1 i`. Establish `hv : ‖a₀ * g τ i i‖ ≤ 1`. Rewrite using `[← hb', hnorm]`. Conclude with `P.integers.map_le_one b` after adjusting the coercions.
-
-Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`. Establish `hpos : (0 : ℝ) < (p : ℝ) ^ htEx E p` using `Real.rpow_pos_of_pos hp0 _`. Rewrite `hv` using `[norm_mul, ha₀, Real.rpow_neg hp0.le]`. Rewrite `hv` using `[inv_mul_le_iff₀ hpos, _root_.mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem diagBound_of_latBound (hL : LatBound) : DiagBound := by
   intro E _ _ _ _ H Dw l Xo c p _ _ T io y₀ hy₀ k y z hH hz
@@ -134,7 +130,7 @@ theorem diagBound_of_latBound (hL : LatBound) : DiagBound := by
     rwa [inv_mul_le_iff₀ hpos, _root_.mul_one] at hv
 
 /- English proof (translation)
-The claim follows from `diagBound_of_latBound`.
+A detailed English derivation is pending.
 -/
 example : LatBound → DiagBound := diagBound_of_latBound
 

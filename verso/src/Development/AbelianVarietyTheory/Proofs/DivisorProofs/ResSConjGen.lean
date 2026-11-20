@@ -16,11 +16,11 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `: Formalism.L2.Herm.intAf F E ≤ (Formalism.L2.Herm.intAf F E).comap (Formalism.UG.sigR τ (Formalism.L2.Herm.Af F))`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨⟨_, c, rfl⟩, rfl⟩ | ⟨b, rfl⟩)`. Take `⟨c', hc'⟩ : ∃ y' : 𝓞 E, (y' : E) = τ (c : E)` from `⟨⟨τ (c : E), (c.isIntegral_coe).map ((τ : E →+* E).toIntAlgHom)⟩, rfl⟩`. Use `Subring.subset_closure (Or.inl ⟨⟨_, c', rfl⟩, ?_⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (c' : E) ⊗ₜ[F] _ = τ (c : E) ⊗ₜ[F] _`. Rewrite using `[hc']`. Both sides reduce to the same expression. Use `Subring.subset_closure (Or.inr ⟨b, ?_⟩) show _ = τ 1 ⊗ₜ[F] _` and prove the remaining obligations. Rewrite using `[map_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `this hs`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_int (τ : E →ₐ[F] E) {s : E ⊗[F] Formalism.L2.Herm.Af F} (hs : s ∈ Formalism.L2.Herm.intAf F E) :
     Formalism.UG.sigR τ (Formalism.L2.Herm.Af F) s ∈ Formalism.L2.Herm.intAf F E := by
@@ -38,9 +38,9 @@ theorem conj_mem_int (τ : E →ₐ[F] E) {s : E ⊗[F] Formalism.L2.Herm.Af F} 
   exact this hs
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `ZMod.intCast_surjective (e (r s))`. Establish `h1 : r (s - n) = 0`. Rewrite using `[map_sub, map_intCast, sub_eq_zero]`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[← hn, map_intCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `h _ h1`. Rewrite `h4` using `[map_sub, map_intCast, map_sub, map_intCast, sub_eq_zero]`. Rewrite using `[h4, ← hn, map_intCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_transfer {S k k' : Type} [CommRing S] [CommRing k] [CommRing k'] (r : S →+* k) (r' : S →+* k')
     (σ : S →+* S) (h : ∀ x, r x = 0 → r' (σ x) = 0) (s : S) (p : ℕ) (e : k ≃+* ZMod p) (e' : ZMod p ≃+* k') :
@@ -55,13 +55,11 @@ theorem res_transfer {S k k' : Type} [CommRing S] [CommRing k] [CommRing k'] (r 
   rw [h4, ← hn, map_intCast]
 
 /- English proof (translation)
-Set `σ : Formalism.L2.Herm.intAf F E →+* Formalism.L2.Herm.intAf F E` to `((Formalism.UG.sigR τ (Formalism.L2.Herm.Af F)).comp (Formalism.L2.Herm.intAf F E).subtype).codRestrict _ (fun x => conj_mem_int τ x.2)`. Establish `hts : t = σ s` using `Subtype.ext ht`. Establish `h3 : idS F w.asIdeal ≤ (idS F w'.asIdeal).comap σ`. Use `Ideal.map_le_iff_le_comap.2 fun c hcw => ?_` and prove the remaining obligations. Take `⟨c', hc', hcc⟩` from `hc c hcw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: σ (oToS F E c) = oToS F E c'`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show τ (c : E) ⊗ₜ[F] _ = (c' : E) ⊗ₜ[F] _`. Rewrite using `[hcc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, this]`. Conclude with `Ideal.mem_map_of_mem _ hc'`. Rewrite using `[hts]`. Use `res_transfer (resS F w) (resS F w') σ (fun x hx => ?_) s p e e'` and prove the remaining obligations. Rewrite `hx`, the goal using `[GlobalTheory.GeoActCompare.resS_eq_resI, GlobalTheory.GeoActCompare.resI_eq_zero_iff]`.
-
-Conclude with `h3 hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resS_conj_gen (τ : E →ₐ[F] E) (w w' : Pl E)
     (hc : ∀ c ∈ w.asIdeal, ∃ c' ∈ w'.asIdeal, (c' : E) = τ (c : E)) (s t : Formalism.L2.Herm.intAf F E)
@@ -89,7 +87,7 @@ theorem resS_conj_gen (τ : E →ₐ[F] E) (w w' : Pl E)
 end General
 
 /- English proof (translation)
-Introduce `D w w' hc s t ht p e e'` and use `resS_conj_gen D.sp.cm.sig w w' hc s t ht p e e'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem resS_conj : ∀ (D : D7) (w w' : Pl D.host.E), IsConjPl w w' → ∀ (s t : Formalism.L2.Herm.intAf D.host.F D.host.E), (t : EAf D) = Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) (s : EAf D) → ∀ (p : ℕ) (e : kP w ≃+* ZMod p) (e' : ZMod p ≃+* kP w'), resS D.host.F w' t = e' (e (resS D.host.F w s)) :=
   fun D w w' hc s t ht p e e' => resS_conj_gen D.sp.cm.sig w w' hc s t ht p e e'

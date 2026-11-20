@@ -5,15 +5,15 @@ open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ n`. Set `b` to `NumberField.RingOfIntegers.basis E`. Set `bZ` to `Pi.basis (fun _ : Fin n => b)`. Set `bQ` to `Pi.basis (fun _ : Fin n => NumberField.integralBasis E)`. Set `b1` to `Algebra.TensorProduct.basis ℚ bZ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨b1.equiv bQ (Equiv.refl _), ?_⟩` and prove the remaining obligations. Set `f1 : (Fin n → 𝓞 E) →ₗ[ℤ] (Fin n → E)` to `((b1.equiv bQ (Equiv.refl _)).toLinearMap.restrictScalars ℤ) ∘ₗ TensorProduct.mk ℤ ℚ (Fin n → 𝓞 E) 1`. Set `f2 : (Fin n → 𝓞 E) →ₗ[ℤ] (Fin n → E)` to `LinearMap.pi (fun i => (algebraMap (𝓞 E) E).toIntAlgHom.toLinearMap ∘ₗ LinearMap.proj i)`. Establish `hf : f1 = f2`. Use `bZ.ext fun k => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk : f1 (bZ k) = b1.equiv bQ (Equiv.refl _) (b1 k)`. Rewrite using `[Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression. Rewrite using `[hk, Module.Basis.equiv_apply]`. Take `⟨i, j⟩` from `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `l`. Simplify using `[bQ, bZ, f2, Pi.basis_apply, Pi.single_apply, NumberField.integralBasis_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Both sides reduce to the same expression. Introduce `v i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congr_fun (LinearMap.congr_fun hf v) i`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pRepEx :
     RepEx := by

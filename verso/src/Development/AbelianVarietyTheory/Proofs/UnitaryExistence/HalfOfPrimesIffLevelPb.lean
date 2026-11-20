@@ -10,14 +10,14 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open GlobalTheory.IndefiniteRowSideFullHecke
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨l.fromK, hl.1 ▸ l.prod, l.coprime⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHalf_of_level (D : D7) (l : Level (hostOfRecord D)) (hl : l.M = D.host.g 0 * D.host.g 1 ∧ l.A = 1) :
     HalfLevelCoefficients.IsHalf D l.Mb :=
   ⟨l.fromK, hl.1 ▸ l.prod, l.coprime⟩
 
 /- English proof (translation)
-Take `⟨M, h3, hodd, Mb, hK, hp, hc, A, hA⟩` from `l`. Take `⟨h1, h2⟩` from `hl`. Simplify using `only at h1 h2`. Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem levelAt_Mb (D : D7) (l : Level (hostOfRecord D)) (hl : l.M = D.host.g 0 * D.host.g 1 ∧ l.A = 1) :
     HalfLevelCoefficients.levelAt D l.Mb (isHalf_of_level D l hl) = l := by
@@ -28,7 +28,7 @@ theorem levelAt_Mb (D : D7) (l : Level (hostOfRecord D)) (hl : l.M = D.host.g 0 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem levelAt_spec (D : D7) (Mb : Ideal (𝓞 D.host.E)) (h : HalfLevelCoefficients.IsHalf D Mb) :
     (HalfLevelCoefficients.levelAt D Mb h).M = D.host.g 0 * D.host.g 1 ∧ (HalfLevelCoefficients.levelAt D Mb h).A = 1 :=
@@ -56,7 +56,7 @@ theorem parAt_levelAt (D : D7) (hF : OFull D) (hz : OZeta D) (hN : N1ab) (Mb : I
   rfl
 
 /- English proof (translation)
-Rewrite using `[← parAt_levelAt]`. Use `congr 1`. Conclude with `(levelAt_Mb D l hl).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem parAt_eq (D : D7) (hF : OFull D) (hz : OZeta D) (hN : N1ab) (l : Level (hostOfRecord D))
     (hl : l.M = D.host.g 0 * D.host.g 1 ∧ l.A = 1) :
@@ -66,9 +66,9 @@ theorem parAt_eq (D : D7) (hF : OFull D) (hz : OZeta D) (hN : N1ab) (l : Level (
   exact (levelAt_Mb D l hl).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, hb⟩`. Establish `h` using `isHalf_of_level D l hl`. Rewrite `h` using `[hb]`. Conclude with `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨HalfLevelCoefficients.levelAt D _ h, levelAt_spec D _ h, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem levelPb_iff (D : D7) (pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K)) :
     LevelPb D pb ↔ HalfLevelCoefficients.IsHalf D (HalfLevelCoefficients.halfOf D pb) := by
@@ -81,7 +81,7 @@ theorem levelPb_iff (D : D7) (pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K)) 
     exact ⟨HalfLevelCoefficients.levelAt D _ h, levelAt_spec D _ h, rfl⟩
 
 /- English proof (translation)
-The claim follows from `forall₂_congr fun pb _ => (levelPb_iff D pb).symm`.
+A detailed English derivation is pending.
 -/
 theorem halfOfPrimes_iff_levelPb (D : D7) :
     HalfLevelCoefficients.HalfOfPrimes D ↔ ∀ pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K),
@@ -89,7 +89,7 @@ theorem halfOfPrimes_iff_levelPb (D : D7) :
   forall₂_congr fun pb _ => (levelPb_iff D pb).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => rfl, fun hF hz hN l => parAt_eq D hF hz hN l.1 l.2, fun hF hz hN Mb => parAt_levelAt D hF hz hN Mb.1 Mb.2, levelPb_iff D, halfOfPrimes_iff_levelPb D⟩`.
+Supply the required witnesses or components.
 -/
 theorem typings_agree (D : D7) :
     (∀ l : {l : Level (hostOfRecord D) // l.M = D.host.g 0 * D.host.g 1 ∧ l.A = 1}, (levelEquivHalf D l).1 = l.1.Mb) ∧

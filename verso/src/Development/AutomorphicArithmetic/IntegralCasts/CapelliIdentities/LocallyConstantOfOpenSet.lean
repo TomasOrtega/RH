@@ -1,11 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `G H _ _ _ _ f hk`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hc : Continuous fun y : G => x⁻¹ * y` using `continuous_const.mul continuous_id`. Establish `ho : IsOpen ((fun y : G => x⁻¹ * y) ⁻¹' (f.ker : Set G))` using `hk.preimage hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : x ∈ (fun y : G => x⁻¹ * y) ⁻¹' (f.ker : Set G)`. Simplify using `[Set.mem_preimage, MonoidHom.mem_ker]`. Use `filter_upwards [ho.mem_nhds hx] with y hy`. Establish `h1 : f (x⁻¹ * y) = 1` using `MonoidHom.mem_ker.mp hy`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one]`.
-
-Conclude with `h1.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.LocallyConstantOfOpenSet.lc_of_open :
     ∀ {G H : Type} [inst : Group G] [inst_1 : TopologicalSpace G]

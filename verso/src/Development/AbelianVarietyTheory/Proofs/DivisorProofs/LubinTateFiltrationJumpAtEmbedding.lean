@@ -8,13 +8,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLubinTatePeri
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct GlobalTheory.PZ GlobalTheory.PMC GlobalTheory.AinfK GlobalTheory.AcrisK
 
 /- English proof (translation)
-Introduce `l _ P AI hT K LL χ π z hLT τ₀`. Take `⟨ω, t, u, hω0, hω2, ht, hg⟩` from `GlobalTheory.T.exists_lubin_tate_period_element l K χ π z hLT`. Take `⟨Ψ, hK, hG, h0, h1, h2⟩` from `GlobalTheory.T.period_ring_embedding_properties l P AI hT K`. Establish `hX1 : Ψ (toB K (ofA K ω)) ∈ (P.PD K).Fil 1` using `h1 ω hω0`. Establish `hX2 : Ψ (toB K (ofA K ω)) ∉ (P.PD K).Fil 2` using `h2 ω hω0 hω2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXU : Ψ (toB K (ofA K ω)) * Ψ u ∈ (P.PD K).Fil 1`. Simplify using `using (P.PD K).Fil_mul 1 0 _ _ hX1 (h0 u)`. Establish `hXXU : Ψ (toB K (ofA K ω)) * (Ψ (toB K (ofA K ω)) * Ψ u) ∈ (P.PD K).Fil 2`. Simplify `(P.PD K).Fil_mul 1 1 _ _ hX1 hXU` using `[one_add_one_eq_two]`. Establish `hY : Ψ t = Ψ (toB K (ofA K ω)) + Ψ (toB K (ofA K ω)) * (Ψ (toB K (ofA K ω)) * Ψ u)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[ht, map_mul, map_add, map_one, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `GlobalTheory.T.lubin_tate_period_filtration_exact l P K LL χ τ₀ (Ψ t) (fun g => ?_) ?_ ?_` and prove the remaining obligations. Rewrite using `[hG, hg, map_mul, hK]`. Rewrite using `[hY]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hX1 ((P.PD K).Fil_anti 1 (by simpa [one_add_one_eq_two] using hXXU))`. Introduce `h`. Apply `hX2` to reduce the goal to its premises. Use `sub_mem h hXXU` as an intermediate fact. Rewrite `this` using `[hY, add_sub_cancel_right]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LTDegOne.main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) →
     ∀ (K LL : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ) (π : ↥(OL K)) (z : ℕ → Om l), LTData K χ π z →

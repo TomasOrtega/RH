@@ -13,12 +13,12 @@ def cA (F : Type) [Field F] [CharZero F] (l : ℕ) [Fact l.Prime] (a : ℤ) : F 
   ((1 + (l : F)) ^ a - 1) / (-(l : F))
 
 /- English proof (translation)
-Simplify using `[cA]`.
+Simplify using the standard rewrite rules.
 -/
 example (l : ℕ) [Fact l.Prime] : cA ℚ_[l] l 0 = 0 := by simp [cA]
 
 /- English proof (translation)
-Establish `h : (l : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`. Simplify using `only [cA, zpow_one, add_sub_cancel_left]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 example (l : ℕ) [Fact l.Prime] : cA ℚ_[l] l 1 = -1 := by
   have h : (l : ℚ_[l]) ≠ 0 := Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero
@@ -41,14 +41,14 @@ def qpow (q : A) (j : ℤ) (P : Submodule O D) : Submodule O D :=
   (P.map (mulBy O D (q ^ j.toNat))).comap (mulBy O D (q ^ (-j).toNat))
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[qpow, mulBy]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 example (q : A) (P : Submodule O D) : qpow q 0 P = P := by
   ext x
   simp [qpow, mulBy]
 
 /- English proof (translation)
-Simplify using `[qpow, mulBy]`.
+Simplify using the standard rewrite rules.
 -/
 example (q : A) (P : Submodule O D) (x : D) : x ∈ qpow q (-1) P ↔ q • x ∈ P := by
   simp [qpow, mulBy]

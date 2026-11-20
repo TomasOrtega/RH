@@ -25,7 +25,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Z : Model Xo c β) {σ : c.F →+* ℂ}
 
 /- English proof (translation)
-Use `Z.jQ_open` as an intermediate fact. Use `(cancel_mono (Z.jQ ≫ genι Z)).1 ?_` and prove the remaining obligations. Establish `h1 : w ≫ Z.oF.t.G.hom ≫ Z.jQ ≫ genι Z = v ≫ Z.t.G.hom`. Rewrite using `[← hw, Category.assoc, Z.m.cart.1.w]`. Rewrite using `[Category.assoc, h1, hv.1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -40,7 +40,7 @@ theorem base_eq [Mono (genι Z)] (q : FrPt Xo c (CAt σ)) {w : Sp (DualNumber �
   rfl
 
 /- English proof (translation)
-Establish `: Epi (CommRingCat.ofHom (algebraMap (𝓞 c.F) c.F))` using `IsLocalization.epi (nonZeroDivisors (𝓞 c.F)) c.F`. Establish `: Mono (spMap (algebraMap (𝓞 c.F) c.F))` using `Scheme.Spec.map_mono (CommRingCat.ofHom _).op`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_genι_of_ringOfIntegers {Xo : Moduli Dw l} {c : Coeff l} (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) :
     Mono (genι Z) := by
@@ -49,31 +49,25 @@ theorem mono_genι_of_ringOfIntegers {Xo : Moduli Dw l} {c : Coeff l} (Z : Model
   infer_instance
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z σ d g ty Fu ch i B P hB hBt hPer hPd hPu hmono V φ F hstr`. Use `set R := {b ∈ B | ch.e.symm b ∈ ptsIn (genStr Z) σ V.1 ∧ ¬ LiesIn (ch.e.symm b) (genBd Z)} with hR`. Break down `B.eq_empty_or_nonempty with hBe | ⟨b₀, hb₀⟩` into its components or cases. Use `⟨0, fun τ k => ?_, fun b hb => by simp [hBe] at hb⟩` and prove the remaining obligations. Establish `: R = ∅`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `b`. Simplify using `[hR, hBe]`. Rewrite using `[this]`. Conclude with `differentiableOn_empty`. Set `L` to `EuclideanSpace.equiv (Fin d) ℂ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set B₁ : Set (Fin d → ℂ) := L.symm ⁻¹' B with hB₁`. Establish `hB₁o : IsOpen B₁` using `hB.preimage L.symm.continuous`. Set `P₂ : (Fin d → ℂ) → ((Fu.Di i).La →+ (Fin g → ℂ))` to `fun x => if L.symm x ∈ B then P (L.symm x) else P b₀`. Establish `hP₂ : ∀ x, IsPeriod (Fu.Di i) ty (P₂ x)` using `fun x => by`. Distinguish the cases in `h : L.symm x ∈ B`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [P₂, if_pos h]`. Conclude with `hPer _ h`. Simplify using `only [P₂, if_neg h]`. Conclude with `hPer _ hb₀`. Establish `hP₂d : ∀ a, DifferentiableOn ℂ (fun x => P₂ x a) B₁` using `fun a => ((hPd a).comp L.symm.differentiableOn fun x hx => hx).congr fun x hx => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [P₂, if_pos (show L.symm x ∈ B from hx), Function.comp_apply]`. Establish `hP₂L : ∀ b ∈ B, P₂ (L b) = P b` using `fun b hb => by`. Simplify using `only [P₂, ContinuousLinearEquiv.symm_apply_apply, if_pos hb]`. Establish `hover : ∀ x, Fu.u i (P₂ x) ≫ Xo.s = spMap σ ≫ spMap (IntermediateField.inclusion c.le).toRingHom` using `fun x => by`. Rewrite using `[Fu.over_σ i _ (hP₂ x), ← Spec.map_comp]`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Set `p : (Fin d → ℂ) → (Sp ℂ ⟶ Xo.XF c)` to `fun x => pullback.lift _ _ (hover x)`. Establish `hu : ∀ x, Fu.u i (P₂ x) = p x ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)` using `fun x => (pullback.lift_fst _ _ _).symm`. Establish `hs : ∀ x, p x ≫ pullback.snd _ _ = spMap σ` using `fun x => pullback.lift_snd _ _ _`. Establish `hpq : ∀ b ∈ B, ∀ q : FrPt Xo c (CAt σ), cxPt Z q = ch.e.symm b → p (L b) = GlobalTheory.AllWt.ptF (S` using `CAt σ) q := fun b hb q hq => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[← hu, hP₂L b hb, hPu b hb q hq.symm]`. Conclude with `(GlobalTheory.TrueCx.ptC_fst q).symm`. Rewrite using `[hs]`. Conclude with `(GlobalTheory.TrueCx.ptC_snd q).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hσφ : ∀ {y : CxPts (genStr Z) σ} (h : y ∈ ptsIn (genStr Z) σ V.1), σ = (evHom h).comp φ` using `fun {y} h => by`. Establish `e : spMap σ = spMap ((evHom h).comp φ)`. Rewrite using `[← y.2, ← spMap_evHom h, Category.assoc, hstr, ← Spec.map_comp]`. Both sides reduce to the same expression. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hRV : ∀ b ∈ R, ⊤ ≤ (p (L b) ≫ Z.jQ) ⁻¹ᵁ V.1` using `fun b hb => by`. Establish `hx : (ch.e.symm b).1 ≫ genι Z = spMap (evHom hb.2.1) ≫ LogKS.chart V ≫ genι Z`. Rewrite using `[← Category.assoc, spMap_evHom hb.2.1]`. Take `⟨f, -⟩` from `F.exists_isMap (evHom hb.2.1) (hσφ hb.2.1) hx`. Take `⟨q, hq, -⟩` from `GlobalTheory.T.exists_framedComplexPoint_of_eigenFrame_off_boundary _ _ _ _ _ _ _ _ Z σ _ hb.2.2 f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hpq b hb.1 q hq]`. Use `show ⊤ ≤ (cxPt Z q).1 ⁻¹ᵁ V.1`. Rewrite using `[hq]`. Conclude with `hb.2.1`. Use `choose W hW hWd using fun (a : Σ τ : E →+* ℂ, Fin (Dw.mult τ)) => GlobalTheory.T.expCoordinates_tangentField_holomorphic_periodMap _ _ _ _ _ _ _ _ Z σ g ty Fu i d B₁ P₂ p hu V (F.v a.1 a.2) hB₁o hP₂ hP₂d hs (F.tan a.1 a.2)`.
-
-Use `⟨fun b τ k => W ⟨τ, k⟩ (L b), fun τ k => ?_, fun b hb hy f hf q hq hw τ k => ?_⟩` and prove the remaining obligations. Conclude with `(hW ⟨τ, k⟩).comp L.differentiableOn fun b hb => ⟨by simpa [hB₁] using hb.1, hRV b hb⟩`. Take `⟨w, hw1, hw2⟩` from `hw τ k`. Establish `hd` using `hWd ⟨τ, k⟩ (L b) (by simpa [hB₁] using hb) (ch.e.symm b) hy (by rw [hpq b hb q hq, ← hq]; rfl)`. Establish `hfv : spMap (dualMap (evHom hy)) ≫ F.v τ k = w ≫ Z.m.φ` using `by rw [hw2, hf τ k]`.
-
-Rewrite `hd` using `[hfv]`. Establish `hbase : w ≫ Z.oF.t.G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ p (L b)`. Rewrite using `[hpq b hb q hq]`. Conclude with `base_eq Z q (by rw [hq]; exact f.tan τ k) hw2`. Establish `h` using `isDerivAt0_ex_of_push Z Fu (p (L b)) i (P₂ (L b)) (hP₂ _) (hu _) hbase hd`.
-
-Rewrite `h` using `[hw1, hP₂L b hb]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_expCoord : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (d g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty) (ch : AlgChart (genStr Z) σ d) (i : Fin Fu.n) (B : Set (ReciprocityTheory.L2DbarEstimates.V d)) (P : ReciprocityTheory.L2DbarEstimates.V d → ((Fu.Di i).La →+ (Fin g → ℂ))), IsOpen B → B ⊆ ch.e.target → (∀ b ∈ B, IsPeriod (Fu.Di i) ty (P b)) → (∀ v, DifferentiableOn ℂ (fun b => P b v) B) → (∀ b ∈ B, ∀ y : FrPt Xo c (CAt σ), ch.e.symm b = cxPt Z y → Fu.u i (P b) = y.x) → Mono (genι Z) → ∀ (V : (gen Z).affineOpens) (φ : c.F →+* Γ(gen Z, V.1)) (F : EigFrame Z φ (LogKS.chart V ≫ genι Z)), LogKS.chart V ≫ genStr Z = spMap φ → ∃ z : ReciprocityTheory.L2DbarEstimates.V d → ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Fin g → ℂ), (∀ τ k, DifferentiableOn ℂ (fun b => z b τ k) {b ∈ B | ch.e.symm b ∈ ptsIn (genStr Z) σ V.1 ∧ ¬ LiesIn (ch.e.symm b) (genBd Z)}) ∧ ∀ b ∈ B, ∀ (hy : ch.e.symm b ∈ ptsIn (genStr Z) σ V.1) (f : EigFrame Z σ ((ch.e.symm b).1 ≫ genι Z)), F.IsMap (evHom hy) f → ∀ q : FrPt Xo c (CAt σ), cxPt Z q = ch.e.symm b → (∀ τ k, ∃ w : Sp (DualNumber ℂ) ⟶ Z.oF.t.G.left, w ≫ Z.m0.toSABMap.φ = q.u τ k ∧ w ≫ Z.m.φ = f.v τ k) → ∀ τ k, IsDerivAt0 (fun w => (Fu.ex i (P b) w).left) (z b τ k) (q.u τ k) := by
   classical

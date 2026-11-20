@@ -13,12 +13,12 @@ import Formalism.LogSumExpBounds.CharacterSumPhase.ZLiftAsm
 namespace Formalism.NuclearRankWeightBounds.Top
 
 /- English proof (translation)
-The claim follows from `Formalism.NuclearRankWeightBounds.P.lattice_sum_holds`.
+A detailed English derivation is pending.
 -/
 theorem latSum : Formalism.NuclearRankWeightBounds.Z.LatSum := Formalism.NuclearRankWeightBounds.P.lattice_sum_holds
 
 /- English proof (translation)
-The claim follows from `Formalism.NuclearRankWeightBounds.P.decay_of_facts Formalism.NuclearRankWeightBounds.P.cb_weights Formalism.NuclearRankWeightBounds.P.nuclear_norm_bound_holds Formalism.NuclearRankWeightBounds.P.rank_block_holds Formalism.NuclearRankWeightBounds.P.log_sum_exp_bound_holds Formalis …`.
+A detailed English derivation is pending.
 -/
 theorem decay : Formalism.NuclearRankWeightBounds.D.Decay :=
   Formalism.NuclearRankWeightBounds.P.decay_of_facts Formalism.NuclearRankWeightBounds.P.cb_weights Formalism.NuclearRankWeightBounds.P.nuclear_norm_bound_holds

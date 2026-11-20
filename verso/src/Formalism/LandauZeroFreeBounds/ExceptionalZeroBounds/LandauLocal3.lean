@@ -6,7 +6,7 @@ noncomputable section
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Introduce `f z₀ r M hr hM hf hfz₀ hbound` and use `exists_localZeroExpansion_of_bound f z₀ r M hr hM hf hfz₀ hbound`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem landau_local3 : LandauLocal3 :=
   fun f z₀ r M hr hM hf hfz₀ hbound => exists_localZeroExpansion_of_bound f z₀ r M hr hM hf hfz₀ hbound

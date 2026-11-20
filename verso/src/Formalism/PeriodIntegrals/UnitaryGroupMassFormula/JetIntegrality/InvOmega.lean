@@ -15,7 +15,7 @@ noncomputable def intS (p : ℕ) [Fact p.Prime] : Subring ℂ_[p] :=
   _root_.UpperTheory.Reformulated.B.PadicComplexValuationRing.intS p
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.coeff_mul]`. Use `S.sum_mem fun x hx => S.mul_mem (hf _ ?_) (hg _ ?_)` and prove the remaining obligations. Use `Finset.HasAntidiagonal.mem_antidiagonal.mp hx` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `Finset.HasAntidiagonal.mem_antidiagonal.mp hx` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -28,11 +28,9 @@ theorem coeff_mul_memS {S : Subring ℂ_[p]} {f g : PowerSeries ℂ_[p]} {m : �
   · have := Finset.HasAntidiagonal.mem_antidiagonal.mp hx; omega
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `i _`. Rewrite using `[pow_zero, PowerSeries.coeff_one]`. Use `split_ifs`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `S.one_mem`. Conclude with `S.zero_mem`. Consider the case `succ k ih`. Introduce `i hi`. Rewrite using `[pow_succ]`.
-
-Conclude with `coeff_mul_memS (fun j hj => ih j (hj.trans hi)) (fun j hj => hf j (hj.trans hi))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_pow_memS {S : Subring ℂ_[p]} {f : PowerSeries ℂ_[p]} {m : ℕ}
     (hf : ∀ i ≤ m, PowerSeries.coeff i f ∈ S) (k : ℕ) : ∀ i ≤ m, PowerSeries.coeff i (f ^ k) ∈ S := by
@@ -49,7 +47,7 @@ theorem coeff_pow_memS {S : Subring ℂ_[p]} {f : PowerSeries ℂ_[p]} {m : ℕ}
     exact coeff_mul_memS (fun j hj => ih j (hj.trans hi)) (fun j hj => hf j (hj.trans hi))
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.algebraMap_apply, mul_assoc, PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow_mul']`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_termS (a : ℂ_[p]) (k n : ℕ) (f : PowerSeries ℂ_[p]) :
     PowerSeries.coeff n (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) a * PowerSeries.X ^ k * f) =
@@ -59,17 +57,11 @@ theorem coeff_termS (a : ℂ_[p]) (k n : ℕ) (f : PowerSeries ℂ_[p]) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [IsWq] at h`. Establish `h' : wq = 1 + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₁ * PowerSeries.X ^ 1 * wq + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₂ * PowerSeries.X ^ 2 * wq + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₃ * PowerSeries.X ^ 3 * wq ^ 2 + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₄ * PowerSeries …`. Rewrite using `[pow_one]`. Conclude with `h`. Establish `key : ∀ n, (∀ i < n, PowerSeries.coeff i wq ∈ S) → PowerSeries.coeff n wq ∈ S`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n ih`. Rewrite using `[h']`. Simplify using `only [map_add, coeff_termS, PowerSeries.coeff_one]`. Use `S.add_mem (S.add_mem (S.add_mem (S.add_mem (S.add_mem ?_ ?_) ?_) ?_) ?_) ?_` and prove the remaining obligations. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `S.one_mem`. Conclude with `S.zero_mem`. Use `split_ifs`. Conclude with `S.mul_mem h1 (ih _ (by omega))`. Conclude with `S.zero_mem`.
-
-Use `split_ifs`. Conclude with `S.mul_mem h2 (ih _ (by omega))`. Conclude with `S.zero_mem`. Use `split_ifs`. Conclude with `S.mul_mem h3 (coeff_pow_memS (m := n - 3) (fun i hi => ih i (by omega)) 2 _ le_rfl)`.
-
-Conclude with `S.zero_mem`. Use `split_ifs`. Conclude with `S.mul_mem h4 (coeff_pow_memS (m := n - 4) (fun i hi => ih i (by omega)) 2 _ le_rfl)`. Conclude with `S.zero_mem`. Use `split_ifs`.
-
-Conclude with `S.mul_mem h6 (coeff_pow_memS (m := n - 6) (fun i hi => ih i (by omega)) 3 _ le_rfl)`. Conclude with `S.zero_mem`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ihn => exact key n ihn`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem wq_mem {S : Subring ℂ_[p]} {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]}
     (h1 : W.a₁ ∈ S) (h2 : W.a₂ ∈ S) (h3 : W.a₃ ∈ S) (h4 : W.a₄ ∈ S) (h6 : W.a₆ ∈ S) (h : IsWq W wq) :
@@ -109,7 +101,7 @@ theorem wq_mem {S : Subring ℂ_[p]} {W : WeierstrassCurve ℂ_[p]} {wq : PowerS
   | _ n ihn => exact key n ihn
 
 /- English proof (translation)
-Simplify using `only [IsWq] at h`. Use `congrArg PowerSeries.constantCoeff h` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem wq_const {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     PowerSeries.constantCoeff wq = 1 := by
@@ -132,7 +124,7 @@ def serS (S : Subring ℂ_[p]) : Subring (PowerSeries ℂ_[p]) where
     rw [map_neg]; exact S.neg_mem (hf n)
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[PowerSeries.coeff_X]`. Use `split_ifs`. Conclude with `S.one_mem`. Conclude with `S.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_mem_serS (S : Subring ℂ_[p]) : (PowerSeries.X : PowerSeries ℂ_[p]) ∈ serS S := by
   intro n
@@ -142,9 +134,7 @@ theorem X_mem_serS (S : Subring ℂ_[p]) : (PowerSeries.X : PowerSeries ℂ_[p])
   · exact S.zero_mem
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[PowerSeries.algebraMap_apply]`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply, PowerSeries.coeff_C]`. Use `split_ifs`. Conclude with `ha`.
-
-Conclude with `S.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem C_mem_serS {S : Subring ℂ_[p]} {a : ℂ_[p]} (ha : a ∈ S) :
     algebraMap ℂ_[p] (PowerSeries ℂ_[p]) a ∈ serS S := by
@@ -156,7 +146,7 @@ theorem C_mem_serS {S : Subring ℂ_[p]} {a : ℂ_[p]} (ha : a ∈ S) :
   · exact S.zero_mem
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [dX, PowerSeries.coeff_mk, PowerSeries.coeff_derivative]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dX_eq_derivative (f : PowerSeries ℂ_[p]) : dX f = PowerSeries.derivative ℂ_[p] f := by
   ext n
@@ -164,7 +154,7 @@ theorem dX_eq_derivative (f : PowerSeries ℂ_[p]) : dX f = PowerSeries.derivati
   ring
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [dX, PowerSeries.coeff_mk, flog, if_neg (Nat.succ_ne_zero n), Nat.add_sub_cancel]`. Establish `h : ((n : ℂ_[p]) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero n`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem dX_flog (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     dX (flog W wq) = omegaW W wq := by
@@ -182,13 +172,13 @@ def vInv (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) : PowerSeries
     3 * algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₆ * (PowerSeries.X ^ 3 * wq) ^ 2)
 
 /- English proof (translation)
-Establish `hc` using `wq_const h`. Simplify using `only [IsWq] at h`. Establish `hd : PowerSeries.derivative ℂ_[p] wq = algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₁ * (wq + PowerSeries.X * PowerSeries.derivative ℂ_[p] wq) + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₂ * (2 * PowerSeries.X * wq + PowerSeries.X ^ 2 * PowerSeries.derivative ℂ_[p] wq) + algebraMap ℂ_[p …` using `by conv_lhs => rw [h]`. Simplify using `only [map_add, Derivation.leibniz, Derivation.leibniz_pow, Derivation.map_algebraMap, PowerSeries.derivative_X, Derivation.map_one_eq_zero, smul_eq_mul, nsmul_eq_mul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hden : PowerSeries.constantCoeff (wq * (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₁ * PowerSeries.X + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₃ * PowerSeries.X ^ 3 * wq - 2)) ≠ 0`. Simplify using `[hc]`. Rewrite using `[map_ofNat]`. Evaluate the numerical expressions.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `key : vInv W wq * (-(2 : PowerSeries ℂ_[p]) * wq - PowerSeries.X * dX wq) = wq * (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₁ * PowerSeries.X + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₃ * PowerSeries.X ^ 3 * wq - 2)`. Rewrite using `[dX_eq_derivative]`. Simplify using `only [vInv]`. Take the linear combination `(-(PowerSeries.X : PowerSeries ℂ_[p])) * hd`. Simplify using `only [omegaW]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, key, PowerSeries.mul_inv_cancel _ hden]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vInv_mul_omega {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     vInv W wq * omegaW W wq = 1 := by
@@ -224,13 +214,11 @@ theorem vInv_mul_omega {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]}
   rw [← mul_assoc, key, PowerSeries.mul_inv_cancel _ hden]
 
 /- English proof (translation)
-Establish `hw : wq ∈ serS (intS p)` using `wq_mem (S := intS p) h1 h2 h3 h4 h6 h`. Establish `hX` using `X_mem_serS (intS p)`. Establish `c1` using `C_mem_serS (S := intS p) h1`. Establish `c2` using `C_mem_serS (S := intS p) h2`. Establish `c3` using `C_mem_serS (S := intS p) h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c4` using `C_mem_serS (S := intS p) h4`. Establish `c6` using `C_mem_serS (S := intS p) h6`. Establish `t2 : (2 : PowerSeries ℂ_[p]) ∈ serS (intS p)`. Conclude with `natCast_mem (serS (intS p)) 2` after adjusting the coercions. Establish `t3 : (3 : PowerSeries ℂ_[p]) ∈ serS (intS p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `natCast_mem (serS (intS p)) 3` after adjusting the coercions. Establish `hw3 : PowerSeries.X ^ 3 * wq ∈ serS (intS p)` using `Subring.mul_mem _ (Subring.pow_mem _ hX 3) hw`. Simplify using `only [vInv]`. Use `Subring.sub_mem _ (Subring.one_mem _) ?_` and prove the remaining obligations. Use `Subring.add_mem _ (Subring.add_mem _ (Subring.add_mem _ (Subring.add_mem _ ?_ ?_) ?_) ?_) ?_` and prove the remaining obligations.
-
-Conclude with `Subring.mul_mem _ c1 hX`. Conclude with `Subring.mul_mem _ c2 (Subring.pow_mem _ hX 2)`. Conclude with `Subring.mul_mem _ (Subring.mul_mem _ t2 c3) hw3`. Conclude with `Subring.mul_mem _ (Subring.mul_mem _ (Subring.mul_mem _ t2 c4) hX) hw3`. Conclude with `Subring.mul_mem _ (Subring.mul_mem _ t3 c6) (Subring.pow_mem _ hw3 2)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vInv_mem {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]}
     (h1 : IsIntP W.a₁) (h2 : IsIntP W.a₂) (h3 : IsIntP W.a₃) (h4 : IsIntP W.a₄) (h6 : IsIntP W.a₆)
@@ -257,7 +245,7 @@ theorem vInv_mem {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]}
   · exact Subring.mul_mem _ (Subring.mul_mem _ t3 c6) (Subring.pow_mem _ hw3 2)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Gwa1.inverse_omega_holds`.
+A detailed English derivation is pending.
 -/
 theorem inverse_omega_holds : InvOmega :=
   _root_.UpperTheory.Reformulated.B.Gwa1.inverse_omega_holds

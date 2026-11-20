@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.BorelUMod
 
 /- English proof (translation)
-Unfold `AddSubgroup.relIndex`. Rewrite using `[← AddSubgroup.index_prod, ← AddSubgroup.index_comap_of_surjective ((H.addSubgroupOf K).prod (H'.addSubgroupOf K')) (f := (AddSubgroup.prodEquiv K K').toAddMonoidHom) (AddSubgroup.prodEquiv K K').surjective]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem relIndex_prod_prod {G G' : Type} [AddGroup G] [AddGroup G'] (H K : AddSubgroup G) (H' K' : AddSubgroup G') :
     (H.prod H').relIndex (K.prod K') = H.relIndex K * H'.relIndex K' := by
@@ -27,9 +27,9 @@ def skewPair (σ : L →+* L) (θ d : L) :
     ext i j <;> simp [adjJ] <;> ring)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `X hX`. Establish `h1 : X - θ • (X + adjJ σ X) = 0` using `congrArg Prod.fst hX`. Establish `h2 : d • (X + adjJ σ X) = 0` using `congrArg Prod.snd hX`. Establish `h3 : X + adjJ σ X = 0` using `(smul_eq_zero.1 h2).resolve_left hd`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h1` using `[h3]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem skewPair_injective (σ : L →+* L) (θ : L) {d : L} (hd : d ≠ 0) :
     Function.Injective (skewPair (n := n) σ θ d) := by
@@ -43,15 +43,13 @@ theorem skewPair_injective (σ : L →+* L) (θ : L) {d : L} (hd : d ≠ 0) :
 variable [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Establish `hd0 : d ≠ 0` using `fun e => by simp [e] at hd`. Establish `hσθ : σ θ = 1 - θ` using `by linear_combination hθ1`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨X, hX, rfl⟩`. Establish `hs : X + adjJ σ X ∈ upLat L c` using `add_mem hX (adjJ_mem_upLat hv hc hX)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨⟨(upLat L c).sub_mem hX (smul_mem_upLat hθ hs), ?_⟩, ⟨smul_mem_upLat hd.le hs, ?_⟩⟩` and prove the remaining obligations. Use `show adjJ σ (X - θ • (X + adjJ σ X)) = -(X - θ • (X + adjJ σ X))`. Rewrite using `[adjJ_sub, adjJ_smul, adjJ_add, adjJ_adjJ hσ, hσθ]`. Use `module`. Use `show adjJ σ (d • (X + adjJ σ X)) = -(d • (X + adjJ σ X))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[adjJ_smul, adjJ_add, adjJ_adjJ hσ, hd1]`. Use `module`. Introduce and unpack `⟨A, B⟩ ⟨⟨hA, hA'⟩, ⟨hB, hB'⟩⟩`. Establish `hA2 : adjJ σ A = -A` using `hA'`. Establish `hB2 : adjJ σ B = -B` using `hB'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv' : Valued.v (θ * d⁻¹) ≤ 1` using `by simpa [hd] using hθ`. Use `⟨A + (θ * d⁻¹) • B, add_mem hA (smul_mem_upLat hv' hB), ?_⟩` and prove the remaining obligations. Establish `key : A + (θ * d⁻¹) • B + adjJ σ (A + (θ * d⁻¹) • B) = d⁻¹ • B`. Rewrite using `[adjJ_add, adjJ_smul, hA2, hB2, map_mul, map_inv₀, hd1, hσθ, inv_neg]`. Use `module`.
-
-Use `show (A + (θ * d⁻¹) • B - θ • (A + (θ * d⁻¹) • B + adjJ σ (A + (θ * d⁻¹) • B)), d • (A + (θ * d⁻¹) • B + adjJ σ (A + (θ * d⁻¹) • B))) = (A, B)`. Rewrite using `[key, smul_smul, smul_smul, mul_inv_cancel₀ hd0, one_smul, add_sub_cancel_right]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_skewPair_upLat {σ : L →+* L} (hσ : ∀ x, σ (σ x) = x) (hv : ∀ x, Valued.v (σ x) = Valued.v x)
     {θ d : L} (hθ : Valued.v θ ≤ 1) (hθ1 : θ + σ θ = 1) (hd : Valued.v d = 1) (hd1 : σ d = -d)
@@ -82,7 +80,7 @@ theorem map_skewPair_upLat {σ : L →+* L} (hσ : ∀ x, σ (σ x) = x) (hv : �
     rw [key, smul_smul, smul_smul, mul_inv_cancel₀ hd0, one_smul, add_sub_cancel_right]
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q n h c C hc hC _`. Take `⟨⟨θ, hθ, hθ1⟩, d, hd, hd1⟩` from `exists_trace_one h`. Establish `hd0 : d ≠ 0` using `fun e => by simp [e] at hd`. Rewrite using `[← AddSubgroup.relIndex_map_map_of_injective _ _ (skewPair_injective σ θ hd0), map_skewPair_upLat h.1 h.2.1 hθ hθ1 hd hd1 hc, map_skewPair_upLat h.1 h.2.1 hθ hθ1 hd hd1 hC, relIndex_prod_prod, sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_upLat_eq_sq : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L)
     (q n : ℕ), IsUnramInv ϖ σ q → ∀ (c C : Fin n → Fin n → ℤ), (∀ i j, c j.rev i.rev = c i j) →

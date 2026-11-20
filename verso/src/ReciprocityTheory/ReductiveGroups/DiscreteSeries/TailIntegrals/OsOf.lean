@@ -7,17 +7,17 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.Oscillator
 namespace ReciprocityTheory.ChartRestriction.DS.Xi
 
 /- English proof (translation)
-The claim follows from `quadraticSublevelDecay'`.
+A detailed English derivation is pending.
 -/
 theorem sub : SUB := quadraticSublevelDecay'
 
 /- English proof (translation)
-The claim follows from `planarKernelBound'`.
+A detailed English derivation is pending.
 -/
 theorem ker : KER := planarKernelBound'
 
 /- English proof (translation)
-The claim follows from `slowWeightBound'`.
+A detailed English derivation is pending.
 -/
 theorem slow : SLOW := slowWeightBound'
 

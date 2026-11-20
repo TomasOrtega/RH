@@ -21,15 +21,13 @@ namespace GlobalTheory.BlockForms
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ n J _ r Xf Yf _ l d h ι hι`. Take `⟨Φ, j, _, hΦs, -, -, hform⟩` from `hι`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_eq_succ hσ.2.2.1`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsig : Continuous (sigR (AF F) σ)`. Establish `hc` using `IsModuleTopology.continuous_of_linearMap (R := AF F) (LinearMap.baseChange (AF F) σ.toLinearMap)`. Use `hc.congr fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `tmul a y => simp [LinearMap.baseChange_tmul, sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `h1 : Continuous fun g : GlobalTheory.CuspRep.GA E d => g.1.map Φ.symm` using `Units.continuous_val.matrix_map hΦs`. Establish `h2 : Continuous fun g : GlobalTheory.CuspRep.GA E d => (g⁻¹).1.map Φ.symm` using `Units.continuous_coe_inv.matrix_map hΦs`. Establish `h3 : Continuous fun g : GlobalTheory.CuspRep.GA E d => Matrix.transpose (((g⁻¹).1.map Φ.symm).map (sigR (AF F) σ))` using `(h2.matrix_map hsig).matrix_transpose`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hM : Continuous fun g : GlobalTheory.CuspRep.GA E d => (matHom _ σ J (ι g)).1`. Use `Continuous.congr ?_ fun g => (hform g).symm` and prove the remaining obligations. Conclude with `(continuous_const.add ((continuous_const.matrix_mul (h1.sub continuous_const)).matrix_mul continuous_const)).add ((continuous_const.matrix_mul (h3.sub continuous_const)).matrix_mul continuous_const)`. Establish `hMi : Continuous fun g : GlobalTheory.CuspRep.GA E d => ((matHom _ σ J (ι g))⁻¹ : GL (Fin n) (AF F ⊗[F] E)).1`. Use `(hM.comp continuous_inv).congr fun g => ?_` and prove the remaining obligations.
-
-Simplify using `only [Function.comp_apply, map_inv]`. Conclude with `(isEmbedding_matHom (AF F) σ J).continuous_iff.2 (Units.continuous_iff.2 ⟨hM, hMi⟩)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isBlockEmb_continuous : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

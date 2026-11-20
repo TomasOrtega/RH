@@ -12,11 +12,11 @@ namespace PositivityTheory.Rg.Sw.AbsSt.Proj
 open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.AbsSt
 
 /- English proof (translation)
-Establish `hsub : (unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ)) ⊆ Set.pi Set.univ (fun _ => Set.pi Set.univ (fun _ => Metric.closedBall (0 : ℂ) 1))`. Introduce `U hU i _ j _`. Simplify using `using entry_norm_bound_of_unitary hU i j`. Use `(isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall (0 : ℂ) 1).of_isClosed_subset ?_ hsub` and prove the remaining obligations. Establish `hset : (unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ)) = {A | star A * A = 1 ∧ A * star A = 1}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `A`. Conclude with `Iff.rfl`. Rewrite using `[hset]`. Establish `h1 : Continuous fun A : Matrix (Fin n) (Fin n) ℂ => star A * A` using `by fun_prop`. Establish `h2 : Continuous fun A : Matrix (Fin n) (Fin n) ℂ => A * star A` using `by fun_prop`.
+By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(isClosed_eq h1 continuous_const).inter (isClosed_eq h2 continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem cpt_unitary (n : ℕ) : IsCompact (unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ)) := by
   have hsub : (unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ)) ⊆
@@ -42,19 +42,19 @@ variable {n : ℕ}
 def kE (hK : KIso) (a b : unitaryGroup (Fin n) ℂ) : GR n := Classical.choose ((hK n).1 a.1 b.1 a.2 b.2)
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec ((hK n).1 a.1 b.1 a.2 b.2)).1`.
+A detailed English derivation is pending.
 -/
 theorem kE_mem (hK : KIso) (a b : unitaryGroup (Fin n) ℂ) : kE hK a b ∈ KR n :=
   (Classical.choose_spec ((hK n).1 a.1 b.1 a.2 b.2)).1
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec ((hK n).1 a.1 b.1 a.2 b.2)).2`.
+A detailed English derivation is pending.
 -/
 theorem mR_kE (hK : KIso) (a b : unitaryGroup (Fin n) ℂ) : mR (kE hK a b) = kM a.1 b.1 :=
   (Classical.choose_spec ((hK n).1 a.1 b.1 a.2 b.2)).2
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext e)`.
+A detailed English derivation is pending.
 -/
 theorem mR_inj {g h : GR n} (e : mR g = mR h) : g = h := Subtype.ext (Units.ext e)
 
@@ -64,7 +64,7 @@ Both sides reduce to the same expression.
 theorem mR_mul (g h : GR n) : mR (g * h) = mR g * mR h := rfl
 
 /- English proof (translation)
-Apply `mR_inj` to reduce the goal to its premises. Rewrite using `[mR_mul, mR_kE, mR_kE, mR_kE, (hK n).2.1]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kE_mul (hK : KIso) (a b a' b' : unitaryGroup (Fin n) ℂ) :
     kE hK a b * kE hK a' b' = kE hK (a * a') (b * b') := by
@@ -73,9 +73,9 @@ theorem kE_mul (hK : KIso) (a b a' b' : unitaryGroup (Fin n) ℂ) :
   rfl
 
 /- English proof (translation)
-Establish `h1 : kE hK a b * kE hK a⁻¹ b⁻¹ = 1`. Rewrite using `[kE_mul, mul_inv_cancel, mul_inv_cancel]`. Apply `mR_inj` to reduce the goal to its premises. Rewrite using `[mR_kE]`. Conclude with `(hK n).2.2.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (kE hK a b)⁻¹ = kE hK a⁻¹ b⁻¹` using `(eq_inv_of_mul_eq_one_right h1).symm`. Rewrite using `[h2, mR_kE]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mR_inv_kE (hK : KIso) (a b : unitaryGroup (Fin n) ℂ) : mR (kE hK a b)⁻¹ = kM (a⁻¹ : unitaryGroup (Fin n) ℂ).1 (b⁻¹ : unitaryGroup (Fin n) ℂ).1 := by
   have h1 : kE hK a b * kE hK a⁻¹ b⁻¹ = 1 := by
@@ -87,20 +87,20 @@ theorem mR_inv_kE (hK : KIso) (a b : unitaryGroup (Fin n) ℂ) : mR (kE hK a b)�
   rw [h2, mR_kE]
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mR : Continuous (fun g : GR n => mR g) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-Unfold `kM`. Apply the tactic sequence `refine Continuous.matrix_fromBlocks ?_ ?_ ?_ ?_ <;> fun_prop`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_kM : Continuous (fun ab : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ => kM ab.1 ab.2) := by
   unfold kM
   refine Continuous.matrix_fromBlocks ?_ ?_ ?_ ?_ <;> fun_prop
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 ((Units.continuous_iff).2 ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `(continuous_kM.comp (continuous_const.prodMk continuous_subtype_val)).congr fun b => (mR_kE hK a b).symm`. Conclude with `(continuous_kM.comp (continuous_const.prodMk (continuous_subtype_val.comp continuous_inv))).congr fun b => (mR_inv_kE hK a b).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_kE (hK : KIso) (a : unitaryGroup (Fin n) ℂ) : Continuous (fun b : unitaryGroup (Fin n) ℂ => kE hK a b) := by
   refine continuous_induced_rng.2 ((Units.continuous_iff).2 ⟨?_, ?_⟩)
@@ -110,9 +110,9 @@ theorem continuous_kE (hK : KIso) (a : unitaryGroup (Fin n) ℂ) : Continuous (f
       (continuous_subtype_val.comp continuous_inv))).congr fun b => (mR_inv_kE hK a b).symm
 
 /- English proof (translation)
-Establish `h21 : Continuous (fun M : M2 n => M.toBlocks₂₁)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `(continuous_apply (Sum.inl j)).comp (continuous_apply (Sum.inr i))`. Establish `h22 : Continuous (fun M : M2 n => M.toBlocks₂₂)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `(continuous_apply (Sum.inr j)).comp (continuous_apply (Sum.inr i))`. Unfold `u2`. Conclude with `((h21.const_smul Complex.I).neg).add h22`.
+A detailed English derivation is pending.
 -/
 theorem continuous_second_cayley_block_map : Continuous (fun M : M2 n => u2 M) := by
   have h21 : Continuous (fun M : M2 n => M.toBlocks₂₁) := by
@@ -125,44 +125,40 @@ theorem continuous_second_cayley_block_map : Continuous (fun M : M2 n => u2 M) :
   exact ((h21.const_smul Complex.I).neg).add h22
 
 /- English proof (translation)
-Rewrite using `[← fromBlocks_toBlocks X, ← fromBlocks_toBlocks Y, fromBlocks_multiply, toBlocks_fromBlocks₂₁, hX, hY]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lower_left_block_mul {X Y : M2 n} (hX : X.toBlocks₂₁ = 0) (hY : Y.toBlocks₂₁ = 0) : (X * Y).toBlocks₂₁ = 0 := by
   rw [← fromBlocks_toBlocks X, ← fromBlocks_toBlocks Y, fromBlocks_multiply, toBlocks_fromBlocks₂₁, hX, hY]
   simp
 
 /- English proof (translation)
-Introduce `m n ε c t p q e sL ρ hL _ _ W hW hWinv`. Use `letI : MeasurableSpace (unitaryGroup (Fin n) ℂ) := borel _`. Use `haveI : BorelSpace (unitaryGroup (Fin n) ℂ) := ⟨rfl⟩`. Set `μ : Measure (unitaryGroup (Fin n) ℂ)` to `Measure.haar`. Set `L : PX m n →ₗ[ℂ] (unitaryGroup (Fin n) ℂ → ℂ)` to `LinearMap.funLeft ℂ ℂ (fun c : unitaryGroup (Fin n) ℂ => kE hK 1 c) ∘ₗ sL`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hLapp : ∀ (P : PX m n) (c : unitaryGroup (Fin n) ℂ), L P c = sL P (kE hK 1 c)` using `fun _ _ => rfl`. Establish `hVfin : FiniteDimensional ℂ (W.map L)` using `inferInstance`. Establish `hupK : ∀ a : unitaryGroup (Fin n) ℂ, toBlocks₂₁ (mR (kE hK a a)) = 0`. Introduce `a`. Rewrite using `[mR_kE]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hK n).2.2.2.2.1 a.1`. Establish `hVcont : ∀ φ ∈ W.map L, Continuous φ`. Introduce and unpack `φ ⟨P, -, rfl⟩`. Use `show Continuous fun c => sL P (kE hK 1 c)`. Conclude with `(hL.cont P).comp (continuous_kE hK 1)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hVinv : ∀ φ ∈ W.map L, ∀ a : unitaryGroup (Fin n) ℂ, (fun x : unitaryGroup (Fin n) ℂ => φ (a * x)) ∈ W.map L`. Introduce and unpack `φ ⟨P, hP, rfl⟩ a`. Use `⟨F0 p q e (kE hK a a) • ρ (kE hK a⁻¹ 1) P, W.smul_mem _ (hWinv _ (kE_mem hK a⁻¹ 1) P hP), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `hx : kE hK 1 (a * x) = kE hK a a * (kE hK 1 x * kE hK a⁻¹ 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[kE_mul, kE_mul]`. Simplify using the standard rewrite rules. Use `show sL (F0 p q e (kE hK a a) • ρ (kE hK a⁻¹ 1) P) (kE hK 1 x) = sL P (kE hK 1 (a * x))`. Rewrite using `[hx, hL.law _ _ _ (hupK a), hL.kact _ _ _ (kE_mem hK a⁻¹ 1), map_smul, Pi.smul_apply, smul_eq_mul]`. Take `⟨κ0, hκ0c, hκ0img, hκ0fix⟩` from `hR (unitaryGroup (Fin n) ℂ) μ (W.map L) hVfin hVcont hVinv`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu2mem : ∀ k : KR n, u2 (mR (k : GR n)) ∈ unitaryGroup (Fin n) ℂ` using `fun k => ((hK n).2.2.2.2.2 (k : GR n) k.2).2.1`. Set `κ : KR n → ℂ` to `fun k => κ0 ⟨u2 (mR (k : GR n)), hu2mem k⟩`. Set `eK : unitaryGroup (Fin n) ℂ → KR n` to `fun v => ⟨kE hK 1 v, kE_mem hK 1 v⟩`. Establish `heK : Continuous eK` using `(continuous_kE hK 1).subtype_mk _`. Establish `hκe : ∀ v, κ (eK v) = κ0 v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v`. Use `show κ0 _ = κ0 v`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show u2 (mR (kE hK 1 v)) = v.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mR_kE]`. Conclude with `((hK n).2.2.2.1 1 v.1).2`. Establish `hκc : Continuous κ` using `hκ0c.comp ((continuous_second_cayley_block_map.comp (continuous_mR.comp continuous_subtype_val)).subtype_mk _)`. Establish `hint : ∀ g : KR n → ℂ, Continuous g → ∫ k, κ k * g k ∂(μ.map eK) = ∫ v, κ0 v * g (eK v) ∂μ`. Introduce `g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm : Continuous fun k => κ k * g k` using `hκc.mul hg`. Rewrite using `[integral_map (f := fun k => κ k * g k) heK.measurable.aemeasurable hm.aestronglyMeasurable]`. Simplify using `only [hκe]`. Establish `hdec : ∀ y : GR n, ∃ (p' : GR n) (c : unitaryGroup (Fin n) ℂ), toBlocks₂₁ (mR p') = 0 ∧ y = p' * kE hK 1 c`. Introduce `y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p0, k0, hp0, hk0, rfl⟩` from `hI n y`. Take `⟨ha, hb, hk⟩` from `(hK n).2.2.2.2.2 k0 hk0`. Establish `hk0e : k0 = kE hK ⟨_, ha⟩ ⟨_, hb⟩` using `mR_inj (by rw [mR_kE]; exact hk)`. Use `⟨p0 * kE hK ⟨_, ha⟩ ⟨_, ha⟩, (⟨_, ha⟩ : unitaryGroup (Fin n) ℂ)⁻¹ * ⟨_, hb⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mR_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `lower_left_block_mul hp0 (hupK _)`. Rewrite using `[mul_assoc, kE_mul]`. Simplify using `only [mul_one, mul_inv_cancel_left]`. Conclude with `congrArg (p0 * ·) hk0e`. Use `⟨μ.map eK, κ, inferInstance, hκc, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Q hQ y`. Take `⟨p', c, hp', rfl⟩` from `hdec y`. Rewrite using `[hint (fun k : KR n => sL Q (p' * kE hK 1 c * (k : GR n))) ((hL.cont Q).comp (continuous_const.mul continuous_subtype_val))]`. Establish `h1 : ∀ v, κ0 v * sL Q (p' * kE hK 1 c * ((eK v : KR n) : GR n)) = F0 p q e p' * (κ0 v * L Q (c * v))`. Introduce `v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show κ0 v * sL Q (p' * kE hK 1 c * kE hK 1 v) = F0 p q e p' * (κ0 v * sL Q (kE hK 1 (c * v)))`. Rewrite using `[mul_assoc, kE_mul, one_mul, hL.law _ _ _ hp']`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1]`. Rewrite using `[integral_const_mul, hκ0fix (L Q) ⟨Q, hQ, rfl⟩ c, hL.law _ _ _ hp', hLapp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `w f hf hfeq`. Take `⟨Q, hQ, hQeq⟩` from `hκ0img (fun c => f (kE hK 1 c)) (hf.comp (continuous_kE hK 1))`. Use `⟨Q, hQ, fun y => ?_⟩` and prove the remaining obligations. Take `⟨p', c, hp', rfl⟩` from `hdec y`. Rewrite using `[hint (fun k : KR n => f (p' * kE hK 1 c * (k : GR n))) (hf.comp (continuous_const.mul continuous_subtype_val))]`.
-
-Establish `h2 : ∀ v, κ0 v * f (p' * kE hK 1 c * ((eK v : KR n) : GR n)) = ((hLoc p' : ℂ) ^ w * F0 p q e p') * (κ0 v * f (kE hK 1 (c * v)))`. Introduce `v`. Use `show κ0 v * f (p' * kE hK 1 c * kE hK 1 v) = _`. Rewrite using `[mul_assoc, kE_mul, one_mul, hfeq _ _ hp']`. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using `only [h2]`. Establish `hc` using `congrFun hQeq c`. Rewrite using `[integral_const_mul, ← hc, hLapp, hL.law _ _ _ hp', ((hM n p q e).1 p' (kE hK 1 c) (kE_mem hK 1 c)).2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem projOp_of (hK : KIso) (hR : RepKer) (hI : Iwa) (hM : Mult) : ProjOp := by
   intro m n ε c t p q e sL ρ hL _ _ W hW hWinv
@@ -260,7 +256,7 @@ theorem projOp_of (hK : KIso) (hR : RepKer) (hI : Iwa) (hM : Mult) : ProjOp := b
     ring
 
 /- English proof (translation)
-The claim follows from `projOp_of kIso repKer hI hM`.
+A detailed English derivation is pending.
 -/
 theorem projOp (hI : Iwa) (hM : Mult) : ProjOp := projOp_of kIso repKer hI hM
 

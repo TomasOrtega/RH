@@ -18,7 +18,7 @@ variable {p : ℕ} [Fact p.Prime] [IsPerfectoidField K p] [IsPerfectoidField L p
   [IsPerfectoidField M p]
 omit [IsUltrametricDist K] [IsUltrametricDist L] [IsUltrametricDist M] in
 /- English proof (translation)
-Rewrite using `[RingHom.comp_apply, hψ, hφ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_comp_eq {φ : K →+* L} (hφ : ∀ x, ‖φ x‖ = ‖x‖) {ψ : L →+* M}
     (hψ : ∀ x, ‖ψ x‖ = ‖x‖) (x : K) : ‖(ψ.comp φ) x‖ = ‖x‖ := by
@@ -27,7 +27,7 @@ theorem norm_comp_eq {φ : K →+* L} (hφ : ∀ x, ‖φ x‖ = ‖x‖) {ψ : 
 variable (φ : K →+* L) (hφ : ∀ x, ‖φ x‖ = ‖x‖) (ψ : L →+* M) (hψ : ∀ x, ‖ψ x‖ = ‖x‖)
 
 /- English proof (translation)
-Use `RingHom.ext fun x => Perfection.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, coeff_preTiltMap, coeff_preTiltMap, coeff_preTiltMap]`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (Perfection.coeff (ModP (normInteger K) p) p n x)`. Rewrite using `[← ha, modPMap_mk, modPMap_mk, modPMap_mk]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem preTiltMap_comp :
     preTiltMap p (ψ.comp φ) (norm_comp_eq hφ hψ) =
@@ -40,7 +40,7 @@ theorem preTiltMap_comp :
   rfl
 
 /- English proof (translation)
-Use `IsLocalization.ringHom_ext (nonZeroDivisors (PreTilt (normInteger K) p)) ?_` and prove the remaining obligations. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply, tiltMap_algebraMap]`. Rewrite using `[preTiltMap_comp φ hφ ψ hψ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tiltMap_comp :
     tiltMap p (ψ.comp φ) (norm_comp_eq hφ hψ) = (tiltMap p ψ hψ).comp (tiltMap p φ hφ) := by
@@ -60,15 +60,15 @@ variable {p : ℕ} [Fact p.Prime] [IsPerfectoidField K p]
 omit [IsUltrametricDist K] in
 
 /- English proof (translation)
-Establish `hb : 0 < b` using `ha.trans hab`. Take `⟨z, hz1, hz2⟩` from `hnd (a / b) ((div_lt_one hb).2 hab)`. Establish `hz0 : 0 < ‖z‖` using `(div_pos ha hb).trans hz1`. Take `⟨y, hy⟩` from `NormedField.exists_lt_norm K b`. Establish `hex : ∃ m : ℕ, ‖y * z ^ m‖ ≤ b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `exists_pow_lt_of_lt_one (div_pos hb (hb.trans hy)) hz2`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Establish `hy0 : 0 < ‖y‖` using `hb.trans hy`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `set m := Nat.find hex with hmdef`. Establish `hm : ‖y * z ^ m‖ ≤ b` using `Nat.find_spec hex`. Establish `hm0 : m ≠ 0`. Introduce `h`. Rewrite `hm` using `[h, pow_zero, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(lt_irrefl _) (hy.trans_le hm)`. Establish `hprev : b < ‖y * z ^ (m - 1)‖`. Use `Nat.find_min hex (Nat.sub_lt (Nat.pos_of_ne_zero hm0) one_pos)` as an intermediate fact. Conclude with `not_le.1 this`. Use `⟨y * z ^ m, ?_, hm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `e : m = m - 1 + 1` using `by omega`. Rewrite using `[e, pow_succ, ← mul_assoc, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_lt_mul hprev hz1.le (div_pos ha hb) (norm_nonneg _)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_norm_mem_Ioc_of_dense (hnd : ∀ r : ℝ, r < 1 → ∃ x : K, r < ‖x‖ ∧ ‖x‖ < 1)
     {a b : ℝ} (ha : 0 < a) (hab : a < b) : ∃ x : K, a < ‖x‖ ∧ ‖x‖ ≤ b := by
@@ -101,16 +101,16 @@ theorem exists_norm_mem_Ioc_of_dense (hnd : ∀ r : ℝ, r < 1 → ∃ x : K, r 
       apply mul_lt_mul hprev hz1.le (div_pos ha hb) (norm_nonneg _)
 
 /- English proof (translation)
-The claim follows from `exists_norm_mem_Ioc_of_dense (IsPerfectoidField.exists_norm_mem_Ioo (K := K) (p := p)) ha hab`.
+A detailed English derivation is pending.
 -/
 theorem exists_norm_mem_Ioc (p : ℕ) [Fact p.Prime] [IsPerfectoidField K p] {a b : ℝ} (ha : 0 < a) (hab : a < b) :
     ∃ x : K, a < ‖x‖ ∧ ‖x‖ ≤ b :=
   exists_norm_mem_Ioc_of_dense (IsPerfectoidField.exists_norm_mem_Ioo (K := K) (p := p)) ha hab
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj]`. Establish `h1` using `norm_untilt_add_sub_le (x j) (∑ i ∈ s, x i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (((x j + ∑ i ∈ s, x i).untilt : normInteger K) : K) - (((x j).untilt : K) + ∑ i ∈ s, ((x i).untilt : K)) = ((((x j + ∑ i ∈ s, x i).untilt : normInteger K) : K) - (((x j).untilt + (∑ i ∈ s, x i).untilt : normInteger K) : K)) + ((((∑ i ∈ s, x i).untilt : normInteger K) : K) - ∑ …` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 ih)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_untilt_sum_sub_le {ι : Type*} (s : Finset ι) (x : ι → PreTilt (normInteger K) p) :
     ‖(((∑ i ∈ s, x i).untilt : normInteger K) : K) - ∑ i ∈ s, ((x i).untilt : K)‖ ≤
@@ -153,13 +153,13 @@ theorem algebraMap_tilt_eq :
   rfl
 
 /- English proof (translation)
-The claim follows from `norm_tiltMap _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem norm_algebraMap_tilt (x : K♭) : ‖algebraMap K♭ C♭ x‖ = ‖x‖ :=
   norm_tiltMap _ _ x
 
 /- English proof (translation)
-The claim follows from `tiltSharp_tiltMap _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem tiltSharp_algebraMap_tilt (x : K♭) :
     tiltSharp C p (algebraMap K♭ C♭ x) = algebraMap K C (tiltSharp K p x) :=
@@ -218,7 +218,7 @@ def tiltInclusion : F♭ →+* C♭ :=
   tiltMap p (F.val : F →+* C) (norm_val F)
 
 /- English proof (translation)
-Rewrite using `[algebraMap_tilt_eq, tiltInclusion, ← tiltMap_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_tilt_eq_comp :
     algebraMap K♭ C♭ = (tiltInclusion p F).comp
@@ -238,14 +238,14 @@ def tiltIntermediateField : IntermediateField K♭ C♭ where
     exact ⟨_, rfl⟩
 
 /- English proof (translation)
-The claim follows from `RingHom.mem_fieldRange`.
+A detailed English derivation is pending.
 -/
 theorem mem_tiltIntermediateField {z : C♭} :
     z ∈ tiltIntermediateField p F ↔ ∃ y : F♭, tiltInclusion p F y = z :=
   RingHom.mem_fieldRange
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hz`. Rewrite using `[tiltInclusion, tiltSharp_tiltMap]`. Conclude with `(tiltSharp F p y).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tiltSharp_mem_of_mem_tiltIntermediateField {z : C♭}
     (hz : z ∈ tiltIntermediateField p F) : tiltSharp C p z ∈ F := by
@@ -254,11 +254,11 @@ theorem tiltSharp_mem_of_mem_tiltIntermediateField {z : C♭}
   exact (tiltSharp F p y).2
 
 /- English proof (translation)
-Set `y : ℕ → normInteger F` to `fun n => ⟨⟨_, ha n⟩, mem_normInteger.2 (mem_normInteger.1 (PreTilt.untilt ((frobeniusEquiv 𝒪C♭ p).symm^[n] a)).2)⟩`. Establish `hy : ∀ n, y (n + 1) ^ p = y n` using `fun n => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((PreTilt.untilt ((frobeniusEquiv 𝒪C♭ p).symm^[n + 1] a) : normInteger C) : C) ^ p = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← SubmonoidClass.coe_pow, IsPerfectoidField.untilt_iterate_succ_pow]`. Use `⟨algebraMap _ _ (IsPerfectoidField.ofCompatible p y hy), ?_⟩` and prove the remaining obligations. Rewrite using `[tiltInclusion, tiltMap_algebraMap]`. Use `congr 1`. Use `IsPerfectoidField.preTilt_ext p fun n => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `Perfection.coeff (ModP (normInteger C) p) p n (preTiltMap p _ _ _) = _`. Rewrite using `[coeff_preTiltMap]`. Express the relevant statement in the definitionally equal form `modPMap _ _ (Ideal.Quotient.mk _ (y n)) = _`. Rewrite using `[modPMap_mk, ← IsPerfectoidField.mk_untilt_iterate]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_mem_tiltIntermediateField {a : 𝒪C♭}
     (ha : ∀ n, ((PreTilt.untilt ((frobeniusEquiv 𝒪C♭ p).symm^[n] a) : normInteger C) : C) ∈ F) :

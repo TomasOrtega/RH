@@ -14,13 +14,13 @@ namespace GlobalTheory.RankCoinv
 open GlobalTheory.SplitFlip in
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT v hv hν t φ hφ`. Take `⟨ι, hι⟩` from `GlobalTheory.T.exists_linear_bar_good_place hP F E σ B a a' G X om om' hT v hv t`. Take `⟨ν₀, hν₀, hf⟩` from `GlobalTheory.T.exists_unramified_character_good hP F E σ B a a' G X om om' hT v hv hν t`. Establish `hspan : Submodule.span ℂ {Z | ∃ g : GL (Fin a') (Fv F v), ∃ Ψ' ∈ SB (Matrix (Fin a') (Fin (a + a')) (Fv F v)), Z = omB ν₀ ν₀ g 1 Ψ' - Ψ'} ≤ (augAt om' v ⊓ SB _).map ι`. Rewrite using `[Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `Z ⟨g₀, Ψ', hΨ', rfl⟩`. Take `⟨φ', hφ', rfl⟩` from `hι.bij.surjOn hΨ'`. Take `⟨g, hg, hact⟩` from `hf ι hι g₀`. Take `⟨φ₁, hφ₁, hA, hE⟩` from `hact φ' hφ'`. Use `⟨φ₁ - φ', ⟨Submodule.subset_span ⟨g, hg, φ', hφ', φ₁, hφ₁, hA, rfl⟩, Submodule.sub_mem _ hφ₁ hφ'⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[map_sub, hE]`. Take `⟨Ψ₀, -, hrk, hmem⟩` from `GlobalTheory.T.schwartzBruhat_full_rank_modulo_translates (Fv F v) a' (a + a') ν₀ (unifAt v) (GlobalTheory.SplitFlip.exists_isUnif (k := Fv F v)).choose_spec hν₀ (ι φ) (hι.bij.mapsTo hφ)`. Take `⟨n, ⟨hnA, hnSB⟩, hn⟩` from `hspan hmem`. Use `⟨φ - n, ⟨Submodule.sub_mem _ hφ hnSB, ι, hι, fun Y hY => ?_⟩, by simpa using hnA⟩` and prove the remaining obligations. Establish `: ι (φ - n) = Ψ₀` using `by rw [map_sub, hn]; abel`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hrk Y hY`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_soLoc_sub_mem_augAt : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)

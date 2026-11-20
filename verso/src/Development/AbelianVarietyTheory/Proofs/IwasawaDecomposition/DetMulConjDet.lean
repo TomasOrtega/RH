@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.DetLift
 
 /- English proof (translation)
-Establish `h : Formalism.UG.cT σ (g : Matrix (Fin n) (Fin n) A) * (1 : Matrix (Fin n) (Fin n) B).map ι * (g : Matrix (Fin n) (Fin n) A) = (1 : Matrix (Fin n) (Fin n) B).map ι` using `hg`. Rewrite `h` using `[Matrix.map_one _ (map_zero ι) (map_one ι), mul_one]`. Establish `h2` using `congrArg Matrix.det h`. Rewrite `h2` using `[Matrix.det_mul, Formalism.UG.cT, Matrix.det_transpose, Matrix.det_one]`. Rewrite using `[mul_comm, RingHom.map_det]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem det_mul_conj_det {A B : Type} [CommRing A] [CommRing B] (σ : A →+* A) (ι : B →+* A) {n : ℕ} {g : GL (Fin n) A}
     (hg : g ∈ Formalism.UG.UJ σ ((1 : Matrix (Fin n) (Fin n) B).map ι)) :
@@ -24,9 +24,9 @@ theorem det_mul_conj_det {A B : Type} [CommRing A] [CommRing B] (σ : A →+* A)
   exact h2
 
 /- English proof (translation)
-Introduce `R H n g hg`. Establish `hr` using `(DetClass.exists_detClass R H (host_cmData R H).sig (fun x => bridge_star_holds R H x) (afIso H.F H.E) (afIso_tmul_one H.F H.E) (mem_rInt_iff H.F H.E)).1`. Establish `hd : Matrix.GeneralLinearGroup.det g ∈ U1 (host_cmData R H).sig` using `Units.ext (det_mul_conj_det _ _ hg)`. Take `⟨x, hx⟩` from `hr.ge hd`. Take `⟨a, rfl⟩` from `finAf_surjective H.F H.E x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isDetLift : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (n : ℕ) (g : GL (Fin n) (AfE H.F H.E)), g ∈ Formalism.L2.Herm.UstdAf (host_cmData R H) n → ∃ a : Ideles H.E, IsDetLift (host_cmData R H) g a := by
   intro R H n g hg

@@ -10,7 +10,7 @@ namespace GlobalTheory.CartanOne
 variable {T : Type 1} [Category.{0} T]
 
 /- English proof (translation)
-Rewrite using `[← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply, ← HomologicalComplex.comp_f, ← HomologicalComplex.comp_f, φ.naturality]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma nat_el {C D : T ⥤ AbCx} (φ : C ⟶ D) {U V : T} (g : U ⟶ V) (n : ℤ) (c : (C.obj U).X n) :
     (φ.app V).f n ((C.map g).f n c) = (D.map g).f n ((φ.app U).f n c) := by
@@ -18,25 +18,25 @@ lemma nat_el {C D : T ⥤ AbCx} (φ : C ⟶ D) {U V : T} (g : U ⟶ V) (n : ℤ)
     ← HomologicalComplex.comp_f, φ.naturality]
 
 /- English proof (translation)
-Rewrite using `[← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply, f.comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma comm_el {A B : AbCx} (f : A ⟶ B) (n m : ℤ) (a : A.X n) : f.f m (A.d n m a) = B.d n m (f.f n a) := by
   rw [← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply, f.comm]
 
 /- English proof (translation)
-Rewrite using `[Functor.map_comp, HomologicalComplex.comp_f, ConcreteCategory.comp_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma map_comp_el (C : T ⥤ AbCx) {U V W : T} (g : U ⟶ V) (h : V ⟶ W) (n : ℤ) (c : (C.obj U).X n) :
     (C.map (g ≫ h)).f n c = (C.map h).f n ((C.map g).f n c) := by
   rw [Functor.map_comp, HomologicalComplex.comp_f, ConcreteCategory.comp_apply]
 
 /- English proof (translation)
-The claim follows from `map_zero f.hom`.
+A detailed English derivation is pending.
 -/
 lemma hom_zero' {A B : AddCommGrpCat.{1}} (f : A ⟶ B) : f (0 : A) = 0 := map_zero f.hom
 
 /- English proof (translation)
-Take `rfl : k = m - 1` from `by omega`. Conclude with `h m U c hc hy`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma locInj' {Cov : MorphismProperty T} {C D : T ⥤ AbCx} {φ : C ⟶ D} (h : LocInj Cov φ) (k m : ℤ) (hk : k + 1 = m)
     (U : T) (c : (C.obj U).X m) (hc : (C.obj U).d m (m + 1) c = 0)
@@ -46,7 +46,7 @@ lemma locInj' {Cov : MorphismProperty T} {C D : T ⥤ AbCx} {φ : C ⟶ D} (h : 
   exact h m U c hc hy
 
 /- English proof (translation)
-Take `rfl : k = n - 1` from `by omega`. Conclude with `h n U z hz`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma locSurj' {Cov : MorphismProperty T} {C D : T ⥤ AbCx} {φ : C ⟶ D} (h : LocSurj Cov φ) (k n : ℤ) (hk : k + 1 = n)
     (U : T) (z : (D.obj U).X n) (hz : (D.obj U).d n (n + 1) z = 0) :
@@ -56,55 +56,47 @@ lemma locSurj' {Cov : MorphismProperty T} {C D : T ⥤ AbCx} {φ : C ⟶ D} (h :
   exact h n U z hz
 
 /- English proof (translation)
-Introduce `T _ Cov _ C D φ hb hR hS hI`. Take `⟨K, p, q, hbij, hd⟩` from `GlobalTheory.EtC.coneEl_exists T C D φ`. Establish `ext : ∀ n U (x y : (K.obj U).X n), (p n).app U x = (p n).app U y → (q n).app U x = (q n).app U y → x = y` using `fun n U x y h1 h2 => (hbij n U).1 (Prod.ext h1 h2)`. Establish `mk : ∀ n U (c : (C.obj U).X (n + 1)) (z : (D.obj U).X n), ∃ x : (K.obj U).X n, (p n).app U x = c ∧ (q n).app U x = z`. Introduce `n U c z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx⟩` from `(hbij n U).2 (c, z)`. Conclude with `⟨x, congrArg Prod.fst hx, congrArg Prod.snd hx⟩`. Establish `dp` using `fun n U x => (hd n U x).1`. Establish `dq` using `fun n U x => (hd n U x).2`. Establish `natP : ∀ n {U V : T} (g : U ⟶ V) (x : (K.obj U).X n), (p n).app V ((K.map g).f n x) = (C.map g).f (n + 1) ((p n).app U x)` using `fun n _ _ g x => NatTrans.naturality_apply (p n) g x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `natQ : ∀ n {U V : T} (g : U ⟶ V) (x : (K.obj U).X n), (q n).app V ((K.map g).f n x) = (D.map g).f n ((q n).app U x)` using `fun n _ _ g x => NatTrans.naturality_apply (q n) g x`. Establish `cyc : ∀ n U (x : (K.obj U).X n), (C.obj U).d (n + 1) (n + 1 + 1) ((p n).app U x) = 0 → (φ.app U).f (n + 1) ((p n).app U x) + (D.obj U).d n (n + 1) ((q n).app U x) = 0 → (K.obj U).d n (n + 1) x = 0`. Introduce `n U x h1 h2`. Apply `ext` to reduce the goal to its premises. Rewrite using `[dp, h1, neg_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hom_zero' _).symm`. Rewrite using `[dq, h2]`. Conclude with `(hom_zero' _).symm`. Establish `hbK : ∃ b : ℤ, ∀ n : ℤ, n < b → ∀ U, IsZero ((K.obj U).X n)`. Take `⟨b, hb⟩` from `hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨b - 1, fun n hn U => ?_⟩` and prove the remaining obligations. Establish `h1` using `AddCommGrpCat.subsingleton_of_isZero (hb (n + 1) (by omega) U).1`. Establish `h2` using `AddCommGrpCat.subsingleton_of_isZero (hb n (by omega) U).2`. Use `haveI : Subsingleton ((K.obj U).X n) := ⟨fun x y => ext n U x y (@Subsingleton.elim _ h1 _ _) (@Subsingleton.elim _ h2 _ _)⟩`. Conclude with `AddCommGrpCat.isZero_of_subsingleton _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hRK : Refines Cov (fun U X a => ∀ n, WExact (term K n) a)`. Introduce `U V g hg`. Take `⟨X, a, h, hga, hQ⟩` from `hR U V g hg`. Use `⟨X, a, h, hga, fun n => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.EtC.WExactProd.wexact_of_prod T U X a Bool (fun i => cond i (term C (n + 1)) (term D n)) (term K n) (fun i => match i with | true => p n | false => q n) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Conclude with `ext n W x y (congrFun hxy true) (congrFun hxy false)`. Introduce `f`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Take `⟨x, hx1, hx2⟩` from `mk n W (f true) (f false)`. Use `⟨x, funext fun i => ?_⟩` and prove the remaining obligations. Consider the cases of `i`. Conclude with `hx2`. Conclude with `hx1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i`. Consider the cases of `i`. Conclude with `(hQ n).2`. Conclude with `(hQ (n + 1)).1`. Establish `gen : ∀ (j : ℤ) (U : T) (x : (K.obj U).X (j + 1)), (K.obj U).d (j + 1) (j + 1 + 1) x = 0 → ∃ (V : T) (g : U ⟶ V), Cov g ∧ ∃ y : (K.obj V).X j, (K.obj V).d j (j + 1) y = (K.map g).f (j + 1) x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j U x hx`. Take `⟨c, hc⟩ : ∃ c : (C.obj U).X (j + 1 + 1), (p (j + 1)).app U x = c` from `⟨_, rfl⟩`. Take `⟨z, hz⟩ : ∃ z : (D.obj U).X (j + 1), (q (j + 1)).app U x = z` from `⟨_, rfl⟩`. Establish `h1 : (C.obj U).d (j + 1 + 1) (j + 1 + 1 + 1) c = 0`. Use `dp (j + 1) U x` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[hx]`. Use `erw [hom_zero'] at this`. Rewrite `this` using `[hc]`. Conclude with `neg_eq_zero.mp this.symm`. Establish `h2 : (D.obj U).d (j + 1) (j + 1 + 1) z + (φ.app U).f (j + 1 + 1) c = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `dq (j + 1) U x` as an intermediate fact. Rewrite `this` using `[hx]`. Use `erw [hom_zero'] at this`. Rewrite `this` using `[hc, hz]`. Conclude with `(add_comm _ _).trans this.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V₁, g₁, hg₁, b, hb⟩` from `locInj' hI (j + 1) (j + 1 + 1) rfl U c h1 ⟨-z, by rw [map_neg]; exact eq_neg_of_add_eq_zero_left ((add_comm _ _).trans h2)⟩`. Take `⟨w, hw⟩ : ∃ w : (D.obj V₁).X (j + 1), (D.map g₁).f (j + 1) z + (φ.app V₁).f (j + 1) b = w` from `⟨_, rfl⟩`. Establish `hw0 : (D.obj V₁).d (j + 1) (j + 1 + 1) w = 0`. Rewrite using `[← hw, map_add, ← comm_el (D.map g₁), ← comm_el (φ.app V₁), hb, nat_el, ← map_add, h2, map_zero]`. Take `⟨V₂, g₂, hg₂, c', y', hc', hy'⟩` from `locSurj' hS j (j + 1) rfl V₁ w hw0`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hyp, hyq⟩` from `mk j V₂ (c' - (C.map g₂).f (j + 1) b) (-y')`. Use `⟨V₂, g₁ ≫ g₂, Cov.comp_mem _ _ hg₁ hg₂, y, ?_⟩` and prove the remaining obligations. Apply `ext` to reduce the goal to its premises. Rewrite using `[dp, hyp, natP, hc, map_sub, hc', ← comm_el (C.map g₂), hb, map_comp_el, zero_sub, neg_neg]`. Rewrite using `[dq, hyp, hyq, natQ, hz, map_sub, map_neg, hy', ← hw, map_add, nat_el, map_comp_el]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Normalize the expressions using the abelian group laws. Establish `hLK : LocExact Cov K`. Establish `gen' : ∀ k n : ℤ, k + 1 = n → ∀ (U : T) (x : (K.obj U).X n), (K.obj U).d n (n + 1) x = 0 → ∃ (V : T) (g : U ⟶ V), Cov g ∧ ∃ y : (K.obj V).X k, (K.obj V).d k n y = (K.map g).f n x`. Introduce `k n hkn`. Substitute `hkn` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `gen k`. Introduce `n U x hx`. Conclude with `gen' (n - 1) n (by omega) U x hx`. Establish `exK : ∀ (U : T) (k n : ℤ), k + 1 = n → ∀ x : (K.obj U).X n, (K.obj U).d n (n + 1) x = 0 → ∃ y : (K.obj U).X k, (K.obj U).d k n y = x`. Introduce `U k n hkn x hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `rfl : k = n - 1` from `by omega`. Conclude with `GlobalTheory.CartanZero.cartan_zero T Cov K hbK hRK hLK U n x hx`. Introduce `U`. Prove the components needed by the constructor for the conclusion. Establish `sg : ∀ (j : ℤ) (z : (D.obj U).X (j + 1)), (D.obj U).d (j + 1) (j + 1 + 1) z = 0 → ∃ (c : (C.obj U).X (j + 1)) (y : (D.obj U).X j), (C.obj U).d (j + 1) (j + 1 + 1) c = 0 ∧ (φ.app U).f (j + 1) c = z + (D.obj U).d j (j + 1) y`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Introduce `j z hz`. Take `⟨x, hxp, hxq⟩` from `mk (j + 1) U 0 z`. Establish `hx : (K.obj U).d (j + 1) (j + 1 + 1) x = 0` using `cyc _ _ _ (by rw [hxp, map_zero]) (by rw [hxp, hxq, map_zero, zero_add, hz])`. Take `⟨y, hy⟩` from `exK U j (j + 1) rfl x hx`. Take `⟨u, hu⟩ : ∃ u : (D.obj U).X j, (q j).app U y = u` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, hv⟩ : ∃ v : (C.obj U).X (j + 1), (p j).app U y = v` from `⟨_, rfl⟩`. Use `⟨v, -u, ?_, ?_⟩` and prove the remaining obligations. Use `dp j U y` as an intermediate fact. Rewrite `this` using `[hy, hxp, hv]`. Conclude with `neg_eq_zero.mp this.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `dq j U y` as an intermediate fact. Rewrite `this` using `[hy, hxq, hu, hv]`. Rewrite using `[map_neg, this]`. Normalize the expressions using the abelian group laws. Establish `sg' : ∀ k n : ℤ, k + 1 = n → ∀ (z : (D.obj U).X n), (D.obj U).d n (n + 1) z = 0 → ∃ (c : (C.obj U).X n) (y : (D.obj U).X k), (C.obj U).d n (n + 1) c = 0 ∧ (φ.app U).f n c = z + (D.obj U).d k n y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Introduce `k n hkn`. Substitute `hkn` using the available equality. Conclude with `sg k`. Introduce `n z hz`. Conclude with `sg' (n - 1) n (by omega) z hz`.
-
-Establish `ij : ∀ (j : ℤ) (c : (C.obj U).X (j + 1 + 1)), (C.obj U).d (j + 1 + 1) (j + 1 + 1 + 1) c = 0 → ∀ y : (D.obj U).X (j + 1), (φ.app U).f (j + 1 + 1) c = (D.obj U).d (j + 1) (j + 1 + 1) y → ∃ b : (C.obj U).X (j + 1), (C.obj U).d (j + 1) (j + 1 + 1) b = c`. Introduce `j c hc y hy`. Take `⟨x, hxp, hxq⟩` from `mk (j + 1) U c (-y)`. Establish `hx : (K.obj U).d (j + 1) (j + 1 + 1) x = 0` using `cyc _ _ _ (by rw [hxp, hc]) (by rw [hxp, hxq, map_neg, hy, add_neg_cancel])`. Take `⟨y', hy'⟩` from `exK U j (j + 1) rfl x hx`.
-
-Take `⟨v, hv⟩ : ∃ v : (C.obj U).X (j + 1), (p j).app U y' = v` from `⟨_, rfl⟩`. Use `⟨-v, ?_⟩` and prove the remaining obligations. Use `dp j U y'` as an intermediate fact. Rewrite `this` using `[hy', hxp, hv]`. Rewrite using `[map_neg]`.
-
-Conclude with `this.symm`. Establish `ij' : ∀ i n : ℤ, i + 1 = n → ∀ c : (C.obj U).X n, (C.obj U).d n (n + 1) c = 0 → ∀ y : (D.obj U).X i, (φ.app U).f n c = (D.obj U).d i n y → ∃ b : (C.obj U).X i, (C.obj U).d i n b = c`. Introduce `i n hin`. Substitute `hin` using the available equality. Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`.
-
-Conclude with `ij j`. Introduce `n c hc ⟨y, hy⟩`. Conclude with `ij' (n - 1) n (by omega) c hc y hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cartan_one : ∀ (T : Type 1) [Category.{0} T] (Cov : MorphismProperty T) [Cov.IsStableUnderComposition]
     (C D : T ⥤ AbCx) (φ : C ⟶ D), (∃ b : ℤ, ∀ n : ℤ, n < b → ∀ U, IsZero ((C.obj U).X n) ∧ IsZero ((D.obj U).X n)) →

@@ -17,12 +17,12 @@ variable {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDi
   [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F]
 
 /- English proof (translation)
-The claim follows from `mapL_id_id`.
+A detailed English derivation is pending.
 -/
 theorem sp_mapL_one : mapL (1 : E →L[ℂ] E) (1 : F →L[ℂ] F) = 1 := mapL_id_id
 
 /- English proof (translation)
-Use `FiniteDimensional.complete ℂ E` as an intermediate fact. Use `FiniteDimensional.complete ℂ F` as an intermediate fact. Use `FiniteDimensional.complete ℂ (E ⊗[ℂ] F)` as an intermediate fact. Simplify using `only [ContinuousLinearMap.star_eq_adjoint, adjoint_mapL]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sp_star_mapL (A : E →L[ℂ] E) (B : F →L[ℂ] F) : star (mapL A B) = mapL (star A) (star B) := by
   have := FiniteDimensional.complete ℂ E
@@ -31,7 +31,7 @@ theorem sp_star_mapL (A : E →L[ℂ] E) (B : F →L[ℂ] F) : star (mapL A B) =
   simp only [ContinuousLinearMap.star_eq_adjoint, adjoint_mapL]
 
 /- English proof (translation)
-Rewrite using `[Unitary.mem_iff, sp_star_mapL, ← mapL_mul, ← mapL_mul, Unitary.star_mul_self_of_mem A.2, Unitary.star_mul_self_of_mem B.2, Unitary.mul_star_self_of_mem A.2, Unitary.mul_star_self_of_mem B.2]`. Conclude with `⟨sp_mapL_one, sp_mapL_one⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sp_mapL_unitary (A : unitary (E →L[ℂ] E)) (B : unitary (F →L[ℂ] F)) :
     mapL (A : E →L[ℂ] E) (B : F →L[ℂ] F) ∈ unitary (E ⊗[ℂ] F →L[ℂ] E ⊗[ℂ] F) := by
@@ -76,16 +76,16 @@ theorem tensorRightOperator_apply (B : F →L[ℂ] F) : (tensorRightOperator : _
     mapL (1 : E →L[ℂ] E) B := rfl
 
 /- English proof (translation)
-Rewrite using `[← mapL_mul, mul_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sp_mapL_split (A : E →L[ℂ] E) (B : F →L[ℂ] F) :
     mapL A B = mapL A (1 : F →L[ℂ] F) * mapL (1 : E →L[ℂ] E) B := by
   rw [← mapL_mul, mul_one, one_mul]
 
 /- English proof (translation)
-Establish `c1 : Continuous fun g => (ρ1 g : E →L[ℂ] E)` using `continuous_subtype_val.comp h1`. Establish `c2 : Continuous fun g => (ρ2 g : F →L[ℂ] F)` using `continuous_subtype_val.comp h2`. Establish `h : Continuous fun g => mapL (ρ1 g : E →L[ℂ] E) (ρ2 g : F →L[ℂ] F)`. Establish `e : (fun g => mapL (ρ1 g : E →L[ℂ] E) (ρ2 g : F →L[ℂ] F)) = fun g => mapL (ρ1 g : E →L[ℂ] E) (1 : F →L[ℂ] F) * mapL (1 : E →L[ℂ] E) (ρ2 g : F →L[ℂ] F)`. Use function extensionality and compare the values at `fun g => sp_mapL_split _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Conclude with `((tensorLeftOperator (F := F)).continuous.comp c1).mul ((tensorRightOperator (E := E)).continuous.comp c2)`. Conclude with `Continuous.subtype_mk h _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sp_tensU_cont {G : Type*} [Monoid G] [TopologicalSpace G] (ρ1 : G →* unitary (E →L[ℂ] E))
     (ρ2 : G →* unitary (F →L[ℂ] F)) (h1 : Continuous ρ1) (h2 : Continuous ρ2) :
@@ -101,9 +101,9 @@ theorem sp_tensU_cont {G : Type*} [Monoid G] [TopologicalSpace G] (ρ1 : G →* 
   exact Continuous.subtype_mk h _
 
 /- English proof (translation)
-Establish `h1` using `((tensorLeftOperator (F := F)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) ha`. Establish `h2` using `((tensorRightOperator (E := E)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hb`. Establish `h` using `h1.mul h2`. Simplify using `only [Function.comp_def, ContinuousLinearMap.coe_restrictScalars', tensorLeftOperator_apply, tensorRightOperator_apply, ha0, hb0, sp_mapL_one, mul_one, one_mul] at h`. Establish `e : (fun t => mapL (a t) (b t)) = fun t => mapL (a t) (1 : F →L[ℂ] F) * mapL (1 : E →L[ℂ] E) (b t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun t => sp_mapL_split _ _`. Rewrite using `[e]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sp_mapL_hasDeriv {a : ℝ → E →L[ℂ] E} {b : ℝ → F →L[ℂ] F} {a' : E →L[ℂ] E} {b' : F →L[ℂ] F}
     (ha : HasDerivAt a a' 0) (hb : HasDerivAt b b' 0) (ha0 : a 0 = 1) (hb0 : b 0 = 1) :
@@ -123,7 +123,7 @@ end Tens
 variable {n : ℕ} {ε : Fin n → Bool} {Λ1 : Fin (cnt ε true) → ℝ} {Λ2 : Fin (cnt ε false) → ℝ}
 
 /- English proof (translation)
-Use `ext`. Simplify using `[sp_sub]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sp_sub_add (ε : Fin n → Bool) (c : Bool) (X Y : Matrix (Fin n) (Fin n) ℂ) :
     sp_sub ε c (X + Y) = sp_sub ε c X + sp_sub ε c Y := by
@@ -147,7 +147,7 @@ theorem sp_dτ_apply (T1 : KType (fun _ : Fin (cnt ε true) => true) Λ1)
     sp_dτ T1 T2 X = mapL (T1.dτ (sp_sub ε true X)) 1 + mapL 1 (T2.dτ (sp_sub ε false X)) := rfl
 
 /- English proof (translation)
-The claim follows from `onep_KG_ext (by rw [hγ 0]; simp; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem sp_curve_zero {X : Matrix (Fin n) (Fin n) ℂ} {γ : ℝ → KG ε}
     (hγ : ∀ t : ℝ, toMK (γ t) = NormedSpace.exp ((t : ℂ) • X)) : γ 0 = 1 :=
@@ -179,7 +179,7 @@ theorem sp_rep_op (T1 : KType (fun _ : Fin (cnt ε true) => true) Λ1)
     (sp_rep T1 T2).op k = mapL (T1.op (sp_proj ε true k)) (T2.op (sp_proj ε false k)) := rfl
 
 /- English proof (translation)
-Use `show (sp_dτ T1 T2 (single (blk ε true r) (blk ε true s) 1)) x = _`. Simplify using `[sp_dτ_apply, sp_sub_single_same, sp_sub_single_other, kunits, mapL_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sp_units_true (T1 : KType (fun _ : Fin (cnt ε true) => true) Λ1)
     (T2 : KType (fun _ : Fin (cnt ε false) => true) Λ2) (r s : Fin (cnt ε true))
@@ -190,7 +190,7 @@ theorem sp_units_true (T1 : KType (fun _ : Fin (cnt ε true) => true) Λ1)
   rfl
 
 /- English proof (translation)
-Use `show (sp_dτ T1 T2 (single (blk ε false r) (blk ε false s) 1)) x = _`. Simplify using `[sp_dτ_apply, sp_sub_single_same, sp_sub_single_other, kunits, mapL_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sp_units_false (T1 : KType (fun _ : Fin (cnt ε true) => true) Λ1)
     (T2 : KType (fun _ : Fin (cnt ε false) => true) Λ2) (r s : Fin (cnt ε false))

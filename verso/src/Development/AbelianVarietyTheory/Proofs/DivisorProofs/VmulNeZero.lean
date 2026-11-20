@@ -8,9 +8,9 @@ open GlobalTheory.QFam GlobalTheory.WpFam
 namespace GlobalTheory.WpFam.SepGL
 
 /- English proof (translation)
-Introduce `h`. Apply `hx` to reduce the goal to its premises. Establish `h2 : (x ᵥ* (α : Matrix (Fin 2) (Fin 2) (ZMod N))) ᵥ* ((α⁻¹ : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N)) = x`. Rewrite using `[Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]`. Unfold `vmul at h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← h2, h, Matrix.zero_vecMul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vmul_ne_zero {N : ℕ} (x : Fin 2 → ZMod N) (hx : x ≠ 0) (α : GL (Fin 2) (ZMod N)) :
     vmul x α ≠ 0 := by
@@ -23,11 +23,11 @@ theorem vmul_ne_zero {N : ℕ} (x : Fin 2 → ZMod N) (hx : x ≠ 0) (α : GL (F
   rw [← h2, h, Matrix.zero_vecMul]
 
 /- English proof (translation)
-Introduce `N _ τ α β h`. Break down `subsingleton_or_nontrivial (ZMod N) with hs | hs` into its components or cases. Conclude with `Matrix.GeneralLinearGroup.ext fun i j => Subsingleton.elim _ _`. Establish `key : ∀ i : Fin 2, vmul (Pi.single i 1) α = vmul (Pi.single i 1) β`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : (Pi.single i (1 : ZMod N) : Fin 2 → ZMod N) ≠ 0`. Introduce `h1`. Use `congrFun h1 i` as an intermediate fact. Simplify using `at this`. Conclude with `GlobalTheory.T.eq_of_weierstrassP_derivWeierstrassP_torsion_eq N τ _ _ (vmul_ne_zero _ h0 α) (vmul_ne_zero _ h0 β) (h i).1 (h i).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations. Use `congrFun (key i) j` as an intermediate fact. Simplify `this` using `[vmul, Matrix.single_vecMul]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem main : ∀ (N : ℕ) [NeZero N] (τ : ℍ) (α β : GL (Fin 2) (ZMod N)), (∀ i : Fin 2, wp N (vmul (Pi.single i 1) α) τ = wp N (vmul (Pi.single i 1) β) τ ∧ wpd N (vmul (Pi.single i 1) α) τ = wpd N (vmul (Pi.single i 1) β) τ) → α = β := by
   intro N _ τ α β h

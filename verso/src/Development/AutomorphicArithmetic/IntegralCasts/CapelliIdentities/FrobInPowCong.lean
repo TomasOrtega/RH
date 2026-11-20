@@ -1,11 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Ω inst A a b ha hb hab m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h : a ^ (n + 1) - b ^ (n + 1) = a * (a ^ n - b ^ n) + (a - b) * b ^ n` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[h]`. Use `A.valuation.map_add_lt ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ha) ih`. Rewrite using `[map_mul, map_pow]`.
-
-Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (pow_le_one' hb n)) hab`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf16.frobIn_pow_cong :
     ∀ {Ω : Type} [inst : Field Ω] (A : ValuationSubring Ω)

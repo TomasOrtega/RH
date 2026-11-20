@@ -15,15 +15,13 @@ namespace GlobalTheory.FinPl.RdInt
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝒪[k]) c`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[k]`. Take `⟨m, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 hϖ`. Establish `hp : ((Nat.card 𝓀[k] : ℕ) : 𝒪[k]) ∈ IsLocalRing.maximalIdeal 𝒪[k]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_natCast]`. Use `Fintype.ofFinite 𝓀[k]` as an intermediate fact. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `FiniteField.cast_card_eq_zero _`. Rewrite `hp` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdv : b ∣ ((Nat.card 𝓀[k] ^ m : ℕ) : 𝒪[k])`. Rewrite using `[hu, Nat.cast_pow, Units.mul_left_dvd]`. Conclude with `pow_dvd_pow_of_dvd hp m`. Take `⟨d, hd⟩` from `hdv`. Use `⟨Nat.card 𝓀[k] ^ m, pow_pos Nat.card_pos m, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb' : (algebraMap 𝒪[k] k b) ≠ 0`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `hb0`. Establish `: ((Nat.card 𝓀[k] ^ m : ℕ) : k) * (algebraMap 𝒪[k] k a / algebraMap 𝒪[k] k b) = algebraMap 𝒪[k] k (d * a)`. Rewrite using `[← map_natCast (algebraMap 𝒪[k] k), hd, map_mul, map_mul]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `(d * a).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem (c : k) : ∃ N : ℕ, 0 < N ∧ (N : k) * c ∈ 𝒪[k] := by
   obtain ⟨a, b, hb, rfl⟩ := IsFractionRing.div_surjective (A := 𝒪[k]) c
@@ -51,7 +49,7 @@ theorem exists_nat_mul_mem (c : k) : ∃ N : ℕ, 0 < N ∧ (N : k) * c ∈ 𝒪
   exact (d * a).2
 
 /- English proof (translation)
-Use `choose N hN h using fun i => exists_nat_mul_mem (c i)`. Use `⟨∏ i, N i, Finset.prod_pos fun i _ => hN i, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ i), Nat.cast_mul, mul_assoc]`. Conclude with `mul_mem (natCast_mem _ _) (h i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem_fin {ι : Type} [Fintype ι] (c : ι → k) :
     ∃ N : ℕ, 0 < N ∧ ∀ i, (N : k) * c i ∈ 𝒪[k] := by
@@ -63,7 +61,7 @@ theorem exists_nat_mul_mem_fin {ι : Type} [Fintype ι] (c : ι → k) :
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Use `sum_mem fun a _ => sum_mem fun c _ => ?_` and prove the remaining obligations. Establish `: ((N * N : ℕ) : k) * (b i c * x c a * b' a j) = ((N : k) * b i c) * x c a * ((N : k) * b' a j)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `mul_mem (mul_mem (hb i c) (hx c a)) (hb' a j)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_mem {n n' m m' : Type} [Fintype n] [Fintype n'] {N : ℕ} (b : Matrix m n k) (b' : Matrix n' m' k)
     (hb : ∀ i a, (N : k) * b i a ∈ 𝒪[k]) (hb' : ∀ a j, (N : k) * b' a j ∈ 𝒪[k]) (x : Matrix n n' k)
@@ -78,13 +76,13 @@ theorem entry_mem {n n' m m' : Type} [Fintype n] [Fintype n'] {N : ℕ} (b : Mat
 end GlobalTheory.FinPl.RdInt
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p n n' _ _ _ _ S T α β LS LT hS hT`. Take `⟨N₀, hN₀, h₀⟩` from `GlobalTheory.FinPl.RdInt.exists_nat_mul_mem_fin (Sum.elim (fun x : Fin T.rank × n => β.b x.1 x.2) (fun x : n' × Fin S.rank => α.b' x.1 x.2))`. Take `⟨K, hK, hmul⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_mem_latO (S := S) (T := T) hS.1 hT.1`. Take `⟨ε, hε, heε⟩` from `GlobalTheory.FinPl.HalfInd.exists_idem p`. Use `⟨K * (N₀ * N₀), Nat.mul_pos hK (Nat.mul_pos hN₀ hN₀), fun t ht hrd => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hent` using `GlobalTheory.FinPl.RdInt.entry_mem β.b α.b' (fun i a => h₀ (Sum.inl (i, a))) (fun a j => h₀ (Sum.inr (a, j))) (rd α β t) hrd`. Establish `htw` using `GlobalTheory.FinPl.HalfInd.wr_rd α β ht`. Establish `hu : IsHalf p.e ((N₀ * N₀) • t)` using `(GlobalTheory.PlaceModel.isHalf_iff S T).2 ((GlobalTheory.PlaceModel.half S T p.e).nsmul_mem ((GlobalTheory.PlaceModel.isHalf_iff S T).1 ht) _)`. Establish `hui : ∀ i j, toEAf D (((N₀ * N₀) • t) i j) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Introduce `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ((N₀ * N₀) • t) i j = p.sec (((N₀ * N₀ : ℕ) : k) * (β.b * rd α β t * α.b') i j)`. Rewrite using `[← nsmul_eq_mul, map_nsmul, ← GlobalTheory.FinPl.HalfInd.wr_apply, htw]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `GlobalTheory.PlaceCoord.toEAf_mem ((p.int_iff _).1 (hent i j))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hmul _ (GlobalTheory.PlaceDatum.infPart_of_half (GlobalTheory.PlaceCoord.infPart_split p.split) hu) hui`. Establish `h2` using `(GlobalTheory.PlaceModel.idem_smul_mem hε p.split.1 heε h1).1`. Establish `hh : K • (N₀ * N₀) • t ∈ GlobalTheory.PlaceModel.half S T p.e` using `(GlobalTheory.PlaceModel.half S T p.e).nsmul_mem ((GlobalTheory.PlaceModel.isHalf_iff S T).1 hu) _`. Rewrite `h2` using `[(GlobalTheory.PlaceModel.mem_half S T).1 hh]`. Rewrite using `[mul_nsmul']` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinPl.exists_nsmul_mem_latO_of_rd_int : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (S T : HSp D) (α : Frame p S n') (β : Frame p T n) (LS : Lat S) (LT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT → ∃ N : ℕ, 0 < N ∧ ∀ t : WO S T, IsHalf p.e t → (∀ i j, rd α β t i j ∈ 𝒪[k]) → N • t ∈ latO S T (LS : Set _) (LT : Set _) (· = p.v) := by
   intro D k _ _ _ _ p n n' _ _ _ _ S T α β LS LT hS hT

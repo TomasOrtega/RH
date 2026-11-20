@@ -63,9 +63,9 @@ instance isDenseSubsite_overEquivalence_inverse :
   U.instIsDenseSubsiteSubtypeMemOverGrothendieckTopologyOverInverseOverEquivalence
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, hy, rfl⟩`.
+Supply the required witnesses or components.
 -/
 lemma overEquivalence_inverse_left (W : U.toScheme.Opens) :
     (U.overEquivalence.inverse.obj W).left = U.ι ''ᵁ W := by
@@ -97,7 +97,7 @@ def cohomologyPresheafAddEquivRestrict (F : X.Modules) (n : ℕ) :
       ((Sheaf.functorH _ n).mapIso (restrictAbIso U F)).addCommGroupIsoToAddEquiv)
 
 /- English proof (translation)
-The claim follows from `(cohomologyPresheafAddEquivRestrict.{w'} U F n).toEquiv.subsingleton`.
+A detailed English derivation is pending.
 -/
 lemma subsingleton_H'_of_restrict (F : X.Modules) (n : ℕ)
     [h : Subsingleton (Sheaf.H.{w'} (modulesAb (F.restrict U.ι)) n)] :

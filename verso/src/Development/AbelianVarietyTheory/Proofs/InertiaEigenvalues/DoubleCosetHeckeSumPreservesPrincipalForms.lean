@@ -22,24 +22,22 @@ def conjMeet {Γ : Type*} [Group Γ] (K : Subgroup Γ) (γ : Γ) : Subgroup Γ :
   K ⊓ K.comap (MulAut.conj γ⁻¹).toMonoidHom
 
 /- English proof (translation)
-Simplify using `[conjMeet, Subgroup.mem_inf, Subgroup.mem_comap, MulAut.conj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_conjMeet {Γ : Type*} [Group Γ] {K : Subgroup Γ} {γ x : Γ} :
     x ∈ conjMeet K γ ↔ x ∈ K ∧ γ⁻¹ * x * γ ∈ K := by
   simp [conjMeet, Subgroup.mem_inf, Subgroup.mem_comap, MulAut.conj_apply]
 
 /- English proof (translation)
-Use `set H := (conjMeet K γ).subgroupOf K`. Use `haveI : Fintype (K ⧸ H) := Fintype.ofFinite _`. Set `r : K ⧸ H → Γ` to `fun q => ((Quotient.out q : K) : Γ) * γ`. Establish `hr : Function.Injective r`. Introduce `q₁ q₂ h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : (Quotient.out q₁ : K) = Quotient.out q₂` using `Subtype.ext (mul_right_cancel h)`. Rewrite using `[← Quotient.out_eq q₁, ← Quotient.out_eq q₂, h']`. Use `⟨Finset.univ.image r, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.image_nonempty.2 ⟨(QuotientGroup.mk 1 : K ⧸ H), Finset.mem_univ _⟩`. Introduce `δ hδ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hδ`. Conclude with `⟨_, (Quotient.out q).2, rfl⟩`. Introduce `F hF k hk g`. Rewrite using `[Finset.sum_image (fun a _ b _ h => hr h), Finset.sum_image (fun a _ b _ h => hr h)]`. Set `kk : K` to `⟨k, hk⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ q : K ⧸ H, F (g * k * r q) = F (g * r (kk • q))`. Introduce `q`. Establish `hq : (QuotientGroup.mk (Quotient.out (kk • q)) : K ⧸ H) = QuotientGroup.mk (kk * Quotient.out q)`. Rewrite using `[QuotientGroup.out_eq']`. Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hm` using `QuotientGroup.eq.1 hq`. Rewrite `hm` using `[Subgroup.mem_subgroupOf, mem_conjMeet]`. Establish `e : g * k * r q = g * r (kk • q) * (γ⁻¹ * ((((Quotient.out (kk • q))⁻¹ * (kk * Quotient.out q) : K) : Γ)) * γ)`. Simplify using `only [r, Subgroup.coe_mul, Subgroup.coe_inv, kk]`.
-
-Use `group`. Rewrite using `[e, hF _ hm.2]`. Rewrite using `[Finset.sum_congr rfl fun q _ => key q]`. Conclude with `Fintype.sum_equiv (MulAction.toPerm kk) _ _ (fun q => rfl)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum_inv {Γ : Type*} [Group Γ] (K : Subgroup Γ) (γ : Γ)
     [hf : ((conjMeet K γ).subgroupOf K).FiniteIndex] :
@@ -84,17 +82,15 @@ end GlobalTheory.TransSum
 namespace GlobalTheory.TransSum
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R i hP γ hγ`. Establish `topgrp` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig (Wc D i).gram`. Use `haveI : CompactSpace (levW R i) := isCompact_iff_compactSpace.mp (GlobalTheory.ParahoricCompact.isCompact_levG _ _ _)`. Establish `hU` using `GlobalTheory.LevelOpen.isOpen_levG (Wc D i) (R.βW i) (R.datWp i R.triv)`. Establish `hopen : IsOpen (((conjMeet (levW R i) γ).subgroupOf (levW R i) : Subgroup (levW R i)) : Set (levW R i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ : levW R i → GfC (Wc D i)` to `fun x => ⟨γ⁻¹ * (x : GA D (Wc D i)) * γ, mul_mem (mul_mem (inv_mem hγ) (hP.1 x.2)) hγ⟩`. Establish `hφ : Continuous φ`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `(continuous_const.mul continuous_subtype_val).mul continuous_const`. Establish `e : (((conjMeet (levW R i) γ).subgroupOf (levW R i) : Subgroup (levW R i)) : Set (levW R i)) = φ ⁻¹' {g : GfC (Wc D i) | (g : GA D (Wc D i)) ∈ levG _ (R.βW i) (R.datWp i R.triv)}`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, mem_conjMeet, Set.mem_preimage, Set.mem_setOf_eq, φ]`. Conclude with `⟨fun h => h.2, fun h => ⟨x.2, h⟩⟩`. Rewrite using `[e]`. Conclude with `hU.preimage hφ`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : Finite (levW R i ⧸ (conjMeet (levW R i) γ).subgroupOf (levW R i)) := Subgroup.quotient_finite_of_isOpen _ hopen`. Use `haveI : ((conjMeet (levW R i) γ).subgroupOf (levW R i)).FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Take `⟨C, hne, hC, hsum⟩` from `exists_sum_inv (levW R i) γ`. Use `⟨C, hne, hC, fun Tm hT => ?_⟩` and prove the remaining obligations. Establish `hCf : ∀ a ∈ C, a ∈ GfC (Wc D i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha`. Take `⟨k, hk, rfl⟩` from `hC a ha`. Conclude with `mul_mem (hP.1 hk) hγ`. Unfold `RealDat.Wall at hT ⊢`. Rewrite `hT`, the goal using `[GlobalTheory.MultMem.mem_mult_iff]`.
-
-Use `GlobalTheory.HeckeParts.isMultMap_heckeOn hT hCf fun v k hk g => ?_` and prove the remaining obligations. Establish `h1 : levChi _ (R.βW i) (R.datWp i R.triv) k = 1` using `hP.2.1 k hk`. Rewrite using `[h1, one_mul, heckeLin_apply, heckeLin_apply]`. Conclude with `hsum (Tm v) (fun k' hk' g' => by rw [hT.lev v k' hk' g', hP.2.1 k' hk', one_mul]) k hk g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeOn_doubleCoset_mem_wall : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m}, LevProd R i → ∀ (γ : GA D (Wc D i)), γ ∈ GfC (Wc D i) → ∃ C : Finset (GA D (Wc D i)), C.Nonempty ∧ (∀ δ ∈ C, ∃ k ∈ levW R i, δ = k * γ) ∧ ∀ T ∈ R.Wall i (sg0 D A), heckeOn (R.MW i (sg0 D A)) C T ∈ R.Wall i (sg0 D A) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R i hP γ hγ

@@ -16,9 +16,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.UChart
 
 /- English proof (translation)
-Take `⟨m, hm⟩ : ∃ m, H.d + 1 = 4 * m` from `⟨(H.d + 1) / 4, by have := H.d_mod; omega⟩`. Establish `e : (H.d + 1) / 4 = m` using `by omega`. Establish `hm' : (H.d : 𝓞 E) + 1 = 4 * m` using `by exact_mod_cast hm`. Rewrite using `[e, GlobalTheory.HostModel.cmHost_bar_halfIntegerGenerator]`. Establish `h4 : (4 : 𝓞 E) ≠ 0` using `by norm_num`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ h4` to reduce the goal to its premises. Take the linear combination `(-(2 * H.w0 + H.rt - 1)) * H.two_weight_eq_one_add_root - H.rt_sq + hm'`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem w_zero_mul_conj_eq_norm {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) :
     H.w0 * H.bar H.w0 = (((H.d + 1) / 4 : ℕ) : 𝓞 E) := by
@@ -31,9 +31,9 @@ theorem w_zero_mul_conj_eq_norm {E : Type} [Field E] [NumberField E] [IsCMField 
   linear_combination (-(2 * H.w0 + H.rt - 1)) * H.two_weight_eq_one_add_root - H.rt_sq + hm'
 
 /- English proof (translation)
-Use `letI := H.starRing`. Take `⟨G, iG, cG, A, hG, ⟨U⟩⟩` from `GlobalTheory.T.hasSemiAbelianUniformisation_complete_normal_base R hR D`. Take `⟨oA, oG, hl⟩` from `GlobalTheory.T.exists_ringAction_extension_to_uniformised_semiAbelian R hR D A G hG U (𝓞 E) oD`. Establish `hd` using `H.d_mod`. Set `t : SAB H (Sp R)` to `{ G := G semi := hG act := ofRingAct oG PP := U.LG cub := U.cubG sym := GlobalTheory.isSymmetric_of_symmetry_generator U.LG U.symG U.symG_gen U.symG_rig adj := fun a => GlobalTheory.Mum.UnifAdjoint.lbIso_cubeLB_star R hR.1 D A G hG U (𝓞 E) oD oA oG hl a prim := GlobalTheory.T.lbI …`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `⟨t, ⟨D, oD, A, oA, U, rfl, hl, hw⟩, rfl, HEq.rfl, HEq.rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_sab_pelUnif_of_norm {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type)
     [CommRing R] [IsDomain R] [IsLocalRing R] (hR : Base R) (D : DegData R (maximalIdeal R))

@@ -8,9 +8,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Form
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Proceed by induction on `Z using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ih fun i hi j hj hij => ho i (Finset.mem_insert_of_mem hi) j (Finset.mem_insert_of_mem hj) hij]`. Establish `h0 : es a * ∑ w ∈ s, es w = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun j hj => ho a (Finset.mem_insert_self a s) j (Finset.mem_insert_of_mem hj) fun h => ha (h ▸ hj)`. Take the linear combination `(d - 1) ^ 2 * h0`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem prod_orthogonal_idempotents {R ι : Type} [CommRing R] [DecidableEq ι] (d : R) (es : ι → R) (Z : Finset ι)
     (ho : ∀ i ∈ Z, ∀ j ∈ Z, i ≠ j → es i * es j = 0) :
@@ -27,7 +27,7 @@ private theorem prod_orthogonal_idempotents {R ι : Type} [CommRing R] [Decidabl
     linear_combination (d - 1) ^ 2 * h0
 
 /- English proof (translation)
-Establish `h1 : f ((x⁻¹ : Aˣ) : A) * f (x : A) = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`. Establish `h2 : f (x : A) * (1 - ε + ε * d') = 1`. Rewrite using `[hx]`. Take the linear combination `(1 - d - d' + d * d') * hε + ε * hd`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 -/
 private theorem inv_aux {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (x : Aˣ) (ε d d' : B)
     (hε : ε * ε = ε) (hd : d * d' = 1) (hx : f (x : A) = 1 - ε + ε * d) :
@@ -39,24 +39,24 @@ private theorem inv_aux {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (
     _ = _ := by rw [← mul_assoc, h1, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, Matrix.det_units_conj']`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem det_conj_eq {n : ℕ} {B : Type} [CommRing B] (β γ : GL (Fin n) B) :
     (β⁻¹ * γ * β : GL (Fin n) B).val.det = γ.val.det := by
   rw [Units.val_mul, Units.val_mul, Matrix.det_units_conj']
 
 /- English proof (translation)
-Introduce `D S βS e Z hZ g hg`. Establish `hinf` using `GlobalTheory.PlaceDatum.infPart_idemSum hZ`. Establish `hint` using `StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.toEAf_mem hZ`. Establish `hee : e * e = e` using `GlobalTheory.Tow.idemSum_mul_of_subset hZ hZ (Finset.Subset.refl Z)`. Take `⟨⟨es, hes, hsum⟩, -⟩` from `hZ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hid : ∀ w ∈ Z, GlobalTheory.RowVacScalar.idemAt w = es w` using `fun w hw => GlobalTheory.Tow.idemAt_unique (Classical.epsilon_spec (p := fun a : AE D => Formalism.L2.NTheta.IsIdemAt a w) ⟨es w, hes w hw⟩) (hes w hw)`. Establish `hval : ((∏ w ∈ Z, GlobalTheory.RowVacScalar.detIdl (GlobalTheory.RowVacScalar.idemAt w) S g : (AE D)ˣ) : AE D) = e * (Formalism.L2.Theta.mt S g).det + (1 - e)`. Rewrite using `[Units.coe_prod, hsum, ← prod_orthogonal_idempotents _ es Z fun i hi j hj hij => GlobalTheory.Tow.idemAt_orth (hes i hi) (hes j hj) hij]`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Rewrite using `[hid w hw, GlobalTheory.RowVacScalar.detIdl_val (hes w hw).1.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : toEAf D (Formalism.L2.Theta.mt S g).det = (Lev.finE S g).val.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Establish `h2 : toEAf D ((∏ w ∈ Z, GlobalTheory.RowVacScalar.detIdl (GlobalTheory.RowVacScalar.idemAt w) S g : (AE D)ˣ) : AE D) = 1 - toEAf D e + toEAf D e * (βS⁻¹ * Lev.finE S g * βS : GL (Fin S.rank) (Lev.EAf D)).val.det`. Rewrite using `[hval, det_conj_eq, map_add, map_mul, map_sub, map_one, hdet, add_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[hval, map_add, map_mul, map_sub, map_one, hinf, zero_mul, zero_add, sub_zero]`. Take `⟨z, hz⟩` from `hg`. Establish `hz' : (βS⁻¹ * Lev.finE S g * βS : GL (Fin S.rank) (Lev.EAf D)) = Formalism.L2.DIV.intGL _ _ _ z`. Rewrite using `[← hz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show βS⁻¹ * (βS * Formalism.L2.DIV.intGL _ _ _ z * βS⁻¹) * βS = _`. Use `group`. Establish `hzd : (βS⁻¹ * Lev.finE S g * βS : GL (Fin S.rank) (Lev.EAf D)).val.det = (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype z.val.det`. Rewrite using `[hz', RingHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : (βS⁻¹ * Lev.finE S g * βS : GL (Fin S.rank) (Lev.EAf D)).val.det * (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype (z⁻¹).val.det = 1`. Rewrite using `[hzd, ← map_mul, ← Matrix.det_mul, Units.mul_inv, Matrix.det_one, map_one]`. Rewrite using `[inv_aux (toEAf D) _ _ _ _ (by rw [← map_mul, hee]) hd h2]`. Conclude with `add_mem (sub_mem (one_mem _) hint) (mul_mem hint (z⁻¹).val.det.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isUnitDet_prod_detIdl_of_mem_St :
     ∀ (D : D7) (S : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (e : AE D) (Z : Finset (Formalism.L2.DIV.Pl D.host.E)),

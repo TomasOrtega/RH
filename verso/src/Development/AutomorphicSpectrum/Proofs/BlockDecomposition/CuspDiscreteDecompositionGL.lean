@@ -11,7 +11,7 @@ open NumberField MeasureTheory Topology GlobalTheory.AutomorphicL2Unitary Global
 namespace GlobalTheory.CompanionTheory.CuspRep
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.cuspidal_decomposition_of_compact GlobalTheory.T.cuspidal_convolution_compact`.
+A detailed English derivation is pending.
 -/
 theorem cuspDiscreteDecompositionGL : GlobalTheory.Published.CuspDiscreteDecompositionGL :=
   GlobalTheory.T.cuspidal_decomposition_of_compact GlobalTheory.T.cuspidal_convolution_compact

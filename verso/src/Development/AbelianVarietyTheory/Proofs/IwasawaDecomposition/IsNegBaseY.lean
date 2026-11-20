@@ -48,13 +48,13 @@ Both sides reduce to the same expression.
 theorem toRows₂_baseY (A : Matrix (Fin P) (Fin Q) ℂ) : (baseY A).toRows₂ = 1 := rfl
 
 /- English proof (translation)
-Simplify using `[matA, baseY]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matA_baseY (A : Matrix (Fin P) (Fin Q) ℂ) : matA (baseY A) = A := by
   simp [matA, baseY]
 
 /- English proof (translation)
-Establish `h1 : baseV x ∘ Sum.inr = 0` using `rfl`. Establish `h2 : baseF x ∘ Sum.inl = 0` using `rfl`. Rewrite using `[linX, h1, h2]`. Apply the tactic sequence `ext (i | j) <;> simp [baseV, baseF]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem linX_base (A : Matrix (Fin P) (Fin Q) ℂ) (x : Ix P Q → ℂ) : linX (baseY A) (baseV x) (baseF x) = x := by
   have h1 : baseV x ∘ Sum.inr = 0 := rfl
@@ -63,14 +63,14 @@ theorem linX_base (A : Matrix (Fin P) (Fin Q) ℂ) (x : Ix P Q → ℂ) : linX (
   ext (i | j) <;> simp [baseV, baseF]
 
 /- English proof (translation)
-Establish `h1 : baseV x ∘ Sum.inr = 0` using `rfl`. Simplify using `[scal, h1, toRows₂_baseY]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem scal_base (A : Matrix (Fin P) (Fin Q) ℂ) (x : Ix P Q → ℂ) : scal (baseY A) (baseV x) (baseF x) = 1 := by
   have h1 : baseV x ∘ Sum.inr = 0 := rfl
   simp [scal, h1, toRows₂_baseY]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Matrix.fromRows_toRows Y, ← Matrix.fromRows_toRows Y']`. Rewrite using `[Jm, Formalism.UG.Jpq, Matrix.conjTranspose_fromRows_eq_fromCols_conjTranspose, Matrix.fromCols_mul_fromBlocks, Matrix.fromCols_mul_fromRows]`. Simplify using `[sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_blocks (Y Y' : Matrix (Ix P Q) (Fin Q) ℂ) :
     -(Yᴴ * Jm P Q * Y') = Y.toRows₂ᴴ * Y'.toRows₂ - Y.toRows₁ᴴ * Y'.toRows₁ := by
@@ -80,7 +80,7 @@ theorem form_blocks (Y Y' : Matrix (Ix P Q) (Fin Q) ℂ) :
   simp [sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[baseY, Matrix.fromRows_mul, matA, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ h, Matrix.mul_one, Matrix.one_mul, Matrix.fromRows_toRows]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_eq (Y : Matrix (Ix P Q) (Fin Q) ℂ) (h : IsUnit Y.toRows₂.det) :
     Y = baseY (matA Y) * Y.toRows₂ := by
@@ -88,7 +88,7 @@ theorem frame_eq (Y : Matrix (Ix P Q) (Fin Q) ℂ) (h : IsUnit Y.toRows₂.det) 
     Matrix.one_mul, Matrix.fromRows_toRows]
 
 /- English proof (translation)
-Establish `e : ∀ Y : Matrix (Ix P Q) (Fin Q) ℂ, IsUnit Y.toRows₂.det → matA Y * Y.toRows₂ = Y.toRows₁` using `fun Y h => by`. Rewrite using `[matA, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ h, Matrix.mul_one]`. Rewrite using `[form_blocks, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, e Y h, Matrix.mul_assoc, e Y' h']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_factor (Y Y' : Matrix (Ix P Q) (Fin Q) ℂ) (h : IsUnit Y.toRows₂.det) (h' : IsUnit Y'.toRows₂.det) :
     -(Yᴴ * Jm P Q * Y') = Y.toRows₂ᴴ * (1 - (matA Y)ᴴ * matA Y') * Y'.toRows₂ := by
@@ -98,16 +98,16 @@ theorem form_factor (Y Y' : Matrix (Ix P Q) (Fin Q) ℂ) (h : IsUnit Y.toRows₂
     e Y h, Matrix.mul_assoc, e Y' h']
 
 /- English proof (translation)
-Rewrite using `[IsNeg, form_blocks]`. Simplify `h` using `[baseY]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isNeg_baseY {A : Matrix (Fin P) (Fin Q) ℂ} (h : (1 - Aᴴ * A).PosDef) : IsNeg (baseY A) := by
   rw [IsNeg, form_blocks]
   simpa [baseY] using h
 
 /- English proof (translation)
-Rewrite `h` using `[IsNeg, form_blocks]`. Establish `h2` using `h.add_posSemidef (Matrix.posSemidef_conjTranspose_mul_self Y.toRows₁)`. Rewrite `h2` using `[sub_add_cancel]`. Establish `h3` using `h2.isUnit`. Rewrite `h3` using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_of_mul_isUnit_right h3`.
+A detailed English derivation is pending.
 -/
 theorem IsNeg.isUnit {Y : Matrix (Ix P Q) (Fin Q) ℂ} (h : IsNeg Y) : IsUnit Y.toRows₂.det := by
   rw [IsNeg, form_blocks] at h
@@ -118,7 +118,7 @@ theorem IsNeg.isUnit {Y : Matrix (Ix P Q) (Fin Q) ℂ} (h : IsNeg Y) : IsUnit Y.
   exact isUnit_of_mul_isUnit_right h3
 
 /- English proof (translation)
-Establish `hu` using `h.isUnit`. Rewrite `h` using `[IsNeg, form_factor Y Y hu hu]`. Establish `hu' : IsUnit Y.toRows₂` using `(Matrix.isUnit_iff_isUnit_det _).2 hu`. Conclude with `(hu'.posDef_star_left_conjugate_iff).1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsNeg.posDef {Y : Matrix (Ix P Q) (Fin Q) ℂ} (h : IsNeg Y) : (1 - (matA Y)ᴴ * matA Y).PosDef := by
   have hu := h.isUnit
@@ -127,7 +127,7 @@ theorem IsNeg.posDef {Y : Matrix (Ix P Q) (Fin Q) ℂ} (h : IsNeg Y) : (1 - (mat
   exact (hu'.posDef_star_left_conjugate_iff).1 h
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_mul]`. Use `conv_rhs => rw [← hg]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_mul {g : Mat P Q} (hg : gᴴ * Jm P Q * g = Jm P Q) (Y Y' : Matrix (Ix P Q) (Fin Q) ℂ) :
     (g * Y)ᴴ * Jm P Q * (g * Y') = Yᴴ * Jm P Q * Y' := by
@@ -136,26 +136,26 @@ theorem form_mul {g : Mat P Q} (hg : gᴴ * Jm P Q * g = Jm P Q) (Y Y' : Matrix 
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[IsNeg, form_mul hg]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem IsNeg.mul {g : Mat P Q} (hg : gᴴ * Jm P Q * g = Jm P Q) {Y : Matrix (Ix P Q) (Fin Q) ℂ} (h : IsNeg Y) :
     IsNeg (g * Y) := by
   rwa [IsNeg, form_mul hg]
 
 /- English proof (translation)
-Simplify using `[Jm, Formalism.UG.Jpq, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Jm_mul_Jm : Jm P Q * Jm P Q = 1 := by
   simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Establish `hg2 : g * g' = 1` using `mul_eq_one_comm.1 hg'`. Establish `h1 : gᴴ * Jm P Q = Jm P Q * g'` using `by conv_rhs => rw [← hg, Matrix.mul_assoc, hg2, Matrix.mul_one]`. Establish `h0 : g' = Jm P Q * gᴴ * Jm P Q`. Rewrite using `[Matrix.mul_assoc, h1, ← Matrix.mul_assoc, Jm_mul_Jm, Matrix.one_mul]`. Establish `hJ : (Jm P Q)ᴴ = Jm P Q` using `by simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Jm P Q * g'ᴴ = g * Jm P Q`. Rewrite using `[h0, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hJ, Matrix.conjTranspose_conjTranspose, ← Matrix.mul_assoc, Jm_mul_Jm, Matrix.one_mul]`. Establish `e1 : star (g *ᵥ v) ᵥ* Jm P Q = (star v ᵥ* Jm P Q) ᵥ* g'`. Rewrite using `[Matrix.star_mulVec, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, h1]`. Establish `e2 : Jm P Q *ᵥ star (φ ᵥ* g') = g *ᵥ (Jm P Q *ᵥ star φ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.star_vecMul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h2]`. Establish `e3 : g * Y' * (Yᴴ * Jm P Q * Y')⁻¹ * (g * Y)ᴴ * Jm P Q = g * (Y' * (Yᴴ * Jm P Q * Y')⁻¹ * Yᴴ * Jm P Q) * g'`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc, h1]`. Establish `e4 : ∀ (u w : Ix P Q → ℂ) (M : Mat P Q), (u ᵥ* g') ⬝ᵥ (g * M * g') *ᵥ (g *ᵥ w) = u ⬝ᵥ M *ᵥ w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `u w M`. Rewrite using `[← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `congr 2`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hg', Matrix.one_mul, Matrix.mul_assoc, hg', Matrix.mul_one]`. Rewrite using `[ker, ker, form_mul hg, e1, e2, e3, ← Matrix.add_vecMul, ← Matrix.mulVec_add, e4, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hg', Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_mul {g g' : Mat P Q} (hg : gᴴ * Jm P Q * g = Jm P Q) (hg' : g' * g = 1)
     (Y : Matrix (Ix P Q) (Fin Q) ℂ) (v φ : Ix P Q → ℂ) (Y' : Matrix (Ix P Q) (Fin Q) ℂ) (v' φ' : Ix P Q → ℂ) :

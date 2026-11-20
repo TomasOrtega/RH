@@ -26,19 +26,19 @@ def finMod (b : (FiniteAdeleRing (𝓞 K) K)ˣ) : ℝ :=
   ∏ᶠ v : HeightOneSpectrum (𝓞 K), ‖(b : FiniteAdeleRing (𝓞 K) K) v‖
 
 /- English proof (translation)
-The claim follows from `infiniteModule_pos (ofInfinite a)`.
+A detailed English derivation is pending.
 -/
 theorem infMod_pos (a : (InfiniteAdeleRing K)ˣ) : 0 < infMod a :=
   infiniteModule_pos (ofInfinite a)
 
 /- English proof (translation)
-The claim follows from `finiteModule_pos (ofFinite b)`.
+A detailed English derivation is pending.
 -/
 theorem finMod_pos (b : (FiniteAdeleRing (𝓞 K) K)ˣ) : 0 < finMod b :=
   finiteModule_pos (ofFinite b)
 
 /- English proof (translation)
-Rewrite using `[finChar, infChar, MonoidHom.comp_apply, MonoidHom.comp_apply, ← map_mul, ofFinite_mul_ofInfinite]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toIdele_eq_finChar_mul_infChar (χ : HeckeCharacter K) (x : IdeleGroup K) :
     χ.toIdele x = finChar χ (toFinite K x) * infChar χ (toInfinite K x) := by
@@ -52,7 +52,7 @@ theorem ideleModule_eq_infMod_mul_finMod (x : IdeleGroup K) :
     (ideleModule K x : ℝ) = infMod (toInfinite K x) * finMod (toFinite K x) := rfl
 
 /- English proof (translation)
-Rewrite using `[modPow, ideleModule_eq_infMod_mul_finMod, Complex.ofReal_mul]`. Conclude with `Complex.mul_cpow_ofReal_nonneg (infMod_pos _).le (finMod_pos _).le s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modPow_eq (x : IdeleGroup K) (s : ℂ) :
     modPow x s = ((infMod (toInfinite K x) : ℝ) : ℂ) ^ s * ((finMod (toFinite K x) : ℝ) : ℂ) ^ s := by
@@ -79,14 +79,14 @@ def finSection (χ₁ χ₂ : HeckeCharacter K) (s : ℂ) (Φ : (Fin 2 → Finit
         (finChar (χ₁ * χ₂⁻¹) b : ℂ) * ((finMod b : ℝ) : ℂ) ^ (2 * s) ∂finiteIdeleMeasure K
 
 /- English proof (translation)
-Rewrite using `[← IdeleGroup.prodEquiv_apply_fst, ContinuousMulEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_symm_fst (p : (InfiniteAdeleRing K)ˣ × (FiniteAdeleRing (𝓞 K) K)ˣ) :
     (((IdeleGroup.prodEquiv K).symm p : IdeleGroup K) : 𝔸[K]).1 = (p.1 : InfiniteAdeleRing K) := by
   rw [← IdeleGroup.prodEquiv_apply_fst, ContinuousMulEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[← IdeleGroup.prodEquiv_apply_snd, ContinuousMulEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_symm_snd (p : (InfiniteAdeleRing K)ˣ × (FiniteAdeleRing (𝓞 K) K)ˣ) :
     (((IdeleGroup.prodEquiv K).symm p : IdeleGroup K) : 𝔸[K]).2 =
@@ -94,7 +94,7 @@ theorem val_symm_snd (p : (InfiniteAdeleRing K)ˣ × (FiniteAdeleRing (𝓞 K) K
   rw [← IdeleGroup.prodEquiv_apply_snd, ContinuousMulEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(IdeleGroup.prodEquiv K ((IdeleGroup.prodEquiv K).symm p)).1 = p.1`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toInfinite_symm (p : (InfiniteAdeleRing K)ˣ × (FiniteAdeleRing (𝓞 K) K)ˣ) :
     toInfinite K ((IdeleGroup.prodEquiv K).symm p) = p.1 := by
@@ -102,7 +102,7 @@ theorem toInfinite_symm (p : (InfiniteAdeleRing K)ˣ × (FiniteAdeleRing (𝓞 K
   rw [ContinuousMulEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(IdeleGroup.prodEquiv K ((IdeleGroup.prodEquiv K).symm p)).2 = p.2`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toFinite_symm (p : (InfiniteAdeleRing K)ˣ × (FiniteAdeleRing (𝓞 K) K)ˣ) :
     toFinite K ((IdeleGroup.prodEquiv K).symm p) = p.2 := by
@@ -110,7 +110,7 @@ theorem toFinite_symm (p : (InfiniteAdeleRing K)ˣ × (FiniteAdeleRing (𝓞 K) 
   rw [ContinuousMulEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((detI g : IdeleGroup K) : 𝔸[K]).1 = _`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two, Matrix.det_fin_two]`. Simplify using `[AdelicGLn.prodEquiv_apply_fst]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem toInfinite_detI (g : GL (Fin 2) 𝔸[K]) :
     toInfinite K (detI g) = Matrix.GeneralLinearGroup.det (AdelicGLn.prodEquiv K 2 g).1 := by
@@ -121,7 +121,7 @@ theorem toInfinite_detI (g : GL (Fin 2) 𝔸[K]) :
   simp [AdelicGLn.prodEquiv_apply_fst]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((detI g : IdeleGroup K) : 𝔸[K]).2 = _`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two, Matrix.det_fin_two]`. Simplify using `[AdelicGLn.prodEquiv_apply_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem toFinite_detI (g : GL (Fin 2) 𝔸[K]) :
     toFinite K (detI g) = Matrix.GeneralLinearGroup.det (AdelicGLn.prodEquiv K 2 g).2 := by
@@ -132,7 +132,7 @@ theorem toFinite_detI (g : GL (Fin 2) 𝔸[K]) :
   simp [AdelicGLn.prodEquiv_apply_snd]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [infPart, infVec, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem infPart_slice (g : GL (Fin 2) 𝔸[K]) (t : 𝔸[K]) :
     infPart (![0, t] ᵥ* (g : Matrix (Fin 2) (Fin 2) 𝔸[K])) =
@@ -143,7 +143,7 @@ theorem infPart_slice (g : GL (Fin 2) 𝔸[K]) (t : 𝔸[K]) :
   congr 1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[finPart, Matrix.vecMul, dotProduct, Fin.sum_univ_two, AdelicGLn.prodEquiv_apply_snd]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem finPart_slice (g : GL (Fin 2) 𝔸[K]) (t : 𝔸[K]) :
     finPart (![0, t] ᵥ* (g : Matrix (Fin 2) (Fin 2) 𝔸[K])) =
@@ -153,11 +153,11 @@ theorem finPart_slice (g : GL (Fin 2) 𝔸[K]) (t : 𝔸[K]) :
   simp [finPart, Matrix.vecMul, dotProduct, Fin.sum_univ_two, AdelicGLn.prodEquiv_apply_snd]
 
 /- English proof (translation)
-Establish `hZ : globalZeta (slice (schwartzBruhatTensor2 φ Φ) g) (χ₁ * χ₂⁻¹) (2 * s) = (∫ a, φ (infVec (![0, (a : InfiniteAdeleRing K)] ᵥ* ((AdelicGLn.prodEquiv K 2 g).1 : Matrix (Fin 2) (Fin 2) (InfiniteAdeleRing K)))) * (infChar (χ₁ * χ₂⁻¹) a : ℂ) * ((infMod a : ℝ) : ℂ) ^ (2 * s) ∂infinit …`. Rewrite using `[← integral_prod_mul, globalZeta, integral_ideleMeasure]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Establish `h1` using `val_symm_fst p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h2` using `val_symm_snd p`. Simplify using `only [slice, schwartzBruhatTensor2, infPart_slice, finPart_slice, h1, h2]`. Rewrite using `[toIdele_eq_finChar_mul_infChar, toInfinite_symm, toFinite_symm]`. Express the relevant statement in the definitionally equal form `_ * _ * (modPow _ (2 * s)) = _`. Rewrite using `[modPow_eq, toInfinite_symm, toFinite_symm, Circle.coe_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[godementSection, hZ, archSection, finSection, toIdele_eq_finChar_mul_infChar, modPow_eq, toInfinite_detI, toFinite_detI, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem godementSection_tensor (χ₁ χ₂ : HeckeCharacter K) (s : ℂ) (φ : 𝓢(Fin 2 → mixedSpace K, ℂ))
     (Φ : (Fin 2 → FiniteAdeleRing (𝓞 K) K) → ℂ) (g : GL (Fin 2) 𝔸[K]) :
@@ -186,7 +186,7 @@ theorem godementSection_tensor (χ₁ χ₂ : HeckeCharacter K) (s : ℂ) (φ : 
   ring
 
 /- English proof (translation)
-Take `⟨hlc, hcs⟩` from `(mem_finiteSchwartzBruhat2 K).mp (comp_vecMul_mem_finiteSchwartzBruhat2 g hΦ)`. Establish `hcl : Topology.IsClosedEmbedding (fun v : FiniteAdeleRing (𝓞 K) K ↦ ![0, v])` using `Function.LeftInverse.isClosedEmbedding (f := fun x : Fin 2 → FiniteAdeleRing (𝓞 K) K ↦ x 1) (fun v ↦ rfl) (continuous_apply 1) (continuous_pi (Fin.forall_fin_two.mpr ⟨continuous_const, continuous_id⟩))`. Conclude with `⟨hlc.comp_continuous hcl.continuous, hcs.comp_isClosedEmbedding hcl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem finSlice_mem {Φ : (Fin 2 → FiniteAdeleRing (𝓞 K) K) → ℂ}
     (hΦ : Φ ∈ finiteSchwartzBruhat2 K) (g : GL (Fin 2) (FiniteAdeleRing (𝓞 K) K)) :
@@ -201,25 +201,25 @@ theorem finSlice_mem {Φ : (Fin 2 → FiniteAdeleRing (𝓞 K) K) → ℂ}
   exact ⟨hlc.comp_continuous hcl.continuous, hcs.comp_isClosedEmbedding hcl⟩
 
 /- English proof (translation)
-Simplify using `only [finMod, finiteModule, ofFinite_val_snd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finMod_eq (b : (FiniteAdeleRing (𝓞 K) K)ˣ) : finMod b = finiteModule (ofFinite b) := by
   simp only [finMod, finiteModule, ofFinite_val_snd]
 
 /- English proof (translation)
-The claim follows from `(continuous_finiteModule.comp continuous_ofFinite).congr fun b ↦ (finMod_eq b).symm`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finMod : Continuous (finMod (K := K)) :=
   (continuous_finiteModule.comp continuous_ofFinite).congr fun b ↦ (finMod_eq b).symm
 
 /- English proof (translation)
-Use `set h : FiniteAdeleRing (𝓞 K) K → ℂ := fun b ↦ Φ (![0, b] ᵥ* (g : Matrix (Fin 2) (Fin 2) (FiniteAdeleRing (𝓞 K) K))) with hh`. Establish `hmem : h ∈ finiteSchwartzBruhat K` using `finSlice_mem hΦ g`. Take `⟨M, hM⟩` from `hmem.1.continuous.bounded_above_of_compact_support hmem.2`. Take `⟨L, hL⟩` from `exists_subset_idealFiniteAdeles hmem.2`. Establish `hcont : Continuous fun b : (FiniteAdeleRing (𝓞 K) K)ˣ ↦ ‖h b‖ * finMod b ^ σ` using `(hmem.1.continuous.comp Units.continuous_val).norm.mul (continuous_finMod.rpow_const fun b ↦ Or.inl (finMod_pos b).ne')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((integrable_finiteZetaBound L hσ).const_mul (max M 0)).mono' hcont.aestronglyMeasurable (Eventually.of_forall fun b ↦ ?_)` and prove the remaining obligations. Establish `hpow : 0 ≤ finMod b ^ σ` using `(Real.rpow_pos_of_pos (finMod_pos b) σ).le`. Rewrite using `[Real.norm_of_nonneg (mul_nonneg (norm_nonneg _) hpow)]`. Distinguish the cases in `hb : (b : FiniteAdeleRing (𝓞 K) K) ∈ idealFiniteAdeles L`. Establish `hfz : finiteZetaBound L σ b = finMod b ^ σ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finiteZetaBound, if_pos hb, finMod_eq]`. Rewrite using `[hfz]`. Conclude with `mul_le_mul_of_nonneg_right ((hM _).trans (le_max_left _ _)) hpow`. Establish `h0 : h b = 0`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb (hL (subset_tsupport h hne))`. Express the relevant statement in the definitionally equal form `‖h b‖ * _ ≤ _`. Rewrite using `[h0, norm_zero, zero_mul]`. Conclude with `mul_nonneg (le_max_right _ _) (finiteZetaBound_nonneg _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_norm_finIntegrand {Φ : (Fin 2 → FiniteAdeleRing (𝓞 K) K) → ℂ}
     (hΦ : Φ ∈ finiteSchwartzBruhat2 K) (g : GL (Fin 2) (FiniteAdeleRing (𝓞 K) K)) {σ : ℝ}
@@ -264,7 +264,7 @@ def archSliceMap (g : GL (Fin 2) (InfiniteAdeleRing K)) :
       map_smul' := fun c u ↦ by funext j; simp }
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [archSliceMap, LinearMap.coe_toContinuousLinearMap', LinearMap.coe_mk, AddHom.coe_mk, infVec, Matrix.vecMul, dotProduct, Fin.sum_univ_two, toMixedGL, Matrix.GeneralLinearGroup.map_apply, homeomorphMixedSpace_apply, Matrix.cons_val_zero, Matrix.cons_val_one, zero_mul, zero_ad …`. Conclude with `(map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace K) a _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem archSliceMap_apply (g : GL (Fin 2) (InfiniteAdeleRing K)) (a : InfiniteAdeleRing K) :
     archSliceMap g (homeomorphMixedSpace K a) =
@@ -277,13 +277,13 @@ theorem archSliceMap_apply (g : GL (Fin 2) (InfiniteAdeleRing K)) (a : InfiniteA
   exact (map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace K) a _).symm
 
 /- English proof (translation)
-Use `set N := ((toMixedGL g)⁻¹ : GL (Fin 2) (mixedSpace K))`. Use `set w := archSliceMap g u`. Establish `hw : w = ![0, u] ᵥ* (toMixedGL g : Matrix (Fin 2) (Fin 2) (mixedSpace K))`. Use function extensionality and compare the values at `j`. Simplify using `[w, archSliceMap, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : u = w 0 * N 0 1 + w 1 * N 1 1`. Establish `: ![0, u] = w ᵥ* (N : Matrix (Fin 2) (Fin 2) (mixedSpace K))`. Rewrite using `[hw, Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]`. Use `congrFun this 1` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ‖w 0‖ ≤ ‖w‖` using `norm_le_pi_norm w 0`. Establish `h1 : ‖w 1‖ ≤ ‖w‖` using `norm_le_pi_norm w 1`. Rewrite using `[pow_one]`. Combine the equalities or inequalities in the displayed calculation. Use `norm_nonneg w` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `norm_nonneg (N 0 1)` as an intermediate fact. Use `norm_nonneg (N 1 1)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_le_archSliceMap (g : GL (Fin 2) (InfiniteAdeleRing K)) (u : mixedSpace K) :
     ‖u‖ ≤ (‖((toMixedGL g)⁻¹ : GL (Fin 2) (mixedSpace K)) 0 1‖ +
@@ -319,7 +319,7 @@ def archSlice (φ : 𝓢(Fin 2 → mixedSpace K, ℂ)) (g : GL (Fin 2) (Infinite
   SchwartzMap.compCLM ℂ (archSliceMap g).hasTemperateGrowth ⟨1, _, norm_le_archSliceMap g⟩ φ
 
 /- English proof (translation)
-Rewrite using `[archSlice, SchwartzMap.compCLM_apply, Function.comp_apply, archSliceMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem archSlice_apply (φ : 𝓢(Fin 2 → mixedSpace K, ℂ)) (g : GL (Fin 2) (InfiniteAdeleRing K))
     (a : InfiniteAdeleRing K) :

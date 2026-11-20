@@ -11,9 +11,9 @@ noncomputable section
 variable {J : Type} [Fintype J]
 
 /- English proof (translation)
-Establish `hf' : HasFDerivAt (fderiv ℝ f) (fderiv ℝ (fderiv ℝ f) z) z` using `((hf.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)).hasFDerivAt`. Establish `hg' : HasFDerivAt (fderiv ℝ g) (fderiv ℝ (fderiv ℝ g) z) z` using `((hg.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)).hasFDerivAt`. Establish `hev : fderiv ℝ (fun y => f y + g y) =ᶠ[𝓝 z] fun y => fderiv ℝ f y + fderiv ℝ g y` using `by filter_upwards [hf.eventually (by simp), hg.eventually (by simp)] with y hy1 hy2`. Conclude with `((hy1.differentiableAt (by norm_num)).hasFDerivAt.add (hy2.differentiableAt (by norm_num)).hasFDerivAt).fderiv`. Establish `h2 : HasFDerivAt (fun y => fderiv ℝ f y + fderiv ℝ g y) (fderiv ℝ (fderiv ℝ f) z + fderiv ℝ (fderiv ℝ g) z) z` using `hf'.add hg'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hev.fderiv_eq, h2.fderiv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fderiv_fderiv_add_apply {f g : (J → ℂ) → ℝ} {z : J → ℂ} (hf : ContDiffAt ℝ 2 f z)
     (hg : ContDiffAt ℝ 2 g z) (v : J → ℂ) :
@@ -33,9 +33,9 @@ theorem fderiv_fderiv_add_apply {f g : (J → ℂ) → ℝ} {z : J → ℂ} (hf 
   rfl
 
 /- English proof (translation)
-Establish `hpos' : ∀ᶠ y in 𝓝 z, 0 < F y` using `continuousAt_const.eventually_lt hF.continuousAt hpos`. Establish `hev : fderiv ℝ (fun x => Real.log (F x)) =ᶠ[𝓝 z] fun y => (F y)⁻¹ • fderiv ℝ F y` using `by filter_upwards [hF.eventually (by simp), hpos'] with y hy hy'`. Conclude with `((hy.differentiableAt (by norm_num)).hasFDerivAt.log hy'.ne').fderiv`. Establish `hH : HasFDerivAt (fderiv ℝ F) (fderiv ℝ (fderiv ℝ F) z) z` using `((hF.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)).hasFDerivAt`. Establish `hinv : HasFDerivAt (fun y => (F y)⁻¹) ((ContinuousLinearMap.toSpanSingleton ℝ (-(F z ^ 2)⁻¹)).comp (fderiv ℝ F z)) z` using `(hasFDerivAt_inv hpos.ne').comp z (hF.differentiableAt (by norm_num)).hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `hinv.fun_smul hH`. Rewrite using `[hev.fderiv_eq, hP.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, smul_eq_mul, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.coe_comp', Function.comp_apply, ContinuousLinearMap.toSpanSingleton_apply]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fderiv_fderiv_log_apply {F : (J → ℂ) → ℝ} {z : J → ℂ} (hF : ContDiffAt ℝ 2 F z) (hpos : 0 < F z)
     (v : J → ℂ) :
@@ -59,7 +59,7 @@ theorem fderiv_fderiv_log_apply {F : (J → ℂ) → ℝ} {z : J → ℂ} (hF : 
   ring
 
 /- English proof (translation)
-Unfold `leviForm`. Rewrite using `[fderiv_fderiv_log_apply hF hpos, fderiv_fderiv_log_apply hF hpos]`. Establish `: F z ≠ 0` using `hpos.ne'`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem leviForm_log {F : (J → ℂ) → ℝ} {z : J → ℂ} (hF : ContDiffAt ℝ 2 F z) (hpos : 0 < F z) (w : J → ℂ) :
     leviForm (fun x => Real.log (F x)) z w =
@@ -71,11 +71,11 @@ theorem leviForm_log {F : (J → ℂ) → ℝ} {z : J → ℂ} (hF : ContDiffAt 
   ring
 
 /- English proof (translation)
-Introduce `J _ P u z w hP hu hpos hu0 hdw hdiw hlevi`. Establish `hF : ContDiffAt ℝ 2 (fun x => P x + u x) z` using `hP.add hu`. Establish `hFpos : 0 < P z + u z` using `by rw [hu0, add_zero]; exact hpos`. Establish `hd : ∀ v, fderiv ℝ (fun x => P x + u x) z v = fderiv ℝ P z v + fderiv ℝ u z v`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : HasFDerivAt (fun x => P x + u x) (fderiv ℝ P z + fderiv ℝ u z) z` using `(hP.differentiableAt (by norm_num)).hasFDerivAt.add (hu.differentiableAt (by norm_num)).hasFDerivAt`. Rewrite using `[h2.fderiv]`. Both sides reduce to the same expression. Establish `hL : leviForm (fun x => P x + u x) z w = leviForm P z w + leviForm u z w`. Unfold `leviForm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[fderiv_fderiv_add_apply hP hu, fderiv_fderiv_add_apply hP hu]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[leviForm_log hF hFpos, leviForm_log hP hpos, hL, hlevi, hd, hd, hdw, hdiw, hu0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem LeviLogFlat.proof : LeviLogFlat.Statement := by
   intro J _ P u z w hP hu hpos hu0 hdw hdiw hlevi

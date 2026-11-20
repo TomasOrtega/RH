@@ -9,9 +9,9 @@ open scoped TensorProduct NNReal
 namespace GlobalTheory.CompanionTheory.KFin
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Conclude with `⟨b, Or.inr rfl, ⟨0, O.zero_mem, by simp [ha]⟩, ⟨1, O.one_mem, by simp⟩⟩`. Distinguish the cases in `hb : b = 0`. Conclude with `⟨a, Or.inl rfl, ⟨1, O.one_mem, by simp⟩, ⟨0, O.zero_mem, by simp [hb]⟩⟩`. Break down `O.mem_or_inv_mem (a / b) with h | h` into its components or cases.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨b, Or.inr rfl, ⟨a / b, h, by field_simp⟩, ⟨1, O.one_mem, by simp⟩⟩`. Use `⟨a, Or.inl rfl, ⟨1, O.one_mem, by simp⟩, ⟨(a / b)⁻¹, h, ?_⟩⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_larger_of_valuationSubring {k : Type} [Field k] (O : ValuationSubring k) (a b : k) :
     ∃ c : k, (c = a ∨ c = b) ∧ (∃ u ∈ O, a = c * u) ∧ (∃ u ∈ O, b = c * u) := by
@@ -25,29 +25,29 @@ theorem exists_larger_of_valuationSubring {k : Type} [Field k] (O : ValuationSub
     field_simp
 
 /- English proof (translation)
-Proceed by induction on `I, hI using Submodule.fg_induction with`. Consider the case `singleton r₀`. Use `⟨(φ r₀).1, (φ r₀).2, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨t, rfl⟩`. Establish `ht` using `(h𝔬 t).1 t.2`. Establish `hs : φ (t • r₀) = φ (t : R) * φ r₀`. Rewrite using `[Subring.smul_def, smul_eq_mul, map_mul]`. Use `⟨⟨(φ (t : R)).1, ht.1, ?_⟩, ⟨(φ (t : R)).2, ht.2, ?_⟩⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs, Prod.fst_mul, mul_comm]`. Rewrite using `[hs, Prod.snd_mul, mul_comm]`. Introduce and unpack `⟨⟨x, hx, h1⟩, ⟨y, hy, h2⟩⟩`. Establish `hmem : φ.symm (x, y) ∈ 𝔬`. Rewrite using `[h𝔬]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using ⟨hx, hy⟩`. Use `⟨⟨φ.symm (x, y), hmem⟩, ?_⟩` and prove the remaining obligations. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[Subring.smul_def, smul_eq_mul, map_mul, RingEquiv.apply_symm_apply]`. Use `ext`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[h1, mul_comm]`. Simplify using `[h2, mul_comm]`. Consider the case `sup I₁ I₂ _ _ ih₁ ih₂`. Take `⟨α₁, β₁, h₁⟩` from `ih₁`. Take `⟨α₂, β₂, h₂⟩` from `ih₂`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα, ⟨u₁, hu₁, e₁⟩, ⟨u₂, hu₂, e₂⟩⟩` from `exists_larger_of_valuationSubring O α₁ α₂`. Take `⟨β, hβ, ⟨v₁, hv₁, f₁⟩, ⟨v₂, hv₂, f₂⟩⟩` from `exists_larger_of_valuationSubring O β₁ β₂`. Use `⟨α, β, fun r => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hr`. Take `⟨⟨x₁, hx₁, p₁⟩, ⟨y₁, hy₁, q₁⟩⟩` from `(h₁ a).1 ha`. Take `⟨⟨x₂, hx₂, p₂⟩, ⟨y₂, hy₂, q₂⟩⟩` from `(h₂ b).1 hb`. Use `⟨⟨u₁ * x₁ + u₂ * x₂, O.add_mem _ _ (O.mul_mem _ _ hu₁ hx₁) (O.mul_mem _ _ hu₂ hx₂), ?_⟩, ⟨v₁ * y₁ + v₂ * y₂, O.add_mem _ _ (O.mul_mem _ _ hv₁ hy₁) (O.mul_mem _ _ hv₂ hy₂), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_add, Prod.fst_add, p₁, p₂, e₁, e₂]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, Prod.snd_add, q₁, q₂, f₁, f₂]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨⟨x, hx, p⟩, ⟨y, hy, q⟩⟩`. Establish `hsplit : r = φ.symm ((φ r).1, 0) + φ.symm (0, (φ r).2)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_add, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[hsplit]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hα with rfl | rfl` into its components or cases. Use `Submodule.mem_sup_left ((h₁ _).2 ?_)` and prove the remaining obligations. Simplify using `only [RingEquiv.apply_symm_apply]`. Conclude with `⟨⟨x, hx, p⟩, ⟨0, O.zero_mem, by simp⟩⟩`. Use `Submodule.mem_sup_right ((h₂ _).2 ?_)` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [RingEquiv.apply_symm_apply]`. Conclude with `⟨⟨x, hx, p⟩, ⟨0, O.zero_mem, by simp⟩⟩`. Break down `hβ with rfl | rfl` into its components or cases. Use `Submodule.mem_sup_left ((h₁ _).2 ?_)` and prove the remaining obligations. Simplify using `only [RingEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `⟨⟨0, O.zero_mem, by simp⟩, ⟨y, hy, q⟩⟩`. Use `Submodule.mem_sup_right ((h₂ _).2 ?_)` and prove the remaining obligations. Simplify using `only [RingEquiv.apply_symm_apply]`. Conclude with `⟨⟨0, O.zero_mem, by simp⟩, ⟨y, hy, q⟩⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem fg_eq_prod_principal {k R : Type} [Field k] [CommRing R] (O : ValuationSubring k)
     (φ : R ≃+* k × k) (𝔬 : Subring R)

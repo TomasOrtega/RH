@@ -16,13 +16,13 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Moeb
 variable {a b : Type} [Fintype a] [Fintype b] [DecidableEq a] [DecidableEq b]
 
 /- English proof (translation)
-Use `set K := (1 - Mᴴ * M)⁻¹ with hK`. Establish `hKp : K.PosDef` using `h.inv`. Establish `hu : IsUnit (1 - Mᴴ * M).det` using `(h.det_pos.ne').isUnit`. Establish `hNK : (1 - Mᴴ * M) * K = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hX : (1 + M * K * Mᴴ).PosDef` using `Matrix.PosDef.one.add_posSemidef (hKp.posSemidef.mul_mul_conjTranspose_same M)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : K = 1 + Mᴴ * M * K`. Rewrite `hNK` using `[sub_mul, one_mul]`. Rewrite using `[← hNK]`. Normalize the expressions using the abelian group laws. Establish `h2 : M * K * Mᴴ = M * Mᴴ + M * Mᴴ * (M * K * Mᴴ)` using `by conv_lhs => rw [h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.mul_assoc]`. Establish `hmul : (1 - M * Mᴴ) * (1 + M * K * Mᴴ) = 1`. Generalize the expression as in `M * K * Mᴴ = X at h2`. Generalize the expression as in `M * Mᴴ = Y at h2`. Establish `e : (1 - Y) * (1 + X) = 1 + (X - (Y + Y * X))` using `by noncomm_ring`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← h2]`. Simplify using the standard rewrite rules. Establish `: 1 - M * Mᴴ = (1 + M * K * Mᴴ)⁻¹` using `(Matrix.inv_eq_left_inv hmul).symm`. Rewrite using `[this]`. Conclude with `hX.inv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posDef_one_sub_swap (M : Matrix a b ℂ) (h : (1 - Mᴴ * M).PosDef) : (1 - M * Mᴴ).PosDef := by
   set K := (1 - Mᴴ * M)⁻¹ with hK
@@ -46,17 +46,17 @@ theorem posDef_one_sub_swap (M : Matrix a b ℂ) (h : (1 - Mᴴ * M).PosDef) : (
   rw [this]; exact hX.inv
 
 /- English proof (translation)
-Simplify using `[Matrix.transpose_sub, Matrix.transpose_mul, Matrix.conjTranspose, Matrix.transpose_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem transpose_one_sub (Y : Matrix a b ℂ) : (1 - Yᴴ * Y)ᵀ = 1 - Yᵀ * (Yᵀ)ᴴ := by
   simp [Matrix.transpose_sub, Matrix.transpose_mul, Matrix.conjTranspose, Matrix.transpose_map]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `h.transpose`. Rewrite `h1` using `[transpose_one_sub]`. Establish `h2` using `posDef_one_sub_swap (Zᵀ)ᴴ (by rw [Matrix.conjTranspose_conjTranspose]; exact h1)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.conjTranspose_conjTranspose]`. Then use the resulting hypothesis. Introduce `h`. Establish `h2` using `posDef_one_sub_swap Zᵀ h`. Rewrite `h2` using `[← transpose_one_sub]`. Establish `h1` using `h2.transpose`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Matrix.transpose_transpose]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem posDef_transpose_iff (Z : Matrix a b ℂ) :
     (1 - Zᴴ * Z).PosDef ↔ (1 - (Zᵀ)ᴴ * Zᵀ).PosDef := by
@@ -73,7 +73,7 @@ theorem posDef_transpose_iff (Z : Matrix a b ℂ) :
     rwa [Matrix.transpose_transpose] at h1
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_transpose, transpose_one_sub, Matrix.det_one_sub_mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_transpose_eq (Z : Matrix a b ℂ) :
     (1 - Zᴴ * Z).det = (1 - (Zᵀ)ᴴ * Zᵀ).det := by
@@ -89,11 +89,11 @@ def num (u : Matrix (Sg j j') (Sg j j') ℂ) (W : Matrix (Fin j') (Fin j) ℂ) :
   u.toBlocks₂₁ + u.toBlocks₂₂ * W
 
 /- English proof (translation)
-Take `⟨A, B, C, D, rfl⟩ : ∃ A B C D, u = fromBlocks A B C D` from `⟨_, _, _, _, (fromBlocks_toBlocks u).symm⟩`. Simplify using `only [IsSgU, sgI, fromBlocks_conjTranspose, fromBlocks_multiply] at hu`. Establish `h` using `Matrix.fromBlocks_inj.1 hu`. Take `⟨h11, h12, h21, h22⟩` from `h`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul] at h11 h12 h21 h22`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [den, num, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂]`. Establish `e : (A + B * W)ᴴ * (A + B * W) - (C + D * W)ᴴ * (C + D * W) = (Aᴴ * A - Cᴴ * C) + (Aᴴ * B - Cᴴ * D) * W + Wᴴ * (Bᴴ * A - Dᴴ * C) + Wᴴ * (Bᴴ * B - Dᴴ * D) * W`. Simplify using `only [conjTranspose_add, conjTranspose_mul, Matrix.add_mul, Matrix.mul_add, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Establish `g11 : Aᴴ * A - Cᴴ * C = 1` using `by rw [sub_eq_add_neg]; exact h11`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `g12 : Aᴴ * B - Cᴴ * D = 0` using `by rw [sub_eq_add_neg]; exact h12`. Establish `g21 : Bᴴ * A - Dᴴ * C = 0` using `by rw [sub_eq_add_neg]; exact h21`. Establish `g22 : Bᴴ * B - Dᴴ * D = -1` using `by rw [sub_eq_add_neg]; exact h22`. Rewrite using `[e, g11, g12, g21, g22]`. Simplify using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem den_gram {u : Matrix (Sg j j') (Sg j j') ℂ} (hu : IsSgU u) (W : Matrix (Fin j') (Fin j) ℂ) :
     (den u W)ᴴ * den u W - (num u W)ᴴ * num u W = 1 - Wᴴ * W := by
@@ -117,9 +117,9 @@ theorem den_gram {u : Matrix (Sg j j') (Sg j j') ℂ} (hu : IsSgU u) (W : Matrix
   simp [sub_eq_add_neg]
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨v, hv, hPv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Establish `h1` using `hW.dotProduct_mulVec_pos hv`. Rewrite `h1` using `[← den_gram hu W, Matrix.sub_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hPv, Matrix.mulVec_zero, zero_sub, dotProduct_neg, Matrix.dotProduct_mulVec, Matrix.vecMul_conjTranspose, star_star]`. Establish `h2 : 0 ≤ star (num u W *ᵥ v) ⬝ᵥ (num u W *ᵥ v)` using `dotProduct_star_self_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `lt_irrefl _ (lt_of_le_of_lt h2 (neg_pos.1 h1))`.
+A detailed English derivation is pending.
 -/
 theorem den_det_ne {u : Matrix (Sg j j') (Sg j j') ℂ} (hu : IsSgU u) {W : Matrix (Fin j') (Fin j) ℂ}
     (hW : (1 - Wᴴ * W).PosDef) : (den u W).det ≠ 0 := by
@@ -132,9 +132,9 @@ theorem den_det_ne {u : Matrix (Sg j j') (Sg j j') ℂ} (hu : IsSgU u) {W : Matr
   exact lt_irrefl _ (lt_of_le_of_lt h2 (neg_pos.1 h1))
 
 /- English proof (translation)
-Establish `hd` using `den_det_ne hu hW`. Establish `hQ : moebW u W * den u W = num u W`. Express the relevant statement in the definitionally equal form `num u W * (den u W)⁻¹ * den u W = _`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_right _ _ hd.isUnit]`. Rewrite using `[← den_gram hu W, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, ← hQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem moeb_gram {u : Matrix (Sg j j') (Sg j j') ℂ} (hu : IsSgU u) {W : Matrix (Fin j') (Fin j) ℂ}
     (hW : (1 - Wᴴ * W).PosDef) :
@@ -147,11 +147,11 @@ theorem moeb_gram {u : Matrix (Sg j j') (Sg j j') ℂ} (hu : IsSgU u) {W : Matri
   simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hd` using `den_det_ne hu hW`. Establish `hP : ((den u W)⁻¹)ᴴ * (1 - Wᴴ * W) * (den u W)⁻¹ = 1 - (moebW u W)ᴴ * moebW u W`. Rewrite using `[← moeb_gram hu hW]`. Establish `h1 : ((den u W)⁻¹)ᴴ * (den u W)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hd.isUnit, Matrix.conjTranspose_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : den u W * (den u W)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd.isUnit`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[← hP]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hW.conjTranspose_mul_mul_same ?_` and prove the remaining obligations. Conclude with `Matrix.mulVec_injective_of_isUnit (Matrix.isUnit_nonsing_inv_iff.2 ((Matrix.isUnit_iff_isUnit_det _).2 hd.isUnit))`.
+A detailed English derivation is pending.
 -/
 theorem moeb_posDef {u : Matrix (Sg j j') (Sg j j') ℂ} (hu : IsSgU u) {W : Matrix (Fin j') (Fin j) ℂ}
     (hW : (1 - Wᴴ * W).PosDef) : (1 - (moebW u W)ᴴ * moebW u W).PosDef := by
@@ -169,9 +169,9 @@ theorem moeb_posDef {u : Matrix (Sg j j') (Sg j j') ℂ} (hu : IsSgU u) {W : Mat
   exact Matrix.mulVec_injective_of_isUnit (Matrix.isUnit_nonsing_inv_iff.2 ((Matrix.isUnit_iff_isUnit_det _).2 hd.isUnit))
 
 /- English proof (translation)
-Rewrite using `[← moeb_gram hu hW, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `: ((‖(den u W).det‖ ^ 2 : ℝ) : ℂ) = star (den u W).det * (den u W).det`. Rewrite using `[show star (den u W).det = (starRingEnd ℂ) (den u W).det from rfl, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem moeb_det {u : Matrix (Sg j j') (Sg j j') ℂ} (hu : IsSgU u) {W : Matrix (Fin j') (Fin j) ℂ}
     (hW : (1 - Wᴴ * W).PosDef) :
@@ -187,7 +187,7 @@ section Conv
 variable {a b : Type} [Fintype a] [Fintype b] [DecidableEq a] [DecidableEq b]
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq]`. Simplify using `only [dotProduct, Pi.star_apply]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show star (y i) = (starRingEnd ℂ) (y i) from rfl, Complex.conj_mul']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem star_dot_self (y : a → ℂ) : star y ⬝ᵥ y = ((‖WithLp.toLp 2 y‖ ^ 2 : ℝ) : ℂ) := by
   rw [EuclideanSpace.norm_sq_eq]
@@ -197,7 +197,7 @@ theorem star_dot_self (y : a → ℂ) : star y ⬝ᵥ y = ((‖WithLp.toLp 2 y�
   rw [show star (y i) = (starRingEnd ℂ) (y i) from rfl, Complex.conj_mul']
 
 /- English proof (translation)
-Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, dotProduct_sub, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_conjTranspose, star_star, star_dot_self, star_dot_self]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem form_one_sub (Z : Matrix a b ℂ) (x : b → ℂ) :
     star x ⬝ᵥ (1 - Zᴴ * Z) *ᵥ x = ((‖WithLp.toLp 2 x‖ ^ 2 - ‖WithLp.toLp 2 (Z *ᵥ x)‖ ^ 2 : ℝ) : ℂ) := by
@@ -206,9 +206,9 @@ theorem form_one_sub (Z : Matrix a b ℂ) (x : b → ℂ) :
   push_cast; rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.posDef_iff_dotProduct_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ x hx`. Establish `h1` using `h hx`. Rewrite `h1` using `[form_one_sub, Complex.zero_lt_real]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_of_pow_lt_pow_left₀ 2 (norm_nonneg _) (sub_pos.1 h1)`. Introduce `h`. Use `⟨Matrix.isHermitian_one.sub (Matrix.isHermitian_conjTranspose_mul_self _), fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[form_one_sub, Complex.zero_lt_real]`. Conclude with `sub_pos.2 (pow_lt_pow_left₀ (h x hx) (norm_nonneg _) two_ne_zero)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posDef_iff_norm (Z : Matrix a b ℂ) :
     (1 - Zᴴ * Z).PosDef ↔ ∀ x : b → ℂ, x ≠ 0 → ‖WithLp.toLp 2 (Z *ᵥ x)‖ < ‖WithLp.toLp 2 x‖ := by
@@ -224,11 +224,11 @@ theorem posDef_iff_norm (Z : Matrix a b ℂ) :
     exact sub_pos.2 (pow_lt_pow_left₀ (h x hx) (norm_nonneg _) two_ne_zero)
 
 /- English proof (translation)
-Rewrite using `[convex_iff_forall_pos]`. Introduce `Z₁ h₁ Z₂ h₂ s r hs hr hsr`. Simplify using `only [Set.mem_setOf_eq, posDef_iff_norm] at h₁ h₂ ⊢`. Introduce `x hx`. Establish `e : WithLp.toLp 2 ((s • Z₁ + r • Z₂) *ᵥ x) = s • WithLp.toLp 2 (Z₁ *ᵥ x) + r • WithLp.toLp 2 (Z₂ *ᵥ x)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `[Matrix.add_mulVec, Matrix.smul_mulVec]`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_smul, norm_smul, Real.norm_of_nonneg hs.le, Real.norm_of_nonneg hr.le]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ < s * ‖WithLp.toLp 2 x‖ + r * ‖WithLp.toLp 2 x‖ := add_lt_add (mul_lt_mul_of_pos_left (h₁ x hx) hs) (mul_lt_mul_of_pos_left (h₂ x hx) hr)`. Use `_ = _ := by rw [← add_mul, hsr, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem convex_ball_mat : Convex ℝ {Z : Matrix a b ℂ | (1 - Zᴴ * Z).PosDef} := by
   rw [convex_iff_forall_pos]
@@ -252,9 +252,9 @@ section Dom
 variable {Ψ : Type} [Fintype Ψ] {j j' n : ℕ}
 
 /- English proof (translation)
-Establish `hset : ballDom q = ⋂ τ, (fun t => ballMat q t τ) ⁻¹' {Z | (1 - Zᴴ * Z).PosDef}`. Use extensionality with `t`. Simplify using `[ballDom]`. Rewrite using `[hset]`. Use `convex_iInter fun τ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `L : (Fin n → ℂ) →ₗ[ℝ] Matrix (Fin j) (Fin j') ℂ` to `{ toFun := fun t => ballMat q t τ map_add' := fun s t => by ext a b; simp [ballMat] map_smul' := fun c t => by ext a b; simp [ballMat] }`. Conclude with `convex_ball_mat.linear_preimage L`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem convex_ballDom (q : Ψ × Fin j × Fin j' ≃ Fin n) : Convex ℝ (ballDom q) := by
   have hset : ballDom q = ⋂ τ, (fun t => ballMat q t τ) ⁻¹' {Z | (1 - Zᴴ * Z).PosDef} := by
@@ -269,7 +269,7 @@ theorem convex_ballDom (q : Ψ × Fin j × Fin j' ≃ Fin n) : Convex ℝ (ballD
   exact convex_ball_mat.linear_preimage L
 
 /- English proof (translation)
-Introduce `τ`. Establish `: ballMat q 0 τ = 0` using `by ext a b; simp [ballMat]`. Rewrite using `[this]`. Simplify using `using Matrix.PosDef.one`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zero_mem (q : Ψ × Fin j × Fin j' ≃ Fin n) : (0 : Fin n → ℂ) ∈ ballDom q := by
   intro τ
@@ -277,7 +277,7 @@ theorem zero_mem (q : Ψ × Fin j × Fin j' ≃ Fin n) : (0 : Fin n → ℂ) ∈
   rw [this]; simpa using Matrix.PosDef.one
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[ballMat, ballPt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ballMat_ballPt (q : Ψ × Fin j × Fin j' ≃ Fin n) (W : Ψ → Matrix (Fin j') (Fin j) ℂ) (τ : Ψ) :
     ballMat q (ballPt q W) τ = (W τ)ᵀ := by
@@ -289,7 +289,7 @@ section Hol
 variable {Ψ : Type} [Fintype Ψ] {j j' n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Conclude with `Finset.analyticAt_fun_sum _ fun σ _ => analyticAt_const.mul (Finset.analyticAt_fun_prod _ fun i _ => h _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analyticAt_det_entries {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] {ι : Type}
     [Fintype ι] [DecidableEq ι] (f : X → Matrix ι ι ℂ) (x : X)
@@ -299,9 +299,9 @@ theorem analyticAt_det_entries {X : Type} [NormedAddCommGroup X] [NormedSpace �
     (Finset.analyticAt_fun_prod _ fun i _ => h _ _)
 
 /- English proof (translation)
-Simplify using `only [Matrix.adjugate_apply]`. Use `analyticAt_det_entries _ x fun i k => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = d`. Substitute `hi` using the available equality. Simplify using `using analyticAt_const`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h i k` using `[Matrix.updateRow_apply, hi]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem analyticAt_adjugate_entries {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] {ι : Type}
     [Fintype ι] [DecidableEq ι] (f : X → Matrix ι ι ℂ) (x : X)
@@ -315,7 +315,7 @@ theorem analyticAt_adjugate_entries {X : Type} [NormedAddCommGroup X] [NormedSpa
   · simpa [Matrix.updateRow_apply, hi] using h i k
 
 /- English proof (translation)
-Simplify using `only [Matrix.add_apply, Matrix.mul_apply, Matrix.transpose_apply, ballMat, Matrix.of_apply]`. Use `analyticAt_const.add (Finset.analyticAt_fun_sum _ fun e _ => analyticAt_const.mul ?_)` and prove the remaining obligations. Conclude with `analyticAt_pi_iff.1 analyticAt_id _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem analyticAt_lin_entry (q : Ψ × Fin j × Fin j' ≃ Fin n) {r : Type} [Fintype r] (X : Matrix r (Fin j) ℂ)
     (Y : Matrix r (Fin j') ℂ) (τ : Ψ) (t : Fin n → ℂ) (c d) :
@@ -325,21 +325,21 @@ theorem analyticAt_lin_entry (q : Ψ × Fin j × Fin j' ≃ Fin n) {r : Type} [F
   exact analyticAt_pi_iff.1 analyticAt_id _
 
 /- English proof (translation)
-The claim follows from `analyticAt_lin_entry q _ _ τ t c d`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_den_entry (q : Ψ × Fin j × Fin j' ≃ Fin n) (u : Matrix (Sg j j') (Sg j j') ℂ) (τ : Ψ)
     (t : Fin n → ℂ) (c d) : AnalyticAt ℂ (fun t => den u (ballMat q t τ)ᵀ c d) t :=
   analyticAt_lin_entry q _ _ τ t c d
 
 /- English proof (translation)
-The claim follows from `analyticAt_lin_entry q _ _ τ t c d`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_num_entry (q : Ψ × Fin j × Fin j' ≃ Fin n) (u : Matrix (Sg j j') (Sg j j') ℂ) (τ : Ψ)
     (t : Fin n → ℂ) (c d) : AnalyticAt ℂ (fun t => num u (ballMat q t τ)ᵀ c d) t :=
   analyticAt_lin_entry q _ _ τ t c d
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `AnalyticAt ℂ (fun t => (num u (ballMat q t τ)ᵀ * (den u (ballMat q t τ)ᵀ)⁻¹) c d) t`. Simplify using `only [Matrix.mul_apply, Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv']`. Apply the tactic sequence `refine Finset.analyticAt_fun_sum _ fun e _ => (analyticAt_num_entry q u τ t c e).mul (AnalyticAt.mul (AnalyticAt.inv (analyticAt_det_entries _ t (analyticAt_den_entry q u τ t)) hd) (analyticAt_adjugate_entries _ t (analyticAt_den_entry q u τ t) e d))`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem analyticAt_moebW_entry (q : Ψ × Fin j × Fin j' ≃ Fin n) (u : Matrix (Sg j j') (Sg j j') ℂ) (τ : Ψ)
     (t : Fin n → ℂ) (hd : (den u (ballMat q t τ)ᵀ).det ≠ 0) (c d) :
@@ -351,21 +351,21 @@ theorem analyticAt_moebW_entry (q : Ψ × Fin j × Fin j' ≃ Fin n) (u : Matrix
       (analyticAt_adjugate_entries _ t (analyticAt_den_entry q u τ t) e d))
 
 /- English proof (translation)
-The claim follows from `(posDef_transpose_iff _).1 (ht τ)`.
+A detailed English derivation is pending.
 -/
 theorem ball_transpose {q : Ψ × Fin j × Fin j' ≃ Fin n} {t : Fin n → ℂ} (ht : t ∈ ballDom q) (τ : Ψ) :
     (1 - ((ballMat q t τ)ᵀ)ᴴ * (ballMat q t τ)ᵀ).PosDef :=
   (posDef_transpose_iff _).1 (ht τ)
 
 /- English proof (translation)
-The claim follows from `ballMat_ballPt q _ τ`.
+A detailed English derivation is pending.
 -/
 theorem ballMat_moebBall (q : Ψ × Fin j × Fin j' ≃ Fin n) (u : Ψ → Matrix (Sg j j') (Sg j j') ℂ)
     (t : Fin n → ℂ) (τ : Ψ) : ballMat q (moebBall q u t) τ = (moebW (u τ) (ballMat q t τ)ᵀ)ᵀ :=
   ballMat_ballPt q _ τ
 
 /- English proof (translation)
-Introduce `t ht τ`. Rewrite using `[ballMat_moebBall]`. Use `(posDef_transpose_iff _).2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.transpose_transpose]`. Conclude with `moeb_posDef (hu τ) (ball_transpose ht τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapsTo_moebBall (q : Ψ × Fin j × Fin j' ≃ Fin n) (u : Ψ → Matrix (Sg j j') (Sg j j') ℂ)
     (hu : ∀ τ, IsSgU (u τ)) : Set.MapsTo (moebBall q u) (ballDom q) (ballDom q) := by
@@ -376,7 +376,7 @@ theorem mapsTo_moebBall (q : Ψ × Fin j × Fin j' ≃ Fin n) (u : Ψ → Matrix
   exact moeb_posDef (hu τ) (ball_transpose ht τ)
 
 /- English proof (translation)
-Use `differentiableOn_pi.2 fun k t ht => ?_` and prove the remaining obligations. Apply the tactic sequence `exact (analyticAt_moebW_entry q (u (q.symm k).1) (q.symm k).1 t (den_det_ne (hu _) (ball_transpose ht _)) _ _).differentiableAt.differentiableWithinAt`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem differentiableOn_moebBall (q : Ψ × Fin j × Fin j' ≃ Fin n) (u : Ψ → Matrix (Sg j j') (Sg j j') ℂ)
     (hu : ∀ τ, IsSgU (u τ)) : DifferentiableOn ℂ (moebBall q u) (ballDom q) := by
@@ -385,9 +385,9 @@ theorem differentiableOn_moebBall (q : Ψ × Fin j × Fin j' ≃ Fin n) (u : Ψ 
     (den_det_ne (hu _) (ball_transpose ht _)) _ _).differentiableAt.differentiableWithinAt
 
 /- English proof (translation)
-Establish `hW` using `ball_transpose ht τ`. Establish `hd` using `den_det_ne (hu τ) hW`. Establish `hD` using `moeb_det (hu τ) hW`. Establish `hpos : 0 < (1 - (ballMat q (moebBall q u t) τ)ᴴ * ballMat q (moebBall q u t) τ).det.re` using `(Complex.lt_def.1 (mapsTo_moebBall q u hu ht τ).det_pos).1`. Establish `e'` using `det_transpose_eq (ballMat q (moebBall q u t) τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e'` using `[ballMat_moebBall, Matrix.transpose_transpose, ← ballMat_moebBall]`. Rewrite `hD` using `[← e', ← det_transpose_eq]`. Rewrite using `[hD, Complex.re_ofReal_mul, Real.log_mul (by positivity) hpos.ne', Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_det_moeb (q : Ψ × Fin j × Fin j' ≃ Fin n) (u : Ψ → Matrix (Sg j j') (Sg j j') ℂ)
     (hu : ∀ τ, IsSgU (u τ)) {t : Fin n → ℂ} (ht : t ∈ ballDom q) (τ : Ψ) :
@@ -406,11 +406,11 @@ theorem log_det_moeb (q : Ψ × Fin j × Fin j' ≃ Fin n) (u : Ψ → Matrix (S
   push_cast; ring
 
 /- English proof (translation)
-Introduce `Ψ _ j j' n q u hu`. Use `⟨differentiableOn_moebBall q u hu, mapsTo_moebBall q u hu, ?_⟩` and prove the remaining obligations. Establish `hne : ∀ t ∈ ballDom q, ∀ τ, (den (u τ) (ballMat q t τ)ᵀ).det ≠ 0` using `fun t ht τ => den_det_ne (hu τ) (ball_transpose ht τ)`. Apply the tactic sequence `obtain ⟨L, hL, hLe⟩ := GroundTheory.Heights₂.Heights.Regular.exists_analytic_log (GlobalTheory.CompanionTheory.Ar.Cusp.BallInverse.isOpen_ballDom q) (convex_ballDom q) ⟨0, zero_mem q⟩ (h := fun t => ∏ τ, (den (u τ) (ballMat q t τ)ᵀ).det) (fun t _ => Finset.analyticAt_fun_prod _ f …`. Use `⟨fun t => 2 * L t, (hL.differentiableOn).const_mul 2, fun t ht => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hre : (L t).re = ∑ τ, Real.log ‖(den (u τ) (ballMat q t τ)ᵀ).det‖`. Establish `h1` using `congrArg norm (hLe t ht)`. Rewrite `h1` using `[Complex.norm_exp, norm_prod]`. Rewrite using `[← Real.log_prod (fun τ _ => norm_ne_zero_iff.2 (hne t ht τ)), ← h1, Real.log_exp]`. Establish `h2 : (2 * L t).re = 2 * (L t).re` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [ballPot]`. Rewrite using `[h2, hre, Finset.mul_sum, Finset.sum_congr rfl fun τ _ => log_det_moeb q u hu ht τ, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem moebBall_props : ∀ (Ψ : Type) [Fintype Ψ] (j j' n : ℕ) (q : Ψ × Fin j × Fin j' ≃ Fin n)
     (u : Ψ → Matrix (Sg j j') (Sg j j') ℂ), (∀ τ, IsSgU (u τ)) →

@@ -11,11 +11,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Groun
 open ReciprocityTheory.AnForm (levi)
 
 /- English proof (translation)
-Introduce `II Ψ _ K _ ι _ Ω _ _ E _ _ D H M w S`. Take `⟨c, hc, hAc⟩` from `hA II Ψ K ι Ω E D M S.B.toPotentialCharts`. Use `⟨c, hc, fun B p q t δ hs hl hqp => ⟨hS II Ψ K ι Ω E D H M w S B p q t hs, fun z hz u hu => ?_⟩⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `S.B.cover (M.proj z)`. Establish `hk' : M.proj z ∈ S.B.mid k` using `S.B.inner_subset_mid k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, hv, heq⟩` from `hL II Ψ K ι Ω E D H M w S B p q t hs z hz u hu k hk'`. Establish `h1` using `hl k _ hk' v`. Establish `h2` using `hAc z hz u k hk' v hv`. Use `show 0 ≤ levi _ z u`. Rewrite using `[heq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : (0 : ℝ) ≤ q` using `Nat.cast_nonneg q`. Establish `hp : (0 : ℝ) ≤ p` using `Nat.cast_nonneg p`. Establish `hv2 : 0 ≤ ‖v‖ ^ 2` using `sq_nonneg _`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 hq, mul_le_mul_of_nonneg_left h2 hp, mul_le_mul_of_nonneg_right hqp hv2]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem MUcChartSemipos.proof (hS : MUcSmooth.Statement) (hL : MUcLeviChart.Statement)
     (hA : APrimeMarginCharts.Statement) : MUcChartSemipos.Statement := by

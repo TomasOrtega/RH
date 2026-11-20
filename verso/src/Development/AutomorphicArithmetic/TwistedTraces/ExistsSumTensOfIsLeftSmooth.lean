@@ -12,7 +12,7 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped ContDiff
 
 /- English proof (translation)
-Establish `h1 : retractOne (finEmb K n (finPart K n (x : AdelicGLn.AdelicGL K n))) = MultiplicityOne.finProj K n (finPart K n (x : AdelicGLn.AdelicGL K n))` using `by ext1`. Both sides reduce to the same expression. Rewrite using `[← h1, ← retract_infEmb, ← retractOne_mul, infEmb_infPart_mul_finEmb_finPart, retractOne_coe]`.
+Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem split_pt {K : Type} [Field K] [NumberField K] {n : ℕ} (x : G1 K n) :
     x = archP K n (infPart K n (x : AdelicGLn.AdelicGL K n)) *
@@ -24,7 +24,7 @@ private theorem split_pt {K : Type} [Field K] [NumberField K] {n : ℕ} (x : G1 
   rw [← h1, ← retract_infEmb, ← retractOne_mul, infEmb_infPart_mul_finEmb_finPart, retractOne_coe]
 
 /- English proof (translation)
-Establish `h1 : retractOne (finEmb K n h) = MultiplicityOne.finProj K n h` using `by ext1`. Both sides reduce to the same expression. Rewrite using `[Subgroup.coe_mul, map_mul, finPart_archP, one_mul, ← h1, finPart_retract, finPart_finEmb]`.
+Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem finPart_split {K : Type} [Field K] [NumberField K] {n : ℕ} (A : archGroup K n)
     (h : AdelicGLn.FiniteAdelicGL K n) :
@@ -35,19 +35,19 @@ private theorem finPart_split {K : Type} [Field K] [NumberField K] {n : ℕ} (A 
   rw [Subgroup.coe_mul, map_mul, finPart_archP, one_mul, ← h1, finPart_retract, finPart_finEmb]
 
 /- English proof (translation)
-Introduce `K _ _ n hn a ha`. Take `⟨hsm, U, hU, hinv⟩` from `ha`. Establish `hVo : IsOpen (((finOpenSubgroup U hU).toSubgroup : Subgroup _) : Set (AdelicGLn.FiniteAdelicGL K n))` using `(finOpenSubgroup U hU).isOpen`. Establish `hVc : IsCompact (((finOpenSubgroup U hU).toSubgroup : Subgroup _) : Set (AdelicGLn.FiniteAdelicGL K n))` using `isCompact_openSubgroupOf U hU`. Establish `hS : IsCompact ((fun x : G1 K n => finPart K n (x : AdelicGLn.AdelicGL K n)) '' tsupport a)` using `a.hasCompactSupport.isCompact.image (continuous_finPart.comp continuous_subtype_val)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, b, e, heV, hE⟩` from `UpperTheory.exists_finite_basis_leftInvariant_compactSupport _ (finOpenSubgroup U hU).toSubgroup hVo hVc _ hS`. Use `choose F hF hFk using fun j => UpperTheory.exists_smoothT_kbar_eq_restriction K n hn a (MultiplicityOne.finProj K n (b j)) (hsm _)`. Use `⟨U, hU, m, F, e, hF, fun j u hu h => heV j _ (coe_mem_openSubgroupOf U hU hu) h, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `hsum : ∀ (s : Finset (Fin m)), (∑ j ∈ s, tens (F j) (e j)) x = ∑ j ∈ s, tens (F j) (e j) x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, CompactlySupportedContinuousMap.add_apply, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum Finset.univ]`. Simplify using `only [(UpperTheory.ConvolutionTheory.Tf.tensApply K n hn _ _).1, tensFun, hFk]`. Establish `hfV : ∀ v ∈ (finOpenSubgroup U hU).toSubgroup, ∀ h, a (archP K n (infPart K n (x : AdelicGLn.AdelicGL K n)) * MultiplicityOne.finProj K n (v * h)) = a (archP K n (infPart K n (x : AdelicGLn.AdelicGL K n)) * MultiplicityOne.finProj K n h)`. Introduce `v hv h`. Establish `hv' : v ∈ (finOpenSubgroup U hU : Set (AdelicGLn.FiniteAdelicGL K n))` using `hv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv'` using `[coe_openSubgroupOf]`. Take `⟨u, hu, rfl⟩` from `hv'`. Rewrite using `[map_mul (MultiplicityOne.finProj K n), MultiplicityOne.finProj_eq_finOne, ← mul_assoc, archimedeanProjection_mul_finiteEmbedding_comm, mul_assoc, hinv u hu]`. Establish `hfS : ∀ h, h ∉ (fun x : G1 K n => finPart K n (x : AdelicGLn.AdelicGL K n)) '' tsupport a → a (archP K n (infPart K n (x : AdelicGLn.AdelicGL K n)) * MultiplicityOne.finProj K n h) = 0`. Introduce `h hh`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hh ⟨_, subset_tsupport _ hne, finPart_split _ h⟩`. Establish `key` using `hE (fun h => a (archP K n (infPart K n (x : AdelicGLn.AdelicGL K n)) * MultiplicityOne.finProj K n h)) hfV hfS (finPart K n (x : AdelicGLn.AdelicGL K n))`. Simplify using `only [← split_pt x] at key`. Rewrite using `[key]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_sum_tens_of_isLeftSmooth :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ a : CC K n, IsLeftSmooth a →

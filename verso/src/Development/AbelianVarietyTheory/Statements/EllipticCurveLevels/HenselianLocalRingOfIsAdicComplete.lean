@@ -32,7 +32,7 @@ abbrev toSpec (O : Type) [CommRing O] [Algebra O K] (B : Type) [CommRing B] [Alg
   Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R := O) (A := K) (B := B)).toRingHom)
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `a`. Simplify using `[Algebra.TensorProduct.tmul_one_eq_one_tmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toSpec_str (B : Type) [CommRing B] [Algebra O B] :
     toSpec K O B ≫ Spec.map (CommRingCat.ofHom (algebraMap O B)) =
@@ -43,7 +43,7 @@ theorem toSpec_str (B : Type) [CommRing B] [Algebra O B] :
   simp [Algebra.TensorProduct.tmul_one_eq_one_tmul]
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spec_tower : Spec.map (CommRingCat.ofHom (algebraMap K Ω)) ≫ Spec.map (CommRingCat.ofHom (algebraMap O K)) =
     Spec.map (CommRingCat.ofHom (algebraMap O Ω)) := by
@@ -79,7 +79,7 @@ def formalSemi {B B' : Type} [CommRing B] [Algebra O B] [CommRing B'] [Algebra O
       ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hτ])
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_eq O K Ω, ← RingHom.comp_assoc, hτ, RingHom.comp_assoc, hρ, RingHom.comp_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem semi_tower {σ : O →+* O} {ρ : K →+* K} (hρ : ρ.comp (algebraMap O K) = (algebraMap O K).comp σ)
     {τ : Ω →+* Ω} (hτ : τ.comp (algebraMap K Ω) = (algebraMap K Ω).comp ρ) :
@@ -100,7 +100,7 @@ variable {X : Scheme.{0}} {p : X ⟶ Spec (CommRingCat.of O)} {x : SpecialPoint 
 
 omit [IsSepClosed (ResidueField O)] in
 /- English proof (translation)
-Rewrite using `[← hψ.2, ← hθ, StrictLoc.toX, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spec_lift_over (L : StrictLoc X x.1) {B : Type} [CommRing B] [Algebra O B] {ψ : X.presheaf.stalk x.1 →+* B}
     (hψ : IsCompletedStalk p x.1 ψ) {θ : L.A →+* B} (hθ : θ.comp L.φ = ψ) :

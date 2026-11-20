@@ -20,19 +20,19 @@ open Matrix GlobalTheory.LeviUnitary
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Simplify using `[piInf, inclR, compInf, infEmb_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piInf_incl_real {w : InfinitePlace F} (τ : EmbOver E w) (x : E) : piInf τ (inclR (F := F) (AF F) x) = τ.1 x := by
   simp [piInf, inclR, compInf, infEmb_tmul]
 
 /- English proof (translation)
-Establish `hσ` using `GlobalTheory.LeviTorus.sigma_invol hcm`. Take `⟨hdec, -⟩` from `GlobalTheory.LeviAdapted.decomp hW hA`. Establish `hv : ∀ v : Fin d → E, (vecMulVec H'.x (W.J *ᵥ fun i => σ (H'.y i)) + H'.ι * π - vecMulVec H'.y (W.J *ᵥ fun i => σ (H'.x i))) *ᵥ v = v`. Introduce `v`. Take `⟨a, b, u, rfl⟩` from `hdec v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e1 : ∀ z v : Fin d → E, (W.J *ᵥ fun i => σ (z i)) ⬝ᵥ v = form σ W.J v z` using `fun z v => by`. Simplify using `only [form]`. Conclude with `dotProduct_comm _ _`. Establish `fy : form σ W.J (a • H'.x + H'.ι *ᵥ u + b • H'.y) H'.y = a`. Rewrite using `[GlobalTheory.LeviAdapted.form_add_left, GlobalTheory.LeviAdapted.form_add_left, GlobalTheory.LeviAdapted.form_smul_left, GlobalTheory.LeviAdapted.form_smul_left, hA.xy, hA.yy, (hA.orth u).2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `fx : form σ W.J (a • H'.x + H'.ι *ᵥ u + b • H'.y) H'.x = -b`. Rewrite using `[GlobalTheory.LeviAdapted.form_add_left, GlobalTheory.LeviAdapted.form_add_left, GlobalTheory.LeviAdapted.form_smul_left, GlobalTheory.LeviAdapted.form_smul_left, hA.xx, (hA.orth u).1, GlobalTheory.LeviAdapted.form_swap hσ hW.skew H'.y H'.x, hA.xy, map_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `pv : π *ᵥ (a • H'.x + H'.ι *ᵥ u + b • H'.y) = u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_add, mulVec_add, mulVec_smul, mulVec_smul, p4, p5, mulVec_mulVec, p1, one_mulVec]`. Simplify using the standard rewrite rules. Rewrite using `[sub_mulVec, add_mulVec, vecMulVec_mulVec, vecMulVec_mulVec, ← mulVec_mulVec, pv, e1, e1, fy, fx]`. Simplify using `only [op_smul_eq_smul, neg_smul, sub_neg_eq_add]`. Conclude with `(Matrix.ext_of_mulVec_single fun j => by rw [hv, one_mulVec]).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_eq_decomp (hcm : IsCMExt F E σ) {B : Base F E} {d d₁ r s : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁}
     (hW : W.IsSkew σ B r s) {H' : Plane E d d₁} {i₀ i₁ : ℕ} (hA : H'.IsAdapted σ B W W₁ i₀ i₁)
@@ -61,13 +61,13 @@ theorem one_eq_decomp (hcm : IsCMExt F E σ) {B : Base F E} {d d₁ r s : ℕ} {
   exact (Matrix.ext_of_mulVec_single fun j => by rw [hv, one_mulVec]).symm
 
 /- English proof (translation)
-Use `set f : E →+* ℂ := (B.emb w).1 with hf`. Use `set θ := W.θ w`. Use `set θ₁ := W₁.θ w`. Establish `hId` using `congrArg f.mapMatrix (one_eq_decomp hcm hW hA p1 p4 p5)`. Establish `mv : ∀ a b : Fin d → E, f.mapMatrix (vecMulVec a b) = vecMulVec (fun i => f (a i)) (fun i => f (b i))` using `fun a b => by ext i j; simp [vecMulVec_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hId` using `[map_one, map_sub, map_add, mv, mv, RingHom.mapMatrix_apply, Matrix.map_mul]`. Establish `mvec : ∀ {k : ℕ} (M : Matrix (Fin k) (Fin d) E) (v : Fin d → E), M.map f *ᵥ (fun i => f (v i)) = fun i => f ((M *ᵥ v) i)` using `fun M v => by funext i; rw [RingHom.map_mulVec]; rfl`. Establish `hπx : π.map f *ᵥ (fun i => f (H'.x i)) = 0` using `by rw [mvec, p4]; funext i; simp`. Establish `hπy : π.map f *ᵥ (fun i => f (H'.y i)) = 0` using `by rw [mvec, p5]; funext i; simp`. Establish `hπι : π.map f * H'.ι.map f = 1` using `by rw [← Matrix.map_mul, p1]; exact Matrix.map_one _ (map_zero f) (map_one f)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hθι, c, hc, hy⟩` from `hA.cartan w`. Rewrite `hθι`, `hy` using `[← hf]`. Establish `hθθ : θ * θ = 1` using `(hW.cartan w).1`. Establish `hθx : θ *ᵥ (fun i => f (H'.x i)) = c⁻¹ • (fun i => f (H'.y i))`. Rewrite using `[hy, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hθy : θ *ᵥ (fun i => f (H'.y i)) = c • (fun i => f (H'.x i))`. Rewrite using `[hy, mulVec_smul, mulVec_mulVec, hθθ, one_mulVec]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hId, Matrix.mul_sub, Matrix.mul_add, mul_vecMulVec, mul_vecMulVec, ← mulVec_mulVec, ← mulVec_mulVec, hθx, hθy, mulVec_smul, mulVec_smul, hπx, hπy, smul_zero, smul_zero, zero_vecMulVec, zero_vecMulVec, zero_add, sub_zero, Matrix.mul_assoc, ← Matrix.mul_assoc θ, hθι, ← Matrix.mul_ …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_cartan (hcm : IsCMExt F E σ) {B : Base F E} {d d₁ r s : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁}
     (hW : W.IsSkew σ B r s) {H' : Plane E d d₁} {i₀ i₁ : ℕ} (hA : H'.IsAdapted σ B W W₁ i₀ i₁)
@@ -98,25 +98,23 @@ theorem proj_cartan (hcm : IsCMExt F E σ) {B : Base F E} {d d₁ r s : ℕ} {W 
         mulVec_smul, mulVec_smul, hπx, hπy, smul_zero, smul_zero, zero_vecMulVec, zero_vecMulVec, zero_add, sub_zero, Matrix.mul_assoc, ← Matrix.mul_assoc θ, hθι, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hπι, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ r s hcm hW hA h₁ hk₁`. Take `⟨π, p1, p2, p3, p4, p5⟩` from `GlobalTheory.LeviAdapted.exists_proj hcm hW hA`. Establish `q1 : incM F π * incM F H'.ι = 1`. Rewrite using `[← incM_mul, p1]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `q2 : incM F W.J * (incM F H'.ι).map (cA σ).toRingHom = (incM F π)ᵀ * incM F W₁.J`. Rewrite using `[incM_conj, ← incM_mul, p2, incM_mul]`. Both sides reduce to the same expression. Establish `q3 : (incM F H'.ι)ᵀ * incM F W.J = incM F W₁.J * (incM F π).map (cA σ).toRingHom`. Rewrite using `[incM_conj, ← incM_mul, ← p3, incM_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hfix : ∀ z, π *ᵥ z = 0 → (1 + incM F H'.ι * (mat h₁ - 1) * incM F π) *ᵥ incV F z = incV F z`. Introduce `z hz`. Establish `h0 : incV F (0 : Fin d₁ → E) = 0` using `by funext i; exact map_zero _`. Rewrite using `[add_mulVec, one_mulVec, ← mulVec_mulVec, incM_mulVec, hz, h0, mulVec_zero, add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨⟨1 + incM F H'.ι * (mat h₁ - 1) * incM F π, 1 + incM F H'.ι * ((h₁.1⁻¹).1 - 1) * incM F π, ?_, ?_⟩, ?_⟩, ⟨?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ext_mul q1, mat, Units.mul_inv]`. Simplify using the standard rewrite rules. Rewrite using `[ext_mul q1, mat, Units.inv_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ext_unitary (cA σ).toRingHom q1 q2 q3 h₁.2`. Introduce `u hu show u • (1 + incM F H'.ι * (mat h₁ - 1) * incM F π - 1) = 0`. Rewrite using `[add_sub_cancel_left, ← Matrix.smul_mul, ← Matrix.mul_smul, hk₁.1 u hu, Matrix.mul_zero, Matrix.zero_mul]`. Introduce `w set f : E →+* ℂ := (B.emb w).1 with hf`. Establish `hinc : ∀ {k l : ℕ} (A : Matrix (Fin k) (Fin l) E), (incM F A).map (piInf (B.emb w)) = A.map f` using `fun A => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[incM, piInf_incl_real, hf]`. Establish `hK : Commute ((mat h₁).map (piInf (B.emb w))) (W₁.θ w)` using `hk₁.2 w`. Use `set K := (mat h₁).map (piInf (B.emb w))`. Establish `hm : (1 + incM F H'.ι * (mat h₁ - 1) * incM F π).map (piInf (B.emb w)) = 1 + H'.ι.map f * (K - 1) * π.map f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ A : Matrix (Fin d) (Fin d) (AE F E), A.map (piInf (B.emb w)) = (piInf (B.emb w)).mapMatrix A` using `fun A => rfl`. Establish `e1 : ∀ A : Matrix (Fin d₁) (Fin d₁) (AE F E), A.map (piInf (B.emb w)) = (piInf (B.emb w)).mapMatrix A` using `fun A => rfl`. Rewrite using `[e, map_add, map_one, RingHom.mapMatrix_apply, Matrix.map_mul, Matrix.map_mul, e1 (mat h₁ - 1), map_sub, map_one, RingHom.mapMatrix_apply, hinc, hinc]`. Use `show Commute ((1 + incM F H'.ι * (mat h₁ - 1) * incM F π).map (piInf (B.emb w))) (W.θ w)`. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hπ` using `proj_cartan hcm hW hA p1 p4 p5 w`. Establish `hθι` using `(hA.cartan w).1`. Establish `hK1 : (K - 1) * W₁.θ w = W₁.θ w * (K - 1)` using `by rw [Matrix.sub_mul, Matrix.mul_sub, hK.eq, Matrix.one_mul, Matrix.mul_one]`. Use `show (1 + H'.ι.map f * (K - 1) * π.map f) * W.θ w = W.θ w * (1 + H'.ι.map f * (K - 1) * π.map f)`. Rewrite using `[Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hπ, ← Matrix.mul_assoc (K - 1), hK1, Matrix.mul_assoc, ← Matrix.mul_assoc (H'.ι.map f), ← hf, ← hθι, Matrix.mul_assoc, Matrix.mul_assoc]`. Rewrite using `[Units.val_one, one_smul]`. Conclude with `hfix _ p4`. Rewrite using `[inv_one, Units.val_one, map_one, one_smul]`.
-
-Conclude with `hfix _ p5`. Use `show (1 + incM F H'.ι * (mat h₁ - 1) * incM F π) * incM F H'.ι = _`. Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, q1, Matrix.mul_one, Matrix.mul_sub, Matrix.mul_one, add_sub_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem exists_kInf_isLevi_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r s : ℕ), IsCMExt F E σ →

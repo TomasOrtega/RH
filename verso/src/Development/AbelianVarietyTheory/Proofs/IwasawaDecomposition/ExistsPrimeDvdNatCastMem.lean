@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory.PrimeDvdNatCastMem
 
 /- English proof (translation)
-Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `hm0 hm`. Distinguish the cases in `h1 : m = 1`. Substitute `h1` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `absurd ((Ideal.eq_top_iff_one P).2 (by simpa using hm)) hP.ne_top`. Take `⟨q, hq, k, hk⟩` from `Nat.exists_prime_and_dvd h1`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `hm0 (by simpa using hk)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : (q : O) * (k : O) ∈ P`. Use `hm` as an intermediate fact. Rewrite `this` using `[hk, Nat.cast_mul]`. Conclude with `this`. Break down `hP.mem_or_mem hmul with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨q, hq, ⟨k, hk⟩, h⟩`. Establish `hlt : k < m`. Establish `h2` using `hq.two_le`. Establish `h3 : 0 < k` using `Nat.pos_of_ne_zero hk0`. Rewrite using `[hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨p, hp, hpk, hpP⟩` from `ih k hlt hk0 h`. Conclude with `⟨p, hp, hk ▸ Dvd.dvd.mul_left hpk q, hpP⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_dvd_natCast_mem {O : Type} [CommRing O] (P : Ideal O) [hP : Ideal.IsPrime P]
     (m : ℕ) : m ≠ (0 : ℕ) → (↑m : O) ∈ P → ∃ (p : ℕ), Nat.Prime p ∧ p ∣ m ∧ (↑p : O) ∈ P := by

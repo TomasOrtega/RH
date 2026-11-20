@@ -13,11 +13,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V.HV (Coef)
 
 /- English proof (translation)
-Establish `hcast : ((l : PadicAlgCl l)) = (((l : ℚ_[l]) : PadicAlgCl l))`. Simplify using the standard rewrite rules. Establish `hlt : ‖((l : PadicAlgCl l))‖ < 1`. Rewrite using `[hcast, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : (0:ℝ) < 1 / (|C| + 1)` using `by positivity`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hpos hlt`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_pow]`. Establish `h0 : 0 ≤ ‖((l : PadicAlgCl l))‖ ^ N` using `by positivity`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, one_mul, div_le_one (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem jv_small {l : ℕ} [hl : Fact l.Prime] (C : ℝ) : ∃ N : ℕ, ‖((l : PadicAlgCl l)) ^ N‖ * C ≤ 1 := by
   have hcast : ((l : PadicAlgCl l)) = (((l : ℚ_[l]) : PadicAlgCl l)) := by
@@ -38,19 +38,19 @@ private theorem jv_small {l : ℕ} [hl : Fact l.Prime] (C : ℝ) : ∃ N : ℕ, 
         linarith
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap c.O E)`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hφ a, ← hφ b, hab]`. Establish `hlO : ((l : PadicAlgCl l)) ∈ c.O`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subalgebra.natCast_mem _ _`. Establish `hl0 : ((l : PadicAlgCl l)) ≠ 0`. Conclude with `hl.out.ne_zero` after adjusting the coercions. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx0 : x ≠ 0` using `nonZeroDivisors.ne_zero hx`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Introduce `h0`. Apply `hx0` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h0, map_zero]`. Introduce `z`. Take `⟨N, hN⟩` from `jv_small (l := l) ‖(z : PadicAlgCl l)‖`. Establish `hmem : (l : PadicAlgCl l) ^ N * z ∈ c.O`. Rewrite using `[hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨E.mul_mem (pow_mem (E.natCast_mem l) N) z.2, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `hN`. Establish `hs : (⟨(l : PadicAlgCl l) ^ N, c.O.pow_mem hlO N⟩ : c.O) ∈ nonZeroDivisors c.O`. Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Apply `pow_ne_zero N hl0` to reduce the goal to its premises. Conclude with `congrArg Subtype.val h`. Use `⟨⟨⟨_, hmem⟩, ⟨_, hs⟩⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Simplify using `only [MulMemClass.coe_mul, hφ]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x y h`. Conclude with `⟨1, by rw [hinj h]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem isFractionRing_coef_of_mem_iff_norm_le_one {l : ℕ} [hl : Fact l.Prime] (E : IntermediateField ℚ_[l] (PadicAlgCl l)) (c : Coef l)
     (hc : ∀ x, x ∈ c.O ↔ x ∈ E ∧ ‖x‖ ≤ 1) [Algebra c.O E]
@@ -91,31 +91,29 @@ private theorem isFractionRing_coef_of_mem_iff_norm_le_one {l : ℕ} [hl : Fact 
     exact ⟨1, by rw [hinj h]⟩
 
 /- English proof (translation)
-Use `letI : Algebra c.O E := ((algebraMap c.O (PadicAlgCl l)).codRestrict E (fun a => ((hc a).1 a.2).1)).toAlgebra`. Establish `hφ : ∀ a : c.O, ((algebraMap c.O E a : E) : PadicAlgCl l) = a` using `fun a => rfl`. Use `haveI := isFractionRing_coef_of_mem_iff_norm_le_one E c hc hφ`. Set `ι : E →+* PadicAlgCl l` to `algebraMap E (PadicAlgCl l)`. Establish `hι : ∀ e : E, ι e = (e : PadicAlgCl l)` using `fun e => rfl`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinjM : Function.Injective (ι.mapMatrix : Matrix (Fin n) (Fin n) E →+* _)`. Introduce `A A' h`. Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Set `M : G →* Matrix (Fin n) (Fin n) E` to `{ toFun := fun g => Matrix.of fun i j => ⟨(r g : Matrix (Fin n) (Fin n) (PadicAlgCl l)) i j, hE g i j⟩ map_one' := by`. Apply `hinjM` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[hι, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use the proof step `map_mul' := by`. Introduce `g h`. Apply `hinjM` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[hι, Matrix.mul_apply] }`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hM : ∀ g, ι.mapMatrix (M g) = (r g : Matrix (Fin n) (Fin n) (PadicAlgCl l))`. Introduce `g`. Use extensionality with `i j`. Both sides reduce to the same expression. Set `rE : G →* GL (Fin n) E` to `M.toHomUnits`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hb : ∀ i j, ∃ C : ℝ, ∀ g, ‖(r g : Matrix (Fin n) (Fin n) (PadicAlgCl l)) i j‖ ≤ C`. Introduce `i j`. Take `⟨C, hC⟩` from `isBounded_iff_forall_norm_le.1 (isCompact_range (hr i j)).isBounded`. Conclude with `⟨C, fun g => hC _ ⟨g, rfl⟩⟩`. Use `choose C hC using hb`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N, hN⟩` from `jv_small (l := l) (∑ i, ∑ j, |C i j|)`. Establish `hbd : ∀ g i j, ‖(r g : Matrix (Fin n) (Fin n) (PadicAlgCl l)) i j‖ ≤ ∑ i, ∑ j, |C i j|`. Introduce `g i j`. Use `(hC i j g).trans ((le_abs_self _).trans ?_)` and prove the remaining obligations. Use `(Finset.single_le_sum (f := fun j => |C i j|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j)).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Finset.single_le_sum (f := fun i => ∑ j, |C i j|) (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _) (Finset.mem_univ i)`. Establish `hlO : ((l : PadicAlgCl l)) ∈ c.O` using `Subalgebra.natCast_mem _ _`. Establish `hl0 : ((l : PadicAlgCl l)) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Set `d : c.O` to `⟨(l : PadicAlgCl l) ^ N, c.O.pow_mem hlO N⟩`. Establish `hd : d ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Apply `pow_ne_zero N hl0` to reduce the goal to its premises. Conclude with `congrArg Subtype.val h`. Establish `hint : ∀ g i j, ∃ a : c.O, algebraMap c.O E d * (rE g : Matrix (Fin n) (Fin n) E) i j = algebraMap c.O E a`. Introduce `g i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hmem : (l : PadicAlgCl l) ^ N * (r g : Matrix (Fin n) (Fin n) (PadicAlgCl l)) i j ∈ c.O`. Rewrite using `[hc]`. Use `⟨E.mul_mem (pow_mem (E.natCast_mem l) N) (hE g i j), ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_mul_of_nonneg_left (hbd g i j) (norm_nonneg _)).trans hN`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `⟨⟨_, hmem⟩, Subtype.ext rfl⟩`. Take `⟨Q, r₀, hQ⟩` from `Pa.Det.latInt rE d hd hint`. Use `⟨Matrix.GeneralLinearGroup.map ι Q, r₀, fun g => ?_⟩` and prove the remaining obligations. Establish `key` using `congrArg (Matrix.GeneralLinearGroup.map ι) (hQ g)`. Rewrite `key` using `[map_mul, map_mul]`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : Matrix.GeneralLinearGroup.map ι (rE g) = r g`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `h2 : Matrix.GeneralLinearGroup.map ι (pushRep (algebraMap c.O E) r₀ g) = pushRep (algebraMap c.O (PadicAlgCl l)) r₀ g`. Use extensionality with `i j`.
-
-Both sides reduce to the same expression. Rewrite `key` using `[h1, h2]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 private theorem jv_model {l : ℕ} [hl : Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G] {n : ℕ}
     (E : IntermediateField ℚ_[l] (PadicAlgCl l)) (c : Coef l) (hc : ∀ x, x ∈ c.O ↔ x ∈ E ∧ ‖x‖ ≤ 1)
@@ -193,15 +191,15 @@ private theorem jv_model {l : ℕ} [hl : Fact l.Prime] {G : Type} [Group G] [Top
   exact key
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible c.O`. Establish `hm : maximalIdeal c.O ^ N = Ideal.span {ϖ ^ N}`. Rewrite using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.span_singleton_pow]`. Establish `hne : ((ϖ ^ N : c.O) : PadicAlgCl l) ≠ 0`. Establish `h0 : ϖ ^ N ≠ 0` using `pow_ne_zero _ hϖ.ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `fun h => h0 (Subtype.ext h)`. Establish `hδ : 0 < ‖((ϖ ^ N : c.O) : PadicAlgCl l)‖` using `norm_pos_iff.2 hne`. Establish `key : ∀ z : c.O, ‖(z : PadicAlgCl l)‖ < ‖((ϖ ^ N : c.O) : PadicAlgCl l)‖ → z ∈ maximalIdeal c.O ^ N`. Introduce `z hz`. Rewrite using `[hm, Ideal.mem_span_singleton']`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : (z : PadicAlgCl l) / ((ϖ ^ N : c.O) : PadicAlgCl l) ∈ c.O`. Rewrite using `[hc]`. Use `⟨E.div_mem ((hc _).1 z.2).1 ((hc _).1 (ϖ ^ N).2).1, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, div_le_one hδ]`. Conclude with `hz.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, hq⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (z : PadicAlgCl l) / ((ϖ ^ N : c.O) : PadicAlgCl l) * ((ϖ ^ N : c.O) : PadicAlgCl l) = z`. Conclude with `div_mul_cancel₀ _ hne`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(fun g => (f g : PadicAlgCl l)) ⁻¹' Metric.ball (f g0 : PadicAlgCl l) ‖((ϖ ^ N : c.O) : PadicAlgCl l)‖, Metric.isOpen_ball.preimage hf, Metric.mem_ball_self hδ, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Rewrite using `[Ideal.Quotient.eq]`. Apply `key` to reduce the goal to its premises. Simplify `hg` using `[dist_eq_norm]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem jv_cont {l : ℕ} [hl : Fact l.Prime] {G : Type} [TopologicalSpace G]
     (E : IntermediateField ℚ_[l] (PadicAlgCl l)) (c : Coef l) (hc : ∀ x, x ∈ c.O ↔ x ∈ E ∧ ‖x‖ ≤ 1)
@@ -236,7 +234,7 @@ private theorem jv_cont {l : ℕ} [hl : Fact l.Prime] {G : Type} [TopologicalSpa
   simpa [dist_eq_norm] using hg
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), PadicAlgCl.norm_extends]`. Simplify using `using a.norm_le_one`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem norm_algebraMap_padicInt_padicAlgCl_le_one' {l : ℕ} [Fact l.Prime] (a : ℤ_[l]) :
     ‖algebraMap ℤ_[l] (PadicAlgCl l) a‖ ≤ 1 := by
@@ -244,17 +242,15 @@ private theorem norm_algebraMap_padicInt_padicAlgCl_le_one' {l : ℕ} [Fact l.Pr
   simpa using a.norm_le_one
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ_[l]) (M := c.O)`. Establish `hM : ∀ z : c.O, ‖(z : PadicAlgCl l)‖ ≤ 1 + ∑ t ∈ s, ‖(t : PadicAlgCl l)‖`. Introduce `z`. Establish `hz : z ∈ Submodule.span ℤ_[l] (s : Set c.O)`. Rewrite using `[hs]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem t ht`. Establish `: ‖(t : PadicAlgCl l)‖ ≤ ∑ t ∈ s, ‖(t : PadicAlgCl l)‖` using `Finset.single_le_sum (f := fun t : c.O => ‖(t : PadicAlgCl l)‖) (fun _ _ => norm_nonneg _) ht`. Combine the linear equalities and inequalities to obtain the conclusion.
+Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Consider the case `zero`. Establish `: (0 : ℝ) ≤ ∑ t ∈ s, ‖(t : PadicAlgCl l)‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Simplify using `only [ZeroMemClass.coe_zero, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `add a b _ _ ha hb`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately.
 
-Rewrite using `[Subalgebra.coe_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)`. Consider the case `smul a z _ hz`. Rewrite using `[Subalgebra.coe_smul, Algebra.smul_def, norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (norm_algebraMap_padicInt_padicAlgCl_le_one' a)).trans hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (1 + ∑ t ∈ s, ‖(t : PadicAlgCl l)‖) h`. Use `hM (x ^ k)` as an intermediate fact. Rewrite `this` using `[SubmonoidClass.coe_pow, norm_pow]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem norm_coe_coef_integer_le_one {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) :
     ‖(x : PadicAlgCl l)‖ ≤ 1 := by
@@ -287,13 +283,11 @@ private theorem norm_coe_coef_integer_le_one {l : ℕ} [Fact l.Prime] (c : Coef 
   linarith
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ_[l]) (M := c.O)`. Use `set S : Set (PadicAlgCl l) := (fun t : c.O => (t : PadicAlgCl l)) '' (s : Set c.O)`. Use `haveI : Finite S := Set.Finite.image _ s.finite_toSet`. Use `haveI : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] S) := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Use `⟨K ⊔ IntermediateField.adjoin ℚ_[l] S, inferInstance, le_sup_left, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Establish `hx : x ∈ Submodule.span ℤ_[l] (s : Set c.O)`. Rewrite using `[hs]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem t ht`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(le_sup_right : IntermediateField.adjoin ℚ_[l] S ≤ _) (IntermediateField.subset_adjoin _ _ ⟨t, ht, rfl⟩)`. Consider the case `zero => exact zero_mem _`. Consider the case `add a b _ _ ha hb`. Rewrite using `[Subalgebra.coe_add]`. Conclude with `add_mem ha hb`.
-
-Consider the case `smul a z _ hz`. Rewrite using `[Subalgebra.coe_smul, Algebra.smul_def, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l)]`. Conclude with `mul_mem (IntermediateField.algebraMap_mem _ _) hz`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_finiteDimensional_ge_forall_coef_integer_mem {l : ℕ} [Fact l.Prime] (c : Coef l)
     (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] :
@@ -321,9 +315,9 @@ private theorem exists_finiteDimensional_ge_forall_coef_integer_mem {l : ℕ} [F
     exact mul_mem (IntermediateField.algebraMap_mem _ _) hz
 
 /- English proof (translation)
-Use `RingHom.IsIntegral.isLocalHom ?_ (Subalgebra.inclusion_injective hle)` and prove the remaining obligations. Introduce `z`. Take `⟨p, hp, hpz⟩` from `(Algebra.IsIntegral.isIntegral z : IsIntegral ℤ_[l] z)`. Use `⟨p.map (algebraMap ℤ_[l] c.O), hp.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hpz` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext fun a => rfl`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 private theorem isLocalHom_inclusion_coef_of_le {l : ℕ} [Fact l.Prime] (c c' : Coef l) (hle : c.O ≤ c'.O) :
     IsLocalHom (Subalgebra.inclusion hle).toRingHom := by
@@ -336,7 +330,7 @@ private theorem isLocalHom_inclusion_coef_of_le {l : ℕ} [Fact l.Prime] (c c' :
   exact RingHom.ext fun a => rfl
 
 /- English proof (translation)
-The claim follows from `isLocalHom_inclusion_coef_of_le c c' hle residue c'.O t = ResidueField.map (Subalgebra.inclusion hle).toRingHom (Alg.res c.O R a) := by haveI := isLocalHom_inclusion_coef_of_le c c' hle obtain ⟨b, hb⟩ := IsLocalRing.residue_surjective (Alg.res c.O R a) have hres : ∀ x : R, Residu …`.
+A detailed English derivation is pending.
 -/
 private theorem resid_h4_lemma_6 {l : ℕ} [Fact l.Prime] (c c' : Coef l) (hle : c.O ≤ c'.O)
     (R : Type) [CommRing R] [Algebra c.O R] [Alg.IsCO c.O R] (y : R →ₐ[c.O] PadicAlgCl l) (a : R) (t : c'.O)
@@ -376,31 +370,27 @@ private theorem resid_h4_lemma_6 {l : ℕ} [Fact l.Prime] (c c' : Coef l) (hle :
   rw [h0, ← ResidueField.map_residue, hb]
 
 /- English proof (translation)
-Establish `hρe : ∀ i j, Continuous fun g => (ρ g : Matrix (Fin n) (Fin n) (PadicAlgCl l)) i j` using `fun i j => (Units.continuous_val.comp hρ).matrix_elem i j`. Take `⟨K, hKfd, hK⟩` from `GlobalTheory.CompactRepField.exists_finiteDimensional_entries_mem l G n ρ hρe`. Take `⟨E, hEfd, hKE, hcE⟩` from `exists_finiteDimensional_ge_forall_coef_integer_mem c K`. Take `⟨c', hc'⟩` from `X.So.coefOf l E`. Establish `hle : c.O ≤ c'.O` using `fun x hx => (hc' x).2 ⟨hcE ⟨x, hx⟩, norm_coe_coef_integer_le_one c ⟨x, hx⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Q, r₀, hQ⟩` from `jv_model E c' hc' ρ hρe (fun g i j => hKE (hK g i j))`. Take `⟨hcomp, hfin, hlmem, -, -, -⟩` from `abelian₂.dvr_finite l c'.O`. Use `haveI := hcomp`. Use `haveI := hfin`. Use `haveI : CharP (ResidueField c'.O) l := (CharP.charP_iff_prime_eq_zero hl.out).2 (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_natCast (residue c'.O)]`. Conclude with `(residue_eq_zero_iff _).2 hlmem)`. Use `haveI := isLocalHom_inclusion_coef_of_le c c' hle`. Establish `hconj : ∀ g, pushRep (algebraMap c'.O (PadicAlgCl l)) r₀ g = Q⁻¹ * ρ g * Q`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[mul_assoc, hQ g, ← mul_assoc, inv_mul_cancel, one_mul]`. Establish `hcont : ∀ i j, Continuous fun g => ((r₀ g : Matrix (Fin n) (Fin n) c'.O) i j : PadicAlgCl l)`. Introduce `i j`. Establish `e : (fun g => ((r₀ g : Matrix (Fin n) (Fin n) c'.O) i j : PadicAlgCl l)) = fun g => (((Q⁻¹ : GL (Fin n) (PadicAlgCl l)) : Matrix (Fin n) (Fin n) (PadicAlgCl l)) * (ρ g : Matrix (Fin n) (Fin n) (PadicAlgCl l)) * (Q : Matrix (Fin n) (Fin n) (PadicAlgCl l))) i j`. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Units.val_mul, ← Units.val_mul, ← hconj g]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `((continuous_const.matrix_mul (Units.continuous_val.comp hρ)).matrix_mul continuous_const).matrix_elem i j`. Establish `hcp : ∀ g, ((r₀ g : Matrix (Fin n) (Fin n) c'.O).charpoly).map (algebraMap c'.O (PadicAlgCl l)) = (χ g).map (y : R →+* PadicAlgCl l)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Rewrite using `[← Matrix.charpoly_map, h1 g]`. Establish `e : (r₀ g : Matrix (Fin n) (Fin n) c'.O).map (algebraMap c'.O (PadicAlgCl l)) = ((Q : Matrix (Fin n) (Fin n) (PadicAlgCl l)))⁻¹ * (ρ g : Matrix (Fin n) (Fin n) (PadicAlgCl l)) * (Q : Matrix (Fin n) (Fin n) (PadicAlgCl l))`. Rewrite using `[← Matrix.coe_units_inv, ← Units.val_mul, ← Units.val_mul, ← hconj g]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, Matrix.charpoly_units_conj']`. Both sides reduce to the same expression. Use `set ιr := ResidueField.map (Subalgebra.inclusion hle).toRingHom with hιr`. Use `set κ' : G →* (ResidueField c'.O)ˣ := (Units.map ιr.toMonoidHom).comp κ with hκ'`. Establish `hred : ∀ g, ((r₀ g : Matrix (Fin n) (Fin n) c'.O).map (residue c'.O)).charpoly = (X - C (κ' g : ResidueField c'.O)) ^ n`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `g`. Rewrite using `[Matrix.charpoly_map]`. Establish `e : ((r₀ g : Matrix (Fin n) (Fin n) c'.O).charpoly).map (residue c'.O) = ((χ g).map (Alg.res c.O R : R →+* ResidueField c.O)).map ιr`. Use extensionality with `k`. Rewrite using `[coeff_map, coeff_map, coeff_map]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `resid_h4_lemma_6 c c' hle R y` to reduce the goal to its premises. Use `congrArg (fun p => p.coeff k) (hcp g)` as an intermediate fact. Simplify using `only [coeff_map] at this`. Conclude with `this`. Rewrite using `[e, h2 g]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hκ', Polynomial.map_pow]`. Establish `hω' : ∃ g, residue c'.O ↑(Loc.cycA p l c'.O (φ g)) ≠ 1`. Take `⟨g, hg⟩` from `hω`. Use `⟨g, fun h => hg ?_⟩` and prove the remaining obligations. Establish `e : (↑(Loc.cycA p l c'.O (φ g)) : c'.O) = (Subalgebra.inclusion hle).toRingHom (algebraMap ℤ_[l] c.O (Loc.cyc p l (φ g) : ℤ_[l]))` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h` using `[e, ← ResidueField.map_residue]`. Apply `ιr.injective` to reduce the goal to its premises. Rewrite using `[h, map_one]`. Establish `key` using `(Loc.v0b hpl φ hφ c'.O κ' (fun g hg => by simp [hκ', hκ g hg]) hω' r₀ (fun N i j => jv_cont E c' hc' _ (hcont i j) N) hred).1`. Introduce `g hg`.
-
-Establish `hp1 : pushRep (algebraMap c'.O (PadicAlgCl l)) r₀ g = 1`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `show algebraMap c'.O (PadicAlgCl l) ((r₀ g : Matrix (Fin n) (Fin n) c'.O) i j) = _`. Rewrite using `[key g hg, Units.val_one, Units.val_one, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
-
-Establish `e` using `hQ g`. Rewrite `e` using `[hp1, mul_one]`. Conclude with `mul_right_cancel (e.trans (one_mul Q).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem jv_local {p l : ℕ} [Fact p.Prime] [hl : Fact l.Prime] (hpl : p ≠ l) {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G] (φ : G →* GQ p) (hφ : IsOpenEmbedding φ) (c : Coef l) (R : Type) [CommRing R]
@@ -485,43 +475,37 @@ private theorem jv_local {p l : ℕ} [Fact p.Prime] [hl : Fact l.Prime] (hpl : p
   exact mul_right_cancel (e.trans (one_mul Q).symm)
 
 /- English proof (translation)
-Introduce `g hg`. Express the relevant statement in the definitionally equal form `g ∈ Subgroup.map V.pr (Ine (s.A s.v0)) at hg`. Take `⟨d, hd, rfl⟩` from `hg`. Use `haveI : Fact s.p.Prime := ⟨s.p_prime⟩`. Establish `hpv : ((s.p : ℕ) : 𝓞 (Lp L)) ∈ s.v0.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : Nat.card (𝓞 (Lp L) ⧸ s.v0.asIdeal) = s.p` using `s.norm_v0_eq_one`. Use `haveI : Finite (𝓞 (Lp L) ⧸ s.v0.asIdeal) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact s.p_prime.ne_zero)`. Use `letI := Fintype.ofFinite (𝓞 (Lp L) ⧸ s.v0.asIdeal)`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast, ← hcard, Nat.card_eq_fintype_card]`. Conclude with `Nat.cast_card_eq_zero _`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap L Ω).injective`. Take `⟨j, hj⟩` from `(Loc.decEmb (F := Lp L) (Ω := Ω) (v := s.p)).1 (s.A s.v0) s.v0 (s.hA s.v0) hpv`. Take `⟨-, φ, hφo, -, -, hIne, hcyc, -⟩` from `(Loc.decEmb (F := Lp L) (Ω := Ω) (v := s.p)).2 j`. Establish `hDr : Dec (Loc.placeJ j) ≤ (resP L Ω).range` using `hj ▸ s.19 s.v0 (Or.inr (Or.inr rfl))`. Take `⟨ψ0, hψ0⟩ : ∃ ψ0 : ↥(Dec (Loc.placeJ j)) →* V.frame.G₀, ∀ x, (ψ0 x).1 = toGS Ω V.S' (x : G (Lp L) Ω)` from `⟨MonoidHom.codRestrict ((toGS Ω V.S').comp (Dec (Loc.placeJ j)).subtype) V.η.ker (fun x => (V.6 x).2 (hDr x.2)), fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpr : ∀ x : ↥(Dec (Loc.placeJ j)), ∃ e : G L Ω, e ∈ Dec (s.A s.v0) ∧ resP L Ω e = x ∧ ψ0 x = V.pr e`. Introduce `x`. Take `⟨e, he⟩` from `hDr x.2`. Use `⟨e, ?_, he, ?_⟩` and prove the remaining obligations. Establish `hx` using `x.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hx` using `[← he, hj]`. Conclude with `hx`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hψ0, ← he]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hψc : Continuous ψ0`. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Conclude with `((continuous_toGS Ω V.S').comp continuous_subtype_val).congr (fun t => (hψ0 t).symm)`. Use `haveI : CompactSpace ↥(Dec (Loc.placeJ j)) := isCompact_iff_compactSpace.1 (isClosed_Dec (F := Lp L) (Loc.placeJ j)).isCompact`. Establish `hD0 : ∀ x : ↥(Dec (Loc.placeJ j)), ψ0 x ∈ V.frame.D0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Take `⟨e, he, -, hx⟩` from `hpr x`. Rewrite using `[hx]`. Conclude with `Subgroup.mem_map_of_mem _ he`. Establish `hIq : ∀ t : ↥(Dec (Loc.placeJ j)), φ t ∈ Loc.Iq s.p → ψ0 t ∈ V.frame.I0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t ht`. Take `⟨e, -, he, hte⟩` from `hpr t`. Rewrite using `[hte]`. Use `Subgroup.mem_map_of_mem _ ?_` and prove the remaining obligations. Establish `h1` using `(hIne t).1 ht`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[← he, hj]`. Conclude with `h1`. Use `delta Resid.V0ok at h`. Take `⟨hI0, hDeq, g1, hg1, hg1e⟩` from `h`. Establish `i0 : Fin n` using `⟨0, hn⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hκ : ∀ t, φ t ∈ Loc.Iq s.p → ((r.chib i0).comp ψ0) t = 1` using `fun t ht => hI0 i0 (hIq t ht)`. Express the relevant statement in the definitionally equal form `g1 ∈ Subgroup.map V.pr (Dec (s.A s.v0)) at hg1`. Take `⟨e1, he1, rfl⟩` from `hg1`. Establish `hω : ∃ t, residue c.O (algebraMap ℤ_[l] c.O (Loc.cyc s.p l (φ t) : ℤ_[l])) ≠ 1`. Use `⟨⟨resP L Ω e1, by rw [hj]; exact he1⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hcyc l]`. Introduce `hcon`. Apply `hg1e` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `delta GFrame.eps`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hε1 : (V.frame.ε (V.pr e1).1 : ℤ_[l]ˣ) = cycZ (Lp L) Ω l (resP L Ω e1)` using `DFunLike.congr_fun V.hε (resP L Ω e1)`. Simplify using `only [pushCh, MonoidHom.comp_apply, Units.coe_map, Subgroup.coe_subtype, hε1, MonoidHom.coe_coe, RingHom.comp_apply, Units.val_one, IsLocalRing.ResidueField.algebraMap_eq]`. Express the relevant statement in the definitionally equal form `((residue c.O).comp (algebraMap ℤ_[l] c.O)) ((V.frame.ε (V.pr e1).1 : ℤ_[l]ˣ) : ℤ_[l]) = 1`. Rewrite using `[hε1, RingHom.comp_apply]`. Conclude with `hcon`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hs : ∀ (A' : Type) [CommRing A'] (f : B.B →+* A') (t : ↥(Dec (Loc.placeJ j))), MonoidAlgebra.mapRingHom V.frame.G₀ f (MonoidAlgebra.single (ψ0 t) 1) = MonoidAlgebra.single (ψ0 t) 1`. Introduce `A' _ f t`. Simplify using `[MonoidAlgebra.mapRingHom]`. Establish `key` using `jv_local (p := s.p) (l := l) s.p_ne φ hφo c B.B x (ρ.comp ψ0) (hρ.comp hψc) ((r.chib i0).comp ψ0) hκ hω (fun t => B.u.D.chi (MonoidAlgebra.single (ψ0 t) 1)) ?_ ?_`. Establish `hdD : resP L Ω d ∈ Dec (Loc.placeJ j)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hj]`. Conclude with `Ine_le_Dec _ hd`. Establish `hφt : φ ⟨resP L Ω d, hdD⟩ ∈ Loc.Iq s.p`. Rewrite using `[hIne]`. Use `show resP L Ω d ∈ Ine (Loc.placeJ j)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hj]`. Conclude with `hd`. Establish `h0` using `key _ hφt`. Establish `hψt : ψ0 ⟨resP L Ω d, hdD⟩ = V.pr d`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ0]`. Both sides reduce to the same expression. Rewrite `h0` using `[MonoidHom.comp_apply, hψt]`. Conclude with `h0`. Introduce `t`.
-
-Establish `e` using `(AlgebraTools.Det.mapApi B.u.D (x : B.B →+* PadicAlgCl l)).1 (MonoidAlgebra.single (ψ0 t) 1)`. Rewrite `e` using `[hs, hx]`. Rewrite using `[← e, (AlgebraTools.Det.repApi (mat ρ)).2.1]`. Both sides reduce to the same expression. Introduce `t`.
-
-Establish `e` using `(AlgebraTools.Det.mapApi B.u.D (Alg.res c.O B.B : B.B →+* ResidueField c.O)).1 (MonoidAlgebra.single (ψ0 t) 1)`. Rewrite `e` using `[hs, B.u.red]`. Rewrite using `[← e]`. Use `delta Resid.Dbar`. Rewrite using `[(AlgebraTools.Det.repApi (diagRep r.chib)).2.1]`.
-
-Express the relevant statement in the definitionally equal form `(Matrix.diagonal fun i => ((r.chib i (ψ0 t) : (ResidueField c.O)ˣ) : ResidueField c.O)).charpoly = _`. Rewrite using `[Matrix.charpoly_diagonal]`. Establish `hc : ∀ i, r.chib i (ψ0 t) = r.chib i0 (ψ0 t)` using `fun i => hDeq _ (hD0 t) i i0`. Simplify using `only [hc, Finset.prod_const, Finset.card_univ, Fintype.card_fin, MonoidHom.comp_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.point_rep_unramified_at_auxiliary_place {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {V : s.Lev} {c : Coef l} {n : ℕ} (hn : 1 ≤ n) {r : Resid V.frame c.O n} (B : UniversalOrdinaryDeterminantRing r)

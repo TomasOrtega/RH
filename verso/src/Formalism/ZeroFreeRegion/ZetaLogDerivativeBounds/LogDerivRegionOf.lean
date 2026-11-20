@@ -8,31 +8,29 @@ noncomputable section
 namespace Formalism.ZF
 
 /- English proof (translation)
-Introduce `hZF hLR hG hI hSH hLL`. Take `⟨c₀, hc₀, hZ0⟩` from `hZF`. Take `⟨CR, hCR0, hCR⟩` from `hLR`. Take `⟨cS, CS, hcS, hCS⟩` from `hSH (Real.exp 24)`. Establish `hlog2 : (1 / 2 : ℝ) < Real.log 2` using `by have := Real.log_two_gt_d9; linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set c := min (min (c₀ / 4) 1) (cS * Real.log 2) with hc`. Establish `hcpos : 0 < c` using `lt_min (lt_min (by linarith) one_pos) (mul_pos hcS (by linarith))`. Establish `hc1 : c ≤ c₀ / 4` using `(min_le_left _ _).trans (min_le_left _ _)`. Establish `hc2 : c ≤ 1` using `(min_le_left _ _).trans (min_le_right _ _)`. Establish `hc3 : c ≤ cS * Real.log 2` using `min_le_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK1 : 0 ≤ 1441 + 60 / c₀` using `by positivity`. Establish `hK3 : 0 ≤ 4 * |CS|` using `by positivity`. Use `⟨c, (1441 + 60 / c₀) + (4 + 4 * CR) + 4 * |CS|, hcpos, ?_⟩` and prove the remaining obligations. Introduce `s hs1 hreg`. Establish `hs : s = (s.re : ℂ) + s.im * I` using `(Complex.re_add_im s).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set σ := s.re with hσ`. Use `set t := s.im with ht`. Use `set L := Real.log (|t| + 2) with hL`. Establish `hL2 : Real.log 2 ≤ L` using `Real.log_le_log (by norm_num) (by linarith [abs_nonneg t])`. Establish `hLpos : 1 / 2 < L` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hL0 : 0 < L` using `by linarith`. Establish `hLsq : 1 / 4 ≤ L ^ 2` using `by nlinarith`. Distinguish the cases in `hright : 1 + 1 / L < σ`. Establish `hinvpos : 0 < 1 / L` using `by positivity`. Establish `hσ1 : 1 < σ` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1` using `hCR s hσ1`. Establish `hnorm : σ - 1 ≤ ‖s - 1‖`. Establish `: (s - 1).re = σ - 1` using `by simp [hσ]`. Combine the equalities or inequalities in the displayed calculation. Establish `hσL : 1 / (σ - 1) ≤ L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[div_le_iff₀ (by linarith)]`. Establish `h` using `hright`. Establish `: 1 / L < σ - 1` using `by linarith`. Rewrite `this` using `[div_lt_iff₀ hL0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : ‖1 / (s - 1)‖ ≤ L`. Rewrite using `[norm_div, norm_one]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `push_neg at hright`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Distinguish the cases in `hbig : 24 ≤ L`. Establish `hlo : 1 - (c₀ / 4) / L ≤ σ`. Establish `: c / L ≤ (c₀ / 4) / L` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlo' : 1 - 1 / L ≤ σ`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `: c / L ≤ 1 / L` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm` using `Formalism.ZF.ldr_mid hZ0 hc₀ hG hI hLL (σ := σ) (t := t) hbig hlo hlo' hright`. Rewrite using `[hs]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `push_neg at hbig`. Establish `htT : |t| ≤ Real.exp 24`. Establish `: |t| + 2 < Real.exp 24`. Rewrite using `[← Real.log_lt_iff_lt_exp (by positivity)]`. Conclude with `hbig`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcL : c / L ≤ cS`. Rewrite using `[div_le_iff₀ hL0]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hinv : 1 / L ≤ 2`.
-
-Rewrite using `[div_le_iff₀ hL0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hσ3 : σ ≤ 3` using `by linarith`. Establish `hb` using `hCS s hs1 htT (by linarith) hσ3`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem logDerivBoundInRegionOfBounds : LogDerivRegionOf := by
   intro hZF hLR hG hI hSH hLL

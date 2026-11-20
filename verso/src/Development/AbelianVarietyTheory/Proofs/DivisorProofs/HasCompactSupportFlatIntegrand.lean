@@ -10,11 +10,9 @@ open GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.RootEx
 variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {G : Grid k}
 
 /- English proof (translation)
-Use `(IsLocallyConstant.iff_eventually_eq T).2 fun x => ?_` and prove the remaining obligations. Establish `h : ∀ᶠ y in nhds x, ∀ b ∈ γ.toFinset, ∀ i j, (((ϖ ^ e)⁻¹ : kˣ) : k) * (y b i j - x b i j) ∈ 𝒪[k]`. Use `(Filter.eventually_all_finset _).2 fun b _ => Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => ?_` and prove the remaining obligations. Establish `hc : Continuous fun y : G.Args => (((ϖ ^ e)⁻¹ : kˣ) : k) * (y b i j - x b i j)` using `continuous_const.mul (((continuous_apply b).matrix_elem i j).sub continuous_const)`. Conclude with `(Model.isOpen_int.preimage hc).mem_nhds (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [h] with y hy`. Rewrite using `[← hT.2.2 x (fun b => if b ∈ γ then y b - x b else 0) fun b => ?_]`. Conclude with `hT.1 fun b hb => by simp [show b ∈ γ from hb]`. Use `split_ifs with hb`. Conclude with `fun i => (mem_smul_lat _ _ _).2 (mem_stdLat.2 fun j => hy b (List.mem_toFinset.2 hb) i j)`.
-
-Conclude with `zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_of_isTensor {ϖ : kˣ} {e : ℕ} {γ : List Edge} {T : G.Args → ℂ} (hT : G.IsTensor ϖ e γ T) :
     IsLocallyConstant T := by
@@ -34,7 +32,7 @@ theorem isLocallyConstant_of_isTensor {ϖ : kˣ} {e : ℕ} {γ : List Edge} {T :
     · exact zero_mem _
 
 /- English proof (translation)
-Use `continuous_const.add (continuous_matrix fun r s => ?_)` and prove the remaining obligations. Simplify using `only [of_apply]`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_stepPt {n n' : Type*} {c : ℕ} (x₀ : Matrix n n' k) :
     Continuous fun e : StepVar n c n' → k => stepPt x₀ e := by
@@ -45,9 +43,7 @@ theorem continuous_stepPt {n n' : Type*} {c : ℕ} (x₀ : Matrix n n' k) :
   · exact continuous_const
 
 /- English proof (translation)
-Use `continuous_pi ?_` and prove the remaining obligations. Apply the tactic sequence `rintro (⟨i, j⟩ | ⟨i, j⟩) <;> simp only [fill] <;> split_ifs`. Use `Continuous.matrix_transpose (Continuous.matrix_submatrix ?_ _ _)` and prove the remaining obligations. Unfold `downMap`. Use `split_ifs with h`.
-
-Conclude with `((continuous_stepPt _).comp (continuous_apply (⟨j, h⟩ : Fin (G.m - 1)))).matrix_reindex _ _`. Conclude with `continuous_const`. Conclude with `continuous_const`. Apply the tactic sequence `all_goals exact continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_fill (hs : 1 ≤ G.s) (x : ColArgs G) (y : RowArgs G) : Continuous (fill hs x y) := by
   refine continuous_pi ?_
@@ -61,11 +57,9 @@ theorem continuous_fill (hs : 1 ≤ G.s) (x : ColArgs G) (y : RowArgs G) : Conti
   all_goals exact continuous_const
 
 /- English proof (translation)
-Establish `hp : ∀ (j : Fin (G.m - 1)) r s, Continuous fun e : Vars G => stepPt (x j) (e j) r s` using `fun j r s => ((continuous_stepPt _).comp (continuous_apply j)).matrix_elem r s`. Use `continuous_finsetSum _ fun j _ => (continuous_finsetSum _ fun i _ => hp j _ _).add ?_` and prove the remaining obligations. Use `split_ifs`. Use `continuous_finsetSum _ fun r _ => Continuous.mul ?_ (hp j _ _)` and prove the remaining obligations. Unfold `rowVar`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with h`. Use `continuous_finsetSum _ fun l _ => ?_ split_ifs` and prove the remaining obligations. Conclude with `hp ⟨_, h⟩ _ _`. Conclude with `continuous_const`. Conclude with `continuous_const`.
-
-Conclude with `continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_phase (x : ColArgs G) : Continuous (phase x) := by
   have hp : ∀ (j : Fin (G.m - 1)) r s, Continuous fun e : Vars G => stepPt (x j) (e j) r s := fun j r s =>
@@ -85,7 +79,7 @@ theorem continuous_phase (x : ColArgs G) : Continuous (phase x) := by
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Use `⟨frame (b := G.rank (G.m, j)) (by have := topRank_add hs j; have := j.2; omega) rs.1.2, frame (b := G.rank (G.m, j + 1)) (by have := topRank_add hs (j + 1); have := j.2; omega) rs.1.1, basePt _ (x j) rs.1.1 rs.1.2, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[fill_theta, transpose_apply, downMap, dif_pos j.2]`. Simplify using `only [reindex_apply, submatrix_apply, Equiv.symm_apply_apply, stepPt, Matrix.add_apply, of_apply]`. Rewrite using `[dif_pos rs.2, add_sub_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_fill_entry (hs : 1 ≤ G.s) (x : ColArgs G) (y : RowArgs G) (j : Fin (G.m - 1))
     (rs : StepVar (Fin (topRank G (j + 1))) (G.m - 2 - j) (Fin (topRank G j))) :
@@ -98,9 +92,9 @@ theorem exists_fill_entry (hs : 1 ≤ G.s) (x : ColArgs G) (y : RowArgs G) (j : 
   rw [dif_pos rs.2, add_sub_cancel_left]
 
 /- English proof (translation)
-Establish `hO : IsCompact (𝒪[k] : Set k)` using `isCompact_iff_compactSpace.2 (inferInstanceAs (CompactSpace 𝒪[k]))`. Establish `hC : IsCompact (Set.univ.pi fun _ : m => Set.univ.pi fun _ : n => (𝒪[k] : Set k))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hO`. Establish `hc : Continuous fun M : Matrix m n k => (A⁻¹).val * M * (B⁻¹).val` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Use `⟨_, hC.image hc, fun X hX => ⟨A.val * X * B.val, fun i _ j _ => mem_matLat_stdLat.1 hX i j, ?_⟩⟩` and prove the remaining obligations. Use `show (A⁻¹).val * (A.val * X * B.val) * (B⁻¹).val = X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isCompact_of_mul_mem {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (A : GL m k) (B : GL n k) :
@@ -116,7 +110,7 @@ theorem exists_isCompact_of_mul_mem {m n : Type*} [Fintype m] [DecidableEq m] [F
     Units.inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hm : Continuous (G.moveArgs .one g)` using `continuous_pi fun b => (continuous_const.matrix_mul (continuous_apply b)).matrix_mul continuous_const`. Conclude with `(continuous_const.mul (continuous_const.mul ((isLocallyConstant_of_isTensor hT).continuous.comp (hm.comp (continuous_fill hs x y))))).mul (continuous_subtype_val.comp (hψ.comp (continuous_phase x).neg))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_flatIntegrand (hs : 1 ≤ G.s) {ψ : AddChar k Circle} (hψ : Continuous ψ) {ϖ : kˣ} {e : ℕ}
     {γ : List Edge} {T : G.Args → ℂ} (hT : G.IsTensor ϖ e γ T) (keep : Bool) (g : G.VertexGroup)
@@ -128,9 +122,9 @@ theorem continuous_flatIntegrand (hs : 1 ≤ G.s) {ψ : AddChar k Circle} (hψ :
     (continuous_subtype_val.comp (hψ.comp (continuous_phase x).neg))
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Apply the tactic sequence `choose a b c h using exists_fill_entry hs x y`. Use `choose K hK hK' using fun j : Fin (G.m - 1) => exists_isCompact_of_mul_mem (Assignment.one.read (g (Edge.theta G.m j).tgt))⁻¹ (Assignment.one.read (g (Edge.theta G.m j).src))`. Use `HasCompactSupport.intro (K := Set.univ.pi fun j => Set.univ.pi fun rs => (fun M => M (a j rs) (b j rs) - c j rs) '' K j) (isCompact_univ_pi fun j => isCompact_univ_pi fun rs => (hK j).image ((continuous_id.matrix_elem _ _).sub continuous_const)) fun v hv => ?_` and prove the remaining obligations. Establish `h0 : T (G.moveArgs .one g (fill hs x y v)) = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Use `hv fun j _ rs _ => ⟨_, hK' j _ ?_, (h j rs v).symm⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `hne (hT.2.1 _ (.theta G.m j) (by have := j.2; simp [oppositePath]; omega) hn)`. Simplify using `[flatIntegrand, moved, Grid.pathAct, h0]`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_flatIntegrand (hs : 1 ≤ G.s) (ψ : AddChar k Circle) {ϖ : kˣ} {e : ℕ}
     {T : G.Args → ℂ} (hT : G.IsTensor ϖ e (oppositePath G.m) T) (keep : Bool) (g : G.VertexGroup)
@@ -150,7 +144,7 @@ theorem hasCompactSupport_flatIntegrand (hs : 1 ≤ G.s) (ψ : AddChar k Circle)
   simp [flatIntegrand, moved, Grid.pathAct, h0]
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Introduce `g x y`. Unfold `varsVol`. Conclude with `(continuous_flatIntegrand hs hψ hT true g x y).integrable_of_hasCompactSupport (hasCompactSupport_flatIntegrand hs ψ hT true g x y)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem flatIntegrable_of_isTensor [MeasurableSpace k] [BorelSpace k] (hs : 1 ≤ G.s) (ψ : AddChar k Circle)
     (ν : Measure k) [ν.IsAddHaarMeasure] {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ} (hψ : Continuous ψ)
@@ -163,7 +157,7 @@ theorem flatIntegrable_of_isTensor [MeasurableSpace k] [BorelSpace k] (hs : 1 �
     (hasCompactSupport_flatIntegrand hs ψ hT true g x y)
 
 /- English proof (translation)
-Introduce `_ hψ hT` and use `flatIntegrable_of_isTensor hs ψ ν hψ hT`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem flatIntegrable [MeasurableSpace k] [BorelSpace k] (hs : 1 ≤ G.s) (ψ : AddChar k Circle)
     (ν : Measure k) [ν.IsAddHaarMeasure] {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ} :

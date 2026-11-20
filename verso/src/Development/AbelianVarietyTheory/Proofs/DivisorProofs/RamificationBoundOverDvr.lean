@@ -11,9 +11,9 @@ section
 variable {K : Type} [Field K] [NumberField K] {la : HeightOneSpectrum (𝓞 K)} {O : Type} [CommRing O] {β : O →+* K}
 
 /- English proof (translation)
-Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`. Take `⟨a, ha⟩` from `(hr x).2 hx.le`. Take `⟨c, hc⟩` from `(hr x⁻¹).2 (by rw [map_inv₀, hx, inv_one])`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: IsUnit a` using `IsUnit.of_mul_eq_one c (hinj (by rw [map_mul, ha, hc, mul_inv_cancel₀ hx0, map_one]))`. Conclude with `⟨this.unit, ha⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_unit (hinj : Function.Injective β) (hr : ∀ x : K, x ∈ Set.range β ↔ la.valuation K x ≤ 1)
     {x : K} (hx : la.valuation K x = 1) : ∃ u : Oˣ, β u = x := by
@@ -26,11 +26,11 @@ theorem exists_unit (hinj : Function.Injective β) (hr : ∀ x : K, x ∈ Set.ra
   exact ⟨this.unit, ha⟩
 
 /- English proof (translation)
-Establish `hp0 : p ≠ 0`. Introduce and unpack `rfl`. Rewrite `hp` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hp.symm`. Establish `hv : la.valuation K x ≠ 0` using `by simpa using hx`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `exists_unit hinj hr (x := x * p ^ (-vLa la x)) (by`. Rewrite using `[map_mul, map_zpow₀, hp, ← WithZero.exp_zsmul, ← WithZero.exp_log hv, ← WithZero.exp_add]`. Simplify using `[vLa])`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, mul_assoc, ← zpow_add₀ hp0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_mul_zpow (hinj : Function.Injective β) (hr : ∀ x : K, x ∈ Set.range β ↔ la.valuation K x ≤ 1)
     {p : K} (hp : la.valuation K p = WithZero.exp (-1 : ℤ)) {x : K} (hx : x ≠ 0) :
@@ -48,7 +48,7 @@ theorem exists_unit_mul_zpow (hinj : Function.Injective β) (hr : ∀ x : K, x �
   simp
 
 /- English proof (translation)
-Establish `hv : la.valuation K (β a) ≠ 0` using `by simpa using ha`. Establish `h` using `(hr _).1 ⟨a, rfl⟩`. Rewrite `h` using `[← WithZero.exp_log hv, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Simplify using `only [vLa]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem vLa_nonneg (hr : ∀ x : K, x ∈ Set.range β ↔ la.valuation K x ≤ 1) {a : O} (ha : β a ≠ 0) :
     0 ≤ vLa la (β a) := by
@@ -59,15 +59,15 @@ theorem vLa_nonneg (hr : ∀ x : K, x ∈ Set.range β ↔ la.valuation K x ≤ 
   omega
 
 /- English proof (translation)
-Establish `hle : ∀ a : O, la.valuation K (β a) ≤ 1` using `fun a => (hr _).1 ⟨a, rfl⟩`. Establish `hun : ∀ a : O, la.valuation K (β a) = 1 → IsUnit a` using `fun a ha => by`. Take `⟨u, hu⟩` from `exists_unit hinj hr ha`. Conclude with `hinj hu ▸ u.isUnit`. Use `⟨fun h => ?_, fun a c h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `h.exists_right_inv`. Establish `h1 : la.valuation K (β π) * la.valuation K (β c) = 1`. Rewrite using `[← map_mul, ← map_mul, hc, map_one, map_one]`. Establish `h2 : (1 : WithZero (Multiplicative ℤ)) ≤ WithZero.exp (-1 : ℤ)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Rewrite `hp` using `[h, map_mul, map_mul]`. Establish `h0` using `mul_ne_zero_iff.1 (hp.trans_ne WithZero.exp_ne_zero)`. Establish `ha` using `hle a`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `hle c`. Rewrite `ha` using `[← WithZero.exp_log h0.1, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Rewrite `hc` using `[← WithZero.exp_log h0.2, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Rewrite `hp` using `[← WithZero.exp_log h0.1, ← WithZero.exp_log h0.2, ← WithZero.exp_add, WithZero.exp_inj]`. Distinguish the cases in `h1 : WithZero.log (la.valuation K (β a)) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inl (hun a (by rw [← WithZero.exp_log h0.1, h1, WithZero.exp_zero]))`. Conclude with `Or.inr (hun c (by`. Rewrite using `[← WithZero.exp_log h0.2, show WithZero.log (la.valuation K (β c)) = 0 by omega, WithZero.exp_zero]))`.
+Prove the second alternative. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irreducible_of_valuation (hinj : Function.Injective β)
     (hr : ∀ x : K, x ∈ Set.range β ↔ la.valuation K x ≤ 1)
@@ -101,25 +101,23 @@ theorem irreducible_of_valuation (hinj : Function.Injective β)
 end
 
 /- English proof (translation)
-Introduce `K _ _ la O _ β hinj hr`. Take `⟨p, hp⟩` from `la.valuation_exists_uniformizer K`. Establish `hp0 : p ≠ 0`. Introduce and unpack `rfl`. Rewrite `hp` using `[map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.exp_ne_zero hp.symm`. Take `⟨π, rfl⟩` from `(hr p).2 (by`. Rewrite using `[hp, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use the proof step `omega)`. Establish `hπ` using `irreducible_of_valuation hinj hr hp`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdom : IsDomain O` using `hinj.isDomain β`. Establish `hdvr : IsDiscreteValuationRing O` using `IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨π, hπ, fun {x} hx => by`. Establish `hx' : β x ≠ 0` using `(map_ne_zero_iff β hinj).2 hx`. Take `⟨u, hu⟩` from `exists_unit_mul_zpow hinj hr hp hx'`. Establish `h0` using `vLa_nonneg hr hx'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(vLa la (β x)).toNat, u, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, ← zpow_natCast, Int.toNat_of_nonneg h0, mul_comm, ← hu]⟩`. Use `⟨hdom, hdvr, ?_, ?_⟩` and prove the remaining obligations. Use `letI := β.toAlgebra haveI : FaithfulSMul O K := (faithfulSMul_iff_algebraMap_injective O K).2 hinj`. Use `IsFractionRing.of_field O K fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `le_total (la.valuation K x) 1 with h | h` into its components or cases. Take `⟨a, ha⟩` from `(hr x).2 h`. Conclude with `⟨a, 1, by rw [map_one, div_one]; exact ha.symm⟩`. Take `⟨a, ha⟩` from `(hr x⁻¹).2 (by rw [map_inv₀]; exact inv_le_one_of_one_le₀ h)`. Conclude with `⟨1, a, by rw [map_one, one_div]; change x = (β a)⁻¹; rw [ha, inv_inv]⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `T io b hb hc`. Establish `hc' : ∀ a, io (β a) = algebraMap T.V T.Fr (b a)` using `fun a => (RingHom.congr_fun hc a).symm`. Establish `hlt : valV T.V (io (β π)) < 1`. Rewrite using `[hc']`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem _ _).2 fun h => hπ.not_isUnit (isUnit_of_map_unit b _ h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : valV T.V (io (β π)) ≠ 0` using `valV_ne_zero ((map_ne_zero io).2 hp0)`. Establish `hpos : 0 < vV T.V (io (β π))`. Rewrite `hlt` using `[← WithZero.exp_log hne, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Simplify using `only [vV]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `⟨(vV T.V (io (β π))).toNat, by omega, fun a => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : a = 0`. Simplify using `[ha, vV, vLa]`. Take `⟨u, hu⟩` from `exists_unit_mul_zpow hinj hr hp ha`. Establish `h1 : valV T.V (io (β u)) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc']`. Use `le_antisymm (HeightOneSpectrum.valuation_le_one _ _) (not_lt.mp fun h => ?_)` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem _ _).1 h (u.isUnit.map b)`. Rewrite using `[Int.toNat_of_nonneg hpos.le]`. Generalize the expression as in `vLa la a = n at hu`.
-
-Rewrite using `[hu]`. Simplify using `only [vV, map_mul, map_zpow₀, h1, one_mul, WithZero.log_zpow]`. Simplify using `[mul_comm]`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dvr_and_overLa : ∀ (K : Type) [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (O : Type) [CommRing O] (β : O →+* K), Function.Injective β → (∀ x : K, x ∈ Set.range β ↔ la.valuation K x ≤ 1) → ∃ (_ : IsDomain O) (_ : IsDiscreteValuationRing O), (letI := β.toAlgebra; IsFractionRing O K) ∧ ∀ (T : CDVR) (io : K →+* T.Fr) (b : O →+* T.V), IsLocalHom b → (algebraMap T.V T.Fr).comp b = io.comp β → ∃ e : ℕ, OverLa la T.V io e := by
   intro K _ _ la O _ β hinj hr

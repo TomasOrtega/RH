@@ -8,7 +8,7 @@ namespace GroundTheory.PAdicHodge
 open PowerSeries
 
 /- English proof (translation)
-Establish `h` using `sub_dvd_pow_sub_pow (1 + Polynomial.X : Polynomial R) 1 q`. Rewrite `h` using `[one_pow, add_sub_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem X_dvd_one_add_X_pow_sub_one {R : Type*} [CommRing R] (q : ℕ) :
     (Polynomial.X : Polynomial R) ∣ (1 + Polynomial.X) ^ q - 1 := by
@@ -16,7 +16,7 @@ theorem X_dvd_one_add_X_pow_sub_one {R : Type*} [CommRing R] (q : ℕ) :
   rwa [one_pow, add_sub_cancel_left] at h
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `pow_dvd_pow_of_dvd (X_dvd_one_add_X_pow_sub_one (R := R) q) n`. Rewrite using `[hg, Polynomial.coeff_X_pow_mul', if_neg (not_le.2 h)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_one_add_X_pow_sub_one_pow_of_lt {R : Type*} [CommRing R] (q : ℕ) {m n : ℕ}
     (h : m < n) : (((1 + Polynomial.X : Polynomial R) ^ q - 1) ^ n).coeff m = 0 := by
@@ -24,9 +24,9 @@ theorem coeff_one_add_X_pow_sub_one_pow_of_lt {R : Type*} [CommRing R] (q : ℕ)
   rw [hg, Polynomial.coeff_X_pow_mul', if_neg (not_le.2 h)]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[add_mul, one_mul, map_add]`. Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[coeff_succ_X_mul, coeff_mk, coeff_mk, coeff_one, if_neg n.succ_ne_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[pow_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_add_X_mul_mk_neg_one_pow :
     (1 + X : ℚ⟦X⟧) * mk (fun n => algebraMap ℚ ℚ ((-1 : ℚ) ^ n)) = 1 := by
@@ -38,25 +38,23 @@ theorem one_add_X_mul_mk_neg_one_pow :
     simp [pow_succ]
 
 /- English proof (translation)
-The claim follows from `HasSubst.of_constantCoeff_zero' (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_one_add_X_pow_sub_one (q : ℕ) : HasSubst ((1 + X : ℚ⟦X⟧) ^ q - 1) :=
   HasSubst.of_constantCoeff_zero' (by simp)
 
 /- English proof (translation)
-Use `set U : ℚ⟦X⟧ := (1 + X) ^ q - 1 with hU`. Establish `hs : HasSubst U` using `hasSubst_one_add_X_pow_sub_one q`. Use `set G : ℚ⟦X⟧ := mk fun n => algebraMap ℚ ℚ ((-1 : ℚ) ^ n)`. Establish `hG : (1 + U) * G.subst U = 1`. Establish `h` using `congrArg (substAlgHom (R := ℚ) hs) one_add_X_mul_mk_neg_one_pow`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[map_mul, map_add, map_one]`. Simplify using `only [coe_substAlgHom] at h`. Rewrite `h` using `[subst_X hs]`. Then use the resulting hypothesis. Establish `h1U : 1 + U = (1 + X) ^ q` using `by rw [hU]; ring`. Apply `derivative.ext` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : d⁄dX ℚ ((log ℚ).subst U) = d⁄dX ℚ ((q : ℚ⟦X⟧) * log ℚ)`. Establish `hunit : IsUnit (1 + X : ℚ⟦X⟧)`. Rewrite using `[isUnit_iff_constantCoeff]`. Simplify using the standard rewrite rules. Apply `hunit.mul_left_cancel` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[derivative_subst hs, deriv_log, Derivation.leibniz, deriv_log]`. Break down `q with _ | q` into its components or cases. Simplify using `[hU]`. Establish `hdU : d⁄dX ℚ U = ((q + 1 : ℕ) : ℚ⟦X⟧) * (1 + X) ^ q`. Rewrite using `[hU, map_sub, derivative_pow, Derivation.map_one_eq_zero, sub_zero, map_add, Derivation.map_one_eq_zero, derivative_X, zero_add, mul_one, Nat.add_sub_cancel]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hdU]`. Establish `hc : d⁄dX ℚ ((q + 1 : ℕ) : ℚ⟦X⟧) = 0`. Rewrite using `[← map_natCast (C (R := ℚ)), derivative_C]`. Rewrite using `[hc, smul_zero, add_zero, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_left_comm, one_add_X_mul_mk_neg_one_pow, mul_one]`. Conclude with `hd`. Establish `h0 : constantCoeff U = 0` using `by simp [hU]`. Establish `h1 : constantCoeff ((log ℚ).subst U) = 0` using `constantCoeff_subst_eq_zero h0 _ constantCoeff_log`. Rewrite using `[h1]`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem PowerSeries.log_subst_one_add_X_pow_sub_one (q : ℕ) :
     (log ℚ).subst ((1 + X : ℚ⟦X⟧) ^ q - 1) = (q : ℚ⟦X⟧) * log ℚ := by
@@ -105,15 +103,15 @@ theorem one_add_X_pow_sub_one_eq_coe (q : ℕ) :
   simp
 
 /- English proof (translation)
-Establish `h` using `congrArg (coeff m) (PowerSeries.log_subst_one_add_X_pow_sub_one q)`. Rewrite `h` using `[coeff_subst' (hasSubst_one_add_X_pow_sub_one q), one_add_X_pow_sub_one_eq_coe]`. Simplify using `only [← Polynomial.coe_pow, Polynomial.coeff_coe, smul_eq_mul] at h`. Rewrite `h` using `[finsum_eq_sum_of_support_subset _ (s := Finset.Icc 1 m) ?_]`. Establish `hr : coeff m ((q : ℚ⟦X⟧) * log ℚ) = q * ((-1) ^ (m - 1) / m)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (q : ℚ⟦X⟧) = C (q : ℚ) from (map_natCast C q).symm, coeff_C_mul, coeff_log, if_neg (by omega), Algebra.algebraMap_self, RingHom.id_apply]`. Use `congr 2`. Rewrite using `[show m + 1 = (m - 1) + 2 by omega, pow_add]; simp`. Rewrite `h` using `[hr]`. Rewrite using `[show (-1 : ℚ) ^ (m - 1) * q / m = q * ((-1) ^ (m - 1) / m) by ring, ← h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Establish `hn1 : n ≠ 0` using `by have := (Finset.mem_Icc.1 hn).1; omega`. Rewrite using `[coeff_log, if_neg hn1, Algebra.algebraMap_self, RingHom.id_apply, show n + 1 = (n - 1) + 2 by omega, pow_add]`. Simplify using the standard rewrite rules. Introduce `n hn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hn` using `[Function.mem_support]`. Rewrite using `[Finset.coe_Icc, Set.mem_Icc]`. Assume the negation of the conclusion as `hc`. Break down `Nat.lt_or_ge n 1 with h1 | h1` into its components or cases. Take `rfl : n = 0` from `by omega`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Simplify using `at hn`. Establish `hlt : m < n` using `by omega`. Rewrite `hn` using `[coeff_one_add_X_pow_sub_one_pow_of_lt q hlt, mul_zero]`. Conclude with `hn rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_coeff_one_add_X_pow_sub_one_pow (q : ℕ) {m : ℕ} (hm : 1 ≤ m) :
     ∑ n ∈ Finset.Icc 1 m, (-1 : ℚ) ^ (n - 1) / n *
@@ -146,13 +144,13 @@ theorem sum_coeff_one_add_X_pow_sub_one_pow (q : ℕ) {m : ℕ} (hm : 1 ≤ m) :
       exact hn rfl
 
 /- English proof (translation)
-Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Establish `hcoe : ∀ n : ℕ, (((((1 : Polynomial ℤ) + Polynomial.X) ^ q - 1) ^ n).coeff m : ℚ) = (((1 + Polynomial.X : Polynomial ℚ) ^ q - 1) ^ n).coeff m` using `fun n => by`. Rewrite using `[← eq_intCast (Int.castRingHom ℚ), ← Polynomial.coeff_map]`. Simplify using `[Polynomial.map_pow]`. Establish `hm' : (m : ℚ) ≠ 0` using `by exact_mod_cast (show m ≠ 0 by omega)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Int.cast_sum, Int.cast_mul, Int.cast_pow, Int.cast_neg, Int.cast_one, Int.cast_natCast, hcoe]`. Establish `hdiv : ∀ n ∈ Finset.Icc 1 m, (((m.factorial / n : ℕ) : ℚ)) = m.factorial / n` using `fun n hn => by`. Establish `h1` using `(Finset.mem_Icc.1 hn)`. Rewrite using `[Nat.cast_div (Nat.dvd_factorial (by omega) h1.2) (by exact_mod_cast (show n ≠ 0 by omega))]`. Rewrite using `[Finset.sum_congr rfl fun n hn => by rw [hdiv n hn]]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfac : (m.factorial : ℚ) = m * (m - 1).factorial`. Rewrite using `[← Nat.cast_mul, ← Nat.mul_factorial_pred (by omega)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => by ring` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = (-1) ^ (m - 1) * q * (m - 1).factorial := by`. Rewrite using `[sum_coeff_one_add_X_pow_sub_one_pow q hm, hfac]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem log_pow_coeff_int (q m : ℕ) (hm : 1 ≤ m) :
     ∑ n ∈ Finset.Icc 1 m, (-1 : ℤ) ^ (n - 1) *

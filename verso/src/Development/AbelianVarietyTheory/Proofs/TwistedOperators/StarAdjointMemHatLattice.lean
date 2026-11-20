@@ -20,23 +20,21 @@ namespace GlobalTheory.LineDepthZero
 set_option maxHeartbeats 1000000
 
 /- English proof (translation)
-Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Establish `key : ∀ t ∈ idLat (shiftId G) Λ₀, ∀ a ∈ D.host.AA, e • (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j) : WO S B) ∈ hatMx (G.modul • homLat LS Λ₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t ht`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, hj, y, hy, rfl⟩` from `hx`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `GlobalTheory.T.idempotentSum_scalar_smul_mem_completedModulus G (homLat LS Λ₀) e he α hα (a * j) (fun w hw => hv w hw _ (FractionalIdeal.mul_mem_mul ha hj)) _ (GlobalTheory.RowLatChi.genMap_one_mem_homLat hS hs hy)`. Use `h1 using 3` and compare the differences between its conclusion and the goal. Use extensionality with `i k`. Simplify using `only [Matrix.of_apply, GlobalTheory.LatVac.genMap, Pi.smul_apply, smul_eq_mul]`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 
-Consider the case `zero`. Introduce `a ha`. Establish `e0 : (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * (0 : Fin B.rank → D.host.E) i * ∑ k, star (s k) * S.gram k j) : WO S B) = 0`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e0, smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Introduce `a ha`. Establish `e0 : (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * (x + y) i * ∑ k, star (s k) * S.gram k j) : WO S B) = (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * x i * ∑ k, star (s k) * S.gram k j)) + (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * y i * …`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.add_apply, Pi.add_apply, mul_add, add_mul, TensorProduct.tmul_add]`. Rewrite using `[e0, smul_add]`. Conclude with `add_mem (hx a ha) (hy a ha)`. Consider the case `smul o x _ hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a ha`. Establish `ha' : a * algebraMap (𝓞 D.host.E) D.host.E o ∈ D.host.AA`. Rewrite using `[mul_comm, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ o ha`. Use `hx _ ha' using 4` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Pi.smul_apply, Algebra.smul_def]`. Put the polynomial expressions in normal form. Conclude with `key t ht a ha`. Consider the case `zero => rw [smul_zero]`.
-
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_hatMx_of_mem_latO {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {S B : HSp D}
     (LS : Lat S) (Λ₀ : Lat B) (hS : IsSelfDualC S LS)
@@ -97,7 +95,7 @@ end GlobalTheory.LineDepthZero
 open GlobalTheory.LineDepthZero in
 
 /- English proof (translation)
-Introduce `D hD T L μ0 hL sc G W Mv hM F hF h u hu e he`. Establish `hx` using `GlobalTheory.T.bessel_step_line_component_mem_hom_lattice D hD T L μ0 hL sc G W Mv hM F hF 0 h u hu`. Establish `hy` using `GlobalTheory.AdjLatO.incA_inv_xi0_smul_starAdj_mem_latO D (negSp F.Lz) (G.V (.core (2 * 0 + 1))) _ (idLat (shiftId G) (Submodule.span (𝓞 D.host.E) {F.ζ 0})) (G.Λ (.core (2 * 0 + 1))) (fun _ => True) (GlobalTheory.T.star_smul_mem_span_modulusDivConjugate_lattice G _) _ hx`. Establish `sdC : IsSelfDualC (G.V (.core (2 * 0 + 1))) (G.Λ (.core (2 * 0 + 1)))` using `(G.sp.P_is (2 * 0 + 1) (by omega)).sd`. Conclude with `smul_mem_hatMx_of_mem_latO G _ _ sdC (GlobalTheory.T.valuation_AA_modulusDivConj_le_cosetExponent hD μ0 hL G) e he _ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AscFin.BoxBF.lineAdj_zero_dep : OnStd fun {D} _ _ {sc} {G} W F => ∀ (h : 2 * 0 + 2 ≤ D.R.m), ∀ u ∈ (pcBF W F 0 h).Γ₀, ∀ e : AE D, IsIdemSum e G.pl.W0 → e • (incA D D.host.xi0⁻¹ • GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj _ _ (((F.oB 0 h).resS (G.V (.core (2 * 0 + 1))) u).2)) ∈ hatMx (G.modul • homLat (G.Λ (.core (2 * 0 + 1))) (Submodule.span (𝓞 D.host.E) {F.ζ 0})) := by
   intro D hD T L μ0 hL sc G W Mv hM F hF h u hu e he

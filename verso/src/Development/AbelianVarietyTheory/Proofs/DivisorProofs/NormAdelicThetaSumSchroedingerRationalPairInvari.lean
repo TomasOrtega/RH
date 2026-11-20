@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.ThetaRatInv
 
 /- English proof (translation)
-Use `invOf_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[← map_ofNat (algebraMap F (AF F)) 2, ← map_mul]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem invOf_two_eq' {F : Type} [Field F] [NumberField F] [Invertible (2 : AF F)] :
     ⅟(2 : AF F) = algebraMap F (AF F) (1 / 2) := by
@@ -25,15 +25,15 @@ theorem invOf_two_eq' {F : Type} [Field F] [NumberField F] [Invertible (2 : AF F
   simp
 
 /- English proof (translation)
-Use `set ra : κ → AF F := fun i => algebraMap F (AF F) (a i) with hra`. Use `set rb : κ → AF F := fun i => algebraMap F (AF F) (b i) with hrb`. Simplify using `only [GlobalTheory.WeilM.thetaSum]`. Rewrite using `[← tsum_mul_left, ← (Equiv.addRight a).tsum_eq (fun ξ : κ → F => ψ (⅟(2 : AF F) * (w.1 ⬝ᵥ rb - ra ⬝ᵥ w.2)) * GlobalTheory.WeilM.schr ψ w Φ fun i => algebraMap F (AF F) (ξ i))]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set rξ : κ → AF F := fun i => algebraMap F (AF F) (ξ i) with hrξ`. Establish `e1 : (fun i => algebraMap F (AF F) ((Equiv.addRight a ξ) i)) = rξ + ra`. Use function extensionality and compare the values at `i`. Simplify using `[hrξ, hra]`. Establish `e3 : ∀ c d : κ → F, (fun i => algebraMap F (AF F) (c i)) ⬝ᵥ (fun i => algebraMap F (AF F) (d i)) = algebraMap F (AF F) (c ⬝ᵥ d)` using `fun c d => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[dotProduct]`. Rewrite using `[e1]`. Simplify using `only [GlobalTheory.WeilM.schr, Prod.fst_add, Prod.snd_add, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Establish `hx : rξ + (ra + w.1) = rξ + ra + w.1` using `(add_assoc _ _ _).symm`. Rewrite using `[hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `h1` using `hψ (ξ ⬝ᵥ b + 1 / 2 * (a ⬝ᵥ b))`. Use `conv_rhs => rw [← mul_one (ψ _), ← h1, ← AddChar.map_add_eq_mul]`. Use `congr 1`. Rewrite using `[map_add, map_mul, ← invOf_two_eq', ← e3, ← e3]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [add_dotProduct, dotProduct_add]`. Establish `t : ∀ z : AF F, ⅟(2 : AF F) * z + ⅟(2 : AF F) * z = z` using `fun z => by`. Rewrite using `[← add_mul, invOf_two_add_invOf_two, one_mul]`. Take the linear combination `t (ra ⬝ᵥ w.2)`.
+A detailed English derivation is pending.
 -/
 theorem thetaSum_schr_rat_add {F : Type} [Field F] [NumberField F] [Invertible (2 : AF F)] (ψ : AddChar (AF F) ℂ)
     (hψ : ∀ a : F, ψ (algebraMap F (AF F) a) = 1) {κ : Type} [Fintype κ] (Φ : (κ → AF F) → ℂ) (a b : κ → F)
@@ -68,7 +68,7 @@ theorem thetaSum_schr_rat_add {F : Type} [Field F] [NumberField F] [Invertible (
   linear_combination t (ra ⬝ᵥ w.2)
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ Φ γ hγ w`. Take `⟨a, b, rfl⟩` from `(GlobalTheory.WeilUnitaryTransport.mem_ratPair_iff γ).mp hγ`. Rewrite using `[thetaSum_schr_rat_add ψ hψ.2.2.1 Φ a b w, norm_mul, hψ.2.1, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_thetaSum_schr_ratPair_add : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (κ : Type) [Fintype κ] (Φ : (κ → AF F) → ℂ),
     ∀ γ ∈ GlobalTheory.WeilUnitaryTransport.ratPair F κ, ∀ w : (κ → AF F) × (κ → AF F),

@@ -20,7 +20,7 @@ variable (hσ : ∀ x, σ (σ x) = x) (hJ : Jᵀ = J.map σ) {e f : ι → K} (h
 include hσ hJ he hff hef
 
 /- English proof (translation)
-Establish `h1 : (1 : Matrix ι ι K) ∈ Good σ J e f` using `⟨1, Submonoid.one_mem _, 1, 1, by simp, by simp [tor]⟩`. Conclude with `⟨1, h1, fun j => Matrix.one_mulVec _, Matrix.one_mulVec _⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem reach_refl (b : ι → K) : Reach σ J e f a b b := by
   have h1 : (1 : Matrix ι ι K) ∈ Good σ J e f :=
@@ -28,7 +28,7 @@ theorem reach_refl (b : ι → K) : Reach σ J e f a b b := by
   exact ⟨1, h1, fun j => Matrix.one_mulVec _, Matrix.one_mulVec _⟩
 
 /- English proof (translation)
-Take `⟨p1, hp1, ha1, hb1⟩` from `h1`. Take `⟨p2, hp2, ha2, hb2⟩` from `h2`. Apply the tactic sequence `refine ⟨p2 * p1, (by apply good_mul <;> assumption), fun j => ?_, ?_⟩`. Rewrite using `[← Matrix.mulVec_mulVec, ha1, ha2]`. Rewrite using `[← Matrix.mulVec_mulVec, hb1, hb2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem reach_trans {b b' b'' : ι → K} (h1 : Reach σ J e f a b b') (h2 : Reach σ J e f a b' b'') :
     Reach σ J e f a b b'' := by
@@ -39,9 +39,9 @@ theorem reach_trans {b b' b'' : ι → K} (h1 : Reach σ J e f a b b') (h2 : Rea
   · rw [← Matrix.mulVec_mulVec, hb1, hb2]
 
 /- English proof (translation)
-Take `⟨p, hp, ha, hb⟩` from `h`. Choose the witnesses or unpack the hypotheses as in `⟨g', hg', hg'p, -⟩ : ∃ g' ∈ Good σ J e f, g' * p = 1 ∧ p * g' = 1 := by`. Apply the tactic sequence `apply good_inv <;> assumption`. Use `⟨g', hg', fun j => ?_, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← ha j]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, hg'p, Matrix.one_mulVec]`. Rewrite using `[← hb, Matrix.mulVec_mulVec, hg'p, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reach_symm {b b' : ι → K} (h : Reach σ J e f a b b') : Reach σ J e f a b' b := by
   obtain ⟨p, hp, ha, hb⟩ := h
@@ -55,13 +55,11 @@ theorem reach_symm {b b' : ι → K} (h : Reach σ J e f a b b') : Reach σ J e 
 include hae haf
 
 /- English proof (translation)
-Establish `hvmv : ∀ x y v : ι → K, vecMulVec x y *ᵥ v = (y ⬝ᵥ v) • x`. Introduce `x y v`. Use extensionality with `i`. Simplify using `only [mulVec, dotProduct, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdot : ∀ g v : ι → K, (J *ᵥ (σ ∘ g)) ⬝ᵥ v = hf σ J v g`. Introduce `g v`. Simplify using `only [dotProduct, mulVec, hf, Function.comp, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Establish `hE : ∀ (g w v : ι → K) (d : K), eich σ J g w d *ᵥ v = v + hf σ J v g • w - hf σ J v w • g + (d * hf σ J v g) • g`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g w v d`. Simplify using `only [eich, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, hvmv, hdot, smul_smul]`. Apply the tactic sequence `refine ⟨eich σ J e u c, (by apply good_of_closure <;> first`. Consider the case `exact Submonoid.subset_closure (Or.inl ⟨u, c, hue, huf, hc, rfl⟩) | assumption),`. Use `fun j => ?_, rfl⟩`.
-
-Rewrite using `[hE, hae j, ← hf_symm hσ hJ u (a j), hua j, map_zero]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reach_eich_e {u : ι → K} {c : K} (hue : hf σ J u e = 0) (huf : hf σ J u f = 0)
     (hc : c + σ c + hf σ J u u = 0) (hua : ∀ j, hf σ J u (a j) = 0) (b : ι → K) :
@@ -88,13 +86,11 @@ theorem reach_eich_e {u : ι → K} {c : K} (hue : hf σ J u e = 0) (huf : hf σ
   simp
 
 /- English proof (translation)
-Establish `hvmv : ∀ x y v : ι → K, vecMulVec x y *ᵥ v = (y ⬝ᵥ v) • x`. Introduce `x y v`. Use extensionality with `i`. Simplify using `only [mulVec, dotProduct, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdot : ∀ g v : ι → K, (J *ᵥ (σ ∘ g)) ⬝ᵥ v = hf σ J v g`. Introduce `g v`. Simplify using `only [dotProduct, mulVec, hf, Function.comp, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Establish `hE : ∀ (g w v : ι → K) (d : K), eich σ J g w d *ᵥ v = v + hf σ J v g • w - hf σ J v w • g + (d * hf σ J v g) • g`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g w v d`. Simplify using `only [eich, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, hvmv, hdot, smul_smul]`. Apply the tactic sequence `refine ⟨eich σ J f u c, (by apply good_of_closure <;> first`. Consider the case `exact Submonoid.subset_closure (Or.inr ⟨u, c, huf, hue, hc, rfl⟩) | assumption),`. Use `fun j => ?_, rfl⟩`.
-
-Rewrite using `[hE, haf j, ← hf_symm hσ hJ u (a j), hua j, map_zero]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reach_eich_f {u : ι → K} {c : K} (hue : hf σ J u e = 0) (huf : hf σ J u f = 0)
     (hc : c + σ c + hf σ J u u = 0) (hua : ∀ j, hf σ J u (a j) = 0) (b : ι → K) :
@@ -121,11 +117,11 @@ theorem reach_eich_f {u : ι → K} {c : K} (hue : hf σ J u e = 0) (huf : hf σ
   simp
 
 /- English proof (translation)
-Establish `hvmv : ∀ x y v : ι → K, vecMulVec x y *ᵥ v = (y ⬝ᵥ v) • x`. Introduce `x y v`. Use extensionality with `i`. Simplify using `only [mulVec, dotProduct, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdot : ∀ g v : ι → K, (J *ᵥ (σ ∘ g)) ⬝ᵥ v = hf σ J v g`. Introduce `g v`. Simplify using `only [dotProduct, mulVec, hf, Function.comp, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Establish `hE : ∀ (g w v : ι → K) (d : K), eich σ J g w d *ᵥ v = v + hf σ J v g • w - hf σ J v w • g + (d * hf σ J v g) • g`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g w v d`. Simplify using `only [eich, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, hvmv, hdot, smul_smul]`. Apply the tactic sequence `refine ⟨tor σ J e f l m, (by apply good_tor <;> assumption), fun j => ?_, rfl⟩`. Simplify using `only [tor, Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, hvmv, hdot, haf j, hae j, zero_smul, smul_zero, add_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reach_tor {l m : K} (hml : m * σ l = 1) (b : ι → K) :
     Reach σ J e f a b (tor σ J e f l m *ᵥ b) := by
@@ -148,13 +144,13 @@ theorem reach_tor {l m : K} (hml : m * σ l = 1) (b : ι → K) :
     haf j, hae j, zero_smul, smul_zero, add_zero]
 
 /- English proof (translation)
-Establish `hvmv : ∀ x y v : ι → K, vecMulVec x y *ᵥ v = (y ⬝ᵥ v) • x`. Introduce `x y v`. Use extensionality with `i`. Simplify using `only [mulVec, dotProduct, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdot : ∀ g v : ι → K, (J *ᵥ (σ ∘ g)) ⬝ᵥ v = hf σ J v g`. Introduce `g v`. Simplify using `only [dotProduct, mulVec, hf, Function.comp, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Establish `hE : ∀ (g w v : ι → K) (d : K), eich σ J g w d *ᵥ v = v + hf σ J v g • w - hf σ J v w • g + (d * hf σ J v g) • g`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g w v d`. Simplify using `only [eich, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, hvmv, hdot, smul_smul]`. Establish `h0 : ∀ v : ι → K, hf σ J 0 v = 0` using `fun v => by simp [hf]`. Establish `h0' : ∀ v : ι → K, hf σ J v 0 = 0` using `fun v => by simp [hf]`. Use `reach_eich_e hσ hJ he hff hef hae haf (u := 0) (c := c) (h0 e) (h0 f) (by rw [hc, h0]; ring) (fun j => h0 _) b` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hE, h0']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reachableFixing_add_smul_first {c : K} (hc : σ c = -c) (b : ι → K) :
     Reach σ J e f a b (b + (c * hf σ J b e) • e) := by
@@ -181,13 +177,13 @@ theorem reachableFixing_add_smul_first {c : K} (hc : σ c = -c) (b : ι → K) :
   simp
 
 /- English proof (translation)
-Establish `hvmv : ∀ x y v : ι → K, vecMulVec x y *ᵥ v = (y ⬝ᵥ v) • x`. Introduce `x y v`. Use extensionality with `i`. Simplify using `only [mulVec, dotProduct, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdot : ∀ g v : ι → K, (J *ᵥ (σ ∘ g)) ⬝ᵥ v = hf σ J v g`. Introduce `g v`. Simplify using `only [dotProduct, mulVec, hf, Function.comp, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Establish `hE : ∀ (g w v : ι → K) (d : K), eich σ J g w d *ᵥ v = v + hf σ J v g • w - hf σ J v w • g + (d * hf σ J v g) • g`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g w v d`. Simplify using `only [eich, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, hvmv, hdot, smul_smul]`. Establish `h0 : ∀ v : ι → K, hf σ J 0 v = 0` using `fun v => by simp [hf]`. Establish `h0' : ∀ v : ι → K, hf σ J v 0 = 0` using `fun v => by simp [hf]`. Use `reach_eich_f hσ hJ he hff hef hae haf (u := 0) (c := c) (h0 e) (h0 f) (by rw [hc, h0]; ring) (fun j => h0 _) b` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hE, h0']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reachableFixing_add_smul_second {c : K} (hc : σ c = -c) (b : ι → K) :
     Reach σ J e f a b (b + (c * hf σ J b f) • f) := by
@@ -214,13 +210,13 @@ theorem reachableFixing_add_smul_second {c : K} (hc : σ c = -c) (b : ι → K) 
   simp
 
 /- English proof (translation)
-Take `⟨n, hn, l, m, hml, rfl⟩` from `hp`. Establish `key : ∀ g ∈ Submonoid.closure (eichSet σ J e f), ∀ x y : ι → K, hf σ J (g *ᵥ x) (g *ᵥ y) = hf σ J x y`. Introduce `g hg`. Proceed by induction on `hg using Submonoid.closure_induction with`. Consider the case `mem g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `x y`. Break down `hg with ⟨u, c, hue, huf, hc, rfl⟩ | ⟨u, c, huf, hue, hc, rfl⟩` into its components or cases. Apply the tactic sequence `apply eich_preserves <;> assumption`. Apply the tactic sequence `apply eich_preserves <;> assumption`. Consider the case `one => intro x y`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `mul g h _ _ ihg ihh`. Introduce `x y`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ihg, ihh]`. Establish `ht : ∀ x y : ι → K, hf σ J (tor σ J e f l m *ᵥ x) (tor σ J e f l m *ᵥ y) = hf σ J x y`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x y`. Apply the tactic sequence `apply tor_preserves <;> assumption`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, key n hn, ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_preserves {p : Matrix ι ι K} (hp : p ∈ Good σ J e f) (x y : ι → K) :
     hf σ J (p *ᵥ x) (p *ᵥ y) = hf σ J x y := by
@@ -244,7 +240,7 @@ theorem good_preserves {p : Matrix ι ι K} (hp : p ∈ Good σ J e f) (x y : ι
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, key n hn, ht]
 
 /- English proof (translation)
-Take `⟨p, hp, ha, rfl⟩` from `h`. Use `⟨fun j => ?_, good_preserves hσ hJ he hff hef hae haf hp b b⟩` and prove the remaining obligations. Rewrite using `[← ha j, good_preserves hσ hJ he hff hef hae haf hp, hb]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem reach_inv {b b' : ι → K} (h : Reach σ J e f a b b') (hb : ∀ j, hf σ J b (a j) = 0) :
     (∀ j, hf σ J b' (a j) = 0) ∧ hf σ J b' b' = hf σ J b b := by

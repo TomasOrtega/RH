@@ -12,12 +12,12 @@ open CategoryTheory Limits AlgebraicGeometry TensorProduct
 namespace CrystallineSemistableComparison
 
 /- English proof (translation)
-The claim follows from `cstSmooth_of_p Pb.pSeam h`.
+A detailed English derivation is pending.
 -/
 theorem cstSmooth_of_side (h : EtSideS) : CstSmooth := cstSmooth_of_p Pb.pSeam h
 
 /- English proof (translation)
-The claim follows from `cstSmooth_of_side (etSideS h4 h8)`.
+A detailed English derivation is pending.
 -/
 theorem cstSmooth (h4 : GlobalTheory.EtC.E4) (h8 : GlobalTheory.EtC.E8) : CstSmooth := cstSmooth_of_side (etSideS h4 h8)
 

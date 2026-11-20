@@ -12,23 +12,21 @@ open NumberField IsDedekindDomain Neutral.B1 ReciprocityTheory.Neutral.Bridge.HC
 namespace GlobalTheory.ProdLocUnit
 
 /- English proof (translation)
-Introduce `F _ _ _ B _ ψ hker hd a T hT`. Use `letI : TopologicalSpace B := ⊥`. Use `haveI : DiscreteTopology B := ⟨rfl⟩`. Establish `hψ : Continuous ψ` using `continuous_of_isOpen_ker' ψ hker`. Set `ι : (InfiniteAdeleRing F)ˣ →* Ideles F` to `Units.map (MonoidHom.inl (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hι : Continuous ι` using `Continuous.units_map _ (continuous_id.prodMk continuous_const)`. Establish `hinf : ∀ u, ψ (ι u) = 1`. Introduce `u`. Take `⟨y, rfl⟩` from `GlobalTheory.HeckeInfTriv.infUnit_surj F u`. Establish `hc : Continuous fun y => ψ (ι (GlobalTheory.HeckeInfTriv.infUnit F y))` using `hψ.comp (hι.comp (GlobalTheory.HeckeInfTriv.continuous_infUnit F))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `PreconnectedSpace.constant inferInstance hc (x := y) (y := 1)`. Rewrite using `[e, map_one, map_one, map_one]`. Set `P : Ideles F →* (InfiniteAdeleRing F)ˣ` to `Units.map (MonoidHom.fst (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F))`. Set `u : (InfiniteAdeleRing F)ˣ` to `P (diagUnits F a)`. Set `av : ∀ v : HeightOneSpectrum (𝓞 F), (v.adicCompletion F)ˣ` to `fun v => Units.map (algebraMap F (v.adicCompletion F)).toMonoidHom a`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `z : Ideles F` to `diagUnits F a * (ι u)⁻¹ * (∏ v ∈ T, locUnit F v a)⁻¹`. Establish `hPι : P (ι u) = u` using `Units.ext rfl`. Establish `hPl : ∀ v, P (locUnit F v a) = 1` using `fun v => Units.ext rfl`. Establish `hz1 : (z : AdeleRing (𝓞 F) F).1 = 1`. Establish `h : P z = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [z, map_mul, map_inv, map_prod, hPι, hPl, Finset.prod_const_one, inv_one, mul_one]`. Conclude with `mul_inv_cancel u`. Conclude with `congrArg Units.val h`. Establish `hev_d : ∀ v, Units.map (GlobalTheory.Mem.LocTriv.ev v) (diagUnits F a) = av v` using `fun v => Units.ext rfl`. Establish `hev_i : ∀ v, Units.map (GlobalTheory.Mem.LocTriv.ev v) (ι u) = 1` using `fun v => Units.ext rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hev_l : ∀ v w, Units.map (GlobalTheory.Mem.LocTriv.ev v) (locUnit F w a) = if w = v then av v else 1`. Introduce `v w`. Apply `Units.ext` to reduce the goal to its premises. Use `split_ifs with h`. Substitute `h` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `GlobalTheory.Mem.LocTriv.ev_local_self w _`. Conclude with `GlobalTheory.Mem.LocTriv.ev_local_ne (Ne.symm h) _`. Establish `hzl : ∀ v, ψ (localIdele F v (Units.map (GlobalTheory.Mem.LocTriv.ev v) z)) = 1`. Introduce `v`. Establish `e : Units.map (GlobalTheory.Mem.LocTriv.ev v) z = av v * (∏ w ∈ T, if w = v then av v else 1)⁻¹`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [z, map_mul, map_inv, map_prod, hev_d, hev_i, hev_l, inv_one, mul_one]`. Rewrite using `[e, Finset.prod_ite_eq' T v]`. Use `split_ifs with hv`. Rewrite using `[mul_inv_cancel, map_one, map_one]`. Rewrite using `[inv_one, mul_one]`.
-
-Conclude with `hT v hv`. Establish `hz` using `GlobalTheory.FrobDense.eq_one_of_local ψ hψ z hz1 hzl`. Simplify using `only [z, map_mul, map_inv, map_prod, hd, hinf, inv_one, one_mul] at hz`. Conclude with `inv_eq_one.mp hz`.
+A detailed English derivation is pending.
 -/
 theorem prod_locUnit_eq_one : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyComplex F] (B : Type) [CommGroup B] (ψ : Ideles F →* B), IsOpen (ψ.ker : Set (Ideles F)) → (∀ k : Fˣ, ψ (diagUnits F k) = 1) → ∀ (a : Fˣ) (T : Finset (HeightOneSpectrum (𝓞 F))), (∀ v ∉ T, ψ (locUnit F v a) = 1) → ∏ v ∈ T, ψ (locUnit F v a) = 1 := by
   intro F _ _ _ B _ ψ hker hd a T hT

@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.BlowupCategories.SpanScale
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Pbf UpperTheory.Blow
 
 /- English proof (translation)
-Introduce `S S' f hf`. Establish `hm : ∀ n : SimplexCategoryᵒᵖ, Mono (f.app n)`. Introduce `n`. Establish `hm' : ∀ T : Schemeᵒᵖ, Mono ((f.app n).app T)`. Introduce `T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mono_iff_injective]`. Conclude with `hf n.unop.len T.unop`. Conclude with `NatTrans.mono_of_mono_app _`. Conclude with `NatTrans.mono_of_mono_app f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.mono_of_injective_on_simplices :
     ∀ {S S' : Spc} (f : S ⟶ S'), (∀ (k : ℕ) (T : Scheme.{0}), Function.Injective (fun x : Sx S k T => x.map f)) → Mono f := by

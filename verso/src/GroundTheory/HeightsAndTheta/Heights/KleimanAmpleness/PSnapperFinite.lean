@@ -15,21 +15,19 @@ noncomputable section
 universe u v w
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x E _ _ _ _ F hF0 t L n c i`. Establish `hpow : ∀ (Lb : LineBundle k x) (m : ℕ), ∃ Q : FinGradedSub (S` using `k) (x := x) Ω, Lb.toSubSystem.pow m = Q.tildeSys 0 := by`. Introduce `Lb m`. Proceed by induction on `m with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `⟨coordGraded k x, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `twistSys k x 0 = _`. Rewrite using `[← coordGraded_tildeSys_twist (twistSys k x 0), SubSystem.twist_twistSys_zero]`. Consider the case `succ m ih`. Take `⟨Q, hQ⟩` from `ih`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨QL, -, hQL⟩` from `hEL k Ω N x Ω Lb.toSubFamily Lb.fg`. Take `⟨P, -, hP⟩` from `hTL k Ω N x Ω Q QL`. Use `⟨P, ?_⟩` and prove the remaining obligations. Establish `hL : Lb.toSubSystem = QL.tildeSys 0` using `SubSystem.ext_sub fun I => (hQL I).symm`. Express the relevant statement in the definitionally equal form `(Lb.toSubSystem.pow m).twist Lb.toSubSystem = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hQ, hL]`. Conclude with `SubSystem.ext_sub hP`. Establish `hpows : ∀ (t : ℕ) (L : Fin t → LineBundle k x) (n : Fin t → ℕ), ∃ P : FinGradedSub (S` using `k) (x := x) E, F.toSubSystem.twistPows t (fun j => (L j).toSubSystem) n = P.tildeSys 0 := by`. Introduce `t`. Proceed by induction on `t with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Introduce `L n`. Take `⟨M, -, hM⟩` from `hE k Ω N x E F hF0`. Conclude with `⟨M, SubSystem.ext_sub fun I => (hM I).symm⟩`. Consider the case `succ t ih`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `L n`. Take `⟨P, hP⟩` from `ih (fun j => L j.castSucc) (fun j => n j.castSucc)`. Take `⟨Q, hQ⟩` from `hpow (L (Fin.last t)) (n (Fin.last t))`. Take `⟨P', -, hP'⟩` from `hT k Ω N x E P Q`. Use `⟨P', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(F.toSubSystem.twistPows t (fun j => (L j.castSucc).toSubSystem) (fun j => n j.castSucc)).twist ((L (Fin.last t)).toSubSystem.pow (n (Fin.last t))) = _`. Rewrite using `[hP, hQ]`. Conclude with `SubSystem.ext_sub hP'`. Take `⟨P, hP⟩` from `hpows t L n`. Rewrite using `[hP, ← hS k Ω N x E P c]`.
-
-Conclude with `hF k Ω N x E P i c`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SnapperFinite.proof (hE : Extension.Statement.{u, v, w}) (hEL : Extension.Statement.{u, w, w})
     (hT : TwistTilde.Statement.{u, v, w}) (hTL : TwistTilde.Statement.{u, w, w})

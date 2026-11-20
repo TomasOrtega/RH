@@ -29,16 +29,16 @@ section Transport
 variable {A : Over (Sp ℂ)} [GrpObj A] {L M : LB A.left} {g : ℕ}
 
 /- English proof (translation)
-The claim follows from `valAt'_res x h _ hV`.
+A detailed English derivation is pending.
 -/
 theorem valAt'_resU {X : Scheme.{0}} (x : Sp ℂ ⟶ X) {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)ˣ)
     (hV : ⊤ ≤ x ⁻¹ᵁ V) : valAt' x V (res h a).val = valAt' x U a.val :=
   valAt'_res x h _ hV
 
 /- English proof (translation)
-Establish `hO : ⊤ ≤ (u.ex z).left ⁻¹ᵁ (M.U j ⊓ L.U i ⊓ (M.U j' ⊓ L.U i'))` using `fun p hp => ⟨⟨hj hp, hi hp⟩, hj' hp, hi' hp⟩`. Establish `hii : ⊤ ≤ (u.ex z).left ⁻¹ᵁ (L.U i ⊓ L.U i')` using `fun p hp => ⟨hi hp, hi' hp⟩`. Establish `e` using `congrArg (fun a : Γ(A.left, M.U j ⊓ L.U i ⊓ (M.U j' ⊓ L.U i'))ˣ => valAt' (u.ex z).left _ a.val) (hw (j, i) (j', i'))`. Establish `e' : valAt' (u.ex z).left (M.U j ⊓ L.U i) (w.s (j, i)).val = valAt' (u.ex z).left (M.U j ⊓ M.U j') (M.g j j').val * (valAt' (u.ex z).left (L.U i ⊓ L.U i') (L.g i i').val)⁻¹ * valAt' (u.ex z).left (M.U j' ⊓ L.U i') (w.s (j', i')).val`. Use `(valAt'_resU _ _ _ hO).symm.trans (e.trans ((valAt'_mul _ _ _ _).trans (congrArg₂ (· * ·) ((valAt'_mul _ _ _ _).trans (congrArg₂ (· * ·) (valAt'_resU _ _ _ hO) ((valAt'_units_inv _ hO _).trans (congrArg (·⁻¹) (valAt'_resU _ _ _ hO))))) (valAt'_resU _ _ _ hO))))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne` using `valAt'_unit_ne_zero _ hii (L.g i i')`. Rewrite using `[e', u.fr_compat i i' z hii]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem iso_fr {w : LB.Iso L M} (hw : w.IsGen) (u : HolUnif A L g) (z : Fin g → ℂ) {j j' : M.ι} {i i' : L.ι}
     (hj : ⊤ ≤ (u.ex z).left ⁻¹ᵁ M.U j) (hj' : ⊤ ≤ (u.ex z).left ⁻¹ᵁ M.U j')
@@ -63,7 +63,7 @@ theorem iso_fr {w : LB.Iso L M} (hw : w.IsGen) (u : HolUnif A L g) (z : Fin g �
   field_simp
 
 /- English proof (translation)
-Rewrite using `[← valAt'_resU x (le_inf le_rfl le_rfl : M.U j ≤ M.U j ⊓ M.U j) _ hj, hM.g_self, Units.val_one, valAt'_one x hj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt'_g_self {X : Scheme.{0}} {M : LB X} (hM : M.IsLB) (x : Sp ℂ ⟶ X) {j : M.ι} (hj : ⊤ ≤ x ⁻¹ᵁ M.U j) :
     valAt' x (M.U j ⊓ M.U j) (M.g j j).val = 1 := by
@@ -71,7 +71,7 @@ theorem valAt'_g_self {X : Scheme.{0}} {M : LB X} (hM : M.IsLB) (x : Sp ℂ ⟶ 
     valAt'_one x hj]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_chart hL ((u.ex z).left (default : PrimeSpectrum ℂ))`. Conclude with `⟨i, (top_le_preimage_iff_mem _ _).2 hi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart_ex (hL : L.IsLB) (u : HolUnif A L g) (z : Fin g → ℂ) :
     ∃ i, ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U i := by
@@ -83,7 +83,7 @@ def frT (hL : L.IsLB) (w : LB.Iso L M) (u : HolUnif A L g) (j : M.ι) (z : Fin g
     u.fr (exists_chart_ex hL u z).choose z
 
 /- English proof (translation)
-Rewrite using `[frT, iso_fr hw u z hj hj (exists_chart_ex hL u z).choose_spec hi, valAt'_g_self hM _ hj, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frT_eq (hL : L.IsLB) (hM : M.IsLB) {w : LB.Iso L M} (hw : w.IsGen) (u : HolUnif A L g) {j : M.ι} {i : L.ι}
     {z : Fin g → ℂ} (hj : ⊤ ≤ (u.ex z).left ⁻¹ᵁ M.U j) (hi : ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U i) :
@@ -117,9 +117,9 @@ def transport (hL : L.IsLB) (hM : M.IsLB) {w : LB.Iso L M} (hw : w.IsGen) (u : H
     iso_fr hw u z ((top_le_preimage_inf _ _ _).1 hz).1 ((top_le_preimage_inf _ _ _).1 hz).2 hi hi
 
 /- English proof (translation)
-Use `⟨h.1, h.2.1, h.2.2.1, fun l j z hj => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart_ex hL u z`. Establish `hl : u.ex (z + l) = u.ex z` using `by rw [u.ex_add, (u.ker _).2 l.2, _root_.mul_one]`. Establish `a` using `frT_eq hL hM hw u (z := z) hj hi`. Establish `b` using `frT_eq hL hM hw u (j := j) (i := i) (z := z + l) (by rw [hl]; exact hj) (by rw [hl]; exact hi)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `b` using `[hl]`. Use `a.trans (Eq.trans ?_ (congrArg _ b.symm))` and prove the remaining obligations. Rewrite using `[h.2.2.2 l i z hi]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isAH_transport (hL : L.IsLB) (hM : M.IsLB) {w : LB.Iso L M} (hw : w.IsGen) (u : HolUnif A L g)
     {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (h : u.IsAH Hm χ) : (transport hL hM hw u).IsAH Hm χ := by
@@ -136,9 +136,9 @@ theorem isAH_transport (hL : L.IsLB) (hM : M.IsLB) {w : LB.Iso L M} (hw : w.IsGe
 end Transport
 
 /- English proof (translation)
-Use `fun p q => unit_ext fun y hy => ?_` and prove the remaining obligations. Use `(gm_res _ y _ hy _).trans (Eq.symm ((map_mul _ _ _).trans ((congrArg₂ (· * ·) (gm_div L L (𝟙 X) y p q hy) (gm_res _ y _ hy _)).trans ?_)))` and prove the remaining obligations. Establish `a` using `gm_cocycle hL (𝟙 X) y hy.1.1 hy.2.1 hy.2.2`. Establish `b` using `gm_cocycle hL (𝟙 X) y hy.1.1 hy.1.2 hy.2.2`. Use `show gm (𝟙 X) y _ (L.g p.1 q.1) * (gm (𝟙 X) y _ (L.g p.2 q.2))⁻¹ * gm (𝟙 X) y _ (L.g q.1 q.2) = gm (𝟙 X) y _ (L.g p.1 p.2)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_right_comm, a, ← b, mul_inv_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem isGen_refl {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) :
     LB.Gen.IsGen (⟨fun p => L.g p.1 p.2⟩ : LB.Iso L L) := by

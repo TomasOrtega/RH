@@ -12,11 +12,11 @@ namespace GlobalTheory.GaloisQuotientRing
 open GlobalTheory.GaloisQuotient
 
 /- English proof (translation)
-Introduce `K _ _ X Y π sY Ga _ ρ hG _ _ hX`. Use `hG.finite` as an intermediate fact. Set `τ : Ga →* Aut X` to `MonoidHom.mk' (fun a => (⟨ρ a⁻¹, ρ a, by rw [← hG.mul, inv_mul_cancel, hG.one], by rw [← hG.mul, mul_inv_cancel, hG.one]⟩ : X ≅ X)) fun a c => Iso.ext (by`. Express the relevant statement in the definitionally equal form `ρ (a * c)⁻¹ = ρ c⁻¹ ≫ ρ a⁻¹`. Rewrite using `[mul_inv_rev, hG.mul])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `OrbitsInAffineOpens.of_isQProjOver hX τ` as an intermediate fact. Establish `hq` using `finiteQuotient.isAffineQuotient τ`. Establish `hD` using `(GlobalTheory.ZM.galoisCover_descent X Y π Ga ρ hG).1`. Take `⟨u, hu, -⟩` from `hD _ (finiteQuotient.π τ) fun a => by`. Simplify `(show ρ a⁻¹⁻¹ ≫ _ = _ from hq.comp_eq a⁻¹)` using `only [inv_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Set `v` to `hq.desc π fun a => hG.inv a⁻¹`. Establish `hv : finiteQuotient.π τ ≫ v = π` using `hq.comp_desc _ _`. Establish `: IsIso u` using `⟨v, (hD Y π hG.inv).unique (by rw [reassoc_of% hu, hv]) (Category.comp_id _), hq.hom_ext (by rw [reassoc_of% hv, hu, Category.comp_id])⟩`. Take `⟨L, hL⟩` from `exists_isAmpleLB_of_isAffineQuotient hq hX`. Conclude with `(hL.pull_of_isAffineHom u).isQProjOver sY`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isQProjOver_of_isGaloisCover : ∀ (K : Type) [CommRing K] [IsNoetherianRing K] (X Y : Scheme.{0}) (π : X ⟶ Y) (sY : Y ⟶ Sp K) (Ga : Type) [Group Ga] (ρ : Ga → (X ⟶ X)), IsGaloisCover Ga ρ π → IsSeparated sY → LocallyOfFiniteType sY → IsQProjOver (π ≫ sY) → IsQProjOver sY := by
   intro K _ _ X Y π sY Ga _ ρ hG _ _ hX

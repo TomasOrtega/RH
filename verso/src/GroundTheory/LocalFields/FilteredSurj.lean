@@ -37,39 +37,33 @@ variable {G H : Type*} [Group G] [Group H]
 @[to_additive map_eq_of_graded_surjective_add
 ]
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `hmap k le_rfl g hg`. Introduce `h hh`. Rewrite using `[Subgroup.mem_map]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : ∀ (n : ℕ) (a : H), ∃ g : G, k ≤ n → a ∈ E (φ n) → g ∈ F n ∧ a / f g ∈ E (φ (n + 1))`. Introduce `n a`. Distinguish the cases in `hc : k ≤ n ∧ a ∈ E (φ n)`. Take `⟨g, hg1, hg2⟩` from `hgr n hc.1 a hc.2`. Conclude with `⟨g, fun _ _ => ⟨hg1, hg2⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨1, fun h1 h2 => absurd ⟨h1, h2⟩ hc⟩`. Use `choose s hs using hs`. Take `⟨r, hr0, hrs⟩ : ∃ r : ℕ → H, r 0 = h ∧ ∀ j, r (j + 1) = r j / f (s (k + j) (r j))` from `⟨fun j => Nat.rec h (fun j rj => rj / f (s (k + j) rj)) j, rfl, fun _ => rfl⟩`. Establish `hrE : ∀ j, r j ∈ E (φ (k + j))`. Introduce `j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `j with`. Consider the case `zero => simpa [hr0] using hh`. Consider the case `succ j ih`. Rewrite using `[hrs, ← add_assoc]`. Conclude with `(hs (k + j) (r j) (Nat.le_add_right k j) ih).2`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨D, hD⟩ : ∃ D : ℕ → G, ∀ j, D j = s (k + j) (r j)` from `⟨_, fun _ => rfl⟩`. Establish `hDF : ∀ j, D j ∈ F (k + j)` using `fun j => by`. Rewrite using `[hD]`. Conclude with `(hs (k + j) (r j) (Nat.le_add_right k j) (hrE j)).1`. Establish `hrs' : ∀ j, r (j + 1) = r j / f (D j)` using `fun j => by rw [hrs, hD]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Take `⟨x, hx0, hxs⟩ : ∃ x : ℕ → G, x 0 = D 0 ∧ ∀ j, x (j + 1) = D (j + 1) * x j` from `⟨fun j => Nat.rec (D 0) (fun j xj => D (j + 1) * xj) j, rfl, fun _ => rfl⟩`. Establish `hxr : ∀ j, h / f (x j) = r (j + 1)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => rw [hx0, hrs', hr0]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `succ j ih`. Rewrite using `[hxs, hrs' (j + 1), ← ih, map_mul]`. Simplify using `only [div_eq_mul_inv, mul_inv_rev, mul_assoc]`. Establish `hxF : ∀ m d, x (m + d) / x m ∈ F (k + m + 1)`. Introduce `m d`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`. Establish `e : x (m + (d + 1)) / x m = D (m + d + 1) * (x (m + d) / x m)`. Rewrite using `[← add_assoc, hxs, div_eq_mul_inv, div_eq_mul_inv, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `(F _).mul_mem (hF (by omega) (hDF (m + d + 1))) ih`. Establish `hC : FiltrationCauchy F x`. Introduce `N`. Use `⟨N, fun m hm n hn => ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `le_total m n with hmn | hnm` into its components or cases. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Conclude with `hF (by omega) (hxF m d)`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hnm`. Establish `e` using `(F _).inv_mem (hxF n d)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `e` using `[inv_div]`. Conclude with `hF (by omega) e`. Establish `hxk : ∀ j, x j ∈ F k`. Introduce `j`. Proceed by induction on `j with`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `zero => rw [hx0]`. Simplify using `using hDF 0`. Consider the case `succ j ih => rw [hxs]; exact (F k).mul_mem (hF (by omega) (hDF (j + 1))) ih`. Take `⟨y, hy⟩` from `hG x hC`. Take `⟨M0, hM0⟩` from `hy k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hyk : y ∈ F k`. Establish `e : (x M0 / y)⁻¹ * x M0 = y`. Simplify using `only [div_eq_mul_inv, mul_inv_rev, inv_inv, mul_assoc, inv_mul_cancel, mul_one]`. Rewrite using `[← e]`. Conclude with `(F k).mul_mem ((F k).inv_mem (hM0 M0 le_rfl)) (hxk M0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨y, hyk, ?_⟩` and prove the remaining obligations. Establish `h1 : h / f y = 1`. Apply `hH` to reduce the goal to its premises. Introduce `m`. Take `⟨N0, hN0⟩` from `Filter.tendsto_atTop_atTop.mp hφ m`.
-
-Take `⟨M, hM⟩` from `hy (max N0 k)`. Establish `e : h / f y = r (max M N0 + 1) * f (x (max M N0) / y)`. Rewrite using `[← hxr (max M N0), map_div]`. Simplify using `only [div_eq_mul_inv, mul_assoc, inv_mul_cancel_left]`. Rewrite using `[e]`.
-
-Use `(E m).mul_mem ?_ ?_` and prove the remaining obligations. Conclude with `hE (hN0 _ (by omega)) (hrE (max M N0 + 1))`. Conclude with `hE (hN0 _ (le_max_left _ _)) (hmap _ (le_max_right _ _) _ (hM (max M N0) (le_max_left _ _)))`. Conclude with `(div_eq_one.mp h1).symm`. Use the proof step `@[to_additive surjective_of_graded_surjective_add`.
-
-Use the proof step `]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem map_eq_of_graded_surjective {F : ℕ → Subgroup G} {E : ℕ → Subgroup H}
     (hF : Antitone F) (hE : Antitone E) (hG : FiltrationComplete F)
@@ -166,9 +160,9 @@ theorem map_eq_of_graded_surjective {F : ℕ → Subgroup G} {E : ℕ → Subgro
 @[to_additive surjective_of_graded_surjective_add
 ]
 /- English proof (translation)
-Introduce `h`. Establish `e` using `map_eq_of_graded_surjective hF hE hG hH f hφ 0 (fun n _ => hmap n) (fun n _ => hgr n)`. Establish `hh : h ∈ E (φ 0)` using `by rw [hE0]; exact Subgroup.mem_top h`. Rewrite `hh` using `[← e, hF0]`. Take `⟨g, -, rfl⟩` from `hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem surjective_of_graded_surjective {F : ℕ → Subgroup G} {E : ℕ → Subgroup H}
     (hF : Antitone F) (hE : Antitone E) (hG : FiltrationComplete F)
@@ -191,13 +185,11 @@ section Topological
 @[to_additive addFiltrationComplete_of_hasBasis
 ]
 /- English proof (translation)
-Introduce `x hx`. Establish `hU : (𝓤 G).HasBasis (fun _ : ℕ => True) (fun n => (fun p : G × G => p.2 / p.1) ⁻¹' (F n : Set G))`. Rewrite using `[uniformity_eq_comap_nhds_one G]`. Conclude with `hb.comap _`. Establish `hcs : CauchySeq x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU.cauchySeq_iff]`. Introduce `N _`. Take `⟨M, hM⟩` from `hx N`. Conclude with `⟨M, fun m hm n hn => hM m hm n hn⟩`. Take `⟨y, hy⟩` from `cauchySeq_tendsto_of_complete hcs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, fun N => ?_⟩` and prove the remaining obligations. Establish `h1 : Tendsto (fun n => x n / y) atTop (𝓝 1)`. Simplify using `using hy.div_const' y`. Conclude with `eventually_atTop.mp ((hb.tendsto_right_iff.mp h1) N trivial)`. Use the proof step `@[to_additive addFiltrationSeparated_of_hasBasis`.
-
-Use the proof step `]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem filtrationComplete_of_hasBasis {G : Type*} [Group G] [UniformSpace G]
     [IsRightUniformGroup G] [CompleteSpace G] {F : ℕ → Subgroup G}
@@ -222,9 +214,7 @@ theorem filtrationComplete_of_hasBasis {G : Type*} [Group G] [UniformSpace G]
 @[to_additive addFiltrationSeparated_of_hasBasis
 ]
 /- English proof (translation)
-Introduce `g hg`. Assume the negation of the conclusion as `hne`. Take `⟨i, -, hi⟩` from `hb.mem_iff.mp (isOpen_compl_singleton.mem_nhds (Set.mem_compl_singleton_iff.mpr (Ne.symm hne)))`. Conclude with `hi (hg i) rfl`. Use the proof step `@[to_additive map_eq_of_graded_surjective_of_hasBasis_add`.
-
-Use the proof step `]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem filtrationSeparated_of_hasBasis {H : Type*} [Group H] [TopologicalSpace H] [T1Space H]
     {E : ℕ → Subgroup H}
@@ -239,7 +229,7 @@ theorem filtrationSeparated_of_hasBasis {H : Type*} [Group H] [TopologicalSpace 
 @[to_additive map_eq_of_graded_surjective_of_hasBasis_add
 ]
 /- English proof (translation)
-The claim follows from `map_eq_of_graded_surjective hF hE (filtrationComplete_of_hasBasis hFb) (filtrationSeparated_of_hasBasis hEb) f hφ k hmap hgr`.
+A detailed English derivation is pending.
 -/
 theorem map_eq_of_graded_surjective_of_hasBasis {G H : Type*} [Group G] [UniformSpace G]
     [IsRightUniformGroup G] [CompleteSpace G] [Group H] [TopologicalSpace H] [T1Space H]

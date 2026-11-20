@@ -8,23 +8,23 @@ open scoped ContDiff Matrix
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Use `set T : ℕ → ℂ := fun k => mixTop (fun i : Fin n => if (i : ℕ) < k then K₁ else K₀) with hT`. Establish `hterm : ∀ j : Fin n, mixTop (intersection_update_fsHerm_neg_one K₁ (K₁ - K₀) K₀ j) = T ((j : ℕ) + 1) - T j`. Introduce `j`. Establish `hK : K₁ - K₀ = (1 : ℂ) • K₁ + (-1 : ℂ) • K₀`. Rewrite using `[one_smul, neg_one_smul, sub_eq_add_neg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK, GlobalTheory.T.polarisedTopChernCoeff_position_linear K₁ K₀ K₁ K₀ 1 (-1) j, one_mul, neg_one_mul, ← sub_eq_add_neg]`. Use `congr 1`. Simplify using `only [hT]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Unfold `intersection_update_fsHerm_neg_one`. Distinguish the cases in `h1 : i < j`. Establish `: (i : ℕ) < j + 1` using `by have := Fin.lt_def.mp h1; omega`. Simplify using `[h1, this]`. Distinguish the cases in `h2 : i = j`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Establish `h3 : ¬ ((i : ℕ) < j + 1)`. Establish `: j < i` using `lt_of_le_of_ne (not_lt.mp h1) (Ne.symm h2)`. Use `Fin.lt_def.mp this` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[h1, h2, h3]`. Simplify using `only [hT]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Unfold `intersection_update_fsHerm_neg_one`. Distinguish the cases in `h1 : i < j`. Establish `: (i : ℕ) < j` using `Fin.lt_def.mp h1`. Simplify using `[h1, this]`. Establish `: ¬ ((i : ℕ) < j)` using `fun h => h1 (Fin.lt_def.mpr h)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : i = j`. Simplify using `[h1, h2, this]`. Simplify using `[h1, h2, this]`. Rewrite using `[Finset.sum_congr rfl (fun j _ => hterm j)]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun k => T (k + 1) - T k) n, Finset.sum_range_sub]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (fun i : Fin n => if (i : ℕ) < n then K₁ else K₀) = fun _ => K₁`. Use function extensionality and compare the values at `i`. Simplify using `[i.isLt]`. Establish `e0 : (fun i : Fin n => if (i : ℕ) < 0 then K₁ else K₀) = fun _ => K₀`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `show mixTop _ - mixTop _ = _`. Rewrite using `[e1, e0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_mixTop_position_sub {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (K₁ K₀ : EndValuedForm11Coeffs n r) :
     ∑ j : Fin n, mixTop (intersection_update_fsHerm_neg_one K₁ (K₁ - K₀) K₀ j) = mixTop (fun _ => K₁) - mixTop fun _ => K₀ := by

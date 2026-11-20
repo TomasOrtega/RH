@@ -16,9 +16,9 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hunit : ∀ s : ((IsLocalRing.maximalIdeal O).comap ε).primeCompl, IsUnit (ε s)`. Introduce `s`. Assume the negation of the conclusion as `hs`. Apply `s.2` to reduce the goal to its premises. Use `show ε s ∈ IsLocalRing.maximalIdeal O`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hs`. Use `⟨IsLocalization.liftAlgHom (M := ((IsLocalRing.maximalIdeal O).comap ε).primeCompl) (S := Localization.AtPrime ((IsLocalRing.maximalIdeal O).comap ε)) hunit, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalization.liftAlgHom_apply]`. Conclude with `IsLocalization.lift_eq hunit h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algHom_localization_augmentation (O : Type) [CommRing O] [IsLocalRing O]
     (H : Type) [CommRing H] [Algebra O H] (ε : H →ₐ[O] O) :
@@ -38,9 +38,9 @@ theorem exists_algHom_localization_augmentation (O : Type) [CommRing O] [IsLocal
   exact IsLocalization.lift_eq hunit h
 
 /- English proof (translation)
-Introduce `O _ _ G _ _ n H _ _ _ _ y g hsm hy huniv h`. Take `⟨ε, hε, -⟩` from `huniv O 1 (one_pow n)`. Take `⟨εT, hεT⟩` from `exists_algHom_localization_augmentation O H ε`. Take `⟨S, _, _, π, x, a, ρ, hπ, hker, hkerε, ha, hρ, hρm⟩` from `GlobalTheory.T.torsion_local_presentation_smooth_group O G n H y g hsm hy huniv ε hε (Localization.AtPrime ((IsLocalRing.maximalIdeal O).comap ε)) εT hεT`. Take `⟨l, hl, hdvd, hlm⟩` from `GlobalTheory.T.exists_integral_of_local_presentation_pow O H ε g n (Localization.AtPrime ((IsLocalRing.maximalIdeal O).comap ε)) εT hεT S π x a ρ hπ hker hkerε ha hρ hρm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Θ, hΘ⟩` from `GlobalTheory.T.exists_diagonal_element_lmul_eq_nonzero_geometric_points O G n H y hy huniv ε l (ε l) hε hl rfl hlm`. Conclude with `dvd_trans hdvd (GlobalTheory.T.dvd_trace_of_tensor_lmul_eq O H Θ (ε l) hΘ h)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pow_dvd_trace_torsion :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] (G : Over (Sp O)) [GrpObj G] [IsCommMonObj G] (n : ℕ) (H : Type) [CommRing H] [Algebra O H] [Module.Finite O H] [Module.Free O H] (y : specO O H ⟶ G) (g : ℕ), SmoothOfRelativeDimension g G.hom → y ^ n = 1 → (∀ (S : Type) [CommRing S] [Algebra O S] (z : specO O S ⟶ G), z ^ n = 1 → ∃! φ : H →ₐ[O] S, ptMap φ ≫ y = z) → ∀ h : H, (n : O) ^ g ∣ Algebra.trace O H h := by

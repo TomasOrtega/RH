@@ -4,7 +4,7 @@ import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.differentiableOn_integral_integral_mul_cpow | exact GlobalTheory.differentiableOn_integral_integral_mul_cpow | (intros; apply GlobalTheory.differentiableOn_integral_integral_mul_cpow <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.holomorphic_parameter_integral : ∀ {α β : Type} [MeasurableSpace α] [MeasurableSpace β] (μK : Measure α) [IsFiniteMeasure μK] (μ : Measure β) [SFinite μ]
     (A : α → β → ℂ) (a : β → ℝ), Measurable a → (∀ l, 0 < a l) → AEStronglyMeasurable (Function.uncurry A) (μK.prod μ) →

@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.Fo
 namespace GlobalTheory.FormalAlg
 
 /- English proof (translation)
-Use `set m := Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))`. Take `⟨h0c, h0k, -⟩` from `GlobalTheory.T.baseChange_quotient_closedImmersion_idealSheaf R J W _ f (pullback.fst f m) (pullback.snd f m) (IsPullback.of_hasPullback f m)`. Take `⟨-, h1k, -⟩` from `GlobalTheory.T.baseChange_quotient_closedImmersion_idealSheaf R J T _ (i ≫ f) (pullback.fst (i ≫ f) m) (pullback.snd (i ≫ f) m) (IsPullback.of_hasPullback (i ≫ f) m)`. Use `haveI := h0c`. Rewrite using `[← h1k, ← h0k, ← Scheme.IdealSheafData.ker_fst_of_isClosedImmersion, ← pullbackRightPullbackFstIso_hom_fst f m i, Scheme.Hom.ker_comp_of_isIso]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseIdeal_comp_eq_comap (R : Type) [CommRing R] (J : Ideal R) {W T : Scheme.{0}}
     (f : W ⟶ Spec (CommRingCat.of R)) (i : T ⟶ W) :
@@ -24,7 +24,7 @@ theorem baseIdeal_comp_eq_comap (R : Type) [CommRing R] (J : Ideal R) {W T : Sch
     ← pullbackRightPullbackFstIso_hom_fst f m i, Scheme.Hom.ker_comp_of_isIso]
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.T.idealSheafData_map_sup_comap_closedImmersion T W i hi ⊥ (baseIdeal f J)).1`. Rewrite `h` using `[bot_sup_eq, Scheme.IdealSheafData.map_bot]`. Rewrite using `[baseIdeal_comp_eq_comap, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_baseIdeal_comp (R : Type) [CommRing R] (J : Ideal R) {W T : Scheme.{0}}
     (f : W ⟶ Spec (CommRingCat.of R)) (i : T ⟶ W) (hi : IsClosedImmersion i) :
@@ -34,15 +34,13 @@ theorem map_baseIdeal_comp (R : Type) [CommRing R] (J : Ideal R) {W T : Scheme.{
   rw [baseIdeal_comp_eq_comap, h]
 
 /- English proof (translation)
-Introduce `R _ J W T Y f i j q hi hj hq`. Use `haveI := hi`. Use `haveI := hj`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, hpb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, hbk, -⟩` from `GlobalTheory.T.baseChange_quotient_closedImmersion_idealSheaf R J T Y (i ≫ f) b q hpb`. Rewrite using `[← hb, Scheme.Hom.ker_comp, hbk, map_baseIdeal_comp R J f i hi]`. Introduce `hk set m := Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))`. Take `⟨h1c, h1k, -⟩` from `GlobalTheory.T.baseChange_quotient_closedImmersion_idealSheaf R J T _ (i ≫ f) (pullback.fst (i ≫ f) m) (pullback.snd (i ≫ f) m) (IsPullback.of_hasPullback (i ≫ f) m)`. Use `haveI := h1c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hker : (pullback.fst (i ≫ f) m ≫ i).ker = j.ker`. Rewrite using `[Scheme.Hom.ker_comp, h1k, map_baseIdeal_comp R J f i hi, hk]`. Set `e` to `IsClosedImmersion.lift (pullback.fst (i ≫ f) m ≫ i) j hker.le`. Establish `he : e ≫ pullback.fst (i ≫ f) m ≫ i = j` using `IsClosedImmersion.lift_fac _ _ _`. Use `haveI : IsIso e := IsClosedImmersion.isIso_of_ker_eq j _ e he hker.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : IsClosedImmersion m := IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hmono : Mono m` using `inferInstance`. Establish `hqe : e ≫ pullback.snd (i ≫ f) m = q`. Rewrite using `[← cancel_mono m, ← hq, Category.assoc, ← pullback.condition, ← he]`. Simplify using `only [Category.assoc]`.
-
-Use `⟨e ≫ pullback.fst (i ≫ f) m, by rw [Category.assoc, he], ?_⟩` and prove the remaining obligations. Rewrite using `[← hqe]`. Conclude with `IsPullback.of_iso (IsPullback.of_hasPullback (i ≫ f) m) (asIso e).symm (Iso.refl _) (Iso.refl _) (Iso.refl _) (by simp) (by simp) (by simp) (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduces_iff_ker_eq : ∀ (R : Type) [CommRing R] (J : Ideal R) (W T Y : Scheme.{0}) (f : W ⟶ Spec (CommRingCat.of R)) (i : T ⟶ W) (j : Y ⟶ W) (q : Y ⟶ Spec (CommRingCat.of (R ⧸ J))), IsClosedImmersion i → IsClosedImmersion j → j ≫ f = q ≫ (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))) → ((∃ b : Y ⟶ T, b ≫ i = j ∧ IsPullback b q (i ≫ f) (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)))) ↔ i.ker ⊔ baseIdeal f J = j.ker) := by
   intro R _ J W T Y f i j q hi hj hq

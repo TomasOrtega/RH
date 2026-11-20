@@ -18,7 +18,7 @@ open scoped Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction f (fun y => D y = 0) (fun a b ha hb => by rw [Derivation.leibniz, ha, hb, smul_zero, smul_zero, add_zero]) (Derivation.map_one_eq_zero D) h`.
+A detailed English derivation is pending.
 -/
 theorem derivation_prod_eq_zero_of_forall {F R : Type} [CommRing F] [CommRing R] [Algebra F R]
     (D : Derivation F R R) {ι : Type} (s : Finset ι) (f : ι → R) (h : ∀ i ∈ s, D (f i) = 0) :
@@ -28,53 +28,45 @@ theorem derivation_prod_eq_zero_of_forall {F R : Type} [CommRing F] [CommRing R]
     (Derivation.map_one_eq_zero D) h
 
 /- English proof (translation)
-Introduce `F A R _ _ _ _ _ _ _ _ _ _ _ _ P _ _ n m x e J hrsp hbs I hI b _hbF hbI hspan`. Take `⟨bs, hbs⟩` from `hbs`. Use `set φ := algebraMap A R with hφ`. Use `set r : Fin m → R := fun j => φ (x (e j)) with hr`. Use `set g : R := ∏ j ∈ J, r j with hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hφg : φ (∏ j ∈ J, x (e j)) = g` using `by rw [map_prod]`. Establish `hIg : I.map φ = Ideal.span {g}` using `by rw [hI, hφg]`. Set `dd : Fin n → Derivation F R R` to `fun i => (bs.coord i).compDer (KaehlerDifferential.D F R)`. Establish `hδ : ∀ i l, dd i (φ (x l)) = if l = i then 1 else 0`. Introduce `i l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `show bs.coord i (KaehlerDifferential.D F R (φ (x l))) = _`. Rewrite using `[← hbs l, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Set `hm : Fin n → R` to `fun l => if l ∈ J.map e then φ (x l) else 1`. Set `E : Fin n → Derivation F R R` to `fun i => hm i • dd i`. Establish `hEapp : ∀ i y, E i y = hm i * dd i y` using `fun i y => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hEg : ∀ i, E i g ∈ Ideal.span {g}`. Introduce `i`. Rewrite using `[hEapp]`. Distinguish the cases in `hi : i ∈ J.map e`. Take `⟨j0, hj0, rfl⟩` from `Finset.mem_map.mp hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsplit : g = r j0 * ∏ j ∈ J.erase j0, r j` using `(Finset.mul_prod_erase J r hj0).symm`. Establish `hrest : dd (e j0) (∏ j ∈ J.erase j0, r j) = 0`. Use `derivation_prod_eq_zero_of_forall _ _ _ fun j hj => ?_` and prove the remaining obligations. Establish `hne : e j ≠ e j0` using `fun h => (Finset.ne_of_mem_erase hj) (e.injective h)`. Use `show dd (e j0) (φ (x (e j))) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hδ, if_neg hne]`. Establish `hone : dd (e j0) (r j0) = 1` using `by show dd (e j0) (φ (x (e j0))) = 1`. Rewrite using `[hδ, if_pos rfl]`. Establish `hmv : hm (e j0) = r j0` using `if_pos hi`. Establish `: hm (e j0) * dd (e j0) g = g` using `by conv_lhs => rw [hsplit]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Derivation.leibniz, hrest, hone, hmv, smul_zero, zero_add, smul_eq_mul, mul_one, ← hsplit]`. Rewrite using `[this]`. Conclude with `Ideal.mem_span_singleton_self g`. Establish `: dd i g = 0`. Use `derivation_prod_eq_zero_of_forall _ _ _ fun j hj => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hne : e j ≠ i` using `fun h => hi (Finset.mem_map.mpr ⟨j, hj, h⟩)`. Use `show dd i (φ (x (e j))) = 0`. Rewrite using `[hδ, if_neg hne]`. Rewrite using `[this, mul_zero]`. Conclude with `Ideal.zero_mem _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hE : ∀ i, ∀ f ∈ I.map φ, E i f ∈ I.map φ`. Introduce `i f hf`. Rewrite `hf`, the goal using `[hIg]`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hf`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (hEg i)) (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self g))`. Use `choose N hN using fun i => GlobalTheory.T.logarithmicDerivation_localizationAtPrime_span_of_ring F A R P I n b hspan (E i) (hE i)`. Use `choose D' hD' using fun k => GlobalTheory.T.exists_derivation_extend_localization_atPrime ℤ A R P ((Algebra.linearMap A R).compDer (b k))`. Establish `hD'a : ∀ k a, D' k (φ a) = φ (b k a)` using `fun k a => hD' k a`. Establish `hD'I : ∀ k, ∀ f ∈ I.map φ, D' k f ∈ I.map φ`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, rfl⟩` from `hy`. Rewrite using `[hD'a]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_map_of_mem _ (hbI k a ha)`. Consider the case `zero => rw [map_zero]`. Conclude with `Ideal.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Ideal.add_mem _ hy hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `smul c y hy hy'`. Rewrite using `[smul_eq_mul, Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hy') (Ideal.mul_mem_right _ _ hy)`. Establish `hdiv : ∀ l k, ∃ c, φ (b k (x l)) = hm l * c`. Introduce `l k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hl : l ∈ J.map e`. Take `⟨j, hj, rfl⟩` from `Finset.mem_map.mp hl`. Establish `hgk : D' k g ∈ Ideal.span {g}`. Rewrite using `[← hIg]; exact hD'I k g (by rw [hIg]; exact Ideal.mem_span_singleton_self g)`. Use `GlobalTheory.T.dvd_derivation_of_mem_span_prod_params' R m r hrsp J (D' k) hgk j hj` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `this`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hmv : hm (e j) = r j` using `if_pos hl`. Rewrite using `[hmv, ← hc]`. Conclude with `(hD'a k (x (e j))).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨φ (b k (x l)), ?_⟩` and prove the remaining obligations. Establish `hmv : hm l = 1` using `if_neg hl`. Rewrite using `[hmv, one_mul]`. Use `choose M hM using hdiv`. Set `Bm : Matrix (Fin n) (Fin n) R` to `Matrix.of fun l k => φ (b k (x l))`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hBdet : φ (logDet b x) = Bm.det`. Rewrite using `[logDet, RingHom.map_det]`. Use `congr 1`. Establish `h1 : Bm = Matrix.diagonal hm * Matrix.of M`. Use extensionality with `l k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[Bm, Matrix.diagonal_mul, hM]`. Establish `h2 : Matrix.diagonal hm = Bm * (Matrix.of N).transpose`. Use extensionality with `l i`. Rewrite using `[Matrix.mul_apply]`. Establish `hsum : ∑ k, Bm l k * (Matrix.of N).transpose k i = ∑ k, N i k * φ (b k (x l))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[Bm, mul_comm]`. Rewrite using `[hsum, ← hN i (x l), hEapp, hδ, Matrix.diagonal_apply]`. Distinguish the cases in `hli : l = i`. Substitute `hli` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `[hli]`. Establish `hdetD : (Matrix.diagonal hm).det = g`. Rewrite using `[Matrix.det_diagonal]`. Establish `: ∏ l, hm l = ∏ l ∈ J.map e, φ (x l)`.
-
-Rewrite using `[← Finset.prod_filter]`. Use `congr 1`. Use extensionality with `l`. Simplify using the standard rewrite rules. Rewrite using `[this, Finset.prod_map]`.
-
-Use `haveI : IsDomain R := ReciprocityTheory.AnForm.R.isDomain_of_isRegularLocalRing`. Establish `hprime : ∀ j, Prime (r j)` using `ReciprocityTheory.AnForm.R.prime_of_regular_params r hrsp.1 hrsp.2`. Establish `hg0 : g ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun j _ => (hprime j).ne_zero`. Establish `hMN : (Matrix.of M).det * (Matrix.of N).transpose.det = 1`. Establish `h3 : Matrix.diagonal hm = Matrix.diagonal hm * (Matrix.of M * (Matrix.of N).transpose)` using `by conv_lhs => rw [h2, h1]`.
-
-Rewrite using `[Matrix.mul_assoc]`. Establish `h4` using `congrArg Matrix.det h3`. Rewrite `h4` using `[Matrix.det_mul, Matrix.det_mul, hdetD]`. Conclude with `(mul_left_cancel₀ hg0 (h4.symm.trans (mul_one g).symm))`. Use `⟨Units.mkOfMulEqOne _ _ hMN, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Units.val_mkOfMulEqOne, hφg, hBdet, h1, Matrix.det_mul, hdetD, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logDet_local_eq_unit_mul_prod :
     ∀ (F A R : Type) [Field F] [CommRing A] [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [IsRegularLocalRing R] [IsNoetherianRing A] [Algebra F A] [Algebra A R] [Algebra F R] [IsScalarTower F A R] [Algebra.FiniteType F A] (P : Ideal A) [P.IsPrime] [IsLocalization.AtPrime R P] (n m : ℕ) (x : Fin n → A) (e : Fin m ↪ Fin n) (J : Finset (Fin m)), ReciprocityTheory.AnForm.R.FinalTheorems.Rsp R m (fun j => algebraMap A R (x (e j))) → (∃ bs : Module.Basis (Fin n) R Ω[R⁄F], ∀ i, bs i = KaehlerDifferential.D F R (algebraMap A R (x i))) → ∀ (I : Ideal A), I.map (algebraMap A R) = Ideal.span {algebraMap A R (∏ j ∈ J, x (e j))} → ∀ (b : Fin n → Derivation ℤ A A), (∀ j c, b j (algebraMap F A c) = 0) → (∀ j, ∀ f ∈ I, b j f ∈ I) → (∀ D : Derivation ℤ A A, (∀ c, D (algebraMap F A c) = 0) → (∀ f ∈ I, D f ∈ I) → ∃ c : Fin n → A, D = ∑ j, c j • b j) → ∃ u : Rˣ, algebraMap A R (GlobalTheory.LogPole.logDet b x) = u * algebraMap A R (∏ j ∈ J, x (e j)) := by

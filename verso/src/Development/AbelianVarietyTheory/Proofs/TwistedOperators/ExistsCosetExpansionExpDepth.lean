@@ -15,9 +15,9 @@ namespace GlobalTheory.RowTest
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 /- English proof (translation)
-Establish `hV : ∀ X : Node, X.InRange D.R.m → (∀ j, X ≠ .grid 0 j) → Submodule.IsLattice D.host.E (G.Λ X)` using `fun X h h0 => (G.isV h h0).sd.1`. Use `⟨⟨hV (.top j) (show j ≤ D.R.m by omega) (by simp), hV (.top (j + 1)) (show j + 1 ≤ D.R.m by omega) (by simp)⟩, hV (.grid (j + 1) D.R.m) ⟨by omega, le_rfl⟩ (by simp), ?_⟩` and prove the remaining obligations. Break down `j with _ | i` into its components or cases. Use `show Submodule.IsLattice D.host.E (columnBlock L D.R.m).lat`. Rewrite using `[colY_m]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hF, -⟩` from `hL.βX`. Conclude with `GlobalTheory.DiagLiftFix.isLattice_of_isFrame hF`. Conclude with `hV (.grid (i + 1) D.R.m) ⟨by omega, le_rfl⟩ (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_pairs {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {μ₀ : T} (hL : L.Is μ₀)
     (t : T) (j : ℕ) (hj : j < D.R.m) :
@@ -41,13 +41,13 @@ section Coset
 variable {m n : ℕ}
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, h i j]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_nsmul_of {e : AE D} {u : Mx D m n} (c : ℕ) (h : IsHalf e u) : IsHalf e (c • u) := fun i j => by
   rw [Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, h i j]
 
 /- English proof (translation)
-Take `⟨u, -, hu, rfl⟩` from `h`. Introduce `i j`. Rewrite using `[Matrix.add_apply, mul_add, h0 i j, isHalf_nsmul_of K hu i j]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHalf_of_mem_halfCoset {e : AE D} {Λ : AddSubgroup (Mx D m n)} {K : ℕ} {x₀ x : Mx D m n} (h0 : IsHalf e x₀)
     (h : x ∈ halfCoset e Λ K x₀) : IsHalf e x := by
@@ -56,9 +56,9 @@ theorem isHalf_of_mem_halfCoset {e : AE D} {Λ : AddSubgroup (Mx D m n)} {K : �
   rw [Matrix.add_apply, mul_add, h0 i j, isHalf_nsmul_of K hu i j]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, hv', hx⟩`. Use `⟨v - u, sub_mem hv hu, fun i j => by rw [Matrix.sub_apply, mul_sub, hv' i j, hu' i j], ?_⟩` and prove the remaining obligations. Rewrite using `[nsmul_sub, ← add_sub_assoc, ← hx, add_sub_cancel_right]`. Introduce and unpack `⟨v, hv, hv', rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨v + u, add_mem hv hu, fun i j => by rw [Matrix.add_apply, mul_add, hv' i j, hu' i j], by rw [nsmul_add, add_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem add_nsmul_mem_halfCoset_iff {e : AE D} {Λ : AddSubgroup (Mx D m n)} {K : ℕ} {x₀ x u : Mx D m n} (hu : u ∈ Λ)
     (hu' : IsHalf e u) : x + K • u ∈ halfCoset e Λ K x₀ ↔ x ∈ halfCoset e Λ K x₀ := by
@@ -71,9 +71,9 @@ theorem add_nsmul_mem_halfCoset_iff {e : AE D} {Λ : AddSubgroup (Mx D m n)} {K 
       by rw [nsmul_add, add_assoc]⟩
 
 /- English proof (translation)
-Use `⟨fun x hx => isHalf_of_mem_halfCoset h0 (Set.mem_of_indicator_ne_zero hx), K, hK, fun u hu hu' x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ halfCoset e Λ K x₀`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem ((add_nsmul_mem_halfCoset_iff hu hu').2 hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (mt (add_nsmul_mem_halfCoset_iff hu hu').1 hx)]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, -, rfl⟩` from `Set.mem_of_indicator_ne_zero hx`. Rewrite using `[nsmul_add]`. Conclude with `add_mem h1 (nsmul_mem (nsmul_mem hu K) K)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSBHalf_halfCoset_indicator {e : AE D} {Λ : AddSubgroup (Mx D m n)} {K : ℕ} (hK : 0 < K) {x₀ : Mx D m n}
     (h0 : IsHalf e x₀) (h1 : K • x₀ ∈ Λ) : IsSBHalf e Λ ((halfCoset e Λ K x₀).indicator 1) := by
@@ -87,9 +87,9 @@ theorem isSBHalf_halfCoset_indicator {e : AE D} {Λ : AddSubgroup (Mx D m n)} {K
     exact add_mem h1 (nsmul_mem (nsmul_mem hu K) K)
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `hK`. Take `⟨-, h2, h3⟩` from `h.2.choose_spec`. Use `⟨fun x hx => ⟨h.1 x hx, ?_⟩, fun u hu hu' x => ?_⟩` and prove the remaining obligations. Rewrite using `[show h.2.choose * c = c * h.2.choose from mul_comm _ _, mul_smul]`. Conclude with `nsmul_mem (h3 x hx) c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul]`. Conclude with `h2 _ (nsmul_mem hu c) (isHalf_nsmul_of c hu') x`.
+A detailed English derivation is pending.
 -/
 theorem isSBHalf_of_dvd {e : AE D} {Λ : AddSubgroup (Mx D m n)} {f : Mx D m n → ℂ} (h : IsSBHalf e Λ f) {K : ℕ}
     (hK : h.2.choose ∣ K) :
@@ -103,13 +103,13 @@ theorem isSBHalf_of_dvd {e : AE D} {Λ : AddSubgroup (Mx D m n)} {f : Mx D m n �
     exact h2 _ (nsmul_mem hu c) (isHalf_nsmul_of c hu') x
 
 /- English proof (translation)
-Establish `key : ∀ r, x ∈ halfCoset e Λ K r → f r = f x`. Introduce and unpack `r ⟨u, hu, hu', rfl⟩`. Conclude with `(hf2 u hu hu' r).symm`. Distinguish the cases in `hx : f x = 0`. Rewrite using `[hx, eq_comm]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations. Distinguish the cases in `hm : x ∈ halfCoset e Λ K r`. Rewrite using `[key r hm, hx, zero_mul]`. Rewrite using `[Set.indicator_of_notMem hm, mul_zero]`. Take `⟨r₀, hr₀, hm⟩` from `hR2 x (hf1 x hx).1 (hf1 x hx).2`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single_of_mem r₀ hr₀, Set.indicator_of_mem hm, key r₀ hm, Pi.one_apply, mul_one]`. Introduce `r hr hne`. Rewrite using `[Set.indicator_of_notMem, mul_zero]`. Introduce `hm'`. Use `hne (hR3 r hr r₀ hr₀ ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(halfCoset_eq hm').symm.trans (halfCoset_eq hm)]`. Conclude with `mem_halfCoset_self _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem eq_sum_halfCoset_indicator {e : AE D} {Λ : AddSubgroup (Mx D m n)} {K : ℕ} {f : Mx D m n → ℂ}
     {R : Finset (Mx D m n)} (hf1 : ∀ x, f x ≠ 0 → IsHalf e x ∧ K • x ∈ Λ)
@@ -145,25 +145,25 @@ def cosetDatum {t : T} {p : Pair T} (d : FinDatum G t p) (K : ℕ) (r : WO (G.pS
   else d
 
 /- English proof (translation)
-Apply the tactic sequence `unfold cosetDatum; split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cosetDatum_P {t : T} {p : Pair T} (d : FinDatum G t p) (K : ℕ) (r) : (cosetDatum d K r).P = d.P := by
   unfold cosetDatum; split_ifs <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `unfold cosetDatum; split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cosetDatum_e {t : T} {p : Pair T} (d : FinDatum G t p) (K : ℕ) (r) : (cosetDatum d K r).e = d.e := by
   unfold cosetDatum; split_ifs <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `unfold cosetDatum; split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cosetIndicatorFinDatum_point {t : T} {p : Pair T} (d : FinDatum G t p) (K : ℕ) (r) : (cosetDatum d K r).z = d.z := by
   unfold cosetDatum; split_ifs <;> rfl
 
 /- English proof (translation)
-Substitute `he` using the available equality. Unfold `cosetDatum`. Rewrite using `[dif_pos ⟨hK, h1, h2⟩]`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetDatum_fn {t : T} {p : Pair T} (d : FinDatum G t p) {K : ℕ} {r} {e : AE D} (he : d.e = e) (hK : 0 < K)
     (h1 : IsHalf e r) (h2 : K • r ∈ pairLat G p) :
@@ -173,7 +173,7 @@ theorem cosetDatum_fn {t : T} {p : Pair T} (d : FinDatum G t p) {K : ℕ} {r} {e
   rw [dif_pos ⟨hK, h1, h2⟩]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨r, (cosetDatum_e d K r).symm ▸ h1, h2, by rw [cosetDatum_fn d rfl hK h1 h2, cosetDatum_e]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCosetDatum_cosetDatum {t : T} {p : Pair T} (d : FinDatum G t p) {K : ℕ} {r} (hK : 0 < K) (h1 : IsHalf d.e r)
     (h2 : K • r ∈ pairLat G p) : IsCosetDatum K (cosetDatum d K r) :=
@@ -184,7 +184,7 @@ section Reps
 variable {D : D7} {m n : ℕ}
 
 /- English proof (translation)
-Establish `hu : IsUnit (K : AE D)`. Rewrite using `[← map_natCast (algebraMap D.host.F (AE D))]`. Conclude with `(isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 hK.ne')).map _`. Rewrite `h` using `[nsmul_eq_mul, nsmul_eq_mul]`. Conclude with `hu.mul_left_cancel h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_cancel_ae {K : ℕ} (hK : 0 < K) {a b : AE D} (h : K • a = K • b) : a = b := by
   have hu : IsUnit (K : AE D) := by
@@ -194,34 +194,34 @@ theorem nsmul_cancel_ae {K : ℕ} (hK : 0 < K) {a b : AE D} (h : K • a = K •
   exact hu.mul_left_cancel h
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `nsmul_cancel_ae hK (by simpa only [Matrix.smul_apply] using congrFun (congrFun h i) j)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem nsmul_cancel_mx {K : ℕ} (hK : 0 < K) {x y : Mx D m n} (h : K • x = K • y) : x = y := by
   ext i j
   exact nsmul_cancel_ae hK (by simpa only [Matrix.smul_apply] using congrFun (congrFun h i) j)
 
 /- English proof (translation)
-Take `⟨F₀, hF₀, hF2⟩` from `hF`. Set `F` to `hF₀.toFinset`. Set `C : Mx D m n → Set (Mx D m n)` to `fun f => {x | IsHalf e x ∧ K • x ∈ Λ ∧ ∃ v ∈ Λ, K • x = f + (K * K) • v}`. Set `rep : Mx D m n → Mx D m n` to `fun f => if h : (C f).Nonempty then h.some else 0`. Establish `hrep : ∀ f, (C f).Nonempty → rep f ∈ C f` using `fun f h => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [rep, dif_pos h]`. Conclude with `h.some_mem`. Establish `hhalf : ∀ {x r w : Mx D m n}, IsHalf e x → IsHalf e r → K • x = K • r + (K * K) • w → IsHalf e w`. Introduce `x r w hx hr h i j`. Establish `hw : (K * K) • w = K • x - K • r` using `by rw [h]; abel`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : IsHalf e (K • x - K • r)` using `fun i j => by`. Rewrite using `[Matrix.sub_apply, mul_sub, isHalf_nsmul_of K hx i j, isHalf_nsmul_of K hr i j]`. Rewrite `hs` using `[← hw]`. Use `nsmul_cancel_ae (Nat.mul_pos hK hK) ?_` and prove the remaining obligations. Use `hs i j` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.smul_apply, nsmul_eq_mul, mul_left_comm]`. Rewrite using `[nsmul_eq_mul, nsmul_eq_mul]`. Conclude with `this`. Establish `hCeq : ∀ f f' : Mx D m n, (∃ w ∈ Λ, f' = f + (K * K) • w) → C f = C f'`. Introduce and unpack `f f' ⟨w, hw, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hKx, v, hv, h⟩`. Conclude with `⟨hx, hKx, v - w, sub_mem hv hw, by rw [h, nsmul_sub]; abel⟩`. Introduce and unpack `⟨hx, hKx, v, hv, h⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨hx, hKx, w + v, add_mem hw hv, by rw [h, nsmul_add]; abel⟩`. Use `⟨(F.filter fun f => (C f).Nonempty).image rep, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Take `⟨f, hf, rfl⟩` from `Finset.mem_image.1 hr`. Take `⟨h1, h2, -⟩` from `hrep f (Finset.mem_filter.1 hf).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨h1, h2⟩`. Introduce `x hx hKx`. Take `⟨f, hf, v, hv, hfv⟩` from `hF2 _ hKx`. Establish `hxC : x ∈ C f` using `⟨hx, hKx, v, hv, hfv⟩`. Use `⟨rep f, Finset.mem_image.2 ⟨f, Finset.mem_filter.2 ⟨hF₀.mem_toFinset.2 hf, x, hxC⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, -, w, hw, h2⟩` from `hrep f ⟨x, hxC⟩`. Establish `h3 : K • x = K • rep f + (K * K) • (v - w)` using `by rw [hfv, h2, nsmul_sub]; abel`. Use `⟨v - w, sub_mem hv hw, hhalf hx h1 h3, nsmul_cancel_mx hK ?_⟩` and prove the remaining obligations. Rewrite using `[h3, nsmul_add, mul_smul]`. Introduce `r hr r' hr' hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, rfl⟩` from `Finset.mem_image.1 hr`. Take `⟨f', hf', rfl⟩` from `Finset.mem_image.1 hr'`. Take `⟨-, -, w, hw, h1⟩` from `hrep f (Finset.mem_filter.1 hf).2`. Take `⟨-, -, w', hw', h2⟩` from `hrep f' (Finset.mem_filter.1 hf').2`. Take `⟨u, hu, -, h3⟩` from `hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : f' = f + (K * K) • (w + u - w')`. Establish `h5 : K • rep f' = K • rep f + (K * K) • u` using `by rw [h3, nsmul_add, mul_smul]`. Rewrite `h5` using `[h2, h1]`. Rewrite using `[nsmul_sub, nsmul_add, eq_sub_of_add_eq h5]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hCeq f f' ⟨_, sub_mem (add_mem hw hu) hw', h4⟩` as an intermediate fact. Simplify using `only [rep, this]`.
+A detailed English derivation is pending.
 -/
 theorem exists_halfCoset_reps {Λ : AddSubgroup (Mx D m n)} (e : AE D) {K : ℕ} (hK : 0 < K)
     (hF : ∃ F : Set (Mx D m n), F.Finite ∧ ∀ u ∈ Λ, ∃ f ∈ F, ∃ v ∈ Λ, u = f + (K * K) • v) :
@@ -289,29 +289,25 @@ section Main
 variable {U : Set T}
 
 /- English proof (translation)
-Introduce and unpack `⟨τ, e, he, hP, hsum⟩`. Use `set K : ℕ := ∏ d ∈ τ.support, ((∏ j, (d.1 j).sb.2.choose) * ∏ i, (d.2 i).sb.2.choose) with hKdef`. Establish `hKpos : 0 < K` using `Finset.prod_pos fun d _ => Nat.mul_pos (Finset.prod_pos fun j _ => (d.1 j).sb.2.choose_spec.1) (Finset.prod_pos fun i _ => (d.2 i).sb.2.choose_spec.1)`. Establish `hdvd1 : ∀ d ∈ τ.support, ∀ j, (d.1 j).sb.2.choose ∣ K` using `fun d hd j => (dvd_mul_of_dvd_left (Finset.dvd_prod_of_mem (fun j => (d.1 j).sb.2.choose) (Finset.mem_univ j)) _).trans (Finset.dvd_prod_of_mem (fun d : PureDat G t => (∏ j, (d.1 j).sb.2.choose) * ∏ i, (d.2 i).sb.2.choose) hd)`. Establish `hdvd2 : ∀ d ∈ τ.support, ∀ i, (d.2 i).sb.2.choose ∣ K` using `fun d hd i => (dvd_mul_of_dvd_right (Finset.dvd_prod_of_mem (fun i => (d.2 i).sb.2.choose) (Finset.mem_univ i)) _).trans (Finset.dvd_prod_of_mem (fun d : PureDat G t => (∏ j, (d.1 j).sb.2.choose) * ∏ i, (d.2 i).sb.2.choose) hd)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR1 : ∀ j : Fin D.R.m, ∃ R : Finset (WO (G.pS (.top t j)) (G.pT (.top t j))), (∀ r ∈ R, IsHalf e r ∧ K • r ∈ pairLat G (.top t j)) ∧ (∀ x, IsHalf e x → K • x ∈ pairLat G (.top t j) → ∃ r ∈ R, x ∈ halfCoset e (pairLat G (.top t j)) K r) ∧ ∀ r ∈ R, ∀ r' ∈ R, r' ∈ halfCoset e (pairL …` using `fun j => exists_halfCoset_reps e hKpos (GlobalTheory.LatFinMod.latO_finite_mod D _ _ _ _ (isLattice_pairs G hL t j j.2).1.1.fg (isLattice_pairs G hL t j j.2).1.2.fg _ (K * K) (Nat.mul_pos hKpos hKpos))`. Establish `hR2 : ∀ i : Fin D.R.m, ∃ R : Finset (WO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T))), (∀ r ∈ R, IsHalf e r ∧ K • r ∈ pairLat G (.chi i D.R.m)) ∧ (∀ x, IsHalf e x → K • x ∈ pairLat G (.chi i D.R.m) → ∃ r ∈ R, x ∈ halfCoset e (pairLat G (.chi i D.R.m)) K r) ∧ ∀ r …` using `fun i => exists_halfCoset_reps e hKpos (GlobalTheory.LatFinMod.latO_finite_mod D _ _ _ _ (isLattice_pairs G hL t i i.2).2.1.fg (isLattice_pairs G hL t i i.2).2.2.fg _ (K * K) (Nat.mul_pos hKpos hKpos))`. Use `choose R1 hR1 using hR1`. Use `choose R2 hR2 using hR2`. Use `set τ' : PureDat G t →₀ ℂ := (∑ d ∈ τ.support, ∑ ρ ∈ Fintype.piFinset R1, ∑ ρ' ∈ Fintype.piFinset R2, Finsupp.single (((fun j => cosetDatum (d.1 j) K (ρ j)), fun i => cosetDatum (d.2 i) K (ρ' i)) : PureDat G t) (τ d * (∏ j, (d.1 j).fn (ρ j)) * ∏ i, (d.2 i).fn (ρ' i))) with hτ'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hsupp : ∀ d' ∈ τ'.support, ∃ d ∈ τ.support, ∃ ρ ∈ Fintype.piFinset R1, ∃ ρ' ∈ Fintype.piFinset R2, d' = ((fun j => cosetDatum (d.1 j) K (ρ j)), fun i => cosetDatum (d.2 i) K (ρ' i))`. Introduce `d' hd'`. Rewrite `hd'` using `[hτ']`. Take `⟨d, hd, h1⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finsetSum hd')`. Take `⟨ρ, hρ, h2⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finsetSum h1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ', hρ', h3⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finsetSum h2)`. Conclude with `⟨d, hd, ρ, hρ, ρ', hρ', Finset.mem_singleton.1 (Finsupp.support_single_subset h3)⟩`. Use `⟨K, τ', hKpos, ⟨e, he, fun d' hd' => ?_, fun x y hx hy => ?_⟩, fun d' hd' => ?_⟩` and prove the remaining obligations. Take `⟨d, hd, ρ, -, ρ', -, rfl⟩` from `hsupp d' hd'`. Use `⟨fun j => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, b, c⟩` from `(hP d hd).1 j`. Conclude with `⟨(cosetDatum_P _ _ _).trans a, (cosetDatum_e _ _ _).trans b, (cosetIndicatorFinDatum_point _ _ _).trans c⟩`. Take `⟨a, b, c⟩` from `(hP d hd).2 i`. Conclude with `⟨(cosetDatum_P _ _ _).trans a, (cosetDatum_e _ _ _).trans b, (cosetIndicatorFinDatum_point _ _ _).trans c⟩`. Set `g : PureDat G t → ℂ → ℂ` to `fun d c => c * (∏ j, (d.1 j).fn (x j)) * ∏ i, (d.2 i).fn (y i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h0 : ∀ d, g d 0 = 0` using `fun d => by simp [g]`. Establish `hadd : ∀ d b₁ b₂, g d (b₁ + b₂) = g d b₁ + g d b₂` using `fun d b₁ b₂ => by simp only [g]; ring`. Rewrite using `[← hsum x y hx hy]`. Express the relevant statement in the definitionally equal form `Finsupp.sum τ' g = τ.sum g`. Rewrite using `[hτ', ← Finsupp.sum_finsetSum_index h0 hadd, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.sum_finsetSum_index h0 hadd]`. Repeatedly rewrite using `[← Finsupp.sum_finsetSum_index h0 hadd, Finsupp.sum_single_index (h0 _)]`. Establish `hA : ∀ j, (d.1 j).fn (x j) = ∑ r ∈ R1 j, (d.1 j).fn r * (halfCoset e (pairLat G (.top t j)) K r).indicator 1 (x j)` using `fun j => by`. Establish `h` using `isSBHalf_of_dvd (d.1 j).sb (hdvd1 d hd j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[((hP d hd).1 j).2.1]`. Conclude with `eq_sum_halfCoset_indicator h.1 h.2 (hR1 j).2.1 (hR1 j).2.2 (x j)`. Establish `hB : ∀ i, (d.2 i).fn (y i) = ∑ r ∈ R2 i, (d.2 i).fn r * (halfCoset e (pairLat G (.chi i D.R.m)) K r).indicator 1 (y i)` using `fun i => by`. Establish `h` using `isSBHalf_of_dvd (d.2 i).sb (hdvd2 d hd i)`. Rewrite `h` using `[((hP d hd).2 i).2.1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `eq_sum_halfCoset_indicator h.1 h.2 (hR2 i).2.1 (hR2 i).2.2 (y i)`. Simplify using `only [g]`. Rewrite using `[Finset.prod_congr rfl fun j _ => hA j, Finset.prod_congr rfl fun i _ => hB i, Finset.prod_univ_sum, Finset.prod_univ_sum]`. Use `conv_rhs => rw [mul_assoc, Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ρ hρ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_rhs => rw [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ρ' hρ' => ?_` and prove the remaining obligations. Rewrite `hρ`, `hρ'` using `[Fintype.mem_piFinset]`. Rewrite using `[Finset.prod_congr rfl fun j _ => congrFun (cosetDatum_fn (d.1 j) ((hP d hd).1 j).2.1 hKpos ((hR1 j).1 _ (hρ j)).1 ((hR1 j).1 _ (hρ j)).2) (x j), Finset.prod_congr rfl fun i _ => congrFun (cosetDatum_fn (d.2 i) ((hP d hd).2 i).2.1 hKpos ((hR2 i).1 _ (hρ' i)).1 ((hR2 i).1 _ (hρ' i …`. Expand and normalize the polynomial expressions, which then agree.
-
-Take `⟨d, hd, ρ, hρ, ρ', hρ', rfl⟩` from `hsupp d' hd'`. Rewrite `hρ`, `hρ'` using `[Fintype.mem_piFinset]`. Use `⟨fun j => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `(hR1 j).1 _ (hρ j)`. Conclude with `isCosetDatum_cosetDatum _ hKpos (((hP d hd).1 j).2.1 ▸ h.1) h.2`.
-
-Establish `h` using `(hR2 i).1 _ (hρ' i)`. Conclude with `isCosetDatum_cosetDatum _ hKpos (((hP d hd).2 i).2.1 ▸ h.1) h.2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_cosetExpansion {μ₀ : T} (hL : L.Is μ₀) (S : GridChoice W U) (t : T) (Φ : G.Datum) (β : CosFam G t) :
     (∃ τ, S.IsExpansion t Φ β τ) → ∃ k τ', IsCosetExpansion S t Φ β k τ' := by
@@ -403,7 +399,7 @@ theorem exists_cosetExpansion {μ₀ : T} (hL : L.Is μ₀) (S : GridChoice W U)
 end Main
 
 /- English proof (translation)
-Take `⟨k, τ', h'⟩` from `exists_cosetExpansion hL S t Φ β h`. Conclude with `h'.exists_expDepth`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_cosetExpansion_expDepth {U : Set T} {μ₀ : T} (hL : L.Is μ₀) (S : GridChoice W U) (t : T) (Φ : G.Datum)
     (β : CosFam G t) (h : ∃ τ, S.IsExpansion t Φ β τ) : ∃ τ', IsCosetExpansion S t Φ β (expDepth S t Φ β) τ' := by

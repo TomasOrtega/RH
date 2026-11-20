@@ -26,25 +26,21 @@ open scoped Topology
 namespace GlobalTheory.CompanionTheory.WcB.Decay
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ hχ hχ1 σ hσ μ _ Φ hΦ hΦc`. Take `⟨C₁, hC₁, hlat⟩` from `GlobalTheory.T.weil_whittaker_support_quadratic_extension F E χ hχ hχ1 Φ hΦ hΦc`. Take `⟨C₂, hC₂, hvol⟩` from `GlobalTheory.T.weil_character_twist_nontrivial_galois F E σ hσ μ`. Take `⟨B, hB⟩` from `hΦ.continuous.bounded_above_of_compact_support hΦc`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnorm : ∀ (κ : F) (ξ u : E), ‖(χ (κ * Algebra.norm F u - Algebra.trace F E (ξ * u)) : ℂ) * Φ u‖ = ‖Φ u‖`. Introduce `κ ξ u`. Rewrite using `[norm_mul, Circle.norm_coe, one_mul]`. Establish `hA : ∀ (κ : F) (ξ : E), ‖gaussI χ μ Φ κ ξ‖ ≤ ∫ u, ‖Φ u‖ ∂μ`. Introduce `κ ξ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `gaussI`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun u => hnorm κ ξ u)`. Use `⟨max (∫ u, ‖Φ u‖ ∂μ) (B * (C₂ * C₁)), fun κ ξ => ?_⟩` and prove the remaining obligations. Break down `le_or_gt (modulus κ : ℝ) 1 with h1 | h1` into its components or cases.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[max_eq_left h1, mul_one]`. Conclude with `(hA κ ξ).trans (le_max_left _ _)`. Rewrite using `[max_eq_right h1.le]`. Establish `hκ : κ ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h0 : (modulus (0 : F) : ℝ) = 0` using `by simp`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : (0 : ℝ) < modulus κ` using `by linarith`. Take `⟨M, hMc, hMo, hMΦ, hMχ, hMx⟩` from `hlat κ`. Establish `hI` using `GlobalTheory.T.weil_whittaker_bound_quadratic_extension F E χ hχ σ hσ μ Φ hΦ hΦc κ ξ M hMc hMo hMΦ hMχ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set S : Set E := {u : E | ∀ r ∈ M, χ (Algebra.trace F E ((algebraMap F E κ * σ u - ξ) * r)) = 1} with hS`. Use `set T : Set E := {u : E | (modulus (algebraMap F E κ * σ u - ξ) : ℝ) ≤ C₁ * (modulus κ : ℝ)} with hT`. Establish `hST : S ⊆ T`. Introduce `u hu`. Use `hMx _ hu` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[max_eq_right h1.le]`. Then use the resulting hypothesis. Establish `hR : 0 < C₁ * (modulus κ : ℝ)` using `mul_pos hC₁ hpos`. Establish `hμT : μ T ≤ ENNReal.ofReal (C₂ * (C₁ * (modulus κ : ℝ)) / (modulus κ : ℝ) ^ 2)` using `hvol κ hκ ξ _ hR`. Establish `hμS : μ S ≤ ENNReal.ofReal (C₂ * (C₁ * (modulus κ : ℝ)) / (modulus κ : ℝ) ^ 2)` using `(measure_mono hST).trans hμT`. Establish `hfin : μ S < ⊤` using `hμS.trans_lt ENNReal.ofReal_lt_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hreal : μ.real S ≤ C₂ * (C₁ * (modulus κ : ℝ)) / (modulus κ : ℝ) ^ 2` using `ENNReal.toReal_le_of_le_ofReal (by positivity) hμS`. Establish `hbound : ‖gaussI χ μ Φ κ ξ‖ ≤ B * μ.real S`. Rewrite using `[hI]`. Use `norm_setIntegral_le_of_norm_le_const hfin fun u _ => ?_` and prove the remaining obligations. Rewrite using `[hnorm]`.
-
-Conclude with `hB u`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right (hbound.trans ?_) hpos.le` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left hreal hB0`. Use `_ = B * (C₂ * C₁) := by`.
-
-Clear the denominators using the available nonvanishing facts. Use `_ ≤ _ := le_max_right _ _`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem gaussI_decay : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle), Continuous χ → χ ≠ 1 → ∀ σ : E ≃ₐ[F] E, σ ≠ AlgEquiv.refl → ∀ (μ : Measure E) [μ.IsAddHaarMeasure] (Φ : E → ℂ), IsLocallyConstant Φ → HasCompactSupport Φ → ∃ C : ℝ, ∀ (κ : F) (ξ : E), ‖gaussI χ μ Φ κ ξ‖ * max 1 (modulus κ : ℝ) ≤ C := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ hχ hχ1 σ hσ μ _ Φ hΦ hΦc

@@ -23,9 +23,9 @@ theorem singleTens_tmul (v : Pl F) (a : Fv F v) (x : E) :
     singleTens E v (a ⊗ₜ[F] x) = GlobalTheory.LatVac.liftV v a ⊗ₜ[F] x := rfl
 
 /- English proof (translation)
-Use `AddSubgroup.subset_closure ⟨GlobalTheory.LatVac.liftV v a * c, ?_, ?_, o • x, X.L.smul_mem o hx, y, hy, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[smul_eq_mul, mul_left_comm, ← smul_eq_mul u c, hc u hu, mul_zero]`. Rewrite using `[map_mul, GlobalTheory.LatVac.evFin_liftV]`. Conclude with `mul_mem ha hcv`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `only [singleTens_tmul, Matrix.smul_apply, incM, Matrix.map_apply, Matrix.vecMulVec_apply, smul_eq_mul, Pi.smul_apply, Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply, inclR]`. Express the relevant statement in the definitionally equal form `_ * ((c ⊗ₜ[F] (1:E)) * ((1:AF F) ⊗ₜ[F] (x i * y j))) = ((GlobalTheory.LatVac.liftV v a * c) ⊗ₜ[F] (1:E)) * ((1:AF F) ⊗ₜ[F] ((o:E) * x i * y j))`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tmul_smul_gen_mem {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v : Pl F) {a : Fv F v}
     (ha : a ∈ v.adicCompletionIntegers F) (o : 𝓞 E) {c : AF F} (hc : At (evFin F v) c)
@@ -44,15 +44,11 @@ theorem tmul_smul_gen_mem {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v : Pl F)
     simp only [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, mul_assoc]
 
 /- English proof (translation)
-Use `intLoc_induction (p := fun y => singleTens E v y • γ ∈ latAtV X W v) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce `a ha o`. Proceed by induction on `hγ using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨c, hc, hcv, x, hx, y', hy', rfl⟩` from `hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `tmul_smul_gen_mem X W v ha o hc hcv hx hy'`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ h h' => rw [smul_add]`. Conclude with `add_mem h h'`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `neg z _ h => rw [smul_neg]`. Conclude with `neg_mem h`. Use `show singleTens E v 0 • γ ∈ latAtV X W v`. Rewrite using `[map_zero, zero_smul]`. Conclude with `zero_mem _`.
-
-Introduce `y z h h' show singleTens E v (y + z) • γ ∈ latAtV X W v`. Rewrite using `[map_add, add_smul]`. Conclude with `add_mem h h'`. Introduce `y h show singleTens E v (-y) • γ ∈ latAtV X W v`. Rewrite using `[map_neg, neg_smul]`.
-
-Conclude with `neg_mem h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem singleTens_smul_mem {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v : Pl F) {y : Fv F v ⊗[F] E}
     (hy : y ∈ intLoc F E v) {γ : Matrix (Fin n) (Fin d) (AE F E)} (hγ : γ ∈ latAtV X W v) :
@@ -76,7 +72,7 @@ theorem singleTens_smul_mem {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v : Pl 
     rw [map_neg, neg_smul]; exact neg_mem h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `splitProj t (compFin F E v (singleTens E v (splitIdem hcm t))) = 1`. Rewrite using `[compFin_singleTens_self, splitProj_splitIdem]`. Express the relevant statement in the definitionally equal form `splitProj (t.comp σ) (compFin F E v (singleTens E v (splitIdem hcm t))) = 0`. Rewrite using `[compFin_singleTens_self, splitProj_comp_splitIdem]`.
+Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem piW_splitIdemAd {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {v : Pl F} (t : E →ₐ[F] Fv F v) :
     piW t (splitIdemAd hcm t) = 1 ∧ piW (t.comp σ) (splitIdemAd hcm t) = 0 := by
@@ -87,9 +83,9 @@ theorem piW_splitIdemAd {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {v : Pl F} (
     rw [compFin_singleTens_self, splitProj_comp_splitIdem]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d hcm X W v t γ hγ`. Establish `h1 : splitIdemAd hcm t • γ ∈ latAtV X W v` using `singleTens_smul_mem X W v (splitIdem_mem hcm t) hγ`. Take `⟨e1, e0⟩` from `piW_splitIdemAd hcm t`. Use `⟨splitIdemAd hcm t • γ, h1, γ - splitIdemAd hcm t • γ, sub_mem hγ h1, (add_sub_cancel _ _).symm, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `[smul_eq_mul, e0]`. Use extensionality with `i j`. Simplify using `[smul_eq_mul, e1]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem latAtV_decomp : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ},
     IsCMExt F E σ → ∀ (X : Spc F E n) (W : Spc F E d) (v : Pl F) (t : E →ₐ[F] Fv F v), ∀ γ ∈ latAtV X W v,

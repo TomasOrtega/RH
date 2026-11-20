@@ -12,19 +12,15 @@ namespace GlobalTheory.ModelClosure
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Establish `hξ : (s (genericPoint X)).asIdeal = ⊥`. Establish `h` using `(genericPoint_specializes x).map s.continuous`. Rewrite `h` using `[← PrimeSpectrum.le_iff_specializes]`. Conclude with `le_bot_iff.1 (hx ▸ h)`. Establish `hsup : ⨆ U : {U : X.affineOpens // ((U : X.Opens) : Set X).Nonempty}, (U.1 : X.Opens) = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Establish `hy : y ∈ ⨆ U : X.affineOpens, (U : X.Opens)` using `by rw [iSup_affineOpens_eq_top]; trivial`. Take `⟨U, hU⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, y, hU⟩, hU⟩`. Use `HasRingHomProperty.of_iSup_eq_top (P := @Flat) (fun U : {U : X.affineOpens // ((U : X.Opens) : Set X).Nonempty} ↦ U.1) hsup fun U ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨U, hUa⟩, ⟨u, hu⟩⟩` from `U`. Use `haveI : Nonempty (U : X.Opens) := ⟨⟨u, hu⟩⟩`. Rewrite using `[← RingHom.Flat.respectsIso.cancel_left_isIso (Scheme.ΓSpecIso (.of O)).inv]`. Use `letI := ((s.appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (.of O)).inv.hom).toAlgebra`. Use `(IsDedekindDomain.flat_iff_torsion_eq_bot (R := O) (M := Γ(X, U))).mpr ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[eq_bot_iff]`. Introduce and unpack `a ⟨⟨r, hr⟩, ha⟩`. Establish `ha' : s.appLE ⊤ U le_top ((Scheme.ΓSpecIso (.of O)).inv r) * a = 0` using `ha`. Use `(mul_eq_zero.1 ha').resolve_left fun h0 => ?_` and prove the remaining obligations. Establish `hb` using `Scheme.basicOpen_appLE s U ⊤ le_top ((Scheme.ΓSpecIso (.of O)).inv r)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hb` using `[h0, Scheme.basicOpen_zero]`. Establish `hmem : genericPoint X ∈ (U : X.Opens) ⊓ s ⁻¹ᵁ (Sp O).basicOpen ((Scheme.ΓSpecIso (.of O)).inv r)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `((genericPoint_specializes u).mem_open U.isOpen hu)`. Use `show s (genericPoint X) ∈ (Sp O).basicOpen ((Scheme.ΓSpecIso (.of O)).inv r)`.
-
-Rewrite using `[basicOpen_eq_of_affine]`. Use `show r ∉ (s (genericPoint X)).asIdeal`. Rewrite using `[hξ]`. Conclude with `nonZeroDivisors.ne_zero hr`. Rewrite `hmem` using `[← hb]`.
-
-Conclude with `hmem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_of_isIntegral {O : Type} [CommRing O] [IsDedekindDomain O] {X : Scheme.{0}}
     [IsIntegral X] (s : X ⟶ Sp O) (x : X) (hx : (s x).asIdeal = ⊥) : Flat s := by
@@ -62,7 +58,7 @@ theorem flat_of_isIntegral {O : Type} [CommRing O] [IsDedekindDomain O] {X : Sch
   exact hmem
 
 /- English proof (translation)
-Establish `h` using `(genericPoint_spec Y).image g.continuous`. Rewrite `h` using `[Set.image_univ, g.surjective.range_eq, closure_univ]`. Conclude with `h.eq (genericPoint_spec Y')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_genericPoint {Y Y' : Scheme.{0}} [IsIntegral Y] [IsIntegral Y'] (g : Y ⟶ Y')
     [Surjective g] : g (genericPoint Y) = genericPoint Y' := by
@@ -71,7 +67,7 @@ theorem map_genericPoint {Y Y' : Scheme.{0}} [IsIntegral Y] [IsIntegral Y'] (g :
   exact h.eq (genericPoint_spec Y')
 
 /- English proof (translation)
-Use `⟨fun t => ?_⟩` and prove the remaining obligations. Establish `h : closure {genericPoint Y'} ⊆ Set.range g` using `closure_minimal (by rintro _ rfl; exact ⟨y, hy⟩) hg.isClosed_range`. Establish `h2` using `(genericPoint_spec Y').def`. Conclude with `h (h2 ▸ Set.mem_univ t)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem surjective_of_genericPoint {Y Y' : Scheme.{0}} [IsIntegral Y'] (g : Y ⟶ Y')
     (hg : IsClosedMap g) (y : Y) (hy : g y = genericPoint Y') : Surjective g := by
@@ -86,21 +82,19 @@ end GlobalTheory.ModelClosure
 namespace GlobalTheory.ModelClosure
 
 /- English proof (translation)
-Introduce `O _ _ _ B B₁ B₂ f₁ f₂`. Take `⟨z, hz₁, hz₂⟩` from `Scheme.Pullback.exists_preimage_pullback (f := f₁.f) (g := f₂.f) (genericPoint B₁.X) (genericPoint B₂.X) ((map_genericPoint f₁.f).trans (map_genericPoint f₂.f).symm)`. Set `j` to `(pullback f₁.f f₂.f).fromSpecResidueField z`. Choose the witnesses or unpack the hypotheses as in `⟨ζ, hζ⟩ : z ∈ Set.range j.imageι := by`. Rewrite using `[GlobalTheory.range_imageι j, Scheme.range_fromSpecResidueField]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `subset_closure rfl`. Set `ι` to `j.imageι`. Set `s` to `ι ≫ pullback.fst f₁.f f₂.f ≫ B₁.str`. Establish `hproj : IsProjOver s`. Establish `e : s = (ι ≫ pullback.mapDesc f₁.f f₂.f B.str) ≫ pullback.fst (f₁.f ≫ B.str) (f₂.f ≫ B.str) ≫ f₁.f ≫ B.str`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [s, pullback.mapDesc, pullback.map, Category.assoc, pullback.lift_fst_assoc, Category.comp_id, f₁.comp_str]`. Rewrite using `[e]`. Use `GlobalTheory.ProjSpace.isProjOver_comp_of_isClosedImmersion _ ?_` and prove the remaining obligations. Use `GlobalTheory.ProjSpace.isProjOver_pullback ?_ ?_` and prove the remaining obligations. Rewrite using `[f₁.comp_str]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `B₁.isProjOver`. Rewrite using `[f₂.comp_str]`. Conclude with `B₂.isProjOver`. Establish `hs : s ζ = B₁.str (genericPoint B₁.X)` using `by show B₁.str (pullback.fst f₁.f f₂.f (ι ζ)) = _`. Rewrite using `[show ι ζ = z from hζ, hz₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hflat : Flat s` using `flat_of_isIntegral s ζ (by`. Rewrite using `[hs]`. Conclude with `GlobalTheory.Vert.Model.mem_gen_iff_eq_bot.1 B₁.genericPoint_mem_gen)`. Set `Z : GlobalTheory.Vert.Model O` to `{ X := j.image, str := s, isIntegral := inferInstance, isProjOver := hproj, flat := hflat }`. Use `haveI : IsProper f₁.f := GlobalTheory.Vert.Model.isProper_of_comp_str f₁.comp_str`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsProper f₂.f := GlobalTheory.Vert.Model.isProper_of_comp_str f₂.comp_str`. Set `h₁ : GlobalTheory.Vert.Model.Hom Z B₁` to `{ f := ι ≫ pullback.fst f₁.f f₂.f comp_str := by simp [Z, s] surjective := surjective_of_genericPoint _ (ι ≫ pullback.fst f₁.f f₂.f).isClosedMap ζ (by show pullback.fst f₁.f f₂.f (ι ζ) = _; rw [show ι ζ = z from hζ, hz₁]) }`. Set `h₂ : GlobalTheory.Vert.Model.Hom Z B₂` to `{ f := ι ≫ pullback.snd f₁.f f₂.f comp_str := by`. Simplify using `only [Z, s, Category.assoc, ← f₂.comp_str, ← f₁.comp_str]`. Rewrite using `[pullback.condition_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `surjective := surjective_of_genericPoint _ (ι ≫ pullback.snd f₁.f f₂.f).isClosedMap ζ (by show pullback.snd f₁.f f₂.f (ι ζ) = _; rw [show ι ζ = z from hζ, hz₂]) }`. Establish `w : h₁.f ≫ f₁.f = h₂.f ≫ f₂.f`. Simplify using `only [h₁, h₂, Category.assoc, pullback.condition]`. Use `⟨Z, h₁, h₂, w, ?_⟩` and prove the remaining obligations. Establish `e : pullback.lift h₁.f h₂.f w = ι`.
-
-Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `pullback.lift_fst _ _ _`. Conclude with `pullback.lift_snd _ _ _`. Rewrite using `[e]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem exists_model_closedImmersion_pullback : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (B B₁ B₂ : GlobalTheory.Vert.Model O) (f₁ : GlobalTheory.Vert.Model.Hom B₁ B) (f₂ : GlobalTheory.Vert.Model.Hom B₂ B),

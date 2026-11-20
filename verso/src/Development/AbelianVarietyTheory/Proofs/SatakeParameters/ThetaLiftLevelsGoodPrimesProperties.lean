@@ -17,11 +17,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.GoodPrimes
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use `((Formalism.DivisionValues.conjPl P).isMaximal.eq_of_le P'.isPrime.ne_top ?_).symm` and prove the remaining obligations. Use `Ideal.map_le_iff_le_comap.2 fun c hc => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c', h1, h2⟩` from `h c hc`. Establish `: Formalism.DivisionValues.cO _ c = c'` using `RingOfIntegers.ext h2.symm`. Use `show Formalism.DivisionValues.cO _ c ∈ P'.asIdeal`. Rewrite using `[this]` and apply the resulting hypothesis. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Conclude with `fun c hc => ⟨Formalism.DivisionValues.cO _ c, Ideal.mem_map_of_mem _ hc, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem isConjPl_iff {D : D7} {P P' : Pl D.host.E} : Formalism.IndefR.Lev.IsConjPl P P' ↔ P' = Formalism.DivisionValues.conjPl P := by
   constructor
@@ -37,15 +37,13 @@ theorem isConjPl_iff {D : D7} {P P' : Pl D.host.E} : Formalism.IndefR.Lev.IsConj
     exact fun c hc => ⟨Formalism.DivisionValues.cO _ c, Ideal.mem_map_of_mem _ hc, rfl⟩
 
 /- English proof (translation)
-Establish `hsub : (Q.asIdeal : Set (𝓞 D.host.E)) ⊆ P.asIdeal ∪ (Formalism.DivisionValues.conjPl P).asIdeal`. Introduce `x hx`. Establish `hfix : star ((x : D.host.E) * star (x : D.host.E)) = (x : D.host.E) * star (x : D.host.E)`. Rewrite using `[star_mul', star_star, mul_comm]`. Take `⟨y, hy⟩` from `(D.sp.cm.fixed ((x : D.host.E) * star (x : D.host.E))).1 hfix`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hint : IsIntegral ℤ y`. Rewrite using `[← isIntegral_algebraMap_iff (algebraMap D.host.F D.host.E).injective]`. Establish `e : algebraMap D.host.F D.host.E y = ((x * Formalism.DivisionValues.cO _ x : 𝓞 D.host.E) : D.host.E)` using `hy`. Rewrite using `[e]`. Conclude with `(x * Formalism.DivisionValues.cO _ x).isIntegral_coe`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) ⟨y, hint⟩ = x * Formalism.DivisionValues.cO _ x` using `RingOfIntegers.ext hy`. Establish `h1 : (⟨y, hint⟩ : 𝓞 D.host.F) ∈ (Q.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap _ (𝓞 D.host.E) _ ∈ Q.asIdeal`. Rewrite using `[hn]`. Conclude with `Ideal.mul_mem_right _ _ hx`. Rewrite `h1` using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) ⟨y, hint⟩ ∈ P.asIdeal` using `h1`. Rewrite `h2` using `[hn]`. Use `(P.isPrime.mem_or_mem h2).imp id fun h3 => ?_` and prove the remaining obligations. Establish `h4 : Formalism.DivisionValues.cO _ (Formalism.DivisionValues.cO _ x) ∈ (Formalism.DivisionValues.conjPl P).asIdeal` using `Ideal.mem_map_of_mem _ h3`. Establish `e : Formalism.DivisionValues.cO _ (Formalism.DivisionValues.cO _ x) = x` using `RingOfIntegers.ext (star_star (x : D.host.E))`.
-
-Rewrite `h4` using `[e]`. Conclude with `h4`. Conclude with `(Ideal.subset_union.1 hsub).imp (fun h => HeightOneSpectrum.ext (Q.isMaximal.eq_of_le P.isPrime.ne_top h)) (fun h => HeightOneSpectrum.ext (Q.isMaximal.eq_of_le (Formalism.DivisionValues.conjPl P).isPrime.ne_top h))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_or_conj_of_under_eq {D : D7} {P Q : Pl D.host.E} (h : Q.under (𝓞 D.host.F) = P.under (𝓞 D.host.F)) :
     Q = P ∨ Q = Formalism.DivisionValues.conjPl P := by
@@ -77,11 +75,11 @@ theorem eq_or_conj_of_under_eq {D : D7} {P Q : Pl D.host.E} (h : Q.under (𝓞 D
     (fun h => HeightOneSpectrum.ext (Q.isMaximal.eq_of_le (Formalism.DivisionValues.conjPl P).isPrime.ne_top h))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h hP`. Take `⟨x, hx, hy⟩` from `h _ hP`. Conclude with `hy (algebraMap _ _ x) rfl hx`. Introduce `h v hv`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `h` to reduce the goal to its premises. Establish `: v = P.under (𝓞 D.host.F)`. Use `HeightOneSpectrum.ext (v.isMaximal.eq_of_le (P.under (𝓞 D.host.F)).isPrime.ne_top fun x hx => ?_)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, h1, h2⟩` from `hc x hx`. Establish `e : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x = y` using `RingOfIntegers.ext h1.symm`. Use `show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x ∈ P.asIdeal`. Rewrite using `[e]` and apply the resulting hypothesis. Rewrite using `[← this]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem offS_iff {D : D7} (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (P : Pl D.host.E) :
     OffS D S P ↔ P.under (𝓞 D.host.F) ∉ S := by
@@ -102,25 +100,23 @@ theorem offS_iff {D : D7} (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (P : 
     rwa [← this]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL`. Establish `hQ : R.Q A.μ0 = ∅`. Use `Finset.eq_empty_of_forall_notMem fun PP h => ?_` and prove the remaining obligations. Use `(hL.Q_ram A.μ0 PP).2 (Or.inl h) ?_` and prove the remaining obligations. Rewrite using `[hL.xi_base]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun x _ => rfl`. Establish `hcc` using `fun w : Pl D.host.E => Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl w`. Use `⟨hQ, fun t P hP => ⟨fun hg => ?_, fun PP h => ?_, fun PP h => ?_⟩, fun SF hSF P => ?_, fun hF t P hP => ?_⟩` and prove the remaining obligations. Establish `hk : ∃ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Rewrite `hg` using `[Nat.cast_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `P.isPrime.mem_or_mem hg with h | h` into its components or cases. Use `exacts [⟨0, h⟩, ⟨1, h⟩]`. Take `⟨k, hk⟩` from `hk`. Break down `GlobalTheory.ConjOverQuad.div_or_conj_div D R.C.P k P hk with h | ⟨w', h, hw⟩` into its components or cases. Conclude with `(hP P (Or.inl ((hL.Pg P).2 ⟨k, h⟩))).1 rfl`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hP w' (Or.inl ((hL.Pg w').2 ⟨k, h⟩))).2 (isConjPl_iff.2 ?_)` and prove the remaining obligations. Rewrite `hw` using `[Formalism.DivisionValues.GluingInclusion.conjIdeal_eq]`. Rewrite using `[HeightOneSpectrum.ext hw, hcc]`. Take `⟨h1, h2⟩` from `hP PP h`. Rewrite `h2`, the goal using `[isConjPl_iff]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun e => h2 (by rw [e, hcc]), fun e => h1 ?_⟩` and prove the remaining obligations. Rewrite using `[← hcc PP, ← e, hcc]`. Rewrite `h` using `[hQ]`. Conclude with `hP PP (Or.inl (h.resolve_right (Finset.notMem_empty _)))`. Rewrite using `[offS_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h PP hPP`. Rewrite `hPP` using `[hQ]`. Establish `hPP'` using `hPP.resolve_right (Finset.notMem_empty _)`. Establish `key : PP.under (𝓞 D.host.F) ≠ P.under (𝓞 D.host.F)` using `fun e => h ((hSF _).2 ⟨PP, hPP', by rw [← e]; rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun e => key (by rw [e]), fun e => key (GlobalTheory.LevelPlaces.under_eq_of_isConjPl e)⟩`. Introduce `h hm`. Take `⟨PP, hPP, e⟩` from `(hSF _).1 hm`. Take `⟨h1, h2⟩` from `h PP (Or.inl hPP)`. Establish `e' : P.under (𝓞 D.host.F) = PP.under (𝓞 D.host.F)` using `HeightOneSpectrum.ext e.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `eq_or_conj_of_under_eq e' with h3 | h3` into its components or cases. Conclude with `h1 h3.symm`. Conclude with `h2 (isConjPl_iff.2 h3)`. Take `⟨gramR, c0R, c0L, hT⟩` from `hF.tie`. Take `⟨h1, h2, h3⟩` from `(hT.ok t P).1 hP`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1`, `h3` using `[Formalism.DivisionValues.GluingInclusion.conjIdeal_eq]`. Use `⟨fun PP h => ?_, fun e => h1 (by rw [e]), ?_⟩` and prove the remaining obligations. Establish `hm : PP ∈ (R.Sb : Set (Pl D.host.E)) ∪ (R.Q t : Set (Pl D.host.E))` using `h.imp (fun h => hF.Sb h) id`. Use `⟨fun e => h2 (e ▸ hm), fun hc => h3 PP hm ?_⟩` and prove the remaining obligations. Rewrite using `[isConjPl_iff.1 hc, hcc]`.
-
-Rewrite using `[hT.q P, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_primes : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.toLevCh.Is A.μ0 → R.Q A.μ0 = ∅ ∧ (∀ t P, Good R t P → ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal ∧ Good R t (Formalism.DivisionValues.conjPl P) ∧ Good R A.μ0 P) ∧ (∀ SF, IsSF R SF → ∀ P, OffS D SF P ↔ Good R A.μ0 P) ∧ (R.IsFam → ∀ t, ∀ P ∈ A.ok t, Good R t (R.pl P) ∧ Formalism.DivisionValues.conjPl (R.pl P) ≠ R.pl P ∧ A.q P = Ideal.absNorm (R.pl P).asIdeal) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL

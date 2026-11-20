@@ -34,14 +34,14 @@ namespace GlobalTheory.ThK.UnrBound
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.local_l_factor_product_bounded s hs`.
+A detailed English derivation is pending.
 -/
 theorem euler_bound (s : ℕ) (hs : 2 ≤ s) : ∃ C : ℝ, ∀ S : Finset (Pl F),
     ∏ v ∈ S, ‖Lv (fun _ : HeightOneSpectrum (𝓞 E) => ({1} : Multiset ℂˣ)) v (s : ℂ)‖ ≤ C :=
   GlobalTheory.T.local_l_factor_product_bounded s hs
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.local_unitary_integral_ideles_factor σ K hKc v μK hμK μE hμE g r hg`.
+A detailed English derivation is pending.
 -/
 theorem integral_reduce (σ : E →ₐ[F] E) {n : ℕ} {X : Spc F E n} (K : Subgroup (UA σ X.J))
     (hKc : IsClosed (K : Set (UA σ X.J))) (v : Pl F) (μK : Measure (KAt K (evFin F v))) (hμK : IsNormK K (evFin F v) μK)
@@ -52,13 +52,13 @@ theorem integral_reduce (σ : E →ₐ[F] E) {n : ℕ} {X : Spc F E n} (K : Subg
   GlobalTheory.T.local_unitary_integral_ideles_factor σ K hKc v μK hμK μE hμE g r hg
 
 /- English proof (translation)
-Establish `hψ : Continuous B.ψ` using `hX.base.std.1`. Establish `hM` using `hX.geo.hM`. Establish `hvac : G.M.vac v ∈ SB _` using `(hM.vac v).1`. Establish `hfix : locOp v (om (k, 1)) (G.M.vac v) = G.M.vac v` using `locOp_eq hvac hvac (GlobalTheory.T.stabilizer_fixes_spherical_vacuum_vector σ B G X om om' hX K hK v hv k hk)`. Rewrite using `[coneFinInt, hfix, (locOp_rho G.M.co hψ v (shiftA H H' l) hvac).2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hl' : (unitFin F E v l : Fv F v ⊗[F] E) ∈ GlobalTheory.SnMass.locId v (idA σ H.𝔟 H'.𝔟)`. Rewrite using `[GlobalTheory.VacShift.vac_fixed σ B G G₁ H H' X om om' hX hC v l hl hl', (hev v).1, Set.indicator_of_mem (show l ∈ {l : (AE F E)ˣ | (unitFin F E v l : Fv F v ⊗[F] E) ∈ GlobalTheory.SnMass.locId v (idA σ H.𝔟 H'.𝔟)} from hl')]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : ev v (schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M.co v (shiftA H H' l)) (G.M.vac v)) = 0`. Take `⟨γ, hγv, hγ0, hγL, hne⟩` from `GlobalTheory.SuppOut.exists_lat_pair_ne_one σ B G G₁ H H' X om om' hX hC v l hl hl'`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsb : schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M.co v (shiftA H H' l)) (G.M.vac v) ∈ SB _` using `GlobalTheory.SchrSB.schr_mem_SB B.ψ hψ v _ _ hvac`. Establish `h1` using `GlobalTheory.ThK.EvLocInv.ev_schr_of_mem B G.M G₁.M H.ι H'.ι (isoA H H') e he hψ hM hM₁ ei ev hei hev hfac v γ (Or.inl hγ0) hγv _ hsb`. Rewrite `h1` using `[GlobalTheory.CommVac.commVac σ B G G₁ H H' X om om' hX hC v γ hγv hγ0 hγL, map_smul]`. Establish `h2 : (GlobalTheory.LatVac.psiAt B.ψ v (evFin F v (symp (cA σ) (-1) (incM F G.V.J) (incM F G.W.J) γ (shiftA H H' l))) - 1) • ev v (schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M.co v (shiftA H H' l)) (G.M.vac v)) = 0`. Rewrite using `[sub_smul, one_smul, h1, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(smul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hne)`. Rewrite using `[h0, Set.indicator_of_notMem (show l ∉ {l : (AE F E)ˣ | (unitFin F E v l : Fv F v ⊗[F] E) ∈ GlobalTheory.SnMass.locId v (idA σ H.𝔟 H'.𝔟)} from hl')]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem int_vac (σ : E →ₐ[F] E) (B : Base F E) {b a' : ℕ} (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
     (H' : Plane E (b + 2 + a') (b + a')) (hC : CfgA B G G₁ H H') (X : Chars F E) (om : Rep σ G.V G.W)
@@ -100,13 +100,13 @@ theorem int_vac (σ : E →ₐ[F] E) (B : Base F E) {b a' : ℕ} (G : Geo σ (b 
     simp
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.UnrTate.integral_locId_eq_unrFac (1 : Chr F E) 𝔞 h𝔞 v (fun w _ x _ => by simp [locChar]) s hs μ hμ`. Establish `e : ∀ l : idelesAt E (evFin F v), Set.indicator {l : idelesAt E (evFin F v) | (unitFin F E v l.1 : Fv F v ⊗[F] E) ∈ GlobalTheory.SnMass.locId v 𝔞} (fun l => ((1 : Chr F E) l.1 : ℂ) * ((absE F E l.1 : ℝ) : ℂ) ^ s) l = ((Set.indicator {l : idelesAt E (evFin F v) | (unitFin F E v l. …`. Introduce `l`. Distinguish the cases in `h : l ∈ {l : idelesAt E (evFin F v) | (unitFin F E v l.1 : Fv F v ⊗[F] E) ∈ GlobalTheory.SnMass.locId v 𝔞}`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem h]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem h]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[e, integral_complex_ofReal]`. Establish `h2 : unrFac (1 : Chr F E) 𝔞 (s : ℂ) v = Lv (fun _ : HeightOneSpectrum (𝓞 E) => ({1} : Multiset ℂˣ)) v (s : ℂ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[unrFac, Finset.prod_eq_one, one_mul]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `[charFam, UnrAt, locChar]`. Introduce `w hw`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h0 w hw]`. Simplify using `[npow]`. Rewrite `h1` using `[h2]`. Rewrite using `[← h1, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (integral_nonneg fun l => ?_)]`. Conclude with `Set.indicator_nonneg (fun _ _ => by positivity) _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_abs (𝔞 : FractionalIdeal (𝓞 E)⁰ E) (h𝔞 : 𝔞 ≠ 0) (v : Pl F)
     (h0 : ∀ w ∈ aboveF (L := E) F v, FractionalIdeal.count E w 𝔞 = 0) (s : ℕ) (hs : 0 < s)
@@ -143,31 +143,27 @@ end GlobalTheory.ThK.UnrBound
 namespace GlobalTheory.ThK.UnrBound
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _hP B b a' G G₁ H H' hC e he ei ev hE K hK μKv hμKv μEv hμEv μKi _ μEi _ X om om' hX hM₁ φ T hφ hT y`. Take `⟨hei, hev, hfac⟩` from `hE`. Establish `hz2 : 2 ≤ (b + 2 - a') / 2` using `by have := hX.geo.eBig; omega`. Establish `h𝔞 : idA σ H.𝔟 H'.𝔟 ≠ 0`. Take `⟨h𝔟0, -⟩` from `GlobalTheory.PlaneIdeal.plane_ideal_trivial σ B H G.V G₁.V 0 (b + 1) _ _ hX.base hX.geo.hV hC.hH (by omega) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h𝔠0, -⟩` from `GlobalTheory.T.adapted_plane_skew_ideal_coprime_lt σ B H' G.W G₁.W 0 (b + 1) _ _ hX.base hX.geo.hW hC.hH' (by omega) (by omega)`. Conclude with `mul_ne_zero (mul_ne_zero h𝔟0 (inv_ne_zero (conjI_ne_zero σ h𝔠0))) (inv_ne_zero diffE_ne_zero)`. Establish `hstd : {v : Pl F | ¬ G₁.M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1}.Finite` using `Filter.eventually_cofinite.1 hM₁.std`. Establish `hyf : {v : Pl F | ¬ ∀ i, evFin F v (y i) ∈ v.adicCompletionIntegers F}.Finite` using `Filter.eventually_cofinite.1 (Filter.eventually_all.2 fun i => (y i).2.2)`. Establish `haf : {v : Pl F | ∃ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v ∧ FractionalIdeal.count E w (idA σ H.𝔟 H'.𝔟) ≠ 0}.Finite`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors (idA σ H.𝔟 H'.𝔟))).image (fun w : HeightOneSpectrum (𝓞 E) => w.under (𝓞 F))).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨w, rfl, hw⟩`. Conclude with `⟨w, hw, rfl⟩`. Set `S₀ : Finset (Pl F)` to `T ∪ X.T ∪ (hstd.union (hyf.union haf)).toFinset`. Establish `hgood : ∀ v ∉ S₀, v ∉ T ∧ v ∉ X.T ∧ G₁.M.vac v (fun i => evFin F v (y i)) = 1 ∧ ∀ w ∈ aboveF (L` using `E) F v, FractionalIdeal.count E w (idA σ H.𝔟 H'.𝔟) = 0 := by`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Simplify using `only [S₀, Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_union, Set.mem_setOf_eq, not_or, not_not, not_exists, not_and] at hv`. Take `⟨⟨hvT, hvX⟩, hvs, hvy, hva⟩` from `hv`. Use `⟨hvT, hvX, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hvs, Set.indicator_of_mem (show (fun i => evFin F v (y i)) ∈ {x : Fin b × Fin (b + a') → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hvy)]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `hva w (mem_aboveF.1 hw)`. Establish `hunr : ∀ v ∉ X.T, ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → UnrAt X.ν w`. Introduce `v hv w hw`. Rewrite using `[Chars.ν, div_eq_mul_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hX.chars.unrα w fun h => hv (hw ▸ h)).mul (hX.chars.unrβ w fun h => hv (hw ▸ h)).inv`. Establish `hpt : ∀ v ∉ S₀, ∀ k ∈ KAt K (evFin F v), ∀ l ∈ idelesAt E (evFin F v), coneFinInt B G.M om v (ev v) (shiftA H H') X.ν ((b + 2 - a') / 2) (φ v) k l (fun i => evFin F v (y i)) = Set.indicator {l : (AE F E)ˣ | (unitFin F E v l : Fv F v ⊗[F] E) ∈ GlobalTheory.SnMass.locId v (idA σ H. …`. Introduce `v hv k hk l hl`. Take `⟨hvT, hvX, hy1, -⟩` from `hgood v hv`. Rewrite using `[hT v hvT, int_vac σ B G G₁ H H' hC X om om' hX hM₁ e he ei ev hei hev hfac K hK v hvX k hk l hl _ _, hy1, mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hKc : IsClosed (K : Set (UA σ G.V.J))`. Establish `e1 : (K : Set (UA σ G.V.J)) = (GlobalTheory.StabHaar.stabK (σ` using `σ) B G.V : Set (UA σ G.V.J)) := Set.ext fun g => (hK g).trans (GlobalTheory.StabHaar.isStab_stabK (σ := σ) B G.V g).symm`. Rewrite using `[e1]`. Conclude with `GlobalTheory.StabHaar.isClosed_stabK B G.V (GlobalTheory.LatHatClosed.isClosed_latHat F E _ G.V hX.geo.hV.lat)`. Establish `hI : ∀ v ∉ S₀, ∫ q : UA σ G.V.J × (AE F E)ˣ, ‖coneFinInt B G.M om v (ev v) (shiftA H H') X.ν ((b + 2 - a') / 2) (φ v) q.1 q.2 (fun i => evFin F v (y i))‖ ∂(((μKv v).map Subtype.val).prod ((μEv v).map Subtype.val)) = ‖Lv (fun _ : HeightOneSpectrum (𝓞 E) => ({1} : Multiset ℂˣ)) v ( …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Take `⟨-, -, -, h0⟩` from `hgood v hv`. Rewrite using `[integral_reduce σ K hKc v (μKv v) (hμKv v) (μEv v) (hμEv v) _ (Set.indicator {l : idelesAt E (evFin F v) | (unitFin F E v l.1 : Fv F v ⊗[F] E) ∈ GlobalTheory.SnMass.locId v (idA σ H.𝔟 H'.𝔟)} (fun l => (absE F E l.1 : ℝ) ^ ((b + 2 - a') / 2))) ?_]`. Conclude with `integral_abs _ h𝔞 v h0 _ (by omega) (μEv v) (hμEv v)`. Introduce `k hk l hl show ‖coneFinInt B G.M om v (ev v) (shiftA H H') X.ν ((b + 2 - a') / 2) (φ v) k l (fun i => evFin F v (y i))‖ = _`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpt v hv k hk l hl]`. Distinguish the cases in `h : (unitFin F E v l : Fv F v ⊗[F] E) ∈ GlobalTheory.SnMass.locId v (idA σ H.𝔟 H'.𝔟)`. Rewrite using `[Set.indicator_of_mem (show l ∈ {l : (AE F E)ˣ | (unitFin F E v l : Fv F v ⊗[F] E) ∈ GlobalTheory.SnMass.locId v (idA σ H.𝔟 H'.𝔟)} from h), Set.indicator_of_mem (show (⟨l, hl⟩ : idelesAt E (evFin F v)) ∈ {l : idelesAt E (evFin F v) | (unitFin F E v l.1 : Fv F v ⊗[F] E) ∈ GlobalTh …`. Rewrite using `[norm_mul, Circle.norm_coe, one_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (NNReal.coe_nonneg _)]`. Rewrite using `[Set.indicator_of_notMem (show l ∉ {l : (AE F E)ˣ | (unitFin F E v l : Fv F v ⊗[F] E) ∈ GlobalTheory.SnMass.locId v (idA σ H.𝔟 H'.𝔟)} from h), Set.indicator_of_notMem (show (⟨l, hl⟩ : idelesAt E (evFin F v)) ∉ {l : idelesAt E (evFin F v) | (unitFin F E v l.1 : Fv F v ⊗[F] E) ∈ Gl …`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Cζ, hCζ⟩` from `euler_bound (F := F) (E := E) ((b + 2 - a') / 2) hz2`. Set `I : Pl F → ℝ` to `fun v => ∫ q : UA σ G.V.J × (AE F E)ˣ, ‖coneFinInt B G.M om v (ev v) (shiftA H H') X.ν ((b + 2 - a') / 2) (φ v) q.1 q.2 (fun i => evFin F v (y i))‖ ∂(((μKv v).map Subtype.val).prod ((μEv v).map Subtype.val))`. Use `⟨S₀, (∏ v ∈ S₀, I v) * Cζ, fun v hv k hk l hl => ?_, fun S hS => ?_⟩` and prove the remaining obligations. Establish `hl'` using `unitsAt_le v hl`. Take `⟨-, hvX, -, h0⟩` from `hgood v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hord` using `(GlobalTheory.UnrTate.mem_unitsAt_iff v hl').1 hl`. Establish `hmem : (unitFin F E v l : Fv F v ⊗[F] E) ∈ GlobalTheory.SnMass.locId v (idA σ H.𝔟 H'.𝔟)` using `(GlobalTheory.UnrTate.memLocId_iff v h𝔞 _).2 fun w hw => by rw [h0 w hw, hord w hw]`. Establish `hν : (X.ν l : ℂ) = 1`. Rewrite using `[← ideleAt_unitFin hl', GlobalTheory.UnrTate.nu_ideleAt X.ν v (hunr v hvX)]`. Conclude with `Finset.prod_eq_one fun w hw => by rw [hord w hw, zpow_zero]`.
-
-Rewrite using `[hpt v hv k hk l hl', Set.indicator_of_mem (show l ∈ {l : (AE F E)ˣ | (unitFin F E v l : Fv F v ⊗[F] E) ∈ GlobalTheory.SnMass.locId v (idA σ H.𝔟 H'.𝔟)} from hmem), hν, absE_of_mem_unitsAt hl]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm, Finset.prod_sdiff hS]`. Use `_ = (∏ v ∈ S₀, I v) * ∏ v ∈ S \ S₀, ‖Lv (fun _ : HeightOneSpectrum (𝓞 E) => ({1} : Multiset ℂˣ)) v (((b + 2 - a') / 2 : ℕ) : ℂ)‖ := by`.
-
-Use `congr 1`. Conclude with `Finset.prod_congr rfl fun v hv => hI v (Finset.mem_sdiff.1 hv).2`. Use `_ ≤ (∏ v ∈ S₀, I v) * Cζ := mul_le_mul_of_nonneg_left (hCζ (S \ S₀)) (Finset.prod_nonneg fun v _ => integral_nonneg fun _ => norm_nonneg _)`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem unr_integrand_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), GlobalTheory.FunPr.Hypotheses₂ → ∀ (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
     (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

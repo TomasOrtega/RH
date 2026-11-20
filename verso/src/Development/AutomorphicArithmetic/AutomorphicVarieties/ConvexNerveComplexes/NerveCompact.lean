@@ -7,9 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConvexNerveComplex
 open Set UpperTheory.V.ConeExtensionAcyclic
 
 /- English proof (translation)
-Apply `((hfin.toFinset.powerset : Finset (Finset I)).finite_toSet).subset` to reduce the goal to its premises. Introduce and unpack `σ ⟨x, hxX, hx⟩`. Rewrite using `[Finset.mem_coe, Finset.mem_powerset]`. Introduce `j hj`. Rewrite using `[Set.Finite.mem_toFinset]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨x, hxX, hx j hj⟩`.
+Supply the required witnesses or components.
 -/
 private theorem faces_finite {I F : Type} (X : Set F) (A : I → Set F)
     (hfin : {i | (X ∩ A i).Nonempty}.Finite) :
@@ -22,7 +22,7 @@ private theorem faces_finite {I F : Type} (X : Set F) (A : I → Set F)
   exact ⟨x, hxX, hx j hj⟩
 
 /- English proof (translation)
-Establish `hsub : {σ : Finset I | ∃ x ∈ Y, ∀ j ∈ σ, x ∈ A j} ⊆ {σ : Finset I | ∃ x ∈ X, ∀ j ∈ σ, x ∈ A j}`. Introduce and unpack `τ ⟨x, hx, hxt⟩`. Conclude with `⟨x, hYX hx, hxt⟩`. Conclude with `Set.ncard_lt_ncard ((Set.ssubset_iff_of_subset hsub).2 ⟨σ, h1, h2⟩) (faces_finite X A hfin)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem faces_lt {I F : Type} (X Y : Set F) (A : I → Set F)
     (hfin : {i | (X ∩ A i).Nonempty}.Finite) (hYX : Y ⊆ X) (σ : Finset I)
@@ -35,21 +35,19 @@ private theorem faces_lt {I F : Type} (X Y : Set F) (A : I → Set F)
   exact Set.ncard_lt_ncard ((Set.ssubset_iff_of_subset hsub).2 ⟨σ, h1, h2⟩) (faces_finite X A hfin)
 
 /- English proof (translation)
-Introduce `I F _ _ X A hc hcv hne hcl hca hfin hcov`. It suffices to establish `key : ∀ n : ℕ, ∀ X : Set F, {σ : Finset I | ∃ x ∈ X, ∀ j ∈ σ, x ∈ A j}.ncard = n → IsCompact X → Convex ℝ X → X.Nonempty → {i | (X ∩ A i).Nonempty}.Finite → (∀ x ∈ X, ∃ i, x ∈ A i) → Acyc (nerve X A) by`. Conclude with `key _ X rfl hc hcv hne hfin hcov`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `_ n ih`. Introduce `X hn hc hcv hne hfin hcov`. Distinguish the cases in `hcone : ∃ x ∈ X, ∀ i, (X ∩ A i).Nonempty → x ∈ A i`. Take `⟨x, hxX, hx⟩` from `hcone`. Take `⟨a, ha⟩` from `hcov x hxX`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `acyc_cone _ a` to reduce the goal to its premises. Introduce `m t ht`. Simplify using `only [nerve, Set.mem_setOf_eq] at ht ⊢`. Take `⟨y, hyX, hy⟩` from `ht`. Use `⟨x, hxX, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => simpa using ha`. Consider the case `succ k => simpa using hx (t k) ⟨y, hyX, hy k⟩`. Take `⟨f, u, i, σ, hi, hiu, hσ, hσu⟩` from `nerve_sep X A hc hcv hne hcl hca hfin hcone`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcut` using `nerve_cut X A f u hcv hca`. Establish `step : ∀ (Y : Set F) (τ : Finset I), Y ⊆ X → IsCompact Y → Convex ℝ Y → Y.Nonempty → (∃ x ∈ X, ∀ j ∈ τ, x ∈ A j) → (¬ ∃ x ∈ Y, ∀ j ∈ τ, x ∈ A j) → Acyc (nerve Y A)`. Introduce `Y τ hYX hYc hYv hYn h1 h2`. Establish `hfinY : {i | (Y ∩ A i).Nonempty}.Finite` using `hfin.subset (fun k hk => Set.Nonempty.mono (Set.inter_subset_inter hYX subset_rfl) hk)`. Conclude with `ih _ ((faces_lt X Y A hfin hYX τ h1 h2).trans_eq hn) Y rfl hYc hYv hYn hfinY (fun x hx => hcov x (hYX hx))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfc : Continuous f` using `f.continuous`. Take `⟨p, hp⟩` from `hi`. Take `⟨q, hqX, hq⟩` from `hσ`. Establish `hpu : f p < u` using `hiu p hp`. Establish `hqu : u < f q` using `hσu q hqX hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, hfr⟩ : u ∈ f '' X` from `hcv.isPreconnected.intermediate_value hp.1 hqX hfc.continuousOn ⟨hpu.le, hqu.le⟩`. Establish `A1 : Acyc (nerve (X ∩ {x | f x ≤ u}) A)` using `step _ σ Set.inter_subset_left (hc.inter_right (isClosed_le hfc continuous_const)) (hcv.inter ((convex_Iic u).linear_preimage f.toLinearMap)) ⟨p, hp.1, hpu.le⟩ ⟨q, hqX, hq⟩ (fun ⟨x, hx, hxs⟩ => absurd hx.2 (not_le.mpr (hσu x hx.1 hxs)))`. Establish `A2 : Acyc (nerve (X ∩ {x | u ≤ f x}) A)` using `step _ {i} Set.inter_subset_left (hc.inter_right (isClosed_le continuous_const hfc)) (hcv.inter ((convex_Ici u).linear_preimage f.toLinearMap)) ⟨q, hqX, hqu.le⟩ ⟨p, hp.1, fun j hj => (Finset.mem_singleton.mp hj) ▸ hp.2⟩ (fun ⟨x, hx, hxs⟩ => absurd hx.2 (not_le.mpr (hiu x ⟨hx.1, h …`. Establish `A0 : Acyc (nerve (X ∩ {x | f x = u}) A)` using `step _ σ Set.inter_subset_left (hc.inter_right (isClosed_eq hfc continuous_const)) (hcv.inter ((convex_singleton u).linear_preimage f.toLinearMap)) ⟨r, hr, hfr⟩ ⟨q, hqX, hq⟩ (fun ⟨x, hx, hxs⟩ => (hσu x hx.1 hxs).ne' hx.2)`. Rewrite using `[hcut.1]`.
-
-Conclude with `acyc_union (nerve (X ∩ {x | f x ≤ u}) A) (nerve (X ∩ {x | u ≤ f x}) A) (nerve_faceClosed _ _) (nerve_faceClosed _ _) A1 A2 (hcut.2 ▸ A0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ConeExtensionAcyclic.nerve_compact :
     ∀ {I F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] (X : Set F) (A : I → Set F), IsCompact X → Convex ℝ X → X.Nonempty → (∀ i, IsClosed (A i)) → (∀ i, Convex ℝ (A i)) → {i | (X ∩ A i).Nonempty}.Finite → (∀ x ∈ X, ∃ i, x ∈ A i) → Acyc (nerve X A) := by

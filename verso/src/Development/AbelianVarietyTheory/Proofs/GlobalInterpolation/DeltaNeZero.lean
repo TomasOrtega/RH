@@ -20,7 +20,7 @@ variable {X : Fields} {D : D7} (s : Seam D X) {cc : Ideal (𝓞 D.host.K)} {δ :
 def reidx (a b : ℕ) : VCx X.Tau a b ≃ₗ[ℂ] TaylorLogMetric.VC D a b := LinearEquiv.funCongrLeft ℂ (Fin b → Fin a → ℂ) s.iT.symm
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∑ τ, ∑ i, ∑ j, x (s.iT.symm τ) i j * (starRingEnd ℂ) (y (s.iT.symm τ) i j)) / (A : ℂ) = ((A⁻¹ : ℝ) : ℂ) * ∑ τ, ∑ i, ∑ j, x τ i j * (starRingEnd ℂ) (y τ i j)`. Rewrite using `[Equiv.sum_comp s.iT.symm (fun τ => ∑ i, ∑ j, x τ i j * (starRingEnd ℂ) (y τ i j)), Complex.ofReal_inv, div_eq_inv_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem form_reidx (A : ℝ) (a b : ℕ) (x y : VCx X.Tau a b) :
     formV A D.what₂.Tau a b (reidx s a b x) (reidx s a b y) = Formalism.L2.Ker.HV A⁻¹ x y := by
@@ -29,7 +29,7 @@ theorem form_reidx (A : ℝ) (a b : ℕ) (x y : VCx X.Tau a b) :
   rw [Equiv.sum_comp s.iT.symm (fun τ => ∑ i, ∑ j, x τ i j * (starRingEnd ℂ) (y τ i j)), Complex.ofReal_inv, div_eq_inv_mul]
 
 /- English proof (translation)
-Introduce `x y`. Simplify using `[formV, map_sum, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isHerm_formV (A : ℝ) (n : Type) [Fintype n] (a b : ℕ) : IsHerm (formV A n a b) := by
   intro x y
@@ -42,9 +42,9 @@ theorem iop_eq {a b : ℕ} (Λ₁ Λ₂ : AddSubgroup (TaylorLogMetric.VC D a b)
     TaylorLogMetric.Iop D B.tor Λ₁ Λ₂ G = inter (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau a b) (TaylorLogMetric.al D B.tor) Λ₁ Λ₂ G := rfl
 
 /- English proof (translation)
-Establish `h1 : TaylorLogMetric.Hf D B.tor (reidx s a b x) (reidx s a b x) = Formalism.L2.Ker.HV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ))⁻¹ x x` using `form_reidx s _ a b x x`. Unfold `TaylorLogMetric.al`. Rewrite using `[hm, round_intCast]`. Rewrite `hm` using `[h1]`. Unfold `alV alphaQ Formalism.L2.Th1.H.qOf`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hm, ← Complex.exp_pi_mul_I, ← Complex.exp_int_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem alV_eq {a b : ℕ} (x : VCx X.Tau a b) {m : ℤ}
     (hm : Real.sqrt D.host.d / 2 * (TaylorLogMetric.Hf D B.tor (reidx s a b x) (reidx s a b x)).re = (m : ℝ)) :
@@ -62,9 +62,9 @@ theorem alV_eq {a b : ℕ} (x : VCx X.Tau a b) {m : ℤ}
 
 include B in
 /- English proof (translation)
-Introduce and unpack `rfl`. Establish `h1 : B.L.ω₁ ∈ B.L.lattice.toAddSubgroup` using `B.L.ω₁_mem_lattice`. Establish `h2 : TaylorLogMetric.lamOf D cc 0 ≤ ⊥`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨c, -, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using the standard rewrite rules. Rewrite `h1` using `[B.lat]`. Establish `h3 : B.L.ω₁ = 0` using `AddSubgroup.mem_bot.1 (h2 h1)`. Conclude with `B.L.indep.ne_zero 0 h3`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem delta_ne_zero : δ ≠ 0 := by
   rintro rfl
@@ -78,9 +78,9 @@ theorem delta_ne_zero : δ ≠ 0 := by
   exact B.L.indep.ne_zero 0 h3
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : ((Ideal.absNorm cc : ℕ) : X.E) ∈ (ambOf s B χ cD).AA`. Use `Submodule.subset_span ⟨_, Ideal.absNorm_mem cc, 1, Formalism.L2.Pj.one_mem_inverse_halfDifferent D, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite `h1` using `[h, Submodule.mem_bot, Nat.cast_eq_zero, Ideal.absNorm_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hcc h1`.
+A detailed English derivation is pending.
 -/
 theorem aa_ne_bot (hcc : cc ≠ ⊥) : (ambOf s B χ cD).AA ≠ ⊥ := by
   intro h
@@ -91,15 +91,15 @@ theorem aa_ne_bot (hcc : cc ≠ ⊥) : (ambOf s B χ cD).AA ≠ ⊥ := by
   exact hcc h1
 
 /- English proof (translation)
-Set `j : 𝓞 D.host.E →+* 𝓞 X.E` to `RingOfIntegers.mapRingHom (s.iE.symm : D.host.E →+* X.E)`. Establish `hj : ∀ a : 𝓞 D.host.E, ((j a : 𝓞 X.E) : X.E) = s.iE.symm (a : D.host.E)` using `fun _ => rfl`. Take `⟨z, hz, hden⟩` from `D.host.AA0.isFractional`. Establish `hz0 : j z ≠ 0` using `fun h => nonZeroDivisors.ne_zero hz (by`. Establish `h1` using `hj z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h]`. Establish `h2 : (z : D.host.E) = 0` using `s.iE.symm.injective (by rw [← h1]; simp)`. Conclude with `RingOfIntegers.coe_injective (by simpa using h2))`. Establish `hfr : IsFractional (nonZeroDivisors (𝓞 X.E)) (ambOf s B χ cD).AA`. Use `(FractionalIdeal.isFractional_span_iff).2 ⟨j z, mem_nonZeroDivisors_of_ne_zero hz0, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `r ⟨c, -, t, ht, rfl⟩`. Take `⟨w, hw⟩` from `hden t ht`. Use `⟨j (algebraMap (𝓞 D.host.K) (𝓞 D.host.E) c * w), ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `((j _ : 𝓞 X.E) : X.E) = ((j z : 𝓞 X.E) : X.E) * _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj, hj, ← map_mul]`. Use `congr 1`. Establish `e : ((algebraMap (𝓞 D.host.K) (𝓞 D.host.E) c * w : 𝓞 D.host.E) : D.host.E) = ((c : D.host.K) : D.host.E) * (w : D.host.E)` using `rfl`. Establish `hw' : (w : D.host.E) = (z : D.host.E) * t` using `by rw [Algebra.smul_def] at hw; exact hw`. Rewrite using `[e, hw']`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `FractionalIdeal.fg_of_isNoetherianRing le_rfl ⟨_, hfr⟩`.
+A detailed English derivation is pending.
 -/
 theorem aa_fg : (ambOf s B χ cD).AA.FG := by
   let j : 𝓞 D.host.E →+* 𝓞 X.E := RingOfIntegers.mapRingHom (s.iE.symm : D.host.E →+* X.E)
@@ -127,7 +127,7 @@ theorem aa_fg : (ambOf s B χ cD).AA.FG := by
   exact FractionalIdeal.fg_of_isNoetherianRing le_rfl ⟨_, hfr⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Conclude with `inv_mul_cancel_left₀ h _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem vac_eq {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
     (h : Base.chiFac χ a b (s.lat N) (s.lat N') ≠ 0) :
@@ -136,15 +136,15 @@ theorem vac_eq {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule
   exact inv_mul_cancel_left₀ h _
 
 /- English proof (translation)
-Introduce `X D s cc δ B χ cD a b hX hs hcc hχ hE hL hZ ha hb`. Take `⟨hsd, hlam⟩` from `GlobalTheory.T.fieldIso_selfDual_and_periodLattices_agree X D s cc δ B χ cD hs`. Take `⟨hth, hm1, hm2⟩` from `GlobalTheory.T.movedVacuum_mem_thetaFunctions_and_moves D cc δ B χ a b hχ hE hL hZ ha hb`. Establish `hq` using `GlobalTheory.T.quadraticForm_integral_of_selfDual_periodLattices D cc δ B hL`. Establish `hadm : ∀ (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)), IsSdLat N → IsSdLat N' → TaylorLogMetric.admitted D a b (s.lat N) (s.lat N')` using `fun N N' h h' => ⟨ha, hb, hsd _ _ h, hsd _ _ h'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `fun (N₁ N₂ : Submodule (𝓞 X.E) (Sp X.E a)) (N₁' N₂' : Submodule (𝓞 X.E) (Sp X.E b)) (h : IsSdLat N₂) (h' : IsSdLat N₂') (θ : TaylorLogMetric.VC D a b → ℂ) => Transport.inter_transport _ _ (reidx s a b) (Formalism.L2.Ker.HV (ambOf s B χ cD).sc) (formV (TaylorLogMetric.area (Taylor …`. Take `⟨m, hm⟩` from `hq a b _ _ (hadm N₂ N₂' h h') (reidx s a b x) ((hlam a b N₂ N₂' x).1 hx)`. Conclude with `alV_eq s B x hm)`. Use the proof step `(isHerm_formV _ _ _ _) (hL.1 a b _ _ (hadm N₂ N₂' h h')).1 (hL.1 a b _ _ (hadm N₂ N₂' h h')).2`. Use `⟨delta_ne_zero B, Fintype.card_pos_iff.1 hX.f_pos, aa_fg s B χ cD, aa_ne_bot s B χ cD hcc.1, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `N N' h h'`. Take `⟨hc, han, hfix⟩` from `hth _ _ (hsd _ _ h) (hsd _ _ h')`. Take `⟨h1, h2, h3⟩` from `(key N N N' N' h h' 0).1`. Use `⟨hc, ?_, h1, h2⟩` and prove the remaining obligations. Rewrite using `[vac_eq s B χ cD N N' hc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun z _ => ?_, h3 _ hfix⟩` and prove the remaining obligations. Conclude with `(han _ (Set.mem_univ _)).comp ((reidx s a b).toLinearMap.toContinuousLinearMap.analyticAt z)`. Introduce `N N' N'' h h' h''`. Take `⟨hc, -, hfix⟩` from `hth _ _ (hsd _ _ h) (hsd _ _ h')`. Rewrite using `[vac_eq s B χ cD N N' hc, vac_eq s B χ cD N N'' (hth _ _ (hsd _ _ h) (hsd _ _ h'')).1, (key N N N' N'' h h'' _).2 hfix (hL.2 a b _ _ _ _ (hadm N N' h h') (hadm N N'' h h'')).1, hm1 _ _ _ (hsd _ _ h) (hsd _ _ h') (hsd _ _ h''), iop_eq]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `N N₁ N' h h₁ h'`. Take `⟨hc, -, hfix⟩` from `hth _ _ (hsd _ _ h) (hsd _ _ h')`. Rewrite using `[vac_eq s B χ cD N N' hc, vac_eq s B χ cD N₁ N' (hth _ _ (hsd _ _ h₁) (hsd _ _ h')).1, (key N N₁ N' N' h₁ h' _).2 hfix (hL.2 a b _ _ _ _ (hadm N N' h h') (hadm N₁ N' h₁ h')).1, hm2 _ _ _ (hsd _ _ h) (hsd _ _ h₁) (hsd _ _ h'), iop_eq]`.
+A detailed English derivation is pending.
 -/
 theorem moves_ambOf : ∀ (X : Fields) (D : D7) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (a b : ℕ), X.Ok → s.Ok → TaylorLogMetric.IsCurveIdeal D cc → TaylorLogMetric.IsChi D χ → B.EqP χ → B.LatAll → B.ThZeroMem a b → Even a → Even b → Moves (ambOf s B χ cD) a b := by
   intro X D s cc δ B χ cD a b hX hs hcc hχ hE hL hZ ha hb

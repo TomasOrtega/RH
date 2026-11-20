@@ -1,15 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `K _ R _ _ _ _ V _ _ _ _ Y y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact Y.zero_mem⟩`. Consider the case `add x z _ _ hx hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, htz⟩` from `hz`. Use `⟨s * t, mul_ne_zero hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `Y.add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `Y.smul_mem t hsx`. Rewrite using `[mul_smul]`. Conclude with `Y.smul_mem s htz`. Consider the case `smul c x _ hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (nonZeroDivisors R) c`. Use `⟨s * (b : R), mul_ne_zero hs (nonZeroDivisors.coe_ne_zero b), ?_⟩` and prove the remaining obligations. Establish `h1 : (b : R) • (c • x) = a • x`. Rewrite using `[← algebraMap_smul K (b : R) (c • x), smul_smul, mul_comm, hab, algebraMap_smul]`.
-
-Rewrite using `[mul_smul, h1, smul_comm]`. Conclude with `Y.smul_mem a hsx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ElementDenominator.eltDen.{u_1, u_2, u_3} :
     ∀ {K : Type u_1} [inst : Field K] {R : Type u_2} [inst_1 : CommRing R] [IsDomain R] [inst_3 : Algebra R K]

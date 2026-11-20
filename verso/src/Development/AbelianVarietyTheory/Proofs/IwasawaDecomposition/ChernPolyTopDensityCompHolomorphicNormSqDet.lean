@@ -16,11 +16,11 @@ open ComplexConjugate
 variable {n : ℕ} {r : Type} [Fintype r] [DecidableEq r]
 
 /- English proof (translation)
-Establish `hζ : ζ = ∑ c, ζ c • coordVec (n` using `n) c := by`. Use extensionality with `i`. Simplify using `[coordVec, Pi.single_apply]`. Use `conv_lhs => rw [hζ]`. Establish `hl : ∀ (s : Finset (Fin n)), mdel H z (∑ c ∈ s, ζ c • coordVec c) = ∑ c ∈ s, ζ c • mdel H z (coordVec c)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => ext a b`. Simplify using the standard rewrite rules. Consider the case `insert x s hx ih => rw [Finset.sum_insert hx, Finset.sum_insert hx, mdel_add_vec, mdel_smul_vec, ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [conn, hl, Matrix.transpose_sum, Matrix.transpose_smul, Matrix.mul_sum, Matrix.mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem conn_eq_sum (H : V n → Matrix r r ℂ) (z ζ : V n) :
     conn H z ζ = ∑ c, ζ c • conn H z (coordVec c) := by
@@ -35,11 +35,11 @@ theorem conn_eq_sum (H : V n → Matrix r r ℂ) (z ζ : V n) :
   simp only [conn, hl, Matrix.transpose_sum, Matrix.transpose_smul, Matrix.mul_sum, Matrix.mul_smul]
 
 /- English proof (translation)
-Establish `hζ : ζ = ∑ d, ζ d • coordVec (n` using `n) d := by`. Use extensionality with `i`. Simplify using `[coordVec, Pi.single_apply]`. Use `conv_lhs => rw [hζ]`. Establish `hl : ∀ (s : Finset (Fin n)), mdbar (fun x => conn H x ξ) z (∑ d ∈ s, ζ d • coordVec d) = ∑ d ∈ s, conj (ζ d) • mdbar (fun x => conn H x ξ) z (coordVec d)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => ext a b`. Simplify using the standard rewrite rules. Consider the case `insert x s hx ih => rw [Finset.sum_insert hx, Finset.sum_insert hx, mdbar_add_vec, mdbar_smul_vec, ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [curv, hl, Finset.sum_neg_distrib, smul_neg]`.
+A detailed English derivation is pending.
 -/
 theorem curv_eq_sum (H : V n → Matrix r r ℂ) (z ξ ζ : V n) :
     curv H z ξ ζ = ∑ d, conj (ζ d) • curv H z ξ (coordVec d) := by
@@ -55,7 +55,7 @@ theorem curv_eq_sum (H : V n → Matrix r r ℂ) (z ξ ζ : V n) :
   simp only [curv, hl, Finset.sum_neg_distrib, smul_neg]
 
 /- English proof (translation)
-Establish `h1 : MContDiffAt 1 H y` using `h2.of_le (by norm_num)`. Establish `hu' : IsUnit ((H y)ᵀ).det` using `by rwa [Matrix.det_transpose]`. Conclude with `(h1.transpose.inv hu').mul ((h2.mdel (j := 1) (by norm_num) ξ).transpose)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mContDiffAt_conn {H : V n → Matrix r r ℂ} {y : V n} (h2 : MContDiffAt 2 H y)
     (hu : IsUnit (H y).det) (ξ : V n) : MContDiffAt 1 (fun x => conn H x ξ) y := by
@@ -64,9 +64,9 @@ theorem mContDiffAt_conn {H : V n → Matrix r r ℂ} {y : V n} (h2 : MContDiffA
   exact (h1.transpose.inv hu').mul ((h2.mdel (j := 1) (by norm_num) ξ).transpose)
 
 /- English proof (translation)
-Establish `hK : ∀ᶠ w in 𝓝 v, MContDiffAt 2 H (φ w)` using `hφ.continuousAt.eventually h2.eventually_two`. Use `filter_upwards [hK, hφ.eventually_analyticAt] with w hw ha`. Rewrite using `[← conn_eq_sum]`. Establish `hm : mdel (fun x => H (φ x)) w ξ = mdel H (φ w) (fderiv ℂ φ w ξ)`. Use extensionality with `a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `del_comp_holo (u := fun y => H y a b) ((hw a b).differentiableAt (by norm_num)) ha.differentiableAt ξ`. Simplify using `only [conn, hm]`.
+A detailed English derivation is pending.
 -/
 theorem conn_comp_eventually {H : V n → Matrix r r ℂ} {φ : V n → V n} {v : V n} (hφ : AnalyticAt ℂ φ v)
     (h2 : MContDiffAt 2 H (φ v)) (ξ : V n) :
@@ -81,11 +81,11 @@ theorem conn_comp_eventually {H : V n → Matrix r r ℂ} {φ : V n → V n} {v 
   simp only [conn, hm]
 
 /- English proof (translation)
-Rewrite using `[curv, mdbar_congr (conn_comp_eventually hφ h2 ξ)]`. Establish `hd : DifferentiableAt ℂ φ v` using `hφ.differentiableAt`. Establish `hf : ∀ c : Fin n, DifferentiableAt ℂ (fun x => (fderiv ℂ φ x ξ) c) v`. Introduce `c`. Establish `h1 : DifferentiableAt ℂ (fun x => fderiv ℂ φ x ξ) v` using `hφ.fderiv.differentiableAt.clm_apply (differentiableAt_const ξ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(EuclideanSpace.proj (𝕜 := ℂ) c).differentiableAt.comp v h1`. Establish `hc : ∀ (c : Fin n) (i j : r), DifferentiableAt ℝ (fun y => conn H y (coordVec c) i j) (φ v)` using `fun c i j => (mContDiffAt_conn h2 hu (coordVec c)).diff i j`. Use extensionality with `i j`. Simplify using `only [Matrix.neg_apply, mdbar_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Finset.sum_neg_distrib]`. Rewrite using `[dbar_sum (A := fun c x => (fderiv ℂ φ x ξ) c * conn H (φ x) (coordVec c) i j) (fun c _ => ((hf c).restrictScalars ℝ).mul ((hc c i j).comp v (hd.restrictScalars ℝ)))]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.sum_apply, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[dbar_mul (a := fun x => (fderiv ℂ φ x ξ) c) (b := fun x => conn H (φ x) (coordVec c) i j) ((hf c).restrictScalars ℝ) ((hc c i j).comp v (hd.restrictScalars ℝ)), dbar_eq_zero (hf c), dbar_comp_holo (u := fun y => conn H y (coordVec c) i j) (hc c i j) hd]`. Simplify using `[curv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem curv_comp {H : V n → Matrix r r ℂ} {φ : V n → V n} {v : V n} (hφ : AnalyticAt ℂ φ v)
     (h2 : MContDiffAt 2 H (φ v)) (hu : IsUnit (H (φ v)).det) (ξ η : V n) :
@@ -116,7 +116,7 @@ def substAlg (J : Matrix (Fin n) (Fin n) ℂ) :
 def jac (φ : V n → V n) (v : V n) : Matrix (Fin n) (Fin n) ℂ := fun c a => (fderiv ℂ φ v (coordVec a)) c
 
 /- English proof (translation)
-Rewrite using `[curv_comp hφ h2 hu]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[curv_eq_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -131,7 +131,7 @@ theorem curv_comp_coord {H : V n → Matrix r r ℂ} {φ : V n → V n} {v : V n
   rw [smul_smul]; rfl
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [curvPoly, Matrix.of_apply, Matrix.map_apply, curv_comp_coord hφ h2 hu, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, substAlg, aeval_X, aeval_C, algebraMap_eq, Finset.sum_mul, Finset.mul_sum]`. Repeatedly rewrite using `[← Fintype.sum_prod_type']`. Set `e : Fin n × Fin n × Fin n × Fin n ≃ Fin n × Fin n × Fin n × Fin n` to `⟨fun x => (x.2.2.1, x.2.2.2, x.1, x.2.1), fun x => (x.2.2.1, x.2.2.2, x.1, x.2.1), fun _ => rfl, fun _ => rfl⟩`. Conclude with `Fintype.sum_equiv e _ _ fun x => by simp only [e, Equiv.coe_fn_mk]; ring`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem curvPoly_comp {H : V n → Matrix r r ℂ} {φ : V n → V n} {v : V n} (hφ : AnalyticAt ℂ φ v)
     (h2 : MContDiffAt 2 H (φ v)) (hu : IsUnit (H (φ v)).det) :
@@ -146,7 +146,7 @@ theorem curvPoly_comp {H : V n → Matrix r r ℂ} {φ : V n → V n} {v : V n} 
   exact Fintype.sum_equiv e _ _ fun x => by simp only [e, Equiv.coe_fn_mk]; ring
 
 /- English proof (translation)
-Unfold `Matrix.charpolyRev`. Rewrite using `[← Polynomial.coe_mapRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b : 1`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem charpolyRev_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {d : Type} [Fintype d]
     [DecidableEq d] (M : Matrix d d A) :
@@ -158,9 +158,9 @@ theorem charpolyRev_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {
   by_cases hab : a = b <;> simp [Matrix.one_apply, hab]
 
 /- English proof (translation)
-Unfold `chernPoly`. Rewrite using `[curvPoly_comp hφ h2 hu]`. Establish `hm : -(curvPoly H (φ v)).map (substAlg (jac φ v)) = (-curvPoly H (φ v)).map (substAlg (jac φ v)).toRingHom`. Rewrite using `[Matrix.map_neg (f := (substAlg (jac φ v)).toRingHom) (fun a => map_neg _ a)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hm, ← charpolyRev_map, Polynomial.coeff_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chernPoly_comp {H : V n → Matrix r r ℂ} {φ : V n → V n} {v : V n} (hφ : AnalyticAt ℂ φ v)
     (h2 : MContDiffAt 2 H (φ v)) (hu : IsUnit (H (φ v)).det) (k : ℕ) :
@@ -173,7 +173,7 @@ theorem chernPoly_comp {H : V n → Matrix r r ℂ} {φ : V n → V n} {v : V n}
   rfl
 
 /- English proof (translation)
-Use extensionality with `c a`. Simplify using `[LinearMap.toMatrix_apply, jac, coordVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem jac_eq_toMatrix (φ : V n → V n) (v : V n) :
     jac φ v = LinearMap.toMatrix (EuclideanSpace.basisFun (Fin n) ℂ).toBasis
@@ -186,9 +186,9 @@ end GlobalTheory.ChernPull
 open ReciprocityTheory.L2DbarEstimates (V) in
 
 /- English proof (translation)
-Introduce `n ι m R K φ v hφ h2 hu`. Unfold `chernTop`. Establish `hc : ∀ x : ι × ℕ, chernPoly (fun u => K (φ u) x.1) v x.2 = GlobalTheory.ChernPull.substAlg (GlobalTheory.ChernPull.jac φ v) (chernPoly (fun u => K u x.1) (φ v) x.2)` using `fun x => GlobalTheory.ChernPull.chernPoly_comp hφ (h2 x.1) (hu x.1) x.2`. Simplify using `only [hc]`. Establish `ha` using `congrArg (fun F => F R) (MvPolynomial.comp_aeval (R := ℝ) (f := fun x : ι × ℕ => chernPoly (fun u => K u x.1) (φ v) x.2) ((GlobalTheory.ChernPull.substAlg (GlobalTheory.ChernPull.jac φ v)).restrictScalars ℝ))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.comp_apply, AlgHom.coe_restrictScalars'] at ha`. Rewrite using `[← ha, GlobalTheory.ChernPull.substAlg, GlobalTheory.T.topDegreeFormCoeff_linearSubst_eq_absDet_sq_mul, Complex.mul_conj, GlobalTheory.ChernPull.jac_eq_toMatrix, LinearMap.det_toMatrix, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem GlobalTheory.ChernPull.chernTop_comp : ∀ {n : ℕ} {ι : Type} {m : ι → ℕ} (R : MvPolynomial (ι × ℕ) ℝ) (K : ReciprocityTheory.L2DbarEstimates.V n → Mat m ℂ) (φ : ReciprocityTheory.L2DbarEstimates.V n → ReciprocityTheory.L2DbarEstimates.V n) (v : ReciprocityTheory.L2DbarEstimates.V n), AnalyticAt ℂ φ v → (∀ τ, MContDiffAt 2 (fun u => K u τ) (φ v)) → (∀ τ, IsUnit (K (φ v) τ).det) → chernTop R (fun w => K (φ w)) v = Complex.normSq (LinearMap.det (fderiv ℂ φ v : ReciprocityTheory.L2DbarEstimates.V n →ₗ[ℂ] ReciprocityTheory.L2DbarEstimates.V n)) * chernTop R K (φ v) := by
   intro n ι m R K φ v hφ h2 hu

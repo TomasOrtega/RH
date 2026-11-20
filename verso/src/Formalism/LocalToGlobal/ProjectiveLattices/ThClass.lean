@@ -59,9 +59,9 @@ def ThLaTot (nab : NabV Xo c) (w : Cl → (Fin n → LevQ Dw l) → c.F) (La : C
     ∃! t : S, thLaValAt Xo c nab (w k) (La k) (Nc k) (io v) y t
 
 /- English proof (translation)
-Use `⟨fun p y => evR Xo c xi y * ∑ k, algebraMap c.F p.R (vol * ((gam k : c.F))⁻¹ * ep k) * (h k (x k) p.R y).choose, ?_, ?_⟩` and prove the remaining obligations. Introduce `p y`. Conclude with `⟨fun k => (h k (x k) p.R y).choose, fun k => (h k (x k) p.R y).choose_spec.1, rfl⟩`. Introduce `f' hf'`. Use function extensionality and compare the values at `p y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨vc, hvc, hv⟩` from `hf' p y`. Rewrite using `[hv]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[(h k (x k) p.R y).choose_spec.2 (vc k) (hvc k)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem existsUnique_thCls (nab : NabV Xo c) (w : Cl → (Fin n → LevQ Dw l) → c.F) (La : Cl → GenLat E n)
     (Nc : Cl → ℕ) (gam : Cl → ℕ) (vol : c.F) (ep : Cl → c.F) (io : Vs →ₗ[c.F] MvPolynomial (LtN Dw n) c.F) (xi : Rul Xo c)

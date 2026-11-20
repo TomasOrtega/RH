@@ -8,7 +8,7 @@ open Formalism.MainNotions.ArithmeticCylinders
 
 open Classical in
 /- English proof (translation)
-Unfold `mirEl`. Simplify using `[MonoidAlgebra.coeff_single, Finsupp.single_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem coeff_mirEl {r : ℕ} (θ : (ZMod g)ˣ →* ℂˣ) (a : Fin r → ZMod g) (b : Bool) (h : Gn g r) :
     (mirEl θ a b).coeff h = if mirSet a b h then ((θ (Matrix.GeneralLinearGroup.det h) : ℂˣ) : ℂ) else 0 := by
@@ -16,9 +16,9 @@ theorem coeff_mirEl {r : ℕ} (θ : (ZMod g)ˣ →* ℂˣ) (a : Fin r → ZMod g
   simp [MonoidAlgebra.coeff_single, Finsupp.single_apply]
 
 /- English proof (translation)
-Establish `hU : IsUnit M` using `(Matrix.isUnit_iff_isUnit_det M).2 (by rw [hM]; exact d.isUnit)`. Establish `key : ∀ x : Gn g 1, (M = (x : Mt g 1)) ↔ x = hU.unit`. Introduce `x`. Rewrite using `[Units.ext_iff, IsUnit.unit_spec]`. Conclude with `eq_comm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[key]`. Rewrite using `[Finset.sum_ite_eq' Finset.univ hU.unit, if_pos (Finset.mem_univ _)]`. Use `congr 1`. Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, IsUnit.unit_spec, hM]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_gl1 (M : Mt g 1) (d : (ZMod g)ˣ) (hM : M.det = d) (F : (ZMod g)ˣ → ℂ) :
     (∑ x : Gn g 1, if M = (x : Mt g 1) then F (Matrix.GeneralLinearGroup.det x) else 0) = F d := by
@@ -34,7 +34,7 @@ theorem sum_gl1 (M : Mt g 1) (d : (ZMod g)ˣ) (hM : M.det = d) (F : (ZMod g)ˣ �
   rw [Matrix.GeneralLinearGroup.val_det_apply, IsUnit.unit_spec, hM]
 
 /- English proof (translation)
-Unfold `tl entN`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tl_last {n : ℕ} (M : Mt g (n + 1)) (i j : Fin n) : tl n M i j = M i.castSucc j.castSucc := by
   unfold tl entN
@@ -42,7 +42,7 @@ theorem tl_last {n : ℕ} (M : Mt g (n + 1)) (i j : Fin n) : tl n M i j = M i.ca
   rfl
 
 /- English proof (translation)
-Unfold `br entN`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Apply the tactic sequence `congr 1 <;> ext <;> simp [Fin.fin_one_eq_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem br_last {n : ℕ} (M : Mt g (n + 1)) (i j : Fin 1) : br n 1 M i j = M (Fin.last n) (Fin.last n) := by
   unfold br entN
@@ -50,7 +50,7 @@ theorem br_last {n : ℕ} (M : Mt g (n + 1)) (i j : Fin 1) : br n 1 M i j = M (F
   congr 1 <;> ext <;> simp [Fin.fin_one_eq_zero]
 
 /- English proof (translation)
-Unfold `br entN`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Apply the tactic sequence `congr 1 <;> ext <;> simp [add_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem br_succ {n : ℕ} (M : Mt g (n + 1)) (i j : Fin n) : br 1 n M i j = M i.succ j.succ := by
   unfold br entN
@@ -58,7 +58,7 @@ theorem br_succ {n : ℕ} (M : Mt g (n + 1)) (i j : Fin n) : br 1 n M i j = M i.
   congr 1 <;> ext <;> simp [add_comm]
 
 /- English proof (translation)
-Unfold `tl entN`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Apply the tactic sequence `congr 1 <;> ext <;> simp [Fin.fin_one_eq_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tl_zero {n : ℕ} (M : Mt g (n + 1)) (i j : Fin 1) : tl 1 M i j = M 0 0 := by
   unfold tl entN
@@ -72,11 +72,11 @@ def RowsId {n : ℕ} (M : Mt g (n + 1)) : Prop :=
   ∀ i j : Fin (n + 1), i ≠ 0 → M i j = if i = j then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single i]`. Distinguish the cases in `hx : x i = 0`. Rewrite using `[hx, mul_zero]`. Rewrite using `[h i hx, if_pos rfl, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `j _ hji`. Distinguish the cases in `hx : x j = 0`. Rewrite using `[hx, mul_zero]`. Rewrite using `[h j hx, if_neg (Ne.symm hji), zero_mul]`. Introduce `hi`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ i) hi`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_of_id {N : ℕ} (M : Mt g N) (x : Fin N → ZMod g) (i : Fin N)
     (h : ∀ j, x j ≠ 0 → M i j = if i = j then 1 else 0) : M.mulVec x i = x i := by
@@ -92,11 +92,11 @@ theorem mulVec_of_id {N : ℕ} (M : Mt g N) (x : Fin N → ZMod g) (i : Fin N)
   · intro hi; exact absurd (Finset.mem_univ i) hi
 
 /- English proof (translation)
-Unfold `mirSet`. Simplify using `only [Bool.false_eq_true, if_false]`. Prove the components needed by the constructor for the conclusion. Introduce `H i j hj`. Use `congrFun (H (Pi.single j 1) (by simp [single_dotProduct, Pi.single_apply, Ne.symm hj])) i` as an intermediate fact.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mulVec_single_one]`. Simplify `this` using `[Pi.single_apply]`. Introduce `H x hx`. Establish `hx' : x (Fin.last n) = 0` using `by simpa [single_dotProduct] using hx`. Use function extensionality and compare the values at `i`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `mulVec_of_id` to reduce the goal to its premises. Introduce `j hj`. Conclude with `H i j (fun e => hj (e ▸ hx'))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mirSet_last_iff {n : ℕ} (h : Gn g (n + 1)) :
     mirSet (Pi.single (Fin.last n) 1) false h ↔ ColsId (h : Mt g (n + 1)) := by
@@ -115,13 +115,13 @@ theorem mirSet_last_iff {n : ℕ} (h : Gn g (n + 1)) :
     exact H i j (fun e => hj (e ▸ hx'))
 
 /- English proof (translation)
-Unfold `mirSet`. Simplify using `only [if_true]`. Prove the components needed by the constructor for the conclusion. Introduce `H i j hi`. Take `⟨c, hc⟩` from `H (Pi.single j 1)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `congrFun hc i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Simplify using `[Pi.single_apply, hi] at this`. Rewrite `this` using `[sub_eq_zero]`. Simplify `this` using `[Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `H x`. Use `⟨((h : Mt g (n + 1)).mulVec x - x) 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `: (h : Mt g (n + 1)).mulVec x i = x i` using `mulVec_of_id _ _ _ (fun j _ => H i j hi)`. Simplify using `[this, hi]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mirSet_zero_iff {n : ℕ} (h : Gn g (n + 1)) :
     mirSet (Pi.single 0 1) true h ↔ RowsId (h : Mt g (n + 1)) := by
@@ -144,15 +144,15 @@ theorem mirSet_zero_iff {n : ℕ} (h : Gn g (n + 1)) :
       simp [this, hi]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, hT⟩ i j hj`. Take `⟨j, rfl⟩` from `Fin.exists_castSucc_eq.2 hj`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Rewrite using `[if_neg (Fin.castSucc_ne_last j).symm]`. Conclude with `hP _ _ (by simp) (by simp)`. Consider the case `cast i`. Use `congrFun (congrFun hT i) j` as an intermediate fact. Rewrite `this` using `[tl_last]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Matrix.one_apply]`. Simplify using `[Fin.castSucc_inj]`. Introduce `H`. Use `⟨fun i j hj hi => ?_, ?_⟩` and prove the remaining obligations. Establish `hne : j ≠ Fin.last n` using `fun e => by rw [e] at hj; simp at hj`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H i j hne, if_neg]`. Introduce `e`. Rewrite `hi` using `[e]`. Use linear arithmetic over natural numbers and integers. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tl_last, H _ _ (Fin.castSucc_ne_last j), Matrix.one_apply]`. Simplify using `[Fin.castSucc_inj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem parTl_iff {n : ℕ} (M : Mt g (n + 1)) : (InPar n M ∧ tl n M = 1) ↔ ColsId M := by
   constructor
@@ -177,15 +177,15 @@ theorem parTl_iff {n : ℕ} (M : Mt g (n + 1)) : (InPar n M ∧ tl n M = 1) ↔ 
       simp [Fin.castSucc_inj]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, hB⟩ i j hi`. Take `⟨i, rfl⟩` from `Fin.exists_succ_eq.2 hi`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Rewrite using `[if_neg (Fin.succ_ne_zero i)]`. Conclude with `hP _ _ (by simp) (by simp)`. Consider the case `succ j`. Use `congrFun (congrFun hB i) j` as an intermediate fact. Rewrite `this` using `[br_succ]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Matrix.one_apply]`. Simplify using `[Fin.succ_inj]`. Introduce `H`. Use `⟨fun i j hj hi => ?_, ?_⟩` and prove the remaining obligations. Establish `hne : i ≠ 0` using `fun e => by rw [e] at hi; simp at hi`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H i j hne, if_neg]`. Introduce `e`. Rewrite `hi` using `[e]`. Use linear arithmetic over natural numbers and integers. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[br_succ, H _ _ (Fin.succ_ne_zero i), Matrix.one_apply]`. Simplify using `[Fin.succ_inj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem parBr_iff {n : ℕ} (M : Mt g (n + 1)) : (InPar 1 M ∧ br 1 n M = 1) ↔ RowsId M := by
   constructor
@@ -210,11 +210,11 @@ theorem parBr_iff {n : ℕ} (M : Mt g (n + 1)) : (InPar 1 M ∧ br 1 n M = 1) �
       simp [Fin.succ_inj]
 
 /- English proof (translation)
-Establish `hT : M.BlockTriangular id`. Introduce `i j hij`. Establish `hj : j ≠ Fin.last n` using `fun e => by`. Rewrite `hij` using `[e]`. Conclude with `absurd hij (not_lt.2 (Fin.le_last i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [id] at hij`. Rewrite using `[H i j hj, if_neg (ne_of_gt hij)]`. Rewrite using `[Matrix.det_of_upperTriangular hT, Fin.prod_univ_castSucc]`. Rewrite using `[Finset.prod_eq_one, one_mul]`. Introduce `i _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H _ _ (Fin.castSucc_ne_last i), if_pos rfl]`.
+A detailed English derivation is pending.
 -/
 theorem det_colsId {n : ℕ} (M : Mt g (n + 1)) (H : ColsId M) : M.det = M (Fin.last n) (Fin.last n) := by
   have hT : M.BlockTriangular id := by
@@ -229,11 +229,11 @@ theorem det_colsId {n : ℕ} (M : Mt g (n + 1)) (H : ColsId M) : M.det = M (Fin.
   rw [H _ _ (Fin.castSucc_ne_last i), if_pos rfl]
 
 /- English proof (translation)
-Establish `hT : M.BlockTriangular id`. Introduce `i j hij`. Establish `hi : i ≠ 0` using `fun e => by`. Rewrite `hij` using `[e]`. Conclude with `absurd hij (not_lt.2 (Fin.zero_le j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [id] at hij`. Rewrite using `[H i j hi, if_neg (ne_of_gt hij)]`. Rewrite using `[Matrix.det_of_upperTriangular hT, Fin.prod_univ_succ]`. Rewrite using `[Finset.prod_eq_one, mul_one]`. Introduce `i _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H _ _ (Fin.succ_ne_zero i), if_pos rfl]`.
+A detailed English derivation is pending.
 -/
 theorem det_rowsId {n : ℕ} (M : Mt g (n + 1)) (H : RowsId M) : M.det = M 0 0 := by
   have hT : M.BlockTriangular id := by
@@ -248,14 +248,14 @@ theorem det_rowsId {n : ℕ} (M : Mt g (n + 1)) (H : RowsId M) : M.det = M 0 0 :
   rw [H _ _ (Fin.succ_ne_zero i), if_pos rfl]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_unique, br_last, Matrix.GeneralLinearGroup.val_det_apply, det_colsId _ H]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_br_last {n : ℕ} (h : Gn g (n + 1)) (H : ColsId (h : Mt g (n + 1))) :
     (br n 1 (h : Mt g (n + 1))).det = ((Matrix.GeneralLinearGroup.det h : (ZMod g)ˣ) : ZMod g) := by
   rw [Matrix.det_unique, br_last, Matrix.GeneralLinearGroup.val_det_apply, det_colsId _ H]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_unique, tl_zero, Matrix.GeneralLinearGroup.val_det_apply, det_rowsId _ H]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_tl_zero {n : ℕ} (h : Gn g (n + 1)) (H : RowsId (h : Mt g (n + 1))) :
     (tl 1 (h : Mt g (n + 1))).det = ((Matrix.GeneralLinearGroup.det h : (ZMod g)ˣ) : ZMod g) := by
@@ -264,17 +264,17 @@ theorem det_tl_zero {n : ℕ} (h : Gn g (n + 1)) (H : RowsId (h : Mt g (n + 1)))
 open Classical in
 
 /- English proof (translation)
-Establish `hg : (g : ℂ) ^ n ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : g.Prime).ne_zero)`. Establish `hc : ∀ a t : ℂ, (g : ℂ) ^ n * (a * (((g : ℂ) ^ n)⁻¹ * t)) = a * t` using `fun a t => by`. Rewrite using `[mul_left_comm, mul_inv_cancel_left₀ hg]`. Prove the components needed by the constructor for the conclusion. Unfold `tr res`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions.
 
-Repeatedly rewrite using `[coeff_mirEl, mul_one, Finset.mul_sum, hc]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun h _ => ?_)` and prove the remaining obligations. Distinguish the cases in `H : ColsId (h : Mt g (n + 1))`. Take `⟨hP, hT⟩` from `(parTl_iff _).2 H`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_pos ((mirSet_last_iff h).2 H)]`. Simplify using `only [Units.val_one, hP, hT, true_and, mul_ite, mul_zero]`. Rewrite using `[sum_gl1 _ _ (det_br_last h H) (fun d => ((θ d : ℂˣ) : ℂ) * ψ h)]`. Rewrite using `[if_neg (fun e => H ((mirSet_last_iff h).1 e)), zero_mul]`. Use `(Finset.sum_eq_zero (fun x _ => ?_)).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg (fun e => H ((parTl_iff _).1 ⟨e.1, by simpa using e.2.1⟩)), mul_zero]`. Unfold `tr res`. Repeatedly rewrite using `[coeff_mirEl, one_mul, Finset.mul_sum, hc]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun h _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `H : RowsId (h : Mt g (n + 1))`. Take `⟨hP, hB⟩` from `(parBr_iff _).2 H`. Rewrite using `[if_pos ((mirSet_zero_iff h).2 H)]`. Simplify using `only [Units.val_one, hP, hB, true_and, and_true, mul_ite, mul_zero]`. Rewrite using `[sum_gl1 _ _ (det_tl_zero h H) (fun d => ((θ d : ℂˣ) : ℂ) * ψ h)]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun e => H ((mirSet_zero_iff h).1 e)), zero_mul]`. Use `(Finset.sum_eq_zero (fun x _ => ?_)).symm` and prove the remaining obligations. Rewrite using `[if_neg (fun e => H ((parBr_iff _).1 ⟨e.1, by simpa using e.2.2⟩)), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_mir (g : ℕ) [Fact g.Prime] (n : ℕ) (ψ : Gn g (n + 1) → ℂ) (θ : (ZMod g)ˣ →* ℂˣ) :
     tr (mirEl θ (Pi.single (Fin.last n) 1) false) ψ =

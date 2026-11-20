@@ -7,11 +7,11 @@ open Matrix
 namespace PositivityTheory.Rg.Cz.GK
 
 /- English proof (translation)
-Use `set W := Submodule.span ℂ (Set.range ev)`. Establish `hW : W = ⊤`. Establish `h1 : W.dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[Submodule.mem_dualCoannihilator]`. Conclude with `(Submodule.mem_bot ℂ).2 (hsep v fun i => hv _ (Submodule.subset_span ⟨i, rfl⟩))`. Establish `h2` using `Subspace.dualCoannihilator_dualAnnihilator_eq (W := W)`. Rewrite `h2` using `[h1, Submodule.dualAnnihilator_bot]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl : lam ∈ W` using `hW ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hl`. Use `⟨c.support, c, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, Finsupp.sum, LinearMap.sum_apply]`. Simplify using `[smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_comb_of_sep {V ι : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (ev : ι → Module.Dual ℂ V) (hsep : ∀ v, (∀ i, ev i v = 0) → v = 0) (lam : Module.Dual ℂ V) :
@@ -34,11 +34,11 @@ theorem exists_comb_of_sep {V ι : Type} [AddCommGroup V] [Module ℂ V] [Finite
   simp [smul_eq_mul]
 
 /- English proof (translation)
-Use `⟨fun t => NormedSpace.exp (t • Y), fun t => ?_, by simp, fun i j => ?_⟩` and prove the remaining obligations. Establish `h1 : star (NormedSpace.exp (t • Y)) = NormedSpace.exp (-(t • Y))`. Rewrite using `[Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, hY, star_trivial, smul_neg]`. Rewrite using `[h1, Matrix.exp_neg]`. Conclude with `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_exp _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `letI : NormedRing (Matrix (Fin a) (Fin a) ℂ) := Matrix.linftyOpNormedRing`. Set `_ : NormedAlgebra ℝ (Matrix (Fin a) (Fin a) ℂ)` to `Matrix.linftyOpNormedAlgebra`. Set `_ : NormedAlgebra ℚ (Matrix (Fin a) (Fin a) ℂ)` to `NormedAlgebra.restrictScalars ℚ ℝ _`. Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) Y (0 : ℝ)`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `L : Matrix (Fin a) (Fin a) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap { toFun := fun M => M i j, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Conclude with `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`.
+A detailed English derivation is pending.
 -/
 theorem exists_unitary_curve {a : ℕ} (Y : Matrix (Fin a) (Fin a) ℂ) (hY : Yᴴ = -Y) :
     ∃ U : ℝ → Matrix (Fin a) (Fin a) ℂ, (∀ t, star (U t) * U t = 1) ∧ U 0 = 1 ∧

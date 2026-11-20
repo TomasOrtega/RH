@@ -17,7 +17,7 @@ attribute [local instance] GlobalTheory.SqIntSU.circleBorelMS GlobalTheory.SqInt
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SqIntSU.scalarMul_apply, map_mul, show ujMat ε (GlobalTheory.SqIntSU.unitScalar ε z) = (z : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) from rfl, Matrix.smul_mul, Matrix.one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ujMat_scalarMul (ε : Fin n → Bool) (z : Circle) (g : SUJ ε) :
     ujMat ε (scalarMul ε (z, g)) = (z : ℂ) • suMat ε g := by
@@ -27,7 +27,7 @@ theorem ujMat_scalarMul (ε : Fin n → Bool) (z : Circle) (g : SUJ ε) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Simplify using `only [GlobalTheory.Orb.matCoord, ujMat_scalarMul, Pi.smul_apply, Matrix.smul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matCoord_scalarMul (ε : Fin n → Bool) (z : Circle) (g : SUJ ε) :
     GlobalTheory.Orb.matCoord (ujMat ε) (scalarMul ε (z, g)) = (z : ℂ) • GlobalTheory.Orb.matCoord (suMat ε) g := by
@@ -35,17 +35,15 @@ theorem matCoord_scalarMul (ε : Fin n → Bool) (z : Circle) (g : SUJ ε) :
   simp only [GlobalTheory.Orb.matCoord, ujMat_scalarMul, Pi.smul_apply, Matrix.smul_apply]
 
 /- English proof (translation)
-Introduce `n ε m f hf`. Take `⟨hc, Φ, hΦ, e⟩` from `hf`. Use `⟨?_, fun x => ∫ z, (z : ℂ) ^ m * Φ ((z : ℂ) • x) ∂circleHaar, ?_, ?_⟩` and prove the remaining obligations. Set `W : Set (UJ ε)` to `(fun p : Circle × UJ ε => (GlobalTheory.SqIntSU.unitScalar ε p.1)⁻¹ * p.2) '' (Set.univ ×ˢ tsupport f)`. Establish `hW : IsCompact W` using `(isCompact_univ.prod hc.isCompact).image (((GlobalTheory.SqIntSU.continuous_unitScalar ε).comp continuous_fst).inv.mul continuous_snd)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT : IsCompact ((Subtype.val : SUJ ε → UJ ε) ⁻¹' W)` using `(GlobalTheory.SqIntSU.isClosed_special ε).isClosedEmbedding_subtypeVal.isCompact_preimage hW`. Use `HasCompactSupport.intro hT fun g hg => ?_` and prove the remaining obligations. Establish `h0 : ∀ z : Circle, f (scalarMul ε (z, g)) = 0`. Introduce `z`. Use `image_eq_zero_of_notMem_tsupport fun hz => hg ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(z, scalarMul ε (z, g)), ⟨trivial, hz⟩, ?_⟩` and prove the remaining obligations. Use `show (GlobalTheory.SqIntSU.unitScalar ε z)⁻¹ * (GlobalTheory.SqIntSU.unitScalar ε z * (g : UJ ε)) = g`. Conclude with `inv_mul_cancel_left _ _`. Simplify using `only [h0, zero_mul, integral_zero]`. Establish `hφ : Continuous fun z : Circle => (z : ℂ) ^ m`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: (fun z : Circle => (z : ℂ) ^ m) = fun z : Circle => ((z ^ m : Circle) : ℂ)`. Use function extensionality and compare the values at `z`. Rewrite using `[Circle.coe_zpow]`. Rewrite using `[this]`. Conclude with `continuous_subtype_val.comp (continuous_zpow m)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφc : HasCompactSupport fun z : Circle => (z : ℂ) ^ m` using `HasCompactSupport.intro isCompact_univ fun x hx => (hx (Set.mem_univ x)).elim`. Establish `hO : @OpensMeasurableSpace Circle _ GlobalTheory.SqIntSU.circleBorelMS` using `@BorelSpace.opensMeasurable Circle _ GlobalTheory.SqIntSU.circleBorelMS GlobalTheory.SqIntSU.circleBorelSpace`. Conclude with `@GlobalTheory.Orb.contDiff_integral_param Circle ℂ (Fin n → Fin n → ℂ) _ GlobalTheory.SqIntSU.circleBorelMS hO _ circleHaar _ _ _ _ _ _ (fun z : Circle => (z : ℂ)) continuous_subtype_val _ hφ hφc (fun q : (Fin n → Fin n → ℂ) × ℂ => Φ (q.2 • q.1)) (hΦ.comp (contDiff_snd.smul contD …`. Introduce `g`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations.
-
-Simplify using `only [e, matCoord_scalarMul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem avg_mem_ccMat : ∀ (n : ℕ) (ε : Fin n → Bool) (m : ℤ) (f : UJ ε → ℂ), f ∈ CcMat (ujMat ε) →
     (fun g : SUJ ε => ∫ z, f (scalarMul ε (z, g)) * (z : ℂ) ^ m ∂circleHaar) ∈ CcMat (suMat ε) := by

@@ -21,19 +21,19 @@ noncomputable section
 namespace GlobalTheory.ThK.DecX
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ X X₁ H r s i₀ i₁ hX hH w hw`. Take `⟨hdec, -⟩` from `GlobalTheory.LeviRatHerm.decomp hX.lat hH`. Use `choose a b u hsu using fun i : Fin n => hdec (Pi.single i 1)`. Establish `hI : (1 : Matrix (Fin n) (Fin n) E) = Matrix.vecMulVec H.x a + H.ι * (Matrix.of u)ᵀ + Matrix.vecMulVec H.y b`. Use extensionality with `l i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congrFun (hsu i) l` as an intermediate fact. Simplify using `only [Pi.single_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct] at this`. Simplify using `only [Matrix.one_apply, Matrix.add_apply, Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.of_apply, Matrix.transpose_apply]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h0 : ∀ c : AF F, evI F c = 0 → ∀ i j, c • w i j = 0` using `fun c hc i j => by`. Simplify using `using congrFun (congrFun (hw c hc) i) j`. Establish `hAt : ∀ v : Fin n → AE F E, At (evI F) (v ᵥ* w)`. Introduce `v c hc`. Use function extensionality and compare the values at `j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, Matrix.vecMul, dotProduct, Finset.smul_sum, ← mul_smul_comm, h0 c hc, mul_zero, Finset.sum_const_zero, Pi.zero_apply]`. Use `⟨incV F a ᵥ* w, incV F b ᵥ* w, incM F (Matrix.of u)ᵀ * w, hAt _, hAt _, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Use extensionality with `k j`. Simplify using `only [Matrix.smul_apply, Matrix.mul_apply, Finset.smul_sum, ← mul_smul_comm, h0 c hc, mul_zero, Finset.sum_const_zero, Matrix.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hI'` using `congrArg (incM F) hI`. Establish `e1 : incM F (1 : Matrix (Fin n) (Fin n) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `e2 : incM F (Matrix.vecMulVec H.x a + H.ι * (Matrix.of u)ᵀ + Matrix.vecMulVec H.y b) = Matrix.vecMulVec (incV F H.x) (incV F a) + incM F H.ι * incM F (Matrix.of u)ᵀ + Matrix.vecMulVec (incV F H.y) (incV F b)`. Use extensionality with `i j`. Simplify using `[incM, incV, Matrix.vecMulVec_apply, Matrix.mul_apply, map_sum, map_add, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hI'` using `[e1, e2]`. Use `conv_lhs => rw [← Matrix.one_mul w, hI']`. Establish `hv : ∀ (p : Fin n → AE F E) (q : Fin n → AE F E), Matrix.vecMulVec p q * w = Matrix.vecMulVec p (q ᵥ* w)`. Introduce `p q`. Use extensionality with `i l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.vecMul, dotProduct, Finset.mul_sum, mul_assoc]`. Rewrite using `[Matrix.add_mul, Matrix.add_mul, hv, hv, Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem decompose : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E)
     {n d n₁ : ℕ} (X : Spc F E n) (X₁ : Spc F E n₁) (H : Plane E n n₁) (r s i₀ i₁ : ℕ),

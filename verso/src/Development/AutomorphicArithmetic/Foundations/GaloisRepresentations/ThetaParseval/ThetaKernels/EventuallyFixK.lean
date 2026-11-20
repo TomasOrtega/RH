@@ -16,7 +16,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E}
   {ξ₀ : E} {ψ : AddChar (AF F) ℂ}
 /- English proof (translation)
-Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_sig_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) (x : E) : σ (σ x) = x := by
   let τ : E →+* ℂ := (IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom
@@ -25,24 +25,24 @@ theorem sig_sig_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) (x : 
 variable {hc : HeisClosedF σ JS JT ξ₀ ψ} {Λ : Submodule (𝓞 E) (Matrix (Fin nT) (Fin nS) E)} {w : 𝓞 E}
   {lam : ℕ →* ℂ} {Om : GAF σ JS × GAF σ JT →* Module.End ℂ (GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ ψ)}
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isHeis_opFF hσ hS hT hξ hc h.hw, h.good, h.sd, h.span, gamFF_rhoFF hS, h.fin⟩`.
+Supply the required witnesses or components.
 -/
 theorem sys_k (hσ : ∀ x, σ (σ x) = x) (hS : IsHermND σ JS) (hT : IsHermND σ JT) (hξ : σ ξ₀ = -ξ₀)
     (h : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ ψ hc Λ w lam Om) :
     GlobalTheory.LatticeRep.IsLatSystem (sgOF σ) w (gamFF σ JS JT ξ₀ ψ) (opFF hc w) lam (latF F E nS nT Λ) (rhoFF σ JS JT) :=
   ⟨isHeis_opFF hσ hS hT hξ hc h.hw, h.good, h.sd, h.span, gamFF_rhoFF hS, h.fin⟩
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.op, h.vac⟩`.
+Supply the required witnesses or components.
 -/
 theorem rep_k (h : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ ψ hc Λ w lam Om) :
     GlobalTheory.LatticeRep.IsLatRep (opFF hc w) lam (latF F E nS nT Λ) (rhoFF σ JS JT) Om :=
   ⟨h.op, h.vac⟩
 /- English proof (translation)
-Establish `hs` using `_root_.PositivityTheory.ThKW.LatA.sys_k hσ hS hT hξ h`. Establish `H` using `hs.1`. Use `GlobalTheory.LatticeRep.transl_induction hs.2.2.2.1 (p := fun f => ∀ᶠ p in 𝓝 (1 : GAF σ JS × GAF σ JT), Om p f = f) (fun x e he => ?_) (Filter.Eventually.of_forall fun p => map_zero _) (fun u v hu hv => ?_) (fun c u hu => ?_) f` and prove the remaining obligations. Take `⟨N, hN, hNU⟩` from `h.lev (w • x) filter_upwards [h.near, h.near' x N hN] with p hp hp'`. Take `⟨l, hl, e1⟩` from `hp'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e2 : gamFF σ JS JT ξ₀ ψ (w • x) (N • l) = 1`. Rewrite using `[gamFF, ← symplOHF_add_self, AddChar.map_add_eq_mul, XFF.coe_nsmul, hNU l hl, one_mul]`. Establish `e4` using `H.comp x (N • l) e`. Rewrite `e4` using `[he _ (nsmul_mem hl N), e2, one_smul]`. Rewrite using `[h.op, (_root_.PositivityTheory.ThKW.LatA.rep_k h).fix_of_map_le hs (by rintro _ ⟨a, ha, rfl⟩; exact hp a ha) he, e1, ← e4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hu, hv] with p h3 h4 using by rw [map_add, h3, h4]`. Use `filter_upwards [hu] with p h3 using by rw [map_smul, h3]`.
+A detailed English derivation is pending.
 -/
 theorem eventually_fix_k (hσ : ∀ x, σ (σ x) = x) (hS : IsHermND σ JS) (hT : IsHermND σ JT) (hξ : σ ξ₀ = -ξ₀)
     (h : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ ψ hc Λ w lam Om) (f : GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ ψ) :

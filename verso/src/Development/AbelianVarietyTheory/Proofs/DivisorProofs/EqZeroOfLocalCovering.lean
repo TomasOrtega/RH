@@ -13,11 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.Aff
 
 /- English proof (translation)
-Introduce `R _ G _ _ N B _ _ z P`. Set `k` to `FractionRing (B ⧸ P.asIdeal)`. Set `x : Sp k` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum k)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[torsMap_val, Over.comp_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.comp_apply]`. Use `congr 1`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `algebraMap B k a ∈ (⊥ : Ideal k) ↔ a ∈ P.asIdeal`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Ideal.mem_bot, IsScalarTower.algebraMap_apply B (B ⧸ P.asIdeal) k, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tors_point_range_fld : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (N : ℕ) (B : Type) [CommRing B] [Algebra R B] (z : Tors G N B) (P : PrimeSpectrum B), z.1.left P ∈ Set.range (torsMap (IsScalarTower.toAlgHom R B (FractionRing (B ⧸ P.asIdeal))) z).1.left := by
   intro R _ G _ _ N B _ _ z P

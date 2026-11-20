@@ -17,7 +17,7 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundl
 namespace GlobalTheory.CompanionTheory.Ar.Num.CkTransport
 
 /- English proof (translation)
-Unfold `mseg at hs ⊢`. Rewrite `hs`, the goal using `[Finset.prod_ne_zero_iff]`. Introduce `k _`. Conclude with `hs (Sum.inl k) (Finset.mem_univ _)`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mseg_restrict {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {ι' : K' → Type}
     {Ω : Type} [Field Ω] (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω)
@@ -29,13 +29,13 @@ theorem mseg_restrict {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {
   exact hs (Sum.inl k) (Finset.mem_univ _)
 
 /- English proof (translation)
-Introduce `s hs v`. Establish `hr` using `h _ (mseg_restrict x z s hs)`. Establish `key : FB.lat s = (EB.lat s).map (e : V →+ V₁)`. Rewrite using `[hE s hs, hF s hs, AddMonoidHom.map_closure]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, t, ht, rfl⟩`. Use `⟨a • e.symm t, ⟨a, ha, e.symm t, (hr _).1 (by simpa using ht), rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨_, ⟨a, ha, t, ht, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, e t, (hr _).2 ht, by simp⟩`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, huv⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `: u = v` using `e.injective huv`. Conclude with `this ▸ hu`. Introduce `hv`. Conclude with `⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pull_transport (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {Ω : Type} [Field Ω] [Algebra O Ω]
@@ -69,11 +69,11 @@ theorem pull_transport (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuation
     exact ⟨v, hv, rfl⟩
 
 /- English proof (translation)
-Use `⟨fun c hc i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hw.graded c hc i]`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨e.symm v, (h c hc _).1 (by simpa using hv), ?_, ?_⟩` and prove the remaining obligations. Simplify using `using h1`. Simplify using `using h2`. Introduce and unpack `⟨v, hv, h1, h2⟩`. Use `⟨e v, (h c hc _).2 hv, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using h1`. Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem frame_transport {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω]
     {K : Type} [Fintype K] {ι : K → Type} (y : (Σ k, ι k) → Ω) {N : ℕ}
@@ -96,19 +96,17 @@ theorem frame_transport {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra 
     · simpa using h2
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x d hW N V _ _ V₁ _ _ e E E' F F' hEE' he`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hFF' : SameGeneric O x F F'`. Introduce `s hs`. Use `⟨fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc, h⟩` from `(hEE' s hs).1 (e.symm v) ((he s hs _).1.1 (by simpa using hv))`. Conclude with `⟨c, hc, by simpa using (he s hs _).2.2 h⟩`. Take `⟨c, hc, h⟩` from `(hEE' s hs).2 (e.symm v) ((he s hs _).2.1 (by simpa using hv))`. Conclude with `⟨c, hc, by simpa using (he s hs _).1.2 h⟩`. Establish `hEE : SameGeneric O x E E` using `fun s _ => ⟨fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩, fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨K', _, _, ι', _, z, EB, w, b, hW', hfn, hj⟩` from `GlobalTheory.T.same_generic_bundle_chain O Ω K ι x d hW N 1 V ![E, E'] (by`. Introduce `j`. Use `fin_cases j`. Conclude with `hEE`. Conclude with `hEE')`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : IsPull O x z E (EB 0)` using `(hj 0).1`. Establish `hp1 : IsPull O x z E' (EB 1)` using `(hj 1).1`. Establish `hB : SameGeneric O (joinCoord x z) (EB 0) (EB 1)` using `(GlobalTheory.CompanionTheory.Ar.Num.PullPreserve.pull_preserve O Ω K ι x N V E E' K' ι' z (EB 0) (EB 1) hp0 hp1).2.1 hEE'`. Take `⟨-, f, g, hfp⟩` from `GlobalTheory.T.same_generic_flag_comparison O Ω (K ⊕ K') (Sum.elim ι ι') (joinCoord x z) ϖ hϖ d ((GroundTheory.Heights₂.Heights.NumbersDVR.BundleExamples.isModelOver_iff O _ d).1 hW').2 N V (EB 0) (EB 1) hB w w (b 0) (b 1) (hj 0).2 (hj 1).2 (fun i j hij => by simp [Finsupp.single …`. Take `⟨FB, hF⟩` from `(GlobalTheory.CompanionTheory.Ar.Num.PullExists.main O Ω K ι x N V₁ F).1 K' ι' z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨FB', hF'⟩` from `(GlobalTheory.CompanionTheory.Ar.Num.PullExists.main O Ω K ι x N V₁ F').1 K' ι' z`. Establish `hfpF : IsFlagPair ϖ (joinCoord x z) FB FB' (w.map e) (w.map e) (b 0) (b 1) f g`. Use `⟨frame_transport _ e (EB 0) FB (pull_transport O x z e E F (fun s hs v => (he s hs v).1) _ _ hp0 hF) w _ hfp.flag, frame_transport _ e (EB 1) FB' (pull_transport O x z e E' F' (fun s hs v => (he s hs v).2) _ _ hp1 hF') w _ hfp.flag', fun i j hij => ?_, hfp.vertical, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.repr_self, Finsupp.single_apply, if_neg hij.ne]`. Use `hfp.generic i` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this`, the goal using `[Module.Basis.repr_self]`. Conclude with `this`. Take `⟨h1, h2⟩` from `GlobalTheory.T.same_generic_flag_difference O Ω K ι x ϖ hϖ d hW N V E E' hEE' K' ι' z hW' hfn (EB 0) (EB 1) hp0 hp1 w w (b 0) (b 1) f g hfp`. Take `⟨h3, h4⟩` from `GlobalTheory.T.same_generic_flag_difference O Ω K ι x ϖ hϖ d hW N V₁ F F' hFF' K' ι' z hW' hfn FB FB' hF hF' (w.map e) (w.map e) (b 0) (b 1) f g hfpF`. Use `⟨fun k hk hkd q L Q hQ => ?_, fun c G hG hc hcd q L Q hQ a ha => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[h1 k hk hkd q L Q hQ, h3 k hk hkd q L Q hQ]`. Rewrite using `[h2 c G hG hc hcd q L Q hQ a ha, h4 c G hG hc hcd q L Q hQ a ha]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (d : ℕ), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → ∀ (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (V₁ : Type) [AddCommGroup V₁] [Module Ω V₁] (e : V ≃ₗ[Ω] V₁) (E E' : ChartBundle O (mseg x) N V) (F F' : ChartBundle O (mseg x) N V₁), SameGeneric O x E E' → (∀ s, mseg x s ≠ 0 → ∀ v, (e v ∈ F.lat s ↔ v ∈ E.lat s) ∧ (e v ∈ F'.lat s ↔ v ∈ E'.lat s)) → (∀ (k : ℕ), 1 ≤ k → k ≤ d + 1 → ∀ (q : ℕ) (L : Fin q → K → ℤ) (Q : MvPolynomial (Fin q) ℤ), Q.IsHomogeneous (d + 1 - k) → ck O x d N F F' k L Q = ck O x d N E E' k L Q) ∧ (∀ (c : ℕ) (G : MvPolynomial (Fin N) ℤ), G.IsSymmetric → G.IsHomogeneous c → c ≤ d → ∀ (q : ℕ) (L : Fin q → K → ℤ) (Q : MvPolynomial (Fin q) ℤ), Q.IsHomogeneous (d - c) → ∀ a : O, a ≠ 0 → rootNum O x d N F G L Q a = rootNum O x d N E G L Q a) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x d hW N V _ _ V₁ _ _ e E E' F F' hEE' he

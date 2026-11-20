@@ -14,7 +14,7 @@ section One
 variable {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Rewrite using `[coeff_mul_fin, coeff_mul_fin]`. Simplify using `only [mul_one]`. Conclude with `Fintype.sum_equiv (Equiv.inv G) _ _ (fun h => by rw [Equiv.inv_apply, inv_inv, mul_comm])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tau_mul_comm (a b : MonoidAlgebra ℂ G) : (a * b).coeff 1 = (b * a).coeff 1 := by
   rw [coeff_mul_fin, coeff_mul_fin]
@@ -22,7 +22,7 @@ theorem tau_mul_comm (a b : MonoidAlgebra ℂ G) : (a * b).coeff 1 = (b * a).coe
   exact Fintype.sum_equiv (Equiv.inv G) _ _ (fun h => by rw [Equiv.inv_apply, inv_inv, mul_comm])
 
 /- English proof (translation)
-Rewrite using `[tau_mul_comm, ← mul_assoc, MonoidAlgebra.single_mul_single, inv_mul_cancel, one_mul, ← MonoidAlgebra.one_def, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tau_conj (P : G) (a : MonoidAlgebra ℂ G) :
     (MonoidAlgebra.single P 1 * a * MonoidAlgebra.single P⁻¹ 1).coeff 1 = a.coeff 1 := by
@@ -30,7 +30,7 @@ theorem tau_conj (P : G) (a : MonoidAlgebra ℂ G) :
     ← MonoidAlgebra.one_def, one_mul]
 
 /- English proof (translation)
-Rewrite using `[coeff_mul_fin, Complex.ofReal_sum]`. Simplify using `only [conjA_coeff, mul_one]`. Conclude with `Fintype.sum_equiv (Equiv.inv G) _ _ (fun h => by rw [Equiv.inv_apply, Complex.star_def, mul_comm, Complex.mul_conj])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tau_normSq (x : MonoidAlgebra ℂ G) :
     (conjA x * x).coeff 1 = ((∑ h : G, Complex.normSq (x.coeff h) : ℝ) : ℂ) := by
@@ -40,7 +40,7 @@ theorem tau_normSq (x : MonoidAlgebra ℂ G) :
     (fun h => by rw [Equiv.inv_apply, Complex.star_def, mul_comm, Complex.mul_conj])
 
 /- English proof (translation)
-Establish `hx : conjA (a * e) * (a * e) = a * e`. Rewrite using `[conjA_mul, hse, hsa, mul_assoc, ← mul_assoc a a e, ha, ← mul_assoc, hc a, mul_assoc, he]`. Rewrite using `[← tau_normSq (a * e), hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem tau_proj (a e : MonoidAlgebra ℂ G) (ha : a * a = a) (hsa : conjA a = a) (he : e * e = e)
     (hc : ∀ y, e * y = y * e) (hse : conjA e = e) :
@@ -59,15 +59,15 @@ def pA (f : ∀ i, MonoidAlgebra ℂ (G i)) : MonoidAlgebra ℂ (∀ i, G i) :=
   MonoidAlgebra.ofCoeff (Finsupp.equivFunOnFinite.symm fun γ => ∏ i, (f i).coeff (γ i))
 
 /- English proof (translation)
-Simplify using `[pA, MonoidAlgebra.coeff_ofCoeff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pA_coeff (f : ∀ i, MonoidAlgebra ℂ (G i)) (γ : ∀ i, G i) : (pA f).coeff γ = ∏ i, (f i).coeff (γ i) := by
   simp [pA, MonoidAlgebra.coeff_ofCoeff]
 
 /- English proof (translation)
-Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `γ`. Rewrite using `[coeff_mul_fin, pA_coeff]`. Simplify using `only [pA_coeff, coeff_mul_fin]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun h _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pA_mul (f g : ∀ i, MonoidAlgebra ℂ (G i)) : pA f * pA g = pA (fun i => f i * g i) := by
   apply MonoidAlgebra.ext
@@ -80,7 +80,7 @@ theorem pA_mul (f g : ∀ i, MonoidAlgebra ℂ (G i)) : pA f * pA g = pA (fun i 
   rfl
 
 /- English proof (translation)
-Rewrite using `[pA_coeff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pA_one_coeff (f : ∀ i, MonoidAlgebra ℂ (G i)) : (pA f).coeff 1 = ∏ i, (f i).coeff 1 := by
   rw [pA_coeff]

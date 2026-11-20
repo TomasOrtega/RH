@@ -17,9 +17,9 @@ namespace HomDerivDescent
 variable {R R' : Type} [CommRing R] [CommRing R']
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Simplify using `using hu 0`. Introduce `h`. Use `⟨![w], fun i => ?_, by simp⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases i`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem isLieComb_one_iff {G : Over (Sp R)} [GrpObj G] (a : R) (t w : epsR R ⟶ G) :
     IsLieComb ![a] ![t] w ↔ w.left = spMap (epsScaleR a) ≫ t.left := by
@@ -32,7 +32,7 @@ theorem isLieComb_one_iff {G : Over (Sp R)} [GrpObj G] (a : R) (t w : epsR R ⟶
     exact h
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, epsScaleR, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsScaleR_comp_dualMapR (g : R →+* R') (a : R) :
     (epsScaleR (g a)).comp (Chart.dualMapR g) = (Chart.dualMapR g).comp (epsScaleR a) := by
@@ -40,11 +40,11 @@ theorem epsScaleR_comp_dualMapR (g : R →+* R') (a : R) :
   ext <;> simp [Chart.dualMapR, epsScaleR, mul_comm]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[isLieComb_one_iff]`. Unfold `IsVecOver at hv ht`. Use `hψ.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite `h`, the goal using `[Over.comp_left]`. Rewrite using `[Category.assoc, hf, ← Category.assoc, hv, Category.assoc, h, Category.assoc, ht, ← Category.assoc, ← Category.assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `(spMap_comp_spMap _ _).trans ((congrArg spMap (epsScaleR_comp_dualMapR g a).symm).trans (spMap_comp_spMap _ _).symm)`. Rewrite using `[Over.w, Category.assoc, Over.w]`. Use `Eq.trans ?_ (spMap_comp_spMap _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap _ = _`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply the tactic sequence `ext x <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isLieComb_pull {g : R →+* R'} {G H : Over (Sp R)} {G' H' : Over (Sp R')} [GrpObj H] [GrpObj H']
     {φ : G'.left ⟶ G.left} {ψ : H'.left ⟶ H.left} (hψ : IsPullback ψ H'.hom H.hom (spMap g))
@@ -68,15 +68,13 @@ theorem isLieComb_pull {g : R →+* R'} {G H : Over (Sp R)} {G' H' : Over (Sp R'
     ext x <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Take `⟨e, he, he'⟩` from `grpPullback_iso hP.2.1 (isGrpPullback_pullback P.A _)`. Take `⟨d, hd, hd'⟩` from `grpPullback_iso hQ.2.1 (isGrpPullback_pullback Q.A _)`. Take `⟨K, f, j, hK, hf, j₁, j₂, j₃⟩` from `hom_descends_to_numberField hT hB k P Q (e.inv ≫ fc ≫ d.hom) inferInstance`. Take `⟨P₁, φ₁, hP₁⟩` from `exists_isPolFibre hB (algebraMap k K) P`. Take `⟨Q₁, ψ₁, hQ₁⟩` from `exists_isPolFibre hB (algebraMap k K) Q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, hm'⟩` from `PolFibre.cancel (g := algebraMap K ℂ) hP₁ hP`. Take `⟨n, hn, hn'⟩` from `PolFibre.cancel (g := algebraMap K ℂ) hQ₁ hQ`. Take `⟨a, ha, ha'⟩` from `grpPullback_iso hP₁.2.1 (isGrpPullback_pullback P.A _)`. Take `⟨b, hb, hb'⟩` from `grpPullback_iso (isGrpPullback_pullback Q.A _) hQ₁.2.1`. Use `⟨K, P₁, Q₁, φ₁, ψ₁, m, n, a.hom ≫ f ≫ b.hom, hK, hP₁, hQ₁, hm, hn, hm', hn', inferInstance, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : m ≫ a.hom.left = e.hom.left ≫ j`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `((Category.assoc _ _ _).trans ((congrArg (m ≫ ·) ha').trans hm')).trans ((Category.assoc _ _ _).trans ((congrArg (e.hom.left ≫ ·) j₁).trans he')).symm`. Conclude with `((Category.assoc _ _ _).trans ((congrArg (m ≫ ·) (Over.w a.hom)).trans hm.2.1.1.w)).trans ((Category.assoc _ _ _).trans ((congrArg (e.hom.left ≫ ·) j₂).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) (Over.w e.hom))))).symm`. Use `hQ₁.2.1.1.hom_ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `r : e.hom.left ≫ (e.inv ≫ fc ≫ d.hom).left = fc.left ≫ d.hom.left`. Rewrite using `[← Over.comp_left, e.hom_inv_id_assoc, Over.comp_left]`. Rewrite using `[Category.assoc, hn', Over.comp_left, Over.comp_left]`. Simplify using `only [Category.assoc]`. Rewrite using `[hb', ← Category.assoc, key, Category.assoc, ← hd', ← Category.assoc, ← r, Category.assoc]`.
-
-Conclude with `congrArg (e.hom.left ≫ ·) j₃.symm`. Rewrite using `[Category.assoc, Category.assoc, Over.w, hn.2.1.1.w, hm.2.1.1.w, ← Category.assoc, Over.w]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_descent (hT : ThetaUnifAV) (hB : Out.PolBaseChangeSt) (k : IntermediateField ℚ ℂ)
     [FiniteDimensional ℚ k] (P Q : Out.PolAV (Sp k)) {Pc Qc : Out.PolAV (Sp ℂ)} {φc : Pc.A.left ⟶ P.A.left}
@@ -118,17 +116,17 @@ end HomDerivDescent
 open HomDerivDescent in
 
 /- English proof (translation)
-Introduce `hT hB R _ P Q v t k ρ α hk hv hbas hhom`. Take `⟨Pk, φk, hPk⟩` from `exists_isPolFibre hB ρ P`. Take `⟨Qk, ψk, hQk⟩` from `exists_isPolFibre hB ρ Q`. Take `⟨Pc, φc, hPc⟩` from `exists_isPolFibre hB (algebraMap k ℂ) Pk`. Take `⟨Qc, ψc, hQc⟩` from `exists_isPolFibre hB (algebraMap k ℂ) Qk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hPc'` using `PolFibre.comp hPk hPc`. Establish `hQc'` using `PolFibre.comp hQk hQc`. Take `⟨vc, hvc, -⟩` from `existsUnique_isVecOver hPc'.2.1.1 v`. Take `⟨tc, htc, -⟩` from `existsUnique_isVecOver hQc'.2.1.1 t`. Take `⟨fc, hfc, hα⟩` from `hhom Pc Qc _ _ vc tc hPc' hQc' hvc htc`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K, P₀, Q₀, φ₀, ψ₀, m, n, f₀, hK, hP₀, hQ₀, hm, hn, em, en, hf₀, ef⟩` from `exists_descent hT hB k Pk Qk hPc hQc fc`. Establish `hP₀'` using `PolFibre.comp hPk hP₀`. Establish `hQ₀'` using `PolFibre.comp hQk hQ₀`. Take `⟨v₀, hv₀, -⟩` from `existsUnique_isVecOver hP₀'.2.1.1 v`. Take `⟨t₀, ht₀, -⟩` from `existsUnique_isVecOver hQ₀'.2.1.1 t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, -⟩` from `(hbas _ _ _ _ _ hQ₀' ht₀).2 (v₀ ≫ f₀) (HomDescent.isTangent_comp f₀ (hv₀.isTangent hP₀'.2.1 hv))`. Take `⟨a, rfl⟩ : ∃ a, c = ![a]` from `⟨c 0, by ext i; fin_cases i; rfl⟩`. Establish `hv' : IsVecOver (algebraMap K ℂ) m v₀ vc` using `(PolFibre.vec_iff hP₀'.2.1.1 hm.2.1.1.w hv₀).2 (by rw [← Category.assoc, em]; exact hvc)`. Establish `ht' : IsVecOver (algebraMap K ℂ) n t₀ tc` using `(PolFibre.vec_iff hQ₀'.2.1.1 hn.2.1.1.w ht₀).2 (by rw [← Category.assoc, en]; exact htc)`. Establish `hα'` using `isLieComb_pull hn.2.1.1 hv' ht' ef hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haα : algebraMap K ℂ a = α` using `congrFun (((hbas _ _ _ _ _ hQc' htc).2 (vc ≫ fc) (HomDescent.isTangent_comp fc (hvc.isTangent hPc'.2.1 hv))).unique hα' hα) 0`. Establish `main : ∀ (P₁ Q₁ : Out.PolAV (Sp K)) (φ₁ : P₁.A.left ⟶ P.A.left) (ψ₁ : Q₁.A.left ⟶ Q.A.left) (v₁ : epsR K ⟶ P₁.A) (t₁ : epsR K ⟶ Q₁.A), IsPolFibre ((algebraMap k K).comp ρ) P P₁ φ₁ → IsPolFibre ((algebraMap k K).comp ρ) Q Q₁ ψ₁ → IsVecOver ((algebraMap k K).comp ρ) φ₁ v v₁ → IsVec …`. Introduce `P₁ Q₁ φ₁ ψ₁ v₁ t₁ hP₁ hQ₁ hv₁ ht₁`. Take `⟨p, hp, rfl⟩` from `PolFibre.cancel (g := RingHom.id K) hP₀' hP₁`. Take `⟨q, hq, rfl⟩` from `PolFibre.cancel (g := RingHom.id K) hQ₀' hQ₁`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f₁, hf₁, e₁⟩` from `HomDescent.exists_isMonHom_pull hp.2.1 hq.2.1 f₀`. Conclude with `⟨f₁, hf₁, isLieComb_pull hq.2.1.1 ((PolFibre.vec_iff hP₀'.2.1.1 hp.2.1.1.w hv₀).2 hv₁) ((PolFibre.vec_iff hQ₀'.2.1.1 hq.2.1.1.w ht₀).2 ht₁) e₁ hc⟩`. Establish `: IsScalarTower ℚ k K` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `hfin : FiniteDimensional ℚ K` using `Module.Finite.trans k K`. Conclude with `⟨K.restrictScalars ℚ, fun x hx => K.algebraMap_mem ⟨x, hx⟩, a, hfin, haα, main⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem hom_deriv_descends_to_numberField : ThetaUnifAV → Out.PolBaseChangeSt → ∀ (R : Type) [CommRing R] (P Q : Out.PolAV (Sp R)) (v : epsR R ⟶ P.A) (t : epsR R ⟶ Q.A) (k : IntermediateField ℚ ℂ) (ρ : R →+* k) (α : ℂ), FiniteDimensional ℚ k → IsTangent v → (∀ (R' : Type) [CommRing R'] (f' : R →+* R') (P' : Out.PolAV (Sp R')) (φ' : P'.A.left ⟶ Q.A.left) (v' : epsR R' ⟶ P'.A), IsPolFibre f' Q P' φ' → IsVecOver f' φ' t v' → IsLieBasis ![v']) → (∀ (P₁ Q₁ : Out.PolAV (Sp ℂ)) (φ₁ : P₁.A.left ⟶ P.A.left) (ψ₁ : Q₁.A.left ⟶ Q.A.left) (v₁ : epsR ℂ ⟶ P₁.A) (t₁ : epsR ℂ ⟶ Q₁.A), IsPolFibre ((algebraMap k ℂ).comp ρ) P P₁ φ₁ → IsPolFibre ((algebraMap k ℂ).comp ρ) Q Q₁ ψ₁ → IsVecOver ((algebraMap k ℂ).comp ρ) φ₁ v v₁ → IsVecOver ((algebraMap k ℂ).comp ρ) ψ₁ t t₁ → ∃ f₁ : P₁.A ⟶ Q₁.A, IsMonHom f₁ ∧ IsLieComb ![α] ![t₁] (v₁ ≫ f₁)) → ∃ (K₁ : IntermediateField ℚ ℂ) (hk : k ≤ K₁) (a : K₁), FiniteDimensional ℚ K₁ ∧ (a : ℂ) = α ∧ (∀ (P₁ Q₁ : Out.PolAV (Sp K₁)) (φ₁ : P₁.A.left ⟶ P.A.left) (ψ₁ : Q₁.A.left ⟶ Q.A.left) (v₁ : epsR K₁ ⟶ P₁.A) (t₁ : epsR K₁ ⟶ Q₁.A), IsPolFibre ((IntermediateField.inclusion hk).toRingHom.comp ρ) P P₁ φ₁ → IsPolFibre ((IntermediateField.inclusion hk).toRingHom.comp ρ) Q Q₁ ψ₁ → IsVecOver ((IntermediateField.inclusion hk).toRingHom.comp ρ) φ₁ v v₁ → IsVecOver ((IntermediateField.inclusion hk).toRingHom.comp ρ) ψ₁ t t₁ → ∃ f₁ : P₁.A ⟶ Q₁.A, IsMonHom f₁ ∧ IsLieComb ![a] ![t₁] (v₁ ≫ f₁)) := by
   intro hT hB R _ P Q v t k ρ α hk hv hbas hhom

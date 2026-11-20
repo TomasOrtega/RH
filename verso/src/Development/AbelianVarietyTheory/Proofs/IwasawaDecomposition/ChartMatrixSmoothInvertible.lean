@@ -15,13 +15,11 @@ namespace GlobalTheory.ChernReg.MatSmooth
 open ReciprocityTheory.L2DbarEstimates
 
 /- English proof (translation)
-Use `⟨Matrix.of fun k l => (b k l + starRingEnd ℂ (b l k)) / (2 * Real.pi), ?_, fun ξ => ?_⟩` and prove the remaining obligations. Use extensionality with `k l`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.of_apply, star_div₀, star_add, RCLike.star_def, Complex.conj_conj, map_mul, Complex.conj_ofReal, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Use `set S := ∑ k, ∑ l, b k l * ξ k * starRingEnd ℂ (ξ l)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hT : ∑ k, ∑ l, starRingEnd ℂ (b l k) * ξ k * starRingEnd ℂ (ξ l) = starRingEnd ℂ S`. Simplify using `only [S, map_sum, map_mul, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `e : ∑ k, ∑ l, (Matrix.of fun k l => (b k l + starRingEnd ℂ (b l k)) / (2 * Real.pi) : Matrix (Fin d) (Fin d) ℂ) k l * ξ k * starRingEnd ℂ (ξ l) = (S + ∑ k, ∑ l, starRingEnd ℂ (b l k) * ξ k * starRingEnd ℂ (ξ l)) / (2 * Real.pi)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [S, Matrix.of_apply, Finset.sum_div, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[e, hT, Complex.add_conj]`. Establish `hp : (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 Real.pi_ne_zero`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_herm {d : ℕ} (b : Matrix (Fin d) (Fin d) ℂ) :
     ∃ B : Matrix (Fin d) (Fin d) ℂ, B.IsHermitian ∧ ∀ ξ : Fin d → ℂ,
@@ -48,7 +46,7 @@ theorem exists_herm {d : ℕ} (b : Matrix (Fin d) (Fin d) ℂ) :
     field_simp
 
 /- English proof (translation)
-Establish `hf : ContDiffOn ℝ ∞ (fun v => fderiv ℝ h v) O` using `((contDiffOn_infty_iff_fderiv_of_isOpen hO).1 hh).2`. Establish `h1 : ContDiffOn ℝ ∞ (fun v => fderiv ℝ h v (bas d j)) O` using `hf.clm_apply contDiffOn_const`. Establish `h2 : ContDiffOn ℝ ∞ (fun v => fderiv ℝ h v (Complex.I • bas d j)) O` using `hf.clm_apply contDiffOn_const`. Conclude with `⟨(h1.sub (contDiffOn_const.mul h2)).div_const _, (h1.add (contDiffOn_const.mul h2)).div_const _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem contDiffOn_wirt {d : ℕ} {O : Set (V d)} (hO : IsOpen O) {h : V d → ℂ} (hh : ContDiffOn ℝ ∞ h O)
     (j : Fin d) : ContDiffOn ℝ ∞ (wd d j h) O ∧ ContDiffOn ℝ ∞ (wdb d j h) O := by
@@ -59,7 +57,7 @@ theorem contDiffOn_wirt {d : ℕ} {O : Set (V d)} (hO : IsOpen O) {h : V d → �
   exact ⟨(h1.sub (contDiffOn_const.mul h2)).div_const _, (h1.add (contDiffOn_const.mul h2)).div_const _⟩
 
 /- English proof (translation)
-Unfold `leviV`. Conclude with `ContDiffOn.sum fun j _ => ContDiffOn.sum fun k _ => ((contDiffOn_wirt hO (contDiffOn_wirt hO hg k).2 j).1.mul contDiffOn_const).mul contDiffOn_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiffOn_leviV {d : ℕ} {O : Set (V d)} (hO : IsOpen O) {g : V d → ℂ} (hg : ContDiffOn ℝ ∞ g O)
     (ξ : Fin d → ℂ) : ContDiffOn ℝ ∞ (fun v => leviV d g v ξ) O := by
@@ -70,9 +68,9 @@ theorem contDiffOn_leviV {d : ℕ} {O : Set (V d)} (hO : IsOpen O) {g : V d → 
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ}
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨W, φ, hyW, hWo, hs, e⟩` from `ha.1 (c.e.symm v)`. Establish `hO : IsOpen (c.e.target ∩ c.e.symm ⁻¹' W)` using `GlobalTheory.ChartGlue.isOpen_over c.e hWo`. Establish `hvO : v ∈ c.e.target ∩ c.e.symm ⁻¹' W` using `⟨hv, hyW⟩`. Establish `hg : ContDiffOn ℝ ∞ (fun u => ((φ (c.e.symm u) : ℝ) : ℂ)) (c.e.target ∩ c.e.symm ⁻¹' W)` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (hs.chart hWo c)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : ContDiffOn ℝ ∞ (fun u => (leviV d (fun u => ((φ (c.e.symm u) : ℝ) : ℂ)) u ξ).re / Real.pi) (c.e.target ∩ c.e.symm ⁻¹' W)` using `(Complex.reCLM.contDiff.comp_contDiffOn (contDiffOn_leviV hO hg ξ)).div_const _`. Establish `hE : ContDiffOn ℝ ∞ (fun v => a c (c.e.symm v) ξ) (c.e.target ∩ c.e.symm ⁻¹' W)` using `hL.congr fun u hu => by`. Rewrite using `[e c _ (c.e.map_target hu.1) hu.2 ξ, ddcForm, AlgChart.levi, c.e.right_inv hu.1]`. Conclude with `(hE.contDiffAt (hO.mem_nhds hvO)).contDiffWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffOn_form {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerForm R a) (c : AlgChart p σ d)
     (ξ : Fin d → ℂ) : ContDiffOn ℝ ∞ (fun v => a c (c.e.symm v) ξ) c.e.target := by
@@ -91,11 +89,11 @@ theorem contDiffOn_form {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehl
   exact (hE.contDiffAt (hO.mem_nhds hvO)).contDiffWithinAt
 
 /- English proof (translation)
-Take `⟨b, eb⟩` from `exists_eq_sum ha (c.e.map_target hv)`. Take `⟨B, hB, eB⟩` from `exists_herm b`. Establish `hq : a c (c.e.symm v) = fun ξ => (∑ k, ∑ l, B k l * ξ k * starRingEnd ℂ (ξ l)).re`. Rewrite using `[eb]`. Use function extensionality and compare the values at `ξ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[eB ξ, Complex.ofReal_re]`. Establish `hM : matIn a c v = B` using `by rw [matIn, hq, polMat_form hB]`. Use `⟨hM ▸ hB, fun ξ => ?_⟩` and prove the remaining obligations. Rewrite using `[hM, eb, ← eB ξ]`. Simplify using `only [Matrix.vecMul, dotProduct, Finset.sum_mul, Pi.star_apply, RCLike.star_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matIn_spec {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerForm R a) (c : AlgChart p σ d)
     {v : V d} (hv : v ∈ c.e.target) : (matIn a c v).IsHermitian ∧ ∀ ξ : Fin d → ℂ,
@@ -114,9 +112,9 @@ theorem matIn_spec {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerFor
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, fun v hv => ?_, fun v hv ξ => (matIn_spec ha c hv).2 ξ.ofLp⟩` and prove the remaining obligations. Establish `hF` using `fun ξ => Complex.ofRealCLM.contDiff.comp_contDiffOn (contDiffOn_form ha c ξ)`. Unfold `matIn polMat`. Conclude with `((((hF _).sub (hF _)).add (contDiffOn_const.mul (hF _))).sub (contDiffOn_const.mul (hF _))).div_const _`. Rewrite using `[isUnit_iff_ne_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Take `⟨w, hw, hwM⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Establish `e` using `(matIn_spec ha c hv).2 w`. Rewrite `e` using `[hwM, zero_dotProduct, Complex.ofReal_eq_zero]`. Conclude with `(ha.2 c _ (c.e.map_target hv) w hw).ne' e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matIn_smooth_unit_form (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ)
     (R : AnRead p σ d) (a : ChartForm p σ d) (ha : IsKaehlerForm R a) (c : AlgChart p σ d) :

@@ -7,17 +7,17 @@ open Finset
 noncomputable def psi (n : ℤ) : ℝ := (4 / (|(n : ℝ)| + 1)) ^ (5 / 4 : ℝ)
 
 /- English proof (translation)
-Unfold `psi`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 lemma psi_nonneg (n : ℤ) : 0 ≤ psi n := by
   unfold psi; positivity
 
 /- English proof (translation)
-Establish `hnat : Summable (fun n : ℕ => (4 / ((n : ℝ) + 1)) ^ (5 / 4 : ℝ))`. Establish `h1 : Summable (fun n : ℕ => (((n : ℝ)) ^ (5 / 4 : ℝ))⁻¹)` using `Real.summable_nat_rpow_inv.mpr (by norm_num)`. Establish `h2 : Summable (fun n : ℕ => (((n + 1 : ℕ) : ℝ) ^ (5 / 4 : ℝ))⁻¹)` using `(summable_nat_add_iff 1).mpr h1`. Establish `h3` using `h2.mul_left ((4 : ℝ) ^ (5 / 4 : ℝ))`. Use `h3.congr (fun n => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn : (0 : ℝ) ≤ (n : ℝ) + 1` using `by positivity`. Rewrite using `[Real.div_rpow (by norm_num) hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[summable_int_iff_summable_nat_and_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Use `hnat.congr (fun n => ?_)` and prove the remaining obligations. Simplify using `[psi]`. Use `hnat.congr (fun n => ?_)` and prove the remaining obligations. Simplify using `[psi]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma summable_psi : Summable psi := by
   have hnat : Summable (fun n : ℕ => (4 / ((n : ℝ) + 1)) ^ (5 / 4 : ℝ)) := by
@@ -39,20 +39,20 @@ lemma summable_psi : Summable psi := by
     simp [psi]
 
 /- English proof (translation)
-The claim follows from `summable_psi.sum_le_tsum T (fun n _ => psi_nonneg n)`.
+A detailed English derivation is pending.
 -/
 lemma psi_sum_le (T : Finset ℤ) : ∑ n ∈ T, psi n ≤ ∑' n, psi n :=
   summable_psi.sum_le_tsum T (fun n _ => psi_nonneg n)
 
 /- English proof (translation)
-The claim follows from `tsum_nonneg psi_nonneg`.
+A detailed English derivation is pending.
 -/
 lemma tsum_psi_nonneg : 0 ≤ ∑' n, psi n := tsum_nonneg psi_nonneg
 
 /- English proof (translation)
-Establish `hK' : (3 : ℝ) ≤ K` using `by exact_mod_cast hK`. Break down `le_or_gt t 1 with h | h` into its components or cases. Rewrite using `[min_eq_right h, min_eq_right (pow_le_one₀ ht.le h)]`. Rewrite using `[← Real.rpow_add ht, ← Real.rpow_add ht, ← Real.rpow_natCast]`. Apply `le_of_eq` to reduce the goal to its premises.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[min_eq_left h.le, Real.one_rpow, mul_one, mul_one]`. Use `(min_le_left _ _).trans ?_` and prove the remaining obligations. Conclude with `Real.one_le_rpow h.le (by linarith)`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma min_pow_le (t : ℝ) (ht : 0 < t) (K : ℕ) (hK : 3 ≤ K) :
     min 1 (t ^ K) ≤ t ^ ((K : ℝ) - 5 / 2) * ((min 1 t) ^ (5 / 4 : ℝ) * (min 1 t) ^ (5 / 4 : ℝ)) := by
@@ -68,23 +68,21 @@ lemma min_pow_le (t : ℝ) (ht : 0 < t) (K : ℕ) (hK : 3 ≤ K) :
     exact Real.one_le_rpow h.le (by linarith)
 
 /- English proof (translation)
-Unfold `psi`. Use `set a : ℤ := ⌊2 * r / x⌋ with ha`. Establish `key : min 1 (x / y) ≤ 4 / (|(a : ℝ)| + 1)`. Break down `le_or_gt |(a : ℝ)| 2 with h | h` into its components or cases. Use `(min_le_left _ _).trans ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(min_le_right _ _).trans ?_` and prove the remaining obligations. Establish `h1 : (a : ℝ) ≤ 2 * r / x` using `Int.floor_le _`. Establish `h2 : 2 * r / x < a + 1` using `Int.lt_floor_add_one _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : |(a : ℝ)| - 1 ≤ |2 * r / x|`. Break down `le_or_gt 0 (a : ℝ) with h0 | h0` into its components or cases. Rewrite using `[abs_of_nonneg h0]`. Establish `: (a : ℝ) ≤ |2 * r / x|` using `h1.trans (le_abs_self _)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[abs_of_neg h0]`. Establish `ha1 : (a : ℝ) + 1 ≤ 0`. Establish `: a < 0` using `by exact_mod_cast h0`. Establish `: a + 1 ≤ 0` using `by omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: -(2 * r / x) ≤ |2 * r / x|` using `neg_le_abs _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : |2 * r / x| = 2 * |r| / x`. Rewrite using `[abs_div, abs_mul, abs_of_pos hx]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[h4]`. Establish `h3' : (3 : ℝ) ≤ |(a : ℝ)|`. Rewrite `h`, the goal using `[← Int.cast_abs]`. Establish `h6 : (2 : ℤ) < |a|` using `by exact_mod_cast h`. Establish `h7 : (3 : ℤ) ≤ |a|` using `by omega`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h7` after adjusting the coercions. Establish `h5 : (|(a : ℝ)| + 1) / 2 ≤ 2 * y / x`. Establish `: 2 * |r| / x ≤ 2 * y / x`. Apply `div_le_div_of_nonneg_right _ hx.le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[div_le_div_iff₀ hy (by positivity)]`. Rewrite `h5` using `[le_div_iff₀ hx]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h0 : 0 ≤ min 1 (x / y)` using `le_min zero_le_one (by positivity)`.
-
-Conclude with `Real.rpow_le_rpow h0 key (by norm_num)`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma min_le_psi (x y r : ℝ) (hx : 0 < x) (hy : 0 < y) (hr : |r| ≤ y) :
     (min 1 (x / y)) ^ (5 / 4 : ℝ) ≤ psi ⌊2 * r / x⌋ := by
@@ -129,17 +127,13 @@ lemma min_le_psi (x y r : ℝ) (hx : 0 < x) (hy : 0 < y) (hr : |r| ≤ y) :
   exact Real.rpow_le_rpow h0 key (by norm_num)
 
 /- English proof (translation)
-Use `set T : Finset ℤ := (P.biUnion fun p => univ.image fun v => (p v).1) ∪ (P.biUnion fun p => univ.image fun v => (p v).2) with hT`. Establish `hsub : P ⊆ Fintype.piFinset (fun _ : Fin f => T ×ˢ T)`. Introduce `p hp`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_product]`. Prove the components needed by the constructor for the conclusion. Apply `mem_union_left` to reduce the goal to its premises. Conclude with `mem_biUnion.mpr ⟨p, hp, mem_image.mpr ⟨v, mem_univ _, rfl⟩⟩`. Apply `mem_union_right` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `mem_biUnion.mpr ⟨p, hp, mem_image.mpr ⟨v, mem_univ _, rfl⟩⟩`. Combine the equalities or inequalities in the displayed calculation. Apply `sum_le_sum_of_subset_of_nonneg hsub` to reduce the goal to its premises. Introduce `p _ _`. Conclude with `prod_nonneg (fun v _ => mul_nonneg (psi_nonneg _) (psi_nonneg _))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = ∏ _v : Fin f, ∑ q ∈ T ×ˢ T, psi q.1 * psi q.2 := by`. Rewrite using `[prod_univ_sum]`. Use `_ = ∏ _v : Fin f, ((∑ n ∈ T, psi n) * (∑ n ∈ T, psi n)) := by`. Rewrite using `[sum_mul_sum, sum_product]`. Use `_ ≤ ∏ _v : Fin f, ((∑' n, psi n) ^ 2) := by`.
-
-Apply `prod_le_prod` to reduce the goal to its premises. Introduce `v _`. Conclude with `mul_nonneg (sum_nonneg fun n _ => psi_nonneg n) (sum_nonneg fun n _ => psi_nonneg n)`. Introduce `v _`. Rewrite using `[sq]`.
-
-Conclude with `mul_le_mul (psi_sum_le T) (psi_sum_le T) (sum_nonneg fun n _ => psi_nonneg n) tsum_psi_nonneg`. Use `_ = ((∑' n, psi n) ^ 2) ^ f := by`. Rewrite using `[prod_const, card_univ, Fintype.card_fin]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cell_sum_le (f : ℕ) (P : Finset (Fin f → ℤ × ℤ)) :
     ∑ p ∈ P, ∏ v, (psi (p v).1 * psi (p v).2) ≤ ((∑' n, psi n) ^ 2) ^ f := by
@@ -177,35 +171,31 @@ lemma cell_sum_le (f : ℕ) (P : Finset (Fin f → ℤ × ℤ)) :
         rw [prod_const, card_univ, Fintype.card_fin]
 
 /- English proof (translation)
-Use `⟨((∑' n, psi n) + 1) ^ 2, by have := tsum_psi_nonneg; positivity, ?_⟩` and prove the remaining obligations. Introduce `f La x K S hLa hx hxprod hK hS`. Use `set D := ∑' n, psi n with hD`. Establish `hD0 : 0 ≤ D` using `tsum_psi_nonneg`. Set `c : (Fin f → ℂ) → (Fin f → ℤ × ℤ)` to `fun o v => (⌊2 * (o v).re / x v⌋, ⌊2 * (o v).im / x v⌋)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hne : ∀ o ∈ S, ∀ v, o v ≠ 0`. Introduce `o ho v h0`. Establish `h1` using `hLa o (hS o ho).1 (hS o ho).2`. Rewrite `h1` using `[prod_eq_zero (mem_univ v) (by simp [h0])]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hinj : Set.InjOn c S`. Introduce `o ho o' ho' hc`. Assume the negation of the conclusion as `hoo`. Establish `hmem : o - o' ∈ La` using `La.sub_mem (hS o ho).1 (hS o' ho').1`. Establish `h1` using `hLa (o - o') hmem (sub_ne_zero.mpr hoo)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∏ v, ‖(o - o') v‖ ≤ ∏ v, x v`. Apply `prod_le_prod (fun v _ => norm_nonneg _)` to reduce the goal to its premises. Introduce `v _`. Establish `hcv` using `congrFun hc v`. Simplify using `only [c, Prod.mk.injEq] at hcv`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hre` using `Int.abs_sub_lt_one_of_floor_eq_floor hcv.1`. Establish `him` using `Int.abs_sub_lt_one_of_floor_eq_floor hcv.2`. Establish `hxv` using `hx v`. Establish `e1 : 2 * (o v).re / x v - 2 * (o' v).re / x v = 2 * ((o v).re - (o' v).re) / x v`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e2 : 2 * (o v).im / x v - 2 * (o' v).im / x v = 2 * ((o v).im - (o' v).im) / x v`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hre` using `[e1, abs_div, abs_mul, abs_of_pos hxv, div_lt_one hxv]`. Rewrite `him` using `[e2, abs_div, abs_mul, abs_of_pos hxv, div_lt_one hxv]`. Establish `h3` using `Complex.norm_le_abs_re_add_abs_im ((o - o') v)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.sub_apply, Complex.sub_re, Complex.sub_im] at h3 ⊢`. Evaluate the numerical expressions using `at hre him`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpt : ∀ o ∈ S, ∏ v, min 1 ((x v / ‖o v‖) ^ K) ≤ (∏ v, x v) ^ ((K : ℝ) - 5 / 2) * ∏ v, (psi (c o v).1 * psi (c o v).2)`.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `o ho`. Establish `hno : ∀ v, 0 < ‖o v‖` using `fun v => norm_pos_iff.mpr (hne o ho v)`. Establish `ht : ∀ v, 0 < x v / ‖o v‖` using `fun v => div_pos (hx v) (hno v)`. Combine the equalities or inequalities in the displayed calculation. Apply `prod_le_prod` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v _`. Conclude with `le_min zero_le_one (pow_nonneg (ht v).le _)`. Introduce `v _`. Conclude with `min_pow_le _ (ht v) K hK`. Use `_ = (∏ v, (x v / ‖o v‖) ^ ((K : ℝ) - 5 / 2)) * ∏ v, ((min 1 (x v / ‖o v‖)) ^ (5 / 4 : ℝ) * (min 1 (x v / ‖o v‖)) ^ (5 / 4 : ℝ)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_mul_distrib]`. Use `_ ≤ (∏ v, x v) ^ ((K : ℝ) - 5 / 2) * ∏ v, (psi (c o v).1 * psi (c o v).2) := by`. Establish `hK' : (3 : ℝ) ≤ K` using `by exact_mod_cast hK`. Apply `mul_le_mul` to reduce the goal to its premises. Rewrite using `[Real.finsetProd_rpow _ _ (fun v _ => (ht v).le)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Real.rpow_le_rpow (prod_nonneg fun v _ => (ht v).le) _ (by linarith)` to reduce the goal to its premises. Rewrite using `[prod_div_distrib]`. Conclude with `div_le_self (prod_nonneg fun v _ => (hx v).le) (hLa o (hS o ho).1 (hS o ho).2)`. Apply `prod_le_prod` to reduce the goal to its premises. Introduce `v _`.
+Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Check the signs of the components of the expression.
 
-Establish `h0 : 0 ≤ min 1 (x v / ‖o v‖)` using `le_min zero_le_one (ht v).le`. Check the signs of the components of the expression. Introduce `v _`. Establish `h0 : 0 ≤ min 1 (x v / ‖o v‖)` using `le_min zero_le_one (ht v).le`. Apply `mul_le_mul` to reduce the goal to its premises.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `min_le_psi _ _ _ (hx v) (hno v) (Complex.abs_re_le_norm _)`. Conclude with `min_le_psi _ _ _ (hx v) (hno v) (Complex.abs_im_le_norm _)`. Check the signs of the components of the expression. Conclude with `psi_nonneg _`. Conclude with `prod_nonneg fun v _ => mul_nonneg (Real.rpow_nonneg (le_min zero_le_one (ht v).le) _) (Real.rpow_nonneg (le_min zero_le_one (ht v).le) _)`.
-
-Conclude with `Real.rpow_nonneg (prod_nonneg fun v _ => (hx v).le) _`. Establish `hX0 : 0 ≤ (∏ v, x v) ^ ((K : ℝ) - 5 / 2)` using `Real.rpow_nonneg (prod_nonneg fun v _ => (hx v).le) _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_sum, sum_image (fun a ha b hb h => hinj ha hb h)]`. Use `_ ≤ (∏ v, x v) ^ ((K : ℝ) - 5 / 2) * (D ^ 2) ^ f := mul_le_mul_of_nonneg_left (cell_sum_le f _) hX0`.
-
-Use `_ ≤ (∏ v, x v) ^ ((K : ℝ) - 5 / 2) * ((D + 1) ^ 2) ^ f := by`. Apply `mul_le_mul_of_nonneg_left _ hX0` to reduce the goal to its premises. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Use `_ = ((D + 1) ^ 2) ^ f * (∏ v, x v) ^ ((K : ℝ) - 5 / 2) := mul_comm _ _`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem lattice_sum_holds : Formalism.NuclearRankWeightBounds.Z.LatSum := by
   classical

@@ -17,37 +17,37 @@ namespace PositivityTheory.Rg.BcB.F.Rig
 open PositivityTheory.Rg.BcB.One
 
 /- English proof (translation)
-The claim follows from `rStrings regPart`.
+A detailed English derivation is pending.
 -/
 theorem strings_holds : Strings := rStrings regPart
 
 /- English proof (translation)
-The claim follows from `rCuspCsd PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity strSat strings_holds`.
+A detailed English derivation is pending.
 -/
 theorem cuspCsd_holds : CuspCsd := rCuspCsd PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity strSat strings_holds
 
 /- English proof (translation)
-The claim follows from `rLoc PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity strSat strings_holds`.
+A detailed English derivation is pending.
 -/
 theorem locRigid_holds : LocRigid := rLoc PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity strSat strings_holds
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ hπ` and use `eventually_isUnramU hπ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unrAE_holds : UnrAE := fun _ _ _ _ _ _ hπ => eventually_isUnramU hπ
 
 /- English proof (translation)
-The claim follows from `rFullSat unrAE_holds B.inertSatEx splitSatPre`.
+A detailed English derivation is pending.
 -/
 theorem fullSat_holds : FullSat := rFullSat unrAE_holds B.inertSatEx splitSatPre
 
 /- English proof (translation)
-The claim follows from `rFullTheta unrAE_holds B.inertSatEx splitConj`.
+A detailed English derivation is pending.
 -/
 theorem fullTheta_holds : FullTheta := rFullTheta unrAE_holds B.inertSatEx splitConj
 
 /- English proof (translation)
-The claim follows from `fieldN_of hR fullSat_holds fullTheta_holds weightEx strings_holds cuspCsd_holds locRigid_holds permSub`.
+A detailed English derivation is pending.
 -/
 theorem fieldN_of_run (hR : RunFin) : PositivityTheory.Rg.BcN.BaseChangeIsobaricN :=
   fieldN_of hR fullSat_holds fullTheta_holds weightEx strings_holds cuspCsd_holds locRigid_holds permSub

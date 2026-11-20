@@ -17,7 +17,7 @@ section Lift
 variable {X A : Scheme.{0}} (f : X ⟶ A) [IsOpenImmersion f] {S S' : Type} [CommRing S] [CommRing S']
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨y, -, hy⟩` from `h (Set.mem_univ x)`. Conclude with `⟨y, hy⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem range_subset (U : X.Opens) (z : Sp S ⟶ A) (h : ⊤ ≤ z ⁻¹ᵁ (f ''ᵁ U)) : Set.range z ⊆ Set.range f := by
   rintro _ ⟨x, rfl⟩
@@ -29,15 +29,15 @@ def liftPt (U : X.Opens) (z : Sp S ⟶ A) (h : ⊤ ≤ z ⁻¹ᵁ (f ''ᵁ U)) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem liftPt_fac (U : X.Opens) (z : Sp S ⟶ A) (h : ⊤ ≤ z ⁻¹ᵁ (f ''ᵁ U)) : liftPt f U z h ≫ f = z :=
   IsOpenImmersion.lift_fac _ _ _
 
 /- English proof (translation)
-Introduce `x _`. Take `⟨y, hy, e⟩` from `h (Set.mem_univ x)`. Establish `e2 : f (liftPt f U z h x) = z x`. Rewrite using `[← Scheme.Hom.comp_apply, liftPt_fac]`. Establish `: y = liftPt f U z h x` using `f.isOpenEmbedding.injective (e.trans e2.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show liftPt f U z h x ∈ U`. Conclude with `this ▸ hy`.
+A detailed English derivation is pending.
 -/
 theorem liftPt_le (U : X.Opens) (z : Sp S ⟶ A) (h : ⊤ ≤ z ⁻¹ᵁ (f ''ᵁ U)) : ⊤ ≤ liftPt f U z h ⁻¹ᵁ U := by
   intro x _
@@ -49,13 +49,13 @@ theorem liftPt_le (U : X.Opens) (z : Sp S ⟶ A) (h : ⊤ ≤ z ⁻¹ᵁ (f ''�
   exact this ▸ hy
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono f, liftPt_fac]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem liftPt_comp (U : X.Opens) (x : Sp S ⟶ X) (h : ⊤ ≤ (x ≫ f) ⁻¹ᵁ (f ''ᵁ U)) : liftPt f U (x ≫ f) h = x := by
   rw [← cancel_mono f, liftPt_fac]
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono f, Category.assoc, liftPt_fac, liftPt_fac]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_liftPt (φ : S →+* S') (U : X.Opens) (z : Sp S ⟶ A) (h : ⊤ ≤ z ⁻¹ᵁ (f ''ᵁ U))
     (h' : ⊤ ≤ (spMap φ ≫ z) ⁻¹ᵁ (f ''ᵁ U)) : spMap φ ≫ liftPt f U z h = liftPt f U (spMap φ ≫ z) h' := by
@@ -71,7 +71,7 @@ def tanCast {x x' : Sp S ⟶ X0} (e : x = x') : TanM x G ≃ₗ[S] TanM x' G := 
   subst e; exact LinearEquiv.refl _ _
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem tanCast_left {x x' : Sp S ⟶ X0} (e : x = x') (v : TanM x G) : (tv (tanCast e v)).left = (tv v).left := by
   subst e; rfl
@@ -93,7 +93,7 @@ def gBasis (M : MChart Y) (z : Sp S ⟶ A) (h : ⊤ ≤ z ⁻¹ᵁ (f ''ᵁ M.U)
   ((lieBasis M (liftPt f M.U z h) (liftPt_le f M.U z h)).map (tanEquiv hF _)).map (tanCast (liftPt_fac f M.U z h))
 
 /- English proof (translation)
-Simplify using `only [gBasis, Module.Basis.map_apply]`. Rewrite using `[tanCast_left]`. Use `show (tv (lieBasis M _ _ j)).left ≫ F = _`. Rewrite using `[lieBasis_left, Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gBasis_left (M : MChart Y) (z : Sp S ⟶ A) (h : ⊤ ≤ z ⁻¹ᵁ (f ''ᵁ M.U)) (j : Fin M.n) :
     (tv (gBasis hF M z h j)).left =
@@ -104,7 +104,7 @@ theorem gBasis_left (M : MChart Y) (z : Sp S ⟶ A) (h : ⊤ ≤ z ⁻¹ᵁ (f '
   rw [lieBasis_left, Category.assoc]
 
 /- English proof (translation)
-Apply `tan_ext_left` to reduce the goal to its premises. Rewrite using `[gBasis_left]`. Use `show _ = (tv (lieBasis M x h₀ j)).left ≫ F`. Rewrite using `[lieBasis_left, ev_congr (liftPt_comp f M.U x h), Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gBasis_comp (M : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ (x ≫ f) ⁻¹ᵁ (f ''ᵁ M.U)) (h₀ : ⊤ ≤ x ⁻¹ᵁ M.U)
     (j : Fin M.n) : gBasis hF M (x ≫ f) h j = tanEquiv hF x (lieBasis M x h₀ j) := by
@@ -114,7 +114,7 @@ theorem gBasis_comp (M : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ (x ≫ f) ⁻
   rw [lieBasis_left, ev_congr (liftPt_comp f M.U x h), Category.assoc]
 
 /- English proof (translation)
-Establish `e1 : gBasis hF M (x ≫ f) h = (lieBasis M x h₀).map (tanEquiv hF x)` using `Module.Basis.eq_of_apply_eq fun j => by rw [gBasis_comp hF M x h h₀, Module.Basis.map_apply]`. Establish `e2 : gBasis hF M' (x ≫ f) h' = (lieBasis M' x h₀').map (tanEquiv hF x)` using `Module.Basis.eq_of_apply_eq fun j => by rw [gBasis_comp hF M' x h' h₀', Module.Basis.map_apply]`. Rewrite using `[e1, e2]`. Use extensionality with `i j`. Simplify using `[Module.Basis.toMatrix_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gBasis_toMatrix (M M' : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ (x ≫ f) ⁻¹ᵁ (f ''ᵁ M.U))
     (h' : ⊤ ≤ (x ≫ f) ⁻¹ᵁ (f ''ᵁ M'.U)) (h₀ : ⊤ ≤ x ⁻¹ᵁ M.U) (h₀' : ⊤ ≤ x ⁻¹ᵁ M'.U) :
@@ -128,7 +128,7 @@ theorem gBasis_toMatrix (M M' : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ (x ≫
   simp [Module.Basis.toMatrix_apply]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Apply `tan_ext_left` to reduce the goal to its premises. Rewrite using `[tanPull_left, gBasis_left, gBasis_left]`. Establish `e1` using `spMap_liftPt f φ M.U z h h'`. Rewrite using `[← ev_congr e1 M.U (le_preimage_comp _ (liftPt_le f M.U z h)) (liftPt_le f M.U _ h'), ev_spMap φ _ M.U (liftPt_le f M.U z h), FlagMod.dualMap_comp, ← spMap_comp', Category.assoc]`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tanPull_gBasis (M : MChart Y) (φ : S →+* S') {z : Sp S ⟶ A} {z' : Sp S' ⟶ A} (e : spMap φ ≫ z = z')
     (h : ⊤ ≤ z ⁻¹ᵁ (f ''ᵁ M.U)) (h' : ⊤ ≤ z' ⁻¹ᵁ (f ''ᵁ M.U)) (j : Fin M.n) :
@@ -157,7 +157,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 def gU (a : Σ i, MChart (C i)) : A.Opens := ψ a.1 ''ᵁ a.2.U
 
 /- English proof (translation)
-The claim follows from `(a.2.hU.image_of_isOpenImmersion (ψ a.1)).inf (b.2.hU.image_of_isOpenImmersion (ψ b.1))`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_gU_inf [A.IsSeparated] (a b : Σ i, MChart (C i)) : IsAffineOpen (gU C ψ a ⊓ gU C ψ b) :=
   (a.2.hU.image_of_isOpenImmersion (ψ a.1)).inf (b.2.hU.image_of_isOpenImmersion (ψ b.1))
@@ -169,9 +169,9 @@ def gDet [A.IsSeparated] (a b : Σ i, MChart (C i)) : Γ(A, gU C ψ a ⊓ gU C �
 def gLie [A.IsSeparated] : LB A := ⟨Σ i, MChart (C i), gU C ψ, gDet C ψ hF⟩
 
 /- English proof (translation)
-Establish `e : spMap (ev z _ hh) ≫ tau (isAffineOpen_gU_inf C ψ a b) = z` using `spMap_ev z _ hh`. Use `(map_rdet _ _).trans (congrArg rdet ?_)` and prove the remaining obligations. Use extensionality with `i j`. Establish `h1` using `(gBasis (hF a.1) a.2 (tau (isAffineOpen_gU_inf C ψ a b)) (tau_le _ inf_le_left)).sum_toMatrix_smul_self (gBasis (hF b.1) b.2 (tau (isAffineOpen_gU_inf C ψ a b)) (tau_le _ inf_le_right)) j`. Establish `h2` using `congrArg (tanPull (G := G) _ e) h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_sum, tanPull_gBasis (hF b.1) b.2 _ e _ h']`. Simplify using `only [map_smulₛₗ, tanPull_gBasis (hF a.1) a.2 _ e _ h] at h2`. Rewrite using `[Module.Basis.toMatrix_apply, ← h2, Module.Basis.repr_sum_self]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_gDet [A.IsSeparated] (a b : Σ i, MChart (C i)) (z : Sp S ⟶ A) (h : ⊤ ≤ z ⁻¹ᵁ gU C ψ a)
     (h' : ⊤ ≤ z ⁻¹ᵁ gU C ψ b) (hh : ⊤ ≤ z ⁻¹ᵁ (gU C ψ a ⊓ gU C ψ b)) :
@@ -188,9 +188,9 @@ theorem ev_gDet [A.IsSeparated] (a b : Σ i, MChart (C i)) (z : Sp S ⟶ A) (h :
   rfl
 
 /- English proof (translation)
-Use `isLB_of_ev _ (eq_top_iff.2 fun x _ => ?_) fun a b d S _ z hab hbd had => ?_` and prove the remaining obligations. Take `⟨i, y, rfl⟩` from `hcov x`. Take `⟨M, hM⟩` from `Opens.mem_iSup.1 ((hc i).cover.ge (Set.mem_univ y))`. Conclude with `Opens.mem_iSup.2 ⟨⟨i, M⟩, ⟨y, hM, rfl⟩⟩`. Establish `ha` using `le_preimage_mono inf_le_left hab`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `le_preimage_mono inf_le_right hab`. Establish `hd` using `le_preimage_mono inf_le_right hbd`. Conclude with `(congrArg₂ (· * ·) (ev_gDet C ψ hF a b z ha hb hab) (ev_gDet C ψ hF b d z hb hd hbd)).trans ((rdet_toMatrix_mul _ _ _).trans (ev_gDet C ψ hF a d z ha hd had).symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLB_gLie [A.IsSeparated] (hc : ∀ i, (detLie (C i)).IsLB) (hcov : ∀ x : A, ∃ i, x ∈ Set.range (ψ i)) :
     (gLie C ψ hF).IsLB := by
@@ -205,17 +205,17 @@ theorem isLB_gLie [A.IsSeparated] (hc : ∀ i, (detLie (C i)).IsLB) (hcov : ∀ 
       ((rdet_toMatrix_mul _ _ _).trans (ev_gDet C ψ hF a d z ha hd had).symm)
 
 /- English proof (translation)
-Establish `le : ∀ (M : MChart (C i)) (J : ((gLie C ψ hF).pull (ψ i)).ι), M.U ⊓ ((gLie C ψ hF).pull (ψ i)).U J ≤ ψ i ⁻¹ᵁ (gU C ψ ⟨i, M⟩ ⊓ gU C ψ (J PUnit.unit))` using `fun M J => fun y hy => ⟨⟨y, hy.1, rfl⟩, LB.wchart_le (gLie C ψ hF) (fun _ : PUnit => ψ i) J PUnit.unit hy.2⟩`. Use `⟨⟨fun p => res (le p.1 p.2) (pullU (ψ i) _ (gDet C ψ hF ⟨i, p.1⟩ (p.2 PUnit.unit)))⟩, fun p q => ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (mul_right_comm _ _ _)` and prove the remaining obligations. Use `eq_mul_inv_of_mul_eq (Units.ext (ext_ev fun S _ z hz => ?_))` and prove the remaining obligations. Establish `hp` using `le_preimage_mono inf_le_left hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hq` using `le_preimage_mono inf_le_right hz`. Establish `hp1 : ⊤ ≤ z ⁻¹ᵁ (p.1 : MChart (C i)).U` using `le_preimage_mono inf_le_left hp`. Establish `hq1 : ⊤ ≤ z ⁻¹ᵁ (q.1 : MChart (C i)).U` using `le_preimage_mono inf_le_left hq`. Establish `hp2 : ⊤ ≤ z ⁻¹ᵁ ((gLie C ψ hF).pull (ψ i)).U p.2` using `le_preimage_mono inf_le_right hp`. Establish `hq2 : ⊤ ≤ z ⁻¹ᵁ ((gLie C ψ hF).pull (ψ i)).U q.2` using `le_preimage_mono inf_le_right hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp3` using `le_preimage_map (ψ i) (le p.1 p.2) hp`. Establish `hq3` using `le_preimage_map (ψ i) (le q.1 q.2) hq`. Establish `a1 : ⊤ ≤ (z ≫ ψ i) ⁻¹ᵁ gU C ψ ⟨i, p.1⟩` using `le_preimage_mono inf_le_left hp3`. Establish `b1 : ⊤ ≤ (z ≫ ψ i) ⁻¹ᵁ gU C ψ (p.2 PUnit.unit)` using `le_preimage_mono inf_le_right hp3`. Establish `a2 : ⊤ ≤ (z ≫ ψ i) ⁻¹ᵁ gU C ψ ⟨i, q.1⟩` using `le_preimage_mono inf_le_left hq3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b2 : ⊤ ≤ (z ≫ ψ i) ⁻¹ᵁ gU C ψ (q.2 PUnit.unit)` using `le_preimage_mono inf_le_right hq3`. Establish `g` using `ev_pull_g (gLie C ψ hF) (ψ i) z p.2 q.2 (le_preimage_inf hp2 hq2) (le_preimage_inf b1 b2)`. Establish `sp : ev z _ hp (res (le p.1 p.2) (pullU (ψ i) _ (gDet C ψ hF ⟨i, p.1⟩ (p.2 PUnit.unit)))).val = ev (z ≫ ψ i) _ hp3 (gDet C ψ hF ⟨i, p.1⟩ (p.2 PUnit.unit)).val`. Rewrite using `[← ev_appLE z (ψ i) (le p.1 p.2) hp hp3]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `sq : ev z _ hq (res (le q.1 q.2) (pullU (ψ i) _ (gDet C ψ hF ⟨i, q.1⟩ (q.2 PUnit.unit)))).val = ev (z ≫ ψ i) _ hq3 (gDet C ψ hF ⟨i, q.1⟩ (q.2 PUnit.unit)).val`. Rewrite using `[← ev_appLE z (ψ i) (le q.1 q.2) hq hq3]`. Both sides reduce to the same expression. Use `(map_mul (ev z _ hz) _ _).trans (Eq.trans ?_ (map_mul (ev z _ hz) _ _).symm)` and prove the remaining obligations. Use `(congrArg₂ (· * ·) ((ev_res z _ hz hp _).trans (sp.trans (ev_gDet C ψ hF _ _ _ a1 b1 hp3))) ((ev_res z _ hz _ _).trans (g.trans (ev_gDet C ψ hF _ _ _ b1 b2 _)))).trans (Eq.trans ?_ (congrArg₂ (· * ·) ((ev_res z _ hz (le_preimage_inf hp1 hq1) _).trans (ev_detChg _ _ z hp1 hq1 _)) …` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(rdet_toMatrix_mul _ _ _).trans ((congrArg (rdet · * _) (gBasis_toMatrix (hF i) p.1 q.1 z a1 a2 hp1 hq1).symm).trans (rdet_toMatrix_mul _ _ _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_gLie_pull [A.IsSeparated] (i : I) : LBIso ((gLie C ψ hF).pull (ψ i)) (detLie (C i)) := by
   have le : ∀ (M : MChart (C i)) (J : ((gLie C ψ hF).pull (ψ i)).ι),

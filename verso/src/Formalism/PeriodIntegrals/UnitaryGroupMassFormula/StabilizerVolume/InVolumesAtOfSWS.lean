@@ -15,14 +15,14 @@ def SWXS : Prop := ∀ {D : D7} (X : HidaSetting D),
     Formalism.L2.SG.Pf.NcWeil.StabilizerFirstChernCompatibility X.B.I.F X.B.I.E X.B.I.cm.sig X.B.I.n X.B.I.J
 
 /- English proof (translation)
-Introduce `X` and use `PI.VolStabS.Assembly.volStabFromSW_holds _ _ _ (stepCM X) _ _ (stepHerm X) (hSW X).1 (hSW X).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem volStabXS_of (hSW : SWXS) : ∀ {D : D7} (X : HidaSetting D),
     Formalism.L2.SG.Pf.NcWeil.VolStabW X.B.I.F X.B.I.E X.B.I.cm.sig X.B.I.n X.B.I.J := fun X =>
   PI.VolStabS.Assembly.volStabFromSW_holds _ _ _ (stepCM X) _ _ (stepHerm X) (hSW X).1 (hSW X).2
 
 /- English proof (translation)
-The claim follows from `inVolumesAt_of_w (volStabXS_of hSW) (stepGramH_of MassDataLevelSSteps.frameStd_holds)`.
+A detailed English derivation is pending.
 -/
 theorem inVolumesAt_of_SWS (hSW : SWXS) :
     ∀ {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf)

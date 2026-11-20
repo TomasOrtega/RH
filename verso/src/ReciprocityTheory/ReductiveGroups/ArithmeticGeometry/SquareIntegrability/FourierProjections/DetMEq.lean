@@ -11,7 +11,7 @@ variable {ι : Type} [Fintype ι]
 open Classical
 
 /- English proof (translation)
-The claim follows from `|b₀.toBasis.det Y.b| = 1 := by have hM : ∀ i k, ∃ m : ℤ, (Hf (Y.b i) (Y.b k)).im = m := fun i k => Y.integral _ _ (Submodule.subset_span ⟨i, rfl⟩) (Submodule.subset_span ⟨k, rfl⟩) choose m hm using hM have hG : lemSG Y.b = (Matrix.of m).map (Int.cast : ℤ → ℝ) := by ext i k; simp …`.
+A detailed English derivation is pending.
 -/
 theorem detM_eq (Y : GT ι) (b₀ : OrthonormalBasis (Fin (2 * Fintype.card ι)) ℝ (EuclideanSpace ℂ ι)) :
     |b₀.toBasis.det Y.b| = 1 := by
@@ -36,7 +36,7 @@ theorem detM_eq (Y : GT ι) (b₀ : OrthonormalBasis (Fin (2 * Fintype.card ι))
   nlinarith
 
 /- English proof (translation)
-Establish `hfr : Module.finrank ℝ (EuclideanSpace ℂ ι) = 2 * Fintype.card ι` using `by first`. Consider the case `(rw [← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ ι), Complex.finrank_real_complex, finrank_euclideanSpace])`. Consider the case `simp [← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ ι)]`. Set `b₀ : OrthonormalBasis (Fin (2 * Fintype.card ι)) ℝ (EuclideanSpace ℂ ι)` to `(stdOrthonormalBasis ℝ (EuclideanSpace ℂ ι)).reindex (finCongr hfr)`. Rewrite using `[ZSpan.measure_fundamentalDomain Y.b volume b₀.toBasis, detM_eq Y b₀, measure_congr (ZSpan.fundamentalDomain_ae_parallelepiped b₀.toBasis volume), OrthonormalBasis.coe_toBasis, b₀.volume_parallelepiped]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -54,15 +54,15 @@ theorem vol_eq (Y : GT ι) : volume (ZSpan.fundamentalDomain Y.b) = 1 := by
   simp
 
 /- English proof (translation)
-Take `⟨C1, hC1, h1⟩` from `paPoly_growth hF`. Use `⟨C1, hC1, fun a v => ?_⟩` and prove the remaining obligations. Establish `hn` using `paU_norm_mul q a v F`. Establish `hW : paW q v * Real.exp ((q * Real.pi) * ‖v‖ ^ 2) = 1`. Rewrite using `[paW, ← Real.exp_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hE1 : Real.exp (-(q * Real.pi) * ‖v - (1 / 2 : ℂ) • a‖ ^ 2) ≤ 1`. Rewrite using `[Real.exp_le_one_iff]`. Establish `: 0 ≤ (q : ℝ) * Real.pi` using `by positivity`. Use polynomial arithmetic with `[sq_nonneg ‖v - (1 / 2 : ℂ) • a‖]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hva : 1 + ‖v - a‖ ≤ (1 + ‖v‖) * (1 + ‖a‖)`. Use polynomial arithmetic with `[norm_sub_le v a, norm_nonneg v, norm_nonneg a, mul_nonneg (norm_nonneg v) (norm_nonneg a)]`. Establish `ha : (1 + ‖a‖) ^ c ≤ (1 + ‖a‖) ^ (2 * c)` using `pow_le_pow_right₀ (by linarith [norm_nonneg a]) (by omega)`. Establish `E2` using `Real.exp_pos (-(q * Real.pi) * ‖a‖ ^ 2 / 4)`. Establish `EV` using `Real.exp_pos ((q * Real.pi) * ‖v‖ ^ 2)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : ‖paU q a F v‖ = (‖paU q a F v‖ * paW q v) * Real.exp ((q * Real.pi) * ‖v‖ ^ 2)`. Rewrite using `[mul_assoc, hW, mul_one]`. Rewrite using `[hU, hn]`. Establish `k1 : ‖F (v - a)‖ ≤ C1 * ((1 + ‖v‖) ^ c * (1 + ‖a‖) ^ (2 * c))`. Use `(h1 _).trans (mul_le_mul_of_nonneg_left ?_ hC1)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hFn` using `norm_nonneg (F (v - a))`. Establish `hE1p` using `Real.exp_pos (-(q * Real.pi) * ‖v - (1 / 2 : ℂ) • a‖ ^ 2)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem paU_pt {q c : ℕ} {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ a v : EuclideanSpace ℂ ι, ‖paU q a F v‖ ≤

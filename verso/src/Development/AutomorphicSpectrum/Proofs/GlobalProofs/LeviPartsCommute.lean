@@ -23,7 +23,7 @@ open GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.KInf GlobalTheory.UAut 
 open scoped Pointwise
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun k : K => (k : G) • (U : Set G)) (fun k => hU.smul _) fun x hx => Set.mem_iUnion.2 ⟨⟨x, hx⟩, ⟨1, U.one_mem, mul_one x⟩⟩`. Use `⟨t.image Subtype.val, by simp, fun k hk => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hkc⟩` from `Set.mem_iUnion₂.1 (ht hk)`. Take `⟨u, hu, e⟩` from `Set.mem_smul_set.1 hkc`. Conclude with `⟨c, Finset.mem_image_of_mem _ hc, u, hu, e.symm⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_finset_cosets {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {K : Set G}
     (hK : IsCompact K) {U : Subgroup G} (hU : IsOpen (U : Set G)) :
@@ -37,7 +37,7 @@ theorem exists_finset_cosets {G : Type} [Group G] [TopologicalSpace G] [IsTopolo
   exact ⟨c, Finset.mem_image_of_mem _ hc, u, hu, e.symm⟩
 
 /- English proof (translation)
-Use `list_prod_mem fun x hx => ?_` and prove the remaining obligations. Take `⟨τ, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `(isAtTau_kAt θ V hθ τ (hfr τ).1 (hfr τ).2 (κ τ)).1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem kInf_mem_GinfC {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} (hθ : IsInfFam θ) {V : HSp D}
     {ε : D.what₂.Tau → Fin V.rank → Bool} {fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} (hfr : IsFrameFam V ε fr)
@@ -47,7 +47,7 @@ theorem kInf_mem_GinfC {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.hos
   exact (isAtTau_kAt θ V hθ τ (hfr τ).1 (hfr τ).2 (κ τ)).1
 
 /- English proof (translation)
-Take `⟨B, hB, eB⟩` from `hp`. Take `⟨B', hB', eB'⟩` from `hq`. Use `⟨B * B', hB.mul hB', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, eB', ← Matrix.mul_assoc, eB, Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_minPar {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n r : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {X : Matrix (Fin n) (Fin r) E} {p q : GlobalTheory.AdelicU.GAd σ J}
@@ -58,9 +58,9 @@ theorem mul_mem_minPar {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   rw [map_mul, Units.val_mul, Matrix.mul_assoc, eB', ← Matrix.mul_assoc, eB, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `D θ hθ V ε fr hfr m X Y hW`. Establish `hh` using `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm`. Take `⟨K, hKf, hK, hiw, -⟩` from `GlobalTheory.T.unitary_adelic_iwasawa_compact D.host.F D.host.E D.sp.cm.sig hh.1 V.rank V.gram (hh.2 V) m X Y hW`. Use `⟨K, hK, hKf, fun g => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, κ, e1⟩` from `GlobalTheory.T.archimedean_iwasawa_minimal_parabolic D θ hθ V ε fr hfr m X Y hW _ (GlobalTheory.AutMult.toInf V g).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, hqf, k, hk, e2⟩` from `hiw _ (GlobalTheory.AutMult.toFin V g).2`. Use `⟨p * q, mul_mem_minPar hp hq, κ, k, hk, ?_⟩` and prove the remaining obligations. Establish `hcomm` using `GlobalTheory.AutMult.commute_inf_fin (⟨_, kInf_mem_GinfC hθ hfr κ⟩ : GinfC V) ⟨q, hqf⟩`. Rewrite using `[← GlobalTheory.AutMult.toInf_mul_toFin g, e1, e2, mul_assoc p, ← mul_assoc _ q k, hcomm.eq]`. Simplify using `only [mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_iwasawa : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), IsFrameFam V ε fr → ∀ (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∃ K : Subgroup (GA D V), IsCompact (K : Set (GA D V)) ∧ K ≤ GfC V ∧ ∀ g : GA D V, ∃ p ∈ PositivityTheory.ThKR.minPar D.sp.cm.sig V.gram X, ∃ κ : (∀ τ, Formalism.REAL.KG (ε τ)), ∃ k ∈ K, g = p * GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.KInf.kInf θ V ε fr κ * k := by
   intro D θ hθ V ε fr hfr m X Y hW
@@ -75,13 +75,13 @@ theorem exists_iwasawa : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗
   simp only [mul_assoc]
 
 /- English proof (translation)
-Introduce `D θ hθ V U hU ε fr hfr m X Y hW T`. Establish `hh` using `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm`. Take `⟨K, hK, hKf, hiw⟩` from `exists_iwasawa D θ hθ V ε fr hfr m X Y hW`. Take `⟨C, hCK, hC⟩` from `exists_finset_cosets hK hU`. Use `⟨C, fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, hp, κ, k, hk, rfl⟩` from `hiw g`. Take `⟨c, hc, u, hu, rfl⟩` from `hC k hk`. Take `⟨n, hn, l, hl, rfl⟩` from `GlobalTheory.T.minimal_parabolic_unipotent_levi_decomp D.host.F D.host.E D.sp.cm.sig hh.1 V.rank V.gram (hh.2 V) m X Y hW T p hp`. Establish `hcf : c ∈ GfC V` using `hKf (hCK hc)`. Establish `huf : u ∈ GfC V`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_mem (inv_mem hcf) (hKf hk)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis. Use `⟨n, hn, l, hl, c, hc, κ, u, hu, huf, ?_⟩` and prove the remaining obligations. Establish `hcomm` using `GlobalTheory.AutMult.commute_inf_fin (⟨_, kInf_mem_GinfC hθ hfr κ⟩ : GinfC V) ⟨c, hcf⟩`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc (kInf θ V ε fr κ) c u, hcomm.eq, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_decomp : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (U : Subgroup (GA D V)), IsOpen (U : Set (GA D V)) → ∀ (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), IsFrameFam V ε fr → ∀ (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ T : Finset (Fin m), ∃ C : Finset (GA D V), ∀ g : GA D V, ∃ n ∈ unip D.sp.cm.sig V.gram X T, ∃ l ∈ levi D.sp.cm.sig V.gram X Y T, ∃ c ∈ C, ∃ κ : (∀ τ, Formalism.REAL.KG (ε τ)), ∃ u ∈ U, u ∈ GfC V ∧ g = n * l * c * GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.KInf.kInf θ V ε fr κ * u := by
   intro D θ hθ V U hU ε fr hfr m X Y hW T
@@ -103,7 +103,7 @@ theorem exists_decomp : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[
   rw [← mul_assoc (kInf θ V ε fr κ) c u, hcomm.eq, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.EvaluationMap.main ρ`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_coeffSpan {K W : Type} [Group K] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (ρ : Representation ℂ K W) : FiniteDimensional ℂ (GlobalTheory.Published.AutFin.coeffSpan ρ) :=
@@ -115,13 +115,13 @@ variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E 
 open Classical in
 
 /- English proof (translation)
-It suffices to establish `key : ∀ I : Finset D.what₂.Tau, ∀ κ : ∀ τ, Formalism.REAL.KG (ε τ), (∀ τ, τ ∉ I → κ τ ∈ S τ) → φ (x * kInf θ V ε fr κ) = 0 from key Finset.univ κ (by simp)`. Introduce `I`. Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => exact fun κ hκ => h κ (Fintype.mem_piFinset.2 fun τ => hκ τ (by simp))`. Consider the case `insert a I _ ih`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `κ hκ`. Take `⟨y, hy⟩` from `exists_kInf_eq_mul hθ hfr κ a`. Establish `h0` using `hS a _ (htype a (x * y)) fun t ht => by`. Establish `e` using `hy (Function.update κ a t) fun τ hτ => Function.update_of_ne hτ _ _`. Rewrite `e` using `[Function.update_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show φ (x * y * kAt θ V a (ε a) (fr a) t) = 0`. Rewrite using `[mul_assoc, ← e]`. Use `ih _ fun τ hτ => ?_` and prove the remaining obligations. Distinguish the cases in `e' : τ = a`. Substitute `e'` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using ht`. Rewrite using `[Function.update_of_ne e']; exact hκ τ (by simp [e', hτ])`. Rewrite using `[hy κ fun _ _ => rfl, ← mul_assoc]`. Conclude with `congrFun h0 (κ a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_kInf {W : D.what₂.Tau → Type} [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)]
     {ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (ε τ)) (W τ)} (hθ : IsInfFam θ) (hfr : IsFrameFam V ε fr) {φ : GA D V → ℂ}
@@ -151,11 +151,9 @@ theorem eq_zero_of_kInf {W : D.what₂.Tau → Type} [∀ τ, AddCommGroup (W τ
     exact congrFun h0 (κ a)
 
 /- English proof (translation)
-Introduce `D θ hθ V U hU ε fr hfr W _ _ _ ρ hρ c m X Y hW T hT`. Take `⟨C, hC⟩` from `exists_decomp D θ hθ V U hU ε fr hfr m X Y hW T`. Use `haveI := fun τ => finiteDimensional_coeffSpan (ρ τ)`. Use `choose S hS using fun τ => exists_finset_sep (GlobalTheory.Published.AutFin.coeffSpan (ρ τ))`. Use `⟨(C ×ˢ Fintype.piFinset S).image fun p => p.1 * kInf θ V ε fr p.2, fun φ hφ h0 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `g`. Take `⟨n, hn, l, hl, c', hc, κ, u, hu, hu', rfl⟩` from `hC g`. Rewrite using `[hφ.2.1 u hu hu', mul_assoc (n * l), mul_assoc n, hφ.1.left n (Subgroup.mem_sup_left hn), ← mul_assoc]`. Use `eq_zero_of_kInf hθ hfr hφ.2.2.1 S hS (l * c') (fun s hs => ?_) κ` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
-
-Conclude with `h0 _ (Finset.mem_image.2 ⟨(c', s), Finset.mem_product.2 ⟨hc, hs⟩, rfl⟩) l hl`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_sep_levi : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (U : Subgroup (GA D V)), IsOpen (U : Set (GA D V)) → ∀ (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), IsFrameFam V ε fr → ∀ (W : D.what₂.Tau → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)] [∀ τ, FiniteDimensional ℂ (W τ)] (ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (ε τ)) (W τ)), (∀ τ, IsContRep (ρ τ)) → ∀ (c : D.what₂.Tau → ℕ → ℂ) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ T : Finset (Fin m), T.Nonempty → ∃ B : Finset (GA D V), ∀ φ ∈ formsOn θ V X Y T U ε fr ρ c, (∀ b ∈ B, ∀ g ∈ levi D.sp.cm.sig V.gram X Y T, φ (g * b) = 0) → φ = 0 := by
   intro D θ hθ V U hU ε fr hfr W _ _ _ ρ hρ c m X Y hW T hT

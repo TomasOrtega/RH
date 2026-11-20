@@ -6,11 +6,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV.DelB
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Unfold `TaylorLogMetric.pull`. Use `congr 1`. Use function extensionality and compare the values at `τ i j`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Matrix.of_apply, hT, Fintype.sum_prod_type, pullMat]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Fintype.sum_eq_single τ (fun x hx => by simp [Ne.symm hx])]`. Simplify using `only [if_true]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pull_eq_linear (D : D7) (T : TaylorLogMetric.Tor D) (hT : ∀ τ, T.emb τ = TaylorLogMetric.embT D τ) {a b : ℕ}
     (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin b) D.host.E) (Θ : TaylorLogMetric.VC D a b → ℂ) :
@@ -35,7 +35,7 @@ end GlobalTheory.TwV.DelB
 namespace GlobalTheory.TwV.DelB
 
 /- English proof (translation)
-Use extensionality with `α`. Conclude with `GlobalTheory.ConjSeries.taylor_eq_coeff D G α`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem tay_eq_taylorDir (D : D7) {a b : ℕ} (G : TaylorLogMetric.VC D a b → ℂ) :
     tay G = taylorDir (Formalism.MainNotions.TaylorLogMetric.coordV D) G := by
@@ -43,7 +43,7 @@ theorem tay_eq_taylorDir (D : D7) {a b : ℕ} (G : TaylorLogMetric.VC D a b → 
   exact GlobalTheory.ConjSeries.taylor_eq_coeff D G α
 
 /- English proof (translation)
-Introduce `D cc δ a b e e' Θ hΘ`. Rewrite using `[pull_eq_linear D (TaylorLogMetric.tor0 D cc δ) (fun _ => rfl) e e' Θ, tay_eq_taylorDir, tay_eq_taylorDir, linSub]`. Conclude with `GlobalTheory.PSerLin.taylorDir_linear D Θ (pullMat e e') hΘ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tay_pull_linSub : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {a b : ℕ} (e : Matrix (Fin a) (Fin a) D.host.E) (e' : Matrix (Fin b) (Fin b) D.host.E) (Θ : TaylorLogMetric.VC D a b → ℂ), Differentiable ℂ Θ → tay (TaylorLogMetric.pull D (TaylorLogMetric.tor0 D cc δ) e e' Θ) = linSub (pullMat e e') (tay Θ) := by
   intro D cc δ a b e e' Θ hΘ

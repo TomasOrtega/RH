@@ -15,19 +15,17 @@ open Formalism.DivisionValues Formalism.EigenvalueLevelCeiling Formalism.DworkPo
 namespace EmbeddingLemmas
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨p, hmon, hev⟩` from `hy`. Establish `hsumle : ∀ (s : Finset ℕ) (f : ℕ → k) (C : ℝ), 0 ≤ C → (∀ i ∈ s, ‖f i‖ ≤ C) → ‖∑ i ∈ s, f i‖ ≤ C`. Introduce `s f C hC`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro _`. Simplify using `using hC`. Consider the case `insert a s ha ih`. Introduce `h`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert ha]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))`. Rewrite `hev` using `[hmon.as_sum, Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finset_sum]`. Establish `hyn` using `eq_neg_of_add_eq_zero_left hev`. Establish `hy1 : (1 : ℝ) ≤ ‖y‖` using `hlt.le`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hn : p.natDegree = 0`. Rewrite `hyn` using `[hn, pow_zero, Finset.range_zero, Finset.sum_empty, neg_zero]`. Conclude with `one_ne_zero hyn`. Establish `hb : ∀ i ∈ Finset.range p.natDegree, ‖Polynomial.eval₂ (algebraMap ℤ k) y (Polynomial.C (p.coeff i) * Polynomial.X ^ i)‖ ≤ ‖y‖ ^ (p.natDegree - 1)`. Introduce `i hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X_pow, norm_mul, norm_pow]`. Establish `hc : ‖(algebraMap ℤ k) (p.coeff i)‖ ≤ 1`. Rewrite using `[algebraMap_int_eq, eq_intCast]`. Conclude with `IsUltrametricDist.norm_intCast_le_one k _`. Establish `hi' : i ≤ p.natDegree - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `Finset.mem_range.1 hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Establish `hle` using `hsumle _ _ _ (by positivity) hb`. Establish `hle' : ‖y‖ ^ p.natDegree ≤ ‖y‖ ^ (p.natDegree - 1)`.
-
-Rewrite using `[← norm_pow, hyn, norm_neg]`. Conclude with `hle`. Establish `hlt' : ‖y‖ ^ (p.natDegree - 1) < ‖y‖ ^ p.natDegree` using `pow_lt_pow_right₀ hlt (by omega)`. Combine the linear relations using `[hle']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral {k : Type} [NormedField k] [IsUltrametricDist k] {y : k}
     (hy : IsIntegral ℤ y) : ‖y‖ ≤ 1 := by
@@ -72,17 +70,17 @@ theorem norm_le_one_of_isIntegral {k : Type} [NormedField k] [IsUltrametricDist 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-The claim follows from `map_add (algebraMap (𝓞 K) K) x y`.
+A detailed English derivation is pending.
 -/
 theorem cAdd (x y : 𝓞 K) : ((x + y : 𝓞 K) : K) = (x : K) + (y : K) := map_add (algebraMap (𝓞 K) K) x y
 
 /- English proof (translation)
-The claim follows from `map_mul (algebraMap (𝓞 K) K) x y`.
+A detailed English derivation is pending.
 -/
 theorem cMul (x y : 𝓞 K) : ((x * y : 𝓞 K) : K) = (x : K) * (y : K) := map_mul (algebraMap (𝓞 K) K) x y
 
 /- English proof (translation)
-The claim follows from `map_zero (algebraMap (𝓞 K) K)`.
+A detailed English derivation is pending.
 -/
 theorem cZero : ((0 : 𝓞 K) : K) = 0 := map_zero (algebraMap (𝓞 K) K)
 
@@ -92,7 +90,7 @@ Simplify using the standard rewrite rules.
 theorem cNat (n : ℕ) : ((n : 𝓞 K) : K) = (n : K) := by simp
 
 /- English proof (translation)
-Establish `hspan : Ideal.span {x} ≠ (0 : Ideal (𝓞 K))`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hx`. Rewrite using `[Formalism.DivisionValues.ValuationRepresentative.vw_int, FractionalIdeal.count_coe K w hspan, Nat.cast_le, ← Ideal.dvd_span_singleton, ← Associates.mk_le_mk_iff_dvd, Associates.mk_pow]`. Conclude with `Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.2 hspan) w.associates_irreducible`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_pow_iff (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) (hx : x ≠ 0) (m : ℕ) :
     x ∈ w.asIdeal ^ m ↔ (m : ℤ) ≤ vw w (x : K) := by
@@ -105,23 +103,21 @@ theorem mem_pow_iff (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) (hx : x ≠ 0)
   exact Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.2 hspan) w.associates_irreducible
 
 /- English proof (translation)
-Distinguish the cases in `hb0 : b = 0`. Use `⟨1, 0, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun h => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Rewrite using `[hb0, mul_zero, cZero]`. Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) b`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Establish `hyK : (algebraMap (𝓞 K) K y) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hy`. Establish `hxK : (algebraMap (𝓞 K) K x) ≠ 0` using `fun h => hb0 (by rw [h, zero_div])`. Establish `hx0 : x ≠ 0` using `fun h => hxK (by rw [h, map_zero])`. Establish `hvy : 0 ≤ vw w (algebraMap (𝓞 K) K y)` using `ValuationRepresentative.vw_int_nonneg w y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le hvy`. Rewrite `hb` using `[div_eq_mul_inv, ValuationRepresentative.vw_mul w _ _ hxK (inv_ne_zero hyK), ValuationRepresentative.vw_inv]`. Establish `hxm : x ∈ w.asIdeal ^ m` using `(mem_pow_iff w x hx0 m).2 (by`. Express the relevant statement in the definitionally equal form `(m : ℤ) ≤ vw w (algebraMap (𝓞 K) K x)`. Use the proof step `omega)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hym : y ∈ w.asIdeal ^ m` using `(mem_pow_iff w y hy0 m).2 (by`. Express the relevant statement in the definitionally equal form `(m : ℤ) ≤ vw w (algebraMap (𝓞 K) K y)`. Use the proof step `omega)`. Establish `hym1 : y ∉ w.asIdeal ^ (m + 1)` using `fun h => by`. Establish `h2` using `(mem_pow_iff w y hy0 (m + 1)).1 h`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Move the embeddings inside the algebraic operations.
 
-Express the relevant statement in the definitionally equal form `((m + 1 : ℕ) : ℤ) ≤ vw w (algebraMap (𝓞 K) K y) at h2`. Move the coercions through the operations in `at h2`. Use linear arithmetic over natural numbers and integers. Establish `hdvd : w.asIdeal ^ m ∣ Ideal.span {y}`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_le, Set.singleton_subset_iff]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hym`. Take `⟨J, hJ⟩` from `hdvd`. Establish `hJw : ¬ J ≤ w.asIdeal` using `fun h => by`. Apply `hym1` to reduce the goal to its premises. Establish `h1 : y ∈ w.asIdeal ^ m * J`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hJ]`. Conclude with `Ideal.mem_span_singleton_self y`. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mono_right h h1`. Take `⟨c, hcJ, hcw⟩` from `SetLike.not_le_iff_exists.1 hJw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hxc : x * c ∈ Ideal.span {y}`. Rewrite using `[hJ]`. Conclude with `Ideal.mul_mem_mul hxm hcJ`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 hxc`. Use `⟨c, z, hcw, ?_⟩` and prove the remaining obligations.
-
-Establish `hz' : (algebraMap (𝓞 K) K z) * (algebraMap (𝓞 K) K y) = (algebraMap (𝓞 K) K x) * (algebraMap (𝓞 K) K c)`. Rewrite using `[← map_mul, ← map_mul, hz]`. Express the relevant statement in the definitionally equal form `(algebraMap (𝓞 K) K c) * _ = algebraMap (𝓞 K) K z`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hz'`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_clear (w : HeightOneSpectrum (𝓞 K)) (b : K) (hb : 0 ≤ vw w b) :
     ∃ c z : 𝓞 K, c ∉ w.asIdeal ∧ (c : K) * b = (z : K) := by
@@ -175,9 +171,9 @@ theorem exists_clear (w : HeightOneSpectrum (𝓞 K)) (b : K) (hb : 0 ≤ vw w b
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨p, hp, hpx⟩` from `NumberField.RingOfIntegers.isIntegral_coe x`. Use `norm_le_one_of_isIntegral ⟨p, hp, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg σ hpx`. Rewrite `h` using `[map_zero, Polynomial.hom_eval₂]`. Establish `h2 : Polynomial.eval₂ (Int.castRingHom ℂ_[l]) (σ x) p = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← RingHom.ext_int (σ.comp (algebraMap ℤ K)) (Int.castRingHom ℂ_[l])]`. Conclude with `h`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_int_le (σ : K →+* ℂ_[l]) (x : 𝓞 K) : ‖σ (x : K)‖ ≤ 1 := by
   obtain ⟨p, hp, hpx⟩ := NumberField.RingOfIntegers.isIntegral_coe x
@@ -211,11 +207,11 @@ def normIdeal (σ : K →+* ℂ_[l]) : Ideal (𝓞 K) where
 end EmbeddingLemmas
 
 /- English proof (translation)
-Introduce `K _ _ _ w l hlp ι h`. Assume the negation of the conclusion as `hne`. Establish `hnot : (l : 𝓞 K) ∉ w.asIdeal`. Introduce `hmem`. Rewrite `hmem` using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdvd : plc w ∣ l` using `(ringChar.spec (𝓞 K ⧸ w.asIdeal) l).1 hmem`. Conclude with `hne ((Nat.prime_dvd_prime_iff_eq (Formalism.EigenvalueLevelCeiling.ramBasic K w).1 hlp.out).1 hdvd)`. Establish `hv : vw w (l : K) = 0`. Establish `h2` using `ValuationZeroReduction.vw_eq_zero_of_not_mem w (l : 𝓞 K) hnot`. Rewrite `h2` using `[EmbeddingLemmas.cNat]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h3` using `h (l : K) (Nat.cast_ne_zero.2 hlp.out.ne_zero)`. Rewrite `h3` using `[map_natCast, hv, Int.cast_zero, zero_div, Real.rpow_zero]`. Conclude with `absurd h3 (norm_l_lt_one l).ne`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embeddingForces_holds : EmbForces := by
   intro K _ _ _ w l hlp ι h

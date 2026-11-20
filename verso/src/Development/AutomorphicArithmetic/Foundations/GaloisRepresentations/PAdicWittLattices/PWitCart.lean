@@ -6,9 +6,9 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Introduce `hI p _ D G L R _ _ gb N' N X' X u hu π Φ hW`. Take `⟨-, o, ψ, φ, hT, rfl⟩` from `hW`. Establish `hψ : IsIso ψ` using `hI p D G L R gb X'.X X'.s N' N X'.univ o ψ u hu hT`. Establish `hl : IsIso ψ.left` using `inferInstanceAs (IsIso ((Over.forget _).map ψ))`. Establish `h₁ : IsPullback ψ.left X'.univ.A.hom o.A.hom (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by rw [Over.w, Category.comp_id]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂` using `h₁.paste_horiz φ.cart.1`. Rewrite `h₂` using `[Category.id_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.Gal.G3.pWitCart :
     TransIso → WitCart := by

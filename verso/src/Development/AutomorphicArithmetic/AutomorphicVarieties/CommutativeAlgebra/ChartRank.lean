@@ -19,11 +19,11 @@ private theorem crLin_apply (φ : A →ₐ[O] MvPowerSeries τ (FractionRing O))
     crLin φ i f = MvPowerSeries.coeff (Finsupp.single i 1) (φ f) := rfl
 
 /- English proof (translation)
-Establish `h2 : ∀ f ∈ RingHom.ker x ^ 2, crLin φ i f = 0`. Introduce `f hf`. Rewrite `hf` using `[sq]`. Use `Submodule.mul_induction_on hf (fun a ha b hb => ?_) (fun a b ha hb => by rw [map_add, ha, hb, add_zero])` and prove the remaining obligations. Establish `ha' : MvPowerSeries.coeff 0 (φ a) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h.const, show x a = 0 from ha, map_zero]`. Establish `hb' : MvPowerSeries.coeff 0 (φ b) = 0`. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h.const, show x b = 0 from hb, map_zero]`. Rewrite using `[crLin_apply, map_mul, MvPowerSeries.coeff_mul, Finsupp.antidiagonal_single]`. Simplify using `[Finset.Nat.antidiagonal_succ, ha', hb']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `f ⟨c, hc, hf⟩`. Use `h2 _ hf` as an intermediate fact. Rewrite `this` using `[map_smul]`. Conclude with `(smul_eq_zero.1 this).resolve_left hc`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem crLin_sat (h : IsChart 𝒜 x wt φ) (i : τ) : ∀ f ∈ satSq x, crLin φ i f = 0 := by
   classical
@@ -43,14 +43,14 @@ private theorem crLin_sat (h : IsChart 𝒜 x wt φ) (i : τ) : ∀ f ∈ satSq 
   exact (smul_eq_zero.1 this).resolve_left hc
 
 /- English proof (translation)
-The claim follows from `h.graded j f hf _ (by simpa [Finsupp.weight_single] using hij)`.
+A detailed English derivation is pending.
 -/
 private theorem crLin_wt (h : IsChart 𝒜 x wt φ) (i : τ) {j : X} (hij : wt i ≠ j)
     {f : A} (hf : f ∈ 𝒜 j) : crLin φ i f = 0 :=
   h.graded j f hf _ (by simpa [Finsupp.weight_single] using hij)
 
 /- English proof (translation)
-Rewrite using `[crLin_apply, AlgHom.commutes, MvPowerSeries.algebraMap_apply, MvPowerSeries.coeff_C, if_neg (by simp)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem crLin_const (φ : A →ₐ[O] MvPowerSeries τ (FractionRing O)) (i : τ) (c : O) :
     crLin φ i (algebraMap O A c) = 0 := by
@@ -58,7 +58,7 @@ private theorem crLin_const (φ : A →ₐ[O] MvPowerSeries τ (FractionRing O))
   rw [crLin_apply, AlgHom.commutes, MvPowerSeries.algebraMap_apply, MvPowerSeries.coeff_C, if_neg (by simp)]
 
 /- English proof (translation)
-Establish `h1` using `h.graded j f hf 0 (by simpa using hj.symm)`. Rewrite `h1` using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h.const]`. Conclude with `IsFractionRing.injective O (FractionRing O) (by rw [h1, map_zero])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cr_fixed (h : IsChart 𝒜 x wt φ) {j : X} (hj : j ≠ 0) {f : A} (hf : f ∈ 𝒜 j) : x f = 0 := by
   have h1 := h.graded j f hf 0 (by simpa using hj.symm)
@@ -66,9 +66,9 @@ private theorem cr_fixed (h : IsChart 𝒜 x wt φ) {j : X} (hj : j ≠ 0) {f : 
   exact IsFractionRing.injective O (FractionRing O) (by rw [h1, map_zero])
 
 /- English proof (translation)
-Proceed by induction on `f using DirectSum.Decomposition.inductionOn 𝒜 with`. Consider the case `zero => simp`. Consider the case `@homogeneous k f`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality.
+Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[DirectSum.decompose_of_mem_same 𝒜 f.2]`. Rewrite using `[DirectSum.decompose_of_mem_ne 𝒜 f.2 hk, map_zero, crLin_wt h i (fun h' => hk (h'.symm.trans hij)) f.2]`. Consider the case `add f g hf hg => simp [hf, hg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 private theorem crLin_proj [DecidableEq X] [GradedAlgebra 𝒜] (h : IsChart 𝒜 x wt φ) (i : τ) {j : X}
     (hij : wt i = j) (f : A) : crLin φ i (DirectSum.decompose 𝒜 f j) = crLin φ i f := by
@@ -82,9 +82,9 @@ private theorem crLin_proj [DecidableEq X] [GradedAlgebra 𝒜] (h : IsChart �
   | add f g hf hg => simp [hf, hg]
 
 /- English proof (translation)
-Establish `hm : (DirectSum.decompose 𝒜 f j : A) ∈ 𝒜 j` using `(DirectSum.decompose 𝒜 f j).2`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Use `⟨(DirectSum.decompose 𝒜 f 0 : A) - algebraMap O A (x (DirectSum.decompose 𝒜 f 0 : A)), sub_mem hm (SetLike.algebraMap_mem_graded 𝒜 _), by simp, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, crLin_const, sub_zero, crLin_proj h i hi]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, hm, cr_fixed h hj hm, fun i hi => crLin_proj h i hi f⟩`.
+Supply the required witnesses or components.
 -/
 private theorem cr_comp [DecidableEq X] [GradedAlgebra 𝒜] (h : IsChart 𝒜 x wt φ) (j : X) (f : A) :
     ∃ g : A, g ∈ 𝒜 j ∧ x g = 0 ∧ ∀ i, wt i = j → crLin φ i g = crLin φ i f := by
@@ -99,17 +99,17 @@ private theorem cr_comp [DecidableEq X] [GradedAlgebra 𝒜] (h : IsChart 𝒜 x
 end
 
 /- English proof (translation)
-Introduce `O A X _ _ _ _ _ _ 𝒜 _ x τ _ wt φ h j`. Rewrite using `[Nat.card_eq_fintype_card]`. Set `ψ : cotLat x 𝒜 j →ₗ[O] ({i // wt i = j} → FractionRing O)` to `LinearMap.pi fun i => ((satSq x).liftQ (crLin φ i.1) (crLin_sat h i.1)) ∘ₗ (cotLat x 𝒜 j).subtype`. Establish `hψ : ∀ (f : A) (hf : (satSq x).mkQ f ∈ cotLat x 𝒜 j) i, ψ ⟨_, hf⟩ i = crLin φ i.1 f` using `fun f hf i => rfl`. Apply `Module.finrank_eq_of_rank_eq` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Establish `hinj : Function.Injective ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨_, f, hf, rfl⟩ h0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(Submodule.Quotient.mk_eq_zero _).2 (h.inj f hf.2 fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : wt i = j`. Conclude with `congrFun h0 ⟨i, hi⟩`. Conclude with `crLin_wt h i hi hf.1`. Establish `h1` using `LinearMap.rank_le_of_injective ψ hinj`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[← IsLocalization.rank_eq (FractionRing O) (nonZeroDivisors O) le_rfl (N := {i // wt i = j} → FractionRing O), rank_fun']`. Then use the resulting hypothesis. Use `choose g hg hg' using h.onto choose p hp hpx hpl using cr_comp h j`. Establish `hm : ∀ i, (satSq x).mkQ (p (g i)) ∈ cotLat x 𝒜 j` using `fun i => ⟨_, ⟨hp _, hpx _⟩, rfl⟩`. Establish `hli : LinearIndependent O fun i : {i // wt i = j} => (⟨_, hm i.1⟩ : cotLat x 𝒜 j)`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `c hc i`. Establish `h1` using `congrFun (congrArg ψ hc) i`. Rewrite `h1` using `[map_sum, Finset.sum_apply, Finset.sum_eq_single i, map_zero, map_smul, Pi.smul_apply, hψ, hpl _ _ i.2]`. Conclude with `(smul_eq_zero.1 h1).resolve_right (hg i.1)`. Introduce `k _ hk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[map_smul, Pi.smul_apply, hψ, hpl _ _ i.2, crLin_apply, hg' k.1 i.1 (fun h' => hk (Subtype.ext h').symm), smul_zero]`. Simplify using the standard rewrite rules. Establish `h2` using `hli.cardinal_le_rank`. Rewrite `h2` using `[Cardinal.mk_fintype]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.chart_rank :
     ∀ (O A X : Type) [CommRing O] [IsDomain O] [CommRing A] [Algebra O A] [AddCommGroup X] [DecidableEq X] (𝒜 : X → Submodule O A) [GradedAlgebra 𝒜] (x : A →ₐ[O] O) (τ : Type) [Fintype τ] (wt : τ → X) (φ : A →ₐ[O] MvPowerSeries τ (FractionRing O)), IsChart 𝒜 x wt φ →

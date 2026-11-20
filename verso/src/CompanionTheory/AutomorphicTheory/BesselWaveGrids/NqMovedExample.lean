@@ -16,7 +16,7 @@ structure PairData (P : M.Par) (l : ℕ) (lam : ℕ → ℝ) (c g b : ℝ) : Pro
   pair : ∀ Y, I.OnCut P.u P.u' l Y → (∃ e, PairOK P.k lam P.u e (-Y)) ∧ ∃ e', PairOK P.k lam P.u' e' (-Y)
 
 /- English proof (translation)
-The claim follows from `hL.c_pos g_ge := hL.g_ge b_ge_three := hL.b_ge_three b_ge_k := hL.b_ge_k b_ge_c := hL.b_ge_c lam_le := hL.lam_le gap := hL.gap ul_le := hL.u_le l hl1 hlk pair := fun Y _ => ⟨⟨0, pairOK_of_interlace P.k lam P.u 0 (-Y) fun s h1 h2 => (hL.inter s h1 h2).1⟩, ⟨0, pairOK_of_interlace P …`.
+A detailed English derivation is pending.
 -/
 theorem LamData.toPair {P : M.Par} {lam : ℕ → ℝ} {c g b : ℝ} (hL : LamData P lam c g b) {l : ℕ} (hl1 : 1 ≤ l)
     (hlk : l ≤ P.k) : PairData P l lam c g b where
@@ -33,13 +33,13 @@ theorem LamData.toPair {P : M.Par} {lam : ℕ → ℝ} {c g b : ℝ} (hL : LamDa
       ⟨0, pairOK_of_interlace P.k lam P.u' 0 (-Y) fun s h1 h2 => (hL.inter s h1 h2).2⟩⟩
 
 /- English proof (translation)
-Break down `hx with ⟨h1, -⟩ | ⟨-, h2⟩` into its components or cases. Use `⟨l - 1, fun s hs1 hsk hse => ⟨fun hlt => ?_, fun _ => ?_⟩⟩` and prove the remaining obligations. Establish `hsl : s ≠ l`. Introduce and unpack `rfl`. Use `(h s hs1 hsk).1` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hv s hsl]`. Conclude with `(h s hs1 hsk).1`. Rewrite using `[hv (s + 1) (by omega)]`. Conclude with `(h s hs1 hsk).2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨l, fun s hs1 hsk hse => ⟨fun _ => ?_, fun hle => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hv s hse]`. Conclude with `(h s hs1 hsk).1`. Establish `hsl : s + 1 ≠ l`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `(h s hs1 hsk).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hv (s + 1) hsl]`. Conclude with `(h s hs1 hsk).2`.
+A detailed English derivation is pending.
 -/
 theorem pairOK_of_moved (k l : ℕ) (lam u v : ℕ → ℝ) (x : ℝ)
     (h : ∀ s, 1 ≤ s → s ≤ k - 1 → lam s + 1 / 2 ≤ u s ∧ u (s + 1) ≤ lam s - 1 / 2)
@@ -78,7 +78,7 @@ structure MovedData (P : M.Par) (l : ℕ) (lam : ℕ → ℝ) (c g b : ℝ) : Pr
   ul_le : |P.u l| ≤ b ∧ |P.u' l| ≤ b
 
 /- English proof (translation)
-The claim follows from `hM.c_pos g_ge := hM.g_ge b_ge_three := hM.b_ge_three b_ge_k := hM.b_ge_k b_ge_c := hM.b_ge_c lam_le := hM.lam_le gap := hM.gap ul_le := hM.ul_le pair := fun Y hY => ⟨⟨0, pairOK_of_interlace P.k lam P.u 0 (-Y) hM.inter⟩, pairOK_of_moved P.k l lam P.u P.u' (-Y) hM.inter hM.moved (b …`.
+A detailed English derivation is pending.
 -/
 theorem MovedData.toPair {P : M.Par} {l : ℕ} {lam : ℕ → ℝ} {c g b : ℝ} (hM : MovedData P l lam c g b) :
     PairData P l lam c g b where
@@ -98,11 +98,11 @@ theorem MovedData.toPair {P : M.Par} {l : ℕ} {lam : ℕ → ℝ} {c g b : ℝ}
         · exact Or.inr ⟨by linarith, by linarith⟩)⟩
 
 /- English proof (translation)
-Establish `hρ` using `interlaces_of_OK P hOK`. Establish `hq` using `Formalism.FourierDecayAlt.P.q_positive_interlacing P.k P.u P.u' P.lo l Y P.T P.T' hl1 hlk hρ hY hOK.T_pos hOK.T'_pos`. Establish `hTT : 0 < P.T * P.T'` using `mul_pos hOK.T_pos hOK.T'_pos`. Rewrite using `[qC_ofReal, Complex.ofReal_re]`. Use `⟨hq, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hden` using `den_onCut P.k P.u P.u' P.lo l Y hl1 hlk hρ hY`. Establish `hYb : |Y| ≤ b` using `abs_le_of_onCut P.u P.u' l Y b hY hL.ul_le.1 hL.ul_le.2`. Take `⟨⟨e, he⟩, e', he'⟩` from `hL.pair Y hY`. Establish `hmain` using `pst_mul_le P.k P.r lam P.u P.u' e e' c g b Y hk hL.c_pos.le hL.g_ge hL.b_ge_three hL.b_ge_k hL.b_ge_c hYb hL.lam_le hL.gap he he' (fun i h1 h2 => (hden i h1 h2).1) (fun i h1 h2 => (hden i h1 h2).2)`. Rewrite using `[qpoly_eq_of_pos P.k P.T P.T' P.u P.u' Y hOK.T_pos hOK.T'_pos hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hTT.ne']`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nq_onCut_pair (P : M.Par) (hOK : P.OK) (l : ℕ) (hl1 : 1 ≤ l) (hlk : l ≤ P.k) (hk : 2 ≤ P.k)
     (lam : ℕ → ℝ) (c g b : ℝ) (hL : PairData P l lam c g b) (Y : ℝ) (hY : I.OnCut P.u P.u' l Y) :
@@ -136,15 +136,13 @@ noncomputable def P₁ : M.Par where
   u' := fun i => if i = 1 then 40 else if i = 2 then 36 else 0
 
 /- English proof (translation)
-Use `show 1 ≤ 2; norm_num T_pos := by show (0 : ℝ) < 1; norm_num T'_pos := by show (0 : ℝ) < 1; norm_num int_u := by`. Introduce `i hi`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hi`. Establish `h2' : i ≤ 2` using `h2`. Use `interval_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, by simp [P₁]⟩`. Conclude with `⟨-40, by simp [P₁]⟩`. Use the proof step `int_u' := by`. Introduce `i hi`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `h2' : i ≤ 2` using `h2`. Use `interval_cases i`. Conclude with `⟨0, by simp [P₁]⟩`. Conclude with `⟨-4, by simp [P₁]; norm_num⟩`. Use `gap := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Introduce `i hi`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hi`. Establish `h2' : i ≤ 1` using `h2`. Use `interval_cases i`. Simplify using `only [M.Par.lo, M.Par.hi, P₁]`.
-
-Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 theorem P₁_OK : P₁.OK where
   k_pos := by show 1 ≤ 2; norm_num
@@ -173,15 +171,13 @@ theorem P₁_OK : P₁.OK where
     norm_num
 
 /- English proof (translation)
-Evaluate the numerical expressions using `g_ge := by norm_num b_ge_three := by norm_num b_ge_k := by show ((2 : ℕ) : ℝ) ≤ 40; norm_num b_ge_c := by norm_num lam_le := by`. Introduce `s _ _`. Unfold `lam₀`. Apply the tactic sequence `split_ifs <;> norm_num`. Use `gap := by`.
+Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s h1 h2`. Establish `: P₁.k = 2` using `rfl`. Use linear arithmetic over natural numbers and integers. Use `inter := by`. Introduce `s h1 h2`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2' : s ≤ 1` using `h2`. Use `interval_cases s`. Simplify using `only [lam₀, P₁]`. Evaluate the numerical expressions. Use `moved := by`.
+Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Introduce `i hi`. Simplify using `only [P₁]`. Apply the tactic sequence `split_ifs <;> simp_all`. Use `ul_le := by`. Simplify using `only [P₁]`.
-
-Evaluate the numerical expressions.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem movedData₁ : MovedData P₁ 2 lam₀ 1 2 40 where
   c_pos := by norm_num
@@ -212,7 +208,7 @@ theorem movedData₁ : MovedData P₁ 2 lam₀ 1 2 40 where
     norm_num
 
 /- English proof (translation)
-The claim follows from `nq_onCut_pair P₁ P₁_OK 2 (by norm_num) (by show 2 ≤ 2; norm_num) (by show 2 ≤ 2; norm_num) lam₀ 1 2 40 movedData₁.toPair (-10) (Or.inl ⟨by simp [P₁]; norm_num, by simp [P₁]; norm_num⟩)`.
+A detailed English derivation is pending.
 -/
 theorem nq_moved_example :
     0 < (M.qC P₁ ((-10 : ℝ) : ℂ)).re ∧

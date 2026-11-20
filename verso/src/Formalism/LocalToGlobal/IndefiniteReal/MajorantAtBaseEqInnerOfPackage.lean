@@ -17,7 +17,7 @@ section Part3
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty : Type}
 
 /- English proof (translation)
-Rewrite using `[InertDat3.inert_part_eq_comap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_part3_iff (B : BlockDat K G Pl0) (D : InertDat3 B I0 Ty) (ℓ : Lvl K G) (Z : Submodule K B.S.Forms)
     (p : Typ3 K Pl0 I0 Ty) (y : Fin (B.dZ ℓ Z) → K) : y ∈ D.part3 ℓ Z p ↔ B.toF ℓ Z y ∈ D.inertTypeEigenspaceSum p := by
@@ -33,7 +33,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
   (I : In3 K G Pl0 I0 Ty T m)
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem side_lv (b : Bool) :
     lv (faceOf3 I.A3 I.P0 I.ψ0 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) b = I.A3.side3 (I.lvP b) (I.lvψ b) I.X.zs := by
@@ -45,7 +45,7 @@ Both sides reduce to the same expression.
 theorem Jm_eq (b : Bool) : I.Jm b = I.Jt b I.A3.fam3.base3.μ0 := rfl
 
 /- English proof (translation)
-Introduce `s h v`. Establish `hW` using `I.A3.side_well_formed h.ok ⊥ 1 I.X.zs h.stable h.inBlock h.sep`. Establish `hu : IsUnit (frameOf ((prin I.X).gramE I.cg false)).det` using `gramE_unit' (prin I.X) I.cg false h.h2g.1 (by show (0 : ℝ) < 1; norm_num)`. Conclude with `(rowXE_spec (Df := I.A3.side3 ⊥ 1 I.X.zs) hW _ hu I.X.κ h.h4pos.1 (fun j p v => I.X.lam j I.A3.fam3.base3.μ0 p v) (fun j p v => h.h4pos.2.1 j _ p v)).1 v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pFrames : I.PFrames := by
   intro s h v
@@ -57,7 +57,7 @@ theorem pFrames : I.PFrames := by
 
 variable {I} in
 /- English proof (translation)
-Introduce `_ hz` and use `h.stable.1 I.A.fam.μ0 (Sum.inr g) (Submodule.mem_map_of_mem hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Z_stable_g {s : ℕ} (h : I.Hyp s) (g : G) :
     I.X.zs.Z I.A.fam.μ0 ≤ (I.X.zs.Z I.A.fam.μ0).comap ((I.A.fam.R I.A.fam.μ0).r g) := fun _ hz =>
@@ -65,9 +65,9 @@ theorem Z_stable_g {s : ℕ} (h : I.Hyp s) (g : G) :
 
 variable {I} in
 /- English proof (translation)
-Take `⟨y, hty⟩` from `exists_toF_act (I.A.fam.R I.A.fam.μ0) h.ok.ok2.conj (h.ok.ok2.what₂ _) I.A.fam.X h.ok.ok2.irr (I.X.zs.Z I.A.fam.μ0) (fun g => Z_stable_g h g) g x`. Establish `key : I.iCg (cpt I.A3.fam3.base3.v0.embedding (I.ρf g *ᵥ x)) = I.iCg (cpt I.A3.fam3.base3.v0.embedding y)`. Rewrite using `[(hρ s h).2.2 g x]`. Establish `e1 : I.iCg (cpt I.A3.fam3.base3.v0.embedding x) = I.X.Θ I.A.fam.μ0 (I.X.jR I.A.fam.μ0 ((I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) x))` using `iC_cpt I.X I.cg false I.A.fam.μ0 x`. Establish `e2 : I.iCg (cpt I.A3.fam3.base3.v0.embedding y) = I.X.Θ I.A.fam.μ0 (I.X.jR I.A.fam.μ0 ((I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) y))` using `iC_cpt I.X I.cg false I.A.fam.μ0 y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Use `erw [hty]`. Conclude with `(h.gequiv I.A.fam.μ0 g _).symm`. Establish `hxy` using `cpt_injective _ (h.h2g.1 key)`. Conclude with `(congrArg (fun z => (I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) z) hxy).trans hty`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toF_rho (hρ : I.PRho) {s : ℕ} (h : I.Hyp s) (g : G) (x : Fin I.Sg.D → K) :
     (I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) (I.ρf g *ᵥ x) =
@@ -90,14 +90,14 @@ theorem toF_rho (hρ : I.PRho) {s : ℕ} (h : I.Hyp s) (g : G) (x : Fin I.Sg.D �
 
 variable {I} in
 /- English proof (translation)
-Rewrite using `[side_lv]`. Conclude with `I.A3.side_well_formed h.ok _ _ _ h.stable h.inBlock h.sep`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wf_lv {s : ℕ} (h : I.Hyp s) (b : Bool) : (lv (faceOf3 I.A3 I.P0 I.ψ0 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) b).WF := by
   rw [side_lv]; exact I.A3.side_well_formed h.ok _ _ _ h.stable h.inBlock h.sep
 
 variable {I} in
 /- English proof (translation)
-The claim follows from `I.A3.side_well_formed h.ok ⊥ 1 _ h.stable h.inBlock h.sep`.
+A detailed English derivation is pending.
 -/
 theorem wf_g {s : ℕ} (h : I.Hyp s) : (lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).WF :=
   I.A3.side_well_formed h.ok ⊥ 1 _ h.stable h.inBlock h.sep
@@ -105,7 +105,7 @@ theorem wf_g {s : ℕ} (h : I.Hyp s) : (lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I
 variable {I} in
 
 /- English proof (translation)
-Break down `k with i | k` into its components or cases. Conclude with `(h.ok.ok2.what₂ _).opG i g`. Conclude with `(h.ok.what₂ _).opG k g`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem opAll_comm {s : ℕ} (h : I.Hyp s) (g : G) (k : (I.A3.rowI I.A.fam.μ0).OpIx) :
     Commute ((I.A3.rowI I.A.fam.μ0).opAll k) ((I.A.fam.R I.A.fam.μ0).r g) := by
@@ -115,9 +115,9 @@ theorem opAll_comm {s : ℕ} (h : I.Hyp s) (g : G) (k : (I.A3.rowI I.A.fam.μ0).
 
 variable {I} in
 /- English proof (translation)
-Consider the cases of `b`. Use `(mem_part3_iff (I.A.fam.R I.A.fam.μ0) (I.A3.rowI I.A.fam.μ0) (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) p.1 (I.Jm false *ᵥ x)).2 ?_` and prove the remaining obligations. Establish `e : (I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) (I.Jm false *ᵥ x) = (I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl I.P0 I.ψ0) (I.X.zs.Z I.A.fam.μ0) x` using `(hJt s h false I.A.fam.μ0).2.1 x`. Rewrite using `[e]`. Conclude with `(mem_part3_iff (I.A.fam.R I.A.fam.μ0) (I.A3.rowI I.A.fam.μ0) (I.A.fam.lvl I.P0 I.ψ0) (I.X.zs.Z I.A.fam.μ0) p.1 x).1 hx`.
+Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_part3_iff (I.A.fam.R I.A.fam.μ0) (I.A3.rowI I.A.fam.μ0) (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) p.1 (I.Jm true *ᵥ x)).2 ?_` and prove the remaining obligations. Establish `e : (I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) (I.Jm true *ᵥ x) = (I.A.fam.R I.A.fam.μ0).toF (I.A.fam.lvl I.P1 I.ψ1) (I.X.zs.Z I.A.fam.μ0) x` using `(hJt s h true I.A.fam.μ0).2.1 x`. Rewrite using `[e]`. Conclude with `(mem_part3_iff (I.A.fam.R I.A.fam.μ0) (I.A3.rowI I.A.fam.μ0) (I.A.fam.lvl I.P1 I.ψ1) (I.X.zs.Z I.A.fam.μ0) p.1 x).1 hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Jm_parts (hJt : I.PJt) {s : ℕ} (h : I.Hyp s) (b : Bool) (p : I.A3.fam3.base3.Ix)
     (x : Fin ((lv (faceOf3 I.A3 I.P0 I.ψ0 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) b).dQ I.A3.fam3.base3.μ0) → K)
@@ -137,7 +137,7 @@ theorem Jm_parts (hJt : I.PJt) {s : ℕ} (h : I.Hyp s) (b : Bool) (p : I.A3.fam3
 
 variable {I} in
 /- English proof (translation)
-Consider the cases of `b`. Conclude with `hT (I.A.fam.R I.A.fam.μ0) h.ok.ok2.conj (h.ok.ok2.what₂ _) I.A.fam.X h.ok.ok2.irr I.P0 I.ψ0 (I.X.zs.Z I.A.fam.μ0) (fun g => Z_stable_g h g) (I.Jm false) (hJt s h false I.A.fam.μ0).2.1 v x y`. Conclude with `hT (I.A.fam.R I.A.fam.μ0) h.ok.ok2.conj (h.ok.ok2.what₂ _) I.A.fam.X h.ok.ok2.irr I.P1 I.ψ1 (I.X.zs.Z I.A.fam.μ0) (fun g => Z_stable_g h g) (I.Jm true) (hJt s h true I.A.fam.μ0).2.1 v x y`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem quot_lv (hT : TransferS (K := K) (G := G) (Pl0 := Pl0)) (hJt : I.PJt) {s : ℕ} (h : I.Hyp s) (b : Bool)
     (v : InfinitePlace K)
@@ -154,7 +154,7 @@ theorem quot_lv (hT : TransferS (K := K) (G := G) (Pl0 := Pl0)) (hJt : I.PJt) {s
 
 variable {I} in
 /- English proof (translation)
-Establish `e` using `majorant_at_base_eq_scaled_inner (prin I.X) I.cg false (wf_g h) h.h2g.1 (show (0 : ℝ) < 1 by norm_num) h.h4pos.1 (fun j p v => h.h4pos.2.1 j _ p v) x y`. Establish `e1 : (prin I.X).nP false = 1` using `rfl`. Rewrite `e` using `[e1, inv_one, Complex.ofReal_one, one_mul]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem majorant_at_base_eq_inner {s : ℕ} (h : I.Hyp s) (x y : Fin I.Sg.D → K) :
     Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin I.Sg.D)) I.Sg.XE I.A3.fam3.base3.v0 x y =
@@ -167,7 +167,7 @@ theorem majorant_at_base_eq_inner {s : ℕ} (h : I.Hyp s) (x y : Fin I.Sg.D → 
 
 variable {I} in
 /- English proof (translation)
-The claim follows from `majorant_at_base_eq_scaled_inner I.X I.cr b (wf_lv h b) (h.h2 b).1 (h.h4pos.2.2 b) h.h4pos.1 (fun j p v => h.h4pos.2.1 j _ p v) x y`.
+A detailed English derivation is pending.
 -/
 theorem majorant_at_base_eq_inner_of_package {s : ℕ} (h : I.Hyp s) (b : Bool) (x y : Fin (I.Sb b).D → K) :
     Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin (I.Sb b).D)) (I.Sb b).XE I.A3.fam3.base3.v0 x y =
@@ -178,7 +178,7 @@ theorem majorant_at_base_eq_inner_of_package {s : ℕ} (h : I.Hyp s) (b : Bool) 
 
 variable {I} in
 /- English proof (translation)
-Consider the cases of `b`. Conclude with `h.np0`. Conclude with `h.np1`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem nP_eq_card_lvP {s : ℕ} (h : I.Hyp s) (b : Bool) : I.X.nP b = (Nat.card (I.lvP b) : ℝ) := by
   cases b
@@ -186,9 +186,9 @@ theorem nP_eq_card_lvP {s : ℕ} (h : I.Hyp s) (b : Bool) : I.X.nP b = (Nat.card
   · exact h.np1
 
 /- English proof (translation)
-Introduce `s h b v x y`. Establish `hcard : (0 : ℝ) < (Nat.card (I.lvP b) : ℝ)` using `by exact_mod_cast Nat.card_pos`. Rewrite using `[hsc _ _ (Real.sqrt_pos.2 hcard), Real.sq_sqrt hcard.le]`. Distinguish the cases in `hv : v = I.A3.fam3.base3.v0`. Substitute `hv` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[majorant_at_base_eq_inner_of_package h b, majorant_at_base_eq_inner h, nP_eq_card_lvP h b]`. Use `congr 1`. Conclude with `(congrArg₂ (fun a c => ⟪a, c⟫_ℂ) ((hJ s h b).1 x) ((hJ s h b).1 y)).symm`. Conclude with `rowXE_map (lv (faceOf3 I.A3 I.P0 I.ψ0 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) b) (lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false) (wf_lv h b) (wf_g h) _ (gramE_unit' I.X I.cr b (h.h2 b).1 (h.h4pos.2.2 b)) _ (gramE_unit' (prin I.X) I.cg false h.h2g.1 (by show (0 : ℝ) < 1; …`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pMet_core (hT : TransferS (K := K) (G := G) (Pl0 := Pl0)) (hsc : ∀ {n : ℕ}
     (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (c : ℝ), 0 < c → ∀ (v : InfinitePlace K) (x y : Fin n → K),
@@ -212,7 +212,7 @@ theorem pMet_core (hT : TransferS (K := K) (G := G) (Pl0 := Pl0)) (hsc : ∀ {n 
 
 variable {I} in
 /- English proof (translation)
-Establish `hx'` using `(mem_part3_iff (I.A.fam.R I.A.fam.μ0) (I.A3.rowI I.A.fam.μ0) (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) p.1 x).1 hx`. Use `(mem_part3_iff (I.A.fam.R I.A.fam.μ0) (I.A3.rowI I.A.fam.μ0) (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A.fam.μ0) p.1 (I.ρf g *ᵥ x)).2 ?_` and prove the remaining obligations. Rewrite using `[toF_rho hρ h g x]`. Conclude with `Formalism.L2.Col.eigSum_le_comap (fun k => opAll_comm h g k) _ hx'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_parts (hρ : I.PRho) {s : ℕ} (h : I.Hyp s) (g : G) (p : I.A3.fam3.base3.Ix)
     (x : Fin ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).dQ I.A3.fam3.base3.μ0) → K)
@@ -224,9 +224,9 @@ theorem rho_parts (hρ : I.PRho) {s : ℕ} (h : I.Hyp s) (g : G) (p : I.A3.fam3.
   exact Formalism.L2.Col.eigSum_le_comap (fun k => opAll_comm h g k) _ hx'
 
 /- English proof (translation)
-Introduce `s h v g x y`. Distinguish the cases in `hv : v = I.A3.fam3.base3.v0`. Substitute `hv` using the available equality. Rewrite using `[majorant_at_base_eq_inner h, majorant_at_base_eq_inner h]`. Conclude with `(congrArg₂ (fun a c => ⟪a, c⟫_ℂ) ((hρ s h).2.2 g x) ((hρ s h).2.2 g y)).trans (h.gunit g _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `rowXE_map (lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false) (lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false) (wf_g h) (wf_g h) _ (gramE_unit' (prin I.X) I.cg false h.h2g.1 (by show (0 : ℝ) < 1; norm_num)) _ (gramE_unit' (prin I.X) I.cg false h.h2g.1 (by …`. Rewrite using `[one_mul]`. Conclude with `(hI (I.A.fam.R I.A.fam.μ0) h.ok.ok2.conj (h.ok.ok2.what₂ _) I.A.fam.X h.ok.ok2.irr (I.X.zs.Z I.A.fam.μ0) (fun g => Z_stable_g h g) g (I.ρf g) (toF_rho hρ h g) v x y).symm) x y`. Rewrite `e` using `[one_mul]`. Conclude with `e.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pUni_core (hI : InvS (K := K) (G := G) (Pl0 := Pl0)) (hρ : I.PRho) : I.PUni := by
   intro s h v g x y
@@ -248,13 +248,13 @@ theorem pUni_core (hI : InvS (K := K) (G := G) (Pl0 := Pl0)) (hρ : I.PRho) : I.
     exact e.symm
 
 /- English proof (translation)
-The claim follows from `I.pMet_core transferS_holds (fun X c hc v x y => BlockMetrics.majAt_scaleFrame X c hc v x y) hJt hJ`.
+A detailed English derivation is pending.
 -/
 theorem pMet_of (hJt : I.PJt) (hJ : I.PJ) : I.PMet :=
   I.pMet_core transferS_holds (fun X c hc v x y => BlockMetrics.majAt_scaleFrame X c hc v x y) hJt hJ
 
 /- English proof (translation)
-The claim follows from `I.pUni_core invS_holds hρ`.
+A detailed English derivation is pending.
 -/
 theorem pUni_of (_hJt : I.PJt) (hρ : I.PRho) : I.PUni :=
   I.pUni_core invS_holds hρ

@@ -14,19 +14,19 @@ section Gen
 variable (θ : InfFam D) (V : HSp D) {n : ℕ} (hn : V.rank = n)
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.Theta.mt, map_mul, Units.val_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_mul (g h : GA D V) : mt V (g * h) = mt V g * mt V h := by
   simp only [Formalism.L2.Theta.mt, map_mul, Units.val_mul]
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.Theta.mt, map_one, Units.val_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_one : mt V (1 : GA D V) = 1 := by
   simp only [Formalism.L2.Theta.mt, map_one, Units.val_one]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Simplify using `only [finM, mt_mul, finCongr_refl, Matrix.reindex_refl_refl]`. Conclude with `Matrix.map_mul`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finM_mul (g h : GA D V) : finM V hn (g * h) = finM V hn g * finM V hn h := by
   subst hn
@@ -34,7 +34,7 @@ theorem finM_mul (g h : GA D V) : finM V hn (g * h) = finM V hn g * finM V hn h 
   exact Matrix.map_mul
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Simplify using `only [finM, mt_one, finCongr_refl, Matrix.reindex_refl_refl]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finM_one : finM V hn (1 : GA D V) = 1 := by
   subst hn
@@ -48,7 +48,7 @@ theorem infM_eq (g : GA D V) (τ : D.what₂.Tau) :
     infM θ V hn g τ = ((mt V g).map ((θ τ).comp (infPart D))).reindex (finCongr hn) (finCongr hn) := rfl
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Simplify using `only [infM_eq, mt_mul, finCongr_refl, Matrix.reindex_refl_refl]`. Conclude with `Matrix.map_mul`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem infM_mul (g h : GA D V) (τ : D.what₂.Tau) : infM θ V hn (g * h) τ = infM θ V hn g τ * infM θ V hn h τ := by
   subst hn
@@ -56,7 +56,7 @@ theorem infM_mul (g h : GA D V) (τ : D.what₂.Tau) : infM θ V hn (g * h) τ =
   exact Matrix.map_mul
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Simplify using `only [infM_eq, mt_one, finCongr_refl, Matrix.reindex_refl_refl]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem infM_one (τ : D.what₂.Tau) : infM θ V hn (1 : GA D V) τ = 1 := by
   subst hn
@@ -64,7 +64,7 @@ theorem infM_one (τ : D.what₂.Tau) : infM θ V hn (1 : GA D V) τ = 1 := by
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Establish `h` using `infM_mul θ V hn g g⁻¹ τ`. Rewrite `h` using `[mul_inv_cancel, infM_one]`. Conclude with `Matrix.isUnit_det_of_right_inverse h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infM_unit (g : GA D V) (τ : D.what₂.Tau) : IsUnit (infM θ V hn g τ).det := by
   have h := infM_mul θ V hn g g⁻¹ τ
@@ -75,7 +75,7 @@ def finGL (g : GA D V) : GL (Fin n) (EF D) :=
   ⟨finM V hn g, finM V hn g⁻¹, by rw [← finM_mul, mul_inv_cancel, finM_one], by rw [← finM_mul, inv_mul_cancel, finM_one]⟩
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => rfl`. Consider the case `add x y hx hy => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, RingHom.map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem toEAf_conj (a : AE D) :
     toEAf D (cA D a) = Formalism.UG.sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (toEAf D a) := by
@@ -90,11 +90,11 @@ Both sides reduce to the same expression.
 theorem toEAf_inc (e : D.host.E) : toEAf D (incA D e) = inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) e := rfl
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hg : cT (cA D) (mt V g) * V.gram.map (incA D) * mt V g = V.gram.map (incA D)` using `g.2`. Establish `h2` using `congrArg (fun M => M.map (toEAf D)) hg`. Simplify using `only [Matrix.map_mul] at h2`. Express the relevant statement in the definitionally equal form `cT _ (finM V rfl g) * _ * finM V rfl g = _`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [finM, finCongr_refl, Matrix.reindex_refl_refl]`. Establish `e1 : cT (Formalism.UG.sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ((mt V g).map (toEAf D)) = (cT (cA D) (mt V g)).map (toEAf D)`. Use extensionality with `i j`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, toEAf_conj]`. Establish `e2 : V.gram.map (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) = (V.gram.map (incA D)).map (toEAf D) := rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finGL_mem (g : GA D V) :
     finGL V hn g ∈ UPts (sigD D) (V.gram.reindex (finCongr hn) (finCongr hn)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) := by
@@ -118,9 +118,9 @@ variable {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
   (yc : cl → UPts (sigD D) (V.gram.reindex (finCongr hn) (finCongr hn)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hy (Quotient.mk'' ⟨finGL V hn g, finGL_mem V hn g⟩)`. Take `⟨a, ha, b, hb, hab⟩` from `(DoubleCoset.eq _ _ (yc c) _).1 hc`. Take `⟨γ, hγ, e⟩` from `Subgroup.mem_subgroupOf.1 ha`. Use `⟨(c, γ, ⟨b.1, Subgroup.mem_subgroupOf.1 hb⟩), hγ, ?_⟩` and prove the remaining obligations. Use `congrArg (fun x => x.1.1) hab` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only at this`. Rewrite using `[e]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dec (hy : Function.Surjective (fun c => (Quotient.mk'' (yc c) : Cls S))) (g : GA D V) :
     ∃ p, IsDec S yc (finM V hn g) p := by
@@ -135,13 +135,13 @@ theorem exists_dec (hy : Function.Surjective (fun c => (Quotient.mk'' (yc c) : C
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `h` using `exists_dec V hn S yc hy g`. Rewrite using `[rdS, dif_pos h]`. Take `⟨h1, h2⟩` from `h.choose_spec`. Generalize the expression as in `h.choose = p at h1 h2 ⊢`. Establish `hi : ∀ τ, atInf (embT D) p.2.1.1 τ * atInf (embT D) (p.2.1⁻¹ : GL (Fin n) D.host.E).1 τ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Introduce `τ`. Simplify using `only [atInf]`. Rewrite using `[← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hu : ∀ τ, IsUnit (atInf (embT D) (p.2.1⁻¹ : GL (Fin n) D.host.E).1 τ * infM θ V hn g τ * y.1 τ).det`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.det_mul, Matrix.det_mul]`. Conclude with `((Matrix.isUnit_det_of_left_inverse (hi τ)).mul (infM_unit θ V hn g τ)).mul (y.2 τ)`. Rewrite using `[atFr, dif_pos hu]`. Use `(hΨ p.2.1 h1 (yc p.1) _ p.2.2 (Units.ext h2) _ _ ?_).symm` and prove the remaining obligations. Introduce `τ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [trFr]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hi, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rdS_res (hy : Function.Surjective (fun c => (Quotient.mk'' (yc c) : Cls S)))
     (Ψ) (hΨ : Ψ ∈ AdFun S (embT D)) (y : Frames (gramC _ (embT D))) (g : GA D V) :
@@ -165,13 +165,13 @@ theorem rdS_res (hy : Function.Surjective (fun c => (Quotient.mk'' (yc c) : Cls 
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hi, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[rdS_res θ V hn S yc hy Ψ hΨ, rdS_res θ V hn S yc hy Ψ hΨ]`. Substitute `hn` using the available equality. Take `⟨δ, hδ, e⟩` from `Subgroup.mem_subgroupOf.1 hγ`. Establish `e' : mt V γ = δ.1.map (incA D)` using `congrArg Units.val e.symm`. Use `hΨ δ hδ ⟨finGL V rfl g, finGL_mem V rfl g⟩ ⟨finGL V rfl (γ * g), finGL_mem V rfl (γ * g)⟩ 1 (by` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `finM V rfl (γ * g) = _`. Rewrite using `[finM_mul]`. Simplify using `only [OneMemClass.coe_one, mul_one, Units.val_mul]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [finM, e', finCongr_refl, Matrix.reindex_refl_refl]`. Use the proof step `rfl)`. Use the proof step `(trFr θ V rfl (γ * g) y) (trFr θ V rfl g y) (by`. Introduce `τ`. Simplify using `only [trFr, infM_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [infM_eq, e', finCongr_refl, Matrix.reindex_refl_refl]`. Use extensionality with `i j`. Conclude with `(hθ τ).1 _)`. Simplify using `using this`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rdS_left (hθ : IsInfFam θ) (hy : Function.Surjective (fun c => (Quotient.mk'' (yc c) : Cls S)))
     (Ψ) (hΨ : Ψ ∈ AdFun S (embT D)) (y : Frames (gramC _ (embT D))) (γ : GA D V) (hγ : γ ∈ GQ V) (g : GA D V) :
@@ -198,7 +198,7 @@ theorem rdS_left (hθ : IsInfFam θ) (hy : Function.Surjective (fun c => (Quotie
   simpa using this
 
 /- English proof (translation)
-Establish `e : finM V hn (g * k) = finM V hn g` using `by rw [finM_mul, hk, mul_one]`. Simplify using `only [rdS, e, infM_mul, trFr, Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem rdS_right_inf (ψ : cl → Frames (gramC (V.gram.reindex (finCongr hn) (finCongr hn)) (embT D)) → ℂ)
     (y : Frames (gramC _ (embT D))) (g k : GA D V) (hk : finM V hn k = 1) :
@@ -209,9 +209,9 @@ theorem rdS_right_inf (ψ : cl → Frames (gramC (V.gram.reindex (finCongr hn) (
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Rewrite using `[rdS_res θ V hn S yc hy Ψ hΨ, rdS_res θ V hn S yc hy Ψ hΨ]`. Use `hΨ 1 (one_mem _) _ _ κ ?_ _ _ ?_` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `finM V hn (g * k) = _`. Rewrite using `[finM_mul, hk]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_one, one_mul, Units.val_mul]`. Both sides reduce to the same expression. Introduce `τ`. Simplify using `only [trFr, infM_mul, hk', atInf, Units.val_one, mul_one]`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rdS_right_lev (hy : Function.Surjective (fun c => (Quotient.mk'' (yc c) : Cls S)))
     (Ψ) (hΨ : Ψ ∈ AdFun S (embT D)) (y : Frames (gramC _ (embT D))) (g k : GA D V) (κ : S.U)
@@ -229,9 +229,9 @@ theorem rdS_right_lev (hy : Function.Surjective (fun c => (Quotient.mk'' (yc c) 
     rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[rdS_res θ V hn S yc hy Ψ hΨ]`. Use `congr 1`. Conclude with `Subtype.ext (Units.ext hk)`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [trFr, hk', Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem rdS_at_rep (hy : Function.Surjective (fun c => (Quotient.mk'' (yc c) : Cls S)))
     (Ψ) (hΨ : Ψ ∈ AdFun S (embT D)) (y : Frames (gramC _ (embT D))) (g : GA D V) (c : cl)
@@ -243,7 +243,7 @@ theorem rdS_at_rep (hy : Function.Surjective (fun c => (Quotient.mk'' (yc c) : C
   · apply Subtype.ext; funext τ; simp only [trFr, hk', Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [rdS, atFr]`. Use `split_ifs`. Conclude with `mul_add _ _ _`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rdS_add (ψ ψ' : cl → Frames (gramC (V.gram.reindex (finCongr hn) (finCongr hn)) (embT D)) → ℂ) (y) (g : GA D V) :
     rdS θ V hn S yc (ψ + ψ') y g = rdS θ V hn S yc ψ y g + rdS θ V hn S yc ψ' y g := by
@@ -258,7 +258,7 @@ end Gen
 variable {u : D.what₂.Word}
 
 /- English proof (translation)
-Establish `e : (fun c z => ψ (Q.inc c) (Q.eY.symm z)) = fun c => Ψ (Q.K.y c)` using `by funext c z; exact hψ c z`. Rewrite using `[Chart.rd, e]`. Conclude with `rdS_res θ _ (rankN D i hi) Q.K.lev Q.K.y Q.K.y_bij.2 Ψ hΨ _ g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_rd {i : ℕ} {hi : i ≤ D.R.m} (Q : Chart D u i hi) (θ : InfFam D)
     (ψ : (D.mem u).C.cls i → (D.mem u).C.Y i → ℂ) (Ψ) (hΨ : Ψ ∈ AdFun Q.K.lev (embT D))
@@ -269,7 +269,7 @@ theorem chart_rd {i : ℕ} {hi : i ≤ D.R.m} (Q : Chart D u i hi) (θ : InfFam 
   exact rdS_res θ _ (rankN D i hi) Q.K.lev Q.K.y Q.K.y_bij.2 Ψ hΨ _ g
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Q.K.y_bij.2 (Quotient.mk'' 1)).choose⟩`.
+Supply the required witnesses or components.
 -/
 theorem chart_nonempty {i : ℕ} {hi : i ≤ D.R.m} (Q : Chart D u i hi) : Nonempty Q.cl :=
   ⟨(Q.K.y_bij.2 (Quotient.mk'' 1)).choose⟩
@@ -277,9 +277,9 @@ theorem chart_nonempty {i : ℕ} {hi : i ≤ D.R.m} (Q : Chart D u i hi) : Nonem
 variable {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i} (F : FormsTiedSym D u Ch chOf)
 
 /- English proof (translation)
-Establish `hc : chart F i (le_of_succ_m h2) β = midChart F i h1 h2 β`. Rewrite using `[chart, dif_neg (by omega)]`. Take `⟨Ψ, hΨ, e⟩` from `((F.valC i h1 h2).Fi ψ).1 hψ β`. Rewrite using `[rd, hc, Chart.rd]`. Establish `e' : (fun c z => ψ ((midChart F i h1 h2 β).inc c) ((midChart F i h1 h2 β).eY.symm z)) = fun c => Ψ ((midChart F i h1 h2 β).K.y c)` using `e.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e']`. Conclude with `rdS_left θ _ (rankN D i (le_of_succ_m h2)) _ _ hθ (midChart F i h1 h2 β).K.y_bij.2 Ψ hΨ.1 _ γ hγ g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mid_left (i : ℕ) (h1 : 1 ≤ i) (h2 : i + 1 ≤ D.R.m) (β : Ch i) (θ : InfFam D) (hθ : IsInfFam θ)
     (ψ : (D.mem u).C.cls i → (D.mem u).C.Y i → ℂ) (hψ : ψ ∈ (D.fm u).Fi i) (y) (γ) (hγ : γ ∈ GQ (D.sp.X i)) (g) :
@@ -294,9 +294,9 @@ theorem mid_left (i : ℕ) (h1 : 1 ≤ i) (h2 : i + 1 ≤ D.R.m) (β : Ch i) (θ
   exact rdS_left θ _ (rankN D i (le_of_succ_m h2)) _ _ hθ (midChart F i h1 h2 β).K.y_bij.2 Ψ hΨ.1 _ γ hγ g
 
 /- English proof (translation)
-Establish `hc : chart F i hi β = endChart F i hi h` using `by rw [chart, dif_pos h]`. Take `⟨Ψ, hΨ, e⟩` from `((F.val i hi h).Fi ψ).1 hψ`. Rewrite using `[rd, hc, Chart.rd]`. Establish `e' : (fun c z => ψ ((endChart F i hi h).inc c) ((endChart F i hi h).eY.symm z)) = fun c => Ψ ((endChart F i hi h).K.y c)` using `e.symm`. Rewrite using `[e']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `rdS_left θ _ (rankN D i hi) _ _ hθ (endChart F i hi h).K.y_bij.2 Ψ hΨ.1 _ γ hγ g`.
+A detailed English derivation is pending.
 -/
 theorem end_left (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0 ∨ i = D.R.m) (β : Ch i) (θ : InfFam D) (hθ : IsInfFam θ)
     (ψ : (D.mem u).C.cls i → (D.mem u).C.Y i → ℂ) (hψ : ψ ∈ (D.fm u).Fi i) (y) (γ) (hγ : γ ∈ GQ (D.sp.X i)) (g) :
@@ -310,7 +310,7 @@ theorem end_left (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0 ∨ i = D.R.m) (β : Ch
   exact rdS_left θ _ (rankN D i hi) _ _ hθ (endChart F i hi h).K.y_bij.2 Ψ hΨ.1 _ γ hγ g
 
 /- English proof (translation)
-Take `⟨Ψ, hΨ, e⟩` from `(F.valP.ptC z).1 hz`. Rewrite using `[rdP, ← e]`. Conclude with `rdS_left θ _ (rankP D) _ _ hθ F.clsP.y_bij.2 Ψ hΨ.1 _ γ hγ g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rdP_left (θ : InfFam D) (hθ : IsInfFam θ) (z : (D.mem u).P.Wrow) (hz : z ∈ (D.fm u).ptC) (y) (γ) (hγ : γ ∈ GQ D.sp.X') (g) :
     rdP F θ z y (γ * g) = rdP F θ z y g := by

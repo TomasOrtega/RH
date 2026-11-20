@@ -17,15 +17,15 @@ noncomputable section
 namespace GlobalTheory.IndLine
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ φ φ' hφ hφ' c hc`. Establish `htop` using `GlobalTheory.T.config_a_matched_descent hK F E σ B b a' G G₁ H H' hC X om om' R Rf hM`. It suffices to establish `h : paraSpan B G.M om G₁.W H' R.p ≤ LinearMap.ker (φ' - c • φ) by`. Use extensionality with `x`. Establish `hx : x ∈ LinearMap.ker (φ' - c • φ)` using `h (htop ▸ Submodule.mem_top)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the argument to an intermediate assertion. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `hx` using `[sub_eq_zero]`. Use `sInf_le ⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[sub_eq_zero, hc x hx]`. Introduce and unpack `γ hγ hP f hf f₁ hd hpf`. Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, sub_eq_zero] at hpf ⊢`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Break down `hP with hu | ⟨γ₁, hγ₁, t, ht⟩` into its components or cases. Rewrite using `[hφ'.unip γ hγ hu f hf f₁ hd, hφ.unip γ hγ hu f hf f₁ hd, smul_zero]`. Take `⟨δ₁, hδ₁⟩` from `GlobalTheory.T.exists_lieDerivative_polynomialFock_seesaw B G₁ X om₁ om₁' hM₁.triple γ₁ hγ₁`. Establish `hx0 : H'.x ≠ 0` using `fun h0 => by simpa [h0, form] using hC.hH'.xy`. Take `⟨cX, hcX⟩` from `GlobalTheory.T.hecke_line_derivative_exists G.W G₁.W H' hx0 γ hγ γ₁ hγ₁ t ht X.α hM.triple.chars.heckeα ((a' : ℝ) / 2)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem : φ (R.p f) ∈ (G₁.M.Pol B.ψ B.emb).map R₁.p` using `by rw [hM₁.real.quot.onto]; trivial`. Take `⟨g, hg, hpg⟩` from `hmem`. Establish `e1` using `hφ.lie γ hγ γ₁ hγ₁ t ht f hf f₁ hd g hg (δ₁ g) (hδ₁ g hg).2 hpg.symm cX hcX`. Establish `hcg : c • g ∈ G₁.M.Pol B.ψ B.emb` using `Submodule.smul_mem _ c hg`. Establish `e2` using `hφ'.lie γ hγ γ₁ hγ₁ t ht f hf f₁ hd (c • g) hcg (δ₁ (c • g)) (hδ₁ _ hcg).2 (by rw [hpf, map_smul, hpg]) cX hcX`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e2, e1, hpf, map_smul, map_smul, smul_add, smul_comm c cX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frobInf_eq_of_lowPart : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)

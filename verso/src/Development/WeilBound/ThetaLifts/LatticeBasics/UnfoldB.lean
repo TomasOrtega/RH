@@ -12,13 +12,13 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Take `⟨e, A, hA⟩` from `h`. Use `set D : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ := Matrix.fromBlocks 1 0 0 (-1) with hD`. Establish `h1 : Aᵀ * (M * A.map star * D) = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hA, hD, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : A * (M * A.map star * D)ᵀ = 1`. Use `(Matrix.mul_eq_one_comm_of_equiv (Fintype.equivOfCardEq (by simp [e]))).1 h1` as an intermediate fact. Simplify using `using congrArg Matrix.transpose this`. Take `⟨y, rfl⟩ : ∃ y, x = A *ᵥ y` from `⟨(M * A.map star * D)ᵀ *ᵥ x, by rw [Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]⟩`. Establish `h3 : star (A *ᵥ y) = A.map star *ᵥ star y`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct]`. Rewrite `hx` using `[h3, Matrix.mulVec_mulVec, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hA]`. Establish `h4 : y ⬝ᵥ star y = 0`. Break down `Nat.min_eq_zero_iff.1 h0 with rfl | rfl` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rwa [show D = -1 by ext (i | i) (j | j) <;> first | exact i.elim0 | exact j.elim0 | simp [hD, Matrix.one_apply], Matrix.neg_mulVec, dotProduct_neg, neg_eq_zero, Matrix.one_mulVec] at hx`. Apply the tactic sequence `rwa [show D = 1 by ext (i | i) (j | j) <;> first | exact i.elim0 | exact j.elim0 | simp [hD, Matrix.one_apply], Matrix.one_mulVec] at hx`. Use `open ComplexOrder in rw [dotProduct_self_star_eq_zero.1 h4, Matrix.mulVec_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem HasSig.aniso {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) (h0 : min r s = 0) {x : Fin n → ℂ}
     (hx : x ⬝ᵥ M *ᵥ star x = 0) : x = 0 := by
@@ -48,7 +48,7 @@ variable (σ) in
 def Aniso (J : Matrix (Fin n) (Fin n) E) : Prop := ∀ x, form σ J x x = 0 → x = 0
 
 /- English proof (translation)
-Introduce `x hx` and use `by obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance have e : ((B.emb w).1 ∘ x) ⬝ᵥ Y.J.map (B.emb w).1 *ᵥ star ((B.emb w).1 ∘ x) = 0 := by rw [← map_zero (B.emb w).1, ← hx] simp [form, Matrix.mulVec, dotProduct, hB.cm.2.2.2] have : (B.emb w).1 ∘ x = 0 := hY.elim (fun h => …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem aniso_of {B : Base F E} {r s : ℕ} (hB : B.IsGood σ) (hY : Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) (h0 : min r s = 0) :
     Aniso σ Y.J := fun x hx => by
@@ -68,31 +68,31 @@ instance nontrivAE : Nontrivial (AE F E) :=
 abbrev dC (n : ℕ) (R : Type) [CommRing R] : Matrix (Fin n ⊕ Fin n) (Fin n) R := diagCols (Fin n)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isPar_iff {p : G2 σ Y} {t} : IsPar p t ↔ mat2 p * dC n (AE F E) = dC n (AE F E) * t.1 := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.map_injective (inclR (F := F) (E := E) (AF F)).injective`.
+A detailed English derivation is pending.
 -/
 theorem incM_inj {a b : Type} : Function.Injective (incM F : Matrix a b E → _) :=
   Matrix.map_injective (inclR (F := F) (E := E) (AF F)).injective
 
 /- English proof (translation)
-Simplify using `[incM, diagCols, Matrix.fromRows_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incM_diag : incM F (dC n E) = dC n (AE F E) := by
   simp [incM, diagCols, Matrix.fromRows_map]
 
 /- English proof (translation)
-Rewrite `*` using `[isPar_iff]`. Rewrite using `[show mat2 (p * p') = mat2 p * mat2 p' from rfl, Units.val_mul, Matrix.mul_assoc, h', ← Matrix.mul_assoc, h, Matrix.mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem IsPar.mul {p p' : G2 σ Y} {t t'} (h : IsPar p t) (h' : IsPar p' t') : IsPar (p * p') (t * t') := by
   rw [isPar_iff] at *
   rw [show mat2 (p * p') = mat2 p * mat2 p' from rfl, Units.val_mul, Matrix.mul_assoc, h', ← Matrix.mul_assoc, h, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite `*` using `[isPar_iff]`. Establish `: mat2 p⁻¹ * (mat2 p * dC n (AE F E)) * (t⁻¹).1 = mat2 p⁻¹ * dC n (AE F E)`. Rewrite using `[h, Matrix.mul_assoc, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[← this, ← Matrix.mul_assoc, show mat2 p⁻¹ * mat2 p = 1 from p.1.inv_mul, Matrix.one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem IsPar.inv {p : G2 σ Y} {t} (h : IsPar p t) : IsPar p⁻¹ t⁻¹ := by
   rw [isPar_iff] at *
@@ -101,9 +101,9 @@ theorem IsPar.inv {p : G2 σ Y} {t} (h : IsPar p t) : IsPar p⁻¹ t⁻¹ := by
   rw [← this, ← Matrix.mul_assoc, show mat2 p⁻¹ * mat2 p = 1 from p.1.inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => Subgroup.subset_closure h⟩` and prove the remaining obligations. Proceed by induction on `h using Subgroup.closure_induction with`. Consider the case `mem _ h => exact h`. Consider the case `one => exact ⟨1, isPar_iff.2 ((Matrix.one_mul _).trans (Matrix.mul_one _).symm)⟩`. Consider the case `mul _ _ _ _ h h' => exact ⟨_, h.choose_spec.mul h'.choose_spec⟩`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `inv _ _ h => exact ⟨_, h.choose_spec.inv⟩`.
+Treat this case separately.
 -/
 theorem mem_parabolic_GL2_iff {p : G2 σ Y} : p ∈ par2 σ Y ↔ ∃ t, IsPar p t := by
   refine ⟨fun h => ?_, fun h => Subgroup.subset_closure h⟩
@@ -114,7 +114,7 @@ theorem mem_parabolic_GL2_iff {p : G2 σ Y} : p ∈ par2 σ Y ↔ ∃ t, IsPar p
   | inv _ _ h => exact ⟨_, h.choose_spec.inv⟩
 
 /- English proof (translation)
-Establish `e : (Matrix.GeneralLinearGroup.det t).1 = inclR (F` using `F) (AF F) T.det := by`. Rewrite using `[RingHom.map_det]`. Conclude with `congrArg Matrix.det h`. Conclude with `⟨Units.mk0 T.det fun h0 => (Matrix.GeneralLinearGroup.det t).ne_zero (by rw [e, h0, map_zero]), Units.ext e⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem det_rat {t : GL (Fin n) (AE F E)} {T : Matrix (Fin n) (Fin n) E} (h : t.1 = incM F T) :
     ∃ u : Eˣ, Matrix.GeneralLinearGroup.det t = Units.map (inclR (F := F) (AF F)).toMonoidHom u := by
@@ -123,9 +123,9 @@ theorem det_rat {t : GL (Fin n) (AE F E)} {T : Matrix (Fin n) (Fin n) E} (h : t.
   exact ⟨Units.mk0 T.det fun h0 => (Matrix.GeneralLinearGroup.det t).ne_zero (by rw [e, h0, map_zero]), Units.ext e⟩
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `hp`. Establish `e : mat2 p = incM F g.1` using `(congrArg Units.val hg).symm`. Rewrite `h` using `[isPar_iff, e, ← incM_diag, ← incM_mul, incM_diag]`. Use `⟨(g.1 * dC n E).toRows₁, ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg Matrix.toRows₁ h).symm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[diagCols, Matrix.fromRows_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem par_rat {p : G2 σ Y} {t} (h : IsPar p t) (hp : p ∈ rat2 σ Y) : ∃ T, t.1 = incM F T := by
   obtain ⟨g, hg⟩ := hp
@@ -136,7 +136,7 @@ theorem par_rat {p : G2 σ Y} {t} (h : IsPar p t) (hp : p ∈ rat2 σ Y) : ∃ T
   simp [diagCols, Matrix.fromRows_mul]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Take `⟨u, hu⟩` from `det_rat (t := γ.1) (T := g.1) (congrArg Units.val hg).symm`. Rewrite using `[detInv, hu, hχ.2]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem detInv_rat {χ : Chr F E} (hχ : IsHecke F E χ) {γ : UA σ Y.J} (h : γ ∈ ratU σ Y.J) : detInv χ γ = 1 := by
   obtain ⟨g, hg⟩ := h
@@ -144,29 +144,27 @@ theorem detInv_rat {χ : Chr F E} (hχ : IsHecke F E χ) {γ : UA σ Y.J} (h : �
   rw [detInv, hu, hχ.2]; simp
 
 /- English proof (translation)
-Simplify using `[detInv, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem detInv_mul (χ : Chr F E) (g h : UA σ Y.J) : detInv χ (g * h) = detInv χ g * detInv χ h := by
   simp [detInv, mul_comm]
 
 /- English proof (translation)
-The claim follows from `Circle.norm_coe _`.
+A detailed English derivation is pending.
 -/
 theorem norm_detInv (χ : Chr F E) (g : UA σ Y.J) : ‖detInv χ g‖ = 1 := Circle.norm_coe _
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Conclude with `continuous_subtype_val.comp ((hχ.1.comp (Matrix.GeneralLinearGroup.continuous_det.comp continuous_subtype_val)).inv)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_detInv {χ : Chr F E} (hχ : IsHecke F E χ) : Continuous (detInv χ : UA σ Y.J → ℂ) := by
   haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)
   exact continuous_subtype_val.comp ((hχ.1.comp (Matrix.GeneralLinearGroup.continuous_det.comp continuous_subtype_val)).inv)
 
 /- English proof (translation)
-Establish `d0 : Y.J.det ≠ 0` using `fun h0 => by`. Take `⟨v, hv, e⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Conclude with `hv (hJ v (by rw [form, Matrix.dotProduct_mulVec, e, zero_dotProduct]))`. Establish `u : IsUnit (incM F Y.J).det`. Rewrite using `[incM, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `d0.isUnit.map _`. Establish `e` using `congrArg Matrix.det (show (mat h)ᵀ * incM F Y.J * (mat h).map (cA σ) = incM F Y.J from h.2)`. Rewrite `e` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, mul_right_comm, u.mul_eq_right, show ((mat h).map (cA σ)).det = sigR (AF F) σ (mat h).det from (RingHom.map_det (sigR (AF F) σ) _).symm]`. Establish `e2 : Matrix.GeneralLinearGroup.det h.1 * GlobalTheory.Doubling.conjUnit σ (Matrix.GeneralLinearGroup.det h.1) = 1` using `Units.ext e`. Establish `e3` using `congrArg (absE F E) e2`.
-
-Rewrite `e3` using `[map_mul, GlobalTheory.Doubling.absE_conjUnit, map_one]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 (by rw [sq, e3])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absE_det (hJ : Aniso σ Y.J) (h : UA σ Y.J) : absE F E (Matrix.GeneralLinearGroup.det h.1) = 1 := by
   have d0 : Y.J.det ≠ 0 := fun h0 => by
@@ -183,15 +181,15 @@ theorem absE_det (hJ : Aniso σ Y.J) (h : UA σ Y.J) : absE F E (Matrix.GeneralL
   exact (pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 (by rw [sq, e3])
 
 /- English proof (translation)
-Rewrite using `[isPar_iff, e]`. Simplify using `[diagCols, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul, mat]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsEmb.par {h : UA σ Y.J} {x : G2 σ Y} (e : IsEmb h h x) : IsPar x h.1 := by
   rw [isPar_iff, e]; simp [diagCols, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul, mat]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `a`. Take `⟨g', hg'⟩` from `b`. Use `⟨⟨Matrix.fromBlocks g.1 0 0 g'.1, Matrix.fromBlocks (g⁻¹).1 0 0 (g'⁻¹).1, by simp [Matrix.fromBlocks_multiply], by simp [Matrix.fromBlocks_multiply]⟩, Units.ext (Eq.trans ?_ e.symm)⟩` and prove the remaining obligations. Rewrite using `[show mat h = incM F g.1 from (congrArg Units.val hg).symm, show mat h' = incM F g'.1 from (congrArg Units.val hg').symm]`. Use `show incM F (Matrix.fromBlocks g.1 0 0 g'.1) = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[incM, Matrix.fromBlocks_map]`.
+A detailed English derivation is pending.
 -/
 theorem IsEmb.rat {h h' : UA σ Y.J} {x : G2 σ Y} (e : IsEmb h h' x) (a : h ∈ ratU σ Y.J) (b : h' ∈ ratU σ Y.J) : x ∈ rat2 σ Y := by
   obtain ⟨g, hg⟩ := a
@@ -203,25 +201,21 @@ theorem IsEmb.rat {h h' : UA σ Y.J} {x : G2 σ Y} (e : IsEmb h h' x) (a : h ∈
   simp [incM, Matrix.fromBlocks_map]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `hγ`. Establish `e : mat2 γ = incM F g.1` using `(congrArg Units.val hg).symm`. Establish `mm : ∀ {a b e : Type} [Fintype b] (A : Matrix a b E) (B : Matrix b e E), (A * B).map σ = A.map σ * B.map σ` using `fun A B => Matrix.map_mul (f := σ.toRingHom)`. Establish `u : g.1ᵀ * dbl Y.J * g.1.map σ = dbl Y.J` using `incM_inj (F := F) (by`. Establish `: (mat2 γ)ᵀ * dbl (incM F Y.J) * (mat2 γ).map (cA σ) = dbl (incM F Y.J)` using `γ.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e, incM_conj]`. Establish `d : incM F (dbl Y.J) = dbl (incM F Y.J)` using `by simp [incM, dbl, Matrix.fromBlocks_map, Matrix.map_neg]`. Rewrite using `[incM_mul, incM_mul, d]`. Conclude with `this)`. Take `⟨A, B, hAB⟩ : ∃ A B, g.1 * dC n E = Matrix.fromRows A B` from `⟨_, _, (Matrix.fromRows_toRows _).symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `iso : Aᵀ * Y.J * A.map σ = Bᵀ * Y.J * B.map σ`. Establish `: (g.1 * dC n E)ᵀ * dbl Y.J * (g.1 * dC n E).map σ = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mm, Matrix.transpose_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [u]; exact (isLagr_diagCols σ Y.J).1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[hAB]`. Simplify `this` using `[dbl, Matrix.transpose_fromRows, Matrix.fromRows_map, Matrix.fromCols_mul_fromBlocks, Matrix.fromCols_mul_fromRows, ← sub_eq_add_neg, sub_eq_zero]`. Establish `fm : ∀ (C : Matrix (Fin n) (Fin n) E) v, form σ Y.J (C *ᵥ v) (C *ᵥ v) = form σ (Cᵀ * Y.J * C.map σ) v v` using `fun C v => by`. Rewrite using `[form, form, show (fun i => σ ((C *ᵥ v) i)) = C.map σ *ᵥ fun i => σ (v i) by ext i; simp [Matrix.mulVec, dotProduct], Matrix.mulVec_mulVec, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Establish `inj : ∀ v, A *ᵥ v = 0 → B *ᵥ v = 0 → v = 0` using `fun v a b => by`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (g⁻¹).1 *ᵥ (g.1 * dC n E) *ᵥ v = 0`. Rewrite using `[hAB, Matrix.fromRows_mulVec, a, b]`. Simplify using the standard rewrite rules. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul, dC, diagCols, Matrix.fromRows_mulVec]`. Conclude with `funext fun i => by simpa using congrFun this (.inl i)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `un : ∀ C : Matrix (Fin n) (Fin n) E, (∀ v, C *ᵥ v = 0 → v = 0) → IsUnit C` using `fun C h => (Matrix.isUnit_iff_isUnit_det _).2 (Ne.isUnit fun h0 => by`. Take `⟨v, hv, e⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Conclude with `hv (h v e))`. Take `⟨a, rfl⟩` from `un A fun v h => inj v h (hJ _ (by rw [fm, ← iso, ← fm, h]; simp [form]))`. Take `⟨b, rfl⟩` from `un B fun v h => inj v (hJ _ (by rw [fm, iso, ← fm, h]; simp [form])) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `ud : (a * b⁻¹).1ᵀ * Y.J * (a * b⁻¹).1.map σ = Y.J`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, mm, Matrix.transpose_mul, Matrix.mul_assoc]`. Use `_ = (b * b⁻¹).1ᵀ * Y.J * (b * b⁻¹).1.map σ := by`. Rewrite using `[iso]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_mul, mm, Matrix.transpose_mul, Matrix.mul_assoc]`. Use `_ = Y.J := by simp`. Use `⟨⟨Matrix.GeneralLinearGroup.map (inclR (F := F) (AF F)) (a * b⁻¹), ?_⟩, ⟨_, rfl⟩, fun x hx => mem_parabolic_GL2_iff.2 ⟨Matrix.GeneralLinearGroup.map (inclR (F := F) (AF F)) a, ?_⟩⟩` and prove the remaining obligations. Use `show (incM F (a * b⁻¹).1)ᵀ * incM F Y.J * (incM F (a * b⁻¹).1).map (cA σ) = incM F Y.J`. Rewrite using `[incM_conj, show (incM F (a * b⁻¹).1)ᵀ = incM F (a * b⁻¹).1ᵀ from rfl, ← incM_mul, ← incM_mul, ud]`.
-
-Use `show mat2 x * mat2 γ * dC n (AE F E) = dC n (AE F E) * incM F a.1`. Establish `: mat2 γ * dC n (AE F E) = incM F (Matrix.fromRows a.1 b.1)` using `by rw [e, ← incM_diag, ← incM_mul, hAB]`. Rewrite using `[Matrix.mul_assoc, this, hx]`. Use `show Matrix.fromBlocks 1 0 0 (incM F (a * b⁻¹).1) * (Matrix.fromRows a.1 b.1).map _ = _`. Rewrite using `[Matrix.fromRows_map, Matrix.fromBlocks_mul_fromRows, dC, diagCols, Matrix.fromRows_mul]`.
-
-Use `show Matrix.fromRows (1 * incM F a.1 + 0 * incM F b.1) (0 * incM F a.1 + incM F (a * b⁻¹).1 * incM F b.1) = _`. Rewrite using `[← incM_mul, ← Units.val_mul, inv_mul_cancel_right]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orbit (hJ : Aniso σ Y.J) {γ : G2 σ Y} (hγ : γ ∈ rat2 σ Y) :
     ∃ δ ∈ ratU σ Y.J, ∀ x, IsEmb 1 δ x → x * γ ∈ par2 σ Y := by

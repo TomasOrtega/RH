@@ -10,7 +10,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.QuotP
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[← hw x, valuation_lt_one_iff' (Ω := Ω), valuation_lt_one_iff' (Ω := Ω), ← hg, ← hg, map_inv₀, g.commutes]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem over_move {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {A B : ValuationSubring Ω}
     (g : G F Ω) (hg : ∀ x, g x ∈ A ↔ x ∈ B) {w : HeightOneSpectrum (𝓞 F)} (hw : IsPlaceOver A w) :
@@ -19,11 +19,9 @@ private theorem over_move {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Al
   rw [← hw x, valuation_lt_one_iff' (Ω := Ω), valuation_lt_one_iff' (Ω := Ω), ← hg, ← hg, map_inv₀, g.commutes]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.index_ker]`. Introduce `h`. Take `⟨x, hx⟩` from `exists_prime_orderOf_dvd_card' l (h.trans (Subgroup.card_subgroup_dvd_card _))`. Establish `h1 : x = 1` using `funext fun i => by`. Establish `h2 : x i ^ l = 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hx]`. Conclude with `congrFun (pow_orderOf_eq_one x) i`. Establish `h3 : ((x i : k) - 1) ^ l = 0`. Rewrite using `[sub_pow_char, one_pow, ← Units.val_pow_eq_pow_val, h2, Units.val_one, sub_self]`. Conclude with `Units.ext (sub_eq_zero.1 (pow_eq_zero_iff hl.out.ne_zero |>.1 h3))`.
-
-Rewrite `hx` using `[h1, orderOf_one]`. Conclude with `hl.out.one_lt.ne hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem not_dvd_index {Γ k : Type} [Group Γ] [Field k] [Finite k] {l : ℕ} [hl : Fact l.Prime] [CharP k l]
     (φ : Γ →* (Fin 4 → kˣ)) : ¬ l ∣ φ.ker.index := by
@@ -41,7 +39,7 @@ private theorem not_dvd_index {Γ k : Type} [Group Γ] [Field k] [Finite k] {l :
   exact hl.out.one_lt.ne hx
 
 /- English proof (translation)
-Use `le_antisymm (Subgroup.normalClosure_mono h2) (Subgroup.normalClosure_le_normal fun x hx => ?_)` and prove the remaining obligations. Break down `h1 x hx with rfl | h` into its components or cases. Conclude with `one_mem _`. Conclude with `Subgroup.subset_normalClosure h`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem clos_eq {X : Type} [Group X] (s t : Set X) (h1 : ∀ x ∈ s, x = 1 ∨ x ∈ t) (h2 : t ⊆ s) :
     Subgroup.normalClosure t = Subgroup.normalClosure s := by
@@ -52,33 +50,27 @@ private theorem clos_eq {X : Type} [Group X] (s t : Set X) (h1 : ∀ x ∈ s, x 
 
 open scoped Pointwise in
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D T hT`. Establish `hD : D.Good` using `hT.2.elim (fun h => h.1.1) fun h => h.1.1`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsAlgClosure T.F Ω := ⟨inferInstance, inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsGalois T.F Ω := {}`. Take `⟨-, hfk, hlm, -⟩` from `abelian₂.dvr_finite l c.O`. Use `haveI := hfk`. Use `haveI : CharP (ResidueField c.O) l := (CharP.charP_iff_prime_eq_zero hl.out).2 (by`. Rewrite using `[← map_natCast (residue c.O), residue_eq_zero_iff]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hlm)`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, hro, -⟩` from `facts D hD`. Establish `hcont : Continuous (resQ T.F)` using `(galEmbTop ℚ T.F Ω).1.continuous`. Set `K : Subgroup (G T.F Ω)` to `D.rbar.ker.comap (resQ T.F)`. Establish `hKo : IsOpen (K : Set (G T.F Ω))` using `hro.preimage hcont`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Establish `hKi : ¬ l ∣ K.index`. Establish `h1 : K = (MonoidHom.pi fun i => ((Units.map (residue c.O).toMonoidHom).comp (D.ps i)).comp (resQ T.F)).ker`. Use extensionality with `g`. Use `show D.rbar (resQ T.F g) = 1 ↔ _`. Rewrite using `[MonoidHom.mem_ker]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun h => funext fun i => Units.ext ?_, fun h => ?_⟩` and prove the remaining obligations. Simplify `congrFun (congrFun h i) i` using `[Raw.rbar, Raw.r0, diagRep, mapRep]`. Use extensionality with `i j`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `congrArg Units.val (congrFun h i)` using `[Raw.rbar, Raw.r0, diagRep, mapRep]`. Simplify using `[Raw.rbar, Raw.r0, diagRep, mapRep, e]`. Rewrite using `[h1]`. Conclude with `not_dvd_index _`. Establish `hfin : {v : HeightOneSpectrum (𝓞 T.F) | ((l : ℕ) : 𝓞 T.F) ∈ v.asIdeal}.Finite`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `(Ideal.finite_factors (I := Ideal.span {((l : ℕ) : 𝓞 T.F)}) (mt Ideal.span_singleton_eq_bot.1 (Nat.cast_ne_zero.2 hl.out.ne_zero))).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`. Set `S` to `hfin.toFinset`. Establish `hS : ∀ v, v ∈ S ↔ ((l : ℕ) : 𝓞 T.F) ∈ v.asIdeal` using `fun v => hfin.mem_toFinset`. Establish `hval : ∀ {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 T.F)}, IsPlaceOver A v → (A.valuation (l : Ω) < 1 ↔ ((l : ℕ) : 𝓞 T.F) ∈ v.asIdeal)` using `fun {A v} h => (places T.F Ω l A).2.2.1 v h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `N` to `GC.tameN (S : Set (HeightOneSpectrum (𝓞 T.F))) K`. Use `haveI : N.Normal := Subgroup.is_normal_topologicalClosure _`. Use `haveI hNc : IsClosed (N : Set (G T.F Ω)) := Subgroup.isClosed_topologicalClosure _`. Establish `h0 : ∀ u : T.ι, ∃ w : S, IsPlaceOver (T.pl u) w.1` using `fun u => by`. Take `⟨a1, a2, -⟩` from `places T.F Ω l (T.pl u)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `a1 fun h => (a2 h).2 (T.ovl u)`. Conclude with `⟨⟨w, (hS w).2 ((hval hw).1 (T.ovl u))⟩, hw⟩`. Use `choose pl hp using h0`. Establish `hbij : Function.Bijective pl`. Use `⟨fun a b h => ?_, fun w => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨g, hg⟩` from `exists_smul_eq_of_isPlaceOver (F := T.F) (hp a) (h ▸ hp b)`. Use `(T.cover (T.pl b) (T.ovl b)).unique ⟨g, fun x => ?_⟩ ⟨1, fun _ => Iff.rfl⟩` and prove the remaining obligations. Use `show g • x ∈ T.pl b ↔ _`. Rewrite using `[← hg]`. Conclude with `ValuationSubring.smul_mem_pointwise_smul_iff`.
+Prove the first alternative. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Take `⟨A, hA⟩ : ∃ A : ValuationSubring Ω, IsPlaceOver A w.1` from `exists_isPlaceOver Ω w.1`. Take `⟨u, ⟨g, hg⟩, -⟩` from `T.cover A ((hval hA).2 ((hS _).1 w.2))`. Conclude with `⟨u, Subtype.ext (eq_of_isPlaceOver (hp u) (over_move g hg hA))⟩`. Use `⟨S, K, G T.F Ω ⧸ N, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, (AlgebraTools.totallyDisconnected_quot _ N hNc).1, QuotientGroup.mk' N, Equiv.ofBijective pl hbij, GC.gLink_quot l hD.l_odd (fun v hv => (hS v).2 hv) inferInstance hKo hKi, fun w hw => …` and prove the remaining obligations. Rewrite using `[QuotientGroup.ker_mk']`.
-
-Use `congrArg Subgroup.topologicalClosure (clos_eq _ _ ?_ fun x hx => ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨A, hA, h1, h2⟩`. Take `⟨a1, a2, -⟩` from `places T.F Ω l A`. Distinguish the cases in `ht : A = ⊤`. Rewrite `h1` using `[(a2 ht).1, Subgroup.mem_bot]`.
-
-Conclude with `Or.inl h1`. Take `⟨v, hv⟩` from `a1 ht`. Use `Or.inr ?_` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨v, fun h => hA l (Finset.mem_insert_self _ _) ((hval hv).2 ((hS v).1 h)), A, hv, h1, h2⟩`.
-
-Simplify using `only [Set.mem_iUnion] at hx`. Take `⟨v, hv, A, hA, h1, h2⟩` from `hx`. Use `⟨A, fun p hp h => ?_, h1, h2⟩` and prove the remaining obligations. Take `rfl : p = l` from `by simpa using hp`. Conclude with `hv ((hS v).2 ((hval hA).1 h))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.X1.linkT :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Fit → ∃ (S : Finset (HeightOneSpectrum (𝓞 T.F))) (K : Subgroup (G T.F Ω)) (Γ : Type) (_ : Group Γ) (_ : TopologicalSpace Γ) (_ : IsTopologicalGroup Γ) (_ : CompactSpace Γ) (_ : T2Space Γ) (_ : TotallyDisconnectedSpace Γ) (π : G T.F Ω →* Γ) (ι : T.ι ≃ S), GC.GLink l S K π ∧ (∀ w ∈ S, ((l : ℕ) : 𝓞 T.F) ∈ w.asIdeal) ∧ (∀ v, IsPlaceOver (T.pl v) (ι v).1) ∧ (T.fr ∅).Quo π := by

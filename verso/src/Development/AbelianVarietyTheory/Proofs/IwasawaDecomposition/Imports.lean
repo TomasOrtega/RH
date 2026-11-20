@@ -7,7 +7,7 @@ open Formalism.BasicNotions MeasureTheory Filter Topology Matrix
 namespace GlobalTheory.UpqHaarRight
 
 /- English proof (translation)
-Introduce `P Q μ hμ` and use `GlobalTheory.UpqUnimodular.isMulRightInvariant_of_isHaarMeasure P Q μ hμ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant :
     ∀ (P Q : ℕ) (μ : Measure (UpqT P Q)), μ.IsHaarMeasure → μ.IsMulRightInvariant :=

@@ -19,7 +19,7 @@ noncomputable def scalGL (n : ℕ) {S : Type} [CommRing S] {m : ℤ} (h : IsUnit
   Units.map (Matrix.scalar (Fin n)).toMonoidHom h.unit
 
 /- English proof (translation)
-Use `show Matrix.scalar (Fin n) (m : S) = _`. Rewrite using `[Matrix.scalar_apply, ← Int.cast_smul_eq_zsmul S m (1 : Matrix (Fin n) (Fin n) S), Matrix.smul_one_eq_diagonal]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalGL_val (n : ℕ) {S : Type} [CommRing S] {m : ℤ} (h : IsUnit (m : S)) :
     (scalGL n h).1 = m • (1 : Matrix (Fin n) (Fin n) S) := by
@@ -27,16 +27,16 @@ theorem scalGL_val (n : ℕ) {S : Type} [CommRing S] {m : ℤ} (h : IsUnit (m : 
   rw [Matrix.scalar_apply, ← Int.cast_smul_eq_zsmul S m (1 : Matrix (Fin n) (Fin n) S), Matrix.smul_one_eq_diagonal]
 
 /- English proof (translation)
-The claim follows from `Units.ext (by rw [Units.val_mul, Units.val_mul, scalGL_val, mul_smul_comm, smul_mul_assoc, mul_one, one_mul])`.
+A detailed English derivation is pending.
 -/
 theorem scalGL_comm {n : ℕ} {S : Type} [CommRing S] {m : ℤ} (h : IsUnit (m : S)) (x : GL (Fin n) S) :
     x * scalGL n h = scalGL n h * x :=
   Units.ext (by rw [Units.val_mul, Units.val_mul, scalGL_val, mul_smul_comm, smul_mul_assoc, mul_one, one_mul])
 
 /- English proof (translation)
-Take `⟨a, b, e⟩` from `h`. Establish `e' : (m : S) * (a : S) = 1`. Use `congrArg (Int.cast : ℤ → S) e` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite `this` using `[h0, mul_zero, add_zero, mul_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Conclude with `⟨⟨m, a, e', by rw [mul_comm]; exact e'⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isUnit_of_coprime {S : Type} [CommRing S] {m M : ℤ} (h : IsCoprime m M) (h0 : (M : S) = 0) : IsUnit (m : S) := by
   obtain ⟨a, b, e⟩ := h
@@ -48,21 +48,21 @@ theorem isUnit_of_coprime {S : Type} [CommRing S] {m M : ℤ} (h : IsCoprime m M
   exact ⟨⟨m, a, e', by rw [mul_comm]; exact e'⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, map_zsmul, Matrix.one_apply, Matrix.one_apply, apply_ite f, map_one, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_int_one {n : ℕ} {S S' : Type} [CommRing S] [CommRing S'] (f : S →+* S') (m : ℤ) (i j : Fin n) :
     f ((m • (1 : Matrix (Fin n) (Fin n) S)) i j) = (m • (1 : Matrix (Fin n) (Fin n) S')) i j := by
   rw [Matrix.smul_apply, Matrix.smul_apply, map_zsmul, Matrix.one_apply, Matrix.one_apply, apply_ite f, map_one, map_zero]
 
 /- English proof (translation)
-Rewrite using `[Int.cast_natCast, ← map_natCast (Ideal.Quotient.mk I)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cast_quot {O : Type} [CommRing O] (I : Ideal O) {M : ℕ} (h : (M : O) ∈ I) : (((M : ℕ) : ℤ) : O ⧸ I) = 0 := by
   rw [Int.cast_natCast, ← map_natCast (Ideal.Quotient.mk I)]
   exact Ideal.Quotient.eq_zero_iff_mem.2 h
 
 /- English proof (translation)
-Establish `h0 : x ∈ A * J` using `by rw [h]; exact Ideal.mem_span_singleton_self x`. Conclude with `hA (Ideal.mul_le_inf h0).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_of_prod {O : Type} [CommRing O] (A : Ideal O) {I J : Ideal O} {x : O} (hA : A ≤ I) (h : A * J = Ideal.span {x})
     : x ∈ I := by
@@ -70,7 +70,7 @@ theorem mem_of_prod {O : Type} [CommRing O] (A : Ideal O) {I J : Ideal O} {x : O
   exact hA (Ideal.mul_le_inf h0).1
 
 /- English proof (translation)
-The claim follows from `cast_quot P.asIdeal (mem_of_prod _ ((GlobalTheory.OneMapRef.Lift.mem_iff_prod_le T P).1 hP) hJ)`.
+A detailed English derivation is pending.
 -/
 theorem cast_res {E : Type} [Field E] [NumberField E] (T : Finset (Pl E)) {J : Ideal (𝓞 E)} {M : ℕ}
     (hJ : (∏ P ∈ T, P.asIdeal) * J = Ideal.span {(M : 𝓞 E)}) {P : Pl E} (hP : P ∈ T) : (((M : ℕ) : ℤ) : kP P) = 0 :=
@@ -81,9 +81,9 @@ section Res
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ i j, ∃ c, oToS F E b * (y.1 i j - (m • (1 : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E))) i j) = M • c`. Introduce `i j`. Establish `h1 : y.1 i j - (m • (1 : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E))) i j ∈ (∏ P ∈ T, P.asIdeal).map (oToS F E)` using `GlobalTheory.LevelUnique.mem_map_prod _ T fun P hP => GlobalTheory.LevelUnique.sub_mem_idS ((congrArg (fun g : Matrix (Fin n) (Fin n) (kP P) => g i j) (h P hP)).trans (map_int_one (resS F P) m i j).symm)`. Establish `h2` using `Ideal.mul_mem_mul h1 (Ideal.mem_map_of_mem (oToS F E) hb)`. Rewrite `h2` using `[← Ideal.map_mul, hJ, Ideal.map_span, Set.image_singleton, map_natCast, Ideal.mem_span_singleton']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩` from `h2`. Conclude with `⟨c, by rw [mul_comm, ← hc, nsmul_eq_mul, mul_comm]⟩`. Use `choose c hc using key`. Conclude with `⟨Matrix.of c, Matrix.ext fun i j => hc i j⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_matrix_int (T : Finset (Pl E)) {J : Ideal (𝓞 E)} {M : ℕ}
     (hJ : (∏ P ∈ T, P.asIdeal) * J = Ideal.span {(M : 𝓞 E)}) {y : GL (Fin n) (Formalism.L2.Herm.intAf F E)} {m : ℤ}
@@ -105,9 +105,9 @@ theorem exists_matrix_int (T : Finset (Pl E)) {J : Ideal (𝓞 E)} {M : ℕ}
 end Res
 
 /- English proof (translation)
-Establish `e : (b : R) • ((Formalism.UG.bc S.subtype y).1 - m • (1 : Matrix (Fin n) (Fin n) R)) = M • s.map S.subtype`. Use extensionality with `i j`. Establish `: S.subtype ((b • (y.1 - m • (1 : Matrix (Fin n) (Fin n) S))) i j) = S.subtype ((M • s) i j)` using `by rw [h]`. Rewrite `this` using `[Matrix.smul_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, map_mul, map_sub, map_int_one, map_nsmul]`. Conclude with `this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : m • (1 : Matrix (Fin n) (Fin n) R) = β.1 * (m • (1 : Matrix (Fin n) (Fin n) R)) * (β⁻¹).1`. Rewrite using `[mul_smul_comm, mul_one, smul_mul_assoc, Units.mul_inv]`. Rewrite using `[Units.val_mul, Units.val_mul, e2, ← sub_mul, ← mul_sub, ← smul_mul_assoc, ← mul_smul_comm, e, mul_smul_comm, smul_mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_smul_sub_int {R : Type} [CommRing R] {n : ℕ} (S : Subring R) (β : GL (Fin n) R) {y : GL (Fin n) S}
     {s : Matrix (Fin n) (Fin n) S} {b : S} {M : ℕ} {m : ℤ} (h : b • (y.1 - m • (1 : Matrix (Fin n) (Fin n) S)) = M • s) :
@@ -123,13 +123,13 @@ theorem conj_smul_sub_int {R : Type} [CommRing R] {n : ℕ} (S : Subring R) (β 
   rw [Units.val_mul, Units.val_mul, e2, ← sub_mul, ← mul_sub, ← smul_mul_assoc, ← mul_smul_comm, e, mul_smul_comm, smul_mul_assoc]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Simplify using `only [redFn_frGL] at h`. Take `⟨s, hs⟩` from `exists_matrix_int T hJ h hb`. Establish `e` using `conj_smul_sub_int _ β hs`. Establish `hN` using `fun z hz => (hfr _).2 (GlobalTheory.LevelUnique.conj_mulVec_mem _ β s z ((hfr z).1 hz))`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `β.1 * s.map (Formalism.L2.Herm.intAf F E).subtype * (β⁻¹).1 = N at e hN`. Use `⟨N.map (Algebra.TensorProduct.comm F _ E).symm, fun z hz => ?_, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Establish `h4` using `GlobalTheory.PrincInLevel.swap_symm_mem_hat Λ _ (hN _ (GlobalTheory.PrincInLevel.swap_mem_hatL Λ z hz))`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, AlgEquiv.symm_apply_apply, Matrix.map_apply]`. Apply `(Algebra.TensorProduct.comm F _ E).injective` to reduce the goal to its premises. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, map_nsmul, Matrix.map_apply, AlgEquiv.apply_symm_apply, smul_eq_mul, map_mul, Matrix.sub_apply, map_sub, ← hK]`. Establish `e3` using `map_int_one (Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E).toAlgHom.toRingHom m i j`. Use `Eq.trans ?_ (congrFun (congrFun e i) j)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun t => _ * (_ - t)) e3`.
+A detailed English derivation is pending.
 -/
 theorem exists_matrix_hat_int {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     {β : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} {Λ : Submodule (𝓞 E) (Fin n → E)} (hfr : IsFrame β Λ)
@@ -163,9 +163,9 @@ theorem exists_matrix_hat_int {F E : Type} [Field F] [NumberField F] [Field E] [
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hl : Formalism.L2.Pj.latHat V = GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin V.rank → D.host.E))` using `(GlobalTheory.OneMapRef.Lift.hatV_eq hβ).symm`. Take `⟨c, hfr, -⟩` from `hβ`. Take `⟨N, hN, e⟩` from `exists_matrix_hat_int hfr T hJ hk m h hb (K := (finHom V k).1) (fun _ _ => rfl)`. Rewrite `hN` using `[← hl]`. Introduce `z hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨_, GlobalTheory.LevelUnique.mulVec_mem_latGHat _ hN z hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.sub_mulVec, ← Matrix.smul_mulVec, e, Matrix.smul_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_cong_int {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hβ : IsSDFrame V β Λ 1) (T : Finset (Pl D.host.E)) {J : Ideal (𝓞 D.host.E)} {M : ℕ}
@@ -184,7 +184,7 @@ theorem exists_cong_int {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Sub
   rw [← Matrix.sub_mulVec, ← Matrix.smul_mulVec, e, Matrix.smul_mulVec]
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Conclude with `e`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem eq_int_of_submatrix {n r : ℕ} (hr : n = r) (h : r ≤ n) {S : Type} [CommRing S] {x : Matrix (Fin n) (Fin n) S} {m : ℤ}
     (e : x.submatrix (Fin.castLE h) (Fin.castLE h) = m • (1 : Matrix (Fin r) (Fin r) S)) :
@@ -193,7 +193,7 @@ theorem eq_int_of_submatrix {n r : ℕ} (hr : n = r) (h : r ≤ n) {S : Type} [C
   exact e
 
 /- English proof (translation)
-Rewrite using `[smul_add, ← e₂, ← e₃, sub_add_sub_cancel, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem int_calc {R : Type} [CommRing R] {n : ℕ} {K : Matrix (Fin n) (Fin n) R} {x z w₂ w₃ : Fin n → R} {M : ℕ} {m : ℤ}
     (e₂ : x - K *ᵥ z = M • w₂) (e₃ : K *ᵥ z - (m • (1 : Matrix (Fin n) (Fin n) R)) *ᵥ z = M • w₃) :
@@ -201,7 +201,7 @@ theorem int_calc {R : Type} [CommRing R] {n : ℕ} {K : Matrix (Fin n) (Fin n) R
   rw [smul_add, ← e₂, ← e₃, sub_add_sub_cancel, Matrix.smul_mulVec, Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `P hP`. Establish `e : upperLeftBlock L.hr (redFn β P (Lev.finE V k)) = g ⟨P, hP⟩` using `congrFun hk.2.2 ⟨P, hP⟩`. Establish `e'` using `(congrArg Units.val e).trans (hg ⟨P, hP⟩)`. Rewrite `e'` using `[upper_block_val_submatrix _ (blockTri_blkOf_le _ _ (parLev_g hk.2.1 hP))]`. Conclude with `eq_int_of_submatrix hr L.hr e'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redFn_int {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank} (hr : V.rank = L.r)
     {g : G0 L.Pg L.r} {k : GA D V} (hk : Lev.IsLevelLift V β L g k) (m : ℤ)
@@ -216,13 +216,13 @@ theorem redFn_int {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.h
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hR tie i O hO m hm`. Establish `hT` using `tie.laws`. Establish `hL` using `hR.lev`. Establish `hβ` using `hL.βW i`. Establish `hι` using `GlobalTheory.LevelAction.latEmb_iotaW T hT i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMb : T.Q.l.Mb = ∏ PP ∈ R.Pg, PP.asIdeal` using `(hO.tuple ()).half.1`. Establish `hp : T.Q.l.Mb * Mfr T.Q.l = Ideal.span {((T.Q.l.M : ℕ) : 𝓞 D.host.E)}` using `T.Q.l.prod`. Establish `hp' : (∏ PP ∈ R.Pg, PP.asIdeal) * Mfr T.Q.l = Ideal.span {((T.Q.l.M : ℕ) : 𝓞 D.host.E)}` using `by rw [← hMb]; exact hp`. Establish `hM0 : 0 < T.Q.l.M` using `lt_of_lt_of_le (by norm_num) T.Q.l.three_le`. Establish `hu : ∀ P : R.Pg, IsUnit ((m : ℤ) : kP P.1)` using `fun P => isUnit_of_coprime hm (cast_res R.Pg hp' P.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `R.eG.surjective fun P => scalGL D.R.r (hu P)`. Use `⟨z, Subgroup.mem_center_iff.2 fun g => R.eG.injective ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[R.eG.map_mul, R.eG.map_mul, hz]`. Use function extensionality and compare the values at `P`. Conclude with `scalGL_comm (hu P) (R.eG g P)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hf⟩` from `hO.lift.lev z`. Establish `hr` using `redFn_int (L := R.datWp i R.triv) (rank_Wc i) hk m (fun P => (congrArg Units.val (congrFun hz P)).trans (scalGL_val _ (hu P)))`. Take `⟨w₃, hw₃, e₃⟩` from `GlobalTheory.OneMapRef.Lift.cong_on_half hι (fun b hb => exists_cong_int (b := b) hβ R.Pg hp' (parLev_St hk.2.1) m hr hb) a ha`. Take `⟨w₂, hw₂, e₂⟩` from `hf a ha`. Conclude with `GlobalTheory.OneMapRef.Lift.sign_div hι hM0 (add_mem hw₂ hw₃) (int_calc e₂ e₃)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem central_lev : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → FWTie T R κ v₀ → ∀ (i : Fin D.R.m) (O : OM T R i), Pinned κ v₀ O → ∀ m : ℤ, IsCoprime m (T.Q.l.M : ℤ) → ∃ z ∈ Subgroup.center G, ∀ a ∈ Mfr T.Q.l • (⊤ : Submodule (𝓞 D.host.E) (T.Q.Dw ((i : ℕ) + 1)).La), ∃ b : (T.Q.Dw ((i : ℕ) + 1)).La, O.lev z a = m • a + T.Q.l.M • b := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hR tie i O hO m hm

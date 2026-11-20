@@ -27,7 +27,7 @@ section Primes
 variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E}
 
 /- English proof (translation)
-Use `halfPrime_isPrime l v.2.1.isMaximal ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `g_dvd (D := D) v.1`. Rewrite using `[hM, hk, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ v.2.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typePrime_isPrime {l : Level H} (hM : l.M = D.host.g 0 * D.host.g 1) (v : Sq D.host) :
     (typePrime l v).IsPrime := by
@@ -37,9 +37,7 @@ theorem typePrime_isPrime {l : Level H} (hM : l.M = D.host.g 0 * D.host.g 1) (v 
   exact Ideal.mul_mem_right _ _ v.2.2
 
 /- English proof (translation)
-Take `⟨hP, hN⟩` from `hl₂.typePrime_spec v`. Establish `hne : typePrime l₂ v ≠ ⊥`. Introduce `h`. Rewrite `hN` using `[h, Ideal.absNorm_bot]`. Conclude with `(D.host.g_prime v.1).ne_zero hN.symm`.
-
-Conclude with `(hP.isMaximal hne).eq_of_le (typePrime_isPrime hM v).ne_top (sup_le_sup_right hle _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typePrime_eq {l l₂ : Level H} (hM : l.M = D.host.g 0 * D.host.g 1) (hl₂ : IsTypeLevel l₂)
     (hle : l₂.Mb ≤ l.Mb) (v : Sq D.host) : typePrime l₂ v = typePrime l v := by
@@ -51,7 +49,7 @@ theorem typePrime_eq {l l₂ : Level H} (hM : l.M = D.host.g 0 * D.host.g 1) (hl
   exact (hP.isMaximal hne).eq_of_le (typePrime_isPrime hM v).ne_top (sup_le_sup_right hle _)
 
 /- English proof (translation)
-Establish `hP` using `typePrime_isPrime hM v`. Establish `h1 : ∏ PP ∈ Pg, PP.asIdeal ≤ typePrime l v` using `hMb ▸ le_sup_left`. Take `⟨PP, hPP, h2⟩` from `(hP.prod_le).1 h1`. Conclude with `⟨PP, hPP, PP.isMaximal.eq_of_le hP.ne_top h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_eq {l : Level H} (hM : l.M = D.host.g 0 * D.host.g 1) {Pg : Finset (Formalism.L2.DIV.Pl D.host.E)}
     (hMb : l.Mb = ∏ PP ∈ Pg, PP.asIdeal) (v : Sq D.host) : ∃ PP ∈ Pg, PP.asIdeal = typePrime l v := by
@@ -61,19 +59,15 @@ theorem exists_mem_eq {l : Level H} (hM : l.M = D.host.g 0 * D.host.g 1) {Pg : F
   exact ⟨PP, hPP, PP.isMaximal.eq_of_le hP.ne_top h2⟩
 
 /- English proof (translation)
-Use `choose f hf hfe using exists_mem_eq hM hMb`. Establish `hinj : Function.Injective (fun v ↦ (⟨f v, hf v⟩ : Pg))`. Introduce `v w h`. Establish `h' : typePrime l v = typePrime l w`. Rewrite using `[← hfe v, ← hfe w]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `congrArg (fun x : Pg ↦ x.1.asIdeal) h`. Assume the negation of the conclusion as `hvw`. Establish `hc` using `typePrime_coprime (l := l) hvw`. Rewrite `hc` using `[Function.onFun, Ideal.isCoprime_iff_sup_eq, h', sup_idem]`. Conclude with `(typePrime_isPrime hM w).ne_top hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective (fun v ↦ (⟨f v, hf v⟩ : Pg))`. Introduce and unpack `⟨PP, hPP⟩`. Establish `hle : l.Mb ≤ PP.asIdeal` using `hMb ▸ Ideal.prod_le_inf.trans (Finset.inf_le hPP)`. Establish `hm : ((D.host.g 0 : ℕ) : 𝓞 D.host.E) * ((D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Rewrite using `[← Nat.cast_mul, ← hM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `hle (natCast_M_mem l)`. Establish `hk : ∃ k : Fin 2, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Break down `PP.isPrime.mem_or_mem hm with h | h` into its components or cases. Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨k, hk⟩` from `hk`. Establish `hg : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ Ideal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) PP.asIdeal`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hk`. Set `w : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F)` to `⟨Ideal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) PP.asIdeal, inferInstance, fun e ↦ by`.
-
-Rewrite `hg` using `[e, Ideal.mem_bot]`. Conclude with `(D.host.g_prime k).ne_zero (by exact_mod_cast hg)⟩`. Establish `he : typePrime l ⟨k, ⟨w, hg⟩⟩ = PP.asIdeal` using `halfPrime_eq l w.isMaximal PP.isPrime (sup_le hle Ideal.map_comap_le)`. Use `⟨⟨k, ⟨w, hg⟩⟩, Subtype.ext (IsDedekindDomain.HeightOneSpectrum.ext ?_)⟩` and prove the remaining obligations. Conclude with `(hfe _).trans he`.
-
-Conclude with `⟨Equiv.ofBijective _ ⟨hinj, hsurj⟩, fun v ↦ hfe v⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_equiv {l : Level H} (hM : l.M = D.host.g 0 * D.host.g 1) {Pg : Finset (Formalism.L2.DIV.Pl D.host.E)}
     (hMb : l.Mb = ∏ PP ∈ Pg, PP.asIdeal) : ∃ e : Sq D.host ≃ Pg, ∀ v, (e v).1.asIdeal = typePrime l v := by
@@ -109,7 +103,7 @@ theorem exists_equiv {l : Level H} (hM : l.M = D.host.g 0 * D.host.g 1) {Pg : Fi
   exact ⟨Equiv.ofBijective _ ⟨hinj, hsurj⟩, fun v ↦ hfe v⟩
 
 /- English proof (translation)
-Establish `hc : Nat.card (kP PP) = D.host.g v.1`. Rewrite using `[← (hl₂.typePrime_spec v).2, ← hPP, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (kP PP) := Nat.finite_of_card_ne_zero (hc ▸ (D.host.g_prime _).ne_zero)`. Use `haveI := Fintype.ofFinite (kP PP)`. Conclude with `⟨ZMod.ringEquivOfPrime (kP PP) (D.host.g_prime v.1) (by rw [← Nat.card_eq_fintype_card, hc])⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_iso {l₂ : Level H} (hl₂ : IsTypeLevel l₂) (v : Sq D.host) (PP : Formalism.L2.DIV.Pl D.host.E)
     (hPP : PP.asIdeal = typePrime l₂ v) : Nonempty (ZMod (D.host.g v.1) ≃+* kP PP) := by
@@ -126,17 +120,15 @@ section Frame
 variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H}
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hker : typePrime l₂ v • (⊤ : Submodule (𝓞 D.host.E) Dw.La) ≤ LinearMap.ker φ`. Rewrite using `[← hPP, Submodule.smul_le]`. Introduce `a ha x _`. Rewrite using `[LinearMap.mem_ker, map_smul]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[Pi.smul_apply, Pi.zero_apply, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 ha, zero_mul]`. Set `ψ` to `(typePrime l₂ v • (⊤ : Submodule (𝓞 D.host.E) Dw.La)).liftQ φ hker`. Establish `hψs : Function.Surjective ψ`. Introduce `y`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, rfl⟩` from `hφ y`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`. Establish `hc : Nat.card (𝓞 D.host.E ⧸ typePrime l₂ v) = D.host.g v.1`. Rewrite using `[← (hl₂.typePrime_spec v).2, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (𝓞 D.host.E ⧸ typePrime l₂ v) := Nat.finite_of_card_ne_zero (hc ▸ (D.host.g_prime _).ne_zero)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := Dw.fin`. Use `haveI := Dw.proj`. Establish `hN : Nat.card (QMod Dw.La (typePrime l₂ v)) = D.host.g v.1 ^ D.R.r`. Rewrite using `[GlobalTheory.natCard_quot_smul_top_of_projective, hc, Dw.rank, hr]`. Establish `hc' : Nat.card (kP PP) = D.host.g v.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (hl₂.typePrime_spec v).2, ← hPP, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hN' : Nat.card (Fin D.R.r → kP PP) = D.host.g v.1 ^ D.R.r`. Rewrite using `[Nat.card_fun, hc', Nat.card_eq_fintype_card, Fintype.card_fin]`. Use `haveI : Finite (QMod Dw.La (typePrime l₂ v)) := Nat.finite_of_card_ne_zero (by rw [hN]; exact pow_ne_zero _ (D.host.g_prime _).ne_zero)`. Establish `hψb : Function.Bijective ψ` using `hψs.bijective_of_nat_card_le (by rw [hN, hN'])`.
-
-Set `e1 : QMod Dw.La (typePrime l₂ v) ≃+ (Fin D.R.r → kP PP)` to `AddEquiv.ofBijective ψ.toAddMonoidHom hψb`. Set `e2 : (Fin D.R.r → kP PP) ≃+ (Fin D.R.r → ZMod (D.host.g v.1))` to `AddEquiv.piCongrRight (fun _ ↦ iso.symm.toAddEquiv)`. Conclude with `⟨e1.trans e2, fun x ↦ rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frame {l₂ : Level H} (hl₂ : IsTypeLevel l₂) (hr : Dw.p + Dw.q = D.R.r) (v : Sq D.host)
     (PP : Formalism.L2.DIV.Pl D.host.E) (hPP : PP.asIdeal = typePrime l₂ v) (iso : ZMod (D.host.g v.1) ≃+* kP PP)
@@ -180,7 +172,7 @@ end Frame
 section Main
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hyz`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mulVec_reindex {K : Type} [CommRing K] {n r : ℕ} (h : n = r) (hr : r ≤ n) (Mn : Matrix (Fin n) (Fin n) K)
     (y z : Fin n → K)
@@ -190,33 +182,31 @@ theorem mulVec_reindex {K : Type} [CommRing K] {n r : ℕ} (h : n = r) (hr : r �
   exact hyz
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R i hβ H Dw l l₂ ι hι hr hA hM hl₂ hle hMb lev hlev`. Take `⟨e, he⟩` from `exists_equiv hM hMb`. Establish `htp : ∀ v, typePrime l₂ v = typePrime l v` using `typePrime_eq hM hl₂ hle`. Establish `he₂ : ∀ v, (e v).1.asIdeal = typePrime l₂ v` using `fun v ↦ (he v).trans (htp v).symm`. Set `iso : ∀ v : Sq D.host, ZMod (D.host.g v.1) ≃+* kP (e v).1` to `fun v ↦ (nonempty_iso hl₂ v _ (he₂ v)).some`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hφ` using `fun v : Sq D.host ↦ GlobalTheory.T.lattice_coordinates_mod_prime_selfDual_stabilizer D (Wc D i) (R.βW i) (R.ΛW i) hβ Dw.La ι hι (e v).1`. Use `choose φ hφs hφk using hφ`. Establish `hfr0` using `fun v ↦ exists_frame hl₂ hr v (e v).1 (he₂ v) (iso v) (rank_Wc i) (φ v) (hφs v)`. Use `choose fr hfr using hfr0`. Use `⟨fr, e, iso, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `γ g hg a`. Take `⟨κ, hκ, hκa⟩` from `hlev g`. Establish `hSt : Lev.finE (Wc D i) κ ∈ St (R.βW i)` using `parLev_St hκ.2.1`. Establish `hin : ∀ v, l.Mb ≤ (e v).1.asIdeal` using `fun v ↦ by rw [he v]; exact le_sup_left`. Establish `hkill : ∀ v, ∀ u ∈ l.Mb, ∀ x : Dw.La, φ v (u • x) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v u hu x`. Rewrite using `[map_smul]`. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.smul_apply, Pi.zero_apply, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 (hin v hu), zero_mul]`. Establish `hcop : l.Mb ⊔ Mfr l = ⊤` using `l.coprime`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu, w, hw, huw⟩` from `Submodule.mem_sup.1 (hcop ▸ Submodule.mem_top : (1 : 𝓞 D.host.E) ∈ l.Mb ⊔ Mfr l)`. Establish `ha : a = u • a + w • a` using `by rw [← add_smul, huw, one_smul]`. Establish `hlevφ : ∀ v, φ v (lev g a) = (redFn (R.βW i) (e v).1 (Lev.finE (Wc D i) κ)).1 *ᵥ φ v a`. Introduce `v`. Establish `h1` using `hφk v κ hSt l.M (hin v (natCast_M_mem l)) (w • a) (lev g (w • a)) (hκa (w • a) (Submodule.smul_mem_smul hw Submodule.mem_top))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : φ v (w • a) = φ v a` using `by conv_rhs => rw [ha]`. Rewrite using `[map_add, hkill v u hu, zero_add]`. Establish `h3 : φ v (lev g a) = φ v (lev g (w • a))` using `by conv_lhs => rw [ha]`. Rewrite using `[map_add, map_add, map_smul, hkill v u hu, zero_add]`. Rewrite using `[h3, h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hliftφ : ∀ v, φ v (liftLa γ a) = φ v (lev g a)`. Introduce `v`. Establish `hγa : γ (Submodule.Quotient.mk a) = Submodule.Quotient.mk (liftLa γ a)` using `(liftLa_spec γ a).symm`. Establish `h0 : (typeRed fr γ v : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g v.1))) *ᵥ fr v (Submodule.Quotient.mk a) = fr v (Submodule.Quotient.mk (liftLa γ a))`. Establish `h00` using `GlobalTheory.LevDesc.typeRed_mulVec fr γ v (Submodule.Quotient.mk a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h00` using `[hγa]`. Conclude with `h00`. Rewrite `h0` using `[hfr, hfr]`. Establish `h1` using `GlobalTheory.LevelActionPinned.equiv_mulVec (iso v) (typeRed fr γ v : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g v.1))) (fun j ↦ (iso v).symm (φ v a (Fin.cast (rank_Wc i).symm j)))`. Rewrite `h1` using `[h0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [RingEquiv.apply_symm_apply] at h1`. Establish `hT : (typeRed fr γ v : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g v.1))).map (iso v) = (redFn (R.βW i) (e v).1 (Lev.finE (Wc D i) κ) : Matrix _ _ _).submatrix (Fin.castLE (R.datWp i R.triv).hr) (Fin.castLE (R.datWp i R.triv).hr)`. Establish `h5 : R.eG g (e v) = upperLeftBlock (R.datWp i R.triv).hr (redFn (R.βW i) (e v).1 (Lev.finE (Wc D i) κ))` using `(congrFun hκ.2.2 (e v)).symm`. Establish `h6` using `upper_block_val_submatrix (R.datWp i R.triv).hr (blockTri_blkOf_le _ _ (parLev_g hκ.2.1 (e v).2))`. Rewrite `h6` using `[← h5, hg v]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h6`. Rewrite `h1` using `[hT]`. Rewrite using `[hlevφ v]`. Conclude with `mulVec_reindex (rank_Wc i) _ _ _ _ h1`. Establish `hall : ∀ v, liftLa γ a - lev g a ∈ typePrime l v • (⊤ : Submodule (𝓞 D.host.E) Dw.La)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `v`. Establish `hx : φ v (liftLa γ a - lev g a) = 0` using `by rw [map_sub, sub_eq_zero, hliftφ v]`. Establish `h4 : fr v (Submodule.Quotient.mk (liftLa γ a - lev g a)) = 0`. Rewrite using `[hfr, hx]`. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h5` using `(AddEquiv.map_eq_zero_iff (fr v)).1 h4`. Rewrite `h5` using `[Submodule.Quotient.mk_eq_zero, htp]`. Conclude with `h5`. Establish `h3` using `mem_iInf_smul_top (typePrime_coprime (l := l)) hall`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle' : ⨅ v, typePrime l v ≤ l.Mb` using `iInf_typePrime_le.trans (sup_le le_rfl ((Ideal.span_singleton_le_iff_mem _).2 (by rw [← hM]; exact natCast_M_mem l)))`. Conclude with `Submodule.smul_mono_left hle' h3`. Introduce `γ hγ`. Rewrite using `[typeRed_eq_one, mem_grpR_iff]`. Introduce `v q`.
-
-Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `h1 : γ (Submodule.Quotient.mk a) = Submodule.Quotient.mk (liftLa γ a)` using `(liftLa_spec γ a).symm`. Rewrite using `[h1, ← Submodule.Quotient.mk_sub]`. Establish `h2 : liftLa γ a - a ∈ typePrime l₂ v • (⊤ : Submodule (𝓞 D.host.E) Dw.La)` using `Submodule.smul_mono_left ((le_sup_left : l.Mb ≤ typePrime l v).trans (htp v).ge) (hγ a)`. Conclude with `map_mem_smul_top (l₂.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)).mkQ h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem typeFrame_cover : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m), IsSDFrame (Wc D i) (R.βW i) (R.ΛW i) 1 → ∀ (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l l₂ : Level H) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)), LatEmb (Wc D i) ι → Dw.p + Dw.q = D.R.r → l.A = 1 → l.M = D.host.g 0 * D.host.g 1 → IsTypeLevel l₂ → l₂.Mb ≤ l.Mb → l.Mb = ∏ PP ∈ R.Pg, PP.asIdeal → ∀ lev : G → Dw.La →ₗ[𝓞 D.host.E] Dw.La, LevIs R i ι l.M (Mfr l) lev → ∃ (fr : TypeFrame Dw l₂) (e : Sq D.host ≃ R.Pg) (iso : ∀ v : Sq D.host, ZMod (D.host.g v.1) ≃+* kP (e v).1), (∀ (γ : LevelAut Dw l₂) (g : G), (∀ v, R.eG g (e v) = Formalism.UG.bc (iso v : ZMod (D.host.g v.1) →+* kP (e v).1) (typeRed fr γ v)) → CongMod l.Mb (liftLa γ) (lev g)) ∧ ∀ γ : LevelAut Dw l₂, CongMod l.Mb (liftLa γ) LinearMap.id → typeRed fr γ = 1 := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R i hβ H Dw l l₂ ι hι hr hA hM hl₂ hle hMb lev hlev

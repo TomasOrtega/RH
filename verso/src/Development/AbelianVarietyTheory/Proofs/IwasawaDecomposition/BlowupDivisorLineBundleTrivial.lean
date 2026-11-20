@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.MixedLower
 
 /- English proof (translation)
-Use `haveI : IsDiscreteValuationRing W := hW.1`. Use `letI := f.toAlgebra`. Establish `: FaithfulSMul W V` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hf`. Establish `: IsLocalHom (algebraMap W V)` using `‹IsLocalHom f›`. Establish `: Module.Flat W V` using `inferInstance`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.FaithfullyFlat W V` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, ← Ideal.comap_map_eq_self_of_faithfullyFlat (B := V) I]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_le_of_map {W V : Type} [CommRing W] [IsDomain W] [IsLocalRing W] [CommRing V] [IsDomain V] [IsLocalRing V]
     (hW : CDvr W) (f : W →+* V) (hf : Function.Injective f) [IsLocalHom f] (I : Ideal W) (a : W)
@@ -30,9 +30,9 @@ theorem span_le_of_map {W V : Type} [CommRing W] [IsDomain W] [IsLocalRing W] [C
   exact h
 
 /- English proof (translation)
-Establish `hinj : Function.Injective ((algebraMap V (FractionRing V)).comp f)` using `(IsFractionRing.injective V (FractionRing V)).comp hf`. Set `gam : FractionRing W →+* FractionRing V` to `IsFractionRing.lift hinj`. Establish `hcomm : ∀ r, gam (algebraMap W _ r) = algebraMap V _ (f r)` using `fun r => IsFractionRing.lift_algebraMap hinj r`. Establish `hsq : spMap gam ≫ jK W = jK V ≫ spMap f` using `AnyChartExtend.spMap_jK' hcomm`. Rewrite using `[← hsq]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem range_jK_spMap_subset {W V : Type} [CommRing W] [IsDomain W] [CommRing V] [IsDomain V] (f : W →+* V)
     (hf : Function.Injective f) : Set.range (jK V ≫ spMap f) ⊆ Set.range (jK W) := by
@@ -46,19 +46,17 @@ theorem range_jK_spMap_subset {W V : Type} [CommRing W] [IsDomain W] [CommRing V
   exact ⟨_, rfl⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c X Z Y BY π e J EX n d d' k g φs 𝒩 φ DX _ _ _ hcones _ _ _ _ hblow hchart W _ _ _ hW hmix ϖ hϖ χ t mt P hgen be hbe hmono m hm`. Take `⟨R, _, _, _, ξ, tR, mR, PR, k', γ, hCN, hx, hEt, hFU, hTor, hCn, hIn⟩` from `hcones ((χ ≫ π) (closedPoint W))`. Take `⟨V, _, _, _, f, ψ, hV, hfi, hfl, hψl, hfϖ, hsq⟩` from `GlobalTheory.T.exists_dvr_extension_closed_point X.X R ξ hCN hEt hFU W hW ϖ hϖ (χ ≫ π) hx.symm`. Establish `hZX : Z.j ≫ π = X.j` using `hblow.2.1`. Establish `hgenV : Set.range (jK V ≫ spMap ψ ≫ ξ) ⊆ Set.range X.j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hsq, ← hZX]`. Introduce and unpack `_ ⟨p, rfl⟩`. Take `⟨q, hq⟩` from `range_jK_spMap_subset f hfi ⟨p, rfl⟩`. Take `⟨z, hz⟩` from `hgen ⟨q, rfl⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Scheme.Hom.comp_apply] at hz hq ⊢`. Rewrite using `[hz, hq]`. Take `⟨ε, hε⟩` from `GlobalTheory.T.dvr_point_boundary_compatible E H D l Xo c X Z π hZX R ξ tR mR PR hCN hTor W hW hmix ϖ hϖ χ t mt P hgen be hmono V hV f ψ hfi hfl hψl hfϖ hsq hgenV`. Set `beR : LinearMap.BilinForm ℤ PR.D.toPre.X` to `pull ε.toLinearMap be`. Establish `hmem : beR ∈ levelForms H 1 PR.D.toPre.X`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨h1, h2, -⟩` from `hbe`. Use `⟨fun y z => h1 _ _, fun a y z => ?_, fun y z => by simp⟩` and prove the remaining obligations. Simplify using `only [beR, pull_apply, LinearEquiv.coe_coe, map_smul]`. Conclude with `h2 _ _ _`. Establish `hform : FormAt PR.D.toPre ψ (f ϖ) beR` using `fun y => hε y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (comb 0 φ (n * d') φ).evalZ beR = (comb 0 φ (n * d') φ).evalZ be` using `evalZ_pull _ ε.surjective be`. Establish `hVmix : ¬ ∀ p : ℕ, p.Prime → IsUnit (p : V)` using `fun h => hmix fun p hp => by`. Use `h p hp` as an intermediate fact. Rewrite `this` using `[← map_natCast f]`. Conclude with `isUnit_of_map_unit f _ this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `hchart R ξ tR mR PR k' γ hCN hEt hFU hTor hCn hIn V hV hVmix (f ϖ) hfϖ ψ hψl hgenV beR hmem hform m (hm.trans hev.symm)`. Establish `hmap : (idlAlong J (χ ≫ π)).map f = (idlAlong J ξ).map ψ`. Rewrite using `[← TraitOrder.idlAlong_comp, ← TraitOrder.idlAlong_comp, hsq]`. Apply `span_le_of_map hW f hfi` to reduce the goal to its premises. Rewrite using `[hmap, map_pow]`.
-
-Conclude with `key (Ideal.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofChartMem : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (X Z : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (BY : EffCartierData Y.X) (π : Z.X ⟶ X.X) (e : gen Y ≅ gen Z) (J : X.X.IdealSheafData) (EX : EffCartierData Z.X) (n d d' k g : ℕ) (φs : InvFun ℤ) (𝒩 : Finset ℕ) (φ : InvFun (𝓞 E)) (DX : EffCartierData X.X), Module.finrank ℚ E * min D.p D.q ≤ g → IsPolFan id g φs → Refines H (min D.p D.q) φs 𝒩 φ → HasCones (ConeZ E φs) X → X.N4 → IsPol (comb d (resInt _ φs) 0 φ) k X DX → 0 < d' → IsPhiDiv (comb 0 φ d' φ) Y BY → IsBlowOf X Z Y BY π e J EX n → GlobalTheory.MixedLower.ChartMem (ConeZ E φs) X J φ (n * d') → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ¬ (∀ p : ℕ, p.Prime → IsUnit (p : W)) → ∀ ϖ : W, Irreducible ϖ → ∀ (χ : Sp W ⟶ Z.X) (t : SAB H (Sp W)) (_ : SABMap t Z.t χ) (P : PELUnif (maximalIdeal W) t), Set.range (jK W ≫ χ) ⊆ Set.range Z.j → ∀ be ∈ levelForms H 1 P.D.toPre.X, IsMonomial P.D.toPre ![ϖ] ![be] → ∀ m : ℕ, (m : ℝ) = (comb 0 φ (n * d') φ).evalZ be → Ideal.span {ϖ ^ m} ≤ idlAlong J (χ ≫ π) := by
   intro E _ _ _ H D l Xo c X Z Y BY π e J EX n d d' k g φs 𝒩 φ DX _ _ _ hcones _ _ _ _ hblow hchart W _ _ _ hW hmix ϖ hϖ χ t mt P

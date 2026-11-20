@@ -22,14 +22,14 @@ def renameSumInl (k : Type u) [Field k] (M n : ℕ) :
         (ULift.up (Sum.inl a.down) : ULift.{u} (Fin M ⊕ Fin n)))).toRingHom
 
 /- English proof (translation)
-Simplify using `[renameSumInl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem renameSumInl_C (k : Type u) [Field k] (M n : ℕ) (c : k) :
     renameSumInl k M n (MvPolynomial.C c) = MvPolynomial.C c := by
   simp [renameSumInl]
 
 /- English proof (translation)
-Simplify using `[renameSumInl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem renameSumInl_X (k : Type u) [Field k] (M n : ℕ) (a : Fin M) :
     renameSumInl k M n (MvPolynomial.X (ULift.up a)) =
@@ -37,7 +37,7 @@ theorem renameSumInl_X (k : Type u) [Field k] (M n : ℕ) (a : Fin M) :
   simp [renameSumInl]
 
 /- English proof (translation)
-Simplify using `[MvPolynomial.pderiv_X]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem pderiv_inr_X_inl (k : Type u) [Field k] (M n : ℕ) (i : Fin n) (a : Fin M) :
     MvPolynomial.pderiv (ULift.up (Sum.inr i) : ULift.{u} (Fin M ⊕ Fin n))
@@ -47,9 +47,9 @@ private theorem pderiv_inr_X_inl (k : Type u) [Field k] (M n : ℕ) (i : Fin n) 
   simp [MvPolynomial.pderiv_X]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on`. Name the introduced variables `c`. Simplify using `[renameSumInl_C]`. Name the introduced variables `q r hq hr`. Simplify using `[hq, hr]`.
+Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Name the introduced variables `q a hq`. Take `⟨a⟩` from `a`. Rewrite using `[map_mul, renameSumInl_X, MvPolynomial.pderiv_mul, hq, pderiv_inr_X_inl]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules.
 -/
 theorem pderiv_inr_renameSumInl (k : Type u) [Field k] (M n : ℕ) (i : Fin n)
     (p : MvPolynomial (ULift.{u} (Fin M)) k) :
@@ -67,7 +67,7 @@ theorem pderiv_inr_renameSumInl (k : Type u) [Field k] (M n : ℕ) (i : Fin n)
     simp
 
 /- English proof (translation)
-Establish `h2 : ((projLeft k M n) ≫ affineSpaceIndexedByToSpec k (ULift.{u} (Fin M))).appTop y = (affineSpaceIndexedByToSpec k (ULift.{u} (Fin M ⊕ Fin n))).appTop y`. Rewrite using `[projLeft_comp_affineSpaceIndexedByToSpec]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem projLeft_appTop_affineSpaceIndexedByToSpec_appTop (k : Type u) [Field k] (M n : ℕ)
     (y : Γ(Spec (CommRingCat.of k), ⊤)) :
@@ -79,7 +79,7 @@ private theorem projLeft_appTop_affineSpaceIndexedByToSpec_appTop (k : Type u) [
   exact h2
 
 /- English proof (translation)
-Rewrite using `[mvPolynomialEquivGlobalSections_C, mvPolynomialEquivGlobalSections_C, projLeft_appTop_affineSpaceIndexedByToSpec_appTop]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem projLeft_appTop_mvPolynomialEquivGlobalSections_C (k : Type u) [Field k] (M n : ℕ) (c : k) :
     (projLeft k M n).appTop (mvPolynomialEquivGlobalSections k (ULift.{u} (Fin M)) (MvPolynomial.C c)) =
@@ -87,7 +87,7 @@ private theorem projLeft_appTop_mvPolynomialEquivGlobalSections_C (k : Type u) [
   rw [mvPolynomialEquivGlobalSections_C, mvPolynomialEquivGlobalSections_C, projLeft_appTop_affineSpaceIndexedByToSpec_appTop]
 
 /- English proof (translation)
-Take `⟨a⟩` from `a`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 private theorem projLeft_appTop_mvPolynomialEquivGlobalSections_X (k : Type u) [Field k] (M n : ℕ)
     (a : ULift.{u} (Fin M)) :
@@ -98,9 +98,9 @@ private theorem projLeft_appTop_mvPolynomialEquivGlobalSections_X (k : Type u) [
   simp
 
 /- English proof (translation)
-Establish `key : ((mvPolynomialEquivGlobalSections k (ULift.{u} (Fin M ⊕ Fin n))).symm.toRingHom).comp ((((projLeft k M n).appTop).hom).comp ((mvPolynomialEquivGlobalSections k (ULift.{u} (Fin M))).toRingHom)) = renameSumInl k M n`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c show (mvPolynomialEquivGlobalSections k (ULift.{u} (Fin M ⊕ Fin n))).symm ((projLeft k M n).appTop (mvPolynomialEquivGlobalSections k (ULift.{u} (Fin M)) (MvPolynomial.C c))) = renameSumInl k M n (MvPolynomial.C c)`. Rewrite using `[projLeft_appTop_mvPolynomialEquivGlobalSections_C, RingEquiv.symm_apply_apply, renameSumInl_C]`. Introduce `a show (mvPolynomialEquivGlobalSections k (ULift.{u} (Fin M ⊕ Fin n))).symm ((projLeft k M n).appTop (mvPolynomialEquivGlobalSections k (ULift.{u} (Fin M)) (MvPolynomial.X a))) = renameSumInl k M n (MvPolynomial.X a)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[projLeft_appTop_mvPolynomialEquivGlobalSections_X, RingEquiv.symm_apply_apply]`. Simplify using `[renameSumInl]`. Conclude with `RingHom.congr_fun key p`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mvPolynomialEquivGlobalSections_symm_projLeft_appTop (k : Type u) [Field k] (M n : ℕ)
     (p : MvPolynomial (ULift.{u} (Fin M)) k) :
@@ -129,9 +129,9 @@ theorem mvPolynomialEquivGlobalSections_symm_projLeft_appTop (k : Type u) [Field
   exact RingHom.congr_fun key p
 
 /- English proof (translation)
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `t`. Establish `h` using `mvPolynomialEquivGlobalSections_symm_projLeft_appTop k M n ((mvPolynomialEquivGlobalSections k (ULift.{u} (Fin M))).symm t)`. Simplify using `only [RingEquiv.apply_symm_apply] at h`. Simplify using `using h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem mvPolynomialEquivGlobalSections_symm_comp_mvPolynomialToSumCoordinateRing (k : Type u) [Field k] (M n : ℕ) :
     ((mvPolynomialEquivGlobalSections k (ULift.{u} (Fin M ⊕ Fin n))).symm.toRingHom).comp (mvPolynomialToSumCoordinateRing k M n) =
@@ -149,7 +149,7 @@ theorem mvPolynomialEquivGlobalSections_symm_comp_mvPolynomialToSumCoordinateRin
     simp
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (mvPolynomialEquivGlobalSections_symm_comp_mvPolynomialToSumCoordinateRing k M n) p`.
+A detailed English derivation is pending.
 -/
 theorem mvPolynomialEquivGlobalSections_symm_mvPolynomialToSumCoordinateRing (k : Type u) [Field k] (M n : ℕ)
     (p : MvPolynomial (Fin n) Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤)) :
@@ -161,11 +161,9 @@ theorem mvPolynomialEquivGlobalSections_symm_mvPolynomialToSumCoordinateRing (k 
   RingHom.congr_fun (mvPolynomialEquivGlobalSections_symm_comp_mvPolynomialToSumCoordinateRing k M n) p
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on`. Name the introduced variables `t`. Rewrite using `[MvPolynomial.eval₂_C, MvPolynomial.pderiv_C, MvPolynomial.eval₂_zero]`. Conclude with `hf t`. Name the introduced variables `q r hq hr`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `[MvPolynomial.eval₂_add, hq, hr]`. Name the introduced variables `q j hq`. Establish `hX : MvPolynomial.pderiv (ULift.up (Sum.inr i) : ULift.{u} (Fin M ⊕ Fin n)) (MvPolynomial.X (ULift.up (Sum.inr j) : ULift.{u} (Fin M ⊕ Fin n)) : MvPolynomial (ULift.{u} (Fin M ⊕ Fin n)) k) = MvPolynomial.eval₂ f (fun l : Fin n => MvPolynomial.X (ULift.up (Sum.inr l) : ULift.{u} ( …`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
-
-Simplify using the standard rewrite rules. Simplify using `[MvPolynomial.pderiv_X, h]`. Simplify using `only [MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X, MvPolynomial.pderiv_mul, MvPolynomial.eval₂_add, hq, hX]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pderiv_inr_eval₂_X_inr (k : Type u) [Field k] (M n : ℕ)
     (f : Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤) →+*
@@ -203,7 +201,7 @@ private theorem pderiv_inr_eval₂_X_inr (k : Type u) [Field k] (M n : ℕ)
       MvPolynomial.eval₂_add, hq, hX]
 
 /- English proof (translation)
-Rewrite using `[mvPolynomialEquivGlobalSections_symm_mvPolynomialToSumCoordinateRing, mvPolynomialEquivGlobalSections_symm_mvPolynomialToSumCoordinateRing]`. Use `pderiv_inr_eval₂_X_inr k M n ((renameSumInl k M n).comp ((mvPolynomialEquivGlobalSections k (ULift.{u} (Fin M))).symm.toRingHom)) i ?_ p` and prove the remaining obligations. Introduce `t`. Rewrite using `[RingHom.comp_apply]`. Conclude with `pderiv_inr_renameSumInl k M n i _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_mvPolynomialEquivGlobalSections_symm_mvPolynomialToSumCoordinateRing (k : Type u) [Field k] (M n : ℕ) (i : Fin n)
     (p : MvPolynomial (Fin n) Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤)) :

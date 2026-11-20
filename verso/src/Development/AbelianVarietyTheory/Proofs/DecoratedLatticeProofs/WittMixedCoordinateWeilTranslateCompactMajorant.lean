@@ -19,13 +19,13 @@ noncomputable section
 namespace GlobalTheory.Unf
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hω θ hθ S₀ ρ d v f hf Kp hKp`. Take `⟨U, hU, hUK⟩` from `GlobalTheory.T.exists_common_heisenbergLevel_weilTransform_compact D ψ S T χS χT om hω f hf Kp hKp`. Take `⟨K, hK, hKN⟩` from `GlobalTheory.T.mixedCoordinate_thetaFun_le_schwartz_majorant_level D ψ hω.std θ hθ S S₀ T ρ d v U hU`. Use `⟨K, hK, fun N => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hKN N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA⟩` from `GlobalTheory.WeilWordGrowth.sup_words_growth D ψ S T χS χT om hω θ hθ N`. Take `⟨c, hc⟩` from `hA f hf`. Establish `hcont : Continuous fun p : GA D S × GA D T => c * (GlobalTheory.Grow.height S p.1 * GlobalTheory.Grow.height T p.2) ^ A` using `continuous_const.mul ((((GlobalTheory.Grow.continuous_height S).comp continuous_fst).mul ((GlobalTheory.Grow.continuous_height T).comp continuous_snd)).pow A)`. Take `⟨B, hB⟩` from `hKp.bddAbove_image hcont.continuousOn`. Use `⟨(C : ℝ) * max B 0, fun p hp x w => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hC (om p f) (hUK p hp) x w`. Establish `h2 : supSob ψ θ N (om p f) ≤ ENNReal.ofReal (max B 0)` using `(hc p.1 p.2).trans (ENNReal.ofReal_le_ofReal ((hB ⟨p, hp, rfl⟩).trans (le_max_left _ _)))`. Establish `hm` using `maj_nonneg θ K N x`. Establish `h3 : ‖d.mixS T ψ v.μ v.𝓕 (om p f) x w‖ₑ ≤ ENNReal.ofReal ((C : ℝ) * max B 0 * maj θ K N x)`. Use `h1.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_coe_nnreal]`. Use `gcongr`. Rewrite `h3` using `[← ofReal_norm_eq_enorm]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixS_om_compact_maj : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ θ : InfFam D, IsInfFam θ → ∀ (S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ) (f : WO S T → ℂ), IsThetaFunO ψ S T f → ∀ Kp : Set (GA D S × GA D T), IsCompact Kp → ∃ K : Set (Mx D T.rank ρ), IsCompact K ∧ ∀ N : ℕ, ∃ C : ℝ, ∀ p ∈ Kp, ∀ x w, ‖d.mixS T ψ v.μ v.𝓕 (om p f) x w‖ ≤ C * maj θ K N x := by
   intro D ψ S T χS χT om hω θ hθ S₀ ρ d v f hf Kp hKp

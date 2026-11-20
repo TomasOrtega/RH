@@ -22,15 +22,15 @@ variable {B Y : Scheme.{0}} {j : ℕ} {D : Fin j → Scheme.{0}} {s : Y ⟶ B}
     {d : ∀ i, D i ⟶ B} {pr : ∀ i, Y ⟶ D i}
 
 /- English proof (translation)
-Use `⟨fun i => ?_, fun Z z f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono V.ι]`. Simplify using `[h.1 i]`. Take `⟨g, ⟨hg₁, hg₂⟩, hu⟩` from `h.2 Z (z ≫ V.ι) (fun i => f i ≫ (W i).ι) (fun i => by`. Rewrite using `[← hf i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Establish `hr : Set.range g ⊆ Set.range W'.ι`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Use `h₃ _ ?_ fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (fun q => q y ∈ V) hg₁).mpr (z y).2`. Conclude with `(congrArg (fun q => q y ∈ W i) (hg₂ i)).mpr (f i y).2`. Use `⟨IsOpenImmersion.lift W'.ι g hr, ⟨?_, fun i => ?_⟩, fun g' hg' => ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono V.ι]`. Simplify using `[hg₁]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono (W i).ι]`. Simplify using `[hg₂]`. Rewrite using `[← cancel_mono W'.ι, IsOpenImmersion.lift_fac]`. Use `hu _ ⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hg'.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[← hg'.2 i]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem IsWideProduct.resLE (h : IsWideProduct s d pr) (V : B.Opens) (W : ∀ i, (D i).Opens)
     (W' : Y.Opens) (hW : ∀ i, W i ≤ d i ⁻¹ᵁ V) (h₁ : W' ≤ s ⁻¹ᵁ V) (h₂ : ∀ i, W' ≤ pr i ⁻¹ᵁ W i)
@@ -56,9 +56,9 @@ theorem IsWideProduct.resLE (h : IsWideProduct s d pr) (V : B.Opens) (W : ∀ i,
     · rw [← hg'.2 i]; simp
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `isAffine_and_generated_of_wide_product Γ(B, ⊤) j Y D (s ≫ B.isoSpec.hom) (fun i => d i ≫ B.isoSpec.hom) pr (fun i => by rw [← Category.assoc, h.1 i]) (fun Z z f hf => by`. Take `⟨g, ⟨hg₁, hg₂⟩, hu⟩` from `h.2 Z (z ≫ B.isoSpec.inv) f (fun i => by`. Rewrite using `[← hf i]`. Use the proof step `simp)`. Use `⟨g, ⟨by rw [← Category.assoc, hg₁]; simp, hg₂⟩, fun g' hg' => hu _ ⟨?_, hg'.2⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg'.1]`. Use the proof step `simp) hD`. Conclude with `⟨h₁, fun A hs hp => h₂ A (fun a => hs _) hp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsWideProduct.affine [IsAffine B] (h : IsWideProduct s d pr) (hD : ∀ i, IsAffine (D i)) :
     IsAffine Y ∧ ∀ A : Subring Γ(Y, ⊤), (∀ a, s.appTop.hom a ∈ A) →
@@ -73,11 +73,11 @@ theorem IsWideProduct.affine [IsAffine B] (h : IsWideProduct s d pr) (hD : ∀ i
   exact ⟨h₁, fun A hs hp => h₂ A (fun a => hs _) hp⟩
 
 /- English proof (translation)
-Establish `: IsAffine V` using `hV`. Take `⟨k₁, k₂⟩` from `(h.resLE V W W' hW h₁ h₂ h₃).affine hA`. Use `⟨k₁, fun A hs hp => ?_⟩` and prove the remaining obligations. Establish `key : ∀ {X : Scheme.{0}} (f : Y ⟶ X) (O : X.Opens) (e : W' ≤ f ⁻¹ᵁ O) a, W'.topIso.hom.hom ((f.resLE O W' e).appTop.hom a) = (f.appLE O W' e).hom (O.topIso.hom.hom a)`. Introduce `X f O e a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun q => q.hom a) (arrowResLEAppIso f O W' e).hom.w` as an intermediate fact. Conclude with `this.symm`. Use `k₂ (A.comap W'.topIso.hom.hom) (fun a => by rw [Subring.mem_comap, key]; exact hs _) (fun i a => by rw [Subring.mem_comap, key]; exact hp _ _)` as an intermediate fact. Rewrite using `[eq_top_iff]`. Introduce `a _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h4 : W'.topIso.inv.hom a ∈ A.comap W'.topIso.hom.hom` using `by rw [this]; trivial`. Rewrite `h4` using `[Subring.mem_comap]`. Rewrite `h4` using `[show W'.topIso.hom.hom (W'.topIso.inv.hom a) = a from Iso.inv_hom_id_apply W'.topIso a]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem IsWideProduct.affineOpen (h : IsWideProduct s d pr) (V : B.Opens) (W : ∀ i, (D i).Opens)
     (W' : Y.Opens) (hW : ∀ i, W i ≤ d i ⁻¹ᵁ V) (h₁ : W' ≤ s ⁻¹ᵁ V) (h₂ : ∀ i, W' ≤ pr i ⁻¹ᵁ W i)
@@ -120,9 +120,9 @@ def Embeds (π : Y ⟶ B) (P : LB Y) {I : Type} (s : I → LB.Sec P) : Prop :=
           (π.appLE ⊤ (nonzeroLocus (s i)) le_top).hom r)
 
 /- English proof (translation)
-Use `⟨by rw [← h.1]; exact e.iSup_comp (g := fun i => nonzeroLocus (s i)), fun i => ?_⟩` and prove the remaining obligations. Take `⟨h₁, r, h₂, h₃⟩` from `h.2 (e i)`. Use `⟨h₁, fun j => r (e j), fun j k => h₂ _ _, fun x => ?_⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `h₃ x`. Use `⟨MvPolynomial.rename e.symm p, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_rename]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Embeds.reindex {π : Y ⟶ B} {P : LB Y} {I J : Type} {s : I → LB.Sec P} (h : Embeds π P s)
     (e : J ≃ I) : Embeds π P (fun j => s (e j)) := by
@@ -137,14 +137,14 @@ theorem Embeds.reindex {π : Y ⟶ B} {P : LB Y} {I J : Type} {s : I → LB.Sec 
   simp
 
 /- English proof (translation)
-Simplify using `only [gs_eq r z U h, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_finprod {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) {K : Type}
     [Fintype K] (a : K → Γ(X, U)) : gs r z U (∏ k, a k) = ∏ k, gs r z U (a k) := by
   simp only [gs_eq r z U h, map_prod]
 
 /- English proof (translation)
-Establish `hm : r z ∈ P.U k ⊓ P.U k'` using `⟨hk, hk'⟩`. Establish `e` using `congrArg (gs r z _) (s.compat k k')`. Rewrite `e` using `[gs_res _ z _ hm, gs_mul _ z _ hm, gs_res _ z _ hm, gs_unit _ z _ hm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gs_compat {P : LB Y} (s : LB.Sec P) {Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) {k k' : P.ι}
     (hk : r z ∈ P.U k) (hk' : r z ∈ P.U k') :
@@ -154,7 +154,7 @@ theorem gs_compat {P : LB Y} (s : LB.Sec P) {Z : Scheme.{0}} (r : Z ⟶ Y) (z : 
   rwa [gs_res _ z _ hm, gs_mul _ z _ hm, gs_res _ z _ hm, gs_unit _ z _ hm] at e
 
 /- English proof (translation)
-Rewrite using `[mem_nonzeroLocus, gs_stalkMap r z _ hk, isUnit_map_iff]`. Use `⟨fun ⟨l, hl, u⟩ => ?_, fun u => ⟨k, hk, u⟩⟩` and prove the remaining obligations. Rewrite using `[gs_compat s (𝟙 Y) (r z) hk hl]`. Conclude with `(Units.isUnit _).mul u`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_pull {P : LB Y} (s : LB.Sec P) {Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z)
     {k : P.ι} (hk : r z ∈ P.U k) : r z ∈ nonzeroLocus s ↔ IsUnit (gs r z _ (s.f k)) := by
@@ -166,9 +166,7 @@ theorem mem_nonzeroLocus_pull {P : LB Y} (s : LB.Sec P) {Z : Scheme.{0}} (r : Z 
 variable {j : ℕ} {P : LB Y} {P' : LB Y'} {ρ : Fin j → (Y' ⟶ Y)} {idx : P'.ι → Fin j → P.ι}
 
 /- English proof (translation)
-Establish `v : ∀ k (y : Y'), y ∈ P'.U k → gs (𝟙 Y') y _ (∏ i, ((ρ i).appLE _ _ (le k i)).hom ((s i).f (idx k i))) = ∏ i, gs (ρ i) y _ ((s i).f (idx k i))` using `fun k y hy => by`. Rewrite using `[gs_finprod _ y _ hy]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [gs_appLE _ _ _ _ _ y hy, Category.id_comp]`. Use `⟨⟨fun k => ∏ i, ((ρ i).appLE _ _ (le k i)).hom ((s i).f (idx k i)), fun k k' => fn_ext fun y hy => ?_⟩, v⟩` and prove the remaining obligations. Rewrite using `[gs_res _ y _ hy, gs_mul _ y _ hy, gs_res _ y _ hy, gs_unit _ y _ hy, v k y hy.1, v k' y hy.2, hg y k k' hy.1 hy.2, Units.coe_prod, ← Finset.prod_mul_distrib]`.
-
-Conclude with `Finset.prod_congr rfl fun i _ => gs_compat _ _ _ (le k i hy.1) (le k' i hy.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_boxSec (le : ∀ k i, P'.U k ≤ ρ i ⁻¹ᵁ P.U (idx k i))
     (hg : ∀ (y : Y') k k', y ∈ P'.U k → y ∈ P'.U k' →
@@ -187,25 +185,21 @@ theorem exists_boxSec (le : ∀ k i, P'.U k ≤ ρ i ⁻¹ᵁ P.U (idx k i))
   exact Finset.prod_congr rfl fun i _ => gs_compat _ _ _ (le k i hy.1) (le k' i hy.2)
 
 /- English proof (translation)
-Use `choose t ht using fun a : Fin j → I => exists_boxSec le hg (fun i => s (a i))`. Establish `loc : ∀ a (y : Y'), y ∈ nonzeroLocus (t a) ↔ ∀ i, ρ i y ∈ nonzeroLocus (s (a i))`. Introduce `a y`. Take `⟨k, hk⟩` from `hc y`. Use `(mem_nonzeroLocus_pull (t a) (𝟙 Y') y hk).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht a k y hk, IsUnit.prod_univ_iff]`. Conclude with `forall_congr' fun i => (mem_nonzeroLocus_pull _ _ _ (le k i hk)).symm`. Use `⟨t, top_le_iff.1 fun y _ => ?_, fun a => ?_⟩` and prove the remaining obligations. Use `choose a ha using fun i => Opens.mem_iSup.1 (show ρ i y ∈ ⨆ n, nonzeroLocus (s n) by rw [h.1]; trivial)`. Conclude with `Opens.mem_iSup.2 ⟨a, (loc a y).2 ha⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `le' : ∀ i, nonzeroLocus (t a) ≤ ρ i ⁻¹ᵁ nonzeroLocus (s (a i))` using `fun i y hy => (loc a y).1 hy i`. Use `choose haff r hr hsurj using h.2`. Take `⟨k₁, k₂⟩` from `hw.affineOpen ⊤ (fun i => nonzeroLocus (s (a i))) (nonzeroLocus (t a)) (fun _ => le_top) le_top le' (fun y _ hy => (loc a y).2 hy) (isAffineOpen_top _) (fun i => haff _)`. Establish `hr' : ∀ n m k {Z : Scheme.{0}} (q : Z ⟶ Y) (z : Z), q z ∈ nonzeroLocus (s n) → q z ∈ P.U k → gs q z _ ((s m).f k) = gs q z _ (r n m) * gs q z _ ((s n).f k)`. Introduce `n m k Z q z h₁ h₂`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm : q z ∈ nonzeroLocus (s n) ⊓ P.U k` using `⟨h₁, h₂⟩`. Establish `e` using `congrArg (gs q z _) (hr n m k)`. Rewrite `e` using `[gs_res _ z _ hm, gs_mul _ z _ hm, gs_res _ z _ hm, gs_res _ z _ hm]`. Then use the resulting hypothesis. Establish `r1 : ∀ n, r n n = 1` using `fun n => fn_ext fun y hy => by`. Take `⟨k, hk, u⟩` from `(mem_nonzeroLocus _ y).1 hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `hr' n n k (𝟙 Y) y hy hk`. Rewrite using `[gs_eq (𝟙 Y) y _ hy 1, map_one, map_one]`. Conclude with `u.mul_right_cancel (e.symm.trans (_root_.one_mul _).symm)`. Use `⟨k₁, fun b => ∏ i, ((ρ i).appLE _ _ (le' i)).hom (r (a i) (b i)), fun b k => fn_ext fun y hy => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[gs_res _ y _ hy, gs_mul _ y _ hy, gs_res _ y _ hy, gs_res _ y _ hy, ht b k y hy.2, ht a k y hy.2, gs_finprod _ y _ hy.1, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gs_appLE _ _ _ _ _ y hy.1, Category.id_comp]`. Conclude with `hr' _ _ _ _ _ (le' i hy.1) (le k i hy.2)`. Rewrite using `[← RingHom.range_eq_top]`. Use `k₂ _ (fun c => ⟨MvPolynomial.C c, MvPolynomial.eval₂Hom_C _ _ _⟩) fun i x => ?_` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨p, rfl⟩` from `hsurj _ x`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c`. Use `⟨MvPolynomial.C c, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂Hom_C]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : ρ i ≫ π = π'` from `hw.1 i`. Conclude with `(congrArg (fun q => q.hom c) (Scheme.Hom.appLE_comp_appLE (ρ i) π ⊤ _ _ le_top (le' i))).symm`. Consider the case `add p q hp hq => rw [map_add, map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p m hp`.
-
-Rewrite using `[map_mul, map_mul]`. Use `mul_mem hp ⟨MvPolynomial.X (Function.update a i m), ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂Hom_X', MvPolynomial.eval₂Hom_X', Finset.prod_eq_single i]`. Rewrite using `[Function.update_self]`. Introduce `l _ hl`.
-
-Rewrite using `[Function.update_of_ne hl, r1, map_one]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Embeds.box [IsAffine B] {π : Y ⟶ B} {π' : Y' ⟶ B}
     (hw : IsWideProduct π' (fun _ => π) ρ) (hc : ∀ y : Y', ∃ k, y ∈ P'.U k)
@@ -278,15 +272,15 @@ namespace GlobalTheory
 open Segre ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Introduce `S G' G _ _ j p L hL hA U hU`. Take `⟨N, hN, M, s, hs⟩` from `hA U hU`. Establish `: IsAffine U` using `hU`. Establish `w₀ : IsWideProduct G'.hom (fun _ => G.hom) (fun i => (p.pr i).left)`. Use `⟨fun i => Over.w _, fun Z z f hf => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `c : Fan (fun _ : Fin j => G)` to `Fan.mk (Over.mk z) (fun i => Over.homMk (f i) (hf i))`. Use `⟨(p.lim.lift c).left, ⟨Over.w (p.lim.lift c), fun i => congrArg (fun q => q.left) (p.lim.fac c ⟨i⟩)⟩, fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun q => q.left) (p.lim.uniq c (Over.homMk g hg.1) (fun i => Over.OverMorphism.ext (hg.2 i.as)))`. Establish `le : ∀ i, G'.hom ⁻¹ᵁ U ≤ (p.pr i).left ⁻¹ᵁ (G.hom ⁻¹ᵁ U)` using `fun i y hy => (congrArg (fun q => q y ∈ U) (Over.w (p.pr i))).mpr hy`. Establish `w₁` using `w₀.resLE U (fun _ => G.hom ⁻¹ᵁ U) (G'.hom ⁻¹ᵁ U) (fun _ => le_rfl) le_rfl le (fun y hy _ => hy)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Scheme.Hom.resLE_eq_morphismRestrict] at w₁`. Use `set ρ : Fin j → ((G'.hom ⁻¹ᵁ U).toScheme ⟶ (G.hom ⁻¹ᵁ U).toScheme) := fun i => (p.pr i).left.resLE _ _ (le i) with hρ`. Establish `hι : ∀ i, ρ i ≫ (G.hom ⁻¹ᵁ U).ι = (G'.hom ⁻¹ᵁ U).ι ≫ (p.pr i).left` using `fun i => Scheme.Hom.resLE_comp_ι _ _`. Establish `le₂ : ∀ (k : Fin N → Fin j → L.ι) (i : Fin j), (powOver G' (boxLB L p.pr) U N).U k ≤ ρ i ⁻¹ᵁ (powOver G L U N).U (fun n => k n i)` using `fun k i y hy => Set.mem_iInter.2 fun n => (congrArg (fun q => q y ∈ L.U (k n i)) (hι i)).mpr (Set.mem_iInter.1 (Set.mem_iInter.1 hy n) i)`. Take `⟨t, ht⟩` from `Embeds.box (P := powOver G L U N) (P' := powOver G' (boxLB L p.pr) U N) (idx := fun k i n => k n i) w₁ (exists_chart (LB.isLB_linComb (LB.isLB_linComb hL _ _) _ _)) le₂ (fun y k k' hk hk' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gm_linComb (boxLB L p.pr) (fun _ : Fin N => (G'.hom ⁻¹ᵁ U).ι) (fun _ => 1) (𝟙 _) y k k' hk hk').trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (Finset.prod_congr rfl fun i _ => (gm_linComb L (fun _ : Fin N => (G.hom ⁻¹ᵁ U).ι) (fun _ => 1) (ρ i) y _ _ (le₂ k i hk) (le₂ k' i hk')).symm)` and prove the remaining obligations. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(gm_linComb L (fun i => (p.pr i).left) (fun _ => 1) (𝟙 _ ≫ (G'.hom ⁻¹ᵁ U).ι) y _ _ (Set.mem_iInter.1 hk n) (Set.mem_iInter.1 hk' n)).trans ?_` and prove the remaining obligations. Simplify using `only [hι, Category.id_comp]) (s := s) hs`. Establish `hpos : 0 < Fintype.card (Fin j → Fin (M + 1))` using `Fintype.card_pos`. Take `⟨M', hM'⟩` from `Nat.exists_eq_succ_of_ne_zero hpos.ne'`. Conclude with `⟨N, hN, M', _, ht.reindex (Fintype.equivFinOfCardEq hM').symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem relAmple_boxLB : ∀ (S : Scheme.{0}) (G' G : Over S) [GrpObj G'] [GrpObj G] (j : ℕ) (p : IsPowGrp G' G j) (L : LB G.left), L.IsLB → RelAmple G L → RelAmple G' (boxLB L p.pr) := by
   intro S G' G _ _ j p L hL hA U hU

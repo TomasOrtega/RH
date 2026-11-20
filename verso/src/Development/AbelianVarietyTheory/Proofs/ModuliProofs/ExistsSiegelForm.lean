@@ -13,37 +13,35 @@ namespace GlobalTheory.SiegelPeriod
 open GlobalTheory.SiegelNormalForm Matrix
 
 /- English proof (translation)
-Introduce `La _ EF g bas Q Hm hbas ⟨_, _, _, hH, hpos, hE⟩`. Unfold `hermForm at hpos hE ⊢`. Use `set e : Fin g → Fin g → ℂ := fun i => Q (bas (Pi.single (.inr i) 1)) with he`. Use `set f : Fin g → Fin g → ℂ := fun i => Q (bas (Pi.single (.inl i) 1)) with hf`. Establish `hee : ∀ i j, (e i ⬝ᵥ Hm *ᵥ star (e j)).im = 0` using `fun i j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [he]`. Rewrite using `[hE, hbas]`. Simplify using `[omegaStd]`. Establish `hff : ∀ i j, (f i ⬝ᵥ Hm *ᵥ star (f j)).im = 0` using `fun i j => by`. Simplify using `only [hf]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hE, hbas]`. Simplify using `[omegaStd]`. Establish `hef : ∀ i j, (e i ⬝ᵥ Hm *ᵥ star (f j)).im = if i = j then -1 else 0` using `fun i j => by`. Simplify using `only [he, hf]`. Rewrite using `[hE, hbas]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[omegaStd, Pi.single_apply]`. Simplify using `[omegaStd, Pi.single_apply, hij, Ne.symm hij]`. Set `P : Matrix (Fin g) (Fin g) ℂ` to `Matrix.of fun k i => e i k`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F : Matrix (Fin g) (Fin g) ℂ` to `Matrix.of fun k i => f i k`. Establish `hP : ∀ i, P *ᵥ Pi.single i 1 = e i` using `fun i => by`. Use extensionality with `k`. Simplify using `[P]`. Establish `hF : ∀ i, F *ᵥ Pi.single i 1 = f i` using `fun i => by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `k`. Simplify using `[F]`. Set `Y : Matrix (Fin g) (Fin g) ℝ` to `(Pᵀ * Hm * P.map star).map Complex.re`. Establish `hYe : ∀ i j, (Pᵀ * Hm * P.map star) i j = e i ⬝ᵥ Hm *ᵥ star (e j)` using `fun i j => by`. Rewrite using `[← form_single (Pᵀ * Hm * P.map star), ← form_pull, hP, hP]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hY : Pᵀ * Hm * P.map star = Y.map (↑)`. Use extensionality with `i j`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[Y]`. Rewrite using `[hYe, hee]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hPu : IsUnit P` using `isUnit_of_lagrangian P Hm f hpos Y hY (fun i j => by rw [hP, hef])`. Establish `hPd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hPu`. Establish `hPi : Function.Injective P.mulVec` using `Matrix.mulVec_injective_iff_isUnit.2 hPu`. Establish `hPP : ∀ z, P *ᵥ (P⁻¹ *ᵥ z) = z` using `fun z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv P hPd, Matrix.one_mulVec]`. Set `τ : Matrix (Fin g) (Fin g) ℂ` to `P⁻¹ * F`. Establish `hPτ : ∀ z, P *ᵥ (τ *ᵥ z) = F *ᵥ z` using `fun z => by`. Rewrite using `[← Matrix.mulVec_mulVec, hPP]`. Establish `hτ : ∀ j, P *ᵥ (τ *ᵥ Pi.single j 1) = f j` using `fun j => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hPτ, hF]`. Establish `hform : ∀ z w, (P *ᵥ z) ⬝ᵥ Hm *ᵥ star (P *ᵥ w) = z ⬝ᵥ Y.map (↑) *ᵥ star w` using `fun z w => by rw [form_pull, hY]`. Establish `hYs : Yᵀ = Y`. Use extensionality with `i j`. Use `congrArg Complex.re (form_conj hH (e i) (e j))` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.star_def, Complex.conj_re] at this`. Simplify using `only [Y, Matrix.transpose_apply, Matrix.map_apply, hYe, this]`. Establish `hYp : Y.PosDef`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos (by simpa [Matrix.IsHermitian] using hYs) ?_` and prove the remaining obligations. Introduce `a ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : P *ᵥ (fun i => (a i : ℂ)) ≠ 0`. Introduce `h0`. Use `hPi (h0.trans (Matrix.mulVec_zero P).symm)` as an intermediate fact. Conclude with `ha (funext fun i => by simpa using congrFun this i)`. Use `hpos _ hne` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hform]`. Simplify `this` using `[Matrix.mulVec, dotProduct]`. Take `⟨hτs, hτp, hYτ⟩` from `siegel_of_relations Y hYp τ (fun i j => by rw [← hform, hP, hτ, hef]) (fun i j => by rw [← hform, hτ, hτ, hff])`. Establish `hYi : (τ.map Complex.im)⁻¹ = Y` using `Matrix.inv_eq_left_inv hYτ`. Use `⟨P⁻¹, τ, Matrix.isUnit_nonsing_inv_iff.2 hPu, Matrix.nonsing_inv_nonsing_inv P hPd, rfl, hτs, hτp, fun z w => ?_, fun a => hPi ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hYi, ← hform, hPP, hPP]`. Establish `h1 : ∀ m : Fin g → ℤ, (fun i => (m i : ℂ)) = ∑ i, m i • (Pi.single i 1 : Fin g → ℂ)`. Introduce `m`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : a = ∑ i, a (.inl i) • Pi.single (.inl i) 1 + ∑ i, a (.inr i) • Pi.single (.inr i) 1`. Apply the tactic sequence `ext k; rcases k with k | k <;> simp [Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hPP, h1 (fun i => a (.inl i)), h1 (fun i => a (.inr i))]`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_sum, Matrix.mulVec_smul, hP, hτ]`. Use `conv_lhs => rw [h2]`.
-
-Simplify using `only [map_add, map_sum, map_zsmul, he, hf]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_siegel_form : ∀ (La : Type) [AddCommGroup La] (EF : LinearMap.BilinForm ℤ La) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] La) (Q : La →+ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ), (∀ a b, EF (bas a) (bas b) = omegaStd a b) → (Function.Injective Q ∧ DiscreteTopology (Q).range ∧ Submodule.span ℝ (Set.range Q) = ⊤ ∧ (Hm).IsHermitian ∧ (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) ∧ ∀ x y, (hermForm Hm (Q x) (Q y)).im = EF x y) → ∃ h τ : Matrix (Fin g) (Fin g) ℂ, IsUnit h ∧ h⁻¹ = (Matrix.of fun i j => Q (bas (Pi.single (.inr j) 1)) i) ∧ τ = h * (Matrix.of fun i j => Q (bas (Pi.single (.inl j) 1)) i) ∧ τ.IsSymm ∧ (τ.map Complex.im).PosDef ∧ (∀ z w, hermForm Hm z w = hermForm (((τ.map Complex.im)⁻¹).map Complex.ofReal) (h.mulVec z) (h.mulVec w)) ∧ ∀ a, h.mulVec (Q (bas a)) = τ.mulVec (fun i => (a (.inl i) : ℂ)) + fun i => (a (.inr i) : ℂ) := by
   intro La _ EF g bas Q Hm hbas ⟨_, _, _, hH, hpos, hE⟩

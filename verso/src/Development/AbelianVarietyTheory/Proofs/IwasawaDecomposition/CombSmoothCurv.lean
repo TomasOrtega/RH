@@ -14,14 +14,14 @@ variable {F : Type} [Field F] {Y : Var F} {σ : F →+* ℂ}
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Rewrite using `[AlgChart.levi, ReciprocityTheory.L2DbarEstimates.Y.cmpb_leviV_const, Complex.zero_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_const (c : AlgChart Y.str σ Y.dim) (a : ℝ) (y : Pts Y σ) (ξ : Fin Y.dim → ℂ) :
     c.levi (fun _ => a) y ξ = 0 := by
   rw [AlgChart.levi, ReciprocityTheory.L2DbarEstimates.Y.cmpb_leviV_const, Complex.zero_re]
 
 /- English proof (translation)
-The claim follows from `AnRead.levi_eq_of_add_log (R := Y.an σ) ((Var.isOpen_eqnSet Δ g).inter (Var.isOpen_eqnSet Δ g')) ((hm.2 g).mono (fun _ hz => ⟨trivial, hz.1⟩)) (Var.holoOn_tv Δ g g') (fun _ hz => Var.tv_ne_zero hz.1 hz.2) (fun _ hz => Var.Met.wt_trans (hm.1 trivial) hz.1 hz.2) hy ⟨hg, hg'⟩ ξ`.
+A detailed English derivation is pending.
 -/
 theorem levi_wt_frame {Δ : Y.Dv} {m : Var.Met Y σ Δ} (hm : Var.mSmooth Y σ Δ m) {c : AlgChart Y.str σ Y.dim}
     {g g' : Y.Fnˣ} {y : Pts Y σ} (hy : y ∈ c.e.source) (hg : y ∈ Var.eqnSet σ Δ g) (hg' : y ∈ Var.eqnSet σ Δ g')
@@ -31,7 +31,7 @@ theorem levi_wt_frame {Δ : Y.Dv} {m : Var.Met Y σ Δ} (hm : Var.mSmooth Y σ �
     (fun _ hz => Var.Met.wt_trans (hm.1 trivial) hz.1 hz.2) hy ⟨hg, hg'⟩ ξ
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using levi_const c 0 y ξ`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Rewrite using `[AlgChart.levi_add (g := fun z => ∑ k ∈ s, f k z) (hf a) (ContDiffAt.sum fun k _ => hf k) ξ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_sum {κ : Type} (s : Finset κ) {c : AlgChart Y.str σ Y.dim} {y : Pts Y σ} (f : κ → Pts Y σ → ℝ)
     (hf : ∀ k, ContDiffAt ℝ 2 (f k ∘ c.e.symm) (c.e y)) (ξ : Fin Y.dim → ℂ) :
@@ -61,14 +61,14 @@ variable {F : Type} [Field F] [NumberField F] {Y : Var F} {ι : Type} [Fintype �
 def nbhd (y₀ : Pts Y σ) : Set (Pts Y σ) := ⋂ i, Var.eqnSet σ (ρ i).D (eqn (ρ i).D (under y₀))
 
 /- English proof (translation)
-The claim follows from `isOpen_iInter_of_finite fun _ => Var.isOpen_eqnSet _ _`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_nbhd (y₀ : Pts Y σ) : IsOpen (nbhd ρ σ y₀) :=
   isOpen_iInter_of_finite fun _ => Var.isOpen_eqnSet _ _
 
 omit [Fintype ι] in
 /- English proof (translation)
-The claim follows from `Set.mem_iInter.2 fun _ => Base.isEqn_eqn _ _`.
+A detailed English derivation is pending.
 -/
 theorem mem_nbhd (y₀ : Pts Y σ) : y₀ ∈ nbhd ρ σ y₀ := Set.mem_iInter.2 fun _ => Base.isEqn_eqn _ _
 

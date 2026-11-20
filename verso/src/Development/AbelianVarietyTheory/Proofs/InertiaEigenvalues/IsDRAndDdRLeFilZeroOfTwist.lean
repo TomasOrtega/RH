@@ -17,7 +17,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (PD : PeriodData G Qp K₀ K B BdR)
 
 /- English proof (translation)
-Rewrite using `[← PD.ι_comm, PD.t_act, ← algebraMap_smul K₀ ((PD.χ g : Qpˣ) : Qp) PD.t, map_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem deRhamTwist_galoisAct_period (g : G) :
     PD.actdR g (PD.ι PD.t) = ((PD.χ g : Qpˣ) : Qp) • PD.ι PD.t := by
@@ -25,7 +25,7 @@ theorem deRhamTwist_galoisAct_period (g : G) :
     algebraMap_smul]
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simpa using PD.one_mem`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Conclude with `PD.Fil_mul _ _ _ _ ih PD.mem_filtration_one` after adjusting the coercions.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem drTwist_pow_mem (e : ℕ) : (PD.ι PD.t) ^ e ∈ PD.Fil (e : ℤ) := by
   induction e with
@@ -35,7 +35,7 @@ theorem drTwist_pow_mem (e : ℕ) : (PD.ι PD.t) ^ e ∈ PD.Fil (e : ℤ) := by
     exact_mod_cast PD.Fil_mul _ _ _ _ ih PD.mem_filtration_one
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Use `le_trans ?_ ih` and prove the remaining obligations. Conclude with `PD.Fil_anti (n : ℤ)` after adjusting the coercions.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem drTwist_Fil_le (e : ℕ) : PD.Fil (e : ℤ) ≤ PD.Fil 0 := by
   induction e with
@@ -54,9 +54,9 @@ theorem drTwistMap_apply (e : ℕ) (k : K) :
     drTwistMap PD e k = algebraMap K BdR k * (PD.ι PD.t) ^ e := rfl
 
 /- English proof (translation)
-Establish `hnt : Nontrivial BdR`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `PD.not_mem_filtration_two (by rw [Subsingleton.elim (PD.ι PD.t) 0]; exact Submodule.zero_mem _)`. Introduce `a b hab`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hab` using `[drTwistMap_apply, drTwistMap_apply]`. Establish `hu : IsUnit ((PD.ι PD.t) ^ e)` using `(PD.t_unit.map PD.ι).pow e`. Conclude with `(algebraMap K BdR).injective (hu.mul_right_cancel hab)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem drTwistMap_injective (e : ℕ) : Function.Injective (drTwistMap PD e) := by
   have hnt : Nontrivial BdR := by
@@ -69,21 +69,21 @@ theorem drTwistMap_injective (e : ℕ) : Function.Injective (drTwistMap PD e) :=
   exact (algebraMap K BdR).injective (hu.mul_right_cancel hab)
 
 /- English proof (translation)
-Rewrite using `[drTwistMap_apply, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (drTwist_Fil_le PD e (drTwist_pow_mem PD e))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem drTwistMap_mem (e : ℕ) (k : K) : drTwistMap PD e k ∈ PD.Fil 0 := by
   rw [drTwistMap_apply, ← Algebra.smul_def]
   exact Submodule.smul_mem _ _ (drTwist_Fil_le PD e (drTwist_pow_mem PD e))
 
 /- English proof (translation)
-Rewrite using `[map_pow, deRhamTwist_galoisAct_period, smul_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem drTwist_act_pow (e : ℕ) (g : G) :
     PD.actdR g ((PD.ι PD.t) ^ e) = ((PD.χ g : Qpˣ) : Qp) ^ e • (PD.ι PD.t) ^ e := by
   rw [map_pow, deRhamTwist_galoisAct_period, smul_pow]
 
 /- English proof (translation)
-Rewrite using `[drTwistMap_apply, map_mul, AlgEquiv.commutes, drTwist_act_pow, mul_smul_comm, smul_smul, ← mul_pow, inv_mul_cancel₀ (PD.χ g).ne_zero, one_pow, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem drTwistMap_fixed (e : ℕ) (g : G) (k : K) :
     (((PD.χ g : Qpˣ) : Qp)⁻¹) ^ e • PD.actdR g (drTwistMap PD e k) = drTwistMap PD e k := by
@@ -91,9 +91,9 @@ theorem drTwistMap_fixed (e : ℕ) (g : G) (k : K) :
     ← mul_pow, inv_mul_cancel₀ (PD.χ g).ne_zero, one_pow, one_smul]
 
 /- English proof (translation)
-Establish `hu : IsUnit ((PD.ι PD.t) ^ e)` using `(PD.t_unit.map PD.ι).pow e`. Take `⟨z, hz⟩` from `hu.exists_left_inv`. Establish `hyz : y = (y * z) * (PD.ι PD.t) ^ e` using `by rw [mul_assoc, hz, mul_one]`. Take `⟨k, hk⟩` from `PD.invdR (y * z) (fun g => by`. Apply `hu.mul_right_cancel` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h` using `hy g`. Rewrite `h` using `[hyz, map_mul, drTwist_act_pow, mul_smul_comm, smul_smul, ← mul_pow, inv_mul_cancel₀ (PD.χ g).ne_zero, one_pow, one_smul]`. Conclude with `h)`. Conclude with `⟨k, by rw [drTwistMap_apply, hk, ← hyz]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem drTwistMap_range (e : ℕ) (y : BdR)
     (hy : ∀ g, (((PD.χ g : Qpˣ) : Qp)⁻¹) ^ e • PD.actdR g y = y) :
@@ -113,7 +113,7 @@ variable {LL : Type} [Field LL] [Algebra Qp LL] {V : Type} [AddCommGroup V] [Mod
     [Module Qp V] [IsScalarTower Qp LL V] (ρ : Representation LL G V)
 
 /- English proof (translation)
-Establish `: actVdR PD ρ g (v ⊗ₜ[Qp] y) = ρ g v ⊗ₜ[Qp] PD.actdR g y` using `rfl`. Rewrite using `[this, h, ← map_inv₀, ← map_pow, algebraMap_smul, smul_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem drTwist_act_tmul (e : ℕ)
     (h : ∀ g x, ρ g x = ((algebraMap Qp LL (PD.χ g : Qp))⁻¹) ^ e • x) (g : G) (v : V) (y : BdR) :
@@ -123,17 +123,17 @@ theorem drTwist_act_tmul (e : ℕ)
   rw [this, h, ← map_inv₀, ← map_pow, algebraMap_smul, smul_tmul]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `tmul v k`. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, AlgebraTensorModule.map_tmul, sub_eq_zero]`. Introduce `g`.
+Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[drTwist_act_tmul PD ρ e h, drTwistMap_fixed]`. Introduce `x hx`. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hx`. Set `b` to `Module.Basis.ofVectorSpace Qp V`. Set `E` to `TensorProduct.equivFinsuppOfBasisLeft (N := BdR) b`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hE : ∀ g (x : V ⊗[Qp] BdR) i, E (actVdR PD ρ g x) i = (((PD.χ g : Qpˣ) : Qp)⁻¹) ^ e • PD.actdR g (E x i)`. Introduce `g x i`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, Finsupp.add_apply, ha, hb, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul v y`. Rewrite using `[drTwist_act_tmul PD ρ e h]`. Simplify using `only [E, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]`. Rewrite using `[← algebraMap_smul K (b.repr v i) y, map_smul, algebraMap_smul, smul_comm]`. Establish `hx' : x = E.symm (E x)` using `(E.symm_apply_apply x).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hx', TensorProduct.equivFinsuppOfBasisLeft_symm_apply]`. Use `Submodule.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations. Take `⟨k, hk⟩` from `drTwistMap_range PD e (E x i) (fun g => by rw [← hE, hx g])`. Conclude with `⟨b i ⊗ₜ k, by rw [AlgebraTensorModule.map_tmul, hk]; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem drTwist_range (e : ℕ)
     (h : ∀ g x, ρ g x = ((algebraMap Qp LL (PD.χ g : Qp))⁻¹) ^ e • x) :
@@ -174,11 +174,11 @@ theorem drTwist_range (e : ℕ)
 end TwistDeRham
 
 /- English proof (translation)
-Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ V _ _ _ _ _ ρ e h`. Establish `hr` using `drTwist_range PD ρ e h`. Prove the components needed by the constructor for the conclusion. Establish `hinj : Function.Injective (AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (drTwistMap PD e))` using `Module.Flat.lTensor_preserves_injective_linearMap (M := V) _ (drTwistMap_injective PD e)`. Use `PD.finK` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `IsDR`. Rewrite using `[← hr, LinearMap.finrank_range_of_inj hinj, Module.finrank_tensorProduct, mul_comm]`. Rewrite using `[← hr]`. Introduce and unpack `_ ⟨x, rfl⟩`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `tmul v k => exact ⟨v ⊗ₜ ⟨drTwistMap PD e k, drTwistMap_mem PD e k⟩, rfl⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isDR_and_DdR_le_Fil_zero_of_twist : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] (PD : PeriodData G Qp K₀ K B BdR) {LL : Type} [Field LL] [Algebra Qp LL] {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] [FiniteDimensional LL V] (ρ : Representation LL G V) (e : ℕ), (∀ g x, ρ g x = ((algebraMap Qp LL (PD.χ g : Qp))⁻¹) ^ e • x) → IsDR PD ρ ∧ DdR PD ρ ≤ FilV PD (LL := LL) (V := V) 0 := by
   intro G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ V _ _ _ _ _ ρ e h

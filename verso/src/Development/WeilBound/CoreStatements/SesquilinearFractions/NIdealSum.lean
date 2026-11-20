@@ -7,9 +7,9 @@ open NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar
 namespace PositivityTheory.Xgf
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Establish `h1` using `(GlobalTheory.T.log_ideal_mul_span_map E p j hj).2.1 1`. Rewrite `h1` using `[Ideal.span_singleton_one, map_one, norm_one, Real.log_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h1`. Consider the case `succ n ih`. Rewrite using `[pow_succ, (GlobalTheory.T.log_ideal_mul_span_map E p j hj).1 _ _ (pow_ne_zero _ hI) hI, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem logIdeal_pow (E : Type) [Field E] [NumberField E] (p : Nat.Primes) (j : 𝓞 E →+* ℂ_[p])
     (hj : Function.Injective j) (I : Ideal (𝓞 E)) (hI : I ≠ ⊥) :
@@ -26,21 +26,19 @@ theorem logIdeal_pow (E : Type) [Field E] [NumberField E] (p : Nat.Primes) (j : 
     ring
 
 /- English proof (translation)
-Introduce `E _ _ I hI p`. Use `set h := Fintype.card (ClassGroup (𝓞 E)) with hh`. Establish `hpos : 0 < h` using `Fintype.card_pos`. Establish `hmem : I ∈ nonZeroDivisors (Ideal (𝓞 E))` using `mem_nonZeroDivisors_of_ne_zero hI`. Establish `hprin : (I ^ h).IsPrincipal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem' : I ^ h ∈ nonZeroDivisors (Ideal (𝓞 E))` using `pow_mem hmem h`. Rewrite using `[← ClassGroup.mk0_eq_one_iff hmem']`. Establish `e1 : (⟨I ^ h, hmem'⟩ : (nonZeroDivisors (Ideal (𝓞 E)))) = ⟨I, hmem⟩ ^ h` using `rfl`. Rewrite using `[e1, map_pow, hh, pow_card_eq_one]`. Take `⟨a, ha⟩ : ∃ a : 𝓞 E, I ^ h = Ideal.span {a}` from `⟨Submodule.IsPrincipal.generator (I ^ h), (Ideal.span_singleton_generator (I ^ h)).symm⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[Ideal.span_singleton_eq_bot.mpr rfl]`. Conclude with `pow_ne_zero h hI ha`. Establish `key : ∀ j : E →+* ℂ_[p], (h : ℝ) * logIdeal (j.comp (algebraMap (𝓞 E) E)) I = Real.log ‖j (a : E)‖`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j`. Establish `hinj : Function.Injective (j.comp (algebraMap (𝓞 E) E))` using `j.injective.comp (FaithfulSMul.algebraMap_injective (𝓞 E) E)`. Rewrite using `[← logIdeal_pow E p _ hinj I hI h, ha, (GlobalTheory.T.log_ideal_mul_span_map E p _ hinj).2.1]`. Both sides reduce to the same expression. Establish `haE : (a : E) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Conclude with `ha0 (RingOfIntegers.coe_eq_zero_iff.mp h0)`. Establish `hprod : ∏ j : E →+* ℂ_[p], j (a : E) = ((Algebra.norm ℤ a : ℤ) : ℂ_[p])`. Rewrite using `[Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ_[p]) (fun j => j (a : E)) (fun σ => σ (a : E)) (fun _ => rfl), ← Algebra.norm_eq_prod_embeddings ℚ ℂ_[p] (a : E), ← Algebra.coe_norm_int, map_intCast]`. Establish `hN : ((Algebra.norm ℤ a).natAbs : ℕ) = Ideal.absNorm I ^ h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.absNorm_span_singleton, ← ha, map_pow]`. Establish `hnorm : ‖((Algebra.norm ℤ a : ℤ) : ℂ_[p])‖ = ‖((Ideal.absNorm I : ℕ) : ℂ_[p])‖ ^ h`. Rewrite using `[← norm_pow, ← Nat.cast_pow, ← hN]`. Break down `Int.natAbs_eq (Algebra.norm ℤ a) with e | e` into its components or cases. Use `conv_lhs => rw [e]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Use `conv_lhs => rw [e]`. Simplify using the standard rewrite rules. Establish `hh0 : (h : ℝ) ≠ 0` using `by exact_mod_cast hpos.ne'`. Apply `mul_left_cancel₀ hh0` to reduce the goal to its premises.
-
-Rewrite using `[Finset.mul_sum]`. Repeatedly rewrite using `[key]`. Rewrite using `[← Real.log_prod (fun j _ => norm_ne_zero_iff.mpr ((map_ne_zero j).mpr haE)), ← norm_prod, hprod, hnorm, Real.log_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_logIdeal_eq_log_absNorm : ∀ (E : Type) [Field E] [NumberField E] (I : Ideal (𝓞 E)), I ≠ ⊥ → ∀ p : Nat.Primes, ∑ j : E →+* ℂ_[p], logIdeal (j.comp (algebraMap (𝓞 E) E)) I = Real.log ‖((Ideal.absNorm I : ℕ) : ℂ_[p])‖ := by
   intro E _ _ I hI p

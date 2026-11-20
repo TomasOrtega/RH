@@ -14,7 +14,7 @@ namespace Formalism.MainNotions.BridgeCS3d
 open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions.S.ThB Formalism.BasicNotions Formalism.MainNotions.OnePlaceEstimates Formalism.MainNotions.BridgeLemma₄
 
 /- English proof (translation)
-Proceed by induction on `w generalizing v with`. Consider the case `nil => rfl`. Consider the case `cons X w ih => show PI.UpqRep.dsig (k := k) (r := r) σ X (PI.UpqRep.dsigW (k := k) (r := r) σ w v) = Formalism.MainNotions.S.dsig (k := k) (r := r) σ X (Formalism.MainNotions.S.dsigW (k := k) (r := r) σ w v)`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dsigW_eq {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H))
@@ -29,7 +29,7 @@ theorem dsigW_eq {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpac
     rfl
 
 /- English proof (translation)
-Simplify using `only [PI.BesselMapUniq.IsBesselMapSm, Formalism.MainNotions.S.IsBesselMapSm, PI.BesselMapUniq.IsCWCont, Formalism.MainNotions.S.IsCWCont, dsigW_eq]`. Conclude with `Iff.rfl`.
+Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isBesselMapSm_iff {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ)
@@ -48,11 +48,11 @@ def GapNearParameters (Cg0 : ℝ) : Prop :=
     ∃ h : ℝ, Formalism.QuantumDeterminants.GapAtLeast L.ε μ h ∧ Formalism.FourierDecayAlt.ThreeDimData.GapOK D.R.k D.R.rS h
 
 /- English proof (translation)
-Take `⟨hκ, hL, -, -⟩` from `hN`. Establish `hc : L.c = cOfDpsi (κ : ℂ)` using `hL.2.2.1`. Establish `hka : 0 < ka` using `hL.2.2.2.2.2.1.2.2.2.1`. Establish `hκ0 : κ ≠ 0`. Break down `hκ with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h]`. Conclude with `one_ne_zero`. Rewrite using `[h]`. Conclude with `hka.ne'`. Rewrite using `[hc, cOfDpsi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (κ : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hκ0`. Establish `hI : Complex.I ≠ 0` using `Complex.I_ne_zero`. Simplify using `[this, hI]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem c_ne_zero {D : D7} {Ch Cg Cq : ℝ} {L : LocBessel D.R.k D.R.rS} {lam0 μ : Fin (2 * D.R.rS + D.R.k + 1) → ℝ}
     {ka b κ : ℝ} (hN : NearbyChamberParameters D Ch Cg Cq L lam0 μ ka b κ) : L.c ≠ 0 := by

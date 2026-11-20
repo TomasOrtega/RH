@@ -8,9 +8,7 @@ open scoped Pointwise
 namespace GlobalTheory.UnfoldSemidirect
 
 /- English proof (translation)
-Use `haveI := hH`. Use `haveI := hμ`. Use `haveI : MeasurableConstSMul H X := ⟨fun g => hL g.1⟩`. Use `haveI : SMulInvariantMeasure H X μ := ⟨fun g s hs => by show μ ((fun x => (g : X) * x) ⁻¹' s) = μ s`. Rewrite using `[← Measure.map_apply (hL g.1) hs, map_mul_left_eq_self]⟩`.
-
-Use `haveI : ∀ g : H, IsFiniteMeasure (μ.restrict (g • 𝓕)) := fun g => ⟨by rw [Measure.restrict_apply_univ, measure_smul]; exact hfin.lt_top⟩`. Rewrite using `[← h𝓕.sum_restrict]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sFinite_of_fd {X : Type} [Group X] [MeasurableSpace X] (μ : Measure X) (H : Subgroup X)
     (𝓕 : Set X) (hH : Countable H) (hL : ∀ g : X, Measurable (g * ·)) (hμ : μ.IsMulLeftInvariant)
@@ -26,11 +24,9 @@ theorem sFinite_of_fd {X : Type} [Group X] [MeasurableSpace X] (μ : Measure X) 
   infer_instance
 
 /- English proof (translation)
-Use `haveI := h1`. Use `haveI := h2`. Use `haveI := h3`. Establish `m1 : Measurable (fun q : G₁ × L × Kt => ∫⁻ n, Φ (n, q) ∂μN)` using `hΦ.lintegral_prod_left'`. Establish `m2 : Measurable (fun q : L × Kt => ∫⁻ g₀, ∫⁻ n, Φ (n, g₀, q) ∂μN ∂ν)` using `m1.lintegral_prod_left'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m3 : Measurable (fun k : Kt => ∫⁻ l, ∫⁻ g₀, ∫⁻ n, Φ (n, g₀, l, k) ∂μN ∂ν ∂μL)` using `m2.lintegral_prod_left'`. Establish `hk` using `(lintegral_eq_zero_iff m3).1 h0`. Use `filter_upwards [hk] with k hk`. Establish `m2k : Measurable (fun l : L => ∫⁻ g₀, ∫⁻ n, Φ (n, g₀, l, k) ∂μN ∂ν)` using `m2.comp (measurable_id.prodMk measurable_const)`. Establish `hl` using `(lintegral_eq_zero_iff m2k).1 hk`.
-
-Use `filter_upwards [hl] with l hl`. Establish `m1kl : Measurable (fun g₀ : G₁ => ∫⁻ n, Φ (n, g₀, l, k) ∂μN)` using `m1.comp (measurable_id.prodMk measurable_const)`. Conclude with `(lintegral_eq_zero_iff m1kl).1 hl`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ae_zero_of_iter {N G₁ L Kt : Type} [MeasurableSpace N] [MeasurableSpace G₁]
     [MeasurableSpace L] [MeasurableSpace Kt] (μN : Measure N) (ν : Measure G₁) (μL : Measure L)
@@ -55,13 +51,11 @@ theorem ae_zero_of_iter {N G₁ L Kt : Type} [MeasurableSpace N] [MeasurableSpac
   exact (lintegral_eq_zero_iff m1kl).1 hl
 
 /- English proof (translation)
-Break down `mul_eq_zero.1 h0 with h1 | h1` into its components or cases. Establish `hfun : (fun n : N => B.indicator (1 : G → ENNReal) (n.1 * h)) = ((fun n : N => n.1 * h) ⁻¹' B).indicator 1`. Use function extensionality and compare the values at `n`. Simplify using `[Set.indicator_apply]`. Establish `hpre : μN ((fun n : N => n.1 * h) ⁻¹' B) = 0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← lintegral_indicator_one (hh hB), ← hfun]`. Conclude with `h1`. Establish `hae : ∀ᵐ n ∂μN, ∑' q : Q, D.indicator (1 : G → ENNReal) (q.1 * (n.1 * h)) = 1`. Rewrite using `[ae_iff]`. Use `measure_mono_null ?_ hpre` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn`. Assume the negation of the conclusion as `hnB`. Conclude with `hn (hχ _ hnB)`. Rewrite using `[lintegral_congr_ae (ae_restrict_of_ae hae)]`. Simplify using the standard rewrite rules.
-
-Simplify using `[h1]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem setLIntegral_count_mul {G : Type} [Group G] [MeasurableSpace G] (N Q : Subgroup G)
     (μN : Measure N) (𝓕 : Set N) (D B : Set G) (h : G) (a : ENNReal)
@@ -87,41 +81,35 @@ theorem setLIntegral_count_mul {G : Type} [Group G] [MeasurableSpace G] (N Q : S
   · simp [h1]
 
 /- English proof (translation)
-Introduce `G G₁ L Kt _ _ _ _ _ _ μG ν μL μK N Q Γ μN kk m ι w c dom 𝓕 hQc hΓc hνsf hLsf hLG hLG₁ hRG hjoint hw hw0 hwtop hμG hformula hc0 hctop hmι hιQ huniq hconj hμN h𝓕 h𝓕0 h𝓕top hdom hν 𝓓 h𝓓 φ hφ hφQ hφN`. Use `haveI := hQc`. Use `haveI := hΓc`. Use `haveI := hνsf`. Use `haveI := hLsf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI := hμN`. Use `haveI := hν`. Use `haveI := hμG`. Establish `hLN : ∀ g : N, Measurable (g * ·)` using `fun g => ((hLG g.1).comp measurable_subtype_coe).subtype_mk`. Use `haveI hQNc : Countable (Q.subgroupOf N) := by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Function.Injective.countable (f := fun x : Q.subgroupOf N => (⟨x.1.1, x.2⟩ : Q)) ?_` and prove the remaining obligations. Introduce `x y hxy`. Establish `h2` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (Subtype.ext h2)`. Use `haveI hNsf : SFinite μN := sFinite_of_fd μN (Q.subgroupOf N) 𝓕 hQNc hLN hμN h𝓕 h𝓕top`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : MeasurableConstSMul Γ G₁ := ⟨fun γ => hLG₁ γ.1⟩`. Use `haveI : SMulInvariantMeasure Γ G₁ ν := ⟨fun γ s hs => by show ν ((fun x => (γ : G₁) * x) ⁻¹' s) = ν s`. Rewrite using `[← Measure.map_apply (hLG₁ γ.1) hs, map_mul_left_eq_self]⟩`. Take `⟨𝓓₀, hsub, h₀, hae⟩` from `h𝓓.nullMeasurableSet.exists_measurable_subset_ae_eq`. Establish `hnull : μG (𝓓 \ 𝓓₀) = 0` using `(ae_eq_set.1 hae).2`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `χ : G → ENNReal` to `fun y => ∑' q : Q, 𝓓₀.indicator (1 : G → ENNReal) ((q : G) * y)`. Establish `hχae : ∀ᵐ y ∂μG, χ y = 1` using `GlobalTheory.T.fundamental_domain_indicator_tsum_one μG Q 𝓓 𝓓₀ hQc hLG hμG h𝓓 h₀ hsub hnull`. Establish `hχm : Measurable χ` using `Measurable.ennreal_tsum fun q => (measurable_one.indicator h₀).comp (hLG q.1)`. Set `B : Set G` to `χ ⁻¹' {1}ᶜ`. Establish `hBm : MeasurableSet B` using `hχm (measurableSet_singleton 1).compl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hB0 : μG B = 0` using `ae_iff.1 hχae`. Establish `hχB : ∀ y ∉ B, ∑' q : Q, 𝓓₀.indicator (1 : G → ENNReal) (q.1 * y) = 1`. Introduce `y hy`. Assume the negation of the conclusion as `hne`. Conclude with `hy hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hBint : ∫⁻ k, ∫⁻ l, ∫⁻ g₀, ∫⁻ n, B.indicator φ (n.1 * m l g₀ * kk k) * w l ∂μN ∂ν ∂μL ∂μK = 0`. Establish `h1` using `hformula (B.indicator φ) (hφ.indicator hBm)`. Rewrite `h1` using `[lintegral_indicator hBm, setLIntegral_measure_zero _ _ hB0]`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left hc0`. Establish `hΦm : Measurable (fun p : N × G₁ × L × Kt => B.indicator φ (p.1.1 * m p.2.2.1 p.2.1 * kk p.2.2.2) * w p.2.2.1)` using `((hφ.indicator hBm).comp hjoint).mul (hw.comp measurable_snd.snd.fst)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hae4` using `ae_zero_of_iter μN ν μL μK hNsf hνsf hLsf (fun p : N × G₁ × L × Kt => B.indicator φ (p.1.1 * m p.2.2.1 p.2.1 * kk p.2.2.2) * w p.2.2.1) hΦm hBint`. Establish `key : ∀ k l g₀, ∑' γ : Γ, (∫⁻ n, 𝓓₀.indicator φ (n.1 * m l ((γ : G₁) * g₀) * kk k) * w l ∂μN) = (∫⁻ n in 𝓕, χ (n.1 * (m l g₀ * kk k)) ∂μN) * (φ (m l g₀ * kk k) * w l)`. Introduce `k l g₀`. Establish `hmeas : Measurable (fun n : N => n.1 * (m l g₀ * kk k))` using `(hRG _).comp measurable_subtype_coe`. Establish `e1 : ∀ γ : Γ, (∫⁻ n, 𝓓₀.indicator φ (n.1 * m l ((γ : G₁) * g₀) * kk k) * w l ∂μN) = (∫⁻ n, 𝓓₀.indicator (1 : G → ENNReal) (n.1 * ι γ * (m l g₀ * kk k)) ∂μN) * (φ (m l g₀ * kk k) * w l)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `γ`. Establish `hm1 : Measurable (fun n : N => 𝓓₀.indicator (1 : G → ENNReal) (n.1 * ι γ * (m l g₀ * kk k)))` using `((measurable_one.indicator h₀).comp (hRG _)).comp ((hRG (ι γ)).comp measurable_subtype_coe)`. Rewrite using `[← lintegral_mul_const _ hm1]`. Use `lintegral_congr fun n => ?_` and prove the remaining obligations. Establish `hx : n.1 * m l ((γ : G₁) * g₀) * kk k = n.1 * ι γ * (m l g₀ * kk k)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hmι l g₀ γ γ.2]`. Simplify using `only [mul_assoc]`. Establish `hφx : φ (n.1 * ι γ * (m l g₀ * kk k)) = φ (m l g₀ * kk k)`. Rewrite using `[mul_assoc n.1 (ι γ), hφN n.1 n.2, hφQ (ι γ) (hιQ γ γ.2)]`. Rewrite using `[hx]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hd : n.1 * ι γ * (m l g₀ * kk k) ∈ 𝓓₀`. Simplify using `[Set.indicator_apply, hd, hφx]`. Simplify using `[Set.indicator_apply, hd]`. Rewrite using `[tsum_congr e1, ENNReal.tsum_mul_right]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.fundamental_domain_unfold_subgroup N Q Γ μN ι 𝓕 𝓓₀ (m l g₀ * kk k) hQc hΓc hLG hmeas h₀ hιQ huniq (fun γ hγ => hconj γ hγ (fun x => 𝓓₀.indicator (1 : G → ENNReal) (x * (m l g₀ * kk k))) ((measurable_one.indicator h₀).comp (hRG _))) hμN h𝓕`. Establish `unfoldG₁ : ∀ k l, ∫⁻ g₀, ∫⁻ n, 𝓓₀.indicator φ (n.1 * m l g₀ * kk k) * w l ∂μN ∂ν = ∫⁻ g₀ in dom, (∫⁻ n in 𝓕, χ (n.1 * (m l g₀ * kk k)) ∂μN) * (φ (m l g₀ * kk k) * w l) ∂ν`. Introduce `k l`. Establish `hP0 : Measurable (fun p : N × G₁ => 𝓓₀.indicator φ (p.1.1 * m l p.2 * kk k))` using `(hφ.indicator h₀).comp (hjoint.comp (measurable_fst.prodMk (measurable_snd.prodMk (measurable_const (a := (l, k))))))`. Establish `hP : Measurable (fun p : N × G₁ => 𝓓₀.indicator φ (p.1.1 * m l p.2 * kk k) * w l)` using `hP0.mul_const (w l)`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Establish `hHm : Measurable (fun g₀ : G₁ => ∫⁻ n, 𝓓₀.indicator φ (n.1 * m l g₀ * kk k) * w l ∂μN)` using `hP.lintegral_prod_left'`. Combine the equalities or inequalities in the displayed calculation. Establish `hLHS : ∫⁻ g in 𝓓, φ g ∂μG = c * ∫⁻ k, ∫⁻ l, ∫⁻ g₀, ∫⁻ n, 𝓓₀.indicator φ (n.1 * m l g₀ * kk k) * w l ∂μN ∂ν ∂μL ∂μK`. Rewrite using `[setLIntegral_congr hae.symm, ← lintegral_indicator h₀]`. Conclude with `hformula _ (hφ.indicator h₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hLHS, mul_assoc]`. Use `congr 1`. Rewrite using `[← lintegral_const_mul' _ _ h𝓕top]`. Use `lintegral_congr_ae (hae4.mono fun k hk => ?_)` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[← lintegral_const_mul' _ _ h𝓕top]`. Use `lintegral_congr_ae (hk.mono fun l hl => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[unfoldG₁ k l, ← lintegral_const_mul' _ _ h𝓕top]`. Use `lintegral_congr_ae (ae_restrict_of_ae (hl.mono fun g₀ hg => ?_))` and prove the remaining obligations.
-
-Simplify using `only`. Establish `hg' : ∫⁻ n, B.indicator φ (n.1 * m l g₀ * kk k) * w l ∂μN = 0` using `hg`. Establish `hmB : Measurable (fun n : N => B.indicator (1 : G → ENNReal) (n.1 * (m l g₀ * kk k)))` using `(measurable_one.indicator hBm).comp ((hRG _).comp measurable_subtype_coe)`. Use `setLIntegral_count_mul N Q μN 𝓕 𝓓₀ B (m l g₀ * kk k) (φ (m l g₀ * kk k) * w l) ((hRG _).comp measurable_subtype_coe) hBm hχB ?_` and prove the remaining obligations. Rewrite using `[← lintegral_mul_const _ hmB, ← hg']`.
-
-Use `lintegral_congr fun n => ?_` and prove the remaining obligations. Establish `hφx : φ (n.1 * m l g₀ * kk k) = φ (m l g₀ * kk k)`. Rewrite using `[mul_assoc, hφN n.1 n.2]`. Rewrite using `[← mul_assoc n.1]`. Distinguish the cases in `hb : n.1 * m l g₀ * kk k ∈ B`.
-
-Simplify using `[Set.indicator_apply, hb, hφx]`. Simplify using `[Set.indicator_apply, hb]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_fundamentalDomain_eq : ∀ {G G₁ L Kt : Type} [Group G] [MeasurableSpace G] [Group G₁] [MeasurableSpace G₁] [MeasurableSpace L] [MeasurableSpace Kt]
     (μG : Measure G) (ν : Measure G₁) (μL : Measure L) (μK : Measure Kt) (N Q : Subgroup G) (Γ : Subgroup G₁) (μN : Measure N)

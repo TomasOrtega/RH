@@ -26,7 +26,7 @@ theorem invT_val {R : Type} [CommRing R] {d : ℕ} (g : GL (Fin d) R) :
     (invT R d g : Matrix (Fin d) (Fin d) R) = ((g⁻¹ : GL (Fin d) R) : Matrix (Fin d) (Fin d) R)ᵀ := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.transpose_transpose _)`.
+A detailed English derivation is pending.
 -/
 theorem invT_invT {R : Type} [CommRing R] {d : ℕ} (g : GL (Fin d) R) : invT R d (invT R d g) = g :=
   Units.ext (Matrix.transpose_transpose _)
@@ -42,7 +42,7 @@ def sbs (g : K → GL (Fin d) ℂ) : MvPolynomial (K × Fin d) ℂ →ₐ[ℂ] M
   aeval fun p => ∑ j, X (p.1, j) * C ((g p.1 : Matrix (Fin d) (Fin d) ℂ) j p.2)
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [sbs]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => rw [map_mul, map_mul, map_mul, hp]`. Simplify using `[sbs, act]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem eval_sbs (g : K → GL (Fin d) ℂ) (x : K × Fin d → ℂ) (P : MvPolynomial (K × Fin d) ℂ) :
     eval x (sbs g P) = eval (act g x) P := by
@@ -52,13 +52,13 @@ theorem eval_sbs (g : K → GL (Fin d) ℂ) (x : K × Fin d → ℂ) (P : MvPoly
   | mul_X p i hp => rw [map_mul, map_mul, map_mul, hp]; simp [sbs, act]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨v, i⟩` from `p`. Simplify using `[act, Matrix.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem act_one (x : K × Fin d → ℂ) : act 1 x = x := by
   funext p; obtain ⟨v, i⟩ := p; simp [act, Matrix.one_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [act, Pi.mul_apply, Units.val_mul, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_mul (g h : K → GL (Fin d) ℂ) (x : K × Fin d → ℂ) : act (g * h) x = act h (act g x) := by
   funext p
@@ -76,7 +76,7 @@ def MH (n : K → ℕ) : Submodule ℂ (MvPolynomial (K × Fin d) ℂ) where
   smul_mem' c P h s x := by rw [smul_eval, smul_eval, h]; ring
 
 /- English proof (translation)
-Introduce `s x`. Rewrite using `[eval_sbs, eval_sbs, ← h]`. Use `congr 2`. Use function extensionality and compare the values at `p`. Simplify using `[act, Finset.mul_sum, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sbs_mem {n : K → ℕ} (g : K → GL (Fin d) ℂ) {P : MvPolynomial (K × Fin d) ℂ} (h : P ∈ MH d n) : sbs g P ∈ MH d n := by
   intro s x
@@ -99,7 +99,7 @@ def mRep (n : K → ℕ) : Representation ℂ (K → GL (Fin d) ℂ) (MH d n) wh
     rw [eval_sbs, eval_sbs, eval_sbs, act_mul]
 
 /- English proof (translation)
-The claim follows from `eval_sbs g x P.1`.
+A detailed English derivation is pending.
 -/
 theorem eval_mRep (n : K → ℕ) (g : K → GL (Fin d) ℂ) (P : MH d n) (x : K × Fin d → ℂ) :
     eval x (mRep d n g P).1 = eval (act g x) P.1 := eval_sbs g x P.1
@@ -132,9 +132,9 @@ variable (d) in
 def biRep (n : I → ℕ) : Representation ℂ (I → GL (Fin d) ℂ) (Bi d n) := (mRep d _).comp (dbl d)
 
 /- English proof (translation)
-Introduce `s x`. Rewrite using `[eval_rename, eval_rename]`. Use `h (fun k => s (k.1, !k.2)) (x ∘ flip I d)` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[Fintype.prod_prod_type, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flip_mem {n : I → ℕ} {P : MvPolynomial ((I × Bool) × Fin d) ℂ} (h : P ∈ Bi d n) : rename (flip I d) P ∈ Bi d n := by
   intro s x
@@ -209,7 +209,7 @@ def WD {R I : Type} [CommRing R] [Fintype I] (em : I → R →+* ℂ) (n : ℕ) 
 def chi {R I : Type} [CommRing R] [Fintype I] (em : I → R →+* ℂ) (j : ℕ) (τ : R) : ℂ := ∏ w, hq (em w τ) 1 j
 
 /- English proof (translation)
-Introduce `s x` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : (1 : MvPolynomial (Unit × Fin 2) ℂ) ∈ MH 2 (fun _ : Unit => 0) := fun s x => by simp
 

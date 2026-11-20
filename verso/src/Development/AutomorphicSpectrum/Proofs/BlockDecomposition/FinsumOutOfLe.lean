@@ -9,21 +9,19 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.HintLevel
 
 /- English proof (translation)
-Establish `hm' : Nat.card (S ⧸ L.subgroupOf S) ≠ 0` using `hm`. Use `haveI : Finite (S ⧸ L.subgroupOf S) := Nat.finite_of_card_ne_zero hm'`. Set `e` to `Subgroup.quotientEquivProdOfLE hLS`. Establish `hfst : ∀ q : H ⧸ L, (e q).1 = ((q.out : H) : H ⧸ S)`. Introduce `q`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective q`. Establish `h1 : (e (g : H ⧸ L)).1 = (g : H ⧸ S)` using `rfl`. Rewrite using `[h1]`. Conclude with `QuotientGroup.eq.2 (hLS (QuotientGroup.eq.1 (QuotientGroup.out_eq' (g : H ⧸ L)).symm))`. Establish `hg : ∀ q : H ⧸ L, u q.out = u (e q).1.out`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `q`. Rewrite using `[hfst q]`. Establish `hk : (((q.out : H) : H ⧸ S).out)⁻¹ * q.out ∈ S` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' ((q.out : H) : H ⧸ S))`. Use `hS hk (((q.out : H) : H ⧸ S).out)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : ∑ᶠ q : H ⧸ L, u q.out = ∑ᶠ p : (H ⧸ S) × (S ⧸ L.subgroupOf S), u p.1.out`. Rewrite using `[← finsum_comp_equiv e]`. Conclude with `finsum_congr hg`. Rewrite using `[hcomp]`. Distinguish the cases in `hfin : (Function.support fun c : H ⧸ S => u c.out).Finite`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsupp : (Function.support fun p : (H ⧸ S) × (S ⧸ L.subgroupOf S) => u p.1.out).Finite`. Use `(hfin.prod (Set.finite_univ (α := S ⧸ L.subgroupOf S))).subset ?_` and prove the remaining obligations. Introduce `p hp`. Conclude with `⟨hp, Set.mem_univ _⟩`. Rewrite using `[finsum_curry _ hsupp]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hin : ∀ c : H ⧸ S, ∑ᶠ _ : S ⧸ L.subgroupOf S, u c.out = ((L.relIndex S : ℕ) : ℂ) * u c.out`. Introduce `c`. Use `haveI := Fintype.ofFinite (S ⧸ L.subgroupOf S)`. Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hin]`. Rewrite using `[mul_finsum]`. Establish `h0 : ∑ᶠ c : H ⧸ S, u c.out = 0` using `finsum_of_infinite_support hfin`. Rewrite using `[h0, mul_zero]`. Use `finsum_of_infinite_support fun hsupp => hfin ?_` and prove the remaining obligations.
-
-Use `(hsupp.image Prod.fst).subset ?_` and prove the remaining obligations. Introduce `c hc`. Conclude with `⟨(c, ((1 : S) : S ⧸ L.subgroupOf S)), hc, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finsum_out_of_le {H : Type} [Group H] {L S : Subgroup H} (u : H → ℂ) (hLS : L ≤ S)
     (hS : S ≤ rStab u) (hm : L.relIndex S ≠ 0) :
@@ -71,9 +69,9 @@ theorem finsum_out_of_le {H : Type} [Group H] {L S : Subgroup H} (u : H → ℂ)
     exact ⟨(c, ((1 : S) : S ⧸ L.subgroupOf S)), hc, rfl⟩
 
 /- English proof (translation)
-Introduce `H _ K L u hLK hLu hfin`. Establish `hLS : L ≤ rStab u ⊓ K` using `le_inf hLu hLK`. Establish `hmul` using `Subgroup.relIndex_mul_relIndex L (rStab u ⊓ K) K hLS inf_le_right`. Establish `hm : L.relIndex (rStab u ⊓ K) ≠ 0` using `fun h0 => hfin (by rw [← hmul, h0, zero_mul])`. Rewrite using `[finsum_out_of_le u hLS inf_le_left hm, ← hmul, hint]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmC : ((L.relIndex (rStab u ⊓ K) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hm`. Rewrite using `[Nat.cast_mul, mul_inv, mul_mul_mul_comm, inv_mul_cancel₀ hmC, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hint_eq_level : ∀ (H : Type) [Group H] (K L : Subgroup H) (u : H → ℂ), L ≤ K → L ≤ rStab u →
     L.relIndex K ≠ 0 → hint K u = ((L.relIndex K : ℕ) : ℂ)⁻¹ * ∑ᶠ q : H ⧸ L, u q.out := by

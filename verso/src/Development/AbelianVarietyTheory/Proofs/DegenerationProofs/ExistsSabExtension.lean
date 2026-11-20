@@ -25,20 +25,20 @@ def cubeCls {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ G)) (c : Pic G.left) : 
   ∑ I : ULift.{0} (Finset (Fin n)), ((-1 : ℤ) ^ (n - I.down.card)) • pull (psum G x I.down).left c
 
 /- English proof (translation)
-The claim follows from `LB.isLB_linComb hL _ _`.
+A detailed English derivation is pending.
 -/
 theorem isLB_cube {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ G)) {L : LB G.left} (hL : L.IsLB) : (cubeLB G x L).IsLB :=
   LB.isLB_linComb hL _ _
 
 /- English proof (translation)
-The claim follows from `cls_linComb hL _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cls_cube {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ G)) {L : LB G.left} (hL : L.IsLB) :
     cls _ (isLB_cube x hL) = cubeCls x (cls L hL) :=
   cls_linComb hL _ _ _
 
 /- English proof (translation)
-Unfold `cubeCls`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← pull_comp, ← Over.comp_left]`. Conclude with `congrArg (fun z => _ • pull (CommaMorphism.left z) c) (psum_hom (preHom u) x I.down)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_cubeCls_pre {T T' : Over S} (u : T' ⟶ T) {n : ℕ} (x : Fin n → (T ⟶ G)) (c : Pic G.left) :
     pull u.left (cubeCls x c) = cubeCls (fun i => u ≫ x i) c := by
@@ -49,7 +49,7 @@ theorem pull_cubeCls_pre {T T' : Over S} (u : T' ⟶ T) {n : ℕ} (x : Fin n →
   exact congrArg (fun z => _ • pull (CommaMorphism.left z) c) (psum_hom (preHom u) x I.down)
 
 /- English proof (translation)
-Unfold `cubeCls`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← pull_comp, ← pull_comp, psum_push h x' x u hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_cubeCls_push (h : IsGrpPullback G' G f φ) {T' : Over S'} {T : Over S} {n : ℕ} (x' : Fin n → (T' ⟶ G'))
     (x : Fin n → (T ⟶ G)) (u : Over.mk (T'.hom ≫ f) ⟶ T) (hx : ∀ i, pushPt h.1.w (x' i) = u ≫ x i)
@@ -60,9 +60,9 @@ theorem pull_cubeCls_push (h : IsGrpPullback G' G f φ) {T' : Over S'} {T : Over
   rw [map_zsmul, ← pull_comp, ← pull_comp, psum_push h x' x u hx]
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun I _ => ?_` and prove the remaining obligations. Establish `e₁ : (1 : 𝟙_ (Over S) ⟶ G) = η[G]` using `by rw [Hom.one_def]; simp`. Establish `e : psum G (fun _ : Fin n => η[G]) I.down = η[G]`. Use `psum_hom (1 : (𝟙_ (Over S) ⟶ G) →* (𝟙_ (Over S) ⟶ G)) (fun _ : Fin n => η[G]) I.down` as an intermediate fact. Simplify using `only [MonoidHom.one_apply, e₁] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this.symm`. Rewrite using `[e]`. Conclude with `(congrArg _ hc).trans (smul_zero _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cubeCls_one {n : ℕ} (c : Pic G.left) (hc : pull (eSec G) c = 0) :
     cubeCls (fun _ : Fin n => η[G]) c = 0 := by
@@ -78,7 +78,7 @@ theorem cubeCls_one {n : ℕ} (c : Pic G.left) (hc : pull (eSec G) c = 0) :
 end Cube
 
 /- English proof (translation)
-Take `⟨A, hA, rfl⟩` from `cls_surj α`. Take `⟨B, hB, rfl⟩` from `cls_surj β`. Conclude with `(cls_eq_iff hA hB).2 ((GlobalTheory.T.lineBundleIso_extend_of_normal_base S hS U H HU j p e jH pU hp hg he hj A B hA hB ((cls_eq_iff (pull_isLB hA _) (pull_isLB hB _)).1 h₁)).1 ((cls_eq_iff (pull_isLB hA _) (pull_isLB hB _)).1 h₂))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pic_ext (S : Scheme.{0}) [IsIntegral S] [IsLocallyNoetherian S] (hS : Geo.Tor.IsNormalScheme S) {U H HU : Scheme.{0}}
     [Nonempty U] (j : U ⟶ S) [IsOpenImmersion j] (p : H ⟶ S) (e : S ⟶ H) (jH : HU ⟶ H) (pU : HU ⟶ U) (hp : Smooth p)
@@ -90,27 +90,25 @@ theorem pic_ext (S : Scheme.{0}) [IsIntegral S] [IsLocallyNoetherian S] (hS : Ge
     ((cls_eq_iff (pull_isLB hA _) (pull_isLB hB _)).1 h₁)).1 ((cls_eq_iff (pull_isLB hA _) (pull_isLB hB _)).1 h₂))
 
 /- English proof (translation)
-Introduce `S _ _ hS E _ _ _ H U _ j _ G _ _ semi act t₀ a h hact M hM hMa`. Use `semi.smooth` as an intermediate fact. Use `semi.geomConnected` as an intermediate fact. Take `⟨PP, cub, m, rfl, hme, hlin, hsym⟩` from `GlobalTheory.T.exists_rigidified_cubical_symmetric_extension_normalBase S hS U j G t₀.G a h t₀.PP t₀.cub M hM hMa`. Establish `hc₀ : cls t₀.PP.L t₀.PP.isLB = pull m.F (cls PP.L PP.isLB)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw, -⟩` from `hlin`. Conclude with `(cls_eq_iff t₀.PP.isLB (pull_isLB PP.isLB _)).2 ⟨w, hw⟩`. Establish `hrig : pull (eSec G) (cls PP.L PP.isLB) = 0` using `(cls_eq_zero_iff (pull_isLB PP.isLB _)).2 ⟨PP.rig, PP.rigGen⟩`. Establish `pa : ∀ {T : Over U} (x : T ⟶ t₀.G) b, pushPt h.1.w (x ≫ t₀.act.act b) = pushPt h.1.w x ≫ act.act b` using `fun x b => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, hact, Category.assoc])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha1 : ∀ b, η[G] ≫ act.act b = η[G]` using `fun b => by have := act.hom b; exact IsMonHom.one_hom _`. Use `⟨PP, cub, hsym t₀.sym, fun b => ?_, ?_, ⟨m, h, hme, hact, hlin⟩, rfl⟩` and prove the remaining obligations. Use `(cls_eq_iff (isLB_cube _ PP.isLB) (isLB_cube _ PP.isLB)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_cube _ PP.isLB, cls_cube _ PP.isLB]`. Establish `hsm : Smooth (G ⊗ G).hom` using `by show Smooth (pullback.fst G.hom G.hom ≫ G.hom) infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgc : GeometricallyConnected (G ⊗ G).hom` using `by show GeometricallyConnected (pullback.fst G.hom G.hom ≫ G.hom)`. Conclude with `GeometricallyConnected.comp _ _`. Set `T' : Over U` to `Over.mk (pullback.snd (G ⊗ G).hom j)`. Set `u : Over.mk (T'.hom ≫ j) ⟶ G ⊗ G` to `Over.homMk (pullback.fst (G ⊗ G).hom j) pullback.condition`. Establish `hy : ∀ y : G ⊗ G ⟶ G, ∃ y' : T' ⟶ t₀.G, pushPt h.1.w y' = u ≫ y` using `fun y => ⟨Over.homMk (h.1.lift (u ≫ y).left T'.hom (Over.w (u ≫ y))) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y₁, hy₁⟩` from `hy (fst G G)`. Take `⟨y₂, hy₂⟩` from `hy (snd G G)`. Set `e : 𝟙_ (Over S) ⟶ G ⊗ G` to `lift η[G] η[G]`. Use `pic_ext S hS j (G ⊗ G).hom e.left u.left T'.hom hsm (geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres _) (Over.w e) (IsPullback.of_hasPullback _ _) _ _ ?_ ?_` and prove the remaining obligations. Establish `h₀` using `(cls_eq_iff (isLB_cube _ t₀.PP.isLB) (isLB_cube _ t₀.PP.isLB)).2 (t₀.adj b)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h₀` using `[cls_cube _ t₀.PP.isLB, cls_cube _ t₀.PP.isLB, hc₀]`. Establish `h₁` using `congrArg (pull (lift y₁ y₂).left) h₀`. Rewrite `h₁` using `[pull_cubeCls_pre, pull_cubeCls_pre]`. Use `(pull_cubeCls_push h _ _ u (fun i => ?_) _).trans (h₁.trans (pull_cubeCls_push h _ _ u (fun i => ?_) _).symm)` and prove the remaining obligations. Use `fin_cases i`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[pa, hy₁]`. Simplify using `[hy₂]`. Use `fin_cases i`. Simplify using `[hy₁]`. Simplify using `[pa, hy₂]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `(pull_cubeCls_pre e _ _).trans (Eq.trans ?_ (pull_cubeCls_pre e _ _).symm)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [e, ha1]`. Use `(cls_eq_iff PP.isLB (isLB_cube _ PP.isLB)).1 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[cls_cube _ PP.isLB]`. Use `pic_ext S hS j G.hom (eSec G) m.F t₀.G.hom inferInstance (geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres _) (Over.w η[G]) h.1 _ _ ?_ ?_` and prove the remaining obligations. Establish `h₀` using `(cls_eq_iff t₀.PP.isLB (isLB_cube _ t₀.PP.isLB)).2 t₀.prim`. Rewrite `h₀` using `[cls_cube _ t₀.PP.isLB, hc₀]`. Establish `h₁` using `pull_cubeCls_push h ![𝟙 t₀.G, t₀.act.act H.w0] ![𝟙 G, act.act H.w0] (pushPt h.1.w (𝟙 t₀.G)) (fun i => by fin_cases i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Conclude with `(congrArg (pushPt h.1.w) (Category.id_comp _).symm).trans (pa _ _)) (cls PP.L PP.isLB)`. Establish `e : (pushPt h.1.w (𝟙 t₀.G)).left = m.F` using `Category.id_comp _`. Rewrite `h₁` using `[e]`. Conclude with `h₀.trans h₁.symm`.
-
-Use `hrig.trans (Eq.trans ?_ (pull_cubeCls_pre η[G] _ _).symm)` and prove the remaining obligations. Use `(cubeCls_one (n := 2) _ hrig).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [ha1]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_sab_extension : ∀ (S : Scheme.{0}) [IsIntegral S] [IsLocallyNoetherian S], Geo.Tor.IsNormalScheme S → ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Host E) (U : Scheme.{0}) [Nonempty U] (j : U ⟶ S) [IsOpenImmersion j] (G : Over S) [GrpObj G] [IsCommMonObj G] (semi : IsSemiAbelian G) (act : OAct (NumberField.RingOfIntegers E) G) (t₀ : SAB H U) (a : t₀.G.left ⟶ G.left), IsGrpPullback t₀.G G j a → (∀ x, (t₀.act.act x).left ≫ a = a ≫ (act.act x).left) → ∀ M : LB G.left, M.IsLB → LBIso (M.pull a) t₀.PP.L → ∃ (PP : RigLB G) (cub : CubicalStr G PP) (h₁ : _) (h₂ : _) (h₃ : _) (m : SABMap t₀ (SAB.mk G semi act PP cub h₁ h₂ h₃) j), m.φ = a := by
   intro S _ _ hS E _ _ _ H U _ j _ G _ _ semi act t₀ a h hact M hM hMa

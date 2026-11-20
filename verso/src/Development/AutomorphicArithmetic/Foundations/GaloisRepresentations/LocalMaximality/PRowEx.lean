@@ -26,9 +26,9 @@ private def den (B C : Subalgebra ℂ L) (hBC : B ≤ C) (e : B →ₐ[ℂ] ℂ)
   algebraMap_mem' c := ⟨1, by simp, by simpa using C.algebraMap_mem c⟩
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y h`. Take `⟨b, hb, v, hv, rfl⟩` from `h`. Conclude with `Submodule.subset_span ⟨c * b, C.mul_mem hc hb, v, hv, by rw [smul_smul]⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma smul_omB (C : Subalgebra ℂ L) (q : ℕ) {c : L} (hc : c ∈ C) {y : DR ℂ L} (hy : y ∈ omB ℂ L C q) :
     c • y ∈ omB ℂ L C q := by
@@ -41,13 +41,13 @@ private lemma smul_omB (C : Subalgebra ℂ L) (q : ℕ) {c : L} (hc : c ∈ C) {
   | smul r a _ ha => rw [smul_comm]; exact Submodule.smul_mem _ _ ha
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y h`. Take `⟨b, hb, w, hw, rfl⟩` from `h`. Use `Submodule.subset_span ⟨a * b, C.mul_mem ha hb, (Fin.cons v w : Fin (q + 1) → L), ?_, ?_⟩` and prove the remaining obligations. Introduce `j`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `using hv`. Simplify using `using hw i`. Establish `ht : (Matrix.vecTail fun j => D ℂ L ((Fin.cons v w : Fin (q + 1) → L) j)) = fun j => D ℂ L (w j)`. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.vecTail]`. Rewrite using `[ExteriorAlgebra.ιMulti_succ_apply, ht, smul_mul_smul_comm]`. Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [mul_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma one_mul_omB (C : Subalgebra ℂ L) (q : ℕ) {a v : L} (ha : a ∈ C) (hv : v ∈ C) {y : DR ℂ L}
     (hy : y ∈ omB ℂ L C q) : (a • ExteriorAlgebra.ι L (D ℂ L v)) * y ∈ omB ℂ L C (q + 1) := by
@@ -69,13 +69,13 @@ private lemma one_mul_omB (C : Subalgebra ℂ L) (q : ℕ) {a v : L} (ha : a ∈
   | smul r a _ ha => rw [mul_smul_comm]; exact Submodule.smul_mem _ _ ha
 
 /- English proof (translation)
-Introduce `q`. Proceed by induction on `q with`. Consider the case `zero`. Introduce `v _`. Use `Submodule.subset_span ⟨1, C.one_mem, v, fun j => j.elim0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Consider the case `succ q ih`. Introduce `v hv`. Establish `h1` using `ih (fun j => v j.succ) fun j => hv _`. Establish `h2` using `one_mul_omB C q hβ (hv 0) h1`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `one_mul_omB C q (hv 0) hβ h1`. Establish `hD : β ^ 2 • D ℂ L (v 0) = β • D ℂ L (β * v 0) - (β * v 0) • D ℂ L β`. Rewrite using `[Derivation.leibniz, smul_add, smul_smul, smul_smul, pow_two, add_sub_cancel_right]`. Establish `hι : β ^ 2 • ExteriorAlgebra.ι L (D ℂ L (v 0)) = β • ExteriorAlgebra.ι L (D ℂ L (β * v 0)) - (β * v 0) • ExteriorAlgebra.ι L (D ℂ L β)`. Rewrite using `[← map_smul, hD, map_sub, map_smul, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: β ^ (2 * (q + 1)) • ExteriorAlgebra.ιMulti L (q + 1) (fun j => D ℂ L (v j)) = (β • ExteriorAlgebra.ι L (D ℂ L (β * v 0))) * (β ^ (2 * q) • ExteriorAlgebra.ιMulti L q (fun j => D ℂ L (v j.succ))) - ((β * v 0) • ExteriorAlgebra.ι L (D ℂ L β)) * (β ^ (2 * q) • ExteriorAlgebra.ιMul …`. Rewrite using `[ExteriorAlgebra.ιMulti_succ_apply, ← sub_mul, ← hι, smul_mul_smul_comm, ← pow_add, show 2 * (q + 1) = 2 + 2 * q by ring]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `sub_mem h2 h3`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma pow_smul_omB (C : Subalgebra ℂ L) {β : L} (hβ : β ∈ C) : ∀ (q : ℕ) (v : Fin q → L), (∀ j, β * v j ∈ C) →
     β ^ (2 * q) • ExteriorAlgebra.ιMulti L q (fun j => D ℂ L (v j)) ∈ omB ℂ L C q := by
@@ -119,7 +119,7 @@ private def locS (B : Subalgebra ℂ L) (e : B →ₐ[ℂ] ℂ) (M : Submodule �
     exact ⟨b, hb, by rw [smul_comm]; exact M.smul_mem c h⟩
 
 /- English proof (translation)
-Establish `: locM B e M = locS B e M hM` using `Submodule.span_eq (locS B e M hM)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma mem_locM (B : Subalgebra ℂ L) (e : B →ₐ[ℂ] ℂ) (M : Submodule ℂ (DR ℂ L))
     (hM : ∀ b ∈ B, ∀ m ∈ M, (b : L) • m ∈ M) {v : DR ℂ L} :
@@ -129,23 +129,21 @@ private lemma mem_locM (B : Subalgebra ℂ L) (e : B →ₐ[ℂ] ℂ) (M : Submo
   rfl
 
 /- English proof (translation)
-Introduce `m hm` and use `Submodule.subset_span ⟨1, by simp, by simpa using hm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private lemma le_locM (B : Subalgebra ℂ L) (e : B →ₐ[ℂ] ℂ) (M : Submodule ℂ (DR ℂ L)) : M ≤ locM B e M :=
   fun m hm => Submodule.subset_span ⟨1, by simp, by simpa using hm⟩
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨b0, hb0, v, hv, rfl⟩`. Take `⟨β0, h0, h0'⟩` from `hC' hb0`. Use `choose β hβ hβ' using fun j => hC' (hv j)`. Use `set γ : B := β0 * ∏ j, β j with hγdef`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hγ : e γ ≠ 0`. Rewrite using `[hγdef, map_mul, map_prod]`. Conclude with `mul_ne_zero h0 (Finset.prod_ne_zero_iff.2 fun j _ => hβ j)`. Establish `hvj : ∀ j, (γ : L) * v j ∈ C`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: (γ : L) = ((β0 * ∏ i ∈ Finset.univ.erase j, β i : B) : L) * (β j : L)`. Rewrite using `[← Subalgebra.coe_mul, mul_assoc, Finset.prod_erase_mul _ _ (Finset.mem_univ j)]`. Rewrite using `[this, mul_assoc]`. Conclude with `C.mul_mem (hBC (Subtype.property _)) (hβ' j)`. Establish `hbC : (γ : L) * b0 ∈ C`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `: (γ : L) * b0 = ((∏ j, β j : B) : L) * ((β0 : L) * b0)`. Rewrite using `[hγdef, Subalgebra.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `C.mul_mem (hBC (Subtype.property _)) h0'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨γ ^ (2 * q + 1), by rw [map_pow]; exact pow_ne_zero _ hγ, ?_⟩` and prove the remaining obligations. Use `smul_omB C q hbC (pow_smul_omB C (hBC γ.2) q v hvj)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma omB_le_locS (B C C' : Subalgebra ℂ L) (hBC : B ≤ C) (e : B →ₐ[ℂ] ℂ)
     (hC' : C' ≤ den B C hBC e) (q : ℕ) :
@@ -178,9 +176,9 @@ private lemma omB_le_locS (B C C' : Subalgebra ℂ L) (hBC : B ≤ C) (e : B →
   ring
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨b, hb, hm⟩` from `(mem_locM B e _ fun _ hb _ hm => smul_omB C' q (hBC' hb) hm).1 hy`. Take `⟨b', hb', hm'⟩` from `omB_le_locS B C C' hBC e hC' q hm`. Use `(mem_locM B e _ fun _ hb _ hm => smul_omB C q (hBC hb) hm).2 ⟨b' * b, by simp [hb, hb'], ?_⟩` and prove the remaining obligations. Rewrite `hm'` using `[smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using hm'`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma locM_le_locM (B C C' : Subalgebra ℂ L) (hBC : B ≤ C) (hBC' : B ≤ C') (e : B →ₐ[ℂ] ℂ)
     (hC' : C' ≤ den B C hBC e) (q : ℕ) : locM B e (omB ℂ L C' q) ≤ locM B e (omB ℂ L C q) := by
@@ -194,15 +192,13 @@ private lemma locM_le_locM (B C C' : Subalgebra ℂ L) (hBC : B ≤ C) (hBC' : B
 end Forms
 
 /- English proof (translation)
-Introduce `c hc`. Take `⟨hC, hD⟩` from `Submodule.mem_inf.1 hc`. Establish `hdc : GlobalTheory.DI.delta c = 0` using `by rw [← hw]; exact hD`. Use `Submodule.mem_map.2 ⟨GlobalTheory.MonoCech.cone j c, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.mem_pi.2 fun s _ => ?_ show GlobalTheory.MonoCech.cone j c s ∈ (if (s.card : ℤ) = n - 1 then A s else ⊥)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hs : j ∈ s`. Simplify using `[GlobalTheory.MonoCech.cone, hs]`. Establish `h1 : c (insert j s) ∈ (if ((insert j s).card : ℤ) = n then A (insert j s) else ⊥)` using `(Submodule.mem_pi.1 hC) (insert j s) (Set.mem_univ _)`. Rewrite `h1` using `[Finset.card_insert_of_notMem hs]`. Distinguish the cases in `hcard : (s.card : ℤ) = n - 1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hcard]`. Rewrite `h1` using `[if_pos (by push_cast; omega)]`. Simplify using `only [GlobalTheory.MonoCech.cone, if_neg hs]`. Conclude with `zsmul_mem (hA s h1) _`. Rewrite using `[if_neg hcard]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[if_neg (by push_cast; omega)]`. Simplify using `[GlobalTheory.MonoCech.cone, hs, (Submodule.mem_bot ℂ).1 h1]`. Use `GlobalTheory.MonoCech.delta_cone_add j c` as an intermediate fact. Rewrite `this` using `[hdc, GlobalTheory.MonoCech.cone_zero, add_zero]`. Use `show wd _ (GlobalTheory.MonoCech.cone j c) = c`.
-
-Rewrite using `[hw]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma cone_exact {σ V : Type} [LinearOrder σ] [AddCommGroup V] [Module ℂ V] (A : Finset σ → Submodule ℂ V) (j : σ)
     (hA : ∀ J, A (insert j J) ≤ A J) (hw : ∀ c, wd (fun _ : σ => (1 : Module.End ℂ V)) c = GlobalTheory.DI.delta c) (n : ℤ) :
@@ -233,7 +229,7 @@ private lemma cone_exact {σ V : Type} [LinearOrder σ] [AddCommGroup V] [Module
     exact this
 
 /- English proof (translation)
-Introduce and unpack `v ⟨b, hb, hbv⟩`. Conclude with `⟨Subalgebra.inclusion h b, hb, h hbv⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private lemma loc_mono {L : Type} [Field L] [Algebra ℂ L] (B B' : Subalgebra ℂ L) (h : B' ≤ B) (e : B →ₐ[ℂ] ℂ) :
     loc B' (e.comp (Subalgebra.inclusion h)) ≤ loc B e := by
@@ -241,11 +237,9 @@ private lemma loc_mono {L : Type} [Field L] [Algebra ℂ L] (B B' : Subalgebra �
   exact ⟨Subalgebra.inclusion h b, hb, h hbv⟩
 
 /- English proof (translation)
-Introduce `c hc`. Establish `key` using `(hLG L B (DR ℂ L) (Fin (d + 1)) A (fun _ => 1) hst).1 m c`. Simplify using `only [map_one] at key`. Use `key fun e => ?_` and prove the remaining obligations. Take `⟨j', hA⟩` from `hloc e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hC, hD⟩` from `Submodule.mem_inf.1 hc`. Use `cone_exact _ j' hA (fun c => (hWd _ _ (fun _ => ⊥) (fun _ => 1)).2.2.2.2.1 c) m (Submodule.mem_inf.2 ⟨Submodule.mem_pi.2 fun s hs => ?_, hD⟩)` and prove the remaining obligations. Use `Submodule.mem_pi.1 hC s hs` as an intermediate fact. Use `show c s ∈ (if (s.card : ℤ) = m then _ else ⊥)`. Express the relevant statement in the definitionally equal form `c s ∈ (if (s.card : ℤ) = m then _ else ⊥) at this`.
-
-Use `split_ifs at this ⊢`. Conclude with `le_locM _ _ _ this`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private lemma ex_of_loc (hLG : LG) (hWd : WdBasic) {L : Type} [Field L] [Algebra ℂ L] (B : Subalgebra ℂ L) [Algebra.FiniteType ℂ B]
     {d : ℕ} (A : Finset (Fin (d + 1)) → Submodule ℂ (DR ℂ L)) (hst : ∀ J, Stab (Algebra.lsmul ℂ ℂ (DR ℂ L)) B (A J))
@@ -267,13 +261,13 @@ private lemma ex_of_loc (hLG : LG) (hWd : WdBasic) {L : Type} [Field L] [Algebra
   · exact this
 
 /- English proof (translation)
-Use `sup_le (fun v hv => ⟨1, by simp, by simpa using hBR J hv⟩) ?_` and prove the remaining obligations. Introduce `y hy`. Break down `J.eq_empty_or_nonempty with rfl | ⟨j, hj⟩` into its components or cases. Establish `hy' : y ∈ R2 (xv x) j2 {j'}` using `by simpa using hy`. Take `⟨b, hb, hby⟩` from `hloc hy'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, hb, hBR ∅ hby⟩`. Take `⟨N, hN⟩` from `hlast J j hj j' y hy`. Establish `hm : algebraMap F K ((x j : F) / x j') ∈ rB ℂ K (xv x) {j'}` using `(integralClosure (rA ℂ (xv x) {j'}) K).algebraMap_mem ⟨(x j : F) / x j', Algebra.subset_adjoin ⟨j', Finset.mem_singleton_self _, j, rfl⟩⟩`. Take `⟨b, hb, hbu⟩` from `hloc (hmap {j'} _ hm).2`. Use `⟨b ^ N, by rw [map_pow]; exact pow_ne_zero _ hb, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hone : j2 (algebraMap F K ((x j : F) / x j')) * j2 (algebraMap F K ((x j' : F) / x j)) = 1`. Rewrite using `[← map_mul, ← map_mul, div_mul_div_comm, mul_comm (x j : F), div_self (mul_ne_zero (x j').ne_zero (x j).ne_zero), map_one, map_one]`. Establish `heq : ((b ^ N : rB ℂ K' (xv x) I) : K') * y = ((b : K') * j2 (algebraMap F K ((x j : F) / x j'))) ^ N * (y * j2 (algebraMap F K ((x j' : F) / x j)) ^ N)`. Establish `h1 : j2 (algebraMap F K ((x j : F) / x j')) ^ N * j2 (algebraMap F K ((x j' : F) / x j)) ^ N = 1`. Rewrite using `[← mul_pow, hone, one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SubmonoidClass.coe_pow]`. Take the linear combination `(-((b : K') ^ N * y)) * h1`. Rewrite using `[heq]`. Conclude with `mul_mem (pow_mem (hBR J hbu) N) ((le_sup_right : R2 (xv x) j2 J ≤ RY (xv x) j2 I J) hN)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma den_insert {F K K' : Type} [Field F] [Field K] [Field K'] [Algebra ℂ F] [Algebra ℂ K] [Algebra ℂ K'] [Algebra F K]
     [IsScalarTower ℂ F K] [Algebra K K'] [IsScalarTower ℂ K K'] [Algebra F K'] [IsScalarTower F K K'] [IsScalarTower ℂ F K'] {d : ℕ}
@@ -310,11 +304,11 @@ private lemma den_insert {F K K' : Type} [Field F] [Field K] [Field K'] [Algebra
 end UpperTheory.Gal.productCup_of_system
 
 /- English proof (translation)
-Introduce `hLG _ hRY hFT _ hWd F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 hY q I hI m`. Take `⟨h0, -, hmono, hmap, hlast⟩` from `hRY F K K' d x j2 hY`. Establish `hBR : ∀ J, rB ℂ K' (xv x) I ≤ RY (xv x) j2 I J` using `fun J => le_sup_left`. Use `haveI : Algebra.FiniteType ℂ (rB ℂ K' (xv x) I) := by`. Use `hFT F K K' d x j2 hY I ∅ hI` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[h0]`. Then use the resulting hypothesis. Use `ex_of_loc hLG hWd (rB ℂ K' (xv x) I) _ (fun J r hr m hm => smul_omB _ q (hBR J hr) hm) (fun e => ?_) m` and prove the remaining obligations. Take `⟨i, hi⟩` from `hI`. Establish `hle : rB ℂ K' (xv x) {i} ≤ rB ℂ K' (xv x) I`. Rewrite using `[← h0, ← h0]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hmono _ _ _ _ (Finset.singleton_subset_iff.2 hi) subset_rfl`. Take `⟨j', hj'⟩` from `hY.cov i (e.comp (Subalgebra.inclusion hle))`. Establish `hloc : R2 (xv x) j2 {j'} ≤ loc (rB ℂ K' (xv x) I) e` using `hj'.trans (loc_mono _ _ hle e)`. Conclude with `⟨j', fun J => locM_le_locM _ _ _ (hBR J) (hBR _) e (den_insert x j2 I hmap hlast hBR (h0 I) e j' hloc J) q⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.rowEx_of :
     LG → OmLoc → RYBasic → RYFT → ValBasic → WdBasic → RowEx := by

@@ -8,14 +8,14 @@ open scoped TensorProduct DirectSum
 namespace UpperTheory.Gal.KunnethLefschetz
 
 /- English proof (translation)
-Rewrite using `[LateralTheory.EtaleTrace.pb_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem pbc (l : ℕ) [Fact l.Prime] {A B C : Scheme.{0}} (f : A ⟶ B) (g : B ⟶ C) (n : ℤ) (z : V l C n) :
     pb l (f ≫ g) n z = pb l f n (pb l g n z) := by
   rw [LateralTheory.EtaleTrace.pb_comp]; rfl
 
 /- English proof (translation)
-Use `show pullHQ l (sch.map (𝟙 X)) n 0 z = z`. Rewrite using `[CategoryTheory.Functor.map_id]`. Unfold `pullHQ`. Rewrite using `[pullHl_id, LinearMap.baseChange_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem pbi (l : ℕ) [Fact l.Prime] (X : Scheme.{0}) (n : ℤ) (z : V l X n) : pb l (𝟙 X) n z = z := by
   show pullHQ l (sch.map (𝟙 X)) n 0 z = z
@@ -24,23 +24,23 @@ private theorem pbi (l : ℕ) [Fact l.Prime] (X : Scheme.{0}) (n : ℤ) (z : V l
   rw [pullHl_id, LinearMap.baseChange_id]; rfl
 
 /- English proof (translation)
-Establish `hsep : IsSeparated (U'.ι ≫ p)` using `inferInstance`. Establish `hsm' : SmoothOfRelativeDimension d (U'.ι ≫ p)`. Establish `h` using `smoothOfRelativeDimension_comp (n := 0) (m := d) U'.ι p`. Rewrite `h` using `[Nat.zero_add]`. Then use the resulting hypothesis. Establish `hr : Set.range y.1 ⊆ Set.range U'.ι` using `by simpa using hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Set `y' : S k ⟶ U'.toScheme` to `IsOpenImmersion.lift U'.ι y.1 hr`. Establish `hy' : y' ≫ U'.ι = y.1` using `IsOpenImmersion.lift_fac _ _ _`. Set `t : Pt (U'.ι ≫ p)` to `⟨y', by rw [← Category.assoc, hy', y.2]⟩`. Establish `hpt : IsPair d 0 (U'.ι ≫ p) y'` using `((hP k d _ hsep hsm').2 t).1`. Establish `hpy : IsPair d 0 p y.1` using `((hP k d p hs hsm).2 y).1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hoff : Off y' (U'.ι ⁻¹ᵁ U)`. Unfold `Off`. Use extensionality with `x`. Establish `hx : U'.ι x ∈ (U' : Set X)`. Establish `: U'.ι x ∈ Set.range U'.ι` using `⟨x, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Use `show U'.ι x ∈ (U : Set X) ↔ x ∉ Set.range y'`. Rewrite using `[hU]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2⟩ ⟨w, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h2 ⟨w, by rw [← hy']; rfl⟩`. Introduce `h`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨w, hw⟩`. Apply `h` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨w, ?_⟩` and prove the remaining obligations. Apply `U'.ι.isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← hw, ← hy']`. Both sides reduce to the same expression. Establish `hdead : pb l (U'.ι ⁻¹ᵁ U).ι _ (pb l U'.ι _ z) = 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pbc, ← morphismRestrict_ι, pbc, hz, map_zero]`. Establish `hprop : IsProper (y' ≫ U'.ι ≫ p)`. Establish `: y' ≫ U'.ι ≫ p = 𝟙 _` using `t.2`. Rewrite using `[this]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `G.onto hpt (zero_add _) _ hoff hprop _ hdead`. Take `⟨r, hra, -⟩` from `hL.line a`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `hpb : IsPullback y' (𝟙 _) U'.ι y.1` using `IsPullback.of_vert_isIso_mono ⟨by simp [hy']⟩`. Establish `hnat` using `G.nat hpt hpy U'.ι (𝟙 _) rfl hpb (zero_add _) (oneV l (S k))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hnat` using `[pbi]`. Establish `hpt' : G.pt d y = G.g hpy (zero_add _) (oneV l (S k))`. Simplify using `only [GysQ.cls, dif_pos hpy]`. Rewrite using `[map_sub, map_smul, hpt', hnat, ← map_smul, ← hra, ha, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem step {l : ℕ} [Fact l.Prime] {k : Type} [Field k] (hP : Pairs) (hL : Low l k) (G : GysQ k l) (d : ℕ)
     {X : Scheme.{0}} (p : X ⟶ S k) (hs : IsSeparated p) (hsm : SmoothOfRelativeDimension d p) (y : Pt p)
@@ -93,25 +93,23 @@ private theorem step {l : ℕ} [Fact l.Prime] {k : Type} [Field k] (hP : Pairs) 
 end UpperTheory.Gal.KunnethLefschetz
 
 /- English proof (translation)
-Unfold `FinSupp`. Introduce `_ hP l _ k _ _ _ _ hL G d X p hsep hsm s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `U hU z hz`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : U = ⊤`. Apply `SetLike.coe_injective` to reduce the goal to its premises. Simplify `hU` using `[OffPts]`. Substitute `hT` using the available equality. Establish `h0 : z = 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `e : X.topIso.inv ≫ (⊤ : X.Opens).ι = 𝟙 X` using `by simp`. Establish `h1 : pb l X.topIso.inv _ (pb l (⊤ : X.Opens).ι _ z) = z`. Rewrite using `[← pbc, e, pbi]`. Rewrite using `[← h1, hz, map_zero]`. Rewrite using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Consider the case `insert y s hy ih`. Introduce `U hU z hz`. Establish `hcl : ∀ t : Pt p, IsClosed (Set.range t.1)` using `fun t => by haveI := ((hP k d p hsep hsm).2 t).1.cl`. Conclude with `t.1.isClosedEmbedding.isClosed_range`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hopen : IsOpen ((⋃ t ∈ s, Set.range t.1)ᶜ)` using `(s.finite_toSet.isClosed_biUnion fun t _ => hcl t).isOpen_compl`. Set `U' : X.Opens` to `⟨_, hopen⟩`. Establish `hU' : OffPts s U'` using `rfl`. Establish `hU2 : (U : Set X) = (U' : Set X) \ Set.range y.1`. Rewrite using `[hU, Finset.set_biUnion_insert, Set.compl_union, Set.diff_eq, Set.inter_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails.
 
-Both sides reduce to the same expression. Distinguish the cases in `hin : Set.range y.1 ⊆ (U' : Set X)`. Take `⟨r, hr⟩` from `step hP hL G d p hsep hsm y U' U hU2 hin z hz`. Establish `h1` using `ih U' hU' _ hr`. Establish `hz' : z = (z - r • G.pt d y) + r • G.pt d y` using `(sub_add_cancel _ _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hz']`. Conclude with `add_mem h1 (Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, rfl⟩))`. Establish `hsub : Subsingleton (S k)` using `inferInstanceAs (Subsingleton (PrimeSpectrum k))`. Establish `hUU : U = U'`. Apply `SetLike.coe_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hU2]`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`. Introduce `hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨hx, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨w, rfl⟩`. Apply `hin` to reduce the goal to its premises. Introduce and unpack `_ ⟨w', rfl⟩`. Rewrite using `[Subsingleton.elim w' w]` and apply the resulting hypothesis.
-
-Substitute `hUU` using the available equality. Conclude with `ih _ hU' z hz`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.finSupp_holds :
     UpperTheory.Gal.KunnethLefschetz.FinSupp := by

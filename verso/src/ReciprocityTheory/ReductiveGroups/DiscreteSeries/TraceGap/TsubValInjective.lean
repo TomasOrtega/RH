@@ -9,7 +9,7 @@ namespace ReciprocityTheory.ChartRestriction.DS.TRGap
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Use `show kᴴ * Jm ε * k = Jm ε`. Rewrite using `[mul_assoc, ← hk.2, ← mul_assoc, ← Matrix.star_eq_conjTranspose, (Matrix.mem_unitaryGroup_iff').1 hk.1, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kset_mem_UJset {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) : k ∈ UJset ε := by
   show kᴴ * Jm ε * k = Jm ε
@@ -20,7 +20,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Set `Lk : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ k : H →ₗ[ℂ] H), norm_map' := hσ.2.1 k (kset_mem_UJset hk) }`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner]`. Conclude with `Lk.inner_map_map u v`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_sigD (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {k : Matrix (Fin n) (Fin n) ℂ}
     (hk : k ∈ Kset ε) (u v : D) : inner ℂ (sigD hD hk u) (sigD hD hk v) = inner ℂ u v := by
@@ -29,18 +29,18 @@ theorem inner_sigD (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {
   exact Lk.inner_map_map u v
 
 /- English proof (translation)
-Rewrite using `[ffMat, LinearMap.toMatrix_apply, Module.Basis.coord_apply, AlgHom.toLinearMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_ff_basis (k : Matrix (Fin n) (Fin n) ℂ) (s s' : Finset (Fin (n * n))) :
     (fockBasis n).coord s (ff ε k (fockBasis n s')) = ffMat ε k s s' := by
   rw [ffMat, LinearMap.toMatrix_apply, Module.Basis.coord_apply, AlgHom.toLinearMap_apply]
 
 /- English proof (translation)
-Establish `hU` using `(Matrix.mem_unitaryGroup_iff').1 (ffMat_unitary (ε := ε) hk)`. Unfold `tform`. Simplify using `only [tco_wK, coord_ff_basis, sum_inner, inner_sum, inner_smul_left, inner_smul_right, inner_sigD hσ hD hk, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Establish `h1 : ∀ s'' : Finset (Fin (n * n)), ∑ x, ffMat ε k x s' * ((starRingEnd ℂ) (ffMat ε k x s'') * inner ℂ (tcoef ((fockBasis n).coord s'') y) (tcoef ((fockBasis n).coord s') y')) = (1 : Matrix (Finset (Fin (n * n))) (Finset (Fin (n * n))) ℂ) s'' s' * inner ℂ (tcoef ((fockBasis n).coo …`. Introduce `s''`. Rewrite using `[← hU, Matrix.mul_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.star_apply, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun s'' _ => h1 s'']`. Simplify using `[Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tform_wK (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {k : Matrix (Fin n) (Fin n) ℂ}
     (hk : k ∈ Kset ε) (y y' : TensorProduct ℂ D (Fock n)) :
@@ -65,7 +65,7 @@ theorem tform_wK (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {k 
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[sigD, hσ.1.1]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sigD_one (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (h1 : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Kset ε) :
     sigD hD h1 = LinearMap.id := by
@@ -73,7 +73,7 @@ theorem sigD_one (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (h1
   simp [sigD, hσ.1.1]
 
 /- English proof (translation)
-Rewrite using `[wK, sigD_one hσ hD h1, ff_one]`. Conclude with `TensorProduct.map_id`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wK_one (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (h1 : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Kset ε) :
     wK hD h1 = LinearMap.id := by
@@ -81,7 +81,7 @@ theorem wK_one (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (h1 :
   exact TensorProduct.map_id
 
 /- English proof (translation)
-Establish `hs : sigD hD hab = sigD hD ha ∘ₗ sigD hD hb`. Use extensionality with `v`. Simplify using `[sigD, hσ.1.2 a (kset_mem_UJset ha) b (kset_mem_UJset hb)]`. Rewrite using `[wK, wK, wK, hs, ff_mul ha hb, ← TensorProduct.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem wK_mul (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {a b : Matrix (Fin n) (Fin n) ℂ}
     (ha : a ∈ Kset ε) (hb : b ∈ Kset ε) (hab : a * b ∈ Kset ε) :
@@ -93,13 +93,13 @@ theorem wK_mul (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {a b 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_mem _, by rw [one_mul, mul_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_Kset' : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Kset ε :=
   ⟨one_mem _, by rw [one_mul, mul_one]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_mem ha.1 hb.1, by rw [mul_assoc, hb.2, ← mul_assoc, ha.2, mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mul_mem_Kset' {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ Kset ε) (hb : b ∈ Kset ε) : a * b ∈ Kset ε :=
   ⟨mul_mem ha.1 hb.1, by rw [mul_assoc, hb.2, ← mul_assoc, ha.2, mul_assoc]⟩
@@ -120,12 +120,12 @@ def tsubVal (S : Submodule ℂ (TensorProduct ℂ M (Fock n))) : TSub S →ₗ[�
   S.subtype
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem tsubVal_injective : Function.Injective (tsubVal S) := Subtype.val_injective
 
 /- English proof (translation)
-The claim follows from `(x : S).2`.
+A detailed English derivation is pending.
 -/
 theorem tsubVal_mem (x : TSub S) : tsubVal S x ∈ S := (x : S).2
 
@@ -180,7 +180,7 @@ variable (hD : IsDerivedOn ε σ D E) {S : Submodule ℂ (TensorProduct ℂ D (F
   (hSK : ∀ (k : Matrix (Fin n) (Fin n) ℂ) (hk : k ∈ Kset ε), ∀ y ∈ S, wK hD hk y ∈ S)
 
 /- English proof (translation)
-Simplify using `only [tOp, dif_pos hk]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem tOp_apply {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (x : TSub S) :
     tsubVal S (tOp hD hSK k x) = wK hD hk (tsubVal S x) := by
@@ -188,19 +188,19 @@ theorem tOp_apply {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (x : TSu
   rfl
 
 /- English proof (translation)
-Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Apply `tsubVal_injective` to reduce the goal to its premises. Rewrite using `[tOp_apply hD hSK one_mem_Kset', wK_one hσ hD]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `a ha b hb`. Use extensionality with `x`. Apply `tsubVal_injective` to reduce the goal to its premises. Rewrite using `[tOp_apply hD hSK (mul_mem_Kset' ha hb), ContinuousLinearMap.comp_apply, tOp_apply hD hSK ha, tOp_apply hD hSK hb, wK_mul hσ hD ha hb]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `g hg v`. Rewrite using `[norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ), tsub_inner, tsub_inner, tOp_apply hD hSK hg, tform_wK hσ hD hg]`. Introduce `v`. Establish `hΨ : Set.EqOn (fun g => coordH (tsubVal S (tOp hD hSK g v))) (fun g => fun s => ∑ s', ffMat ε g s s' • σ g ((tcoef ((fockBasis n).coord s') (tsubVal S v) : D) : H)) (Formalism.REAL.Kset ε)`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg' : g ∈ Kset ε` using `hg`. Use function extensionality and compare the values at `s`. Simplify using `only`. Rewrite using `[tOp_apply hD hSK hg', coordH_apply, tco_wK, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coord_ff_basis]`. Both sides reduce to the same expression. Establish `hc : ContinuousOn (fun g => coordH (tsubVal S (tOp hD hSK g v))) (Formalism.REAL.Kset ε)`. Use `ContinuousOn.congr ?_ hΨ` and prove the remaining obligations. Use `continuousOn_pi.2 fun s => continuousOn_finsetSum _ fun s' _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(ffMat_continuous s s').continuousOn.smul ((hσ.2.2 _).mono fun g hg => kset_mem_UJset hg)`. Establish `hinj : Function.Injective (coordH ∘ₗ tsubVal S)` using `coordH_injective.comp tsubVal_injective`. Set `e` to `LinearEquiv.ofInjective _ hinj`. Establish `hcont : Continuous e.symm` using `LinearMap.continuous_of_finiteDimensional e.symm.toLinearMap`. Establish `hfe : (fun g => tOp hD hSK g v) = fun g => e.symm ⟨(coordH ∘ₗ tsubVal S) (tOp hD hSK g v), LinearMap.mem_range_self _ _⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Use `(e.symm_apply_apply (tOp hD hSK g v)).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hfe, continuousOn_iff_continuous_restrict]`. Conclude with `hcont.comp ((continuousOn_iff_continuous_restrict.1 hc).subtype_mk _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tOp_isURepOn (hσ : IsURepOn (UJset ε) σ) :
     Formalism.MainNotions.S.IsURepOn (Formalism.REAL.Kset ε) (tOp hD hSK) := by
@@ -254,7 +254,7 @@ variable (hD : IsDerivedOn ε σ D E) {S : Submodule ℂ (TensorProduct ℂ D (F
   (hSK : ∀ (k : Matrix (Fin n) (Fin n) ℂ) (hk : k ∈ Kset ε), ∀ y ∈ S, wK hD hk y ∈ S)
 
 /- English proof (translation)
-Simplify using `only [tOp, dif_pos hk]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem tOp_trace {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) :
     LinearMap.trace ℂ (TSub S) (tOp hD hSK k : TSub S →ₗ[ℂ] TSub S) =
@@ -263,29 +263,25 @@ theorem tOp_trace {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) :
   rfl
 
 /- English proof (translation)
-Establish `hE : IsGlRep E` using `hD.glRep`. Establish `hU : IsInfUnitary ε E` using `isInfUnitary_of_isDerivedOn hσ hD`. Establish `hKA : Formalism.REAL.KRel ε (diagE ε (eT E) cpT cmT)` using `fun a b c d hab hcd => diagAction_commutator (eT_isGlRep hE) cpT_cmT_isCAR (eT_commutesCAR E) ε a b c d hab hcd`. Take `⟨_, hSs, hirr, w, hwS, hw0, hwK⟩` from `hS`. Establish `hSeq : kLowSpan ε (diagE ε (eT E) cpT cmT) w = S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle` using `kLowSpan_le hSs hwS`. Break down `hirr _ hle (compactLoweringSpan_kStable hKA hwK) with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hw0` to reduce the goal to its premises. Use `self_mem_kLowSpan (ε := ε) (E := diagE ε (eT E) cpT cmT) w` as an intermediate fact.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `this`. Conclude with `h`. Use `⟨inferInstance, fun g _ v _ => Submodule.mem_top, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `S'' _ hK''`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P : Submodule ℂ (TensorProduct ℂ D (Fock n))` to `S''.map (tsubVal S)`. Establish `hPS : P ≤ S`. Introduce and unpack `_ ⟨x, _, rfl⟩`. Conclude with `tsubVal_mem x`. Establish `hPfd : FiniteDimensional ℂ P` using `Module.Finite.map S'' (tsubVal S)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hPK : ∀ (k : Matrix (Fin n) (Fin n) ℂ) (hk : k ∈ Kset ε), ∀ y ∈ P, wK hD hk y ∈ P`. Introduce and unpack `k hk _ ⟨x, hx, rfl⟩`. Conclude with `⟨tOp hD hSK k x, hK'' k hk x hx, tOp_apply hD hSK hk x⟩`. Establish `hPs : IsKStableSub ε (diagE ε (eT E) cpT cmT) P` using `fun a b hab y hy => diagE_mem_of_wK hσ hD P hPfd hPK hab hy`. Break down `hirr P hPS hPs with h | h` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `: tsubVal S x ∈ P` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_bot]`. Conclude with `tsubVal_injective (this.trans (map_zero _).symm)`. Use `right`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hxP : tsubVal S x ∈ P`. Rewrite using `[h]`. Conclude with `tsubVal_mem x`. Take `⟨x', hx', hxx⟩` from `hxP`. Conclude with `(tsubVal_injective hxx) ▸ hx'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(show TSub S from ⟨w, hwS⟩), Submodule.mem_top, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hw0` to reduce the goal to its premises. Use `congrArg (tsubVal S) h` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `θ _`. Apply `tsubVal_injective` to reduce the goal to its premises. Rewrite using `[tOp_apply hD hSK (diag_mem_Kset' ε θ), map_smul]`. Conclude with `wK_diag_wt hσ hD hwK.1 θ`. Introduce `μ v _ hv0 hwt`.
-
-Establish `hy : ∀ θ : Fin n → ℝ, wK hD (diag_mem_Kset' ε θ) (tsubVal S v) = Complex.exp (((∑ a, μ a * θ a : ℝ) : ℂ) * Complex.I) • tsubVal S v`. Introduce `θ`. Rewrite using `[← tOp_apply hD hSK (diag_mem_Kset' ε θ), hwt θ (bwt_diag_mem_Kset ε θ), map_smul]`. Establish `hμ` using `diagE_wt_of_wK hσ hD hy`. Establish `hvS : tsubVal S v ∈ kLowSpan ε (diagE ε (eT E) cpT cmT) w` using `hSeq ▸ tsubVal_mem v`.
-
-Establish `hv0' : tsubVal S v ≠ 0` using `fun h => hv0 (tsubVal_injective (h.trans (map_zero _).symm))`. Take `⟨l, hl, rfl⟩` from `kLow_wt_eq_lowWt hKA (fun a y y' => tensorForm_diagAction_adjoint hU rfl y y') hwK hvS hv0' hμ`. Conclude with `cdom_lowWt γ l hl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tOp_isKTypeOf (hσ : IsURepOn (UJset ε) σ) {γ : Fin n → ℝ}
     (hS : IsKIrrHW ε (diagE ε (eT E) cpT cmT) γ S) :
@@ -354,7 +350,7 @@ theorem tOp_isKTypeOf (hσ : IsURepOn (UJset ε) σ) {γ : Fin n → ℝ}
     exact cdom_lowWt γ l hl
 
 /- English proof (translation)
-Take `⟨_, _, _, w, hwS, hw0, _⟩` from `hS`. Use `⟨⟨(show TSub S from ⟨w, hwS⟩), 0, fun h => hw0 ?_⟩⟩` and prove the remaining obligations. Use `congrArg (tsubVal S) h` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tSub_nontrivial {γ : Fin n → ℝ} (hS : IsKIrrHW ε (diagE ε (eT E) cpT cmT) γ S) : Nontrivial (TSub S) := by
   obtain ⟨_, _, _, w, hwS, hw0, _⟩ := hS

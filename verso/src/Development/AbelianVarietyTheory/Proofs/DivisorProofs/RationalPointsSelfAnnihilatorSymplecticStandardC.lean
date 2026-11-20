@@ -16,14 +16,14 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (AlgHom.id F (AF F)) σ ((1 : AF F) ⊗ₜ[F] e) = (1 : AF F) ⊗ₜ[F] σ e`. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cAF_incAF (σ : E →ₐ[F] E) (e : E) : cAF σ (incAF F E e) = incAF F E (σ e) := by
   show Algebra.TensorProduct.map (AlgHom.id F (AF F)) σ ((1 : AF F) ⊗ₜ[F] e) = (1 : AF F) ⊗ₜ[F] σ e
   rw [Algebra.TensorProduct.map_tmul, AlgHom.id_apply]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `GlobalTheory.PsiNontriv.psiV_ne_one ψ hψ v (DFunLike.ext _ _ fun t => ?_)` and prove the remaining obligations. Rewrite using `[AddChar.one_apply]`. Conclude with `h t`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiV_exists_ne_one {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (v : HeightOneSpectrum (𝓞 F)) :
     ∃ y, psiV F ψ v y ≠ 1 := by
@@ -34,11 +34,11 @@ theorem psiV_exists_ne_one {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (v : Heigh
   exact h t
 
 /- English proof (translation)
-Use `haveI : IsTotallyReal F := hB.cm.1`. Take `⟨⟨θ, hθ⟩, -⟩` from `(GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood F E σ B hB).2`. Set `L : Ainf F →+ ℂ` to `AddMonoidHom.mk' (fun x => ∑ w, θ w (x ⊗ₜ[F] (1 : E))) fun a b => by`. Simplify using `only [map_add, TensorProduct.add_tmul, Finset.sum_add_distrib]`. Establish `hL : ∀ x, L x = ((Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (InfiniteAdeleRing.ringEquiv_mixedSpace F x) : ℝ) : ℂ)` using `fun x => GlobalTheory.StdCharWeilDatum.sum_infFam B θ hθ x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.RatAnnih.adele_rat (GlobalTheory.StdCharWeilDatum.isCharAF hB.std) (psiV_exists_ne_one hB.std) L (continuous_finset_sum _ fun w _ => (hθ w).2) (fun x => ?_) (fun x => ?_) a h` and prove the remaining obligations. Rewrite using `[hL]`. Establish `e : InfiniteAdeleRing.ringEquiv_mixedSpace F (algebraMap F (Ainf F) x) = mixedEmbedding F x`. Rewrite using `[InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`. Rewrite using `[e, GlobalTheory.LatVacArith.trace_mixedEmbedding]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Complex.ofReal_ratCast _`. Use `show B.ψ (pairA F x 0) = _`. Rewrite using `[GlobalTheory.StdCharWeilDatum.psi_pairA hB.std, hL]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem adele_rat_of_isGood {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) (a : AF F)
     (h : ∀ c : F, B.ψ (a * algebraMap F _ c) = 1) : ∃ d : F, a = algebraMap F _ d := by
@@ -61,9 +61,9 @@ theorem adele_rat_of_isGood {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood �
     ring
 
 /- English proof (translation)
-Set `g` to `Function.surjInv hσ`. Set `P` to `JS * Matrix.single j i (ξ₀⁻¹ * e) * JT⁻¹`. Use `⟨(incAF F E).toAddMonoidHom.mapMatrix (Matrix.of fun c b => g (P b c)), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.RatAnnih.sum_single (incAF F E) JS JT (isUnit_iff_ne_zero.2 hS.2) (isUnit_iff_ne_zero.2 hT.2) j i (ξ₀⁻¹ * e) x`. Establish `h2 : hOF σ JS JT x ((incAF F E).toAddMonoidHom.mapMatrix (Matrix.of fun c b => g (P b c))) = incAF F E (ξ₀⁻¹ * e) * x i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h, hOF]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [AddMonoidHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, cAF_incAF, g, Function.surjInv_eq hσ]`. Both sides reduce to the same expression. Rewrite using `[symplOF, h2, ← mul_assoc, ← RingHom.map_mul, mul_inv_cancel_left₀ hξ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_symplOF_eq (σ : E →ₐ[F] E) (hσ : Function.Surjective σ) {nS nT : ℕ}
     {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E} (hS : IsHermND σ JS) (hT : IsHermND σ JT)
@@ -85,9 +85,9 @@ theorem exists_symplOF_eq (σ : E →ₐ[F] E) (hσ : Function.Surjective σ) {n
   rw [symplOF, h2, ← mul_assoc, ← RingHom.map_mul, mul_inv_cancel_left₀ hξ]
 
 /- English proof (translation)
-Use `⟨Algebra.trace F E (ξ₀ * ∑ a, ∑ b, ∑ c, ∑ d, JS⁻¹ a b * σ (N c b) * JT c d * M d a), ?_⟩` and prove the remaining obligations. Establish `h : hOF σ JS JT ((incAF F E).toAddMonoidHom.mapMatrix M) ((incAF F E).toAddMonoidHom.mapMatrix N) = incAF F E (∑ a, ∑ b, ∑ c, ∑ d, JS⁻¹ a b * σ (N c b) * JT c d * M d a)`. Simplify using `only [hOF, AddMonoidHom.mapMatrix_apply, Matrix.map_apply, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, cAF_incAF, map_sum, map_mul]`. Rewrite using `[symplOF, h, ← map_mul]`. Use `show Algebra.trace (AF F) (AEF F E) ((1 : AF F) ⊗ₜ[F] _) = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.LatVac.trace_tmul, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem symplOF_rat (σ : E →ₐ[F] E) [Module.Finite F E] {nS nT : ℕ}
     (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E)
@@ -105,13 +105,11 @@ theorem symplOF_rat (σ : E →ₐ[F] E) [Module.Finite F E] {nS nT : ℕ}
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ x`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hB.cm.2.2.1]; norm_num)`. Establish `hσ : Function.Surjective σ` using `(Algebra.IsAlgebraic.algHom_bijective σ).2`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hent : ∀ i j, ∃ e : E, x i j = (1 : AF F) ⊗ₜ[F] e` using `fun i j => GlobalTheory.RatAnnih.tensor_rat (x i j) fun e => adele_rat_of_isGood hB _ fun c => by`. Take `⟨γ, hγ, hγe⟩` from `exists_symplOF_eq σ hσ hS hT hξ x i j (c • e)`. Conclude with `(congrArg B.ψ ((GlobalTheory.RatAnnih.trace_mul_algebraMap (x i j) e c).trans hγe.symm)).trans (h γ hγ)`. Use `choose M hM using hent`. Use `⟨Matrix.of M, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hM i j]`. Both sides reduce to the same expression. Introduce and unpack `⟨M, rfl⟩ _ ⟨N, rfl⟩`. Take `⟨a, ha⟩` from `symplOF_rat σ JS JT ξ₀ M N`. Rewrite using `[ha]`.
-
-Conclude with `(GlobalTheory.StdCharWeilDatum.isCharAF hB.std).2.2.1 a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratLF_annihilator : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

@@ -12,9 +12,9 @@ open GlobalTheory.ChiGrid GlobalTheory.FunObj.SqNum
 namespace GlobalTheory.FunObj.StdDatum.HalfDiff
 
 /- English proof (translation)
-Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `h`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ h`. Establish `hb : D.host.𝔟 ≤ M` using `le_sup_right.trans hle`. Establish `h0 : M ≠ ⊥` using `fun e => ReciprocityTheory.ChartRestriction.G.PullbackSections.MLI.bb_ne_bot D (eq_bot_iff.2 (e ▸ hb))`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `P : HeightOneSpectrum (𝓞 D.host.E)` to `⟨M, hM.isPrime, h0⟩`. Conclude with `GlobalTheory.HalfCompare.not_mem_of_coprime P hN (GlobalTheory.HalfCompare.two_q_mem (P := P) (Ideal.dvd_iff_le.2 hb)) (hle (Ideal.mem_sup_left hI))`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isCoprime_of_natCast_mem {D : D7} {I : Ideal (𝓞 D.host.E)} {N : ℕ} (hN : Nat.Coprime N (D.host.QS * D.host.q))
     (hI : (N : 𝓞 D.host.E) ∈ I) : IsCoprime I D.host.𝔟 := by
@@ -28,16 +28,16 @@ theorem isCoprime_of_natCast_mem {D : D7} {I : Ideal (𝓞 D.host.E)} {N : ℕ} 
     (hle (Ideal.mem_sup_left hI))
 
 /- English proof (translation)
-Establish `: Nat.Coprime a m` using `by rw [Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, h, Nat.gcd_one_left]`. Conclude with `this.coprime_dvd_right hb`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coprime_of_mod {a b m : ℕ} (h : a % m = 1) (hb : b ∣ m) : Nat.Coprime a b := by
   have : Nat.Coprime a m := by rw [Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, h, Nat.gcd_one_left]
   exact this.coprime_dvd_right hb
 
 /- English proof (translation)
-Establish `hg : ∀ k, Nat.Coprime (D.host.g k) (D.host.QS * D.host.q)` using `fun k => coprime_of_mod (D.ntypes.g_cond k) (dvd_mul_right _ _)`. Break down `P.mem_S0_of_sum_eq.1 hv with rfl | h1` into its components or cases. Conclude with `⟨q0 D, coprime_of_mod (leastSplitAuxiliaryPrimeThetaChain_spec D).2.1 (Dvd.dvd.mul_left ⟨D.host.d, rfl⟩ _), P.basePlace_over_qZero⟩`. Break down `(S1_mem_OmF D).1 h1 with h' | h' | h' | h'` into its components or cases. Conclude with `⟨_, hg 0, h'⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨_, hg 1, h'⟩`. Conclude with `⟨_, h.1, h'⟩`. Conclude with `⟨_, h.2, h'⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_nat_mem_place_coprime {D : D7} {T : Type} {L : LevCh D T} (P : Places L)
     (h : Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q)) {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : v ∈ P.S0) :
@@ -54,9 +54,9 @@ theorem exists_nat_mem_place_coprime {D : D7} {T : Type} {L : LevCh D T} (P : Pl
     · exact ⟨_, h.2, h'⟩
 
 /- English proof (translation)
-Use `choose! p hp hm using fun v (hv : v ∈ P.S0) => exists_nat_mem_place_coprime P h hv`. Use `⟨∏ v ∈ P.S0, p v ^ condExp P v, Nat.Coprime.prod_left fun v hv => (hp v hv).pow_left _, ?_⟩` and prove the remaining obligations. Unfold `SqNum.condE`. Use `push_cast`. Use `Ideal.prod_mem_prod fun v hv => Ideal.pow_mem_pow ?_ _` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ((p v : ℕ) : 𝓞 D.host.F) ∈ ((P.w v).under (𝓞 D.host.F)).asIdeal`. Rewrite using `[P.under_w hv]`. Conclude with `hm v hv`. Simplify using `using Ideal.mem_comap.1 h1`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_nat_mem_condE {D : D7} {T : Type} {L : LevCh D T} (P : Places L)
     (h : Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q)) :
@@ -72,7 +72,7 @@ theorem exists_nat_mem_condE {D : D7} {T : Type} {L : LevCh D T} (P : Places L)
   simpa using Ideal.mem_comap.1 h1
 
 /- English proof (translation)
-Take `⟨N, hN, hm⟩` from `exists_nat_mem_condE P h`. Use `⟨isCoprime_of_natCast_mem hN hm, isCoprime_of_natCast_mem hN ?_⟩` and prove the remaining obligations. Establish `h1` using `Ideal.smul_mem_pointwise_smul D.host.conj _ _ hm`. Establish `h2 : D.host.conj • (N : 𝓞 D.host.E) = N` using `map_natCast (MulSemiringAction.toRingHom _ _ D.host.conj) N`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem condE_isCoprime_halfDifferent {D : D7} {T : Type} {L : LevCh D T} (P : Places L)
     (h : Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q)) :

@@ -15,33 +15,31 @@ noncomputable section
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S ρ M U₀ Q p _ y y₀ u jV yV yK hT F ψ hM a W h hE hV x hx yW hyW`. Take `⟨-, -, hK, hK0⟩` from `hT`. Take `⟨hF, hψ1, hψ2, hψ3⟩` from `hM`. Take `⟨hh, hE⟩` from `hE`. Take `⟨hx1, hx2, hx3, hx4⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsep : IsSeparated Q.G.hom` using `Q.semi.separated`. Establish `hpa : (ρ.pt a).left ≫ ρ.P.A.hom = 𝟙 _` using `Over.w (ρ.pt a)`. Establish `hφ : Q.φ ≫ Q.G.hom = pullback.snd ρ.P.A.hom Q.u₀ ≫ U₀.ι` using `Q.cart.1.w`. Establish `hFw : F ≫ Q.G.hom = u.G.hom ≫ yV` using `hF.1.w`. Set `sec : U₀.toScheme ⟶ pullback ρ.P.A.hom Q.u₀` to `pullback.lift (Q.u₀ ≫ (ρ.pt a).left) (𝟙 _) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[Category.assoc, hpa]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm)`. Establish `hs1 : sec ≫ pullback.fst _ _ = Q.u₀ ≫ (ρ.pt a).left` using `pullback.lift_fst _ _ _`. Establish `hs2 : sec ≫ pullback.snd _ _ = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `hs3 : sec ≫ Q.φ ≫ Q.G.hom = U₀.ι`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, ← Category.assoc, hs2, Category.id_comp]`. Set `N : M.Z.Opens` to `W ⊓ U₀`. Set `iW : N.toScheme ⟶ W.toScheme` to `M.Z.homOfLE inf_le_left`. Set `iU : N.toScheme ⟶ U₀.toScheme` to `M.Z.homOfLE inf_le_right`. Establish `hiW : iW ≫ W.ι = N.ι` using `M.Z.homOfLE_ι _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiU : iU ≫ U₀.ι = N.ι` using `M.Z.homOfLE_ι _`. Establish `hr : Set.range (jK u.V ≫ yV) ⊆ Set.range N.ι`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hyW]`. Conclude with `(yW (jK u.V w)).2`. Rewrite using `[← hK]`. Conclude with `(yK w).2`. Set `k : Sp (FractionRing u.V) ⟶ N.toScheme` to `IsOpenImmersion.lift N.ι (jK u.V ≫ yV) hr`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : k ≫ N.ι = jK u.V ≫ yV` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hkW : k ≫ iW = jK u.V ≫ yW`. Rewrite using `[← cancel_mono W.ι, Category.assoc, hiW, hk, Category.assoc, hyW]`. Establish `hkU : k ≫ iU = yK`. Rewrite using `[← cancel_mono U₀.ι, Category.assoc, hiU, hk, hK]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hne : (N : Set M.Z).Nonempty` using `⟨_, (k (IsLocalRing.closedPoint (FractionRing u.V))).2⟩`. Establish `hg : Set.range M.pt ⊆ Set.range N.ι`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `M.top_le_preimage_pt hne (x := w) trivial`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : Sp Ω ⟶ N.toScheme` to `IsOpenImmersion.lift N.ι M.pt hg`. Establish `hgN : g ≫ N.ι = M.pt` using `IsOpenImmersion.lift_fac _ _ _`. Establish `: IsDominant (g ≫ N.ι)` using `by rw [hgN]; infer_instance`. Establish `: IsDominant g` using `IsDominant.of_comp_of_isOpenImmersion g N.ι`. Establish `key : iW ≫ h = iU ≫ sec ≫ Q.φ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ext_of_isDominant_of_isSeparated Q.G.hom ?_ g ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[hh, hs3, hiW, hiU]`. Establish `h1 : (g ≫ iU) ≫ U₀.ι = M.pt` using `by rw [Category.assoc, hiU, hgN]`. Use `hE (g ≫ iW) (g ≫ iU ≫ sec) (by rw [Category.assoc, hiW, hgN]) (by simp only [Category.assoc]; rw [hs3, hiU, hgN]) (by` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[hs1, ← Q.u₀_gen _ h1]`. Simplify using `only [Category.assoc])`. Simplify `this` using `only [Category.assoc]`. Establish `hxψ : yK ≫ sec = x ≫ ψ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hs1, Category.assoc, hψ1, ← Category.assoc, hK0]`. Conclude with `hx4.symm`. Rewrite using `[Category.assoc, hs2, Category.assoc, hψ2, ← Category.assoc, hx3, Category.comp_id, Category.id_comp]`. Establish `: IsDominant (jK u.V)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (algebraMap u.V (FractionRing u.V))).2 (by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective u.V (FractionRing u.V))]`. Conclude with `bot_le)⟩`. Use `ext_of_isDominant_of_isSeparated Q.G.hom ?_ (jK u.V) ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[hh, hyW, hFw, ← Category.assoc, hx1, Category.id_comp]`.
-
-Rewrite using `[← Category.assoc, ← hkW, Category.assoc, key, ← Category.assoc, hkU, ← Category.assoc, hxψ, Category.assoc, hψ3, ← Category.assoc, hx2, Category.assoc]`.
+A detailed English derivation is pending.
 -/
 theorem extPt_comp_eq_integral_point : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (Q : ZHPre ρ M U₀), ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (jV : u.V →+* OO p) (yV : Sp u.V ⟶ M.Z) (yK : Sp (FractionRing u.V) ⟶ U₀.toScheme), Q.TestFac y u jV yV yK → ∀ (F : u.G.left ⟶ Q.G.left) (ψ : pullback u.G.hom (jK u.V) ⟶ pullback ρ.P.A.hom Q.u₀), Q.TestMap u yV yK F ψ → ∀ (a : S.Gam) (W : M.Z.Opens) (h : W.toScheme ⟶ Q.G.left), Q.ExtPt a W h → ∀ (hV : Sp u.V ⟶ u.G.left) (x : Sp (FractionRing u.V) ⟶ pullback u.G.hom (jK u.V)), (hV ≫ u.G.hom = 𝟙 _ ∧ x ≫ pullback.fst _ _ = jK u.V ≫ hV ∧ x ≫ pullback.snd _ _ = 𝟙 _ ∧ x ≫ u.U.gen.hom.left ≫ u.φ = spMap u.yK ≫ (ρ.pt a).left) → ∀ yW : Sp u.V ⟶ W.toScheme, yW ≫ W.ι = yV → yW ≫ h = hV ≫ F := by
   intro o Ω _ _ _ _ S ρ M U₀ Q p _ y y₀ u jV yV yK hT F ψ hM a W h hE hV x hx yW hyW

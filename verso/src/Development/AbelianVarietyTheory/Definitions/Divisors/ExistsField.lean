@@ -40,19 +40,19 @@ end
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Take `⟨ψ, χ, θ, μ, 𝓕, ω, H, ν, Φ, hψ, hχ, hres, hθ, hμ, hω, hH, hν, hΦ, hΦ0, -⟩` from `GlobalTheory.AnisoStdModel.data D A V`. Set `n` to `A.rank`. Establish `hCM` using `GlobalTheory.AdelicU.isCMExt_host D`. Take `⟨δ, hδ0, hδ⟩` from `skew_xi D`. Set `J : Matrix (Fin n) (Fin n) D.host.E` to `δ • 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hJ : ∀ i j, D.sp.cm.sig (J j i) = -J i j` using `fun i j => by`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[J, hδ]`. Simplify using `[J, h, Ne.symm h]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hJ0 : J.det ≠ 0` using `by simp [J, hδ0]`. Take `⟨T, K, hT, hK, -⟩` from `GlobalTheory.T.exists_witt_basis_compact_stabiliser D.host.F D.host.E D.sp.cm.sig hCM n 1 J _ one_ne_zero hJ0 rfl`. Establish `hG` using `gram_witt hJ hT`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.witt_change_basis_unitary_iso D n _ T hG`. Take `⟨hP, ha⟩` from `GlobalTheory.T.siegel_parabolic_chart_levi_block D n _ T κ hκ J hT`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hK'` using `GlobalTheory.T.standard_compact_under_witt_chart D n _ T κ hκ K hK`. Take `⟨ι, hι, hιQ⟩` from `GlobalTheory.T.unitary_group_conj_hermitian_automorphisms D V`. Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Set `ε` to `Module.finBasis D.host.F D.host.E`. Take `⟨co, had, hco⟩` from `GlobalTheory.T.darboux_basis_adapted_coordinates D n V J _ T hT hG _ ε`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI : MeasurableSpace (Fin V.rank × Fin n × Fin (Module.finrank D.host.F D.host.E) → AF D.host.F) := borel _`. Use `haveI : BorelSpace (Fin V.rank × Fin n × Fin (Module.finrank D.host.F D.host.E) → AF D.host.F) := ⟨rfl⟩`. Take `⟨μ', hμ', hint⟩` from `GlobalTheory.T.tamagawa_measure_matrix_adeles D V.rank n _ ε μ 𝓕 hμ`. Take `⟨om, hom⟩` from `GlobalTheory.T.weil_representation_seesaw_schwartz D n V ψ χ θ hθ μ 𝓕 hμ ω hω _ _ ε ι κ`. Take `⟨ν', 𝓖, hν', h𝓖, -⟩` from `GlobalTheory.T.haar_average_fundamental_domain_descent D V ι hιQ ν hν`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨φ, hφ⟩, e⟩` from `GlobalTheory.SchwartzCoord.exists_schA_comp_coord_eq D θ hθ V.rank n _ ε Φ.1 Φ.2`. Take `⟨hI, -⟩` from `height hH hP ha hK'`. Establish `hF` using `formulas hθ hω hT hG hκ hι hco hint hom`. Establish `hR` using `GlobalTheory.LFun.resEtaPow_of_resEta D.host.F D.host.E hCM.2.2.1 χ V.rank hres`. Establish `h0 : φ ≠ 0` using `fun h => hΦ0 (Subtype.ext (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e' : φ ∘ coord ε = Φ.1` using `e`. Rewrite using `[← e', h]`. Use the proof step `rfl))`. Conclude with `⟨hCM, unramified_host D, ψ, hψ, 1, -V.gram, J, _, one_ne_zero, isHermND_neg_gram V, aniso_neg_gram han, by rw [inv_one, one_smul]; exact hJ, rfl, T, hT, _, inferInstance, co, had, inferInstance, inferInstance, μ', hμ', χ, hχ, hR, om, hF, K, hK, hI, φ, hφ, h0, kfin hom hK' hφ Φ e …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hypsMet_of (D : D7) (A V : HSp D) (han : IsAniso V) :
     HypsMet D.host.F D.host.E D.sp.cm.sig A.rank V.rank := by
@@ -92,14 +92,14 @@ theorem hypsMet_of (D : D7) (A V : HSp D) (han : IsAniso V) :
     om, hF, K, hK, hI, φ, hφ, h0, kfin hom hK' hφ Φ e hΦ, ν', 𝓖, hν', h𝓖⟩
 
 /- English proof (translation)
-Take `⟨A, V, rfl, rfl, h⟩` from `GlobalTheory.AnisoStdModel.ranks D n m`. Conclude with `hypsMet_of D A V h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hypsMet (D : D7) (n m : ℕ) : HypsMet D.host.F D.host.E D.sp.cm.sig n m := by
   obtain ⟨A, V, rfl, rfl, h⟩ := GlobalTheory.AnisoStdModel.ranks D n m
   exact hypsMet_of D A V h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨2 * n + 1, by omega, by omega, hypsMet D _ _⟩, ⟨2 * n, by omega, by omega, hypsMet D _ _⟩, ⟨n, hn, le_rfl, hypsMet D _ _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ranges_met (D : D7) (n : ℕ) (hn : 1 ≤ n) :
     (∃ m, 1 ≤ m ∧ 2 * n < m ∧ HypsMet D.host.F D.host.E D.sp.cm.sig n m) ∧
@@ -109,7 +109,7 @@ theorem ranges_met (D : D7) (n : ℕ) (hn : 1 ≤ n) :
     ⟨n, hn, le_rfl, hypsMet D _ _⟩⟩
 
 /- English proof (translation)
-Take `⟨D⟩` from `GlobalTheory.Mem.nonempty_record`. Conclude with `⟨_, _, _, _, _, _, _, D.sp.cm.sig, hypsMet D⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_field : ∃ (F E : Type) (_ : Field F) (_ : NumberField F) (_ : Field E) (_ : NumberField E) (_ : Algebra F E)
     (σ : E →ₐ[F] E), ∀ n m, HypsMet F E σ n m := by

@@ -13,17 +13,17 @@ noncomputable section
 namespace GlobalTheory.UPel.HT
 
 /- English proof (translation)
-Introduce `h M B _ ζ O _ bar S S' s s' f z act hs hz hR hA`. Take `⟨⟨w, φ, φ₂, hφ, hsq, hP, hlev⟩, hpr⟩` from `GlobalTheory.siegPre_pullback h M B ζ S S' s s' f z hs`. Establish `hwP : w.Principal` using `hpr w ⟨φ, φ₂, hφ, hsq, hP, hlev⟩ hz`. Take `⟨e, he, heφ⟩` from `grpPullback_iso hφ (isGrpPullback_pullback z.A f)`. Use `haveI := he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hie : e.inv.left ≫ e.hom.left = 𝟙 _` using `by rw [← Over.comp_left, e.inv_hom_id, Over.id_left]`. Set `actw : O → (w.A ⟶ w.A)` to `fun a => e.hom ≫ (Over.pullback f).map (act a) ≫ e.inv`. Establish `hv : ∀ a, (actw a).left ≫ φ = φ ≫ (act a).left` using `fun a => by`. Establish `hm : ((Over.pullback f).map (act a)).left ≫ pullback.fst z.A.hom f = pullback.fst z.A.hom f ≫ (act a).left` using `pullback.lift_fst _ _ _`. Rewrite using `[← heφ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [actw, Over.comp_left, Category.assoc]`. Rewrite using `[reassoc_of% hie, hm]`. Establish `hRw : IsRAct w.A actw` using `ActUnr.isRAct_conj e _ (ActUnr.isRAct_pullback f z.A act hR)`. Establish `lf : ∀ {T : Scheme.{0}} {X Y : Over T} (x y : X ⟶ Y), (lift x y).left ≫ (fst Y Y).left = x.left` using `fun x y => by rw [← Over.comp_left, lift_fst]`. Establish `ls : ∀ {T : Scheme.{0}} {X Y : Over T} (x y : X ⟶ Y), (lift x y).left ≫ (snd Y Y).left = y.left` using `fun x y => by rw [← Over.comp_left, lift_snd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : ∀ a, (lift (fst w.A w.A ≫ actw a) (snd w.A w.A)).left ≫ φ₂ = φ₂ ≫ (lift (fst z.A z.A ≫ act a) (snd z.A z.A)).left` using `fun a => by`. Apply `ActUnr.left_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, lf, Category.assoc, lf, Over.comp_left _ _ _ (fst w.A w.A) (actw a), Over.comp_left _ _ _ (fst z.A z.A) (act a), Category.assoc, hv, ← Category.assoc, ← hsq.1, Category.assoc]`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ls, Category.assoc, ls, hsq.2]`. Establish `hc2 : ∀ a, (lift (fst w.A w.A) (snd w.A w.A ≫ actw (bar a))).left ≫ φ₂ = φ₂ ≫ (lift (fst z.A z.A) (snd z.A z.A ≫ act (bar a))).left` using `fun a => by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ActUnr.left_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, lf, Category.assoc, lf, hsq.1]`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ls, Category.assoc, ls, Over.comp_left _ _ _ (snd w.A w.A) (actw (bar a)), Over.comp_left _ _ _ (snd z.A z.A) (act (bar a)), Category.assoc, hv, ← Category.assoc, ← hsq.2, Category.assoc]`. Establish `hadj : Adj w.A w.P bar actw` using `fun a => by`. Establish `h1` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso hP _ (hc1 a).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.GenSpread.lbIso_pull_comp (L := z.P) (M := z.P) φ₂ rfl rfl (hA a)`. Establish `h3` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso hP _ (hc2 a).symm`. Conclude with `LBIso.trans (pull_isLB w.isLB _) (pull_isLB z.isLB _) (pull_isLB w.isLB _) (LBIso.trans (pull_isLB w.isLB _) (pull_isLB z.isLB _) (pull_isLB z.isLB _) h1 h2) h3.symm`. Conclude with `⟨w, actw, hwP, hRw, hadj, φ, φ₂, hφ, hsq, hP, hlev, hv⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem siegPre_actPB_pullback : ∀ (h M : ℕ) (B : Type) [CommRing B] (ζ : B) (O : Type) [Ring O] (bar : O → O)
     (S S' : Scheme.{0}) (s : S ⟶ Sp B) (s' : S' ⟶ Sp B) (f : S' ⟶ S) (z : SiegPre h M ζ s)

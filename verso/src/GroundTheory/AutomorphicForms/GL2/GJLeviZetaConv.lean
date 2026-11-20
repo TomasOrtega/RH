@@ -19,19 +19,17 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   [MeasurableSpace (levi F n β)] [BorelSpace (levi F n β)]
 
 /- English proof (translation)
-Set `L : W →ₗ[ℂ] ℂ` to `{ toFun := fun w' => ∫ m, G m * ℓ (σ m w') ∂μ map_add' := fun x y => by`. Rewrite using `[← integral_add (hint x) (hint y)]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Rewrite using `[map_add, map_add, mul_add]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_smul' := fun c x => by`. Rewrite using `[RingHom.id_apply, smul_eq_mul, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Rewrite using `[map_smul, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `ring }`. Establish `hinv : ∀ u : levi F n β, (u : GL (Fin n) F) ∈ unipotentRadical F n (splitFun {i₀}) → ∀ x : W, L (σ u x - x) = 0`. Introduce `u hu x`. Rewrite using `[map_sub, sub_eq_zero]`. Use `show ∫ m, G m * ℓ (σ m (σ u x)) ∂μ = ∫ m, G m * ℓ (σ m x) ∂μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `map_mul_right_eq_self_of_mem_unipotentRadical μ hu`. Establish `hfun : (fun m => G m * ℓ (σ m (σ u x))) = fun m => (fun m => G m * ℓ (σ m x)) (m * u)`. Use function extensionality and compare the values at `m`. Use `show _ = G (m * u) * ℓ (σ (m * u) x)`. Rewrite using `[hG m u hu, map_mul, Module.End.mul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfun]`. Establish `hmeas : AEMeasurable (· * u : levi F n β → levi F n β) μ` using `(measurable_mul_const u).aemeasurable`. Establish `h2` using `integral_map hmeas (f := fun m => G m * ℓ (σ m x)) (by rw [e]; exact (hint x).1)`. Rewrite `h2` using `[e]`. Conclude with `h2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨U, hU, hwU⟩` from `exists_finset_of_isCuspidal hc (S := {i₀}) ⟨i₀, j₀, hij, Finset.mem_singleton_self _, by simpa using hne.symm⟩ w`. Establish `hle : Submodule.span ℂ {y | ∃ u ∈ U, ∃ x, y = σ u x - x} ≤ LinearMap.ker L`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, x, rfl⟩`. Conclude with `hinv u (hU u hu) x`.
-
-Conclude with `hle hwU`.
+A detailed English derivation is pending.
 -/
 theorem integral_eq_zero_of_cuspidal (hc : IsCuspidal σ) (μ : Measure (levi F n β))
     [μ.IsHaarMeasure] {i₀ j₀ : Fin n} (hij : β i₀ = β j₀) (hne : i₀ ≠ j₀)
@@ -78,7 +76,7 @@ theorem integral_eq_zero_of_cuspidal (hc : IsCuspidal σ) (μ : Measure (levi F 
   exact hle hwU
 
 /- English proof (translation)
-Use `choose ω hω using fun b : Set.range β => exists_central_character hσ (blockUnif_mem_center (F := F) (β := β) b)`. Conclude with `⟨ω, hω⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_blockChar (hσ : IsSmooth σ) [σ.IsIrreducible] :
     ∃ ω : Set.range β → ℂ, ∀ b v, σ (blockUnif F b) v = ω b • v := by
@@ -91,7 +89,7 @@ def coeffIntegrand (σ : Representation ℂ (levi F n β) W) (θ : levi F n β �
   (θ m : ℂ) * detPow (m : GL (Fin n) F) s * ℓ (σ m w)
 
 /- English proof (translation)
-The claim follows from `((Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp hθ)).mul (isLocallyConstant_detPow s).continuous).mul (isLocallyConstant_coeff hσ w ℓ).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coeffIntegrand (hσ : IsSmooth σ) (θ : levi F n β →* ℝ≥0) (hθ : Continuous θ)
     (w : W) (ℓ : Module.Dual ℂ W) (s : ℂ) : Continuous (coeffIntegrand σ θ w ℓ s) :=
@@ -99,14 +97,14 @@ theorem continuous_coeffIntegrand (hσ : IsSmooth σ) (θ : levi F n β →* ℝ
     (isLocallyConstant_detPow s).continuous).mul (isLocallyConstant_coeff hσ w ℓ).continuous
 
 /- English proof (translation)
-Rewrite using `[detPow_eq_qs_zpow, ordDet_blockUnif, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem detPow_blockUnif (b : Set.range β) (s : ℂ) :
     detPow ((blockUnif F b : levi F n β) : GL (Fin n) F) s = qs F s ^ blockSize β b := by
   rw [detPow_eq_qs_zpow, ordDet_blockUnif, zpow_natCast]
 
 /- English proof (translation)
-Simplify using `only [coeffIntegrand]`. Rewrite using `[map_mul, Subgroup.coe_mul, detPow_mul, detPow_blockUnif, map_mul, Module.End.mul_apply, hω, map_smul, smul_eq_mul, NNReal.coe_mul, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coeffIntegrand_blockUnif_mul {ω : Set.range β → ℂ}
     (hω : ∀ b v, σ (blockUnif F b) v = ω b • v) (θ : levi F n β →* ℝ≥0) (w : W)
@@ -119,7 +117,7 @@ theorem coeffIntegrand_blockUnif_mul {ω : Set.range β → ℂ}
   ring
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', mul_assoc, coeffIntegrand_blockUnif_mul hω, ih, pow_succ']`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coeffIntegrand_blockUnif_pow_mul {ω : Set.range β → ℂ}
     (hω : ∀ b v, σ (blockUnif F b) v = ω b • v) (θ : levi F n β →* ℝ≥0) (w : W)
@@ -132,7 +130,7 @@ theorem coeffIntegrand_blockUnif_pow_mul {ω : Set.range β → ℂ}
   | succ j ih => rw [pow_succ', mul_assoc, coeffIntegrand_blockUnif_mul hω, ih, pow_succ']; ring
 
 /- English proof (translation)
-Rewrite using `[blockOrd_mul, blockOrd_inv, blockOrd_pow, blockOrd_blockUnif]`. Apply the tactic sequence `split_ifs <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockOrd_blockUnif_pow_inv_mul (b b' : Set.range β) (j : ℕ) (m : levi F n β) :
     blockOrd F b' ((blockUnif F b ^ j)⁻¹ * m) =
@@ -141,7 +139,7 @@ theorem blockOrd_blockUnif_pow_inv_mul (b b' : Set.range β) (j : ℕ) (m : levi
   split_ifs <;> ring
 
 /- English proof (translation)
-The claim follows from `isLocallyConstant_of_forall_mul fun m => ⟨leviIntegral F n β, isOpen_leviIntegral, fun k hk => by funext b rw [blockOrd_mul, blockOrd_of_mem_integralGL b (Subgroup.mem_subgroupOf.1 hk), add_zero]⟩`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_blockOrds :
     IsLocallyConstant fun m : levi F n β => fun b : Set.range β => blockOrd F b m :=
@@ -150,70 +148,64 @@ theorem isLocallyConstant_blockOrds :
     rw [blockOrd_mul, blockOrd_of_mem_integralGL b (Subgroup.mem_subgroupOf.1 hk), add_zero]⟩
 
 /- English proof (translation)
-The claim follows from `(isLocallyConstant_blockOrds (F := F) (β := β) {v | P v}).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_blockOrds (P : (Set.range β → ℤ) → Prop) :
     MeasurableSet {m : levi F n β | P fun b => blockOrd F b m} :=
   (isLocallyConstant_blockOrds (F := F) (β := β) {v | P v}).measurableSet
 
 /- English proof (translation)
-Take `⟨ω, hω⟩` from `exists_blockChar (F := F) hσ`. Use `set q : ℝ := (LocalField.residueCard F : ℝ) with hqdef`. Establish `hq : 1 < q` using `by rw [hqdef]; exact_mod_cast LocalField.one_lt_residueCard (K := F)`. Use `set A : ℝ := 1 + ∑ b, (θ (blockUnif F b) : ℝ) * ‖ω b‖ with hAdef`. Establish `hA : 1 ≤ A` using `le_add_of_nonneg_right (Finset.sum_nonneg fun b _ => by positivity)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs₀ : 0 ≤ Real.logb q A` using `Real.logb_nonneg hq hA`. Use `⟨Real.logb q A, hs₀, fun s hs w ℓ hℓ k => ?_⟩` and prove the remaining obligations. Use `set c : Set.range β → ℂ := fun b => (θ (blockUnif F b) : ℂ) * ω b * qs F s ^ blockSize β b with hcdef`. Establish `hqs : ‖qs F s‖ < A⁻¹`. Rewrite using `[norm_qs, ← hqdef]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : q ^ (-s.re) < q ^ (-Real.logb q A)` using `Real.rpow_lt_rpow_of_exponent_lt hq (neg_lt_neg hs)`. Establish `h2 : q ^ (-Real.logb q A) = A⁻¹`. Rewrite using `[Real.rpow_neg (by linarith), Real.rpow_logb (by linarith) hq.ne' (by linarith)]`. Conclude with `h1.trans_eq h2`. Establish `hqs1 : ‖qs F s‖ ≤ 1` using `hqs.le.trans (inv_le_one_of_one_le₀ hA)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : ∀ b, ‖c b‖ < 1`. Introduce `b`. Establish `hnb : 1 ≤ blockSize β b` using `blockSize_pos β b`. Establish `hpow : ‖qs F s‖ ^ blockSize β b ≤ ‖qs F s‖` using `pow_le_of_le_one (norm_nonneg _) hqs1 (by omega)`. Establish `hθω : (θ (blockUnif F b) : ℝ) * ‖ω b‖ ≤ A - 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hAdef, add_sub_cancel_left]`. Conclude with `Finset.single_le_sum (f := fun b => (θ (blockUnif F b) : ℝ) * ‖ω b‖) (fun b _ => by positivity) (Finset.mem_univ b)`. Simplify using `only [hcdef, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, NNReal.abs_eq]`. Establish `hApos : 0 < A` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sub_mul, mul_inv_cancel₀ hApos.ne']`. Establish `: 0 < A⁻¹` using `inv_pos.2 hApos`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set g := coeffIntegrand σ θ w ℓ s with hgdef`. Establish `hgc : Continuous g` using `continuous_coeffIntegrand hσ θ hθ w ℓ s`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hgm : Measurable fun m => ‖g m‖ₑ` using `hgc.measurable.enorm`. Set `E : Finset (Set.range β) → Set (levi F n β)` to `fun S => {m | (∀ b, k b ≤ blockOrd F b m) ∧ ∀ b ∉ S, blockOrd F b m < k b + blockSize β b}`. Establish `hEm : ∀ S, MeasurableSet (E S)` using `fun S => measurableSet_blockOrds (fun v => (∀ b, k b ≤ v b) ∧ ∀ b ∉ S, v b < k b + blockSize β b)`. Establish `key : ∀ S, ∫⁻ m, (E S).indicator (fun m => ‖g m‖ₑ) m ∂μ < ⊤`. Introduce `S`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Take `⟨C, hC, hmemC⟩` from `exists_compact_of_coeff hσ hc w hℓ k (fun b => k b + blockSize β b)`. Establish `hle : (E ∅).indicator (fun m => ‖g m‖ₑ) ≤ C.indicator fun m => ‖g m‖ₑ`. Introduce `m`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hm : m ∈ E ∅`. Rewrite using `[Set.indicator_of_mem hm]`. Distinguish the cases in `hg : g m = 0`. Rewrite using `[hg, enorm_zero]`. Conclude with `zero_le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hℓm : ℓ (σ m w) ≠ 0` using `fun h => hg (by simp [hgdef, coeffIntegrand, h])`. Rewrite using `[Set.indicator_of_mem (hmemC m hℓm fun b => ⟨hm.1 b, (hm.2 b (Finset.notMem_empty b)).le⟩)]`. Rewrite using `[Set.indicator_of_notMem hm]`. Conclude with `zero_le`. Use `(lintegral_mono hle).trans_lt ?_` and prove the remaining obligations.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[lintegral_indicator hC.isClosed.measurableSet]`. Use `setLIntegral_lt_top_of_isCompact (μ := μ) hC.measure_lt_top.ne hC (f := fun m => ‖g m‖₊) hgc.nnnorm` as an intermediate fact. Simplify `this` using `[enorm_eq_nnnorm]`. Consider the case `insert b S hb ih`. Establish `hρ : ‖c b‖ₑ < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[enorm_eq_nnnorm]`. Conclude with `(show ‖c b‖₊ < 1 from hc1 b)` after adjusting the coercions. Establish `hdec : ∀ m, (E (insert b S)).indicator (fun m => ‖g m‖ₑ) m = ∑' j : ℕ, {m : levi F n β | (blockUnif F b ^ j)⁻¹ * m ∈ E S}.indicator (fun m => ‖g m‖ₑ) m`. Introduce `m`. Establish `hnb : (0 : ℤ) < blockSize β b` using `by exact_mod_cast blockSize_pos β b`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmem : ∀ j : ℕ, (blockUnif F b ^ j)⁻¹ * m ∈ E S ↔ (∀ b', b' ≠ b → k b' ≤ blockOrd F b' m) ∧ (∀ b', b' ≠ b → b' ∉ S → blockOrd F b' m < k b' + blockSize β b') ∧ k b ≤ blockOrd F b m - j * blockSize β b ∧ blockOrd F b m - j * blockSize β b < k b + blockSize β b`. Introduce `j`. Simplify using `only [E, Set.mem_ofPred_eq, blockOrd_blockUnif_pow_inv_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨fun b' hb' => ?_, fun b' hb' hb'S => ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `h1 b'` using `[hb']`. Simplify `h2 b' hb'S` using `[hb']`. Simplify using `using h1 b`. Simplify using `using h2 b hb`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨h1, h2, h3, h4⟩`. Use `⟨fun b' => ?_, fun b' hb'S => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb' : b' = b`. Substitute `hb'` using the available equality. Simplify using `using h3`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify `h1 b' hb'` using `[hb']`. Distinguish the cases in `hb' : b' = b`. Substitute `hb'` using the available equality. Simplify using `using h4`. Simplify `h2 b' hb' hb'S` using `[hb']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `huniq : ∀ j j' : ℕ, (blockUnif F b ^ j)⁻¹ * m ∈ E S → (blockUnif F b ^ j')⁻¹ * m ∈ E S → j = j'`. Introduce `j j' hj hj'`. Take `⟨-, -, h3, h4⟩` from `(hmem j).1 hj`. Take `⟨-, -, h3', h4'⟩` from `(hmem j').1 hj'`. Establish `e1 : ((j : ℤ) - j' - 1) * blockSize β b < 0` using `by nlinarith`.
+Assume the negation of the conclusion and derive a contradiction. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ((j' : ℤ) - j - 1) * blockSize β b < 0` using `by nlinarith`. Establish `f1 : (j : ℤ) - j' - 1 < 0`. Assume the negation of the conclusion as `h`. Conclude with `absurd e1 (not_lt.2 (mul_nonneg (not_lt.1 h) hnb.le))`. Establish `f2 : (j' : ℤ) - j - 1 < 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `absurd e2 (not_lt.2 (mul_nonneg (not_lt.1 h) hnb.le))`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hm : m ∈ E (insert b S)`. Rewrite using `[Set.indicator_of_mem hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hvb : k b ≤ blockOrd F b m` using `hm.1 b`. Use `set d : ℤ := blockOrd F b m - k b with hd`. Establish `hd0 : 0 ≤ d` using `by omega`. Establish `hqd : 0 ≤ d / blockSize β b` using `Int.ediv_nonneg hd0 hnb.le`. Establish `hmod` using `Int.emod_def d (blockSize β b)`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hr0` using `Int.emod_nonneg d hnb.ne'`. Establish `hr1` using `Int.emod_lt_of_pos d hnb`. Use `set j₀ : ℕ := (d / blockSize β b).toNat with hj₀`. Establish `hj₀' : ((j₀ : ℕ) : ℤ) = d / blockSize β b` using `Int.toNat_of_nonneg hqd`. Establish `hP : (blockUnif F b ^ j₀)⁻¹ * m ∈ E S`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hmem j₀).2 ⟨fun b' hb' => hm.1 b', fun b' hb' hb'S => hm.2 b' ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hb', hb'S]`. Rewrite using `[hj₀']`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hj₀']`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hz : ∀ j ≠ j₀, {m : levi F n β | (blockUnif F b ^ j)⁻¹ * m ∈ E S}.indicator (fun m => ‖g m‖ₑ) m = 0` using `fun j hj => Set.indicator_of_notMem (s := {m : levi F n β | (blockUnif F b ^ j)⁻¹ * m ∈ E S}) (fun h => hj (huniq j j₀ h hP)) _`. Rewrite using `[tsum_eq_single j₀ hz, Set.indicator_of_mem (show m ∈ {m : levi F n β | (blockUnif F b ^ j₀)⁻¹ * m ∈ E S} from hP)]`. Rewrite using `[Set.indicator_of_notMem hm]`. Use `symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ENNReal.tsum_eq_zero.2 fun j => Set.indicator_of_notMem (s := {m : levi F n β | (blockUnif F b ^ j)⁻¹ * m ∈ E S}) (fun h => hm ?_) _` and prove the remaining obligations. Take `⟨h1, h2, h3, -⟩` from `(hmem j).1 h`. Use `⟨fun b' => ?_, fun b' hb' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb' : b' = b`. Substitute `hb'` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: (0 : ℤ) ≤ j * blockSize β b'` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h1 b' hb'`. Conclude with `h2 b' (fun e => hb' (e ▸ Finset.mem_insert_self _ _)) (fun e => hb' (Finset.mem_insert_of_mem e))`. Rewrite using `[lintegral_congr fun m => hdec m]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[lintegral_tsum fun j => ((hgm.indicator (show MeasurableSet {m : levi F n β | (blockUnif F b ^ j)⁻¹ * m ∈ E S} from (hEm S).preimage (measurable_const_mul _))).aemeasurable)]`. Establish `hterm : ∀ j : ℕ, ∫⁻ m, {m : levi F n β | (blockUnif F b ^ j)⁻¹ * m ∈ E S}.indicator (fun m => ‖g m‖ₑ) m ∂μ = ‖c b‖ₑ ^ j * ∫⁻ m, (E S).indicator (fun m => ‖g m‖ₑ) m ∂μ`. Introduce `j`. Rewrite using `[← lintegral_mul_left_eq_self _ (blockUnif F b ^ j), ← lintegral_const_mul _ ((hgm.indicator (hEm S)))]`. Use `lintegral_congr fun m => ?_` and prove the remaining obligations.
-
-Simplify using `only [Set.indicator, Set.mem_ofPred_eq, inv_mul_cancel_left]`. Use `split_ifs`. Rewrite using `[hgdef, coeffIntegrand_blockUnif_pow_mul hω, enorm_mul, enorm_pow]`. Rewrite using `[mul_zero]`. Repeatedly rewrite using `[hterm]`.
-
-Rewrite using `[ENNReal.tsum_mul_right, ENNReal.tsum_geometric]`. Conclude with `ENNReal.mul_lt_top (ENNReal.inv_lt_top.2 (tsub_pos_of_lt hρ)) ih`. Establish `h` using `key Finset.univ`. Establish `hEu : E Finset.univ = {m : levi F n β | ∀ b, k b ≤ blockOrd F b m}`. Use extensionality with `m`.
-
-Simplify using `[E]`. Rewrite `h` using `[hEu]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_lintegral_lt_top (hσ : IsSmooth σ) [σ.IsIrreducible] (hc : IsCuspidal σ)
     (θ : levi F n β →* ℝ≥0) (hθ : Continuous θ) (μ : Measure (levi F n β)) [μ.IsHaarMeasure] :

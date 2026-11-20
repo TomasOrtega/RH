@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EqZeroOfForallDv
 open Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Hk3.ResWitt.exists_int_unitary_mod_of_gram_mod` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FHermitianIntegralVectorsPairing.lean&line=267#L267)
 -/

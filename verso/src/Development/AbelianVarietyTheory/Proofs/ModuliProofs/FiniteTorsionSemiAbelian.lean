@@ -14,7 +14,7 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `TorsionFinite.finite_torsion_semiAbelian_of_abelian AbTorsionFinite.finite_torsion`.
+A detailed English derivation is pending.
 -/
 theorem finite_torsion_semiAbelian :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G], IsSemiAbelian G → ∀ n : ℕ, 0 < n → Finite {x : 𝟙_ (Over (Sp k)) ⟶ G // x ^ n = 1} :=

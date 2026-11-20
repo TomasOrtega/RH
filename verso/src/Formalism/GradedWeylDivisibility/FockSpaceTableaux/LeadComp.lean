@@ -9,13 +9,13 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `R _ r n M _ w f`. Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Simplify using the standard rewrite rules. Establish `hd : (colLex r n).degree f ∈ (weightedHomogeneousComponent w (Finsupp.weight w ((colLex r n).degree f)) f).support`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[mem_support_iff, coeff_weightedHomogeneousComponent, if_pos rfl]`. Conclude with `(colLex r n).coeff_degree_ne_zero_iff.mpr hf`. Establish `hg0 : weightedHomogeneousComponent w (Finsupp.weight w ((colLex r n).degree f)) f ≠ 0`. Introduce `h`. Rewrite `hd` using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at hd`. Establish `h1` using `(colLex r n).le_degree hd`. Establish `h2 : (colLex r n).toSyn ((colLex r n).degree (weightedHomogeneousComponent w (Finsupp.weight w ((colLex r n).degree f)) f)) ≤ (colLex r n).toSyn ((colLex r n).degree f)`. Apply `(colLex r n).le_degree` to reduce the goal to its premises. Establish `h3` using `(colLex r n).degree_mem_support hg0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[mem_support_iff, coeff_weightedHomogeneousComponent]`. Use `split_ifs at h3 with h`. Conclude with `mem_support_iff.mpr h3`. Conclude with `absurd rfl h3`. Conclude with `(colLex r n).toSyn.injective (le_antisymm h2 h1)`.
+A detailed English derivation is pending.
 -/
 theorem leadingComponent : LeadComp := by
   intro R _ r n M _ w f

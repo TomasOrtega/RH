@@ -12,7 +12,7 @@ def OrbitCurve.Statement : Prop :=
     Geo.IsArithVar (ι := blockIdx n) (orbitIdeal x) 1
 
 /- English proof (translation)
-The claim follows from `samplePoint_blockNonzero`.
+A detailed English derivation is pending.
 -/
 example : BlockNonzero samplePoint := samplePoint_blockNonzero
 

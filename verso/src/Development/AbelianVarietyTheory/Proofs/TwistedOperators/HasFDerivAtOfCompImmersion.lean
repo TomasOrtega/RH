@@ -7,19 +7,17 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E F _ _ _ _ _ _ Φ ψ x A D hA hinj hψ hD`. Take `⟨g, hg⟩` from `(A : E →ₗ[ℝ] F).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.mpr hinj)`. Set `L : F →L[ℝ] E` to `LinearMap.toContinuousLinearMap g`. Establish `hLA : ∀ v, L (A v) = v` using `fun v => by`. Establish `h` using `LinearMap.congr_fun hg v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, ContinuousLinearMap.coe_coe] at h`. Use `first`. Consider the case `exact h`. Consider the case `simpa [L] using h`. Consider the case `(rw [show (L : F → E) = g from LinearMap.coe_toContinuousLinearMap' g]; exact h)`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hr : (fun y => Φ (ψ y) - Φ (ψ x) - A (ψ y - ψ x)) =o[nhds x] (fun y => ψ y - ψ x)` using `hA.hasFDerivAt.isLittleO.comp_tendsto hψ`. Establish `hs : (fun y => Φ (ψ y) - Φ (ψ x) - D (y - x)) =o[nhds x] (fun y => y - x)` using `hD.isLittleO`. Establish `hLr : (fun y => L (Φ (ψ y) - Φ (ψ x) - A (ψ y - ψ x))) =o[nhds x] (fun y => ψ y - ψ x)` using `(L.isBigO_comp _ _).trans_isLittleO hr`. Establish `hu : (fun y => ψ y - ψ x) =O[nhds x] (fun y => y - x)`. Establish `h1` using `hLr.right_isBigO_add`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : (fun y => L (Φ (ψ y) - Φ (ψ x) - A (ψ y - ψ x)) + (ψ y - ψ x)) = fun y => L (Φ (ψ y) - Φ (ψ x))`. Use function extensionality and compare the values at `y`. Simplify using `only [map_sub, hLA]`. Normalize the expressions using the abelian group laws. Rewrite `h1` using `[hsum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1.trans ((L.isBigO_comp _ _).trans hD.isBigO_sub)`. Establish `hP : HasFDerivAt ψ (L.comp D) x`. Rewrite using `[hasFDerivAt_iff_isLittleO]`. Establish `hdiff : (fun y => L (Φ (ψ y) - Φ (ψ x) - D (y - x)) - L (Φ (ψ y) - Φ (ψ x) - A (ψ y - ψ x))) = fun y => ψ y - ψ x - (L.comp D) (y - x)`. Use function extensionality and compare the values at `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [map_sub, hLA, ContinuousLinearMap.comp_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[← hdiff]`. Conclude with `((L.isBigO_comp _ _).trans_isLittleO hs).sub (hLr.trans_isBigO hu)`. Use `⟨L.comp D, hP, ?_⟩` and prove the remaining obligations.
-
-Conclude with `(hA.hasFDerivAt.comp x hP).unique hD`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_of_comp_immersion : ∀ (E F : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ F] (Φ : E → F) (ψ : E → E) (x : E) (A D : E →L[ℝ] F), HasStrictFDerivAt Φ A (ψ x) → Function.Injective A → ContinuousAt ψ x → HasFDerivAt (fun y => Φ (ψ y)) D x → ∃ P : E →L[ℝ] E, HasFDerivAt ψ P x ∧ A.comp P = D := by
   intro E F _ _ _ _ _ _ Φ ψ x A D hA hinj hψ hD

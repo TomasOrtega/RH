@@ -21,7 +21,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.Word R} {Ch : Ch
   {D : Car} (s : Cd.Seam D X) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Cd.Base D cc δ) (χ : Cd.TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
 
 /- English proof (translation)
-The claim follows from `theta_coset_indicator_natural X _ a b Sall D' (ambOf_conj s B χ cD hok) hD hLa (eqLaw_ambOf_of s B χ cD hok (Formalism.L2.Ker.Cd.PairingIndexBounds.Eq.SqG.eqP_car B hcc hδ χ hχ) ha hb)`.
+A detailed English derivation is pending.
 -/
 theorem thIndEq_ambOf_car (hok : s.Ok) (hcc : Cd.TaylorLogMetric.IsCurveIdeal D cc) (hδ : Cd.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hχ : Cd.TaylorLogMetric.IsChi D χ)
     {a b : ℕ} (ha : Even a) (hb : Even b) (Sall : Finset (HeightOneSpectrum (𝓞 X.E))) {D' : ℕ} (hD : 0 < D')
@@ -30,7 +30,7 @@ theorem thIndEq_ambOf_car (hok : s.Ok) (hcc : Cd.TaylorLogMetric.IsCurveIdeal D 
     (eqLaw_ambOf_of s B χ cD hok (Formalism.L2.Ker.Cd.PairingIndexBounds.Eq.SqG.eqP_car B hcc hδ χ hχ) ha hb)
 
 /- English proof (translation)
-Establish `he' : ∀ τ, (e τ : ℚ) = (W.hc u τ).e ⟨i, hi⟩`. Introduce `τ`. Rewrite using `[he τ, ← hT.2.2.2 u τ]`. Both sides reduce to the same expression. Conclude with `thEquivP_stepT_ofD W Ch sel mu cst (Cd.ambOf s B χ cD) u hi e he' hrat (eOmega_ambOf_of s B χ cD (B.stdOK hcc hδ) _ _) (thIndEq_ambOf_car s B χ cD hok hcc hδ hχ (even_rankN R i) (even_rankN R (i + 1)) _ (modulus_pos sel mu cst u hTu) hLa) (chiLaw_ambOf_of s B χ cD hok hχ (even_ra …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thEquivP_ambOf_tiesD (hok : s.Ok) (hcc : Cd.TaylorLogMetric.IsCurveIdeal D cc) (hδ : Cd.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hχ : Cd.TaylorLogMetric.IsChi D χ)
     (hX : X.AbelianUnramifiedExtensionConditions) (hPr : Pr.Ok) (hsel : IsSel X sel)
@@ -58,7 +58,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.Word R} {Ch : Ch
   {D : Car} (s : Cd.Seam D X) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Cd.Base D cc δ) (χ : Cd.TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
 
 /- English proof (translation)
-Establish `hL` using `oneIdx_ok_closed sel S hX hPr hCh h4 Gc hT hWe hval hm`. Establish `hTies : LawTies W Ch sel (mu0 X.F X.E X.K S) (ookCstR Ch sel S Gc) Gc` using `lawTies_of_ok W Ch sel _ _ _ Gc m2 hL hW ⟨eta, hT⟩`. Conclude with `fun i hi => thEquivP_ambOf_tiesD u s B χ cD hok hcc hδ hχ hX1 hPr hsel hg0 hTies (hPr.T_prime u).pos hi (e i) (he i hi) (hLa _ _) (hRat i hi)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thEquivP_ambOf_car (hok : s.Ok) (hcc : Cd.TaylorLogMetric.IsCurveIdeal D cc) (hδ : Cd.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hχ : Cd.TaylorLogMetric.IsChi D χ)
     (hX : X.Ok) (hX1 : X.AbelianUnramifiedExtensionConditions) (hPr : Pr.Ok) (hCh : Ch.Ok) (hW : W.Ok) (hsel : IsSel X sel)

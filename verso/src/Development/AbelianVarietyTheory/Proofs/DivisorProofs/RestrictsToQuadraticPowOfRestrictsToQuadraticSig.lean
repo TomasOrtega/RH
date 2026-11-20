@@ -13,7 +13,7 @@ namespace GlobalTheory.ResEtaFOfPow
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `⟨(IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom⟩`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_invol {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := ⟨(IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom⟩
@@ -21,11 +21,9 @@ theorem sig_invol {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) 
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `⟨(IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom⟩`. Establish `hr : NumberField.ComplexEmbedding.IsReal τ`. Use extensionality with `x`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [NumberField.ComplexEmbedding.conjugate_coe_eq]`. Establish `e` using `h.2.2.2 τ x`. Rewrite `e` using `[hc]`. Conclude with `e.symm`. Establish `hc2` using `h.2.1.isComplex (NumberField.InfinitePlace.mk τ)`.
-
-Conclude with `(NumberField.InfinitePlace.isComplex_mk_iff.1 hc2) hr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sig_ne {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ x, σ x ≠ x := by
   by_contra hc
@@ -50,17 +48,17 @@ abbrev normGrp : Subgroup (AF F)ˣ :=
   (Units.map (algebraMap F (AF F)).toMonoidHom).range ⊔ (normI F E).range
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeLeft_injective (S := F) (algebraMap F E).injective`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_inj : Function.Injective (algebraMap (AF F) (AF F ⊗[F] E)) :=
   Algebra.TensorProduct.includeLeft_injective (S := F) (algebraMap F E).injective
 
 /- English proof (translation)
-Take `⟨δ, hδ, hh⟩` from `GlobalTheory.T.quadraticExt_norm_form_over_algebra F E σ h.2.2.1 (sig_invol h) (sig_ne h)`. Take `⟨h1, h2⟩` from `hh (AF F)`. Establish `hN : ∀ z : AF F ⊗[F] E, algebraMap (AF F) (AF F ⊗[F] E) (Algebra.norm (AF F) z) = z * sigR (AF F) σ z` using `fun z => by`. Take `⟨x, y, e1, e2⟩` from `h1 z`. Rewrite using `[e1, e2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨δ, hδ, fun a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨z, rfl⟩`. Take `⟨x, y, e1, -⟩` from `h1 z`. Conclude with `⟨x, y, e1⟩`. Introduce and unpack `⟨x, y, e⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨z, hz⟩` from `h2 x y`. Rewrite `hz` using `[← e]`. Establish `hu : IsUnit z` using `isUnit_of_mul_isUnit_left (hz ▸ a.isUnit.map _)`. Use `⟨hu.unit, Units.ext (algebraMap_inj (F := F) (E := E) ?_)⟩` and prove the remaining obligations. Conclude with `(hN z).trans hz`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_form {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ δ : F, ¬ IsSquare δ ∧
     ∀ a : (AF F)ˣ, a ∈ (normI F E).range ↔
@@ -83,7 +81,7 @@ theorem exists_form {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ δ : F, ¬ I
     exact (hN z).trans hz
 
 /- English proof (translation)
-Take `⟨δ, hδ, hf⟩` from `exists_form h`. Establish `h0 : δ ≠ 0` using `fun e => hδ (e ▸ IsSquare.zero)`. Use `Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (GlobalTheory.T.quadraticForm_ideleValues_mem_nhds_one F δ h0) fun a ha => ?_)` and prove the remaining obligations. Conclude with `Subgroup.mem_sup_right ((hf a).2 ha)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_normGrp {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : IsOpen (normGrp F E : Set (AF F)ˣ) := by
   obtain ⟨δ, hδ, hf⟩ := exists_form h
@@ -92,9 +90,9 @@ theorem isOpen_normGrp {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : IsOpen (normG
   exact Subgroup.mem_sup_right ((hf a).2 ha)
 
 /- English proof (translation)
-Take `⟨δ, hδ, hf⟩` from `exists_form h`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_idele_ne_algebraMap_mul_norm_of_not_isSquare F δ hδ`. Introduce `e`. Establish `hm : a ∈ normGrp F E` using `e ▸ Subgroup.mem_top a`. Take `⟨_, ⟨t, rfl⟩, n, hn, rfl⟩` from `Subgroup.mem_sup.1 hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, y, e⟩` from `(hf n).1 hn`. Conclude with `ha t x y (by rw [Units.val_mul, e]; rfl)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem normGrp_ne_top {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : normGrp F E ≠ ⊤ := by
   obtain ⟨δ, hδ, hf⟩ := exists_form h
@@ -106,16 +104,16 @@ theorem normGrp_ne_top {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : normGrp F E �
   exact ha t x y (by rw [Units.val_mul, e]; rfl)
 
 /- English proof (translation)
-Take `⟨δ, -, hf⟩` from `exists_form h`. Conclude with `Subgroup.mem_sup_right ((hf _).2 ⟨a, 0, by simp [pow_two]⟩)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sq_mem_normGrp {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (a : (AF F)ˣ) : a * a ∈ normGrp F E := by
   obtain ⟨δ, -, hf⟩ := exists_form h
   exact Subgroup.mem_sup_right ((hf _).2 ⟨a, 0, by simp [pow_two]⟩)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, a ∉ normGrp F E := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `normGrp_ne_top h (eq_top_iff.2 fun a _ => hc a)`. Take `⟨η, h1, h2⟩` from `GlobalTheory.VolHeckeCompare.exists_char_of_not_mem _ (sq_mem_normGrp h) a ha`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨η, ?_, fun b => h1 (Subgroup.mem_sup_left ⟨b, rfl⟩), fun x => h1 (Subgroup.mem_sup_right ⟨x, rfl⟩), fun e => h2 (by rw [e]; rfl)⟩` and prove the remaining obligations. Use `continuous_of_continuousAt_one η ?_` and prove the remaining obligations. Use `(continuousAt_const (y := (1 : Circle))).congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_normGrp h).mem_nhds (one_mem _)] with b hb`. Conclude with `(h1 hb).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isEtaF {σ : E →ₐ[F] E} (h : IsCMExt F E σ) :
     ∃ η : (AF F)ˣ →* Circle, Formalism.IndefR.DatumF.IsEtaF E η := by
@@ -134,19 +132,19 @@ theorem exists_isEtaF {σ : E →ₐ[F] E} (h : IsCMExt F E σ) :
 open Classical in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB χ n hχ`. Establish `hcm : IsCMExt F E σ` using `hB.cm`. Use `⟨exists_isEtaF hcm, fun η hη a => ?_⟩` and prove the remaining obligations. Take `⟨-, h1, h2, h3⟩` from `hη`. Establish `hS : ∀ x ∈ normGrp F E, η x = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: normGrp F E ≤ η.ker` using `sup_le (by rintro _ ⟨y, rfl⟩; exact h1 y) (by rintro _ ⟨y, rfl⟩; exact h2 y)`. Conclude with `fun x hx => this hx`. Establish `hsq : ∀ x, η x * η x = 1` using `fun x => by rw [← map_mul]; exact hS _ (sq_mem_normGrp hcm x)`. Establish `key : ∀ x, ((χ (Formalism.IndefR.DatumF.idFF F E x) : Circle) : ℂ) = if x ∈ normGrp F E then 1 else (-1) ^ n` using `fun x => hχ x`. Apply `Circle.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[key a, Circle.coe_pow]`. Distinguish the cases in `ha : a ∈ normGrp F E`. Rewrite using `[if_pos ha, hS a ha]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg ha]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.even_or_odd n with ⟨k, rfl⟩ | hn` into its components or cases. Rewrite using `[← two_mul, pow_mul, pow_mul, neg_one_sq, one_pow, ← Circle.coe_pow, sq, hsq a]`. Simplify using the standard rewrite rules. Establish `hn1 : ((-1 : ℂ)) ^ n = -1` using `hn.neg_one_pow`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b, η b ≠ 1 := by`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Conclude with `h3 (MonoidHom.ext hh)`. Establish `hbS : b ∉ normGrp F E` using `fun hm => hb (hS b hm)`. Establish `hab : a * b ∈ normGrp F E`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn2`. Establish `e` using `key (a * b)`. Rewrite `e` using `[map_mul, map_mul, Circle.coe_mul, key a, key b, if_neg ha, if_neg hbS, if_neg hn2, hn1]`. Evaluate the numerical expressions using `at e`. Establish `hηb : (η b : ℂ) = -1` using `GlobalTheory.VolHeckeCompare.circle_eq_neg_one (hsq b) hb`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : (η a : ℂ) * η b = 1` using `by rw [← Circle.coe_mul, ← map_mul, hS _ hab]; simp`. Rewrite `e2` using `[hηb]`. Establish `hηa : (η a : ℂ) = -1` using `by linear_combination -e2`. Rewrite using `[hηa]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resEtaF_of_resEtaPow : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E),

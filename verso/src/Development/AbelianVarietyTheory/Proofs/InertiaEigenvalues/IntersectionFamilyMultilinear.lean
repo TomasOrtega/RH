@@ -33,21 +33,19 @@ open Matrix GroundTheory.Automorphic GroundTheory.Automorphic.FourierWhittaker G
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Introduce `E _ _ n m φ hc ⟨C, hC⟩ F hF j`. Establish `hFi` using `integrable_of_mem_schwartzBruhatPi hF`. Establish `hFc` using `continuous_of_mem_schwartzBruhatPi hF`. Establish `hb : ∀ i g, ‖partialWhittakerCoeff φ i g‖ ≤ C`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `i with`. Consider the case `zero => exact hC`. Consider the case `succ i ih => exact fun g => norm_vecCoeff_le (fun x _ => ih _) _`. Establish `hcc : ∀ i, Continuous (partialWhittakerCoeff φ i)`. Introduce `i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `i with`. Consider the case `zero => exact hc`. Consider the case `succ i ih => exact continuous_stepCoeff _ ih`. Unfold `partialCoeff`. Proceed by induction on `n - j with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Proceed by induction.
 
-Consider the case `zero => intro g`. Both sides reduce to the same expression. Consider the case `succ i ih`. Introduce `g`. Establish `e : partialWhittakerCoeff (GlobalTheory.RSnm.colSmooth m F φ) i = GlobalTheory.RSnm.colSmooth m F (partialWhittakerCoeff φ i)` using `funext ih`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [partialWhittakerCoeff]`. Rewrite using `[e]`. Use `set l := n - 1 - i`. Use `set Q := partialWhittakerCoeff φ i`. Use `haveI : IsFiniteMeasure ((vecMeasure E (Fin l)).restrict (vecDomain E (Fin l))) := ⟨by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Measure.restrict_apply_univ, vecMeasure_vecDomain]`. Conclude with `ENNReal.one_lt_top⟩`. Use `set H : (Fin l → Ad E) → (Fin m → Ad E) → ℂ := fun y x => F x * (Q (FourierWhittaker.colGL l y * (g * FourierWhittaker.colGL m x)) * (adelicChar E (-pair (lastVec l) y) : ℂ)) with hH`. Establish `hHc : Continuous (Function.uncurry H)` using `(hFc.comp continuous_snd).mul (((hcc i).comp (((FourierWhittaker.continuous_colGL l).comp continuous_fst).mul (continuous_const.mul ((FourierWhittaker.continuous_colGL m).comp continuous_snd)))).mul ((continuous_adelicChar_neg_pair _).comp continuous_fst))`. Establish `hI : Integrable (Function.uncurry H) (((vecMeasure E (Fin l)).restrict (vecDomain E (Fin l))).prod (adeleMeasurePi E))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Integrable.mono' ((integrable_const C).mul_prod hFi.norm) hHc.aestronglyMeasurable (.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [Function.uncurry, hH, norm_mul, Circle.norm_coe, mul_one]`. Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hb i _) (norm_nonneg _)`. Establish `hs` using `integral_integral_swap hI`.
-
-Simplify using `only [stepCoeff, vecCoeff, GlobalTheory.RSnm.colSmooth, ← integral_mul_const, ← integral_const_mul, mul_assoc]`. Conclude with `hs`.
+A detailed English derivation is pending.
 -/
 theorem partialCoeff_colSmooth : ∀ (E : Type) [Field E] [NumberField E] (n m : ℕ) (φ : GA E n → ℂ), Continuous φ → (∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C) →
     ∀ F ∈ GroundTheory.Automorphic.GJMatrix.schwartzBruhatPi E (Fin m), ∀ (j : ℕ) (g : GA E n),
@@ -95,25 +93,23 @@ theorem partialCoeff_colSmooth : ∀ (E : Type) [Field E] [NumberField E] (n m :
     exact hs
 
 /- English proof (translation)
-Introduce `E _ _ k m hmk φ hc hl hv g`. Use `set ψ : AddChar (Ad E) ℂ := GlobalTheory.StdCharConductor.psi E`. Establish `hψ : StdPsi ψ` using `GlobalTheory.StdCharConductor.stdPsi_psi E`. Establish `hG : ∀ i j, j + i = k → Good ψ j (partialCoeff φ (j + 1))`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `i with`. Consider the case `zero`. Introduce `j hj`. Take `rfl : j = k` from `hj`. Rewrite using `[partialCoeff_self]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `good_top E j ψ φ hc hl hv`. Consider the case `succ i ih`. Introduce `j hj`. Establish `hk : j + 1 < k + 1` using `by omega`. Establish `h1` using `GlobalTheory.CuspRep.Generic.good_colT hψ hk (ih (j + 1) (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hcol : colT ψ (j + 1) (partialCoeff φ (j + 1 + 1)) = partialCoeff φ (j + 1)`. Use function extensionality and compare the values at `g`. Rewrite using `[partialCoeff_of_lt φ hk]`. Conclude with `WhitEq.colT_eq_stepCoeff hk _ (fun ξ g => partialCoeff_succ_diagonal_colGL (K := E) (n := k + 1) hl hk ξ g) g`. Rewrite `h1` using `[hcol]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `hG (k - (m + 1)) (m + 1) (by omega)`. Establish `hk : m + 1 < k + 1` using `by omega`. Establish `hz` using `hg.van (m + 1) (Nat.succ_pos m) le_rfl g`. Establish `hper` using `(per_blk hg.cont (GlobalTheory.CuspRep.Generic.hl_of_good hg le_rfl) g).2`. Use `haveI : Countable (ratV E (UnipotentBlockColumnIndex (k + 1) (m + 1) (m + 1))) := countable_vecLattice`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hz` using `[WhitEq.avg_eq_setIntegral (ratV E (UnipotentBlockColumnIndex (k + 1) (m + 1) (m + 1))) (vecMeasure E _) (vecDomain E _) isAddFundamentalDomain_vecDomain vecMeasure_vecDomain _ hper]`. Set `Em` to `MeasurableEquiv.piCongrLeft (fun _ : Fin (m + 1) => Ad E) (WhitEq.colIx hk)`. Establish `hE : MeasurePreserving Em (vecMeasure E (UnipotentBlockColumnIndex (k + 1) (m + 1) (m + 1))) (vecMeasure E (Fin (m + 1)))` using `measurePreserving_piCongrLeft (fun _ : Fin (m + 1) => GroundTheory.Global.adeleMeasure E) (WhitEq.colIx hk)`. Establish `hEx : ∀ x : UnipotentBlockColumnIndex (k + 1) (m + 1) (m + 1) → Ad E, Em x = fun i => x ((WhitEq.colIx hk).symm i)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Em, MeasurableEquiv.piCongrLeft, Equiv.piCongrLeft]`. Establish `hpre : Em ⁻¹' vecDomain E (Fin (m + 1)) = vecDomain E (UnipotentBlockColumnIndex (k + 1) (m + 1) (m + 1))`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, hEx, vecDomain, Set.mem_pi, Set.mem_univ, true_implies]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h t`. Use `h (WhitEq.colIx hk t)` as an intermediate fact. Rewrite `this` using `[Equiv.symm_apply_apply]`. Then use the resulting hypothesis. Introduce `h i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _`. Rewrite using `[vecCoeff, ← hE.setIntegral_preimage_emb Em.measurableEmbedding, hpre, ← hz]`. Use `setIntegral_congr_fun measurableSet_vecDomain fun x _ => ?_` and prove the remaining obligations. Simplify using `only [hEx]`. Rewrite using `[WhitEq.blkU_eq_colGL hk]`.
-
-Simplify using `[pair]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vecCoeff_zero_eq_zero : ∀ (E : Type) [Field E] [NumberField E] (k m : ℕ), m + 1 ≤ k → ∀ (φ : GA E (k + 1) → ℂ),
     Continuous φ → (∀ γ g, φ (ratGL E (k + 1) γ * g) = φ g) →
@@ -170,15 +166,15 @@ theorem vecCoeff_zero_eq_zero : ∀ (E : Type) [Field E] [NumberField E] (k m : 
   simp [pair]
 
 /- English proof (translation)
-Introduce `E _ _ n G hG x`. Establish `hT : (fun y => G (y + x)) ∈ schwartzBruhatPi E (Fin n)`. Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hg' : (g ∘ Homeomorph.addRight (finPartPi x)) ∈ finiteSchwartzBruhatPi E` using `⟨hg.1.comp_continuous (Homeomorph.continuous _), hg.2.comp_homeomorph _⟩`. Use `schwartzBruhatTensorPi_mem (SchwartzMap.compSubConstCLM ℂ (-infPartPi x) φ) hg' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Establish `h1 : infPartPi (y + x) = infPartPi y + infPartPi x`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [infPartPi, Pi.add_apply, homeomorphMixedSpace_apply]`. Conclude with `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace E) (y i).1 (x i).1`. Establish `h2 : finPartPi (y + x) = finPartPi y + finPartPi x` using `rfl`. Simplify using `only [schwartzBruhatTensorPi, SchwartzMap.compSubConstCLM_apply, Function.comp_apply, h1, h2, sub_neg_eq_add, Homeomorph.coe_addRight]`. Consider the case `zero => exact zero_mem _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `add G H _ _ hG hH => exact add_mem hG hH`. Consider the case `smul r G _ hG => exact Submodule.smul_mem _ r hG`. Use `(tsum_algebraMap_eq_tsum_adelicFourierPi hT).trans (tsum_congr fun ξ => ?_)` and prove the remaining obligations. Simplify using `only [adelicFourierPi]`. Rewrite using `[← integral_mul_const, ← integral_add_right_eq_self (μ := adeleMeasurePi E) (fun y => G y * (adelicChar E (∑ i, y i * algebraMap E (Ad E) (ξ i)) : ℂ) * (adelicChar E (-pair ξ x) : ℂ)) x]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[mul_assoc, ← Circle.coe_mul, ← AddChar.map_add_eq_mul]`. Use `congr 3`. Simplify using `only [pair, Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_comm (x _), add_neg_cancel_right]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tsum_translate_eq : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ), ∀ G ∈ GroundTheory.Automorphic.GJMatrix.schwartzBruhatPi E (Fin n), ∀ x : Fin n → Ad E,
     ∑' η : Fin n → E, G ((fun i => algebraMap E (Ad E) (η i)) + x) =
@@ -214,19 +210,17 @@ theorem tsum_translate_eq : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ), 
   simp only [pair, Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_comm (x _), add_neg_cancel_right]
 
 /- English proof (translation)
-Introduce `E _ _ n G f c hGc hGi hf ⟨C, hC⟩ hp hs hP`. Use `haveI := GroundTheory.Global.countable_numberField E`. Use `set μ := vecMeasure E (Fin n)`. Use `set D := vecDomain E (Fin n)`. Establish `hGi' : Integrable (fun x => G x * f x) μ` using `hGi.mul_bdd hf.aestronglyMeasurable (.of_forall hC)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hD : IsAddFundamentalDomain (vecLattice E (Fin n)) D μ` using `isAddFundamentalDomain_vecDomain`. Set `e : (Fin n → E) ≃ vecLattice E (Fin n)` to `Equiv.ofBijective (fun η => ⟨fun i => algebraMap E (Ad E) (η i), algebraMap_mem_vecLattice η⟩) ⟨fun η η' h => funext fun i => AdeleRing.algebraMap_injective (𝓞 E) E (congrFun (congrArg Subtype.val h) i), fun ⟨_, η, hη⟩ => ⟨η, Subtype.ext hη⟩⟩`. Establish `h1 : ∫ x, G x * f x ∂μ = ∫ x in D, ∑' l : vecLattice E (Fin n), G (l +ᵥ x) * f (l +ᵥ x) ∂μ`. Rewrite using `[hD.integral_eq_tsum'' _ hGi', integral_tsum]`. Introduce `l`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((hGc.mul hf).comp (continuous_const_vadd l)).aestronglyMeasurable`. Rewrite using `[← hD.lintegral_eq_tsum'' fun x => ‖G x * f x‖ₑ]`. Conclude with `hGi'.2.ne`. Establish `h2 : ∀ x, ∑' l : vecLattice E (Fin n), G (l +ᵥ x) * f (l +ᵥ x) = ∑' ξ : Fin n → E, c ξ * (f x * (adelicChar E (-pair ξ x) : ℂ))`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e.tsum_eq]`. Express the relevant statement in the definitionally equal form `∑' η : Fin n → E, G ((fun i => algebraMap E (Ad E) (η i)) + x) * f ((fun i => algebraMap E (Ad E) (η i)) + x) = _`. Simplify using `only [hp]`. Rewrite using `[tsum_mul_right, hP, ← tsum_mul_right]`. Conclude with `tsum_congr fun ξ => by ring`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsFiniteMeasure (μ.restrict D) := ⟨by`. Rewrite using `[Measure.restrict_apply_univ, vecMeasure_vecDomain]`. Conclude with `ENNReal.one_lt_top⟩`. Express the relevant statement in the definitionally equal form `HasSum _ (∫ x, G x * f x ∂μ)`. Rewrite using `[h1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h2, vecCoeff, ← integral_const_mul]`. Establish `hn : ∀ (ξ : Fin n → E) x, ‖c ξ * (f x * (adelicChar E (-pair ξ x) : ℂ))‖ ≤ ‖c ξ‖ * C` using `fun ξ x => by`. Rewrite using `[norm_mul, norm_mul, Circle.norm_coe, mul_one]`. Conclude with `mul_le_mul_of_nonneg_left (hC x) (norm_nonneg _)`. Establish `hi : ∀ ξ : Fin n → E, Integrable (fun x => c ξ * (f x * (adelicChar E (-pair ξ x) : ℂ))) (μ.restrict D)` using `fun ξ => Integrable.mono' (integrable_const (‖c ξ‖ * C)) (continuous_const.mul (hf.mul (continuous_adelicChar_neg_pair ξ))).aestronglyMeasurable (.of_forall (hn ξ))`.
-
-Use `hasSum_integral_of_summable_integral_norm hi ?_` and prove the remaining obligations. Use `Summable.of_nonneg_of_le (fun ξ => integral_nonneg fun x => norm_nonneg _) (fun ξ => ?_) (hs.mul_right C)` and prove the remaining obligations. Use `(integral_mono (hi ξ).norm (integrable_const (‖c ξ‖ * C)) (hn ξ)).trans_eq ?_` and prove the remaining obligations. Rewrite using `[integral_const, measureReal_def, Measure.restrict_apply_univ, vecMeasure_vecDomain, ENNReal.toReal_one, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_integral_mul_of_periodic : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (G f : (Fin n → Ad E) → ℂ) (c : (Fin n → E) → ℂ),
     Continuous G → Integrable G (GroundTheory.Automorphic.GJMatrix.adeleMeasurePi E) → Continuous f → (∃ C : ℝ, ∀ x, ‖f x‖ ≤ C) →
@@ -276,7 +270,7 @@ theorem hasSum_integral_mul_of_periodic : ∀ (E : Type) [Field E] [NumberField 
   rw [integral_const, measureReal_def, Measure.restrict_apply_univ, vecMeasure_vecDomain, ENNReal.toReal_one, one_smul]
 
 /- English proof (translation)
-Unfold `partialCoeff`. Proceed by induction on `n - j generalizing g with`. Consider the case `zero => exact hC g`. Consider the case `succ i ih => exact norm_vecCoeff_le (fun x _ => ih _) _`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem norm_partialCoeff_le {n : ℕ} {φ : GA E n → ℂ} {C : ℝ} (hC : ∀ g, ‖φ g‖ ≤ C) (j : ℕ) (g : GA E n) :
     ‖partialCoeff φ j g‖ ≤ C := by
@@ -290,17 +284,15 @@ def trGL {R : Type} [CommRing R] {n : ℕ} (h : GL (Fin n) R) : GL (Fin n) R :=
     by rw [← transpose_mul, Units.mul_inv, transpose_one]⟩
 
 /- English proof (translation)
-Use `set t := trGL h with ht`. Use `set G : (Fin n → Ad E) → ℂ := fun y => F (y ᵥ* (t⁻¹).val) with hG`. Establish `hGm : G ∈ schwartzBruhatPi E (Fin n)` using `GlobalTheory.ThetaPoisson.comp_vecMul_mem t⁻¹ hF`. Establish `H` using `hasSum_integral_mul_of_periodic E n G f _ (continuous_of_mem_schwartzBruhatPi hGm) (integrable_of_mem_schwartzBruhatPi hGm) hf hb hp (poisson_of_mem_schwartzBruhatPi hGm).2.1 (tsum_translate_eq E n G hGm)`. Use `set d : ℝ := (IdeleGroup.ideleModule E (Matrix.GeneralLinearGroup.det t) : ℝ) with hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd0 : 0 < d` using `(IdeleGroup.ideleModule E (Matrix.GeneralLinearGroup.det t)).2`. Establish `hFT : ∀ y, adelicFourierPi E G y = (d : ℂ) * adelicFourierPi E F (y ᵥ* h.val)`. Introduce `y`. Use `GlobalTheory.ThetaPoisson.adelicFourierPi_comp_vecMul t⁻¹ F y` as an intermediate fact. Rewrite `this` using `[inv_inv, map_inv, map_inv, Positive.coe_inv, inv_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hm` using `(GroundTheory.Automorphic.GJGlobal.Modulus.vecMulHomeomorph t).measurableEmbedding.integral_map (μ := adeleMeasurePi E) (fun x => G x * f x)`. Establish `hmap : (adeleMeasurePi E).map (GroundTheory.Automorphic.GJGlobal.Modulus.vecMulHomeomorph t) = _` using `GroundTheory.Automorphic.GJGlobal.Modulus.map_vecMul_adeleMeasurePi t`. Rewrite `hm` using `[hmap, integral_smul_measure, ENNReal.toReal_ofReal (inv_nonneg.2 hd0.le), Complex.real_smul]`. Establish `e : ∀ x : Fin n → Ad E, G (x ᵥ* t.val) * f (x ᵥ* t.val) = F x * f (h.val *ᵥ x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `x`. Simplify using `only [hG]`. Rewrite using `[vecMul_vecMul, Units.mul_inv, vecMul_one]`. Use `congr 2`. Conclude with `vecMul_transpose _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm' : ∫ x, F x * f (h.val *ᵥ x) ∂adeleMeasurePi E = ((d⁻¹ : ℝ) : ℂ) * ∫ x, G x * f x ∂adeleMeasurePi E`. Rewrite using `[hm]`. Conclude with `integral_congr_ae (.of_forall fun x => (e x).symm)`. Rewrite using `[hm']`. Use `(H.mul_left ((d⁻¹ : ℝ) : ℂ)).congr_fun fun ξ => ?_` and prove the remaining obligations.
-
-Establish `hd' : (d : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hd0.ne'`. Rewrite using `[hFT, Complex.ofReal_inv, ← mul_assoc, ← mul_assoc, inv_mul_cancel₀ hd', one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hasSum_integral_mulVec {n : ℕ} {F : (Fin n → Ad E) → ℂ} (hF : F ∈ schwartzBruhatPi E (Fin n))
     {f : (Fin n → Ad E) → ℂ} (hf : Continuous f) (hb : ∃ C : ℝ, ∀ x, ‖f x‖ ≤ C)
@@ -340,19 +332,17 @@ theorem hasSum_integral_mulVec {n : ℕ} {F : (Fin n → Ad E) → ℂ} (hF : F 
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ k m hmk φ hc hb hl hv F hF γ hγ h`. Establish `hlt : m + 1 < k + 1` using `by omega`. Take `⟨C, hC⟩` from `hb`. Use `set b : GA E (k + 1) := blockGL hlt.le h with hbdef`. Use `set f : (Fin (m + 1) → Ad E) → ℂ := fun z => partialCoeff φ (m + 1 + 1) (FourierWhittaker.colGL (m + 1) z * b) with hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfc : Continuous f` using `(continuous_partialCoeff hc _).comp ((FourierWhittaker.continuous_colGL (m + 1)).mul continuous_const)`. Establish `hp : ∀ (η : Fin (m + 1) → E) x, f ((fun i => algebraMap E (Ad E) (η i)) + x) = f x`. Introduce `η x`. Simplify using `only [hf]`. Rewrite using `[colGL_add, mul_assoc, ← diagonal_colGL, partialCoeff_succ_diagonal_colGL (K := E) (n := k + 1) hl hlt]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H` using `hasSum_integral_mulVec hF hfc ⟨C, fun x => norm_partialCoeff_le hC _ _⟩ hp h`. Establish `hval : partialCoeff (GlobalTheory.RSnm.colSmooth (m + 1) F φ) (m + 1 + 1) b = ∫ x, F x * f (h.val *ᵥ x) ∂adeleMeasurePi E`. Rewrite using `[partialCoeff_colSmooth E (k + 1) (m + 1) φ hc ⟨C, hC⟩ F hF, GlobalTheory.RSnm.colSmooth]`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hf, hbdef]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[colGL_mul_blockGL hlt, mulVec_mulVec, Units.inv_mul, one_mulVec]`. Establish `h0 : vecCoeff f 0 = 0` using `vecCoeff_zero_eq_zero E k m hmk φ hc hl hv b`. Establish `hlast : (lastVec (m + 1) : Fin (m + 1) → E) = Pi.single (Fin.last m) 1`. Use function extensionality and compare the values at `i`. Simplify using `only [lastVec, Pi.single_apply, Fin.ext_iff, Fin.val_last, add_left_inj]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcoef : ∀ ξ : {ξ : Fin (m + 1) → E // ξ ≠ 0}, partialCoeff φ (m + 1) (blockGL hlt.le (ratGL E (m + 1) (γ ξ) * h)) = vecCoeff f ξ.1`. Introduce `ξ`. Use `partialCoeff_diagonal_blockGL_eq_vecCoeff (K := E) (n := k + 1) hl hlt (γ ξ) b` as an intermediate fact. Rewrite `this` using `[hlast, hγ, diagonal_blockGL]`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Rewrite using `[hval]`. Simplify using `only [hcoef]`. Use `(hasSum_subtype_iff_of_support_subset (s := {ξ : Fin (m + 1) → E | ξ ≠ 0}) ?_).2 H` and prove the remaining obligations. Introduce `ξ hξ h1`.
-
-Apply `hξ` to reduce the goal to its premises. Simplify using `only [h1, h0, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasSum_colSmooth : ∀ (E : Type) [Field E] [NumberField E] (k m : ℕ) (hmk : m + 1 ≤ k) (φ : GA E (k + 1) → ℂ),
     Continuous φ → (∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C) → (∀ γ g, φ (ratGL E (k + 1) γ * g) = φ g) →

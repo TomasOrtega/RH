@@ -19,7 +19,7 @@ namespace GlobalTheory.RatLocMove
 variable {D : D7}
 
 /- English proof (translation)
-Use `⟨hA.fg.map _, ?_⟩` and prove the remaining obligations. Establish `: (Formalism.HermitianLatticesTheory.gmap g A : Set (VS D).V) = (g : (VS D).V →ₗ[D.host.E] (VS D).V) '' (A : Set (VS D).V)` using `rfl`. Rewrite using `[this, ← Submodule.map_span, hA.span_eq_top, Submodule.map_top]`. Conclude with `LinearEquiv.range g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_gmap' (g : GV D) (A : LV D) (hA : Submodule.IsLattice D.host.E A) :
     Submodule.IsLattice D.host.E (Formalism.HermitianLatticesTheory.gmap g A) := by
@@ -29,7 +29,7 @@ theorem isLattice_gmap' (g : GV D) (A : LV D) (hA : Submodule.IsLattice D.host.E
   exact LinearEquiv.range g
 
 /- English proof (translation)
-Rewrite using `[finrank_Vp]`. Establish `h1` using `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Take `⟨c, hc⟩` from `h1`. Simplify using `only [Ranks.r, Ranks.rS]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -50,9 +50,9 @@ open GlobalTheory.LocExt
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨hiso, hF, hF'⟩` from `hh`. Take `rfl` from `locEquiv_unique p h g' hg`. Use `Subgroup.subset_closure ⟨locEquiv_unitary Z p h hiso, fun b => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(hB p).1] show locEquiv p h (frFac Z.δ p b • baseChange₂ D p (frame F b)) = _`. Rewrite using `[map_smul, locEquiv_ext p h, hF b]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hB p).2.1] show locEquiv p h (frFac Z.δ p b • baseChange₂ D p (frame F' b)) = _`. Rewrite using `[map_smul, locEquiv_ext p h, hF' b]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem localExtension_isometryFixingFrames_mem_localUnitary {u u' : D.what₂.Word}
     (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))
@@ -70,13 +70,11 @@ theorem localExtension_isometryFixingFrames_mem_localUnitary {u u' : D.what₂.W
     rw [map_smul, locEquiv_ext p h, hF' b]
 
 /- English proof (translation)
-Introduce `D X Y u u' F F' w _ _ Z FP hB hRel`. Use `⟨fun g p => ⟨locEquiv p g, locEquiv_ext p g, fun g' h => locEquiv_unique p g g' h⟩, fun h hh p g' hg => localExtension_isometryFixingFrames_mem_localUnitary F F' Z FP hB h hh p g' hg, ?_, ?_⟩` and prove the remaining obligations. Introduce `g p g' Λ hg`. Take `rfl` from `locEquiv_unique p g g' hg`. Conclude with `(locEquiv_img Z p g Λ).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh Λ y hov`. Establish `hmem : ∀ p, locEquiv p h ∈ (FP p).UW0` using `fun p => localExtension_isometryFixingFrames_mem_localUnitary F F' Z FP hB h hh p _ (locEquiv_ext p h)`. Establish `hact` using `fun p => GlobalTheory.T.exists_complementUnitary_mulAction_localInnerDatum (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS D.R.k (FP p) (finrank_Vp_eq p) (hRel p)`. Use `choose act hmv _ using hact`. Set `y' : Dat Z FP` to `fun p => (act p).smul ⟨locEquiv p h, hmem p⟩ (y p)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmoves : ∀ p, LocNG.Datum.Moves (locEquiv p h) (y p) (y' p)` using `fun p => ((hmv p) ⟨locEquiv p h, hmem p⟩ (y p) (y' p)).2 rfl`. Use `⟨y', ⟨isLattice_gmap' h Λ hov.1, fun p => ?_⟩, fun p => ⟨locEquiv p h, locEquiv_ext p h, hmoves p⟩⟩` and prove the remaining obligations. Take `⟨τ, hτ, hL⟩` from `hov.2 p`. Establish `hm` using `(GlobalTheory.T.unitaryComplement_moves_local_terms_with_data (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS D.R.k (FP p) (finrank_Vp_eq p) (hRel p) (locEquiv p h) (hmem p) (y p) (y' p) τ hτ (hmoves p)).1`. Use `⟨_, hm, ?_⟩` and prove the remaining obligations.
-
-Use `show LocNG.img (locEquiv p h) τ.abelian₂ = _`. Rewrite using `[hL, locEquiv_img Z p h Λ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_ext_moves : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).RelG (LocNG.theta (Z.M p))) → (∀ (g : GV D) (p : PlF D), ∃! g', Ext p g g') ∧ (∀ h ∈ H0 F F', ∀ p g', Ext p h g' → g' ∈ (FP p).UW0) ∧ (∀ (g : GV D) p g' (Λ : LV D), Ext p g g' → lattice₂ D Z.M p (Formalism.HermitianLatticesTheory.gmap g Λ) = LocNG.img g' (lattice₂ D Z.M p Λ)) ∧ ∀ h ∈ H0 F F', ∀ (Λ : LV D) (y : Dat Z FP), LocOver Λ y → ∃ y', LocOver (Formalism.HermitianLatticesTheory.gmap h Λ) y' ∧ RMoves h y y' := by
   intro D X Y u u' F F' w _ _ Z FP hB hRel

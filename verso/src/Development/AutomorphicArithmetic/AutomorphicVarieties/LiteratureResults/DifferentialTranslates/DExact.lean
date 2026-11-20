@@ -4,21 +4,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open UpperTheory.V.Lit.Dr
 
 /- English proof (translation)
-Introduce `Γ V S _ _ _ _ d G hconv q y`. Establish `hsm : minSmoothness ℝ 2 ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)`. Simplify using `only [minSmoothness_of_isRCLikeNormedField]`. Conclude with `WithTop.coe_le_coe.2 le_top`. Establish `hmemy : ∀ s, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) ((y : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s) G.Y ∧ ∀ p ∉ G.Y, (y : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s p = 0` using `y.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hcl : ∀ s, ∀ p ∈ G.Y, extDeriv ((y : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s) p = 0`. Introduce `s p hp`. Establish `h1 : G.Y.indicator (extDeriv ((y : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s)) p = 0` using `congrArg (fun z : G.Om (q + 1 + 1) => (z : S → V → V [⋀^Fin (q + 1 + 1)]→L[ℝ] (Fin d → ℂ)) s p) hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[Set.indicator_of_mem hp]`. Then use the resulting hypothesis. Use `choose η hηs hηd using fun s => poincare V (Fin d → ℂ) G.Y G.isOpen hconv q ((y : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s) (hmemy s).1 (hcl s)`. Set `x : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)` to `fun s => G.Y.indicator (η s)`. Establish `hx : x ∈ G.Om q` using `by show ∀ s, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (x s) G.Y ∧ ∀ p ∉ G.Y, x s p = 0`. Introduce `s`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨(hηs s).congr fun p hp => ?_, fun p hp => ?_⟩` and prove the remaining obligations. Simplify using `only [x, Set.indicator_of_mem hp]`. Simplify using `only [x, Set.indicator_of_notMem hp]`. Use `⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `s p`. Use `show G.Y.indicator (extDeriv (x s)) p = (y : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s p`. Distinguish the cases in `hp : p ∈ G.Y`. Rewrite using `[Set.indicator_of_mem hp]`. Establish `hev : x s =ᶠ[nhds p] η s` using `by filter_upwards [G.isOpen.mem_nhds hp] with z hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [x, Set.indicator_of_mem hz]`. Rewrite using `[hev.extDeriv_eq, hηd s p hp]`. Rewrite using `[Set.indicator_of_notMem hp, (hmemy s).2 p hp]`. Introduce and unpack `⟨x, rfl⟩`. Establish `hmemx : ∀ s, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) ((x : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s) G.Y ∧ ∀ p ∉ G.Y, (x : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s p = 0` using `x.2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s p`. Use `show G.Y.indicator (extDeriv (G.Y.indicator (extDeriv ((x : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s)))) p = 0`. Distinguish the cases in `hp : p ∈ G.Y`. Rewrite using `[Set.indicator_of_mem hp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : G.Y.indicator (extDeriv ((x : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s)) =ᶠ[nhds p] extDeriv ((x : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s)` using `by filter_upwards [G.isOpen.mem_nhds hp] with z hz`. Rewrite using `[Set.indicator_of_mem hz]`. Rewrite using `[hev.extDeriv_eq]`. Conclude with `extDeriv_extDeriv_apply ((hmemx s).1.contDiffAt (G.isOpen.mem_nhds hp)) hsm`. Rewrite using `[Set.indicator_of_notMem hp]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Dr.dExact :
     DExact := by

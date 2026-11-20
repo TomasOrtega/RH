@@ -18,21 +18,21 @@ section Form
 variable {A : Type} [CommRing A] {n : ℕ} (s : A →+* A) (J : Matrix (Fin n) (Fin n) A)
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_right (x y z : Fin n → A) :
     hform s J x (y + z) = hform s J x y + hform s J x z := by
   simp only [hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_left (x y z : Fin n → A) :
     hform s J (x + y) z = hform s J x z + hform s J y z := by
   simp only [hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_smul_right (t : A) (x y : Fin n → A) :
     hform s J x (t • y) = t * hform s J x y := by
@@ -41,7 +41,7 @@ theorem hform_smul_right (t : A) (x y : Fin n → A) :
   ring
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_smul_left (t : A) (x y : Fin n → A) :
     hform s J (t • x) y = s t * hform s J x y := by
@@ -52,17 +52,15 @@ theorem hform_smul_left (t : A) (x y : Fin n → A) :
 end Form
 
 /- English proof (translation)
-Establish `herm : ∀ u v : Fin M → R ⊗[F] E, sigR R σ (hR R σ J u v) = hR R σ J v u`. Introduce `u v`. Establish `h : ∀ a b, sigR R σ (gramR R σ J ![u, v] b a) = gramR R σ J ![u, v] a b` using `GlobalTheory.CompanionTheory.SW.HermTop.gramR_mem R (GlobalTheory.CompanionTheory.SW.HermTop.sigma_sigma hσ) hJ.1 ![u, v]`. Simplify `h 1 0` using `[gramR]`. Establish `hyx : hR R σ J y x = 1` using `by rw [← herm, hxy, map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set c : R ⊗[F] E := algebraMap F (R ⊗[F] E) (1 / 2) with hc`. Establish `hcc : c + c = 1`. Rewrite using `[hc, ← map_add, ← map_one (algebraMap F (R ⊗[F] E))]`. Evaluate the numerical expressions. Establish `hsc : sigR R σ c = c` using `AlgHom.commutes (Algebra.TensorProduct.map (AlgHom.id F R) σ) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set q := hR R σ J y y with hq`. Establish `hsq : sigR R σ q = q` using `herm y y`. Use `⟨y + (-(c * q)) • x, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: hR R σ J x (y + (-(c * q)) • x) = hR R σ J x y + -(c * q) * hR R σ J x x`. Simplify using `only [hR, hform_add_right, hform_smul_right]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, hxx, hxy]`. Expand and normalize the polynomial expressions, which then agree. Establish `: hR R σ J (y + (-(c * q)) • x) x = hR R σ J y x + sigR R σ (-(c * q)) * hR R σ J x x`. Simplify using `only [hR, hform_add_left, hform_smul_left]`. Rewrite using `[this, hxx, hyx]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `: hR R σ J (y + (-(c * q)) • x) (y + (-(c * q)) • x) = hR R σ J y y + -(c * q) * hR R σ J y x + (sigR R σ (-(c * q)) * hR R σ J x y + sigR R σ (-(c * q)) * (-(c * q) * hR R σ J x x))`. Simplify using `only [hR, hform_add_left, hform_add_right, hform_smul_left, hform_smul_right]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hxx, hxy, hyx, ← hq, map_neg, map_mul, hsc, hsq]`.
-
-Take the linear combination `(-q) * hcc`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_hyperbolic_partner {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
@@ -101,17 +99,17 @@ theorem exists_hyperbolic_partner {F E : Type} [Field F] [NumberField F] [Field 
     linear_combination (-q) * hcc
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hL X Y hX hY gX gY`. Use `haveI : IsArtinianRing R := hL.2.2.2.2.1`. Use `haveI : IsReduced R := hL.2.2.2.2.2.1`. Establish `hconst : ∀ Z : Fin 1 → Fin M → R ⊗[F] E, (fun _ : Fin 1 => Z 0) = Z`. Introduce `Z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[Subsingleton.elim a 0]`. Establish `hlx : LinearIndependent (R ⊗[F] E) (fun _ : Fin 1 => X 0)` using `by rwa [hconst]`. Establish `hly : LinearIndependent (R ⊗[F] E) (fun _ : Fin 1 => Y 0)` using `by rwa [hconst]`. Establish `hxx : hR R σ J (X 0) (X 0) = 0` using `congrFun (congrFun gX 0) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hyy : hR R σ J (Y 0) (Y 0) = 0` using `congrFun (congrFun gY 0) 0`. Take `⟨y, hy⟩` from `GlobalTheory.T.hermitian_form_primitive_vector_pairing F E σ hσ M J hJ R hL (X 0) hlx`. Take `⟨y', hy'⟩` from `GlobalTheory.T.hermitian_form_primitive_vector_pairing F E σ hσ M J hJ R hL (Y 0) hly`. Take `⟨u, hu1, hu2, hu3⟩` from `exists_hyperbolic_partner hσ hJ R (X 0) y hxx hy`. Take `⟨u', hu1', hu2', hu3'⟩` from `exists_hyperbolic_partner hσ hJ R (Y 0) y' hyy hy'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hG : gramR R σ J ![X 0, u] = !![0, 1; 1, 0]`. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [gramR, hxx, hu1, hu2, hu3]`. Establish `hG' : gramR R σ J ![Y 0, u'] = !![0, 1; 1, 0]`. Use extensionality with `a b`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [gramR, hyy, hu1', hu2', hu3']`. Establish `hdet : IsUnit (gramR R σ J ![X 0, u]).det`. Rewrite using `[hG, Matrix.det_fin_two_of]`. Simplify using the standard rewrite rules. Take `⟨h, hh⟩` from `GlobalTheory.T.witt_extension_artinian_ring F E σ hσ M J hJ R 2 ![X 0, u] ![Y 0, u'] (hG.trans hG'.symm) hdet`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨h, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Rewrite using `[Subsingleton.elim a 0]`. Simplify `congrFun hh 0` using `[actW, actTup]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem transitive_free_isotropic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ X Y : Fin 1 → Fin M → R ⊗[F] E, LinearIndependent (R ⊗[F] E) X → LinearIndependent (R ⊗[F] E) Y → gramR R σ J X = 0 → gramR R σ J Y = 0 → ∃ h : HA R σ J, actW R σ J h X = Y := by
   intro F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hL X Y hX hY gX gY

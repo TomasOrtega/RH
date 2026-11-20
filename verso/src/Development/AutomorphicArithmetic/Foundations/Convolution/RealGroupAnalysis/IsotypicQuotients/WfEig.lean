@@ -9,7 +9,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Pp
 open private eig_int from Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SmoothRepresentationsGL.EigMap
 
 /- English proof (translation)
-Introduce `F _ _ f hf v B h g`. Use `eig_int ((adeleMeasure F).restrict (fundamentalSet F)) (h 1).card (fun b y => f (gl (nU b) * (g * finGL F 2 (locGL F 2 v y)))) ψ (fun b => ?_) fun y => ?_` and prove the remaining obligations. Simplify `h (gl (nU b) * g)` using `only [mul_assoc]`. Conclude with `intOn ((hf.1.comp (cont_n.mul continuous_const)).mul cont_ψ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Pp.wfEig :
     ∀ (F : Type) [Field F] [NumberField F], UpperTheory.ConvolutionTheory.R2.Pp.WfEig F := by

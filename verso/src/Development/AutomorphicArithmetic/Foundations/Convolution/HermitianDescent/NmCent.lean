@@ -13,16 +13,16 @@ section
 variable {k R : Type} [CommRing k] [CommRing R] [Algebra k R] {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[sg, up, Matrix.GeneralLinearGroup.map_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem cent_sg_up (σ : R ≃ₐ[k] R) (γ : GL (Fin n) k) : sg σ (up R γ) = up R γ := by
   ext a b
   simp [sg, up, Matrix.GeneralLinearGroup.map_apply]
 
 /- English proof (translation)
-Unfold `nm`. Rewrite using `[map_list_prod, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun m _ => ?_` and prove the remaining obligations. Use extensionality with `a b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `(σ ^ m) (σ _) = σ ((σ ^ m) _)`. Rewrite using `[← AlgEquiv.mul_apply, ← AlgEquiv.mul_apply, ← pow_succ, ← pow_succ']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cent_nm_sg (σ : R ≃ₐ[k] R) (q : ℕ) (d : GL (Fin n) R) :
     nm σ q (sg σ d) = sg σ (nm σ q d) := by
@@ -35,7 +35,7 @@ private theorem cent_nm_sg (σ : R ≃ₐ[k] R) (q : ℕ) (d : GL (Fin n) R) :
   rw [← AlgEquiv.mul_apply, ← AlgEquiv.mul_apply, ← pow_succ, ← pow_succ']
 
 /- English proof (translation)
-Introduce `s t hst`. Use extensionality with `a b`. Conclude with `h (congrArg (fun g : GL (Fin n) R => (g : Matrix (Fin n) (Fin n) R) a b) hst)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem cent_up_inj (h : Function.Injective (algebraMap k R)) :
     Function.Injective (up R : GL (Fin n) k → GL (Fin n) R) := by
@@ -44,11 +44,11 @@ private theorem cent_up_inj (h : Function.Injective (algebraMap k R)) :
   exact h (congrArg (fun g : GL (Fin n) R => (g : Matrix (Fin n) (Fin n) R) a b) hst)
 
 /- English proof (translation)
-Establish `key : ∀ y : GL (Fin n) R, sg σ y = y → ∃ M : Matrix (Fin n) (Fin n) k, M.map (algebraMap k R) = (y : Matrix (Fin n) (Fin n) R)`. Introduce `y hy`. Establish `h : ∀ a b, ∃ c, algebraMap k R c = (y : Matrix (Fin n) (Fin n) R) a b` using `fun a b => hσ.fix _ (congrArg (fun g : GL (Fin n) R => (g : Matrix (Fin n) (Fin n) R) a b) hy)`. Use `choose M hM using h`. Conclude with `⟨Matrix.of M, by ext a b; exact hM a b⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `key x hx`. Take `⟨N, hN⟩` from `key x⁻¹ (by rw [map_inv, hx])`. Establish `inj` using `Matrix.map_injective (m := Fin n) (n := Fin n) hσ.inj`. Use `⟨⟨M, N, inj ?_, inj ?_⟩, Units.ext hM.symm⟩` and prove the remaining obligations. Simplify using `only`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul, hM, hN, Matrix.map_one _ (map_zero _) (map_one _), Units.mul_inv]`. Simplify using `only`. Rewrite using `[Matrix.map_mul, hM, hN, Matrix.map_one _ (map_zero _) (map_one _), Units.inv_mul]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cent_descend {σ : R ≃ₐ[k] R} {q : ℕ} (hσ : IsGal σ q) (x : GL (Fin n) R) (hx : sg σ x = x) :
     ∃ t : GL (Fin n) k, x = up R t := by
@@ -73,19 +73,17 @@ end
 end UpperTheory.ConvolutionTheory.D
 
 /- English proof (translation)
-Introduce `k R _ _ _ _ σ q hσ n a γ hsep ha x`. Use `haveI : Module.Finite k R := (galBase k R k σ q hσ).1`. Establish `hs : ((up R γ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).charpoly.Separable`. Establish `h` using `hsep.map (f := algebraMap k R)`. Rewrite `h` using `[cp, ← Matrix.charpoly_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hc` using `(conjSep k R n _ hs).2.1`. Establish `hfix : ∀ y, nm σ q (sgConj σ y a) = up R γ → y * up R γ = up R γ * y`. Introduce `y hy`. Rewrite `hy` using `[(nmPoly k R σ q hσ n a).2 y, ha, mul_assoc, inv_mul_eq_iff_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hy.symm`. Establish `hag : a * up R γ = up R γ * a`. Apply `hfix` to reduce the goal to its premises. Rewrite using `[sgConj, inv_mul_cancel, one_mul, cent_nm_sg, ha, cent_sg_up]`. Establish `hcomm : ∀ y : GL (Fin n) R, y * up R γ = up R γ * y → a * y = y * a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Take `⟨p, hp⟩` from `hc a.val (by simpa using congrArg Units.val hag)`. Take `⟨p', hp'⟩` from `hc y.val (by simpa using congrArg Units.val hy)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, hp, hp', ← map_mul, ← map_mul, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1` using `hfix x (by rw [hx, ha])`. Establish `h2` using `hcomm x h1`. Establish `h3 : sg σ x = x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx` using `[sgConj, mul_assoc, inv_mul_eq_iff_eq_mul, ← h2]`. Conclude with `mul_left_cancel hx`. Take `⟨t, rfl⟩` from `cent_descend hσ x h3`. Use `⟨t, cent_up_inj hσ.inj ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, h1]`.
-
-Introduce and unpack `⟨t, ht, rfl⟩`. Establish `h2` using `hcomm (up R t) (by rw [← map_mul, ← map_mul, ht.eq])`. Rewrite using `[sgConj, cent_sg_up, mul_assoc, h2, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.D.nmCent :
     UpperTheory.ConvolutionTheory.D.NmCent := by

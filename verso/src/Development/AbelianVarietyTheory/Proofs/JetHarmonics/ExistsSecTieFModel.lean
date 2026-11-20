@@ -20,7 +20,7 @@ def isoFromPullId {L : LB X} {m : X' ⟶ X} (w : LB.Iso L' (L.pull m)) : LB.Iso 
     (L.pull m).U p.1 ⊓ (L'.pull (𝟙 X')).U p.2 ≤ (L.pull m).U p.1 ⊓ L'.U (p.2 PUnit.unit)) (w.s (p.1, p.2 PUnit.unit))⟩
 
 /- English proof (translation)
-Establish `hm : r z ∈ (L.pull m).U (fun _ => j) ⊓ (L'.pull (𝟙 X')).U (fun _ => k)` using `⟨mem_pull.2 hj, mem_pull.2 hk⟩`. Use `show gm r z _ (res _ (w.s (fun _ => j, k))) = _`. Conclude with `gm_res r z _ hm _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isoVal_isoFromPullId {L : LB X} {m : X' ⟶ X} (w : LB.Iso L' (L.pull m)) {Z : Scheme.{0}} (r : Z ⟶ X') (z : Z)
     (j : L.ι) (k : L'.ι) (hj : m (r z) ∈ L.U j) (hk : r z ∈ L'.U k) :
@@ -30,9 +30,9 @@ theorem isoVal_isoFromPullId {L : LB X} {m : X' ⟶ X} (w : LB.Iso L' (L.pull m)
   exact gm_res r z _ hm _
 
 /- English proof (translation)
-Use `(isGen_iff _).2 fun Z r z j j' k k' hj hj' hk hk' => ?_` and prove the remaining obligations. Establish `ik : r z ∈ L'.U (k PUnit.unit)` using `(mem_pull (F := 𝟙 X') (x := r z)).1 hk`. Establish `ik' : r z ∈ L'.U (k' PUnit.unit)` using `(mem_pull (F := 𝟙 X') (x := r z)).1 hk'`. Establish `a` using `isoVal_isoFromPullId w r z j (k PUnit.unit) hj ik`. Establish `a'` using `isoVal_isoFromPullId w r z j' (k' PUnit.unit) hj' ik'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `(isGen_iff w).1 hw Z r z j j' _ _ hj hj' ik ik'`. Establish `c` using `(gm_pull_g L' (𝟙 X') r z k k' hk hk').trans (congrArg (fun f : Z ⟶ X' => gm f z _ (L'.g (k PUnit.unit) (k' PUnit.unit))) (Category.comp_id r))`. Use `a.trans (b.trans ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (fun s t => _ * s⁻¹ * t) c.symm a'.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isoFromPullId_isGen {L : LB X} {m : X' ⟶ X} {w : LB.Iso L' (L.pull m)} (hw : w.IsGen) :
     (isoFromPullId w).IsGen := by

@@ -19,11 +19,11 @@ variable {R : Type*} [CommRing R] {L : Type*} [Field L] [Algebra R L] {K : Type*
 def tWeight (K : Type*) [DecidableEq K] : K → K → ℕ := fun k => Pi.single k 1
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial d a`. Establish `h1 : IsWeightedHomogeneous (tWeight K) (pointConeMap R z (monomial d a)) (Finsupp.weight (blockWeight ι) d)`. Rewrite using `[pointConeMap, aeval_monomial, MvPolynomial.algebraMap_apply, Finsupp.weight_apply, Finsupp.prod, Finsupp.sum]`. Use `IsWeightedHomogeneous.C_mul ?_ _` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsWeightedHomogeneous.prod _ _ _ fun p _ => ?_` and prove the remaining obligations. Conclude with `((isWeightedHomogeneous_X (R := L) (tWeight K) p.1).C_mul (z p)).pow (d p)`. Establish `h2 : IsWeightedHomogeneous (blockWeight ι) (monomial d a : MRing ι R) (Finsupp.weight (blockWeight ι) d)` using `isWeightedHomogeneous_monomial _ _ _ rfl`. Distinguish the cases in `h : b = Finsupp.weight (blockWeight ι) d`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1.weightedHomogeneousComponent_same, h2.weightedHomogeneousComponent_same]`. Rewrite using `[h1.weightedHomogeneousComponent_ne _ h, h2.weightedHomogeneousComponent_ne _ h, map_zero]`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coneMap_component (z : (Σ k, ι k) → L) (b : K → ℕ) (f : MRing ι R) :
     weightedHomogeneousComponent (tWeight K) b (pointConeMap R z f) =
@@ -46,11 +46,11 @@ theorem coneMap_component (z : (Σ k, ι k) → L) (b : K → ℕ) (f : MRing ι
   | add f g hf hg => simp only [map_add, hf, hg]
 
 /- English proof (translation)
-Use `⟨RingHom.ker_isPrime _, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf b`. Rewrite `hf`, the goal using `[pointIdeal, RingHom.mem_ker]`. Use `coneMap_component (R := R) z b f` as an intermediate fact. Rewrite `this` using `[hf, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Introduce `k`. Take `⟨i, hi⟩` from `hz k`. Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[pointIdeal, RingHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `pointConeMap R z (X ⟨k, i⟩) ≠ 0`. Rewrite using `[pointConeMap, aeval_X]`. Conclude with `mul_ne_zero (by simpa using hi) (X_ne_zero _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiProjPrime_pointIdeal (z : (Σ k, ι k) → L) (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     IsMultiProjPrime (pointIdeal R z) := by
@@ -69,11 +69,11 @@ theorem isMultiProjPrime_pointIdeal (z : (Σ k, ι k) → L) (hz : ∀ k, ∃ i,
     exact mul_ne_zero (by simpa using hi) (X_ne_zero _)
 
 /- English proof (translation)
-Use `by_contra! h0`. Establish `hall : ∀ l, ψ l = 0`. Introduce `l`. Use `e.ext fun i => ?_` and prove the remaining obligations. Use `Fintype.linearIndependent_iff.1 ht (fun i => ψ l (e i)) (by rw [← h0 l]; exact Finset.sum_congr rfl fun i _ => by rw [Algebra.smul_def, mul_comm])` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this i`. Establish `htop : (⊤ : Submodule Ω (Module.Dual Ω E)) = ⊥`. Rewrite using `[← hψ, Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `hall l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : e.coord ⟨0, hN⟩ = 0`. Establish `: e.coord ⟨0, hN⟩ ∈ (⊥ : Submodule Ω (Module.Dual Ω E))` using `htop ▸ Submodule.mem_top`. Simplify using `using this`. Use `congrArg (fun f => f (e ⟨0, hN⟩)) hc` as an intermediate fact. Simplify using `at this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_of_span {Ω : Type*} [Field Ω] {E : Type*} [AddCommGroup E] [Module Ω E]
     {Φ : Type*} [Field Φ] [Algebra Ω Φ] {N P : ℕ} (hN : 0 < N) (e : Module.Basis (Fin N) Ω E)
@@ -102,19 +102,19 @@ end GenericProjClosureDim
 open GenericProjClosureDim in
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N hN E _ _ B B' hB M M' a₀ a₀' φ φ' hφ hφ' Φ _ _ _ _ e t ht`. Establish `hne : ∀ k, ∃ j, y ⟨k, j⟩ ≠ 0` using `fun k => by`. Take `⟨j, hj⟩` from `hV.multiProj.relevant k`. Use `⟨j, fun h0 => hj ?_⟩` and prove the remaining obligations. Rewrite using `[pointIdeal, RingHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[pointConeMap, h0]`. Use `choose c hc using hne`. Establish `hyc : segreVec y c ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc k`. Establish `hli` using `ht.linearIndependent`. Establish `hz : ∀ o, ∃ i, pairProjCoord y e φ φ' t ⟨o, i⟩ ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(_ | _ | k)`. Conclude with `exists_ne_zero_of_span hN e hli φ' (TwistedDualGensSpan.proof O Ω K ι y N E B' a₀' M' φ' hφ' c hyc)`. Conclude with `exists_ne_zero_of_span hN e hli φ (TwistedDualGensSpan.proof O Ω K ι y N E B a₀ M φ hφ c hyc)`. Conclude with `⟨c k, fun h0 => hc k ((FaithfulSMul.algebraMap_injective Ω Φ) (by simpa [pairProjCoord, projCoord] using h0))⟩`. Establish `hP` using `isMultiProjPrime_pointIdeal (R := O) _ hz`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnt : (pointIdeal O (pairProjCoord y e φ φ' t)).comap (C : O →+* _) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `a ha`. Rewrite `ha` using `[Ideal.mem_comap, pointIdeal, RingHom.mem_ker, pointConeMap, aeval_C, MvPolynomial.algebraMap_apply, C_eq_zero, IsScalarTower.algebraMap_apply O Ω Φ, map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective Ω Φ)]`. Establish `hy : a ∈ (pointIdeal O y).comap (C : O →+* MRing ι O)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Ideal.mem_comap, pointIdeal, RingHom.mem_ker, pointConeMap, aeval_C, MvPolynomial.algebraMap_apply, ha, map_zero]`. Rewrite `hy` using `[hV.noTorsion]`. Simplify using `using hy`. Use `⟨hP, hnt, ?_⟩` and prove the remaining obligations. Establish `hdy` using `hDim O K ι (pointIdeal O y) hV.multiProj hV.noTorsion`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hdy` using `[hV.dim]`. Establish `hty : Algebra.trdeg O (MRing ι O ⧸ pointIdeal O y) = ((d + Fintype.card K : ℕ) : Cardinal)`. Establish `h1 : (((d + Fintype.card K : ℕ) : ℕ∞) + 1) = (Algebra.trdeg O (MRing ι O ⧸ pointIdeal O y)).toENat + 1`. Use `WithBot.coe_injective hdy` as an intermediate fact. Rewrite using `[← this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(Cardinal.toENat_eq_natCast.1 (WithTop.add_right_cancel ENat.one_ne_top h1).symm)`. Rewrite using `[hDim _ _ _ _ hP hnt, hTr O ϖ hϖ Ω K ι y d hV N hN E B B' hB M M' a₀ a₀' φ φ' hφ hφ' Φ e t ht, hty, ← Nat.cast_add, Cardinal.toENat_nat, Fintype.card_option, Fintype.card_option, show d + (N - 1) + 1 + (Fintype.card K + 1 + 1) = d + Fintype.card K + (N + 1) + 1 by omega]`. Use `norm_cast`.
+Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 theorem GenericProjClosureDim.proof (hDim : DvrConeDimTrdeg.Statement) (hTr : PairBundleTrdeg.Statement) :
     GenericProjClosureDim.Statement := by

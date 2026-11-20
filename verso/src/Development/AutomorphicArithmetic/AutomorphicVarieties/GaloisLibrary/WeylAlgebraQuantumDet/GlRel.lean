@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 open Matrix UpperTheory.V.Weyl
 
 /- English proof (translation)
-Introduce `n Ξ a b c d`. Establish `h` using `UpperTheory.V.Weyl.bracket n Ξ a b (Matrix.single c d 1)`. Establish `h1 : Ξ.D (Matrix.single a b (1:ℂ) * Matrix.single c d 1) = if b = c then Ξ.E a d else 0` using `by split_ifs with hbc`. Substitute `hbc` using the available equality. Rewrite using `[Matrix.single_mul_single_same, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Matrix.single_mul_single_of_ne _ _ _ _ hbc, map_zero]`. Establish `h2 : Ξ.D (Matrix.single c d (1:ℂ) * Matrix.single a b 1) = if d = a then Ξ.E c b else 0` using `by split_ifs with hbc`. Substitute `hbc` using the available equality. Rewrite using `[Matrix.single_mul_single_same, mul_one]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Matrix.single_mul_single_of_ne _ _ _ _ hbc, map_zero]`. Rewrite `h` using `[map_sub, h1, h2]`. Conclude with `h`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Weyl.glRel :
     ∀ (n : ℕ) (Ξ : Pre n), Formalism.REAL.GlRel Ξ.E := by

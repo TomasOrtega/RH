@@ -9,7 +9,7 @@ namespace PI.PoleLengthCount
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j}
 
 /- English proof (translation)
-Use `Submodule.span_mono (Set.image_mono ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hb⟩`. Use `⟨hx, fun β hβ ζ => le_trans (WithTop.coe_le_coe.2 ?_) (hb β hβ ζ)⟩` and prove the remaining obligations. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem AA_le_AAp' (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (Q : LocalPointData G la) (T : ℕ)
     (m : PtsG G la → ℕ) : Q.AA T ≤ Q.AAp T m := by
@@ -20,9 +20,9 @@ theorem AA_le_AAp' (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (�
   omega
 
 /- English proof (translation)
-Take `⟨ψ, hker, hP, hQ⟩` from `h2`. Use `(hF (Op X la G.N) (WK X la G.w wF (a0 D j T)) (Fk G la T) (a0 D j T) h1.1 h1.2.1 h1.2.2 (fun k => Vk G la k) ψ hker (Q.AAp T m) (Q.AA T) (fun k => Pk G la Q m k) (fun k => Qk G la Q k) (AA_le_AAp' G la Q T m) hP hQ).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum (fun k _ => (h3 k).le)).trans ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_sum, Nat.cast_le, ← Finset.sum_mul]`. Use `Nat.mul_le_mul_right _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hT : WeightFamilies.dimY D j < T`. Rewrite using `[show a0 D j T = T - WeightFamilies.dimY D j from rfl, hM _ _ hT]`. Rewrite using `[show a0 D j T = 0 from by simp only [a0]; omega]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bound (hF : FiltStep) (hM : MonCount) (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO))
     (Q : LocalPointData G la) (T : ℕ) (m : PtsG G la → ℕ)
@@ -42,7 +42,7 @@ theorem bound (hF : FiltStep) (hM : MonCount) (G : GlobalFamilyData X ka wL wF) 
     simp
 
 /- English proof (translation)
-Introduce `D B P j X ka wL wF G la Q S CRm T e c hOk hw hL`. Take `⟨h1, h2, h3⟩` from `hS G la Q S CRm T e c hOk hw hL`. Conclude with `bound hF hM G la Q T _ h1 h2 h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem target (hF : FiltStep) (hM : MonCount) (hS : Steps) : PI.LengthPoleInLift := by
   intro D B P j X ka wL wF G la Q S CRm T e c hOk hw hL

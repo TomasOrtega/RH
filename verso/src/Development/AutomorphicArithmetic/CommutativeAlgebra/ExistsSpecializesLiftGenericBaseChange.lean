@@ -4,13 +4,11 @@ import Development.EtaleCohomology.EtaleSheaves.H0TwistOverClosedField
 open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Establish `hfst : ∀ p, (pullback.fst w (j ≫ i)) ((pullbackLeftPullbackSndIso w i j).hom p) = (pullback.fst w i) ((pullback.fst (pullback.snd w i) j) p)`. Introduce `p`. Use `show ((pullbackLeftPullbackSndIso w i j).hom ≫ pullback.fst w (j ≫ i)).base p = (pullback.fst (pullback.snd w i) j ≫ pullback.fst w i).base p`. Rewrite using `[pullbackLeftPullbackSndIso_hom_fst]`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy : (pullbackLeftPullbackSndIso w i j).hom ((pullbackLeftPullbackSndIso w i j).inv y') = y'` using `by show ((pullbackLeftPullbackSndIso w i j).inv ≫ (pullbackLeftPullbackSndIso w i j).hom).base y' = y'`. Rewrite using `[Iso.inv_hom_id]`. Both sides reduce to the same expression. Take `⟨z, hz⟩` from `hxr`. Establish `hxz : z ⤳ (pullback.fst (pullback.snd w i) j) ((pullbackLeftPullbackSndIso w i j).inv y')`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (IsPreimmersion.isEmbedding (pullback.fst w i)).isInducing.specializes_iff, hz, ← hfst, hy]`. Conclude with `hx`. Take `⟨x'', hx'', hx''z⟩` from `Flat.generalizingMap (pullback.fst (pullback.snd w i) j) hxz`. Use `⟨(pullbackLeftPullbackSndIso w i j).hom x'', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`.
-
-Conclude with `hx''.map (Scheme.Hom.continuous _)`. Rewrite using `[hfst, hx''z, hz]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma aux {W S T U : Scheme.{0}} (w : W ⟶ S) (i : T ⟶ S) (j : U ⟶ T) (g : U ⟶ S)
     (hg : j ≫ i = g) [Flat j] [IsPreimmersion i] (y' : ↑(pullback w g)) (x : W)
@@ -38,7 +36,7 @@ private lemma aux {W S T U : Scheme.{0}} (w : W ⟶ S) (i : T ⟶ S) (j : U ⟶ 
   · rw [hfst, hx''z, hz]
 
 /- English proof (translation)
-Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Conclude with `Ideal.comap_bot_of_injective f hf`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private lemma spec_bot {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B]
     (f : A →+* B) (hf : Function.Injective f) :
@@ -47,26 +45,26 @@ private lemma spec_bot {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDo
   exact Ideal.comap_bot_of_injective f hf
 
 /- English proof (translation)
-The claim follows from `PrimeSpectrum.ext (Ideal.eq_bot_of_prime _)`.
+A detailed English derivation is pending.
 -/
 private lemma spec_field {F : Type} [Field F] (z : PrimeSpectrum F) : z = ⊥ :=
   PrimeSpectrum.ext (Ideal.eq_bot_of_prime _)
 
 /- English proof (translation)
-The claim follows from `le_bot_iff.1 ((PrimeSpectrum.le_iff_specializes _ _).2 h)`.
+A detailed English derivation is pending.
 -/
 private lemma spec_gen {A : Type} [CommRing A] [IsDomain A] (a : PrimeSpectrum A)
     (h : a ⤳ (⊥ : PrimeSpectrum A)) : a = ⊥ :=
   le_bot_iff.1 ((PrimeSpectrum.le_iff_specializes _ _).2 h)
 
 /- English proof (translation)
-Introduce `R Ω _ _ _ _ hinj W w y' x hx`. Establish `hRK : Function.Injective (algebraMap R (FractionRing R))` using `IsFractionRing.injective R _`. Use `letI : Algebra (FractionRing R) Ω := (IsFractionRing.lift hinj : FractionRing R →+* Ω).toAlgebra`. Use `haveI : IsPreimmersion (Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))) := IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Establish `hcomp : (algebraMap (FractionRing R) Ω).comp (algebraMap R (FractionRing R)) = algebraMap R Ω` using `IsLocalization.lift_comp _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : Spec.map (CommRingCat.ofHom (algebraMap (FractionRing R) Ω)) ≫ Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R))) = Spec.map (CommRingCat.ofHom (algebraMap R Ω))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hcomp]`. Apply `aux w (Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))) (Spec.map (CommRingCat.ofHom (algebraMap (FractionRing R) Ω))) _ hg y' x hx` to reduce the goal to its premises. Establish `hwx : (show PrimeSpectrum R from w x) = ⊥`. Apply `spec_gen` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1` using `hx.map w.continuous`. Establish `h2 : w (pullback.fst w (Spec.map (CommRingCat.ofHom (algebraMap R Ω))) y') = Spec.map (CommRingCat.ofHom (algebraMap R Ω)) (pullback.snd w (Spec.map (CommRingCat.ofHom (algebraMap R Ω))) y')` using `by show (pullback.fst w (Spec.map (CommRingCat.ofHom (algebraMap R Ω))) ≫ w).base y' = (pullback.snd w (Spec.map (CommRingCat.ofHom (algebraMap R Ω))) ≫ Spec.map (CommRingCat.ofHom (algebraMap R Ω))).base y'`. Rewrite using `[pullback.condition]`. Rewrite `h1` using `[h2, spec_field (pullback.snd w (Spec.map (CommRingCat.ofHom (algebraMap R Ω))) y'), spec_bot _ hinj]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := w) (g := Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))) x (⊥ : PrimeSpectrum (FractionRing R)) (by show (show PrimeSpectrum R from w x) = _`. Rewrite using `[hwx, spec_bot _ hRK])`. Conclude with `⟨z, hz⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_specializes_lift_generic_base_change :
     ∀ (R Ω : Type) [CommRing R] [IsDomain R] [Field Ω] [Algebra R Ω], Function.Injective (algebraMap R Ω) → ∀ {W : Scheme.{0}} (w : W ⟶ Sp R) (y' : ↑(pullback w (Spec.map (CommRingCat.ofHom (algebraMap R Ω))))) (x : W), x ⤳ (pullback.fst w (Spec.map (CommRingCat.ofHom (algebraMap R Ω)))) y' → ∃ x' : ↑(pullback w (Spec.map (CommRingCat.ofHom (algebraMap R Ω)))), x' ⤳ y' ∧ (pullback.fst w (Spec.map (CommRingCat.ofHom (algebraMap R Ω)))) x' = x := by

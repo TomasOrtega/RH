@@ -9,13 +9,13 @@ open scoped Classical ENNReal NNReal
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (Continuous.matrix_map continuous_id AdeleBaseChange.continuous_adeleMap)`.
+A detailed English derivation is pending.
 -/
 private theorem cont_em {E : Type} [Field E] [NumberField E] : Continuous (em E) :=
   Continuous.units_map _ (Continuous.matrix_map continuous_id AdeleBaseChange.continuous_adeleMap)
 
 /- English proof (translation)
-Use `⟨Matrix.GeneralLinearGroup.map (algebraMap ℚ E) (Matrix.SpecialLinearGroup.toGL γ), ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[ratGL_apply]`. Conclude with `AdeleBaseChange.adeleMap_algebraMap _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ex_rat {E : Type} [Field E] [NumberField E] (γ : Matrix.SpecialLinearGroup (Fin 2) ℚ) :
     ∃ γ', em E (gl (ratS ℚ γ)) = ratGL E 2 γ' := by
@@ -26,19 +26,19 @@ private theorem ex_rat {E : Type} [Field E] [NumberField E] (γ : Matrix.Special
   exact AdeleBaseChange.adeleMap_algebraMap _
 
 /- English proof (translation)
-The claim follows from `map_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem glm (g h : G1 ℚ) : gl (g * h) = gl g * gl h := map_mul _ _ _
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, M.val_gl]`. Simplify using `[nU, Matrix.mul_apply, Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem row_nU (b : A ℚ) (h : GL (Fin 2) (A ℚ)) (j : Fin 2) : (gl (nU b) * h).val 1 j = h.val 1 j := by
   rw [Units.val_mul, M.val_gl]
   simp [nU, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, M.val_gl, M.val_ratS]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem row_rat (γ : Matrix.SpecialLinearGroup (Fin 2) ℚ) (h : GL (Fin 2) (A ℚ)) (j : Fin 2) :
     (gl (ratS ℚ γ) * h).val 1 j = ((fun i => rt (γ.1 1 i)) ᵥ* h.val) j := by
@@ -46,23 +46,21 @@ private theorem row_rat (γ : Matrix.SpecialLinearGroup (Fin 2) ℚ) (h : GL (Fi
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ D ω φ hA M₀ Φ hΦ t u hu`. Take `⟨σ, hσ⟩` from `G.exists_rowSec (F := ℚ)`. Take `⟨hmp, hme⟩` from `UpperTheory.measurePreserving_idele_scale_and_conj_on_maximalCompact M₀ t u hu`. Establish `hleft : ∀ (γ : Matrix.SpecialLinearGroup (Fin 2) ℚ) (h : GL (Fin 2) (A ℚ)), φ (em E (gl (ratS ℚ γ) * h)) = φ (em E h)`. Introduce `γ h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨γ', e⟩` from `ex_rat (E := E) γ`. Rewrite using `[map_mul, e, hA.left]`. Establish `hg : Continuous fun g : G1 ℚ => gl g * dM u` using `M.continuous_gl.mul continuous_const`. Establish `hm : Measurable (Un.Uu φ Φ t u)`. Use `Continuous.measurable ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hA.cont.comp (cont_em.comp hg)).mul ((continuous_of_mem_schwartzBruhatPi hΦ).comp (continuous_pi fun j => ?_))` and prove the remaining obligations. Conclude with `continuous_const.mul ((Units.continuous_val.comp hg).matrix_elem 1 j)`. Establish `hinv : ∀ (ξ : ℚ) g, Un.Uu φ Φ t u (nU (rt ξ) * g) = Un.Uu φ Φ t u g`. Introduce `ξ g`. Establish `e : gl (nU (rt ξ) * g) * dM u = gl (nU (rt ξ)) * (gl g * dM u)` using `by rw [glm, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : φ (em E (gl (nU (rt ξ)) * (gl g * dM u))) = φ (em E (gl g * dM u))`. Rewrite using `[← M.ratS_up]`. Conclude with `hleft _ _`. Unfold `Un.Uu`. Rewrite using `[e, e']`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [row_nU]`. Establish `key` using `(M.unfC ℚ M₀ σ (Un.Uu φ Φ t u) hσ hm hinv (UpperTheory.maximalCompact_integral_unipotent_norm_finite E D ω φ hA M₀ Φ hΦ t u hu)).2.2.2`. Establish `e1 : ∀ g, φ (em E (gl g * dM u)) * ThR Φ t (gl g * dM u) = ∑' r, Un.Uu φ Φ t u (ratS ℚ (σ r) * g)`. Introduce `g`. Unfold `ThR`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun r => ?_` and prove the remaining obligations. Establish `e : gl (ratS ℚ (σ r) * g) * dM u = gl (ratS ℚ (σ r)) * (gl g * dM u)` using `by rw [glm, mul_assoc]`. Unfold `Un.Uu`. Rewrite using `[e, hleft]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [row_rat]`. Rewrite using `[hσ r]`. Simplify using `only [e1]`. Rewrite using `[key, Meas.I0, ← hmp.integral_comp hme]`. Use `integral_congr_ae (Eventually.of_forall fun p => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : ∀ b, gl (nU b * (mD (Un.aa t u p.1) * cD u p.2)) * dM u = gl (nU b) * (gl (mD (Un.aa t u p.1)) * dM u * gl p.2)`. Introduce `b`. Rewrite using `[glm, glm, mul_assoc, mul_assoc, M.gl_cD, mul_assoc]`. Simplify using `only [iw, Un.Tt, Un.Uu, Un.Fb, e2, row_nU]`. Rewrite using `[integral_mul_const, ← mul_assoc]`.
-
-Simplify using `only [map_mul (em E) (gl (nU _))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.setIntegral_restrict_mul_thetaKernel_eq_unfolded :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (ω : HChar ℚ) (φ : GL (Fin 2) (A E) → ℂ), admitted D ω φ → ∀ (M₀ : Meas ℚ), ∀ Φ ∈ schwartzBruhatPi ℚ (Fin 2), ∀ (t : ℝ) (u : IdeleGroup ℚ), u ∈ UU →

@@ -15,15 +15,13 @@ namespace FunctorialResolution.Blowup
 universe u
 
 /- English proof (translation)
-Establish `hsmem : s ∈ Ideal.map φ I`. Rewrite using `[hmap]`. Conclude with `Ideal.subset_span rfl`. Rewrite `hsmem` using `[← Ideal.span_eq I, Ideal.map_span]`. Take `⟨n, c, gg, hsum⟩` from `Submodule.mem_span_set'.mp hsmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose a ha hφa using fun i => (gg i).2`. Establish `hdex : ∀ i, ∃ e : A, φ (a i) = e * s`. Introduce `i`. Establish `hmem : φ (a i) ∈ Ideal.span {s}`. Rewrite using `[← hmap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Ideal.mem_map_of_mem _ (ha i)`. Take `⟨e, he⟩` from `Ideal.mem_span_singleton'.mp hmem`. Conclude with `⟨e, he.symm⟩`. Use `choose d hdd using hdex`. Use `⟨n, fun i => ⟨a i, ha i⟩, c, d, fun i => hdd i, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hss : (∑ i, c i * d i) * s = s`. Rewrite using `[Finset.sum_mul]`. Use `conv_rhs => rw [← hsum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, ← hφa i, hdd i, mul_assoc]`.
-
-Establish `h1 : ((∑ i, c i * d i) - 1) * s = 0`. Rewrite using `[sub_mul, hss, one_mul, sub_self]`. Establish `h2` using `mem_nonZeroDivisors_iff_right.mp hs _ h1`. Take the linear combination `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem exists_sum_mul_eq_one_of_map_eq_span {R A : Type u} [CommRing R] [CommRing A]
     (I : Ideal R) (φ : R →+* A) (s : A) (hmap : Ideal.map φ I = Ideal.span {s})
@@ -55,11 +53,11 @@ private theorem exists_sum_mul_eq_one_of_map_eq_span {R A : Type u} [CommRing R]
   linear_combination h2
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hmem : ∀ i, (X.presheaf.germ V w hw).hom (d i) ∈ IsLocalRing.maximalIdeal ↥(X.presheaf.stalk w)`. Introduce `i`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hu`. Conclude with `hcon i ((X.mem_basicOpen (d i) w hw).mpr hu)`. Establish `h1 : (1 : ↥(X.presheaf.stalk w)) ∈ IsLocalRing.maximalIdeal ↥(X.presheaf.stalk w)`. Establish `hone : (X.presheaf.germ V w hw).hom (1 : ↥Γ(X, V)) = 1` using `map_one _`. Rewrite using `[← hone, ← hsum, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (hmem i)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal ↥(X.presheaf.stalk w)).ne_top ((Ideal.eq_top_iff_one _).mpr h1)`.
+A detailed English derivation is pending.
 -/
 private theorem exists_mem_basicOpen_of_sum_mul_eq_one {X : Scheme.{u}} {V : X.Opens} {n : ℕ}
     (c d : Fin n → ↥Γ(X, V)) (hsum : ∑ i, c i * d i = 1) (w : ↥X) (hw : w ∈ V) :
@@ -82,7 +80,7 @@ private theorem exists_mem_basicOpen_of_sum_mul_eq_one {X : Scheme.{u}} {V : X.O
     ((Ideal.eq_top_iff_one _).mpr h1)
 
 /- English proof (translation)
-Establish `h2 : X.presheaf.map (homOfLE h).op = 𝟙 _` using `CategoryTheory.Functor.map_id _ _`. Simplify using `only [Scheme.Hom.appLE, h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem appLE_top_top_eq_appTop {X Y : Scheme.{u}} (f : X ⟶ Y)
     (h : (⊤ : X.Opens) ≤ f ⁻¹ᵁ (⊤ : Y.Opens)) : f.appLE ⊤ ⊤ h = f.appTop := by
@@ -92,7 +90,7 @@ private theorem appLE_top_top_eq_appTop {X Y : Scheme.{u}} (f : X ⟶ Y)
   rfl
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appLE_comp_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem appLE_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z) (U : Z.Opens)
     (V : Y.Opens) (V' : X.Opens) (e₁ : V ≤ g ⁻¹ᵁ U) (e₂ : V' ≤ f ⁻¹ᵁ V)
@@ -101,7 +99,7 @@ private theorem appLE_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z) (U :
   rw [Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-Establish `h1 : U.ι ''ᵁ (⊤ : U.toScheme.Opens) = U` using `by simp`. Establish `h2 : U.ι.appLE U ⊤ hle = W.presheaf.map (eqToHom h1).op ≫ (U.ι.appIso ⊤).hom`. Rewrite using `[Scheme.Hom.appIso_hom', Scheme.Hom.map_appLE]`. Rewrite using `[h2, eqToHom_op, eqToHom_map]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIso_ι_appLE {W : Scheme.{u}} (U : W.Opens)
     (hle : (⊤ : U.toScheme.Opens) ≤ U.ι ⁻¹ᵁ U) : IsIso (U.ι.appLE U ⊤ hle) := by
@@ -113,7 +111,7 @@ private theorem isIso_ι_appLE {W : Scheme.{u}} (U : W.Opens)
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[← appLE_top_top_eq_appTop (U.ι ≫ g) (by simp)]`. Conclude with `appLE_comp U.ι g ⊤ U ⊤ hle' hle (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem appTop_ι_comp_eq_appLE_comp {R : Type u} [CommRing R] {W : Scheme.{u}} (U : W.Opens)
     (g : W ⟶ Spec (CommRingCat.of R)) (hle : (⊤ : U.toScheme.Opens) ≤ U.ι ⁻¹ᵁ U)
@@ -123,9 +121,9 @@ private theorem appTop_ι_comp_eq_appLE_comp {R : Type u} [CommRing R] {W : Sche
   exact appLE_comp U.ι g ⊤ U ⊤ hle' hle (by simp)
 
 /- English proof (translation)
-Establish `hle : (⊤ : U.toScheme.Opens) ≤ U.ι ⁻¹ᵁ U` using `by simp`. Establish `hle' : U ≤ g ⁻¹ᵁ (⊤ : (Spec (CommRingCat.of R)).Opens)` using `by simp`. Use `isIso_ι_appLE U hle` as an intermediate fact. Use `⟨asIso (U.ι.appLE U ⊤ hle), fun r => ?_⟩` and prove the remaining obligations. Establish `hcomp` using `appTop_ι_comp_eq_appLE_comp U g hle hle'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [globalSectionsRingHom_eq, hcomp, asIso_hom, CommRingCat.hom_comp, RingHom.comp_apply, sectionsRingHom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem exists_sections_iso_globalSectionsRingHom {R : Type u} [CommRing R] {W : Scheme.{u}} (U : W.Opens)
     (g : W ⟶ Spec (CommRingCat.of R)) :
@@ -141,17 +139,17 @@ private theorem exists_sections_iso_globalSectionsRingHom {R : Type u} [CommRing
     sectionsRingHom_apply]
 
 /- English proof (translation)
-Take `⟨V, s, hwV, hs, hspan⟩` from `hcart w`. Establish `hmap : Ideal.map (sectionsRingHom g (V : W.Opens)) I = Ideal.span {s}` using `(comap_specIdealSheaf_ideal I g V).symm.trans hspan`. Take `⟨n, a, c, d, hd, hsum⟩` from `exists_sum_mul_eq_one_of_map_eq_span I (sectionsRingHom g (V : W.Opens)) s hmap hs`. Take `⟨i, hi⟩` from `exists_mem_basicOpen_of_sum_mul_eq_one c d hsum w hwV`. Establish `hLoc : IsLocalization.Away (d i) ↥Γ(W, W.basicOpen (d i))` using `V.2.isLocalization_basicOpen (d i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hUV : W.basicOpen (d i) ≤ (V : W.Opens)` using `W.basicOpen_le (d i)`. Establish `: IsAffine (W.basicOpen (d i)).toScheme` using `V.2.basicOpen (d i)`. Establish `hunit : IsUnit ((W.presheaf.map (homOfLE hUV).op).hom (d i))` using `IsLocalization.map_units (M := Submonoid.powers (d i)) _ ⟨d i, Submonoid.mem_powers _⟩`. Establish `hrs : (W.presheaf.map (homOfLE hUV).op).hom s ∈ nonZeroDivisors ↥Γ(W, W.basicOpen (d i))` using `IsLocalization.nonZeroDivisors_le_comap (Submonoid.powers (d i)) _ hs`. Establish `hres : ∀ r : R, sectionsRingHom g (W.basicOpen (d i)) r = (W.presheaf.map (homOfLE hUV).op).hom (sectionsRingHom g (V : W.Opens) r)` using `fun r => sectionsRingHom_restrict g hUV r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : sectionsRingHom g (W.basicOpen (d i)) = (W.presheaf.map (homOfLE hUV).op).hom.comp (sectionsRingHom g (V : W.Opens))` using `RingHom.ext hres`. Establish `hmapSpan : Ideal.map (sectionsRingHom g (W.basicOpen (d i))) I = Ideal.span {sectionsRingHom g (W.basicOpen (d i)) (a i : R)}`. Establish `h1 : Ideal.map (sectionsRingHom g (W.basicOpen (d i))) I = Ideal.span {(W.presheaf.map (homOfLE hUV).op).hom (d i) * (W.presheaf.map (homOfLE hUV).op).hom s}`. Rewrite using `[hcomp, ← Ideal.map_map, hmap, Ideal.map_span, Set.image_singleton]`. Conclude with `(Ideal.span_singleton_mul_left_unit hunit _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hres (a i : R), hd i, map_mul]`. Establish `hnonZeroDivU : sectionsRingHom g (W.basicOpen (d i)) (a i : R) ∈ nonZeroDivisors ↥Γ(W, W.basicOpen (d i))`. Rewrite using `[hres, hd i, map_mul]`. Conclude with `mul_mem hunit.mem_nonZeroDivisors hrs`. Take `⟨e, he⟩` from `exists_sections_iso_globalSectionsRingHom (W.basicOpen (d i)) g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen' : Ideal.map (globalSectionsRingHom ((W.basicOpen (d i)).ι ≫ g)) I = Ideal.span {globalSectionsRingHom ((W.basicOpen (d i)).ι ≫ g) (a i : R)}`. Establish `e1 : Ideal.map (globalSectionsRingHom ((W.basicOpen (d i)).ι ≫ g)) I = Ideal.map (CommRingCat.Hom.hom e.hom) (Ideal.map (sectionsRingHom g (W.basicOpen (d i))) I)`. Rewrite using `[Ideal.map_map]`. Conclude with `congrArg (fun ϕ => Ideal.map ϕ I) (RingHom.ext he)`. Rewrite using `[e1, hmapSpan, Ideal.map_span, Set.image_singleton, he]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hnonZeroDiv' : globalSectionsRingHom ((W.basicOpen (d i)).ι ≫ g) (a i : R) ∈ nonZeroDivisors ↥Γ((W.basicOpen (d i)).toScheme, ⊤)`. Rewrite using `[he]`. Conclude with `map_mem_nonZeroDivisors_of_iso e hnonZeroDivU`. Take `⟨h, hh, -⟩` from `exists_lift_affineBlowup I ((W.basicOpen (d i)).ι ≫ g) (a i) hgen' hnonZeroDiv'`. Conclude with `⟨W.basicOpen (d i), hi, h, hh⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_local_lift_toSpec_of_isLocallyGeneratedByNonZeroDivisor {R : Type u} [CommRing R] (I : Ideal R)
     {W : Scheme.{u}} (g : W ⟶ Spec (CommRingCat.of R))
@@ -214,11 +212,11 @@ private def openCoverOfForallMem {W : Scheme.{u}} (U : ↥W → W.Opens) (hU : �
     (fun x => ⟨x, ⟨x, hU x⟩, rfl⟩)
 
 /- English proof (translation)
-Use `choose U hU h hh using fun w => exists_local_lift_toSpec_of_isLocallyGeneratedByNonZeroDivisor I g hcart w`. Establish `hcompat : ∀ x y : ↥W, Limits.pullback.fst ((U x).ι) ((U y).ι) ≫ h x = Limits.pullback.snd ((U x).ι) ((U y).ι) ≫ h y`. Introduce `x y`. Use `affineBlowup_hom_ext _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hh x, hh y, ← Category.assoc, ← Category.assoc, Limits.pullback.condition]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (Limits.pullback.fst ((U x).ι) ((U y).ι) ≫ h x) ≫ AffineBlowup.toSpec I = (Limits.pullback.fst ((U x).ι) ((U y).ι) ≫ (U x).ι) ≫ g`. Rewrite using `[Category.assoc, hh x, ← Category.assoc]`. Establish `h2 : (specIdealSheaf I).comap ((Limits.pullback.fst ((U x).ι) ((U y).ι) ≫ (U x).ι) ≫ g) = ((specIdealSheaf I).comap g).comap (Limits.pullback.fst ((U x).ι) ((U y).ι) ≫ (U x).ι)`. Simplify using `[Scheme.IdealSheafData.comap_comp]`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `IsLocallyGeneratedByNonZeroDivisor.comap_of_isOpenImmersion hcart _`. Use `⟨(openCoverOfForallMem U hU).glueMorphisms h (fun x y => hcompat x y), ?_⟩` and prove the remaining obligations. Use `(openCoverOfForallMem U hU).hom_ext _ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, (openCoverOfForallMem U hU).ι_glueMorphisms h (fun x y => hcompat x y) x]`. Conclude with `hh x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_toSpec_of_isLocallyGeneratedByNonZeroDivisor {R : Type u} [CommRing R] (I : Ideal R)
     {W : Scheme.{u}} (g : W ⟶ Spec (CommRingCat.of R))
@@ -248,9 +246,9 @@ theorem exists_lift_toSpec_of_isLocallyGeneratedByNonZeroDivisor {R : Type u} [C
   exact hh x
 
 /- English proof (translation)
-Use `And.intro (isLocallyGeneratedByNonZeroDivisor_comap_toSpec I) ?_` and prove the remaining obligations. Introduce `W g hg`. Take `⟨h, hh⟩` from `exists_lift_toSpec_of_isLocallyGeneratedByNonZeroDivisor I g hg`. Use `⟨h, hh, fun h' hh' => ?_⟩` and prove the remaining obligations. Use `affineBlowup_hom_ext h' h (by rw [hh', hh]) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hh']`. Conclude with `hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBlowupAlongIdealSheaf_affineBlowup_toSpec {R : Type u} [CommRing R] (I : Ideal R) :
     IsBlowupAlongIdealSheaf (AffineBlowup.toSpec I) (specIdealSheaf I) := by

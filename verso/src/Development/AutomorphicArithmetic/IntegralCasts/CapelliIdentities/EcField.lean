@@ -15,11 +15,11 @@ import Mathlib
         Continuous (⇑j : IsDedekindDomain.HeightOneSpectrum.adicCompletion F w → UpperTheory.Reformulated.B.Qh13.Qbar l) }
 
 /- English proof (translation)
-Introduce `L _ _ l _ w j`. Take `⟨j, hj⟩` from `j`. Set `f : L →+* PadicAlgCl l` to `j.comp (algebraMap L (IsDedekindDomain.HeightOneSpectrum.adicCompletion L w))`. Set `b` to `Module.finBasis ℚ L`. Set `K : IntermediateField ℚ_[l] (PadicAlgCl l)` to `IntermediateField.adjoin ℚ_[l] (Set.range fun i => f (b i))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hK : FiniteDimensional ℚ_[l] K` using `IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Establish `hf : ∀ y : L, f y ∈ K`. Introduce `y`. Rewrite using `[← b.sum_repr y, map_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Rat.smul_def, map_mul, map_ratCast]`. Conclude with `mul_mem (SubfieldClass.ratCast_mem K _) (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)`. Establish `hc : IsClosed (K : Set (PadicAlgCl l))` using `haveI : FiniteDimensional ℚ_[l] K.toSubalgebra.toSubmodule := hK K.toSubalgebra.toSubmodule.closed_of_finiteDimensional`. Use `⟨K, hK, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap L w).induction_on x (hc.preimage hj) hf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh13.ec_field :
     ∀ {L : Type} [inst : Field L] [inst_1 : NumberField L] {l : ℕ} [inst_2 : Fact (Nat.Prime l)]

@@ -22,15 +22,15 @@ def DensCos (μ : Measure V) (f : V → Y) (ι : X → Y) (ν : Measure X) (U : 
           ∫ b in S, g b ∂ν
 
 /- English proof (translation)
-Conclude with `⟨integrable_zero _ _ _, continuous_const, fun S _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasDens_zero : HasDens μ f ι ν (fun _ => 0) (fun _ => 0) := by
   exact ⟨integrable_zero _ _ _, continuous_const, fun S _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨hi1, hc1, he1⟩` from `h₁`. Take `⟨hi2, hc2, he2⟩` from `h₂`. Use `⟨hi1.add hi2, hc1.add hc2, fun S hS => ?_⟩` and prove the remaining obligations. Establish `hg1 : IntegrableOn g₁ S ν` using `by first`. Consider the case `exact hc1.continuousOn.integrableOn_compact hS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact ContinuousOn.integrableOn_compact hS hc1.continuousOn`. Establish `hg2 : IntegrableOn g₂ S ν` using `by first`. Consider the case `exact hc2.continuousOn.integrableOn_compact hS`. Consider the case `exact ContinuousOn.integrableOn_compact hS hc2.continuousOn`. Rewrite using `[integral_add hi1.integrableOn hi2.integrableOn, integral_add hg1 hg2, he1 S hS, he2 S hS]`.
+Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem HasDens.add [IsFiniteMeasureOnCompacts ν] {φ₁ φ₂ : V → ℝ} {g₁ g₂ : X → ℝ}
     (h₁ : HasDens μ f ι ν φ₁ g₁) (h₂ : HasDens μ f ι ν φ₂ g₂) :
@@ -49,9 +49,9 @@ theorem HasDens.add [IsFiniteMeasureOnCompacts ν] {φ₁ φ₂ : V → ℝ} {g�
   rw [integral_add hi1.integrableOn hi2.integrableOn, integral_add hg1 hg2, he1 S hS, he2 S hS]
 
 /- English proof (translation)
-Introduce `T`. Proceed by induction on `T using Finset.cons_induction with`. Consider the case `empty`. Introduce `_`. Simplify using `using (hasDens_zero : HasDens μ f ι ν (fun _ => 0) (fun _ => 0))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `cons a s ha ih`. Introduce `hT`. Establish `h1` using `hT a (Finset.mem_cons_self a s)`. Establish `h2` using `ih (fun i hi => hT i (Finset.mem_cons_of_mem hi))`. Simplify `h1.add h2` using `[Finset.sum_cons]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasDens_sum [IsFiniteMeasureOnCompacts ν] {κ : Type} (φ : κ → V → ℝ) (g : κ → X → ℝ) :
     ∀ T : Finset κ, (∀ i ∈ T, HasDens μ f ι ν (φ i) (g i)) →
@@ -83,9 +83,9 @@ def IsCOBasis (B : AddSubgroup V → Prop) : Prop :=
 
 omit [MeasurableSpace V] [OpensMeasurableSpace V] in
 /- English proof (translation)
-Establish `he : {z | z - y ∈ Λ} = (fun w => w + y) '' (Λ : Set V)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Conclude with `⟨z - y, hz, sub_add_cancel z y⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨w, hw, rfl⟩`. Simplify using `using hw`. Rewrite using `[he]`. Conclude with `hΛc.image (continuous_add_right y)`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_cos (Λ : AddSubgroup V) (hΛc : IsCompact (Λ : Set V)) (y : V) :
     IsCompact {z | z - y ∈ Λ} := by
@@ -100,9 +100,9 @@ theorem isCompact_cos (Λ : AddSubgroup V) (hΛc : IsCompact (Λ : Set V)) (y : 
   exact hΛc.image (continuous_add_right y)
 
 /- English proof (translation)
-Establish `hK` using `isCompact_cos Λ hΛc y`. Establish `hO : IsOpen {z : V | z - y ∈ Λ}` using `hΛo.preimage (continuous_sub_right y)`. Establish `hI : IntegrableOn (fun _ : V => (1 : ℝ)) {z : V | z - y ∈ Λ} μ` using `by first`. Consider the case `exact ContinuousOn.integrableOn_compact hK continuousOn_const`. Consider the case `exact integrableOn_const hK.measure_lt_top.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact integrableOn_const.2 (Or.inr hK.measure_lt_top)`. Conclude with `hI.integrable_indicator hO.measurableSet`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem integrable_cos [IsFiniteMeasureOnCompacts μ] (Λ : AddSubgroup V)
     (hΛo : IsOpen (Λ : Set V)) (hΛc : IsCompact (Λ : Set V)) (y : V) :
@@ -117,37 +117,33 @@ theorem integrable_cos [IsFiniteMeasureOnCompacts μ] (Λ : AddSubgroup V)
   exact hI.integrable_indicator hO.measurableSet
 
 /- English proof (translation)
-Introduce and unpack `φ ⟨hlc, hs, hsU⟩`. Establish `hloc : ∀ x : tsupport φ, ∃ Λx : AddSubgroup V, IsOpen (Λx : Set V) ∧ IsCompact (Λx : Set V) ∧ (∀ y, y - (x : V) ∈ Λx → ∀ Λ : AddSubgroup V, B Λ → IsOpen (Λ : Set V) → IsCompact (Λ : Set V) → Λ ≤ Λx → ∃ g, HasDens μ f ι ν ({z | z - y ∈ Λ}.indicator fun _ => (1 : ℝ)) g) ∧ ∀ z ∈ Λx, …`. Introduce `x`. Take `⟨N, hN, hd⟩` from `h x (hsU x.2)`. Establish `hfib : {z : V | φ ((x : V) + z) = φ x} ∈ 𝓝 (0 : V)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ho : IsOpen {z : V | (φ ∘ fun z => (x : V) + z) z = φ x}` using `(hlc.comp_continuous (continuous_const.add continuous_id)).isClopen_fiber _ |>.isOpen`. Conclude with `ho.mem_nhds (by simp)`. Take `⟨Λx, -, ho, hc, hsub⟩` from `hB _ (inter_mem hN hfib)`. Use `⟨Λx, ho, hc, fun y hy Λ hBΛ hΛo hΛc hle => ?_, fun z hz => (hsub hz).2⟩` and prove the remaining obligations. Take `⟨g, hg, hS⟩` from `hd y (hsub hy).1 Λ hBΛ hΛo hΛc fun z hz => (hsub (hle hz)).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨g, integrable_cos Λ hΛo hΛc y, hg, hS⟩`. Use `choose Λx hΛxo hΛxc hΛxd hΛxφ using hloc`. Take `⟨t, ht⟩` from `hs.isCompact.elim_finite_subcover (fun x : tsupport φ => {y : V | y - (x : V) ∈ Λx x}) (fun x => (hΛxo x).preimage (continuous_id.sub continuous_const)) (fun y hy => mem_iUnion.2 ⟨⟨y, hy⟩, by simp [(Λx _).zero_mem]⟩)`. Take `⟨Λs, -, hso, -, -⟩` from `hB univ univ_mem`. Use `set Λi : AddSubgroup V := Λs ⊓ ⨅ x ∈ t, Λx x with hΛi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hΛio : IsOpen (Λi : Set V)` using `isOpen_inf_iInf Λs hso t Λx hΛxo`. Take `⟨Λ', hBΛ', hΛ'o, hΛ'c, hΛ'sub⟩` from `hB _ (hΛio.mem_nhds Λi.zero_mem)`. Establish `hΛ'le : ∀ x ∈ t, Λ' ≤ Λx x` using `fun x hx z hz => AddSubgroup.mem_iInf.1 (AddSubgroup.mem_iInf.1 (inf_le_right (a := Λs) (hΛ'sub hz)) x) hx`. Establish `hK : ∀ y ∈ tsupport φ, ∃ x ∈ t, y - (x : V) ∈ Λx x` using `fun y hy => by`. Take `⟨x, hx, hyx⟩` from `mem_iUnion₂.1 (ht hy)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨x, hx, hyx⟩`. Establish `hconst : ∀ y ∈ tsupport φ, ∀ z ∈ Λ', φ (y + z) = φ y`. Introduce `y hy z hz`. Take `⟨x, hx, hyx⟩` from `hK y hy`. Establish `h1` using `hΛxφ x (y - x) hyx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `hΛxφ x (y + z - x) (by`. Use `(Λx x).add_mem hyx (hΛ'le x hx hz)` as an intermediate fact. Rewrite using `[show y - (x : V) + z = y + z - x by abel] at this)` and apply the resulting hypothesis. Rewrite `h1`, `h2` using `[add_sub_cancel]`. Rewrite using `[h2, h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t2, ht2⟩` from `hs.isCompact.elim_finite_subcover (fun y : tsupport φ => {z : V | z - (y : V) ∈ Λ'}) (fun y => hΛ'o.preimage (continuous_id.sub continuous_const)) (fun y hy => mem_iUnion.2 ⟨⟨y, hy⟩, by simp [Λ'.zero_mem]⟩)`. Use `set T : Finset (V ⧸ Λ') := t2.image fun y : tsupport φ => (QuotientAddGroup.mk (y : V) : V ⧸ Λ') with hT`. Establish `hrep : ∀ q ∈ T, ∃ y ∈ tsupport φ, q.out - y ∈ Λ'`. Introduce `q hq`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `⟨y, y.2, ?_⟩` and prove the remaining obligations. Use `Λ'.neg_mem (QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' (QuotientAddGroup.mk (y : V) : V ⧸ Λ')))` as an intermediate fact. Rewrite `this` using `[neg_add_rev, neg_neg, neg_add_eq_sub]`. Then use the resulting hypothesis. Establish `hTd : ∀ q ∈ T, ∃ g, HasDens μ f ι ν ({z | z - q.out ∈ Λ'}.indicator fun _ => (1 : ℝ)) g`. Introduce `q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨y, hy, hqy⟩` from `hrep q hq`. Take `⟨x, hx, hyx⟩` from `hK y hy`. Conclude with `hΛxd x q.out (by`. Use `(Λx x).add_mem hyx (hΛ'le x hx hqy)` as an intermediate fact. Rewrite using `[show y - (x : V) + (q.out - y) = q.out - x by abel] at this) Λ' hBΛ' hΛ'o hΛ'c` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(hΛ'le x hx)`. Use `choose! gq hgq using hTd`. Establish `hsum` using `hasDens_sum (fun q v => φ (q : V ⧸ Λ').out * {z | z - q.out ∈ Λ'}.indicator (fun _ => (1 : ℝ)) v) (fun q b => φ (q : V ⧸ Λ').out * gq q b) T (fun q hq => (hgq q hq).const_mul _)`. Establish `heq : (fun v => ∑ q ∈ T, φ (q : V ⧸ Λ').out * {z | z - q.out ∈ Λ'}.indicator (fun _ => (1 : ℝ)) v) = φ`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hind : ∀ q : V ⧸ Λ', {z | z - q.out ∈ Λ'}.indicator (fun _ => (1 : ℝ)) x = if (x : V ⧸ Λ') = q then 1 else 0`. Introduce `q`. Establish `: x - q.out ∈ Λ' ↔ (x : V ⧸ Λ') = q` using `by conv_rhs => rw [← QuotientAddGroup.out_eq' q]`. Rewrite using `[eq_comm, QuotientAddGroup.eq, neg_add_eq_sub]`. Distinguish the cases in `hq : (x : V ⧸ Λ') = q`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos hq, Set.indicator_of_mem (show x ∈ {z | z - q.out ∈ Λ'} from this.2 hq)]`. Rewrite using `[if_neg hq, Set.indicator_of_notMem (show x ∉ {z | z - q.out ∈ Λ'} from fun h' => hq (this.1 h'))]`. Simplify using `only [hind, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq]`. Use `split_ifs with hxT`. Take `⟨y, hy, hqy⟩` from `hrep _ hxT`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `hconst y hy _ hqy`. Rewrite `e1` using `[add_sub_cancel]`. Establish `hxo : x - (x : V ⧸ Λ').out ∈ Λ'`. Use `QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' (x : V ⧸ Λ'))` as an intermediate fact. Rewrite `this` using `[neg_add_eq_sub]`. Then use the resulting hypothesis.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2` using `hconst y hy _ (Λ'.add_mem hxo hqy)`. Rewrite `e2` using `[show y + (x - (x : V ⧸ Λ').out + ((x : V ⧸ Λ').out - y)) = x by abel]`. Rewrite using `[e1, e2]`. Assume the negation of the conclusion as `hne`. Establish `hxK : x ∈ tsupport φ` using `subset_tsupport φ (Ne.symm hne)`.
-
-Take `⟨y, hy, hxy⟩` from `mem_iUnion₂.1 (ht2 hxK)`. Apply `hxT` to reduce the goal to its premises. Use `Finset.mem_image.2 ⟨y, hy, ?_⟩` and prove the remaining obligations. Conclude with `QuotientAddGroup.eq.2 (by rw [neg_add_eq_sub]; exact hxy)`. Rewrite `hsum` using `[heq]`.
-
-Conclude with `⟨_, hsum.2.1, hsum.2.2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem densLC_of_cosB [IsFiniteMeasureOnCompacts μ] [IsFiniteMeasureOnCompacts ν] (U : Set V)
     (B : AddSubgroup V → Prop) (hB : IsCOBasis B) (h : DensCosB B μ f ι ν U) :
@@ -251,11 +247,11 @@ theorem densLC_of_cosB [IsFiniteMeasureOnCompacts μ] [IsFiniteMeasureOnCompacts
   exact ⟨_, hsum.2.1, hsum.2.2⟩
 
 /- English proof (translation)
-Use `densLC_of_cosB U (fun _ => True) ?_ ?_` and prove the remaining obligations. Introduce `N hN first`. Consider the case `(obtain ⟨Λ, h1, h2, h3⟩ := hNA N hN`. Conclude with `⟨Λ, trivial, h1, h2, h3⟩)`. Consider the case `(obtain ⟨Λ, h1, h2, h3⟩ := hNA hN`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨Λ, trivial, h1, h2, h3⟩)`. Consider the case `(obtain ⟨Λ, h2, h1, h3⟩ := hNA N hN`. Conclude with `⟨Λ, trivial, h1, h2, h3⟩)`. Introduce `x hx`. Take `⟨N, hN, h'⟩` from `h x hx`.
+Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N, hN, fun y hy Λ _ => h' y hy Λ⟩`.
+Supply the required witnesses or components.
 -/
 theorem densLC_of_cos [IsFiniteMeasureOnCompacts μ] [IsFiniteMeasureOnCompacts ν] (U : Set V)
     (hNA : HasCOSub V) (h : DensCos μ f ι ν U) : DensOn (IsLCcOn U) μ f ι ν := by

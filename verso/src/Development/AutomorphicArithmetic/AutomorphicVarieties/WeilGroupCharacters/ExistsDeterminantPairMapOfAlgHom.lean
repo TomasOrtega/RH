@@ -15,11 +15,11 @@ private theorem pm_map_map (D : GDet n A G) (f : A →+* A') (g : A' →+* A'') 
     (D.map f).map g = D.map (g.comp f) := rfl
 
 /- English proof (translation)
-Use `letI : Algebra A A'[X] := ((algebraMap A' A'[X]).comp f).toAlgebra`. Establish `h` using `D.nat A[X] A'[X] { (Polynomial.mapRingHom f : A[X] →+* A'[X]) with commutes' := fun a => by show Polynomial.map f (C a) = C (f a)`. Simplify using `}`. Use the proof step `(MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom G C y)`. Use `Eq.trans ?_ h` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `show D.D A'[X] _ = D.D A'[X] (MonoidAlgebra.mapRingHom G (Polynomial.mapRingHom f) _)`. Use `congr 1`. Rewrite using `[map_sub]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Use `clear h`. Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r => simp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem pm_chi_map (D : GDet n A G) (f : A →+* A') (y : MonoidAlgebra A G) :
     (D.map f).chi (MonoidAlgebra.mapRingHom G f y) = (D.chi y).map f := by
@@ -43,14 +43,14 @@ private theorem pm_chi_map (D : GDet n A G) (f : A →+* A') (y : MonoidAlgebra 
     | single g r => simp
 
 /- English proof (translation)
-Simplify using `[GDet.lam, pm_chi_map]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem pm_lam_map (D : GDet n A G) (f : A →+* A') (i : ℕ) (y : MonoidAlgebra A G) :
     (D.map f).lam i (MonoidAlgebra.mapRingHom G f y) = f (D.lam i y) := by
   simp [GDet.lam, pm_chi_map]
 
 /- English proof (translation)
-Rewrite using `[← pm_lam_map]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pm_lam_single (D : GDet n A G) (f : A →+* A') (i : ℕ) (g : G) :
     (D.map f).lam i (MonoidAlgebra.single g 1) = f (D.lam i (MonoidAlgebra.single g 1)) := by
@@ -59,17 +59,15 @@ private theorem pm_lam_single (D : GDet n A G) (f : A →+* A') (i : ℕ) (g : G
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `l _ F O _ _ _ n r R _ _ _ R' _ _ _ f p`. Establish `hle : ∀ N, maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap (f : R →+* R')` using `fun N => by`. Use `le_trans (Ideal.pow_right_mono (fun y hy => ?_) N) (Ideal.le_comap_pow _ N)` and prove the remaining obligations. Use `show f y ∈ maximalIdeal R'`. Rewrite using `[← res_eq_zero_iff O, res_map, res_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hy`. Establish `heps : ∀ g, Units.map ((f : R →+* R') : R →* R') (F.eps O R g) = F.eps O R' g` using `fun g => Units.ext (f.commutes _)`. Use `⟨ { D := p.D.map (f : R →+* R') ψ := fun v i => pushCh (f : R →+* R') (p.ψ v i) cont := fun i N => ?_ red := ?_ psi := fun v i => { cont := fun N => ((p.psi v i).cont N).comp (Ideal.quotientMap _ (f : R →+* R') (hle N)) red := fun g => (res_map f _).trans ((p.psi v i).red g) mu : …` and prove the remaining obligations. Simplify using `only [pm_lam_single]`. Conclude with `(p.cont i N).comp (Ideal.quotientMap _ (f : R →+* R') (hle N))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[pm_map_map, ← p.red]`. Use `congr 1`. Conclude with `RingHom.ext (res_map f)`. Establish `h1 : F.star O R' n (MonoidAlgebra.single g 1) = MonoidAlgebra.mapRingHom _ (f : R →+* R') (F.star O R n (MonoidAlgebra.single g 1))`. Simplify using `only [GFrame.star, GFrame.starOp, MonoidAlgebra.lift_single, one_smul, MonoidHom.coe_mk, OneHom.coe_mk, MulOpposite.unop_op, MonoidAlgebra.mapRingHom_single]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← heps, ← map_zpow]`. Both sides reduce to the same expression. Rewrite using `[h1, pm_lam_map, p.P, pm_lam_single]`. Establish `h1 : MonoidAlgebra.single h 1 * F.oEl v (fun i => pushCh (f : R →+* R') (p.ψ v i)) g = MonoidAlgebra.mapRingHom _ (f : R →+* R') (MonoidAlgebra.single h 1 * F.oEl v (p.ψ v) g)`. Simplify using `only [GFrame.oEl, map_mul, map_list_prod, List.map_ofFn, Function.comp_def, map_sub, MonoidAlgebra.mapRingHom_single, map_one]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[h1, GDet.tr, pm_lam_map]`. Conclude with `(congrArg (f : R →+* R') (p.Ord v g h)).trans (map_zero _)`. Establish `h1 : MonoidAlgebra.single h (1 : R') * (MonoidAlgebra.single g 1 - 1) = MonoidAlgebra.mapRingHom _ (f : R →+* R') (MonoidAlgebra.single h 1 * (MonoidAlgebra.single g 1 - 1))`. Simplify using `only [map_mul, map_sub, MonoidAlgebra.mapRingHom_single, map_one]`.
-
-Rewrite using `[h1, GDet.tr, pm_lam_map]`. Conclude with `(congrArg (f : R →+* R') (p.I u g hg h)).trans (map_zero _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.W.exists_determinantPair_map_of_algHom :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid F O n) (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') (p : Pair r R), ∃ p' : Pair r R', p.Maps (f : R →+* R') p'.D p'.ψ := by

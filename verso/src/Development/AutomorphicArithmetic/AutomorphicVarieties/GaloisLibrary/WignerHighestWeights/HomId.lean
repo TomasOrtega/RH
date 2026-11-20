@@ -4,17 +4,15 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Al
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ a M _ _ _ _ L q ω hd hinf X Y`. Set `Z : Matrix (Fin a) (Fin a) (Cinf E)` to `(1 / 2 : ℝ) • (X - star X)`. Establish `hZ : star Z = -Z`. Simplify using `only [Z]`. Rewrite using `[star_smul, star_sub, star_star, star_trivial, ← smul_neg, neg_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hX : toL X = toL (hp (toL X)).1 + toL Z`. Establish `h : X = (hp (toL X)).1 + Z`. Rewrite using `[hp_val]`. Simplify using `only [Z]`. Use `module`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrArg toL h`. Establish `hb : ∀ U : Herm E a, hp (toL (U.1 * X - X * U.1)) = -brH Z hZ U`. Introduce `U`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h : star U.1 = U.1` using `U.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hp_val]`. Express the relevant statement in the definitionally equal form `_ = -(Z * U.1 - U.1 * Z)`. Simplify using `only [Z, star_sub, star_mul, h, smul_mul_assoc, mul_smul_comm, sub_mul, mul_sub]`. Use `module`. Establish `h1` using `dCo_cons (L := L) ω (hp (toL X)) Y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[hd, AlternatingMap.zero_apply, eq_comm, sub_eq_zero, dCo_apply]`. Rewrite using `[congrArg L hX, map_add, LinearMap.add_apply, h1, hinf Z hZ Y, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h2 : ω (Matrix.vecCons (-brH Z hZ (Y i)) (i.removeNth Y)) = -ω (Matrix.vecCons (brH Z hZ (Y i)) (i.removeNth Y))`. Rewrite using `[← AlternatingMap.curryLeft_apply_apply, ← AlternatingMap.curryLeft_apply_apply, map_neg, AlternatingMap.neg_apply]`.
-
-Rewrite using `[hb, h2, sub_neg_eq_add, smul_add, ← Fin.insertNth_removeNth, AlternatingMap.map_insertNth, AlternatingMap.curryLeft_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.homId :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] [Module ℝ M] [IsScalarTower ℝ ℂ M] (L : Lie E a →ₗ[ℝ] Module.End ℂ M) (q : ℕ) (ω : Herm E a [⋀^Fin (q + 1)]→ₗ[ℝ] M),

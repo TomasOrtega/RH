@@ -21,9 +21,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnusedSlot36 (algVal allVal ordVal 
 section Order
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Break down `isEmpty_or_nonempty (Fin m) with hm | hm` into its components or cases. Rewrite `h` using `[iInf_of_empty]`. Conclude with `absurd (top_le_iff.1 h) hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_eq_ciInf_of_finite (f := f)`. Conclude with `⟨k, hk.le.trans h⟩`. Introduce and unpack `⟨k, hk⟩`. Conclude with `(iInf_le f k).trans hk`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem iInf_le_iff_exists {m : ℕ} (f : Fin m → EReal) {x : EReal} (hx : x ≠ ⊤) :
     (⨅ k, f k) ≤ x ↔ ∃ k, f k ≤ x := by
@@ -38,7 +38,7 @@ theorem iInf_le_iff_exists {m : ℕ} (f : Fin m → EReal) {x : EReal} (hx : x �
     exact (iInf_le f k).trans hk
 
 /- English proof (translation)
-Establish `hb : x ≠ ⊥` using `fun hb => by simp [hb] at h0`. Use `lift x to ℝ using ⟨ht, hb⟩`. Rewrite using `[← EReal.coe_mul, ← EReal.coe_add]`. Conclude with `EReal.coe_ne_top _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_ne_top (ν c' : ℝ) {x : EReal} (h0 : 0 ≤ x) (ht : x ≠ ⊤) : (ν : EReal) + (c' : EReal) * x ≠ ⊤ := by
   have hb : x ≠ ⊥ := fun hb => by simp [hb] at h0
@@ -47,21 +47,21 @@ theorem lin_ne_top (ν c' : ℝ) {x : EReal} (h0 : 0 ≤ x) (ht : x ≠ ⊤) : (
   exact EReal.coe_ne_top _
 
 /- English proof (translation)
-The claim follows from `(iInf_le_iff_exists _ (EReal.coe_ne_top ν)).symm`.
+A detailed English derivation is pending.
 -/
 theorem leastLe_iff {R : Type} {m : ℕ} (w : Fin m → R) (ν : ℝ) (v : R → EReal) :
     LeastLe w ν v ↔ (⨅ k, v (w k)) ≤ (ν : EReal) :=
   (iInf_le_iff_exists _ (EReal.coe_ne_top ν)).symm
 
 /- English proof (translation)
-The claim follows from `and_congr_right fun h0 => forall_congr' fun ht => (iInf_le_iff_exists _ (lin_ne_top ν c' h0 ht)).symm`.
+A detailed English derivation is pending.
 -/
 theorem comb_iff {R : Type} {m : ℕ} (w : Fin m → R) (η : R) (ν c' : ℝ) (v : R → EReal) :
     Comb w η ν c' v ↔ 0 ≤ v η ∧ (v η ≠ ⊤ → (⨅ k, v (w k)) ≤ (ν : EReal) + (c' : EReal) * v η) :=
   and_congr_right fun h0 => forall_congr' fun ht => (iInf_le_iff_exists _ (lin_ne_top ν c' h0 ht)).symm
 
 /- English proof (translation)
-Rewrite using `[comb_iff, EReal.coe_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_zero_iff {R : Type} {m : ℕ} (w : Fin m → R) (η : R) (c' : ℝ) (v : R → EReal) :
     Comb w η 0 c' v ↔ 0 ≤ v η ∧ (v η ≠ ⊤ → (⨅ k, v (w k)) ≤ (c' : EReal) * v η) := by
@@ -74,7 +74,7 @@ section Approx
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Use `(WithZero.log_le_log ((la.valuation K).ne_zero_iff.2 hb) ((la.valuation K).ne_zero_iff.2 ha)).2 h` as an intermediate fact. Simplify using `only [vLa]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem vLa_le_of_le (la : HeightOneSpectrum (𝓞 K)) {a b : K} (ha : a ≠ 0) (hb : b ≠ 0)
     (h : la.valuation K b ≤ la.valuation K a) : vLa la a ≤ vLa la b := by
@@ -82,19 +82,17 @@ theorem vLa_le_of_le (la : HeightOneSpectrum (𝓞 K)) {a b : K} (ha : a ≠ 0) 
   simp only [vLa]; omega
 
 /- English proof (translation)
-Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) a`. Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at ha`. Establish `hI : Ideal.span {x} ≠ ⊥` using `by simpa using hx0`. Use `la.isMaximal` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Q, hQ, hfac⟩` from `Ideal.eq_prime_pow_mul_coprime hI la.asIdeal`. Take `⟨p, hp, b, hb, hpb⟩` from `Submodule.mem_sup.1 (hQ ▸ Submodule.mem_top : (1 : 𝓞 K) ∈ la.asIdeal ⊔ Q)`. Establish `hbn : b ∉ la.asIdeal` using `fun h => la.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hpb ▸ add_mem hp h))`. Establish `hb0 : b ≠ 0` using `by rintro rfl; exact hbn (zero_mem _)`. Establish `hbK : algebraMap (𝓞 K) K b ≠ 0` using `by simpa using hb0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨algebraMap (𝓞 K) K b, hbK, ?_, fun la' hne => vLa_le_of_le la' ha hbK ?_⟩` and prove the remaining obligations. Establish `: la.valuation K (algebraMap (𝓞 K) K b) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_eq_one_iff).2 hbn`. Simplify using `only [vLa, this, WithZero.log_one, neg_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hnle : ¬ la.asIdeal ^ Multiset.count la.asIdeal (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {x})) ≤ la'.asIdeal` using `fun h => by`. Establish `h1 : la.asIdeal ≤ la'.asIdeal`. Use `la'.isPrime` as an intermediate fact. Conclude with `Ideal.IsPrime.le_of_pow_le h`. Conclude with `hne (HeightOneSpectrum.ext (la.isMaximal.eq_of_le la'.isPrime.ne_top h1).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, htn⟩` from `SetLike.not_le_iff_exists.1 hnle`. Establish `hm : t * b ∈ Ideal.span {x}` using `hfac ▸ Ideal.mul_mem_mul ht hb`. Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.1 hm`. Establish `ht1 : la'.intValuation t = 1` using `(HeightOneSpectrum.intValuation_eq_one_iff).2 htn`. Establish `h1 : la'.intValuation b ≤ la'.intValuation x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : la'.intValuation s * la'.intValuation x = la'.intValuation b`. Rewrite using `[← map_mul, hs, map_mul, ht1, one_mul]`. Rewrite using `[← e]`. Conclude with `mul_le_of_le_one_left' (la'.intValuation_le_one s)`. Rewrite using `[map_div₀, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]`.
-
-Establish `hy' : 0 < la'.intValuation y` using `zero_lt_iff.2 (la'.intValuation_ne_zero y hy0)`. Rewrite using `[le_div_iff₀ hy']`. Conclude with `(mul_le_of_le_one_right' (la'.intValuation_le_one y)).trans h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_at (la : HeightOneSpectrum (𝓞 K)) {a : K} (ha : a ≠ 0) :
     ∃ b : K, b ≠ 0 ∧ vLa la b = 0 ∧ ∀ la' : HeightOneSpectrum (𝓞 K), la' ≠ la → vLa la' a ≤ vLa la' b := by
@@ -145,7 +143,7 @@ section Objects
 variable (Xo c)
 
 /- English proof (translation)
-Use extensionality with `q`. Conclude with `⟨fun ⟨T, ι, y, ht, hq⟩ => ⟨T, ι, ht, y, hq⟩, fun ⟨T, ι, ht, y, hq⟩ => ⟨T, ι, y, ht, hq⟩⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem trivSet_eq : trivSet Xo c = ordVal Xo c := by
   ext q
@@ -154,18 +152,18 @@ theorem trivSet_eq : trivSet Xo c = ordVal Xo c := by
 variable {Xo c}
 
 /- English proof (translation)
-Introduce `k _ _ _ y` and use `h k y (hT k y)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem noCommonZero_of_fields (hT : AllTest Xo c) {m : ℕ} {w : Fin m → Rul Xo c}
     (h : GlobalTheory.IndefiniteRowSideFullHecke.UnusedSlot36.NoCommonZero w) : Formalism.L2.PjFree.NoCommonZero Xo c w :=
   fun k _ _ _ y => h k y (hT k y)
 
 /- English proof (translation)
-Introduce `L _ _ y hy`. Set `φ : L →ₐ[c.F] AlgebraicClosure L` to `IsScalarTower.toAlgHom c.F L (AlgebraicClosure L)`. Take `⟨z, hz⟩` from `hB L _ φ y`. Take `⟨k, hk⟩` from `h _ z`. Use `⟨k, fun h0 => hk ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz' : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) z := by`. Take `⟨p, ψ, y', hy'⟩` from `hy`. Conclude with `⟨p, φ.comp ψ, y', frMap_trans (Xo := Xo) (c := c) _ _ _ ψ φ y' y z hy' hz⟩`. Establish `e : evR Xo c (w k) z = φ (evR Xo c (w k) y)`. Unfold `evR evalAt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hz', dif_pos hy]`. Conclude with `hW (w k) (hw k) _ _ _ _ _ _ _ z hz'.choose_spec.choose_spec.choose_spec (frMap_trans (Xo := Xo) (c := c) _ _ _ _ φ _ y z hy.choose_spec.choose_spec.choose_spec hz)`. Rewrite using `[e, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem noCommonZero_of_closed
     (hW : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)) (hB : GlobalTheory.Reg.FrBC Xo c)
@@ -211,13 +209,13 @@ def JointLeast (nz : ∀ {m : ℕ}, (Fin m → Rul Xo c) → Prop) : Prop :=
       (∀ la, ∀ v ∈ algVal Xo c la, LeastLe w (ν la) v) → ∀ la, ∀ v ∈ allVal Xo c la, LeastLe w (ν la) v
 
 /- English proof (translation)
-Unfold `regular₂ ReciprocityTheory.ChartRestriction.G.T0.RegLaw`. Rewrite using `[and_assoc]`. Use `and_congr ?_ (and_congr ?_ ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h a n hd F hF h0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `h ⟨(a, n), hd⟩ ⟨F, hF⟩ fun la y => h0 la y.1 y.2`. Conclude with `⟨fun la v hv => h1 la ⟨v, hv⟩, fun o ho => h2 ⟨o, (trivSet_eq Xo c).symm ▸ ho⟩⟩`. Introduce `h w F h0`. Take `⟨h1, h2⟩` from `h w.1.1 w.1.2 w.2 F.1 F.2 fun la v hv => h0 la ⟨v, hv⟩`. Conclude with `⟨fun la y => h1 la y.1 y.2, fun q => h2 q.1 (trivSet_eq Xo c ▸ q.2)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h aL nL aE nE hL hE m w hw hz η hη ν c' hc h0`. Take `⟨h1, h2⟩` from `h ⟨(aL, nL), hL⟩ ⟨(aE, nE), hE⟩ m (fun k => ⟨w k, hw k⟩) ⟨η, hη⟩ ν c' hc hz fun la y => (comb_iff w η _ c' y.1).1 (h0 la y.1 y.2)`. Conclude with `⟨fun la v hv => (comb_iff w η _ c' v).2 (h1 la ⟨v, hv⟩), fun o ho => (comb_zero_iff w η c' o).2 (h2 ⟨o, (trivSet_eq Xo c).symm ▸ ho⟩)⟩`. Introduce `h wL wE m ws et ν c' hc hz h0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `h _ _ _ _ wL.2 wE.2 m (fun k => (ws k).1) (fun k => (ws k).2) hz et.1 et.2 ν c' hc fun la v hv => (comb_iff _ _ _ c' v).2 (h0 la ⟨v, hv⟩)`. Conclude with `⟨fun la y => (comb_iff _ _ _ c' y.1).1 (h1 la y.1 y.2), fun q => (comb_zero_iff _ _ c' q.1).1 (h2 q.1 (trivSet_eq Xo c ▸ q.2))⟩`. Unfold `JointLeast`. Simplify using `only [leastLe_iff]`. Conclude with `Iff.rfl`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem regular_iff_joint : regular₂ Xo c U ↔ JointInt Xo c U ∧
     JointComb Xo c U (fun w => Formalism.L2.PjFree.NoCommonZero Xo c w) ∧
@@ -263,16 +261,16 @@ def BoundsSpread : Prop :=
 variable {Xo c U}
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 c.F)`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField c.F)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_place : Nonempty (HeightOneSpectrum (𝓞 c.F)) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 c.F)
   exact ⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField c.F)⟩⟩
 
 /- English proof (translation)
-Take `⟨la₀⟩` from `exists_place (c := c)`. Use `(regular_iff_joint Xo c U).2 ⟨fun a n hd F hF h0 => ?_, fun aL nL aE nE hL hE m w hw hz η hη ν c' hc h0 => ?_, fun aL nL hL m w hw hz ν h0 la => ?_⟩` and prove the remaining obligations. Conclude with `⟨fun la => (h.1 la a n hd F hF (h0 la)).1, (h.1 la₀ a n hd F hF (h0 la₀)).2⟩`. Establish `hz'` using `noCommonZero_of_closed hW hB (fun k => (Formalism.L2.PjFree.cusp_le_sec Xo c U _ _ (hw k)).1) hz`. Conclude with `⟨fun la => (h.2.1 la aL nL aE nE hL hE m w hw hz' η hη _ c' hc (h0 la)).1, (h.2.1 la₀ aL nL aE nE hL hE m w hw hz' η hη _ c' hc (h0 la₀)).2⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hz'` using `noCommonZero_of_closed hW hB (fun k => (Formalism.L2.PjFree.cusp_le_sec Xo c U _ _ (hw k)).1) hz`. Conclude with `(h.2.2 la aL nL hL m w hw hz' _ (h0 la)).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem regular_of_transfer
     (hW : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)) (hB : GlobalTheory.Reg.FrBC Xo c)
@@ -288,7 +286,7 @@ theorem regular_of_transfer
     exact (h.2.2 la aL nL hL m w hw hz' _ (h0 la)).1
 
 /- English proof (translation)
-The claim follows from `regular_of_transfer hW hB h.transfer`.
+A detailed English derivation is pending.
 -/
 theorem regular_of_transferAt
     (hW : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)) (hB : GlobalTheory.Reg.FrBC Xo c)
@@ -296,9 +294,9 @@ theorem regular_of_transferAt
   regular_of_transfer hW hB h.transfer
 
 /- English proof (translation)
-Take `⟨a₀, ha, h0⟩` from `hD a n hd F hF`. Take `⟨b, hb, hb0, hle⟩` from `exists_unit_at la ha`. Use `⟨b, hb, fun v hv => ?_, fun la' hne v hv => (h0 la' v hv).trans ?_⟩` and prove the remaining obligations. Rewrite using `[(isVal_valSet la v hv).smul b F hb, hb0]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[(isVal_valSet la' v hv).smul b F hb, (isVal_valSet la' v hv).smul a₀ F ha]`. Use `add_le_add_left (EReal.coe_le_coe_iff.2 ?_) _` and prove the remaining obligations. Conclude with `hle la' hne` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem BoundedDenominators.exists_unit (hD : BoundedDenominators Xo c U) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
     (hd : Dom a n) {F : Rul Xo c} (hF : F ∈ cusp Xo c U a n) (la : HeightOneSpectrum (𝓞 c.F)) :
@@ -315,19 +313,19 @@ theorem BoundedDenominators.exists_unit (hD : BoundedDenominators Xo c U) {a : (
 variable (Xo c)
 
 /- English proof (translation)
-The claim follows from `evalWD_fr (frChartF_of (GlobalTheory.T.chartCoverF_of_sectionBaseChange GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c))`.
+A detailed English derivation is pending.
 -/
 theorem evalWD_framed : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) :=
   evalWD_fr (frChartF_of (GlobalTheory.T.chartCoverF_of_sectionBaseChange GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c))
 
 /- English proof (translation)
-Introduce `S T _ _ _ _ φ y` and use `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c S T φ y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem frBC_framed : GlobalTheory.Reg.FrBC Xo c := fun S T _ _ _ _ φ y =>
   GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c S T φ y
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.framedPoint_reduced_from_testRing GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c`.
+A detailed English derivation is pending.
 -/
 theorem allTest_framed : AllTest Xo c :=
   GlobalTheory.T.framedPoint_reduced_from_testRing GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c
@@ -335,7 +333,7 @@ theorem allTest_framed : AllTest Xo c :=
 variable {Xo c} in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨noCommonZero_of_closed (evalWD_framed Xo c) (frBC_framed Xo c) fun k => (hw k).1, noCommonZero_of_fields (allTest_framed Xo c)⟩`.
+Supply the required witnesses or components.
 -/
 theorem noCommonZero_iff_of_sec {a : (E →+* ℂ) × ℕ → ℕ} {n m : ℕ} {w : Fin m → Rul Xo c}
     (hw : ∀ k, w k ∈ sec Xo c a n) :
@@ -346,7 +344,7 @@ theorem noCommonZero_iff_of_sec {a : (E →+* ℂ) × ℕ → ℕ} {n m : ℕ} {
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h a n hd => h ⟨(a, n), hd⟩, fun h w => h _ _ w.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem forall_domWt (P : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Prop) :
     (∀ w : DomWt E, P w.1.1 w.1.2) ↔ ∀ a n, Dom a n → P a n :=
@@ -355,7 +353,7 @@ theorem forall_domWt (P : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Prop) :
 variable (U)
 
 /- English proof (translation)
-Establish `e : ∀ {a n m} {w : Fin m → Rul Xo c}, (∀ k, w k ∈ cusp Xo c U a n) → (Formalism.L2.PjFree.NoCommonZero Xo c w ↔ GlobalTheory.IndefiniteRowSideFullHecke.UnusedSlot36.NoCommonZero w)` using `fun hw => noCommonZero_iff_of_sec fun k => Formalism.L2.PjFree.cusp_le_sec Xo c U _ _ (hw k)`. Rewrite using `[regular_iff_joint]`. Use `and_congr_right fun _ => and_congr ?_ ?_` and prove the remaining obligations. Conclude with `⟨fun h aL nL aE nE hL hE m w hw hz => h aL nL aE nE hL hE m w hw ((e hw).2 hz), fun h aL nL aE nE hL hE m w hw hz => h aL nL aE nE hL hE m w hw ((e hw).1 hz)⟩`. Conclude with `⟨fun h aL nL hL m w hw hz => h aL nL hL m w hw ((e hw).2 hz), fun h aL nL hL m w hw hz => h aL nL hL m w hw ((e hw).1 hz)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem regular_iff_joint_valuation : regular₂ Xo c U ↔ JointInt Xo c U ∧
     JointComb Xo c U (fun w => GlobalTheory.IndefiniteRowSideFullHecke.UnusedSlot36.NoCommonZero w) ∧
@@ -371,7 +369,7 @@ theorem regular_iff_joint_valuation : regular₂ Xo c U ↔ JointInt Xo c U ∧
       fun h aL nL hL m w hw hz => h aL nL hL m w hw ((e hw).1 hz)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, trivSet_eq Xo c, forall_domWt, fun _ _ _ _ hw => noCommonZero_iff_of_sec hw, regular_iff_joint_valuation Xo c U, regular_of_transfer (evalWD_framed Xo c) (frBC_framed Xo c), regular_of_transferAt (evalWD_framed Xo c) (frBC_framed Xo c)⟩`.
+Supply the required witnesses or components.
 -/
 theorem compare :
     Formalism.L2.PjFree.trivialClassCondition Xo c = GlobalTheory.IndefiniteRowSideFullHecke.UnusedSlot36.trivialClassCondition Xo c ∧ trivSet Xo c = ordVal Xo c ∧

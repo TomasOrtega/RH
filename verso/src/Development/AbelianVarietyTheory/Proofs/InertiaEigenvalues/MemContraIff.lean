@@ -12,16 +12,16 @@ namespace GlobalTheory.CuspRep
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(g⁻¹).valᵀ = _`. Rewrite using `[Matrix.coe_units_inv, Matrix.transpose_nonsing_inv]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem invT_val_eq (g : GA E a) : (invT a (Ad E) g).val = (g.valᵀ)⁻¹ := by
   change (g⁻¹).valᵀ = _
   rw [Matrix.coe_units_inv, Matrix.transpose_nonsing_inv]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((GeneralLinearGroup.scalar (Fin a) z)⁻¹).valᵀ = _`. Rewrite using `[← map_inv]`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[GeneralLinearGroup.scalar]`. Simplify using `[GeneralLinearGroup.scalar, h, Ne.symm h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem invT_scalar {R : Type} [CommRing R] (z : Rˣ) :
     invT a R (GeneralLinearGroup.scalar (Fin a) z) = GeneralLinearGroup.scalar (Fin a) z⁻¹ := by
@@ -40,19 +40,19 @@ variable (π : CuspSub E a)
 def contra : CuspSub E a := UpperTheory.V.TC.dual π
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.TC.dual_dual π`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem contra_contra : π.contra.contra = π := UpperTheory.V.TC.dual_dual π
 
 variable {π} {π' : CuspSub E a}
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.TC.iso_dual h`.
+A detailed English derivation is pending.
 -/
 theorem Iso.contra (h : Iso π π') : Iso π.contra π'.contra := UpperTheory.V.TC.iso_dual h
 
 /- English proof (translation)
-Introduce and unpack `z _ ⟨ψ, hψ, rfl⟩`. Express the relevant statement in the definitionally equal form `rt E a _ (UpperTheory.V.TC.dualFn E a ψ) = _ • UpperTheory.V.TC.dualFn E a ψ`. Rewrite using `[UpperTheory.V.TC.rt_dualFn, invT_scalar, h z⁻¹ ψ hψ, map_smul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem HasCentral.contra {ω : HChar E} (h : π.HasCentral ω) : π.contra.HasCentral ω⁻¹ := by
   rintro z _ ⟨ψ, hψ, rfl⟩
@@ -62,14 +62,14 @@ theorem HasCentral.contra {ω : HChar E} (h : π.HasCentral ω) : π.contra.HasC
   simp
 
 /- English proof (translation)
-Take `⟨ω, h1, h2⟩` from `h`. Conclude with `⟨ω⁻¹, h1.inv, h2.contra⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsUnitary.contra (h : π.IsUnitary) : π.contra.IsUnitary := by
   obtain ⟨ω, h1, h2⟩ := h
   exact ⟨ω⁻¹, h1.inv, h2.contra⟩
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.TC.hasSatGL_dual h`.
+A detailed English derivation is pending.
 -/
 theorem HasSatGL.contra {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ} (h : HasSatGL w (π.locRep w) B) :
     HasSatGL w (π.contra.locRep w) (B.map (·⁻¹)) := UpperTheory.V.TC.hasSatGL_dual h
@@ -87,14 +87,14 @@ Both sides reduce to the same expression.
 @[simp] theorem contra_mk (π : CuspSub E a) : (mk π).contra = mk π.contra := rfl
 
 /- English proof (translation)
-Proceed by induction on `π using Quotient.inductionOn with`. Consider the case `_ π => exact (isUnitary_mk π.contra).2 ((isUnitary_mk π).1 h).contra`.
+Proceed by induction. Treat this case separately.
 -/
 theorem IsUnitary.contra {π : CG E a} (h : π.IsUnitary) : π.contra.IsUnitary := by
   induction π using Quotient.inductionOn with
   | _ π => exact (isUnitary_mk π.contra).2 ((isUnitary_mk π).1 h).contra
 
 /- English proof (translation)
-Proceed by induction on `π using Quotient.inductionOn with`. Consider the case `_ π => exact CuspSub.HasSatGL.contra h`.
+Proceed by induction. Treat this case separately.
 -/
 theorem HasSat.contra {π : CG E a} {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ} (h : π.HasSat w B) :
     π.contra.HasSat w (B.map (·⁻¹)) := by
@@ -102,7 +102,7 @@ theorem HasSat.contra {π : CG E a} {w : HeightOneSpectrum (𝓞 E)} {B : Multis
   | _ π => exact CuspSub.HasSatGL.contra h
 
 /- English proof (translation)
-Proceed by induction on `π using Quotient.inductionOn with`. Consider the case `_ π => exact congrArg mk π.contra_contra`.
+Proceed by induction. Treat this case separately.
 -/
 @[simp] theorem contra_contra (π : CG E a) : π.contra.contra = π := by
   induction π using Quotient.inductionOn with

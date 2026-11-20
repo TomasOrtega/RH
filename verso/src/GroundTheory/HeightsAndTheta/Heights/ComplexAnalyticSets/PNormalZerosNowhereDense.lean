@@ -11,13 +11,13 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open MvPolynomial Topology Filter
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `(IsNoetherian.noetherian I : I.FG)`. Use `⟨Set.univ, s.card, fun i z => eval z (s.equivFin.symm i : MvPolynomial σ ℂ), isOpen_univ, trivial, fun i => AnalyticOnNhd.eval_mvPolynomial _, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Simplify using `only [Set.mem_inter_iff, Set.mem_univ, and_true, Set.mem_ofPred_eq, true_and]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hz i`. Apply `hz` to reduce the goal to its premises. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span (s.equivFin.symm i).2`. Introduce `hz q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : Ideal.span (s : Set (MvPolynomial σ ℂ)) ≤ RingHom.ker (MvPolynomial.eval z)`. Rewrite using `[Ideal.span_le]`. Introduce `p hp`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`. Simplify using `using hz (s.equivFin ⟨p, hp⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq` using `[← hs]`. Conclude with `hle hq`.
+A detailed English derivation is pending.
 -/
 theorem isAnalyticNear_zeroSetIn {σ : Type} [Fintype σ] (I : Ideal (MvPolynomial σ ℂ)) (w : σ → ℂ) :
     IsAnalyticNear (zeroSetIn I) w := by
@@ -41,7 +41,7 @@ theorem isAnalyticNear_zeroSetIn {σ : Type} [Fintype σ] (I : Ideal (MvPolynomi
     exact hle hq
 
 /- English proof (translation)
-Use `analyticOnNhd_of_continuousOn_of_separately hU hF.continuousOn (fun z hz i => ?_)` and prove the remaining obligations. Establish `h1 : DifferentiableAt ℂ F (Function.update z i (z i))`. Rewrite using `[Function.update_eq_self]`. Conclude with `hF.differentiableAt (hU.mem_nhds hz)`. Conclude with `h1.comp (z i) (hasFDerivAt_update (𝕜 := ℂ) z (z i)).differentiableAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_of_differentiableOn_scalar_fin {d : ℕ} {U : Set (Fin d → ℂ)} {F : (Fin d → ℂ) → ℂ}
     (hU : IsOpen U) (hF : DifferentiableOn ℂ F U) : AnalyticOnNhd ℂ F U := by
@@ -52,25 +52,21 @@ theorem analyticOnNhd_of_differentiableOn_scalar_fin {d : ℕ} {U : Set (Fin d �
   exact h1.comp (z i) (hasFDerivAt_update (𝕜 := ℂ) z (z i)).differentiableAt
 
 /- English proof (translation)
-Use `⟨hw, fun f g hf hg hfg => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_or]`. Take `⟨hfne, hgne⟩` from `hcon`. Use `set X := zeroSetIn I with hX`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set N : Set (σ → ℂ) := ({z | AnalyticAt ℂ f z} ∩ {z | AnalyticAt ℂ g z}) ∩ interior {z | z ∈ X → f z * g z = 0} with hNdef`. Establish `hNo : IsOpen N` using `((isOpen_analyticAt ℂ f).inter (isOpen_analyticAt ℂ g)).inter isOpen_interior`. Establish `hwN : w ∈ N` using `⟨⟨hf, hg⟩, mem_interior_iff_mem_nhds.mpr hfg⟩`. Establish `hfd : DifferentiableOn ℂ f N` using `fun z hz => hz.1.1.differentiableAt.differentiableWithinAt`. Establish `hgd : DifferentiableOn ℂ g N` using `fun z hz => hz.1.2.differentiableAt.differentiableWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfgN : ∀ z ∈ X ∩ N, f z * g z = 0` using `fun z hz => interior_subset hz.2.2 hz.1`. Establish `hGne : ¬ ∀ᶠ z in 𝓝 w, z ∈ X → (f + g) z = 0`. Introduce `hev`. Apply `hfne` to reduce the goal to its premises. Use `filter_upwards [hev, hfg] with z h1 h2 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : f z + g z = 0` using `h1 hz`. Establish `hp : f z * g z = 0` using `h2 hz`. Establish `hff : f z * f z = 0` using `by linear_combination f z * hs - hp`. Conclude with `mul_self_eq_zero.mp hff`. Establish `ha : ∀ j, DifferentiableOn ℂ ((![0, -1] : Fin 2 → (σ → ℂ) → ℂ) j) N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j`. Use `fin_cases j`. Conclude with `differentiableOn_const (0 : ℂ)`. Conclude with `differentiableOn_const (-1 : ℂ)`. Take `⟨V, hV, hwV, H, hH, hfH⟩` from `hic σ I w N f (f + g) 2 ![0, -1] hI hn hw hNo hwN hfd (hfd.add hgd) ha hGne (by`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `z hz`. Establish `hp` using `hfgN z hz.1`. Simplify using `[Fin.sum_univ_two]`. Take the linear combination `-hp)`. Establish `hHc : ContinuousAt H w` using `(hH.differentiableAt (hV.mem_nhds hwV)).continuousAt`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ z in 𝓝 w, z ∈ V ∧ (z ∈ X → f z * g z = 0)` using `(show ∀ᶠ z in 𝓝 w, z ∈ V from hV.mem_nhds hwV).and hfg`. Rewrite `hfne`, `hgne` using `[Filter.not_eventually]`. Establish `h1 : H w = 1`. Assume the negation of the conclusion as `hne`. Take `⟨z, hz, hzH⟩` from `(hfne.and_eventually (hev.and (hHc.eventually_ne hne))).exists`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push Not at hz`. Establish `hg0 : g z = 0` using `(mul_eq_zero.mp (hzH.1.2 hz.1)).resolve_left hz.2`. Establish `hfz` using `hfH z ⟨hz.1, hzH.1.1⟩`. Simplify using `only [Pi.add_apply, hg0, add_zero] at hfz`. Conclude with `hzH.2 (mul_left_cancel₀ hz.2 (hfz.symm.trans (mul_one _).symm))`.
-
-Establish `h0 : H w = 0`. Assume the negation of the conclusion as `hne`. Take `⟨z, hz, hzH⟩` from `(hgne.and_eventually (hev.and (hHc.eventually_ne hne))).exists`. Use `push Not at hz`. Establish `hf0 : f z = 0` using `(mul_eq_zero.mp (hzH.1.2 hz.1)).resolve_right hz.2`.
-
-Establish `hfz` using `hfH z ⟨hz.1, hzH.1.1⟩`. Simplify using `only [Pi.add_apply, hf0, zero_add] at hfz`. Conclude with `hzH.2 ((mul_eq_zero.mp hfz.symm).resolve_left hz.2)`. Conclude with `one_ne_zero (h1.symm.trans h0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem germIrreducibleAt_zeroSetIn_of_integrallyClosed (hic : NormalGermIntegrallyClosed.Statement)
     {σ : Type} [Fintype σ] (I : Ideal (MvPolynomial σ ℂ)) (w : σ → ℂ) (hI : I.IsPrime)
@@ -129,35 +125,31 @@ theorem germIrreducibleAt_zeroSetIn_of_integrallyClosed (hic : NormalGermIntegra
   exact one_ne_zero (h1.symm.trans h0)
 
 /- English proof (translation)
-Introduce `σ _ I w N G hI hn hw hN hwN hG hne`. Establish `han` using `isAnalyticNear_zeroSetIn I w`. Establish `hirr` using `germIrreducibleAt_zeroSetIn_of_integrallyClosed hic I w hI hn hw`. Use `set X := zeroSetIn I with hX`. Take `⟨N₀, hN₀, hwN₀, hd⟩` from `hdense σ X w han`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB, hwB, hBU, hpc⟩` from `hconn σ X w han hirr (N ∩ N₀) (Filter.inter_mem (hN.mem_nhds hwN) (hN₀.mem_nhds hwN₀))`. Establish `hBN : B ⊆ N` using `hBU.trans Set.inter_subset_left`. Establish `hdB : X ∩ B ⊆ closure (regLocus (X ∩ B))` using `hd B hB (hBU.trans Set.inter_subset_right)`. Use `⟨B, hB, hwB, hBN, ?_⟩` and prove the remaining obligations. Introduce `z hz V hV`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Use `set R := regLocus (X ∩ B) with hR`. Use `set T : Set (σ → ℂ) := {y | y ∈ X → G y = 0} with hT`. Establish `hloc : ∀ x ∈ R, ∃ M : Set (σ → ℂ), IsOpen M ∧ x ∈ M ∧ ((∃ p ∈ X ∩ M, T ∈ 𝓝 p) → M ⊆ T)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Establish `hx' : IsRegularPointOf (X ∩ B) x` using `hx`. Take `⟨hxXB, d, A, O, W, g, hO, hW, hxW, hg, hAg, hYW⟩` from `hx'`. Take `⟨y₀, hy₀O, hgy₀⟩ : x ∈ g '' O` from `by rw [← hYW]; exact ⟨hxXB, hxW⟩`. Take `⟨r, hr, hrO⟩` from `Metric.isOpen_iff.mp hO y₀ hy₀O`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgO : ∀ y ∈ O, g y ∈ X ∩ B`. Introduce `y hy`. Establish `hy' : g y ∈ (X ∩ B) ∩ W` using `by rw [hYW]; exact Set.mem_image_of_mem g hy`. Conclude with `hy'.1`. Establish `hxA : A x ∈ Metric.ball y₀ r`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hgy₀, hAg y₀ hy₀O]`. Conclude with `Metric.mem_ball_self hr`. Use `⟨W ∩ B ∩ A ⁻¹' Metric.ball y₀ r, (hW.inter hB).inter (Metric.isOpen_ball.preimage A.continuous), ⟨⟨hxW, hxXB.2⟩, hxA⟩, ?_⟩` and prove the remaining obligations. Establish `hcov : ∀ p ∈ X ∩ (W ∩ B ∩ A ⁻¹' Metric.ball y₀ r), ∃ y ∈ Metric.ball y₀ r, g y = p`. Introduce and unpack `p ⟨hpX, ⟨hpW, hpB⟩, hpA⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hyO, rfl⟩ : p ∈ g '' O` from `by rw [← hYW]; exact ⟨⟨hpX, hpB⟩, hpW⟩`. Use `⟨y, ?_, rfl⟩` and prove the remaining obligations. Establish `hpA' : A (g y) ∈ Metric.ball y₀ r` using `hpA`. Rewrite `hpA'` using `[hAg y hyO]`. Then use the resulting hypothesis. Establish `hF : AnalyticOnNhd ℂ (fun y => G (g y)) (Metric.ball y₀ r)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `analyticOnNhd_of_differentiableOn_scalar_fin Metric.isOpen_ball (fun y hy => ?_)` and prove the remaining obligations. Establish `hyO` using `hrO hy`. Conclude with `((hG.differentiableAt (hN.mem_nhds (hBN (hgO y hyO).2))).comp y (hg y hyO).differentiableAt).differentiableWithinAt`. Introduce and unpack `⟨p, hpXM, hpT⟩`. Take `⟨y₁, hy₁, rfl⟩` from `hcov p hpXM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hev : (fun y => G (g y)) =ᶠ[𝓝 y₁] 0` using `by filter_upwards [(hg y₁ (hrO hy₁)).continuousAt.preimage_mem_nhds hpT, Metric.isOpen_ball.mem_nhds hy₁] with y hyT hyb`. Conclude with `hyT (hgO y (hrO hyb)).1`. Establish `hzero` using `hF.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball y₀ r).isPreconnected hy₁ hev`. Introduce `q hq hqX`. Take `⟨y, hy, rfl⟩` from `hcov q ⟨hqX, hq⟩`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hzero hy`. Use `choose! M hMo hxM hMT using hloc`. Establish `hallR : ∀ x ∈ R, T ∈ 𝓝 x`. Take `⟨x₀, hx₀V, hx₀R⟩` from `mem_closure_iff_nhds.mp (hdB hz) (interior V) (interior_mem_nhds.mpr hV)`. Establish `hx₀T : T ∈ 𝓝 x₀` using `Filter.mem_of_superset (isOpen_interior.mem_nhds hx₀V) (fun y hy hyX => hall y ⟨hyX, interior_subset hy⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hbad`. Use `push Not at hbad`. Take `⟨x₁, hx₁R, hx₁T⟩` from `hbad`. Establish `hu : IsOpen (⋃ x ∈ {x | x ∈ R ∧ T ∈ 𝓝 x}, M x)` using `isOpen_biUnion fun x hx => hMo x hx.1`. Establish `hv : IsOpen (⋃ x ∈ {x | x ∈ R ∧ T ∉ 𝓝 x}, M x)` using `isOpen_biUnion fun x hx => hMo x hx.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcover : R ⊆ (⋃ x ∈ {x | x ∈ R ∧ T ∈ 𝓝 x}, M x) ∪ (⋃ x ∈ {x | x ∈ R ∧ T ∉ 𝓝 x}, M x)`. Introduce `x hx`. Distinguish the cases in `h : T ∈ 𝓝 x`. Conclude with `Or.inl (Set.mem_biUnion (x := x) ⟨hx, h⟩ (hxM x hx))`. Conclude with `Or.inr (Set.mem_biUnion (x := x) ⟨hx, h⟩ (hxM x hx))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Take `⟨q, hqR, hqu, hqv⟩` from `hpc _ _ hu hv hcover ⟨x₀, hx₀R, Set.mem_biUnion (x := x₀) ⟨hx₀R, hx₀T⟩ (hxM x₀ hx₀R)⟩ ⟨x₁, hx₁R, Set.mem_biUnion (x := x₁) ⟨hx₁R, hx₁T⟩ (hxM x₁ hx₁R)⟩`. Take `⟨a, ⟨haR, haT⟩, hqa⟩` from `Set.mem_iUnion₂.mp hqu`. Take `⟨b, ⟨hbR, hbT⟩, hqb⟩` from `Set.mem_iUnion₂.mp hqv`. Establish `hqX : q ∈ X` using `(regLocus_subset _ hqR).1`. Establish `hMa : M a ⊆ T` using `hMT a haR ⟨a, ⟨(regLocus_subset _ haR).1, hxM a haR⟩, haT⟩`.
-
-Establish `hqT : T ∈ 𝓝 q` using `Filter.mem_of_superset ((hMo a haR).mem_nhds hqa) hMa`. Establish `hMb : M b ⊆ T` using `hMT b hbR ⟨q, ⟨hqX, hqb⟩, hqT⟩`. Conclude with `hbT (Filter.mem_of_superset ((hMo b hbR).mem_nhds (hxM b hbR)) hMb)`. Establish `hzeroB : ∀ y ∈ X ∩ B, G y = 0`. Introduce `y hy`.
-
-Assume the negation of the conclusion as `hGy`. Establish `hc : ContinuousAt G y` using `(hG.differentiableAt (hN.mem_nhds (hBN hy.2))).continuousAt`. Take `⟨x, hxG, hxR⟩` from `mem_closure_iff_nhds.mp (hdB hy) _ (hc.eventually_ne hGy)`. Conclude with `hxG (mem_of_mem_nhds (hallR x hxR) (regLocus_subset _ hxR).1)`. Conclude with `hne (Filter.mem_of_superset (hB.mem_nhds hwB) fun y hyB hyX => hzeroB y ⟨hyX, hyB⟩)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem NormalZerosNowhereDense.proof (hic : NormalGermIntegrallyClosed.Statement)
     (hconn : IrreducibleGermRegularConnected.Statement) (hdense : RegularLocusDense.Statement) :

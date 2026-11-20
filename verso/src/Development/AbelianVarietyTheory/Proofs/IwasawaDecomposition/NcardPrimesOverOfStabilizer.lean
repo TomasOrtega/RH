@@ -10,9 +10,9 @@ open scoped TensorProduct Pointwise
 namespace GlobalTheory.HostSplit
 
 /- English proof (translation)
-Establish `hgo : Odd p` using `Nat.odd_iff.mpr (by omega)`. Establish `hdo : Odd r` using `Nat.odd_iff.mpr hr`. Rewrite using `[jacobiSym.neg _ hgo, ZMod.χ₄_nat_one_mod_four h4, one_mul, jacobiSym.quadratic_reciprocity_one_mod_four' hdo h4, jacobiSym.mod_left]`. Establish `h2 : ((p : ℤ) % (r : ℤ)) = 1`. Rewrite using `[← Int.natCast_mod, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h2, jacobiSym.one_left]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem jacobiSym_neg_eq_one {r p : ℕ} (hr : r % 2 = 1) (h4 : p % 4 = 1) (h1 : p % r = 1) :
     jacobiSym (-(r : ℤ)) p = 1 := by
@@ -26,15 +26,13 @@ theorem jacobiSym_neg_eq_one {r p : ℕ} (hr : r % 2 = 1) (h4 : p % 4 = 1) (h1 :
   rw [h2, jacobiSym.one_left]
 
 /- English proof (translation)
-Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Establish `hp0 : Ideal.span {(p : ℤ)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions. Establish `himg : HeightOneSpectrum.asIdeal '' placesOver E p = Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 E)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `P`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Establish `hPp` using `v.isPrime`. Use `⟨hPp, ⟨hmax.eq_of_le (Ideal.IsPrime.under ℤ v.asIdeal).ne_top ?_⟩⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show algebraMap ℤ (𝓞 E) ((p : ℕ) : ℤ) ∈ v.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hv`. Introduce and unpack `⟨h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨P, h1, Ideal.ne_bot_of_liesOver_of_ne_bot hp0 P⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `h3 : (p : ℤ) ∈ P.under ℤ`. Rewrite using `[← Ideal.over_def P (Ideal.span {(p : ℤ)})]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `h4 : algebraMap ℤ (𝓞 E) ((p : ℕ) : ℤ) ∈ P` using `h3`.
-
-Rewrite `h4` using `[map_natCast]`. Conclude with `h4`. Rewrite using `[← himg, Set.ncard_image_of_injective _ (fun v w hvw => HeightOneSpectrum.ext hvw)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ncard_placesOver (E : Type) [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) :
     (placesOver E p).ncard = (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 E)).ncard := by
@@ -65,13 +63,13 @@ theorem ncard_placesOver (E : Type) [Field E] [NumberField E] {p : ℕ} (hp : p.
   rw [← himg, Set.ncard_image_of_injective _ (fun v w hvw => HeightOneSpectrum.ext hvw)]
 
 /- English proof (translation)
-Establish `: IsGaloisGroup (E ≃ₐ[ℚ] E) ℤ (𝓞 E)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ E`. Establish `hr : Set.range (fun σ : E ≃ₐ[ℚ] E => σ • P) = Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 E)`. Use extensionality with `Q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨inferInstance, inferInstance⟩`. Introduce and unpack `⟨hQ1, hQ2⟩`. Conclude with `Ideal.exists_smul_eq_of_isGaloisGroup (Ideal.span {(p : ℤ)}) P Q (E ≃ₐ[ℚ] E)`. Establish `hinj : Function.Injective (fun σ : E ≃ₐ[ℚ] E => σ • P)`. Introduce `σ τ hστ`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : τ⁻¹ * σ = 1`. Apply `h` to reduce the goal to its premises. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul]`. Establish `h2 : σ • P = τ • P` using `hστ`. Rewrite using `[h2, inv_smul_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(inv_mul_eq_one.mp h1).symm`. Rewrite using `[← hr, Set.ncard_range_of_injective hinj, IsGalois.card_aut_eq_finrank]`.
+A detailed English derivation is pending.
 -/
 theorem ncard_primesOver_of_stabilizer (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] (p : ℕ)
     (P : Ideal (𝓞 E)) [P.IsPrime] [P.LiesOver (Ideal.span {(p : ℤ)})]
@@ -96,19 +94,19 @@ theorem ncard_primesOver_of_stabilizer (E : Type) [Field E] [NumberField E] [IsG
   rw [← hr, Set.ncard_range_of_injective hinj, IsGalois.card_aut_eq_finrank]
 
 /- English proof (translation)
-Introduce `R H p hp hc`. Establish `hd16 : H.d % 16 = 7` using `H.hyp.2.2.2.1`. Establish `hmod : ∀ m : ℕ, 1 < m → m ∣ H.QS * H.q * H.d → p % m = 1`. Introduce `m hm hdv`. Rewrite using `[← Nat.mod_mod_of_dvd p hdv, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mod_eq_of_lt hm`. Establish `h4Q : 4 ∣ H.QS` using `(show (2 : ℕ) ^ 2 ∣ 2 ^ (R.e + 2) from pow_dvd_pow 2 (by omega)).trans H.tower_dvd`. Establish `h4 : p % 4 = 1` using `hmod 4 (by norm_num) ((h4Q.mul_right _).mul_right _)`. Establish `hd : p % H.d = 1` using `hmod _ (by omega) (dvd_mul_left _ _)`. Establish `hnd : ∀ m : ℕ, m ∣ H.QS * H.q * H.d → ¬ p ∣ m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm hpm`. Establish `h` using `hmod p hp.one_lt (hpm.trans hm)`. Rewrite `h` using `[Nat.mod_self]`. Use linear arithmetic over natural numbers and integers. Establish `hN : ¬ p ∣ H.condN` using `hnd _ dvd_rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp2 : p ∉ H.small` using `fun h => hnd H.QS (((dvd_refl _).mul_right _).mul_right _) (Nat.dvd_of_mem_primeFactors h)`. Establish `hpq : p ≠ H.q` using `fun h => hnd H.q ((dvd_mul_left _ _).mul_right _) (h ▸ dvd_rfl)`. Establish `hpd : p ≠ H.d` using `fun h => hnd H.d (dvd_mul_left _ _) (h ▸ dvd_rfl)`. Establish `jd` using `jacobiSym_neg_eq_one (r := H.d) (by omega) h4 hd`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hG : IsGalois ℚ H.E` using `H.galois`. Use `Formalism.FrobeniusOrbits.SplitK.span_prime p` as an intermediate fact. Take `⟨⟨P, hP1, hP2⟩⟩` from `(inferInstance : Nonempty (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 H.E)))`. Take `⟨-, hF, -, hI⟩` from `H.der.frob p hN P`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : IsArithFrobAt ℤ (1 : H.E ≃ₐ[ℚ] H.E) P`. Use `(hF 1 1 ?_).2 (by rw [map_one, map_one])` and prove the remaining obligations. Rewrite using `[← ZMod.natCast_mod p, show p % H.condN = 1 from hc]`. Simplify using the standard rewrite rules. Rewrite using `[ncard_placesOver H.E hp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ncard_primesOver_of_stabilizer H.E p P fun σ hσ => ?_` and prove the remaining obligations. Take `⟨k, ρ, hρ, rfl⟩` from `Formalism.FrobeniusOrbits.Decomp.stab_eq_inertia_mul p P 1 σ h1 hσ`. Rewrite using `[(hI ρ).1 hρ, one_pow, mul_one]`. Unfold `Host.cls primeClass`. Rewrite using `[if_neg hp2, if_neg hpq, if_neg hpd, if_pos jd]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_of_one_mod : ∀ (R : Ranks) (H : Host R) (p : ℕ), p.Prime → p % (H.QS * H.q * H.d) = 1 →
     (placesOver H.E p).ncard = Module.finrank ℚ H.E ∧ H.cls p = PrimeClass.splitK := by

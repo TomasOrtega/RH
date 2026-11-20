@@ -7,25 +7,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hDC`. Use `⟨fun a ha => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨⟨k, hk⟩, ⟨k', hk'⟩, rfl⟩` from `h1 a ha`. Take `⟨k₁, hk₁J, k₂, hk₂J, hk₁L, rfl, hk₂c⟩` from `hdec k hk`. Take `⟨k₁', hk₁'J, k₂', hk₂'J, hk₁'L, rfl, -⟩` from `hdec k' hk'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : k₁ * k₂ * x * (k₁' * k₂') = k₁ * x * k₁' * (k₂ * k₂')`. Establish `c1 : k₂ * x = x * k₂` using `(hk₂c x hx).eq`. Establish `c2 : k₂ * k₁' = k₁' * k₂` using `(hk₂c k₁' hk₁'L).eq`. Combine the equalities or inequalities in the displayed calculation. Establish `haL` using `hA _ ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hprodL : k₂ * k₂' ∈ Lc`. Establish `: k₂ * k₂' = (k₁ * x * k₁')⁻¹ * (k₁ * k₂ * x * (k₁' * k₂'))` using `by rw [e]; group`. Rewrite using `[this]`. Conclude with `Lc.mul_mem (Lc.inv_mem (Lc.mul_mem (Lc.mul_mem hk₁L hx) hk₁'L)) haL`. Establish `hprod : k₂ * k₂' ∈ J'` using `hLc ⟨J.mul_mem hk₂J hk₂'J, hprodL⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk₁ : k₁ ∈ J'` using `hLc ⟨hk₁J, hk₁L⟩`. Establish `hk₁' : k₁' ∈ J'` using `hLc ⟨hk₁'J, hk₁'L⟩`. Use `⟨⟨k₁, hk₁⟩, ⟨k₁' * (k₂ * k₂'), J'.mul_mem hk₁' hprod⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `group`. Take `⟨⟨k, hk⟩, ⟨k', hk'⟩, rfl⟩` from `hg`. Take `⟨k₁, hk₁J, k₂, hk₂J, hk₁L, rfl, hk₂c⟩` from `hdec k (hJJ hk)`. Establish `hk₁ : k₁ ∈ J'` using `hLc ⟨hk₁J, hk₁L⟩`. Establish `hk₂ : k₂ ∈ J'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: k₂ = k₁⁻¹ * (k₁ * k₂)` using `by group`. Rewrite using `[this]`. Conclude with `J'.mul_mem (J'.inv_mem hk₁) hk`. Take `⟨a, ⟨haA, haJ⟩, -⟩` from `h2 (k₁ * x) ⟨⟨k₁, hk₁J⟩, 1, by simp⟩`. Establish `haL : a⁻¹ * (k₁ * x) ∈ Lc` using `Lc.mul_mem (Lc.inv_mem (hA a haA)) (Lc.mul_mem hk₁L hx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `haJ' : a⁻¹ * (k₁ * x) ∈ J'` using `hLc ⟨haJ, haL⟩`. Establish `c1 : k₂ * x = x * k₂` using `(hk₂c x hx).eq`. Use `⟨a, ⟨haA, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: a⁻¹ * (k₁ * k₂ * x * k') = a⁻¹ * (k₁ * x) * (k₂ * k')`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `J'.mul_mem haJ' (J'.mul_mem hk₂ hk')`. Introduce and unpack `b ⟨hbA, hbJ'⟩`. Establish `hgJ : ∃ m₁ m₂ : J, k₁ * k₂ * x * k' = (m₁ : G) * x * m₂` using `⟨⟨k₁ * k₂, hJJ hk⟩, ⟨k', hJJ hk'⟩, rfl⟩`. Take `⟨c, -, hc⟩` from `h2 _ hgJ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `haJg : a⁻¹ * (k₁ * k₂ * x * k') ∈ J`. Establish `: a⁻¹ * (k₁ * k₂ * x * k') = a⁻¹ * (k₁ * x) * (k₂ * k')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `J.mul_mem haJ (J.mul_mem hk₂J (hJJ hk'))`.
-
-Rewrite using `[hc b ⟨hbA, hJJ hbJ'⟩, hc a ⟨haA, haJg⟩]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDC_of_smaller_level_same_local {G : Type} [Group G] (J J' Lc : Subgroup G) (x : G) (A : Finset G)
     (hJJ : J' ≤ J) (hLc : J ⊓ Lc ≤ J')

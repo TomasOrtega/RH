@@ -19,25 +19,23 @@ Both sides reduce to the same expression.
 theorem idx_eq_card (N F : Submodule R M) : idx N F = Nat.card (F ⧸ N.comap F.subtype) := rfl
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.relIndex_mul_relIndex _ _ _ h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem idx_mul {N F G : Submodule R M} (h1 : N ≤ F) (h2 : F ≤ G) : idx N F * idx F G = idx N G :=
   AddSubgroup.relIndex_mul_relIndex _ _ _ h1 h2
 
 /- English proof (translation)
-Rewrite using `[idx_eq_card, idx_eq_card]`. Set `φ : F →ₗ[R] (↥(F ⊔ G) ⧸ (N ⊔ G).comap (F ⊔ G).subtype)` to `((N ⊔ G).comap (F ⊔ G).subtype).mkQ ∘ₗ Submodule.inclusion le_sup_left`. Establish `hsurj : Function.Surjective φ`. Introduce `q`. Take `⟨⟨y, hy⟩, rfl⟩` from `Submodule.mkQ_surjective _ q`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, g, hg, rfl⟩` from `Submodule.mem_sup.mp hy`. Use `⟨⟨f, hf⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [φ, LinearMap.comp_apply, Submodule.mkQ_apply]`. Rewrite using `[Submodule.Quotient.eq]`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, AddSubgroupClass.coe_sub, Submodule.coe_inclusion]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: f - (f + g) = -g` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.neg_mem _ (Submodule.mem_sup_right hg)`. Establish `hker : LinearMap.ker φ = N.comap F.subtype`. Use extensionality with `⟨x, hx⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [φ, LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_inclusion]`. Prove the components needed by the constructor for the conclusion. Introduce `hxs`. Take `⟨n, hn, g, hg, hng⟩` from `Submodule.mem_sup.mp hxs`. Establish `hgF : g ∈ F`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: g = x - n` using `by rw [← hng]; abel`. Rewrite using `[this]`. Conclude with `F.sub_mem hx (h hn)`. Establish `hg0 : g = 0`. Use `hd.le_bot ⟨hgF, hg⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Rewrite using `[← hng, hg0, add_zero]`. Conclude with `hn`. Introduce `hn`. Conclude with `Submodule.mem_sup_left hn`.
-
-Rewrite using `[← hker]`. Conclude with `(Nat.card_congr (φ.quotKerEquivOfSurjective hsurj).toEquiv).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idx_sup {N F G : Submodule R M} (h : N ≤ F) (hd : Disjoint F G) :
     idx (N ⊔ G) (F ⊔ G) = idx N F := by
@@ -80,11 +78,11 @@ theorem idx_sup {N F G : Submodule R M} (h : N ≤ F) (hd : Disjoint F G) :
 end Idx
 
 /- English proof (translation)
-Set `s' : ι → F` to `fun i => ⟨s i, hm i⟩`. Establish `hs' : LinearIndependent (𝓞 K) s'` using `LinearIndependent.of_comp F.subtype hs`. Establish `hspan : Submodule.span (𝓞 K) (Set.range s') = (Submodule.span (𝓞 K) (Set.range s)).comap F.subtype`. Establish `e : (Submodule.span (𝓞 K) (Set.range s')).map F.subtype = Submodule.span (𝓞 K) (Set.range s)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← e, Submodule.comap_map_eq_of_injective F.injective_subtype]`. Establish `hfin : Finite (F ⧸ Submodule.span (𝓞 K) (Set.range s'))` using `finite_quotient_span hs' hc`. Establish `hdeg` using `E.degree_eq_of_linearIndependent F hs' hc`. Rewrite `hfin`, `hdeg` using `[hspan]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[idx_eq_card]`. Conclude with `Nat.card_pos.ne'`. Rewrite using `[hdeg, idx_eq_card]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_eq (E : HermitianBundle.{0} K) (F : Submodule (𝓞 K) E.carrier) {ι : Type} [Fintype ι]
     [DecidableEq ι] {s : ι → E.carrier} (hs : LinearIndependent (𝓞 K) s) (hm : ∀ i, s i ∈ F)
@@ -109,7 +107,7 @@ theorem deg_eq (E : HermitianBundle.{0} K) (F : Submodule (𝓞 K) E.carrier) {�
   · rw [hdeg, idx_eq_card]
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `E.exists_linearIndependent_rank F`. Conclude with `⟨fun i => (f i : E.carrier), hf.map' F.subtype F.ker_subtype, fun i => (f i).2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_fam (E : HermitianBundle.{0} K) (F : Submodule (𝓞 K) E.carrier) :
     ∃ s : Fin (E.rank F) → E.carrier, LinearIndependent (𝓞 K) s ∧ ∀ i, s i ∈ F := by
@@ -117,14 +115,14 @@ theorem exists_fam (E : HermitianBundle.{0} K) (F : Submodule (𝓞 K) E.carrier
   exact ⟨fun i => (f i : E.carrier), hf.map' F.subtype F.ker_subtype, fun i => (f i).2⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.mpr (Set.range_subset_iff.mpr h)`.
+A detailed English derivation is pending.
 -/
 theorem span_le_of_mem {R M ι : Type} [Ring R] [AddCommGroup M] [Module R M] {s : ι → M}
     {F : Submodule R M} (h : ∀ i, s i ∈ F) : Submodule.span R (Set.range s) ≤ F :=
   Submodule.span_le.mpr (Set.range_subset_iff.mpr h)
 
 /- English proof (translation)
-Establish `h` using `Submodule.rank_sup_add_rank_inf_eq F G`. Rewrite `h` using `[disjoint_iff.mp hd, rank_bot, add_zero]`. Unfold `HermitianBundle.rank Module.finrank`. Rewrite using `[h, Cardinal.toNat_add (Module.rank_lt_aleph0 (𝓞 K) F) (Module.rank_lt_aleph0 (𝓞 K) G)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rank_sup (E : HermitianBundle.{0} K) {F G : Submodule (𝓞 K) E.carrier} (hd : Disjoint F G) :
     E.rank (F ⊔ G) = E.rank F + E.rank G := by
@@ -134,14 +132,14 @@ theorem rank_sup (E : HermitianBundle.{0} K) {F G : Submodule (𝓞 K) E.carrier
   rw [h, Cardinal.toNat_add (Module.rank_lt_aleph0 (𝓞 K) F) (Module.rank_lt_aleph0 (𝓞 K) G)]
 
 /- English proof (translation)
-The claim follows from `(Submodule.equivMapOfInjective φ hφ F).finrank_eq.symm`.
+A detailed English derivation is pending.
 -/
 theorem rank_map (E E' : HermitianBundle.{0} K) (φ : E.carrier →ₗ[𝓞 K] E'.carrier)
     (hφ : Function.Injective φ) (F : Submodule (𝓞 K) E.carrier) : E'.rank (F.map φ) = E.rank F :=
   (Submodule.equivMapOfInjective φ hφ F).finrank_eq.symm
 
 /- English proof (translation)
-Unfold `HermitianBundle.rank`. Use `haveI : Nontrivial F := Submodule.nontrivial_iff_ne_bot.mpr hF`. Conclude with `Module.finrank_pos`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rank_pos (E : HermitianBundle.{0} K) {F : Submodule (𝓞 K) E.carrier} (hF : F ≠ ⊥) :
     0 < E.rank F := by

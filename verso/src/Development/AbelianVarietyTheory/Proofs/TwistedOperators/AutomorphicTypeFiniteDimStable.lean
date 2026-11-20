@@ -53,11 +53,11 @@ section Closure
 variable {D : D7} {V : HSp D}
 
 /- English proof (translation)
-Establish `hE : IsClosed (E : Set (GA D V → ℂ))` using `Submodule.closed_of_finiteDimensional E`. Establish `key : ∀ p : Finset (GA D V) × ℕ, ∃ ψ ∈ E, ∀ x ∈ p.1, ‖φ x - ψ x‖ < 1 / ((p.2 : ℝ) + 1)` using `fun p => h _ p.1.finite_toSet.isCompact _ (by positivity)`. Use `choose u hu hu' using key`. Use `hE.mem_of_tendsto (f := u) (b := (atTop : Filter (Finset (GA D V) × ℕ))) ?_ (Filter.Eventually.of_forall hu)` and prove the remaining obligations. Use `tendsto_pi_nhds.2 fun x => Metric.tendsto_atTop.2 fun δ hδ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `exists_nat_one_div_lt hδ`. Use `⟨({x}, N), fun p hp => ?_⟩` and prove the remaining obligations. Establish `h1 : x ∈ p.1` using `hp.1 (Finset.mem_singleton_self x)`. Establish `h2 : (N : ℝ) ≤ p.2` using `by exact_mod_cast hp.2`. Rewrite using `[dist_comm, dist_eq_norm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem mem_of_approx {E : Submodule ℂ (GA D V → ℂ)} [FiniteDimensional ℂ E] {φ : GA D V → ℂ}
     (h : ∀ C : Set (GA D V), IsCompact C → ∀ δ : ℝ, 0 < δ → ∃ ψ ∈ E, ∀ x ∈ C, ‖φ x - ψ x‖ < δ) : φ ∈ E := by
@@ -85,17 +85,17 @@ variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E 
   {ε : Fin V.rank → Bool} {P : Matrix (Fin V.rank) (Fin V.rank) ℂ}
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `hk : Continuous fun k : KG ε => atTau θ V τ (P⁻¹ * toMK k * P)` using `(continuousOn_atTau hθ V τ).comp_continuous continuous_conjK fun k => conj_inv_mem hP hJ (K_le_UJ (toMK_mem_K k))`. Establish `hd` using `(isUnit_iff_isUnit_det _).1 hP`. Establish `cc : ∀ g : Matrix (Fin V.rank) (Fin V.rank) ℂ, P * (P⁻¹ * g * P) * P⁻¹ = g` using `fun g => by`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hmem : ∀ k : KG ε, rTr V (atTau θ V τ (P⁻¹ * toMK k * P)) φ ∈ W` using `fun k => hW _ (conj_inv_mem hP hJ (K_le_UJ (toMK_mem_K k))) (by rw [cc]; exact toMK_mem_K k) φ hφ`. Set `f : KG ε → W` to `fun k => ⟨_, hmem k⟩`. Establish `hf : Continuous f` using `(continuous_pi fun x => hφc.comp (continuous_const.mul hk)).subtype_mk _`. Set `b` to `Module.finBasis ℂ W`. Establish `hc : ∀ i, Continuous fun k => b.coord i (f k)` using `fun i => (LinearMap.continuous_of_finiteDimensional (b.coord i)).comp hf`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he' : Continuous e` using `by obtain ⟨F, -, h1, h2, -⟩ := he; exact h2 _ h1`. Establish `hint : ∀ i, Integrable (fun k => e k * b.coord i (f k)) (muK ε)` using `fun i => integrableOn_univ.mp ((he'.mul (hc i)).continuousOn.integrableOn_compact isCompact_univ)`. Establish `hrep : ∀ k, (f k : GA D V → ℂ) = ∑ i, b.coord i (f k) • (b i : GA D V → ℂ)` using `fun k => by nth_rw 1 [← b.sum_repr (f k)]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `key : avg θ V τ ε P e φ = ∑ i, (∫ k, e k * b.coord i (f k) ∂(muK ε)) • (b i : GA D V → ℂ)`. Use function extensionality and compare the values at `x`. Establish `hx : ∀ k, φ (x * atTau θ V τ (P⁻¹ * toMK k * P)) = ∑ i, b.coord i (f k) * (b i : GA D V → ℂ) x` using `fun k => by`. Use `congrFun (hrep k) x` as an intermediate fact. Simplify `this` using `[f, rTr, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [avg, hx, Finset.mul_sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_finset_sum _ fun i _ => ?_]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_mul_const]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Expand and normalize the polynomial expressions, which then agree. Simplify `(hint i).mul_const ((b i : GA D V → ℂ) x)` using `[mul_assoc]`. Rewrite using `[key]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (b i).2`.
+Expand and normalize the polynomial expressions, which then agree. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_mem (hθ : IsInfFam (D := D) θ) (hP : IsUnit P) (hJ : Pᴴ * Jm ε * P = gramAt D V τ)
     {W : Submodule ℂ (GA D V → ℂ)} [FiniteDimensional ℂ W]
@@ -151,19 +151,17 @@ open Formalism.REAL Formalism.MainNotions.S GlobalTheory.SmoothGlob GlobalTheory
   GlobalTheory.FiniteGKSum in
 
 /- English proof (translation)
-Introduce `hPr D θ V S M hθ τ φ hφ hT ⟨W, hWf, hφW, hWK⟩`. Use `haveI := hWf`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Take `⟨H', i1, i2, σ', lam', ε', P', hE', hD', hP', hJ', hx⟩` from `hT`. Take `⟨rfl, rfl⟩` from `GlobalTheory.SignedParTest.isEnum_unique (M.enum τ) hE'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U, hU⟩` from `hPr.discreteSeriesHermitianUnique _ (M.ε τ) (M.lam τ) (GlobalTheory.Published.HermitianUnique.isHCParam_of_isDS (M.enum τ).1 (M.ds τ)) _ (M.fr τ) P' (M.fr_unit τ) hP' (M.fr_gram τ) hJ' _ _ (M.σ τ) σ' (M.ds τ) hD'`. Use `haveI : CompleteSpace (M.H τ) := (M.ds τ).1`. Establish `hσ : Std (M.ε τ) (M.σ τ)` using `std_of_isDS hPr.harishChandraModules (M.ds τ)`. Establish `hP` using `M.fr_unit τ`. Establish `hJ` using `M.fr_gram τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx' : ∀ x, HasTypeAll (lieSet (M.ε τ)) (UJset (M.ε τ)) (M.σ τ) (res θ V τ (M.fr τ) φ x)` using `fun x => hasTypeAll_transport _ H' (M.H τ) _ (M.σ τ) (gramAt D V τ) (Jm (M.ε τ)) (M.fr τ) (isUnit_gram hP' hJ') hP hJ U hU (fun g => φ (x * atTau θ V τ g)) (hasTypeAll_iff.2 (hx x))`. Use `choose Sx hS hc v ℓ C h using hx'`. Establish `hZ : ∀ e, KFinFun (M.ε τ) e → avg θ V τ (M.ε τ) (M.fr τ) e φ ∈ gkSums θ V τ (M.ε τ) (M.σ τ) (M.fr τ)`. Introduce `e he`. Take `⟨m, a, c, ha, hQ, hA⟩` from `exists_rank_one hθ hP hJ hσ he`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `choose T hT hTv using fun j => exists_gkMap hθ hP hJ hσ hφ hS hc h (hA j)`. Use `⟨m, T, fun j => ⟨a j, mem_kFin_iff.2 (ha j)⟩, hT, funext fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `(moves_avg hθ hP hJ hσ he φ x _ _ _ _ (hS x) (hc x) (h x)).1.2.2.2.2 1 (one_mem_UJ _)`. Simplify using `only [res_one hθ hP, sigma_one hσ.1, hQ, map_sum, map_smul, smul_eq_mul] at h1`. Establish `h2` using `h1.unique (hasSum_sum fun j _ => (Expn.summable_term (h x) (c j) (hσ.2.2.1 _ (ha j))).hasSum)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Finset.sum_apply, hTv]`. Conclude with `h2`. Establish `hk : Continuous fun k : KG (M.ε τ) => atTau θ V τ ((M.fr τ)⁻¹ * toMK k * M.fr τ)` using `(continuousOn_atTau hθ V τ).comp_continuous continuous_conjK fun k => conj_inv_mem hP hJ (K_le_UJ (toMK_mem_K k))`. Establish `hmem : φ ∈ gkSums θ V τ (M.ε τ) (M.σ τ) (M.fr τ) ⊓ W` using `by haveI : FiniteDimensional ℂ (gkSums θ V τ (M.ε τ) (M.σ τ) (M.fr τ) ⊓ W : Submodule ℂ _) := Submodule.finiteDimensional_of_le inf_le_right`. Use `mem_of_approx fun K hK δ hδ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, hap⟩` from `GlobalTheory.T.exists_compactFinite_approxIdentity _ (M.ε τ) (GA D V) (fun x k => φ (x * atTau θ V τ ((M.fr τ)⁻¹ * toMK k * M.fr τ))) (hφ.cont.comp (continuous_fst.mul (hk.comp continuous_snd))) K hK δ hδ`. Use `⟨avg θ V τ (M.ε τ) (M.fr τ) e φ, ⟨hZ e he, avg_mem hθ hP hJ hWK hφ.cont hφW he⟩, fun x hxK => ?_⟩` and prove the remaining obligations. Establish `h4 : φ (x * atTau θ V τ ((M.fr τ)⁻¹ * toMK (1 : KG (M.ε τ)) * M.fr τ)) = φ x` using `res_one hθ hP φ x`. Establish `h3` using `hap x hxK`. Rewrite `h3` using `[h4]`.
-
-Conclude with `h3`. Take `⟨m, T, p, hT, hsum⟩` from `hmem.1`. Conclude with `⟨m, T, p, hT, hsum⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_sum_of_gkMaps : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
     (V : HSp D) (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →

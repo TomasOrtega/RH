@@ -11,13 +11,13 @@ noncomputable section
 namespace CompanionTheory.CapEig
 
 /- English proof (translation)
-Establish `hinv : P⁻¹ = star P` using `Matrix.inv_eq_left_inv (Unitary.star_mul_self_of_mem hP.2)`. Establish `hPi : P⁻¹ ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ` using `hinv ▸ Unitary.star_mem hP.2`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, hS, hv, hst⟩`. Use `⟨S, hS, hv, fun g hg x hx => hst _ ⟨back_mem hP.1 ?_, ?_⟩ x hx⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show gᴴ * Jm ε * g = Jm ε`. Establish `h1 : gᴴ * g = 1` using `Unitary.star_mul_self_of_mem hg.1`. Rewrite using `[Matrix.mul_assoc, ← hg.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Conclude with `Submonoid.mul_mem _ (Submonoid.mul_mem _ hPi hg.1) hP.2`. Introduce and unpack `⟨S, hS, hv, hst⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨S, hS, hv, fun x hx y hy => ?_⟩` and prove the remaining obligations. Establish `hu : P * x * P⁻¹ ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ` using `Submonoid.mul_mem _ (Submonoid.mul_mem _ hP.2 hx.2) hPi`. Establish `hJ : (P * x * P⁻¹)ᴴ * Jm ε * (P * x * P⁻¹) = Jm ε` using `forth_mem hP.1 hx.1`. Establish `h1 : (P * x * P⁻¹) * (P * x * P⁻¹)ᴴ = 1` using `Unitary.mul_star_self_of_mem hu`. Establish `hK : P * x * P⁻¹ ∈ Kset ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Use `⟨hu, ?_⟩` and prove the remaining obligations. Generalize the expression as in `P * x * P⁻¹ = g at hJ h1`. Combine the equalities or inequalities in the displayed calculation. Use `hst _ hK y hy` as an intermediate fact. Simplify `this` using `only [back_forth hP.1]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem kfin_iff (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (P : B.Mat k r) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (σ : B.Mat k r → (H →L[ℂ] H)) (v : H) (hP : IsCayleyU k r ε P) :
@@ -47,9 +47,9 @@ theorem kfin_iff (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (P : B.Mat k r)
     simpa only [back_forth hP.1] using this
 
 /- English proof (translation)
-Establish `key : ∀ {a b : Fin n → ℝ}, (∀ Y : ℂ, Formalism.QuantumDeterminants.capP (fun s => (a s : ℂ)) Y = Formalism.QuantumDeterminants.capP (fun s => (b s : ℂ)) Y) → Set.range a ⊆ Set.range b`. Introduce and unpack `a b hab _ ⟨s, rfl⟩`. Establish `h0 : Formalism.QuantumDeterminants.capP (fun s => (a s : ℂ)) (-(a s : ℂ)) = 0` using `Finset.prod_eq_zero (Finset.mem_univ s) (by simp)`. Rewrite `h0` using `[hab]`. Take `⟨t, -, ht⟩` from `Finset.prod_eq_zero_iff.1 h0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `: ((b t : ℝ) : ℂ) = (a s : ℂ)` using `by linear_combination ht`. Conclude with `this` after adjusting the coercions. Conclude with `(hμ.range_inj hμ').1 (Set.Subset.antisymm (key h) (key fun Y => (h Y).symm))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_capelliPolynomial_eq {n : ℕ} {μ μ' : Fin n → ℝ} (hμ : StrictAnti μ) (hμ' : StrictAnti μ')
     (h : ∀ Y : ℂ, Formalism.QuantumDeterminants.capP (fun s => (μ s : ℂ)) Y = Formalism.QuantumDeterminants.capP (fun s => (μ' s : ℂ)) Y) : μ = μ' := by
@@ -66,15 +66,15 @@ theorem eq_of_capelliPolynomial_eq {n : ℕ} {μ μ' : Fin n → ℝ} (hμ : Str
   exact (hμ.range_inj hμ').1 (Set.Subset.antisymm (key h) (key fun Y => (h Y).symm))
 
 /- English proof (translation)
-Introduce `hE k r ε ε' μ μ' H H' _ _ _ _ _ _ σ σ' hμ hμ' hσ hσ' hne`. Introduce and unpack `⟨U, hU⟩`. Apply `hne` to reduce the goal to its premises. Take `⟨P, hP, hds⟩` from `id hσ`. Take `⟨S, hS, hSK, -, ⟨v, hvS, hv0, -⟩, -⟩` from `hds.2.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hv : IsKFinHpk (k` using `k) (r := r) σ v := (kfin_iff k r ε P H σ v hP).2 ⟨S, hS, hvS, hSK⟩`. Establish `hv' : IsKFinHpk (k` using `k) (r := r) σ' (U v) := by`. Take `⟨S₁, h1, h2, h3⟩` from `hv`. Use `⟨S₁.map (U.toLinearEquiv : H →ₗ[ℂ] H'), inferInstance, Submodule.mem_map_of_mem h2, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg _ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨σ g x, h3 g hg x hx, hU g hg.1 x⟩`. Establish `c1 : IsCoef k r ε μ (fun g => ⟪v, σ g v⟫_ℂ)` using `⟨H, _, _, inferInstance, σ, v, v, hμ, hσ, hv, hv, fun _ _ => rfl⟩`. Establish `c2 : IsCoef k r ε' μ' (fun g => ⟪v, σ g v⟫_ℂ)` using `⟨H', _, _, inferInstance, σ', U v, U v, hμ', hσ', hv', hv', fun g hg => by`. Rewrite using `[← hU g hg v, U.inner_map_map]⟩`. Establish `h1G : (1 : B.Mat k r) ∈ B.GV k r` using `by show (1 : B.Mat k r)ᴴ * _ * 1 = _`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hσ1 : σ 1 = 1` using `(isURepOn_of_ds hσ).1.1`. Use `eq_of_capelliPolynomial_eq hμ.1 hμ'.1 fun Y => ?_` and prove the remaining obligations. Establish `e1` using `hE k r ε μ _ ℂ ℂ 1 c1 Y 1 h1G`. Establish `e2` using `hE k r ε' μ' _ ℂ ℂ 1 c2 Y 1 h1G`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e2` using `[e1]`. Establish `e3` using `congrArg (fun T : ℂ →L[ℂ] ℂ => T 1) e2`. Simplify using `only [hσ1, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, smul_eq_mul, mul_one] at e3`. Conclude with `mul_right_cancel₀ (inner_self_ne_zero.2 hv0) e3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem capelli_inequivalence : Inequiv := by
   intro hE k r ε ε' μ μ' H H' _ _ _ _ _ _ σ σ' hμ hμ' hσ hσ' hne

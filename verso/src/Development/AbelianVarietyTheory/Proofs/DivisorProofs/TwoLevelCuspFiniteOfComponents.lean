@@ -19,7 +19,7 @@ theorem castFrame_castFrame {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ') (x : 
     castFrame h (castFrame h.symm x) = x := rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castFrame_mem_GG (X : Data E r) {Ψ : Finset (E →+* ℂ)} (h : X.Ψ = Ψ) (x : Frame X.Ψ r) :
     castFrame h x ∈ GG Ψ X.Gm X.p0 ↔ x ∈ X.dom := by
@@ -29,7 +29,7 @@ theorem castFrame_mem_GG (X : Data E r) {Ψ : Finset (E →+* ℂ)} (h : X.Ψ = 
 variable {U C : Type} [Group U] [MulAction U C] (M : TwoLevels E r U C)
 
 /- English proof (translation)
-Use `castFrame_mem_GG (M.comp c).toData (M.comp_Ψ c) x` as an intermediate fact. Rewrite `this` using `[M.comp_Gm c, M.comp_basePoint c]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem castFrame_mem_dom (c : C) (x : Frame (M.comp c).Ψ r) :
     castFrame (M.comp_Ψ c) x ∈ M.dom ↔ x ∈ (M.comp c).dom := by
@@ -43,7 +43,7 @@ def toComp (c : C) : (C → M.dom → ℂ) →ₗ[ℂ] ((M.comp c).dom → ℂ) 
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Unfold `TwoLevels.cusp`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Conclude with `Submodule.subset_span ⟨_, hF c, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem cusp_le_comap (ka : Wt M.Ψ r) (c : C) :
     M.cusp ka ≤ (Submodule.span ℂ ((fun f : Frame (M.comp c).Ψ r → ℂ => fun x : (M.comp c).dom => f x) ''
@@ -54,7 +54,7 @@ theorem cusp_le_comap (ka : Wt M.Ψ r) (c : C) :
   exact Submodule.subset_span ⟨_, hF c, rfl⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c y`. Establish `hy : castFrame (M.comp_Ψ c).symm y.1 ∈ (M.comp c).dom` using `(castFrame_mem_dom M c _).1 (by rw [castFrame_castFrame]; exact y.2)`. Use `congrFun (h c) ⟨_, hy⟩` as an intermediate fact. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toComp_inj (v w : C → M.dom → ℂ) (h : ∀ c, toComp M c v = toComp M c w) : v = w := by
   funext c y
@@ -70,11 +70,11 @@ end GlobalTheory.CompFin
 open GlobalTheory.CompFin in
 
 /- English proof (translation)
-Introduce `E _ _ _ r U C _ _ _ M ka hfin`. Set `S : (c : C) → Submodule ℂ ((M.comp c).dom → ℂ)` to `fun c => Submodule.span ℂ ((fun f : Frame (M.comp c).Ψ r → ℂ => fun x : (M.comp c).dom => f x) '' (M.comp c).SS (castWt (M.comp_Ψ c) ka))`. Establish `: ∀ c, Module.Finite ℂ (S c)` using `hfin`. Set `Φ : M.cusp ka →ₗ[ℂ] (∀ c, S c)` to `LinearMap.pi fun c => ((toComp M c).domRestrict (M.cusp ka)).codRestrict (S c) fun v => cusp_le_comap M ka c v.2`. Establish `hΦ : Function.Injective Φ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `v w hvw`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `toComp_inj M` to reduce the goal to its premises. Introduce `c`. Use `congrArg Subtype.val (congrFun hvw c)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this`. Conclude with `Module.Finite.of_injective Φ hΦ`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.cusp_finite_of_comp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [Finite C] [MulAction U C] (M : TwoLevels E r U C) (ka : Wt M.Ψ r), (∀ c : C, FiniteDimensional ℂ (Submodule.span ℂ ((fun f : Frame (M.comp c).Ψ r → ℂ => fun x : (M.comp c).dom => f x) '' (M.comp c).SS (castWt (M.comp_Ψ c) ka)))) → Module.Finite ℂ (M.cusp ka) := by
   intro E _ _ _ r U C _ _ _ M ka hfin

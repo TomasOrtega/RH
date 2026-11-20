@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.EisPer
 
 /- English proof (translation)
-Establish `hp : Function.Periodic a (N : ℤ)` using `ha`. Rewrite using `[ZMod.val_intCast]`. Use `hp.int_mul (n / N) (n % N)` as an intermediate fact. Simplify using `only [Int.cast_id] at this`. Rewrite using `[← this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Int.mul_ediv_add_emod n N` as an intermediate fact. Combine the linear relations using `[mul_comm (N : ℤ) (n / N)]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem per_val {N : ℕ} [NeZero N] (a : ℤ → ℂ) (ha : ∀ x, a (x + N) = a x) (n : ℤ) :
     a n = a (((n : ZMod N).val : ℕ) : ℤ) := by
@@ -27,7 +27,7 @@ theorem per_val {N : ℕ} [NeZero N] (a : ℤ → ℂ) (ha : ∀ x, a (x + N) = 
   linarith [mul_comm (N : ℤ) (n / N)]
 
 /- English proof (translation)
-Use `Finset.sum_bij' (fun y _ => (y : ZMod N)) (fun z _ => z.val) (by simp) (fun z _ => by simpa using ZMod.val_lt z) (fun y hy => ZMod.val_cast_of_lt (Finset.mem_range.1 hy)) (fun z _ => ZMod.natCast_zmod_val z) (fun _ _ => rfl)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sum_range_zmod {N : ℕ} [NeZero N] (g : ZMod N → ℂ) :
     ∑ y ∈ Finset.range N, g (y : ZMod N) = ∑ z : ZMod N, g z := by
@@ -39,15 +39,15 @@ def invF {N : ℕ} [NeZero N] (a : ℤ → ℂ) (y : ZMod N) : ℂ :=
   (N : ℂ)⁻¹ * ∑ x : ZMod N, a (x.val : ℤ) * ZMod.stdAddChar (-(x * y))
 
 /- English proof (translation)
-Unfold `hat`. Establish `hN : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne N)`. Establish `e1 : ∀ y : ℕ, cexp (2 * π * Complex.I * (y * d) / N) = ZMod.stdAddChar ((y : ZMod N) * (d : ZMod N))`. Introduce `y`. Use `ZMod.stdAddChar_coe (N := N) ((y : ℤ) * d)` as an intermediate fact.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Rewrite using `[← this]`. Repeatedly rewrite using `[e1]`. Rewrite using `[sum_range_zmod (fun z => invF a z * ZMod.stdAddChar (z * (d : ZMod N)))]`. Unfold `invF`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Repeatedly rewrite using `[mul_assoc, ← Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `e2 : ∀ x y : ZMod N, a (x.val : ℤ) * ZMod.stdAddChar (-(x * y)) * ZMod.stdAddChar (y * (d : ZMod N)) = a (x.val : ℤ) * ZMod.stdAddChar (y * ((d : ZMod N) - x))`. Introduce `x y`. Rewrite using `[mul_assoc, ← AddChar.map_add_eq_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e2]`. Repeatedly rewrite using `[← Finset.mul_sum]`. Repeatedly rewrite using `[AddChar.sum_mulShift _ (ZMod.isPrimitive_stdAddChar N)]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[ZMod.card, Nat.cast_ite, Nat.cast_zero, sub_eq_zero, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_ite_eq Finset.univ (d : ZMod N) (fun x => a (x.val : ℤ) * (N : ℂ))]`. Simplify using `only [Finset.mem_univ, if_true]`. Rewrite using `[← per_val a ha d]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem hat_invF {N : ℕ} [NeZero N] (a : ℤ → ℂ) (ha : ∀ x, a (x + N) = a x) (d : ℤ) :
     hat (invF (N := N) a) d = a d := by
@@ -79,13 +79,13 @@ theorem hat_invF {N : ℕ} [NeZero N] (a : ℤ → ℂ) (ha : ∀ x, a (x + N) =
   field_simp
 
 /- English proof (translation)
-Take `⟨u, v, huv⟩` from `hd`. Establish `hu : (u : ZMod N) * (d : ZMod N) = 1`. Use `congrArg (fun t : ℤ => (t : ZMod N)) huv` as an intermediate fact. Simplify using `using this`. Set `U : (ZMod N)ˣ` to `⟨(d : ZMod N), (u : ZMod N), by rw [mul_comm]; exact hu, hu⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Unfold `invF`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Establish `e : ∀ x : ZMod N, c * ((N : ℂ)⁻¹ * (a (x.val : ℤ) * ZMod.stdAddChar (-(x * (y * (d : ZMod N)))))) = (N : ℂ)⁻¹ * (a ((x * (d : ZMod N)).val : ℤ) * ZMod.stdAddChar (-((x * (d : ZMod N)) * y)))`. Introduce `x`. Establish `h1 : a ((x * (d : ZMod N)).val : ℤ) = c * a (x.val : ℤ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hmul, per_val a ha ((x.val : ℤ) * d)]`. Use `congr 3`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val]`. Rewrite using `[h1]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : -(x * (y * (d : ZMod N))) = -((x * (d : ZMod N)) * y)` using `by ring`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(Fintype.sum_equiv (Units.mulRight U) _ _ e).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem invF_twist {N : ℕ} [NeZero N] (a : ℤ → ℂ) (ha : ∀ x, a (x + N) = a x) (d : ℤ) (c : ℂ)
     (hd : IsCoprime d (N : ℤ)) (hmul : ∀ x, a (x * d) = c * a x) (y : ZMod N) :
@@ -116,9 +116,9 @@ end
 
 open GlobalTheory.EisPer in
 /- English proof (translation)
-Introduce `j L₁ L₂ a b χ₁ χ₂ hj hL₁ hL₂ ha0 ha hb hχ hpar`. Use `haveI : NeZero L₁ := ⟨hL₁.ne'⟩`. Establish `hhat : hat (invF (N` using `L₁) a) = a := funext (hat_invF a ha)`. Take `⟨c, hc, -⟩` from `GlobalTheory.T.eisenstein_latticeFunction_isModularFormCoeffSeq j L₁ L₂ b χ₁ χ₂ (invF (N := L₁) a) hj hL₁ hL₂ (by rw [hhat]; exact ha0) hb (fun d hd => ⟨fun y => invF_twist a ha d (χ₁ d) (by`. Establish `: IsCoprime d ((L₁ : ℤ) * (L₂ : ℤ))` using `by exact_mod_cast hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `this.of_mul_right_left) (hχ d hd).1 y, (hχ d hd).2⟩) hpar`. Conclude with `⟨c, by rw [hhat] at hc; exact hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.eis_periodic_weights : ∀ (j L₁ L₂ : ℕ) (a b χ₁ χ₂ : ℤ → ℂ), 1 ≤ j → 0 < L₁ → 0 < L₂ → a 0 = 0 → (∀ x, a (x + L₁) = a x) → (∀ x, b (x + L₂) = b x) → (∀ d : ℤ, IsCoprime d (L₁ * L₂ : ℕ) → (∀ x, a (x * d) = χ₁ d * a x) ∧ ∀ x, b (x * d) = χ₂ d * b x) → χ₁ (-1) * χ₂ (-1) = (-1) ^ j → ∃ c : ℂ, MF j (L₁ * L₂) (fun d => χ₁ d * χ₂ d) (eis j c a b) := by
   intro j L₁ L₂ a b χ₁ χ₂ hj hL₁ hL₂ ha0 ha hb hχ hpar

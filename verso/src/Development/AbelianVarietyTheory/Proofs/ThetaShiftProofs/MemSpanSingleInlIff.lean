@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory.SpanSingleInlMembership
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, hj, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨fun k => by simp, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hne : k ≠ j` using `fun e => hk (e ▸ hj)`. Simplify using `[hne]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Conclude with `⟨fun k => by simp [hx.1 k, hy.1 k], fun k hk => by simp [hx.2 k hk, hy.2 k hk]⟩`. Consider the case `smul a x _ hx`. Conclude with `⟨fun k => by simp [hx.1 k], fun k hk => by simp [hx.2 k hk]⟩`. Introduce and unpack `⟨h1, h2⟩`. Establish `hu : u = ∑ k ∈ S, u (Sum.inl k) • (Pi.single (Sum.inl k) (1 : ℤ) : Fin g ⊕ Fin g → ℤ)`.
+Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Break down `i with j | j` into its components or cases. Distinguish the cases in `hj : j ∈ S`. Simplify using `[Finset.sum_apply, Pi.single_apply, hj]`. Simplify using `[Finset.sum_apply, Pi.single_apply, hj, h2 j hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply, h1 j]`. Rewrite using `[hu]`. Conclude with `Submodule.sum_mem _ fun k hk => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, hk, rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_single_inl_iff {g : ℕ} (S : Finset (Fin g)) (u : Fin g ⊕ Fin g → ℤ) :
     u ∈ Submodule.span ℤ ((fun (k : Fin g) ↦ Pi.single (Sum.inl k) (1 : ℤ)) '' (↑S : Set (Fin g))) ↔

@@ -9,7 +9,7 @@ open Formalism.MainNotions.S MeasureTheory NumberField IsDedekindDomain Formalis
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `⟨Set.range fun c : {c : C // ∃ x, P x ∧ f x = c} => c.2.choose, Set.countable_range _, fun x hx => ?_⟩` and prove the remaining obligations. Set `c : {c : C // ∃ x, P x ∧ f x = c}` to `⟨f x, x, hx, rfl⟩`. Take `⟨hP, hfc⟩` from `c.2.choose_spec`. Conclude with `⟨c.2.choose, ⟨c, rfl⟩, hf x _ hx hP hfc.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cover_of {G : Type} [Group G] (K : Set G) (P : G → Prop) {C : Type} [Countable C]
     (f : G → C) (hf : ∀ x y, P x → P y → f x = f y → y⁻¹ * x ∈ K) :
@@ -22,7 +22,7 @@ theorem cover_of {G : Type} [Group G] (K : Set G) (P : G → Prop) {C : Type} [C
   exact ⟨c.2.choose, ⟨c, rfl⟩, hf x _ hx hP hfc.symm⟩
 
 /- English proof (translation)
-Establish `h' : (N : K) • v = (N : K) • w`. Rewrite using `[Nat.cast_smul_eq_nsmul K, Nat.cast_smul_eq_nsmul K]`. Conclude with `h`. Conclude with `smul_right_injective V (Nat.cast_ne_zero.mpr hN.ne') h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_cancel {K V : Type} [Field K] [CharZero K] [AddCommGroup V] [Module K V] {N : ℕ}
     (hN : 0 < N) {v w : V} (h : N • v = N • w) : v = w := by
@@ -36,14 +36,14 @@ section
 variable (I : AutInst) {k : ℕ} (m : Fin k → Fin I.n → I.E)
 
 /- English proof (translation)
-Rewrite using `[show I.fmat y⁻¹ * I.fmat y = I.fmat (y⁻¹ * y) from rfl, inv_mul_cancel]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fmat_inv_mul (y : I.Gf) : I.fmat y⁻¹ * I.fmat y = 1 := by
   rw [show I.fmat y⁻¹ * I.fmat y = I.fmat (y⁻¹ * y) from rfl, inv_mul_cancel]
   rfl
 
 /- English proof (translation)
-Rewrite using `[show I.fmat y * I.fmat y⁻¹ = I.fmat (y * y⁻¹) from rfl, mul_inv_cancel]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fmat_mul_inv (y : I.Gf) : I.fmat y * I.fmat y⁻¹ = 1 := by
   rw [show I.fmat y * I.fmat y⁻¹ = I.fmat (y * y⁻¹) from rfl, mul_inv_cancel]
@@ -59,17 +59,15 @@ def fN (N : ℕ) (x : I.Gf) : Fin k → Fin k → Bad I.F (N * N) → I.F := by
     fun i => cls (N * N) (h.choose i) else fun _ _ => 0
 
 /- English proof (translation)
-Take `⟨hN, hxj⟩` from `hx`. Take `⟨_, hyj⟩` from `hy`. Establish `hTx : N • (I.fmat x *ᵥ ivec (F` using `I.F) (m j)) ∈ Tset (F := I.F) m := lam_sub_alt hm hgen (hxj j).1`. Establish `hTy : N • (I.fmat y *ᵥ ivec (F` using `I.F) (m j)) ∈ Tset (F := I.F) m := lam_sub_alt hm hgen (hyj j).1`. Establish `hej` using `congrFun he j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [fN, dif_pos hTx, dif_pos hTy] at hej`. Take `⟨haI, haE⟩` from `hTx.choose_spec`. Take `⟨ha'I, ha'E⟩` from `hTy.choose_spec`. Establish `hb : ∀ i, ∃ b : Af I.F, (∀ v, b v ∈ v.adicCompletionIntegers I.F) ∧ hTx.choose i - hTy.choose i = ((N * N : ℕ) : Af I.F) * b` using `fun i => cls_eq (Nat.mul_pos hN hN) (haI i) (ha'I i) (congrFun hej i)`. Use `choose b hbI hbE using hb`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w : Fin I.n → I.E ⊗[I.F] Af I.F := ∑ i, incA I.F I.E (b i) • ivec (F := I.F) (m i) with hwdef`. Establish `hw : w ∈ I.Lf` using `Submodule.sum_mem _ fun i _ => smulO_mem (incA_mem (hbI i)) (ivec_mem (hm i))`. Establish `hdiff : N • (I.fmat x *ᵥ ivec (F` using `I.F) (m j) - I.fmat y *ᵥ ivec (F := I.F) (m j)) = N • (N • w) := by`. Rewrite using `[smul_sub, haE, ha'E, ← Finset.sum_sub_distrib, hwdef, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sub_smul, ← map_sub, hbE i, map_mul, map_natCast, mul_smul, Nat.cast_smul_eq_nsmul, smul_smul]`. Establish `hd : I.fmat x *ᵥ ivec (F` using `I.F) (m j) - I.fmat y *ᵥ ivec (F := I.F) (m j) = N • w := nsmul_cancel (K := I.F) hN hdiff`. Establish `hxu : I.fmat x *ᵥ ivec (F` using `I.F) (m j) = I.fmat y *ᵥ ivec (F := I.F) (m j) + N • w := by`. Rewrite using `[← hd]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.mulVec_mulVec, hxu, Matrix.mulVec_add, Matrix.mulVec_mulVec, fmat_inv_mul I y, Matrix.one_mulVec]`. Use `Submodule.add_mem _ (ivec_mem (hm j)) ?_` and prove the remaining obligations. Establish `hP : ∀ i, (N • I.fmat y⁻¹) *ᵥ ivec (F` using `I.F) (m i) ∈ I.Lf := fun i => by`. Rewrite using `[Matrix.smul_mulVec]`. Conclude with `(hyj i).2`.
-
-Establish `h2` using `mulVec_lam hm hgen (N • I.fmat y⁻¹) hP hw`. Rewrite `h2` using `[Matrix.smul_mulVec, ← Matrix.mulVec_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem half (hm : ∀ i, m i ∈ I.L) (hgen : ∀ l ∈ I.L, ∃ z : Fin k → ℤ, l = ∑ i, z i • m i)
     {N : ℕ} {x y : I.Gf} (hx : PN I m N x) (hy : PN I m N y) (he : fN I m N x = fN I m N y)
@@ -114,11 +112,11 @@ theorem half (hm : ∀ i, m i ∈ I.L) (hgen : ∀ l ∈ I.L, ∃ z : Fin k → 
   rwa [Matrix.smul_mulVec, ← Matrix.mulVec_smul] at h2
 
 /- English proof (translation)
-Use `show ∀ w, w ∈ I.Lf ↔ (((y⁻¹ * x : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix _ _ _) *ᵥ w ∈ I.Lf`. Establish `hco : (((y⁻¹ * x : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) : Matrix _ _ _) = I.fmat y⁻¹ * I.fmat x` using `rfl`. Introduce `w`. Rewrite using `[hco]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hw`. Conclude with `mulVec_lam hm hgen _ (half I m hm hgen hx hy he) hw`. Introduce `hw`. Establish `h2` using `mulVec_lam hm hgen _ (half I m hm hgen hy hx he.symm) hw`. Establish `h1 : I.fmat x⁻¹ * I.fmat y * (I.fmat y⁻¹ * I.fmat x) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[mul_assoc, ← mul_assoc (I.fmat y), fmat_mul_inv, one_mul, fmat_inv_mul]`. Rewrite `h2` using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem step (hm : ∀ i, m i ∈ I.L) (hgen : ∀ l ∈ I.L, ∃ z : Fin k → ℤ, l = ∑ i, z i • m i)
     {N : ℕ} {x y : I.Gf} (hx : PN I m N x) (hy : PN I m N y) (he : fN I m N x = fN I m N y) :
@@ -139,11 +137,9 @@ theorem step (hm : ∀ i, m i ∈ I.L) (hgen : ∀ l ∈ I.L, ∃ z : Fin k → 
     rwa [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec] at h2
 
 /- English proof (translation)
-Establish `hA : ∀ j, ∃ N : ℕ, 0 < N ∧ N • (I.fmat x *ᵥ ivec (F` using `I.F) (m j)) ∈ I.Lf := fun j => exists_nat_vec I.L_span _`. Establish `hB : ∀ j, ∃ N : ℕ, 0 < N ∧ N • (I.fmat x⁻¹ *ᵥ ivec (F` using `I.F) (m j)) ∈ I.Lf := fun j => exists_nat_vec I.L_span _`. Use `choose A hA0 hA using hA`. Use `choose B hB0 hB using hB`. Use `⟨(∏ j, A j) * ∏ j, B j, ?_, fun j => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_pos (Finset.prod_pos fun j _ => hA0 j) (Finset.prod_pos fun j _ => hB0 j)`. Take `⟨M, hM⟩` from `Finset.dvd_prod_of_mem A (Finset.mem_univ j)`. Rewrite using `[hM, mul_assoc]`. Conclude with `nsmul_lam (hA j) _`. Take `⟨M, hM⟩` from `Finset.dvd_prod_of_mem B (Finset.mem_univ j)`.
-
-Rewrite using `[hM, show (∏ j, A j) * (B j * M) = B j * (M * ∏ j, A j) by ring]`. Conclude with `nsmul_lam (hB j) _`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_PN (x : I.Gf) : ∃ N, PN I m N x := by
   classical
@@ -171,11 +167,9 @@ namespace PI.WAU
 open PI.WAU.B
 
 /- English proof (translation)
-Introduce `I`. Take `⟨k, m, hm, hgen⟩` from `exists_gen I.L (Module.Finite.iff_fg.mpr I.L_fg)`. Establish `hcov : ∀ N : ℕ, ∃ s : Set I.Gf, s.Countable ∧ ∀ x, PN I m N x → ∃ y ∈ s, y⁻¹ * x ∈ I.Kset`. Introduce `N`. Use `haveI : Countable (Bad I.F (N * N) → I.F) := countable_cls (N * N)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `cover_of I.Kset (PN I m N) (fN I m N) fun x y hx hy he => step I m hm hgen hx hy he`. Use `choose s hs hsK using hcov`. Use `⟨⋃ N, s N, Set.countable_iUnion hs, fun x => ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `exists_PN I m x`. Take `⟨y, hy, hyK⟩` from `hsK N x hN`.
-
-Conclude with `⟨y, Set.mem_iUnion.mpr ⟨N, hy⟩, hyK⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem compact_countable : KCountable := by
   intro I

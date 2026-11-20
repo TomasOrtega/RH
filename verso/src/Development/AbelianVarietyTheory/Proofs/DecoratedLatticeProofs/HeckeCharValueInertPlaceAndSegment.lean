@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.ChainOnto.InertValue
 
 /- English proof (translation)
-Establish `hlog : (Complex.log (N : ℂ) * ((2 : ℕ) : ℂ)).im = 0`. Rewrite using `[Complex.mul_im, Complex.log_im, Complex.log_re, ← Complex.ofReal_natCast N, Complex.arg_ofReal_of_nonneg (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.LFun.npow, hN, Nat.cast_pow, ← Complex.cpow_natCast (N : ℂ) 2, ← Complex.cpow_mul (x := (N : ℂ)) (y := ((2 : ℕ) : ℂ)) (z := z) (by rw [hlog]; linarith [Real.pi_pos]) (by rw [hlog]; linarith [Real.pi_pos])]`. Rewrite using `[show ((2 : ℕ) : ℂ) * z = (k : ℂ) by rw [← hz]; norm_num, Complex.cpow_intCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem npow_eq_zpow {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) (N : ℕ)
     (hN : Ideal.absNorm w.asIdeal = N ^ 2) (k : ℤ) (z : ℂ) (hz : 2 * z = k) :
@@ -33,9 +33,9 @@ theorem npow_eq_zpow {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum
   rw [show ((2 : ℕ) : ℂ) * z = (k : ℂ) by rw [← hz]; norm_num, Complex.cpow_intCast]
 
 /- English proof (translation)
-Use `(Multiset.Nodup.ext ?_ (Multiset.nodup_range t)).2 fun a => ?_` and prove the remaining obligations. Use `(Multiset.nodup_range t).map_on fun x hx y hy h => ?_` and prove the remaining obligations. Rewrite `hx`, `hy` using `[Multiset.mem_range]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Multiset.mem_map, Multiset.mem_range]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Use linear arithmetic over natural numbers and integers. Introduce `ha; exact ⟨t - 1 - a, by omega, by omega⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem range_reflect (t : ℕ) : (Multiset.range t).map (fun i => t - 1 - i) = Multiset.range t := by
   refine (Multiset.Nodup.ext ?_ (Multiset.nodup_range t)).2 fun a => ?_
@@ -52,13 +52,13 @@ end GlobalTheory.ChainOnto.InertValue
 open GlobalTheory.ChainOnto.InertValue in
 
 /- English proof (translation)
-Introduce `D χ n _ hres v w hwv hw hu`. Use `⟨GlobalTheory.LFun.ResEta.val_of_isInertAt D.sp.cm.deg2 hres hw hu, ?_⟩` and prove the remaining obligations. Introduce `qu z t hqu`. Establish `hN : Ideal.absNorm w.asIdeal = qV D.host.F v ^ 2` using `GlobalTheory.LFun.InertChart.absNorm_eq D.sp.cm.deg2 hw`. Rewrite using `[GlobalTheory.LFun.seg, GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlace.str, Int.toNat_natCast, Multiset.map_map, Finset.range_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← range_reflect t, Multiset.map_map]`. Use `Multiset.map_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Multiset.mem_range]`. Simplify using `only [Function.comp_apply]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LFun.coe_npowU, Units.val_zpow_eq_zpow_val, hqu]`. Use `npow_eq_zpow w _ hN _ _ ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ChainOnto.val_seg_of_isInertAt : ∀ (D : D7) (χ : (AE D)ˣ →* Circle) (n : ℕ), IsHeckeChar D χ → Formalism.L2.Theta.ResEta D χ n → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) = v → IsInertAt D.host.F D.host.E v w → UnrAt χ w → val (F := D.host.F) χ w = (-1) ^ n ∧ ∀ (qu z : ℂˣ) (t : ℕ), (qu : ℂ) = qV D.host.F v → seg w z t = (GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlace.str qu t).map (z * ·) := by
   intro D χ n _ hres v w hwv hw hu

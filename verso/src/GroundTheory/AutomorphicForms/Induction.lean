@@ -50,7 +50,7 @@ def indSpace : Submodule ℂ (G → W) where
 
 variable {H σ} in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_indSpace {f : G → W} :
     f ∈ indSpace H σ ↔ (∀ h : H, ∀ g : G, f ((h : G) * g) = σ h (f g)) ∧
@@ -74,7 +74,7 @@ def cindSpace : Submodule ℂ (G → W) :=
 
 variable {H σ} in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_cindSpace {f : G → W} :
     f ∈ cindSpace H σ ↔ f ∈ indSpace H σ ∧
@@ -82,7 +82,7 @@ theorem mem_cindSpace {f : G → W} :
   Iff.rfl
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem cindSpace_le : cindSpace H σ ≤ indSpace H σ := inf_le_left
 
@@ -91,13 +91,11 @@ variable [IsTopologicalGroup G]
 variable {H σ} in
 
 /- English proof (translation)
-Take `⟨h₁, K, hK, hfK⟩` from `hf`. Use `⟨fun h x => ?_, K.comap (MulAut.conj g⁻¹).toMonoidHom, ?_, fun k hk x => ?_⟩` and prove the remaining obligations. Use `show f ((h : G) * x * g) = σ h (f (x * g))`. Rewrite using `[mul_assoc, h₁]`. Rewrite using `[Subgroup.coe_comap]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ⇑(MulAut.conj g⁻¹).toMonoidHom = fun x : G => g⁻¹ * x * g⁻¹⁻¹`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hK.preimage (by fun_prop)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hfK _ hk (x * g)` as an intermediate fact. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv] at this`. Simplify using `only [rightTranslation_apply]`. Rewrite using `[← this]`. Use `congr 1`.
-
-Use `group`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem rightTranslation_mem_indSpace {f : G → W} (hf : f ∈ indSpace H σ) (g : G) :
     rightTranslation g f ∈ indSpace H σ := by
@@ -121,7 +119,7 @@ theorem rightTranslation_mem_indSpace {f : G → W} (hf : f ∈ indSpace H σ) (
 variable {H σ} in
 
 /- English proof (translation)
-Take `⟨hf, C, hC, hfC⟩` from `mem_cindSpace.1 hf`. Use `mem_cindSpace.2 ⟨rightTranslation_mem_indSpace hf g, (· * g⁻¹) '' C, hC.image (continuous_mul_const g⁻¹), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨h, hh, c, hc, hxc⟩` from `Set.mem_mul.1 (hfC (x * g) hx)`. Use `Set.mem_mul.2 ⟨h, hh, c * g⁻¹, ⟨c, hc, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, hxc, mul_inv_cancel_right]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rightTranslation_mem_cindSpace {f : G → W} (hf : f ∈ cindSpace H σ) (g : G) :
     rightTranslation g f ∈ cindSpace H σ := by
@@ -155,7 +153,7 @@ theorem coe_cindRep_apply (g : G) (f : cindSpace H σ) (x : G) :
     (cindRep H σ g f : G → W) x = (f : G → W) (x * g) := rfl
 
 /- English proof (translation)
-Introduce `f`. Take `⟨-, K, hK, hfK⟩` from `f.2`. Use `Subgroup.isOpen_mono (fun k hk => ?_) hK` and prove the remaining obligations. Rewrite using `[mem_stabilizerOf]`. Conclude with `Subtype.ext (funext fun x => hfK k hk x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmooth_indRep : IsSmooth (indRep H σ) := by
   intro f
@@ -183,7 +181,7 @@ Both sides reduce to the same expression.
 theorem evalOne_apply (f : indSpace H σ) : evalOne H σ f = (f : G → W) 1 := rfl
 
 /- English proof (translation)
-Simplify using `using f.2.1 h 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem evalOne_indRep (h : H) (f : indSpace H σ) :
     evalOne H σ (indRep H σ h f) = σ h (evalOne H σ f) := by
@@ -240,7 +238,7 @@ def frobenius (hπ : IsSmooth π) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem frobenius_apply (hπ : IsSmooth π) (Φ : Representation.IntertwiningMap π (indRep H σ))
     (v : V) : frobenius H σ hπ Φ v = (Φ v : G → W) 1 := rfl

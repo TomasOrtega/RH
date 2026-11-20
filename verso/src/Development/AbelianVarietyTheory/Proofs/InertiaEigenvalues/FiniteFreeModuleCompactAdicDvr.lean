@@ -5,21 +5,19 @@ namespace GlobalTheory
 open IsLocalRing
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis O M`. Establish `hΦ : Continuous (b.equivFun.symm : (Module.Free.ChooseBasisIndex O M → O) → M)`. Establish `: (b.equivFun.symm : (Module.Free.ChooseBasisIndex O M → O) → M) = fun v => ∑ i, v i • b i`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `continuous_finset_sum _ fun i _ => (continuous_apply i).smul continuous_const`. Set `H : (Module.Free.ChooseBasisIndex O M → O) ≃ₜ M` to `hΦ.homeoOfEquivCompactToT2 (f := b.equivFun.symm.toEquiv)`. Establish `hH : ∀ v, H v = b.equivFun.symm v` using `fun v => rfl`. Establish `hcpt : CompactSpace M`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_⟩` and prove the remaining obligations. Use `isCompact_univ.image H.continuous` as an intermediate fact. Rewrite `this` using `[Set.image_univ, H.surjective.range_eq]`. Then use the resulting hypothesis. Use `⟨hcpt, ?_, ?_⟩` and prove the remaining obligations. Establish `hm : IsOpen ((IsLocalRing.maximalIdeal O : Ideal O) : Set O)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(isAdic_iff.mp hadic).1 1` as an intermediate fact. Simplify using `using this`. Set `S : Set (Module.Free.ChooseBasisIndex O M → O)` to `⋂ i, (fun v => v i) ⁻¹' ((IsLocalRing.maximalIdeal O : Ideal O) : Set O)`. Establish `hS : IsOpen S` using `isOpen_iInter_of_finite fun i => hm.preimage (continuous_apply i)`. Establish `heq : (LinearMap.range (LinearMap.lsmul O M ϖ) : Set M) = H '' S`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `m`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_range, LinearMap.lsmul_apply, S, Set.mem_image, Set.mem_iInter, Set.mem_preimage, hϖ.maximalIdeal_eq, Ideal.mem_span_singleton', hH]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Use `⟨b.equivFun (ϖ • x), fun i => ⟨b.equivFun x i, ?_⟩, by simp⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_comm]`. Introduce and unpack `⟨v, hv, rfl⟩ choose c hc using hv`. Use `⟨b.equivFun.symm c, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearEquiv.map_smul]`. Use `congr 1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[← hc i, mul_comm]`. Rewrite using `[heq]`. Conclude with `H.isOpenMap S hS`. Use `(continuous_const_smul ϖ).isClosedEmbedding ?_` and prove the remaining obligations.
-
-Conclude with `smul_right_injective M hϖ.ne_zero`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_free_compact_adic_dvr
     {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O]

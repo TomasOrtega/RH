@@ -12,11 +12,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 namespace FibreNormDehomIntegral
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨p, hp, hpd⟩` from `Nat.exists_prime_and_dvd hne`. Use `Fact.mk hp` as an intermediate fact. Establish `hnum : ¬ (p : ℤ) ∣ a.num`. Introduce `hn`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : p ∣ Nat.gcd a.num.natAbs a.den` using `Nat.dvd_gcd (Int.ofNat_dvd_left.mp hn) hpd`. Rewrite `h1` using `[a.reduced.gcd_eq_one]`. Conclude with `hp.one_lt.ne' (Nat.dvd_one.mp h1)`. Establish `h0` using `h p hp`. Rewrite `h0` using `[padicValRat, padicValInt.eq_zero_of_not_dvd hnum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : 1 ≤ padicValNat p a.den` using `one_le_padicValNat_of_dvd a.den_ne_zero hpd`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem den_eq_one_of_padicValRat_nonneg {a : ℚ} (h : ∀ p : ℕ, p.Prime → 0 ≤ padicValRat p a) : a.den = 1 := by
   by_contra hne
@@ -37,21 +37,19 @@ end FibreNormDehomIntegral
 open FibreNormDehomIntegral in
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D e L q hV hBir he hL hz`. Establish `hSf` using `hF K ι Ω y D e L hV hBir he hL hz`. Use `set T := hSf.toFinset with hT`. Use `choose! C hC using hB K ι Ω y D e L q hV hBir he hL hz`. Establish `hTp : ∀ p ∈ T, p.Prime` using `fun p hp => ((Set.Finite.mem_toFinset hSf).mp hp).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set M₀ : ℕ := ∏ p ∈ T, p ^ C p with hM`. Establish `hM0 : M₀ ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun p hp => pow_ne_zero _ (hTp p hp).ne_zero`. Use `⟨M₀, Nat.one_le_iff_ne_zero.mpr hM0, ?_⟩` and prove the remaining obligations. Introduce `τ s hs j c hc`. Establish `hcoef : ∀ m, (((M₀ : ℚ) ^ τ) * (c (Module.finrank (pullField y L) Ω)).coeff m).den = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `m`. Distinguish the cases in `ha : (c (Module.finrank (pullField y L) Ω)).coeff m = 0`. Rewrite using `[ha, mul_zero]`. Both sides reduce to the same expression. Use `den_eq_one_of_padicValRat_nonneg fun p hp => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Fact.mk hp` as an intermediate fact. Establish `hMq : ((M₀ : ℚ) ^ τ) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hM0)`. Rewrite using `[padicValRat.mul hMq ha, padicValRat.pow, padicValRat.of_nat]`. Distinguish the cases in `hpT : p ∈ T`. Establish `hle : C p ≤ padicValNat p M₀` using `(padicValNat_dvd_iff_le hM0).mp (Finset.dvd_prod_of_mem (fun p => p ^ C p) hpT)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hb` using `hC p hp τ s hs j c hc m`. Establish `hle' : ((C p * τ : ℕ) : ℤ) ≤ (τ : ℤ) * (padicValNat p M₀ : ℤ)`. Use `push_cast`. Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (by exact_mod_cast hle) (by positivity)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgood : ¬ HasCommonZeroModP y L p hp` using `fun h => hpT ((Set.Finite.mem_toFinset hSf).mpr ⟨hp, h⟩)`. Establish `hg` using `hG K ι Ω y D e L q hV hBir he hL hz p hp hgood τ s hs j c hc m`. Establish `: (0 : ℤ) ≤ (τ : ℤ) * (padicValNat p M₀ : ℤ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ((M₀ : ℚ) ^ τ) • c (Module.finrank (pullField y L) Ω) ∈ Set.range (map (Int.castRingHom ℚ) : MvPolynomial (Fin (D + 1)) ℤ → MvPolynomial (Fin (D + 1)) ℚ)`. Rewrite using `[mem_range_map_iff_coeffs_subset]`. Introduce `a ha`. Take `⟨m, -, rfl⟩` from `mem_coeffs_iff.mp ha`. Use `⟨(((M₀ : ℚ) ^ τ) * (c (Module.finrank (pullField y L) Ω)).coeff m).num, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[coeff_smul, smul_eq_mul, eq_intCast]`. Conclude with `Rat.coe_int_num_of_den_eq_one (hcoef m)`. Take `⟨F, hF'⟩` from `hmem`. Conclude with `⟨F, hF'⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem FibreNormDehomIntegral.proof (hF : FibreNormBadPrimesFinite.Statement)
     (hG : FibreNormGoodPrimeIntegral.Statement) (hB : FibreNormPrimeBound.Statement) :

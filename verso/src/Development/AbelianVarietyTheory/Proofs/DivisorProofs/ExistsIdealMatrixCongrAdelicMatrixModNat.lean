@@ -13,19 +13,19 @@ noncomputable section
 namespace GlobalTheory.FunObj.CosetApprox
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, s, hs, rfl⟩` from `hx`. Take `⟨r, w, hw, e⟩` from `GlobalTheory.AdelicApprox.exists_approx D m hm s hs`. Establish `hr : inc D r ∈ OhE D`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: inc D r = s - (m : AE D) * w` using `by rw [e]; ring`. Rewrite using `[this]`. Conclude with `sub_mem hs (mul_mem (natCast_mem _ m) hw)`. Establish `hri : IsIntegral ℤ r` using `Formalism.UG.P.csGlob_int (F := ℚ) _ hr`. Set `r' : 𝓞 D.host.E` to `⟨r, hri⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hbr : b * r' ∈ 𝔪` using `Ideal.mul_mem_right _ _ hb`. Establish `hbw : inc D (b : D.host.E) * w ∈ OhE D` using `mul_mem (Formalism.UG.P.adelstab_incl_int b) hw`. Use `⟨b * r', hbr, -(inc D (b : D.host.E) * w), neg_mem ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.AdelicApprox.absNorm_mul_mem_IhE D ⊤ _ hbw` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc : ((b * r' : 𝓞 D.host.E) : D.host.E) = (b : D.host.E) * r` using `rfl`. Rewrite using `[hc, map_mul, e]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact ⟨0, zero_mem _, 0, zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, t, ht, e⟩` from `hx`. Take `⟨b', hb', t', ht', e'⟩` from `hy`. Use `⟨b + b', add_mem hb hb', t + t', add_mem ht ht', ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[map_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `e + e'`. Consider the case `neg x _ hx`. Take `⟨b, hb, t, ht, e⟩` from `hx`. Use `⟨-b, neg_mem hb, -t, neg_mem ht, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg]`. Take the linear combination `-e`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_mem_approx (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (m : ℕ) (hm : 0 < m) (y : AE D)
     (hy : y ∈ hatId D 𝔪) : ∃ b ∈ 𝔪, ∃ t ∈ IhE D ⊤, inc D (b : D.host.E) - y = (m : AE D) * t := by
@@ -63,7 +63,7 @@ theorem exists_mem_approx (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (m : ℕ) (hm 
     linear_combination -e
 
 /- English proof (translation)
-Introduce `D 𝔪 a d Y hY m hm`. Use `choose b hb t ht e using fun i j => exists_mem_approx D 𝔪 m hm (Y i j) (hY i j)`. Use `⟨Matrix.of fun i j => ((b i j : 𝓞 D.host.E) : D.host.E), fun i j => ⟨b i j, hb i j, rfl⟩, fun i j => ⟨t i j, ht i j, ?_⟩⟩` and prove the remaining obligations. Simplify using `using e i j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem matrix_approx : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) {a d : ℕ} (Y : Matrix (Fin d) (Fin a) (AE D)),
     (∀ i j, Y i j ∈ hatId D 𝔪) → ∀ m : ℕ, 0 < m → ∃ w : Matrix (Fin d) (Fin a) D.host.E,

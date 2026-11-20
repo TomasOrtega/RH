@@ -19,14 +19,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Unfold `hermForm`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hermForm_zero_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (w : Fin g → ℂ) : hermForm Hm 0 w = 0 := by
   unfold hermForm
   simp
 
 /- English proof (translation)
-Unfold `hermForm`. Rewrite using `[add_dotProduct]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermForm_add_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z z' w : Fin g → ℂ) :
     hermForm Hm (z + z') w = hermForm Hm z w + hermForm Hm z' w := by
@@ -34,7 +34,7 @@ theorem hermForm_add_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z z' w : 
   rw [add_dotProduct]
 
 /- English proof (translation)
-Unfold `hermForm`. Rewrite using `[star_add, Matrix.mulVec_add, dotProduct_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermForm_add_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w w' : Fin g → ℂ) :
     hermForm Hm z (w + w') = hermForm Hm z w + hermForm Hm z w' := by
@@ -42,9 +42,9 @@ theorem hermForm_add_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w w' :
   rw [star_add, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Unfold `hermForm`. Simplify using `only [dotProduct, Matrix.mulVec, star_sum, star_mul', Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hji : star (Hm i j) = Hm j i`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrFun (congrFun hH j) i` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_apply]`. Then use the resulting hypothesis. Simplify using `only [Pi.star_apply, star_star, hji]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermForm_swap {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (z w : Fin g → ℂ) :
     hermForm Hm w z = star (hermForm Hm z w) := by
@@ -59,7 +59,7 @@ theorem hermForm_swap {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHer
   ring
 
 /- English proof (translation)
-Unfold `hermForm`. Rewrite using `[smul_dotProduct, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermForm_smul_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (t : ℂ) (z w : Fin g → ℂ) :
     hermForm Hm (t • z) w = t * hermForm Hm z w := by
@@ -67,7 +67,7 @@ theorem hermForm_smul_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (t : ℂ)
   rw [smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `hermForm`. Establish `h1 : star ((t : ℂ) • w) = (t : ℂ) • star w`. Use extensionality with `i`. Simplify using `[Complex.conj_ofReal]`. Rewrite using `[h1, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermForm_real_smul_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (t : ℝ) (z w : Fin g → ℂ) :
     hermForm Hm z ((t : ℂ) • w) = t * hermForm Hm z w := by
@@ -80,14 +80,14 @@ theorem hermForm_real_smul_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (t 
 def mulTy {g : ℕ} (ty : Fin g → E →+* ℂ) (a : 𝓞 E) (z : Fin g → ℂ) : Fin g → ℂ := fun i => ty i (a : E) * z i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[mulTy]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulTy_zero {g : ℕ} (ty : Fin g → E →+* ℂ) (a : 𝓞 E) : mulTy ty a 0 = 0 := by
   funext i
   simp [mulTy]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[mulTy, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulTy_add {g : ℕ} (ty : Fin g → E →+* ℂ) (a : 𝓞 E) (z z' : Fin g → ℂ) :
     mulTy ty a (z + z') = mulTy ty a z + mulTy ty a z' := by
@@ -95,7 +95,7 @@ theorem mulTy_add {g : ℕ} (ty : Fin g → E →+* ℂ) (a : 𝓞 E) (z z' : Fi
   simp [mulTy, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [mulTy, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mulTy_smul {g : ℕ} (ty : Fin g → E →+* ℂ) (a : 𝓞 E) (t : ℂ) (z : Fin g → ℂ) :
     mulTy ty a (t • z) = t • mulTy ty a z := by
@@ -104,27 +104,25 @@ theorem mulTy_smul {g : ℕ} (ty : Fin g → E →+* ℂ) (a : 𝓞 E) (t : ℂ)
   ring
 
 /- English proof (translation)
-Take `⟨hsm, -, -, hspan, -⟩` from `hP`. Establish `hA : ∀ x, P (a • x) = mulTy ty a (P x)` using `fun x => funext fun i => by rw [hsm]; rfl`. Establish `hB : ∀ x, P (H.bar a • x) = mulTy ty (H.bar a) (P x)` using `fun x => funext fun i => by rw [hsm]; rfl`. Establish `hsr : ∀ (t : ℝ) (v : Fin g → ℂ), t • v = (t : ℂ) • v` using `fun t v => by`. Use extensionality with `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Complex.real_smul]`. Establish `step1 : ∀ y v, (hermForm Hm (mulTy ty a v) (P y)).im = (hermForm Hm v (mulTy ty (H.bar a) (P y))).im`. Introduce `y`. Set `S : Submodule ℝ (Fin g → ℂ)` to `{ carrier := {v | (hermForm Hm (mulTy ty a v) (P y)).im = (hermForm Hm v (mulTy ty (H.bar a) (P y))).im} add_mem' := by`. Introduce `v v' hv hv'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[mulTy_add, hermForm_add_left, hermForm_add_left, Complex.add_im, Complex.add_im, hv, hv']`. Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_setOf_eq, mulTy_zero, hermForm_zero_left]`. Use the proof step `smul_mem' := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `t v hv`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[hsr, mulTy_smul, hermForm_smul_left, hermForm_smul_left, Complex.im_ofReal_mul, Complex.im_ofReal_mul, hv] }`. Establish `hle : Submodule.span ℝ (Set.range P) ≤ S`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Use `show (hermForm Hm (mulTy ty a (P x)) (P y)).im = (hermForm Hm (P x) (mulTy ty (H.bar a) (P y))).im`. Rewrite using `[← hA, ← hB, hIm, hIm, D.adj]`. Rewrite `hle` using `[hspan]`. Conclude with `fun v => hle Submodule.mem_top`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `key : ∀ u v, (hermForm Hm (mulTy ty a u) v).im = (hermForm Hm u (mulTy ty (H.bar a) v)).im`. Introduce `u`. Set `S : Submodule ℝ (Fin g → ℂ)` to `{ carrier := {v | (hermForm Hm (mulTy ty a u) v).im = (hermForm Hm u (mulTy ty (H.bar a) v)).im} add_mem' := by`. Introduce `v v' hv hv'`. Simplify using `only [Set.mem_setOf_eq] at *`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[mulTy_add, hermForm_add_right, hermForm_add_right, Complex.add_im, Complex.add_im, hv, hv']`. Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_setOf_eq, mulTy_zero]`. Unfold `hermForm`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `smul_mem' := by`. Introduce `t v hv`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[hsr, mulTy_smul, hermForm_real_smul_right, hermForm_real_smul_right, Complex.im_ofReal_mul, Complex.im_ofReal_mul, hv] }`. Establish `hle : Submodule.span ℝ (Set.range P) ≤ S`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `step1 y u`. Rewrite `hle` using `[hspan]`. Conclude with `fun v => hle Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : ∀ u v, (hermForm Hm u v).re = (hermForm Hm (Complex.I • u) v).im`. Introduce `u v`. Rewrite using `[hermForm_smul_left]`. Simplify using the standard rewrite rules. Apply `Complex.ext` to reduce the goal to its premises.
-
-Rewrite using `[hI, hI, ← mulTy_smul]`. Conclude with `key _ _`. Conclude with `key z w`.
+A detailed English derivation is pending.
 -/
 theorem herm_adj {D : Datum H} {g : ℕ} {ty : Fin g → E →+* ℂ} {P : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty P)
     {Hm : Matrix (Fin g) (Fin g) ℂ} (hIm : ∀ x y, (hermForm Hm (P x) (P y)).im = D.EF x y) (a : 𝓞 E)
@@ -193,17 +191,17 @@ theorem herm_adj {D : Datum H} {g : ℕ} {ty : Fin g → E →+* ℂ} {P : D.La 
   · exact key z w
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `Formalism.MainNotions.ModuliIntegralCharts.H1.GermFun.exists_chart _ Xo.univ.t.PP.isLB ((W.F.ex (W.ik k) W.Pm 0).left cpt)`. Establish `h0 : ⊤ ≤ (W.F.ex (W.ik k) W.Pm 0).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `top_le_of_mem hj`. Establish `hc : ∀ v, ⊤ ≤ (W.F.ex (W.ik k) W.Pm (W.Pm v)).left ⁻¹ᵁ Xo.univ.t.PP.L.U j`. Introduce `v`. Rewrite using `[(W.F.ex_ker _ _ W.per _).2 ⟨v, rfl⟩]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[(W.F.ex_ker _ _ W.per _).2 ⟨0, map_zero _⟩]`. Conclude with `h0`. Establish `hab : W.Pm (a + b) = W.Pm a + W.Pm b` using `map_add _ _ _`. Establish `E1` using `((Wu.c6 (a + b) j 0).2 h0)`. Establish `E2` using `((Wu.c6 a j 0).2 h0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E3` using `((Wu.c6 b j (W.Pm a)).2 (hc a))`. Establish `hF` using `Wu.c3 j (W.Pm a + W.Pm b) (by rw [← hab]; exact hc (a + b))`. Rewrite `E1`, the goal using `[hab]`. Simplify using `only [hermForm_zero_left, mul_zero, zero_add] at E1 E2`. Establish `key : Wu.χl (W.Pm a + W.Pm b) * Complex.exp (Real.pi / 2 * hermForm Wu.Hm (W.Pm a + W.Pm b) (W.Pm a + W.Pm b)) = Wu.χl (W.Pm a) * Wu.χl (W.Pm b) * Complex.exp (Real.pi / 2 * hermForm Wu.Hm (W.Pm a) (W.Pm a) + (Real.pi * hermForm Wu.Hm (W.Pm a) (W.Pm b) + Real.pi / 2 * hermForm Wu …`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_right_cancel₀ hF` to reduce the goal to its premises. Rewrite using `[Complex.exp_add]`. Combine the equalities or inequalities in the displayed calculation. Establish `hexp : (Real.pi / 2 * hermForm Wu.Hm (W.Pm a + W.Pm b) (W.Pm a + W.Pm b) : ℂ) + ((W.F.Di (W.ik k)).EF a b : ℂ) * (Real.pi * Complex.I) = Real.pi / 2 * hermForm Wu.Hm (W.Pm a) (W.Pm a) + (Real.pi * hermForm Wu.Hm (W.Pm a) (W.Pm b) + Real.pi / 2 * hermForm Wu.Hm (W.Pm b) (W.Pm b))`. Rewrite using `[hermForm_add_left, hermForm_add_right, hermForm_add_right, hermForm_swap Wu.herm (W.Pm a) (W.Pm b)]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc1` using `Wu.c1 a b`. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.star_def, Complex.conj_re, Complex.conj_im, hc1] <;> ring`. Rewrite using `[show ((-1 : ℂ)) ^ ((W.F.Di (W.ik k)).EF a b) = Complex.exp (((W.F.Di (W.ik k)).EF a b : ℂ) * (Real.pi * Complex.I)) by`. Rewrite using `[Complex.exp_int_mul, Complex.exp_pi_mul_I]]`. Apply `mul_right_cancel₀ (Complex.exp_ne_zero (Real.pi / 2 * hermForm Wu.Hm (W.Pm a + W.Pm b) (W.Pm a + W.Pm b)))` to reduce the goal to its premises.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, ← hexp, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chiL_add {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom} (W : UnfAt U k x) (Wu : UnitAt W)
     (a b : (W.F.Di (W.ik k)).La) :
@@ -256,14 +254,14 @@ def qW (z : Fin W.g → ℂ) : Sp ℂ ⟶ Xo.univ.t.G.left := (W.F.ex (W.ik k) W
 def tyW' : Fin W.g → E →+* ℂ := fun j => relab c σ (W.e j).1
 
 /- English proof (translation)
-Unfold `qW`. Rewrite using `[W.F.ex_add _ _ W.per, (W.F.ex_ker _ _ W.per _).2 ⟨b, rfl⟩, _root_.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem qW_period (z : Fin W.g → ℂ) (b : (W.F.Di (W.ik k)).La) : qW W (z + W.Pm b) = qW W z := by
   unfold qW
   rw [W.F.ex_add _ _ W.per, (W.F.ex_ker _ _ W.per _).2 ⟨b, rfl⟩, _root_.mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[W.per.1]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pm_smul (b : 𝓞 E) (y : (W.F.Di (W.ik k)).La) : W.Pm (b • y) = mulTy (tyW' W) b (W.Pm y) := by
   funext i
@@ -271,11 +269,11 @@ theorem pm_smul (b : 𝓞 E) (y : (W.F.Di (W.ik k)).La) : W.Pm (b • y) = mulTy
   rfl
 
 /- English proof (translation)
-Establish `hP` using `W.per`. Establish `hh` using `(W.F.hol (W.ik k) 0 Set.univ (fun _ => W.Pm) isOpen_univ ⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩).2`. Introduce `V f`. Take `⟨ho, hd⟩` from `hh V f`. Set `j : (Fin W.g → ℂ) → (Fin 0 → ℂ) × (Fin W.g → ℂ)` to `fun z => (0, z)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hjd : Differentiable ℂ j` using `(differentiable_const _).prodMk differentiable_id`. Establish `hset : {z | ⊤ ≤ qW W z ⁻¹ᵁ V} = j ⁻¹' {bz ∈ (Set.univ : Set (Fin 0 → ℂ)) ×ˢ (Set.univ : Set (Fin W.g → ℂ)) | ⊤ ≤ (W.F.ex (W.ik k) W.Pm bz.2).left ⁻¹ᵁ V}`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, Set.mem_prod, Set.mem_univ, and_self, true_and]`. Conclude with `Iff.rfl`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 
-Rewrite using `[hset]`. Use `⟨ho.preimage hjd.continuous, ?_⟩` and prove the remaining obligations. Use `(hd.comp hjd.differentiableOn (Set.mapsTo_preimage _ _)).congr ?_` and prove the remaining obligations. Introduce `z _`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem isHolFam_qW : IsHolFam (qW W) := by
   have hP := W.per
@@ -304,7 +302,7 @@ def linB (I : Finset (Fin 2)) (b : (W.F.Di (W.ik k)).La) : (W.F.Di (W.ik k)).La 
   (if (0 : Fin 2) ∈ I then b else 0) + (if (1 : Fin 2) ∈ I then H.w0 • b else 0)
 
 /- English proof (translation)
-Unfold `linB linI`. Apply the tactic sequence `by_cases h0 : (0 : Fin 2) ∈ I <;> by_cases h1 : (1 : Fin 2) ∈ I <;>`. Simplify using `only [h0, h1, ↓reduceIte, map_add, map_zero, pm_smul]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem pm_linB (I : Finset (Fin 2)) (b : (W.F.Di (W.ik k)).La) : W.Pm (linB W I b) = linI W I (W.Pm b) := by
   unfold linB linI
@@ -312,7 +310,7 @@ theorem pm_linB (I : Finset (Fin 2)) (b : (W.F.Di (W.ik k)).La) : W.Pm (linB W I
     simp only [h0, h1, ↓reduceIte, map_add, map_zero, pm_smul]
 
 /- English proof (translation)
-Unfold `linI`. Apply the tactic sequence `by_cases h0 : (0 : Fin 2) ∈ I <;> by_cases h1 : (1 : Fin 2) ∈ I <;>`. Apply the tactic sequence `simp only [h0, h1, ↓reduceIte, mulTy_add, add_zero] <;> abel`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem linI_add (I : Finset (Fin 2)) (z z' : Fin W.g → ℂ) : linI W I (z + z') = linI W I z + linI W I z' := by
   unfold linI
@@ -320,16 +318,14 @@ theorem linI_add (I : Finset (Fin 2)) (z z' : Fin W.g → ℂ) : linI W I (z + z
     simp only [h0, h1, ↓reduceIte, mulTy_add, add_zero] <;> abel
 
 /- English proof (translation)
-Unfold `mulTy`. Conclude with `differentiable_pi.2 fun i => (differentiable_apply i).const_mul _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mulTy_diff {g : ℕ} (ty : Fin g → E →+* ℂ) (a : 𝓞 E) : Differentiable ℂ (mulTy ty a) := by
   unfold mulTy
   exact differentiable_pi.2 fun i => (differentiable_apply i).const_mul _
 
 /- English proof (translation)
-Unfold `linI`. Apply the tactic sequence `by_cases h0 : (0 : Fin 2) ∈ I <;> by_cases h1 : (1 : Fin 2) ∈ I <;>`. Simplify using `only [h0, h1, ↓reduceIte, add_zero, zero_add]`. Conclude with `differentiable_id.add (mulTy_diff _ _)`. Conclude with `differentiable_id`.
-
-Conclude with `mulTy_diff _ _`. Conclude with `differentiable_const 0`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linI_diff (I : Finset (Fin 2)) : Differentiable ℂ (linI W I) := by
   unfold linI
@@ -341,11 +337,11 @@ theorem linI_diff (I : Finset (Fin 2)) : Differentiable ℂ (linI W I) := by
   · exact differentiable_const 0
 
 /- English proof (translation)
-Establish `hP` using `W.per`. Establish `e0 : W.F.ex (W.ik k) W.Pm 0 = 1` using `(W.F.ex_ker _ _ hP 0).2 ⟨0, map_zero _⟩`. Establish `ew : W.F.ex (W.ik k) W.Pm (mulTy (tyW' W) H.w0 z) = W.F.ex (W.ik k) W.Pm z ≫ Xo.univ.t.act.act H.w0` using `W.F.ex_lin _ _ hP H.w0 z`. Establish `hl : List.finRange 2 = [0, 1]` using `by decide`. Unfold `qW linI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[W.F.ex_add _ _ hP, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `by_cases h0 : (0 : Fin 2) ∈ I <;> by_cases h1 : (1 : Fin 2) ∈ I <;>`. Simplify using `[psum, padd, pzero, hl, h0, h1, e0, ew]`. Apply the tactic sequence `all_goals first`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `(change _ = CartesianMonoidalCategory.lift _ _ ≫ μ`. Rewrite using `[CartesianMonoidalCategory.comp_lift_assoc, Category.comp_id])`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_psum (I : Finset (Fin 2)) (z : Fin W.g → ℂ) :
     qW W z ≫ (psum Xo.univ.t.G ![𝟙 Xo.univ.t.G, Xo.univ.t.act.act H.w0] I).left = qW W (linI W I z) := by
@@ -376,7 +372,7 @@ def linBK : Fin 1 ⊕ ULift.{0} (Finset (Fin 2)) → (W.F.Di (W.ik k)).La → (W
   Sum.elim (fun _ b => b) fun I b => linB W I.down b
 
 /- English proof (translation)
-Break down `kk with _ | I` into its components or cases. Conclude with `Category.comp_id _`. Conclude with `ex_psum W I.down z`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem qW_phiP (kk : Fin 1 ⊕ ULift.{0} (Finset (Fin 2))) (z : Fin W.g → ℂ) :
     qW W z ≫ (phiP (Xo := Xo) (H := H)) kk = qW W (linK W kk z) := by
@@ -385,7 +381,7 @@ theorem qW_phiP (kk : Fin 1 ⊕ ULift.{0} (Finset (Fin 2))) (z : Fin W.g → ℂ
   · exact ex_psum W I.down z
 
 /- English proof (translation)
-Break down `kk with _ | I` into its components or cases. Both sides reduce to the same expression. Conclude with `linI_add W I.down z z'`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem linK_add (kk) (z z' : Fin W.g → ℂ) : linK W kk (z + z') = linK W kk z + linK W kk z' := by
   rcases kk with _ | I
@@ -393,7 +389,7 @@ theorem linK_add (kk) (z z' : Fin W.g → ℂ) : linK W kk (z + z') = linK W kk 
   · exact linI_add W I.down z z'
 
 /- English proof (translation)
-Break down `kk with _ | I` into its components or cases. Both sides reduce to the same expression. Conclude with `pm_linB W I.down b`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pm_linBK (kk) (b : (W.F.Di (W.ik k)).La) : W.Pm (linBK W kk b) = linK W kk (W.Pm b) := by
   rcases kk with _ | I
@@ -401,7 +397,7 @@ theorem pm_linBK (kk) (b : (W.F.Di (W.ik k)).La) : W.Pm (linBK W kk b) = linK W 
   · exact pm_linB W I.down b
 
 /- English proof (translation)
-Break down `kk with _ | I` into its components or cases. Conclude with `differentiable_id`. Conclude with `linI_diff W I.down`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem linK_diff (kk) : Differentiable ℂ (linK W kk) := by
   rcases kk with _ | I

@@ -17,14 +17,14 @@ namespace RD
 variable {d : SD σ} (R : RD d) (w : InfinitePlace F)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := piInf (d.B.emb w'))`.
+A detailed English derivation is pending.
 -/
 theorem cw_mulR {p q r : Type} [Fintype q] (w' : InfinitePlace F) (A : Matrix p q (AE F E)) (B : Matrix q r (AE F E)) :
     d.cw w' (A * B) = d.cw w' A * d.cw w' B :=
   Matrix.map_mul (f := piInf (d.B.emb w'))
 
 /- English proof (translation)
-Establish `e : (Matrix.of (R.loc w X)).map star = ((R.fr w)⁻¹).1 * d.cw w X`. Use extensionality with `i j`. Conclude with `star_star _`. Rewrite using `[e, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cw_loc (X : Mx F E d.m d.n) : d.cw w X = (R.fr w).1 * (Matrix.of (R.loc w X)).map star := by
   have e : (Matrix.of (R.loc w X)).map star = ((R.fr w)⁻¹).1 * d.cw w X := by
@@ -33,7 +33,7 @@ theorem cw_loc (X : Mx F E d.m d.n) : d.cw w X = (R.fr w).1 * (Matrix.of (R.loc 
   rw [e, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hζ0 : R.ζ ≠ 0` using `Krd.zeta_ne R.hζ`. Simplify using `only [SD.gram]`. Rewrite using `[cw_mulR, cw_mulR, Krd.cw_transpose d, Krd.cw_incM d, Place.cw_cA d, R.cw_loc w X]`. Conclude with `gram_loc _ _ _ _ hζ0 (R.hfr w) _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cw_gram (X : Mx F E d.m d.n) :
     d.cw w (d.gram X X) = (R.ζ⁻¹ * ((R.sg w : ℤ) : ℂ)) • ((Matrix.of (R.loc w X))ᴴ * Matrix.of (R.loc w X)) := by
@@ -43,7 +43,7 @@ theorem cw_gram (X : Mx F E d.m d.n) :
   exact gram_loc _ _ _ _ hζ0 (R.hfr w) _
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun a => piInf τ (algebraMap (AF F) (AE F E) a)) (invOf_mul_self (2 : AF F))`. Simplify using `only [map_mul, map_one, map_ofNat] at h`. Rewrite using `[eq_div_iff two_ne_zero]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piInf_half (τ : EmbOver E w) : piInf τ (algebraMap (AF F) (AE F E) (⅟(2 : AF F))) = 1 / 2 := by
   have h := congrArg (fun a => piInf τ (algebraMap (AF F) (AE F E) a)) (invOf_mul_self (2 : AF F))
@@ -52,17 +52,17 @@ theorem piInf_half (τ : EmbOver E w) : piInf τ (algebraMap (AF F) (AE F E) (�
   exact h
 
 /- English proof (translation)
-Establish `hζ0 : R.ζ ≠ 0` using `Krd.zeta_ne R.hζ`. Use `set z : AE F E := (-(⅟(2 : AF F))) • (β * d.gram X X).trace with hz`. Establish `e1 : -(⅟(2 : AF F) * d.tt (β * d.gram X X)) = Algebra.trace (AF F) (AE F E) z`. Rewrite using `[hz, LinearMap.map_smul, smul_eq_mul, neg_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hpi : ∀ w', piInf (d.B.emb w') z = -(1 / 2) * (d.cw w' β * d.cw w' (d.gram X X)).trace`. Introduce `w'`. Rewrite using `[hz, Algebra.smul_def, map_mul, map_neg, map_neg, piInf_half, ← cw_mulR]`. Use `congr 1`. Simplify using `only [Matrix.trace, SD.cw, Matrix.map_apply, Matrix.diag, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hf : finOne F • z = 0`. Rewrite using `[hz, smul_comm, ← Matrix.trace_smul, ← Matrix.smul_mul, hβf, Matrix.zero_mul, Matrix.trace_zero, smul_zero]`. Establish `ho : ∀ u, u ≠ w → piInf (d.B.emb u) z = 0`. Introduce `u hu`. Rewrite using `[hpi, hβo u hu, Matrix.zero_mul, Matrix.trace_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, Place.psi_trace_at d.std d.cm d.B.emb w z hf ho, hpi, hβw, R.cw_gram w X]`. Use `set T := (b * ((Matrix.of (R.loc w X))ᴴ * Matrix.of (R.loc w X))).trace with hT`. Establish `hreal : ((T.re : ℝ) : ℂ) = T` using `trace_herm_real _ _ hb (by rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose])`. Establish `e2 : (R.ζ • b * (R.ζ⁻¹ * ((R.sg w : ℤ) : ℂ)) • ((Matrix.of (R.loc w X))ᴴ * Matrix.of (R.loc w X))).trace = ((R.sg w : ℤ) : ℂ) * T`. Rewrite using `[smul_mul_smul_comm, Matrix.trace_smul, hT, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hζ0, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Rewrite using `[← hreal]`. Use `congr 1`. Use `push_cast`. Simplify using `only [Complex.mul_re, Complex.neg_re, Complex.ofReal_re, Complex.ofReal_im, Complex.intCast_re, Complex.intCast_im, mul_zero, sub_zero, Complex.div_ofNat_re, Complex.one_re, Complex.neg_im, Complex.div_ofNat_im, Complex.one_im, zero_mul]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem psi_nU (b : Matrix (Fin d.n) (Fin d.n) ℂ) (hb : bᴴ = b) (β : Matrix (Fin d.n) (Fin d.n) (AE F E))
     (hβw : d.cw w β = R.ζ • b) (hβo : ∀ w', w' ≠ w → d.cw w' β = 0) (hβf : finOne F • β = 0) (X : Mx F E d.m d.n) :

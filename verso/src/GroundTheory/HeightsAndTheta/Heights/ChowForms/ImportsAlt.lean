@@ -18,7 +18,7 @@ def AffineChartTrdeg.Statement : Prop :=
 section Inhabitants
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjPrime_point ℚ, ringKrullDim_quot_bot ℚ 1, by rw [Ideal.mem_bot]; exact X_ne_zero 0⟩`.
+Supply the required witnesses or components.
 -/
 theorem AffineChartTrdeg.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧

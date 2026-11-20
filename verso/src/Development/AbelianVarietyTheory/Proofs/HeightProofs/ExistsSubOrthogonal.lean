@@ -15,15 +15,13 @@ namespace GlobalTheory.OrthogonalProjectionPoly
 open MeasureTheory
 
 /- English proof (translation)
-Set `j : V →ₗ[ℂ] C(X, ℂ)` to `{ toFun := fun q => ⟨q, hV q q.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Set `T : V →ₗ[ℂ] Lp ℂ 2 μ` to `(ContinuousMap.toLp 2 μ ℂ : C(X, ℂ) →L[ℂ] Lp ℂ 2 μ).toLinearMap ∘ₗ j`. Set `W : Submodule ℂ (Lp ℂ 2 μ)` to `LinearMap.range T`. Establish `: FiniteDimensional ℂ W` using `LinearMap.finiteDimensional_range T`. Set `P : C(X, ℂ)` to `⟨p, hp⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨p', hp'⟩` from `LinearMap.mem_range.1 (W.starProjection_apply_mem (ContinuousMap.toLp 2 μ ℂ P))`. Use `⟨p', p'.2, fun q hq => ?_⟩` and prove the remaining obligations. Establish `h0` using `W.starProjection_inner_eq_zero (ContinuousMap.toLp 2 μ ℂ P) (T ⟨q, hq⟩) ⟨⟨q, hq⟩, rfl⟩`. Rewrite `h0` using `[← hp']`. Establish `h1 : ContinuousMap.toLp 2 μ ℂ P - T p' = ContinuousMap.toLp 2 μ ℂ (P - j p')`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub]`. Both sides reduce to the same expression. Rewrite `h0` using `[h1]`. Establish `h2 : inner ℂ (ContinuousMap.toLp 2 μ ℂ (P - j p')) (T ⟨q, hq⟩) = ∫ x, q x * (starRingEnd ℂ) (p x - (p' : X → ℂ) x) ∂μ` using `ContinuousMap.inner_toLp μ (P - j p') (j ⟨q, hq⟩)`. Rewrite `h0` using `[h2]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[map_mul, Complex.conj_conj, starRingEnd_apply, _root_.mul_comm]`. Use `_ = (starRingEnd ℂ) (∫ x, q x * (starRingEnd ℂ) (p x - (p' : X → ℂ) x) ∂μ) := integral_conj`.
-
-Use `_ = 0 := by rw [h0, map_zero]`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sub_orthogonal {X : Type*} [TopologicalSpace X] [CompactSpace X] [MeasurableSpace X]
     [BorelSpace X] (μ : Measure X) [IsFiniteMeasure μ] (V : Submodule ℂ (X → ℂ)) [FiniteDimensional ℂ V]
@@ -59,7 +57,7 @@ theorem exists_sub_orthogonal {X : Type*} [TopologicalSpace X] [CompactSpace X] 
     _ = 0 := by rw [h0, map_zero]
 
 /- English proof (translation)
-Introduce `n ε d p hp`. Conclude with `exists_sub_orthogonal (Formalism.REAL.muK ε) (GlobalTheory.KFourier.polyV ε d) (fun q hq => GlobalTheory.KFourier.continuous_of_mem hq) p hp`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_proj_polyV : ∀ {n : ℕ} (ε : Fin n → Bool) (d : ℕ) (p : ↥(Formalism.REAL.KG ε) → ℂ), Continuous p →
     ∃ p' ∈ GlobalTheory.KFourier.polyV ε d, ∀ q ∈ GlobalTheory.KFourier.polyV ε d,

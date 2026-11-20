@@ -18,13 +18,13 @@ namespace GlobalTheory.Poinc.Tors
 open GlobalTheory.TorusExt
 
 /- English proof (translation)
-Use `letI : Module R F := Module.compHom F (algebraMap R (FractionRing R))`. Take `⟨N, hN, hs, hx, happ⟩` from `h`. Set `f : F →ₗ[R] F` to `{ toFun := fun u => a * u map_add' := fun u v => mul_add a u v map_smul' := fun r u => by`. Express the relevant statement in the definitionally equal form `a * ((algebraMap R (FractionRing R) r) • u) = (algebraMap R (FractionRing R) r) • (a * u)`. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `ring }`. Use `⟨N.map f, hN.map f, ⟨s, hs, ht.symm⟩, fun i => ⟨x i, hx i, (hy i).symm⟩, fun n => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `happ n`. Use `⟨S, fun T hT => ?_⟩` and prove the remaining obligations. Establish `hm` using `Submodule.mem_map_of_mem (f := f) (hS T hT)`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hm` using `[Submodule.map_smul'']`. Establish `e : f (s - ∑ i ∈ T, x i) = t - ∑ i ∈ T, y i`. Express the relevant statement in the definitionally equal form `a * (s - ∑ i ∈ T, x i) = t - ∑ i ∈ T, y i`. Rewrite using `[mul_sub, Finset.mul_sum, ht]`. Simplify using `only [hy]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hm` using `[e]`. Conclude with `hm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sumF_mul_left {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] {Ix : Type} {x y : Ix → F} {s t : F} (a : F) (h : SumF I F x s)
@@ -53,25 +53,23 @@ private theorem sumF_mul_left {R : Type} [CommRing R] [IsDomain R] {I : Ideal R}
 attribute [local instance] gtGroup in
 
 /- English proof (translation)
-Introduce `hLL R _ _ _ I hI D A G _ _ hSA U N hN C g x htor hfun hcov b hb`. Establish `hB : D.toPre.TauBimult` using `D.tau_bimult`. Establish `hN0 : N ≠ 0` using `by omega`. Establish `hf : (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))).comp (algebraMap (FractionRing R) (FractionRing R)) = (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R)))` using `RingHom.ext fun _ => rfl`. Take `⟨fT, hT⟩` from `GlobalTheory.TorsionIso.torsion_eq hLL R I hI D A G hSA U (AlgebraicClosure (FractionRing R)) N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hT1, -, hT3, -⟩` from `hT`. Set `P : {h : GtPtF D.toPre (AlgebraicClosure (FractionRing R)) // N • h = 0} → QkPt D.toPre (AlgebraicClosure (FractionRing R)) N` to `fun h => qkMk hB 0 h.1 (by rw [map_zero]; exact h.2)`. Establish `hPy : ∀ h, (P h).y = 0` using `fun h => qkMk_y hB _ _ _`. Establish `hPg : ∀ h, (P h).g = h.1` using `fun h => qkMk_g hB _ _ _`. Establish `hEq : ∀ h h', QkPt.Equiv D.toPre (AlgebraicClosure (FractionRing R)) (P h) (P h') → h = h'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h h' e`. Take `⟨z, hy, hg⟩` from `(equiv_iff hB _ _).1 e`. Rewrite `hy` using `[hPy, hPy, zero_add]`. Establish `hz : z = 0`. Establish `h2 : (N : ℤ) • z = 0` using `by rw [natCast_zsmul]; exact hy.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `smul_eq_zero.1 h2 with h3 | h3` into its components or cases. Conclude with `absurd (by exact_mod_cast h3 : N = 0) hN0`. Conclude with `h3`. Rewrite `hg` using `[hPg, hPg, hz, map_zero, add_zero]`. Conclude with `Subtype.ext hg.symm`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : Finite {h : GtPtF D.toPre (AlgebraicClosure (FractionRing R)) // N • h = 0} := by`. Establish `hc` using `GlobalTheory.UT.card_qk hLL R I hI D (AlgebraicClosure (FractionRing R)) N hN`. Use `haveI : Finite (Quot (QkPt.Equiv D.toPre (AlgebraicClosure (FractionRing R)) (k := N))) := Nat.finite_of_card_ne_zero (by rw [hc]; exact pow_ne_zero _ hN0)`. Use `Finite.of_injective (β := Quot (QkPt.Equiv D.toPre (AlgebraicClosure (FractionRing R)) (k := N))) (fun h => Quot.mk (QkPt.Equiv D.toPre (AlgebraicClosure (FractionRing R)) (k := N)) (P h)) fun h h' e => hEq h h' ?_` and prove the remaining obligations. Conclude with `(equiv_equivalence hB).eqvGen_iff.1 (Quot.eqvGen_exact e)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcx : ∀ h, ∃ c, (fT (P h)).left = spMap (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))) ≫ (x c).left` using `fun h => hcov (P h) (fT (P h)) (hPy h) ((hT1 _ _).2 rfl)`. Use `choose c hc using hcx`. Establish `hgc : ∀ c, N • g c = 0`. Introduce `c`. Take `⟨o, ho, hz⟩` from `htor c`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `ho` using `[isNsmul_iff_eq]`. Rewrite `hz` using `[isZero_iff_eq]`. Rewrite using `[← ho, hz]`. Set `Φ : {h : GtPtF D.toPre (AlgebraicClosure (FractionRing R)) // N • h = 0} → {h : GtPtF D.toPre (AlgebraicClosure (FractionRing R)) // N • h = 0}` to `fun h => ⟨gtExt D.toPre (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))) hf (g (c h)), by rw [← map_nsmul, hgc, map_zero]⟩`. Establish `hΦ : Function.Injective Φ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h h' e`. Establish `e1 : g (c h) = g (c h')` using `GlobalTheory.Balanced.gtExt_injective _ hf D.toPre (congrArg Subtype.val e)`. Establish `e2` using `hfun _ _ e1`. Apply `hEq` to reduce the goal to its premises. Apply `(hT3 _ _).1` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hc, hc, e2]`. Take `⟨g', hg'b, hg'N⟩` from `exists_nsmul_eq_of_pow_eq (D := D.toPre) (F := (AlgebraicClosure (FractionRing R))) hN0 0 (hb.trans zero_b.symm)`. Take `⟨h, hh⟩` from `(Finite.injective_iff_surjective.1 hΦ) ⟨g', hg'N⟩`. Use `⟨c h, ?_⟩` and prove the remaining obligations.
-
-Establish `e1 : g' = gtExt D.toPre (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))) hf (g (c h))` using `(congrArg Subtype.val hh).symm`. Rewrite using `[← hg'b, e1, gtExt_b, Over.comp_left, extMap_left]`.
+A detailed English derivation is pending.
 -/
 theorem exhaust_of_labels : LL → AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => ∀ N : ℕ, 1 ≤ N → ∀ (C : Type) (g : C → GtPtF D.toPre (FractionRing R)) (x : C → (TFK (R := R) (FractionRing R) ⟶ A.A)), (∀ c, ∃ o, GtPtF.IsNsmul N (g c) o ∧ o.IsZero) → (∀ c c', g c = g c' → x c = x c') → (∀ (p : QkPt D.toPre (AlgebraicClosure (FractionRing R)) N) (y : TFK (R := R) (AlgebraicClosure (FractionRing R)) ⟶ A.A), p.y = 0 → QkToAkU U.toUnifPre (AlgebraicClosure (FractionRing R)) N p y → ∃ c, y.left = spMap (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))) ≫ (x c).left) → ∀ b : TF (R := R) (AlgebraicClosure (FractionRing R)) ⟶ D.toPre.P.A, b ^ N = 1 → ∃ c, b.left = spMap (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))) ≫ (g c).b.left := by
   intro hLL R _ _ _ I hI D A G _ _ hSA U N hN C g x htor hfun hcov b hb
@@ -134,7 +132,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {F : Type} [Field F] [Algebra (Fra
 
 omit [IsDomain R] in
 /- English proof (translation)
-Set `u : Γ((TF (R` to `R) F).left, ⊤)ˣ := Units.map ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom : F →* Γ(Spec (CommRingCat.of F), ⊤)) (Units.mk0 c hc)`. Use `⟨GlobalTheory.UU.scaleGen u t, GlobalTheory.UU.scaleGen_isGen u ht, fun z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.UU.val_scaleGen u t (𝟙 _) hJ, Units.val_mul, ← gs_unit (𝟙 _) z ⊤ trivial u, ← CoefBasic.cst_eq]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_scale {X : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → ((TF (R := R) F).left ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) {c : F} (hc : c ≠ 0) :
@@ -147,9 +145,9 @@ theorem exists_scale {X : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K 
   rfl
 
 /- English proof (translation)
-Apply `CoefBasic.coef_eq` to reduce the goal to its premises. Introduce `z J hJ`. Establish `hx` using `CoefBasic.isCoef_coef g hw χ s z J hJ`. Rewrite using `[h z J hJ]`. Rewrite `hx`, the goal using `[CoefBasic.cst_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Take the linear combination `(CoefBasic.cstH (R := R) z c) * hx`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem coef_scale {D : DegPre R} {k : ℕ} (g : GtPtF D F) {w w' : Frm D F k g.b} (hw : w.IsGen) {c : F}
     (h : ∀ z J, Good D.P.L z J → (val w' (𝟙 _) z J).val = CoefBasic.cstH (R := R) z c * (val w (𝟙 _) z J).val)
@@ -165,17 +163,17 @@ theorem coef_scale {D : DegPre R} {k : ℕ} (g : GtPtF D F) {w w' : Frm D F k g.
 end Scale
 
 /- English proof (translation)
-Introduce `R _ _ I _ D A G _ _ U F _ _ w₀ g w x fr hw hfr hL c hc`. Take `⟨w', hw', hw'v⟩` from `exists_scale (R := R) (F := F) w hw (inv_ne_zero hc)`. Take `⟨fr', hfr', hfr'v⟩` from `exists_scale (R := R) (F := F) fr hfr hc`. Use `⟨w', fr', hw', hfr', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk wk hwk hwkg s s' v hexp hval`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hck : c ^ k ≠ 0` using `pow_ne_zero k hc`. Take `⟨wk0, hwk0g, hwk0v⟩` from `exists_scale (R := R) (F := F) wk hwkg hck`. Establish `h1 : SumF I F (coef s' g wk0) (c ^ k * v)`. Use `hL k hk wk0 ?_ hwk0g s s' (c ^ k * v) hexp ?_` and prove the remaining obligations. Introduce `z J hJ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Units.ext` to reduce the goal to its premises. Establish `e : CoefBasic.cstH (R` using `R) z (c ^ k) * (CoefBasic.cstH (R := R) z c⁻¹) ^ k = 1 := by`. Rewrite using `[← map_pow, ← map_mul, ← mul_pow, mul_inv_cancel₀ hc, one_pow, map_one]`. Rewrite using `[hwk0v z J hJ, hwk z J hJ, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, hw'v z J hJ]`. Take the linear combination `((val w (𝟙 _) z J).val) ^ k * e`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `z J hJ`. Establish `hv` using `hval z J hJ`. Rewrite using `[hv, GlobalTheory.FrameMove.val_powFrame, GlobalTheory.FrameMove.val_powFrame, zpow_natCast, zpow_natCast, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, show (val fr' (𝟙 (TFK (R := R) F).left) z J).val = @id ((TFK (R := R) F).left.presheaf.stalk z) (CoefBasic.cstH (R := R) …`. Simplify using `only [id, CoefBasic.cst_eq, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : ∀ χ, coef s' g wk0 χ = c ^ k * coef s' g wk χ` using `fun χ => coef_scale g hwkg hwk0v s' χ`. Conclude with `sumF_mul_left (c ^ k)⁻¹ h1 (fun χ => by rw [h2, ← _root_.mul_assoc, inv_mul_cancel₀ hck, _root_.one_mul]) (by rw [← _root_.mul_assoc, inv_mul_cancel₀ hck, _root_.one_mul])`. Introduce `s χ`. Rewrite using `[coef_scale g hw hw'v s χ, ← _root_.mul_assoc, mul_inv_cancel₀ hc, _root_.one_mul]`. Introduce `z J hJ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show (val fr' (𝟙 (TFK (R := R) F).left) z J).val = @id ((TFK (R := R) F).left.presheaf.stalk z) (CoefBasic.cstH (R := R) z c) * (val fr (𝟙 (TFK (R := R) F).left) z J).val from hfr'v z J hJ]`. Simplify using `only [CoefBasic.cst_eq, id]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liesOver_scale : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → ∀ (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (F : Type) [Field F] [Algebra (FractionRing R) F] (w₀ : W0 U) (g : GtPtF D.toPre F) (w : Frm D.toPre F 1 g.b) (x : TFK (R := R) F ⟶ A.A) (fr : FrAt x), w.IsGen → fr.IsGen → LiesOver U w₀ g w x fr → ∀ c : F, c ≠ 0 → ∃ (w' : Frm D.toPre F 1 g.b) (fr' : FrAt x), w'.IsGen ∧ fr'.IsGen ∧ LiesOver U w₀ g w' x fr' ∧ (∀ (s : Fam D.toPre F 1) χ, c * coef s g w' χ = coef s g w χ) ∧ ∀ z J, Good A.L z J → (val fr' (𝟙 _) z J).val = @id ((TFK (R := R) F).left.presheaf.stalk z) (cst (R := R) F z c) * (val fr (𝟙 _) z J).val := by
   intro R _ _ I _ D A G _ _ U F _ _ w₀ g w x fr hw hfr hL c hc

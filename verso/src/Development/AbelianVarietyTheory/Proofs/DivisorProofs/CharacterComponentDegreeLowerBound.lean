@@ -9,9 +9,9 @@ namespace GlobalTheory.FockLowDeg
 open MvPolynomial Formalism.BasicNotions.TH
 
 /- English proof (translation)
-Introduce `b c hbc`. Simplify using `only [Eab, Matrix.single_apply]`. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`. Apply the tactic sequence `exact (hbc (by cases a <;> trivial)).elim`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isKC_Eab_diag {P Q : ℕ} (a : Ix P Q) : IsKC (Eab a a : Mat P Q) := by
   intro b c hbc
@@ -22,7 +22,7 @@ theorem isKC_Eab_diag {P Q : ℕ} (a : Ix P Q) : IsKC (Eab a a : Mat P Q) := by
   · rfl
 
 /- English proof (translation)
-Simplify using `[Eab, Matrix.trace_single_eq_same]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_Eab_diag {P Q : ℕ} (a : Ix P Q) : (Eab a a : Mat P Q).trace = 1 := by
   simp [Eab, Matrix.trace_single_eq_same]
@@ -31,11 +31,11 @@ def cartanVal {P Q R S : ℕ} (a : Ix P Q) (α : Ln P Q R S →₀ ℕ) : ℂ :=
   ∑ c, lineSign a c * (((α (a, c) : ℕ) : ℂ) + 1 / 2)
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial α c`. Establish `e : (monomial α c : Pol P Q R S) = c • monomial α 1`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, LinearMap.map_smul, cartan1, smul_smul, coeff_smul, coeff_smul, coeff_monomial]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_mul, cartanVal]`. Use `split_ifs with h`. Substitute `h` using the available equality. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add p q hp hq => rw [map_add, coeff_add, hp, hq, coeff_add, mul_add]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_cartan {P Q R S : ℕ} (a : Ix P Q) (β : Ln P Q R S →₀ ℕ) (f : Pol P Q R S) :
     coeff β (fockAct1 P Q R S (Eab a a) f) = cartanVal a β * coeff β f := by
@@ -51,23 +51,21 @@ theorem coeff_cartan {P Q R S : ℕ} (a : Ix P Q) (β : Ln P Q R S →₀ ℕ) (
   | add p q hp hq => rw [map_add, coeff_add, hp, hq, coeff_add, mul_add]
 
 /- English proof (translation)
-Introduce `P Q R S x k k' hk hk' f hf hf0`. Rewrite `hf` using `[GlobalTheory.KFixIrr.mem_chiOne]`. Take `⟨α, hα⟩` from `MvPolynomial.ne_zero_iff.mp hf0`. Establish `hval : ∀ a : Ix P Q, cartanVal a α = (x : ℂ)`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `congrArg (coeff α) (hf _ (isKC_Eab_diag a))`. Rewrite `h` using `[coeff_cartan, trace_Eab_diag, mul_one, coeff_smul, smul_eq_mul]`. Conclude with `mul_right_cancel₀ hα h`. Establish `hkC : (x : ℂ) - ((R : ℂ) - S) / 2 = k`. Use `congrArg (fun t : ℚ => (t : ℂ)) hk` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[cPair]`. Establish `hk'C : (x : ℂ) + ((R : ℂ) - S) / 2 = k'`. Use `congrArg (fun t : ℚ => (t : ℂ)) hk'` as an intermediate fact. Simplify `this` using `[cPair]`. Establish `hP : ∀ i : Fin P, k ≤ ∑ c : Fin R, α (Sum.inl i, Sum.inl c)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `h` using `hval (Sum.inl i)`. Simplify using `only [cartanVal, Fintype.sum_sum_type, lineSign, one_mul, neg_one_mul, Finset.sum_add_distrib, Finset.sum_neg_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h`. Establish `e : ((∑ c : Fin R, α (Sum.inl i, Sum.inl c) : ℕ) : ℂ) = ((∑ c : Fin S, α (Sum.inl i, Sum.inr c) + k : ℕ) : ℂ)`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h + hkC`. Use `Nat.cast_injective e` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hQ : ∀ j : Fin Q, k' ≤ ∑ c : Fin S, α (Sum.inr j, Sum.inr c)`. Introduce `j`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hval (Sum.inr j)`. Simplify using `only [cartanVal, Fintype.sum_sum_type, lineSign, one_mul, neg_one_mul, Finset.sum_add_distrib, Finset.sum_neg_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h`. Establish `e : ((∑ c : Fin S, α (Sum.inr j, Sum.inr c) : ℕ) : ℂ) = ((∑ c : Fin R, α (Sum.inr j, Sum.inl c) + k' : ℕ) : ℂ)`. Use `push_cast`. Take the linear combination `h + hk'C`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `Nat.cast_injective e` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hle` using `MvPolynomial.le_totalDegree (mem_support_iff.mpr hα)`. Use `le_trans ?_ hle` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fintype.sum_prod_type, Fintype.sum_sum_type]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fintype.sum_sum_type]`. Establish `h1 : P * k ≤ ∑ i : Fin P, (∑ c : Fin R, α (Sum.inl i, Sum.inl c) + ∑ c : Fin S, α (Sum.inl i, Sum.inr c))`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Q * k' ≤ ∑ j : Fin Q, (∑ c : Fin R, α (Sum.inr j, Sum.inl c) + ∑ c : Fin S, α (Sum.inr j, Sum.inr c))`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `add_le_add h1 h2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lowerDeg : ∀ (P Q R S : ℕ) (x : ℚ) (k k' : ℕ), x - Formalism.BasicNotions.TH.cPair R S = k →
     x + Formalism.BasicNotions.TH.cPair R S = k' → ∀ f ∈ GlobalTheory.KFixIrr.chiOne P Q R S x, f ≠ 0 →

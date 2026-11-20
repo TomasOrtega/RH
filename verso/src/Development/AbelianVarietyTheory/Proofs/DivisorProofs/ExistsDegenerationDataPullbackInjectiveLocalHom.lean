@@ -14,7 +14,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.MumPull
 
 /- English proof (translation)
-Rewrite using `[genericPoint_eq_bot_of_affine, genericPoint_eq_bot_of_affine]`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show Ideal.comap ρ ⊥ = ⊥`. Conclude with `Ideal.comap_bot_of_injective ρ hρ`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem specOf_genericPoint {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (ρ : R →+* R')
     (hρ : Function.Injective ρ) :
@@ -25,9 +25,9 @@ theorem specOf_genericPoint {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'
   exact Ideal.comap_bot_of_injective ρ hρ
 
 /- English proof (translation)
-Introduce `R R' _ _ _ _ _ _ ρ hρ hloc D`. Take `⟨L, -⟩` from `GlobalTheory.T.all_six_abelian_scheme_laws_hold`. Take `⟨W, hW, hψ⟩` from `GlobalTheory.PsiSpread.exists_psiOn D.toPre D.tau_bimult`. Establish `hη : (specOf ρ).base (genericPoint (Spec (CommRingCat.of R'))) ∈ W`. Rewrite using `[specOf_genericPoint ρ hρ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hW`. Establish `hI : (maximalIdeal R).map ρ ≤ maximalIdeal R'` using `((IsLocalRing.local_hom_TFAE ρ).out 0 2).1 hloc`. Take `⟨D', hD, -, -⟩` from `GlobalTheory.exists_degData_isPullDeg L.polBaseChange L.globalFns R R' (maximalIdeal R) (maximalIdeal R') ρ hI D W hψ hη`. Conclude with `⟨D', ⟨hD⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pull : ∀ (R R' : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), Function.Injective ρ → IsLocalHom ρ → ∀ D : DegData R (maximalIdeal R), ∃ D' : DegData R' (maximalIdeal R'), Nonempty (IsPullDeg ρ D.toPre D'.toPre) := by
   intro R R' _ _ _ _ _ _ ρ hρ hloc D

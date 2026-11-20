@@ -4,7 +4,7 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 open Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.MinorJet.deriv_leadMinor_exp` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FDerivLeadMinorExpHermitianZeroDiag.lean&line=121#L121)
 -/

@@ -21,9 +21,9 @@ section Lin
 variable {k V : Type} [Field k] [AddCommGroup V] [Module k V] {m : ℕ}
 
 /- English proof (translation)
-Use `⟨fun i => ∑ l, d l * A l i, fun i hi => Finset.sum_eq_zero fun l _ => ?_, ?_, ?_⟩` and prove the remaining obligations. Break down `lt_or_ge j l with h | h` into its components or cases. Rewrite using `[hd l h, zero_mul]`. Rewrite using `[hA l i (h.trans_lt hi), mul_zero]`. Use `Finset.sum_eq_single j (fun l _ hl => ?_) (by simp)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `lt_or_gt_of_ne hl with h | h` into its components or cases. Rewrite using `[hA l j h, mul_zero]`. Rewrite using `[hd l h, zero_mul]`. Simplify using `only [hu, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lin_comp {u u' : Fin m → V} (A : Fin m → Fin m → k) (hA : ∀ j i, j < i → A j i = 0)
     (hu : ∀ j, u' j = ∑ i, A j i • u i) (d : Fin m → k) (j : Fin m) (hd : ∀ i, j < i → d i = 0) :
@@ -40,13 +40,13 @@ theorem lin_comp {u u' : Fin m → V} (A : Fin m → Fin m → k) (hA : ∀ j i,
     exact Finset.sum_comm
 
 /- English proof (translation)
-Set `M : Matrix (Fin m) (Fin m) k` to `Matrix.of A`. Establish `key : ∀ d : Fin m → k, ∑ i, d i • u' i = ∑ i, Matrix.vecMul d M i • u i` using `fun d => by`. Simplify using `only [hu, Finset.smul_sum, smul_smul, Finset.sum_smul, Matrix.vecMul, dotProduct, M, Matrix.of_apply]`. Conclude with `Finset.sum_comm`. Establish `hM : IsUnit M` using `Matrix.vecMul_injective_iff_isUnit.1 fun d d' h => hi _ _ (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, key]`. Conclude with `congrArg (fun c : Fin m → k => ∑ i, c i • u i) h)`. Take `⟨I⟩` from `hM.nonempty_invertible`. Establish `ht : M.BlockTriangular OrderDual.toDual` using `fun j i h => hA j i h`. Establish `hB : ∀ j i, j < i → M⁻¹ j i = 0` using `fun j i h => Matrix.blockTriangular_inv_of_blockTriangular ht h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h2 : ∀ j, u j = ∑ i, M⁻¹ j i • u' i` using `fun j => by`. Rewrite using `[key, show Matrix.vecMul (M⁻¹ j) M = (M⁻¹ * M) j from rfl, Matrix.inv_mul_of_invertible]`. Simplify using `[Matrix.one_apply]`. Use `⟨fun j i => M⁻¹ j i, hB, h2, fun j => ?_⟩` and prove the remaining obligations. Take `⟨e, -, he, h⟩` from `lin_comp (fun j i => M⁻¹ j i) hB h2 (A j) j (hA j)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hi e (Pi.single j 1) (by rw [← h, ← hu]; simp [Pi.single_apply])` as an intermediate fact. Rewrite using `[← he, this, Pi.single_eq_same]`.
+A detailed English derivation is pending.
 -/
 theorem lin_symm {u u' : Fin m → V} (hi : ∀ c c' : Fin m → k, ∑ i, c i • u' i = ∑ i, c' i • u' i → c = c')
     (A : Fin m → Fin m → k) (hA : ∀ j i, j < i → A j i = 0) (hu : ∀ j, u' j = ∑ i, A j i • u i) :
@@ -87,7 +87,7 @@ def Tri (u u' : Fin m → (Sp (DualNumber k) ⟶ t.G.left)) : Prop :=
 variable {t x} {u u' u'' : Fin m → (Sp (DualNumber k) ⟶ t.G.left)}
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.LieMet.isComb_iff U a _).2 rfl`. Use `⟨fun h' => ?_, fun e => e ▸ h⟩` and prove the remaining obligations. Conclude with `((isCombAtG_iff t x (fun i => tv (U i)) a _).1 h').symm.trans ((isCombAtG_iff t x (fun i => tv (U i)) a _).1 h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem comb_iff (U : Fin m → TanM x t.G) (a : Fin m → k) (w : Sp (DualNumber k) ⟶ t.G.left) :
     IsCombAtG t x (fun i => (tv (U i)).left) a w ↔ w = (tv (∑ i, a i • U i)).left := by
@@ -97,13 +97,13 @@ theorem comb_iff (U : Fin m → TanM x t.G) (a : Fin m → k) (w : Sp (DualNumbe
     ((isCombAtG_iff t x (fun i => tv (U i)) a _).1 h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => tanOf (h i), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_tan (h : ∀ i, IsTanAtG t x (u i)) : ∃ U : Fin m → TanM x t.G, u = fun i => (tv (U i)).left :=
   ⟨fun i => tanOf (h i), rfl⟩
 
 /- English proof (translation)
-Take `⟨U, rfl⟩` from `exists_tan hu`. Take `⟨U', rfl⟩` from `exists_tan hu'`. Use `choose A hA hc using h`. Take `⟨e, h1, h2, h3⟩` from `lin_comp A hA (fun j => (GlobalTheory.LieMet.isComb_iff U _ _).1 (hc j)) d j hd`. Conclude with `⟨A j, e, hc j, h1, h2, (comb_iff _ _ _).2 (h3 ▸ (comb_iff _ _ _).1 hw)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Tri.comp (hu : ∀ i, IsTanAtG t x (u i)) (hu' : ∀ i, IsTanAtG t x (u' i)) (h : Tri t x u u') {d : Fin m → k}
     {j : Fin m} (hd : ∀ i, j < i → d i = 0) {w : Sp (DualNumber k) ⟶ t.G.left} (hw : IsCombAtG t x u' d w) :
@@ -115,7 +115,7 @@ theorem Tri.comp (hu : ∀ i, IsTanAtG t x (u i)) (hu' : ∀ i, IsTanAtG t x (u'
   exact ⟨A j, e, hc j, h1, h2, (comb_iff _ _ _).2 (h3 ▸ (comb_iff _ _ _).1 hw)⟩
 
 /- English proof (translation)
-Introduce `j` and use `by obtain ⟨d, hd, hw⟩ := h' j obtain ⟨-, e, -, h1, -, h2⟩ := h.comp hu hu' hd hw exact ⟨e, h1, h2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Tri.trans (hu : ∀ i, IsTanAtG t x (u i)) (hu' : ∀ i, IsTanAtG t x (u' i)) (h : Tri t x u u')
     (h' : Tri t x u' u'') : Tri t x u u'' := fun j => by
@@ -124,9 +124,9 @@ theorem Tri.trans (hu : ∀ i, IsTanAtG t x (u i)) (hu' : ∀ i, IsTanAtG t x (u
   exact ⟨e, h1, h2⟩
 
 /- English proof (translation)
-Take `⟨U, rfl⟩` from `exists_tan hu.1`. Take `⟨U', rfl⟩` from `exists_tan hu'.1`. Use `choose A hA hc using h`. Take `⟨B, h1, h2, h3⟩` from `lin_symm (u := U) (u' := U') (fun c c' e => hu'.2 c c' _ ((GlobalTheory.LieMet.isComb_iff _ _ _).2 rfl) ((GlobalTheory.LieMet.isComb_iff _ _ _).2 e)) A hA fun j => (GlobalTheory.LieMet.isComb_iff U _ _).1 (hc j)`. Use `⟨fun j => ⟨B j, h1 j, (GlobalTheory.LieMet.isComb_iff _ _ _).2 (h2 j)⟩, fun j c d hc' hd => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu.2 _ _ _ hc' (hc j), hu'.2 _ _ _ hd ((GlobalTheory.LieMet.isComb_iff _ _ _).2 (h2 j)), h3]`.
+A detailed English derivation is pending.
 -/
 theorem Tri.symm (hu : Ind t x u) (hu' : Ind t x u') (h : Tri t x u u') : Tri t x u' u ∧
     ∀ j c d, IsCombAtG t x u c (u' j) → IsCombAtG t x u' d (u j) → c j * d j = 1 := by
@@ -139,7 +139,7 @@ theorem Tri.symm (hu : Ind t x u) (hu' : Ind t x u') (h : Tri t x u u') : Tri t 
   rw [hu.2 _ _ _ hc' (hc j), hu'.2 _ _ _ hd ((GlobalTheory.LieMet.isComb_iff _ _ _).2 (h2 j)), h3]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h.symm hu hu'`. Take `⟨d, -, hd⟩` from `h1 j`. Take `⟨c', h3, h4⟩` from `h j`. Conclude with `⟨left_ne_zero_of_mul_eq_one (h2 j c d hc hd), hu.2 _ _ _ hc h4 ▸ h3⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Tri.diag (hu : Ind t x u) (hu' : Ind t x u') (h : Tri t x u u') {j : Fin m} {c : Fin m → k}
     (hc : IsCombAtG t x u c (u' j)) : c j ≠ 0 ∧ ∀ i, j < i → c i = 0 := by
@@ -149,7 +149,7 @@ theorem Tri.diag (hu : Ind t x u) (hu' : Ind t x u') (h : Tri t x u u') {j : Fin
   exact ⟨left_ne_zero_of_mul_eq_one (h2 j c d hc hd), hu.2 _ _ _ hc h4 ▸ h3⟩
 
 /- English proof (translation)
-Take `⟨c', e', h1, -, h2, h3⟩` from `h.comp hu.1 hu' hd hw`. Rewrite using `[hu.2 _ _ _ he h3, hu.2 _ _ _ hc h1, h2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Tri.diag_mul (hu : Ind t x u) (hu' : ∀ i, IsTanAtG t x (u' i)) (h : Tri t x u u') {c d e : Fin m → k}
     {j : Fin m} (hd : ∀ i, j < i → d i = 0) {w : Sp (DualNumber k) ⟶ t.G.left} (hw : IsCombAtG t x u' d w)
@@ -166,13 +166,13 @@ variable {t} {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] {x : S
 
 open Pointwise in
 /- English proof (translation)
-Establish `h0` using `(h.diag hu hu' hc).1`. Take `⟨h1, h2⟩` from `h.symm hu hu'`. Rewrite using `[grNorm, grNorm, ← smul_eq_mul, ← Real.sInf_smul_of_nonneg (norm_nonneg _)]`. Use `congr 1`. Use extensionality with `r`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, d0, d1, ⟨w, hw, d2⟩, rfl⟩`. Take `⟨c', e, k1, k2, k3, k4⟩` from `h.comp hu.1 hu'.1 d1 d2`. Take `rfl` from `hu.2 _ _ _ hc k1`. Use `⟨_, ⟨e, k3 ▸ mul_ne_zero d0 h0, k2, ⟨w, hw, k4⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `norm_ne_zero_iff.2 h0` as an intermediate fact. Simplify using `only [k3, norm_mul, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨_, ⟨d, d0, d1, ⟨w, hw, d2⟩, rfl⟩, rfl⟩`. Take `⟨c', e, k1, k2, k3, k4⟩` from `h1.comp hu'.1 hu.1 d1 d2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `e1` using `h2 j c c' hc k1`. Use `⟨e, k3 ▸ mul_ne_zero d0 (right_ne_zero_of_mul_eq_one e1), k2, ⟨w, hw, k4⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[k3, eq_inv_of_mul_eq_one_right e1]`. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Tri.grNorm_eq (hu : Ind t x u) (hu' : Ind t x u') (h : Tri t x u u') (Λ : Set (Sp (DualNumber C) ⟶ t.G.left))
     {j : Fin m} {c : Fin m → C} (hc : IsCombAtG t x u c (u' j)) :
@@ -198,9 +198,9 @@ theorem Tri.grNorm_eq (hu : Ind t x u) (hu' : Ind t x u') (h : Tri t x u u') (Λ
     simp [mul_comm]
 
 /- English proof (translation)
-Take `⟨U, rfl⟩` from `exists_tan hv`. Establish `e : ∀ c : Fin m → C, (∃ w ∈ Λ', IsCombAtG t' x' (fun i => (tv (U i)).left) c w) ↔ ∃ w ∈ Λ, IsCombAtG t x (fun i => (tv (pushL mu x' hx (U i))).left) c w` using `fun c => by`. Simplify using `only [comb_iff, exists_eq_right]`. Rewrite using `[hΛ _ (isTan_tv _), ← left_pushL mu x' hx, map_sum]`. Simplify using `only [map_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [grNorm, e]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem grNorm_push {X' : Scheme.{0}} {t' : SAB H X'} {f : X' ⟶ X} (mu : SABMap t' t f) {x' : Sp C ⟶ X'}
     (hx : x' ≫ f = x) {Λ' : Set (Sp (DualNumber C) ⟶ t'.G.left)} {Λ : Set (Sp (DualNumber C) ⟶ t.G.left)}

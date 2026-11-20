@@ -26,35 +26,35 @@ def DD (k : Bool) (A : PAlg l) (n : ℕ) : DividedPowers (JJ k A n) :=
   | true => A.pdPFil n
 
 /- English proof (translation)
-Consider the cases of `k`. Use `exacts [le_rfl, le_sup_right]`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem fil_le (k : Bool) (A : PAlg l) (n : ℕ) : A.Fil n 1 ≤ JJ k A n := by
   cases k
   exacts [le_rfl, le_sup_right]
 
 /- English proof (translation)
-Consider the cases of `k`. Use `exacts [le_sup_right, le_rfl]`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem le_pfil (k : Bool) (A : PAlg l) (n : ℕ) : JJ k A n ≤ A.PFil n := by
   cases k
   exacts [le_sup_right, le_rfl]
 
 /- English proof (translation)
-Consider the cases of `k`. Use `exacts [dp_mapAcr f n, dpP_mapAcr f n]`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem dd_map (k : Bool) {A A' : PAlg l} (f : A ⟶ A') (n : ℕ) : IsDPMorphism (DD k A n) (DD k A' n) (mapAcr f n) := by
   cases k
   exacts [dp_mapAcr f n, dpP_mapAcr f n]
 
 /- English proof (translation)
-Consider the cases of `k`. Use `exacts [A.dp_red h, A.dpP_red h]`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem dd_red (k : Bool) (A : PAlg l) {m n : ℕ} (h : n ≤ m) : IsDPMorphism (DD k A m) (DD k A n) (A.red h) := by
   cases k
   exacts [A.dp_red h, A.dpP_red h]
 
 /- English proof (translation)
-Consider the cases of `k`. Use `exacts [dp_galBase σ n, dpP_galBase σ n]`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem dd_gal (k : Bool) {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (σ : Gal(PadicAlgCl l/K)) (n : ℕ) :
     IsDPMorphism (DD k (base l) n) (DD k (base l) n) (galBase σ n) := by
@@ -62,7 +62,7 @@ theorem dd_gal (k : Bool) {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (σ : G
   exacts [dp_galBase σ n, dpP_galBase σ n]
 
 /- English proof (translation)
-The claim follows from `Ideal.map_le_iff_le_comap.1 (dd_map k f n).1`.
+A detailed English derivation is pending.
 -/
 theorem jj_le (k : Bool) {A A' : PAlg l} (f : A ⟶ A') (n : ℕ) : JJ k A n ≤ (JJ k A' n).comap (mapAcr f n) :=
   Ideal.map_le_iff_le_comap.1 (dd_map k f n).1
@@ -75,7 +75,7 @@ Both sides reduce to the same expression.
 theorem uJ_th (k : Bool) (A : PAlg l) (n : ℕ) (x : A.W) : uJ k A n (A.th x) = Ideal.Quotient.mk _ (A.toAcr n x) := rfl
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => by obtain ⟨w, rfl⟩ := Ideal.Quotient.mk_surjective x exact congrArg (Ideal.Quotient.mk _) (mapAcr_toAcr f n w)`.
+A detailed English derivation is pending.
 -/
 theorem uJ_map (k : Bool) {A A' : PAlg l} (f : A ⟶ A') (n : ℕ) :
     (Ideal.quotientMap _ (mapAcr f n) (jj_le k f n)).comp (uJ k A n) = (uJ k A' n).comp (mapU f) :=
@@ -150,7 +150,7 @@ def gObj (k : Bool) (n : ℕ) (T : (F.pt κ).Elements) : Thick (Lc F κ k n) whe
   hv := (map_one _).trans (Finset.prod_of_isEmpty (ι := Empty) _).symm
 
 /- English proof (translation)
-Rewrite using `[← mapAcr_comp, fromBase_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mapAcr_fromBase {A A' : PAlg l} (f : A ⟶ A') (n : ℕ) (r : (base l).Acr n) :
     mapAcr f n (mapAcr A.fromBase n r) = mapAcr A'.fromBase n r := by rw [← mapAcr_comp, fromBase_comp]

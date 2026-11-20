@@ -15,9 +15,9 @@ namespace BlockImageArithmetic
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [CharZero Ω]
 
 /- English proof (translation)
-Establish `hhor` using `CoordinateConeArithVar.horizontal y`. Establish `: (mCoordIdeal y).IsPrime` using `RingHom.ker_isPrime _`. Establish `htr` using `ConeTrdeg.proof K ι (CoordinateConeArithVar.ratioField y c) (CoordinateConeArithVar.ratioPtL y c) (CoordinateConeArithVar.birational y c hc) (fun k ↦ ⟨c k, fun h0 ↦ by`. Establish `h1` using `congrArg Subtype.val h0`. Simplify using `[CoordinateConeArithVar.ratioPtL, CoordinateConeArithVar.ratioPt, hc] at h1⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the proof step `(by rw [CoordinateConeArithVar.mCoordIdeal_ratioPtL y c hc]; exact hhor)`. Rewrite `htr` using `[CoordinateConeArithVar.mCoordIdeal_ratioPtL y c hc]`. Rewrite using `[IntDomainDim.proof (MRing ι ⧸ mCoordIdeal y) (CoordinateConeArithVar.algebraMap_injective _ hhor), htr]`. Simplify using `only [map_add, map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_eq (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) :
     ringKrullDim (MRing ι ⧸ mCoordIdeal y) =
@@ -39,7 +39,7 @@ theorem ringKrullDim_eq (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k,
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[hu, Finset.sum_div]`. Use `sum_mem fun b _ ↦ ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc]`. Conclude with `mul_mem (intCast_mem F _) (hF b)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_mem_of_sum (F : IntermediateField ℚ Ω) {A B : Type} [Fintype B] (u : A → Ω) (v : B → Ω)
     (L : Matrix A B ℤ) (hu : ∀ a, u a = ∑ b, (L a b : Ω) * v b) (b₀ : B)
@@ -52,7 +52,7 @@ theorem div_mem_of_sum (F : IntermediateField ℚ Ω) {A B : Type} [Fintype B] (
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[← div_div_div_cancel_right₀ hv (u a) (u a')]`. Conclude with `div_mem (div_mem_of_sum F u v L hu b₀ hF a) (div_mem_of_sum F u v L hu b₀ hF a')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_mem_of_sum (F : IntermediateField ℚ Ω) {A B : Type} [Fintype B] (u : A → Ω) (v : B → Ω)
     (L : Matrix A B ℤ) (hu : ∀ a, u a = ∑ b, (L a b : Ω) * v b) (b₀ : B) (hv : v b₀ ≠ 0)
@@ -63,9 +63,7 @@ theorem ratio_mem_of_sum (F : IntermediateField ℚ Ω) {A B : Type} [Fintype B]
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => rw [aeval_C, algebraMap_int_eq, eq_intCast]`. Conclude with `intCast_mem F a`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`.
-
-Consider the case `mul_X p q hp => rw [map_mul, aeval_X]`. Conclude with `mul_mem hp (hw q)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem aeval_mem (F : IntermediateField ℚ Ω) (w : (Σ k, ι k) → Ω) (hw : ∀ p, w p ∈ F) (f : MRing ι) :
     aeval w f ∈ F := by
@@ -77,11 +75,11 @@ theorem aeval_mem (F : IntermediateField ℚ Ω) (w : (Σ k, ι k) → Ω) (hw :
 omit [Fintype K] [CharZero Ω] in
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Take `⟨k', i'⟩` from `p`. Distinguish the cases in `h : k = k'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[Finset.sum_eq_single i']`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Simplify using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_X_single [DecidableEq K] (p : Σ k, ι k) :
     IsMultiHomog (X p : MRing ι) (fun k ↦ if k = p.1 then 1 else 0) := by
@@ -102,17 +100,15 @@ theorem isMultiHomog_X_single [DecidableEq K] (p : Σ k, ι k) :
 omit [CharZero Ω] in
 
 /- English proof (translation)
-Use `conv_rhs => rw [f.as_sum]`. Use `conv_lhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm ↦ ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, aeval_monomial, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hsum : ∑ p, m p = d k₀`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single k₀]`. Conclude with `hf m hm k₀`. Introduce `k _ hk`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hf m hm k, hd k hk]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hzero : ∀ p : Σ k, ι k, p.1 ≠ k₀ → m p = 0`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hf m hm p.1`. Rewrite `h1` using `[hd _ hp]`. Conclude with `(Finset.sum_eq_zero_iff.mp h1) p.2 (Finset.mem_univ _)`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ ↦ pow_zero _), Finsupp.prod_fintype _ _ (fun _ ↦ pow_zero _), ← hsum, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun p _ ↦ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Rewrite using `[← mul_pow]`. Distinguish the cases in `hp : p.1 = k₀`. Take `⟨k, i⟩` from `p`. Simplify using `only at hp`. Substitute `hp` using the available equality.
-
-Rewrite using `[hw i]`. Rewrite using `[hzero p hp, pow_zero, pow_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mul_pow_of_block (y w : (Σ k, ι k) → Ω) (k₀ : K) (z : Ω)
     (hw : ∀ i, w ⟨k₀, i⟩ * z = y ⟨k₀, i⟩) {f : MRing ι} {d : K → ℕ} (hf : IsMultiHomog f d)
@@ -152,33 +148,31 @@ end BlockImageArithmetic
 open BlockImageArithmetic in
 
 /- English proof (translation)
-Introduce `D K _ _ ι _ Ω _ _ y k₀ r M N x hY hbir hB _`. Take `⟨hK, ⟨_, _, hrel⟩, _, hdim⟩` from `hY`. Establish `hnz : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0`. Introduce `k`. Take `⟨i, hi⟩` from `hrel k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨i, fun h0 ↦ hi ?_⟩` and prove the remaining obligations. Use `show mConeMap y (X ⟨k, i⟩) = 0`. Simplify using `[mConeMap, h0]`. Use `choose c hc using hnz`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ j, x j ≠ 0 := by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_not] at h`. Apply `hc k₀` to reduce the goal to its premises. Rewrite using `[hB.2 (c k₀)]`. Simplify using `[h]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `c' : ∀ k, GlobalTheory (Fin r) k` to `fun _ ↦ j₀.2`. Establish `hc' : ∀ k, x ⟨k, c' k⟩ ≠ 0` using `fun _ ↦ hj₀`. Use `set Fy := CoordinateConeArithVar.ratioField y c with hFy`. Use `set Fx := CoordinateConeArithVar.ratioField (ι := GlobalTheory (Fin r)) x c' with hFx`. Establish `hxF : ∀ j, x j / x j₀ ∈ Fx` using `fun j ↦ IntermediateField.subset_adjoin _ _ ⟨j, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hLx : Fx ≤ Fy`. Rewrite using `[hFx, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `ratio_mem_of_sum Fy x (fun i ↦ y ⟨k₀, i⟩) M hB.1 (c k₀) (hc k₀) (fun i ↦ IntermediateField.subset_adjoin _ _ ⟨⟨k₀, i⟩, rfl⟩) p ⟨p.1, c' p.1⟩`. Establish `hLy : Fy ≤ Fx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hFy, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨⟨k, i⟩, rfl⟩`. Use `show y ⟨k, i⟩ / y ⟨k, c k⟩ ∈ Fx`. Establish `hyF : ∀ i, y ⟨k₀, i⟩ / x j₀ ∈ Fx` using `fun i ↦ div_mem_of_sum Fx (fun i ↦ y ⟨k₀, i⟩) x N hB.2 j₀ hxF i`. Set `w : (Σ k, ι k) → Ω` to `fun p ↦ if p.1 = k₀ then y p / x j₀ else 0`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hwF : ∀ p, w p ∈ Fx`. Introduce and unpack `⟨k', i'⟩`. Distinguish the cases in `h : k' = k₀`. Substitute `h` using the available equality. Simplify using `only [w, if_true]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hyF i'`. Simplify using `only [w, h, if_false]`. Conclude with `zero_mem _`. Establish `hw : ∀ i, w ⟨k₀, i⟩ * x j₀ = y ⟨k₀, i⟩` using `fun i ↦ by`. Simplify using `only [w, if_true]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_mul_cancel₀ _ hj₀`. Take `⟨n, g', h', hg', hh', hh0, heq⟩` from `hbir _ (X ⟨k, i⟩) (X ⟨k, c k⟩) (isMultiHomog_X_single ⟨k, i⟩) (isMultiHomog_X_single ⟨k, c k⟩) (by rw [aeval_X]; exact hc k)`. Rewrite `heq` using `[aeval_X, aeval_X]`. Establish `hd : ∀ k', k' ≠ k₀ → blockDeg k₀ n k' = 0` using `fun k' hk' ↦ by simp [blockDeg, hk']`. Establish `e1` using `aeval_mul_pow_of_block y w k₀ (x j₀) hw hg' hd`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `aeval_mul_pow_of_block y w k₀ (x j₀) hw hh' hd`. Establish `hwh : aeval w h' ≠ 0` using `fun h0 ↦ hh0 (by rw [← e2, h0, zero_mul])`. Establish `hrat : y ⟨k, i⟩ / y ⟨k, c k⟩ = aeval w g' / aeval w h'`. Rewrite using `[div_eq_div_iff (hc k) hwh]`. Apply `mul_right_cancel₀ (pow_ne_zero (blockDeg k₀ n k₀) hj₀)` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `heq + y ⟨k, i⟩ * e2 - y ⟨k, c k⟩ * e1`. Rewrite using `[hrat]`. Conclude with `div_mem (aeval_mem Fx w hwF g') (aeval_mem Fx w hwF h')`. Establish `hLeq : Fy = Fx` using `le_antisymm hLy hLx`. Establish `hdy` using `ringKrullDim_eq y c hc`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite `hdy` using `[hdim]`. Rewrite using `[coordIdeal_eq_mCoordIdeal]`. Use `⟨⟨()⟩, ⟨RingHom.ker_isPrime _, CoordinateConeArithVar.isMultiHomogIdeal x, CoordinateConeArithVar.relevant x c' hc'⟩, CoordinateConeArithVar.horizontal x, ?_⟩` and prove the remaining obligations. Rewrite using `[ringKrullDim_eq x c' hc']`. Rewrite `hdy` using `[← hFy, hLeq]`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Generalize the expression as in `(Algebra.trdeg ℤ Fx).toENat = t at hdy ⊢`. Establish `h1 : ((D + 1 + Fintype.card K : ℕ) : ℕ∞) = t + Fintype.card K + 1` using `by exact_mod_cast hdy`. Proceed by induction on `t using ENat.recTopCoe with`. Consider the case `top => simp at h1`. Consider the case `coe t`.
-
-Establish `h2 : D + 1 + Fintype.card K = t + Fintype.card K + 1` using `by exact_mod_cast h1`. Establish `h3 : t = D` using `by omega`. Substitute `h3` using the available equality. Rewrite using `[Fintype.card_unit]`. Use `norm_cast`.
+A detailed English derivation is pending.
 -/
 theorem BlockImageArith.proof : BlockImageArith.Statement := by
   intro D K _ _ ι _ Ω _ _ y k₀ r M N x hY hbir hB _

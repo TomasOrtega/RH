@@ -15,19 +15,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PolDeg.SymCoc
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a b`. Establish `comm : ψ (b + a) = ψ (a + b)` using `by rw [add_comm]`. Establish `e₁` using `congrArg Additive.ofMul (hF a b)`. Establish `e₂` using `congrArg Additive.ofMul (hF b a)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃` using `congrArg Additive.ofMul (ht a b)`. Establish `e₄` using `congrArg Additive.ofMul (hP a b)`. Establish `e₅` using `congrArg Additive.ofMul (hP b a)`. Establish `e₆` using `congrArg Additive.ofMul comm`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_inv] at e₁ e₂ e₃ e₄ e₅ e₆ ⊢`. Take the linear combination `(norm := abel) e₁ - e₂ + e₃ - e₄ + e₅ + e₆`. Introduce `a b c`. Establish `p₁` using `hP (a + b) c`. Rewrite `p₁` using `[add_assoc]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₁` using `congrArg Additive.ofMul (hadd a b c)`. Establish `e₂` using `congrArg Additive.ofMul (hadd b c a)`. Establish `s₁` using `congrArg Additive.ofMul (ht a (b + c))`. Establish `s₂` using `congrArg Additive.ofMul (ht a b)`. Establish `s₃` using `congrArg Additive.ofMul (ht a c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₁` using `congrArg Additive.ofMul (hC a b c)`. Establish `f₁` using `congrArg Additive.ofMul (hF (a + b) c)`. Establish `f₂` using `congrArg Additive.ofMul (hF a b)`. Establish `f₃` using `congrArg Additive.ofMul (hF a (b + c))`. Establish `f₄` using `congrArg Additive.ofMul (hF b c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q₁` using `congrArg Additive.ofMul p₁`. Establish `q₂` using `congrArg Additive.ofMul (hP a b)`. Establish `q₃` using `congrArg Additive.ofMul (hP a (b + c))`. Establish `q₄` using `congrArg Additive.ofMul (hP b c)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_inv] at e₁ e₂ s₁ s₂ s₃ c₁ f₁ f₂ f₃ f₄ q₁ q₂ q₃ q₄ ⊢`. Take the linear combination `(norm := abel) e₁ - s₁ - e₂ + s₂ + s₃ - c₁ + f₁ + f₂ - f₃ - f₄ - q₁ - q₂ + q₃ + q₄`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem alg {X U : Type} [AddCommGroup X] [CommGroup U] (F t P : X → X → U) (C : X → X → X → U) (ψ : X → U) (r : U)
     (hF : ∀ a b, P a b * F a b = t a b) (hP : ∀ a b, P a b = ψ (a + b) * (ψ a)⁻¹ * (ψ b)⁻¹ * r⁻¹)
@@ -68,9 +68,9 @@ theorem alg {X U : Type} [AddCommGroup X] [CommGroup U] (F t P : X → X → U) 
     linear_combination (norm := abel) e₁ - s₁ - e₂ + s₂ + s₃ - c₁ + f₁ + f₂ - f₃ - f₄ - q₁ - q₂ + q₃ + q₄
 
 /- English proof (translation)
-Establish `hu : ∀ y : nonZeroDivisors R, IsUnit ((algebraMap R' (FractionRing R')).comp ρ y)` using `fun y => by`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ne_eq, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `(map_ne_zero_iff ρ hρ).2 (nonZeroDivisors.ne_zero y.2)`. Use `⟨Spec.map (CommRingCat.ofHom (IsLocalization.lift (M := nonZeroDivisors R) (S := FractionRing R) hu)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [jK, spMap, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[IsLocalization.lift_eq]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_genPtMap {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (ρ : R →+* R')
     (hρ : Function.Injective ρ) : ∃ κ : (TK R').left ⟶ (TK R).left, κ ≫ jK R = jK R' ≫ spMap ρ := by
@@ -91,27 +91,25 @@ namespace GlobalTheory.PolDeg
 open GlobalTheory.PolDeg.SymCoc in
 
 /- English proof (translation)
-Introduce `R _ _ R' _ _ Q ρ D e f hρ hH`. Take `⟨β, β₂, w, h₁, h₂, h₃, h₀, h₄, h₅⟩` from `hH`. Take `⟨κ, hκ⟩ : ∃ κ : (TK R').left ⟶ (TK R).left, κ ≫ jK R = jK R' ≫ spMap ρ` from `exists_genPtMap ρ hρ`. Set `z : (TK R').left` to `(default : PrimeSpectrum (FractionRing R'))`. Take `⟨J, hJ⟩` from `GlobalTheory.UU.exists_good_pt Q.M.isLB z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨J', hJ'⟩` from `GlobalTheory.UU.exists_good_pt D.P.isLB z`. Set `x : D.X → (TK R' ⟶ D.P.A)` to `fun a => toUnit (TK R') ≫ D.c a`. Establish `hx : ∀ a a', x (a + a') = x a * x a'` using `fun a a' => by show toUnit (TK R') ≫ D.c (a + a') = _`. Rewrite using `[D.c_add]`. Conclude with `MonObj.comp_mul _ _ _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ψ : D.X → ((TK R').left.presheaf.stalk z)ˣ` to `fun χ => val (D.psi χ) (𝟙 _) z J'`. Set `r : ((TK R').left.presheaf.stalk z)ˣ` to `val D.rigK (𝟙 _) z J'`. Establish `hP : ∀ a b, val (D.tau a b) (𝟙 _) z J' = ψ (a + b) * (ψ a)⁻¹ * (ψ b)⁻¹ * r⁻¹`. Introduce `a b`. Unfold `DegPre.tau`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_mul hJ', val_mul hJ', val_mul hJ', val_inv, val_inv, val_inv]`. Set `laws` to `fun a a' b => GlobalTheory.LamRigid.lam_iso_laws (Sp R) (Sp R') Q.B D.P.A Q.M ⟨D.P.L, D.rig, D.P.isLB, D.rig_gen⟩ Q.cub D.cub (spMap ρ) β β₂ w h₁ D.P.isAb h₂ h₃ h₀ (TK R') (x a) (x a') (x b) z J J' hJ hJ'`. Set `κo : Over.mk ((TK R').hom ≫ spMap ρ) ⟶ TK R` to `Over.homMk κ hκ`. Set `X : D.X → (TK R ⟶ Q.B)` to `fun a => toUnit (TK R) ≫ Q.c (e a)`. Set `y : D.X → (Over.mk ((TK R').hom ≫ spMap ρ) ⟶ Q.B)` to `fun a => κo ≫ X a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hy : ∀ a, (y a).left = (x a).left ≫ β` using `fun a => by`. Simplify using `only [y, X, x, κo, Over.comp_left, Over.homMk_left, Rosenlicht.toUnit_left, Over.mk_hom, Category.assoc]`. Rewrite using `[h₄ a, ← Category.assoc κ, hκ, Category.assoc]`. Establish `hq : ∀ a a' b, val (Q.tau (e (a + a')) (e b)) κ z J * @id ((TK R').left.presheaf.stalk z)ˣ (cubV Q.cub (T` using `Over.mk ((TK R').hom ≫ spMap ρ)) z J (y a) (y a') (y b)) = val (Q.tau (e a) (e b)) κ z J * val (Q.tau (e a') (e b)) κ z J := by`. Introduce `a a' b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : LB.Gen.Corr Q.M.L _ _ _ _ (LB.mulGen Q.M.L _ _ _ _ (Q.tau (e (a + a')) (e b)) (LB.pullGen Q.M.L (thφ Q.B (x3 Q.B)) thε Q.cub.t (lift (X a) (lift (X a') (X b))).left)) (LB.mulGen Q.M.L _ _ _ _ (Q.tau (e a) (e b)) (Q.tau (e a') (e b)))` using `corr_of_val Q.M.isLB fun y' J₀ hJ₀ => by`. Establish `t₁` using `Q.tau_add (e a) (e a') (e b) y' J₀ hJ₀`. Rewrite `t₁` using `[← map_add e a a']`. Use `(val_mul hJ₀ _ _ _).trans (Eq.trans ?_ (t₁.trans (val_mul hJ₀ _ _ _).symm))` and prove the remaining obligations. Conclude with `congrArg _ ((val_pull hJ₀ _ _ _).trans (congrArg (fun p => val (L := Q.M.L) (φ := thφ Q.B (x3 Q.B)) (ε := thε) Q.cub.t p y' J₀) (Category.id_comp _)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Eq.trans ?_ (val_mul hJ _ _ _).symm` and prove the remaining obligations. Conclude with `congrArg _ (val_cub Q.cub κo hJ (X a) (X a') (X b)).symm`. Use `_ = _ := val_corr hJ hc κ`. Use `_ = _ := val_mul hJ _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hqs : ∀ a b, val (Q.tau (e a) (e b)) κ z J = val (Q.tau (e b) (e a)) κ z J` using `fun a b => val_corr hJ (corr_of_val Q.M.isLB fun y' J₀ hJ₀ => Q.tau_symm (e a) (e b) y' J₀ hJ₀) κ`. Establish `hcub` using `isCub_cubV D.cub hJ'`. Take `⟨hs, hc⟩` from `alg (fun a b => gm (𝟙 (TK R').left) z ⊤ (unitOn (f a b))) (fun a b => lamVal w (lift (x a) (x b)).left z J J' * val (Q.tau (e a) (e b)) κ z J) (fun a b => val (D.tau a b) (𝟙 _) z J') (fun a a' b => cubV D.cub z J' (x a) (x a') (x b)) ψ r (fun a b => h₅ κ hκ a b z J J' hJ hJ') hP …`. Rewrite using `[(laws a a b).1, hqs a b])`. Use the proof step `(fun a a' b => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `(laws a a' b).2 (y a) (y a') (y b) (hy a) (hy a') (hy b)`. Rewrite `e₁` using `[← hx]`. Establish `e₂` using `hq a a' b`. Use `beta_reduce`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₁'` using `congrArg Additive.ofMul e₁`. Establish `e₂'` using `congrArg Additive.ofMul e₂`. Simplify using `only [ofMul_mul, id] at e₁' e₂' ⊢`. Take the linear combination `(norm := abel) e₁' + e₂')`. Use the proof step `(fun a b c => (hcub.s01 _ _ _).trans (hcub.s12 _ _ _))`.
-
-Establish `inj : ∀ u v : (FractionRing R')ˣ, gm (𝟙 (TK R').left) z ⊤ (unitOn u) = gm (𝟙 (TK R').left) z ⊤ (unitOn v) → u = v` using `fun u v h => ReciprocityTheory.ChartRestriction.G.H1.unitOn_injective (GlobalTheory.ArcData.unit_ext_field (𝟙 (Sp (FractionRing R'))) z fun _ => h)`. Establish `hm : ∀ u v : (FractionRing R')ˣ, unitOn (u * v) = unitOn u * unitOn v` using `fun u v => map_mul (Units.map (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R'))).inv.hom.toMonoidHom) u v`. Use `⟨fun a b => inj _ _ (hs a b), fun a b c => inj _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[hm, hm, map_mul, map_mul]`. Conclude with `hc a b c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_symm_cocycle : ∀ (R : Type) [CommRing R] [IsDomain R] (R' : Type) [CommRing R'] [IsDomain R'] (Q : Data R) (ρ : R →+* R') (D : DegPre R') (e : D.X ≃+ Q.X) (f : D.X → D.X → (FractionRing R')ˣ), Function.Injective ρ → Half Q ρ D e f → (∀ a b, f a b = f b a) ∧ ∀ a b c, f (a + b) c * f a b = f a (b + c) * f b c := by
   intro R _ _ R' _ _ Q ρ D e f hρ hH

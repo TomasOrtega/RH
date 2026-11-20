@@ -5,13 +5,11 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.BI
 
 /- English proof (translation)
-Introduce `G _ χ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, ρ, hρ⟩`. Use `⟨n, (Matrix.toLinAlgEquiv' (R := ℂ) (n := Fin n)).toRingEquiv.toMonoidHom.comp ((Units.coeHom _).comp ρ), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hρ g]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = Representation.character _ g`. Rewrite using `[Representation.character, LinearMap.trace_eq_matrix_trace ℂ (Pi.basisFun ℂ (Fin n)), LinearMap.toMatrix_eq_toMatrix']`. Express the relevant statement in the definitionally equal form `_ = (LinearMap.toMatrix' (Matrix.toLin' _)).trace`. Rewrite using `[LinearMap.toMatrix'_toLin']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨n, ρ, hρ⟩`. Use `⟨n, Matrix.GeneralLinearGroup.toLin.symm.toMonoidHom.comp ρ.asGroupHom, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hρ g]`. Use `show Representation.character _ g = _`. Rewrite using `[Representation.character, LinearMap.trace_eq_matrix_trace ℂ (Pi.basisFun ℂ (Fin n)), LinearMap.toMatrix_eq_toMatrix']`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem matrixChar_iff_isChar : ∀ (G : Type) [Group G] (χ : G → ℂ),
     (∃ (n : ℕ) (ρ : G →* GL (Fin n) ℂ), ∀ x, χ x = Matrix.trace (ρ x : Matrix (Fin n) (Fin n) ℂ)) ↔

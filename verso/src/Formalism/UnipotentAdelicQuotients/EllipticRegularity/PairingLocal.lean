@@ -6,7 +6,7 @@ open MeasureTheory Metric Filter Topology
 open scoped ContDiff FourierTransform ENNReal
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simpa [dw] using h`. Consider the case `cons j w ih => filter_upwards [ih.fderiv (𝕜 := ℝ)] with x hx show fderiv ℝ (dw w f) x (ev j) = fderiv ℝ (dw w f') x (ev j)`. Rewrite using `[hx]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma dw_eventuallyEq {d : ℕ} (w : List (Fin d)) {f f' : E d → ℂ} {y : E d} (h : f =ᶠ[𝓝 y] f') :
     dw w f =ᶠ[𝓝 y] dw w f' := by
@@ -18,11 +18,11 @@ lemma dw_eventuallyEq {d : ℕ} (w : List (Fin d)) {f f' : E d → ℂ} {y : E d
     rw [hx]
 
 /- English proof (translation)
-Introduce `d m b b' g φ V hV hg hb`. Use `congr 1`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ V`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `trOp`. Use `Finset.sum_congr rfl fun n _ => Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hev : (fun y => b n w y * φ y) =ᶠ[𝓝 y] (fun y => b' n w y * φ y)` using `by filter_upwards [hV.mem_nhds hy] with z hz`. Rewrite using `[hb n w z hz]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(dw_eventuallyEq _ hev).eq_of_nhds`. Establish `hg0 : g y = 0` using `by first`. Consider the case `exact image_eq_zero_of_nmem_tsupport (fun h => hy (hg h))`. Consider the case `exact image_eq_zero_of_notMem_tsupport (fun h => hy (hg h))`. Rewrite using `[hg0, zero_mul, zero_mul]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjointPairingLocal : PairingLocal := by
   intro d m b b' g φ V hV hg hb

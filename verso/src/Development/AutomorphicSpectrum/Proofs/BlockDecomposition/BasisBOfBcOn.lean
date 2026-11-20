@@ -17,27 +17,25 @@ namespace GlobalTheory.CompanionTheory.BasisBase
 universe w w'
 
 /- English proof (translation)
-Establish `anti : ∀ {a b : ℕ}, a ≤ b → pdP γ b ≤ pdP γ a` using `fun h => Ideal.span_mono fun _ ⟨l, hl, hr, hz⟩ => ⟨l, hl, h.trans hr, hz⟩`. Prove the components needed by the constructor for the conclusion. Establish `key : ∀ d, d ≤ m → ∀ x ∈ pdP γ (m - d), ∃ n : ∀ i, S.N i, x = ∑ i, S.ν i (n i)`. Introduce `d`. Proceed by induction on `d with`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `_ x hx`. Rewrite `hx` using `[Nat.sub_zero, S.nil]`. Conclude with `⟨0, by simpa using Ideal.mem_bot.1 hx⟩`. Consider the case `succ d ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `hd x hx`. Set `i0 : Fin m` to `⟨m - (d + 1), by omega⟩`. Take `⟨n0, hn0⟩` from `S.surj i0 x hx`. Establish `e : (i0 : ℕ) + 1 = m - d` using `by simp only [i0]; omega`. Rewrite `hn0` using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨n, hn⟩` from `ih (by omega) _ hn0`. Use `⟨n + Pi.single i0 n0, ?_⟩` and prove the remaining obligations. Establish `h1 : ∑ i, S.ν i ((Pi.single i0 n0 : ∀ i, S.N i) i) = S.ν i0 n0`. Rewrite using `[Finset.sum_eq_single i0]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules. Simplify using `only [Pi.add_apply, map_add, Finset.sum_add_distrib, h1, ← hn]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `b`. Use `key m le_rfl b ?_` and prove the remaining obligations. Establish `: pdP γ (m - m) = ⊤`. Rewrite using `[Nat.sub_self, Ideal.eq_top_iff_one]`. Conclude with `Ideal.subset_span ⟨[], by simp, by simp, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Discharge the goal by the elementary cases of `trivial`. Introduce `n hn`. Establish `key : ∀ k, ∀ i : Fin m, (i : ℕ) < k → n i = 0`. Introduce `k`.
+Check the elementary cases of the proposition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => intro i hi`. Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`. Introduce `i hi`.
+Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.lt_succ_iff_lt_or_eq.1 hi with h | h` into its components or cases. Conclude with `ih i h`. Establish `h2 : S.ν i (n i) = - ∑ b ∈ Finset.univ.erase i, S.ν b (n b)`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm, Finset.sum_erase_add _ _ (Finset.mem_univ i)]`. Conclude with `hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `S.inj i _ ?_` and prove the remaining obligations. Rewrite using `[h2]`. Use `Ideal.neg_mem_iff _ |>.2 (Ideal.sum_mem _ fun b hb => ?_)` and prove the remaining obligations. Establish `hbi : b ≠ i` using `Finset.ne_of_mem_erase hb`. Break down `lt_or_gt_of_ne (Fin.val_ne_of_ne hbi) with h3 | h3` into its components or cases.
-
-Rewrite using `[ih b (by omega), map_zero]`. Conclude with `Ideal.zero_mem _`. Conclude with `anti (by omega) (S.mem b _)`. Use function extensionality and compare the values at `i`. Conclude with `key _ i (Nat.lt_succ_self _)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem gr_decomp {K B : Type} [CommRing K] [CommRing B] [Algebra K B] {I : Ideal B} (γ : DividedPowers I) (m : ℕ)
     (S : GrSplit K γ m) :
@@ -98,11 +96,11 @@ theorem gr_decomp {K B : Type} [CommRing K] [CommRing B] [Algebra K B] {I : Idea
     exact key _ i (Nat.lt_succ_self _)
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `LinearMap.exists_extend (((LinearMap.ker e).liftQ φ fun x hx => h x hx).comp e.quotKerEquivRange.symm.toLinearMap)`. Establish `h1 : ∀ x, ψ (e x) = φ x`. Introduce `x`. Use `LinearMap.congr_fun hψ ⟨e x, LinearMap.mem_range_self e x⟩` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Establish `h2 : e.quotKerEquivRange.symm ⟨e x, LinearMap.mem_range_self e x⟩ = Submodule.Quotient.mk x`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `[h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun z => TensorProduct.rid K N (LinearMap.lTensor N ψ z)) hz` as an intermediate fact. Simplify `this` using `[map_sum, h1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tens_dual {K N V : Type*} {M : Type w} [Field K] [AddCommGroup N] [Module K N] [AddCommGroup V] [Module K V]
     [AddCommGroup M] [Module K M] (e : V →ₗ[K] M) (φ : V →ₗ[K] K) (h : ∀ x, e x = 0 → φ x = 0) {a : ℕ}
@@ -121,11 +119,11 @@ theorem tens_dual {K N V : Type*} {M : Type w} [Field K] [AddCommGroup N] [Modul
   simpa [map_sum, h1] using this
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul x y`. Take `⟨v, rfl⟩` from `he y`. Use `⟨fun t => bs.repr v t • x, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_lhs => rw [← bs.sum_repr v]`. Rewrite using `[map_sum, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨n, rfl⟩` from `hx`. Take `⟨n', rfl⟩` from `hy`. Conclude with `⟨n + n', by simp [TensorProduct.add_tmul, Finset.sum_add_distrib]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tens_span {K N V : Type*} {M : Type w} [Field K] [AddCommGroup N] [Module K N] [AddCommGroup V] [Module K V]
     [AddCommGroup M] [Module K M] (e : V →ₗ[K] M) (he : Function.Surjective e) {a : ℕ} (bs : Module.Basis (Fin a) K V)
@@ -145,9 +143,9 @@ theorem tens_span {K N V : Type*} {M : Type w} [Field K] [AddCommGroup N] [Modul
     exact ⟨n + n', by simp [TensorProduct.add_tmul, Finset.sum_add_distrib]⟩
 
 /- English proof (translation)
-Establish `h1 : (fun i => ∑ t, n i t ⊗ₜ[K] e i (b t)) = ∑ t, ∑ i, (Pi.single i (n i t ⊗ₜ[K] e i (b t)) : ∀ i, S.N i ⊗[K] M i)`. Use function extensionality and compare the values at `i`. Simplify using `only [Finset.sum_apply, Pi.single_apply]`. Simplify using the standard rewrite rules. Rewrite using `[h1, map_sum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, hG, hf, Finset.sum_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem core_expand {K B : Type} [Field K] [CommRing B] [Algebra K B] {I : Ideal B} {γ : DividedPowers I} {m : ℕ}
     (S : GrSplit K γ m) {V : Type w'} [AddCommGroup V] [Module K V] {W : Type w'} {Y : Type w'} [AddCommGroup W] [Module B W]
@@ -165,26 +163,24 @@ theorem core_expand {K B : Type} [Field K] [CommRing B] [Algebra K B] {I : Ideal
   simp only [map_sum, hG, hf, Finset.sum_smul]
 
 /- English proof (translation)
-The claim follows from `Ideal.span_mono fun _ ⟨l, hl, hr, hz⟩ => ⟨l, hl, h.trans hr, hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_anti' {B : Type} [CommRing B] {I : Ideal B} (γ : DividedPowers I) {a b : ℕ} (h : a ≤ b) :
     pdP γ b ≤ pdP γ a :=
   Ideal.span_mono fun _ ⟨l, hl, hr, hz⟩ => ⟨l, hl, h.trans hr, hz⟩
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `hT`. Establish `uniq : ∀ g : Fin a → B, ∑ t, g t • μ (bs t) = 0 → g = 0`. Introduce `g hg0`. Use `choose n hn using fun t => (gr_decomp γ m S).1 (g t)`. Establish `h1` using `core_expand S e μ qo G hG hf (⇑bs) (fun i t => n t i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : (∑ t, (∑ i, S.ν i (n t i)) • μ (bs t)) = 0`. Rewrite using `[← hg0]; exact Finset.sum_congr rfl fun t _ => by rw [← hn t]`. Rewrite `h1` using `[hsum, map_zero]`. Establish `h2 : (fun i => ∑ t, n t i ⊗ₜ[K] e i (bs t)) = 0` using `G.injective (by rw [← h1, map_zero])`. Establish `h3 : ∀ i t', n t' i = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i t'`. Establish `hz` using `congrFun h2 i`. Use `tens_dual (e i) (bs.coord t') (fun x hx => by` as an intermediate fact. Rewrite using `[(he i).1 (hx.trans (map_zero _).symm)]`. Use the proof step `simp) (fun t => n t i) (⇑bs) hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify `this` using `[Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Use function extensionality and compare the values at `t`. Rewrite using `[hn t]`. Simplify using `[h3]`. Establish `ex : ∃ g : Fin a → B, w = ∑ t, g t • μ (bs t)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : ∀ i, ∃ n : Fin a → S.N i, G.symm (qo w) i = ∑ t, n t ⊗ₜ[K] e i (bs t)` using `fun i => tens_span (e i) (he i).2 bs _`. Use `choose n hn using hz`. Use `⟨fun t => ∑ i, S.ν i (n i t), hq.1 ?_⟩` and prove the remaining obligations. Rewrite using `[core_expand S e μ qo G hG hf (⇑bs) n]`. Establish `: (fun i => ∑ t, n i t ⊗ₜ[K] e i (bs t)) = G.symm (qo w)` using `funext fun i => (hn i).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, G.apply_symm_apply]`. Take `⟨g, hg⟩` from `ex`. Use `⟨g, hg, fun g' hg' => ?_⟩` and prove the remaining obligations. Use `uniq (g' - g) (by` as an intermediate fact. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, ← hg, ← hg', sub_self])`.
-
-Conclude with `sub_eq_zero.1 this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem core_basis {K B : Type} [Field K] [CommRing B] [Algebra K B] {I : Ideal B} {γ : DividedPowers I} {m : ℕ}
     (S : GrSplit K γ m) {V : Type w'} [AddCommGroup V] [Module K V] {W : Type w'} {Y : Type w'} [AddCommGroup W] [Module B W]
@@ -226,15 +222,15 @@ theorem core_basis {K B : Type} [Field K] [CommRing B] [Algebra K B] {I : Ideal 
   exact sub_eq_zero.1 this
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `hT`. Use `choose n hn using fun t => (gr_decomp γ m S).1 (g t)`. Establish `h1` using `core_expand S e μ qo G hG hf bs (fun i t => n t i)`. Establish `hsum : (∑ t, (∑ i, S.ν i (n t i)) • μ (bs t)) = ∑ t, g t • μ (bs t)` using `Finset.sum_congr rfl fun t _ => by rw [← hn t]`. Rewrite `h1` using `[hsum, hg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (fun i => ∑ t, n t i ⊗ₜ[K] e i (bs t)) = 0` using `G.injective (by rw [← h1, map_zero])`. Establish `key : ∑ t, g t * algebraMap K B (φ (bs t)) = ∑ i, ∑ t, S.ν i (n t i) * algebraMap K B (φ (bs t))`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[hn t, Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Break down `hk i with hki | hki` into its components or cases. Conclude with `Ideal.sum_mem _ fun t _ => Ideal.mul_mem_right _ _ (dividedPowerFiltration_anti' γ hki (S.mem i _))`. Establish `h4` using `tens_dual (e i) φ hki (fun t => n t i) bs (congrFun h2 i)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrArg (S.ν i) h4`. Rewrite `h3` using `[map_sum, map_zero]`. Establish `h5 : ∑ t, S.ν i (n t i) * algebraMap K B (φ (bs t)) = 0`. Rewrite using `[← h3]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Algebra.smul_def, mul_comm]`. Rewrite using `[h5]`. Conclude with `Ideal.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem core_filt {K B : Type} [Field K] [CommRing B] [Algebra K B] {I : Ideal B} {γ : DividedPowers I} {m : ℕ}
     (S : GrSplit K γ m) {V : Type w'} [AddCommGroup V] [Module K V] {W : Type w'} {Y : Type w'} [AddCommGroup W] [Module B W]
@@ -271,7 +267,7 @@ theorem core_filt {K B : Type} [Field K] [CommRing B] [Algebra K B] {I : Ideal B
     exact Ideal.zero_mem _
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨AddEquiv.refl _, fun _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem transport_gen {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A : C ⥤ CommAlgCat.{0} R}
     (a a' b : IdF A) (e : a = a') (ha : ∀ T, a.S T = ⊤) (ha' : ∀ T, a'.S T = ⊤) (j : ℕ) :
@@ -280,9 +276,9 @@ theorem transport_gen {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A :
   exact ⟨AddEquiv.refl _, fun _ => rfl⟩
 
 /- English proof (translation)
-Use `CrystallineSemistableComparison.P.mapH_bij (toSq a₀ b h0).hom (fun n => ⟨fun f f' h => ?_, fun y => ?_⟩) j` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Establish `h1` using `congrArg Subtype.val (congrFun h s)`. Establish `h2` using `Ideal.Quotient.eq.1 h1`. Rewrite `h2` using `[hb]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.1 h2`. Establish `hm : ∀ s : ComposableArrows C n, ∃ t : A.obj (s.obj (Fin.last n)), Ideal.Quotient.mk _ t = (show sqM a₀ b _ from y s).1` using `fun s => Ideal.Quotient.mk_surjective _ choose t ht using hm`. Conclude with `⟨t, funext fun s => Subtype.ext (ht s)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem toSq_bij_bot' {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A : C ⥤ CommAlgCat.{0} R}
     (a₀ b : IdF A) (h0 : ∀ T, a₀.S T = ⊤) (hb : ∀ T, b.S T = ⊥) (j : ℕ) :
@@ -299,9 +295,9 @@ theorem toSq_bij_bot' {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A :
     exact ⟨t, funext fun s => Subtype.ext (ht s)⟩
 
 /- English proof (translation)
-Establish `e : sFil Q t = sFil Q 0`. Establish `: thFil (smFun X q) t = thFil (smFun X q) 0`. Unfold `thFil`. Use `congr 1`. Use function extensionality and compare the values at `T`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Int.toNat_of_nonpos ht]`. Both sides reduce to the same expression. Simplify using `only [sFil, this]`. Take `⟨E, hE⟩` from `transport_gen (sFil Q t) (sFil Q 0) (sFil Q u) e _ (fun T => T.obj.pdPow_zero) j`. Conclude with `⟨E, fun x => hE _⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem zK_transport {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     (Q : ObjectProperty (Thick (smFun X q))) (t u : ℤ) (ht : t ≤ 0) (j : ℕ) :
@@ -318,7 +314,7 @@ theorem zK_transport {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (C
   exact ⟨E, fun x => hE _⟩
 
 /- English proof (translation)
-Use `toSq_bij_bot' _ _ _ (fun T => ?_) j` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T.obj.pdPow ((s : ℤ).toNat) = ⊥`. Simplify using `using h _ T.property`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem quoM_bij {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L)) (s : ℕ) (h : ∀ T, Q T → T.pdPow s = ⊥) (j : ℕ) :
     Function.Bijective (quoM Q s j) := by
@@ -327,11 +323,11 @@ theorem quoM_bij {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L)) (s : ℕ)
   simpa using h _ T.property
 
 /- English proof (translation)
-Use `Ideal.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hs, rfl⟩`. Establish `h : ∃ p ∈ l, p.1 ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: (l.map Prod.fst).sum = 0` using `List.sum_eq_zero (by simpa using h)`. Use linear arithmetic over natural numbers and integers. Take `⟨p, hp, h0⟩` from `h`. Use `List.prod_eq_zero (List.mem_map.2 ⟨p, hp, ?_⟩)` and prove the remaining obligations. Establish `e : p.2 = 0` using `hl p hp`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(dividedPowersBot K).dpow_eval_zero h0`.
+A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_dividedPowersBot_of_one_le' {K : Type} [Field K] {r : ℕ} (hr : 1 ≤ r) : pdP (dividedPowersBot K) r = ⊥ := by
   refine Ideal.span_eq_bot.2 ?_
@@ -348,7 +344,7 @@ theorem dividedPowerFiltration_dividedPowersBot_of_one_le' {K : Type} [Field K] 
   exact (dividedPowersBot K).dpow_eval_zero h0
 
 /- English proof (translation)
-The claim follows from `dividedPowerFiltration_dividedPowersBot_of_one_le' hs tf r x h := by simpa using h dv n hn := ⟨0, (n : K)⁻¹, by have : (n : K) ≠ 0 := Nat.cast_ne_zero.2 hn simp [this]⟩`.
+A detailed English derivation is pending.
 -/
 theorem tfbase_K {K : Type} [Field K] [CharZero K] {s : ℕ} (hs : 1 ≤ s) : TFBase (dividedPowersBot K) 1 s where
   nil := dividedPowerFiltration_dividedPowersBot_of_one_le' hs
@@ -358,7 +354,7 @@ theorem tfbase_K {K : Type} [Field K] [CharZero K] {s : ℕ} (hs : 1 ≤ s) : TF
     simp [this]⟩
 
 /- English proof (translation)
-The claim follows from `h tf r x hx := by simpa using hx dv n hn := ⟨0, algebraMap K B (n : K)⁻¹, by have : (n : K) ≠ 0 := Nat.cast_ne_zero.2 hn rw [pow_zero, ← map_natCast (algebraMap K B) n, ← map_mul, mul_inv_cancel₀ this, map_one]⟩`.
+A detailed English derivation is pending.
 -/
 theorem tfbase_B {K B : Type} [Field K] [CharZero K] [CommRing B] [Algebra K B] {I : Ideal B} (γ : DividedPowers I) {s : ℕ}
     (h : pdP γ s = ⊥) : TFBase γ 1 s where
@@ -369,23 +365,21 @@ theorem tfbase_B {K B : Type} [Field K] [CharZero K] [CommRing B] [Algebra K B] 
     rw [pow_zero, ← map_natCast (algebraMap K B) n, ← map_mul, mul_inv_cancel₀ this, map_one]⟩
 
 /- English proof (translation)
-Introduce `hB hK K B _ _ _ _ I γ s m hm hms X q U hU 𝒱 h𝒱 j a bs`. Break down `Nat.eq_zero_or_pos m with rfl | hm0` into its components or cases. Establish `hone : (1 : B) ∈ pdP γ 0` using `Ideal.subset_span ⟨[], by simp, by simp, by simp⟩`. Rewrite `hone` using `[hm]`. Establish `hsub : Subsingleton B` using `subsingleton_of_zero_eq_one ((Ideal.mem_bot.1 hone).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hW : ∀ w : HO (TS γ q 1 s 𝒱) j, w = 0` using `fun w => by`. Establish `: (1 : B) • w = (0 : B) • w` using `by rw [Subsingleton.elim (1 : B) 0]`. Rewrite `this` using `[one_smul, zero_smul]`. Then use the resulting hypothesis. Use `⟨fun w => ⟨fun _ => 0, ?_, fun y _ => Subsingleton.elim _ _⟩, fun r hr g hg c φ hφ => ?_⟩` and prove the remaining obligations. Conclude with `(hW _).trans (hW _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim (∑ t, g t * algebraMap K B (φ (bs t))) 0]`. Conclude with `Ideal.zero_mem _`. Take `⟨S⟩` from `GlobalTheory.T.graded_splitting_over_field (K := K) γ m hm`. Establish `hs : 1 ≤ s` using `hm0.trans_le hms`. Establish `hsB : pdP γ s = ⊥` using `le_bot_iff.1 (hm ▸ Ideal.span_mono fun _ ⟨l, hl, hr, hz⟩ => ⟨l, hl, hms.trans hr, hz⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO : TFBase (dividedPowersBot K) 1 s` using `tfbase_K hs`. Establish `hA : TFBase γ 1 s` using `tfbase_B (K := K) γ hsB`. Establish `hd : ∀ α, U.d α < s` using `fun α => by have := hU α; omega`. Establish `LC` using `fun (i : Fin m) n r => GlobalTheory.T.scalar_multiplication_shifts_filtration (O := K) γ q 1 s 𝒱 i (S.ν i n) (S.mem i n) r`. Establish `T` using `fun (r : ℕ) (hr : r ≤ s) => hB γ 1 s m hO hA S q 𝒱 (Or.inr ⟨not_false, ⟨U⟩, h𝒱⟩) 0 r (by positivity) (by exact_mod_cast hr) (fun i n => LC i n 0) (fun i n => LC i n r) j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : ∀ i : Fin m, (0 : ℤ) - (i : ℕ) ≤ 0` using `fun i => by omega`. Use `⟨fun w => ?_, ?_⟩` and prove the remaining obligations. Use `core_basis S (fun i => zK q (TO q 1 s 𝒱) (0 - (i : ℕ)) (s - (i : ℕ)) (hne i) j) (muB γ q 1 s 𝒱 j) (quoM (TS γ q 1 s 𝒱) s j).toAddMonoidHom (T s le_rfl) (fun i n x => GlobalTheory.T.smooth_pull_basis_filtration γ q 1 s 𝒱 _ _ _ _ _ _ _ j x) bs (fun i => ?_) (quoM_bij _ s (fun T hT …` and prove the remaining obligations. Take `⟨E, hE⟩` from `zK_transport q (TO q 1 s 𝒱) (0 - (i : ℕ)) (s - (i : ℕ)) (hne i) j`. Establish `hb : Function.Bijective (quoK q (KS q s 𝒱) ((s - (i : ℕ) : ℕ) : ℤ) j)` using `GlobalTheory.T.quotient_filtration_bijective_of_cover hK q U s (s - i) (fun α => by have := hU α; have := i.2; omega) (by omega) 𝒱 h𝒱 j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : (((s - (i : ℕ) : ℕ) : ℤ)) = (s : ℤ) - (i : ℕ)` using `by have := i.2; omega`. Rewrite `hb` using `[e1]`. Establish `: E ∘ (zK q (TO q 1 s 𝒱) (0 - (i : ℕ)) (s - (i : ℕ)) (hne i) j) = quoK q (KS q s 𝒱) ((s : ℤ) - (i : ℕ)) j`. Use function extensionality and compare the values at `hE`. Conclude with `(Function.Bijective.of_comp_iff' E.bijective _).1 (this ▸ hb)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce `r hr g hg c φ hφ`. Use `core_filt S (fun i => zK q (TO q 1 s 𝒱) (0 - (i : ℕ)) (r - (i : ℕ)) (hne i) j) (muB γ q 1 s 𝒱 j) (quoM (TS γ q 1 s 𝒱) r j).toAddMonoidHom (T r hr) (fun i n x => GlobalTheory.T.smooth_pull_basis_filtration γ q 1 s 𝒱 _ _ _ _ _ _ _ j x) bs φ (r - c) (fun i => ?_) g hg` and prove the remaining obligations. Distinguish the cases in `hi : r - c ≤ (i : ℕ)`. Conclude with `Or.inl hi`. Use `Or.inr fun x hx => hφ x ?_` and prove the remaining obligations.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨E, hE⟩` from `zK_transport q (TO q 1 s 𝒱) (0 - (i : ℕ)) (r - (i : ℕ)) (hne i) j`. Establish `h0 : quoK q (KS q s 𝒱) ((r - (i : ℕ) : ℕ) : ℤ) j x = 0`. Establish `e1 : (((r - (i : ℕ) : ℕ) : ℤ)) = (r : ℤ) - (i : ℕ)` using `by omega`. Rewrite using `[e1, ← hE x, hx, map_zero]`. Establish `h1` using `((hK q U s hd 𝒱 h𝒱 j).2 (r - i) (by omega) x).2 h0`.
-
-Conclude with `GlobalTheory.LogCris.fil_anti _ _ (by omega) h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : BcOn False → KH.KIso → BasisB := by
   intro hB hK K B _ _ _ _ I γ s m hm hms X q U hU 𝒱 h𝒱 j a bs
@@ -437,7 +431,7 @@ theorem main : BcOn False → KH.KIso → BasisB := by
     exact GlobalTheory.LogCris.fil_anti _ _ (by omega) h1
 
 /- English proof (translation)
-The claim follows from `main`.
+A detailed English derivation is pending.
 -/
 theorem basisB_of_bcOn : BcOn False → KH.KIso → BasisB := main
 

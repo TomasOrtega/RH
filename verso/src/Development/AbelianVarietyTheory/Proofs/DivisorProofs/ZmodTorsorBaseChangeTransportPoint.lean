@@ -12,19 +12,19 @@ noncomputable section
 namespace GlobalTheory.KeyOriginCut
 
 /- English proof (translation)
-Introduce `A A₁ R R₁ _ _ _ _ _ _ _ j γ ρ ρ₁ β hβ hret hργ q hq DA _ _ actA hT`. Use `letI : Algebra (GlobalTheory.LocAcyc.GenFib A R) (GlobalTheory.LocAcyc.GenFib A₁ R₁) := β.toAlgebra`. Take `⟨act', -, hT'⟩` from `GlobalTheory.LocAcyc.isZModTorsor_baseChange (GlobalTheory.LocAcyc.GenFib A R) (GlobalTheory.LocAcyc.GenFib A₁ R₁) DA q hq actA hT`. Set `M₁` to `Algebra.algebraMapSubmonoid R₁ (nonZeroDivisors A₁)`. Set `f : R₁ →+* FractionRing A₁` to `(algebraMap A₁ (FractionRing A₁)).comp ρ₁`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hf : ∀ m : M₁, IsUnit (f m)`. Introduce and unpack `⟨m, hm⟩`. Take `⟨a, ha, rfl⟩` from `hm`. Establish `: ρ₁ (algebraMap A₁ R₁ a) = a`. Simplify using `using congrArg (fun φ : A₁ →+* A₁ => φ a) hret`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [f, RingHom.comp_apply, this]`. Conclude with `IsLocalization.map_units (FractionRing A₁) (⟨a, ha⟩ : nonZeroDivisors A₁)`. Set `ρK : GlobalTheory.LocAcyc.GenFib A₁ R₁ →+* FractionRing A₁` to `IsLocalization.lift (M := M₁) (S := GlobalTheory.LocAcyc.GenFib A₁ R₁) hf`. Establish `hρK : ρK.comp (algebraMap R₁ (GlobalTheory.LocAcyc.GenFib A₁ R₁)) = f` using `IsLocalization.lift_comp hf`. Use `⟨TensorProduct (GlobalTheory.LocAcyc.GenFib A R) (GlobalTheory.LocAcyc.GenFib A₁ R₁) DA, inferInstance, inferInstance, act', Algebra.TensorProduct.includeRight.toRingHom, hT', ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `b`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[← Algebra.TensorProduct.tmul_one_eq_one_tmul]`. Both sides reduce to the same expression. Introduce `σ hσ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hagree : ρK.comp β = σ.comp (algebraMap (GlobalTheory.LocAcyc.GenFib A R) DA)`. Apply `IsLocalization.ringHom_ext (Algebra.algebraMapSubmonoid R (nonZeroDivisors A))` to reduce the goal to its premises. Rewrite using `[hσ, RingHom.comp_assoc, hβ, ← RingHom.comp_assoc, hρK, ← hργ]`. Both sides reduce to the same expression. Use `letI : Algebra (GlobalTheory.LocAcyc.GenFib A R) (FractionRing A₁) := (ρK.comp β).toAlgebra`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `fA : GlobalTheory.LocAcyc.GenFib A₁ R₁ →ₐ[GlobalTheory.LocAcyc.GenFib A R] FractionRing A₁` to `{ ρK with commutes' := fun _ => rfl }`. Set `gA : DA →ₐ[GlobalTheory.LocAcyc.GenFib A R] FractionRing A₁` to `{ σ with commutes' := fun b => (congrArg (fun φ => φ b) hagree).symm }`. Use `⟨(Algebra.TensorProduct.productMap fA gA).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.productMap_apply_tmul, map_one, mul_one]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show ρK (algebraMap R₁ _ r) = _`. Rewrite using `[← RingHom.comp_apply ρK, hρK]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem torsor_baseChange_point :
     ∀ (A A₁ R R₁ : Type) [CommRing A] [CommRing A₁] [IsDomain A₁] [CommRing R] [Algebra A R]

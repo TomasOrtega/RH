@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-Introduce `h0`. Establish `hl : ((V.l : ℕ) : T.Fr) ≠ 0` using `Nat.cast_ne_zero.2 V.l_prime.ne_zero`. Use `h _ hl` as an intermediate fact. Rewrite `this` using `[map_natCast, V.v_l, h0]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem embOK_vl_ne {T : CDVR} {V : VF C} {ι : T.Fr →+* C} (h : EmbOK T V ι) :
     vV T.V ((V.l : ℕ) : T.Fr) ≠ 0 := by
@@ -24,9 +24,9 @@ theorem embOK_vl_ne {T : CDVR} {V : VF C} {ι : T.Fr →+* C} (h : EmbOK T V ι)
   simp at this
 
 /- English proof (translation)
-Unfold `vV`. Distinguish the cases in `ha : valV T.V (algebraMap T.V T.Fr a) = 0`. Simplify using `[ha]`. Establish `h1 : valV T.V (algebraMap T.V T.Fr a) ≤ 1` using `IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ a`. Use `(WithZero.log_le_log ha one_ne_zero).2 h1` as an intermediate fact.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem vV_nonneg (T : CDVR) (a : T.V) : 0 ≤ vV T.V (algebraMap T.V T.Fr a) := by
   unfold vV
@@ -39,7 +39,7 @@ theorem vV_nonneg (T : CDVR) (a : T.V) : 0 ≤ vV T.V (algebraMap T.V T.Fr a) :=
   omega
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ vV T.V ((V.l : ℕ) : T.Fr)`. Use `vV_nonneg T (V.l : T.V)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h1` using `embOK_vl_ne h`. Unfold `eOf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -58,11 +58,9 @@ variable {l : Level H} {c : Coeff l} {T : CDVR} {io : c.F →+* T.Fr} {ι : T.Fr
 variable {Orb : Type} {d : ℕ}
 
 /- English proof (translation)
-Establish `hx : IsIntegral ℤ (io (embK c τ x))` using `(Algebra.IsIntegral.isIntegral (R := ℤ) x).map_of_comp_eq (RingHom.id ℤ) (io.comp (embK c τ)) (Subsingleton.elim _ _)`. Establish `hx' : IsIntegral T.V (io (embK c τ x))` using `hx.tower_top`. Take `⟨z, hz⟩` from `(IsIntegrallyClosed.isIntegral_iff (K := T.Fr)).1 hx'`. Use `show V.Ge 0 (ι (io (embK c τ x)))`. Rewrite using `[← hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : algebraMap T.V T.Fr z = 0`. Rewrite using `[h0, map_zero]`. Conclude with `VF.Ge.zero 0`. Unfold `VF.Ge`. Rewrite using `[h _ h0, ← (embOK_eOf h).2]`.
-
-Use `vV_nonneg T z` as an intermediate fact. Conclude with `WithTop.coe_le_coe.2 (div_nonneg (by exact_mod_cast this) (by positivity))`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem em_int_holds (τ : E →+* ℂ) (x : 𝓞 E) (h : EmbOK T V ι) : V.Ge 0 (emA3 io ι τ x) := by
   have hx : IsIntegral ℤ (io (embK c τ x)) :=

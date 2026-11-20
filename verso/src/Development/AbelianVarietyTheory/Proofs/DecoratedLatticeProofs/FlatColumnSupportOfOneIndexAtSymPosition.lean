@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.LocFlat.SuppColProof
 
 /- English proof (translation)
-Use `ext`. Simplify using `[colE, upU]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_colE {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] (c p : ℕ) (β : n → k) :
     Matrix.GeneralLinearGroup.det (colE c p β) = 1 := by
@@ -19,7 +19,7 @@ theorem det_colE {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] (c 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[show om μ 1 (g⁻¹ * h) Φ = om μ (1 * 1) (g⁻¹ * h) Φ by rw [mul_one], om_mul]`. Use function extensionality and compare the values at `z`. Establish `hi : Matrix.GeneralLinearGroup.det g⁻¹ = 1` using `by rw [map_inv, hg, inv_one]`. Simplify using `[om, hi, nabs_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem om_colE {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
     (μ : kˣ →* ℂˣ) (g h : GL (n ⊕ Fin c) k) (hg : Matrix.GeneralLinearGroup.det g = 1)
@@ -35,11 +35,11 @@ end GlobalTheory.LocFlat.SuppColProof
 open GlobalTheory.LocFlat.SuppColProof in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν hν s κ S t _ _ hOne j c H r hr h hne`. Establish `hΦ : (S.T t).Phi j (c + 1) (by omega) ∈ SB _` using `(Chain.ofType_regular _ _ _ _ _).1 j (c + 1) (by omega)`. Take `⟨x, hx⟩` from `Function.ne_iff.mp hne`. Rewrite `hx` using `[GlobalTheory.T.flatColumnMap_eq_rootExchangeOperator_translate k S.ψ ν S.cond.continuous hν.1 _ _ (c + 1) (r + 1) (by omega) (by omega) _ (om_mem_SB _ 1 h hΦ) x]`. Establish `hf` using `om_colE (n' := XIx (Fin κ) t j ⊕ Fin (c + 1 + 1)) (S.μ (j + 1)) (colE (c + 1) (r + 1) fun a => x a (Sum.inr ())) h (det_colE _ _ _) ((S.T t).Phi j (c + 1) (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx' : opE S.ψ ν (r + 1) (om (S.μ (j + 1)) 1 ((colE (c + 1) (r + 1) fun a => x a (Sum.inr ()))⁻¹ * h) ((S.T t).Phi j (c + 1) (by omega))) x.toCols₁ ≠ 0`. Rewrite using `[← hf]`. Conclude with `hx`. Take `⟨q, hq, u, hu, e⟩` from `hOne j (c + 1) (by omega) (r + 1) (by omega) (by omega) _ (fun hz => hx' (by rw [hz]; rfl))`. Use `⟨fun a => x a (Sum.inr ()), q, hq, u, hu, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, ← e, mul_inv_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LocFlat.suppCol_of_oneIndexAt : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν → ∀ (s κ : ℕ) (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t], S.OneIndexAt t ν → GlobalTheory.LocFlat.SuppCol S t ν := by
   intro k _ _ _ _ _ _ ν hν s κ S t _ _ hOne j c H r hr h hne

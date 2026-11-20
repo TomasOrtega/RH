@@ -28,17 +28,17 @@ namespace GlobalTheory.IdemResLift
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D Q es hI hc Y`. Establish `h1 : ∀ i ∈ Q, es i * es i = es i` using `fun i hi => (hI i hi).1.1`. Establish `hx` using `GlobalTheory.PlaceDatum.cross_eq_zero (R := AE D) GlobalTheory.PlaceDatum.isUnit_natCast (cA D) es Q h1 hc`. Establish `horth : ∀ i ∈ Q, ∀ j ∈ Q, j ≠ i → es i * es j = 0` using `fun i hi j hj hji => GlobalTheory.PlaceDatum.idemAt_mul (hI i hi) (hI j hj) (hx i hi j hj) (hx j hj i hi) hji`. Establish `hfix : ∀ j ∈ Q, (∑ i ∈ Q, es i) * es j = es j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j hj`. Rewrite using `[Finset.sum_mul, Finset.sum_eq_single j (fun i hi hij => by rw [mul_comm]; exact horth j hj i hi hij) (fun h => absurd hj h), h1 j hj]`. Use `choose a ha using fun P : Pl D.host.E => Ideal.Quotient.mk_surjective (Y P)`. Establish `hint : ∀ P ∈ Q, toEAf D (es P) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun P hP => (GlobalTheory.IdemRes.resS_idem_eq_one D (es P) P (hI P hP)).1`. Establish `hmem : ∀ P ∈ Q, toEAf D (es P) * ((oToS D.host.F D.host.E (a P) : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun P hP => Subring.mul_mem _ (hint P hP) (Subtype.property _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `T : ∀ P, P ∈ Q → Formalism.L2.Herm.intAf D.host.F D.host.E` to `fun P hP => ⟨toEAf D (es P), hint P hP⟩ * oToS D.host.F D.host.E (a P)`. Use `⟨∑ P ∈ Q, toEAf D (es P) * ((oToS D.host.F D.host.E (a P) : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D), Subring.sum_mem _ hmem, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun P hP => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← RingHom.map_mul (toEAf D), hfix P hP]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Establish `hN : (⟨_, Subring.sum_mem _ hmem⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = ∑ x ∈ Q.attach, T x.1 x.2`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Conclude with `(Finset.sum_attach Q (fun P => toEAf D (es P) * ((oToS D.host.F D.host.E (a P) : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D))).symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hN, map_sum, Finset.sum_eq_single ⟨P, hP⟩]`. Take `⟨h, h1⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D (es P) P (hI P hP) show resS D.host.F P (⟨toEAf D (es P), hint P hP⟩ * oToS D.host.F D.host.E (a P)) = Y P`. Rewrite using `[map_mul, resS_oToS, ha, h1, one_mul]`. Introduce and unpack `⟨P', hP'⟩ - hne`. Establish `hne' : P' ≠ P` using `fun h => hne (Subtype.ext h)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show resS D.host.F P (⟨toEAf D (es P'), hint P' hP'⟩ * oToS D.host.F D.host.E (a P')) = 0`. Rewrite using `[map_mul, GlobalTheory.TameProd.resS_idem_eq_zero (hI P' hP') hne', zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_attach Q _) h`.
+A detailed English derivation is pending.
 -/
 theorem exists_int_lift : ∀ (D : D7) (Q : Finset (Pl D.host.E)) (es : Pl D.host.E → AE D), (∀ PP ∈ Q, Formalism.L2.NTheta.IsIdemAt (es PP) PP) → (∑ PP ∈ Q, es PP) * cA D (∑ PP ∈ Q, es PP) = 0 → ∀ Y : ∀ PP : Pl D.host.E, kP PP, ∃ N : EAf D, ∃ hN : N ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, toEAf D (∑ PP ∈ Q, es PP) * N = N ∧ ∀ PP ∈ Q, resS D.host.F PP ⟨N, hN⟩ = Y PP := by
   intro D Q es hI hc Y

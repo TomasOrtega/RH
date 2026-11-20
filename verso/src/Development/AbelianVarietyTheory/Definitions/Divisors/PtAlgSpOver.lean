@@ -34,20 +34,20 @@ def ptAlg (z : Pt (SpAlg R D) E) : D →ₐ[R] E :=
       exact congrArg (fun f ↦ CommRingCat.Hom.hom f r) h }
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (Spec.map_preimage (R := CommRingCat.of D) (S := CommRingCat.of E) z.left)`.
+A detailed English derivation is pending.
 -/
 theorem spOver_ptAlg (z : Pt (SpAlg R D) E) : spOver (ptAlg z) = z :=
   Over.OverMorphism.ext (Spec.map_preimage (R := CommRingCat.of D) (S := CommRingCat.of E) z.left)
 
 /- English proof (translation)
-Use `AlgHom.ext fun r ↦ ?_` and prove the remaining obligations. Conclude with `congrArg (fun f ↦ CommRingCat.Hom.hom f r) (Spec.preimage_map (CommRingCat.ofHom (α : D →+* E)))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ptAlg_spOver (α : D →ₐ[R] E) : ptAlg (spOver α) = α := by
   refine AlgHom.ext fun r ↦ ?_
   exact congrArg (fun f ↦ CommRingCat.Hom.hom f r) (Spec.preimage_map (CommRingCat.ofHom (α : D →+* E)))
 
 /- English proof (translation)
-Use `conv_lhs => rw [← spOver_ptAlg z, spOver_comp]`. Conclude with `ptAlg_spOver _`.
+A detailed English derivation is pending.
 -/
 theorem ptAlg_comp (ψ : E →ₐ[R] E') (z : Pt (SpAlg R D) E) : ptAlg (spOver ψ ≫ z) = ψ.comp (ptAlg z) := by
   conv_lhs => rw [← spOver_ptAlg z, spOver_comp]

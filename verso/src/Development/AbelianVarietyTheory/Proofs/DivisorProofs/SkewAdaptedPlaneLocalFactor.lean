@@ -16,13 +16,13 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.MixWP
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ e he`. Use `GlobalTheory.T.skew_adapted_plane_pair_constant hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ e he ?_` and prove the remaining obligations. Introduce `h₁ m hm`. Take `⟨hmaps, hheis, hinv⟩` from `GlobalTheory.T.skew_adapted_plane_pair_dual F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ e he h₁ m hm`. Establish `hspl` using `IsUWeilPair.isUSplitting hP.weil`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hspl₁` using `IsUWeilPair.isUSplitting hP₁.weil`. Establish `hadm : ∀ l ∈ (adeleClass F).adm (Fin n × Fin d₁), l ∘ₗ (om₁ (1, h₁⁻¹) ∘ₗ e ∘ₗ om (1, m)) ∈ (adeleClass F).adm (Fin n × Fin d)`. Introduce `l hl`. Establish `h1` using `hspl₁.adm (1, h₁⁻¹) l hl`. Establish `h2` using `GlobalTheory.T.eigen_intertwiner_good_models F E σ B n d n d₁ X W X W₁ M M₁ 1 H'.ι (iso0 n H') e hP.good hP₁.good he _ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hspl.adm (1, m) _ h2`. Simplify `h3` using `[LinearMap.comp_assoc]`. Take `⟨c, hc⟩` from `GlobalTheory.T.skew_adapted_plane_pair_eigen hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ e he _ hmaps hheis hinv hadm`. Use `⟨c, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `key` using `hc Φ hΦ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hinv1 : ∀ Ψ, om₁ (1, h₁) (om₁ (1, h₁⁻¹) Ψ) = Ψ`. Introduce `Ψ`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, mul_inv_cancel, Prod.mk_one_one, map_one, Module.End.one_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem evalZero_levi_unitary : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

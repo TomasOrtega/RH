@@ -16,7 +16,7 @@ variable {K : Type*} [CommRing K] (cj : K →+* K) {n : Type*} [Fintype n] [Deci
 def cjT {m n : Type*} (A : Matrix m n K) : Matrix n m K := (A.map cj)ᵀ
 
 /- English proof (translation)
-Unfold `cjT`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cjT_mul {l m n : Type*} [Fintype m] (A : Matrix l m K) (B : Matrix m n K) :
     cjT cj (A * B) = cjT cj B * cjT cj A := by
@@ -24,13 +24,13 @@ theorem cjT_mul {l m n : Type*} [Fintype m] (A : Matrix l m K) (B : Matrix m n K
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cjT, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cjT_cjT {m n : Type*} (h : ∀ x, cj (cj x) = x) (A : Matrix m n K) : cjT cj (cjT cj A) = A := by
   ext i j; simp [cjT, h]
 
 /- English proof (translation)
-Unfold `cjT`. Rewrite using `[Matrix.fromBlocks_map, Matrix.fromBlocks_transpose]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cjT_fromBlocks {a b c d : Type*} (A : Matrix a c K) (B : Matrix a d K) (C : Matrix b c K) (D : Matrix b d K) :
     cjT cj (Matrix.fromBlocks A B C D) = Matrix.fromBlocks (cjT cj A) (cjT cj C) (cjT cj B) (cjT cj D) := by
@@ -38,15 +38,15 @@ theorem cjT_fromBlocks {a b c d : Type*} (A : Matrix a c K) (B : Matrix a d K) (
   rw [Matrix.fromBlocks_map, Matrix.fromBlocks_transpose]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cjT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cjT_zero {m n : Type*} : cjT cj (0 : Matrix m n K) = 0 := by
   ext i j; simp [cjT]
 
 /- English proof (translation)
-Rewrite using `[cjT_fromBlocks, cjT_zero, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]`. Rewrite using `[h1, h3, ← h2]`. Apply the tactic sequence `congr 1 <;> first`. Consider the case `(simp only [Matrix.mul_assoc]; done)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Consider the case `(rw [cjT_mul, cjT_mul, cjT_cjT cj h]; simp only [Matrix.mul_assoc])`.
+Treat this case separately.
 -/
 theorem block_cong (h : ∀ x, cj (cj x) = x) (G₁ G₁' X X' G₂ G₂' Mm U : Matrix n n K)
     (h1 : cjT cj Mm * G₁ * Mm = G₁') (h2 : cjT cj Mm * X * U = X') (h3 : cjT cj U * G₂ * U = G₂') :
@@ -70,9 +70,9 @@ def gDiag (p : PlF D) (T : D.host.E) : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 
     (D.s.atP p).ιE (if a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS then -T else 0)
 
 /- English proof (translation)
-Establish `hcj : (M p).L.cj = (D.s.atP p).cj` using `(hA p).2.2.1`. Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using `[GaLoc, gDiag, Ga, phi]`. Simplify using `[GaLoc, ZhatLoc, Ga, phi]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [GaLoc, Matrix.of_apply, phi, Sum.elim_inl, Sum.elim_inr, Ga, Matrix.fromBlocks_apply₂₁, Matrix.conjTranspose_apply, cjT, Matrix.transpose_apply, Matrix.map_apply, ZhatLoc, RingHom.coe_coe]`. Rewrite using `[map_mul, map_mul, (M p).L.cj_cj, hcj, Formalism.MainNotions.S.Inh.tie_cj_iota]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[GaLoc, gDiag, Ga, phi]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem gaLoc_blocks (hA : ∀ q, Agree δ M q) (p : PlF D) (T T' : D.host.E) (Z : MatZ D) :
     GaLoc M δ p T T' Z = Matrix.fromBlocks (gDiag δ M p T) (ZhatLoc M δ p Z)

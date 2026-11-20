@@ -17,7 +17,7 @@ section Alg
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' ha`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent fun s => by rw [ha s]; exact IsNilpotent.zero`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem hasSubst_finite_of_constantCoeff_eq_zero {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ K}
     (ha : ∀ s, constantCoeff (a s) = 0) : HasSubst a := by
@@ -27,21 +27,21 @@ private theorem hasSubst_finite_of_constantCoeff_eq_zero {σ τ : Type} [Finite 
   | exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent fun s => by rw [ha s]; exact IsNilpotent.zero
 
 /- English proof (translation)
-Apply the tactic sequence `exact hasSubst_finite_of_constantCoeff_eq_zero fun i => by fin_cases i <;> first | exact ha | exact hb | simp [ha, hb]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hs2 {τ : Type} {a b : MvPowerSeries τ K} (ha : constantCoeff a = 0)
     (hb : constantCoeff b = 0) : HasSubst ![a, b] := by
   exact hasSubst_finite_of_constantCoeff_eq_zero fun i => by fin_cases i <;> first | exact ha | exact hb | simp [ha, hb]
 
 /- English proof (translation)
-Apply the tactic sequence `exact hasSubst_finite_of_constantCoeff_eq_zero fun i => by fin_cases i <;> first | exact ha | exact hb | exact hc | simp [ha, hb, hc]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hs3 {τ : Type} {a b c : MvPowerSeries τ K} (ha : constantCoeff a = 0)
     (hb : constantCoeff b = 0) (hc : constantCoeff c = 0) : HasSubst ![a, b, c] := by
   exact hasSubst_finite_of_constantCoeff_eq_zero fun i => by fin_cases i <;> first | exact ha | exact hb | exact hc | simp [ha, hb, hc]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact subst_comp_subst_apply (PowerSeries.HasSubst.const ha) hb f`. Consider the case `exact subst_comp_subst_apply ha hb f`. Consider the case `exact subst_comp_subst_apply (hasSubst_of_constantCoeff_nilpotent fun _ => ha) hb f`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem subst_subst1 {ι κ : Type} {b : ι → MvPowerSeries κ K} (hb : HasSubst b)
     {a : MvPowerSeries ι K} (ha : PowerSeries.HasSubst a) (f : PowerSeries K) :
@@ -52,7 +52,7 @@ theorem subst_subst1 {ι κ : Type} {b : ι → MvPowerSeries κ K} (hb : HasSub
   | exact subst_comp_subst_apply (hasSubst_of_constantCoeff_nilpotent fun _ => ha) hb f
 
 /- English proof (translation)
-Unfold `at1`. Rewrite using `[subst_subst1 hb (PowerSeries.HasSubst.of_constantCoeff_zero (a := (X x : MvPowerSeries ι K)) (by simp)) f, subst_X hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_single_var {ι κ : Type} {b : ι → MvPowerSeries κ K} (hb : HasSubst b)
     (x : ι) (f : PowerSeries K) : subst b (at1 x f) = PowerSeries.subst (b x) f := by
@@ -61,7 +61,7 @@ theorem subst_single_var {ι κ : Type} {b : ι → MvPowerSeries κ K} (hb : Ha
     subst_X hb]
 
 /- English proof (translation)
-Unfold `at1`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero (a := (X x : MvPowerSeries ι K)) (by simp) f hf`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem constantCoeff_inVar_eq_zero {ι : Type} (x : ι) {f : PowerSeries K}
     (hf : PowerSeries.constantCoeff f = 0) : constantCoeff (at1 x f) = 0 := by
@@ -69,7 +69,7 @@ theorem constantCoeff_inVar_eq_zero {ι : Type} (x : ι) {f : PowerSeries K}
   exact PowerSeries.constantCoeff_subst_eq_zero (a := (X x : MvPowerSeries ι K)) (by simp) f hf
 
 /- English proof (translation)
-Rewrite using `[subst_comp_subst_apply (hs2 ha hb) hφ]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst2_comp {ι κ : Type} {φ : ι → MvPowerSeries κ K} (hφ : HasSubst φ)
     {a b : MvPowerSeries ι K} (ha : constantCoeff a = 0) (hb : constantCoeff b = 0)
@@ -81,13 +81,13 @@ theorem subst2_comp {ι κ : Type} {φ : ι → MvPowerSeries κ K} (hφ : HasSu
   fin_cases i <;> rfl
 
 /- English proof (translation)
-The claim follows from `PowerSeries.constantCoeff_subst_eq_zero ha f hf`.
+A detailed English derivation is pending.
 -/
 theorem cc_ps {τ : Type} {a : MvPowerSeries τ K} (ha : constantCoeff a = 0) {f : PowerSeries K}
     (hf : PowerSeries.constantCoeff f = 0) : constantCoeff (PowerSeries.subst a f) = 0 := PowerSeries.constantCoeff_subst_eq_zero ha f hf
 
 /- English proof (translation)
-Establish `h1 : HasSubst (fun _ : Unit => a)` using `hasSubst_finite_of_constantCoeff_eq_zero fun _ => ha`. Conclude with `(subst_subst1 h1 (PowerSeries.HasSubst.of_constantCoeff_zero he) f).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ps_comp {τ : Type} {a : MvPowerSeries τ K} (ha : constantCoeff a = 0) {e : PowerSeries K}
     (he : PowerSeries.constantCoeff e = 0) (f : PowerSeries K) :
@@ -96,7 +96,7 @@ theorem ps_comp {τ : Type} {a : MvPowerSeries τ K} (ha : constantCoeff a = 0) 
   exact (subst_subst1 h1 (PowerSeries.HasSubst.of_constantCoeff_zero he) f).symm
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [lgF]`. Consider the case `(rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]; simp [lgF])`. Consider the case `(show PowerSeries.coeff 0 (lgF K l) = 0; simp [lgF])`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cc_lgF {l : ℕ} (_hl : 2 ≤ l) : PowerSeries.constantCoeff (lgF K l) = 0 := by
   first
@@ -105,7 +105,7 @@ theorem cc_lgF {l : ℕ} (_hl : 2 ≤ l) : PowerSeries.constantCoeff (lgF K l) =
   | (show PowerSeries.coeff 0 (lgF K l) = 0; simp [lgF])
 
 /- English proof (translation)
-Rewrite using `[ps_comp ha (cc_lgF hl) (expF K l), (hE K l hl).2.2.1]`. Use `first`. Consider the case `exact PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero ha)`. Consider the case `simp [PowerSeries.subst_X, PowerSeries.HasSubst.of_constantCoeff_zero ha]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exp_log (hE : ExpSpec) {l : ℕ} (hl : 2 ≤ l) {τ : Type} {a : MvPowerSeries τ K}
     (ha : constantCoeff a = 0) :
@@ -116,11 +116,9 @@ theorem exp_log (hE : ExpSpec) {l : ℕ} (hl : 2 ≤ l) {τ : Type} {a : MvPower
   | simp [PowerSeries.subst_X, PowerSeries.HasSubst.of_constantCoeff_zero ha]
 
 /- English proof (translation)
-Establish `hA : constantCoeff (PowerSeries.subst a (lgF K l)) = 0` using `cc_ps ha (cc_lgF hl)`. Establish `hB : constantCoeff (PowerSeries.subst b (lgF K l)) = 0` using `cc_ps hb (cc_lgF hl)`. Establish `hE0` using `(hE K l hl).1`. Establish `h2` using `hs2 hA hB`. Unfold `addC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[subst_comp_subst_apply (hs2 (constantCoeff_inVar_eq_zero (0 : Fin 2) hE0) (constantCoeff_inVar_eq_zero (1 : Fin 2) hE0)) h2]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `(subst_single_var h2 0 (expF K l)).trans (exp_log hE hl ha)`.
-
-Conclude with `(subst_single_var h2 1 (expF K l)).trans (exp_log hE hl hb)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem addC_log (hE : ExpSpec) {l : ℕ} (hl : 2 ≤ l) {τ : Type} {a b : MvPowerSeries τ K}
     (ha : constantCoeff a = 0) (hb : constantCoeff b = 0) (be0 : MvPowerSeries (Fin 2) K) :
@@ -139,7 +137,7 @@ theorem addC_log (hE : ExpSpec) {l : ℕ} (hl : 2 ≤ l) {τ : Type} {a b : MvPo
   · exact (subst_single_var h2 1 (expF K l)).trans (exp_log hE hl hb)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MvPowerSeries.subst_add hφ f g`. Consider the case `(rw [← coe_substAlgHom hφ]; exact map_add _ f g)`. Consider the case `exact map_add (substAlgHom hφ) f g`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem mvSubst_add {ι κ : Type} {φ : ι → MvPowerSeries κ K} (hφ : HasSubst φ)
     (f g : MvPowerSeries ι K) : subst φ (f + g) = subst φ f + subst φ g := by
@@ -149,7 +147,7 @@ private theorem mvSubst_add {ι κ : Type} {φ : ι → MvPowerSeries κ K} (hφ
   | exact map_add (substAlgHom hφ) f g
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MvPowerSeries.subst_sub hφ f g`. Consider the case `(rw [← coe_substAlgHom hφ]; exact map_sub _ f g)`. Consider the case `exact map_sub (substAlgHom hφ) f g`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem mvSubst_sub {ι κ : Type} {φ : ι → MvPowerSeries κ K} (hφ : HasSubst φ)
     (f g : MvPowerSeries ι K) : subst φ (f - g) = subst φ f - subst φ g := by
@@ -159,9 +157,9 @@ private theorem mvSubst_sub {ι κ : Type} {φ : ι → MvPowerSeries κ K} (hφ
   | exact map_sub (substAlgHom hφ) f g
 
 /- English proof (translation)
-Establish `h2` using `hs2 ha hb`. Establish `e : PowerSeries.subst F (lgF K l) = at1 0 (lgF K l) + at1 1 (lgF K l)`. Unfold `cob at hF`. Rewrite `hF` using `[sub_sub, sub_eq_zero]`. Conclude with `hF`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `congrArg (subst ![a, b]) e`. Rewrite `h` using `[mvSubst_add h2, subst_subst1 h2 (PowerSeries.HasSubst.of_constantCoeff_zero hF0), subst_single_var h2, subst_single_var h2]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_law {l : ℕ} {F : MvPowerSeries (Fin 2) K} (hF0 : constantCoeff F = 0)
     (hF : cob F (lgF K l) = 0) {τ : Type} {a b : MvPowerSeries τ K}
@@ -179,11 +177,11 @@ theorem log_law {l : ℕ} {F : MvPowerSeries (Fin 2) K} (hF0 : constantCoeff F =
   exact h
 
 /- English proof (translation)
-Unfold `in3`. Establish `hx : ∀ i : Fin 2, constantCoeff (![(X 0 : MvPowerSeries (Fin 3) K), X 1] i) = 0`. Apply the tactic sequence `intro i; fin_cases i <;> simp`. Use `first`. Consider the case `exact constantCoeff_subst_eq_zero hx F hF0`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) hx hF0`. Consider the case `exact constantCoeff_subst_eq_zero hx hF0`. Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) hx F hF0`. Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) F hx hF0`. Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) hF0 hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) F hF0 hx`. Consider the case `(apply constantCoeff_subst_eq_zero <;> first | assumption | exact hasSubst_finite_of_constantCoeff_eq_zero hx)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem constantCoeff_in3_eq_zero {F : MvPowerSeries (Fin 2) K} (hF0 : constantCoeff F = 0) :
     constantCoeff (in3 F) = 0 := by
@@ -201,11 +199,9 @@ private theorem constantCoeff_in3_eq_zero {F : MvPowerSeries (Fin 2) K} (hF0 : c
   | (apply constantCoeff_subst_eq_zero <;> first | assumption | exact hasSubst_finite_of_constantCoeff_eq_zero hx)
 
 /- English proof (translation)
-Establish `h3` using `hs3 ha hb hc`. Establish `hX : ∀ i : Fin 3, constantCoeff (X i : MvPowerSeries (Fin 3) K) = 0` using `fun i => by simp`. Establish `e1 : subst ![a, b, c] (in3 F) = subst ![a, b] F`. Unfold `in3`. Rewrite using `[subst2_comp h3 (hX 0) (hX 1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [subst_X h3]`. Apply the tactic sequence `first | rfl | simp`. Unfold `d1`. Rewrite using `[mvSubst_sub h3, mvSubst_sub h3, subst2_comp h3 (constantCoeff_in3_eq_zero hF0) (hX 2), subst2_comp h3 (hX 0) (hX 2), subst2_comp h3 (hX 1) (hX 2), e1]`. Simplify using `only [subst_X h3]`.
-
-Apply the tactic sequence `first | rfl | simp`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subst_first_coboundary_three {F : MvPowerSeries (Fin 2) K} (hF0 : constantCoeff F = 0) {τ : Type}
     {a b c : MvPowerSeries τ K} (ha : constantCoeff a = 0) (hb : constantCoeff b = 0)
@@ -226,9 +222,9 @@ theorem subst_first_coboundary_three {F : MvPowerSeries (Fin 2) K} (hF0 : consta
   first | rfl | simp
 
 /- English proof (translation)
-Establish `h2` using `hs2 ha hb`. Establish `hX : ∀ i : Fin 2, constantCoeff (X i : MvPowerSeries (Fin 2) K) = 0` using `fun i => by simp`. Unfold `swap2`. Rewrite using `[subst2_comp h2 (hX 1) (hX 0)]`. Simplify using `only [subst_X h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `first | rfl | simp`.
+A detailed English derivation is pending.
 -/
 theorem subst_swap2 {τ : Type} {a b : MvPowerSeries τ K} (ha : constantCoeff a = 0)
     (hb : constantCoeff b = 0) (H : MvPowerSeries (Fin 2) K) :
@@ -244,7 +240,7 @@ def mulF (K : Type) [Field K] (l : ℕ) (c : K) : PowerSeries K :=
   PowerSeries.subst (PowerSeries.C c * lgF K l) (expF K l)
 
 /- English proof (translation)
-Use `first`. Consider the case `rw [map_mul, cc_lgF hl, mul_zero]`. Consider the case `simp [cc_lgF hl]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cc_C_mul_lgF {l : ℕ} (hl : 2 ≤ l) (c : K) :
     PowerSeries.constantCoeff (PowerSeries.C c * lgF K l) = 0 := by
@@ -253,9 +249,9 @@ theorem cc_C_mul_lgF {l : ℕ} (hl : 2 ≤ l) (c : K) :
   | simp [cc_lgF hl]
 
 /- English proof (translation)
-Use `⟨cc_ps (τ := Unit) (cc_C_mul_lgF hl c) (hE K l hl).1, ?_⟩` and prove the remaining obligations. Establish `h1` using `ps_comp (τ := Unit) (a := PowerSeries.C c * lgF K l) (cc_C_mul_lgF hl c) (hE K l hl).1 (lgF K l)`. Rewrite `h1` using `[(hE K l hl).2.1]`. Use `first`. Consider the case `exact h1.trans (PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero (cc_C_mul_lgF hl c)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `(unfold mulF; rw [h1]; simp [PowerSeries.subst_X, PowerSeries.HasSubst.of_constantCoeff_zero (cc_C_mul_lgF hl c)])`.
+A detailed English derivation is pending.
 -/
 theorem isMul_mulF (hE : ExpSpec) {l : ℕ} (hl : 2 ≤ l) (c : K) : IsMul l c (mulF K l c) := by
   refine ⟨cc_ps (τ := Unit) (cc_C_mul_lgF hl c) (hE K l hl).1, ?_⟩
@@ -267,9 +263,9 @@ theorem isMul_mulF (hE : ExpSpec) {l : ℕ} (hl : 2 ≤ l) (c : K) : IsMul l c (
   | (unfold mulF; rw [h1]; simp [PowerSeries.subst_X, PowerSeries.HasSubst.of_constantCoeff_zero (cc_C_mul_lgF hl c)])
 
 /- English proof (translation)
-Establish `h` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. Use `first`. Consider the case `(simp only [← PowerSeries.smul_eq_C_mul, ← MvPowerSeries.smul_eq_C_mul]; exact PowerSeries.subst_smul h c f)`. Consider the case `(rw [PowerSeries.subst_mul h]; congr 1; simp [PowerSeries.subst_C h])`. Consider the case `(rw [← PowerSeries.coe_substAlgHom h, map_mul]; congr 1; exact (PowerSeries.substAlgHom h).commutes c)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [PowerSeries.subst_mul h]`.
+A detailed English derivation is pending.
 -/
 private theorem powerSeries_subst_C_mul {τ : Type} {a : MvPowerSeries τ K} (ha : constantCoeff a = 0)
     (c : K) (f : PowerSeries K) :
@@ -282,7 +278,7 @@ private theorem powerSeries_subst_C_mul {τ : Type} {a : MvPowerSeries τ K} (ha
   | simp [PowerSeries.subst_mul h]
 
 /- English proof (translation)
-Rewrite using `[ps_comp ha he.1 (lgF K l), he.2]`. Conclude with `powerSeries_subst_C_mul ha c (lgF K l)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_mul {l : ℕ} {c : K} {e : PowerSeries K} (he : IsMul l c e) {τ : Type}
     {a : MvPowerSeries τ K} (ha : constantCoeff a = 0) :
@@ -292,7 +288,7 @@ theorem log_mul {l : ℕ} {c : K} {e : PowerSeries K} (he : IsMul l c e) {τ : T
   exact powerSeries_subst_C_mul ha c (lgF K l)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MvPowerSeries.subst_sum hφ s f`. Consider the case `(rw [← coe_substAlgHom hφ]; exact map_sum _ f s)`. Consider the case `exact map_sum (substAlgHom hφ) f s`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem subst_sum {ι κ α : Type} {φ : ι → MvPowerSeries κ K} (hφ : HasSubst φ) (s : Finset α)
     (f : α → MvPowerSeries ι K) : subst φ (∑ r ∈ s, f r) = ∑ r ∈ s, subst φ (f r) := by
@@ -302,7 +298,7 @@ theorem subst_sum {ι κ α : Type} {φ : ι → MvPowerSeries κ K} (hφ : HasS
   | exact map_sum (substAlgHom hφ) f s
 
 /- English proof (translation)
-Unfold `linE`. Simplify using `[apply_ite]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cc_linE {d : ℕ} [NeZero d] (σ : K →+* K) (c : K) :
     constantCoeff (linE (d := d) σ c) = 0 := by
@@ -310,7 +306,7 @@ theorem cc_linE {d : ℕ} [NeZero d] (σ : K →+* K) (c : K) :
   simp [apply_ite]
 
 /- English proof (translation)
-Unfold `linO`. Simplify using `[apply_ite]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cc_linO {d : ℕ} [NeZero d] (σ : K →+* K) (c : K) :
     constantCoeff (linO (d := d) σ c) = 0 := by
@@ -318,7 +314,7 @@ theorem cc_linO {d : ℕ} [NeZero d] (σ : K →+* K) (c : K) :
   simp [apply_ite]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MvPowerSeries.subst_zero hφ`. Consider the case `(rw [← coe_substAlgHom hφ]; exact map_zero _)`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem subst_zero' {ι κ : Type} {φ : ι → MvPowerSeries κ K} (hφ : HasSubst φ) :
     subst φ (0 : MvPowerSeries ι K) = 0 := by
@@ -334,7 +330,7 @@ section NormedLin
 variable {K : Type} [NormedField K]
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [← MvPowerSeries.smul_eq_C_mul]; rw [MvPowerSeries.subst_smul hL, subst_X hL])`. Consider the case `(rw [← coe_substAlgHom hL, map_mul, coe_substAlgHom hL, subst_X hL]; congr 1; simp)`. Consider the case `simp [subst_X hL, MvPowerSeries.subst_mul hL]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem subst_C_mul_X_eq_C_mul {ι τ : Type} {L : ι → MvPowerSeries τ K} (hL : HasSubst L) (x : K)
     (s : ι) : subst L (C x * X s) = C x * L s := by
@@ -344,7 +340,7 @@ private theorem subst_C_mul_X_eq_C_mul {ι τ : Type} {L : ι → MvPowerSeries 
   | simp [subst_X hL, MvPowerSeries.subst_mul hL]
 
 /- English proof (translation)
-Unfold `linE linEL`. Rewrite using `[subst_sum hL]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> first | exact subst_zero' hL | exact subst_C_mul_X_eq_C_mul hL _ s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_linE {d : ℕ} [NeZero d] (σ : K →+* K) (c : K) {τ : Type}
     {L : ZMod d → MvPowerSeries τ K} (hL : HasSubst L) :
@@ -355,7 +351,7 @@ theorem subst_linE {d : ℕ} [NeZero d] (σ : K →+* K) (c : K) {τ : Type}
   split_ifs <;> first | exact subst_zero' hL | exact subst_C_mul_X_eq_C_mul hL _ s
 
 /- English proof (translation)
-Unfold `linO linOL`. Rewrite using `[subst_sum hL]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> first | exact subst_zero' hL | exact subst_C_mul_X_eq_C_mul hL _ s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_linO {d : ℕ} [NeZero d] (σ : K →+* K) (c : K) {τ : Type}
     {L : ZMod d → MvPowerSeries τ K} (hL : HasSubst L) :
@@ -372,7 +368,7 @@ section Normed
 variable {K : Type} [NormedField K] [CharZero K]
 
 /- English proof (translation)
-Establish `e : A - (B + C) = A - B - C - 0` using `by rw [sub_zero, sub_sub]`. Unfold `Simeq at h ⊢`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem simeq_of_sub {ι : Type} {A B C : MvPowerSeries ι K} (h : Simeq (A - B - C) 0) :
     Simeq A (B + C) := by
@@ -388,9 +384,9 @@ end Pair
 open Pair
 
 /- English proof (translation)
-Unfold `SubstTil`. Introduce `K _ l d _ σ _hl be0 ι _ om oms τ _ L hL0`. Establish `hL : HasSubst L` using `hasSubst_finite_of_constantCoeff_eq_zero hL0`. Unfold `beTil`. Rewrite using `[subst_sum hL]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[subst2_comp hL (cc_linE σ (oms r)) (cc_linO σ (om r)), subst_linE σ (oms r) hL, subst_linO σ (om r) hL]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_tilde : SubstTil := by
   unfold SubstTil
@@ -403,11 +399,11 @@ theorem subst_tilde : SubstTil := by
     subst_linO σ (om r) hL]
 
 /- English proof (translation)
-Establish `hx : ∀ i : Fin 2, constantCoeff (![a, b] i) = 0`. Apply the tactic sequence `intro i; fin_cases i <;> first | exact ha | exact hb | simp [ha, hb]`. Use `first`. Consider the case `exact constantCoeff_subst_eq_zero hx F hF0`. Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) hx hF0`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact constantCoeff_subst_eq_zero hx hF0`. Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) hx F hF0`. Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) F hx hF0`. Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) hF0 hx`. Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) F hF0 hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(apply constantCoeff_subst_eq_zero <;> first | assumption | exact hasSubst_finite_of_constantCoeff_eq_zero hx)`.
+A detailed English derivation is pending.
 -/
 private theorem constantCoeff_subst_vec_pair_eq_zero {K : Type} [Field K] {τ : Type} {a b : MvPowerSeries τ K}
     (ha : constantCoeff a = 0) (hb : constantCoeff b = 0) {F : MvPowerSeries (Fin 2) K}
@@ -425,29 +421,27 @@ private theorem constantCoeff_subst_vec_pair_eq_zero {K : Type} [Field K] {τ : 
   | (apply constantCoeff_subst_eq_zero <;> first | assumption | exact hasSubst_finite_of_constantCoeff_eq_zero hx)
 
 /- English proof (translation)
-Establish `hS : SimeqRules` using `by first`. Consider the case `exact Formalism.InvariantFactorPaths.G7.equivalence_rules`. Consider the case `exact equivalence_rules`. Unfold `PairRules`. Introduce `K _ _ _ l σ hU F hF be0 hF1 τ _`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hF0, -, hFc⟩` from `hF`. Take `⟨-, hd, hds⟩` from `hF1`. Establish `hl : 2 ≤ l` using `by have := hU.2.1; omega`. Establish `lift : ∀ G : MvPowerSeries τ K, IP l σ G → ∃ g : MvPowerSeries τ K, constantCoeff g = 0 ∧ Integral g ∧ PowerSeries.subst g (lgF K l) = G` using `fun G hG => hIP K l σ hU τ G hG`. Establish `tr : ∀ g h : MvPowerSeries τ K, constantCoeff g = 0 → constantCoeff h = 0 →`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `![PowerSeries.subst g (lgF K l), PowerSeries.subst h (lgF K l)] (addC l be0) =` using the available equality. Substitute `![g, h] be0 :=` using the available equality. Use `fun g h hg hh => addC_log hE hl hg hh be0`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `G G' H hG hG' hH`.
+Substitute using the available equality. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg0, hgI, rfl⟩` from `lift G hG`. Take `⟨g', hg0', hgI', rfl⟩` from `lift G' hG'`. Take `⟨h, hh0, hhI, rfl⟩` from `lift H hH`. Rewrite using `[← log_law hF0 hFc hg0 hg0', tr _ _ (constantCoeff_subst_vec_pair_eq_zero hg0 hg0' hF0) hh0, tr _ _ hg0 hh0, tr _ _ hg0' hh0]`. Apply `simeq_of_sub` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h0 : ∀ i, constantCoeff (![g, g', h] i) = 0`. Apply the tactic sequence `intro i; fin_cases i <;> first | exact hg0 | exact hg0' | exact hh0`. Establish `hI : ∀ i, Integral (![g, g', h] i)`. Apply the tactic sequence `intro i; fin_cases i <;> first | exact hgI | exact hgI' | exact hhI`. Establish `hh` using `(hS K (Fin 3)).2.2.2.2 τ (d1 F be0) 0 ![g, g', h] h0 hI hd`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hh` using `[subst_first_coboundary_three hF0 hg0 hg0' hh0, subst_zero' (hs3 hg0 hg0' hh0)]`. Conclude with `hh`. Introduce `G H H' hG hH hH'`. Take `⟨g, hg0, hgI, rfl⟩` from `lift G hG`. Take `⟨h, hh0, hhI, rfl⟩` from `lift H hH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h', hh0', hhI', rfl⟩` from `lift H' hH'`. Rewrite using `[← log_law hF0 hFc hh0 hh0', tr _ _ hg0 (constantCoeff_subst_vec_pair_eq_zero hh0 hh0' hF0), tr _ _ hg0 hh0, tr _ _ hg0 hh0']`. Apply `simeq_of_sub` to reduce the goal to its premises. Establish `h0 : ∀ i, constantCoeff (![h, h', g] i) = 0`. Apply the tactic sequence `intro i; fin_cases i <;> first | exact hh0 | exact hh0' | exact hg0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hI : ∀ i, Integral (![h, h', g] i)`. Apply the tactic sequence `intro i; fin_cases i <;> first | exact hhI | exact hhI' | exact hgI`. Establish `hh` using `(hS K (Fin 3)).2.2.2.2 τ (d1 F (swap2 be0)) 0 ![h, h', g] h0 hI hds`. Rewrite `hh` using `[subst_first_coboundary_three hF0 hh0 hh0' hg0, subst_zero' (hs3 hh0 hh0' hg0), subst_swap2 (constantCoeff_subst_vec_pair_eq_zero hh0 hh0' hF0) hg0, subst_swap2 hh0 hg0, subst_swap2 hh0' hg0]`. Conclude with `hh`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `hF2 c G H hc hcc hG hH`. Take `⟨g, hg0, hgI, rfl⟩` from `lift G hG`. Take `⟨h, hh0, hhI, rfl⟩` from `lift H hH`. Establish `he` using `isMul_mulF hE hl c`. Establish `he'` using `isMul_mulF hE hl (σ c)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← log_mul he hg0, ← log_mul he' hh0, tr _ _ (cc_ps hg0 he.1) hh0, tr _ _ hg0 (cc_ps hh0 he'.1)]`. Establish `h0 : ∀ i, constantCoeff (![g, h] i) = 0`. Apply the tactic sequence `intro i; fin_cases i <;> first | exact hg0 | exact hh0`. Establish `hI : ∀ i, Integral (![g, h] i)`. Apply the tactic sequence `intro i; fin_cases i <;> first | exact hgI | exact hhI`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh` using `(hS K (Fin 2)).2.2.2.2 τ _ _ ![g, h] h0 hI (hF2 c hc hcc _ _ he he')`. Establish `h2` using `hs2 hg0 hh0`. Establish `hX : ∀ i : Fin 2, constantCoeff (X i : MvPowerSeries (Fin 2) K) = 0` using `fun i => by simp`. Rewrite `hh` using `[subst2_comp h2 (constantCoeff_inVar_eq_zero (0 : Fin 2) he.1) (hX 1), subst2_comp h2 (hX 0) (constantCoeff_inVar_eq_zero (1 : Fin 2) he'.1), subst_single_var h2, subst_single_var h2]`. Simplify using `only [subst_X h2] at hh`.
-
-Conclude with `hh`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem PairRules_of (hE : ExpSpec) (hIP : IPLemma) : PairRules := by
   have hS : SimeqRules := by

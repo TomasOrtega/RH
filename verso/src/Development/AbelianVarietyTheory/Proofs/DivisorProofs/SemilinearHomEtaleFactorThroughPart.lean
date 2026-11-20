@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.PDivGroup
 
 /- English proof (translation)
-Establish `hmem : a - algebraMap k (C.A n) (counit (R` using `k) a) ∈ augIdeal k (C.A n) := by`. Rewrite using `[mem_augIdeal_iff', map_sub, ← Bialgebra.counitAlgHom_apply (R := k), ← Bialgebra.counitAlgHom_apply (R := k), AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. It suffices to establish `h : i₀.app n ((x.app n).toRingHom (a - algebraMap k (C.A n) (counit (R` using `k) a))) = 0 by`. Rewrite `h` using `[map_sub, map_sub, sub_eq_zero]`. Use `h.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `i₀.app n ((x.app n) (algebraMap k (C.A n) (counit (R := k) a))) = _`. Rewrite using `[(x.app n).map_algebraMap, AlgHomClass.commutes]`. Use `haveI := hC n`. Use `haveI : IsNoetherianRing (G'₀.A n) := isNoetherian_of_tower k' inferInstance`. Take `⟨N, hN⟩` from `(Ideal.FG.isNilpotent_iff_le_nilradical (IsNoetherian.noetherian (augIdeal k' (G'₀.A n)))).2 fun y hy => mem_nilradical.2 (hG n y hy)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, hb, hab⟩` from `exists_augIdeal_pow_eq (A := C.A n) N _ hmem`. Establish `hfb : i₀.app n ((x.app n).toRingHom b) ∈ augIdeal k' (G'₀.A n)`. Rewrite using `[mem_augIdeal_iff', CoalgHomClass.counit_comp_apply]`. Express the relevant statement in the definitionally equal form `counit (R := k') ((x.app n) b) = 0`. Rewrite using `[(x.app n).counit_map, (mem_augIdeal_iff' b).1 hb, map_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : N ≤ p ^ N` using `(Nat.lt_pow_self (Fact.out : p.Prime).one_lt).le`. Establish `h1` using `Ideal.pow_le_pow_right hle (Ideal.pow_mem_pow hfb (p ^ N))`. Rewrite `h1` using `[hN]`. Rewrite using `[hab, map_pow, map_pow]`. Conclude with `(Submodule.mem_bot _).1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_app_eq_algebraMap_counit_of_isConn_of_isEt {p : ℕ} [Fact p.Prime] {k k' : Type}
     [Field k] [CharP k p] [PerfectRing k p] [Field k'] {σ : k →+* k'} {G' G'₀ : PDivGroup p k'}
@@ -49,7 +49,7 @@ theorem app_app_eq_algebraMap_counit_of_isConn_of_isEt {p : ℕ} [Fact p.Prime] 
   exact (Submodule.mem_bot _).1 h1
 
 /- English proof (translation)
-Establish `h` using `DFunLike.congr_fun (congrArg ofConv (map_mul toPts (f.conv n) (g.conv n))) c`. Rewrite `h` using `[AlgHom.convMul_apply]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_app_eq_lift_comul {p : ℕ} {k : Type} [CommRing k] {G H : PDivGroup p k}
     (f g : G ⟶ H) (n : ℕ) (c : H.A n) :
@@ -62,13 +62,13 @@ theorem add_app_eq_lift_comul {p : ℕ} {k : Type} [CommRing k] {G H : PDivGroup
 end GlobalTheory.PDivGroup
 
 /- English proof (translation)
-Introduce `p _ k k' _ _ _ _ _ _ σ G' G'₀ G'₁ C i₀ q₀ i₁ q₁ hG hC hs x n a`. Establish `key : ∀ t : C.A n ⊗[k] C.A n, Algebra.TensorProduct.lift ((q₀ ≫ i₀).app n : G'.A n →ₐ[k'] G'.A n) ((q₁ ≫ i₁).app n : G'.A n →ₐ[k'] G'.A n) (fun _ _ => .all _ _) ((x.app n).two t) = (q₁ ≫ i₁).app n (x.app n (TensorProduct.lid k _ (LinearMap.rTensor _ counit t)))`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add u v hu hv`. Rewrite using `[map_add, map_add, hu, hv, map_add, map_add, ← map_add, ← map_add]`. Consider the case `tmul a₁ a₂`. Rewrite using `[TensorProduct.map_tmul, SemiBialgHom.lin_apply, SemiBialgHom.lin_apply, Algebra.TensorProduct.lift_tmul, LinearMap.rTensor_tmul, TensorProduct.lid_tmul]`. Express the relevant statement in the definitionally equal form `q₀.app n (i₀.app n (x.app n a₁)) * _ = _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[app_app_eq_algebraMap_counit_of_isConn_of_isEt i₀ hG hC x n a₁, AlgHomClass.commutes, ← Algebra.smul_def, (x.app n).smul_map]`. Express the relevant statement in the definitionally equal form `_ = ((q₁ ≫ i₁).app n : G'.A n →ₐ[k'] G'.A n) (σ (counit a₁) • x.app n a₂)`. Rewrite using `[map_smul]`. Establish `h1 : x.app n a = Hom.app (q₀ ≫ i₀ + q₁ ≫ i₁) n (x.app n a)` using `by rw [hs]; rfl`. Rewrite `h1` using `[add_app_eq_lift_comul, ← SemiBialgHom.two_comul, key, Coalgebra.rTensor_counit_comul, TensorProduct.lid_tmul, one_smul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PDivGroup.semiHom_factor_of_isConn_of_isEt :
     ∀ (p : ℕ) [Fact p.Prime] (k k' : Type) [Field k] [CharP k p] [PerfectRing k p]

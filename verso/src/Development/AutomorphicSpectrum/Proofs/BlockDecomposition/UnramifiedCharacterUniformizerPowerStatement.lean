@@ -9,7 +9,7 @@ open scoped ValuativeRel
 open GlobalTheory.CompanionTheory.LFUDom
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.LFUDom.mp_uniformizerUnit_zpow_half` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FUnramifiedCharacterUniformizerPower.lean&line=14#L14)
 -/

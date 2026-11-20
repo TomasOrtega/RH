@@ -16,7 +16,7 @@ open Formalism.MainNotions.S
 namespace GlobalTheory.TrModel
 
 /- English proof (translation)
-Introduce `D V μ _ _`. Use `⟨GlobalTheory.AutomorphicL2Unitary.stdDom (GQ V), RG V μ, LinearIsometryEquiv.refl ℂ _, ?_, ?_, fun g F => rfl, fun F ψ => Iff.rfl⟩` and prove the remaining obligations. Conclude with `⟨inferInstance, inferInstance, GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom _ μ, (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol V μ _ inferInstance (GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom _ μ)).ne⟩`. Conclude with `⟨fun g F => GlobalTheory.AutomorphicL2Unitary.lift_R g F, fun g F => GlobalTheory.AutomorphicL2Unitary.norm_R g F, fun F => (isUnitaryRep_RG (V := V) (μ := μ)).continuous_apply F⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_model : ∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant], ∃ (𝓕 : Set (GA D V)) (ρ : GA D V →* (Lp ℂ 2 (GlobalTheory.HolDict.nuQ V μ 𝓕) →L[ℂ] Lp ℂ 2 (GlobalTheory.HolDict.nuQ V μ 𝓕))) (e : DividedPowerChartLift V μ ≃ₗᵢ[ℂ] Lp ℂ 2 (GlobalTheory.HolDict.nuQ V μ 𝓕)), GlobalTheory.HolDict.FinPair V μ 𝓕 ∧ GlobalTheory.HolDict.IsReg V μ 𝓕 ρ ∧ (∀ g F, e (RG V μ g F) = ρ g (e F)) ∧ ∀ F ψ, GlobalTheory.HolDict.Repr V μ 𝓕 (e F) ψ ↔ lift (GQ V) F =ᵐ[μ] ψ := by
   intro D V μ _ _

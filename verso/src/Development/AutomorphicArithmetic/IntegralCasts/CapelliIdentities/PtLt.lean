@@ -4,7 +4,7 @@ import Formalism.ConjugateSelfDual.Statement
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NormLtOne
 
 /- English proof (translation)
-Introduce `l _ c R _ _ _ y a ha`. Conclude with `UpperTheory.Reformulated.B.NormLtOne.norm_lt_one (l := l) (O := ↥c.O) y a ha`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Gs4b.pt_lt :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] {c : UpperTheory.V.HV.Coef l} {R : Type} [inst_1 : CommRing R]

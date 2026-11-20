@@ -23,7 +23,7 @@ def idVec (r : ℕ) : (Fin r → K) →ₛₗ[(φ : Λ →+* K)] (Fin r → K) w
 
 include hs in
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[matAct, hs, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matAct_eq {n : ℕ} (Φ : Matrix (Fin n) (Fin n) Λ) (x : Fin n → K) :
     matAct (M := K) Φ x = (Φ.map φ).mulVec x := by
@@ -32,7 +32,7 @@ theorem matAct_eq {n : ℕ} (Φ : Matrix (Fin n) (Fin n) Λ) (x : Fin n → K) :
 
 include hs in
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[repOn, matAct, hs, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem repOn_eq {Γ : Type} [Group Γ] {r : ℕ} (ρ : Γ →* GL (Fin r) O) (κ : Γ →* Λˣ) (g : Γ) (m : Fin r → K) :
     repOn ρ κ K g m = φ ((κ g : Λˣ) : Λ) • ((ρ g : Matrix (Fin r) (Fin r) O).map (algebraMap O K)).mulVec m := by
@@ -40,7 +40,7 @@ theorem repOn_eq {Γ : Type} [Group Γ] {r : ℕ} (ρ : Γ →* GL (Fin r) O) (�
   simp [repOn, matAct, hs, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `repOn ρ κ K g m = repOn ρ (1 : Γ →* Kˣ) K g m`. Rewrite using `[repOn_eq φ hs, hκ]`. Use function extensionality and compare the values at `a`. Simplify using `[repOn, matAct, Matrix.mulVec, dotProduct]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem idVec_repOn {Γ : Type} [Group Γ] {r : ℕ} (ρ : Γ →* GL (Fin r) O) (κ : Γ →* Λˣ)
     (hκ : ∀ g, φ ((κ g : Λˣ) : Λ) = 1) (g : Γ) (m : Fin r → K) :
@@ -57,11 +57,11 @@ def tau : H1 (repOn ρ κ K) →ₛₗ[(φ : Λ →+* K)] H1 (repOn ρ (1 : Γ �
   slH1 _ _ (idVec φ hs r) continuous_of_discreteTopology (idVec_repOn φ hs ρ κ hκ)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z`. Establish `h1 : (Submodule.Quotient.mk (semilinearCoefficientMapCocycles _ _ (idVec φ hs r) continuous_of_discreteTopology (idVec_repOn φ hs ρ κ hκ) z) : H1 (repOn ρ (1 : Γ →* Kˣ) K)) = 0` using `hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `h1`, the goal using `[Submodule.Quotient.mk_eq_zero]`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 h1`. Use `(mem_coboundaries1 _ _).2 ⟨m, fun g => ?_⟩` and prove the remaining obligations. Establish `e : repOn ρ κ K g m = repOn ρ (1 : Γ →* Kˣ) K g m` using `idVec_repOn φ hs ρ κ hκ g m`. Rewrite using `[e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm g`.
+A detailed English derivation is pending.
 -/
 theorem tau_injective : Function.Injective (tau φ hs ρ κ hκ) := by
   rw [injective_iff_map_eq_zero]
@@ -82,11 +82,11 @@ def kerIn {n : ℕ} (Φ : Matrix (Fin n) (Fin n) Λ) (x : LinearMap.ker (Φ.map 
   ⟨x.1, by rw [LinearMap.mem_ker, matAct_eq φ hs]; exact x.2⟩
 
 /- English proof (translation)
-Use `⟨{ toFun := fun x => tau φ hs ρ κ hκ (e (kerIn φ hs Φ x)).1 map_add' := fun x y => ?_ map_smul' := fun c x => ?_ }, fun x y hxy => ?_, fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[show kerIn φ hs Φ (x + y) = kerIn φ hs Φ x + kerIn φ hs Φ y from rfl, map_add, Submodule.coe_add, map_add]`. Take `⟨o, rfl⟩` from `hsurj c`. Establish `h1 : kerIn φ hs Φ (algebraMap O K o • x) = algebraMap O Λ o • kerIn φ hs Φ x`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `b`. Express the relevant statement in the definitionally equal form `algebraMap O K o * x.1 b = algebraMap O Λ o • x.1 b`. Rewrite using `[hs, AlgHom.commutes]`. Rewrite using `[h1, map_smul, Submodule.coe_smul, map_smulₛₗ, RingHom.id_apply]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `φ.commutes o`. Establish `h1` using `e.injective (Subtype.ext (tau_injective φ hs ρ κ hκ hxy))`. Establish `h2 : (kerIn φ hs Φ x).1 = (kerIn φ hs Φ y).1` using `congrArg Subtype.val h1`. Conclude with `Subtype.ext h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_linear (hsurj : Function.Surjective (algebraMap O K)) {n : ℕ} (Φ : Matrix (Fin n) (Fin n) Λ)
     (S : Submodule Λ (H1 (repOn ρ κ K))) (e : LinearMap.ker (matAct (M := K) Φ) ≃ₗ[Λ] S) :
@@ -120,13 +120,11 @@ variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : N
   (φ : Λ →ₐ[X.O0 i] K) (hs : ∀ (y : Λ) (b : K), y • b = φ y * b) (κ : GE N →* Λˣ) (hκ : ∀ g, φ ((κ g : Λˣ) : Λ) = 1)
 
 /- English proof (translation)
-Unfold `bkOn at hx ⊢`. Use `split_ifs at hx ⊢ with hv`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨z, c, y, b, hc, hy, hz, rfl⟩` from `hx`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨semilinearCoefficientMapCocycles _ _ (idVec φ hs r) continuous_of_discreteTopology (fun g m => idVec_repOn φ hs ρ κ hκ g.1 m) z, c, y, b, hc, hy, fun g a => ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((z : ↥(DecV N v) → Fin r → K) g a) = _`. Rewrite using `[hz, smul_eq_mul, hs, AlgHom.commutes]`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`. Rewrite `hx`, the goal using `[Submodule.mem_bot]`.
-
-Rewrite using `[hx, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_mem_bkOn (v : PlE D.host) (x : H1 ((repOn ρ κ K).comp (DecV N v).subtype))
     (hx : x ∈ bkOn bkP i ρ κ K v) :
@@ -149,9 +147,7 @@ theorem tau_mem_bkOn (v : PlE D.host) (x : H1 ((repOn ρ κ K).comp (DecV N v).s
     rw [hx, map_zero]
 
 /- English proof (translation)
-Use `(mem_Sel _ _ _ _ _).2 fun v => ?_` and prove the remaining obligations. Establish `hv` using `(mem_Sel _ _ _ _ _).1 hx v`. Use `(res_slH1 (repOn ρ κ K) (repOn ρ (1 : GE N →* Kˣ) K) (idVec φ hs r) continuous_of_discreteTopology (idVec_repOn φ hs ρ κ hκ) (Dec (F := D.host.E) (N.plOm.1 v)).subtype continuous_subtype_val x) ▸ ?_` and prove the remaining obligations. Unfold `Formalism.GaloisCohomology.bkCond at hv ⊢`. Use `split_ifs at hv ⊢ with h1 h2`.
-
-Conclude with `tau_mem_bkOn bkP i ρ φ hs κ hκ v _ hv`. Conclude with `Submodule.mem_top`. Conclude with `slH1_ur _ _ _ _ _ _ _ hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tau_mem_selOn (Q : Finset (PlE D.host)) (x : H1 (repOn ρ κ K)) (hx : x ∈ selOn bkP i ρ κ K Q) :
     tau φ hs ρ κ hκ x ∈ selOn bkP i ρ (1 : GE N →* Kˣ) K Q := by
@@ -168,23 +164,23 @@ theorem tau_mem_selOn (Q : Finset (PlE D.host)) (x : H1 (repOn ρ κ K)) (hx : x
 end Sel
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by rw [pow_one, nsmul_eq_mul, h, zero_mul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem tors_of_cast_eq_zero {B : Type} [CommRing B] {l : ℕ} (h : (l : B) = 0) (b : B) : ∃ n : ℕ, (l ^ n) • b = 0 :=
   ⟨1, by rw [pow_one, nsmul_eq_mul, h, zero_mul]⟩
 
 /- English proof (translation)
-Introduce `D N X bkP i s M ι d Q a Φ hC k _ _ _ _ hk hsurj aug haug`. Take `⟨e, he⟩` from `hC`. Use `letI : Module (abelian₂ X i M ι) k := Module.compHom k (aug : abelian₂ X i M ι →+* k)`. Establish `hs : ∀ (y : abelian₂ X i M ι) (b : k), y • b = aug y * b` using `fun _ _ => rfl`. Establish `hκ : ∀ g, aug ((delInv i M d g : (abelian₂ X i M ι)ˣ) : abelian₂ X i M ι) = 1` using `fun g => haug (delAll X i M d g)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkT` using `tors_of_cast_eq_zero hk`. Take `⟨E, hEi, hE⟩` from `exists_linear aug hs (Tgl i s) (delInv i M d) hκ hsurj Φ _ (e k hkT)`. Use `⟨E, hEi, fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hE]`. Conclude with `tau_mem_selOn bkP i _ aug hs _ hκ Q _ (e k hkT (kerIn aug hs Φ x)).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `B _ _ th hB x hx`. Use `letI : Module (abelian₂ X i M ι) B := Module.compHom B (th : abelian₂ X i M ι →+* B)`. Establish `hsB : ∀ (y : abelian₂ X i M ι) (b : B), y • b = th y * b` using `fun _ _ => rfl`. Use `letI : TopologicalSpace B := ⊥`. Use `haveI : DiscreteTopology B := ⟨rfl⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hBT` using `tors_of_cast_eq_zero hB`. Set `xB : LinearMap.ker (matAct (M` to `B) Φ) := ⟨x, by rw [LinearMap.mem_ker, matAct_eq th hsB]; exact hx⟩`. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (e B hBT xB).1`. Use `⟨z.1, (IsLocallyConstant.iff_continuous _).2 z.2.1, fun g h => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[z.2.2 g h, repOn_eq th hsB, Tgl_coe]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `fl : B →ₗ[abelian₂ X i M ι] k` to `{ toFun := f map_add' := map_add f map_smul' := fun y b => hf y b }`. Establish `hx' : (Φ.map aug).mulVec (fun c => f (x c)) = 0`. Use function extensionality and compare the values at `c`. Establish `h1` using `congrArg f (congrFun hx c)`. Simplify `h1` using `[Matrix.mulVec, dotProduct, map_sum, hf]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `z₁ : Z1 (repOn (Tgl i s) (delInv i M d) k)` to `cocycles1MapOfEquivariant _ _ (fl.compLeft (Fin D.R.r)) continuous_of_discreteTopology (repOn_map (Tgl i s) (delInv i M d) fl) z`. Use `⟨⟨fun c => f (x c), hx'⟩, semilinearCoefficientMapCocycles _ _ (idVec aug hs D.R.r) continuous_of_discreteTopology (idVec_repOn aug hs (Tgl i s) (delInv i M d) hκ) z₁, fun _ => rfl, fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[hE, he B k hBT hkT fl xB (kerIn aug hs Φ ⟨fun c => f (x c), hx'⟩) z z₁ (fun _ => rfl) (fun _ _ => rfl) hz.symm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem computes_transfer : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i) (M : ℕ) (ι : Type) (d : ι → (GE N →* Multiplicative (ZMod (X.l i ^ M)))) (Q : Finset (PlE D.host)) (a : ℕ) (Φ : Matrix (Fin a) (Fin a) (abelian₂ X i M ι)), Computes bkP i s M d Q Φ → ∀ (k : Type) [Field k] [Algebra (X.O0 i) k] [TopologicalSpace k] [DiscreteTopology k], ((X.l i : ℕ) : k) = 0 → Function.Surjective (algebraMap (X.O0 i) k) → ∀ aug : abelian₂ X i M ι →ₐ[X.O0 i] k, (∀ δ, aug (MonoidAlgebra.of (X.O0 i) (Del X i M ι) δ) = 1) → ∃ E : LinearMap.ker (Φ.map aug).mulVecLin →ₗ[k] H1 (red i k (Tgl i s)), Function.Injective E ∧ (∀ x, E x ∈ selOn bkP i (Tgl i s) (1 : GE N →* kˣ) k Q) ∧ ∀ (B : Type) [CommRing B] [Algebra (X.O0 i) B] (th : abelian₂ X i M ι →ₐ[X.O0 i] B), ((X.l i : ℕ) : B) = 0 → ∀ x : Fin a → B, (Φ.map th).mulVec x = 0 → ∃ z : GE N → Fin D.R.r → B, IsLocallyConstant z ∧ (∀ g h, z (g * h) = z g + th ((delInv i M d g : (abelian₂ X i M ι)ˣ) : abelian₂ X i M ι) • ((Tmat i s g).map (algebraMap (X.O0 i) B)).mulVec (z h)) ∧ ∀ f : B →+ k, (∀ y b, f (th y * b) = aug y * f b) → ∃ (x' : LinearMap.ker (Φ.map aug).mulVecLin) (z' : Z1 (red i k (Tgl i s))), (∀ c, x'.1 c = f (x c)) ∧ (∀ g c, z'.1 g c = f (z g c)) ∧ E x' = cl z' := by
   intro D N X bkP i s M ι d Q a Φ hC k _ _ _ _ hk hsurj aug haug

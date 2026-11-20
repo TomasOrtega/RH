@@ -2,9 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 
 open CategoryTheory in
 /- English proof (translation)
-Introduce `hR Γ _ P q X hX A`. Take `⟨i⟩` from `hX`. Rewrite using `[(groupCohomologyIsoExt A q ≪≫ P.isoExt q A).toLinearEquiv.rank_eq]`. Use `(hR _ q).trans ?_` and prove the remaining obligations. Rewrite using `[ChainComplex.linearYonedaObj_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Linear.homCongr ℂ i (Iso.refl A)).rank_eq.le`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.rankCohHom_of_rankHomology :
     UpperTheory.V.Af.CohB.RankHomology → UpperTheory.V.Af.BA.RankCohHom := by

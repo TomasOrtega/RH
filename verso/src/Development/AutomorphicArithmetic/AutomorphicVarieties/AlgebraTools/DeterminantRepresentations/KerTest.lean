@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 open Polynomial UpperTheory.V.W
 
 /- English proof (translation)
-Introduce `n A G _ _ X K _ f ρ D hf hD y hy`. Use `(UpperTheory.V.AlgebraTools.Det.injTest K f hf).2 D y fun x => ?_` and prove the remaining obligations. Rewrite using `[hD x]`. Conclude with `(UpperTheory.V.AlgebraTools.Det.repApi (ρ x)).2.2.2.2.1 _ (hy x)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.kerTest :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] {X : Type} (K : X → Type) [∀ x, CommRing (K x)] (f : ∀ x, A →+* K x)

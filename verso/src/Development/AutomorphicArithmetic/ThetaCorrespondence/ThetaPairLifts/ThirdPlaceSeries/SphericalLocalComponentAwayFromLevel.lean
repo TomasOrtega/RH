@@ -19,17 +19,17 @@ end GlobalTheory.RowSphOff
 end SphOffSec
 namespace GlobalTheory.RowSphOff
 /- English proof (translation)
-Introduce `hPr`. Use `evG_all fun K => lg_all K fun B f T _ => ?_` and prove the remaining obligations. Introduce `hKP w hpin Z Wt hX z p0 Y hH hEx hGeo hGrp hGA σ s hoff`. Take `⟨h, hh⟩` from `levS_of_kO_conj _ _ _ _ _ _ _ z.R z.F z.cG p0 Y z.pins s hoff`. Take `⟨φ, hφS, hφ0, hφfix⟩` from `exists_fixed_of_level _ _ _ _ _ _ _ z.R z.F p0 Y σ {κ | ReciprocityTheory.Aut.TrivOutside {s.v} κ ∧ h⁻¹ * s.loc _ κ * h ∈ GlobalTheory.SplitWeil.KO (s.v.adicCompletion (maximalRealSubfield (w.st Z).toD7.host.E)) (Fin (w.st Z).toD7.R.r)} (fun b κ hκ => hh b κ hκ.1 hκ.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ⟩` from `exists_isLocS_rows hPr.hc hPr.decay _ _ _ _ _ _ _ z.R z.F z.cG p0 Y z.pins σ s`. Use `⟨τ, hτ, ?_⟩` and prove the remaining obligations. Take `⟨x, hx, e⟩` from `GlobalTheory.SplitLift.exists_trivOutside_loc_eq _ s h`. Establish `hmul : ∀ (a b : Formalism.AUTREP.GAf (w.st Z).toD7.host.E (w.st Z).toD7.R.r) (g : Formalism.AUTREP.GAf (w.st Z).toD7.host.E (w.st Z).toD7.R.r → ℂ), NG.rt _ _ (a * b) g = NG.rt _ _ a (NG.rt _ _ b g)`. Introduce `a b g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `c`. Simplify using `[NG.rt, mul_assoc]`. Establish `hone : ∀ g : Formalism.AUTREP.GAf (w.st Z).toD7.host.E (w.st Z).toD7.R.r → ℂ, NG.rt _ _ 1 g = g`. Introduce `g`. Use function extensionality and compare the values at `c`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[NG.rt]`. Establish `hT : ∀ a b : Formalism.AUTREP.GAf (w.st Z).toD7.host.E (w.st Z).toD7.R.r, ReciprocityTheory.Aut.TrivOutside {s.v} a → ReciprocityTheory.Aut.TrivOutside {s.v} b → ReciprocityTheory.Aut.TrivOutside {s.v} (a * b)` using `fun a b ha hb v hv => by`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, Matrix.map_mul, ha v hv, hb v hv, mul_one]`. Use `fixed_kO_ne_bot _ _ (repOf Y σ) s τ hτ (NG.rt _ _ x⁻¹ φ) ((repOf Y σ).stable _ φ hφS) ?_ ?_` and prove the remaining obligations. Introduce `h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hφ0` to reduce the goal to its premises. Rewrite using `[← hone φ, ← mul_inv_cancel x, hmul, h0, map_zero]`. Introduce `κ hκ hk`. Establish `h1` using `hφfix (x * κ * x⁻¹) ⟨hT _ _ (hT _ _ hx hκ) (GlobalTheory.RowLevelSplit.trivOutside_inv hx), by`. Rewrite using `[map_mul, map_mul, map_inv, e, show h⁻¹ * (h * s.loc _ κ * h⁻¹) * h = s.loc _ κ by group]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hk⟩`. Rewrite using `[← hmul, show κ * x⁻¹ = x⁻¹ * (x * κ * x⁻¹) by group, hmul, h1]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spherical_localComponent_away_from_level_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → OverRows fun _ _ _ _ w Z _ _ z _ Y => ∀ (σ : (w.st Z).toD7.what₂.FT) (s : ReciprocityTheory.Aut.SplitPlace (w.st Z).toD7.host.E), (∀ k : Fin 2, s.w ∉ placesOver (w.st Z).toD7.host.E ((w.st Z).toD7.host.g k)) → ∃ τ, IsLocS (repOf Y σ).S s τ ∧ GlobalTheory.SmGL.IsSpherical τ.ρ := by
   intro hPr
@@ -72,7 +72,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RowSphOff.spherical_localComponent_away_from_level_alt | exact _root_.GlobalTheory.RowSphOff.spherical_localComponent_away_from_level_alt | (intros; apply _root_.GlobalTheory.RowSphOff.spherical_localComponent_away_from_level_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_spherical_loc_comp_at_split_place_off_g : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → OverRows fun _ _ _ _ w Z _ _ z _ Y => ∀ (σ : (w.st Z).toD7.what₂.FT) (s : ReciprocityTheory.Aut.SplitPlace (w.st Z).toD7.host.E), (∀ k : Fin 2, s.w ∉ placesOver (w.st Z).toD7.host.E ((w.st Z).toD7.host.g k)) → ∃ τ, IsLocS (repOf Y σ).S s τ ∧ GlobalTheory.SmGL.IsSpherical τ.ρ := by
   first | exact @_root_.GlobalTheory.RowSphOff.spherical_localComponent_away_from_level_alt | exact _root_.GlobalTheory.RowSphOff.spherical_localComponent_away_from_level_alt | (intros; apply _root_.GlobalTheory.RowSphOff.spherical_localComponent_away_from_level_alt <;> assumption)

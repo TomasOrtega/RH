@@ -7,7 +7,7 @@ open DividedPowers CrystallineSemistableComparison.Pb
 namespace GlobalTheory.CompanionTheory.DPFiltration
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Rewrite using `[DividedPowers.RatAlgebra.dpow_eq_inv_fact_smul _ δ hy, Algebra.smul_def, mul_pow]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dpow_mem_span_pow {B : Type} [CommRing B] [Algebra ℚ B] {x : B}
     (δ : DividedPowers (Ideal.span {x})) (k : ℕ) {y : B} (hy : y ∈ Ideal.span {x}) :
@@ -17,9 +17,9 @@ theorem dpow_mem_span_pow {B : Type} [CommRing B] [Algebra ℚ B] {x : B}
   exact Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons q l ih`. Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons, pow_add]`. Establish `h1` using `dpow_mem_span_pow δ q.1 (hl q (by simp))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `ih (fun q' hq' => hl q' (by simp [hq']))`. Rewrite `h1`, `h2`, the goal using `[Ideal.mem_span_singleton]`. Conclude with `mul_dvd_mul h1 h2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem list_prod_dpow_mem {B : Type} [CommRing B] [Algebra ℚ B] {x : B}
     (δ : DividedPowers (Ideal.span {x})) (l : List (ℕ × B))
@@ -35,13 +35,13 @@ theorem list_prod_dpow_mem {B : Type} [CommRing B] [Algebra ℚ B] {x : B}
     exact mul_dvd_mul h1 h2
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Unfold `CrystallineSemistableComparison.Pb.pdP`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `z ⟨l, hl, hr, rfl⟩`. Establish `h` using `list_prod_dpow_mem δ l hl`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h` using `[Ideal.mem_span_singleton]`. Rewrite using `[SetLike.mem_coe, Ideal.mem_span_singleton]`. Conclude with `(pow_dvd_pow x hr).trans h`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Unfold `CrystallineSemistableComparison.Pb.pdP`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Ideal.subset_span` to reduce the goal to its premises. Use `⟨List.replicate r (1, x), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Rewrite using `[List.eq_of_mem_replicate hq]`. Conclude with `Ideal.mem_span_singleton_self x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[δ.dpow_one (Ideal.mem_span_singleton_self x)]`.
+A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_span_singleton {B : Type} [CommRing B] [Algebra ℚ B] (x : B)
     (δ : DividedPowers (Ideal.span {x})) (r : ℕ) :
@@ -65,7 +65,7 @@ theorem dividedPowerFiltration_span_singleton {B : Type} [CommRing B] [Algebra �
     · simp [δ.dpow_one (Ideal.mem_span_singleton_self x)]
 
 /- English proof (translation)
-The claim follows from `dividedPowerFiltration_span_singleton (f ξ) (Lat.γB f ξ) r`.
+A detailed English derivation is pending.
 -/
 theorem pdP_γB {W B : Type} [CommRing W] [CommRing B] [Algebra ℚ B] (f : W →+* B) (ξ : W) (r : ℕ) :
     pdP (Lat.γB f ξ) r = Ideal.span {f ξ ^ r} :=

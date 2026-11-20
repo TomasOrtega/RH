@@ -29,11 +29,11 @@ namespace GlobalTheory.SplitAdeleTrace
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `zero_mul _`. Express the relevant statement in the definitionally equal form `GlobalTheory.AdelicU.singleFin v 1 * b.2 = GlobalTheory.AdelicU.singleFin v (evFin F v b)`. Apply `GlobalTheory.AdelicU.af_ext` to reduce the goal to its premises. Introduce `w`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_self, GlobalTheory.AdelicU.evalV_singleFin_self, one_mul]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_ne hw, GlobalTheory.AdelicU.evalV_singleFin_ne hw, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem liftV_one_mul_comp (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (b : AF F) :
     GlobalTheory.LatVac.liftV v 1 * b = GlobalTheory.LatVac.liftV v (evFin F v b) := by
@@ -52,7 +52,7 @@ theorem liftV_one_mul_comp (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTens
 omit [NumberField F] [NumberField E] in
 
 /- English proof (translation)
-Establish `h1 : a ⊗ₜ[F] e = a • ((1 : R) ⊗ₜ[F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h1, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_baseChange_tmul [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] (a : R) (e : E) :
     Algebra.trace R (R ⊗[F] E) (a ⊗ₜ[F] e) = a * algebraMap F R (Algebra.trace F E e) := by
@@ -62,11 +62,11 @@ theorem trace_baseChange_tmul [FiniteDimensional F E] (R : Type) [CommRing R] [A
     LinearMap.trace_baseChange, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hc` using `h.2.1`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h.2.2.1⟩`. Set `s : E ≃ₐ[F] E` to `AlgEquiv.ofAlgHom σ σ (by ext y; simp [GlobalTheory.AdelicU.cm_conj_conj h]) (by ext y; simp [GlobalTheory.AdelicU.cm_conj_conj h])`. Establish `hs : (1 : E ≃ₐ[F] E) ≠ s`. Introduce `h1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `GlobalTheory.AdelicU.exists_cm_conj_ne h`. Conclude with `hy (DFunLike.congr_fun h1 y).symm`. Establish `hu : (Finset.univ : Finset (E ≃ₐ[F] E)) = {1, s}`. Use `symm`. Apply `Finset.eq_univ_of_card` to reduce the goal to its premises.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.card_pair hs, ← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank, h.2.2.1]`. Rewrite using `[trace_eq_sum_automorphisms, hu, Finset.sum_pair hs]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem add_conj_eq_trace {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) :
     x + σ x = algebraMap F E (Algebra.trace F E x) := by
@@ -87,17 +87,17 @@ theorem add_conj_eq_trace {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) :
   rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm v τ z hz`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hcm.2.2.1]; norm_num)`. Use `set l : AF F := GlobalTheory.LatVac.liftV v 1 with hl`. Establish `hz1 : z = l • z`. Establish `h0` using `hz (1 - l) (by rw [map_sub, map_one, hl, GlobalTheory.LatVac.evFin_liftV, sub_self])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h0`. Establish `hpiW : ∀ (t : E →ₐ[F] Fv F v) (w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW t (l • w) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW t w`. Introduce `t w`. Rewrite using `[Algebra.smul_def, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `: GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW t (algebraMap (AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) l) = 1`. Express the relevant statement in the definitionally equal form `evFin F v l * t 1 = 1`. Rewrite using `[hl, GlobalTheory.LatVac.evFin_liftV, map_one, one_mul]`. Rewrite using `[this, one_mul]`. Establish `key : ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E, Algebra.trace (AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) (l • w) = GlobalTheory.LatVac.liftV v (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW τ w + GlobalTheo …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy, ← map_add]`. Use `congr 1`.
+Treat this case separately. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul b e`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, trace_baseChange_tmul, mul_assoc, liftV_one_mul_comp, map_mul, AlgHom.commutes]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `evFin F v b * algebraMap F (Fv F v) (Algebra.trace F E e) = evFin F v b * τ e + evFin F v b * τ (σ e)`. Rewrite using `[← mul_add, ← map_add, add_conj_eq_trace hcm, AlgHom.commutes]`. Rewrite using `[hz1, key, hpiW, hpiW]`.
+A detailed English derivation is pending.
 -/
 theorem trace_at_split : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E}, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ → ∀ (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (τ : E →ₐ[F] Fv F v)

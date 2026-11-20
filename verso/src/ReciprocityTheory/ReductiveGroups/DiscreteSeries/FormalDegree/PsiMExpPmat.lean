@@ -13,9 +13,9 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hX` using `pmat_inP z`. Establish `hex : ∃ (k' : KG ε) (X' : Matrix (Fin n) (Fin n) ℂ), inP ε X' ∧ toMK k * NormedSpace.exp (pmat z) = toMK k' * NormedSpace.exp X'` using `⟨k, pmat z, hX, rfl⟩`. Unfold `PsiM`. Rewrite using `[dif_pos hex]`. Take `⟨hP, hEq⟩` from `hex.choose_spec.choose_spec`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `polar_unique hX hP hEq`. Rewrite using `[← h2, ← h1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiM_polar {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (μ : Fin n → ℤ) (k : KG ε)
     (z : PCoord ε → ℂ) :
@@ -30,7 +30,7 @@ theorem psiM_polar {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) 
   rw [← h2, ← h1]
 
 /- English proof (translation)
-Establish `h` using `psiM_polar T μ (1 : KG ε) z`. Establish `e : toMK (1 : KG ε) = 1` using `rfl`. Establish `o : T.op (1 : KG ε) = 1` using `by simp [KType.op, map_one]`. Rewrite `h` using `[e, Matrix.one_mul, o, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem psiM_exp_pmat {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (μ : Fin n → ℤ)
     (z : PCoord ε → ℂ) : PsiM T μ (NormedSpace.exp (pmat z)) = psM T μ (NormedSpace.exp (pmat z)) := by

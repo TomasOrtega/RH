@@ -6,9 +6,9 @@ namespace GroundTheory.Heights₂.Heights.FiniteCovolume
 open NumberField
 
 /- English proof (translation)
-Introduce `N hN`. Establish `hI : Ideal.span {(N : 𝓞 E)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hN.ne'` after adjusting the coercions. Establish `: Finite (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)})` using `Ideal.finiteQuotientOfFreeOfNeBot _ hI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)})ˣ` using `Finite.of_injective _ Units.val_injective`. Establish `: (congruenceUnits E N).FiniteIndex` using `Subgroup.finiteIndex_ker _`. Conclude with `Subgroup.FiniteIndex.index_ne_zero`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem CongruenceUnitsFiniteIndex.proof (E : Type*) [Field E] [NumberField E] :
     CongruenceUnitsFiniteIndex.Statement E := by

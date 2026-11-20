@@ -7,9 +7,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.CenKeepsType
 
 /- English proof (translation)
-Establish `hle : NG.isoTyp ρ S ≤ (NG.isoTyp ρ S).comap (NG.rt L n h)`. Use `sSup_le fun U hU => ?_` and prove the remaining obligations. Introduce `a ha`. Establish `hU' : U ≤ NG.isoTyp ρ S` using `le_sSup hU`. Conclude with `hU' (hU.1.1.stable h a ha)`.
-
-Conclude with `hle hf`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rt_mem_isoTyp {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type} [AddCommGroup W]
     [Module ℂ W] (ρ : Representation ℂ (GQ L n) W) (S : Submodule ℂ (GAf L n → W)) (h : GAf L n)
@@ -22,11 +20,9 @@ theorem rt_mem_isoTyp {L : Type} [Field L] [NumberField L] [IsCMField L] {n : �
   exact hle hf
 
 /- English proof (translation)
-Introduce `D M A hC i PI z F hF`. Distinguish the cases in `hz : z ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))`. Take `⟨L, -, hL⟩` from `hC (D.nd.mu i) (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2`. Rewrite using `[NTypes.onMt, dif_pos hz]`. Rewrite `hF`, the goal using `[A.typeV, Submodule.mem_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e : (M.loc i).real (D.ntypes.cenMt (D.nd.mu i) (D.nd.j i) ⟨z, hz⟩ F) = actSum D L z ((M.loc i).real F)` using `hL ⟨z, hz⟩ F`. Rewrite using `[e]`. Unfold `actSum Finsupp.sum`. Conclude with `Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (rt_mem_isoTyp _ _ _ _ hF)`. Rewrite using `[NTypes.onMt, dif_neg hz]`.
-
-Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (M : MtFam D), AVTied D M → CenReal D M → OnMtPreservesTypeV D := by
   intro D M A hC i PI z F hF

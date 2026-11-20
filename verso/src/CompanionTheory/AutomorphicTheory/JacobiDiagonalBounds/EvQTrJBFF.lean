@@ -25,7 +25,7 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `gauge_transition_chain_holds Wp Wq P p.T.base p.hP p.hl.2.2 J hJ`. Establish `h3` using `raw_gauge_smoothness_holds Wp Wq P p.T.base p.hP p.hl.2.2 e he _ _ h1 ρ`. Rewrite `h3` using `[← h2]`. Unfold `trJB`. Rewrite using `[toSm_of_mem P h3]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -40,7 +40,7 @@ theorem evQ_trJB_FF (p : KB.Pl P Wp Wq) {e : M.Ty P → ℂ → (Wq →L[ℂ] Wp
   rfl
 
 /- English proof (translation)
-Take `⟨_, _, _, h1, h2, _, _⟩` from `p.hP`. Simplify using `only [MA.Qset, JF.QDom, Set.mem_setOf_eq, M.Par.TT, h1, h2]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem qdom (p : KB.Pl P Wp Wq) {x : MA.E P.r} :
     x ∈ MA.Qset P.r P.TT ↔ x ∈ JF.QDom P.k P.r p.T.base.z p.T.base.z' := by
@@ -48,7 +48,7 @@ theorem qdom (p : KB.Pl P Wp Wq) {x : MA.E P.r} :
   simp only [MA.Qset, JF.QDom, Set.mem_setOf_eq, M.Par.TT, h1, h2]
 
 /- English proof (translation)
-Use `⟨6 * r * m + |(r : ℝ) * (4 * r + 2 * k - 1) * (6 * r + 1)| + 1, ?_⟩` and prove the remaining obligations. Unfold `WeakThresholdClauses.WeakDominationThreshold`. Establish `h1` using `le_abs_self ((r : ℝ) * (4 * r + 2 * k - 1) * (6 * r + 1))`. Establish `h2` using `abs_nonneg ((r : ℝ) * (4 * r + 2 * k - 1) * (6 * r + 1))`. Apply the tactic sequence `constructor <;> linarith`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem thrW_exists (k r m : ℕ) : ∃ A : ℝ, WeakThresholdClauses.WeakDominationThreshold k r A m := by
   refine ⟨6 * r * m + |(r : ℝ) * (4 * r + 2 * k - 1) * (6 * r + 1)| + 1, ?_⟩
@@ -60,13 +60,13 @@ theorem thrW_exists (k r m : ℕ) : ∃ A : ℝ, WeakThresholdClauses.WeakDomina
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Establish `hom : ∀ q' : MA.Qp P.r P.TT, B.gq p.T.base q'.1 ∈ JF.Om P.k P.r p.T.base.z p.T.base.z'` using `fun q' => BigCellHermitian.gqDom p.T.base ((qdom p).1 q'.2)`. Establish `hJ0` using `jdc_ffl p.T.base Dop hS hJ H hH`. Take `⟨F₁, hF₁, U, hU, hgU, hag⟩` from `hLL P.k P.r Wp Wq p.T.base J _ _ hJ hJ0 (hom q) h0 fun H hH => jf_cpt_FF p.T.base hH`. Take `⟨⟨Φ, hΦ⟩, ht⟩` from `tie_cpt p he hG hM hw a hF₁`. Take `⟨A, hA⟩` from `thrW_exists P.k P.r (B.opOrder Dop)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, -, hn⟩` from `TLB.nice_of_cpt hF₁`. Establish `e1 : B.JF p.T.base (p.Θ.Θ w a F₁) (B.gq p.T.base q.1) = B.JF p.T.base H (B.gq p.T.base q.1)`. Establish `hd : B.gq p.T.base q.1 ∈ C6.domL p.T.base ∅`. Rewrite using `[nfLeib_domL_eq]`. Conclude with `jdc_om_sub_gpos _ (hom q)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PBN.jf_congr_pos p.T.base (hΘ F₁) hd, ← orbital_commutes_on_open_set _ _ _ _ p.T.base A (B.opOrder Dop) F₁ Dop _ subset_rfl le_rfl hA (hn.2.1 A _) (fun p' hp' f' hf' g hg => hC p' hp' f' hf' g (jdc_om_sub_gpos _ hg)) _ (hom q), JA.LocOp.opApply_congr_GV Dop hU (fun g hg hgU => h …`. Establish `hcont : ContinuousOn (fun x => B.gq p.T.base x) (MA.Qset P.r P.TT)` using `(CellSmoothness.contDiffOn_gq p.T.base).continuousOn.mono fun x hx => (qdom p).1 hx`. Establish `hV` using `hcont.isOpen_inter_preimage (MA.Qset_open _ _) hU`. Rewrite using `[← hloc.congr hV (f := trJB P p.T.base e (B.JF p.T.base F₁)) (fun ρ' q' hq' => ?_) ρ q ⟨q.2, hgU⟩, ← ht, evQ_trJB p.hP p.hl.2.2 he hΦ]`. Simplify using `only [rawJ, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[evQ_trJB_FF p he (jf_cpt_FF p.T.base hF₁), evQ_trJB_FF p he hJ]`. Simplify using `only [rawJ, hag _ hq'.2 (hom q').1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tie_FF (hLL : LocLift) (p : KB.Pl P Wp Wq) {e : M.Ty P → ℂ → (Wq →L[ℂ] Wp)} (he : IsFrameB P p.T.base e)
     (hG : GaugeQQ P p.T.base e) {Lm : R.LevelData (MA.A P (MA.DQ P)) P.r} (hM : MA.IsModelLevel P (MA.DQ P) Lm)
@@ -103,9 +103,9 @@ theorem tie_FF (hLL : LocLift) (p : KB.Pl P Wp Wq) {e : M.Ty P → ℂ → (Wq �
     simp only [rawJ, hag _ hq'.2 (hom q').1]
 
 /- English proof (translation)
-Take `⟨C₁, h⟩` from `empty_operator_list_holds`. Take `⟨Th₀, Th, -, hTh, hh⟩` from `h Wp Wq P p s`. Use `jdc_ffl p.T.base Th hTh.1 hF _ fun g _ => ?_` and prove the remaining obligations. Establish `h` using `JCTx2.JF_cutF p.T.base (fun x => x ^ s) F 1 g`. Unfold `D.cutF at h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [div_one] at h`. Rewrite using `[(hh (B.JF p.T.base F) g).2, h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem jf_Gpow (p : KB.Pl P Wp Wq) (s : ℕ) {F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} (hF : B.JF p.T.base F ∈ FFKB p) :
     B.JF p.T.base (fun g => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ s : ℝ) : ℂ) • F g) ∈ FFKB p := by
@@ -121,9 +121,9 @@ def PD {E : Type} [AddCommGroup E] [Module ℂ E] (o : ℕ) (f : ℕ → E) : Pr
   ∃ a : ℕ → E, ∀ s : ℕ, f s = ∑ n ∈ Finset.range (o + 1), (s : ℂ) ^ n • a n
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨fun _ => 0, fun s => by simp⟩`. Consider the case `cons i l ih`. Take `⟨a₁, h₁⟩` from `h i (by simp)`. Take `⟨a₂, h₂⟩` from `ih (fun j hj => h j (by simp [hj]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun n => a₁ n + a₂ n, fun s => ?_⟩` and prove the remaining obligations. Simplify using `only [List.map_cons, List.sum_cons, h₁ s, h₂ s, smul_add, Finset.sum_add_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem pd_list {E ι : Type} [AddCommGroup E] [Module ℂ E] {o : ℕ} (l : List ι) (f : ι → ℕ → E)
     (h : ∀ i ∈ l, PD o (f i)) : PD o fun s => (l.map fun i => f i s).sum := by
@@ -136,7 +136,7 @@ theorem pd_list {E ι : Type} [AddCommGroup E] [Module ℂ E] {o : ℕ} (l : Lis
     simp only [List.map_cons, List.sum_cons, h₁ s, h₂ s, smul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use `⟨fun m => if m = n then x else 0, fun s => ?_⟩` and prove the remaining obligations. Simplify using `only [smul_ite, smul_zero]`. Rewrite using `[Finset.sum_ite_eq' (Finset.range (o + 1)) n, if_pos (Finset.mem_range.2 (by omega))]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pd_mono {E : Type} [AddCommGroup E] [Module ℂ E] {o n : ℕ} (hn : n ≤ o) (x : E) :
     PD o fun s => (s : ℂ) ^ n • x := by
@@ -145,19 +145,19 @@ theorem pd_mono {E : Type} [AddCommGroup E] [Module ℂ E] {o n : ℕ} (hn : n �
   rw [Finset.sum_ite_eq' (Finset.range (o + 1)) n, if_pos (Finset.mem_range.2 (by omega))]
 
 /- English proof (translation)
-Establish `hG : 0 < Gf P.k P.r p.T.base.z p.T.base.z' g` using `hg.2.1`. Establish `hpd : PD o fun s : ℕ => ∑ q : Fin (Q + 1), (s : ℂ) ^ (q : ℕ) • B.opApply (L q) F g`. Establish `h1 : PD o fun s : ℕ => (Dop.map fun T => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ (-(s : ℝ)) : ℝ) : ℂ) • T.coef g (B.Rw T.word (fun g' => ((Gf P.k P.r p.T.base.z p.T.base.z' g' ^ (s : ℝ) : ℝ) : ℂ) • F g') g)).sum`. Use `pd_list _ _ fun T hT => ?_` and prove the remaining obligations. Take `⟨terms, ht, hexp⟩` from `leibniz_expansion_holds P.k P.r Wp Wq p.T.base T.word T.word_lie`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `pd_list (o := o) terms (fun t (s : ℕ) => (s : ℂ) ^ t.1 • T.coef g ((t.2.1 g * ((Gf P.k P.r p.T.base.z p.T.base.z' g : ℝ) : ℂ)⁻¹ ^ t.2.2.1) • B.Rw t.2.2.2 F g)) fun t h => pd_mono (le_trans (ht t h).1 (ho T hT)) _`. Use `h2 using 2 with s` and compare the differences between its conclusion and the goal. Establish `h3` using `hexp _ (nfLeib_thChain_rpow (s : ℝ)) F hF g hg`. Simplify using `only [pow_zero, one_mul] at h3`. Rewrite using `[h3, map_list_sum, List.smul_sum, List.map_map, List.map_map]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `List.map_congr_left fun t _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, map_smul, smul_smul]`. Use `congr 1`. Establish `h4 : ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ (-(s : ℝ)) : ℝ) : ℂ) * ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ (s : ℝ) : ℝ) : ℂ) = 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← Complex.ofReal_mul, ← Real.rpow_add hG, neg_add_cancel, Real.rpow_zero, Complex.ofReal_one]`. Move the coercions through the operations in `at h4 ⊢`. Take the linear combination `((s : ℂ) ^ t.1 * (t.2.1 g * ((Gf P.k P.r p.T.base.z p.T.base.z' g : ℝ) : ℂ)⁻¹ ^ t.2.2.1)) * h4`. Use `h1 using 2 with s` and compare the differences between its conclusion and the goal. Establish `h5` using `hS (s : ℝ) F hF g hg`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Rewrite `h5` using `[hΘ _ g hg, B.opApply, List.smul_sum, List.map_map]`. Move the coercions through the operations in `at h5 ⊢`. Conclude with `h5.symm`. Take `⟨c, hc⟩` from `hpd`. Use `beta_reduce at hc`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `key` using `nf_coef_unique (Q + 1 + (o + 1)) (fun i => (if h : i < Q + 1 then B.opApply (L ⟨i, h⟩) F g else 0) - (if i < o + 1 then c i else 0)) (Set.range fun n : ℕ => (n : ℂ)) (Set.infinite_range_of_injective Nat.cast_injective) (by`. Introduce and unpack `_ ⟨s, rfl⟩`. Simplify using `only [smul_sub, Finset.sum_sub_distrib]`. Rewrite using `[nf_sum_pad (by omega) _ fun q => B.opApply (L q) F g, hc s, sub_eq_zero, ← Finset.sum_subset (Finset.range_subset_range.2 (show o + 1 ≤ Q + 1 + (o + 1) by omega))]`. Conclude with `Finset.sum_congr rfl fun i hi => by rw [if_pos (Finset.mem_range.1 hi)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i _ hi`. Rewrite using `[if_neg (by simpa using hi), smul_zero]) qq (by omega)`. Simplify `key` using `only [dif_pos qq.2, if_neg (show ¬ (qq : ℕ) < o + 1 by omega), sub_zero]`.
+A detailed English derivation is pending.
 -/
 theorem scoef_zero (p : KB.Pl P Wp Wq) {w : List C.Letter} {a : Wd.Ix (Fin w.length)} {Q o : ℕ}
     {L : Fin (Q + 1) → B.DiffOp P.k P.r Wp Wq} (hS : IsSCoef p w a Q L) {Dop : B.DiffOp P.k P.r Wp Wq}

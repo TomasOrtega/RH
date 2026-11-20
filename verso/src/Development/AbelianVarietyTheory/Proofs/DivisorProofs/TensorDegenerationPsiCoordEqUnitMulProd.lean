@@ -19,25 +19,23 @@ namespace GlobalTheory.TensPsiCoord
 open GlobalTheory.PsiTauCoordRel GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues
 
 /- English proof (translation)
-Introduce `R _ _ _ Q D' r W pr xe hT y k hk x hx`. Take `⟨-, -, -, w, -, hpsi⟩` from `hT`. Use `haveI : IsProper D'.P.A.hom := D'.P.isAb.proper`. Use `haveI : IsProper Q.B.hom := Q.isAb.proper`. Take `⟨ξ⟩ : Nonempty (Spec (CommRingCat.of (FractionRing R)))` from `⟨⟨⊥, Ideal.isPrime_bot⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨J', hJ', hc'⟩` from `GlobalTheory.PeriodBalance.exists_good_integral ξ D'.P.isLB D'.P.A.hom`. Take `⟨J, hJ, hc⟩` from `GlobalTheory.PeriodBalance.exists_good_integral ξ Q.M.isLB Q.B.hom`. Establish `E` using `hpsi y ξ J J' hJ hJ'`. Take `⟨j, h, hj, rfl⟩` from `hx`. Take `⟨u₁, g₁⟩` from `val_psi_chart D' ξ hJ' hc' y j hj (h trivial)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `eP` using `gm_genVal ξ (D'.psi y) j h`. Choose the witnesses or unpack the hypotheses as in `⟨u₂, e₂⟩ : ∃ u : Rˣ, (gm (D'.xK y) ξ _ (w.s (fun k => J (D'.xK y ≫ tensφ pr k), J' (D'.xK y)))).val = GlobalTheory.PeriodBalance.cst ξ u := by`. Use `GlobalTheory.PeriodBalance.unit_gm' ξ (D'.c y).left _ (And.intro (Set.mem_iInter.2 fun I => ?_) ?_) _` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q : D'.P.A ⟶ Q.B, tensφ pr I = q.left := by`. Take `⟨⟨a, b⟩, c⟩` from `I`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `fin_cases c <;> exact ⟨_, rfl⟩`. Use `hc ((D'.c y).left ≫ tensφ pr I) (by` as an intermediate fact. Rewrite using `[hq, Category.assoc, Over.w q, Over.w]`. Use the proof step `rfl)`. Rewrite `this` using `[← Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Conclude with `hc' _ (Over.w _)`. Establish `hv : ∀ i j, ∃ v : Rˣ, val (Q.tau (xe y i) (xe y j)) (𝟙 _) ξ J = GlobalTheory.TauShift.kK ξ (k i j) * GlobalTheory.TauShift.cK ξ v`. Introduce `i j`. Take `⟨u, -, hu⟩` from `hk i j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : Rˣ, val u (jK R ≫ 𝟙 _) ξ J = Units.map (GlobalTheory.PeriodBalance.cst ξ).toMonoidHom v := by`. Use `val_int ξ hc u (𝟙 _) fun l => ?_` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨q, hq⟩ : ∃ q : 𝟙_ (Over (Sp R)) ⟶ Q.B, GlobalTheory.PolDeg.lamPts (Q.c (xe y i)) (Q.c (xe y j)) l = q.left := by fin_cases l <;> exact ⟨_, rfl⟩`. Rewrite using `[Category.id_comp, hq, Over.w q]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨v, (hu ξ J hJ).trans (congrArg₂ (· * ·) ?_ ?_)⟩` and prove the remaining obligations. Use `GlobalTheory.RefTauCoord.gm_unitOn (RingHom.id (FractionRing R)) ξ (k i j)` as an intermediate fact. Rewrite `this` using `[show spMap (RingHom.id (FractionRing R)) = 𝟙 _ by simp]`. Conclude with `Units.ext this`. Rewrite using `[toUnit_left, ← Category.comp_id (jK R)]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hv`. Use `choose v hv using hv`. Establish `hc2 : ∀ z : Rˣ, GlobalTheory.TauShift.kK ξ (Units.map (algebraMap R (FractionRing R)).toMonoidHom z) = GlobalTheory.TauShift.cK ξ z` using `fun z => Units.ext rfl`. Use `⟨u₁⁻¹ * u₂ * ∏ i, ∏ j, v i j ^ W i j, Units.map_injective (f := (kst ξ).toMonoidHom) (kst_injective ξ) ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.TauShift.kK ξ _ = GlobalTheory.TauShift.kK ξ _`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `eP' : gm (𝟙 _) ξ (LB.wchart D'.P.L (fun _ : PUnit => D'.xK y) j) ((D'.psi y).s j) = GlobalTheory.TauShift.kK ξ (genVal (D'.psi y) j h)` using `Units.ext eP`. Establish `e₂' : gm (D'.xK y) ξ _ (w.s (fun k => J (D'.xK y ≫ tensφ pr k), J' (D'.xK y))) = GlobalTheory.TauShift.cK ξ u₂` using `Units.ext e₂`. Establish `G` using `g₁.symm.trans (E.trans (by rw [e₂']))`. Rewrite `G` using `[eP']`. Simplify using `only [hv] at G`.
-
-Simplify using `only [map_mul, map_inv, map_prod, map_zpow, mul_zpow, Finset.prod_mul_distrib, hc2] at G ⊢`. Establish `G'` using `congrArg ((GlobalTheory.TauShift.cK ξ u₁)⁻¹ * ·) G`. Simplify using `only [inv_mul_cancel_left] at G'`. Rewrite using `[G']`. The two sides agree by associativity and commutativity.
+Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (Q : Data R) (D' : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (pr : Fin r → (D'.P.A ⟶ Q.B)) (xe : D'.X ≃+ (Fin r → Q.X)), IsTens Q D' W pr xe → ∀ (y : D'.X) (k : Fin r → Fin r → (FractionRing R)ˣ), (∀ i j, Q.TauCoord (xe y i) (xe y j) (k i j)) → ∀ x : (FractionRing R)ˣ, GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.IsPsiCoord D' y x → ∃ u : Rˣ, x = Units.map (algebraMap R (FractionRing R)).toMonoidHom u * ∏ i, ∏ j, k i j ^ W i j := by
   intro R _ _ _ Q D' r W pr xe hT y k hk x hx

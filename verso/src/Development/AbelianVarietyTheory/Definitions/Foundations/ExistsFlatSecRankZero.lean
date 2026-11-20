@@ -22,14 +22,14 @@ def lineDeg (r : (K →+* ℂ) → ℝ) (ρ : HeightOneSpectrum (𝓞 K) → ℝ
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `h.subset (Function.support_mul_subset_left _ _)`.
+A detailed English derivation is pending.
 -/
 theorem fin_mul {ρ : HeightOneSpectrum (𝓞 K) → ℝ} (h : (Function.support ρ).Finite)
     (g : HeightOneSpectrum (𝓞 K) → ℝ) : (Function.support fun la => ρ la * g la).Finite :=
   h.subset (Function.support_mul_subset_left _ _)
 
 /- English proof (translation)
-Simplify using `only [lineDeg, Pi.add_apply, Pi.mul_apply, add_mul, Real.log_mul (hr _).ne' (hr' _).ne', Finset.sum_add_distrib]`. Rewrite using `[finsum_add_distrib (fin_mul h _) (fin_mul h' _)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lineDeg_mul {r r' : (K →+* ℂ) → ℝ} {ρ ρ' : HeightOneSpectrum (𝓞 K) → ℝ} (hr : ∀ σ, 0 < r σ)
     (hr' : ∀ σ, 0 < r' σ) (h : (Function.support ρ).Finite) (h' : (Function.support ρ').Finite) :
@@ -40,21 +40,21 @@ theorem lineDeg_mul {r r' : (K →+* ℂ) → ℝ} {ρ ρ' : HeightOneSpectrum (
   ring
 
 /- English proof (translation)
-Simplify using `only [lineDeg, Pi.neg_apply, Pi.inv_apply, neg_mul, Real.log_inv, Finset.sum_neg_distrib, finsum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lineDeg_inv (r : (K →+* ℂ) → ℝ) (ρ : HeightOneSpectrum (𝓞 K) → ℝ) : lineDeg r⁻¹ (-ρ) = -lineDeg r ρ := by
   simp only [lineDeg, Pi.neg_apply, Pi.inv_apply, neg_mul, Real.log_inv, Finset.sum_neg_distrib, finsum_neg_distrib]
   ring
 
 /- English proof (translation)
-Simplify using `[lineDeg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lineDeg_one : lineDeg (K := K) 1 0 = 0 := by simp [lineDeg]
 
 /- English proof (translation)
-Establish `h` using `(FinitePlace.hasFiniteMulSupport ha).preimage (f := FinitePlace.equivHeightOneSpectrum.symm) (Equiv.injective _).injOn`. Use `h.subset fun la hla h1 => hla ?_` and prove the remaining obligations. Establish `h2 : FinitePlace.mk la a = 1` using `h1`. Rewrite `h2` using `[finitePlace_eq_zpow la ha, zpow_eq_one_iff_right₀ (by positivity) (one_lt_absNorm_real la).ne']`. Establish `: vAdd la a = 0` using `neg_eq_zero.1 h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finite_vAdd {a : K} (ha : a ≠ 0) :
     (Function.support fun la : HeightOneSpectrum (𝓞 K) => (vAdd la a : ℝ)).Finite := by
@@ -67,19 +67,19 @@ theorem finite_vAdd {a : K} (ha : a ≠ 0) :
   simp [this]
 
 /- English proof (translation)
-Establish `h1` using `FinitePlace.prod_eq_inv_abs_norm ha`. Rewrite `h1` using `[← finprod_comp_equiv FinitePlace.equivHeightOneSpectrum.symm]`. Establish `h2 : ∀ la : HeightOneSpectrum (𝓞 K), FinitePlace.equivHeightOneSpectrum.symm la a = Real.exp (-((vAdd la a : ℝ) * Real.log (Ideal.absNorm la.asIdeal : ℝ)))` using `fun la => by show FinitePlace.mk la a = _`. Rewrite using `[finitePlace_eq_zpow la ha, ← Real.rpow_intCast, Real.rpow_def_of_pos (by linarith [one_lt_absNorm_real la])]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [vLa, vAdd]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hf` using `fin_mul (finite_vAdd ha) fun la => Real.log (Ideal.absNorm la.asIdeal : ℝ)`. Establish `h3 : ∏ᶠ la : HeightOneSpectrum (𝓞 K), FinitePlace.equivHeightOneSpectrum.symm la a = Real.exp (-∑ᶠ la : HeightOneSpectrum (𝓞 K), (vAdd la a : ℝ) * Real.log (Ideal.absNorm la.asIdeal : ℝ))`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[finsum_eq_sum _ hf, ← Finset.sum_neg_distrib, Real.exp_sum, finprod_eq_prod_of_mulSupport_subset (s := hf.toFinset)]`. Conclude with `Finset.prod_congr rfl fun la _ => h2 la`. Introduce `la hla`. Simplify using `only [Set.Finite.coe_toFinset]`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hla` to reduce the goal to its premises. Simplify using `only at h0 ⊢`. Rewrite using `[h2, h0]`. Simplify using the standard rewrite rules. Establish `h4 : ∑ σ : K →+* ℂ, Real.log ‖σ a‖ = Real.log |((Algebra.norm ℚ a : ℚ) : ℝ)|`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.log_prod (fun σ _ => norm_ne_zero_iff.2 ((map_ne_zero σ).2 ha)), ← norm_prod]`. Use `congr 1`. Use `Algebra.norm_eq_prod_embeddings ℚ ℂ a` as an intermediate fact. Rewrite `this` using `[← Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) (fun σ : K →+* ℂ => σ a) _ (fun _ => rfl)]`. Rewrite using `[← this]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `h1` using `[h3]`. Establish `h5` using `congrArg Real.log h1`. Rewrite `h5` using `[Real.log_exp, Rat.cast_inv, Real.log_inv, Rat.cast_abs, neg_inj]`. Simplify using `only [lineDeg, lw, ← mul_div_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4, ← h5]`. Simplify using `only [div_eq_mul_inv]`. Rewrite using `[finsum_mul, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineDeg_num {a : K} (ha : a ≠ 0) : lineDeg (fun σ : K →+* ℂ => ‖σ a‖) (fun la => (vAdd la a : ℝ)) = 0 := by
   have h1 := FinitePlace.prod_eq_inv_abs_norm ha
@@ -117,7 +117,7 @@ theorem lineDeg_num {a : K} (ha : a ≠ 0) : lineDeg (fun σ : K →+* ℂ => �
   rw [finsum_mul, sub_self]
 
 /- English proof (translation)
-Establish `h` using `lineDeg_num (K := K) (a := n) (Nat.cast_ne_zero.2 hn)`. Establish `hK : (finrank ℚ K : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr finrank_pos.ne'`. Simplify using `only [lineDeg, map_natCast, Complex.norm_natCast, Finset.sum_const, Finset.card_univ, Embeddings.card, nsmul_eq_mul] at h`. Rewrite using `[sub_eq_zero.1 h]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem sum_vAdd_nat {n : ℕ} (hn : n ≠ 0) : ∑ᶠ la, (vAdd la (n : K) : ℝ) * lw K la = Real.log n := by
   have h := lineDeg_num (K := K) (a := n) (Nat.cast_ne_zero.2 hn)
@@ -127,7 +127,7 @@ theorem sum_vAdd_nat {n : ℕ} (hn : n ≠ 0) : ∑ᶠ la, (vAdd la (n : K) : �
   rw [sub_eq_zero.1 h]; field_simp
 
 /- English proof (translation)
-Rewrite using `[vAdd, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_if_neg _ hx]`. Simplify using `[QAt.vla]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vla_span {x : 𝓞 K} (hx : x ≠ 0) (la : HeightOneSpectrum (𝓞 K)) :
     (QAt.vla la (Ideal.span {x}) : ℤ) = vAdd la (x : K) := by
@@ -136,11 +136,11 @@ theorem vla_span {x : 𝓞 K} (hx : x ≠ 0) (la : HeightOneSpectrum (𝓞 K)) :
   simp [QAt.vla]
 
 /- English proof (translation)
-Take `⟨k, m, hnd, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn ℓ hℓ.ne_one`. Use `haveI := Fact.mk hℓ`. Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hnd (dvd_zero _)`. Establish `h1 : la.valuation K ((m : 𝓞 K) : K) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hmm`. Establish `hc : IsCoprime (ℓ : 𝓞 K) (m : 𝓞 K)` using `Nat.Coprime.cast ((Nat.Prime.coprime_iff_not_dvd hℓ).2 hnd)`. Take `⟨a, b, hab⟩` from `hc`. Conclude with `la.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ hm) (Ideal.mul_mem_left _ _ hmm)))`. Establish `h1' : la.valuation K (m : K) = 1` using `by simpa using h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[padicValNat.mul (pow_ne_zero _ hℓ.ne_zero) hm0, padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hnd]`. Simplify using `[vAdd, h1']`.
+A detailed English derivation is pending.
 -/
 theorem vAdd_natCast {ℓ n : ℕ} (hℓ : ℓ.Prime) (hn : n ≠ 0) {la : HeightOneSpectrum (𝓞 K)}
     (hm : (ℓ : 𝓞 K) ∈ la.asIdeal) : vAdd la (n : K) = padicValNat ℓ n * vAdd la (ℓ : K) := by
@@ -161,7 +161,7 @@ theorem vAdd_natCast {ℓ n : ℕ} (hℓ : ℓ.Prime) (hn : n ≠ 0) {la : Heigh
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-The claim follows from `(Ideal.finite_factors (conjDifferent_ne_bot σ)).subset fun la h => by refine (QAt.BeSumPf.vla_ne_zero_iff la (conjDifferent_ne_bot σ)).1 fun h0 => h ?_ simp [DefectSumCompare.ord_vw_eq_vla la (conjDifferent_ne_bot σ), h0]`.
+A detailed English derivation is pending.
 -/
 theorem finite_ord (σ : E →+* K) :
     (Function.support fun la : HeightOneSpectrum (𝓞 K) => (ord_vw la (conjDifferent σ) : ℝ)).Finite :=
@@ -170,15 +170,15 @@ theorem finite_ord (σ : E →+* K) :
     simp [DefectSumCompare.ord_vw_eq_vla la (conjDifferent_ne_bot σ), h0]
 
 /- English proof (translation)
-Establish `hf` using `fin_mul (finite_ord σ) fun la => Real.log (Ideal.absNorm la.asIdeal : ℝ)`. Establish `h1` using `QAt.BeSumPf.sum_vla_log_fin _ (conjDifferent_ne_bot σ) (finite_ord σ).toFinset fun v hv => by`. Simplify `hv` using `[DefectSumCompare.ord_vw_eq_vla v (conjDifferent_ne_bot σ)]`. Use `letI := σ.toAlgebra`. Establish `h2 : Ideal.absNorm (conjDifferent σ) = (discr E).natAbs ^ finrank E K`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `Ideal.absNorm_algebraMap (𝓞 E) (𝓞 K) (differentIdeal ℤ (𝓞 E))` as an intermediate fact. Rewrite `this` using `[absNorm_differentIdeal E, ← IsFractionRing.finrank_eq (𝓞 E) E (𝓞 K) K]`. Conclude with `this`. Establish `h3 : (finrank ℚ K : ℝ) = finrank ℚ E * finrank E K`. Rewrite using `[← Module.finrank_mul_finrank ℚ E K]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hK : (finrank E K : ℝ) ≠ 0`. Introduce `h`. Rewrite `h3` using `[h, mul_zero]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Nat.cast_ne_zero.mpr finrank_pos.ne') h3`. Establish `hE : (finrank ℚ E : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr finrank_pos.ne'`. Simplify using `only [lw, div_eq_mul_inv, ← mul_assoc]`. Rewrite using `[← finsum_mul, finsum_eq_sum_of_support_subset (s := (finite_ord σ).toFinset) _ (by simpa using Function.support_mul_subset_left _ _)]`. Simplify using `only [DefectSumCompare.ord_vw_eq_vla _ (conjDifferent_ne_bot σ)] at h1 ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[h1, h2, h3, Nat.cast_pow, Real.log_pow, Nat.cast_natAbs, Int.cast_abs, DefectSumCompare.log_discr_eq]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem sum_ord (σ : E →+* K) : ∑ᶠ la, (ord_vw la (conjDifferent σ) : ℝ) * lw K la = lrd E := by
   have hf := fin_mul (finite_ord σ) fun la => Real.log (Ideal.absNorm la.asIdeal : ℝ)
@@ -216,7 +216,7 @@ open Classical in
 def flatWt (Dw : Datum H) (τ : Psi H) : Weight Dw := parWt Dw fun τ' => if τ' = τ then -1 else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i`. Simplify using `[parWt, flatWt, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem parWt_eq_sum (w : Psi H → ℤ) : parWt Dw w = ∑ τ, (-w τ) • flatWt Dw τ := by
   classical
@@ -224,7 +224,7 @@ theorem parWt_eq_sum (w : Psi H → ℤ) : parWt Dw w = ∑ τ, (-w τ) • flat
   simp [parWt, flatWt, Finset.sum_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨(wtOf_big _ 0 τ i hi).trans ?_, (wtOf_small _ 0 τ j hj).trans ?_, rfl⟩ <;> simp [flatWt, parWt]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (τ : Psi H) (i : Fin (Dw.mult τ.1)) (j : Fin (Dw.mult (conjEmb τ.1))) (hi : (i : ℕ) < Dw.p)
     (hj : (j : ℕ) < Dw.q) : exOf Dw (flatWt Dw τ) 0 (some ⟨τ.1, i⟩) = -1 ∧
@@ -237,19 +237,19 @@ def different_vp (E : Type) [Field E] [NumberField E] (ℓ : ℕ) : ℚ :=
 def flDefect_vp (Dw : Datum H) (ℓ : ℕ) : ℚ := Dw.q * (different_vp E ℓ - if ℓ = H.d then 1 else 0)
 
 /- English proof (translation)
-Simplify using `[flDefect_vp, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flDefect_vp_of_ne {ℓ : ℕ} (h : ℓ ≠ H.d) : flDefect_vp Dw ℓ = Dw.q * different_vp E ℓ := by
   simp [flDefect_vp, h]
 
 /- English proof (translation)
-Simplify using `only [flDefect_vp, h, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem flDefect_vp_d (h : different_vp E H.d = 1 / 2) : flDefect_vp Dw H.d = -(Dw.q * different_vp E H.d) := by
   simp only [flDefect_vp, h, if_true]; ring
 
 /- English proof (translation)
-Simplify using `[flDefect_vp, h, different_vp, padicValNat.eq_zero_of_not_dvd h']`.
+Simplify using the standard rewrite rules.
 -/
 theorem flDefect_vp_eq_zero {ℓ : ℕ} (h : ℓ ≠ H.d) (h' : ¬ ℓ ∣ (discr E).natAbs) : flDefect_vp Dw ℓ = 0 := by
   simp [flDefect_vp, h, different_vp, padicValNat.eq_zero_of_not_dvd h']
@@ -260,13 +260,13 @@ def flDefect_vw (Dw : Datum H) (c : Coeff l) (τ : Psi H) (la : HeightOneSpectru
 variable {c : Coeff l}
 
 /- English proof (translation)
-Establish `hd : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.mpr (discr_ne_zero E)`. Establish `h1` using `DefectSumCompare.vla_discAt (embF c τ.1) la`. Establish `h2` using `vla_span (K := c.F) (x := ((discr E).natAbs : ℕ)) (Nat.cast_ne_zero.2 hd) la`. Establish `h3` using `vAdd_natCast hℓ hd hm`. Establish `h4 : (finrank ℚ E : ℝ) * ord_vw la (conjDifferent (embF c τ.1)) = padicValNat ℓ (discr E).natAbs * (vAdd la (ℓ : c.F) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : ((finrank ℚ E * ord_vw la (conjDifferent (embF c τ.1)) : ℕ) : ℤ) = padicValNat ℓ (discr E).natAbs * vAdd la (ℓ : c.F)`. Rewrite using `[← h1, ← h3]`. Conclude with `h2`. Establish `h7` using `congrArg (Int.cast : ℤ → ℝ) h5`. Simplify `h7` using `only [Int.cast_mul, Int.cast_natCast, Nat.cast_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h6 : (vAdd la (H.d : c.F) : ℝ) = (if ℓ = H.d then 1 else 0) * (vAdd la (ℓ : c.F) : ℝ)` using `by split_ifs with h`. Rewrite using `[h, one_mul]`. Rewrite using `[vAdd_natCast hℓ H.d_prime.ne_zero hm, padicValNat.eq_zero_of_not_dvd fun h' => h ((Nat.prime_dvd_prime_iff_eq hℓ H.d_prime).1 h')]`. Simplify using the standard rewrite rules. Establish `hE : (finrank ℚ E : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr finrank_pos.ne'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[flDefect_vw, h6, eq_div_of_mul_eq hE ((mul_comm _ _).trans h4), flDefect_vp, different_vp]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem flDefect_vw_eq [IsGalois ℚ E] (τ : Psi H) {ℓ : ℕ} (hℓ : ℓ.Prime) {la : HeightOneSpectrum (𝓞 c.F)}
     (hm : (ℓ : 𝓞 c.F) ∈ la.asIdeal) :
@@ -293,7 +293,7 @@ theorem flDefect_vw_eq [IsGalois ℚ E] (τ : Psi H) {ℓ : ℕ} (hℓ : ℓ.Pri
   split_ifs <;> push_cast <;> ring
 
 /- English proof (translation)
-The claim follows from `((finite_ord (embF c τ.1)).union (finite_vAdd (K := c.F) (Nat.cast_ne_zero.2 H.d_prime.ne_zero))).subset fun la h => by by_contra hn simp only [Set.mem_union, Function.mem_support, not_or, not_not] at hn exact h (by rw [flDefect_vw, hn.1, hn.2]; simp)`.
+A detailed English derivation is pending.
 -/
 theorem finite_flDefect_vw (τ : Psi H) : (Function.support (flDefect_vw Dw c τ)).Finite :=
   ((finite_ord (embF c τ.1)).union (finite_vAdd (K := c.F) (Nat.cast_ne_zero.2 H.d_prime.ne_zero))).subset
@@ -303,7 +303,7 @@ theorem finite_flDefect_vw (τ : Psi H) : (Function.support (flDefect_vw Dw c τ
       exact h (by rw [flDefect_vw, hn.1, hn.2]; simp)
 
 /- English proof (translation)
-Simplify using `only [flDefect_vw, mul_assoc, sub_mul]`. Rewrite using `[← mul_finsum, finsum_sub_distrib (fin_mul (finite_ord _) _) (fin_mul (finite_vAdd (Nat.cast_ne_zero.2 H.d_prime.ne_zero)) _), sum_ord, sum_vAdd_nat H.d_prime.ne_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_flDefect_vw (τ : Psi H) :
     ∑ᶠ la, flDefect_vw Dw c τ la * lw c.F la = Dw.q * (lrd E - Real.log H.d) := by
@@ -319,20 +319,20 @@ abbrev Tested {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) : Prop :
   FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y
 
 /- English proof (translation)
-The claim follows from `funext fun _ => funext fun y => (cspB_idem_idem _ (cspB_isClopen (CompSplitPfD.cspD_comp_disj Xo c) Z) y.x y.x_over).eq`.
+A detailed English derivation is pending.
 -/
 theorem idem_mul_idem (Z : Comp Xo c) : idem Z * idem Z = idem Z :=
   funext fun _ => funext fun y =>
     (cspB_idem_idem _ (cspB_isClopen (CompSplitPfD.cspD_comp_disj Xo c) Z) y.x y.x_over).eq
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cspB_rule_natural _ _, fun p t y y' h => by simp [idem, cspB_rule_bor _ _ p t y y' h]⟩`.
+Supply the required witnesses or components.
 -/
 theorem idem_mem_secZ (Z : Comp Xo c) : idem Z ∈ secZ Xo c 0 :=
   ⟨cspB_rule_natural _ _, fun p t y y' h => by simp [idem, cspB_rule_bor _ _ p t y y' h]⟩
 
 /- English proof (translation)
-Rewrite using `[idem, cspB_evR _ _ y ht]`. Use `cspB_idem_eq_of (cspB_idem_idem _ _ _ _) IsIdempotentElem.one fun q => ?_` and prove the remaining obligations. Rewrite using `[cspB_idem_spec]`. Conclude with `iff_of_true (h q) ((Ideal.ne_top_iff_one _).1 q.isPrime.ne_top)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_idem {Z : Comp Xo c} {S : Type} [CommRing S] [Algebra c.F S] {y : FrPt Xo c S} (h : LiesOn Z y)
     (ht : Tested y) : evR Xo c (idem Z) y = 1 := by
@@ -342,7 +342,7 @@ theorem evR_idem {Z : Comp Xo c} {S : Type} [CommRing S] [Algebra c.F S] {y : Fr
   exact iff_of_true (h q) ((Ideal.ne_top_iff_one _).1 q.isPrime.ne_top)
 
 /- English proof (translation)
-Introduce `S _ _ y h` and use `by by_cases ht : Tested y · rw [idem, cspB_evR _ _ y ht] refine cspB_idem_eq_of (cspB_idem_idem _ _ _ _) IsIdempotentElem.zero fun q => ?_ rw [cspB_idem_spec] exact iff_of_false (h q) (not_not.2 q.asIdeal.zero_mem) · exact cspB_evR_zero y ht _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem idem_mem_suppOn (Z : Comp Xo c) : idem Z ∈ suppOn Z := fun S _ _ y h => by
   by_cases ht : Tested y
@@ -358,7 +358,7 @@ def algOn (Z : Comp Xo c) (T : CDVR) (ι : c.F →+* T.Fr) (y : IntFr Xo c T ι)
 def valOn (Z : Comp Xo c) (la : HeightOneSpectrum (𝓞 c.F)) : Set (Rul Xo c → EReal) := valSet Xo c (algOn Z) la
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨PtV.widen (fun _ _ _ h => h.1) y, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem valOn_subset (Z : Comp Xo c) (la : HeightOneSpectrum (𝓞 c.F)) :
     valOn Z la ⊆ valSet Xo c (algCls Xo c) la := by
@@ -366,15 +366,15 @@ theorem valOn_subset (Z : Comp Xo c) (la : HeightOneSpectrum (𝓞 c.F)) :
   exact ⟨PtV.widen (fun _ _ _ h => h.1) y, rfl⟩
 
 /- English proof (translation)
-The claim follows from `isVal_valSet la v hv`.
+A detailed English derivation is pending.
 -/
 theorem isVal_valOn {Z : Comp Xo c} {la : HeightOneSpectrum (𝓞 c.F)} {v : Rul Xo c → EReal} (hv : v ∈ valOn Z la) :
     IsVal la v := isVal_valSet la v hv
 
 /- English proof (translation)
-Take `⟨⟨q, T, io, e, ho, y, hy, η, hη, rfl⟩, rfl⟩` from `hv`. Use `letI := io.toAlgebra`. Distinguish the cases in `h : LiesOn Z y.1`. Conclude with `Or.inl ⟨PtV.mk la ho y ⟨hy, h⟩ () trivial, rfl⟩`. Use `Or.inr fun f hf => ?_ show nval T.V e (evR Xo c f y.1) = ⊤` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hf _ _ ((liesOff_iff Z y.1).2 h), nval_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_valOn_or {Z : Comp Xo c} {la : HeightOneSpectrum (𝓞 c.F)} {v : Rul Xo c → EReal}
     (hv : v ∈ valSet Xo c (algCls Xo c) la) : v ∈ valOn Z la ∨ ∀ f ∈ suppOn Z, v f = ⊤ := by
@@ -387,7 +387,7 @@ theorem mem_valOn_or {Z : Comp Xo c} {la : HeightOneSpectrum (𝓞 c.F)} {v : Ru
     rw [hf _ _ ((liesOff_iff Z y.1).2 h), nval_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h la v hv => h la v (valOn_subset Z la hv), fun h la v hv => (mem_valOn_or (Z := Z) hv).elim (h la v) fun h' => (h' _ hf).symm ▸ le_top⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_supLat_iff {Z : Comp Xo c} {C : Submodule c.F (Rul Xo c)} {f : C} (hf : (f : Rul Xo c) ∈ suppOn Z) :
     f ∈ supLat C ↔ ∀ la, ∀ v ∈ valOn Z la, 0 ≤ v (f : Rul Xo c) :=
@@ -395,7 +395,7 @@ theorem mem_supLat_iff {Z : Comp Xo c} {C : Submodule c.F (Rul Xo c)} {f : C} (h
     (mem_valOn_or (Z := Z) hv).elim (h la v) fun h' => (h' _ hf).symm ▸ le_top⟩
 
 /- English proof (translation)
-Take `⟨⟨q, T, io, e, ho, y, hy, η, hη, rfl⟩, rfl⟩` from `hv`. Use `letI := io.toAlgebra`. Use `show nval T.V e (evR Xo c (idem Z) y.1) = 0`. Rewrite using `[evR_idem hy.2 y.2.1, nval_of_ne one_ne_zero]`. Simplify using `[vV]`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_idem {Z : Comp Xo c} {la : HeightOneSpectrum (𝓞 c.F)} {v : Rul Xo c → EReal} (hv : v ∈ valOn Z la) :
     v (idem Z) = 0 := by
@@ -406,9 +406,9 @@ theorem val_idem {Z : Comp Xo c} {la : HeightOneSpectrum (𝓞 c.F)} {v : Rul Xo
   simp [vV]
 
 /- English proof (translation)
-Take `⟨⟨q, T, io, e, ho, y, hy, η, hη, rfl⟩, rfl⟩` from `hv`. Establish `h' : nval T.V e (evI y f) = a` using `h`. Distinguish the cases in `h0 : evI y f = 0`. Rewrite `h'` using `[h0, nval_zero]`. Conclude with `absurd h' (EReal.top_ne_coe a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[nval_of_ne h0, EReal.coe_eq_coe_iff]`. Conclude with `⟨(vV T.V (evI y f) : ℚ) / e, by rw [← h']; push_cast; rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem val_rat {Z : Comp Xo c} {la : HeightOneSpectrum (𝓞 c.F)} {v : Rul Xo c → EReal} (hv : v ∈ valOn Z la)
     {f : Rul Xo c} {a : ℝ} (h : v f = a) : ∃ b : ℚ, a = b := by
@@ -430,9 +430,9 @@ open Classical in
 def modelFlat {Ψ : Finset (E →+* ℂ)} (r : ℕ) (τ : Ψ) : Wt Ψ r := fun τ' _ => if τ' = τ then -1 else 0
 
 /- English proof (translation)
-Establish `: gram τ G y = y.transpose * τ.mapMatrix G * (starRingEnd ℂ).mapMatrix y`. Use extensionality with `a b`. Simplify using `only [gram, hermC, col, Matrix.of_apply, Matrix.mul_apply, Finset.sum_mul, Matrix.transpose_apply, RingHom.mapMatrix_apply, Matrix.map_apply]`. Conclude with `Finset.sum_comm`. Rewrite using `[this, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, ← RingHom.map_det, ← RingHom.map_det, norm_mul, norm_mul, Complex.norm_conj]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem det_gram (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (y : Matrix (Fin r) (Fin r) ℂ) :
     ‖(gram τ G y).det‖ = ‖τ G.det‖ * ‖y.det‖ ^ 2 := by
@@ -446,13 +446,13 @@ theorem det_gram (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (y : Matrix (
   ring
 
 /- English proof (translation)
-Establish `hd : ∀ i, dmin X.Gm y τ i ≠ 0` using `fun i h0 => by`. Use `(hy τ).2 i` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Establish `h0 : dmin X.Gm y τ 0 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `dmin lminor`. Conclude with `Matrix.det_isEmpty (n := Fin 0)`. Establish `hl : dmin X.Gm y τ (Fin.last r) = (gram τ.1 X.Gm (mat y τ)).det` using `rfl`. Establish `ht : ∏ i : Fin r, dmin X.Gm y τ i.succ / dmin X.Gm y τ i.castSucc = (gram τ.1 X.Gm (mat y τ)).det`. Establish `h1` using `(Fin.prod_univ_succ (dmin X.Gm y τ)).symm.trans (Fin.prod_univ_castSucc (dmin X.Gm y τ))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h0, one_mul, hl]`. Rewrite using `[Finset.prod_div_distrib, h1, mul_div_cancel_left₀ _ (Finset.prod_ne_zero_iff.2 fun i _ => hd _)]`. Establish `hx : ‖(mat y τ).det‖ ≠ 0` using `norm_ne_zero_iff.2 (hy τ).1`. Rewrite using `[Data.pnorm, Finset.prod_eq_single τ (fun τ' _ h => by simp [modelFlat, h]) (by simp)]`. Simplify using `only [modelFlat, if_true]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.finset_prod_rpow _ _ (fun _ _ => norm_nonneg _), ← norm_prod, ht, det_gram, horizGen, norm_inv]`. Rewrite using `[show (-((-1 : ℤ) : ℝ) / 2) = 1 / 2 by norm_num, ← Real.sqrt_eq_rpow, Real.sqrt_mul (norm_nonneg _), Real.sqrt_sq (norm_nonneg _)]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem pnorm_horizGen (X : Data E r) (τ : X.Ψ) {y : Frame X.Ψ r} (hy : y ∈ X.dom) :
     X.pnorm (modelFlat r τ) (horizGen τ) y = Real.sqrt ‖τ.1 X.Gm.det‖ := by
@@ -476,17 +476,17 @@ theorem pnorm_horizGen (X : Data E r) (τ : X.Ψ) {y : Frame X.Ψ r} (hy : y ∈
   field_simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨ρ, hρ⟩ j`. Take `⟨hp0, hΨ⟩` from `hU.2.1 k`. Establish `hr` using `hU.1`. Establish `hj` using `j.2`. Take `⟨ρ', rfl⟩` from `Finite.injective_iff_surjective.1 (relab_injective (E := E) (c := c) σ) ρ`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hρΨ : ρ' (H.rt : E) = H.rt0`. Assume the negation of the conclusion as `hn`. Establish `h3 : relab c σ (conjEmb ρ') (H.rt : E) = H.rt0`. Establish `hσ0 : σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩ = H.rt0` using `hσ`. Conclude with `(congrArg σ (Subtype.ext (conj_mem hn))).trans hσ0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[relab_conj]`. Conclude with `conj_not_mem ⟨_, (hΨ _).1 hρ⟩ h3`. Establish `e : ((⟨ρ', hρΨ⟩ : Psi H) = τ) ↔ ((⟨relab c σ ρ', hρ⟩ : (U.X k).Ψ) = ⟨_, hτ⟩)`. Rewrite using `[Subtype.ext_iff, Subtype.ext_iff]`. Conclude with `(relab_injective σ).eq_iff.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : (j : ℕ) < Dw.q`. Use `(modelWt_wtOf_small U _ 0 k hp0 ⟨ρ', hρΨ⟩ hρ j h hj).trans ?_` and prove the remaining obligations. Simplify using `only [flatWt, parWt, modelFlat]`. Distinguish the cases in `h1 : (⟨ρ', hρΨ⟩ : Psi H) = τ`. Rewrite using `[if_pos h1, if_pos (e.1 h1)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_neg h1, if_neg (mt e.2 h1)]`. Use `modelWt_wtOf_big U (flatWt Dw τ) 0 k hp0 ⟨ρ', hρΨ⟩ hρ (j - Dw.q) (by omega) (by omega)` as an intermediate fact. Establish `ej : j = ⟨Dw.q + (j - Dw.q), by omega⟩` using `Fin.ext (by simp only; omega)`. Rewrite using `[ej]`. Use `this.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [flatWt, parWt, modelFlat]`. Distinguish the cases in `h1 : (⟨ρ', hρΨ⟩ : Psi H) = τ`. Rewrite using `[if_pos h1, if_pos (e.1 h1)]`. Rewrite using `[if_neg h1, if_neg (mt e.2 h1)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modelWt_flatWt {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : IsUnf U) (τ : Psi H) (k : U.Comp)
     (hτ : relab c σ τ.1 ∈ (U.X k).Ψ) : modelWt U (wtOf Dw (flatWt Dw τ) 0) k = modelFlat r ⟨_, hτ⟩ := by
@@ -524,7 +524,7 @@ def IsHorizontal {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (Z : Comp Xo c) (τ : 
     rdU U f k y = a * horizGen ⟨_, hτ⟩ y
 
 /- English proof (translation)
-Take `⟨hτ, a, ha⟩` from `h k`. Use `⟨lieFacZ Dw x (wtOf Dw (flatWt Dw τ) 0) * (‖a‖ * Real.sqrt ‖relab c σ τ.1 (U.X k).Gm.det‖), fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← pnorm_horizGen (U.X k) ⟨_, hτ⟩ hy.1, homN, ptN, modelWt_flatWt U hσ hU τ k hτ]`. Simplify using `only [Data.pnorm, ha y hy, norm_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsHorizontal.homN_const {σ : c.F →+* ℂ} {U : Unf Xo c σ r} (hσ : GoodEmb c σ) (hU : IsUnf U) (x : ℝ)
     {Z : Comp Xo c} {τ : Psi H} {f : Rul Xo c} (h : IsHorizontal U Z τ f) (k : U.Comp) :
@@ -542,13 +542,13 @@ section Norm
 variable {r : ℕ} {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (x : ℝ)
 
 /- English proof (translation)
-Simplify using `[homN, lieFacZ, ptN, Data.pnorm, modelWt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem homN_zero (f : Rul Xo c) (z : Σ k, Frame (U.X k).Ψ r) : homN U x 0 f z = ‖rdU U f z.1 z.2‖ := by
   simp [homN, lieFacZ, ptN, Data.pnorm, modelWt]
 
 /- English proof (translation)
-Unfold `homN ptN`. Rewrite using `[map_smulₛₗ]`. Conclude with `(congrArg _ (pnorm_smul _ _ (σ a) _ _)).trans (by ring)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homN_smul (G : WTZ E) (a : c.F) (f : Rul Xo c) (z : Σ k, Frame (U.X k).Ψ r) :
     homN U x G (a • f) z = ‖σ a‖ * homN U x G f z := by
@@ -557,9 +557,9 @@ theorem homN_smul (G : WTZ E) (a : c.F) (f : Rul Xo c) (z : Σ k, Frame (U.X k).
   exact (congrArg _ (pnorm_smul _ _ (σ a) _ _)).trans (by ring)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ht`. Apply `h` to reduce the goal to its premises. Establish `: rdU U f z.1 z.2 = 0`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, hz, dif_pos]`. Conclude with `cspB_evR_zero _ ht f`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[homN, ptN, Data.pnorm, this]`.
+A detailed English derivation is pending.
 -/
 theorem tested_of_homN_ne {G : WTZ E} {f : Rul Xo c} {z : Σ k, Frame (U.X k).Ψ r} (hz : z.2 ∈ (U.X z.1).dom)
     (h : homN U x G f z ≠ 0) : Tested (U.un z.1 ⟨z.2, hz⟩) := by
@@ -571,7 +571,7 @@ theorem tested_of_homN_ne {G : WTZ E} {f : Rul Xo c} {z : Σ k, Frame (U.X k).Ψ
   simp [homN, ptN, Data.pnorm, this]
 
 /- English proof (translation)
-Establish `: rdU U (idem Z) z.1 z.2 = 1`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, hz, dif_pos]`. Conclude with `evR_idem (S := CAt σ) h ht`. Rewrite using `[homN_zero, this, norm_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homN_idem {Z : Comp Xo c} {z : Σ k, Frame (U.X k).Ψ r} (hz : z.2 ∈ (U.X z.1).dom)
     (h : LiesOn Z (U.un z.1 ⟨z.2, hz⟩)) (ht : Tested (U.un z.1 ⟨z.2, hz⟩)) : homN U x 0 (idem Z) z = 1 := by
@@ -583,37 +583,37 @@ theorem homN_idem {Z : Comp Xo c} {z : Σ k, Frame (U.X k).Ψ r} (hz : z.2 ∈ (
 end Norm
 
 /- English proof (translation)
-Rewrite using `[Set.eq_singleton_iff_nonempty_unique_mem, Set.image_nonempty, Set.forall_mem_image]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem image_eq_singleton_iff {α β : Type*} {f : α → β} {s : Set α} {a : β} :
     f '' s = {a} ↔ s.Nonempty ∧ ∀ z ∈ s, f z = a := by
   rw [Set.eq_singleton_iff_nonempty_unique_mem, Set.image_nonempty, Set.forall_mem_image]
 
 /- English proof (translation)
-Rewrite using `[smul_mul_smul_comm, mul_inv_cancel₀ ha, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mul_inv_smul {K R : Type} [Field K] [CommRing R] [Algebra K R] {a : K} (ha : a ≠ 0) (f g : R) :
     a • f * a⁻¹ • g = f * g := by
   rw [smul_mul_smul_comm, mul_inv_cancel₀ ha, one_smul]
 
 /- English proof (translation)
-The claim follows from `wtOf_add la la' 0 0`.
+A detailed English derivation is pending.
 -/
 theorem wtOf_add' (la la' : Weight Dw) : wtOf Dw (la + la') 0 = wtOf Dw la 0 + wtOf Dw la' 0 := wtOf_add la la' 0 0
 
 /- English proof (translation)
-The claim follows from `exOf_add la la' 0 0`.
+A detailed English derivation is pending.
 -/
 theorem exOf_add' (la la' : Weight Dw) : exOf Dw (la + la') 0 = exOf Dw la 0 + exOf Dw la' 0 := exOf_add la la' 0 0
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; rw [exOf, wtOf_zero]; cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exOf_zero : exOf Dw 0 0 = 0 := by
   funext i; rw [exOf, wtOf_zero]; cases i <;> rfl
 
 /- English proof (translation)
-The claim follows from `eq_neg_of_add_eq_zero_left (by rw [← exOf_add', neg_add_cancel, exOf_zero])`.
+A detailed English derivation is pending.
 -/
 theorem exOf_neg (la : Weight Dw) : exOf Dw (-la) 0 = -exOf Dw la 0 :=
   eq_neg_of_add_eq_zero_left (by rw [← exOf_add', neg_add_cancel, exOf_zero])
@@ -653,32 +653,32 @@ section Basic
 variable (s : ConstSec U x Z la δ)
 
 /- English proof (translation)
-Rewrite using `[← s.idem_sig, mul_comm]`. Conclude with `mul_mem_suppOn _ (idem_mem_suppOn Z)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_mem_suppOn : s.sig ∈ suppOn Z := by
   rw [← s.idem_sig, mul_comm]; exact mul_mem_suppOn _ (idem_mem_suppOn Z)
 
 /- English proof (translation)
-Rewrite using `[← s.idem_inv, mul_comm]`. Conclude with `mul_mem_suppOn _ (idem_mem_suppOn Z)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_suppOn : s.inv ∈ suppOn Z := by
   rw [← s.idem_inv, mul_comm]; exact mul_mem_suppOn _ (idem_mem_suppOn Z)
 
 /- English proof (translation)
-Rewrite using `[← cspB_evR_mul, s.mul_inv, evR_idem h ht]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evR_mul_inv {S : Type} [CommRing S] [Algebra c.F S] {y : FrPt Xo c S} (h : LiesOn Z y) (ht : Tested y) :
     evR Xo c s.sig y * evR Xo c s.inv y = 1 := by
   rw [← cspB_evR_mul, s.mul_inv, evR_idem h ht]
 
 /- English proof (translation)
-The claim follows from `(image_eq_singleton_iff.1 (s.norm_inf σ)).2 z hz`.
+A detailed English derivation is pending.
 -/
 theorem homN_eq {σ : c.F →+* ℂ} {z} (hz : z ∈ framesOn (U (goodOf c σ)) Z) :
     homN (U (goodOf c σ)) x (wtOf Dw la 0) s.sig z = s.cInf σ := (image_eq_singleton_iff.1 (s.norm_inf σ)).2 z hz
 
 /- English proof (translation)
-The claim follows from `(image_eq_singleton_iff.1 (s.val_fin w)).2 v hv`.
+A detailed English derivation is pending.
 -/
 theorem val_eq {w} {v : Rul Xo c → EReal} (hv : v ∈ valOn Z w) : v s.sig = ((δ w + s.rho_vw w : ℝ) : EReal) :=
   (image_eq_singleton_iff.1 (s.val_fin w)).2 v hv
@@ -686,7 +686,7 @@ theorem val_eq {w} {v : Rul Xo c → EReal} (hv : v ∈ valOn Z w) : v s.sig = (
 include s in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun σ => ⟨(image_eq_singleton_iff.1 (s.norm_inf σ)).1, fun _ hz hd => tested_of_homN_ne _ x hd ((s.homN_eq hz).symm ▸ (s.cInf_pos σ).ne')⟩, fun w => (image_eq_singleton_iff.1 (s.val_fin w)).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasPts : HasPts U Z :=
   ⟨fun σ => ⟨(image_eq_singleton_iff.1 (s.norm_inf σ)).1, fun _ hz hd =>
@@ -694,7 +694,7 @@ theorem hasPts : HasPts U Z :=
    fun w => (image_eq_singleton_iff.1 (s.val_fin w)).1⟩
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨z, hz⟩ := (s.hasPts.1 c.F.val.toRingHom).1 have h1 := s.homN_eq hz rw [h, ← zero_smul c.F (0 : Rul Xo c), homN_smul, map_zero, norm_zero, zero_mul] at h1 exact (s.cInf_pos _).ne h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sig_ne_zero : s.sig ≠ 0 := fun h => by
   obtain ⟨z, hz⟩ := (s.hasPts.1 c.F.val.toRingHom).1
@@ -703,7 +703,7 @@ theorem sig_ne_zero : s.sig ≠ 0 := fun h => by
   exact (s.cInf_pos _).ne h1
 
 /- English proof (translation)
-Rewrite using `[homN_mul _ x hG (even_wtOf _ _) _ _ _ hz.1, s.homN_eq hz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem homN_mul_sig {G : WTZ E} (hG : Even G.2) (f : Rul Xo c) {σ : c.F →+* ℂ} {z}
     (hz : z ∈ framesOn (U (goodOf c σ)) Z) :
@@ -711,14 +711,14 @@ theorem homN_mul_sig {G : WTZ E} (hG : Even G.2) (f : Rul Xo c) {σ : c.F →+* 
   rw [homN_mul _ x hG (even_wtOf _ _) _ _ _ hz.1, s.homN_eq hz]
 
 /- English proof (translation)
-Rewrite using `[(isVal_valOn hv).mul, s.val_eq hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_mul_sig (f : Rul Xo c) {w} {v : Rul Xo c → EReal} (hv : v ∈ valOn Z w) :
     v (f * s.sig) = v f + ((δ w + s.rho_vw w : ℝ) : EReal) := by
   rw [(isVal_valOn hv).mul, s.val_eq hv]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `s.hasPts.2 w`. Conclude with `val_rat hv (s.val_eq hv)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_rat (w : HeightOneSpectrum (𝓞 c.F)) : ∃ b : ℚ, δ w + s.rho_vw w = b := by
   obtain ⟨v, hv⟩ := s.hasPts.2 w
@@ -729,7 +729,7 @@ def cFin (w : HeightOneSpectrum (𝓞 c.F)) : ℝ := (Ideal.absNorm w.asIdeal : 
 def deg : ℝ := lineDeg s.cInf s.rho_vw
 
 /- English proof (translation)
-Establish `: ∀ w, Real.log (s.cFin w) = -(s.rho_vw w * Real.log (Ideal.absNorm w.asIdeal : ℝ))` using `fun w => by`. Rewrite using `[cFin, Real.log_rpow (by linarith [one_lt_absNorm_real w]), neg_mul]`. Simplify using `only [this, deg, lineDeg, lw, finsum_neg_distrib, div_eq_mul_inv, ← mul_assoc]`. Rewrite using `[← finsum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_log_eq : ((∑ᶠ w, Real.log (s.cFin w)) + ∑ σ, Real.log (s.cInf σ)) / (finrank ℚ c.F : ℝ) = -s.deg := by
   have : ∀ w, Real.log (s.cFin w) = -(s.rho_vw w * Real.log (Ideal.absNorm w.asIdeal : ℝ)) := fun w => by
@@ -740,9 +740,9 @@ theorem sum_log_eq : ((∑ᶠ w, Real.log (s.cFin w)) + ∑ σ, Real.log (s.cInf
 end Basic
 
 /- English proof (translation)
-Establish `h1 : s.inv = t.inv`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : s.cInf = t.cInf` using `funext fun σ => Set.singleton_injective ((s.norm_inf σ).symm.trans (h ▸ t.norm_inf σ))`. Establish `h3 : s.rho_vw = t.rho_vw` using `funext fun w => by`. Use `Set.singleton_injective ((s.val_fin w).symm.trans (h ▸ t.val_fin w))` as an intermediate fact.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `add_left_cancel (EReal.coe_eq_coe_iff.1 this)`. Consider the cases of `s`. Consider the cases of `t`. Reduce the equality to equality of the corresponding arguments.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ext {s t : ConstSec U x Z la δ} (h : s.sig = t.sig) : s = t := by
   have h1 : s.inv = t.inv :=
@@ -849,30 +849,30 @@ def relat (s : ConstSec U x Z la δ) (δ' : HeightOneSpectrum (𝓞 c.F) → ℝ
     finite_rho := (h.union s.finite_rho).subset (Function.support_add _ _) }
 
 /- English proof (translation)
-The claim follows from `lineDeg_one`.
+A detailed English derivation is pending.
 -/
 theorem deg_one (h : HasPts U Z) : (one x h).deg = 0 := lineDeg_one
 
 /- English proof (translation)
-The claim follows from `(lineDeg_mul (fun σ => norm_pos_iff.2 ((map_ne_zero σ).2 ha)) s.cInf_pos (finite_vAdd ha) s.finite_rho).trans (by rw [lineDeg_num ha, zero_add]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem deg_smul (a : c.F) (ha : a ≠ 0) (s : ConstSec U x Z la δ) : (s.smul a ha).deg = s.deg :=
   (lineDeg_mul (fun σ => norm_pos_iff.2 ((map_ne_zero σ).2 ha)) s.cInf_pos (finite_vAdd ha) s.finite_rho).trans
     (by rw [lineDeg_num ha, zero_add]; rfl)
 
 /- English proof (translation)
-The claim follows from `lineDeg_mul s.cInf_pos t.cInf_pos s.finite_rho t.finite_rho`.
+A detailed English derivation is pending.
 -/
 theorem deg_mul (s : ConstSec U x Z la δ) (t : ConstSec U x Z la' δ') : (s.mul t).deg = s.deg + t.deg :=
   lineDeg_mul s.cInf_pos t.cInf_pos s.finite_rho t.finite_rho
 
 /- English proof (translation)
-The claim follows from `lineDeg_inv _ _`.
+A detailed English derivation is pending.
 -/
 theorem deg_symm (s : ConstSec U x Z la δ) : s.symm.deg = -s.deg := lineDeg_inv _ _
 
 /- English proof (translation)
-Use `lineDeg_mul (r := 1) (fun _ => one_pos) s.cInf_pos h s.finite_rho` as an intermediate fact. Rewrite `this` using `[one_mul]`. Use `this.trans ?_` and prove the remaining obligations. Simplify using `[lineDeg, deg, add_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem deg_relat (s : ConstSec U x Z la δ) (δ' : HeightOneSpectrum (𝓞 c.F) → ℝ)
     (h : (Function.support (δ - δ')).Finite) : (s.relat δ' h).deg = s.deg + ∑ᶠ w, (δ w - δ' w) * lw c.F w := by
@@ -886,11 +886,11 @@ section Prod
 variable {ι : Type} {lb : ι → Weight Dw} {ε : ι → HeightOneSpectrum (𝓞 c.F) → ℝ}
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.cons_induction with`. Consider the case `empty => exact ⟨one x h, by simp [one], by simp [one], rfl, rfl, deg_one h⟩`. Consider the case `cons i T hi ih`. Take `⟨t, h1, h2, h3, h4, h5⟩` from `ih`. Use `⟨((s i).mul t).copy (Finset.sum_cons hi).symm (Finset.sum_cons hi).symm, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_cons, mul_left_comm, ← h1]`. Both sides reduce to the same expression. Rewrite using `[Finset.prod_cons, mul_left_comm, ← h2]`. Both sides reduce to the same expression. Rewrite using `[Finset.prod_cons, ← h3]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `(congrArg ((s i).rho_vw + ·) h4).trans (Finset.sum_cons (f := fun i => (s i).rho_vw) hi).symm`. Conclude with `(deg_mul _ _).trans ((congrArg ((s i).deg + ·) h5).trans (Finset.sum_cons (f := fun i => (s i).deg) hi).symm)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_prod (h : HasPts U Z) (T : Finset ι) (s : ∀ i, ConstSec U x Z (lb i) (ε i)) :
     ∃ t : ConstSec U x Z (∑ i ∈ T, lb i) (∑ i ∈ T, ε i), t.sig = idem Z * ∏ i ∈ T, (s i).sig ∧
@@ -912,7 +912,7 @@ def prod (h : HasPts U Z) (T : Finset ι) (s : ∀ i, ConstSec U x Z (lb i) (ε 
     ConstSec U x Z (∑ i ∈ T, lb i) (∑ i ∈ T, ε i) := (exists_prod h T s).choose
 
 /- English proof (translation)
-The claim follows from `(exists_prod h T s).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem prod_spec (h : HasPts U Z) (T : Finset ι) (s : ∀ i, ConstSec U x Z (lb i) (ε i)) :
     (prod h T s).sig = idem Z * ∏ i ∈ T, (s i).sig ∧ (prod h T s).inv = idem Z * ∏ i ∈ T, (s i).inv ∧
@@ -922,7 +922,7 @@ theorem prod_spec (h : HasPts U Z) (T : Finset ι) (s : ∀ i, ConstSec U x Z (l
 end Prod
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_const, Finset.sum_const, Finset.card_range, Finset.card_range, smul_neg, ← sub_eq_add_neg, ← natCast_zsmul, ← natCast_zsmul, ← sub_smul, Int.toNat_sub_toNat_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_range_toNat {A : Type} [AddCommGroup A] (a : A) (n : ℤ) :
     ∑ _i ∈ Finset.range n.toNat, a + ∑ _i ∈ Finset.range (-n).toNat, -a = n • a := by
@@ -934,11 +934,11 @@ def zpow (s : ConstSec U x Z la δ) (n : ℤ) : ConstSec U x Z (n • la) (n •
     (prod s.hasPts (Finset.range (-n).toNat) fun _ => s.symm)).copy (sum_range_toNat la n) (sum_range_toNat δ n)
 
 /- English proof (translation)
-Take `⟨a1, -, a2, a3, a4⟩` from `prod_spec s.hasPts (Finset.range n.toNat) fun _ => s`. Take `⟨b1, -, b2, b3, b4⟩` from `prod_spec s.hasPts (Finset.range (-n).toNat) fun _ => s.symm`. Use `⟨?_, fun σ => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(congrArg₂ (· * ·) a1 b1).trans ?_` and prove the remaining obligations. Rewrite using `[mul_mul_mul_comm, idem_mul_idem]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[symm]`. Use `(congrFun (congrArg₂ (· * ·) a2 b2) σ).trans ?_` and prove the remaining obligations. Simplify using `only [symm, Finset.prod_const, Finset.card_range, Pi.mul_apply, Pi.pow_apply, Pi.inv_apply, inv_pow]`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_neg, ← zpow_add₀ (s.cInf_pos σ).ne', ← sub_eq_add_neg, Int.toNat_sub_toNat_neg]`. Conclude with `(congrArg₂ (· + ·) a3 b3).trans (sum_range_toNat s.rho_vw n)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(deg_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[a4, b4, deg_symm, sum_range_toNat, zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_spec (s : ConstSec U x Z la δ) (n : ℤ) :
     (s.zpow n).sig = idem Z * (s.sig ^ n.toNat * s.inv ^ (-n).toNat) ∧ (∀ σ, (s.zpow n).cInf σ = s.cInf σ ^ n) ∧
@@ -968,7 +968,7 @@ def toFrame {τ : Psi H} (s : FlatSec U x Z τ) : ConstSec U x Z (flatWt Dw τ) 
   s.relat 0 (by simpa using finite_flDefect_vw τ)
 
 /- English proof (translation)
-Rewrite using `[toFrame, ConstSec.deg_relat]`. Simplify using `only [Pi.zero_apply, sub_zero, sum_flDefect_vw]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem deg_eq_toFrame {τ : Psi H} (s : FlatSec U x Z τ) :
     s.deg = s.toFrame.deg + Dw.q * (Real.log H.d - lrd E) := by
@@ -977,7 +977,7 @@ theorem deg_eq_toFrame {τ : Psi H} (s : FlatSec U x Z τ) :
   ring
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `s.exists_rat w`. Use `⟨b - Dw.q * ((ord_vw w (conjDifferent (embF c τ.1)) : ℚ) - (vAdd w (H.d : c.F) : ℚ)), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_sub_of_add_eq' hb, flDefect_vw]`. Use `push_cast`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem rho_rat {τ : Psi H} (s : FlatSec U x Z τ) (w : HeightOneSpectrum (𝓞 c.F)) : ∃ b : ℚ, s.rho_vw w = b := by
   obtain ⟨b, hb⟩ := s.exists_rat w
@@ -989,7 +989,7 @@ def shift (h : HasPts U Z) (s : ∀ τ, FlatSec U x Z τ) (w : Psi H → ℤ) :
   (ConstSec.prod h Finset.univ fun τ => (s τ).zpow (-w τ)).copy (parWt_eq_sum w).symm rfl
 
 /- English proof (translation)
-Take `⟨a1, -, a2, a3, a4⟩` from `ConstSec.prod_spec h Finset.univ fun τ => (s τ).zpow (-w τ)`. Use `⟨a1, fun σ => (congrFun a2 σ).trans ?_, fun v => (congrFun a3 v).trans ?_, a4.trans ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.prod_apply, (ConstSec.zpow_spec _ _).2.1]`. Simplify using `[Finset.sum_apply, (ConstSec.zpow_spec _ _).2.2.1]`. Simplify using `[(ConstSec.zpow_spec _ _).2.2.2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem shift_spec (h : HasPts U Z) (s : ∀ τ, FlatSec U x Z τ) (w : Psi H → ℤ) :
     (shift h s w).sig = idem Z * ∏ τ, ((s τ).zpow (-w τ)).sig ∧
@@ -1023,16 +1023,14 @@ def FlatDegree (logOm : ℝ) : Prop := FlatExistsAt U x (-flatDegVal Dw logOm)
 variable {U x}
 
 /- English proof (translation)
-Rewrite using `[degFlat, dif_pos (h Z τ).1, (h Z τ).2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem FlatExistsAt.degFlat_eq {a : ℝ} (h : FlatExistsAt U x a) (Z : Comp Xo c) (τ : Psi H) :
     degFlat U x Z τ = -a := by
   rw [degFlat, dif_pos (h Z τ).1, (h Z τ).2]
 
 /- English proof (translation)
-Use `haveI := CompFin.finite_comp Xo c`. Use `haveI : Nonempty (Comp Xo c) := hne`. Use `haveI := Fintype.ofFinite (Comp Xo c)`. Establish `hc : (Fintype.card (Comp Xo c) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Simplify using `only [c1, h.degFlat_eq, finsum_eq_sum_of_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem FlatExistsAt.c1_eq {a : ℝ} (h : FlatExistsAt U x a) (hne : CompNe Xo c) (τ : Psi H) : c1 U x τ = a := by
   haveI := CompFin.finite_comp Xo c
@@ -1044,7 +1042,7 @@ theorem FlatExistsAt.c1_eq {a : ℝ} (h : FlatExistsAt U x a) (hne : CompNe Xo c
   field_simp
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h`. Rewrite using `[ha.c1_eq ⟨Z⟩, (ha Z τ).2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem FlatExists.deg_eq (h : FlatExists U x) {Z : Comp Xo c} {τ : Psi H} (s : FlatSec U x Z τ) (τ' : Psi H) :
     s.deg = -c1 U x τ' := by
@@ -1052,20 +1050,20 @@ theorem FlatExists.deg_eq (h : FlatExists U x) {Z : Comp Xo c} {τ : Psi H} (s :
   rw [ha.c1_eq ⟨Z⟩, (ha Z τ).2]
 
 /- English proof (translation)
-The claim follows from `(h.choose_spec Z τ).1`.
+A detailed English derivation is pending.
 -/
 theorem FlatExists.nonempty (h : FlatExists U x) (Z : Comp Xo c) (τ : Psi H) : Nonempty (FlatSec U x Z τ) :=
   (h.choose_spec Z τ).1
 
 /- English proof (translation)
-Rewrite using `[s.sum_log_eq, h.deg_eq s τ, neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem FlatExists.sum_log_eq (h : FlatExists U x) {Z : Comp Xo c} {τ : Psi H} (s : FlatSec U x Z τ) :
     ((∑ᶠ w, Real.log (s.cFin w)) + ∑ σ, Real.log (s.cInf σ)) / (finrank ℚ c.F : ℝ) = c1 U x τ := by
   rw [s.sum_log_eq, h.deg_eq s τ, neg_neg]
 
 /- English proof (translation)
-Rewrite using `[(FlatSec.shift_spec hp s w).2.2.2]`. Conclude with `Finset.sum_congr rfl fun τ _ => by rw [h.deg_eq (s τ) τ, neg_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FlatExists.deg_shift (h : FlatExists U x) {Z : Comp Xo c} (hp : HasPts U Z) (s : ∀ τ, FlatSec U x Z τ)
     (w : Psi H → ℤ) : (FlatSec.shift hp s w).deg = ∑ τ, w τ * c1 U x τ := by
@@ -1073,19 +1071,19 @@ theorem FlatExists.deg_shift (h : FlatExists U x) {Z : Comp Xo c} (hp : HasPts U
   exact Finset.sum_congr rfl fun τ _ => by rw [h.deg_eq (s τ) τ, neg_neg]
 
 /- English proof (translation)
-Rewrite using `[FlatExistsAt.c1_eq h hne, flatDegVal]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem FlatDegree.c1_eq {logOm : ℝ} (h : FlatDegree U x logOm) (hne : CompNe Xo c) (τ : Psi H) :
     c1 U x τ = -(((Dw.p : ℝ) - Dw.q) / 2 * logOm) - Dw.q * (Real.log H.d - lrd E) := by
   rw [FlatExistsAt.c1_eq h hne, flatDegVal]; ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem FlatDegree.flatExists {logOm : ℝ} (h : FlatDegree U x logOm) : FlatExists U x := ⟨_, h⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `[flDefect_vw, hq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 example (hq : Dw.q = 0) (τ : Psi H) : flDefect_vw Dw c τ = 0 := by
   funext w; simp [flDefect_vw, hq]
@@ -1093,7 +1091,7 @@ example (hq : Dw.q = 0) (τ : Psi H) : flDefect_vw Dw c τ = 0 := by
 variable (x) in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((ConstSec.one x h).smul a ha).copy (funext fun _ => funext fun i => by have := i.2; omega) (funext fun w => by simp [flDefect_vw, hq]), rfl, fun σ => mul_one _, fun w => add_zero _, (ConstSec.deg_smul a ha _).trans (ConstSec.deg_one h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_flatSec_rank_zero (hp : Dw.p = 0) (hq : Dw.q = 0) {Z : Comp Xo c} (h : HasPts U Z) (τ : Psi H)
     {a : c.F} (ha : a ≠ 0) : ∃ s : FlatSec U x Z τ, s.sig = a • idem Z ∧ (∀ σ, s.cInf σ = ‖σ a‖) ∧
@@ -1103,7 +1101,7 @@ theorem exists_flatSec_rank_zero (hp : Dw.p = 0) (hq : Dw.q = 0) {Z : Comp Xo c}
     (ConstSec.deg_smul a ha _).trans (ConstSec.deg_one h)⟩
 
 /- English proof (translation)
-Rewrite using `[ConstSec.deg_relat, finsum_eq_single _ w fun v hv => by simp [hv]]`. Simplify using `[sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example {Z : Comp Xo c} {la : Weight Dw} (s : ConstSec U x Z la 0) (w : HeightOneSpectrum (𝓞 c.F))
     (h : (Function.support (0 - fun v => open Classical in if v = w then (1 : ℝ) else 0)).Finite) :

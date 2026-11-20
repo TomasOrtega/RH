@@ -16,7 +16,7 @@ variable {k : ℕ}
 def Su (k : ℕ) (i j : Fin (k + 1)) : Mb k := Matrix.single i j 1
 
 /- English proof (translation)
-Unfold `Su`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same, mul_one]`. Rewrite using `[Matrix.single_mul_single_of_ne _ _ _ _ h]`.
+Replace the relevant objects with their definitions. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Su_mul (i j j' m : Fin (k + 1)) : Su k i j * Su k j' m = if j = j' then Su k i m else 0 := by
   unfold Su
@@ -29,7 +29,7 @@ def nuG (k : ℕ) (v s w : ℂ) : Mb k :=
   1 + (v - 1) • Su k 0 0 + s • (Su k 0 (Fin.last k) + Su k (Fin.last k) 0) + (w - 1) • Su k (Fin.last k) (Fin.last k)
 
 /- English proof (translation)
-Unfold `nu nuG Su`. Simplify using `only [Matrix.single_eq_single_vecMulVec_single, Matrix.add_vecMulVec, Matrix.smul_vecMulVec]`. Use `module`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma nu_eq (w s : ℂ) : nu k w s = nuG k (star w) s w := by
   unfold nu nuG Su
@@ -43,7 +43,7 @@ lemma dnu_eq (a b c : ℂ) : dnu k a b c =
     a • Su k 0 0 + b • (Su k 0 (Fin.last k) + Su k (Fin.last k) 0) + c • Su k (Fin.last k) (Fin.last k) := rfl
 
 /- English proof (translation)
-Simplify using `only [nuG, mul_add, add_mul, Matrix.smul_mul, Matrix.mul_smul, one_mul, mul_one, Su_mul, h0, h0.symm, if_true, if_false, smul_zero, add_zero, zero_add]`. Take the linear combination `(norm := module) hw • (Su k 0 0 + Su k (Fin.last k) (Fin.last k))`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma nuG_mul (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (v s w : ℂ) (hw : w * v - s * s = 1) :
     nuG k v s w * nuG k w (-s) v = 1 := by
@@ -52,7 +52,7 @@ lemma nuG_mul (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (v s w : ℂ) (hw : w * v 
   linear_combination (norm := module) hw • (Su k 0 0 + Su k (Fin.last k) (Fin.last k))
 
 /- English proof (translation)
-Simplify using `only [nuG, mul_add, add_mul, Matrix.smul_mul, Matrix.mul_smul, one_mul, mul_one, Su_mul, h0, h0.symm, if_true, if_false, smul_zero, add_zero, zero_add]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma conj_corner_matrix_unit (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (v s w : ℂ) :
     nuG k w (-s) v * Su k 0 0 * nuG k v s w = (w * v) • Su k 0 0 + (w * s) • Su k 0 (Fin.last k) -
@@ -62,7 +62,7 @@ lemma conj_corner_matrix_unit (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (v s w : �
   module
 
 /- English proof (translation)
-Simplify using `only [nuG, mul_add, add_mul, Matrix.smul_mul, Matrix.mul_smul, one_mul, mul_one, Su_mul, h0, h0.symm, hm0, hml, hm0.symm, hml.symm, if_true, if_false, smul_zero, add_zero, zero_add]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma conj0m (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (v s w : ℂ) (m : Fin (k + 1)) (hm0 : m ≠ 0) (hml : m ≠ Fin.last k) :
     nuG k w (-s) v * Su k 0 m * nuG k v s w = w • Su k 0 m - s • Su k (Fin.last k) m := by
@@ -71,7 +71,7 @@ lemma conj0m (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (v s w : ℂ) (m : Fin (k +
   module
 
 /- English proof (translation)
-Simplify using `only [nuG, mul_add, add_mul, Matrix.smul_mul, Matrix.mul_smul, one_mul, mul_one, Su_mul, h0, h0.symm, hm0, hml, hm0.symm, hml.symm, if_true, if_false, smul_zero, add_zero, zero_add]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma conjm0 (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (v s w : ℂ) (m : Fin (k + 1)) (hm0 : m ≠ 0) (hml : m ≠ Fin.last k) :
     nuG k w (-s) v * Su k m 0 * nuG k v s w = v • Su k m 0 + s • Su k m (Fin.last k) := by
@@ -80,7 +80,7 @@ lemma conjm0 (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (v s w : ℂ) (m : Fin (k +
   module
 
 /- English proof (translation)
-Simplify using `only [nuG, dnu_eq, mul_add, add_mul, Matrix.smul_mul, Matrix.mul_smul, one_mul, mul_one, Su_mul, h0, h0.symm, if_true, if_false, smul_zero, add_zero, zero_add]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma nuI_dnu (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (v s w a b c : ℂ) :
     nuG k w (-s) v * dnu k a b c = (w * a - s * b) • Su k 0 0 + (w * b - s * c) • Su k 0 (Fin.last k) +
@@ -90,7 +90,7 @@ lemma nuI_dnu (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (v s w a b c : ℂ) :
   module
 
 /- English proof (translation)
-Establish `hw' : w = (1 + s * s) / v` using `by field_simp; linear_combination hw`. Establish `hp' : p = -c * v / (2 * s)` using `by field_simp; linear_combination hp`. Substitute `hw' hp'` using the available equality. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, conj_corner_matrix_unit h0, nuI_dnu h0]`. Apply the tactic sequence `match_scalars <;> field_simp <;> ring`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma unit0l (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (v s w c p : ℂ) (hs : s ≠ 0) (hc : c ≠ 0) (hv : v ≠ 0)
     (hw : w * v - s * s = 1) (hp : 2 * s * p = -c * v) :
@@ -103,9 +103,9 @@ lemma unit0l (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (v s w c p : ℂ) (hs : s �
   match_scalars <;> field_simp <;> ring
 
 /- English proof (translation)
-Establish `hw' : w = (1 + s * s) / v` using `by field_simp; linear_combination hw`. Substitute `hw'` using the available equality. Establish `hq' : q = -c * ((1 + s * s) / v) / (2 * s)` using `by field_simp; field_simp at hq; linear_combination hq`. Substitute `hq'` using the available equality. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, conj_corner_matrix_unit h0, nuI_dnu h0]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `match_scalars <;> field_simp <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma unitl0 (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (v s w c q : ℂ) (hs : s ≠ 0) (hc : c ≠ 0) (hv : v ≠ 0)
     (hw : w * v - s * s = 1) (hq : 2 * s * q = -c * w) :
@@ -119,9 +119,9 @@ lemma unitl0 (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (v s w c q : ℂ) (hs : s �
   match_scalars <;> field_simp <;> ring
 
 /- English proof (translation)
-Establish `hw' : w = (1 + s * s) / v` using `by field_simp; linear_combination hw`. Substitute `hw'` using the available equality. Establish `hp' : p = -c * v / (2 * s)` using `by field_simp; linear_combination hp`. Establish `hq' : q = -c * ((1 + s * s) / v) / (2 * s)` using `by field_simp; field_simp at hq; linear_combination hq`. Substitute `hp' hq'` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[conj_corner_matrix_unit h0, nuI_dnu h0, nuI_dnu h0]`. Apply the tactic sequence `match_scalars <;> field_simp <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma unitll (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (v s w c p q : ℂ) (hs : s ≠ 0) (hc : c ≠ 0) (hv : v ≠ 0)
     (hw : w * v - s * s = 1) (hp : 2 * s * p = -c * v) (hq : 2 * s * q = -c * w) :

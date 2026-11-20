@@ -17,7 +17,7 @@ def locRecT (hT : UpperTheory.Zero.LLC.RecTExists) (h : IsPlaceOver A w) : IrrGL
   (hT E Ω A w h).choose
 
 /- English proof (translation)
-The claim follows from `(hT E Ω A w h).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem isRecT_locRecT (hT : UpperTheory.Zero.LLC.RecTExists) (h : IsPlaceOver A w) :
     UpperTheory.Zero.LLC.IsRecT h (locRecT hT h) :=

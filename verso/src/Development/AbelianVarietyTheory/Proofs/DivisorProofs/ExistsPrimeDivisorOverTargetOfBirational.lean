@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Introduce `p s _ hb E'` and use `DivOver.exists_over_of_bijective ℂ _ _ p s hb E'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DivOver.exists_over_of_bijective_complex : ∀ {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp ℂ) (s : Y ⟶ X) [IsDominant s],
     Function.Bijective (functionFieldMap s) → ∀ E' : DivOver (s ≫ p), ∃ E : DivOver p, DivOver.Over s E' E :=

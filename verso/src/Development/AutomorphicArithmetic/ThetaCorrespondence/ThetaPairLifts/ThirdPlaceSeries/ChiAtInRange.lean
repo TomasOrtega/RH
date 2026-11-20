@@ -18,7 +18,7 @@ end GlobalTheory.LevelCharExp
 end
 namespace GlobalTheory.LevelCharExp
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.ExpTie.InRangeAlt _root_.GlobalTheory.BigOn.AtPtsAlt`. Use `Formalism.MainNotions.Pk.Closed.of_class fun Fm _ _ => _root_.GlobalTheory.BigTop.EventuallyAtPoints.of_forall fun x hx i p _ _ j P W _ _ w _ _ _ => ?_` and prove the remaining obligations. Use `⟨expOf (p.R.datVt j (p.R.mu w)), expOf_pos _, fun κ => ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val]`. Conclude with `congrArg Units.val (levEnv_chi_pow _ _ _ κ)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiAt_inRange_alt : _root_.GlobalTheory.ExpTie.InRangeAlt fun _ _ _ _ p j P _ w => SmallAt p j P w → ChiAt p j w := by
   unfold _root_.GlobalTheory.ExpTie.InRangeAlt _root_.GlobalTheory.BigOn.AtPtsAlt

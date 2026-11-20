@@ -10,7 +10,7 @@ open Formalism.MainNotions.PlaceDegreeData
 namespace GlobalTheory.CountBridge
 
 /- English proof (translation)
-Introduce `hV A`. Take `⟨n₀, C₀, hC₀, hcount⟩` from `GlobalTheory.T.unitaryAutomorphicCounting_unbundled (GlobalTheory.T.unitaryAutomorphicCounting_of_compactDualVolumeRatio hV) A`. Use `⟨n₀, C₀, hC₀, fun n₁ hn₁ C hC _D => ?_⟩` and prove the remaining obligations. Introduce `I b lam g g₀ e H _ _ _ σ w Hs _ _ _ σs tens μf _ fund R Re h hSet hData`. Conclude with `hcount n₁ hn₁ C hC I b lam g g₀ e H σ w Hs σs tens μf fund R Re h hSet hData`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem count_typed_of_volumeStep :
     GlobalTheory.FlagMeas.VolumeStep → ∀ A : ℝ, ∃ (n₀ : ℕ) (C₀ : ℝ), 0 ≤ C₀ ∧ ∀ n₁ ≥ n₀, ∀ C ≥ C₀,

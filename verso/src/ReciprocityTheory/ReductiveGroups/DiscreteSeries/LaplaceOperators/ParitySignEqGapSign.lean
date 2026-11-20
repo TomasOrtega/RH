@@ -16,9 +16,9 @@ def NVStatement : Prop :=
     GapLap (parEps k r) (parLam k r v b) h → BesselAll (parEps k r) (parLam k r v b) u
 
 /- English proof (translation)
-Introduce `k r u v b h hk hHC hIL hHalf hLow hGap`. Establish `hp` using `parEps_pOf k r hk`. Establish `hq` using `parEps_qOf k r hk`. Establish `hSG : StepGap (parEps k r) r h`. Use `gapLap_stepGap _ (parEps k r) (parLam k r v b) h (by rw [hp]; omega) (by rw [hq]; omega) hGap` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hq, Nat.add_sub_cancel]`. Then use the resulting hypothesis. Take `⟨t₀, ht⟩` from `hI k r u v b hk hHC hIL hHalf`. Conclude with `TransportInt.transport_of hIS hDD hk hGap (walkStep hIS hS k r u v b h t₀ hk hHC hIL hHalf hLow hSG (ht t₀ le_rfl))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nv_of (hI : Base.StepIBaseStatement) (hS : StepStatement) (hIS : S0.IntSStatement)
     (hDD : DecDerivStatement) : NVStatement := by

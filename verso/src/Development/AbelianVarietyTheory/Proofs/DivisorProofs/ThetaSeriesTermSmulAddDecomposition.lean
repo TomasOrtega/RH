@@ -5,35 +5,33 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set H := Subgroup.closure (Set.range N.c ∪ {h.b}) with hH`. Use `set T := S.toSubmonoid.units with hT`. Use `set π : Oˣ →* Oˣ ⧸ T := QuotientGroup.mk' T with hπ`. Establish `Hc : ∀ a, N.c a ∈ H` using `fun a => Subgroup.subset_closure (Or.inl ⟨a, rfl⟩)`. Establish `Hb : h.b ∈ H` using `Subgroup.subset_closure (Or.inr rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `θ1 : ∀ x ∈ H, ∀ x' ∈ H, ∀ x'' ∈ H, π (N.θ x x' x'') = 1` using `fun x hx x' hx' x'' hx'' => (QuotientGroup.eq_one_iff _).2 ((Submonoid.mem_units_iff _ _).2 (hθ x hx x' hx' x'' hx''))`. Establish `σ1 : ∀ a, π (N.σ (N.c a)) = 1` using `fun a => (QuotientGroup.eq_one_iff _).2 ((Submonoid.mem_units_iff _ _).2 (hσ _ (Hc a)))`. Establish `Bl : ∀ a a' b, π (N.τ (a + a') b) = π (N.τ a b) * π (N.τ a' b)`. Introduce `a a' b`. Use `congrArg π (N.τ_add_left a a' b)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[map_mul, map_mul, θ1 _ (Hc a) _ (Hc a') _ (Hc b), mul_one]`. Then use the resulting hypothesis. Establish `Br : ∀ a b b', π (N.τ a (b + b')) = π (N.τ a b) * π (N.τ a b')`. Introduce `a b b'`. Use `congrArg π (N.τ_add_right a b b')` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, θ1 _ (Hc b) _ (Hc b') _ (Hc a), mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `fadd : ∀ a b, π (N.ψ (a + b)) = π (N.τ a b) * π (N.ψ a) * π (N.ψ b)`. Introduce `a b`. Rewrite using `[N.ψ_add, map_mul, map_mul]`. Establish `fneg : ∀ a, π (N.ψ (-a)) = π (N.ψ a)`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `congrArg π (N.even a)` as an intermediate fact. Rewrite `this` using `[map_mul, σ1, mul_one]`. Then use the resulting hypothesis. Establish `Bnegr : ∀ a b, π (N.τ a (-b)) = (π (N.τ a b))⁻¹`. Introduce `a b`. Use `Br a b (-b)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[add_neg_cancel, N.τ_zero_right, map_one]`. Conclude with `eq_inv_of_mul_eq_one_right this.symm`. Establish `Bself : ∀ a, π (N.τ a a) = π (N.ψ a) ^ 2`. Introduce `a`. Use `fadd a (-a)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[add_neg_cancel, N.ψ_zero, map_one, fneg, Bnegr, mul_assoc, eq_comm, inv_mul_eq_one]`. Rewrite using `[sq]`. Conclude with `this`. Establish `Bsmul : ∀ (k : ℕ) a b, π (N.τ (k • a) b) = π (N.τ a b) ^ k`. Introduce `k a b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [succ_nsmul, Bl, ih, pow_succ]`. Establish `Bsmulr : ∀ (k : ℕ) a b, π (N.τ a (k • b)) = π (N.τ a b) ^ k`. Introduce `k a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[N.τ_symm, Bsmul, N.τ_symm]`. Establish `fsmul : ∀ (k : ℕ) a, π (N.ψ (k • a)) = π (N.ψ a) ^ (k ^ 2)`. Introduce `k a`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Consider the case `succ k ih`. Rewrite using `[succ_nsmul, fadd, ih, Bsmul, Bself, ← pow_mul, ← pow_add, ← pow_succ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `Sadd : ∀ χ χ', π (h.s (χ + χ')) = π (h.s χ) * π (h.s χ')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `χ χ'`. Use `congrArg π (h.mult χ χ')` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, θ1 _ (Hc χ) _ (Hc χ') _ Hb, mul_one]`. Then use the resulting hypothesis. Establish `Ssmul : ∀ (k : ℕ) a, π (h.s (k • a)) = π (h.s a) ^ k`. Introduce `k a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [succ_nsmul, Sadd, ih, pow_succ]`. Establish `Spow : π (h.s a) ^ m = π (N.τ a y)`. Use `congrArg π (h.pow_s m a)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_mul, map_pow, hy, GlobalTheory.Ex.NumD.io_s, N.τ_symm]`. Establish `hc : π (cubN N.θ m 1 h.b (N.c a)) = 1`. Unfold `cubN`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_one fun i _ => θ1 _ (by rw [one_mul]; exact pow_mem Hb i) _ Hb _ (Hc a)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `this` using `[hc, mul_one]`. Conclude with `this.symm`. Use `⟨N.ψ (m • a + b) * h.s (m • a + b) / (N.ψ a ^ (m ^ 2) * N.τ a (m • b + y) * (N.ψ b * h.s b)), ?_, ?_⟩` and prove the remaining obligations. Establish `e : π (N.ψ (m • a + b) * h.s (m • a + b) / (N.ψ a ^ (m ^ 2) * N.τ a (m • b + y) * (N.ψ b * h.s b))) = 1`. Rewrite using `[map_div, div_eq_one, map_mul, map_mul, map_mul, map_mul, map_pow, fadd, Sadd, fsmul, Bsmul, Br, Bsmulr, Ssmul, Spow]`.
-
-The two sides agree by associativity and commutativity. Conclude with `((Submonoid.mem_units_iff _ _).1 ((QuotientGroup.eq_one_iff _).1 e)).1`. Conclude with `(fun (L X Y Z : Oˣ) => show L = L / (X * Y * Z) * X * Y * Z by`. Rewrite using `[mul_assoc (L / (X * Y * Z)) X Y, mul_assoc (L / (X * Y * Z)) (X * Y) Z, div_mul_cancel]) _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem theta_term_smul_add (O : Type) [CommRing O] (N : GlobalTheory.Ex.NumD O) (S : Subring O) (m : ℕ) (h : N.Gt)
     (y : N.X) (hy : h ^ m = N.io y)

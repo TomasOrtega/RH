@@ -11,11 +11,11 @@ open NumberField NumberField.ComplexEmbedding TensorProduct Matrix GroundTheory.
 noncomputable section
 
 /- English proof (translation)
-Establish `h1 : C.relIndex (A ⊓ B) * B.relIndex A = C.relIndex A`. Rewrite using `[← AddSubgroup.inf_relIndex_left A B]`. Conclude with `AddSubgroup.relIndex_mul_relIndex _ _ _ (le_inf hCA hCB) inf_le_left`. Establish `h2 : C.relIndex (A ⊓ B) * A.relIndex B = C.relIndex B`. Rewrite using `[← AddSubgroup.inf_relIndex_right A B]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `AddSubgroup.relIndex_mul_relIndex _ _ _ (le_inf hCA hCB) inf_le_right`. Establish `h3 : (C.relIndex (A ⊓ B) : ℝ) ≠ 0`. Introduce `h`. Apply `hC` to reduce the goal to its premises. Rewrite using `[← h2, Nat.cast_eq_zero.mp h, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `genIndex`. Rewrite using `[← h1, ← h2]`. Use `push_cast`. Rewrite using `[mul_div_mul_left _ _ h3]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genIndex_eq_div_of_le {M : Type*} [AddCommGroup M] {A B C : AddSubgroup M} (hCA : C ≤ A)
     (hCB : C ≤ B) (hC : C.relIndex B ≠ 0) :
@@ -36,7 +36,7 @@ theorem genIndex_eq_div_of_le {M : Type*} [AddCommGroup M] {A B C : AddSubgroup 
   rw [mul_div_mul_left _ _ h3]
 
 /- English proof (translation)
-The claim follows from `_root_.GroundTheory.Variant₂.N1.exists_smul_mem_of_span_eq_top_alt Λ hΛ v`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_of_span_eq_top {K : Type*} [Field K] [NumberField K] {n : ℕ}
     (Λ : Submodule (𝓞 K) (Fin n → K)) (hΛ : Submodule.span K (Λ : Set (Fin n → K)) = ⊤)
@@ -44,9 +44,9 @@ theorem exists_smul_mem_of_span_eq_top {K : Type*} [Field K] [NumberField K] {n 
   _root_.GroundTheory.Variant₂.N1.exists_smul_mem_of_span_eq_top_alt Λ hΛ v
 
 /- English proof (translation)
-Establish `he : ∀ v : Fin n → K, embVec σ (c • v) = σ c • embVec σ v` using `fun v => by`. Use function extensionality and compare the values at `k`. Simplify using `[embVec]`. Use extensionality with `a b`. Simplify using `only [gramAt, he, star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, Matrix.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, Complex.star_def, Complex.mul_conj']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gramAt_smul {K : Type*} [Field K] {n : ℕ} (h : Matrix (Fin n) (Fin n) ℂ) (σ : K →+* ℂ)
     {ι : Type*} (u : ι → Fin n → K) (c : K) :
@@ -62,49 +62,45 @@ theorem gramAt_smul {K : Type*} [Field K] {n : ℕ} (h : Matrix (Fin n) (Fin n) 
   ring
 
 /- English proof (translation)
-Introduce `K _ _ E n H ψ hψ hspan hmet G ι _ _ u hu hG`. Establish `hu' : LinearIndependent (𝓞 K) u` using `(LinearIndependent.iff_fractionRing (𝓞 K) K).mpr hu`. Take `⟨t, ht0, htu⟩ : ∃ t : 𝓞 K, t ≠ 0 ∧ ∀ j, t • u j ∈ LinearMap.range ψ` from `by choose a ha hau using fun j => exists_smul_mem_of_span_eq_top (LinearMap.range ψ) hspan (u j)`. Use `⟨∏ j, a j, Finset.prod_ne_zero_iff.mpr fun j _ => ha j, fun j => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem a (Finset.mem_univ j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hc, mul_comm, mul_smul]`. Conclude with `(LinearMap.range ψ).smul_mem c (hau j)`. Establish `htW : ∀ j, t • u j ∈ (Submodule.span K (Set.range u)).restrictScalars (𝓞 K)` using `fun j => (Submodule.span K (Set.range u)).smul_of_tower_mem t (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hmemG : ∀ j, t • u j ∈ G.map ψ`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG]`. Conclude with `⟨htu j, htW j⟩`. Use `choose f0 hf0G hf0 using fun j => Submodule.mem_map.mp (hmemG j)`. Set `f : ι → G` to `fun j => ⟨f0 j, hf0G j⟩`. Establish `htK : algebraMap (𝓞 K) K t ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr ht0`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htu_li : LinearIndependent (𝓞 K) (fun j => t • u j)`. Use `(LinearIndependent.iff_fractionRing (𝓞 K) K).mpr ?_` and prove the remaining obligations. Establish `h` using `hu.units_smul (fun _ : ι => Units.mk0 _ htK)`. Establish `he : (fun j => t • u j) = (fun _ : ι => Units.mk0 _ htK) • u`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply', Units.smul_def, Units.val_mk0, algebraMap_smul]`. Rewrite using `[he]`. Conclude with `h`. Establish `hf_li : LinearIndependent (𝓞 K) f`. Use `LinearIndependent.of_comp (ψ ∘ₗ G.subtype) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (ψ ∘ₗ G.subtype) ∘ f = fun j => t • u j` using `funext hf0`. Rewrite using `[this]`. Conclude with `htu_li`. Establish `hcard : Fintype.card ι = Module.finrank (𝓞 K) G`. Use `le_antisymm hf_li.fintype_card_le_finrank ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `HermitianBundle.exists_linearIndependent_rank E G`. Establish `hgW : ∀ i, ψ (g i) ∈ Submodule.span K (Set.range u)`. Introduce `i`. Establish `hi : ψ (g i) ∈ G.map ψ` using `Submodule.mem_map_of_mem (g i).2`. Rewrite `hi` using `[hG]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hi.2`. Set `v : Fin (HermitianBundle.rank E G) → Submodule.span K (Set.range u)` to `fun i => ⟨ψ (g i), hgW i⟩`. Establish `hv : LinearIndependent K v`. Use `LinearIndependent.of_comp (Submodule.span K (Set.range u)).subtype ?_` and prove the remaining obligations. Use `(LinearIndependent.iff_fractionRing (𝓞 K) K).mp ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hg.map' (ψ ∘ₗ G.subtype) (LinearMap.ker_eq_bot.mpr (hψ.comp G.injective_subtype))`. Use `hv.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, finrank_span_eq_card hu]`. Conclude with `this`. Establish `hCA' : Submodule.span (𝓞 K) (Set.range fun j => t • u j) ≤ LinearMap.range ψ ⊓ (Submodule.span K (Set.range u)).restrictScalars (𝓞 K)` using `Submodule.span_le.mpr (Set.range_subset_iff.mpr fun j => ⟨htu j, htW j⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hCB' : Submodule.span (𝓞 K) (Set.range fun j => t • u j) ≤ Submodule.span (𝓞 K) (Set.range u)` using `Submodule.span_le.mpr (Set.range_subset_iff.mpr fun j => Submodule.smul_mem _ t (Submodule.subset_span ⟨j, rfl⟩))`. Establish `hCA : (Submodule.span (𝓞 K) (Set.range fun j => t • u j)).toAddSubgroup ≤ (LinearMap.range ψ ⊓ (Submodule.span K (Set.range u)).restrictScalars (𝓞 K)).toAddSubgroup` using `fun _ hx => hCA' hx`. Establish `hCB : (Submodule.span (𝓞 K) (Set.range fun j => t • u j)).toAddSubgroup ≤ (Submodule.span (𝓞 K) (Set.range u)).toAddSubgroup` using `fun _ hx => hCB' hx`. Establish `h1 : (Submodule.span (𝓞 K) (Set.range fun j => t • u j)).toAddSubgroup.relIndex (LinearMap.range ψ ⊓ (Submodule.span K (Set.range u)).restrictScalars (𝓞 K)).toAddSubgroup = Nat.card (G ⧸ Submodule.span (𝓞 K) (Set.range f))`. Establish `hS : (Submodule.span (𝓞 K) (Set.range fun j => (f j : E.carrier))).map ψ = Submodule.span (𝓞 K) (Set.range fun j => t • u j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `congrArg _ (congrArg Set.range (funext hf0))`. Rewrite using `[← hG, ← hS, Submodule.map_toAddSubgroup, Submodule.map_toAddSubgroup, AddSubgroup.relIndex_map_map_of_injective _ _ hψ]`. Establish `hsp : Submodule.span (𝓞 K) (Set.range f) = (Submodule.span (𝓞 K) (Set.range fun j => (f j : E.carrier))).comap G.subtype`. Rewrite using `[← Submodule.comap_map_eq_of_injective G.injective_subtype (Submodule.span (𝓞 K) (Set.range f)), Submodule.map_span, ← Set.range_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[hsp]`. Both sides reduce to the same expression. Establish `h2 : (Submodule.span (𝓞 K) (Set.range fun j => t • u j)).toAddSubgroup.relIndex (Submodule.span (𝓞 K) (Set.range u)).toAddSubgroup = (Algebra.norm ℤ t).natAbs ^ Fintype.card ι`. Establish `hΦ : Function.Injective (Fintype.linearCombination (𝓞 K) u)` using `hu'.fintypeLinearCombination_injective`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `Dm : Matrix ι ι (𝓞 K)` to `Matrix.diagonal fun _ => t`. Establish `hDet : Dm.det = t ^ Fintype.card ι`. Simplify using `[Dm, Matrix.det_diagonal]`. Establish `hcomp : Fintype.linearCombination (𝓞 K) u ∘ₗ Dm.mulVecLin = Fintype.linearCombination (𝓞 K) (fun j => t • u j)`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, Matrix.mulVecLin_apply, Fintype.linearCombination_apply, Dm, Matrix.mulVec_diagonal]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul, smul_comm]`. Rewrite using `[← Fintype.range_linearCombination, ← Fintype.range_linearCombination, ← hcomp, LinearMap.range_comp, LinearMap.range_eq_map (Fintype.linearCombination (𝓞 K) u), Submodule.map_toAddSubgroup, Submodule.map_toAddSubgroup, AddSubgroup.relIndex_map_map_of_injective _ _ hΦ, Submodule. …`. Express the relevant statement in the definitionally equal form `Nat.card ((ι → 𝓞 K) ⧸ LinearMap.range Dm.mulVecLin) = _`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[card_quotient_mulVecLin Dm (by rw [hDet]; exact pow_ne_zero _ ht0), hDet, map_pow, Int.natAbs_pow]`. Establish `hM0 : (Algebra.norm ℤ t).natAbs ≠ 0` using `Int.natAbs_ne_zero.mpr (Algebra.norm_ne_zero_iff.mpr ht0)`. Establish `hidx : genIndex (LinearMap.range ψ ⊓ (Submodule.span K (Set.range u)).restrictScalars (𝓞 K)).toAddSubgroup (Submodule.span (𝓞 K) (Set.range u)).toAddSubgroup = (Nat.card (G ⧸ Submodule.span (𝓞 K) (Set.range f)) : ℝ) / ((Algebra.norm ℤ t).natAbs : ℝ) ^ Fintype.card ι`. Rewrite using `[genIndex_eq_div_of_le hCA hCB (by rw [h2]; exact pow_ne_zero _ hM0), h1, h2]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hgram : ∀ σ : K →+* ℂ, GroundTheory.Heights₂.Heights.gramDet (E.metric.comap G.subtype G.injective_subtype) σ f = (‖σ (algebraMap (𝓞 K) K t)‖ ^ 2) ^ Fintype.card ι * (gramAt (H σ) σ u).det.re`. Introduce `σ`. Establish `hM : (gram ℂ fun i => fibreVec (E.metric.comap G.subtype G.injective_subtype) σ (f i)) = ((‖σ (algebraMap (𝓞 K) K t)‖ ^ 2 : ℝ) : ℂ) • gramAt (H σ) σ u`. Rewrite using `[← gramAt_smul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(E.metric.form σ).inner ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] (f i : E.carrier)) ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] (f j : E.carrier)) = _`. Rewrite using `[hmet]`. Simplify using `only [gramAt, f, hf0, algebraMap_smul]`. Simplify using `only [GroundTheory.Heights₂.Heights.gramDet]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hM, Matrix.det_smul, ← Complex.ofReal_pow, Complex.re_ofReal_mul]`. Establish `hpos : ∀ σ : K →+* ℂ, 0 < ‖σ (algebraMap (𝓞 K) K t)‖` using `fun σ => norm_pos_iff.mpr ((map_ne_zero σ).mpr htK)`. Establish `hD : ∀ σ : K →+* ℂ, 0 < (gramAt (H σ) σ u).det.re`. Introduce `σ`. Establish `h` using `gramDet_pos (E.metric.comap G.subtype G.injective_subtype) σ hf_li`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hgram σ]`. Conclude with `pos_of_mul_pos_right h (by positivity)`. Establish `hN : (0 : ℝ) < Nat.card (G ⧸ Submodule.span (𝓞 K) (Set.range f))`. Use `finite_quotient_span hf_li hcard` as an intermediate fact. Conclude with `Nat.card_pos` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hMpos : (0 : ℝ) < ((Algebra.norm ℤ t).natAbs : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hM0`. Establish `hsum : ∑ σ : K →+* ℂ, Real.log ((‖σ (algebraMap (𝓞 K) K t)‖ ^ 2) ^ Fintype.card ι * (gramAt (H σ) σ u).det.re) = 2 * Fintype.card ι * Real.log ((Algebra.norm ℤ t).natAbs : ℝ) + ∑ σ : K →+* ℂ, Real.log (gramAt (H σ) σ u).det.re`. Rewrite using `[← sum_log_norm_embedding t ht0, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_mul (pow_pos (pow_pos (hpos σ) 2) _).ne' (hD σ).ne', Real.log_pow, Real.log_pow, show algebraMap (𝓞 K) K t = (t : K) from rfl]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[HermitianBundle.degree_eq_arithDegree, arithDegree_eq _ hf_li hcard, GroundTheory.Heights₂.Heights.degreeWith, subDegree, hidx]`. Simplify using `only [hgram]`. Rewrite using `[hsum, Real.log_div hN.ne' (pow_pos hMpos _).ne', Real.log_pow]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem S6.CoordinateDegree.proof : S6.CoordinateDegree.Statement := by
   intro K _ _ E n H ψ hψ hspan hmet G ι _ _ u hu hG

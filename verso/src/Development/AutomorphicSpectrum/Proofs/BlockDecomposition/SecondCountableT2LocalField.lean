@@ -8,9 +8,7 @@ namespace GlobalTheory.CompanionTheory.GLMeasure
 open ValuativeRel
 
 /- English proof (translation)
-Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `letI : (Valued.v (R := k)).RankOne := { hom' := IsRankLeOne.nonempty.some.emb (R := k).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`. Use `open scoped Valued in`. Use `haveI : ProperSpace k := .of_nontriviallyNormedField_of_weaklyLocallyCompactSpace k`.
-
-Conclude with `⟨secondCountable_of_proper, inferInstance⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem secondCountable_t2_local_field (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] : SecondCountableTopology k ∧ T2Space k := by
@@ -25,7 +23,7 @@ theorem secondCountable_t2_local_field (k : Type) [Field k] [ValuativeRel k] [To
   exact ⟨secondCountable_of_proper, inferInstance⟩
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `secondCountable_t2_local_field k`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) k) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → k))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) k)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Conclude with `(Units.isEmbedding_embedProduct (M := Matrix (Fin n) (Fin n) k)).secondCountableTopology`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem secondCountable_GL (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) : SecondCountableTopology (GL (Fin n) k) := by
@@ -37,7 +35,7 @@ theorem secondCountable_GL (k : Type) [Field k] [ValuativeRel k] [TopologicalSpa
   exact (Units.isEmbedding_embedProduct (M := Matrix (Fin n) (Fin n) k)).secondCountableTopology
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `secondCountable_t2_local_field k`. Use `haveI : SigmaCompactSpace k := inferInstance`. Use `haveI : SigmaCompactSpace (Matrix (Fin n) (Fin n) k) := inferInstanceAs (SigmaCompactSpace (Fin n → Fin n → k))`. Use `haveI : SigmaCompactSpace (Matrix (Fin n) (Fin n) k)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.sigmaCompactSpace`. Conclude with `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) k)).sigmaCompactSpace`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sigmaCompact_GL (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) : SigmaCompactSpace (GL (Fin n) k) := by
@@ -50,9 +48,7 @@ theorem sigmaCompact_GL (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace 
   exact (Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) k)).sigmaCompactSpace
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n _ _`. Use `haveI := secondCountable_GL k n`. Use `haveI := sigmaCompact_GL k n`. Use `⟨inferInstance, inferInstance, fun μ hμ => ?_⟩` and prove the remaining obligations. Use `haveI : SigmaFinite μ := Measure.IsHaarMeasure.sigmaFinite μ`.
-
-Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem glMeas : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], PositivityTheory.Lbc.GLMeas k := by

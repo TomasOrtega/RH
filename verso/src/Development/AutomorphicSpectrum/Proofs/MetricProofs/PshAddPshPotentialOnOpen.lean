@@ -15,13 +15,13 @@ namespace GlobalTheory.CompanionTheory.Ar.PshAdd
 open ReciprocityTheory.AnForm.M.LocPot
 
 /- English proof (translation)
-Introduce `x j y hy w`. Take `⟨hyt, ⟨⟨hyP, -⟩, hyΘ⟩, hyU⟩` from `hy`. Establish `hP2 : ContDiffAt ℝ 2 (P.φ x ∘ (A.chart j).symm) y`. Establish `hmem : (A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U x ∈ 𝓝 y` using `((A.chart j).isOpen_inter_preimage_symm (P.isOpen_U x)).mem_nhds ⟨hyt, hyP⟩`. Conclude with `((hP.1 x j).contDiffAt hmem).of_le (by norm_cast)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf2 : ContDiffAt ℝ 2 (f ∘ (A.chart j).symm) y`. Establish `hmem : (A.chart j).target ∩ (A.chart j).symm ⁻¹' U ∈ 𝓝 y` using `((A.chart j).isOpen_inter_preimage_symm hU).mem_nhds ⟨hyt, hyU⟩`. Conclude with `((hf j).contDiffAt hmem).of_le (by norm_cast)`. Establish `hΘ2 : ContDiffAt ℝ 2 (Θ.φ x ∘ (A.chart j).symm) y`. Establish `hmem : (A.chart j).target ∩ (A.chart j).symm ⁻¹' Θ.U x ∈ 𝓝 y` using `((A.chart j).isOpen_inter_preimage_symm (Θ.isOpen_U x)).mem_nhds ⟨hyt, hyΘ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((hΘ.1 x j).contDiffAt hmem).of_le (by norm_cast)`. Establish `hPf2 : ContDiffAt ℝ 2 (fun z => P.φ x ((A.chart j).symm z) + f ((A.chart j).symm z)) y` using `hP2.add hf2`. Establish `h1` using `hPf x j y ⟨hyt, ⟨hyP, Set.mem_univ _⟩, hyU⟩ w`. Establish `h2` using `hΘp x j y ⟨hyt, hyΘ⟩ w`. Establish `hsum` using `ReciprocityTheory.AnForm.levi_add_smul (f := fun z => P.φ x ((A.chart j).symm z) + f ((A.chart j).symm z)) (g := Θ.φ x ∘ (A.chart j).symm) 1 hPf2 hΘ2 w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `heq : ((P + LocPot.ofFun f + Θ).φ x ∘ (A.chart j).symm) = fun z => (P.φ x ((A.chart j).symm z) + f ((A.chart j).symm z)) + 1 * (Θ.φ x ∘ (A.chart j).symm) z`. Use function extensionality and compare the values at `z`. Simplify using `[Function.comp, HAdd.hAdd, Add.add, LocPot.ofFun]`. Rewrite using `[heq, hsum, one_mul]`. Conclude with `add_nonneg h1 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPshOn_add_psh {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (U : Set X)
     (P : LocPot X) (f : X → ℝ) (Θ : LocPot X) (hU : IsOpen U) (hP : IsPotential A P)

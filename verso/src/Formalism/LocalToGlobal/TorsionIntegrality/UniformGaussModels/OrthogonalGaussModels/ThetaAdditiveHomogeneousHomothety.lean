@@ -14,25 +14,23 @@ open Formalism.L2.Th1.E (IntCurve curveL)
 open Formalism.InvariantFactorPaths.G7 (at1)
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm`. Establish `hD0 : L.g₂ ^ 3 - 27 * L.g₃ ^ 2 ≠ 0` using `Formalism.L2.Th1.F.discNeZero L`. Take `⟨c, hc12⟩` from `IsAlgClosed.exists_pow_nat_eq (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) (show 0 < 12 by norm_num)`. Establish `hc : c ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc12` using `[h]`. Conclude with `hD0 (by rw [← hc12]; simp)`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Introduce `p _ h5 ι`. Establish `hH` using `Formalism.L2.Th1.F.homogeneity L c hc`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (Formalism.L2.Th1.F.scalePair L c hc).g₂ = (c ^ 4)⁻¹ * L.g₂` using `hH.2.2.2.2.2.2.2.2.2.1`. Establish `e3 : (Formalism.L2.Th1.F.scalePair L c hc).g₃ = (c ^ 6)⁻¹ * L.g₃` using `hH.2.2.2.2.2.2.2.2.2.2`. Use `set a : ℂ := (Formalism.L2.Th1.F.scalePair L c hc).g₂ with ha`. Use `set b : ℂ := (Formalism.L2.Th1.F.scalePair L c hc).g₃ with hb`. Establish `hΔ : a ^ 3 - 27 * b ^ 2 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e2, e3]`. Establish `: ((c ^ 4)⁻¹ * L.g₂) ^ 3 - 27 * ((c ^ 6)⁻¹ * L.g₃) ^ 2 = (c ^ 12)⁻¹ * (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, hc12, inv_mul_cancel₀ hD0]`. Establish `hj : 1728 * a ^ 3 = jInv L`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Unfold `jInv`. Rewrite using `[e2, ← hc12]`. Clear the denominators using the available nonvanishing facts. Establish `hJ : ‖ι (jInv L)‖ ≤ 1` using `ReciprocityTheory.ChartRestriction.L1.jInt dK L hsq hd4 hcm p ι`. Establish `ha3 : ‖ι a‖ ^ 3 ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrArg ι hj`. Rewrite `h` using `[map_mul, map_pow, map_ofNat]`. Rewrite `hJ` using `[← h, norm_mul, GM.norm_twelve_cubed_eq_one_of_five_le_prime p h5, one_mul, norm_pow]`. Conclude with `hJ`. Establish `ha1 : ‖ι a‖ ≤ 1` using `(pow_le_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 ha3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb2 : ‖ι b‖ ^ 2 ≤ 1`. Establish `h : 27 * ι b ^ 2 = ι a ^ 3 - 1`. Establish `h` using `congrArg ι hΔ`. Rewrite `h` using `[map_sub, map_mul, map_pow, map_pow, map_ofNat, map_one]`. Take the linear combination `-h`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h'` using `congrArg norm h`. Rewrite `h'` using `[norm_mul, GM.norm_27 p h5, one_mul, norm_pow]`. Rewrite using `[h', sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ (by simp))` and prove the remaining obligations. Rewrite using `[norm_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `ha3`. Establish `hb1 : ‖ι b‖ ≤ 1` using `(pow_le_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 hb2`. Unfold `curveL`. Use `Formalism.L2.Th1.E.ScaledModelNorms.intCurve_short p h5 _ _ ha1 hb1 ?_` and prove the remaining obligations. Establish `h` using `congrArg ι hΔ`.
-
-Rewrite `h` using `[map_sub, map_mul, map_pow, map_pow, map_ofNat, map_one]`. Rewrite using `[h, norm_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_model_uniform_homothety : GoodModelUniform := by
   intro dK L hsq hd4 hcm
@@ -92,7 +90,7 @@ open Formalism.L2.Th1.F (scalePair opU herm th0 area taylor0 sgStar)
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[Formalism.InvariantFactorPaths.G7.at1, PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero (by simp))]`. Simplify using `only [MvPowerSeries.coeff_X_pow, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[finsum_eq_single _ (e i) (fun d hd => by beta_reduce`. Conclude with `if_neg (fun h => hd (by rw [h, Finsupp.single_eq_same])))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_single_variable_series {K n : Type} [Field K] (i : n) (f : PowerSeries K) (e : n →₀ ℕ) :
     MvPowerSeries.coeff e (at1 i f) =
@@ -104,9 +102,7 @@ theorem coeff_single_variable_series {K n : Type} [Field K] (i : n) (f : PowerSe
     exact if_neg (fun h => hd (by rw [h, Finsupp.single_eq_same])))]
 
 /- English proof (translation)
-Use extensionality with `e`. Rewrite using `[MvPowerSeries.coeff_rescale, coeff_single_variable_series, coeff_single_variable_series, PowerSeries.coeff_rescale]`. Use `split_ifs with h`. Use `conv_lhs => rw [h]`. Simplify using `[Finsupp.prod_single_index]`.
-
-Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rescale_single_variable_series {K n : Type} [Field K] (a : n → K) (i : n) (f : PowerSeries K) :
     MvPowerSeries.rescale a (at1 i f) = at1 i (PowerSeries.rescale (a i) f) := by
@@ -119,9 +115,9 @@ theorem rescale_single_variable_series {K n : Type} [Field K] (a : n → K) (i :
   · simp
 
 /- English proof (translation)
-Establish `hC : ∀ x : K, MvPowerSeries.rescale a (MvPowerSeries.C x) = MvPowerSeries.C x` using `by classical`. Introduce `x`. Use extensionality with `e`. Rewrite using `[MvPowerSeries.coeff_rescale, MvPowerSeries.coeff_C]`. Use `split_ifs with h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `only [Formalism.L2.Th1.E.thetaProd, map_sum, map_mul, map_prod, hC, rescale_single_variable_series]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rescale_thetaProd {K κ n : Type} [Field K] [Fintype κ] [Fintype n] (a : n → K) (r : κ → K)
     (H : κ → n → PowerSeries K) :
@@ -139,14 +135,14 @@ theorem rescale_thetaProd {K κ n : Type} [Field K] [Fintype κ] [Fintype n] (a 
   simp only [Formalism.L2.Th1.E.thetaProd, map_sum, map_mul, map_prod, hC, rescale_single_variable_series]
 
 /- English proof (translation)
-Conclude with `Formalism.L2.Th1.F.Homog.herm_scale (L := L) (c := c) (hc := hc) z x`.
+A detailed English derivation is pending.
 -/
 theorem herm_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (z x : ℂ) :
     herm (scalePair L c hc) (c * z) (c * x) = herm L z x := by
   exact Formalism.L2.Th1.F.Homog.herm_scale (L := L) (c := c) (hc := hc) z x
 
 /- English proof (translation)
-Unfold `opU`. Rewrite using `[herm_scale L c hc z s, herm_scale L c hc s s]`. Establish `h1 : c * ω₀ / 2 = c * (ω₀ / 2)` using `by ring`. Establish `h2 : c * z + c * s = c * (z + s)` using `by ring`. Rewrite using `[h1, h2, Formalism.L2.Th1.F.Homog.normalizedTheta_scale (L := L) (c := c) (hc := hc)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem opU_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (ω₀ s z : ℂ) :
     opU (scalePair L c hc) (c * s) (th0 (scalePair L c hc) (c * ω₀ / 2)) (c * z) =
@@ -158,7 +154,7 @@ theorem opU_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (ω₀ s z : ℂ) :
   rw [h1, h2, Formalism.L2.Th1.F.Homog.normalizedTheta_scale (L := L) (c := c) (hc := hc)]
 
 /- English proof (translation)
-Use `show Differentiable ℂ fun z => θ (z + s) * Complex.exp (-(Real.pi : ℂ) * herm L z s - (Real.pi : ℂ) * herm L s s / 2)`. Simplify using `only [herm]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_opU (L : PeriodPair) (s : ℂ) {θ : ℂ → ℂ} (h : Differentiable ℂ θ) :
     Differentiable ℂ (opU L s θ) := by
@@ -168,7 +164,7 @@ theorem differentiable_opU (L : PeriodPair) (s : ℂ) {θ : ℂ → ℂ} (h : Di
   fun_prop
 
 /- English proof (translation)
-Establish `hs : Differentiable ℂ (sgStar L)` using `(Formalism.L2.Th1.F.sgStarBasic L).1`. Use `show Differentiable ℂ fun z => opU L t (sgStar L) z / opU L t (sgStar L) 0`. Conclude with `(differentiable_opU L t hs).div_const _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem differentiable_evenTheta (L : PeriodPair) (t : ℂ) : Differentiable ℂ (th0 L t) := by
   have hs : Differentiable ℂ (sgStar L) := (Formalism.L2.Th1.F.sgStarBasic L).1
@@ -176,9 +172,9 @@ theorem differentiable_evenTheta (L : PeriodPair) (t : ℂ) : Differentiable ℂ
   exact (differentiable_opU L t hs).div_const _
 
 /- English proof (translation)
-Establish `hd : Differentiable ℂ (opU (scalePair L c hc) (c * s) (th0 (scalePair L c hc) (c * ω₀ / 2)))` using `differentiable_opU _ _ (differentiable_evenTheta _ _)`. Establish `hF : (fun z => opU (scalePair L c hc) (c * s) (th0 (scalePair L c hc) (c * ω₀ / 2)) (c * z)) = opU L s (th0 L (ω₀ / 2))` using `funext (opU_scale L c hc ω₀ s)`. Use extensionality with `n`. Simplify using `only [taylor0, PowerSeries.coeff_rescale, PowerSeries.coeff_mk]`. Rewrite using `[← hF, iteratedDeriv_comp_const_mul hd.contDiff c]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem taylor0_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (ω₀ s : ℂ) :
     PowerSeries.rescale c
@@ -198,9 +194,9 @@ theorem taylor0_scale (L : PeriodPair) (c : ℂ) (hc : c ≠ 0) (ω₀ s : ℂ) 
 end ThetaHomothety
 
 /- English proof (translation)
-Unfold `ThetaZScale`. Introduce `p _ L ι c hc ω₀ _ κ n _ _ r s`. Unfold `thetaZ`. Rewrite using `[ThetaHomothety.rescale_thetaProd]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k i`. Use extensionality with `m`. Rewrite using `[PowerSeries.coeff_rescale, PowerSeries.coeff_map, PowerSeries.coeff_map, ← ThetaHomothety.taylor0_scale L c hc ω₀ (s k i), PowerSeries.coeff_rescale, map_mul, map_pow]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem theta_additive_homogeneous_homothety : ThetaZScale := by
   unfold ThetaZScale

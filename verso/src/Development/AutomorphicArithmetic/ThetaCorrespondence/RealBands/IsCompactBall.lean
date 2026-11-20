@@ -7,17 +7,15 @@ open GlobalTheory.Dec (IsHaarSub IsIsoC NW IsSqIntIrr)
 open scoped Topology InnerProductSpace
 
 /- English proof (translation)
-Introduce `n ε`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `R`. Take `⟨hemb, -⟩` from `isClosedEmbeddingMatrix n ε`. Establish `hK` using `(hermitian_small_ball n ε).1 R`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpre` using `hemb.isCompact_preimage hK`. Use `hpre using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `⟨g.2, h⟩`. Introduce `h`. Conclude with `h.2`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.sqrt_mul (frobenius_nonneg x)]`. Conclude with `Real.sqrt_le_sqrt (frobenius_mul_le x y)`. Introduce `g`. Establish `h1 : umat g⁻¹ = Jm ε * (coeMatrixAlt ε g)ᴴ * Jm ε` using `coeMatrix_inv_eq ε g`. Establish `h2 : coeMatrixAlt ε g = umat g` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Establish `hd : ∀ i, ‖(if ε i = true then (1 : ℂ) else -1)‖ = 1`. Introduce `i`. Apply the tactic sequence `split <;> simp`. Simplify using `only [hs, Jm, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.conjTranspose_apply, norm_mul, hd, one_mul, mul_one, norm_star]`.
-
-Conclude with `Finset.sum_comm`. Conclude with `continuous_hs_real_place_taylor.comp (continuous_coeMatrix ε)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cusp.isCompact_ball :
     ∀ (n : ℕ) (ε : Fin n → Bool), (∀ R : ℝ, IsCompact {g : UJ ε | hs (umat g) ≤ R}) ∧

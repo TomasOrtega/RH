@@ -24,9 +24,9 @@ variable {n : ℕ} {H₁ H₂ : Type*} [NormedAddCommGroup H₁] [InnerProductSp
   {ε : Fin n → Bool}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `h g hg _ ⟨x, hx, rfl⟩`. Conclude with `⟨σ₁ g x, h g hg x hx, hint g hg x⟩`. Introduce `h g hg v hv`. Take `⟨w, hw, hwe⟩` from `Submodule.mem_map.mp (h g hg (φ v) (Submodule.mem_map_of_mem hv))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hwe` using `[← hint g hg v]`. Rewrite using `[← hφ hwe]`. Conclude with `hw`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kStableOn_map_iff (φ : H₁ →ₗ[ℂ] H₂) (hφ : Function.Injective φ)
     (hint : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, φ (σ₁ g x) = σ₂ g (φ x)) (S : Submodule ℂ H₁) :
@@ -41,9 +41,9 @@ theorem kStableOn_map_iff (φ : H₁ →ₗ[ℂ] H₂) (hφ : Function.Injective
     exact hw
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.IsWtOn`. Prove the components needed by the constructor for the conclusion. Introduce `h θ hθ`. Rewrite using `[← hint _ hθ x, h θ hθ, map_smul]`. Introduce `h θ hθ`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hφ` to reduce the goal to its premises. Rewrite using `[hint _ hθ x, h θ hθ, map_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isWtOn_map_iff (φ : H₁ →ₗ[ℂ] H₂) (hφ : Function.Injective φ)
     (hint : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, φ (σ₁ g x) = σ₂ g (φ x)) (μ : Fin n → ℝ) (x : H₁) :
@@ -57,23 +57,19 @@ theorem isWtOn_map_iff (φ : H₁ →ₗ[ℂ] H₂) (hφ : Function.Injective φ
     rw [hint _ hθ x, h θ hθ, map_smul]
 
 /- English proof (translation)
-Establish `hfd : FiniteDimensional ℂ S ↔ FiniteDimensional ℂ (S.map φ)` using `⟨fun _ => (Submodule.equivMapOfInjective φ hφ S).finiteDimensional, fun _ => (Submodule.equivMapOfInjective φ hφ S).symm.finiteDimensional⟩`. Establish `hst` using `kStableOn_map_iff φ hφ hint`. Establish `hwt` using `isWtOn_map_iff φ hφ hint`. Unfold `Formalism.MainNotions.S.IsKTypeOf`. Use `and_congr hfd (and_congr (hst S) (and_congr ?_ (and_congr ?_ ?_)))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h S' hS' hst'`. Establish `hle : S'.comap φ ≤ S`. Introduce `x hx`. Take `⟨w, hw, hwx⟩` from `Submodule.mem_map.mp (hS' hx)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hφ hwx]`. Conclude with `hw`. Establish `hst'' : Formalism.MainNotions.S.IsKStableOn ε σ₁ (S'.comap φ)`. Introduce `g hg x hx`. Use `show φ (σ₁ g x) ∈ S'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hint g hg x]`. Conclude with `hst' g hg (φ x) hx`. Establish `hS'eq : (S'.comap φ).map φ = S'`. Use `le_antisymm (Submodule.map_comap_le _ _) fun y hy => ?_` and prove the remaining obligations. Take `⟨w, -, rfl⟩` from `Submodule.mem_map.mp (hS' hy)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_map_of_mem hy`. Break down `h _ hle hst'' with h0 | h1` into its components or cases. Use `left`. Rewrite using `[← hS'eq, h0, Submodule.map_bot]`. Use `right`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← hS'eq, h1]`. Introduce `h S' hS' hst'`. Break down `h (S'.map φ) (Submodule.map_mono hS') ((hst S').mp hst') with h0 | h1` into its components or cases. Use `left`. Apply `Submodule.map_injective_of_injective hφ` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[h0, Submodule.map_bot]`. Use `right`. Conclude with `Submodule.map_injective_of_injective hφ h1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, hv0, hvw⟩`.
-
-Conclude with `⟨φ v, Submodule.mem_map_of_mem hv, (map_ne_zero_iff φ hφ).mpr hv0, (hwt μ v).mp hvw⟩`. Introduce and unpack `⟨v, hv, hv0, hvw⟩`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.mp hv`. Conclude with `⟨w, hw, (map_ne_zero_iff φ hφ).mp hv0, (hwt μ w).mpr hvw⟩`. Prove the components needed by the constructor for the conclusion.
-
-Introduce `h ν v hv hv0 hvw`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.mp hv`. Conclude with `h ν w hw ((map_ne_zero_iff φ hφ).mp hv0) ((hwt ν w).mpr hvw)`. Introduce `h ν v hv hv0 hvw`. Conclude with `h ν (φ v) (Submodule.mem_map_of_mem hv) ((map_ne_zero_iff φ hφ).mpr hv0) ((hwt ν v).mp hvw)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isKTypeOf_map_iff (φ : H₁ →ₗ[ℂ] H₂) (hφ : Function.Injective φ)
     (hint : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, φ (σ₁ g x) = σ₂ g (φ x)) (μ : Fin n → ℝ) (S : Submodule ℂ H₁) :
@@ -152,9 +148,7 @@ def kfinLam (ε : Fin n → Bool) (Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L
 variable {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
 /- English proof (translation)
-Establish `hD` using `datumEmbedding_mem_smooth hP v₀ v`. Establish `hV : (⟨uniformisationL2 ε Ψ v₀ v, hD⟩ : smD ε (rreg ε)) ∈ datumV ε Ψ v₀` using `by show uniformisationL2 ε Ψ v₀ v ∈ Submodule.span ℂ (Set.range (uniformisationL2 ε Ψ v₀))`. Conclude with `Submodule.subset_span ⟨v, rfl⟩`. Establish `hG : (⟨uniformisationL2 ε Ψ v₀ v, hD⟩ : smD ε (rreg ε)) ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)` using `Submodule.mem_sInf.mpr fun U hU => hU.1 hV`. Unfold `Hlam closGen`.
-
-Conclude with `Submodule.le_topologicalClosure _ (Submodule.mem_map_of_mem hG)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem datumEmbedding_mem_Hlam (hP : IsPsiFor ε lam T Ψ) (v : T.V) : uniformisationL2 ε Ψ v₀ v ∈ Hlam ε Ψ v₀ := by
   have hD := datumEmbedding_mem_smooth hP v₀ v
@@ -167,7 +161,7 @@ theorem datumEmbedding_mem_Hlam (hP : IsPsiFor ε lam T Ψ) (v : T.V) : uniformi
   exact Submodule.le_topologicalClosure _ (Submodule.mem_map_of_mem hG)
 
 /- English proof (translation)
-The claim follows from `closGen_stable hgap (rreg_isURepOn ε) (isDerivedOn_smE (rreg_isURepOn ε)) (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀)`.
+A detailed English derivation is pending.
 -/
 theorem rreg_mem_Hlam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) :
     ∀ g ∈ UJset ε, ∀ x ∈ Hlam ε Ψ v₀, rreg ε g x ∈ Hlam ε Ψ v₀ :=
@@ -175,7 +169,7 @@ theorem rreg_mem_Hlam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ 
     (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀)
 
 /- English proof (translation)
-Establish `hm` using `rreg_mem_Hlam hgap hP hv₀ g hg x x.2`. Establish `h1 : sigLam ε Ψ v₀ g x = ⟨rreg ε g x, hm⟩` using `Submodule.orthogonalProjectionOnto_mem_subspace_eq_self (⟨rreg ε g x, hm⟩ : Hlam ε Ψ v₀)`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigLam_coe (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (x : Hlam ε Ψ v₀) :
     ((sigLam ε Ψ v₀ g x : Hlam ε Ψ v₀) : L2 ε) = rreg ε g x := by
@@ -185,13 +179,11 @@ theorem sigLam_coe (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v
   rw [h1]
 
 /- English proof (translation)
-Establish `hR` using `rreg_isURepOn ε`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x : 1 show (Hlam ε Ψ v₀).orthogonalProjectionOnto (rreg ε 1 (x : L2 ε)) = x`. Rewrite using `[hR.1.1]`. Conclude with `Submodule.orthogonalProjectionOnto_mem_subspace_eq_self x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb`. Use extensionality with `x : 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hy : rreg ε a (rreg ε b (x : L2 ε)) ∈ Hlam ε Ψ v₀` using `rreg_mem_Hlam hgap hP hv₀ a ha _ (rreg_mem_Hlam hgap hP hv₀ b hb _ x.2)`. Establish `e1 : sigLam ε Ψ v₀ (a * b) x = ⟨_, hy⟩` using `by show (Hlam ε Ψ v₀).orthogonalProjectionOnto (rreg ε (a * b) (x : L2 ε)) = _`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR.1.2 a ha b hb]`. Conclude with `Submodule.orthogonalProjectionOnto_mem_subspace_eq_self ⟨_, hy⟩`. Rewrite using `[e1, ContinuousLinearMap.comp_apply, sigLam_coe hgap hP hv₀ ha, sigLam_coe hgap hP hv₀ hb]`. Introduce `g hg v show ‖((sigLam ε Ψ v₀ g v : Hlam ε Ψ v₀) : L2 ε)‖ = ‖(v : L2 ε)‖`. Rewrite using `[sigLam_coe hgap hP hv₀ hg v, hR.2.1 g hg]`.
-
-Introduce `v`. Conclude with `(Hlam ε Ψ v₀).orthogonalProjectionOnto.continuous.comp_continuousOn (hR.2.2 (v : L2 ε))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sigLam_isURepOn (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) : IsURepOn (UJset ε) (sigLam ε Ψ v₀) := by
   have hR := rreg_isURepOn ε
@@ -217,13 +209,11 @@ theorem sigLam_isURepOn (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv�
     exact (Hlam ε Ψ v₀).orthogonalProjectionOnto.continuous.comp_continuousOn (hR.2.2 (v : L2 ε))
 
 /- English proof (translation)
-Introduce `S hSc hSG`. Establish `hinj : Function.Injective (Hlam ε Ψ v₀).subtype` using `Subtype.val_injective`. Establish `hcl : IsClosed ((S.map (Hlam ε Ψ v₀).subtype : Submodule ℂ (L2 ε)) : Set (L2 ε))`. Establish `h` using `(Submodule.isClosed_topologicalClosure _).isClosedEmbedding_subtypeVal.isClosedMap (S : Set (Hlam ε Ψ v₀)) hSc`. Rewrite using `[Submodule.map_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hle : S.map (Hlam ε Ψ v₀).subtype ≤ closGen (smE ε (rreg ε)) (datumV ε Ψ v₀)`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`. Establish `hst : ∀ g ∈ UJset ε, ∀ x ∈ S.map (Hlam ε Ψ v₀).subtype, rreg ε g x ∈ S.map (Hlam ε Ψ v₀).subtype`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `g hg _ ⟨x, hx, rfl⟩`. Conclude with `⟨sigLam ε Ψ v₀ g x, hSG g (by rw [mir_UJset_eq]; exact hg) x hx, sigLam_coe hgap hP hv₀ hg x⟩`. Break down `rigid_irred hgap (rreg_isURepOn ε) (isDerivedOn_smE (rreg_isURepOn ε)) (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) _ hle hcl hst with h | h` into its components or cases. Use `left`. Conclude with `Submodule.map_injective_of_injective hinj (h.trans (Submodule.map_bot _).symm)`.
-
-Use `right`. Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises. Rewrite using `[h, Submodule.map_top, Submodule.range_subtype]`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sigLam_irred (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) : Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset ε) (sigLam ε Ψ v₀) := by
   intro S hSc hSG
@@ -249,9 +239,9 @@ theorem sigLam_irred (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ :
     rfl
 
 /- English proof (translation)
-Take `⟨-, -, -, w, hw, hw0, -⟩` from `datumV_isKIrrHW hP hv₀`. Establish `hm : ((w : smD ε (rreg ε)) : L2 ε) ∈ Hlam ε Ψ v₀`. Unfold `Hlam closGen`. Conclude with `Submodule.le_topologicalClosure _ (Submodule.mem_map_of_mem (Submodule.mem_sInf.mpr fun U hU => hU.1 hw))`. Use `⟨⟨⟨w, hm⟩, 0, fun h => hw0 ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ((w : smD ε (rreg ε)) : L2 ε) = 0` using `congrArg (fun z : Hlam ε Ψ v₀ => (z : L2 ε)) h`. Conclude with `Subtype.ext h2`.
+A detailed English derivation is pending.
 -/
 theorem Hlam_nontrivial (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) : Nontrivial (Hlam ε Ψ v₀) := by
   obtain ⟨-, -, -, w, hw, hw0, -⟩ := datumV_isKIrrHW hP hv₀
@@ -264,7 +254,7 @@ theorem Hlam_nontrivial (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv�
   exact Subtype.ext h2
 
 /- English proof (translation)
-Take `⟨hu, hc⟩` from `hg`. Establish `h1 : star g * g = 1` using `Matrix.mem_unitaryGroup_iff'.mp hu`. Establish `hJ : ReciprocityTheory.ChartRestriction.DS.Jm ε = Formalism.REAL.Jm ε` using `rfl`. Use `show gᴴ * ReciprocityTheory.ChartRestriction.DS.Jm ε * g = ReciprocityTheory.ChartRestriction.DS.Jm ε`. Rewrite using `[hJ, mul_assoc, ← hc, ← mul_assoc, ← Matrix.star_eq_conjTranspose, h1, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Kset_subset_UJset_mem {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ Formalism.REAL.Kset ε) : g ∈ UJset ε := by
@@ -275,7 +265,7 @@ private theorem Kset_subset_UJset_mem {g : Matrix (Fin n) (Fin n) ℂ}
   rw [hJ, mul_assoc, ← hc, ← mul_assoc, ← Matrix.star_eq_conjTranspose, h1, one_mul]
 
 /- English proof (translation)
-Introduce `g hg x`. Conclude with `sigLam_coe hgap hP hv₀ (Kset_subset_UJset_mem hg) x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem subtype_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) :
     ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, (Hlam ε Ψ v₀).subtype (sigLam ε Ψ v₀ g x) =
@@ -284,7 +274,7 @@ theorem subtype_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀
   exact sigLam_coe hgap hP hv₀ (Kset_subset_UJset_mem hg) x
 
 /- English proof (translation)
-Unfold `lowKSubLam`. Rewrite using `[Submodule.map_comap_subtype, inf_eq_right]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Unfold `Hlam closGen`. Conclude with `Submodule.le_topologicalClosure _ (Submodule.mem_map_of_mem (Submodule.mem_sInf.mpr fun U hU => hU.1 hy))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem map_lowKSubLam : (lowKSubLam ε Ψ v₀).map (Hlam ε Ψ v₀).subtype =
     (datumV ε Ψ v₀).map (smD ε (rreg ε)).subtype := by
@@ -296,16 +286,16 @@ theorem map_lowKSubLam : (lowKSubLam ε Ψ v₀).map (Hlam ε Ψ v₀).subtype =
     (Submodule.mem_map_of_mem (Submodule.mem_sInf.mpr fun U hU => hU.1 hy))
 
 /- English proof (translation)
-Conclude with `Submodule.map_subtype_le _ S`.
+A detailed English derivation is pending.
 -/
 theorem map_subtype_le_closGen (S : Submodule ℂ (Hlam ε Ψ v₀)) :
     S.map (Hlam ε Ψ v₀).subtype ≤ closGen (smE ε (rreg ε)) (datumV ε Ψ v₀) := by
   exact Submodule.map_subtype_le _ S
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Hlam ε Ψ v₀).subtype` using `Subtype.val_injective`. Establish `hint` using `subtype_sigLam hgap hP hv₀`. Establish `hK` using `data_isKTypeOf hgap (rreg_isURepOn ε) (isDerivedOn_smE (rreg_isURepOn ε)) (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀)`. Use `⟨?_, fun S hS => ?_⟩` and prove the remaining obligations. Rewrite using `[isKTypeOf_map_iff _ hinj hint, map_lowKSubLam, mir_lowK_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hK`. Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises. Rewrite using `[map_lowKSubLam]`. Rewrite `hS` using `[isKTypeOf_map_iff _ hinj hint, mir_lowK_eq]`. Conclude with `data_lowK_eq hgap (rreg_isURepOn ε) (isDerivedOn_smE (rreg_isURepOn ε)) (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) _ (map_subtype_le_closGen S) hS`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigLam_lowK (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) :
     Formalism.MainNotions.S.IsKTypeOf ε (sigLam ε Ψ v₀) (Formalism.QuantumDeterminants.lowK ε lam) (lowKSubLam ε Ψ v₀) ∧
@@ -325,7 +315,7 @@ theorem sigLam_lowK (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : 
       (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) _ (map_subtype_le_closGen S) hS
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Hlam ε Ψ v₀).subtype` using `Subtype.val_injective`. Rewrite `hS` using `[isKTypeOf_map_iff _ hinj (subtype_sigLam hgap hP hv₀)]`. Conclude with `⟨data_vogan hgap (rreg_isURepOn ε) (isDerivedOn_smE (rreg_isURepOn ε)) (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) _ (map_subtype_le_closGen S) hS, fun h hh hbig hμ => data_casValK_gap hgap (rreg_isURepOn ε) (isDerivedOn_smE (rreg_isURepOn ε)) (datumV_i …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sigLam_kType_bounds (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {μ : Fin n → ℝ} (S : Submodule ℂ (Hlam ε Ψ v₀))
     (hS : Formalism.MainNotions.S.IsKTypeOf ε (sigLam ε Ψ v₀) μ S) :
@@ -340,9 +330,9 @@ theorem sigLam_kType_bounds (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (
       (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) hh hbig _ (map_subtype_le_closGen S) hS hμ⟩
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Hlam ε Ψ v₀).subtype` using `Subtype.val_injective`. Establish `hint` using `subtype_sigLam hgap hP hv₀`. Establish `hfin` using `data_admissible hgap (rreg_isURepOn ε) (isDerivedOn_smE (rreg_isURepOn ε)) (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) μ`. Establish `hle : (sSup {S : Submodule ℂ (Hlam ε Ψ v₀) | Formalism.MainNotions.S.IsKTypeOf ε (sigLam ε Ψ v₀) μ S}).map (Hlam ε Ψ v₀).subtype ≤ sSup {S : Submodule ℂ (L2 ε) | S ≤ closGen (smE ε (rreg ε)) (datumV ε Ψ v₀) ∧ Formalism.MainNotions.S.IsKTypeOf ε (rreg ε) μ S}`. Rewrite using `[Submodule.map_le_iff_le_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `sSup_le fun S hS => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.map_le_iff_le_comap]`. Conclude with `le_sSup ⟨map_subtype_le_closGen S, (isKTypeOf_map_iff _ hinj hint μ S).1 hS⟩`. Use `Submodule.finiteDimensional_of_le hle` as an intermediate fact. Conclude with `(Submodule.equivMapOfInjective _ hinj _).symm.finiteDimensional`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sigLam_admissible (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (μ : Fin n → ℝ) :
     FiniteDimensional ℂ
@@ -363,11 +353,9 @@ theorem sigLam_admissible (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv
   exact (Submodule.equivMapOfInjective _ hinj _).symm.finiteDimensional
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Hlam ε Ψ v₀).subtype` using `Subtype.val_injective`. Establish `hint` using `subtype_sigLam hgap hP hv₀`. Use `hSf` as an intermediate fact. Establish `hf : FiniteDimensional ℂ (S.map (Hlam ε Ψ v₀).subtype)` using `(Submodule.equivMapOfInjective _ hinj S).finiteDimensional`. Establish `hK : ∀ k ∈ Kset ε, ∀ x ∈ S.map (Hlam ε Ψ v₀).subtype, rreg ε k x ∈ S.map (Hlam ε Ψ v₀).subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k hk x hx`. Rewrite `hk` using `[← mir_Kset_eq]`. Conclude with `(kStableOn_map_iff _ hinj hint S).1 hSK k hk x hx`. Establish `h` using `data_kfin_le hgap (rreg_isURepOn ε) (isDerivedOn_smE (rreg_isURepOn ε)) (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) _ (map_subtype_le_closGen S) hf hK`. Introduce `x hx`.
-
-Conclude with `h ⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sigLam_kfin (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (S : Submodule ℂ (Hlam ε Ψ v₀)) (hSf : FiniteDimensional ℂ S)
     (hSK : Formalism.MainNotions.S.IsKStableOn ε (sigLam ε Ψ v₀) S) : S ≤ kfinLam ε Ψ v₀ := by

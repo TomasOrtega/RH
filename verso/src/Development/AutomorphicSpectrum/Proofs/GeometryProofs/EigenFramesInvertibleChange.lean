@@ -13,17 +13,17 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.LocFn.FrameChange
 
 /- English proof (translation)
-Introduce `S R _ _ G _ _ x O _ act σ n r u V hu hV`. Take `⟨E, _, _, ⟨M⟩⟩` from `lieModel_exists S G R x`. Take `⟨ρ, hρ, -⟩` from `lieModel_exists_unique_act S G R x E M O act.act act.hom act.one act.mul act.add`. Take `⟨hc, hf⟩` from `GlobalTheory.T.lie_model_eigenvectors_action S R G x E M`. Establish `hfr` using `(hf O act ρ σ hρ).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose u' hu' using fun i => M.onto (u i) (hu.1 i).1`. Use `choose V' hV' using fun i => M.onto (V i) (hV.1 i).1`. Take `rfl : (fun k => M.pt (u' k)) = u` from `funext hu'`. Take `rfl : (fun k => M.pt (V' k)) = V` from `funext hV'`. Take `⟨lu, su⟩` from `(hfr n u').1 hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨lV, sV⟩` from `(hfr r V').1 hV`. Set `bu : Module.Basis (Fin n) R (eigSp ρ σ)` to `(Module.Basis.span lu).map (LinearEquiv.ofEq _ _ su)`. Set `bV : Module.Basis (Fin r) R (eigSp ρ σ)` to `(Module.Basis.span lV).map (LinearEquiv.ofEq _ _ sV)`. Establish `bu_eq : ∀ i, (bu i : E) = u' i` using `fun i => by`. Simplify using `[bu, Module.Basis.span_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `bV_eq : ∀ i, (bV i : E) = V' i` using `fun i => by`. Simplify using `[bV, Module.Basis.span_apply]`. Establish `hrn : r = n` using `by simpa using Fintype.card_congr (bV.indexEquiv bu)`. Use `⟨hrn, (bu.toMatrix bV).transpose, fun i => ?_, (bV.toMatrix bu).transpose, ?_, ?_⟩` and prove the remaining obligations. Use `(hc n _ u' _).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : V' i = ∑ k, (bu.toMatrix bV).transpose i k • u' k`. Establish `h` using `congrArg Subtype.val (bu.sum_repr (bV i))`. Rewrite `h` using `[bV_eq]`. Rewrite using `[← h]`. Use `clear h hc hf hfr hu hV hu' hV' hρ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, bu_eq, Matrix.transpose_apply, Module.Basis.toMatrix_apply]`. Conclude with `congrArg M.pt h`. Rewrite using `[← Matrix.transpose_mul, Module.Basis.toMatrix_mul_toMatrix_flip, Matrix.transpose_one]`. Rewrite using `[← Matrix.transpose_mul, Module.Basis.toMatrix_mul_toMatrix_flip, Matrix.transpose_one]`.
+A detailed English derivation is pending.
 -/
 theorem eigFrame_change : ∀ (S : Scheme.{0}) (R : Type) [CommRing R] [Nontrivial R] (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Sp R ⟶ S) (O : Type) [CommRing O] (act : OAct O G) (σ : O →+* R) (n r : ℕ) (u : Fin n → (epsAt x ⟶ G)) (V : Fin r → (epsAt x ⟶ G)), IsEigFrame act x σ u → IsEigFrame act x σ V → r = n ∧ ∃ C : Matrix (Fin r) (Fin n) R, (∀ i, IsComb (C i) u (V i)) ∧ ∃ C' : Matrix (Fin n) (Fin r) R, C * C' = 1 ∧ C' * C = 1 := by
   intro S R _ _ G _ _ x O _ act σ n r u V hu hV

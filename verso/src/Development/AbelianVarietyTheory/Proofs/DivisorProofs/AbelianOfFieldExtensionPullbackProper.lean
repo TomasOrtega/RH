@@ -11,13 +11,13 @@ open GlobalTheory.Mum GlobalTheory.Mum.GenDesc
 namespace GlobalTheory.Mum.GenDesc
 
 /- English proof (translation)
-Introduce `K K' _ _ i G _ B _ φ g hG h hP hB`. Establish `hc` using `hG.comm`. Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hG.geomConnected` as an intermediate fact. Establish `: Flat (spMap i)` using `inferInstance`. Establish `: Surjective (spMap i)` using `inferInstance`. Establish `: UniversallyClosed G.hom` using `MorphismProperty.of_isPullback_of_descendsAlong (P := @UniversallyClosed) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) h.1.flip ⟨⟨inferInstance, inferInstance⟩, inferInstance⟩ inferInstance`. Establish `hp : IsProper G.hom` using `⟨⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ConnectedSpace G.left` using `GeometricallyConnected.geometrically_connectedSpace (f := G.hom) (𝟙 _) (𝟙 _) G.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`. Take `⟨d, hd⟩` from `exists_dim_of_preconnected G.hom (eSec G (default : PrimeSpectrum K))`. Establish `hd' : SmoothOfRelativeDimension d B.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange d).of_isPullback h.1 hd`. Establish `e : d = g` using `ReciprocityTheory.ChartRestriction.G.H1.dim_unique B.hom hd' hB (eSec B (default : PrimeSpectrum K'))`. Substitute `e` using the available equality.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `⟨⟨hc, inferInstance, hp, inferInstance⟩, hd⟩`.
+Supply the required witnesses or components.
 -/
 theorem abelian_of_field_of_pullback : ∀ (K K' : Type) [Field K] [Field K'] (i : K →+* K') (G : Over (Sp K)) [GrpObj G] (B : Over (Sp K')) [GrpObj B] (φ : B.left ⟶ G.left) (g : ℕ), IsSemiAbelian G → IsGrpPullback B G (spMap i) φ → IsProper B.hom → SmoothOfRelativeDimension g B.hom → IsAbelianScheme G ∧ SmoothOfRelativeDimension g G.hom := by
   intro K K' _ _ i G _ B _ φ g hG h hP hB

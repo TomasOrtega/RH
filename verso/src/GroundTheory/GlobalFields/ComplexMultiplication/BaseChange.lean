@@ -18,21 +18,21 @@ noncomputable def ffMap : E.toAffine.FunctionField →+* (E.map σ).toAffine.Fun
   (bcEmb (F' := F') E).toRingHom
 
 /- English proof (translation)
-Set `_` to `σ.toAlgebra`. Conclude with `bcEmb_genX (F' := F') E`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem ffMap_genX : ffMap σ E (genX E) = genX (E.map σ) := by
   let _ := σ.toAlgebra
   exact bcEmb_genX (F' := F') E
 
 /- English proof (translation)
-Set `_` to `σ.toAlgebra`. Conclude with `bcEmb_genY (F' := F') E`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem ffMap_genY : ffMap σ E (genY E) = genY (E.map σ) := by
   let _ := σ.toAlgebra
   exact bcEmb_genY (F' := F') E
 
 /- English proof (translation)
-Set `_` to `σ.toAlgebra`. Conclude with `(bcEmb (F' := F') E).commutes a`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem ffMap_algebraMap (a : F) :
     ffMap σ E (algebraMap F E.toAffine.FunctionField a) =
@@ -41,9 +41,9 @@ theorem ffMap_algebraMap (a : F) :
   exact (bcEmb (F' := F') E).commutes a
 
 /- English proof (translation)
-Set `_ : Algebra F L` to `(f.comp (algebraMap F W.toAffine.FunctionField)).toAlgebra`. Set `f' : W.toAffine.FunctionField →ₐ[F] L` to `{ f with commutes' := fun a => rfl }`. Set `g' : W.toAffine.FunctionField →ₐ[F] L` to `{ g with commutes' := fun a => (hc a).symm }`. Establish `e : f' = g'` using `algHom_ext_gen W hx hy`. Use extensionality with `z`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `DFunLike.congr_fun e z`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_ext_functionField {W : WeierstrassCurve F} {L : Type*} [Field L]
     {f g : W.toAffine.FunctionField →+* L}
@@ -61,19 +61,19 @@ noncomputable def ffCongr {C D : WeierstrassCurve F'} (h : C = D) :
   subst h; exact RingEquiv.refl _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ffCongr_genX {C D : WeierstrassCurve F'} (h : C = D) : ffCongr h (genX C) = genX D := by
   subst h; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ffCongr_genY {C D : WeierstrassCurve F'} (h : C = D) : ffCongr h (genY C) = genY D := by
   subst h; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ffCongr_algebraMap {C D : WeierstrassCurve F'} (h : C = D) (a : F') :
     ffCongr h (algebraMap F' C.toAffine.FunctionField a) = algebraMap F' D.toAffine.FunctionField a := by
@@ -88,14 +88,14 @@ variable {E E' E'' : WeierstrassCurve F} [E.IsElliptic] [E'.IsElliptic] [E''.IsE
 
 omit [E.IsElliptic] [E'.IsElliptic] in
 /- English proof (translation)
-Break down `φ with ⟨Q, ⟨x, y, h, rfl, hx⟩, hr⟩` into its components or cases. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.val_eq (φ : Isogeny E E') : φ.1 = Point.some φ.x φ.y φ.nonsingular := by
   rcases φ with ⟨Q, ⟨x, y, h, rfl, hx⟩, hr⟩
   rfl
 
 /- English proof (translation)
-Apply `Isogeny.ext'` to reduce the goal to its premises. Rewrite using `[φ.val_eq, ψ.val_eq]`. Simplify using `only [Point.some.injEq]`. Conclude with `⟨hx, hy⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.ext_xy {φ ψ : Isogeny E E'} (hx : φ.x = ψ.x) (hy : φ.y = ψ.y) : φ = ψ := by
   apply Isogeny.ext'
@@ -109,7 +109,7 @@ noncomputable def _root_.GroundTheory.Arith.Abelian.Isogeny.map (φ : Isogeny E 
   isogBaseChange (F' := F') φ
 
 /- English proof (translation)
-Set `_` to `σ.toAlgebra`. Set `_` to `Classical.decEq F'`. Use `show xOf _ (isogBaseChange (F' := F') φ).1 = _`. Rewrite using `[isogBaseChange_val, φ.val_eq, Point.map_some]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.map_x (φ : Isogeny E E') : (φ.map σ).x = ffMap σ E φ.x := by
   let _ := σ.toAlgebra
@@ -119,7 +119,7 @@ theorem _root_.GroundTheory.Arith.Abelian.Isogeny.map_x (φ : Isogeny E E') : (�
   rfl
 
 /- English proof (translation)
-Set `_` to `σ.toAlgebra`. Set `_` to `Classical.decEq F'`. Use `show yOf _ (isogBaseChange (F' := F') φ).1 = _`. Rewrite using `[isogBaseChange_val, φ.val_eq, Point.map_some]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.map_y (φ : Isogeny E E') : (φ.map σ).y = ffMap σ E φ.y := by
   let _ := σ.toAlgebra
@@ -129,9 +129,9 @@ theorem _root_.GroundTheory.Arith.Abelian.Isogeny.map_y (φ : Isogeny E E') : (�
   rfl
 
 /- English proof (translation)
-Establish `e : (φ.map σ).comap.toRingHom.comp (ffMap σ E') = (ffMap σ E).comp φ.comap.toRingHom`. Apply `ringHom_ext_functionField` to reduce the goal to its premises. Introduce `a`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, ffMap_algebraMap, AlgHom.commutes]`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, ffMap_genX, Isogeny.comap_genX, Isogeny.map_x]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, ffMap_genY, Isogeny.comap_genY, Isogeny.map_y]`. Conclude with `DFunLike.congr_fun e f`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.comap_map (φ : Isogeny E E') (f : E'.toAffine.FunctionField) :
     (φ.map σ).comap (ffMap σ E' f) = ffMap σ E (φ.comap f) := by
@@ -147,21 +147,21 @@ theorem _root_.GroundTheory.Arith.Abelian.Isogeny.comap_map (φ : Isogeny E E') 
   exact DFunLike.congr_fun e f
 
 /- English proof (translation)
-Rewrite using `[Isogeny.x, Isogeny.comp_val, ψ.val_eq, Point.map_some]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.comp_alt (ψ : Isogeny E' E'') (φ : Isogeny E E') : (ψ.comp φ).x = φ.comap ψ.x := by
   rw [Isogeny.x, Isogeny.comp_val, ψ.val_eq, Point.map_some]
   rfl
 
 /- English proof (translation)
-Rewrite using `[Isogeny.y, Isogeny.comp_val, ψ.val_eq, Point.map_some]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.comp_y (ψ : Isogeny E' E'') (φ : Isogeny E E') : (ψ.comp φ).y = φ.comap ψ.y := by
   rw [Isogeny.y, Isogeny.comp_val, ψ.val_eq, Point.map_some]
   rfl
 
 /- English proof (translation)
-Apply `Isogeny.ext_xy` to reduce the goal to its premises. Rewrite using `[Isogeny.map_x, Isogeny.comp_alt, Isogeny.comp_alt, Isogeny.map_x, Isogeny.comap_map]`. Rewrite using `[Isogeny.map_y, Isogeny.comp_y, Isogeny.comp_y, Isogeny.map_y, Isogeny.comap_map]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.map_comp (ψ : Isogeny E' E'') (φ : Isogeny E E') :
     (ψ.comp φ).map σ = (ψ.map σ).comp (φ.map σ) := by
@@ -170,9 +170,9 @@ theorem _root_.GroundTheory.Arith.Abelian.Isogeny.map_comp (ψ : Isogeny E' E'')
   · rw [Isogeny.map_y, Isogeny.comp_y, Isogeny.comp_y, Isogeny.map_y, Isogeny.comap_map]
 
 /- English proof (translation)
-Set `_` to `σ.toAlgebra`. Set `_` to `Classical.decEq F'`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Point.map (W' := E) (bcEmb (F' := F') E) (n • genericPoint E) = n • genericPoint (E.baseChange F')`. Rewrite using `[map_zsmul, map_bcEmb_genericPoint]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.map_mulIsogeny (n : ℤ) (hn : n ≠ 0) :
     (mulIsogeny E n hn).map σ = mulIsogeny (E.map σ) n hn := by
@@ -197,14 +197,14 @@ noncomputable def _root_.GroundTheory.Arith.Abelian.Isogeny.congr (hC : C = D) (
   subst hC hC'; exact φ
 
 /- English proof (translation)
-Substitute `hC hC'` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.congr_alt (hC : C = D) (hC' : C' = D') (φ : Isogeny C C') :
     (φ.congr hC hC').x = ffCongr hC φ.x := by
   subst hC hC'; rfl
 
 /- English proof (translation)
-Substitute `hC hC'` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.congr_y (hC : C = D) (hC' : C' = D') (φ : Isogeny C C') :
     (φ.congr hC hC').y = ffCongr hC φ.y := by
@@ -217,7 +217,7 @@ theorem _root_.GroundTheory.Arith.Abelian.Isogeny.congr_rfl (φ : Isogeny C C') 
   rfl
 
 /- English proof (translation)
-Substitute `hC hC'` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.degree_congr (hC : C = D) (hC' : C' = D')
     (φ : Isogeny C C') : (φ.congr hC hC').degree = φ.degree := by
@@ -230,14 +230,14 @@ noncomputable def _root_.GroundTheory.Arith.Abelian.Isogeny.mapOf (hE : E.map σ
   (φ.map σ).congr hE hE'
 
 /- English proof (translation)
-Rewrite using `[Isogeny.mapOf, Isogeny.congr_alt, Isogeny.map_x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.mapOf_alt (hE : E.map σ = D) (hE' : E'.map σ = D')
     (φ : Isogeny E E') : (φ.mapOf σ hE hE').x = ffCongr hE (ffMap σ E φ.x) := by
   rw [Isogeny.mapOf, Isogeny.congr_alt, Isogeny.map_x]
 
 /- English proof (translation)
-Rewrite using `[Isogeny.mapOf, Isogeny.congr_y, Isogeny.map_y]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.mapOf_y (hE : E.map σ = D) (hE' : E'.map σ = D')
     (φ : Isogeny E E') : (φ.mapOf σ hE hE').y = ffCongr hE (ffMap σ E φ.y) := by

@@ -50,19 +50,17 @@ include Ct in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `huE` using `framepf_E_unit hR hs`. Establish `hEΔ` using `framepf_E_Δ hR`. Take `⟨Γ, hΓ, R, hΓR⟩` from `framepf_Γ Bs π' (c - 1) hπ0 hΔπ hR2 hu hγN`. Take `⟨H, H', ⟨K1, hK1⟩, ⟨K2, hK2⟩, -, -, ⟨K5, hK5⟩, ⟨K6, hK6⟩⟩` from `framepf_mats _ hne Fs hF0 R M hM1 aσ _ haσ`. Rewrite `hK5`, `hK6` using `[← pow_mul, mul_comm σ 2]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨Φ, hΦL, hΦJ, hβα, hαβ⟩` from `hB H H' K5 K6 _ hK5 hK6`. Establish `hγ` using `framepf_hhx_γ Bs π' c hπ0 hΔπ hR2 γ0 hu (PowerSeries.X * Fs) (by simp) hFs Γ hΓ H K2 M (by rw [hΓR]; exact hK2)`. Establish `hmod` using `framepf_hhx_mod Bs π' c hπ0 hΔπ hR2 γ0 hu _ H K1 hK1`. Establish `hp0 : ((PD.p : ℕ) : O) ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg (algebraMap O LL) h`. Rewrite `h1` using `[map_natCast, map_zero]`. Use `W.v_l` as an intermediate fact. Rewrite `this` using `[h1, AddValuation.map_zero]`. Conclude with `absurd this (by simp)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hR.2.2.1`. Take `⟨w', hw'⟩` from `hR.2.2.2.2.1`. Use `⟨_, framepf_Ψα Bs π' c hπ0 hΔπ hR2 γ0 hu H, Φ, framepf_Ψα_Lam Bs π' c hπ0 hΔπ hR2 γ0 hu _ huE hEΔ h' H, hΦL, hγ, hmod, framepf_Ψα_tmul Bs π' c hπ0 hΔπ hR2 γ0 hu H, framepf_Ψα_J Bs π' c hπ0 hΔπ hR2 γ0 hu _ h' M H, hΦJ, hβα, hαβ, fun x hx hj => ?_, fun x hx hgx => ?_, fun τ ζ hpt x …` and prove the remaining obligations. Conclude with `framepf_JLA_sat π' c (framepf_Lbas Bs π' c hπ0 hΔπ hR2 γ0 hu) _ h' M hu huE (fun o ho => (mul_eq_zero.1 ho).resolve_left hp0) _ x hx hj`. Take `⟨f, hfΔ, hf⟩` from `framepf_γπ hR`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Ff, hFf, -⟩` from `hR2 f hfΔ`. Take `⟨t, ht⟩` from `gradNPf_expand π' f hπ0 Ff hFf _ (gradNPf_cc_f W s' w π' f hw hf)`. Use `invLiftPf_inj W T π' f t _ hf ht hu hΔπ hγN hK M (fun y hy _ r₀ hr₀ d hd hrd => ?_) x hx (by rw [hK]; exact hgx)` and prove the remaining obligations. Conclude with `invLiftPf_nzd W T π' w s' w.isUnit hw _ (fun o ho => (mul_eq_zero.1 ho).resolve_left (sub_ne_zero.2 (hne y hy))) Bs.r Bs.b (fun j => (Bs.mem j).1) Bs.uniq 1 r₀ d hr₀ hd (by rw [pow_one]; exact hrd)`. Use `framepf_locC Ct T hT hs c ζ (hprim τ ζ hpt) (fun x k hk => ?_) ?_ (fun r hr h => ?_) π' _ w w' s' h' M σ hs' hw w'.isUnit hw' hM _ (fun ℓ => ((mem_NcS W T (c - 1) _).1 (framepf_hhx_mem Bs π' c hπ0 hΔπ hR2 γ0 hu H ℓ)).1) hγ hmod _ (framepf_Ψα_tmul Bs π' c hπ0 hΔπ hR2 γ0 hu H) x y …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `((h4.1 (c - 1) 1 ⟨0, one_pow _⟩ (by rw [Formalism.MainNotions.LiftingTheory.wmap_X_one W hs]; exact framepf_lev_π_one _)).1 x k).2 hk`. Rewrite using `[W.gam_gen]`. Rewrite using `[hs, Nat.cast_one]`. Conclude with `zero_le_one`. Take `⟨y, rfl⟩` from `Int.eq_ofNat_of_zero_le (show 0 ≤ r by omega)`.
-
-Rewrite `h` using `[zpow_natCast, ← map_pow, ← map_one (algebraMap O LL)]`. Apply `hne y (by omega)` to reduce the goal to its premises. Rewrite using `[← pow_mul, mul_comm, pow_mul, hι h, one_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem framepf_data [IsDomain O] (hι : Function.Injective (algebraMap O LL)) (hT : IsCrys PD T.ρ)
     (hs : W.s = 1) (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (c : ZMod n)

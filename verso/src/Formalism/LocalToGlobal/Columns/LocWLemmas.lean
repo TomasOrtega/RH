@@ -74,9 +74,9 @@ Both sides reduce to the same expression.
 theorem hs_plEquiv (w : HeightOneSpectrum (𝓞 K)) : Formalism.L2.GlobalTheoryTheory.Arith.hs (plEquiv K w) = w := rfl
 
 /- English proof (translation)
-Unfold `Formalism.L2.GlobalTheoryTheory.Arith.pOf`. Establish `hdvd : ringChar (𝓞 K ⧸ w.asIdeal) ∣ prW w`. Apply `ringChar.dvd` to reduce the goal to its premises. Rewrite using `[← map_natCast (Ideal.Quotient.mk w.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `natCast_prW_mem w`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `(Nat.dvd_prime (prW_prime w)).1 hdvd with h | h` into its components or cases. It suffices to derive a contradiction. Establish `: Nontrivial (𝓞 K ⧸ w.asIdeal)` using `Ideal.Quotient.nontrivial_iff.2 w.isPrime.ne_top`. Conclude with `CharP.ringChar_ne_one h`. Conclude with `h.symm`.
+It suffices to derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prW_eq_pOf (w : HeightOneSpectrum (𝓞 K)) : prW w = Formalism.L2.GlobalTheoryTheory.Arith.pOf w := by
   unfold Formalism.L2.GlobalTheoryTheory.Arith.pOf
@@ -91,7 +91,7 @@ theorem prW_eq_pOf (w : HeightOneSpectrum (𝓞 K)) : prW w = Formalism.L2.Globa
   · exact h.symm
 
 /- English proof (translation)
-The claim follows from `(eq_prW_of_mem w (Formalism.BasicNotions.Examples₂.PlacesToy.resCharW_prime w) (Formalism.BasicNotions.Examples₂.PlacesToy.resCharW_mem w)).symm`.
+A detailed English derivation is pending.
 -/
 theorem prW_eq_resCharW (w : HeightOneSpectrum (𝓞 K)) : prW w = Formalism.BasicNotions.Examples₂.PlacesToy.resCharW w :=
   (eq_prW_of_mem w (Formalism.BasicNotions.Examples₂.PlacesToy.resCharW_prime w) (Formalism.BasicNotions.Examples₂.PlacesToy.resCharW_mem w)).symm
@@ -124,9 +124,9 @@ section Len
 variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Establish `h1 : Formalism.LFunctionChainParameters.slopeLatticeData.lenAt (plEquiv K w) A B = Formalism.LFunctionChainParameters.slopeLatticeData.lenAt (plEquiv K w) A (A ⊓ B)`. Unfold `Formalism.LFunctionChainParameters.slopeLatticeData.lenAt`. Establish `: (A ⊓ B).comap A.subtype = B.comap A.subtype`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Rewrite using `[h1, ← lenW_inf]`. Conclude with `(@Formalism.LFunctionChainParameters.slopeLatticeData.length_at_span K V _ _ _ _ (plEquiv K w) (owModule w V) (owTowerO w V) A (A ⊓ B) inf_le_left).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lenW_eq_lenAt (w : HeightOneSpectrum (𝓞 K)) (A B : Submodule (𝓞 K) V) :
     lenW w A B = Formalism.LFunctionChainParameters.slopeLatticeData.lenAt (plEquiv K w) A B := by
@@ -140,13 +140,13 @@ theorem lenW_eq_lenAt (w : HeightOneSpectrum (𝓞 K)) (A B : Submodule (𝓞 K)
     (A ⊓ B) inf_le_left).symm
 
 /- English proof (translation)
-The claim follows from `lenW_eq_lenAt w A B`.
+A detailed English derivation is pending.
 -/
 theorem lenW_eq_lenLoc (w : HeightOneSpectrum (𝓞 K)) (A B : Submodule (𝓞 K) V) :
     lenW w A B = Formalism.BasicNotions.DV.lenLoc w B A := lenW_eq_lenAt w A B
 
 /- English proof (translation)
-The claim follows from `scalW_eq_locScal _ c L`.
+A detailed English derivation is pending.
 -/
 theorem scalW_symm_eq_locScal (p : Formalism.LFunctionChainParameters.slopeLatticeData.FinPl K) (c : K) (L : Submodule (𝓞 K) V) :
     scalW ((plEquiv K).symm p) c L =
@@ -154,13 +154,13 @@ theorem scalW_symm_eq_locScal (p : Formalism.LFunctionChainParameters.slopeLatti
   scalW_eq_locScal _ c L
 
 /- English proof (translation)
-The claim follows from `lenW_eq_lenAt _ A B`.
+A detailed English derivation is pending.
 -/
 theorem lenW_symm_eq_lenAt (p : Formalism.LFunctionChainParameters.slopeLatticeData.FinPl K) (A B : Submodule (𝓞 K) V) :
     lenW ((plEquiv K).symm p) A B = Formalism.LFunctionChainParameters.slopeLatticeData.lenAt p A B := lenW_eq_lenAt _ A B
 
 /- English proof (translation)
-Rewrite using `[lenW_eq_length]`. Conclude with `Module.length_ne_top_iff.mpr (Formalism.HermitianLatticesTheory.indexBasic_finLen w.asIdeal A B hA (mem_nonZeroDivisors_of_ne_zero hd) h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lenW_ne_top (w : HeightOneSpectrum (𝓞 K)) {A B : Submodule (𝓞 K) V} (hA : A.FG) {d : 𝓞 K}
     (hd : d ≠ 0) (h : ∀ x ∈ A, d • x ∈ B) : lenW w A B ≠ ⊤ := by
@@ -169,7 +169,7 @@ theorem lenW_ne_top (w : HeightOneSpectrum (𝓞 K)) {A B : Submodule (𝓞 K) V
     (Formalism.HermitianLatticesTheory.indexBasic_finLen w.asIdeal A B hA (mem_nonZeroDivisors_of_ne_zero hd) h)
 
 /- English proof (translation)
-Use `⟨(lenW w A B).toNat, (ENat.natCast_toNat (lenW_ne_top w hA hd h)).symm, (lenUW_mul_eW w A B).symm⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem lenW_eq_lenUW_mul (w : HeightOneSpectrum (𝓞 K)) {A B : Submodule (𝓞 K) V} (hA : A.FG) {d : 𝓞 K}
     (hd : d ≠ 0) (h : ∀ x ∈ A, d • x ∈ B) :
@@ -177,7 +177,7 @@ theorem lenW_eq_lenUW_mul (w : HeightOneSpectrum (𝓞 K)) {A B : Submodule (�
   refine ⟨(lenW w A B).toNat, (ENat.natCast_toNat (lenW_ne_top w hA hd h)).symm, (lenUW_mul_eW w A B).symm⟩
 
 /- English proof (translation)
-Establish `h` using `lenUW_mul_eW w A B`. Establish `h' : ((lenUW w A B : ℚ) : ℝ) * (eW w : ℝ) = ((lenW w A B).toNat : ℝ)` using `by exact_mod_cast h`. Unfold `Formalism.BasicNotions.unitRule`. Rewrite using `[mul_comm]`. Conclude with `h'`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitRule_lenUW_real (w : HeightOneSpectrum (𝓞 K)) (A B : Submodule (𝓞 K) V) :
     Formalism.BasicNotions.unitRule K w ((lenUW w A B : ℚ) : ℝ) = ((lenW w A B).toNat : ℝ) := by
@@ -188,7 +188,7 @@ theorem unitRule_lenUW_real (w : HeightOneSpectrum (𝓞 K)) (A B : Submodule (�
   exact h'
 
 /- English proof (translation)
-Unfold `lenUW Formalism.BasicNotions.lenUnit lenW`. Rewrite using `[length_ow_quot_prW, ENat.toNat_natCast]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lenUW_eq_lenUnit (w : HeightOneSpectrum (𝓞 K)) (A B : Submodule (𝓞 K) V) :
     lenUW w A B =
@@ -202,9 +202,9 @@ section Rec
 variable [StarRing K]
 
 /- English proof (translation)
-Rewrite using `[mem_range_ow_iff]`. Use `show (0 : WithTop ℤ) ≤ Formalism.BasicNotions.Examples₂.PlacesToy.valW w x ↔ _`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.BasicNotions.Examples₂.PlacesToy.valW_of_ne w hx]`. Establish `h0 : w.valuation K x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Unfold `Formalism.BasicNotions.vAdd`. Rewrite using `[← WithTop.coe_zero, WithTop.coe_le_coe, neg_nonneg, ← WithZero.log_one, WithZero.log_le_log h0 one_ne_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_intW_iff (w : HeightOneSpectrum (𝓞 K)) (x : K) :
     x ∈ Formalism.BasicNotions.intW (Formalism.BasicNotions.Examples₂.placesOf K) w ↔ x ∈ (algebraMap (Ow w) K).range := by
@@ -222,15 +222,15 @@ theorem mem_intW_iff (w : HeightOneSpectrum (𝓞 K)) (x : K) :
 variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span hx`. Consider the case `zero => exact Submodule.zero_mem _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx`. Take `⟨r', hr'⟩` from `(mem_intW_iff w r.1).1 r.2`. Establish `: r • x = r' • x`. Rewrite using `[ow_smul_def, hr']`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => exact Submodule.subset_span hx`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx`. Establish `hr : algebraMap (Ow w) K r ∈ Formalism.BasicNotions.intW (Formalism.BasicNotions.Examples₂.placesOf K) w` using `(mem_intW_iff w _).2 ⟨r, rfl⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: r • x = (⟨algebraMap (Ow w) K r, hr⟩ : Formalism.BasicNotions.intW (Formalism.BasicNotions.Examples₂.placesOf K) w) • x` using `rfl`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_locW_iff (w : HeightOneSpectrum (𝓞 K)) (L : Submodule (𝓞 K) V) (x : V) :
     x ∈ Formalism.BasicNotions.locW (Formalism.BasicNotions.Examples₂.placesOf K) w L ↔ x ∈ atW w L := by
@@ -261,7 +261,7 @@ theorem mem_locW_iff (w : HeightOneSpectrum (𝓞 K)) (L : Submodule (𝓞 K) V)
 end Rec
 
 /- English proof (translation)
-Rewrite using `[D.mem_locW_iff, mem_atW_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_locW_D (D : Formalism.BasicNotions.D7) (w : D.what₂.places.Pl) {V : Type} [AddCommGroup V]
     [Module D.what₂.LL V] [Module (𝓞 D.what₂.LL) V] [IsScalarTower (𝓞 D.what₂.LL) D.what₂.LL V]
@@ -270,13 +270,13 @@ theorem mem_locW_D (D : Formalism.BasicNotions.D7) (w : D.what₂.places.Pl) {V 
   rw [D.mem_locW_iff, mem_atW_iff]; rfl
 
 /- English proof (translation)
-The claim follows from `(D.ram_eq w).symm`.
+A detailed English derivation is pending.
 -/
 theorem eW_D (D : Formalism.BasicNotions.D7) (w : D.what₂.places.Pl) : eW (D.plEq w) = D.what₂.places.ramIdx w :=
   (D.ram_eq w).symm
 
 /- English proof (translation)
-Use `(eq_prW_of_mem _ (D.what₂.places.resChar_prime w) ?_).symm` and prove the remaining obligations. Rewrite using `[← (D.plEq w).valuation_lt_one_iff_mem (K := D.what₂.LL), D.val_resChar', ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use `D.what₂.places.ramIdx_pos w` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem prW_D (D : Formalism.BasicNotions.D7) (w : D.what₂.places.Pl) : prW (D.plEq w) = D.what₂.places.resChar w := by
   refine (eq_prW_of_mem _ (D.what₂.places.resChar_prime w) ?_).symm
@@ -286,7 +286,7 @@ theorem prW_D (D : Formalism.BasicNotions.D7) (w : D.what₂.places.Pl) : prW (D
   omega
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Rows.unitRule`. Rewrite using `[← eW_D, mul_comm, lenUW_mul_eW]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitRule_lenUW (D : Formalism.BasicNotions.D7) (w : D.what₂.places.Pl) {V : Type} [AddCommGroup V]
     [Module D.what₂.LL V] [Module (𝓞 D.what₂.LL) V] (A B : Submodule (𝓞 D.what₂.LL) V) :
@@ -298,9 +298,9 @@ theorem unitRule_lenUW (D : Formalism.BasicNotions.D7) (w : D.what₂.places.Pl)
 open Formalism.BasicNotions (vAdd)
 
 /- English proof (translation)
-Establish `h1 : w.valuation K (algebraMap (Ow w) K u) ≤ 1` using `(mem_range_ow_iff w _).1 ⟨_, rfl⟩`. Establish `h2 : w.valuation K (algebraMap (Ow w) K (u⁻¹ : (Ow w)ˣ)) ≤ 1` using `(mem_range_ow_iff w _).1 ⟨_, rfl⟩`. Establish `h3 : w.valuation K (algebraMap (Ow w) K u) * w.valuation K (algebraMap (Ow w) K (u⁻¹ : (Ow w)ˣ)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Apply `le_antisymm h1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem valuation_ow_unit (w : HeightOneSpectrum (𝓞 K)) (u : (Ow w)ˣ) :
     w.valuation K (algebraMap (Ow w) K u) = 1 := by
@@ -317,9 +317,9 @@ theorem valuation_ow_unit (w : HeightOneSpectrum (𝓞 K)) (u : (Ow w)ˣ) :
     _ = _ := mul_one _
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.vAdd`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Establish `h0 : ϖ ≠ 0` using `fun h' => h.2 (h' ▸ Ideal.zero_mem _)`. Establish `hne : w.intValuation ϖ ≠ 0` using `w.intValuation_ne_zero ϖ h0`. Establish `h1 : w.intValuation ϖ ≤ WithZero.exp (-((1 : ℕ) : ℤ))` using `(w.intValuation_le_pow_iff_mem ϖ 1).2 (by simpa using h.1)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ¬ w.intValuation ϖ ≤ WithZero.exp (-((2 : ℕ) : ℤ))` using `fun h' => h.2 ((w.intValuation_le_pow_iff_mem ϖ 2).1 h')`. Rewrite `h1`, `h2` using `[← WithZero.log_le_iff_le_exp hne]`. Move the coercions through the operations in `at h1 h2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 -/
 theorem vAdd_unifW {w : HeightOneSpectrum (𝓞 K)} {ϖ : 𝓞 K} (h : IsUnifW w ϖ) :
     vAdd w (algebraMap (𝓞 K) K ϖ) = 1 := by
@@ -336,11 +336,11 @@ theorem vAdd_unifW {w : HeightOneSpectrum (𝓞 K)} {ϖ : 𝓞 K} (h : IsUnifW w
   omega
 
 /- English proof (translation)
-Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hr hϖ`. Use `⟨n, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[emultiplicity_eq_of_associated_right (associated_unit_mul_left (ϖ ^ n) (u : Ow w) u.isUnit), emultiplicity_pow_self_of_prime hϖ.prime]`. Take `⟨ϖ0, h0⟩` from `exists_isUnifW w`. Take `⟨v, hv⟩` from `IsDiscreteValuationRing.associated_of_irreducible (Ow w) h0.irreducible hϖ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hval : w.valuation K (algebraMap (Ow w) K ϖ) = w.valuation K (algebraMap (𝓞 K) K ϖ0)`. Rewrite using `[← hv, map_mul, map_mul, valuation_ow_unit, mul_one, ← IsScalarTower.algebraMap_apply]`. Establish `h1` using `vAdd_unifW h0`. Unfold `Formalism.BasicNotions.vAdd at h1 ⊢`. Rewrite using `[map_mul, map_mul, valuation_ow_unit, one_mul, map_pow, map_pow, hval, WithZero.log_pow, nsmul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : WithZero.log (w.valuation K (algebraMap (𝓞 K) K ϖ0)) = -1` using `by omega`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_emultiplicity_eq_vAdd (w : HeightOneSpectrum (𝓞 K)) {ϖ : Ow w} (hϖ : Irreducible ϖ)
     {r : Ow w} (hr : r ≠ 0) :
@@ -365,9 +365,9 @@ section Det
 variable {V : Type} [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Establish `h1 : (s : V) = ∑ j, algebraMap (Ow w) K (b.repr s j) • bK j` using `by conv_lhs => rw [← b.sum_repr s]`. Rewrite using `[Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hb]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1, bK.repr_sum_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_coe (w : HeightOneSpectrum (𝓞 K)) {ι : Type} [Fintype ι] (S : Submodule (Ow w) V)
     (b : Module.Basis ι (Ow w) S) (bK : Module.Basis ι K V) (hb : ∀ i, bK i = (b i : V)) (s : S) (i : ι) :
@@ -380,17 +380,17 @@ theorem repr_coe (w : HeightOneSpectrum (𝓞 K)) {ι : Type} [Fintype ι] (S : 
   rw [h1, bK.repr_sum_self]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (Ow w)`. Set `fS : S →ₗ[Ow w] S` to `(f.restrictScalars (Ow w)).restrict (fun x hx => hf ⟨x, hx, rfl⟩)`. Set `u : Matrix ι ι (Ow w)` to `LinearMap.toMatrix b b fS`. Establish `hu : (algebraMap (Ow w) K).mapMatrix u = LinearMap.toMatrix bK bK f`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h1 : u i j = b.repr (fS (b j)) i` using `LinearMap.toMatrix_apply b b fS i j`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, h1, LinearMap.toMatrix_apply, hb, ← repr_coe w S b bK hb]`. Both sides reduce to the same expression. Establish `hdu : algebraMap (Ow w) K u.det = LinearMap.det f`. Rewrite using `[RingHom.map_det, hu, LinearMap.det_toMatrix]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu0 : u.det ≠ 0` using `fun h => hdet (by rw [← hdu, h, map_zero])`. Take `⟨n, hn1, hn2⟩` from `exists_emultiplicity_eq_vAdd w hϖ hu0`. Use `⟨n, ?_, by rw [← hdu]; exact hn2⟩` and prove the remaining obligations. Rewrite using `[← hn1, ← Formalism.HermitianLattices.RamifiedLatticeOperators.IndexDeterminantCharacterSums.index_det ϖ hϖ u hu0]`. Use `LinearEquiv.length_eq (Submodule.Quotient.equiv _ _ b.equivFun ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨z, hz, hzx⟩` from `hx`. Use `⟨b.equivFun ⟨z, hz⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : fS ⟨z, hz⟩ = x` using `Subtype.ext hzx`. Establish `h2` using `LinearMap.toMatrix_mulVec_repr b b fS ⟨z, hz⟩`. Rewrite `h2` using `[h1]`. Conclude with `h2`. Introduce and unpack `⟨z, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fS (b.equivFun.symm z), ⟨_, (b.equivFun.symm z).2, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h2` using `LinearMap.toMatrix_mulVec_repr b b fS (b.equivFun.symm z)`. Establish `h3 : (⇑(b.repr (b.equivFun.symm z)) : ι → Ow w) = z` using `b.equivFun.apply_symm_apply z`. Rewrite `h2` using `[h3]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quot_map (w : HeightOneSpectrum (𝓞 K)) {ι : Type} [Fintype ι] [DecidableEq ι]
     (S : Submodule (Ow w) V) (b : Module.Basis ι (Ow w) S) (bK : Module.Basis ι K V)
@@ -433,9 +433,9 @@ theorem length_quot_map (w : HeightOneSpectrum (𝓞 K)) {ι : Type} [Fintype ι
 end Det
 
 /- English proof (translation)
-Use `(LinearEquiv.length_eq (Submodule.Quotient.equiv _ _ (e.submoduleMap X) ?_)).symm` and prove the remaining obligations. Use extensionality with `⟨y, hy⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hxy⟩`. Conclude with `⟨x, hx, congrArg Subtype.val hxy⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, hz, hzy⟩`. Take `⟨x, hx, hxy⟩` from `hy`. Establish `hxz : x = z` using `e.injective (hxy.trans hzy.symm)`. Substitute `hxz` using the available equality. Conclude with `⟨⟨x, hx⟩, hz, Subtype.ext hxy⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem length_map_equiv {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (e : M ≃ₗ[R] M)
     (X Y : Submodule R M) :
@@ -457,39 +457,35 @@ section Local
 variable {V : Type} [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis bK`. Set `G : Matrix ι ι K` to `LinearMap.toMatrix bK bK (γ : V →ₗ[K] V)`. Take `⟨c, hc⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (Ow w)) (Finset.univ.image (fun p : ι × ι => G p.1 p.2))`. Establish `c0 : (c : Ow w) ≠ 0` using `nonZeroDivisors.coe_ne_zero c`. Set `cK : K` to `algebraMap (Ow w) K c`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `cK0 : cK ≠ 0` using `fun h => c0 (algebraMap_ow_injective w (by rw [map_zero]; exact h))`. Set `f : V →ₗ[K] V` to `cK • (γ : V →ₗ[K] V)`. Set `g : V →ₗ[K] V` to `cK • (LinearMap.id : V →ₗ[K] V)`. Establish `hfb : ∀ j, f (b j : V) ∈ S`. Introduce `j`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : f (b j : V) = ∑ i, (cK * G i j) • bK i` using `by show cK • γ (b j : V) = _`. Rewrite using `[← hb j, ← bK.sum_repr (γ (bK j)), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hG : G i j = bK.repr (γ (bK j)) i` using `LinearMap.toMatrix_apply _ _ _ _ _`. Rewrite using `[smul_smul, hG]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `hc (G i j) (Finset.mem_image.2 ⟨(i, j), Finset.mem_univ _, rfl⟩)`. Establish `h2 : (cK * G i j) • bK i = r • (b i : V)`. Rewrite using `[ow_smul_def, hr, Algebra.smul_def, hb]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `S.smul_mem r (b i).2`. Establish `hf : S.map (f.restrictScalars (Ow w)) ≤ S`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h1 : x = ∑ j, (b.repr ⟨x, hx⟩ j) • (b j : V)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this.symm`. Use `show f x ∈ S`. Rewrite using `[h1, map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul_of_tower]`. Conclude with `S.smul_mem _ (hfb j)`. Establish `hg : S.map (g.restrictScalars (Ow w)) ≤ S`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `S.smul_mem (c : Ow w) hx`. Establish `hdγ : LinearMap.det (γ : V →ₗ[K] V) ≠ 0` using `(LinearEquiv.isUnit_det' γ).ne_zero`. Establish `hdg : LinearMap.det g = cK ^ Module.finrank K V`. Rewrite using `[LinearMap.det_smul, LinearMap.det_id, mul_one]`. Establish `hdg0 : LinearMap.det g ≠ 0` using `by rw [hdg]; exact pow_ne_zero _ cK0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdf : LinearMap.det f = LinearMap.det g * LinearMap.det (γ : V →ₗ[K] V)`. Rewrite using `[hdg, LinearMap.det_smul]`. Establish `hdf0 : LinearMap.det f ≠ 0` using `by rw [hdf]; exact mul_ne_zero hdg0 hdγ`. Take `⟨n1, hl1, hv1⟩` from `length_quot_map w S b bK hb f hf hdf0`. Take `⟨n2, hl2, hv2⟩` from `length_quot_map w S b bK hb g hg hdg0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hv : vAdd w (LinearMap.det (γ : V →ₗ[K] V)) = (n1 : ℤ) - n2`. Rewrite `hv1` using `[hdf, Formalism.BasicNotions.Examples₂.PlacesToy.vAdd_mul w hdg0 hdγ, hv2]`. Use linear arithmetic over natural numbers and integers. Set `γR : V ≃ₗ[Ow w] V` to `γ.restrictScalars (Ow w)`. Establish `hTγ : S.map (γR : V →ₗ[Ow w] V) = T` using `hT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hC : (S.map (g.restrictScalars (Ow w))).map (γR : V →ₗ[Ow w] V) = S.map (f.restrictScalars (Ow w))`. Rewrite using `[← Submodule.map_comp]`. Use `congr 1`. Use extensionality with `x`. Use `show γ (cK • x) = cK • γ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[map_smul]`. Establish `hl3 : Module.length (Ow w) (T ⧸ (S.map (f.restrictScalars (Ow w))).comap T.subtype) = n2`. Rewrite using `[← hl2, ← length_map_equiv γR S (S.map (g.restrictScalars (Ow w))), hC]`. Substitute `hT` using the available equality. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hCT : S.map (f.restrictScalars (Ow w)) ≤ T`. Rewrite using `[← hC, ← hTγ]`. Conclude with `Submodule.map_mono hg`. Establish `e1` using `Formalism.HermitianLatticesTheory.indexBasic_len_add (S.map (f.restrictScalars (Ow w))) (S ⊓ T) S (le_inf hf hCT) inf_le_left`. Establish `e2` using `Formalism.HermitianLatticesTheory.indexBasic_len_add (S.map (f.restrictScalars (Ow w))) (S ⊓ T) T (le_inf hf hCT) inf_le_right`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `e1` using `[hl1]`. Rewrite `e2` using `[hl3]`. Establish `t1 : Module.length (Ow w) (↥(S ⊓ T) ⧸ (S.map (f.restrictScalars (Ow w))).comap (S ⊓ T).subtype) + Module.length (Ow w) (S ⧸ (S ⊓ T).comap S.subtype) ≠ ⊤`. Rewrite using `[← e1]`. Conclude with `ENat.natCast_ne_top _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `t2 : Module.length (Ow w) (↥(S ⊓ T) ⧸ (S.map (f.restrictScalars (Ow w))).comap (S ⊓ T).subtype) + Module.length (Ow w) (T ⧸ (S ⊓ T).comap T.subtype) ≠ ⊤`. Rewrite using `[← e2]`. Conclude with `ENat.natCast_ne_top _`. Take `⟨hx, ha⟩` from `WithTop.add_ne_top.mp t1`. Take `⟨-, ha'⟩` from `WithTop.add_ne_top.mp t2`.
-
-Establish `f1` using `congrArg ENat.toNat e1`. Establish `f2` using `congrArg ENat.toNat e2`. Rewrite `f1` using `[ENat.toNat_natCast, ENat.toNat_add hx ha]`. Rewrite `f2` using `[ENat.toNat_natCast, ENat.toNat_add hx ha']`. Rewrite using `[hv]`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lidx_local (w : HeightOneSpectrum (𝓞 K)) {ι : Type} [Fintype ι] [DecidableEq ι]
     (S : Submodule (Ow w) V) (b : Module.Basis ι (Ow w) S) (bK : Module.Basis ι K V)
@@ -592,11 +588,11 @@ section Main
 variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Use `atW_finite w hfg` as an intermediate fact. Use `atW_free w hfg` as an intermediate fact. Set `b` to `Module.Free.chooseBasis (Ow w) (atW w A)`. Establish `hli : LinearIndependent (Ow w) (fun i => ((b i : atW w A) : V))` using `b.linearIndependent.map' (atW w A).subtype (Submodule.ker_subtype _)`. Establish `hliK : LinearIndependent K (fun i => ((b i : atW w A) : V))` using `(LinearIndependent.iff_fractionRing (Ow w) K).1 hli`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Submodule.span (Ow w) (Set.range fun i => ((b i : atW w A) : V)) = atW w A`. Establish `h1 : (Set.range fun i => ((b i : atW w A) : V)) = (atW w A).subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h1, ← Submodule.map_span, b.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ S : Set V, Submodule.span (Ow w) S = atW w A → Submodule.span K S = ⊤` using `fun S hS => by`. Rewrite using `[← hsp, ← span_atW w A, ← hS, Submodule.span_span_of_tower]`. Conclude with `⟨_, inferInstance, b, Module.Basis.mk hliK (key _ hs).ge, fun i => Module.Basis.mk_apply _ _ i⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_basis_atW (w : HeightOneSpectrum (𝓞 K)) {A : Submodule (𝓞 K) V} (hfg : A.FG)
     (hsp : Submodule.span K (A : Set V) = ⊤) :
@@ -618,7 +614,7 @@ theorem exists_basis_atW (w : HeightOneSpectrum (𝓞 K)) {A : Submodule (𝓞 K
   exact ⟨_, inferInstance, b, Module.Basis.mk hliK (key _ hs).ge, fun i => Module.Basis.mk_apply _ _ i⟩
 
 /- English proof (translation)
-Take `⟨ι, _, b, bK, hb⟩` from `exists_basis_atW w hfg hsp`. Rewrite using `[← lidx_local w (atW w A) b bK hb γ (atW w B) h]`. Unfold `lidxW lenW`. Rewrite using `[atW_inf]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lidxW_eq_vAdd_det (w : HeightOneSpectrum (𝓞 K)) (A B : Submodule (𝓞 K) V) (γ : V ≃ₗ[K] V)
     (hfg : A.FG) (hsp : Submodule.span K (A : Set V) = ⊤)
@@ -631,7 +627,7 @@ theorem lidxW_eq_vAdd_det (w : HeightOneSpectrum (𝓞 K)) (A B : Submodule (�
   rw [atW_inf]
 
 /- English proof (translation)
-Unfold `lidxUW`. Rewrite using `[lidxW_eq_vAdd_det w A B γ hfg hsp h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lidxUW_eq_vAdd_det (w : HeightOneSpectrum (𝓞 K)) (A B : Submodule (𝓞 K) V) (γ : V ≃ₗ[K] V)
     (hfg : A.FG) (hsp : Submodule.span K (A : Set V) = ⊤)
@@ -641,9 +637,9 @@ theorem lidxUW_eq_vAdd_det (w : HeightOneSpectrum (𝓞 K)) (A B : Submodule (�
   rw [lidxW_eq_vAdd_det w A B γ hfg hsp h]
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ w A B γ hA h`. Rewrite using `[← lidxW_eq_lidx]`. Use `lidxW_eq_vAdd_det w A B γ hA.fg hA.span_eq_top ?_` and prove the remaining obligations. Rewrite using `[← atW_map]`. Apply `Submodule.restrictScalars_injective (𝓞 K)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[atW_restrictScalars, atW_restrictScalars]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bridge_lidx_det_holds : Formalism.BasicNotions.bridge_lidx_det := by
   intro K V _ _ _ _ _ _ _ w A B γ hA h

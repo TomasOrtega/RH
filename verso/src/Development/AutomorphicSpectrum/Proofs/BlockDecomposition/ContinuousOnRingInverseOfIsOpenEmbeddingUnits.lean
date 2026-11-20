@@ -7,9 +7,9 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.GLOpen
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨u, rfl⟩`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Rewrite using `[← hA.continuousAt_iff]`. Establish `h : (Ring.inverse ∘ Units.val : Aˣ → A) = fun v => ((v⁻¹ : Aˣ) : A)`. Use function extensionality and compare the values at `v`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Ring.inverse_unit v`. Rewrite using `[h]`. Conclude with `Units.continuous_coe_inv.continuousAt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_ringInverse_of_isOpenEmbedding_units
     (A : Type) [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
@@ -25,11 +25,11 @@ theorem continuousOn_ringInverse_of_isOpenEmbedding_units
   exact Units.continuous_coe_inv.continuousAt
 
 /- English proof (translation)
-Establish `hdet : Continuous (fun M : Matrix (Fin n) (Fin n) A => M.det)` using `continuous_id.matrix_det`. Establish `hunit : ∀ M : Matrix (Fin n) (Fin n) A, IsUnit M ↔ IsUnit M.det` using `fun M => Matrix.isUnit_iff_isUnit_det M`. Establish `hadj : Continuous (fun M : Matrix (Fin n) (Fin n) A => M.adjugate)` using `continuous_id.matrix_adjugate`. Establish `hopen : IsOpen {x : A | IsUnit x}` using `hA.isOpen_range`. Use `⟨Units.isEmbedding_val_mk' (f := fun M : Matrix (Fin n) (Fin n) A => M⁻¹) ?_ fun u => (Matrix.coe_units_inv u).symm, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinv : ContinuousOn (fun M : Matrix (Fin n) (Fin n) A => Ring.inverse M.det • M.adjugate) {M | IsUnit M}`. Establish `hri : ContinuousOn (fun M : Matrix (Fin n) (Fin n) A => Ring.inverse M.det) {M | IsUnit M}` using `(GlobalTheory.CompanionTheory.SW.GLOpen.continuousOn_ringInverse_of_isOpenEmbedding_units A hA).comp hdet.continuousOn fun M hM => (hunit M).mp hM`. Conclude with `hri.smul hadj.continuousOn`. Conclude with `hinv.congr fun M _ => Matrix.inv_def M`. Establish `h : Set.range (Units.val : GL (Fin n) A → Matrix (Fin n) (Fin n) A) = (fun M : Matrix (Fin n) (Fin n) A => M.det) ⁻¹' {x | IsUnit x}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `M`. Conclude with `hunit M`. Rewrite using `[h]`. Conclude with `hopen.preimage hdet`.
+A detailed English derivation is pending.
 -/
 theorem isOpenEmbedding_val_GL
     (A : Type) [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]

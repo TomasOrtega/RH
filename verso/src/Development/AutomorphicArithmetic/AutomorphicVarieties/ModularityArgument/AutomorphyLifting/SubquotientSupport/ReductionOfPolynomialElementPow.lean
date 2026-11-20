@@ -13,9 +13,9 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `hp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.1 hl.out`. Use `haveI : (Ideal.span {(l : ℤ)}).IsPrime := (Ideal.span_singleton_prime hp.ne_zero).2 hp`. Take `⟨Q, hQ, hc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral_of_isDomain (S := 𝓞 K) (Ideal.span {(l : ℤ)}) (by rw [(RingHom.injective_iff_ker_eq_bot (algebraMap ℤ (𝓞 K))).1 (RingHom.injective_int _)]; exact bot_le)`. Establish `hm : ((l : ℕ) : 𝓞 K) ∈ Q`. Establish `: (l : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 K))` using `hc ▸ Ideal.mem_span_singleton_self _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Use `⟨⟨Q, hQ, fun h => ?_⟩, hm⟩` and prove the remaining obligations. Rewrite `hm` using `[h, Ideal.mem_bot]`. Conclude with `hl.out.ne_zero (by exact_mod_cast hm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_place_above_prime_pow (K : Type) [Field K] [NumberField K] (l : ℕ) [hl : Fact l.Prime] :
     ∃ v : HeightOneSpectrum (𝓞 K), ((l : ℕ) : 𝓞 K) ∈ v.asIdeal := by
@@ -31,14 +31,14 @@ private theorem exists_place_above_prime_pow (K : Type) [Field K] [NumberField K
   exact hl.out.ne_zero (by exact_mod_cast hm)
 
 /- English proof (translation)
-The claim follows from `((UpperTheory.V.CA.d_gmap D).2.2.1 f y).2 1`.
+A detailed English derivation is pending.
 -/
 private theorem trace_map_ring_hom_pow {n : ℕ} {A B G : Type} [CommRing A] [CommRing B] [Group G] (D : GDet n A G) (f : A →+* B)
     (y : MonoidAlgebra A G) : (D.map f).tr (MonoidAlgebra.mapRingHom G f y) = f (D.tr y) :=
   ((UpperTheory.V.CA.d_gmap D).2.2.1 f y).2 1
 
 /- English proof (translation)
-Rewrite using `[← trace_map_ring_hom_pow, (UpperTheory.V.CA.d_gmap D).2.1, hk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem trace_map_comp_pow {n : ℕ} {A B C G : Type} [CommRing A] [CommRing B] [CommRing C] [Group G] (D : GDet n A G)
     (f : A →+* B) (g : B →+* C) (k : A →+* C) (hk : g.comp f = k) (y : MonoidAlgebra B G) :
@@ -46,11 +46,11 @@ private theorem trace_map_comp_pow {n : ℕ} {A B C G : Type} [CommRing A] [Comm
   rw [← trace_map_ring_hom_pow, (UpperTheory.V.CA.d_gmap D).2.1, hk]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(GDet.repAlg ρ (Polynomial K) _).det = Matrix.det _`. Use `congr 1`. Establish `h : GDet.repAlg ρ (Polynomial K) (MonoidAlgebra.mapRingHom G Polynomial.C y) = (Polynomial.C : K →+* Polynomial K).mapMatrix (GDet.repAlg ρ K y)`. Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r => ext i j`. Simplify using `[GDet.repAlg]`. Rewrite using `[map_sub, h, Matrix.charmatrix]`. Use `congr 1`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(GDet.repAlg ρ (Polynomial K)).commutes Polynomial.X`.
+A detailed English derivation is pending.
 -/
 private theorem charpoly_of_representation_pow {n : ℕ} {K G : Type} [CommRing K] [Group G] (ρ : G →* Matrix (Fin n) (Fin n) K)
     (y : MonoidAlgebra K G) : (GDet.ofRep ρ).chi y = (GDet.repAlg ρ K y).charpoly := by
@@ -67,7 +67,7 @@ private theorem charpoly_of_representation_pow {n : ℕ} {K G : Type} [CommRing 
   exact (GDet.repAlg ρ (Polynomial K)).commutes Polynomial.X
 
 /- English proof (translation)
-Break down `n with _ | n` into its components or cases. Rewrite using `[← h₀, GDet.tr, GDet.tr, GDet.lam, GDet.lam, charpoly_of_representation_pow, charpoly_of_representation_pow, Subsingleton.elim (GDet.repAlg ρ K y) (GDet.repAlg ρ K y₀)]`. Use `nontriviality K`. Rewrite using `[GDet.tr, GDet.lam, charpoly_of_representation_pow, h, Matrix.charpoly_zero, Polynomial.coeff_X_pow]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem trace_eq_zero_of_rep_eq_zero_pow {n : ℕ} {K G : Type} [CommRing K] [Group G] (ρ : G →* Matrix (Fin n) (Fin n) K)
     (y₀ y : MonoidAlgebra K G) (h₀ : (GDet.ofRep ρ).tr y₀ = 0) (h : GDet.repAlg ρ K y = 0) : (GDet.ofRep ρ).tr y = 0 := by
@@ -78,7 +78,7 @@ private theorem trace_eq_zero_of_rep_eq_zero_pow {n : ℕ} {K G : Type} [CommRin
     simp
 
 /- English proof (translation)
-Simplify using `only [twoPowerModulus, map_mul, map_pow, map_list_prod, List.map_ofFn, Function.comp_def, map_sub, apply_ite (MonoidAlgebra.mapRingHom G f), MonoidAlgebra.mapRingHom_single, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem map_ring_hom_second_relation_pow {n : ℕ} {A B G : Type} [CommRing A] [CommRing B] [Group G] (f : A →+* B) (E : ℕ) (ph ta : G)
     (u : Fin n → A) (i : Fin n) (y : A) : MonoidAlgebra.mapRingHom G f (twoPowerModulus E ph ta u i y) =
@@ -87,16 +87,16 @@ private theorem map_ring_hom_second_relation_pow {n : ℕ} {A B G : Type} [CommR
     apply_ite (MonoidAlgebra.mapRingHom G f), MonoidAlgebra.mapRingHom_single, map_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[GDet.repAlg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem rep_single_eq_smul_pow {n : ℕ} {K G : Type} [CommRing K] [Group G] (ρ : G →* Matrix (Fin n) (Fin n) K) (g : G) (a : K) :
     GDet.repAlg ρ K (MonoidAlgebra.single g a) = a • ρ g := by
   ext i j; simp [GDet.repAlg]
 
 /- English proof (translation)
-Rewrite using `[twoPowerModulus, map_mul, map_pow, map_list_prod, List.map_ofFn]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `congr 1`. Use `congr 3`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `by_cases hk : k = i <;> simp [hk, rep_single_eq_smul_pow]`. Simplify using `[rep_single_eq_smul_pow, sub_smul]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem rep_second_relation_pow_eq_zero {n : ℕ} {K G : Type} [CommRing K] [Group G] (ρ : G →* Matrix (Fin n) (Fin n) K) (E : ℕ) (ph ta : G)
     (α : Fin n → K) (i : Fin n) (c : K)
@@ -112,7 +112,7 @@ private theorem rep_second_relation_pow_eq_zero {n : ℕ} {K G : Type} [CommRing
   · simp [rep_single_eq_smul_pow, sub_smul]
 
 /- English proof (translation)
-Establish `e` using `trace_map_comp_pow D (MvPolynomial.C : R →+* MvPolynomial (Fin n ⊕ Fin n) R) (MvPolynomial.rename (Sum.map (fun i => (j, i)) fun i => (j, i)) : MvPolynomial (Fin n ⊕ Fin n) R →ₐ[R] PUY R q n).toRingHom MvPolynomial.C (by ext : 1; simp) z`. Rewrite `e` using `[hz]`. Rewrite using `[fEl, ← Finset.prod_erase_mul _ _ (Finset.mem_univ j), mul_pow, mul_assoc, map_mul, ← e]`. Use `mul_eq_zero_of_right _ (Eq.trans ?_ h)` and prove the remaining obligations. Simplify using `[map_prod]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem reduction_of_polynomial_element_pow {n q : ℕ} {R G E : Type} [CommRing R] [Group G] [Ring E] [Algebra R E] (D : GDet n R G)
     (act : PUY R q n →ₐ[R] E) (Nq : Fin q → ℕ) (j : Fin q) (k : ℕ) (z : MonoidAlgebra (MvPolynomial (Fin n ⊕ Fin n) R) G)
@@ -133,7 +133,7 @@ private theorem reduction_of_polynomial_element_pow {n q : ℕ} {R G E : Type} [
   simp [map_prod]
 
 /- English proof (translation)
-Establish `hD' : D.map (ι.comp θ) = GDet.ofRep (ι.mapMatrix.toMonoidHom.comp ρ)`. Rewrite using `[← (UpperTheory.V.CA.d_gmap D).2.1, hD, (UpperTheory.V.CA.d_gmap (GDet.ofRep ρ)).2.2.2]`. Rewrite using `[← MvPolynomial.coe_eval₂Hom, trace_map_comp_pow D _ _ (ι.comp θ) (by ext : 1; simp), hD']`. Use `trace_eq_zero_of_rep_eq_zero_pow _ (MonoidAlgebra.mapRingHom G (ι.comp θ) z₀) _ ?_ h` and prove the remaining obligations. Rewrite using `[← hD', trace_map_ring_hom_pow, h₀, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem trace_vanishing_of_evaluation_pow {n : ℕ} {R K S G : Type} [CommRing R] [CommRing K] [CommRing S] [Group G] (D : GDet n R G) (θ : R →+* K) (ι : K →+* S)
     (ρ : G →* Matrix (Fin n) (Fin n) K) (hD : D.map θ = GDet.ofRep ρ) (z₀ : MonoidAlgebra R G) (h₀ : D.tr z₀ = 0)

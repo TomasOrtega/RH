@@ -115,13 +115,13 @@ variable {R : Type} [CommRing R] {C C' : Type 1} [Category.{0} C] [Category.{0} 
 abbrev Fs (S : Sc Φ Λ) : C ⥤ ModuleCat.{0} Λ := sq (IdF.top S.site.A) (IdF.bot S.site.A)
 
 /- English proof (translation)
-Introduce `_ _ _` and use `trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_top' (S : Sc Φ Λ) (Y : Λ) (G : C' ⥤ C) (hu : ∀ T, IsUnit (S.ρ (G.obj T) Y)) (c : Localization.Away Y) :
     (S.mor Y G hu).LeC c (IdF.top S.site.A) (IdF.top (S.loc Y G hu).site.A) := fun _ _ _ => trivial
 
 /- English proof (translation)
-Introduce `T x hx` and use `by have h : x = 0 := hx subst h rw [map_zero, mul_zero] exact Ideal.zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_bot' (S : Sc Φ Λ) (Y : Λ) (G : C' ⥤ C) (hu : ∀ T, IsUnit (S.ρ (G.obj T) Y)) (c : Localization.Away Y) :
     (S.mor Y G hu).LeC c (IdF.bot S.site.A) (IdF.bot (S.loc Y G hu).site.A) := fun T x hx => by
@@ -141,21 +141,19 @@ namespace GlobalTheory.CompanionTheory.KMVan
 open TensorProduct
 
 /- English proof (translation)
-Use `letI : Module Λ M' := Module.compHom M' (algebraMap Λ (Localization.Away Y))`. Use `haveI : IsScalarTower Λ (Localization.Away Y) M' := ⟨fun a b x => by`. Express the relevant statement in the definitionally equal form `(a • b) • x = algebraMap Λ (Localization.Away Y) a • b • x`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Set `g : M →ₗ[Λ] M'` to `{ f0 with map_smul' := fun a x => hs a x }`.
+Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hunit : ∀ x : Submonoid.powers Y, IsUnit (algebraMap Λ (Module.End Λ M') x)`. Introduce and unpack `⟨_, n, rfl⟩`. Establish `hu : IsUnit (algebraMap Λ (Localization.Away Y) (Y ^ n))`. Rewrite using `[map_pow]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit Y).pow n`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu⟩` from `hu`. Use `(Module.End.isUnit_iff _).2 ⟨fun a b h => ?_, fun b => ⟨(↑u⁻¹ : Localization.Away Y) • b, ?_⟩⟩` and prove the remaining obligations. Establish `h' : algebraMap Λ (Localization.Away Y) (Y ^ n) • a = algebraMap Λ (Localization.Away Y) (Y ^ n) • b` using `h`. Rewrite `h'` using `[← hu]`. Establish `h2` using `congrArg (fun z => (↑u⁻¹ : Localization.Away Y) • z) h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [smul_smul, Units.inv_mul, one_smul] at h2`. Conclude with `h2`. Express the relevant statement in the definitionally equal form `algebraMap Λ (Localization.Away Y) (Y ^ n) • (↑u⁻¹ : Localization.Away Y) • b = b`. Rewrite using `[← hu, smul_smul, Units.mul_inv, one_smul]`. Use `haveI : IsLocalizedModule (Submonoid.powers Y) g := { map_units := hunit surj := fun y => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, x, hx⟩` from `h1 y`. Conclude with `⟨⟨x, ⟨Y ^ n, n, rfl⟩⟩, hx.symm⟩`. Use `exists_of_eq := fun {x y} h => by`. Establish `: f0 (x - y) = 0` using `by rw [map_sub]; exact sub_eq_zero.2 h`. Take `⟨n, hn⟩` from `h0 _ this`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨Y ^ n, n, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Y ^ n • x = Y ^ n • y`. Rewrite `hn` using `[smul_sub]`. Conclude with `sub_eq_zero.1 hn }`. Establish `hb` using `IsLocalizedModule.isBaseChange (Submonoid.powers Y) (Localization.Away Y) g`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨(LinearEquiv.funUnique Unit Λ (Localization.Away Y ⊗[Λ] M)).toAddEquiv.trans hb.equiv.toAddEquiv, fun i n x => ?_⟩` and prove the remaining obligations. Establish `e : (LinearEquiv.funUnique Unit Λ (Localization.Away Y ⊗[Λ] M)) (Pi.single i (n ⊗ₜ x)) = n ⊗ₜ x`. Simplify using `[LinearEquiv.funUnique, Pi.single]`. Express the relevant statement in the definitionally equal form `hb.equiv ((LinearEquiv.funUnique Unit Λ (Localization.Away Y ⊗[Λ] M)) (Pi.single i (n ⊗ₜ x))) = f n x`. Rewrite using `[e, IsBaseChange.equiv_tmul, hf0]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem tens_of_loc {Λ : Type} [CommRing Λ] (Y : Λ) {M M' : Type*} [AddCommGroup M] [Module Λ M] [AddCommGroup M']
     [Module (Localization.Away Y) M'] (f : Localization.Away Y → M → M')
@@ -209,21 +207,21 @@ variable {R : Type} [CommRing R] {C C' : Type 1} [Category.{0} C] [Category.{0} 
   {Φ : PDF R C} {Λ : Type} [CommRing Λ]
 
 /- English proof (translation)
-Establish `key : ∀ (n : Localization.Away Y) (a : S.site.A.obj D), (((mc S Y G hu n).τ D' (((Fs S).map e).hom (GlobalTheory.CompanionTheory.LocCmp.qE S.site.A D a)) : sqM _ _ D').1) = Ideal.Quotient.mk _ ((S.loc Y G hu).ρ D' n * (show (Φ.res G).A.obj D' from (Φ.A.map e).hom a))` using `fun n a => rfl`. Use `tens_of_loc Y _ (((mc S Y G hu 1).τ D').toAddMonoidHom.comp ((Fs S).map e).hom.toAddMonoidHom) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `n x`. Take `⟨a, rfl⟩` from `(GlobalTheory.CompanionTheory.LocCmp.qE S.site.A D).surjective x`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ = n • ((mc S Y G hu 1).τ D' (((Fs S).map e).hom (GlobalTheory.CompanionTheory.LocCmp.qE S.site.A D a)) : sqM _ _ D').1`. Rewrite using `[key, key, map_one, one_mul]`. Both sides reduce to the same expression. Introduce `b x`. Express the relevant statement in the definitionally equal form `(mc S Y G hu 1).τ D' (((Fs S).map e).hom (b • x)) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_smul, LinearMap.map_smulₛₗ]`. Both sides reduce to the same expression. Introduce `x hx`. Take `⟨a, rfl⟩` from `(GlobalTheory.CompanionTheory.LocCmp.qE S.site.A D).surjective x`. Establish `h2` using `congrArg (fun z : sqM _ _ D' => z.1) hx`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `((mc S Y G hu 1).τ D' (((Fs S).map e).hom (GlobalTheory.CompanionTheory.LocCmp.qE S.site.A D a)) : sqM _ _ D').1 = 0 at h2`. Rewrite `h2` using `[key, map_one, one_mul]`. Establish `h3 : (Φ.A.map e).hom a = 0` using `Ideal.mem_bot.1 (Ideal.Quotient.eq_zero_iff_mem.1 h2)`. Take `⟨n, hn⟩` from `h0 a h3`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4` using `(GlobalTheory.CompanionTheory.LocCmp.qE S.site.A D).map_smul (Y ^ n) a`. Use `h4.symm.trans ?_` and prove the remaining obligations. Establish `: Y ^ n • a = 0`. Rewrite using `[Algebra.smul_def]`. Establish `e2 : algebraMap Λ (S.site.A.obj D) (Y ^ n) = S.ρ D Y ^ n` using `map_pow (S.ρ D) Y n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `hn`. Rewrite using `[this, map_zero]`. Introduce `y`. Take `⟨b, rfl⟩` from `(GlobalTheory.CompanionTheory.LocCmp.qE (S.loc Y G hu).site.A D').surjective y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, x, hx⟩` from `h1 b`. Use `⟨n, GlobalTheory.CompanionTheory.LocCmp.qE S.site.A D x, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((mc S Y G hu 1).τ D' (((Fs S).map e).hom (GlobalTheory.CompanionTheory.LocCmp.qE S.site.A D x)) : sqM _ _ D').1 = _`. Rewrite using `[key, map_one, one_mul]`. Establish `e3 : (S.loc Y G hu).ρ D' (algebraMap Λ (Localization.Away Y) (Y ^ n)) = S.ρ (G.obj D') Y ^ n` using `(IsLocalization.Away.lift_eq Y (hu D') (Y ^ n)).trans (map_pow _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (show (Φ.res G).A.obj D' from (Φ.A.map e).hom x) = _`. Rewrite using `[show (show (Φ.res G).A.obj D' from (Φ.A.map e).hom x) = (S.loc Y G hu).ρ D' (algebraMap Λ (Localization.Away Y) (Y ^ n)) * (show (Φ.res G).A.obj D' from b) from hx.trans (by rw [e3])]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tensD (S : Sc Φ Λ) (Y : Λ) (G : C' ⥤ C) (hu : ∀ T, IsUnit (S.ρ (G.obj T) Y)) {D : C} {D' : C'} (e : D ⟶ G.obj D')
     (h0 : ∀ x, (Φ.A.map e).hom x = 0 → ∃ n : ℕ, S.ρ _ Y ^ n * x = 0)
@@ -281,7 +279,7 @@ variable {R : Type} [CommRing R] {C C' : Type 1} [Category.{0} C] [Category.{0} 
   {Φ : PDF R C} {Λ : Type} [CommRing Λ]
 
 /- English proof (translation)
-The claim follows from `trivial ca _ _ _ _ := ⟨fun _ _ => trivial, fun _ => trivial⟩ cb _ _ T b := hQ T b`.
+A detailed English derivation is pending.
 -/
 theorem ladder_tb (S : Sc Φ Λ) (Q : Poly Φ) (hQ : Q.Crit (fun _ => IdF.bot _) 0) :
     (S.poly Q).Ladder (fun _ => IdF.top _) (fun _ => IdF.bot _) 0 where
@@ -290,7 +288,7 @@ theorem ladder_tb (S : Sc Φ Λ) (Q : Poly Φ) (hQ : Q.Crit (fun _ => IdF.bot _)
   cb _ _ T b := hQ T b
 
 /- English proof (translation)
-Conclude with `GlobalTheory.CompanionTheory.LocBC.local_base_change (S.mor Y G hu) (S.poly Q) ((S.loc Y G hu).poly Q₁) (S.frame E) ((S.loc Y G hu).frame E₁) e (fun i {T} s s' => he i s s') (fun _ _ _ h => h) (ι := Unit) (fun _ => Localization.Away Y) (fun _ => LinearMap.id) (fun _ _ => IdF.top …`.
+A detailed English derivation is pending.
 -/
 theorem local_tens (S : Sc Φ Λ) (Y : Λ) (G : C' ⥤ C) (hu : ∀ T, IsUnit (S.ρ (G.obj T) Y))
     (Q : Poly Φ) (hQ : Q.Crit (fun _ => IdF.bot _) 0) (Q₁ : Poly (Φ.res G)) (hQ₁ : Q₁.Crit (fun _ => IdF.bot _) 0)
@@ -314,7 +312,7 @@ section FV
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `| 0, C, _, Φ, Q, hQ, E, n, hn => by obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩ exact GlobalTheory.CompanionTheory.LocGr.H_succ_subsingleton _ E.initial m | d + 1, C, _, Φ, Q, hQ, E, n, hn => by obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩ have hT : ∀ r, Q.Crit …`.
+A detailed English derivation is pending.
 -/
 theorem framed_vanish : ∀ (d : ℕ) {C : Type 1} [Category.{0} C] {Φ : PDF R C} (Q : Poly Φ)
     (hQ : Q.Crit (fun _ => IdF.bot _) 0) (E : Frame Φ d) (n : ℕ), d < n →
@@ -353,11 +351,11 @@ variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPower
   {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
 
 /- English proof (translation)
-Introduce `T b`. Establish `key` using `GlobalTheory.CompanionTheory.SiteTrCrit.repr_sum T.obj.δ b`. Use `⟨fun h k => ?_, fun h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ∈ (⊥ : Ideal _) at h`. Rewrite `h` using `[Ideal.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : b = 0`. Rewrite using `[← key]`. Conclude with `(congrArg _ h).trans (map_zero _)`. Rewrite using `[h1]`. Conclude with `Ideal.zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h1 : b = 0`. Use extensionality with `k`. Conclude with `h k`. Substitute `h1` using the available equality. Conclude with `Ideal.zero_mem _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem polyS_crit (hp : p ≠ 0) (𝒱 : Set X.Opens) :
     (polyS (γ := γ) (q := q) (κ := κ) hp 𝒱).Crit (fun _ => IdF.bot _) 0 := by
@@ -395,7 +393,7 @@ def polyRes (Q : Poly Φ) (W : ObjectProperty C) (hW : Cosieve W) : Poly (Φ.res
   span T z := Q.span T.obj z
 
 /- English proof (translation)
-Introduce `T b` and use `hQ T.obj b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem polyRes_crit (Q : Poly Φ) (W : ObjectProperty C) (hW : Cosieve W) (hQ : Q.Crit (fun _ => IdF.bot _) 0) :
     (polyRes Q W hW).Crit (fun _ => IdF.bot _) 0 := fun T b => hQ T.obj b
@@ -443,31 +441,29 @@ variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPower
   {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} {V V' : X.Opens} {d : ℕ}
 
 /- English proof (translation)
-Establish `hc` using `GlobalTheory.CompanionTheory.ChartMaps.good c`. Establish `hc'` using `GlobalTheory.CompanionTheory.ChartMaps.good c'`. Set `σ` to `locH c.D g`. Establish `hgL : IsUnit (σ.φ g)` using `IsLocalization.Away.algebraMap_isUnit (S := Localization.Away g) g`. Establish `hL : InU V' (locT c.D g)` using `hT _ σ hgL`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLV : InU V (locT c.D g)` using `inU_hom σ c.inV`. Take `⟨s₀⟩` from `hc'.1 _ hL`. Establish `hy : ∀ i, σ.φ (c.t i) - s₀.φ (c'.t i) ∈ (locT c.D g).J` using `fun i => by`. Take `⟨φ, -, hu⟩` from `c.rep (CommRingCat.of ((locT c.D g).B ⧸ (locT c.D g).J)) (locT c.D g).y hLV`. Establish `e1` using `(hu _ σ.pt).trans (hu _ (e ≫ s₀).pt).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `Ideal.Quotient.eq.1 (RingHom.congr_fun e1 (Ideal.Quotient.mk _ (c.t i)))`. Establish `e3 : (e ≫ s₀).φ (c.t i) = s₀.φ (c'.t i)` using `(congrArg s₀.φ (he i))`. Rewrite using `[← e3]`. Conclude with `e2`. Take `⟨s₁, h1, -⟩` from `hc'.2 _ s₀ _ hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs₁ : ∀ i, s₁.φ (c'.t i) = σ.φ (c.t i)` using `fun i => by`. Use `h1 i` as an intermediate fact. Take the linear combination `this`. Establish `hes : e ≫ s₁ = σ`. Establish `h0 : ∀ i : Fin d, (0 : (locT c.D g).B) ∈ (locT c.D g).J` using `fun _ => Ideal.zero_mem _`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hc.2 _ σ (fun _ => 0) h0).unique (fun i => ?_) (fun i => sub_self _)` and prove the remaining obligations. Establish `e3 : (e ≫ s₁).φ (c.t i) = s₁.φ (c'.t i)` using `congrArg s₁.φ (he i)`. Rewrite using `[e3, hs₁, sub_self]`. Set `ℓ : Localization.Away g →+* c'.D.B` to `IsLocalization.Away.lift g hg`. Establish `hℓ : ∀ x, ℓ (algebraMap c.D.B (Localization.Away g) x) = e.φ x` using `fun x => IsLocalization.Away.lift_eq g hg x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : ℓ.comp (algebraMap c.D.B (Localization.Away g)) = e.φ` using `RingHom.ext hℓ`. Establish `hdp : (locD c.D g).IsDPMorphism c'.D.δ ℓ`. Use `IsDPMorphism.on_span _ _ (S := algebraMap c.D.B (Localization.Away g) '' (c.D.J : Set c.D.B)) rfl ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Rewrite using `[hℓ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `e.hle ha`. Introduce and unpack `n _ ⟨a, ha, rfl⟩`. Rewrite using `[(locD_dp c.D g).dpow_comp a ha, hℓ, hℓ]`. Conclude with `(e.dp.dpow_comp a ha).symm`. Establish `hle : (c.D.J.map (algebraMap c.D.B (Localization.Away g))) ≤ c'.D.J.comap ℓ` using `Ideal.map_le_iff_le_comap.1 hdp.ideal_comp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ℓ' : locT c.D g ⟶ c'.D` to `descOf e ℓ hcomp hdp hle`. Establish `hu : s₁ ≫ ℓ' = 𝟙 c'.D`. Establish `h0 : ∀ i : Fin d, (0 : c'.D.B) ∈ c'.D.J` using `fun _ => Ideal.zero_mem _`. Use `(hc'.2 _ (𝟙 c'.D) (fun _ => 0) h0).unique (fun i => ?_) (fun i => sub_self _)` and prove the remaining obligations. Establish `e3 : (s₁ ≫ ℓ').φ (c'.t i) = ℓ (σ.φ (c.t i))` using `congrArg ℓ (hs₁ i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3]`. Establish `e4 : ℓ (σ.φ (c.t i)) = e.φ (c.t i)` using `hℓ _`. Rewrite using `[e4, he]`. Conclude with `sub_self _`. Establish `hv : ∀ z, s₁.φ (ℓ z) = z`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `: s₁.φ.comp ℓ = RingHom.id _`. Use `IsLocalization.ringHom_ext (Submonoid.powers g) (RingHom.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingHom.id_apply, hℓ]`. Conclude with `congrArg (fun f => f.φ x) hes`. Conclude with `fun z => RingHom.congr_fun this z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hw : ∀ y, ℓ (s₁.φ y) = y` using `fun y => congrArg (fun f => f.φ y) hu`. Use `⟨fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `h2 : algebraMap c.D.B (Localization.Away g) x = 0`. Rewrite using `[← hv (algebraMap c.D.B (Localization.Away g) x), hℓ, hx, map_zero]`. Take `⟨⟨_, n, rfl⟩, hm⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers g) _ x).1 h2`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨n, hm⟩`. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj (S := Localization.Away g) g (s₁.φ y)`. Use `⟨n, a, ?_⟩` and prove the remaining obligations. Use `congrArg ℓ ha` as an intermediate fact. Rewrite `this` using `[map_mul, hw, map_pow, hℓ, hℓ]`.
-
-Rewrite using `[← this, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_loc (c : Chart γ p q κ V d) (c' : Chart γ p q κ V' d) (e : c.D ⟶ c'.D) (he : ∀ i, e.φ (c.t i) = c'.t i)
     (g : c.D.B) (hg : IsUnit (e.φ g))
@@ -544,14 +540,14 @@ variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPower
   {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
 
 /- English proof (translation)
-Introduce `_ _` and use `trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inU_top (T : Thick (nlFun γ p X q κ)) : InU (⊤ : X.Opens) T := fun _ _ => trivial
 
 def evT (T : Thick (nlFun γ p X q κ)) : Γ(X, ⊤) →+* T.B ⧸ T.J := ev T (inU_top T)
 
 /- English proof (translation)
-Establish `key : ∀ (y : Spec (CommRingCat.of (T'.B ⧸ T'.J)) ⟶ X) (hy : y = Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) ≫ pt T) (hh : ⊤ ≤ y ⁻¹ᵁ ⊤), GlobalTheory.Cris.evalAt y ⊤ hh f = Ideal.quotientMap T'.J φ.φ φ.hle (evT T f)`. Introduce `y hy hh`. Substitute `hy` using the available equality. Conclude with `evalAt_map (B := CommRingCat.of (T.B ⧸ T.J)) (B' := CommRingCat.of (T'.B ⧸ T'.J)) _ (pt T) (inU_top T) hh f`. Conclude with `key _ (pt_hom φ) (inU_top T')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem evT_nat {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (f : Γ(X, ⊤)) :
     evT T' f = Ideal.quotientMap T'.J φ.φ φ.hle (evT T f) := by
@@ -564,7 +560,7 @@ theorem evT_nat {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (f : Γ(X, �
   exact key _ (pt_hom φ) (inU_top T')
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hu`. Take `⟨m, hm, hum⟩` from `exists_max_ideal_of_mem_nonunits hu`. Establish `h1` using `h (show (⟨m, hm.isPrime⟩ : Spec (CommRingCat.of B)) ∈ (⊤ : (Spec (CommRingCat.of B)).Opens) from trivial)`. Rewrite `h1` using `[basicOpen_eq_of_affine, PrimeSpectrum.mem_basicOpen]`. Conclude with `h1 hum`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_basicOpen_top {B : Type} [CommRing B] (u : B)
     (h : (⊤ : (Spec (CommRingCat.of B)).Opens) ≤ (Spec (CommRingCat.of B)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom u)) :
@@ -576,9 +572,9 @@ theorem isUnit_of_basicOpen_top {B : Type} [CommRing B] (u : B)
   exact h1 hum
 
 /- English proof (translation)
-Establish `e : (pt T).app ⊤ f = (Scheme.ΓSpecIso (CommRingCat.of (T.B ⧸ T.J))).inv.hom (evT T f)`. Express the relevant statement in the definitionally equal form `_ = (Scheme.ΓSpecIso (CommRingCat.of (T.B ⧸ T.J))).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of (T.B ⧸ T.J))).hom.hom ((pt T).appLE ⊤ ⊤ _ f))`. Rewrite using `[← CommRingCat.comp_apply, Iso.hom_inv_id]`. Simplify using `[Scheme.Hom.appLE]`. Unfold `InU`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[Scheme.preimage_basicOpen, e]`. Use `⟨isUnit_of_basicOpen_top _, fun h => ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.basicOpen_of_isUnit (Spec (CommRingCat.of (T.B ⧸ T.J))) (h.map (Scheme.ΓSpecIso (CommRingCat.of (T.B ⧸ T.J))).inv.hom)).ge`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem inU_basicOpen_iff (T : Thick (nlFun γ p X q κ)) (f : Γ(X, ⊤)) :
     InU (X.basicOpen f) T ↔ IsUnit (evT T f) := by
@@ -601,13 +597,13 @@ variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPower
   {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
 
 /- English proof (translation)
-Take `⟨j, hj, rfl⟩ : ∃ j ∈ J, a = j + b` from `⟨a - b, h, by ring⟩`. Rewrite using `[add_pow, Finset.sum_range_succ']`. Establish `: ∀ m ∈ Finset.range n, j ^ (m + 1) * b ^ (n - (m + 1)) * (n.choose (m + 1) : B) = 0`. Introduce `m _`. Rewrite using `[← δ.factorial_mul_dpow_eq_pow hj]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((m + 1).factorial : B) * (n.choose (m + 1) : B) = (n.descFactorial (m + 1) : B)`. Rewrite using `[Nat.descFactorial_eq_factorial_mul_choose]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (n.descFactorial (m + 1) : B) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Consider the cases of `n with`. Consider the case `zero => simp`. Consider the case `succ n`. Rewrite using `[Nat.succ_descFactorial_succ, Nat.cast_mul, hn, zero_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.sum_eq_zero this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pow_eq_of_sub_mem {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {n : ℕ} (hn : (n : B) = 0) {a b : B}
     (h : a - b ∈ J) : a ^ n = b ^ n := by
@@ -629,7 +625,7 @@ theorem pow_eq_of_sub_mem {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPow
   simp
 
 /- English proof (translation)
-Use `pow_eq_of_sub_mem δ hn (a := a) (b := 0) (by simpa using h)` as an intermediate fact. Rewrite using `[this, zero_pow h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_zero_of_mem {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {n : ℕ} (h0 : n ≠ 0) (hn : (n : B) = 0)
     {a : B} (h : a ∈ J) : a ^ n = 0 := by
@@ -637,9 +633,9 @@ theorem pow_eq_zero_of_mem {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPo
   rw [this, zero_pow h0]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `h.exists_right_inv`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Establish `h1 : a * c - 1 ∈ J` using `Ideal.Quotient.eq.1 (by rw [map_mul, hb, map_one])`. Establish `h2 : IsNilpotent (a * c - 1)` using `⟨n, pow_eq_zero_of_mem δ h0 hn h1⟩`. Establish `h3 : IsUnit (a * c)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h2.isUnit_add_one` as an intermediate fact. Simplify using `using this`. Conclude with `isUnit_of_mul_isUnit_left h3`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isUnit_of_mk {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {n : ℕ} (h0 : n ≠ 0) (hn : (n : B) = 0)
     {a : B} (h : IsUnit (Ideal.Quotient.mk J a)) : IsUnit a := by
@@ -656,7 +652,7 @@ def lftT (T : Thick (nlFun γ p X q κ)) (f : Γ(X, ⊤)) : T.B :=
   Function.surjInv Ideal.Quotient.mk_surjective (evT T f)
 
 /- English proof (translation)
-The claim follows from `Function.surjInv_eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem mk_lftT (T : Thick (nlFun γ p X q κ)) (f : Γ(X, ⊤)) : Ideal.Quotient.mk T.J (lftT T f) = evT T f :=
   Function.surjInv_eq _ _
@@ -664,20 +660,20 @@ theorem mk_lftT (T : Thick (nlFun γ p X q κ)) (f : Γ(X, ⊤)) : Ideal.Quotien
 def tau (n : ℕ) (f : Γ(X, ⊤)) (T : Thick (nlFun γ p X q κ)) : T.B := lftT T f ^ n
 
 /- English proof (translation)
-Rewrite using `[← map_natCast T.i, hn, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem n_zero (T : Thick (nlFun γ p X q κ)) {n : ℕ} (hn : (n : R) = 0) : (n : T.B) = 0 := by
   rw [← map_natCast T.i, hn, map_zero]
 
 /- English proof (translation)
-Rewrite using `[tau, map_pow, mk_lftT]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mk_tau (T : Thick (nlFun γ p X q κ)) (n : ℕ) (f : Γ(X, ⊤)) :
     Ideal.Quotient.mk T.J (tau n f T) = evT T f ^ n := by
   rw [tau, map_pow, mk_lftT]
 
 /- English proof (translation)
-Rewrite using `[tau, tau, map_pow]`. Use `pow_eq_of_sub_mem T'.δ (n_zero T' hn) (Ideal.Quotient.eq.1 ?_)` and prove the remaining obligations. Rewrite using `[mk_lftT, evT_nat φ f, ← mk_lftT T f]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tau_nat {n : ℕ} (hn : (n : R) = 0) {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (f : Γ(X, ⊤)) :
     φ.φ (tau n f T) = tau n f T' := by
@@ -687,9 +683,9 @@ theorem tau_nat {n : ℕ} (hn : (n : R) = 0) {T T' : Thick (nlFun γ p X q κ)} 
   rfl
 
 /- English proof (translation)
-Rewrite using `[inU_basicOpen_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h.map (Ideal.Quotient.mk T.J)` as an intermediate fact. Rewrite `this` using `[mk_tau]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(isUnit_pow_iff h0).1 this`. Introduce `h`. Use `(IsUnit.pow n ?_)` and prove the remaining obligations. Conclude with `isUnit_of_mk T.δ h0 (n_zero T hn) (by rw [mk_lftT]; exact h)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isUnit_tau {n : ℕ} (h0 : n ≠ 0) (hn : (n : R) = 0) (T : Thick (nlFun γ p X q κ)) (f : Γ(X, ⊤)) :
     IsUnit (tau n f T) ↔ InU (X.basicOpen f) T := by

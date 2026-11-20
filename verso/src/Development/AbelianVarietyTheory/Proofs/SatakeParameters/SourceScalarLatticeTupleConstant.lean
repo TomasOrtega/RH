@@ -13,23 +13,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV.DelA
 
 /- English proof (translation)
-Unfold `GlobalTheory.TwV.AllSites`. Introduce `D _ hT _ _ _ _ _ ex u μ w hg Lv I H X _ std t J S d j hj hne La`. Establish `hW` using `GlobalTheory.T.kernelSite_modelStageWeights_eq_chainWeights S j hj hne`. Establish `hfr` using `(GlobalTheory.T.changedFrame_rational_unitary S d j hj.le (rkS _ _ hW.rk) La).2.2`. Apply the tactic sequence `obtain ⟨e, he, hmu⟩ := GlobalTheory.T.stepCharacter_det_rationalIsometry S j hj`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgd` using `(GlobalTheory.T.det_rational_unitary_orthonormalChange_matrices S j hj.le).2 _ (d.mem j hj.le La)`. Take `⟨q, hq⟩` from `Formalism.L2.Ker.even_rankN D.R (j + 1)`. Establish `hs : ∀ τ, (D.chTw u μ).sSharp j τ = e τ - ((D.R.N (j + 1) / 2 : ℕ) : ℤ)`. Introduce `τ`. Establish `h1` using `(D.chTw u μ).sSharp_eq j hj τ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[D.hcW_e u τ, ← he τ]`. Establish `h2 : D.R.N (j + 1) / 2 = q` using `by omega`. Rewrite using `[h2]`. Establish `h3 : ((D.R.N (j + 1) : ℕ) : ℚ) = (q : ℚ) + q` using `by exact_mod_cast hq`. Unfold `sExp' at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h1` using `[h3]`. Establish `h4 : ((D.chTw u μ).sSharp j τ : ℚ) = ((e τ - (q : ℤ) : ℤ) : ℚ)` using `by push_cast; rw [h1]; ring`. Conclude with `h4` after adjusting the coercions. Establish `hχ : d.chi j hj.le La ≠ 0` using `by unfold Dec.chi; exact Units.ne_zero _`. Establish `hcD : ((D.chiD ((t.O u μ).dt j (clsAt X H j La.1 La.2)) : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `dPow sPt Dec.uS kS dPow`. Rewrite using `[dif_pos hj.le, hmu j hj.le _ (d.mem j hj.le La), hgd.1]`. Simplify using `only []`. Use `set n : ℤ := ((D.R.N (j + 1) / 2 : ℕ) : ℤ) with hn`. Use `set c : ℤ := cTw D j with hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ∀ (A χ C B Mu P : ℂ), A * (χ * C ^ c * B) * (χ⁻¹ * Mu⁻¹ * P * C ^ (-c)) = A * B * Mu⁻¹ * P * (χ * χ⁻¹) * (C ^ c * C ^ (-c)) from fun _ _ _ _ _ _ => by ring]`. Rewrite using `[mul_inv_cancel₀ hχ, ← zpow_add₀ hcD, add_neg_cancel, zpow_zero, mul_one, mul_one]`. Rewrite using `[← Finset.prod_zpow, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hm : (embT D τ) (mM d j hj.le La).1.det ≠ 0` using `by rw [map_ne_zero]; exact (Matrix.isUnits_det_units _).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hgn : (embT D τ) (d.gam j hj.le La).1.det ≠ 0` using `by rw [map_ne_zero]; exact (Matrix.isUnits_det_units _).ne_zero`. Establish `hb` using `congrArg (embT D τ) hfr`. Rewrite `hb` using `[map_mul]`. Rewrite using `[← hb, hW.sh τ, hs τ]`. Use `show (embT D τ) _ ^ _ * _ * ((embT D τ) _ ^ _)⁻¹ * ((embT D τ) (_ * _)) ^ _ = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[map_mul]`. Generalize the expression as in `(embT D τ) (mM d j hj.le La).1.det = m at hm ⊢`. Generalize the expression as in `(embT D τ) (d.gam j hj.le La).1.det = g at hgn ⊢`. Generalize the expression as in `(embT D τ) (gMat J j hj.le 1).det = G`. Generalize the expression as in `e τ = ee`.
-
-Simplify using `only [mul_zpow, zpow_neg, zpow_sub₀ hm, zpow_sub₀ hgn, zpow_add₀ hm, zpow_add₀ hgn]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem source_scalar_const : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => ∀ (d : Dec J std) j (hj : j < D.R.m), Nonempty (Lv.comp (j + 1)) → ∀ La : (sysS H X std).Lt j, dPow (mM d j hj.le La).1 (fun τ => -(wT (sysS H X std) D (hT.gat_pos u w hg) j τ)) * sPt d j hj.le La * d.uS S j La = kS J j hj.le La.1) := by
   unfold GlobalTheory.TwV.AllSites

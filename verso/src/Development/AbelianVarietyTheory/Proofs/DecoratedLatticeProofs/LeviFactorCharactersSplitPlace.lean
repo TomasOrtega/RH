@@ -19,7 +19,7 @@ open GlobalTheory.Unf
 namespace GlobalTheory.LeviSplitChar
 
 /- English proof (translation)
-Establish `h1 : ‖(u : ℂ)‖ = 1` using `Circle.norm_coe u`. Rewrite `h1` using `[h, Complex.norm_real, Real.norm_eq_abs, abs_of_pos ht]`. Apply `Circle.ext` to reduce the goal to its premises. Rewrite using `[h, h1, Circle.coe_one]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem circle_eq_one_of_pos {u : Circle} {t : ℝ} (ht : 0 < t) (h : (u : ℂ) = t) : u = 1 := by
   have h1 : ‖(u : ℂ)‖ = 1 := Circle.norm_coe u
@@ -31,14 +31,14 @@ theorem circle_eq_one_of_pos {u : Circle} {t : ℝ} (ht : 0 < t) (h : (u : ℂ) 
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `[Formalism.L2.Theta.SuppAt, Formalism.L2.Theta.mt]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem suppAt_one (e : AE D) (V : HSp D) : SuppAt e V 1 := by
   intro i j
   simp [Formalism.L2.Theta.SuppAt, Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Theta.IsDetAt, Formalism.L2.Theta.mt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isDetAt_one (e : AE D) (V : HSp D) : IsDetAt e V 1 1 := by
   simp [Formalism.L2.Theta.IsDetAt, Formalism.L2.Theta.mt]
@@ -50,13 +50,13 @@ namespace GlobalTheory.LeviSplitChar
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨ℓ₀, hinv₀, f₀, hf₀, hne₀⟩` from `GlobalTheory.T.exists_split_place_half_heisenberg_invariant_form D ψ hω.std S₀ T e he`. Take `⟨ℓ, hinv, hne, hcmp⟩` from `GlobalTheory.T.exists_splitPlace_invariantForm_of_wittCore D ψ hω.std S S₀ T ρ d μ 𝓕 hμ e he ℓ₀ hinv₀ ⟨f₀, hf₀, hne₀⟩`. Use `⟨ℓ, hinv, hne, fun a g hg x₀ hx₀ => ?_⟩` and prove the remaining obligations. Take `⟨r₀, hr₀, hsp₀⟩` from `hω₀.om_split e he g 1 hg (suppAt_one e T) x₀ 1 hx₀ (isDetAt_one e T)`. Take `⟨r, hr, hc⟩` from `hcmp 1 a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmv` using `(GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D ψ hω.std).1 S S₀ T ρ d μ 𝓕 hμ`. Establish `hbr` using `(GlobalTheory.T.wittSourceMixedCoord_heisenbergRestriction D ψ S S₀ T ρ d).2.2.2.2.2.2.1`. Establish `hm` using `GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod_pos T.rank a`. Use `⟨r * r₀ * GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod T.rank a, by positivity, fun f hf => ?_⟩` and prove the remaining obligations. Establish `key` using `hc f (om (d.levi a * d.emb0 g, 1) f) ((α a : ℂ) * (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod T.rank a : ℂ) * (ξ g : ℂ) * (r₀ : ℂ) * (splitFacO χS χT x₀ 1 : ℂ)) hf (hω.om_pres _ f hf) (fun x _ => ?_)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[key]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hmove` using `(GlobalTheory.T.weil_operators_witt_parabolic_origin_to_point D ψ S S₀ T ρ d χS χT om hω μ 𝓕 hμ f hf x).2.1 a g`. Rewrite using `[hmove, H a g _ (GlobalTheory.TwistFactorCompare.isTheta_heisO hω.std hf _), ← hbr μ 𝓕 f (x ⬝ a.1), map_smul, smul_eq_mul, hsp₀ ℓ₀ hinv₀ _ (hmv f hf _)]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_one, Matrix.one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_form (ψ : AddChar (AF D.host.F) ℂ) (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ)
     (χS χT : (AE D)ˣ →* Circle) (om : Om S T) (om₀ : Om S₀ T)
@@ -95,23 +95,23 @@ end GlobalTheory.LeviSplitChar
 namespace GlobalTheory.LeviSplitChar
 
 /- English proof (translation)
-Introduce `D ψ S S₀ T ρ d χS χT om om₀ hω hω₀ μ 𝓕 hμ α ξ H e he`. Take `⟨ℓ, hinv, ⟨f, hf, hℓf⟩, hkey⟩` from `exists_form ψ S S₀ T ρ d χS χT om om₀ hω hω₀ μ 𝓕 hμ α ξ H e he`. Establish `hsd` using `GlobalTheory.T.splitPlace_determinants_wittLeviFactor D S S₀ ρ d e he`. Prove the components needed by the constructor for the conclusion. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hS, x, hx₀, hx⟩` from `hsd.1 g hg`. Take `⟨R, hR, hk⟩` from `hkey 1 g hg x hx₀`. Take `⟨r', hr', hsp⟩` from `hω.om_split e he (d.emb0 g) 1 hS (suppAt_one e T) x 1 hx (isDetAt_one e T)`. Establish `h1` using `hk f hf`. Establish `h2` using `hsp ℓ hinv f hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_one, one_mul]`. Rewrite `h2` using `[h1, map_one, Circle.coe_one]`. Establish `hs : (splitFacO χS χT x 1 : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Establish `h3 : (R : ℂ) * (ξ g : ℂ) = r'`. Use `mul_right_cancel₀ hℓf (by rw [← h2]; ring : ((R : ℂ) * (ξ g : ℂ)) * (splitFacO χS χT x 1 : ℂ) * ℓ f = (r' : ℂ) * (splitFacO χS χT x 1 : ℂ) * ℓ f)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel₀ hs this`. Apply `circle_eq_one_of_pos (div_pos hr' hR)` to reduce the goal to its premises. Establish `hR0 : (R : ℂ) ≠ 0` using `by exact_mod_cast hR.ne'`. Use `push_cast`. Rewrite using `[← h3]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Introduce `a ha`. Take `⟨hS, x, hx, hχ⟩` from `hsd.2 χT T.rank hω.hecT hω.resT a ha`. Take `⟨R, hR, hk⟩` from `hkey a 1 (suppAt_one e S₀) 1 (isDetAt_one e S₀)`. Take `⟨r', hr', hsp⟩` from `hω.om_split e he (d.levi a) 1 hS (suppAt_one e T) x 1 hx (isDetAt_one e T)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hk f hf`. Establish `h2` using `hsp ℓ hinv f hf`. Rewrite `h1` using `[map_one, mul_one]`. Rewrite `h2` using `[h1]`. Simplify using `only [splitFacO, map_one, inv_one, mul_one, Circle.coe_one, hχ, Circle.coe_mul, Circle.coe_inv] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hd : ((χT (Matrix.GeneralLinearGroup.det a) : Circle) : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Establish `h3 : (R : ℂ) * ((α a : ℂ) * (χT (Matrix.GeneralLinearGroup.det a) : ℂ)) = r'`. Use `mul_right_cancel₀ hℓf h2` as an intermediate fact. Rewrite using `[← mul_assoc, this]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hu : α a * χT (Matrix.GeneralLinearGroup.det a) = 1`. Apply `circle_eq_one_of_pos (div_pos hr' hR)` to reduce the goal to its premises. Establish `hR0 : (R : ℂ) ≠ 0` using `by exact_mod_cast hR.ne'`. Use `push_cast`. Rewrite using `[← h3]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Conclude with `eq_inv_of_mul_eq_one_left hu`.
+A detailed English derivation is pending.
 -/
 theorem levi_chars_split : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (χS χT : (AE D)ˣ →* Circle) (om : Om S T) (om₀ : Om S₀ T), IsWeilDatumO ψ S T χS χT om → IsWeilDatumO ψ S₀ T χS χT om₀ → ∀ (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ)), IsCovolOne (ratMx D T.rank ρ) μ 𝓕 → ∀ (α : GL (Fin ρ) (AE D) →* Circle) (ξ : GA D S₀ →* Circle), (∀ a g f, IsThetaFunO ψ S T f → d.mixS T ψ μ 𝓕 (om (d.levi a * d.emb0 g, 1) f) 0 = ((α a : ℂ) * (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod T.rank a : ℂ) * (ξ g : ℂ)) • om₀ (g, 1) (d.mixS T ψ μ 𝓕 (f) 0)) → ∀ e, IsSplitIdem D e → (∀ g, SuppAt e S₀ g → ξ g = 1) ∧ ∀ a : GL (Fin ρ) (AE D), (∀ i j, (e + cA D e) * (a.1 - 1) i j = (a.1 - 1) i j) → α a = (χT (Matrix.GeneralLinearGroup.det a))⁻¹ := by
   intro D ψ S S₀ T ρ d χS χT om om₀ hω hω₀ μ 𝓕 hμ α ξ H e he

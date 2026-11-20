@@ -6,19 +6,17 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `W W' Y Y₁ _ _ i _ h c _ s₁ U hiso hcomm hη hw`. Take `⟨w', hw'⟩` from `hw`. Use `⟨i ⁻¹ᵁ U, ⟨genericPoint W, hη⟩, ?_⟩` and prove the remaining obligations. Establish `hi : IsClosedImmersion (i ∣_ U)` using `IsZariskiLocalAtTarget.restrict (P := @IsClosedImmersion) ‹_› U`. Establish `hc : IsClosedImmersion (c ∣_ (s₁ ⁻¹ᵁ U))` using `IsZariskiLocalAtTarget.restrict (P := @IsClosedImmersion) ‹_› _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsClosedImmersion ((c ≫ s₁) ∣_ U)`. Rewrite using `[morphismRestrict_comp]`. Establish `hs : IsClosedImmersion (s₁ ∣_ U)` using `inferInstance`. Conclude with `@IsClosedImmersion.comp _ _ _ _ _ hc hs`. Establish `h2 : IsClosedImmersion ((h ≫ i) ∣_ U)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomm]`. Conclude with `h1`. Rewrite `h2` using `[morphismRestrict_comp]`. Establish `h3 : IsClosedImmersion (h ∣_ (i ⁻¹ᵁ U))` using `@IsClosedImmersion.of_comp_isClosedImmersion _ _ _ _ (i ∣_ U) hi h2`. Establish `hw'U : w' ∈ h ⁻¹ᵁ (i ⁻¹ᵁ U)` using `by show h w' ∈ i ⁻¹ᵁ U`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hw']`. Conclude with `hη`. Establish `h4 : Surjective (h ∣_ (i ⁻¹ᵁ U))`. Prove the components needed by the constructor for the conclusion. Introduce `x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcl : IsClosed (Set.range (h ∣_ (i ⁻¹ᵁ U)))` using `(h ∣_ (i ⁻¹ᵁ U)).isClosedEmbedding.isClosed_range`. Set `p : (h ⁻¹ᵁ (i ⁻¹ᵁ U) : Scheme)` to `⟨w', hw'U⟩`. Establish `hp : ((h ∣_ (i ⁻¹ᵁ U)) p).1 = genericPoint W`. Rewrite using `[morphismRestrict_base_coe]`. Conclude with `hw'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsp : (h ∣_ (i ⁻¹ᵁ U)) p ⤳ x`. Rewrite using `[← (i ⁻¹ᵁ U).ι.isOpenEmbedding.toIsInducing.specializes_iff]`. Establish `: (i ⁻¹ᵁ U).ι ((h ∣_ (i ⁻¹ᵁ U)) p) = genericPoint W` using `hp`. Rewrite using `[this]`. Conclude with `(genericPoint_spec W).specializes (Set.mem_univ _)`.
-
-Conclude with `hsp.mem_closed hcl ⟨p, rfl⟩`. Conclude with `isIso_of_isClosedImmersion_of_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem isIso_restrict_of_closedImmersion_near_generic :
     ∀ {W W' Y Y₁ : Scheme.{0}} [IsIntegral W] [IsIntegral W'] (i : W ⟶ Y) [IsClosedImmersion i] (h : W' ⟶ W)

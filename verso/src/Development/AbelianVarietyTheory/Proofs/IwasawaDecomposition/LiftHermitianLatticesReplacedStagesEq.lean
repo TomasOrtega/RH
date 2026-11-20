@@ -24,7 +24,7 @@ namespace GlobalTheory.Mem.R3.Rw.Up
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T₀ : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T₀ D.R.m}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Consider the cases of `hj`. Conclude with `⟨⟨eW⟩, ⟨h1, h2⟩⟩`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem exists_mjHTie_of_eq (F : Face3 D A3) (Xd : DivX D) {X X' : Cx.CxData A3.fam3.amb3} (e : X' = X)
     (jW : ∀ i : Fin D.R.m, (Fin ((A3.indefDown (X'.data F.cr false)).dW i) → D.what₂.LL) →ₛₗ[D.what₂.embLL] D.what₂.Mj ((i : ℕ) + 1))
@@ -44,9 +44,9 @@ end GlobalTheory.Mem.R3.Rw.Up
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `K B f T w Z hX Wt p0 r S' N h r' hz hj Y hY`. Take `⟨z', hold', Y', Z', tix⟩` from `r'`. Simplify using `only at hz hj`. Substitute `hz` using the available equality. Take `⟨J', t'⟩` from `hY`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `letI : Algebra (Mv.cpDat (Up.refUp Z S' N h).to (Up.refUp Z S' N h).same r.z).core.Q.c.F (w.st (SRe.upL Z S' N h)).toD7.what₂.LL := (Mv.cpDat (Up.refUp Z S' N h).to (Up.refUp Z S' N h).same r.z).alg`. Establish `e` using `toCx3_eq (Up.refUp Z S' N h).to (iK := r.z.alg) r.z.R r.z.F`. Conclude with `(by with_unfolding_all exact ((exists_mjHTie_of_eq r.z.F (divBack Y) e.symm ((Z'.jW)) ((r.Z.jW)) ((hj)) ((J'.eW)) ((t'.j_eq)) ((t'.hlat))) : _))`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.R3.Rw.Up.mjAre_back : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (p0 : BaseLevelRowSide (w.D Z)) (r : RowsAre (w.st Z) w.I hX T Wt (Equiv.refl _) p0) (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ) (r' : RowsAre (w.st (SRe.upL Z S' N h)) w.I hX T Wt (Equiv.refl _) (Tr.baseLevelRowSideTransport (Up.refUp Z S' N h) p0)), r'.z = Mv.cpDat (Up.refUp Z S' N h).to (Up.refUp Z S' N h).same r.z → HEq r'.Z.jW r.Z.jW → ∀ Y : DivX (w.D (SRe.upL Z S' N h)), MjAre r'.Z Y → MjAre r.Z (Up.divBack Y) := by
   intro K B f T w Z hX Wt p0 r S' N h r' hz hj Y hY

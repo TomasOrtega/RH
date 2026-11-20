@@ -36,7 +36,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Establish `h : IsIrreducibleComponentOf C (↑(intersectionIdeal L J).support : Set ↥Y)` using `(mem_intersectionComponents_iff L J C).1 hC`. Establish `hclosed : IsClosed (↑(intersectionIdeal L J).support : Set ↥Y)` using `(intersectionIdeal L J).support.2`. Establish `hcl : closure C = C` using `h.2.2 (closure C) h.1.closure subset_closure (closure_minimal h.2.1 hclosed)`. Conclude with `isClosed_of_closure_subset hcl.subset`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_intersectionComponents_of_mem {Y : Scheme.{u}} {L : List Y.IdealSheafData}
     {J : Finset (Fin L.length)} {C : Set ↥Y} (hC : C ∈ intersectionComponents L J) : IsClosed C := by
@@ -49,14 +49,14 @@ theorem isClosed_intersectionComponents_of_mem {Y : Scheme.{u}} {L : List Y.Idea
   exact isClosed_of_closure_subset hcl.subset
 
 /- English proof (translation)
-The claim follows from `((mem_intersectionComponents_iff L J C).1 hC).1`.
+A detailed English derivation is pending.
 -/
 theorem isIrreducible_of_mem_intersectionComponents {Y : Scheme.{u}} {L : List Y.IdealSheafData}
     {J : Finset (Fin L.length)} {C : Set ↥Y} (hC : C ∈ intersectionComponents L J) : IsIrreducible C :=
   ((mem_intersectionComponents_iff L J C).1 hC).1
 
 /- English proof (translation)
-Establish `hcl : closure C = C` using `(isClosed_intersectionComponents_of_mem hC).closure_eq`. Establish `h : closure {(isIrreducible_of_mem_intersectionComponents hC).genericPoint} = closure C`. Simplify using the standard rewrite rules. Conclude with `h.trans hcl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isGenericPoint_genericPoint_of_mem_intersectionComponents {Y : Scheme.{u}}
     {L : List Y.IdealSheafData} {J : Finset (Fin L.length)} {C : Set ↥Y}
@@ -68,7 +68,7 @@ theorem isGenericPoint_genericPoint_of_mem_intersectionComponents {Y : Scheme.{u
   exact h.trans hcl
 
 /- English proof (translation)
-Unfold `orderAlong`. Conclude with `dif_pos (isIrreducible_of_mem_intersectionComponents hC)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem orderAlong_eq_orderAt_of_mem_intersectionComponents {Y : Scheme.{u}} (I : Y.IdealSheafData)
     {L : List Y.IdealSheafData} {J : Finset (Fin L.length)} {C : Set ↥Y}
@@ -78,7 +78,7 @@ theorem orderAlong_eq_orderAt_of_mem_intersectionComponents {Y : Scheme.{u}} (I 
   exact dif_pos (isIrreducible_of_mem_intersectionComponents hC)
 
 /- English proof (translation)
-Unfold `orderAlong`. Conclude with `dif_pos h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem orderAlong_eq_orderAt_genericPoint {Y : Scheme.{u}} (I : Y.IdealSheafData)
     {C : Set ↥Y} (h : IsIrreducible C) : orderAlong I C = orderAt I h.genericPoint := by
@@ -86,9 +86,9 @@ theorem orderAlong_eq_orderAt_genericPoint {Y : Scheme.{u}} (I : Y.IdealSheafDat
   exact dif_pos h
 
 /- English proof (translation)
-Rewrite using `[orderAlong_eq_orderAt_genericPoint I hS, orderAlong_eq_orderAt_genericPoint I hC]`. Establish `e1 : closure ({hS.genericPoint} : Set ↥Y) = closure S` using `by simp`. Establish `e2 : closure ({hC.genericPoint} : Set ↥Y) = closure C` using `by simp`. Establish `h1 : closure ({hS.genericPoint} : Set ↥Y) = closure ({hC.genericPoint} : Set ↥Y)`. Rewrite using `[e1, e2, hcl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(inseparable_iff_closure_eq.mpr h1).eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem orderAlong_eq_of_closure_eq {Y : Scheme.{u}} (I : Y.IdealSheafData) {S : Set ↥Y}
     (hS : IsIrreducible S) {C : Set ↥Y} (hC : IsIrreducible C)
@@ -101,7 +101,7 @@ theorem orderAlong_eq_of_closure_eq {Y : Scheme.{u}} (I : Y.IdealSheafData) {S :
   rw [(inseparable_iff_closure_eq.mpr h1).eq]
 
 /- English proof (translation)
-Rewrite using `[mem_support_iff_stalkIdeal_le_maximalIdeal, stalkIdeal_bot]`. Conclude with `bot_le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_support_bot {Y : Scheme.{u}} (x : ↥Y) :
     x ∈ (⊥ : Y.IdealSheafData).support := by
@@ -109,7 +109,7 @@ private theorem mem_support_bot {Y : Scheme.{u}} (x : ↥Y) :
   exact bot_le
 
 /- English proof (translation)
-Rewrite `hI`, `hJ`, the goal using `[mem_support_iff_stalkIdeal_le_maximalIdeal]`. Rewrite using `[stalkIdeal_sup]`. Conclude with `sup_le hI hJ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_support_sup_of_mem {Y : Scheme.{u}} {I J : Y.IdealSheafData} {x : ↥Y}
     (hI : x ∈ I.support) (hJ : x ∈ J.support) : x ∈ (I ⊔ J).support := by
@@ -118,9 +118,9 @@ private theorem mem_support_sup_of_mem {Y : Scheme.{u}} {I J : Y.IdealSheafData}
   exact sup_le hI hJ
 
 /- English proof (translation)
-Use `revert hx`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[Finset.sup_empty]`. Conclude with `mem_support_bot x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a s ha ih hS`. Rewrite using `[Finset.sup_insert]`. Conclude with `mem_support_sup_of_mem (hS a (Finset.mem_insert_self a s)) (ih fun j hj => hS j (Finset.mem_insert_of_mem hj))`.
+A detailed English derivation is pending.
 -/
 private theorem mem_support_finsetSup_of_forall_mem {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (x : ↥Y) (S : Finset (Fin L.length)) (hx : ∀ j ∈ S, x ∈ (L.get j).support) :
@@ -136,7 +136,7 @@ private theorem mem_support_finsetSup_of_forall_mem {Y : Scheme.{u}} (L : List Y
       (ih fun j hj => hS j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Establish `he : intersectionIdeal L J = J.sup fun j => L.get j` using `(intersectionIdeal_eq_iSup L J).trans (Finset.sup_eq_iSup J fun j => L.get j).symm`. Rewrite using `[he]`. Conclude with `mem_support_finsetSup_of_forall_mem L x J hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_support_intersectionIdeal {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J : Finset (Fin L.length)) (x : ↥Y) (hx : ∀ j ∈ J, x ∈ (L.get j).support) :
@@ -147,7 +147,7 @@ theorem mem_support_intersectionIdeal {Y : Scheme.{u}} (L : List Y.IdealSheafDat
   exact mem_support_finsetSup_of_forall_mem L x J hx
 
 /- English proof (translation)
-The claim follows from `hGeom.components_subset_divisor_iff T hT.valid J C hC i`.
+A detailed English derivation is pending.
 -/
 theorem subset_support_iff_mem_of_mem_intersectionComponents (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -157,11 +157,11 @@ theorem subset_support_iff_mem_of_mem_intersectionComponents (hGeom : MonomialGe
   hGeom.components_subset_divisor_iff T hT.valid J C hC i
 
 /- English proof (translation)
-Establish `hgen : closure {(isIrreducible_of_mem_intersectionComponents hC).genericPoint} = C` using `isGenericPoint_genericPoint_of_mem_intersectionComponents hC`. Establish `hsub` using `subset_support_iff_mem_of_mem_intersectionComponents hGeom hT hC i`. Establish `hcl : IsClosed (↑(T.boundary.get i).support : Set ↥T.scheme)` using `(T.boundary.get i).support.2`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hsub.1 ?_` and prove the remaining obligations. Establish `hx' : ({(isIrreducible_of_mem_intersectionComponents hC).genericPoint} : Set ↥T.scheme) ⊆ (↑(T.boundary.get i).support : Set ↥T.scheme)` using `Set.singleton_subset_iff.2 hx`. Establish `hsubc` using `hcl.closure_subset_iff.2 hx'`. Rewrite `hsubc` using `[hgen]`. Then use the resulting hypothesis. Introduce `hi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : (isIrreducible_of_mem_intersectionComponents hC).genericPoint ∈ closure ({(isIrreducible_of_mem_intersectionComponents hC).genericPoint} : Set ↥T.scheme)` using `subset_closure rfl`. Rewrite `hmem` using `[hgen]`. Conclude with `hsub.2 hi hmem`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genericPoint_mem_support_iff_mem (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -188,9 +188,9 @@ theorem genericPoint_mem_support_iff_mem (hGeom : MonomialGeometryHypotheses.{u}
     exact hsub.2 hi hmem
 
 /- English proof (translation)
-Establish `: CharZero T.base` using `hT.charZero`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `hT.smooth`. Establish `hmem : (isIrreducible_of_mem_intersectionComponents hC).genericPoint ∈ orderAtLeastLocus T.ideal c`. Rewrite using `[mem_orderAtLeastLocus_iff, ← orderAlong_eq_orderAt_of_mem_intersectionComponents T.ideal hC]`. Conclude with `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hclosed : IsClosed (orderAtLeastLocus T.ideal c)` using `isClosed_orderAtLeastLocus T.base T.structMap T.ideal c`. Establish `h2 : closure ({(isIrreducible_of_mem_intersectionComponents hC).genericPoint} : Set ↥T.scheme) = C` using `isGenericPoint_genericPoint_of_mem_intersectionComponents hC`. Establish `hsub : closure ({(isIrreducible_of_mem_intersectionComponents hC).genericPoint} : Set ↥T.scheme) ⊆ orderAtLeastLocus T.ideal c` using `closure_minimal (Set.singleton_subset_iff.2 hmem) hclosed`. Rewrite using `[← h2]`. Conclude with `hsub`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subset_orderAtLeastLocus_of_le_orderAlong {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     {J : Finset (Fin T.boundary.length)} {C : Set ↥T.scheme}
@@ -217,14 +217,14 @@ def supportIndices {Y : Scheme.{u}} (L : List Y.IdealSheafData) (x : ↥Y) :
   @Finset.filter _ (fun j => x ∈ (L.get j).support) (Classical.decPred _) Finset.univ
 
 /- English proof (translation)
-Simplify using `[supportIndices]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_supportIndices {Y : Scheme.{u}} (L : List Y.IdealSheafData) (x : ↥Y)
     (j : Fin L.length) : j ∈ supportIndices L x ↔ x ∈ (L.get j).support := by
   simp [supportIndices]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [orderAt_top]`. Consider the case `cons I L ih => simp [orderAt_mul k p, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem orderAt_foldr_mul (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -235,13 +235,13 @@ theorem orderAt_foldr_mul (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
   | cons I L ih => simp [orderAt_mul k p, ih]
 
 /- English proof (translation)
-Establish `: CharZero T.base` using `hT.valid.charZero`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `hT.valid.smooth`. Establish `: AlgebraicGeometry.Smooth U.ι` using `inferInstance`. Establish `: AlgebraicGeometry.Smooth (U.ι ≫ T.structMap)` using `inferInstance`. Establish `h1 : orderAt (T.ideal.comap U.ι) ⟨x, hx⟩ = orderAt T.ideal x` using `orderAt_comap T.base T.structMap U.ι T.ideal ⟨x, hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : orderAt (T.ideal.comap U.ι) ⟨x, hx⟩ = ∑ i : Fin T.boundary.length, orderAt ((T.boundary.get i).comap U.ι ^ a i) ⟨x, hx⟩`. Rewrite using `[hmon, orderAt_foldr_mul T.base (U.ι ≫ T.structMap) ⟨x, hx⟩]`. Simplify using `[List.map_ofFn, List.sum_ofFn]`. Establish `h3 : ∀ i : Fin T.boundary.length, orderAt ((T.boundary.get i).comap U.ι ^ a i) ⟨x, hx⟩ = (a i : ℕ∞) * (↑(T.boundary.get i).support : Set ↥T.scheme).indicator (fun _ => (1 : ℕ∞)) x`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmemlist : T.boundary.get i ∈ T.boundary` using `by simp`. Establish `hcomap : orderAt ((T.boundary.get i).comap U.ι) ⟨x, hx⟩ = orderAt (T.boundary.get i) x` using `orderAt_comap T.base T.structMap U.ι (T.boundary.get i) ⟨x, hx⟩`. Rewrite using `[orderAt_pow T.base (U.ι ≫ T.structMap) ((T.boundary.get i).comap U.ι) (a i) ⟨x, hx⟩, hcomap]`. Distinguish the cases in `hmem : x ∈ (T.boundary.get i).support`. Establish `hset : x ∈ (↑(T.boundary.get i).support : Set ↥T.scheme)` using `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hGeom.orderAt_boundary_eq_one T hT.valid (T.boundary.get i) hmemlist x hmem, Set.indicator_of_mem hset]`. Establish `hset : x ∉ (↑(T.boundary.get i).support : Set ↥T.scheme)` using `hmem`. Rewrite using `[(orderAt_eq_zero_iff_not_mem_support (T.boundary.get i) x).2 hmem, Set.indicator_apply, if_neg hset]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem orderAt_eq_sum_indicator_support (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T) (U : T.scheme.Opens)
@@ -293,27 +293,27 @@ theorem orderAt_eq_sum_indicator_support (hGeom : MonomialGeometryHypotheses.{u}
         Finset.sum_congr rfl fun i _ => h3 i
 
 /- English proof (translation)
-Simplify using `[Set.indicator, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem indicator_one_eq_zero_of_notMem {α : Type u} (s : Set α) (x : α) (h : x ∉ s) :
     s.indicator (fun _ => (1 : ℕ∞)) x = 0 := by
   simp [Set.indicator, h]
 
 /- English proof (translation)
-Simplify using `[Set.indicator, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem indicator_one_eq_one_of_mem {α : Type u} (s : Set α) (x : α) (h : x ∈ s) :
     s.indicator (fun _ => (1 : ℕ∞)) x = 1 := by
   simp [Set.indicator, h]
 
 /- English proof (translation)
-Establish `hgen : closure ({(isIrreducible_of_mem_intersectionComponents hC).genericPoint} : Set ↥T.scheme) = C` using `isGenericPoint_genericPoint_of_mem_intersectionComponents hC`. Establish `hξU0 : (isIrreducible_of_mem_intersectionComponents hC).genericPoint ∈ U`. Assume the negation of the conclusion as `hnot`. Establish `h2 : C ⊆ (↑U : Set ↥T.scheme)ᶜ`. Rewrite using `[← hgen]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `closure_minimal (Set.singleton_subset_iff.2 hnot) (TopologicalSpace.Opens.isOpen U).isClosed_compl`. Conclude with `h2 hxC hxU`. Take `⟨ξ, hord, hξU, hξs⟩ : ∃ ξ : ↥T.scheme, orderAlong T.ideal C = orderAt T.ideal ξ ∧ ξ ∈ U ∧ ∀ j : Fin T.boundary.length, (ξ ∈ (T.boundary.get j).support ↔ j ∈ J)` from `⟨(isIrreducible_of_mem_intersectionComponents hC).genericPoint, orderAlong_eq_orderAt_of_mem_intersectionComponents T.ideal hC, hξU0, fun j => genericPoint_mem_support_iff_mem hGeom hT hC j⟩`. Rewrite using `[hord, orderAt_eq_sum_indicator_support hGeom hT U a hmon ξ hξU]`. Establish `hzero : ∀ j ∈ (Finset.univ : Finset (Fin T.boundary.length)), j ∉ J → (a j : ℕ∞) * (↑(T.boundary.get j).support : Set ↥T.scheme).indicator (fun _ => (1 : ℕ∞)) ξ = 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j _ hj`. Establish `h1 : ξ ∉ (↑(T.boundary.get j).support : Set ↥T.scheme)` using `fun hm => hj ((hξs j).1 hm)`. Rewrite using `[indicator_one_eq_zero_of_notMem _ ξ h1, mul_zero]`. Establish `hone : ∀ j ∈ J, (a j : ℕ∞) * (↑(T.boundary.get j).support : Set ↥T.scheme).indicator (fun _ => (1 : ℕ∞)) ξ = (a j : ℕ∞)`. Introduce `j hj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ξ ∈ (↑(T.boundary.get j).support : Set ↥T.scheme)` using `(hξs j).2 hj`. Rewrite using `[indicator_one_eq_one_of_mem _ ξ h1, mul_one]`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ J) hzero, Finset.sum_congr rfl hone]`. Conclude with `(Nat.cast_sum J a).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderAlong_eq_sum_of_monomial (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T) {J : Finset (Fin T.boundary.length)}
@@ -356,11 +356,11 @@ theorem orderAlong_eq_sum_of_monomial (hGeom : MonomialGeometryHypotheses.{u}) {
   exact (Nat.cast_sum J a).symm
 
 /- English proof (translation)
-Establish `h2 : ∀ j ∈ (Finset.univ : Finset (Fin T.boundary.length)), j ∉ supportIndices T.boundary x → (a j : ℕ∞) * (↑(T.boundary.get j).support : Set ↥T.scheme).indicator (fun _ => (1 : ℕ∞)) x = 0`. Introduce `j _ hj`. Establish `hx : x ∉ (↑(T.boundary.get j).support : Set ↥T.scheme)`. Introduce `hmem`. Conclude with `hj ((mem_supportIndices T.boundary x j).2 hmem)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_apply, if_neg hx, mul_zero]`. Establish `h1 : ∀ j ∈ supportIndices T.boundary x, (a j : ℕ∞) * (↑(T.boundary.get j).support : Set ↥T.scheme).indicator (fun _ => (1 : ℕ∞)) x = (a j : ℕ∞)`. Introduce `j hj`. Establish `hx : x ∈ (↑(T.boundary.get j).support : Set ↥T.scheme)` using `(mem_supportIndices T.boundary x j).1 hj`. Rewrite using `[Set.indicator_apply, if_pos hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_one _`. Rewrite using `[orderAt_eq_sum_indicator_support hGeom hT U a hmon x hxU, Nat.cast_sum, ← Finset.sum_subset (Finset.subset_univ (supportIndices T.boundary x)) h2]`. Conclude with `Finset.sum_congr rfl h1`.
+A detailed English derivation is pending.
 -/
 theorem orderAt_eq_sum_supportIndices (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T) (x : ↥T.scheme) (U : T.scheme.Opens)
@@ -393,7 +393,7 @@ theorem orderAt_eq_sum_supportIndices (hGeom : MonomialGeometryHypotheses.{u}) {
   exact Finset.sum_congr rfl h1
 
 /- English proof (translation)
-Unfold `IsCandidateComponent at h`. Simplify using `only [mem_intersectionComponents_iff] at h ⊢`. The claim follows by propositional logic.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 private theorem mem_intersectionComponents_of_isCandidateComponent {Y : Scheme.{u}} (I : Y.IdealSheafData)
     (m : ℕ) (L : List Y.IdealSheafData) (r : ℕ) (J : Finset (Fin L.length)) (C : Set ↥Y)
@@ -403,7 +403,7 @@ private theorem mem_intersectionComponents_of_isCandidateComponent {Y : Scheme.{
   tauto
 
 /- English proof (translation)
-Establish `hfin : (⋃ J : Finset (Fin T.boundary.length), (fun C : Set ↥T.scheme => ((J, C) : Finset (Fin T.boundary.length) × Set ↥T.scheme)) '' intersectionComponents T.boundary J).Finite` using `Set.finite_iUnion fun J => Set.Finite.image (fun C : Set ↥T.scheme => ((J, C) : Finset (Fin T.boundary.length) × Set ↥T.scheme)) (hGeom.components_finite T hT.valid J)`. Use `hfin.subset ?_` and prove the remaining obligations. Introduce and unpack `⟨J, C⟩ ⟨r, hcand⟩`. Establish `hmem : C ∈ intersectionComponents T.boundary J` using `mem_intersectionComponents_of_isCandidateComponent T.ideal T.mult T.boundary r J C hcand`. Conclude with `Set.mem_iUnion.2 ⟨J, Set.mem_image_of_mem _ hmem⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_setOf_isCandidateComponent (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T) :
@@ -424,15 +424,15 @@ theorem finite_setOf_isCandidateComponent (hGeom : MonomialGeometryHypotheses.{u
   exact Set.mem_iUnion.2 ⟨J, Set.mem_image_of_mem _ hmem⟩
 
 /- English proof (translation)
-The claim follows from `h.trans_lt (ENat.natCast_lt_top B)`.
+A detailed English derivation is pending.
 -/
 private theorem lt_top_of_le_natCast {a : ℕ∞} {B : ℕ} (h : a ≤ (B : ℕ∞)) : a < ⊤ :=
   h.trans_lt (ENat.natCast_lt_top B)
 
 /- English proof (translation)
-Establish `hC : C ∈ intersectionComponents T.boundary J`. Unfold `IsCandidateComponent at hcand`. The claim follows by propositional logic. Take `⟨B, hB⟩` from `hGeom.orderAt_bounded T hT.valid T.ideal hT.valid.nonzeroOnComponents`. Rewrite using `[orderAlong_eq_orderAt_of_mem_intersectionComponents T.ideal hC]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. The claim follows by propositional logic. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_top_of_le_natCast (hB _)`.
+A detailed English derivation is pending.
 -/
 theorem orderAlong_lt_top_of_isCandidateComponent (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T) {r : ℕ}
@@ -457,9 +457,9 @@ private theorem minIndexCard_eq_sInf {Y : Scheme.{u}} (I : Y.IdealSheafData) (m 
         IsCandidateComponent I m L r J C} := rfl
 
 /- English proof (translation)
-Establish `hne : {r : ℕ | 1 ≤ r ∧ ∃ (J : Finset (Fin L.length)) (C : Set ↥Y), IsCandidateComponent I m L r J C}.Nonempty` using `hex`. Establish `hmem : minIndexCard I m L ∈ {r : ℕ | 1 ≤ r ∧ ∃ (J : Finset (Fin L.length)) (C : Set ↥Y), IsCandidateComponent I m L r J C}`. Rewrite using `[minIndexCard_eq_sInf I m L]`. Conclude with `Nat.sInf_mem hne`. Take `⟨h1, h2⟩` from `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Introduce `r hr J C hcand`. Rewrite using `[minIndexCard_eq_sInf I m L]`. Conclude with `Nat.sInf_le ⟨hr, J, C, hcand⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minIndexCard_spec {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData)
@@ -484,13 +484,11 @@ theorem minIndexCard_spec {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
   exact Nat.sInf_le ⟨hr, J, C, hcand⟩
 
 /- English proof (translation)
-Rewrite using `[minIndexCard_eq_sInf I m L, Nat.sInf_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h0 | hempty) hex`. Take `⟨h1, -⟩` from `h0`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨r, hr⟩` from `hex`. Establish `h2 : r ∈ (∅ : Set ℕ)`. Rewrite using `[← hempty]`. Conclude with `hr`. Conclude with `(Set.mem_empty_iff_false r).mp h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hne`. Use `Or.inr ?_` and prove the remaining obligations. Use extensionality with `r`. Prove the components needed by the constructor for the conclusion. Introduce `hr`.
-
-Conclude with `(hne ⟨r, hr⟩).elim`. Introduce `hr`. Conclude with `((Set.mem_empty_iff_false r).mp hr).elim`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem minIndexCard_eq_zero_iff {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) :
@@ -517,7 +515,7 @@ theorem minIndexCard_eq_zero_iff {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : �
       exact ((Set.mem_empty_iff_false r).mp hr).elim
 
 /- English proof (translation)
-Establish `hex : ∃ r : ℕ, 1 ≤ r ∧ ∃ (J : Finset (Fin L.length)) (C : Set ↥Y), IsCandidateComponent I m L r J C`. Assume the negation of the conclusion as `hc`. Conclude with `h ((minIndexCard_eq_zero_iff I m L).2 hc)`. Conclude with `(minIndexCard_spec I m L hex).2.1`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_isCandidateComponent_minIndexCard {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) (h : minIndexCard I m L ≠ 0) :
@@ -539,17 +537,17 @@ private theorem maxCandidateOrder_eq_iSup_orderAlong {Y : Scheme.{u}} (I : Y.Ide
   rfl
 
 /- English proof (translation)
-Take `⟨J₁, C₁, hcand₁⟩` from `exists_isCandidateComponent_minIndexCard T.ideal T.mult T.boundary h`. Establish `hsub : {p : Finset (Fin T.boundary.length) × Set ↥T.scheme | IsCandidateComponent T.ideal T.mult T.boundary (minIndexCard T.ideal T.mult T.boundary) p.1 p.2} ⊆ {p : Finset (Fin T.boundary.length) × Set ↥T.scheme | ∃ r : ℕ, IsCandidateComponent T.ideal T.mult T.boundary r p.1 p.2}`. Introduce `p hp`. Simplify using `only [Set.mem_ofPred_eq] at hp ⊢`. Conclude with `⟨minIndexCard T.ideal T.mult T.boundary, hp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hfin : {p : Finset (Fin T.boundary.length) × Set ↥T.scheme | IsCandidateComponent T.ideal T.mult T.boundary (minIndexCard T.ideal T.mult T.boundary) p.1 p.2}.Finite` using `(finite_setOf_isCandidateComponent hGeom hT).subset hsub`. Establish `hne : {p : Finset (Fin T.boundary.length) × Set ↥T.scheme | IsCandidateComponent T.ideal T.mult T.boundary (minIndexCard T.ideal T.mult T.boundary) p.1 p.2}.Nonempty` using `⟨(J₁, C₁), hcand₁⟩`. Take `⟨p₀, hmem₀, hmax₀⟩` from `Set.exists_max_image _ (fun q : Finset (Fin T.boundary.length) × Set ↥T.scheme => orderAlong T.ideal q.2) hfin hne`. Establish `hcand₀ : IsCandidateComponent T.ideal T.mult T.boundary (minIndexCard T.ideal T.mult T.boundary) p₀.1 p₀.2` using `hmem₀`. Establish `hkey : maxCandidateOrder T.ideal T.mult T.boundary = orderAlong T.ideal p₀.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[maxCandidateOrder_eq_iSup_orderAlong]`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Apply `iSup_le` to reduce the goal to its premises. Introduce `J`. Apply `iSup_le` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `C`. Apply `iSup_le` to reduce the goal to its premises. Introduce `hc`. Conclude with `hmax₀ (J, C) hc`. Conclude with `le_iSup_of_le p₀.1 (le_iSup_of_le p₀.2 (le_iSup_of_le hcand₀ le_rfl))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨p₀.1, p₀.2, hcand₀, hkey.symm⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `J C hc`. Rewrite using `[hkey]`. Conclude with `hmax₀ (J, C) hc`. Rewrite using `[hkey]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp` using `hcand₀`. Unfold `IsCandidateComponent at hcomp`. Conclude with `hcomp.2.2`. Rewrite using `[hkey]`. Conclude with `orderAlong_lt_top_of_isCandidateComponent hGeom hT hcand₀`.
+A detailed English derivation is pending.
 -/
 theorem maxCandidateOrder_spec (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -606,7 +604,7 @@ theorem maxCandidateOrder_spec (hGeom : MonomialGeometryHypotheses.{u}) {T : Mar
     exact orderAlong_lt_top_of_isCandidateComponent hGeom hT hcand₀
 
 /- English proof (translation)
-Take `⟨J, C, hcand, hord⟩` from `(maxCandidateOrder_spec hGeom hT h).1`. Use `⟨J, ?_⟩` and prove the remaining obligations. Unfold `IsMaxOrderIndexSet`. Conclude with `⟨C, hcand, hord⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem exists_isMaxOrderIndexSet (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -626,7 +624,7 @@ private theorem maxBinaryCode_eq_sSup {Y : Scheme.{u}} (I : Y.IdealSheafData) (m
       sSup {c : ℕ | ∃ J : Finset (Fin L.length), IsMaxOrderIndexSet I m L J ∧ binaryEncode J = c} := rfl
 
 /- English proof (translation)
-Unfold `IsMaxOrderIndexSet at hJ`. Take `⟨C, hcand, -⟩` from `hJ`. Unfold `IsCandidateComponent at hcand`. Conclude with `hcand.1`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem card_eq_minIndexCard_of_isMaxOrderIndexSet {Y : Scheme.{u}} {I : Y.IdealSheafData}
     {m : ℕ} {L : List Y.IdealSheafData} {J : Finset (Fin L.length)} (hJ : IsMaxOrderIndexSet I m L J) :
@@ -637,15 +635,13 @@ private theorem card_eq_minIndexCard_of_isMaxOrderIndexSet {Y : Scheme.{u}} {I :
   exact hcand.1
 
 /- English proof (translation)
-Take `⟨J0, hJ0⟩` from `exists_isMaxOrderIndexSet hGeom hT h`. Establish `hbdd : BddAbove {c : ℕ | ∃ J : Finset (Fin T.boundary.length), IsMaxOrderIndexSet T.ideal T.mult T.boundary J ∧ binaryEncode J = c}`. Use `Set.Finite.bddAbove (Set.Finite.subset (Set.finite_range (fun J : Finset (Fin T.boundary.length) => binaryEncode J)) ?_)` and prove the remaining obligations. Introduce and unpack `c ⟨J, -, rfl⟩`. Conclude with `Set.mem_range_self J`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hne : {c : ℕ | ∃ J : Finset (Fin T.boundary.length), IsMaxOrderIndexSet T.ideal T.mult T.boundary J ∧ binaryEncode J = c}.Nonempty` using `⟨binaryEncode J0, ⟨J0, hJ0, rfl⟩⟩`. Establish `hex : ∃ J : Finset (Fin T.boundary.length), IsMaxOrderIndexSet T.ideal T.mult T.boundary J ∧ binaryEncode J = maxBinaryCode T.ideal T.mult T.boundary`. Establish `hmem : maxBinaryCode T.ideal T.mult T.boundary ∈ {c : ℕ | ∃ J : Finset (Fin T.boundary.length), IsMaxOrderIndexSet T.ideal T.mult T.boundary J ∧ binaryEncode J = c}`. Rewrite using `[maxBinaryCode_eq_sSup]`. Conclude with `Nat.sSup_mem hne hbdd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hmem`. Establish `hchosen : IsMaxOrderIndexSet T.ideal T.mult T.boundary (lexMaxIndices T.ideal T.mult T.boundary) ∧ binaryEncode (lexMaxIndices T.ideal T.mult T.boundary) = maxBinaryCode T.ideal T.mult T.boundary`. Unfold `lexMaxIndices`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hchosen.1, ?_⟩` and prove the remaining obligations. Introduce `J hJ hlex`. Establish `hcard : J.card = (lexMaxIndices T.ideal T.mult T.boundary).card`. Rewrite using `[card_eq_minIndexCard_of_isMaxOrderIndexSet hJ, card_eq_minIndexCard_of_isMaxOrderIndexSet hchosen.1]`. Establish `hlt : binaryEncode (lexMaxIndices T.ideal T.mult T.boundary) < binaryEncode J` using `(MonomialCenter.binaryEncode_lt_iff_lex_of_card_eq J (lexMaxIndices T.ideal T.mult T.boundary) hcard).2 hlex`.
-
-Establish `hle : binaryEncode J ≤ binaryEncode (lexMaxIndices T.ideal T.mult T.boundary)`. Rewrite using `[hchosen.2, maxBinaryCode_eq_sSup]`. Conclude with `le_csSup hbdd ⟨J, hJ, rfl⟩`. Conclude with `absurd hlt (not_lt.2 hle)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lexMaxIndices_spec (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -693,7 +689,7 @@ theorem lexMaxIndices_spec (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedI
   exact absurd hlt (not_lt.2 hle)
 
 /- English proof (translation)
-The claim follows from `card_eq_minIndexCard_of_isMaxOrderIndexSet (lexMaxIndices_spec hGeom hT h).1`.
+A detailed English derivation is pending.
 -/
 theorem card_lexMaxIndices (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -702,7 +698,7 @@ theorem card_lexMaxIndices (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedI
   card_eq_minIndexCard_of_isMaxOrderIndexSet (lexMaxIndices_spec hGeom hT h).1
 
 /- English proof (translation)
-Unfold `monomialCenter`. Simplify using `[h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem monomialCenter_eq_top_of_minIndexCard_eq_zero {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) (h : minIndexCard I m L = 0) : monomialCenter I m L = ⊤ := by
@@ -716,7 +712,7 @@ def centerComponents {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
       orderAlong I C = maxCandidateOrder I m L}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_centerComponents_iff {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) (C : Set ↥Y) :
@@ -726,7 +722,7 @@ theorem mem_centerComponents_iff {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : �
   Iff.rfl
 
 /- English proof (translation)
-Introduce `C hC`. Conclude with `mem_intersectionComponents_of_isCandidateComponent I m L (minIndexCard I m L) (lexMaxIndices I m L) C ((mem_centerComponents_iff I m L C).1 hC).1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem centerComponents_subset_intersectionComponents {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) :
@@ -736,7 +732,7 @@ theorem centerComponents_subset_intersectionComponents {Y : Scheme.{u}} (I : Y.I
     ((mem_centerComponents_iff I m L C).1 hC).1
 
 /- English proof (translation)
-The claim follows from `hGeom.sUnion_isOpen T hT.valid _ _ (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_preimage_sUnion_centerComponents (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T) :
@@ -746,7 +742,7 @@ theorem isOpen_preimage_sUnion_centerComponents (hGeom : MonomialGeometryHypothe
     (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary)
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[monomialCenterSet, centerComponents, Set.mem_sUnion]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem monomialCenterSet_eq_sUnion_centerComponents {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) :
@@ -755,7 +751,7 @@ theorem monomialCenterSet_eq_sUnion_centerComponents {Y : Scheme.{u}} (I : Y.Ide
   simp [monomialCenterSet, centerComponents, Set.mem_sUnion]
 
 /- English proof (translation)
-Rewrite using `[monomialCenterSet_eq_sUnion_centerComponents]`. Conclude with `isOpen_preimage_sUnion_centerComponents hGeom hT`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_preimage_monomialCenterSet (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T) :
@@ -765,7 +761,7 @@ theorem isOpen_preimage_monomialCenterSet (hGeom : MonomialGeometryHypotheses.{u
   exact isOpen_preimage_sUnion_centerComponents hGeom hT
 
 /- English proof (translation)
-Substitute `hEq` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem openSublocusIdeal_eq_componentUnionIdeal {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J : Finset (Fin L.length)) (𝒞 : Set (Set ↥Y))
@@ -777,7 +773,7 @@ private theorem openSublocusIdeal_eq_componentUnionIdeal {Y : Scheme.{u}} (L : L
   rfl
 
 /- English proof (translation)
-Establish `hc : minIndexCard T.ideal T.mult T.boundary ≠ 0 ∧ IsOpen (⇑(intersectionIdeal T.boundary (lexMaxIndices T.ideal T.mult T.boundary)).subschemeι ⁻¹' monomialCenterSet T.ideal T.mult T.boundary)` using `⟨h, isOpen_preimage_monomialCenterSet hGeom hT⟩`. Unfold `monomialCenter`. Rewrite using `[dif_pos hc]`. Conclude with `openSublocusIdeal_eq_componentUnionIdeal T.boundary (lexMaxIndices T.ideal T.mult T.boundary) (centerComponents T.ideal T.mult T.boundary) _ (by rw [monomialCenterSet_eq_sUnion_centerComponents]) _ _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomialCenter_eq_componentUnionIdeal (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -797,7 +793,7 @@ theorem monomialCenter_eq_componentUnionIdeal (hGeom : MonomialGeometryHypothese
     (by rw [monomialCenterSet_eq_sUnion_centerComponents]) _ _
 
 /- English proof (translation)
-Rewrite using `[monomialCenterSet_eq_sUnion_centerComponents T.ideal T.mult T.boundary, monomialCenter_eq_componentUnionIdeal hGeom hT h]`. Conclude with `hGeom.center_support T hT.valid _ _ (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem support_monomialCenter (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -810,9 +806,9 @@ theorem support_monomialCenter (hGeom : MonomialGeometryHypotheses.{u}) {T : Mar
     (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary) _
 
 /- English proof (translation)
-Establish `hbest` using `(lexMaxIndices_spec hGeom hT h).1`. Unfold `IsMaxOrderIndexSet at hbest`. Take `⟨C, hcand, hord⟩` from `hbest`. Establish `hmem : C ∈ centerComponents T.ideal T.mult T.boundary` using `(mem_centerComponents_iff T.ideal T.mult T.boundary C).2 ⟨hcand, hord⟩`. Establish `hC : C ∈ intersectionComponents T.boundary (lexMaxIndices T.ideal T.mult T.boundary)` using `mem_intersectionComponents_of_isCandidateComponent T.ideal T.mult T.boundary (minIndexCard T.ideal T.mult T.boundary) (lexMaxIndices T.ideal T.mult T.boundary) C hcand`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `(isIrreducible_of_mem_intersectionComponents hC).1`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[monomialCenterSet_eq_sUnion_centerComponents T.ideal T.mult T.boundary]`. Conclude with `Set.mem_sUnion.2 ⟨C, hmem, hx⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomialCenterSet_nonempty (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -832,9 +828,9 @@ theorem monomialCenterSet_nonempty (hGeom : MonomialGeometryHypotheses.{u}) {T :
   exact Set.mem_sUnion.2 ⟨C, hmem, hx⟩
 
 /- English proof (translation)
-Introduce `htop`. Take `⟨x, hx⟩` from `monomialCenterSet_nonempty hGeom hT h`. Establish `hsupp` using `support_monomialCenter hGeom hT h`. Establish `hxmem : x ∈ (↑(monomialCenter T.ideal T.mult T.boundary).support : Set ↥T.scheme)`. Rewrite using `[hsupp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Establish `hx2 : x ∈ (monomialCenter T.ideal T.mult T.boundary).support` using `hxmem`. Rewrite `hx2` using `[mem_support_iff_stalkIdeal_ne_top, htop, stalkIdeal_top]`. Conclude with `hx2 rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomialCenter_ne_top (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -851,7 +847,7 @@ theorem monomialCenter_ne_top (hGeom : MonomialGeometryHypotheses.{u}) {T : Mark
   exact hx2 rfl
 
 /- English proof (translation)
-Rewrite using `[monomialCenter_eq_componentUnionIdeal hGeom hT h]`. Conclude with `hGeom.center_smooth T hT.valid _ _ (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_monomialCenter (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -863,7 +859,7 @@ theorem smooth_monomialCenter (hGeom : MonomialGeometryHypotheses.{u}) {T : Mark
     (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary) _
 
 /- English proof (translation)
-Rewrite using `[monomialCenter_eq_componentUnionIdeal hGeom hT h]`. Conclude with `hGeom.center_snc T hT.valid _ _ (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasStrictNormalCrossingsWith_monomialCenter (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -874,9 +870,9 @@ theorem hasStrictNormalCrossingsWith_monomialCenter (hGeom : MonomialGeometryHyp
     (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary) _
 
 /- English proof (translation)
-Rewrite using `[support_monomialCenter hGeom hT h, monomialCenterSet_eq_sUnion_centerComponents T.ideal T.mult T.boundary]`. Introduce and unpack `x ⟨C, hC, hxC⟩`. Establish `hcand : IsCandidateComponent T.ideal T.mult T.boundary (minIndexCard T.ideal T.mult T.boundary) (lexMaxIndices T.ideal T.mult T.boundary) C` using `((mem_centerComponents_iff T.ideal T.mult T.boundary C).1 hC).1`. Establish `hmem : C ∈ intersectionComponents T.boundary (lexMaxIndices T.ideal T.mult T.boundary)` using `mem_intersectionComponents_of_isCandidateComponent T.ideal T.mult T.boundary (minIndexCard T.ideal T.mult T.boundary) (lexMaxIndices T.ideal T.mult T.boundary) C hcand`. Establish `hord : (T.mult : ℕ∞) ≤ orderAlong T.ideal C`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp` using `hcand`. Unfold `IsCandidateComponent at hcomp`. Conclude with `hcomp.2.2`. Conclude with `subset_orderAtLeastLocus_of_le_orderAlong hT.valid hmem T.mult hord hxC`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem support_monomialCenter_subset_orderAtLeastLocus (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -899,11 +895,11 @@ theorem support_monomialCenter_subset_orderAtLeastLocus (hGeom : MonomialGeometr
   exact subset_orderAtLeastLocus_of_le_orderAlong hT.valid hmem T.mult hord hxC
 
 /- English proof (translation)
-Rewrite using `[support_monomialCenter hGeom hT h, monomialCenterSet_eq_sUnion_centerComponents T.ideal T.mult T.boundary]`. Introduce `x hx`. Take `⟨C, hC, hxC⟩` from `Set.mem_sUnion.1 hx`. Establish `hCcomp : C ∈ intersectionComponents T.boundary (lexMaxIndices T.ideal T.mult T.boundary)` using `centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary hC`. Establish `hcard : (lexMaxIndices T.ideal T.mult T.boundary).card = minIndexCard T.ideal T.mult T.boundary` using `card_lexMaxIndices hGeom hT h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (lexMaxIndices T.ideal T.mult T.boundary).Nonempty`. Rewrite using `[← Finset.card_pos, hcard]`. Conclude with `Nat.pos_of_ne_zero h`. Take `⟨j, hj⟩` from `hne`. Establish `hsub : C ⊆ (↑(T.boundary.get j).support : Set ↥T.scheme)` using `(subset_support_iff_mem_of_mem_intersectionComponents hGeom hT hCcomp j).2 hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmemlist : T.boundary.get j ∈ T.boundary` using `by simp`. Conclude with `Set.mem_iUnion₂.2 ⟨T.boundary.get j, hmemlist, hsub hxC⟩`.
+A detailed English derivation is pending.
 -/
 theorem support_monomialCenter_subset_boundary (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -928,9 +924,9 @@ theorem support_monomialCenter_subset_boundary (hGeom : MonomialGeometryHypothes
   exact Set.mem_iUnion₂.2 ⟨T.boundary.get j, hmemlist, hsub hxC⟩
 
 /- English proof (translation)
-Establish `: CharZero T.base` using `hT.valid.charZero`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `hT.valid.smooth`. Establish `: AlgebraicGeometry.IsNoetherian T.scheme` using `hT.valid.isNoetherian`. Establish `: AlgebraicGeometry.IsNoetherian (Blowup.blowup (monomialCenter T.ideal T.mult T.boundary))` using `isNoetherian_of_isBlowupAlongIdealSheaf (Blowup.blowup.isBlowupAlongIdealSheaf_proj (monomialCenter T.ideal T.mult T.boundary))`. Establish `hle : T.ideal ≤ monomialCenter T.ideal T.mult T.boundary ^ T.mult` using `le_pow_of_hasStrictNormalCrossingsWith T.structMap (monomialCenter T.ideal T.mult T.boundary) T.ideal T.boundary (hasStrictNormalCrossingsWith_monomialCenter hGeom hT h) T.mult (support_monomialCenter_subset_orderAtLeastLocus hGeom hT h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨J, hJ, -⟩` from `existsUnique_pow_mul_eq_comap_of_isBlowupAlongIdealSheaf (Blowup.blowup.proj (monomialCenter T.ideal T.mult T.boundary)) (monomialCenter T.ideal T.mult T.boundary) T.ideal T.mult (Blowup.blowup.isBlowupAlongIdealSheaf_proj (monomialCenter T.ideal T.mult T.boundary)) hle`. Conclude with `⟨J, hJ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_controlledTransform_monomialCenter (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -956,7 +952,7 @@ theorem exists_controlledTransform_monomialCenter (hGeom : MonomialGeometryHypot
   exact ⟨J, hJ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨monomialCenter_ne_top hGeom hT h, smooth_monomialCenter hGeom hT h, hasStrictNormalCrossingsWith_monomialCenter hGeom hT h, support_monomialCenter_subset_orderAtLeastLocus hGeom hT h, exists_controlledTransform_monomialCenter hGeom hT h⟩`.
+Supply the required witnesses or components.
 -/
 theorem monomialCenter_spec (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -976,27 +972,25 @@ theorem monomialCenter_spec (hGeom : MonomialGeometryHypotheses.{u}) {T : Marked
     exists_controlledTransform_monomialCenter hGeom hT h⟩
 
 /- English proof (translation)
-Establish `hsing : IsPreirreducible ({(⟨x, hx⟩ : ↥S)} : Set ↥S)`. Introduce `u v _ _ hu hv`. Take `⟨p, hp, hpu⟩` from `hu`. Take `⟨q, hq, hqv⟩` from `hv`. Rewrite `hp`, `hq` using `[Set.mem_singleton_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hp` using the available equality. Substitute `hq` using the available equality. Conclude with `⟨(⟨x, hx⟩ : ↥S), rfl, hpu, hqv⟩`. Take `⟨t, ht, hts, hmax⟩` from `exists_preirreducible ({(⟨x, hx⟩ : ↥S)} : Set ↥S) hsing`. Establish `hxt : (⟨x, hx⟩ : ↥S) ∈ t` using `hts (Set.mem_singleton_iff.2 rfl)`.
+Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxim : x ∈ Subtype.val '' t` using `⟨(⟨x, hx⟩ : ↥S), hxt, rfl⟩`. Establish `hsubS : Subtype.val '' t ⊆ S`. Introduce and unpack `y ⟨p, -, rfl⟩`. Conclude with `p.2`. Establish `hpre : IsPreirreducible (Subtype.val '' t)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u v hu hv hu' hv'`. Take `⟨p, hpim, hpu⟩` from `hu'`. Take `⟨q, hqim, hqv⟩` from `hv'`. Take `⟨p', hp't, hp'eq⟩` from `hpim`. Take `⟨q', hq't, hq'eq⟩` from `hqim`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp'u : p' ∈ Subtype.val ⁻¹' u`. Rewrite using `[Set.mem_preimage, hp'eq]`. Conclude with `hpu`. Establish `hq'v : q' ∈ Subtype.val ⁻¹' v`. Rewrite using `[Set.mem_preimage, hq'eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `hqv`. Take `⟨r, hrt, hru, hrv⟩` from `ht (Subtype.val ⁻¹' u) (Subtype.val ⁻¹' v) (hu.preimage continuous_subtype_val) (hv.preimage continuous_subtype_val) ⟨p', hp't, hp'u⟩ ⟨q', hq't, hq'v⟩`. Conclude with `⟨(r : ↥Y), ⟨r, hrt, rfl⟩, hru, hrv⟩`. Establish `hirr : IsIrreducible (Subtype.val '' t)` using `⟨⟨x, hxim⟩, hpre⟩`. Establish `hmaxi : ∀ C' : Set ↥Y, IsIrreducible C' → Subtype.val '' t ⊆ C' → C' ⊆ S → C' = Subtype.val '' t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `C' hC' hle hC'S`. Establish `hpre' : IsPreirreducible (Subtype.val ⁻¹' C' : Set ↥S)`. Introduce `u v hu hv hu' hv'`. Take `⟨u₀, hu₀, hu₀e⟩ : ∃ u₀ : Set ↥Y, IsOpen u₀ ∧ Subtype.val ⁻¹' u₀ = u` from `isOpen_induced_iff.1 hu`. Take `⟨v₀, hv₀, hv₀e⟩ : ∃ v₀ : Set ↥Y, IsOpen v₀ ∧ Subtype.val ⁻¹' v₀ = v` from `isOpen_induced_iff.1 hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `hu₀e` using the available equality. Substitute `hv₀e` using the available equality. Take `⟨p, hp, hpu⟩` from `hu'`. Take `⟨q, hq, hqv⟩` from `hv'`. Take `⟨y, hyC', hyu, hyv⟩` from `hC'.2 u₀ v₀ hu₀ hv₀ ⟨(p : ↥Y), hp, hpu⟩ ⟨(q : ↥Y), hq, hqv⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨(⟨y, hC'S hyC'⟩ : ↥S), hyC', hyu, hyv⟩`. Establish `hsubt : t ⊆ Subtype.val ⁻¹' C'` using `fun p hp => hle ⟨p, hp, rfl⟩`. Establish `hkey : Subtype.val ⁻¹' C' = t` using `hmax _ hpre' hsubt`. Use `Set.Subset.antisymm ?_ hle` and prove the remaining obligations. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(⟨y, hC'S hy⟩ : ↥S), ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← hkey]`. Conclude with `hy`. Use `⟨Subtype.val '' t, hxim, ?_⟩` and prove the remaining obligations. Use `show IsIrreducible (Subtype.val '' t) ∧ Subtype.val '' t ⊆ S ∧ ∀ C' : Set ↥Y, IsIrreducible C' → Subtype.val '' t ⊆ C' → C' ⊆ S → C' = Subtype.val '' t`.
-
-Conclude with `⟨hirr, hsubS, hmaxi⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isIrreducibleComponentOf_mem {Y : Scheme.{u}} (S : Set ↥Y) (x : ↥Y) (hx : x ∈ S) :
     ∃ C : Set ↥Y, x ∈ C ∧ IsIrreducibleComponentOf C S := by
@@ -1060,7 +1054,7 @@ theorem exists_isIrreducibleComponentOf_mem {Y : Scheme.{u}} (S : Set ↥Y) (x :
   exact ⟨hirr, hsubS, hmaxi⟩
 
 /- English proof (translation)
-Take `⟨C, hxC, hcomp⟩` from `exists_isIrreducibleComponentOf_mem (↑(intersectionIdeal L J).support : Set ↥Y) x hx`. Conclude with `⟨C, hxC, (mem_intersectionComponents_iff L J C).2 hcomp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_intersectionComponents_of_mem_support {Y : Scheme.{u}}
     (L : List Y.IdealSheafData) (J : Finset (Fin L.length)) (x : ↥Y)
@@ -1071,19 +1065,17 @@ theorem exists_mem_intersectionComponents_of_mem_support {Y : Scheme.{u}}
   exact ⟨C, hxC, (mem_intersectionComponents_iff L J C).2 hcomp⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨x, hx⟩` from `Set.nonempty_iff_ne_empty.2 hne`. Take `⟨U, hxU, a, hmon⟩` from `hT.monomialNear x hx`. Establish `hmult : 1 ≤ T.mult` using `hT.valid.one_le_mult`. Establish `hmle : (T.mult : ℕ∞) ≤ orderAt T.ideal x` using `(mem_orderAtLeastLocus_iff _ _ _).1 hx`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hord : orderAt T.ideal x = ((∑ j ∈ supportIndices T.boundary x, a j : ℕ) : ℕ∞)` using `orderAt_eq_sum_supportIndices hGeom hT x U hxU a hmon`. Establish `hJne : (supportIndices T.boundary x).Nonempty`. Break down `Finset.eq_empty_or_nonempty (supportIndices T.boundary x) with he | hne'` into its components or cases. It suffices to derive a contradiction. Rewrite `hord` using `[he, Finset.sum_empty]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmle` using `[hord]`. Establish `hm0 : T.mult ≤ 0` using `by exact_mod_cast hmle`. Use linear arithmetic over natural numbers and integers. Conclude with `hne'`. Establish `hxsupp : x ∈ (↑(intersectionIdeal T.boundary (supportIndices T.boundary x)).support : Set ↥T.scheme)` using `mem_support_intersectionIdeal T.boundary (supportIndices T.boundary x) x fun j hj => (mem_supportIndices T.boundary x j).1 hj`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hxC, hcomp⟩` from `exists_isIrreducibleComponentOf_mem (↑(intersectionIdeal T.boundary (supportIndices T.boundary x)).support : Set ↥T.scheme) x hxsupp`. Establish `hCmem : C ∈ intersectionComponents T.boundary (supportIndices T.boundary x)` using `(mem_intersectionComponents_iff T.boundary (supportIndices T.boundary x) C).2 hcomp`. Establish `hordC : orderAlong T.ideal C = ((∑ j ∈ supportIndices T.boundary x, a j : ℕ) : ℕ∞)` using `orderAlong_eq_sum_of_monomial hGeom hT hCmem hxC U hxU a hmon`. Establish `hordm : (T.mult : ℕ∞) ≤ orderAlong T.ideal C`. Rewrite using `[hordC, ← hord]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmle`. Establish `hcand : IsCandidateComponent T.ideal T.mult T.boundary (supportIndices T.boundary x).card (supportIndices T.boundary x) C`. Unfold `IsCandidateComponent`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Use the matching hypothesis. Use the matching hypothesis.
 
-Use the matching hypothesis. Use the matching hypothesis. Establish `hcontr : ¬ ∃ r : ℕ, 1 ≤ r ∧ ∃ (J : Finset (Fin T.boundary.length)) (C : Set ↥T.scheme), IsCandidateComponent T.ideal T.mult T.boundary r J C` using `(minIndexCard_eq_zero_iff _ _ _).1 h`. Establish `hcard : 1 ≤ (supportIndices T.boundary x).card`. Establish `hpos` using `Finset.card_pos.2 hJne`.
-
-Use linear arithmetic over natural numbers and integers. Conclude with `hcontr ⟨(supportIndices T.boundary x).card, hcard, supportIndices T.boundary x, C, hcand⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_eq_empty_of_minIndexCard_eq_zero (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
@@ -1137,9 +1129,9 @@ theorem orderAtLeastLocus_eq_empty_of_minIndexCard_eq_zero (hGeom : MonomialGeom
     supportIndices T.boundary x, C, hcand⟩
 
 /- English proof (translation)
-Rewrite using `[minIndexCard_eq_zero_iff]`. Introduce and unpack `⟨r, hr, J, C, hcand⟩`. Establish `hC : C ∈ intersectionComponents T.boundary J` using `mem_intersectionComponents_of_isCandidateComponent T.ideal T.mult T.boundary r J C hcand`. Establish `hord : (T.mult : ℕ∞) ≤ orderAlong T.ideal C`. Unfold `IsCandidateComponent at hcand`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hcand.2.2`. Establish `hsub : C ⊆ orderAtLeastLocus T.ideal T.mult` using `subset_orderAtLeastLocus_of_le_orderAlong hT hC T.mult hord`. Take `⟨x, hx⟩` from `(isIrreducible_of_mem_intersectionComponents hC).1`. Rewrite `hsub` using `[h]`. Conclude with `(Set.mem_empty_iff_false x).mp (hsub hx)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minIndexCard_eq_zero_of_orderAtLeastLocus_eq_empty {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (h : orderAtLeastLocus T.ideal T.mult = (∅ : Set ↥T.scheme)) :
@@ -1163,7 +1155,7 @@ def maxOrderCandidatePairs {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     IsCandidateComponent I m L (minIndexCard I m L) p.1 p.2 ∧ orderAlong I p.2 = maxCandidateOrder I m L}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_maxOrderCandidatePairs_iff {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) (p : Finset (Fin L.length) × Set ↥Y) :
@@ -1172,7 +1164,7 @@ theorem mem_maxOrderCandidatePairs_iff {Y : Scheme.{u}} (I : Y.IdealSheafData) (
   Iff.rfl
 
 /- English proof (translation)
-Use `(finite_setOf_isCandidateComponent hGeom hT).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨J, C⟩ ⟨hcand, -⟩`. Conclude with `⟨minIndexCard T.ideal T.mult T.boundary, hcand⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finite_maxOrderCandidatePairs (hGeom : MonomialGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : MonomialCenter.IsLocallyMonomialTriple T) :

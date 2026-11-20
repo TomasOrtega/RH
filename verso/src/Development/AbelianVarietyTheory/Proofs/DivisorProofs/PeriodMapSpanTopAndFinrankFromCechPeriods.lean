@@ -14,11 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CechPer
 
 /- English proof (translation)
-Introduce `A _ g L u hA P hP`. Take `⟨b, -, -⟩` from `GlobalTheory.exists_basis_of_discrete_of_span_eq_top_complex_pi g u.Λ u.discrete u.full`. Use `GlobalTheory.T.latticeEvaluation_span_dual_finrank (primDR A) u.Λ (2 * g) b P (fun w hw ↦ ?_) (fun p ↦ ?_)` and prove the remaining obligations. Establish `h0 : (fun l ↦ P l w) = 0` using `funext hw`. Establish `h1` using `hP w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0]`. Establish `h2` using `GlobalTheory.T.cechDeRham_class_eq_zero_of_periods_zero A g L u hA _ h1`. Establish `h3 : w.1 = 0` using `(GlobalTheory.T.bijective_cmp1_of_isAbelianScheme_over_complex A hA).1 (h2.trans (map_zero _).symm)`. Conclude with `Subtype.ext h3`. Take `⟨x, hx⟩` from `GlobalTheory.T.surjective_periodMap_abelianVariety_lattice A g L u hA p`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `(GlobalTheory.T.bijective_cmp1_of_isAbelianScheme_over_complex A hA).2 x`. Establish `hc` using `GlobalTheory.T.mem_primitiveDeRhamCohomology_of_additive_periods A g L u hA c p hx`. Conclude with `⟨⟨c, hc⟩, fun l ↦ congrFun (GlobalTheory.T.isPer_unique' A g L u _ _ _ (hP ⟨c, hc⟩) hx) l⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem span_periods_eq_top_and_finrank : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → ∀ P : u.Λ →+ HdR A, (∀ c : primDR A, IsPer u.ex u.Λ (cmp1 (str A) c.1) fun l => P l c) → Submodule.span ℂ (Set.range P) = ⊤ ∧ Module.finrank ℂ (HdR A) = 2 * g := by
   intro A _ g L u hA P hP

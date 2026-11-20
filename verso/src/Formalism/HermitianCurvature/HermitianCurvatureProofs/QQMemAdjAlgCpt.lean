@@ -41,7 +41,7 @@ def cptSub : Submodule ℂ (RadSp k r z z' π π') where
     rw [hK0 g hg hgK, smul_zero]
 
 /- English proof (translation)
-Introduce `c hc Φ hΦ Ψ _`. Take `⟨K, hKc, hKG, hK0⟩` from `hΦ c hc`. Simplify using `only [hsInner_eq_sum]`. Conclude with `integrable_finsetSum _ fun m _ => int_cpt_gen μ hμ Φ Ψ c _ K hKc hKG hc _ (Or.inr rfl) hK0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem intOn_cpt (μ : Measure (Mt k r)) (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) :
     IntOn μ (cptSub k r z z' π π') := by
@@ -52,9 +52,9 @@ theorem intOn_cpt (μ : Measure (Mt k r)) (hμ : B.IsHaarOn (Glev k r (Fin.last 
     int_cpt_gen μ hμ Φ Ψ c _ K hKc hKG hc _ (Or.inr rfl) hK0
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨hg₀G, hg₀D⟩` from `hg₀`. Take `⟨-, hs, -⟩` from `Φ.2`. Take `⟨U, F, hU, hxU, hF, hΦ⟩` from `hs (c, g₀) (show ((c, g₀) : (Fin r → ℂ) × Mx k r) ∈ DomR k r z z' from ⟨hc, hg₀G, hD hg₀D⟩)`. Establish `hcont : Continuous fun g : Mx k r => ((c, g) : (Fin r → ℂ) × Mx k r)` using `by fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsm : ContDiff ℝ ∞ fun g : Mx k r => ((c, g) : (Fin r → ℂ) × Mx k r)` using `by fun_prop`. Use `⟨(fun g : Mx k r => ((c, g) : (Fin r → ℂ) × Mx k r)) ⁻¹' U, fun g => F (c, g), hU.preimage hcont, hxU, hF.comp hsm.contDiffOn (fun g hg => hg), ?_⟩` and prove the remaining obligations. Introduce `g hg hgG`. Conclude with `hΦ (c, g) hg hgG`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smoothLev_slice (Φ : RadSp k r z z' π π') (c : Fin r → ℂ) (hc : c ∈ OmX r) (D : Set (Mx k r))
     (hD : D ⊆ {g | 0 < GGl k r z z' g}) :
@@ -72,9 +72,9 @@ theorem smoothLev_slice (Φ : RadSp k r z z' π π') (c : Fin r → ℂ) (hc : c
   exact hΦ (c, g) hg hgG
 
 /- English proof (translation)
-Introduce `Φ hΦ c hc`. Take `⟨K, hKc, hKG, hK0⟩` from `hΦ c hc`. Use `⟨K, hKc, hKG, fun g hg hgK => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : ((c, g) : (Fin r → ℂ) × Mx k r) ∈ DomR k r z z'`. Establish `h` using `X.fn_apply j Φ (c, g) hx dsimp only at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[h, hK0 g hg hgK, smul_zero]`. Take `⟨h0, -, -⟩` from `(X.fn j Φ).2`. Conclude with `h0 (c, g) hx`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fn_pres_cpt (X : ActualOps k r z z' π π') (j : Fin 6) :
     ∀ Φ ∈ cptSub k r z z' π π', X.fn j Φ ∈ cptSub k r z z' π π' := by
@@ -89,17 +89,15 @@ theorem fn_pres_cpt (X : ActualOps k r z z' π π') (j : Fin 6) :
     exact h0 (c, g) hx
 
 /- English proof (translation)
-Introduce `Φ hΦ c hc`. Take `⟨K, hKc, hKG, hK0⟩` from `hΦ c hc`. Use `⟨K, hKc, hKG, fun g hg hgK => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hd : (c, g) ∈ DomR k r z z'`. Establish `e` using `X.t_apply Y a b Φ (c, g) hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only at e`. Rewrite using `[e]`. Use `set D : Set (Mx k r) := {g | 0 < GGl k r z z' g} \ K with hDdef`. Establish `hDo : IsOpen D` using `(isOpen_lt continuous_const (P.Qx5.GGl_continuous k r z z')).sdiff hKc.isClosed`. Establish `hDG : D ⊆ {g | 0 < GGl k r z z' g}` using `Set.sdiff_subset`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgD : g ∈ Glev k r (Fin.last r) ∩ D` using `⟨hg, hd.2.2, hgK⟩`. Establish `hS1` using `smoothLev_slice Φ c hc D hDG`. Establish `hS0 : SmoothLev k r (Fin.last r) D (fun _ : Mx k r => (0 : Wq →L[ℂ] Wp))`. Introduce `g₀ hg₀`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hL` using `Formalism.FourierDecayAlt.P.transfer_linear_local (Wq →L[ℂ] Wp) k r z z' (Fin.last r) D Y a b (fun g => (Φ : Fn k r (Wq →L[ℂ] Wp)) c g) (fun _ => 0) 1 hDo hS1 hS0 g hgD`. Establish `hL0` using `Formalism.FourierDecayAlt.P.transfer_linear_local (Wq →L[ℂ] Wp) k r z z' (Fin.last r) D Y a b (fun _ => (0 : Wq →L[ℂ] Wp)) (fun _ => 0) 1 hDo hS0 hS0 g hgD`. Establish `h0 : tL k r z z' (Fin.last r) Y a b (fun _ : Mx k r => (0 : Wq →L[ℂ] Wp)) g = 0`. Establish `h` using `hL0.1`. Simplify using `only [smul_zero, add_zero, one_smul] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : tL k r z z' (Fin.last r) Y a b (fun _ : Mx k r => (0 : Wq →L[ℂ] Wp)) g + tL k r z z' (Fin.last r) Y a b (fun _ : Mx k r => (0 : Wq →L[ℂ] Wp)) g = tL k r z z' (Fin.last r) Y a b (fun _ : Mx k r => (0 : Wq →L[ℂ] Wp)) g + 0`. Rewrite using `[add_zero]`. Conclude with `h.symm`. Conclude with `add_left_cancel h2`. Establish `hloc` using `hL.2 (fun x hx => hK0 x hx.1 hx.2.2)`.
-
-Rewrite using `[show (Φ : Fn k r (Wq →L[ℂ] Wp)) c = fun g => (Φ : Fn k r (Wq →L[ℂ] Wp)) c g from rfl, hloc, h0]`. Conclude with `radSp_zero_off (X.t Y a b Φ) (x := (c, g)) hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t_pres_cpt (X : ActualOps k r z z' π π') (Y : ℂ) (a b : Fin 2) :
     ∀ Φ ∈ cptSub k r z z' π π', X.t Y a b Φ ∈ cptSub k r z z' π π' := by
@@ -142,7 +140,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Use `⟨t_pres_cpt X Y a b, t_pres_cpt X (star Y) b a, fun c hc Φ hΦ Ψ hΨ => ?_⟩` and prove the remaining obligations. Use `show pairAt μ (X.t Y a b Φ) Ψ c = pairAt μ Φ (X.t (star Y) b a Ψ) c`. Take `⟨K1, h1c, h1G, h10⟩` from `hΦ c hc`. Take `⟨K2, h2c, h2G, h20⟩` from `hΨ c hc`. Conclude with `pairAt_t_adj_cpt' P z z' π π' hP X μ hμ Φ Ψ c hc ⟨K1 ∪ K2, h1c.union h2c, Set.union_subset h1G h2G, fun g hg hgK => ⟨h10 g hg (fun h => hgK (Or.inl h)), h20 g hg (fun h => hgK (Or.inr h))⟩⟩ Y a b`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem QQ_mem_adjAlg_cpt (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (hP : IsPlace P z z' π π') (X : ActualOps P.k P.r z z' π π')
@@ -157,7 +155,7 @@ theorem QQ_mem_adjAlg_cpt (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (
       fun g hg hgK => ⟨h10 g hg (fun h => hgK (Or.inl h)), h20 g hg (fun h => hgK (Or.inr h))⟩⟩ Y a b
 
 /- English proof (translation)
-Conclude with `adjTop_of_tAdj (S := S) P z z' π π' X μ L st K l0 hD (cptSub P.k P.r z z' π π') (intOn_cpt μ hD.2.1) hK (fn_pres_cpt X) (fun Y _ a b => QQ_mem_adjAlg_cpt P z z' π π' hD.1 X μ hD.2.1 Y a b)`.
+A detailed English derivation is pending.
 -/
 theorem adjTop_cpt (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))

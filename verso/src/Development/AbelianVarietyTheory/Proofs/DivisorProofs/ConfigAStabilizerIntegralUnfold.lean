@@ -19,7 +19,7 @@ namespace GlobalTheory.ConeMem
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_zero' {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {σ : E →ₐ[F] E} (M : Model σ X W) (ψ : AddChar (AF F) ℂ)
     (w : Matrix (Fin n) (Fin d) (AE F E)) : M.co.rho ψ w (0 : (Fin n × Fin d → AF F) → ℂ) = 0 := by
@@ -27,7 +27,7 @@ theorem rho_zero' {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {σ : E →ₐ[F] 
   simp [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_add' {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {σ : E →ₐ[F] E} (M : Model σ X W) (ψ : AddChar (AF F) ℂ)
     (w : Matrix (Fin n) (Fin d) (AE F E)) (a b : (Fin n × Fin d → AF F) → ℂ) :
@@ -36,7 +36,7 @@ theorem rho_add' {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {σ : E →ₐ[F] E
   simp [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_smul' {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {σ : E →ₐ[F] E} (M : Model σ X W) (ψ : AddChar (AF F) ℂ)
     (w : Matrix (Fin n) (Fin d) (AE F E)) (c : ℂ) (a : (Fin n × Fin d → AF F) → ℂ) :
@@ -46,11 +46,11 @@ theorem rho_smul' {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {σ : E →ₐ[F] 
   ring
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Use `replace hg := GlobalTheory.SBSpan.mem_span_restrictedProd F _ g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `zero => rw [show pureA F f 0 = 0 from funext fun _ => mul_zero _]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `N.zero_mem`. Consider the case `add a b _ _ ha hb`. Rewrite using `[show pureA F f (a + b) = pureA F f a + pureA F f b from funext fun _ => mul_add _ _ _]`. Conclude with `N.add_mem ha hb`. Consider the case `smul c a _ ha`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show pureA F f (c • a) = c • pureA F f a from funext fun _ => mul_left_comm _ _ _]`. Conclude with `N.smul_mem c ha`. Consider the case `mem p hp`. Take `⟨φ, hφ, hs, rfl⟩` from `hp`. Conclude with `h f φ hφ hs`.
+A detailed English derivation is pending.
 -/
 theorem schA_le_of_pure' {κ : Type} [Fintype κ] {N : Submodule ℂ ((κ → AF F) → ℂ)}
     (h : ∀ (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ), (∀ v, φ v ∈ SB (κ → Fv F v)) →
@@ -70,21 +70,19 @@ theorem schA_le_of_pure' {κ : Type} [Fintype κ] {N : Submodule ℂ ((κ → AF
     exact h f φ hφ hs
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC K μK μ hK hμK hμ e hE X om om' om₁ om₁' hT hT₁`. Establish `hpres : ∀ (x : UA σ G.V.J × UA σ G.W.J), ∀ Φ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), om x Φ ∈ schA F _` using `fun x Φ hΦ => (IsUWeilPair.isUSplitting hT.weil).pres x Φ hΦ`. Establish `hzero : cone B G.M om e K μK μ (shiftA H H') X.ν ((b + 2 - a') / 2) 0 = 0`. Use function extensionality and compare the values at `y`. Simplify using `[cone, rho_zero']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hadd : ∀ Φ₁ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), ∀ Φ₂ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), cone B G.M om e K μK μ (shiftA H H') X.ν ((b + 2 - a') / 2) (Φ₁ + Φ₂) = cone B G.M om e K μK μ (shiftA H H') X.ν ((b + 2 - a') / 2) Φ₁ + cone B G.M om e K μK μ (shiftA H H') X.ν …`. Introduce `Φ₁ h₁ Φ₂ h₂`. Use function extensionality and compare the values at `y`. Simplify using `only [cone, Pi.add_apply]`. Rewrite using `[← integral_add (GlobalTheory.T.config_a_stabilizer_haar_eigen hKP F E σ B b a' G G₁ H H' hC K μK μ hK hμK hμ e hE X om om' om₁ om₁' hT hT₁ Φ₁ h₁ y) (GlobalTheory.T.config_a_stabilizer_haar_eigen hKP F E σ B b a' G G₁ H H' hC K μK μ hK hμK hμ e hE X om om' om₁ om₁' hT hT₁ Φ₂ h₂ y …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← integral_add (GlobalTheory.T.config_a_haar_eigen_triple hKP F E σ B b a' G G₁ H H' hC μ hμ e hE X om om' om₁ om₁' hT hT₁ _ (hpres _ _ h₁) y) (GlobalTheory.T.config_a_haar_eigen_triple hKP F E σ B b a' G G₁ H H' hC μ hμ e hE X om om' om₁ om₁' hT hT₁ _ (hpres _ _ h₂) y)]`. Use `integral_congr_ae (Eventually.of_forall fun l => ?_)` and prove the remaining obligations. Use `beta_reduce`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_add, rho_add', map_add, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsmul : ∀ (c : ℂ) (Φ : (Fin (b + 2) × Fin (b + 2 + a') → AF F) → ℂ), cone B G.M om e K μK μ (shiftA H H') X.ν ((b + 2 - a') / 2) (c • Φ) = c • cone B G.M om e K μK μ (shiftA H H') X.ν ((b + 2 - a') / 2) Φ`. Introduce `c Φ`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cone, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← integral_const_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `integral_congr_ae (Eventually.of_forall fun l => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[map_smul, rho_smul', map_smul, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Set `N : Submodule ℂ ((Fin (b + 2) × Fin (b + 2 + a') → AF F) → ℂ)` to `{ carrier := {Φ | Φ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')) ∧ cone B G.M om e K μK μ (shiftA H H') X.ν ((b + 2 - a') / 2) Φ ∈ schA F (Fin b × Fin (b + a'))} zero_mem' := ⟨Submodule.zero_mem _, by rw [hzero]; exact Submodule.zero_mem _⟩ add_mem' := fun {Φ₁ Φ₂} h₁ h₂ => ⟨Submodul …`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hadd Φ₁ h₁.1 Φ₂ h₂.1]`. Conclude with `Submodule.add_mem _ h₁.2 h₂.2⟩`. Use the proof step `smul_mem' := fun c {Φ} h => ⟨Submodule.smul_mem _ c h.1, by`. Rewrite using `[hsmul c Φ]`. Conclude with `Submodule.smul_mem _ c h.2⟩ }`.
-
-Establish `hle : schA F (Fin (b + 2) × Fin (b + 2 + a')) ≤ N`. Use `schA_le_of_pure' fun f φ hφ hs => ?_` and prove the remaining obligations. Establish `hv : ∀ᶠ v in cofinite, φ v = G.M.vac v` using `(hs.and hT.geo.hM.std).mono fun v h => h.1.trans h.2.symm`. Conclude with `⟨GlobalTheory.TensUniq.pure_mem_schA f φ hφ hs, GlobalTheory.T.config_a_stabilizer_haar_unfolding hKP F E σ B b a' G G₁ H H' hC K μK μ hK hμK hμ e hE X om om' om₁ om₁' hT hT₁ f φ hφ hv⟩`. Conclude with `fun Ψ hΨ => (hle hΨ).2`.
+Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem cone_mem_schA : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

@@ -28,15 +28,15 @@ Both sides reduce to the same expression.
 theorem rho_apply (z : 𝓞 D.host.E) : rho G z = (ofSplit G.q).pr (z : D.host.E) := rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SplitCharCond.pr_int G.q (AddSubgroup.subset_closure ⟨1, fun v => by simp, z, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem rho_int (z : 𝓞 D.host.E) : rho G z ∈ 𝒪[G.k] :=
   GlobalTheory.SplitCharCond.pr_int G.q (AddSubgroup.subset_closure ⟨1, fun v => by simp, z, rfl⟩)
 
 /- English proof (translation)
-Distinguish the cases in `h0 : z = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Establish `h0' : rho G z ≠ 0` using `(map_ne_zero (G.q.pr.comp (incA D))).2 (RingOfIntegers.coe_ne_zero_iff.2 h0)`. Establish `h1` using `(G.idem.2 z h0).1 hz`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← G.q.sec_pr, ← G.q.int_iff]`. Express the relevant statement in the definitionally equal form `(G.q.pr.comp (incA D)) _ ∉ _ at h1`. Rewrite `h1` using `[map_inv₀, Valuation.mem_integer_iff, map_inv₀, not_le]`. Conclude with `(one_lt_inv₀ (zero_lt_iff.2 ((map_ne_zero _).2 h0'))).1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_lt {z : 𝓞 D.host.E} (hz : z ∈ PP.asIdeal) : valuation G.k (rho G z) < 1 := by
   by_cases h0 : z = 0
@@ -51,13 +51,13 @@ theorem rho_lt {z : 𝓞 D.host.E} (hz : z ∈ PP.asIdeal) : valuation G.k (rho 
 def out (y : Formalism.L2.DIV.kP PP) : 𝓞 D.host.E := Function.surjInv (Ideal.Quotient.mk_surjective (I := PP.asIdeal)) y
 
 /- English proof (translation)
-The claim follows from `Function.surjInv_eq (Ideal.Quotient.mk_surjective (I := PP.asIdeal)) y`.
+A detailed English derivation is pending.
 -/
 theorem mk_out (y : Formalism.L2.DIV.kP PP) : Ideal.Quotient.mk PP.asIdeal (out y) = y :=
   Function.surjInv_eq (Ideal.Quotient.mk_surjective (I := PP.asIdeal)) y
 
 /- English proof (translation)
-Rewrite using `[← map_sub]`. Use `rho_lt G (Ideal.Quotient.eq.1 ?_)` and prove the remaining obligations. Rewrite using `[mk_out, hz]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_sub_lt {y : Formalism.L2.DIV.kP PP} {z : 𝓞 D.host.E} (hz : Ideal.Quotient.mk PP.asIdeal z = y) :
     valuation G.k (rho G (out y) - rho G z) < 1 := by
@@ -69,7 +69,7 @@ def pos : Fin D.R.k ⊕ Fin (G.s + 1) ≃ Fin D.R.r :=
   finSumFinEquiv.trans (finCongr (by have := G.hs; unfold Ranks.r; omega))
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pos_val (a : Fin D.R.k ⊕ Fin (G.s + 1)) : (pos G a).val = GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos _ _ a := by
   rcases a with a | a <;> rfl
@@ -79,15 +79,15 @@ def lift (g : Matrix (Fin D.R.r) (Fin D.R.r) (Formalism.L2.DIV.kP PP)) :
   fun a b => rho G (out (g (pos G a) (pos G b)))
 
 /- English proof (translation)
-Introduce `a b` and use `rho_int G _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lift_int (g : Matrix (Fin D.R.r) (Fin D.R.r) (Formalism.L2.DIV.kP PP)) : IntM (lift G g) :=
   fun a b => rho_int G _
 
 /- English proof (translation)
-Introduce `a b`. Establish `e : (lift G g * lift G h - lift G (g * h)) a b = -(rho G (out ((g * h) (pos G a) (pos G b))) - rho G (∑ l, out (g (pos G a) l) * out (h l (pos G b))))`. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, lift, map_sum, map_mul]`. Rewrite using `[← Equiv.sum_comp (pos G) (fun l => rho G (out (g (pos G a) l)) * rho G (out (h l (pos G b))))]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, Valuation.map_neg]`. Use `rho_sub_lt G ?_` and prove the remaining obligations. Simplify using `only [map_sum, map_mul, mk_out, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lift_mul (g h : Matrix (Fin D.R.r) (Fin D.R.r) (Formalism.L2.DIV.kP PP)) :
     MaxM (lift G g * lift G h - lift G (g * h)) := by
@@ -103,9 +103,9 @@ theorem lift_mul (g h : Matrix (Fin D.R.r) (Fin D.R.r) (Formalism.L2.DIV.kP PP))
   simp only [map_sum, map_mul, mk_out, Matrix.mul_apply]
 
 /- English proof (translation)
-Introduce `a b`. Establish `e : (lift G 1 - 1) a b = rho G (out ((1 : Matrix (Fin D.R.r) (Fin D.R.r) (Formalism.L2.DIV.kP PP)) (pos G a) (pos G b))) - rho G (if a = b then 1 else 0)`. Simplify using `only [Matrix.sub_apply, lift, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `rho_sub_lt G ?_` and prove the remaining obligations. Simplify using `only [Matrix.one_apply, (pos G).injective.eq_iff]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_one : MaxM (lift G 1 - 1) := by
   intro a b
@@ -119,11 +119,11 @@ theorem lift_one : MaxM (lift G 1 - 1) := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a b`. Use `h a b (pos G a) (pos G b) (pos_val G a) (pos_val G b) _ (mk_out _)` as an intermediate fact. Simplify `this` using `only [Matrix.sub_apply, lift, rho_apply]`. Introduce `h a b a' b' ha hb z hz`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `rfl : a' = pos G a` from `Fin.ext (ha.trans (pos_val G a).symm)`. Take `rfl : b' = pos G b` from `Fin.ext (hb.trans (pos_val G b).symm)`. Establish `e : (x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val a b - (ofSplit G.q).pr (z : D.host.E) = ((x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - lift G g.val) a b + (rho G (out (g.val (pos G a) (pos G b))) - rho G z)`. Simplify using `only [Matrix.sub_apply, lift, rho_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `Valuation.map_add_lt _ (h a b) (rho_sub_lt G hz)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_iff (x : G.S.P.J) (g : GL (Fin D.R.r) (Formalism.L2.DIV.kP PP)) :
     G.Red x g ↔ MaxM ((x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - lift G g.val) := by
@@ -141,14 +141,14 @@ theorem red_iff (x : G.S.P.J) (g : GL (Fin D.R.r) (Formalism.L2.DIV.kP PP)) :
     exact Valuation.map_add_lt _ (h a b) (rho_sub_lt G hz)
 
 /- English proof (translation)
-The claim follows from `mem_KO.1 (G.S.P.le_KO x.2)`.
+A detailed English derivation is pending.
 -/
 theorem intM_J (x : G.S.P.J) : IntM (x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val ∧
     IntM ((x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k)⁻¹).val :=
   mem_KO.1 (G.S.P.le_KO x.2)
 
 /- English proof (translation)
-Rewrite using `[red_iff]`. Use `(lift_one G).neg` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem red_one : G.Red 1 1 := by
   rw [red_iff]
@@ -156,9 +156,9 @@ theorem red_one : G.Red 1 1 := by
   simpa using this
 
 /- English proof (translation)
-Rewrite `hx`, `hy`, the goal using `[red_iff]`. Establish `e : ((x * y : G.S.P.J) : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - lift G (g * h).val = ((x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - lift G g.val) * (y : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val + lift G g.val * ((y : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - lift G h.val) + (l …`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, Matrix.sub_mul, Matrix.mul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hx.mul_intM (intM_J G y).1).add ((lift_int G _).mul_maxM hy)).add (lift_mul G _ _)`.
+A detailed English derivation is pending.
 -/
 theorem red_mul {x y : G.S.P.J} {g h : GL (Fin D.R.r) (Formalism.L2.DIV.kP PP)} (hx : G.Red x g) (hy : G.Red y h) :
     G.Red (x * y) (g * h) := by
@@ -173,9 +173,9 @@ theorem red_mul {x y : G.S.P.J} {g h : GL (Fin D.R.r) (Formalism.L2.DIV.kP PP)} 
   exact ((hx.mul_intM (intM_J G y).1).add ((lift_int G _).mul_maxM hy)).add (lift_mul G _ _)
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[red_iff]`. Use `set X := (x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k) with hX`. Establish `e : ((x⁻¹ : G.S.P.J) : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - lift G (g⁻¹).val = (X⁻¹).val * -((X.val - lift G g.val) * lift G (g⁻¹).val + (lift G g.val * lift G (g⁻¹).val - lift G (g.val * (g⁻¹).val)) + (lift G 1 - 1))`. Rewrite using `[Units.mul_inv]`. Simplify using `only [Subgroup.coe_inv, Matrix.sub_mul, Matrix.mul_neg, Matrix.mul_add, Matrix.mul_sub, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `(intM_J G x).2.mul_maxM (((hx.mul_intM (lift_int G _)).add (lift_mul G _ _)).add (lift_one G)).neg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_inv {x : G.S.P.J} {g : GL (Fin D.R.r) (Formalism.L2.DIV.kP PP)} (hx : G.Red x g) : G.Red x⁻¹ g⁻¹ := by
   rw [red_iff] at hx ⊢
@@ -191,9 +191,9 @@ theorem red_inv {x : G.S.P.J} {g : GL (Fin D.R.r) (Formalism.L2.DIV.kP PP)} (hx 
   exact (intM_J G x).2.mul_maxM (((hx.mul_intM (lift_int G _)).add (lift_mul G _ _)).add (lift_one G)).neg
 
 /- English proof (translation)
-Rewrite `hx`, `hx'` using `[red_iff]`. Establish `h1 : (x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k)⁻¹ * x' ∈ KOne G.k _`. Use `inv_mul_mem_KOne (G.S.P.le_KO x.2) ?_` and prove the remaining obligations. Establish `e : (x' : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - (x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val = ((x' : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - lift G g.val) - ((x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val - lift G g.val)` using `by abel`. Rewrite using `[e, sub_eq_add_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx'.add hx.neg`. Establish `h2` using `G.S.P.lam_eq_one (x⁻¹ * x') (by simpa using h1)`. Rewrite `h2` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_congr {x x' : G.S.P.J} {g : GL (Fin D.R.r) (Formalism.L2.DIV.kP PP)} (hx : G.Red x g) (hx' : G.Red x' g) :
     G.S.P.lam x = G.S.P.lam x' := by
@@ -228,7 +228,7 @@ def grp : Subgroup (Formalism.L2.DIV.G0 d.c.Pg D.R.r) where
 def lam0 (g : grp G) : ℂˣ := ∏ PP, (G PP).S.P.lam (Classical.choose (g.2 PP))
 
 /- English proof (translation)
-The claim follows from `Finset.prod_congr rfl fun PP _ => lam_congr _ (Classical.choose_spec (g.2 PP)) (hx PP)`.
+A detailed English derivation is pending.
 -/
 theorem lambda_zero_eq_product (g : grp G) (x : ∀ PP, (G PP).S.P.J) (hx : ∀ PP, (G PP).Red (x PP) (g.1 PP)) :
     lam0 G g = ∏ PP, (G PP).S.P.lam (x PP) :=
@@ -257,18 +257,18 @@ section Comb
 variable {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `[comb, Finsupp.support_single_ne_zero, heisO, symplOH, symplO, hO]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comb_single_zero (f : WO S T → ℂ) : comb ψ S T (Finsupp.single 0 1) f = f := by
   funext w
   simp [comb, Finsupp.support_single_ne_zero, heisO, symplOH, symplO, hO]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Use `⟨Finsupp.single 0 1, fun w hw => ?_, fun f => comb_single_zero ψ f⟩` and prove the remaining obligations. Rewrite `hw` using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`. Conclude with `hw ▸ h0`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `cons i l ih`. Take `⟨c₁, h₁, e₁⟩` from `ih`. Take `⟨c'', hs, he⟩` from `(GlobalTheory.HeisComb.main D ψ S T).1 (c i) c₁`. Use `⟨c'', fun w hw => ?_, fun f => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, y, hy, rfl⟩` from `hs w hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hadd x y (hc i x hx) (h₁ y hy)`. Rewrite using `[he, e₁, List.foldr_cons]`.
+A detailed English derivation is pending.
 -/
 theorem exists_prod {ι : Type} (c : ι → (WO S T →₀ ℂ)) (P : WO S T → Prop) (h0 : P 0) (hadd : ∀ x y, P x → P y → P (x + y))
     (hc : ∀ i, ∀ w ∈ (c i).support, P w) (l : List ι) :
@@ -291,7 +291,7 @@ end Comb
 variable {D : D7} {u : D.what₂.Word} {d : Dat D u} {τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E}
 
 /- English proof (translation)
-Take `⟨ε, hε, hs⟩` from `G.q.above`. Establish `h` using `GlobalTheory.IdemUnder.under_eq_of_isIdemAt D _ PP.1 _ ε G.idem hε hs`. Unfold `GlobalTheory.ChainOnto.Com.S`. Conclude with `Finset.mem_image.2 ⟨PP.1, PP.2, h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem v_mem_S {PP : d.c.Pg} (G : GAt d τ PP.1) : G.q.v ∈ d.c.S := by
   classical
@@ -301,9 +301,7 @@ theorem v_mem_S {PP : d.c.Pg} (G : GAt d τ PP.1) : G.q.v ∈ d.c.S := by
   exact Finset.mem_image.2 ⟨PP.1, PP.2, h⟩
 
 /- English proof (translation)
-Establish `hs` using `G.hs`. Establish `h : ∀ w ∈ (G.cg j).support, IsHalf (G.q.e + cA D G.q.e) w`. Break down `(by omega : j + 1 ≤ G.s ∨ j = G.s ∨ j = G.s + 1) with h | rfl | rfl` into its components or cases. Conclude with `(G.cg_mid j (G.s - (j + 1)) (by omega)).1`. Conclude with `G.cg_pen.1`.
-
-Conclude with `G.cg_top.1`. Conclude with `fun w hw a b => GlobalTheory.SeeSaw.CellProd.idAt_le (fun v (hv : v = G.q.v) => hv ▸ v_mem_S G) (GlobalTheory.SeeSaw.CellProd.mem_idAt G.q (h w hw a b))`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem cg_supp {PP : d.c.Pg} (G : GAt d τ PP.1) {j : ℕ} (hj : j < D.R.m) :
     ∀ w ∈ (G.cg j).support, MxAt (· ∈ d.c.S) w := by
@@ -321,9 +319,9 @@ end GlobalTheory.LevelComb
 namespace GlobalTheory.LevelComb
 
 /- English proof (translation)
-Introduce `D u d τ G _`. Use `⟨⟨⟨grp G, chi G⟩, fun g => Iff.rfl, fun g x hx => lambda_zero_eq_product G g x hx⟩, ?_⟩` and prove the remaining obligations. Establish `key : ∀ j, ∃ c : WO (D.sp.X j) (D.sp.X (j + 1)) →₀ ℂ, (∀ w ∈ c.support, GlobalTheory.FinPl.MxAt (· ∈ d.c.S) w) ∧ (j < D.R.m → ∀ f, comb d.c.ψ _ _ c f = d.c.Pg.attach.toList.foldr (fun PP f' => comb d.c.ψ _ _ ((G PP).cg j) f') f)`. Introduce `j`. Distinguish the cases in `hj : j < D.R.m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨c, hc, he⟩` from `exists_prod d.c.ψ (fun PP : d.c.Pg => (G PP).cg j) (GlobalTheory.FinPl.MxAt (· ∈ d.c.S)) (fun a b => zero_mem _) (fun x y hx hy a b => add_mem (hx a b) (hy a b)) (fun PP => cg_supp (G PP) hj) d.c.Pg.attach.toList`. Conclude with `⟨c, hc, fun _ => he⟩`. Conclude with `⟨0, by simp, fun h => absurd h hj⟩`. Use `choose cG h1 h2 using key`. Conclude with `⟨cG, h1, fun j hj f _ => h2 j hj f⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (u : D.what₂.Word) (d : Dat D u) τ (G : ∀ PP : d.c.Pg, GAt d τ PP.1), d.c.Is → (∃ P : Formalism.L2.DIV.LevelP d.c.Pg D.R.r ℂ, (∀ g, g ∈ P.H ↔ ∀ PP, ∃ x, (G PP).Red x (g PP)) ∧ ∀ (g : P.H) (x : ∀ PP, (G PP).S.P.J), (∀ PP, (G PP).Red (x PP) (g.1 PP)) → P.chi g = ∏ PP, (G PP).S.P.lam (x PP)) ∧ ∃ cG : ∀ j, WO (D.sp.X j) (D.sp.X (j + 1)) →₀ ℂ, (∀ j, ∀ w ∈ (cG j).support, GlobalTheory.FinPl.MxAt (· ∈ d.c.S) w) ∧ ∀ j, j < D.R.m → ∀ f, IsThetaFunO d.c.ψ _ _ f → comb d.c.ψ _ _ (cG j) f = d.c.Pg.attach.toList.foldr (fun PP f' => comb d.c.ψ _ _ ((G PP).cg j) f') f := by
   intro D u d τ G _

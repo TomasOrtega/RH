@@ -7,7 +7,7 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h` using `LinearMap.congr_fun (GlobalTheory.T.casimir_fockAct1_sub_casimir_fockAct2_eq_smul_one p q r s) P`. Rewrite `h` using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Rewrite using `[← h, sub_sub_cancel]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_casimir_apply (p q r s : ℕ) (P : Pol p q r s) :
     casimir (fockAct2 p q r s) P = casimir (fockAct1 p q r s) P -

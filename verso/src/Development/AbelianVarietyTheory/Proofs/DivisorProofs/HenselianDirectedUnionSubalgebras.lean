@@ -10,43 +10,39 @@ open GlobalTheory.EtC
 namespace GlobalTheory.QUnits
 
 /- English proof (translation)
-Introduce `q _ T _ _ _ hAIC hq O _ _ _ _ _ _ hind A _ _ _ _ π hπ u`. Establish `hq0 : 0 < q` using `Nat.pos_of_ne_zero (NeZero.ne q)`. Set `L` to `Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))`. Set `R` to `TensorProduct T (FractionRing T) A`. Set `f : O →+* R` to `(Algebra.TensorProduct.includeRight : A →ₐ[T] R).toRingHom.comp π.toRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hπT : ∀ t : T, π (algebraMap T O t) = algebraMap T A t`. Introduce `t`. Rewrite using `[IsScalarTower.algebraMap_apply T (Polynomial T) O, AlgHom.commutes, ← IsScalarTower.algebraMap_apply]`. Establish `hfT : ∀ t : T, f (algebraMap T O t) = algebraMap T R t`. Introduce `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.includeRight (π (algebraMap T O t)) = _`. Rewrite using `[hπT, AlgHom.commutes]`. Establish `hf : ∀ y : Algebra.algebraMapSubmonoid O (nonZeroDivisors T), IsUnit (f y)`. Introduce and unpack `⟨_, t, ht, rfl⟩`. Express the relevant statement in the definitionally equal form `IsUnit (f (algebraMap T O t))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hfT, IsScalarTower.algebraMap_apply T (FractionRing T) R]`. Conclude with `(IsLocalization.map_units (FractionRing T) ⟨t, ht⟩).map _`. Set `φ : L →+* R` to `IsLocalization.lift hf`. Establish `hφ : Function.Surjective φ`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero φ⟩`. Consider the case `add x y hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a + b, map_add φ a b⟩`. Consider the case `tmul k a`. Take `⟨o, rfl⟩` from `hπ a`. Take `⟨⟨x, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors T) k`. Use `⟨IsLocalization.mk' L (algebraMap T O x * o) (⟨algebraMap T O s, Algebra.mem_algebraMapSubmonoid_of_mem s⟩ : Algebra.algebraMapSubmonoid O (nonZeroDivisors T)), ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalization.lift_mk'_spec]`. Express the relevant statement in the definitionally equal form `f (algebraMap T O x * o) = f (algebraMap T O (s : T)) * _`. Rewrite using `[map_mul, hfT, hfT]`. Express the relevant statement in the definitionally equal form `algebraMap T R x * (Algebra.TensorProduct.includeRight (π o)) = _`. Establish `hR : ∀ t : T, algebraMap T R t = algebraMap T (FractionRing T) t ⊗ₜ[T] (1 : A)` using `fun t => rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.includeRight_apply, hR, hR, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, IsLocalization.mk'_spec']`. Establish `hB : ∀ P : Ideal L, P.IsPrime → P ≠ ⊥ → P.IsMaximal ∧ ∀ x : L, ∃ c d : T, d ≠ 0 ∧ algebraMap T L d * x - algebraMap T L c ∈ P`. Introduce `P hP hne`. Take `⟨g, hg, hgP⟩` from `GlobalTheory.T.exists_ne_zero_polynomial_mem_prime_localization T hAIC O hind P hP hne`. Conclude with `GlobalTheory.T.prime_tensor_polynomial_isMaximal_of_mem_image T hAIC O hind P hP g hg hgP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hJ : RingHom.ker φ = ⊥`. Establish `hinj : Function.Injective φ` using `(RingHom.injective_iff_ker_eq_bot φ).2 hJ`. Set `e : L ≃+* R` to `RingEquiv.ofBijective φ ⟨hinj, hφ⟩`. Take `⟨v, hv⟩` from `GlobalTheory.LocAcycUnits.units_localization_pow_surj T O q ⟨inferInstance, hAIC⟩ hq hq0 hind (Units.map e.symm.toMonoidHom u)`. Use `⟨Units.map e.toMonoidHom v, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← map_pow, hv]`. Use `ext`. Simplify using the standard rewrite rules. Set `J` to `RingHom.ker φ`. Set `e : L ⧸ J ≃+* R` to `RingHom.quotientKerEquivOfSurjective hφ`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : ∀ I : Ideal (L ⧸ J), I.comap (Ideal.Quotient.mk J) ≠ ⊥`. Introduce `I h`. Apply `hJ` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h, Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 hx]`. Conclude with `I.zero_mem`. Use `haveI : Ring.KrullDimLE 0 (L ⧸ J) := by`. Use `Ring.KrullDimLE.mk₀ ?_` and prove the remaining obligations. Introduce `I hI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hP : (I.comap (Ideal.Quotient.mk J)).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hmax` using `(hB _ hP (hne I)).1`. Use `Ideal.map_eq_top_or_isMaximal_of_surjective (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective hmax` as an intermediate fact. Rewrite `this` using `[Ideal.map_comap_of_surjective (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective]`. Conclude with `this.resolve_left hI.ne_top`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hqL : IsUnit (q : L ⧸ J)`. Use `hq.map (algebraMap T (L ⧸ J))` as an intermediate fact. Simplify using `using this`. Establish `hroot : ∀ m : Ideal (L ⧸ J), m.IsMaximal → ∃ x : L ⧸ J, x ^ q - ((Units.map e.symm.toMonoidHom u : (L ⧸ J)ˣ) : L ⧸ J) ∈ m`. Introduce `m hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w0, hw0⟩` from `Ideal.Quotient.mk_surjective ((Units.map e.symm.toMonoidHom u : (L ⧸ J)ˣ) : L ⧸ J)`. Establish `hP : (m.comap (Ideal.Quotient.mk J)).IsPrime` using `Ideal.comap_isPrime _ _`. Take `⟨c, d, hd, hcd⟩` from `(hB _ hP (hne m)).2 w0`. Take `⟨n, rfl⟩ : ∃ n, q = n + 1` from `⟨q - 1, by omega⟩`. Take `⟨r, hr⟩` from `hAIC (Polynomial.X ^ (n + 1) - Polynomial.C (c * d ^ n)) (Polynomial.monic_X_pow_sub_C _ (Nat.succ_ne_zero n)) (by rw [Polynomial.natDegree_X_pow_sub_C]; exact hq0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrq : r ^ (n + 1) = c * d ^ n` using `by simpa [sub_eq_zero] using hr`. Establish `hdu : IsUnit (algebraMap T L d)`. Rewrite using `[IsScalarTower.algebraMap_apply T O L]`. Conclude with `IsLocalization.map_units L (⟨algebraMap T O d, Algebra.mem_algebraMapSubmonoid_of_mem (⟨d, mem_nonZeroDivisors_of_ne_zero hd⟩ : nonZeroDivisors T)⟩ : Algebra.algebraMapSubmonoid O (nonZeroDivisors T))`. Use `set D := algebraMap T L d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Dinv : L := ((hdu.unit⁻¹ : Lˣ) : L)`. Establish `hDn : Dinv ^ (n + 1) * D ^ (n + 1) = 1`. Rewrite using `[← mul_pow, IsUnit.val_inv_mul, one_pow]`. Establish `hR : algebraMap T L r ^ (n + 1) = algebraMap T L c * D ^ n`. Rewrite using `[← map_pow, hrq, map_mul, map_pow]`.
-
-Use `⟨Ideal.Quotient.mk J (algebraMap T L r * Dinv), ?_⟩` and prove the remaining obligations. Rewrite using `[← hw0, ← map_pow, ← map_sub, ← Ideal.mem_comap]`. Establish `key : (algebraMap T L r * Dinv) ^ (n + 1) - w0 = -(Dinv ^ (n + 1) * D ^ n) * (D * w0 - algebraMap T L c)`. Take the linear combination `Dinv ^ (n + 1) * hR + w0 * hDn`. Rewrite using `[key]`.
-
-Conclude with `Ideal.mul_mem_left _ _ hcd`. Take `⟨v, hv⟩` from `GlobalTheory.T.exists_root_of_unit_zero_dimensional (L ⧸ J) q hq0 hqL (Units.map e.symm.toMonoidHom u) hroot`. Conclude with `⟨Units.map e.toMonoidHom v, by rw [← map_pow, hv]; ext; simp⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tensorFractionRing_units_pow_surj : ∀ (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T], AIC T → IsUnit (q : T) → ∀ (O : Type) [CommRing O] [Algebra T O] [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O] [HenselianLocalRing O] [IsSepClosed (IsLocalRing.ResidueField O)], (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra (Polynomial T) O), Monotone Si ∧ (∀ s : O, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (E : Type) (_ : CommRing E) (_ : Algebra (Polynomial T) E) (_ : Algebra.Etale (Polynomial T) E) (P : Ideal E) (_ : P.IsPrime), Nonempty (Localization.AtPrime P ≃ₐ[(Polynomial T)] Si i)) → ∀ (A : Type) [CommRing A] [Algebra (Polynomial T) A] [Algebra T A] [IsScalarTower T (Polynomial T) A] (π : O →ₐ[Polynomial T] A), Function.Surjective π → ∀ u : (TensorProduct T (FractionRing T) A)ˣ, ∃ v : (TensorProduct T (FractionRing T) A)ˣ, v ^ q = u := by
   intro q _ T _ _ _ hAIC hq O _ _ _ _ _ _ hind A _ _ _ _ π hπ u

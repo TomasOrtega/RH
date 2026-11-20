@@ -30,7 +30,7 @@ Both sides reduce to the same expression.
 theorem rt_apply (I : Type) (g : GF F) (f : X I × GF F → ℂ) (p : X I × GF F) : rt I g f p = f (p.1, p.2 * g) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Use `show (∑ i, f (p.1, p.2 * a i)) = _`. Simplify using `[Finset.sum_apply, rt_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem op_eq {I : Type} [Fintype I] {n : ℕ} (a : Fin n → GF F) (f : X I × GF F → ℂ) :
     Dat.Op a f = ∑ i, rt I (a i) f := by
@@ -39,9 +39,9 @@ theorem op_eq {I : Type} [Fintype I] {n : ℕ} (a : Fin n → GF F) (f : X I × 
   simp [Finset.sum_apply, rt_apply]
 
 /- English proof (translation)
-Proceed by induction on `W with`. Consider the case `nil => simp`. Consider the case `cons w W ih`. Establish `key : ∀ g : Mk, ((z w • (Dat.Op (aw w)).restrict (hw w)) g : X I × GF F → ℂ) = z w • Uop w ((rt I).comp (locGL F 2 w)) (c w) (g : X I × GF F → ℂ)`. Introduce `g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `((haw w).act _ (rt I) _ (hfix _ g.2)).2`. Simplify using `only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one] at h`. Rewrite using `[LinearMap.smul_apply, Submodule.coe_smul, LinearMap.coe_restrict_apply, op_eq, h]`. Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply]`. Rewrite using `[key, ih, map_smul, mul_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem wordU {I : Type} [Fintype I] {c : Pl F → ℕ} (Mk : Submodule ℂ (X I × GF F → ℂ))
     (hfix : ∀ f ∈ Mk, f ∈ Hi.fixd (rt I) (Kc c)) (z : Pl F → ℂ) (na : Pl F → ℕ) (aw : ∀ w, Fin (na w) → GF F)
@@ -61,7 +61,7 @@ theorem wordU {I : Type} [Fintype I] {c : Pl F → ℕ} (Mk : Submodule ℂ (X I
     rw [key, ih, map_smul, mul_smul]
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[wordU Mk hfix z na aw haw hw W f, LinearMap.smul_apply, Submodule.coe_smul, LinearMap.coe_restrict_apply, op_eq, (ha.act _ (rt I) _ (hfix _ f.2)).2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem word {I : Type} [Fintype I] {c : Pl F → ℕ} (Mk : Submodule ℂ (X I × GF F → ℂ))
     (hfix : ∀ f ∈ Mk, f ∈ Hi.fixd (rt I) (Kc c)) (z : Pl F → ℂ) (na : Pl F → ℕ) (aw : ∀ w, Fin (na w) → GF F)
@@ -73,7 +73,7 @@ theorem word {I : Type} [Fintype I] {c : Pl F → ℕ} (Mk : Submodule ℂ (X I 
     (ha.act _ (rt I) _ (hfix _ f.2)).2]
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations. Establish `h1` using `wordU Mk hfix z na aw haw hw [i, j] f`. Establish `h2` using `wordU Mk hfix z na aw haw hw [j, i] f`. Simplify using `only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one] at h1 h2`. Rewrite using `[h1, h2, mul_comm (z i) (z j), Module.End.mul_apply, Module.End.mul_apply, (hc F _ (rt I) c f.1 (hfix _ f.2) i).2 j]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm {I : Type} [Fintype I] {c : Pl F → ℕ} (hc : HkComm) (Mk : Submodule ℂ (X I × GF F → ℂ))
     (hfix : ∀ f ∈ Mk, f ∈ Hi.fixd (rt I) (Kc c)) (z : Pl F → ℂ) (na : Pl F → ℕ) (aw : ∀ w, Fin (na w) → GF F)
@@ -87,11 +87,11 @@ theorem comm {I : Type} [Fintype I] {c : Pl F → ℕ} (hc : HkComm) (Mk : Submo
   rw [h1, h2, mul_comm (z i) (z j), Module.End.mul_apply, Module.End.mul_apply, (hc F _ (rt I) c f.1 (hfix _ f.2) i).2 j]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∀ u ∈ Kc c, rt _ u f = f`. Introduce `u hu`. Use function extensionality and compare the values at `p`. Establish `hH : u ∈ Hc c` using `Subgroup.mem_sup_left hu`. Establish `h1 : χ ⟨u, hH⟩ = 1`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(hχ ⟨u, hH⟩).2 u hu 1 (by simp)]`. Simplify using the standard rewrite rules. Use `hf.lev p.1 p.2 ⟨u, hH⟩` as an intermediate fact. Express the relevant statement in the definitionally equal form `f (p.1, p.2 * u) = ((χ ⟨u, hH⟩ : ℂˣ) : ℂ) * f (p.1, p.2) at this`. Rewrite `this` using `[h1, Units.val_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[rt_apply, this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fix_of_form [IsTotallyReal F] {c : Pl F → ℕ} {ω : HChar F} {χ : Hc c →* ℂˣ} (hχ : IsChi c ω χ)
     {k : InfinitePlace F → ℕ} {f : X (InfinitePlace F) × GF F → ℂ} (hf : (mkDat c χ).IsForm k f) :
@@ -109,13 +109,11 @@ theorem fix_of_form [IsTotallyReal F] {c : Pl F → ℕ} {ω : HChar F} {χ : Hc
   rw [rt_apply, this]
 
 /- English proof (translation)
-Take `⟨-, h2, h3, h4, h0, h5⟩` from `hRel F k`. Establish `hsm : ∀ {g : X (InfinitePlace F) × GF F → ℂ} {ψ : GA F 2 → ℂ} (s : ℂ), Rel k g ψ → Rel k (s • g) (s • ψ)` using `fun s h => by simpa using h4 0 _ 0 _ s h0 h`. Establish `hU : (∑ i, TR.finRep F 2 (a i) φ) = Uop w (locSm F w) (c w) φ`. Use `(ha.act (TR.Sm F 2) (TR.finRep F 2) φ hφ).2` as an intermediate fact. Simplify `this` using `[locSm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `r1 : Rel k (α • Dat.Op a f) ((α • Uop w (locSm F w) (c w) φ : TR.Sm F 2) : GA F 2 → ℂ)`. Rewrite using `[← hU]`. Simplify using `using hsm α (h5 n a f φ hrel)`. Establish `r2 : Rel k (β • f) ((β • φ : TR.Sm F 2) : GA F 2 → ℂ)` using `by simpa using hsm β hrel`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Rewrite `r1` using `[h]`. Conclude with `Subtype.ext (h2 _ _ _ r1 r2)`. Introduce `h`. Rewrite `r1` using `[h]`.
-
-Conclude with `h3 _ _ _ r1 r2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_iff [IsTotallyReal F] (hRel : HRel) {k : InfinitePlace F → ℕ} {c : Pl F → ℕ} {w : Pl F} {n : ℕ}
     {a : Fin n → GF F} (ha : IsReps c [w] a) {f : X (InfinitePlace F) × GF F → ℂ} {φ : TR.Sm F 2} (hrel : Rel k f φ.1)
@@ -139,11 +137,11 @@ theorem eig_iff [IsTotallyReal F] (hRel : HRel) {k : InfinitePlace F → ℕ} {c
     exact h3 _ _ _ r1 r2
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `(hRel F k).1 f`. Take `⟨hψS, hhol⟩` from `hH2d F k c hc ω χ hω hχ hS h1 f ψ hf hψ`. Establish `hne : (⟨ψ, hψS⟩ : TR.Sm F 2) ≠ 0`. Introduce `h`. Apply `hf0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h' : ψ = 0` using `congrArg Subtype.val h`. Rewrite `hψ` using `[h']`. Conclude with `(hRel F k).2.2.1 _ _ _ hψ (hRel F k).2.2.2.2.1`. Use `⟨⟨ψ, hψS⟩, hhol, hne, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hH2e F k c ω _ hω h1 hhol (hH2a F k c hc ω χ hω hχ hS h1 f ψ hf hψ).2.2.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w`. Establish `hfix` using `(hH0 F k c ω _ hhol hne).2.1`. Conclude with `(eig_iff hRel (haw w) hψ hfix (α w) (s w)).1 (heig w)`.
+A detailed English derivation is pending.
 -/
 theorem lift [IsTotallyReal F] (hH0 : H0) (hRel : HRel) (hH2a : H2a) (hH2d : H2d) (hH2e : H2e)
     {k : InfinitePlace F → ℕ} {c : Pl F → ℕ} (hc : {w | c w ≠ 0}.Finite) {ω : HChar F} (hω : IsOfFinOrder ω)
@@ -168,7 +166,7 @@ theorem lift [IsTotallyReal F] (hH0 : H0) (hRel : HRel) (hH2a : H2a) (hH2d : H2d
     exact (eig_iff hRel (haw w) hψ hfix (α w) (s w)).1 (heig w)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Use `push_cast`. Conclude with `(Valuation.map_add _ _ _).trans (max_le ih (by simp))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem nu_nat_le {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) : nu ι (n : ℂ) ≤ 1 := by
   induction n with
@@ -178,7 +176,7 @@ theorem nu_nat_le {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) : n
     exact (Valuation.map_add _ _ _).trans (max_le ih (by simp))
 
 /- English proof (translation)
-Break down `Int.eq_nat_or_neg n with ⟨m, rfl | rfl⟩` into its components or cases. Simplify using `using nu_nat_le ι m`. Rewrite using `[Int.cast_neg, Valuation.map_neg]`. Simplify using `using nu_nat_le ι m`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nu_int_le {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℤ) : nu ι (n : ℂ) ≤ 1 := by
   rcases Int.eq_nat_or_neg n with ⟨m, rfl | rfl⟩
@@ -187,13 +185,13 @@ theorem nu_int_le {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℤ) : n
     simpa using nu_nat_le ι m
 
 /- English proof (translation)
-Establish `hl` using `(Fact.out : l.Prime)`. Establish `hcop : Nat.Coprime m l` using `Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hl).2 hm)`. Establish `hbez` using `Nat.gcd_eq_gcd_ab m l`. Rewrite `hbez` using `[Nat.Coprime.gcd_eq_one hcop]`. Establish `hc : ((m : ℂ) * (Nat.gcdA m l : ℂ)) = 1 - (l : ℂ) * (Nat.gcdB m l : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun x : ℤ => (x : ℂ)) hbez` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `-this`. Establish `h1 : nu ι ((m : ℂ) * (Nat.gcdA m l : ℂ)) = 1`. Rewrite using `[hc, Valuation.map_one_sub_of_lt]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[map_mul]`. Use `le_antisymm (nu_nat_le ι m) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hlt`. Establish `: nu ι (m : ℂ) * nu ι (Nat.gcdA m l : ℂ) < 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd h1 this.ne`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem nu_coprime {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (hnul : nu ι (l : ℂ) < 1) (m : ℕ) (hm : ¬ l ∣ m) :
     nu ι (m : ℂ) = 1 := by
@@ -220,7 +218,7 @@ theorem nu_coprime {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (hnul : nu �
   exact absurd h1 this.ne
 
 /- English proof (translation)
-Rewrite using `[mul_smul, ← h, smul_smul, ← mul_assoc, mul_comm P⁻¹ A, mul_assoc, inv_mul_cancel₀ hP, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_fix {V : Type} [AddCommGroup V] [Module ℂ V] (A P s : ℂ) (hP : P ≠ 0) (x y : V)
     (h : (A * P) • x = s • y) : A • x = (P⁻¹ * s) • y := by
@@ -230,45 +228,41 @@ end UpperTheory.Esk.HolWCAux
 
 open UpperTheory.Esk.HolWCAux in
 /- English proof (translation)
-Introduce `hFin0 hE0b hDAx hReps hGood hTr hH0 hH0b hRel hH1 hHFin hH2a hH2d hH2e`. Introduce `F _ _ _ hd l _ hl2 ι D k₀ hk₀ c hc hcl hu ω hω φ lam hφ hcusp hlam S B`. Establish `hl` using `(Fact.out : l.Prime)`. Establish `hk1 : IsHolV (fun _ => k₀) c ω φ` using `isHolV_of hφ.hol`. Take `⟨hSgn, hφfix, χ, hχ⟩` from `hH0 F (fun _ => k₀) c ω φ hk1 hφ.ne`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hχfin, -⟩` from `hH0b F (fun _ => k₀) c ω χ hω hχ`. Establish `hAx : (mkDat c χ).Ax` using `hDAx F hd c hc χ hχfin`. Establish `hE : ∀ k, (∀ f, f ∈ (mkDat c χ).M k ↔ (mkDat c χ).IsForm k f) ∧ ∀ (ι : Type) [Fintype ι] (a : ι → GF F), (mkDat c χ).Good a → ∀ f ∈ (mkDat c χ).M k, Dat.Op a f ∈ (mkDat c χ).M k` using `hE0b F _ _ (mkDat c χ) hAx`. Use `choose na aw haw using fun w : Pl F => hReps F c [w]`. Establish `hgood : ∀ w, (mkDat c χ).Good (aw w)` using `fun w => (hGood F c ω χ hχ [w] (na w) (aw w) (haw w)).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfixM : ∀ k, ∀ f ∈ (mkDat c χ).M k, f ∈ Hi.fixd (rt (InfinitePlace F)) (Kc c)` using `fun k f hf => fix_of_form hχ (((hE k).1 f).1 hf)`. Establish `hwM : ∀ k, ∀ w, ∀ f ∈ (mkDat c χ).M k, Dat.Op (aw w) f ∈ (mkDat c χ).M k` using `fun k w => (hE k).2 _ (aw w) (hgood w)`. Establish `hcomm : HkComm` using `UpperTheory.V.Sd.Wc.hkComm (UpperTheory.V.Sd.Wc.hkReps UpperTheory.V.Sd.uopSum) UpperTheory.V.Sd.Wc.kcTop`. Establish `: FiniteDimensional ℂ ((mkDat c χ).M fun _ => k₀)` using `hHFin F (fun _ => k₀) c hc ω χ hω hχ hSgn (fun _ => by omega)`. Take `⟨N, hN⟩ : ∃ N, N = Module.finrank ℂ ((mkDat c χ).M fun _ => k₀)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩ : ∃ t, t = (l - 1) * l ^ N * max B 1` from `⟨_, rfl⟩`. Establish `hl1 : 0 < l - 1` using `by have := hl.two_le; omega`. Establish `htB : t ≥ B`. Rewrite using `[ht]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `htd : l - 1 ∣ t` using `⟨l ^ N * max B 1, by rw [ht]; ring⟩`. Establish `hdiv : ∀ v, (l - 1) * l ^ N ∣ (fun v : InfinitePlace F => if v ∈ S then t else 0) v`. Introduce `v`. Simplify using `only`. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨max B 1, ht⟩`. Conclude with `dvd_zero _`. Establish `hSgn' : Sgn (fun v => k₀ + 2 * (if v ∈ S then t else 0)) ω`. Introduce `v`. Rewrite using `[hSgn v]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[pow_add, pow_mul]`. Establish `hk'1 : ∀ v, 1 ≤ (fun v => k₀ + 2 * (if v ∈ S then t else 0)) v` using `fun v => by simp only; omega`. Establish `: FiniteDimensional ℂ ((mkDat c χ).M fun v => k₀ + 2 * (if v ∈ S then t else 0))` using `hHFin F _ c hc ω χ hω hχ hSgn' hk'1`. Establish `hnul : nu ι (l : ℂ) < 1`. Take `⟨v⟩ : Nonempty (InfinitePlace F)` from `inferInstance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `(D.lt v ((l : ℕ) : (D.pl v).adicCompletion F)).2 (by`. Rewrite using `[D.unif v, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use the proof step `norm_num)`. Simplify using `using h`. Establish `hnul0 : 0 < nu ι (l : ℂ)` using `(Valuation.pos_iff _).2 (by exact_mod_cast hl.ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hε : ∀ d : ℕ, 1 ≤ d → d ≤ Module.finrank ℂ ((mkDat c χ).M fun _ => k₀) → nu ι (l : ℂ) ^ N < nu ι (d : ℂ)`. Introduce `d hd1 hdN`. Rewrite `hdN` using `[← hN]`. Take `⟨a, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (by omega : d ≠ 0) l hl.one_lt.ne'`. Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero (fun h => hm (h ▸ dvd_zero l))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `ha : a < N`. Establish `h1 : l ^ a ≤ l ^ a * m` using `Nat.le_mul_of_pos_right _ hm0`. Establish `h2 : N < l ^ N` using `Nat.lt_pow_self hl.one_lt`. Assume the negation of the conclusion as `hh`. Use `push Not at hh`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `Nat.pow_le_pow_right hl.pos hh` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `push_cast`. Rewrite using `[map_mul, map_pow, nu_coprime ι hnul m hm, mul_one]`. Conclude with `pow_lt_pow_right_of_lt_one₀ hnul0 hnul ha`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨f0, hf0, hrel0⟩` from `hH1 F (fun _ => k₀) c ω χ hω hχ φ hk1 hcusp`. Establish `hf0M : f0 ∈ (mkDat c χ).M fun _ => k₀` using `((hE _).1 f0).2 hf0`. Establish `hf0ne : (⟨f0, hf0M⟩ : (mkDat c χ).M fun _ => k₀) ≠ 0`. Introduce `h`. Establish `h0 : f0 = 0` using `congrArg Subtype.val h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hrel0` using `[h0]`. Apply `hφ.ne` to reduce the goal to its premises. Conclude with `Subtype.ext ((hRel F _).2.1 _ _ _ hrel0 (hRel F _).2.2.2.2.1)`. Establish `hnz0 : ∀ w, nz D k₀ 0 w = (((normV w : ℝ) ^ ((k₀ : ℝ) / 2 - 1) : ℝ) : ℂ)` using `fun w => by simp [nz]`. Establish `heig : ∀ w, (nz D k₀ 0 w • (Dat.Op (aw w)).restrict (hwM (fun _ => k₀) w)) ⟨f0, hf0M⟩ = lam w • ⟨f0, hf0M⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [LinearMap.smul_apply, Submodule.coe_smul, LinearMap.coe_restrict_apply]`. Use `(eig_iff hRel (haw w) hrel0 hφfix _ _).2 ?_` and prove the remaining obligations. Use `hφ.eig w` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hk, LinearMap.smul_apply] at this`. Rewrite using `[hnz0]`. Conclude with `this`. Establish `htr : ∀ (W : List (Pl F)) (r : ℕ), 1 ≤ r → (∀ j ∈ Finset.univ.image D.pl, r ≤ W.count j) → nu ι (LinearMap.trace ℂ ((mkDat c χ).M fun _ => k₀) (W.map fun w => nz D k₀ 0 w • (Dat.Op (aw w)).restrict (hwM (fun _ => k₀) w)).prod) ≤ 1 ∧ nu ι (LinearMap.trace ℂ ((mkDat c χ).M fun v => …`. Introduce `W r hr hW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, a, ha⟩` from `hReps F c W`. Establish `hg` using `(hGood F c ω χ hχ W n a ha).1`. Establish `h0` using `(hE (fun _ => k₀)).2 _ a hg`. Establish `h1` using `(hE (fun v => k₀ + 2 * (if v ∈ S then t else 0))).2 _ a hg`. Rewrite using `[word _ (hfixM _) (nz D k₀ 0) na aw haw (hwM _) W a ha h0, word _ (hfixM _) (nz D k₀ (fun v => if v ∈ S then t else 0)) na aw haw (hwM _) W a ha h1, LinearMap.map_smul, LinearMap.map_smul, smul_eq_mul, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hTr F hd l hl2 ι D k₀ hk₀ c hc hcl hu ω χ hω hχ hSgn N (fun v => if v ∈ S then t else 0) hdiv W r hr (fun v => hW _ (Finset.mem_image_of_mem _ (Finset.mem_univ _))) n a ha h0 h1`. Take `⟨f', s', hf'ne, hf'eig, hs'⟩` from `hFin0 (nu ι) l hl hnul (Pl F) ((mkDat c χ).M fun _ => k₀) ((mkDat c χ).M fun v => k₀ + 2 * (if v ∈ S then t else 0)) (fun w => nz D k₀ 0 w • (Dat.Op (aw w)).restrict (hwM (fun _ => k₀) w)) (fun w => nz D k₀ (fun v => if v ∈ S then t else 0) w • (Dat.Op (aw w)).restrict (hwM (fun …`. Establish `hf'F` using `((hE _).1 f'.1).1 f'.2`. Establish `hf'0 : f'.1 ≠ 0` using `fun h => hf'ne (Subtype.ext h)`. Take `⟨φ', hhol, hne, hcusp', hφ'eig⟩` from `lift hH0 hRel hH2a hH2d hH2e hc hω hχ hSgn' hk'1 hf'F hf'0 na aw haw (fun w => nz D k₀ (fun v => if v ∈ S then t else 0) w) s' (fun w => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Subtype.val (hf'eig w)` as an intermediate fact. Simplify `this)` using `only [LinearMap.smul_apply, Submodule.coe_smul, LinearMap.coe_restrict_apply]`. Apply the tactic sequence `have hP : ∀ w, (∏ v, if D.pl v = w then (l : ℂ) ^ (if v ∈ S then t else 0) else 1) ≠ 0 := fun w => Finset.prod_ne_zero_iff.2 fun v _ => by split_ifs <;> simp [hl.ne_zero]`. Use `⟨t, htB, htd, φ', fun w => (∏ v, if D.pl v = w then (l : ℂ) ^ (if v ∈ S then t else 0) else 1)⁻¹ * s' w, hhol, hne, hcusp', ?_, ?_⟩` and prove the remaining obligations. Introduce `w`.
-
-Use `hφ'eig w` as an intermediate fact. Simplify using `only [nz] at this`. Simplify using `only [hk, LinearMap.smul_apply]`. Conclude with `smul_fix _ _ _ (hP w) _ _ this`. Introduce `w`.
-
-Establish `hprod : (∏ v, if D.pl v = w ∧ v ∈ S then (l : ℂ) ^ t else 1) = ∏ v, if D.pl v = w then (l : ℂ) ^ (if v ∈ S then t else 0) else 1` using `Finset.prod_congr rfl fun v _ => by`. Apply the tactic sequence `by_cases h1 : D.pl v = w <;> by_cases h2 : v ∈ S <;> simp [h1, h2]`. Rewrite using `[hprod, ← mul_assoc, mul_inv_cancel₀ (hP w), one_mul]`. Conclude with `hs' w`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.pf_HolWC : UpperTheory.Esk.Fin0 → UpperTheory.Esk.FormsStableUnderOperators → UpperTheory.Esk.DAx → UpperTheory.Esk.DReps → UpperTheory.Esk.DGood → UpperTheory.Esk.TrCong → UpperTheory.Esk.H0 → UpperTheory.Esk.H0b → UpperTheory.Esk.HRel → UpperTheory.Esk.H1 → UpperTheory.Esk.HFin → UpperTheory.Esk.H2a → UpperTheory.Esk.H2d → UpperTheory.Esk.H2e → UpperTheory.Esk.HolWC := by
   intro hFin0 hE0b hDAx hReps hGood hTr hH0 hH0b hRel hH1 hHFin hH2a hH2d hH2e

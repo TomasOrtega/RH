@@ -9,9 +9,9 @@ open UpperTheory.V.Lit.Geo
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af GlobalTheory.UnitaryBC UpperTheory.V.Lit.Dr UpperTheory.V.Lit.Bor
 
 /- English proof (translation)
-Introduce `h`. Apply `hv` to reduce the goal to its premises. Establish `h1 : vInf v ᵥ* (GeneralLinearGroup.map (pInf E) g).val = 0` using `h`. Establish `h2 : vInf v = 0`. Use `congrArg (fun x => x ᵥ* ((GeneralLinearGroup.map (pInf E) g)⁻¹).val) h1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [Matrix.vecMul_vecMul, Units.mul_inv, Matrix.vecMul_one, Matrix.zero_vecMul]`. Use function extensionality and compare the values at `i`. Establish `h3 : ((pInf E : Ad E →+* Cinf E).comp (algebraMap E (Ad E))) (v i) = 0` using `congrFun h2 i`. Conclude with `(map_eq_zero_iff _ (RingHom.injective _)).1 h3`.
+Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pt_ne_zero {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (g : GA E a)
     (v : Fin a → E) (hv : v ≠ 0) : pt g v ≠ 0 := by
@@ -26,11 +26,11 @@ private theorem pt_ne_zero {E : Type} [Field E] [NumberField E] [IsTotallyComple
   exact (map_eq_zero_iff _ (RingHom.injective _)).1 h3
 
 /- English proof (translation)
-Establish `hH0 : 0 < H` using `by linarith`. Establish `hT0 : 0 < T` using `by linarith`. Establish `hl : 0 ≤ Real.log T` using `Real.log_nonneg hT`. Establish `a1` using `Real.log_le_log (by positivity) h1`. Rewrite `a1` using `[Real.log_mul hH0.ne' (by positivity), Real.log_pow, Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a2` using `Real.log_le_log (Real.exp_pos _) h2`. Rewrite `a2` using `[Real.log_exp, Real.log_mul hq.ne' hT0.ne']`. Establish `hN : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`. Establish `a3` using `mul_le_mul_of_nonneg_left a2 hN`. Establish `a4` using `le_abs_self (Real.log C)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a5` using `mul_nonneg (abs_nonneg (Real.log C)) hl`. Establish `a6` using `mul_nonneg (mul_nonneg hN Real.pi_pos.le) hl`. Move the coercions through the operations in `at a1`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem log_bound {H q T C : ℝ} {N : ℕ} (hH : 1 ≤ H) (hT : 1 ≤ T) (hq : 0 < q)
     (h1 : H * (q ^ 2) ^ N ≤ C) (h2 : Real.exp (-Real.pi) ≤ q * T) :
@@ -51,13 +51,13 @@ private theorem log_bound {H q T C : ℝ} {N : ℕ} (hH : 1 ≤ H) (hT : 1 ≤ T
   nlinarith
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha L hL`. Take `⟨C, N, hC⟩` from `UpperTheory.nsmul_orbit_bounded_of_compact E a ha L hL`. Take `⟨M, hM⟩` from `UpperTheory.geometry_of_numbers_lattice_estimate E a ha L hL`. Establish `hT` using `(UpperTheory.hermitian_space_geometric_estimate E a ha L hL).1`. Use `⟨|Real.log C| + 2 * N * Real.pi + 2 * N, fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv, hv0, hb⟩` from `hC g`. Set `φ : lat L g →+ EuclideanSpace ℂ (Fin a × InfinitePlace E)` to `(euc.toLinearMap.toAddMonoidHom.comp (pt (rt g))).comp (lat L g).subtype`. Establish `hφ : ∀ x : lat L g, ‖φ x‖ ^ 2 = qf (pt (rt g) x.1)` using `fun x => norm_euc_sq _`. Establish `hs : Summable fun x => Real.exp (-Real.pi * ‖φ x‖ ^ 2)`. Use `((hM g).2 1 1 one_pos le_rfl).1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [hφ, one_mul]`. Establish `hne : φ ⟨v, hv⟩ ≠ 0` using `fun h => pt_ne_zero (rt g) v hv0 (euc.injective (h.trans (map_zero euc).symm))`. Establish `hlow` using `UpperTheory.geometric_side_lower_bound (lat L g) _ φ hs ⟨v, hv⟩ hne`. Establish `hTh : ∑' x, Real.exp (-Real.pi * ‖φ x‖ ^ 2) = Th L g`. Simplify using `only [hφ]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite `hlow` using `[hTh]`. Use `log_bound ((UpperTheory.V.Lit.Geo.qhtFacts E a).1 g) (hT g).1 (norm_pos_iff.2 hne) ?_ hlow` and prove the remaining obligations. Rewrite using `[hφ]`. Conclude with `hb`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.hermitian_space_point_log_estimate :
     LeFn := by

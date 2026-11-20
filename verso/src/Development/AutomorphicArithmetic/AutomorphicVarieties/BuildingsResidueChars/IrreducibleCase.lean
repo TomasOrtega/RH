@@ -5,26 +5,26 @@ open UpperTheory.V.Af UpperTheory.V.Af.Gu
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.DefiniteBC
 
 /- English proof (translation)
-Simplify using `[spehInf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem spehInf_one' (m : Multiset ℂ) : spehInf 1 m = m := by
   simp [spehInf]
 
 /- English proof (translation)
-Simplify using `[satTot, GlobalTheory.WeilDeligne.qPow_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem satTot_one {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (S : Fin 1 → Multiset ℂˣ) :
     satTot w (fun _ => 1) S = S 0 := by
   simp [satTot, GlobalTheory.WeilDeligne.qPow_zero]
 
 /- English proof (translation)
-Introduce `PH E Ω _ _ _ _ _ _ l _ ι n hn1 π hπ c a d hn P ρ m H hc hd r hr hF`. Substitute `hc` using the available equality. Take `rfl : d = fun _ => 1` from `funext hd`. Establish `hn' : a 0 = n` using `by simpa using hn`. Substitute `hn'` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hw : ∀ φ lam, HasWeightAt π φ lam → (P 0).HasInfChar φ (infOfWeight lam)` using `fun φ lam h => by`. Establish `e` using `H.weight φ lam h`. Rewrite `e` using `[Fin.sum_univ_one, spehInf_one']`. Conclude with `e ▸ H.inf 0 φ`. Use `⟨P 0, (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => ?_, GlobalTheory.LocGlobDual.Model.dualIsConj_of_isCsd (PH.toClassicalTheorems.litN.aut.gk E _ (P 0)) (H.csd 0), ⟨hr, hF.mono fun w ⟨S, h1, h2⟩ => ⟨S 0, h1 0, satTot_one w S ▸ h2⟩⟩, hw⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨lam, hl⟩` from `GlobalTheory.T.exists_algebraicWeight_of_automorphic_definiteUnitary E _ hn1 π hπ τ`. Rewrite using `[CG.HasInfChar.infChar_eq (π := CG.mk (P 0)) (hw τ lam hl)]`. Use `⟨nodup_infOfWeight lam, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[infOfWeight, Multiset.mem_map]`. Take `⟨j, -, rfl⟩` from `hz`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨lam.w j - (j : ℕ), by push_cast; ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.irreducible_case :
     HypothesesH → IrrCase := by

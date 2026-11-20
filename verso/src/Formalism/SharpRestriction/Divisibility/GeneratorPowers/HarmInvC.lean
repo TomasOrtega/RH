@@ -18,7 +18,7 @@ variable {S : Type} [CommRing S] {n d : ℕ}
 def sb (b : Fin n) : Fin 1 × Fin d → MvPowerSeries (Fin n × Fin d) S := fun p => MvPowerSeries.X ((b, p.2))
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [sb]`. Consider the case `exact MvPowerSeries.constantCoeff_X _`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sb_cc (b : Fin n) (p : Fin 1 × Fin d) : MvPowerSeries.constantCoeff (sb (S := S) b p) = 0 := by
   first
@@ -26,9 +26,9 @@ theorem sb_cc (b : Fin n) (p : Fin 1 × Fin d) : MvPowerSeries.constantCoeff (sb
   | exact MvPowerSeries.constantCoeff_X _
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MvPowerSeries.rename_eq_subst _ _`. Consider the case `exact (MvPowerSeries.subst_X_comp_eq_rename _ _).symm`. Consider the case `(rw [MvPowerSeries.rename_eq_subst]; rfl)`. Consider the case `(rw [← MvPowerSeries.subst_eq_rename]; rfl)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [MvPowerSeries.subst_eq_rename]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem rename_col (b : Fin n) (F : MvPowerSeries (Fin 1 × Fin d) S) :
     MvPowerSeries.rename (fun p : Fin 1 × Fin d => ((b, p.2) : Fin n × Fin d)) F = MvPowerSeries.subst (sb b) F := by
@@ -40,11 +40,11 @@ theorem rename_col (b : Fin n) (F : MvPowerSeries (Fin 1 × Fin d) S) :
   | (rw [MvPowerSeries.subst_eq_rename]; rfl)
 
 /- English proof (translation)
-Establish `h0 : ∀ p : Fin 1 × Fin d, MvPowerSeries.constantCoeff (sb (S` using `S) (n := n) (d := d) b p) = 0 := fun p => sb_cc b p`. Establish `hs : MvPowerSeries.HasSubst (sb (S` using `S) (n := n) (d := d) b) := by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero h0`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero h0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' h0`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [h0 s]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [h0 s]; exact IsNilpotent.zero)`. Establish `hC : ∀ (c : S) (f : MvPowerSeries (Fin 1 × Fin d) S), MvPowerSeries.C c * f = c • f` using `fun c f => by rw [MvPowerSeries.smul_eq_C_mul]`. Establish `hC' : ∀ (c : S) (f : MvPowerSeries (Fin n × Fin d) S), MvPowerSeries.C c * f = c • f` using `fun c f => by rw [MvPowerSeries.smul_eq_C_mul]`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hs]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ReciprocityTheory.ChartRestriction.G.TB.quadCol, Fin.sum_univ_one, mul_assoc, hC, hC', map_smul, map_sum, map_mul]`. Simplify using `only [MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X hs, sb]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem subst_quadCol (b : Fin n) (r : S) (β : Matrix (Fin d) (Fin d) S) :
     MvPowerSeries.subst (sb b) (r • TB.quadCol (n := 1) β) =
@@ -66,7 +66,7 @@ theorem subst_quadCol (b : Fin n) (r : S) (β : Matrix (Fin d) (Fin d) S) :
   simp only [MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X hs, sb]
 
 /- English proof (translation)
-Simplify using `only [subst_quadCol]`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.TB.quadCol, Finset.smul_sum]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_subst_quadCol (r : S) (β : Matrix (Fin d) (Fin d) S) :
     ∑ b : Fin n, MvPowerSeries.subst (sb b) (r • TB.quadCol (n := 1) β) = r • TB.quadCol (n := n) β := by
@@ -74,7 +74,7 @@ theorem sum_subst_quadCol (r : S) (β : Matrix (Fin d) (Fin d) S) :
   simp only [ReciprocityTheory.ChartRestriction.G.TB.quadCol, Finset.smul_sum]
 
 /- English proof (translation)
-Simplify using `[ReciprocityTheory.ChartRestriction.G.TB.quadCol]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cc_quadCol {m : ℕ} (β : Matrix (Fin d) (Fin d) S) :
     MvPowerSeries.constantCoeff (TB.quadCol (n := m) β) = 0 := by
@@ -83,7 +83,7 @@ theorem cc_quadCol {m : ℕ} (β : Matrix (Fin d) (Fin d) S) :
 end Col
 
 /- English proof (translation)
-Establish `key : ∀ {α : Type} (e : α →₀ ℕ), e.degree = e.sum (fun _ k => k)` using `fun e => rfl`. Rewrite using `[colIdx, key, key, Finsupp.sum_mapDomain_index (fun _ => rfl) (fun _ _ _ => rfl)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem colIdx_degree {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {n : ℕ}
     (m : LtN Dw n →₀ ℕ) : (colIdx m).degree = m.degree := by
@@ -92,9 +92,9 @@ theorem colIdx_degree {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
   rw [colIdx, key, key, Finsupp.sum_mapDomain_index (fun _ => rfl) (fun _ _ _ => rfl)]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero ha`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' ha`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [ha s]; exact IsNilpotent.zero)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [ha s]; exact IsNilpotent.zero)`.
+A detailed English derivation is pending.
 -/
 private theorem hasSubst_lemma {S σ τ : Type} [CommRing S] [Finite σ] {a : σ → MvPowerSeries τ S}
     (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) : MvPowerSeries.HasSubst a := by
@@ -106,7 +106,7 @@ private theorem hasSubst_lemma {S σ τ : Type} [CommRing S] [Finite σ] {a : σ
   | exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [ha s]; exact IsNilpotent.zero)
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_empty, Finset.sum_empty, ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_zero]`. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ih, ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_add (hx a) (by rw [map_sum]; exact Finset.sum_eq_zero (fun i _ => hx i))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_exp_lemma_2 {S σ ι : Type} [CommRing S] [Algebra ℚ S] (s : Finset ι)
     (x : ι → MvPowerSeries σ S) (hx : ∀ i, MvPowerSeries.constantCoeff (x i) = 0) :
@@ -119,19 +119,19 @@ private theorem prod_exp_lemma_2 {S σ ι : Type} [CommRing S] [Algebra ℚ S] (
       (by rw [map_sum]; exact Finset.sum_eq_zero (fun i _ => hx i))]
 
 /- English proof (translation)
-Establish `hccQ : ∀ (r : S) {m' : ℕ}, MvPowerSeries.constantCoeff (r • TB.quadCol (n` using `m') β) = 0 := by`. Introduce `r m'`. Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, cc_quadCol, mul_zero]`. Establish `hsb : ∀ b : Fin n, MvPowerSeries.HasSubst (sb (S` using `S) (n := n) (d := dL Dw) b) := fun b => hasSubst_lemma (sb_cc b)`. Establish `hR : ∀ (b : Fin n) (F : MvPowerSeries (Fin 1 × Fin (dL Dw)) S), MvPowerSeries.rename (fun p : Fin 1 × Fin (dL Dw) => ((b, p.2) : Fin n × Fin (dL Dw))) F = MvPowerSeries.subst (sb b) F` using `fun b F => rename_col b F`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE4 : ∏ b, MvPowerSeries.rename (fun p : Fin 1 × Fin (dL Dw) => ((b, p.2) : Fin n × Fin (dL Dw))) (g b * PowerSeries.subst ((k : S) • ReciprocityTheory.ChartRestriction.G.TB.quadCol (n` using `1) β) (PowerSeries.exp S)) = PowerSeries.subst ((k : S) • TB.quadCol (n := n) β) (PowerSeries.exp S) * ∏ b, MvPowerSeries.rename (fun p : Fin 1 × Fin (dL Dw) => ((b, p.2) : Fin n × Fin (dL Dw))) (g b) := by`. Simplify using `only [hR]`. Simplify using `only [MvPowerSeries.subst_mul (hsb _), Finset.prod_mul_distrib]`. Rewrite using `[mul_comm]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hc : ∀ b : Fin n, MvPowerSeries.subst (sb (S` using `S) (n := n) (d := dL Dw) b) (PowerSeries.subst ((k : S) • ReciprocityTheory.ChartRestriction.G.TB.quadCol (n := 1) β) (PowerSeries.exp S)) = PowerSeries.subst (MvPowerSeries.subst (sb (S := S) (n := n) (d := dL Dw) b) ((k : S) • ReciprocityTheory.ChartRestriction.G.TB.quadCol (n …`. Introduce `b`. Establish `hq : MvPowerSeries.HasSubst (fun _ : Unit => ((k : S) • ReciprocityTheory.ChartRestriction.G.TB.quadCol (n` using `1) β)) := hasSubst_lemma (fun _ => hccQ _)`. Conclude with `MvPowerSeries.subst_comp_subst_apply hq (hsb b) (PowerSeries.exp S)`. Simplify using `only [hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_exp_lemma_2 Finset.univ _ (fun b => ?_), sum_subst_quadCol]`. Rewrite using `[subst_quadCol]`. Simplify using `[MvPowerSeries.smul_eq_C_mul]`. Establish `hE2 : psJet D (∏ b, MvPowerSeries.rename (fun p : Fin 1 × Fin (dL Dw) => ((b, p.2) : Fin n × Fin (dL Dw))) (g' b)) = psJet D (∏ b, MvPowerSeries.rename (fun p : Fin 1 × Fin (dL Dw) => ((b, p.2) : Fin n × Fin (dL Dw))) (g b * PowerSeries.subst ((k : S) • ReciprocityTheory.ChartRes …` using `1) β) (PowerSeries.exp S))) := by`. Use `Formalism.MainNotions.ModuliIntegralCharts.H1.HarmInvA.psJet_prod_congr D (fun b => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR, hR]`. Conclude with `Formalism.MainNotions.ModuliIntegralCharts.H1.HarmInvA.psJet_subst_congr D (sb b) (sb_cc b) (hj b)`. Establish `hK` using `Formalism.MainNotions.ModuliIntegralCharts.H1.killAddValCol_of ReciprocityTheory.ChartRestriction.G.TB.kernel_additive E H Dw l c S k n (PowerSeries.subst ((k : S) • TB.quadCol (n := n) β) (PowerSeries.exp S) * ∏ b, MvPowerSeries.rename (fun p : Fin 1 × Fin (dL Dw) => ((b, p.2) : …`. Establish `hcan : PowerSeries.subst (-((k : S)) • TB.quadCol (n` using `n) β) (PowerSeries.exp S) * PowerSeries.subst ((k : S) • TB.quadCol (n := n) β) (PowerSeries.exp S) = 1 := by`. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_add (hccQ _) (hccQ _), neg_smul, neg_add_cancel, ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.FB.expS, ← mul_assoc, hcan, one_mul] at hK`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun m hm => ?_)` and prove the remaining obligations. Rewrite using `[← Formalism.MainNotions.ModuliIntegralCharts.H1.prodCol_holds E H Dw S n g' m, ← hE4]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.MainNotions.ModuliIntegralCharts.H1.mVal`. Rewrite using `[Formalism.MainNotions.ModuliIntegralCharts.H1.HarmInvA.coeff_eq_of_psJet hE2 (by rw [colIdx_degree]; exact hD m hm)]`. Use `_ = ∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * mVal (∏ b, MvPowerSeries.rename (fun p : Fin 1 × Fin (dL Dw) => ((b, p.2) : Fin n × Fin (dL Dw))) (g b)) m := hK.symm`. Use `_ = ∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * ∏ b, expVal (g b) (colOf m b) := Finset.sum_congr rfl (fun m _ => by rw [Formalism.MainNotions.ModuliIntegralCharts.H1.prodCol_holds E H Dw S n g m])`.
+A detailed English derivation is pending.
 -/
 theorem harm_kill_jet {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     (c : Coeff l) {S : Type} [CommRing S] [Algebra c.F S] [Algebra ℚ S] (k n D : ℕ)

@@ -21,7 +21,7 @@ variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [C
   {C'' : Type u''} [Category.{v''} C'']
 
 /- English proof (translation)
-Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Apply the tactic sequence `exact CoefMap.pullCohomologyOne_eq_of_natTrans _ _ (𝟙 _) (fun T b => by simp [CoefMap.comp, CoefMap.restrict, mp] <;> rfl) c`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem restrict_pull1 (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C) (H : C'' ⥤ C') (c : GlobalTheory.CatCoh.H1 F) :
     (CoefMap.restrict (G ⋙ F) H).pull1 ((CoefMap.restrict F G).pull1 c) =
@@ -30,7 +30,7 @@ theorem restrict_pull1 (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C) (H : C'' ⥤ 
   exact CoefMap.pullCohomologyOne_eq_of_natTrans _ _ (𝟙 _) (fun T b => by simp [CoefMap.comp, CoefMap.restrict, mp] <;> rfl) c
 
 /- English proof (translation)
-Rewrite using `[← CoefMap.pullCohomologyTwo_comp]`. Apply the tactic sequence `exact CoefMap.pullCohomologyTwo_eq_of_natTrans _ _ (𝟙 _) (fun T b => by simp [CoefMap.comp, CoefMap.restrict, mp] <;> rfl) c`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem restrict_pull2 (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C) (H : C'' ⥤ C') (c : GlobalTheory.CatCoh.H2 F) :
     (CoefMap.restrict (G ⋙ F) H).pull2 ((CoefMap.restrict F G).pull2 c) =
@@ -53,7 +53,7 @@ section Comma
 variable {T : (IsSmall γ s U).FullSubcategory}
 
 /- English proof (translation)
-The claim follows from `Thick.Hom.le_preimage a.hom.hom a.left.le`.
+A detailed English derivation is pending.
 -/
 theorem comma_le (a : CostructuredArrow (toSmall γ s U) T) : ⊤ ≤ T.obj.x ⁻¹ᵁ U a.left.k :=
   Thick.Hom.le_preimage a.hom.hom a.left.le
@@ -66,11 +66,11 @@ def toSelf (a : CostructuredArrow (toSmall γ s U) T) (k : K) (h : ⊤ ≤ T.obj
   CostructuredArrow.homMk (⟨a.hom.hom, e⟩ : Tag.Hom _ _) (Category.comp_id _)
 
 /- English proof (translation)
-Establish `hf` using `CostructuredArrow.w f`. Establish `hg` using `CostructuredArrow.w g`. Apply `CostructuredArrow.hom_ext` to reduce the goal to its premises. Use `revert hf hg`. Break down `f with ⟨⟨f1, l1⟩, fr, fw⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `g with ⟨⟨g1, l2⟩, gr, gw⟩` into its components or cases. Introduce `hf hg`. Simplify using `[selfObj, toSmall] at hf hg ⊢`. Establish `e : f1 = g1` using `congrArg (fun q => q.hom) (hf.trans hg.symm)`. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem toSelf_unique {a : CostructuredArrow (toSmall γ s U) T} {k : K} {h : ⊤ ≤ T.obj.x ⁻¹ᵁ U k}
     (f g : a ⟶ selfObj k h) : f = g := by
@@ -95,7 +95,7 @@ def selfFun (m : CostructuredArrow (toSmall γ s U) T → K) (h : ∀ a, ⊤ ≤
   map_comp _ _ := toSelf_unique _ _
 
 /- English proof (translation)
-The claim follows from `CoefMap.pullCohomologyOne_eq_of_natTrans (CoefMap.restrict ((Functor.const D).obj M) Φ) (CoefMap.restrict ((Functor.const D).obj M) Ψ : CoefMap (RingHom.id R) ((Functor.const D).obj M) (Φ ⋙ (Functor.const D).obj M)) θ (fun _ _ => rfl) c`.
+A detailed English derivation is pending.
 -/
 private theorem pull1_restrict_const_eq_of_natTrans {D : Type u} [Category.{v} D] (M : CommAlgCat.{0} R) (Φ Ψ : D ⥤ D)
     (θ : Φ ⟶ Ψ) (c : GlobalTheory.CatCoh.H1 ((Functor.const D).obj M)) :
@@ -107,7 +107,7 @@ private theorem pull1_restrict_const_eq_of_natTrans {D : Type u} [Category.{v} D
     θ (fun _ _ => rfl) c
 
 /- English proof (translation)
-The claim follows from `CoefMap.pullCohomologyTwo_eq_of_natTrans (CoefMap.restrict ((Functor.const D).obj M) Φ) (CoefMap.restrict ((Functor.const D).obj M) Ψ : CoefMap (RingHom.id R) ((Functor.const D).obj M) (Φ ⋙ (Functor.const D).obj M)) θ (fun _ _ => rfl) c`.
+A detailed English derivation is pending.
 -/
 private theorem pull2_restrict_const_eq_of_natTrans {D : Type u} [Category.{v} D] (M : CommAlgCat.{0} R) (Φ Ψ : D ⥤ D)
     (θ : Φ ⟶ Ψ) (c : GlobalTheory.CatCoh.H2 ((Functor.const D).obj M)) :
@@ -119,7 +119,7 @@ private theorem pull2_restrict_const_eq_of_natTrans {D : Type u} [Category.{v} D
     θ (fun _ _ => rfl) c
 
 /- English proof (translation)
-Apply the tactic sequence `have e := CoefMap.pullCohomologyOne_eq_of_natTrans (CoefMap.id F) (CoefMap.restrict F (𝟭 D)) (𝟙 _) (fun _ b => by simp [CoefMap.restrict, CoefMap.id, mp] <;> rfl) c`. Rewrite `e` using `[CoefMap.pullCohomologyOne_id]`. Conclude with `e.symm`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pull1_restrict_id {D : Type u} [Category.{v} D] (F : D ⥤ CommAlgCat.{0} R)
     (c : GlobalTheory.CatCoh.H1 F) : (CoefMap.restrict F (𝟭 D)).pull1 c = c := by
@@ -129,7 +129,7 @@ private theorem pull1_restrict_id {D : Type u} [Category.{v} D] (F : D ⥤ CommA
   exact e.symm
 
 /- English proof (translation)
-Apply the tactic sequence `have e := CoefMap.pullCohomologyTwo_eq_of_natTrans (CoefMap.id F) (CoefMap.restrict F (𝟭 D)) (𝟙 _) (fun _ b => by simp [CoefMap.restrict, CoefMap.id, mp] <;> rfl) c`. Rewrite `e` using `[CoefMap.pullCohomologyTwo_id]`. Conclude with `e.symm`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pull2_restrict_id {D : Type u} [Category.{v} D] (F : D ⥤ CommAlgCat.{0} R)
     (c : GlobalTheory.CatCoh.H2 F) : (CoefMap.restrict F (𝟭 D)).pull2 c = c := by
@@ -139,9 +139,9 @@ private theorem pull2_restrict_id {D : Type u} [Category.{v} D] (F : D ⥤ CommA
   exact e.symm
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `H2.mk_surjective F c`. Rewrite using `[H2.mk_eq_zero]`. Use `⟨fun a b φ => z.1 a b b φ (𝟙 b), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a b d φ ψ`. Break down `a with ⟨⟨⟩⟩` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `b with ⟨⟨⟩⟩` into its components or cases. Break down `d with ⟨⟨⟩⟩` into its components or cases. Take `rfl : φ = 𝟙 _` from `Subsingleton.elim _ _`. Take `rfl : ψ = 𝟙 _` from `Subsingleton.elim _ _`. Simplify using `[d1_apply, mp]`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 private theorem H2_discrete_punit_eq_zero (F : Discrete PUnit.{1} ⥤ CommAlgCat.{0} R) (c : GlobalTheory.CatCoh.H2 F) :
     c = 0 := by
@@ -157,7 +157,7 @@ private theorem H2_discrete_punit_eq_zero (F : Discrete PUnit.{1} ⥤ CommAlgCat
   simp [d1_apply, mp]
 
 /- English proof (translation)
-Establish `e` using `restrict_pull1 ((Functor.const D).obj M) ((Functor.const (Discrete PUnit.{1})).obj x) ((Functor.const D).obj ⟨⟨⟩⟩) c`. Rewrite `e` using `[H1.eq_zero_of_isInitial _ (T₀ := (⟨⟨⟩⟩ : Discrete PUnit.{1})) (Limits.IsInitial.ofUniqueHom (fun _ => Discrete.eqToHom (Subsingleton.elim _ _)) (fun _ _ => Subsingleton.elim _ _)) ((CoefMap.restrict ((Functor.const D).obj M) ((Functor.const (Discrete PUnit.{1})).obj x)).pull1 c) …`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pull1_restrict_const_const_eq_zero {D : Type u} [Category.{v} D] (M : CommAlgCat.{0} R) (x : D)
     (c : GlobalTheory.CatCoh.H1 ((Functor.const D).obj M)) :
@@ -172,7 +172,7 @@ private theorem pull1_restrict_const_const_eq_zero {D : Type u} [Category.{v} D]
   exact e.symm
 
 /- English proof (translation)
-Establish `e` using `restrict_pull2 ((Functor.const D).obj M) ((Functor.const (Discrete PUnit.{1})).obj x) ((Functor.const D).obj ⟨⟨⟩⟩) c`. Rewrite `e` using `[H2_discrete_punit_eq_zero _ ((CoefMap.restrict ((Functor.const D).obj M) ((Functor.const (Discrete PUnit.{1})).obj x)).pull2 c), map_zero]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pull2_restrict_const_const_eq_zero {D : Type u} [Category.{v} D] (M : CommAlgCat.{0} R) (x : D)
     (c : GlobalTheory.CatCoh.H2 ((Functor.const D).obj M)) :
@@ -185,15 +185,13 @@ private theorem pull2_restrict_const_const_eq_zero {D : Type u} [Category.{v} D]
   exact e.symm
 
 /- English proof (translation)
-Take `⟨k0, h0⟩` from `T.property`. Use `choose m2 hm2 using fun (a : CostructuredArrow (toSmall γ s U) T) => hinf a.left.k k0`. Establish `h2 : ∀ a, ⊤ ≤ T.obj.x ⁻¹ᵁ U (m2 a)`. Introduce `a`. Rewrite using `[hm2 a]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Conclude with `⟨comma_le a hp, h0 hp⟩`. Set `S1` to `selfFun (T := T) (fun a => a.left.k) comma_le (fun a b f => Tag.Hom.le f.left)`. Set `S2` to `selfFun (T := T) m2 h2 (fun a b f => by`. Rewrite using `[hm2 a, hm2 b]`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `inf_le_inf_right _ (Tag.Hom.le f.left))`. Set `θ1 : 𝟭 _ ⟶ S1` to `{ app := fun a => toSelf a _ (comma_le a) le_rfl naturality := fun _ _ _ => toSelf_unique _ _ }`. Set `θ2 : S2 ⟶ S1` to `{ app := fun a => toSelf (selfObj (m2 a) (h2 a)) a.left.k (comma_le a) (show U (m2 a) ≤ U a.left.k by rw [hm2 a]; exact inf_le_left) naturality := fun _ _ _ => toSelf_unique _ _ }`. Set `θ3 : S2 ⟶ (Functor.const _).obj (selfObj k0 h0)` to `{ app := fun a => toSelf (selfObj (m2 a) (h2 a)) k0 h0 (show U (m2 a) ≤ U k0 by rw [hm2 a]; exact inf_le_right) naturality := fun _ _ _ => toSelf_unique (k := k0) (h := h0) _ _ }`. Use `⟨⟨selfObj k0 h0⟩, fun M => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g hg`. Establish `key : ∀ a, g a = g (selfObj k0 h0)` using `fun a => (hg _ _ (θ1.app a)).symm.trans ((hg _ _ (θ2.app a)).trans (hg _ _ (θ3.app a)).symm)`. Introduce `a b`. Conclude with `(key a).trans (key b).symm`. Introduce `c`.
-
-Conclude with `(pull1_restrict_id _ c).symm.trans ((pull1_restrict_const_eq_of_natTrans M _ _ θ1 c).trans ((pull1_restrict_const_eq_of_natTrans M _ _ θ2 c).symm.trans ((pull1_restrict_const_eq_of_natTrans M _ _ θ3 c).trans (pull1_restrict_const_const_eq_zero M _ c))))`. Introduce `c`. Conclude with `(pull2_restrict_id _ c).symm.trans ((pull2_restrict_const_eq_of_natTrans M _ _ θ1 c).trans ((pull2_restrict_const_eq_of_natTrans M _ _ θ2 c).symm.trans ((pull2_restrict_const_eq_of_natTrans M _ _ θ3 c).trans (pull2_restrict_const_const_eq_zero M _ c))))`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem acyc_toSmall (hinf : ∀ k l, ∃ m, U m = U k ⊓ U l) (T : (IsSmall γ s U).FullSubcategory) :
     Acyc R (CostructuredArrow (toSmall γ s U) T) := by
@@ -237,7 +235,7 @@ theorem acyc_toSmall (hinf : ∀ k l, ∃ m, U m = U k ⊓ U l) (T : (IsSmall γ
 end Comma
 
 /- English proof (translation)
-Establish `key : ⇑(CoefMap.restrict (O γ s) (Tag.forget γ s U)).pull1 = ⇑(CoefMap.restrict ((IsSmall γ s U).ι ⋙ O γ s) (toSmall γ s U)).pull1 ∘ ⇑(CoefMap.restrict (O γ s) (IsSmall γ s U).ι).pull1`. Use function extensionality and compare the values at `fun c => (restrict_pull1 (O γ s) (IsSmall γ s U).ι (toSmall γ s U) c).symm`. Rewrite using `[key]`. Conclude with `(qa1 _ _ (fun T => acyc_toSmall hinf T)).comp (SmallDescent.pull1_bijective R I γ X s K U hcov)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tag_pull1 (hcov : ⨆ k, U k = ⊤) (hinf : ∀ k l, ∃ m, U m = U k ⊓ U l) :
     Function.Bijective (CoefMap.restrict (O γ s) (Tag.forget γ s U)).pull1 := by
@@ -250,17 +248,15 @@ theorem tag_pull1 (hcov : ⨆ k, U k = ⊤) (hinf : ∀ k l, ∃ m, U m = U k �
     (SmallDescent.pull1_bijective R I γ X s K U hcov)
 
 /- English proof (translation)
-Apply `Desc.pull2_bijective` to reduce the goal to its premises. Introduce `T b`. Take `⟨L, l, hl⟩` from `SmallDescent.exists_isLoc T b`. Take `⟨hu, hsurj, hker, hfac⟩` from `hl`. Use `⟨L, l, hu, ?_, hker, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Take `⟨n, N, h⟩` from `hsurj y`. Conclude with `⟨N, n, h⟩`. Introduce `S u hu'`. Take `⟨ψ, hψ⟩` from `hfac S u hu'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ψ, hψ, fun ψ' h' => SmallDescent.IsLoc.hom_ext ⟨hu, hsurj, hker, hfac⟩ (h'.trans hψ.symm)⟩`. Introduce `S S' a hS`. Conclude with `SmallDescent.isSmall_of_hom a hS`. Introduce `T`. Take `⟨σ, hσ, hσs⟩` from `SmallDescent.exists_cover hcov T`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨σ.card, fun i => (σ.equivFin.symm i : T.B), ?_, ?_⟩` and prove the remaining obligations. Establish `hr : Set.range (fun i => (σ.equivFin.symm i : T.B)) = (σ : Set T.B)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(σ.equivFin.symm i).2`. Introduce `hx`. Conclude with `⟨σ.equivFin ⟨x, hx⟩, by simp⟩`. Rewrite using `[hr]`. Conclude with `hσ`.
-
-Introduce `i S u hu`. Conclude with `hσs _ (σ.equivFin.symm i).2 S u hu`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem pull2_restrict_isSmall_bijective_of_cover (hcov : ⨆ k, U k = ⊤) :
     Function.Bijective (CoefMap.restrict (O γ s) (IsSmall γ s U).ι).pull2 := by
@@ -294,7 +290,7 @@ private theorem pull2_restrict_isSmall_bijective_of_cover (hcov : ⨆ k, U k = �
       exact hσs _ (σ.equivFin.symm i).2 S u hu
 
 /- English proof (translation)
-Establish `key : ⇑(CoefMap.restrict (O γ s) (Tag.forget γ s U)).pull2 = ⇑(CoefMap.restrict ((IsSmall γ s U).ι ⋙ O γ s) (toSmall γ s U)).pull2 ∘ ⇑(CoefMap.restrict (O γ s) (IsSmall γ s U).ι).pull2`. Use function extensionality and compare the values at `fun c => (restrict_pull2 (O γ s) (IsSmall γ s U).ι (toSmall γ s U) c).symm`. Rewrite using `[key]`. Conclude with `(qa2 _ _ (fun T => acyc_toSmall hinf T)).comp (pull2_restrict_isSmall_bijective_of_cover hcov)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tag_pull2 (hcov : ⨆ k, U k = ⊤) (hinf : ∀ k l, ∃ m, U m = U k ⊓ U l) :
     Function.Bijective (CoefMap.restrict (O γ s) (Tag.forget γ s U)).pull2 := by

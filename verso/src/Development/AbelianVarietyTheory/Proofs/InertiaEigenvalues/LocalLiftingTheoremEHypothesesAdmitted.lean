@@ -16,9 +16,9 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 namespace GlobalTheory.AdmThmE
 
 /- English proof (translation)
-Introduce `hBK hTD hEC D HW F Cm`. Take `⟨hU, hE⟩` from `GlobalTheory.T.wachModuleLocalConclusions_usedForms D HW F Cm`. Take `⟨pL, pW, _, _, pWR, pH, pTr, _⟩` from `GlobalTheory.T.localConstants_from_admitted_local_Galois_statements hBK hTD hEC D HW F Cm`. Take `⟨_, hSatE, _, _, _, _, hKillE, _, hF1E, _, hF2E, hTools, hBC⟩` from `GlobalTheory.T.arcTheorem_tools_of_wachModuleConclusions D HW F Cm`. Take `⟨p1, _, _, _, _, _, _, p8, p9, _, _, a, _⟩` from `GlobalTheory.T.wachLattice_laterClauses_hold D HW F Cm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hX` using `GlobalTheory.HerrExtUnit.main D HW F`. Conclude with `⟨hU, pL, pW, pWR, pH, pTr, hTools, hSatE, hF1E, hF2E, hKillE, GlobalTheory.T.h1fGeneratorBoundAll_loc D, hBC, GlobalTheory.HodgeCrysSeq.hodge_crystalline_sequences D, hE, Formalism.MainNotions.UnusedSlot35.extension_clause D HW F ⟨p1, p8, hX⟩, Formalism.MainNotions.UnusedSlot35.e …`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem admitted_all : GlobalTheory.Published.BlochKatoLocal → Formalism.GaloisCohomology.LocalTateDualityK →
     Formalism.GaloisCohomology.LocalEulerCharK → ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)

@@ -11,13 +11,13 @@ namespace SectionsLattice
 namespace BaseChangeReduced
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis k B`. Establish `key : ∀ (m : Ideal R) (i) (y : R ⊗[k] B), Ideal.Quotient.mk m ((Algebra.TensorProduct.basis R b).repr y i) = (Algebra.TensorProduct.basis (R ⧸ m) b).repr (Algebra.TensorProduct.map (Ideal.Quotient.mkₐ k m) (AlgHom.id k B) y) i`. Introduce `m i y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a z => simp [Algebra.TensorProduct.basis_repr_tmul]`. Consider the case `add y z hy hz => simp [map_add, hy, hz]`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Apply `(Algebra.TensorProduct.basis R b).repr.injective` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `i`. Simplify using `only [map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Establish `hmem : (Algebra.TensorProduct.basis R b).repr x i ∈ (⊥ : Ideal R).jacobson`. Rewrite using `[Ideal.jacobson, Ideal.mem_sInf]`. Introduce and unpack `m ⟨-, hm⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, key m i x]`. Establish `hz : Algebra.TensorProduct.map (Ideal.Quotient.mkₐ k m) (AlgHom.id k B) x = 0` using `(h m hm).eq_zero _ (hx.map _)`. Rewrite using `[hz]`. Simplify using the standard rewrite rules. Rewrite `hmem` using `[IsJacobsonRing.out inferInstance Ideal.isRadical_bot]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isReduced_tensor_of_forall_isMaximal {k R B : Type} [Field k] [CommRing R] [Algebra k R]
     [IsJacobsonRing R] [IsReduced R] [CommRing B] [Algebra k B]
@@ -48,9 +48,9 @@ theorem isReduced_tensor_of_forall_isMaximal {k R B : Type} [Field k] [CommRing 
   rwa [IsJacobsonRing.out inferInstance Ideal.isRadical_bot] at hmem
 
 /- English proof (translation)
-Apply `IsReduced.tensorProduct_of_flat_of_forall_fg` to reduce the goal to its premises. Introduce `A₀ hfg`. Establish `: Algebra.FiniteType k A₀` using `(Subalgebra.fg_iff_finiteType A₀).mp hfg`. Establish `: IsJacobsonRing A₀` using `isJacobsonRing_of_finiteType (A := k)`. Establish `: IsReduced A₀` using `isReduced_of_injective A₀.val Subtype.val_injective`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA₀ : IsReduced (A₀ ⊗[k] B)` using `isReduced_tensor_of_forall_isMaximal fun m hm => by`. Set `` to `Ideal.Quotient.field m`. Use `finite_of_finite_type_of_isJacobsonRing k (A₀ ⧸ m)` as an intermediate fact. Conclude with `hB (A₀ ⧸ m)`. Conclude with `isReduced_of_injective (Algebra.TensorProduct.comm k B A₀).toAlgHom (Algebra.TensorProduct.comm k B A₀).injective`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_tensor_of_forall_finite {k B : Type} [Field k] [CommRing B] [Algebra k B]
     (hB : ∀ (E : Type) [Field E] [Algebra k E] [FiniteDimensional k E], IsReduced (E ⊗[k] B))
@@ -68,7 +68,7 @@ theorem isReduced_tensor_of_forall_finite {k B : Type} [Field k] [CommRing B] [A
     (Algebra.TensorProduct.comm k B A₀).injective
 
 /- English proof (translation)
-Establish `: Algebra.FormallyUnramified k E'` using `Algebra.FormallyUnramified.of_isSeparable k E'`. Conclude with `Algebra.FormallyUnramified.isReduced_of_field E (E ⊗[k] E')`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_tensor_finite_finite {k : Type} [Field k] [CharZero k] (E E' : Type) [Field E]
     [Algebra k E] [Field E'] [Algebra k E'] [FiniteDimensional k E'] :
@@ -77,7 +77,7 @@ theorem isReduced_tensor_finite_finite {k : Type} [Field k] [CharZero k] (E E' :
   exact Algebra.FormallyUnramified.isReduced_of_field E (E ⊗[k] E')
 
 /- English proof (translation)
-Introduce `k L A _ _ _ _ _ _ hA`. Establish `step : ∀ (E' : Type) [Field E'] [Algebra k E'] [FiniteDimensional k E'] (A' : Type) [CommRing A'] [Algebra k A'] [IsReduced A'], IsReduced (E' ⊗[k] A')` using `fun E' _ _ _ A' _ _ _ => isReduced_tensor_of_forall_finite (B := E') (fun E _ _ _ => isReduced_tensor_finite_finite E E') A'`. Conclude with `isReduced_tensor_of_forall_finite (B := L) (fun E _ _ _ => step E L) A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem proof : BaseChangeReduced.Statement := by
   intro k L A _ _ _ _ _ _ hA

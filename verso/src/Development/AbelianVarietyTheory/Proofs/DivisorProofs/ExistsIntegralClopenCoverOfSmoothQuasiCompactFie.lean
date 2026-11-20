@@ -14,17 +14,15 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ X f _ _`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian f`. Establish `hopen : ∀ c : _root_.ConnectedComponents X, IsOpen ((_root_.ConnectedComponents.mk : X → _) ⁻¹' {c})`. Introduce `c`. Take `⟨x, rfl⟩` from `_root_.ConnectedComponents.surjective_coe c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[connectedComponents_preimage_singleton]`. Conclude with `GlobalTheory.isOpen_connectedComponent_of_isLocallyNoetherian X inferInstance x`. Set `U : _root_.ConnectedComponents X → X.Opens` to `fun c => ⟨_, hopen c⟩`. Use `⟨_root_.ConnectedComponents X, U, ?_, ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Conclude with `Opens.mem_iSup.2 ⟨_root_.ConnectedComponents.mk x, rfl⟩`. Introduce `a b hab`. Rewrite using `[disjoint_iff, ← SetLike.coe_set_eq]`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Simplify using `only [U, Opens.coe_inf, Opens.coe_mk, Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, Opens.coe_bot, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce and unpack `rfl rfl`. Conclude with `hab rfl`. Take `⟨x, rfl⟩` from `_root_.ConnectedComponents.surjective_coe c`. Establish `hU : ((U (_root_.ConnectedComponents.mk x) : X.Opens) : Set X) = connectedComponent x` using `connectedComponents_preimage_singleton`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Use `haveI : ConnectedSpace (U (_root_.ConnectedComponents.mk x)).toScheme := by show ConnectedSpace ((U (_root_.ConnectedComponents.mk x) : Set X))`. Rewrite using `[← isConnected_iff_connectedSpace, hU]`. Conclude with `isConnected_connectedComponent`. Conclude with `isIntegral_of_smooth_field_of_connectedSpace ((U (_root_.ConnectedComponents.mk x)).ι ≫ f)`.
-
-Use `IsClosedImmersion.of_isPreimmersion _ ?_` and prove the remaining obligations. Rewrite using `[Scheme.Opens.range_ι, hU]`. Conclude with `isClosed_connectedComponent`.
+A detailed English derivation is pending.
 -/
 theorem exists_integral_clopen_cover_of_smooth_field :
     ∀ (k : Type) [Field k] (X : Scheme.{0}) (f : X ⟶ Sp k) [Smooth f] [QuasiCompact f], ∃ (κ : Type) (U : κ → X.Opens), ⨆ c, U c = ⊤ ∧ (Pairwise fun a b => Disjoint (U a) (U b)) ∧ ∀ c, IsIntegral (U c).toScheme ∧ IsClosedImmersion (U c).ι := by

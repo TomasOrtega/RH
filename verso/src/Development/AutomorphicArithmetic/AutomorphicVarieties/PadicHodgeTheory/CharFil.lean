@@ -26,15 +26,15 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (ρ : Representation LL G V) {n : ℕ} (e : Basis (Fin n) Qp V)
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `exists_coord PD ρ e W W' hWW hg y hy`. Establish `hc : coord e BdR y = W.mulVec fun i => algebraMap K BdR (k i)`. Rewrite using `[hk, Matrix.mulVec_mulVec, hWW, Matrix.one_mulVec]`. Use `⟨fun hb => ?_, fun hb hF => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_filV PD e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[hc]`. Use `fil_mono PD hb ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, ← Algebra.smul_def]`. Conclude with `(PD.Fil a).smul_mem _ (hW i j)`. Rewrite `hF` using `[mem_filV PD e]`. Establish `hk0 : ∀ i, k i = 0` using `fun i => by`. Use `eq_zero_of_mem_fil_one PD _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[congrFun hk i]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Conclude with `fil_mono PD (by omega) (PD.Fil_mul _ _ _ _ (hW' i j) (hF j))`. Apply `(coord e BdR).injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hc, map_zero]`. Use function extensionality and compare the values at `i`. Simplify using `[hk0, Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem split_fil (a : ℤ) (W W' : Matrix (Fin n) (Fin n) BdR) (hWW : W * W' = 1)
     (hW : ∀ i j, W i j ∈ PD.Fil a) (hW' : ∀ i j, W' i j ∈ PD.Fil (-a))
@@ -71,9 +71,9 @@ variable {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [Algebra ℚ_[l] E] [Fini
   [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] [TopologicalSpace E] [IsModuleTopology ℚ_[l] E]
 
 /- English proof (translation)
-Set `j : E →ₐ[ℚ_[l]] Om l` to `IsAlgClosed.lift`. Establish `hj : Continuous j` using `IsModuleTopology.continuous_of_linearMap j.toLinearMap`. Set `d : G →* Om l` to `(j : E →* Om l).comp ((Units.coeHom E).comp μ)`. Establish `hd : ‖d g‖ = 1` using `GlobalTheory.UnramifiedChar.norm_eq_one_of_compact d (hj.comp hμ) g`. Set `LL : FinExt l` to `⟨j.fieldRange, Module.Finite.of_surjective j.rangeRestrict.toLinearMap j.rangeRestrict_surjective⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h1 : (⟨j (μ g), ⟨_, rfl⟩⟩ : ↥LL.1) ∈ OL LL` using `(GlobalTheory.Per.Val.mem_OL_iff LL _).2 hd.le`. Establish `h2 : IsIntegral ℤ_[l] (j (μ g))` using `IsIntegral.map (LL.1.val.restrictScalars ℤ_[l]) h1`. Conclude with `(isIntegral_algHom_iff (j.restrictScalars ℤ_[l]) j.injective).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem val_integral {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G] (μ : G →* Eˣ)
     (hμ : Continuous fun g => (μ g : E)) (g : G) : IsIntegral ℤ_[l] (μ g : E) := by
@@ -89,11 +89,9 @@ private theorem val_integral {G : Type} [Group G] [TopologicalSpace G] [CompactS
 omit [TopologicalSpace E] [IsModuleTopology ℚ_[l] E] in
 
 /- English proof (translation)
-Establish `: CharZero E` using `charZero_of_injective_algebraMap (algebraMap ℚ_[l] E).injective`. Establish `: IsTorsionFree ℤ_[l] E`. Rewrite using `[Module.isTorsionFree_iff_algebraMap_injective, IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] E]`. Conclude with `(algebraMap ℚ_[l] E).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])`. Establish `: Module.Finite ℤ_[l] ↥(integralClosure ℤ_[l] E)` using `IsIntegralClosure.finite ℤ_[l] ℚ_[l] E _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Free ℤ_[l] ↥(integralClosure ℤ_[l] E)` using `IsIntegralClosure.module_free ℤ_[l] ℚ_[l] E _`. Establish `: Module.Finite ℤ_[l] ↥(integralClosure ℤ_[l] E).toSubmodule` using `‹Module.Finite ℤ_[l] ↥(integralClosure ℤ_[l] E)›`. Establish `: Module.Free ℤ_[l] ↥(integralClosure ℤ_[l] E).toSubmodule` using `‹Module.Free ℤ_[l] ↥(integralClosure ℤ_[l] E)›`. Use `GlobalTheory.Cyc.LatBasis.exists_basis_of_submodule (integralClosure ℤ_[l] E).toSubmodule fun x => ?_` and prove the remaining obligations. Establish `hx : IsAlgebraic ℤ_[l] x` using `(IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] E).2 (Algebra.IsAlgebraic.isAlgebraic x)`.
-
-Conclude with `hx.exists_integral_multiple`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_int_basis : ∃ (n : ℕ) (e : Basis (Fin n) ℚ_[l] E),
     ∀ x : E, IsIntegral ℤ_[l] x ↔ ∀ i, ‖e.repr x i‖ ≤ 1 := by
@@ -112,19 +110,17 @@ private theorem exists_int_basis : ∃ (n : ℕ) (e : Basis (Fin n) ℚ_[l] E),
 open GlobalTheory.UnramifiedCrys GlobalTheory.UnramifiedRep in
 
 /- English proof (translation)
-Use `compactSpace_GK K` as an intermediate fact. Take `⟨Ti⟩` from `tiedP l`. Use `set P := PP l`. Use `set AI := AIP l`. Take `⟨n, e, he⟩` from `exists_int_basis (l := l) (E := E)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : ∀ g x, chRep μ g x = (μ g : E) * x` using `fun _ _ => rfl`. Establish `hint : ∀ g i j, ‖e.repr (chRep μ g (e j)) i‖ ≤ 1` using `fun g i j => (he _).1 ((val_integral μ hμ g).mul ((he (e j)).2 fun k => by`. Rewrite using `[e.repr_self, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp)) i`. Take `⟨M, hM⟩` from `exists_matrixHom (chRep μ) e hint`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨W, hW, hWg⟩` from `exists_witt_matrix (p := l) (AI.actT.comp (GK K).subtype) (fun y m hm hy => (continuous_subtype_val.tendsto (1 : ↥(GK K))).eventually (eventually_actT_eq AI y m hm hy)) M (continuous_pi fun i => continuous_pi fun j => continuous_induced_rng.2 (by`. Establish `h` using `(IsModuleTopology.continuous_of_linearMap (e.coord i)).comp (hμ.mul (continuous_const (y := e j)))`. Conclude with `h.congr fun g => (hM g i j).symm))`. Use the proof step `(fun g hg => by`. Establish `h` using `hI g (Subgroup.subset_closure fun x hx => norm_sub_lt_one_of_fix AI g (fun m hm y hy => hg m hm y hy) x hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_one M]`. Use extensionality with `i j`. Apply `PadicInt.ext` to reduce the goal to its premises. Rewrite using `[hM, hM, hρ, hρ, h, map_one])`. Establish `hB : ∀ g, (Matrix.of fun i j => algebraMap ℚ_[l] P.R.B (e.repr (chRep μ g (e j)) i)) * (AI.ιA.mapMatrix W).map ((P.PD K).actB g) = AI.ιA.mapMatrix W` using `fun g => by conv_rhs => rw [← hWg g, map_mul]`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, ← hM]`. Conclude with `(ιA_zlW AI Ti (M g i j)).symm`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(P.PD_actB K g _).trans (AI.ιA_act g _).symm`. Set `f : Ainf l →+* P.R.BdR` to `((P.PD K).ι : P.R.B →+* P.R.BdR).comp AI.ιA`. Establish `hf : ∀ a, f a ∈ (P.PD K).Fil 0` using `fun a => by`. Express the relevant statement in the definitionally equal form `(P.PD K).ι (AI.ιA a) ∈ _`. Rewrite using `[P.PD_ι]`.
-
-Conclude with `AI.ainf_image_mem_filtration_zero K a`. Use `⟨n, e, f.mapMatrix W, f.mapMatrix W⁻¹, ?_, fun i j => hf _, fun i j => hf _, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, Matrix.mul_nonsing_inv _ hW, map_one]`. Establish `hι : ∀ c : ℚ_[l], ((P.PD K).ι : P.R.B →+* P.R.BdR) (algebraMap ℚ_[l] P.R.B c) = algebraMap ℚ_[l] P.R.BdR c` using `fun c => (P.PD_ι K _).trans (P.ιB.commutes c)`. Conclude with `map_mul_map_eq ((P.PD K).ι : P.R.B →+* P.R.BdR) (hB g) (fun i j => hι _) ((P.PD K).ι_comm g)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_split [IsTopologicalRing E] (K : FinExt l) (μ : ↥(GK K) →* Eˣ)
     (hμ : Continuous fun g => (μ g : E)) (hI : ∀ g ∈ IK K, μ g = 1) :
@@ -179,7 +175,7 @@ private theorem exists_split [IsTopologicalRing E] (K : FinExt l) (μ : ↥(GK K
 
 omit [FiniteDimensional ℚ_[l] E] [TopologicalSpace E] [IsModuleTopology ℚ_[l] E] in
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `algebraMap ℤ_[l] E _ = algebraMap ℚ_[l] E _`. Rewrite using `[(cycFacts l l).2.2 g, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] E]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cycA_val (g : GQ l) : cycA l l E g = Units.map (algebraMap ℚ_[l] E : ℚ_[l] →* E) ((PP l).χQ g) := by
   ext
@@ -189,9 +185,7 @@ private theorem cycA_val (g : GQ l) : cycA l l E g = Units.map (algebraMap ℚ_[
 
 omit [FiniteDimensional ℚ_[l] E] in
 /- English proof (translation)
-Establish `h1 : Continuous (algebraMap ℤ_[l] E)`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] E]`. Conclude with `(IsModuleTopology.continuous_of_linearMap (Algebra.linearMap ℚ_[l] E)).comp continuous_subtype_val`. Establish `h2 : Continuous fun g : GQ l => cyc l l g ^ w` using `(cycFacts l l).1.zpow w`. Use `(h1.comp (Units.continuous_val.comp h2)).congr fun g => ?_` and prove the remaining obligations.
-
-Conclude with `congrArg Units.val (map_zpow (Units.map (algebraMap ℤ_[l] E : ℤ_[l] →* E)) (cyc l l g) w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem cont_cycA [IsTopologicalRing E] (w : ℤ) : Continuous fun g : GQ l => ((cycA l l E g ^ w : Eˣ) : E) := by
   have h1 : Continuous (algebraMap ℤ_[l] E) := by
@@ -202,15 +196,15 @@ private theorem cont_cycA [IsTopologicalRing E] (w : ℤ) : Continuous fun g : G
   exact congrArg Units.val (map_zpow (Units.map (algebraMap ℤ_[l] E : ℤ_[l] →* E)) (cyc l l g) w)
 
 /- English proof (translation)
-Take `⟨T⟩` from `tiedP l`. Set `μ : ↥(GK K) →* Eˣ` to `κ * ((cycA l l E).comp (GK K).subtype) ^ (-w)`. Establish `hμ : ∀ g, μ g = κ g * cycA l l E g ^ (-w)` using `fun _ => rfl`. Take `⟨n, e, W, W', hWW, hW, hW', hg⟩` from `exists_split K μ (hκ.mul ((cont_cycA (-w)).comp continuous_subtype_val)) (fun g hg => by rw [hμ, hI g hg, zpow_neg, mul_inv_cancel])`. Use `set t := GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence.tdR (PP l) K`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht : (t : Bdr l) = ((PP l).PD K).ι ((PP l).PD K).t` using `rfl`. Use `split_fil ((PP l).PD K) (chRep κ) e (-w) (((t ^ (-w) : (Bdr l)ˣ) : Bdr l) • W) (((t ^ w : (Bdr l)ˣ) : Bdr l) • W') ?_ (fun i j => ?_) (fun i j => ?_) (fun g => ?_) y hy b` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, hWW, smul_smul, zpow_neg, Units.inv_mul, one_smul]`. Simplify using `using ((PP l).PD K).Fil_mul _ _ _ _ (GlobalTheory.DRFil.tdR_zpow_mem T K (-w)) (hW i j)`. Simplify using `using ((PP l).PD K).Fil_mul _ _ _ _ (GlobalTheory.DRFil.tdR_zpow_mem T K w) (hW' i j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Use `conv_rhs => rw [← hg g]`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.mul_apply, Matrix.of_apply, Matrix.map_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hχ : ((PP l).PD K).χ g = (PP l).χQ g` using `Units.ext ((PP l).PD_χ K g)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : chRep μ g (e k) = (((PP l).χQ g ^ (-w) : ℚ_[l]ˣ) : ℚ_[l]) • chRep κ g (e k)`. Express the relevant statement in the definitionally equal form `(μ g : E) * e k = _ • ((κ g : E) * e k)`. Rewrite using `[hμ, cycA_val, ← map_zpow, Algebra.smul_def, Units.val_mul, Units.coe_map]`. Simplify using `only [MonoidHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[GlobalTheory.DRDual.act_zpow _ t ht, hχ, h1, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem gk_case [IsTopologicalRing E] (K : FinExt l) (κ : ↥(GK K) →* Eˣ)
     (hκ : Continuous fun g => (κ g : E)) (w : ℤ) (hI : ∀ g ∈ IK K, κ g = cycA l l E g ^ w)
@@ -248,19 +242,19 @@ end UpperTheory.V.Loc.CharFil
 
 open UpperTheory.V.Loc.CharFil in
 /- English proof (translation)
-Introduce `l _ G _ _ _ φ hφ E _ _ _ _ _ _ _ _ κ hκ w ⟨U, hU, hw⟩`. Establish `hφU : IsOpenEmbedding (φ.comp U.subtype)` using `hφ.comp hU.isOpenEmbedding_subtypeVal`. Establish `hc : ContAction (chRep κ)` using `(hκ.comp continuous_fst).mul continuous_snd`. Establish `hcU : ContAction ((chRep κ).comp U.subtype : Representation E U E)` using `(hκ.comp (continuous_subtype_val.comp continuous_fst)).mul continuous_snd`. Use `⟨((isCrys_isDR_restrict_openSubgroup φ hφ _ hc).2 U hU).2.2 ((isCrys_isDR_restrict_openSubgroup _ hφU _ hcU).1 (crUnr _ hφU _ hcU w fun g hg x => ?_)), fun i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(κ g : E) • x = _`. Rewrite using `[hw g g.2 hg]`. Both sides reduce to the same expression. Take `⟨K, e, -, he, hf, -, -, -⟩` from `openField _ hφU`. Establish `hf' : ∀ g : ↥(GK K), φ (e.symm g) = g` using `fun g => by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `DFunLike.congr_fun hf (e.symm g)` as an intermediate fact. Simplify using `using this.symm`. Set `κ' : ↥(GK K) →* Eˣ` to `(κ.comp U.subtype).comp e.symm.toMonoidHom`. Establish `hF : FilT E E i = FilV ((PP l).PD K) (LL` using `E) (V := E) i := by`. Establish `: (((PP l).PD (botExt l)).Fil i).restrictScalars ℚ_[l] = (((PP l).PD K).Fil i).restrictScalars ℚ_[l]` using `SetLike.coe_injective ((PP l).PD_Fil _ _ i)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `FilT FilV`. Rewrite using `[this]`. Establish `key : ∀ y ∈ Ddr φ (chRep κ), (i ≤ -w → y ∈ FilT E E i) ∧ (-w < i → y ∈ FilT E E i → y = 0)`. Introduce `y hy`. Rewrite using `[hF]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `gk_case K κ' (hκ.comp (continuous_subtype_val.comp he)) w (fun g hg => ?_) y ?_ i` and prove the remaining obligations. Use `hw (e.symm g) (e.symm g).2 (by rw [hf']; exact (memIK K g).1 hg)` as an intermediate fact. Rewrite `this` using `[hf']`. Conclude with `this`. Use `(Submodule.mem_iInf _).2 fun g => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `(Submodule.mem_iInf _).1 hy (e.symm g)`. Establish `h2 : actVdR ((PP l).PD K) (chRep κ') g = actD φ (chRep κ) (e.symm g)`. Unfold `actVdR actD`. Rewrite using `[hf']`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.ext fun z => (PP l).PD_actdR K g z`. Rewrite using `[h2]`. Conclude with `h1`. Conclude with `⟨fun h => inf_eq_left.2 fun y hy => (key y hy).1 h, fun h => (Submodule.eq_bot_iff _).2 fun y hy => (key y hy.1).2 h hy.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.charFil :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] [TopologicalSpace E] [IsModuleTopology ℚ_[l] E] [IsTopologicalRing E] (κ : G →* Eˣ), Continuous (fun g => (κ g : E)) → ∀ w : ℤ, HasWeight φ κ w → IsDr φ (chRep κ) ∧ ∀ i : ℤ, (i ≤ -w → FilD φ (chRep κ) i = Ddr φ (chRep κ)) ∧ (-w < i → FilD φ (chRep κ) i = ⊥) := by

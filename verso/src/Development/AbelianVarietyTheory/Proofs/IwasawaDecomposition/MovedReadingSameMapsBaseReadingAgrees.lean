@@ -29,7 +29,7 @@ open DivX (md) in
 def divBack (X : DivX (GlobalTheory.EX.OB.setDiv D N h)) : DivX D := { X with md := fun S κ p _ la z => { md X S κ p la z with } }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(by with_unfolding_all exact (H.Ij_def :)), (by with_unfolding_all exact (H.jw_def :))⟩`.
+Supply the required witnesses or components.
 -/
 theorem idxDefs_fwd {X : DivX (GlobalTheory.EX.OB.setDiv D N h)} (H : IdxDefs D (divBack N h X)) : IdxDefs (GlobalTheory.EX.OB.setDiv D N h) X :=
   ⟨(by with_unfolding_all exact (H.Ij_def :)), (by with_unfolding_all exact (H.jw_def :))⟩
@@ -50,7 +50,7 @@ def AmbW (A : FamIn D.what₂.LL G Pl0 T D.R.m) (X : RowSide D EE) (a : AmbForm 
   ∃ J, AmbTie D A X a P ψ tup jA J
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl` from `eq_of_heq ej`. Conclude with `H`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem AmbW.congr {a : AmbForm D X} {P : Subgroup G} {ψ : P →* D.what₂.LLˣ} {tup : T → D.what₂.Tup}
     {jA : ∀ t, (Fin (rDim D A P ψ t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X.Amb (tup t)} (H : AmbW A X a P ψ tup jA)
@@ -61,7 +61,7 @@ theorem AmbW.congr {a : AmbForm D X} {P : Subgroup G} {ψ : P →* D.what₂.LL�
   exact H
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl` from `eq_of_heq ek`. Conclude with `H s`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sameOn_congr {K τ ι : Type} {n : τ → ℕ} {m : ι → ℕ} {V : τ → Type} (j : ∀ μ, (Fin (n μ) → K) → V μ) {tup tup' : ι → τ}
     (e : tup' = tup) {k : ∀ s, (Fin (m s) → K) → V (tup s)} {k' : ∀ s, (Fin (m s) → K) → V (tup' s)} (ek : HEq k' k)
@@ -71,7 +71,7 @@ theorem sameOn_congr {K τ ι : Type} {n : τ → ℕ} {m : ι → ℕ} {V : τ 
   exact H s
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl` from `eq_of_heq ek`. Conclude with `HEq.rfl`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem heq_map {τ ι : Type} {P Q : ι → τ → Type} (φ : ∀ s μ, P s μ → Q s μ) {tup tup' : ι → τ} (e : tup' = tup)
     {k : ∀ s, P s (tup s)} {k' : ∀ s, P s (tup' s)} (ek : HEq k' k) :
@@ -94,7 +94,7 @@ def MjW (F : Face3 D A3) (Xd : DivX D) (X : Cx.CxData A3.fam3.amb3) (jW : JwT F 
     MjHTie D A3.A Xd (A3.indefDown (P := F.P0) (ψ := F.ψ0) (Zs := X.zs) (X.data F.cr false)) jW J
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl` from `eq_of_heq ej`. Conclude with `Iff.rfl`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem MjW.congr {F : Face3 D A3} {Xd : DivX D} {X X' : Cx.CxData A3.fam3.amb3} (e : X = X') {jW : JwT F X} {jW' : JwT F X'}
     (ej : HEq jW' jW) : MjW F Xd X jW ↔ MjW F Xd X' jW' := by
@@ -116,7 +116,7 @@ def datMv {hX : B.fields.Ok} (z : Dat (w.st Z) w.I hX T Wt) : Dat (w.st (Db.setD
 def p0Mv (p0 : BaseLevelRowSide (w.D Z)) : BaseLevelRowSide (w.D (Db.setDivZ Z N h)) := (by with_unfolding_all exact ((⟨GlobalTheory.EX.OB.sideTr N h p0.s⟩ : BaseLevelRowSide (GlobalTheory.EX.OB.setDiv (w.D Z) N h)) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl z.cG) :))`.
+A detailed English derivation is pending.
 -/
 theorem datMv_cG {hX : B.fields.Ok} (z : Dat (w.st Z) w.I hX T Wt) : HEq (datMv N h z).cG z.cG := (by with_unfolding_all exact ((HEq.refl z.cG) :))
 
@@ -128,14 +128,14 @@ def cxMv : Cx.CxData (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).fam3.amb
   (by with_unfolding_all exact (((datMv N h z).R.toCx3 (datMv N h z).F) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((toCx3_eq (a := Z) (Db.setDivZ Z N h) (iK := z.alg) z.R z.F) :))`.
+A detailed English derivation is pending.
 -/
 theorem cxMv_eq : z.R.toCx3 z.F = cxMv N h z := (by with_unfolding_all exact ((toCx3_eq (a := Z) (Db.setDivZ Z N h) (iK := z.alg) z.R z.F) :))
 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨J, HJ⟩` from `H`. Conclude with `⟨⟨(by with_unfolding_all exact (J.eW :))⟩, ⟨(by with_unfolding_all exact (HJ.j_eq :)), (by with_unfolding_all exact (HJ.hlat :))⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mjW_fwd {X : DivX (w.D Z)} {jW : JwT z.F (cxMv N h z)} (H : MjW z.F X (cxMv N h z) jW) :
     MjW (datMv N h z).F ((@EX.OB.divTr (@ColW.D B f T w Z) N h X)) ((datMv N h z).R.toCx3 (datMv N h z).F) ((jW)) := by
@@ -145,7 +145,7 @@ theorem mjW_fwd {X : DivX (w.D Z)} {jW : JwT z.F (cxMv N h z)} (H : MjW z.F X (c
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨J, HJ⟩` from `H`. Conclude with `⟨⟨(by with_unfolding_all exact (J.eW :))⟩, ⟨(by with_unfolding_all exact (HJ.j_eq :)), (by with_unfolding_all exact (HJ.hlat :))⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mjW_back {X : DivX (w.D (Db.setDivZ Z N h))} {jW : JwT (datMv N h z).F ((datMv N h z).R.toCx3 (datMv N h z).F)}
     (H : MjW (datMv N h z).F X ((datMv N h z).R.toCx3 (datMv N h z).F) jW) :
@@ -181,14 +181,14 @@ variable {N h t} {Y : Read (datMv N h t.r.z).R.toRealDat (datMv N h t.r.z).F.lv2
     {L : ReadL (datMv N h t.r.z).R (datMv N h t.r.z).F ((by with_unfolding_all exact ((p0Mv N h p0) :))) Y}
 
 /- English proof (translation)
-The claim follows from `eq_of_heq ((by exact s.tup))`.
+A detailed English derivation is pending.
 -/
 theorem ReadSame.tup_eq (s : ReadSame N h t Y L) : ((by exact Y.tup) : type_of% t.r.Y.tup) = t.r.Y.tup := eq_of_heq ((by exact s.tup))
 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (((MjW.congr (F := t.r.z.F) (Xd := ((divBack (D := w.D Z) N h ((by with_unfolding_all exact (X :)))))) (cxMv_eq N h t.r.z) (jW := (t.r.Z.jW)) (jW' := (L.jW)) ((s.jW))).2 (((mjW_back N h t.r.z (X := X) (jW := (by with_unfolding_all exact (L.jW :))) ((b …`.
+A detailed English derivation is pending.
 -/
 theorem ReadSame.mj_back (s : ReadSame N h t Y L) {X : DivX (w.D (Db.setDivZ Z N h))} (H : MjAre L ((X))) :
     MjAre t.r.Z ((@divBack (@ColW.D B f T w Z) N h X)) :=
@@ -199,7 +199,7 @@ theorem ReadSame.mj_back (s : ReadSame N h t Y L) {X : DivX (w.D (Db.setDivZ Z N
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((mjW_fwd N h t.r.z (X := X) (jW := (L.jW)) ((MjW.congr (cxMv_eq N h t.r.z) (jW := (t.r.Z.jW)) (jW' := (L.jW)) ((s.jW))).1 ((H)))) : _))`.
+A detailed English derivation is pending.
 -/
 theorem ReadSame.mj_fwd (s : ReadSame N h t Y L) {X : DivX (w.D Z)} (H : MjAre t.r.Z ((X))) :
     MjAre L ((@EX.OB.divTr (@ColW.D B f T w Z) N h X)) :=
@@ -237,7 +237,7 @@ def ReadSame.what₂ (s : ReadSame N h t Y L) : RowsT K w (Db.setDivZ Z N h) Wt 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `rfl tr := rfl core := (by with_unfolding_all exact ((HEq.refl (datMv N h t.r.z).core) :)) R := (by with_unfolding_all exact ((HEq.refl (datMv N h t.r.z).R) :)) cG := (by with_unfolding_all exact ((datMv_cG N h t.r.z) :)) tup := (by with_unfolding_all exact (s.tup :)) tupT := (by …`.
+A detailed English derivation is pending.
 -/
 theorem ReadSame.rowsSame (s : ReadSame N h t Y L) : RowsSame t s.what₂ where
   Xg := rfl
@@ -264,7 +264,7 @@ theorem ReadSame.rowsSame (s : ReadSame N h t Y L) : RowsSame t s.what₂ where
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `e : ((by with_unfolding_all exact (Y.eE :)) : type_of% t.r.Y.eE) = t.r.Y.eE` using `eq_of_heq ((by with_unfolding_all exact (s.eE :)))`. Conclude with `(by with_unfolding_all exact ((heq_of_eq (congrArg (fun E : type_of% t.r.Y.eE => SRe.RowPk.up Z Z.S N h { SRe.pkOf t with eE := E }) e)) :))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ReadSame.pk (s : ReadSame N h t Y L) : HEq (SRe.pkOf s.what₂) ((SRe.pkOf t).up Z Z.S N h) := by
   have e : ((by with_unfolding_all exact (Y.eE :)) : type_of% t.r.Y.eE) = t.r.Y.eE := eq_of_heq ((by with_unfolding_all exact (s.eE :)))
@@ -274,9 +274,9 @@ theorem ReadSame.pk (s : ReadSame N h t Y L) : HEq (SRe.pkOf s.what₂) ((SRe.pk
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨M, j, a1, a2, a3, a4, a5⟩` from `a'`. Simplify using `only at e1 e2`. Substitute `e1` using the available equality. Establish `e : ((by with_unfolding_all exact (a.jAmb :))) = j` using `eq_of_heq ((by with_unfolding_all exact (e2.symm :)))`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨J, HJ⟩` from `AmbW.congr H ((by with_unfolding_all exact (Y.tup :))) ((by with_unfolding_all exact (s.tup_eq :))) ((by with_unfolding_all exact (Y.jA :))) ((by with_unfolding_all exact (s.jA :)))`. Conclude with `⟨⟨(by with_unfolding_all exact (J.eA :))⟩, ⟨(by with_unfolding_all exact (HJ.j_eq :)), (by with_unfolding_all exact (HJ.lat :)), (by with_unfolding_all exact (HJ.metric :))⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ReadSame.amb1 (s : ReadSame N h t Y L) {a : AmbForm (w.D Z) (RowSide.sharp (w.D Z))}
     (a' : AmbForm (w.D (Db.setDivZ Z N h)) (RowSide.sharp (w.D (Db.setDivZ Z N h)))) (e1 : a'.MtH = (a.MtH))
@@ -296,9 +296,9 @@ theorem ReadSame.amb1 (s : ReadSame N h t Y L) {a : AmbForm (w.D Z) (RowSide.sha
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨M, j, a1, a2, a3, a4, a5⟩` from `a'`. Simplify using `only at e1 e2`. Substitute `e1` using the available equality. Establish `e : ((by with_unfolding_all exact (a.jAmb :))) = j` using `eq_of_heq ((by with_unfolding_all exact (e2.symm :)))`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨J, HJ⟩` from `AmbW.congr H ((by with_unfolding_all exact (Y.tup :))) ((by with_unfolding_all exact (s.tup_eq :))) ((by with_unfolding_all exact (Y.jA0 :))) ((by with_unfolding_all exact (s.jA0 :)))`. Conclude with `⟨⟨(by with_unfolding_all exact (J.eA :))⟩, ⟨(by with_unfolding_all exact (HJ.j_eq :)), (by with_unfolding_all exact (HJ.lat :)), (by with_unfolding_all exact (HJ.metric :))⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ReadSame.amb0 (s : ReadSame N h t Y L) {a : AmbForm (w.D Z) p0.s}
     (a' : AmbForm (w.D (Db.setDivZ Z N h)) (p0Mv N h p0).s) (e1 : a'.MtH = (a.MtH))
@@ -335,7 +335,7 @@ def allMv (x : RXs t) :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `sameOn_congr (fun μ => x.all.jA μ) s.tup_eq (k := fun u => t.r.Y.jA u) (heq_map (P := fun u μ => (Fin (rDim (w.st Z).toD7 (famR (w.st Z) w.I t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr).A t.r.z.F.P1 t.r.z.F.ψ1 u) → (w.st Z).toD7.what₂.LL) →ₛₗ[(w.st Z).toD7.what₂.embLL] (w.st Z).toD7 …`.
+A detailed English derivation is pending.
 -/
 theorem ReadSame.jA_use (s : ReadSame N h t Y L) (x : RXs t) (u) :
     SameOn (x.all.jA (((by exact Y.tup) : type_of% t.r.Y.tup) u)) (((by exact Y.jA) : ∀ u, (Fin (rDim (w.st Z).toD7
@@ -349,7 +349,7 @@ theorem ReadSame.jA_use (s : ReadSame N h t Y L) (x : RXs t) (u) :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `sameOn_congr (fun μ => x.all.jA0 μ) s.tup_eq (k := fun u => t.r.Y.jA0 u) (heq_map (P := fun u μ => JAT (D := (w.st Z).toD7) (famR (w.st Z) w.I t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr).A p0.s t.r.z.F.P0 t.r.z.F.ψ0 u μ) (fun _ _ j => (j : _ → _)) s.tup_eq ((by with_unfolding_all e …`.
+A detailed English derivation is pending.
 -/
 theorem ReadSame.movedReadingSameMaps_baseReading_agrees (s : ReadSame N h t Y L) (x : RXs t) (u) :
     SameOn (x.all.jA0 (((by exact Y.tup) : type_of% t.r.Y.tup) u)) (((by exact Y.jA0) : ∀ u, JAT (D := (w.st Z).toD7)
@@ -363,7 +363,7 @@ abbrev EMtT (t : RowsT K w Z Wt p0) (i : Fin (w.st Z).toD7.R.m) (u : TupU w.I (u
     (w.st Z).toD7.what₂.MtL μ ((i : ℕ) + 1)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl` from `eq_of_heq ek`. Conclude with `HEq.rfl`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eMt_heq (t : RowsT K w Z Wt p0) {tup tup' : TupU w.I (usedOf w.I T Wt) → (w.st Z).toD7.what₂.Tup} (e : tup' = tup)
     {k : ∀ i u, EMtT t i u (tup u)} {k' : ∀ i u, EMtT t i u (tup' u)} (ek : HEq k' k) (i) : HEq (k' i) (k i) := by
@@ -374,7 +374,7 @@ theorem eMt_heq (t : RowsT K w Z Wt p0) {tup tup' : TupU w.I (usedOf w.I T Wt) �
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `sameOn_congr (fun μ => x.all.eMt i μ) s.tup_eq (k := fun u => t.r.Y.eMt i u) (heq_map (P := fun u μ => EMtT t i u μ) (fun _ _ j => (j : _ → _)) s.tup_eq (eMt_heq t s.tup_eq (k := t.r.Y.eMt) (k' := (by with_unfolding_all exact (Y.eMt :))) ((by with_unfolding_all exact (s.eMt :))) …`.
+A detailed English derivation is pending.
 -/
 theorem ReadSame.eMt_use (s : ReadSame N h t Y L) (x : RXs t) (i : Fin (w.st Z).toD7.R.m) (u) :
     SameOn (x.all.eMt i (((by exact Y.tup) : type_of% t.r.Y.tup) u))
@@ -407,7 +407,7 @@ end Rows
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((And.intro (s.amb1 (a := O.amb) (((O.tr N h).amb)) (((Eq.refl O.amb.MtH))) (((HEq.refl O.amb.jAmb))) ((H.amb.1))) (s.amb0 (a := O.amb0) (((O.tr N h).amb0)) (((Eq.refl O.amb0.MtH))) (((HEq.refl O.amb0.jAmb))) ((H.amb.2)))) : _)) mjH := (by with_unfold …`.
+A detailed English derivation is pending.
 -/
 theorem ReadSame.objT {N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V} {h : B.Word → ℝ} {O : Obj2 (w.D Z)} {t : RowsT K w Z Wt O.p0}
     {Y : Read (datMv N h t.r.z).R.toRealDat (datMv N h t.r.z).F.lv2 ((p0Mv N h O.p0))}
@@ -421,7 +421,7 @@ theorem ReadSame.objT {N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V} {h : B
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Substitute `hO` using the available equality. Take `⟨Y, L, s⟩` from `hs`. Conclude with `⟨(by with_unfolding_all exact (s.what₂ :)), (by with_unfolding_all exact (s.rowsSame :)), (by with_unfolding_all exact (s.pk :)), fun H => (by with_unfolding_all exact ((s.objT H) :)), fun ⟨x⟩ => ⟨(by with_unfolding_all exact ((s.rxs x) :))⟩⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rows_move_of_read (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl)
     (O : Obj2 (w.D Z)) (t : RowsT K w Z Wt O.p0) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ)

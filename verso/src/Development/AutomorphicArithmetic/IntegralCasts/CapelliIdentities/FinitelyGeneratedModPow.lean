@@ -3,19 +3,19 @@ import Mathlib
 namespace UpperTheory.Reformulated.B.FinitelyGeneratedModPow
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨⊥, Submodule.fg_bot, fun x => ⟨0, Submodule.zero_mem _, by simp⟩⟩`. Consider the case `succ n ih`. Take `⟨N, hN, hx⟩` from `ih`. Take `⟨s, hs⟩ : (m ^ n).FG` from `IsNoetherian.noetherian (m ^ n)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ z ∈ Ideal.span (s : Set A), ∃ w ∈ Submodule.span O (s : Set A), z - w ∈ m ^ (n + 1)`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => exact ⟨z, Submodule.subset_span hz, by simp⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add z₁ z₂ _ _ h₁ h₂`. Take `⟨w₁, hw₁, e₁⟩` from `h₁`. Take `⟨w₂, hw₂, e₂⟩` from `h₂`. Use `⟨w₁ + w₂, Submodule.add_mem _ hw₁ hw₂, ?_⟩` and prove the remaining obligations. Establish `: z₁ + z₂ - (w₁ + w₂) = (z₁ - w₁) + (z₂ - w₂)` using `by ring`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Ideal.add_mem _ e₁ e₂`. Consider the case `smul a z hz h`. Take `⟨w, hw, e⟩` from `h`. Take `⟨c, hc⟩` from `hres a`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz' : z ∈ m ^ n` using `by rw [← hs]; exact hz`. Use `⟨c • w, Submodule.smul_mem _ c hw, ?_⟩` and prove the remaining obligations. Establish `: a • z - c • w = z * (a - algebraMap O A c) + algebraMap O A c * (z - w)`. Rewrite using `[smul_eq_mul, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `Ideal.add_mem _ ?_ (Ideal.mul_mem_left _ _ e)` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul hz' hc`. Use `⟨N ⊔ Submodule.span O (s : Set A), hN.sup ⟨s, rfl⟩, fun x => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hy, hxy⟩` from `hx x`. Rewrite `hxy` using `[← hs]`. Take `⟨w, hw, e⟩` from `key _ hxy`. Use `⟨y + w, Submodule.add_mem_sup hy hw, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_sub]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fg_mod_pow {O A : Type} [CommRing O] [CommRing A] [Algebra O A] [IsNoetherianRing A]
     (m : Ideal A) (hres : ∀ x : A, ∃ a : O, x - algebraMap O A a ∈ m) (n : ℕ) :

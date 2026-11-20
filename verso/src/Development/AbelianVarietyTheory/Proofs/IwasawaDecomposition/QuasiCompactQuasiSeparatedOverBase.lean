@@ -8,7 +8,7 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 namespace GlobalTheory.GModMap
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c X Z π hπ`. Establish `hX : IsProper X.s` using `GlobalTheory.SchemeWords.isProper_of_isProjOver X.proj`. Establish `hZ : IsProper Z.s` using `GlobalTheory.SchemeWords.isProper_of_isProjOver Z.proj`. Establish `hc : IsProper (π ≫ X.s)` using `hπ ▸ hZ`. Conclude with `⟨QuasiCompact.of_comp π X.s, QuasiSeparated.of_comp π X.s⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem quasiCompact_quasiSeparated : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (c : Coeff l) (X Z : GMod Xo c) (π : Z.X ⟶ X.X), π ≫ X.s = Z.s →

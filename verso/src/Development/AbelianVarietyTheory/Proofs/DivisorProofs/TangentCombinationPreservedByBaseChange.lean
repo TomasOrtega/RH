@@ -22,7 +22,7 @@ open MonoidalCategory CartesianMonoidalCategory MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_spMap' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R' →+* R'')
     (g : R →+* R') : spMap f ≫ spMap g = spMap (f.comp g) := by
@@ -31,14 +31,14 @@ theorem spMap_comp_spMap' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext s <;> simp [Formalism.L2.Pj.dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp_algebraMap {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) :
     (Formalism.L2.Pj.dualMap ψ).comp (algebraMap S (DualNumber S)) = (algebraMap T (DualNumber T)).comp ψ := by
   ext s <;> simp [Formalism.L2.Pj.dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Apply the tactic sequence `ext s <;> simp [Formalism.L2.Pj.dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fstHom_comp_dualMap {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) :
     (TrivSqZeroExt.fstHom T T T).toRingHom.comp (Formalism.L2.Pj.dualMap ψ) =
@@ -46,14 +46,14 @@ theorem fstHom_comp_dualMap {S T : Type} [CommRing S] [CommRing T] (ψ : S →+*
   ext s <;> simp [Formalism.L2.Pj.dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Apply the tactic sequence `ext s <;> simp [Formalism.L2.Pj.dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp_epsMul' {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (a : S) :
     (Formalism.L2.Pj.dualMap ψ).comp (epsMul a) = (epsMul (ψ a)).comp (Formalism.L2.Pj.dualMap ψ) := by
   ext s <;> simp [Formalism.L2.Pj.dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [Hom.one_def]`. Consider the case `cons a L ih => simp only [List.map_cons, List.prod_cons, ih, Hom.mul_def, comp_lift_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem list_prod_comp' {X0 : Scheme.{0}} {G : Over X0} [MonObj G] {T T' : Over X0} (f : T' ⟶ T)
     (L : List (T ⟶ G)) : (L.map (f ≫ ·)).prod = f ≫ L.prod := by
@@ -62,15 +62,15 @@ theorem list_prod_comp' {X0 : Scheme.{0}} {G : Over X0} [MonObj G] {T T' : Over 
   | cons a L ih => simp only [List.map_cons, List.prod_cons, ih, Hom.mul_def, comp_lift_assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t S S' _ _ φ x x' hx`. Substitute `hx` using the available equality. Use `⟨fun v hv => ?_, fun m v cf w h => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hv`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, h1, ← Category.assoc, spMap_comp_spMap', dualMap_comp_algebraMap, ← spMap_comp_spMap', Category.assoc]`. Rewrite using `[← Category.assoc, spMap_comp_spMap', fstHom_comp_dualMap, ← spMap_comp_spMap', Category.assoc, h2]`. Establish `e : (Over.homMk (spMap φ) rfl : Over.mk (spMap φ ≫ x) ⟶ Over.mk x) ≫ (1 : Over.mk x ⟶ t.G) = 1`. Simplify using `[Hom.one_def]`. Rewrite using `[← e, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨u, hu, hp⟩` from `h`. Set `q : tEpsG (spMap φ ≫ x) ⟶ tEpsG x` to `Over.homMk (spMap (Formalism.L2.Pj.dualMap φ)) (by show spMap (Formalism.L2.Pj.dualMap φ) ≫ spMap (algebraMap S (DualNumber S)) ≫ x = spMap (algebraMap S' (DualNumber S')) ≫ spMap φ ≫ x`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp_spMap', spMap_comp_spMap', dualMap_comp_algebraMap])`. Use `⟨fun i => q ≫ u i, fun i => ?_, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show spMap (Formalism.L2.Pj.dualMap φ) ≫ (u i).left = _`. Rewrite using `[hu i, ← Category.assoc, spMap_comp_spMap', dualMap_comp_epsMul', ← spMap_comp_spMap', Category.assoc]`. Establish `e : List.ofFn (fun i => q ≫ u i) = (List.ofFn u).map (q ≫ ·)`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, list_prod_comp', Over.comp_left, hp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tan_comb_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (S S' : Type) [CommRing S] [CommRing S'] (φ : S →+* S') (x : Sp S ⟶ X) (x' : Sp S' ⟶ X), spMap φ ≫ x = x' → (∀ v : Sp (DualNumber S) ⟶ t.G.left, IsTanAtG t x v → IsTanAtG t x' (spMap (dualMap φ) ≫ v)) ∧ ∀ (m : ℕ) (v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)) (cf : Fin m → S) (w : Sp (DualNumber S) ⟶ t.G.left), IsCombAtG t x v cf w → IsCombAtG t x' (fun i => spMap (dualMap φ) ≫ v i) (fun i => φ (cf i)) (spMap (dualMap φ) ≫ w) := by
   intro E _ _ _ H X t S S' _ _ φ x x' hx

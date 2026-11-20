@@ -11,17 +11,17 @@ open NumberField Formalism.BasicNotions Classical Formalism.MainNotions Formalis
 namespace GlobalTheory.IsomTheta
 
 /- English proof (translation)
-Introduce `D cc δ B χ hcc hδ hχ h0 N N' L L' hA g S e hd hLa hH`. Establish `hS : B.StdOK` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.stdOK B hcc hδ`. Establish `hmem` using `(B.vec_mem_ne hcc hδ h0 hS χ hχ N N' L L' hA).1`. Establish `hQ` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.rational_integrality_link D cc hcc δ hδ B N N' L L' hA`. Simplify using `only [Th, ThSp, Set.mem_setOf_eq] at hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hdiff : Differentiable ℂ (fun z => B.eNat χ N N' L L' (e.symm z))` using `hmem.1.comp e.symm.differentiable`. Conclude with `ReciprocityTheory.ChartRestriction.G.I2.contDiff_of_differentiable hdiff`. Introduce `x hx`. Establish `hx0 : e.symm x ∈ La D B.tor L L'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hLa]`. Simplify using `using hx`. Take `⟨m, hm⟩` from `hQ _ hx0`. Use function extensionality and compare the values at `z`. Establish `key` using `hmem.2 (e.symm x) hx0 (e.symm z)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : JMB.hf S.Hm z x = Hf D B.tor (e.symm z) (e.symm x)`. Simplify using `using hH (e.symm z) (e.symm x)`. Establish `h2 : JMB.hf S.Hm x x = Hf D B.tor (e.symm x) (e.symm x)`. Simplify using `using hH (e.symm x) (e.symm x)`. Establish `hre : (JMB.beta S.d S.Hm x x).re = (m : ℝ)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[JMB.beta, h2, hd, Complex.re_ofReal_mul]`. Conclude with `hm`. Establish `hal : al D B.tor (e.symm x) = (-1 : ℂ) ^ m`. Rewrite using `[al, hm, round_intCast]`. Establish `hph : Complex.exp ((Real.pi : ℂ) * Complex.I * (((JMB.beta S.d S.Hm x x).re : ℝ) : ℂ)) = (-1 : ℂ) ^ m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hre, show (Real.pi : ℂ) * Complex.I * ((m : ℝ) : ℂ) = (m : ℂ) * ((Real.pi : ℂ) * Complex.I) by push_cast; ring, Complex.exp_int_mul, Complex.exp_pi_mul_I]`. Use `show Complex.exp ((Real.pi : ℂ) * Complex.I * (((JMB.beta S.d S.Hm x x).re : ℝ) : ℂ)) * (B.eNat χ N N' L L' (e.symm (z + x)) * Complex.exp (-(Real.pi : ℂ) * JMB.hf S.Hm z x - (Real.pi : ℂ) / 2 * JMB.hf S.Hm x x)) = B.eNat χ N N' L L' (e.symm z)`. Rewrite using `[← key, hph, ← hal, h1, h2, map_add]`. Unfold `U`. Put the polynomial expressions in normal form.
+Replace the relevant objects with their definitions. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem isTheta_eNat_comp : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : IdE D → ℂ), IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ → IsChi D χ → δ ≠ 0 → ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), admitted D N N' L L' → ∀ (g : ℕ) (S : JMB.Setup g) (e : VC D N N' ≃L[ℂ] (Fin g → ℂ)), S.d = D.host.d → (∀ x, e x ∈ S.La ↔ x ∈ La D B.tor L L') → (∀ x y, JMB.hf S.Hm (e x) (e y) = Hf D B.tor x y) → S.IsTheta (fun z => B.eNat χ N N' L L' (e.symm z)) := by
   intro D cc δ B χ hcc hδ hχ h0 N N' L L' hA g S e hd hLa hH

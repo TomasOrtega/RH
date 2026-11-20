@@ -8,13 +8,11 @@ open NumberField MeasureTheory
 namespace GlobalTheory.OrbitUnfold
 
 /- English proof (translation)
-Establish `key : ∀ u, ∫ y, p y • h (y + t u) = ∫ y, p (y - t u) • h y`. Introduce `u`. Use `integral_add_right_eq_self (μ := (volume : Measure (I → ℝ))) (fun y => p (y - t u) • h y) (t u)` as an intermediate fact. Simplify using `using this`. Repeatedly rewrite using `[key]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `hasSum_integral_of_dominated_convergence (fun u y => p (y - t u) * ‖h y‖) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `u`. Conclude with `((hp.comp (measurable_sub_const (t u))).aestronglyMeasurable).smul hh.aestronglyMeasurable`. Introduce `u`. Use `ae_of_all _ (fun y => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul, Real.norm_of_nonneg (hp0 _)]`. Conclude with `ae_of_all _ (fun y => ((hsum y).mul_right ‖h y‖).summable)`. Use `hh.norm.congr (ae_of_all _ (fun y => ?_))` and prove the remaining obligations. Simplify using `only [((hsum y).mul_right ‖h y‖).tsum_eq, one_mul]`. Use `ae_of_all _ (fun y => ?_)` and prove the remaining obligations.
-
-Simplify using `using (hsum y).smul_const (h y)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasSum_integral_translate {I : Type} [Fintype I] {U : Type} [Countable U]
     {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -41,9 +39,9 @@ theorem hasSum_integral_translate {I : Type} [Fintype I] {U : Type} [Countable U
     simpa using (hsum y).smul_const (h y)
 
 /- English proof (translation)
-Introduce `I _ U _ t p hp hp0 hsum g hg`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hasSum_integral_translate t p hp hp0 hsum g hg` as an intermediate fact. Simplify `this` using `[Complex.real_smul]`. Use `hasSum_integral_translate t p hp hp0 hsum (fun y => ‖g y‖) hg.norm` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem orbit_unfold : ∀ (I : Type) [Fintype I] (U : Type) [Countable U] (t : U → I → ℝ)
     (p : (I → ℝ) → ℝ), Measurable p → (∀ y, 0 ≤ p y) → (∀ y, HasSum (fun u => p (y - t u)) 1) →

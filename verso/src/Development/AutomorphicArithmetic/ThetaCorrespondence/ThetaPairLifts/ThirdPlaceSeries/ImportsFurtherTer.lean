@@ -15,17 +15,17 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.JumpShapeAt
 open Classical
 /- English proof (translation)
-Introduce `hPr D L P nch HW F Cm X C₂ S ep hJ i h0 h1 w hw C`. Establish `hR : GoodR D.nd i (X.r i)` using `S.canon.fam.good i`. Establish `hA` using `S.facts.toCore.admA`. Establish `hg : D.nd.l i ∉ TwistedPlaces.gset D`. Simplify using `only [TwistedPlaces.gset, Finset.mem_insert, Finset.mem_singleton, not_or]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨h0, h1⟩`. Establish `hChi` using `_root_.GlobalTheory.ChiOneNoPt.main_alt_alt_alt hPr.font D hA.1 hA.2.2.2.1 hA.2.2.2.2.2.2 S.facts.block S.facts.muUnr i hg`. Establish `hG2` using `S.facts.g2.1 i (X.r i) hR`. Establish `hcr : ∀ x, IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rO D.nd i (X.r i) x)))` using `fun x => GlobalTheory.DualTwistCrys.crys_coef D i (X.r i) w hw C x (_root_.GlobalTheory.DualTwistCrys.crys_bridge_alt_alt D i (X.r i) hR hG2 h0 h1 w hw x)`. Use `⟨hcr, fun x => GlobalTheory.DualTwistCrys.tw_crys D i (X.r i) w hw C x (GlobalTheory.DualTwistCrys.crys_chi D i hChi w hw C) (hcr x), fun τ => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, ρ, hRd, hx, -⟩` from `hJ i (X.r i) hR w hw C τ`. Establish `hAJ` using `S.facts.admJ L S.par`. Establish `hJall : AdmissibleParameterJ.JumpConditions L` using `_root_.GlobalTheory.JumpStatement.holds_all_alt D L hAJ`. Establish `hj` using `D.nd.j_range i`. Establish `hint` using `jj_int D L S.par hAJ.2.2.2.1 i _ g ρ hRd (decide (AdmissibleParameterJ.TypeU D ep g))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Cl, Lo, hS⟩` from `shape D L S.par hJall.2.1 hJall.2.2.1 _ hj.1 hj.2 ρ _ hint`. Use `⟨Cl, Lo, fun x => ?_⟩` and prove the remaining obligations. Establish `hsg : (if EmbeddingTypes.EmbU C ep τ then (1 : ℤ) else -1) = (if decide (AdmissibleParameterJ.TypeU D ep g) then 1 else -1)`. Distinguish the cases in `hT : AdmissibleParameterJ.TypeU D ep g`. Rewrite using `[if_pos ((embU_iff D i w hw C τ ep g ρ hRd).2 hT), decide_eq_true hT]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[if_neg (mt (embU_iff D i w hw C τ ep g ρ hRd).1 hT), decide_eq_false hT]`. Both sides reduce to the same expression. Rewrite using `[hsg]`. Use `hS using 1` and compare the differences between its conclusion and the goal.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[(hx x a).2.1]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem main_alt_alt : Hypotheses₂ → ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (X : KillingConditions.HubData D) (C₂ : ℝ), _root_.GlobalTheory.NLink.SetupAlt L nch HW X C₂ → ∀ ep, AdmissibleParameterJ.hodgeTateJumpsAtModulesForSign D ep → ∀ i, EmbeddingTypes.admG2 i (X.r i) ep := by
   intro hPr D L P nch HW F Cm X C₂ S ep hJ i h0 h1 w hw C

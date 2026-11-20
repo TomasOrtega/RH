@@ -15,11 +15,11 @@ namespace GlobalTheory
 namespace ArcNotAbelian
 
 /- English proof (translation)
-Set `K'` to `AlgebraicClosure K`. Set `u : Spec (CommRingCat.of K') ⟶ Spec (CommRingCat.of K)` to `Spec.map (CommRingCat.ofHom (algebraMap K K'))`. Establish `: Subsingleton (Spec (CommRingCat.of K))` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Establish `q : Spec (CommRingCat.of K')` using `(default : PrimeSpectrum K')`. Establish `: Nonempty (Spec (CommRingCat.of K'))` using `⟨q⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁ : IsProper (pullback.snd G.hom (u ≫ t))` using `hp K' (u ≫ t) ⟨q, congrArg (fun z => t z) (Subsingleton.elim (u q) p)⟩`. Establish `P` using `(IsPullback.of_hasPullback (pullback.snd G.hom t) u).paste_horiz (IsPullback.of_hasPullback G.hom t)`. Establish `h₂ : UniversallyClosed (pullback.snd (pullback.snd G.hom t) u)`. Rewrite using `[← P.isoPullback_hom_snd]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) u` using `⟨⟨inferInstance, inferInstance⟩, inferInstance⟩`. Establish `: UniversallyClosed (pullback.snd G.hom t)` using `MorphismProperty.of_pullback_snd_of_descendsAlong (P := @UniversallyClosed) hu h₂`. Use `hG.separated` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Conclude with `⟨⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isProper_fibre {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG : IsSemiAbelian G) (K : Type) [Field K]
     (t : Spec (CommRingCat.of K) ⟶ S) (p : Spec (CommRingCat.of K)) (hp : t p ∈ abLocus G) :
@@ -45,11 +45,11 @@ theorem isProper_fibre {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG : IsSemiAbel
 open TorusToProper in
 
 /- English proof (translation)
-Establish `h` using `splitTorus_hom_proper_trivial_field K X B f hf`. Establish `e : ptFun K X (AddMonoidAlgebra K X) (univ K X) = ptFun K X (AddMonoidAlgebra K X) 1`. Rewrite using `[← cancel_mono f, h, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Conclude with `toUnit_unique _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e₂` using `(ptFun_fst K X _ (univ K X)).symm.trans ((congrArg (fun z => z.left ≫ Rosenlicht.torusFst _ X) e).trans (ptFun_fst K X _ 1))`. Establish `e₃ : charRing X _ (univ K X) = charRing X (AddMonoidAlgebra K X) 1` using `congrArg CommRingCat.Hom.hom (Spec.map_injective e₂)`. Establish `key : ∀ a : X, (AddMonoidAlgebra.single a 1 : AddMonoidAlgebra K X) = 1`. Introduce `a`. Use `congrArg (fun φ => φ (AddMonoidAlgebra.single a 1)) e₃` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [charRing_single] at this`. Simplify `this` using `[univ]`. Conclude with `⟨fun a b => AddMonoidAlgebra.single_left_injective (one_ne_zero (α := K)) ((key a).trans (key b).symm)⟩`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_mono (K : Type) [Field K] (X : Type) [AddCommGroup X]
     [Module.Free ℤ X] [Module.Finite ℤ X] (B : Over (Spec (CommRingCat.of K))) [GrpObj B]
@@ -72,7 +72,7 @@ theorem subsingleton_of_mono (K : Type) [Field K] (X : Type) [AddCommGroup X]
   exact ⟨fun a b => AddMonoidAlgebra.single_left_injective (one_ne_zero (α := K)) ((key a).trans (key b).symm)⟩
 
 /- English proof (translation)
-Use `letI := hA.toField`. Establish `: IsProper ((Over.pullback t).obj G).hom` using `isProper_fibre G hG A t p hp`. Conclude with `subsingleton_of_mono A X _ f hf`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_mem_abLocus {S : Scheme.{0}} (G : Over S) [GrpObj G] (hG : IsSemiAbelian G)
     (A : Type) [CommRing A] (hA : IsField A) (t : Spec (CommRingCat.of A) ⟶ S) (p : Spec (CommRingCat.of A))
@@ -88,17 +88,15 @@ end ArcNotAbelian
 open ArcNotAbelian in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c k _ bF a O _ β Y χ W x hx`. Use `mem_range_jK x fun hX => ?_` and prove the remaining obligations. Establish `h₁ : χ x ∈ abLocus Y.t.G`. Take `⟨p, hp⟩` from `hx`. Establish `hz : Y.jQ p ∈ pullback.fst Y.s (spMap β) ⁻¹' abLocus Y.t.G`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Y.ab_gen]`. Conclude with `⟨_, rfl⟩`. Rewrite using `[← hp]`. Conclude with `hz`. Establish `h₂ : x ∈ abLocus W.t.G` using `(abLocus_pullback abLocusOne Y.t.semi W.m.cart.1 x).1 h₁`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmax : (Ideal.span {(PowerSeries.X : PowerSeries k)} ^ (0 + 1)).IsMaximal`. Rewrite using `[zero_add, pow_one, ← PowerSeries.maximalIdeal_eq_span_X]`. Use `infer_instance`. Establish `hF : IsField (PowerSeries k ⧸ Ideal.span {(PowerSeries.X : PowerSeries k)} ^ (0 + 1))` using `(Ideal.Quotient.maximal_ideal_iff_isField_quotient _).1 hmax`. Establish `hle : Ideal.span {(PowerSeries.X : PowerSeries k)} ^ (0 + 1) ≤ x.asIdeal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[zero_add, pow_one, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hX`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : x ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.mk (Ideal.span {(PowerSeries.X : PowerSeries k)} ^ (0 + 1)))) := by`. Rewrite using `[range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective, Ideal.mk_ker]`. Conclude with `hle`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `g` to `W.P.U.gt 0`. Establish `m : Mono g.i` using `⟨fun a b h => g.isKernel.hom_ext h (toUnit_unique _ _)⟩`. Establish `hp' : thick (PowerSeries k) (Ideal.span {PowerSeries.X}) 0 p ∈ abLocus W.t.G`. Rewrite `h₂` using `[← hp]`. Conclude with `h₂`.
-
-Establish `hs` using `subsingleton_of_mem_abLocus W.t.G W.t.semi _ hF _ p hp' W.P.D.toPre.X g.i g.i_hom`. Establish `hn : Nontrivial (a.restrict β).D₀.X` using `(a.restrict β).nontriv`. Conclude with `not_subsingleton _ (W.e.toEquiv.subsingleton)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem arcWit_mem_range_jK_of_mem_range_j : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (k : Type) [Field k] (bF : c.F →+* k) (a : ArcIn D l (RingHom.id c.F) k bF) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (χ : Sp (PowerSeries k) ⟶ Y.X) (W : ArcWit Y (a.restrict β) (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := k)) PowerSeries.X χ) (x : Sp (PowerSeries k)), χ x ∈ Set.range Y.j → x ∈ Set.range (jK (PowerSeries k)) := by
   intro E _ _ _ H D l Xo c k _ bF a O _ β Y χ W x hx

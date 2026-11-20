@@ -11,33 +11,31 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `(absFin_le_iff F v).2 fun τ => by rw [map_zero, (absBar_eq_zero F v).2 rfl]; exact zero_le`.
+A detailed English derivation is pending.
 -/
 theorem abs_zero_le (v : HeightOneSpectrum (𝓞 F)) (C : ℝ≥0) : absFin F v (0 : Fv F v ⊗[F] E) ≤ C :=
   (absFin_le_iff F v).2 fun τ => by rw [map_zero, (absBar_eq_zero F v).2 rfl]; exact zero_le
 
 /- English proof (translation)
-The claim follows from `(absFin_le_iff F v).2 fun τ => by rw [map_neg, absBar_neg]; exact (le_absFin F v τ y).trans h`.
+A detailed English derivation is pending.
 -/
 theorem abs_neg_le (v : HeightOneSpectrum (𝓞 F)) {C : ℝ≥0} {y : Fv F v ⊗[F] E} (h : absFin F v y ≤ C) :
     absFin F v (-y) ≤ C :=
   (absFin_le_iff F v).2 fun τ => by rw [map_neg, absBar_neg]; exact (le_absFin F v τ y).trans h
 
 /- English proof (translation)
-The claim follows from `(absFin_mul_le F v c y).trans ((mul_le_mul' (absFin_le_one_of_mem_intLoc hc) h).trans_eq (one_mul C))`.
+A detailed English derivation is pending.
 -/
 theorem abs_int_mul_le (v : HeightOneSpectrum (𝓞 F)) {C : ℝ≥0} {c y : Fv F v ⊗[F] E} (hc : c ∈ intLoc F E v)
     (h : absFin F v y ≤ C) : absFin F v (c * y) ≤ C :=
   (absFin_mul_le F v c y).trans ((mul_le_mul' (absFin_le_one_of_mem_intLoc hc) h).trans_eq (one_mul C))
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hL`. Use `⟨S.sup fun s => Finset.univ.sup fun i => absFin F v ((1 : Fv F v) ⊗ₜ[F] s i), fun x hx i => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem s hs`. Conclude with `(Finset.le_sup (f := fun i => absFin F v ((1 : Fv F v) ⊗ₜ[F] s i)) (Finset.mem_univ i)).trans (Finset.le_sup (f := fun s : Fin n → E => Finset.univ.sup fun i => absFin F v ((1 : Fv F v) ⊗ₜ[F] s i)) hs)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [Pi.zero_apply, TensorProduct.tmul_zero]`. Conclude with `abs_zero_le v _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[Pi.add_apply, TensorProduct.tmul_add]`. Conclude with `(absFin_add_le F v _ _).trans (max_le hx hy)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c x _ hx`. Establish `e : (1 : Fv F v) ⊗ₜ[F] (c • x) i = ((1 : Fv F v) ⊗ₜ[F] (c : E)) * ((1 : Fv F v) ⊗ₜ[F] x i)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`.
-
-Conclude with `abs_int_mul_le v (tmul_mem_intLoc (one_mem _) c) hx`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound_rat {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) (v : HeightOneSpectrum (𝓞 F)) :
     ∃ C : ℝ≥0, ∀ x ∈ L, ∀ i, absFin F v ((1 : Fv F v) ⊗ₜ[F] x i) ≤ C := by
@@ -58,11 +56,11 @@ theorem exists_bound_rat {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hL : 
     exact abs_int_mul_le v (tmul_mem_intLoc (one_mem _) c) hx
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `exists_bound_rat L (Submodule.IsLattice.fg (A := E)) v`. Use `⟨C, fun y hy i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y ∈ AddSubgroup.closure _ at hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Establish `e : a ⊗ₜ[F] x i = (a ⊗ₜ[F] ((1 : 𝓞 E) : E)) * ((1 : Fv F v) ⊗ₜ[F] x i)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `absFin F v (a ⊗ₜ[F] x i) ≤ C`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Conclude with `abs_int_mul_le v (tmul_mem_intLoc ha 1) (hC x hx i)`. Consider the case `zero => exact abs_zero_le v C`. Consider the case `add y z _ _ hy hz => exact (absFin_add_le F v _ _).trans (max_le hy hz)`. Consider the case `neg y _ hy => exact abs_neg_le v hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_bound_latLoc {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] (v : HeightOneSpectrum (𝓞 F)) :

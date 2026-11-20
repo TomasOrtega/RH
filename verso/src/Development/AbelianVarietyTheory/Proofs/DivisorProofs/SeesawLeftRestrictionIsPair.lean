@@ -29,13 +29,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LatModel
 
 /- English proof (translation)
-Introduce `HD HR E _ _ _ I _ φ hφ c y hc l _ lam 𝔠 X U hα k₀ R₀ hk₀ hR₀ hR₀k G₀ _ p₀ P₀ Ψ₀ hG₀ hp₀ hΨ hfin hfl hsurj`. Set `σ : R₀ →+* Qb` to `{ toFun := fun x ↦ ⟨x, (hR₀.2.1 x x.2).1⟩ map_one' := rfl map_mul' := fun _ _ ↦ rfl map_zero' := rfl map_add' := fun _ _ ↦ rfl }`. Take `⟨XQ, pQ, gQ, cmQ, hQ, hgQ, epQ, hrmQ, hαQ⟩` from `GlobalTheory.T.cm_uniformization_algebraic_model HD E I φ c (lattice c y) 𝔠 X U hα R₀ σ (fun _ ↦ rfl) G₀ p₀ hG₀ hp₀`. Take `⟨k, hk, H⟩` from `GlobalTheory.T.cm_endomorphism_place_integral HD HR (FR E) 𝔠 (orderC c) (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.ofF c) l lam k₀ R₀ (GlobalTheory.T.conductor_order_finite_integers E c) hk₀ hR₀ hR₀k σ (fun _ ↦ rfl) G₀ P₀ Ψ₀ hG₀ hΨ hfin hfl hsurj XQ gQ …`. Use `⟨k ⊔ k₀, inferInstance, fun R hR ↦ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : R₀ ≤ R` using `fun x hx ↦ (hR.mono le_sup_right).2.2 x (hR₀k x hx) (hR₀.2.1 x hx)`. Set `j : R →+* Qb` to `{ toFun := fun x ↦ ⟨x, (hR.2.1 x x.2).1⟩ map_one' := rfl map_mul' := fun _ _ ↦ rfl map_zero' := rfl map_add' := fun _ _ ↦ rfl }`. Take `⟨X₀, pj, g, cm, hj, hg, epj, hrm, hcm⟩` from `H R (hR.mono le_sup_left) (Subring.inclusion hle) j (fun _ ↦ rfl) (fun _ ↦ rfl)`. Establish `hspec : spMap (algebraMap Qb ℂ) ≫ spMap j = spMap R.subtype`. Rewrite using `[GlobalTheory.HomDescent.spMap_comp]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hX : X.IsPullBy X₀ (spMap R.subtype) (pQ ≫ pj)` using `hspec ▸ Obj.IsPullBy.trans hQ hj`. Use `⟨X₀, pQ ≫ pj, cm, hX, hrm, fun a α hα' hu ↦ ?_, fun v₀ v' hv₀ hv' ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hαQ a α hα' hu, Category.assoc, hcm, Category.assoc]`. Take `⟨v, hv, ev⟩` from `GlobalTheory.T.tangent_pullback_chain_compat R₀ R (Subring.inclusion hle) (fun _ ↦ rfl) G₀ X₀.A X.A g (pQ ≫ pj) hg hX.grp v₀ v'.hom hv₀ (by rw [Category.assoc, epj, epQ]; exact hv')`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Serre.Lie.mk _ v hv, ev⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_obj_of_isogenous_model : GlobalTheory.Published.AbelianDualCrystal → GlobalTheory.Published.AbelianDeRham →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ →

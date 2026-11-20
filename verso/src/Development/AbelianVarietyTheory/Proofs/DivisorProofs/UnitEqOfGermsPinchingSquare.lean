@@ -11,15 +11,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PinchLift
 
 /- English proof (translation)
-Introduce `X X' Z Z' p i i' p' hc hG V u v hp hi`. Establish `ep : (p.app V).hom u.val = (p.app V).hom v.val`. Apply `TopCat.Presheaf.section_ext X'.sheaf (p ⁻¹ᵁ V)` to reduce the goal to its premises. Introduce `x hx`. Establish `h` using `congrArg Units.val (hp x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[gm_val _ x V hx, gm_val _ x V hx]`. Then use the resulting hypothesis. Establish `ei : (i.app V).hom u.val = (i.app V).hom v.val`. Apply `TopCat.Presheaf.section_ext Z.sheaf (i ⁻¹ᵁ V)` to reduce the goal to its premises. Introduce `z hz`. Establish `h` using `congrArg Units.val (hi z hz)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[gm_val _ z V hz, gm_val _ z V hz]`. Then use the resulting hypothesis. Establish `key : ∀ (f g : Z' ⟶ X) (_ : f = g) (O : Z'.Opens) (e : O ≤ f ⁻¹ᵁ V) (e' : O ≤ g ⁻¹ᵁ V), f.appLE V O e = g.appLE V O e'`. Introduce `f g hfg O e e'`. Substitute `hfg` using the available equality. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression.
 
-Establish `hag : (i'.appLE (p ⁻¹ᵁ V) (i' ⁻¹ᵁ (p ⁻¹ᵁ V) ⊓ p' ⁻¹ᵁ (i ⁻¹ᵁ V)) inf_le_left).hom ((p.app V).hom u.val) = (p'.appLE (i ⁻¹ᵁ V) (i' ⁻¹ᵁ (p ⁻¹ᵁ V) ⊓ p' ⁻¹ᵁ (i ⁻¹ᵁ V)) inf_le_right).hom ((i.app V).hom u.val)`. Establish `e1` using `Scheme.Hom.comp_appLE i' p V (i' ⁻¹ᵁ (p ⁻¹ᵁ V) ⊓ p' ⁻¹ᵁ (i ⁻¹ᵁ V)) inf_le_left`. Establish `e2` using `Scheme.Hom.comp_appLE p' i V (i' ⁻¹ᵁ (p ⁻¹ᵁ V) ⊓ p' ⁻¹ᵁ (i ⁻¹ᵁ V)) inf_le_right`. Establish `e3` using `key _ _ hc (i' ⁻¹ᵁ (p ⁻¹ᵁ V) ⊓ p' ⁻¹ᵁ (i ⁻¹ᵁ V)) inf_le_left inf_le_right`. Rewrite `e3` using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg (fun f => f.hom u.val) e3` as an intermediate fact. Simplify `this` using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `Units.ext ((hG V _ _ hag).unique ⟨rfl, rfl⟩ ⟨ep.symm, ei.symm⟩)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unit_eq_of_germs_glues : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z ⟶ X) (i' : Z' ⟶ X') (p' : Z' ⟶ Z), i' ≫ p = p' ≫ i → GlobalTheory.PinchLift.Glues p i i' p' → ∀ (V : X.Opens) (u v : Γ(X, V)ˣ), (∀ x' : X', p x' ∈ V → gm p x' V u = gm p x' V v) → (∀ z : Z, i z ∈ V → gm i z V u = gm i z V v) → u = v := by
   intro X X' Z Z' p i i' p' hc hG V u v hp hi

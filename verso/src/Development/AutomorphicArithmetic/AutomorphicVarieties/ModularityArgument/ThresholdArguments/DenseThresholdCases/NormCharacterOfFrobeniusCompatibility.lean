@@ -9,7 +9,7 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Af.Sol
 /- English proof (translation)
-Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Use `show Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ w.asIdeal.inertiaDeg (𝓞 K)`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     (w : HeightOneSpectrum (𝓞 K')) : normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
@@ -20,9 +20,9 @@ private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [
   rw [← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal,
     Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
 /- English proof (translation)
-Use `Filter.Tendsto.cofinite_of_finite_preimage_singleton fun v => ?_` and prove the remaining obligations. Establish `h0 : Ideal.map (algebraMap (𝓞 K) (𝓞 K')) v.asIdeal ≠ 0` using `fun h => v.ne_bot ((Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)).1 h)`. Use `(Ideal.finite_factors h0).subset fun w hw => ?_` and prove the remaining obligations. Establish `e : w.under (𝓞 K) = v` using `hw`. Use `show w.asIdeal ∣ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap, ← e]`. Conclude with `le_rfl`.
+A detailed English derivation is pending.
 -/
 private theorem tendsto_under' {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K'] :
     Filter.Tendsto (fun w : HeightOneSpectrum (𝓞 K') => w.under (𝓞 K)) Filter.cofinite Filter.cofinite := by
@@ -35,13 +35,13 @@ private theorem tendsto_under' {K K' : Type} [Field K] [NumberField K] [Field K'
   rw [Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap, ← e]
   exact le_rfl
 /- English proof (translation)
-Introduce `P hC K M Ω _ _ _ _ _ _ _ _ _ _ _ l _ ι η hη`. Break down `hη with rfl | hN` into its components or cases. Conclude with `⟨1, rfl, Filter.Eventually.of_forall fun v => charEig_one ι v⟩`. Take `⟨art, ha⟩` from `P.litN.aut.art K Ω`. Establish `hm : 0 < Module.finrank K M` using `Module.finrank_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA : IsAlgPos η 0` using `isAlgPos_zero_of_orderDvd (χ := η) hm hN.2.1`. Take `⟨δ, hδc, hL⟩` from `ha.exists_isLAdicOf ι hA`. Establish `hE` using `hC K Ω l ι η δ ⟨hδc, art, 0, ha, hA, hL⟩`. Use `⟨δ, ?_, hE.mono fun v hv => hv.2⟩` and prove the remaining obligations. Establish `hw : ∀ᶠ w : HeightOneSpectrum (𝓞 M) in Filter.cofinite, CharEig ι (δ.comp (res K Ω M)) w 1` using `by filter_upwards [hN.2.2, (tendsto_under' (K := K) (K' := M)).eventually hE] with w h1 h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hf` using `normV_under (K := K) w`. Establish `h3` using `(UpperTheory.frobenius_power_compatibility K M Ω l ι w _ hf).2 δ _ h2.2`. Rewrite `h3` using `[← Units.val_pow_eq_pow_val, h1 _ hf, Units.val_one]`. Then use the resulting hypothesis. Establish `key` using `GlobalTheory.Published.ChebotarevDegreeOne.eq_of_frob (F := M) (Ω := Ω) GlobalTheory.Published.chebotarevDegreeOne' (Filter.eventually_cofinite.1 hw) (f := fun s => δ (res K Ω M s)) (f' := fun _ => 1) (hδc.comp (continuous_restrictScalarsHom K M Ω)) continuous_const fun v hv _ A …`. Establish `h` using `((not_not.1 hv : CharEig _ _ _ _) A hA).2 σ hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_eq_one_iff _ ι.injective, map_inv, Units.val_eq_one, inv_eq_one]`. Conclude with `h`. Conclude with `MonoidHom.ext fun s => congrFun key s`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.norm_character_of_printed_char_frobenius :
     _root_.UpperTheory.V.Af.Hypotheses' → UpperTheory.V.Af.Sol.CharFrob → UpperTheory.V.Af.Sol.NormChar := by

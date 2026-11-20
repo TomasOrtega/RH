@@ -14,16 +14,16 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[JJ, fromBlocks_multiply, ← fromBlocks_one, fromBlocks_neg]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem JJ_sq_eq_neg_one : JJ n * JJ n = -1 := by
   rw [JJ, fromBlocks_multiply, ← fromBlocks_one, fromBlocks_neg]
   simp
 
 /- English proof (translation)
-Establish `hJ` using `(JJ_sq_eq_neg_one (n := n))`. Establish `hx' : xᴴ * JJ n * x = JJ n` using `hx`. Establish `h1 : (-(JJ n * xᴴ * JJ n)) * x = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.neg_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = 1 := by rw [hx', hJ, neg_neg]`. Establish `h2 : x * (-(JJ n * xᴴ * JJ n)) = 1` using `mul_eq_one_comm.mp h1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, hJ, Matrix.mul_one, neg_neg]`. Use `_ = JJ n := by rw [h2, Matrix.one_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem inG_mul_JJ_mul_conjTranspose_eq_JJ {x : M2 n} (hx : InG x) : x * JJ n * xᴴ = JJ n := by
   have hJ := (JJ_sq_eq_neg_one (n := n))
@@ -38,9 +38,9 @@ private theorem inG_mul_JJ_mul_conjTranspose_eq_JJ {x : M2 n} (hx : InG x) : x *
     _ = JJ n := by rw [h2, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `e` using `inG_mul_JJ_mul_conjTranspose_eq_JJ hx`. Rewrite `e` using `[← fromBlocks_toBlocks x]`. Simplify using `only [JJ, fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_inj, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂] at e`. Simplify using `at e`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `e.2.2.2`. Rewrite `h` using `[neg_add_eq_sub, sub_eq_zero]`. Conclude with `h`. Establish `h` using `e.2.2.1`. Rewrite `h` using `[neg_add_eq_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem toBlocks₂_relations_of_inG {x : M2 n} (hx : InG x) :
     toBlocks₂₁ x * (toBlocks₂₂ x)ᴴ = toBlocks₂₂ x * (toBlocks₂₁ x)ᴴ ∧
@@ -58,17 +58,15 @@ private theorem toBlocks₂_relations_of_inG {x : M2 n} (hx : InG x) :
     rwa [neg_add_eq_sub] at h
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨v, hv, hvM⟩` from `exists_vecMul_eq_zero_iff.mpr h0`. Take `⟨hC, hA⟩` from `toBlocks₂_relations_of_inG hx`. Rewrite `hvM` using `[Matrix.vecMul_add, Matrix.vecMul_smul]`. Establish `hβ : v ᵥ* toBlocks₂₂ x = -t • (v ᵥ* toBlocks₂₁ x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[neg_smul, ← sub_eq_zero, sub_neg_eq_add, add_comm]`. Conclude with `hvM`. Establish `key : (v ᵥ* toBlocks₂₁ x) ⬝ᵥ star (v ᵥ* toBlocks₂₂ x) = (v ᵥ* toBlocks₂₂ x) ⬝ᵥ star (v ᵥ* toBlocks₂₁ x)`. Establish `h` using `congrArg (fun M => (v ᵥ* M) ⬝ᵥ star v) hC`. Establish `e1 : (v ᵥ* (toBlocks₂₁ x * (toBlocks₂₂ x)ᴴ)) ⬝ᵥ star v = (v ᵥ* toBlocks₂₁ x) ⬝ᵥ star (v ᵥ* toBlocks₂₂ x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← vecMul_vecMul, ← dotProduct_mulVec, star_vecMul]`. Establish `e2 : (v ᵥ* (toBlocks₂₂ x * (toBlocks₂₁ x)ᴴ)) ⬝ᵥ star v = (v ᵥ* toBlocks₂₂ x) ⬝ᵥ star (v ᵥ* toBlocks₂₁ x)`. Rewrite using `[← vecMul_vecMul, ← dotProduct_mulVec, star_vecMul]`. Rewrite using `[← e1, ← e2]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[hβ, star_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul]`. Establish `hs : (v ᵥ* toBlocks₂₁ x) ⬝ᵥ star (v ᵥ* toBlocks₂₁ x) = 0`. Establish `h3 : (t - star t) * ((v ᵥ* toBlocks₂₁ x) ⬝ᵥ star (v ᵥ* toBlocks₂₁ x)) = 0`. Rewrite `key` using `[star_neg]`. Take the linear combination `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `mul_eq_zero.mp h3 with h4 | h4` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h4) ht`. Conclude with `h4`. Establish `hα : v ᵥ* toBlocks₂₁ x = 0` using `by open scoped ComplexOrder in exact dotProduct_self_star_eq_zero.mp hs`. Establish `hβ0 : v ᵥ* toBlocks₂₂ x = 0` using `by rw [hβ, hα, smul_zero]`.
-
-Establish `h5` using `congrArg (fun M => v ᵥ* M) hA`. Simplify using `only [Matrix.vecMul_sub, ← vecMul_vecMul, hα, hβ0, zero_vecMul, sub_self, vecMul_neg, vecMul_one] at h5`. Conclude with `hv (neg_eq_zero.mp h5.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem det_smul_toBlocks₂₁_add_toBlocks₂₂_ne_zero {x : M2 n} (hx : InG x) (t : ℂ) (ht : t ≠ star t) :
     (t • toBlocks₂₁ x + toBlocks₂₂ x).det ≠ 0 := by
@@ -107,9 +105,9 @@ private theorem det_smul_toBlocks₂₁_add_toBlocks₂₂_ne_zero {x : M2 n} (h
   exact hv (neg_eq_zero.mp h5.symm)
 
 /- English proof (translation)
-Establish `h` using `det_smul_toBlocks₂₁_add_toBlocks₂₂_ne_zero hx (-Complex.I) (by`. Rewrite using `[star_neg, Complex.star_def, Complex.conj_I, neg_neg]`. Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Evaluate the numerical expressions using `at this)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Rewrite `h` using `[neg_smul]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_second_cayley_block_ne {x : M2 n} (hx : InG x) : (u2 x).det ≠ 0 := by
   have h := det_smul_toBlocks₂₁_add_toBlocks₂₂_ne_zero hx (-Complex.I) (by
@@ -121,14 +119,14 @@ theorem det_second_cayley_block_ne {x : M2 n} (hx : InG x) : (u2 x).det ≠ 0 :=
   exact h
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem inG_of_inK {g : M2 n} (h : InK g) : InG g := h.1
 
 /- English proof (translation)
-Establish `hJ : JJ n * JJ n = -1`. Rewrite using `[JJ, fromBlocks_multiply, ← fromBlocks_one, fromBlocks_neg]`. Simplify using the standard rewrite rules. Establish `hx' : xᴴ * JJ n * x = JJ n` using `hx`. Establish `h1 : (-(JJ n * xᴴ * JJ n)) * x = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.neg_mul, Matrix.mul_assoc]`. Use `_ = 1 := by rw [hx', hJ, neg_neg]`. Conclude with `(Matrix.isUnit_det_of_left_inverse h1).ne_zero`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem det_ne_zero_of_inG' {x : M2 n} (hx : InG x) : x.det ≠ 0 := by
   have hJ : JJ n * JJ n = -1 := by
@@ -142,17 +140,15 @@ private theorem det_ne_zero_of_inG' {x : M2 n} (hx : InG x) : x.det ≠ 0 := by
   exact (Matrix.isUnit_det_of_left_inverse h1).ne_zero
 
 /- English proof (translation)
-Establish `hC : Continuous fun k => toBlocks₂₁ (ι k)` using `continuous_matrix fun i j => hι.matrix_elem (Sum.inr i) (Sum.inl j)`. Establish `hD : Continuous fun k => toBlocks₂₂ (ι k)` using `continuous_matrix fun i j => hι.matrix_elem (Sum.inr i) (Sum.inr j)`. Establish `hu1 : Continuous fun k => u1 (ι k)`. Unfold `u1`. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hu2 : Continuous fun k => u2 (ι k)`. Unfold `u2`. Use `fun_prop`. Establish `hI : Complex.I ≠ star Complex.I`. Rewrite using `[Complex.star_def, Complex.conj_I]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Evaluate the numerical expressions using `at this`. Establish `hd1 : ∀ k, (u1 (ι k)).det ≠ 0` using `fun k => det_smul_toBlocks₂₁_add_toBlocks₂₂_ne_zero (hK k) Complex.I hI`. Establish `hinv : Continuous fun k => (u2 (ι k))⁻¹`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `k`. Use `(continuousAt_matrix_inv _ ?_).comp hu2.continuousAt` and prove the remaining obligations. Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ (det_second_cayley_block_ne (hK k))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `hdet : Continuous fun k => (ι k).det` using `hι.matrix_det`. Unfold `rhoP fz`. Simplify using `only [neg_zero, Complex.cpow_zero, mul_one]`. Use `Continuous.star (Continuous.mul (Continuous.mul (hdet.zpow₀ e ?_) ?_) (Continuous.matrix_trace ((hinv.matrix_mul continuous_const).matrix_mul hu1)))` and prove the remaining obligations. Conclude with `fun k => Or.inl (det_ne_zero_of_inG' (hK k))`.
-
-Conclude with `(hu1.matrix_det).zpow₀ _ (fun k => Or.inl (hd1 k))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem continuous_rhoP {Kg : Type} [TopologicalSpace Kg] (ι : Kg → M2 n) (hι : Continuous ι)
     (hK : ∀ k, InG (ι k)) (m : ℕ) (e : ℤ) (Y : Matrix (Fin n) (Fin n) ℂ) : Continuous (rhoP ι m e Y) := by
@@ -187,63 +183,61 @@ theorem continuous_rhoP {Kg : Type} [TopologicalSpace Kg] (ι : Kg → M2 n) (h�
   · exact (hu1.matrix_det).zpow₀ _ (fun k => Or.inl (hd1 k))
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[toBlocks₁₁, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem one_upper_left_block : (1 : M2 n).toBlocks₁₁ = 1 := by ext i j; simp [toBlocks₁₁, Matrix.one_apply]
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[toBlocks₂₁, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem one_lower_left_block : (1 : M2 n).toBlocks₂₁ = 0 := by ext i j; simp [toBlocks₂₁, Matrix.one_apply]
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[toBlocks₂₂, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem one_lower_right_block : (1 : M2 n).toBlocks₂₂ = 1 := by ext i j; simp [toBlocks₂₂, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `[fz, u1, ub1, one_upper_left_block, one_lower_left_block, one_lower_right_block]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fz_one (m : ℕ) (e : ℤ) (z : ℂ) : fz m e z (1 : M2 n) = 1 := by
   simp [fz, u1, ub1, one_upper_left_block, one_lower_left_block, one_lower_right_block]
 
 /- English proof (translation)
-Simplify using `[Om, ub2, ub1, one_upper_left_block, one_lower_left_block]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Om_one : Om (1 : M2 n) = -1 := by
   simp [Om, ub2, ub1, one_upper_left_block, one_lower_left_block]
 
 /- English proof (translation)
-Simplify using `[eQ, fz_one, Om_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eQ_one (m : ℕ) (e : ℤ) (z : ℂ) (Q : Matrix (Fin n) (Fin n) ℂ) : eQ m e z Q (1 : M2 n) = -Q.trace := by
   simp [eQ, fz_one, Om_one]
 
 /- English proof (translation)
-Simplify using `only [eQ, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eQ_smul (m : ℕ) (e : ℤ) (z c : ℂ) (Q : Matrix (Fin n) (Fin n) ℂ) (x : M2 n) :
     eQ m e z (c • Q) x = c * eQ m e z Q x := by
   simp only [eQ, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul]; ring
 
 /- English proof (translation)
-Unfold `AsmLT LocTau`. Introduce `hLT1 hLT2 hLT3 hCrux n m e hmn Kg _ _ _ _ _ _ μ _ ι hι hιK Q`. Establish `hK : ∀ k, InG (ι k)` using `fun k => inG_of_inK ((hιK (ι k)).mpr ⟨k, rfl⟩)`. Take `⟨P, ψ, a, b, x0, hψ, ha, hb, hx0, hder⟩` from `hCrux n m e hmn Kg μ ι hι hιK`. Take `⟨c, hc, hcEq⟩` from `hLT2 n m e Kg μ ι hι hιK ψ a b hψ.1 hψ.2.1 ha hb`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1G : InG (1 : M2 n)` using `by simp [InG]`. Establish `hc0 : c 0 = 0`. Establish `h3` using `hLT3 n m e hmn Kg μ ι hι hιK (rhoP ι m e 1) ψ a b 1 (continuous_rhoP ι hι hK m e 1) hψ ha hb h1G`. Rewrite `h3` using `[hcEq 1 0 1 h1G, eQ_smul, eQ_one]`. Simplify using `at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `h3 with h | h` into its components or cases. Conclude with `h`. Use linear arithmetic over natural numbers and integers. Establish `hd : deriv c 0 ≠ 0`. Introduce `hd0`.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hder` to reduce the goal to its premises. Use `set β := (u1 x0).det * (ub1 x0).det with hβdef`. Use `set K0 := x0.det ^ e * (u1 x0).det ^ (-(m : ℤ)) * (Om x0 * Pᴴ).trace with hK0`. Establish `hF : (fun z => tOp μ ι (rhoP ι m e P) ψ a b (fz m e z) x0) = fun z => c z * (K0 * β ^ (-z))`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hcEq P z x0 hx0, eQ_smul]`. Simplify using `only [eQ, fz, hK0, hβdef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hF]`. Distinguish the cases in `hβ : β = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `h0 : (fun z => c z * (K0 * β ^ (-z))) = fun _ => 0`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Simplify using `[hc0]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hβ, Complex.zero_cpow (neg_ne_zero.mpr hz)]`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hg : HasDerivAt (fun z : ℂ => K0 * β ^ (-z)) (K0 * (β ^ (-(0 : ℂ)) * Complex.log β * (-1))) 0` using `(((hasDerivAt_id' (0 : ℂ)).neg).const_cpow (Or.inl hβ)).const_mul K0`. Establish `h` using `((hc 0).hasDerivAt.mul hg).deriv`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [hd0, hc0, zero_mul, mul_zero, add_zero] at h`. Conclude with `h`. Use `⟨1, fun _ => rhoP ι m e Qᴴ, fun _ => ψ, fun _ => a, fun _ => b, dslope c 0, fun _ _ => 1, fun _ => continuous_rhoP ι hι hK m e _, fun _ => hψ, fun _ => ⟨ha, hb⟩, ?_, ?_, fun _ => differentiable_const _, ?_⟩` and prove the remaining obligations. Establish `h` using `(Complex.differentiableOn_dslope (s := Set.univ) (c := 0) Filter.univ_mem).mpr hc.differentiableOn`. Conclude with `differentiableOn_univ.mp h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dslope_same]`. Conclude with `hd`. Introduce `z x hx`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, one_mul]`. Rewrite using `[hLT1 n m e z Q x hx, hcEq Qᴴ z x hx, conjTranspose_conjTranspose, eQ_smul]`.
-
-Establish `h` using `sub_smul_dslope c 0 z`. Rewrite `h` using `[sub_zero, hc0, sub_zero, smul_eq_mul]`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem asmLT : AsmLT := by
   unfold AsmLT LocTau
@@ -307,7 +301,7 @@ end PositivityTheory.Rg.Sw.HSt.LoweringDerivative
 namespace PositivityTheory.Rg.Sw.HSt
 
 /- English proof (translation)
-The claim follows from `LoweringDerivative.asmLT`.
+A detailed English derivation is pending.
 -/
 theorem asmLT : AsmLT := LoweringDerivative.asmLT
 

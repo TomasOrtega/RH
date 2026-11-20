@@ -19,9 +19,9 @@ section
 variable {K : Type} [Field K] [NumberField K] {M : ℕ} (D : RayData K M)
 
 /- English proof (translation)
-Establish `: idealsIn D g 0 = ∅`. Use extensionality with `I`. Simplify using `only [idealsIn, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨h1, -, h2, -⟩`. Conclude with `h1 (Ideal.absNorm_eq_zero_iff.1 h2)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `[aRay, this]`.
+A detailed English derivation is pending.
 -/
 theorem aRay_norm_zero (g : D.G) : aRay D g 0 = 0 := by
   have : idealsIn D g 0 = ∅ := by
@@ -32,11 +32,9 @@ theorem aRay_norm_zero (g : D.G) : aRay D g 0 = 0 := by
   simp [aRay, this]
 
 /- English proof (translation)
-Establish `: idealsIn D 1 1 = {⊤}`. Use extensionality with `I`. Simplify using `only [idealsIn, Set.mem_ofPred_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, -, h2, -⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `Ideal.absNorm_eq_one_iff.1 h2`. Introduce and unpack `rfl`. Use `⟨top_ne_bot, ?_, Ideal.absNorm_eq_one_iff.2 rfl, D.cls_top⟩` and prove the remaining obligations. Rewrite using `[← Ideal.one_eq_top]`. Conclude with `isCoprime_one_left`.
-
-Simplify using `[aRay, this]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aRay_one_norm_one : aRay D 1 1 = 1 := by
   have : idealsIn D 1 1 = {⊤} := by
@@ -51,9 +49,9 @@ theorem aRay_one_norm_one : aRay D 1 1 = 1 := by
   simp [aRay, this]
 
 /- English proof (translation)
-Establish `: idealsIn D g 1 = ∅`. Use extensionality with `I`. Simplify using `only [idealsIn, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨-, -, h2, h3⟩`. Rewrite `h3` using `[Ideal.absNorm_eq_one_iff.1 h2, D.cls_top]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hg h3.symm`. Simplify using `[aRay, this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aRay_norm_one_of_ne {g : D.G} (hg : g ≠ 1) : aRay D g 1 = 0 := by
   have : idealsIn D g 1 = ∅ := by
@@ -65,9 +63,9 @@ theorem aRay_norm_one_of_ne {g : D.G} (hg : g ≠ 1) : aRay D g 1 = 0 := by
   simp [aRay, this]
 
 /- English proof (translation)
-Establish `h1` using `RayData.card_eq_rayNo K M hM D`. Establish `h2` using `(RayNo.rayNo_bounds K (Ideal.span {(M : 𝓞 K)}) (by simpa [Ideal.span_singleton_eq_bot] using hM)).2.1`. Establish `h3 : Ideal.absNorm (Ideal.span {(M : 𝓞 K)}) = M ^ 2`. Rewrite using `[Ideal.absNorm_span_singleton, show (M : 𝓞 K) = algebraMap ℤ (𝓞 K) M by simp, Algebra.norm_algebraMap, RingOfIntegers.rank, hK]`. Simplify using `[Int.natAbs_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h4 : (classNumber K : ℝ) ≤ 4 * |(discr K : ℝ)|`. Conclude with `GlobalTheory.classNumber_le_four_mul_abs_discr K hK` after adjusting the coercions. Rewrite `h2` using `[h3, ← h1]`. Establish `h5 : (Fintype.card D.G : ℝ) ≤ (classNumber K : ℝ) * (M : ℝ) ^ 2` using `by exact_mod_cast h2`. Conclude with `h5.trans (mul_le_mul_of_nonneg_right h4 (by positivity))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_ray_le (hK : Module.finrank ℚ K = 2) (hM : M ≠ 0) :
     (Fintype.card D.G : ℝ) ≤ 4 * |(discr K : ℝ)| * (M : ℝ) ^ 2 := by
@@ -87,7 +85,7 @@ theorem card_ray_le (hK : Module.finrank ℚ K = 2) (hM : M ≠ 0) :
 end
 
 /- English proof (translation)
-Establish `: χ g * χ g = 1`. Rewrite using `[← AddChar.mul_apply, h, AddChar.one_apply]`. Conclude with `mul_self_eq_one_iff.1 this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addChar_eq_one_or_neg_one {G : Type} [AddCommGroup G] (χ : AddChar G ℂ) (h : χ * χ = 1) (g : G) :
     χ g = 1 ∨ χ g = -1 := by
@@ -96,23 +94,19 @@ theorem addChar_eq_one_or_neg_one {G : Type} [AddCommGroup G] (χ : AddChar G �
   exact mul_self_eq_one_iff.1 this
 
 /- English proof (translation)
-Introduce `d M hd hd4 hd100 hM`. Take `⟨K, _, _, ω, -, hK, hdisc, hω, -, -⟩` from `GlobalTheory.Mem.ImagQuad.exists_imagQuad_integers d hd hd4`. Establish `hx : (((2 * ω - 1 : 𝓞 K) : K)) ^ 2 = -(d : K)`. Use `congrArg (algebraMap (𝓞 K) K) hω` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hM0 : M ≠ 0` using `by omega`. Set `D : RayData K M` to `rayData K M hM0`. Establish `hc` using `GlobalTheory.Hk.rayCountTheta K d M _ hd hd4 hd100 hx hK hM D`. Establish `hl` using `GlobalTheory.Hk.LamRay.lamRay_props K d M _ hd hd4 hd100 hx hK hM D`. Establish `hcard` using `card_ray_le D hK hM0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdR : (100 : ℝ) ≤ d` using `by exact_mod_cast hd100`. Establish `hMR : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hM2 : (9 : ℝ) ≤ (M : ℝ) ^ 2` using `by nlinarith`. Establish `hs : (10 : ℝ) ≤ Real.sqrt d` using `Real.le_sqrt_of_sq_le (by linarith)`. Establish `hss : Real.sqrt d * Real.sqrt d = d` using `Real.mul_self_sqrt (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsd : Real.sqrt d ≤ d` using `by nlinarith`. Establish `hpi` using `Real.pi_gt_three`. Establish `hpi4` using `Real.pi_le_four`. Rewrite `hcard` using `[hdisc]`. Establish `habs : |(((-(d : ℤ) : ℤ)) : ℝ)| = d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Int.cast_neg, abs_neg, Int.cast_natCast, Nat.abs_cast]`. Rewrite `hcard` using `[habs]`. Use `⟨{ G := Additive D.G ft := D.fin B := 4 * (d : ℝ) * (M : ℝ) ^ 2 κ := 2 * Real.pi / (Real.sqrt d * (M : ℝ) ^ 2) a := fun g n => aRay D g.toMul n lam := fun g n => lamRay D g.toMul n B_ge := by nlinarith card_le := hcard κ_ge := by` and prove the remaining obligations. Rewrite using `[div_le_div_iff₀ (by positivity) (by positivity)]`. Establish `h1 : Real.sqrt d * (M : ℝ) ^ 2 ≤ d * (M : ℝ) ^ 2` using `mul_le_mul_of_nonneg_right hsd (by positivity)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (0 : ℝ) ≤ d * (M : ℝ) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Use `κ_le := by`. Rewrite using `[div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `a_nonneg := fun g n => Nat.cast_nonneg _`. Use `a_zero := fun g => aRay_norm_zero D _`. Use `a_one := aRay_one_norm_one D`. Use `a_one_ne := fun g hg => aRay_norm_one_of_ne D hg`. Use `count := fun g => (hc g.toMul).1`.
-
-Use `theta := fun g => (hc g.toMul).2`. Use `lam_nonneg := fun g n => hl.1 _ n`. Use `lam_le := hl.2.1`. Use `conv := fun g n => GlobalTheory.Hk.aRay_mul_log K M (by omega) D g.toMul n`. Use `sq := fun χ hχ n => GlobalTheory.Hk.RaySq.conv_real_char K M (by omega) D (fun g => (χ (Additive.ofMul g)).re) (by simp) ?_ ?_ n }, rfl, hl.2.2⟩`.
-
-Introduce `g h`. Rewrite using `[ofMul_mul, AddChar.map_add_eq_mul]`. Apply the tactic sequence `rcases addChar_eq_one_or_neg_one χ hχ (Additive.ofMul g) with h1 | h1 <;> simp [h1]`. Introduce `g`. Apply the tactic sequence `rcases addChar_eq_one_or_neg_one χ hχ (Additive.ofMul g) with h1 | h1 <;> simp [h1]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_lFam_ray : ∀ d M : ℕ, d.Prime → d % 4 = 3 → 100 ≤ d → 3 ≤ M → ∃ 𝓕 : LFam, 𝓕.B = (4 * (d : ℝ) * (M : ℝ) ^ 2) ∧
     ∀ p : ℕ, p.Prime → 𝓕.lam 0 p ≠ 0 → GlobalTheory.Mem.An.NormOne d M p := by

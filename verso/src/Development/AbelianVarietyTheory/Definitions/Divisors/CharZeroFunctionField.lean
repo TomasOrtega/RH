@@ -22,7 +22,7 @@ structure IsBallFam {G : Type} [AddCommGroup G] (Λ : AddSubgroup G) (B : ℝ �
   nsmul_iff : ∀ (n : ℕ) (r : ℝ) (x : G), 0 < n → x ∈ Λ → (n • x ∈ B (n * r) ↔ x ∈ B r)
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.mem_top _ zero_mem r hr := by simpa using hr sub_mem r r' x y hx hy := by simp only [Set.mem_setOf_eq, Int.cast_sub] at hx hy ⊢ exact (abs_sub _ _).trans (add_le_add hx hy) nsmul_iff n r x hn _ := by have hn' : (0 : ℝ) < n := by exact_mod_cast hn simp only [Set.mem_se …`.
+A detailed English derivation is pending.
 -/
 theorem isBallFam_int : IsBallFam (⊤ : AddSubgroup ℤ) fun r => {x | |(x : ℝ)| ≤ r} where
   subset _ _ _ := AddSubgroup.mem_top _
@@ -52,7 +52,7 @@ structure Pair (p : X ⟶ Sp k) where
   hr' : IsRatSec A.B r'
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_isRatSec L.isLB`. Take `⟨r', hr'⟩` from `exists_isRatSec A.isLB`. Conclude with `⟨⟨L, A, r, r', hr, hr'⟩, rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pair (L A : HermLB p) : ∃ P : Pair p, P.L = L ∧ P.A = A := by
   obtain ⟨r, hr⟩ := exists_isRatSec L.isLB
@@ -121,7 +121,7 @@ namespace IntExample
 open GlobalTheory.Points GlobalTheory.CechPic
 
 /- English proof (translation)
-Establish `h : genericPoint X ∈ (⊤ : X.Opens)` using `trivial`. Establish `e : (n : X.functionField) = fnOf ⊤ h (n : Γ(X, ⊤))` using `(map_natCast _ n).symm`. Rewrite using `[e, ratVal_fnOf mem_ptsIn_top h, ev_eq mem_ptsIn_top, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratVal_nat {σ : k →+* ℂ} (y : CxPts p σ) (n : ℕ) : ratVal (n : X.functionField) y = n := by
   have h : genericPoint X ∈ (⊤ : X.Opens) := trivial
@@ -129,7 +129,7 @@ theorem ratVal_nat {σ : k →+* ℂ} (y : CxPts p σ) (n : ℕ) : ratVal (n : X
   rw [e, ratVal_fnOf mem_ptsIn_top h, ev_eq mem_ptsIn_top, map_natCast]
 
 /- English proof (translation)
-Introduce `i j h`. Simplify using `[LB.triv]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isRatSec_one : IsRatSec (LB.triv X) fun _ => 1 := by
   intro i j h
@@ -139,7 +139,7 @@ def pair : Pair (𝟙 (Sp ℤ)) :=
   ⟨ArithBase.trivShift 0, ArithBase.trivShift (Real.log 3), fun _ => 1, fun _ => 1, isRatSec_one, isRatSec_one⟩
 
 /- English proof (translation)
-Use `(HermLB.IsArithHeight.isNef_iff ArithBase.isArithVar_int (ArithBase.isArithHeight_trivShift t)).2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(HermLB.isNef_triv (𝟙 (Sp ℤ)) 0).semiPos.shift (fun _ => t) (fun _ => rfl)`. Introduce `Z i _ _ _ dsimp only split_ifs`. Conclude with `ht`. Conclude with `Real.log_natCast_nonneg _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 theorem isNef_trivShift (t : ℝ) (ht : 0 ≤ t) : (ArithBase.trivShift t).IsNef 0 := by
   classical
@@ -153,7 +153,7 @@ theorem isNef_trivShift (t : ℝ) (ht : 0 ≤ t) : (ArithBase.trivShift t).IsNef
     · exact Real.log_natCast_nonneg _
 
 /- English proof (translation)
-Use `show f * (((1 : (Sp ℤ).functionFieldˣ)) : (Sp ℤ).functionField) ^ a * (((1 : (Sp ℤ).functionFieldˣ)) : (Sp ℤ).functionField) ^ b = f`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_eq (a b : ℤ) (f) (i j) : pair.loc a b f i j = f := by
   show f * (((1 : (Sp ℤ).functionFieldˣ)) : (Sp ℤ).functionField) ^ a *
@@ -173,7 +173,7 @@ private theorem pair_A_phi_apply_eq_two_log_three (σ : ℤ →+* ℂ) (i) (y : 
     (pair.A.φ σ).φ i y = 0 + 2 * Real.log 3 := rfl
 
 /- English proof (translation)
-Simplify using `only [Pair.nu, loc_eq, ratVal_nat, Complex.norm_natCast, pair_L_phi_apply_eq_zero, pair_A_phi_apply_eq_two_log_three]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nu_nat (a b : ℤ) (σ) (y) (n : ℕ) : pair.nu a b σ y n = n * Real.exp (-(b * Real.log 3)) := by
   simp only [Pair.nu, loc_eq, ratVal_nat, Complex.norm_natCast, pair_L_phi_apply_eq_zero, pair_A_phi_apply_eq_two_log_three]
@@ -181,15 +181,15 @@ theorem nu_nat (a b : ℤ) (σ) (y) (n : ℕ) : pair.nu a b σ y n = n * Real.ex
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨n, map_natCast _ n⟩`.
+Supply the required witnesses or components.
 -/
 theorem regAt_nat (x : Sp ℤ) (n : ℕ) : RegAt x (n : (Sp ℤ).functionField) :=
   ⟨n, map_natCast _ n⟩
 
 /- English proof (translation)
-Establish `h : genericPoint (Sp ℤ) ∈ (⊤ : (Sp ℤ).Opens)` using `trivial`. Set `f : ℤ →+* (Sp ℤ).functionField` to `(fnOf ⊤ h).comp (Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv.hom`. Establish `hf : Function.Injective f`. Introduce `a b hab`. Establish `h1` using `fnOf_injective ⊤ h hab`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using congrArg (Scheme.ΓSpecIso (CommRingCat.of ℤ)).hom.hom h1`. Conclude with `charZero_of_injective_ringHom hf`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem charZero_functionField : CharZero (Sp ℤ).functionField := by
   have h : genericPoint (Sp ℤ) ∈ (⊤ : (Sp ℤ).Opens) := trivial
@@ -202,7 +202,7 @@ theorem charZero_functionField : CharZero (Sp ℤ).functionField := by
   exact charZero_of_injective_ringHom hf
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨CxPts.ofHom (p := 𝟙 (Sp ℤ)) (U := ⊤) (isAffineOpen_top (Sp ℤ)) ((Int.castRingHom ℂ).comp (Scheme.ΓSpecIso (CommRingCat.of ℤ)).hom.hom) (fun a => by simp only [eq_intCast, map_intCast])⟩`.
+Supply the required witnesses or components.
 -/
 private theorem nonempty_cxPts_spec_int : Nonempty (CxPts (𝟙 (Sp ℤ)) (Int.castRingHom ℂ)) :=
   ⟨CxPts.ofHom (p := 𝟙 (Sp ℤ)) (U := ⊤) (isAffineOpen_top (Sp ℤ))
@@ -210,13 +210,11 @@ private theorem nonempty_cxPts_spec_int : Nonempty (CxPts (𝟙 (Sp ℤ)) (Int.c
     (fun a => by simp only [eq_intCast, map_intCast])⟩
 
 /- English proof (translation)
-Establish `key : ∀ σ y, pair.nu a 1 σ y n = n / 3`. Introduce `σ y`. Rewrite using `[nu_nat, Int.cast_one, one_mul, Real.exp_neg, Real.exp_log (by norm_num), div_eq_mul_inv]`. Establish `hH : (n : (Sp ℤ).functionField) ∈ pair.H a 1` using `fun x i j _ _ => by`. Rewrite using `[loc_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `regAt_nat x n`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Take `⟨y⟩` from `nonempty_cxPts_spec_int`. Establish `h1` using `h (Int.castRingHom ℂ) y`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[key, div_le_one (by norm_num)]`. Conclude with `h1` after adjusting the coercions. Introduce `hn`. Use `⟨hH, fun σ y => ?_⟩` and prove the remaining obligations. Rewrite using `[key, div_le_one (by norm_num)]`.
-
-Conclude with `hn` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nat_mem_Bl_iff (a : ℤ) (n : ℕ) : (n : (Sp ℤ).functionField) ∈ pair.Bl a 1 1 ↔ n ≤ 3 := by
   have key : ∀ σ y, pair.nu a 1 σ y n = n / 3 := by
@@ -237,7 +235,7 @@ theorem nat_mem_Bl_iff (a : ℤ) (n : ℕ) : (n : (Sp ℤ).functionField) ∈ pa
     exact_mod_cast hn
 
 /- English proof (translation)
-The claim follows from `{ isLB := LB.isLB_triv _ compactSpace := inferInstance exists_affine := fun x => by refine ⟨1, le_rfl, powSecMk (L := LB.triv (Sp ℤ)) 1 (fun _ => 1) (fun i j => by simp [LB.triv]), ?_, isAffineOpen_nonzeroLocus (isLB_lbPow (LB.isLB_triv _) 1) _⟩ erw [nonzeroLocus_powSecMk] simp [ …`.
+A detailed English derivation is pending.
 -/
 theorem good : pair.Good 0 1 (2 : ℕ) (3 : ℕ) where
   ample :=
@@ -270,7 +268,7 @@ theorem good : pair.Good 0 1 (2 : ℕ) (3 : ℕ) where
     ring
 
 /- English proof (translation)
-Introduce `h` and use `by have h1 := (nat_mem_Bl_iff (-1) 4).1 h.t_mem omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_good : ¬ pair.Good 0 1 (2 : ℕ) (4 : ℕ) := fun h => by
   have h1 := (nat_mem_Bl_iff (-1) 4).1 h.t_mem
@@ -283,9 +281,9 @@ private theorem trivShift_phi_apply_eq_two_mul (t : ℝ) (σ : ℤ →+* ℂ) (c
     ((ArithBase.trivShift t).φ σ).φ c y = 0 + 2 * t := rfl
 
 /- English proof (translation)
-Use `⟨fun _ => 1, isRatSec_one, fun x c i j _ _ _ => ?_, fun σ y c i j _ _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[loc_eq]`. Simplify using `using unitAt_one x`. Rewrite using `[loc_eq, trivShift_phi_apply_eq_two_mul, pair_L_phi_apply_eq_zero, pair_A_phi_apply_eq_two_log_three]`. Establish `h1 : ratVal (((1 : (Sp ℤ).functionFieldˣ) : (Sp ℤ).functionField) / 1) y = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Units.val_one, div_one, ← Nat.cast_one, ratVal_nat, Nat.cast_one]`. Rewrite using `[h1, norm_one, Real.log_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rep (a b : ℤ) : pair.Rep a b (ArithBase.trivShift (b * Real.log 3)) := by
   refine ⟨fun _ => 1, isRatSec_one, fun x c i j _ _ _ => ?_, fun σ y c i j _ _ _ => ?_⟩

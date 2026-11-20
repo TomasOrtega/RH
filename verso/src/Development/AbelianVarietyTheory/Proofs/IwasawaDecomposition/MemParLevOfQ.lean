@@ -15,7 +15,7 @@ variable (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (U : Set I.�
   (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U))
 
 /- English proof (translation)
-The claim follows from `q.2.1`.
+A detailed English derivation is pending.
 -/
 theorem mem_parLev_of_Q (i : Fin X.toD7.R.m) (t : TupU I U) (q : (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).Q) :
     Formalism.UG.bc (swapAE X.toD7) ((q : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _) ∈
@@ -25,12 +25,12 @@ def rV (i : Fin X.toD7.R.m) (t : TupU I U) (x : GL (Fin (Vc X.toD7 i).rank) (For
   rTup (L.βV i) (L.datVt i t) x
 
 /- English proof (translation)
-The claim follows from `rTup_one`.
+A detailed English derivation is pending.
 -/
 theorem rV_one (i : Fin X.toD7.R.m) (t : TupU I U) : rV X I U L i t 1 = 1 := rTup_one
 
 /- English proof (translation)
-The claim follows from `rTup_mul hx hy`.
+A detailed English derivation is pending.
 -/
 theorem rV_mul (i : Fin X.toD7.R.m) (t : TupU I U) {x y : GL (Fin (Vc X.toD7 i).rank) (Formalism.IndefR.Lev.EAf X.toD7)}
     (hx : x ∈ Formalism.L2.DIV.parLev X.toD7.sp.cm (Vc X.toD7 i).gram (L.βV i) (L.datVt i t))
@@ -57,7 +57,7 @@ theorem redQ_apply (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r) (i : Fin X.toD7.R.m)
       (Formalism.UG.bc (swapAE X.toD7) ((q : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _))) := rfl
 
 /- English proof (translation)
-Rewrite using `[redQ_apply]`. Conclude with `eG.apply_symm_apply _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eG_redQ (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r) (i : Fin X.toD7.R.m) (t : TupU I U)
     (q : (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).Q) :
@@ -67,9 +67,9 @@ theorem eG_redQ (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r) (i : Fin X.toD7.R.m) (t
   exact eG.apply_symm_apply _
 
 /- English proof (translation)
-Rewrite using `[redQ_apply, MulEquiv.map_eq_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨mem_parLev_of_Q X I U L i t q, Subgroup.mem_bot.2 h⟩`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subgroup.mem_bot.1 h.2`.
+A detailed English derivation is pending.
 -/
 theorem redQ_eq_one_iff (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r) (i : Fin X.toD7.R.m) (t : TupU I U)
     (q : (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).Q) :

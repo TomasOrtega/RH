@@ -6,7 +6,7 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.TwZeroGen
 
 /- English proof (translation)
-Set `f : LocallyConstant V Empty` to `⟨isEmptyElim, fun s => by rw [Set.eq_empty_of_isEmpty (isEmptyElim ⁻¹' s)]; exact isOpen_empty⟩`. Take `⟨W, j, -, -, -, hG⟩` from `hLc V Empty f`. Prove the components needed by the constructor for the conclusion. Introduce `a b`. Conclude with `(hG R G (fun e => e.elim)).unique (fun e => e.elim) (fun e => e.elim)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sec_subsingleton (hLc : LcCover) (V : Scheme.{0}) [IsEmpty V] {R : Type} [CommRing R] (G : Shv R) :
     Subsingleton (Sec G V) := by
@@ -18,7 +18,7 @@ theorem sec_subsingleton (hLc : LcCover) (V : Scheme.{0}) [IsEmpty V] {R : Type}
   exact (hG R G (fun e => e.elim)).unique (fun e => e.elim) (fun e => e.elim)
 
 /- English proof (translation)
-Unfold `twGen`. Use `congr 1`. Use `(Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨θ, η, b, h, ?_⟩)` and prove the remaining obligations. Rewrite using `[zpow_zero]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem twGen_zero_eq_of_eq_pow {q : ℕ} {V : Scheme.{0}} (η θ : Prim q ↑(V.presheaf.obj (op ⊤)))
     (b : (ZMod q)ˣ) (h : η.1 = θ.1 ^ (b : ZMod q).val) : twGen 0 η = twGen 0 θ := by
@@ -29,13 +29,13 @@ private theorem twGen_zero_eq_of_eq_pow {q : ℕ} {V : Scheme.{0}} (η θ : Prim
   rfl
 
 /- English proof (translation)
-Introduce `hR hL hP hIn q _ U ζ ξ`. Take `⟨f, hf, hu⟩` from `(hR q U ζ).2 ξ`. Take `⟨W, j, hWf, -, -, hG⟩` from `hL U (ZMod q) f`. Establish `key : ∀ a, Sec.res (j a) (twGen 0 ζ) = Sec.res (j a) (twGen 0 ξ)`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[((hP q 0 U ζ).1 (W a) (j a)).1, ((hP q 0 U ξ).1 (W a) (j a)).1]`. Distinguish the cases in `ha : IsUnit a`. Use `symm`. Apply `twGen_zero_eq_of_eq_pow _ _ ha.unit` to reduce the goal to its premises. Establish `hpw` using `hf (W a) (j a) a (hWf a)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e : (primRes (j a) ξ).1 = (CommRingCat.Hom.hom (Scheme.Hom.appTop (j a))) ξ.1` using `rfl`. Rewrite using `[IsUnit.unit_spec, e]`. Conclude with `hpw`. Use `haveI : IsEmpty (W a) := ⟨fun v => by`. Establish `hv` using `hu (j a v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hv` using `[hWf a v]`. Conclude with `ha hv⟩`. Conclude with `(sec_subsingleton hL (W a) (tw q 0)).elim _ _`. Take `⟨y, -, hy⟩` from `hG (ZMod q) (tw q 0) (fun a => Sec.res (j a) (twGen 0 ζ))`. Conclude with `(hy _ (fun a => rfl)).trans (hy _ (fun a => (key a).symm)).symm`.
+A detailed English derivation is pending.
 -/
 theorem twZero : RootPow → LcCover → RepRoot → TwZero := by
   intro hR hL hP hIn q _ U ζ ξ

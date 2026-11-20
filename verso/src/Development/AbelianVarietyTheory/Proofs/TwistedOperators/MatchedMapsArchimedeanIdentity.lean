@@ -14,13 +14,13 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hpow : ∀ m : ℕ, (L ^ m) v ∈ N`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simpa using hv`. Consider the case `succ m ih => rw [pow_succ', Module.End.mul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `hL _ ih`. Assume the negation of the conclusion as `hn`. Take `⟨l, hl, hmap⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hn inferInstance`. Establish `hz : ∀ y ∈ N, l y = 0` using `fun y hy => by`. Establish `h'` using `Submodule.mem_map_of_mem (f := l) hy`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[hmap, Submodule.mem_bot]`. Conclude with `h'`. Establish `h0 : (fun m : ℕ => ((m.factorial : ℂ))⁻¹ * l ((L ^ m) v)) = fun _ => 0`. Use function extensionality and compare the values at `m`. Rewrite using `[hz _ (hpow m), mul_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs` using `hU v l`. Rewrite `hs` using `[h0]`. Conclude with `hl (hs.unique hasSum_zero)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_isExp {V : Type} [AddCommGroup V] [Module ℂ V] {L U : Module.End ℂ V} (hU : IsExp L U)
     (N : Submodule ℂ V) (hL : ∀ y ∈ N, L y ∈ N) {v : V} (hv : v ∈ N) : U v ∈ N := by
@@ -44,23 +44,19 @@ theorem mem_of_isExp {V : Type} [AddCommGroup V] [Module ℂ V] {L U : Module.En
 open scoped Classical in
 
 /- English proof (translation)
-Establish `hAL : ActsLaws` using `GlobalTheory.RealLift.actsLaws`. Establish `hfr : GlobalTheory.RealLift.FrameEx` using `GlobalTheory.T.cartanEigen_orthonormalFrame_exists`. Establish `hder : GlobalTheory.RealLift.DerEx` using `GlobalTheory.T.archHeisenbergDerivatives_exist`. Establish `hvl : GlobalTheory.RealLift.VacLine` using `GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives hder`. Establish `hfe : GlobalTheory.RealLift.FockEx` using `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives hder`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hls : GlobalTheory.RealLift.LieScalar` using `GlobalTheory.T.lieScalar_of_prints_derEx_vacLine hP hder hvl`. Establish `hpr : GlobalTheory.RealLift.PolRange` using `GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws hAL hder hvl`. Establish `hkl : GlobalTheory.RealLift.KLine` using `GlobalTheory.RealLift.kLine_of_lineEx GlobalTheory.T.unitaryLieElements_generate_oneParamLines`. Use `choose A hA hAθ using fun w => hfr _ _ _ _ _ (hX.sig w) (hX.cartan w)`. Use `choose C hC hCθ using fun w => hfr _ _ _ _ _ (hW.sig w) (hW.cartan w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F X.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[GlobalTheory.PolCompact.incM_map_piInf', one_smul]`. Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[GlobalTheory.PolCompact.incM_map_piInf']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hC w`. Establish `fr : Framed B.emb (incM F X.J) (incM F W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`. Take `⟨Φ, hΦ⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C hb.cm hb.std fr`. Establish `hr` using `hpr F E σ _ _ _ _ _ _ X W M B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F X.J) (incM F W.J) M.co χX χW om` using `hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hact⟩` from `hls F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C Φ _ hb.cm hb.std fr hΦ hwp.1.1`. Establish `hadm` using `fun g => (hwp.isUSplitting).adm g`. Take `⟨γ, hγ, Yg, hgen, hKC, hγ1⟩` from `hkl F E σ (Fin d) _ _ B.emb (incM F W.J) Complex.I C W.θ hb.cm hC1 hCθ k hk.1 hk.2`. Establish `hloc` using `GlobalTheory.RealLift.locFin_sumPl _ _ _ (fun w => GlobalTheory.PolCompact.locFin_second r s r' s' (Yg w) (hKC w) (c w * (Yg w).trace))`. Take `⟨U, hU, hSA⟩` from `GlobalTheory.T.weakExponential_action_on_fockVectors F (Fin n × Fin d) _ Φ _ ((om.comp (MonoidHom.inr _ _)).comp γ) hloc (fun t l hl => hadm _ l hl) (fun T => hact γ hγ Yg hgen T)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hf` using `[← hr]`. Take `⟨T, rfl⟩` from `hf`. Use `set N' : Submodule ℂ (Tens F r s r' s') := N.comap (p ∘ₗ Φ) with hN'`. Establish `hstab : ∀ y ∈ N', sumPl (fun w => fockAct2 r s r' s' (Yg w) + (c w * (Yg w).trace) • 1) y ∈ N'`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsd` using `hact γ hγ Yg hgen y`. Establish `had : ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) (Φ y) (Φ (sumPl (fun w => fockAct2 r s r' s' (Yg w) + (c w * (Yg w).trace) • 1) y))` using `(hAL F (Fin n × Fin d) _ _ (Φ y)).1 _ (fun t => map_zero _) hsd`. Establish `hy' : Φ y ∈ M.Pol B.ψ B.emb` using `hr ▸ LinearMap.mem_range_self Φ y`. Conclude with `hlie γ hγ _ hy' _ had hy`. Establish `hUT : U T ∈ N'` using `mem_of_isExp hU N' hstab hfN`.
-
-Establish `h1` using `hSA T`. Rewrite `h1` using `[MonoidHom.comp_apply, hγ1]`. Establish `hA2 : Acts (evI F) (om (1, k)) (Φ T) (Φ (U T))` using `(hAL F (Fin n × Fin d) (Φ T) (Φ (U T)) (Φ (U T))).2.1 _ (map_zero _) h1`. Establish `he : f₁ = Φ (U T)` using `(hAL F (Fin n × Fin d) (Φ T) f₁ (Φ (U T))).2.2.2.1 _ hact1 hA2`. Rewrite using `[he]`.
-
-Conclude with `hUT`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kStable_of_lieStable (hP : GlobalTheory.FunPr.Hypotheses₂) {σ : E →ₐ[F] E} {B : Base F E} {n d : ℕ} {X : Spc F E n}
     {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hb : B.IsGood σ)
@@ -118,7 +114,7 @@ theorem kStable_of_lieStable (hP : GlobalTheory.FunPr.Hypotheses₂) {σ : E →
   exact hUT
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ a a' Bs Γ Xc om om' R Rf h N hlie k hk f hf f₁ hact hN`. Conclude with `kStable_of_lieStable hP h.triple.base h.triple.geo.hV h.triple.geo.hW h.triple.weil R.p N hlie hk hf hact hN`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lieStable_kStable : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ}
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

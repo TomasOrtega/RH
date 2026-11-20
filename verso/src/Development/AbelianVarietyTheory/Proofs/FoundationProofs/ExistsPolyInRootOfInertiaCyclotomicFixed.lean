@@ -6,13 +6,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.InertiaCycFixed
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `: NeZero (l : Ω)` using `⟨Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero⟩`. Establish `hspec` using `cyclotomicCharacter.spec (L := Ω) l (n := m) (MulSemiringAction.toRingAut (G ℚ Ω) Ω s) ζ hζ.pow_eq_one`. Establish `hs' : (MulSemiringAction.toRingAut (G ℚ Ω) Ω s) ζ = ζ` using `hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hspec` using `[hs']`. Use `set x : ZMod (l ^ m) := ((cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G ℚ Ω) Ω s)).val.toZModPow m) with hx`. Establish `hmod : x.val ≡ 1 [MOD l ^ m]`. Establish `hne : l ^ m ≠ 0` using `pow_ne_zero m (Fact.out : l.Prime).ne_zero`. Establish `hz : IsPrimitiveRoot (hζ.isUnit hne).unit (l ^ m)` using `IsPrimitiveRoot.isUnit_unit hne hζ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `(pow_eq_pow_iff_modEq (x := (hζ.isUnit hne).unit) (n := x.val) (m := 1)).1 (by`. Use `ext`. Simplify using `only [Units.val_pow_eq_pow_val, IsUnit.unit_spec, pow_one]`. Conclude with `hspec.symm)`. Rewrite `key` using `[← hz.eq_orderOf]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ((x.val : ℕ) : ZMod (l ^ m)) = ((1 : ℕ) : ZMod (l ^ m))` using `(ZMod.natCast_eq_natCast_iff _ _ _).2 hmod`. Rewrite `h1` using `[ZMod.natCast_zmod_val, Nat.cast_one]`. Apply `Units.ext` to reduce the goal to its premises. Simplify `h1` using `[cycMod, cycZ, hx]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cycMod_eq_one_of_fix (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (m : ℕ) (ζ : Ω)
     (hζ : IsPrimitiveRoot ζ (l ^ m)) (s : G ℚ Ω) (hs : s ζ = ζ) : cycMod ℚ Ω l m s = 1 := by
@@ -40,29 +40,25 @@ theorem cycMod_eq_one_of_fix (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Al
   simpa [cycMod, cycZ, hx] using h1
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ A m ζ hζ u hu`. Establish `: IsGalois ℚ Ω` using `{}`. Establish `hint : Algebra.IsIntegral ℚ Ω` using `Algebra.IsAlgebraic.isIntegral`. Use `set I : Subgroup (G ℚ Ω) := Ine (F := ℚ) A with hI`. Use `set K : IntermediateField ℚ Ω := IntermediateField.fixedField I with hK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsScalarTower ℚ K Ω` using `IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`. Use `set L : IntermediateField ℚ Ω := (IntermediateField.adjoin K {ζ}).restrictScalars ℚ with hL`. Establish `hKL : K ≤ L` using `fun x hx => by show x ∈ IntermediateField.adjoin K {ζ}`. Conclude with `(IntermediateField.adjoin K {ζ}).algebraMap_mem ⟨x, hx⟩`. Establish `hζL : ζ ∈ L` using `IntermediateField.mem_adjoin_simple_self K ζ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfix : ∀ s ∈ L.fixingSubgroup, s u = u`. Introduce `s hs`. Set `C : ClosedSubgroup (G ℚ Ω)` to `⟨I.topologicalClosure, I.isClosed_topologicalClosure⟩`. Establish `hsC : s ∈ I.topologicalClosure`. Establish `hle : IntermediateField.fixedField C.toSubgroup ≤ K`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite `hx`, the goal using `[IntermediateField.mem_fixedField_iff]`. Introduce `f hf`. Conclude with `hx f (I.le_topologicalClosure hf)`. Establish `h1 : s ∈ K.fixingSubgroup` using `IntermediateField.fixingSubgroup_antitone hKL hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `IntermediateField.fixingSubgroup_antitone hle h1`. Rewrite `h2` using `[InfiniteGalois.fixingSubgroup_fixedField C]`. Then use the resulting hypothesis. Use `set E : IntermediateField ℚ Ω := IntermediateField.adjoin ℚ {u, ζ} with hE`. Establish `: FiniteDimensional ℚ E`. Rewrite using `[hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `IntermediateField.finiteDimensional_adjoin ?_` and prove the remaining obligations. Introduce `x _`. Conclude with `Algebra.IsIntegral.isIntegral x`. Establish `hopen : IsOpen ((E.fixingSubgroup : Subgroup (G ℚ Ω)) : Set (G ℚ Ω))` using `E.fixingSubgroup_isOpen`. Establish `hopen' : IsOpen {x : G ℚ Ω | s⁻¹ * x ∈ E.fixingSubgroup}` using `hopen.preimage (continuous_const.mul continuous_id)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsmem : s ∈ {x : G ℚ Ω | s⁻¹ * x ∈ E.fixingSubgroup}`. Simplify using `only [Set.mem_ofPred_eq, inv_mul_cancel]`. Conclude with `one_mem _`. Rewrite `hsC` using `[← SetLike.mem_coe, Subgroup.topologicalClosure_coe]`. Take `⟨i, hi1, hi2⟩` from `mem_closure_iff.1 hsC _ hopen' hsmem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_ofPred_eq] at hi1`. Establish `hu' : (s⁻¹ * i) u = u` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hi1 u (IntermediateField.subset_adjoin ℚ _ (by simp))`. Establish `hζ' : (s⁻¹ * i) ζ = ζ` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hi1 ζ (IntermediateField.subset_adjoin ℚ _ (by simp))`. Establish `hsζ : s ζ = ζ` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hs ζ hζL`. Establish `hiζ : i ζ = ζ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: i = s * (s⁻¹ * i)` using `by group`. Rewrite using `[this, AlgEquiv.mul_apply, hζ', hsζ]`. Establish `hiu : i u = u` using `hu i hi2 (cycMod_eq_one_of_fix l Ω m ζ hζ i hiζ)`. Establish `: i = s * (s⁻¹ * i)` using `by group`. Rewrite `hiu` using `[this, AlgEquiv.mul_apply, hu']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hiu`. Establish `huL : u ∈ L`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup L, IntermediateField.mem_fixedField_iff]`. Conclude with `hfix`. Establish `huK : u ∈ IntermediateField.adjoin K {ζ}` using `huL`.
-
-Establish `hζint : IsIntegral K ζ` using `(Algebra.IsIntegral.isIntegral (R := ℚ) ζ).tower_top`. Rewrite `huK` using `[← IntermediateField.mem_toSubalgebra, IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hζint.isAlgebraic, Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨P, hP⟩` from `huK`. Use `⟨P.map (algebraMap K Ω), ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx s hs`.
-
-Take `⟨n, -, rfl⟩` from `Polynomial.mem_coeffs_iff.1 hx`. Rewrite using `[Polynomial.coeff_map]`. Conclude with `((IntermediateField.mem_fixedField_iff _ _).1 (P.coeff n).2) s hs`. Rewrite using `[Polynomial.eval_map_algebraMap]`. Conclude with `hP`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_poly_of_fixed : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω) (m : ℕ) (ζ : Ω), IsPrimitiveRoot ζ (l ^ m) → ∀ u : Ω, (∀ s ∈ Ine (F := ℚ) A, cycMod ℚ Ω l m s = 1 → s u = u) → ∃ Q : Polynomial Ω, (∀ x ∈ Q.coeffs, ∀ s ∈ Ine (F := ℚ) A, s x = x) ∧ Q.eval ζ = u := by
   intro l _ Ω _ _ _ A m ζ hζ u hu

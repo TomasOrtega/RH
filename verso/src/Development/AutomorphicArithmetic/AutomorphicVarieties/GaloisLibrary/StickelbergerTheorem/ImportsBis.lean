@@ -4,17 +4,15 @@ open NumberField IsDedekindDomain UpperTheory.V.Kum UpperTheory.V.Stick
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Introduce `K _ _ p hp P`. Establish `hpp : p.Prime` using `hp.out`. Establish `hcard : ∀ π : 𝓞 K →+* ZMod p, Function.Surjective π` using `fun π x => by`. Use `⟨(x.val : 𝓞 K), ?_⟩` and prove the remaining obligations. Rewrite using `[map_natCast, ZMod.natCast_zmod_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun h => ?_, fun π hπ => ?_⟩` and prove the remaining obligations. Establish `hfin : Finite (𝓞 K ⧸ P)`. Rewrite using `[← Ideal.absNorm_ne_zero_iff, h]`. Conclude with `hpp.ne_zero`. Set `_ : Fintype (𝓞 K ⧸ P)` to `Fintype.ofFinite _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc : Fintype.card (𝓞 K ⧸ P) = p`. Rewrite using `[← Nat.card_eq_fintype_card, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, h]`. Set `e` to `ZMod.ringEquivOfPrime (𝓞 K ⧸ P) hpp hc`. Use `⟨(e.symm : (𝓞 K ⧸ P) →+* ZMod p).comp (Ideal.Quotient.mk P), ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.ker_comp_of_injective _ e.symm.injective, Ideal.mk_ker]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs` using `hcard π`. Establish `e : (𝓞 K ⧸ P) ≃+* ZMod p` using `hπ ▸ RingHom.quotientKerEquivOfSurjective hs`. Establish `hn : Ideal.absNorm P = p`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_congr e.toEquiv, Nat.card_zmod]`. Establish `hmax : P.IsMaximal` using `hπ ▸ RingHom.ker_isMaximal_of_surjective π hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hn, hmax, ?_, ?_⟩` and prove the remaining obligations. Use `Ideal.prime_of_isPrime ?_ hmax.isPrime` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hn` using `[Ideal.absNorm_bot]`. Conclude with `hpp.ne_zero hn.symm`.
-
-Rewrite using `[← hπ, RingHom.mem_ker, map_natCast, ZMod.natCast_self]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Stick.red :
     ∀ (K : Type) [Field K] [NumberField K] (p : ℕ) [Fact p.Prime] (P : Ideal (𝓞 K)),

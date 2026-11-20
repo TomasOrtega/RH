@@ -11,7 +11,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Simplify using `[dg, Matrix.mulVec_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dg_mulVec {Γ k : Type} [Group Γ] [Field k] {t : ℕ} (a : Fin t → Γ →* kˣ) (g : Γ)
     (u : Fin t → k) (i : Fin t) :
@@ -19,25 +19,23 @@ private theorem dg_mulVec {Γ k : Type} [Group Γ] [Field k] {t : ℕ} (a : Fin 
   simp [dg, Matrix.mulVec_diagonal]
 
 /- English proof (translation)
-Introduce `Γ k _ _ m t r a c`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨i, hi⟩`. Set `e : Fin t → k` to `Pi.single i 1`. Set `w : Fin (m + t) → k` to `fun x => (finSumFinEquiv.symm x).elim (fun _ => 0) e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hwl : w ∘ ⇑finSumFinEquiv ∘ Sum.inl = 0`. Use function extensionality and compare the values at `y`. Simplify using `[w]`. Establish `hwr : w ∘ ⇑finSumFinEquiv ∘ Sum.inr = e`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[w]`. Use `⟨w, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Use `congrFun hwr i` as an intermediate fact. Rewrite `this` using `[h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[e] at this`. Introduce `g`. Use function extensionality and compare the values at `x`. Take `⟨y, rfl⟩` from `finSumFinEquiv.surjective x`. Break down `y with y | y` into its components or cases.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[GlobalTheory.EigTwist.sumRep_mulVec_inl, hwl, Matrix.mulVec_zero, Pi.smul_apply]`. Use `congrFun hwl y` as an intermediate fact. Simplify using `only [Function.comp_apply] at this`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.EigTwist.sumRep_mulVec_inr, hwr, dg_mulVec]`. Use `congrFun hwr y` as an intermediate fact. Simplify using `only [Function.comp_apply] at this`. Rewrite using `[Pi.smul_apply, this, smul_eq_mul]`. Distinguish the cases in `hy : y = i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hy` using the available equality. Rewrite using `[hi]`. Simplify using `[e, Pi.single_apply, hy]`. Introduce `hne hex`. Take `⟨w, hw0, hw⟩` from `hex`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Break down `GlobalTheory.EigTwist.eigen_pair c r (dg a) w hw0 hw with h | ⟨v, hv0, hv⟩` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, v j ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at hcon`. Conclude with `hv0 (funext hcon)`. Apply `hne j` to reduce the goal to its premises. Use extensionality with `g`. Use `congrFun (hv g) j` as an intermediate fact.
-
-Rewrite `this` using `[dg_mulVec, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_right_cancel₀ hj this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Sub.eigSum_holds :
     EigSum := by

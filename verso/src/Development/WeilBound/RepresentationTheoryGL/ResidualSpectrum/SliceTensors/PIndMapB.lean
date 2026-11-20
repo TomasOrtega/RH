@@ -20,35 +20,35 @@ namespace B
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lev_cc (m : GL (Fin r) R × GL (Fin s) R) (i j : Fin r) :
     (lev R r s m : Matrix (Fin (r + s)) (Fin (r + s)) R) (Fin.castAdd s i) (Fin.castAdd s j) = (m.1 : Matrix _ _ R) i j := by
   simp [GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lev_nn (m : GL (Fin r) R × GL (Fin s) R) (i j : Fin s) :
     (lev R r s m : Matrix (Fin (r + s)) (Fin (r + s)) R) (Fin.natAdd r i) (Fin.natAdd r j) = (m.2 : Matrix _ _ R) i j := by
   simp [GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lev_cn (m : GL (Fin r) R × GL (Fin s) R) (i : Fin r) (j : Fin s) :
     (lev R r s m : Matrix (Fin (r + s)) (Fin (r + s)) R) (Fin.castAdd s i) (Fin.natAdd r j) = 0 := by
   simp [GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lev_nc (m : GL (Fin r) R × GL (Fin s) R) (i : Fin s) (j : Fin r) :
     (lev R r s m : Matrix (Fin (r + s)) (Fin (r + s)) R) (Fin.natAdd r i) (Fin.castAdd s j) = 0 := by
   simp [GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]
 
 /- English proof (translation)
-Use `k.isLt` as an intermediate fact. Rewrite using `[GlobalTheory.CompanionTheory.AffglAssembly.unip_eq_unipGL, GroundTheory.Automorphic.AutomorphicForm.coe_unipGL, GroundTheory.Automorphic.AutomorphicForm.unipMatrix, Matrix.add_apply, GroundTheory.Automorphic.AutomorphicForm.blockEntry_apply, dif_neg (fun h => by have := h.2; sim …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem unip_col (x : BlockIx (r + s) r → R) (i : Fin (r + s)) (k : Fin r) :
     ((unip x : GL (Fin (r + s)) R) : Matrix _ _ R) i (Fin.castAdd s k) =
@@ -59,7 +59,7 @@ theorem unip_col (x : BlockIx (r + s) r → R) (i : Fin (r + s)) (k : Fin r) :
     dif_neg (fun h => by have := h.2; simp only [Fin.val_castAdd] at this; omega), add_zero]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.AffglAssembly.unip_eq_unipGL, GroundTheory.Automorphic.AutomorphicForm.coe_unipGL, GroundTheory.Automorphic.AutomorphicForm.unipMatrix, Matrix.add_apply, GroundTheory.Automorphic.AutomorphicForm.blockEntry_apply, dif_neg (fun h => by have := h.1; sim …`.
+Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem unip_row (x : BlockIx (r + s) r → R) (k : Fin s) (j : Fin (r + s)) :
     ((unip x : GL (Fin (r + s)) R) : Matrix _ _ R) (Fin.natAdd r k) j =
@@ -73,16 +73,16 @@ end B
 open B
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.AffglAssembly.unip_eq_unipGL]`. Conclude with `GroundTheory.Automorphic.AutomorphicForm.unipGL_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unip_zero {R : Type} [CommRing R] {a r : ℕ} : unip (0 : BlockIx a r → R) = 1 := by
   rw [GlobalTheory.CompanionTheory.AffglAssembly.unip_eq_unipGL]
   exact GroundTheory.Automorphic.AutomorphicForm.unipGL_zero
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_add]`. Establish `h : ∀ x : Fin r, Fin.natAdd r i ≠ Fin.castAdd s x` using `fun x h => by`. Use `congrArg Fin.val h` as an intermediate fact. Use `x.isLt` as an intermediate fact. Simplify using `only [Fin.val_natAdd, Fin.val_castAdd] at *`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[unip_row, lev_nc, lev_cc, Matrix.one_apply, h]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem unip_lev_ll {R : Type} [CommRing R] (u : BlockIx (r + s) r → R) (m : GL (Fin r) R × GL (Fin s) R)
     (i : Fin s) (j : Fin r) :
@@ -96,7 +96,7 @@ theorem unip_lev_ll {R : Type} [CommRing R] (u : BlockIx (r + s) r → R) (m : G
   simp [unip_row, lev_nc, lev_cc, Matrix.one_apply, h]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_add]`. Simplify using `[unip_col, lev_nc, lev_cc, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unip_lev_cc {R : Type} [CommRing R] (u : BlockIx (r + s) r → R) (m : GL (Fin r) R × GL (Fin s) R)
     (i j : Fin r) :
@@ -106,7 +106,7 @@ theorem unip_lev_cc {R : Type} [CommRing R] (u : BlockIx (r + s) r → R) (m : G
   simp [unip_col, lev_nc, lev_cc, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_add]`. Simplify using `[unip_row, lev_cn, lev_nn, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unip_lev_nn {R : Type} [CommRing R] (u : BlockIx (r + s) r → R) (m : GL (Fin r) R × GL (Fin s) R)
     (i j : Fin s) :
@@ -116,9 +116,9 @@ theorem unip_lev_nn {R : Type} [CommRing R] (u : BlockIx (r + s) r → R) (m : G
   simp [unip_row, lev_cn, lev_nn, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.CompanionTheory.CTFin.blockDiag_lev (R := R) m`. Establish `h2 : GlobalTheory.CompanionTheory.CTFin.BlockDiag r ((lev R r s m)⁻¹).val`. Rewrite using `[← map_inv]`. Conclude with `GlobalTheory.CompanionTheory.CTFin.blockDiag_lev _`. Use `⟨(GlobalTheory.CompanionTheory.CTFin.conjE (lev R r s m) h1 h2).symm u, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CompanionTheory.CTFin.unip_mul_eq _ h1 h2, AddEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem lev_mul_unip {R : Type} [CommRing R] (m : GL (Fin r) R × GL (Fin s) R) (u : BlockIx (r + s) r → R) :
     ∃ v : BlockIx (r + s) r → R, lev R r s m * unip u = unip v * lev R r s m := by
@@ -129,13 +129,13 @@ theorem lev_mul_unip {R : Type} [CommRing R] (m : GL (Fin r) R × GL (Fin s) R) 
   rw [GlobalTheory.CompanionTheory.CTFin.unip_mul_eq _ h1 h2, AddEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `refine ga_ext ?_ ?_ <;> simp [cf]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cf_mul (a : ℕ) (k k' : Kinf E a) (g g' : GL (Fin a) (Af E)) : cf a k g * cf a k' g' = cf a (k * k') (g * g') := by
   refine ga_ext ?_ ?_ <;> simp [cf]
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `GlobalTheory.CompanionTheory.CTFin.IwaAd.iwasawa_finite_cosets E r s ⊤ isOpen_univ`. Take `⟨y, m, t, k, l, -, -, rfl⟩` from `hT x`. Use `⟨y, m, k, t * l, ?_⟩` and prove the remaining obligations. Rewrite using `[cf, map_mul, ← mul_assoc (infGL E (r + s) _), infGL_comm]`. Simplify using `only [mul_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_decomp (x : GA E (r + s)) : ∃ (u : BlockIx (r + s) r → Ad E) (m : GA E r × GA E s) (k : Kinf E (r + s))
     (g : GL (Fin (r + s)) (Af E)), x = unip u * lev (Ad E) r s m * cf (r + s) k g := by
@@ -146,17 +146,15 @@ theorem exists_decomp (x : GA E (r + s)) : ∃ (u : BlockIx (r + s) r → Ad E) 
   simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `h1` using `congrArg (Matrix.GeneralLinearGroup.map (pInf E)) h`. Rewrite `h1` using `[map_mul, GlobalTheory.CompanionTheory.CTFin.IwaAd.map_unip, GlobalTheory.CompanionTheory.CTFin.IwaAd.map_lev, cf, map_mul, pInf_infGL, pInf_finGL, mul_one]`. Use `set y₁ := Matrix.GeneralLinearGroup.map (pInf E) m.1 with hy₁`. Use `set y₂ := Matrix.GeneralLinearGroup.map (pInf E) m.2 with hy₂`. Establish `hv : ((Unitary.toUnits k : GL (Fin (r + s)) (Cinf E)) : Matrix _ _ _) = k.1` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hll : ∀ i j, k.1 (Fin.natAdd r i) (Fin.castAdd s j) = 0` using `fun i j => by rw [← hv, ← h1, unip_lev_ll]`. Establish `hcc : ∀ i j, k.1 (Fin.castAdd s i) (Fin.castAdd s j) = y₁.val i j` using `fun i j => by rw [← hv, ← h1, unip_lev_cc]`. Establish `hnn : ∀ i j, k.1 (Fin.natAdd r i) (Fin.natAdd r j) = y₂.val i j` using `fun i j => by rw [← hv, ← h1, unip_lev_nn]`. Establish `u₁ : y₁.val ∈ Matrix.unitaryGroup (Fin r) (Cinf E)`. Rewrite using `[Matrix.mem_unitaryGroup_iff']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `ext1 i j`. Use `congrFun (congrFun (Matrix.mem_unitaryGroup_iff'.1 k.2) (Fin.castAdd s i)) (Fin.castAdd s j)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Fin.sum_univ_add]`. Simplify using `only [Matrix.star_apply, hll, hcc, mul_zero, Finset.sum_const_zero, add_zero, Matrix.one_apply, Fin.castAdd_inj] at this`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply, ← this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `u₂ : y₂.val ∈ Matrix.unitaryGroup (Fin s) (Cinf E)`. Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Use `ext1 i j`. Use `congrFun (congrFun (Matrix.mem_unitaryGroup_iff.1 k.2) (Fin.natAdd r i)) (Fin.natAdd r j)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `this` using `[Matrix.mul_apply, Fin.sum_univ_add]`. Simplify using `only [Matrix.star_apply, hll, hnn, zero_mul, Finset.sum_const_zero, zero_add, Matrix.one_apply, Fin.natAdd_inj] at this`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply, ← this]`. Both sides reduce to the same expression. Use `⟨⟨_, u₁⟩, Matrix.GeneralLinearGroup.map (pFin E) m.1, ⟨_, u₂⟩, Matrix.GeneralLinearGroup.map (pFin E) m.2, Prod.ext ?_ ?_⟩` and prove the remaining obligations.
-
-Conclude with `(infGL_mul_finGL m.1).symm.trans (congrArg (fun z => infGL E r z * _) (Units.ext rfl))`. Conclude with `(infGL_mul_finGL m.2).symm.trans (congrArg (fun z => infGL E s z * _) (Units.ext rfl))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem levi_cf {u : BlockIx (r + s) r → Ad E} {m : GA E r × GA E s} {k : Kinf E (r + s)} {g : GL (Fin (r + s)) (Af E)}
     (h : unip u * lev (Ad E) r s m = cf (r + s) k g) :
@@ -193,11 +191,11 @@ theorem levi_cf {u : BlockIx (r + s) r → Ad E} {m : GA E r × GA E s} {k : Kin
   · exact (infGL_mul_finGL m.2).symm.trans (congrArg (fun z => infGL E s z * _) (Units.ext rfl))
 
 /- English proof (translation)
-Establish `e : infGL E (r + s) (unip u) = unip fun p => sInf E (u p)`. Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[pInf_infGL, GlobalTheory.CompanionTheory.CTFin.IwaAd.map_unip]`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `((infEq E).symm_apply_apply _).symm`. Rewrite using `[pFin_infGL, GlobalTheory.CompanionTheory.CTFin.IwaAd.map_unip]`. Conclude with `unip_zero.symm`. Take `⟨v, hv⟩` from `lev_mul_unip m fun p => sInf E (u p)`. Use `⟨v, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_mul, map_mul, e, ← GlobalTheory.CompanionTheory.CTFin.Slice1.lev_infGL, ← mul_assoc, ← mul_assoc, hv, cf, map_one, mul_one, mul_assoc (unip v), ← map_mul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem lev_mul_infGL (m : GA E r × GA E s) (u : BlockIx (r + s) r → Cinf E) (b₁ : GL (Fin r) (Cinf E))
     (b₂ : GL (Fin s) (Cinf E)) (κ : Kinf E (r + s)) :

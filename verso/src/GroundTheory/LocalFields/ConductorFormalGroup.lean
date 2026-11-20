@@ -12,9 +12,9 @@ section Coeff
 variable {R : Type*} [CommRing R] (F : FormalGroup R)
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.coeff, coeff_subst, finsum_eq_single _ (Finsupp.single 0 j)]`. Simplify using `[PowerSeries.coeff_X_pow]`. Introduce `d hd`. Distinguish the cases in `hd₁ : d 1 = 0`. Simplify using `[hd₁, PowerSeries.coeff_X_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce `h`. Apply the tactic sequence `exact absurd (by ext i; fin_cases i <;> simp [h, hd₁]) hd`. Simplify using `[hd₁]`. Conclude with `HasSubst.X_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_formalGroup_Xzero (j : ℕ) :
     PowerSeries.coeff j F.Xzero = coeff (Finsupp.single 0 j) F.toPowerSeries := by
@@ -29,15 +29,15 @@ theorem coeff_formalGroup_Xzero (j : ℕ) :
   · exact HasSubst.X_zero
 
 /- English proof (translation)
-Establish `hdvd : (X 1 : MvPowerSeries (Fin 2) R) ∣ F.toPowerSeries - X 0`. Rewrite using `[X_dvd_iff]`. Introduce `m hm`. Establish `hm' : m = Finsupp.single 0 (m 0)`. Apply the tactic sequence `ext i; fin_cases i <;> simp [hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[map_sub, hm', ← coeff_formalGroup_Xzero, F.Xzero_eq_X, PowerSeries.coeff_X, coeff_X]`. Distinguish the cases in `h : m 0 = 1`. Simplify using `[h]`. Establish `: Finsupp.single (0 : Fin 2) (m 0) ≠ Finsupp.single 0 1`. Introduce `e; exact h (by simpa using congrArg (fun d => d 0) e)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h, this]`. Take `⟨G, hG⟩` from `hdvd`. Use `⟨G, ?_, hG⟩` and prove the remaining obligations. Establish `h` using `congrArg (coeff (Finsupp.single 1 1)) hG`. Rewrite using `[map_sub, F.lin_coeff_Y, coeff_X, if_neg (by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Simplify using `using congrArg (fun d => d 1) e)] at h`. Establish `e` using `coeff_add_monomial_mul (m := Finsupp.single (1 : Fin 2) 1) (n := 0) (φ := G) (1 : R)`. Rewrite `e` using `[add_zero, one_mul, ← X_def]`. Rewrite `h` using `[e, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, ← h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_sub_X_eq_X_mul :
     ∃ G : MvPowerSeries (Fin 2) R, constantCoeff G = 1 ∧ F.toPowerSeries - X 0 = X 1 * G := by
@@ -74,7 +74,7 @@ omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel Ω] [IsVa
   [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω] in
 
 /- English proof (translation)
-Rewrite using `[psEval, tsum_eq_single 0]`. Simplify using `[psTerm]`. Introduce `d hd`. Simplify using `[psTerm, coeff_one, hd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem psEval_one {σ : Type*} (x : σ → Ω) : psEval (1 : MvPowerSeries σ 𝒪[K]) x = 1 := by
   classical
@@ -84,11 +84,11 @@ theorem psEval_one {σ : Type*} (x : σ → Ω) : psEval (1 : MvPowerSeries σ �
     simp [psTerm, coeff_one, hd]
 
 /- English proof (translation)
-Take `⟨G, hG1, hG⟩` from `exists_sub_X_eq_X_mul F`. Establish `hx : ∀ i, valuation Ω ((![a, b] : Fin 2 → Ω) i) < 1`. Introduce `i`. Use `fin_cases i`. Use `exacts [ha, hb]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : psEval F.toPowerSeries ![a, b] - a = b * psEval G ![a, b]`. Establish `e : F.toPowerSeries = X 0 + X 1 * G` using `by rw [← hG]; ring`. Rewrite using `[e, psEval_add' _ _ _ hx, psEval_mul' _ _ _ hx, psEval_X, psEval_X]`. Simplify using the standard rewrite rules. Establish `h2 : valuation Ω (psEval G ![a, b]) = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG' : G = 1 + (G - 1)` using `by ring`. Establish `hc : constantCoeff (G - 1) = 0` using `by simp [hG1]`. Rewrite using `[hG', psEval_add' _ _ _ hx, psEval_one]`. Conclude with `Valuation.map_one_add_of_lt _ (valuation_psEval_lt_one' hc _ hx)`. Rewrite using `[h1, map_mul, h2, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_psEval_sub_left (F : FormalGroup 𝒪[K]) {a b : Ω} (ha : valuation Ω a < 1)
     (hb : valuation Ω b < 1) :

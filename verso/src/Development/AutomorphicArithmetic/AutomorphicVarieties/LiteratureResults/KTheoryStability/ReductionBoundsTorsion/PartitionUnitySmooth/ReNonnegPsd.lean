@@ -10,14 +10,14 @@ set_option linter.unusedSectionVars false
 variable {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_dotProduct a (A *ᵥ b), star_star, Matrix.star_mulVec, hA.eq, Matrix.dotProduct_mulVec]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem herm_swap (A : Matrix n n ℂ) (hA : A.IsHermitian) (a b : n → ℂ) :
     star b ⬝ᵥ (A *ᵥ a) = star (star a ⬝ᵥ (A *ᵥ b)) := by
   rw [Matrix.star_dotProduct a (A *ᵥ b), star_star, Matrix.star_mulVec, hA.eq, Matrix.dotProduct_mulVec]
 
 /- English proof (translation)
-Rewrite using `[herm_swap A hA a b]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herm_re_swap (A : Matrix n n ℂ) (hA : A.IsHermitian) (a b : n → ℂ) :
     (star b ⬝ᵥ (A *ᵥ a)).re = (star a ⬝ᵥ (A *ᵥ b)).re := by
@@ -25,7 +25,7 @@ theorem herm_re_swap (A : Matrix n n ℂ) (hA : A.IsHermitian) (a b : n → ℂ)
   simp
 
 /- English proof (translation)
-Establish `h` using `congrArg Complex.im (herm_swap A hA a a)`. Simplify using `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem herm_im (A : Matrix n n ℂ) (hA : A.IsHermitian) (a : n → ℂ) :
     (star a ⬝ᵥ (A *ᵥ a)).im = 0 := by
@@ -34,7 +34,7 @@ theorem herm_im (A : Matrix n n ℂ) (hA : A.IsHermitian) (a : n → ℂ) :
   linarith
 
 /- English proof (translation)
-Simplify using `only [star_add, star_smul, mulVec_add, mulVec_smul, dotProduct_add, add_dotProduct, dotProduct_smul, smul_dotProduct, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem expand (A : Matrix n n ℂ) (u v : n → ℂ) (s : ℂ) :
     star (u + s • v) ⬝ᵥ (A *ᵥ (u + s • v)) = star u ⬝ᵥ (A *ᵥ u) + s * (star u ⬝ᵥ (A *ᵥ v)) +
@@ -44,7 +44,7 @@ theorem expand (A : Matrix n n ℂ) (u v : n → ℂ) (s : ℂ) :
   ring
 
 /- English proof (translation)
-Use `hH.dotProduct_mulVec_nonneg x` as an intermediate fact. Conclude with `(Complex.nonneg_iff.1 this).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem re_nonneg_psd {H : Matrix n n ℂ} (hH : H.PosSemidef) (x : n → ℂ) :
     0 ≤ (star x ⬝ᵥ (H *ᵥ x)).re := by
@@ -52,7 +52,7 @@ theorem re_nonneg_psd {H : Matrix n n ℂ} (hH : H.PosSemidef) (x : n → ℂ) :
   exact (Complex.nonneg_iff.1 this).1
 
 /- English proof (translation)
-Establish `hs : star (s:ℂ) = s` using `by simp`. Rewrite using `[expand, hs, ← Complex.ofReal_mul]`. Simplify using `only [Complex.add_re, Complex.re_ofReal_mul]`. Rewrite using `[herm_re_swap M hM u v]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem hermitian_form_add_real_smul_expand (M : Matrix n n ℂ) (hM : M.IsHermitian) (u v : n → ℂ) (s : ℝ) :
     (star (u + (s:ℂ) • v) ⬝ᵥ (M *ᵥ (u + (s:ℂ) • v))).re =
@@ -64,11 +64,11 @@ private theorem hermitian_form_add_real_smul_expand (M : Matrix n n ℂ) (hM : M
   ring
 
 /- English proof (translation)
-Establish `hq : ∀ t : ℝ, 0 ≤ (δ * (star v ⬝ᵥ (H *ᵥ v)).re) * (t * t) + (-2 * (star u ⬝ᵥ (A *ᵥ v)).re) * t + δ * (star u ⬝ᵥ (H *ᵥ u)).re`. Introduce `t`. Establish `b1` using `hb (u + (t:ℂ) • v)`. Establish `b2` using `hb (u + ((-t:ℝ):ℂ) • v)`. Rewrite `b1` using `[hermitian_form_add_real_smul_expand A hA, hermitian_form_add_real_smul_expand H hH]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b2` using `[hermitian_form_add_real_smul_expand A hA, hermitian_form_add_real_smul_expand H hH]`. Establish `c1` using `(abs_le.mp b1).2`. Establish `c2` using `(abs_le.mp b2).1`. Use the polynomial consequences of the given equalities and inequalities. Establish `hd` using `discrim_le_zero hq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Unfold `discrim at hd`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem re_inner_sq_le_sq_mul_of_hermitian_form_bound (A H : Matrix n n ℂ) (hA : A.IsHermitian) (hH : H.IsHermitian) (δ : ℝ)
     (hb : ∀ x : n → ℂ, |(star x ⬝ᵥ (A *ᵥ x)).re| ≤ δ * (star x ⬝ᵥ (H *ᵥ x)).re) (u v : n → ℂ) :
@@ -88,13 +88,13 @@ private theorem re_inner_sq_le_sq_mul_of_hermitian_form_bound (A H : Matrix n n 
   nlinarith
 
 /- English proof (translation)
-Establish `hH'` using `hH.isHermitian`. Use `set c := star u ⬝ᵥ (A *ᵥ v) with hc`. Establish `hu` using `re_nonneg_psd hH u`. Establish `hv` using `re_nonneg_psd hH v`. Establish `h` using `re_inner_sq_le_sq_mul_of_hermitian_form_bound A H hA hH' δ hb u (star c • v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : star u ⬝ᵥ (A *ᵥ (star c • v)) = ((‖c‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul, ← hc, Complex.sq_norm, Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression. Establish `e2 : star (star c • v) ⬝ᵥ (H *ᵥ (star c • v)) = ((‖c‖ ^ 2 : ℝ) : ℂ) * (star v ⬝ᵥ (H *ᵥ v))`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, star_smul, smul_dotProduct, star_star, smul_eq_mul, smul_eq_mul, Complex.sq_norm, Complex.normSq_eq_conj_mul_self]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e1, e2, Complex.ofReal_re, Complex.re_ofReal_mul]`. Establish `hn : 0 ≤ ‖c‖ ^ 2` using `sq_nonneg _`. Break down `hn.eq_or_lt with h0 | hpos` into its components or cases.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h0]`. Conclude with `mul_nonneg (mul_nonneg (sq_nonneg _) hu) hv`. Conclude with `le_of_mul_le_mul_left (by nlinarith [h]) hpos`.
+A detailed English derivation is pending.
 -/
 theorem csq (A H : Matrix n n ℂ) (hA : A.IsHermitian) (hH : H.PosSemidef) (δ : ℝ) (hδ : 0 ≤ δ)
     (hb : ∀ x : n → ℂ, |(star x ⬝ᵥ (A *ᵥ x)).re| ≤ δ * (star x ⬝ᵥ (H *ᵥ x)).re) (u v : n → ℂ) :
@@ -120,15 +120,15 @@ theorem csq (A H : Matrix n n ℂ) (hA : A.IsHermitian) (hH : H.PosSemidef) (δ 
   · exact le_of_mul_le_mul_left (by nlinarith [h]) hpos
 
 /- English proof (translation)
-Establish `hAh` using `hA.isHermitian`. Establish `hBu` using `hB.isUnit`. Establish `hAu` using `hA.isUnit`. Use `set y := B⁻¹ *ᵥ u with hy`. Use `set z := A⁻¹ *ᵥ u with hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hBy : B *ᵥ y = u`. Rewrite using `[hy, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det B).mp hBu), Matrix.one_mulVec]`. Establish `hAz : A *ᵥ z = u`. Rewrite using `[hz, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det A).mp hAu), Matrix.one_mulVec]`. Establish `e1 : (star u ⬝ᵥ y).re = (star y ⬝ᵥ (B *ᵥ y)).re`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hBy, star_dotProduct u y]`. Simplify using the standard rewrite rules. Establish `e2 : (star z ⬝ᵥ (A *ᵥ z)).re = (star u ⬝ᵥ z).re`. Rewrite using `[hAz, star_dotProduct z u]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : (star y ⬝ᵥ (A *ᵥ z)).re = (star y ⬝ᵥ (B *ᵥ y)).re`. Rewrite using `[hAz, hBy]`. Establish `e4 : (star z ⬝ᵥ (A *ᵥ y)).re = (star y ⬝ᵥ (A *ᵥ z)).re` using `herm_re_swap A hAh y z`. Establish `hn` using `re_nonneg_psd hA.posSemidef (z + ((-c:ℝ):ℂ) • y)`. Rewrite `hn` using `[hermitian_form_add_real_smul_expand A hAh z y (-c), e2, e4, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl` using `hle y`. Rewrite using `[e1]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hl hc.le]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem invmono (A B : Matrix n n ℂ) (hA : A.PosDef) (hB : B.PosDef) (c : ℝ) (hc : 0 < c)
     (hle : ∀ x : n → ℂ, c * (star x ⬝ᵥ (A *ᵥ x)).re ≤ (star x ⬝ᵥ (B *ᵥ x)).re) (u : n → ℂ) :
@@ -160,7 +160,7 @@ theorem invmono (A B : Matrix n n ℂ) (hA : A.PosDef) (hB : B.PosDef) (c : ℝ)
   nlinarith [mul_le_mul_of_nonneg_left hl hc.le]
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply]`. Use `ContDiff.sum fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Units.smul_def, zsmul_eq_mul]`. Conclude with `contDiff_const.mul (contDiff_prod fun i _ => hf _ _)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cd_det {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {n : Type} [Fintype n] [DecidableEq n]
     {k : WithTop ℕ∞} (f : E → Matrix n n ℂ) (hf : ∀ i j, ContDiff ℝ k (fun x => f x i j)) :
@@ -171,11 +171,11 @@ theorem cd_det {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {n : Type} 
   exact contDiff_const.mul (contDiff_prod fun i _ => hf _ _)
 
 /- English proof (translation)
-Establish `hdet : ContDiff ℝ k (fun x => (f x).det)` using `cd_det f hf`. Establish `hadj : ContDiff ℝ k (fun x => (f x).adjugate i j)`. Simplify using `only [Matrix.adjugate_apply]`. Apply `cd_det (fun x => (f x).updateRow j (Pi.single i 1))` to reduce the goal to its premises. Introduce `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `by_cases h : a = j <;> simp [Matrix.updateRow_apply, h, contDiff_const, hf]`. Establish `hinv : ContDiffAt ℝ k (fun x => ((f x).det)⁻¹) x` using `hdet.contDiffAt.inv hx`. Establish `heq : (fun x => (f x)⁻¹ i j) = fun x => ((f x).det)⁻¹ * (f x).adjugate i j`. Use function extensionality and compare the values at `y`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, Ring.inverse_eq_inv', smul_eq_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Conclude with `hinv.mul hadj.contDiffAt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cd_inv {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {n : Type} [Fintype n] [DecidableEq n]
     {k : WithTop ℕ∞} (f : E → Matrix n n ℂ) (hf : ∀ i j, ContDiff ℝ k (fun x => f x i j)) (i j : n) (x : E)

@@ -29,7 +29,7 @@ def arg2 : ℂˣ →* Circle where
     rw [Units.val_mul, map_mul, mul_div_mul_comm])
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `Units.continuous_val.div (Complex.continuous_conj.comp Units.continuous_val) fun z => by simp`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_unitsDivConjCircleChar : Continuous arg2 := by
   refine Continuous.subtype_mk ?_ _
@@ -37,13 +37,11 @@ theorem continuous_unitsDivConjCircleChar : Continuous arg2 := by
     fun z => by simp
 
 /- English proof (translation)
-Use `choose y hy using hy`. Establish `hn : ∀ x, ‖σ (y x)‖ = 1`. Introduce `x`. Establish `h2 : y x ^ m = 1` using `σ₀.injective (by rw [map_pow, ← hy, ← Circle.coe_pow, hf, map_one, Circle.coe_one])`. Establish `h3 : ‖σ (y x)‖ ^ m = 1` using `by rw [← norm_pow, ← map_pow, h2, map_one, norm_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 h3`. Establish `hone : ∀ x, f x = 1 → y x = 1` using `fun x h => σ₀.injective (by rw [← hy, h, map_one, Circle.coe_one])`. Set `ψ : G →* Circle` to `{ toFun := fun x => ⟨σ (y x), by simp [Submonoid.unitSphere, hn]⟩ map_one' := Circle.ext (by show σ (y 1) = 1`. Rewrite using `[hone 1 (map_one f), map_one])`. Use the proof step `map_mul' := fun a b => Circle.ext (by show σ (y (a * b)) = σ (y a) * σ (y b)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: y (a * b) = y a * y b` using `σ₀.injective (by rw [map_mul, ← hy, ← hy, ← hy, map_mul, Circle.coe_mul])`. Rewrite using `[this, map_mul]) }`. Use `⟨ψ, continuous_of_continuousAt_one ψ ?_, fun x z h => ?_⟩` and prove the remaining obligations. Use `(continuousAt_const (y := (1 : Circle))).congr ?_ filter_upwards [hU] with x hx` and prove the remaining obligations. Use `Circle.ext ?_` and prove the remaining obligations.
-
-Use `show (1 : ℂ) = σ (y x)`. Rewrite using `[hone x (h1 x hx), map_one]`. Use `show σ (y x) = σ z`. Rewrite using `[σ₀.injective ((hy x).symm.trans h)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_transport {G K : Type} [CommGroup G] [TopologicalSpace G] [IsTopologicalGroup G] [Field K]
     (σ₀ σ : K →+* ℂ) (f : G →* Circle) (hy : ∀ x, ∃ y, ((f x : Circle) : ℂ) = σ₀ y) (m : ℕ) (hm : 0 < m)
@@ -75,21 +73,19 @@ theorem exists_transport {G K : Type} [CommGroup G] [TopologicalSpace G] [IsTopo
     rw [σ₀.injective ((hy x).symm.trans h)]
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, 1, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem one_mem_intAE (D : D7) : (1 : Af D.host.F ⊗[D.host.F] D.host.E) ∈ intAE D :=
   AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, 1, rfl⟩
 
 /- English proof (translation)
-Use `AddSubgroup.closure_induction₂ (p := fun x y _ _ => x * y ∈ intAE D) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hx hy` and prove the remaining obligations. Introduce and unpack `_ _ ⟨a, ha, u, rfl⟩ ⟨b, hb, v, rfl⟩`. Use `AddSubgroup.subset_closure ⟨a * b, fun w => ?_, u * v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem (ha w) (hb w)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Both sides reduce to the same expression. Introduce `x _`. Rewrite using `[zero_mul]`. Conclude with `zero_mem _`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _`. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[add_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_mem h1 h2`. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[mul_add]`. Conclude with `add_mem h1 h2`. Introduce `x y _ _ h`.
-
-Rewrite using `[neg_mul]`. Conclude with `neg_mem h`. Introduce `x y _ _ h`. Rewrite using `[mul_neg]`. Conclude with `neg_mem h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_intAE (D : D7) {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (hy : y ∈ intAE D) :
     x * y ∈ intAE D := by
@@ -123,14 +119,14 @@ theorem angle_coe (D : D7) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)
     ((angle D θ x : Circle) : ℂ) = θ (infPart D (x : AE D)) / starRingEnd ℂ (θ (infPart D (x : AE D))) := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_unitsDivConjCircleChar.comp (Continuous.units_map _ (h.comp (GlobalTheory.Member.continuous_infPart D)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_angle (D : D7) {θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ} (h : Continuous θ) :
     Continuous (angle D θ) :=
   continuous_unitsDivConjCircleChar.comp (Continuous.units_map _ (h.comp (GlobalTheory.Member.continuous_infPart D)))
 
 /- English proof (translation)
-Use `(map_prod Circle.coeHom _ _).trans (Finset.prod_congr rfl fun τ _ => ?_)` and prove the remaining obligations. Conclude with `Circle.coe_zpow _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coe_prod_zpow {ι : Type} [Fintype ι] (u : ι → Circle) (k : ι → ℤ) :
     ((∏ i, u i ^ k i : Circle) : ℂ) = ∏ i, (u i : ℂ) ^ k i := by
@@ -141,21 +137,21 @@ set_option maxHeartbeats 2000000 in
 open GlobalTheory.FockCompare in
 
 /- English proof (translation)
-Take `⟨ρ, hρ, r1, r0⟩` from `exists_real_chart D θ hθ (GlobalTheory.CMTypePlaces.places_bijective D)`. Take `⟨s, hs⟩` from `RealChart.exists_chart D θ hθ ρ hρ r1 r0`. Establish `ext : ∀ a b : AE D, finPart D a = finPart D b → (∀ τ, θ τ (infPart D a) = θ τ (infPart D b)) → a = b`. Introduce `a b h1 h2`. Rewrite using `[← sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs.ext _ (by rw [RingHom.map_sub, h1, sub_self]) fun τ => by`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, h2, sub_self]`. Set `t : (D.what₂.Tau → ℂˣ) → AE D` to `fun z => s (fun τ => (z τ : ℂ)) + (1 - s 1)`. Establish `tf : ∀ z, finPart D (t z) = 1` using `fun z => by`. Simplify using `only [t, RingHom.map_add, RingHom.map_sub, RingHom.map_one, hs.fin, zero_add, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ti : ∀ z τ, θ τ (infPart D (t z)) = z τ` using `fun z τ => by`. Simplify using `only [t, RingHom.map_add, RingHom.map_sub, RingHom.map_one, hs.comp, Pi.one_apply, sub_self, add_zero]`. Establish `tc : Continuous t` using `(hs.cont.comp (continuous_pi fun τ => Units.continuous_val.comp (continuous_apply τ))).add continuous_const`. Set `T : (D.what₂.Tau → ℂˣ) →* AE D` to `{ toFun := t map_one' := ext _ _ (by rw [tf, RingHom.map_one]) fun τ => by`. Rewrite using `[ti, RingHom.map_one, RingHom.map_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use the proof step `map_mul' := fun x y => ext _ _ (by rw [RingHom.map_mul, tf, tf, tf, mul_one]) fun τ => by`. Rewrite using `[RingHom.map_mul, RingHom.map_mul, ti, ti, ti]`. Use `rfl }`. Establish `Tc : Continuous T.toHomUnits` using `Units.continuous_iff.2 ⟨tc, tc.comp continuous_inv⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `rr : ∀ z : D.what₂.Tau → ℂˣ, (∀ i, ((z i : ℂ)).im = 0) → ∀ τ, θ τ (ρ (fun i => (z i : ℂ).re) ⊗ₜ[D.host.F] (1 : D.host.E)) = z τ` using `fun z hz τ => by`. Rewrite using `[r1]`. Conclude with `Complex.ext rfl (hz τ).symm`. Establish `rm : ∀ z : D.what₂.Tau → ℂˣ, (∀ i, ((z i : ℂ)).im = 0) → ρ (fun i => (z i : ℂ).re) * ρ (fun i => (z⁻¹ i : ℂ).re) = 1` using `fun z hz => by`. Establish `hz' : ∀ i, ((z⁻¹ i : ℂˣ) : ℂ).im = 0` using `fun i => by simp [hz i]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Use `r0 _ fun τ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.sub_tmul, RingHom.map_sub, ← mul_one (1 : D.host.E), ← Algebra.TensorProduct.tmul_mul_tmul, RingHom.map_mul, rr z hz, rr z⁻¹ hz', mul_one, ← Algebra.TensorProduct.one_def, RingHom.map_one]`. Simplify using the standard rewrite rules. Take `⟨k, hk⟩` from `GlobalTheory.T.exists_zpow_prod_div_conj_of_continuous_trivial_on_real D.what₂.Tau (χ.comp T.toHomUnits) (hc.comp Tc) fun z hz => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `a : (AF D.host.F)ˣ` to `Units.mkOfMulEqOne (pairA D.host.F (ρ (fun i => (z i : ℂ).re)) 1) (pairA D.host.F (ρ (fun i => (z⁻¹ i : ℂ).re)) 1) (Prod.ext (rm z hz) (mul_one (1 : Af D.host.F)))`. Establish `: T.toHomUnits z = idF D a` using `Units.ext (ext _ _ ((tf z).trans rfl) fun τ => (ti z τ).trans (rr z hz τ).symm)`. Conclude with `(congrArg χ this).trans (hF a)`. Use `⟨k, fun x hx => Circle.ext ?_⟩` and prove the remaining obligations. Set `z : D.what₂.Tau → ℂˣ` to `fun τ => Units.map ((θ τ).comp (infPart D)).toMonoidHom x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `: x = T.toHomUnits z` using `Units.ext (ext _ _ (hx.trans (tf z).symm) fun τ => (ti z τ).symm)`. Use `((congrArg (fun u => ((χ u : Circle) : ℂ)) this).trans (hk z)).trans ?_` and prove the remaining obligations. Rewrite using `[coe_prod_zpow]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_type (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ)
     (χ : (AE D)ˣ →* Circle) (hc : Continuous χ) (hF : ∀ a, χ (idF D a) = 1) :
@@ -205,7 +201,7 @@ theorem exists_type (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F
   rfl
 
 /- English proof (translation)
-Use `Circle.ext ?_` and prove the remaining obligations. Establish `h0 : θ (infPart D (idF D a : AE D)) ≠ 0` using `(Units.map (θ.comp (infPart D)).toMonoidHom (idF D a)).ne_zero`. Establish `h1 : sigR (Ainf D.host.F) D.sp.cm.sig (infPart D (idF D a : AE D)) = infPart D (idF D a : AE D)` using `by show fstA D.host.F (a : AF D.host.F) ⊗ₜ[D.host.F] D.sp.cm.sig 1 = fstA D.host.F (a : AF D.host.F) ⊗ₜ[D.host.F] 1`. Rewrite using `[map_one]`. Rewrite using `[angle_coe, ← h, h1, div_self h0, Circle.coe_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem angle_idF (D : D7) {θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ}
     (h : ∀ z, θ (sigR (Ainf D.host.F) D.sp.cm.sig z) = starRingEnd ℂ (θ z)) (a : (AF D.host.F)ˣ) :
@@ -218,7 +214,7 @@ theorem angle_idF (D : D7) {θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ}
   rw [angle_coe, ← h, h1, div_self h0, Circle.coe_one]
 
 /- English proof (translation)
-Establish `h1 : θ (infPart D ((Units.map (incA D).toMonoidHom e : (AE D)ˣ) : AE D)) = τ e` using `h.1 e`. Rewrite using `[angle_coe, h1, map_div₀, IsCMField.complexEmbedding_complexConj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem angle_inc (D : D7) {τ : D.host.E →+* ℂ} {θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ}
     (h : Formalism.MainNotions.StandardLattice.IsInfEmb τ θ) (e : D.host.Eˣ) :
@@ -230,31 +226,29 @@ theorem angle_inc (D : D7) {τ : D.host.E →+* ℂ} {θ : Ainf D.host.F ⊗[D.h
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D Q χ₀ hH hF hy`. Take `⟨⟨θ, hθ⟩, hθ'⟩` from `GlobalTheory.Member.infiniteAdele_bijective D`. Take `⟨θc, θs, -⟩` from `hθ' θ hθ`. Take `⟨k, hk⟩` from `exists_type D (fun τ => θ (tauE D τ)) (fun τ => hθ _) χ₀ hH.1 hF`. Take `⟨hop, a, b, -, bc, hab, ha, hb⟩` from `GlobalTheory.T.isOpen_congruence_ideles_and_real_finite_parts D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, hN1, m, hm, hm1⟩` from `GlobalTheory.T.continuous_character_finite_order_integral_units D χ₀ hH.1`. Establish `Hopen : IsOpen (intIdeles D : Set (AE D)ˣ)`. Use `hop 1 one_pos using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Conclude with `⟨fun h => ⟨h.1, h.2, _, sub_mem h.1 (one_mem_intAE D), (one_nsmul _).symm⟩, fun h => ⟨h.1, h.2.1⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Establish `hbu : ∀ x : intIdeles D, FinUnit (b x)` using `fun x => ⟨(hb x).1, (hb x).2 ▸ x.2.1, by rw [← map_inv, (hb _).2]; exact x.2.2⟩`. Establish `key : ∀ σ : Q.c.F →+* ℂ, ∃ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ ∧ (∀ a, χ (idF D a) = 1) ∧ MuConj Q.c.F.val.toRingHom σ χ₀ χ`. Introduce `σ`. Take `⟨ψ, ψc, hψ⟩` from `exists_transport Q.c.F.val.toRingHom σ ((χ₀.comp b).comp (intIdeles D).subtype) (fun x => hy _ (hbu x)) m hm (fun x => hm1 _ (hbu x)) (Subtype.val ⁻¹' _) (((hop N hN).preimage continuous_subtype_val).mem_nhds ⟨(intIdeles D).one_mem.1, (intIdeles D).one_mem.2, 0, zero_mem _, by sh …`. Rewrite using `[RingHom.map_one, sub_self, nsmul_zero]⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun x hx => hN1 _ (hbu x) (by rw [(hb _).2]; exact hx.2.2))`. Set `A : (AE D)ˣ →* Circle` to `∏ τ, angle D (θ (relab Q.c σ (tauE D τ))) ^ k τ`. Establish `hA : ∀ x, A x = ∏ τ, angle D (θ (relab Q.c σ (tauE D τ))) x ^ k τ` using `fun x => by`. Simplify using `only [A, MonoidHom.finset_prod_apply, MonoidHom.zpow_apply]`. Establish `Ac : Continuous A`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (A : _ → _) = _ from funext hA]`. Conclude with `continuous_finset_prod _ fun τ _ => (continuous_angle D (θc _)).zpow _`. Take `⟨χ, χc, χ1, χ2⟩` from `GlobalTheory.T.exists_continuous_circle_char_extension' (AE D)ˣ (intIdeles D) ((Units.map (incA D).toMonoidHom).range ⊔ (idF D).range) (A.comp (intIdeles D).subtype * ψ) Hopen ((Ac.comp continuous_subtype_val).mul ψc) (by`. Introduce `x hx`. Take `⟨_, ⟨e, rfl⟩, _, ⟨r, rfl⟩, hx⟩` from `Subgroup.mem_sup.1 hx`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `han : ∀ τ, ((angle D (θ τ) x : Circle) : ℂ) = τ ((e : D.host.E) / IsCMField.complexConj D.host.E (e : D.host.E))` using `fun τ => by`. Rewrite using `[← hx, map_mul, angle_idF D (θs τ), mul_one, angle_inc D (hθ τ)]`. Generalize the expression as in `(e : D.host.E) / IsCMField.complexConj D.host.E (e : D.host.E) = w at han`. Establish `h0 : χ₀ (a x) * χ₀ (b x) = 1`. Rewrite using `[← map_mul, ← hab, ← hx, map_mul, hH.2, hF, mul_one]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((χ₀ (a x) : Circle) : ℂ) = Q.c.F.val.toRingHom (∏ τ, embF Q.c (tauE D τ) w ^ k τ)`. Rewrite using `[hk _ (ha _).2, coe_prod_zpow, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, angle_coe, (ha _).1, ← angle_coe, han]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hψ x (∏ τ, embF Q.c (tauE D τ) w ^ k τ)⁻¹ (by`. Rewrite using `[map_inv₀, ← h1, ← Circle.coe_inv, ← eq_inv_of_mul_eq_one_right h0]`. Use the proof step `rfl)`. Establish `h3 : ((A x : Circle) : ℂ) = σ (∏ τ, embF Q.c (tauE D τ) w ^ k τ)`. Rewrite using `[hA, coe_prod_zpow, map_prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, han]`. Both sides reduce to the same expression. Use `Circle.ext ?_` and prove the remaining obligations. Use `show ((A x : Circle) : ℂ) * ((ψ x : Circle) : ℂ) = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[h2, map_inv₀, ← h3, mul_inv_cancel₀ (Circle.coe_ne_zero _)])`. Use `⟨χ, ⟨χc, fun e => χ1 _ (Subgroup.mem_sup_left ⟨e, rfl⟩)⟩, fun r => χ1 _ (Subgroup.mem_sup_right ⟨r, rfl⟩), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hy x hx`. Establish `han : ∀ u : (AE D)ˣ, infPart D (u : AE D) = 1 → ∀ τ, angle D (θ τ) u = 1` using `fun u hu τ => Circle.ext (by rw [angle_coe, hu]; simp)`. Establish `h1 : χ₀ (b x) = χ₀ x` using `by conv_rhs => rw [hab x, map_mul, hk _ (ha _).2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [han _ ((ha x).1.trans hx.1), one_zpow, Finset.prod_const_one, one_mul]`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `h2` using `χ2 ⟨x, hx.2⟩`. Establish `h3 : A x = 1` using `by simp only [hA, han _ hx.1, one_zpow, Finset.prod_const_one]`. Establish `h4 : χ x = A x * ψ ⟨x, hx.2⟩` using `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[h4, h3, one_mul]`. Conclude with `hψ ⟨x, hx.2⟩ y ((congrArg _ h1).trans hy)`. Use `choose χ hχ using key`. Use `⟨fun σ => if σ = Q.c.F.val.toRingHom then χ₀ else χ σ, if_pos rfl, fun σ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : σ = Q.c.F.val.toRingHom`.
-
-Substitute `h` using the available equality. Simplify using `only [if_true]`. Conclude with `⟨hH, hF, fun x hx => (hy x hx).imp fun y h => ⟨h, h⟩⟩`. Simplify using `only [if_neg h]`. Conclude with `hχ σ`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_conjugates : ∀ (D : D7) (Q : Par D) (χ₀ : (AE D)ˣ →* Circle), IsHeckeChar D χ₀ → (∀ a, χ₀ (idF D a) = 1) → (∀ x, FinUnit x → ∃ y : Q.c.F, ((χ₀ x : Circle) : ℂ) = Q.c.F.val.toRingHom y) → ∃ χ : (Q.c.F →+* ℂ) → (AE D)ˣ →* Circle, χ Q.c.F.val.toRingHom = χ₀ ∧ ∀ σ, IsHeckeChar D (χ σ) ∧ (∀ a, χ σ (idF D a) = 1) ∧ MuConj Q.c.F.val.toRingHom σ χ₀ (χ σ) := by
   intro D Q χ₀ hH hF hy

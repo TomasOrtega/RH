@@ -11,7 +11,7 @@ namespace UpperTheory.V.Ws.Lk.BetaCyclotomicPlace
 variable (l : ℕ) [hl : Fact l.Prime]
 
 /- English proof (translation)
-Establish `h : Prime ((l : ℤ))` using `Nat.prime_iff_prime_int.1 hl.out`. Establish `h2` using `(MulEquiv.prime_iff (Rat.ringOfIntegersEquiv.symm : ℤ ≃* 𝓞 ℚ)).2 h`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem prime_l : Prime ((l : ℕ) : 𝓞 ℚ) := by
   have h : Prime ((l : ℤ)) := Nat.prime_iff_prime_int.1 hl.out
@@ -26,17 +26,17 @@ private noncomputable def vQ : HeightOneSpectrum (𝓞 ℚ) where
 variable {l} {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨n, rfl⟩ : ∃ n : ℤ, x = (n : 𝓞 ℚ)` from `⟨Rat.ringOfIntegersEquiv x, by rw [← map_intCast Rat.ringOfIntegersEquiv.symm, Int.cast_id, RingEquiv.symm_apply_apply]⟩`. Establish `hcast : algebraMap ℚ Ω (((n : 𝓞 ℚ)) : ℚ) = (n : Ω)` using `by simp`. Rewrite using `[hcast]`. Use `show _ ↔ (n : 𝓞 ℚ) ∈ Ideal.span {((l : ℕ) : 𝓞 ℚ)}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_span_singleton]`. Establish `hle : ∀ m : ℤ, A.valuation (m : Ω) ≤ 1` using `fun m => (A.valuation_le_one_iff _).2 (intCast_mem A m)`. Establish `hdvd : ((l : ℕ) : 𝓞 ℚ) ∣ (n : 𝓞 ℚ) ↔ (l : ℤ) ∣ n`. Rewrite using `[show ((l : ℕ) : 𝓞 ℚ) = Rat.ringOfIntegersEquiv.symm (l : ℤ) by simp, show (n : 𝓞 ℚ) = Rat.ringOfIntegersEquiv.symm n by simp, map_dvd_iff]`. Rewrite using `[hdvd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Assume the negation of the conclusion as `hnd`. Establish `hp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.1 hl.out`. Take `⟨a, b, hab⟩` from `(Irreducible.coprime_iff_not_dvd hp.irreducible).2 hnd`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : A.valuation ((a * l + b * n : ℤ) : Ω) < 1`. Use `push_cast`. Apply `lt_of_le_of_lt (A.valuation.map_add _ _)` to reduce the goal to its premises. Apply `max_lt` to reduce the goal to its premises. Rewrite using `[map_mul]`.
+Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[hab]`. Simplify using `at h1`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, rfl⟩`. Use `push_cast`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem isPlaceOver_vQ [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω)
     (hA : A.valuation ((l : ℕ) : Ω) < 1) : IsPlaceOver (F := ℚ) A (vQ l) := by
@@ -81,29 +81,27 @@ end UpperTheory.V.Ws.Lk.BetaCyclotomicPlace
 
 open UpperTheory.V.Ws.Lk.BetaCyclotomicPlace in
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ K _ hK A₀ hA₀ β hconj U hU hcyc A hA`. Establish `hn : U.index ≠ 0` using `by haveI : Finite (G K Ω ⧸ U) := U.quotient_finite_of_isOpen hU`. Conclude with `Subgroup.index_ne_zero_of_finite`. Establish `hpow : ∀ s : G K Ω, s ^ U.index.factorial ∈ U` using `fun s => Subgroup.pow_mem_of_index_ne_zero_of_dvd hn s (fun m h1 h2 => Nat.dvd_factorial h1 h2)`. Establish `hkpos : 0 < U.index.factorial` using `Nat.factorial_pos _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ t : G K Ω, ((cycBar K Ω l t : (Qbar l)ˣ) : PadicAlgCl l) = algebraMap ℤ_[l] (PadicAlgCl l) (cycZ K Ω l t : ℤ_[l])` using `fun t => rfl`. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver (isPlaceOver_vQ A₀ hA₀) (isPlaceOver_vQ A hA)`. Distinguish the cases in `hσK : σ ∈ K.fixingSubgroup`. Use `⟨1, U.index.factorial, hkpos, odd_one, ?_⟩` and prove the remaining obligations. Establish `hB : ∀ x ∈ K, x ∈ A ↔ x ∈ A₀`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[← hσ, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Establish `hfix : σ⁻¹ • x = x` using `(K.fixingSubgroup.inv_mem hσK) ⟨x, hx⟩`. Rewrite using `[hfix]`. Introduce `s hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ht : s ^ U.index.factorial ∈ U ⊓ Ine (F` using `K) A := ⟨hpow s, pow_mem hs _⟩`. Establish `h1 : β (s ^ U.index.factorial) ^ 2 = cycBar K Ω l (s ^ U.index.factorial)` using `Units.ext (by push_cast; rw [hcyc A hB _ ht, hval])`. Establish `e1 : (β s ^ 2 * cycBar K Ω l s ^ (-1 : ℤ)) ^ U.index.factorial = β (s ^ U.index.factorial) ^ 2 * (cycBar K Ω l (s ^ U.index.factorial))⁻¹`. Rewrite using `[map_pow, map_pow, zpow_neg, zpow_one]`. Simplify using `only [mul_pow, inv_pow, ← pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm 2]`. Rewrite using `[e1, h1, mul_inv_cancel]`. Use `⟨-1, U.index.factorial, hkpos, ⟨-1, by norm_num⟩, ?_⟩ haveI hN : K.fixingSubgroup.Normal := by` and prove the remaining obligations. Use `(InfiniteGalois.normal_iff_isGalois K).2 ?_` and prove the remaining obligations. Use `haveI : Algebra.IsQuadraticExtension ℚ K := ⟨hK⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `isGalois_iff.2 ⟨Algebra.IsSeparable.of_integral _ _, Algebra.IsQuadraticExtension.normal ℚ K⟩`. Introduce `s hs`. Establish `hg : resQ K s ∈ Ine (F` using `ℚ) A := (resQ_Ine K A s).1 hs`. Establish `hlift : IsLift (RingEquiv.refl ℚ) (σ : Ω ≃+* Ω)` using `fun y => by simp`. Establish `hg' : conjGal hlift (resQ K s) ∈ Ine (F` using `ℚ) A₀ := by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conjGal_mem_Ine hlift (fun x => ?_) hg` and prove the remaining obligations. Rewrite using `[← hσ, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Use `show σ⁻¹ • σ • x ∈ A₀ ↔ x ∈ A₀`. Rewrite using `[inv_smul_smul]`. Establish `heq : conjGal hlift (resQ K s) = σ⁻¹ * resQ K s * σ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Both sides reduce to the same expression. Establish `hmem : σ⁻¹ * resQ K s * σ ∈ K.fixingSubgroup`. Establish `h'` using `hN.conj_mem _ (resQ_mem K s) σ⁻¹`. Rewrite `h'` using `[inv_inv]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s', hs'⟩` from `exists_resQ hmem`. Establish `hs'I : s' ∈ Ine (F` using `K) A₀ := (resQ_Ine K A₀ s').2 (by rw [hs', ← heq]; exact hg')`. Establish `hσ' : σ⁻¹ ∉ K.fixingSubgroup` using `fun h' => hσK (by simpa using K.fixingSubgroup.inv_mem h')`. Establish `hbb : β s * β s' = 1` using `hconj σ⁻¹ hσ' s s' (by rw [hs', inv_inv])`. Establish `hcy : cycBar K Ω l s' = cycBar K Ω l s` using `by show Units.map _ (cycZ K Ω l s') = Units.map _ (cycZ K Ω l s)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : cycZ ℚ Ω l (σ⁻¹ * resQ K s * σ) = cycZ ℚ Ω l (resQ K s)`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm (cycZ ℚ Ω l σ)⁻¹, inv_mul_cancel_right]`. Rewrite using `[← resQ_cyc, ← resQ_cyc, hs', hz]`. Establish `ht' : s' ^ U.index.factorial ∈ U ⊓ Ine (F` using `K) A₀ := ⟨hpow s', pow_mem hs'I _⟩`. Establish `h1 : β (s' ^ U.index.factorial) ^ 2 = cycBar K Ω l (s' ^ U.index.factorial)` using `Units.ext (by push_cast; rw [hcyc A₀ (fun _ _ => Iff.rfl) _ ht', hval])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hbs : β s = (β s')⁻¹` using `eq_inv_of_mul_eq_one_left hbb`. Establish `e2 : (β s ^ 2 * cycBar K Ω l s ^ (-(-1) : ℤ)) ^ U.index.factorial = (β (s' ^ U.index.factorial) ^ 2)⁻¹ * cycBar K Ω l (s' ^ U.index.factorial)`. Rewrite using `[neg_neg, zpow_one, hbs, ← hcy, map_pow, map_pow]`. Simplify using `only [mul_pow, inv_pow, ← pow_mul]`. Rewrite using `[mul_comm 2]`.
-
-Rewrite using `[e2, h1, inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Lk.betaCyc :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ Ω) [NumberField K], Module.finrank ℚ K = 2 → ∀ A₀ : ValuationSubring Ω, A₀.valuation (l : Ω) < 1 → ∀ β : G K Ω →* (PadicAlgCl l)ˣ, (∀ σ ∉ K.fixingSubgroup, ∀ s s' : G K Ω, resQ K s' = σ * resQ K s * σ⁻¹ → β s * β s' = 1) → ∀ U : Subgroup (G K Ω), IsOpen (U : Set (G K Ω)) → (∀ B : ValuationSubring Ω, (∀ x ∈ K, x ∈ B ↔ x ∈ A₀) → ∀ s ∈ U ⊓ Ine (F := K) B, (β s : PadicAlgCl l) ^ 2 = algebraMap ℤ_[l] (PadicAlgCl l) (cycZ K Ω l s : ℤ_[l])) → ∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → ∃ (b : ℤ) (k : ℕ), 0 < k ∧ Odd b ∧ ∀ s ∈ Ine (F := K) A, (β s ^ 2 * cycBar K Ω l s ^ (-b)) ^ k = 1 := by

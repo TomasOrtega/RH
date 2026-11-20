@@ -11,7 +11,7 @@ open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `AdeleBaseChange.adeleTensorEquiv F E (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F _) ((AdeleBaseChange.adeleTensorEquiv F E).symm (AdeleBaseChange.adeleMap F E a))) = _`. Rewrite using `[AdeleBaseChange.adeleTensorEquiv_symm_adeleMap, Algebra.TensorProduct.map_tmul, AdeleBaseChange.adeleTensorEquiv_tmul, map_one, map_one, one_mul]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem galAd_adeleMap {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E ≃ₐ[F] E) (a : NumberField.AdeleRing (𝓞 F) F) :
@@ -23,7 +23,7 @@ private theorem galAd_adeleMap {F E : Type} [Field F] [NumberField F] [Field E] 
   rfl
 
 /- English proof (translation)
-Use `⟨rpowHom ((d : ℝ))⁻¹ t, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((t : ℝ) ^ ((d : ℝ))⁻¹) ^ d = t`. Conclude with `Real.rpow_inv_natCast_pow t.2.le hd`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private theorem exists_pow_eq (d : ℕ) (hd : d ≠ 0) (t : {r : ℝ // 0 < r}) :
     ∃ s : {r : ℝ // 0 < r}, s ^ d = t := by
@@ -32,7 +32,7 @@ private theorem exists_pow_eq (d : ℕ) (hd : d ≠ 0) (t : {r : ℝ // 0 < r}) 
   exact Real.rpow_inv_natCast_pow t.2.le hd
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `exists_pow_eq (Module.finrank F E) Module.finrank_pos.ne' t`. Establish `h` using `UpperTheory.centralSection_baseChange F E n s`. Rewrite using `[← h]`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Conclude with `galAd_adeleMap σ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem map_centralSection {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E ≃ₐ[F] E) (n : ℕ) (t : {r : ℝ // 0 < r}) :
@@ -44,11 +44,11 @@ private theorem map_centralSection {F E : Type} [Field F] [NumberField F] [Field
   exact galAd_adeleMap σ _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ n hn μ _ θ hθ h h' hh`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hθ, MultiplicityOne.coe_finProj, MultiplicityOne.coe_finProj, map_mul, map_inv, hh, map_centralSection]`. Use `set s := detModule E n (finEmb E n h) with hs`. Establish `hmem : finEmb E n h' * (centralSection E n s)⁻¹ ∈ normOneGL E n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(θ.e (MultiplicityOne.finProj E n h)).2`. Rewrite `h1` using `[hθ, MultiplicityOne.coe_finProj, map_mul, map_inv, hh, map_centralSection]`. Conclude with `h1`. Establish `hd : detModule E n (finEmb E n h') = s`. Establish `h2` using `(mem_normOneGL_iff_detModule).1 hmem`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[map_mul, map_inv, detModule_centralSection hn]`. Conclude with `mul_inv_eq_one.1 h2`. Rewrite using `[hd]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.galTwist_finProj_eq_of_galAd_finEmb_eq :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E] (σ : E ≃ₐ[F] E) (n : ℕ), 0 < n →

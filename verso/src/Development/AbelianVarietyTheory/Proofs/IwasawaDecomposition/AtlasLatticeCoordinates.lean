@@ -23,7 +23,7 @@ def LCrd.frvecEmbL (D : LCrd M π) (α : D.C.A) {S : Type} [CommRing S] (z : Sp 
   (Matrix.mulVecLin ((D.Em.A α).map (ev z _ h))).comp (D.crd α S z h)
 
 /- English proof (translation)
-Unfold `LCrd.emb`. Rewrite using `[D.bc α S S' φ z _ rfl h h' e v, FlagMod.ev_spMap φ z _ h h']`. Use function extensionality and compare the values at `r`. Rewrite using `[Function.comp_apply, RingHom.map_mulVec, Matrix.map_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem LCrd.frvec_emb_tanPull (D : LCrd M π) (α : D.C.A) {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S')
     (z : Sp S ⟶ X) (h : ⊤ ≤ z ⁻¹ᵁ D.C.B α) (h' : ⊤ ≤ (spMap φ ≫ z) ⁻¹ᵁ D.C.B α)
@@ -36,9 +36,9 @@ theorem LCrd.frvec_emb_tanPull (D : LCrd M π) (α : D.C.A) {S S' : Type} [CommR
   rfl
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `D.Em.compat α β S z hα hβ`. Use `⟨u, fun v => ?_⟩` and prove the remaining obligations. Unfold `LCrd.emb`. Rewrite using `[← D.tr α β S z hα hβ v, Matrix.mulVec_mulVec]`. Rewrite using `[hu]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `r`. Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem LCrd.frvec_exists_emb_eq_smul (D : LCrd M π) (α β : D.C.A) {S : Type} [CommRing S] (z : Sp S ⟶ X)
     (hα : ⊤ ≤ z ⁻¹ᵁ D.C.B α) (hβ : ⊤ ≤ z ⁻¹ᵁ D.C.B β) :
@@ -52,9 +52,9 @@ theorem LCrd.frvec_exists_emb_eq_smul (D : LCrd M π) (α β : D.C.A) {S : Type}
   simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Take `⟨A', hA'⟩` from `D.Em.linv α`. Establish `h1 : A'.map (ev z _ h) * (D.Em.A α).map (ev z _ h) = 1`. Rewrite using `[← Matrix.map_mul, hA', Matrix.map_one _ (map_zero _) (map_one _)]`. Introduce `x y hxy`. Simplify using `only [LCrd.frvecEmbL, LinearMap.coe_comp, Function.comp_apply, Matrix.mulVecLin_apply] at hxy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun w => (A'.map (ev z _ h)).mulVec w) hxy` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec] at this`. Conclude with `D.inj α K z h hz this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LCrd.frvec_emb_injective (D : LCrd M π) (α : D.C.A) {K : Type} [Field K] (z : Sp K ⟶ X) (h : ⊤ ≤ z ⁻¹ᵁ D.C.B α)
     (hz : Set.range z ⊆ π ⁻¹' Set.range M.j) : Function.Injective (D.frvecEmbL α z h) := by
@@ -68,16 +68,16 @@ theorem LCrd.frvec_emb_injective (D : LCrd M π) (α : D.C.A) {K : Type} [Field 
   exact D.inj α K z h hz this
 
 /- English proof (translation)
-Rewrite using `[initSpan, initSpan, Submodule.map_span, Set.image_image]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frvec_initSpan_map {K P Q : Type} [Field K] [AddCommGroup P] [Module K P] [AddCommGroup Q] [Module K Q] {m : ℕ}
     (F : P →ₗ[K] Q) (v : Fin m → P) (e : ℕ) : initSpan K (fun i => F (v i)) e = (initSpan K v e).map F := by
   rw [initSpan, initSpan, Submodule.map_span, Set.image_image]
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, hj, rfl⟩)`. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Establish `: v j = ((u⁻¹ : Kˣ) : K) • ((u : K) • v j)` using `by rw [smul_smul, Units.inv_mul, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, hj, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem frvec_initSpan_smul {K Q : Type} [Field K] [AddCommGroup Q] [Module K Q] {m : ℕ}
     (u : Kˣ) (v : Fin m → Q) (e : ℕ) : initSpan K (fun i => (u : K) • v i) e = initSpan K v e := by
@@ -90,7 +90,7 @@ theorem frvec_initSpan_smul {K Q : Type} [Field K] [AddCommGroup Q] [Module K Q]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, hj, rfl⟩)
 
 /- English proof (translation)
-Establish `: {j : Fin m | (j : ℕ) < m} = Set.univ` using `Set.eq_univ_of_forall fun j => j.2`. Rewrite using `[initSpan, this, Set.image_univ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem frvec_initSpan_top {K Q : Type} [Field K] [AddCommGroup Q] [Module K Q] {m : ℕ}
     (v : Fin m → Q) : initSpan K v m = Submodule.span K (Set.range v) := by
@@ -98,31 +98,29 @@ theorem frvec_initSpan_top {K Q : Type} [Field K] [AddCommGroup Q] [Module K Q] 
   rw [initSpan, this, Set.image_univ]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c V M X π ty A D σ α hα`. Establish `hu : ∀ a, ∃ u : TVecs Dw M.t (A.ch.χ a ≫ π), up u = A.fr a` using `fun a => exists_up fun σ i => ((A.frame a).1 σ i).1`. Use `choose u₀ hu₀ using hu`. Set `cv : ∀ a, Fin (Dw.mult σ) → Fin (D.N + 1) → A.ch.R a` to `fun a i => D.emb (α a) (A.ch.χ a) (hα a) (u₀ a σ i)`. Establish `key : IsFrVec D A σ α cv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a S _ φ z ez h u hup i`. Substitute `ez` using the available equality. Establish `e' : spMap φ ≫ A.ch.χ a ≫ π = (spMap φ ≫ A.ch.χ a) ≫ π` using `(Category.assoc _ _ _).symm`. Establish `hu : u = fun σ i => tanPull φ e' (u₀ a σ i)`. Apply `up_injective` to reduce the goal to its premises.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[up_tanPull, hu₀, hup]`. Rewrite using `[hu]`. Conclude with `(D.frvec_emb_tanPull (α a) φ (A.ch.χ a) (hα a) h e' (u₀ a σ i)).symm`. Establish `li : ∀ (a : A.ch.ι) (K : Type) [Field K] (φ : A.ch.R a →+* K), LinearIndependent K fun i => φ ∘ cv a i`. Introduce `a K _ φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h : ⊤ ≤ (spMap φ ≫ A.ch.χ a) ⁻¹ᵁ D.C.B (α a)` using `FlagMod.le_preimage_comp _ (hα a)`. Take `⟨u, hu⟩` from `A.exists_up_fr (rfl : spMap φ ≫ A.ch.χ a = _)`. Establish `hf` using `A.isFrame_bc (rfl : spMap φ ≫ A.ch.χ a = _)`. Rewrite `hf` using `[← hu]`. Establish `hr : Set.range (spMap φ ≫ A.ch.χ a) ⊆ π ⁻¹' Set.range M.j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← A.cover]`. Conclude with `A.ch.range_subset rfl`. Use `((isFrame_up_iff _ _).1 hf σ).1.map' (D.frvecEmbL (α a) _ h) (LinearMap.ker_eq_bot.2 (D.frvec_emb_injective (α a) _ h hr))` as an intermediate fact. Establish `e : (fun i => φ ∘ cv a i) = D.frvecEmbL (α a) _ h ∘ u σ` using `funext fun i => key a K φ _ rfl h u hu i`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Establish `hD : ∀ a, ∃ Dv : Fin (Dw.mult σ) → Fin (D.N + 1) → A.ch.R a, LeftInv Dv (cv a)`. Introduce `a`. Take `⟨Q, hQ⟩` from `GlobalTheory.matrix_exists_left_inverse_of_forall_field (A.ch.R a) (D.N + 1) (Dw.mult σ) (Matrix.of fun r i => cv a i r) fun K _ φ => by`. Rewrite using `[Matrix.mulVec_injective_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `li a K φ`. Use `⟨fun z r => Q z r, fun z z' => ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun hQ z) z'` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.of_apply] at this`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `this` and compare the differences between its conclusion and the goal. Use `choose Dv hDv using hD`. Use `⟨cv, Dv, key, hDv, fun K _ a a' φ φ' hz e he => ?_⟩` and prove the remaining obligations. Establish `h : ⊤ ≤ (spMap φ ≫ A.ch.χ a) ⁻¹ᵁ D.C.B (α a)` using `FlagMod.le_preimage_comp _ (hα a)`. Establish `h' : ⊤ ≤ (spMap φ ≫ A.ch.χ a) ⁻¹ᵁ D.C.B (α a')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hz]`. Conclude with `FlagMod.le_preimage_comp _ (hα a')`. Take `⟨u, hu⟩` from `A.exists_up_fr (rfl : spMap φ ≫ A.ch.χ a = _)`. Take `⟨u', hu'⟩` from `A.exists_up_fr hz.symm`. Take `⟨s, hs⟩` from `D.frvec_exists_emb_eq_smul (α a') (α a) _ h' h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e1 : (fun i => φ ∘ cv a i) = fun i => D.frvecEmbL (α a) _ h (u σ i)`. Use function extensionality and compare the values at `fun i => key a K φ _ rfl h u hu i`. Establish `e2 : (fun i => φ' ∘ cv a' i) = fun i => (s : K) • D.frvecEmbL (α a) _ h (u' σ i)`. Use function extensionality and compare the values at `fun i => (key a' K φ' _ hz.symm h' u' hu' i).trans (hs _)`. Rewrite using `[e1, e2, frvec_initSpan_smul, frvec_initSpan_map, frvec_initSpan_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Break down `he with he | rfl | rfl` into its components or cases. Establish `f1` using `A.flagAt_fr (rfl : spMap φ ≫ A.ch.χ a = _)`. Establish `f2` using `A.flagAt_fr hz.symm`. Rewrite `f1` using `[← hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `f2` using `[← hu']`. Conclude with `Atlas.FlagAt.initSpan_eq f1 f2 σ he`. Simplify using `[initSpan]`. Establish `f1` using `A.isFrame_bc (rfl : spMap φ ≫ A.ch.χ a = _)`. Establish `f2` using `A.isFrame_bc hz.symm`.
-
-Rewrite `f1` using `[← hu]`. Rewrite `f2` using `[← hu', ← A.alg_eq rfl hz.symm]`. Rewrite using `[frvec_initSpan_top, frvec_initSpan_top, ((isFrame_up_iff _ _).1 f1 σ).2, ((isFrame_up_iff _ _).1 f2 σ).2]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isFrVec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : ValuationSubring c.F) (M : Model Xo c V.subtype) (X : Scheme.{0}) (π : X ⟶ M.X) (ty : (E →+* ℂ) → Finset ℕ) (A : Atlas M π ty) (D : LCrd M π) (σ : E →+* ℂ) (α : A.ch.ι → D.C.A), (∀ a, ⊤ ≤ A.ch.χ a ⁻¹ᵁ D.C.B (α a)) → ∃ (cv Dv : ∀ a, Fin (Dw.mult σ) → Fin (D.N + 1) → A.ch.R a), IsFrVec D A σ α cv ∧ (∀ a, LeftInv (Dv a) (cv a)) ∧ ∀ (K : Type) [Field K] (a a' : A.ch.ι) (φ : A.ch.R a →+* K) (φ' : A.ch.R a' →+* K), spMap φ ≫ A.ch.χ a = spMap φ' ≫ A.ch.χ a' → ∀ e : ℕ, e ∈ ty σ ∨ e = 0 ∨ e = Dw.mult σ → initSpan K (fun i => φ ∘ cv a i) e = initSpan K (fun i => φ' ∘ cv a' i) e := by
   intro E _ _ _ H Dw l Xo c V M X π ty A D σ α hα

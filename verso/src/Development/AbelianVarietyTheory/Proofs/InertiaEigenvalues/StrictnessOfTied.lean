@@ -13,11 +13,11 @@ namespace GlobalTheory.FontaineExtensionCriteria
 open GlobalTheory.Per.FontaineBound in
 
 /- English proof (translation)
-Introduce `LL _ _ _ O _ _ hO A`. Establish `: FiniteDimensional ℚ_[l] LL` using `hO.2.1`. Establish `hd` using `ddR_finite_le (P.PD K) (isField_of_tied T) A.ρ`. Use `⟨?_, hd, fun hc => ?_⟩` and prove the remaining obligations. Use `isDomain_cris (P.PD K) (isField_of_tied T)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(P.PD K).finK₀` as an intermediate fact. Use `finite_finrank_le (P.PD K).actB (fun b b' hb h => GlobalTheory.T.ratio_invariant_in_K0 l P AI T K b' b hb fun g hg => ?_) A.ρ` and prove the remaining obligations. Establish `h1` using `h ⟨g, hg⟩`. Rewrite `h1` using `[P.PD_actB, P.PD_actB]`. Rewrite using `[mul_comm, h1, mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.Per.CrisDR.abstract_cmp (P.PD K) A.ρ (fun m x hx b hb => GlobalTheory.T.injective_tensor_Bcris_to_BdR l P AI T K m x hx b ?_) hd.1 hd.2 hc).1` and prove the remaining obligations. Simplify `hb` using `only [P.PD_ι]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fontCore_of_tied {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI)
     (K : FinExt l) : LocalSituation.fontCore (P.PD K) := by
@@ -36,14 +36,14 @@ theorem fontCore_of_tied {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf
     simpa only [P.PD_ι] using hb
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.DeRhamCompare.strict_iff P).1 (GlobalTheory.DRFil.deRhamComparison l P AI ⟨T⟩).2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem strictness_of_tied {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) :
     GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.Strictness l P :=
   (GlobalTheory.DeRhamCompare.strict_iff P).1 (GlobalTheory.DRFil.deRhamComparison l P AI ⟨T⟩).2.2.2.2.2.1
 
 /- English proof (translation)
-Introduce `P _ ⟨T⟩` and use `GlobalTheory.CrysExt.extCrys P (fontCore_of_tied T) (strictness_of_tied T)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem extCrys_of_tied : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     Nonempty (LocTied l P AI) → GlobalTheory.IndefiniteRowSideFullHecke.CrystallineExtensions.ExtCrys P :=

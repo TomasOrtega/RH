@@ -12,14 +12,14 @@ open ReciprocityTheory.ChartRestriction.G.FD
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Simplify using `[herm, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_eq' (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     herm G x y = x ⬝ᵥ (G *ᵥ fun b => cc (y b)) := by
   simp [herm, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `hc : ∀ (P : Matrix (Fin r) (Fin r) E) (y : Fin r → E), (fun b => cc ((P *ᵥ y) b)) = P.map cc *ᵥ fun b => cc (y b)`. Introduce `P y`. Use extensionality with `a`. Simplify using `[mulVec, dotProduct, cc, map_sum, map_mul]`. Rewrite using `[herm_eq', herm_eq', hc, add_mulVec, dotProduct_add, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec u Xᵀ, vecMul_transpose]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_pair (G X : Matrix (Fin r) (Fin r) E) (u w : Fin r → E) :
     herm G (X *ᵥ u) w + herm G u (X *ᵥ w) = u ⬝ᵥ ((Xᵀ * G + G * X.map cc) *ᵥ fun b => cc (w b)) := by
@@ -30,11 +30,11 @@ theorem herm_pair (G X : Matrix (Fin r) (Fin r) E) (u w : Fin r → E) :
     dotProduct_mulVec u Xᵀ, vecMul_transpose]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `a b`. Establish `h1` using `h (Pi.single a 1) (Pi.single b 1)`. Rewrite `h1` using `[herm_pair]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (fun c => cc ((Pi.single b (1 : E) : Fin r → E) c)) = Pi.single b 1`. Apply the tactic sequence `ext c; by_cases hcb : c = b <;> simp [hcb, cc]`. Rewrite `h1` using `[e]`. Simplify `h1` using `[mulVec_single_one, Matrix.mul_assoc]`. Introduce `h u w`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[herm_pair, h, zero_mulVec, dotProduct_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem skew_iff (G X : Matrix (Fin r) (Fin r) E) :
     (∀ x y, herm G (X *ᵥ x) y + herm G x (X *ᵥ y) = 0) ↔ Xᵀ * G + G * X.map cc = 0 := by
@@ -51,7 +51,7 @@ theorem skew_iff (G X : Matrix (Fin r) (Fin r) E) :
     rw [herm_pair, h, zero_mulVec, dotProduct_zero]
 
 /- English proof (translation)
-Use extensionality with `X`. Express the relevant statement in the definitionally equal form `(X.trace = 0 ∧ _ ∧ _) ↔ (X.trace = 0 ∧ _ ∧ _)`. Use `and_congr_right fun _ => and_congr_left fun _ => ?_` and prove the remaining obligations. Rewrite using `[skew_iff, ← transpose_eq_zero (M := Xᵀ * G + G * X.map cc)]`. Rewrite using `[transpose_add, transpose_mul, transpose_mul, transpose_transpose, add_comm]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -65,9 +65,7 @@ theorem lieInt_eq (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r
   rfl
 
 /- English proof (translation)
-Unfold `resOrder`. Use `split_ifs with h`. Establish `hI : v.asIdeal.map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) ≠ ⊥`. Rewrite using `[Ne, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `v.ne_bot`.
-
-Use `haveI := Ideal.finiteQuotientOfFreeOfNeBot _ hI`. Use `(Set.ncard_pos (Set.toFinite _)).2 ⟨_, 1, ⟨by simp, fun a b => by simp⟩, rfl⟩` and prove the remaining obligations. Use `haveI := Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Conclude with `Nat.card_pos`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem resOrder_pos (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) : 0 < resOrder E r v := by
   unfold resOrder
@@ -81,7 +79,7 @@ theorem resOrder_pos (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) : 0 
     exact Nat.card_pos
 
 /- English proof (translation)
-Unfold `locFactor`. Use `div_pos (by exact_mod_cast resOrder_pos v) (pow_pos ?_ _)` and prove the remaining obligations. Conclude with `Nat.pos_of_ne_zero fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem locFactor_pos (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) : 0 < locFactor E r v := by
   unfold locFactor
@@ -93,7 +91,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 local notation "F" => maximalRealSubfield E
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, cc]`. Rewrite using `[Algebra.smul_def, map_mul, AlgEquiv.commutes, ← Algebra.smul_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_cc_smul (c : F) (X : Matrix (Fin r) (Fin r) E) : (c • X).map cc = c • X.map cc := by
   ext a b
@@ -120,14 +118,14 @@ def slSp (G : Matrix (Fin r) (Fin r) E) : Submodule F (Matrix (Fin r) (Fin r) E)
   smul_mem' c X hX := ⟨by rw [trace_smul, hX.1, smul_zero], (skewSp G).smul_mem c hX.2⟩
 
 /- English proof (translation)
-Introduce `_ h` and use `h.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem slSp_le (G : Matrix (Fin r) (Fin r) E) : slSp G ≤ skewSp G := fun _ h => h.2
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : E, IsCMField.complexConj E x ≠ x := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `IsCMField.complexConj_ne_one E (AlgEquiv.ext h)`. Use `⟨x - IsCMField.complexConj E x, sub_ne_zero.mpr hx.symm, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_sub, IsCMField.complexConj_apply_apply]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_imag : ∃ δ : E, δ ≠ 0 ∧ IsCMField.complexConj E δ = -δ := by
   obtain ⟨x, hx⟩ : ∃ x : E, IsCMField.complexConj E x ≠ x := by
@@ -139,21 +137,21 @@ theorem exists_imag : ∃ δ : E, δ ≠ 0 ∧ IsCMField.complexConj E δ = -δ 
   ring
 
 /- English proof (translation)
-Take `⟨δ, hδ0, hδ⟩` from `exists_imag (E := E)`. Set `f : (skewSp G × skewSp G) →ₗ[F] Matrix (Fin r) (Fin r) E` to `{ toFun := fun p => (p.1 : Matrix (Fin r) (Fin r) E) + δ • (p.2 : Matrix (Fin r) (Fin r) E) map_add' := by`. Introduce `p q`. Simplify using `only [Prod.fst_add, Prod.snd_add, Submodule.coe_add, smul_add]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Use the proof step `map_smul' := by`. Introduce `c p`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, Submodule.coe_smul, smul_add, RingHom.id_apply, smul_comm δ c] }`. Establish `hinj : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨X, hX⟩, ⟨Y, hY⟩⟩ h`. Express the relevant statement in the definitionally equal form `X + δ • Y = 0 at h`. Express the relevant statement in the definitionally equal form `Xᵀ * G + G * X.map cc = 0 at hX`. Express the relevant statement in the definitionally equal form `Yᵀ * G + G * Y.map cc = 0 at hY`. Establish `hXe : X = -(δ • Y)` using `eq_neg_of_add_eq_zero_left h`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXc : X.map cc = δ • Y.map cc`. Rewrite using `[hXe]`. Use extensionality with `a b`. Simplify using `[cc, hδ]`. Rewrite `hX` using `[hXc, hXe, transpose_neg, transpose_smul, Matrix.neg_mul, Matrix.smul_mul, Matrix.mul_smul, eq_neg_of_add_eq_zero_left hY, smul_neg, neg_neg, ← two_smul E (δ • (G * Y.map cc)), smul_smul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : G * Y.map cc = 0`. Break down `smul_eq_zero.1 hX with h | h` into its components or cases. Conclude with `absurd h (mul_ne_zero two_ne_zero hδ0)`. Conclude with `h`. Establish `h3 : Y.map cc = 0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun M => G⁻¹ * M) h2` as an intermediate fact. Simplify `this` using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (Ne.isUnit hG)]`. Establish `hY0 : Y = 0`. Use extensionality with `a b`. Use `congrFun (congrFun h3 a) b` as an intermediate fact.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify `this` using `[cc]`. Establish `hX0 : X = 0` using `by rw [hXe, hY0, smul_zero, neg_zero]`. Substitute `hX0 hY0` using the available equality. Both sides reduce to the same expression. Establish `h1` using `LinearMap.finrank_le_finrank_of_injective hinj`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h1` using `[Module.finrank_prod, Module.finrank_matrix, Fintype.card_fin, Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E]`. Rewrite using `[sq]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem finrank_skewSp_le (G : Matrix (Fin r) (Fin r) E) (hG : G.det ≠ 0) :
     Module.finrank F (skewSp G) ≤ r ^ 2 := by
@@ -200,13 +198,13 @@ theorem finrank_skewSp_le (G : Matrix (Fin r) (Fin r) E) (hG : G.det ≠ 0) :
   omega
 
 /- English proof (translation)
-Establish `hle` using `finrank_skewSp_le G hG`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Use `Submodule.finrank_mono (slSp_le G)` as an intermediate fact. Substitute `hr` using the available equality. Conclude with `this.trans hle`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ0, hδ⟩` from `exists_imag (E := E)`. Establish `hmem : δ • (1 : Matrix (Fin r) (Fin r) E) ∈ skewSp G`. Express the relevant statement in the definitionally equal form `(δ • (1 : Matrix (Fin r) (Fin r) E))ᵀ * G + G * (δ • (1 : Matrix (Fin r) (Fin r) E)).map cc = 0`. Establish `e : (δ • (1 : Matrix (Fin r) (Fin r) E)).map cc = (-δ) • 1`. Apply the tactic sequence `ext a b; by_cases h : a = b <;> simp [h, cc, hδ, Matrix.one_apply]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, transpose_smul, transpose_one, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, neg_smul, add_neg_cancel]`. Establish `hnot : δ • (1 : Matrix (Fin r) (Fin r) E) ∉ slSp G`. Introduce `h`. Use `h.1` as an intermediate fact. Rewrite `this` using `[trace_smul, trace_one, Fintype.card_fin, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero hδ0 (Nat.cast_ne_zero.2 hr.ne') this`. Establish `hlt : slSp G < skewSp G` using `lt_of_le_of_ne (slSp_le G) fun h => hnot (h ▸ hmem)`. Use `Submodule.finrank_lt_finrank_of_lt hlt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_slSp_le (G : Matrix (Fin r) (Fin r) E) (hG : G.det ≠ 0) :
     Module.finrank F (slSp G) ≤ r ^ 2 - 1 := by
@@ -237,16 +235,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 local notation "F" => maximalRealSubfield E
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hX.1, (skew_iff G X).1 hX.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem lieLat_le_slSp (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) {X : Matrix (Fin r) (Fin r) E}
     (hX : X ∈ lieLat G Λ) : X ∈ slSp G :=
   ⟨hX.1, (skew_iff G X).1 hX.2.1⟩
 
 /- English proof (translation)
-Use `Submodule.eq_of_le_of_finrank_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `lieLat_le_slSp G Λ (he i)`. Rewrite using `[finrank_span_eq_card hli, Fintype.card_fin]`.
-
-Conclude with `finrank_slSp_le G hG`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_eq_slSp (G : Matrix (Fin r) (Fin r) E) (hG : G.det ≠ 0) (Λ : Submodule (𝓞 E) (Fin r → E))
     (e : Fin (r ^ 2 - 1) → Matrix (Fin r) (Fin r) E) (he : ∀ i, e i ∈ lieLat G Λ)
@@ -259,13 +255,13 @@ theorem span_eq_slSp (G : Matrix (Fin r) (Fin r) E) (hG : G.det ≠ 0) (Λ : Sub
     exact finrank_slSp_le G hG
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun F).1 hX`. Establish `hc : ∀ i, ∃ m : ℕ, 0 < m ∧ IsIntegral ℤ ((m : F) * c i)` using `fun i => GlobalTheory.DenClear.exists_natMul_isIntegral (c i)`. Use `choose m hm hint using hc`. Use `⟨∏ i, m i, Finset.prod_pos fun i _ => hm i, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem m (Finset.mem_univ i)`. Establish `hI : IsIntegral ℤ (((∏ j, m j : ℕ) : F) * c i)`. Rewrite using `[hk, Nat.cast_mul, mul_comm (m i : F), mul_assoc]`. Establish `h1` using `(isIntegral_algebraMap (R := ℤ) (A := F) (x := (k : ℤ))).mul (hint i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`. Set `a : 𝓞 F` to `⟨_, (mem_integralClosure_iff ℤ F).2 hI⟩`. Establish `e1 : (∏ j, m j) • c i • e i = a • e i`. Rewrite using `[← algebraMap_smul F a (e i), ← Nat.cast_smul_eq_nsmul F, smul_smul]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ a (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem_span {n : ℕ} (e : Fin n → Matrix (Fin r) (Fin r) E) {X : Matrix (Fin r) (Fin r) E}
     (hX : X ∈ Submodule.span F (Set.range e)) :
@@ -289,15 +285,11 @@ theorem exists_nsmul_mem_span {n : ℕ} (e : Fin n → Matrix (Fin r) (Fin r) E)
   exact Submodule.smul_mem _ a (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Establish `hv : ∀ j : Fin r, ∃ n : ℕ, 0 < n ∧ (n : E) • (Pi.single j 1 : Fin r → E) ∈ Λ` using `fun j => GlobalTheory.DenClear.exists_natSmul_mem Λ _ (by rw [hspan]; trivial)`. Use `choose n hn hnΛ using hv`. Use `set N := ∏ j, n j with hN`. Establish `hN0 : (N : E) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.prod_pos fun j _ => hn j).ne'`. Establish `hNΛ : ∀ j, (N : E) • (Pi.single j 1 : Fin r → E) ∈ Λ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `j`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem n (Finset.mem_univ j)`. Rewrite using `[hN, hk, Nat.cast_mul, mul_comm, ← smul_smul, Nat.cast_smul_eq_nsmul]`. Conclude with `Λ.nsmul_mem (hnΛ j) k`. Set `φ : lieLat G Λ →+ (Fin r → Λ)` to `{ toFun := fun X j => ⟨X.1 *ᵥ ((N : E) • Pi.single j 1), X.2.2.2 _ (hNΛ j)⟩ map_zero' := by ext j; simp map_add' := by intro X Y; ext j; simp [add_mulVec] }`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hinj : Function.Injective φ`. Introduce `X Y h`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a j`. Use `congrArg (fun f : Fin r → Λ => ((f j : Λ) : Fin r → E) a) h` as an intermediate fact.
-
-Simplify using `only [φ, AddMonoidHom.coe_mk, ZeroHom.coe_mk, mulVec_smul, mulVec_single_one, Pi.smul_apply, smul_eq_mul] at this`. Conclude with `mul_left_cancel₀ hN0 this`. Use `haveI : Module.Finite (𝓞 E) Λ := Module.Finite.iff_fg.2 hfg`. Use `haveI : Module.Finite ℤ Λ := Module.Finite.trans (𝓞 E) Λ`. Use `haveI : Module.Finite ℤ (lieLat G Λ) := Module.Finite.of_injective φ.toIntLinearMap hinj`.
-
-Conclude with `Module.Finite.iff_addGroup_fg.1 inferInstance`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fg_lieLat (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (hfg : Λ.FG)
     (hspan : Submodule.span E (Λ : Set (Fin r → E)) = ⊤) : AddGroup.FG (lieLat G Λ) := by
@@ -329,11 +321,9 @@ theorem fg_lieLat (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r
   exact Module.Finite.iff_addGroup_fg.1 inferInstance
 
 /- English proof (translation)
-Use `haveI := fg_lieLat G Λ hS.2.2.1 hS.2.2.2.1`. Establish `hsp` using `span_eq_slSp G hS.2.1 Λ e he hli`. Use `haveI : Finite (lieLat G Λ ⧸ (Submodule.span (𝓞 F) (Set.range e)).toAddSubgroup.addSubgroupOf (lieLat G Λ)) := by`. Use `AddCommGroup.finite_of_fg_torsion _ fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using QuotientAddGroup.induction_on with`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `H b`. Take `⟨m, hm, hmem⟩` from `exists_nsmul_mem_span e (hsp ▸ lieLat_le_slSp G Λ b.2)`. Use `isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨m, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Conclude with `hmem`.
-
-Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E))
     (e : Fin (r ^ 2 - 1) → Matrix (Fin r) (Fin r) E) (hS : SelfDualLat G Λ) (he : ∀ i, e i ∈ lieLat G Λ)
@@ -354,7 +344,7 @@ theorem relIndex_ne_zero (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E)
 end Index
 
 /- English proof (translation)
-Introduce `E _ _ _ r G Λ e hS he hli`. Conclude with `⟨lieInt_eq G Λ, relIndex_ne_zero G Λ e hS he hli, fun v => locFactor_pos v⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (e : Fin (r ^ 2 - 1) → Matrix (Fin r) (Fin r) E), SelfDualLat G Λ → (∀ i, e i ∈ lieLat G Λ) → LinearIndependent (maximalRealSubfield E) e → lieInt (IsCMField.complexConj E).toAlgHom Gᵀ Λ = lieLat G Λ ∧ (Submodule.span (𝓞 (maximalRealSubfield E)) (Set.range e)).toAddSubgroup.relIndex (lieLat G Λ) ≠ 0 ∧ ∀ v, 0 < locFactor E r v := by
   intro E _ _ _ r G Λ e hS he hli

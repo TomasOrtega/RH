@@ -4,11 +4,9 @@ open UpperTheory.V.Z.Mult UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V
 open Formalism.L2.Host GlobalTheory.BCT GlobalTheory.UnitaryBC GlobalTheory.LFun Formalism.UG Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.PRep
 
 /- English proof (translation)
-Introduce `E _ _ _ n w hw f hf`. Take `⟨K', hKo, hKle, hK⟩` from `hf`. Establish `hU : UL n w = ⊤` using `if_pos hw`. Establish `hcl : IsClosed ((UL n w : Subgroup (GLw n w)) : Set (GLw n w))`. Rewrite using `[hU]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isClosed_univ`. Use `⟨K'.subgroupOf (UL n w), hKo.preimage continuous_subtype_val, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Conclude with `Subgroup.mem_subgroupOf.mpr (hKle (Subgroup.mem_subgroupOf.mp hx))`. Conclude with `hK.1.comp_isClosedEmbedding hcl.isClosedEmbedding_subtypeVal`.
-
-Introduce `k hk x`. Conclude with `hK.2 k.1 (Subgroup.mem_subgroupOf.mp hk) x.1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Mult.lcLev :
     UpperTheory.V.Z.Mult.LcLev := by

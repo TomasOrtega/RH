@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.PB.FMX GlobalTheory.CompanionTheory.Ar.FlagBun
 
 /- English proof (translation)
-Use `⟨b.linearIndependent.map' f (LinearMap.ker_eq_bot.2 hf), ?_⟩` and prove the remaining obligations. Establish `h : (Set.range fun a => f (b a)) = f '' Set.range b`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h, Submodule.span_image, b.span_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem basis_image {Ω M N ι : Type} [Field Ω] [AddCommGroup M] [Module Ω M] [AddCommGroup N] [Module Ω N]
     (b : Module.Basis ι Ω M) (f : M →ₗ[Ω] N) (hf : Function.Injective f) :
@@ -22,7 +22,7 @@ theorem basis_image {Ω M N ι : Type} [Field Ω] [AddCommGroup M] [Module Ω M]
   rw [h, Submodule.span_image, b.span_eq]
 
 /- English proof (translation)
-The claim follows from `LinearMap.inl_injective`.
+A detailed English derivation is pending.
 -/
 theorem inW_injective {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}
@@ -31,7 +31,7 @@ theorem inW_injective {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
   LinearMap.inl_injective
 
 /- English proof (translation)
-Unfold `inO`. Rewrite using `[LinearMap.coe_comp]`. Use `LinearMap.inr_injective.comp ?_` and prove the remaining obligations. Rewrite using `[LinearMap.coe_single]`. Conclude with `Pi.single_injective τ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inO_injective {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}
@@ -45,9 +45,7 @@ theorem inO_injective {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
   exact Pi.single_injective τ
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S Ω _ _ K₀ _ J₀ _ x₀ 𝔐 bW bO s`. Break down `s with τ | τ` into its components or cases. Establish `h` using `basis_image (bW τ) ((inW 𝔐).comp (𝔐.Vgen (.inl τ)).subtype) ((inW_injective 𝔐).comp Subtype.val_injective)`. Rewrite `h` using `[Submodule.map_comp, Submodule.map_subtype_top]`. Conclude with `h`.
-
-Conclude with `basis_image (bO τ) (inO 𝔐 τ) (inO_injective 𝔐 τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (K₀ : Type) [Fintype K₀] (J₀ : K₀ → Type) [∀ k, Fintype (J₀ k)] (x₀ : (Σ k, J₀ k) → Ω) (𝔐 : HodgeCpt Y S x₀) (bW : WBases 𝔐) (bO : OmBases 𝔐), ∀ s, LinearIndependent Ω (cc 𝔐 bW bO s) ∧ Submodule.span Ω (Set.range (cc 𝔐 bW bO s)) = VV 𝔐 s := by
   intro E _ _ _ H D l Xo c Y S Ω _ _ K₀ _ J₀ _ x₀ 𝔐 bW bO s

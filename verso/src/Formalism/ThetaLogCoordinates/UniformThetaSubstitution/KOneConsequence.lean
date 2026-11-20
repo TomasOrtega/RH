@@ -21,83 +21,83 @@ namespace Formalism.InvariantFactorPaths.G7.Top
 open Formalism.InvariantFactorPaths.G7
 
 /- English proof (translation)
-The claim follows from `iterate_statement`.
+A detailed English derivation is pending.
 -/
 theorem iterate : Iterate := iterate_statement
 
 /- English proof (translation)
-The claim follows from `e_one_identity_of`.
+A detailed English derivation is pending.
 -/
 theorem e_one_identity : JetPairingHasseIdentity := e_one_identity_of
 /- English proof (translation)
-The claim follows from `e_one_integral_of`.
+A detailed English derivation is pending.
 -/
 theorem e_one_integral : HasseDerivIntegralHomogeneous := e_one_integral_of
 /- English proof (translation)
-The claim follows from `e_one_vanish_of`.
+A detailed English derivation is pending.
 -/
 theorem e_one_vanish : HasseDerivProdVanish := e_one_vanish_of
 /- English proof (translation)
-The claim follows from `minor_hits`.
+A detailed English derivation is pending.
 -/
 theorem minorHits : MinorHits := minor_hits
 /- English proof (translation)
-The claim follows from `gainFactorialInequality`.
+A detailed English derivation is pending.
 -/
 theorem starArith : StarArith := gainFactorialInequality
 /- English proof (translation)
-The claim follows from `cyclicShiftLeast`.
+A detailed English derivation is pending.
 -/
 theorem chargeLemma : ChargeLemma := cyclicShiftLeast
 /- English proof (translation)
-The claim follows from `excessGainBound`.
+A detailed English derivation is pending.
 -/
 theorem entry_a_one_bound : ExcessGainBound := excessGainBound
 /- English proof (translation)
-The claim follows from `cappedGainBound`.
+A detailed English derivation is pending.
 -/
 theorem bCore : BCore := cappedGainBound
 /- English proof (translation)
-The claim follows from `HitsCapPos_of e_one_vanish minorHits`.
+A detailed English derivation is pending.
 -/
 theorem hitsCapPos : HitsCapPos := HitsCapPos_of e_one_vanish minorHits
 /- English proof (translation)
-The claim follows from `HitsColumnsPos_of e_one_vanish minorHits`.
+A detailed English derivation is pending.
 -/
 theorem hitsColumnsPos : HitsColumnsPos := HitsColumnsPos_of e_one_vanish minorHits
 /- English proof (translation)
-The claim follows from `hasseDerivSupport`.
+A detailed English derivation is pending.
 -/
 theorem hasseDegree : HasseDegree := hasseDerivSupport
 /- English proof (translation)
-The claim follows from `minorProdBlockDegree`.
+A detailed English derivation is pending.
 -/
 theorem minorProdDegree : MinorProdDegree := minorProdBlockDegree
 /- English proof (translation)
-The claim follows from `TermBound_of e_one_identity e_one_integral`.
+A detailed English derivation is pending.
 -/
 theorem termBound : TermBound := TermBound_of e_one_identity e_one_integral
 /- English proof (translation)
-The claim follows from `decomposition_of_hh`.
+A detailed English derivation is pending.
 -/
 theorem hhDecomp : HhDecomp := decomposition_of_hh
 /- English proof (translation)
-The claim follows from `EntryStar_of termBound hhDecomp classSubst Formalism.DworkPowerSeriesWeights.jet_pair_linearity starArith hasseDegree minorProdDegree`.
+A detailed English derivation is pending.
 -/
 theorem entryStar : EntryStar :=
   EntryStar_of termBound hhDecomp classSubst Formalism.DworkPowerSeriesWeights.jet_pair_linearity starArith hasseDegree
     minorProdDegree
 
 /- English proof (translation)
-The claim follows from `entryExcessBound_of entryStar hitsCapPos entry_a_one_bound chargeLemma`.
+A detailed English derivation is pending.
 -/
 theorem entry_a_one : EntryExcessBound := entryExcessBound_of entryStar hitsCapPos entry_a_one_bound chargeLemma
 /- English proof (translation)
-The claim follows from `entryCappedBound_of entryStar hitsCapPos Formalism.GrowthSums.cappedGainSubLE`.
+A detailed English derivation is pending.
 -/
 theorem entry_a_two : EntryCappedBound := entryCappedBound_of entryStar hitsCapPos Formalism.GrowthSums.cappedGainSubLE
 /- English proof (translation)
-The claim follows from `EntryB_of entryStar hitsCapPos hitsColumnsPos bCore`.
+A detailed English derivation is pending.
 -/
 theorem entryB : EntryB := EntryB_of entryStar hitsCapPos hitsColumnsPos bCore
 

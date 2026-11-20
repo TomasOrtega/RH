@@ -17,11 +17,11 @@ open GlobalTheory.AscFin
 namespace GlobalTheory.AscFin
 
 /- English proof (translation)
-Introduce `D hq T L μ0 hL sc G W M hM F hF ρ h`. Use `⟨fun u hu => ?_⟩` and prove the remaining obligations. Establish `e1` using `((F.dB ρ h).coordS (G.V (.grid (2 * ρ + 1) 0))).symm_apply_apply u`. Establish `e2` using `((F.dJ ρ h).coordT (F.V₀ ρ)).symm_apply_apply (u ⬝ (F.dB ρ h).j0)`. Take `⟨s1, -, s3⟩` from `GlobalTheory.T.bessel_depth_lattice_splits_along_source_witt D hq T L μ0 hL sc G W M hM F hF ρ h u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f4, i4⟩` from `GlobalTheory.T.depthLatticeGridRow_dualPart_finite_pairs_trivially D hq T L μ0 hL sc G W M hM F hF ρ h u hu`. Establish `b` using `GlobalTheory.T.depth_lattice_core_parts_mem_selfDual_lattice D hq T L μ0 hL sc G W M hM F hF ρ h _ s3`. Use `⟨u ⬝ (F.dB ρ h).jX, s1, u ⬝ (F.dB ρ h).jY, AddSubgroup.subset_closure ⟨f4, i4⟩, (F.dJ ρ h).pX ⬝ (u ⬝ (F.dB ρ h).j0), b.1, (F.dJ ρ h).pY ⬝ (u ⬝ (F.dB ρ h).j0), b.2, (F.dJ ρ h).p0 ⬝ (u ⬝ (F.dB ρ h).j0), GlobalTheory.T.bessel_depth_lattice_core_splits_along_target_witt D hq T L μ0 h …` and prove the remaining obligations. Establish `e2' : (F.dJ ρ h).incX (F.V₀ ρ) ((F.dJ ρ h).pX ⬝ (u ⬝ (F.dB ρ h).j0)) + (F.dJ ρ h).incY (F.V₀ ρ) ((F.dJ ρ h).pY ⬝ (u ⬝ (F.dB ρ h).j0)) + (F.dJ ρ h).inc0 (F.V₀ ρ) ((F.dJ ρ h).p0 ⬝ (u ⬝ (F.dB ρ h).j0)) = (u ⬝ (F.dB ρ h).j0)`. Simplify using `only [HypDec.coordT, AddEquiv.coe_mk, Equiv.coe_fn_mk, AddEquiv.symm_mk, Equiv.coe_fn_symm_mk] at e2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(add_right_comm _ _ _).trans e2`. Establish `e1' : (F.dB ρ h).extX (G.V (.grid (2 * ρ + 1) 0)) (u ⬝ (F.dB ρ h).jX) + (F.dB ρ h).extY (G.V (.grid (2 * ρ + 1) 0)) (u ⬝ (F.dB ρ h).jY) + (F.dB ρ h).ext0 (G.V (.grid (2 * ρ + 1) 0)) (u ⬝ (F.dB ρ h).j0) = u`. Simplify using `only [HypDec.coordS, AddEquiv.coe_mk, Equiv.coe_fn_mk, AddEquiv.symm_mk, Equiv.coe_fn_symm_mk] at e1`. Conclude with `(add_right_comm _ _ _).trans e1`. Rewrite using `[e2', e1']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pcBF_splits : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), Splits (F.dB ρ h) (F.dJ ρ h) (pcBF W F ρ h) (xZero (F.dJ ρ h)) (yBF F ρ h) W.ψ (latRow G (2 * ρ + 1)) := by
   intro D hq T L μ0 hL sc G W M hM F hF ρ h

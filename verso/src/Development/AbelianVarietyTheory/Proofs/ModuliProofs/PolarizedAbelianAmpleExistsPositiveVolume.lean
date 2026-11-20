@@ -18,9 +18,7 @@ open GlobalTheory.ZV Filter Topology
 namespace GlobalTheory.VolEx
 
 /- English proof (translation)
-Use `split_ifs with hik`. Substitute `hik` using the available equality. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with e he`. Rewrite using `[div_self (by positivity)]`.
-
-Conclude with `(tendsto_pow_div_pow_atTop_zero (𝕜 := ℝ) (lt_of_le_of_ne h hik)).comp tendsto_natCast_atTop_atTop`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_pow_div_pow {i k : ℕ} (h : i ≤ k) :
     Tendsto (fun e : ℕ => (e : ℝ) ^ i / (e : ℝ) ^ k) atTop (𝓝 (if i = k then 1 else 0)) := by
@@ -32,9 +30,9 @@ theorem tendsto_pow_div_pow {i k : ℕ} (h : i ≤ k) :
   · exact (tendsto_pow_div_pow_atTop_zero (𝕜 := ℝ) (lt_of_le_of_ne h hik)).comp tendsto_natCast_atTop_atTop
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun e : ℕ => ∑ i ∈ Finset.range (k + 1), (Q.coeff i : ℝ) * ((e : ℝ) ^ i / (e : ℝ) ^ k)) atTop (𝓝 (∑ i ∈ Finset.range (k + 1), (Q.coeff i : ℝ) * (if i = k then 1 else 0)))` using `tendsto_finsetSum _ fun i hi => (tendsto_pow_div_pow (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))).const_mul _`. Simplify using `only [mul_ite, _root_.mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_range, Nat.lt_succ_self, if_true] at h1`. Use `h1.congr fun e => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval_eq_sum_range' (Nat.lt_succ_of_le h)]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun i _ => (mul_div_assoc _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_eval_div_pow (Q : Polynomial ℚ) {k : ℕ} (h : Q.natDegree ≤ k) :
     Tendsto (fun e : ℕ => ((Q.eval (e : ℚ) : ℚ) : ℝ) / (e : ℝ) ^ k) atTop (𝓝 (Q.coeff k : ℝ)) := by
@@ -52,7 +50,7 @@ theorem tendsto_eval_div_pow (Q : Polynomial ℚ) {k : ℕ} (h : Q.natDegree ≤
 variable {K : Type} [Field K] {X : Scheme.{0}}
 
 /- English proof (translation)
-Use `⟨h.1, fun i => ⟨(h.2 i).1, ?_⟩⟩` and prove the remaining obligations. Take `⟨r, hr, hs⟩` from `(h.2 i).2`. Use `⟨r, hr, fun f => ?_⟩` and prove the remaining obligations. Take `⟨F, hF⟩` from `hs f`. Conclude with `⟨F, hF.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem vAmp_of_veryAmpleBy {p : X ⟶ Sp K} {M : LB X} {m : ℕ} {s : Fin (m + 1) → M.Sec}
     (h : AbLaw.VeryAmpleBy p M s) : VAmp p M s := by
@@ -63,11 +61,9 @@ theorem vAmp_of_veryAmpleBy {p : X ⟶ Sp K} {M : LB X} {m : ℕ} {s : Fin (m + 
   exact ⟨F, hF.symm⟩
 
 /- English proof (translation)
-Establish `: ∀ e, ∃ r, SectionsHaveFiniteDimension p (lbPow M e) r ∧ ((∃ r, SectionsHaveFiniteDimension p (lbPow M e) r ∧ (r : ℝ) = φ e) → (r : ℝ) = φ e)`. Introduce `e`. Distinguish the cases in `h : ∃ r, SectionsHaveFiniteDimension p (lbPow M e) r ∧ (r : ℝ) = φ e`. Take `⟨r, h1, h2⟩` from `h`. Conclude with `⟨r, h1, fun _ => h2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨r, h1⟩` from `hex e`. Conclude with `⟨r, h1, fun h' => absurd h' h⟩`. Use `choose h h1 h2 using this`. Use `⟨h, h1, hδ.congr' ?_⟩` and prove the remaining obligations. Use `filter_upwards [hφ] with e he`.
-
-Rewrite using `[h2 e he]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vol_of_eventually {p : X ⟶ Sp K} {M : LB X} (hex : ∀ e, ∃ r, SectionsHaveFiniteDimension p (lbPow M e) r) (φ : ℕ → ℝ)
     (hφ : ∀ᶠ e : ℕ in atTop, ∃ r, SectionsHaveFiniteDimension p (lbPow M e) r ∧ (r : ℝ) = φ e) {k : ℕ} {δ : ℝ}
@@ -85,30 +81,28 @@ theorem vol_of_eventually {p : X ⟶ Sp K} {M : LB X} (hex : ∀ e, ∃ r, Secti
   rw [h2 e he]
 
 /- English proof (translation)
-Take `⟨h, -, hh⟩` from `h`. Conclude with `ge_of_tendsto' hh fun e => by positivity`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem vol_nonneg {p : X ⟶ Sp K} {M : LB X} {k : ℕ} {δ : ℝ} (h : Vol p M k δ) : 0 ≤ δ := by
   obtain ⟨h, -, hh⟩ := h
   exact ge_of_tendsto' hh fun e => by positivity
 
 /- English proof (translation)
-Introduce `hL _ K _ _ P M hM hA`. Establish `hex : ∀ (N : LB P.A.left), N.IsLB → ∀ e, ∃ r, SectionsHaveFiniteDimension P.A.hom (lbPow N e) r` using `fun N hN e => (GlobalTheory.T.sectionsGrowth_basic_properties_abelianVariety K P (lbPow N e) 0 (LB.isLB_linComb hN _ _)).1`. Establish `: IsProper P.A.hom` using `P.isAb.proper`. Take `⟨d, hd, m, s, hs⟩` from `((relAmple_iff_isAmpleLB_of_isAffine P.A hM).1 hA).exists_veryAmpleBy (R := K) P.A.hom`. Establish `hH : (lbPow M d).IsLB` using `LB.isLB_linComb hM _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Q, hQ⟩` from `GlobalTheory.T.hilbertFunction_vanishingIdeal_veryAmpleSystem K (Fin (m + 1)) _ P.A.hom (lbPow M d) s hH (vAmp_of_veryAmpleBy hs)`. Establish `hdR : (0 : ℝ) < d` using `by exact_mod_cast hd`. Establish `volM : ∀ k, Q.natDegree ≤ k → Vol P.A.hom M k ((Q.coeff k : ℝ) / (d : ℝ) ^ k)`. Introduce `k hk`. Use `(GlobalTheory.T.sectionsGrowth_basic_properties_abelianVariety K P M k hM).2.2.2.2.1 d _ hd hA ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_div_cancel₀ _ (by positivity)]`. Use `vol_of_eventually (hex _ hH) _ ?_ (tendsto_eval_div_pow Q hk)` and prove the remaining obligations. Use `filter_upwards [hQ] with e ⟨r, h1, h2, _⟩`. Conclude with `⟨r, h1, by rw [← h2]; norm_cast⟩`. Establish `volL : ∀ k, P.g ≤ k → Vol P.A.hom P.L k (if P.g = k then 1 else 0)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Use `vol_of_eventually (hex _ P.isLB) (fun e => (e : ℝ) ^ P.g) ?_ (tendsto_pow_div_pow hk)` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop 1] with e he`. Conclude with `⟨e ^ P.g, PowSec.exists_basis_sections hL.globalSectionsRank K P e he, by push_cast; rfl⟩`. Establish `dom : ∀ (A B : LB P.A.left), A.IsLB → B.IsLB → Out.RelAmple P.A A → ∃ c : ℕ, ∀ k δ δ', Vol P.A.hom B k δ → Vol P.A.hom A k δ' → δ ≤ (c : ℝ) ^ k * δ'`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `A B hA hB ha`. Take `⟨c, ⟨⟨t, ht⟩, -⟩, hc⟩` from `((GlobalTheory.T.eventually_section_and_relAmple_pow_div K P A B hA hB ha).and (eventually_ge_atTop 1)).exists`. Use `⟨c, fun k δ δ' h1 h2 => ?_⟩` and prove the remaining obligations. Conclude with `((GlobalTheory.T.sectionsGrowth_basic_properties_abelianVariety K P B k hB).2.2.2.2.2 (lbPow A c) t (LB.isLB_linComb hA _ _) ht).2 _ _ h1 ((GlobalTheory.T.sectionsGrowth_basic_properties_abelianVariety K P A k hA).2.2.2.1 c δ' hc h2)`. Establish `hdeg : Q.natDegree ≤ P.g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Take `⟨c, hc⟩` from `dom P.L M P.isLB hM P.ample`. Establish `h1` using `hc _ _ _ (volM _ le_rfl) (volL _ hlt.le)`. Rewrite `h1` using `[if_neg hlt.ne, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h2` using `le_antisymm h1 (vol_nonneg (volM _ le_rfl))`. Rewrite `h2` using `[div_eq_zero_iff]`. Break down `h2 with h2 | h2` into its components or cases. Establish `h3 : Q.leadingCoeff = 0` using `by exact_mod_cast h2`. Rewrite `h3` using `[Polynomial.leadingCoeff_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hlt` using `[h3]`. Simplify using `at hlt`. Conclude with `absurd h2 (by positivity)`. Use `⟨_, ?_, volM _ hdeg⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `dom M P.L hM P.isLB hA`.
-
-Establish `h1` using `hc _ _ _ (volL _ le_rfl) (volM _ hdeg)`. Rewrite `h1` using `[if_pos rfl]`. Use `lt_of_le_of_ne (vol_nonneg (volM _ hdeg)) fun h => ?_` and prove the remaining obligations. Rewrite `h1` using `[← h, mul_zero]`. Conclude with `absurd h1 (by norm_num)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_vol : Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (M : LB P.A.left), M.IsLB → Out.RelAmple P.A M → ∃ δ : ℝ, 0 < δ ∧ Vol P.A.hom M P.g δ := by
   intro hL _ K _ _ P M hM hA

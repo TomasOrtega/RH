@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.Cint
 namespace GlobalTheory.SumRefinement
 
 /- English proof (translation)
-Set `_ : Fintype F` to `Fintype.ofFinite F`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hg.toFinset ×ˢ Finset.univ) _ ?_, finsum_eq_sum_of_support_subset (s := hg.toFinset) _ (by simp), Finset.sum_product, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`. Introduce `p hp`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.mem_support] at hp`. Simplify using `[hp]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem finsum_fst {X F : Type} [Finite F] (g : X → ℂ) (hg : (Function.support g).Finite) :
     ∑ᶠ p : X × F, g p.1 = (Nat.card F : ℂ) * ∑ᶠ x, g x := by
@@ -21,15 +21,15 @@ theorem finsum_fst {X F : Type} [Finite F] (g : X → ℂ) (hg : (Function.suppo
     simp [hp]
 
 /- English proof (translation)
-Take `⟨-, -, hinv, hfin⟩` from `h`. Use `set e := AddSubgroup.quotientEquivProdOfLE hCB with he`. Establish `hfst : ∀ x : W ⧸ C, (e x).1 = (QuotientAddGroup.mk (Quotient.out x) : W ⧸ B)`. Introduce `x`. Use `conv_lhs => rw [← Quotient.out_eq' x]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hcong : ∀ u v : W, (QuotientAddGroup.mk u : W ⧸ B) = QuotientAddGroup.mk v → φ u = φ v`. Introduce `u v huv`. Establish `hb : -u + v ∈ B` using `QuotientAddGroup.eq.1 huv`. Establish `h1` using `hinv u (-u + v) hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[add_neg_cancel_left]`. Conclude with `h1.symm`. Establish `hval : ∀ x : W ⧸ C, φ (Quotient.out x) = φ (Quotient.out (e x).1)`. Introduce `x`. Rewrite using `[hfst]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hcong _ _ (QuotientAddGroup.out_eq' _).symm`. Establish `: Finite (↥B ⧸ C.addSubgroupOf B)` using `Nat.finite_of_card_ne_zero hi`. Establish `hg : (Function.support fun b : W ⧸ B => φ (Quotient.out b)).Finite`. Use `hfin.subset ?_` and prove the remaining obligations. Introduce `b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Quotient.out b, hb, QuotientAddGroup.out_eq' b⟩`. Rewrite using `[← finsum_comp_equiv e.symm]`. Repeatedly rewrite using `[hval, Equiv.apply_symm_apply]`. Rewrite using `[finsum_fst (fun b : W ⧸ B => φ (Quotient.out b)) hg]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_refine {W : Type} [AddCommGroup W] {A B C : AddSubgroup W} {φ : W → ℂ}
     (h : GlobalTheory.IdxInt.Fine A φ B) (hCB : C ≤ B) (hi : AddSubgroup.relIndex C B ≠ 0) :

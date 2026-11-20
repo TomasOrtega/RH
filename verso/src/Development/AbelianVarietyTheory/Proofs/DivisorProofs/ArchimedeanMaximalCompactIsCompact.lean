@@ -13,7 +13,7 @@ open scoped TensorProduct
 namespace GlobalTheory.KinfCompact
 
 /- English proof (translation)
-Introduce `I`. Use `letI := I.fF`. Use `letI := I.nF`. Use `haveI : ∀ v : InfinitePlace I.F, CompactSpace (Formalism.REAL.KG (I.ε v)) := fun v => Formalism.REAL.instCompactKG _ _`. Conclude with `Pi.compactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem compactSpace_Kinf : ∀ I : Formalism.MainNotions.S.AutInst, CompactSpace (GlobalTheory.Dec.Kinf I) := by
   intro I

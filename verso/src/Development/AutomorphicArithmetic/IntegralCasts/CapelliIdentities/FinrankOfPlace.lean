@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `M V _ _ _ _ _ j hj hs`. Set `b` to `Module.Free.chooseBasis ℤ M`. Establish `h1 : LinearIndependent ℤ (j.toIntLinearMap ∘ b)` using `b.linearIndependent.map' j.toIntLinearMap (LinearMap.ker_eq_bot.mpr hj)`. Establish `h2 : LinearIndependent ℚ (j.toIntLinearMap ∘ b)` using `(LinearIndependent.iff_fractionRing ℤ ℚ).mp h1`. Establish `key : ∀ u : M, j u ∈ Submodule.span ℚ (Set.range (j.toIntLinearMap ∘ b))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u`. Establish `hu : j u = ∑ i, (b.repr u i) • j (b i)` using `by conv_lhs => rw [← b.sum_repr u]`. Simplify using `only [map_sum, map_zsmul]`. Rewrite using `[hu]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zsmul_mem (Submodule.subset_span (Set.mem_range_self i)) _`. Establish `h3 : ⊤ ≤ Submodule.span ℚ (Set.range (j.toIntLinearMap ∘ b))`. Introduce `w _`. Take `⟨m, u, hm, hw⟩` from `hs w`. Establish `hm' : (m : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: w = (m : ℚ)⁻¹ • j u`. Rewrite using `[← hw, ← Nat.cast_smul_eq_nsmul ℚ, smul_smul, inv_mul_cancel₀ hm', one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (key u)`. Rewrite using `[Module.finrank_eq_card_basis b, Module.finrank_eq_card_basis (Module.Basis.mk h2 h3)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.FinrankIntEqFinrankRat.finrank_eq_of_place :
     ∀ {M V : Type} [inst : AddCommGroup M]

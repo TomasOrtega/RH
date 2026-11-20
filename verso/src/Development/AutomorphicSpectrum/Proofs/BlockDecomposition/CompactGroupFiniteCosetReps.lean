@@ -6,17 +6,15 @@ open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 namespace GlobalTheory.CompanionTheory.CosetReps
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hJ.elim_finite_subcover (fun a : A => (fun y : G => (a : G)⁻¹ * y) ⁻¹' (H : Set G)) (fun a => hH.preimage (continuous_const.mul continuous_id)) (fun y hy => by`. Take `⟨a, ha, hay⟩` from `hcov y hy`. Conclude with `Set.mem_iUnion.2 ⟨⟨a, ha⟩, hay⟩)`. Set `T : Finset (G ⧸ H)` to `t.image (fun a : A => ((a : G) : G ⧸ H))`. Establish `rep : ∀ q : T, ∃ a : A, ((a : G) : G ⧸ H) = q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨q, hq⟩`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hq`. Conclude with `⟨a, rfl⟩`. Use `choose f hf using rep`. Establish `key : ∀ y ∈ J, ((y : G) : G ⧸ H) ∈ T`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Take `⟨a, hat, hay⟩` from `Set.mem_iUnion₂.1 (ht hy)`. Conclude with `Finset.mem_image.2 ⟨a, hat, QuotientGroup.eq.2 hay⟩`. Set `e : T ≃ Fin T.card` to `T.equivFin`. Establish `main : ∀ y ∈ J, ∃! i, ((f (e.symm i) : A) : G)⁻¹ * y ∈ H`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Use `⟨e ⟨_, key y hy⟩, ?_, ?_⟩` and prove the remaining obligations. Use `QuotientGroup.eq.1 ?_` and prove the remaining obligations. Rewrite using `[Equiv.symm_apply_apply, hf]`. Introduce `i hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (((f (e.symm i) : A) : G) : G ⧸ H) = ((y : G) : G ⧸ H)` using `QuotientGroup.eq.2 hi`. Rewrite `h1` using `[hf]`. Rewrite using `[← Equiv.symm_apply_eq]`. Conclude with `Subtype.ext h1`. Take `⟨i₀, -⟩` from `main 1 J.one_mem`.
-
-Conclude with `⟨T.card, i₀.pos, fun i => ((f (e.symm i) : A) : G), fun i => (f (e.symm i)).2, main⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fin_coset_reps (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (J H A : Subgroup G) (hJ : IsCompact (J : Set G)) (hH : IsOpen (H : Set G))

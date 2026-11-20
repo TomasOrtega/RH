@@ -16,7 +16,7 @@ open Classical
 open private place from Development.AutomorphicArithmetic.LocalEmbeddings.PairMain
 
 /- English proof (translation)
-Rewrite using `[vertNum]`. Use `split_ifs with h`. Rewrite using `[UpperTheory.pdeg_eq_of_isDeg p V.X n _ (fun j => (N j).isLB) z _ ⟨h.some.Z, h.some.i, h.some.imm, h.some.int, h.some.alg, h.some.gen, h.some.dim, rfl⟩]`. Rewrite using `[VertCmp.pdeg, dif_neg fun ⟨_, Z, i, a₁, a₂, a₃, a₄, a₅, _⟩ => h ⟨⟨Z, i, a₁, a₂, a₃, a₄, a₅⟩⟩, Int.cast_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem vertNum_eq {F : Type} [Field F] [NumberField F] {Y : Var F} (p : ℕ) [Fact p.Prime] (V : Cover Y) (n : ℕ)
     (N : Fin n → HermLB V.p) (z : V.X) : vertNum p V n N z = (VertCmp.pdeg p (fun j => (N j).B) z : ℝ) := by
@@ -27,11 +27,9 @@ private theorem vertNum_eq {F : Type} [Field F] [NumberField F] {Y : Var F} (p :
   · rw [VertCmp.pdeg, dif_neg fun ⟨_, Z, i, a₁, a₂, a₃, a₄, a₅, _⟩ => h ⟨⟨Z, i, a₁, a₂, a₃, a₄, a₅⟩⟩, Int.cast_zero]
 
 /- English proof (translation)
-Use `choose u hu using fun k => UpperTheory.norms_give_rational_sections F Y C (A (.inr k)) V (L (.inr k)) m _ (hL (.inr k))`. Establish `key` using `CovCmp.vsum_cmp V (Cover.ofModel Q hQ) v p hp hd m m' hm hm' (fun v e y => VertCmp.lam (A (.inl false)) v e y - VertCmp.lam (A (.inl true)) v e y) (fun k => VertCmp.lam (A (.inr k))) (fun k => (L (.inr k)).isLB) u hu ((L (.inl false)).tens (L (.inl true)).dual).isLB hr (fun v => …`. Use `(hrn v e y z yt i a₁ a₂ a₃).symm.trans ?_` and prove the remaining obligations. Simplify using `only [VertCmp.lam, hD]`. Use the proof step `ring⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(N₂ := fun k => N (.inr k)) (fun k => hN (.inr k)) (fun k => t (.inr k))`. Use the proof step `(fun k v => CovCmp.cRead_of_gReads Q hQ (ht v (.inr k))) hM hs (fun v => CovCmp.cRead_of_gReads Q hQ (hMs v))`. Rewrite `key` using `[Cover.deg_ofModel, Nat.cast_one, one_mul]`. Use `Eq.trans ?_ key` and prove the remaining obligations. Use `congr 1`.
-
-Use `finsum_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[vertNum_eq, Int.cast_mul]`. Conclude with `if_congr Iff.rfl rfl rfl`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_comp {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} (p : ℕ) [Fact p.Prime]
     (v : HeightOneSpectrum (𝓞 F)) (hp : (p : 𝓞 F) ∈ v.asIdeal) {d : ℕ} (hd : Y.dim = d) (A : Bool ⊕ Fin d → Adl C Y)
@@ -74,17 +72,17 @@ private theorem one_comp {F : Type} [Field F] [NumberField F] {Y : Var F} {C : C
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `h2 hH _ D O x P _ p _ W hW hWv z Sx R hR l ν V L' m hN r hr hrn la`. Set `w` to `wOf (ArIn.ind Sx) p R l ν`. Establish `hw : ∀ (i : Bool ⊕ Fin (dimFl D.what₂.Tau O.N)), ∀ a ∈ (w i).support, {q | a.1 q = true}.Finite ∧ a.2.1 = some R`. Establish `ha (b : Bool) : {q | Function.update (ArIn.ind Sx) p b q = true}.Finite` using `(insert p Sx).finite_toSet.subset fun q hq => by`. Distinguish the cases in `e : q = p`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `[e]`. Simplify `hq` using `[ArIn.ind, e]`. Introduce `i a hai`. Break down `i with b | i` into its components or cases. Take `⟨e₁, e₂⟩` from `mem_support_lnSym hai`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e₁ ▸ ha _, e₂⟩`. Take `⟨e₁, e₂⟩` from `mem_support_lnSym hai`. Conclude with `⟨e₁ ▸ ha _, e₂⟩`. Use `choose M L m' Ψ hI hΨ _ using fun c => (GlobalTheory.ArTopTrue.arTop_true h2.p4 hH.deg HTBound.htBound D _ _ _ _ _ O.s x O.Φ c R hR).2 (Bool ⊕ Fin (dimFl D.what₂.Tau O.N)) w hw`. Establish `hb : 0 ≤ 1 / ((p : ℝ) - 1) + vDiff D.host.E p`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁ : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `h₂ : 0 ≤ vDiff D.host.E p` using `by unfold vDiff; positivity`. Establish `h₃ : 0 ≤ 1 / ((p : ℝ) - 1)` using `div_nonneg zero_le_one (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA` using `fun c => adlOf_lnSym_eq (O.Φ.C c) (metsOf x O.Φ c) (Function.update (ArIn.ind Sx) p false) (Function.update (ArIn.ind Sx) p true) (some R) l`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `fun c => UpperTheory.arithmetic_function_induced_bound h2 D.what₂.LL (O.Φ.C c).Y (M c) _ (fun i => adlOf (O.Φ.C c) (metsOf x O.Φ c) (w i)) (L c) (m' c) (Ψ c) (hI c) (hΨ c) p (.inl false) (.inl true) (hA c) _ hb (fun v ε y => abs_lgOf_lnSym_update_sub_le (O.Φ.C c) (ArIn.ind Sx) p …`. Use `choose Q hQ₁ hQ₂ N t M₀ hM₀ s hs hQ hN' hNt hMs _ _ using hg`. Establish `hpl` using `place (z la) O.Φ O.dim_eq la.1 la.2 (hWv la) (metsOf x O.Φ) (ArIn.ind Sx) (some R) l ν Q hQ (fun c => m' c) (fun c => (m' c).ne_zero) M₀ hM₀ s hs (fun c => hMs c la.1) (fun c k => N c (.inr k)) (fun c k => hN' c (.inr k)) (fun c k => t c (.inr k)) (fun c k => hNt c la.1 (.inr k))`. Establish `e₂ (a : ℝ) : Formalism.L2.Geo.wtL D p la * a = VertCmp.placeDeg p la.1 * a / (Module.finrank ℚ D.what₂.LL : ℝ)`. Rewrite using `[Formalism.L2.Geo.wtL, VertCmp.placeDeg, ← div_div, div_mul_eq_mul_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ ((e₂ _).trans (congrArg (· / (Module.finrank ℚ D.what₂.LL : ℝ)) hpl)).symm` and prove the remaining obligations. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `(div_div _ _ _).symm.trans (congrArg (· / (Module.finrank ℚ D.what₂.LL : ℝ)) ?_)` and prove the remaining obligations. Conclude with `one_comp p la.1 la.2 (O.dim_eq c) (fun i => adlOf (O.Φ.C c) (metsOf x O.Φ c) (w i)) ((congrArg Adl.D (hA c)).trans rfl) (V c) (L' c) (m c) (m c).ne_zero (hN c) (r c) (hr c) (hrn c) (Q c) (hQ c) (m' c) (m' c).ne_zero (N c) (hN' c) (t c) (hNt c) (M₀ c) (hM₀ c) (s c) (hs c) (hMs c)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.admissible_family_valuation_places : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.RegularAlteration → ∀ (D : D7) (O : Setup D)
     (x : ToroidalCompactificationData O.s) (P : PolOf x O.Φ), O.CoreWith x P → ∀ (p : ℕ) [Fact p.Prime]

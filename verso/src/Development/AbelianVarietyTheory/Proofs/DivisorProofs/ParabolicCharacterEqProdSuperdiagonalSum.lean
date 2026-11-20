@@ -39,7 +39,7 @@ Both sides reduce to the same expression.
 theorem tw_apply (x : GL (Fin r) k) (i j : Fin r) : (tw x).val i j = (x⁻¹).val j.rev i.rev := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show x.val i.rev.rev j.rev.rev = _`. Rewrite using `[Fin.rev_rev, Fin.rev_rev]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_tw (x : GL (Fin r) k) : tw (tw x) = x := by
   ext i j
@@ -75,7 +75,7 @@ def iota {n : ℕ} (hn : n = D.R.r) (x : G0 Pg n) : G0 Pg' D.R.r :=
   BadPlacesGoodCoefficients.toG0 b φ (fl S (GoodReductionModelReading.readG0 pl red hn x))
 
 /- English proof (translation)
-Use extensionality with `a b`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem reduction_reading_apply (x : G0 Pg D.R.r) (v : LevelCuspCharacters.Sq D.host) :
     GoodReductionModelReading.readG0 pl red rfl x v = Matrix.GeneralLinearGroup.map (red v).toRingHom (x (pl v)) := by
@@ -83,7 +83,7 @@ theorem reduction_reading_apply (x : G0 Pg D.R.r) (v : LevelCuspCharacters.Sq D.
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h PP => h PP (Set.mem_univ _), fun h PP _ => h PP⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_lastZeroOrthImageSubspace_iff {Q : Finset (Pl D.host.E)} {n : ℕ} (ψ : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ) (u : G0 Q n) :
     u ∈ (P0 Q n ψ).H ↔ ∀ PP, u PP ∈ unip (kP PP.1) n :=
@@ -96,7 +96,7 @@ section Frames
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[upper_block_val_submatrix hr (fun i j hij => by simp [blk2] at hij)]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem restrictedBlock_self_apply {κ : Type} [CommRing κ] (hr : n ≤ n) (g : GL (Fin n) κ) : upperLeftBlock hr g = g := by
   apply Units.ext
@@ -112,7 +112,7 @@ variable {Pg Pg' : Finset (Pl D.host.E)} (pl : LevelCuspCharacters.Sq D.host ≃
   (φ : ∀ PP : ↥Pg', ZMod (D.host.g (b PP).1) ≃+* kP PP.1) (S : Set (LevelCuspCharacters.Sq D.host))
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl : e' = e.symm` from `RingEquiv.toRingHom_injective (Subsingleton.elim _ _)`. Conclude with `(e.symm_apply_apply _).symm`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem redFn_same {n : ℕ} (β x : GL (Fin n) (EAf D)) {w w' : Pl D.host.E} (h : w = w') {p : ℕ} (e : kP w ≃+* ZMod p)
     (e' : ZMod p ≃+* kP w') (i j : Fin n) : (redFn β w' x).val i j = e' (e ((redFn β w x).val i j)) := by
@@ -121,11 +121,11 @@ theorem redFn_same {n : ℕ} (β x : GL (Fin n) (EAf D)) {w w' : Pl D.host.E} (h
   exact (e.symm_apply_apply _).symm
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Take `⟨y, hy⟩` from `GlobalTheory.T.unitary_integral_adelic_element_exists D _ J β G hG SF`. Use `⟨y, fun x hx hx' => funext fun PP => ?_⟩` and prove the remaining obligations. Establish `h` using `hy x hx hx' PP.1 (b PP).2.1 (hb PP).symm`. Simplify using `only [restrictedBlock_self_apply]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Use `show _ = φ PP ((fl S (GoodReductionModelReading.readG0 pl red rfl fun PP : ↥Pg => redFn β PP.1 x) (b PP)).val i j)`. Unfold `fl`. Rewrite using `[reduction_reading_apply]`. Use `split_ifs with hv`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h.2 ((hSF _).2 hv) _ ((hS PP).2 hv) _ (red (b PP)) (φ PP), tw_apply, ← map_inv]`. Both sides reduce to the same expression. Rewrite using `[h.1 (fun h' => hv ((hSF _).1 h'))]`. Conclude with `redFn_same β x ((hS PP).1 hv) (red (b PP)) (φ PP) i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_move {n : ℕ} (hn : n = D.R.r) (hr : D.R.r ≤ n) (J : Matrix (Fin n) (Fin n) D.host.E) (β : GL (Fin n) (EAf D))
     (G : GL (Fin n) (Formalism.L2.Herm.intAf D.host.F D.host.E))
@@ -154,7 +154,7 @@ theorem exists_move {n : ℕ} (hn : n = D.R.r) (hr : D.R.r ≤ n) (J : Matrix (F
 end Main
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `(h v x _ rfl).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem below_of_match {Pg : Finset (Pl D.host.E)} {pl : LevelCuspCharacters.Sq D.host ≃ ↥Pg} (h : GoodReductionModelReading.IsPlaceMatch pl)
     (v : LevelCuspCharacters.Sq D.host) : (pl v).1.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = v.2.1.asIdeal := by
@@ -162,9 +162,9 @@ theorem below_of_match {Pg : Finset (Pl D.host.E)} {pl : LevelCuspCharacters.Sq 
   exact (h v x _ rfl).symm
 
 /- English proof (translation)
-Establish `hs` using `(GlobalTheory.PlaceModel.isSelfDualC_latFrame V).2`. Establish `hd : Formalism.L2.Herm.dualL D.sp.cm V (GlobalTheory.PlaceModel.latFrame V) = GlobalTheory.PlaceModel.latFrame V`. Establish `: dualSet (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram (GlobalTheory.PlaceModel.latFrame V) = (GlobalTheory.PlaceModel.latFrame V : Set _)` using `Set.ext fun y => (hs y).symm`. Unfold `Formalism.L2.Herm.dualL`. Rewrite using `[this, Submodule.span_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨β, c, h⟩` from `GlobalTheory.AdelicFrame.exists_isSDFrame D V _ (GlobalTheory.PlaceModel.coe_latFrame V) hd`. Conclude with `⟨β, _, 0, by rwa [one_pow] at h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_frame (V : HSp D) : ∃ β, BadPlacesGoodCoefficients.IsFrameAtG V β := by
   have hs := (GlobalTheory.PlaceModel.isSelfDualC_latFrame V).2

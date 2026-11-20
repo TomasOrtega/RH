@@ -96,7 +96,7 @@ def KerScheme.Carries {Xo : Moduli D l} {𝔓 : Ideal (𝓞 E)} {p i : ℕ} (Z :
     (Set.range u.left ⊆ Z.K ↔ v ∈ C)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h l Xo P p i ⟨a, b, c, d, e⟩ => h l Xo P p i a b c d e, fun h l Xo P p i a b c d e => h l Xo P p i ⟨a, b, c, d, e⟩⟩`.
+Supply the required witnesses or components.
 -/
 example : ToroidalHeckeCompatibility (H := H) (D := D) ↔ ∀ (l : Level H) (Xo : Moduli D l) (P : Ideal (𝓞 E)) (p i : ℕ),
     admitted l P p → ∀ (k : Type) [Field k] [IsAlgClosed k] (y : Sp k ⟶ Xo.X) (C : Subgroup (Over.mk y ⟶ Xo.univ.t.G)),
@@ -105,7 +105,7 @@ example : ToroidalHeckeCompatibility (H := H) (D := D) ↔ ∀ (l : Level H) (Xo
     fun h l Xo P p i a b c d e => h l Xo P p i ⟨a, b, c, d, e⟩⟩
 
 /- English proof (translation)
-Establish `hw : (η[G] : 𝟙_ (Over S) ⟶ G).left ≫ G.hom = 𝟙 _` using `Over.w _`. Establish `: IsClosedImmersion ((η[G] : 𝟙_ (Over S) ⟶ G).left ≫ G.hom)` using `by rw [hw]; infer_instance`. Conclude with `⟨𝟙_ (Over S), η[G], inferInstanceAs (IsFinite (𝟙 S)), inferInstanceAs (Etale (𝟙 S)), IsClosedImmersion.of_comp _ G.hom, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 example (G : Over S) [GrpObj G] [IsSeparated G.hom] : EtSet G (Set.range (η[G] : 𝟙_ (Over S) ⟶ G).left) := by
   have hw : (η[G] : 𝟙_ (Over S) ⟶ G).left ≫ G.hom = 𝟙 _ := Over.w _
@@ -114,7 +114,7 @@ example (G : Over S) [GrpObj G] [IsSeparated G.hom] : EtSet G (Set.range (η[G] 
     IsClosedImmersion.of_comp _ G.hom, rfl⟩
 
 /- English proof (translation)
-Introduce `hA` and use `hA.2.2.2.2 (h.trans (Nat.dvd_lcm_right _ _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (P : Ideal (𝓞 E)) (h : 2 ∣ l.A) : ¬ admitted l P 2 := fun hA => hA.2.2.2.2 (h.trans (Nat.dvd_lcm_right _ _))
 

@@ -9,11 +9,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Establish `key : ∀ x y, q x = q y → ρ x = ρ y` using `fun x y hxy => sub_eq_zero.1 (by rw [← map_sub]; exact h _ (by rw [map_sub, hxy, sub_self]))`. Use `choose s hs using hq`. Establish `hq' : ∀ x, ρ (s (q x)) = ρ x` using `fun x => key _ _ (hs _)`. Use `⟨⟨⟨⟨⟨fun y => ρ (s y), ?_⟩, fun a b => ?_⟩, ?_, fun a b => ?_⟩, fun r => ?_⟩, hq'⟩` and prove the remaining obligations. Rewrite using `[← map_one q, hq', map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ρ (s (a * b)) = ρ (s a) * ρ (s b)`. Rewrite using `[← map_mul]`. Conclude with `key _ _ (by rw [map_mul, hs, hs, hs])`. Express the relevant statement in the definitionally equal form `ρ (s 0) = 0`. Rewrite using `[← map_zero q, hq', map_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ρ (s (a + b)) = ρ (s a) + ρ (s b)`. Rewrite using `[← map_add]`. Conclude with `key _ _ (by rw [map_add, hs, hs, hs])`. Express the relevant statement in the definitionally equal form `ρ (s (algebraMap B E' r)) = _`. Rewrite using `[← q.commutes, hq', ρ.commutes]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lift_surj {B E E' P : Type} [CommRing B] [Ring E] [Ring E'] [Ring P] [Algebra B E] [Algebra B E']
     [Algebra B P] (q : E →ₐ[B] E') (hq : Function.Surjective q) (ρ : E →ₐ[B] P) (h : ∀ x, q x = 0 → ρ x = 0) :
@@ -36,21 +36,21 @@ private theorem lift_surj {B E E' P : Type} [CommRing B] [Ring E] [Ring E'] [Rin
     rw [← q.commutes, hq', ρ.commutes]
 
 /- English proof (translation)
-Introduce `n h B G _ _ _ _ _ _ _ _ _ _ D χ hc hred hm Z hZ`. Take `⟨DE, hCH, hDE⟩` from `d_quotDet D hc Z hZ`. Take `⟨π0, hs0, hg0, -, hchi0⟩` from `f_chars χ hm.inj`. Set `ρ : MonoidAlgebra B G →ₐ[B] (Fin n → ResidueField B)` to `(π0.restrictScalars B).comp (MonoidAlgebra.mapAlgHom G (Algebra.ofId B (ResidueField B)))`. Establish `hρ : ∀ x, ρ x = π0 (MonoidAlgebra.mapRingHom G (residue B) x)` using `fun x => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hchi : ∀ x, (DE.chi (D.toQuot Z x)).map (residue B) = ∏ i, (X - C (ρ x i))` using `fun x => by`. Rewrite using `[← (d_pull DE (D.toQuot Z)).1, hDE, (d_toDet D x).1, ← ((d_gmap D).2.2.1 (residue B) x).1, hred, hchi0, hρ]`. Establish `hsurj : Function.Surjective (D.toQuot Z)` using `fun q => Quotient.exists_rep q`. Establish `hker : ∀ x, D.toQuot Z x = 0 → ρ x = 0` using `fun x hx => by`. Establish `h1` using `hchi x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hx, ← map_zero (D.toQuot Z), hchi 0, map_zero]`. Use function extensionality and compare the values at `i`. Establish `h2` using `congrArg (eval (ρ x i)) h1`. Rewrite `h2` using `[eval_prod, eval_prod, Finset.prod_eq_zero (f := fun j => eval (ρ x i) (X - C (ρ x j))) (Finset.mem_univ i) (by simp)]`. Take `⟨j, -, hj⟩` from `Finset.prod_eq_zero_iff.1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `using hj`. Take `⟨π, hπ⟩` from `lift_surj (D.toQuot Z) hsurj ρ hker`. Establish `hmap : ∀ y : MonoidAlgebra (ResidueField B) G, ∃ x, MonoidAlgebra.mapRingHom G (residue B) x = y`. Introduce `y`. Proceed by induction on `y using MonoidAlgebra.induction_linear with`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add a b ha hb`. Take `⟨a', rfl⟩` from `ha`. Take `⟨b', rfl⟩` from `hb`. Conclude with `⟨a' + b', map_add _ _ _⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `single g r`. Take `⟨c, rfl⟩` from `residue_surjective r`. Conclude with `⟨MonoidAlgebra.single g c, MonoidAlgebra.mapRingHom_single _ _ _⟩`. Establish `hπs : Function.Surjective π` using `fun v => by`. Take `⟨y, rfl⟩` from `hs0 v`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `hmap y`. Conclude with `⟨D.toQuot Z x, by rw [hπ, hρ]⟩`. Establish `hchiE : ∀ x, (DE.chi x).map (residue B) = ∏ i, (X - C (π x i))` using `fun x => by`. Take `⟨y, rfl⟩` from `hsurj x`. Rewrite using `[hπ, hchi]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsLocalHom (algebraMap B (ResidueField B)) := inferInstanceAs (IsLocalHom (residue B))`. Take `⟨hj, e, he, hπe⟩` from `f_gma DE π hCH hπs hchiE`. Use `⟨DE, π, e, hDE, he, hπs, fun g i => ?_, hj, hπe, hchiE⟩` and prove the remaining obligations. Rewrite using `[hπ, hρ, MonoidAlgebra.mapRingHom_single, map_one, hg0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.finE_gma :
     ∀ {n h : ℕ} {B G : Type} [CommRing B] [IsLocalRing B] [IsNoetherianRing B] [IsAdicComplete (maximalIdeal B) B] [Finite (ResidueField B)] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] (D : GDet n B G) (χ : Fin n → G →* (ResidueField B)ˣ), D.IsCont (maximalIdeal B) → D.map (residue B) = GDet.ofChars χ → MultFree χ h → ∀ Z : Set (MonoidAlgebra B G), (∀ z ∈ Z, D.Kills z) → ∃ (DE : Det n B (D.CHQuot Z)) (π : D.CHQuot Z →ₐ[B] (Fin n → ResidueField B)) (e : Fin n → D.CHQuot Z), DE.pull (D.toQuot Z) = D.toDet ∧ IsGMA DE e ∧ Function.Surjective π ∧ (∀ g i, π (D.toQuot Z (MonoidAlgebra.single g 1)) i = χ i g) ∧ (∀ x, π x = 0 ↔ x ∈ Ring.jacobson (D.CHQuot Z)) ∧ (∀ i, π (e i) = Pi.single i 1) ∧ ∀ x, (DE.chi x).map (residue B) = ∏ i, (X - C (π x i)) := by

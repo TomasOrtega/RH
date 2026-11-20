@@ -13,17 +13,17 @@ namespace GlobalTheory.DRFilCoord
 open Module
 
 /- English proof (translation)
-Set `LL : FinExt l` to `⟨⊥, inferInstance⟩`. Set `e : ↥LL.1 ≃ₐ[ℚ_[l]] ℚ_[l]` to `IntermediateField.botEquiv ℚ_[l] (Om l)`. Use `letI iM : Module ↥LL.1 V := Module.compHom V (e : ↥LL.1 →+* ℚ_[l])`. Use `haveI : IsScalarTower ℚ_[l] ↥LL.1 V := ⟨fun c x v => by show e (c • x) • v = c • (e x • v)`. Establish `h1` using `e.toLinearEquiv.map_smul c x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgEquiv.toLinearEquiv_apply] at h1`. Rewrite using `[h1, smul_eq_mul, mul_smul]⟩`. Use `haveI : FiniteDimensional ↥LL.1 V := Module.Finite.of_restrictScalars_finite ℚ_[l] _ V`. Set `ρ' : Representation ↥LL.1 ↥(GK K) V` to `{ toFun := fun g => { toFun := ρ g map_add' := fun u w => (ρ g).map_add u w map_smul' := fun c v => (ρ g).map_smul (e c) v } map_one' := by ext v; simp map_mul' := fun g h => by ext v; simp; rfl }`. Establish `hV : finrank ↥LL.1 V = finrank ℚ_[l] V`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Module.finrank_mul_finrank ℚ_[l] ↥LL.1 V, IntermediateField.finrank_bot, one_mul]`. Establish `hR : ∀ g x, actVdR (P.PD K) ρ' g x = actVdR (P.PD K) ρ g x` using `fun g x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v w => simp [actVdR]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `add u w hu hw => simp only [map_add, hu, hw]`. Establish `hD : ∀ x, x ∈ DdR (P.PD K) ρ' ↔ x ∈ DdR (P.PD K) ρ` using `fun x => by`. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, hR]`. Establish `hDd : (DdR (P.PD K) ρ').restrictScalars ℚ_[l] = DdR (P.PD K) ρ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Rewrite using `[Submodule.restrictScalars_mem, hD]`. Establish `hDr : finrank ↥LL.1 ↥(DdR (P.PD K) ρ') = finrank ℚ_[l] ↥(DdR (P.PD K) ρ)`. Rewrite using `[← hDd, LinearEquiv.finrank_eq ((Submodule.restrictScalarsEquiv ℚ_[l] ↥LL.1 _ (DdR (P.PD K) ρ')).restrictScalars ℚ_[l]), ← Module.finrank_mul_finrank ℚ_[l] ↥LL.1 ↥(DdR (P.PD K) ρ'), IntermediateField.finrank_bot, one_mul]`. Establish `hDR' : IsDR (P.PD K) ρ'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsDR at hdR ⊢`. Rewrite using `[hDr, hV]`. Conclude with `hdR`. Take `⟨m, k, b, d, h, hy'⟩` from `GlobalTheory.DRFil.deRham_filtered l P AI TT K LL V ρ' hDR' a y hy`. Conclude with `⟨m, k, b, d, fun i => ⟨(hD _).1 (h i).1, (h i).2.1, (h i).2.2⟩, hy'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem deRham_filtered_Ql (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (TT : LocTied l P AI)
     (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V]
@@ -72,29 +72,27 @@ theorem deRham_filtered_Ql (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAi
   exact ⟨m, k, b, d, fun i => ⟨(hD _).1 (h i).1, (h i).2.1, (h i).2.2⟩, hy'⟩
 
 /- English proof (translation)
-Introduce `l _ P AI TT K d ρ hdR a y hy`. Set `f : (Fin d → ℚ_[l]) ⊗[ℚ_[l]] P.R.BdR →ₗ[ℚ_[l]] (Fin d → P.R.BdR)` to `(TensorProduct.piScalarRight ℚ_[l] ℚ_[l] P.R.BdR (Fin d)).toLinearMap ∘ₗ (TensorProduct.comm ℚ_[l] (Fin d → ℚ_[l]) P.R.BdR).toLinearMap`. Establish `hf : ∀ (v : Fin d → ℚ_[l]) (β : P.R.BdR), f (v ⊗ₜ β) = fun i => v i • β`. Introduce `v β`. Simplify using `[f]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hfmul : ∀ (β : P.R.BdR) (x : (Fin d → ℚ_[l]) ⊗[ℚ_[l]] P.R.BdR), f (AlgebraTensorModule.map (LinearMap.id : (Fin d → ℚ_[l]) →ₗ[ℚ_[l]] (Fin d → ℚ_[l])) (LinearMap.mulLeft ℚ_[l] β) x) = β • f x`. Introduce `β x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [AlgebraTensorModule.map_tmul, LinearMap.id_apply, LinearMap.mulLeft_apply, hf]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add u w hu hw => simp only [map_add, hu, hw, smul_add]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Establish `hfil : ∀ (c : ℤ) (x : (Fin d → ℚ_[l]) ⊗[ℚ_[l]] P.R.BdR), x ∈ FilV (P.PD K) (LL` using `ℚ_[l]) (V := Fin d → ℚ_[l]) c → ∀ i, f x i ∈ (P.PD K).Fil c := by`. Introduce `c x hx i`. Use `GlobalTheory.DRFil.FilV_induction (P.PD K) (p := fun x => f x i ∈ (P.PD K).Fil c) ?_ ?_ ?_ hx` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `v β hβ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hf]`. Conclude with `(((P.PD K).Fil c).restrictScalars ℚ_[l]).smul_mem (v i) hβ`. Introduce `x x' h h'`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ h h'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hact : ∀ (g : ↥(GK K)) (x : (Fin d → ℚ_[l]) ⊗[ℚ_[l]] P.R.BdR), f (actVdR (P.PD K) (qRep ρ) g x) = (ρ g).val.map (fun z : ℤ_[l] => algebraMap ℚ_[l] P.R.BdR (z : ℚ_[l])) *ᵥ (fun i => P.actQdR (g : GQ l) (f x i))`. Introduce `g x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, Pi.zero_apply]`. Conclude with `(Matrix.mulVec_zero _).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `tmul v β`. Establish `h1 : actVdR (P.PD K) (qRep ρ) g (v ⊗ₜ β) = qRep ρ g v ⊗ₜ P.actQdR (g : GQ l) β`. Simplify using `[actVdR, P.PD_actdR]`. Rewrite using `[h1, hf, hf]`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : qRep ρ g v = ((ρ g).val.map (algebraMap ℤ_[l] ℚ_[l])) *ᵥ v`. Simplify using `[qRep, Matrix.toLin'_apply]`. Rewrite using `[hq]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Rewrite using `[map_smul, Algebra.smul_def, Algebra.smul_def, ← mul_assoc, ← map_mul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, hx, hy, ← Matrix.mulVec_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Set `x : (Fin d → ℚ_[l]) ⊗[ℚ_[l]] P.R.BdR` to `∑ i, Pi.single i (1 : ℚ_[l]) ⊗ₜ y i`. Establish `hx : x ∈ FilV (P.PD K) (LL` using `ℚ_[l]) (V := Fin d → ℚ_[l]) a := Submodule.sum_mem _ fun i _ => GlobalTheory.DRFil.tmul_mem_FilV (P.PD K) (LL := ℚ_[l]) _ (hy i)`. Establish `hfx : f x = y`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `j`. Simplify using `[x, map_sum, hf, Pi.single_apply]`. Take `⟨m, k, b, dd, h, e⟩` from `deRham_filtered_Ql l P AI TT K (Fin d → ℚ_[l]) (qRep ρ) hdR a x hx`. Use `⟨m, k, b, fun r => f (dd r), fun r => ⟨fun g => ?_, hfil _ _ (h r).2.1, (h r).2.2⟩, ?_⟩` and prove the remaining obligations. Establish `hg : actVdR (P.PD K) (qRep ρ) g (dd r) = dd r` using `(GlobalTheory.DRFil.mem_DdR (P.PD K) (qRep ρ) _).1 (h r).1 g`.
-
-Rewrite using `[← hact, hg]`. Rewrite using `[← hfx, e, map_sum]`. Conclude with `Finset.sum_congr rfl fun r _ => hfmul _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem filtered_coords : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (d : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]), IsDR (P.PD K) (qRep ρ) → ∀ (a : ℤ) (y : Fin d → P.R.BdR), (∀ i, y i ∈ (P.PD K).Fil a) → ∃ (m : ℕ) (k : Fin m → ℤ) (b : Fin m → P.R.BdR) (z : Fin m → Fin d → P.R.BdR), (∀ r, (∀ g : ↥(GK K), (ρ g).val.map (fun z : ℤ_[l] => algebraMap ℚ_[l] P.R.BdR (z : ℚ_[l])) *ᵥ (fun i => P.actQdR (g : GQ l) (z r i)) = z r) ∧ (∀ i, z r i ∈ (P.PD K).Fil (k r)) ∧ b r ∈ (P.PD K).Fil (a - k r)) ∧ y = ∑ r, b r • z r := by
   intro l _ P AI TT K d ρ hdR a y hy

@@ -22,7 +22,7 @@ section Finite
 variable {v : HeightOneSpectrum (𝓞 K.1)} (w : PlacesOver F.1 v)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `h : w.1 = (σ : F.1 ≃ₐ[K.1] F.1) • w.1` using `(congrArg Subtype.val ((mem_stabilizer_iff_smul_eq v w σ).1 σ.2)).symm`. Rewrite using `[coe_finiteProj, coe_smul_idele, smul_snd_eq_galHom _ _ w.1 w.1 h, galHom_eq_decomposition]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finiteProj_smul_of_mem_stabilizer (σ : MulAction.stabilizer (F.1 ≃ₐ[K.1] F.1) w.1.asIdeal)
     (x : IdeleGroup F.1) :
@@ -50,7 +50,7 @@ def finiteComponent (n : ℕ) :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `HomologicalComplex.homologyMap (cochainsMap (finiteProjAboveRep (K := K.1) (L := F.1) v)) n ≫ (HomologicalComplex.homologyMap (cochainsMapAlong _ (continuous_subgroup_subtype _) (orbitProj (permutesFactors_finiteUnitsAboveRep v) (mem_stabilizer_iff_smul_eq v w))) n ≫ HomologicalC …`. Rewrite using `[← HomologicalComplex.homologyMap_comp, ← HomologicalComplex.homologyMap_comp]`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem placeProj_comp_finiteShapiroIso (n : ℕ) :
     cohomologyMap (finiteProjAboveRep (K := K.1) (L := F.1) v) n ≫ (finiteShapiroIso v w n).hom =
@@ -66,7 +66,7 @@ theorem placeProj_comp_finiteShapiroIso (n : ℕ) :
 omit [Fact (K ≤ F)] [F.1.fixingSubgroup.Normal] in
 
 /- English proof (translation)
-Substitute `hu` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ideleEmbedding_snd_of_below_eq {E : FiniteSubfield} [Algebra F.1 E.1]
     (w' : HeightOneSpectrum (𝓞 E.1)) (u : HeightOneSpectrum (𝓞 F.1)) (hu : below F.1 w' = u)
@@ -81,11 +81,11 @@ variable {E : FiniteSubfield} [Fact (K ≤ E)] [Fact (F ≤ E)] [E.1.fixingSubgr
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Unfold `levelTransition finiteComponent localTransition cohomologyMapAlong`. Use `(HomologicalComplex.homologyMap_comp _ _ n).symm.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (HomologicalComplex.homologyMap_comp _ _ n)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `m x : 3`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((ideleEmbedding F.1 E.1 _ : IdeleGroup E.1) : 𝔸[E.1]).2 w'.1 = SemiLocal.completionMap w.1 w'.1 _`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `ideleEmbedding_snd_of_below_eq w'.1 w.1 ((below_eq_iff w'.1 w.1).2 inferInstance) _`.
+A detailed English derivation is pending.
 -/
 theorem levelTransition_comp_finiteComponent (w' : PlacesOver E.1 v)
     [w'.1.asIdeal.LiesOver w.1.asIdeal] (n : ℕ) :
@@ -112,7 +112,7 @@ variable {v : InfinitePlace K.1} (w : v.placesOver F.1)
 
 omit [Fact (K ≤ F)] [F.1.fixingSubgroup.Normal] in
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem fst_eq_completionCongr (a : 𝔸[F.1]) {u u' : InfinitePlace F.1} (h : u = u') :
     a.1 u' = completionCongr h (a.1 u) := by
@@ -121,7 +121,7 @@ theorem fst_eq_completionCongr (a : 𝔸[F.1]) {u u' : InfinitePlace F.1} (h : u
 
 omit [F.1.fixingSubgroup.Normal] in
 /- English proof (translation)
-Rewrite using `[comap_eq_inv_smul]`. Conclude with `(MulAction.mem_stabilizer_iff.1 (inv_mem σ.2)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_comap_of_mem_stabilizer (σ : MulAction.stabilizer (F.1 ≃ₐ[K.1] F.1) w.1) :
     w.1 = w.1.comap (((σ : F.1 ≃ₐ[K.1] F.1) : F.1 ≃+* F.1) : F.1 →+* F.1) := by
@@ -129,7 +129,7 @@ theorem eq_comap_of_mem_stabilizer (σ : MulAction.stabilizer (F.1 ≃ₐ[K.1] F
   exact (MulAction.mem_stabilizer_iff.1 (inv_mem σ.2)).symm
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_infiniteProj, coe_smul_idele, smul_fst, fst_eq_completionCongr _ (eq_comap_of_mem_stabilizer w σ), infiniteCompletionMap_eq_decomposition]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infiniteProj_smul_of_mem_stabilizer (σ : MulAction.stabilizer (F.1 ≃ₐ[K.1] F.1) w.1)
     (x : IdeleGroup F.1) :
@@ -155,7 +155,7 @@ def infiniteComponent (n : ℕ) :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `HomologicalComplex.homologyMap (cochainsMap (infiniteProjAboveRep (K := K.1) (L := F.1) v)) n ≫ (HomologicalComplex.homologyMap (cochainsMapAlong _ (continuous_subgroup_subtype _) (orbitProj (permutesFactors_infiniteUnitsAboveRep v) (mem_stabilizer_iff_smul_eq_infinite v w))) n ≫ …`. Rewrite using `[← HomologicalComplex.homologyMap_comp, ← HomologicalComplex.homologyMap_comp]`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem placeProj_comp_infiniteShapiroIso (n : ℕ) :
     cohomologyMap (infiniteProjAboveRep (K := K.1) (L := F.1) v) n ≫ (infiniteShapiroIso v w n).hom =
@@ -171,7 +171,7 @@ theorem placeProj_comp_infiniteShapiroIso (n : ℕ) :
 omit [Fact (K ≤ F)] [F.1.fixingSubgroup.Normal] in
 
 /- English proof (translation)
-Substitute `hu` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ideleEmbedding_fst_of_comap_eq {E : FiniteSubfield} [Algebra F.1 E.1]
     (w' : InfinitePlace E.1) (u : InfinitePlace F.1) (hu : w'.comap (algebraMap F.1 E.1) = u)
@@ -186,11 +186,11 @@ variable {E : FiniteSubfield} [Fact (K ≤ E)] [Fact (F ≤ E)] [E.1.fixingSubgr
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Unfold `levelTransition infiniteComponent infLocalTransition cohomologyMapAlong`. Use `(HomologicalComplex.homologyMap_comp _ _ n).symm.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (HomologicalComplex.homologyMap_comp _ _ n)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `m x : 3`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((ideleEmbedding F.1 E.1 _ : IdeleGroup E.1) : 𝔸[E.1]).1 w'.1 = NumberField.LiesOver.completionMap (v := w.1) (w := w'.1) _`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `ideleEmbedding_fst_of_comap_eq w'.1 w.1 (InfinitePlace.LiesOver.comap_eq w'.1 w.1) _`.
+A detailed English derivation is pending.
 -/
 theorem levelTransition_comp_infiniteComponent (w' : v.placesOver E.1) [w'.1.LiesOver w.1] (n : ℕ) :
     levelTransition K F E n ≫ infiniteComponent w' n =

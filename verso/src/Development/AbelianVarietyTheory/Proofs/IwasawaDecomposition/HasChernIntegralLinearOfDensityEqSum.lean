@@ -32,7 +32,7 @@ def Meas (ρ : κ → Y → ℝ≥0∞) : Prop :=
 variable {e S}
 
 /- English proof (translation)
-Introduce `i j y hy hi hj` and use `by dsimp only rw [h i j y hy hi hj, h' i j y hy hi hj, mul_add]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Compat.add {ρ ρ' : κ → Y → ℝ≥0∞} (h : Compat e S ρ) (h' : Compat e S ρ') :
     Compat e S (fun i y => ρ i y + ρ' i y) := fun i j y hy hi hj => by
@@ -40,7 +40,7 @@ theorem Compat.add {ρ ρ' : κ → Y → ℝ≥0∞} (h : Compat e S ρ) (h' : 
   rw [h i j y hy hi hj, h' i j y hy hi hj, mul_add]
 
 /- English proof (translation)
-Introduce `i j y hy hi hj` and use `by dsimp only rw [h i j y hy hi hj, mul_left_comm]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Compat.const_mul {ρ : κ → Y → ℝ≥0∞} (h : Compat e S ρ) (c : ℝ≥0∞) :
     Compat e S (fun i y => c * ρ i y) := fun i j y hy hi hj => by
@@ -48,19 +48,19 @@ theorem Compat.const_mul {ρ : κ → Y → ℝ≥0∞} (h : Compat e S ρ) (c :
   rw [h i j y hy hi hj, mul_left_comm]
 
 /- English proof (translation)
-Introduce `i` and use `(h i).add (h' i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Meas.add {ρ ρ' : κ → Y → ℝ≥0∞} (h : Meas e S ρ) (h' : Meas e S ρ') :
     Meas e S (fun i y => ρ i y + ρ' i y) := fun i => (h i).add (h' i)
 
 /- English proof (translation)
-Introduce `i` and use `(h i).const_mul c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Meas.const_mul {ρ : κ → Y → ℝ≥0∞} (h : Meas e S ρ) (c : ℝ≥0∞) :
     Meas e S (fun i y => c * ρ i y) := fun i => (h i).const_mul c
 
 /- English proof (translation)
-Introduce `i k y hy hi hk` and use `by dsimp only rw [Finset.mul_sum] exact Finset.sum_congr rfl fun j _ => h j i k y hy hi hk`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem compat_sum {J : Type} (s : Finset J) {ρ : J → κ → Y → ℝ≥0∞} (h : ∀ j, Compat e S (ρ j)) :
     Compat e S (fun i y => ∑ j ∈ s, ρ j i y) := fun i k y hy hi hk => by
@@ -69,7 +69,7 @@ theorem compat_sum {J : Type} (s : Finset J) {ρ : J → κ → Y → ℝ≥0∞
   exact Finset.sum_congr rfl fun j _ => h j i k y hy hi hk
 
 /- English proof (translation)
-Introduce `i j y hy hi hj` and use `by dsimp only rw [h i j y hy hi hj, mul_left_comm, ENNReal.ofReal_mul (by positivity)]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem compat_ofReal {f : κ → Y → ℝ}
     (h : ∀ i j y, y ∈ S → y ∈ (e i).source → y ∈ (e j).source → f i y = ‖transDet (e i) (e j) y‖ ^ 2 * f j y)
@@ -78,7 +78,7 @@ theorem compat_ofReal {f : κ → Y → ℝ}
   rw [h i j y hy hi hj, mul_left_comm, ENNReal.ofReal_mul (by positivity)]
 
 /- English proof (translation)
-Introduce `i` and use `ENNReal.measurable_ofReal.comp_aemeasurable ((h i).const_mul s)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem meas_ofReal {f : κ → Y → ℝ}
     (h : ∀ i, AEMeasurable (fun v => f i ((e i).symm v)) (volume.restrict ((e i).target ∩ (e i).symm ⁻¹' S)))
@@ -88,9 +88,9 @@ theorem meas_ofReal {f : κ → Y → ℝ}
 variable (e) in
 
 /- English proof (translation)
-Establish `key : (glueMeas e ρ).restrict S ≤ (glueMeas e ρ').restrict S`. Rewrite using `[glueMeas, glueMeas, GlobalTheory.ChernScale.restrict_iSup_eq _ hS, GlobalTheory.ChernScale.restrict_iSup_eq _ hS]`. Use `iSup_mono fun i => Measure.le_iff.2 fun B hB => ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply hB, Measure.restrict_apply hB, chartMeas_apply _ _ (hB.inter hS), chartMeas_apply _ _ (hB.inter hS)]`. Use `setLIntegral_mono' (measurableSet_image (e i) ((e i).open_source.measurableSet.inter (hB.inter hS)) Set.inter_subset_left) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[(e i).left_inv hy.1]`. Conclude with `h i y hy.1 hy.2.2`. Simplify `Measure.le_iff'.1 key S` using `only [Measure.restrict_apply_self]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem glueMeas_mono_on (hS : MeasurableSet S) {ρ ρ' : κ → Y → ℝ≥0∞}
     (h : ∀ i, ∀ y ∈ (e i).source, y ∈ S → ρ i y ≤ ρ' i y) : glueMeas e ρ S ≤ glueMeas e ρ' S := by
@@ -108,7 +108,7 @@ theorem glueMeas_mono_on (hS : MeasurableSet S) {ρ ρ' : κ → Y → ℝ≥0�
 
 variable (e) in
 /- English proof (translation)
-The claim follows from `le_antisymm (glueMeas_mono_on e hS fun i y hy hS => (h i y hy hS).le) (glueMeas_mono_on e hS fun i y hy hS => (h i y hy hS).ge)`.
+A detailed English derivation is pending.
 -/
 theorem glueMeas_congr_on (hS : MeasurableSet S) {ρ ρ' : κ → Y → ℝ≥0∞}
     (h : ∀ i, ∀ y ∈ (e i).source, y ∈ S → ρ i y = ρ' i y) : glueMeas e ρ S = glueMeas e ρ' S :=
@@ -117,7 +117,7 @@ theorem glueMeas_congr_on (hS : MeasurableSet S) {ρ ρ' : κ → Y → ℝ≥0�
 
 variable (e) in
 /- English proof (translation)
-Use `GlobalTheory.ChernScale.glueMeas_restrict_eq e (ρ := fun i y => c * ρ i y) (ρ' := ρ) hc hS fun _ _ _ _ => rfl` as an intermediate fact. Simplify `congrArg (fun μ : Measure Y => μ S) this` using `only [Measure.smul_apply, smul_eq_mul, Measure.restrict_apply_self]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem glueMeas_const_mul (hS : MeasurableSet S) (c : ℝ≥0∞) (hc : c ≠ ⊤) (ρ : κ → Y → ℝ≥0∞) :
     glueMeas e (fun i y => c * ρ i y) S = c * glueMeas e ρ S := by
@@ -130,9 +130,9 @@ variable [SecondCountableTopology Y]
 
 variable (e) in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Use `glueMeas_const_mul e hS 0 ENNReal.zero_ne_top (fun _ _ => (0 : ℝ≥0∞))` as an intermediate fact. Simplify `this` using `only [zero_mul]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Rewrite using `[← ih]`. Conclude with `GlobalTheory.T.gluedChartDensityMeasure_add_of_compatible_on e hd hcov hS (ρ a) (fun i y => ∑ j ∈ s, ρ j i y) (hc a) (compat_sum s hc) (hm a)`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glueMeas_sum {J : Type} (hd : ∀ i j, DifferentiableOn ℂ (e j ∘ (e i).symm) ((e i).target ∩ (e i).symm ⁻¹' (e j).source))
     (hcov : ∀ y, ∃ i, y ∈ (e i).source) (hS : MeasurableSet S) (s : Finset J) (ρ : J → κ → Y → ℝ≥0∞)
@@ -158,15 +158,13 @@ namespace GlobalTheory.GoodMetric.ChernLin
 variable {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {ι : Type} [Fintype ι] {m : ι → ℕ}
 
 /- English proof (translation)
-Use `set U := c.e.target ∩ c.e.symm ⁻¹' ptsIn X.str σ O with hU`. Set `W : Mat m X.Fn → Set (V X.dim)` to `fun A => U ∩ {v | A ∈ E.S (under (c.e.symm v))}`. Establish `hWo : ∀ A, IsOpen (W A)`. Introduce `A`. Rewrite using `[isOpen_iff_mem_nhds]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `v ⟨⟨hvt, hvS⟩, hvA⟩`. Establish `hc : ContinuousAt c.e.symm v` using `c.e.continuousAt_symm hvt`. Conclude with `Filter.inter_mem (Filter.inter_mem (c.e.open_target.mem_nhds hvt) (hc.preimage_mem_nhds ((isOpen_ptsIn O).mem_nhds hvS))) (hc.eventually (GlobalTheory.FrameLift.eventually_mem hvA))`. Establish `hcov : ⋃ A, W A = U`. Use `Set.Subset.antisymm (Set.iUnion_subset fun A => Set.inter_subset_left) fun v hv => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Set.mem_iUnion.2 ⟨_, hv, (E.nonempty (under (c.e.symm v))).choose_spec⟩`. Take `⟨T, hTc, hT⟩` from `TopologicalSpace.isOpen_iUnion_countable W hWo`. Establish `hUT : U = ⋃ A : T, W A` using `by rw [← hcov, ← hT, Set.biUnion_eq_iUnion]`. Use `haveI := hTc.to_subtype`. Rewrite using `[hUT, aemeasurable_iUnion_iff]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨A, -⟩`. Use `((GlobalTheory.T.measurable_chernPolyTopDensity R fun w => H A (c.e.symm w)).aemeasurable).congr ?_` and prove the remaining obligations. Use `(ae_restrict_mem (hWo A).measurableSet).mono fun v hv => ?_` and prove the remaining obligations. Take `⟨⟨hvt, hvS⟩, hvA⟩` from `hv`. Establish `hy : c.e.symm v ∈ c.e.source` using `c.e.map_target hvt`.
-
-Use `GlobalTheory.T.chern_density_frame_indep_chart_jacobian_factor E O H hH R hvS c c hy hy (E.nonempty (under (c.e.symm v))).choose_spec hvA` as an intermediate fact. Rewrite `this` using `[c.transDet_self hy, norm_one, one_pow, one_mul, c.e.right_inv hvt]`. Use `show chernTop R (fun w => H A (c.e.symm w)) v = chernTop R (fun w => H (E.nonempty (under (c.e.symm v))).choose (c.e.symm w)) (c.e (c.e.symm v))`. Rewrite using `[c.e.right_inv hvt, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aemeasurable_dens (E : Fr (ratOf X) m 0) (O : X.X.Opens) (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ)
     (hH : IsMetricOn E O H) (R : MvPolynomial (ι × ℕ) ℝ) (c : AlgChart X.str σ X.dim) :
@@ -203,7 +201,7 @@ end GlobalTheory.GoodMetric.ChernLin
 namespace GlobalTheory.GoodMetric.ChernLin
 
 /- English proof (translation)
-Break down `le_total v 0 with h | h` into its components or cases. Rewrite using `[max_eq_right h, ENNReal.ofReal_of_nonpos h, ENNReal.ofReal_zero]`. Rewrite using `[max_eq_left h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofReal_eq_max (v : ℝ) : ENNReal.ofReal v = ENNReal.ofReal (max v 0) := by
   rcases le_total v 0 with h | h
@@ -211,14 +209,14 @@ theorem ofReal_eq_max (v : ℝ) : ENNReal.ofReal v = ENNReal.ofReal (max v 0) :=
   · rw [max_eq_left h]
 
 /- English proof (translation)
-Rewrite using `[ofReal_eq_max v, ← ENNReal.ofReal_mul hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ofReal_mul_eq (u v : ℝ) (hu : 0 ≤ u) :
     ENNReal.ofReal u * ENNReal.ofReal v = ENNReal.ofReal (u * max v 0) := by
   rw [ofReal_eq_max v, ← ENNReal.ofReal_mul hu]
 
 /- English proof (translation)
-Break down `le_total v 0 with h | h` into its components or cases. Rewrite using `[max_eq_right h, max_eq_left (neg_nonneg.2 h)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[max_eq_left h, max_eq_right (neg_nonpos.2 h)]`. Expand and normalize the polynomial expressions, which then agree.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem max_sub_max_neg (v : ℝ) : max v 0 - max (-v) 0 = v := by
   rcases le_total v 0 with h | h
@@ -226,13 +224,13 @@ theorem max_sub_max_neg (v : ℝ) : max v 0 - max (-v) 0 = v := by
   · rw [max_eq_left h, max_eq_right (neg_nonpos.2 h)]; ring
 
 /- English proof (translation)
-Establish `conv : ∀ (s : ℝ) (u w : J → ℝ), (∀ j, 0 ≤ u j) → (∀ j, 0 ≤ w j) → ENNReal.ofReal s + ∑ j, (ENNReal.ofReal (u j) * ENNReal.ofReal (1 * x j) + ENNReal.ofReal (w j) * ENNReal.ofReal (-1 * x j)) = ENNReal.ofReal (max s 0 + ∑ j, (u j * max (1 * x j) 0 + w j * max (-1 * x j) 0))`. Introduce `s u w hu hw`. Establish `hn : ∀ j, 0 ≤ u j * max (1 * x j) 0 + w j * max (-1 * x j) 0` using `fun j => add_nonneg (mul_nonneg (hu j) (le_max_right _ _)) (mul_nonneg (hw j) (le_max_right _ _))`. Rewrite using `[ENNReal.ofReal_add (le_max_right _ _) (Finset.sum_nonneg fun j _ => hn j), ENNReal.ofReal_sum_of_nonneg (fun j _ => hn j), ← ofReal_eq_max]`. Use `congrArg _ (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ENNReal.ofReal_add (mul_nonneg (hu j) (le_max_right _ _)) (mul_nonneg (hw j) (le_max_right _ _)), ofReal_mul_eq _ _ (hu j), ofReal_mul_eq _ _ (hw j)]`. Rewrite using `[conv _ _ _ (fun j => le_max_right _ _) (fun j => le_max_right _ _), conv _ _ _ (fun j => le_max_right _ _) (fun j => le_max_right _ _)]`. Use `congr 1`. Establish `h1` using `max_sub_max_neg (1 * ∑ j, a j * x j)`. Establish `h2 : ∑ j, (max (a j) 0 * max (1 * x j) 0 + max (-a j) 0 * max (-1 * x j) 0) - ∑ j, (max (-a j) 0 * max (1 * x j) 0 + max (a j) 0 * max (-1 * x j) 0) = ∑ j, a j * x j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `ha` using `max_sub_max_neg (a j)`. Establish `hx` using `max_sub_max_neg (x j)`. Simplify using `only [one_mul, neg_one_mul] at hx ⊢`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(max (a j) 0 - max (-a j) 0) * hx + x j * ha`. Simplify using `only [neg_one_mul, one_mul] at h1 h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ofReal_balance {J : Type} [Fintype J] (a x : J → ℝ) :
     ENNReal.ofReal (1 * ∑ j, a j * x j) + ∑ j, (ENNReal.ofReal (max (-a j) 0) * ENNReal.ofReal (1 * x j) +
@@ -267,11 +265,11 @@ theorem ofReal_balance {J : Type} [Fintype J] (a x : J → ℝ) :
   linarith
 
 /- English proof (translation)
-Establish `habs : ∀ v : ℝ, ENNReal.ofReal |v| = ENNReal.ofReal (1 * v) + ENNReal.ofReal (-1 * v)`. Introduce `v`. Break down `le_total 0 v with h | h` into its components or cases. Rewrite using `[abs_of_nonneg h, ENNReal.ofReal_of_nonpos (by linarith : -1 * v ≤ 0), one_mul, add_zero]`. Rewrite using `[abs_of_nonpos h, ENNReal.ofReal_of_nonpos (by linarith : 1 * v ≤ 0), neg_one_mul, zero_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.ofReal_le_ofReal ((le_abs_self _).trans ?_)` and prove the remaining obligations. Rewrite using `[abs_mul, hε, one_mul]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun j _ => abs_mul _ _`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ j, ENNReal.ofReal |a j| * ENNReal.ofReal |x j| := by`. Rewrite using `[ENNReal.ofReal_sum_of_nonneg fun j _ => mul_nonneg (abs_nonneg _) (abs_nonneg _)]`. Conclude with `Finset.sum_congr rfl fun j _ => ENNReal.ofReal_mul (abs_nonneg _)`. Use `_ = _ := Finset.sum_congr rfl fun j _ => by rw [habs (x j)]`.
+A detailed English derivation is pending.
 -/
 theorem ofReal_le_sum {J : Type} [Fintype J] (ε : ℝ) (hε : |ε| = 1) (a x : J → ℝ) :
     ENNReal.ofReal (ε * ∑ j, a j * x j) ≤
@@ -296,39 +294,37 @@ end GlobalTheory.GoodMetric.ChernLin
 open GlobalTheory.GoodMetric.ChernLin in
 
 /- English proof (translation)
-Introduce `F _ σ X ι _ m E O H R J _ M E' H' R' a t hH hH' hlin hint`. Use `set S := ptsIn X.str σ O with hSdef`. Establish `hS : MeasurableSet S` using `(isOpen_ptsIn O).measurableSet`. Set `e : AlgChart X.str σ X.dim → OpenPartialHomeomorph (CxPts X.str σ) (V X.dim)` to `fun c => c.e`. Establish `hd : ∀ i j : AlgChart X.str σ X.dim, DifferentiableOn ℂ (e j ∘ (e i).symm) ((e i).target ∩ (e i).symm ⁻¹' (e j).source)` using `fun i j => i.holo_trans j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcov : ∀ y, ∃ i : AlgChart X.str σ X.dim, y ∈ (e i).source` using `fun y => AlgChart.exists_mem_source y`. Set `f : AlgChart X.str σ X.dim → CxPts X.str σ → ℝ` to `fun c y => chernTop R (fun v => H (E.nonempty (under y)).choose (c.e.symm v)) (c.e y)`. Set `g : J → AlgChart X.str σ X.dim → CxPts X.str σ → ℝ` to `fun j c y => chernTop R' (fun v => H' j ((E' j).nonempty (under y)).choose (c.e.symm v)) (c.e y)`. Establish `fc : ∀ i k y, y ∈ S → y ∈ (e i).source → y ∈ (e k).source → f i y = ‖transDet (e i) (e k) y‖ ^ 2 * f k y` using `fun i k y hy hi hk => GlobalTheory.T.chern_density_frame_indep_chart_jacobian_factor E O H hH R hy i k hi hk (E.nonempty _).choose_spec (E.nonempty _).choose_spec`. Establish `gc : ∀ j, ∀ i k y, y ∈ S → y ∈ (e i).source → y ∈ (e k).source → g j i y = ‖transDet (e i) (e k) y‖ ^ 2 * g j k y` using `fun j i k y hy hi hk => GlobalTheory.T.chern_density_frame_indep_chart_jacobian_factor (E' j) O (H' j) (hH' j) R' hy i k hi hk ((E' j).nonempty _).choose_spec ((E' j).nonempty _).choose_spec`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fm : ∀ i, AEMeasurable (fun v => f i ((e i).symm v)) (volume.restrict ((e i).target ∩ (e i).symm ⁻¹' S))` using `fun i => aemeasurable_dens E O H hH R i`. Establish `gm : ∀ j i, AEMeasurable (fun v => g j i ((e i).symm v)) (volume.restrict ((e i).target ∩ (e i).symm ⁻¹' S))` using `fun j i => aemeasurable_dens (E' j) O (H' j) (hH' j) R' i`. Establish `hfg : ∀ i, ∀ y ∈ (e i).source, y ∈ S → f i y = ∑ j, a j * g j i y`. Introduce `c y hc hy`. Take `⟨A, hA, B, hB, h⟩` from `hlin y hy c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.T.chern_density_frame_indep_chart_jacobian_factor E O H hH R hy c c hc hc (E.nonempty (under y)).choose_spec hA`. Rewrite `h1` using `[c.transDet_self hc, norm_one, one_pow, one_mul]`. Use `show chernTop R _ (c.e y) = _`. Rewrite using `[h1, h]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `GlobalTheory.T.chern_density_frame_indep_chart_jacobian_factor (E' j) O (H' j) (hH' j) R' hy c c hc hc ((E' j).nonempty (under y)).choose_spec (hB j)`. Rewrite `h2` using `[c.transDet_self hc, norm_one, one_pow, one_mul]`. Use `show _ = a j * chernTop R' _ (c.e y)`. Rewrite using `[h2]`. Set `pf : ℝ → AlgChart X.str σ X.dim → CxPts X.str σ → ℝ≥0∞` to `fun s i y => ENNReal.ofReal (s * f i y)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `pg : J → ℝ → AlgChart X.str σ X.dim → CxPts X.str σ → ℝ≥0∞` to `fun j s i y => ENNReal.ofReal (s * g j i y)`. Establish `cf : ∀ s, Compat e S (pf s)` using `compat_ofReal fc`. Establish `mf : ∀ s, Meas e S (pf s)` using `meas_ofReal fm`. Establish `cg : ∀ j s, Compat e S (pg j s)` using `fun j => compat_ofReal (gc j)`. Establish `mg : ∀ j s, Meas e S (pg j s)` using `fun j => meas_ofReal (gm j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPf : ∀ ε : ℤˣ, chernTopPart E H R ε S = glueMeas e (pf ((ε : ℤ) : ℝ)) S` using `fun ε => rfl`. Establish `hPg : ∀ j (ε : ℤˣ), chernTopPart (E' j) (H' j) R' ε S = glueMeas e (pg j ((ε : ℤ) : ℝ)) S` using `fun j ε => rfl`. Establish `hQ : ∀ j (s : ℝ), s = 1 ∨ s = -1 → glueMeas e (pg j s) S ≠ ⊤`. Introduce and unpack `j s (rfl | rfl)`. Use `(hint j).1 1` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hPg, Units.val_one, Int.cast_one]`. Then use the resulting hypothesis. Use `(hint j).1 (-1)` as an intermediate fact. Rewrite `this` using `[hPg, Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one]`. Then use the resulting hypothesis. Establish `hfin : ∀ s : ℝ, |s| = 1 → glueMeas e (pf s) S ≠ ⊤`. Introduce `s hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ne_top_of_le_ne_top ?_ (glueMeas_mono_on e hS (ρ' := fun i y => ∑ j, ENNReal.ofReal |a j| * (pg j 1 i y + pg j (-1) i y)) fun i y hi hy => ?_)` and prove the remaining obligations. Rewrite using `[glueMeas_sum e hd hcov hS Finset.univ (fun j i y => ENNReal.ofReal |a j| * (pg j 1 i y + pg j (-1) i y)) (fun j => ((cg j 1).add (cg j (-1))).const_mul _) (fun j => ((mg j 1).add (mg j (-1))).const_mul _)]`. Use `ENNReal.sum_ne_top.2 fun j _ => ?_` and prove the remaining obligations. Rewrite using `[glueMeas_const_mul e hS _ ENNReal.ofReal_ne_top, GlobalTheory.T.gluedChartDensityMeasure_add_of_compatible_on e hd hcov hS (pg j 1) (pg j (-1)) (cg j 1) (cg j (-1)) (mg j 1)]`. Conclude with `ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.add_ne_top.2 ⟨hQ j 1 (Or.inl rfl), hQ j (-1) (Or.inr rfl)⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show ENNReal.ofReal (s * f i y) ≤ _`. Rewrite using `[hfg i y hi hy]`. Conclude with `ofReal_le_sum s hs a fun j => g j i y`. Use `⟨fun ε => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hPf]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `exact hfin _ (by rcases Int.units_eq_one_or ε with rfl | rfl <;> simp)`. Set `ap : J → ℝ` to `fun j => max (a j) 0`. Set `an : J → ℝ` to `fun j => max (-a j) 0`. Establish `hT : ∀ j (u w : ℝ), glueMeas e (fun i y => ENNReal.ofReal u * pg j 1 i y + ENNReal.ofReal w * pg j (-1) i y) S = ENNReal.ofReal u * glueMeas e (pg j 1) S + ENNReal.ofReal w * glueMeas e (pg j (-1)) S`. Introduce `j u w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.gluedChartDensityMeasure_add_of_compatible_on e hd hcov hS _ _ ((cg j 1).const_mul _) ((cg j (-1)).const_mul _) ((mg j 1).const_mul _), glueMeas_const_mul e hS _ ENNReal.ofReal_ne_top, glueMeas_const_mul e hS _ ENNReal.ofReal_ne_top]`. Establish `hside : ∀ (s : ℝ) (u w : J → ℝ), glueMeas e (fun i y => pf s i y + ∑ j, (ENNReal.ofReal (u j) * pg j 1 i y + ENNReal.ofReal (w j) * pg j (-1) i y)) S = glueMeas e (pf s) S + ∑ j, (ENNReal.ofReal (u j) * glueMeas e (pg j 1) S + ENNReal.ofReal (w j) * glueMeas e (pg j (-1)) S)`. Introduce `s u w`. Rewrite using `[GlobalTheory.T.gluedChartDensityMeasure_add_of_compatible_on e hd hcov hS _ _ (cf s) (compat_sum _ fun j => ((cg j 1).const_mul _).add ((cg j (-1)).const_mul _)) (mf s), glueMeas_sum e hd hcov hS Finset.univ (fun j i y => ENNReal.ofReal (u j) * pg j 1 i y + ENNReal.ofReal (w j) …`. Conclude with `congrArg _ (Finset.sum_congr rfl fun j _ => hT j (u j) (w j))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbal` using `glueMeas_congr_on e hS (ρ := fun i y => pf 1 i y + ∑ j, (ENNReal.ofReal (an j) * pg j 1 i y + ENNReal.ofReal (ap j) * pg j (-1) i y)) (ρ' := fun i y => pf (-1) i y + ∑ j, (ENNReal.ofReal (ap j) * pg j 1 i y + ENNReal.ofReal (an j) * pg j (-1) i y)) fun i y hi hy => by show ENNRea …`. Rewrite using `[hfg i y hi hy]`. Conclude with `ofReal_balance a fun j => g j i y`. Rewrite `hbal` using `[hside, hside]`. Establish `h1` using `hfin 1 (by simp)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hfin (-1) (by simp)`. Establish `hq1 : ∀ j, glueMeas e (pg j 1) S ≠ ⊤` using `fun j => hQ j 1 (Or.inl rfl)`. Establish `hq2 : ∀ j, glueMeas e (pg j (-1)) S ≠ ⊤` using `fun j => hQ j (-1) (Or.inr rfl)`. Establish `hr` using `congrArg ENNReal.toReal hbal`. Rewrite `hr` using `[ENNReal.toReal_add h1 (ENNReal.sum_ne_top.2 fun j _ => ENNReal.add_ne_top.2 ⟨ENNReal.mul_ne_top ENNReal.ofReal_ne_top (hq1 j), ENNReal.mul_ne_top ENNReal.ofReal_ne_top (hq2 j)⟩), ENNReal.toReal_add h2 (ENNReal.sum_ne_top.2 fun j _ => ENNReal.add_ne_top.2 ⟨ENNReal.mul_ne_top ENNR …`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ENNReal.toReal_add (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (hq1 _)) (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (hq2 _)), ENNReal.toReal_mul, ENNReal.toReal_ofReal (le_max_right _ _)] at hr`. Establish `hap : ∀ j, (ENNReal.ofReal (ap j)).toReal = ap j` using `fun j => ENNReal.toReal_ofReal (le_max_right _ _)`. Establish `han : ∀ j, (ENNReal.ofReal (an j)).toReal = an j` using `fun j => ENNReal.toReal_ofReal (le_max_right _ _)`. Simplify using `only [hap, han] at hr`. Establish `ht : ∀ j, t j = (glueMeas e (pg j 1) S).toReal - (glueMeas e (pg j (-1)) S).toReal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[← (hint j).2, measureReal_def, measureReal_def, hPg, hPg, Units.val_one, Int.cast_one, Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one]`. Rewrite using `[measureReal_def, measureReal_def, hPf, hPf, Units.val_one, Int.cast_one, Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one]`. Establish `hsum : ∑ j, (ap j * (glueMeas e (pg j 1) S).toReal + an j * (glueMeas e (pg j (-1)) S).toReal) - ∑ j, (an j * (glueMeas e (pg j 1) S).toReal + ap j * (glueMeas e (pg j (-1)) S).toReal) = ∑ j, a j * t j`. Rewrite using `[← Finset.sum_sub_distrib]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[ht j]`. Establish `ha : ap j - an j = a j` using `max_sub_max_neg (a j)`. Take the linear combination `((glueMeas e (pg j 1) S).toReal - (glueMeas e (pg j (-1)) S).toReal) * ha`. Combine the linear equalities and inequalities to obtain the conclusion.
+Take a linear combination of the given relations to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GoodMetric.hasChernIntegral_of_eq_sum : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (O : X.X.Opens) (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ) (R : MvPolynomial (ι × ℕ) ℝ) (J : Type) [Fintype J] (M : J → ℕ) (E' : ∀ j, Fr (ratOf X) (fun _ : Unit => M j) 0) (H' : ∀ j, Mat (fun _ : Unit => M j) X.Fn → CxPts X.str σ → Mat (fun _ : Unit => M j) ℂ) (R' : MvPolynomial (Unit × ℕ) ℝ) (a t : J → ℝ), IsMetricOn E O H → (∀ j, IsMetricOn (E' j) O (H' j)) → (∀ y ∈ ptsIn X.str σ O, ∀ c : AlgChart X.str σ X.dim, y ∈ c.e.source → ∃ A ∈ E.S (under y), ∃ B : ∀ j, Mat (fun _ : Unit => M j) X.Fn, (∀ j, B j ∈ (E' j).S (under y)) ∧ chernTop R (fun v => H A (c.e.symm v)) (c.e y) = ∑ j, a j * chernTop R' (fun v => H' j (B j) (c.e.symm v)) (c.e y)) → (∀ j, HasChernIntegral (E' j) O (H' j) R' (t j)) → HasChernIntegral E O H R (∑ j, a j * t j) := by
   intro F _ σ X ι _ m E O H R J _ M E' H' R' a t hH hH' hlin hint

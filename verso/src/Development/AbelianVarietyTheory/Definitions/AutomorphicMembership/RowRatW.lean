@@ -62,7 +62,7 @@ def RowRatW : Prop := StepW Start fun K B f T w => ∀ (Z : w.Lt) (hX : B.fields
     Formalism.IndefR.Rat.RowTest (z.R.toCx3 z.F)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨c, h1, h2, h3, m, (StepW.and ((StepW.of_all fun _ _ _ _ _ _ _ s => s.1 : StepW Start Pinned).trans m) r).trans (StepW.of_all fun _ _ _ _ _ _ _ G Z hX Wt z a b k c d e g u v => ⟨G.1 Z hX Wt z a b c d, G.2 Z hX Wt z a b k c d e g u v⟩)⟩`.
+Supply the required witnesses or components.
 -/
 theorem hypH_of (c : GlobalTheory.Published.DiscreteSeriesCover) (h1 : GlobalTheory.PrimIn.Hypotheses3) (h2 : GlobalTheory.Published.RegularisedSiegelWeilFirstTerm)
     (h3 : GlobalTheory.Published.HeckeLPartialContinuation) (m : MultL) (r : RowRatW) : HypH :=

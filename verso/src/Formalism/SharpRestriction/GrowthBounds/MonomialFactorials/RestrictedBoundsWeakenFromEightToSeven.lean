@@ -16,7 +16,7 @@ def RestOpen8E (D : Formalism.BasicNotions.D7) : Prop :=
     ∀ X : flipOneThree.Inst, AdmNoK D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs X → RestOpen8 C0 CYb Cde Ck CD Cb CE1 CE2 Cc CM X
 
 /- English proof (translation)
-The claim follows from `thr_mono (fun C0 CYb Cde Ck CD Cb CE1 CE2 Cc hP Ckap Cs CM hCM X hA hH => by obtain ⟨a, b, c, d⟩ := hP Ckap Cs CM hCM X hA hH exact ⟨restBCdim_of C0 CE1 CE2 X a, b, c, d⟩) h`.
+A detailed English derivation is pending.
 -/
 theorem restricted_bounds_weaken_from_eight_to_seven (D : Formalism.BasicNotions.D7) (h : RestOpen8E D) : RestOpen7E D :=
   thr_mono (fun C0 CYb Cde Ck CD Cb CE1 CE2 Cc hP Ckap Cs CM hCM X hA hH => by
@@ -24,7 +24,7 @@ theorem restricted_bounds_weaken_from_eight_to_seven (D : Formalism.BasicNotions
     exact ⟨restBCdim_of C0 CE1 CE2 X a, b, c, d⟩) h
 
 /- English proof (translation)
-The claim follows from `closed_of_open_base_dims D (restricted_bounds_weaken_from_eight_to_seven D h)`.
+A detailed English derivation is pending.
 -/
 theorem theorem_A_closed_of_eight_open_bounds (D : Formalism.BasicNotions.D7) (h : RestOpen8E D) : IntegralityFromMetricForLargeConstants D :=
   closed_of_open_base_dims D (restricted_bounds_weaken_from_eight_to_seven D h)

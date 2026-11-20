@@ -10,7 +10,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Establish `hc : Nat.Coprime (2 ^ k) m` using `Nat.Coprime.pow_left _ (Nat.coprime_two_left.mpr hm)`. Establish `h3 : orderOf x ∣ Nat.gcd (2 ^ k) m` using `Nat.dvd_gcd h1 h2`. Rewrite `h3` using `[hc.gcd_eq_one, Nat.dvd_one, orderOf_eq_one_iff]`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_one_of_odd {Γ : Type} [Monoid Γ] {x : Γ} {k m : ℕ} (h1 : orderOf x ∣ 2 ^ k) (h2 : orderOf x ∣ m)
     (hm : Odd m) : x = 1 := by
@@ -20,21 +20,17 @@ private theorem eq_one_of_odd {Γ : Type} [Monoid Γ] {x : Γ} {k m : ℕ} (h1 :
   exact h3
 
 /- English proof (translation)
-Establish `hN : h.N ≠ 0` using `NeZero.ne _`. Take `⟨-, -, -, -, -, hpf, hpow, hq1, hd, -⟩` from `hostIndex h`. Rewrite using `[(compCond O h.N ψ 2 Nat.prime_two).2.2.2.2.2 h.q h.q_dvd]`. Introduce `p hp`. Establish `hpp : p.Prime` using `Nat.prime_of_mem_primeFactors hp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpN : p ∣ h.N` using `Nat.dvd_of_mem_primeFactors hp`. Take `⟨hcond, hone, -⟩` from `compCond O h.N ψ p hpp`. Establish `c1 : comp p ψ = 1 → (comp p ψ).conductor = 1` using `fun e => by`. Rewrite using `[hcond, Nat.factorization_eq_zero_of_not_dvd (hone.mp e), pow_zero]`. Distinguish the cases in `h2p : p = 2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h2p` using the available equality. Rewrite using `[c1 h2]`. Conclude with `one_dvd _`. Establish `hf : ψ.conductor.factorization p ≤ h.N.factorization p` using `(Nat.factorization_le_iff_dvd ψ.conductor_ne_zero hN).mpr ψ.conductor_dvd_level p`. Establish `hdvdp : (comp p ψ).conductor ∣ p ^ h.N.factorization p`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcond]`. Conclude with `Nat.pow_dvd_pow p hf`. Establish `key : p = h.q1 ∨ p = h.d → (comp p ψ).conductor ∣ h.q`. Introduce `hpe`. Establish `hpp1 : p ^ h.N.factorization p = p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hpe with rfl | rfl` into its components or cases. Use `exacts [hq1, hd]`. Rewrite `hdvdp` using `[hpp1]`. Distinguish the cases in `hpq : p ∣ h.q`. Conclude with `hdvdp.trans hpq`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm, hmd⟩` from `ho p hpp hpe`. Establish `hsq : comp p ψ ^ 2 = 1` using `((hostComp h O ψ hψ).2.2 p hpp h2p).2.2.1 hpq`. Establish `e : comp p ψ = 1` using `eq_one_of_odd (k := 1) (by simpa using orderOf_dvd_of_pow_eq_one hsq) hmd hm`. Rewrite using `[c1 e]`. Conclude with `one_dvd _`.
-
-Distinguish the cases in `hpe : p = h.q1 ∨ p = h.d`. Conclude with `key hpe`. Use `push_neg at hpe`. Break down `(hpf p hpp).mp hpN with h2' | hpq | hq1' | hd'` into its components or cases. Conclude with `absurd h2' h2p`.
-
-Rewrite `hdvdp` using `[hpow p hpp h2p hpe.1 hpe.2]`. Conclude with `hdvdp.trans (Nat.ordProj_dvd _ _)`. Conclude with `absurd hq1' hpe.1`. Conclude with `absurd hd' hpe.2`.
+Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cond_dvd (h : Host) (O : Type) [CommRing O] [IsDomain O] (ψ : DirichletCharacter O h.N) (hψ : h.IsChar ψ)
     (h2 : comp 2 ψ = 1) (ho : ∀ p, p.Prime → p = h.q1 ∨ p = h.d → ∃ m, Odd m ∧ orderOf (comp p ψ) ∣ m) :
@@ -82,7 +78,7 @@ private theorem cond_dvd (h : Host) (O : Type) [CommRing O] [IsDomain O] (ψ : D
   · exact absurd hd' hpe.2
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(compOrd O N ψ 2 Nat.prime_two).2.1`. Establish `hd : orderOf (comp 2 ψ) ∣ orderOf ψ` using `((compAlg O N 2 Nat.prime_two).2.2.2.2.2.1 ψ).2.1`. Conclude with `eq_one_of_odd (k := k) (hk ▸ dvd_refl _) hd ho`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem comp_two_eq_one (O : Type) [CommRing O] [IsDomain O] (N : ℕ) [NeZero N] (ψ : DirichletCharacter O N)
     (ho : Odd (orderOf ψ)) : comp 2 ψ = 1 := by
@@ -91,19 +87,17 @@ private theorem comp_two_eq_one (O : Type) [CommRing O] [IsDomain O] (N : ℕ) [
   exact eq_one_of_odd (k := k) (hk ▸ dvd_refl _) hd ho
 
 /- English proof (translation)
-Introduce `h O _ _ ψ hψ`. Take `⟨hord, hpos, -⟩` from `hostComp h O ψ hψ`. Use `⟨fun hodd => ?_, fun l hl hl2 hlq1 hld hodd => ?_⟩` and prove the remaining obligations. Establish `h2 : comp 2 ψ = 1` using `comp_two_eq_one O h.N ψ hodd`. Establish `hcd : ψ.conductor ∣ h.q` using `cond_dvd h O ψ hψ h2 (fun p hp _ => ⟨orderOf ψ, hodd, ((compAlg O h.N p hp).2.2.2.2.2.1 ψ).2.1⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hc2eq, hone2, -⟩` from `compCond O h.N ψ 2 Nat.prime_two`. Establish `hnd : ¬ 2 ∣ ψ.conductor` using `hone2.mp h2`. Use `⟨?_, h2, ?_, ?_, hcd⟩` and prove the remaining obligations. Establish `hco : Nat.Coprime (orderOf ψ) (2 ^ (h.ex + 1))` using `Nat.Coprime.pow_right _ (Nat.coprime_two_right.mpr hodd)`. Establish `hdo : orderOf ψ ∣ h.o` using `hco.dvd_of_dvd_mul_left hord`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.dvd_ordCompl_of_dvd_not_dvd hdo (by rwa [← even_iff_two_dvd, Nat.not_even_iff_odd])`. Use `show (comp 2 ψ).conductor.factorization 2 = 0`. Rewrite using `[hc2eq, Nat.factorization_eq_zero_of_not_dvd hnd]`. Simplify using the standard rewrite rules. Rewrite using `[← Nat.not_even_iff_odd, even_iff_two_dvd]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, -, -, -, -, hc2chi, -, -, hcomp_eq, -⟩` from `hostTh1 h O ψ hψ l hl hl2`. Establish `hpsi : psi2 ψ = 1`. Rewrite using `[← hc2chi]`. Conclude with `comp_two_eq_one O h.N _ hodd`. Use `⟨cond_dvd h O ψ hψ hpsi ?_, hpsi⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `p hp hpe`. Establish `hpl : p ≠ l`. Break down `hpe with rfl | rfl` into its components or cases. Use `exacts [hlq1.symm, hld.symm]`. Take `⟨hkap, -⟩` from `partOrd _ l hl ψ hpos`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨orderOf (chiP l ψ) * l ^ (orderOf ψ).factorization l, Odd.mul hodd (Odd.pow (hl.odd_of_ne_two hl2)), ?_⟩` and prove the remaining obligations. Establish `e : comp p ψ = comp p (th0 l ψ) * comp p (kap l ψ)`. Rewrite using `[← (compAlg O h.N p hp).2.1, dirichletPrimeToLPart_mul_lPowerPart]`. Rewrite using `[e]`. Use `(Commute.all _ _).orderOf_mul_dvd_mul_orderOf.trans (Nat.mul_dvd_mul ?_ ?_)` and prove the remaining obligations.
-
-Rewrite using `[← hcomp_eq p hp hpl]`. Conclude with `((compAlg O h.N p hp).2.2.2.2.2.1 _).2.1`. Establish `hk` using `((compAlg O h.N p hp).2.2.2.2.2.1 (kap l ψ)).2.1`. Rewrite `hk` using `[show kap l ψ = lPart l ψ from rfl, hkap]`. Conclude with `hk`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.hostOdd :
     ∀ (h : Host) (O : Type) [CommRing O] [IsDomain O] (ψ : DirichletCharacter O h.N), h.IsChar ψ →

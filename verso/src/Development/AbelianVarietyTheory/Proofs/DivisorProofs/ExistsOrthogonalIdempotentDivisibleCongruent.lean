@@ -18,45 +18,37 @@ namespace GlobalTheory.BotPairSmall.IdemChoice
 open GlobalTheory.FunObj.StdDatum
 
 /- English proof (translation)
-Introduce `hB1 D 𝔪 hsup δ u hδu`. Use `set 𝔫 : Ideal (𝓞 D.host.E) := D.host.conj • 𝔪 with h𝔫`. Establish `gen : ∀ {b : 𝓞 D.host.E}, b ∈ 𝔫 → ∀ {y : AE D}, y ∈ OhE D → inc D (b : D.host.E) * y ∈ hatId D 𝔫` using `fun {b} hb {y} hy => AddSubgroup.subset_closure ⟨b, hb, y, hy, rfl⟩`. Establish `gen1 : ∀ {b : 𝓞 D.host.E}, b ∈ 𝔫 → inc D (b : D.host.E) ∈ hatId D 𝔫` using `fun hb => by`. Simplify using `using gen hb (one_mem (OhE D))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hδ : δ = 0`. Substitute `hδ` using the available equality. Use `⟨0, zero_mem _, 0, zero_mem _, by simp, by simp, by simp, ?_⟩` and prove the remaining obligations. Establish `: inc D ((0 * u : 𝓞 D.host.E) : D.host.E) - 1 = -1` using `by simp`. Rewrite `hδu` using `[this]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using neg_mem hδu`. Establish `h1m : (1 : 𝓞 D.host.E) ∈ 𝔪 ⊔ 𝔫` using `by rw [hsup]; exact Submodule.mem_top`. Take `⟨s, hs, t, ht, hst⟩` from `Submodule.mem_sup.1 h1m`. Establish `h𝔫0 : 𝔫 ≠ ⊥`. Introduce `e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h𝔪 : 𝔪 = ⊥`. Assume the negation of the conclusion as `h`. Conclude with `GlobalTheory.BotPairSmall.conj_smul_ne_bot D h e`. Rewrite `hsup` using `[e, h𝔪, sup_bot_eq]`. Conclude with `bot_ne_top hsup`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set x : 𝓞 D.host.E := s * δ * u with hx`. Use `set X : AE D := inc D (x : D.host.E) with hX`. Establish `hXO : X ∈ OhE D` using `GlobalTheory.CongIdx.inc_int_mem x`. Establish `h1X : 1 - X ∈ hatId D 𝔫`. Establish `e : 1 - X = inc D (t : D.host.E) + inc D (s : D.host.E) * (-(inc D ((δ * u : 𝓞 D.host.E) : D.host.E) - 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `e1 : inc D (s : D.host.E) + inc D (t : D.host.E) = 1`. Rewrite using `[← map_add, show (s : D.host.E) + t = ((s + t : 𝓞 D.host.E) : D.host.E) from rfl, hst]`. Simplify using the standard rewrite rules. Rewrite using `[hX, hx]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul]`. Take the linear combination `-e1`. Rewrite using `[e]`. Conclude with `add_mem (gen1 ht) (GlobalTheory.CongIdx.mul_mem_hatId (GlobalTheory.CongIdx.inc_int_mem s) (neg_mem hδu))`. Establish `hxm : x ∈ 𝔪` using `by rw [hx, mul_assoc]; exact Ideal.mul_mem_right _ _ hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsX : sgA D X ∈ hatId D 𝔫`. Rewrite using `[hX, GlobalTheory.NormSum.PtsMem.sgA_inc]`. Conclude with `gen1 (Ideal.smul_mem_pointwise_smul _ _ _ hxm)`. Establish `hsXO : sgA D X ∈ OhE D` using `VacMove.sgA_mem D hXO`. Establish `hN₁ : 0 < Ideal.absNorm (Ideal.span {δ})`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hδ`. Establish `hN₂ : 0 < Ideal.absNorm 𝔫`. Rewrite using `[Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `h𝔫0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set N := Ideal.absNorm (Ideal.span {δ}) * Ideal.absNorm 𝔫 with hN`. Establish `hNδ : (N : 𝓞 D.host.E) ∈ Ideal.span {δ}`. Rewrite using `[hN, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`. Establish `hN𝔫 : (N : 𝓞 D.host.E) ∈ 𝔫`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hN, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.absNorm_mem _)`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hNδ`. Establish `hNinc : (N : AE D) = inc D ((N : 𝓞 D.host.E) : D.host.E)` using `by simp`. Take `⟨e, heO, hee, hlim⟩` from `hB1 D x`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨n, hn, w, hwO, hew⟩` from `hlim N (Nat.mul_pos hN₁ hN₂)`. Use `set ē := sgA D e with hē`. Establish `hēO : ē ∈ OhE D` using `VacMove.sgA_mem D heO`. Establish `hēē : ē * ē = ē` using `by rw [hē, ← map_mul, hee]`. Use `⟨e * (1 - ē), mul_mem heO (sub_mem (one_mem _) hēO), ?_⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hXd : X = inc D (δ : D.host.E) * inc D ((s * u : 𝓞 D.host.E) : D.host.E)`. Rewrite using `[hX, hx, ← map_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hNd : (N : AE D) = inc D (δ : D.host.E) * inc D (c : D.host.E)`. Rewrite using `[hNinc, ← hc, ← map_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Establish `hed : e = inc D (δ : D.host.E) * (inc D ((s * u : 𝓞 D.host.E) : D.host.E) * X ^ m + inc D (c : D.host.E) * w)`. Rewrite using `[hew, pow_succ, hNd, ← hX]`. Take the linear combination `X ^ m * hXd`. Use `⟨(inc D ((s * u : 𝓞 D.host.E) : D.host.E) * X ^ m + inc D (c : D.host.E) * w) * (1 - ē), mul_mem (add_mem (mul_mem (GlobalTheory.CongIdx.inc_int_mem _) (pow_mem hXO m)) (mul_mem (GlobalTheory.CongIdx.inc_int_mem _) hwO)) (sub_mem (one_mem _) hēO), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(1 - ē) ^ 2 * hee + e * hēē`. Establish `hs2 : sgA D (e * (1 - ē)) = ē * (1 - e)`. Rewrite using `[map_mul, map_sub, map_one, hē, GlobalTheory.NormSum.VacMove.sgA_sgA]`. Rewrite using `[hs2]`. Take the linear combination `(-(1 - ē) * ē) * hee`.
-
-Use `conv_lhs => rw [hed]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : 1 - e * (1 - ē) = (1 - X ^ (m + 1)) - (N : AE D) * w + e * ē` using `by rw [hew, ← hX]; ring`. Rewrite using `[e1]`. Use `add_mem (sub_mem ?_ ?_) ?_` and prove the remaining obligations.
-
-Rewrite using `[← mul_neg_geom_sum]`. Rewrite using `[mul_comm]`. Conclude with `GlobalTheory.CongIdx.mul_mem_hatId (sum_mem fun i _ => pow_mem hXO i) h1X`. Rewrite using `[hNinc]`. Conclude with `gen hN𝔫 hwO`.
-
-Use `GlobalTheory.CongIdx.mul_mem_hatId heO ?_` and prove the remaining obligations. Rewrite using `[hē, hew, ← hX, map_add, map_pow, map_mul, pow_succ, map_natCast]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Conclude with `GlobalTheory.CongIdx.mul_mem_hatId (pow_mem hsXO m) hsX`. Rewrite using `[hNinc]`.
-
-Conclude with `gen hN𝔫 (VacMove.sgA_mem D hwO)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idem_of_limit : (∀ (D : D7) (x : 𝓞 D.host.E), ∃ e ∈ OhE D, e * e = e ∧ ∀ N : ℕ, 0 < N → ∃ n : ℕ, 0 < n ∧ ∃ w ∈ OhE D, e = inc D (x : D.host.E) ^ n + (N : AE D) * w) → ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ⊔ D.host.conj • 𝔪 = ⊤ → ∀ (δ u : 𝓞 D.host.E), inc D ((δ * u : 𝓞 D.host.E) : D.host.E) - 1 ∈ hatId D (D.host.conj • 𝔪) → ∃ f ∈ OhE D, ∃ w ∈ OhE D, f * f = f ∧ f * sgA D f = 0 ∧ f = inc D (δ : D.host.E) * w ∧ 1 - f ∈ hatId D (D.host.conj • 𝔪) := by
   intro hB1 D 𝔪 hsup δ u hδu

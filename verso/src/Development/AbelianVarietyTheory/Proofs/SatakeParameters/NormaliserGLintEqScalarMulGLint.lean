@@ -21,7 +21,7 @@ namespace GlobalTheory.NormaliserGLint
 open Matrix
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Use `⟨(π : v.adicCompletion F), ?_⟩` and prove the remaining obligations. Unfold `Formalism.UG.IsUnifV`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hπ]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_unif (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     ∃ ϖ : v.adicCompletion F, Formalism.UG.IsUnifV F v ϖ := by
@@ -32,7 +32,7 @@ theorem exists_unif (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum 
   rfl
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun k _ => O.mul_mem (hA i k) (hB k j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_entries_mem {L : Type} [Field L] (O : Subring L) {n : ℕ} {A B : Matrix (Fin n) (Fin n) L}
     (hA : ∀ i j, A i j ∈ O) (hB : ∀ i j, B i j ∈ O) : ∀ i j, (A * B) i j ∈ O := by
@@ -41,7 +41,7 @@ theorem mul_entries_mem {L : Type} [Field L] (O : Subring L) {n : ℕ} {A B : Ma
   exact Subring.sum_mem _ fun k _ => O.mul_mem (hA i k) (hB k j)
 
 /- English proof (translation)
-Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun k _ => O.mul_mem (hA i k) (hz k)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_entries_mem {L : Type} [Field L] (O : Subring L) {n : ℕ} {A : Matrix (Fin n) (Fin n) L}
     {z : Fin n → L} (hA : ∀ i j, A i j ∈ O) (hz : ∀ i, z i ∈ O) : ∀ i, (A *ᵥ z) i ∈ O := by
@@ -50,9 +50,9 @@ theorem mulVec_entries_mem {L : Type} [Field L] (O : Subring L) {n : ℕ} {A : M
   exact Subring.sum_mem _ fun k _ => O.mul_mem (hA i k) (hz k)
 
 /- English proof (translation)
-Establish `hv` using `congrArg Valued.v h`. Rewrite `hv` using `[map_mul, map_zpow₀, map_zpow₀, hϖ]`. Establish `hw' : Valued.v w ≤ 1` using `hw`. Establish `key : ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) ^ q ≤ ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) ^ p`. Rewrite using `[hv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_right' hw'`. Rewrite `key` using `[← WithZero.coe_zpow, ← WithZero.coe_zpow, WithZero.coe_le_coe, ← ofAdd_zsmul, ← ofAdd_zsmul, Multiplicative.ofAdd_le]`. Simplify using `at key`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem le_of_zpow_eq {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)}
     {ϖ : v.adicCompletion F} (hϖ : Formalism.UG.IsUnifV F v ϖ) {p q : ℤ} {w : v.adicCompletion F}
@@ -75,41 +75,35 @@ namespace GlobalTheory.NormaliserGLint
 open Matrix
 
 /- English proof (translation)
-Introduce `F _ _ v n N hN X`. Take `⟨ϖ, hϖ⟩` from `exists_unif F v`. Establish `hϖO : ϖ ∈ Formalism.UG.Ov F v`. Express the relevant statement in the definitionally equal form `Valued.v ϖ ≤ 1`. Rewrite using `[hϖ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(by decide : ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) ≤ 1)`. Establish `h0 : ϖ ≠ 0` using `by rintro rfl; simp [Formalism.UG.IsUnifV] at hϖ`. Take `⟨m, -, a, ha, b, hb, hNab⟩` from `Formalism.UG.Final.CartanDecomp F v n ϖ hϖO hϖ N`. Use `set O := Formalism.UG.Ov F v with hO`. Establish `hbe` using `Formalism.UG.P.cartan_entries_of_mem O b hb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbi` using `Formalism.UG.P.cartan_entries_of_mem O _ (inv_mem hb)`. Establish `hae` using `Formalism.UG.P.cartan_entries_of_mem O a ha`. Establish `hai` using `Formalism.UG.P.cartan_entries_of_mem O _ (inv_mem ha)`. Establish `ha1 : ((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * (a : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha2 : (a : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * ((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hb2 : (b : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * ((b⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `ha1x : ∀ Y : Matrix (Fin n) (Fin n) (v.adicCompletion F), ((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * ((a : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * Y) = Y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `Y`. Rewrite using `[← Matrix.mul_assoc, ha1, Matrix.one_mul]`. Establish `ha2x : ∀ Y : Matrix (Fin n) (Fin n) (v.adicCompletion F), (a : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * (((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * Y) = Y`. Introduce `Y`. Rewrite using `[← Matrix.mul_assoc, ha2, Matrix.one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ i j : Fin n, i ≠ j → m i ≤ m j`. Introduce `i j hij`. Use `set E : Matrix (Fin n) (Fin n) (v.adicCompletion F) := Matrix.single i j 1 with hE`. Establish `hsq : E * E = 0` using `by rw [hE]; simp [Matrix.single_mul_single_of_ne, hij.symm]`. Establish `hEmem : ∀ r s, E r s ∈ O`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `r s`. Simplify using `only [hE, Matrix.single_apply]`. Use `split_ifs`. Conclude with `O.one_mem`. Conclude with `O.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1mem : ∀ r s, (1 : Matrix (Fin n) (Fin n) (v.adicCompletion F)) r s ∈ O`. Introduce `r s`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `O.one_mem`.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `O.zero_mem`. Establish `hAB : ((a : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * (1 + E) * ((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F))) * ((a : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * (1 - E) * ((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) …`. Establish `hpm : (1 + E) * (1 - E) = 1`. Rewrite using `[add_mul, one_mul, mul_sub, mul_one, hsq]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc, ha1x]`. Rewrite using `[← Matrix.mul_assoc (1 + E), hpm, Matrix.one_mul, ha2]`. Take `⟨g, hg, hgA⟩` from `Formalism.UG.P.cartan_exists_glint O _ _ hAB (mul_entries_mem O (mul_entries_mem O hae fun r s => O.add_mem (h1mem r s) (hEmem r s)) hai) (mul_entries_mem O (mul_entries_mem O hae fun r s => O.sub_mem (h1mem r s) (hEmem r s)) hai)`. Establish `hz : ∀ k, (((b⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) *ᵥ Pi.single j 1) k ∈ O` using `mulVec_entries_mem O hbi fun k => by`. Rewrite using `[Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `split_ifs`. Conclude with `O.one_mem`. Conclude with `O.zero_mem`. Take `⟨z', hz', hEq⟩` from `hN g hg _ hz`. Rewrite `hEq` using `[hgA, hNab]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hL` using `congrArg (fun w => ((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) *ᵥ w) hEq`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc, ha1x, hb2, Matrix.mul_one] at hL`. Establish `hi` using `congrFun hL i`. Rewrite `hi` using `[Matrix.mulVec_single_one, Matrix.col_apply]`. Rewrite `hi` using `[← Matrix.mulVec_mulVec]`.
+Substitute using the available equality. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Formalism.UG.diagPow, Matrix.mul_diagonal, Matrix.mulVec_diagonal, Matrix.add_apply, Matrix.one_apply_ne hij, hE, Matrix.single_apply_same, zero_add, one_mul] at hi`. Conclude with `le_of_zpow_eq hϖ (mulVec_entries_mem O hbe hz' i) hi`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hD⟩ : ∃ c : v.adicCompletion F, c ≠ 0 ∧ Formalism.UG.diagPow F v ϖ m = c • (1 : Matrix (Fin n) (Fin n) (v.adicCompletion F)) := by`. Break down `n with _ | k` into its components or cases. Conclude with `⟨1, one_ne_zero, by ext i; exact i.elim0⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨ϖ ^ (m 0), zpow_ne_zero _ h0, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Formalism.UG.diagPow, Matrix.diagonal_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hm : m i = m 0`. Break down `eq_or_ne i 0 with rfl | hi` into its components or cases. Both sides reduce to the same expression. Conclude with `le_antisymm (key i 0 hi) (key 0 i hi.symm)`. Rewrite using `[hm, mul_one]`.
-
-Rewrite using `[mul_zero]`. Use `⟨(a * b)⁻¹, inv_mem (mul_mem ha hb), a * b, mul_mem ha hb, ?_⟩` and prove the remaining obligations. Establish `hNc : (N : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = c • ((a * b : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F))`. Rewrite using `[hNab, hD, Units.val_mul, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`. Establish `hNi : ((N⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = c⁻¹ • (((a * b)⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F))`.
-
-Establish `h1 : ((N⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * (N : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `h2 : (N : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * (c⁻¹ • (((a * b)⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F))) = 1`. Rewrite using `[hNc, Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ hc, one_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[h2, Matrix.mul_one]`. Use `_ = _ := by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]`. Rewrite using `[hNi, hNc]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hc, mul_inv_cancel₀ hc, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_eq_glint_mul_mul :
     ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (n : ℕ)

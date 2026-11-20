@@ -10,9 +10,9 @@ open MvPolynomial GroundTheory.Heights₂.Heights.FieldNumbers
 universe u
 
 /- English proof (translation)
-Unfold `mixedDiff`. Proceed by induction on `(List.ofFn bs) with`. Consider the case `nil => simpa using hh`. Consider the case `cons b l ih`. Establish `hs : Filter.Tendsto (fun m : K → ℤ => m - b) Filter.atTop Filter.atTop`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify `Filter.tendsto_atTop_add_const_right Filter.atTop (-b) Filter.tendsto_id` using `[sub_eq_add_neg]`. Use `filter_upwards [ih, hs.eventually ih] with m h1 h2`. Simplify using `[List.foldr, diffStep, h1, h2]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma mixedDiff_eventually_zero {K : Type*} (h : (K → ℤ) → ℤ)
     (hh : ∀ᶠ m in Filter.atTop, h m = 0) {n : ℕ} (bs : Fin n → K → ℤ) :
@@ -28,7 +28,7 @@ private lemma mixedDiff_eventually_zero {K : Type*} (h : (K → ℤ) → ℤ)
     simp [List.foldr, diffStep, h1, h2]
 
 /- English proof (translation)
-Establish `hex : ∃ c, ∀ᶠ m in Filter.atTop, f m = c` using `⟨0, hf⟩`. Rewrite using `[eventualValue, dif_pos hex]`. Take `⟨m, h1, h2⟩` from `(hex.choose_spec.and hf).exists`. Rewrite using `[← h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private lemma eventualValue_of_eventually_zero {K : Type*} (f : (K → ℤ) → ℤ)
     (hf : ∀ᶠ m in Filter.atTop, f m = 0) : eventualValue f = 0 := by
@@ -39,17 +39,17 @@ private lemma eventualValue_of_eventually_zero {K : Type*} (f : (K → ℤ) → 
   rw [← h1, h2]
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ n G hG hGh hdim b₁ b₂ L`. Establish `hupd : ∀ b : K → ℤ, Matrix.vecCons b L = Function.update (Matrix.vecCons (0 : K → ℤ) L) 0 b` using `fun b => by`. Simplify using `[Matrix.vecCons, Fin.update_cons_zero]`. Distinguish the cases in `hrel : IsRelevant G`. Establish `hle : relDim G = ((n + 1 : ℕ) : WithBot (WithTop ℤ)) ∨ relDim G < ((n + 1 : ℕ) : WithBot (WithTop ℤ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hc : ((n + 1 : ℕ) : WithBot (WithTop ℤ)) = (((n + 1 : ℕ) : ℤ) : WithTop ℤ)`. Both sides reduce to the same expression. Unfold `relDim`. Generalize the expression as in `ringKrullDim (MRing ι F ⧸ G) = x at hdim ⊢`. Proceed by induction on `x using WithBot.recBotCoe with`.
+Establish an intermediate fact. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Consider the case `bot => exact Or.inr (WithBot.bot_lt_coe _)`. Consider the case `coe d`. Proceed by induction on `d using ENat.recTopCoe with`. Consider the case `top => exfalso; exact absurd hdim (by simp)`. Consider the case `coe e`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `he : e < n + 2 + Fintype.card K`. Rewrite `hdim` using `[← WithBot.coe_natCast]`. Conclude with `WithBot.coe_lt_coe.1 hdim` after adjusting the coercions. Simplify using `only [WithBot.map_coe]`. Rewrite using `[hc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `show ((((e : ℤ) - Fintype.card K : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ)) = _ ∨ ((((e : ℤ) - Fintype.card K : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ)) < _`. Break down `(show (e : ℤ) - Fintype.card K ≤ ((n + 1 : ℕ) : ℤ) by omega).lt_or_eq with h | h` into its components or cases. Conclude with `Or.inr (WithBot.coe_lt_coe.2 (WithTop.coe_lt_coe.2 h))`. Conclude with `Or.inl (by rw [h])`. Break down `hle with heq | hlt` into its components or cases.
+Prove the second alternative. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hupd (b₁ + b₂), hupd b₁, hupd b₂]`. Conclude with `h1 F K ι G hGh hrel (n + 1) heq (Matrix.vecCons 0 L) 0 b₁ b₂`. Simplify using `only [(h2 F K ι G).2 hGh (n + 1) _ hlt, add_zero]`. Establish `hz` using `(h3 F K ι G hGh).2 hrel`. Simplify using `only [intNum, eventualValue_of_eventually_zero _ (mixedDiff_eventually_zero _ hz _), add_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IntNumAddFirst.proof (h1 : FieldNumbers.IntNumAdd.Statement.{u})
     (h2 : FieldNumbers.IntNumZeroSlot.Statement.{u})

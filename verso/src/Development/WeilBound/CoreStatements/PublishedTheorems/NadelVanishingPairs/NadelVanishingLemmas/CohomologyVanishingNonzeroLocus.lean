@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X F _ L hL σ ι _ _ U hU n h`. Take `⟨μ, ρ, h₁, h₂, h₃, h₄⟩` from `GlobalTheory.T.cech_twist_nonzero_locus_maps X F L hL σ U hU`. Conclude with `GlobalTheory.T.cech_complex_direct_limit (fun c => cechCube ℤ (twistZ F L c) ⊤ U) (cechCube ℤ F (nonzeroLocus σ) U) μ ρ h₁ h₂ h₃ h₄ n h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isZero_cechH_nonzeroLocus_of_eventually_twist : ∀ (X : Scheme.{0}) (F : X.Modules) [F.IsQuasicoherent] (L : LB X), L.IsLB → ∀ (σ : L.Sec)
     {ι : Type} [LinearOrder ι] [Fintype ι] (U : ι → X.Opens),
@@ -29,17 +29,13 @@ theorem isZero_cechH_nonzeroLocus_of_eventually_twist : ∀ (X : Scheme.{0}) (F 
   exact GlobalTheory.T.cech_complex_direct_limit (fun c => cechCube ℤ (twistZ F L c) ⊤ U) (cechCube ℤ F (nonzeroLocus σ) U) μ ρ h₁ h₂ h₃ h₄ n h
 
 /- English proof (translation)
-Introduce `X _ _ F _ L hL σ i h`. Take `⟨κ, hκ, T, c, hT, -, hTc, hcov⟩` from `Twist.exists_finite_affine_chart_cover hL (W := ⊤) (isCompact_univ (X := X))`. Use `letI : Fintype κ := Fintype.ofFinite κ`. Use `letI : LinearOrder κ := LinearOrder.lift' (Fintype.equivFin κ) (Fintype.equivFin κ).injective`. Establish `hsep : ∀ s : Finset κ, s.Nonempty → IsAffineOpen (⨅ a ∈ s, T a)` using `(cech_computes_coh_of_affine_cover.{0, 0, 0} X ℤ).1 (Or.inl inferInstance) κ T hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hc : ⨆ a, T a = ⊤` using `eq_top_iff.2 hcov`. Establish `hV : ∀ s : Finset κ, s.Nonempty → IsAffineOpen (cechOpen (nonzeroLocus σ) T s)`. Introduce and unpack `s ⟨a, ha⟩`. Establish `hle : ⨅ b ∈ s, T b ≤ L.U (c a)` using `(biInf_le T ha).trans (hTc a)`. Establish `e` using `Twist.basicOpen_resG_zfun (Twist.zofSec σ) (c a) hle`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[Twist.nonzeroLocus_zofSec hL]`. Establish `e' : cechOpen (nonzeroLocus σ) T s = X.basicOpen (resG X hle (Twist.zfun (Twist.zofSec σ) (c a)))`. Rewrite using `[e, cechOpen, inf_comm]`. Rewrite using `[e']`. Conclude with `(hsep s ⟨a, ha⟩).basicOpen _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hVc : nonzeroLocus σ ≤ ⨆ a, T a` using `hc ▸ le_top`. Establish `eV` using `cechHEquivCohOn ℤ hVc (cechAcyclicMod_of_isAffineOpen hV F) i`. Establish `hZ : IsZero (cechH ℤ F (nonzeroLocus σ) T i)`. Use `isZero_cechH_nonzeroLocus_of_eventually_twist X F L hL σ T hsep i (h.mono fun k hk => ?_)` and prove the remaining obligations. Use `haveI hq : (twistZ F L k).IsQuasicoherent := Twist.isQuasicoherent_twist (Twist.isLB_lbZPow hL k)`.
-
-Establish `e2` using `cechHEquivCoh ℤ hc hsep (twistZ F L k) i`. Use `haveI : Subsingleton (coh (twistZ F L k) i) := by rw [Twist.twistZ_natCast]; exact hk`. Use `haveI : Subsingleton (cechH ℤ (twistZ F L k) ⊤ T i) := e2.injective.subsingleton`. Conclude with `ModuleCat.isZero_of_subsingleton _`. Use `haveI : Subsingleton (cechH ℤ F (nonzeroLocus σ) T i) := ModuleCat.subsingleton_of_isZero hZ`.
-
-Conclude with `eV.symm.injective.subsingleton`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsingleton_cohOn_nonzeroLocus_of_eventually_twist : ∀ (X : Scheme.{0}) [CompactSpace X] [X.IsSeparated] (F : X.Modules) [F.IsQuasicoherent] (L : LB X), L.IsLB → ∀ (σ : L.Sec) (i : ℕ), (∀ᶠ c : ℕ in atTop, Subsingleton (coh (twist F (lbPow L c)) i)) → Subsingleton (cohOn F (nonzeroLocus σ) i) := by
   intro X _ _ F _ L hL σ i h

@@ -13,15 +13,15 @@ namespace ZM
 variable [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (Vsp X.dim)}
 
 /- English proof (translation)
-Establish `hadd : ∀ a b c : Vsp X.dim, (Hf (a + b) c).im = (Hf a c).im + (Hf b c).im`. Introduce `a b c`. Simplify using `[Hf, add_mul, Finset.sum_add_distrib]`. Establish `hsmul : ∀ (r : ℝ) (a c : Vsp X.dim), (Hf (r • a) c).im = r * (Hf a c).im`. Introduce `r a c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Hf, Finset.mul_sum, mul_assoc]`. Establish `hzero : ∀ c : Vsp X.dim, (Hf 0 c).im = 0`. Introduce `c`. Simplify using `[Hf]`. Establish `step1 : ∀ w ∈ I, ∀ v ∈ IR I, (Hf v w).im = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `w hw v hv`. Express the relevant statement in the definitionally equal form `v ∈ Submodule.span ℝ (I : Set (Vsp X.dim)) at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem a ha => exact hI.iso a ha w hw`. Consider the case `zero => exact hzero w`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [hadd, ha, hb, add_zero]`. Consider the case `smul r a _ ha => rw [hsmul, ha, mul_zero]`. Establish `step2 : (Hf y x).im = 0`. Express the relevant statement in the definitionally equal form `y ∈ Submodule.span ℝ (I : Set (Vsp X.dim)) at hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Consider the case `mem a ha => rw [Hf_conj, Complex.conj_im, step1 a ha x hx, neg_zero]`. Consider the case `zero => exact hzero x`. Consider the case `add a b _ _ ha hb => rw [hadd, ha, hb, add_zero]`. Consider the case `smul r a _ ha => rw [hsmul, ha, mul_zero]`. Rewrite using `[Hf_conj, Complex.conj_im, step2, neg_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem Hf_im_eq_zero_of_mem_IR_of_isSplit (hI : IsSplit P I) {x y : Vsp X.dim} (hx : x ∈ IR I) (hy : y ∈ IR I) :
     (Hf x y).im = 0 := by
@@ -52,7 +52,7 @@ private theorem Hf_im_eq_zero_of_mem_IR_of_isSplit (hI : IsSplit P I) {x y : Vsp
   rw [Hf_conj, Complex.conj_im, step2, neg_zero]
 
 /- English proof (translation)
-Simplify using `[Hf, Complex.im_sum, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem Hf_real_combination_left_im {κ : Type} [Fintype κ] (γ : Vsp X.dim) (r : κ → ℝ) (w : κ → Vsp X.dim) :
     (Hf (∑ k, r k • w k) γ).im = ∑ k, r k * (Hf (w k) γ).im := by
@@ -60,9 +60,9 @@ private theorem Hf_real_combination_left_im {κ : Type} [Fintype κ] (γ : Vsp X
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `hek : e (IR I) k ∈ IR I` using `(ob (IR I) k).2`. Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_re]`. Simplify using `[z, Hf, real_inner_eq_re_inner, PiLp.inner_apply, Complex.mul_re, mul_comm]`. Rewrite using `[Complex.ofReal_im]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Hf_im_eq_zero_of_mem_IR_of_isSplit hI hb hek`.
+A detailed English derivation is pending.
 -/
 theorem z_of_K (hI : IsSplit P I) (k : Fin (dK (IR I))) {b : Vsp X.dim} (hb : b ∈ IR I) :
     z (IR I) k b = ((inner ℝ (e (IR I) k) b : ℝ) : ℂ) := by
@@ -74,13 +74,13 @@ theorem z_of_K (hI : IsSplit P I) (k : Fin (dK (IR I))) {b : Vsp X.dim} (hb : b 
     exact Hf_im_eq_zero_of_mem_IR_of_isSplit hI hb hek
 
 /- English proof (translation)
-Establish `hexp : b = ∑ k, (inner ℝ (e (IR I) k) b) • e (IR I) k`. Establish `h` using `congrArg Subtype.val ((ob (IR I)).sum_repr' ⟨b, hb⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_inner] at h`. Conclude with `h.symm`. Establish `hR : ∑ k, (z (IR I) k γ).im * inner ℝ (e (IR I) k) b = (Hf γ b).im`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (Hf γ b).im = -(Hf b γ).im`. Rewrite using `[Hf_conj γ b, Complex.conj_im, neg_neg]`. Rewrite using `[h1]`. Use `conv_rhs => rw [hexp]`. Rewrite using `[Hf_real_combination_left_im, ← Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Establish `h2 : (Hf (e (IR I) k) γ).im = -(z (IR I) k γ).im`. Simplify using `only [z]`. Rewrite using `[Hf_conj (e (IR I) k) γ, Complex.conj_im, neg_neg]`. Rewrite using `[h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[z_of_K hI _ hb]`. Conclude with `hR` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem sum_im_coord_mul (hI : IsSplit P I) (γ : Vsp X.dim) {b : Vsp X.dim} (hb : b ∈ IR I) :
     ∑ k, ((z (IR I) k γ).im : ℂ) * z (IR I) k b = ((Hf γ b).im : ℂ) := by
@@ -104,21 +104,21 @@ theorem sum_im_coord_mul (hI : IsSplit P I) (γ : Vsp X.dim) {b : Vsp X.dim} (hb
   exact_mod_cast hR
 
 /- English proof (translation)
-Establish `hmem : tb hI t ∈ IR I` using `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Ib hI i).2)`. Establish `hzadd : ∀ k (x y : Vsp X.dim), z (IR I) k (x + y) = z (IR I) k x + z (IR I) k y`. Introduce `k x y`. Simplify using `[z, Hf, add_mul, Finset.sum_add_distrib]`. Establish `hcs : ∀ (r : ℝ) (x : Vsp X.dim), ((r : ℂ) • x) = r • x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `r x`. Use extensionality with `i`. Simplify using `[Complex.real_smul]`. Establish `hp1 : ∀ w ∈ IR I, p1 (IR I) w = w`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hexp` using `congrArg Subtype.val ((ob (IR I)).sum_repr' ⟨w, hw⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_inner] at hexp`. Simplify using `only [p1]`. Use `conv_rhs => rw [← hexp]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[z_of_K hI k hw, hcs]`. Apply the tactic sequence `all_goals rfl`. Establish `hp1add : ∀ x y : Vsp X.dim, p1 (IR I) (x + y) = p1 (IR I) x + p1 (IR I) y`. Introduce `x y`. Simplify using `only [p1, hzadd, add_smul, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hp2 : p2 (IR I) (v + tb hI t) = p2 (IR I) v`. Simplify using `only [p2, hp1add, hp1 _ hmem]`. Normalize the expressions using the abelian group laws. Establish `him : (Hf γ (tb hI t)).im = ∑ i, (Hf γ ((Ib hI i : IR I) : Vsp X.dim)).im * t i`. Rewrite using `[Hf_conj (tb hI t) γ, Complex.conj_im]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [tb]`. Rewrite using `[Hf_real_combination_left_im, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Hf_conj γ ((Ib hI i : IR I) : Vsp X.dim), Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : ∑ k, ((z (IR I) k γ).im : ℂ) * z (IR I) k (v + tb hI t) = ∑ k, ((z (IR I) k γ).im : ℂ) * z (IR I) k v + ((Hf γ (tb hI t)).im : ℂ)`. Rewrite using `[← sum_im_coord_mul hI γ hmem, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[hzadd, mul_add]`. Unfold `gaugeExp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hp2, hsplit, him]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gaugeExp_add_tb (hI : IsSplit P I) (γ v : Vsp X.dim) (t : Fin (Module.finrank ℝ (IR I)) → ℝ) :
     gaugeExp I γ (v + tb hI t) = gaugeExp I γ v -
@@ -165,13 +165,13 @@ theorem gaugeExp_add_tb (hI : IsSplit P I) (γ v : Vsp X.dim) (t : Fin (Module.f
   ring
 
 /- English proof (translation)
-Establish `hg : ∀ t : Fin (Module.finrank ℝ (IR I)) → ℝ, gaugeExp I γ (v + ∑ i, t i • ((Ib hI i : IR I) : Vsp X.dim)) = gaugeExp I γ v - 2 * Real.pi * Complex.I * ∑ i, ((m i : ℤ) : ℂ) * (t i : ℂ)`. Introduce `t`. Establish `h` using `gaugeExp_add_tb hI γ v t`. Simplify using `only [tb] at h`. Simplify using `only [h, hm, Complex.ofReal_intCast]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hN : ∀ t : Fin (Module.finrank ℝ (IR I)) → ℝ, ∑ i, (((n + m) i : ℤ) : ℂ) * (t i : ℂ) = ∑ i, ((n i : ℤ) : ℂ) * (t i : ℂ) + ∑ i, ((m i : ℤ) : ℂ) * (t i : ℂ)`. Introduce `t`. Simplify using `only [Pi.add_apply, Int.cast_add, add_mul, Finset.sum_add_distrib]`. Simplify using `only [zmC]`. Rewrite using `[← MeasureTheory.integral_const_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall (fun t => ?_))` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Establish `hv : v + γ + ∑ i, t i • ((Ib hI i : IR I) : Vsp X.dim) = (v + ∑ i, t i • ((Ib hI i : IR I) : Vsp X.dim)) + γ`. Normalize the expressions using the abelian group laws. Rewrite using `[hv, zmG_add hI hs hγ, hg t, hN t]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_add, neg_add, Complex.exp_add, Complex.exp_neg, Complex.exp_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem zmC_add (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1)
     {γ : Vsp X.dim} (hγ : γ ∈ X.L) (m : Fin (Module.finrank ℝ (IR I)) → ℤ)
@@ -202,29 +202,29 @@ theorem zmC_add (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s �
   ring
 
 /- English proof (translation)
-Establish `hx' : x ∈ X.L ∧ ∀ a ∈ I, (Hf x a).im = 0` using `hx`. Establish `hadd : ∀ a b c : Vsp X.dim, (Hf (a + b) c).im = (Hf a c).im + (Hf b c).im`. Introduce `a b c`. Simplify using `[Hf, add_mul, Finset.sum_add_distrib]`. Establish `hsmul : ∀ (r : ℝ) (a c : Vsp X.dim), (Hf (r • a) c).im = r * (Hf a c).im`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `r a c`. Simplify using `[Hf, Finset.mul_sum, mul_assoc]`. Establish `hzero : ∀ c : Vsp X.dim, (Hf 0 c).im = 0`. Introduce `c`. Simplify using `[Hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hIm : ∀ a ∈ IR I, (Hf a x).im = 0`. Introduce `a ha`. Express the relevant statement in the definitionally equal form `a ∈ Submodule.span ℝ (I : Set (Vsp X.dim)) at ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem b hb => rw [Hf_conj x b, Complex.conj_im, hx'.2 b hb, neg_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact hzero x`. Consider the case `add a b _ _ ha hb => rw [hadd, ha, hb, add_zero]`. Consider the case `smul r a _ ha => rw [hsmul, ha, mul_zero]`. Establish `hzx : ∀ k, (z (IR I) k x).im = 0`. Introduce `k`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hek : e (IR I) k ∈ IR I` using `(ob (IR I) k).2`. Simplify using `only [z]`. Rewrite using `[Hf_conj (e (IR I) k) x, Complex.conj_im, hIm _ hek, neg_zero]`. Establish `hg : ∀ w, gaugeExp I x w = Real.pi * Hf (p2 (IR I) w) (p2 (IR I) x) + Real.pi * Hf (p2 (IR I) x) (p2 (IR I) x) / 2`. Introduce `w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `gaugeExp`. Simplify using `only [hzx, Complex.ofReal_zero, zero_mul, mul_zero, Finset.sum_const_zero, neg_zero, zero_sub, sub_zero, zero_add]`. Apply the tactic sequence `try ring`. Establish `hzadd : ∀ k (a b : Vsp X.dim), z (IR I) k (a + b) = z (IR I) k a + z (IR I) k b`. Introduce `k a b`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[z, Hf, add_mul, Finset.sum_add_distrib]`. Establish `hcs : ∀ (r : ℝ) (a : Vsp X.dim), ((r : ℂ) • a) = r • a`. Introduce `r a`. Use extensionality with `i`. Simplify using `[Complex.real_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hp1 : ∀ w ∈ IR I, p1 (IR I) w = w`. Introduce `w hw`. Establish `hexp` using `congrArg Subtype.val ((ob (IR I)).sum_repr' ⟨w, hw⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_inner] at hexp`. Simplify using `only [p1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_rhs => rw [← hexp]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[z_of_K hI k hw, hcs]`. Apply the tactic sequence `all_goals rfl`. Establish `hp1add : ∀ a b : Vsp X.dim, p1 (IR I) (a + b) = p1 (IR I) a + p1 (IR I) b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a b`. Simplify using `only [p1, hzadd, add_smul, Finset.sum_add_distrib]`. Establish `hp2 : ∀ t : Fin (Module.finrank ℝ (IR I)) → ℝ, p2 (IR I) (v + ∑ i, t i • ((Ib hI i : IR I) : Vsp X.dim)) = p2 (IR I) v`. Introduce `t`. Establish `hmem : ∑ i, t i • ((Ib hI i : IR I) : Vsp X.dim) ∈ IR I` using `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Ib hI i).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Simplify using `only [p2, hp1add, hp1 _ hmem]`. Normalize the expressions using the abelian group laws. Simplify using `only [zmC]`. Rewrite using `[← MeasureTheory.integral_const_mul]`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall (fun t => ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try dsimp only`. Establish `hv : v + x + ∑ i, t i • ((Ib hI i : IR I) : Vsp X.dim) = (v + ∑ i, t i • ((Ib hI i : IR I) : Vsp X.dim)) + x`. Normalize the expressions using the abelian group laws. Rewrite using `[hv, zmG_add hI hs hx'.1, hg, hp2 t]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem zeroMode_add_lattice (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1)
     {x : Vsp X.dim} (hx : x ∈ Col.Ip X I) (v : Vsp X.dim) :

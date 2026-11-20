@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.SheafCycle
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.topologicalKrullDim_add_one_le_of_irreducible_ssubset T A B hA hAi hBi h`.
+A detailed English derivation is pending.
 -/
 theorem dim_add_one_le {T : Type} [TopologicalSpace T] {A B : Set T} (hA : IsClosed A)
     (hAi : IsIrreducible A) (hBi : IsIrreducible B) (h : A ⊂ B) :
@@ -30,7 +30,7 @@ theorem dim_add_one_le {T : Type} [TopologicalSpace T] {A B : Set T} (hA : IsClo
   GlobalTheory.T.topologicalKrullDim_add_one_le_of_irreducible_ssubset T A B hA hAi hBi h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.length_stalk_ne_infty_of_no_generization X F w h`.
+A detailed English derivation is pending.
 -/
 theorem length_stalk_ne_top {X : Scheme.{0}} [IsLocallyNoetherian X] (F : X.Modules)
     [QCoh.IsFiniteQC F] (w : X) (h : ∀ y ∈ QCoh.support F, w ∈ closure {y} → y = w) :
@@ -38,7 +38,7 @@ theorem length_stalk_ne_top {X : Scheme.{0}} [IsLocallyNoetherian X] (F : X.Modu
   GlobalTheory.T.length_stalk_ne_infty_of_no_generization X F w h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.length_stalk_reducedClosed_genericPoint_eq_rank X Z G`.
+A detailed English derivation is pending.
 -/
 theorem length_stalk_pushforward_generic {X : Scheme.{0}} (Z : Closeds X)
     [IsIntegral (Scheme.IdealSheafData.vanishingIdeal Z).subscheme]
@@ -49,11 +49,11 @@ theorem length_stalk_pushforward_generic {X : Scheme.{0}} (Z : Closeds X)
   GlobalTheory.T.length_stalk_reducedClosed_genericPoint_eq_rank X Z G
 
 /- English proof (translation)
-Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => exact WithBot.bot_lt_coe _`. Consider the case `coe a`. Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-It suffices to derive a contradiction. Establish `e : ((⊤ : ℕ∞) : WithBot ℕ∞) + 1 = ((⊤ + 1 : ℕ∞) : WithBot ℕ∞)` using `rfl`. Rewrite `h` using `[e, top_add]`. Establish `: ((⊤ : ℕ∞)) ≤ (n : ℕ∞)` using `by exact_mod_cast h`. Conclude with `ENat.natCast_ne_top n (top_le_iff.1 this)`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `coe m`. Establish `: ((m + 1 : ℕ) : WithBot ℕ∞) ≤ n` using `by exact_mod_cast h`. Establish `: m + 1 ≤ n` using `by exact_mod_cast this`. Conclude with `(by omega : m < n)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lt_of_add_one_le_natCast {a : WithBot ℕ∞} {n : ℕ} (h : a + 1 ≤ n) : a < n := by
   induction a using WithBot.recBotCoe with
@@ -76,7 +76,7 @@ open QCoh
 variable {κ : Type} [Field κ] {X : Scheme.{0}} [Algebra κ Γ(X, ⊤)]
 
 /- English proof (translation)
-Use `haveI := notMem_support_iff.1 h`. Conclude with `Module.length_eq_zero`.
+A detailed English derivation is pending.
 -/
 theorem length_stalk_eq_zero_of_notMem {F : X.Modules} {w : X} (h : w ∉ support F) :
     Module.length (X.presheaf.stalk w) (F.presheaf.stalk w :) = 0 := by
@@ -84,7 +84,7 @@ theorem length_stalk_eq_zero_of_notMem {F : X.Modules} {w : X} (h : w ∉ suppor
   exact Module.length_eq_zero
 
 /- English proof (translation)
-Rewrite using `[suppDim_eq_iSup_closure F]`. Conclude with `le_iSup₂ (f := fun x (_ : x ∈ support F) ↦ topologicalKrullDim (closure {x} : Set X)) w h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_closure_le_suppDim {F : X.Modules} [IsFiniteQC F] {w : X} (h : w ∈ support F) :
     topologicalKrullDim (closure {w} : Set X) ≤ suppDim F := by
@@ -92,9 +92,9 @@ theorem dim_closure_le_suppDim {F : X.Modules} [IsFiniteQC F] {w : X} (h : w ∈
   exact le_iSup₂ (f := fun x (_ : x ∈ support F) ↦ topologicalKrullDim (closure {x} : Set X)) w h
 
 /- English proof (translation)
-Introduce `y hy hwy`. Establish `hsub : closure {w} ⊆ closure {y}` using `isClosed_closure.closure_subset_iff.2 (Set.singleton_subset_iff.2 hwy)`. Distinguish the cases in `he : closure ({w} : Set X) = closure {y}`. Conclude with `(inseparable_iff_closure_eq.2 he.symm).eq`. Establish `h1` using `dim_add_one_le isClosed_closure isIrreducible_singleton.closure isIrreducible_singleton.closure (ssubset_of_subset_of_ne hsub he)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(dim_closure_le_suppDim hy).trans hd`. Rewrite `h1` using `[hw]`. Establish `h3 : ((n + 1 : ℕ) : WithBot ℕ∞) ≤ n` using `by push_cast; exact h1.trans h2`. Conclude with `absurd (by exact_mod_cast h3 : n + 1 ≤ n) (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_mem_closure {F : X.Modules} [IsFiniteQC F] {n : ℕ} (hd : suppDim F ≤ n) {w : X}
     (hw : topologicalKrullDim (closure {w} : Set X) = n) :
@@ -114,9 +114,9 @@ theorem eq_of_mem_closure {F : X.Modules} [IsFiniteQC F] {n : ℕ} (hd : suppDim
 variable (κ) in
 
 /- English proof (translation)
-Take `⟨_, A, hA⟩` from `isProper_and_exists_isAmpleLB_of_isProjOver hp`. Establish `: IsLocallyNoetherian X` using `(isNoetherian_of_isProjOver hp).toIsLocallyNoetherian`. Establish `hAV : IsAmpleLB (A.pull (redι C))` using `hA.pull_of_isClosedImmersion _`. Use `haveI : IsFiniteQC ((Scheme.Modules.pushforward (redι C)).obj (structureModule _)) := ProperFinite.isFiniteQC_pushforward (redι C) hAV _`. Use `interNum_eq_zero_of_isProjOver (algebraMap_eq_strHom κ X) _ hp ?_ hP` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_lt (topologicalKrullDim_mono ?_) hC` and prove the remaining obligations. Conclude with `(support_pushforward_subset_image_of_isClosedImmersion (redι C) _).trans ((Set.image_subset_range _ _).trans (range_redι C).le)`.
+A detailed English derivation is pending.
 -/
 theorem interNumRed_eq_zero (hp : IsProjOver (strHom κ X)) {ι : Type} [Fintype ι]
     {P : ι → LB X} (hP : ∀ i, (P i).IsLB) (C : Closeds X)
@@ -132,41 +132,33 @@ theorem interNumRed_eq_zero (hp : IsProjOver (strHom κ X)) {ι : Type} [Fintype
     ((Set.image_subset_range _ _).trans (range_redι C).le)
 
 /- English proof (translation)
-Introduce `κ _ X _ hp ι _ P hP F hF`. Establish `hf` using `algebraMap_eq_strHom κ X`. Use `haveI : AlgebraicGeometry.IsNoetherian X := isNoetherian_of_isProjOver hp`. Take `⟨_, A, hA⟩` from `isProper_and_exists_isAmpleLB_of_isProjOver hp`. Use `set n := Fintype.card ι with hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `term : X.Modules → X → ℤ` to `fun E w ↦ ((Module.length (X.presheaf.stalk w) (E.presheaf.stalk w :)).toNat : ℤ) * interNumRed κ (⟨closure {w}, isClosed_closure⟩ : Closeds _) P`. Establish `hsmall : ∀ (E : X.Modules) (w : X), topologicalKrullDim (closure ({w} : Set X)) < n → term E w = 0` using `fun E w h ↦ by`. Simplify using `only [term, interNumRed_eq_zero κ hp hP ⟨closure {w}, isClosed_closure⟩ h, mul_zero]`. Establish `hout : ∀ (E : X.Modules) (w : X), w ∉ support E → term E w = 0` using `fun E w h ↦ by`. Simplify using `only [term, length_stalk_eq_zero_of_notMem h, ENat.toNat_zero, Nat.cast_zero, zero_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the argument to an intermediate assertion.
 
-Set `Q : X.Modules → Prop` to `fun E ↦ suppDim E ≤ n → ∀ S : Finset X, (∀ w ∈ support E, topologicalKrullDim (closure ({w} : Set X)) = n → w ∈ S) → interNum κ E P = ∑ w ∈ S, term E w`. It suffices to establish `H : Q F from H`. Use `GlobalTheory.QCoh.devissage X Q ?_ ?_ ?_ F hF` and prove the remaining obligations. Introduce `E hE _ S _`. Rewrite using `[interNum_eq_zero_of_isZero κ hE hP]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.sum_eq_zero fun w _ ↦ hout E w ?_).symm` and prove the remaining obligations. Rewrite using `[support_eq_empty_iff.2 hE]`. Conclude with `Set.notMem_empty w`. Introduce `C hC h₁ h₃ Q₁ Q₃ hd S hS haveI := h₁ haveI := h₃ haveI := hC.mono_f haveI := hC.epi_g`. Establish `hd₁ : suppDim C.X₁ ≤ n` using `(suppDim_le_of_mono C.f).trans hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd₃ : suppDim C.X₃ ≤ n` using `(suppDim_le_of_epi C.g).trans hd`. Rewrite using `[interNum_shortExact hC hP (finiteCohTwists_of_isProjOver hf _ hp) (finiteCohTwists_of_isProjOver hf _ hp), Q₁ hd₁ S (fun w hw ↦ hS w (support_subset_of_mono C.f hw)), Q₃ hd₃ S (fun w hw ↦ hS w (support_subset_of_epi C.g hw)), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun w _ ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hw : topologicalKrullDim (closure ({w} : Set X)) < n`. Rewrite using `[hsmall _ _ hw, hsmall _ _ hw, hsmall _ _ hw, add_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hfin : ∀ (E : X.Modules) [IsFiniteQC E], suppDim E ≤ n → Module.length (X.presheaf.stalk w) (E.presheaf.stalk w :) ≠ ⊤` using `fun E _ hE ↦ by`. Distinguish the cases in `hm : w ∈ support E`. Establish `he : topologicalKrullDim (closure ({w} : Set X)) = n` using `le_antisymm ((dim_closure_le_suppDim hm).trans hE) (not_lt.1 hw)`. Conclude with `length_stalk_ne_top E w (eq_of_mem_closure hE he)`. Rewrite using `[length_stalk_eq_zero_of_notMem hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `ENat.zero_ne_top`. Establish `hex` using `Module.length_eq_add_of_exact (stalkLinear C.f w) (stalkLinear C.g w) (stalkLinear_injective C.f w) (stalkLinear_surjective C.g w) ((exact_iff_stalkLinear C).1 hC.exact w)`. Simplify using `only [term]`. Rewrite using `[hex, ENat.toNat_add (hfin C.X₁ hd₁) (hfin C.X₃ hd₃)]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `Z hZ hsm G hG hd S hS haveI := hG haveI := isIntegral_red hZ`. Establish `hAV : IsAmpleLB (A.pull (redι Z))` using `hA.pull_of_isClosedImmersion _`. Use `haveI hFq : IsFiniteQC ((Scheme.Modules.pushforward (redι Z)).obj G) := ProperFinite.isFiniteQC_pushforward (redι Z) hAV G`. Establish `hsupp : support ((Scheme.Modules.pushforward (redι Z)).obj G) ⊆ (Z : Set X)` using `(support_pushforward_subset_image_of_isClosedImmersion (redι Z) G).trans ((Set.image_subset_range _ _).trans (range_redι Z).le)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `hss : support ((Scheme.Modules.pushforward (redι Z)).obj G) = (Z : Set X)`. Use `swap`. Conclude with `hsm _ hFq (ssubset_of_subset_of_ne hsupp hss) hd S hS`. Establish `hdZ : topologicalKrullDim (Z : Set X) ≤ n`. Rewrite using `[← hss]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `hd`. Establish `hlt : ∀ w ∈ support ((Scheme.Modules.pushforward (redι Z)).obj G), closure ({w} : Set X) ≠ Z → topologicalKrullDim (closure ({w} : Set X)) < n`. Introduce `w hw hne`. Establish `hwZ : closure ({w} : Set X) ⊆ Z` using `Z.isClosed.closure_subset_iff.2 (Set.singleton_subset_iff.2 (hsupp hw))`. Establish `h1` using `dim_add_one_le isClosed_closure isIrreducible_singleton.closure hZ (ssubset_of_subset_of_ne hwZ hne)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_add_one_le_natCast (h1.trans hdZ)`. Break down `lt_or_eq_of_le hdZ with hZlt | hZeq` into its components or cases. Rewrite using `[interNum_eq_zero_of_isProjOver hf _ hp (by rw [suppDim, hss]; exact hZlt) hP]`. Use `(Finset.sum_eq_zero fun w _ ↦ ?_).symm` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ support ((Scheme.Modules.pushforward (redι Z)).obj G)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hsmall _ _ (lt_of_le_of_lt (topologicalKrullDim_mono ?_) hZlt)` and prove the remaining obligations. Conclude with `Z.isClosed.closure_subset_iff.2 (Set.singleton_subset_iff.2 (hsupp hw))`. Conclude with `hout _ _ hw`. Use `set η := redι Z (genericPoint (Scheme.IdealSheafData.vanishingIdeal Z).subscheme) with hη`. Establish `hcl : closure ({η} : Set X) = Z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hη, ← Set.image_singleton, (redι Z).isClosedEmbedding.closure_image_eq, (genericPoint_spec _).def, Set.image_univ, range_redι]`. Establish `hηs : η ∈ support ((Scheme.Modules.pushforward (redι Z)).obj G)`. Rewrite using `[hss]`. Conclude with `(range_redι Z).le ⟨_, rfl⟩`. Rewrite using `[Finset.sum_eq_single_of_mem η (hS η hηs (by rw [hcl]; exact hZeq)) fun w _ hne ↦ ?_]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `swap`. Distinguish the cases in `hw : w ∈ support ((Scheme.Modules.pushforward (redι Z)).obj G)`. Use `hsmall _ _ (hlt w hw fun e ↦ hne ?_)` and prove the remaining obligations. Conclude with `(inseparable_iff_closure_eq.2 (e.trans hcl.symm)).eq`. Conclude with `hout _ _ hw`.
-
-Simplify using `only [term]`. Rewrite using `[length_stalk_pushforward_generic Z G, ENat.toNat_natCast]`. Establish `hC : (⟨closure {η}, isClosed_closure⟩ : Closeds X) = Z` using `Closeds.ext hcl`. Rewrite using `[hC]`. Use `letI : Algebra κ Γ((Scheme.IdealSheafData.vanishingIdeal Z).subscheme, ⊤) := algebraΓOfHom (redι Z ≫ strHom κ X)`.
-
-Establish `hfZ : ∀ r : κ, (redι Z).appTop (algebraMap κ Γ(X, ⊤) r) = algebraMap κ Γ((Scheme.IdealSheafData.vanishingIdeal Z).subscheme, ⊤) r` using `fun r ↦ by`. Rewrite using `[hf r]`. Both sides reduce to the same expression. Establish `hstr : strHom κ (Scheme.IdealSheafData.vanishingIdeal Z).subscheme = redι Z ≫ strHom κ X` using `strHom_eq fun _ ↦ rfl`. Establish `hpZ : IsProjOver (strHom κ (Scheme.IdealSheafData.vanishingIdeal Z).subscheme)`.
-
-Rewrite using `[hstr]`. Conclude with `ProjSpace.isProjOver_comp_of_isClosedImmersion _ hp`. Establish `hdimZ : topologicalKrullDim (Scheme.IdealSheafData.vanishingIdeal Z).subscheme ≤ (Fintype.card ι : ℕ)`. Rewrite using `[topologicalKrullDim_red]`. Conclude with `hdZ`.
-
-Rewrite using `[interNum_pushforward_of_isClosedImmersion hfZ G hP, GlobalTheory.T.lineBundleIntersectionNumber_eq_genericRank_mul κ _ hpZ ι hdimZ G _ (fun i ↦ pull_isLB (hP i) _), interNumRed_def, interNumSub_def, interNumOn_def, interNum_pushforward_of_isClosedImmersion hfZ _ hP]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interNum_eq_sum_length_mul_interNumRed : ∀ (κ : Type) [Field κ] (X : Scheme.{0}) [Algebra κ Γ(X, ⊤)], IsProjOver (strHom κ X) → ∀ (ι : Type) [Fintype ι] (P : ι → LB X), (∀ i, (P i).IsLB) → ∀ (F : X.Modules) [GlobalTheory.QCoh.IsFiniteQC F], GlobalTheory.QCoh.suppDim F ≤ (Fintype.card ι : ℕ) → ∀ S : Finset X, (∀ w ∈ GlobalTheory.QCoh.support F, topologicalKrullDim (closure ({w} : Set X)) = (Fintype.card ι : ℕ) → w ∈ S) → interNum κ F P = ∑ w ∈ S, ((Module.length (X.presheaf.stalk w) (F.presheaf.stalk w :)).toNat : ℤ) * interNumRed κ (⟨closure {w}, isClosed_closure⟩ : Closeds _) P := by
   intro κ _ X _ hp ι _ P hP F hF

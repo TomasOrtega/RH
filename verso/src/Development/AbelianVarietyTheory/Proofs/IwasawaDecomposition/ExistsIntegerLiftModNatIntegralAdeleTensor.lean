@@ -8,17 +8,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.LiftModG
 
 /- English proof (translation)
-Introduce `D X s hs`. Establish `hg : X.B.g ≠ 0`. Rewrite using `[X.g_eq]`. Conclude with `Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`. Use `set I : Ideal (𝓞 X.B.I.E) := Ideal.span {((X.B.g : ℕ) : 𝓞 X.B.I.E)} with hI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hI0 : I ≠ ⊥`. Rewrite using `[hI, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hg` after adjusting the coercions. Take `⟨q, hq⟩` from `cmpS_surj (F := X.B.I.F) I hI0 (Ideal.Quotient.mk _ ⟨s, hs⟩)`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Ideal.Quotient.mk (idS X.B.I.F I) (oToS X.B.I.F X.B.I.E a) = Ideal.Quotient.mk _ ⟨s, hs⟩` using `hq`. Rewrite `h1` using `[Ideal.Quotient.eq]`. Establish `h2 : (⟨s, hs⟩ - oToS X.B.I.F X.B.I.E a) ∈ Ideal.span {oToS X.B.I.F X.B.I.E ((X.B.g : ℕ) : 𝓞 X.B.I.E)}`. Use `(Ideal.neg_mem_iff _).2 h1` as an intermediate fact. Rewrite `this` using `[neg_sub]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[idS, hI, Ideal.map_span]`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 h2`. Use `⟨RingOfIntegers.mapRingEquiv X.ιE a, t, t.2, ?_⟩` and prove the remaining obligations. Establish `e1 : X.ιE.symm ((RingOfIntegers.mapRingEquiv X.ιE a : 𝓞 D.host.E) : D.host.E) = (a : X.B.I.E)`. Rewrite using `[RingOfIntegers.mapRingEquiv_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `X.ιE.symm_apply_apply _`. Rewrite using `[e1]`. Use `congrArg (fun y : Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E => (y : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F)) ht` as an intermediate fact. Simplify using `only [Subring.coe_mul, AddSubgroupClass.coe_sub, map_natCast, Subring.coe_natCast] at this`. Rewrite `this` using `[mul_comm]`.
-
-Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_mod_g : ∀ (D : D7) (X : HidaSetting D) (s : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F), s ∈ Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E → ∃ α : 𝓞 D.host.E, ZMod' X.B.I X.B.g (s - Formalism.UG.inclE (F := X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) (X.ιE.symm (α : D.host.E))) := by
   intro D X s hs

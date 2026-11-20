@@ -93,9 +93,9 @@ def FamilyStatementAtConstants (CB C : ℝ) : Prop := AdmF Fm CB → FamilyTarge
 end Family
 
 /- English proof (translation)
-Unfold `Big at *`. Establish `hp : 0 ≤ ((L.r : ℝ) + 1) ^ 4 * ((N : ℝ) * ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 2 + ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 3)` using `by positivity`. Establish `hle : C * ((L.r : ℝ) + 1) ^ 4 * ((N : ℝ) * ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 2 + ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 3) ≤ C' * ((L.r : ℝ) + 1) ^ 4 * ((N : ℝ) * ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 2 + ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 3)`. Rewrite using `[mul_assoc, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right h hp`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hle.trans hB.1, hle.trans hB.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem big_mono {C C' : ℝ} (h : C ≤ C') {L : Lev} {N : ℕ} {A : ℝ} {mm : ℕ} (hB : Big C' L N A mm) :
     Big C L N A mm := by

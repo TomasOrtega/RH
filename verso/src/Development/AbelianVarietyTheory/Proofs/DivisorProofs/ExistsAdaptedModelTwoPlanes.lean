@@ -16,17 +16,17 @@ namespace GlobalTheory.ThK.AdaptEv
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨ei, hne, hei⟩` from `GlobalTheory.T.extend_by_zero_restriction_nonzero_continuous F eq`. Use `⟨GlobalTheory.T.restriction_preserves_adelic_schwartz F eq, ?_, ?_, ⟨ei, fun _ => restrL eq, hne, fun v => ⟨?_, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Introduce `z Φ _`. Use function extensionality and compare the values at `y`. Simplify using `only [restrL_apply, Darboux.rho, schr, h1 z]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[dotProduct_ext0, dotProduct_ext0, ← matrixExtendByZero_add]`. Introduce `u hu Φ _`. Use function extensionality and compare the values at `y`. Take `⟨hu1, hu2⟩` from `h2 u hu`. Simplify using `only [restrL_apply, Darboux.rho, schr, hu1, ext0_dotProduct_of eq y _ hu2, add_zero, zero_dotProduct, mul_zero, AddChar.map_zero_eq_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[restrL_apply, hv, prodVac_ext0, (hA v).2, one_mul]`. Use `le_antisymm (Submodule.map_le_iff_le_comap.2 fun g hg => (GlobalTheory.T.schwartz_bruhat_restriction_and_product eq).1 g hg) fun φ hφ => ?_` and prove the remaining obligations. Use `⟨prodVac eq (A v) φ, (GlobalTheory.T.schwartz_bruhat_restriction_and_product eq).2 _ (hA v).1 φ hφ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show restrL eq _ y = _`. Rewrite using `[restrL_apply, prodVac_ext0, (hA v).2, one_mul]`. Introduce `f φ _ _`. Use function extensionality and compare the values at `y`. Establish `hc : ∀ {S : Type} [Zero S] (g : AF F → S), g 0 = 0 → (fun k => g (ext0 eq y k)) = ext0 eq (fun i => g (y i))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S _ g hg`. Use function extensionality and compare the values at `k`. Simplify using `only [ext0]`. Apply the tactic sequence `cases eq k <;> simp [hg]`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ (ext0 eq y) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei f) (fun v => restrL eq (φ v)) y`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, hei, restrL_apply]`. Rewrite using `[hc (evI F) (map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F))]`. Use `congr 1`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[hc (evFin F v) (map_zero _)]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEv_restrL (B : Base F E) {n d n₁ d₁ m : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁}
     {W₁ : Spc F E d₁} (Ma : Model σ X W) (M₁ : Model σ X₁ W₁) (ι₀ : Matrix (Fin n) (Fin n₁) E)
@@ -78,9 +78,9 @@ end GlobalTheory.ThK.AdaptEv
 open GlobalTheory.ThK.AdaptEv in
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ H H' M M₁ hB hX hW hM hH hH' hM₁`. Take `⟨co, eq, hrat, h1, h2, h2'⟩` from `GlobalTheory.T.adapted_planes_double_restriction_model F E σ B n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ H H' M₁ hB hX hW hH hH' hM₁`. Take `⟨A, hA, hstd⟩` from `GlobalTheory.T.adapted_planes_darboux_reordering F E σ B n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ H H' M₁ co eq hB hX hW hH hH' hM₁ hrat h1 h2 h2'`. Set `Ma : Model σ X W` to `⟨co, fun v => prodVac eq (A v) (M₁.vac v), M.μ, M.dom⟩`. Use `⟨Ma, restrL eq, ⟨hrat, fun v => (hA v).2.2, ?_, hM.haar, hM.dom⟩, isEv_restrL B Ma M₁ H.ι H'.ι (isoA H H') eq A h1 h2 (fun v => ⟨(hA v).1, (hA v).2.1⟩) fun _ => rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hstd, hM₁.std] with v hv hv₁`. Use `show prodVac eq (A v) (M₁.vac v) = _`. Rewrite using `[hv, hv₁]`. Conclude with `prodVac_indicator eq (v.adicCompletionIntegers F : Set (Fv F v))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.AdaptEv.exists_isEv_isoA : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (H : Plane E n n₁)

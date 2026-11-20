@@ -17,13 +17,13 @@ section Low
 variable {X : Type*} [AddCommGroup X] [Module ℂ X] {ε : Fin n → Bool} {A : Fin n → Fin n → Module.End ℂ X}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => by rw [map_smul, h.1 a, smul_comm], fun a b h1 h2 => by rw [map_smul, h.2 a b h1 h2, smul_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem dot_add_right_alt (c : ℂ) {μ : Fin n → ℝ} {v : X} (h : IsKHWVec ε A μ v) : IsKHWVec ε A μ (c • v) :=
   ⟨fun a => by rw [map_smul, h.1 a, smul_comm], fun a b h1 h2 => by rw [map_smul, h.2 a b h1 h2, smul_zero]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => by rw [map_sub, hv.1 a, hw.1 a, smul_sub], fun a b h1 h2 => by rw [map_sub, hv.2 a b h1 h2, hw.2 a b h1 h2, sub_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem highestWeight_sub {μ : Fin n → ℝ} {v w : X} (hv : IsKHWVec ε A μ v) (hw : IsKHWVec ε A μ w) :
     IsKHWVec ε A μ (v - w) :=
@@ -35,7 +35,7 @@ variable (hK : ∀ a b c d, ε a = ε b → ε c = ε d →
 include hK
 
 /- English proof (translation)
-The claim follows from `| [], _, a => by simpa [lowWord, lowWt] using hy a | p :: l, hl, a => by obtain ⟨c, d⟩ := p have hcd : IsKLow ε (c, d) := hl _ (List.mem_cons_self ..) have hl' : ∀ p ∈ l, IsKLow ε p := fun p hp => hl p (List.mem_cons_of_mem _ hp) have h := congrArg (fun Y : Module.End ℂ X => Y (l …`.
+A detailed English derivation is pending.
 -/
 theorem loweringWord_weight {μ : Fin n → ℝ} {y : X} (hy : ∀ a, A a a y = (μ a : ℂ) • y) :
     ∀ (l : List (Fin n × Fin n)), (∀ p ∈ l, IsKLow ε p) → ∀ (a : Fin n),
@@ -64,9 +64,9 @@ theorem loweringWord_weight {μ : Fin n → ℝ} {y : X} (hy : ∀ a, A a a y = 
     · simp [hac, had, Ne.symm had]
 
 /- English proof (translation)
-Establish `: kLowSpan ε A y ≤ (kLowSpan ε A y).comap (A a a)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨l, hl, rfl⟩`. Use `show A a a (lowWord A y l) ∈ kLowSpan ε A y`. Rewrite using `[loweringWord_weight hK hy l hl a]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `Submodule.smul_mem _ _ (lowWord_mem hl)`. Conclude with `fun x hx => this hx`.
+A detailed English derivation is pending.
 -/
 theorem loweringSpan_diag_stable {μ : Fin n → ℝ} {y : X} (hy : ∀ a, A a a y = (μ a : ℂ) • y)
     (a : Fin n) : ∀ x ∈ kLowSpan ε A y, A a a x ∈ kLowSpan ε A y := by
@@ -79,7 +79,7 @@ theorem loweringSpan_diag_stable {μ : Fin n → ℝ} {y : X} (hy : ∀ a, A a a
   exact fun x hx => this hx
 
 /- English proof (translation)
-Break down `hab.lt_or_eq with h | rfl` into its components or cases. Conclude with `kLowSpan_low_stable (c := a) (d := b) ⟨h, hε⟩ _ (lowWord_mem hl)`. Conclude with `loweringSpan_diag_stable hK hy b _ (lowWord_mem hl)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem loweringWord_mem_span_of_ge {μ : Fin n → ℝ} {y : X} (hy : ∀ a, A a a y = (μ a : ℂ) • y)
     {l : List (Fin n × Fin n)} (hl : ∀ p ∈ l, IsKLow ε p) {a b : Fin n} (hab : b ≤ a) (hε : ε a = ε b) :
@@ -89,7 +89,7 @@ theorem loweringWord_mem_span_of_ge {μ : Fin n → ℝ} {y : X} (hy : ∀ a, A 
   · exact loweringSpan_diag_stable hK hy b _ (lowWord_mem hl)
 
 /- English proof (translation)
-The claim follows from `| [], _, a, b, hab, hε => by simp only [lowWord] rw [hy.2 a b hab hε] exact Submodule.zero_mem _ | p :: l, hl, a, b, hab, hε => by obtain ⟨c, d⟩ := p have hcd : IsKLow ε (c, d) := hl _ (List.mem_cons_self ..) have hl' : ∀ p ∈ l, IsKLow ε p := fun p hp => hl p (List.mem_cons_of_me …`.
+A detailed English derivation is pending.
 -/
 theorem loweringWord_raise_mem_span {μ : Fin n → ℝ} {y : X} (hy : IsKHWVec ε A μ y) :
     ∀ (l : List (Fin n × Fin n)), (∀ p ∈ l, IsKLow ε p) → ∀ a b : Fin n, a < b → ε a = ε b →
@@ -122,9 +122,9 @@ theorem loweringWord_raise_mem_span {μ : Fin n → ℝ} {y : X} (hy : IsKHWVec 
       · simp
 
 /- English proof (translation)
-Introduce `a b hab`. Break down `lt_or_ge a b with h | h` into its components or cases. Establish `: kLowSpan ε A y ≤ (kLowSpan ε A y).comap (A a b)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨l, hl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `loweringWord_raise_mem_span hK hy l hl a b h hab`. Conclude with `fun x hx => this hx`. Break down `h.lt_or_eq with h | rfl` into its components or cases. Conclude with `kLowSpan_low_stable ⟨h, hab⟩`. Conclude with `loweringSpan_diag_stable hK hy.1 b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem loweringSpan_kStable {μ : Fin n → ℝ} {y : X} (hy : IsKHWVec ε A μ y) :
     IsKStableSub ε A (kLowSpan ε A y) := by
@@ -144,16 +144,16 @@ end Low
 section Weights
 
 /- English proof (translation)
-Unfold `dot`. Simplify using `[mul_add, sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem highestWeight_smul (u v w : Fin n → ℝ) : dot u (v + w) = dot u v + dot u w := by
   unfold dot
   simp [mul_add, sum_add_distrib]
 
 /- English proof (translation)
-Unfold `dot phSum`. Simplify using `only [Finset.sum_apply, mul_sum]`. Rewrite using `[sum_comm]`. Use `sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `Lap.LemK.cone_norm_dot_root lam x.1 x.2 1` as an intermediate fact.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dot_positiveRootSum (lam : Fin n → ℝ) (Ph : Finset (Fin n × Fin n)) :
     dot lam (phSum Ph) = ∑ x ∈ Ph, (lam x.1 - lam x.2) := by
@@ -165,7 +165,7 @@ theorem dot_positiveRootSum (lam : Fin n → ℝ) (Ph : Finset (Fin n × Fin n))
   simpa using this
 
 /- English proof (translation)
-Unfold `nsq dot`. Conclude with `sum_nonneg fun i _ => mul_self_nonneg (u i)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem normSq_nonneg_alt (u : Fin n → ℝ) : 0 ≤ nsq u := by
   unfold nsq dot
@@ -178,31 +178,31 @@ section Form
 variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M]
 
 /- English proof (translation)
-Establish `hfun : (fun a b => TensorProduct.map (E a b) LinearMap.id + LinearMap.lTensor M (sgE ε cpFock cmFock a b)) = diagE ε (eT E) cpT cmT`. Use function extensionality and compare the values at `a b`. Rewrite using `[diagE, signedAction_tensor]`. Both sides reduce to the same expression. Establish `hy'` using `hy`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `hy'` using `[← hfun]`. Take `⟨s, hs0, hsK⟩` from `khw_extract ε hlam hy' hy0`. Establish `hsP : s ⊆ lfPhysModes ε` using `support_subset_physicalModes hyP hs0`. Establish `hwM : tcoef ((fockBasis n).coord s) y ∈ genSub E V` using `tcoef_mem hyT _`. Establish `hν` using `hcone _ _ hwM hs0 hsK`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPh : IsPosNC ε (gcPh ε s)` using `gc_isPosNC ε hsP`. Establish `hwt : fockWt ε s = rhoHol ε - rhoN ε + phSum (gcPh ε s)` using `gc_wt_eq ε hsP`. Establish `hcasT : casimir (eT (n` using `n) E) y = ((casVal lam : ℝ) : ℂ) • y := by`. Rewrite using `[ssh_casimir_eT]`. Take `⟨x, rfl⟩` from `hyT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcomp : casimir E ∘ₗ (genSub E V).subtype = ((casVal lam : ℝ) : ℂ) • (genSub E V).subtype`. Use extensionality with `v`. Simplify using `[hcas v v.2]`. Rewrite using `[← LinearMap.comp_apply, ← TensorProduct.map_comp, LinearMap.id_comp, hcomp, TensorProduct.map_smul_left, LinearMap.smul_apply]`. Establish `hKv : IsKHWVec ε (diagE ε (eT E) cpT cmT) ((μ - rhoHol ε) + rhoHol ε) y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_add_cancel]`. Conclude with `hy`. Establish `h2` using `two_D_sq_khw (eT_isGlRep hE) cpT_cmT_isCAR (eT_commutesCAR E) hKv hcasT`. Rewrite `h2` using `[Module.End.mul_apply, hyD, map_zero, smul_zero]`. Establish `hc0` using `(smul_eq_zero.mp h2.symm).resolve_right hy0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hreal : nsq (μ - rhoHol ε + rhoC ε) = nsq lam`. Establish `h3 : nsq (μ - rhoHol ε + rhoC ε) - nsq (rho n) - casVal lam = 0` using `by exact_mod_cast hc0`. Unfold `casVal at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsplit : μ - rhoHol ε + rhoC ε = lam + ((μ - fockWt ε s - lowK ε lam) + phSum (gcPh ε s))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hwt]`. Use function extensionality and compare the values at `a`. Simplify using `only [lowK, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hreal` using `[hsplit, carU_nsq_add, highestWeight_smul, dot_positiveRootSum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdb : 0 ≤ dot lam (μ - fockWt ε s - lowK ε lam)` using `Lap.LemK.cone_norm_dot_nonneg lam _ hlam.antitone hν`. Establish `hdp : 0 ≤ ∑ x ∈ gcPh ε s, (lam x.1 - lam x.2)` using `sum_nonneg fun x hx => sub_nonneg.2 (hlam.antitone (hPh x hx).1.le)`. Establish `hnn` using `normSq_nonneg_alt ((μ - fockWt ε s - lowK ε lam) + phSum (gcPh ε s))`. Establish `hPh0 : gcPh ε s = ∅`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: 0 < ∑ x ∈ gcPh ε s, (lam x.1 - lam x.2)` using `sum_pos (fun x hx => sub_pos.2 (hlam (hPh x hx).1)) (nonempty_iff_ne_empty.2 hne)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hγ : (μ - fockWt ε s - lowK ε lam) + phSum (gcPh ε s) = 0` using `Lap.LemK.cone_norm_eq_zero _ (by linarith)`. Establish `hp0 : phSum (gcPh ε s) = 0` using `by rw [hPh0]; simp [phSum]`. Rewrite `hγ` using `[hp0, add_zero]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hwt` using `[hp0, add_zero]`. Establish `hss : s = sIdx ε` using `by rw [sIdx_eq]; exact gc_Ph_empty hPh0`. Establish `hμ : μ = gaW ε lam`. Use function extensionality and compare the values at `a`. Establish `ha` using `congrFun hγ a`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw` using `congrFun hwt a`. Simplify using `only [gaW, lowK, Pi.sub_apply, Pi.add_apply, Pi.zero_apply] at ha hw ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Substitute `hss` using the available equality. Use `⟨hμ, hs0, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hwt2 : μ - fockWt ε (sIdx ε) = lowK ε lam`. Rewrite using `[hwt, hμ]`. Use function extensionality and compare the values at `a`. Simplify using `only [gaW, lowK, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hwt2]`. Conclude with `hsK`.
+A detailed English derivation is pending.
 -/
 theorem highestWeight_extraction {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : StrictAnti lam)
     {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E) {V : Submodule ℂ M}
@@ -281,13 +281,13 @@ theorem highestWeight_extraction {ε : Fin n → Bool} {lam : Fin n → ℝ} (hl
   exact hsK
 
 /- English proof (translation)
-Distinguish the cases in `hy0 : y = 0`. Conclude with `⟨0, by rw [hy0, zero_smul]⟩`. Take `⟨hμ, hy1, hyK⟩` from `highestWeight_extraction hlam hE hcone hcas hyT hyP hyD hy0 hy`. Take `⟨hν, hz1, hzK⟩` from `highestWeight_extraction hlam hE hcone hcas hzT hzP hzD hz0 hz`. Take `⟨c, hc⟩` from `khw_line_of_irr hE hU hV (hlowK _ (tcoef_mem hyT _) hyK) (hlowK _ (tcoef_mem hzT _) hzK) hyK hzK hz1`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hd0 : y - c • z ≠ 0` using `sub_ne_zero.2 hne`. Rewrite `hy` using `[hμ]`. Rewrite `hz` using `[hν]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hK` using `highestWeight_sub hy (dot_add_right_alt c hz)`. Establish `hDd : (dOp ε (eT E) cpT + dOp' ε (eT E) cmT) (y - c • z) = 0`. Rewrite using `[map_sub, map_smul, hyD, hzD, smul_zero, sub_zero]`. Use `highestWeight_extraction hlam hE hcone hcas (sub_mem hyT (Submodule.smul_mem _ _ hzT)) (sub_mem hyP (Submodule.smul_mem _ _ hzP)) hDd hd0 hK` as an intermediate fact. Apply `this.2.1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show tcoef ((fockBasis n).coord (sIdx ε)) (y - c • z) = 0`. Rewrite using `[map_sub, map_smul]`. Conclude with `sub_eq_zero.2 hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem highestWeight_uniqueness {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : StrictAnti lam)
     {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E) (hU : IsInfUnitary ε E) {V : Submodule ℂ M}

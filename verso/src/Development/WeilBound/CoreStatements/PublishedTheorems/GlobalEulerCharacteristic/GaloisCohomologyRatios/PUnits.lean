@@ -11,9 +11,9 @@ variable {K L : FiniteSubfield} [Fact (K ≤ L)] {S : Set (HeightOneSpectrum (�
   (hL : ∀ x : L.1, algebraMap L.1 ℚ̄ x ∈ maxUnramifiedOutside K.1 ℚ̄ S) [Normal K.1 L.1]
 
 /- English proof (translation)
-Establish `h : LinearMap.range (LinearMap.lsmul ℤ A (n : ℤ)) ≤ (LinearMap.range (LinearMap.lsmul ℤ B (n : ℤ))).comap e.toIntLinearEquiv.toLinearMap`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨e y, by simp⟩`. Use `Finite.of_surjective (Submodule.mapQ _ _ e.toIntLinearEquiv.toLinearMap h) fun q => ?_` and prove the remaining obligations. Proceed by induction on `q using Submodule.Quotient.induction_on with`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `H b => exact ⟨Submodule.Quotient.mk (e.symm b), by simp⟩`.
+Treat this case separately.
 -/
 theorem units_finite_modN_of_addEquiv {A B : Type*} [AddCommGroup A] [AddCommGroup B] (e : A ≃+ B) (n : ℕ)
     [Finite (ModN A n)] : Finite (ModN B n) := by
@@ -26,9 +26,9 @@ theorem units_finite_modN_of_addEquiv {A B : Type*} [AddCommGroup A] [AddCommGro
   | H b => exact ⟨Submodule.Quotient.mk (e.symm b), by simp⟩
 
 /- English proof (translation)
-Use `Finite.of_surjective (fun x : TorsN A n => (⟨e x.1, by` and prove the remaining obligations. Establish `hx` using `(mem_ker_lsmul_iff n (x : A)).1 x.2`. Conclude with `(mem_ker_lsmul_iff n (e x.1)).2 (by rw [← map_nsmul, hx, map_zero])⟩ : TorsN B n)) fun y => ?_`. Use `⟨⟨e.symm y.1, (mem_ker_lsmul_iff n _).2 ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_nsmul, (mem_ker_lsmul_iff n (y : B)).1 y.2, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem units_finite_torsN_of_addEquiv {A B : Type*} [AddCommGroup A] [AddCommGroup B] (e : A ≃+ B) (n : ℕ)
     [Finite (TorsN A n)] : Finite (TorsN B n) := by
@@ -40,11 +40,9 @@ theorem units_finite_torsN_of_addEquiv {A B : Type*} [AddCommGroup A] [AddCommGr
   · ext; simp
 
 /- English proof (translation)
-Establish `: NeZero ℓ` using `⟨(Fact.out : ℓ.Prime).ne_zero⟩`. Use `haveI : Finite (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))) := finite_placesOver (L := L.1) (S := S)`. Use `haveI : Finite (ModN (Additive ((placesOver S : Set (HeightOneSpectrum (𝓞 L.1))).unit L.1)) ℓ) := units_finite_modN_of_addEquiv (gsH0SUnitsEquiv hL) ℓ`. Use `haveI : Finite (TorsN (Additive ((placesOver S : Set (HeightOneSpectrum (𝓞 L.1))).unit L.1)) ℓ) := units_finite_torsN_of_addEquiv (gsH0SUnitsEquiv hL) ℓ`. Establish `hU` using `conj_gsH0SUnits_eq hL d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hg : (letI` using `actA hL 0; d.g (AA hL 0)) = dMod hL d 0 - dTors hL d 0 := by`. Use `letI := actA hL 0`. Conclude with `d.g_eq _`. Establish `hS` using `d.g_sUnits (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))) (placesOver_stable (S := S) (K := K) (L := L))`. Rewrite using `[← hg]`.
-
-Conclude with `hU.trans hS`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem S_units_euler_difference [Finite S] (d : AdditiveFunction.{0} ℓ (L.1 ≃ₐ[K.1] L.1))
     [Finite (ModN (AA hL 0) ℓ)] [Finite (TorsN (AA hL 0) ℓ)] :
@@ -65,9 +63,9 @@ theorem S_units_euler_difference [Finite S] (d : AdditiveFunction.{0} ℓ (L.1 �
   exact hU.trans hS
 
 /- English proof (translation)
-Establish `: NeZero ℓ` using `⟨(Fact.out : ℓ.Prime).ne_zero⟩`. Use `letI := actA hL 1`. Use `haveI : Finite (AA hL 1) := finite_gsH1SUnits hL`. Establish `h1` using `d.g_eq_zero_of_finite (AA hL 1)`. Rewrite `h1` using `[d.g_eq (AA hL 1)]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `dMod dTors`. Conclude with `sub_eq_zero.1 h1`.
+A detailed English derivation is pending.
 -/
 theorem class_group_mod_eq_torsion [Finite S] (d : AdditiveFunction.{0} ℓ (L.1 ≃ₐ[K.1] L.1))
     [Finite (ModN (AA hL 1) ℓ)] [Finite (TorsN (AA hL 1) ℓ)] :

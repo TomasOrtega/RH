@@ -15,25 +15,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.CompanionTheory.Ar.LocalFrames
 
 /- English proof (translation)
-Introduce `X Ω _ ξ E _ _ L V' p g b S h hspan hL hI`. Use `haveI hfr : IsFractionRing (regAt ξ p) Ω := (RegAtRing.regAt_ring X Ω ξ h p).1`. Establish `sm : ∀ (c : regAt ξ p) {m : E}, m ∈ L p → (c : Ω) • m ∈ L p` using `fun c _ hm => (L p).smul_mem c hm`. Establish `key : ∀ x : E, ∃ d : regAt ξ p, (d : Ω) ≠ 0 ∧ (d : Ω) • x ∈ L p`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx : x ∈ Submodule.span Ω (Set.range b)` using `hspan ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Use `⟨1, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[hL]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Submodule.subset_span hy`. Consider the case `zero => exact ⟨1, by simp, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨d, hd, hdy⟩` from `hy`. Take `⟨e, he, hez⟩` from `hz`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d * e, by rw [Subring.coe_mul]; exact mul_ne_zero hd he, ?_⟩` and prove the remaining obligations. Establish `: ((d * e : regAt ξ p) : Ω) • (y + z) = (e : Ω) • ((d : Ω) • y) + (d : Ω) • ((e : Ω) • z)`. Simplify using `only [Subring.coe_mul, smul_add, smul_smul, mul_comm]`. Rewrite using `[this]`. Conclude with `(L p).add_mem (sm e hdy) (sm d hez)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul a y _ hy`. Take `⟨d, hd, hdy⟩` from `hy`. Take `⟨u, v, hv, rfl⟩` from `IsFractionRing.div_surjective (A := regAt ξ p) a`. Establish `hv0 : (v : Ω) ≠ 0`. Use `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (K := Ω) hv` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. Use `⟨v * d, by rw [Subring.coe_mul]; exact mul_ne_zero hv0 hd, ?_⟩` and prove the remaining obligations. Establish `: ((v * d : regAt ξ p) : Ω) • ((algebraMap (regAt ξ p) Ω u / algebraMap (regAt ξ p) Ω v) • y) = (u : Ω) • ((d : Ω) • y)`. Establish `hu : algebraMap (regAt ξ p) Ω u = (u : Ω)` using `rfl`. Establish `hv' : algebraMap (regAt ξ p) Ω v = (v : Ω)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hu, hv', smul_smul, smul_smul, Subring.coe_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `sm u hdy`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨d, hd, hdx⟩` from `key x`. Establish `h1 : (d : Ω) • x ∈ (L.inter V') p` using `⟨hdx, V'.smul_mem _ hx⟩`. Rewrite `h1` using `[hI]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : (d : Ω) • x ∈ Submodule.span Ω (b '' S)` using `Submodule.span_subset_span (regAt ξ p) Ω (b '' S) h1`. Conclude with `(Submodule.smul_mem_iff _ hd).1 h2`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Establish `h1 : y ∈ (L.inter V') p`.
-
-Rewrite using `[hI]`. Conclude with `Submodule.subset_span hy`. Conclude with `h1.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_eq_of_saturated : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (L : Lat ξ E) (V' : Submodule Ω E) (p : Cpt ξ) (g : ℕ) (b : Fin g → E) (S : Finset (Fin g)), IsCptGen ξ → Submodule.span Ω (Set.range b) = ⊤ → L p = Submodule.span (regAt ξ p) (Set.range b) → (L.inter V') p = Submodule.span (regAt ξ p) (b '' S) → V' = Submodule.span Ω (b '' S) := by
   intro X Ω _ ξ E _ _ L V' p g b S h hspan hL hI

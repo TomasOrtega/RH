@@ -16,9 +16,9 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   [T2Space G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Take `⟨V, hVc, hV1⟩` from `exists_compact_mem_nhds (1 : G)`. Use `set U := interior V ∩ (interior V)⁻¹ with hUdef`. Establish `h1 : (1 : G) ∈ U` using `⟨mem_interior_iff_mem_nhds.2 hV1, by rw [Set.mem_inv, inv_one]; exact mem_interior_iff_mem_nhds.2 hV1⟩`. Establish `hUo : IsOpen U` using `isOpen_interior.inter isOpen_interior.inv`. Use `⟨U, hUo, h1, ?_, hUo.measure_pos μ ⟨1, h1⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hUdef, Set.inter_inv, inv_inv, inter_comm]`. Conclude with `lt_of_le_of_lt (measure_mono (inter_subset_left.trans interior_subset)) hVc.measure_lt_top`.
+A detailed English derivation is pending.
 -/
 theorem us_exists_open (μ : Measure G) [IsHaarMeasure μ] :
     ∃ U : Set G, IsOpen U ∧ (1 : G) ∈ U ∧ U⁻¹ = U ∧ 0 < μ U ∧ μ U < ⊤ := by
@@ -33,9 +33,9 @@ theorem us_exists_open (μ : Measure G) [IsHaarMeasure μ] :
       hVc.measure_lt_top
 
 /- English proof (translation)
-Establish `hc : μ.inv = haarScalarFactor μ.inv μ • μ` using `um_eq_smul_of_sigmaCompact _ _`. Take `⟨U, hUo, -, hUi, hpos, hfin⟩` from `us_exists_open μ`. Establish `h : μ.inv U = μ U` using `by rw [Measure.inv_apply, hUi]`. Rewrite `h` using `[hc, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Establish `hc1 : haarScalarFactor μ.inv μ = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((haarScalarFactor μ.inv μ : ℝ≥0) : ℝ≥0∞) = 1`. Rewrite using `[← ENNReal.mul_left_inj hpos.ne' hfin.ne, one_mul]`. Conclude with `h`. Conclude with `this` after adjusting the coercions. Conclude with `⟨by rw [hc, hc1, one_smul]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem us_invInv [SigmaCompactSpace G] (μ : Measure G) [IsHaarMeasure μ]
     [IsMulRightInvariant μ] : IsInvInvariant μ := by
@@ -51,17 +51,15 @@ theorem us_invInv [SigmaCompactSpace G] (μ : Measure G) [IsHaarMeasure μ]
   exact ⟨by rw [hc, hc1, one_smul]⟩
 
 /- English proof (translation)
-Take `⟨U, hUo, -, -, hpos, hfin⟩` from `us_exists_open μ`. Use `set f : G → ℝ≥0∞ := U.indicator 1 with hfdef`. Establish `hfm : Measurable f` using `measurable_one.indicator hUo.measurableSet`. Establish `hI : ∫⁻ g, f g ∂μ = μ U` using `lintegral_indicator_one hUo.measurableSet`. Use `⟨fun k => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set c := haarScalarFactor (map (· * k) μ') μ' with hcdef`. Establish `hc : map (· * k) μ' = c • μ'` using `um_eq_smul_of_sigmaCompact _ _`. Establish `h1` using `hcompat (fun g => f (g * ι k)) (hfm.comp (measurable_mul_const _))`. Rewrite `h1` using `[lintegral_mul_right_eq_self f (ι k)]`. Establish `hin : ∀ y, ∫⁻ h', f (s y * ι h' * ι k) ∂μ' = c * ∫⁻ h', f (s y * ι h') ∂μ'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y`. Establish `e1 : (fun h' => f (s y * ι h' * ι k)) = fun h' => f (s y * ι (h' * k))`. Use function extensionality and compare the values at `h'`. Rewrite using `[map_mul, mul_assoc]`. Rewrite using `[e1]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `lintegral_map_equiv (μ := μ') (fun h' => f (s y * ι h')) (MeasurableEquiv.mulRight k)`. Establish `e3 : (⇑(MeasurableEquiv.mulRight k) : S → S) = (· * k)` using `rfl`. Rewrite `e2` using `[e3, hc, lintegral_smul_measure]`. Rewrite using `[← e2]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hin]`. Rewrite `h1` using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top, ← hcompat f hfm, hI]`. Establish `hc1 : c = 1`. Establish `: (c : ℝ≥0∞) = 1`. Rewrite using `[← ENNReal.mul_left_inj hpos.ne' hfin.ne, one_mul]`.
-
-Conclude with `h1.symm`. Conclude with `this` after adjusting the coercions. Rewrite using `[hc, hc1, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem us_rightInv_of_compat (μ : Measure G) [IsHaarMeasure μ] [IsMulRightInvariant μ]
     {S : Type*} [Group S] [TopologicalSpace S] [IsTopologicalGroup S] [LocallyCompactSpace S]
@@ -108,9 +106,9 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hcont : Continuous fun g : HA (AF F) σ J => g • ratTup (F` using `F) (AF F) X0 := by show Continuous fun g : HA (AF F) σ J => actTup (AF F) (HA.mat (AF F) σ J g) (ratTup (F := F) (AF F) X0)`. Unfold `actTup HA.mat`. Use `continuous_pi fun b => Continuous.matrix_mulVec ?_ continuous_const` and prove the remaining obligations. Conclude with `Units.continuous_val.comp (continuous_subtype_val : Continuous fun g : HR (AF F) σ J => (g : GL (Fin M) (AF F ⊗[F] E)))`. Establish `: ((stabT (AF F) σ J X0 : Subgroup (HA (AF F) σ J)) : Set (HA (AF F) σ J)) = {g | g • ratTup (F` using `F) (AF F) X0 = ratTup (F := F) (AF F) X0} := by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `g`. Conclude with `MulAction.mem_stabilizer_iff`. Rewrite using `[this]`. Conclude with `isClosed_eq hcont continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem us_isClosed_stab (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] [FiniteDimensional F E] (σ : E →ₐ[F] E) (M a : ℕ)
@@ -139,11 +137,11 @@ def InvS : Prop := InCtx fun F E _ _ _ _ _ σ M J _a X0 hT =>
       μ'.IsInvInvariant
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ hSWa1 hSWc1 a ha1 ha2 X0 hT hdet ψ _ μ hμ νX _ μ' hμ' hC`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; norm_num)`. Establish `: μ.IsHaarMeasure` using `hμ`. Establish `: SigmaCompactSpace (HA (AF F) σ J)` using `um_sigmaCompact_HA F E σ M J hSWa1`. Establish `: IsMulRightInvariant μ` using `unimod_holds F E σ hσ M J hJ hSWa1 hSWc1 a ha1 ha2 X0 hT hdet μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl` using `us_isClosed_stab F E σ M a J X0`. Establish `: LocallyCompactSpace (stabT (AF F) σ J X0)` using `hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SigmaCompactSpace (stabT (AF F) σ J X0)` using `hcl.sigmaCompactSpace`. Set `s : (Fin a → Fin M → AF F ⊗[F] E) → HA (AF F) σ J` to `fun y => if h : ∃ g : HA (AF F) σ J, g • ratTup (F := F) (AF F) X0 = y then h.choose else 1`. Establish `hs : ∀ y, (∃ g : HA (AF F) σ J, g • ratTup (F` using `F) (AF F) X0 = y) → s y • ratTup (F := F) (AF F) X0 = y := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y h`. Simplify using `only [s, dif_pos h]`. Conclude with `h.choose_spec`. Conclude with `us_rightInv_of_compat μ (stabT (AF F) σ J X0).subtype μ' νX s (fun f hf => hC.2 f hf s hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unimodStab_holds : UnimodStab := by
   intro F E _ _ _ _ _ σ hσ M J hJ hSWa1 hSWc1 a ha1 ha2 X0 hT hdet ψ _ μ hμ νX _ μ' hμ' hC
@@ -168,9 +166,9 @@ theorem unimodStab_holds : UnimodStab := by
     (fun f hf => hC.2 f hf s hs)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ hSWa1 hSWc1 _a ha1 ha2 X0 hT hdet μ hμ`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; norm_num)`. Establish `: μ.IsHaarMeasure` using `hμ`. Establish `: SigmaCompactSpace (HA (AF F) σ J)` using `um_sigmaCompact_HA F E σ M J hSWa1`. Establish `: IsMulRightInvariant μ` using `unimod_holds F E σ hσ M J hJ hSWa1 hSWc1 _a ha1 ha2 X0 hT hdet μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `us_invInv μ`.
+A detailed English derivation is pending.
 -/
 theorem invG_holds : InvG := by
   intro F E _ _ _ _ _ σ hσ M J hJ hSWa1 hSWc1 _a ha1 ha2 X0 hT hdet μ hμ
@@ -182,9 +180,9 @@ theorem invG_holds : InvG := by
   exact us_invInv μ
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ hSWa1 hSWc1 a ha1 ha2 X0 hT hdet ψ hψ μ hμ νX hν μ' hμ' hC`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; norm_num)`. Establish `: SigmaCompactSpace (HA (AF F) σ J)` using `um_sigmaCompact_HA F E σ M J hSWa1`. Establish `hcl` using `us_isClosed_stab F E σ M a J X0`. Establish `: LocallyCompactSpace (stabT (AF F) σ J X0)` using `hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SigmaCompactSpace (stabT (AF F) σ J X0)` using `hcl.sigmaCompactSpace`. Establish `: IsMulRightInvariant μ'` using `unimodStab_holds F E σ hσ M J hJ hSWa1 hSWc1 a ha1 ha2 X0 hT hdet ψ hψ μ hμ νX hν μ' hμ' hC`. Conclude with `us_invInv μ'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem invS_holds : InvS := by
   intro F E _ _ _ _ _ σ hσ M J hJ hSWa1 hSWc1 a ha1 ha2 X0 hT hdet ψ hψ μ hμ νX hν μ' hμ' hC
@@ -199,7 +197,7 @@ theorem invS_holds : InvS := by
   exact us_invInv μ'
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ hSWa1 hSWc1 a ha1 ha2 X0 hT hdet` and use `⟨invG_holds F E σ hσ M J hJ hSWa1 hSWc1 a ha1 ha2 X0 hT hdet, invS_holds F E σ hσ M J hJ hSWa1 hSWc1 a ha1 ha2 X0 hT hdet⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem invInv_holds : InvInv := fun F E _ _ _ _ _ σ hσ M J hJ hSWa1 hSWc1 a ha1 ha2 X0 hT hdet =>
   ⟨invG_holds F E σ hσ M J hJ hSWa1 hSWc1 a ha1 ha2 X0 hT hdet,

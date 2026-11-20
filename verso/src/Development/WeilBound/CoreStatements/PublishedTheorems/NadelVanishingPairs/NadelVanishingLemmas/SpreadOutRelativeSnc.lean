@@ -24,7 +24,7 @@ def toAdjInv {k : Type} [Field k] (R : Subring k) (a : k) : R →+* adjInv R a :
   (Polynomial.eval₂RingHom R.subtype a⁻¹).rangeRestrict.comp Polynomial.C
 
 /- English proof (translation)
-Use extensionality with `r`. Express the relevant statement in the definitionally equal form `Polynomial.eval₂ R.subtype a⁻¹ (Polynomial.C r) = (r : k)`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem subtype_comp_toAdjInv {k : Type} [Field k] (R : Subring k) (a : k) :
     (adjInv R a).subtype.comp (toAdjInv R a) = R.subtype := by
@@ -33,7 +33,7 @@ theorem subtype_comp_toAdjInv {k : Type} [Field k] (R : Subring k) (a : k) :
   simp
 
 /- English proof (translation)
-Use `IsUnit.of_mul_eq_one ((Polynomial.eval₂RingHom R.subtype (a : k)⁻¹).rangeRestrict Polynomial.X) ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Polynomial.eval₂ R.subtype (a : k)⁻¹ (Polynomial.C a) * Polynomial.eval₂ R.subtype (a : k)⁻¹ Polynomial.X = 1`. Simplify using `[ha]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem isUnit_toAdjInv {k : Type} [Field k] (R : Subring k) (a : R) (ha : (a : k) ≠ 0) :
     IsUnit (toAdjInv R (a : k) a) := by
@@ -43,7 +43,7 @@ theorem isUnit_toAdjInv {k : Type} [Field k] (R : Subring k) (a : R) (ha : (a : 
   simp [ha]
 
 /- English proof (translation)
-Use `haveI := hR`. Establish `hP : Algebra.FiniteType ℤ (Polynomial R)` using `inferInstance`. Conclude with `@Algebra.FiniteType.of_surjective _ _ _ _ _ _ _ _ hP (Polynomial.eval₂RingHom R.subtype a⁻¹).rangeRestrict.toIntAlgHom (Polynomial.eval₂RingHom R.subtype a⁻¹).rangeRestrict_surjective`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteType_adjInv {k : Type} [Field k] (R : Subring k) (hR : Algebra.FiniteType ℤ R) (a : k) :
     Algebra.FiniteType ℤ (adjInv R a) := by
@@ -54,7 +54,7 @@ theorem finiteType_adjInv {k : Type} [Field k] (R : Subring k) (hR : Algebra.Fin
     (Polynomial.eval₂RingHom R.subtype a⁻¹).rangeRestrict_surjective
 
 /- English proof (translation)
-Simplify using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -67,19 +67,17 @@ end
 namespace GlobalTheory.ModelSnc
 
 /- English proof (translation)
-Introduce `k _ X f d hf s L σ h M hM`. Use `haveI : SmoothOfRelativeDimension d f := GlobalTheory.T.smoothOfRelativeDimension_of_relSncDivisor k X f d s L σ h`. Establish `hsm : Smooth f` using `SmoothOfRelativeDimension.smooth d f`. Take `⟨R, X₁, f₁, π, L₁, σ₁, h₁, M₁, hM₁, hR, hsm₁, hpr₁, hpb, hcl, hsame, hclM⟩` from `GlobalTheory.T.spread_out_smooth_proper k X f hsm hf s L σ h.isLB M hM`. Establish `hX : RelSnc f d (fun i => (L₁ i).pull π) (fun i => Cartier.secPull (σ₁ i) π)` using `GlobalTheory.T.relative_snc_same_divisor k X f d s L σ _ _ h (fun i => pull_isLB (h₁ i) π) hsame`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := hsm₁`. Use `haveI := hpr₁`. Take `⟨a, ha, hsp⟩` from `GlobalTheory.T.relative_snc_generic_spread R k R.subtype X₁ X f₁ f π d s L₁ σ₁ hpb h₁ hX`. Use `set R' := adjInv R (a : k)`. Use `set χ := toAdjInv R (a : k)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ : IsUnit (χ a)` using `isUnit_toAdjInv R a ha`. Set `g : pullback f₁ (spMap χ) ⟶ Sp R'` to `pullback.snd f₁ (spMap χ)`. Set `ρ : pullback f₁ (spMap χ) ⟶ X₁` to `pullback.fst f₁ (spMap χ)`. Establish `hρ : IsPullback ρ g f₁ (spMap χ)` using `IsPullback.of_hasPullback f₁ (spMap χ)`. Establish `hZ` using `hsp R' χ hχ _ g ρ hρ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hcomp : spMap R.subtype = spMap R'.subtype ≫ spMap χ`. Rewrite using `[← spMap_comp, subtype_comp_toAdjInv]`. Establish `hw : π ≫ f₁ = (f ≫ spMap R'.subtype) ≫ spMap χ`. Rewrite using `[Category.assoc, ← hcomp]`. Conclude with `hpb.w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `π' : X ⟶ pullback f₁ (spMap χ)` to `pullback.lift π (f ≫ spMap R'.subtype) hw`. Establish `hπ' : π' ≫ ρ = π` using `pullback.lift_fst _ _ _`. Establish `hg' : π' ≫ g = f ≫ spMap R'.subtype` using `pullback.lift_snd _ _ _`. Establish `hpb' : IsPullback π' f g (spMap R'.subtype)`. Use `IsPullback.of_right ?_ hg' hρ` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hπ', ← hcomp]`. Conclude with `hpb`. Use `haveI : IsProper g := inferInstance`. Use `⟨R', pullback f₁ (spMap χ), g, π', fun i => (L₁ i).pull ρ, fun i => Cartier.secPull (σ₁ i) ρ, hZ, M₁.pull ρ, pull_isLB hM₁ ρ, finiteType_adjInv R hR _, inferInstance, hpb', fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcl i, ← hπ', pull_comp]`.
-
-Both sides reduce to the same expression. Rewrite using `[hclM, ← hπ', pull_comp]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_model_relSnc : ∀ (k : Type) [Field k] (X : Scheme.{0}) (f : X ⟶ Sp k) (d : ℕ), IsProper f → ∀ (s : ℕ) (L : Fin s → LB X) (σ : ∀ i, (L i).Sec) (h : RelSnc f d L σ) (M : LB X) (hM : M.IsLB), ∃ (R : Subring k) (X₁ : Scheme.{0}) (f₁ : X₁ ⟶ Sp R) (π : X ⟶ X₁) (L₁ : Fin s → LB X₁) (σ₁ : ∀ i, (L₁ i).Sec) (h₁ : RelSnc f₁ d L₁ σ₁) (M₁ : LB X₁) (hM₁ : M₁.IsLB), Algebra.FiniteType ℤ R ∧ IsProper f₁ ∧ IsPullback π f f₁ (spMap R.subtype) ∧ (∀ i, cls (L i) (h.isLB i) = CechPic.pull π (cls (L₁ i) (h₁.isLB i))) ∧ cls M hM = CechPic.pull π (cls M₁ hM₁) := by
   intro k _ X f d hf s L σ h M hM

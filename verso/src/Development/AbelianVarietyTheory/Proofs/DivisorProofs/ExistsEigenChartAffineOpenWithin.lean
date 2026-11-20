@@ -13,13 +13,13 @@ open Matrix
 section Alg
 
 /- English proof (translation)
-Set `b : Module.Basis (Fin m) L N` to `Module.finBasisOfFinrankEq L N hr`. Establish `hmem : ∀ v, e.mulVec v ∈ N` using `fun v => (hN _).2 (by rw [Matrix.mulVec_mulVec, he])`. Set `P : (Fin n → L) →ₗ[L] N` to `e.mulVecLin.codRestrict N hmem`. Use `⟨LinearMap.toMatrix' (N.subtype ∘ₗ b.equivFun.symm.toLinearMap), LinearMap.toMatrix' (b.equivFun.toLinearMap ∘ₗ P), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (N.subtype ∘ₗ b.equivFun.symm.toLinearMap) ∘ₗ (b.equivFun.toLinearMap ∘ₗ P) = e.mulVecLin`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[P, LinearMap.codRestrict_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `LinearMap.toMatrix'_toLin' e`. Rewrite using `[← LinearMap.toMatrix'_comp]`. Establish `: (b.equivFun.toLinearMap ∘ₗ P) ∘ₗ (N.subtype ∘ₗ b.equivFun.symm.toLinearMap) = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Establish `h1 : P (b.equivFun.symm a : N) = b.equivFun.symm a` using `Subtype.ext ((hN _).1 (b.equivFun.symm a).2)`. Simplify using `only [LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, Submodule.coe_subtype, h1, LinearEquiv.apply_symm_apply, LinearMap.id_coe, id_eq]`. Rewrite using `[this, LinearMap.toMatrix'_id]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor_idem {L : Type} [Field L] {n m : ℕ} (e : Matrix (Fin n) (Fin n) L) (he : e * e = e)
     (N : Submodule L (Fin n → L)) (hN : ∀ v, v ∈ N ↔ e.mulVec v = v) (hr : Module.finrank L N = m) :
@@ -49,7 +49,7 @@ theorem exists_factor_idem {L : Type} [Field L] {n m : ℕ} (e : Matrix (Fin n) 
     rw [this, LinearMap.toMatrix'_id]
 
 /- English proof (translation)
-Establish `h0` using `GlobalTheory.det_mul_eq_sum_minors V U`. Rewrite `h0` using `[h, det_one]`. Rewrite using `[h0]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_mul _ _ _ id _ Function.bijective_id, det_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_minors_of_factor {T : Type} [CommRing T] {n m : ℕ} (U : Matrix (Fin n) (Fin m) T)
     (V : Matrix (Fin m) (Fin n) T) (h : V * U = 1) :
@@ -62,9 +62,9 @@ theorem sum_minors_of_factor {T : Type} [CommRing T] {n m : ℕ} (U : Matrix (Fi
   rw [Matrix.submatrix_mul _ _ _ id _ Function.bijective_id, det_mul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Matrix.submatrix_mul _ _ s id s Function.bijective_id, Matrix.submatrix_mul _ _ id id s Function.bijective_id, Matrix.submatrix_mul _ _ s id id Function.bijective_id, adjugate_mul_distrib, det_mul]`. Simplify using `only [Matrix.submatrix_id_id]`. Establish `e1 : U * V.submatrix id s * ((V.submatrix id s).adjugate * (U.submatrix s id).adjugate) * (U.submatrix s id * V) = U * (V.submatrix id s * (V.submatrix id s).adjugate) * ((U.submatrix s id).adjugate * U.submatrix s id) * V`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e1, mul_adjugate, adjugate_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, smul_smul, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_smul_of_factor {T : Type} [CommRing T] {n m : ℕ} (U : Matrix (Fin n) (Fin m) T)
     (V : Matrix (Fin m) (Fin n) T) (s : Fin m → Fin n) :
@@ -81,13 +81,13 @@ theorem det_smul_of_factor {T : Type} [CommRing T] {n m : ℕ} (U : Matrix (Fin 
   simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, smul_smul, mul_comm]
 
 /- English proof (translation)
-Take `⟨U, V, hUV, hVU⟩` from `exists_factor_idem (e.map φ) (by rw [← Matrix.map_mul, he]) N hN hr`. Establish `hdet : ∀ s : Fin m → Fin n, φ (e.submatrix s s).det = ((e.map φ).submatrix s s).det` using `fun s => by`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, Matrix.submatrix_map]`. Use `⟨hφ ?_, fun s => Matrix.map_injective hφ ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hdet, ← hUV]`. Conclude with `sum_minors_of_factor U V hVU`. Simplify using `only`. Establish `h2` using `det_smul_of_factor U V s`. Rewrite `h2` using `[hUV]`.
+Simplify using the standard rewrite rules. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : ((e.submatrix s s).det • e).map φ = φ (e.submatrix s s).det • e.map φ`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `ha : (e.submatrix s s).adjugate.map φ = ((e.map φ).submatrix s s).adjugate`. Rewrite using `[← RingHom.mapMatrix_apply, RingHom.map_adjugate, RingHom.mapMatrix_apply, Matrix.submatrix_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, hdet, h2, Matrix.map_mul, Matrix.map_mul, ← Matrix.submatrix_map, ← Matrix.submatrix_map, ha]`.
+A detailed English derivation is pending.
 -/
 theorem idem_minors {R L : Type} [CommRing R] [Field L] (φ : R →+* L) (hφ : Function.Injective φ) {n m : ℕ}
     (e : Matrix (Fin n) (Fin n) R) (he : e * e = e) (N : Submodule L (Fin n → L))
@@ -112,11 +112,11 @@ theorem idem_minors {R L : Type} [CommRing R] [Field L] (φ : R →+* L) (hφ : 
     rw [hs, hdet, h2, Matrix.map_mul, Matrix.map_mul, ← Matrix.submatrix_map, ← Matrix.submatrix_map, ha]
 
 /- English proof (translation)
-Use `⟨(e.submatrix id s).map φ, (hu.unit⁻¹ : Sˣ).val • ((e.submatrix s s).adjugate * e.submatrix s id).map φ, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : e.submatrix s id * e.submatrix id s = e.submatrix s s`. Rewrite using `[← Matrix.submatrix_mul _ _ s id s Function.bijective_id, he]`. Rewrite using `[Matrix.smul_mul, ← Matrix.map_mul, Matrix.mul_assoc, h1, adjugate_mul]`. Establish `hs : ((e.submatrix s s).det • (1 : Matrix (Fin m) (Fin m) R)).map φ = φ (e.submatrix s s).det • (1 : Matrix (Fin m) (Fin m) S)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [h, Matrix.one_apply]`. Rewrite using `[hs, smul_smul, IsUnit.val_inv_mul, one_smul]`. Rewrite using `[Matrix.mul_smul, ← Matrix.map_mul, ← Matrix.mul_assoc, ← hid]`. Establish `hs : ((e.submatrix s s).det • e).map φ = φ (e.submatrix s s).det • e.map φ`. Use extensionality with `i j`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[hs, smul_smul, IsUnit.val_inv_mul, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_split {R S : Type} [CommRing R] [CommRing S] {n m : ℕ} (e : Matrix (Fin n) (Fin n) R)
     (he : e * e = e) (s : Fin m → Fin n)
@@ -145,9 +145,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨L, _, _, y, h, hy, hi⟩` from `LowRank.genIn_id Y M`. Take `⟨h1, h2⟩` from `LowRank.pm_gen p M σ hy h`. Establish `he : LowRank.pm p M σ * LowRank.pm p M σ = LowRank.pm p M σ` using `Matrix.map_injective hi (Matrix.map_mul.trans h2)`. Take `⟨Λ⟩` from `MChart.nonempty_lift E H Dw l Xo c c.F (RingHom.id c.F) Y M L (ev _ M.U h) y hy (spMap_ev _ M.hU h).symm`. Set `N : Submodule L (Fin M.n → L)` to `Module.End.eigenspace ((LowRank.pm p M σ).map (ev _ M.U h)).mulVecLin 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hN : ∀ v, v ∈ N ↔ ((LowRank.pm p M σ).map (ev _ M.U h)).mulVec v = v` using `fun v => Module.End.mem_eigenspace_iff.trans (by rw [one_smul]; rfl)`. Conclude with `⟨he, idem_minors _ hi _ he N hN (finrank_chart_eig E H Dw l Xo c c.F (RingHom.id c.F) Y M L _ _ Λ σ N fun v => (hN v).trans (h1 v).symm)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pm_minors (Y : Model Xo c (RingHom.id c.F)) (p : Proj (RingHom.id c.F)) (M : MChart Y) (σ : E →+* ℂ) :
     LowRank.pm p M σ * LowRank.pm p M σ = LowRank.pm p M σ ∧
@@ -169,17 +169,15 @@ theorem pm_minors (Y : Model Xo c (RingHom.id c.F)) (p : Proj (RingHom.id c.F)) 
     (finrank_chart_eig E H Dw l Xo c c.F (RingHom.id c.F) Y M L _ _ Λ σ N fun v => (hN v).trans (h1 v).symm)⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y p M x hx W hW`. Establish `ex : ∀ σ : E →+* ℂ, ∃ s : Fin (Dw.mult σ) → Fin M.n, Y.X.evaluation M.U x hx ((LowRank.pm p M.toMChart σ).submatrix s s).det ≠ 0` using `fun σ => by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `congrArg (Y.X.evaluation M.U x hx) (pm_minors Y p M.toMChart σ).2.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_sum, map_one, Finset.sum_eq_zero fun S _ => h _]`. Conclude with `zero_ne_one this`. Use `choose s hs using ex`. Set `d` to `fun σ => ((LowRank.pm p M.toMChart σ).submatrix (s σ) (s σ)).det`. Establish `hxf : x ∈ Y.X.basicOpen (∏ σ, d σ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(Y.X.evaluation_ne_zero_iff_mem_basicOpen x hx _).1 ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun σ _ => hs σ`. Take `⟨g, hg, hxg⟩` from `M.hU.exists_basicOpen_le (V := W ⊓ Y.X.basicOpen (∏ σ, d σ)) ⟨x, hW, hxf⟩ hx`. Establish `hle : Y.X.basicOpen g ≤ M.U` using `Y.X.basicOpen_le g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVf : Y.X.basicOpen g ≤ Y.X.basicOpen (∏ σ, d σ)` using `hg.trans inf_le_right`. Establish `hf : IsUnit (resG Y.X hle (∏ σ, d σ))`. Establish `h1 : IsUnit (resG Y.X (Y.X.basicOpen_le (∏ σ, d σ)) (∏ σ, d σ))` using `RingedSpace.isUnit_res_basicOpen Y.X.toRingedSpace _`. Establish `h2 : resG Y.X hle (∏ σ, d σ) = resG Y.X hVf (resG Y.X (Y.X.basicOpen_le (∏ σ, d σ)) (∏ σ, d σ))`. Simplify using `only [resG, ← CommRingCat.comp_apply, ← Functor.map_comp]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Both sides reduce to the same expression. Rewrite using `[h2]`. Conclude with `h1.map _`. Establish `hu : ∀ σ, IsUnit (resG Y.X hle (d σ))` using `fun σ => isUnit_of_dvd_unit (map_dvd _ (Finset.dvd_prod_of_mem d (Finset.mem_univ σ))) hf`. Use `choose u w hwu huw using fun σ => exists_split _ (pm_minors Y p M.toMChart σ).1 (s σ) ((pm_minors Y p M.toMChart σ).2.2 (s σ)) (resG Y.X hle) (hu σ)`.
-
-Conclude with `⟨⟨M, Y.X.basicOpen g, hle, u, w, hwu, huw⟩, rfl, hxg, M.hU.basicOpen g, hg.trans inf_le_left⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_eCh_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (p : Proj (RingHom.id c.F)) (M : GChart Y)

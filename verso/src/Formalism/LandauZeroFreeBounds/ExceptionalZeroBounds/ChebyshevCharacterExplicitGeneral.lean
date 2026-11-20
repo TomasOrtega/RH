@@ -8,67 +8,59 @@ namespace Formalism.ZeroFreeDirichlet
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨hBc, hBz, hBall⟩` from `hE`. Establish `hy0 : (0:ℝ) < y` using `by linarith`. Establish `hy1 : (1:ℝ) ≤ y` using `by linarith`. Establish `hy1' : (1:ℝ) < y` using `by linarith`. Establish `hlog2 : (1:ℝ) / 2 < Real.log 2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Real.log_two_gt_d9`. Evaluate the numerical expressions using `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogy2 : Real.log 2 ≤ Real.log y` using `Real.log_le_log (by norm_num) hy`. Establish `hly : (1:ℝ) / 2 < Real.log y` using `by linarith`.
+Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogy : 0 < Real.log y` using `by linarith`. Establish `hlogyne : Real.log y ≠ 0` using `hlogy.ne'`. Establish `hT0 : (0:ℝ) < T` using `by linarith`. Establish `hTabs : |T| = T` using `abs_of_pos hT0`. Establish `hq1 : (1:ℝ) ≤ (q:ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : 0 < q` using `Nat.pos_of_ne_zero (NeZero.ne q)`. Conclude with `hq` after adjusting the coercions. Establish `hL2 : Real.log 2 ≤ L`. Rewrite using `[← hL]`. Conclude with `Real.log_le_log (by norm_num) (by nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLh : (1:ℝ) / 2 < L` using `by linarith`. Establish `hL0 : 0 < L` using `by linarith`. Establish `hLne : L ≠ 0` using `hL0.ne'`. Establish `hc₁ne : c₁ ≠ 0` using `hc₁.ne'`. Establish `ha : 0 < c₁ / L` using `div_pos hc₁ hL0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haL : c₁ / L * L = c₁` using `by field_simp`. Establish `ha' : c₁ / L ≤ 1 / 10` using `by nlinarith`. Establish `e3 : c₁ / (3 * L) = c₁ / L / 3` using `by rw [mul_comm 3 L, ← div_div]`. Establish `e4 : c₁ / (4 * L) = c₁ / L / 4` using `by rw [mul_comm 4 L, ← div_div]`. Establish `e2 : c₁ / 2 / L = c₁ / L / 2` using `div_right_comm c₁ 2 L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2ε : 2 / (c₁ / (4 * L)) = 8 * L / c₁` using `by rw [div_div_eq_mul_div]; ring`. Establish `h1δ : 1 / (c₁ / (24 * L)) = 24 * L / c₁` using `one_div_div _ _`. Take `⟨σ₁, hσ₁c, hσ₁B⟩` from `exists_contour_avoiding_real_zero B hBc L c₁ hL0 hc₁`. Rewrite `hσ₁c` using `[e3, e4]`. Establish `hσ₁b : 1 - c₁ / L / 3 ≤ σ₁ ∧ σ₁ ≤ 1 - c₁ / L / 4`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `rcases hσ₁c with h | h <;> rw [h] <;> constructor <;> linarith`. Take `⟨hσ₁lo, hσ₁up⟩` from `hσ₁b`. Use `⟨σ₁, by rw [e4]; exact hσ₁up, ?_⟩` and prove the remaining obligations. Establish `hσ₁lt1 : σ₁ < 1` using `by linarith`. Establish `hσ₁pos : 0 < σ₁` using `by linarith`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhalf : 1 / 2 ≤ σ₁` using `by linarith`. Establish `hgap : c₁ / (4 * L) ≤ 1 - σ₁` using `by rw [e4]; linarith`. Establish `hσ₁reg : 1 - c₁ / 2 / Real.log ((q : ℝ) * (T + 2)) ≤ σ₁`. Rewrite using `[hL, e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨σ₀, hσ₀e⟩ : ∃ σ₀ : ℝ, σ₀ = 1 + 1 / Real.log y` from `⟨_, rfl⟩`. Establish `hinv : 1 / Real.log y * Real.log y = 1` using `by field_simp`. Establish `hinvpos : 0 < 1 / Real.log y` using `div_pos one_pos hlogy`. Establish `hinv2 : 1 / Real.log y < 2` using `by nlinarith`. Establish `hσ₀gt : 1 < σ₀` using `by rw [hσ₀e]; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσσ : σ₁ ≤ σ₀` using `by linarith`. Establish `hσdiff : |σ₀ - σ₁| ≤ 3`. Rewrite using `[abs_of_nonneg (by linarith), hσ₀e]; linarith`. Establish `hyσ₀ : y ^ σ₀ = Real.exp 1 * y`. Rewrite using `[hσ₀e, Real.rpow_add hy0, Real.rpow_one, Real.rpow_def_of_pos hy0, mul_one_div_cancel hlogyne, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB₁ : ∀ β ∈ B.filter (fun β => σ₁ < β), σ₁ < β ∧ β < σ₀ ∧ deriv (DirichletCharacter.LFunction χ) (β : ℂ) ≠ 0`. Introduce `β hβ`. Rewrite `hβ` using `[Finset.mem_filter]`. Take `⟨-, -, hz, hd⟩` from `hBz β hβ.1`. Use `⟨hβ.2, ?_, hd⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hβ1 : β < 1`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl hχ) (by simpa using hc) hz`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hB₁z : ∀ β ∈ B.filter (fun β => σ₁ < β), DirichletCharacter.LFunction χ (β : ℂ) = 0`. Introduce `β hβ`. Rewrite `hβ` using `[Finset.mem_filter]`. Conclude with `(hBz β hβ.1).2.2.1`. Establish `hzer : ∀ w : ℂ, σ₁ ≤ w.re → w.re ≤ σ₀ → |w.im| ≤ T → DirichletCharacter.LFunction χ w = 0 → ∃ β ∈ B.filter (fun β => σ₁ < β), w = (β : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `w h1 _ h3 h4`. Establish `hreg : InRegion c₁ q w`. Unfold `InRegion`. Establish `hm` using `log_analytic_conductor_mono q w.im T h3`. Rewrite `hm` using `[hL]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `hpos` using `log_conductor_pos_real q w.im`. Establish `key : c₁ / L ≤ c₁ / Real.log ((q : ℝ) * (|w.im| + 2))`. Rewrite using `[div_eq_mul_one_div c₁ L, div_eq_mul_one_div c₁ (Real.log ((q : ℝ) * (|w.im| + 2)))]`. Conclude with `mul_le_mul_of_nonneg_left (one_div_le_one_div_of_le hpos hm) hc₁.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Take `⟨β, hβB, hwβ⟩` from `hBall w hreg ⟨Or.inl hχ, h4⟩`. Use `⟨β, Finset.mem_filter.mpr ⟨hβB, ?_⟩, hwβ⟩` and prove the remaining obligations. Establish `h1' : σ₁ ≤ β` using `by rw [hwβ] at h1; simpa using h1`. Establish `hne` using `hσ₁B β hβB`. Break down `lt_or_eq_of_le h1' with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. It suffices to derive a contradiction. Rewrite `hne` using `[h, sub_self, abs_zero]`. Establish `hp : 0 < c₁ / (24 * L)` using `div_pos hc₁ (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrect` using `hRS q χ hχ y hy0 σ₁ σ₀ T (B.filter (fun β => σ₁ < β)) hσ₁pos hσ₁lt1 hσ₀gt hT0 hB₁ hzer hB₁z`. Establish `hdec` using `perron_contour_decomposition hP χ y σ₁ σ₀ T _ hy1 hσ₀gt hT0.le hrect`. Establish `hAnn : 0 ≤ (Real.log y + C₀) * (Real.exp 1 * y)` using `mul_nonneg (by linarith) (mul_pos (Real.exp_pos 1) hy0).le`. Establish `hI1 : ‖∫ t in (Set.Ioc (-T) T)ᶜ, Fchi χ y ((σ₀ : ℂ) + t * I)‖ ≤ 2 * Real.pi * ((Real.log y + C₀) * (Real.exp 1 * y)) / T`. Use `Formalism.ZF.norm_integral_compl_le (fun t : ℝ => Fchi χ y ((σ₀ : ℂ) + t * I)) _ T hAnn hT0 (fun t ht => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ‖Fchi χ y ((σ₀ : ℂ) + t * I)‖ ≤ _`. Rewrite using `[hσ₀e]`. Conclude with `perron_right_line_bound χ C₀ hR y T t hy1' hT0 ht`. Establish `hHnn : 0 ≤ (C * L ^ 2 + 1) * (Real.exp 1 * y) / T ^ 2`. Establish `hCL : 0 ≤ C * L ^ 2 + 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `mul_nonneg hC (sq_nonneg L)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `div_nonneg (mul_nonneg hCL (mul_pos (Real.exp_pos 1) hy0).le) (sq_nonneg T)`. Establish `hH : ∀ v : ℝ, |v| = T → ‖∫ x in σ₁..σ₀, Fchi χ y ((x : ℂ) + (v : ℂ) * I)‖ ≤ (C * L ^ 2 + 1) * (Real.exp 1 * y) / T ^ 2 * 3`. Introduce `v hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb` using `intervalIntegral.norm_integral_le_of_norm_le_const (a := σ₁) (b := σ₀) (f := fun x : ℝ => Fchi χ y ((x : ℂ) + (v : ℂ) * I)) (C := (C * L ^ 2 + 1) * (Real.exp 1 * y) / T ^ 2) (fun x hx => by`. Rewrite `hx` using `[Set.uIoc_of_le hσσ]`. Establish `hx'` using `perron_horizontal_segment_bound χ c₁ C B hBc hD y T x v σ₀ σ₁ hy1 hT hv hσ₁reg hx.1.le hx.2`. Rewrite `hx'` using `[hL, hyσ₀]`. Conclude with `hx')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hb.trans (mul_le_mul_of_nonneg_left hσdiff hHnn)`. Establish `hV : ‖∫ u in (-T)..T, Fchi χ y ((σ₁ : ℂ) + u * I)‖ ≤ (C * L ^ 2 + 24 * L / c₁) * y ^ σ₁ * (8 * L / c₁) * (2 * T)`. Establish `hb` using `intervalIntegral.norm_integral_le_of_norm_le_const (a := -T) (b := T) (f := fun u : ℝ => Fchi χ y ((σ₁ : ℂ) + u * I)) (C := (C * L ^ 2 + 24 * L / c₁) * y ^ σ₁ * (8 * L / c₁)) (fun u hu => by`. Rewrite `hu` using `[Set.uIoc_of_le (by linarith)]`. Establish `hu' : |u| ≤ T` using `abs_le.mpr ⟨hu.1.le, hu.2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hb'` using `perron_left_line_bound χ c₁ C hc₁.le hC B hBc hD y T u σ₁ (c₁ / (24 * L)) (c₁ / (4 * L)) hy0 hu' hσ₁reg hhalf (div_pos hc₁ (by linarith)) hgap (div_pos hc₁ (by linarith)) hσ₁B`. Rewrite `hb'` using `[hL, h1δ, h2ε]`. Conclude with `hb')`. Establish `h2T : |T - -T| = 2 * T`. Rewrite using `[sub_neg_eq_add, abs_of_pos (by linarith)]; ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hb` using `[h2T]`. Conclude with `hb`. Establish `hO : ‖∑ β ∈ B \ B.filter (fun β => σ₁ < β), (y : ℂ) ^ (β : ℂ) / ((β : ℂ) * ((β : ℂ) - 1))‖ ≤ y ^ σ₁ * (8 * L / c₁)`. Use `norm_sum_le_of_card_le_one _ ((Finset.card_le_card Finset.sdiff_subset).trans hBc) (fun β : ℝ => (y : ℂ) ^ (β : ℂ) / ((β : ℂ) * ((β : ℂ) - 1))) _ (mul_nonneg (Real.rpow_nonneg hy0.le _) (div_pos (by linarith) hc₁).le) (fun β hβ => ?_)` and prove the remaining obligations. Rewrite `hβ` using `[Finset.mem_sdiff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hβσ : β ≤ σ₁`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hβ.2 (Finset.mem_filter.mpr ⟨hβ.1, hc⟩)`. Establish `hreg` using `(hBz β hβ.1).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `InRegion at hreg`. Simplify using `only [Complex.ofReal_im, Complex.ofReal_re, abs_zero, zero_add] at hreg`. Establish `hl2 : Real.log 2 ≤ Real.log ((q : ℝ) * 2)` using `Real.log_le_log (by norm_num) (by nlinarith)`. Establish `hlq : (1:ℝ) / 2 < Real.log ((q : ℝ) * 2)` using `by linarith`. Establish `hlqne : Real.log ((q : ℝ) * 2) ≠ 0` using `by linarith`.
-
-Establish `hr : c₁ / Real.log ((q : ℝ) * 2) * Real.log ((q : ℝ) * 2) = c₁` using `by field_simp`. Establish `hrpos : 0 ≤ c₁ / Real.log ((q : ℝ) * 2)` using `div_nonneg hc₁.le (by linarith)`. Establish `hrh : c₁ / Real.log ((q : ℝ) * 2) ≤ 1 / 2` using `by nlinarith`. Establish `hβhalf : 1 / 2 ≤ β` using `by linarith`. Establish `hom` using `real_zero_residue_term_bound y β σ₁ (c₁ / (4 * L)) hy1 hβhalf hβσ (div_pos hc₁ (by linarith)) hgap`.
-
-Rewrite `hom` using `[h2ε]`. Conclude with `hom`. Establish `hmain : ‖Schi χ y - (negLD χ 1 * y - ∑ β ∈ B.filter (fun β => σ₁ < β), (y : ℂ) ^ (β : ℂ) / ((β : ℂ) * ((β : ℂ) - 1)))‖ ≤ 2 * Real.pi * ((Real.log y + C₀) * (Real.exp 1 * y)) / T + (C * L ^ 2 + 1) * (Real.exp 1 * y) / T ^ 2 * 3 + (C * L ^ 2 + 1) * (Real.exp 1 * y) / T ^ 2 * 3 + (C …`. Establish `hX` using `norm_nonneg (Schi χ y - (negLD χ 1 * y - ∑ β ∈ B.filter (fun β => σ₁ < β), (y : ℂ) ^ (β : ℂ) / ((β : ℂ) * ((β : ℂ) - 1))))`. Establish `h2pi : (1:ℝ) ≤ 2 * Real.pi` using `by linarith [Real.pi_gt_three]`.
-
-Establish `hXX` using `mul_le_mul_of_nonneg_right h2pi hX`. Establish `hbot` using `hH (-T) (by rw [abs_neg]; exact hTabs)`. Establish `htop` using `hH T hTabs`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← Finset.sum_sdiff (Finset.filter_subset (fun β => σ₁ < β) B)]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem chebyshev_character_explicit_general (hP : PerronChi) (hRS : RectShiftChi) (c₁ C C₀ : ℝ) (hc₁ : 0 < c₁)
     (hc₁' : c₁ ≤ 1 / 20) (hC : 0 ≤ C) (hC₀ : 0 ≤ C₀)

@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ A B n f hn h`. Establish `hs` using `(GlobalTheory.T.abelianVariety_intCast_smul_isogeny_degree K A n hn).1.2`. Use `GlobalTheory.T.cancel_of_surjective_abelianVarietyHom K A A (n • 𝟙 A) hs B f 0 ?_` and prove the remaining obligations. Rewrite using `[Preadditive.zsmul_comp, Category.id_comp, Limits.comp_zero, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_torsionFree : ∀ (K : Type) [Field K] (A B : AbVar K) (n : ℤ) (f : A ⟶ B), n ≠ 0 → n • f = 0 → f = 0 := by
   intro K _ A B n f hn h

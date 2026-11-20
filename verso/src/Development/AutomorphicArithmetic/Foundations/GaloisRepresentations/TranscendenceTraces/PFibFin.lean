@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Apply `(Set.finite_range (fun g : B →ₐ[Ω] Ω => Spec.map (CommRingCat.ofHom (g : B →+* Ω)))).subset` to reduce the goal to its premises. Introduce `z hz`. Establish `hz' : z ≫ Spec.map (CommRingCat.ofHom (algebraMap Ω B)) = 𝟙 _` using `hz`. Take `⟨φ, rfl⟩ : ∃ φ, Spec.map φ = z` from `⟨Spec.preimage z, Spec.map_preimage z⟩`. Rewrite `hz'` using `[← Spec.map_comp, ← Spec.map_id]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `Spec.map_injective hz'`. Use `⟨{ φ.hom with commutes' := fun c => ?_ }, ?_⟩` and prove the remaining obligations. Use `congrArg (fun g => g.hom c) h2` as an intermediate fact. Simplify using `using this`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Both sides reduce to the same expression.
 -/
 private theorem fib_spec_finite (Ω B : Type) [Field Ω] [CommRing B] [Algebra Ω B] [Module.Finite Ω B] :
     (fib (Ω := Ω) (Spec.map (CommRingCat.ofHom (algebraMap Ω B))) (𝟙 (gp Ω))).Finite := by
@@ -22,9 +22,9 @@ private theorem fib_spec_finite (Ω B : Type) [Field Ω] [CommRing B] [Algebra �
   · rfl
 
 /- English proof (translation)
-Introduce `hC`. Unfold `Chart at hC`. Unfold `FibFin`. Introduce `V U r _ Ω _ x`. Take `⟨B, iB, iAB, v, hfin, hpb⟩` from `hC r Ω x`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI := hfin`. Establish `h` using `(fib_bijOn hpb (𝟙 (gp Ω))).image_eq`. Rewrite `h` using `[Category.id_comp]`. Rewrite using `[← h]`. Conclude with `(fib_spec_finite Ω B).image _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.fibFin_of :
     Chart → FibFin := by

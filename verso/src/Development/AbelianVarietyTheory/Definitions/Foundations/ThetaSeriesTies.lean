@@ -131,7 +131,7 @@ def cutTo (fw : FWTie J R κ v₀) (i : Fin D.R.m) :
 end Coord
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Nat.le_add_left _ _, i.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem inR_succ (i : Fin D.R.m) : InR D ((i : ℕ) + 1) := ⟨Nat.le_add_left _ _, i.2⟩
 
@@ -224,11 +224,11 @@ end Comparison₂
 section Api
 
 /- English proof (translation)
-Set `c : Module.Basis (Fin n) F C` to `(Module.Basis.span hF).map ((LinearEquiv.ofEq _ _ hr).trans (LinearEquiv.ofInjective f hf).symm)`. Establish `hc : ∀ i, f (c i) = b i` using `fun i => by`. Use `LinearEquiv.ofInjective_symm_apply f (h := hf) (LinearEquiv.ofEq _ _ hr (Module.Basis.span hF i))` as an intermediate fact. Simplify `this` using `[c, Module.Basis.span_apply]`. Set `bK : Module.Basis (Fin n) K V` to `Module.Basis.mk hK hs.ge`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `e : f.liftBaseChange K = ((c.baseChange K).equiv bK (Equiv.refl _)).toLinearMap`. Use `(c.baseChange K).ext fun i => ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, Module.Basis.equiv_apply, Module.Basis.baseChange_apply, LinearMap.liftBaseChange_tmul, one_smul, hc]`. Simplify using `[bK]`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearEquiv.bijective _`.
+A detailed English derivation is pending.
 -/
 theorem liftBaseChange_bijective {F K C V : Type} [Field F] [Field K] [Algebra F K] [AddCommGroup C] [Module F C]
     [AddCommGroup V] [Module F V] [Module K V] [IsScalarTower F K V] (f : C →ₗ[F] V) (hf : Function.Injective f)
@@ -250,7 +250,7 @@ theorem liftBaseChange_bijective {F K C V : Type} [Field F] [Field K] [Algebra F
   exact LinearEquiv.bijective _
 
 /- English proof (translation)
-The claim follows from `liftBaseChange_bijective f hf b hF hr hK hs`.
+A detailed English derivation is pending.
 -/
 theorem cusp_liftBaseChange_bijective (B : WeightFamilies.Prov D) {j : ℕ} {w : WeightFamilies.Wt D j} {K : Type} [Field K] [Algebra B.KO K]
     {m : ℕ} (f : B.Cusp j w →ₗ[B.KO] (Fin m → K)) (hf : Function.Injective f)
@@ -261,9 +261,7 @@ theorem cusp_liftBaseChange_bijective (B : WeightFamilies.Prov D) {j : ℕ} {w :
   liftBaseChange_bijective f hf b hF hr hK hs
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `haveI := Fintype.ofFinite U`. Express the relevant statement in the definitionally equal form `∑ᶠ u : U, ψ (u : P) • z.symm (1 ⊗ₜ[B.KO] f u) ∈ spanK z t`. Rewrite using `[finsum_eq_sum_of_fintype]`.
-
-Conclude with `Submodule.sum_mem _ fun u _ => Submodule.smul_mem _ _ (mem_spanK z (hst f hf u))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceSpan_le {B : WeightFamilies.Prov D} {j : ℕ} {w : WeightFamilies.Wt D j} {K : Type} [Field K] [NumberField K] [Algebra B.KO K]
     {n : ℕ} (z : (Fin n → K) ≃ₗ[K] K ⊗[B.KO] B.Cusp j w) {P : Type} [Group P] [Finite P] (U : Subgroup P) (ψ : P → 𝓞 K)
@@ -280,11 +278,9 @@ section Right
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Establish `hc : cSep l ∈ Mfr l`. Unfold `cSep`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : cSep l • q ∈ (Ideal.span {(l.M : 𝓞 E)}) • (⊤ : Submodule (𝓞 E) Dw.La)`. Rewrite using `[← l.prod, mul_comm, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hc hq`. Rewrite `h1` using `[Submodule.ideal_span_singleton_smul]`. Take `⟨y, -, hy⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 h1`.
-
-Rewrite using `[← hy, Nat.cast_smul_eq_nsmul, map_nsmul, nsmul_eq_mul]`. Conclude with `dvd_mul_right _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_pair_of_mem (x : Dw.La) {q : Dw.La} (hq : q ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)) :
     (l.M : ℤ) ∣ Dw.EF x (cSep l • q) := by
@@ -302,9 +298,9 @@ theorem dvd_pair_of_mem (x : Dw.La) {q : Dw.La} (hq : q ∈ l.Mb • (⊤ : Subm
   exact dvd_mul_right _ _
 
 /- English proof (translation)
-Introduce `b a`. Establish `e : (l.M : ℤ) ∣ Dw.EF (x b) (cSep l • liftLa γ (liftLa δ a)) - Dw.EF (x b) (cSep l • liftLa (γ * δ) a)`. Rewrite using `[← map_sub, ← smul_sub]`. Use `dvd_pair_of_mem _ ((Submodule.Quotient.eq _).1 ?_)` and prove the remaining obligations. Conclude with `((liftLa_spec γ _).trans (congrArg γ (liftLa_spec δ a))).trans (liftLa_spec (γ * δ) a).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `dvd_add (dvd_add (h' b a) (h b (liftLa δ a))) e` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsRightMul.mul {γ δ : LaMod Dw l ≃ₗ[𝓞 E] LaMod Dw l} {n : ℕ} {x x' x'' : Fin n → Dw.La} (h : IsRightMul γ x x')
     (h' : IsRightMul δ x' x'') : IsRightMul (γ * δ) x x'' := by
@@ -319,7 +315,7 @@ theorem IsRightMul.mul {γ δ : LaMod Dw l ≃ₗ[𝓞 E] LaMod Dw l} {n : ℕ} 
 end Right
 
 /- English proof (translation)
-Take `⟨Λ, N, x₀, P, x, h1, h2, h3, h4, -, h6, h7⟩` from `hf`. Conclude with `⟨hu, Λ, N, x u, P, h1, h2, h3, h4, by simpa using (h7 u).2.1, h6, (h7 u).2.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsOrbitFamily.mem_shortGen {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {bad : ℕ} {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
@@ -330,7 +326,7 @@ theorem IsOrbitFamily.mem_shortGen {E : Type} [Field E] [NumberField E] [IsCMFie
   exact ⟨hu, Λ, N, x u, P, h1, h2, h3, h4, by simpa using (h7 u).2.1, h6, (h7 u).2.2⟩
 
 /- English proof (translation)
-Establish `e : orthProj Hm Z x = (subE Z).mulVecLin ((orthPr Hm (subE Z)).mulVec x)`. Simplify using `[orthProj, Matrix.mulVec_mulVec]`. Rewrite using `[e]`. Conclude with `(subspace_image_spec K n Z).2.le ⟨_, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthProj_mem {K : Type} [Field K] [StarRing K] {n : ℕ} (Hm : Matrix (Fin n) (Fin n) K) (Z : Submodule K (Fin n → K))
     (x : Fin n → K) : orthProj Hm Z x ∈ Z := by
@@ -340,9 +336,9 @@ theorem orthProj_mem {K : Type} [Field K] [StarRing K] {n : ℕ} (Hm : Matrix (F
   exact (subspace_image_spec K n Z).2.le ⟨_, rfl⟩
 
 /- English proof (translation)
-Introduce `w hw`. Take `⟨a, rfl⟩` from `(subspace_image_spec K n Z).2.ge hw`. Establish `h0 : ((subE Z)ᴴ * Hm).mulVec (x - orthProj Hm Z x) = 0`. Rewrite using `[Matrix.mulVec_sub, orthProj, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, orthPr, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, sub_self]`. Establish `h1 : ∀ u y : Fin n → K, Formalism.DivisionValues.hform Hm u y = star u ⬝ᵥ Hm.mulVec y` using `fun u y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Formalism.DivisionValues.hform, Matrix.toLinearMapₛₗ₂'_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, starRingEnd_apply, mul_assoc, mul_comm, mul_left_comm]`. Rewrite using `[h1, Matrix.mulVecLin_apply, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, h0, dotProduct_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_orthProj_mem_perpOf {K : Type} [Field K] [StarRing K] {n : ℕ} (Hm : Matrix (Fin n) (Fin n) K)
     (Z : Submodule K (Fin n → K)) (hd : IsUnit ((subE Z)ᴴ * Hm * subE Z).det) (x : Fin n → K) :
@@ -358,7 +354,7 @@ theorem sub_orthProj_mem_perpOf {K : Type} [Field K] [StarRing K] {n : ℕ} (Hm 
   rw [h1, Matrix.mulVecLin_apply, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, h0, dotProduct_zero]
 
 /- English proof (translation)
-The claim follows from `orthProj_mem Hm ⊥ x`.
+A detailed English derivation is pending.
 -/
 example {K : Type} [Field K] [StarRing K] {n : ℕ} (Hm : Matrix (Fin n) (Fin n) K) (x : Fin n → K) :
     orthProj Hm ⊥ x = 0 := orthProj_mem Hm ⊥ x
@@ -368,7 +364,7 @@ section
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m}
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => hinj ((h x).trans (h' x).symm)`.
+A detailed English derivation is pending.
 -/
 theorem IsClassSum.unique {t : T0} {U : Subgroup G} {ψ : U →* D.what₂.LLˣ} {ph : ℂ}
     {θ θ' : (Fin (srcDim A i t U ψ) → D.what₂.LL) →ₗ[D.what₂.LL] (Fin (R.nW i) → D.what₂.LL)}
@@ -381,9 +377,9 @@ variable {T : Full D} [inst : Algebra T.J.Q.c.F D.what₂.LL] {R : RealDat D A T
   {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
 
 /- English proof (translation)
-Use `⟨Subtype.val_injective.comp ((fw.e i).injective.comp (Submodule.inclusion_injective _)), le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨F, rfl⟩`. Conclude with `(fw.e i _).2`. Introduce `x hx`. Take `⟨F, hF⟩` from `(fw.e i).surjective ⟨x, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨F.1, (cutR_eq J.toCore.C (inR_succ i) (κ i)).symm ▸ F.2⟩, congrArg Subtype.val hF⟩`.
+A detailed English derivation is pending.
 -/
 theorem cutTo_spec {J : CoreJ D} [Algebra J.Q.c.F D.what₂.LL] {R : RealDat D A J.Q.c.F}
     {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec} (fw : FWTie J R κ v₀) (i : Fin D.R.m) :
@@ -396,7 +392,7 @@ theorem cutTo_spec {J : CoreJ D} [Algebra J.Q.c.F D.what₂.LL] {R : RealDat D A
     exact ⟨⟨F.1, (cutR_eq J.toCore.C (inR_succ i) (κ i)).symm ▸ F.2⟩, congrArg Subtype.val hF⟩
 
 /- English proof (translation)
-Unfold `toForms`. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, LinearMap.liftBaseChange_tmul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem toForms_tmul (h : LawsP T.toTop) (fw : FWTie T.J R κ v₀) (i : Fin D.R.m) {n : ℕ}
     (z : (Fin n → D.what₂.LL) ≃ₗ[D.what₂.LL] D.what₂.LL ⊗[(recB h.toLawsCore).KO] (recB h.toLawsCore).Cusp ((i : ℕ) + 1) (κ i))
@@ -406,7 +402,7 @@ theorem toForms_tmul (h : LawsP T.toTop) (fw : FWTie T.J R κ v₀) (i : Fin D.R
   rw [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, LinearMap.liftBaseChange_tmul]
 
 /- English proof (translation)
-Take `⟨m, b, -, h1, h2, h3, h4⟩` from `fw.ks i`. Conclude with `(cusp_liftBaseChange_bijective (recB h.toLawsCore) (cuspTo h fw i) (cutTo_spec fw i).1 b h1 (h2.trans (cutTo_spec fw i).2.symm) h3 h4).comp z.bijective`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem toForms_bijective (h : LawsP T.toTop) (fw : FWTie T.J R κ v₀) (i : Fin D.R.m) {n : ℕ}
     (z : (Fin n → D.what₂.LL) ≃ₗ[D.what₂.LL] D.what₂.LL ⊗[(recB h.toLawsCore).KO] (recB h.toLawsCore).Cusp ((i : ℕ) + 1) (κ i)) :
@@ -430,9 +426,9 @@ variable {h : LawsP T.toTop} {fw : FWTie T.J R κ v₀} {hinj : Function.Injecti
     {y : (Fin (O.nX v i) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fin (srcDim A ι (R.mu v) U ψ) → D.what₂.LL)}
 
 /- English proof (translation)
-Rewrite using `[t.Th0_eq, t.ThK_eq]`. Use `traceSpan_le z _ _ fun f hf u => Submodule.subset_span ?_` and prove the remaining obligations. Use `IsOrbitFamily.mem_shortGen hf (T.nab _) u (cutR_le T.C _ _ (f u).2).1` as an intermediate fact. Express the relevant statement in the definitionally equal form `(f u).1 ∈ shortGen _ _ _ _ D.R.nV _ _ _`. Rewrite using `[← hn]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem OnTie.Th0_le_ThK (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (hn : (κ ι).n = D.R.nV) :
     O.Th0 v i ≤ O.ThK v i := by
@@ -444,14 +440,14 @@ theorem OnTie.Th0_le_ThK (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc �
   exact this
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun t.e_eq x`.
+A detailed English derivation is pending.
 -/
 theorem OnTie.e_eOp (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (x : Fin (O.nZ i) → D.what₂.LL) :
     toForms h fw ι z (O.e i x) = (R.FW ι).eOp (fun g => (idemOf A.X).coeff g) (toForms h fw ι z x) :=
   LinearMap.congr_fun t.e_eq x
 
 /- English proof (translation)
-Use `t.θ'_eq hr (y x)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem OnTie.adForm_θ' (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y)
     (hr : ClassSumRational R ι (R.mu v) U ψ ph) (x : Fin (O.nX v i) → D.what₂.LL) :
@@ -460,9 +456,9 @@ theorem OnTie.adForm_θ' (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc �
   simpa using this
 
 /- English proof (translation)
-Take `⟨a, h1, h2⟩` from `ha`. Take `⟨u, rfl⟩` from `z.symm.surjective x`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => rw [z.symm.map_zero, LinearMap.map_zero, LinearMap.map_zero, LinearMap.map_zero]`. Consider the case `add u u' hu hu' => rw [z.symm.map_add, LinearMap.map_add, LinearMap.map_add, hu, hu', LinearMap.map_add, LinearMap.map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul c F`. Establish `e : act g F = a (inc g) F` using `Subtype.ext ((t.act_eq g F).trans (h1 (inc g) F).symm)`. Rewrite using `[t.toFormTieK.rho_tmul, toForms_tmul, toForms_tmul, e, h2, map_smul]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem OnTie.rho_eq_of_actionPin (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (ha : ActionPin h fw ι ℓ)
     (g : P) (x : Fin (O.nZ i) → D.what₂.LL) :
@@ -488,18 +484,18 @@ def charInt {K : Type} [Field K] [NumberField K] {P : Type} [Group P] (inc : P �
   else 1
 
 /- English proof (translation)
-The claim follows from `congrArg (fun a : 𝓞 K => (a : K)) (dif_pos hg)`.
+A detailed English derivation is pending.
 -/
 theorem charInt_coe {K : Type} [Field K] [NumberField K] {P : Type} [Group P] (inc : P →* G) (U : Subgroup G) (ψ : U →* Kˣ)
     (g : P) (hg : inc g ∈ U) : ((charInt inc U ψ g : 𝓞 K) : K) = (ψ ⟨inc g, hg⟩ : Kˣ) :=
   congrArg (fun a : 𝓞 K => (a : K)) (dif_pos hg)
 
 /- English proof (translation)
-Take `⟨O₁, z, -, hp, -, H⟩` from `exists_formTieK (B := recB h.toLawsCore) (P6 := T.G.P) hinj EX O (fun i => (ι i : ℕ) + 1) (fun _ i => recPJ h ((ι i : ℕ) + 1) (inR_succ (ι i))) p (fun i => κ (ι i)) wL wF nT ρ`. Set `w : ∀ i, (Fin (O₁.nZ i) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fin (R.nW (ι i)) → D.what₂.LL)` to `fun i => LinearEquiv.ofBijective (toForms h fw (ι i) (z i)) (toForms_bijective h fw (ι i) (z i))`. Set `e : ∀ i, (Fin (O₁.nZ i) → D.what₂.LL) →ₗ[D.what₂.LL] (Fin (O₁.nZ i) → D.what₂.LL)` to `fun i => (w i).symm.toLinearMap ∘ₗ (R.FW (ι i)).eOp (fun g => (idemOf A.X).coeff g) ∘ₗ toForms h fw (ι i) (z i)`. Set `θ : ∀ v i, (Fin (srcDim A (ι i) (R.mu v) U ψ) → D.what₂.LL) →ₗ[D.what₂.LL] (Fin (O₁.nZ i) → D.what₂.LL)` to `fun v i => if hr : ClassSumRational R (ι i) (R.mu v) U ψ (ph i) then (w i).symm.toLinearMap ∘ₗ hr.choose else 0`. Establish `hw : ∀ i x, toForms h fw (ι i) (z i) ((w i).symm x) = x` using `fun i x => (w i).apply_symm_apply x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `O' : OnObj S P oc` to `{ O₁ with U := U.comap inc ψ := charInt inc U ψ e := e V₀ := fun i => LinearMap.range (e i) Th0 := fun _ i => thetaEig h ((ι i : ℕ) + 1) (κ (ι i)) (z i) (U.comap inc) (charInt inc U ψ) fun g => ℓ i (inc g) ThJ := fun v i => (thetaBase R (ι i) U ψ (ph i) v (p v)).comap ((toForms h …`. Use `⟨O', z, fun _ _ => LinearEquiv.refl _ _, hp, fun v i => { Ms_eq := (H v i).Ms_eq, rho_eq := (H v i).rho_eq, Th_eq := (H v i).Th_eq, σ_eq := (H v i).σ_eq, ThK_eq := (H v i).ThK_eq, act_eq := hρ i, U_eq := rfl, ψ_eq := fun g hg => ?_, e_eq := LinearMap.ext fun x => hw i _, V₀_eq := …` and prove the remaining obligations. Conclude with `charInt_coe inc U ψ g hg`. Express the relevant statement in the definitionally equal form `adForm R (ι i) (toForms h fw (ι i) (z i) (θ v i x)) = _`. Simplify using `only [θ, dif_pos hr]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(congrArg (adForm R (ι i)) (hw i _)).trans (hr.choose_spec x)`. Express the relevant statement in the definitionally equal form `orthProj _ (perpOf _ (LinearMap.ker (θ v i))) = orthProj _ (perpOf _ ((LinearMap.ker (θ v i)).map LinearMap.id))`. Rewrite using `[Submodule.map_id]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_onTie (h : LawsP T.toTop) (fw : FWTie T.J R κ v₀) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D)
     {Bs : DefBase D.what₂.LL} {Df : DefSide Bs} {S : IndefData Df} {P : Type} [Group P] [Finite P] {oc : OnConst}

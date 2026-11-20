@@ -6,7 +6,7 @@ import ReciprocityTheory.SemistableReduction.LatAll
 open NumberField ReciprocityTheory.ChartRestriction.G.FD
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.section_slice_eq_poly_div_det_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFrameSectionSliceEqPolyDivDetPow.lean&line=30#L30)
 -/

@@ -34,7 +34,7 @@ def IsEigenBasis {O : Type} [CommRing O] (act : OAct O G) (x : Sp R ⟶ S) (χ :
     ∀ w, IsEigenTangent act x χ w → ∃! c : Fin n → R, IsCombination x c (fun i => (v i).left) w
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem lieMult_iff {k : Type} [Field k] {O : Type} [CommRing O] (act : OAct O G) (x : Sp k ⟶ S)
     (χ : O →+* k) (n : ℕ) :
@@ -69,15 +69,13 @@ structure Framed (Y : Model Xo c β) (Xc : (Xo.XF c).Opens) (τ : E →+* ℂ) (
   w_basis : IsEigenBasis Y.t.act (x ≫ pullback.fst _ _) (chr c (conjEmb τ) j) w
 
 /- English proof (translation)
-Take `⟨hd, -⟩` from `Y.oF.geom k y (j.comp (IntermediateField.inclusion c.le).toRingHom) (by`. Rewrite using `[pullback.condition, ← Category.assoc, hy]`. Conclude with `(Spec.map_comp _ _).symm)`. Establish `h1 : chr c τ j H.rt = (j.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ` using `congrArg j (Subtype.ext hτ)`. Establish `h2 : chr c (conjEmb τ) j H.rt ≠ (j.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ` using `fun h => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : starRingEnd ℂ (τ (H.rt : E)) = H.rt0` using `congrArg Subtype.val (j.injective h)`. Rewrite `h3` using `[hτ]`. Establish `h4` using `H.sqrt_neg_disc_sq`. Establish `h5 : H.rt0.im = 0` using `Complex.conj_eq_iff_im.1 h3`. Establish `h6` using `congrArg Complex.re h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : (0 : ℝ) < H.d` using `Nat.cast_pos.2 H.d_prime.pos`. Simplify using `[pow_two, h5] at h6`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Establish `hv` using `(LiePull.lieMult_pull _ _ _ _ _ _ _ Y.t.act Y.oF.t.act Y.m.cart Y.m.act _ y _ _).1 ((hd _).1 h1)`. Establish `hw` using `(LiePull.lieMult_pull _ _ _ _ _ _ _ Y.t.act Y.oF.t.act Y.m.cart Y.m.act _ y _ _).1 ((hd _).2 h2)`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv`, `hw` using `[← Category.assoc, lieMult_iff]`. Take `⟨v, hv⟩` from `hv`. Take `⟨w, hw⟩` from `hw`. Use `⟨⟨y ≫ Y.jQ, by rw [Category.assoc, Y.jQ_over, hy], ?_, v, w, hv, hw⟩, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`.
-
-Conclude with `subset_closure ⟨y z, hm ⟨z, rfl⟩, by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_framed (Y : Model Xo c β) (Xc : (Xo.XF c).Opens) (τ : E →+* ℂ)
     (hτ : τ (H.rt : E) = H.rt0) (k : Type) [Field k] [IsAlgClosed k] (j : c.F →+* k)
@@ -216,7 +214,7 @@ def DetLineTrivial : Prop :=
           ∀ sig ∈ sections Y Xc τ, sig ≠ 0 → VanishesNowhere sig ∧ IsHorizontal sig
 
 /- English proof (translation)
-Rewrite using `[flatCoord, ← Matrix.det_submatrix_equiv_self (finSumFinEquiv.symm : Fin (0 + 1) ≃ _), Matrix.det_fin_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 example {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z : Fin 0 ⊕ Fin 1 → Fin g → ℂ) (W : Fin 0 → Fin g → ℂ)
     (C : Fin 0 ⊕ Fin 1 → Fin 1 → ℂ) : flatCoord Hm z W C = C (.inr 0) 0 := by

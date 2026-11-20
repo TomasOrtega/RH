@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ModelExtend
 
 /- English proof (translation)
-Use `⟨Submodule.fg_span_singleton ζ, ?_⟩` and prove the remaining obligations. Establish `h0 : ζ ≠ 0` using `fun h0 => h.2 (by simp [h0])`. Rewrite using `[Submodule.span_span_of_tower]`. Establish `hr : Module.finrank D.host.E (Fin L.rank → D.host.E) = 1` using `by simp [h.1]`. Conclude with `(finrank_eq_one_iff_of_nonzero ζ h0).1 hr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLattice_span {D : D7} {L : HSp D} {ζ : Fin L.rank → D.host.E} (h : IsLineVec L ζ) :
     Submodule.IsLattice D.host.E (Submodule.span (NumberField.RingOfIntegers D.host.E) {ζ} : Lat L) := by
@@ -27,25 +27,25 @@ theorem isLattice_span {D : D7} {L : HSp D} {ζ : Fin L.rank → D.host.E} (h : 
 open GlobalTheory.LocMod in
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p ψ hψ hU S L'' ζ₀ hζ LS hLS n _ _ FS FL'' TL hTL`. Use `set P := GlobalTheory.LocMod.Place.ofSplitPt p with hP`. Use `set Λ := latO S L'' (LS : Set _) ((Submodule.span (NumberField.RingOfIntegers D.host.E) {ζ₀} : Lat L'') : Set _) (· = p.v) with hΛ`. Take `⟨hAo, hAc⟩` from `GlobalTheory.T.splitPlace_homLattice_completion_openCompact D k p S L'' LS (Submodule.span (NumberField.RingOfIntegers D.host.E) {ζ₀}) hLS.1 (isLattice_span hζ) Unit n FS FL''`. Establish `hinj : Function.Injective (Witness.ext P FS FL'')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `Φ Ψ h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `congrFun h (P.up FS FL'' x)` as an intermediate fact. Rewrite `this` using `[Witness.ext_apply, Witness.ext_apply, if_pos (Witness.up_half P FS FL'' x), if_pos (Witness.up_half P FS FL'' x), Witness.down_up]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨G, hG⟩` from `LinearMap.exists_leftInverse_of_injective (Witness.ext P FS FL'') (LinearMap.ker_eq_bot.2 hinj)`. Use `set T₃ : (WO S L'' → ℂ) →ₗ[ℂ] (WO S L'' → ℂ) := TL ∘ₗ G with hT₃d`. Establish `hT₃ : ∀ Φ, T₃ (Witness.ext P FS FL'' Φ) = TL Φ` using `fun Φ => by`. Express the relevant statement in the definitionally equal form `TL (G (Witness.ext P FS FL'' Φ)) = TL Φ`. Rewrite using `[← LinearMap.comp_apply G, hG, LinearMap.id_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hsb : ∀ Φ, IsSBHalf p.e Λ Φ → ∃ Φ' : SB (Matrix Unit n k), Witness.ext P FS FL'' Φ' = Φ` using `GlobalTheory.T.exists_schwartzBruhat_extByZero_of_splitPlaceHalf D k P S L'' Unit n FS FL'' Λ hAo hAc`. Generalize the expression as in `hA : (Λ.comap (Witness.upH P FS FL'') : AddSubgroup (Matrix Unit n k)) = A at hAo hAc`. Establish `hcl : IsClopen (A : Set (Matrix Unit n k))` using `⟨A.isClosed_of_isOpen hAo, hAo⟩`. Set `Φ₀ : SB (Matrix Unit n k)` to `⟨(A : Set (Matrix Unit n k)).indicator 1, (LocallyConstant.charFn ℂ hcl).isLocallyConstant, HasCompactSupport.intro hAc fun x hx => Set.indicator_of_notMem hx _⟩`. Establish `e1 : Witness.ext P FS FL'' Φ₀ = halfInd p.e Λ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[Witness.ext_apply, halfInd]`. Express the relevant statement in the definitionally equal form `(if IsHalf p.e t then _ else _) = _`. Distinguish the cases in `ht : IsHalf p.e t`. Rewrite using `[if_pos ht]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(A : Set (Matrix Unit n k)).indicator 1 _ = _`. Rewrite using `[Set.indicator_apply, ← hA]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P.up FS FL'' (P.down FS FL'' t) ∈ Λ ↔ _`. Rewrite using `[Witness.up_down P FS FL'' ht, and_iff_left ht]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_neg ht, if_neg fun h => ht h.2]`. Use `⟨TL Φ₀, T₃, hTL.theta Φ₀, ⟨fun Φ hΦ x hx => ?_, fun Φ hΦ y hy => ?_, ?_⟩, hT₃⟩` and prove the remaining obligations. Take `⟨Φ', rfl⟩` from `hsb Φ hΦ`. Set `Φ'' : SB (Matrix Unit n k)` to `⟨fun s => Φ'.1 (s + P.down FS FL'' x), Φ'.2.1.comp_continuous (continuous_add_right _), Φ'.2.2.comp_homeomorph (Homeomorph.addRight _)⟩`. Establish `e2 : (fun t => Witness.ext P FS FL'' Φ' (t + x)) = Witness.ext P FS FL'' Φ''`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[Witness.ext_apply, Witness.ext_apply, Witness.down_add]`. Conclude with `if_congr (Witness.half_add hx) rfl rfl`. Rewrite using `[e2, hT₃, hT₃, hTL.trans (P.down FS FL'' x) Φ' Φ'' (fun t => rfl), Witness.up_down P FS FL'' hx]`. Take `⟨Φ', rfl⟩` from `hsb Φ hΦ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Set `Φ'' : SB (Matrix Unit n k)` to `⟨fun s => ψ (symplO S L'' (P.up FS FL'' s) y) * Φ'.1 s, GlobalTheory.T.schwartzBruhat_mul_conjugateHalf_character_splitPlace D k P ψ hψ S L'' Unit n FS FL'' y hy Φ'.1 Φ'.2⟩`. Establish `e2 : (fun t => ψ (symplO S L'' t y) * Witness.ext P FS FL'' Φ' t) = Witness.ext P FS FL'' Φ''`. Use function extensionality and compare the values at `t`. Rewrite using `[Witness.ext_apply, Witness.ext_apply]`. Use `split_ifs with ht`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = ψ (symplO S L'' (P.up FS FL'' (P.down FS FL'' t)) y) * _`. Rewrite using `[Witness.up_down P FS FL'' ht]`. Rewrite using `[mul_zero]`. Rewrite using `[e2, hT₃, hT₃, hTL.modul y hy Φ' Φ'' (fun t => rfl)]`. Rewrite using `[one_smul, ← e1, hT₃]`.
+A detailed English derivation is pending.
 -/
 theorem exists_placeModel_ext : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → p.UnitAA → ∀ (S L'' : HSp D) (ζ₀ : Fin L''.rank → D.host.E), IsLineVec L'' ζ₀ → ∀ (LS : Lat S), IsSelfDualC S LS → ∀ (n : Type) [Fintype n] [DecidableEq n] (FS : GlobalTheory.LocMod.Frame k S.rank n) (FL'' : GlobalTheory.LocMod.Frame k L''.rank Unit) (TL : SB (Matrix Unit n k) →ₗ[ℂ] (WO S L'' → ℂ)), (GlobalTheory.LocMod.Place.ofSplitPt p).IsModel ψ FS FL'' TL → ∃ (g₃ : WO S L'' → ℂ) (T₃ : (WO S L'' → ℂ) →ₗ[ℂ] (WO S L'' → ℂ)), IsThetaFunO ψ S L'' g₃ ∧ IsPlaceModel ψ (symplO S L'') (heisO ψ S L'') p.e (latO S L'' (LS : Set _) ((Submodule.span (NumberField.RingOfIntegers D.host.E) {ζ₀} : Lat L'') : Set _) (· = p.v)) 1 g₃ T₃ ∧ ∀ Φ, T₃ (GlobalTheory.LocMod.Witness.ext (GlobalTheory.LocMod.Place.ofSplitPt p) FS FL'' Φ) = TL Φ := by
   intro D k _ _ _ _ p ψ hψ hU S L'' ζ₀ hζ LS hLS n _ _ FS FL'' TL hTL

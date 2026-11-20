@@ -38,9 +38,9 @@ namespace Formalism.L2.SG.Pf.G9
 open Formalism.HermitianLattices.Ext.L3 Formalism.L2.SG.Pf.Cnt
 
 /- English proof (translation)
-Distinguish the cases in `hm : Multipliable f`. Establish `e` using `hm.hasProd.eventually_mem (IsOpen.mem_nhds (isOpen_discrete {∏' i, f i}) rfl)`. Take `⟨s, hs⟩` from `e.exists`. Rewrite using `[← Set.mem_singleton_iff.mp hs]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => hf i`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tprod_eq_one_of_not_multipliable hm]`. Conclude with `one_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem tprod_nat_ne_zero {ι : Type*} (f : ι → ℕ) (hf : ∀ i, f i ≠ 0) : ∏' i, f i ≠ 0 := by
   by_cases hm : Multipliable f
@@ -52,7 +52,7 @@ theorem tprod_nat_ne_zero {ι : Type*} (f : ι → ℕ) (hf : ∀ i, f i ≠ 0) 
     exact one_ne_zero
 
 /- English proof (translation)
-Establish `h1 : ∀ i, e i ≤ ∑ i, e i + ∑ i, e' i` using `fun i => le_trans (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)) (Nat.le_add_right _ _)`. Establish `h2 : ∀ i, e' i ≤ ∑ i, e i + ∑ i, e' i` using `fun i => le_trans (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)) (Nat.le_add_left _ _)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_eq_of_min {n n' : ℕ} (e : Fin n → ℕ) (e' : Fin n' → ℕ)
     (H : ∀ j, ∑ i, min (e i) j = ∑ i, min (e' i) j) : ∑ i, e i = ∑ i, e' i := by
@@ -66,9 +66,9 @@ theorem sum_eq_of_min {n n' : ℕ} (e : Fin n → ℕ) (e' : Fin n' → ℕ)
     _ = ∑ i, e' i := Finset.sum_congr rfl fun i _ => min_eq_left (h2 i)
 
 /- English proof (translation)
-Rewrite using `[Finset.card_filter]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : e i = 0`. Rewrite using `[if_neg (not_not.mpr hi), hi]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos hi, min_eq_right (Nat.one_le_iff_ne_zero.mpr hi)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_ne_zero_eq {n : ℕ} (e : Fin n → ℕ) :
     (Finset.univ.filter fun i => e i ≠ 0).card = ∑ i, min (e i) 1 := by
@@ -84,14 +84,14 @@ variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Number
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Simplify using `[orthK, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_orthK {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {w : V} :
     w ∈ orthK h U ↔ ∀ u ∈ U, h u w = 0 := by
   simp [orthK, Submodule.mem_iInf, LinearMap.mem_ker]
 
 /- English proof (translation)
-Rewrite `hw`, the goal using `[mem_orthK]`. Introduce `u hu`. Establish `e : h u (g w) = h (g u) (g w)` using `by rw [hg.2 u hu]`. Rewrite using `[e, hg.1 u w]`. Conclude with `hw u hu`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_mem_orthK {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g : V ≃ₗ[K] V}
     (hg : g ∈ isomFix h U) {w : V} (hw : w ∈ orthK h U) : g w ∈ orthK h U := by
@@ -102,9 +102,9 @@ theorem apply_mem_orthK {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {
   exact hw u hu
 
 /- English proof (translation)
-Establish `hinj : Function.Injective ((g : V →ₗ[K] V).restrictScalars (𝓞 K))` using `fun a b e => g.injective e`. Rewrite using `[Formalism.HermitianLatticesTheory.gmap, Submodule.map_inf _ hinj]`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[Submodule.mem_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `h1 y hy`. Introduce `hx`. Conclude with `⟨g.symm x, h2 x hx, g.apply_symm_apply x⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gmap_inf_sub {g : V ≃ₗ[K] V} (X : Submodule K V) (h1 : ∀ x ∈ X, g x ∈ X)
     (h2 : ∀ x ∈ X, g.symm x ∈ X) (Λ : Submodule (𝓞 K) V) :
@@ -123,7 +123,7 @@ theorem gmap_inf_sub {g : V ≃ₗ[K] V} (X : Submodule K V) (h1 : ∀ x ∈ X, 
     exact ⟨g.symm x, h2 x hx, g.apply_symm_apply x⟩
 
 /- English proof (translation)
-Use `gmap_inf_sub _ (fun x hx => apply_mem_orthK hg hx) (fun x hx => ?_) Λ` and prove the remaining obligations. Use `apply_mem_orthK ((isomFix h U).inv_mem hg) hx` as an intermediate fact. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gmap_cutW {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g : V ≃ₗ[K] V}
     (hg : g ∈ isomFix h U) (Λ : Submodule (𝓞 K) V) :
@@ -134,7 +134,7 @@ theorem gmap_cutW {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g : V 
   exact this
 
 /- English proof (translation)
-Use `gmap_inf_sub _ (fun x hx => by rw [hg.2 x hx]; exact hx) (fun x hx => ?_) Λ` and prove the remaining obligations. Rewrite using `[g.symm_apply_eq.mpr (hg.2 x hx).symm]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmap_cutU {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g : V ≃ₗ[K] V}
     (hg : g ∈ isomFix h U) (Λ : Submodule (𝓞 K) V) :
@@ -145,11 +145,11 @@ theorem gmap_cutU {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g : V 
   exact hx
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, e⟩`. Establish `e2 : g y = y` using `hg.2 y (hM y hy)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Express the relevant statement in the definitionally equal form `g y ∈ M`. Rewrite using `[e2]`. Conclude with `hy`. Introduce `hx`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx, hg.2 x (hM x hx)⟩`.
+A detailed English derivation is pending.
 -/
 theorem gmap_eq_self {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g : V ≃ₗ[K] V}
     (hg : g ∈ isomFix h U) {M : Submodule (𝓞 K) V} (hM : ∀ x ∈ M, x ∈ U) :
@@ -167,11 +167,11 @@ theorem gmap_eq_self {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {g :
     exact ⟨x, hx, hg.2 x (hM x hx)⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `isNoetherian_of_fg_of_noetherian _ hΛ.fg` as an intermediate fact. Conclude with `Submodule.FG.of_le_of_isNoetherian (inf_le_left : Λ ⊓ X.restrictScalars (𝓞 K) ≤ Λ)`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_le.mpr fun x hx => hx.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨r, hr, hrx⟩` from `StabilizerLattices.exists_smul_mem hΛ x`. Establish `h1 : r • x ∈ Λ ⊓ X.restrictScalars (𝓞 K)` using `⟨hrx, (X.restrictScalars (𝓞 K)).smul_mem r hx⟩`. Establish `hr' : algebraMap (𝓞 K) K r ≠ 0` using `by simpa using hr`. Establish `e : x = (algebraMap (𝓞 K) K r)⁻¹ • (r • x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul K r x, smul_smul, inv_mul_cancel₀ hr', one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`.
+A detailed English derivation is pending.
 -/
 theorem cut_isLatIn {Λ : Submodule (𝓞 K) V} (hΛ : Submodule.IsLattice K Λ) (X : Submodule K V) :
     IsLatIn X (Λ ⊓ X.restrictScalars (𝓞 K)) := by
@@ -191,9 +191,7 @@ theorem cut_isLatIn {Λ : Submodule (𝓞 K) V} (hΛ : Submodule.IsLattice K Λ)
       exact Submodule.smul_mem _ _ (Submodule.subset_span h1)
 
 /- English proof (translation)
-Introduce `x hx y hy`. Establish `hy' : y ∈ Formalism.HermitianLatticesTheory.dual h Λ`. Rewrite using `[hU]`. Conclude with `hy.1`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap] at hy'`.
-
-Conclude with `hy' x hx.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_of_unimod {h : V →ₗ⋆[K] V →ₗ[K] K} {Λ : Submodule (𝓞 K) V}
     (hU : Formalism.HermitianLatticesTheory.IsUnimodular h Λ) (X : Submodule (𝓞 K) V) :
@@ -225,14 +223,14 @@ def stabEquiv (h : V →ₗ⋆[K] V →ₗ[K] K) (U : Submodule K V) (Λ : Submo
   right_inv _ := rfl
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr (stabEquiv h U Λ)`.
+A detailed English derivation is pending.
 -/
 theorem card_stab (h : V →ₗ⋆[K] V →ₗ[K] K) (U : Submodule K V) (Λ : Submodule (𝓞 K) V) :
     Nat.card (MulAction.stabilizer (isomFix h U) Λ) = Nat.card (stabFix h U Λ) :=
   Nat.card_congr (stabEquiv h U Λ)
 
 /- English proof (translation)
-Use `hfin.to_subtype` as an intermediate fact. Conclude with `Set.finite_coe_iff.mp (Finite.of_equiv _ (stabEquiv h U Λ).symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_stab {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {Λ : Submodule (𝓞 K) V}
     (hfin : (stabFix h U Λ).Finite) :
@@ -241,9 +239,9 @@ theorem finite_stab {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {Λ :
   exact Set.finite_coe_iff.mp (Finite.of_equiv _ (stabEquiv h U Λ).symm)
 
 /- English proof (translation)
-Introduce `x hx hxy`. Establish `hxW : x ∈ orthK h U`. Rewrite using `[mem_orthK]`. Introduce `u hu`. Rewrite using `[← hs.eq x u, hxy u hu, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.disjoint_def.mp hUW.disjoint) x hx hxW`.
+A detailed English derivation is pending.
 -/
 theorem nondegOn_U {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {U : Submodule K V}
     (hUW : IsCompl U (orthK h U)) : NondegOn h U := by
@@ -255,9 +253,9 @@ theorem nondegOn_U {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {U : Submo
   exact (Submodule.disjoint_def.mp hUW.disjoint) x hx hxW
 
 /- English proof (translation)
-Introduce `x hx hxy`. Apply `hnd x` to reduce the goal to its premises. Introduce `v`. Establish `hv : v ∈ U ⊔ orthK h U` using `by rw [hUW.sup_eq_top]; exact Submodule.mem_top`. Take `⟨u, hu, w, hw, rfl⟩` from `Submodule.mem_sup.mp hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_add, hxy w hw, ← hs.eq u x, (mem_orthK.mp hx) u hu, map_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nondegenerate_on_orth_compl {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hnd : Nondeg h)
     {U : Submodule K V} (hUW : IsCompl U (orthK h U)) : NondegOn h (orthK h U) := by
@@ -269,7 +267,7 @@ theorem nondegenerate_on_orth_compl {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.I
   rw [map_add, hxy w hw, ← hs.eq u x, (mem_orthK.mp hx) u hu, map_zero, add_zero]
 
 /- English proof (translation)
-Establish `H` using `h2 K F V V hK hF h h hs hs X X' L L' hL hL' 𝔭 h𝔭 b a b' a' hJ hJ' hiso`. Use `⟨sum_eq_of_min _ _ H, ?_⟩` and prove the remaining obligations. Unfold `cJof`. Rewrite using `[card_ne_zero_eq (fun i => vF 𝔭 (a i)), card_ne_zero_eq (fun i => vF 𝔭 (a' i))]`. Conclude with `H 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vJof_eq_of_jordan (h2 : JordanInv) (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {X X' : Submodule K V} {L L' : Submodule (𝓞 K) V}
@@ -284,13 +282,13 @@ theorem vJof_eq_of_jordan (h2 : JordanInv) (hK : Formalism.HermitianLatticesTheo
   exact H 1
 
 /- English proof (translation)
-Establish `key : ∀ b' a', IsJordanIn h X L 𝔭 b' a' → vJof 𝔭 a' = vJof 𝔭 a ∧ cJof 𝔭 a' = cJof 𝔭 a` using `fun b' a' hJ' => vJof_eq_of_jordan h2 hK hF hs hL hL h𝔭 hJ' hJ ⟨LinearEquiv.refl _ _⟩`. Prove the components needed by the constructor for the conclusion. Establish `e : {v | ∃ b a, IsJordanIn h X L 𝔭 b a ∧ v = vJof 𝔭 a} = {vJof 𝔭 a}`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨b', a', hJ', rfl⟩`. Conclude with `(key b' a' hJ').1`. Introduce and unpack `rfl`. Conclude with `⟨b, a, hJ, rfl⟩`. Unfold `vJ`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, csInf_singleton]`. Establish `e : {v | ∃ b a, IsJordanIn h X L 𝔭 b a ∧ v = cJof 𝔭 a} = {cJof 𝔭 a}`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b', a', hJ', rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `(key b' a' hJ').2`. Introduce and unpack `rfl`. Conclude with `⟨b, a, hJ, rfl⟩`. Unfold `cJ`. Rewrite using `[e, csInf_singleton]`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vJ_cJ_eq (h2 : JordanInv) (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {X : Submodule K V} {L : Submodule (𝓞 K) V}
@@ -326,43 +324,39 @@ open Formalism.HermitianLattices.Ext.L3
 open scoped Formalism.L2.SG.Pf.G9
 
 /- English proof (translation)
-Introduce `K F V _ _ _ _ _ _ _ _ _ _ _ hK hF h hs hnd U hUW hpos M hM hMi hne c hc`. Take `⟨Λ₀, hΛ₀⟩` from `hne`. Take `⟨T₀, hT⟩ : ∃ T₀, Λ₀ ⊓ (orthK h U).restrictScalars (𝓞 K) = T₀` from `⟨_, rfl⟩`. Establish `hT₀ : IsLatIn (orthK h U) T₀` using `hT ▸ G9.cut_isLatIn hΛ₀.1 _`. Establish `hT₀i : Formalism.HermitianLatticesTheory.IsIntegralLat h T₀` using `hT ▸ G9.integral_of_unimod hΛ₀.2.1 _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨sY, hsY1, hsY2, hsYfin, hmass⟩` from `hG K F V hK hF h hs hnd U hUW hpos T₀ hT₀ hT₀i c hc`. Establish `hrefl : ∀ T, SameGenusFix (F` using `F) h U T T := fun T _ _ => ⟨1, (isomFix h U).one_mem, autSub_gmap_one _⟩`. Establish `hB : ∀ Λ ∈ GlueSet h U M, IsLatIn (orthK h U) (Λ ⊓ (orthK h U).restrictScalars (𝓞 K)) ∧ SameGenusFix (F` using `F) h U T₀ (Λ ⊓ (orthK h U).restrictScalars (𝓞 K)) := by`. Introduce `Λ hΛ`. Establish `hl` using `G9.cut_isLatIn hΛ.1 (orthK h U)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨hl, ?_⟩` and prove the remaining obligations. Establish `e1` using `((h8 K F V hK hF h hs hnd U hUW hpos M hM Λ hΛ _ hl).1).mpr (hrefl _)`. Establish `e2` using `((h8 K F V hK hF h hs hnd U hUW hpos M hM Λ₀ hΛ₀ _ hl).1).mp e1`. Rewrite `e2` using `[hT]`. Then use the resulting hypothesis. Establish `hfib0 : ∀ 𝔭 : Ideal (𝓞 F), 𝔭.IsMaximal → fibP h U 𝔭 M T₀ ≠ 0` using `((h8 K F V hK hF h hs hnd U hUW hpos M hM Λ₀ hΛ₀ T₀ hT₀).1).mpr (by rw [hT]; exact hrefl _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hfibeq : ∀ T, SameGenusFix (F` using `F) h U T₀ T → ∀ 𝔭 : Ideal (𝓞 F), 𝔭.IsMaximal → fibP h U 𝔭 M T = fibP h U 𝔭 M T₀ := by`. Introduce `T hg 𝔭 h𝔭`. Take `⟨g, hg, e⟩` from `hg 𝔭 h𝔭`. Establish `e1 : fibP h U 𝔭 M T = fibP h U 𝔭 M (Formalism.HermitianLatticesTheory.gmap g T₀)`. Unfold `fibP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← LocalizedFibreSets.gmap_locF, e]`. Rewrite using `[e1]`. Conclude with `(h6 K F V hK hF h hs hnd U hUW M T₀ hM hT₀ 𝔭 h𝔭).2 g hg`. Establish `hdisc : ∀ 𝔭 : Ideal (𝓞 F), 𝔭.IsMaximal → fibP h U 𝔭 M T₀ = discAut h (orthK h U) T₀ 𝔭` using `fun 𝔭 h𝔭 => ((h6 K F V hK hF h hs hnd U hUW M T₀ hM hT₀ 𝔭 h𝔭).1 (hfib0 𝔭 h𝔭)).2`. Establish `hfibcard : ∀ T, IsLatIn (orthK h U) T → SameGenusFix (F` using `F) h U T₀ T → Nat.card {Λ : Submodule (𝓞 K) V // Λ ∈ GlueSet h U M ∧ Λ ⊓ (orthK h U).restrictScalars (𝓞 K) = T} = ∏' 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, discAut h (orthK h U) T₀ 𝔭.1 := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T hTl hg`. Rewrite using `[(h8 K F V hK hF h hs hnd U hUW hpos M hM Λ₀ hΛ₀ T hTl).2]`. Conclude with `tprod_congr fun 𝔭 => by rw [hfibeq T hg 𝔭.1 𝔭.2, hdisc 𝔭.1 𝔭.2]`. Establish `hN : ∏' 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, discAut h (orthK h U) T₀ 𝔭.1 ≠ 0` using `G9.tprod_nat_ne_zero _ fun 𝔭 => by rw [← hdisc 𝔭.1 𝔭.2]; exact hfib0 𝔭.1 𝔭.2`. Set `π : Submodule (𝓞 K) V → Submodule (𝓞 K) V` to `fun Λ => Λ ⊓ (orthK h U).restrictScalars (𝓞 K)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `B : Set (Submodule (𝓞 K) V)` to `{T | IsLatIn (orthK h U) T ∧ SameGenusFix (F := F) h U T₀ T}`. Establish `hπ : ∀ (g : isomFix h U) (x : Submodule (𝓞 K) V), π (g • x) = g • π x` using `fun g x => (G9.gmap_cutW g.2 x).symm`. Establish `hA : ∀ g : isomFix h U, ∀ x ∈ GlueSet h U M, g • x ∈ GlueSet h U M`. Introduce `g x hx`. Take `⟨hx1, hx2, hx3⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hact` using `Formalism.HermitianLatticesTheory.isomAct (𝓞 K) K V h g.1 g.2.1 x`. Use `⟨hact.2.2.2.2.mpr hx1, hact.2.2.2.1.mpr hx2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.HermitianLatticesTheory.gmap g.1 x ⊓ U.restrictScalars (𝓞 K) = M`. Rewrite using `[← G9.gmap_cutU g.2, hx3]`. Conclude with `G9.gmap_eq_self g.2 fun y hy => by rw [← hM.2]; exact Submodule.subset_span hy`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsY1' : ∀ u ∈ sY, u ∈ B` using `fun u hu => hsY1 u hu`. Establish `hY : ∀ y ∈ B, ∃! t, t ∈ sY ∧ ∃ g : isomFix h U, g • t = y`. Introduce `y hy`. Take `⟨t, ⟨ht, g, hg, e⟩, hu⟩` from `hsY2 y hy.1 hy.2`. Conclude with `⟨t, ⟨ht, ⟨g, hg⟩, e⟩, fun t' ⟨ht', ⟨g', hg'⟩, e'⟩ => hu t' ⟨ht', g', hg', e'⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfinY : ∀ y ∈ B, ((MulAction.stabilizer (isomFix h U) y : Set (isomFix h U))).Finite` using `fun y hy => G9.finite_stab (hsYfin y hy.1 hy.2)`. Establish `hfibfin : ∀ u ∈ B, {x | x ∈ GlueSet h U M ∧ π x = u}.Finite`. Introduce `u hu`. Establish `hc : Nat.card {x // x ∈ GlueSet h U M ∧ π x = u} ≠ 0`. Rewrite using `[hfibcard u hu.1 hu.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hN`. Conclude with `Set.finite_coe_iff.mp (Nat.finite_of_card_ne_zero hc)`. Take `⟨sX, hsX1, hsX2⟩` from `OrbSum.exists_reps_of_cover (G := isomFix h U) (GlueSet h U M) hA (⋃ u ∈ (sY : Set (Submodule (𝓞 K) V)), {x | x ∈ GlueSet h U M ∧ π x = u}) (sY.finite_toSet.biUnion fun u hu => hfibfin u (hsY1' u hu)) (fun x hx => by`. Take `⟨u, -, hx'⟩` from `Set.mem_iUnion₂.mp hx`. Conclude with `hx'.1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(by`. Introduce `x hx`. Take `⟨u, ⟨hu, g, e⟩, -⟩` from `hY (π x) (hB x hx)`. Use `⟨g⁻¹ • x, Set.mem_biUnion (Finset.mem_coe.mpr hu) ⟨hA _ x hx, ?_⟩, g, smul_inv_smul g x⟩` and prove the remaining obligations. Rewrite using `[hπ, ← e, inv_smul_smul])`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨sX, hsX1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Λ hΛ`. Take `⟨t, ⟨ht, g, e⟩, hu⟩` from `hsX2 Λ hΛ`. Conclude with `⟨t, ⟨ht, g.1, g.2, e⟩, fun t' ⟨ht', g', hg', e'⟩ => hu t' ⟨ht', ⟨g', hg'⟩, e'⟩⟩`. Introduce `Λ hΛ`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb` using `hB Λ (hsX1 Λ hΛ)`. Use `(hsYfin _ hb.1 hb.2).subset ?_` and prove the remaining obligations. Introduce and unpack `g ⟨hg, e⟩`. Conclude with `⟨hg, by rw [G9.gmap_cutW hg, e]⟩`. Establish `e1 : ∀ Λ ∈ sX, ((Nat.card (stabFix h U Λ) : ℕ) : ℝ)⁻¹ = ((Nat.card (MulAction.stabilizer (isomFix h U) Λ) : ℕ) : ℝ)⁻¹` using `fun Λ _ => by rw [G9.card_stab]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl e1, OrbSum.sum_orbits_on π hπ (GlueSet h U M) B hA (fun x hx => hB x hx) sX sY hsX1 hsY1' hsX2 hY hfinY]`. Establish `e2 : ∀ u ∈ sY, (Nat.card {x // x ∈ GlueSet h U M ∧ π x = u} : ℝ) / (Nat.card (MulAction.stabilizer (isomFix h U) u) : ℝ) = ((∏' 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, discAut h (orthK h U) T₀ 𝔭.1 : ℕ) : ℝ) * ((Nat.card (stabFix h U u) : ℕ) : ℝ)⁻¹`. Introduce `u hu`. Rewrite using `[G9.card_stab, div_eq_mul_inv]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hfibcard u (hsY1 u hu).1 (hsY1 u hu).2` after adjusting the coercions. Rewrite using `[Finset.sum_congr rfl e2, ← Finset.mul_sum, hmass]`. Establish `hJ : ∀ 𝔭 : Ideal (𝓞 F), 𝔭.IsMaximal → vJ h (orthK h U) T₀ 𝔭 = vJ h U M 𝔭 ∧ cJ h (orthK h U) T₀ 𝔭 = cJ h U M 𝔭`. Introduce `𝔭 h𝔭`. Take `⟨b, a, hJM⟩` from `(h1 K F V hK hF h hs).1 U M (G9.nondegOn_U hs hUW) hM hMi 𝔭 h𝔭`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨b', a', hJT⟩` from `(h1 K F V hK hF h hs).1 _ T₀ (G9.nondegenerate_on_orth_compl hs hnd hUW) hT₀ hT₀i 𝔭 h𝔭`. Establish `hiso` using `((h6 K F V hK hF h hs hnd U hUW M T₀ hM hT₀ 𝔭 h𝔭).1 (hfib0 𝔭 h𝔭)).1`. Establish `E` using `G9.vJof_eq_of_jordan h2 hK hF hs hM hT₀ h𝔭 hJM hJT hiso`. Establish `EM` using `G9.vJ_cJ_eq h2 hK hF hs hM h𝔭 hJM`. Establish `ET` using `G9.vJ_cJ_eq h2 hK hF hs hT₀ h𝔭 hJT`.
-
-Conclude with `⟨by rw [EM.1, ET.1, E.1], by rw [EM.2, ET.2, E.2]⟩`. Establish `hnM : nM F h (orthK h U) T₀ = nM F h U M`. Unfold `nM`. Conclude with `tprod_congr fun 𝔭 => by rw [(hJ 𝔭.1 𝔭.2).1]`. Rewrite using `[hnM]`.
-
-Use `congr 1`. Conclude with `tprod_congr fun 𝔭 => by rw [(hJ 𝔭.1 𝔭.2).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem glueMass_of (h1 : JordanExists) (h2 : JordanInv) (h6 : GlueLoc) (h8 : GlueProd)
     (hG : GenusMassW) : GlueMass := by

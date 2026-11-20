@@ -22,11 +22,9 @@ section Over
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hI : Ideal.span {a} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `ha`. Establish `hfin` using `(Ideal.finite_factors hI).image (fun v : HeightOneSpectrum (𝓞 E) => v.asIdeal)`. Apply `hfin.subset` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `p ⟨hp, hap⟩`. Establish `hne : p ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hp (RingOfIntegers.not_isField E)`. Use `⟨⟨p, hp.isPrime, hne⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show p ∣ Ideal.span {a}`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`.
-
-Conclude with `hap`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finMaxElt (a : 𝓞 E) (ha : a ≠ 0) : {p : Ideal (𝓞 E) | p.IsMaximal ∧ a ∈ p}.Finite := by
   have hI : Ideal.span {a} ≠ 0 := by
@@ -42,11 +40,11 @@ theorem finMaxElt (a : 𝓞 E) (ha : a ≠ 0) : {p : Ideal (𝓞 E) | p.IsMaxima
   exact hap
 
 /- English proof (translation)
-Establish `ha : ∀ v : HeightOneSpectrum (𝓞 F), ∃ a : 𝓞 F, a ∈ v.asIdeal ∧ a ≠ 0` using `fun v => Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Use `choose a haM ha0 using ha`. Establish `hne0 : ∀ x : 𝓞 F, x ≠ 0 → algebraMap (𝓞 F) (𝓞 E) x ≠ 0`. Introduce `x hx h0`. Establish `h1 : algebraMap (𝓞 F) E x = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E, h0, map_zero]`. Rewrite `h1` using `[IsScalarTower.algebraMap_apply (𝓞 F) F E, map_eq_zero_iff _ (algebraMap F E).injective]`. Conclude with `hx (FaithfulSMul.algebraMap_injective (𝓞 F) F (by rw [h1, map_zero]))`. Apply `(T.finite_toSet.biUnion (fun v _ => finMaxElt (algebraMap (𝓞 F) (𝓞 E) (a v)) (hne0 (a v) (ha0 v)))).subset` to reduce the goal to its premises. Introduce and unpack `p ⟨hp, v, hv, hc⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Set.mem_biUnion (x := v) hv ⟨hp, ?_⟩` and prove the remaining obligations. Establish `: a v ∈ p.comap (algebraMap (𝓞 F) (𝓞 E))` using `by rw [hc]; exact haM v`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem primesOver_finite (T : Finset (HeightOneSpectrum (𝓞 F))) :
     {p : Ideal (𝓞 E) | p.IsMaximal ∧ ∃ v ∈ T, p.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal}.Finite := by
@@ -70,15 +68,15 @@ theorem primesOver_finite (T : Finset (HeightOneSpectrum (𝓞 F))) :
 variable [StarRing E] {V : Type} [AddCommGroup V] [Module E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V]
 
 /- English proof (translation)
-Introduce and unpack `x ⟨s, hs, hsx⟩`. Set `I : Ideal (𝓞 E)` to `Y.comap (LinearMap.toSpanSingleton (𝓞 E) V x)`. Assume the negation of the conclusion as `hno`. Establish `hle : I.comap (algebraMap (𝓞 F) (𝓞 E)) ≤ v.asIdeal`. Introduce `a ha`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hav`. Conclude with `hno ⟨a, hav, ha⟩`. Take `⟨Q, hIQ, hQp, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral v.asIdeal I hle`. Establish `hQm : Q.IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := 𝓞 F) Q (by rw [hQc]; exact v.isMaximal)`. Establish `hsQ : algebraMap (𝓞 F) (𝓞 E) s ∉ Q` using `fun hq => hs (by rw [← hQc]; exact hq)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : algebraMap (𝓞 F) (𝓞 E) s ∈ hcompl (K` using `E) Q := by`. Apply `Submonoid.subset_closure` to reduce the goal to its premises. Use `⟨hsQ, fun t ht => ?_⟩` and prove the remaining obligations. Establish `e1 : algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) s) = algebraMap F E (algebraMap (𝓞 F) F s)`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 F) F E]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: t = algebraMap (𝓞 F) (𝓞 E) s`. Apply `FaithfulSMul.algebraMap_injective (𝓞 E) E` to reduce the goal to its premises. Rewrite using `[ht, e1, hst]`. Rewrite using `[this]`. Conclude with `hsQ`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hxX : x ∈ loc (K` using `E) Q X := ⟨_, hs', hsx⟩`. Rewrite `hxX` using `[h Q hQm hQc]`. Take `⟨t, ht, htx⟩` from `hxX`. Use `haveI := hQm.isPrime`. Conclude with `(hcompl_le_primeCompl Q ht) (hIQ htx)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hermToF (hst : ∀ a : F, star (algebraMap F E a) = algebraMap F E a)
     (v : HeightOneSpectrum (𝓞 F)) (X Y : Submodule (𝓞 E) V)
@@ -115,9 +113,9 @@ theorem hermToF (hst : ∀ a : F, star (algebraMap F E a) = algebraMap F E a)
 end Over
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hsymm hnd hL N hN T`. Use `set P := (primesOver_finite (E := E) T).toFinset with hP`. Take `⟨γ, hγ⟩` from `hH F E σ V h M b L0 hσ hθ hsymm hnd hL N hN P (fun p hp => ((Set.Finite.mem_toFinset _).1 hp).1)`. Use `⟨γ, fun v hv => ?_⟩` and prove the remaining obligations. Establish `hst : ∀ a : F, star (algebraMap F E a) = algebraMap F E a` using `fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hσ, AlgHom.commutes]`. Establish `hpv : ∀ p : Ideal (𝓞 E), p.IsMaximal → p.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal → loc (K` using `E) p (gmap (linOf b (γ : GL (Fin M) E)) L0) = loc (K := E) p N := fun p hp hc => hγ p ((Set.Finite.mem_toFinset _).2 ⟨hp, v, hv, hc⟩)`. Conclude with `Set.Subset.antisymm (hermToF hst v _ _ hpv) (hermToF hst v _ _ (fun p hp hc => (hpv p hp hc).symm))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem semiApprox_of (hH : HermApprox) : SemiApprox := by
   intro F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hsymm hnd hL N hN T
@@ -134,7 +132,7 @@ theorem semiApprox_of (hH : HermApprox) : SemiApprox := by
   exact Set.Subset.antisymm (hermToF hst v _ _ hpv) (hermToF hst v _ _ (fun p hp hc => (hpv p hp hc).symm))
 
 /- English proof (translation)
-The claim follows from `surjStep_of_F hP (semiApprox_of hH) hO`.
+A detailed English derivation is pending.
 -/
 theorem surjStep_of_patchF_herm (hP : PatchF) (hH : HermApprox) (hO : LSOne) : SurjStep :=
   surjStep_of_F hP (semiApprox_of hH) hO

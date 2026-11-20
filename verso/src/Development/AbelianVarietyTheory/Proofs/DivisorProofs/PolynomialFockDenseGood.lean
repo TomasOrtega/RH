@@ -23,25 +23,23 @@ namespace GlobalTheory.PolDense
 open GlobalTheory.GaussFockJ GlobalTheory.ThK.EvAt0.PolD
 
 /- English proof (translation)
-Establish `hcm` using `hB.cm`. Establish `hψ` using `hB.std`. Take `⟨ε, hε⟩` from `hG`. Set `rel : Matrix (Fin n) (Fin d) (AE F E) → InfinitePlace F → Matrix (Fin n) (Fin d) ℂ` to `fun u w => (((ε w : ℤ) : ℂ) * Complex.I) • (X.θ w * u.map (piInf (B.emb w)) * (W.θ w)ᵀ)`. Use `choose R hRat hRmap using fun u => exists_mat_at hcm B.emb (rel u)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hRadd : ∀ u v, R (u + v) = R u + R v`. Introduce `u v`. Use `eq_of_map_piInf hcm B.emb (hRat _) (fun c hc => by rw [smul_add, hRat u c hc, hRat v c hc, add_zero]) fun w => ?_` and prove the remaining obligations. Rewrite using `[hRmap, Matrix.map_add _ (map_add _), hRmap, hRmap]`. Simplify using `only [rel, Matrix.map_add _ (map_add _), Matrix.mul_add, Matrix.add_mul, smul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hRsmul : ∀ (c : AF F) u, R (c • u) = c • R u`. Introduce `c u`. Use `eq_of_map_piInf hcm B.emb (hRat _) (fun c' hc' => by rw [smul_comm, hRat u c' hc', smul_zero]) fun w => ?_` and prove the remaining obligations. Rewrite using `[hRmap, map_smul_piInf, hRmap]`. Simplify using `only [rel, map_smul_piInf, Matrix.mul_smul, Matrix.smul_mul, smul_smul, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hRR : ∀ u, At (evI F) u → R (R u) = -u`. Introduce `u hu`. Use `eq_of_map_piInf hcm B.emb (hRat _) (fun c hc => by rw [smul_neg, hu c hc, neg_zero]) fun w => ?_` and prove the remaining obligations. Rewrite using `[hRmap, Matrix.map_neg _ (map_neg _)]`. Simplify using `only [rel, hRmap]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hV` using `(hX.cartan w).1`. Establish `hW'` using `(hW.cartan w).1`. Establish `hWt : (W.θ w)ᵀ * (W.θ w)ᵀ = 1` using `by rw [← Matrix.transpose_mul, hW', Matrix.transpose_one]`. Establish `he : (((ε w : ℤ) : ℂ) * Complex.I) * (((ε w : ℤ) : ℂ) * Complex.I) = -1`. Establish `h1 : ((ε w : ℤ) : ℂ) * ((ε w : ℤ) : ℂ) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Take the linear combination `(Complex.I * Complex.I) * h1 + Complex.I_mul_I`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, smul_smul, he, neg_one_smul]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hV, Matrix.one_mul, Matrix.mul_assoc, hWt, Matrix.mul_one]`. Set `J : ((Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F)) → ((Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F))` to `fun w => Psi M (R (Phi M w))`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hJPhi : ∀ w, Phi M (J w) = R (Phi M w)` using `fun w => Phi_Psi M (hRat _)`. Establish `hPsi_smul : ∀ (t : ℝ) v, At (evI F) v → Psi M (realAd F t • v) = t • Psi M v`. Introduce `t v hv`. Rewrite using `[← Phi_Psi M hv, ← Phi_smul, Psi_Phi, Psi_Phi]`. Set `J₀ : ((Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F)) →ₗ[ℝ] ((Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F))` to `{ toFun := J map_add' := fun w w' => by show Psi M (R (Phi M (w + w'))) = Psi M (R (Phi M w)) + Psi M (R (Phi M w'))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Phi_add, hRadd, Psi_add]`. Use the proof step `map_smul' := fun t w => by show Psi M (R (Phi M (t • w))) = t • Psi M (R (Phi M w))`. Rewrite using `[Phi_smul, hRsmul, hPsi_smul t _ (hRat _)] }`. Use `⟨J₀, fun w => ?_, fun w x => ?_⟩` and prove the remaining obligations. Use `show Psi M (R (Phi M (Psi M (R (Phi M w))))) = -w`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Phi_Psi M (hRat _), hRR _ (at_Phi M w), Psi_neg, Psi_Phi]`. Establish `h` using `hε (Phi M w) (R (Phi M w)) (at_Phi M w) (hRat _) (hRmap _) _ _ (actsD_Phi hψ M w f₀) (by rw [← hJPhi]; exact actsD_Phi hψ M (J w) f₀)`. Rewrite using `[dHeis_eq_dOp, dHeis_eq_dOp]`. Use `show dOp (J w).1 (J w).2 f₀ x = _`. Rewrite using `[h]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_complex_structure_pair {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (B : Base F E) {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) {r s r' s' : ℕ}
@@ -110,25 +108,25 @@ theorem exists_complex_structure_pair {F E : Type} [Field F] [NumberField F] [Fi
     rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M r s r' s' hB hX hW`. Take `⟨f₀, hne, hG⟩` from `GlobalTheory.T.exists_nonzero_gaussian_vector F E σ B n d r s r' s' X W M hB hX hW GlobalTheory.T.archHeisenbergDerivatives_exist GlobalTheory.T.archActionReadings_compatible`. Take `⟨J₀, hJJ, hJ⟩` from `exists_complex_structure_pair B X W M hB hX hW f₀ hG`. Take `⟨Q, -, -, hneg, hsol, -⟩` from `GlobalTheory.T.fockVacua_smooth_family_complexGaussians (GlobalTheory.GaussLine.pairInf F (Fin n × Fin d)) (GlobalTheory.GaussLine.pairInf_nondeg F (Fin n × Fin d)) (fun _ => J₀) (fun _ => contDiff_const) (fun _ => hJJ) (fun _ => ⟨f₀, hne, hJ⟩)`. Take `⟨ε, hε, hev⟩` from `hneg 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hQ` using `hev.self_of_nhds`. Establish `hf` using `hsol 0 f₀ hJ`. Establish `h0 : f₀ 0 ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Rewrite using `[hf x, h, zero_mul]`. Both sides reduce to the same expression. Establish `hmem : f₀ ∈ M.Pol B.ψ B.emb`. Rewrite using `[Model.Pol, Submodule.mem_sInf]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun N hN => hN.1 f₀ hG`. Set `Qc : (Fin n × Fin d → mixedEmbedding.mixedSpace F) →L[ℝ] (Fin n × Fin d → mixedEmbedding.mixedSpace F) →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : ((Fin n × Fin d → mixedEmbedding.mixedSpace F) →ₗ[ℝ] ℂ) ≃ₗ[ℝ] _).toLinearMap ∘ₗ (-Q 0))`. Establish `hQc : ∀ x y, Qc x y = -Q 0 x y` using `fun x y => rfl`. Establish `hsurj : Function.Surjective (GlobalTheory.GaussLine.pairInf F (Fin n × Fin d)).flip`. Establish `hinj : Function.Injective (GlobalTheory.GaussLine.pairInf F (Fin n × Fin d)).flip`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `q hq`. Conclude with `GlobalTheory.GaussLine.pairInf_nondeg F _ q fun x => by`. Simplify using `using LinearMap.congr_fun hq x`. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq).symm).1 hinj`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.T.schwartzSubmodule_eq_top_of_gaussian_mem_derivStable _ (M.Pol B.ψ B.emb) ((f₀ 0)⁻¹ • f₀) Qc ε hε (fun x => ?_) (fun x => ?_) (Submodule.smul_mem _ _ hmem) ?_ ?_` and prove the remaining obligations. Rewrite using `[hQc]`. Use `hQ x` as an intermediate fact. Simplify using `only [LinearMap.neg_apply, Complex.neg_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[SchwartzMap.smul_apply, hf x, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ h0, one_mul, hQc, neg_neg]`. Introduce `v f f₁ hfN h₁`. Establish `e : dOp v 0 f = f₁`. Use `SchwartzMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[h₁ x, ← dHeis_eq_dOp (v, (0 : Fin n × Fin d → mixedEmbedding.mixedSpace F)) f x]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[GlobalTheory.GaussLine.dHeis]`. Rewrite `hfN`, the goal using `[Model.Pol, Submodule.mem_sInf]`. Introduce `N hN`. Conclude with `e ▸ hN.2 _ (at_Phi M (v, 0)) f (hfN N hN) _ (actsD_Phi hB.std M (v, 0) f)`. Introduce `ℓ f f₁ hfN h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q, hq⟩` from `hsurj ℓ.toLinearMap`. Take `⟨f₂, hf₂, h₂⟩` from `GlobalTheory.PolMul.model_mul M B.ψ hB.std B.emb q f hfN`. Establish `e : f₂ = f₁`. Use `SchwartzMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[h₂ x, h₁ x]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.congr_fun hq x` as an intermediate fact. Simplify using `only [LinearMap.flip_apply, ContinuousLinearMap.coe_coe] at this`. Rewrite using `[this]`. Conclude with `e ▸ hf₂`.
+A detailed English derivation is pending.
 -/
 theorem pol_dense_good : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' →

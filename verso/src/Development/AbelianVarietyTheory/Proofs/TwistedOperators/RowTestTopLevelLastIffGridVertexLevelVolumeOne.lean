@@ -25,18 +25,16 @@ section Loc
 variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Conclude with `symPr_zero C`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem symPr_of_eq_zero {n : Type*} [Fintype n] [DecidableEq n] {c : ℕ} (hc : c = 0) (C : Subgroup (GL (n ⊕ Fin c) k)) :
     symPr C = C.comap (embX c) := by
   subst hc; exact symPr_zero C
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H i j`. Use `H (frame h (.inl i)) (frame h (.inl j))` as an intermediate fact. Simplify `this` using `[embX]`. Introduce `H i j`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Generalize the expression as in `(frame h).symm i = r`. Generalize the expression as in `(frame h).symm j = s`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;> simp only [embX, Units.coe_map, MonoidHom.coe_mk, OneHom.coe_mk, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂]`. Conclude with `H r s`. Conclude with `zero_mem _`.
-
-Conclude with `zero_mem _`. Rewrite using `[one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embX_frame_int {a c b : ℕ} (h : a + c = b) (z : GL (Fin a) k) :
     (∀ i j : Fin b, (embX c z).val ((frame h).symm i) ((frame h).symm j) ∈ 𝒪[k]) ↔ ∀ i j, z.val i j ∈ 𝒪[k] := by
@@ -57,7 +55,7 @@ theorem embX_frame_int {a c b : ℕ} (h : a + c = b) (z : GL (Fin a) k) :
       · exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[Subgroup.map_equiv_eq_comap_symm', Subgroup.mem_comap, mem_KO_iff, mem_KO_iff, ← map_inv, ← map_inv]`. Conclude with `and_congr (embX_frame_int h x) (embX_frame_int h x⁻¹)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embX_mem_frame_KO {a c b : ℕ} (h : a + c = b) (x : GL (Fin a) k) :
     embX c x ∈ (KO k (Fin b)).map (frameGL (k := k) h).toMonoidHom ↔ x ∈ KO k (Fin a) := by
@@ -65,9 +63,9 @@ theorem embX_mem_frame_KO {a c b : ℕ} (h : a + c = b) (x : GL (Fin a) k) :
   exact and_congr (embX_frame_int h x) (embX_frame_int h x⁻¹)
 
 /- English proof (translation)
-Rewrite using `[symPr_of_eq_zero (by omega), conjLevel, hJ, hg]`. Use extensionality with `x`. Rewrite using `[Subgroup.mem_comap, map_one]`. Establish `e : Subgroup.map (MulEquiv.toMonoidHom (1 : MulAut (GL (Fin (Γ.rank (Γ.m, j))) k))) (KO k (Fin (Γ.rank (Γ.m, j)))) = KO k _` using `Subgroup.map_id _`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `embX_mem_frame_KO _ x`.
+A detailed English derivation is pending.
 -/
 theorem symPr_conjLevel_last {Γ : Grid k} (hs : 1 ≤ Γ.s) (J : Γ.Level) (g : Γ.VertexGroup) {j : ℕ} (hj : j < Γ.m)
     (hlast : j + 1 = Γ.m) (hJ : J (Γ.m, j) = KO k _) (hg : g (Γ.m, j) = 1) :
@@ -88,7 +86,7 @@ namespace GlobalTheory.LastLevUnit
 open GlobalTheory.FunObj.UnfModel GlobalTheory.SplitWeil GlobalTheory.SplitFlip GlobalTheory.RootEx ValuativeRel GlobalTheory.FunObj.LevRowSucc
 
 /- English proof (translation)
-Rewrite using `[Reps.elt, onColumn_apply]`. Simplify using `only`. Rewrite using `[dif_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem elt_last {k : Type*} [Field k] {Γ : Grid k} {hs : 1 ≤ Γ.s} {J : Γ.Level} (ρ : Reps hs J) (β : Cosets hs J) {j : ℕ}
     (hj : j + 2 = Γ.m) : ρ.elt β (Γ.m, j + 1) = 1 := by
@@ -99,7 +97,7 @@ theorem elt_last {k : Type*} [Field k] {Γ : Grid k} {hs : 1 ≤ Γ.s} {J : Γ.L
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-The claim follows from `| (0, _), h, _ => absurd rfl h | (_ + 1, 0), _, h => absurd rfl h | (_ + 1, _ + 1), _, _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem givenLevel_pos (G : GridData L sc) (t : T) (w : Pl D.host.E) :
     ∀ X : ℕ × ℕ, X.1 ≠ 0 → X.2 ≠ 0 → givenLevel G t w X = KO (Kw w) (Fin ((locGrid G t w).rank X))
@@ -108,7 +106,7 @@ theorem givenLevel_pos (G : GridData L sc) (t : T) (w : Pl D.host.E) :
   | (_ + 1, _ + 1), _, _ => rfl
 
 /- English proof (translation)
-Rewrite using `[GridData.levMax]`. Conclude with `prodLev_inf_UA (S.βp_is (j + 1) h.le) (G.isV (X := .top (j + 1)) h.le fun _ e => by cases e).sd (locPl G t) _ _ fun w => symPr_conjLevel_last one_le_sLen (givenLevel G t w.1) ((repsAt G t w.1).elt (β w)) h (by show j + 1 + 1 = D.R.m; omega) (givenLevel_pos G t w.1 _ (by show D.R. …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levTop_last_inf_UA {G : GridData L sc} (W : G.Weil) {U : Set T} (S : GridChoice W U) (t : T) (Φ : G.Datum)
     (β : CosFam G t) (j : ℕ) (h : j + 1 < D.R.m) (hj : j + 2 = D.R.m) :
@@ -119,7 +117,7 @@ theorem levTop_last_inf_UA {G : GridData L sc} (W : G.Weil) {U : Set T} (S : Gri
       (givenLevel_pos G t w.1 _ (by show D.R.m ≠ 0; omega) (by show j + 1 ≠ 0; omega)) (elt_last _ _ hj)
 
 /- English proof (translation)
-The claim follows from `| 0, _, h1, h2 => absurd h1 (by omega) | j + 1, h, h1, _ => levTop_last_inf_UA W S t Φ β j h (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem levTop_inf_UA_levJ {G : GridData L sc} (W : G.Weil) {U : Set T} (S : GridChoice W U) (t : T) (Φ : G.Datum)
     (β : CosFam G t) : ∀ n (h : n < D.R.m), n + 1 = D.R.m → 2 ≤ D.R.m →
@@ -128,7 +126,7 @@ theorem levTop_inf_UA_levJ {G : GridData L sc} (W : G.Weil) {U : Set T} (S : Gri
   | j + 1, h, h1, _ => levTop_last_inf_UA W S t Φ β j h (by omega)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun D _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ s ch _ _ t Φ β h hm k => by have hU : finG (ch.G.V (.top (D.R.m - 1))) k ∈ UA D.sp.cm (ch.G.V (.top (D.R.m - 1))).gram := GlobalTheory.LevSplit.finE_mem_UA _ _ rw [← levTop_inf_UA_levJ ch.W ch.S.toGridChoice t Φ β (D.R.m - …`.
+Supply the required witnesses or components.
 -/
 theorem levTop_iff_levJ : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ t Φ β (h : D.R.m - 1 < D.R.m), 2 ≤ D.R.m → ∀ (k : FinPt ch.G (.top (D.R.m - 1))),
     finG (ch.G.V (.top (D.R.m - 1))) k ∈ ch.S.toGridChoice.levTop t Φ β (D.R.m - 1) h ↔

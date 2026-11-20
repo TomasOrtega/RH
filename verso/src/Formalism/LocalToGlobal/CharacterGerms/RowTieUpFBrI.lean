@@ -57,7 +57,7 @@ def UpFLaw (p : ℕ) [Fact p.Prime] (T : Type) [CommRing T] (OE : Type) [CommRin
           ((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom) : ℝ)) ≤ xs
 
 /- English proof (translation)
-Take `⟨D, A, U, F, x, iM, io, oD, oA, act, rfl, rfl, -, hx, hO, hA⟩` from `hG`. Introduce `C _ _ _ v O _ _ hv _ _ _ _ iota hloc w _ t hbas hfrob r W hW j`. Conclude with `hUp T hlT G D A U dd F x hx hp2 OE io oD oA hO hdisc act hA C v O hv iota hloc w t hbas hfrob r W hW j`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem upFLaw_of_geoJ {p : ℕ} [Fact p.Prime] (hUp : UpFSt p) (hp2 : p ≠ 2)
     (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [IsNoetherianRing T] [CharZero T]
@@ -83,14 +83,14 @@ def EigIn {Y : FBChart C V OE dd} (p : PairData Y d I) (R : Type) [CommRing R] [
       ∀ c i, algebraMap R C (W (emR g a) c i) = p.u g (e c) i
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[Fin.ofNat, Fin.val_add, Nat.add_mod]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem ofNat_succ (n : ℕ) [NeZero n] (k : ℕ) : Fin.ofNat n (k + 1) = Fin.ofNat n k + 1 := by
   apply Fin.ext
   simp [Fin.ofNat, Fin.val_add, Nat.add_mod]
 
 /- English proof (translation)
-The claim follows from `| 0 => by have : Fin.ofNat n 0 = 0 := by apply Fin.ext; simp [Fin.ofNat] simp [this] | k + 1 => by have e : a + ((k + 1 : ℕ) : ZMod d) = (a + (k : ZMod d)) + 1 := by push_cast; ring rw [e, h, jj_add jj h a k, ofNat_succ, add_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem jj_add {n : ℕ} [NeZero n] (jj : ZMod d ≃ Fin n) (h : ∀ a, jj (a + 1) = jj a + 1) (a : ZMod d) :
     ∀ k : ℕ, jj (a + (k : ZMod d)) = jj a + Fin.ofNat n k
@@ -102,21 +102,19 @@ theorem jj_add {n : ℕ} [NeZero n] (jj : ZMod d ≃ Fin n) (h : ∀ a, jj (a + 
     rw [e, h, jj_add jj h a k, ofNat_succ, add_assoc]
 
 /- English proof (translation)
-Use `Y.algClosed` as an intermediate fact. Introduce `g a _`. Take `⟨w, iN, t, jj, hj1, hjt, hbas⟩` from `hPl g`. Take `⟨r, W, hW, hWe⟩` from `hEig`. Establish `hinj : Function.Injective (algebraMap R C)` using `hv.hom_inj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfrob : ∀ (j : Fin w.n) (x : OE), ((t (j + 1) : Emb (O` using `R) w.e) : OE →+* R) x - (((t j : Emb (O := R) w.e) : OE →+* R) x) ^ V.l ∈ maximalIdeal R := by`. Introduce `j x`. Take `⟨a', rfl⟩` from `jj.surjective j`. Rewrite using `[← hj1, hjt, hjt]`. Apply `hMM` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_sub, map_pow, hem, hem]`. Conclude with `p.em_frob g a' x`. Take `⟨xs, hAF, hle⟩` from `hL C vm R hv iota hloc w t hbas hfrob r W hW (jj a)`. Take `⟨e, he⟩` from `hWe g a`. Establish `hconj : ∀ b, (emR g b).comp ((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom = emR (1 - g) b`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Use extensionality with `x`. Apply `hinj` to reduce the goal to its premises. Use `show algebraMap R C (emR g b (star x)) = _`. Rewrite using `[hem, hem]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `fin_cases g`. Conclude with `(p.em_conj b x).symm`. Use `show p.em 1 b (star x) = p.em 0 b x`. Rewrite using `[p.em_conj, star_star]`. Establish `hrk : ∀ b, r (emR (1 - g) b) = rk p (1 - g) b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `b`. Take `⟨e', -⟩` from `hWe (1 - g) b`. Use `Fintype.card_congr e'` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, Fintype.card_subtype]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨r (emR g a), e, W (emR g a), xs, he, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hAF` using `[hjt a]`. Conclude with `hAF`. Establish `hs : S4.frobSum V.l (rk p (1 - g)) a = ∑' n : ℕ, ((V.l : ℝ) ^ (-((n : ℝ) + 1))) * (r (((t (jj a + Fin.ofNat w.n (n + 1)) : Emb (O` using `R) w.e) : OE →+* R).comp ((starRingAut : RingAut OE) : OE ≃+* OE).toRingHom) : ℝ) := by`. Unfold `S4.frobSum`.
-
-Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[← jj_add jj hj1 a (n + 1), hjt, hconj, hrk, rpow_neg_succ V.l_prime.pos]`. Rewrite using `[hs]`. Rewrite `hle` using `[map_natCast]`. Conclude with `hle`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem afBound_of_upFLaw (Y : FBChart C V OE dd) (p : PairData Y d I)
     (vm : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C] (hv : vm.Integers R)
@@ -174,9 +172,9 @@ theorem afBound_of_upFLaw (Y : FBChart C V OE dd) (p : PairData Y d I)
     exact hle
 
 /- English proof (translation)
-Use `upChar_of_afBound Y p hr Hc vm R hT hv h0 h1 (fun i => MvPowerSeries.map iota (FT i)) hF ?_ (afBound_of_upFLaw Y p vm R hv hMM T FT actT hL iota hloc emR hem hPl hEig)` and prove the remaining obligations. Introduce `i`. Apply `hv.hom_inj` to reduce the goal to its premises. Use `Y.B.G.const i` as an intermediate fact. Rewrite `this` using `[hF i, MvPowerSeries.constantCoeff_map]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem upChar_of_upFLaw (Y : FBChart C V OE dd) (p : PairData Y d I) (hr : (Y.raw p).RankHyp)
     (Hc : ∀ g, (Y.raw p).CartHyp V g)
@@ -200,7 +198,7 @@ theorem upChar_of_upFLaw (Y : FBChart C V OE dd) (p : PairData Y d I) (hr : (Y.r
   rw [this, map_zero]
 
 /- English proof (translation)
-The claim follows from `upChar_of_upFLaw Y p hr Hc vm R hT hv h0 h1 hMM T FT actT (upFLaw_of_geoJ hUp Y.l_odd T hlT G aG FT actT hG hdisc) iota hloc hF emR hem hPl hEig`.
+A detailed English derivation is pending.
 -/
 theorem upChar_of_upF [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE]
     (hUp : UpFSt V.l) (Y : FBChart C V OE dd) (p : PairData Y d I) (hr : (Y.raw p).RankHyp)

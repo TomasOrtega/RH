@@ -12,13 +12,13 @@ section Character
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ)
 
 /- English proof (translation)
-Establish `hMΩ : ((x.den : ℕ) : Ω) ≠ 0`. Introduce `h`. Use `congrArg ε h` as an intermediate fact. Simplify using `only [map_natCast, map_zero, Nat.cast_eq_zero] at this`. Conclude with `x.den_nz this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `haveI : NeZero ((x.den : ℕ) : Ω) := ⟨hMΩ⟩`. Use `haveI : NeZero x.den := ⟨x.den_nz⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω x.den`. Establish `hζ'` using `hζ.map_of_injective ε.injective`. Establish `hw : Complex.exp (2 * Real.pi * Complex.I * (x : ℂ)) ^ x.den = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Complex.exp_nat_mul]`. Establish `hx : (x : ℂ) * (x.den : ℂ) = (x.num : ℂ)` using `by exact_mod_cast Rat.mul_den_eq_num x`. Establish `: (x.den : ℂ) * (2 * Real.pi * Complex.I * (x : ℂ)) = (x.num : ℂ) * (2 * Real.pi * Complex.I)`. Rewrite using `[← hx]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[this]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I _`. Take `⟨i, -, hi⟩` from `hζ'.eq_pow_of_pow_eq_one hw`. Conclude with `⟨ζ ^ i, by rw [map_pow]; exact hi⟩`.
+A detailed English derivation is pending.
 -/
 theorem exp_mem_range_of_isAlgClosed (x : ℚ) :
     Complex.exp (2 * Real.pi * Complex.I * (x : ℂ)) ∈ Set.range ε := by
@@ -41,13 +41,13 @@ theorem exp_mem_range_of_isAlgClosed (x : ℚ) :
   exact ⟨ζ ^ i, by rw [map_pow]; exact hi⟩
 
 /- English proof (translation)
-The claim follows from `Function.invFun_eq (exp_mem_range_of_isAlgClosed ε x)`.
+A detailed English derivation is pending.
 -/
 theorem eOm_spec (x : ℚ) : ε (eOm ε x) = Complex.exp (2 * Real.pi * Complex.I * (x : ℂ)) :=
   Function.invFun_eq (exp_mem_range_of_isAlgClosed ε x)
 
 /- English proof (translation)
-Apply `ε.injective` to reduce the goal to its premises. Rewrite using `[map_mul, eOm_spec, eOm_spec, eOm_spec, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eOm_add (x y : ℚ) : eOm ε (x + y) = eOm ε x * eOm ε y := by
   apply ε.injective
@@ -55,7 +55,7 @@ theorem eOm_add (x y : ℚ) : eOm ε (x + y) = eOm ε x * eOm ε y := by
   congr 1; push_cast; ring
 
 /- English proof (translation)
-Apply `ε.injective` to reduce the goal to its premises. Rewrite using `[eOm_spec, map_one]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eOm_zero : eOm ε 0 = 1 := by
   apply ε.injective
@@ -73,13 +73,13 @@ Both sides reduce to the same expression.
 theorem cm_coeff (c : ℚ → R) (φ : HahnSeries ℚ R) (r : ℚ) : (cm c φ).coeff r = c r * φ.coeff r := rfl
 
 /- English proof (translation)
-Use extensionality with `r`. Establish `h1 : (cm c φ).support ⊆ φ.support` using `fun t ht h => ht (by simp [cm_coeff, h])`. Establish `h2 : (cm c ψ).support ⊆ ψ.support` using `fun t ht h => ht (by simp [cm_coeff, h])`. Rewrite using `[cm_coeff, HahnSeries.coeff_mul, HahnSeries.coeff_mul, Finset.mul_sum]`. Establish `e1 : ∀ ij ∈ Finset.antidiagonal φ.isPWO_support ψ.isPWO_support r, c r * (φ.coeff ij.1 * ψ.coeff ij.2) = (cm c φ).coeff ij.1 * (cm c ψ).coeff ij.2`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `ij hij`. Rewrite `hij` using `[Finset.mem_antidiagonal]`. Rewrite using `[cm_coeff, cm_coeff, ← hij.2.2, hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `ij hij`. Rewrite `hij`, the goal using `[Finset.mem_antidiagonal]`. Conclude with `⟨h1 hij.1, h2 hij.2.1, hij.2.2⟩`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `ij hij hn`. Rewrite `hij`, `hn` using `[Finset.mem_antidiagonal]`. Assume the negation of the conclusion as `hne`. Conclude with `hn ⟨(HahnSeries.mem_support _ _).2 (ne_zero_and_ne_zero_of_mul hne).1, (HahnSeries.mem_support _ _).2 (ne_zero_and_ne_zero_of_mul hne).2, hij.2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem cm_mul (c : ℚ → R) (hc : ∀ r s, c (r + s) = c r * c s) (φ ψ : HahnSeries ℚ R) :
     cm c (φ * ψ) = cm c φ * cm c ψ := by
@@ -105,9 +105,9 @@ theorem cm_mul (c : ℚ → R) (hc : ∀ r s, c (r + s) = c r * c s) (φ ψ : Ha
       (HahnSeries.mem_support _ _).2 (ne_zero_and_ne_zero_of_mul hne).2, hij.2.2⟩
 
 /- English proof (translation)
-Use extensionality with `r`. Rewrite using `[cm_coeff, HahnSeries.coeff_one]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[hc, mul_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem cm_one (c : ℚ → R) (hc : c 0 = 1) : cm c (1 : HahnSeries ℚ R) = 1 := by
   ext r
@@ -117,14 +117,14 @@ theorem cm_one (c : ℚ → R) (hc : c 0 = 1) : cm c (1 : HahnSeries ℚ R) = 1 
   · rw [mul_zero]
 
 /- English proof (translation)
-Simplify using `only [scale, dif_pos ha]`. Conclude with `HahnSeries.embDomain_mul _ (fun x y => by simp [mul_add]) φ ψ`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scale_mul {a : ℚ} (ha : 0 < a) (φ ψ : HahnSeries ℚ R) : scale a (φ * ψ) = scale a φ * scale a ψ := by
   simp only [scale, dif_pos ha]
   exact HahnSeries.embDomain_mul _ (fun x y => by simp [mul_add]) φ ψ
 
 /- English proof (translation)
-Simplify using `only [scale, dif_pos ha]`. Conclude with `HahnSeries.embDomain_one _ (by simp)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scale_one {a : ℚ} (ha : 0 < a) : scale a (1 : HahnSeries ℚ R) = 1 := by
   simp only [scale, dif_pos ha]
@@ -133,11 +133,11 @@ theorem scale_one {a : ℚ} (ha : 0 < a) : scale a (1 : HahnSeries ℚ R) = 1 :=
 end Coeff
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε a b d h φ ψ`. Establish `hc : ∀ r s : ℚ, eOm ε ((r + s) * b / d) = eOm ε (r * b / d) * eOm ε (s * b / d)`. Introduce `r s`. Rewrite using `[← eOm_add]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 : eOm ε (0 * b / d) = 1` using `by rw [zero_mul, zero_div, eOm_zero]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [sub]`. Rewrite using `[cm_mul _ hc, scale_mul h]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sub]`. Rewrite using `[cm_one _ h0, scale_one h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_mul_and_one : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (a b d : ℚ), 0 < a / d →
     ∀ φ ψ : HahnSeries ℚ Ω,

@@ -12,7 +12,7 @@ variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchi
 variable {D : Type*}
 
 /- English proof (translation)
-Establish `hlt : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Rewrite using `[Valuation.mem_integer_iff, map_inv₀, not_le]`. Conclude with `(one_lt_inv₀ (zero_lt_iff.2 (by simp))).2 hlt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsUnif.inv_notMem {ϖ : kˣ} (hϖ : IsUnif ϖ) : (ϖ : k)⁻¹ ∉ 𝒪[k] := by
   have hlt : valuation k (ϖ : k) < 1 := hϖ ▸ uniformizer_lt_one
@@ -20,9 +20,7 @@ theorem IsUnif.inv_notMem {ϖ : kˣ} (hϖ : IsUnif ϖ) : (ϖ : k)⁻¹ ∉ 𝒪[
   exact (one_lt_inv₀ (zero_lt_iff.2 (by simp))).2 hlt
 
 /- English proof (translation)
-Rewrite `hx` using `[Valuation.mem_integer_iff, not_le]`. Establish `h : valuation k x⁻¹ ≤ valuation k (ϖ : k)`. Rewrite using `[hϖ, le_uniformizer_iff, map_inv₀]`. Conclude with `inv_lt_one_of_one_lt₀ hx`. Rewrite using `[Valuation.mem_integer_iff, map_mul, map_inv₀ _ (ϖ : k), inv_mul_le_iff₀ (zero_lt_iff.2 (by simp)), mul_one]`.
-
-Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsUnif.inv_mul_inv_mem {ϖ : kˣ} (hϖ : IsUnif ϖ) {x : k} (hx : x ∉ 𝒪[k]) : (ϖ : k)⁻¹ * x⁻¹ ∈ 𝒪[k] := by
   rw [Valuation.mem_integer_iff, not_le] at hx
@@ -32,7 +30,7 @@ theorem IsUnif.inv_mul_inv_mem {ϖ : kˣ} (hϖ : IsUnif ϖ) {x : k} (hx : x ∉ 
   exact h
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, ← mem_cball_uniformiser hϖ.irreducible (x := ϖ) rfl, Valuation.mem_integer_iff, map_mul, map_inv₀, inv_mul_le_iff₀ (zero_lt_iff.2 (by simp)), mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsUnif.residue_eq_iff {ϖ : kˣ} (hϖ : IsUnif ϖ) (x y : 𝒪[k]) :
     IsLocalRing.residue _ x = IsLocalRing.residue _ y ↔ (ϖ : k)⁻¹ * ((x : k) - y) ∈ 𝒪[k] := by
@@ -43,13 +41,13 @@ theorem IsUnif.residue_eq_iff {ϖ : kˣ} (hϖ : IsUnif ϖ) (x y : 𝒪[k]) :
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-The claim follows from `Λ.smul_mem ⟨c, hc⟩ hx`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_of_int {Λ : Submodule 𝒪[k] (D → k)} {c : k} (hc : c ∈ 𝒪[k]) {x : D → k} (hx : x ∈ Λ) :
     c • x ∈ Λ := Λ.smul_mem ⟨c, hc⟩ hx
 
 /- English proof (translation)
-Rewrite using `[vecMul_eq_sum]`. Conclude with `Λ.sum_mem fun i _ => smul_mem_of_int (hc i) (hY i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecMul_mem_of_int {A : Type*} [Fintype A] {Λ : Submodule 𝒪[k] (D → k)} {Y : Matrix A D k}
     (hY : Y ∈ matLat A Λ) {c : A → k} (hc : ∀ i, c i ∈ 𝒪[k]) : c ᵥ* Y ∈ Λ := by
@@ -57,15 +55,15 @@ theorem vecMul_mem_of_int {A : Type*} [Fintype A] {Λ : Submodule 𝒪[k] (D →
   exact Λ.sum_mem fun i _ => smul_mem_of_int (hc i) (hY i)
 
 /- English proof (translation)
-Establish `hli : Y.rank = Fintype.card A ↔ LinearIndependent k Y.row`. Rewrite using `[rank_eq_finrank_span_row, linearIndependent_iff_card_eq_finrank_span, eq_comm]`. Both sides reduce to the same expression. Establish `hv : ∀ c : A → k, c ᵥ* Y = ∑ i, c i • Y.row i` using `fun c => vecMul_eq_sum _ _`. Rewrite using `[IsPrimFrame, hli]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨h2, fun c hc i => ?_⟩` and prove the remaining obligations. Establish `h4 : c ᵥ* Y ∈ Submodule.span 𝒪[k] (Set.range Y.row)`. Rewrite using `[h3]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(Submodule.mem_span_range_iff_exists_fun k).2 ⟨c, (hv c).symm⟩, hc⟩`. Take `⟨c', hc'⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 h4`. Use `Fintype.linearIndependent_iffₛ.1 h1 (fun i => (c' i : k)) c (by rw [← hv c, ← hc']; rfl) i` as an intermediate fact. Conclude with `this ▸ (c' i).2`. Introduce and unpack `⟨h2, h⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, hϖ⟩` from `exists_isUnif (k := k)`. Use `⟨Fintype.linearIndependent_iff.2 fun c hc i => ?_, h2, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hi`. Use `h (((ϖ : k)⁻¹ * (c i)⁻¹) • c) (by rw [smul_vecMul, hv, hc, smul_zero]; exact Λ.zero_mem) i` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, smul_eq_mul, inv_mul_cancel_right₀ hi]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hϖ.inv_notMem this`. Conclude with `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact ⟨Submodule.subset_span ⟨i, rfl⟩, h2 i⟩)`. Introduce and unpack `x ⟨hx, hx'⟩`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun k).1 hx`. Conclude with `Submodule.sum_mem _ fun i _ => smul_mem_of_int (h c (by rw [hv]; exact hx') i) (Submodule.subset_span ⟨i, rfl⟩)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isPrimFrame_iff [Fintype D] {A : Type*} [Fintype A] {Λ : Submodule 𝒪[k] (D → k)} {Y : Matrix A D k} :
     IsPrimFrame Λ Y ↔ Y ∈ matLat A Λ ∧ ∀ c : A → k, c ᵥ* Y ∈ Λ → ∀ i, c i ∈ 𝒪[k] := by
@@ -100,7 +98,7 @@ variable {n : ℕ}
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[vecMul, dotProduct, Fin.sum_univ_succ]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cons_vecMul_rows (u : k) (c : Fin n → k) (Y : Matrix (Fin (n + 1)) D k) :
     (Fin.cons u c : Fin (n + 1) → k) ᵥ* Y = u • Y.row 0 + c ᵥ* Y.submatrix Fin.succ id := by
@@ -108,13 +106,13 @@ theorem cons_vecMul_rows (u : k) (c : Fin n → k) (Y : Matrix (Fin (n + 1)) D k
   simp [vecMul, dotProduct, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Rewrite using `[isPrimFrame_iff, isPrimFrame_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨fun i => h1 i.succ, fun c hc i => ?_⟩, h1 0, fun c _ hc => hϖ.inv_notMem ?_⟩` and prove the remaining obligations. Conclude with `h2 (Fin.cons 0 c) (by rwa [cons_vecMul_rows, zero_smul, zero_add]) i.succ`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `h2 (Fin.cons (ϖ : k)⁻¹ ((ϖ : k)⁻¹ • c)) (by rwa [cons_vecMul_rows, smul_vecMul, ← smul_add]) 0`. Introduce and unpack `⟨⟨h1, h2⟩, h0, h3⟩`. Use `⟨Fin.cases h0 h1, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[← Fin.cons_self_tail c, cons_vecMul_rows]`. Establish `hc0 : c 0 ∈ 𝒪[k]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc0`. Establish `hne : c 0 ≠ 0` using `fun h => hc0 (h ▸ zero_mem _)`. Establish `h4` using `smul_mem_of_int (hϖ.inv_mul_inv_mem hc0) hc`. Rewrite `h4` using `[mul_smul, smul_add, inv_smul_smul₀ hne, ← smul_vecMul]`. Use `h3 _ (h2 _ ?_) h4` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5` using `smul_mem_of_int hϖ.mem h4`. Rewrite `h5` using `[smul_inv_smul₀ ϖ.ne_zero]`. Conclude with `(add_mem_cancel_left h0).1 h5`. Conclude with `Fin.cases hc0 (h2 _ ((add_mem_cancel_left (smul_mem_of_int hc0 h0)).1 hc))`.
+A detailed English derivation is pending.
 -/
 theorem isPrimFrame_succ_iff [Fintype D] {ϖ : kˣ} (hϖ : IsUnif ϖ) {Λ : Submodule 𝒪[k] (D → k)}
     (Y : Matrix (Fin (n + 1)) D k) :
@@ -143,17 +141,17 @@ theorem isPrimFrame_succ_iff [Fintype D] {ϖ : kˣ} (hϖ : IsUnif ϖ) {Λ : Subm
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[isPrimFrame_succ_iff hϖ]`. Distinguish the cases in `h : IsPrimFrame Λ (Y.submatrix Fin.succ id)`. Use `swap`. Simplify using `[h]`. Take `⟨h1, h2⟩` from `isPrimFrame_iff.1 h`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, true_and, if_true, one_mul]`. Generalize the expression as in `Y.submatrix Fin.succ id = Y' at *`. Generalize the expression as in `Y.row 0 = y`. Establish `key : ∀ c c' : Fin n → 𝒪[k], (ϖ : k)⁻¹ • (y + (fun i => (c i : k)) ᵥ* Y') ∈ Λ → ((ϖ : k)⁻¹ • (y + (fun i => (c' i : k)) ᵥ* Y') ∈ Λ ↔ ∀ i, IsLocalRing.residue _ (c' i) = IsLocalRing.residue _ (c i))` using `fun c c' hc => by`. Establish `e : (ϖ : k)⁻¹ • (y + (fun i => (c' i : k)) ᵥ* Y') = (ϖ : k)⁻¹ • (y + (fun i => (c i : k)) ᵥ* Y') + ((ϖ : k)⁻¹ • ((fun i => (c' i : k)) - fun i => (c i : k))) ᵥ* Y'`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_vecMul, sub_vecMul, ← smul_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[e, add_mem_cancel_left hc]`. Simplify using `only [hϖ.residue_eq_iff]`.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨fun h => h2 _ h, fun h => vecMul_mem_of_int h1 h⟩`. Distinguish the cases in `h3 : ∀ c : Fin n → k, (∀ i, c i ∈ 𝒪[k]) → (ϖ : k)⁻¹ • (y + c ᵥ* Y') ∉ Λ`. Rewrite using `[Finset.sum_eq_zero fun r _ => if_neg (h3 _ fun i => (l (r i)).2), sub_zero]`. Simplify using `only [and_iff_left h3]`. Rewrite `h3` using `[if_neg fun h => h3 h.2] push Not`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hc'⟩` from `h3`. Establish `hy : y ∈ Λ`. Establish `h5` using `smul_mem_of_int hϖ.mem hc'`. Rewrite `h5` using `[smul_inv_smul₀ ϖ.ne_zero]`. Conclude with `(add_mem_cancel_right (vecMul_mem_of_int h1 hc)).1 h5`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h6` using `fun r : Fin n → 𝓀[k] => key (fun i => ⟨c i, hc i⟩) (fun i => l (r i)) hc'`. Simplify using `only [hl, ← funext_iff] at h6`. Simplify using `only [h6]`. Simplify using `[hy]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem indicator_isPrimFrame_succ [Fintype D] [Fintype 𝓀[k]] {ϖ : kˣ} (hϖ : IsUnif ϖ)
     {Λ : Submodule 𝒪[k] (D → k)} (l : 𝓀[k] → 𝒪[k]) (hl : ∀ r, IsLocalRing.residue _ (l r) = r)
@@ -200,7 +198,7 @@ def consBlock (u : k) (c : Fin n → k) (γ : Matrix (Fin n) (Fin n) k) : Matrix
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Rewrite using `[det_succ_column_zero, Fin.sum_univ_succ]`. Simplify using `only [consBlock, of_apply, Fin.cons_succ, Fin.cons_zero, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, Fin.val_zero, pow_zero, one_mul, Fin.succAbove_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem det_consBlock (u : k) (c : Fin n → k) (γ : Matrix (Fin n) (Fin n) k) :
     (consBlock u c γ).det = u * γ.det := by
@@ -210,9 +208,9 @@ theorem det_consBlock (u : k) (c : Fin n → k) (γ : Matrix (Fin n) (Fin n) k) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_matLat, mem_matLat, Fin.forall_fin_succ, and_comm, ← cons_vecMul_rows]`. Use `and_congr (forall_congr' fun i => ?_) Iff.rfl` and prove the remaining obligations. Establish `: (consBlock u c γ * Y).row i.succ = (γ * Y.submatrix Fin.succ id).row i`. Use function extensionality and compare the values at `j`. Simplify using `[consBlock, Matrix.mul_apply, Fin.sum_univ_succ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem consBlock_mul_mem {Λ : Submodule 𝒪[k] (D → k)} (u : k) (c : Fin n → k) (γ : Matrix (Fin n) (Fin n) k)
     (Y : Matrix (Fin (n + 1)) D k) : consBlock u c γ * Y ∈ matLat _ Λ ↔
@@ -228,15 +226,15 @@ end Step
 open Classical in
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `⟨PUnit, inferInstance, 1, 1, 0, by simp, fun Y => ?_, by simp⟩` and prove the remaining obligations. Simplify using `[isPrimFrame_iff, mem_matLat]`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨ι, _, m, γ, j, h1, h2, h3⟩` from `ih`. Establish `: Fintype 𝓀[k]` using `Fintype.ofFinite _`. Use `choose l hl using IsLocalRing.residue_surjective (R := 𝒪[k])`. Use `⟨ι ⊕ ι × (Fin n → 𝓀[k]), inferInstance, Sum.elim m fun p => -m p.1, Sum.elim (fun i => consBlock 1 0 (γ i)) fun p => consBlock (ϖ : k)⁻¹ ((ϖ : k)⁻¹ • fun i => (l (p.2 i) : k)) (γ p.1), Sum.elim j fun p => j p.1 + 1, ?_, fun Y => ?_, fun x => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rintro (i | p) <;> simp [det_consBlock, h1, pow_succ']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[indicator_isPrimFrame_succ hϖ l hl, ← h2, Fintype.sum_sum_type, Fintype.sum_prod_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, consBlock_mul_mem, smul_vecMul, ← smul_add, one_smul, zero_vecMul, add_zero, Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : γ i * Y.submatrix Fin.succ id ∈ matLat _ Λ`. Simplify using `only [h, true_and, if_true, mul_one, mul_sub, Finset.mul_sum, neg_mul, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[h]`. Rewrite using `[Finset.prod_range_succ, ← h3, Fintype.sum_sum_type, Fintype.sum_prod_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Finset.sum_const, Finset.card_univ, Fintype.card_fun, Fintype.card_fin, resCard, Nat.card_eq_fintype_card, Finset.sum_mul, ← Finset.sum_add_distrib, nsmul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_comb_isPrimFrame.{u} {k : Type u} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [Fintype D] {ϖ : kˣ} (hϖ : IsUnif ϖ) (Λ : Submodule 𝒪[k] (D → k)) (n : ℕ) :
@@ -273,7 +271,7 @@ theorem exists_comb_isPrimFrame.{u} {k : Type u} [Field k] [ValuativeRel k] [Top
       push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[apow, nabs_uniformiser hϖ.irreducible (x := ϖ) rfl, Complex.cpow_neg, Complex.ofReal_inv, Complex.inv_cpow _ _ (by rw [Complex.arg_ofReal_of_nonneg (Nat.cast_nonneg _)]; exact Real.pi_ne_zero.symm), Complex.ofReal_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsUnif.apow_eq {ϖ : kˣ} (hϖ : IsUnif ϖ) (z : ℂ) : apow ϖ z = (resCard k : ℂ) ^ (-z) := by
   rw [apow, nabs_uniformiser hϖ.irreducible (x := ϖ) rfl, Complex.cpow_neg, Complex.ofReal_inv,
@@ -281,7 +279,7 @@ theorem IsUnif.apow_eq {ϖ : kˣ} (hϖ : IsUnif ϖ) (z : ℂ) : apow ϖ z = (res
     Complex.ofReal_natCast]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ, apow_mul, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem apow_pow (x : kˣ) (j : ℕ) (z : ℂ) : apow (x ^ j) z = apow x z ^ j := by
   induction j with
@@ -289,9 +287,9 @@ theorem apow_pow (x : kˣ) (j : ℕ) (z : ℂ) : apow (x ^ j) z = apow x z ^ j :
   | succ j ih => rw [pow_succ, apow_mul, ih, pow_succ]
 
 /- English proof (translation)
-Use `Finset.prod_ne_zero_iff.2 fun i hi h0 => ?_` and prove the remaining obligations. Establish `hq : 1 < resCard k` using `Finite.one_lt_card`. Establish `hq' : (1 : ℝ) < resCard k` using `by exact_mod_cast hq`. Establish `h1` using `congrArg norm (sub_eq_zero.1 h0)`. Rewrite `h1` using `[norm_mul, norm_mul, hc, one_mul, norm_one, norm_pow, Complex.norm_natCast, Complex.norm_natCast_cpow_of_pos (by omega), ← Real.rpow_natCast, ← Real.rpow_add (by linarith)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(Real.rpow_lt_one_of_one_lt_of_neg hq' ?_).ne' h1` and prove the remaining obligations. Establish `h2 : (i : ℝ) + 1 ≤ a'` using `by exact_mod_cast Finset.mem_range.1 hi`. Establish `h3 : (-(d : ℂ) / 2).re = -(d : ℝ) / 2` using `by simp`. Rewrite using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem prod_primFactor_ne_zero {c : ℂ} (hc : ‖c‖ = 1) {a' d : ℕ} (h : (a' : ℝ) - 1 < (d : ℝ) / 2) :
     ∏ i ∈ Finset.range a', (1 - (resCard k : ℂ) ^ i * (c * (resCard k : ℂ) ^ (-(d : ℂ) / 2))) ≠ 0 := by
@@ -309,13 +307,13 @@ theorem prod_primFactor_ne_zero {c : ℂ} (hc : ‖c‖ = 1) {a' d : ℕ} (h : (
 variable [Fintype D] [DecidableEq D]
 
 /- English proof (translation)
-Take `⟨ι, _, m, γ, j, h1, h2, h3⟩` from `exists_comb_isPrimFrame hϖ Λ a'`. Use `set x : ℂ := (ν ϖ : ℂ) * (resCard k : ℂ) ^ (-(Fintype.card D : ℂ) / 2) with hx`. Set `g : ι → GL (Fin a') k` to `fun i => Matrix.GeneralLinearGroup.mkOfDetNeZero (γ i)ᵀ (by rw [det_transpose, h1]; simp)`. Establish `hg : ∀ i, (g i).valᵀ = γ i` using `fun i => transpose_transpose _`. Establish `hd : ∀ i, gdet (g i) = ϖ⁻¹ ^ j i` using `fun i => Units.ext (by show (γ i)ᵀ.det = _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_transpose, h1]`. Use the proof step `simp)`. Establish `hf : ∀ i, x ^ j i * ((ν (gdet (g i)) : ℂ) * apow (gdet (g i)) ((Fintype.card D : ℂ) / 2)) = 1` using `fun i => by`. Rewrite using `[hd, map_pow, apow_pow, Units.val_pow_eq_pow_val, ← mul_pow, ← mul_pow, hx, neg_div, ← hϖ.apow_eq, mul_mul_mul_comm, ← Units.val_mul, ← map_mul, ← apow_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ i, Finsupp.single (g i) (m i * x ^ j i), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finsupp.linearCombination_apply ℂ, map_sum]`. Use function extensionality and compare the values at `Y`. Rewrite using `[Finset.sum_apply, show {Y : Matrix (Fin a') D k | IsPrimFrame Λ Y}.indicator 1 Y = if IsPrimFrame Λ Y then (1 : ℂ) else 0 by simp [Set.indicator_apply], ← h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finsupp.linearCombination_single, Pi.smul_apply, smul_eq_mul, omB, map_one, Units.val_one, apow_one, mul_one, Matrix.mul_one, hg, Set.indicator_apply, SetLike.mem_coe, Pi.one_apply]`. Rewrite using `[mul_assoc, ← mul_assoc (x ^ j i), hf, one_mul]`. Rewrite using `[← Finsupp.sum_finsetSum_index (by simp) (by simp), ← h3]`. Conclude with `Finset.sum_congr rfl fun i _ => Finsupp.sum_single_index rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_translates_eq_primFrame_lat {ϖ : kˣ} (hϖ : IsUnif ϖ) (ν α : kˣ →* ℂˣ)
     (Λ : Submodule 𝒪[k] (D → k)) (a' : ℕ) :
@@ -350,7 +348,7 @@ theorem exists_translates_eq_primFrame_lat {ϖ : kˣ} (hϖ : IsUnif ϖ) (ν α :
     exact Finset.sum_congr rfl fun i _ => Finsupp.sum_single_index rfl
 
 /- English proof (translation)
-Take `⟨z, h1, h2⟩` from `exists_translates_eq_primFrame_lat hϖ ν α (stdLat k D) a'`. Conclude with `⟨z, h1, h2, fun hν h => h2 ▸ prod_primFactor_ne_zero hν h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_translates_eq_primFrame {ϖ : kˣ} (hϖ : IsUnif ϖ) (ν α : kˣ →* ℂˣ) (a' : ℕ) :
     ∃ z : GL (Fin a') k →₀ ℂ,

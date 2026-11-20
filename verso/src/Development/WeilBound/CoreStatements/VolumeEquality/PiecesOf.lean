@@ -16,7 +16,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ
   {B : BaseUnif Y Or.sm Dc.j Dc.j' Dc.n} {FF : Fin B.np → Set (Fin Dc.n → ℂ)} {d : Fin B.np → ℕ} (Z : Sheets Or B FF d)
 
 /- English proof (translation)
-Establish `hi` using `(interior_iff Or.𝔐 _).1 (Z.z_over m t ht ▸ B.interior _ t (Z.V_sub m ht))`. Use `⟨Z.z_coords m t ht, hi, ?_⟩` and prove the remaining obligations. Rewrite using `[funext (B.σ_eq (Z.pc m))]`. Conclude with `labVal_of_over Or.𝔐 hi (by rw [← Category.assoc, Z.z_over m t ht, B.comp_s_eq_spMap_of_isOver _ t (Z.V_sub m ht)]) _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Sheets.at (m : ℕ) (t : Fin Dc.n → ℂ) (ht : t ∈ Z.V m) : CoordsAt Or.𝔐.ξ Dc.y (Z.z m t) (Z.γ m t) ∧ Or.𝔐.Interior (Z.z m t) ∧
     Or.𝔐.LabVal (Z.z m t) Or.sm (B.F (Z.pc m)).σ := by
@@ -53,7 +53,7 @@ def Sheets.pieces (hG : Top.Given) (hF : ∀ k, (B.F k).IsFundSet (B.Γ k) (FF k
 
 variable (Or) in
 /- English proof (translation)
-Establish `hN` using `Or.N_eq`. Take `⟨B⟩` from `h hG E H D l (Xo l) c Y Or.sm Dc.j Dc.j' Dc.n (by have := Dc.two_le_N; omega) (Or.side.imp (fun h => ⟨h.2.1, h.2.2, by have := h.2.2; unfold ComponentData.j'; omega⟩) fun h => ⟨h.2.1, h.2.2, by have := h.2.2; unfold ComponentData.j'; omega⟩) rfl`. Conclude with `⟨B, Classical.skolem.1 fun k => GlobalTheory.T.exists_fundamental_set E _ _ _ _ _ _ (B.F k) (GlobalTheory.T.exists_group_dictionary E _ _ _ _ _ _ H (B.F k)).some _ (B.arith k)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_base (h : BaseUnifEx) (hG : Top.Given) : ∃ (B : BaseUnif Y Or.sm Dc.j Dc.j' Dc.n) (FF : Fin B.np → Set (Fin Dc.n → ℂ)),
     ∀ k, (B.F k).IsFundSet (B.Γ k) (FF k) := by
@@ -65,7 +65,7 @@ theorem exists_base (h : BaseUnifEx) (hG : Top.Given) : ∃ (B : BaseUnif Y Or.s
 
 variable (Or) in
 /- English proof (translation)
-Take `⟨B, FF, hF⟩` from `exists_base Or h6 hG`. Take `⟨U, -, -, ⟨Z⟩⟩` from `exists_sheets Or B h1 h2 h3 h4 h5 FF hF`. Conclude with `⟨Z.pieces hG hF⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pieces_of (h1 : HolNull) (h2 : ChartMeets) (h3 : RootBranches) (h4 : CoverRoots) (h5 : LocInj) (h6 : BaseUnifEx)
     (hG : Top.Given) : Nonempty (Pieces Or) := by

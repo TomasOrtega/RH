@@ -26,9 +26,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 omit [IsCMField E] in
 
 /- English proof (translation)
-Set `A : ∀ u : HeightOneSpectrum (𝓞 E), Set (u.adicCompletion E)` to `fun u => u.adicCompletionIntegers E`. Set `g : HeightOneSpectrum (𝓞 E) → ∀ u, A u` to `fun w u => ⟨pLoc E u (z w), hz w u⟩`. Set `o : ∀ u, A u` to `fun u => ⟨pLoc E u c, hc u⟩`. Establish `hg : Tendsto g cofinite (𝓝 o)`. Rewrite using `[tendsto_pi_nhds]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `u`. Rewrite using `[tendsto_subtype_rng]`. Conclude with `tendsto_const_nhds.congr' ((he u).mono fun w hw => hw.symm)`. Establish `h2` using `((RestrictedProduct.isEmbedding_structureMap (A := A) (𝓕 := cofinite)).continuous.tendsto o).comp hg`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_finAdele (z : HeightOneSpectrum (𝓞 E) → Af E) (c : Af E)
     (hz : ∀ w u, pLoc E u (z w) ∈ u.adicCompletionIntegers E) (hc : ∀ u, pLoc E u c ∈ u.adicCompletionIntegers E)
@@ -45,9 +45,9 @@ theorem tendsto_finAdele (z : HeightOneSpectrum (𝓞 E) → Af E) (c : Af E)
   exact h2
 
 /- English proof (translation)
-Use `Filter.eventually_cofinite.2 ((Set.toFinite ({u, conjSrc (GlobalTheory.SplitPts.conjE E) u} : Set (HeightOneSpectrum (𝓞 E)))).subset fun w hw => ?_)` and prove the remaining obligations. Establish `hw' : ¬ u.under (𝓞 (maximalRealSubfield E)) ≠ w.under (𝓞 (maximalRealSubfield E))` using `hw`. Establish `hu : w.under (𝓞 (maximalRealSubfield E)) = u.under (𝓞 (maximalRealSubfield E))` using `(not_not.1 hw').symm`. Break down `(GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj E) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one E) u w).1 hu with rfl | h` into its components or cases. Conclude with `Set.mem_insert _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.mem_insert_of_mem _ (Set.mem_singleton_iff.2 ?_)` and prove the remaining obligations. Rewrite using `[eq_conjSrc h, GlobalTheory.SplitPts.conjSrc_conjSrc_cm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_under_ne (u : HeightOneSpectrum (𝓞 E)) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in cofinite,
@@ -63,11 +63,9 @@ theorem eventually_under_ne (u : HeightOneSpectrum (𝓞 E)) :
     rw [eq_conjSrc h, GlobalTheory.SplitPts.conjSrc_conjSrc_cm]
 
 /- English proof (translation)
-Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Establish `h1 : ∀ w, ((((x w : UA E n) : GA E n) : Matrix (Fin n) (Fin n) (Ad E)) i j).1 = ((1 : Matrix (Fin n) (Fin n) (Ad E)) i j).1` using `fun w => by`. Establish `a` using `congrArg (fun g : GL (Fin n) (Cinf E) => (g : Matrix (Fin n) (Fin n) (Cinf E)) i j) (MonoidHom.mem_ker.1 (Subgroup.mem_inf.1 (hx w)).1)`. Establish `b` using `congrArg (fun g : GL (Fin n) (Cinf E) => (g : Matrix (Fin n) (Fin n) (Cinf E)) i j) (map_one (cInf (E := E) (n := n)))`. Conclude with `(infEq E).symm.injective (a.trans b.symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Tendsto (fun w => ((((x w : UA E n) : GA E n) : Matrix (Fin n) (Fin n) (Ad E)) i j).2) cofinite (𝓝 ((1 : Matrix (Fin n) (Fin n) (Ad E)) i j).2)`. Use `tendsto_finAdele _ _ (fun w u => GlobalTheory.UnramDict.cLoc_entry_mem (hx w) (hK w) u i j) (fun u => GlobalTheory.UnramDict.cLoc_entry_mem (one_mem (locU n u)) (by rw [map_one]; exact one_mem _) u i j) fun u => ?_` and prove the remaining obligations. Use `filter_upwards [eventually_under_ne u] with w hw`. Establish `a` using `congrArg (fun g : GL (Fin n) (u.adicCompletion E) => (g : Matrix (Fin n) (Fin n) (u.adicCompletion E)) i j) (MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 (hx w)).2 u) hw))`. Establish `b` using `congrArg (fun g : GL (Fin n) (u.adicCompletion E) => (g : Matrix (Fin n) (Fin n) (u.adicCompletion E)) i j) (map_one (cLoc (E := E) (n := n) u))`.
-
-Conclude with `a.trans b.symm`. Conclude with `((tendsto_const_nhds (x := ((1 : Matrix (Fin n) (Fin n) (Ad E)) i j).1)).congr fun w => (h1 w).symm).prodMk_nhds h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_val_locU (x : HeightOneSpectrum (𝓞 E) → UA E n) (hx : ∀ w, x w ∈ locU n w)
     (hK : ∀ w, cLoc w (x w) ∈ GlobalTheory.LFun.KGL w n) :
@@ -95,13 +93,11 @@ theorem tendsto_val_locU (x : HeightOneSpectrum (𝓞 E) → UA E n) (hx : ∀ w
     fun w => (h1 w).symm).prodMk_nhds h2
 
 /- English proof (translation)
-Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 hπ.ne_bot`. Establish `hS : {k : finU E n | RU E n k φ = φ} ∈ 𝓝 (1 : finU E n)` using `(hπ.aut φ hφ).level.mem_nhds (by simp)`. Establish `hy : ∀ w : HeightOneSpectrum (𝓞 E), ∃ y : UA E n, y ∈ locU n w ∧ cLoc w y ∈ GlobalTheory.LFun.KGL w n ∧ (RU E n y φ = φ → ∀ x ∈ locU n w, cLoc w x ∈ GlobalTheory.LFun.KGL w n → RU E n x φ = φ)`. Introduce `w`. Distinguish the cases in `h : ∀ x ∈ locU n w, cLoc w x ∈ GlobalTheory.LFun.KGL w n → RU E n x φ = φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨1, one_mem _, by rw [map_one]; exact one_mem _, fun _ => h⟩`. Simplify using `only [not_forall] at h`. Take `⟨x, hx, hk, hne⟩` from `h`. Conclude with `⟨x, hx, hk, fun e => absurd e hne⟩`. Use `choose y hyl hyK hyi using hy`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hyf : ∀ w, y w ∈ finU E n` using `fun w => (Subgroup.mem_inf.1 (hyl w)).1`. Establish `ht : Tendsto (fun w => (⟨y w, hyf w⟩ : finU E n)) cofinite (𝓝 1)`. Rewrite using `[tendsto_subtype_rng, tendsto_subtype_rng, Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Conclude with `(tendsto_val_locU y hyl hyK).prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp (tendsto_val_locU (fun w => (y w)⁻¹) (fun w => inv_mem (hyl w)) fun w => by`. Rewrite using `[map_inv]`.
-
-Conclude with `inv_mem (hyK w)))`. Use `filter_upwards [ht.eventually_mem hS] with w hw`. Conclude with `⟨φ, hφ, h0, hyi w hw⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_isUnramU {π : Submodule ℂ (UA E n → ℂ)} (hπ : IsAutRepU π) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in cofinite, IsUnramU π w := by
@@ -137,13 +133,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 omit [IsCMField E] in
 
 /- English proof (translation)
-Take `⟨S, q, hq⟩` from `hsub`. Take `⟨-, hKc⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n`. Establish `hSs : IsSmooth S.toRepresentation` using `fun y => by`. Use `(congrArg IsOpen ?_).mpr (hρs y.1)` and prove the remaining obligations. Use extensionality with `g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `Subtype.ext_iff`. Use `⟨hsph, fun x hx hx0 => ?_⟩` and prove the remaining obligations. Establish `hx' : x ∈ (fixed S.toRepresentation (GlobalTheory.LFun.KGL w n)).map q.toLinearMap`. Rewrite using `[GlobalTheory.LocGL.map_fixed_of_surjective hSs hKc (f := q) hq]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu, hux⟩` from `Submodule.mem_map.1 hx'`. Establish `hu0 : u ≠ 0` using `fun e => hx0 (by rw [← hux, e, map_zero])`. Establish `huK : u.1 ∈ fixed ρ (GlobalTheory.LFun.KGL w n)` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 hu k hk)`. Establish `hu1 : GlobalTheory.LFun.IsSatVecGL w ρ u.1 B` using `hsat _ huK fun e => hu0 (Subtype.ext e)`. Establish `hu2 : GlobalTheory.LFun.IsSatVecGL w S.toRepresentation u B` using `GlobalTheory.LFun.IsSatVecGL.of_map (ρ' := ρ) S.toSubmodule.subtype (fun _ _ => rfl) Subtype.val_injective hu1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu3 : GlobalTheory.LFun.IsSatVecGL w σ (q.toLinearMap u) B` using `hu2.map (ρ' := σ) q.toLinearMap (fun g y => Representation.IntertwiningMap.isIntertwining _ _ q g y) (by rw [hux]; exact hx0)`. Rewrite `hu3` using `[hux]`. Conclude with `hu3`.
+A detailed English derivation is pending.
 -/
 theorem hasSatGL_of_isSubquotient {w : HeightOneSpectrum (𝓞 E)} {V W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) (hρs : IsSmooth ρ)
@@ -175,9 +171,9 @@ theorem hasSatGL_of_isSubquotient {w : HeightOneSpectrum (𝓞 E)} {V W : Type} 
   exact hu3
 
 /- English proof (translation)
-Use `filter_upwards [Filter.eventually_all.2 fun i => GlobalTheory.SpehPair.eventually_spherical (X.discrete i)] with w hw`. Establish `hsph : ∀ i, GlobalTheory.LGrp.IsSpherical (X.σ i w).ρ (GlobalTheory.LFun.KGL w (X.N i))` using `fun i => hw i _ (X.loc i w)`. Take `⟨f, hf, hf0⟩` from `(Submodule.ne_bot_iff _).1 (GlobalTheory.Rigid.isSpherical_locProd X.h w (X.σ · w) hsph)`. Take `⟨S, hS, -⟩` from `GlobalTheory.SatInd.exists_sat_multiProd X.h (π := fun i => (X.σ i w).ρ) (fun i => (X.σ i w).smooth) (fun i => (X.σ i w).irred) hf hf0`. Use `⟨S, fun i => ⟨hsph i, hS i⟩, fun f' hf' hf'0 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨S', hS', hfS'⟩` from `GlobalTheory.SatInd.exists_sat_multiProd X.h (π := fun i => (X.σ i w).ρ) (fun i => (X.σ i w).smooth) (fun i => (X.σ i w).irred) hf' hf'0`. Establish `e : S' = S` using `funext fun a => (hS' a).unique (hS a)`. Rewrite using `[← e]`. Conclude with `hfS'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_sat (X : Pre E n) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in cofinite, ∃ S : Fin X.c → Multiset ℂˣ,
@@ -197,11 +193,11 @@ theorem eventually_sat (X : Pre E n) :
   exact hfS'
 
 /- English proof (translation)
-Introduce `E _ _ _ n π hπ D D' hD hD'`. Use `filter_upwards [eventually_sat D, eventually_sat D', eventually_isUnramU hπ, hD.compl_mem_cofinite, hD'.compl_mem_cofinite] with w h1 h2 hu hw hw' hs`. Take `⟨S, hS, hSf⟩` from `h1`. Take `⟨S', hS', hS'f⟩` from `h2`. Establish `hw2 : ¬ (IsSplitAt w ∧ ¬ D.SplitAt π w)` using `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw2' : ¬ (IsSplitAt w ∧ ¬ D'.SplitAt π w)` using `hw'`. Take `⟨P, hPsub, hPc⟩ : D.SplitAt π w` from `not_not.1 fun h => hw2 ⟨hs, h⟩`. Take `⟨P', hP'sub, hP'c⟩ : D'.SplitAt π w` from `not_not.1 fun h => hw2' ⟨hs, h⟩`. Establish `hP` using `hasSatGL_of_isSubquotient (locProd D.h w (D.σ · w)) (GlobalTheory.SmGL.isSmooth_parInd _ _) P.ρ hPsub (GlobalTheory.PfBCI.split_spherical hπ hs P hPc hu) _ hSf`. Establish `hP'` using `hasSatGL_of_isSubquotient (locProd D'.h w (D'.σ · w)) (GlobalTheory.SmGL.isSmooth_parInd _ _) P'.ρ hP'sub (GlobalTheory.PfBCI.split_spherical hπ hs P' hP'c hu) _ hS'f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `GlobalTheory.SplitSatake.hasSatGL_of_isCompAlong_split E n π hπ w hs _ _ P.ρ P'.ρ hPc hP'c _ hP`. Conclude with `⟨∑ i, S i, ⟨S, hS, rfl⟩, ⟨S', hS', (h3.unique hP').symm⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem splitSatPre : SplitSatPre := by
   intro E _ _ _ n π hπ D D' hD hD'

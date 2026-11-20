@@ -7,19 +7,19 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.TopCh
 
 /- English proof (translation)
-Introduce `F E K _ _ _ _ _ _ _ hc n _ ST SG Q Λ Θ U k' y p hlev hp γ`. Apply the tactic sequence `have hγ : IsPtOf hc (ratAd F γ * (y * k')) (((γ, 1, 1) : UF E n × GLG E n SG × GLQ E n Q) • p) := by first | exact GlobalTheory.Mem.Col2.RatMove.isPtOf_ratAd F E hc n ST SG Q γ (y * k') p hp | exact GlobalTheory.Mem.Col2.RatMove.isPtOf_ratAd (hc := hc) γ hp | (apply GlobalTheory. …`. Establish `hx : IsPtOf hc (y * (y⁻¹ * ratAd F γ * y) * k') (((γ, 1, 1) : UF E n × GLG E n SG × GLQ E n Q) • p)`. Establish `: y * (y⁻¹ * ratAd F γ * y) * k' = ratAd F γ * (y * k')` using `by group`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hγ`. Establish `key` using `hlev y (y⁻¹ * ratAd F γ * y) p _ hp hx`. Establish `hmem : ratAd F γ ∈ U.map (MulAut.conj y).toMonoidHom ↔ y⁻¹ * ratAd F γ * y ∈ U`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, he⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply] at he`. Rewrite using `[← he]`. Simplify `hu` using `[mul_assoc]`. Introduce `hu`. Use `⟨_, hu, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`. Rewrite using `[hmem, key]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, θ, he⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨h⁻¹, θ⁻¹, ?_⟩` and prove the remaining obligations. Establish `e1 : ((γ, 1, 1) : UF E n × GLG E n SG × GLQ E n Q) = ((1, (h⁻¹).1, (θ⁻¹).1) : UF E n × GLG E n SG × GLQ E n Q) * (γ, h.1, θ.1)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[e1, mul_smul, he]`. Introduce and unpack `⟨h, θ, he⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨h⁻¹, θ⁻¹, ?_⟩` and prove the remaining obligations. Establish `: ((γ, (h⁻¹).1, (θ⁻¹).1) : UF E n × GLG E n SG × GLQ E n Q) = ((1, (h⁻¹).1, (θ⁻¹).1) : UF E n × GLG E n SG × GLQ E n Q) * (γ, 1, 1)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[this, mul_smul, ← he, ← mul_smul]`. Establish `: ((1, (h⁻¹).1, (θ⁻¹).1) : UF E n × GLG E n SG × GLQ E n Q) * (1, h.1, θ.1) = 1`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp`. Rewrite using `[this, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem stab_iff_mem_conj : ∀ (F E K : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] [Field K] (hc : CMData F E) (n : ℕ) [NeZero n] (ST SG Q : Finset (HeightOneSpectrum (𝓞 E))) (Λ : LevFam E K n SG) (Θ : LevQFam E K n Q) (U : Subgroup (GL (Fin n) (AfE F E))) (k' y : GL (Fin n) (AfE F E)) (p : DecoF E n ST SG Q), (∀ (g x : GL (Fin n) (AfE F E)) (p p' : DecoF E n ST SG Q), IsPtOf hc (g * k') p → IsPtOf hc (g * x * k') p' → (x ∈ U ↔ ∃ (h : Λ.grp) (θ : Θ.grp), ((1, h.1, θ.1) : UF E n × GLG E n SG × GLQ E n Q) • p = p')) → IsPtOf hc (y * k') p → ∀ γ : UF E n, (∃ (h : Λ.grp) (θ : Θ.grp), ((γ, h.1, θ.1) : UF E n × GLG E n SG × GLQ E n Q) • p = p) ↔ ratAd F γ ∈ U.map (MulAut.conj y).toMonoidHom := by
   intro F E K _ _ _ _ _ _ _ hc n _ ST SG Q Λ Θ U k' y p hlev hp γ

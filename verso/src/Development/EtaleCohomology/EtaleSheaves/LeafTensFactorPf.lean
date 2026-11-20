@@ -8,7 +8,7 @@ open scoped TensorProduct DirectSum
 namespace LateralTheory.E.LeafTensFactorPf
 
 /- English proof (translation)
-Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} R)]`. Simplify using `only [Pair.lift, DirectSum.toModule_lof, TensorProduct.lift.tmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lift_lof {R : Type} [CommRing R] {I J T : Cx R} (τ : Pair I J T) (U : Scheme.{0}) (s t w : ℤ) (hw : s + t = w)
     (a : Sec (I.X s) U) (b : Sec (J.X t) U) :
@@ -19,13 +19,13 @@ theorem lift_lof {R : Type} [CommRing R] {I J T : Cx R} (τ : Pair I J T) (U : S
   simp only [Pair.lift, DirectSum.toModule_lof, TensorProduct.lift.tmul]
 
 /- English proof (translation)
-Establish `hl : ∀ V (x : Tens I J V w), ψ V (τ.lift V w x) = ψ' V (τ.lift V w x)`. Introduce `V x`. Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[ha, hb]`. Consider the case `of p z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[ha, hb]`. Consider the case `tmul a c`. Take `⟨⟨s, t⟩, hw⟩` from `p`. Rewrite using `[lift_lof]`. Conclude with `h V s t hw a c`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LateralTheory.EtaleFoundations.TensFam.sep M` to reduce the goal to its premises. Take `⟨S, hS, h1⟩` from `hτ.1 U w y`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `h1 V g hg`. Rewrite using `[hψ, hψ', ← hx, hl]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniq_mul {R : Type} [CommRing R] {I J T : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (w : ℤ) {M : Shv R}
     (ψ ψ' : ∀ U : Scheme.{0}, Sec (T.X w) U →+ Sec M U)
@@ -54,7 +54,7 @@ theorem uniq_mul {R : Type} [CommRing R] {I J T : Cx R} (τ : Pair I J T) (hτ :
   rw [hψ, hψ', ← hx, hl]
 
 /- English proof (translation)
-Use `f.hom.naturality g.op` as an intermediate fact. Conclude with `(congrArg (fun φ => (ModuleCat.Hom.hom φ) y) this).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secMap_nat {R : Type} [CommRing R] {F G : Shv R} (f : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (y : Sec F U) :
     Sec.res g (Sec.map f y) = Sec.map f (Sec.res g y) := by
@@ -62,7 +62,7 @@ theorem secMap_nat {R : Type} [CommRing R] {F G : Shv R} (f : F ⟶ G) {V U : Sc
   exact (congrArg (fun φ => (ModuleCat.Hom.hom φ) y) this).symm
 
 /- English proof (translation)
-Rewrite using `[Units.smul_def, Units.smul_def]`. Conclude with `map_zsmul _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addHom_usmul {A B : Type*} [AddCommGroup A] [AddCommGroup B] (φ : A →+ B) (n : ℤˣ) (x : A) :
     φ (n • x) = n • φ x := by
@@ -73,9 +73,9 @@ end LateralTheory.E.LeafTensFactorPf
 namespace LateralTheory.E.LeafTensFactorPf
 
 /- English proof (translation)
-Take `⟨φ, h1, h2⟩` from `LateralTheory.EtaleFoundations.etale_tensor_hom_descends_along_tensor_pairing R R τ hτ w (K.X w) (fun U => (ν.lift U w).toAddMonoidHom) (fun V U g x => LateralTheory.EtaleFoundations.TensFam.lift_res ν g w x)`. Use `⟨φ, h1, fun U s t hw a b => ?_⟩` and prove the remaining obligations. Use `h2 U (DirectSum.of _ ⟨(s, t), hw⟩ (a ⊗ₜ b))` as an intermediate fact. Rewrite `this` using `[lift_lof]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lift_lof ν U s t w hw a b`.
+A detailed English derivation is pending.
 -/
 theorem phi_exists {R : Type} [CommRing R] {I J T K : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (ν : Pair I J K) (w : ℤ) :
     ∃ φ : ∀ U : Scheme.{0}, Sec (T.X w) U →+ Sec (K.X w) U,
@@ -90,11 +90,11 @@ theorem phi_exists {R : Type} [CommRing R] {I J T K : Cx R} (τ : Pair I J T) (h
   exact lift_lof ν U s t w hw a b
 
 /- English proof (translation)
-Use `uniq_mul τ hτ w (fun U => (φ U).comp (DistribSMul.toAddMonoidHom _ r)) (fun U => (DistribSMul.toAddMonoidHom _ r).comp (φ U)) ?_ ?_ ?_ U y` and prove the remaining obligations. Introduce `V U g y`. Simplify using `only [AddMonoidHom.comp_apply, DistribSMul.toAddMonoidHom_apply]`. Rewrite using `[h1]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `map_smul _ r y`. Introduce `V U g y`. Simplify using `only [AddMonoidHom.comp_apply, DistribSMul.toAddMonoidHom_apply]`. Rewrite using `[← h1]`. Conclude with `map_smul _ r _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `U s t hw a b`. Simplify using `only [AddMonoidHom.comp_apply, DistribSMul.toAddMonoidHom_apply]`. Rewrite using `[← LinearMap.map_smul₂, h2, h2, LinearMap.map_smul₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_smul {R : Type} [CommRing R] {I J T K : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (ν : Pair I J K) (w : ℤ)
     (φ : ∀ U : Scheme.{0}, Sec (T.X w) U →+ Sec (K.X w) U)
@@ -123,7 +123,7 @@ def toHom {R : Type} [CommRing R] {F G : Shv R} (φ : ∀ U : Scheme.{0}, Sec F 
         exact (hnat _ _ g.unop y).symm }
 
 /- English proof (translation)
-Apply `Sheaf.hom_ext` to reduce the goal to its premises. Use extensionality with `U y`. Conclude with `h (unop U) y`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem sheafHom_ext {R : Type} [CommRing R] {F G : Shv R} (f g : F ⟶ G)
     (h : ∀ (U : Scheme.{0}) (y : Sec F U), Sec.map f y = Sec.map g y) : f = g := by
@@ -132,13 +132,13 @@ theorem sheafHom_ext {R : Type} [CommRing R] {F G : Shv R} (f g : F ⟶ G)
   exact h (unop U) y
 
 /- English proof (translation)
-Use `choose φ h1 h2 using fun w => phi_exists τ hτ ν w`. Establish `hsm : ∀ w U (r : ULift.{1} R) y, φ w U (r • y) = r • φ w U y` using `fun w => phi_smul τ hτ ν w (φ w) (h1 w) (h2 w)`. Use `⟨{ f := fun w => toHom (φ w) (h1 w) (hsm w), comm' := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Simplify using `only [ComplexShape.up_Rel] at hij`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Apply `sheafHom_ext` to reduce the goal to its premises. Introduce `U y`. Use `show Sec.map (K.d i (i + 1)) (φ i U y) = φ (i + 1) U (Sec.map (T.d i (i + 1)) y)`. Use `uniq_mul τ hτ i (M := K.X (i + 1)) (fun U => ((K.d i (i + 1)).hom.app (op U)).hom.toAddMonoidHom.comp (φ i U)) (fun U => (φ (i + 1) U).comp ((T.d i (i + 1)).hom.app (op U)).hom.toAddMonoidHom) ?_ ?_ ?_ U y` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `V U g y show Sec.res g (Sec.map (K.d i (i + 1)) (φ i U y)) = Sec.map (K.d i (i + 1)) (φ i V (Sec.res g y))`. Rewrite using `[secMap_nat, h1]`. Introduce `V U g y show Sec.res g (φ (i + 1) U (Sec.map (T.d i (i + 1)) y)) = φ (i + 1) V (Sec.map (T.d i (i + 1)) (Sec.res g y))`. Rewrite using `[h1, secMap_nat]`. Introduce `U s t hw a b show Sec.map (K.d i (i + 1)) (φ i U (τ.mul U s t i hw a b)) = φ (i + 1) U (Sec.map (T.d i (i + 1)) (τ.mul U s t i hw a b))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h2, ν.leibniz, τ.leibniz, map_add, addHom_usmul, h2, h2]`. Introduce `U s t w hw a b`. Rewrite using `[LateralTheory.E.LeafTwPairHtpyPf.secMap_id_f, LateralTheory.E.LeafTwPairHtpyPf.secMap_id_f]`. Conclude with `h2 w U s t hw a b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor {R : Type} [CommRing R] {I J T K : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (ν : Pair I J K) :
     ∃ u : T ⟶ K, τ.Compat ν (𝟙 I) (𝟙 J) u := by
@@ -171,7 +171,7 @@ theorem factor {R : Type} [CommRing R] {I J T K : Cx R} (τ : Pair I J T) (hτ :
 end LateralTheory.E.LeafTensFactorPf
 
 /- English proof (translation)
-Introduce `R _ I J T K τ hτ ν`. Conclude with `LateralTheory.E.LeafTensFactorPf.factor τ hτ ν`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LateralTheory.E.LeafTwPairHtpyPf.LeafTensFactor_of : LateralTheory.E.LeafTwPairHtpyPf.LeafTensFactor := by
   intro R _ I J T K τ hτ ν

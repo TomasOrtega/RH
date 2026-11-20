@@ -15,7 +15,7 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.FdegDens
 
 /- English proof (translation)
-Unfold `volUn`. Use `Finset.prod_pos fun i _ => ?_` and prove the remaining obligations. Establish `h2π : (0 : ℝ) < 2 * Real.pi` using `by positivity`. Conclude with `div_pos (pow_pos h2π _) (by exact_mod_cast Nat.factorial_pos i)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem volUn_pos (j : ℕ) : 0 < volUn j := by
   unfold volUn
@@ -24,9 +24,9 @@ theorem volUn_pos (j : ℕ) : 0 < volUn j := by
   exact div_pos (pow_pos h2π _) (by exact_mod_cast Nat.factorial_pos i)
 
 /- English proof (translation)
-Set `A` to `{i : Fin n // ε i = true}`. Set `B` to `{i : Fin n // ¬ε i = true}`. Set `e : Fin (Fintype.card A) ⊕ Fin (Fintype.card B) ≃ Fin n` to `(Equiv.sumCongr (Fintype.equivFin A).symm (Fintype.equivFin B).symm).trans (Equiv.sumCompl fun i => ε i = true)`. Use `⟨Fintype.card A, Fintype.card B, e, ?_, fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Simplify using `using Fintype.card_congr e`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `((Fintype.equivFin A).symm i).2`. Use `show ε (((Fintype.equivFin B).symm j : B) : Fin n) = false`. Simplify using `using ((Fintype.equivFin B).symm j).2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_sort {n : ℕ} (ε : Fin n → Bool) : ∃ (p q : ℕ) (e : Fin p ⊕ Fin q ≃ Fin n), p + q = n ∧
     (∀ i, ε (e (Sum.inl i)) = true) ∧ ∀ j, ε (e (Sum.inr j)) = false := by
@@ -43,7 +43,7 @@ theorem exists_sort {n : ℕ} (ε : Fin n → Bool) : ∃ (p q : ℕ) (e : Fin p
     simpa using ((Fintype.equivFin B).symm j).2
 
 /- English proof (translation)
-Use `haveI : BorelSpace (Formalism.BasicNotions.UpqT p q) := ⟨rfl⟩`. Establish `hmat : Continuous (Formalism.BasicNotions.UpqT.mat : Formalism.BasicNotions.UpqT p q → _)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hc : Continuous fun g : Formalism.BasicNotions.UpqT p q => (Matrix.of.symm (Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g)) : PI.MtM n)` using `hmat.matrix_reindex e e`. Conclude with `hc.measurable`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_reindex {n p q : ℕ} (e : Fin p ⊕ Fin q ≃ Fin n) :
     Measurable fun g : Formalism.BasicNotions.UpqT p q =>
@@ -57,7 +57,7 @@ theorem measurable_reindex {n p q : ℕ} (e : Fin p ⊕ Fin q ≃ Fin n) :
   exact hc.measurable
 
 /- English proof (translation)
-Take `⟨g0, hg0⟩` from `g`. Establish `hg : ((g0 : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)ᴴ * Formalism.UG.Jpq p q * (g0 : GL (Fin p ⊕ Fin q) ℂ) = Formalism.UG.Jpq p q` using `hg0`. Use `show (Matrix.reindex e e ((g0 : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ))ᴴ * Formalism.REAL.Jm ε * Matrix.reindex e e (g0 : GL (Fin p ⊕ Fin q) ℂ) = Formalism.REAL.Jm ε`. Rewrite using `[GlobalTheory.OmegaFrobenius.jm_eq h1 h2, Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, hg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reindex_mem {n p q : ℕ} (ε : Fin n → Bool) (e : Fin p ⊕ Fin q ≃ Fin n)
     (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.inr j)) = false) (g : Formalism.BasicNotions.UpqT p q) :
@@ -71,7 +71,7 @@ theorem reindex_mem {n p q : ℕ} (ε : Fin n → Bool) (e : Fin p ⊕ Fin q ≃
     Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, hg]
 
 /- English proof (translation)
-Unfold `HasDens at h h'`. Conclude with `tendsto_nhds_unique h h'`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hasDens_unique {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} {μ : Measure (Fin m → Fin m → ℂ)} {c c' : ℝ≥0∞}
     (h : HasDens S μ c) (h' : HasDens S μ c') : c = c' := by
@@ -79,7 +79,7 @@ theorem hasDens_unique {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} {μ : Me
   exact tendsto_nhds_unique h h'
 
 /- English proof (translation)
-Unfold `HasDens at h ⊢`. Use `(ENNReal.Tendsto.const_mul h (Or.inr ENNReal.coe_ne_top) (a := (t : ℝ≥0∞))).congr fun ρ => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, mul_div_assoc]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasDens_smul {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} {μ : Measure (Fin m → Fin m → ℂ)} {c : ℝ≥0∞}
     (h : HasDens S μ c) (t : NNReal) : HasDens S (t • μ) (t * c) := by
@@ -88,11 +88,11 @@ theorem hasDens_smul {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} {μ : Meas
   rw [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, mul_div_assoc]
 
 /- English proof (translation)
-Substitute `hpq` using the available equality. Take `⟨c0, -, -, hc1, hc2⟩` from `cd.trick p q`. Establish `hK` using `GlobalTheory.T.hasDensityAtIdentityLieAlgebra_of_omegaDensity (p + q) (fun _ => true) (p + q) 0 (Equiv.sumEmpty _ _) (fun _ => rfl) (fun j => j.elim0) (cd.cd (p + q) 0) c0 (cd.haar _ _) hc2`. Establish `hJ : Formalism.REAL.Jm (fun _ : Fin (p + q) => true) = 1`. Unfold `Formalism.REAL.Jm`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using the standard rewrite rules. Rewrite `hK` using `[hJ]`. Establish `hprob : ((cd.cd (p + q) 0).map fun g => Matrix.of.symm (Matrix.reindex (Equiv.sumEmpty (Fin (p + q)) (Fin 0)) (Equiv.sumEmpty (Fin (p + q)) (Fin 0)) (Formalism.BasicNotions.UpqT.mat g))) Set.univ = 1`. Rewrite using `[Measure.map_apply (measurable_reindex _) MeasurableSet.univ, Set.preimage_univ]`. Use `haveI := cd.prob (p + q)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `measure_univ`. Establish `hc0 : c0 = ENNReal.ofReal (volUn (p + q))⁻¹` using `hasDens_unique hK.2 (GlobalTheory.T.hasDensityAtIdentity_unitaryGroup_probability (p + q) _ hK.1 hprob)`. Establish `hM` using `GlobalTheory.T.hasDensityAtIdentityLieAlgebra_of_omegaDensity (p + q) ε p q e h1 h2 (cd.cd p q) c0 (cd.haar p q) hc1`. Rewrite `hM` using `[hc0]`. Conclude with `hM`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cd_dens {n p q : ℕ} (ε : Fin n → Bool) (e : Fin p ⊕ Fin q ≃ Fin n) (hpq : p + q = n)
     (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.inr j)) = false) (cd : Formalism.BasicNotions.CDHaar) :
@@ -122,7 +122,7 @@ theorem cd_dens {n p q : ℕ} (ε : Fin n → Bool) (e : Fin p ⊕ Fin q ≃ Fin
   exact hM
 
 /- English proof (translation)
-Establish `h : Topology.IsClosedEmbedding (fun a : Formalism.REAL.UJ ε => (Matrix.of.symm (umat a) : PI.MtM n))` using `(Formalism.REAL.isClosedEmbeddingMatrix n ε).1`. Conclude with `h.measurableEmbedding`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem umat_emb {n : ℕ} (ε : Fin n → Bool) :
     MeasurableEmbedding fun a : Formalism.REAL.UJ ε => (Matrix.of.symm (umat a) : PI.MtM n) := by
@@ -131,11 +131,9 @@ theorem umat_emb {n : ℕ} (ε : Fin n → Bool) :
   exact h.measurableEmbedding
 
 /- English proof (translation)
-Establish `hu : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP`. Establish `hm : ∀ A B : Matrix (Fin n) (Fin n) ℂ, Measurable fun x : PI.MtM n => (Matrix.of.symm (A * Matrix.of x * B) : PI.MtM n)`. Introduce `A B`. Establish `hx : Continuous fun x : PI.MtM n => (Matrix.of x : Matrix (Fin n) (Fin n) ℂ)` using `continuous_id`. Establish `hc : Continuous fun x : PI.MtM n => (Matrix.of.symm (A * Matrix.of x * B) : PI.MtM n)` using `(continuous_const.matrix_mul hx).matrix_mul continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc.measurable`. Set `φ : PI.MtM n ≃ PI.MtM n` to `{ toFun := fun x => Matrix.of.symm (P⁻¹ * Matrix.of x * P) invFun := fun y => Matrix.of.symm (P * Matrix.of y * P⁻¹) left_inv := fun x => by show Matrix.of.symm (P * (P⁻¹ * Matrix.of x * P) * P⁻¹) = x`. Simplify using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, ← Matrix.mul_assoc P P⁻¹, Matrix.mul_nonsing_inv_cancel_left _ _ hu]`. Use `right_inv := fun y => by show Matrix.of.symm (P⁻¹ * (P * Matrix.of y * P⁻¹) * P) = y`. Simplify using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.nonsing_inv_mul_cancel_left _ _ hu] }`.
-
-Conclude with `(MeasurableEquiv.mk φ (hm _ _) (hm _ _)).measurableEmbedding`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_emb {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P) :
     MeasurableEmbedding fun x : PI.MtM n => (Matrix.of.symm (P⁻¹ * Matrix.of x * P) : PI.MtM n) := by
@@ -160,25 +158,25 @@ theorem conj_emb {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P) :
   exact (MeasurableEquiv.mk φ (hm _ _) (hm _ _)).measurableEmbedding
 
 /- English proof (translation)
-Introduce `k r H _ _ _ σ ε cd sc P d c μG hcomp hP hF hc hμG hdG`. Take `⟨p, q, e, hpq, h1, h2⟩` from `exists_sort ε`. Establish `hU` using `umat_emb ε`. Establish `hC` using `conj_emb P hP.1`. Establish `hν : ((sc : ℝ≥0∞) • Formalism.REAL.muG ε).map (fun a : Formalism.REAL.UJ ε => (Matrix.of.symm (umat a) : PI.MtM (2 * r + k + 1))) = (cd.cd p q).map fun g => Matrix.of.symm (Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `B hB`. Rewrite using `[Measure.map_apply hU.measurable hB, Measure.map_apply (measurable_reindex e) hB, hcomp p q e h1 h2 _ (hU.measurable hB)]`. Use `congr 1`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, ha, hag⟩ show Matrix.of.symm (Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g)) ∈ B`. Rewrite using `[← hag]`. Conclude with `ha`. Introduce `hg`. Establish `hmem : Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g) ∈ Set.range (fun a : Formalism.REAL.UJ ε => ((a : (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ˣ) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ))`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(Formalism.REAL.isClosedEmbeddingMatrix _ ε).2]`. Conclude with `reindex_mem ε e h1 h2 g`. Take `⟨a, ha⟩` from `hmem`. Use `⟨a, ?_, ha⟩` and prove the remaining obligations. Use `show Matrix.of.symm (umat a) ∈ B`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[show umat a = Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g) from ha]`. Conclude with `hg`. Establish `hcd` using `cd_dens ε e hpq h1 h2 cd`. Rewrite `hcd` using `[← hν]`. Establish `hHk` using `Formalism.QuantumDeterminants.hpkFacts k r`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD` using `GlobalTheory.T.haar_density_conj_unitaryHermitianGroups (2 * r + k + 1) (Formalism.QuantumDeterminants.Hpk k r) (Formalism.REAL.Jm ε) P hHk.1 hHk.2.1 (Formalism.REAL.Jm_conjTranspose ε) (Formalism.REAL.Jm_mul_self ε) hP.1 hP.2 _ _ hcd.1 hcd.2`. Take `⟨t, -, httop, hμt⟩` from `(GlobalTheory.MatHaar.haar_unique_locFinite_openPos _ _ _ (GlobalTheory.AdDens.isMatGroup_UH _ hHk.2.1) hD.1).1 μG hμG`. Establish `hdt : HasDens (GG k r) μG (t * ENNReal.ofReal (volUn (2 * r + k + 1))⁻¹)`. Establish `h` using `hasDens_smul hD.2 t.toNNReal`. Rewrite `h` using `[ENNReal.smul_def, ENNReal.coe_toNNReal httop.ne, ← hμt]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hV` using `volUn_pos (2 * r + k + 1)`. Establish `htr : t.toReal = c * volUn (2 * r + k + 1)`. Establish `h` using `congrArg ENNReal.toReal (hasDens_unique hdG hdt)`. Rewrite `h` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal hc.le, ENNReal.toReal_ofReal (inv_nonneg.mpr hV.le)]`. Rewrite using `[h, mul_assoc, inv_mul_cancel₀ hV.ne', mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hμt` using `[Measure.map_map hC.measurable hU.measurable]`. Establish `hemb` using `hC.comp hU`. Take `⟨hd, hFd⟩` from `hF`. Use `⟨div_pos hd (mul_pos hc hV), fun v w v' w' => ?_⟩` and prove the remaining obligations. Take `⟨hI, hE⟩` from `hFd v w v' w'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hμt]`. Use `⟨Integrable.smul_measure ?_ httop.ne, ?_⟩` and prove the remaining obligations. Rewrite using `[hemb.integrable_map_iff]`. Conclude with `hI`. Rewrite using `[integral_smul_measure, hemb.integral_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `(congrArg (fun z : ℂ => t.toReal • z) hE).trans ?_` and prove the remaining obligations. Rewrite using `[htr, Complex.real_smul]`. Use `push_cast`. Rewrite using `[div_div_eq_mul_div]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem schur_of_dens : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mat k r → (H →L[ℂ] H)) (ε : Fin (2 * r + k + 1) → Bool) (cd : Formalism.BasicNotions.CDHaar) (sc : NNReal) (P : Mat k r) (d c : ℝ) (μG : Measure (Mt k r)), (∀ (p q : ℕ) (e : Fin p ⊕ Fin q ≃ Fin (2 * r + k + 1)), (∀ i, ε (e (Sum.inl i)) = true) → (∀ j, ε (e (Sum.inr j)) = false) → ∀ A : Set (Formalism.REAL.UJ ε), MeasurableSet A → ((sc : ℝ≥0∞) • Formalism.REAL.muG ε) A = cd.cd p q {g | ∃ a ∈ A, umat a = Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g)}) → IsCayley k r ε P → IsFdeg ((sc : ℝ≥0∞) • Formalism.REAL.muG ε) (fun g => σ (P⁻¹ * g * P)) d → 0 < c → IsHaarOn (GG k r) μG → HasDens (GG k r) μG (ENNReal.ofReal c) → SchurH μG σ (d / (c * volUn (2 * r + k + 1))) := by
   intro k r H _ _ _ σ ε cd sc P d c μG hcomp hP hF hc hμG hdG

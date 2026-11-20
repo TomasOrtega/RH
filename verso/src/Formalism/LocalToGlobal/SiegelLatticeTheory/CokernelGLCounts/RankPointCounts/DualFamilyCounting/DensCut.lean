@@ -69,13 +69,13 @@ def DensMultInt : Prop :=
         Formalism.HermitianLatticesTheory.IsIntegralLat (VS D).hT (MMof D F0 F') → Multipliable (densP L δ ϖ (Tn u) (Tn u') Z)
 
 /- English proof (translation)
-Introduce `D δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP`. Use `⟨fun hI => ⟨fun p => ?_, h6 D δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP hI⟩, h3 D δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP⟩` and prove the remaining obligations. Take `⟨A, a, hAO, hAdet, hG, hc⟩` from `h2 D δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP hI p`. Establish `hSD` using `h1 D δ M hA L p`. Take `⟨-, -, hUr, -⟩` from `perpendicular_definition_holds D u u' hT F0 what₂ hR Z F' hz hZ hP`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm` using `Formalism.L2.SG.Pf.NcArithG.rm_eq D`. Establish `hk5 : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hcard : Fintype.card (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) ≤ Module.finrank (D.s.atP p).Ep (L.V p)`. Rewrite using `[L.rank p, Fintype.card_sum, Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hcle : cJ (VS D).hT (UPair D F0 F') (MMof D F0 F') p.asIdeal ≤ 2 * (D.R.rS + 1)`. Use `Formalism.L2.SG.Pf.Asm.cJ_le (VS D).hT (UPair D F0 F') (MMof D F0 F') p.asIdeal` as an intermediate fact. Rewrite `this` using `[hUr, hm]`. Conclude with `this`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `densP`. Rewrite using `[hG, local_density_corank (D.s.atP p).Fp (D.s.atP p).Ep (M p) (D.s.atP p).lf (D.s.atP p).char0 (L.V p) (L.H p) (lattice₂ L p (VS D).L0) hSD (ϖ p) (hϖ p) _ A a hAO hAdet hcard, L.rank p, Fintype.card_sum, Fintype.card_fin, hc, show D.R.rS + 1 + (D.R.rS + 1) = 2 * (D.R.rS + 1) by r …`. Conclude with `h5 D δ M hA p _ hcle`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem densAll_of (h1 : LocSelfDual) (h2 : GaPlusDiag) (h3 : NotIntDens) (h5 : DensProdVal)
     (h6 : DensMultInt) : DensAll := by

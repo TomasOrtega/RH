@@ -18,25 +18,23 @@ def redCoord {d : ℕ} (bs : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (�
     (show (x : Fv F v ⊗[F] E) ∈ Rv bs v from hS ▸ x.2) k⟩
 
 /- English proof (translation)
-Use `set B := Algebra.TensorProduct.basis (Fv F v) bs with hB`. Establish `hsm : ∀ z : Fv F v ⊗[F] E, z * algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ = (ϖ : Fv F v) • z`. Introduce `z`. Rewrite using `[Algebra.smul_def, mul_comm]`. Rewrite using `[show lev (⟨_, hϖ⟩ : S) 1 = Ideal.span {(⟨_, hϖ⟩ : S) ^ 1} from rfl, pow_one, Ideal.mem_span_singleton']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hk : ∀ k, ∃ t : v.adicCompletionIntegers F, (t : Fv F v) * ϖ = B.repr x k - B.repr y k`. Introduce `k`. Establish `h1` using `congrFun h k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [redCoord] at h1`. Rewrite `h1` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨t, ht⟩` from `h1`. Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Subtype.val ht`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h2`. Conclude with `h2`. Use `choose t ht using hk`. Set `z : Fv F v ⊗[F] E` to `B.equivFun.symm (fun k => (t k : Fv F v))`. Establish `hz : ∀ k, B.repr z k = t k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Establish `hzS : z ∈ S`. Establish `hzR : z ∈ Rv bs v`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hz k]`. Conclude with `(t k).2`. Rewrite `hzR` using `[← hS]`. Conclude with `hzR`. Use `⟨⟨z, hzS⟩, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show z * algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ = (x : Fv F v ⊗[F] E) - y`. Rewrite using `[hsm, B.ext_elem_iff]`. Introduce `k`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, hz k, map_sub, Finsupp.sub_apply, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `ht k`. Introduce and unpack `⟨a, ha⟩`. Establish `hxy : (x : Fv F v ⊗[F] E) - y = (ϖ : Fv F v) • (a : Fv F v ⊗[F] E)`. Rewrite using `[← hsm]`. Conclude with `(congrArg Subtype.val ha).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `haR : (a : Fv F v ⊗[F] E) ∈ Rv bs v` using `hS ▸ a.2`. Use function extensionality and compare the values at `k`. Simplify using `only [redCoord]`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Use `⟨⟨B.repr a k, haR k⟩, ?_⟩` and prove the remaining obligations.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Establish `h3` using `congrArg (fun w => B.repr w k) hxy`. Simplify using `only [map_sub, Finsupp.sub_apply, map_smul, Finsupp.smul_apply, smul_eq_mul] at h3`. Rewrite using `[mul_comm, ← h3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redCoord_eq_iff {d : ℕ} (bs : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))
     (S : Subring (Fv F v ⊗[F] E)) (hS : (S : Set (Fv F v ⊗[F] E)) = Rv bs v)
@@ -95,13 +93,13 @@ theorem redCoord_eq_iff {d : ℕ} (bs : Module.Basis (Fin d) F E) (v : HeightOne
     rw [mul_comm, ← h3]
 
 /- English proof (translation)
-Introduce `g`. Use `set B := Algebra.TensorProduct.basis (Fv F v) bs with hB`. Use `choose t ht using fun k => Ideal.Quotient.mk_surjective (g k)`. Set `z : Fv F v ⊗[F] E` to `B.equivFun.symm (fun k => (t k : Fv F v))`. Establish `hz : ∀ k, B.repr z k = t k`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Establish `hzS : z ∈ S`. Establish `hzR : z ∈ Rv bs v`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hz k]`. Conclude with `(t k).2`. Rewrite `hzR` using `[← hS]`. Conclude with `hzR`. Use `⟨⟨z, hzS⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Simplify using `only [redCoord]`. Rewrite using `[← ht k]`. Use `congr 1`. Conclude with `Subtype.ext (hz k)`.
+A detailed English derivation is pending.
 -/
 theorem redCoord_surjective {d : ℕ} (bs : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))
     (S : Subring (Fv F v ⊗[F] E)) (hS : (S : Set (Fv F v ⊗[F] E)) = Rv bs v)
@@ -128,13 +126,13 @@ theorem redCoord_surjective {d : ℕ} (bs : Module.Basis (Fin d) F E) (v : Heigh
   exact Subtype.ext (hz k)
 
 /- English proof (translation)
-Establish `hsurj` using `Ideal.Quotient.mk_surjective (I := lev (⟨_, hϖ⟩ : S) 1)`. Set `sec` to `Function.surjInv hsurj`. Establish `hsec : ∀ q, Ideal.Quotient.mk _ (sec q) = q` using `Function.surjInv_eq hsurj`. Set `g : S ⧸ lev (⟨_, hϖ⟩ : S) 1 → (Fin d → v.adicCompletionIntegers F ⧸ Ideal.span {ϖ})` to `fun q => redCoord bs v S hS ϖ (sec q)`. Establish `hg : Function.Bijective g`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `q₁ q₂ h`. Rewrite using `[← hsec q₁, ← hsec q₂, Ideal.Quotient.eq]`. Conclude with `(redCoord_eq_iff bs v S hS ϖ hϖ _ _).mp h`. Introduce `w`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `redCoord_surjective bs v S hS ϖ w`. Use `⟨Ideal.Quotient.mk _ x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx]`. Apply `(redCoord_eq_iff bs v S hS ϖ hϖ _ _).mpr` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq, hsec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_congr (Equiv.ofBijective g hg), Nat.card_fun, Nat.card_fin]`.
+A detailed English derivation is pending.
 -/
 theorem card_quot {d : ℕ} (bs : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))
     (S : Subring (Fv F v ⊗[F] E)) (hS : (S : Set (Fv F v ⊗[F] E)) = Rv bs v)
@@ -159,9 +157,9 @@ theorem card_quot {d : ℕ} (bs : Module.Basis (Fin d) F E) (v : HeightOneSpectr
   rw [Nat.card_congr (Equiv.ofBijective g hg), Nat.card_fun, Nat.card_fin]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d bs v S σS ϖ hQ hϖ`. Take `⟨hCM, -, hS, -, -, -, -, hcard⟩` from `hQ`. Establish `hd : d = 2`. Rewrite using `[← hCM.2.2.1, Module.finrank_eq_card_basis bs, Fintype.card_fin]`. Substitute `hd` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[card_quot bs v S hS ϖ hϖ, hcard]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem q3 : PositivityTheory.SiegelWeilFormula.Gunr.Q3 := by
   intro F E _ _ _ _ _ σ d bs v S σS ϖ hQ hϖ

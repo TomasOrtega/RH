@@ -8,23 +8,23 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Introduce `S T x A G _ inc k hk hu A₁ _ φ₁ B₁ _ f hP hB hf`. Establish `hfe` using `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion B₁ (hG := hB) hu`. Take `⟨hfin, het⟩` from `hfe.2`. Set `pr : (Over.mk x ⊗ G).left ⟶ T` to `(fst (Over.mk x) G).left`. Establish `hpr : pr ≫ x = (Over.mk x ⊗ G).hom` using `Over.w (fst (Over.mk x) G)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨τ, hτ, -⟩` from `UpperTheory.SubRep.pull_existsUnique hP (Over.mk x ⊗ G) pr hpr (snd (Over.mk x) G ≫ inc)`. Establish `hτk : τ ^ k = 1`. Apply `UpperTheory.SubRep.pull_ext hP` to reduce the goal to its premises. Rewrite using `[UpperTheory.SubRep.pull_pow hP _ pr hpr hτ k, hk _ (snd (Over.mk x) G), UpperTheory.SubRep.pull_one hP _ pr hpr]`. Establish `hpow : ∀ n : ℕ, (τ ≫ f) ^ n = (τ ^ n) ≫ f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.one_comp]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]`. Establish `hwk : (τ ≫ f) ^ k = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[hpow, hτk, MonObj.one_comp]`. Take `⟨c, hc, -⟩` from `GlobalTheory.LatticeTorsion.existsUnique_torsion B₁ k (τ ≫ f) hwk`. Take `⟨c₀, hc₀, -⟩` from `GlobalTheory.LatticeTorsion.existsUnique_torsion B₁ k (1 : Over.mk pr ⟶ B₁) (one_pow k)`. Take `⟨V, hV, H⟩` from `GlobalTheory.LevCover.clopenCond_eq c c₀`. Use `⟨V, hV, fun T' t a g hg => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl : (lift t a).left ≫ pr = t.left`. Express the relevant statement in the definitionally equal form `((lift t a) ≫ fst (Over.mk x) G).left = t.left`. Rewrite using `[lift_fst]`. Set `h : Over.mk t.left ⟶ Over.mk pr` to `Over.homMk (lift t a).left hl`. Establish `hhτ : h ≫ τ = g`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `UpperTheory.SubRep.pull_ext hP` to reduce the goal to its premises. Establish `e : (lift t a).left ≫ (snd (Over.mk x) G ≫ inc).left = a.left ≫ inc.left`. Express the relevant statement in the definitionally equal form `(lift t a ≫ snd (Over.mk x) G ≫ inc).left = _`. Rewrite using `[lift_snd_assoc]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `(lift t a).left ≫ τ.left ≫ φ₁ = _`. Rewrite using `[hτ, e, hg]`. Establish `hgf : g ≫ f = h ≫ τ ≫ f` using `by rw [← hhτ, Category.assoc]`. Establish `key : g ≫ f = 1 ↔ h ≫ c = h ≫ c₀`. Prove the components needed by the constructor for the conclusion.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `e`. Establish `h1 : (h ≫ c) ≫ torsion.ι B₁ k = 1`. Rewrite using `[Category.assoc, hc, ← hgf, e]`. Establish `h2 : (h ≫ c₀) ≫ torsion.ι B₁ k = 1`. Rewrite using `[Category.assoc, hc₀, MonObj.comp_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.LatticeTorsion.existsUnique_torsion B₁ k (1 : Over.mk t.left ⟶ B₁) (one_pow k)).unique h1 h2`. Introduce `e`. Rewrite using `[hgf, ← hc, ← Category.assoc, e, Category.assoc, hc₀, MonObj.comp_one]`. Conclude with `key.trans (H _ h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_closed_locus_of_torsion_abelianScheme :
     ∀ {S T : Scheme.{0}} (x : T ⟶ S) (A G : Over S) [GrpObj A] (inc : G ⟶ A) (k : ℕ), (∀ (T' : Over S) (a : T' ⟶ G), (a ≫ inc) ^ k = 1) → IsUnit (k : Γ(T, ⊤)) → ∀ (A₁ : Over T) [GrpObj A₁] (φ₁ : A₁.left ⟶ A.left) (B₁ : Over T) [GrpObj B₁] (f : A₁ ⟶ B₁), IsGrpPullback A₁ A x φ₁ → IsAbelianScheme B₁ → IsMonHom f → ∃ V : (Over.mk x ⊗ G).left.Opens, IsClosed (V : Set (Over.mk x ⊗ G).left) ∧ ∀ (T' : Over S) (t : T' ⟶ Over.mk x) (a : T' ⟶ G) (g : Over.mk t.left ⟶ A₁), g.left ≫ φ₁ = a.left ≫ inc.left → (g ≫ f = 1 ↔ Set.range (lift t a).left ⊆ V) := by

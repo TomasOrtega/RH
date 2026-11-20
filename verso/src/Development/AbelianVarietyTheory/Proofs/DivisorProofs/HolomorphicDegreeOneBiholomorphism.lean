@@ -15,7 +15,7 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 namespace GlobalTheory.FinUnram
 
 /- English proof (translation)
-Introduce `K _ _ R _ _ _ H`. Use `haveI : Algebra.FiniteType K R := inferInstance`. Use `GlobalTheory.TangentCrit.formallyUnramified_of_dual_const_field (K := K) (A := K) (B := R) (fun φ hK _ b => ?_)` and prove the remaining obligations. Conclude with `H { φ with commutes' := hK } b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem formallyUnramified_of_dual_const : ∀ (K : Type) [Field K] [IsAlgClosed K] (R : Type) [CommRing R] [Algebra K R] [Module.Finite K R], (∀ (φ : R →ₐ[K] DualNumber K) (r : R), (φ r).snd = 0) → Algebra.FormallyUnramified K R := by
   intro K _ _ R _ _ _ H

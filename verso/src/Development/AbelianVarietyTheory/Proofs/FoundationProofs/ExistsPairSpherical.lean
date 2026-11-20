@@ -10,7 +10,7 @@ open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalis
 namespace GlobalTheory.NormSum.Inhab
 
 /- English proof (translation)
-Take `⟨x, x', hx, hx', h⟩` from `(VacInt.vacuum_eigen D (GlobalTheory.InducedType.induced_type D).1 cc δ hc a d e0 he W).2.1 k hk k' hk'`. Rewrite using `[h, h1 x' hx', h2 x hx]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem om_vac {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ) {a d : ℕ}
     {e0 : VC D a d → ℂ} (he : e0 ∈ Th D (tor0 D cc δ) (stdL D a) (stdL D d)) (W : WeilO D cc δ a d e0)

@@ -24,9 +24,9 @@ namespace GlobalTheory.LatCount
 open scoped ENNReal
 
 /- English proof (translation)
-Establish `h0 : (0 : ℝ) ≤ i` using `Nat.cast_nonneg i`. Establish `h1 : 0 < 1 + b * i` using `by positivity`. Establish `h2 : 0 < 1 + b * ((i : ℝ) + 1)` using `by positivity`. Establish `e2 : 1 / b * ((1 + b * (i : ℝ))⁻¹ - (1 + b * ((i : ℝ) + 1))⁻¹) = ((1 + b * i) * (1 + b * ((i : ℝ) + 1)))⁻¹`. Rewrite using `[inv_sub_inv h1.ne' h2.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `inv_anti₀ (by positivity) (by nlinarith)`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tail_term {b : ℝ} (hb : 0 < b) (i : ℕ) :
     ((1 + b * ((i : ℝ) + 1)) ^ 2)⁻¹ ≤ 1 / b * ((1 + b * (i : ℝ))⁻¹ - (1 + b * ((i : ℝ) + 1))⁻¹) := by
@@ -42,7 +42,7 @@ theorem tail_term {b : ℝ} (hb : 0 < b) (i : ℕ) :
   exact inv_anti₀ (by positivity) (by nlinarith)
 
 /- English proof (translation)
-Establish `h0 : (0 : ℝ) ≤ i` using `Nat.cast_nonneg i`. Use `mul_nonneg (by positivity) (sub_nonneg.2 (inv_anti₀ (by positivity) ?_))` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem tail_nonneg {b : ℝ} (hb : 0 < b) (i : ℕ) :
     0 ≤ 1 / b * ((1 + b * (i : ℝ))⁻¹ - (1 + b * ((i : ℝ) + 1))⁻¹) := by
@@ -51,9 +51,9 @@ theorem tail_nonneg {b : ℝ} (hb : 0 < b) (i : ℕ) :
   nlinarith
 
 /- English proof (translation)
-Use `ENNReal.tsum_le_of_sum_range_le fun n => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hs` using `Finset.sum_range_sub' (fun i : ℕ => (1 + b * (i : ℝ))⁻¹) n`. Simplify using `only [Nat.cast_add, Nat.cast_one, Nat.cast_zero, mul_zero, add_zero, inv_one] at hs`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.mul_sum, hs]`. Establish `: 0 ≤ (1 + b * (n : ℝ))⁻¹` using `by positivity`. Establish `hb1 : 0 < 1 / b` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem tail_le {b : ℝ} (hb : 0 < b) :
     ∑' n : ℕ, ENNReal.ofReal (((1 + b * ((n : ℝ) + 1)) ^ 2)⁻¹) ≤ ENNReal.ofReal (1 / b) := by
@@ -80,9 +80,9 @@ namespace GlobalTheory.LatCount
 open scoped ENNReal
 
 /- English proof (translation)
-Establish `h1 : ∑' z : ℤ, g z = ∑' n : ℕ, g (n : ℤ) + ∑' n : ℕ, g (-((n : ℤ) + 1))`. Rewrite using `[tsum_of_nat_of_neg_add_one]`. Conclude with `ENNReal.summable`. Conclude with `ENNReal.summable`. Establish `h2 : ∑' n : ℕ, g (n : ℤ) = g ((0 : ℕ) : ℤ) + ∑' n : ℕ, g (((n + 1 : ℕ) : ℤ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tsum_eq_zero_add']`. Conclude with `ENNReal.summable`. Rewrite using `[h1, h2]`. Simplify using `only [Nat.cast_zero, Nat.cast_add, Nat.cast_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tsum_int_split (g : ℤ → ℝ≥0∞) :
     ∑' z : ℤ, g z = g 0 + ∑' n : ℕ, g ((n : ℤ) + 1) + ∑' n : ℕ, g (-((n : ℤ) + 1)) := by
@@ -97,13 +97,11 @@ theorem tsum_int_split (g : ℤ → ℝ≥0∞) :
   simp only [Nat.cast_zero, Nat.cast_add, Nat.cast_one]
 
 /- English proof (translation)
-Rewrite using `[tsum_int_split (fun z : ℤ => ENNReal.ofReal (((1 + b * |(z : ℝ)|) ^ 2)⁻¹))]`. Establish `hpos : ∀ n : ℕ, |(((n : ℤ) + 1 : ℤ) : ℝ)| = (n : ℝ) + 1`. Introduce `n`. Rewrite using `[Int.cast_add, Int.cast_natCast, Int.cast_one]`. Conclude with `abs_of_nonneg (by positivity)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hneg : ∀ n : ℕ, |((-((n : ℤ) + 1) : ℤ) : ℝ)| = (n : ℝ) + 1`. Introduce `n`. Rewrite using `[Int.cast_neg, abs_neg, Int.cast_add, Int.cast_natCast, Int.cast_one]`. Conclude with `abs_of_nonneg (by positivity)`. Establish `h0 : ENNReal.ofReal (((1 + b * |((0 : ℤ) : ℝ)|) ^ 2)⁻¹) = 1` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hpos, hneg, h0]`. Establish `ht` using `tail_le hb`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_one, ← ENNReal.ofReal_add (by norm_num) (by positivity), ← ENNReal.ofReal_add (by positivity) (by positivity)]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tsum_int_le {b : ℝ} (hb : 0 < b) :
     ∑' z : ℤ, ENNReal.ofReal (((1 + b * |(z : ℝ)|) ^ 2)⁻¹) ≤ ENNReal.ofReal (1 + 2 / b) := by
@@ -134,13 +132,13 @@ namespace GlobalTheory.LatCount
 open scoped ENNReal
 
 /- English proof (translation)
-Take `⟨hpos, hstep, hlast⟩` from `ht`. Establish `hm0 : 0 < min c 1` using `lt_min hc one_pos`. Establish `hm1 : min c 1 ≤ 1` using `min_le_right _ _`. Establish `key : ∀ n : ℕ, ∀ k : Fin r, (k : ℕ) + 1 + n = r → min c 1 ^ (n + 1) ≤ t k`. Introduce `n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `k hk`. Simplify `hk))` using `using (min_le_left c 1).trans (hlast k (by simpa`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `k hk`. Establish `hlt : (k : ℕ) + 1 < r` using `by omega`. Establish `h1` using `ih ⟨k + 1, hlt⟩ (by simp only; omega)`. Establish `h2` using `hstep k ⟨k + 1, hlt⟩ rfl`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hk : (k : ℕ) + 1 + (r - (k + 1)) = r` using `by omega`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem cone_pow_le {r : ℕ} {c : ℝ} (hc : 0 < c) {t : Fin r → ℝ}
     (ht : t ∈ GlobalTheory.SiegelSet.cone r c) (k : Fin r) : min c 1 ^ r ≤ t k := by
@@ -169,15 +167,15 @@ theorem cone_pow_le {r : ℕ} {c : ℝ} (hc : 0 < c) {t : Fin r → ℝ}
 open NumberField in
 
 /- English proof (translation)
-Set `B` to `canonicalEmbedding.latticeBasis D.host.E`. Set `f : Module.Free.ChooseBasisIndex ℤ (𝓞 D.host.E) → (((D.host.E →+* ℂ) → ℂ) →L[ℂ] ℂ)` to `fun l => LinearMap.toContinuousLinearMap (B.coord l)`. Use `⟨∑ l, ‖f l‖ + 1, by positivity, fun y => ?_⟩` and prove the remaining obligations. Establish `hnorm : ‖canonicalEmbedding D.host.E y‖ ≤ ∑ τ, ‖tauE D τ y‖`. Rewrite using `[canonicalEmbedding.norm_le_iff]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `φ`. Take `⟨τ, hτ⟩` from `(GlobalTheory.CMTypePlaces.mk_tauE_bijective D).2 (InfinitePlace.mk φ)`. Establish `: ‖φ y‖ = ‖tauE D τ y‖`. Rewrite using `[← InfinitePlace.apply, ← InfinitePlace.apply]`. Simplify using `only at hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hτ]`. Rewrite using `[this]`. Conclude with `Finset.single_le_sum (f := fun τ => ‖tauE D τ y‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ τ)`. Establish `hl : ∀ l, |((integralBasis D.host.E).repr y l : ℝ)| ≤ ‖f l‖ * ‖canonicalEmbedding D.host.E y‖`. Introduce `l`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : f l (canonicalEmbedding D.host.E y) = ((integralBasis D.host.E).repr y l : ℂ)`. Simplify using `only [f, B, LinearMap.coe_toContinuousLinearMap']`. Rewrite using `[Module.Basis.coord_apply, canonicalEmbedding.integralBasis_repr_apply]`. Establish `h2` using `(f l).le_opNorm (canonicalEmbedding D.host.E y)`. Rewrite `h2` using `[h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ‖((integralBasis D.host.E).repr y l : ℂ)‖ = |((integralBasis D.host.E).repr y l : ℝ)|`. Rewrite using `[← Complex.ofReal_ratCast, Complex.norm_real, Real.norm_eq_abs]`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_repr_le (D : D7) : ∃ C : ℝ, 0 < C ∧ ∀ y : D.host.E,
     ∑ l, |((integralBasis D.host.E).repr y l : ℝ)| ≤ C * ∑ τ, ‖tauE D τ y‖ := by
@@ -222,7 +220,7 @@ open scoped ENNReal
 open NumberField
 
 /- English proof (translation)
-Establish `h` using `NumberField.integralBasis_repr_apply (K := D.host.E) (⟨x, hx⟩ : 𝓞 D.host.E) l`. Establish `e : algebraMap (𝓞 D.host.E) D.host.E ⟨x, hx⟩ = x` using `rfl`. Rewrite `h` using `[e, eq_intCast]`. Rewrite using `[h, Int.floor_intCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_int {D : D7} {x : D.host.E} (hx : IsIntegral ℤ x)
     (l : Module.Free.ChooseBasisIndex ℤ (𝓞 D.host.E)) :
@@ -233,7 +231,7 @@ theorem repr_int {D : D7} {x : D.host.E} (hx : IsIntegral ℤ x)
   rw [h, Int.floor_intCast]
 
 /- English proof (translation)
-Establish `e : (L : D.host.E) * y = (L : ℚ) • y`. Rewrite using `[Algebra.smul_def, map_natCast]`. Rewrite using `[e, LinearEquiv.map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_nat_mul {D : D7} (L : ℕ) (y : D.host.E)
     (l : Module.Free.ChooseBasisIndex ℤ (𝓞 D.host.E)) :
@@ -243,45 +241,41 @@ theorem repr_nat_mul {D : D7} (L : ℕ) (y : D.host.E)
   rw [e, LinearEquiv.map_smul, Finsupp.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `D θ hθ m r c hc`. Take `⟨C, hC, hCb⟩` from `exists_repr_le D`. Set `P` to `Fin m × Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 D.host.E)`. Set `c0 : ℝ` to `min c 1 ^ r`. Establish `hc0 : 0 < c0` using `pow_pos (lt_min hc one_pos) _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨2 * Fintype.card P, Fintype.card P, (1 + 2 * C / c0) ^ Fintype.card P, by positivity, fun L hL t ht => ?_⟩` and prove the remaining obligations. Establish `hLr : (1 : ℝ) ≤ L` using `by exact_mod_cast hL`. Establish `hLpos : (0 : ℝ) < L` using `by positivity`. Use `set S := {ξ : Matrix (Fin m) (Fin r) D.host.E | ∀ i j, IsIntegral ℤ ((L : D.host.E) * ξ i j)} with hS`. Rewrite using `[← tsum_subtype S]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `b : ℝ` to `c0 / (C * L)`. Establish `hb : 0 < b` using `by positivity`. Set `kap : Matrix (Fin m) (Fin r) D.host.E → P → ℤ` to `fun ξ p => ⌊(integralBasis D.host.E).repr ((L : D.host.E) * ξ p.1 p.2.1) p.2.2⌋`. Establish `hint : ∀ ξ ∈ S, ∀ p : P, (((kap ξ p : ℤ) : ℚ)) = (L : ℚ) * (integralBasis D.host.E).repr (ξ p.1 p.2.1) p.2.2`. Introduce `ξ hξ p`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← repr_nat_mul]`. Conclude with `repr_int (hξ p.1 p.2.1) p.2.2`. Set `G : (P → ℤ) → ℝ≥0∞` to `fun k => ∏ p, ENNReal.ofReal (((1 + b * |((k p : ℤ) : ℝ)|) ^ 2)⁻¹)`. Establish `hpt : ∀ ξ : S, ENNReal.ofReal ((1 + ∑ τ, ∑ i, ∑ j, ‖(compAt θ τ ((ξ : Matrix (Fin m) (Fin r) D.host.E).map (incA D) : Mx D m r) * diagonal (fun k => (t k : ℂ))) i j‖) ^ (2 * Fintype.card P))⁻¹ ≤ G (kap ξ)`. Introduce and unpack `⟨ξ, hξ⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ENNReal.ofReal ((1 + ∑ τ, ∑ i, ∑ j, ‖(compAt θ τ (ξ.map (incA D) : Mx D m r) * diagonal (fun k => (t k : ℂ))) i j‖) ^ (2 * Fintype.card P))⁻¹ ≤ G (kap ξ)`. Establish `hcomp : ∀ τ, compAt θ τ (ξ.map (incA D) : Mx D m r) = ξ.map (tauE D τ)`. Introduce `τ`. Use extensionality with `i j`. Conclude with `(hθ τ).1 (ξ i j)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `htpos : ∀ k, 0 < t k` using `ht.1`. Apply the tactic sequence `have hentry : ∀ τ i j, ‖(compAt θ τ (ξ.map (incA D) : Mx D m r) * diagonal (fun k => (t k : ℂ))) i j‖ = ‖tauE D τ (ξ i j)‖ * t j := by`. Introduce `τ i j`. Rewrite using `[hcomp, Matrix.mul_diagonal, Matrix.map_apply, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (htpos j)]`. Take `⟨s, hs⟩ : ∃ s : ℝ, s = ∑ τ, ∑ i, ∑ j, ‖(compAt θ τ (ξ.map (incA D) : Mx D m r) * diagonal (fun k => (t k : ℂ))) i j‖` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hs]`. Establish `hs0 : 0 ≤ s`. Rewrite using `[hs]`. Conclude with `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hs_ge : b * ∑ p : P, |((kap ξ p : ℤ) : ℝ)| ≤ s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∀ p : P, |((kap ξ p : ℤ) : ℝ)| = L * |((integralBasis D.host.E).repr (ξ p.1 p.2.1) p.2.2 : ℝ)|`. Introduce `p`. Use `congrArg (fun q : ℚ => (q : ℝ)) (hint ξ hξ p)` as an intermediate fact. Simplify using `only [Rat.cast_intCast, Rat.cast_mul, Rat.cast_natCast] at this`. Rewrite using `[this, abs_mul, abs_of_nonneg (Nat.cast_nonneg _)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : ∑ p : P, |((kap ξ p : ℤ) : ℝ)| = L * ∑ i, ∑ j, ∑ l, |((integralBasis D.host.E).repr (ξ i j) l : ℝ)|`. Simplify using `only [e1, P, Fintype.sum_prod_type, Finset.mul_sum]`. Establish `e3 : s = ∑ i, ∑ j, ∑ τ, ‖tauE D τ (ξ i j)‖ * t j`. Rewrite using `[hs]`. Simplify using `only [hentry]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Establish `hij : ∀ i j, c0 / C * ∑ l, |((integralBasis D.host.E).repr (ξ i j) l : ℝ)| ≤ ∑ τ, ‖tauE D τ (ξ i j)‖ * t j`. Introduce `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hCb (ξ i j)`. Establish `htj : c0 ≤ t j` using `cone_pow_le hc ht j`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, div_mul_cancel₀ _ hC.ne', Finset.mul_sum]`. Use `_ ≤ ∑ τ, ‖tauE D τ (ξ i j)‖ * t j := Finset.sum_le_sum fun τ _ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left htj (norm_nonneg _)`. Establish `hb' : b * L = c0 / C` using `by simp only [b]; field_simp`. Rewrite using `[e2, e3, ← mul_assoc, hb', Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun j _ => hij i j`. Establish `hkp : ∀ p, 1 + b * |((kap ξ p : ℤ) : ℝ)| ≤ 1 + s`. Introduce `p`. Establish `h1 : |((kap ξ p : ℤ) : ℝ)| ≤ ∑ p : P, |((kap ξ p : ℤ) : ℝ)|` using `Finset.single_le_sum (f := fun p => |((kap ξ p : ℤ) : ℝ)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ p)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `mul_le_mul_of_nonneg_left h1 hb.le`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show ENNReal.ofReal (((1 + s) ^ (2 * Fintype.card P))⁻¹) ≤ ∏ p, ENNReal.ofReal (((1 + b * |((kap ξ p : ℤ) : ℝ)|) ^ 2)⁻¹)`. Rewrite using `[← ENNReal.ofReal_prod_of_nonneg (fun p _ => by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_inv_distrib]`. Apply `inv_anti₀ (Finset.prod_pos fun p _ => by positivity)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ, ← pow_mul]`. Establish `hinj : Function.Injective (fun ξ : S => kap ξ)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨ξ, hξ⟩ ⟨ξ', hξ'⟩ h`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `hL0 : (L : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hL.ne'`. Apply `mul_left_cancel₀ hL0` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Apply `(integralBasis D.host.E).repr.injective` to reduce the goal to its premises. Use extensionality with `l`. Establish `h1` using `hint ξ hξ (i, j, l)`. Establish `h2` using `hint ξ' hξ' (i, j, l)`. Establish `h3 : kap ξ (i, j, l) = kap ξ' (i, j, l)` using `congrFun h (i, j, l)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[repr_nat_mul, repr_nat_mul]`. Rewrite using `[← h1, ← h2, h3]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ, ENNReal.ofReal_pow (by positivity)]`. Use `_ ≤ ENNReal.ofReal ((1 + 2 * C / c0) ^ Fintype.card P * (L : ℝ) ^ Fintype.card P) := by`.
-
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[← mul_pow]`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Establish `e : 2 / b = 2 * C / c0 * L`. Simplify using `only [b]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Establish `: 0 ≤ 2 * C / c0` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem lattice_count : ∀ {D : D7} (θ : InfFam D), IsInfFam θ → ∀ (m r : ℕ) (c : ℝ), 0 < c →
     ∃ (N A : ℕ) (C : ℝ), 0 ≤ C ∧ ∀ L : ℕ, 0 < L → ∀ t ∈ GlobalTheory.SiegelSet.cone r c,

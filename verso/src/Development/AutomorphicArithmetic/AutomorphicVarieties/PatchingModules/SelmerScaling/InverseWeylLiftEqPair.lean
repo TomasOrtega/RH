@@ -12,7 +12,7 @@ private def PP (M : Matrix (Fin n) (Fin n) A) (Z : Fin e → Matrix (Fin n) (Fin
   Matrix.of fun a b => ⟨algebraMap A R (M a b), fun j => algebraMap A R (Z j a b), 0, 0⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => simp [Finset.sum_insert ha, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem sum_a {ι : Type} (s : Finset ι) (f : ι → DD R e) : (∑ i ∈ s, f i).a = ∑ i ∈ s, (f i).a := by
   classical
@@ -21,7 +21,7 @@ private theorem sum_a {ι : Type} (s : Finset ι) (f : ι → DD R e) : (∑ i �
   | insert a s ha ih => simp [Finset.sum_insert ha, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => simp [Finset.sum_insert ha, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem sum_ep {ι : Type} (s : Finset ι) (f : ι → DD R e) (j) : (∑ i ∈ s, f i).ep j = ∑ i ∈ s, (f i).ep j := by
   classical
@@ -30,7 +30,7 @@ private theorem sum_ep {ι : Type} (s : Finset ι) (f : ι → DD R e) (j) : (�
   | insert a s ha ih => simp [Finset.sum_insert ha, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => simp [Finset.sum_insert ha, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem sum_ep' {ι : Type} (s : Finset ι) (f : ι → DD R e) (j) : (∑ i ∈ s, f i).ep' j = ∑ i ∈ s, (f i).ep' j := by
   classical
@@ -39,7 +39,7 @@ private theorem sum_ep' {ι : Type} (s : Finset ι) (f : ι → DD R e) (j) : (�
   | insert a s ha ih => simp [Finset.sum_insert ha, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => simp [Finset.sum_insert ha, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem sum_eta {ι : Type} (s : Finset ι) (f : ι → DD R e) : (∑ i ∈ s, f i).eta = ∑ i ∈ s, (f i).eta := by
   classical
@@ -48,7 +48,7 @@ private theorem sum_eta {ι : Type} (s : Finset ι) (f : ι → DD R e) : (∑ i
   | insert a s ha ih => simp [Finset.sum_insert ha, ih]
 
 /- English proof (translation)
-Apply the tactic sequence `ext a b j <;> simp [PP, Matrix.mul_apply, sum_a, sum_ep, sum_ep', sum_eta, Finset.sum_add_distrib]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem congruenceCondition_mul (M M' : Matrix (Fin n) (Fin n) A) (Z Z' : Fin e → Matrix (Fin n) (Fin n) A) :
     PP R M Z * PP R M' Z' = PP R (M * M') (fun j => M * Z' j + Z j * M') := by
@@ -61,7 +61,7 @@ private theorem pair_matrix_transpose (M : Matrix (Fin n) (Fin n) A) (Z : Fin e 
     (PP R M Z)ᵀ = PP R Mᵀ (fun j => (Z j)ᵀ) := rfl
 
 /- English proof (translation)
-Use extensionality with `a b j`. Both sides reduce to the same expression. Simplify using `only [PP, Matrix.of_apply, Matrix.zero_apply, map_zero]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
 Both sides reduce to the same expression.
 -/
@@ -74,13 +74,13 @@ private theorem PP_map (M : Matrix (Fin n) (Fin n) A) :
   · rfl
 
 /- English proof (translation)
-Rewrite using `[← PP_map]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem PP_one : PP R (1 : Matrix (Fin n) (Fin n) A) (fun _ : Fin e => 0) = 1 := by
   rw [← PP_map]; exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Rewrite using `[← PP_one (A := A) R]`. Apply the tactic sequence `ext a b j <;> simp [PP, DD.epM]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem PP_add (Z : Fin e → Matrix (Fin n) (Fin n) A) :
     (1 + DD.epM fun j => (Z j).map (algebraMap A R)) = PP R 1 Z := by
@@ -88,7 +88,7 @@ private theorem PP_add (Z : Fin e → Matrix (Fin n) (Fin n) A) :
   ext a b j <;> simp [PP, DD.epM]
 
 /- English proof (translation)
-Rewrite using `[← PP_one (A := A) R, sub_eq_add_neg]`. Apply the tactic sequence `ext a b j <;> simp [PP, DD.epM]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem PP_sub (Z : Fin e → Matrix (Fin n) (Fin n) A) :
     (1 - DD.epM fun j => (Z j).map (algebraMap A R)) = PP R 1 (fun j => -Z j) := by
@@ -96,7 +96,7 @@ private theorem PP_sub (Z : Fin e → Matrix (Fin n) (Fin n) A) :
   ext a b j <;> simp [PP, DD.epM]
 
 /- English proof (translation)
-Use `congrFun (congrFun (PP_map R (e := e) M) a) b` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply]`. Rewrite using `[this]`. Simplify using `[PP, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem PP_apply (M : Matrix (Fin n) (Fin n) A) (Z : Fin e → Matrix (Fin n) (Fin n) A) (a b : Fin n)
     (h : ∀ j, Z j a b = 0) : PP R M Z a b = algebraMap A (DD R e) (M a b) := by
@@ -106,9 +106,9 @@ private theorem PP_apply (M : Matrix (Fin n) (Fin n) A) (Z : Fin e → Matrix (F
   simp [PP, h]
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun h => ?_, fun _ => trivial⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : ((i : ℕ) < a) ↔ ((k : ℕ) < a)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[(Submodule.mem_bot A).1 ((hZ i k).1 hk), zero_mul]`. Rewrite using `[(Submodule.mem_bot A).1 ((hM k j).2 (by tauto)), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem od_ev {a : ℕ} {Z M : Matrix (Fin n) (Fin n) A} (hZ : Z ∈ Od A A n a) (hM : M ∈ Ev A A n a) :
     Z * M ∈ Od A A n a := by
@@ -121,9 +121,9 @@ private theorem od_ev {a : ℕ} {Z M : Matrix (Fin n) (Fin n) A} (hZ : Z ∈ Od 
   · rw [(Submodule.mem_bot A).1 ((hM k j).2 (by tauto)), mul_zero]
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun h => ?_, fun _ => trivial⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : ((i : ℕ) < a) ↔ ((k : ℕ) < a)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[(Submodule.mem_bot A).1 ((hZ k j).1 (by tauto)), mul_zero]`. Rewrite using `[(Submodule.mem_bot A).1 ((hM i k).2 hk), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ev_od {a : ℕ} {Z M : Matrix (Fin n) (Fin n) A} (hZ : Z ∈ Od A A n a) (hM : M ∈ Ev A A n a) :
     M * Z ∈ Od A A n a := by
@@ -136,9 +136,9 @@ private theorem ev_od {a : ℕ} {Z M : Matrix (Fin n) (Fin n) A} (hZ : Z ∈ Od 
   · rw [(Submodule.mem_bot A).1 ((hM i k).2 hk), zero_mul]
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k < i`. Rewrite using `[hM i k hk, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN k j (lt_of_lt_of_le hij (not_lt.1 hk)), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem tri_mul {M N : Matrix (Fin n) (Fin n) A} (hM : ∀ i j, j < i → M i j = 0) (hN : ∀ i j, j < i → N i j = 0) :
     ∀ i j, j < i → (M * N) i j = 0 := by
@@ -156,21 +156,21 @@ section K
 variable {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {x : NP F n} (k : Kap x) (R : Type) [CommRing R] [Algebra x.A R]
 
 /- English proof (translation)
-Establish `: x.ρX (DD R k.g) g = PP R (x.ρX x.A g) (fun _ => 0)` using `by rw [← PP_map]; rfl`. Rewrite using `[Kap.ρ1, PP_add, this, congruenceCondition_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem ρ1_eq (g : F.G₀) : k.ρ1 R g = PP R (x.ρX x.A g) (fun j => k.κ j g * x.ρX x.A g) := by
   have : x.ρX (DD R k.g) g = PP R (x.ρX x.A g) (fun _ => 0) := by rw [← PP_map]; rfl
   rw [Kap.ρ1, PP_add, this, congruenceCondition_mul]; simp
 
 /- English proof (translation)
-Establish `: x.wX (DD R k.g) v = PP R (x.wX x.A v) (fun _ => 0)` using `by rw [← PP_map]; rfl`. Rewrite using `[Kap.w1, PP_sub, this, congruenceCondition_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem weyl_lift_eq_pair (v) : k.w1 R v = PP R (x.wX x.A v) (fun j => -(k.Y j v * x.wX x.A v)) := by
   have : x.wX (DD R k.g) v = PP R (x.wX x.A v) (fun _ => 0) := by rw [← PP_map]; rfl
   rw [Kap.w1, PP_sub, this, congruenceCondition_mul]; simp
 
 /- English proof (translation)
-Establish `: x.wiX (DD R k.g) v = PP R (x.wiX x.A v) (fun _ => 0)` using `by rw [← PP_map]; rfl`. Rewrite using `[Kap.wi1, PP_add, this, congruenceCondition_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem inverse_weyl_lift_eq_pair (v) : k.wi1 R v = PP R (x.wiX x.A v) (fun j => x.wiX x.A v * k.Y j v) := by
   have : x.wiX (DD R k.g) v = PP R (x.wiX x.A v) (fun _ => 0) := by rw [← PP_map]; rfl
@@ -181,41 +181,37 @@ end K
 end UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x k R _ _`. Establish `hρ : ∀ g, x.ρX x.A g = mat x.ρ g` using `fun g => rfl`. Establish `hmul : ∀ g g', x.ρX x.A (g * g') = x.ρX x.A g * x.ρX x.A g'`. Introduce `g g'`. Simplify using `[hρ, mat]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hone : x.ρX x.A 1 = 1` using `by simp [hρ, mat]`. Establish `hinv : ∀ g, x.ρX x.A g⁻¹ * x.ρX x.A g = 1`. Introduce `g`. Rewrite using `[← hmul, inv_mul_cancel, hone]`. Establish `hev : ∀ g, x.ρX x.A g ∈ Ev x.A x.A n x.a` using `x.blk`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hform : ∀ g, (x.ρX x.A g)ᵀ * x.ρX x.A (G0.frame.conj g) = ((G0.frame.eps ℤ_[l] x.A g ^ (1 - (n : ℤ)) : x.Aˣ) : x.A) • (1 : Matrix (Fin n) (Fin n) x.A)`. Introduce `g`. Use `x.form g` as an intermediate fact. Rewrite `this` using `[Units.val_one, Matrix.mul_one]`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun g g' => ?_, ?_, fun g => ?_, fun w g hg => ?_, fun g => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[ρ1_eq, ρ1_eq, ρ1_eq, congruenceCondition_mul, hmul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[(k.mem j).2.2.1 g g', add_mul, add_comm, Matrix.mul_assoc (_ * _), ← Matrix.mul_assoc (x.ρX x.A g⁻¹), hinv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc, Matrix.one_mul]`. Rewrite using `[ρ1_eq, hone, ← PP_one (A := x.A) R]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `(k.mem j).2.2.1 1 1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_one, inv_one, hone, one_mul] at this`. Rewrite using `[mul_one]`. Conclude with `left_eq_add.1 this`. Rewrite using `[ρ1_eq, ρ1_eq, pair_matrix_transpose, congruenceCondition_mul, hform]`. Establish `: (fun j => (x.ρX x.A g)ᵀ * (k.κ j (G0.frame.conj g) * x.ρX x.A (G0.frame.conj g)) + (k.κ j g * x.ρX x.A g)ᵀ * x.ρX x.A (G0.frame.conj g)) = fun _ => 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[(k.mem j).2.2.2.1 g]`. Simplify using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Rewrite using `[this, ← PP_map]`. Use `ext1 a b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`. Rewrite using `[ρ1_eq, ← PP_one (A := x.A) R]`. Establish `: x.ρX x.A g = 1` using `by simp [hρ, mat, x.ine w g hg]`. Rewrite using `[this]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[(k.mem j).2.2.2.2.1 w g hg, zero_mul]`. Rewrite using `[ρ1_eq]`. Introduce `a b`. Use `⟨fun hab => ⟨by simp, fun _ => ?_, fun _ => rfl, fun _ => rfl⟩, fun hab => ⟨fun _ => ?_, by simp, fun _ => rfl, fun _ => rfl⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Use `(Submodule.mem_bot _).1 ((od_ev ((k.mem j).1 g) (hev g) a b).1 hab)` as an intermediate fact. Simplify using `[PP, this]`. Use `(Submodule.mem_bot _).1 ((hev g a b).2 hab)` as an intermediate fact. Simplify using `[PP, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2, h3, h4, -⟩` from `oddDiag l L G G0 h n x x.A v`. Use `⟨?_, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[weyl_lift_eq_pair, inverse_weyl_lift_eq_pair, congruenceCondition_mul, h1, ← PP_one (A := x.A) R]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, h1, neg_mul, Matrix.mul_assoc, h1]`. Simplify using the standard rewrite rules. Rewrite using `[weyl_lift_eq_pair, inverse_weyl_lift_eq_pair, congruenceCondition_mul, h2, ← PP_one (A := x.A) R]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mul_assoc]`. Use `set r := x.ρX x.A (G0.φ v g) with hr`. Establish `key : k.wi1 R v * k.ρ1 R (G0.φ v g) * k.w1 R v = PP R (x.wiX x.A v * r * x.wX x.A v) (fun j => x.wiX x.A v * (k.κ j (G0.φ v g) * r + k.Y j v * r - r * k.Y j v) * x.wX x.A v)`. Rewrite using `[weyl_lift_eq_pair, inverse_weyl_lift_eq_pair, ρ1_eq, congruenceCondition_mul, congruenceCondition_mul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[← hr]`. Use `noncomm_ring`. Rewrite using `[key]`. Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PP_apply, (h4 g).1 a b hab, map_zero]`. Introduce `j`. Establish `e : x.wiX x.A v * (k.κ j (G0.φ v g) * r + k.Y j v * r - r * k.Y j v) * x.wX x.A v = (x.wiX x.A v * (k.κ j (G0.φ v g) - dY G0.frame (x.ρX x.A) (k.Y j v) (G0.φ v g)) * x.wX x.A v) * (x.wiX x.A v * r * x.wX x.A v)`. Establish `e1 : (k.κ j (G0.φ v g) - dY G0.frame (x.ρX x.A) (k.Y j v) (G0.φ v g)) * r = k.κ j (G0.φ v g) * r + k.Y j v * r - r * k.Y j v`. Rewrite using `[dY, sub_mul, sub_mul, Matrix.mul_assoc _ _ r, hr, hinv, mul_one]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[← e1]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (x.wX x.A v), h1, one_mul]`. Rewrite using `[e]`.
-
-Conclude with `tri_mul (k.loc j v g).1 (h4 g).1 a b hab`. Rewrite using `[PP_apply, (h4 g).2 a]`. Both sides reduce to the same expression. Introduce `j`. Use `h3 _ ?_ a` and prove the remaining obligations.
-
-Conclude with `Submodule.sub_mem _ (Submodule.add_mem _ (od_ev ((k.mem j).1 _) (hev _)) (od_ev (k.Y_mem j v) (hev _))) (ev_od (k.Y_mem j v) (hev _))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.rho1Tri :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n), ∀ (k : Kap x), ∀ (R : Type) [CommRing R] [Algebra x.A R], (∀ g g', k.ρ1 R (g * g') = k.ρ1 R g * k.ρ1 R g') ∧ k.ρ1 R 1 = 1 ∧ (∀ g, (k.ρ1 R g)ᵀ * k.ρ1 R (G0.frame.conj g) = algebraMap x.A (DD R k.g) ((G0.frame.eps ℤ_[l] x.A g ^ (1 - (n : ℤ)) : x.Aˣ) : x.A) • (1 : Matrix (Fin n) (Fin n) (DD R k.g))) ∧ (∀ w, ∀ g ∈ G0.frame.Iu w, k.ρ1 R g = 1) ∧ (∀ g, k.ρ1 R g ∈ W1 n x.A R k.g x.a) ∧ ∀ v, k.w1 R v * k.wi1 R v = 1 ∧ k.wi1 R v * k.w1 R v = 1 ∧ ∀ g, (∀ i j, j < i → (k.wi1 R v * k.ρ1 R (G0.φ v g) * k.w1 R v) i j = 0) ∧ ∀ i, (k.wi1 R v * k.ρ1 R (G0.φ v g) * k.w1 R v) i i = algebraMap x.A (DD R k.g) (x.ψ v i g) := by

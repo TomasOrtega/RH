@@ -19,7 +19,7 @@ def lagFrame (W : HSp D) (Y : Lag W) :
     Matrix.of fun a j => (b j : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)).2 a)
 
 /- English proof (translation)
-Unfold `IsLagFrame lagFrame`. Establish `h : (Set.range fun j => ((fun a => (Matrix.of fun a j => ((Module.finBasisOfFinrankEq D.host.E Y.1 Y.2.1) j : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)).1 a) a j), (fun a => (Matrix.of fun a j => ((Module.finBasisOfFinrankEq D.host.E Y.1 Y.2.1) j : (Fin W.rank → D.host.E) …`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h, Submodule.span_image, Module.Basis.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem lagFrame_isLagFrame (W : HSp D) (Y : Lag W) : IsLagFrame W Y (lagFrame W Y) := by
   unfold IsLagFrame lagFrame

@@ -22,7 +22,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.AnF
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Use `(IsLocalization.map_units (ReciprocityTheory.AnForm.R.locPt pt) (⟨g, fun h => hg (RingHom.mem_ker.mp h)⟩ : (ReciprocityTheory.AnForm.R.ptIdeal pt).primeCompl)).map (algebraMap (ReciprocityTheory.AnForm.R.locPt pt) (ReciprocityTheory.AnForm.R.locRing I pt))` as an intermediate fact. Rewrite `this` using `[← IsScalarTower.algebraMap_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_algebraMap_locRing {n : ℕ} (I : Ideal (MvPolynomial (Fin n) ℂ)) (pt : Fin n → ℂ)
     (g : MvPolynomial (Fin n) ℂ) (hg : eval pt g ≠ 0) :
@@ -33,28 +33,24 @@ theorem isUnit_algebraMap_locRing {n : ℕ} (I : Ideal (MvPolynomial (Fin n) ℂ
   rwa [← IsScalarTower.algebraMap_apply] at this
 
 /- English proof (translation)
-Introduce `hz` and use `by simpa using hz.2 1 Submodule.mem_top`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_mem_conePts_top (z : (Σ k, ι k) → ℂ) :
     z ∉ ReciprocityTheory.AnForm.R.conePts (⊤ : Ideal (MvPolynomial (Σ k, ι k) ℂ)) :=
   fun hz => by simpa using hz.2 1 Submodule.mem_top
 
 /- English proof (translation)
-Set `R0 : ReciprocityTheory.AnForm.R.AlgRes ι (pC P) ⊤ e` to `{ M := R.M n := R.n amb := R.amb ideal := R.ideal src := R.src isOpen_alt_bis := R.isOpen_alt_bis cover := R.cover coord := R.coord isEmbedding := R.isEmbedding image := R.image trans := R.trans regular := R.regular dim := R.dim lift := R.lift lift_one := R.lift_one lift_mem := R …`. Rewrite using `[ReciprocityTheory.AnForm.R.eval_bind_one]`. Introduce `h0`. Conclude with `not_mem_conePts_top _ (hz _ (R.lift_mem i x hx) h0)), by simp⟩⟩ }`. Take `⟨A, hA⟩` from `R0.exists_atlas`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA' : R.IsGoodAtlas A` using `hA`. Use `choose idx hidx using R.cover`. Set `R' : AnLogRes P J e` to `{ homog := hJ nondeg := hJP X := R.M A := A U := fun x => R.src (idx x) isOpen_U := fun x => R.isOpen_alt_bis (idx x) mem_U := hidx lift := fun x y q => eval (R.coord (idx x) y) (R.lift (idx x) q) holo := fun x p => hA'.1 (idx x) (R.lift (idx x) p) mem := fun x y hy => by`. Rewrite using `[mem_mcPts_iff_conePts_pC]`. Conclude with `R.lift_mem (idx x) y hy`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `compat := fun x x' y hy => R.compat (idx x) (idx x') y hy`. Use `surj := fun z hz _ => by`. Rewrite `hz` using `[mem_mcPts_iff_conePts_pC]`. Take `⟨i, x, hx, hxz⟩` from `hsurj z hz`. Conclude with `⟨x, sameOrbit_trans (R.compat (idx x) i x ⟨hidx x, hx⟩) hxz⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `inj := fun x x' _ hxx => hinj (idx x) (idx x') x (hidx x) x' (hidx x') hxx`. Use `immersion := fun x _ p hp j hj => R0.fderiv_affCoord_ker_eq_bot A hA (idx x) x (hidx x) (not_mem_conePts_top _) p hp j hj`. Use `snc := fun f a hfP hf hz => by`. Establish `hf' : ReciprocityTheory.AnForm.R.IsMultiHomog (map (Int.castRingHom ℂ) f) a` using `fun m hm k => hf m (support_map_subset _ _ hm) k`. Establish `hfP' : map (Int.castRingHom ℂ) f ∉ pC P` using `fun h => hfP (hPC f h)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz' : ∀ z ∈ ReciprocityTheory.AnForm.R.conePts (pC P), eval z (map (Int.castRingHom ℂ) f) = 0 → z ∈ ReciprocityTheory.AnForm.R.conePts (pC J)`. Introduce `z hz1 hz2`. Rewrite `hz1`, the goal using `[← mem_mcPts_iff_conePts_pC]`. Conclude with `hz z hz1 hz2`. Take `⟨m, hm⟩` from `R.isSNC_pullback A hA' idx hidx (fun _ _ => 0) _ a hf' hfP' hz'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨R.rc, m, R.comp, hm⟩`. Use `null := fun j => by`. Use `MeasureTheory.measure_mono_null ?_ (R.volume_preimage_eq_zero A hA' j)` and prove the remaining obligations. Introduce and unpack `y ⟨hy1, hy2⟩`. Use `⟨hy1, idx _, hidx _, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq] at hy2 ⊢`. Rewrite using `[← mem_mcPts_iff_conePts_pC]`. Conclude with `hy2 }`. Use `⟨R', ?_⟩` and prove the remaining obligations. Conclude with `{ isOpen := fun x => R.isOpen_alt_bis (idx x) mem_U := hidx holo := fun x p => hA'.1 (idx x) (R.lift (idx x) p) mem := R'.mem compat := R'.compat surj := fun z hz => by`.
-
-Rewrite `hz` using `[mem_mcPts_iff_conePts_pC]`. Take `⟨i, x, hx, hxz⟩` from `hsurj z hz`. Conclude with `⟨x, sameOrbit_trans (R.compat (idx x) i x ⟨hidx x, hx⟩) hxz⟩`. Use `inj := fun x x' hxx => hinj (idx x) (idx x') x (hidx x) x' (hidx x') hxx`. Use `immersion := fun x p hp j hj => R0.fderiv_affCoord_ker_eq_bot A hA (idx x) x (hidx x) (not_mem_conePts_top _) p hp j hj }`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isEmbedded_of_algRes {P J : Ideal (MRing ι)} {e : ℕ} (hJ : IsMultiHomogIdeal J)
     (hJP : ¬ J ≤ P) (hPC : ∀ f : MRing ι, map (Int.castRingHom ℂ) f ∈ pC P → f ∈ P)
@@ -183,25 +179,15 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y e J hP hJ hJP hsnc`. Establish `hPh : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal (pC (mCoordIdeal y))` using `isMultiHomogIdeal_pC hP.2.1.2.1`. Establish `hDh : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal (pC J)` using `isMultiHomogIdeal_pC hJ`. Take `⟨hcpt, hsrc⟩` from `GlobalTheory.T.snc_resolution_compact_embedded K ι _ hPh`. Take `⟨himage, htrans⟩` from `GlobalTheory.T.snc_resolution_transition_polynomial K ι _ hPh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hcover, hliftmem, hcompat, hsurj, hinj, hzero⟩` from `GlobalTheory.T.snc_resolution_cover_and_cone K ι _ _ hPh hDh`. Establish `hinv` using `GlobalTheory.T.snc_resolution_local_chart_polynomial K ι _ hPh`. Establish `hreg` using `GlobalTheory.T.snc_resolution_regular_local_ring K ι Ω y e J hP hsnc`. Establish `hsc` using `GlobalTheory.T.snc_resolution_boundary_normal_crossing K ι Ω y e J hP hJ hJP hsnc`. Set `E` to `Fintype.equivFin ((k : K) → ι k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `R : ReciprocityTheory.AnForm.R.AlgRes ι (pC (mCoordIdeal y)) (pC J) e` to `{ M := Pts (pC (mCoordIdeal y)) compact := hcpt n := Fintype.card ((k : K) → ι k) amb := fun _ => Fintype.card (Σ k, ι k) ideal := fun i => ideal _ (E.symm i) src := fun i => src _ (E.symm i) isOpen_alt_bis := fun i => (hsrc _).1 cover := fun x => by`. Take `⟨p, hp⟩` from `hcover x`. Take `⟨i, rfl⟩` from `E.symm.surjective p`. Conclude with `⟨i, hp⟩`. Use `coord := fun i => coord _ (E.symm i)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `isEmbedding := fun i => (hsrc _).2`. Use `image := fun i => himage _`. Use `trans := fun i j => htrans _ _`. Use `regular := fun i x hx => (hreg _ x hx).1`. Use `dim := fun i x hx => (hreg _ x hx).2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `lift := fun i => lift (E.symm i)`. Use `lift_one := fun i => ⟨E.symm i, fun k => by simp [lift]⟩`. Use `lift_mem := fun i => hliftmem _`. Use `compat := fun i j => hcompat _ _`. Use `surj := fun z hz _ => by`.
-
-Take `⟨p, x, hx, h⟩` from `hsurj z hz`. Take `⟨i, rfl⟩` from `E.symm.surjective p`. Conclude with `⟨i, x, hx, h⟩`. Use `inj := fun i j x hx x' hx' _ h => hinj _ _ x hx x' hx' h`. Use `inv := fun i x hx _ p' hp' => hinv _ x hx p' hp'`.
-
-Use `bd := fun i => bd _ (pC J) (E.symm i)`. Use `le_bd := fun i => le_trans (Ideal.map_mono (sup_le_sup_right le_sup_left _)) Ideal.le_radical`. Use `zero_bd := fun i => hzero _`. Use `rc := rc _ (pC J)`. Use `comp := comp _ (pC J)`.
-
-Use `sncAt := fun i x hx => (hsc _ x hx).choose`. Use `comp_eq := fun i x hx => (hsc _ x hx).choose_spec.1`. Use `mult := fun f a hf hfP hz => ⟨fun k => ordAlong (compIdeal _ (pC J) k) _ f, fun i x hx => (hsc _ x hx).choose_spec.2 f a hf hfP hz⟩ }`. Use `exists_isEmbedded_of_algRes hJ hJP (pcContract K ι _ e hP) R ?_ ?_ ?_` and prove the remaining obligations. Introduce `z hz`.
-
-Take `⟨p, x, hx, h⟩` from `hsurj z hz`. Take `⟨i, rfl⟩` from `E.symm.surjective p`. Conclude with `⟨i, x, hx, h⟩`. Introduce `i j x hx x' hx' h`. Conclude with `hinj _ _ x hx x' hx' h`.
-
-Introduce `i x hx p' hp'`. Conclude with `hinv _ x hx p' hp'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isEmbedded_of_isSncModel : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [CharZero Ω] (y : (Σ k, ι k) → Ω) (e : ℕ) (J : Ideal (MRing ι)), IsArithVar (mCoordIdeal y) (e + 1) → IsMultiHomogIdeal J → ¬ J ≤ mCoordIdeal y → IsSncModel y e J → ∃ R : AnLogRes (mCoordIdeal y) J e, IsEmbedded R.A (mCoordIdeal y) R.U R.lift := by
   intro K _ ι _ Ω _ _ y e J hP hJ hJP hsnc

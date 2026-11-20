@@ -13,7 +13,7 @@ section
 variable {l : ℕ} [Fact l.Prime] (F : W.GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O]
 
 /- English proof (translation)
-Simplify using `only [W.GFrame.star, W.GFrame.starOp]`. Rewrite using `[MonoidAlgebra.lift_single]`. Simplify using `only [MonoidHom.coe_mk, OneHom.coe_mk, MulOpposite.unop_smul, MulOpposite.unop_op, MonoidAlgebra.smul_single', smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem rf_star_single (R : Type) [CommRing R] [Algebra O R] (n : ℕ) (g : F.G₀) (a : R) :
     F.star O R n (MonoidAlgebra.single g a) =
@@ -39,7 +39,7 @@ private theorem rf_dual_apply (K : Type) [CommRing K] [Algebra O K] (n : ℕ) (r
 end
 
 /- English proof (translation)
-Simplify using `only [W.GDet.repAlg]`. Rewrite using `[MonoidAlgebra.lift_single]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem rf_rep_single {G R : Type} [Group G] [CommRing R] {a : ℕ} (ρ : G →* Matrix (Fin a) (Fin a) R)
     (g : G) (b : R) : W.GDet.repAlg ρ R (MonoidAlgebra.single g b) = b • ρ g := by
@@ -50,25 +50,25 @@ private theorem rf_rep_single {G R : Type} [Group G] [CommRing R] {a : ℕ} (ρ 
 end UpperTheory.V.Ws.Eb
 
 /- English proof (translation)
-Introduce `l _ F c n r B A _ _ _ f ρ hF hD`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨1, fun g => Subsingleton.elim _ _⟩`. Establish `hF' : Submodule.span A (Set.range (W.mat ρ)) = ⊤` using `hF`. Establish `key : ∀ g : F.G₀, (W.GDet.ofRep (W.mat ρ)).lam 1 (F.star c.O A n (MonoidAlgebra.single g 1)) = (W.GDet.ofRep (W.mat ρ)).lam 1 (MonoidAlgebra.single g 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g`. Establish `h1` using `congrArg (f : B.B →+* A) (B.u.P 1 g)`. Establish `hm` using `(AlgebraTools.Det.mapApi B.u.D (f : B.B →+* A)).2.1 1`. Rewrite `h1` using `[← hm, ← hm]`. Establish `hs` using `(AlgebraTools.Det.starApi F c.O B.B n).2.2.2.2.2 A f (MonoidAlgebra.single g 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hs, hD]`. Simplify using `using h1`. Establish `trs : ∀ y, (W.GDet.ofRep (W.mat ρ)).lam 1 y = (W.GDet.repAlg (W.mat ρ) A y).trace`. Introduce `y`. Establish `h` using `(AlgebraTools.Det.repApi (W.mat ρ)).2.2.1 hn y`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h` using `only [W.GDet.tr]`. Establish `hsingle : ∀ g, (W.mat ρ g).trace = (rf_dual F c.O A n ρ g).trace`. Introduce `g`. Establish `h` using `key g`. Rewrite `h` using `[trs, trs, rf_star_single, rf_rep_single, rf_rep_single]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[rf_dual_apply, trace_smul, trace_transpose]`. Simplify `h.symm` using `[trace_smul]`. Establish `htr : ∀ x, (W.GDet.repAlg (W.mat ρ) A x).trace = (W.GDet.repAlg (rf_dual F c.O A n ρ) A x).trace`. Introduce `x`. Proceed by induction on `x using MonoidAlgebra.induction_on with`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `of g`. Simplify using `only [MonoidAlgebra.of_apply, rf_rep_single, one_smul]`. Conclude with `hsingle g`. Consider the case `add x y hx hy => simp only [map_add, trace_add, hx, hy]`. Consider the case `smul a x hx => simp only [map_smul, trace_smul, hx]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective (W.GDet.repAlg (W.mat ρ) A)`. Introduce `M`. Establish `hM : M ∈ Submodule.span A (Set.range (W.mat ρ))`. Rewrite using `[hF']`. Discharge the goal by the elementary cases of `trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Establish `hle : Submodule.span A (Set.range (W.mat ρ)) ≤ LinearMap.range (W.GDet.repAlg (W.mat ρ) A).toLinearMap`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨MonoidAlgebra.single g 1, by simp [rf_rep_single]⟩`. Take `⟨x, hx⟩` from `hle hM`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, by simpa using hx⟩`. Take `⟨U, hU⟩` from `GlobalTheory.TraceConjugacy.exists_conj_of_surjective (W.GDet.repAlg (W.mat ρ) A) (W.GDet.repAlg (rf_dual F c.O A n ρ) A) hsurj htr`. Use `⟨⟨(↑U : Matrix (Fin n) (Fin n) A)ᵀ, (↑U⁻¹ : Matrix (Fin n) (Fin n) A)ᵀ, ?_, ?_⟩, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← transpose_mul, Units.inv_mul, transpose_one]`. Rewrite using `[← transpose_mul, Units.mul_inv, transpose_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (W.mat ρ g)ᵀ * (↑U : Matrix (Fin n) (Fin n) A)ᵀ * W.mat ρ (F.conj g) = _`. Establish `h` using `congrArg transpose (hU (MonoidAlgebra.single g 1))`. Rewrite `h` using `[rf_rep_single, rf_rep_single, one_smul, one_smul, rf_dual_apply, transpose_mul, transpose_mul, transpose_smul, transpose_transpose]`. Rewrite using `[← h, Matrix.mul_assoc, Matrix.smul_mul, Matrix.mul_smul, ← map_mul, inv_mul_cancel, map_one, Matrix.mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Eb.relForm :
     ∀ {l : ℕ} [Fact l.Prime] {F : W.GFrame l} {c : Coef l} {n : ℕ} {r : W.Resid F c.O n} (B : W.UniversalOrdinaryDeterminantRing r) {A : Type} [CommRing A] [IsLocalRing A] [Algebra c.O A] (f : B.B →ₐ[c.O] A) (ρ : F.G₀ →* GL (Fin n) A), Full ρ → B.u.D.map (f : B.B →+* A) = W.GDet.ofRep (W.mat ρ) →

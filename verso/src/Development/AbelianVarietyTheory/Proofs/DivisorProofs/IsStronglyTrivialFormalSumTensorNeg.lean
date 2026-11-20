@@ -9,11 +9,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.TensBalNeg
 
 /- English proof (translation)
-Introduce `R _ _ D D' r W T c ⟨Ξ, hΞ, h1, h2⟩`. Establish `hF : FormEq (fun v : c.support => (GlobalTheory.TensBal.vecHom T v.1).left) (fun v => -(c v.1)) (fun v : (-c).support => (GlobalTheory.TensBal.vecHom T v.1).left) (fun v => (-c) v.1)`. Introduce `U _ h`. Rewrite using `[Finset.prod_coe_sort c.support (fun v => h (GlobalTheory.TensBal.vecHom T v).left ^ (-(c v))), Finset.prod_coe_sort (-c).support (fun v => h (GlobalTheory.TensBal.vecHom T v).left ^ ((-c) v)), Finsupp.support_neg]`. Simplify using `only [Finsupp.neg_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨Ξ', hΞ', hv⟩` from `exists_gen D.P.isLB hF (LB.invGen D.P.L _ _ Ξ) (LB.isGen_invGen D.P.L _ _ Ξ hΞ)`. Use `⟨Ξ', hΞ', fun z J hJ => ?_, fun z J hJ y y' => ?_⟩` and prove the remaining obligations. Rewrite using `[hv _ _ z J hJ, val_inv, h1 z J hJ, inv_one]`. Rewrite using `[hv _ _ z J hJ, val_inv, h2 z J hJ y y', Finsupp.support_neg, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finsupp.neg_apply, neg_neg, zpow_neg, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_neg : ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ)
     (T : Tens D D' W) (c : GlobalTheory.TensBal.Vec r →₀ ℤ), GlobalTheory.TensBal.Triv T c → GlobalTheory.TensBal.Triv T (-c) := by

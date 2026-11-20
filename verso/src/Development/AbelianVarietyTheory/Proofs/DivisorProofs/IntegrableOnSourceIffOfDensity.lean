@@ -22,17 +22,15 @@ namespace FinChart
 variable {D : ℕ}
 
 /- English proof (translation)
-Use `set x := toV D z with hx`. Use `set H := fderiv ℝ (fderiv ℝ f) x with hH`. Establish `hD : HasFDerivAt (fderiv ℝ f) H x` using `((hf.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero).hasFDerivAt`. Establish `h₁ : fderiv ℝ (f ∘ toV D) = fun w => (fderiv ℝ f (toV D w)).comp (toV D).toContinuousLinearMap`. Use function extensionality and compare the values at `fun _ => (toV D).comp_right_fderiv`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂ (u w : Fin D → ℂ) : fderiv ℝ (fderiv ℝ (f ∘ toV D)) z u w = H (toV D u) (toV D w)`. Use `((hD.comp z (toV D).hasFDerivAt).clm_comp (hasFDerivAt_const (toV D).toContinuousLinearMap z)).fderiv` as an intermediate fact. Rewrite using `[h₁]`. Use `erw [this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hdiff` using `ReciprocityTheory.L2DbarEstimates.eventually_differentiableAt_of_contDiffAt hf`. Use `set G : Fin D → V D → ℂ := fun l y => (2 : ℂ)⁻¹ * ((fderiv ℝ f y (bas D l) : ℂ) + Complex.I * (fderiv ℝ f y (Complex.I • bas D l) : ℂ))`. Establish `hwdb (l) : wdb D l (fun y => (f y : ℂ)) =ᶠ[𝓝 x] G l` using `by filter_upwards [hdiff] with y hy`. Simplify using `only [wdb, G, ReciprocityTheory.L2DbarEstimates.fderiv_ofReal_apply hy]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hGd (l e) : fderiv ℝ (G l) x e = ((H e (bas D l) : ℂ) + Complex.I * (H e (Complex.I • bas D l) : ℂ)) / 2`. Establish `ha (b : V D) : HasFDerivAt (fun y => ((fderiv ℝ f y b : ℝ) : ℂ)) (Complex.ofRealCLM.comp ((fderiv ℝ f x).comp (0 : V D →L[ℝ] V D) + H.flip b)) x` using `Complex.ofRealCLM.hasFDerivAt.comp x (hD.clm_apply (hasFDerivAt_const b x))`. Establish `hG : HasFDerivAt (G l) _ x` using `((ha (bas D l)).add ((ha (Complex.I • bas D l)).const_mul Complex.I)).const_mul (2 : ℂ)⁻¹`. Rewrite using `[hG.fderiv]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use extensionality with `j l`. Establish `b₁ (a : Fin D) : toV D (Pi.single a 1) = bas D a` using `rfl`. Establish `b₂ (a : Fin D) : toV D (Complex.I • Pi.single a 1) = Complex.I • bas D a` using `rfl`. Simplify using `only [cHess, Matrix.of_apply, wd, (hwdb l).fderiv_eq, hGd, hessC, h₂, b₁, b₂]`.
-
-Use `push_cast`. Take the linear combination `(-(H (Complex.I • bas D j) (Complex.I • bas D l) : ℂ) / 4) * Complex.I_mul_I`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cHess_eq_hessC {f : V D → ℝ} {z : Fin D → ℂ} (hf : ContDiffAt ℝ 2 f (toV D z)) :
     cHess D (fun v => (f v : ℂ)) (toV D z) = hessC (f ∘ toV D) z := by
@@ -74,7 +72,7 @@ theorem cHess_eq_hessC {f : V D → ℝ} {z : Fin D → ℂ} (hf : ContDiffAt �
   linear_combination (-(H (Complex.I • bas D j) (Complex.I • bas D l) : ℂ) / 4) * Complex.I_mul_I
 
 /- English proof (translation)
-The claim follows from `MeasurePreserving.symm (MeasurableEquiv.toLp 2 (Fin D → ℂ)).symm (volume_preserving_ofLp_complex (Fin D))`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_toV : MeasurePreserving (toV D) :=
   MeasurePreserving.symm (MeasurableEquiv.toLp 2 (Fin D → ℂ)).symm
@@ -87,9 +85,9 @@ section Abstract
 variable {e : ℕ} {X : Type} [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X]
 
 /- English proof (translation)
-Establish `hT` using `c.open_target.measurableSet`. Establish `key : μ.restrict c.source = ((volume.restrict c.target).withDensity fun y => ENNReal.ofReal (w y)).map c.symm`. Use extensionality with `S hS`. Rewrite using `[Measure.restrict_apply hS, hμ _ (hS.inter c.open_source.measurableSet) inter_subset_right, Measure.map_apply_of_aemeasurable ((c.continuousOn_symm.aemeasurable hT).mono_ac (withDensity_absolutelyContinuous _ _)) hS, withDensity_apply', Measure.restrict_restrict' hT]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `y`. Conclude with `⟨fun h => ⟨h.2.1, h.1⟩, fun h => ⟨h.2, h.1, c.map_target h.2⟩⟩`. Rewrite using `[IntegrableOn, key]`. Conclude with `map_withDensity_integrable_integral c.open_target c.continuousOn_symm hw hw0 hg`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_source_iff_of_density (c : OpenPartialHomeomorph X (Fin e → ℂ))
     {μ : Measure X} {w : (Fin e → ℂ) → ℝ} (hw : ContinuousOn w c.target)
@@ -113,11 +111,11 @@ theorem integrableOn_source_iff_of_density (c : OpenPartialHomeomorph X (Fin e �
   exact map_withDensity_integrable_integral c.open_target c.continuousOn_symm hw hw0 hg
 
 /- English proof (translation)
-Establish `hc (j) : Continuous (P.χ j)` using `continuous_iff_continuousAt.2 fun x => by`. Take `⟨l, hl⟩` from `A.cover x`. Establish `h₁` using `((P.smooth j l).continuousOn.mono fun y hy => ⟨hy, mem_univ _⟩).continuousAt ((A.chart l).open_target.mem_nhds ((A.chart l).map_source hl))`. Use `(h₁.comp ((A.chart l).continuousAt hl)).congr ?_` and prove the remaining obligations. Conclude with `eventually_of_mem ((A.chart l).open_source.mem_nhds hl) fun z hz => congrArg (P.χ j) ((A.chart l).left_inv hz)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key (j)` using `integrableOn_source_iff_of_density (A.chart j) (hw j) (hw0 j) (hμ j) ((hc j).measurable.mul hg)`. Establish `h0 (j) (x) (hx : x ∉ (A.chart j).source) : P.χ j x * g x = 0`. Rewrite using `[image_eq_zero_of_notMem_tsupport fun h => hx (P.tsupport_subset j h), zero_mul]`. Establish `h₁ (j) : Integrable (fun x => P.χ j x * g x) μ` using `((key j).1.2 (hi j)).integrable_of_forall_notMem_eq_zero (h0 j)`. Establish `e : g = fun x => ∑ j, P.χ j x * g x` using `funext fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_mul, P.sum_eq_one, one_mul]`. Use `⟨e ▸ integrable_finsetSum _ fun j _ => h₁ j, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [e]`. Rewrite using `[integral_finsetSum _ fun j _ => h₁ j]`. Conclude with `Finset.sum_congr rfl fun j _ => (setIntegral_eq_integral_of_forall_compl_eq_zero (h0 j)).symm.trans (key j).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_of_pieces (A : FinHolAtlas e X) (P : ChartPartition A) {μ : Measure X}
     {w : Fin A.n → (Fin e → ℂ) → ℝ} (hw : ∀ j, ContinuousOn (w j) (A.chart j).target)
@@ -157,9 +155,9 @@ variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+*
 namespace Weight
 
 /- English proof (translation)
-Establish `hr : c.e (c.finChart.symm z) = toV D z` using `c.e.right_inv hz`. Establish `hd` using `h.contDiffAt c (c.finChart.map_target hz) (mem_pick φ.isLB (c.finChart.symm z))`. Rewrite `hd` using `[hr]`. Establish `e : (fun y => φ.locPot.φ (c.finChart.symm z) (c.finChart.symm y)) = fun y => 2⁻¹ * ((fun v => φ.φ (pick φ.isLB (c.finChart.symm z)) (c.e.symm v)) ∘ toV D) y`. Use function extensionality and compare the values at `fun _ => div_eq_inv_mul _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[maDens, ReciprocityTheory.AnForm.A.mdisc_const, e, hessC_const_mul', AlgChart.chernDens, AlgChart.hess, hr, cHess_eq_hessC hd, Matrix.det_smul, ← Complex.ofReal_pow, Complex.re_ofReal_mul, Fintype.card_fin, ← mul_assoc, mul_assoc (D.factorial : ℝ), ← mul_pow, div_eq_mul_inv _ (_ …`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsCInf.maDens_eq (h : φ.IsCInf) (c : AlgChart p σ D) {z : Fin D → ℂ}
     (hz : z ∈ c.finChart.target) :
@@ -181,7 +179,7 @@ theorem IsCInf.maDens_eq (h : φ.IsCInf) (c : AlgChart p σ D) {z : Fin D → �
 variable {A : FinHolAtlas D (CxPts p σ)}
 
 /- English proof (translation)
-Unfold `locDens`. Rewrite `hz`, the goal using `[hA.chart_eq j]`. Conclude with `h.maDens_eq _ hz`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCInf.locDens_eq (h : φ.IsCInf) (hA : IsAlgAtlas A) (j : Fin A.n) {z : Fin D → ℂ}
     (hz : z ∈ (A.chart j).target) : locDens A (fun _ => φ.locPot) j z =
@@ -191,11 +189,11 @@ theorem IsCInf.locDens_eq (h : φ.IsCInf) (hA : IsAlgAtlas A) (j : Fin A.n) {z :
   exact h.maDens_eq _ hz
 
 /- English proof (translation)
-Establish `hl (y)` using `h.locDens_eq hA j (z := y)`. Generalize the expression as in `locDens A (fun _ => φ.locPot) j = d at hl ⊢`. Rewrite `hs`, `hl`, the goal using `[hA.chart_eq j]`. Use `set c := hA.anRead.chart j`. Establish `hm` using `measurableSet_image c.e hS hs`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chernPart_apply h ε c hS hs, ← measurePreserving_toV.setLIntegral_comp_preimage_emb (toV D).toHomeomorph.measurableEmbedding]`. Establish `e : c.e '' S = c.e.target ∩ c.e.symm ⁻¹' S`. Rewrite using `[← c.e.image_source_inter_eq', inter_eq_right.2 (show S ⊆ c.e.source from hs)]`. Rewrite `hm`, the goal using `[e]`. Use `setLIntegral_congr_fun (hm.preimage (toV D).continuous.measurable) fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [ENNReal.ofReal_max, ENNReal.ofReal_zero, zero_le, max_eq_left, hl y hy.1]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem IsCInf.chernPart_eq [SecondCountableTopology (CxPts p σ)] (h : φ.IsCInf)
     (hA : IsAlgAtlas A) (ε : ℤˣ) (j : Fin A.n) (S : Set (CxPts p σ)) (hS : MeasurableSet S)
@@ -219,19 +217,17 @@ theorem IsCInf.chernPart_eq [SecondCountableTopology (CxPts p σ)] (h : φ.IsCIn
 variable [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)] [SecondCountableTopology (CxPts p σ)]
 
 /- English proof (translation)
-Establish `hne : Nonempty (ChartPartition A)` using `existsPartition A`. Use `set P := hne.some`. Use `set d := locDens A fun _ => φ.locPot with hd`. Establish `hdc (j) : ContinuousOn (d j) (A.chart j).target` using `locDensCont A _ (fun _ => ((isCInf_iff_isSmooth hA.anRead).1 h).isPotential hA) j`. Set `w (ε : ℤˣ) (j) (y) : ℝ` to `max ((ε : ℤ) * d j y) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw (ε j) : ContinuousOn (w ε j) (A.chart j).target` using `(continuous_id.max continuous_const).comp_continuousOn (continuousOn_const.mul (hdc j))`. Establish `hw0 (ε j) : ∀ y ∈ (A.chart j).target, 0 ≤ w ε j y` using `fun _ _ => le_max_right _ _`. Establish `hsub (j y) : w 1 j y - w (-1) j y = d j y`. Simplify `max_zero_sub_max_neg_zero_eq_self (d j y)` using `[w]`. Establish `habs (ε j y) : |w ε j y| ≤ |d j y|`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[abs_of_nonneg (le_max_right _ _)]`. Use `max_le ((le_abs_self _).trans_eq ?_) (abs_nonneg _)` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or ε with rfl | rfl <;> simp`. Establish `back (hm : MIntegrable A (fun _ => φ.locPot) g) (ε j) : IntegrableOn (fun y => P.χ j ((A.chart j).symm y) * g ((A.chart j).symm y) * w ε j y) (A.chart j).target`. Take `⟨hKc, hKs⟩` from `image_closed_compact (A.chart j) (isClosed_tsupport (P.χ j)) (P.tsupport_subset j)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `integrableOn_target_of_closed (A.chart j) (Z := tsupport (P.χ j)) (fun y _ hy => by simp [image_eq_zero_of_notMem_tsupport hy]) ?_` and prove the remaining obligations. Establish `hcc` using `(chi_comp_continuousOn P j).mono hKs`. Use `Integrable.mono ((hm j _ hKs hKc).continuousOn_mul hcc hKc) ?_ (.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `(((hcc.aemeasurable hKc.measurableSet).mul (hg.comp_aemeasurable (((A.chart j).continuousOn_symm.mono hKs).aemeasurable hKc.measurableSet))).mul (((hw ε j).mono hKs).aemeasurable hKc.measurableSet)).aestronglyMeasurable`. Simplify using `only [Real.norm_eq_abs, abs_mul, ← mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left (habs ε j y) (by positivity)`. Establish `pieces (hm : MIntegrable A (fun _ => φ.locPot) g) (ε)` using `integrable_of_pieces A P (hw ε) (hw0 ε) (h.chernPart_eq hA ε) hg (back hm ε)`. Establish `fwd (hi : φ.ChernIntegrableOn D univ g) : MIntegrable A (fun _ => φ.locPot) g` using `fun j K hK _ => by`. Establish `key (ε)` using `(integrableOn_source_iff_of_density (A.chart j) (hw ε j) (hw0 ε j) (h.chernPart_eq hA ε j) hg).1.1`. Use `IntegrableOn.mono_set ?_ hK` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(Integrable.sub (key 1 (hi.1.mono_set (subset_univ _))) (key (-1) (hi.2.mono_set (subset_univ _)))).congr (.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, ← mul_sub, hsub, hd]`. Use `⟨⟨fwd, fun hm => ⟨(pieces hm 1).1.integrableOn, (pieces hm (-1)).1.integrableOn⟩⟩, fun hi => ?_⟩` and prove the remaining obligations. Establish `hm` using `fwd hi`. Rewrite using `[chernInt, Measure.restrict_univ, Measure.restrict_univ, (pieces hm 1).2, (pieces hm (-1)).2, mInt_eq_integralWith A _ hne, integralWith, ← Finset.sum_sub_distrib]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_sub (back hm 1 j) (back hm (-1) j)]`. Simplify using `only [← mul_sub, hsub, hd, P]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsCInf.chernInt_eq_mInt_of_isAlgAtlas (h : φ.IsCInf) (hA : IsAlgAtlas A)
     {g : CxPts p σ → ℝ} (hg : Measurable g) :
@@ -286,7 +282,7 @@ theorem IsCInf.chernInt_eq_mInt_of_isAlgAtlas (h : φ.IsCInf) (hA : IsAlgAtlas A
   simp only [← mul_sub, hsub, hd, P]
 
 /- English proof (translation)
-The claim follows from `h.chernInt_eq_mInt_of_isAlgAtlas R.isAlgAtlas_finAtlas hg`.
+A detailed English derivation is pending.
 -/
 theorem chernInt_eq_mInt (R : AnRead p σ D) (h : φ.IsCInf) {g : CxPts p σ → ℝ}
     (hg : Measurable g) :

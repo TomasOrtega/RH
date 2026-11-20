@@ -10,17 +10,15 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hE M J hJ ha hc hJ' a ha1 ha2 X0 hT hdet`. Use `⟨h1 F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet, fun ψ hψ => ?_⟩` and prove the remaining obligations. Use `⟨ha.1, fun μ hμ => ?_⟩` and prove the remaining obligations. Use `⟨h2 F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ, fun νX hν => ?_⟩` and prove the remaining obligations. Use `⟨h3 F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μ hμ νX hν, fun μ' hμ' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hμ'H, hμ'C⟩` from `hμ'`. Use `⟨(ha.2 μ hμ).1, fun 𝓕 h𝓕 => ?_⟩` and prove the remaining obligations. Use `⟨h4 F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet μ' hμ'H, fun 𝓕' h𝓕' => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ0, hadm, hI⟩` from `h7 F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μ hμ νX hν μ' hμ'H hμ'C`. Establish `e1` using `h5 F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μ hμ 𝓕 h𝓕 νX hν _ hadm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `meanC at e1`. Establish `hθ : ∫ h in 𝓕, thetaS F E σ M J (fun X => (φ X : ℂ)) {X | gramE σ J X = gramE σ J X0} h ∂μ ≠ 0`. Introduce `h0`. Rewrite `e1` using `[h0, smul_zero]`. Conclude with `hI e1.symm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hfin, e2⟩` from `h6 F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μ hμ 𝓕 h𝓕 νX hν μ' hμ'H hμ'C 𝓕' h𝓕' φ hφ0 hadm hθ`. Rewrite `e1` using `[e2, smul_smul]`. Establish `hc1 : (μ 𝓕).toReal⁻¹ * (μ' 𝓕').toReal = 1`. Establish `e3 : ((((μ 𝓕).toReal⁻¹ * (μ' 𝓕').toReal : ℝ)) : ℂ) * ∫ X, (φ X : ℂ) ∂νX = 1 * ∫ X, (φ X : ℂ) ∂νX`. Rewrite using `[one_mul, ← Complex.real_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e1`. Conclude with `mul_right_cancel₀ hI e3` after adjusting the coercions. Establish `h0 : (μ 𝓕).toReal ≠ 0`. Introduce `h0`. Rewrite `hc1` using `[h0, inv_zero, zero_mul]`.
-
-Conclude with `zero_ne_one hc1`. Establish `e4 : (μ 𝓕).toReal = (μ' 𝓕').toReal` using `(inv_mul_eq_one₀ h0).1 hc1`. Conclude with `(ENNReal.toReal_eq_toReal_iff' hfin ((ha.2 μ hμ).2 𝓕 h𝓕).ne).1 e4.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem volStabFromSW_of (h1 : ExChar) (h2 : ExOmT) (h3 : ExStab) (h4 : ExFDStab)
     (h5 : SWeqOm) (h6 : Unfold) (h7 : PosTest) : PI.VolFromSW.VolStabFromSW := by

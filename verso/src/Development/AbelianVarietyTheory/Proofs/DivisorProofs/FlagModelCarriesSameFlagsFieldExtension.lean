@@ -18,17 +18,17 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections (tv)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y X hFE C K K' _ _ ι z p hR`. Take `⟨φ, k, hz, g, hs, hg, y, ψ, φ₁, f, t, t', hp, hf0, hx, hφ, hcomb⟩` from `hR`. Establish `hz' : ⊤ ≤ (spMap ι ≫ z) ⁻¹ᵁ X.F.U k` using `fun w _ => by`. Conclude with `hz (show spMap ι w ∈ (⊤ : (Sp K).Opens) from trivial)`. Establish `hs' : (spMap ι ≫ z) ≫ X.π ≫ Y.s = spMap (ι.comp φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hs, ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap]`. Take `⟨g', hg'⟩` from `hFE K' (ι.comp φ) (spMap ι ≫ z) k hz' hs'`. Establish `e : spMap ι ≫ (z ≫ X.π) = (spMap ι ≫ z) ≫ X.π` using `(Category.assoc _ _ _).symm`. Establish `hv : ∀ τ i, g'.v τ i = spMap (dualMap ι) ≫ g.v τ i` using `fun τ i => by`. Establish `h1 : g'.v τ i = (tv (GlobalTheory.FlagMod.tanPull ι e (X.F.vecAt k z hz rfl τ i))).left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg' τ i, X.F.tanPull_vecAt k ι z hz hz' rfl rfl e]`. Rewrite using `[h1, hg τ i]`. Both sides reduce to the same expression. Use `⟨ι.comp φ, k, hz', g', hs', hg', y, ι.comp ψ, φ₁, f, t, fun τ i => Units.map ι.toMonoidHom (t' τ i), ?_, hf0, ?_, ?_, fun τ i => ?_⟩` and prove the remaining obligations. Rewrite using `[hp, ← Category.assoc, ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hx, ← Category.assoc, ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap]`. Rewrite using `[hφ]`. Both sides reduce to the same expression. Take `⟨cf, h1, h2, h3⟩` from `hcomb τ i`. Use `⟨fun j => ι (cf j), by simp [h1], fun j hj => by simp [h2 j hj], ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h4` using `GlobalTheory.LatDRFree.comb_map Y.t ι h3`. Establish `hd : ∀ j, spMap (dualMap ι) ≫ spMap (dualMap ψ) ≫ f.v τ j = spMap (dualMap (ι.comp ψ)) ≫ f.v τ j` using `fun j => by`. Rewrite using `[← Category.assoc, ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap]`. Use `congr 2`. Apply the tactic sequence `exact RingHom.ext fun a => by ext <;> simp [dualMap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [hd] at h4`. Rewrite using `[hv, ← e]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_baseChange : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)}, ∀ (X : GlobalTheory.FlagMod.FlagCover Y), GlobalTheory.VarFlag.FramesExist X → ∀ (C : GlobalTheory.ShFam.FlagCpt Y (RingEquiv.refl c.F)) (K K' : Type) [Field K] [Field K'] (ι : K →+* K') (z : Sp K ⟶ X.YY) (p : Sp K ⟶ C.Y.X), GlobalTheory.VarFlag.Rel X.F C z p → GlobalTheory.VarFlag.Rel X.F C (spMap ι ≫ z) (spMap ι ≫ p) := by
   intro E _ _ _ H Dw l Xo c Y X hFE C K K' _ _ ι z p hR

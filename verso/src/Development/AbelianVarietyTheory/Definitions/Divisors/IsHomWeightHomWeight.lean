@@ -29,14 +29,14 @@ variable {X U} {z : Sp (CAt σ) ⟶ X.YY} {j j' : X.F.J} {k k' : U.Comp} {w : (U
   {t t' : Ix Dw → (CAt σ)ˣ}
 
 /- English proof (translation)
-The claim follows from `let ⟨_, _, hQ, ht⟩ := h FlagCover.eq_ptY (hQ.lies.frBor ht)`.
+A detailed English derivation is pending.
 -/
 theorem FrameAt.eq_ptY (h : FrameAt X U z j k w t) : z = X.ptY (U.un k w) :=
   let ⟨_, _, hQ, ht⟩ := h
   FlagCover.eq_ptY (hQ.lies.frBor ht)
 
 /- English proof (translation)
-Take `rfl` from `h.trans (X.pt_inc _).symm`. Take `⟨Q, t, hQ, ht⟩` from `X.exists_chartFr_frBor _ j hj`. Conclude with `⟨t, hj, Q, hQ, ht⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_frameAt_of_eq (h : z = X.ptY (U.un k w)) (hj : ⊤ ≤ z ⁻¹ᵁ X.F.U j) : ∃ t, FrameAt X U z j k w t := by
   obtain rfl := h.trans (X.pt_inc _).symm
@@ -44,11 +44,11 @@ theorem exists_frameAt_of_eq (h : z = X.ptY (U.un k w)) (hj : ⊤ ≤ z ⁻¹ᵁ
   exact ⟨t, hj, Q, hQ, ht⟩
 
 /- English proof (translation)
-Establish `hr : Set.range z ⊆ Set.range X.inc`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `(opensRange_inc X).ge (hO (Set.mem_univ s))`. Take `⟨v, rfl⟩ : ∃ v, v ≫ X.inc = z` from `⟨_, IsOpenImmersion.lift_fac X.inc z hr⟩`. Establish `e : Y.j ≫ Y.s = pullback.snd _ _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over]`. Conclude with `(congrArg (_ ≫ ·) (Spec.map_id _)).trans (Category.comp_id _)`. Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Take `⟨P, rfl⟩` from `(X.points.1 v).1 (by`. Rewrite using `[← e, ← pullback.condition_assoc]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `(Category.assoc _ _ _).symm.trans hz)`. Take `⟨k, w, t, ht⟩` from `hU.2.2.1 P`. Conclude with `⟨k, w, (X.pt_inc P).trans (X.ptY_frBor ht).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_ptY (hU : IsUnf U) (hz : z ≫ flagStr X = spMap σ) (hO : ⊤ ≤ z ⁻¹ᵁ flagOpen X) :
     ∃ k w, z = X.ptY (U.un k w) := by
@@ -94,7 +94,7 @@ def homWeight (la : AllWt.Weight Dw) (σ : c.F →+* ℂ) : Weight M.str σ (Lmo
   ((atGood (flagWeight X (U (goodOf c σ)) x la)).pull (inc₀ X Z) rfl).pull M.σ rfl
 
 /- English proof (translation)
-The claim follows from `(Weight.pull_φ _ _ _ _ _).trans ((Weight.pull_φ _ _ _ _ _).trans (congrArg ((flagWeight X _ x la).φ j) (Subtype.ext ((goodPt_map (f := toFlag M) (z := y) (Category.assoc _ _ _)).trans hz.symm))))`.
+A detailed English derivation is pending.
 -/
 theorem homWeight_φ (la : AllWt.Weight Dw) {σ : c.F →+* ℂ} (j : X.F.J) (y : CxPts M.str σ)
     (z : CxPts (flagStr X) (goodOf c σ)) (hz : z.1 = flagPt M y) :
@@ -103,7 +103,7 @@ theorem homWeight_φ (la : AllWt.Weight Dw) {σ : c.F →+* ℂ} (j : X.F.J) (y 
     (Subtype.ext ((goodPt_map (f := toFlag M) (z := y) (Category.assoc _ _ _)).trans hz.symm))))
 
 /- English proof (translation)
-The claim follows from `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (Category.assoc _ _ _)).trans (goodPt y).2)`.
+A detailed English derivation is pending.
 -/
 theorem flagPt_str {σ : c.F →+* ℂ} (y : CxPts M.str σ) : flagPt M y ≫ flagStr X = spMap (goodOf c σ) :=
   (Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (Category.assoc _ _ _)).trans (goodPt y).2)
@@ -113,7 +113,7 @@ variable {U} {σ : c.F →+* ℂ} {la a b : AllWt.Weight Dw}
 variable {M x} {y : CxPts M.str σ}
 
 /- English proof (translation)
-The claim follows from `mem_ptsIn.trans ((((common₀ X Z).pull M.σ).mem la j _).trans (mem_ptsIn (y := y) (U := toFlag M ⁻¹ᵁ X.F.U j)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem mem_flagIdx {j : X.F.J} :
     y ∈ ptsIn M.str σ ((Lmod M la).U (flagIdx M la j)) ↔ ⊤ ≤ (y.1 ≫ toFlag M) ⁻¹ᵁ X.F.U j :=
@@ -121,19 +121,19 @@ theorem mem_flagIdx {j : X.F.J} :
     (mem_ptsIn (y := y) (U := toFlag M ⁻¹ᵁ X.F.U j)).symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨i PUnit.unit PUnit.unit, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_eq_flagIdx (i : (Lmod M la).ι) : ∃ j, i = flagIdx M la j := ⟨i PUnit.unit PUnit.unit, rfl⟩
 
 /- English proof (translation)
-The claim follows from `exists_eq_ptY hU (flagPt_str M y) (ptsIn_mono M.off_eq.le (goodPt_mem hy))`.
+A detailed English derivation is pending.
 -/
 theorem exists_flagPt_eq (hU : IsUnf (U (goodOf c σ))) (hy : y ∈ ptsIn M.str σ M.off) :
     ∃ k w, flagPt M y = X.ptY ((U (goodOf c σ)).un k w) :=
   exists_eq_ptY hU (flagPt_str M y) (ptsIn_mono M.off_eq.le (goodPt_mem hy))
 
 /- English proof (translation)
-The claim follows from `let ⟨k, w, h⟩ := exists_flagPt_eq hU hy ⟨k, w, exists_frameAt_of_eq h (mem_flagIdx.1 (goodPt_mem hj))⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_frameAt (hU : IsUnf (U (goodOf c σ))) (hy : y ∈ ptsIn M.str σ M.off) {j : X.F.J}
     (hj : y ∈ ptsIn M.str σ ((Lmod M la).U (flagIdx M la j))) :
@@ -146,7 +146,7 @@ namespace IsHomWeight
 variable {φ φ' : Weight M.str σ (Lmod M la)}
 
 /- English proof (translation)
-Take `⟨j, rfl⟩` from `exists_eq_flagIdx i`. Take `⟨k, w, t, ht⟩` from `exists_frameAt hU hy hi`. Conclude with `neg_injective (Real.exp_injective ((h y hy j k w t ht).trans (h' y hy j k w t ht).symm))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unique (hU : IsUnf (U (goodOf c σ))) (h : IsHomWeight M U x la φ) (h' : IsHomWeight M U x la φ')
     (i : (Lmod M la).ι) (hy : y ∈ ptsIn M.str σ M.off) (hi : y ∈ ptsIn M.str σ ((Lmod M la).U i)) :
@@ -156,7 +156,7 @@ theorem unique (hU : IsUnf (U (goodOf c σ))) (h : IsHomWeight M U x la φ) (h' 
   exact neg_injective (Real.exp_injective ((h y hy j k w t ht).trans (h' y hy j k w t ht).symm))
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `⟨k, w, t, ht⟩` from `exists_frameAt (la := a) hU hy (mem_flagIdx.2 hj)`. Use `neg_injective (Real.exp_injective ?_)` and prove the remaining obligations. Rewrite using `[neg_add, Real.exp_add, ha y hy j k w t ht, hb y hy j k w t ht, hs y hy j k w t ht, genNorm_add, mul_pow]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem add (hU : IsUnf (U (goodOf c σ))) {s : AllWt.Weight Dw} (e : a + b = s) {φa : Weight M.str σ (Lmod M a)}
     {φb : Weight M.str σ (Lmod M b)} {φs : Weight M.str σ (Lmod M s)} (ha : IsHomWeight M U x a φa)
@@ -169,14 +169,14 @@ theorem add (hU : IsUnf (U (goodOf c σ))) {s : AllWt.Weight Dw} (e : a + b = s)
   rw [neg_add, Real.exp_add, ha y hy j k w t ht, hb y hy j k w t ht, hs y hy j k w t ht, genNorm_add, mul_pow]
 
 /- English proof (translation)
-The claim follows from `left_eq_add.1 (add hU (add_zero 0) h h h hy hj)`.
+A detailed English derivation is pending.
 -/
 theorem zero (hU : IsUnf (U (goodOf c σ))) {φ : Weight M.str σ (Lmod M 0)} (h : IsHomWeight M U x 0 φ)
     (hy : y ∈ ptsIn M.str σ M.off) {j : X.F.J} (hj : ⊤ ≤ (y.1 ≫ toFlag M) ⁻¹ᵁ X.F.U j) : φ.φ (flagIdx M 0 j) y = 0 :=
   left_eq_add.1 (add hU (add_zero 0) h h h hy hj)
 
 /- English proof (translation)
-Rewrite using `[h y hy j k w 1 hw, genNorm, diagChar_one, homFac, FD.Data.nfac]`. Simplify using `[hu]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (h : IsHomWeight M U x la φ) (hy : y ∈ ptsIn M.str σ M.off) {j k w}
     (hw : FrameAt X (U (goodOf c σ)) (flagPt M y) j k w 1) (hu : ∀ τ i, ‖FD.dmin (((U (goodOf c σ)).X k).Gm) w.1 τ i‖ = 1) :
@@ -210,13 +210,13 @@ variable {ω}
 namespace VolGood
 
 /- English proof (translation)
-The claim follows from `(exists_eq_ciSup_of_finite (f := fun σ : c.F →+* ℂ => |Real.log (volHom U x ω σ).toReal|)).imp fun _ => Eq.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq (_ : VolGood U x ω) : ∃ σ, volLogMax U x ω = |Real.log (volHom U x ω σ).toReal| :=
   (exists_eq_ciSup_of_finite (f := fun σ : c.F →+* ℂ => |Real.log (volHom U x ω σ).toReal|)).imp fun _ => Eq.symm
 
 /- English proof (translation)
-The claim follows from `let ⟨_, e⟩ := h.exists_eq e ▸ abs_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem nonneg (h : VolGood U x ω) : 0 ≤ volLogMax U x ω :=
   let ⟨_, e⟩ := h.exists_eq
@@ -225,7 +225,7 @@ theorem nonneg (h : VolGood U x ω) : 0 ≤ volLogMax U x ω :=
 end VolGood
 
 /- English proof (translation)
-Simplify using `[volLogMax, h, (Real.exp_pos _).le]`.
+Simplify using the standard rewrite rules.
 -/
 example {s : ℝ} (h : ∀ σ, volHom U x ω σ = ENNReal.ofReal (Real.exp (-s))) : volLogMax U x ω = |s| := by
   simp [volLogMax, h, (Real.exp_pos _).le]

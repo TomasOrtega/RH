@@ -23,29 +23,27 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `irr : ∀ χ ∈ A.X, IsAbsIrrChar χ` using `hs.irr`. Take `⟨y, hy, hy0⟩` from `Submodule.ne_bot_iff _ |>.1 hi`. Establish `hWall : R.Wat i (sg0 D A) (R.levL F b (sg0 D A)) ≤ R.Wall i (sg0 D A)` using `(GlobalTheory.PartDims.goodPart_le_flag (L := R.datWp i R.triv) R.θ _ rfl rfl _ _).trans inf_le_left`. Establish `hR : LinearMap.range (R.HW i (sg0 D A)).e = R.Wall i (sg0 D A)` using `(hC.models.HW i (sg0 D A)).2.1`. Take `⟨x, rfl⟩ : y ∈ LinearMap.range (R.HW i (sg0 D A)).e` from `hR ▸ hWall hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx0 : x ≠ 0` using `by rintro rfl; exact hy0 (map_zero _)`. Take `⟨hxe, hxt⟩` from `(GlobalTheory.WatType.wat_iff_type R F hs hC b i x).1 hy`. Take `⟨h, -, -, -, hsup, hstab, -, -⟩` from `GlobalTheory.SphOpsModel.sphericalOperators_forms_on_rank_space_normal_alt R F hC hS irr SF hSF i`. Take `⟨hidem, -, -, -⟩` from `GlobalTheory.Hk3.eH_laws R F hC irr i`. Take `⟨lam, hlam⟩ : ∃ lam : (F.lvl b).P → ℂ, ∀ p, lam p = sg0 D A ((((F.lvl b).ψ⁻¹ p : D.what₂.LLˣ)) : D.what₂.LL)` from `⟨_, fun _ => rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `lam_mul : ∀ p q, lam (p * q) = lam p * lam q` using `fun p q => by`. Simplify using `only [hlam, map_mul, Units.val_mul]`. Establish `lam_ne : ∀ p, lam p ≠ 0` using `fun p => by rw [hlam]; exact (map_ne_zero _).2 (Units.ne_zero _)`. Establish `hxt' : ∀ p : (F.lvl b).P, R.gW i (sg0 D A) (p : G) x = lam p • x` using `fun p => by rw [hlam]; exact hxt p`. Take `⟨π, hπ⟩ : ∃ π : Module.End ℂ (R.HW i (sg0 D A)).H, ∀ w, π w = ∑ p : (F.lvl b).P, (lam p)⁻¹ • R.gW i (sg0 D A) (p : G) w` from `⟨∑ p : (F.lvl b).P, (lam p)⁻¹ • R.gW i (sg0 D A) (p : G), fun w => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply]⟩`. Establish `htype : ∀ w (q : (F.lvl b).P), R.gW i (sg0 D A) (q : G) (π w) = lam q • π w`. Introduce `w q`. Rewrite using `[hπ, map_sum, Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft q) _ _ fun p => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, ← Module.End.mul_apply, ← map_mul, smul_smul, Equiv.coe_mulLeft]`. Use `show (lam p)⁻¹ • R.gW i (sg0 D A) ((q : G) * p) w = (lam q * (lam (q * p))⁻¹) • R.gW i (sg0 D A) ((q * p : (F.lvl b).P) : G) w`. Rewrite using `[lam_mul, mul_inv, ← mul_assoc, mul_inv_cancel₀ (lam_ne q), one_mul]`. Conclude with `congrArg (fun g => (lam p)⁻¹ • R.gW i (sg0 D A) g w) (Subgroup.coe_mul _ q p).symm`. Establish `hπmem : ∀ c w, w ∈ GlobalTheory.Hk3.Wcc R SF i c → π w ∈ GlobalTheory.Hk3.Wcc R SF i c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c w hw`. Rewrite using `[hπ]`. Use `Submodule.sum_mem _ fun p _ => ?_` and prove the remaining obligations. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `h2 : R.gW i (sg0 D A) (p : G) w ∈ (GlobalTheory.Hk3.Wcc R SF i c).map (R.gW i (sg0 D A) (p : G))` using `Submodule.mem_map_of_mem hw`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hstab c (p : G) h2`. Establish `hfix : π x = (Fintype.card (F.lvl b).P : ℂ) • x`. Establish `h1 : ∀ p : (F.lvl b).P, (lam p)⁻¹ • R.gW i (sg0 D A) (p : G) x = x` using `fun p => by`. Rewrite using `[hxt' p, smul_smul, inv_mul_cancel₀ (lam_ne p), one_smul]`. Rewrite using `[hπ, Finset.sum_congr rfl fun p _ => h1 p, Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hπx : π x ≠ 0`. Introduce `h0`. Apply `hx0` to reduce the goal to its premises. Establish `hc : (Fintype.card (F.lvl b).P : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `h3` using `congrArg (fun z => (Fintype.card (F.lvl b).P : ℂ)⁻¹ • z) (hfix.symm.trans h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[smul_zero, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis. Establish `hxR` using `hsup.ge (LinearMap.mem_range.2 ⟨x, hxe⟩)`. Establish `hmem` using `(Submodule.map_iSup π (fun c => GlobalTheory.Hk3.Wcc R SF i c)).le (Submodule.mem_map_of_mem (f := π) hxR)`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hbot : ∀ c, (GlobalTheory.Hk3.Wcc R SF i c).map π = ⊥`. Introduce `c`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hz : π w ∈ GlobalTheory.Hk3.Wcc R SF i c` using `hπmem c w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `he : GlobalTheory.Hk3.eH R i (π w) = π w`. Take `⟨u, hu⟩` from `LinearMap.mem_range.1 (hsup.le (Submodule.mem_iSup_of_mem c hz))`. Rewrite using `[← hu, ← Module.End.mul_apply, hidem]`. Assume the negation of the conclusion as `h0`. Conclude with `hall c (π w) hz h0 ((GlobalTheory.WatType.wat_iff_type R F hs hC b i _).2 ⟨he, fun p => by rw [htype w p, hlam]⟩)`.
-
-Simplify using `only [hbot, iSup_bot, Submodule.mem_bot] at hmem`. Conclude with `hπx hmem`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_part (R : RealDat D A Ks) (F : Face D A) {s : ℕ} (hs : A.fam.Ok s) (hC : GlobalTheory.Hk3.Core R F)
     (hS : GlobalTheory.Hk3.SchurAll R) (SF : Finset (HeightOneSpectrum (𝓞 D.host.F))) (hSF : GlobalTheory.Hk3.IsSF R SF) (b : Bool)
@@ -118,13 +116,13 @@ theorem exists_part (R : RealDat D A Ks) (F : Face D A) {s : ℕ} (hs : A.fam.Ok
   exact hπx hmem
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F s hs hC hS SF hSF hTR hW b`. Take `⟨i, hi⟩` from `hW b`. Take `⟨c, z, hzc, hz0, hzW⟩` from `exists_part R F hs hC hS SF hSF b i hi`. Establish `hinj` using `(hC.models.HW i (sg0 D A)).1`. Establish `hez : (R.HW i (sg0 D A)).e z ≠ 0` using `fun h => hz0 (hinj (h.trans (map_zero _).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzc'` using `(Submodule.mem_inf.1 (Submodule.mem_comap.1 hzc)).2`. Establish `hpart : (R.HW i (sg0 D A)).e z ∈ GlobalTheory.TrCopy.partW R.θ (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i (R.levL F b (sg0 D A)))) (levChi _ (R.βW i) (R.datWp i (R.levL F b (sg0 D A)))) (R.eWf i (sg0 D A)) SF c`. Use `Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨(Submodule.mem_inf.1 hzW).1, ?_⟩, hzW⟩` and prove the remaining obligations. Establish `h1` using `(Submodule.mem_inf.1 hzc').2`. Simplify using `only [Submodule.mem_iInf] at h1 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `fun P d B hB => h1 P d B (GlobalTheory.T.heckeOperator_faceLevel_eq_principalLevel R F hC SF hSF b i P d B hB)`. Establish `hne : GlobalTheory.TrCopy.partW R.θ (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i (R.levL F b (sg0 D A)))) (levChi _ (R.βW i) (R.datWp i (R.levL F b (sg0 D A)))) (R.eWf i (sg0 D A)) SF c ≠ ⊥` using `fun h => hez ((Submodule.mem_bot ℂ).1 (h ▸ hpart))`. Establish `hr` using `(hTR i).2 b c`. Introduce `hE`. Apply `hne` to reduce the goal to its premises.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Submodule.rank_eq_zero, ← hr, Submodule.rank_eq_zero]`. Conclude with `eq_bot_iff.2 (inf_le_right.trans hE.le)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowsNe : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), ∀ s : ℕ, A.fam.Ok s → GlobalTheory.Hk3.Core R F → GlobalTheory.Hk3.SchurAll R → ∀ SF, GlobalTheory.Hk3.IsSF R SF → GlobalTheory.TrCopy.TRLev R F SF → (∀ b, ∃ i, R.Wat i (sg0 D A) (R.levL F b (sg0 D A)) ≠ ⊥) → RowsNe R F := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F s hs hC hS SF hSF hTR hW b

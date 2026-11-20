@@ -17,11 +17,9 @@ noncomputable section
 namespace GlobalTheory.ThK.LemF.UnipCone
 
 /- English proof (translation)
-Set `S : Subgroup (UA σ W.J)` to `{ carrier := {g | mat g *ᵥ incV F H'.x = incV F H'.x} one_mem' := by show mat (1 : UA σ W.J) *ᵥ _ = _`. Rewrite using `[GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec]`. Use the proof step `mul_mem' := by`. Introduce `g h hg hh`. Use `show mat (g * h) *ᵥ _ = _`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[GlobalTheory.StabHaar.mat_mul, ← Matrix.mulVec_mulVec, show mat h *ᵥ incV F H'.x = incV F H'.x from hh]`. Conclude with `hg`. Use the proof step `inv_mem' := by`. Introduce `g hg`. Use `show mat g⁻¹ *ᵥ _ = _`.
-
-Establish `hg' : mat g *ᵥ incV F H'.x = incV F H'.x` using `hg`. Use `conv_lhs => rw [← hg']`. Rewrite using `[Matrix.mulVec_mulVec, ← GlobalTheory.StabHaar.mat_mul, inv_mul_cancel, GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec] }`. Establish `hle : unip σ W H' ≤ S` using `(Subgroup.closure_le S).2 fun g hg => hg.1`. Conclude with `hle hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mat_mulVec_of_mem_unip {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {d d₁ : ℕ} {W : Spc F E d} (H' : Plane E d d₁) {g : UA σ W.J} (hg : g ∈ unip σ W H') :
@@ -46,7 +44,7 @@ theorem mat_mulVec_of_mem_unip {F E : Type} [Field F] [NumberField F] [Field E] 
   exact hle hg
 
 /- English proof (translation)
-Rewrite using `[shiftB, Matrix.smul_mul, GlobalTheory.ThK.EvLawA.vecMulVec_mul_transpose, hM]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shiftB_mul_transpose {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n n₁ d d₁ : ℕ} (H : Plane E n n₁) (H' : Plane E d d₁) (l : (AE F E)ˣ)
@@ -61,19 +59,19 @@ end
 open GlobalTheory.ThK.LemF.UnipCone GlobalTheory.ThK.EvLawA in
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B a b G G₁ H H' cfg e' hev ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ _ _ u hu huv φ hφ`. Establish `hA : ActsEx` using `GlobalTheory.T.theta_action_exists hPr`. Establish `P' : IsPair B G.M' X.α (X.α / X.β) om' G.q (b + 2 - G.q) _ _` using `⟨T.base, T.geo.hV', T.geo.hW, T.geo.hM', T.chars.heckeα, isHecke_div' T.chars.heckeα T.chars.heckeβ, T.chars.resα, by rw [Nat.add_comm]; exact resEtaPow_div' T.chars.resα T.chars.resβ, T.weil'⟩`. Establish `hlaw : ∀ Φ ∈ schA F (Fin (b + 2) × Fin (a + (b + 2))), e' (om' (1, u) Φ) = (1 : ℂ) • id (e' Φ)`. Introduce `Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL : IsLevi (W₁` using `G₁.W) H' 1 (1 : UA σ G₁.W.J) (1 : UA σ G.W.J) := by`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec, Units.val_one, one_smul]`. Rewrite using `[GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec, inv_one, Units.val_one, map_one, one_smul]`. Rewrite using `[GlobalTheory.StabHaar.mat_one, GlobalTheory.StabHaar.mat_one, Matrix.one_mul, Matrix.mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `GlobalTheory.T.config_b_levi_torus_evaluation hPr F E σ B a b G G₁ H H' cfg e' hev X om om' om₁ om₁' T T₁ 1 1 1 hL u hu Φ hΦ`. Simplify using `only [mul_one, Prod.mk_one_one, map_one, Circle.coe_one, NNReal.coe_one, Real.one_rpow, Complex.ofReal_one, Module.End.one_apply] at h`. Rewrite using `[h, id]`. Establish `hevB : ∀ ψ ∈ SB (Fin (b + 2) × Fin (a + (b + 2)) → Fv F v), ev' v (locOp v (om' (1, u)) ψ) = ev' v ψ`. Introduce `ψ hψ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψ₁ : ev' v ψ ∈ SB (Fin b × Fin (a + b) → Fv F v)`. Rewrite using `[← (hloc.2.1 v).2]`. Conclude with `Submodule.mem_map_of_mem hψ`. Establish `h` using `GlobalTheory.T.local_part_operator_unitary_compatible B G.M' G₁.M' T.geo.hM' T₁.geo.hM' e' ei' ev' hloc v (om' (1, u)) id 1 hlaw ψ (locOp v (om' (1, u)) ψ) (ev' v ψ) hψ (locOp_mem _ _ _) hψ₁ (acts_locOp_om hA P' (UAtSub σ G.V' (evFin F v)).one_mem huv hψ) (fun r _ => rfl)`. Rewrite using `[h, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ k ∈ UAt σ G.V' (evFin F v), ∀ l : (AE F E)ˣ, ev' v (locOp v (G.M'.co.rho B.ψ (partFin v (shiftB σ H H' l))) (locOp v (om' (k, 1)) (locOp v (om' (1, u)) φ))) = ev' v (locOp v (G.M'.co.rho B.ψ (partFin v (shiftB σ H H' l))) (locOp v (om' (k, 1)) φ))`. Introduce `k hk l`. Rewrite using `[GlobalTheory.T.local_weil_action_compatible hPr F E σ B _ _ G.V' G.W G.M' _ _ om' _ _ _ _ P' v k u hk huv φ hφ]`. Rewrite using `[GlobalTheory.T.local_weil_translation_action hPr F E σ B _ _ G.V' G.W G.M' _ _ om' _ _ _ _ P' v u huv _ (at_partFin v _) _ (locOp_mem _ _ _)]`. Establish `hfix : mat u⁻¹ *ᵥ incV F H'.x = incV F H'.x` using `mat_mulVec_of_mem_unip H' (inv_mem hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[partFin, Matrix.smul_mul, shiftB_mul_transpose H H' l _ hfix, ← partFin]`. Conclude with `hevB _ (locOp_mem _ _ _)`. Use function extensionality and compare the values at `y`. Unfold `coneFin`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Use `congr 1`. Use function extensionality and compare the values at `l`. Unfold `coneFinInt`. Rewrite using `[key k.1 (mem_KAt.1 k.2).2 l.1]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.LemF.coneFin_unipB : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)

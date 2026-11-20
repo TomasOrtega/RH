@@ -6,7 +6,7 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.RadCov.LocSplit
 
 /- English proof (translation)
-Use `congrArg (fun M : Matrix (Fin n) (Fin n) K => M *ᵥ y) h.2.2` as an intermediate fact. Simplify using `only [Matrix.one_mulVec, Matrix.sum_mulVec] at this`. Simplify using `only [Matrix.mulVec_mulVec]`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem biorth_decomp {K : Type} [CommRing K] {n m : ℕ} {r : ℕ → ℕ}
     {T : ∀ b, Matrix (Fin n) (Fin (r b)) K} {T' : ∀ b, Matrix (Fin (r b)) (Fin n) K}
@@ -18,11 +18,11 @@ theorem biorth_decomp {K : Type} [CommRing K] {n m : ℕ} {r : ℕ → ℕ}
   exact this.symm
 
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hd`. Establish `h2 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hd`. Establish `key : ∀ b b', (T' b).map φ * P * (P⁻¹ * (T b').map φ) = (T' b * T b').map φ`. Introduce `b b'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc P, h1, Matrix.one_mul, Matrix.map_mul]`. Use `⟨fun b => ?_, fun b b' hb => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key, h.1 b, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Rewrite using `[key, h.2.1 b b' hb, Matrix.map_zero _ (map_zero φ)]`. Establish `e : ∀ b, P⁻¹ * (T b).map φ * ((T' b).map φ * P) = P⁻¹ * φ.mapMatrix (T b * T' b) * P`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `b`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Simplify using `only [e]`. Rewrite using `[← Finset.sum_mul, ← Finset.mul_sum, ← map_sum, h.2.2, map_one, mul_one, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem biorth_map {E K : Type} [CommRing E] [CommRing K] {n m : ℕ} {r : ℕ → ℕ}
     {T : ∀ b, Matrix (Fin n) (Fin (r b)) E} {T' : ∀ b, Matrix (Fin (r b)) (Fin n) E}
@@ -46,7 +46,7 @@ theorem biorth_map {E K : Type} [CommRing E] [CommRing K] {n m : ℕ} {r : ℕ �
     rw [← Finset.sum_mul, ← Finset.mul_sum, ← map_sum, h.2.2, map_one, mul_one, h2]
 
 /- English proof (translation)
-Use extensionality with `i`. Conclude with `(RingHom.map_mulVec φ A y i).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_mulVec_comp {E K : Type} [CommRing E] [CommRing K] {n p : ℕ} (φ : E →+* K)
     (A : Matrix (Fin n) (Fin p) E) (y : Fin p → E) :
@@ -55,9 +55,9 @@ theorem map_mulVec_comp {E K : Type} [CommRing E] [CommRing K] {n p : ℕ} (φ :
   exact (RingHom.map_mulVec φ A y i).symm
 
 /- English proof (translation)
-Rewrite using `[hF]`. Introduce `b'`. Rewrite using `[Matrix.mulVec_mulVec]`. Distinguish the cases in `e : b' = b`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[h.1, Matrix.one_mulVec]`. Conclude with `⟨hv, fun hk => absurd hk (by omega)⟩`. Rewrite using `[h.2.1 _ _ e, Matrix.zero_mulVec]`. Conclude with `⟨zero_mem _, fun _ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem block_mem {R K : Type} [CommRing R] [CommRing K] [Algebra R K] {n m : ℕ} {r : ℕ → ℕ}
     {F : ℕ → Submodule R (Fin n → K)}
@@ -76,27 +76,25 @@ theorem block_mem {R K : Type} [CommRing R] [CommRing K] [Algebra R K] {n m : �
     exact ⟨zero_mem _, fun _ => rfl⟩
 
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hd`. Prove the components needed by the constructor for the conclusion. Introduce `hy b hb`. Unfold `locFlag at hy`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨z, hz, rfl⟩` from `hx`. Establish `h0` using `((hF k z).1 hz b).2 hb`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, h1, Matrix.mul_one, map_mulVec_comp, h0]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `l`. Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul, hx, smul_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Introduce `hy`. Rewrite using `[biorth_decomp (biorth_map h φ hP) y]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : k ≤ b`. Simplify using `only [hy b hb, Matrix.mulVec_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `zero_mem _`. Establish `A : ∀ v : Fin (r b) → E, (P⁻¹ * (T b).map φ) *ᵥ (fun l => φ (v l)) ∈ locFlag φ P F k`. Introduce `v`. Establish `hv : v ∈ Submodule.span E (Λ b : Set (Fin (r b) → E))`. Rewrite using `[(hΛ b).span_eq_top]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Rewrite using `[← Matrix.mulVec_mulVec, map_mulVec_comp]`. Conclude with `Submodule.subset_span ⟨_, block_mem h hF (by omega) hx, rfl⟩`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero`. Establish `: (fun l => φ ((0 : Fin (r b) → E) l)) = 0` using `by ext l; simp`. Rewrite using `[this, Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `: (fun l => φ ((x + y) l)) = (fun l => φ (x l)) + fun l => φ (y l)` using `by ext l; simp`. Rewrite using `[this, Matrix.mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `: (fun l => φ ((c • x) l)) = φ c • fun l => φ (x l)` using `by ext l; simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this, Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `B : ∀ u : Fin (r b) → ℂ, (P⁻¹ * (T b).map φ) *ᵥ u ∈ locFlag φ P F k`. Introduce `u`. Establish `e : u = ∑ j, u j • fun l => φ ((Pi.single j (1 : E) : Fin (r b) → E) l)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `l`. Simplify using `[Finset.sum_apply, Pi.single_apply, apply_ite φ]`. Rewrite using `[e, Matrix.mulVec_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ (A _)`. Conclude with `B _`.
+A detailed English derivation is pending.
 -/
 theorem mem_locFlag_iff {E : Type} [Field E] [NumberField E] {n m : ℕ} {r : ℕ → ℕ}
     {F : ℕ → Submodule (𝓞 E) (Fin n → E)}
@@ -160,11 +158,11 @@ theorem mem_locFlag_iff {E : Type} [Field E] [NumberField E] {n m : ℕ} {r : �
     exact B _
 
 /- English proof (translation)
-Use `⟨∑ b : Fin m, T b * Z b * T' (b + c + 1), fun a y hy => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sum_mulVec]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Establish `h1` using `(hF _ y).1 hy (b + c + 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hb : (b : ℕ) < a`. Conclude with `block_mem h hF hb (hZ b _ h1.1)`. Rewrite using `[h1.2 (by omega), Matrix.mulVec_zero, Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Rewrite using `[Matrix.mul_sum, Matrix.sum_mul, Finset.sum_eq_single a]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h.1, Matrix.one_mul, Matrix.mul_assoc, h.1, Matrix.mul_one]`. Introduce `b _ hb`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h.2.1 _ _ (fun e => hb (Fin.ext e.symm)), Matrix.zero_mul, Matrix.zero_mul, Matrix.zero_mul]`. Introduce `ha`. Conclude with `absurd (Finset.mem_univ a) ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_lowers_blocks {R K : Type} [CommRing R] [CommRing K] [Algebra R K] {n m : ℕ} {r : ℕ → ℕ}
     {F : ℕ → Submodule R (Fin n → K)}
@@ -193,9 +191,7 @@ theorem exists_lowers_blocks {R K : Type} [CommRing R] [CommRing K] [Algebra R K
       exact absurd (Finset.mem_univ a) ha
 
 /- English proof (translation)
-Introduce `E _ _ n m F r T T' Λ h hΛ hF`. Use `⟨fun φ P hP => ⟨biorth_map h φ hP, mem_locFlag_iff h hΛ hF φ hP⟩, fun c => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `Y hY b y hy`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `((hF (b + 1) _).1 (hY (b + 1) _ (block_mem h hF (by omega) hy)) b).1`.
-
-Conclude with `exists_lowers_blocks h hF c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locSplit : ∀ (E : Type) [Field E] [NumberField E] (n m : ℕ) (F : ℕ → Submodule (𝓞 E) (Fin n → E)) (r : ℕ → ℕ) (T : ∀ b, Matrix (Fin n) (Fin (r b)) E) (T' : ∀ b, Matrix (Fin (r b)) (Fin n) E) (Λ : ∀ b, Submodule (𝓞 E) (Fin (r b) → E)), Biorth r m T T' → (∀ b, Submodule.IsLattice E (Λ b)) → (∀ k y, y ∈ F k ↔ ∀ b, T' b *ᵥ y ∈ Λ b ∧ (k ≤ b → T' b *ᵥ y = 0)) → (∀ (φ : E →+* ℂ) (P : Matrix (Fin n) (Fin n) ℂ), IsUnit P → Biorth r m (fun b => P⁻¹ * (T b).map φ) (fun b => (T' b).map φ * P) ∧ ∀ k y, y ∈ locFlag φ P F k ↔ ∀ b, k ≤ b → ((T' b).map φ * P) *ᵥ y = 0) ∧ ∀ c, (∀ Y ∈ lowers F c, ∀ b, ∀ y ∈ Λ (b + c + 1), (T' b * Y * T (b + c + 1)) *ᵥ y ∈ Λ b) ∧ ∀ Z : ∀ b : Fin m, Matrix (Fin (r b)) (Fin (r (b + c + 1))) E, (∀ b : Fin m, ∀ y ∈ Λ (b + c + 1), Z b *ᵥ y ∈ Λ b) → ∃ Y ∈ lowers F c, ∀ b : Fin m, T' b * Y * T (b + c + 1) = Z b := by
   intro E _ _ n m F r T T' Λ h hΛ hF

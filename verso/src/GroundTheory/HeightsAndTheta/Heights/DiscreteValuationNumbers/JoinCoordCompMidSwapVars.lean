@@ -29,7 +29,7 @@ def midSwapVars (ι : K → Type) (ι' : K' → Type) (ι₂ : K₂ → Type) :
     rintro ⟨k | k | k, i⟩ <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨k | k | k, i⟩ := v <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem midSwapVars_fst {ι : K → Type} {ι' : K' → Type} {ι₂ : K₂ → Type}
     (v : Σ k : K ⊕ (K₂ ⊕ K'), Sum.elim ι (Sum.elim ι₂ ι') k) :
@@ -37,7 +37,7 @@ theorem midSwapVars_fst {ι : K → Type} {ι' : K' → Type} {ι₂ : K₂ → 
   obtain ⟨k | k | k, i⟩ := v <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Apply the tactic sequence `obtain ⟨k | k | k, i⟩ := v <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem joinCoord_comp_midSwapVars {ι : K → Type} {ι' : K' → Type} {ι₂ : K₂ → Type} {Ω : Type*}
     (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (w : (Σ k, ι₂ k) → Ω) :

@@ -19,27 +19,27 @@ namespace GlobalTheory.HoweGlobal.RealTransfer
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealActs
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM hreal`. Establish `hPair` using `GlobalTheory.ThK.RealUniq.isPair_V hM.triple`. Establish `PA : PolActs Bs G.M om` using `GlobalTheory.T.polynomial_datum_action_of_pair hP F E σ Bs _ _ _ _ G.M _ _ om _ _ _ _ hPair`. Use `set P := G.M.Pol Bs.ψ Bs.emb with hPdef`. Establish `key : ∀ N : Submodule ℂ ↥P, relInf Bs G om ≤ N → (∀ g ∈ opInf Bs G om, ∀ x ∈ N, g x ∈ N) → GlobalTheory.Published.ThetaSubInf G.M Bs.ψ Bs.emb om (N.map P.subtype)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N hrel hop`. Use `⟨Submodule.map_subtype_le _ _, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ f hf f₁ hA`. Take `⟨D, hDP, hD⟩` from `PA.1 γ hγ`. Establish `e : f₁ = D f` using `(hD f hf f₁).1 hA`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : f₁ ∈ P` using `e ▸ hDP f hf`. Use `⟨⟨f₁, h1⟩, hrel (Submodule.subset_span (Or.inl ⟨γ, hγ, f, hf, hA⟩)), rfl⟩` and prove the remaining obligations. Introduce `k hk f hf f₁ hA`. Take `⟨D, hDP, hD⟩` from `PA.2.1 k hk`. Establish `e : f₁ = D f` using `(hD f hf f₁).1 hA`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : f₁ ∈ P` using `e ▸ hDP f hf`. Use `⟨⟨f₁, h1⟩ - ⟨f, hf⟩, hrel (Submodule.subset_span (Or.inr ⟨k, hk, ⟨f, hf⟩, ⟨f₁, h1⟩, hA, rfl⟩)), rfl⟩` and prove the remaining obligations. Introduce `γ hγ f hf f₁ hA`. Take `⟨y, hy, rfl⟩` from `hf`. Take `⟨D, hDP, hD⟩` from `PA.2.2.1 γ hγ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `g : Module.End ℂ ↥P` to `D.restrict hDP`. Establish `hg : g ∈ opInf Bs G om` using `Or.inr ⟨γ, hγ, fun f => (hD f f.2 _).2 rfl⟩`. Establish `e : f₁ = D y` using `(hD y y.2 f₁).1 hA`. Conclude with `⟨g y, hop g hg y hy, e.symm⟩`. Introduce `k hk f hf f₁ hA`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, rfl⟩` from `hf`. Take `⟨D, hDP, hD⟩` from `PA.2.2.2 k hk`. Set `g : Module.End ℂ ↥P` to `D.restrict hDP`. Establish `hg : g ∈ opInf Bs G om` using `Or.inl ⟨k, hk, fun f => (hD f f.2 _).2 rfl⟩`. Establish `e : f₁ = D y` using `(hD y y.2 f₁).1 hA`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨g y, hop g hg y hy, e.symm⟩`. Establish `hinj : Function.Injective (Submodule.map P.subtype)` using `Submodule.map_injective_of_injective P.injective_subtype`. Establish `hne : ∀ N : Submodule ℂ ↥P, N ≠ ⊤ → N.map P.subtype ≠ P`. Introduce `N hN h`. Apply `hN` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[h, Submodule.map_subtype_top]`. Use `⟨GlobalTheory.T.polynomial_data_countable_rank hP F E σ Bs _ _ _ _ G.M _ _ om _ _ _ _ hPair, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨L, hL⟩` from `hreal.1`. Use `⟨L, fun m N hN hN' => hL m (fun i => (N i).map P.subtype) ((Submodule.map_strictMono_of_injective P.injective_subtype).comp hN) fun i => key _ (hN' i).1 (hN' i).2⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N hrel hop hN x hx`. Conclude with `hreal.2 _ (key N hrel hop) (hne N hN) x ⟨x, hx, rfl⟩`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (⟨γ, hγ, f, hf, hA⟩ | ⟨k, hk, f, f₁, hA, rfl⟩)`. Conclude with `hM.real.quot.lie γ hγ f hf _ hA`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show R.p (((f₁ - f : ↥P)) : SInf F _) = 0`. Rewrite using `[Submodule.coe_sub, map_sub, hM.real.quot.cpt k hk f f.2 f₁ hA, sub_self]`. Introduce `g hg x hx`. Establish `hx' : R.p (x : SInf F _) = 0` using `hx`. Use `show R.p ((g x : ↥P) : SInf F _) = 0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `hg with ⟨k, hk, hA⟩ | ⟨γ, hγ, hA⟩` into its components or cases. Use `hM.real.cpt k hk x x.2 0 (G.M'.Pol Bs.ψ Bs.emb).zero_mem _ 0 (hA x) (GlobalTheory.ThK.RealUniq.acts_zero _) (by rw [hx', map_zero])` as an intermediate fact. Rewrite using `[this, map_zero]`. Use `hM.real.lie γ hγ x x.2 0 (G.M'.Pol Bs.ψ Bs.emb).zero_mem _ 0 (hA x) (GlobalTheory.ThK.RealUniq.actsD_zero _) (by rw [hx', map_zero])` as an intermediate fact. Rewrite using `[this, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem realTransfer : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

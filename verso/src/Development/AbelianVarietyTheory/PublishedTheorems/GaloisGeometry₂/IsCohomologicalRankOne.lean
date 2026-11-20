@@ -14,11 +14,11 @@ namespace GlobalTheory.RegAlgPurityModel
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩ : ∃ z, u = expU z` from `⟨_, (expU_log u).symm⟩`. Establish `e : z = ∑ w : InfinitePlace E, atEmb w.embedding (z w)` using `by conv_lhs => rw [← Finset.univ_sum_single z]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[atEmb]`. Establish `c1 : ∀ w : InfinitePlace E, coord w.embedding z = z w` using `fun w => by simp [coord]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `c2 : ∀ w : InfinitePlace E, coord (ComplexEmbedding.conjugate w.embedding) z = starRingEnd ℂ (z w)` using `fun w => by`. Use `(InfType.conj_ne w.embedding).symm` as an intermediate fact. Simplify using `[coord, this]`. Rewrite using `[chiInf_expU]`. Use `conv_lhs => rw [e, map_sum, Complex.exp_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← chiInf_expU, chiInf_expU_atEmb, InfType.coord_expU, InfType.coord_expU, c1, c2, h, h, Complex.exp_add, Complex.exp_int_mul, Complex.exp_int_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiInf_eq_prod (χ : HChar E) (n : (E →+* ℂ) → ℤ) (h : ∀ τ, expo χ τ = n τ) (u : (Cinf E)ˣ) :
     ((chiInf χ u : ℂˣ) : ℂ) = ∏ w : InfinitePlace E,
@@ -43,9 +43,9 @@ theorem chiInf_eq_prod (χ : HChar E) (n : (E →+* ℂ) → ℤ) (h : ∀ τ, e
 omit [NumberField E] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Establish `h1 : (fun y : GL (Fin 1) (Cinf E) => coord τ y.val.det) ∈ regFun E 1` using `Algebra.subset_adjoin (Or.inl ⟨τ, 0, 0, by simp⟩)`. Establish `h2 : (fun y : GL (Fin 1) (Cinf E) => (coord τ y.val.det)⁻¹) ∈ regFun E 1` using `Algebra.subset_adjoin (Or.inr ⟨τ, rfl⟩)`. Break down `m with m | m` into its components or cases. Use `pow_mem h1 m using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Use `pow_mem h2 (m + 1) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using `[zpow_negSucc]`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem zpow_mem (τ : E →+* ℂ) (m : ℤ) : (fun y : GL (Fin 1) (Cinf E) => coord τ y.val.det ^ m) ∈ regFun E 1 := by
   have h1 : (fun y : GL (Fin 1) (Cinf E) => coord τ y.val.det) ∈ regFun E 1 :=
@@ -85,7 +85,7 @@ def invRep (χ : HChar E) (n : (E →+* ℂ) → ℤ) (h : ∀ τ, expo χ τ = 
     exact eq_bot_or_eq_top W
 
 /- English proof (translation)
-Establish `h` using `lie_mulChi χ X (mulChi 1 χ⁻¹ (oneFn E 1))`. Rewrite `h` using `[← mulChi_mul, inv_mul_cancel, mulChi_one, lie_oneFn, lie_mulChi, lie_oneFn, zero_add, map_smul, ← add_smul, map_smul, ← mulChi_mul, inv_mul_cancel, mulChi_one]`. Conclude with `(smul_eq_zero.1 h.symm).resolve_right oneFn_ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dchi_inv_add (χ : HChar E) (X : Lie E 1) :
     dchi χ⁻¹ (Matrix.of X).trace + dchi χ (Matrix.of X).trace = 0 := by
@@ -95,13 +95,13 @@ theorem dchi_inv_add (χ : HChar E) (X : Lie E 1) :
   exact (smul_eq_zero.1 h.symm).resolve_right oneFn_ne_zero
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrArg Subtype.val (lie_mulChi χ⁻¹ X (oneFn E 1))) 1`. Rewrite `h1` using `[lie_oneFn, zero_add]`. Establish `e : (extGL fun y => (invRep χ n h).mat y (0 : Fin 1) (0 : Fin 1)) = chart (mulChi 1 χ⁻¹ (oneFn E 1)).1 1`. Use function extensionality and compare the values at `x`. Unfold `extGL chart`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use `split_ifs with hx`. Express the relevant statement in the definitionally equal form `_ = 1 * ((chiDet 1 χ⁻¹ (1 * _) : ℂˣ) : ℂ)`. Rewrite using `[one_mul, one_mul]`. Conclude with `Matrix.diagonal_apply_eq _ (0 : Fin 1)`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `i j`. Take `rfl : i = (0 : Fin 1)` from `Subsingleton.elim (α := Fin 1) _ _`. Take `rfl : j = (0 : Fin 1)` from `Subsingleton.elim (α := Fin 1) _ _`. Express the relevant statement in the definitionally equal form `fderiv ℝ (extGL fun y => (invRep χ n h).mat y (0 : Fin 1) (0 : Fin 1)) _ X = _`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `h1.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * 1 * ((chiDet 1 χ⁻¹ 1 : ℂˣ) : ℂ) = _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dmat_invRep (χ : HChar E) (n : (E →+* ℂ) → ℤ) (h : ∀ τ, expo χ τ = n τ) (X : Lie E 1) :
     (invRep χ n h).dmat X = Matrix.scalar (Fin 1) (dchi χ⁻¹ (Matrix.of X).trace) := by
@@ -125,17 +125,17 @@ theorem dmat_invRep (χ : HChar E) (n : (E →+* ℂ) → ℤ) (h : ∀ τ, expo
   simp
 
 /- English proof (translation)
-Use `Submodule.nontrivial_iff_ne_bot.2 ((CuspSub.triv E le_rfl).twist χ).ne_bot` as an intermediate fact. Take `⟨φ, hφ⟩` from `exists_ne (0 : ((CuspSub.triv E le_rfl).twist χ).V)`. Establish `key : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] (v : V), v ⊗ₜ[ℂ] (fun _ : Fin 1 => (1 : ℂ)) = 0 → v = 0` using `fun v h => by`. Establish `h1` using `congrArg (fun x => TensorProduct.rid ℂ _ (LinearMap.lTensor _ (LinearMap.proj (0 : Fin 1)) x)) h`. Simplify using `only [LinearMap.lTensor_tmul, LinearMap.proj_apply, TensorProduct.rid_tmul, one_smul, map_zero] at h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h1`. Establish `sc : ∀ c : ℂ, Matrix.scalar (Fin 1) c *ᵥ (fun _ : Fin 1 => (1 : ℂ)) = c • (fun _ : Fin 1 => (1 : ℂ))`. Introduce `c`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Subsingleton.elim i 0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨invRep χ n h, hasCohomology_of_invariant (m := φ ⊗ₜ fun _ => 1) (fun h => hφ (key φ h)) (fun k => ?_) fun X => ?_⟩` and prove the remaining obligations. Rewrite using `[tensorK, TensorProduct.map_tmul, CuspSub.op_triv_twist, Matrix.toLin'_apply]`. Establish `e` using `sc ((chiDet 1 χ⁻¹ (infGL E 1 (Unitary.toUnits k)) : ℂˣ) : ℂ)`. Use `(congrArg (fun v : Fin 1 → ℂ => _ ⊗ₜ[ℂ] v) e).trans ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', smul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ((chiDet 1 χ⁻¹ (infGL E 1 (Unitary.toUnits k)) : ℂˣ) : ℂ) * (((opMul χ (.cpt k) : ℂˣ) : ℂ) * opTriv (E` using `E) (.cpt k) + opAdd χ (.cpt k)) = 1 := by`. Express the relevant statement in the definitionally equal form `(((chiDet 1 χ (infGL E 1 (Unitary.toUnits k)))⁻¹ : ℂˣ) : ℂ) * (((chiDet 1 χ (infGL E 1 (Unitary.toUnits k)) : ℂˣ) : ℂ) * 1 + 0) = 1`. Simplify using the standard rewrite rules. Rewrite using `[e2, one_smul]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tensorLie_tmul, CuspSub.op_triv_twist, dmat_invRep]`. Use `(congrArg (fun v : Fin 1 → ℂ => _ + φ ⊗ₜ[ℂ] v) (sc _)).trans ?_` and prove the remaining obligations. Establish `e2 : (((opMul χ (.lie X) : ℂˣ) : ℂ) * opTriv (E` using `E) (.lie X) + opAdd χ (.lie X)) = -dchi χ⁻¹ (Matrix.of X).trace := by`. Express the relevant statement in the definitionally equal form `_ * 0 + dchi χ (Matrix.of X).trace = _`. Take the linear combination `dchi_inv_add χ X`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, TensorProduct.tmul_smul, TensorProduct.smul_tmul', neg_smul, TensorProduct.neg_tmul]`. Conclude with `neg_add_cancel _`.
+A detailed English derivation is pending.
 -/
 theorem isCohomological_char (χ : HChar E) (n : (E →+* ℂ) → ℤ) (h : ∀ τ, expo χ τ = n τ) :
     IsCohomological ((CuspSub.triv E le_rfl).twist χ) := by
@@ -171,7 +171,7 @@ theorem isCohomological_char (χ : HChar E) (n : (E →+* ℂ) → ℤ) (h : ∀
     exact neg_add_cancel _
 
 /- English proof (translation)
-Take `⟨χ, rfl⟩` from `RankOne.exists_eq_twist π`. Use `choose n hn using (CG.isRegAlg_ofChar χ).1 h`. Conclude with `isCohomological_char χ n hn`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCohomological_rank_one (π : CuspSub E 1) (h : (CG.mk π).IsRegAlg) : IsCohomological π := by
   obtain ⟨χ, rfl⟩ := RankOne.exists_eq_twist π
@@ -179,9 +179,9 @@ theorem isCohomological_rank_one (π : CuspSub E 1) (h : (CG.mk π).IsRegAlg) : 
   exact isCohomological_char χ n hn
 
 /- English proof (translation)
-Introduce `π`. Establish `h` using `(InfType.expo_of_infType E _).2.1 m (GlobalTheory.HeckeGal.Model.absPow_isAbsPow E m)`. Establish `hr : (CG.mk π).IsRegAlg` using `(CG.isRegAlg_ofChar _).2 fun τ => ⟨m, by rw [h]; simp⟩`. Use `⟨hr, fun τ => ?_, isCohomological_rank_one π hr⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(CG.ofChar _).infChar _ = ((CG.ofChar _).infChar _).map _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[CG.infChar_ofChar, CG.infChar_ofChar, h, h, Multiset.map_singleton]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem absPow_model (m : ℤ) :
     let π := (CuspSub.triv E le_rfl).twist (GlobalTheory.HeckeGal.Model.absPow E m)
@@ -196,9 +196,9 @@ theorem absPow_model (m : ℤ) :
   congr 1; push_cast; ring
 
 /- English proof (translation)
-Introduce `hr`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Take `⟨n, hn⟩` from `(CG.isRegAlg_ofChar _).1 hr τ`. Rewrite `hn` using `[(InfType.expo_of_infType E _).2.1 _ (GlobalTheory.HeckeGal.Model.absPow_isAbsPow E _)]`. Establish `h1 : (1 / 2 : ℝ) = n` using `by exact_mod_cast hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (1 : ℤ) = 2 * n` using `by exact_mod_cast (by linarith : (1 : ℝ) = 2 * n)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem not_isRegAlg_half : ¬ (CG.ofChar (GlobalTheory.HeckeGal.Model.absPow E (1 / 2))).IsRegAlg := by
   intro hr
@@ -210,7 +210,7 @@ theorem not_isRegAlg_half : ¬ (CG.ofChar (GlobalTheory.HeckeGal.Model.absPow E 
   omega
 
 /- English proof (translation)
-Establish `: IsCMField (CyclotomicField 4 ℚ)` using `IsCyclotomicExtension.Rat.isCMField (S := {4}) _ ⟨4, rfl, by norm_num⟩`. Conclude with `⟨this, _, absPow_model 1⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_gauss : ∃ (_ : IsCMField (CyclotomicField 4 ℚ)) (π : CuspSub (CyclotomicField 4 ℚ) 1),
     (CG.mk π).IsRegAlg ∧ (∀ τ, (CG.mk π).infChar ((starRingEnd ℂ).comp τ) =

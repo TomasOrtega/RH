@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 /- English proof (translation)
-Rewrite `h` using `[QuotientGroup.eq]`. Establish `e : clSub (∅ : Set (HeightOneSpectrum (𝓞 K))) = ⊥` using `by simp [clSub]`. Rewrite `h` using `[e, Subgroup.mem_bot]`. Conclude with `inv_mul_eq_one.1 h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem reflTw_empty {K : Type} [Field K] [NumberField K] {c d : ClassGroup (𝓞 K)}
     (h : (QuotientGroup.mk c : ClS (∅ : Set (HeightOneSpectrum (𝓞 K)))) = QuotientGroup.mk d) : c = d := by
@@ -17,15 +17,15 @@ private theorem reflTw_empty {K : Type} [Field K] [NumberField K] {c d : ClassGr
   exact inv_mul_eq_one.1 h
 
 /- English proof (translation)
-Simplify using `[radCl, ordv_one]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem reflTw_one {K : Type} [Field K] [NumberField K] (n : ℕ) : radCl n (1 : Kˣ) = 1 := by
   simp [radCl, ordv_one]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero, reflTw_one]`. Consider the case `succ m ih`. Rewrite using `[pow_succ, pow_succ, ← ih]`. Apply `reflTw_empty` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[QuotientGroup.mk_mul]`. Conclude with `(radClMul K ∅ n hn).1 _ (pow_mem ha m) _ ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem reflTw_pow {K : Type} [Field K] [NumberField K] {n : ℕ} (hn : n ≠ 0) {a : Kˣ}
     (ha : a ∈ SelK (∅ : Set (HeightOneSpectrum (𝓞 K))) n) (m : ℕ) : radCl n (a ^ m) = radCl n a ^ m := by
@@ -38,7 +38,7 @@ private theorem reflTw_pow {K : Type} [Field K] [NumberField K] {n : ℕ} (hn : 
     exact (radClMul K ∅ n hn).1 _ (pow_mem ha m) _ ha
 
 /- English proof (translation)
-Apply `reflTw_empty` to reduce the goal to its premises. Rewrite using `[QuotientGroup.mk_pow, QuotientGroup.mk_one]`. Conclude with `(radClMul K ∅ n hn).2.1 _ ha`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem reflTw_pow_eq {K : Type} [Field K] [NumberField K] {n : ℕ} (hn : n ≠ 0) {a : Kˣ}
     (ha : a ∈ SelK (∅ : Set (HeightOneSpectrum (𝓞 K))) n) : radCl n a ^ n = 1 := by
@@ -47,14 +47,14 @@ private theorem reflTw_pow_eq {K : Type} [Field K] [NumberField K] {n : ℕ} (hn
   exact (radClMul K ∅ n hn).2.1 _ ha
 
 /- English proof (translation)
-Rewrite using `[← ZMod.natCast_eq_zero_iff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem reflTw_dvd (n : ℕ) [NeZero n] : n ∣ (-1 : ZMod n).val + 1 := by
   rw [← ZMod.natCast_eq_zero_iff]
   simp
 
 /- English proof (translation)
-Rewrite using `[map_pow, h, mul_pow, ← pow_mul, ZMod.val_mul, ← pow_eq_pow_mod _ hζ, mul_comm m.val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem reflTw_radPow {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] {U : Subgroup (G F Ω)} {n : ℕ} [NeZero n]
     {ζ β : Ω} (hζ : ζ ^ n = 1) {φ : U → ZMod n} (h : ∀ u : U, u.1 β = ζ ^ (φ u).val * β) (m : ZMod n) (u : U) :
@@ -62,11 +62,11 @@ private theorem reflTw_radPow {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] 
   rw [map_pow, h, mul_pow, ← pow_mul, ZMod.val_mul, ← pow_eq_pow_mod _ hζ, mul_comm m.val]
 
 /- English proof (translation)
-Establish `hz : algebraMap K Ω ζ ^ n = 1` using `by rw [← map_pow, hζ.pow_eq_one, map_one]`. Establish `h1 : IsRad (algebraMap K Ω ζ) (galOf F K Ω) (fun u => k * s * φ u) (σ β)`. Use `radConj F Ω _ n _ β σ k φ _ hz hk hβ fun u' => ?_` and prove the remaining obligations. Establish `hK : ∀ x : K, ((σ.trans u'.1.toRingEquiv).trans σ.symm) (algebraMap K Ω x) = algebraMap K Ω x` using `fun x => by show σ.symm (u'.1 (σ (algebraMap K Ω x))) = _`. Rewrite using `[hl x, u'.2, ← hl x, σ.symm_apply_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `u : galOf F K Ω` to `⟨AlgEquiv.ofRingEquiv (f := (σ.trans u'.1.toRingEquiv).trans σ.symm) fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply F K Ω, hK], hK⟩`. Establish `hu : ∀ x, u'.1 (σ x) = σ (u.1 x)` using `fun x => (σ.apply_symm_apply _).symm`. Conclude with `⟨u, hu, by rw [hs u u' hu, mul_assoc]⟩`. Establish `h2 : IsRad (algebraMap K Ω ζ) (galOf F K Ω) (fun u => k * s * φ u) (β ^ (k * s).val)` using `⟨pow_ne_zero _ hβ.1, reflTw_radPow hz hβ.2 _⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `(radXDual F Ω K _ n 1 ζ rfl hζ).2 _ _ _ h2 h1`. Use `⟨c, Units.ext ((algebraMap K Ω).injective ?_)⟩` and prove the remaining obligations. Use `show algebraMap K Ω (τ a) = _`. Rewrite using `[← hl, ← ha, map_pow, hc, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_mul, map_pow, map_pow, ← ha]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem reflTw_key {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {K : Type}
     [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω]
@@ -96,21 +96,21 @@ private theorem reflTw_key {F Ω : Type} [Field F] [NumberField F] [Field Ω] [A
   ring
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ U n _ N ζ _ χ ψ φ β a hU hζ hχ hφ hβ ha`. Substitute `hU` using the available equality. Establish `hn : n ≠ 0` using `NeZero.ne n`. Establish `hS : a ∈ SelK (∅ : Set (HeightOneSpectrum (𝓞 K))) n`. Take `⟨β₀, a₀, h₀, ha₀, hS₀⟩` from `(radXDual F Ω K _ n N ζ rfl hζ).1 φ hφ.1`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(radXDual F Ω K _ n N ζ rfl hζ).2 _ _ _ h₀ hβ`. Establish `e : a = a₀ * c ^ n` using `Units.ext ((algebraMap K Ω).injective (by`. Rewrite using `[← ha, hc, Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, ← ha₀]`. Use the proof step `ring))`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_mem hS₀ fun v _ => ?_` and prove the remaining obligations. Use `⟨ordv v c, ?_⟩` and prove the remaining obligations. Simplify using `[ordv]`. Establish `h1` using `reflTw_pow_eq hn hS`. Establish `hmap : ∀ (τ : K ≃+* K) (m : ℕ) (c : Kˣ), Units.map τ.toMonoidHom a = a ^ m * c ^ n → clMap τ (radCl n a) = radCl n a ^ m` using `fun τ m c h => by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[radClMap, h, (radClMul K ∅ n hn).2.2, reflTw_pow hn hS]`. Use `⟨⟨h1, fun g τ hl => ?_⟩, fun τ σ hl hτ hc => ?_⟩` and prove the remaining obligations. Establish `hg : φ ∈ conjCond (galOf F K Ω) g.toRingEquiv (scalRep (ZMod n) ψ g)` using `(Submodule.mem_iInf _).1 hφ.2 g`. Take `⟨c, hc⟩` from `reflTw_key hζ hβ ha hl (χ g) ((ψ g)⁻¹ : (ZMod n)ˣ) (hχ g) fun u u' h => by`. Rewrite using `[hg u u' h, scalRep_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `hmap τ _ c ?_` and prove the remaining obligations. Rewrite using `[hc]`. Simplify using the standard rewrite rules. Take `⟨j, hj⟩` from `reflTw_dvd n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk : σ (algebraMap K Ω ζ) = algebraMap K Ω ζ ^ (-1 : ZMod n).val`. Rewrite using `[hl, hτ, ← map_pow]`. Use `congr 1`. Use `inv_eq_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← pow_succ, hj, pow_mul, hζ.pow_eq_one, one_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `reflTw_key hζ hβ ha hl (-1) 1 hk fun u u' h => by`. Rewrite using `[hc u u' h]`. Simplify using the standard rewrite rules. Rewrite `hc` using `[mul_one]`. Use `⟨⟨a ^ j * c, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, ← mul_assoc, ← pow_succ', hj, powMonoidHom_apply, mul_pow, ← pow_mul, mul_comm j]`. Use `show clMap τ (radCl n a) * radCl n a = 1`. Rewrite using `[hmap τ _ c hc, ← pow_succ, hj, pow_mul, h1, one_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.reflTw :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (U : Subgroup (G F Ω)) (n : ℕ) [NeZero n] (N : ℕ) (ζ : K) [Normal F K] (χ ψ : G F Ω →* (ZMod n)ˣ) (φ : U → ZMod n) (β : Ω) (a : Kˣ), U = galOf F K Ω → IsPrimitiveRoot ζ n → (∀ g : G F Ω, g (algebraMap K Ω ζ) = (algebraMap K Ω ζ) ^ (χ g : ZMod n).val) → φ ∈ EqHom N U (scalRep (ZMod n) ψ) → IsRad (algebraMap K Ω ζ) U φ β → β ^ n = algebraMap K Ω a →

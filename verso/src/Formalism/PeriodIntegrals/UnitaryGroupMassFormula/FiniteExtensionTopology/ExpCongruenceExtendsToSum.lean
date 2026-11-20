@@ -7,9 +7,7 @@ namespace PI.UnitaryGroupMassFormula.FinExtTop
 open PI.FinExtTop
 
 /- English proof (translation)
-Establish `hr0 : algebraMap O' (FractionRing O') r ≠ 0`. Introduce `h0`. Conclude with `hr.ne_zero ((IsFractionRing.injective O' (FractionRing O')).eq_iff.1 (h0.trans (map_zero _).symm))`. Establish `h' : algebraMap O' (FractionRing O') r • f = algebraMap O' (FractionRing O') r • g`. Simplify `h` using `only [algebraMap_smul]`.
-
-Conclude with `((IsUnit.mk0 _ hr0).smul_left_cancel).1 h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem torsionFree_pi_matrix (O' : Type) [CommRing O'] [IsDomain O'] (X' d : Type) [Fintype d]
     [DecidableEq d] : Module.IsTorsionFree O' (X' → Matrix d d (FractionRing O')) where
@@ -23,11 +21,11 @@ theorem torsionFree_pi_matrix (O' : Type) [CommRing O'] [IsDomain O'] (X' d : Ty
     exact ((IsUnit.mk0 _ hr0).smul_left_cancel).1 h'
 
 /- English proof (translation)
-Introduce `O' _ _ _ _ _ _ X' d _ _ R' hfin`. Set `_ : TopologicalSpace R'` to `moduleTopology O' R'`. Establish `_ : IsModuleTopology O' R'` using `⟨rfl⟩`. Establish `_ : IsTopologicalRing R'` using `IsModuleTopology.isTopologicalRing O' R'`. Establish `_ : ContinuousSMul O' R'` using `IsModuleTopology.toContinuousSMul O' R'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `_` using `torsionFree_pi_matrix O' X' d`. Establish `_ : Module.IsTorsionFree O' R'` using `inferInstance`. Establish `_ : Module.Free O' R'` using `Module.free_of_finite_type_torsion_free'`. Set `b` to `Module.Free.chooseBasis O' R'`. Establish `hc : Continuous b.equivFun` using `IsModuleTopology.continuous_of_linearMap b.equivFun.toLinearMap`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `_ : T2Space R'` using `T2Space.of_injective_continuous b.equivFun.injective hc`. Conclude with `⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, ⟨hfin, inferInstance, inferInstance⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem expCongruenceExtendsToSum : S4 := by
   intro O' _ _ _ _ _ _ X' d _ _ R' hfin

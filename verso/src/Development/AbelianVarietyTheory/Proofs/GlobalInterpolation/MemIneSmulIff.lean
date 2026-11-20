@@ -7,11 +7,11 @@ open NumberField IsDedekindDomain Pointwise
 namespace GlobalTheory.PlaceConjQ
 
 /- English proof (translation)
-Establish `: Fact q.Prime` using `⟨hq⟩`. Use `v.isPrime` as an intermediate fact. Use `w.isPrime` as an intermediate fact. Establish `h1` using `((ReciprocityTheory.Gal.liesOver_span_iff q v.asIdeal).2 hv).over`. Establish `h2` using `((ReciprocityTheory.Gal.liesOver_span_iff q w.asIdeal).2 hw).over`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Take `⟨n, rfl⟩` from `Rat.ringOfIntegersEquiv.symm.surjective x`. Establish `e : Rat.ringOfIntegersEquiv.symm n = algebraMap ℤ (𝓞 ℚ) n` using `(eq_intCast Rat.ringOfIntegersEquiv.symm.toRingHom n).trans (eq_intCast (algebraMap ℤ (𝓞 ℚ)) n).symm`. Rewrite using `[e, ← Ideal.mem_comap, ← Ideal.mem_comap]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `n ∈ v.asIdeal.under ℤ ↔ n ∈ w.asIdeal.under ℤ`. Rewrite using `[← h1, ← h2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_prime_mem {q : ℕ} (hq : q.Prime) {v w : HeightOneSpectrum (𝓞 ℚ)}
     (hv : ((q : ℕ) : 𝓞 ℚ) ∈ v.asIdeal) (hw : ((q : ℕ) : 𝓞 ℚ) ∈ w.asIdeal) : v = w := by
@@ -30,9 +30,9 @@ theorem eq_of_prime_mem {q : ℕ} (hq : q.Prime) {v w : HeightOneSpectrum (𝓞 
   rw [← h1, ← h2]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `ReciprocityTheory.Gal.conj_mem_Ine_smul (F := F) (A := x • A) (γ := x⁻¹) (σ := σ) h` as an intermediate fact. Rewrite `this` using `[inv_inv, inv_smul_smul]`. Conclude with `this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `ReciprocityTheory.Gal.conj_mem_Ine_smul (F := F) (A := A) (γ := x) (σ := x⁻¹ * σ * x) h` as an intermediate fact. Rewrite `this` using `[show x * (x⁻¹ * σ * x) * x⁻¹ = σ by group]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Ine_smul_iff {F Ω : Type*} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (A : ValuationSubring Ω) (x σ : Formalism.ConjugateSelfDual.G F Ω) :
@@ -48,7 +48,7 @@ theorem mem_Ine_smul_iff {F Ω : Type*} [Field F] [NumberField F] [Field Ω] [Al
     exact this
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.V.Lang.mem_Dec, Formalism.MainNotions.V.Lang.mem_Dec, mul_smul, mul_smul, inv_smul_eq_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_Dec_smul_iff {F Ω : Type*} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     (A : ValuationSubring Ω) (x σ : Formalism.ConjugateSelfDual.G F Ω) :
@@ -56,11 +56,9 @@ theorem mem_Dec_smul_iff {F Ω : Type*} [Field F] [NumberField F] [Field Ω] [Al
   rw [Formalism.MainNotions.V.Lang.mem_Dec, Formalism.MainNotions.V.Lang.mem_Dec, mul_smul, mul_smul, inv_smul_eq_iff]
 
 /- English proof (translation)
-Introduce `D V q hq A hA`. Establish `: IsAlgClosure ℚ Formalism.BasicNotions.TV.QbarQ` using `AlgebraicClosure.instIsAlgClosure ℚ`. Take `⟨v, hv, hqv⟩` from `hA`. Take `⟨w, hw, hqw⟩` from `V.plc_above q hq`. Take `rfl` from `eq_of_prime_mem hq hqv hqw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `ReciprocityTheory.Gal.exists_smul_eq_of_over (F := ℚ) hw hv`. Use `⟨x, fun σ => ?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hx]`. Conclude with `mem_Ine_smul_iff _ x σ`. Rewrite using `[← hx]`.
-
-Conclude with `mem_Dec_smul_iff _ x σ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : Formalism.BasicNotions.D7) (V : Formalism.BasicNotions.VData D), Formalism.MainNotions.V.Pf.V3.P4.F_PlcConj V := by
   intro D V q hq A hA

@@ -8,9 +8,9 @@ set_option backward.isDefEq.respectTransparency false
 open CategoryTheory Limits AlgebraicGeometry GroundTheory.PAdicHodge CrystallineSemistableComparison TensorProduct UpperTheory.Gal.crystallineComparison UpperTheory.Ru.crystallineComparison
 
 /- English proof (translation)
-Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Take `⟨s, hs⟩` from `pow_unbounded_of_one_lt ‖q‖ hl`. Establish `hpos : (0 : ℝ) < (l : ℝ) ^ s` using `by positivity`. Use `⟨s, ⟨((l ^ s : ℕ) : ℚ_[l]) * q, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[norm_pow, Padic.norm_p, inv_pow, inv_mul_le_one₀ hpos]`. Conclude with `hs.le`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_mul_int (l : ℕ) [Fact l.Prime] (q : ℚ_[l]) :
     ∃ (s : ℕ) (c : ℤ_[l]), ((l ^ s : ℕ) : ℚ_[l]) * q = (c : ℚ_[l]) := by
@@ -24,13 +24,13 @@ private theorem pow_mul_int (l : ℕ) [Fact l.Prime] (q : ℚ_[l]) :
   exact hs.le
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul q x`. Take `⟨s, c, hc⟩` from `pow_mul_int l q`. Use `⟨s, c • x, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq : ((l ^ s : ℕ) : ℚ_[l]) • q = c • (1 : ℚ_[l])`. Rewrite using `[smul_eq_mul, hc, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ_[l], TensorProduct.smul_tmul', hq, TensorProduct.smul_tmul]`. Consider the case `add a b ha hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨s, h, e⟩` from `ha`. Take `⟨t, k, f⟩` from `hb`. Use `⟨s + t, (l ^ t : ℕ) • h + (l ^ s : ℕ) • k, ?_⟩` and prove the remaining obligations. Establish `e1 : (l ^ (s + t) : ℕ) • a = (l ^ t : ℕ) • (1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] h`. Rewrite using `[← e, smul_smul, pow_add, mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (l ^ (s + t) : ℕ) • b = (l ^ s : ℕ) • (1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] k`. Rewrite using `[← f, smul_smul, pow_add]`. Establish `t1 : ∀ (c : ℕ) (x : H), c • (1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] x = (1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] (c • x)` using `fun c x => (map_nsmul (TensorProduct.mk ℤ_[l] ℚ_[l] H 1) c x).symm`. Rewrite using `[smul_add, e1, e2, TensorProduct.tmul_add, t1, t1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_int {l : ℕ} [Fact l.Prime] {H : Type*} [AddCommGroup H] [Module ℤ_[l] H]
     (a : ℚ_[l] ⊗[ℤ_[l]] H) : ∃ (s : ℕ) (h : H), (l ^ s : ℕ) • a = (1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] h := by
@@ -56,20 +56,20 @@ private theorem exists_int {l : ℕ} [Fact l.Prime] {H : Type*} [AddCommGroup H]
     rw [smul_add, e1, e2, TensorProduct.tmul_add, t1, t1]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qk55.exists_kill h e`.
+A detailed English derivation is pending.
 -/
 private theorem exists_kill {l : ℕ} [Fact l.Prime] {H : Type*} [AddCommGroup H] [Module ℤ_[l] H]
     (h : H) (e : (1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] h = 0) : ∃ b : ℕ, (l ^ b : ℕ) • h = 0 :=
   _root_.UpperTheory.Reformulated.B.Qk55.exists_kill h e
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Finset.univ.sup f, fun a => Finset.le_sup (Finset.mem_univ a)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_ub {α : Type*} [Fintype α] (f : α → ℕ) : ∃ s, ∀ a, f a ≤ s :=
   ⟨Finset.univ.sup f, fun a => Finset.le_sup (Finset.mem_univ a)⟩
 
 /- English proof (translation)
-Simplify using `only [Model.pullV, Model.toV, Model.pullT, GlobalTheory.EtC.pullHQ]`. Conclude with `LinearMap.baseChange_tmul _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pullV_toV {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M N : Model l K}
     (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (n : ℕ) (x : N.T n) :
@@ -78,36 +78,36 @@ private theorem pullV_toV {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l
   exact LinearMap.baseChange_tmul _ _ _
 
 /- English proof (translation)
-The claim follows from `map_nsmul (TensorProduct.mk ℤ_[l] ℚ_[l] (GlobalTheory.EtC.Hl l M.spc n 0) 1) c x`.
+A detailed English derivation is pending.
 -/
 private theorem toV_nsmul {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (M : Model l K) (n c : ℕ)
     (x : M.T n) : M.toV n (c • x) = c • M.toV n x :=
   map_nsmul (TensorProduct.mk ℤ_[l] ℚ_[l] (GlobalTheory.EtC.Hl l M.spc n 0) 1) c x
 
 /- English proof (translation)
-The claim follows from `map_sub (TensorProduct.mk ℤ_[l] ℚ_[l] (GlobalTheory.EtC.Hl l M.spc n 0) 1) x y`.
+A detailed English derivation is pending.
 -/
 private theorem toV_sub {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (M : Model l K) (n : ℕ)
     (x y : M.T n) : M.toV n (x - y) = M.toV n x - M.toV n y :=
   map_sub (TensorProduct.mk ℤ_[l] ℚ_[l] (GlobalTheory.EtC.Hl l M.spc n 0) 1) x y
 
 /- English proof (translation)
-The claim follows from `map_sum (TensorProduct.mk ℤ_[l] ℚ_[l] (GlobalTheory.EtC.Hl l M.spc n 0) 1) f t`.
+A detailed English derivation is pending.
 -/
 private theorem toV_sum {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (M : Model l K) (n : ℕ)
     {α : Type*} (t : Finset α) (f : α → M.T n) : M.toV n (∑ a ∈ t, f a) = ∑ a ∈ t, M.toV n (f a) :=
   map_sum (TensorProduct.mk ℤ_[l] ℚ_[l] (GlobalTheory.EtC.Hl l M.spc n 0) 1) f t
 
 /- English proof (translation)
-Introduce `l _ K M W π hπ j n T hr A hA z hz hsp ι _ v`. Establish `h1 : ∀ (i : Fin (n + 1)) (k : ι), ∃ (s : ℕ) (h : M.T j), (l ^ s : ℕ) • A i (M.toV j (v k)) = M.toV j h` using `fun i k => exists_int (H := GlobalTheory.EtC.Hl l M.spc j 0) (A i (M.toV j (v k)))`. Use `choose s' h hs' using h1`. Take `⟨s, hs⟩` from `exists_ub (fun p : Fin (n + 1) × ι => s' p.1 p.2)`. Establish `hle : ∀ i k, s' i k ≤ s` using `fun i k => hs (i, k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `w : Fin (n + 1) → ι → M.T j` to `fun i k => (l ^ (s - s' i k) : ℕ) • h i k`. Establish `hw : ∀ i k, M.toV j (w i k) = (l ^ s : ℕ) • A i (M.toV j (v k))`. Introduce `i k`. Establish `e : (l ^ s : ℕ) = l ^ (s - s' i k) * l ^ s' i k` using `by rw [← pow_add, Nat.sub_add_cancel (hle i k)]`. Rewrite using `[e, mul_smul, hs', toV_nsmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `d : ∀ i k, W.T j` to `fun i k => Model.pullT π hπ j (w i k) - (l ^ s : ℕ) • ∑ a, Model.pullT (z i a ≫ (T i).r) (by rw [Category.assoc, hr, ← Category.assoc, hz, hπ]) j (v k)`. Establish `hd : ∀ i k, W.toV j (d i k) = 0`. Introduce `i k`. Simplify using `only [d]`. Rewrite using `[toV_sub, toV_nsmul, toV_sum, ← pullV_toV, hw, map_nsmul, hA i W π hπ (z i) (hz i) (hsp i)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [pullV_toV, sub_self]`. Establish `h2 : ∀ i k, ∃ b : ℕ, (l ^ b : ℕ) • d i k = 0` using `fun i k => exists_kill (H := GlobalTheory.EtC.Hl l W.spc j 0) (d i k) (hd i k)`. Use `choose b' hb' using h2`. Take `⟨b, hb⟩` from `exists_ub (fun p : Fin (n + 1) × ι => b' p.1 p.2)`. Use `⟨s, b, w, hw, fun i k => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (l ^ b : ℕ) = l ^ (b - b' i k) * l ^ b' i k` using `by rw [← pow_add, Nat.sub_add_cancel (hb (i, k))]`. Establish `hz0 : (l ^ b : ℕ) • d i k = 0` using `by rw [e, mul_smul, hb', smul_zero]`. Simplify using `only [d] at hz0`. Rewrite `hz0` using `[smul_sub, sub_eq_zero]`. Rewrite using `[hz0, smul_smul, pow_add, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.hecke_correspondence_product :
     ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (M W : Model l K) (π : W.X ⟶ M.X) (hπ : π ≫ M.p = W.p) (j n : ℕ)

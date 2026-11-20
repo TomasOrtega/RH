@@ -5,13 +5,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecSigmaBijectiveSt
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `R _ F G f V b h`. Establish `hd : ∀ (V' W : Scheme.{0}) (g : V' ⟶ V) (k : W ⟶ V'), (∃ a : Sec F V', Sec.map f a = Sec.res g b) → ∃ a : Sec F W, Sec.map f a = Sec.res (k ≫ g) b`. Introduce and unpack `V' W g k ⟨a, ha⟩`. Conclude with `⟨Sec.res k a, by rw [map_res, ha, res_res]⟩`. Establish `h2` using `(GlobalTheory.T.etaleLocally_iff_affine_etale_point_cover V (fun W k => ∃ a : Sec F W, Sec.map f a = Sec.res k b) hd).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose Wf k _ het hx a ha using h2`. Take `⟨a', ha'⟩` from `(GlobalTheory.T.sec_sigma_res_bijective R F Wf).2 a`. Use `⟨∐ Wf, Sigma.desc k, a', ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: IsZariskiLocalAtSource @Etale` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Conclude with `IsZariskiLocalAtSource.sigmaDesc (P := @Etale) fun i => het i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hx x`. Use `⟨Sigma.ι Wf x y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Sigma.ι_desc, hy]`. Use `(GlobalTheory.T.sec_sigma_res_bijective R G Wf).1 (funext fun i => ?_) show Sec.res (Sigma.ι Wf i) (Sec.map f a') = Sec.res (Sigma.ι Wf i) (Sec.res (Sigma.desc k) b)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Sec.res (Sigma.ι Wf i) a' = a i` using `congrFun ha' i`. Rewrite using `[← map_res, e, ha, res_res, Sigma.ι_desc]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.coverOne_of :
     CoverOne := by

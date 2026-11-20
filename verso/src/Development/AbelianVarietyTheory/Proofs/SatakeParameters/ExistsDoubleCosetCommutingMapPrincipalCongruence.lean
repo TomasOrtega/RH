@@ -11,27 +11,25 @@ noncomputable section
 namespace GlobalTheory.HeckeIsoMap
 
 /- English proof (translation)
-Introduce `L _ _ _ n a S₁ S₂ hS₁ hiso N hN hex`. Take `⟨T, hT⟩` from `hiso`. Take `⟨φ, hφ⟩` from `LinearMap.exists_extend (S₂.subtype ∘ₗ T.toLinearMap)`. Establish `hφS : ∀ f (hf : f ∈ S₁), φ f = ((T ⟨f, hf⟩ : S₂) : GAf L n → a.W)`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `LinearMap.congr_fun hφ ⟨f, hf⟩` as an intermediate fact. Simplify using `using this`. Establish `hrt : ∀ h (f : GAf L n → a.W), f ∈ S₁ → φ (NG.rt L n h f) = NG.rt L n h (φ f)`. Introduce `h f hf`. Establish `hf' : NG.rt L n h f ∈ S₁` using `hS₁.1.stable h f hf`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hφS _ hf', hφS _ hf]`. Conclude with `hT h ⟨f, hf⟩ ⟨_, hf'⟩ rfl`. Use `⟨φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf hfix`. Use `⟨?_, fun κ hκ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφS _ hf]`. Conclude with `(T ⟨f, hf⟩).2`. Rewrite using `[← hrt κ f hf, hfix κ hκ]`. Take `⟨f, hf, hfix, hne⟩` from `hex`. Use `⟨f, hf, hfix, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hφS _ hf]`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Establish `: T ⟨f, hf⟩ = 0` using `Subtype.ext h0`. Use `congrArg Subtype.val ((LinearEquiv.map_eq_zero_iff T).1 this)` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this`. Introduce `g f hf hfix set J := GlobalTheory.IsotOrth.congSub L n N with hJ set D : Set (GAf L n) := {x | ∃ u ∈ J, ∃ u' ∈ J, x = u * g * u'} with hD`. Take `⟨M, hM, hMc⟩` from `GlobalTheory.ConjCong.exists_cong_conj L n N g hN`. Establish `hfin : {c : GAf L n ⧸ J | ∃ x ∈ D, (x : GAf L n ⧸ J) = c}.Finite`. Use `((GlobalTheory.HeckeRecon.finite_cosets (L := L) (n := n) (N * M) (Nat.mul_pos hN hM)).image (fun c : GAf L n ⧸ GlobalTheory.IsotOrth.congSub L n (N * M) => ((c.out * g : GAf L n) : GAf L n ⧸ J))).subset ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x, ⟨u, hu, u', hu', rfl⟩, rfl⟩`. Use `⟨(u : GAf L n ⧸ GlobalTheory.IsotOrth.congSub L n (N * M)), ⟨u, (show NG.Cong L n N u from hu).1, rfl⟩, ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k ∈ GlobalTheory.IsotOrth.congSub L n (N * M), (Quotient.out (u : GAf L n ⧸ GlobalTheory.IsotOrth.congSub L n (N * M))) = u * k := by`. Establish `h1` using `QuotientGroup.out_eq' (u : GAf L n ⧸ GlobalTheory.IsotOrth.congSub L n (N * M))`. Rewrite `h1` using `[QuotientGroup.eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, Subgroup.inv_mem _ h1, by group⟩`. Take `⟨hkmem, hkeq⟩` from `hk`. Use `show ((Quotient.out (u : GAf L n ⧸ GlobalTheory.IsotOrth.congSub L n (N * M)) * g : GAf L n) : GAf L n ⧸ J) = ((u * g * u' : GAf L n) : GAf L n ⧸ J)`. Rewrite using `[hkeq, QuotientGroup.eq]`. Establish `hc : g⁻¹ * k * g ∈ J` using `hMc k hkmem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (u * k * g)⁻¹ * (u * g * u') = (g⁻¹ * k * g)⁻¹ * u'` using `by group`. Rewrite using `[this]`. Conclude with `J.mul_mem (J.inv_mem hc) hu'`. Establish `hsum : ∀ F : GAf L n → a.W, NG.heckeD J D F = ∑ c ∈ hfin.toFinset, (if hc : ∃ x ∈ D, (x : GAf L n ⧸ J) = c then NG.rt L n hc.choose F else 0)`. Introduce `F`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[GlobalTheory.HeckeRecon.heckeD_eq_sum J D hfin, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[hsum, hsum, map_sum]`.
-
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`. Conclude with `hrt _ f hf`. Conclude with `map_zero φ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isoMap : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n) (S₁ S₂ : Submodule ℂ (GAf L n → a.W)), NG.IsIrrRep a.ρ S₁ → NG.IsoRep S₁ S₂ → ∀ N : ℕ, 0 < N → (∃ f ∈ S₁, (∀ κ, NG.Cong L n N κ → NG.rt L n κ f = f) ∧ f ≠ 0) → ∃ φ : (GAf L n → a.W) →ₗ[ℂ] (GAf L n → a.W), (∀ f ∈ S₁, (∀ κ, NG.Cong L n N κ → NG.rt L n κ f = f) → φ f ∈ S₂ ∧ ∀ κ, NG.Cong L n N κ → NG.rt L n κ (φ f) = φ f) ∧ (∃ f ∈ S₁, (∀ κ, NG.Cong L n N κ → NG.rt L n κ f = f) ∧ φ f ≠ 0) ∧ (∀ (g : GAf L n) (f : GAf L n → a.W), f ∈ S₁ → (∀ κ, NG.Cong L n N κ → NG.rt L n κ f = f) → φ (NG.heckeD (GlobalTheory.IsotOrth.congSub L n N) {x | ∃ u ∈ GlobalTheory.IsotOrth.congSub L n N, ∃ u' ∈ GlobalTheory.IsotOrth.congSub L n N, x = u * g * u'} f) = NG.heckeD (GlobalTheory.IsotOrth.congSub L n N) {x | ∃ u ∈ GlobalTheory.IsotOrth.congSub L n N, ∃ u' ∈ GlobalTheory.IsotOrth.congSub L n N, x = u * g * u'} (φ f)) := by
   classical

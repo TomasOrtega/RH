@@ -30,7 +30,7 @@ def prodD (a : ι → AE D) (Ψ : ι → WO S T → ℂ) (s : Finset ι) (y : WO
   if IsHalf (∑ w ∈ s, a w) y then ∏ w ∈ s, Ψ w (a w • y) else 0
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero fun v hv => ho v w fun h => hw (h ▸ hv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_mul_zero {a : ι → AE D} (ho : ∀ v w, v ≠ w → a v * a w = 0) {s : Finset ι} {w : ι} (hw : w ∉ s) :
     (∑ v ∈ s, a v) * a w = 0 := by
@@ -38,9 +38,9 @@ theorem sum_mul_zero {a : ι → AE D} (ho : ∀ v w, v ≠ w → a v * a w = 0)
   exact Finset.sum_eq_zero fun v hv => ho v w fun h => hw (h ▸ hv)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Unfold `prodD halfInd`. Rewrite using `[Finset.sum_empty, Finset.prod_empty]`. Distinguish the cases in `h : IsHalf (0 : AE D) y`. Rewrite using `[if_pos h, if_pos ⟨(GlobalTheory.VecProd.isHalf_zero_iff y).1 h ▸ Λ.zero_mem, h⟩]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg fun h' => h h'.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prodD_empty (a : ι → AE D) (Ψ : ι → WO S T → ℂ) (Λ : AddSubgroup (WO S T)) :
     prodD a Ψ ∅ = halfInd 0 Λ := by
@@ -52,11 +52,11 @@ theorem prodD_empty (a : ι → AE D) (Ψ : ι → WO S T → ℂ) (Λ : AddSubg
   · rw [if_neg h, if_neg fun h' => h h'.2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `h0` using `sum_mul_zero ho hw`. Establish `hiff : IsHalf (a w + ∑ v ∈ s, a v) y ↔ IsHalf (∑ v ∈ s, a v) (y - a w • y)` using `GlobalTheory.VecProd.isHalf_add_iff h0 y`. Establish `hp : ∏ v ∈ s, Ψ v (a v • (y - a w • y)) = ∏ v ∈ s, Ψ v (a v • y)` using `Finset.prod_congr rfl fun v hv => by`. Rewrite using `[smul_sub, smul_smul, ho v w fun h => hw (h ▸ hv), zero_smul, sub_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tens_apply]`. Unfold `prodD`. Rewrite using `[Finset.sum_insert hw, Finset.prod_insert hw, hp]`. Distinguish the cases in `h : IsHalf (a w + ∑ v ∈ s, a v) y`. Rewrite using `[if_pos h, if_pos (hiff.1 h), mul_comm]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg fun h' => h (hiff.2 h'), zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prodD_insert {a : ι → AE D} (ho : ∀ v w, v ≠ w → a v * a w = 0) (Ψ : ι → WO S T → ℂ) {s : Finset ι} {w : ι}
     (hw : w ∉ s) : prodD a Ψ (insert w s) = tens (a w) (prodD a Ψ s) (Ψ w) := by
@@ -75,7 +75,7 @@ theorem prodD_insert {a : ι → AE D} (ho : ∀ v w, v ≠ w → a v * a w = 0)
   · rw [if_neg h, if_neg fun h' => h (hiff.2 h'), zero_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Unfold `prodD`. Rewrite using `[Finset.prod_congr rfl fun w hw => congrFun (h w hw) _]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodD_congr (a : ι → AE D) {Ψ Ψ' : ι → WO S T → ℂ} {s : Finset ι} (h : ∀ w ∈ s, Ψ w = Ψ' w) :
     prodD a Ψ s = prodD a Ψ' s := by
@@ -84,9 +84,9 @@ theorem prodD_congr (a : ι → AE D) {Ψ Ψ' : ι → WO S T → ℂ} {s : Fins
   rw [Finset.prod_congr rfl fun w hw => congrFun (h w hw) _]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[prodD_empty a Ψ Λ, Finset.sum_empty]`. Conclude with `GlobalTheory.isSBHalf_halfInd _ _`. Consider the case `insert w s hw ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prodD_insert ho Ψ hw, Finset.sum_insert hw, add_comm]`. Conclude with `Factor.isSBHalf_tens (sum_mul_zero ho hw) (hi w) (hΛ w) ih (hΨ w)`.
+A detailed English derivation is pending.
 -/
 theorem prodD_sb {a : ι → AE D} (ho : ∀ v w, v ≠ w → a v * a w = 0) (hi : ∀ w, a w * a w = a w)
     {Λ : AddSubgroup (WO S T)} (hΛ : ∀ w, ∀ u ∈ Λ, a w • u ∈ Λ) {Ψ : ι → WO S T → ℂ}
@@ -100,9 +100,9 @@ theorem prodD_sb {a : ι → AE D} (ho : ∀ v w, v ≠ w → a v * a w = 0) (hi
     exact Factor.isSBHalf_tens (sum_mul_zero ho hw) (hi w) (hΛ w) ih (hΨ w)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [prodD_empty a _ Λ, Finset.sum_empty]`. Consider the case `insert w s hw ih`. Rewrite using `[prodD_insert ho _ hw, Finset.sum_insert hw, add_comm, ih]`. Establish `h` using `HalfOff.tens_vac (sum_mul_zero ho hw) (hi w) Λ (hΛ w)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[one_smul, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem prodD_ind {a : ι → AE D} (ho : ∀ v w, v ≠ w → a v * a w = 0) (hi : ∀ w, a w * a w = a w)
     {Λ : AddSubgroup (WO S T)} (hΛ : ∀ w, ∀ u ∈ Λ, a w • u ∈ Λ) (s : Finset ι) :
@@ -115,21 +115,19 @@ theorem prodD_ind {a : ι → AE D} (ho : ∀ v w, v ≠ w → a v * a w = 0) (h
     rwa [one_smul, one_smul] at h
 
 /- English proof (translation)
-Take `⟨⟨Tm, hTm⟩, hall⟩` from `hf`. Establish `hΛ : ∀ w, ∀ u ∈ (latO S T ΛS ΛT fun _ => True), a w • u ∈ (latO S T ΛS ΛT fun _ => True)` using `fun w u hu => GlobalTheory.CosetRow.smul_mem_latO_idem _ _ (hi w) hu`. Set `mix : Finset ι → ι → WO S T → ℂ` to `fun s w => if w ∈ s then Ψ w else halfInd (a w) (latO S T ΛS ΛT fun _ => True)`. Establish `hmix : ∀ s w, IsSBHalf (a w) (latO S T ΛS ΛT fun _ => True) (mix s w)` using `fun s w => by`. Distinguish the cases in `h : w ∈ s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [mix, if_pos h]`. Conclude with `hΨ w`. Simplify using `only [mix, if_neg h]`. Conclude with `GlobalTheory.isSBHalf_halfInd _ _`. Establish `hV0 : Tm (prodD a (mix ∅) Finset.univ) = f₀`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[prodD_congr a (Ψ' := fun w => halfInd (a w) (latO S T ΛS ΛT fun _ => True)) (fun w _ => if_neg (Finset.notMem_empty w)), prodD_ind ho hi hΛ]`. Establish `h` using `hTm.vac`. Rewrite `h` using `[one_smul]`. Then use the resulting hypothesis. Establish `hstep : ∀ s w, w ∉ s → IsThetaAt ψ (symplO S T) (heisO ψ S T) (a w) (latO S T ΛS ΛT fun _ => True) 1 (Tm (prodD a (mix s) Finset.univ)) (Ψ w) (Tm (prodD a (mix (insert w s)) Finset.univ))`. Introduce `s w hw`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : w ∉ Finset.univ.erase w` using `Finset.notMem_erase w _`. Establish `hu : (Finset.univ : Finset ι) = insert w (Finset.univ.erase w)` using `(Finset.insert_erase (Finset.mem_univ w)).symm`. Establish `e1 : prodD a (mix s) Finset.univ = tens (a w) (prodD a (mix s) (Finset.univ.erase w)) (halfInd (a w) (latO S T ΛS ΛT fun _ => True))` using `by conv_lhs => rw [hu]`. Rewrite using `[prodD_insert ho _ hne]`. Simplify using `only [mix, if_neg hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : prodD a (mix (insert w s)) Finset.univ = tens (a w) (prodD a (mix s) (Finset.univ.erase w)) (Ψ w)` using `by conv_lhs => rw [hu]`. Rewrite using `[prodD_insert ho _ hne, prodD_congr a (Ψ := mix (insert w s)) (Ψ' := mix s) fun v hv => by`. Establish `hvw : v ≠ w` using `Finset.ne_of_mem_erase hv`. Simplify using `only [mix, Finset.mem_insert, hvw, false_or]]`. Simplify using `only [mix, if_pos (Finset.mem_insert_self w s)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hTm' : IsPlaceModel ψ (symplO S T) (heisO ψ S T) ((∑ v ∈ Finset.univ.erase w, a v) + a w) (latO S T ΛS ΛT fun _ => True) 1 f₀ Tm`. Rewrite using `[Finset.sum_erase_add _ _ (Finset.mem_univ w)]` and apply the resulting hypothesis. Establish `hM` using `Factor.isPlaceModel_tensR D ψ S T _ (a w) _ _ _ f₀ Tm (sum_mul_zero ho hne) (hi w) (hΛ w) (fun _ _ => Iff.rfl) (prodD_sb ho hi hΛ (hmix s) (Finset.univ.erase w)) hTm'`. Rewrite using `[e1, e2]`. Conclude with `⟨⟨_, hM⟩, fun T' hT' => GlobalTheory.PlaceVec.placeModel_unique hψ hS hT (hi w) (hinf w) hM hT' (hΨ w)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun s => Tm (prodD a (mix s) Finset.univ), hV0, ?_, fun s => ?_, hstep⟩` and prove the remaining obligations. Rewrite using `[hall Tm hTm]`. Conclude with `congrArg Tm (prodD_congr a fun w hw => if_pos hw)`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => beta_reduce`.
-
-Rewrite using `[hV0]`. Conclude with `h₀`. Consider the case `insert w s hw ih => exact GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt hψ hθ (hstep s w hw) ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_chain [Fintype ι] {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
@@ -187,7 +185,7 @@ theorem exists_chain [Fintype ι] {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam 
     | insert w s hw ih => exact GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt hψ hθ (hstep s w hw) ih
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `h`. Rewrite using `[Finset.sum_singleton]`. Conclude with `hes w (Finset.mem_singleton_self w)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idemAt_of_single {a : AE D} {w : Pl D.host.E} (h : IsIdemSum a {w}) : Formalism.L2.NTheta.IsIdemAt a w := by
   obtain ⟨⟨es, hes, rfl⟩, -⟩ := h
@@ -195,7 +193,7 @@ theorem idemAt_of_single {a : AE D} {w : Pl D.host.E} (h : IsIdemSum a {w}) : Fo
   exact hes w (Finset.mem_singleton_self w)
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Rewrite using `[← Finset.sum_coe_sort P es]`. Conclude with `Finset.sum_congr rfl fun w _ => by`. Rewrite using `[GlobalTheory.IdemAtPl.eq_atPl_of_isIdemAt (idemAt_of_single (ha w)), GlobalTheory.IdemAtPl.eq_atPl_of_isIdemAt (hes w.1 w.2)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_eq {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) {a : P → AE D}
     (ha : ∀ w, IsIdemSum (a w) {w.1}) : ∑ w, a w = e := by
@@ -205,9 +203,9 @@ theorem sum_eq {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) {a : P
     rw [GlobalTheory.IdemAtPl.eq_atPl_of_isIdemAt (idemAt_of_single (ha w)), GlobalTheory.IdemAtPl.eq_atPl_of_isIdemAt (hes w.1 w.2)]
 
 /- English proof (translation)
-Establish `h1` using `cpt_of_isIdemAt (idemAt_of_single ha)`. Establish `h2` using `cpt_of_isIdemAt (idemAt_of_single hb)`. Use `ae_ext ?_ fun Q => ?_` and prove the remaining obligations. Rewrite using `[map_mul, GlobalTheory.PlaceVec.idemSum_infPart ha, zero_mul, map_zero]`. Rewrite using `[map_mul, map_mul, map_zero, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hQ : Q = v`. Rewrite using `[h2.2 Q (hQ ▸ h), mul_zero]`. Rewrite using `[h1.2 Q hQ, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem orth {a b : AE D} {v w : Pl D.host.E} (ha : IsIdemSum a {v}) (hb : IsIdemSum b {w}) (h : v ≠ w) : a * b = 0 := by
   have h1 := cpt_of_isIdemAt (idemAt_of_single ha)
@@ -220,7 +218,7 @@ theorem orth {a b : AE D} {v w : Pl D.host.E} (ha : IsIdemSum a {v}) (hb : IsIde
     · rw [h1.2 Q hQ, zero_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[map_mul, map_mul, (cpt_of_isIdemAt (idemAt_of_single ha)).1, one_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_cpt_smul {a : AE D} {w : Pl D.host.E} (ha : IsIdemSum a {w}) {m n : ℕ} (y : Mx D m n) :
     ((a • y).map fun x => cpt w (toEAf D x)) = y.map fun x => cpt w (toEAf D x) := by
@@ -229,25 +227,23 @@ theorem map_cpt_smul {a : AE D} {w : Pl D.host.E} (ha : IsIdemSum a {w}) {m n : 
   rw [map_mul, map_mul, (cpt_of_isIdemAt (idemAt_of_single ha)).1, one_mul]
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t e he φ hφ fd hfd eL heL`. Establish `hL : R.toLevCh.Is A.μ0` using `s.core.lev`. Establish `hAA : ∀ w ∈ locPl ch.G t, ((∀ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) ≤ 1) ∧ ∃ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) = 1)`. Introduce `w hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb` using `GlobalTheory.FunObj.Good.badInt_notMem hL (GlobalTheory.FlipIntegrand.pde_ne_q_of_setting s) (hch.guard t) hw`. Establish `h2q` using `fun h => hb (GlobalTheory.HalfCompare.mem_of_dvd h (Dvd.intro _ rfl))`. Establish `hN` using `fun h => hb (GlobalTheory.HalfCompare.mem_of_dvd h (Dvd.intro_left _ rfl))`. Use `⟨fun a ha => ?_, ⟨_, GlobalTheory.HostClear.absNorm_mem_AA D, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FunObj.Good.valued_alg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.FunObj.Good.valuation_le_one_of_mem h2q (Or.inl ha)`. Rewrite using `[GlobalTheory.FunObj.Good.valued_alg]`. Conclude with `GlobalTheory.FunObj.Good.valuation_nat hN`. Establish `ho : ∀ v w, v ≠ w → eL v * eL w = 0` using `fun v w h => orth (heL v) (heL w) fun h' => h (Subtype.ext h')`. Establish `hi : ∀ w, eL w * eL w = eL w` using `fun w => GlobalTheory.PlaceVec.idemSum_mul_self (heL w)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinf : ∀ w, infPart D (eL w) = 0` using `fun w => GlobalTheory.PlaceVec.idemSum_infPart (heL w)`. Establish `hsum` using `sum_eq he heL`. Establish `key : ∀ j : Fin D.R.m, ∃ V : Finset (locPl ch.G t) → Sch ch.G (.down t D.R.m j), V ∅ = ch.rm.vT D.R.m j ∧ V Finset.univ = fd j ∧ (∀ S, IsThetaFunO ch.W.ψ _ _ (V S)) ∧ ∀ (S : Finset (locPl ch.G t)) (w : locPl ch.G t), w ∉ S → IsLocVec ch.W (.mu t D.R.m j) (eL w) (V S) (fun y => if …` using `(D.R.m, j + 1)) (Y := (D.R.m, j)) ⟨le_rfl, j.2⟩ ⟨le_rfl, j.2.le⟩ (y.map fun a => cpt w.1 (toEAf D a))) else 0) (V (insert w S)) := by`. Introduce `j`. Establish `hS : IsSelfDualC (ch.G.pS (.mu t D.R.m j)) (ch.G.latS (.mu t D.R.m j))` using `(node_isV ch.G hL (X := .grid D.R.m j) ⟨le_rfl, j.2.le⟩).sd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : IsSelfDualC (ch.G.pT (.mu t D.R.m j)) (ch.G.latT (.mu t D.R.m j))` using `(node_isV ch.G hL (X := .grid D.R.m ((j : ℕ) + 1)) ⟨le_rfl, j.2⟩).sd`. Establish `hβS` using `ch.S.B.isFrame_β hL (i := D.R.m) (j := (j : ℕ)) le_rfl j.2.le`. Establish `hβT` using `ch.S.B.isFrame_β hL (i := D.R.m) (j := (j : ℕ) + 1) le_rfl j.2`. Establish `hmem : GlobalTheory.SplitFlip.Edge.theta D.R.m j ∈ GlobalTheory.SplitFlip.oppositePath D.R.m`. Simplify using `[GlobalTheory.SplitFlip.oppositePath]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Ψ : locPl ch.G t → WO (ch.G.pS (.mu t D.R.m j)) (ch.G.pT (.mu t D.R.m j)) → ℂ` to `fun w y => if IsHalf (eL w) y then φ w (.theta D.R.m j) (ch.S.B.coord t w.1 (X := (D.R.m, j + 1)) (Y := (D.R.m, j)) ⟨le_rfl, j.2⟩ ⟨le_rfl, j.2.le⟩ (y.map fun a => cpt w.1 (toEAf D a))) else 0`. Establish `hΨ : ∀ w, IsSBHalf (eL w) (latO (ch.G.pS (.mu t D.R.m j)) (ch.G.pT (.mu t D.R.m j)) (ch.G.latS (.mu t D.R.m j) : Set _) (ch.G.latT (.mu t D.R.m j) : Set _) fun _ => True) (Ψ w)`. Introduce `w`. Establish `hin : ∀ v : ({w.1} : Finset (Pl D.host.E)), v.1 ∈ locPl ch.G t` using `fun v => by`. Rewrite using `[Finset.mem_singleton.1 v.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `w.2`. Establish `hSB` using `GlobalTheory.VecsLast.isSBHalf_frames hS hT hβS hβT (heL w) (fun v hv => hAA v (hin ⟨v, hv⟩)) (fun v => GlobalTheory.VecsLast.coordHom ch.S.B t v.1 (X := (D.R.m, (j : ℕ) + 1)) (Y := (D.R.m, (j : ℕ))) ⟨le_rfl, j.2⟩ ⟨le_rfl, j.2.le⟩) (fun v z => GlobalTheory.VecsLast.coordHom_int_i …`. Use `haveI : Subsingleton ({w.1} : Finset (Pl D.host.E)) := ⟨fun a b => Subtype.ext ((Finset.mem_singleton.1 a.2).trans (Finset.mem_singleton.1 b.2).symm)⟩`. Use `hSB using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Fintype.prod_subsingleton _ ⟨w.1, Finset.mem_singleton_self _⟩]`. Both sides reduce to the same expression. Establish `hprod : prodD eL Ψ Finset.univ = fun y => if IsHalf e y then ∏ w : locPl ch.G t, φ w (.theta D.R.m j) (ch.S.B.coord t w.1 (X` using `(D.R.m, j + 1)) (Y := (D.R.m, j)) ⟨le_rfl, j.2⟩ ⟨le_rfl, j.2.le⟩ (y.map fun a => cpt w.1 (toEAf D a))) else 0 := by`. Use function extensionality and compare the values at `y`. Unfold `prodD`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hsum]`. Use `if_congr Iff.rfl (Finset.prod_congr rfl fun w _ => ?_) rfl` and prove the remaining obligations. Use `(if_pos (Factor.half_of_idem (hi w) y)).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun z => φ w (.theta D.R.m j) (ch.S.B.coord t w.1 (X := (D.R.m, j + 1)) (Y := (D.R.m, j)) ⟨le_rfl, j.2⟩ ⟨le_rfl, j.2.le⟩ z)) (map_cpt_smul (heL w) y)`. Take `⟨V, h1, h2, h3, h4⟩` from `exists_chain ch.W.ψ_std ch.W.θ_is hS hT ho hi hinf hΨ (ch.rm.vT_is t D.R.m j le_rfl j.2).2.theta (f := fd j) (by rw [hsum, hprod]; exact (hfd j).2)`.
-
-Conclude with `⟨V, h1, h2, h3, fun S w hw => ⟨hΨ w, h4 S w hw⟩⟩`. Use `choose V h1 h2 h3 h4 using key`. Conclude with `⟨fun S j => V j S, funext h1, funext h2, fun S j => h3 j S, fun S w hw j => h4 j S w hw⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem subset_vectors : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (e : AE D), IsIdemSum e (locPl ch.G t) → ∀ (φ : (∀ w : locPl ch.G t, ∀ b : GlobalTheory.SplitFlip.Edge, Matrix (Fin ((locGrid ch.G t w.1).rank b.tgt)) (Fin ((locGrid ch.G t w.1).rank b.src)) (Kw w.1) → ℂ)), (∀ w : locPl ch.G t, ∀ b ∈ GlobalTheory.SplitFlip.oppositePath D.R.m, GlobalTheory.SplitFlip.IsNatDatum (unifAt w.1) (depthAt ch.G w.1) (φ w b)) → ∀ (fd : SchDown ch.G t), (∀ j : Fin D.R.m, IsLocVec ch.W (.mu t D.R.m j) e (ch.rm.vT D.R.m j) (fun y => if IsHalf e y then ∏ w : locPl ch.G t, φ w (.theta D.R.m j) (ch.S.B.coord t w.1 (X := (D.R.m, j + 1)) (Y := (D.R.m, j)) ⟨le_rfl, j.2⟩ ⟨le_rfl, j.2.le⟩ (y.map fun a => cpt w.1 (toEAf D a))) else 0) (fd j)) → ∀ (eL : locPl ch.G t → AE D), (∀ w, IsIdemSum (eL w) {w.1}) → ∃ V : Finset (locPl ch.G t) → SchDown ch.G t, V ∅ = (fun j : Fin D.R.m => ch.rm.vT D.R.m j) ∧ V Finset.univ = fd ∧ (∀ S j, IsThetaFunO ch.W.ψ _ _ (V S j)) ∧ ∀ (S : Finset (locPl ch.G t)) (w : locPl ch.G t), w ∉ S → ∀ j : Fin D.R.m, IsLocVec ch.W (.mu t D.R.m j) (eL w) (V S j) (fun y => if IsHalf (eL w) y then φ w (.theta D.R.m j) (ch.S.B.coord t w.1 (X := (D.R.m, j + 1)) (Y := (D.R.m, j)) ⟨le_rfl, j.2⟩ ⟨le_rfl, j.2.le⟩ (y.map fun a => cpt w.1 (toEAf D a))) else 0) (V (insert w S) j) := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩

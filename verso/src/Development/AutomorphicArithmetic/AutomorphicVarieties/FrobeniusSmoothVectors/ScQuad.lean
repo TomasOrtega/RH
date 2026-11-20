@@ -3,31 +3,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
 /- English proof (translation)
-Introduce `Ω _ _ _ η D δ hD hδ hη`. Establish `hDq : (0 : ℚ) < D` using `by exact_mod_cast hD`. Establish `hDr : (0 : ℝ) < D` using `by exact_mod_cast hD`. Establish `hδ0 : δ ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h0 : ((D : ℕ) : Ω) = 0`. Use `hδ.symm` as an intermediate fact. Simplify using `using this`. Conclude with `hD.ne' (by exact_mod_cast h0)`. Use `set p : Polynomial ℚ := Polynomial.X ^ 2 + Polynomial.C (D : ℚ) with hp`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmon : p.Monic` using `Polynomial.monic_X_pow_add_C _ two_ne_zero`. Establish `hdeg : p.natDegree = 2` using `Polynomial.natDegree_X_pow_add_C`. Establish `hroot : Polynomial.aeval δ p = 0`. Simplify using `[hp, hδ]`. Establish `hirr : Irreducible p`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Polynomial.irreducible_of_degree_le_three_of_not_isRoot (by rw [hdeg]; decide) ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [hp, Polynomial.IsRoot, Polynomial.eval_add, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C] at hx`. Use polynomial arithmetic with `[sq_nonneg x]`. Establish `hmin : p = minpoly ℚ δ` using `minpoly.eq_of_irreducible_of_monic hirr hroot hmon`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : IsIntegral ℚ δ` using `⟨p, hmon, by rw [← Polynomial.aeval_def]; exact hroot⟩`. Use `haveI : FiniteDimensional ℚ (IntermediateField.adjoin ℚ ({δ} : Set Ω)) := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI : NumberField (IntermediateField.adjoin ℚ ({δ} : Set Ω)) := by constructor`. Use `⟨IntermediateField.adjoin ℚ ({δ} : Set Ω), inferInstance, inferInstance, inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.adjoin.finrank hint, ← hmin, hdeg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[NumberField.InfinitePlace.isComplex_iff]`. Introduce `hr`. Rewrite `hr` using `[NumberField.ComplexEmbedding.isReal_iff]`. Use `set φ := v.embedding`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `d : IntermediateField.adjoin ℚ ({δ} : Set Ω)` to `⟨δ, IntermediateField.mem_adjoin_simple_self ℚ δ⟩`. Establish `hd : d ^ 2 = -(D : IntermediateField.adjoin ℚ ({δ} : Set Ω))` using `Subtype.ext (by simpa [d] using hδ)`. Establish `hz : (φ d) ^ 2 = -(D : ℂ)`. Use `congrArg φ hd` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (starRingEnd ℂ) (φ d) = φ d`. Use `RingHom.congr_fun hr d` as an intermediate fact. Simplify using `using this`. Establish `him : (φ d).im = 0` using `Complex.conj_eq_iff_im.mp hc`. Establish `hre` using `congrArg Complex.re hz`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `[pow_two, him] at hre`. Use polynomial arithmetic with `[mul_self_nonneg (φ d).re]`. Use extensionality with `σ`. Rewrite using `[mem_galOf, MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Introduce `h`. Establish `h1 : σ δ = δ` using `h ⟨δ, IntermediateField.mem_adjoin_simple_self ℚ δ⟩`. Rewrite `h1` using `[hη σ]`. Break down `Int.units_eq_one_or (η σ) with h2 | h2` into its components or cases. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-It suffices to derive a contradiction. Rewrite `h1` using `[h2]`. Simplify using `only [Units.val_neg, Units.val_one, neg_smul, one_smul] at h1`. Establish `: (2 : Ω) * δ = 0` using `by linear_combination -h1`. Break down `mul_eq_zero.mp this with h3 | h3` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `two_ne_zero h3`. Conclude with `hδ0 h3`. Introduce `h x`. Establish `hσδ : σ δ = δ` using `by rw [hη σ, h]; simp`. Establish `hext : ((σ : Ω →ₐ[ℚ] Ω).comp (IntermediateField.val _) : IntermediateField.adjoin ℚ ({δ} : Set Ω) →ₐ[ℚ] Ω) = IntermediateField.val _` using `IntermediateField.algHom_ext_of_eq_adjoin ℚ rfl (by`.
-
-Introduce `y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Conclude with `hσδ)`. Conclude with `AlgHom.congr_fun hext x`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.sc_quad :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (η : G ℚ Ω →* ℤˣ) (D : ℕ) (δ : Ω), 0 < D → δ ^ 2 = -(D : Ω) → (∀ s : G ℚ Ω, s δ = (η s : ℤ) • δ) → ∃ (K : Type) (_ : Field K) (_ : NumberField K) (_ : Algebra K Ω), Module.finrank ℚ K = 2 ∧ IsTotallyComplex K ∧ galOf ℚ K Ω = η.ker := by

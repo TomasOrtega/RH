@@ -17,15 +17,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p _ B G _ hG y n hn t ht`. Use `hG.comm` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `GrpTangent.etale_torsion G hn` as an intermediate fact. Establish `hP` using `GrpTangent.isPullback_torsion G n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ {T : Scheme.{0}} (q : T ⟶ B), (1 : Over.mk q ⟶ G).left = q ≫ η[G].left`. Introduce `T q`. Rewrite using `[Hom.one_def, Over.comp_left]`. Both sides reduce to the same expression. Establish `w : t.left ≫ (mulN G n).left = (spMap (IsLocalRing.residue (OO p)) ≫ y) ≫ η[G].left`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, GrpTangent.comp_mulN, ht, e]`. Take `⟨c, hc₁, hc₂⟩` from `ZJ.exists_classical_lift_of_smooth p _ _ (torsion G n).hom y (hP.lift _ _ w) (hP.lift_snd _ _ w)`. Set `b : Over.mk y ⟶ G` to `Over.homMk (c ≫ (torsion.ι G n).left) (by`. Rewrite using `[Category.assoc, Over.w]`. Conclude with `hc₁)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b, ?_, ?_⟩` and prove the remaining obligations. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[← GrpTangent.comp_mulN, Over.comp_left, e]`. Express the relevant statement in the definitionally equal form `(c ≫ (torsion.ι G n).left) ≫ _ = _`. Rewrite using `[Category.assoc, hP.w, ← Category.assoc, hc₁]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ ≫ c ≫ (torsion.ι G n).left = _`. Rewrite using `[← Category.assoc]`. Conclude with `(congrArg (· ≫ (torsion.ι G n).left) hc₂).trans (hP.lift_fst _ _ w)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ZJ.exists_torsion_lift_of_residue :
     ∀ (p : ℕ) [Fact p.Prime] (B : Scheme.{0}) (G : Over B) [GrpObj G], IsSemiAbelian G → ∀ (y : Sp (OO p) ⟶ B) (n : ℕ), IsUnit (n : Γ(B, ⊤)) → ∀ t : Over.mk (spMap (IsLocalRing.residue (OO p)) ≫ y) ⟶ G, t ^ n = 1 → ∃ b : Over.mk y ⟶ G, b ^ n = 1 ∧ spMap (IsLocalRing.residue (OO p)) ≫ b.left = t.left := by

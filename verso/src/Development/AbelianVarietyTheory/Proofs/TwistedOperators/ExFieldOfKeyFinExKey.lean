@@ -20,11 +20,9 @@ noncomputable section
 namespace GlobalTheory.RowEx
 
 /- English proof (translation)
-Introduce `h2 h1`. Take `⟨c, h1⟩` from `h1`. Use `⟨c, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x, h1⟩` from `h1 ε CF hC`. Use `⟨x, fun s e hx P f Ξ hΞ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨𝒦, hK, H⟩` from `h2 P Ξ hΞ`. Use `choose S hS HS using h1 s e hx P f`. Use `⟨hK.toFinset.biUnion S, fun z hz => ?_, fun Y f' hP hf large₂ hs Γ _ _ Pl0 U A Ks _ _ _ R F st hC ho hc hz => ?_⟩` and prove the remaining obligations. Take `⟨κ, -, hz⟩` from `Finset.mem_biUnion.1 hz`. Conclude with `hS κ z hz`.
-
-Take `⟨κ, hκ, hk⟩` from `H Y U R.toLevCh A.μ0 hP st.core.lev hc`. Conclude with `HS κ Y f' hP hf large₂ hs Γ Pl0 U A Ks R F st hC ho hk fun z hz' => hz z (Finset.mem_biUnion.2 ⟨κ, hK.mem_toFinset.2 hκ, hz'⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exField_of_keyFin_exKey : KeyFin → ExKey → ExField := by
   classical

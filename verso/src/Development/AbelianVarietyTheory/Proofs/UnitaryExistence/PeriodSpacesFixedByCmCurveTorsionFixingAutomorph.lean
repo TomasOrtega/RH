@@ -14,15 +14,15 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.CompRat.AnyLevel
 
 /- English proof (translation)
-Take `⟨C, io, hC⟩` from `hfix`. Establish `hτ : τ H.rt0 = H.rt0`. Rewrite using `[← hσ]`. Conclude with `RingHom.congr_fun hτσ _`. Take `⟨i', P', hP', hu⟩` from `F.onto (spMap (τ : ℂ →+* ℂ) ≫ F.u i P) (by rw [Category.assoc, F.over_σ i P hP, GlobalTheory.ConjPermutes.spMap_comp, hτσ])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, hE, hp, hm, hlevA, hlev⟩` from `GlobalTheory.T.marking_at_conjugate_splitPoint_transported_twisted E H D l Xo σ g ty F hD hσ hty τ hτ C io hC.1 i P hP i' P' hP' hs hu.symm (1, 0) hC`. Take `⟨L, hL⟩` from `exists_complex_linear_of_pure_types E H _ _ g ty P P' hP hP' Φ hs (fun a ha => (hp a).2 ha) (fun a ha => (hm a).2 ha)`. Establish `hw : wE H (1, 0) = 1` using `by simp [wE]`. Establish `hmem : ∀ v, F.t i v ∈ lat hP H.rt0 ⊔ lat hP (-H.rt0)` using `fun v => by`. Rewrite using `[show lat hP H.rt0 ⊔ lat hP (-H.rt0) = ⊤ from hs]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Discharge the goal by the elementary cases of `trivial`. Establish `hA' : ∀ v, ∃ x, Φ (F.t i v) = F.t i' v + l.A • x` using `fun v => by`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 (hmem v)`. Take `⟨e, he⟩` from `hlevA v a ha b hb hab.symm`. Rewrite `he` using `[hw, map_one, one_smul, one_smul, hab]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨-e, by rw [he, smul_neg, add_neg_cancel_right]⟩`. Use `hu.symm.trans ((GlobalTheory.UnifPoint.point_eq_iff_isometry_closed GlobalTheory.thetaUnifAV_all GlobalTheory.firstFiveLaws.1 E H D l Xo σ g ty hD hσ hty (F.Di i) (F.Di i') (F.t i) (F.t i') P P' (F.u i P) (F.u i' P') (F.ex i P) (F.ex i' P') ⟨F.over_σ i P hP, hP, ⟨F.ex_add i P hP, …` and prove the remaining obligations. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 (hmem v)`. Take `⟨e, he⟩` from `hlev v hv a ha b hb hab.symm`. Rewrite `he` using `[hw, map_one, one_smul, one_smul, hab]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨-e, by rw [he, smul_neg, add_neg_cancel_right]⟩`.
+A detailed English derivation is pending.
 -/
 theorem conj_point_eq_of_isSplit {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (F : FamilyUnif Xo σ ty)
@@ -63,11 +63,11 @@ theorem conj_point_eq_of_isSplit {E : Type} [Field E] [NumberField E] [IsCMField
   exact ⟨-e, by rw [he, smul_neg, add_neg_cancel_right]⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo σ g ty F hpq hσ hty hσx hsig τ hτ hC`. Take `⟨π, hπ⟩` from `GlobalTheory.T.exists_periodSpace_perm_of_complexAut E H D l Xo σ g ty F hpq hσ hty hσx τ hτ`. Establish `hτσ : (τ : ℂ →+* ℂ).comp σ = σ` using `RingHom.ext fun x => by show τ (σ x) = σ x`. Rewrite using `[hσx, hτ]`. Establish `hid : ∀ i, π i = i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Take `⟨P, hP, hs⟩` from `GlobalTheory.T.exists_split_period_any_level E H D l Xo σ g ty F hpq hσ hty hsig i`. Establish `h1` using `conj_point_eq_of_isSplit F hpq hσ hty τ hτσ hC i P hP hs`. Take `⟨P', hP', h2⟩` from `hπ i P hP`. Conclude with `(F.disj i (π i) P P' hP hP' (h1.symm.trans h2)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (π : Fin F.n → Fin F.n) = id` using `funext hid`. Rewrite `hπ` using `[this]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem permutes_id_of_fixesCurve : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ ty), 1 ≤ D.p + D.q → σ (baseKA l).ρ = H.rt0 → IsTypeFn H D.p D.q ty → (∀ x : KA l, σ x = (x : ℂ)) → (D.p = 0 ∨ D.q = 0 ∨ (3 ≤ D.p + D.q ∧ (∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0))) → ∀ τ : ℂ ≃+* ℂ, (∀ x : KA l, τ (x : ℂ) = x) → FixesCurve H τ l.M' → ConjugationPermutesPeriods F τ id := by
   intro E _ _ _ H D l Xo σ g ty F hpq hσ hty hσx hsig τ hτ hC

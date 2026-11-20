@@ -11,11 +11,11 @@ open scoped Pointwise
 namespace GlobalTheory.ConjOverQuad
 
 /- English proof (translation)
-Take `⟨⟨W, hW, hWQ⟩⟩` from `(inferInstance : Nonempty (Q.primesOver (𝓞 L)))`. Establish `hpW : ((p : ℕ) : 𝓞 L) ∈ W`. Rewrite `hQ` using `[hWQ.over, Ideal.mem_under]`. Simplify using `using hQ`. Use `GlobalTheory.Mem.Chr.liesOver_span_of_natCast_mem hp _ hv` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `GlobalTheory.Mem.Chr.liesOver_span_of_natCast_mem hp _ hpW` as an intermediate fact. Take `⟨σ, hσ⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup (Ideal.span {(p : ℤ)}) v W (L ≃ₐ[ℚ] L)`. Break down `hb σ with h1 | h1` into its components or cases. Use `left`. Rewrite using `[hWQ.over, ← hσ, GlobalTheory.Mem.Chr.under_smul_of_fix b σ h1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `right`. Establish `h2 : (σ * c) b = b`. Rewrite using `[AlgEquiv.mul_apply, hc, map_neg, h1, neg_neg]`. Establish `h4 : (σ * c) • c⁻¹ • v = W` using `by rw [mul_smul, smul_inv_smul, hσ]`. Rewrite using `[hWQ.over, ← h4, GlobalTheory.Mem.Chr.under_smul_of_fix b _ h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem under_eq_or_smul_under_eq {L : Type} [Field L] [NumberField L] [IsGalois ℚ L] {p : ℕ} (hp : p.Prime) (b : L)
     (hb : ∀ σ : L ≃ₐ[ℚ] L, σ b = b ∨ σ b = -b) (c : L ≃ₐ[ℚ] L) (hc : c b = -b)
@@ -43,15 +43,13 @@ theorem under_eq_or_smul_under_eq {L : Type} [Field L] [NumberField L] [IsGalois
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D P k w hw`. Establish `hG : IsGalois ℚ D.host.E` using `D.host.hostE_isGalois`. Establish `hsq` using `D.host.sqrtMinusD_sq`. Establish `hc` using `D.host.conj_sqrtMinusD`. Establish `hb : ∀ σ : D.host.E ≃ₐ[ℚ] D.host.E, σ D.host.sqrtMinusD = D.host.sqrtMinusD ∨ σ D.host.sqrtMinusD = -D.host.sqrtMinusD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ`. Apply `sq_eq_sq_iff_eq_or_eq_neg.1` to reduce the goal to its premises. Rewrite using `[← map_pow, hsq, map_neg, map_natCast]`. Use `w.isPrime` as an intermediate fact. Establish `hQ` using `(P.pb k).isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `@under_eq_or_smul_under_eq _ _ _ _ _ (D.host.g_prime k) D.host.sqrtMinusD hb D.host.conj hc w.asIdeal _ hw (P.pb k).asIdeal hQ (P.pb_over k) with h | h` into its components or cases. Conclude with `Or.inl (HeightOneSpectrum.ext h)`. Use `Or.inr ⟨Formalism.L2.Col.conjPrime₂ w, HeightOneSpectrum.ext ?_, (Formalism.L2.Col.conjIdeal_asIdeal w).symm⟩` and prove the remaining obligations. Establish `e : (Formalism.L2.Col.conjPrime₂ w).asIdeal = D.host.conj⁻¹ • w.asIdeal`. Use extensionality with `y`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Formalism.L2.Col.mem_conjP, Ideal.mem_inv_pointwise_smul_iff]`. Establish `: Formalism.L2.Col.cO D.host.E y = D.host.conj • y` using `RingOfIntegers.ext (bridge_star_holds D.R D.host (y : D.host.E))`. Rewrite using `[this]`. Use `show ((Formalism.L2.Col.conjPrime₂ w).asIdeal).under (𝓞 D.host.K) = _`. Rewrite using `[e]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_or_conj_div : ∀ (D : D7) (P : Formalism.L2.Host.PiBar D.host) (k : Fin 2) (w : HeightOneSpectrum (𝓞 D.host.E)), ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal → P.Div k w ∨ ∃ w' : HeightOneSpectrum (𝓞 D.host.E), P.Div k w' ∧ w'.asIdeal = Formalism.HermitianLatticesTheory.conjIdeal (K := D.host.E) w.asIdeal := by
   intro D P k w hw

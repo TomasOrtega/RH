@@ -13,17 +13,17 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.CocycleModPow
 
 /- English proof (translation)
-Establish `hK : FiniteDimensional ℚ_[l] ↥K.1` using `K.2`. Set `_ : TopologicalSpace M` to `⊥`. Establish `_ : DiscreteTopology M` using `⟨rfl⟩`. Establish `hr' : ∀ m : M, l ^ (r + 1) • m = 0` using `fun m => by`. Rewrite using `[pow_succ', mul_smul, hr, smul_zero]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `_ : NeZero (l ^ (r + 1))` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Take `⟨_⟩ : Nonempty (Module (ZMod (l ^ (r + 1))) M)` from `⟨AddCommGroup.zmodModule hr'⟩`. Set `φ : ↥(GK K) ≃* Formalism.GaloisCohomology.GK l K.1` to `IntermediateField.fixingSubgroupEquiv K.1`. Establish `hφ : Continuous φ ∧ Continuous φ.symm` using `GlobalTheory.fixingSubgroupEquiv_bicontinuous ℚ_[l] (Om l) K.1`. Set `rho : Representation (ZMod (l ^ (r + 1))) (Formalism.GaloisCohomology.GK l K.1) M` to `GlobalTheory.CocycleCount.repOfAction _ (fun g => a (φ.symm g)) (fun m => by rw [map_one, h1]) (fun g h m => by rw [map_mul, hmul])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `ha : ∀ (g : Formalism.GaloisCohomology.GK l K.1) (m : M), (rho g : M →ₗ[ZMod (l ^ (r + 1))] M) m = a (φ.symm g) m` using `fun _ _ => rfl`. Establish `hrho : ReciprocityTheory.Gal.ContAction rho`. Use `continuous_prod_of_discrete_right.2 fun m => ?_` and prove the remaining obligations. Conclude with `(hlc m).continuous.comp hφ.2`. Establish `hH` using `(GlobalTheory.T.finite_H1_H2_local hT l K.1 hK (r + 1) M rho (Nat.succ_pos r) hrho).1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ` using `GlobalTheory.CocycleCount.card_cocycles_mul_invariants_discrete _ _ M rho hrho`. Establish `hH1 : 0 < Nat.card (ReciprocityTheory.Gal.H1 rho)` using `Nat.card_pos`. Establish `hM : 0 < Nat.card M` using `Nat.card_pos`. Establish `hfin : Finite (ReciprocityTheory.Gal.Z1 rho)`. Use `Nat.finite_of_card_ne_zero fun h0 => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hZ` using `[h0, zero_mul]`. Conclude with `(Nat.mul_pos hH1 hM).ne hZ`. Set `E : ↥{c : ↥(GK K) → M | IsLocallyConstant c ∧ ∀ g h, c (g * h) = c g + a g (c h)} → ↥(ReciprocityTheory.Gal.Z1 rho)` to `fun c => ⟨fun g => c.1 (φ.symm g), c.2.1.continuous.comp hφ.2, fun g h => by beta_reduce`. Rewrite using `[ha, map_mul, c.2.2]⟩`. Use `Set.finite_coe_iff.1 (Finite.of_injective E fun c c' h => Subtype.ext (funext fun g => ?_))` and prove the remaining obligations.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun (congrArg Subtype.val h) (φ g)` as an intermediate fact. Simplify `this` using `only [E, φ.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem cocycles_finite (hT : Formalism.GaloisCohomology.LocalTateDualityK) (l : ℕ) [Fact l.Prime] (K : FinExt l)
     (r : ℕ) (M : Type) [AddCommGroup M] [Finite M] (a : ↥(GK K) → M →+ M) (h1 : ∀ m, a 1 m = m)
@@ -65,13 +65,11 @@ theorem cocycles_finite (hT : Formalism.GaloisCohomology.LocalTateDualityK) (l :
   simpa only [E, φ.symm_apply_apply] using this
 
 /- English proof (translation)
-Take `⟨-, -, hfin, hcomp⟩` from `GlobalTheory.T.coefficient_ring_integers_compact_adic_properties l LL O hO`. Take `⟨⟨hdom, hdvr, -⟩, -⟩` from `hO`. Establish `hnu : ¬ IsUnit ((l : ℕ) : O)` using `fun hu => by`. Establish `htop : Ideal.span {((l : ℕ) : O)} = ⊤` using `Ideal.span_singleton_eq_top.2 hu`. Establish `hH : IsHausdorff (Ideal.span {((l : ℕ) : O)}) O` using `hcomp.toIsHausdorff`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : O) = 0` using `hH.haus 1 fun k => by`. Rewrite using `[htop, SModEq.zero]`. Simplify using `[Ideal.top_pow]`. Conclude with `one_ne_zero h1`. Establish `hdvd : ϖ ∣ ((l : ℕ) : O)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.mem_span_singleton, ← hϖ.maximalIdeal_eq]`. Conclude with `hnu`. Establish `hd : ϖ ^ n ∣ ((l : ℕ) : O) ^ n` using `pow_dvd_pow_of_dvd hdvd n`. Use `⟨hd, ?_⟩` and prove the remaining obligations. Use `hfin n` as an intermediate fact.
-
-Conclude with `Finite.of_surjective _ (Ideal.Quotient.factor_surjective (Ideal.span_singleton_le_span_singleton.2 hd))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dvd_and_finite (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Algebra ℚ_[l] LL]
     [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL] (hO : GoodO (Qp := ℚ_[l]) LL O)
@@ -96,27 +94,25 @@ theorem dvd_and_finite (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Algebra 
     (Ideal.Quotient.factor_surjective (Ideal.span_singleton_le_span_singleton.2 hd))
 
 /- English proof (translation)
-Introduce `hT l _ K LL _ _ _ O _ _ hO A LA ϖ hϖ n hI`. Take `⟨hd, hfin⟩` from `dvd_and_finite l LL O hO ϖ hϖ n`. Establish `hring : IsTopologicalRing LL` using `hO.2.2.2.1`. Establish `hopen : IsOpen (LA.T : Set A.V)` using `GlobalTheory.Cyc.isOpen_of_fg_of_span_eq_top hO.2.2.2.2 LA.T LA.fg LA.span`. Take `⟨⟨hdom, hdvr, hfrac⟩, -⟩` from `hO`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hTfin : Module.Finite O ↥LA.T` using `Module.Finite.iff_fg.2 LA.fg`. Establish `hQ : Finite (↥LA.T ⧸ (Ideal.span {ϖ ^ n} • ⊤ : Submodule O ↥LA.T))`. Establish `: Module.Finite (O ⧸ Ideal.span {ϖ ^ n}) (↥LA.T ⧸ (Ideal.span {ϖ ^ n} • ⊤ : Submodule O ↥LA.T))` using `Module.Finite.of_restrictScalars_finite O _ _`. Conclude with `Module.finite_of_finite (O ⧸ Ideal.span {ϖ ^ n})`. Establish `hmem : ∀ t : ↥LA.T, ϖ ^ n • t ∈ (Ideal.span {ϖ ^ n} • ⊤ : Submodule O ↥LA.T)` using `fun t => Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : algebraMap O LL (ϖ ^ n) ≠ 0`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `pow_ne_zero _ hϖ.ne_zero`. Use `haveI := IsModuleTopology.topologicalAddGroup LL A.V`. Use `cocycles_finite hT l K n _ (fun g => (actQ LA _ hI g).toAddMonoidHom) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `m`. Proceed by induction on `m using Submodule.Quotient.induction_on with`. Consider the case `H x`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (actT LA 1 x) = _`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `A.ρ 1 x = x`. Simplify using the standard rewrite rules. Introduce `g h m`. Proceed by induction on `m using Submodule.Quotient.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Consider the case `H x`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (actT LA (g * h) x) = Submodule.Quotient.mk (actT LA g (actT LA h x))`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `A.ρ (g * h) x = A.ρ g (A.ρ h x)`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Simplify using the standard rewrite rules. Introduce `m`. Proceed by induction on `m using Submodule.Quotient.induction_on with`. Consider the case `H x`. Take `⟨b, hb⟩` from `hd`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul O, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Nat.cast_pow, hb, mul_smul]`. Conclude with `hmem _`. Introduce `m`. Proceed by induction on `m using Submodule.Quotient.induction_on with`. Consider the case `H x`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g₀`. Establish `hcont : Continuous fun g : ↥(GK K) => (algebraMap O LL (ϖ ^ n))⁻¹ • (A.ρ g x - A.ρ g₀ x)` using `((A.cont x).sub continuous_const).const_smul _`. Establish `hev` using `(hopen.preimage hcont).mem_nhds (x := g₀) (by simp)`. Use `filter_upwards [hev] with g hg`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (actT LA g x) = Submodule.Quotient.mk (actT LA g₀ x)`. Rewrite using `[Submodule.Quotient.eq]`. Use `hmem ⟨_, hg⟩ using 1` and compare the differences between its conclusion and the goal. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `A.ρ g x - A.ρ g₀ x = ϖ ^ n • ((algebraMap O LL (ϖ ^ n))⁻¹ • (A.ρ g x - A.ρ g₀ x))`.
-
-Rewrite using `[← algebraMap_smul LL (ϖ ^ n), smul_smul, mul_inv_cancel₀ hc, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_Z1Q : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (ϖ : O), Irreducible ϖ → ∀ (n : ℕ) (hI : StableSub LA (Ideal.span {ϖ ^ n} • ⊤ : Submodule O ↥LA.T)), (quotientCocycles LA _ hI : Set (↥(GK K) → ↥LA.T ⧸ (Ideal.span {ϖ ^ n} • ⊤ : Submodule O ↥LA.T))).Finite := by
   intro hT l _ K LL _ _ _ O _ _ hO A LA ϖ hϖ n hI

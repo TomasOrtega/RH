@@ -8,7 +8,7 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `F ⟨φ, g, hg, rfl⟩`. Conclude with `GroundTheory.Automorphic.Adele2.schwartzBruhatTensor2_mem φ (show _ ∧ _ from (mem_finiteSchwartzBruhatPi ℚ).mp hg)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem sb_le : schwartzBruhatPi ℚ (Fin 2) ≤ GroundTheory.Automorphic.Adele2.schwartzBruhat2 ℚ := by
   refine Submodule.span_le.mpr ?_
@@ -17,9 +17,9 @@ private theorem sb_le : schwartzBruhatPi ℚ (Fin 2) ≤ GroundTheory.Automorphi
     (show _ ∧ _ from (mem_finiteSchwartzBruhatPi ℚ).mp hg)
 
 /- English proof (translation)
-Set `u : ℝ → (TR.Rinf ℚ)ˣ` to `fun t => ⟨fun _ => Real.exp t, fun _ => (Real.exp t)⁻¹,`. Use function extensionality and compare the values at `fun _ => mul_inv_cancel₀ (Real.exp_ne_zero t), funext fun _ => inv_mul_cancel₀ (Real.exp_ne_zero t)⟩`. Establish `hu : Continuous u`. Use `Units.continuous_iff.mpr ⟨continuous_pi fun _ => Real.continuous_exp, continuous_pi fun _ => ?_⟩` and prove the remaining obligations. Conclude with `Real.continuous_exp.inv₀ Real.exp_ne_zero`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (fun t : ℝ => iy (Real.exp t)) = fun t => TR.infId ℚ (u t)`. Use function extensionality and compare the values at `t`. Conclude with `dif_neg (Real.exp_ne_zero t)`. Rewrite using `[e]`. Conclude with `(TR.continuous_infId ℚ).comp hu`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cont_iy : Continuous fun t : ℝ => iy (Real.exp t) := by
   let u : ℝ → (TR.Rinf ℚ)ˣ := fun t => ⟨fun _ => Real.exp t, fun _ => (Real.exp t)⁻¹,
@@ -34,9 +34,9 @@ private theorem cont_iy : Continuous fun t : ℝ => iy (Real.exp t) := by
   exact (TR.continuous_infId ℚ).comp hu
 
 /- English proof (translation)
-Establish `hs` using `(GroundTheory.Automorphic.Adele2.poisson_rightTranslate (sb_le hΦ) (Matrix.GeneralLinearGroup.scalar (Fin 2) a * g)).1.of_norm`. Establish `hv : ((Matrix.GeneralLinearGroup.scalar (Fin 2) a * g : GL (Fin 2) (A ℚ)) : Matrix (Fin 2) (Fin 2) (A ℚ)) = (a : A ℚ) • g.val`. Use extensionality with `i j`. Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.smul_apply]`. Use `(hs.comp_injective (Subtype.val_injective (p := fun r : Fin 2 → ℚ => r ≠ 0))).congr fun ξ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[hv, Matrix.vecMul_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem summable_row {Φ : (Fin 2 → A ℚ) → ℂ} (hΦ : Φ ∈ schwartzBruhatPi ℚ (Fin 2))
     (a : (A ℚ)ˣ) (g : GL (Fin 2) (A ℚ)) :
@@ -53,9 +53,9 @@ private theorem summable_row {Φ : (Fin 2 → A ℚ) → ℂ} (hΦ : Φ ∈ schw
   rfl
 
 /- English proof (translation)
-Introduce `Φ hΦ X _ _ _ τ h hτ hh`. Establish `hc` using `continuous_of_mem_schwartzBruhatPi hΦ`. Establish `ha : Continuous fun x => ((iy (Real.exp (τ x)) : (A ℚ)ˣ) : A ℚ)` using `Units.continuous_val.comp (cont_iy.comp hτ)`. Establish `hg : Continuous fun x => (h x).val` using `Units.continuous_val.comp hh`. Establish `hterm : ∀ ξ : Rw ℚ, Continuous fun x => Φ fun j => ((iy (Real.exp (τ x)) : (A ℚ)ˣ) : A ℚ) * ((fun i => rt (ξ.1 i)) ᵥ* (h x).val) j` using `fun ξ => hc.comp (continuous_pi fun j => ha.mul ((continuous_apply j).comp (continuous_const.matrix_vecMul hg)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `measurable_of_tendsto_metrizable' (Filter.atTop : Filter (Finset (Rw ℚ))) (f := fun (s : Finset (Rw ℚ)) x => ∑ ξ ∈ s, Φ fun j => ((iy (Real.exp (τ x)) : (A ℚ)ˣ) : A ℚ) * ((fun i => rt (ξ.1 i)) ᵥ* (h x).val) j) (fun s => (continuous_finset_sum s fun ξ _ => hterm ξ).measurable) ?_` and prove the remaining obligations. Conclude with `tendsto_pi_nhds.mpr fun x => (summable_row hΦ (iy (Real.exp (τ x))) (h x)).hasSum`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.measurable_thetaSeries_comp_continuous :
     ∀ (Φ : (Fin 2 → A ℚ) → ℂ), Φ ∈ schwartzBruhatPi ℚ (Fin 2) → ∀ {X : Type} [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X]

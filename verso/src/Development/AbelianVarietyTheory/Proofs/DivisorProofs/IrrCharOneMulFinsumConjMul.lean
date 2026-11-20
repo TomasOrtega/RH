@@ -7,11 +7,11 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hc : ∀ g : G, (∑ h : G, ρ (h * x * h⁻¹)) * ρ g = ρ g * ∑ h : G, ρ (h * x * h⁻¹)`. Introduce `g`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `(Fintype.sum_equiv (Equiv.mulLeft g) _ _ fun h => ?_).symm` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[mul_assoc]`. Set `T : Representation.IntertwiningMap ρ ρ` to `{ toLinearMap := ∑ h : G, ρ (h * x * h⁻¹) isIntertwining' := fun g => hc g }`. Take `⟨c, hT⟩` from `(Representation.IsIrreducible.algebraMap_intertwiningMap_bijective_of_isAlgClosed (ρ := ρ)).2 T`. Use `⟨c, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `T v = c • v`. Rewrite using `[← hT, Algebra.algebraMap_eq_smul_one]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_sum_conj_eq_smul_one {G V : Type} [Group G] [Fintype G] [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (ρ : Representation ℂ G V) [ρ.IsIrreducible] (x : G) :
@@ -34,9 +34,9 @@ theorem exists_sum_conj_eq_smul_one {G V : Type} [Group G] [Fintype G] [AddCommG
   rfl
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_sum_conj_eq_smul_one ρ x`. Establish `key : ∀ z : G, ∑ h : G, ρ.character (h * x * h⁻¹ * z) = c * ρ.character z`. Introduce `z`. Use `congrArg (fun A => LinearMap.trace ℂ V (A * ρ z)) hc` as an intermediate fact. Simplify using `only [Finset.sum_mul, map_sum, smul_mul_assoc, one_mul, map_smul, smul_eq_mul, ← map_mul] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Establish `h1` using `key 1`. Simplify using `only [mul_one, Representation.char_conj, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at h1`. Rewrite using `[key y, ← mul_assoc, mul_comm _ c, ← h1, mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem character_one_mul_sum_conj_mul {G V : Type} [Group G] [Fintype G] [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (ρ : Representation ℂ G V) [ρ.IsIrreducible] (x y : G) :
@@ -53,9 +53,9 @@ theorem character_one_mul_sum_conj_mul {G V : Type} [Group G] [Fintype G] [AddCo
   rw [key y, ← mul_assoc, mul_comm _ c, ← h1, mul_assoc]
 
 /- English proof (translation)
-Introduce `G _ _ χ hχ x y`. Set `` to `Fintype.ofFinite G`. Take `⟨n, ρ, hρ, h⟩` from `hχ`. Establish `hh : χ = ρ.character`. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `using h g`. Substitute `hh` using the available equality. Rewrite using `[finsum_eq_sum_of_fintype, Nat.card_eq_fintype_card]`. Conclude with `character_one_mul_sum_conj_mul ρ x y`.
+Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irrChar_one_mul_finsum_conj_mul : ∀ (G : Type) [Group G] [Finite G] (χ : G → ℂ), IsIrrChar ℂ ℂ χ → ∀ x y : G, χ 1 * ∑ᶠ h : G, χ (h * x * h⁻¹ * y) = (Nat.card G : ℂ) * (χ x * χ y) := by
   intro G _ _ χ hχ x y

@@ -14,23 +14,19 @@ noncomputable section
 namespace GlobalTheory.NL.QuoFree
 
 /- English proof (translation)
-Take `⟨Gs, hG⟩` from `hM.fg_top`. Use `set P := Submodule.span R (Set.image2 (· • ·) (F : Set A) (Gs : Set M)) with hPdef`. Establish `key : ∀ b ∈ Submodule.span R (F : Set A), ∀ g ∈ Gs, b • g ∈ P`. Introduce `b hb g hg`. Proceed by induction on `hb using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem f hf => exact Submodule.subset_span ⟨f, hf, g, hg, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_smul]`. Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx => rw [smul_assoc]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.smul_mem _ r hx`. Establish `hsplit : ∀ (a : A) (g : M), g ∈ Gs → a • g ∈ P`. Introduce `a g hg`. Take `⟨c, hc⟩` from `hF a`. Establish `: a • g = (a - q * c) • g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[sub_smul, mul_comm, mul_smul, hq, smul_zero, sub_zero]`. Rewrite using `[this]`. Conclude with `key _ hc g hg`. Set `P' : Submodule A M` to `{ carrier := P add_mem' := fun ha hb => P.add_mem ha hb zero_mem' := P.zero_mem smul_mem' := by`. Introduce `a m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, g, hg, rfl⟩` from `hx`. Express the relevant statement in the definitionally equal form `a • (f • g) ∈ P`. Rewrite using `[← mul_smul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `hsplit _ g hg`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `P.add_mem hx hy`. Consider the case `smul r x _ hx => rw [smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `P.smul_mem r hx }`. Establish `htop : P = ⊤`. Use `eq_top_iff.2 fun m _ => ?_` and prove the remaining obligations. Establish `hm : m ∈ Submodule.span A (Gs : Set M)` using `by rw [hG]; trivial`. Establish `hle : Submodule.span A (Gs : Set M) ≤ P'` using `Submodule.span_le.2 fun g hg => by`.
-
-Use `hsplit 1 g hg` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Conclude with `hle hm`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← htop]`.
-
-Conclude with `Submodule.fg_span (Set.Finite.image2 _ F.finite_toSet Gs.finite_toSet)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_of_killed {R A M : Type*} [CommRing R] [CommRing A] [Algebra R A] [AddCommGroup M]
     [Module A M] [Module R M] [IsScalarTower R A M] [hM : Module.Finite A M] (q : A)
@@ -79,7 +75,7 @@ theorem finite_of_killed {R A M : Type*} [CommRing R] [CommRing A] [Algebra R A]
   exact Submodule.fg_span (Set.Finite.image2 _ F.finite_toSet Gs.finite_toSet)
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [Polynomial.coeff_coe, map_sum, PowerSeries.coeff_smul, PowerSeries.coeff_X_pow, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_range]`. Use `split_ifs with hm`. Both sides reduce to the same expression. Conclude with `Polynomial.coeff_eq_zero_of_degree_lt (lt_of_lt_of_le hr (by exact_mod_cast not_lt.1 hm))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coe_poly_eq_sum {O : Type} [CommRing O] (D : ℕ) (r : Polynomial O) (hr : r.degree < D) :
     (r : PowerSeries O) = ∑ k ∈ Finset.range D, r.coeff k • (PowerSeries.X : PowerSeries O) ^ k := by
@@ -91,15 +87,15 @@ theorem coe_poly_eq_sum {O : Type} [CommRing O] (D : ℕ) (r : Polynomial O) (hr
   · exact Polynomial.coeff_eq_zero_of_degree_lt (lt_of_lt_of_le hr (by exact_mod_cast not_lt.1 hm))
 
 /- English proof (translation)
-Establish `H : g.IsWeierstrassDivisor` using `PowerSeries.IsWeierstrassDivisor.of_map_ne_zero hg`. Use `set D := (g.map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O))).order.toNat`. Use `⟨(Finset.univ ×ˢ Finset.range D).image (fun p : ZMod n × ℕ => (Pi.single p.1 ((PowerSeries.X : PowerSeries O) ^ p.2) : LetA O n)), ?_⟩` and prove the remaining obligations. Introduce `a`. Use `⟨fun i => H.div (a i), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hdecomp : a - (fun _ => g) * (fun i => H.div (a i)) = ∑ i : ZMod n, ∑ k ∈ Finset.range D, (H.mod (a i)).coeff k • (Pi.single i ((PowerSeries.X : PowerSeries O) ^ k) : LetA O n)`. Use function extensionality and compare the values at `j`. Establish `hd` using `H.isWeierstrassDivisionAt_div_mod (a j)`. Rewrite using `[Pi.sub_apply, Pi.mul_apply]`. Rewrite using `[show a j - g * H.div (a j) = ((H.mod (a j) : Polynomial O) : PowerSeries O) from sub_eq_iff_eq_add'.2 hd.eq_mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_poly_eq_sum D _ hd.degree_lt, Finset.sum_apply, Finset.sum_eq_single j]`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.single_eq_same]`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne (Ne.symm hb), smul_zero]`. Simplify using the standard rewrite rules. Rewrite using `[hdecomp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun k hk => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Simplify using `only [Finset.coe_image, Finset.coe_product, Finset.coe_univ, Set.mem_image, Set.mem_prod, Set.mem_univ, true_and, Finset.mem_coe, Finset.mem_range]`. Conclude with `⟨(i, k), Finset.mem_range.1 hk, rfl⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem div_letters {O : Type} [CommRing O] [IsLocalRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (n : ℕ) [NeZero n] (g : PowerSeries O)
@@ -139,9 +135,9 @@ theorem div_letters {O : Type} [CommRing O] [IsLocalRing O]
   exact ⟨(i, k), Finset.mem_range.1 hk, rfl⟩
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc hϖ`. Establish `h1 : ϖ ∣ p`. Establish `: p ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 hp`. Rewrite `this` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Conclude with `⟨k, (Units.mul_left_dvd).2 (pow_dvd_pow_of_dvd h1 k)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dvd_pow_of_nonunit {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {c p : O} (hc : c ≠ 0) (hp : ¬ IsUnit p) : ∃ k : ℕ, c ∣ p ^ k := by
@@ -154,9 +150,9 @@ theorem dvd_pow_of_nonunit {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValua
   exact ⟨k, (Units.mul_left_dvd).2 (pow_dvd_pow_of_dvd h1 k)⟩
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `(GlobalTheory.Cyc.XX_QQ_properties l O s hs).2.2.2.1`. Establish `hl0 : ((l : ℕ) : IsLocalRing.ResidueField O) = 0`. Rewrite using `[← map_natCast (IsLocalRing.residue O)]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).2 ((IsLocalRing.mem_maximalIdeal _).2 hl)`. Establish `hl1 : ((l : ℕ) : PowerSeries (IsLocalRing.ResidueField O)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (PowerSeries.C (R := IsLocalRing.ResidueField O)), hl0, map_zero]`. Rewrite using `[map_pow, hb, map_add, map_mul, map_natCast, map_pow, PowerSeries.map_X, hl1, zero_mul, add_zero, ← pow_mul]`. Conclude with `pow_ne_zero _ PowerSeries.X_ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem QQ_pow_map_ne {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
     (hl : ¬ IsUnit ((l : ℕ) : O)) (s : ℕ) (hs : 1 ≤ s) (y : ℕ) :
@@ -187,11 +183,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Use `Module.IsTorsionFree.of_smul_eq_zero fun c z hz => ?_` and prove the remaining obligations. Break down `eq_or_ne c 0 with hc | hc` into its components or cases. Conclude with `Or.inl hc`. Use `right`. Proceed by induction on `z using Submodule.Quotient.induction_on with`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Proceed by induction. Treat this case separately.
 
-Consider the case `H x`. Rewrite `hz` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_smul_of_tower] at hz ⊢`. Take `⟨k, d, hd⟩` from `dvd_pow_of_nonunit hc hp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hsat (x : W.DD T) ⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.NL.Isog.pow_smul_eq, hd, mul_comm, mul_smul, ← algebraMap_smul (LetA O n) d]`. Conclude with `(W.N T).smul_mem _ hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsionFree_quo [IsDomain O] [IsDiscreteValuationRing O] (hp : ¬ IsUnit ((PD.p : ℕ) : O))
     (T : LocLat G Qp LL O) (hsat : wachSaturated W T) (S : Submodule (LetA O n) (W.DD T)) :
@@ -211,17 +207,15 @@ theorem torsionFree_quo [IsDomain O] [IsDiscreteValuationRing O] (hp : ¬ IsUnit
   exact (W.N T).smul_mem _ hz
 
 /- English proof (translation)
-Use `set u : W.EE := ↑(hq.unit⁻¹)`. Establish `hinv : ∀ x : W.DD T, q • (u • x) = x`. Introduce `x`. Rewrite using `[← algebraMap_smul W.EE q (u • x), smul_smul]`. Establish `: algebraMap (LetA O n) W.EE q * u = 1` using `hq.mul_val_inv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, one_smul]`. Set `φu : W.DD T →ₗ[LetA O n] W.DD T` to `(LinearMap.lsmul W.EE (W.DD T) u).restrictScalars (LetA O n)`. Establish `hS : invN W T q = (W.N T).map φu`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hz`. Use `⟨q • z, hz, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u • (q • z) = z`. Rewrite using `[← algebraMap_smul W.EE q z, smul_smul, mul_comm, hq.mul_val_inv, one_smul]`. Introduce and unpack `⟨x, hx, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `q • (u • x) ∈ W.N T`. Rewrite using `[hinv]`. Conclude with `hx`. Use `haveI : Module.Finite (LetA O n) ↥(invN W T q) := by`. Rewrite using `[hS]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Conclude with `Module.Finite.iff_fg.2 ((W.N_fg T).map φu)`. Use `haveI : Module.Finite (LetA O n) (quo W T (invN W T q) (W.N T)) := Module.Finite.quotient (LetA O n) _`. Use `finite_of_killed q (fun m => ?_) F hF` and prove the remaining obligations. Proceed by induction on `m using Submodule.Quotient.induction_on with`. Consider the case `H x`.
-
-Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_smul_of_tower]`. Conclude with `x.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_quo (T : LocLat G Qp LL O) (q : LetA O n)
     (hq : IsUnit (algebraMap (LetA O n) W.EE q)) (F : Finset (LetA O n))
@@ -263,15 +257,13 @@ set_option maxHeartbeats 1600000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D HW F l _ K s LL h W T hT y`. Take `⟨hdvr, hcomp, hl⟩` from `GlobalTheory.FinExtIntegers.dvr_complete LL`. Use `haveI := hdvr`. Use `haveI := ((D.loc l).PD K).finK₀`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQ : ∀ i, W.Q i = GlobalTheory.Cyc.QQ l ↥(OL LL) s`. Take `⟨_, _, _, _, _, hQ, _⟩` from `GlobalTheory.NL.CycRing.rings_cyclotomic D HW l K s LL h`. Conclude with `hQ`. Establish `hQy : W.Q ^ y = fun _ => GlobalTheory.Cyc.QQ l ↥(OL LL) s ^ y`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Pi.pow_apply, hQ]`. Establish `hunit : IsUnit (algebraMap (AA K LL) W.EE (W.Q ^ y))`. Use `((GlobalTheory.NL.IoXQ.main D HW F l K s LL h).2.2.2.2.2.2 0).2` as an intermediate fact. Rewrite `this` using `[pow_zero, AlgHom.one_apply]`. Rewrite using `[map_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this.pow y`. Establish `hp : ¬ IsUnit ((((D.loc l).PD K).p : ℕ) : ↥(OL LL))`. Rewrite using `[(D.loc l).PD_p K]`. Conclude with `hl`. Establish `hsat` using `(GlobalTheory.NL.Isog.saturated_and_isogeny_invariant D HW F l K s LL h).1 T hT`.
-
-Use `haveI := hcomp`. Take `⟨Fs, hFs⟩` from `div_letters (Module.finrank ℚ_[l] ↥(K0 K)) (GlobalTheory.Cyc.QQ l ↥(OL LL) s ^ y) (QQ_pow_map_ne hl s h.1 y)`. Use `haveI hfin : Module.Finite ↥(OL LL) (quo W T (invN W T (W.Q ^ y)) (W.N T)) := finite_quo W T (W.Q ^ y) hunit Fs (by rw [hQy]; exact hFs)`. Use `haveI := torsionFree_quo W hp T hsat (invN W T (W.Q ^ y))`. Conclude with `⟨Module.free_of_finite_type_torsion_free', hfin⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem quo_free_finite : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ y : ℕ, Module.Free ↥(OL LL) (quo W T (invN W T (W.Q ^ y)) (W.N T)) ∧ Module.Finite ↥(OL LL) (quo W T (invN W T (W.Q ^ y)) (W.N T)) := by
   intro D HW F l _ K s LL h W T hT y

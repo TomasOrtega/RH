@@ -16,11 +16,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.TorRef
 
 /- English proof (translation)
-Use `letI := φ.toAlgebra`. Use `haveI : Module.Flat A R := hφ.1`. Use `haveI : IsLocalHom (algebraMap A R) := by`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : φ x ∈ maximalIdeal R` using `hφ.2.1 ▸ Ideal.mem_map_of_mem φ ((mem_maximalIdeal x).2 hn)`. Conclude with `(mem_maximalIdeal _).1 hm hx`. Use `haveI := Module.FaithfullyFlat.of_flat_of_isLocalHom (A := A) (B := R)`. Establish `key : ∀ x y : A, φ x ∣ φ y → x ∣ y`. Introduce `x y hxy`.
-
-Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.comap_map_eq_self_of_faithfullyFlat (B := R) (Ideal.span {x}), Ideal.mem_comap, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Conclude with `hxy`. Conclude with `associated_of_dvd_dvd (key _ _ h.dvd) (key _ _ h.symm.dvd)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem associated_of_isEtaleCompletion {A R : Type} [CommRing A] [IsLocalRing A] [IsDomain A] [CommRing R]
     [IsLocalRing R] (φ : A →+* R) (hφ : IsEtaleCompletion φ) (a b : A) (h : Associated (φ a) (φ b)) :
@@ -41,13 +39,13 @@ theorem associated_of_isEtaleCompletion {A R : Type} [CommRing A] [IsLocalRing A
   exact associated_of_dvd_dvd (key _ _ h.dvd) (key _ _ h.symm.dvd)
 
 /- English proof (translation)
-Establish `hK : ∀ x y : A, x ≠ 0 → (∀ (p : Ideal A) [p.IsPrime], p.height = 1 → algebraMap A (Localization.AtPrime p) x ∣ algebraMap A (Localization.AtPrime p) y) → x ∣ y`. Introduce `x y hx hdiv`. Establish `hx' : algebraMap A (FractionRing A) x ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective A (FractionRing A))).2 hx`. Establish `hmem : algebraMap A (FractionRing A) y / algebraMap A (FractionRing A) x ∈ (algebraMap A (FractionRing A)).range`. Rewrite using `[(GlobalTheory.normal_domain_height_one.{0, 0, 0} A (FractionRing A)).2.1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `p _ hp`. Rewrite using `[GlobalTheory.mem_primeLocalSubalgebra_iff]`. Take `⟨c, hc⟩` from `hdiv p hp`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective p.primeCompl c`. Establish `e : y * s = x * r`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `IsLocalization.injective (Localization.AtPrime p) p.primeCompl_le_nonZeroDivisors` to reduce the goal to its premises. Rewrite using `[map_mul, hc, map_mul, mul_assoc, IsLocalization.mk'_spec]`. Use `⟨s, s.2, r, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, ← mul_div_assoc, eq_div_iff hx', ← map_mul, ← map_mul, mul_comm r x, ← e, mul_comm]`. Take `⟨z, hz⟩` from `hmem`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨z, IsFractionRing.injective A (FractionRing A) ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hz, mul_div_cancel₀ _ hx']`. Conclude with `associated_of_dvd_dvd (hK a b ha fun p _ hp => (h p hp).dvd) (hK b a hb fun p _ hp => (h p hp).symm.dvd)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem associated_of_associated_heightOne {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A]
     [IsIntegrallyClosed A] (a b : A) (ha : a ≠ 0) (hb : b ≠ 0)
@@ -81,11 +79,9 @@ end GlobalTheory.TorRef
 namespace GlobalTheory.TorRef
 
 /- English proof (translation)
-Introduce `h`. Take `⟨W, hxW, i, j, hw⟩` from `X.presheaf.germ_eq x hx hx f 0 (by rw [h, map_zero])`. Establish `hij : i = j` using `Subsingleton.elim _ _`. Substitute `hij` using the available equality. Establish `h0 : ReciprocityTheory.ChartRestriction.G.Geo.Tor.resG X (leOfHom i) f = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE (leOfHom i)).op).hom f = 0`. Rewrite using `[show homOfLE (leOfHom i) = i from Subsingleton.elim _ _, hw, map_zero]`. Establish `hnz` using `hf W (leOfHom i)`. Rewrite `hnz` using `[h0]`. Use `haveI : Nontrivial Γ(X, W) := RingHom.domain_nontrivial (X.presheaf.germ W x hxW).hom`.
-
-Conclude with `zero_notMem_nonZeroDivisors hnz`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_ne_zero_of_isRegularFn {X : Scheme.{0}} {U : X.Opens} {f : Γ(X, U)} (hf : GlobalTheory.Cartier.IsRegularFn f)
     (x : X) (hx : x ∈ U) : (X.presheaf.germ U x hx).hom f ≠ 0 := by
@@ -105,13 +101,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l}
 
 /- English proof (translation)
-Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver Z.proj` as an intermediate fact. Establish `: IsLocallyNoetherian Z.X` using `LocallyOfFiniteType.isLocallyNoetherian Z.s`. Take `⟨R, _, _, _, ξ, t, m, P, k, γ, hCN, hcl, hEt, -, -, -, -⟩` from `hC q`. Substitute `hcl` using the available equality. Use `haveI := (Z.normal (ξ (closedPoint R))).1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Use `haveI := (Z.normal (ξ (closedPoint R))).2`. Establish `hR : CDvr R` using `GlobalTheory.T.etale_completion_of_dim_one_normal _ hd hEt hCN`. Use `haveI : IsDiscreteValuationRing R := hR.1`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Establish `hj` using `GlobalTheory.T.generic_point_in_open_of_etale Z ξ hEt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨be, hbe, hmon⟩` from `GlobalTheory.T.exists_monomial_level_form_dvr hR ϖ hϖ t P`. Take `⟨n, hn, hfn⟩` from `hf R hR ϖ hϖ ξ t m P hj be hbe hmon hU rfl`. Take `⟨n', hn', hgn⟩` from `hg R hR ϖ hϖ ξ t m P hj be hbe hmon hV rfl`. Establish `hnn : n = n'` using `by exact_mod_cast hn.trans hn'.symm`. Substitute `hnn` using the available equality.
-
-Conclude with `associated_of_isEtaleCompletion _ hEt _ _ (hfn.trans hgn.symm)`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem associated_germ_of_traitOrdPt_of_codimOne (Z : GMod Xo c)
     (Cn : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] (m : ℕ),
@@ -137,13 +131,11 @@ theorem associated_germ_of_traitOrdPt_of_codimOne (Z : GMod Xo c)
   exact associated_of_isEtaleCompletion _ hEt _ _ (hfn.trans hgn.symm)
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Z Cn φ hC U V f g hfr hgr hord x hx hx'`. Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver Z.proj` as an intermediate fact. Establish `: IsLocallyNoetherian Z.X` using `LocallyOfFiniteType.isLocallyNoetherian Z.s`. Use `haveI := (Z.normal x).1`. Use `haveI := (Z.normal x).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `associated_of_associated_heightOne _ _ (germ_ne_zero_of_isRegularFn hfr x hx) (germ_ne_zero_of_isRegularFn hgr x hx') ?_` and prove the remaining obligations. Introduce `p _ hp`. Take `⟨q, e, hqx, he⟩` from `GlobalTheory.T.stalk_generization_germ_compat x p`. Establish `hqU : q ∈ U` using `hqx.mem_open U.isOpen hx`. Establish `hqV : q ∈ V` using `hqx.mem_open V.isOpen hx'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : ringKrullDim (Z.X.presheaf.stalk q) = 1`. Rewrite using `[ringKrullDim_eq_of_ringEquiv e, IsLocalization.AtPrime.ringKrullDim_eq_height p (Localization.AtPrime p), hp]`. Both sides reduce to the same expression. Take `⟨hf, hg⟩` from `hord q hqU hqV hd.le`. Establish `ha` using `associated_germ_of_traitOrdPt_of_codimOne Z Cn φ hC hqU hqV hd hf hg`.
-
-Rewrite using `[← he U hqU hx f, ← he V hqV hx' g]`. Conclude with `ha.map e`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem associated_germ_of_traitOrdPt : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) (Cn : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] (m : ℕ), (Fin m → LinearMap.BilinForm ℤ X) → Prop) (φ : InvFun (𝓞 E)), HasCones Cn Z → ∀ (U V : Z.X.Opens) (f : Γ(Z.X, U)) (g : Γ(Z.X, V)), IsRegularFn f → IsRegularFn g → (∀ q, q ∈ U → q ∈ V → ringKrullDim (Z.X.presheaf.stalk q) ≤ 1 → TraitOrdPt φ Z U f q ∧ TraitOrdPt φ Z V g q) → ∀ (x : Z.X) (hx : x ∈ U) (hx' : x ∈ V), Associated ((Z.X.presheaf.germ U x hx).hom f) ((Z.X.presheaf.germ V x hx').hom g) := by
   intro E _ _ _ H D l Xo c Z Cn φ hC U V f g hfr hgr hord x hx hx'

@@ -20,7 +20,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HeckeFunct
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LevelPlusSubgroup
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SumSize.Join.fin_away_inf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSumSizeFiniteAwayInfinite.lean&line=44#L44)
 -/

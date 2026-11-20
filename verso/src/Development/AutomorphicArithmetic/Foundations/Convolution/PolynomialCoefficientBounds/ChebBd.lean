@@ -7,21 +7,19 @@ open MvPolynomial Filter Topology PositivityTheory.Rg.Fx
 open scoped ContDiff
 
 /- English proof (translation)
-Introduce `η m hη hη1`. Establish `hA : ∀ a ∈ Set.Icc 0 η, |cheb η m a| ≤ 1`. Introduce `a ha`. Unfold `cheb`. Use `(UpperTheory.ConvolutionTheory.FX.cheb_facts m _).1 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : 0 ≤ 2 * a / η` using `div_nonneg (by linarith [ha.1]) hη.le`. Establish `h2 : 2 * a / η ≤ 2`. Rewrite using `[div_le_iff₀ hη]`. Combine the linear relations using `[ha.2]`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨hA, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Distinguish the cases in `h : a ≤ η`. Use `(hA a ⟨ha.1, h⟩).trans (one_le_pow₀ ?_)` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hη]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h : η < a` using `lt_of_not_ge h`. Establish `h2 : 2 ≤ 2 * a / η`. Rewrite using `[le_div_iff₀ hη]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3 : 2 * (2 * a / η) ≤ 4 / η`. Rewrite using `[← mul_div_assoc]`. Conclude with `div_le_div_of_nonneg_right (by linarith [ha.2]) hη.le`. Unfold `cheb`. Use `((UpperTheory.ConvolutionTheory.FX.cheb_facts m _).2 (by linarith)).2.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pow_le_pow_left₀ (by linarith) (by linarith) m`. Use `⟨(Polynomial.Chebyshev.T ℝ (m : ℤ)).comp (Polynomial.C (2 / η) * Polynomial.X + Polynomial.C (-1)), ?_, ?_⟩` and prove the remaining obligations. Use `Polynomial.natDegree_comp_le.trans ?_` and prove the remaining obligations. Rewrite using `[Polynomial.Chebyshev.natDegree_T, Int.natAbs_natCast]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `a`. Unfold `cheb`. Rewrite using `[Polynomial.eval_comp]`. Use `congr 1`. Simplify using `only [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.FX.cheb_bound :
     ∀ (η : ℝ) (m : ℕ), 0 < η → η ≤ 1 → (∀ a ∈ Set.Icc 0 η, |cheb η m a| ≤ 1) ∧ (∀ a ∈ Set.Icc (0 : ℝ) 1, |cheb η m a| ≤ (4 / η) ^ m) ∧ ∃ q : Polynomial ℝ, q.natDegree ≤ m ∧ ∀ a, q.eval a = cheb η m a := by

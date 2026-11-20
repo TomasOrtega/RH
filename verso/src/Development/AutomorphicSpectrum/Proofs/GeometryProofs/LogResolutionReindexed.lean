@@ -27,7 +27,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Chg.DegBlock
 variable {K₀ K : Type} [Fintype K₀] [Fintype K] {J₀ : K₀ → Type} {J : K → Type} [∀ k, Fintype (J₀ k)] [∀ k, Fintype (J k)]
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨m1, hm1, m2, hm2, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul _ _ hm)`. Establish `h1` using `hf m1 hm1 k`. Establish `h2` using `hg m2 hm2 k`. Simplify using `[Finset.sum_add_distrib, h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_mul' {f g : MRing J₀} {a b : K₀ → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g b) :
     IsMultiHomog (f * g) (a + b) := by
@@ -38,21 +38,21 @@ theorem isMultiHomog_mul' {f g : MRing J₀} {a b : K₀ → ℕ} (hf : IsMultiH
   simp [Finset.sum_add_distrib, h1, h2]
 
 /- English proof (translation)
-Introduce `m hm k'`. Rewrite `hm` using `[support_rename_of_injective hv.2.1]`. Take `⟨m0, hm0, rfl⟩` from `Finset.mem_image.mp hm`. Distinguish the cases in `hk : k' ∈ Set.range κ`. Take `⟨k, rfl⟩` from `hk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hv.1.extend_apply, ← hf m0 hm0 k]`. Establish `hex : ∀ i' : J (κ k), ∃ i : J₀ k, v ⟨k, i⟩ = ⟨κ k, i'⟩`. Introduce `i'`. Take `⟨p, hp⟩` from `hv.2.2.2 ⟨κ k, i'⟩ ⟨k, rfl⟩`. Establish `h1 : κ p.1 = κ k` using `by rw [← hv.2.2.1 p, hp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k₁, i⟩` from `p`. Take `rfl : k₁ = k` from `hv.1 h1`. Conclude with `⟨i, hp⟩`. Use `choose g hg using hex`. Establish `hb : Function.Bijective g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `: (⟨κ k, a⟩ : Σ k, J k) = ⟨κ k, b⟩` using `by rw [← hg a, ← hg b, hab]`. Conclude with `eq_of_heq (Sigma.mk.inj this).2`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : ∃ i', v ⟨k, i⟩ = ⟨κ k, i'⟩`. Establish `h1` using `hv.2.2.1 ⟨k, i⟩`. Generalize the expression as in `v ⟨k, i⟩ = q at h1`. Take `⟨q1, q2⟩` from `q`. Simplify using `only at h1`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components.
 
-Substitute `h1` using the available equality. Conclude with `⟨q2, rfl⟩`. Take `⟨i', hi'⟩` from `hq`. Use `⟨i', ?_⟩` and prove the remaining obligations. Establish `h2 : v ⟨k, g i'⟩ = v ⟨k, i⟩` using `by rw [hg i', hi']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `eq_of_heq (Sigma.mk.inj (hv.2.1 h2)).2`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Rewrite using `[← hg i', Finsupp.mapDomain_apply hv.2.1]`. Use `_ = ∑ i, m0 ⟨k, i⟩ := hb.sum_comp fun i => m0 ⟨k, i⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Function.extend_apply' _ _ _ (by simpa using hk)]`. Use `Finset.sum_eq_zero fun i' _ => ?_` and prove the remaining obligations. Use `Finsupp.mapDomain_notin_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨p, hp⟩`. Conclude with `hk ⟨p.1, by rw [← hv.2.2.1 p, hp]⟩`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_rename' {κ : K₀ → K} {v : (Σ k, J₀ k) → (Σ k, J k)} (hv : IsBlockMap κ v) {f : MRing J₀}
     {a : K₀ → ℕ} (hf : IsMultiHomog f a) : IsMultiHomog (rename v f : MRing J) (Function.extend κ a 0) := by
@@ -98,7 +98,7 @@ theorem isMultiHomog_rename' {κ : K₀ → K} {v : (Σ k, J₀ k) → (Σ k, J 
     exact hk ⟨p.1, by rw [← hv.2.2.1 p, hp]⟩
 
 /- English proof (translation)
-Rewrite using `[map_rename, eval_rename]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_map_rename' (zt : (Σ k, J k) → ℂ) (v : (Σ k, J₀ k) → (Σ k, J k)) (s : MRing J₀) :
     eval zt (map (Int.castRingHom ℂ) (rename v s : MRing J)) = eval (fun p => zt (v p)) (map (Int.castRingHom ℂ) s) := by
@@ -106,13 +106,13 @@ theorem eval_map_rename' (zt : (Σ k, J k) → ℂ) (v : (Σ k, J₀ k) → (Σ 
   rfl
 
 /- English proof (translation)
-Use `le_antisymm ?_ (mCoordIdeal_le_imageZ i bx hy)` and prove the remaining obligations. Introduce `f hf`. Set `Φ : MvPolynomial K₀ Ω₀ →+* MvPolynomial K Ω` to `(rename bk : MvPolynomial K₀ Ω →ₐ[Ω] MvPolynomial K Ω).toRingHom.comp (MvPolynomial.map i)`. Establish `hΦ : Function.Injective Φ` using `(rename_injective bk hbk).comp (MvPolynomial.map_injective i i.injective)`. Establish `key : ∀ f : MRing J₀, mConeMap y (rename (blkV bk bx) f) = Φ (mConeMap y₀ f)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap, Φ]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨k, a⟩` from `n`. Simplify using `only [map_mul, hp, rename_X]`. Use `congr 1`. Simplify using `[mConeMap, Φ, blkV, hy]`. Establish `h0 : mConeMap y (rename (blkV bk bx) f) = 0` using `hf`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h0` using `[key]`. Conclude with `hΦ (h0.trans (map_zero Φ).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem imageZ_eq {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] (i : Ω₀ →+* Ω) {y₀ : (Σ k, J₀ k) → Ω₀}
     {y : (Σ k, J k) → Ω} {bk : K₀ → K} (bx : ∀ k, J₀ k ≃ J (bk k)) (hbk : Function.Injective bk)
@@ -139,7 +139,7 @@ theorem imageZ_eq {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] (i : Ω₀ →+* Ω
   exact hΦ (h0.trans (map_zero Φ).symm)
 
 /- English proof (translation)
-Introduce `h`. Use `h.2 1 trivial` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_mem_mcPts_top {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] (z : (Σ k, J k) → ℂ) :
     z ∉ mcPts (⊤ : Ideal (MRing J)) := by
@@ -148,7 +148,7 @@ theorem not_mem_mcPts_top {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintyp
   simp at this
 
 /- English proof (translation)
-Take `⟨s, hs, rfl⟩` from `h1`. Take `⟨t, ht, rfl⟩` from `h2`. Conclude with `⟨fun k => s k * t k, fun k => mul_ne_zero (hs k) (ht k), by funext p; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sameOrbit_trans' {K : Type} {J : K → Type} {a b c : (Σ k, J k) → ℂ} (h1 : SameOrbit a b) (h2 : SameOrbit b c) :
     SameOrbit a c := by
@@ -157,7 +157,7 @@ theorem sameOrbit_trans' {K : Type} {J : K → Type} {a b c : (Σ k, J k) → �
   exact ⟨fun k => s k * t k, fun k => mul_ne_zero (hs k) (ht k), by funext p; ring⟩
 
 /- English proof (translation)
-Take `⟨s, hs, rfl⟩` from `h`. Use `⟨fun k => (s k)⁻¹, fun k => inv_ne_zero (hs k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Conclude with `(inv_mul_cancel_left₀ (hs p.1) _).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem sameOrbit_symm' {K : Type} {J : K → Type} {a b : (Σ k, J k) → ℂ} (h : SameOrbit a b) : SameOrbit b a := by
   obtain ⟨s, hs, rfl⟩ := h
@@ -166,7 +166,7 @@ theorem sameOrbit_symm' {K : Type} {J : K → Type} {a b : (Σ k, J k) → ℂ} 
   exact (inv_mul_cancel_left₀ (hs p.1) _).symm
 
 /- English proof (translation)
-Take `⟨s, hs, rfl⟩` from `h`. Conclude with `⟨fun k => s (bk k), fun k => hs _, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sameOrbit_restr {bk : K₀ → K} (bx : ∀ k, J₀ k ≃ J (bk k)) {a b : (Σ k, J k) → ℂ} (h : SameOrbit a b) :
     SameOrbit (fun p => a (blkV bk bx p)) (fun p => b (blkV bk bx p)) := by
@@ -174,13 +174,13 @@ theorem sameOrbit_restr {bk : K₀ → K} (bx : ∀ k, J₀ k ≃ J (bk k)) {a b
   exact ⟨fun k => s (bk k), fun k => hs _, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_id, fun j k => A.holo j k⟩`.
+Supply the required witnesses or components.
 -/
 theorem holoMap_id' {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) : HoloMap A A (id : X → X) :=
   ⟨continuous_id, fun j k => A.holo j k⟩
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Simplify using `[hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_one' : IsMultiHomog (1 : MRing J₀) (0 : K₀ → ℕ) := by
   intro m hm k
@@ -188,7 +188,7 @@ theorem isMultiHomog_one' : IsMultiHomog (1 : MRing J₀) (0 : K₀ → ℕ) := 
   simp [hm]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isMultiHomog_one'`. Consider the case `insert x s hx ih`. Rewrite using `[Finset.prod_insert hx, Finset.sum_insert hx]`. Conclude with `isMultiHomog_mul' (h x (Finset.mem_insert_self x s)) (ih fun u hu => h u (Finset.mem_insert_of_mem hu))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_prod' {X : Type} (s : Finset X) {f : X → MRing J₀} {a : X → K₀ → ℕ}
     (h : ∀ x ∈ s, IsMultiHomog (f x) (a x)) : IsMultiHomog (∏ x ∈ s, f x) (∑ x ∈ s, a x) := by
@@ -200,25 +200,21 @@ theorem isMultiHomog_prod' {X : Type} (s : Finset X) {f : X → MRing J₀} {a :
       (ih fun u hu => h u (Finset.mem_insert_of_mem hu))
 
 /- English proof (translation)
-Establish `halg : ∀ α : Ω, (letI` using `i.toAlgebra; IsAlgebraic Ω₀ α) := by`. Use `letI := i.toAlgebra`. Use `haveI : Module.Finite Ω₀ Ω := Module.finite_of_finrank_pos (by rw [hfin]; exact hd)`. Conclude with `fun α => Algebra.IsAlgebraic.isAlgebraic α`. Establish `hdata` using `fun q r : Σ k, J k => GlobalTheory.T.algebraic_element_homog_relation K₀ J₀ Ω₀ Ω y₀ i (y q / y r) hB₀ (halg _)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose n c a G b hc hG hGn hsum hsimple using hdata`. Use `⟨∏ x : (Σ k, J k) × (Σ k, J k), G x.1 x.2, ∑ x : (Σ k, J k) × (Σ k, J k), b x.1 x.2, isMultiHomog_prod' _ fun x _ => hG x.1 x.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `hm`. Take `⟨x, -, hx⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hprime)).1 hm`. Conclude with `hGn _ _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz w₀ hw₀ hr h0`. Establish `hGw : ∀ q r, eval w₀ (map (Int.castRingHom ℂ) (G q r)) ≠ 0`. Introduce `q r h`. Apply `h0` to reduce the goal to its premises. Rewrite using `[map_prod, map_prod]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ (q, r)) h`. Use `choose rr hrr using hz.1`. Set `r : ∀ k, Σ k, J k` to `fun k => ⟨k, rr k⟩`. Establish `hyr : ∀ k, y (r k) ≠ 0`. Introduce `k h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `hrr k` to reduce the goal to its premises. Establish `hm : (X (r k) : MRing J) ∈ mCoordIdeal y` using `by show mConeMap y (X (r k)) = 0`. Simplify using `[mConeMap, h]`. Simplify using `using hz.2 _ hm`. Establish `hroot : ∀ q : Σ k, J k, ∃ (V : Set ((Σ k, J₀ k) → ℂ)) (W : Set ℂ) (g : ((Σ k, J₀ k) → ℂ) → ℂ), IsOpen V ∧ w₀ ∈ V ∧ IsOpen W ∧ z q / z (r q.1) ∈ W ∧ AnalyticOnNhd ℂ g V ∧ ∀ w ∈ V, ∀ τ ∈ W, ∑ j ∈ Finset.range (n q (r q.1) + 1), eval w (map (Int.castRingHom ℂ) (c q (r q.1) j)) * τ ^ …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q`. Establish `h1` using `GlobalTheory.T.homog_relation_ratio_reindex K₀ K J₀ J Ω₀ Ω y₀ y bk bx i q (r q.1) (n q (r q.1)) (c q (r q.1)) (a q (r q.1)) hy rfl (hyr _) (hc _ _) (hsum _ _) z hz (hrr _) w₀ hr`. Conclude with `GlobalTheory.T.implicit_root_analytic _ (n q (r q.1)) (fun j w => eval w (map (Int.castRingHom ℂ) (c q (r q.1) j))) w₀ _ (fun j => AnalyticOnNhd.eval_mvPolynomial _ _ (Set.mem_univ _)) h1 (hsimple _ _ w₀ hw₀ (hGw _ _) _ h1)`. Use `choose V W g hVo hV hWo hW hga huniq using hroot`. Use `⟨⋂ q, V q, {z'' | ∀ q : Σ k, J k, z'' (r q.1) ≠ 0 ∧ z'' q / z'' (r q.1) ∈ W q}, fun w q => g q w, isOpen_iInter_of_finite hVo, Set.mem_iInter.2 hV, ?_, fun q => ⟨hrr _, hW q⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Set.setOf_forall]`. Use `isOpen_iInter_of_finite fun q => ?_` and prove the remaining obligations. Establish `hc1 : Continuous fun z'' : (Σ k, J k) → ℂ => z'' (r q.1)` using `continuous_apply _`. Establish `hc2 : Continuous fun z'' : (Σ k, J k) → ℂ => z'' q` using `continuous_apply _`. Establish `ho : IsOpen {z'' : (Σ k, J k) → ℂ | z'' (r q.1) ≠ 0}` using `isOpen_ne_fun hc1 continuous_const`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(ContinuousOn.isOpen_inter_preimage (hc2.continuousOn.div hc1.continuousOn fun _ h => h) ho (hWo q))`. Introduce `w hw`. Establish `: ∀ q, AnalyticAt ℂ (g q) w` using `fun q => hga q w (Set.mem_iInter.1 hw q)`. Conclude with `AnalyticAt.pi this`. Introduce and unpack `z'' ⟨hz1, hz2⟩ w ⟨hw1, -⟩ hR`.
-
-Use `⟨fun k => (z'' (r k))⁻¹, fun k => inv_ne_zero (hz1 (r k)).1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Establish `h1` using `GlobalTheory.T.homog_relation_ratio_reindex K₀ K J₀ J Ω₀ Ω y₀ y bk bx i q (r q.1) (n q (r q.1)) (c q (r q.1)) (a q (r q.1)) hy rfl (hyr _) (hc _ _) (hsum _ _) z'' hz2 (hz1 q).1 w hR`. Establish `h2` using `huniq q w (Set.mem_iInter.1 hw1 q) _ (hz1 q).2 h1`. Use `show g q w = (z'' (r q.1))⁻¹ * z'' q`.
-
-Rewrite using `[← h2, div_eq_inv_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_section {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] [CharZero Ω] (y₀ : (Σ k, J₀ k) → Ω₀)
     (y : (Σ k, J k) → Ω) (bk : K₀ → K) (bx : ∀ k, J₀ k ≃ J (bk k)) (i : Ω₀ →+* Ω) (d : ℕ)
@@ -290,7 +286,7 @@ theorem exists_local_section {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] [CharZer
     rw [← h2, div_eq_inv_mul]
 
 /- English proof (translation)
-Establish `himg` using `imageZ_eq i bx hbk hy`. Take `⟨Gf, ch, hch, hf⟩` from `GlobalTheory.T.arith_variety_reindexed K₀ K J₀ J Ω₀ Ω y₀ y bk bx i D d hbk hy hA₀ hA hB₀ hB hfin hd`. Take `⟨G, a, hG, hGn, hc⟩` from `GlobalTheory.T.generic_points_good_statement K₀ J₀ K J bk (blkV bk bx) (mCoordIdeal y) D Gf ch (isBlockMap_blkV bx hbk) hA (by rw [himg]; exact hA₀) hch`. Rewrite `hGn`, `hc` using `[himg]`. Conclude with `⟨G, a, hG, hGn, fun w hw h0 => (hc w hw h0).trans hf⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_count {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] [CharZero Ω] (y₀ : (Σ k, J₀ k) → Ω₀)
     (y : (Σ k, J k) → Ω) (bk : K₀ → K) (bx : ∀ k, J₀ k ≃ J (bk k)) (i : Ω₀ →+* Ω) (D d : ℕ)
@@ -308,17 +304,17 @@ theorem exists_count {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] [CharZero Ω] (y
   exact ⟨G, a, hG, hGn, fun w hw h0 => (hc w hw h0).trans hf⟩
 
 /- English proof (translation)
-Introduce `K₀ K _ _ J₀ J _ _ Ω₀ Ω _ _ _ y₀ y bk bx i D d R₀ R h hbk hy hA₀ hA hB₀ hB hh hlift hfin hd`. Establish `hv : IsBlockMap bk (blkV bk bx)` using `isBlockMap_blkV bx hbk`. Establish `hprime : (mCoordIdeal y₀).IsPrime` using `hA₀.2.1.1`. Establish `himg` using `imageZ_eq i bx hbk hy`. Take `⟨G₁, a₁, hG₁, hG₁n, hcount⟩` from `exists_count y₀ y bk bx i D d hbk hy hA₀ hA hB₀ hB hfin hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨G₂, a₂, hG₂, hG₂n, hloc⟩` from `exists_local_section y₀ y bk bx i d hy hprime hB₀ hfin hd`. Establish `hGn : G₁ * G₂ ∉ mCoordIdeal y₀` using `fun hm => (hprime.mem_or_mem hm).elim hG₁n hG₂n`. Establish `hGh : IsMultiHomog (G₁ * G₂) (a₁ + a₂)` using `isMultiHomog_mul' hG₁ hG₂`. Establish `hev : ∀ w : (Σ k, J₀ k) → ℂ, eval w (map (Int.castRingHom ℂ) (G₁ * G₂)) ≠ 0 → eval w (map (Int.castRingHom ℂ) G₁) ≠ 0 ∧ eval w (map (Int.castRingHom ℂ) G₂) ≠ 0`. Introduce `w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_mul] at hw`. Conclude with `⟨fun h => hw (by rw [h]; simp), fun h => hw (by rw [h]; simp)⟩`. Establish `hrn : rename (blkV bk bx) (G₁ * G₂) ∉ mCoordIdeal y` using `fun hm => hGn (himg ▸ (show G₁ * G₂ ∈ imageZ (blkV bk bx) (mCoordIdeal y) from hm))`. Use `⟨_, GlobalTheory.T.log_resolution_compatible_pullback K₀ J₀ K J (mCoordIdeal y₀) ⊤ (mCoordIdeal y) ⊤ D R₀.X R₀.A R₀ id R h (fun z w => SameOrbit (fun p => z (blkV bk bx p)) w) (G₁ * G₂) (rename (blkV bk bx) (G₁ * G₂)) (a₁ + a₂) (Function.extend bk (a₁ + a₂) 0) d rfl hA₀ hA (holoM …` and prove the remaining obligations. Introduce `x x₀ e`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e' : x₀ = h x` using `e`. Substitute `e'` using the available equality. Conclude with `sameOrbit_symm' (hlift x)`. Introduce `x x₀ hr`. Conclude with `R₀.inj x₀ (h x) (not_mem_mcPts_top _) (sameOrbit_trans' (sameOrbit_symm' hr) (sameOrbit_symm' (hlift x)))`.
+Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw h0`. Conclude with `hcount w hw (hev w h0).1`. Introduce `z hz hzJ`. Conclude with `absurd hzJ (not_mem_mcPts_top z)`. Introduce `z hz w hw hr h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eval_map_rename']`. Take `⟨c, hc, e⟩` from `hr`. Rewrite using `[e, ReciprocityTheory.ChartRestriction.G.Geo.eval_smul_homog _ _ hGh, h0, mul_zero]`. Introduce `z hz w₀ hw₀ hr h0`. Conclude with `hloc z hz w₀ hw₀ hr (hev w₀ h0).2`.
+A detailed English derivation is pending.
 -/
 theorem isDegreeOff_of_block : ∀ (K₀ K : Type) [Fintype K₀] [Fintype K] (J₀ : K₀ → Type) (J : K → Type) [∀ k, Fintype (J₀ k)] [∀ k, Fintype (J k)] (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [CharZero Ω] (y₀ : (Σ k, J₀ k) → Ω₀) (y : (Σ k, J k) → Ω) (bk : K₀ → K) (bx : ∀ k, J₀ k ≃ J (bk k)) (i : Ω₀ →+* Ω) (D d : ℕ) (R₀ : AnLogRes (mCoordIdeal y₀) ⊤ D) (R : AnLogRes (mCoordIdeal y) ⊤ D) (h : R.X → R₀.X), Function.Injective bk → (∀ k a, y ⟨bk k, bx k a⟩ = i (y₀ ⟨k, a⟩)) → IsArithVar (mCoordIdeal y₀) (D + 1) → IsArithVar (mCoordIdeal y) (D + 1) → Birational y₀ → Birational y → HoloMap R.A R₀.A h → (∀ x, SameOrbit (R₀.lift (h x) (h x)) (fun p => R.lift x x (blkV bk bx p))) → (letI := i.toAlgebra; Module.finrank Ω₀ Ω = d) → 0 < d → ∃ br : Set R₀.X, IsDegreeOff R₀.A R.A h d br := by
   intro K₀ K _ _ J₀ J _ _ Ω₀ Ω _ _ _ y₀ y bk bx i D d R₀ R h hbk hy hA₀ hA hB₀ hB hh hlift hfin hd

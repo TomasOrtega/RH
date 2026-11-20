@@ -8,15 +8,13 @@ open MeasureTheory Topology TopologicalSpace Set
 open scoped ENNReal NNReal
 
 /- English proof (translation)
-Set `_` to `TopologicalSpace.metrizableSpaceMetric Y`. Establish `hemb : IsEmbedding ((↑) : Y → UniformSpace.Completion Y)` using `(UniformSpace.Completion.isUniformEmbedding_coe Y).isEmbedding`. Establish `hdense : DenseRange ((↑) : Y → UniformSpace.Completion Y)` using `UniformSpace.Completion.denseRange_coe`. Establish `hopen : IsOpen (range ((↑) : Y → UniformSpace.Completion Y))`. Rewrite using `[isOpen_iff_forall_mem_open]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨K, hK, hKy⟩` from `exists_compact_mem_nhds y`. Take `⟨V, hVK, hVo, hyV⟩` from `mem_nhds_iff.1 hKy`. Take `⟨U, hUo, hUV⟩` from `hemb.isInducing.isOpen_iff.1 hVo`. Use `⟨U, ?_, hUo, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcl : IsClosed (((↑) : Y → UniformSpace.Completion Y) '' K)` using `(hK.image hemb.continuous).isClosed`. Combine the equalities or inequalities in the displayed calculation. Apply `closure_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨hz, ⟨z, rfl⟩⟩`. Use `⟨z, hVK ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hUV]`. Conclude with `hz`. Use `_ = ((↑) : Y → UniformSpace.Completion Y) '' K := hcl.closure_eq`. Use `_ ⊆ range ((↑) : Y → UniformSpace.Completion Y) := image_subset_range _ _`. Use `show y ∈ ((↑) : Y → UniformSpace.Completion Y) ⁻¹' U`.
-
-Rewrite using `[hUV]`. Conclude with `hyV`. Establish `: PolishSpace (range ((↑) : Y → UniformSpace.Completion Y))` using `hopen.polishSpace`. Conclude with `hemb.toHomeomorph.isClosedEmbedding.polishSpace`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem polish_of_lcsc (Y : Type) [TopologicalSpace Y] [LocallyCompactSpace Y] [T2Space Y]
     [SecondCountableTopology Y] : PolishSpace Y := by
@@ -56,7 +54,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Rewrite using `[MeasureTheory.Measure.modularCharacterFun_eq_haarScalarFactor μ g]`. Conclude with `Measure.isMulLeftInvariant_eq_smul _ μ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mul_right_eq (μ : Measure G) [μ.IsHaarMeasure] (g : G) :
     μ.map (· * g) = Measure.modularCharacterFun g • μ := by
@@ -65,13 +63,13 @@ theorem map_mul_right_eq (μ : Measure G) [μ.IsHaarMeasure] (g : G) :
   exact Measure.isMulLeftInvariant_eq_smul _ μ
 
 /- English proof (translation)
-Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : G)`. Use `set μ : Measure G := Measure.haar`. Establish `hpos : μ K ≠ 0` using `by first`. Consider the case `exact (Measure.measure_pos_of_mem_nhds μ hK1).ne'`. Consider the case `exact (MeasureTheory.measure_pos_of_mem_nhds μ hK1).ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact ((isOpen_interior.measure_pos μ ⟨1, mem_interior_iff_mem_nhds.2 hK1⟩).trans_le (measure_mono interior_subset)).ne'`. Establish `hfin : μ K ≠ ∞` using `hK.measure_lt_top.ne`. Establish `key : (fun g : G => (Measure.modularCharacterFun g : ℝ≥0∞)) = fun g => (∫⁻ x, K.indicator 1 (x * g) ∂μ) / μ K`. Use function extensionality and compare the values at `g`. Establish `e` using `congrArg (fun m : Measure G => m K) (map_mul_right_eq μ g)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e`. Rewrite `e` using `[Measure.map_apply (measurable_mul_const g) hK.measurableSet]`. Rewrite using `[ENNReal.eq_div_iff hpos hfin, mul_comm, ← e, ← lintegral_indicator_one (hK.measurableSet.preimage (measurable_mul_const g))]`. Both sides reduce to the same expression. Rewrite using `[key]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Measurable.div_const ?_ _` and prove the remaining obligations. Conclude with `((measurable_one.indicator hK.measurableSet).comp (measurable_snd.mul measurable_fst)).lintegral_prod_right'`.
+A detailed English derivation is pending.
 -/
 theorem measurable_modChar :
     Measurable (fun g : G => (Measure.modularCharacterFun g : ℝ≥0∞)) := by
@@ -100,35 +98,31 @@ theorem measurable_modChar :
     (measurable_snd.mul measurable_fst)).lintegral_prod_right'
 
 /- English proof (translation)
-Use `haveI : MeasurableMul H := by first`. Consider the case `infer_instance`. Consider the case `exact ⟨fun c => ((measurable_const_mul (c : G)).comp measurable_subtype_coe).subtype_mk, fun c => ((measurable_mul_const (c : G)).comp measurable_subtype_coe).subtype_mk⟩`. Take `⟨D, hD⟩ : ∃ D : H → ℝ, ∀ h, D h = (Measure.modularCharacterFun (h : G) : ℝ)` from `⟨_, fun _ => rfl⟩`. Establish `hDm : Measurable D`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show D = fun h : H => (Measure.modularCharacterFun (h : G) : ℝ) from funext hD]`. Conclude with `measurable_coe_nnreal_real.comp ((measurable_coe_nnreal_ennreal_iff.1 measurable_modChar).comp measurable_subtype_coe)`. Establish `hmul : ∀ a b : H, D (a * b) = D a * D b`. Introduce `a b`. Establish `e : Measure.modularCharacterFun ((a : G) * b) = Measure.modularCharacterFun (a : G) * Measure.modularCharacterFun (b : G)` using `map_mul (Measure.modularCharacter (G := G)) (a : G) (b : G)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hD, hD, hD, Subgroup.coe_mul, e, NNReal.coe_mul]`. Establish `hone : D 1 = 1`. Establish `e : Measure.modularCharacterFun (1 : G) = 1` using `map_one (Measure.modularCharacter (G := G))`. Rewrite using `[hD, OneMemClass.coe_one, e, NNReal.coe_one]`. Establish `hpos : ∀ a : H, 0 < D a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Establish `e : D a * D a⁻¹ = 1` using `by rw [← hmul, mul_inv_cancel, hone]`. Establish `hne0 : D a ≠ 0` using `left_ne_zero_of_mul_eq_one e`. Rewrite `hne0`, the goal using `[hD]`. Conclude with `lt_of_le_of_ne (NNReal.coe_nonneg _) (Ne.symm hne0)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Establish `hc : D k ≠ 1`. Introduce `e`. Rewrite `e` using `[hD]`. Conclude with `hne (by exact_mod_cast e)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, ht_def⟩ : ∃ t, t = Real.log (D k)` from `⟨_, rfl⟩`. Establish `ht : t ≠ 0`. Introduce `e`. Rewrite `e` using `[ht_def]`. Break down `Real.log_eq_zero.1 e with h | h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hpos k).ne' h`. Conclude with `hc h`. Combine the linear relations using `[hpos k]`. Establish `hinv : D k⁻¹ = (D k)⁻¹`. Establish `e` using `hmul k⁻¹ k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `e` using `[inv_mul_cancel, hone]`. Conclude with `eq_inv_of_mul_eq_one_left e.symm`. Establish `hN : ∀ h : H, ⌊Real.log (D (k⁻¹ * h)) / t⌋ = ⌊Real.log (D h) / t⌋ - 1`. Introduce `h`. Establish `e2 : Real.log (D (k⁻¹ * h)) / t = Real.log (D h) / t - 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hmul, hinv, Real.log_mul (inv_ne_zero (hpos k).ne') (hpos h).ne', Real.log_inv, ← ht_def, add_div, neg_div, div_self ht]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, Int.floor_sub_one]`. Establish `hA : ∀ m : ℤ, ν {h : H | ⌊Real.log (D h) / t⌋ = m + 1} = ν {h : H | ⌊Real.log (D h) / t⌋ = m}`. Introduce `m`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : {h : H | ⌊Real.log (D h) / t⌋ = m + 1} = (fun h => k⁻¹ * h) ⁻¹' {h : H | ⌊Real.log (D h) / t⌋ = m}`. Use extensionality with `h`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, hN]`. Apply the tactic sequence `constructor <;> intro hh <;> omega`. Rewrite using `[e, measure_preimage_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hall : ∀ m : ℤ, ν {h : H | ⌊Real.log (D h) / t⌋ = m} = ν {h : H | ⌊Real.log (D h) / t⌋ = 0}`. Introduce `m`. Proceed by induction on `m using Int.induction_on with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [hA, ih]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `pred n ih => rw [← ih, ← hA, sub_add_cancel]`. Establish `hU : (⋃ m : ℤ, {h : H | ⌊Real.log (D h) / t⌋ = m}) = Set.univ`. Use extensionality with `h`. Simplify using the standard rewrite rules. Establish `hdisj : Pairwise (Function.onFun Disjoint fun m : ℤ => {h : H | ⌊Real.log (D h) / t⌋ = m})`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i j hij`. Conclude with `Set.disjoint_left.2 (fun h hi hj => hij (hi.symm.trans hj))`. Establish `hmeas : ∀ m : ℤ, MeasurableSet {h : H | ⌊Real.log (D h) / t⌋ = m}` using `fun m => (Int.measurable_floor.comp ((Real.measurable_log.comp hDm).div_const t)) (measurableSet_singleton m)`. Establish `htot : ν univ = ∑' _m : ℤ, ν {h : H | ⌊Real.log (D h) / t⌋ = 0}`. Rewrite using `[← hU, measure_iUnion hdisj hmeas]`.
-
-Conclude with `tsum_congr hall`. Distinguish the cases in `hz : ν {h : H | ⌊Real.log (D h) / t⌋ = 0} = 0`. Rewrite `htot` using `[hz, tsum_zero]`. Conclude with `h0 htot`. Rewrite `htot` using `[ENNReal.tsum_const_eq_top_of_ne_zero hz]`.
-
-Conclude with `hfin htot`.
+A detailed English derivation is pending.
 -/
 theorem modChar_eq_one (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant]
     (h0 : ν univ ≠ 0) (hfin : ν univ ≠ ∞) (k : H) : Measure.modularCharacterFun (k : G) = 1 := by
@@ -218,7 +212,7 @@ theorem modChar_eq_one (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant]
     exact hfin htot
 
 /- English proof (translation)
-Rewrite using `[show (∫⁻ g, f (g * k) ∂μ) = ∫⁻ g, f g ∂(μ.map (· * (k : G))) from (lintegral_map hf (measurable_mul_const _)).symm, map_mul_right_eq μ (k : G), modChar_eq_one H ν h0 hfin k, one_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem lintegral_mul_right_of_mem (μ : Measure G) [μ.IsHaarMeasure] (H : Subgroup G)
     (ν : Measure H) [ν.IsMulLeftInvariant] (h0 : ν univ ≠ 0) (hfin : ν univ ≠ ∞) (k : H)
@@ -229,7 +223,7 @@ theorem lintegral_mul_right_of_mem (μ : Measure G) [μ.IsHaarMeasure] (H : Subg
     modChar_eq_one H ν h0 hfin k, one_smul]
 
 /- English proof (translation)
-Conclude with `(hf.comp (measurable_fst.mul (measurable_subtype_coe.comp measurable_snd))).lintegral_prod_right'`.
+A detailed English derivation is pending.
 -/
 theorem meas_avg (H : Subgroup G) (ν : Measure H) [SFinite ν] {f : G → ℝ≥0∞} (hf : Measurable f) :
     Measurable (fun g : G => ∫⁻ h, f (g * (h : G)) ∂ν) := by
@@ -237,7 +231,7 @@ theorem meas_avg (H : Subgroup G) (ν : Measure H) [SFinite ν] {f : G → ℝ�
   exact (hf.comp (measurable_fst.mul (measurable_subtype_coe.comp measurable_snd))).lintegral_prod_right'
 
 /- English proof (translation)
-Use `haveI : MeasurableMul H := by first`. Consider the case `infer_instance`. Consider the case `exact ⟨fun c => ((measurable_const_mul (c : G)).comp measurable_subtype_coe).subtype_mk, fun c => ((measurable_mul_const (c : G)).comp measurable_subtype_coe).subtype_mk⟩`. Establish `e` using `lintegral_mul_left_eq_self (μ := ν) (fun h : H => f (g * (h : G))) k`. Simplify `e` using `[mul_assoc]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem avg_mul_mem (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant] (f : G → ℝ≥0∞)
     (g : G) (k : H) : ∫⁻ h, f (g * k * (h : G)) ∂ν = ∫⁻ h, f (g * (h : G)) ∂ν := by
@@ -251,7 +245,7 @@ theorem avg_mul_mem (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant] (f
   simpa [mul_assoc] using e
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul H g`. Rewrite using `[hk]`. Conclude with `avg_mul_mem H ν f g k`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_out (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant] (f : G → ℝ≥0∞) (g : G) :
     ∫⁻ h, f ((g : G ⧸ H).out * (h : G)) ∂ν = ∫⁻ h, f (g * (h : G)) ∂ν := by
@@ -261,7 +255,7 @@ theorem avg_out (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant] (f : G
   exact avg_mul_mem H ν f g k
 
 /- English proof (translation)
-Use `measurable_from_quotient.2 ?_` and prove the remaining obligations. Use `meas_avg H ν hf using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Conclude with `avg_out H ν f g`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem meas_avg_q (H : Subgroup G) (ν : Measure H) [SFinite ν] [ν.IsMulLeftInvariant]
     {f : G → ℝ≥0∞} (hf : Measurable f) :
@@ -276,7 +270,7 @@ variable {X : Type} [MulAction G X] [TopologicalSpace X] [T2Space X] [Measurable
   [BorelSpace X]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (MulAction.stabilizer G x0) g`. Rewrite using `[hk, mul_smul, MulAction.mem_stabilizer_iff.mp k.2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem orb_mk (x0 : X) (g : G) :
     ((g : G ⧸ MulAction.stabilizer G x0)).out • x0 = g • x0 := by
@@ -285,7 +279,7 @@ theorem orb_mk (x0 : X) (g : G) :
   rw [hk, mul_smul, MulAction.mem_stabilizer_iff.mp k.2]
 
 /- English proof (translation)
-Establish `e : (fun q : G ⧸ MulAction.stabilizer G x0 => q.out • x0) ∘ QuotientGroup.mk = fun g : G => g • x0`. Use function extensionality and compare the values at `g`. Conclude with `orb_mk x0 g`. Conclude with `(QuotientGroup.isQuotientMap_mk (MulAction.stabilizer G x0)).continuous_iff.2 (by rw [e]; exact hc)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem orb_cont (x0 : X) (hc : Continuous fun g : G => g • x0) :
     Continuous (fun q : G ⧸ MulAction.stabilizer G x0 => q.out • x0) := by
@@ -297,7 +291,7 @@ theorem orb_cont (x0 : X) (hc : Continuous fun g : G => g • x0) :
   exact (QuotientGroup.isQuotientMap_mk (MulAction.stabilizer G x0)).continuous_iff.2 (by rw [e]; exact hc)
 
 /- English proof (translation)
-Introduce `q q' h`. Simplify using `only at h`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq, MulAction.mem_stabilizer_iff, mul_smul, ← h, ← mul_smul, inv_mul_cancel, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem orb_inj (x0 : X) :
     Function.Injective (fun q : G ⧸ MulAction.stabilizer G x0 => q.out • x0) := by
@@ -308,29 +302,23 @@ theorem orb_inj (x0 : X) :
     MulAction.mem_stabilizer_iff, mul_smul, ← h, ← mul_smul, inv_mul_cancel, one_smul]
 
 /- English proof (translation)
-Use `haveI := hν`. Use `haveI : IsFiniteMeasure ν := ⟨lt_top_iff_ne_top.2 hfin⟩`. Establish `hS : IsClosed ((MulAction.stabilizer G x0 : Subgroup G) : Set G)`. Establish `e : ((MulAction.stabilizer G x0 : Subgroup G) : Set G) = (fun g : G => g • x0) ⁻¹' {x0}`. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `MulAction.mem_stabilizer_iff`. Rewrite using `[e]`. Conclude with `isClosed_singleton.preimage hc`. Use `haveI : IsClosed ((MulAction.stabilizer G x0 : Subgroup G) : Set G) := hS`. Use `haveI : PolishSpace (G ⧸ MulAction.stabilizer G x0) := polish_of_lcsc _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : PolishSpace G := polish_of_lcsc G`. Establish `hqc : Continuous (QuotientGroup.mk : G → G ⧸ MulAction.stabilizer G x0)` using `(QuotientGroup.isQuotientMap_mk _).continuous`. Use `haveI : BorelSpace (G ⧸ MulAction.stabilizer G x0) := by`. Use `⟨le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce `A hA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA' : MeasurableSet ((QuotientGroup.mk : G → G ⧸ MulAction.stabilizer G x0) ⁻¹' A)` using `hA`. Establish `hAc' : MeasurableSet ((QuotientGroup.mk : G → G ⧸ MulAction.stabilizer G x0) ⁻¹' Aᶜ)` using `hA'.compl`. Use `letI : MeasurableSpace (G ⧸ MulAction.stabilizer G x0) := borel _`. Use `haveI : BorelSpace (G ⧸ MulAction.stabilizer G x0) := ⟨rfl⟩`. Establish `h1 : AnalyticSet A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← Set.image_preimage_eq A QuotientGroup.mk_surjective]`. Conclude with `hA'.analyticSet_image hqc.measurable`. Establish `h2 : AnalyticSet Aᶜ`. Rewrite using `[← Set.image_preimage_eq Aᶜ QuotientGroup.mk_surjective]`. Conclude with `hAc'.analyticSet_image hqc.measurable`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.measurableSet_of_compl h2`. Use `MeasurableSpace.generateFrom_le ?_` and prove the remaining obligations. Introduce `U hU`. Conclude with `(hU.preimage hqc).measurableSet`. Establish `hπ : MeasurableEmbedding (fun q : G ⧸ MulAction.stabilizer G x0 => q.out • x0)` using `(orb_cont x0 hc).measurableEmbedding (orb_inj x0)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmk : Measurable (QuotientGroup.mk : G → G ⧸ MulAction.stabilizer G x0)` using `by first`. Consider the case `exact measurable_quotient_mk''`. Consider the case `exact measurable_quotient_mk'`. Consider the case `exact (QuotientGroup.continuous_mk).measurable`. Consider the case `exact continuous_quot_mk.measurable`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `fun_prop`. Establish `hmap : μ.map (fun g => g • x0) = (μ.map (QuotientGroup.mk : G → G ⧸ MulAction.stabilizer G x0)).map (fun q : G ⧸ MulAction.stabilizer G x0 => q.out • x0)`. Rewrite using `[Measure.map_map hπ.measurable hmk]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(orb_mk x0 g).symm`. Establish `hFs : ∀ q : G ⧸ MulAction.stabilizer G x0, ∫⁻ h', f (s (q.out • x0) * (h' : G)) ∂ν = ∫⁻ h', f (q.out * (h' : G)) ∂ν`. Introduce `q`. Establish `hy : s (q.out • x0) • x0 = q.out • x0` using `hs _ ⟨q.out, rfl⟩`. Establish `hk : (q.out)⁻¹ * s (q.out • x0) ∈ MulAction.stabilizer G x0`.
-
-Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, hy, ← mul_smul, inv_mul_cancel, one_smul]`. Establish `e : s (q.out • x0) = q.out * ((q.out)⁻¹ * s (q.out • x0))` using `by group`. Rewrite using `[e]`. Conclude with `avg_mul_mem (MulAction.stabilizer G x0) ν f q.out ⟨_, hk⟩`. Establish `hinner : ∀ k : MulAction.stabilizer G x0, ∫⁻ g, f (g * k) ∂μ = ∫⁻ g, f g ∂μ` using `fun k => lintegral_mul_right_of_mem μ (MulAction.stabilizer G x0) ν h0 hfin k hf`.
-
-Rewrite using `[hmap, hπ.lintegral_map]`. Simplify using `only [hFs]`. Rewrite using `[lintegral_map (meas_avg_q (MulAction.stabilizer G x0) ν hf) hmk]`. Simplify using `only [avg_out]`. Rewrite using `[lintegral_lintegral_swap (f := fun (g : G) (h : MulAction.stabilizer G x0) => f (g * (h : G))) ((hf.comp (measurable_fst.mul (measurable_subtype_coe.comp measurable_snd))).aemeasurable)]`.
-
-Simplify using `only [hinner, lintegral_const]`. Rewrite using `[mul_comm (∫⁻ g, f g ∂μ), ← mul_assoc, ENNReal.inv_mul_cancel h0 hfin, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfold_stab (x0 : X) (hc : Continuous fun g : G => g • x0) (μ : Measure G)
     [μ.IsHaarMeasure] (ν : Measure (MulAction.stabilizer G x0)) (hν : ν.IsMulLeftInvariant)

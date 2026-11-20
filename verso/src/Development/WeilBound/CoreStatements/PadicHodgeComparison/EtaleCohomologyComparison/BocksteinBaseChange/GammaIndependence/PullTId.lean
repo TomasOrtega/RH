@@ -13,7 +13,7 @@ namespace CrystallineSemistableComparison
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Apply the tactic sequence `apply pullback.hom_ext <;> simp [GlobalTheory.Et.geomMap]`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem geomMap_eq_id {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}}
     (p : X ⟶ Spec (CommRingCat.of k)) (f : X ⟶ X) (hf : f = 𝟙 X) (h : f ≫ p = p) :
@@ -22,7 +22,7 @@ theorem geomMap_eq_id {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω]
   apply pullback.hom_ext <;> simp [GlobalTheory.Et.geomMap]
 
 /- English proof (translation)
-Unfold `Model.pullT`. Rewrite using `[geomMap_eq_id _ _ _ (genMap_id M h), CategoryTheory.Functor.map_id]`. Conclude with `GlobalTheory.EtC.pullHl_id l _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullT_id (M : Model l K) (h : 𝟙 M.X ≫ M.p = M.p) (n : ℕ) : Model.pullT (𝟙 M.X) h n = LinearMap.id := by
   unfold Model.pullT
@@ -30,7 +30,7 @@ theorem pullT_id (M : Model l K) (h : 𝟙 M.X ≫ M.p = M.p) (n : ℕ) : Model.
   exact GlobalTheory.EtC.pullHl_id l _ _ _
 
 /- English proof (translation)
-Unfold `Model.pullV GlobalTheory.EtC.pullHQ`. Rewrite using `[geomMap_eq_id _ _ _ (genMap_id M h), CategoryTheory.Functor.map_id, GlobalTheory.EtC.pullHl_id]`. Conclude with `LinearMap.baseChange_id`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullV_id (M : Model l K) (h : 𝟙 M.X ≫ M.p = M.p) (n : ℕ) : Model.pullV (𝟙 M.X) h n = LinearMap.id := by
   unfold Model.pullV GlobalTheory.EtC.pullHQ

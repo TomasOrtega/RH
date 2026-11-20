@@ -23,7 +23,7 @@ def NormAt {F : Type} [Field F] (O : Subring F) {n r : ℕ} (Y : Matrix (Fin n) 
   kMinor Y k hk I ≠ 0 ∧ ∀ I' : Fin k → Fin n, kMinor Y k hk I' / kMinor Y k hk I ∈ O
 
 /- English proof (translation)
-Use `⟨by simp [kMinor], fun I' => ?_⟩` and prove the remaining obligations. Simplify `O.one_mem` using `[kMinor]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem normAt_zero {F : Type} [Field F] (O : Subring F) {n r : ℕ} (Y : Matrix (Fin n) (Fin r) F)
     (I : Fin 0 → Fin n) : NormAt O Y 0 (Nat.zero_le r) I := by
@@ -31,7 +31,7 @@ theorem normAt_zero {F : Type} [Field F] (O : Subring F) {n r : ℕ} (Y : Matrix
   simpa [kMinor] using O.one_mem
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.DetMulExpand.det_mul_expand A B`.
+A detailed English derivation is pending.
 -/
 theorem det_mul_expand {F : Type} [CommRing F] {k r : ℕ} (A : Matrix (Fin k) (Fin r) F)
     (B : Matrix (Fin r) (Fin k) F) :
@@ -39,7 +39,7 @@ theorem det_mul_expand {F : Type} [CommRing F] {k r : ℕ} (A : Matrix (Fin k) (
   _root_.UpperTheory.Reformulated.B.DetMulExpand.det_mul_expand A B
 
 /- English proof (translation)
-Unfold `kMinor`. Establish `: (A * B).submatrix J (Fin.castLE hk) = A.submatrix J id * B.submatrix id (Fin.castLE hk)`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[this, det_mul_expand]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -54,7 +54,7 @@ theorem kMinor_mul_expand {F : Type} [CommRing F] {n m r : ℕ} (A : Matrix (Fin
   rfl
 
 /- English proof (translation)
-Rewrite using `[kMinor_mul_expand, Finset.sum_div]`. Use `D.sum_mem fun I _ => ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc]`. Conclude with `D.mul_mem (D.prod_mem fun a _ => hA _ _) (hB I)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kMinor_mul_div_mem {F : Type} [Field F] (D : Subring F) {n m r : ℕ} (A : Matrix (Fin n) (Fin m) F)
     (B : Matrix (Fin m) (Fin r) F) (k : ℕ) (hk : k ≤ r) (c : F) (hA : ∀ a b, A a b ∈ D)
@@ -65,17 +65,15 @@ theorem kMinor_mul_div_mem {F : Type} [Field F] (D : Subring F) {n m r : ℕ} (A
   exact D.mul_mem (D.prod_mem fun a _ => hA _ _) (hB I)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `key : ∀ t : Finset ι, t ⊆ s → ∃ h : ∑ i ∈ t, a i ∈ O, (⟨_, h⟩ : O) ∈ IsLocalRing.maximalIdeal O`. Introduce `t`. Proceed by induction on `t using Finset.cons_induction with`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `empty => intro _; exact ⟨by simp, Ideal.zero_mem _⟩`. Consider the case `cons i t hi ih`. Introduce `hts`. Rewrite `hts` using `[Finset.cons_eq_insert, Finset.insert_subset_iff]`. Take `⟨h2, h3⟩` from `ih hts.2`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h4 : a i ∈ O` using `ha i hts.1`. Establish `h5 : (⟨a i, h4⟩ : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨v, hv⟩` from `hu.exists_right_inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv' : a i * (v : F) = 1` using `congrArg Subtype.val hv`. Establish `h0 : a i ≠ 0` using `left_ne_zero_of_mul_eq_one hv'`. Use `hcon i hts.1 h0 ?_` and prove the remaining obligations. Rewrite using `[eq_comm.1 (eq_inv_of_mul_eq_one_right hv')]`. Conclude with `v.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_cons]`. Use `⟨O.add_mem h4 h2, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.add_mem _ h5 h3`. Take `⟨h, hm⟩` from `key s subset_rfl`. Establish `: (⟨∑ i ∈ s, a i, h⟩ : O) = 1` using `Subtype.ext h1`.
-
-Rewrite `hm` using `[this]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 hm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_sum_eq_one {F : Type} [Field F] (O : Subring F) [IsLocalRing O] {ι : Type}
     (s : Finset ι) (a : ι → F) (ha : ∀ i ∈ s, a i ∈ O) (h1 : ∑ i ∈ s, a i = 1) :
@@ -110,13 +108,13 @@ theorem exists_unit_of_sum_eq_one {F : Type} [Field F] (O : Subring F) [IsLocalR
   exact (IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 hm)
 
 /- English proof (translation)
-Unfold `kMinor`. Rewrite using `[← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `symm`. Use `Finset.sum_of_injOn (Fin.castLE hk) (Fin.castLE_injective hk).injOn (fun _ _ => Finset.mem_univ _) (fun j _ hj => ?_) (fun _ _ => rfl)` and prove the remaining obligations. Establish `hjk : (Fin.castLE hk b) < j`. Rewrite using `[Fin.lt_def]`. Assume the negation of the conclusion as `hlt`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hjk' : (j : ℕ) < k`. Use `b.2` as an intermediate fact. Simplify using `only [Fin.val_castLE] at hlt`. Use linear arithmetic over natural numbers and integers. Conclude with `hj ⟨⟨j, hjk'⟩, by simp, by ext; simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC _ _ hjk, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem kMinor_mul_upper {F : Type} [CommRing F] {n r : ℕ} (A : Matrix (Fin n) (Fin r) F)
     (C : Matrix (Fin r) (Fin r) F) (hC : ∀ l k, k < l → C l k = 0) (k : ℕ) (hk : k ≤ r) (I : Fin k → Fin n) :
@@ -140,7 +138,7 @@ theorem kMinor_mul_upper {F : Type} [CommRing F] {n r : ℕ} (A : Matrix (Fin n)
   rw [hC _ _ hjk, mul_zero]
 
 /- English proof (translation)
-Unfold `kMinor`. Rewrite using `[Matrix.det_of_lowerTriangular]`. Simplify using `[h1]`. Introduce `a b hab`. Conclude with `h0 _ _ (by simpa using hab)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kMinor_lower_lead {F : Type} [CommRing F] {r : ℕ} (L : Matrix (Fin r) (Fin r) F)
     (h0 : ∀ l k, l < k → L l k = 0) (h1 : ∀ l, L l l = 1) (k : ℕ) (hk : k ≤ r) :
@@ -155,15 +153,15 @@ def lastRow {r : ℕ} (k l : Fin r) : Fin ((k : ℕ) + 1) → Fin r := fun a =>
   if h : (a : ℕ) = k then l else ⟨a, by have := a.2; have := k.2; omega⟩
 
 /- English proof (translation)
-Unfold `kMinor`. Rewrite using `[Matrix.det_of_lowerTriangular, Fin.prod_univ_castSucc]`. Establish `e1 : ∀ a : Fin (k : ℕ), (L.submatrix (lastRow k l) (Fin.castLE k.2)) a.castSucc a.castSucc = 1`. Introduce `a`. Establish `: lastRow k l a.castSucc = Fin.castLE k.2 a.castSucc`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `a.2` as an intermediate fact. Use `ext`. Simplify using `[lastRow, Nat.ne_of_lt this]`. Simplify using `[this, h1]`. Establish `e2 : (L.submatrix (lastRow k l) (Fin.castLE k.2)) (Fin.last _) (Fin.last _) = L l k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `a1 : lastRow k l (Fin.last _) = l` using `by simp [lastRow]`. Establish `a2 : Fin.castLE k.2 (Fin.last (k : ℕ)) = k` using `by ext; simp`. Simplify using `[a1, a2]`. Rewrite using `[Finset.prod_congr rfl (fun a _ => e1 a), e2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a b hab`. Establish `hab' : a < b` using `by simpa using hab`. Establish `hb` using `b.2`. Establish `ha : (a : ℕ) ≠ k`. Establish `: (a : ℕ) < b` using `hab'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [Matrix.submatrix_apply, lastRow, dif_neg ha]`. Conclude with `h0 _ _ (by rw [Fin.lt_def]; simpa using hab')`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kMinor_lower_lastRow {F : Type} [CommRing F] {r : ℕ} (L : Matrix (Fin r) (Fin r) F)
     (h0 : ∀ l k, l < k → L l k = 0) (h1 : ∀ l, L l l = 1) (k l : Fin r) (hkl : k < l) :
@@ -193,13 +191,13 @@ theorem kMinor_lower_lastRow {F : Type} [CommRing F] {r : ℕ} (L : Matrix (Fin 
     exact h0 _ _ (by rw [Fin.lt_def]; simpa using hab')
 
 /- English proof (translation)
-Take `⟨hP, hr⟩` from `hJ`. Use `set P := kMinor (A * Y) k hk J with hPdef`. Establish `hY : Y = N * (A * Y)` using `by rw [← Matrix.mul_assoc, hNA, Matrix.one_mul]`. Establish `hyO : ∀ I, kMinor Y k hk I / P ∈ O` using `fun I => by`. Rewrite using `[hY]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `kMinor_mul_div_mem O N (A * Y) k hk P hN hr I`. Establish `h1 : ∑ I : Fin k → Fin r, (∏ a, A (J a) (I a)) * (kMinor Y k hk I / P) = 1`. Establish `: P = ∑ I : Fin k → Fin r, (∏ a, A (J a) (I a)) * kMinor Y k hk I` using `kMinor_mul_expand A Y k hk J`. Simplify using `only [← mul_div_assoc]`. Rewrite using `[← Finset.sum_div, ← this, div_self hP]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨I, -, hne, hinv⟩` from `exists_unit_of_sum_eq_one O Finset.univ _ (fun I _ => O.mul_mem (O.prod_mem fun a _ => hA _ _) (hyO I)) h1`. Establish `hc : (∏ a, A (J a) (I a)) ≠ 0` using `left_ne_zero_of_mul hne`. Establish `hd : kMinor Y k hk I / P ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hy : kMinor Y k hk I ≠ 0` using `fun h => hd (by rw [h, zero_div])`. Use `⟨I, hy, fun I' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `e : kMinor Y k hk I' / kMinor Y k hk I = (kMinor Y k hk I' / P) * ((∏ a, A (J a) (I a)) * ((∏ a, A (J a) (I a)) * (kMinor Y k hk I / P))⁻¹)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `O.mul_mem (hyO I') (O.mul_mem (O.prod_mem fun a _ => hA _ _) hinv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_normAt {F : Type} [Field F] (O : Subring F) [IsLocalRing O] {n r : ℕ}
     (A : Matrix (Fin n) (Fin r) F) (N : Matrix (Fin r) (Fin n) F) (hA : ∀ a b, A a b ∈ O)
@@ -228,7 +226,7 @@ theorem exists_normAt {F : Type} [Field F] (O : Subring F) [IsLocalRing O] {n r 
   exact O.mul_mem (hyO I') (O.mul_mem (O.prod_mem fun a _ => hA _ _) hinv)
 
 /- English proof (translation)
-Unfold `kMinor`. Rewrite using `[Matrix.det_apply']`. Use `D.sum_mem fun σ _ => D.mul_mem (intCast_mem D _) (D.prod_mem fun a _ => hA _ _)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem kMinor_mem {F : Type} [CommRing F] (D : Subring F) {n r : ℕ} (A : Matrix (Fin n) (Fin r) F)
     (hA : ∀ a b, A a b ∈ D) (k : ℕ) (hk : k ≤ r) (I : Fin k → Fin n) : kMinor A k hk I ∈ D := by
@@ -237,7 +235,7 @@ theorem kMinor_mem {F : Type} [CommRing F] (D : Subring F) {n r : ℕ} (A : Matr
   refine D.sum_mem fun σ _ => D.mul_mem (intCast_mem D _) (D.prod_mem fun a _ => hA _ _)
 
 /- English proof (translation)
-Establish `h1` using `kMinor_lower_lead V hV0 hV1 k hk`. Rewrite `h1` using `[← h, kMinor_mul_upper Y C hC]`. Rewrite using `[← h, kMinor_mul_upper Y C hC, div_eq_iff h0]`. Take the linear combination `(-(kMinor Y k hk I)) * h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ratio_eq_kMinor {F : Type} [Field F] {r : ℕ} (Y C V : Matrix (Fin r) (Fin r) F)
     (hC : ∀ l k, k < l → C l k = 0) (hV0 : ∀ l k, l < k → V l k = 0) (hV1 : ∀ l, V l l = 1)
@@ -249,15 +247,13 @@ theorem ratio_eq_kMinor {F : Type} [Field F] {r : ℕ} (Y C V : Matrix (Fin r) (
   linear_combination (-(kMinor Y k hk I)) * h1
 
 /- English proof (translation)
-Establish `hdet : IsUnit T'.det` using `isUnit_iff_ne_zero.2 hT`. Establish `hTi : (T'⁻¹).map (algebraMap Ω K) * T'.map (algebraMap Ω K) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hdet, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `set Q := (T'⁻¹).map (algebraMap Ω K) * V with hQ`. Establish `hQ' : u * C = Q`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ, ← h, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hTi, Matrix.one_mul]`. Establish `hQF : ∀ a b, Q a b ∈ Fd` using `fun a b => by`. Rewrite using `[hQ, Matrix.mul_apply]`. Conclude with `sum_mem fun j _ => mul_mem (Fd.algebraMap_mem _) (hF _ _)`. Establish `hk : (k : ℕ) + 1 ≤ r` using `k.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `kMinor_lower_lead V hV0 hV1 _ hk`. Rewrite `h1` using `[← h, kMinor_mul_upper _ C hC]`. Establish `hc : kMinor C _ hk (Fin.castLE hk) ≠ 0` using `right_ne_zero_of_mul_eq_one h1`. Establish `h2` using `kMinor_mul_upper u C hC _ hk (lastRow k l)`. Establish `h3` using `kMinor_mul_upper u C hC _ hk (Fin.castLE hk)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[kMinor_lower_lastRow u hu0 hu1 k l hkl, hQ']`. Rewrite `h3` using `[kMinor_lower_lead u hu0 hu1, hQ', _root_.one_mul]`. Establish `e : u l k = kMinor Q _ hk (lastRow k l) / kMinor Q _ hk (Fin.castLE hk)`. Rewrite using `[h2, h3, mul_div_assoc, div_self hc, mul_one]`. Rewrite using `[e]`.
-
-Conclude with `div_mem (kMinor_mem Fd.toSubalgebra.toSubring Q hQF _ hk _) (kMinor_mem Fd.toSubalgebra.toSubring Q hQF _ hk _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entries_mem {Ω K : Type} [Field Ω] [Field K] [Algebra Ω K] (Fd : IntermediateField Ω K) {r : ℕ}
     (T' : Matrix (Fin r) (Fin r) Ω) (hT : T'.det ≠ 0) (u C V : Matrix (Fin r) (Fin r) K)
@@ -288,7 +284,7 @@ theorem entries_mem {Ω K : Type} [Field Ω] [Field K] [Algebra Ω K] (Fd : Inte
   exact div_mem (kMinor_mem Fd.toSubalgebra.toSubring Q hQF _ hk _) (kMinor_mem Fd.toSubalgebra.toSubring Q hQF _ hk _)
 
 /- English proof (translation)
-Unfold `genU`. Rewrite using `[dif_neg (not_lt.2 h.le), if_neg h.ne]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem genU_zero (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (s : S) (l k : Fin (r s)) (h : l < k) :
     genU Ω r s l k = 0 := by
@@ -296,7 +292,7 @@ theorem genU_zero (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (s : S) (l k
   rw [dif_neg (not_lt.2 h.le), if_neg h.ne]
 
 /- English proof (translation)
-Unfold `genU`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem genU_one (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (s : S) (l : Fin (r s)) :
     genU Ω r s l l = 1 := by
@@ -304,7 +300,7 @@ theorem genU_one (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (s : S) (l : 
   simp
 
 /- English proof (translation)
-Unfold `genU`. Rewrite using `[dif_pos q.2.2]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem genU_gen (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (q : GenIx r) :
     genU Ω r q.1 q.2.1.1 q.2.1.2 = algebraMap (MvPolynomial (GenIx r) Ω) (GenField Ω r) (MvPolynomial.X q) := by
@@ -313,7 +309,7 @@ theorem genU_gen (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (q : GenIx r)
   rfl
 
 /- English proof (translation)
-The claim follows from `(MvPolynomial.algebraicIndependent_X (GenIx r) Ω).map' (f := IsScalarTower.toAlgHom Ω (MvPolynomial (GenIx r) Ω) (GenField Ω r)) (IsFractionRing.injective _ _)`.
+A detailed English derivation is pending.
 -/
 theorem genU_indep (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) :
     AlgebraicIndependent Ω (fun q : GenIx r =>

@@ -8,11 +8,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Introduce `l _ F O _ _ _ _ _ _ _ n r B N x`. Use `u_gen O B.B _ ?_ N x` and prove the remaining obligations. Introduce `R' _ _ _ f f' h`. Take `⟨p, hp⟩` from `pair_map r B.u f`. Use `(B.univ R' p).unique hp ⟨?_, fun v i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hp.1]`. Use `d_gext _ _ fun g i h1 h2 => ?_` and prove the remaining obligations. Establish `e : ∀ φ : B.B →+* R', (B.u.D.map φ).lam i (MonoidAlgebra.single g 1) = φ (B.u.D.lam i (MonoidAlgebra.single g 1))` using `fun φ => by`. Use `((d_gmap B.u.D).2.2.1 φ (MonoidAlgebra.single g 1)).2 i` as an intermediate fact. Rewrite `this` using `[MonoidAlgebra.mapRingHom_single, map_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[e, e]`. Conclude with `(h _ (Or.inl ⟨i, g, h1, h2, rfl⟩)).symm`. Rewrite using `[← hp.2 v i]`. Use extensionality with `g`. Conclude with `(h _ (Or.inr ⟨v, i, g, rfl⟩)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.exists_adjoin_coeff_character_sub_mem_maximalIdeal_pow :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] [Finite (ResidueField O)] [CharP (ResidueField O) l] [Algebra ℤ_[l] O] {n : ℕ} (r : Resid F O n) (B : UniversalOrdinaryDeterminantRing r) (N : ℕ) (x : B.B), ∃ y ∈ Algebra.adjoin O ({a | ∃ (i : ℕ) (g : F.G₀), 1 ≤ i ∧ i ≤ n ∧ a = B.u.D.lam i (MonoidAlgebra.single g 1)} ∪ {a | ∃ v i g, a = ((B.u.ψ v i g : B.Bˣ) : B.B)}), x - y ∈ maximalIdeal B.B ^ N := by

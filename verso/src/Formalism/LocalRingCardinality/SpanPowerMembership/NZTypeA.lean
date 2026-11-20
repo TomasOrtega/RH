@@ -9,15 +9,13 @@ namespace Formalism.BasicNotions.Examples₂.NZ
 open Polynomial Formalism.CyclotomicNorms
 
 /- English proof (translation)
-Use `set n := orderOf x with hn`. Establish `hn0 : n ≠ 0` using `(orderOf_pos_iff.mpr hx).ne'`. Use `set a := n.factorization ℓ`. Use `set m := n / ℓ ^ a with hm`. Establish `hnm : ℓ ^ a * m = n` using `Nat.ordProj_mul_ordCompl_eq_self n ℓ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Nat.Coprime (ℓ ^ a) m` using `(Nat.coprime_ordCompl hℓ hn0).pow_left a`. Use `set u := (((ℓ ^ a : ℕ) : ZMod m)⁻¹).val`. Establish `h1 : ((ℓ ^ a * u : ℕ) : ZMod m) = 1`. Establish `hm0 : NeZero m` using `⟨fun h => hn0 (by rw [← hnm, h, mul_zero])⟩`. Rewrite using `[Nat.cast_mul, ZMod.natCast_zmod_val]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ZMod.coe_mul_inv_eq_one _ hc`. Establish `h2 : ℓ ^ a * u ≡ 1 [MOD m]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff, h1, Nat.cast_one]`. Unfold `primeToPart`. Rewrite using `[← pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h3 : ℓ ^ a * u * ℓ ^ a ≡ ℓ ^ a [MOD n]`. Use `h2.mul_left' (ℓ ^ a)` as an intermediate fact. Rewrite `this` using `[mul_one, hnm]`. Rewrite using `[mul_comm (ℓ ^ a * u) (ℓ ^ a)]` and apply the resulting hypothesis. Rewrite using `[← pow_mod_orderOf x (ℓ ^ a * u * ℓ ^ a), ← pow_mod_orderOf x (ℓ ^ a)]`.
-
-Conclude with `congrArg _ h3`.
+A detailed English derivation is pending.
 -/
 theorem pow_primeToPart {M : Type*} [Monoid M] {ℓ : ℕ} (hℓ : ℓ.Prime) (x : M) (hx : IsOfFinOrder x) :
     primeToPart ℓ x ^ (ℓ ^ (orderOf x).factorization ℓ) = x ^ (ℓ ^ (orderOf x).factorization ℓ) := by
@@ -44,7 +42,7 @@ theorem pow_primeToPart {M : Type*} [Monoid M] {ℓ : ℕ} (hℓ : ℓ.Prime) (x
   exact congrArg _ h3
 
 /- English proof (translation)
-Use `⟨(orderOf x).factorization ℓ + (orderOf y).factorization ℓ, ?_⟩` and prove the remaining obligations. Establish `h1` using `pow_primeToPart hℓ x hx`. Establish `h2` using `pow_primeToPart hℓ y hy`. Rewrite using `[pow_add, pow_mul, ← h1, h, ← pow_mul, mul_comm, pow_mul, h2, ← pow_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pow_eq {M : Type*} [Monoid M] {ℓ : ℕ} (hℓ : ℓ.Prime) (x y : M) (hx : IsOfFinOrder x)
     (hy : IsOfFinOrder y) (h : primeToPart ℓ x = primeToPart ℓ y) : ∃ c : ℕ, x ^ ℓ ^ c = y ^ ℓ ^ c := by
@@ -54,29 +52,27 @@ theorem exists_pow_eq {M : Type*} [Monoid M] {ℓ : ℕ} (hℓ : ℓ.Prime) (x y
   rw [pow_add, pow_mul, ← h1, h, ← pow_mul, mul_comm, pow_mul, h2, ← pow_mul]
 
 /- English proof (translation)
-Use `⟨hℓ, ?_⟩` and prove the remaining obligations. Use `set G := g ^ d with hG`. Establish `hG3 : 3 ≤ G`. Establish `h2 : 2 ≤ d`. Establish `: 1 ≤ Nat.gcd d e` using `Nat.gcd_pos_of_pos_left e hd`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Establish `hn0 : G - 1 ≠ 0` using `by omega`. Establish `: Fact ℓ.Prime` using `⟨hℓ⟩`. Use `set v := padicValNat ℓ (G - 1) with hv`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfac : (G - 1).factorization ℓ = v` using `Nat.factorization_def _ hℓ`. Use `set B := (G - 1) / ℓ ^ v with hB`. Establish `hAB : ℓ ^ v * B = G - 1`. Use `Nat.ordProj_mul_ordCompl_eq_self (G - 1) ℓ` as an intermediate fact. Rewrite `this` using `[hfac]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hcop : Nat.Coprime ℓ B`. Use `Nat.coprime_ordCompl hℓ hn0` as an intermediate fact. Rewrite `this` using `[hfac]`. Then use the resulting hypothesis. Establish `hB1 : B ∣ g ^ e - 1` using `(Nat.Coprime.pow_left c hcop).symm.dvd_of_dvd_mul_left ((Dvd.intro_left _ hAB).trans h)`. Establish `hB2 : B ∣ g ^ Nat.gcd d e - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Nat.pow_sub_one_gcd_pow_sub_one]`. Conclude with `Nat.dvd_gcd (Dvd.intro_left _ hAB) hB1`. Use `set s := Nat.gcd d e`. Establish `hs1 : 1 ≤ s` using `Nat.gcd_pos_of_pos_left e hd`. Establish `hgs : 2 ≤ g ^ s` using `le_trans hg (Nat.le_self_pow (by omega) g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hBle : B ≤ g ^ s - 1` using `Nat.le_of_dvd (by omega) hB2`. Establish `hBsq : B * B ≤ G - 1`. Establish `h1 : g ^ s * g ^ s ≤ G`. Rewrite using `[← pow_add, hG]; exact Nat.pow_le_pow_right (by omega) (by omega)`. Establish `h2 : B * B ≤ (g ^ s - 1) * (g ^ s - 1)` using `Nat.mul_le_mul hBle hBle`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h3 : (g ^ s - 1) * (g ^ s - 1) + 1 ≤ g ^ s * g ^ s`. Take `⟨t, ht⟩ : ∃ t, g ^ s = t + 2` from `⟨g ^ s - 2, by omega⟩`. Rewrite using `[ht]; simp only [show t + 2 - 1 = t + 1 by omega]; nlinarith`. Use linear arithmetic over natural numbers and integers. Use `set A := ℓ ^ v`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA2 : G - 1 ≤ A * A`. Establish `h1 : (A * A) * (B * B) = (G - 1) * (G - 1)` using `by rw [← hAB]; ring`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hBpos : 0 < B * B`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use linear arithmetic over natural numbers and integers.
 
-Break down `Nat.eq_zero_or_pos (B * B) with h0 | h0` into its components or cases. Rewrite `h1` using `[h0, mul_zero]`. Establish `: 0 < (G - 1) * (G - 1)` using `Nat.mul_pos (by omega) (by omega)`. Use linear arithmetic over natural numbers and integers. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `: (A * A) * (B * B) < (G - 1) * (G - 1)`. Combine the equalities or inequalities in the displayed calculation. Use linear arithmetic over natural numbers and integers. Establish `hA4 : ℓ ^ (4 * v) = (A * A) * (A * A)` using `by show ℓ ^ (4 * v) = (ℓ ^ v * ℓ ^ v) * (ℓ ^ v * ℓ ^ v)`. Rewrite using `[← pow_add, ← pow_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hA4]`. Establish `h5 : (G - 1) * (G - 1) ≤ (A * A) * (A * A)` using `Nat.mul_le_mul hA2 hA2`. Establish `h6 : G < (G - 1) * (G - 1)`.
-
-Take `⟨t, ht⟩ : ∃ t, G = t + 3` from `⟨G - 3, by omega⟩`. Rewrite using `[ht]; simp only [show t + 3 - 1 = t + 2 by omega]; nlinarith`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exc_of_dvd {g d e ℓ c : ℕ} (hg : 2 ≤ g) (hℓ : ℓ.Prime) (hd : 1 ≤ d) (he : 2 * Nat.gcd d e ≤ d)
     (h : g ^ d - 1 ∣ ℓ ^ c * (g ^ e - 1)) : Exc g d ℓ := by

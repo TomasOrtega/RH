@@ -7,19 +7,19 @@ open UpperTheory.Gal.crystallineComparison
 
 open CategoryTheory.Limits in
 /- English proof (translation)
-Introduce `l S S' Y Y' u f f' h hY T hT`. Establish `Q` using `IsPullback.of_hasPullback T.p h`. Establish `hw : (pullback.fst T.p h ≫ T.r) ≫ f = (pullback.snd T.p h ≫ f') ≫ u`. Rewrite using `[Category.assoc, hT, ← Category.assoc, pullback.condition, Category.assoc, hY.w, Category.assoc]`. Establish `hfin : IsFinite (pullback.snd T.p h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `T.fin` as an intermediate fact. Conclude with `MorphismProperty.of_isPullback Q this`. Establish `het : Etale (pullback.snd T.p h ∣_ Y'.basicOpen (l : Γ(Y', ⊤)))`. Establish `hle : Y'.basicOpen (l : Γ(Y', ⊤)) ≤ h ⁻¹ᵁ Y.basicOpen (l : Γ(Y, ⊤))` using `le_of_eq (by rw [Scheme.preimage_basicOpen_top, map_natCast])`. Set `k` to `Y'.homOfLE hle ≫ h ∣_ Y.basicOpen (l : Γ(Y, ⊤))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e1 : k ≫ (Y.basicOpen (l : Γ(Y, ⊤))).ι = (Y'.basicOpen (l : Γ(Y', ⊤))).ι ≫ h`. Simplify using `only [k, Category.assoc, morphismRestrict_ι, Scheme.homOfLE_ι_assoc]`. Establish `A` using `(isPullback_morphismRestrict (pullback.snd T.p h) (Y'.basicOpen (l : Γ(Y', ⊤)))).flip`. Establish `outer` using `A.paste_horiz Q`. Establish `R` using `(isPullback_morphismRestrict T.p (Y.basicOpen (l : Γ(Y, ⊤)))).flip`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw2 : ((pullback.snd T.p h ⁻¹ᵁ Y'.basicOpen (l : Γ(Y', ⊤))).ι ≫ pullback.fst T.p h) ≫ T.p = (pullback.snd T.p h ∣_ Y'.basicOpen (l : Γ(Y', ⊤)) ≫ k) ≫ (Y.basicOpen (l : Γ(Y, ⊤))).ι`. Simplify using `only [Category.assoc, pullback.condition, e1, morphismRestrict_ι_assoc]`. Establish `outer' : IsPullback (R.lift _ _ hw2 ≫ (T.p ⁻¹ᵁ Y.basicOpen (l : Γ(Y, ⊤))).ι) (pullback.snd T.p h ∣_ Y'.basicOpen (l : Γ(Y', ⊤))) T.p (k ≫ (Y.basicOpen (l : Γ(Y, ⊤))).ι)`. Rewrite using `[R.lift_fst, e1]`. Conclude with `outer`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `L` using `IsPullback.of_right outer' (R.lift_snd _ _ _) R`. Conclude with `MorphismProperty.of_isPullback L T.et`. Establish `hdeg : ∀ (K : Type) [Field K] [IsAlgClosed K], (l : K) ≠ 0 → ∀ (y : Spec (CommRingCat.of K) ⟶ Y'), Nat.card { z // z ≫ pullback.snd T.p h = y } = T.d`. Introduce `K _ _ hl y`. Rewrite using `[← T.deg K hl (y ≫ h)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Nat.card_congr { toFun := fun z => ⟨z.1 ≫ pullback.fst T.p h, by rw [Category.assoc, pullback.condition, ← Category.assoc, z.2]⟩ invFun := fun z => ⟨Q.lift z.1 y z.2, Q.lift_snd _ _ _⟩ left_inv := ?_ right_inv := ?_ }` and prove the remaining obligations. Introduce `z`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Q.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[z.2]`. Introduce `z`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use `⟨⟨pullback T.p h, pullback.snd T.p h, hY.lift _ _ hw, T.d, hfin, het, hdeg⟩, pullback.fst T.p h, Q.flip, hY.lift_fst _ _ _, hY.lift_snd _ _ _, rfl⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.corrPull_of :
     CorrPull := by

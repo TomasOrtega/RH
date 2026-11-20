@@ -14,15 +14,15 @@ noncomputable section
 namespace GlobalTheory.FramePairGram
 
 /- English proof (translation)
-Establish `hd' : IsUnit (mat x' τ).det` using `(hx' τ).1.isUnit`. Establish `hN : frameCo X hj x τ = frameCo X hj x' τ * reindex (idx hj) (idx hj) ((mat x' τ)⁻¹ * mat x τ)`. Simplify using `only [frameCo, reindex_apply, submatrix_mul_equiv]`. Rewrite using `[Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hd']`. Establish `hu'` using `frameCo_isUnit₂₂ X hj hp hx' τ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hW : coW X hj x τ = coW X hj x' τ * (reindex (idx hj) (idx hj) ((mat x' τ)⁻¹ * mat x τ)).toBlocks₁₁`. Unfold `coW`. Rewrite using `[h, hN, moeb_zero]`. Generalize the expression as in `frameCo X hj x' τ = g at *`. Generalize the expression as in `reindex (idx hj) (idx hj) ((mat x' τ)⁻¹ * mat x τ) = N`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `e11 : (g * N).toBlocks₁₁ = g.toBlocks₁₁ * N.toBlocks₁₁ + g.toBlocks₁₂ * N.toBlocks₂₁` using `by conv_lhs => rw [← fromBlocks_toBlocks g, ← fromBlocks_toBlocks N]`. Rewrite using `[fromBlocks_multiply, toBlocks_fromBlocks₁₁]`. Establish `e21 : (g * N).toBlocks₂₁ = g.toBlocks₂₁ * N.toBlocks₁₁ + g.toBlocks₂₂ * N.toBlocks₂₁` using `by conv_lhs => rw [← fromBlocks_toBlocks g, ← fromBlocks_toBlocks N]`. Rewrite using `[fromBlocks_multiply, toBlocks_fromBlocks₂₁]`. Rewrite using `[e11, e21]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_add, Matrix.sub_mul, Matrix.mul_assoc, nonsing_inv_mul_cancel_left _ _ hu']`. Normalize the expressions using the abelian group laws. Rewrite using `[hW, ← Matrix.mul_assoc, nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 ((isUnit_iff_isUnit_det _).2 (isUnit_coW X hj hp hx' τ))), Matrix.one_mul]`. Use extensionality with `b i`. Establish `hb : X.p0 + (b : ℕ) < r` using `by have := b.2; have := X.p0_le; omega`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hi : X.p0 + (i : ℕ) < r` using `by have := i.2; have := X.p0_le; omega`. Establish `eb : (idx hj).symm (Sum.inl b) = ⟨X.p0 + b, hb⟩` using `Fin.ext (by rw [idx_symm_inl]; show r - j + (b : ℕ) = X.p0 + b; omega)`. Establish `ei : (idx hj).symm (Sum.inl i) = ⟨X.p0 + i, hi⟩` using `Fin.ext (by rw [idx_symm_inl]; show r - j + (i : ℕ) = X.p0 + i; omega)`. Simplify using `only [of_apply, coef, dif_pos τ.2, ent, dif_pos (And.intro hb hi), Subtype.coe_eta, toBlocks₁₁, reindex_apply, submatrix_apply, eb, ei]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem coef_eq_coW_change {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) {j : ℕ}
     (hj : j ≤ r) (hp : X.p0 = r - j) {x x' : Frame X.Ψ r} (hx : x ∈ X.dom) (hx' : x' ∈ X.dom) (τ : X.Ψ)

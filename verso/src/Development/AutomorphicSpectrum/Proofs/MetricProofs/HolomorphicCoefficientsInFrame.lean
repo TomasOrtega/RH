@@ -12,27 +12,25 @@ open scoped ComplexOrder
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart
 
 /- English proof (translation)
-Introduce `t₀ ht₀`. Apply `DifferentiableAt.differentiableWithinAt` to reduce the goal to its premises. Establish `hUn : U ∈ 𝓝 t₀` using `hU.mem_nhds ht₀`. Set `φ : (Fin m → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `Fintype.linearCombination ℂ (fun b => d b t₀)`. Establish `hφ : LinearMap.ker φ = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `v hv`. Establish `h0` using `Fintype.linearIndependent_iff.1 (hli t₀ ht₀) v (by simpa [φ, Fintype.linearCombination_apply] using hv)`. Conclude with `funext h0`. Take `⟨L0, hL0⟩` from `φ.exists_leftInverse_of_injective hφ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `L : (Fin g → ℂ) →L[ℂ] (Fin m → ℂ)` to `LinearMap.toContinuousLinearMap L0`. Establish `hLd : ∀ b, L (d b t₀) = Pi.single b 1`. Introduce `b`. Establish `h1 : φ (Pi.single b 1) = d b t₀`. Simplify using `[φ, Fintype.linearCombination_apply, Pi.single_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `LinearMap.congr_fun hL0 (Pi.single b 1)`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, h1] at h2`. Conclude with `h2`. Set `T : (Fin n → ℂ) → ((Fin m → ℂ) →L[ℂ] (Fin m → ℂ))` to `fun t => ∑ b, (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin m => ℂ) b).smulRight (L (d b t))`. Establish `hTapply : ∀ t v, T t v = ∑ b, v b • L (d b t)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `t v`. Simplify using `[T, ContinuousLinearMap.sum_apply]`. Establish `hT0 : T t₀ = 1`. Apply `ContinuousLinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hTapply]`. Simplify using `only [hLd]`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hTd : DifferentiableAt ℂ T t₀`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : ∀ b ∈ (Finset.univ : Finset (Fin m)), DifferentiableAt ℂ (fun t => (ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin m => ℂ) b).smulRight (L (d b t))) t₀ := by`. Introduce `b _`. Conclude with `(ContinuousLinearMap.smulRightL ℂ (Fin m → ℂ) (Fin m → ℂ) (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin m => ℂ) b)).differentiableAt.comp t₀ (L.differentiableAt.comp t₀ ((hd b).differentiableAt hUn))`. Conclude with `DifferentiableAt.fun_sum hb`. Establish `hTu : ∀ᶠ t in 𝓝 t₀, IsUnit (T t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ContinuousAt T t₀` using `hTd.continuousAt`. Establish `: {u : (Fin m → ℂ) →L[ℂ] (Fin m → ℂ) | IsUnit u} ∈ 𝓝 (T t₀)`. Rewrite using `[hT0]`. Conclude with `Units.isOpen.mem_nhds isUnit_one`. Conclude with `hc this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : w =ᶠ[𝓝 t₀] fun t => Ring.inverse (T t) (L (x t))` using `by filter_upwards [hTu, hUn] with t hu ht`. Take `⟨u, hu'⟩` from `hu`. Establish `h1 : L (x t) = T t (w t)`. Rewrite using `[hw t ht, hTapply, map_sum]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← hu', Ring.inverse_unit, ← ContinuousLinearMap.mul_apply, u.inv_mul]`. Both sides reduce to the same expression. Use `DifferentiableAt.congr_of_eventuallyEq ?_ heq` and prove the remaining obligations. Establish `hinv : DifferentiableAt ℂ (fun t => Ring.inverse (T t)) t₀`. Establish `: DifferentiableAt ℂ Ring.inverse (T t₀)`.
-
-Rewrite using `[hT0]`. Conclude with `differentiableAt_inverse isUnit_one`. Conclude with `this.comp t₀ hTd`. Establish `hLx : DifferentiableAt ℂ (fun t => L (x t)) t₀` using `L.differentiableAt.comp t₀ (hx.differentiableAt hUn)`. Conclude with `hinv.clm_apply hLx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem differentiableOn_coeff_of_linearIndependent (n m g : ℕ) (U : Set (Fin n → ℂ))
     (d : Fin m → (Fin n → ℂ) → Fin g → ℂ) (x : (Fin n → ℂ) → Fin g → ℂ)

@@ -23,49 +23,47 @@ section
 variable {K : Type} [Field K] [CharZero K] {σ : Type}
 
 /- English proof (translation)
-Introduce `k x hx`. Use `show Q (((k.factorial : K)⁻¹ • ((ε : K) • polarizationOperator K v w) ^ k) x)`. Use `hQ.lin ((k.factorial : K)⁻¹ • ((ε : K) • polarizationOperator K v w) ^ k) ?_ x hx` and prove the remaining obligations. Introduce `m c hmc`. Use `set mj : ℕ → (σ →₀ ℕ) := fun j => (m.update w (m w - j)).update v (m v + j) with hmj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmjw : ∀ j, mj j w = m w - j` using `fun j => by`. Simplify using `[hmj, Finsupp.update_apply, Ne.symm hvw]`. Establish `hmjv : ∀ j, mj j v = m v + j` using `fun j => by`. Simplify using `[hmj, Finsupp.update_apply]`. Establish `hmjo : ∀ j i, i ≠ v → i ≠ w → mj j i = m i` using `fun j i hiv hiw => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hmj, Finsupp.update_apply, hiv, hiw]`. Establish `hT : ∀ j, (polarizationOperator K v w ^ j) (monomial m c) = monomial (mj j) (c * ((m w).descFactorial j : K))`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h0 : mj 0 = m`. Use extensionality with `i`. Distinguish the cases in `hiv : i = v`. Rewrite using `[hiv, hmjv]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hiw : i = w`. Rewrite using `[hiw, hmjw]`. Both sides reduce to the same expression. Conclude with `hmjo 0 i hiv hiw`. Rewrite using `[h0]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ j ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih]`. Use `show X v * pderiv w (monomial (mj j) (c * ((m w).descFactorial j : K))) = _`. Rewrite using `[MvPolynomial.pderiv_monomial, hmjw, show (X v : MvPolynomial σ K) = monomial (Finsupp.single v 1) 1 from rfl, MvPolynomial.monomial_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j < m w`. Establish `hexp : Finsupp.single v 1 + (mj j - Finsupp.single w 1) = mj (j + 1)`. Use extensionality with `i`. Distinguish the cases in `hiv : i = v`. Rewrite using `[hiv]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [hmjv, Finsupp.single_apply, hvw, Ne.symm hvw] <;> omega`. Distinguish the cases in `hiw : i = w`. Rewrite using `[hiw]`. Apply the tactic sequence `simp [hmjw, Finsupp.single_apply, hvw, Ne.symm hvw] <;> omega`. Simplify using `[hmjo j i hiv hiw, hmjo (j + 1) i hiv hiw, Finsupp.single_apply, Ne.symm hiv, Ne.symm hiw]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hexp, Nat.descFactorial_succ, Nat.cast_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (m w).descFactorial (j + 1) = 0` using `Nat.descFactorial_eq_zero_iff_lt.mpr (by omega)`. Establish `h2 : m w - j = 0` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules. Establish `hk : (k.factorial : K) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero k`. Establish `hval : ((k.factorial : K)⁻¹ • ((ε : K) • polarizationOperator K v w) ^ k) (monomial m c) = monomial (mj k) (c * (((ε ^ k * ((m w).choose k : ℤ) : ℤ)) : K))`. Rewrite using `[smul_pow, LinearMap.smul_apply, LinearMap.smul_apply, hT k, MvPolynomial.smul_monomial, MvPolynomial.smul_monomial, Nat.descFactorial_eq_factorial_mul_choose]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [smul_eq_mul]`. Use `push_cast`. Rewrite using `[inv_mul_eq_iff_eq_mul₀ hk]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hval]`. Use `hQ.step m (mj k) c _ hmc ?_` and prove the remaining obligations. Distinguish the cases in `hkw : k ≤ m w`. Use `right`. Establish `hz : padicValInt p (ε ^ k * ((m w).choose k : ℤ)) = padicValNat p ((m w).choose k)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[padicValInt, Int.natAbs_mul, Int.natAbs_pow, hε]`. Rewrite using `[hz]`. Use `set s : Finset σ := m.support ∪ {v, w} with hs`. Establish `hvs : v ∈ s` using `by simp [hs]`. Establish `hws : w ∈ s.erase v` using `by simp [hs, Ne.symm hvw]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub1 : m.support ⊆ s` using `Finset.subset_union_left`. Establish `hsub2 : (mj k).support ⊆ s`. Introduce `i hi`. Rewrite `hi` using `[Finsupp.mem_support_iff]`. Distinguish the cases in `hiv : i = v`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hiv]`. Simplify using `[hs]`. Distinguish the cases in `hiw : i = w`. Rewrite using `[hiw]`. Simplify using `[hs]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hi` using `[hmjo k i hiv hiw]`. Conclude with `Finset.mem_union_left _ (Finsupp.mem_support_iff.mpr hi)`. Establish `hE : expFact m = (m v).factorial * ((m w).factorial * ∏ i ∈ (s.erase v).erase w, (m i).factorial)`. Unfold `expFact`. Rewrite using `[Finsupp.prod_of_support_subset m hsub1 (fun _ k => k.factorial) (fun _ _ => rfl), ← Finset.mul_prod_erase s _ hvs, ← Finset.mul_prod_erase (s.erase v) _ hws]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE' : expFact (mj k) = (m v + k).factorial * ((m w - k).factorial * ∏ i ∈ (s.erase v).erase w, (m i).factorial)`. Unfold `expFact`. Rewrite using `[Finsupp.prod_of_support_subset (mj k) hsub2 (fun _ k => k.factorial) (fun _ _ => rfl), ← Finset.mul_prod_erase s _ hvs, ← Finset.mul_prod_erase (s.erase v) _ hws, hmjv, hmjw]`. Use `congr 2`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hiw : i ≠ w` using `Finset.ne_of_mem_erase hi`. Establish `hiv : i ≠ v` using `Finset.ne_of_mem_erase (Finset.mem_of_mem_erase hi)`. Rewrite using `[hmjo k i hiv hiw]`. Establish `hid : expFact m * (m v + k).choose k = expFact (mj k) * (m w).choose k`. Establish `e1` using `Nat.choose_mul_factorial_mul_factorial (show k ≤ m v + k by omega)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Rewrite `e1` using `[Nat.add_sub_cancel]`. Establish `e2` using `Nat.choose_mul_factorial_mul_factorial hkw`. Rewrite using `[hE, hE', ← e1, ← e2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hEpos : expFact m ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hE]`. Check the signs of the components of the expression. Establish `hE'pos : expFact (mj k) ≠ 0`. Rewrite using `[hE']`. Check the signs of the components of the expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hC1 : (m v + k).choose k ≠ 0` using `(Nat.choose_pos (by omega)).ne'`. Establish `hC2 : (m w).choose k ≠ 0` using `(Nat.choose_pos hkw).ne'`. Establish `hv` using `congrArg (padicValNat p) hid`. Rewrite `hv` using `[padicValNat.mul hEpos hC1, padicValNat.mul hE'pos hC2]`. Use linear arithmetic over natural numbers and integers.
-
-Use `left`. Establish `: (m w).choose k = 0` using `Nat.choose_eq_zero_of_lt (by omega)`. Simplify using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem divided_powers_preserve_polarization (p : ℕ) [Fact p.Prime] (Q : MvPolynomial σ K → Prop) (hQ : MonomialGradedLattice p Q) (ε : ℤ)
     (hε : ε.natAbs = 1) (v w : σ) (hvw : v ≠ w) : DividedPowersPreserve Q ((ε : K) • polarizationOperator K v w) := by
@@ -191,9 +189,9 @@ theorem divided_powers_preserve_polarization (p : ℕ) [Fact p.Prime] (Q : MvPol
     simp [this]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[List.range_succ, List.map_append, List.prod_append, Finset.prod_range_succ]`. Simplify using `[hx, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `first`. Consider the case `done`. Consider the case `module`. Consider the case `(rw [mul_comm, mul_smul]; module)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem list_prod_eigen_shift {V : Type*} [AddCommGroup V] [Module K V] (E : Module.End K V) (x : V) (w : K)
     (hx : E x = w • x) (k : ℕ) :
@@ -210,9 +208,9 @@ theorem list_prod_eigen_shift {V : Type*} [AddCommGroup V] [Module K V] (E : Mod
       | (rw [mul_comm, mul_smul]; module)
 
 /- English proof (translation)
-Establish `h1 : (∏ j ∈ Finset.range k, (w - (j : ℤ))) = (k.factorial : ℤ) * Ring.choose w k`. Rewrite using `[← descPochhammer_eval_eq_prod_range, Polynomial.eval_eq_smeval, Ring.descPochhammer_eq_factorial_smul_choose]`. Use `first`. Consider the case `rw [nsmul_eq_mul]`. Consider the case `rw [smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp`. Establish `h2` using `congrArg (Int.cast (R := K)) h1`. Move the coercions through the operations in `at h2`. Conclude with `h2`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem prod_range_sub_eq_factorial_choose (w : ℤ) (k : ℕ) :
     (∏ j ∈ Finset.range k, ((w : K) - (j : K))) = (k.factorial : K) * ((Ring.choose w k : ℤ) : K) := by
@@ -246,13 +244,11 @@ theorem gl_operator_eq_sum_letters (LL : Letters ι) (S : Set ι) (a b : Fin n) 
     glOps K n LL S a b = ∑ l : ι, letterPolarization K LL S a b l := rfl
 
 /- English proof (translation)
-Establish `hne : ∀ x y : Fin n, ((l, x) : ι × Fin n) ≠ (l', y)` using `fun x y hxy => h (congrArg Prod.fst hxy)`. Establish `hc : ∀ x y x' y' : Fin n, Commute (polarizationOperator K (l, x) (l, y)) (polarizationOperator K (l', x') (l', y'))` using `fun x y x' y' => polarization_commute _ _ _ _ (hne _ _) (hne _ _) (hne _ _).symm`. Unfold `letterPolarization`. Distinguish the cases in `h1 : l ∈ S`. Distinguish the cases in `h2 : l' ∈ S`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h1, if_pos h2]`. Apply the tactic sequence `by_cases v1 : LL.vec l = true <;> by_cases v2 : LL.vec l' = true`. Rewrite using `[if_pos v1, if_pos v2]`. Conclude with `hc _ _ _ _`. Rewrite using `[if_pos v1, if_neg v2]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hc _ _ _ _).neg_right`. Rewrite using `[if_neg v1, if_pos v2]`. Conclude with `(hc _ _ _ _).neg_left`. Rewrite using `[if_neg v1, if_neg v2]`. Conclude with `(hc _ _ _ _).neg_left.neg_right`.
-
-Rewrite using `[if_neg h2]`. Conclude with `Commute.zero_right _`. Rewrite using `[if_neg h1]`. Conclude with `Commute.zero_left _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem letter_polarization_commute (LL : Letters ι) (S : Set ι) (a b : Fin n) (l l' : ι) (h : l ≠ l') :
     Commute (letterPolarization K LL S a b l) (letterPolarization K LL S a b l') := by
@@ -278,11 +274,11 @@ theorem letter_polarization_commute (LL : Letters ι) (S : Set ι) (a b : Fin n)
     exact Commute.zero_left _
 
 /- English proof (translation)
-Unfold `letterPolarization`. Use `split_ifs with h1 h2`. Use `divided_powers_preserve_polarization p Q hQ 1 rfl (l, a) (l, b) (by simp [hab])` as an intermediate fact. Simplify using `using this`. Use `divided_powers_preserve_polarization p Q hQ (-1) rfl (l, b) (l, a) (by simp [Ne.symm hab])` as an intermediate fact.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Unfold `DividedPowersPreserve`. Introduce `k x hx`. Break down `k with _ | k` into its components or cases. Simplify using `using hx`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hQ.zero`.
+A detailed English derivation is pending.
 -/
 theorem divided_powers_preserve_letter (p : ℕ) [Fact p.Prime] (Q : MvPolynomial (ι × Fin n) K → Prop) (hQ : MonomialGradedLattice p Q)
     (LL : Letters ι) (S : Set ι) (a b : Fin n) (hab : a ≠ b) (l : ι) : DividedPowersPreserve Q (letterPolarization K LL S a b l) := by
@@ -299,11 +295,11 @@ theorem divided_powers_preserve_letter (p : ℕ) [Fact p.Prime] (Q : MvPolynomia
     · simpa using hQ.zero
 
 /- English proof (translation)
-Rewrite using `[gl_operator_eq_sum_letters]`. Establish `key : ∀ s : Finset ι, DividedPowersPreserve Q (∑ l ∈ s, letterPolarization K LL S a b l)`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `DividedPowersPreserve`. Introduce `k x hx`. Break down `k with _ | k` into its components or cases. Simplify using `using hx`. Simplify using `using hQ.zero`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `l s hl ih`. Rewrite using `[Finset.sum_insert hl]`. Use `divided_powers_preserve_add Q hQ.zero hQ.add _ _ ?_ (divided_powers_preserve_letter p Q hQ LL S a b hab l) ih` and prove the remaining obligations. Conclude with `Commute.sum_right _ _ _ fun l' hl' => letter_polarization_commute LL S a b l l' (by rintro rfl; exact hl hl')`. Conclude with `key Finset.univ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem divided_powers_preserve_gl_operator (p : ℕ) [Fact p.Prime] (Q : MvPolynomial (ι × Fin n) K → Prop) (hQ : MonomialGradedLattice p Q)
     (LL : Letters ι) (S : Set ι) (a b : Fin n) (hab : a ≠ b) : DividedPowersPreserve Q (glOps K n LL S a b) := by
@@ -325,17 +321,17 @@ theorem divided_powers_preserve_gl_operator (p : ℕ) [Fact p.Prime] (Q : MvPoly
   exact key Finset.univ
 
 /- English proof (translation)
-Break down `hu with ⟨a, b, k, hab, rfl⟩ | ⟨a, k, rfl⟩` into its components or cases. Conclude with `divided_powers_preserve_gl_operator p Q hQ LL S a b hab k F hF`. Use `hQ.lin (binomE (glOps K n LL S) a k) ?_ F hF` and prove the remaining obligations. Introduce `m c hmc`. Use `set w : ℤ := ∑ l : ι, (if l ∈ S then (if LL.vec l then ((m (l, a) : ℕ) : ℤ) else -((m (l, a) : ℕ) : ℤ)) else 0) with hw`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heig : glOps K n LL S a a (monomial m c) = (w : K) • monomial m c`. Rewrite using `[gl_operator_eq_sum_letters, LinearMap.sum_apply, hw]`. Use `push_cast`. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `letterPolarization polarizationOperator`. Use `split_ifs`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulLeft_apply, AlgHom.toLinearMap_apply, LinearMap.coe_toAddHom]`. Express the relevant statement in the definitionally equal form `X (l, a) * (pderiv (l, a)) ((monomial m) c) = _`. Rewrite using `[MvPolynomial.X_mul_pderiv_monomial, Nat.cast_smul_eq_nsmul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.neg_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply]`. Express the relevant statement in the definitionally equal form `-(X (l, a) * (pderiv (l, a)) ((monomial m) c)) = _`. Rewrite using `[MvPolynomial.X_mul_pderiv_monomial, neg_smul, Nat.cast_smul_eq_nsmul]`. Simplify using the standard rewrite rules. Establish `hprod` using `list_prod_eigen_shift (glOps K n LL S a a) (monomial m c) (w : K) heig k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hprod` using `[prod_range_sub_eq_factorial_choose w k]`. Establish `hk : (k.factorial : K) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero k`. Establish `key : binomE (glOps K n LL S) a k (monomial m c) = monomial m (c * ((Ring.choose w k : ℤ) : K))`. Unfold `binomE`. Rewrite using `[LinearMap.smul_apply, hprod, smul_smul, ← mul_assoc, inv_mul_cancel₀ hk, one_mul, MvPolynomial.smul_monomial]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `hQ.step m m c (Ring.choose w k) hmc (Or.inr (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem integral_generators_preserve_lattice (p : ℕ) [Fact p.Prime] (Q : MvPolynomial (ι × Fin n) K → Prop) (hQ : MonomialGradedLattice p Q)
     (LL : Letters ι) (S : Set ι) (u : Module.End K (MvPolynomial (ι × Fin n) K))
@@ -377,19 +373,17 @@ theorem integral_generators_preserve_lattice (p : ℕ) [Fact p.Prime] (Q : MvPol
 end
 
 /- English proof (translation)
-Use `haveI := hchar`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Introduce `n ι _ LL S u hu`. Take `⟨h0, hadd, _, _, _, hlin, hstep, hint, hmono, hiff⟩` from `h (ι × Fin n)`. Use `⟨fun F hF => ?_, fun F hF => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQ : MonomialGradedLattice p (fun F : MvPolynomial (ι × Fin n) (KK O) => F ∈ IntPol O (ι × Fin n))`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hiff]`. Introduce `m`. Conclude with `⟨0, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `F G hF hG`. Rewrite `hF`, `hG`, the goal using `[hiff]`. Introduce `m`. Take `⟨a, ha⟩` from `hF m`. Take `⟨b, hb⟩` from `hG m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨a + b, by rw [MvPolynomial.coeff_add, ha, hb, map_add]⟩`. Introduce `u' hu' F hF`. Use `hint u' (fun m => ?_) F hF` and prove the remaining obligations. Establish `h1` using `hmono m 1`. Simplify using `only [Int.cast_one] at h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hu' m 1 h1`. Introduce `m m' c z hmc _`. Rewrite `hmc`, the goal using `[hiff]`. Take `⟨o, ho⟩` from `hmc m`. Rewrite `ho` using `[MvPolynomial.coeff_monomial, if_pos rfl]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `m''`. Rewrite using `[MvPolynomial.coeff_monomial]`. Use `split_ifs`. Conclude with `⟨o * z, by rw [ho, map_mul, map_intCast]⟩`. Conclude with `⟨0, by simp⟩`.
-
-Conclude with `integral_generators_preserve_lattice p _ hQ LL S u hu F hF`. Establish `hQ : MonomialGradedLattice p (fun F : MvPolynomial (ι × Fin n) (KK O) => InBB (O` using `O) p F) := ⟨h0, hadd, hlin, hstep⟩`. Conclude with `integral_generators_preserve_lattice p _ hQ LL S u hu F hF`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem char_zero_stability_of_closure {p : ℕ} (hp : p.Prime) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (hchar : CharZero (KK O)) (h : FockLatticeClosure p O) : IntegralFormGeneratorsPreserveLattices p O := by

@@ -30,7 +30,7 @@ def matSub (C : Subalgebra ℂ A) (n : Type) [Fintype n] [DecidableEq n] : Subal
     · exact C.zero_mem
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_matSub {C : Subalgebra ℂ A} {n : Type} [Fintype n] [DecidableEq n] {M : Matrix n n A} :
     M ∈ matSub C n ↔ ∀ i j, M i j ∈ C := by
@@ -39,9 +39,7 @@ theorem mem_matSub {C : Subalgebra ℂ A} {n : Type} [Fintype n] [DecidableEq n]
 variable {S : Type} [Fintype S] [DecidableEq S] (C : Subalgebra ℂ A)
 
 /- English proof (translation)
-Rewrite using `[mem_matSub]`. Introduce `x y`. Simplify using `only [eU, Matrix.of_apply]`. Use `split_ifs`. Conclude with `C.one_mem`.
-
-Conclude with `C.zero_mem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eU_mem (a : S) (i j : Fin 2) : (eU a i j : SlopeTestRemainingChoices S A) ∈ matSub C (Ix S) := by
   rw [mem_matSub]
@@ -52,9 +50,7 @@ theorem eU_mem (a : S) (i j : Fin 2) : (eU a i j : SlopeTestRemainingChoices S A
   · exact C.zero_mem
 
 /- English proof (translation)
-Rewrite using `[mem_matSub]`. Introduce `i j`. Simplify using `only [io, Matrix.scalar_apply, Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `hx`.
-
-Conclude with `C.zero_mem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem io_mem {x : A} (hx : x ∈ C) : (io x : SlopeTestRemainingChoices S A) ∈ matSub C (Ix S) := by
   rw [mem_matSub]
@@ -65,7 +61,7 @@ theorem io_mem {x : A} (hx : x ∈ C) : (io x : SlopeTestRemainingChoices S A) �
   · exact C.zero_mem
 
 /- English proof (translation)
-Rewrite using `[mem_matSub]`. Introduce `i j`. Simplify using `only [lift0, Matrix.map_apply]`. Conclude with `io_mem C (hM i j)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_mem_matrix_algebra {M : M2 A} (hM : ∀ i j, M i j ∈ C) :
     (lift0 M : M2 (SlopeTestRemainingChoices S A)) ∈ matSub (matSub C (Ix S)) (Fin 2) := by
@@ -75,7 +71,7 @@ theorem lift_mem_matrix_algebra {M : M2 A} (hM : ∀ i j, M i j ∈ C) :
   exact io_mem C (hM i j)
 
 /- English proof (translation)
-Unfold `ins`. Use `Subalgebra.sum_mem _ fun i _ => Subalgebra.sum_mem _ fun j _ => Subalgebra.mul_mem _ (eU_mem C a i j) ?_` and prove the remaining obligations. Conclude with `mem_matSub.1 hM i j`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ins_mem (a : S) {M : M2 (SlopeTestRemainingChoices S A)} (hM : M ∈ matSub (matSub C (Ix S)) (Fin 2)) :
     ins a M ∈ matSub C (Ix S) := by
@@ -84,14 +80,14 @@ theorem ins_mem (a : S) {M : M2 (SlopeTestRemainingChoices S A)} (hM : M ∈ mat
   exact mem_matSub.1 hM i j
 
 /- English proof (translation)
-Conclude with `mem_matSub.2 fun i j => mem_matSub.1 hM j i`.
+A detailed English derivation is pending.
 -/
 theorem transpose_mem {n : Type} [Fintype n] [DecidableEq n] {C' : Subalgebra ℂ A} {M : Matrix n n A}
     (hM : M ∈ matSub C' n) : Mᵀ ∈ matSub C' n := by
   exact mem_matSub.2 fun i j => mem_matSub.1 hM j i
 
 /- English proof (translation)
-Establish `hP : (P0 a : M2 (SlopeTestRemainingChoices S A)) ∈ matSub (matSub C (Ix S)) (Fin 2)` using `mem_matSub.2 fun i j => eU_mem C a j i`. Unfold `Rh0`. Conclude with `Subalgebra.smul_mem _ (Subalgebra.sub_mem _ (Subalgebra.smul_mem _ (Subalgebra.one_mem _) D) hP) _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Rh0_mem (a : S) (D : ℂ) : (Rh0 a D : M2 (SlopeTestRemainingChoices S A)) ∈ matSub (matSub C (Ix S)) (Fin 2) := by
   have hP : (P0 a : M2 (SlopeTestRemainingChoices S A)) ∈ matSub (matSub C (Ix S)) (Fin 2) :=
@@ -100,7 +96,7 @@ theorem Rh0_mem (a : S) (D : ℂ) : (Rh0 a D : M2 (SlopeTestRemainingChoices S A
   exact Subalgebra.smul_mem _ (Subalgebra.sub_mem _ (Subalgebra.smul_mem _ (Subalgebra.one_mem _) D) hP) _
 
 /- English proof (translation)
-Establish `hQ : (Q0 a : M2 (SlopeTestRemainingChoices S A)) ∈ matSub (matSub C (Ix S)) (Fin 2)` using `mem_matSub.2 fun i j => eU_mem C a i j`. Unfold `Rht0`. Conclude with `Subalgebra.smul_mem _ (Subalgebra.sub_mem _ (Subalgebra.smul_mem _ (Subalgebra.one_mem _) D) hQ) _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Rht0_mem (a : S) (D : ℂ) : (Rht0 a D : M2 (SlopeTestRemainingChoices S A)) ∈ matSub (matSub C (Ix S)) (Fin 2) := by
   have hQ : (Q0 a : M2 (SlopeTestRemainingChoices S A)) ∈ matSub (matSub C (Ix S)) (Fin 2) :=
@@ -109,9 +105,9 @@ theorem Rht0_mem (a : S) (D : ℂ) : (Rht0 a D : M2 (SlopeTestRemainingChoices S
   exact Subalgebra.smul_mem _ (Subalgebra.sub_mem _ (Subalgebra.smul_mem _ (Subalgebra.one_mem _) D) hQ) _
 
 /- English proof (translation)
-Proceed by induction on `w generalizing Y with`. Consider the case `nil`. Simplify using `only [TTw]`. Conclude with `lift_mem_matrix_algebra C (hQ Y)`. Consider the case `cons l w ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [TTw]`. Use `split_ifs`. Conclude with `Subalgebra.mul_mem _ (ih Y) (Rh0_mem C _ _)`. Conclude with `Subalgebra.mul_mem _ (Rht0_mem C _ _) (ih Y)`.
+A detailed English derivation is pending.
 -/
 theorem TTw_mem {QQ : ℂ → M2 A} (hQ : ∀ Y i j, QQ Y i j ∈ C) (w : List (Letter ℂ S)) (Y : ℂ) :
     TTw QQ w Y ∈ matSub (matSub C (Ix S)) (Fin 2) := by
@@ -126,9 +122,9 @@ theorem TTw_mem {QQ : ℂ → M2 A} (hQ : ∀ Y i j, QQ Y i j ∈ C) (w : List (
     · exact Subalgebra.mul_mem _ (Rht0_mem C _ _) (ih Y)
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil`. Simplify using `only [RRw]`. Conclude with `Subalgebra.one_mem _`. Consider the case `cons l w ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [RRw]`. Use `Subalgebra.mul_mem _ ih (ins_mem C _ ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `TTw_mem C hQ w _`. Conclude with `transpose_mem (TTw_mem C hQ w _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem RRw_mem {QQ : ℂ → M2 A} (hQ : ∀ Y i j, QQ Y i j ∈ C) (w : List (Letter ℂ S)) :
     RRw QQ w ∈ matSub C (Ix S) := by
@@ -144,9 +140,9 @@ theorem RRw_mem {QQ : ℂ → M2 A} (hQ : ∀ Y i j, QQ Y i j ∈ C) (w : List (
     · exact transpose_mem (TTw_mem C hQ w _)
 
 /- English proof (translation)
-Establish `h : ∀ i j, f * M i j = M i j * f`. Introduce `i j`. Establish `hm` using `mem_matSub.1 hM i j`. Rewrite `hm` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `hm f (Set.mem_singleton f)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Use `show (io f : SlopeTestRemainingChoices S A) * M = M * io f`. Use extensionality with `i j`. Simplify using `only [io, Matrix.scalar_apply, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Conclude with `h i j`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem commute_io {f : A} {M : SlopeTestRemainingChoices S A} (hM : M ∈ matSub (Subalgebra.centralizer ℂ {f}) (Ix S)) :
     Commute (io f : SlopeTestRemainingChoices S A) M := by
@@ -169,9 +165,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)} {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Prod.fst_sum (s := s) (f := g)`. Consider the case `(classical`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty]`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Use the proof step `rfl)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pr_fst_sum {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} (s : Finset ι) (g : ι → Pr V) :
     (∑ i ∈ s, g i).1 = ∑ i ∈ s, (g i).1 := by
@@ -193,7 +189,7 @@ Both sides reduce to the same expression.
 theorem pr_fst_zero {V : Type} [AddCommGroup V] [Module ℂ V] : (0 : Pr V).1 = 0 := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [act, Matrix.mul_apply, pr_fst_sum, pr_fst_mul, LinearMap.sum_apply, Module.End.mul_apply, map_sum]`. Conclude with `Finset.sum_comm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_mul (M N : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))) (x : Ix S → RadSp k r z z' π π') :
     act (M * N) x = act M (act N x) := by
@@ -203,9 +199,9 @@ theorem act_mul (M N : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π')))
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [act, io, Matrix.scalar_apply, Matrix.diagonal_apply]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg (Ne.symm hb), pr_fst_zero, LinearMap.zero_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem act_io (f : Pr (RadSp k r z z' π π')) (x : Ix S → RadSp k r z z' π π') (a : Ix S) :
     act (io f) x a = f.1 (x a) := by
@@ -226,9 +222,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)} {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Establish `e : Formalism.FourierDecayAlt.B.hsVec (a • U) = a • Formalism.FourierDecayAlt.B.hsVec U`. Unfold `Formalism.FourierDecayAlt.B.hsVec`. Rewrite using `[← WithLp.toLp_smul]`. Use `first`. Consider the case `rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `(congr 1; funext i; simp)`. Unfold `Formalism.FourierDecayAlt.B.hsInner`. Rewrite using `[e, inner_smul_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hsInner_smul_left (a : ℂ) (U V : Wq →L[ℂ] Wp) : B.hsInner (a • U) V = a * B.hsInner U V := by
   have e : Formalism.FourierDecayAlt.B.hsVec (a • U) = a • Formalism.FourierDecayAlt.B.hsVec U := by
@@ -241,7 +237,7 @@ theorem hsInner_smul_left (a : ℂ) (U V : Wq →L[ℂ] Wp) : B.hsInner (a • U
   rw [e, inner_smul_right]
 
 /- English proof (translation)
-Unfold `pairAt`. Repeatedly rewrite using `[hW Φ c, hsInner_smul_left]`. Conclude with `MeasureTheory.integral_const_mul _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairAt_mulOp (μ : Measure (Mt k r)) (l : Fin r) (s : ℂ) (Wv : Module.End ℂ (RadSp k r z z' π π'))
     (hW : multiplicationOperator Wv (fun c _ => fsv s (c l))) (Φ Ψ : RadSp k r z z' π π') (c : Fin r → ℂ) :
@@ -251,7 +247,7 @@ theorem pairAt_mulOp (μ : Measure (Mt k r)) (l : Fin r) (s : ℂ) (Wv : Module.
   exact MeasureTheory.integral_const_mul _ _
 
 /- English proof (translation)
-Simplify using `only [glue]`. Rewrite using `[dif_neg (by rw [Fin.val_succ]; omega)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem glue_succ_update (l : Fin r) (c : Fin r → ℂ) (t : ℂ) (c' : Cf r l.succ) :
     glue l.succ (Function.update c l t) c' l = t := by
@@ -260,9 +256,9 @@ theorem glue_succ_update (l : Fin r) (c : Fin r → ℂ) (t : ℂ) (c' : Cf r l.
   simp
 
 /- English proof (translation)
-Unfold `form`. Establish `h : ∀ (c' : Cf r l.succ) (a : Ix S), pairAt μ (act (io (mkP Wv Wv')) u a) (y a) (glue l.succ (Function.update c l t) c') = fsv s t * pairAt μ (u a) (y a) (glue l.succ (Function.update c l t) c')`. Introduce `c' a`. Rewrite using `[act_io]`. Establish `e : (mkP Wv Wv' : Pr (RadSp k r z z' π π')).1 = Wv` using `rfl`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, pairAt_mulOp μ l s Wv hW, glue_succ_update]`. Repeatedly rewrite using `[h, ← Finset.mul_sum, mul_left_comm _ (fsv s t)]`. Conclude with `MeasureTheory.integral_const_mul _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_mulOp (μ : Measure (Mt k r)) (l : Fin r) (s : ℂ) (Wv Wv' : Module.End ℂ (RadSp k r z z' π π'))
     (hW : multiplicationOperator Wv (fun c _ => fsv s (c l))) (u y : Ix S → RadSp k r z z' π π') (c : Fin r → ℂ) (t : ℂ) :
@@ -290,11 +286,11 @@ variable (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r �
   (K : Fin (P.r + 1) → Submodule ℂ (RadSp P.k P.r z z' π π')) (l0 : ℕ)
 
 /- English proof (translation)
-Introduce `hD hPW hWS hWC hWK w hw l s Wv Wv' hW hW' x y hx hy c _`. Use `⟨hWK w hw l s Wv Wv' hW hW' x hx, fun t _ => ?_⟩` and prove the remaining obligations. Take `⟨hwave, hc1, hc2, hp⟩` from `hWS hD.2.2.1 l s Wv Wv' hW hW'`. Establish `hbT : bTl L l w * Vw (mkP Wv Wv') s w = io (mkP Wv Wv') * bTl L l w` using `hPW ℂ _ S (site L l) (mkP Wv Wv') (mkP Wv' Wv) s w hwave hc1 hc2 hp hw.1.1`. Establish `hQ : ∀ Y i j, QQi L st l.succ Y i j ∈ Subalgebra.centralizer ℂ {mkP Wv Wv'}`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Y i j`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce and unpack `g rfl`. Conclude with `(hWC l s Wv Wv' hW hW' Y i j).eq`. Establish `hcomm : io (mkP Wv Wv') * RRi L st l.succ w = RRi L st l.succ w * io (mkP Wv Wv')` using `(commute_io (RRw_mem _ hQ w)).eq`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [P5.ph, RRform]`. Rewrite using `[← act_mul (bTl L l w) (Vw (mkP Wv Wv') s w) x, hbT, act_mul (io (mkP Wv Wv')) (bTl L l w) x, ← act_mul (RRi L st l.succ w) (io (mkP Wv Wv')), ← hcomm, act_mul (io (mkP Wv Wv')), form_mulOp μ l s Wv Wv' hW]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem stepTwistFromParts : StepTwistFromParts (S := S) P z z' π π' X μ L st K l0 := by
   intro hD hPW hWS hWC hWK w hw l s Wv Wv' hW hW' x y hx hy c _

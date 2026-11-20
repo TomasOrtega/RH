@@ -17,31 +17,29 @@ noncomputable section
 namespace GlobalTheory.MBLow
 
 /- English proof (translation)
-Establish `H1` using `GlobalTheory.T.familyTerm_translate_bound_functionalEquation V D C hC N ν hν q hq k hk1 s gm₀ gm htan hpull`. Establish `H2` using `GlobalTheory.T.translate_section_values_bounded_integral_tangent V D C hC N ν hν k hk1 s gm₀ gm htan hpull`. Use `choose bb hbb using H2`. Establish `hk0 : (0 : ℤ) < k` using `by exact_mod_cast hk1`. Establish `hkR : (0 : ℝ) < k` using `by exact_mod_cast hk1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `bs` to `Module.Free.chooseBasis ℤ N.X`. Set `g : (Module.Free.ChooseBasisIndex ℤ N.X → Fin k) → N.X` to `fun c => ∑ i, ((c i : ℕ) : ℤ) • bs i`. Set `quo : N.X → N.X` to `fun χ => ∑ i, (bs.repr χ i / (k : ℤ)) • bs i`. Set `cOf : N.X → Module.Free.ChooseBasisIndex ℤ N.X → Fin k` to `fun χ i => ⟨(bs.repr χ i % (k : ℤ)).toNat, by`. Establish `h1` using `Int.emod_nonneg (bs.repr χ i) hk0.ne'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Int.emod_lt_of_pos (bs.repr χ i) hk0`. Use the proof step `omega⟩`. Establish `hdec : ∀ χ, χ = g (cOf χ) + k • quo χ`. Introduce `χ`. Establish `e1 : ∀ i, (((cOf χ i : ℕ) : ℤ)) = bs.repr χ i % (k : ℤ)` using `fun i => Int.toNat_of_nonneg (Int.emod_nonneg _ hk0.ne')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : k • quo χ = ∑ i, ((k : ℤ) * (bs.repr χ i / (k : ℤ))) • bs i`. Rewrite using `[← natCast_zsmul, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_smul _ _ _`. Rewrite using `[e2]`. Simplify using `only [g, e1, ← Finset.sum_add_distrib, ← add_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `conv_lhs => rw [← bs.sum_repr χ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `Int.mul_ediv_add_emod (bs.repr χ i) (k : ℤ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hqk : ∀ a mu : N.X, q (a + k • mu) = q a + (k : ℝ) ^ 2 * q mu + (k : ℝ) * QuadraticMap.polar q mu a`. Introduce `a mu`. Establish `e1 : q (k • mu + a) = q (k • mu) + q a + QuadraticMap.polar q (k • mu) a`. Simplify using `only [QuadraticMap.polar]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : q (k • mu) = ((k : ℤ) * (k : ℤ)) • q mu`. Rewrite using `[← natCast_zsmul]`. Conclude with `QuadraticMap.map_smul q _ _`. Establish `e3 : QuadraticMap.polar q (k • mu) a = (k : ℤ) • QuadraticMap.polar q mu a`. Rewrite using `[← natCast_zsmul]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `QuadraticMap.polar_smul_left q _ _ _`. Rewrite using `[add_comm, e1, e2, e3, zsmul_eq_mul, zsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hexp : ∀ a mu : N.X, Real.exp (-((k : ℝ) * q mu + QuadraticMap.polar q mu a)) = Real.exp (q a / k) * Real.exp (-(q (a + k • mu) / k))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Introduce `a mu`. Rewrite using `[← Real.exp_add, hqk]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `B : ℝ` to `∑ c, max 0 (bb (g c) * Real.exp (q (g c) / k))`. Establish `hB : ∀ c, bb (g c) * Real.exp (q (g c) / k) ≤ B` using `fun c => (le_max_right _ _).trans (Finset.single_le_sum (f := fun c => max 0 (bb (g c) * Real.exp (q (g c) / k))) (fun _ _ => le_max_left _ _) (Finset.mem_univ c))`. Use `⟨‖ν.rg ^ k‖⁻¹ * B, fun α => ?_⟩` and prove the remaining obligations. Establish `hα` using `hdec α`. Take `⟨h1, h2⟩` from `H1 (g (cOf α)) (quo α)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h3, h4⟩` from `hbb (g (cOf α)) (quo α)`. Establish `hE` using `hexp (g (cOf α)) (quo α)`. Rewrite `h1`, `h2`, `hE` using `[← hα]`. Establish `key : ∀ x : ℝ, x ≤ Real.exp (-((k : ℝ) * q (quo α) + QuadraticMap.polar q (quo α) (g (cOf α)))) * bb (g (cOf α)) → x ≤ B * Real.exp (-(q α / k))`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Use `hx.trans ?_` and prove the remaining obligations. Rewrite using `[hE]`. Combine the equalities or inequalities in the displayed calculation. Establish `hE0` using `Real.exp_pos (-((k : ℝ) * q (quo α) + QuadraticMap.polar q (quo α) (g (cOf α))))`. Establish `hr0 : 0 ≤ ‖ν.rg ^ k‖⁻¹` using `inv_nonneg.2 (norm_nonneg _)`.
-
-Prove the components needed by the constructor for the conclusion. Rewrite using `[norm_div, div_eq_mul_inv, mul_comm, _root_.mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (key _ (h1.trans (mul_le_mul_of_nonneg_left h3 hE0.le))) hr0`. Rewrite using `[norm_div, div_eq_mul_inv, mul_comm, _root_.mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (key _ (h2.trans (mul_le_mul_of_nonneg_left (max_le h3 h4) hE0.le))) hr0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jc_bound_k (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (IsLocalRing.maximalIdeal V))
     (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [IsAlgClosed C] [CharZero C] [Algebra (FractionRing V) C]
@@ -121,9 +119,9 @@ theorem jc_bound_k (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing
     exact mul_le_mul_of_nonneg_left (key _ (h2.trans (mul_le_mul_of_nonneg_left (max_le h3 h4) hE0.le))) hr0
 
 /- English proof (translation)
-Introduce `V _ _ _ D C _ _ _ _ _ hC N ν hν q hq m hm p s f hf hev gm₀ gm htan hpull`. Establish `hk1 : 1 ≤ m ^ 2` using `Nat.one_le_pow _ _ hm.pos`. Take `⟨b, hb⟩` from `jc_bound_k V D C hC N ν hν q hq (m ^ 2) hk1 s gm₀ gm htan hpull`. Use `⟨b, fun α => ?_⟩` and prove the remaining obligations. Establish `hcast : (((m ^ 2 : ℕ) : ℝ)) = (m : ℝ) ^ 2` using `by push_cast; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hcast]`. Conclude with `hb α`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jc_bound : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (IsLocalRing.maximalIdeal V)) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [IsAlgClosed C] [CharZero C] [Algebra (FractionRing V) C], CExt V (IsLocalRing.maximalIdeal V) C → ∀ (N : NumD C) (ν : NumOf D.toPre C N), ν.IntN → ∀ q, N.Int q → ∀ (m : ℕ), Odd m → ∀ (p : N.QT (m ^ 2)) (s : Fam D.toPre C (m ^ 2)) (f : N.X → N.A → C), ν.FamV s f → IsEvFam N m p f → ∀ (gm₀ : GtPt D.toPre (epsR V)) (gm : GtPt D.toPre (TE V C)), GtTan gm₀ → GtPt.IsPull (spMap (dualMap (toF V C))) gm₀ gm → ∃ b : ℝ, ∀ α, ‖(jc ν s gm α).fst / ν.rg ^ (m ^ 2)‖ ≤ b * Real.exp (-(q α / (m : ℝ) ^ 2)) ∧ ‖(jc ν s gm α).snd / ν.rg ^ (m ^ 2)‖ ≤ b * Real.exp (-(q α / (m : ℝ) ^ 2)) := by
   intro V _ _ _ D C _ _ _ _ _ hC N ν hν q hq m hm p s f hf hev gm₀ gm htan hpull

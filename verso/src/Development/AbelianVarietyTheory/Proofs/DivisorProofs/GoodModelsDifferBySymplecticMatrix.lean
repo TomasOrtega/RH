@@ -7,59 +7,57 @@ open scoped Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ ψ n d X W M M₁ hM hM₁`. Set `ι` to `algebraMap F (AF F)`. Establish `hι : Function.Injective ι` using `AdeleRing.algebraMap_injective (𝓞 F) F`. Set `sp` to `LinearEquiv.sumArrowLequivProdArrow (Fin n × Fin d) (Fin n × Fin d) (AF F) (AF F)`. Set `Φ₀` to `M.co.e.trans sp.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Φ₁` to `M₁.co.e.trans sp.symm`. Establish `hΦ₀ : ∀ u, Φ₀ u = Sum.elim (M.co.e u).1 (M.co.e u).2` using `fun u => rfl`. Establish `hΦ₁ : ∀ u, Φ₁ u = Sum.elim (M₁.co.e u).1 (M₁.co.e u).2` using `fun u => rfl`. Set `A : Matrix ((Fin n × Fin d) ⊕ (Fin n × Fin d)) ((Fin n × Fin d) ⊕ (Fin n × Fin d)) (AF F)` to `LinearMap.toMatrix' ((Φ₀.symm.trans Φ₁ : _ ≃ₗ[AF F] _) : ((Fin n × Fin d) ⊕ (Fin n × Fin d) → AF F) →ₗ[AF F] _)`. Establish `hA : ∀ u, A *ᵥ Φ₀ u = Φ₁ u`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `u`. Simplify using `[A, LinearMap.toMatrix'_mulVec]`. Establish `hspan : Submodule.span (AF F) (Set.range (incM F : Matrix (Fin n) (Fin d) E → Matrix (Fin n) (Fin d) (AE F E))) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `U _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.matrix_eq_sum_single U]`. Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Generalize the expression as in `U i j = t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a e`. Establish `: Matrix.single i j (a ⊗ₜ[F] e : AE F E) = a • incM F (Matrix.single i j e)`. Use extensionality with `k l`. Simplify using `only [incM, Matrix.single_apply, Matrix.smul_apply, Matrix.map_apply, inclR]`. Use `split_ifs`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[TensorProduct.smul_tmul']`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Consider the case `add x y hx hy => rw [Matrix.single_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ hx hy`. Establish `hspan' : Submodule.span (AF F) (Φ₀.toLinearMap '' Set.range (incM F : Matrix (Fin n) (Fin d) E → Matrix (Fin n) (Fin d) (AE F E))) = ⊤`. Rewrite using `[Submodule.span_image, hspan, Submodule.map_top, LinearEquiv.range]`. Establish `hrat0 : ∀ x : Matrix (Fin n) (Fin d) E, ∃ w : (Fin n × Fin d) ⊕ (Fin n × Fin d) → F, Φ₀ (incM F x) = fun i => ι (w i)`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Take `⟨y, z, h⟩` from `hM.rat x`. Apply the tactic sequence `refine ⟨Sum.elim y z, ?_⟩; funext i; rw [hΦ₀, h]; cases i <;> rfl`. Establish `hrat1 : ∀ x : Matrix (Fin n) (Fin d) E, ∃ w : (Fin n × Fin d) ⊕ (Fin n × Fin d) → F, Φ₁ (incM F x) = fun i => ι (w i)`. Introduce `x`. Take `⟨y, z, h⟩` from `hM₁.rat x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply the tactic sequence `refine ⟨Sum.elim y z, ?_⟩; funext i; rw [hΦ₁, h]; cases i <;> rfl`. Set `G : Set ((Fin n × Fin d) ⊕ (Fin n × Fin d) → F)` to `{w | ∃ x, Φ₀ (incM F x) = fun i => ι (w i)}`. Establish `hG : Submodule.span F G = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hfk⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `c : (Fin n × Fin d) ⊕ (Fin n × Fin d) → F` to `fun i => f (fun j => if i = j then 1 else 0)`. Establish `hfc : ∀ w, f w = ∑ i, w i * c i`. Introduce `w`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f w]`. Simplify using `[c, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hP : ∀ V ∈ Submodule.span (AF F) (Φ₀.toLinearMap '' Set.range (incM F : Matrix (Fin n) (Fin d) E → Matrix (Fin n) (Fin d) (AE F E))), ∑ i, V i * ι (c i) = 0`. Introduce `V hV`. Proceed by induction on `hV using Submodule.span_induction with`. Consider the case `mem V hV`. Take `⟨_, ⟨x, rfl⟩, rfl⟩` from `hV`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, hw⟩` from `hrat0 x`. Establish `h1` using `hfk (Submodule.subset_span (show w ∈ G from ⟨x, hw⟩))`. Rewrite `h1` using `[LinearMap.mem_ker, hfc]`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.coe_toLinearMap, hw, ← map_mul, ← map_sum, h1, map_zero]`. Consider the case `zero => simp`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add x y _ _ hx hy => simp [add_mul, Finset.sum_add_distrib, hx, hy]`. Consider the case `smul a x _ hx => simp [mul_assoc, ← Finset.mul_sum, hx]`. Establish `hc : ∀ i, c i = 0`. Introduce `i`. Establish `h1` using `hP (Pi.single i 1) (by rw [hspan']; trivial)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pi.single_apply] at h1`. Conclude with `hι (by simpa using h1)`. Conclude with `hf0 (LinearMap.ext fun w => by simp [hfc, hc])`. Establish `hrat : ∀ w : (Fin n × Fin d) ⊕ (Fin n × Fin d) → F, ∃ q : (Fin n × Fin d) ⊕ (Fin n × Fin d) → F, A *ᵥ (fun i => ι (w i)) = fun i => ι (q i)`. Introduce `w`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hw : w ∈ Submodule.span F G` using `hG ▸ Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨x, hx⟩` from `hw`. Take `⟨q, hq⟩` from `hrat1 x`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨q, (congrArg (A *ᵥ ·) hx).symm.trans ((hA _).trans hq)⟩`. Consider the case `zero => exact ⟨0, by funext i; simp [Matrix.mulVec, dotProduct]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨p, hp⟩` from `hx`. Take `⟨q, hq⟩` from `hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨p + q, ?_⟩` and prove the remaining obligations. Establish `: (fun i => ι ((x + y) i)) = (fun i => ι (x i)) + (fun i => ι (y i))` using `by funext i; simp`. Rewrite using `[this, Matrix.mulVec_add, hp, hq]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c x _ hx`. Take `⟨p, hp⟩` from `hx`. Use `⟨c • p, ?_⟩` and prove the remaining obligations. Establish `: (fun i => ι ((c • x) i)) = ι c • (fun i => ι (x i))` using `by funext i; simp`. Rewrite using `[this, Matrix.mulVec_smul, hp]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use `choose q hq using fun j : (Fin n × Fin d) ⊕ (Fin n × Fin d) => hrat (Pi.single j 1)`. Set `a : Matrix ((Fin n × Fin d) ⊕ (Fin n × Fin d)) ((Fin n × Fin d) ⊕ (Fin n × Fin d)) F` to `Matrix.of fun i j => q j i`. Establish `haA : a.map ι = A`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Establish `h1 : A *ᵥ Pi.single j 1 = fun i => ι (q j i)`. Rewrite using `[← hq j]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pi.single_apply]`. Establish `h2` using `congrFun h1 i`. Rewrite `h2` using `[Matrix.mulVec_single_one]`. Simplify `h2.symm` using `[a]`. Establish `hstd : ∀ w w' : (Fin n × Fin d) ⊕ (Fin n × Fin d) → AF F, w ⬝ᵥ (Matrix.fromBlocks 0 1 (-1) 0 *ᵥ w') = (w ∘ Sum.inl) ⬝ᵥ (w' ∘ Sum.inr) - (w' ∘ Sum.inl) ⬝ᵥ (w ∘ Sum.inr)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `w w'`. Rewrite using `[Matrix.fromBlocks_mulVec]`. Simplify using `[dotProduct, Fintype.sum_sum_type, Matrix.neg_mulVec, mul_comm, sub_eq_add_neg]`. Establish `hform : ∀ u u', Φ₁ u ⬝ᵥ (Matrix.fromBlocks 0 1 (-1) 0 *ᵥ Φ₁ u') = Φ₀ u ⬝ᵥ (Matrix.fromBlocks 0 1 (-1) 0 *ᵥ Φ₀ u')`. Introduce `u u'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[hstd, hstd, hΦ₀, hΦ₀, hΦ₁, hΦ₁]`. Simplify using `only [Sum.elim_comp_inl, Sum.elim_comp_inr]`. Rewrite using `[← M.co.form, ← M₁.co.form]`. Establish `hsympA : Aᵀ * Matrix.fromBlocks 0 1 (-1) 0 * A = Matrix.fromBlocks 0 1 (-1) 0`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ N : Matrix ((Fin n × Fin d) ⊕ (Fin n × Fin d)) ((Fin n × Fin d) ⊕ (Fin n × Fin d)) (AF F), N i j = Pi.single i 1 ⬝ᵥ (N *ᵥ Pi.single j 1)`. Introduce `N`. Simplify using `[Matrix.mulVec_single_one]`. Rewrite using `[key (Aᵀ * Matrix.fromBlocks 0 1 (-1) 0 * A), key (Matrix.fromBlocks 0 1 (-1) 0)]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `e1 : ∀ s, A *ᵥ s = Φ₁ (Φ₀.symm s)` using `fun s => by rw [← hA, LinearEquiv.apply_symm_apply]`. Rewrite using `[e1, e1, hform]`. Simplify using the standard rewrite rules. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Apply `Matrix.map_injective hι` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [Matrix.map_mul, Matrix.transpose_map, Matrix.fromBlocks_map]`. Rewrite using `[haA]`. Simplify `hsympA` using `[Matrix.map_zero, Matrix.map_one, Matrix.map_neg]`. Introduce `u`. Rewrite using `[show a.map (algebraMap F (AF F)) = A from haA, ← hΦ₀, hA, hΦ₁]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem goodModel_coords_rat_symplectic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M M₁ : Model σ X W), M.IsGood ψ → M₁.IsGood ψ → ∃ a : Matrix ((Fin n × Fin d) ⊕ (Fin n × Fin d)) ((Fin n × Fin d) ⊕ (Fin n × Fin d)) F, aᵀ * Matrix.fromBlocks 0 1 (-1) 0 * a = Matrix.fromBlocks 0 1 (-1) 0 ∧ ∀ u, M₁.co.e u = ((a.map (algebraMap F (AF F)) *ᵥ Sum.elim (M.co.e u).1 (M.co.e u).2) ∘ Sum.inl, (a.map (algebraMap F (AF F)) *ᵥ Sum.elim (M.co.e u).1 (M.co.e u).2) ∘ Sum.inr) := by
   intro F E _ _ _ _ _ σ ψ n d X W M M₁ hM hM₁

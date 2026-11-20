@@ -19,12 +19,12 @@ def lsub (M : Matrix σ σ ℂ) : MvPolynomial σ ℂ →ₐ[ℂ] MvPolynomial �
   aeval fun v => ∑ w, C (M w v) * X w
 
 /- English proof (translation)
-The claim follows from `aeval_X _ _`.
+A detailed English derivation is pending.
 -/
 theorem lsub_X (M : Matrix σ σ ℂ) (v : σ) : lsub M (X v) = ∑ w, C (M w v) * X w := aeval_X _ _
 
 /- English proof (translation)
-Use `algHom_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[lsub_X, Finset.sum_eq_single v]`. Simplify using the standard rewrite rules. Introduce `w _ hw`. Simplify using `[Matrix.one_apply_ne hw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -37,7 +37,7 @@ theorem lsub_one [DecidableEq σ] : lsub (1 : Matrix σ σ ℂ) = AlgHom.id ℂ 
   · simp
 
 /- English proof (translation)
-Use `algHom_ext fun v => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, lsub_X, map_sum, map_mul, algHom_C, algebraMap_eq, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lsub_mul (M N : Matrix σ σ ℂ) : lsub (M * N) = (lsub M).comp (lsub N) := by
   refine algHom_ext fun v => ?_
@@ -48,9 +48,9 @@ theorem lsub_mul (M N : Matrix σ σ ℂ) : lsub (M * N) = (lsub M).comp (lsub N
   ring
 
 /- English proof (translation)
-Establish `: (constantCoeff : MvPolynomial σ ℂ →+* ℂ).comp (lsub M).toRingHom = constantCoeff`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using the standard rewrite rules. Introduce `i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[lsub_X]`. Conclude with `congrArg (fun φ : MvPolynomial σ ℂ →+* ℂ => φ g) this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_lsub (M : Matrix σ σ ℂ) (g : MvPolynomial σ ℂ) :
     constantCoeff (lsub M g) = constantCoeff g := by
@@ -61,15 +61,15 @@ theorem constantCoeff_lsub (M : Matrix σ σ ℂ) (g : MvPolynomial σ ℂ) :
   exact congrArg (fun φ : MvPolynomial σ ℂ →+* ℂ => φ g) this
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq, mul_add, Finset.sum_add_distrib]`. Consider the case `mul_X p k hp`. Establish `hX : pderiv s (lsub M (X k)) = C (M s k)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[lsub_X, map_sum, Finset.sum_eq_single s]`. Simplify using `[pderiv_X]`. Introduce `b _ hb`. Rewrite using `[Derivation.leibniz, pderiv_C, pderiv_X_of_ne hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[map_mul, Derivation.leibniz, hX, hp, smul_eq_mul, smul_eq_mul]`. Repeatedly rewrite using `[Derivation.leibniz, smul_eq_mul, map_add, map_mul, mul_add, Finset.sum_add_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single k]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pderiv_X_self, map_one]`. Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`. Rewrite using `[pderiv_X_of_ne hb.symm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pderiv_lsub [DecidableEq σ] (M : Matrix σ σ ℂ) (s : σ) (g : MvPolynomial σ ℂ) :
     pderiv s (lsub M g) = ∑ w, C (M s w) * lsub M (pderiv w g) := by
@@ -98,11 +98,11 @@ theorem pderiv_lsub [DecidableEq σ] (M : Matrix σ σ ℂ) (s : σ) (g : MvPoly
       ring
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on generalizing F' with`. Consider the case `C a => rw [algHom_C, algebraMap_eq, fockL_C_left, fockL_C_left, constantCoeff_lsub]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hp, hq]`. Consider the case `mul_X p v hp`. Establish `e1 : lsub M (p * X v) = ∑ w, M w v • (X w * lsub M p)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[map_mul, lsub_X, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, map_sum, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, fockL_X_pderiv, hp]`. Rewrite using `[mul_comm p, fockL_X_pderiv, pderiv_lsub, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_C_mul, map_smul, Matrix.conjTranspose_apply, starRingEnd_apply]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fockL_lsub_adj (M : Matrix σ σ ℂ) (F F' : MvPolynomial σ ℂ) :
     fockL (lsub M F) F' = fockL F (lsub Mᴴ F') := by
@@ -128,7 +128,7 @@ section Blocks
 variable {m n : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun h a) i`. Simplify using `only [Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul] at h1`. Apply the tactic sequence `cases ha : ε a <;> cases hi : ε i <;> simp only [ha, hi] at hai h1 <;> simp at hai h1`. Take the linear combination `(1 / 2 : ℂ) * h1`. Take the linear combination `(-1 / 2 : ℂ) * h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem entry_eq_zero {ε : Fin m → Bool} {k : Matrix (Fin m) (Fin m) ℂ}
     (h : k * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * k) {a i : Fin m} (hai : ε a ≠ ε i) : k a i = 0 := by
@@ -139,7 +139,7 @@ theorem entry_eq_zero {ε : Fin m → Bool} {k : Matrix (Fin m) (Fin m) ℂ}
   · linear_combination (-1 / 2 : ℂ) * h1
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det k).1 hk.1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`. Use `_ = Formalism.REAL.Jm ε * k⁻¹ := by`. Rewrite using `[← hk.2, ← Matrix.mul_assoc k⁻¹, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_comm {ε : Fin m → Bool} {k : Matrix (Fin m) (Fin m) ℂ} (hk : k ∈ GlobalTheory.Dec.KC ε) :
     k⁻¹ * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * k⁻¹ := by
@@ -150,7 +150,7 @@ theorem inv_comm {ε : Fin m → Bool} {k : Matrix (Fin m) (Fin m) ℂ} (hk : k 
         rw [← hk.2, ← Matrix.mul_assoc k⁻¹, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `cases ε a <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_mul_Jm (ε : Fin m → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   rw [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -159,7 +159,7 @@ theorem Jm_mul_Jm (ε : Fin m → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.
   cases ε a <;> simp
 
 /- English proof (translation)
-Rewrite using `[Formalism.REAL.Jm, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `cases h : ε a <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_conj (ε : Fin m → Bool) : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε := by
   rw [Formalism.REAL.Jm, Matrix.diagonal_conjTranspose]
@@ -171,16 +171,16 @@ def blk (J k : Matrix (Fin m) (Fin m) ℂ) : Matrix (Fin m) (Fin m) ℂ :=
   (1 / 2 : ℂ) • (1 + J) * k + (1 / 2 : ℂ) • (1 - J)
 
 /- English proof (translation)
-Rewrite using `[blk, Matrix.mul_one, ← smul_add, add_add_sub_cancel, ← two_smul ℂ, smul_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blk_one (J : Matrix (Fin m) (Fin m) ℂ) : blk J 1 = 1 := by
   rw [blk, Matrix.mul_one, ← smul_add, add_add_sub_cancel, ← two_smul ℂ, smul_smul]
   simp
 
 /- English proof (translation)
-Establish `h1 : ∀ x : Matrix (Fin m) (Fin m) ℂ, J * (J * x) = x` using `fun x => by`. Rewrite using `[← Matrix.mul_assoc, hJ, Matrix.one_mul]`. Establish `h2 : ∀ x : Matrix (Fin m) (Fin m) ℂ, k * (J * x) = J * (k * x)` using `fun x => by`. Rewrite using `[← Matrix.mul_assoc, hk, Matrix.mul_assoc]`. Simplify using `only [blk, Matrix.smul_mul, Matrix.mul_smul, add_mul, mul_add, sub_mul, mul_sub, one_mul, mul_one, mul_assoc, h1, h2, hJ, hk, smul_add, smul_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem blk_mul {J k : Matrix (Fin m) (Fin m) ℂ} (hJ : J * J = 1) (hk : k * J = J * k)
     (k' : Matrix (Fin m) (Fin m) ℂ) : blk J (k * k') = blk J k * blk J k' := by
@@ -193,9 +193,9 @@ theorem blk_mul {J k : Matrix (Fin m) (Fin m) ℂ} (hJ : J * J = 1) (hk : k * J 
   module
 
 /- English proof (translation)
-Establish `h1 : kᴴ * J = J * kᴴ`. Use `congrArg Matrix.conjTranspose hk` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hJ]`. Conclude with `this.symm`. Establish `h2 : star (1 / 2 : ℂ) = 1 / 2` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [blk, Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_one, hJ, h2, Matrix.smul_mul, Matrix.mul_smul, add_mul, mul_add, one_mul, mul_one, h1]`.
+A detailed English derivation is pending.
 -/
 theorem blk_conj {J k : Matrix (Fin m) (Fin m) ℂ} (hJ : Jᴴ = J) (hk : k * J = J * k) :
     blk J kᴴ = (blk J k)ᴴ := by
@@ -215,7 +215,7 @@ theorem detPlus_def₂ (ε : Fin m → Bool) (k : Matrix (Fin m) (Fin m) ℂ) :
     detP ε k = (blk (Formalism.REAL.Jm ε) k).det := rfl
 
 /- English proof (translation)
-Rewrite using `[detM, blk, sub_neg_eq_add, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem detM_eq (ε : Fin m → Bool) (k : Matrix (Fin m) (Fin m) ℂ) :
     detM ε k = (blk (-Formalism.REAL.Jm ε) k).det := by
@@ -230,7 +230,7 @@ def fmat (ε : ι → Fin m → Bool) (k : ι → Matrix (Fin m) (Fin m) ℂ) (u
       else (k v.1)⁻¹ v.2.1 w.2.1 * u v.1 w.2.2 v.2.2) else 0
 
 /- English proof (translation)
-Use extensionality with `⟨s, a, b⟩ ⟨t, i, j⟩`. Simplify using `only [fmat, Matrix.of_apply, Pi.one_apply, inv_one, Matrix.one_apply, Prod.mk.injEq]`. Apply the tactic sequence `by_cases h1 : s = t <;> by_cases h2 : a = i <;> by_cases h3 : b = j <;>`. Simplify using `[h1, h2, h3, eq_comm (a := i), eq_comm (a := j)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem fmat_one (ε : ι → Fin m → Bool) : fmat (n := n) ε 1 1 = 1 := by
   ext ⟨s, a, b⟩ ⟨t, i, j⟩
@@ -239,15 +239,15 @@ theorem fmat_one (ε : ι → Fin m → Bool) : fmat (n := n) ε 1 1 = 1 := by
     simp [h1, h2, h3, eq_comm (a := i), eq_comm (a := j)]
 
 /- English proof (translation)
-Use extensionality with `⟨s, a, b⟩ ⟨t, i, j⟩`. Rewrite using `[Matrix.mul_apply, Fintype.sum_prod_type, Finset.sum_eq_single t]`. Simplify using `only [fmat, Matrix.of_apply, Pi.mul_apply, Matrix.mul_inv_rev, if_true]`. Distinguish the cases in `h1 : s = t`. Simplify using `only [h1, if_true]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fintype.sum_prod_type]`. Consider the cases of `hi : ε t i`. Simplify using `only [Bool.false_eq_true, if_false, Matrix.mul_apply, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Consider the cases of `hc : ε t c`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Simplify using `only [Bool.false_eq_true, if_false]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[entry_eq_zero (inv_comm (hk' t)) (a := i) (i := c) (by simp [hi, hc])]; simp`. Simplify using `only [if_true, Matrix.mul_apply, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Consider the cases of `hc : ε t c`. Rewrite using `[entry_eq_zero (hk' t).2 (a := c) (i := i) (by simp [hi, hc])]; simp`. Simplify using `only [if_true]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h1]`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Introduce `r _ hr`. Simplify using `[fmat, hr]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fmat_mul [Fintype ι] (ε : ι → Fin m → Bool) (k k' : ι → Matrix (Fin m) (Fin m) ℂ)
     (u u' : ι → Matrix (Fin n) (Fin n) ℂ) (hk' : ∀ τ, k' τ ∈ GlobalTheory.Dec.KC (ε τ)) :
@@ -275,11 +275,11 @@ theorem fmat_mul [Fintype ι] (ε : ι → Fin m → Bool) (k k' : ι → Matrix
   · simp
 
 /- English proof (translation)
-Use extensionality with `⟨s, a, b⟩ ⟨t, i, j⟩`. Simplify using `only [fmat, Matrix.of_apply, Matrix.conjTranspose_apply, ← Matrix.conjTranspose_nonsing_inv]`. Distinguish the cases in `h1 : s = t`. Substitute `h1` using the available equality. Simplify using `only [if_true]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `cases hi : ε s i <;> cases ha : ε s a`. Simplify using the standard rewrite rules. Rewrite using `[entry_eq_zero (hk s).2 (a := i) (i := a) (by simp [hi, ha]), entry_eq_zero (inv_comm (hk s)) (a := a) (i := i) (by simp [hi, ha])]`. Simplify using the standard rewrite rules. Rewrite using `[entry_eq_zero (hk s).2 (a := i) (i := a) (by simp [hi, ha]), entry_eq_zero (inv_comm (hk s)) (a := a) (i := i) (by simp [hi, ha])]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `[h1, Ne.symm h1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fmat_conj (ε : ι → Fin m → Bool) (k : ι → Matrix (Fin m) (Fin m) ℂ)
     (u : ι → Matrix (Fin n) (Fin n) ℂ) (hk : ∀ τ, k τ ∈ GlobalTheory.Dec.KC (ε τ)) :
@@ -315,7 +315,7 @@ section
 variable {D : D7} {m n : ℕ}
 
 /- English proof (translation)
-Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[FMul.lsub_X, fsub, MvPolynomial.aeval_X, Fintype.sum_prod_type, Finset.sum_eq_single v.1, Fintype.sum_prod_type]`. Simplify using `only [FMul.fmat, Matrix.of_apply, if_true]`. Introduce `r _ hr`. Simplify using `[FMul.fmat, hr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -330,16 +330,16 @@ theorem fsub_eq_lsub (ε : D.what₂.Tau → Fin m → Bool) (k : D.what₂.Tau 
   · simp
 
 /- English proof (translation)
-Simplify using `[fchar, FMul.detPlus_def₂, FMul.detM_eq, FMul.blk_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fchar_one (ε : D.what₂.Tau → Fin m → Bool) (x₁ x₂ x₃ : D.what₂.Tau → ℤ) :
     fchar (n := n) ε x₁ x₂ x₃ 1 1 = 1 := by
   simp [fchar, FMul.detPlus_def₂, FMul.detM_eq, FMul.blk_one]
 
 /- English proof (translation)
-Unfold `fchar`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [FMul.detPlus_def₂, FMul.detM_eq, Pi.mul_apply]`. Rewrite using `[FMul.blk_mul (FMul.Jm_mul_Jm _) (hk τ).2, FMul.blk_mul (J := -Formalism.REAL.Jm (ε τ)) (by rw [neg_mul_neg, FMul.Jm_mul_Jm]) (by rw [mul_neg, neg_mul, (hk τ).2])]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.det_mul, mul_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fchar_mul (ε : D.what₂.Tau → Fin m → Bool) (x₁ x₂ x₃ : D.what₂.Tau → ℤ)
     (k k' : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) (u u' : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ)
@@ -356,9 +356,9 @@ theorem fchar_mul (ε : D.what₂.Tau → Fin m → Bool) (x₁ x₂ x₃ : D.wh
   ring
 
 /- English proof (translation)
-Unfold `fchar`. Rewrite using `[star_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [FMul.detPlus_def₂, FMul.detM_eq]`. Rewrite using `[FMul.blk_conj (FMul.Jm_conj _) (hk τ).2, FMul.blk_conj (J := -Formalism.REAL.Jm (ε τ)) (by rw [Matrix.conjTranspose_neg, FMul.Jm_conj]) (by rw [mul_neg, neg_mul, (hk τ).2])]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.det_conjTranspose, star_mul', star_zpow₀]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fchar_conj (ε : D.what₂.Tau → Fin m → Bool) (x₁ x₂ x₃ : D.what₂.Tau → ℤ)
     (k : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) (u : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ)
@@ -376,9 +376,9 @@ theorem fchar_conj (ε : D.what₂.Tau → Fin m → Bool) (x₁ x₂ x₃ : D.w
 end
 
 /- English proof (translation)
-Introduce `D m n ε x₁ x₂ x₃`. Use `⟨?_, fun k k' u u' hk hk' _ _ => ?_, fun k u hk _ F F' => ?_⟩` and prove the remaining obligations. Rewrite using `[fact, fchar_one, one_smul, fsub_eq_lsub, FMul.fmat_one, FMul.lsub_one]`. Both sides reduce to the same expression. Simplify using `only [fact]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[fchar_mul ε x₁ x₂ x₃ k k' u u' hk, smul_mul_smul_comm, fsub_eq_lsub, fsub_eq_lsub, fsub_eq_lsub, FMul.fmat_mul ε k k' u u' hk', FMul.lsub_mul]`. Both sides reduce to the same expression. Simplify using `only [fact]`. Rewrite using `[fchar_conj ε x₁ x₂ x₃ k u hk, fsub_eq_lsub, fsub_eq_lsub, FMul.fmat_conj ε k u hk]`. Simplify using `only [LinearMap.smul_apply, AlgHom.toLinearMap_apply, LinearMap.map_smulₛₗ, starRingEnd_apply, RingHom.id_apply, FMul.fockL_lsub_adj]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fact_one_mul_adj : ∀ (D : D7) (m n : ℕ) (ε : D.what₂.Tau → Fin m → Bool) (x₁ x₂ x₃ : D.what₂.Tau → ℤ), fact (n := n) ε x₁ x₂ x₃ 1 1 = 1 ∧ (∀ (k k' : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) (u u' : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ), (∀ τ, k τ ∈ GlobalTheory.Dec.KC (ε τ)) → (∀ τ, k' τ ∈ GlobalTheory.Dec.KC (ε τ)) → (∀ τ, IsUnit (u τ)) → (∀ τ, IsUnit (u' τ)) → fact ε x₁ x₂ x₃ (k * k') (u * u') = fact ε x₁ x₂ x₃ k u * fact ε x₁ x₂ x₃ k' u') ∧ ∀ (k : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) (u : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ), (∀ τ, k τ ∈ GlobalTheory.Dec.KC (ε τ)) → (∀ τ, IsUnit (u τ)) → ∀ F F' : PolF D m n, fockL (fact ε x₁ x₂ x₃ k u F) F' = fockL F (fact ε x₁ x₂ x₃ (fun τ => (k τ)ᴴ) (fun τ => (u τ)ᴴ) F') := by
   intro D m n ε x₁ x₂ x₃

@@ -6,25 +6,25 @@ open CrystallineSemistableComparison CrystallineSemistableComparison.Tw
 namespace GlobalTheory.CompanionTheory.TowerSeq
 
 /- English proof (translation)
-Introduce `W _ l S S' T T' e e' h h' L`. Set `E : ∀ n, S.M n ≃ₗ[W] T.M n` to `fun n => LinearEquiv.ofBijective (e.f n) (h n)`. Set `E' : ∀ n, S'.M n ≃ₗ[W] T'.M n` to `fun n => LinearEquiv.ofBijective (e'.f n) (h' n)`. Establish `hc : ∀ n y, T.r n (E (n + 1) y) = E n (S.r n y)` using `fun n y => e.comm n y`. Establish `hc' : ∀ n y, T'.r n (E' (n + 1) y) = E' n (S'.r n y)` using `fun n y => e'.comm n y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ∀ n x, (E n).symm (T.r n x) = S.r n ((E (n + 1)).symm x)`. Introduce `n x`. Apply `(E n).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, ← hc, LinearEquiv.apply_symm_apply]`. Use `⟨{ ρ := fun c b => (E b).toLinearMap ∘ₗ L.ρ c b ∘ₗ (E c).symm.toLinearMap ν := fun a c => (E c).toLinearMap ∘ₗ L.ν a c ∘ₗ (E a).symm.toLinearMap δ := fun b a => (E' a).toLinearMap ∘ₗ L.δ b a ∘ₗ (E b).symm.toLinearMap kill := ?_, ρ_self := ?_, ρ_succ := ?_, ν_ρ := ?_, ν_r := ?_, e …` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n x`. Apply `(E n).symm.injective` to reduce the goal to its premises. Rewrite using `[map_smul, L.kill, map_zero]`. Introduce `c x`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[L.ρ_self, LinearEquiv.apply_symm_apply]`. Introduce `c b hb x`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[L.ρ_succ c b hb, hr]`. Introduce `a c ha x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Rewrite using `[L.ν_ρ a c ha, map_smul, LinearEquiv.apply_symm_apply]`. Introduce `a c ha y`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[hc, L.ν_r a c ha, hr]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b c hcab x hx`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe] at hx`. Establish `h0 : L.ρ c b ((E c).symm x) = 0`. Apply `(E b).injective` to reduce the goal to its premises. Rewrite using `[hx, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `L.ex₁ a b c hcab _ h0`. Use `⟨E a y, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Rewrite using `[hy, LinearEquiv.apply_symm_apply]`. Introduce `b a x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[hc', L.δ_r]`. Introduce `a b c hcab x hx`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe] at hx`. Establish `h0 : L.δ b a ((E b).symm x) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `(E' a).injective` to reduce the goal to its premises. Rewrite using `[hx, map_zero]`. Take `⟨y, hy⟩` from `L.ex₂ a b c hcab _ h0`. Use `⟨E c y, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hy, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lseq_transport : ∀ (W : Type) [CommRing W] (l : ℕ) (S S' T T' : Sys.{1} W)
     (e : Sys.Hom S T (RingHom.id W)) (e' : Sys.Hom S' T' (RingHom.id W)),

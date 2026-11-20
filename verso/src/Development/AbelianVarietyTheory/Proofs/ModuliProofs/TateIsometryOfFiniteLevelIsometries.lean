@@ -23,14 +23,14 @@ def LevelIso (D : Datum H) {K : Type} [Field K] {Q : Type} [Group Q] (act : 𝓞
 variable {D : Datum H} {K : Type} [Field K] {Q : Type} [Group Q] {act : 𝓞 E → Q → Q} {e : ℕ → Q → Q → Kˣ → Prop}
 
 /- English proof (translation)
-The claim follows from `map_nsmul (AddMonoidHom.mk' (fun a => Additive.ofMul (f a)) hf) n a`.
+A detailed English derivation is pending.
 -/
 theorem map_nsmul_of_add {M : Type} [AddCommGroup M] {f : M → Q} (hf : ∀ a c, f (a + c) = f a * f c)
     (n : ℕ) (a : M) : f (n • a) = f a ^ n :=
   map_nsmul (AddMonoidHom.mk' (fun a => Additive.ofMul (f a)) hf) n a
 
 /- English proof (translation)
-Use `D.proj` as an intermediate fact. Establish `: Module.Flat ℤ D.La` using `Module.Flat.trans ℤ (𝓞 E) D.La`. Establish `h' : (r : ℤ) • a = (r : ℤ) • c` using `by simpa only [natCast_zsmul] using h`. Conclude with `smul_right_injective D.La (by exact_mod_cast hr.ne' : (r : ℤ) ≠ 0) h'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nsmul_cancel (D : Datum H) {r : ℕ} (hr : 0 < r) {a c : D.La} (h : r • a = r • c) : a = c := by
   have := D.proj
@@ -39,15 +39,15 @@ theorem nsmul_cancel (D : Datum H) {r : ℕ} (hr : 0 < r) {a c : D.La} (h : r �
   exact smul_right_injective D.La (by exact_mod_cast hr.ne' : (r : ℤ) ≠ 0) h'
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6⟩` from `h`. Establish `hp : ∀ a, (p ^ r).2 a = p.2 (r • a)` using `fun a => (map_nsmul_of_add h2 r a).symm`. Use `⟨h1.pow (Nat.mul_pos hN hr) (mul_comm _ _), fun a c => ?_, fun c a => ?_, fun a => ?_, fun x => ?_, fun a c => ?_⟩` and prove the remaining obligations. Rewrite using `[hp, hp, hp, smul_add, h2]`. Rewrite using `[hp, hp, smul_comm, h3]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp, h4]`. Use `exists_congr fun c => ⟨fun h => nsmul_cancel D hr ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[h, mul_comm, mul_smul]`. Rewrite using `[h, mul_comm, mul_smul]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Take `⟨a, rfl⟩` from `(h5 x).1 (by rw [pow_mul, hx, one_pow])`. Rewrite `hx` using `[← map_nsmul_of_add h2, h4]`. Take `⟨c, hc⟩` from `hx`. Rewrite `hc` using `[mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨c, by rw [hp, nsmul_cancel D hN hc]⟩`. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[hp, ← map_nsmul_of_add h2, h4]`. Conclude with `⟨a, by rw [mul_smul]⟩`. Use `he N r _ _ _ hN hr ((h5 _).2 ⟨a, rfl⟩) ((h5 _).2 ⟨c, rfl⟩) (h6 a c)` as an intermediate fact.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e1 : (p.1 ^ D.EF a c) ^ r = (p.1 ^ r) ^ D.EF a c`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast]`. Rewrite `this` using `[e1]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LevelIso.pow
     (he : ∀ n m x x' c, 0 < n → 0 < m → x ^ (n * m) = 1 → x' ^ (n * m) = 1 → e (n * m) x x' c →
@@ -81,13 +81,11 @@ theorem LevelIso.pow
     exact this
 
 /- English proof (translation)
-Use `D.fin` as an intermediate fact. Establish `hf : Module.Finite ℤ D.La` using `Module.Finite.trans (𝓞 E) D.La`. Take `⟨S, hS, hSf⟩` from `AddGroup.fg_iff.1 (Module.Finite.iff_addGroup_fg.1 hf)`. Use `hSf.to_subtype` as an intermediate fact. Establish `hQ' : {x : Q | x ^ N = 1}.Finite` using `hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζ : {ζ : Kˣ | ζ ^ N = 1}.Finite`. Establish `: NeZero N` using `⟨hN.ne'⟩`. Establish `: Finite (rootsOfUnity N K)` using `inferInstance`. Conclude with `this`. Use `Set.Finite.of_finite_image (f := fun p => (p.1, fun s : S => p.2 s)) ((hζ.prod (Set.Finite.pi' (fun _ : S => hQ'))).subset ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `⟨hp.1.pow_eq_one, fun s => (hp.2.2.2.2.1 _).2 ⟨_, rfl⟩⟩`. Introduce `p hp q hq h`. Use `Prod.ext (Prod.ext_iff.1 h).1 (funext fun a => ?_)` and prove the remaining obligations. Use `AddMonoidHom.eq_of_eqOn_dense hS (f := AddMonoidHom.mk' (fun a => Additive.ofMul (p.2 a)) hp.2.1) (g := AddMonoidHom.mk' (fun a => Additive.ofMul (q.2 a)) hq.2.1) (fun s hs => congrFun (Prod.ext_iff.1 h).2 ⟨s, hs⟩)` as an intermediate fact.
-
-Conclude with `DFunLike.congr_fun this a`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_levelIso {N : ℕ} (hN : 0 < N) (hQ : Finite {x : Q // x ^ N = 1}) :
     {p | LevelIso D act e N p}.Finite := by
@@ -113,23 +111,19 @@ theorem finite_levelIso {N : ℕ} (hN : 0 < N) (hQ : Finite {x : Q // x ^ N = 1}
     exact DFunLike.congr_fun this a
 
 /- English proof (translation)
-Introduce `E _ _ _ H D K _ Q _ act e k z κ lam y hk hQ he hex`. Establish `hx : ∀ j : ℕ, ∃ p : Kˣ × (D.La → Q), LevelIso D act e (k * j.factorial) p ∧ (p.1 : K) ^ j.factorial = z ∧ ∀ i, p.2 (lam i) ^ j.factorial = y i` using `fun j => by`. Take `⟨ζ, ev, h1, h2, h3, h4, h5, h6, h7, h8⟩` from `hex _ j.factorial_pos`. Conclude with `⟨(ζ, ev), ⟨h1, h2, h3, h4, h5, h6⟩, h7, h8⟩`. Use `choose x hx hz hy using hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `U : Ultrafilter ℕ` to `Ultrafilter.of Filter.atTop`. Establish `hU : ∀ n, 0 < n → ∀ᶠ j : ℕ in U, n ∣ k * j.factorial` using `fun n hn => Ultrafilter.of_le _ ((Filter.eventually_ge_atTop n).mono fun j hj => Dvd.dvd.mul_left (Nat.dvd_factorial hn hj) k)`. Establish `hs : ∀ n, 0 < n → ∃ s, LevelIso D act e n s ∧ ∀ᶠ j in U, x j ^ (k * j.factorial / n) = s` using `fun n hn => by`. Establish `hm : {p | LevelIso D act e n p} ∈ U.map fun j => x j ^ (k * j.factorial / n)`. Use `(hU n hn).mono fun j hj => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hj'` using `hx j`. Establish `hpos` using `Nat.mul_pos hk j.factorial_pos`. Rewrite `hj'` using `[← Nat.mul_div_cancel' hj]`. Conclude with `hj'.pow he hn (Nat.div_pos (Nat.le_of_dvd hpos hj) hn)`. Take `⟨s, h1, h2⟩` from `Ultrafilter.eq_pure_of_finite_mem (finite_levelIso hn (hQ n hn)) hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨s, h1, ?_⟩` and prove the remaining obligations. Establish `: {s} ∈ U.map fun j => x j ^ (k * j.factorial / n)`. Rewrite using `[h2]`. Conclude with `rfl`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : ∀ n, ∃ s, LevelIso D act e (max n 1) s ∧ ∀ᶠ j in U, x j ^ (k * j.factorial / max n 1) = s` using `fun n => hs _ (by omega)`. Use `choose s hs1 hs2 using hs'`. Establish `hs3 : ∀ n, 0 < n → LevelIso D act e n (s n)` using `fun n hn => by`. Use `hs1 n` as an intermediate fact. Rewrite `this` using `[max_eq_left hn]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hs4 : ∀ n, 0 < n → ∀ᶠ j in U, x j ^ (k * j.factorial / n) = s n` using `fun n hn => by`. Use `hs2 n` as an intermediate fact. Rewrite `this` using `[max_eq_left hn]`. Then use the resulting hypothesis. Establish `htow : ∀ n m, 0 < n → 0 < m → s (n * m) ^ m = s n` using `fun n m hn hm => by`. Establish `hnm` using `Nat.mul_pos hn hm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨j, h1, h2, c, h3⟩` from `((hs4 _ hnm).and ((hs4 n hn).and (hU _ hnm))).exists`. Rewrite using `[← h1, ← h2, h3, ← pow_mul, Nat.mul_div_cancel_left _ hnm, Nat.mul_assoc, Nat.mul_div_cancel_left _ hn, mul_comm c m]`. Take `⟨j, hj⟩` from `(hs4 k hk).exists`. Rewrite `hj` using `[Nat.mul_div_cancel_left _ hk]`. Use `⟨⟨fun n => (s n).1, fun n hn => (hs3 n hn).1, fun n m hn hm => congrArg Prod.fst (htow n m hn hm), fun n => (s n).2, fun n => (hs1 n).2.1, fun n => (hs1 n).2.2.1, fun n hn => (hs3 n hn).2.2.2.1, fun n hn => (hs3 n hn).2.2.2.2.1, fun n m hn hm a => congrFun (congrArg Prod.snd (hto …` and prove the remaining obligations.
-
-Use `show ((s k).1 : K) = z`. Rewrite using `[← hj, ← hz j]`. Conclude with `Units.val_pow_eq_pow_val _ _`. Use `show (s k).2 (lam i) = y i`. Rewrite using `[← hj, ← hy j i]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tateIso_of_levels : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (K : Type) [Field K] (Q : Type) [Group Q] (act : 𝓞 E → Q → Q) (e : ℕ → Q → Q → Kˣ → Prop) (k : ℕ) (z : K) (κ : Type) (lam : κ → D.La) (y : κ → Q), 0 < k → (∀ n, 0 < n → Finite {x : Q // x ^ n = 1}) → (∀ n m x x' c, 0 < n → 0 < m → x ^ (n * m) = 1 → x' ^ (n * m) = 1 → e (n * m) x x' c → e n (x ^ m) (x' ^ m) (c ^ m)) → (∀ m, 0 < m → ∃ (ζ : Kˣ) (ev : D.La → Q), IsPrimitiveRoot ζ (k * m) ∧ (∀ a c, ev (a + c) = ev a * ev c) ∧ (∀ (c : 𝓞 E) a, ev (c • a) = act c (ev a)) ∧ (∀ a, ev a = 1 ↔ ∃ c, a = (k * m) • c) ∧ (∀ x, x ^ (k * m) = 1 ↔ ∃ a, ev a = x) ∧ (∀ a c, e (k * m) (ev a) (ev c) (ζ ^ D.EF a c)) ∧ (ζ : K) ^ m = z ∧ ∀ i, ev (lam i) ^ m = y i) → ∃ I : TateIso D K Q act e, (I.ζ k : K) = z ∧ ∀ i, I.ev k (lam i) = y i := by
   intro E _ _ _ H D K _ Q _ act e k z κ lam y hk hQ he hex

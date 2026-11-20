@@ -10,23 +10,21 @@ open scoped Classical ENNReal NNReal
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
 /- English proof (translation)
-Take `⟨ν, hν⟩ : ∃ ν : Measure (ℝ × G), ν = volume.prod υ` from `⟨_, rfl⟩`. Take `⟨m, hm⟩ : ∃ m : Measure G, m = Measure.sum fun α : Q => ν.map fun p => c p.1 p.2 α` from `⟨_, rfl⟩`. Establish `key : ∀ h : G → ℝ≥0∞, Measurable h → ∫⁻ y, h y ∂m = ∫⁻ t : ℝ, ∫⁻ u, ∑' α : Q, h (c t u α) ∂υ` using `fun h hh => by`. Establish `hα : ∀ α, Measurable fun p : ℝ × G => h (c p.1 p.2 α)` using `fun α => hh.comp (hc α).measurable`. Rewrite using `[hm, lintegral_sum_measure, tsum_congr fun α => lintegral_map hh (hc α).measurable, ← lintegral_tsum fun α => (hα α).aemeasurable, hν, lintegral_prod _ (Measurable.ennreal_tsum hα).aemeasurable]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `inv : m.IsMulLeftInvariant` using `⟨fun x => by`. Take `⟨τ, w, β, hw, rfl⟩` from `hcov x`. Establish `hp : MeasurePreserving (fun p : ℝ × G => (τ + p.1, w * p.2)) ν ν`. Rewrite using `[hν]`. Conclude with `(measurePreserving_add_left volume τ).prod (g := fun x => w * x) ⟨measurable_const_mul w, hinv w hw⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ∀ α, ((ν.map fun p => c p.1 p.2 α).map (c τ w β * ·)) = ν.map fun p => c p.1 p.2 (β * α)` using `fun α => by`. Use `Eq.trans ?_ (congrArg (Measure.map fun p : ℝ × G => c p.1 p.2 (β * α)) hp.map_eq)` and prove the remaining obligations. Rewrite using `[Measure.map_map (measurable_const_mul _) (hc α).measurable, Measure.map_map (hc (β * α)).measurable hp.measurable]`. Conclude with `congrArg (fun f => Measure.map f ν) (funext fun p => hmul τ w β p.1 p.2 α)`. Rewrite using `[hm, Measure.map_sum (measurable_const_mul _).aemeasurable]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `s hs`. Rewrite using `[Measure.sum_apply _ hs, Measure.sum_apply _ hs, tsum_congr fun α => congrArg (fun n : Measure G => n s) (e α)]`. Conclude with `(Equiv.mulLeft β).tsum_eq fun α : Q => (ν.map fun p => c p.1 p.2 α) s⟩`. Establish `fin : IsFiniteMeasureOnCompacts m` using `⟨fun K hK => by`. Take `⟨R, F, hF⟩` from `hfin K hK`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : ∀ α, (ν.map fun p => c p.1 p.2 α) K ≤ if α ∈ F then volume (Set.Icc (-R) R) else 0` using `fun α => by`. Rewrite using `[Measure.map_apply (hc α).measurable hK.measurableSet]`. Establish `hn : ν (Set.univ ×ˢ Sᶜ) = 0` using `by rw [hν, Measure.prod_prod, hS, mul_zero]`. Use `split_ifs with h`. Use `(measure_mono (t := Set.Icc (-R) R ×ˢ Set.univ ∪ Set.univ ×ˢ Sᶜ) fun p hp => ?_).trans ((measure_union_le _ _).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hu : p.2 ∈ S`. Conclude with `Or.inl ⟨(hF _ _ hu α hp).1, trivial⟩`. Conclude with `Or.inr ⟨trivial, hu⟩`. Rewrite using `[hn, add_zero, hν, Measure.prod_prod, measure_univ, mul_one]`. Conclude with `(measure_mono (t := Set.univ ×ˢ Sᶜ) fun p hp => ⟨trivial, fun hu => h (hF _ _ hu α hp).2⟩).trans hn.le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hm, Measure.sum_apply _ hK.measurableSet]`. Use `(ENNReal.tsum_le_tsum hb).trans_lt ?_` and prove the remaining obligations. Rewrite using `[tsum_eq_sum (s := F) fun α h => if_neg h]`. Conclude with `ENNReal.sum_lt_top.2 fun α h => by rw [if_pos h]; exact measure_Icc_lt_top⟩`. Establish `e` using `Measure.isMulLeftInvariant_eq_smul m μ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨m.haarScalarFactor μ, fun h0 => ?_, fun h hh => ?_⟩` and prove the remaining obligations. Rewrite `e` using `[h0, zero_smul]`. Establish `h1` using `key (fun _ => 1) measurable_const`. Rewrite `h1` using `[e, lintegral_zero_measure]`. Establish `h2 : (∑' _ : Q, (1 : ℝ≥0∞)) ≠ 0` using `fun h => one_ne_zero (ENNReal.tsum_eq_zero.1 h 1)`.
-
-Rewrite `h1` using `[lintegral_const, lintegral_const, measure_univ, mul_one, Real.volume_univ]`. Conclude with `mul_ne_zero h2 ENNReal.top_ne_zero h1.symm`. Rewrite using `[← key h hh]`. Conclude with `(congrArg (fun n : Measure G => ∫⁻ y, h y ∂n) e).trans (by rw [lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gen {G Q : Type} [CommGroup G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] [Group Q] [Countable Q] (μ υ : Measure G) [μ.IsHaarMeasure]
@@ -82,7 +80,7 @@ private theorem gen {G Q : Type} [CommGroup G] [TopologicalSpace G] [IsTopologic
     exact (congrArg (fun n : Measure G => ∫⁻ y, h y ∂n) e).trans (by rw [lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul])
 
 /- English proof (translation)
-Establish `hcont` using `UpperTheory.realIdele_mul_abs_continuous_and_unit_abs_eq_one.2.2.1`. Unfold `Un.cov`. Conclude with `(continuous_const.mul ((hcont.comp continuous_fst).mul (hcont.comp continuous_fst))).mul continuous_snd`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem cov_cont (α : ℚˣ) : Continuous fun p : ℝ × IdeleGroup ℚ => Un.cov p.1 p.2 α := by
   have hcont := UpperTheory.realIdele_mul_abs_continuous_and_unit_abs_eq_one.2.2.1
@@ -90,7 +88,7 @@ private theorem cov_cont (α : ℚˣ) : Continuous fun p : ℝ × IdeleGroup ℚ
   exact (continuous_const.mul ((hcont.comp continuous_fst).mul (hcont.comp continuous_fst))).mul continuous_snd
 
 /- English proof (translation)
-Establish `h1 : (C ∩ (IdeleGroup.diagonal ℚ).range).Finite` using `(hC.inter_right (Subgroup.isClosed_of_discrete (H := (IdeleGroup.diagonal ℚ).range))).finite (isDiscrete_iff_discreteTopology.2 (DiscreteTopology.of_subset (s := ((IdeleGroup.diagonal ℚ).range : Set _)) (inferInstanceAs (DiscreteTopology (IdeleGroup.diagonal ℚ).range)) Set.inter_ …`. Conclude with `(h1.preimage (IdeleGroup.diagonal_injective ℚ).injOn).subset fun α hα => ⟨hα, α, rfl⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fin_rat {C : Set (IdeleGroup ℚ)} (hC : IsCompact C) : {α : ℚˣ | IdeleGroup.diagonal ℚ α ∈ C}.Finite := by
   have h1 : (C ∩ (IdeleGroup.diagonal ℚ).range).Finite :=
@@ -100,11 +98,11 @@ private theorem fin_rat {C : Set (IdeleGroup ℚ)} (hC : IsCompact C) : {α : �
   exact (h1.preimage (IdeleGroup.diagonal_injective ℚ).injOn).subset fun α hα => ⟨hα, α, rfl⟩
 
 /- English proof (translation)
-Take `⟨-, hab, -, habU⟩` from `UpperTheory.realIdele_mul_abs_continuous_and_unit_abs_eq_one`. Establish `hl : Continuous fun y : (A ℚ)ˣ => Real.log (ab y)` using `M.continuous_ab.log fun y => (M.ab_pos y).ne'`. Take `⟨R, hR⟩` from `(hK.image hl).isBounded.exists_norm_le`. Establish `ht : ∀ t, ∀ u ∈ UU, ∀ α, Un.cov t u α ∈ K → t ∈ Set.Icc (-R) R` using `fun t u hu α h => by`. Establish `h1` using `hR _ ⟨_, h, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ab (Un.cov t u α) = Real.exp (t + t)`. Unfold `Un.cov`. Rewrite using `[M.ab_mul, M.ab_mul, M.ab_mul, M.ab_diag, habU u hu, hab _ (Real.exp_ne_zero _), abs_of_pos (Real.exp_pos _), one_mul, mul_one, Real.exp_add]`. Simplify using `only at h1`. Rewrite `h1` using `[h2, Real.log_exp, Real.norm_eq_abs, abs_le]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2]`. Establish `hq : Continuous fun q : IdeleGroup ℚ × ℝ × IdeleGroup ℚ => q.1 * (Un.cov q.2.1 q.2.2 1)⁻¹` using `continuous_fst.mul ((cov_cont 1).comp continuous_snd).inv`. Establish `hfin` using `fin_rat ((hK.prod ((isCompact_Icc (a := -R) (b := R)).prod UpperTheory.isCompact_integralIdeleUnits_and_abs_eq_one.1)).image hq)`. Use `⟨R, hfin.toFinset, fun t u hu α h => ⟨ht t u hu α h, hfin.mem_toFinset.2 ⟨(_, t, u), ⟨h, ht t u hu α h, hu⟩, ?_⟩⟩⟩` and prove the remaining obligations. Simplify using `only [Un.cov, map_one, one_mul, mul_assoc, mul_inv_cancel, mul_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem cov_fin (K : Set (IdeleGroup ℚ)) (hK : IsCompact K) :
     ∃ (R : ℝ) (F : Finset ℚˣ), ∀ t, ∀ u ∈ UU, ∀ α, Un.cov t u α ∈ K → t ∈ Set.Icc (-R) R ∧ α ∈ F := by
@@ -127,9 +125,7 @@ private theorem cov_fin (K : Set (IdeleGroup ℚ)) (hK : IsCompact K) :
   simp only [Un.cov, map_one, one_mul, mul_assoc, mul_inv_cancel, mul_one]
 
 /- English proof (translation)
-Introduce `U`. Use `haveI := U.prob`. Use `haveI : Countable ℚˣ := Units.val_injective.countable`. Use `gen (ideleMeasure ℚ) U.υ Un.cov UU cov_cont U.supp U.inv UpperTheory.exists_rat_idele_eq_exp_unit_principal (fun τ w β t u α => ?_) cov_fin` and prove the remaining obligations. Simplify using `only [Un.cov, Real.exp_add, UpperTheory.realIdele_mul_abs_continuous_and_unit_abs_eq_one.1 _ _ (Real.exp_ne_zero _) (Real.exp_ne_zero _), map_mul]`.
-
-The two sides agree by associativity and commutativity.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ideleCovering_lintegral_eq_const_mul_haar :
     ∀ U : UMeas, ∃ c : ℝ≥0, c ≠ 0 ∧ ∀ h : IdeleGroup ℚ → ℝ≥0∞, Measurable h →

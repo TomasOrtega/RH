@@ -26,11 +26,11 @@ namespace GlobalTheory.InducingAut
 open GlobalTheory.FieldBaseChange
 
 /- English proof (translation)
-Establish `tr : ∀ {t : LB.Gen N}, t.IsGen → ∀ (i j : N.ι) (x : Y), x ∈ N.U i ⊓ N.U j → gm (𝟙 Y) x (N.U i) (t.s i) = gm (𝟙 Y) x (N.U i ⊓ N.U j) (N.g i j) * gm (𝟙 Y) x (N.U j) (t.s j)`. Introduce `t ht i j x hx`. Use `congrArg (gm (𝟙 Y) x (N.U i ⊓ N.U j)) (ht i j)` as an intermediate fact. Rewrite `this` using `[map_mul, gm_res _ x _ hx, gm_res _ x _ hx]`. Then use the resulting hypothesis. Take `⟨u, hu⟩` from `glue_unit ⊤ N.U (fun _ => le_top) (fun y _ => TopologicalSpace.Opens.mem_iSup.2 (hN y)) (fun i => t₁.s i * (t₂.s i)⁻¹) (fun i j x hx => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, map_mul, map_inv, map_inv, tr h₁ i j x hx, tr h₂ i j x hx, mul_inv, _root_.mul_mul_mul_comm, mul_inv_cancel, _root_.one_mul])`. Take `⟨a, ha⟩` from `hp u.val`. Take `⟨c, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).2 a`. Use `⟨c, fun Z r z i hi => ?_⟩` and prove the remaining obligations. Establish `key : (gm r z (N.U i) (t₁.s i) * (gm r z (N.U i) (t₂.s i))⁻¹).val = constVal (r ≫ p) z c`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← map_inv, ← map_mul, ← hu i, gm_res r z _ hi]`. Conclude with `(gs_unit r z ⊤ trivial _).symm.trans ((congrArg (gs r z ⊤) ha.symm).trans (gs_pull r p z ⊤ trivial _))`. Rewrite using `[← key, ← Units.val_mul, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_const_ratio {K : Type} [CommRing K] {Y : Scheme.{0}} {N : LB Y} (hN : ∀ y : Y, ∃ i, y ∈ N.U i)
     (p : Y ⟶ Spec (CommRingCat.of K)) (hp : Function.Surjective p.appTop.hom)
@@ -56,14 +56,14 @@ theorem exists_const_ratio {K : Type} [CommRing K] {Y : Scheme.{0}} {N : LB Y} (
   rw [← key, ← Units.val_mul, inv_mul_cancel_right]
 
 /- English proof (translation)
-Simplify using `only [constVal, gs_eq π z ⊤ trivial, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constVal_pow {K : Type} [CommRing K] {Z : Scheme.{0}} (π : Z ⟶ Spec (CommRingCat.of K)) (z : Z) (c : K)
     (k : ℕ) : constVal π z (c ^ k) = constVal π z c ^ k := by
   simp only [constVal, gs_eq π z ⊤ trivial, map_pow]
 
 /- English proof (translation)
-Use `(isoRelM_iff w m k h₁ h.1 _ h.2.1 _ _).2 fun y i₂ i₁ a₂ a₁ => ?_` and prove the remaining obligations. Establish `b₁ : g₁ ((𝟙 Y' ≫ h₁) y) ∈ L₁.U i₁` using `(congrArg (fun q : Y' ⟶ X₁ => q y) h.1 : g₁ (h₁ y) = f₁ (m y)).symm ▸ a₁`. Rewrite using `[powVal_smul _ _ _ y b₁, (isoRelM_iff w' m k h₁ h.1 _ h.2.1 _ _).1 h _ (𝟙 _) y i₂ i₁ a₂ a₁, zpow_natCast, zpow_natCast, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, hc y i₂ i₁ a₂ a₁, constVal_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isoRelM_change {Y Y' X₁ X₂ Z₁ Z₂ : Scheme.{0}} {L₁ : LB X₁} {L₂ : LB X₂} {f₁ : Y ⟶ X₁} {f₂ : Y ⟶ X₂}
     {w w' : LB.Iso (L₁.pull f₁) (L₂.pull f₂)} {m : Y' ⟶ Y} {k : ℕ} {g₁ : Z₁ ⟶ X₁} {h₁ : Y' ⟶ Z₁}
@@ -85,9 +85,9 @@ theorem isoRelM_change {Y Y' X₁ X₂ Z₁ Z₂ : Scheme.{0}} {L₁ : LB X₁} 
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h y J hJ`. Conclude with `(congrArg (gs (𝟙 Y) y _) (h _)).trans (gs_mul _ y _ (hJ.mem (fun _ : Fin 1 => g) (𝟙 Y)) _ _)`. Introduce `h j`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ, e⟩` from `exists_good L hL y (fun _ : Fin 1 => 𝟙 Y ≫ g) j (fun a b _ => congrArg j (Subsingleton.elim a b)) (fun k => Set.mem_iInter.1 hy k)`. Use `h y J hJ` as an intermediate fact. Rewrite `this` using `[sval_of s _ y J j e, sval_of s' _ y J j e, sval_of s'' _ y J j e]`. Conclude with `this.trans (gs_mul _ y _ hy _ _).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_chart_iff {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (g : Y ⟶ X) {a b c : ℤ}
     (s : LB.Sec (LB.LinComb L (fun _ : Fin 1 => g) (fun _ => a)))
@@ -112,7 +112,7 @@ section Frames
 variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-The claim follows from `exists_gen_of_local (V := F) D.P.L D.P.isLB _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_frame (k : ℕ) (b : TF (R := R) F ⟶ D.P.A) : ∃ w : Frm D F k b, w.IsGen :=
   exists_gen_of_local (V := F) D.P.L D.P.isLB _ _
@@ -120,7 +120,7 @@ theorem exists_frame (k : ℕ) (b : TF (R := R) F ⟶ D.P.A) : ∃ w : Frm D F k
 variable {D F} in
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨ω, h, v⟩ := exists_gen D.P.isLB (φ' := DegPre.lineφ D F b) (ε' := DegPre.lineε (k * n)) (fun U _ h => Finset.prod_congr rfl fun i _ => congrArg _ (by fin_cases i <;> simp [DegPre.lineε, mul_comm])) (GeneratorPullback.powGen D.P.L _ _ w n) (powGen_isGen _ _ _ w hw n)`. Conclude with `⟨ω, h, fun z J hJ => (v _ _ z J hJ).trans (map_pow _ _ _)⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 -/
 theorem exists_frame_pow {k : ℕ} {b : TF (R := R) F ⟶ D.P.A} (w : Frm D F k b) (hw : w.IsGen) (n : ℕ) :
     ∃ ω : Frm D F (k * n) b, ω.IsGen ∧ ∀ z J, Good D.P.L z J → val ω (𝟙 _) z J = val w (𝟙 _) z J ^ n := by
@@ -139,13 +139,13 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Establish `: IsIso U.gen.hom.left` using `⟨⟨U.gen.inv.left, by rw [← Over.comp_left, U.gen.hom_inv_id, Over.id_left], by rw [← Over.comp_left, U.gen.inv_hom_id, Over.id_left]⟩⟩`. Establish `hp : Function.Surjective (U.gen.hom.left ≫ A.A.hom).appTop.hom`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.coe_comp]`. Establish `: IsIso U.gen.hom.left.appTop` using `inferInstanceAs (IsIso (U.gen.hom.left.app ⊤))`. Conclude with `(ConcreteCategory.bijective_of_isIso U.gen.hom.left.appTop).2.comp (hG _ _ A.isAb).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `exists_const_ratio (K := FractionRing R) (fun y => by`. Take `⟨i, hi⟩` from `exists_chart A.isLB (U.gen.hom.left y)`. Take `⟨j, hj⟩` from `exists_chart U.LG.isLB (pullback.fst G.hom (jK R) y)`. Conclude with `⟨(fun _ => j, fun _ => i), mem_pull.2 hj, mem_pull.2 hi⟩) (U.gen.hom.left ≫ A.A.hom) hp hw' hw`. Use `⟨algebraMap (FractionRing R) F c ^ k, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `t s ⟨v, a, b⟩`. Use `⟨v, isoRelM_change (π₁ := abelianBase A F) _ (fun y i₂ i₁ a₂ a₁ => ?_) a, b⟩` and prove the remaining obligations. Use `(hc _ _ y (fun _ => i₂, fun _ => i₁) ⟨mem_pull.2 a₂, mem_pull.2 a₁⟩).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Use `Eq.trans (congrArg (fun q => constVal q y c) ?_) (constVal_specMap _ (algebraMap (FractionRing R) F) y c)` and prove the remaining obligations. Establish `hπ : (U.genF F).left ≫ abelianBase A F = groupBase G F` using `congrArg (fun q => q.left) (lift_fst _ _ : U.genF F ≫ fst _ _ = _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : U.gen.hom.left ≫ A.A.hom = pullback.snd G.hom (jK R)` using `Over.w U.gen.hom`. Simplify using `only [Category.id_comp]`. Rewrite using `[hπ, e]`. Conclude with `(isPullback_groupBase F).w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expandsF_change (hG : GlobalFnsSt) (U : UnifPre I D A G) (F : Type) [Field F] [Algebra (FractionRing R) F]
     (k : ℕ) {w w' : W0 U} (hw : w.IsGen) (hw' : w'.IsGen) :
@@ -174,11 +174,11 @@ theorem expandsF_change (hG : GlobalFnsSt) (U : UnifPre I D A G) (F : Type) [Fie
   exact (isPullback_groupBase F).w
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.exists_linearEquiv_expandsF hG U F hN w₀ hw₀`. Set `Ψ` to `(e.trans (LinearEquiv.ofBijective Φ hΦ)).trans e.symm`. Establish `hΨ : ∀ t, e (Ψ t) = Φ (e t)` using `fun t => e.apply_symm_apply _`. Use `⟨Ψ.toEquiv, fun s s' s'' c h j => ?_, fun t => ⟨e t, (he _ _).2 rfl, (he _ _).2 (hΨ t)⟩, fun w₁ hw₁ t s s' h h' => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv).2 c`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `t : SecOver (abelianBase A F) (LPow A.A A.L (N : ℤ) (TFK (R` to `R) F)) := s`. Set `t' : SecOver (abelianBase A F) (LPow A.A A.L (N : ℤ) (TFK (R` to `R) F)) := s'`. Set `t'' : SecOver (abelianBase A F) (LPow A.A A.L (N : ℤ) (TFK (R` to `R) F)) := s''`. Establish `e₁ : t'' = c • t + t'` using `SecOver.ext _ _ fun j => (h j).trans rfl`. Establish `e₂ : Ψ t'' = c • Ψ t + Ψ t'` using `by rw [e₁, map_add, map_smul]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(congrArg (chartFun _ _ j) e₂).trans rfl`. Take `⟨c, hc⟩` from `expandsF_change hG U.toUnifPre F N hw₀ hw₁`. Establish `a` using `(he _ _).1 (hc t s h)`. Establish `a'` using `(he _ _).1 (hc (Ψ t) s' h')`. Conclude with `a'.symm.trans ((e.map_smul c _).trans ((congrArg (c • ·) (hΨ t)).trans ((Φ.map_smul c _).symm.trans (congrArg Φ ((e.map_smul c t).symm.trans a)))))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_transport (hG : GlobalFnsSt) (U : Unif I D A G) (F : Type) [Field F] [Algebra (FractionRing R) F]
     {N : ℕ} (hN : 1 ≤ N) {w₀ : W0 U.toUnifPre} (hw₀ : w₀.IsGen) (Φ : Fam D.toPre F N →ₗ[F] Fam D.toPre F N)
@@ -213,7 +213,7 @@ end Unif
 attribute [local instance] GlobalTheory.TorusExt.gtGroup in
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.TorusExt.qkMk hB (k := k * n) (n • p.y) p.g (by rw [map_nsmul, ← GlobalTheory.TorusExt.qk_nsmul hB p, mul_nsmul])).eq`.
+A detailed English derivation is pending.
 -/
 theorem exists_qk_mul {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} (hB : D.TauBimult) {F : Type} [Field F]
     [Algebra (FractionRing R) F] {k : ℕ} (p : QkPt D F k) (n : ℕ) :
@@ -222,15 +222,13 @@ theorem exists_qk_mul {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} (hB : 
     rw [map_nsmul, ← GlobalTheory.TorusExt.qk_nsmul hB p, mul_nsmul])).eq
 
 /- English proof (translation)
-Introduce `hL R _ _ _ I hI D A G _ _ hS U F _ _ _ k hk p`. Establish `hG` using `hL.1.globalFns`. Establish `hN : ∀ n, 1 ≤ k * (n + 1)` using `fun n => Nat.mul_pos hk n.succ_pos`. Take `⟨w₀, hw₀⟩` from `U.ext`. Take `⟨w, hw⟩` from `exists_frame D.toPre F k p.g.b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose ω hω vω using fun n => exists_frame_pow w hw (n + 1)`. Set `q : ∀ n, QkPt D.toPre F (k * (n + 1))` to `fun n => ⟨(n + 1) • p.y, p.g, exists_qk_mul D.tau_bimult p (n + 1)⟩`. Use `choose Φ hΦ using fun n => GlobalTheory.T.thetaOperators_projective_representation hL R I hI D F (k * (n + 1)) (hN n)`. Establish `hΦ'` using `fun n => (hΦ n).1 (q n) (ω n) (hω n)`. Use `choose Ψ lin ex un using fun n => exists_transport hG U F (hN n) hw₀ _ (hΦ' n).1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `mul : ∀ m : Fin 3 → ℕ, m 2 = m 0 + m 1 + 1 → ∀ t : ∀ i, SecA A F (k * (m i + 1)), (∀ z J, Good A.L z J → sA (t 2) (𝟙 _) z J = sA (t 0) (𝟙 _) z J * sA (t 1) (𝟙 _) z J) → ∀ z J, Good A.L z J → sA (Ψ _ (t 2)) (𝟙 _) z J = sA (Ψ _ (t 0)) (𝟙 _) z J * sA (Ψ _ (t 1)) (𝟙 _) z J`. Introduce `m hm t`. Use `choose s hs hs' using fun i => ex (m i) (t i)`. Conclude with `GlobalTheory.T.heckeOperator_multiplicative_on_section_products hL R I hI D A G hS U F w₀ hw₀ k hk p w hw (fun i => m i + 1) (fun i => k * (m i + 1)) (fun i => ⟨Nat.succ_pos _, rfl⟩) (by show m 2 + 1 = m 0 + 1 + (m 1 + 1); omega) (fun i => q (m i)) (fun i => ω (m i)) (fun i => ⟨r …`. Take `⟨ψ, hψ, hα⟩` from `GlobalTheory.T.exists_automorphism_of_multiplicative_section_family F _ A (jFK (R := R) F) k hk Ψ lin (fun a b s s' s'' h => (mul_chart_iff A.isLB _ _ _ _).2 (mul ![a, b, a + b + 1] rfl (Fin.cons s (Fin.cons s' (Fin.cons s'' finZeroElim))) ((mul_chart_iff A.isLB _ _ _ _).1 h)))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨ψ, fun n N hn hN' q' hy hg => ?_⟩` and prove the remaining obligations. Take `⟨n, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Substitute `hN'` using the available equality. Take `rfl : q' = q n` from `GlobalTheory.TorusExt.qk_ext hy hg`. Take `⟨α, hα, tw⟩` from `hα n`.
-
-Use `⟨hψ, fun w₁ hw₁ => ⟨α, ω n, hα, hω n, fun t t' s s' h h' H => ?_⟩⟩` and prove the remaining obligations. Take `rfl : t' = Ψ n t` from `sec_ext' A.isLB fun y J hJ => (GlobalTheory.ThetaLin.sval_of_isTwistPull A.A H (𝟙 _) y hJ).trans (GlobalTheory.ThetaLin.sval_of_isTwistPull A.A (tw t) (𝟙 _) y hJ).symm`. Conclude with `((hΦ' n).2 _ _).2 (un n w₁ hw₁ t s s' h h')`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_aut : LL → AllUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀ (k : ℕ), 1 ≤ k → ∀ p : QkPt D.toPre F k, ∃ ψ : (TFK (R := R) F ⊗ A.A) ≅ (TFK (R := R) F ⊗ A.A), ∀ (n N : ℕ), 1 ≤ n → N = k * n → ∀ q : QkPt D.toPre F N, q.y = n • p.y → q.g = p.g → IndAt U.toUnifPre F N q ψ.hom := by
   intro hL R _ _ _ I hI D A G _ _ hS U F _ _ _ k hk p

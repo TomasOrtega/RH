@@ -11,7 +11,7 @@ section PullPsh
 variable {e e' : ℕ} {X X' : Type} [TopologicalSpace X] [TopologicalSpace X']
 
 /- English proof (translation)
-Establish `hc : ContinuousAt (h ∘ (A'.chart j).symm) t` using `hh.1.continuousAt.comp ((A'.chart j).continuousAt_symm ht)`. Establish `hmem : ∀ᶠ s in 𝓝 t, h ((A'.chart j).symm s) ∈ (A.chart k).source` using `hc.preimage_mem_nhds ((A.chart k).open_source.mem_nhds hk)`. Use `filter_upwards [hmem] with s hs`. Simplify using `only [Function.comp_apply, (A.chart k).left_inv hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comp_chart_eventuallyEq {A : FinHolAtlas e X} {A' : FinHolAtlas e' X'} {h : X' → X}
     (hh : HoloMap A' A h) (g : X → ℝ) (j : Fin A'.n) (k : Fin A.n) {t : Fin e' → ℂ}
@@ -26,7 +26,7 @@ theorem comp_chart_eventuallyEq {A : FinHolAtlas e X} {A' : FinHolAtlas e' X'} {
   simp only [Function.comp_apply, (A.chart k).left_inv hs]
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.AnForm.levi_congr (comp_chart_eventuallyEq hh g j k ht hk) w, ReciprocityTheory.AnForm.levi_comp w (hh.2 j k t ⟨ht, hk⟩) hg]`. Conclude with `hn _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_pull_nonneg {A : FinHolAtlas e X} {A' : FinHolAtlas e' X'} {h : X' → X}
     (hh : HoloMap A' A h) (g : X → ℝ) (j : Fin A'.n) (k : Fin A.n) {t : Fin e' → ℂ}
@@ -39,7 +39,7 @@ theorem levi_pull_nonneg {A : FinHolAtlas e X} {A' : FinHolAtlas e' X'} {h : X' 
   exact hn _
 
 /- English proof (translation)
-Conclude with `⟨(A.chart k).map_source hk, (A.chart k).left_inv hk⟩`.
+Supply the required witnesses or components.
 -/
 theorem chart_image_mem {A : FinHolAtlas e X} {A' : FinHolAtlas e' X'} {h : X' → X}
     (j : Fin A'.n) (k : Fin A.n) {t : Fin e' → ℂ}
@@ -49,7 +49,7 @@ theorem chart_image_mem {A : FinHolAtlas e X} {A' : FinHolAtlas e' X'} {h : X' �
   exact ⟨(A.chart k).map_source hk, (A.chart k).left_inv hk⟩
 
 /- English proof (translation)
-Establish `ho : IsOpen ((A.chart k).target ∩ (A.chart k).symm ⁻¹' U)` using `(A.chart k).continuousOn_symm.isOpen_inter_preimage (A.chart k).open_target hU`. Conclude with `(hf k).contDiffAt (ho.mem_nhds ⟨hz, hzU⟩)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_of_smoothOn {A : FinHolAtlas e X} {U : Set X} (hU : IsOpen U) {f : X → ℝ}
     (hf : A.SmoothOn U f) (k : Fin A.n) {z : Fin e → ℂ} (hz : z ∈ (A.chart k).target)
@@ -59,11 +59,11 @@ theorem contDiffAt_of_smoothOn {A : FinHolAtlas e X} {U : Set X} (hU : IsOpen U)
   exact (hf k).contDiffAt (ho.mem_nhds ⟨hz, hzU⟩)
 
 /- English proof (translation)
-Introduce `j`. Establish `key : ∀ t ∈ (A'.chart j).target ∩ (A'.chart j).symm ⁻¹' (h ⁻¹' U), ContDiffAt ℝ ∞ ((f ∘ h) ∘ (A'.chart j).symm) t`. Introduce and unpack `t ⟨ht, htU⟩`. Take `⟨k, hk⟩` from `A.cover (h ((A'.chart j).symm t))`. Establish `hF : AnalyticAt ℂ (A.chart k ∘ h ∘ (A'.chart j).symm) t` using `hh.2 j k t ⟨ht, hk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hF' : ContDiffAt ℂ ∞ (A.chart k ∘ h ∘ (A'.chart j).symm) t` using `hF.contDiffAt`. Establish `hci` using `chart_image_mem (A := A) (A' := A') (h := h) j k hk`. Establish `hzU : (A.chart k).symm ((A.chart k ∘ h ∘ (A'.chart j).symm) t) ∈ U`. Rewrite using `[hci.2]`. Conclude with `htU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfk : ContDiffAt ℝ ∞ (f ∘ (A.chart k).symm) ((A.chart k ∘ h ∘ (A'.chart j).symm) t)` using `contDiffAt_of_smoothOn hU hf k hci.1 hzU`. Establish `hcomp : ContDiffAt ℝ ∞ ((f ∘ (A.chart k).symm) ∘ (A.chart k ∘ h ∘ (A'.chart j).symm)) t` using `hfk.comp t (hF'.restrict_scalars ℝ)`. Conclude with `hcomp.congr_of_eventuallyEq (comp_chart_eventuallyEq hh f j k ht hk)`. Introduce `t ht`. Conclude with `(key t ht).contDiffWithinAt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smoothOn_pull {A : FinHolAtlas e X} {A' : FinHolAtlas e' X'} {h : X' → X}
     (hh : HoloMap A' A h) {U : Set X} (hU : IsOpen U) {f : X → ℝ} (hf : A.SmoothOn U f) :
@@ -87,9 +87,9 @@ theorem smoothOn_pull {A : FinHolAtlas e X} {A' : FinHolAtlas e' X'} {h : X' →
   exact (key t ht).contDiffWithinAt
 
 /- English proof (translation)
-Introduce `x j y hy w`. Take `⟨k, hk⟩` from `A.cover (h ((A'.chart j).symm y))`. Establish `hci` using `chart_image_mem (A := A) (A' := A') (h := h) j k hk`. Establish `hyP : h ((A'.chart j).symm y) ∈ P.U (h x)` using `hy.2`. Establish `hzU : (A.chart k).symm ((A.chart k ∘ h ∘ (A'.chart j).symm) y) ∈ P.U (h x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hci.2]`. Conclude with `hyP`. Establish `h2 : (2 : WithTop ℕ∞) ≤ ∞` using `WithTop.coe_le_coe.mpr le_top`. Establish `hg : ContDiffAt ℝ 2 (P.φ (h x) ∘ (A.chart k).symm) ((A.chart k ∘ h ∘ (A'.chart j).symm) y)` using `(contDiffAt_of_smoothOn (P.isOpen_U (h x)) (hP.1 (h x)) k hci.1 hzU).of_le h2`. Conclude with `levi_pull_nonneg hh (P.φ (h x)) j k hy.1 hk hg (fun v => hpsh (h x) k _ ⟨hci.1, hzU⟩ v) w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPsh_pull {A : FinHolAtlas e X} {A' : FinHolAtlas e' X'} {h : X' → X}
     (hh : HoloMap A' A h) {P : LocPot X} (hP : IsPotential A P) (hpsh : IsPsh A P) :
@@ -107,11 +107,11 @@ theorem isPsh_pull {A : FinHolAtlas e X} {A' : FinHolAtlas e' X'} {h : X' → X}
   exact levi_pull_nonneg hh (P.φ (h x)) j k hy.1 hk hg (fun v => hpsh (h x) k _ ⟨hci.1, hzU⟩ v) w
 
 /- English proof (translation)
-Introduce `x j y hy w`. Take `⟨k, hk⟩` from `A.cover (h ((A'.chart j).symm y))`. Establish `hci` using `chart_image_mem (A := A) (A' := A') (h := h) j k hk`. Establish `hyP : h ((A'.chart j).symm y) ∈ P.U (h x)` using `hy.2.1.1`. Establish `hyU : h ((A'.chart j).symm y) ∈ U` using `hy.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzP : (A.chart k).symm ((A.chart k ∘ h ∘ (A'.chart j).symm) y) ∈ P.U (h x)`. Rewrite using `[hci.2]`. Conclude with `hyP`. Establish `hzU : (A.chart k).symm ((A.chart k ∘ h ∘ (A'.chart j).symm) y) ∈ U`. Rewrite using `[hci.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hyU`. Establish `h2 : (2 : WithTop ℕ∞) ≤ ∞` using `WithTop.coe_le_coe.mpr le_top`. Establish `hg : ContDiffAt ℝ 2 ((fun z => P.φ (h x) z + f z) ∘ (A.chart k).symm) ((A.chart k ∘ h ∘ (A'.chart j).symm) y)` using `((contDiffAt_of_smoothOn (P.isOpen_U (h x)) (hP.1 (h x)) k hci.1 hzP).add (contDiffAt_of_smoothOn hU hf k hci.1 hzU)).of_le h2`. Establish `hmem : (A.chart k ∘ h ∘ (A'.chart j).symm) y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' ((P + LocPot.ofFun f).U (h x) ∩ U)` using `⟨hci.1, ⟨hzP, Set.mem_univ _⟩, hzU⟩`. Conclude with `levi_pull_nonneg hh (fun z => P.φ (h x) z + f z) j k hy.1 hk hg (fun v => hpsh (h x) k _ hmem v) w`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPshOn_pull {A : FinHolAtlas e X} {A' : FinHolAtlas e' X'} {h : X' → X}
     (hh : HoloMap A' A h) {P : LocPot X} {U : Set X} {f : X → ℝ} (hU : IsOpen U)
@@ -138,7 +138,7 @@ theorem isPshOn_pull {A : FinHolAtlas e X} {A' : FinHolAtlas e' X'} {h : X' → 
     (fun v => hpsh (h x) k _ hmem v) w
 
 /- English proof (translation)
-Introduce `e e' X X' _ _ A A' h hh P U f hU hP`. Conclude with `⟨fun hf => smoothOn_pull hh hU hf, fun hpsh => isPsh_pull hh hP hpsh, fun hf hpsh => isPshOn_pull hh hU hP hf hpsh⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem pullPsh : PullPshStatement := by
   intro e e' X X' _ _ A A' h hh P U f hU hP

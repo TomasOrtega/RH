@@ -14,9 +14,9 @@ namespace GlobalTheory.AHPhase
 open GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues
 
 /- English proof (translation)
-Substitute `hσ` using the available equality. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Take `⟨hr, hk⟩` from `h.laws.modelW _ hj T.σ₀ T.toCore.good_σ₀`. Establish `key : ∀ (V : HSp D) (_ : V = Wc D i) (hr' : V.rank = D.R.r) (X : ReciprocityTheory.ChartRestriction.G.FD.Data D.host.E D.R.r), ModelW V hr' X → ModelW (Wc D i) (rank_Wc i) X`. Introduce and unpack `V rfl hr' X hX`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hX`. Conclude with `fun k => key _ hV hr _ (hk k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem modelW_of_tieIn {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F}
@@ -39,21 +39,21 @@ namespace GlobalTheory.AHPhase
 open GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues GlobalTheory.FinTranslate
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R hT i σ hV ph b hb hM γ g hx Wt Y hp Yr hcol`. Establish `hW` using `hT.ωP i A.μ0`. Establish `hv` using `hT.vP i A.μ0`. Establish `hψ : IsStdChar D R.ψ (-1)` using `hW.std`. Establish `hf : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vacP i)` using `hv.1.2.theta`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Θ := R.ωP i A.μ0 (1, γ * g) (R.vacP i) with hΘdef`. Establish `hΘ : IsThetaFunO R.ψ (Vc D i) (Wc D i) Θ` using `hW.om_pres _ _ hf`. Use `choose α hα using hcol`. Use `GlobalTheory.T.thetaFunction_orientedModel_eq_of_realAdelicPoints D R.ψ hψ (Vc D i) (Wc D i) _ _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hΘ _) (theta_smul _ hΘ) fun X => ?_` and prove the remaining obligations. Establish `hth : ∀ w, thetaAt R.ψ (R.ωP i A.μ0) (R.vacP i) (γ * g) w = Θ w` using `fun w => thetaAt_eq _ _ _ _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `theta_realPt_add hΘ X Yr`. Establish `e2` using `thetaAt_eq_prod_ahG hp (X + Yr)`. Establish `e3` using `thetaAt_eq_prod_ahG hp X`. Rewrite `e2`, `e3` using `[hth]`. Establish `hcolAdd : ∀ a, perVec Wt (colB b (X + Yr) a) = pv Wt (colB b X a) + Wt.Pm (α a)` using `fun a => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hα a]`. Establish `: colB b (X + Yr) a = colB b X a + colB b Yr a`. Use function extensionality and compare the values at `m`. Simplify using `only [colB, Matrix.add_apply, add_mul, Finset.sum_add_distrib, Pi.add_apply]`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pvHom Wt).map_add _ _`. Establish `hG : ∀ a, ahG Y (perVec Wt (colB b (X + Yr) a)) = Y.χl (perVec Wt (colB b Yr a)) * Complex.exp (Real.pi * Complex.I * ((Algebra.trace ℚ D.host.E (-((T.U ((i : ℕ) + 1) σ).X (dictW T i σ hV g).1).ξ0 * ReciprocityTheory.ChartRestriction.G.FD.herm ((T.U ((i : ℕ) + 1) σ).X (dictW T i …` using `fun a => by`. Rewrite using `[hcolAdd a, ahG_add_period, hα a]`. Establish `him` using `im_hermForm_pv Wt Y (colB b X a) (colB b Yr a)`. Express the relevant statement in the definitionally equal form `_ * Complex.exp (_ * ((hermForm Y.Hm (pv Wt (colB b X a)) (pv Wt (colB b Yr a))).im : ℂ)) * _ = _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[him]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hL : R.ψ (symplOH (Vc D i) (Wc D i) (realPt (Vc D i) (Wc D i) X) (realPt (Vc D i) (Wc D i) Yr)) = Complex.exp (Real.pi * Complex.I * ∑ a, ((Algebra.trace ℚ D.host.E (-((T.U ((i : ℕ) + 1) σ).X (dictW T i σ hV g).1).ξ0 * ReciprocityTheory.ChartRestriction.G.FD.herm ((T.U ((i : ℕ) + …` using `GlobalTheory.T.stdChar_symplectic_realAdelicPoints_modelForm D R.ψ hψ (Vc D i) (Wc D i) b hb D.R.r (rank_Wc i) _ (hM (dictW T i σ hV g).1) X Yr`. Establish `hs : R.ψ (symplOH (Vc D i) (Wc D i) (realPt (Vc D i) (Wc D i) X) (realPt (Vc D i) (Wc D i) Yr)) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Use `AddChar.map_add_eq_mul R.ψ (symplOH (Vc D i) (Wc D i) (realPt (Vc D i) (Wc D i) X) (realPt (Vc D i) (Wc D i) Yr)) (-(symplOH (Vc D i) (Wc D i) (realPt (Vc D i) (Wc D i) X) (realPt (Vc D i) (Wc D i) Yr)))` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h0, zero_mul]`. Conclude with `one_ne_zero this`. Establish `key : Θ (realPt (Vc D i) (Wc D i) (X + Yr)) = R.ψ (symplOH (Vc D i) (Wc D i) (realPt (Vc D i) (Wc D i) X) (realPt (Vc D i) (Wc D i) Yr)) * ((∏ a, Y.χl (perVec Wt (colB b Yr a))) * Θ (realPt (Vc D i) (Wc D i) X))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, e3, hL, Finset.prod_congr rfl (fun a _ => hG a), Finset.prod_mul_distrib, Finset.prod_mul_distrib, ← Complex.exp_sum, Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Apply `mul_left_cancel₀ hs` to reduce the goal to its premises. Rewrite using `[← e1, key, Pi.smul_apply, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem heis_law_of_periods : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type)
     (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F),
@@ -124,9 +124,9 @@ namespace GlobalTheory.AHPhase
 open GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R hT i σ hV b hb hM g hx Wt Y X Yr`. Establish `hψ : IsStdChar D R.ψ (-1)` using `(hT.ωP i A.μ0).std`. Rewrite using `[GlobalTheory.T.stdChar_symplectic_realAdelicPoints_modelForm D R.ψ hψ (Vc D i) (Wc D i) b hb D.R.r (rank_Wc i) _ (hM (dictW T i σ hV g).1) X Yr]`. Use `congrArg Complex.exp (congrArg (fun t => (Real.pi : ℂ) * Complex.I * t) (Finset.sum_congr rfl fun a _ => ?_))` and prove the remaining obligations. Establish `h` using `im_hermForm_pv Wt Y (colB b X a) (colB b Yr a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = (((hermForm Y.Hm (pv Wt (colB b X a)) (pv Wt (colB b Yr a))).im : ℝ) : ℂ)`. Rewrite using `[h]`. Use `push_cast`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem psi_realPt_eq_exp_im : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type)
     (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F),
@@ -150,7 +150,7 @@ theorem psi_realPt_eq_exp_im : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl
   rfl
 
 /- English proof (translation)
-Introduce `D hHP hSL hVF G _ _ Pl0 T0 A T _ R F κ v₀ hL hGr hFa hMo hT hTie i σ hσ hV ph b hph hb γ hγ g hFr hx Wt Y hp Yr`. Establish `hM` using `modelW_of_tieIn hTie i σ hσ hV`. Conclude with `⟨GlobalTheory.T.columns_mem_periodLattice_iff_finitePart_movedLattice D hHP hSL hVF G Pl0 T0 A T R F κ v₀ hL hGr hFa hMo hT hTie i σ hσ hV ph b hph hb γ hγ g hFr hx Wt Y hp Yr, heis_law_of_periods D G Pl0 T0 A T R hT i σ hV ph b hb hM γ g hx Wt Y hp Yr, fun X => psi_realPt_eq_exp …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem frame_phase : ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.HeckePointLaws → GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.SplitLinearModel D →
     GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.VacFixed D →

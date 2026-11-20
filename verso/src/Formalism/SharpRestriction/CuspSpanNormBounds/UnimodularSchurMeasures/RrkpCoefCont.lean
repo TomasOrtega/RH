@@ -10,7 +10,7 @@ open scoped InnerProductSpace ENNReal
 open Formalism.MainNotions.S Formalism.MainNotions.PlaceDegreeData Formalism.MainNotions.BridgeLemma
 
 /- English proof (translation)
-The claim follows from `continuous_const.inner (homOf_cont σ h w)`.
+A detailed English derivation is pending.
 -/
 theorem rrkp_coef_cont {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (h : IsURepOn (UJset ε) σ) (w : H) :
@@ -18,9 +18,9 @@ theorem rrkp_coef_cont {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddComm
   continuous_const.inner (homOf_cont σ h w)
 
 /- English proof (translation)
-Establish `he : Measurable X.e` using `(hX.1.2.2.2.2.2.2.1.1).continuous.measurable`. Establish `hc : ∀ v, Measurable (coefOn (ε` using `X.I.ε v) (X.σ v) (X.w v) (X.w v)) := fun v => (rrkp_coef_cont (hX.2.1.1 v).2.2.1 (X.w v)).measurable`. Establish `hp : Measurable (phOf X.I X.σ X.w)`. Unfold `phOf`. Use `measurable_const.mul (continuous_star.measurable.comp ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.measurable_prod _ fun v _ => (hc v).comp (measurable_pi_apply v)`. Unfold `CData.φ phe`. Conclude with `(hp.comp measurable_fst).mul (he.comp measurable_snd)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rrk_phi_meas (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) : Measurable X.φ := by
   have he : Measurable X.e := (hX.1.2.2.2.2.2.2.1.1).continuous.measurable
@@ -34,11 +34,11 @@ theorem rrk_phi_meas (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) : M
   exact (hp.comp measurable_fst).mul (he.comp measurable_snd)
 
 /- English proof (translation)
-Take `⟨-, h2, h3, -⟩` from `hloc X.I.n (X.I.ε v) (X.lam v) (hX.1.2.2.2.2.1 v) (X.H v) (X.σ v) (hX.2.1.1 v) (X.w v) (hX.2.1.2.1 v) X.h (hX.2.2 v) (h1 v)`. Use `⟨fun g => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← h2 g, star_star]`. Establish `h` using `h3 1 y`. Establish `hm : coefOn (X.σ v) (X.w v) (X.w v) (1 : Formalism.REAL.UJ (X.I.ε v)) = 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ : X.σ v 1 = 1` using `(hX.2.1.1 v).2.2.1.1.1`. Establish `hu : umat (1 : Formalism.REAL.UJ (X.I.ε v)) = 1` using `rfl`. Unfold `coefOn`. Rewrite using `[hu, hσ, one_apply_eq_self, inner_self_eq_norm_sq_to_K, (hX.2.1.2.1 v).1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hm, one_mul]`. Rewrite using `[← h]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem rrkp_loc (D : Formalism.BasicNotions.D7) (hloc : LocalProjectorRealPlace D) (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) (h1 : X.GapAboveThreeHalvesPower)
     (v : InfinitePlace X.I.F) :
@@ -63,9 +63,9 @@ theorem rrkp_loc (D : Formalism.BasicNotions.D7) (hloc : LocalProjectorRealPlace
     simp
 
 /- English proof (translation)
-Establish `he : ∀ x, X.e x⁻¹ = star (X.e x)` using `hX.1.2.2.2.2.2.2.1.2.2.1`. Unfold `CData.φ phe`. Rewrite using `[star_mul', X.phOf_eq_prod, X.phOf_eq_prod]`. Establish `e1 : (z⁻¹).2 = (z.2)⁻¹` using `rfl`. Rewrite using `[e1, he]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `e2 : star (∏ v, phLoc (X.I.ε v) (X.σ v) (X.w v) (z.1 v)) = ∏ v, star (phLoc (X.I.ε v) (X.σ v) (X.w v) (z.1 v))` using `map_prod (starRingEnd ℂ) _ _`. Rewrite using `[e2]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Conclude with `(rrkp_loc D hloc X hX h1 v).1 (z.1 v)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rrk_phi_star (D : Formalism.BasicNotions.D7) (hloc : LocalProjectorRealPlace D) (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A)
     (h1 : X.GapAboveThreeHalvesPower) (z : X.I.GA) : X.φ z⁻¹ = star (X.φ z) := by
@@ -82,13 +82,13 @@ theorem rrk_phi_star (D : Formalism.BasicNotions.D7) (hloc : LocalProjectorRealP
   exact (rrkp_loc D hloc X hX h1 v).1 (z.1 v)
 
 /- English proof (translation)
-Establish `he : X.I.convF X.μf X.e X.e = X.e` using `hX.1.2.2.2.2.2.2.1.2.1`. Establish `he' : ∫ y, X.e y * X.e (y⁻¹ * z.2) ∂X.μf = X.e z.2` using `congrFun he z.2`. Establish `hfun : (fun g : X.I.GA => X.φ g * X.φ (g⁻¹ * z)) = fun g : X.I.GA => (fun a : X.I.Ginf => ∏ v, (phLoc (X.I.ε v) (X.σ v) (X.w v) (a v) * phLoc (X.I.ε v) (X.σ v) (X.w v) ((a v)⁻¹ * z.1 v))) g.1 * (fun y : X.I.Gf => X.e y * X.e (y⁻¹ * z.2)) g.2`. Use function extensionality and compare the values at `g`. Unfold `CData.φ phe`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use `beta_reduce`. Rewrite using `[X.phOf_eq_prod, X.phOf_eq_prod, Finset.prod_mul_distrib]`. Establish `e1 : (g⁻¹ * z).2 = (g.2)⁻¹ * z.2` using `rfl`. Establish `e2 : ∀ v, (g⁻¹ * z).1 v = (g.1 v)⁻¹ * z.1 v` using `fun v => rfl`. Simplify using `only [e1, e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Unfold `AutInst.muA`. Use `(integral_prod_mul (μ := Measure.pi fun v => Formalism.REAL.muG (X.I.ε v)) (ν := X.μf) (fun a : X.I.Ginf => ∏ v, (phLoc (X.I.ε v) (X.σ v) (X.w v) (a v) * phLoc (X.I.ε v) (X.σ v) (X.w v) ((a v)⁻¹ * z.1 v))) (fun y : X.I.Gf => X.e y * X.e (y⁻¹ * z.2))).trans ?_` and prove the remaining obligations. Rewrite using `[he', integral_fintype_prod_eq_prod (fun v (a : Formalism.REAL.UJ (X.I.ε v)) => phLoc (X.I.ε v) (X.σ v) (X.w v) a * phLoc (X.I.ε v) (X.σ v) (X.w v) (a⁻¹ * z.1 v))]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `CData.φ phe`. Rewrite using `[X.phOf_eq_prod]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun v _ => (rrkp_loc D hloc X hX h1 v).2 (z.1 v)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem rrk_phi_idem (D : Formalism.BasicNotions.D7) (hloc : LocalProjectorRealPlace D) (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A)
     (h1 : X.GapAboveThreeHalvesPower) (z : X.I.GA) : ∫ g, X.φ g * X.φ (g⁻¹ * z) ∂(X.I.muA X.μf) = X.φ z := by

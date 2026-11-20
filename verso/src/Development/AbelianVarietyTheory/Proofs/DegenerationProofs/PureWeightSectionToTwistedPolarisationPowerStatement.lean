@@ -6,7 +6,7 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ZH
 attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlgebra
 /- English proof (citation)
-Apply `GlobalTheory.ZH.TwSec.pure_sec_twist` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FPureWeightSectionToTwistedPolarisationPower.lean&line=460#L460)
 -/

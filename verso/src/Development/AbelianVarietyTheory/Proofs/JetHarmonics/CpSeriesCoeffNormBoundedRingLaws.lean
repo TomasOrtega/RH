@@ -8,23 +8,21 @@ open scoped ComplexConjugate BigOperators Topology
 namespace GlobalTheory.MomOne
 
 /- English proof (translation)
-Introduce `q _`. Establish `R` using `GlobalTheory.EvenTheta.SerRing.series_ring_laws q`. Establish `hmul : ∀ (f g : ℂ_[q]⟦X⟧) (A B : ℝ), Bd A f → Bd B g → Bd (A * B) (f * g)` using `fun f g A B hf hg => R.2.2.2.2.2.2 f g A B hf hg`. Establish `hinv : ∀ f : ℂ_[q]⟦X⟧, Bd 1 f → ‖constantCoeff f‖ = 1 → Bd 1 f⁻¹` using `fun f hf h0 => R.2.2.2.2.1 f hf h0`. Establish `hinv' : ∀ (f g : ℂ_[q]⟦X⟧), Bd 1 f → ‖constantCoeff f‖ = 1 → f * g = 1 → Bd 1 g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f g hf h0 hfg`. Establish `hc : constantCoeff f ≠ 0`. Introduce `h`. Rewrite `h0` using `[h, norm_zero]`. Conclude with `zero_ne_one h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hgf : g = f⁻¹`. Rewrite using `[PowerSeries.eq_inv_iff_mul_eq_one hc, mul_comm]`. Conclude with `hfg`. Rewrite using `[hgf]`. Conclude with `hinv f hf h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgauss : ∀ (f g : ℂ_[q]⟦X⟧) (B : ℝ), Bdd f → Bdd g → Bd B (f * g) → ∀ i j, ‖coeff i f‖ * ‖coeff j g‖ ≤ B` using `fun f g B hf hg hB => GlobalTheory.EvenTheta.sup_norm_mul_padicComplex q f g B hf hg hB`. Use `⟨fun f g A B hf hg => ⟨fun n => GlobalTheory.EvenTheta.SerRing.norm_coeff_add_le f g A B hf hg n, hmul f g A B hf hg⟩, fun f h A hf hh h0 => R.2.2.2.2.2.1 f h A hf hh h0, hinv', hgauss, ?_, ?_⟩` and prove the remaining obligations. Introduce `f g hf hg hfg h1`. Establish `hg0 : constantCoeff g = 1`. Establish `hc` using `congrArg constantCoeff hfg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hc` using `[map_mul, h1, one_mul, map_one]`. Conclude with `hc`. Establish `hB : Bd 1 (f * g)`. Rewrite using `[hfg]`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `H` using `hgauss f g 1 hf hg hB`. Use `⟨fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `hi` using `H i 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hi` using `[coeff_zero_eq_constantCoeff_apply, hg0, norm_one, mul_one]`. Then use the resulting hypothesis. Establish `hj` using `H 0 j`. Rewrite `hj` using `[coeff_zero_eq_constantCoeff_apply, h1, norm_one, one_mul]`. Then use the resulting hypothesis. Introduce `f v k B hv h0 hB`. Establish `hw : Bd B (v * f)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `m`. Establish `hm` using `hB (m + k)`. Rewrite `hm` using `[mul_assoc, coeff_X_pow_mul]`. Then use the resulting hypothesis. Establish `hc : constantCoeff v ≠ 0`. Introduce `h`.
-
-Rewrite `h0` using `[h, norm_zero]`. Conclude with `zero_ne_one h0`. Establish `hvf` using `hmul v⁻¹ (v * f) 1 B (hinv v hv h0) hw`. Rewrite `hvf` using `[← mul_assoc, PowerSeries.inv_mul_cancel _ hc, one_mul, one_mul]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sup_norm_laws : ∀ (q : ℕ) [Fact q.Prime], (∀ (f g : ℂ_[q]⟦X⟧) (A B : ℝ), Bd A f → Bd B g → Bd (max A B) (f + g) ∧ Bd (A * B) (f * g)) ∧ (∀ (f h : ℂ_[q]⟦X⟧) (A : ℝ), Bd A f → Bd 1 h → constantCoeff h = 0 → Bd A (f.subst h)) ∧ (∀ (f g : ℂ_[q]⟦X⟧), Bd 1 f → ‖constantCoeff f‖ = 1 → f * g = 1 → Bd 1 g) ∧ (∀ (f g : ℂ_[q]⟦X⟧) (B : ℝ), Bdd f → Bdd g → Bd B (f * g) → ∀ i j, ‖coeff i f‖ * ‖coeff j g‖ ≤ B) ∧ (∀ (f g : ℂ_[q]⟦X⟧), Bdd f → Bdd g → f * g = 1 → constantCoeff f = 1 → Bd 1 f ∧ Bd 1 g) ∧ (∀ (f v : ℂ_[q]⟦X⟧) (k : ℕ) (B : ℝ), Bd 1 v → ‖constantCoeff v‖ = 1 → Bd B (X ^ k * v * f) → Bd B f) := by
   intro q _

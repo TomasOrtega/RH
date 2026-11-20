@@ -12,7 +12,7 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 namespace GlobalTheory.SiegLoc
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c φ φs n R _ b ω hpq hφ hS h3 hodd hn hφs hω hωb hloc`. Take `⟨F, S, s, j, hj, G, hG, e, BD, d, N, hD⟩` from `(siegAt_iff _ _ _).1 hS`. Take `⟨κ, C, π, hκ, hC⟩` from `GlobalTheory.T.siegel_family_boundary_pullback E H D l Xo c n R b ω φ F S s j G e BD d N hpq h3 hodd hn hω hωb hloc hD`. Conclude with `⟨C, GlobalTheory.T.siegel_family_refined_fan_pullback E H D l Xo c n R b ω φ φs F S s j G e BD d N κ C π hpq h3 hodd hn hφ hφs hω hωb hloc hD hκ hC, GlobalTheory.T.siegel_family_polarization_ample E H D l Xo c n R b ω φ φs F S s j G e BD d N κ C π hpq h3 hodd hn hφ hφs hω hωb hlo …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_siegel_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (φ φs : InvFun ℤ) (n : ℕ) (R : Type) [CommRing R] (b : 𝓞 c.F →+* R) (ω : R →+* c.F), 1 ≤ D.p + D.q → IsPolFan id (Module.finrank ℚ E / 2 * (D.p + D.q)) φ → SiegAt (Module.finrank ℚ E / 2 * (D.p + D.q)) φ n → 3 ≤ n → Odd n → n ∣ l.M → AgreesPsd (Module.finrank ℚ E / 2 * (D.p + D.q)) φs φ → IsDedFrac ω → ω.comp b = algebraMap (𝓞 c.F) c.F → @IsLocalization.Away (𝓞 c.F) _ (n : 𝓞 c.F) R _ b.toAlgebra → ∃ C : Model Xo c ω, HasCones (ConeZ E φs) C ∧ PolRay (comb 0 (resInt _ φs) 0 (resInt _ φs)) (resInt _ φs) 1 C := by
   intro E _ _ _ H D l Xo c φ φs n R _ b ω hpq hφ hS h3 hodd hn hφs hω hωb hloc

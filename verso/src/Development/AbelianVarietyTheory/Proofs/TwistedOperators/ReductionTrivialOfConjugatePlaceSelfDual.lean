@@ -14,15 +14,15 @@ namespace GlobalTheory.ConjPlaceRedGen
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D V L hsd β hβ k hk PP PP' hc h1`. Take `⟨m, s, s', hs, hd⟩` from `GlobalTheory.LatVacDual.dualFamily D V L hsd`. Take `⟨G, hG⟩` from `GlobalTheory.FrameGram.exists_unit_adelic star (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) (fun _ => GlobalTheory.LevSplit.sigR_int) (fun _ => rfl) V.gram β _ hβ (fun y hy => (hsd.2 y).1 hy) s s' hs hd`. Take `⟨h, hh⟩` from `hk`. Establish `hU : β * Formalism.UG.bc (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype h * β⁻¹ ∈ Formalism.UG.UJ (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) (V.gram.map (Formalism.UG.inclE (F` using `D.host.F) (Formalism.L2.Herm.Af D.host.F))) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : β * Formalism.UG.bc (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype h * β⁻¹ = Lev.finE V k` using `hh`. Rewrite using `[e]`. Conclude with `GlobalTheory.LevSplit.finE_mem_UA V k`. Establish `key` using `GlobalTheory.FrameMove.conj_gram_sub (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) (Formalism.L2.Herm.intAf D.host.F D.host.E) _ β G h hG hU`. Rewrite `h1`, the goal using `[← hh, Formalism.L2.DIV.redFn_frGL]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1' : Formalism.UG.bc (Formalism.L2.DIV.resS D.host.F PP') h⁻¹ = 1` using `by rw [map_inv, h1, inv_one]`. Establish `h2 : Formalism.UG.bc (Formalism.L2.DIV.resS D.host.F PP) (G * h * G⁻¹) = 1`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `hz : Formalism.L2.DIV.resS D.host.F PP' ((h⁻¹).val j i) = if j = i then 1 else 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((Formalism.UG.bc (Formalism.L2.DIV.resS D.host.F PP') h⁻¹ : GL (Fin V.rank) (Formalism.L2.DIV.kP PP')) : Matrix _ _ (Formalism.L2.DIV.kP PP')) j i = Formalism.L2.DIV.resS D.host.F PP' ((h⁻¹).val j i)` using `rfl`. Rewrite using `[← e, h1', Units.val_one, Matrix.one_apply]`. Establish `h0` using `GlobalTheory.ConjPlaceRed.resS_conj_ite D.sp.cm.sig PP' PP hc _ _ (key i j) (j = i) hz`. Use `h0.trans ?_` and prove the remaining obligations. Rewrite using `[Units.val_one, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `if_congr eq_comm rfl rfl`. Rewrite `h2` using `[map_mul, map_mul, map_inv]`. Conclude with `_root_.conj_eq_one_iff.1 h2`.
+A detailed English derivation is pending.
 -/
 theorem redFn_eq_one_of_conj : ∀ (D : D7) (V : HSp D) (L : Lt D.host.E V.rank), IsSelfDualC V L → ∀ β : GL (Fin V.rank) (Lev.EAf D), Formalism.L2.DIV.IsFrame β L → ∀ k : GA D V, Lev.finE V k ∈ Formalism.L2.DIV.St β → ∀ (PP PP' : Formalism.L2.DIV.Pl D.host.E), Formalism.IndefR.Lev.IsConjPl PP' PP → Formalism.L2.DIV.redFn β PP' (Lev.finE V k) = 1 → Formalism.L2.DIV.redFn β PP (Lev.finE V k) = 1 := by
   intro D V L hsd β hβ k hk PP PP' hc h1

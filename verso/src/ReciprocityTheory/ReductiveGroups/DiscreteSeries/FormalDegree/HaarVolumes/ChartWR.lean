@@ -13,31 +13,27 @@ variable {N : ℕ}
 
 open ChartWRAux in
 /- English proof (translation)
-Establish `: (volume : Measure (Fin N → Fin N → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Set `L : (UCo N × TriCo N) →L[ℝ] (Fin N → Fin N → ℂ)` to `(lamE : (UCo N × TriCo N) ≃L[ℝ] _)`. Set `g : (Fin N → Fin N → ℂ) → (Fin N → Fin N → ℂ)` to `fun z => chartWR (lamE.symm z)`. Establish `hg : HasStrictFDerivAt g (ContinuousLinearMap.id ℝ (Fin N → Fin N → ℂ)) 0`. Establish `hc : HasStrictFDerivAt (chartWR (N` using `N)) L (lamE.symm 0) := by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_zero]`. Conclude with `chartWR_strict`. Establish `h` using `hc.comp (0 : Fin N → Fin N → ℂ) ((lamE.symm : (Fin N → Fin N → ℂ) ≃L[ℝ] (UCo N × TriCo N)) : (Fin N → Fin N → ℂ) →L[ℝ] (UCo N × TriCo N)).hasStrictFDerivAt`. Rewrite `h` using `[ContinuousLinearEquiv.coe_comp_coe_symm]`. Then use the resulting hypothesis. Establish `hdet : ENNReal.ofReal |(ContinuousLinearMap.id ℝ (Fin N → Fin N → ℂ)).det| = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[ContinuousLinearMap.det, ContinuousLinearMap.coe_id]`. Establish `ev1` using `addHaar_image_le_mul_of_det_lt (μ := (volume : Measure (Fin N → Fin N → ℂ))) (ContinuousLinearMap.id ℝ (Fin N → Fin N → ℂ)) (m := (1 + η).toNNReal) (by`. Rewrite using `[hdet]; exact_mod_cast (show (1 : ℝ) < (1 + η).toNNReal by`. Rewrite using `[Real.coe_toNNReal _ (by linarith)]; linarith))`. Establish `ev2 : ∀ᶠ δ in 𝓝[>] (0 : NNReal), ∀ (s : Set (Fin N → Fin N → ℂ)) (f : (Fin N → Fin N → ℂ) → (Fin N → Fin N → ℂ)), ApproximatesLinearOn f (ContinuousLinearMap.id ℝ (Fin N → Fin N → ℂ)) s δ → ENNReal.ofReal (1 - η) * volume s ≤ volume (f '' s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_ge η 1 with h1 | h1` into its components or cases. Use `mul_le_addHaar_image_of_lt_det (μ := (volume : Measure (Fin N → Fin N → ℂ))) (ContinuousLinearMap.id ℝ (Fin N → Fin N → ℂ)) (m := (1 - η).toNNReal) (by` as an intermediate fact. Rewrite using `[hdet]; exact_mod_cast (show ((1 - η).toNNReal : ℝ) < 1 by`. Rewrite using `[Real.coe_toNNReal _ (by linarith)]; linarith))`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Filter.Eventually.of_forall fun δ s f _ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_of_nonpos (by linarith), zero_mul]; exact bot_le`. Take `⟨c, ⟨hc1, hc2⟩, hcpos⟩` from `((ev1.and ev2).and self_mem_nhdsWithin).exists`. Take `⟨s, hs, hap⟩` from `hg.approximates_deriv_on_nhds (Or.inr hcpos)`. Take `⟨r, hr, hrs⟩` from `Metric.mem_nhds_iff.1 hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hL0 : 0 ≤ ‖L‖` using `norm_nonneg _`. Use `⟨r / (‖L‖ + 1), by positivity, fun B E hB hE hBδ hEδ => ?_⟩` and prove the remaining obligations. Establish `hLr : ‖L‖ * (r / (‖L‖ + 1)) < r`. Rewrite using `[mul_div_assoc', div_lt_iff₀ (by positivity)]; nlinarith`. Establish `hball : (lamE : (UCo N × TriCo N) ≃L[ℝ] (Fin N → Fin N → ℂ)) '' (B ×ˢ E) ⊆ s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨p, hp, rfl⟩`. Apply `hrs` to reduce the goal to its premises. Rewrite using `[Metric.mem_ball, dist_zero_right]`. Establish `hp' : ‖p‖ < r / (‖L‖ + 1)`. Rewrite using `[Prod.norm_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `max_lt (hBδ _ hp.1) (hEδ _ hp.2)`. Combine the equalities or inequalities in the displayed calculation. Establish `hap'` using `hap.mono_set hball`. Establish `himg : chartWR '' (B ×ˢ E) = g '' ((lamE : (UCo N × TriCo N) ≃L[ℝ] _) '' (B ×ˢ E))`. Rewrite using `[Set.image_image]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Set.image_congr fun p _ => ?_` and prove the remaining obligations. Simplify using `[g]`. Establish `hmp : MeasurePreserving (lamE : (UCo N × TriCo N) ≃L[ℝ] (Fin N → Fin N → ℂ)) volume volume`. Establish `e : (⇑(lamE : (UCo N × TriCo N) ≃L[ℝ] (Fin N → Fin N → ℂ))) = lam` using `funext lamE_apply`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `mp_lam`. Establish `hme : MeasurableEmbedding (lamE : (UCo N × TriCo N) ≃L[ℝ] (Fin N → Fin N → ℂ))` using `lamE.toHomeomorph.measurableEmbedding`. Establish `hvol : volume ((lamE : (UCo N × TriCo N) ≃L[ℝ] _) '' (B ×ˢ E)) = volume B * volume E`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmp.map_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `_ = volume (lamE ⁻¹' ((lamE : (UCo N × TriCo N) ≃L[ℝ] _) '' (B ×ˢ E))) := hme.map_apply _ _`. Use `_ = volume (B ×ˢ E) := by rw [Set.preimage_image_eq _ lamE.injective]`. Use `_ = volume B * volume E := Measure.prod_prod _ _`. Rewrite using `[himg]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Use `hc1 _ g hap'` as an intermediate fact. Rewrite `this` using `[hvol]`. Conclude with `this`. Use `hc2 _ g hap'` as an intermediate fact. Rewrite `this` using `[hvol]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartWR_vol (η : ℝ) (hη : 0 < η) :
     ∃ δ > 0, ∀ (B : Set (UCo N)) (E : Set (TriCo N)), MeasurableSet B → MeasurableSet E →

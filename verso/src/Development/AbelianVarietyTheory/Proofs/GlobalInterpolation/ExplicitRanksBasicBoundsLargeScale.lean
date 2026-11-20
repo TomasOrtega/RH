@@ -7,7 +7,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Establish `hx0 : 0 < x` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem rank_const_absorb {x : ℝ} (hx : 1 < x) (hK : (1000 : ℝ) ≤ x ^ ((1 : ℝ) / 1000)) {a b C : ℝ}
     (hC : C ≤ 1000) (hab : a + 1 / 1000 ≤ b) : C * x ^ a ≤ x ^ b := by
@@ -18,7 +18,7 @@ theorem rank_const_absorb {x : ℝ} (hx : 1 < x) (hK : (1000 : ℝ) ≤ x ^ ((1 
     _ ≤ x ^ b := Real.rpow_le_rpow_of_exponent_le hx.le hab
 
 /- English proof (translation)
-Rewrite using `[Real.rpow_add hx]`. Conclude with `mul_le_mul hu hv' hv (Real.rpow_nonneg hx.le _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_mul_le {x : ℝ} (hx : 0 < x) {u v a b : ℝ} (hv : 0 ≤ v) (hu : u ≤ x ^ a) (hv' : v ≤ x ^ b) :
     u * v ≤ x ^ (a + b) := by
@@ -26,61 +26,59 @@ theorem rank_mul_le {x : ℝ} (hx : 0 < x) {u v a b : ℝ} (hv : 0 ≤ v) (hu : 
   exact mul_le_mul hu hv' hv (Real.rpow_nonneg hx.le _)
 
 /- English proof (translation)
-Introduce `eps he0 he1`. Use `⟨(1000 : ℝ) ^ (1000 : ℝ), fun s R hs hx0 hR => ?_⟩` and prove the remaining obligations. Establish `hn2` using `RankVal.n_le hR`. Take `⟨⟨hn1, -⟩, ⟨hm1, hm2⟩, ⟨hk1, hk2⟩, ht⟩` from `hR`. Establish `hx` using `s.one_lt_alt`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxp : 0 < s.x` using `lt_trans one_pos hx`. Establish `e0` using `s.eps_pos`. Establish `e1` using `s.eps_lt`. Establish `hK : (1000 : ℝ) ≤ s.x ^ ((1 : ℝ) / 1000)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Real.rpow_mul (by norm_num)]; norm_num`. Use `_ ≤ _ := Real.rpow_le_rpow (by positivity) hx0 (by norm_num)`. Use `clear hx0`. Establish `ab : ∀ {a b C : ℝ}, C ≤ 1000 → a + 1 / 1000 ≤ b → C * s.x ^ a ≤ s.x ^ b` using `fun hC hab => rank_const_absorb hx hK hC hab`. Establish `mono : ∀ {a b : ℝ}, a ≤ b → s.x ^ a ≤ s.x ^ b` using `fun h => Real.rpow_le_rpow_of_exponent_le hx.le h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `one : ∀ {a : ℝ}, 0 ≤ a → 1 ≤ s.x ^ a` using `fun h => Real.one_le_rpow hx.le h`. Establish `hsq : Real.sqrt (s.x * s.delta1) = s.x ^ ((1 : ℝ) / 2 - s.eps / 16)`. Establish `: s.x * s.delta1 = s.x ^ (1 + -(s.eps / 8))`. Rewrite using `[Real.rpow_add hxp, Real.rpow_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[this, Real.sqrt_eq_rpow, ← Real.rpow_mul hxp.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hm1`, `hm2` using `[hsq]`. Establish `h2m` using `R.two_le_m`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmk` using `R.m_add_three_le_k`. Establish `hkr : R.k ≤ R.r` using `by unfold Ranks.r; omega`. Establish `hrk : R.r ≤ 2 * R.k` using `by unfold Ranks.r; omega`. Establish `hkr' : (R.k : ℝ) ≤ R.r` using `by exact_mod_cast hkr`. Establish `hrk' : (R.r : ℝ) ≤ 2 * R.k` using `by exact_mod_cast hrk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfn : (R.f : ℝ) = 2 * R.n` using `by unfold Ranks.f; push_cast; ring`. Establish `hf : (R.f : ℝ) ≤ s.x ^ ((2156 : ℝ) / 1000)`. Use `ab (C := 4) (a := 2 + 8 * s.eps + s.eps / 100) (b := 2156 / 1000) (by norm_num) (by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr : (R.r : ℝ) ≤ s.x ^ ((4694 : ℝ) / 1000)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `ab (C := 4) (a := 9 / 2 + 10 * s.eps) (b := 4694 / 1000) (by norm_num) (by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk : (R.k : ℝ) ≤ s.x ^ ((4694 : ℝ) / 1000)` using `hkr'.trans hr`. Establish `hL : s.L ≤ s.x ^ ((20 : ℝ) / 1000)` using `mono (by linarith)`. Establish `hL1 : 1 ≤ s.L` using `one e0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmu : (R.m : ℝ) ≤ s.x ^ ((501 : ℝ) / 1000)`. Use `ab (C := 2) (a := 1 / 2 - s.eps / 16) (b := 501 / 1000) (by norm_num) (by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmp : (0 : ℝ) < R.m` using `by exact_mod_cast (by omega : 0 < R.m)`. Establish `hmi : (R.m : ℝ)⁻¹ ≤ s.x ^ (-(498 : ℝ) / 1000)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : s.x ^ ((498 : ℝ) / 1000) ≤ R.m` using `(mono (by linarith)).trans hm1`. Rewrite using `[neg_div, Real.rpow_neg hxp.le]`. Conclude with `inv_anti₀ (by positivity) h1`. Establish `f0 : (0 : ℝ) ≤ R.f` using `by positivity`. Establish `r0 : (0 : ℝ) ≤ R.r` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k0 : (0 : ℝ) ≤ R.k` using `by positivity`. Establish `L0 : (0 : ℝ) ≤ s.L` using `by linarith`. Establish `mi0 : (0 : ℝ) ≤ (R.m : ℝ)⁻¹` using `by positivity`. Establish `k1 : (1 : ℝ) ≤ R.k` using `by exact_mod_cast (by omega : 1 ≤ R.k)`. Establish `hf1 : 1 ≤ R.f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `: 0 < R.f` using `by unfold Ranks.f Ranks.n; positivity`. Use linear arithmetic over natural numbers and integers. Establish `hf1' : (1 : ℝ) ≤ R.f` using `by exact_mod_cast hf1`. Establish `hfr` using `rank_mul_le hxp r0 hf hr`. Establish `hB0 : 0 ≤ (R.f : ℝ) ^ 2 * ((R.k : ℝ) - 1) ^ 3 * s.L ^ 2 / R.m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) ≤ (R.k : ℝ) - 1` using `by linarith`. Check the signs of the components of the expression. Establish `hApos : 0 < 10 * (R.r : ℝ) * ((R.f : ℝ) + (R.f : ℝ) ^ 2 * ((R.k : ℝ) - 1) ^ 3 * s.L ^ 2 / R.m) / 8`. Establish `: (0 : ℝ) < R.r` using `by linarith`. Establish `: (0 : ℝ) < (R.f : ℝ) + (R.f : ℝ) ^ 2 * ((R.k : ℝ) - 1) ^ 3 * s.L ^ 2 / R.m` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hW1 : 1 ≤ nWv R s`. Use `Nat.ceil_pos.mpr hApos` as an intermediate fact. Unfold `nWv`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : ((nWv R s : ℕ) : ℝ) ≤ s.x ^ ((229 : ℝ) / 10)`. Establish `h1` using `(Nat.ceil_lt_add_one hApos.le).le`. Establish `hk' : (R.k : ℝ) - 1 ≤ s.x ^ ((4694 : ℝ) / 1000)` using `by linarith`. Establish `k0' : (0 : ℝ) ≤ (R.k : ℝ) - 1` using `by linarith`. Establish `h2` using `rank_mul_le hxp mi0 (rank_mul_le hxp L0 (rank_mul_le hxp L0 (rank_mul_le hxp k0' (rank_mul_le hxp k0' (rank_mul_le hxp k0' (rank_mul_le hxp f0 hfr hf) hk') hk') hk') hL) hL) hmi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `h2.trans (mono (b := 227 / 10) (by norm_num))`. Establish `h4` using `hfr.trans (mono (b := 227 / 10) (by norm_num))`. Establish `h5 : 1 ≤ s.x ^ ((227 : ℝ) / 10)` using `one (by norm_num)`. Establish `h6` using `ab (C := 28) (a := 227 / 10) (b := 229 / 10) (by norm_num) (by norm_num)`. Establish `h7 : 10 * (R.r : ℝ) * ((R.f : ℝ) + (R.f : ℝ) ^ 2 * ((R.k : ℝ) - 1) ^ 3 * s.L ^ 2 / R.m) / 8 = (10 * ((R.f : ℝ) * R.r) + 10 * ((R.f : ℝ) * R.r * R.f * ((R.k : ℝ) - 1) * ((R.k : ℝ) - 1) * ((R.k : ℝ) - 1) * s.L * s.L * (R.m : ℝ)⁻¹)) / 8`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Rewrite using `[div_eq_mul_inv ((R.f : ℝ) ^ 2 * ((R.k : ℝ) - 1) ^ 3 * s.L ^ 2)]`. Expand and normalize the polynomial expressions, which then agree. Unfold `nWv`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT1 : s.x ^ (377 : ℝ) ≤ (TOv s : ℝ)` using `Nat.le_ceil _`. Establish `hT2 : (TOv s : ℝ) ≤ s.x ^ (378 : ℝ)`. Establish `h1 : (TOv s : ℝ) ≤ s.x ^ (377 : ℝ) + 1` using `(Nat.ceil_lt_add_one (by positivity)).le`. Establish `h5 : 1 ≤ s.x ^ (377 : ℝ)` using `one (by norm_num)`. Establish `h6` using `ab (C := 2) (a := 377) (b := 378) (by norm_num) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht1 : TOv s ≤ R.t`. Establish `h1 : TOv s ≤ TOv s * nWv R s` using `Nat.le_mul_of_pos_right _ hW1`. Establish `h2 : R.r ≤ 8 * R.f * R.r` using `Nat.le_mul_of_pos_left _ (by omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht2 : (R.t : ℝ) ≤ s.x ^ (401 : ℝ)`. Establish `h1 : R.t ≤ 8 * R.f * R.r + 4 + TOv s * nWv R s` using `by omega`. Establish `h2 : (R.t : ℝ) ≤ 8 * (R.f * R.r) + 4 + TOv s * nWv R s`. Establish `: ((R.t : ℕ) : ℝ) ≤ ((8 * R.f * R.r + 4 + TOv s * nWv R s : ℕ) : ℝ)` using `by exact_mod_cast h1`. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `(rank_mul_le hxp (by positivity) hT2 hW).trans (mono (b := 4009 / 10) (by norm_num))`. Establish `h4` using `hfr.trans (mono (b := 4009 / 10) (by norm_num))`. Establish `h5 : 1 ≤ s.x ^ ((4009 : ℝ) / 10)` using `one (by norm_num)`. Establish `h6` using `ab (C := 13) (a := 4009 / 10) (b := 401) (by norm_num) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hf.trans (mono (by norm_num)), ?_, hr.trans (mono (by norm_num)), hkr, hrk, ?_, hL1, ?_, ?_, ?_, ?_, hW, hT1.trans (by exact_mod_cast ht1), ht2, ?_, hm1, hm2⟩` and prove the remaining obligations. Simplify using `using hmu.trans (mono (b := 1) (by norm_num))`. Simplify using `using hL.trans (mono (b := 1) (by norm_num))`. Establish `h1 : s.x ^ (2 : ℝ) ≤ R.f`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `mono (a := 2) (b := 2 + 8 * s.eps) (by linarith)` as an intermediate fact. Establish `: (0 : ℝ) ≤ R.n` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : s.x ^ ((9 : ℝ) / 2) ≤ R.r`. Use `mono (a := 9 / 2) (b := 9 / 2 + 10 * s.eps) (by linarith)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_add hxp]`. Evaluate the numerical expressions. Use `_ ≤ _ := by gcongr`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(rank_mul_le hxp L0 hfr hL).trans (mono (by norm_num))`. Establish `h1 : ((R.r.choose 2 : ℕ) : ℝ) ≤ R.r * R.r`. Use `Nat.choose_le_pow R.r 2` as an intermediate fact. Rewrite `this` using `[sq]`. Conclude with `this` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(rank_mul_le hxp r0 hfr hr).trans (mono (b := 12) (by norm_num))`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_eq_mul_inv]`. Conclude with `(rank_mul_le hxp mi0 (rank_mul_le hxp f0 hk hf) hmi).trans (mono (by norm_num))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3` using `(rank_mul_le hxp (by positivity) hmu ht2).trans (mono (b := 4016 / 10) (by norm_num))`. Establish `h4` using `hk.trans (mono (b := 4016 / 10) (by norm_num))`. Establish `h5` using `hmu.trans (mono (b := 4016 / 10) (by norm_num))`. Establish `h6` using `ab (C := 3) (a := 4016 / 10) (b := 402) (by norm_num) (by norm_num)`. Unfold `Ranks.N`.
-
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem rank_basic_bounds : ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks), s.eps = eps → x0 ≤ s.x → RankVal s R → (R.f : ℝ) ≤ s.x ^ (3 : ℝ) ∧ (R.m : ℝ) ≤ s.x ∧ (R.r : ℝ) ≤ s.x ^ (5 : ℝ) ∧ R.k ≤ R.r ∧ R.r ≤ 2 * R.k ∧ s.L ≤ s.x ∧ 1 ≤ s.L ∧ s.x ^ ((13 : ℝ) / 2) ≤ (R.f : ℝ) * R.r * s.L ∧ (R.f : ℝ) * R.r * s.L ≤ s.x ^ ((687 : ℝ) / 100) ∧ ((R.f * R.r.choose 2 : ℕ) : ℝ) ≤ s.x ^ (12 : ℝ) ∧ (R.k : ℝ) * R.f / R.m ≤ s.x ^ (7 : ℝ) ∧ ((nWv R s : ℕ) : ℝ) ≤ s.x ^ ((229 : ℝ) / 10) ∧ s.x ^ (377 : ℝ) ≤ (R.t : ℝ) ∧ (R.t : ℝ) ≤ s.x ^ (401 : ℝ) ∧ (R.N R.m : ℝ) ≤ s.x ^ (402 : ℝ) ∧ s.x ^ ((1 : ℝ) / 2 - s.eps / 16) ≤ (R.m : ℝ) ∧ (R.m : ℝ) ≤ 2 * s.x ^ ((1 : ℝ) / 2 - s.eps / 16) := by
   intro eps he0 he1

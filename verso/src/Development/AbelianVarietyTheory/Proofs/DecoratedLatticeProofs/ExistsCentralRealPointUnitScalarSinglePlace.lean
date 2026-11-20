@@ -20,13 +20,13 @@ namespace GlobalTheory.CentralUnit
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `GlobalTheory.FockCompare.exists_chart hθ`. Set `v : D.what₂.Tau → ℂ` to `fun ρ => if ρ = τ then ζ - 1 else 0`. Set `a : AE D` to `1 + σ v`. Establish `a1 : finPart D a = 1`. Simplify using `only [a]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[RingHom.map_add, hσ.fin, RingHom.map_one, add_zero]`. Establish `a2 : ∀ ρ, θ ρ (infPart D a) = if ρ = τ then ζ else 1`. Introduce `ρ`. Simplify using `only [a]`. Rewrite using `[RingHom.map_add, RingHom.map_add, hσ.comp, RingHom.map_one, RingHom.map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [v]`. Apply the tactic sequence `split_ifs <;> ring`. Use `⟨a, a1, a2, sub_eq_zero.1 (hσ.ext _ ?_ fun ρ => ?_)⟩` and prove the remaining obligations. Establish `e : finPart D (cA D a) = sigR (Af D.host.F) D.sp.cm.sig (finPart D a)` using `GlobalTheory.FockCompare.LiftUnitary.snd_sigR D.sp.cm.sig a`. Rewrite using `[RingHom.map_sub, RingHom.map_mul, RingHom.map_one, e, a1, RingHom.map_one, one_mul, sub_self]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_sub, RingHom.map_sub, RingHom.map_mul, RingHom.map_mul, RingHom.map_one, RingHom.map_one, GlobalTheory.FockCompare.comp_cA hθ, a2] split_ifs`. Rewrite using `[Complex.conj_mul', hζ, Complex.ofReal_one, one_pow, sub_self]`. Rewrite using `[RingHom.map_one, one_mul, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_unit {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {ζ : ℂ} (hζ : ‖ζ‖ = 1) :
     ∃ a : AE D, finPart D a = 1 ∧ (∀ ρ, θ ρ (infPart D a) = if ρ = τ then ζ else 1) ∧ cA D a * a = 1 := by
@@ -51,7 +51,7 @@ theorem exists_unit {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {ζ
     · rw [RingHom.map_one, one_mul, sub_self]
 
 /- English proof (translation)
-Rewrite using `[Formalism.UG.cT, Matrix.diagonal_map (RingHom.map_zero _), Matrix.diagonal_transpose]`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Take the linear combination `(JR (AF D.host.F) S.gram i j) * ha`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem scalar_mem (S : HSp D) {a : AE D} (ha : cA D a * a = 1) :
     Formalism.UG.cT (cA D) (Matrix.diagonal fun _ : Fin S.rank => a) * JR (AF D.host.F) S.gram *
@@ -73,9 +73,9 @@ theorem mt_scalarElt (S : HSp D) {a : AE D} (ha : cA D a * a = 1) :
     Formalism.L2.Theta.mt S (scalarElt S ha) = Matrix.diagonal fun _ => a := rfl
 
 /- English proof (translation)
-Rewrite using `[GinfC, MonoidHom.mem_ker]`. Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `((Matrix.diagonal fun _ : Fin S.rank => a).map (finPart D)) i j = (1 : Matrix (Fin S.rank) (Fin S.rank) (Af D.host.F ⊗[D.host.F] D.host.E)) i j`. Rewrite using `[Matrix.map_apply, Matrix.diagonal_apply, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `h1`. Conclude with `RingHom.map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem scalarElt_mem_GinfC (S : HSp D) {a : AE D} (ha : cA D a * a = 1) (h1 : finPart D a = 1) :
     scalarElt S ha ∈ GinfC S := by
@@ -90,7 +90,7 @@ theorem scalarElt_mem_GinfC (S : HSp D) {a : AE D} (ha : cA D a * a = 1) (h1 : f
   · exact RingHom.map_zero _
 
 /- English proof (translation)
-Use `Subgroup.mem_center_iff.2 fun k => Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(k.1.val * Matrix.diagonal fun _ : Fin S.rank => a) i j = ((Matrix.diagonal fun _ : Fin S.rank => a) * k.1.val) i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem scalarElt_mem_center (S : HSp D) {a : AE D} (ha : cA D a * a = 1) :
     scalarElt S ha ∈ Subgroup.center (GA D S) := by
@@ -100,7 +100,7 @@ theorem scalarElt_mem_center (S : HSp D) {a : AE D} (ha : cA D a * a = 1) :
   rw [Matrix.mul_diagonal, Matrix.diagonal_mul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[mt_scalarElt]`. Use extensionality with `i j`. Rewrite using `[compAt, Matrix.map_apply, Matrix.smul_apply, Matrix.diagonal_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem compAt_scalarElt (θ : InfFam D) (τ : D.what₂.Tau) (S : HSp D) {a : AE D} (ha : cA D a * a = 1) :
     compAt θ τ (Formalism.L2.Theta.mt S (scalarElt S ha)) = θ τ (infPart D a) • (1 : Matrix (Fin S.rank) (Fin S.rank) ℂ) := by
@@ -110,7 +110,7 @@ theorem compAt_scalarElt (θ : InfFam D) (τ : D.what₂.Tau) (S : HSp D) {a : A
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `D θ hθ S τ ζ hζ`. Take `⟨a, a1, a2, ac⟩` from `exists_unit hθ τ hζ`. Use `⟨scalarElt S ac, scalarElt_mem_GinfC S ac a1, scalarElt_mem_center S ac, ?_, fun ρ hρ => ?_⟩` and prove the remaining obligations. Rewrite using `[compAt_scalarElt, a2, if_pos rfl]`. Rewrite using `[compAt_scalarElt, a2, if_neg hρ, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_central_of_norm_one : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (S : HSp D) (τ : D.what₂.Tau) (ζ : ℂ), ‖ζ‖ = 1 → ∃ z ∈ GinfC S, z ∈ Subgroup.center (GA D S) ∧ compAt θ τ (Formalism.L2.Theta.mt S z) = ζ • (1 : Matrix (Fin S.rank) (Fin S.rank) ℂ) ∧ ∀ ρ : D.what₂.Tau, ρ ≠ τ → compAt θ ρ (Formalism.L2.Theta.mt S z) = 1 := by
   intro D θ hθ S τ ζ hζ

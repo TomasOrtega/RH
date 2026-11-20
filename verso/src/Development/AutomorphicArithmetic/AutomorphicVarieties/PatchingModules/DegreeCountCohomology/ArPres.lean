@@ -10,9 +10,9 @@ section SlopeTestRemainingChoices
 variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : ((s.p : ℕ) : 𝓞 (Lp L)) ∈ s.v0.asIdeal`. Rewrite using `[← s.norm_v0_eq_one]`. Conclude with `Ideal.absNorm_mem s.v0.asIdeal`. Establish `hc : IsCoprime (s.p : 𝓞 (Lp L)) (l : 𝓞 (Lp L))` using `((Nat.coprime_primes s.p_prime Fact.out).2 s.p_ne).cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hab⟩` from `hc`. Conclude with `s.v0.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h)))`.
+A detailed English derivation is pending.
 -/
 private theorem l_not_mem_base_prime (s : HidaSetting l L Ω) : ((l : ℕ) : 𝓞 (Lp L)) ∉ s.v0.asIdeal := by
   intro h
@@ -32,7 +32,7 @@ private def plF (s : HidaSetting l L Ω) {q : ℕ} (v : Fin q → Plc (Lp L)) : 
   | .inr (.inr (some j)) => v j
 
 /- English proof (translation)
-Break down `w with u | u | _ | j` into its components or cases. Conclude with `iff_of_true u.2 ⟨u, rfl⟩`. Conclude with `iff_of_false (s.St_l u.1 u.2) (by simp)`. Conclude with `iff_of_false (l_not_mem_base_prime s) (by simp)`. Conclude with `iff_of_false (fun h => hn j (Or.inl h)) (by simp)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem plF_l (s : HidaSetting l L Ω) {q : ℕ} (v : Fin q → Plc (Lp L)) (hn : ∀ j, v j ∉ s.S) (w) :
     ((l : ℕ) : 𝓞 (Lp L)) ∈ (plF s v w).asIdeal ↔ ∃ u, w = .inl u := by
@@ -43,13 +43,9 @@ private theorem plF_l (s : HidaSetting l L Ω) {q : ℕ} (v : Fin q → Plc (Lp 
   · exact iff_of_false (fun h => hn j (Or.inl h)) (by simp)
 
 /- English proof (translation)
-Establish `key : ∀ (u : Vl l L) w, plF s v (.inl u) = plF s v (.inr w) → False` using `fun u w h => by`. Use `(plF_l s v hn (.inr w)).1 (h ▸ u.2)` as an intermediate fact. Simplify using `at this`. Introduce and unpack `(a | a) (b | b) h`. Conclude with `congrArg _ (Subtype.ext h)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(key _ _ h).elim`. Conclude with `(key _ _ h.symm).elim`. Apply the tactic sequence `rcases a with a | _ | a <;> rcases b with b | _ | b <;> simp only [plF] at h`. Rewrite using `[Subtype.ext h]`. Conclude with `(s.v0_St (h ▸ a.2)).elim`.
-
-Conclude with `(hn b (h ▸ Or.inr (Or.inl a.2))).elim`. Conclude with `(s.v0_St (h ▸ b.2)).elim`. Both sides reduce to the same expression. Conclude with `(hn b (Or.inr (Or.inr h.symm))).elim`. Conclude with `(hn a (h ▸ Or.inr (Or.inl b.2))).elim`.
-
-Conclude with `(hn a (Or.inr (Or.inr h))).elim`. Rewrite using `[hi h]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem plF_inj (s : HidaSetting l L Ω) {q : ℕ} (v : Fin q → Plc (Lp L)) (hi : Function.Injective v)
     (hn : ∀ j, v j ∉ s.S) : Function.Injective (plF s v) := by
@@ -72,11 +68,11 @@ private theorem plF_inj (s : HidaSetting l L Ω) {q : ℕ} (v : Fin q → Plc (L
     · rw [hi h]
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u | u | _ | j, rfl⟩`. Conclude with `Or.inl (Or.inl u.2)`. Conclude with `Or.inl (Or.inr (Or.inl u.2))`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the first alternative.
 
-Conclude with `Or.inl (Or.inr (Or.inr rfl))`. Conclude with `Or.inr ⟨j, rfl⟩`. Introduce and unpack `((h | h | h) | ⟨j, h⟩)`. Conclude with `⟨.inl ⟨x, h⟩, rfl⟩`. Conclude with `⟨.inr (.inl ⟨x, h⟩), rfl⟩`.
+Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨.inr (.inr none), h.symm⟩`. Conclude with `⟨.inr (.inr (some j)), h⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 private theorem plF_range (s : HidaSetting l L Ω) {q : ℕ} (v : Fin q → Plc (Lp L)) :
     Set.range (plF s v) = s.S ∪ Set.range v := by
@@ -102,27 +98,17 @@ private def vaF (s : HidaSetting l L Ω) {q : ℕ} (B : Fin q → ValuationSubri
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s V0 O _ _ _ _ _ n r T P _ N`. Take `⟨hex, hcc⟩` from `ccEx l L Ω`. Use `choose c hc using hex`. Establish `hc' : ∀ w, ∃ j : Ω →+* ℂ, ∀ x, j (c w x) = starRingEnd ℂ (j x)` using `fun w => by`. Take `⟨j, h, -⟩` from `hc w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨j, h⟩`. Establish `hcard : Fintype.card (InfinitePlace (Lp L)) = Module.finrank ℚ (Lp L)`. Rewrite using `[IsTotallyReal.finrank, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, add_zero]`. Set `ip : Fin (Module.finrank ℚ (Lp L)) ≃ InfinitePlace (Lp L)` to `(Fintype.equivFinOfCardEq hcard).symm`. Establish `hε : ∀ g, (T.GN N).ε ((P.e N).p (toGS Ω (P.V N).S' g)) = cycZ (Lp L) Ω l g` using `fun g => ((P.e N).ε _).trans (DFunLike.congr_fun (P.V N).hε g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `a : ArData (T.GN N) T.q (Module.finrank ℚ (Lp L))` to `{ Dq := fun o => Dec (F := L) (vaF s (P.B N) (.inr (.inr o))) cpt := fun o => isCompact_iff_compactSpace.1 (isClosed_Dec (F := L) _).isCompact φq := fun o => (P.e N).p₀.comp ((P.V N).pr.comp (Dec (F := L) _).subtype) φq_cont := fun o => ((P.e N).cont.comp (((continuous_toGS Ω _). …`. Rewrite using `[← (P.e N).c]`. Conclude with `(hε s.c).trans (hcc _ s.hc).2.2`. Use `dv := fun v => locDeg (Subtype.val v)`. Use `sum_dv := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Rewrite using `[← finsum_eq_sum_of_fintype]`. Conclude with `sumDegF l (Lp L) }`. Establish `hsp : ∀ w, Dec (F` using `Lp L) (vaF s (P.B N) w) ≤ (resP L Ω).range := by`. Introduce and unpack `(u | u | _ | j)`. Conclude with `s.split _ (Or.inl u.2)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Conclude with `s.split _ (Or.inr (Or.inl u.2))`. Conclude with `s.split _ (Or.inr (Or.inr rfl))`. Conclude with `P.split N j`. Use `choose α hα using fun w => decSplit L Ω _ (hsp w)`. Set `e0` to `MulEquiv.ofBijective (P.e N).p ⟨P.e_inj N, (P.e N).surj⟩`.
+Treat this case separately. Treat this case separately. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `ec : Continuous e0.toEquiv` using `(P.e N).cont`. Set `e : GS Ω (P.V N).S' ≃ₜ* (T.GN N).Γ` to `{ e0 with continuous_toFun := (P.e N).cont continuous_invFun := (Continuous.homeoOfEquivCompactToT2 ec).symm.continuous }`. Set `pl : ArData.W (locOf r) T.q ≃ (P.V N).S'` to `(Equiv.ofInjective _ (plF_inj s (P.v N) (P.v_inj N) (P.v_not N))).trans (Equiv.setCongr ((plF_range s _).trans (P.S_eq N).symm))`. Use `⟨a, { S := (P.V N).S' above := fun v hv => (P.V N).sub (Or.inl hv) e := e e_ε := hε pl := pl pl_l := fun w => plF_l s (P.v N) (P.v_not N) w A := vaF s (P.B N) isOver := ?_ α := fun w => match w with` and prove the remaining obligations. Consider the case `.inl u => α (.inl u)`.
-
-Consider the case `.inr (.inl u) => α (.inr (.inl u))`. Consider the case `.inr (.inr o) => α (.inr (.inr o))`. Use `ι_eq := ?_`. Use `dv_eq := fun v => rfl`. Use `ip := ip`.
-
-Use `c := fun i => c (ip i)`. Use `cc := fun i => hc _`. Use `cw_eq := fun i => rfl }, fun v => rfl, ?_, fun j => ⟨⟨⟨P.fr N j, P.fr_dec N j⟩, (P.ph N j).symm⟩, ?_⟩⟩`. Introduce and unpack `(u | u | _ | j)`. Conclude with `s.hA _`.
-
-Conclude with `s.hA _`. Conclude with `s.hA _`. Conclude with `P.B_v N j`. Introduce and unpack `(u | u | o) g`. Conclude with `((P.e N).φ u g).symm.trans (congrArg (fun x => (P.e N).p (toGS Ω _ x)) (hα (.inl u) g).symm)`.
-
-Conclude with `((P.e N).φu u g).symm.trans (congrArg (fun x => (P.e N).p (toGS Ω _ x)) (hα (.inr (.inl u)) g).symm)`. Conclude with `congrArg (fun x => (P.e N).p (toGS Ω _ x)) (hα (.inr (.inr o)) g).symm`. Establish `: ((T.h N).p₀).comp (a.φq none) = V0.pr.comp (Dec (F` using `L) (s.A s.v0)).subtype := MonoidHom.ext fun g => Subtype.ext (P.e_h N _)`. Rewrite using `[this]`. Conclude with `(MonoidHom.range_comp _ _).trans (congrArg (Subgroup.map V0.pr) (Subgroup.range_subtype _))`.
-
-Conclude with `⟨⟨P.τ N j, Ine_le_Dec _ (P.τ_gen N j).1⟩, (P.ta N j).symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.arPres :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (V0 : s.Lev) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid V0.frame O n) (T : TWGrp (globOf r V0)) (_ : TWPl r T), V0.S' = s.S → ∀ N, ∃ (a : ArData (T.GN N) T.q (Module.finrank ℚ (Lp L))) (_ : ArPres a (Lp L) Ω), (∀ v : Vl l L, a.dv v = locDeg v.1) ∧ (((T.h N).p₀).comp (a.φq none)).range = V0.frame.D0 ∧ ∀ j, T.ph N j ∈ (a.φq (some j)).range ∧ T.ta N j ∈ (a.φq (some j)).range := by

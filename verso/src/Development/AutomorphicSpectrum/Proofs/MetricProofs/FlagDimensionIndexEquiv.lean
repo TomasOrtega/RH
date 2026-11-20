@@ -7,19 +7,19 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.W
 namespace GlobalTheory.CompanionTheory.Ar.PB.WMan.ChartCount
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_range_id, Nat.choose_two_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_range_eq_choose (m : ℕ) : ∑ i ∈ Finset.range m, i = m.choose 2 := by
   rw [Finset.sum_range_id, Nat.choose_two_right]
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_subtype]`. Establish `key : (Finset.univ.filter fun b : Fin N => b < a ∧ ((a : ℕ) < N - j ↔ (b : ℕ) < N - j)).map Fin.valEmbedding = Finset.Ico (if (a : ℕ) < N - j then 0 else N - j) (a : ℕ)`. Use extensionality with `x`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_Ico]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨b, ⟨hba, hiff⟩, rfl⟩`. Establish `hba' : (b : ℕ) < a` using `hba`. Use `split_ifs with h`. Conclude with `⟨Nat.zero_le _, hba'⟩`. Conclude with `⟨Nat.le_of_not_lt (fun hb => h (hiff.mpr hb)), hba'⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨x, lt_trans h2 a.isLt⟩, ⟨h2, ?_⟩, rfl⟩` and prove the remaining obligations. Use `show (a : ℕ) < N - j ↔ x < N - j`. Use `split_ifs at h1 with h`. Conclude with `⟨fun _ => lt_trans h2 h, fun _ => h⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `⟨fun h' => absurd h' h, fun h' => absurd h1 (Nat.not_le.mpr h')⟩`. Rewrite using `[← Finset.card_map Fin.valEmbedding, key, Nat.card_Ico]`. Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem card_row (N j : ℕ) (hj : j ≤ N) (a : Fin N) :
     Fintype.card {b : Fin N // b < a ∧ ((a : ℕ) < N - j ↔ (b : ℕ) < N - j)} =
@@ -46,11 +46,11 @@ theorem card_row (N j : ℕ) (hj : j ≤ N) (a : Fin N) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_congr (Equiv.subtypeProdEquivSigmaSubtype (fun (a b : Fin N) => b < a ∧ ((a : ℕ) < N - j ↔ (b : ℕ) < N - j))), Fintype.card_sigma]`. Establish `h1 : ∀ a : Fin N, Fintype.card {b : Fin N // b < a ∧ ((a : ℕ) < N - j ↔ (b : ℕ) < N - j)} = if (a : ℕ) < N - j then (a : ℕ) else (a : ℕ) - (N - j)` using `card_row N j hj`. Simplify using `only [h1]`. Establish `hs : ∑ a : Fin N, (if (a : ℕ) < N - j then (a : ℕ) else (a : ℕ) - (N - j)) = ∑ i ∈ Finset.range N, (if i < N - j then i else i - (N - j))` using `Fin.sum_univ_eq_sum_range (fun i => if i < N - j then i else i - (N - j)) N`. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨M, rfl⟩ : ∃ M, N = M + j` from `⟨N - j, by omega⟩`. Establish `hM : M + j - j = M` using `by omega`. Rewrite using `[hM, Finset.sum_range_add]`. Establish `e1 : ∑ x ∈ Finset.range M, (if x < M then x else x - M) = ∑ x ∈ Finset.range M, x` using `Finset.sum_congr rfl (fun x hx => if_pos (Finset.mem_range.mp hx))`. Establish `e2 : ∑ x ∈ Finset.range j, (if M + x < M then M + x else M + x - M) = ∑ x ∈ Finset.range j, x` using `Finset.sum_congr rfl (fun x _ => by rw [if_neg (by omega)]; omega)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, sum_range_eq_choose, sum_range_eq_choose, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_pairs (N j : ℕ) (hj : j ≤ N) :
     Fintype.card {p : Fin N × Fin N // p.2 < p.1 ∧ ((p.1 : ℕ) < N - j ↔ (p.2 : ℕ) < N - j)} =
@@ -75,7 +75,7 @@ theorem card_pairs (N j : ℕ) (hj : j ≤ N) :
   rw [e1, e2, sum_range_eq_choose, sum_range_eq_choose, add_comm]
 
 /- English proof (translation)
-Rewrite using `[← card_pairs N j hj, ← Fintype.card_prod]`. Conclude with `Fintype.card_congr { toFun := fun q => (q.1.1, ⟨q.1.2, q.2⟩) invFun := fun x => ⟨(x.1, x.2.1), x.2.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_lowIdx (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (hj : j ≤ N) :
     Fintype.card (LowIdx Ψ N j) = Fintype.card Ψ * (j.choose 2 + (N - j).choose 2) := by
@@ -87,7 +87,7 @@ theorem card_lowIdx (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (hj : 
       right_inv := fun _ => rfl }
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j n d hj hd`. Apply `Fintype.card_eq.mp` to reduce the goal to its premises. Rewrite using `[Fintype.card_sum, Fintype.card_sum, Fintype.card_fin, card_lowIdx Ψ N j hj, Fintype.card_unit, Fintype.card_fin]`. Generalize the expression as in `Fintype.card Ψ * (j.choose 2 + (N - j).choose 2) = t at hd ⊢`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 -/
 theorem nonempty_paramEquiv : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j n d : ℕ), j ≤ N →
     d + 1 = n + Fintype.card Ψ * (j.choose 2 + (N - j).choose 2) →

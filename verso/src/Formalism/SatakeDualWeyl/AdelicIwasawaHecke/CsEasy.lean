@@ -8,9 +8,9 @@ open Matrix NumberField
 namespace Formalism.UG.P
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ e`. Set `τ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Establish `h : ∀ x, τ (σ x) = starRingEnd ℂ (τ x)` using `fun x => by`. Simplify using `using RingHom.congr_fun (hσ τ) x`. Apply `τ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h, h, Complex.conj_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_involution_holds : Formalism.UG.CS.SigmaInvol := by
   intro F E _ _ _ _ _ σ hσ e
@@ -21,9 +21,9 @@ theorem sigma_involution_holds : Formalism.UG.CS.SigmaInvol := by
   rw [h, h, Complex.conj_conj]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Formalism.UG.stdLat, Submodule.mem_pi, Set.mem_univ, true_implies, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose y hy using h`. Conclude with `⟨y, funext fun i => by simpa using hy i⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, rfl⟩ i`. Conclude with `⟨y i, by simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem csEasy_stdLat_eq_range (E : Type) [Field E] [NumberField E] (n : Type) [Fintype n]
     [DecidableEq n] :
@@ -40,11 +40,11 @@ theorem csEasy_stdLat_eq_range (E : Type) [Field E] [NumberField E] (n : Type) [
     exact ⟨y i, by simp⟩
 
 /- English proof (translation)
-Introduce `E _ _ n _ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[csEasy_stdLat_eq_range] infer_instance`. Rewrite using `[eq_top_iff, ← (Pi.basisFun E n).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `show Pi.basisFun E n i ∈ Formalism.UG.stdLat (n := n) (A := E) (𝓞 E)`. Simplify using `only [Formalism.UG.stdLat, Submodule.mem_pi, Set.mem_univ, true_implies, LinearMap.mem_range, Pi.basisFun_apply]`. Introduce `j`. Rewrite using `[Pi.single_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `split_ifs`. Conclude with `⟨1, by simp⟩`. Conclude with `⟨0, by simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem standard_lattice_full_holds : Formalism.UG.CS.StdLatFull := by
   intro E _ _ n _ _
@@ -64,9 +64,9 @@ theorem standard_lattice_full_holds : Formalism.UG.CS.StdLatFull := by
     · exact ⟨0, by simp⟩
 
 /- English proof (translation)
-Unfold `Formalism.UG.CS.formJ Formalism.UG.hform`. Rewrite using `[Matrix.toLinearMapₛₗ₂'_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show σ (x i) * (y j * (c * J i j)) = c * (σ (x i) * J i j * y j)`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem csEasy_formJ_apply {E : Type} [Field E] (σ : E →+* E) (hσ : ∀ e, σ (σ e) = e)
     {n : Type} [Fintype n] [DecidableEq n] (J : Matrix n n E) (c : E) (x y : n → E) :
@@ -80,13 +80,13 @@ theorem csEasy_formJ_apply {E : Type} [Field E] (σ : E →+* E) (hσ : ∀ e, �
   ring
 
 /- English proof (translation)
-Introduce `E _ σ hσ n _ _ J c hc hJ`. Establish `hJ' : ∀ i j, σ (J i j) = J j i` using `fun i j => by`. Use `congrFun (congrFun hJ j) i` as an intermediate fact. Simplify `this` using `[Formalism.UG.cT]`. Use `⟨?_, fun x y => csEasy_formJ_apply σ hσ J c x y⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce `x y`. Rewrite using `[csEasy_formJ_apply, csEasy_formJ_apply]`. Use `show σ (c * Formalism.UG.hform σ J x y) = c * Formalism.UG.hform σ J y x`. Rewrite using `[map_mul, hc]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Unfold `Formalism.UG.hform`. Simplify using `only [map_sum, map_mul, hσ, hJ']`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hermitian_form_symmetry_holds : Formalism.UG.CS.FormSymm := by
   intro E _ σ hσ n _ _ J c hc hJ
@@ -107,9 +107,9 @@ theorem hermitian_form_symmetry_holds : Formalism.UG.CS.FormSymm := by
   ring
 
 /- English proof (translation)
-Establish `e : ∀ (A : Matrix n n E) (u v : n → E), Formalism.UG.hform σ A u v = (fun i => σ (u i)) ⬝ᵥ (A *ᵥ v)`. Introduce `A u v`. Simplify using `only [Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`. Establish `hs : (fun i => σ ((M *ᵥ x) i)) = (M.map σ) *ᵥ (fun i => σ (x i))`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[mulVec, dotProduct, map_sum]`. Rewrite using `[e, e, hs, ← Matrix.vecMul_transpose, Matrix.dotProduct_mulVec, Matrix.dotProduct_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, Formalism.UG.cT]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma hform_mulVec_mulVec_of_cT_mul_mul_eq {E : Type} [Field E] (σ : E →+* E) {n : Type} [Fintype n]
     [DecidableEq n] (J M : Matrix n n E) (x y : n → E) :
@@ -126,7 +126,7 @@ private lemma hform_mulVec_mulVec_of_cT_mul_mul_eq {E : Type} [Field E] (σ : E 
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hform_single_single_stabilizer_orbit_volume {E : Type} [Field E] (σ : E →+* E) {n : Type} [Fintype n]
     [DecidableEq n] (A : Matrix n n E) (i j : n) :
@@ -134,11 +134,11 @@ private lemma hform_single_single_stabilizer_orbit_volume {E : Type} [Field E] (
   simp [Formalism.UG.hform, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `E _ σ hσ n _ _ J c hc hcσ g`. Establish `hg : ∀ x, Formalism.UG.glEquiv g x = (g : Matrix n n E) *ᵥ x` using `fun x => rfl`. Use `show Formalism.UG.cT σ (g : Matrix n n E) * J * (g : Matrix n n E) = J ↔ _`. Use `show _ ↔ ∀ x y, _ = _`. Simplify using `only [hg, csEasy_formJ_apply, hform_mulVec_mulVec_of_cT_mul_mul_eq, mul_right_inj' hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h x y`. Rewrite using `[h]`. Introduce `h`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `h (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[hform_single_single_stabilizer_orbit_volume, hform_single_single_stabilizer_orbit_volume]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem unitary_isometry_lattice_holds : Formalism.UG.CS.IsomUJ := by
   intro E _ σ hσ n _ _ J c hc hcσ g

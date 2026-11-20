@@ -15,7 +15,7 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ B _ hB M hM`. Use `hB.comm` as an intermediate fact. Conclude with `GlobalTheory.AbLaw.CubeProj.exists_gen_theta_abelianVariety GlobalTheory.globalFns_holds K B hB (GlobalTheory.T.isProjectiveOverRingByCharts_abelian_variety K B hB) M hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_gen_theta_of_isAbelianScheme :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Spec (CommRingCat.of K))) [GrpObj B], IsAbelianScheme B → ∀ M : LB B.left, M.IsLB → ∃ t : LB.Gen (Theta B M), t.IsGen := by

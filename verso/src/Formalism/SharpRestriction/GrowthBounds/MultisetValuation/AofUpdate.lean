@@ -22,7 +22,7 @@ structure LinD : Prop where
 variable {X}
 
 /- English proof (translation)
-Unfold `Sys.Zop Sys.Ttu`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hL.Tt_add, smul_add, smul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Zop_add (hL : LinD X) (v : X.Pl) (u m : ℕ → X.G.Kf) (j : ℕ) (F F' : X.Fm j) :
     X.Zop v u m j (F + F') = X.Zop v u m j F + X.Zop v u m j F' := by
@@ -32,9 +32,9 @@ theorem Zop_add (hL : LinD X) (v : X.Pl) (u m : ℕ → X.G.Kf) (j : ℕ) (F F' 
   rw [hL.Tt_add, smul_add, smul_add]
 
 /- English proof (translation)
-Unfold `Sys.Zop Sys.Ttu`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hL.Tt_smul]`. Simplify using `only [smul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Zop_smul (hL : LinD X) (v : X.Pl) (u m : ℕ → X.G.Kf) (j : ℕ) (a : X.G.Kf) (F : X.Fm j) :
     X.Zop v u m j (a • F) = a • X.Zop v u m j F := by
@@ -47,7 +47,7 @@ theorem Zop_smul (hL : LinD X) (v : X.Pl) (u m : ℕ → X.G.Kf) (j : ℕ) (a : 
   ring
 
 /- English proof (translation)
-Establish `h` using `Zop_smul hL v u m j 0 0`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Zop_zero (hL : LinD X) (v : X.Pl) (u m : ℕ → X.G.Kf) (j : ℕ) : X.Zop v u m j 0 = 0 := by
   have h := Zop_smul hL v u m j 0 0
@@ -67,7 +67,7 @@ def Gen (j : ℕ) (vs : List X.Pl) : Set (X.Fm (j + 1)) :=
 variable {X}
 
 /- English proof (translation)
-Proceed by induction on `vs with`. Consider the case `nil => rfl`. Consider the case `cons v vs ih => show X.Zop v (u v) (m v) j (ZL X u m j vs (a • F)) = a • X.Zop v (u v) (m v) j (ZL X u m j vs F)`. Rewrite using `[ih, Zop_smul hL]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ZL_smul (hL : LinD X) (u m : X.Pl → ℕ → X.G.Kf) (j : ℕ) (vs : List X.Pl) (a : X.G.Kf) (F : X.Fm j) :
     ZL X u m j vs (a • F) = a • ZL X u m j vs F := by
@@ -78,7 +78,7 @@ theorem ZL_smul (hL : LinD X) (u m : X.Pl → ℕ → X.G.Kf) (j : ℕ) (vs : Li
     rw [ih, Zop_smul hL]
 
 /- English proof (translation)
-Proceed by induction on `vs with`. Consider the case `nil => rfl`. Consider the case `cons v vs ih => show X.Tt v (i0 v) j (TtL X j i0 vs F) = X.Tt v (i0' v) j (TtL X j i0' vs F)`. Rewrite using `[h v (by simp), ih (fun w hw => h w (by simp [hw]))]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem TtL_congr (j : ℕ) (i0 i0' : X.Pl → ℕ) (vs : List X.Pl) (h : ∀ v ∈ vs, i0 v = i0' v) (F : X.Fm j) :
     TtL X j i0 vs F = TtL X j i0' vs F := by
@@ -89,11 +89,11 @@ theorem TtL_congr (j : ℕ) (i0 i0' : X.Pl → ℕ) (vs : List X.Pl) (h : ∀ v 
     rw [h v (by simp), ih (fun w hw => h w (by simp [hw]))]
 
 /- English proof (translation)
-Unfold `Aof`. Establish `hs : (if i = 0 then (X.alEven v : ℝ) else 0) = ∑ w, if w = v ∧ i = 0 then (X.alEven w : ℝ) else 0`. Rewrite using `[Finset.sum_eq_single v]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hb]`. Simplify using the standard rewrite rules. Rewrite using `[hs, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w = v`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Simplify using `[hv]`. Simplify using `[hw, Function.update_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Aof_update (i0 : X.Pl → ℕ) (vs : List X.Pl) (v : X.Pl) (hv : v ∉ vs) (i : ℕ) :
     Aof X (Function.update i0 v i) (v :: vs) = Aof X i0 vs + (if i = 0 then (X.alEven v : ℝ) else 0) := by
@@ -113,25 +113,23 @@ theorem Aof_update (i0 : X.Pl → ℕ) (vs : List X.Pl) (v : X.Pl) (hv : v ∉ v
   · simp [hw, Function.update_apply]
 
 /- English proof (translation)
-Introduce `T hT`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, i0, G', hG', hr, h0, ha, rfl⟩` from `hx`. Rewrite using `[Zop_smul hL]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Unfold `Sys.Zop`. Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun l hl => ?_` and prove the remaining obligations. Rewrite `hl` using `[Finset.mem_range]`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hupd : Function.update i0 v (X.G.P.r - l) v = X.G.P.r - l` using `by simp`. Establish `hTt : TtL X (j + 1) (Function.update i0 v (X.G.P.r - l)) (v :: vs) (X.Kz j G') = X.Tt v (X.G.P.r - l) (j + 1) (TtL X (j + 1) i0 vs (X.Kz j G'))` using `by show X.Tt v (Function.update i0 v (X.G.P.r - l) v) (j + 1) (TtL X (j + 1) (Function.update i0 v (X.G.P.r - l)) vs (X.Kz j G')) = _`. Rewrite using `[hupd, TtL_congr (j + 1) _ i0 vs (fun w hw => Function.update_of_ne (ne_of_mem_of_not_mem hw hv) _ _)]`. Use `⟨a * ((-1) ^ l * X.cl v m (j + 1) l * (∏ l' ∈ Icc 1 (j + 1), u l') ^ (-((X.G.P.r - l : ℕ) : ℤ))), Function.update i0 v (X.G.P.r - l), G', hG', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hupd]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Function.update_of_ne hw]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hr w`. Introduce `w hw`. Rewrite `hw` using `[List.mem_cons, not_or]`. Rewrite using `[Function.update_of_ne hw.1]`. Conclude with `h0 w hw.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Aof_update i0 vs v hv (X.G.P.r - l)]`. Establish `hU : X.vEqK (∏ l' ∈ Icc 1 (j + 1), u l') 0` using `vEqK_prod_units X hfr (eO_pos X v) _ _ fun l' hl' => hu l' (by`. Rewrite `hl'`, the goal using `[Finset.mem_Icc]`. Use the proof step `omega)`. Establish `hUk` using `(vEqK_zpow X hfr hU (-((X.G.P.r - l : ℕ) : ℤ))).1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcl : X.vGeK (X.cl v m (j + 1) l) (if X.G.P.r - l = 0 then (X.alEven v : ℝ) else 0)` using `by split_ifs with h`. Establish `hlr : l = X.G.P.r` using `by omega`. Rewrite using `[hlr]`. Conclude with `hcr`. Conclude with `hc0 l (by omega)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key` using `vGeK_mul X hfr ha (vGeK_mul X hfr (vGeK_mul X hfr (vGeK_negOnePow X l) hcl) hUk)`. Use `key using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hTt]`. Simplify using `only [Sys.Ttu, smul_smul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero`. Rewrite using `[Zop_zero hL]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[Zop_add hL]`.
-
-Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[← algebraMap_smul X.G.Kf a x, Zop_smul hL, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Zop_gen (hfr : IsFractionRing X.G.O X.G.Kf) (hL : LinD X) (v : X.Pl) (u m : ℕ → X.G.Kf) (j : ℕ)
     (hj : j < X.mm) (hu : ∀ l ∈ Icc 1 X.mm, X.vEqK (u l) 0)
@@ -195,11 +193,11 @@ theorem Zop_gen (hfr : IsFractionRing X.G.O X.G.Kf) (hL : LinD X) (v : X.Pl) (u 
     exact Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-Proceed by induction on `vs with`. Consider the case `nil`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨1, fun _ => 0, G, hG, fun _ => Nat.zero_le _, fun _ _ => rfl, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : Aof X (fun _ => 0) [] = 0`.
+Proceed by induction. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[Aof]`. Rewrite using `[h0]`. Conclude with `vGeK_one X`. Rewrite using `[one_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `cons v vs ih`. Rewrite `hnd` using `[List.nodup_cons]`. Conclude with `Zop_gen hfr hL v (u v) (m v) j hj (hu v) (hc0 v) (hcr v) vs hnd.1 _ (ih hnd.2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ZL_mem (hfr : IsFractionRing X.G.O X.G.Kf) (hL : LinD X) (u m : X.Pl → ℕ → X.G.Kf) (j : ℕ) (hj : j < X.mm)
     (hu : ∀ v, ∀ l ∈ Icc 1 X.mm, X.vEqK (u v l) 0)
@@ -222,21 +220,19 @@ theorem ZL_mem (hfr : IsFractionRing X.G.O X.G.Kf) (hL : LinD X) (u m : X.Pl →
     exact Zop_gen hfr hL v (u v) (m v) j hj (hu v) (hc0 v) (hcr v) vs hnd.1 _ (ih hnd.2)
 
 /- English proof (translation)
-Establish `key : ∀ T ∈ Submodule.span X.G.O (Gen X j vs), X.vGe (j + 1) T (∑ v, gP v - X.dG j)`. Introduce `T hT`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, i0, G', hG', hr, h0, ha, rfl⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨gQ, hgQ⟩ : ∃ f : X.Pl → ℝ, f = fun v => gP v - (if v ∈ vs ∧ i0 v = 0 then (X.alEven v : ℝ) else 0)` from `⟨_, rfl⟩`. Establish `hP : ∀ v, PlaceB X Y j v (i0 v) (gQ v)`. Introduce `v`. Distinguish the cases in `hv : v ∈ vs`. Distinguish the cases in `hi : i0 v = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Use `left`. Use `⟨hi, Or.inr ?_⟩` and prove the remaining obligations. Simplify using `only [hgQ, hv, hi, and_self, if_true]`. Combine the linear relations using `[h1 v hv]`. Use `right`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨by omega, hr v, ?_⟩` and prove the remaining obligations. Simplify using `only [hgQ, hv, hi, and_false, if_false, sub_zero]`. Conclude with `h1 v hv`. Use `left`. Use `⟨h0 v hv, Or.inl ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hgQ, hv, false_and, if_false, sub_zero]`. Conclude with `h2 v hv`. Establish `hTt` using `form_of_place hF hE j hj i0 vs gQ hnd hr h0 hP G' hG'`. Establish `hsum : ∑ v, gQ v = ∑ v, gP v - Aof X i0 vs`. Simplify using `only [hgQ, Aof, Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Establish `hs` using `vGe_smul X hfr ha hTt`. Rewrite `hs` using `[hsum]`. Use `hs using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact vGe_zero X _ _`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `add x y _ _ hx hy => exact vGe_add X hx hy`. Consider the case `smul a x _ hx`. Establish `ha : X.vGeK (algebraMap X.G.O X.G.Kf a) 0` using `(vGeK_zero_iff X).2 ((mem_intK X).2 ⟨a, rfl⟩)`. Establish `hs` using `vGe_smul X hfr ha hx`. Rewrite `hs` using `[zero_add, algebraMap_smul]`.
-
-Conclude with `hs`. Conclude with `key _ (ZL_mem hfr hL u m j hj hu hc0 hcr vs hnd G hG)`.
+A detailed English derivation is pending.
 -/
 theorem ZL_bound {Y : Pend X} (hfr : IsFractionRing X.G.O X.G.Kf) (hL : LinD X) (hF : FormB X Y) (hE : EntCondition X Y)
     (u m : X.Pl → ℕ → X.G.Kf) (j : ℕ) (hj : j < X.mm)

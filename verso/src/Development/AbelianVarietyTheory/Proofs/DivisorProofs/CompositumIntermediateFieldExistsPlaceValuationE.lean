@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.UnramCompositum
 
 /- English proof (translation)
-Establish `: IsGaloisGroup (N ≃ₐ[k] N) (𝓞 k) (𝓞 N)` using `IsGaloisGroup.of_isFractionRing _ _ _ k N`. Establish `hpr : (Q.under (𝓞 k)).IsPrime` using `Ideal.IsPrime.under _ Q`. Establish `hcard` using `Ideal.card_inertia_eq_ramificationIdxIn (G := N ≃ₐ[k] N) (Q.under (𝓞 k)) Q`. Rewrite `hcard` using `[Ideal.ramificationIdxIn_eq_ramificationIdx (Q.under (𝓞 k)) Q (N ≃ₐ[k] N)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem card_inertia (k N : Type) [Field k] [NumberField k] [Field N] [NumberField N]
     [Algebra k N] [IsGalois k N] (Q : Ideal (𝓞 N)) [Q.IsPrime] :
@@ -17,13 +17,13 @@ theorem card_inertia (k N : Type) [Field k] [NumberField k] [Field N] [NumberFie
   rwa [Ideal.ramificationIdxIn_eq_ramificationIdx (Q.under (𝓞 k)) Q (N ≃ₐ[k] N)] at hcard
 
 /- English proof (translation)
-Use `haveI : IsGalois E N := IsGalois.tower_top_of_isGalois k E N`. Establish `h1` using `card_inertia k N Q`. Establish `h2` using `card_inertia E N Q`. Establish `h3 : Q.ramificationIdx (𝓞 k) = (Q.under (𝓞 E)).ramificationIdx (𝓞 k) * Q.ramificationIdx (𝓞 E)` using `Ideal.ramificationIdx_tower (Q.under (𝓞 E)) Q`. Establish `h4 : 0 < Q.ramificationIdx (𝓞 E)` using `Ideal.ramificationIdx_pos Q (𝓞 E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f : Q.inertia (N ≃ₐ[E] N) → Q.inertia (N ≃ₐ[k] N)` to `fun σ => ⟨σ.1.restrictScalars k, AddSubgroup.mem_inertia.mpr fun x => AddSubgroup.mem_inertia.mp σ.2 x⟩`. Establish `hf : Function.Injective f` using `fun σ σ' h => Subtype.ext (AlgEquiv.restrictScalars_injective k (congrArg Subtype.val h))`. Prove the components needed by the constructor for the conclusion. Introduce `h τ hτ y`. Establish `hb : Function.Bijective f` using `hf.bijective_of_nat_card_le (by rw [h1, h2, h3, h, one_mul])`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ⟩` from `hb.2 ⟨τ, AddSubgroup.mem_inertia.mpr hτ⟩`. Establish `: σ.1.restrictScalars k = τ` using `congrArg Subtype.val hσ`. Rewrite using `[← this]`. Conclude with `σ.1.commutes y`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Function.Surjective f` using `fun τ => ⟨⟨{ τ.1.toRingEquiv with commutes' := h τ.1 (AddSubgroup.mem_inertia.mp τ.2) }, AddSubgroup.mem_inertia.mpr fun x => AddSubgroup.mem_inertia.mp τ.2 x⟩, rfl⟩`. Establish `hc` using `Nat.card_eq_of_bijective f ⟨hf, hs⟩`. Rewrite `hc` using `[h1, h2, h3]`. Conclude with `Nat.eq_of_mul_eq_mul_right h4 (by rw [one_mul]; exact hc.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramificationIdx_eq_one_iff_fix (k E N : Type) [Field k] [NumberField k] [Field E] [NumberField E]
     [Field N] [NumberField N] [Algebra k E] [Algebra k N] [Algebra E N] [IsScalarTower k E N] [IsGalois k N]
@@ -56,7 +56,7 @@ theorem ramificationIdx_eq_one_iff_fix (k E N : Type) [Field k] [NumberField k] 
     exact Nat.eq_of_mul_eq_mul_right h4 (by rw [one_mul]; exact hc.symm)
 
 /- English proof (translation)
-Establish `: IsAlgClosure ℚ (AlgebraicClosure K)` using `IsAlgClosure.ofAlgebraic ℚ K (AlgebraicClosure K)`. Establish `: IsGalois ℚ (AlgebraicClosure K)` using `⟨⟩`. Establish `: NumberField (IntermediateField.normalClosure ℚ K (AlgebraicClosure K))` using `⟨⟩`. Conclude with `⟨IntermediateField.normalClosure ℚ K (AlgebraicClosure K), inferInstance, inferInstance, inferInstance, IsGalois.normalClosure ℚ K (AlgebraicClosure K)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_galois_above (K : Type) [Field K] [NumberField K] :
     ∃ (N : Type) (_ : Field N) (_ : NumberField N) (_ : Algebra K N), IsGalois ℚ N := by
@@ -67,15 +67,15 @@ theorem exists_galois_above (K : Type) [Field K] [NumberField K] :
     IsGalois.normalClosure ℚ K (AlgebraicClosure K)⟩
 
 /- English proof (translation)
-Take `⟨N, _, _, _, hN⟩` from `exists_galois_above K`. Use `letI : Algebra F N := ((algebraMap K N).comp (algebraMap F K)).toAlgebra`. Use `letI : Algebra F' N := ((algebraMap K N).comp (algebraMap F' K)).toAlgebra`. Establish `: IsScalarTower F K N` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsGalois F N` using `IsGalois.tower_top_of_isGalois ℚ F N`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `w.isMaximal` as an intermediate fact. Take `⟨Q, hQ, hQw⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 N) w.asIdeal`. Establish `hqQ : ((q : ℕ) : 𝓞 N) ∈ Q`. Use `(Ideal.mem_of_liesOver Q w.asIdeal _).1 hw` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hu : Algebra.IsUnramifiedAt ℤ (Q.under (𝓞 F'))` using `(not_dvd_discr_iff_forall_mem F' (𝓞 F') (Nat.prime_iff_prime_int.1 hq)).1 hd _ inferInstance (by`. Rewrite using `[Ideal.under, Ideal.mem_comap, map_intCast, Int.cast_natCast]`. Conclude with `hqQ)`. Establish `hu' : Algebra.IsUnramifiedAt (𝓞 ℚ) (Q.under (𝓞 F'))` using `Algebra.IsUnramifiedAt.of_restrictScalars ℤ _`. Establish `hfix` using `(ramificationIdx_eq_one_iff_fix ℚ F' N Q).1 (Ideal.ramificationIdx_eq_one _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : (Q.under (𝓞 K)).ramificationIdx (𝓞 F) = 1`. Use `(ramificationIdx_eq_one_iff_fix F K N Q).2 fun τ hτ y => ?_` and prove the remaining obligations. Conclude with `RingHom.congr_fun (hgen N ((τ : N →+* N).comp (algebraMap K N)) (algebraMap K N) (fun x => τ.commutes x) (fun x => hfix (τ.restrictScalars ℚ) hτ x)) y`. Establish `hlo : (Q.under (𝓞 K)).LiesOver w.asIdeal` using `Ideal.LiesOver.tower_bot Q _ _`. Set `𝔭 : HeightOneSpectrum (𝓞 K)` to `⟨Q.under (𝓞 K), inferInstance, Ideal.ne_bot_of_liesOver_of_ne_bot w.ne_bot _⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlo' : 𝔭.asIdeal.LiesOver w.asIdeal` using `hlo`. Use `⟨𝔭, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← HeightOneSpectrum.valuation_liesOver K w 𝔭 a, Ideal.ramificationIdx'_eq_ramificationIdx w.asIdeal 𝔭.asIdeal w.ne_bot]`. Express the relevant statement in the definitionally equal form `_ ^ (Q.under (𝓞 K)).ramificationIdx (𝓞 F) = _`. Rewrite using `[he, pow_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_valuation_eq (F F' K : Type) [Field F] [NumberField F] [Field F'] [NumberField F'] [Field K]
     [NumberField K] [Algebra F K] [Algebra F' K]
@@ -116,13 +116,13 @@ theorem exists_valuation_eq (F F' K : Type) [Field F] [NumberField F] [Field F']
 open Formalism.L2.Pj in
 
 /- English proof (translation)
-Introduce `F F' K _ _ _ hF hK q hq hd w hw`. Establish `hF' : F' ≤ K` using `hK ▸ le_sup_right`. Use `letI : Algebra F K := (IntermediateField.inclusion hF).toRingHom.toAlgebra`. Use `letI : Algebra F' K := (IntermediateField.inclusion hF').toRingHom.toAlgebra`. Take `⟨𝔭, h⟩` from `exists_valuation_eq F F' K (fun N _ f g h1 h2 => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Set `T : Subfield ℂ` to `(RingHom.eqLocusField f g).map (K.val : K →+* ℂ)`. Set `S : IntermediateField ℚ ℂ` to `T.toIntermediateField fun x => by`. Rewrite using `[eq_ratCast]`. Conclude with `SubfieldClass.ratCast_mem T x`. Establish `hle : K ≤ S`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hK.le.trans (sup_le (fun x hx => ⟨⟨x, hF hx⟩, h1 ⟨x, hx⟩, rfl⟩) (fun x hx => ⟨⟨x, hF' hx⟩, h2 ⟨x, hx⟩, rfl⟩))` and prove the remaining obligations. Use extensionality with `z`. Take `⟨y, hy, hyz⟩` from `hle z.2`. Establish `hyz' : y = z` using `Subtype.ext hyz`. Substitute `hyz'` using the available equality.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `hy) q hq hd w hw`. Conclude with `⟨𝔭, fun a => congrArg (fun t => -WithZero.log t) (h a)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_vLa_eq : ∀ (F F' K : IntermediateField ℚ ℂ) [NumberField F] [NumberField F'] [NumberField K]
     (hF : F ≤ K), K = F ⊔ F' → ∀ q : ℕ, q.Prime → ¬ (q : ℤ) ∣ discr F' → ∀ w : HeightOneSpectrum (𝓞 F),

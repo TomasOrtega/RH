@@ -34,7 +34,7 @@ open GlobalTheory
 namespace GlobalTheory.DualTower
 
 /- English proof (translation)
-Take `⟨B, _, P₀, _, hdim, hdual, _⟩` from `GlobalTheory.dualAbelianScheme _ A.X A.ab`. Take `⟨e⟩` from `GlobalTheory.Published.AbelianDualCrystal.Test.dual_unique hdual h`. Establish `hB` using `hdim A.dim A.smooth`. Establish `hne : Nonempty (Sp K)` using `⟨IsLocalRing.closedPoint K⟩`. Conclude with `(GlobalTheory.relDim_unique_of_iso_grp _ hne B D.X e.hom inferInstance A.dim D.dim hB D.smooth).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dim_eq_of_isDual {K : Type} [Field K] (A D : AV.AbVar K) (P : LB (A.X ⊗ D.X).left)
     (h : IsDual A.X D.X P) : D.dim = A.dim := by

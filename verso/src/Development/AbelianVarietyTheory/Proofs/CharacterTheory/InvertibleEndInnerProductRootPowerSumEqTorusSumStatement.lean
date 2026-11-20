@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.Invariant
 open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CuspGL.ipGL_rootSum_eq_sum_torus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCharacterTheory%2FInvertibleEndInnerProductRootPowerSumEqTorusSum.lean&line=12#L12)
 -/

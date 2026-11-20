@@ -7,35 +7,31 @@ open scoped InnerProductSpace
 namespace GlobalTheory.RealInd
 
 /- English proof (translation)
-Introduce `n ε D`. Take `⟨hnt, -, hU, -⟩` from `D.temp`. Set `C : Subgroup (UJ ε)` to `KG ε ⊓ leviOne ε D.W`. Establish `hC : IsCompact (C : Set (UJ ε))` using `(isCompact_iff_compactSpace.2 (instCompactKG n ε)).inter_right (isClosed_leviOne D.flag D.pos)`. Use `haveI : CompactSpace C := isCompact_iff_compactSpace.1 hC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `μ : Measure C` to `Measure.haarMeasure ⊤`. Take `⟨v, hv⟩` from `exists_ne (0 : D.V)`. Establish `hmat : ∀ c : C, uMat (c : UJ ε) ∈ mats (leviOne ε D.W)` using `fun c => ⟨c, c.2.2, rfl⟩`. Establish `hsc : Continuous fun c : C => D.σ (uMat (c : UJ ε)) v` using `(hU.2.2 v).comp_continuous (continuous_uMat.comp continuous_subtype_val) hmat`. Establish `hσ1 : D.σ (uMat (1 : UJ ε)) v = v` using `by rw [uMat_one, hU.1.1]; rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsOpen {c : C | 0 < RCLike.re ⟪v, D.σ (uMat (c : UJ ε)) v⟫_ℂ}` using `isOpen_lt continuous_const (RCLike.continuous_re.comp (continuous_const.inner hsc))`. Take `⟨U, hUo, hUS⟩` from `isOpen_induced_iff.1 hS`. Establish `h1U : (1 : UJ ε) ∈ U`. Establish `: (1 : C) ∈ Subtype.val ⁻¹' U`. Rewrite using `[hUS]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `0 < RCLike.re ⟪v, D.σ (uMat (1 : UJ ε)) v⟫_ℂ`. Rewrite using `[hσ1, inner_self_eq_norm_sq]`. Conclude with `pow_pos (norm_pos_iff.2 hv) 2`. Conclude with `this`. Take `⟨f, hf, hf1, hfK⟩` from `CompletelyRegularSpace.completely_regular (1 : UJ ε) Uᶜ hUo.isClosed_compl (fun h => h h1U)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b : UJ ε → ℝ` to `fun g => 1 - (f g : ℝ)`. Establish `hb : Continuous b` using `continuous_const.sub (continuous_subtype_val.comp hf)`. Establish `hb0 : ∀ g, 0 ≤ b g` using `fun g => sub_nonneg.2 (f g).2.2`. Establish `hb1 : b 1 = 1` using `by simp [b, hf1]`. Establish `hbU : ∀ g, b g ≠ 0 → g ∈ U` using `fun g hg => by`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hg (by simp [b, hfK h])`. Set `F : UJ ε → C → D.V` to `fun g c => ((b (g⁻¹ * c) : ℝ) : ℂ) • D.σ (uMat (c : UJ ε)) v`. Establish `hF : Continuous (Function.uncurry F)` using `(Complex.continuous_ofReal.comp (hb.comp (continuous_fst.inv.mul (continuous_subtype_val.comp continuous_snd)))).smul (hsc.comp continuous_snd)`. Establish `hFi : ∀ g, Integrable (F g) μ` using `fun g => (hF.comp (Continuous.prodMk_right g)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun g => ∫ c, F g c ∂μ, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_parametric_integral_of_continuous (μ := μ) hF (isCompact_univ (X := C))` as an intermediate fact. Simplify `this` using `only [Measure.restrict_univ]`. Introduce `h0 beta_reduce at h0`. Establish `e1 : ∫ c, ⟪v, F 1 c⟫_ℂ ∂μ = 0` using `by rw [integral_inner (hFi 1), h0, inner_zero_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e2 : ∫ c, RCLike.re ⟪v, F 1 c⟫_ℂ ∂μ = 0`. Rewrite using `[integral_re ((hFi 1).const_inner v), e1, map_zero]`. Set `G : C → ℝ` to `fun c => b c * RCLike.re ⟪v, D.σ (uMat (c : UJ ε)) v⟫_ℂ`. Establish `eG : ∀ c, RCLike.re ⟪v, F 1 c⟫_ℂ = G c` using `fun c => by`. Simplify using `only [F, G, inv_one, one_mul, inner_smul_right]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using the standard rewrite rules. Establish `hG : Continuous G` using `(hb.comp continuous_subtype_val).mul (RCLike.continuous_re.comp (continuous_const.inner hsc))`. Establish `hG0 : 0 ≤ G` using `fun c => by`. Distinguish the cases in `h : b c = 0`. Simplify using `[G, h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : c ∈ Subtype.val ⁻¹' U` using `hbU _ h`. Rewrite `hc` using `[hUS]`. Conclude with `mul_nonneg (hb0 _) hc.le`. Establish `hG1 : G 1 ≠ 0`. Establish `: G 1 = ‖v‖ ^ 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [G]`. Rewrite using `[show ((1 : C) : UJ ε) = 1 from rfl, hb1, hσ1, inner_self_eq_norm_sq, one_mul]`. Rewrite using `[this]`. Conclude with `(pow_pos (norm_pos_iff.2 hv) 2).ne'`. Use `hG.integral_pos_of_hasCompactSupport_nonneg_nonzero (μ := μ) (HasCompactSupport.of_compactSpace _) hG0 hG1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← integral_congr_ae (Filter.Eventually.of_forall eG), e2]`. Conclude with `lt_irrefl _ this`. Introduce `m hmM hmK g`. Set `m' : C` to `⟨m, hmK, hmM⟩`. Use `beta_reduce`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e` using `integral_mul_left_eq_self (μ := μ) (F (m * g)) m'`. Rewrite using `[← e, ← ContinuousLinearMap.integral_comp_comm _ (hFi g)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun c => ?_)` and prove the remaining obligations. Simplify using `only [F]`. Establish `h1 : (m * g)⁻¹ * ((m' * c : C) : UJ ε) = g⁻¹ * (c : UJ ε)`.
-
-Express the relevant statement in the definitionally equal form `(m * g)⁻¹ * (m * (c : UJ ε)) = _`. Use `group`. Establish `h2 : D.σ (uMat ((m' * c : C) : UJ ε)) = D.σ (uMat m) ∘SL D.σ (uMat (c : UJ ε))`. Express the relevant statement in the definitionally equal form `D.σ (uMat (m * (c : UJ ε))) = _`. Rewrite using `[uMat_mul]`.
-
-Conclude with `hU.1.2 _ ⟨m, hmM, rfl⟩ _ (hmat c)`. Rewrite using `[h1, h2, map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_kLevi_equivariant_ne_zero : ∀ (n : ℕ) (ε : Fin n → Bool) (D : Datum ε), ∃ φ : UJ ε → D.V,
     Continuous φ ∧ φ 1 ≠ 0 ∧

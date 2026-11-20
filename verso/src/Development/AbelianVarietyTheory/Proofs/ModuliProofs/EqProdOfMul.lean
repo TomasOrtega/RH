@@ -12,9 +12,9 @@ noncomputable def gen {r : ℕ} {K : Type} [CommRing K] (f : Fin r → K) : K[X]
   ∑ i : Fin r, monomial (i : ℕ) (f i)
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[MvPolynomial.map_aeval, MvPolynomial.aeval_def, MvPolynomial.coe_eval₂Hom]`. Use `congr 1`. Conclude with `RingHom.ext_rat _ _`. Use extensionality with `i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem ev_map {r : ℕ} (Φ : MvPolynomial (Fin r) ℚ) {K L : Type} [CommRing K] [Algebra ℚ K]
     [CommRing L] [Algebra ℚ L] (φ : K →+* L) (F : K[X]) : φ (ev Φ F) = ev Φ (F.map φ) := by
@@ -25,14 +25,14 @@ theorem ev_map {r : ℕ} (Φ : MvPolynomial (Fin r) ℚ) {K L : Type} [CommRing 
   · ext i; simp
 
 /- English proof (translation)
-Simplify using `[gen, Polynomial.map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gen_map {r : ℕ} {K L : Type} [CommRing K] [CommRing L] (φ : K →+* L) (f : Fin r → K) :
     (gen f).map φ = gen (fun i => φ (f i)) := by
   simp [gen, Polynomial.map_sum]
 
 /- English proof (translation)
-Unfold `gen`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => monomial i (F.coeff i)) r]`. Conclude with `(as_sum_range' F r h).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_coeff {r : ℕ} {K : Type} [CommRing K] (F : K[X]) (h : F.natDegree < r) :
     gen (fun i : Fin r => F.coeff i) = F := by
@@ -41,7 +41,7 @@ theorem gen_coeff {r : ℕ} {K : Type} [CommRing K] (F : K[X]) (h : F.natDegree 
   exact (as_sum_range' F r h).symm
 
 /- English proof (translation)
-Unfold `gen`. Use `natDegree_sum_le_of_forall_le _ _ fun i _ => (natDegree_monomial_le _).trans ?_` and prove the remaining obligations. Conclude with `Nat.lt_succ_iff.mp i.2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem natDegree_gen {r : ℕ} {K : Type} [CommRing K] (f : Fin (r + 1) → K) :
     (gen f).natDegree ≤ r := by
@@ -50,9 +50,9 @@ theorem natDegree_gen {r : ℕ} {K : Type} [CommRing K] (f : Fin (r + 1) → K) 
   exact Nat.lt_succ_iff.mp i.2
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq', MvPolynomial.eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hd' : ∑ i, d i = m`. Use `h.degree_eq_sum_deg_support hd` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(Finset.sum_subset (Finset.subset_univ _) (by simp)).symm`. Simplify using `only [coeff_C_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ev_homog {r m : ℕ} {Φ : MvPolynomial (Fin r) ℚ} (h : Φ.IsHomogeneous m)
     {K : Type} [CommRing K] [Algebra ℚ K] (c : K) (F : K[X]) :
@@ -74,7 +74,7 @@ variable (N : ℤ[X] → ℚ) (Φ : (r : ℕ) → MvPolynomial (Fin r) ℚ)
 include hN
 
 /- English proof (translation)
-Use `⟨ev (Φ (F.natDegree + 1)) (F.map (Int.castRingHom ℚ[X]) + C X), fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hN (F.natDegree + 1), ← coe_evalRingHom, ev_map]`. Use `congr 1`. Simplify using `[Polynomial.map_map, RingHom.ext_int ((evalRingHom (t:ℚ)).comp _) (Int.castRingHom ℚ)]`. Rewrite using `[← C_eq_natCast, natDegree_add_C]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -86,9 +86,9 @@ theorem shift_poly (F : ℤ[X]) : ∃ p : ℚ[X], ∀ t : ℕ, N (F + t) = p.eva
   · rw [← C_eq_natCast, natDegree_add_C]; omega
 
 /- English proof (translation)
-Use `⟨ev (Φ (F.natDegree + G.natDegree + 1)) ((F.map (Int.castRingHom ℚ[X]) + C X) * (G.map (Int.castRingHom ℚ[X]) + C X)), fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hN (F.natDegree + G.natDegree + 1), ← coe_evalRingHom, ev_map]`. Use `congr 1`. Simplify using `[Polynomial.map_map, RingHom.ext_int ((evalRingHom (t:ℚ)).comp _) (Int.castRingHom ℚ)]`. Use `lt_of_le_of_lt natDegree_mul_le ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← C_eq_natCast, natDegree_add_C, natDegree_add_C]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem shift_poly₂ (F G : ℤ[X]) :
     ∃ p : ℚ[X], ∀ t : ℕ, N ((F + t) * (G + t)) = p.eval (t : ℚ) := by
@@ -101,11 +101,11 @@ theorem shift_poly₂ (F G : ℤ[X]) :
     rw [← C_eq_natCast, natDegree_add_C, natDegree_add_C]; omega
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `shift_poly N Φ hN F`. Take `⟨q, hq⟩` from `shift_poly N Φ hN G`. Take `⟨s, hs⟩` from `shift_poly₂ N Φ hN F G`. Establish `: s = p * q`. Apply `eq_of_infinite_eval_eq` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨a, ha⟩` from `Filter.eventually_atTop.mp ((hG F).and (hG G))`. Use `Set.Infinite.mono (s := (fun t : ℕ => (t : ℚ)) '' Set.Ici a) ?_ ((Set.Ici_infinite a).image Nat.cast_injective.injOn)` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Simplify using `only [Set.mem_setOf_eq, eval_mul]`. Rewrite using `[← hp, ← hq, ← hs, hm _ _ (ha t ht).1 (ha t ht).2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `hs 0`. Rewrite `h0` using `[this, eval_mul, ← hp, ← hq]`. Simplify using `using h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mul_all (Good : ℤ[X] → Prop) (hG : ∀ F, ∀ᶠ t : ℕ in Filter.atTop, Good (F + t))
     (hm : ∀ F G, Good F → Good G → N (F * G) = N F * N G) (F G : ℤ[X]) :
@@ -126,17 +126,15 @@ theorem mul_all (Good : ℤ[X] → Prop) (hG : ∀ F, ∀ᶠ t : ℕ in Filter.a
   simpa using h0
 
 /- English proof (translation)
-Set `R` to `MvPolynomial (Fin (r₁ + 1) ⊕ Fin (r₂ + 1)) ℚ`. Set `A : R[X]` to `gen fun i => MvPolynomial.X (Sum.inl i)`. Set `B : R[X]` to `gen fun i => MvPolynomial.X (Sum.inr i)`. Establish `key : ev (Φ s) (A * B) = ev (Φ (r₁ + 1)) A * ev (Φ (r₂ + 1)) B`. Apply `MvPolynomial.funext_set (s := fun _ => Set.range (Int.cast : ℤ → ℚ)) (fun _ => Set.infinite_range_of_injective Int.cast_injective)` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Use `choose y hy using fun i => hx i (Set.mem_univ i)`. Establish `hA : A.map (MvPolynomial.eval x) = (gen fun i => y (Sum.inl i)).map (Int.castRingHom ℚ)`. Simplify using `[A, gen_map, hy]`. Establish `hB : B.map (MvPolynomial.eval x) = (gen fun i => y (Sum.inr i)).map (Int.castRingHom ℚ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[B, gen_map, hy]`. Establish `h1` using `natDegree_gen fun i => y (Sum.inl i)`. Establish `h2` using `natDegree_gen fun i => y (Sum.inr i)`. Rewrite using `[map_mul, ev_map, ev_map, ev_map, Polynomial.map_mul, hA, hB, ← Polynomial.map_mul, ← hN, ← hN, ← hN, hm]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `lt_of_le_of_lt natDegree_mul_le (by omega)`. Set `φ : R →+* K` to `(MvPolynomial.aeval (Sum.elim (fun i : Fin (r₁ + 1) => F.coeff i) (fun i : Fin (r₂ + 1) => G.coeff i))).toRingHom`. Establish `hA : A.map φ = F`. Use `(gen_map _ _).trans (Eq.trans ?_ (gen_coeff F (Nat.lt_succ_of_le hF)))` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `funext fun i => MvPolynomial.aeval_X _ _`. Establish `hB : B.map φ = G`. Use `(gen_map _ _).trans (Eq.trans ?_ (gen_coeff G (Nat.lt_succ_of_le hG)))` and prove the remaining obligations. Use `congr 1`.
-
-Conclude with `funext fun i => MvPolynomial.aeval_X _ _`. Use `congrArg φ key` as an intermediate fact. Rewrite `this` using `[map_mul, ev_map, ev_map, ev_map, Polynomial.map_mul, hA, hB]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ev_mul (hm : ∀ F G, N (F * G) = N F * N G) {K : Type} [CommRing K] [Algebra ℚ K]
     (r₁ r₂ s : ℕ) (hs : r₁ + r₂ < s) (F G : K[X]) (hF : F.natDegree ≤ r₁)
@@ -177,7 +175,7 @@ theorem ev_mul (hm : ∀ F G, N (F * G) = N F * N G) {K : Type} [CommRing K] [Al
   rwa [map_mul, ev_map, ev_map, ev_map, Polynomial.map_mul, hA, hB] at this
 
 /- English proof (translation)
-Use `ev_map (Φ (r + 1)) (algebraMap ℚ K) ((1 : ℤ[X]).map (Int.castRingHom ℚ))` as an intermediate fact. Rewrite `this` using `[← hN _ _ (by simp), h1]`. Simplify using `using this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ev_one (h1 : N 1 = 1) {K : Type} [CommRing K] [Algebra ℚ K] (r : ℕ) :
     ev (Φ (r + 1)) (1 : K[X]) = 1 := by
@@ -186,7 +184,7 @@ theorem ev_one (h1 : N 1 = 1) {K : Type} [CommRing K] [Algebra ℚ K] (r : ℕ) 
   simpa using this.symm
 
 /- English proof (translation)
-Use `ev_mul N Φ hN hm F.natDegree 0 s hF F 1 le_rfl (by simp)` as an intermediate fact. Rewrite `this` using `[ev_one N Φ hN h1, mul_one, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ev_compat (h1 : N 1 = 1) (hm : ∀ F G, N (F * G) = N F * N G) {K : Type} [CommRing K]
     [Algebra ℚ K] (s : ℕ) (F : K[X]) (hF : F.natDegree < s) :
@@ -195,7 +193,7 @@ theorem ev_compat (h1 : N 1 = 1) (hm : ∀ F G, N (F * G) = N F * N G) {K : Type
   rwa [ev_one N Φ hN h1, mul_one, mul_one] at this
 
 /- English proof (translation)
-Use `⟨⟨⟨fun F => ev (Φ (F.natDegree + 1)) F, ev_one N Φ hN h1 _⟩, fun F G => ?_⟩, fun s F h => (ev_compat N Φ hN h1 hm s F h).symm⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← ev_mul N Φ hN hm F.natDegree G.natDegree _ (Nat.lt_succ_self _) F G le_rfl le_rfl, ← ev_compat N Φ hN h1 hm]`. Conclude with `Nat.lt_succ_of_le natDegree_mul_le`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext (h1 : N 1 = 1) (hm : ∀ F G, N (F * G) = N F * N G) (K : Type) [CommRing K]
     [Algebra ℚ K] : ∃ M : K[X] →* K, ∀ s (F : K[X]), F.natDegree < s → M F = ev (Φ s) F := by
@@ -209,17 +207,17 @@ theorem exists_ext (h1 : N 1 = 1) (hm : ∀ F G, N (F * G) = N F * N G) (K : Typ
 end
 
 /- English proof (translation)
-Establish `hd : ∀ d ∈ Φ.support, d 0 + d 1 = m` using `fun d hd => by`. Use `h.degree_eq_sum_deg_support hd` as an intermediate fact. Rewrite using `[this, ← Fin.sum_univ_two (fun i => d i)]`. Conclude with `(Finset.sum_subset (Finset.subset_univ _) (by simp)).symm`. Establish `e : ev Φ (C X - X : ℚ[X][X]) = ∑ d ∈ Φ.support, monomial (d 0) (Φ.coeff d * (-1) ^ d 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `ev`. Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.eval₂_eq']`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `[← C_mul_X_pow_eq_monomial, coeff_X, coeff_C]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hle : (ev Φ (C X - X : ℚ[X][X])).natDegree ≤ m`. Rewrite using `[e]`. Use `natDegree_sum_le_of_forall_le _ _ fun d hd' => (natDegree_monomial_le _).trans ?_` and prove the remaining obligations. Use `hd d hd'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hc : (ev Φ (C X - X : ℚ[X][X])).coeff m = 1`. Rewrite using `[e, ← h1, finset_sum_coeff]`. Unfold `ev`. Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.eval₂_eq']`. Use `Finset.sum_congr rfl fun d hd' => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hd d hd'` as an intermediate fact. Distinguish the cases in `h0 : d 1 = 0`. Establish `: d 0 = m` using `by omega`. Simplify using `[coeff_monomial, h0, this]`. Establish `: d 0 ≠ m` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[coeff_monomial, h0, this, coeff_one]`. Conclude with `⟨monic_of_natDegree_le_of_coeff_eq_one m hle hc, natDegree_eq_of_le_of_coeff_ne_zero hle (by simp [hc])⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem monic_ev {m : ℕ} {Φ : MvPolynomial (Fin 2) ℚ} (h : Φ.IsHomogeneous m)
     (h1 : ev Φ (1 : ℚ[X]) = 1) :
@@ -254,9 +252,9 @@ theorem monic_ev {m : ℕ} {Φ : MvPolynomial (Fin 2) ℚ} (h : Φ.IsHomogeneous
     natDegree_eq_of_le_of_coeff_ne_zero hle (by simp [hc])⟩
 
 /- English proof (translation)
-Set `M' : K[X] →* K` to `{ toFun := fun F => (a.map fun x => F.eval x).prod map_one' := by simp map_mul' := by simp [Multiset.prod_map_mul] }`. Establish `hc' : ∀ c, M (C c) = M' (C c)` using `fun c => by simp [hc, M']`. Establish `hl' : ∀ β, M (X - C β) = M' (X - C β)` using `fun β => by`. Establish `: (X - C β : K[X]) = C (-1) * (C β - X)` using `by simp`. Rewrite using `[this, map_mul, map_mul, hc', hl]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[M']`. Express the relevant statement in the definitionally equal form `M F = M' F`. Rewrite using `[← C_leadingCoeff_mul_prod_multiset_X_sub_C (p := F) IsAlgClosed.card_roots_eq_natDegree, map_mul, map_mul, hc', map_multiset_prod, map_multiset_prod, Multiset.map_map, Multiset.map_map]`. Simplify using `[hl']`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eq_prod_of_mul {K : Type} [Field K] [IsAlgClosed K] (M : K[X] →* K) (a : Multiset K)
     (hc : ∀ c, M (C c) = c ^ Multiset.card a)
@@ -278,13 +276,13 @@ theorem eq_prod_of_mul {K : Type} [Field K] [IsAlgClosed K] (M : K[X] →* K) (a
   simp [hl']
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hp F`. Establish `t0 : Filter.Tendsto (fun k : ℕ => (l : ℤ_[l]) ^ k) Filter.atTop (nhds 0)` using `tendsto_pow_atTop_nhds_zero_of_norm_lt_one (by`. Rewrite using `[PadicInt.norm_p]; exact inv_lt_one_of_one_lt₀ (by exact_mod_cast hl.out.one_lt))`. Establish `c1 : Continuous fun x : ℤ_[l] => ‖(p.map (Rat.castHom ℚ_[l])).eval (x : ℚ_[l])‖` using `((p.map (Rat.castHom ℚ_[l])).continuous.comp continuous_subtype_val).norm`. Establish `c2 : Continuous fun x : ℤ_[l] => ‖(Polynomial.aeval U F + x • (1 : Matrix (Fin m) (Fin m) ℤ_[l])).det‖` using `((continuous_const.add (continuous_id.smul continuous_const)).matrix_det).norm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∀ t : ℕ, ((N (F + t) : ℚ) : ℚ_[l]) = (p.map (Rat.castHom ℚ_[l])).eval (((t : ℤ_[l])) : ℚ_[l])` using `fun t => by`. Rewrite using `[hp, PadicInt.coe_natCast, ← map_natCast (Rat.castHom ℚ_[l]), eval_map, eval₂_at_apply]`. Both sides reduce to the same expression. Establish `e2 : ∀ t : ℕ, Polynomial.aeval U (F + (t : ℤ[X])) = Polynomial.aeval U F + (t : ℤ_[l]) • (1 : Matrix (Fin m) (Fin m) ℤ_[l])` using `fun t => by`. Rewrite using `[map_add, map_natCast, Nat.cast_smul_eq_nsmul, nsmul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `tendsto_nhds_unique_of_eventuallyEq ((c1.tendsto 0).comp t0) ((c2.tendsto 0).comp t0) (((tendsto_pow_atTop_atTop_of_one_lt hl.out.one_lt).eventually (hG F)).mono fun k hk => by`. Use `hn _ hk` as an intermediate fact. Rewrite `this` using `[e1, e2]`. Simplify using `using this)`. Use `e1 0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [Nat.cast_zero, add_zero] at this`. Rewrite using `[this, h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_all {l : ℕ} [hl : Fact l.Prime] {m : ℕ} (U : Matrix (Fin m) (Fin m) ℤ_[l])
     (N : ℤ[X] → ℚ) (Good : ℤ[X] → Prop)
@@ -319,9 +317,9 @@ theorem norm_all {l : ℕ} [hl : Fact l.Prime] {m : ℕ} (U : Matrix (Fin m) (Fi
   simp
 
 /- English proof (translation)
-Establish `hc : Multiset.card b = m`. Rewrite using `[← natDegree_multiset_prod_X_sub_C_eq_card b, ← hb]`. Simplify using the standard rewrite rules. Use `eq_prod_of_mul (Matrix.detMonoidHom.comp (aeval V : K[X] →ₐ[K] _).toMonoidHom) b (fun c => ?_) (fun β => ?_) F` and prove the remaining obligations. Simplify using `[hc, Algebra.algebraMap_eq_smul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congrArg (eval β) hb` as an intermediate fact. Rewrite `this` using `[Matrix.eval_charpoly, eval_multiset_prod, Multiset.map_map]`. Simplify `this` using `[Matrix.algebraMap_eq_diagonal, Pi.algebraMap_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_eq_prod {K : Type} [Field K] [IsAlgClosed K] {m : ℕ} (V : Matrix (Fin m) (Fin m) K)
     (b : Multiset K) (hb : V.charpoly = (b.map fun x => X - C x).prod) (F : K[X]) :
@@ -336,31 +334,27 @@ theorem det_eq_prod {K : Type} [Field K] [IsAlgClosed K] {m : ℕ} (V : Matrix (
     simpa [Matrix.algebraMap_eq_diagonal, Pi.algebraMap_def] using this
 
 /- English proof (translation)
-Introduce `l _ m U N Good hΦ h1 hG hm hn`. Use `choose Φ hh hΦ using hΦ`. Establish `hN : ∀ r (F : ℤ[X]), F.natDegree < r → N F = ev (Φ r) (F.map (Int.castRingHom ℚ))`. Introduce `r F hF`. Use `hΦ r fun i => F.coeff i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[show ∑ i : Fin r, monomial (i : ℕ) (F.coeff i) = F from gen_coeff F hF]`. Rewrite using `[this]`. Simplify using `[ev, MvPolynomial.aeval_eq_eval]`. Establish `hm'` using `mul_all N Φ hN Good hG hm`. Establish `hn'` using `norm_all U N Good (shift_poly N Φ hN) hG hn`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨E, _, _, _, _⟩ : ∃ (E : Type) (_ : Field E) (_ : Algebra ℚ_[l] E), IsAlgClosed E ∧ Algebra.IsAlgebraic ℚ_[l] E` from `⟨AlgebraicClosure ℚ_[l], inferInstance, inferInstance, inferInstance, inferInstance⟩`. Use `haveI : CharZero E := charZero_of_injective_algebraMap (algebraMap ℚ_[l] E).injective`. Establish `inj : Function.Injective (algebraMap ℚ_[l] E)` using `(algebraMap ℚ_[l] E).injective`. Take `⟨M, hM⟩` from `exists_ext N Φ hN h1 hm' E`. Take `⟨hP, hPd⟩` from `monic_ev (hh 2) (ev_one N Φ hN h1 1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `set P := ev (Φ 2) (C X - X : ℚ[X][X]) with hPdef`. Set `ψ : ℤ_[l] →+* E` to `(algebraMap ℚ_[l] E).comp PadicInt.Coe.ringHom`. Set `V : Matrix (Fin m) (Fin m) E` to `U.map ψ`. Establish `roots : ∀ S : E[X], S.Monic → S = (S.roots.map fun x => X - C x).prod` using `fun S hS => (prod_multiset_X_sub_C_of_monic_of_roots_card_eq hS IsAlgClosed.card_roots_eq_natDegree).symm`. Set `a` to `(P.map (algebraMap ℚ E)).roots`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : P.map (algebraMap ℚ E) = (a.map fun x => X - C x).prod` using `roots _ (hP.map _)`. Establish `hac : Multiset.card a = m`. Rewrite using `[IsAlgClosed.card_roots_eq_natDegree, hP.natDegree_map, hPd]`. Establish `hMa : ∀ F, M F = (a.map fun x => F.eval x).prod`. Use `eq_prod_of_mul M a (fun c => ?_) (fun β => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hM 1 _ (by simp), ← mul_one (C c), ev_homog (hh 1), ev_one N Φ hN h1, mul_one, hac]`. Use `congrArg (eval β) ha` as an intermediate fact. Rewrite `this` using `[eval_multiset_prod, Multiset.map_map, eval_map, ← coe_eval₂RingHom, hPdef, ev_map]`. Rewrite using `[hM 2]`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `lt_of_le_of_lt (natDegree_sub_le _ _) (by simp)`. Establish `hNa : ∀ F : ℤ[X], algebraMap ℚ_[l] E (N F : ℚ_[l]) = (a.map fun x => aeval x F).prod`. Introduce `F`. Use `hMa (F.map (algebraMap ℤ E))` as an intermediate fact. Simplify using `only [eval_map_algebraMap] at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← this, hM (F.natDegree + 1) _ (Nat.lt_succ_of_le natDegree_map_le), map_ratCast, ← eq_ratCast (algebraMap ℚ E), hN _ F (Nat.lt_succ_self _), ev_map, Polynomial.map_map]`. Use `congr 2`. Apply the tactic sequence `all_goals exact RingHom.ext_int _ _`. Establish `hDb : ∀ b : Multiset E, V.charpoly = (b.map fun x => X - C x).prod → ∀ F : ℤ[X], algebraMap ℚ_[l] E ((aeval U F).det : ℤ_[l]) = (b.map fun x => aeval x F).prod`. Introduce `b hb F`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `det_eq_prod V b hb (F.map (algebraMap ℤ E))` as an intermediate fact. Simplify using `only [eval_map_algebraMap, aeval_map_algebraMap] at this`. Rewrite using `[← this]`. Express the relevant statement in the definitionally equal form `ψ _ = _`. Rewrite using `[RingHom.map_det]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `(aeval_algHom_apply ψ.mapMatrix.toIntAlgHom U F).symm`. Establish `hPm : (P.map (Rat.castHom ℚ_[l])).map (algebraMap ℚ_[l] E) = P.map (algebraMap ℚ E)`. Apply the tactic sequence `rw [Polynomial.map_map]; congr 1 <;> exact RingHom.ext_rat _ _`. Establish `hQm : (U.charpoly.map PadicInt.Coe.ringHom).map (algebraMap ℚ_[l] E) = V.charpoly`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.map_map, ← Matrix.charpoly_map]`. Establish `hb` using `roots _ V.charpoly_monic`. Establish `key` using `GlobalTheory.T.eq_of_norm_prod_aeval_eq_moduli l E a V.charpoly.roots (P.map (Rat.castHom ℚ_[l])) (U.charpoly.map PadicInt.Coe.ringHom) (hPm.trans ha) (hQm.trans hb) (fun F u v hu hv => by`. Rewrite `hu` using `[← hNa]`. Rewrite `hv` using `[← hDb _ hb]`.
-
-Rewrite using `[inj hu, inj hv, hn']`. Use the proof step `rfl)`. Introduce `F`. Apply `inj` to reduce the goal to its premises. Rewrite using `[hNa, hDb a]`.
-
-Rewrite using `[← hQm, ← key, hPm, ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_det : ∀ (l : ℕ) [Fact l.Prime] (m : ℕ) (U : Matrix (Fin m) (Fin m) ℤ_[l]) (N : Polynomial ℤ → ℚ) (Good : Polynomial ℤ → Prop), (∀ r : ℕ, ∃ Φ : MvPolynomial (Fin r) ℚ, Φ.IsHomogeneous m ∧ ∀ a : Fin r → ℤ, N (∑ i : Fin r, Polynomial.monomial (i : ℕ) (a i)) = MvPolynomial.eval (fun i => (a i : ℚ)) Φ) → N 1 = 1 → (∀ F, ∀ᶠ t : ℕ in Filter.atTop, Good (F + t)) → (∀ F G, Good F → Good G → N (F * G) = N F * N G) → (∀ F, Good F → ‖((N F : ℚ) : ℚ_[l])‖ = ‖(Polynomial.aeval U F).det‖) → ∀ F, ((N F : ℚ) : ℚ_[l]) = ((Polynomial.aeval U F).det : ℤ_[l]) := by
   intro l _ m U N Good hΦ h1 hG hm hn

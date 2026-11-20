@@ -13,15 +13,15 @@ namespace GlobalTheory.FrameLab
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (star_star (x : D.host.E))`.
+A detailed English derivation is pending.
 -/
 theorem cO_cO (x : 𝓞 D.host.E) : Formalism.DivisionValues.cO D.host.E (Formalism.DivisionValues.cO D.host.E x) = x :=
   RingOfIntegers.ext (star_star (x : D.host.E))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `x ∈ P.asIdeal.map (Formalism.DivisionValues.cO D.host.E) ↔ _`. Rewrite using `[Ideal.mem_map_of_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, e⟩`. Establish `: y = x` using `by rw [← cO_cO y, e, hx]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← this]` and apply the resulting hypothesis. Conclude with `fun h => ⟨x, h, hx⟩`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_conjPl_of_fixed (P : HeightOneSpectrum (𝓞 D.host.E)) {x : 𝓞 D.host.E} (hx : Formalism.DivisionValues.cO D.host.E x = x) :
     x ∈ (Formalism.DivisionValues.conjPl P).asIdeal ↔ x ∈ P.asIdeal := by
@@ -34,7 +34,7 @@ theorem mem_conjPl_of_fixed (P : HeightOneSpectrum (𝓞 D.host.E)) {x : 𝓞 D.
   · exact fun h => ⟨x, h, hx⟩
 
 /- English proof (translation)
-Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Conclude with `mem_conjPl_of_fixed P (x := algebraMap _ (𝓞 D.host.E) x) (RingOfIntegers.ext (IsCMField.complexConj_apply_eq_self D.host.E (x : maximalRealSubfield D.host.E)))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem under_conjPl (P : HeightOneSpectrum (𝓞 D.host.E)) :
     (Formalism.DivisionValues.conjPl P).under (𝓞 (maximalRealSubfield D.host.E)) = P.under (𝓞 (maximalRealSubfield D.host.E)) := by
@@ -43,7 +43,7 @@ theorem under_conjPl (P : HeightOneSpectrum (𝓞 D.host.E)) :
     (RingOfIntegers.ext (IsCMField.complexConj_apply_eq_self D.host.E (x : maximalRealSubfield D.host.E)))
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv P.asIdeal _ (Formalism.DivisionValues.cO D.host.E) rfl).toEquiv).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_conjPl (P : HeightOneSpectrum (𝓞 D.host.E)) :
     Ideal.absNorm (Formalism.DivisionValues.conjPl P).asIdeal = Ideal.absNorm P.asIdeal := by
@@ -51,7 +51,7 @@ theorem absNorm_conjPl (P : HeightOneSpectrum (𝓞 D.host.E)) :
   exact (Nat.card_congr (Ideal.quotientEquiv P.asIdeal _ (Formalism.DivisionValues.cO D.host.E) rfl).toEquiv).symm
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p _ _ j P W _ _ w _ _ _ Q`. Take `⟨-, h2, h3⟩` from `(GlobalTheory.GoodPrimes.good_primes p.R.toRealDat (p.P.face p.Dcf p.Spf p.Del p.h0 Csz).lv2 p.charW.base.lev).2.2.2 p.charW.base.fam (p.R.mu w) Q.1 Q.2`. Use `⟨⟨plOf p j (p.R.mu w) Q, fun e => h2 e.symm, (under_conjPl _).symm⟩, under_conjPl _, (absNorm_conjPl _).trans h3.symm, mem_conjPl_of_fixed _ (map_natCast _ _)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem labels_ok : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), PtAt.Rows p → More p →

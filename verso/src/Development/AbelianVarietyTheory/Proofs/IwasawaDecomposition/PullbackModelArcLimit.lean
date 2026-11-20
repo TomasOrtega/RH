@@ -13,9 +13,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.TraitGen
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c p W hp hW Z Y bV hbV f t m₁ m₂ hf hj huniv φ m BD hhom hpol O' _ _ _ b' ϖ a χ₀ hB hC x₀ hx₀ n hn`. Take `⟨e₁, he₁, hx₁⟩` from `GlobalTheory.T.pullback_model_arc_polarization E H D l Xo c p W hp hW Z Y bV hbV f t m₁ m₂ hf hj huniv O' b' ϖ a χ₀ hB hC x₀ hx₀`. Take `⟨e₂, he₂, hx₂⟩` from `GlobalTheory.T.generator_extends_power _ _ _ _ e₁ m he₁ hx₁`. Take `⟨e₃, he₃, hx₃⟩` from `GlobalTheory.T.ideal_along_dvr_arcs Z.X BD (PowerSeries O') PowerSeries.X PowerSeries.X_ne_zero (x₀ ≫ Z.j) n hn`. Take `⟨e, he, hx⟩` from `GlobalTheory.T.generator_extends_tensor _ _ _ _ _ e₂ e₃ he₂ he₃ hx₂ hx₃`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e, he, hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_polGen_extends : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits →

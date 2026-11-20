@@ -42,7 +42,7 @@ def IsLogNormPiH (P : ReciprocityTheory.ChartRestriction.G.Out.PolAV (Sp K₁)) 
     v = Real.log (Real.sqrt (Real.pi * hermSq Hm w))
 
 /- English proof (translation)
-Take `⟨_, A', _, φ, u, Hm, χ, θ, Fd, _, _, _, _, _, _, _, _, hv⟩` from `h`. Rewrite using `[hv]`. Conclude with `div_nonneg (MeasureTheory.integral_nonneg (fun z => by positivity)) ENNReal.toReal_nonneg`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsL2SquareIntegralProblem.nonneg {P : ReciprocityTheory.ChartRestriction.G.Out.PolAV (Sp K₁)} {rig : LB.Gen (P.L.pull (eSec P.A))}
     {σ : K₁ →+* ℂ} {s : P.L.Sec} {v : ℝ} (h : IsL2SquareIntegralProblem P rig σ s v) : 0 ≤ v := by
@@ -81,14 +81,14 @@ def IsValLineLogNormAt (B : ReciprocityTheory.ChartRestriction.G.Out.PolAV (Sp K
   ∃ σ : K₁ →+* ℂ, InfinitePlace.mk σ = w ∧ IsValLineLogNorm B rig th A₁ A₂ src n mu σ a
 
 /- English proof (translation)
-Simplify using `[valLineLogNorm]`.
+Simplify using the standard rewrite rules.
 -/
 example (ℓ : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → ℝ) (c : ℝ) :
     valLineLogNorm (Dw := Dw) 2 0 (Real.exp c) ℓ = -c := by
   simp [valLineLogNorm]
 
 /- English proof (translation)
-Simplify using `[valLineLogNorm]`.
+Simplify using the standard rewrite rules.
 -/
 example (ℓ : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → ℝ) (n : ℤ) (x : ArcLt Dw) (m : ℕ) :
     valLineLogNorm n (Finsupp.single x m) 1 ℓ = -(m * ℓ x.1 x.2.2) := by

@@ -21,57 +21,51 @@ def om0 (a : G → W → W) (a1 : ∀ x, a 1 x = x) (am : ∀ g h x, a (g * h) x
 def s0 (A : AddSubgroup W) : W → ℂ := fun z => if z ∈ A then 1 else 0
 
 /- English proof (translation)
-Establish `mul0 : ∀ x y, rho0 c x * rho0 c y = c x y • rho0 c (x + y)`. Introduce `x y`. Use extensionality with `f z`. Simplify using `[rho0, hl, hr, add_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `nrm : ∀ g x, om0 a a1 am g * rho0 c x = rho0 c (a g x) * om0 a a1 am g`. Introduce `g x`. Use extensionality with `f z`. Establish `h1 : c (a g⁻¹ z) x = c z (a g x)`. Rewrite using `[← ha g, ← am]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[a1]`. Establish `h2 : a g⁻¹ (a g x) = x` using `by rw [← am]; simp [a1]`. Simplify using `[rho0, om0, h1, aa, h2]`. Establish `oms : ∀ g, om0 a a1 am g (s0 A) = s0 A`. Introduce `g`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `z`. Use `show s0 A (a g⁻¹ z) = s0 A z`. Simplify using `only [s0, haA]`. Establish `vac : ∀ u ∈ A, rho0 c u (s0 A) = s0 A`. Introduce `u hu`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Use `show c z u * s0 A (z + u) = s0 A z`. Distinguish the cases in `hz : z ∈ A`. Simplify using `[s0, hz, A.add_mem hz hu, hA z hz u hu]`. Establish `: z + u ∉ A` using `fun h => hz (by simpa using A.sub_mem h hu)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[s0, hz, this]`. Set `N : Submodule ℂ (W → ℂ)` to `Submodule.span ℂ (Set.range fun x => rho0 c x (s0 A))`. Establish `hρ : ∀ x, ∀ f ∈ N, rho0 c x f ∈ N`. Introduce `x f hf`. Establish `: N.map (rho0 c x) ≤ N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`. Use `congrArg (fun T => T (s0 A)) (mul0 x y)` as an intermediate fact. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply] at this`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `N.smul_mem _ (Submodule.subset_span ⟨_, rfl⟩)`. Conclude with `this ⟨f, hf, rfl⟩`. Establish `hω : ∀ g, ∀ f ∈ N, om0 a a1 am g f ∈ N`. Introduce `g f hf`. Establish `: N.map (om0 a a1 am g) ≤ N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`. Use `congrArg (fun T => T (s0 A)) (nrm g y)` as an intermediate fact. Simplify using `only [Module.End.mul_apply, oms] at this`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Conclude with `this ⟨f, hf, rfl⟩`. Establish `r0 : rho0 c 0 = 1` using `by ext f z; simp [rho0, h0]`. Establish `hs0 : s0 A ∈ N` using `Submodule.subset_span ⟨0, by simp [r0]⟩`. Establish `anti : ∀ x y, c x y * c y x = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Use `hs (x + y)` as an intermediate fact. Rewrite `this` using `[hl, hr, hr, hs, hs]`. Simplify using `using this`. Establish `eqv : ∀ f ∈ N, ∀ u ∈ A, ∀ z, f (z + u) = c z u * f z`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `f hf u hu`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨x, rfl⟩` from `hf`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show c (z + u) x * s0 A (z + u + x) = c z u * (c z x * s0 A (z + x))`. Distinguish the cases in `hz : z + x ∈ A`. Establish `h2 : z + u + x ∈ A` using `by have := A.add_mem hz hu; rwa [add_right_comm] at this`. Establish `h3` using `hA u hu _ hz`. Rewrite `h3` using `[hr]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4` using `anti z u`. Establish `h5 : c u x = c z u`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[s0, hz, h2, hl, h5]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `h2 : z + u + x ∉ A` using `fun h => hz (by have := A.sub_mem h hu; rwa [show z + u + x - u = z + x by abel] at this)`. Simplify using `[s0, hz, h2]`. Consider the case `zero => intro z`. Simplify using the standard rewrite rules. Consider the case `add f g _ _ h1 h2 => intro z`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[h1 z, h2 z, mul_add]`. Consider the case `smul r f _ h1 => intro z`. Simplify using `[h1 z]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨N, inferInstance, inferInstance, fun x => (rho0 c x).restrict (hρ x), { toFun := fun g => (om0 a a1 am g).restrict (hω g), map_one' := ?_, map_mul' := ?_ }, ⟨s0 A, hs0⟩, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `f z`. Simplify using the standard rewrite rules. Introduce `g h`. Use extensionality with `f z`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Use `congrFun (congrArg Subtype.val h) 0` as an intermediate fact. Simplify using `[s0] at this`. Use extensionality with `f z`. Simplify using `[r0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations. Conclude with `congrArg (fun T => T f.1) (mul0 x y)`. Introduce `u hu`. Conclude with `Subtype.ext (vac u hu)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Submodule.map_injective_of_injective N.injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`. Both sides reduce to the same expression. Introduce `g x`. Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg (fun T => T f.1) (nrm g x)`. Introduce and unpack `g ⟨t, ht⟩ hv`. Establish `hv' : ∀ u ∈ A, ∀ z, c z u * t (z + u) = t z` using `fun u hu z => congrFun (congrArg Subtype.val (hv u hu)) z`. Establish `ht0 : t = t 0 • s0 A`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hz : z ∈ A`. Use `eqv t ht z hz 0` as an intermediate fact. Rewrite `this` using `[hA 0 A.zero_mem z hz]`. Simplify `this` using `[s0, hz]`. Take `⟨u, hu, hne⟩` from `hnd z hz`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hv' u hu z`. Rewrite `h1` using `[eqv t ht u hu, ← mul_assoc]`. Establish `: t z = 0`. Assume the negation of the conclusion as `h`. Conclude with `hne (mul_right_cancel₀ h (by rw [h1, one_mul]))`.
-
-Simplify using `[s0, hz, this]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show om0 a a1 am g t = t`. Rewrite using `[ht0, map_smul, oms]`. Introduce `x hx h`.
-
-Take `⟨r, hr'⟩` from `Submodule.mem_span_singleton.1 h`. Establish `h1` using `congrFun (congrArg Subtype.val hr') (-x)`. Establish `hx' : -x ∉ A` using `fun h => hx (by simpa using A.neg_mem h)`. Establish `h2 : c (-x) x ≠ 0` using `left_ne_zero_of_mul_eq_one (anti _ _)`. Express the relevant statement in the definitionally equal form `r * s0 A (-x) = c (-x) x * s0 A (-x + x) at h1`.
-
-Simplify using `[s0, hx'] at h1`. Conclude with `h2 h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_model (A : AddSubgroup W) (c : W → W → ℂ)
     (hl : ∀ x y z, c (x + y) z = c x z * c y z) (hr : ∀ x y z, c x (y + z) = c x y * c x z)
@@ -205,9 +199,9 @@ def ratCirc : AddCircle (1 : ℚ) →+ AddCircle (1 : ℝ) :=
     exact ⟨k, by simp⟩)
 
 /- English proof (translation)
-Proceed by induction on `x using QuotientAddGroup.induction_on with`. Consider the case `H r`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Establish `h' : ((r : ℝ) : AddCircle (1 : ℝ)) = 0` using `h`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `(QuotientAddGroup.eq_zero_iff _).1 h'`. Use `(QuotientAddGroup.eq_zero_iff _).2 ⟨k, ?_⟩` and prove the remaining obligations. Establish `: ((k : ℚ) : ℝ) = r` using `by simpa using hk`. Simplify using `using (by exact_mod_cast this : (k : ℚ) = r)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ratCirc_ne (x : AddCircle (1 : ℚ)) (hx : x ≠ 0) : ratCirc x ≠ 0 := by
   induction x using QuotientAddGroup.induction_on with
@@ -221,13 +215,13 @@ theorem ratCirc_ne (x : AddCircle (1 : ℚ)) (hx : x ≠ 0) : ratCirc x ≠ 0 :=
     simpa using (by exact_mod_cast this : (k : ℚ) = r)
 
 /- English proof (translation)
-Set `O : AddSubgroup L` to `(Formalism.UG.intL L).toAddSubgroup`. Establish `hne : (QuotientAddGroup.mk ϖ⁻¹ : L ⧸ O) ≠ 0`. Rewrite using `[Ne, QuotientAddGroup.eq_zero_iff]`. Conclude with `hϖ`. Take `⟨χ, hχ⟩` from `CharacterModule.exists_character_apply_ne_zero_of_ne_zero hne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `φ : L →+ AddCircle (1 : ℝ)` to `ratCirc.comp ((χ : (L ⧸ O) →+ AddCircle (1 : ℚ)).comp (QuotientAddGroup.mk' O))`. Use `⟨{ toFun := fun a => (AddCircle.toCircle (φ a) : ℂ), map_zero_eq_one' := by simp, map_add_eq_mul' := by intro a b; simp [AddCircle.toCircle_add] }, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Establish `h1 : (QuotientAddGroup.mk' O) a = 0` using `(QuotientAddGroup.eq_zero_iff _).2 ha`. Establish `: φ a = 0` using `by show ratCirc ((χ : (L ⧸ O) →+ AddCircle (1 : ℚ)) ((QuotientAddGroup.mk' O) a)) = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, map_zero, map_zero]`. Use `show (AddCircle.toCircle (φ a) : ℂ) = 1`. Simplify using `[this]`. Introduce `h`. Establish `h1 : AddCircle.toCircle (φ ϖ⁻¹) = AddCircle.toCircle (0 : AddCircle (1 : ℝ))`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddCircle.toCircle_zero]`. Conclude with `h`. Conclude with `ratCirc_ne _ hχ (AddCircle.injective_toCircle one_ne_zero h1)`.
+A detailed English derivation is pending.
 -/
 theorem exists_psi (ϖ : L) (hϖ : ϖ⁻¹ ∉ Formalism.UG.intL L) :
     ∃ ψ : AddChar L ℂ, (∀ a ∈ Formalism.UG.intL L, ψ a = 1) ∧ ψ ϖ⁻¹ ≠ 1 := by
@@ -250,15 +244,15 @@ theorem exists_psi (ϖ : L) (hϖ : ϖ⁻¹ ∉ Formalism.UG.intL L) :
     exact ratCirc_ne _ hχ (AddCircle.injective_toCircle one_ne_zero h1)
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, h2, hc⟩` from `h`. Assume the negation of the conclusion as `hne`. Establish `hle : Valued.v (2 : L) ≤ 1`. Use `(Valued.v (R := L)).integer.add_mem (one_mem _) (one_mem _)` as an intermediate fact. Rewrite `this` using `[one_add_one_eq_two]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hlt` using `lt_of_le_of_ne hle hne`. Use `set R := (Valued.v (R := L)).valuationSubring`. Express the relevant statement in the definitionally equal form `Nat.card (R ⧸ IsLocalRing.maximalIdeal R) = q ^ 2 at hc`. Establish `hm : (2 : R) ∈ IsLocalRing.maximalIdeal R`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Valuation.mem_maximalIdeal_iff]`. Conclude with `hlt`. Establish `h20 : (2 : R ⧸ IsLocalRing.maximalIdeal R) = 0`. Use `Ideal.Quotient.eq_zero_iff_mem.2 hm` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hodd : Odd (Nat.card (R ⧸ IsLocalRing.maximalIdeal R))` using `by rw [hc]; exact hq.pow`. Take `⟨k, hk⟩` from `hodd`. Establish `h3 : ((Nat.card (R ⧸ IsLocalRing.maximalIdeal R) : ℕ) : R ⧸ IsLocalRing.maximalIdeal R) = 0`. Rewrite using `[← nsmul_one]`. Conclude with `card_nsmul_eq_zero'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h3` using `[hk]`. Move the coercions through the operations in `at h3`. Rewrite `h3` using `[h20]`. Simplify using `at h3`.
+A detailed English derivation is pending.
 -/
 theorem v_two {ϖ : L} {σ : L →+* L} {q : ℕ} (h : Formalism.UG.IsUnramInv ϖ σ q) (hq : Odd q) : Valued.v (2 : L) = 1 := by
   obtain ⟨-, -, -, -, -, h2, hc⟩ := h
@@ -284,9 +278,9 @@ theorem v_two {ϖ : L} {σ : L →+* L} {q : ℕ} (h : Formalism.UG.IsUnramInv �
   simp at h3
 
 /- English proof (translation)
-Establish `h : Formalism.UG.cT σ ((g : GL (Fin 1) L) : Matrix (Fin 1) (Fin 1) L) * _ * _ = _` using `g.2`. Establish `h1` using `congrFun (congrFun h 0) 0`. Simplify using `[Matrix.mul_apply, Formalism.UG.cT] at h1`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Valued.v h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_mul, hv, map_one, ← sq]`. Break down `lt_trichotomy (Valued.v ((g : GL (Fin 1) L) 0 0)) 1 with h | h | h` into its components or cases. Conclude with `absurd h2 (pow_lt_one₀ zero_le h two_ne_zero).ne`. Conclude with `h`. Conclude with `absurd h2 (one_lt_pow₀ h two_ne_zero).ne'`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem unitary_gl1_unit_valuation {σ : L →+* L} (hv : ∀ x, Valued.v (σ x) = Valued.v x)
     (g : Formalism.UG.UJ σ ((1 : GL (Fin 1) L) : Matrix (Fin 1) (Fin 1) L)) :
@@ -303,52 +297,48 @@ theorem unitary_gl1_unit_valuation {σ : L →+* L} (hv : ∀ x, Valued.v (σ x)
   · exact absurd h2 (one_lt_pow₀ h two_ne_zero).ne'
 
 /- English proof (translation)
-Simplify using `[locH, Matrix.trace, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem local_hermitian_form_gl1 (σ : L →+* L) (δ : L) (x y : Matrix (Fin 1) (Fin 1) L) :
     locH σ δ (1 : GL (Fin 1) L) (1 : GL (Fin 1) L) x y = δ * (σ (y 0 0) * x 0 0) := by
   simp [locH, Matrix.trace, Matrix.mul_apply]
 
 /- English proof (translation)
-Establish `h2` using `v_two h hq`. Take `⟨hσ, hv, hϖσ, hϖ, ⟨x0, -, hx0⟩, -, -⟩` from `id h`. Establish `hmem : ∀ a : L, a ∈ Formalism.UG.intL L ↔ Valued.v a ≤ 1` using `fun a => Iff.rfl`. Establish `hϖi : Valued.v ϖ⁻¹ = WithZero.exp 1`. Rewrite using `[map_inv₀, hϖ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hϖn : ϖ⁻¹ ∉ Formalism.UG.intL L`. Rewrite using `[hmem, hϖi, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Take `⟨ψ, hψ1, hψ2⟩` from `exists_psi ϖ hϖn`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use `set δ := σ x0 - x0 with hδ`. Establish `hσδ : σ δ = -δ` using `by rw [hδ, map_sub, hσ]; ring`. Establish `hδ0 : δ ≠ 0` using `by intro h0; rw [h0] at hx0; simp at hx0`. Set `A : AddSubgroup (Matrix (Fin 1) (Fin 1) L)` to `(Formalism.UG.intL L).toAddSubgroup.comap (Matrix.entryAddMonoidHom L 0 0)`. Establish `hAm : ∀ u, u ∈ A ↔ Valued.v (u 0 0) ≤ 1` using `fun u => Iff.rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAm' : ∀ u : Matrix (Fin 1) (Fin 1) L, (∀ i j, u i j ∈ Formalism.UG.intL L) ↔ u ∈ A` using `fun u => ⟨fun hu => hu 0 0, fun hu i j => by rw [Subsingleton.elim i 0, Subsingleton.elim j 0]; exact hu⟩`. Set `c : Matrix (Fin 1) (Fin 1) L → Matrix (Fin 1) (Fin 1) L → ℂ` to `fun x y => ψ ((locH σ δ (1 : GL (Fin 1) L) (1 : GL (Fin 1) L) x y + σ (locH σ δ (1 : GL (Fin 1) L) (1 : GL (Fin 1) L) x y)) / 2)`. Establish `hc : ∀ x y, c x y = ψ (δ * (σ (y 0 0) * x 0 0 - y 0 0 * σ (x 0 0)) / 2)`. Introduce `x y`. Simplify using `only [c, local_hermitian_form_gl1, map_mul, hσ, hσδ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Set `U` to `Formalism.UG.UJ σ ((1 : GL (Fin 1) L) : Matrix (Fin 1) (Fin 1) L)`. Set `a : U × U → Matrix (Fin 1) (Fin 1) L → Matrix (Fin 1) (Fin 1) L` to `fun p x => ((p.2 : GL (Fin 1) L) : Matrix (Fin 1) (Fin 1) L) * x * (((p.1 : GL (Fin 1) L)⁻¹ : GL (Fin 1) L) : Matrix (Fin 1) (Fin 1) L)`. Establish `ha0 : ∀ p (_ : Matrix (Fin 1) (Fin 1) L), ∃ t : L, σ t * t = 1 ∧ Valued.v t = 1 ∧ ∀ x, a p x 0 0 = t * x 0 0`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Take `⟨e1, e2⟩` from `unitary_gl1_unit_valuation hv p.2`. Take `⟨f1, f2⟩` from `unitary_gl1_unit_valuation hv p.1⁻¹`. Use `fun _ => ⟨(p.2 : GL (Fin 1) L) 0 0 * ((p.1⁻¹ : U) : GL (Fin 1) L) 0 0, ?_, by rw [map_mul, e2, f2, one_mul], fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `e1 * (σ (((p.1⁻¹ : U) : GL (Fin 1) L) 0 0) * ((p.1⁻¹ : U) : GL (Fin 1) L) 0 0) + f1`. Simplify using `only [a, Matrix.mul_apply, Fin.sum_univ_one, Fin.default_eq_zero, Finset.univ_unique, Finset.sum_singleton, Subgroup.coe_inv]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨M, i1, i2, ρ, ω, s, s0', r0, rm, rv, rs, rn, rf, rx⟩` from `exists_model (G := U × U) A c (by intro x y z; rw [hc, hc, hc, ← AddChar.map_add_eq_mul]; congr 1; simp only [Matrix.add_apply, map_add]; ring) (by intro x y z; rw [hc, hc, hc, ← AddChar.map_add_eq_mul]; congr 1; simp only [Matrix.add_apply, map_add]; ring) (by intro x; rw [hc]; …`. Introduce `u hu w hw`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Apply `hψ1` to reduce the goal to its premises. Rewrite using `[hmem, map_div₀, h2, div_one, map_mul, hx0, one_mul]`. Rewrite `hu`, `hw` using `[hAm]`. Use `(Valuation.map_sub_le _ ?_ ?_)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hv]`. Conclude with `mul_le_one' hw hu`. Rewrite using `[map_mul, hv]`. Conclude with `mul_le_one' hw hu)`. Use the proof step `(by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz`. Rewrite `hz` using `[hAm, not_le]`. Establish `hz0 : z 0 0 ≠ 0` using `by intro h0; rw [h0] at hz; simp at hz`. Establish `hϖ0 : ϖ ≠ 0` using `by intro h0; rw [h0] at hϖ; simp at hϖ`. Use `⟨Matrix.of fun _ _ => σ (ϖ⁻¹ / (2 * δ * z 0 0)), ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hAm, Matrix.of_apply, hv, map_div₀, hϖi, map_mul, map_mul, h2, hx0, one_mul, one_mul]`. Establish `hne : Valued.v (z 0 0) ≠ 0` using `(zero_lt_one.trans hz).ne'`. Rewrite using `[div_le_one₀ (zero_lt_one.trans hz)]`. Rewrite `hz`, the goal using `[← WithZero.exp_log hne]`. Rewrite `hz` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hc, ← AddChar.map_add_eq_mul]`. Establish `hσz : σ (z 0 0) ≠ 0` using `(map_ne_zero σ).2 hz0`. Use `hψ2 using 2` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `e : σ (ϖ⁻¹ / (2 * δ * z 0 0)) = ϖ⁻¹ / (2 * -δ * σ (z 0 0))`. Rewrite using `[map_div₀, map_inv₀, hϖσ, map_mul, map_mul, hσδ, map_ofNat]`. Rewrite using `[Matrix.of_apply, hσ, e]`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `a (by intro x; simp [a]) (by`. Introduce `g k x`. Take `⟨t1, -, -, h1⟩` from `ha0 g x`. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [a, Prod.fst_mul, Prod.snd_mul, Subgroup.coe_mul, mul_inv_rev, Units.val_mul, Matrix.mul_assoc])`. Use the proof step `(by intro g x y; simp only [a, Matrix.mul_add, Matrix.add_mul])`. Use the proof step `(by`. Introduce `g x y`. Take `⟨t, t1, -, h1⟩` from `ha0 g x`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc, hc, h1, h1]`. Use `congr 2`. Simplify using `only [map_mul]`. Take the linear combination `δ * (σ (y 0 0) * x 0 0 - y 0 0 * σ (x 0 0)) * t1)`. Use the proof step `(by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g x`. Take `⟨t, -, t2, h1⟩` from `ha0 g x`. Rewrite using `[hAm, hAm, h1, map_mul, t2, one_mul])`. Establish `hs : LocVac ρ s` using `fun u hu => rv u ((hAm' u).1 hu)`. Use `⟨δ, ψ, M, i1, i2, ρ, ω, s, ⟨h, hq, one_mem _, one_mem _, ?_, ?_, ⟨hx0, hσδ⟩, fun a ha _ => hψ1 a ha, ⟨1, one_mem _, map_one σ, by simpa using hψ2⟩, r0, rm, ?_, fun g k x => rn (g, k) x, ?_⟩, s0', hs, rs, ⟨fun _ _ => ϖ⁻¹, rx _ hϖn⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce `i j`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Simplify using the standard rewrite rules. Introduce `i j`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[eq_top_iff, ← rs]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨x, s, hs, rfl⟩`.
-
-Introduce `g k _ _ t ht`. Conclude with `rf (g, k) t fun u hu => ht u ((hAm' u).2 hu)`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_locPair [CharZero L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h : Formalism.UG.IsUnramInv ϖ σ q) (hq : Odd q) :
     ∃ (δ : L) (ψ : AddChar L ℂ) (M : Type) (_ : AddCommGroup M) (_ : Module ℂ M)

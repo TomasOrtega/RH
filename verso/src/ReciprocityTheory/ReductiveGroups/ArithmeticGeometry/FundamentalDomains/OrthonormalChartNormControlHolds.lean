@@ -9,17 +9,15 @@ open NumberField Complex Matrix
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 /- English proof (translation)
-Introduce `r X x hx ho ρ hρ0 hρ1`. Use `⟨fun Z hZ => ⟨OrthonormalChartBounds.xZ_mem_dom (X := X) hx ho (lt_of_le_of_lt hZ (by linarith)), fun la w hw => OrthonormalChartBounds.nfac_xZ (X := X) hx ho hρ0 hρ1 hZ la w hw, fun τ v => OrthonormalChartBounds.maj_xZ (X := X) hx ho hρ0 hρ1 hZ τ v⟩, ?_⟩` and prove the remaining obligations. Introduce `G hG`. Establish `hd : Differentiable ℂ (fun Z : X.Coord => X.xZ x Z)`. Use `differentiable_pi.mpr fun τ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `differentiable_pi.mpr fun a => ?_` and prove the remaining obligations. Use `differentiable_pi.mpr fun b => ?_` and prove the remaining obligations. Simplify using `only [Data.xZ, Matrix.mul_apply, Data.lowBlock, Matrix.of_apply]`. Establish `hsum : ∀ {f : Fin r → X.Coord → ℂ}, (∀ j, Differentiable ℂ (f j)) → Differentiable ℂ (fun Z => ∑ j, f j Z)`. Introduce `f hf`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `first`. Consider the case `exact Differentiable.fun_sum fun j _ => hf j`. Consider the case `simpa [Finset.sum_fn] using Differentiable.sum (u := Finset.univ) (fun j _ => hf j)`. Consider the case `fun_prop`. Use `hsum fun k => ?_` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Differentiable.const_mul ?_ _` and prove the remaining obligations. Use `(differentiable_const _).add ?_` and prove the remaining obligations. Distinguish the cases in `h : X.p0 ≤ (k : ℕ) ∧ (b : ℕ) < X.p0`. Simplify using `only [dif_pos h] first`. Consider the case `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (differentiable_pi.mp ((differentiable_pi.mp ((differentiable_pi.mp differentiable_id) τ)) _)) _`. Simplify using `only [dif_neg h]`. Conclude with `differentiable_const _`. Use `hG.comp hd.differentiableOn ?_` and prove the remaining obligations. Introduce `Z hZ`.
-
-Conclude with `OrthonormalChartBounds.xZ_mem_dom (X := X) hx ho (lt_of_lt_of_le hZ (by linarith))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orthonormalChartNormControl_holds : OrthonormalChartNormControl (E := E) := by
   intro r X x hx ho ρ hρ0 hρ1

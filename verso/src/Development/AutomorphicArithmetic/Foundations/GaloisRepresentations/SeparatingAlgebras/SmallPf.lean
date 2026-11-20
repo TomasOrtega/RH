@@ -3,29 +3,27 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Separ
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `hSym hStar hNull hDens n Φ hΦ δ hδ`. Take `⟨P, hPmem, hPprod, hPpoly⟩` from `hSym n Φ`. Take `⟨Ψ, hΨ, hPΨ⟩` from `hPpoly hΦ`. Take `⟨Q, hQmem, hQ⟩` from `hStar n P hPmem`. Take `⟨-, -, hcont, hnorm⟩` from `hDens n 0 le_rfl one_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `(isCompact_univ : IsCompact (Set.univ : Set (Fin n → UnitAddCircle))).exists_bound_of_continuousOn (hcont P).continuousOn`. Use `set c : ℝ := 1 / (M ^ 2 + 1) with hc`. Establish `hc0 : 0 < c` using `by positivity`. Set `g : (Fin n → UnitAddCircle) → ℝ` to `fun θ => 1 - c * ‖evalAt (pt θ) P‖ ^ 2`. Establish `hg0 : ∀ θ, 0 ≤ g θ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `θ`. Establish `h1 : ‖evalAt (pt θ) P‖ ≤ M` using `hM θ (Set.mem_univ _)`. Establish `h2 : ‖evalAt (pt θ) P‖ ^ 2 ≤ M ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) h1 2`. Establish `h3 : c * ‖evalAt (pt θ) P‖ ^ 2 ≤ 1`. Rewrite using `[hc, div_mul_eq_mul_div, one_mul, div_le_one (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [g]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hg1 : ∀ θ, g θ ≤ 1`. Introduce `θ`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [g]`. Establish `: 0 ≤ c * ‖evalAt (pt θ) P‖ ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Set `pk : ℕ → LaurentRing n` to `fun k => (1 - (c : ℂ) • (P * Q)) ^ k`. Establish `hpk_mem : ∀ k, pk k ∈ symmetricLaurent n`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Conclude with `Subalgebra.pow_mem _ (Subalgebra.sub_mem _ (Subalgebra.one_mem _) (Subalgebra.smul_mem _ (Subalgebra.mul_mem _ hPmem hQmem) _)) k`. Establish `hpk_eval : ∀ k θ, evalAt (pt θ) (pk k) = ((g θ : ℝ) : ℂ) ^ k`. Introduce `k θ`. Simplify using `only [pk, g, map_pow, map_sub, map_one, map_smul, map_mul, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hQ (pt θ) (hnorm θ), Complex.mul_conj']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hF : ∀ k θ, ‖evalAt (pt θ) (pk k)‖ ^ 2 = (g θ ^ k) ^ 2`. Introduce `k θ`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hpk_eval, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hg0 θ)]`. Establish `hlim : Filter.Tendsto (fun k => ∫ θ, ‖evalAt (pt θ) (pk k)‖ ^ 2) Filter.atTop (nhds (∫ _θ : Fin n → UnitAddCircle, (0 : ℝ)))`. Use `tendsto_integral_of_dominated_convergence (fun _ => (1 : ℝ)) (fun k => ?_) (integrable_const _) (fun k => Filter.Eventually.of_forall (fun θ => ?_)) ?_` and prove the remaining obligations. Conclude with `((hcont (pk k)).norm.pow 2).aestronglyMeasurable`. Rewrite using `[hF, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `pow_le_one₀ (pow_nonneg (hg0 θ) _) (pow_le_one₀ (hg0 θ) (hg1 θ))`. Use `filter_upwards [hNull n Ψ hΨ] with θ hθ`. Establish `hP0 : evalAt (pt θ) P ≠ 0` using `by rw [hPΨ]; exact hθ`. Establish `hlt : g θ < 1`. Simplify using `only [g]`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Establish `: 0 < c * ‖evalAt (pt θ) P‖ ^ 2`. Use `norm_pos_iff.mpr hP0` as an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [hF]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (hg0 θ) hlt).pow 2`. Simplify using `using h`. Rewrite `hlim` using `[MeasureTheory.integral_zero]`. Take `⟨k, hk⟩` from `((tendsto_order.1 hlim).2 δ hδ).exists`. Use `⟨pk k, hpk_mem k, fun z hz => ?_, hk.le⟩` and prove the remaining obligations.
-
-Establish `hP0 : evalAt z P = 0`. Rewrite using `[hPprod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ 1) (by simpa using hz)`. Simplify using `only [pk, map_pow, map_sub, map_one, map_smul, map_mul, hP0, zero_mul, smul_zero, sub_zero, one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.small_pf :
     UpperTheory.Gal.Gen.SymEx → UpperTheory.Gal.Gen.StarEx → UpperTheory.Gal.Gen.NullZero → UpperTheory.Gal.Gen.DensCont → UpperTheory.Gal.Gen.Small := by

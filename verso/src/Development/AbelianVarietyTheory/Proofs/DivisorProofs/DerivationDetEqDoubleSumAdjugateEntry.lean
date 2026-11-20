@@ -5,9 +5,9 @@ open Matrix Finset
 namespace GlobalTheory.DetDeriv
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, Finset.erase_insert ha, Derivation.leibniz, ih, add_comm, Finset.smul_sum, smul_eq_mul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hne : a ≠ i` using `fun h => ha (h ▸ hi)`. Rewrite using `[Finset.erase_insert_of_ne hne, Finset.prod_insert (fun h => ha (Finset.mem_of_mem_erase h)), smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem derivation_prod {K R : Type} [CommRing K] [CommRing R] [Algebra K R]
     {ι : Type} [DecidableEq ι] (δ : Derivation K R R) (s : Finset ι) (f : ι → R) :
@@ -25,11 +25,11 @@ theorem derivation_prod {K R : Type} [CommRing K] [CommRing R] [Algebra K R]
     ring
 
 /- English proof (translation)
-Establish `key : ∀ N : Matrix ι ι R, N.det = ∑ σ : Equiv.Perm ι, ((Equiv.Perm.sign σ : ℤ) : R) * ∏ i, N i (σ i)`. Introduce `N`. Rewrite using `[← det_transpose, det_apply']`. Both sides reduce to the same expression. Simplify using `only [key, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, δ.map_intCast, smul_zero, add_zero, smul_eq_mul, ← Finset.mul_sum, derivation_prod]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ t), updateRow_self, mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[updateRow_ne (Finset.ne_of_mem_erase hi)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem derivation_det_rows {K R : Type} [CommRing K] [CommRing R] [Algebra K R]
     (δ : Derivation K R R) {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι R) :
@@ -52,7 +52,7 @@ theorem derivation_det_rows {K R : Type} [CommRing K] [CommRing R] [Algebra K R]
   rw [updateRow_ne (Finset.ne_of_mem_erase hi)]
 
 /- English proof (translation)
-Rewrite using `[← cramer_transpose_apply, cramer_eq_adjugate_mulVec, ← adjugate_transpose, mulVec]`. Simplify using `[dotProduct, transpose_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_updateRow_eq_sum_adjugate {R : Type} [CommRing R] {ι : Type} [Fintype ι]
     [DecidableEq ι] (M : Matrix ι ι R) (t : ι) (v : ι → R) :
@@ -61,7 +61,7 @@ theorem det_updateRow_eq_sum_adjugate {R : Type} [CommRing R] {ι : Type} [Finty
   simp [dotProduct, transpose_apply]
 
 /- English proof (translation)
-Rewrite using `[derivation_det_rows]`. Conclude with `Finset.sum_congr rfl fun i _ => det_updateRow_eq_sum_adjugate M i _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivation_det {K R : Type} [CommRing K] [CommRing R] [Algebra K R]
     (δ : Derivation K R R) {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι R) :
@@ -70,7 +70,7 @@ theorem derivation_det {K R : Type} [CommRing K] [CommRing R] [Algebra K R]
   exact Finset.sum_congr rfl fun i _ => det_updateRow_eq_sum_adjugate M i _
 
 /- English proof (translation)
-Introduce `δ _ _ _ M` and use `derivation_det δ M`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {K R : Type} [CommRing K] [CommRing R] [Algebra K R] (δ : Derivation K R R)
     {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι R),

@@ -87,26 +87,26 @@ def LeafAff : Prop := A1 → A3 → A5 → A7 → A9 → A10 → B3 → C4 → D
   IsCompl' (varIdeal (RingHom.id (MvPolynomial (Fin d) D))) U → Conn _ (tw q i) (2 * d) (sch.map U.ι)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨(PrimeSpectrum.zeroLocus (I : Set B))ᶜ, (PrimeSpectrum.isClosed_zeroLocus _).isOpen_compl⟩, fun _ => Iff.rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_compl {B : Type} [CommRing B] (I : Ideal B) : ∃ U, IsCompl' I U :=
   ⟨⟨(PrimeSpectrum.zeroLocus (I : Set B))ᶜ, (PrimeSpectrum.isClosed_zeroLocus _).isOpen_compl⟩, fun _ => Iff.rfl⟩
 
 /- English proof (translation)
-Rewrite using `[varIdeal, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_varIdeal {d : ℕ} {C B W : Type} [CommRing C] [CommRing B] [CommRing W] (φ : MvPolynomial (Fin d) C →+* B)
     (α : B →+* W) : (varIdeal φ).map α = Ideal.span (Set.range fun j => α (φ (MvPolynomial.X j))) := by
   rw [varIdeal, Ideal.map_span, ← Set.range_comp]; rfl
 
 /- English proof (translation)
-Introduce `a1 a2 a3 _ a5 a7 _ a9 a10 _ _ _ b3 _ _ _ _ _ _ c4 _ d1 _ _ _ _ _ _ q _ X Z S p ι _ d e _ _ hq U hU n i`. Use `hLoc a1 a2 a9 _ (tw q i) (2 * d) U (fun x hx W hW => ?_) n` and prove the remaining obligations. Establish `hmem : ∀ y : X, y ∈ U ↔ y ∉ Set.range ι` using `fun y => by`. Express the relevant statement in the definitionally equal form `y ∈ (U : Set X) ↔ _`. Rewrite using `[hU]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨B, C, _, _, j, hj, φ, hφ, hxj, hjW, hz⟩` from `hChart p ι d e x (by by_contra h; exact hx ((hmem x).2 h)) W hW`. Use `⟨_, j, hj, hxj, hjW, ?_⟩` and prove the remaining obligations. Take `⟨D, W', _, _, ψ, α, β, hα, hβ, hc, qα, qβ⟩` from `hRoof d φ hφ`. Establish `hqB : IsUnit (q : B)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using hq.map ((j ≫ p).appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of B)).hom).hom`. Establish `hqD : IsUnit (q : D)` using `by simpa using hqB.map ψ`. Take `⟨U', hU'⟩` from `exists_compl ((varIdeal φ).map α)`. Take `⟨U₀, hU₀⟩` from `exists_compl (varIdeal (RingHom.id (MvPolynomial (Fin d) D)))`. Establish `he : (varIdeal (RingHom.id (MvPolynomial (Fin d) D))).map β = (varIdeal φ).map α`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_varIdeal, map_varIdeal]`. Simplify using `only [hc, RingHom.id_apply]`. Establish `h1` using `(hExc a1 _ (tw q i) (2 * d) β _ hβ qβ U₀ U' hU₀ (he ▸ hU')).1 (hAff a1 a3 a5 a7 a9 a10 b3 c4 d1 q i d D hqD U₀ hU₀)`. Use `(hExc a1 _ (tw q i) (2 * d) α _ hα qα _ U' (fun y => ?_) hU').2 h1` and prove the remaining obligations. Conclude with `(hmem (j y)).trans (not_congr (hz y))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem goal_of (hLoc : LeafLoc) (hExc : LeafExcRing) (hRoof : LeafRoof) (hChart : LeafChart) (hAff : LeafAff) :
     LateralTheory.E.EtaleChapterESix := by

@@ -3,19 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `C _ n h T T' hT hT' hu hc`. It suffices to establish `key : ∀ m, ∀ i j : Fin n, j.val + (n - i.val) = m → j < i → h i j = 0 by`. Introduce `i j hji`. Conclude with `key _ i j rfl hji`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `i j hm hji`. Establish `e` using `congrFun (congrFun hc i) j`. Simplify using `only [Matrix.mul_apply] at e`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hji'` using `Fin.lt_iff_val_lt_val.mp hji`. Establish `L : ∑ k, h i k * T k j = h i j * T j j`. Rewrite using `[Finset.sum_eq_single j]`. Introduce `k _ hkj`. Break down `lt_or_gt_of_ne hkj with hk | hk` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hk'` using `Fin.lt_iff_val_lt_val.mp hk`. Rewrite using `[ih (k.val + (n - i.val)) (by omega) i k rfl (hk.trans hji), zero_mul]`. Rewrite using `[hT k j hk, mul_zero]`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ j) hn`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `R : ∑ k, T' i k * h k j = T' i i * h i j`. Rewrite using `[Finset.sum_eq_single i]`. Introduce `k _ hki`. Break down `lt_or_gt_of_ne hki with hk | hk` into its components or cases. Rewrite using `[hT' i k hk, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk'` using `Fin.lt_iff_val_lt_val.mp hk`. Establish `hkn` using `k.isLt`. Rewrite using `[ih (j.val + (n - k.val)) (by omega) k j rfl (hji.trans hk), mul_zero]`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ i) hn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[L, R]`. Establish `e2 : h i j * (T j j - T' i i) = 0`. Rewrite using `[mul_sub, e, mul_comm]`. Conclude with `sub_self _`. Conclude with `(hu i j hji).mul_left_eq_zero.mp e2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.ep_upt :
     ∀ {C : Type} [CommRing C] {n : ℕ} (h T T' : Matrix (Fin n) (Fin n) C), UpT T → UpT T' → (∀ i j, j < i → IsUnit (T j j - T' i i)) → h * T = T' * h → UpT h := by

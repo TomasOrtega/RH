@@ -17,7 +17,7 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] [LinearOrder K] {ι : K 
   [∀ k, Fintype (ι k)] [∀ k, LinearOrder (ι k)]
 
 /- English proof (translation)
-Take `⟨μ, hμ⟩` from `Finset.nonempty_iff_ne_empty.mpr (mt MvPolynomial.support_eq_empty.mp h0)`. Use function extensionality and compare the values at `k`. Conclude with `(ha μ hμ k).symm.trans (hb μ hμ k)`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem homog_unique {p : MRingOver S ι} {a b : K → ℕ} (ha : IsMultiHomog p a) (hb : IsMultiHomog p b)
     (h0 : p ≠ 0) : a = b := by
@@ -26,7 +26,7 @@ theorem homog_unique {p : MRingOver S ι} {a b : K → ℕ} (ha : IsMultiHomog p
   exact (ha μ hμ k).symm.trans (hb μ hμ k)
 
 /- English proof (translation)
-Establish `h : chartMon (S` using `S) c e = monomial (∑ k, Finsupp.single (⟨k, c k⟩ : Σ k, ι k) (e k)) 1 := by`. Rewrite using `[MvPolynomial.monomial_sum_one, chartMon]`. Conclude with `Finset.prod_congr rfl fun k _ => MvPolynomial.X_pow_eq_monomial`. Rewrite using `[h, Ne, MvPolynomial.monomial_eq_zero]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartMon_ne_zero [Nontrivial S] (c : ∀ k, ι k) (e : K → ℕ) : chartMon (S := S) c e ≠ 0 := by
   have h : chartMon (S := S) c e = monomial (∑ k, Finsupp.single (⟨k, c k⟩ : Σ k, ι k) (e k)) 1 := by
@@ -36,14 +36,14 @@ theorem chartMon_ne_zero [Nontrivial S] (c : ∀ k, ι k) (e : K → ℕ) : char
   exact one_ne_zero
 
 /- English proof (translation)
-Simplify using `only [chartMon, pow_one, ← Finset.prod_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartMon_one_pow (c : ∀ k, ι k) (n : ℕ) :
     chartMon (S := S) c (fun _ => 1) ^ n = chartMon c (fun _ => n) := by
   simp only [chartMon, pow_one, ← Finset.prod_pow]
 
 /- English proof (translation)
-The claim follows from `smul_mk_cancel w y ⟨s, hs⟩`.
+A detailed English derivation is pending.
 -/
 theorem smul_mk_cancel' {T : Submonoid (MRingOver S ι)} {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M]
     (w : MRingOver S ι) (y : M) {s : MRingOver S ι} (hs : s ∈ T) :
@@ -51,11 +51,11 @@ theorem smul_mk_cancel' {T : Submonoid (MRingOver S ι)} {M : Type} [AddCommGrou
   smul_mk_cancel w y ⟨s, hs⟩
 
 /- English proof (translation)
-Proceed by induction on `w using LocalizedModule.induction_on with`. Consider the case `h m s`. Establish `hsub : ∀ k, (chart c').1 k ⊆ ({c k, c' k} : Finset (ι k))` using `fun k => by simp [chart]`. Rewrite `hw` using `[GenTwistGenerated.cellRes_mk (GenTwistGenerated.cellMon_mono hsub)]`. Take `⟨v, hv⟩` from `LocalizedModule.mk_eq.mp (hw.trans (LocalizedModule.zero_mk (1 : KH.cellMon S (fun k => ({c k, c' k} : Finset (ι k))))).symm)`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [one_smul, smul_zero] at hv`. Take `⟨e, w', hw'⟩` from `dvd_of_mem_pair v.2`. Establish `hz : (chartMon (S` using `S) c (fun _ => e) * chartMon c' (fun _ => e)) • m = 0 := by`. Rewrite using `[hw', mul_comm, mul_smul, ← Submonoid.smul_def, hv, smul_zero]`. Use `⟨e, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LocalizedModule.smul'_mk, ← LocalizedModule.zero_mk s, LocalizedModule.mk_eq]`. Use `⟨⟨chartMon c' (fun _ => e), chartMon_mem c' _⟩, ?_⟩` and prove the remaining obligations. Use `show chartMon (S := S) c' (fun _ => e) • (s : MRingOver S ι) • chartMon (S := S) c (fun _ => e) • m = chartMon (S := S) c' (fun _ => e) • (s : MRingOver S ι) • (0 : M)`. Rewrite using `[smul_zero, smul_zero, smul_comm (chartMon c' (fun _ => e)) (s : MRingOver S ι), smul_smul (chartMon c' (fun _ => e)) (chartMon c (fun _ => e)) m, mul_comm (chartMon c' (fun _ => e)) (chartMon c (fun _ => e)), hz, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_kill_of_res_eq_zero {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] (c c' : ∀ k, ι k)
     (w : LocalizedModule (KH.cellMon S (chart c').1) M)
@@ -81,25 +81,25 @@ theorem exists_kill_of_res_eq_zero {M : Type} [AddCommGroup M] [Module (MRingOve
       mul_comm (chartMon c' (fun _ => e)) (chartMon c (fun _ => e)), hz, smul_zero]
 
 /- English proof (translation)
-Introduce `J`. Take `⟨c', rfl⟩ : ∃ c', J = chart c'` from `⟨_, eq_chart J⟩`. Introduce `x hx`. Take `⟨m, t, a, ht, hm, rfl⟩` from `GenSESStep.locPart_normal h𝓜 hx`. Establish `hy : LocalizedModule.mk m (⟨chartMon c a, chartMon_mem c a⟩ : KH.cellMon S (chart c).1) ∈ KH.locPart ι 𝓜 (KH.cellMon S (chart c).1) d` using `GenSESStep.mk_mem_locPart _ _ a (isMultiHomog_chartMon c a) hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t₁, a₁, r, p, z, ht₁T, ht₁, hp, hz, he⟩` from `hloc _ hy`. Take `⟨α₁, rfl⟩` from `exists_chartMon ht₁T`. Take `rfl : a₁ = α₁` from `homog_unique ht₁ (isMultiHomog_chartMon c α₁) (chartMon_ne_zero c α₁)`. Use `set U : ∀ k, Finset (ι k) := fun k => {c k, c' k} with hU`. Establish `hsub : ∀ k, (chart c).1 k ⊆ U k` using `fun k => by simp [chart, hU]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub' : ∀ k, (chart c').1 k ⊆ U k` using `fun k => by simp [chart, hU]`. Establish `hle` using `GenTwistGenerated.cellMon_mono (S := S) hsub`. Establish `hle'` using `GenTwistGenerated.cellMon_mono (S := S) hsub'`. Establish `hagree : ∀ j, KH.cellRes S M (chart c').1 U (z j (chart c')) = KH.cellRes S M (chart c).1 U (z j (chart c))` using `fun j => (res_agree (z j) (LinearMap.mem_ker.mp (hz j).2) c c' U (fun k => by simp [hU]) (fun k => by simp [hU])).symm`. Establish `hD : KH.cellRes S M (chart c').1 U ((f₀ * chartMon c a₁ * (t : MRingOver S ι)) • LocalizedModule.mk m t - ∑ j, (chartMon c a * p j) • z j (chart c')) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : KH.cellRes S M (chart c').1 U (∑ j, (chartMon c a * p j) • z j (chart c')) = LocalizedModule.mk ((f₀ * chartMon c a₁) • m) 1`. Establish `e1 : KH.cellRes S M (chart c').1 U (∑ j, (chartMon c a * p j) • z j (chart c')) = chartMon (S` using `S) c a • KH.cellRes S M (chart c).1 U (∑ j, p j • z j (chart c)) := by`. Rewrite using `[map_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hagree j, map_smul, mul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[e1, ← he, map_smul, GenTwistGenerated.cellRes_mk hle, smul_smul, mul_comm (chartMon (S := S) c a) (f₀ * chartMon c a₁)]`. Conclude with `smul_mk_cancel' _ _ _`. Rewrite using `[map_sub, h2, map_smul, GenTwistGenerated.cellRes_mk hle', sub_eq_zero]`. Conclude with `smul_mk_cancel' _ _ _`. Take `⟨e, he0⟩` from `exists_kill_of_res_eq_zero c c' _ hD`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `he0` using `[smul_sub, sub_eq_zero]`. Use `set E : ℕ := ∑ k, a₁ k with hE`. Establish `haE : ∀ k, a₁ k ≤ E` using `fun k => Finset.single_le_sum (f := a₁) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Establish `hexp : (fun _ : K => e + E + 1) = (fun _ => 1) + (fun k => E - a₁ k) + (fun _ => e) + a₁`. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply]`. Use `haE k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hring : (f₀ * chartMon c (fun _ => 1)) ^ (e + E + 1) * (t : MRingOver S ι) = (f₀ ^ (e + E) * chartMon c (fun _ => 1) * chartMon c (fun k => E - a₁ k)) * (chartMon c (fun _ => e) * (f₀ * chartMon c a₁ * (t : MRingOver S ι)))`. Rewrite using `[mul_pow, chartMon_one_pow, hexp, chartMon_add, chartMon_add, chartMon_add]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨e + E + 1, t, a, r, fun j => f₀ ^ (e + E) * chartMon c (fun _ => 1) * chartMon c (fun k => E - a₁ k) * chartMon c (fun _ => e) * chartMon c a * p j, z, t.2, ht, fun j => ?_, hz, ?_⟩` and prove the remaining obligations. Establish `h` using `GenSESStep.isMultiHomog_mul (GenSESStep.isMultiHomog_mul (GenSESStep.isMultiHomog_mul (GenSESStep.isMultiHomog_mul (GenSESStep.isMultiHomog_mul (isMultiHomog_pow hf₀ (e + E)) (isMultiHomog_chartMon c (fun _ => 1))) (isMultiHomog_chartMon c (fun k => E - a₁ k))) (isMultiHomog_char …`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `haE k` as an intermediate fact. Use `zify [this] at *`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hring, mul_smul, mul_smul (chartMon (S := S) c (fun _ => e)), he0, Finset.smul_sum, Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only`. Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem genNear_of_chart [Nontrivial S] {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M]
     [IsScalarTower S (MRingOver S ι) M] {𝓜 : (K → ℤ) → Submodule S M} {d : K → ℤ} (h𝓜 : KH.IsMGraded S ι 𝓜)
@@ -182,11 +182,11 @@ theorem genNear_of_chart [Nontrivial S] {M : Type} [AddCommGroup M] [Module (MRi
 end ChartNakayamaGen
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ _ M _ _ _ _ 𝓜 P d hS hM h𝓜 hP _ I hI hgen`. Take `⟨c, rfl⟩ : ∃ c, I = ChartNakayamaGen.chart c` from `⟨_, ChartNakayamaGen.eq_chart I⟩`. Establish `h1 : (1 : S) ≠ 0` using `fun h => hP.ne_top ((Ideal.eq_top_iff_one P).mpr (by`. Establish `e : (1 : MRingOver S ι) = 0` using `by rw [← C_1, h, C_0]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.zero_mem))`. Establish `: Nontrivial S` using `nontrivial_of_ne 1 0 h1`. Establish `hc : ∀ k, (X ⟨k, c k⟩ : MRingOver S ι) ∉ P` using `fun k => hI k (c k) (Finset.mem_singleton_self _)`. Take `⟨f₀, δ₀, hf₀, hf₀P, hloc⟩` from `ChartNakayamaGen.chart_nakayama hS hM h𝓜 hP c hc hgen`. Use `⟨f₀ * ChartNakayamaGen.chartMon c (fun _ => 1), δ₀ + fun _ => 1, GenSESStep.isMultiHomog_mul hf₀ (ChartNakayamaGen.isMultiHomog_chartMon c _), fun h => ?_, ChartNakayamaGen.genNear_of_chart h𝓜 c hf₀ hloc⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hP.mem_or_mem h with h | h` into its components or cases. Conclude with `hf₀P h`. Conclude with `ChartNakayamaGen.cellMon_notMem hP hc (ChartNakayamaGen.chartMon_mem c _) h`.
+A detailed English derivation is pending.
 -/
 theorem ChartNakayamaGen.proof : ChartNakayamaGen.Statement := by
   intro S _ K _ _ ι _ _ M _ _ _ _ 𝓜 P d hS hM h𝓜 hP _ I hI hgen

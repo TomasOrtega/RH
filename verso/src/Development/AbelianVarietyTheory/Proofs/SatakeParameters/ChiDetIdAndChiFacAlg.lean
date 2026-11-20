@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SelfDualChiAlg
 
 /- English proof (translation)
-Introduce `D χ hχ`. Use `⟨fun N L hN hL => ?_, fun L L' hA => ⟨GlobalTheory.MomT.FromComb.chiFac_mem hχ hA, ?_⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.MomT.FromComb.chi_mem hχ (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.relative_determinant_norm_one D N _ L hN (GlobalTheory.FourthRootStd.stdL_isSD D N) hL)`. Conclude with `GlobalTheory.Mem.NatEqui.chiFac_ne_zero hχ hA.2.2.1 hA.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem chi_detId_and_chiFac_alg : ∀ (D : D7) (χ : TaylorLogMetric.IdE D → ℂ), TaylorLogMetric.IsChi D χ →
     (∀ (N : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)), Even N → IsSDLat D.host.E N L →

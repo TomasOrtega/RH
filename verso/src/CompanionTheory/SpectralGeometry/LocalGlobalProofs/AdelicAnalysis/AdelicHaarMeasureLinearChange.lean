@@ -16,15 +16,15 @@ variable {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [Mea
   [BorelSpace R] [SecondCountableTopology R] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-The claim follows from `Continuous.matrix_mulVec continuous_const continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mulVec_left (M : Matrix ι ι R) : Continuous (fun x : ι → R => M *ᵥ x) :=
   Continuous.matrix_mulVec continuous_const continuous_id
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify `hx` using `[Matrix.mulVec_mulVec, h2]`. Introduce `hy`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨N *ᵥ y, hy, by simp [Matrix.mulVec_mulVec, h1]⟩`.
+Supply the required witnesses or components.
 -/
 theorem image_mulVec_eq_preimage (M N : Matrix ι ι R) (h1 : M * N = 1) (h2 : N * M = 1)
     (s : Set (ι → R)) : (fun x => M *ᵥ x) '' s = (fun x => N *ᵥ x) ⁻¹' s := by
@@ -36,21 +36,21 @@ theorem image_mulVec_eq_preimage (M N : Matrix ι ι R) (h1 : M * N = 1) (h2 : N
     exact ⟨N *ᵥ y, hy, by simp [Matrix.mulVec_mulVec, h1]⟩
 
 /- English proof (translation)
-Establish `hT : Measurable (fun (x : ι → R) i => v i * x i)` using `(continuous_pi fun i => continuous_const.mul (continuous_apply i)).measurable`. Establish `himg : (fun (x : ι → R) i => u i * x i) '' s = (fun (x : ι → R) i => v i * x i) ⁻¹' s`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `: (fun i => v i * (u i * x i)) = x`. Use function extensionality and compare the values at `i`. Rewrite using `[← mul_assoc, mul_comm (v i), huv, one_mul]`. Simplify `hx` using `[this]`. Introduce `hy`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨_, hy, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show u i * (v i * y i) = y i`. Rewrite using `[← mul_assoc, huv, one_mul]`. Establish `hpre : ∀ i (t : Set R), (fun x => v i * x) ⁻¹' t = (fun x => u i * x) '' t`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i t`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨_, hy, by simp only; rw [← mul_assoc, huv, one_mul]⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Establish `: v i * (u i * x) = x` using `by rw [← mul_assoc, mul_comm (v i), huv, one_mul]`. Simplify `hx` using `[this]`. Establish `e1 : Measure.pi (fun i => c i • lf) = (Measure.pi fun _ : ι => lf).map (fun (x : ι → R) i => v i * x i)`. Use `Measure.pi_eq fun t ht => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_apply hT (MeasurableSet.univ_pi ht)]`. Establish `: (fun (x : ι → R) i => v i * x i) ⁻¹' Set.pi Set.univ t = Set.pi Set.univ fun i => (fun x => u i * x) '' t i`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_univ_pi, ← hpre]`. Rewrite using `[this, Measure.pi_pi]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hc i _ (ht i)]`. Both sides reduce to the same expression. Establish `e2 : Measure.pi (fun i => c i • lf) = (∏ i, (c i : ℝ≥0∞)) • (Measure.pi fun _ : ι => lf)`. Use `Measure.pi_eq fun t ht => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.smul_apply, Measure.pi_pi, smul_eq_mul, ← Finset.prod_mul_distrib]`. Both sides reduce to the same expression. Rewrite using `[himg, ← Measure.map_apply hT hs, ← e1, e2, Measure.smul_apply, smul_eq_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_image_mul (lf : Measure R) [SigmaFinite lf] (u v : ι → R) (huv : ∀ i, u i * v i = 1)
     (c : ι → ℝ≥0)
@@ -102,13 +102,13 @@ theorem pi_image_mul (lf : Measure R) [SigmaFinite lf] (u v : ι → R) (huv : �
   rw [himg, ← Measure.map_apply hT hs, ← e1, e2, Measure.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `ht : Measurable (fun x : ι → R => transvection i j c *ᵥ x)` using `(continuous_mulVec_left _).measurable`. Use `⟨ht, ?_⟩` and prove the remaining obligations. Use `(Measure.pi_eq fun s hs ↦ ?_).symm` and prove the remaining obligations. Establish `h2s : MeasurableSet (Set.univ.pi s)` using `.pi Set.countable_univ fun i _ ↦ hs i`. Repeatedly rewrite using `[← Measure.pi_pi, ← lintegral_indicator_one h2s]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[lintegral_map (measurable_one.indicator h2s) ht]`. Use `lintegral_eq_of_lmarginal_eq {i} ((measurable_one.indicator h2s).comp ht) (measurable_one.indicator h2s) ?_` and prove the remaining obligations. Repeatedly rewrite using `[lmarginal_singleton]`. Use extensionality with `x`. Establish `hup : ∀ xi : R, transvection i j c *ᵥ Function.update x i xi = Function.update x i (xi + c * x j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Introduce `xi`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[transvection, add_mulVec, single_mulVec, hij.symm]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[transvection, add_mulVec, single_mulVec, hk, hij.symm]`. Simplify using `only [Function.comp_apply, hup]`. Conclude with `lintegral_add_right_eq_self (fun xᵢ ↦ Set.indicator (Set.univ.pi s) 1 (Function.update x i xᵢ)) (c * x j)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurePreserving_transvection (lf : Measure R) [SigmaFinite lf] [lf.IsAddLeftInvariant]
     (i j : ι) (hij : i ≠ j) (c : R) :
@@ -144,25 +144,25 @@ section Global
 variable {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Simplify using `[Bf, Matrix.map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Bf_mul (g h : Matrix ι ι F) : Bf (g * h) = Bf g * Bf h := by
   simp [Bf, Matrix.map_mul]
 
 /- English proof (translation)
-Simplify using `[Bf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Bf_one : Bf (1 : Matrix ι ι F) = 1 := by
   simp [Bf]
 
 /- English proof (translation)
-Rewrite using `[← Bf_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hg), Bf_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Bf_inv_mul (g : Matrix ι ι F) (hg : g.det ≠ 0) : Bf g⁻¹ * Bf g = 1 := by
   rw [← Bf_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hg), Bf_one]
 
 /- English proof (translation)
-Rewrite using `[← Bf_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hg), Bf_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Bf_mul_inv (g : Matrix ι ι F) (hg : g.det ≠ 0) : Bf g * Bf g⁻¹ = 1 := by
   rw [← Bf_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hg), Bf_one]
@@ -170,31 +170,29 @@ theorem Bf_mul_inv (g : Matrix ι ι F) (hg : g.det ≠ 0) : Bf g * Bf g⁻¹ = 
 end Global
 
 /- English proof (translation)
-Introduce `F _ _ _ _ lf hH h1 ι _ _`. Take `⟨hlc, hsc, ht2, hOc, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Take `⟨hF, -, hU⟩` from `GlobalTheory.T.adelic_haar_measure_scaling F lf hH h1`. Use `haveI := hlc`. Use `haveI := hsc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := ht2`. Use `haveI : SigmaFinite lf := inferInstance`. Establish `hmeas : ∀ (g : Matrix ι ι F), g.det ≠ 0 → ∀ s : Set (ι → A F), MeasurableSet s → MeasurableSet ((fun x => Bf g *ᵥ x) '' s)`. Introduce `g hg s hs`. Rewrite using `[image_mulVec_eq_preimage _ _ (Bf_mul_inv g hg) (Bf_inv_mul g hg)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(continuous_mulVec_left _).measurable hs`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Use `diagonal_transvection_induction_of_det_ne_zero (fun g => ∀ s : Set (ι → A F), MeasurableSet s → (Measure.pi fun _ : ι => lf) ((fun x => Bf g *ᵥ x) '' s) = ENNReal.ofReal (|((Algebra.norm ℚ g.det : ℚ) : ℝ)|⁻¹) * (Measure.pi fun _ : ι => lf) s) g hg ?_ ?_ ?_` and prove the remaining obligations. Introduce `D hD s hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hD' : ∀ i, D i ≠ 0`. Introduce `i`. Rewrite `hD` using `[det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.1 hD i (Finset.mem_univ i)`. Establish `hfun : (fun x : ι → A F => Bf (diagonal D) *ᵥ x) = fun x i => algebraMap F (A F) (D i) * x i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x i`. Establish `: Bf (diagonal D) = diagonal (fun i => algebraMap F (A F) (D i))`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Bf]`. Simplify using `[Bf, hab]`. Rewrite using `[this, mulVec_diagonal]`. Rewrite using `[hfun, pi_image_mul lf (fun i => algebraMap F (A F) (D i)) (fun i => algebraMap F (A F) (D i)⁻¹) ?_ (fun i => Real.toNNReal (|((Algebra.norm ℚ (D i) : ℚ) : ℝ)|⁻¹)) ?_ s hs]`. Use `congr 1`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[det_diagonal, map_prod, Rat.cast_prod, Finset.abs_prod, ← Finset.prod_inv_distrib, ENNReal.ofReal_prod_of_nonneg fun i _ => inv_nonneg.2 (abs_nonneg _)]`. Both sides reduce to the same expression. Introduce `i`. Rewrite using `[← map_mul, mul_inv_cancel₀ (hD' i), map_one]`. Introduce `i t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hF (D i) (hD' i) t ht`. Introduce `t s hs`. Establish `hdet : t.toMatrix.det = 1` using `t.det`. Establish `hinv : Bf t.toMatrix * Bf (transvection t.i t.j (-t.c)) = 1`. Rewrite using `[← Bf_mul, TransvectionStruct.toMatrix, transvection_mul_transvection_same _ _ t.hij]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Bf_one]`. Establish `hinv' : Bf (transvection t.i t.j (-t.c)) * Bf t.toMatrix = 1`. Rewrite using `[← Bf_mul, TransvectionStruct.toMatrix, transvection_mul_transvection_same _ _ t.hij]`. Simplify using `[Bf_one]`. Establish `hB : Bf (transvection t.i t.j (-t.c)) = transvection t.i t.j (algebraMap F (A F) (-t.c))`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Bf, transvection, Matrix.map_add, Matrix.map_one]`. Rewrite using `[image_mulVec_eq_preimage _ _ hinv hinv', hB, (measurePreserving_transvection lf t.i t.j t.hij _).measure_preimage hs.nullMeasurableSet, hdet]`. Simplify using the standard rewrite rules. Introduce `P Q hP hQ IP IQ s hs`. Establish `himg : (fun x => Bf (P * Q) *ᵥ x) '' s = (fun x => Bf P *ᵥ x) '' ((fun x => Bf Q *ᵥ x) '' s)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Set.image_image]`. Simplify using `[Bf_mul, Matrix.mulVec_mulVec]`. Rewrite using `[himg, IP _ (hmeas Q hQ s hs), IQ s hs, ← mul_assoc, ← ENNReal.ofReal_mul (inv_nonneg.2 (abs_nonneg _)), det_mul, map_mul, Rat.cast_mul, abs_mul, mul_inv]`. Introduce `a s hs`. Establish `hfin : lf ((fun x => (a : A F) * x) '' Oh F) ≠ ∞` using `(hOc.image (continuous_const.mul continuous_id)).measure_lt_top.ne`.
+Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : (fun x : ι → A F => (a : A F) • x) = fun x i => (a : A F) * x i`. Use function extensionality and compare the values at `x i`. Both sides reduce to the same expression. Rewrite using `[hfun, pi_image_mul lf (fun _ => (a : A F)) (fun _ => ((a⁻¹ : (A F)ˣ) : A F)) (fun _ => by simp) (fun _ => (lf ((fun x => (a : A F) * x) '' Oh F)).toNNReal) ?_ s hs]`. Simplify using `[ENNReal.coe_toNNReal hfin]`.
-
-Introduce `_ t ht`. Rewrite using `[ENNReal.coe_toNNReal hfin]`. Conclude with `hU a t ht`.
+A detailed English derivation is pending.
 -/
 theorem pi_scale : ∀ (F : Type) [Field F] [NumberField F], ∀ [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F)), lf.IsAddHaarMeasure → lf (Oh F) = 1 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι], (∀ g : Matrix ι ι F, g.det ≠ 0 → ∀ s : Set (ι → A F), MeasurableSet s → (Measure.pi fun _ : ι => lf) ((fun x => Bf g *ᵥ x) '' s) = ENNReal.ofReal (|((Algebra.norm ℚ g.det : ℚ) : ℝ)|⁻¹) * (Measure.pi fun _ : ι => lf) s) ∧ ∀ (a : (A F)ˣ) (s : Set (ι → A F)), MeasurableSet s → (Measure.pi fun _ : ι => lf) ((fun x => (a : A F) • x) '' s) = lf ((fun x => (a : A F) * x) '' Oh F) ^ Fintype.card ι * (Measure.pi fun _ : ι => lf) s := by
   intro F _ _ _ _ lf hH h1 ι _ _

@@ -39,11 +39,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 attribute [local instance] _root_.GlobalTheory.IndefiniteRowSideFullHecke.LetterBasisDecomposition.letterModule in
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `x`. Establish `hx' : x ∈ Submodule.map (_root_.Formalism.BasicNotions.letE i • LinearMap.id) (W.N T)` using `hx`. Take `⟨y, -, rfl⟩` from `Submodule.mem_map.mp hx'`. Express the relevant statement in the definitionally equal form `(Pi.constRingHom (ZMod n) (PowerSeries O) c : _root_.Formalism.BasicNotions.LetA O n) • ((_root_.Formalism.BasicNotions.letE i : _root_.Formalism.BasicNotions.LetA O n) • y) = (Pi.single i c : _root_.Formalism.BasicNotions.LetA O n) • ((_root_.Formalism.BasicNotions.letE i : _roo …`. Rewrite using `[smul_smul, smul_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Unfold `_root_.Formalism.BasicNotions.letE`. Use extensionality with `j : 1`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.LetterBasisDecomposition.letter_smul (i : ZMod n) (c : PowerSeries O)
     (x : ↥(W.Nl T i)) :
@@ -111,9 +111,9 @@ def FreeAt : Prop :=
     (∃ M₀ h₀, Sandwich W T M₀ h₀) ∧ Matrices W T
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[LocWach.φA, letφ, letE]`. Establish `h' : j - 1 ≠ i - 1` using `fun e => h (sub_left_injective e)`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[LocWach.φA, letφ, letE, h, h']`.
+Simplify using the standard rewrite rules.
 -/
 theorem phi_letE (i : ZMod n) : W.φA (letE (i - 1)) = letE i := by
   funext j

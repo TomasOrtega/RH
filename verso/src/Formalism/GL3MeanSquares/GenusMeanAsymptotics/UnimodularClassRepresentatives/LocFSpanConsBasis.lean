@@ -32,7 +32,7 @@ def prodEquiv (S : VecSplit h h') : (K × V') ≃ₗ[K] V :=
 
 omit [FiniteDimensional K V] [FiniteDimensional K V'] in
 /- English proof (translation)
-Use `show (LinearMap.toSpanSingleton K V S.x₀).coprod S.ι (c, a) = _`. Rewrite using `[LinearMap.coprod_apply, LinearMap.toSpanSingleton_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodEquiv_apply (S : VecSplit h h') (c : K) (a : V') :
     prodEquiv S (c, a) = c • S.x₀ + S.ι a := by
@@ -44,7 +44,7 @@ def consBasis (S : VecSplit h h') {κ : Type} (b' : Basis κ K V') : Basis (Unit
 
 omit [FiniteDimensional K V] [FiniteDimensional K V'] in
 /- English proof (translation)
-Simplify using `[consBasis, prodEquiv_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem consBasis_inl (S : VecSplit h h') {κ : Type} (b' : Basis κ K V') (u : Unit) :
     consBasis S b' (Sum.inl u) = S.x₀ := by
@@ -52,7 +52,7 @@ theorem consBasis_inl (S : VecSplit h h') {κ : Type} (b' : Basis κ K V') (u : 
 
 omit [FiniteDimensional K V] [FiniteDimensional K V'] in
 /- English proof (translation)
-Simplify using `[consBasis, prodEquiv_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem consBasis_inr (S : VecSplit h h') {κ : Type} (b' : Basis κ K V') (i : κ) :
     consBasis S b' (Sum.inr i) = S.ι (b' i) := by
@@ -60,23 +60,19 @@ theorem consBasis_inr (S : VecSplit h h') {κ : Type} (b' : Basis κ K V') (i : 
 
 omit [FiniteDimensional K V] [FiniteDimensional K V'] in
 /- English proof (translation)
-Establish `key : ∀ {A B : Submodule (𝓞 K) V}, A ≤ locF 𝔭 B → B ≤ locF 𝔭 A → locF 𝔭 A = locF 𝔭 B`. Introduce `A B hAB hBA`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(Formalism.HermitianLatticesTheory.genusCovol_locS_mono _ hAB).trans (Formalism.HermitianLatticesTheory.genusCovol_locS_idem _ _)`. Conclude with `(Formalism.HermitianLatticesTheory.genusCovol_locS_mono _ hBA).trans (Formalism.HermitianLatticesTheory.genusCovol_locS_idem _ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `VecSplit.adjoin`. Apply `key` to reduce the goal to its premises. Use `le_trans ?_ (Formalism.HermitianLatticesTheory.genusCovol_le_locS _ _)` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `j with u | i` into its components or cases. Rewrite using `[consBasis_inl]`. Conclude with `Submodule.mem_sup_left (Submodule.subset_span (Set.mem_singleton _))`. Rewrite using `[consBasis_inr]`. Conclude with `Submodule.mem_sup_right ⟨b' i, hbT i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `sup_le` to reduce the goal to its premises. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Apply `Formalism.HermitianLatticesTheory.genusCovol_le_locS` to reduce the goal to its premises. Rewrite using `[← consBasis_inl S b' ()]`. Conclude with `Submodule.subset_span ⟨Sum.inl (), rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨t, ht, rfl⟩`. Establish `ht' : t ∈ locF 𝔭 (spanO b')`. Rewrite using `[hb']`. Conclude with `Formalism.HermitianLatticesTheory.genusCovol_le_locS _ _ ht`. Take `⟨s, hs, hst⟩` from `(Formalism.HermitianLatticesTheory.genusCovol_mem_locS _ _ _).1 ht'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmap : ∀ y ∈ spanO b', S.ι y ∈ spanO (consBasis S b')`. Introduce `y hy`. Use `Submodule.span_induction (p := fun y _ => S.ι y ∈ spanO (consBasis S b')) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[← consBasis_inr S b' i]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨Sum.inr i, rfl⟩`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Introduce `a x _ hx`. Establish `e : S.ι (a • x) = a • S.ι x` using `(S.ι.restrictScalars (𝓞 K)).map_smul a x`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ a hx`. Use `(Formalism.HermitianLatticesTheory.genusCovol_mem_locS _ _ _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations.
-
-Establish `e : S.ι (s • t) = s • S.ι t` using `(S.ι.restrictScalars (𝓞 K)).map_smul s t`. Use `hmap _ hst` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locF_span_consBasis (S : VecSplit h h') {κ : Type} (b' : Basis κ K V')
     {T : Submodule (𝓞 K) V'} (hbT : ∀ i, b' i ∈ T) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
@@ -130,53 +126,47 @@ theorem locF_span_consBasis (S : VecSplit h h') {κ : Type} (b' : Basis κ K V')
       exact this
 
 /- English proof (translation)
-Use `haveI : 𝔭.IsPrime := h𝔭.isPrime`. Use `haveI : Fact (IsFixF K F) := ⟨hF⟩`. Take `⟨π, hπ⟩ : ∃ π : V →ₗ[K] V', ∀ v, π v = ((prodEquiv S).symm v).2` from `⟨(LinearMap.snd K K V') ∘ₗ (prodEquiv S).symm.toLinearMap, fun v => rfl⟩`. Establish `hdec : ∀ v : V, v = h S.x₀ v • S.x₀ + S.ι (π v)`. Introduce `v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, a, hv⟩ : ∃ c a, (prodEquiv S).symm v = (c, a)` from `⟨_, _, rfl⟩`. Establish `hv' : v = c • S.x₀ + S.ι a`. Rewrite using `[← prodEquiv_apply, ← hv, LinearEquiv.apply_symm_apply]`. Establish `hc : h S.x₀ v = c`. Rewrite using `[hv', map_add, map_smul, h1, S.orth]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `ha : π v = a` using `by rw [hπ, hv]`. Rewrite using `[hc, ha]`. Conclude with `hv'`. Establish `hπι : ∀ a, π (S.ι a) = a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a`. Establish `e` using `hdec (S.ι a)`. Rewrite `e` using `[S.orth, zero_smul, zero_add]`. Conclude with `(S.inj e).symm`. Establish `hcutEq : S.cut L = L.map (π.restrictScalars (𝓞 K))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Conclude with `⟨S.ι a, ha, hπι a⟩`. Introduce and unpack `⟨v, hv, rfl⟩ show S.ι (π v) ∈ L`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `Submodule.mem_one.1 (hLi _ hx _ hv)`. Establish `e : S.ι (π v) = v - h S.x₀ v • S.x₀`. Rewrite using `[eq_sub_iff_add_eq, add_comm]`. Conclude with `(hdec v).symm`. Rewrite using `[e, ← hc, algebraMap_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `L.sub_mem hv (L.smul_mem c hx)`. Establish `hcutL : Submodule.IsLattice K (S.cut L)`. Rewrite using `[hcutEq]`. Use `⟨hL.fg.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_coe]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Submodule.span K (π '' (L : Set V)) = ⊤`. Rewrite using `[Submodule.span_image, hL.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `fun a => ⟨S.ι a, hπι a⟩`. Take `⟨b', hb'L, hb'⟩` from `Formalism.HermitianLattices.Ext.L3.LocalSpans.exists_basis_locF hcutL h𝔭`. Establish `hm : ∀ i, S.ι (b' i) ∈ L` using `hb'L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hH'ex : ∀ i j, ∃ z : 𝓞 K, algebraMap (𝓞 K) K z = h' (b' i) (b' j)`. Introduce `i j`. Establish `e` using `hLi _ (hm i) _ (hm j)`. Rewrite `e` using `[S.isom]`. Conclude with `Submodule.mem_one.1 e`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨H', hH'⟩ : ∃ H' : Matrix (Fin (finrank K V')) (Fin (finrank K V')) (𝓞 K), ∀ i j, algebraMap (𝓞 K) K (H' i j) = h' (b' i) (b' j)` from `⟨Matrix.of fun i j => (hH'ex i j).choose, fun i j => (hH'ex i j).choose_spec⟩`. Use `set bb := consBasis S b' with hbbdef`. Establish `hbb : locF 𝔭 (spanO bb) = locF 𝔭 L` using `(locF_span_consBasis S b' hb'L h𝔭 hb').trans (Formalism.HermitianLattices.Ext.L3.PinC.locF_eq_locF_adjoin_cut hK hF S h1 hLi h𝔭 (Formalism.HermitianLattices.Ext.L3.LocF.le_locF 𝔭 L hx)).symm`. Establish `hbbL : ∀ p, bb p ∈ L`. Introduce and unpack `(u | i)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hbbdef, consBasis_inl]`. Conclude with `hx`. Rewrite using `[hbbdef, consBasis_inr]`. Conclude with `hm i`. Establish `hHH : ∀ p q, algebraMap (𝓞 K) K (Formalism.HermitianLattices.Ext.L3.PinE.HH H' p q) = h (bb p) (bb q)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `(u | i) (u' | j)`. Rewrite using `[hbbdef]`. Simplify using `only [consBasis_inl]`. Rewrite using `[h1]`. Simplify using `[Formalism.HermitianLattices.Ext.L3.PinE.HH]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbbdef]`. Simplify using `only [consBasis_inl, consBasis_inr]`. Rewrite using `[S.orth]`. Simplify using `[Formalism.HermitianLattices.Ext.L3.PinE.HH]`. Rewrite using `[hbbdef]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [consBasis_inl, consBasis_inr]`. Establish `e : starRingEnd K (h S.x₀ (S.ι (b' i))) = h (S.ι (b' i)) S.x₀` using `by first`. Consider the case `exact hs S.x₀ (S.ι (b' i))`. Consider the case `exact hs.eq S.x₀ (S.ι (b' i))`. Rewrite using `[← e, S.orth]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Formalism.HermitianLattices.Ext.L3.PinE.HH]`. Rewrite using `[hbbdef]`. Simplify using `only [consBasis_inr]`. Rewrite using `[S.isom]`. Simplify using `[Formalism.HermitianLattices.Ext.L3.PinE.HH, hH']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hmapHH : (Formalism.HermitianLattices.Ext.L3.PinE.HH H').map (Ideal.Quotient.mk (extP K 𝔭 ^ k)) = Formalism.HermitianLattices.Ext.L3.PinE.HH (H'.map (Ideal.Quotient.mk (extP K 𝔭 ^ k)))`. Use extensionality with `p q`. Apply the tactic sequence `rcases p with u | i <;> rcases q with u' | j <;>`. Simplify using `[Formalism.HermitianLattices.Ext.L3.PinE.HH, Matrix.one_apply]`. Establish `htr : ∀ x : Unit ⊕ Fin (finrank K V') → 𝓞 K ⧸ extP K 𝔭 ^ k, star x ⬝ᵥ (Formalism.HermitianLattices.Ext.L3.PinE.HH (H'.map (Ideal.Quotient.mk (extP K 𝔭 ^ k))) *ᵥ x) = 1 → ∃ G G' : Matrix (Unit ⊕ Fin (finrank K V')) (Unit ⊕ Fin (finrank K V')) (𝓞 K ⧸ extP K 𝔭 ^ k), Gᴴ * Formalism.H …`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `x hx1`. Take `⟨c, hc⟩ : ∃ c : Unit ⊕ Fin (finrank K V') → 𝓞 K, ∀ p, Ideal.Quotient.mk (extP K 𝔭 ^ k) (c p) = x p` from `⟨fun p => (Ideal.Quotient.mk_surjective (x p)).choose, fun p => (Ideal.Quotient.mk_surjective (x p)).choose_spec⟩`. Use `set w : ↥(locF 𝔭 (spanO bb)) := ∑ p, c p • Formalism.HermitianLattices.Ext.L3.PinG.bM bb 𝔭 p with hwdef`. Establish `hred : Formalism.HermitianLattices.Ext.L3.PinG.red bb h𝔭 k w = x`. Use function extensionality and compare the values at `q`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `[hwdef, map_sum, map_smul, Formalism.HermitianLattices.Ext.L3.PinG.red_bM, Pi.single_apply, hc, Algebra.smul_def, Ideal.Quotient.algebraMap_eq]`. Apply the tactic sequence `rcases q with ⟨⟩ | i <;> simp`. Establish `hwL : (w : V) ∈ L`. Rewrite using `[hwdef, Submodule.coe_sum]`. Conclude with `Submodule.sum_mem _ (fun p _ => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.coe_smul]`. Conclude with `Submodule.smul_mem _ _ (hbbL p))`. Take `⟨z, hz⟩` from `Submodule.mem_one.1 (hLi _ hwL _ hwL)`. Establish `hform` using `Formalism.HermitianLattices.Ext.L3.PinG.red_form h bb hHH h𝔭 k w w hz.symm`. Rewrite `hform` using `[hred, hmapHH, hx1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcong : CongrP 𝔭 k (h (w : V) (w : V)) 1`. Establish `e` using `(Formalism.HermitianLattices.Ext.L3.integralBasisSpans.congrP_int h𝔭 k z 1).2 (by rw [map_one]; exact hform.symm)`. Rewrite `e` using `[map_one, hz]`. Then use the resulting hypothesis. Take `⟨z', hz'L, hz'1, hz'd⟩` from `Formalism.HermitianLattices.Ext.L3.PinF.exists_exact_lift hK hF hs hd hL hLi h𝔭 h1 hk hwL hcong`. Take `⟨g, hg, hgx⟩` from `Formalism.HermitianLattices.Ext.L3.PinC.exists_aut_map hK hF hs hd S h1 hL hLi hx h𝔭 hv hz'L hz'1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hg` using `[← hbb]`. Take `⟨G, G', hGf, hGG, hGred⟩` from `Formalism.HermitianLattices.Ext.L3.PinG.exists_matrix h bb hHH h𝔭 k hg`. Use `⟨G, G', by rw [← hmapHH]; exact hGf, hGG, ?_⟩` and prove the remaining obligations. Establish `hz'm : z' ∈ locF 𝔭 (spanO bb)` using `by rw [hbb]; exact hz'L`. Establish `e1` using `hGred (Formalism.HermitianLattices.Ext.L3.PinG.bM bb 𝔭 (Sum.inl ())) ⟨z', hz'm⟩ (by show z' = g (bb (Sum.inl ()))`.
-
-Rewrite using `[hbbdef, consBasis_inl, hgx])`. Rewrite `e1` using `[Formalism.HermitianLattices.Ext.L3.PinG.red_bM]`. Establish `e2 : Formalism.HermitianLattices.Ext.L3.PinG.red bb h𝔭 k ⟨z', hz'm⟩ = Formalism.HermitianLattices.Ext.L3.PinG.red bb h𝔭 k w` using `Formalism.HermitianLattices.Ext.L3.PinG.red_eq_of_sub_mem bb h𝔭 k _ _ (by`. Establish `e` using `hz'd`. Rewrite `e` using `[← hbb]`.
-
-Conclude with `e)`. Rewrite using `[← hred, ← e2, e1]`. Both sides reduce to the same expression. Use `haveI : Finite (𝓞 K ⧸ extP K 𝔭 ^ k) := Formalism.HermitianLattices.Ext.L3.idealPowerSpanBounds.finite_quot (K := K) h𝔭 k`. Rewrite using `[Formalism.HermitianLattices.Ext.L3.integralBasisSpans.akCount_eq h h𝔭 bb hbb hHH k, hmapHH, Formalism.HermitianLattices.Ext.L3.PinE.card_split _ htr, Formalism.HermitianLattices.Ext.L3.integralBasisSpans.nkCount_eq h h𝔭 bb hbb hHH k 1, hmapHH, Formalism.HermitianLattices.Ext.L3. …`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem akCount_split (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm)
     (hd : IsTotPosDef h) (S : VecSplit h h') (h1 : h S.x₀ S.x₀ = 1) {L : Submodule (𝓞 K) V}

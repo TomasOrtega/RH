@@ -15,9 +15,9 @@ namespace GlobalTheory.VB.CokerFrame
 variable {X : Scheme.{0}} {F : X.Modules} {U : X.Opens} {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Use `fun V h => ⟨inj V h, fun s => ?_⟩` and prove the remaining obligations. Use `choose W hW hx a ha using fun x : V => loc V h s x x.2`. Establish `hc : V ≤ iSup W` using `fun x hxV => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hxV⟩, hx _⟩`. Establish `key (x y : V) : (fun i => resG X (inf_le_left : W x ⊓ W y ≤ W x) (a x i)) = fun i => resG X (inf_le_right : W x ⊓ W y ≤ W y) (a y i)`. Apply `inj _ (inf_le_left.trans ((hW x).trans h))` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← VB.resM_linearCombination e ((hW x).trans h), ← VB.resM_linearCombination e ((hW y).trans h), ha, ha, resM_resM, resM_resM]`. Use `choose b hb' using fun i => exists_fun_of_cover W hW hc (fun x => a x i) fun x y => congrFun (key x y) i`. Use `⟨b, sec_ext_of_cover W hW hc fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[VB.resM_linearCombination, ← ha x]`. Conclude with `congrArg _ (funext fun i => hb' i x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrame_of_injective_of_local {e : ι → Γ(F, U)}
     (inj : ∀ (V : X.Opens) (h : V ≤ U),
@@ -41,9 +41,9 @@ theorem isFrame_of_injective_of_local {e : ι → Γ(F, U)}
   exact congrArg _ (funext fun i => hb' i x)
 
 /- English proof (translation)
-Use `symm`. Use `Finset.sum_of_injOn (fun k : Fin (N - l) => (⟨l + k, by omega⟩ : Fin N)) (fun a _ b _ hab => ?_) (fun _ _ => Finset.mem_coe.2 (Finset.mem_univ _)) (fun j _ hj => ?_) (fun _ _ => rfl)` and prove the remaining obligations. Use `congrArg Fin.val hab` as an intermediate fact. Simplify using `only at this`. Conclude with `Fin.ext (by omega)`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `hg j (Nat.lt_of_not_le fun hlj => hj ⟨⟨j - l, by omega⟩, by simp, Fin.ext ?_⟩)` and prove the remaining obligations. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_eq_sum_last {M : Type*} [AddCommMonoid M] {N l : ℕ} (hl : l ≤ N) (g : Fin N → M)
     (hg : ∀ j : Fin N, (j : ℕ) < l → g j = 0) :
@@ -64,21 +64,21 @@ end GlobalTheory.VB.CokerFrame
 open GlobalTheory.VB.CokerFrame in
 
 /- English proof (translation)
-Introduce `X F U N P c hc l hl hP`. Use `set π := cokernel.π P.incl`. Establish `hlow (V : X.Opens) (h : V ≤ U) (j : Fin N) (hj : (j : ℕ) < l) : π.app V (resM F h (c j)) = 0` using `by classical`. Rewrite using `[VB.Sub.cokernel_π_app_eq_zero_iff]`. Use `(hP V h (Pi.single j 1)).2 fun j' hj' => by` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_apply, if_neg (fun e => by subst e; omega)]`. Simplify `this` using `[Pi.single_apply]`. Use `⟨fun k => π.app U (c ⟨l + k, by omega⟩), isFrame_of_injective_of_local ?_ ?_⟩` and prove the remaining obligations. Introduce `V h`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Set `b : Fin N → Γ(X, V)` to `fun j => if hj : l ≤ (j : ℕ) then a ⟨j - l, by omega⟩ else 0`. Establish `hsum : (∑ j, b j • resM F h (c j)) = ∑ k : Fin (N - l), a k • resM F h (c ⟨l + k, by omega⟩)`. Rewrite using `[sum_eq_sum_last hl]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [b, dif_pos (Nat.le_add_right l k)]`. Use `congr 2`. Use `ext`. Simplify using the standard rewrite rules. Introduce `j hj`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [b, dif_neg (by omega : ¬ l ≤ (j : ℕ)), zero_smul]`. Establish `hmem : (∑ j, b j • resM F h (c j)) ∈ P.sec V`. Rewrite using `[hsum, ← VB.Sub.cokernel_π_app_eq_zero_iff]`. Rewrite `ha` using `[Fintype.linearCombination_apply]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `ha` using `only [Scheme.Modules.Hom.app_smul, app_resM]`. Establish `hb` using `(hP V h b).1 hmem`. Use function extensionality and compare the values at `k`. Use `hb ⟨l + k, by omega⟩ (Nat.le_add_right l k)` as an intermediate fact. Simplify `this` using `[b]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `V h t x hx`. Take `⟨W, h', hxW, s, hs⟩` from `VB.exists_app_eq_of_epi π t hx`. Take `⟨β, hβ⟩` from `(hc W (h'.trans h)).2 s`. Use `⟨W, h', hxW, fun k => β ⟨l + k, by omega⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs, ← hβ, Fintype.linearCombination_apply, Fintype.linearCombination_apply, map_sum, sum_eq_sum_last hl]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.app_smul, app_resM]`. Introduce `j hj`. Rewrite using `[Scheme.Modules.Hom.app_smul, hlow W (h'.trans h) j hj, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.VB.exists_isFrame_cokernel_of_frame :
     ∀ {X : Scheme.{0}} {F : X.Modules} {U : X.Opens} {N : ℕ} (P : VB.Sub F) (c : Fin N → Γ(F, U)),

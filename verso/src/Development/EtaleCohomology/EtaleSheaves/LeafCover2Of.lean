@@ -8,7 +8,7 @@ namespace LateralTheory.E.LeafCover2Pf
 variable (R : Type) [CommRing R]
 
 /- English proof (translation)
-Establish `k` using `congrArg (fun w => toSheafify Scheme.etaleTopology ((freeP R).obj Q) ≫ w.hom) h`. Conclude with `(toSheafify_naturality_assoc Scheme.etaleTopology ((freeP R).map φ) u.hom).trans (k.trans (toSheafify_naturality_assoc Scheme.etaleTopology ((freeP R).map φ) v.hom).symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pre_eq {P Q : PSh} (G : Shv R) (φ : Q ⟶ P) (u v : (free R).obj P ⟶ G)
     (h : (free R).map φ ≫ u = (free R).map φ ≫ v) :
@@ -19,7 +19,7 @@ theorem pre_eq {P Q : PSh} (G : Shv R) (φ : Q ⟶ P) (u v : (free R).obj P ⟶ 
     (k.trans (toSheafify_naturality_assoc Scheme.etaleTopology ((freeP R).map φ) v.hom).symm)
 
 /- English proof (translation)
-Apply the tactic sequence `have e : ((freeP R).map φ).app (op Y) (ModuleCat.freeMk (ULift.up y)) = ModuleCat.freeMk (ULift.up (φ.app _ y)) := by first | rfl | exact ModuleCat.free_map_apply (R := ULift R) _ _`. Establish `h3` using `congrArg (fun w => w (ModuleCat.freeMk (ULift.up y))) (congrArg (fun t => ConcreteCategory.hom t) (NatTrans.congr_app h (op Y)))`. Simplify using `only [NatTrans.comp_app] at h3`. Use `erw [ConcreteCategory.comp_apply, ConcreteCategory.comp_apply, e] at h3`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gen_eq {P Q : PSh} (G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)) (φ : Q ⟶ P) (a b : (freeP R).obj P ⟶ G)
     (h : (freeP R).map φ ≫ a = (freeP R).map φ ≫ b) (Y : Scheme.{0}) (y : Q.obj (op Y)) :
@@ -34,13 +34,11 @@ theorem gen_eq {P Q : PSh} (G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)
   exact h3
 
 /- English proof (translation)
-Establish `key : ∀ (c : (freeP R).obj P ⟶ G.obj) (Y : Scheme.{0}) (k : Y ⟶ X), G.obj.map k.op (c.app (op X) (ModuleCat.freeMk (ULift.up x))) = c.app (op Y) (ModuleCat.freeMk (ULift.up (P.map k.op x)))`. Introduce `c Y k`. Establish `n1` using `ConcreteCategory.congr_hom (c.naturality k.op) (ModuleCat.freeMk (ULift.up x))`. Use `erw [ConcreteCategory.comp_apply, ConcreteCategory.comp_apply] at n1`. Rewrite using `[← n1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply the tactic sequence `first | rfl | exact ModuleCat.free_map_apply (R := ULift R) _ _`. Establish `hE` using `Presheaf.IsSheaf.hom_ext G.2 ⟨S, hS⟩ (ModuleCat.ofHom (LinearMap.toSpanSingleton (ULift R) _ (a.app (op X) (ModuleCat.freeMk (ULift.up x))))) (ModuleCat.ofHom (LinearMap.toSpanSingleton (ULift R) _ (b.app (op X) (ModuleCat.freeMk (ULift.up x))))) (by`. Introduce `I`. Use `ext1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `LinearMap.ext_ring` to reduce the goal to its premises. Simplify using `only [ModuleCat.hom_comp, ModuleCat.hom_ofHom, LinearMap.coe_comp, Function.comp_apply, LinearMap.toSpanSingleton_apply, one_smul]`. Use `erw [key a, key b]`. Conclude with `h _ _ I.hf)`. Use `ConcreteCategory.congr_hom hE (1 : ULift R)` as an intermediate fact.
-
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem loc_eq {P : PSh} (G : Shv R) (a b : (freeP R).obj P ⟶ G.obj) (X : Scheme.{0}) (x : P.obj (op X))
     (S : Sieve X) (hS : S ∈ Scheme.etaleTopology X)
@@ -69,15 +67,15 @@ theorem loc_eq {P : PSh} (G : Shv R) (a b : (freeP R).obj P ⟶ G.obj) (X : Sche
   simpa using this
 
 /- English proof (translation)
-Introduce `R _ U V E f g hf hg hc`. Use `⟨hf, hg, fun n => ⟨fun {G} u v huv => ?_⟩⟩` and prove the remaining obligations. Proceed by induction on `n using Opposite.rec with | op n => ?_`. Take `⟨m, rfl⟩ : ∃ m, n = SimplexCategory.mk m` from `⟨n.len, rfl⟩`. Establish `h1 : (free R).map (f.app _) ≫ u = (free R).map (f.app _) ≫ v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using congrArg (biprod.inl ≫ ·) huv`. Establish `h2 : (free R).map (g.app _) ≫ u = (free R).map (g.app _) ≫ v`. Simplify using `using congrArg (biprod.inr ≫ ·) huv`. Establish `p1` using `pre_eq R G _ u v h1`. Establish `p2` using `pre_eq R G _ u v h2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Sheaf.hom_ext` to reduce the goal to its premises. Use `sheafify_hom_ext (P := (freeP R).obj (E.obj (op (SimplexCategory.mk m)))) _ _ _ G.2 ?_` and prove the remaining obligations. Apply `NatTrans.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `Y`. Proceed by induction on `Y using Opposite.rec with | op X => ?_`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction.
 
-Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨x⟩`. Take `⟨S, hS, hk⟩` from `hc m X x`. Use `loc_eq R G _ _ X x S hS ?_` and prove the remaining obligations. Introduce `Y k hk'`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hk Y k hk' with ⟨y, hy⟩ | ⟨y, hy⟩` into its components or cases. Rewrite using `[← hy]`. Conclude with `gen_eq R _ _ _ _ p1 Y y`. Rewrite using `[← hy]`. Conclude with `gen_eq R _ _ _ _ p2 Y y`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafCover2_of : LateralTheory.E.D2.LeafCover2 := by
   intro R _ U V E f g hf hg hc

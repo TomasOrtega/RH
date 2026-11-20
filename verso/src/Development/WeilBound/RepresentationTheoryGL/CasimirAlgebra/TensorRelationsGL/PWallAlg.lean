@@ -8,45 +8,43 @@ namespace PositivityTheory.Rg.Cz
 
 open WallAlgP in
 /- English proof (translation)
-Unfold `WallAlg`. Introduce `n M _ _ E₁ E₂ h₁ h₂ hcomm s₁ s₂ c hc₁ hc₂ m X hX hperm hOm htot`. Take `⟨ξ0, hξ0X, hξ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hX`. Establish `eqA : (n:ℂ) * (s₁ + s₂) + n * (n - 1) + m = n * c`. Establish `tr₁` using `(hQ n M E₁ h₁).2.2.1 _ hc₁`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tr₂` using `(hQ n M E₂ h₂).2.2.1 _ hc₂`. Establish `key1` using `trace_rel E₁ E₂ c _ _ ξ0 tr₁ tr₂ (fun a b => htot a b ξ0 hξ0X)`. Establish `e` using `smul_left_injective ℂ hξ0 key1`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at e`. Take the linear combination `e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨eqA, fun hm => ?_⟩` and prove the remaining obligations. Establish `hOmC : ∀ (σ : Equiv.Perm (Fin m)) (p : Fin m), pm σ * Om E₁ p = Om E₁ (σ p) * pm σ` using `(hA n M (Fin m) E₁ h₁ Finset.univ).2.2.2`. Establish `key : ∀ k, k < n → k ≤ m → (∃ ξ ∈ X, alt (firstG m k) ξ ≠ 0) → k < m ∧ ∃ ξ ∈ X, alt (firstG m (k + 1)) ξ ≠ 0`. Introduce `k hkn hkm hPk`. Assume the negation of the conclusion as `hneg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hout : ∀ ξ ∈ X, ∀ i : Fin m, k ≤ (i:ℕ) → ∑ j ∈ Finset.univ.filter (fun j : Fin m => (j:ℕ) < k), pm (Equiv.swap j i) (alt (firstG m k) ξ) = alt (firstG m k) ξ`. Introduce `ξ hξ i hi`. Establish `hk : k < m` using `lt_of_le_of_lt hi i.isLt`. Establish `hz : ∀ η ∈ X, alt (firstG m (k + 1)) η = 0`. Introduce `η hη`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hneg ⟨hk, η, hη, hne⟩`. Conclude with `outer hk X hperm hz ξ hξ i hi`. Establish `hsw : ∀ ξ : TV n M (Fin m), ∀ i j : Fin m, i ≠ j → (i:ℕ) < k → (j:ℕ) < k → pm (Equiv.swap i j) (alt (firstG m k) ξ) = -alt (firstG m k) ξ`. Introduce `ξ i j hij hi hj`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : Equiv.swap i j ∈ firstG m k`. Rewrite using `[mem_firstG]`. Introduce `l hl`. Apply `Equiv.swap_apply_of_ne_of_ne` to reduce the goal to its premises. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `hl` using `[h]`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Rewrite `hl` using `[h]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[pm_alt_first _ hmem, Equiv.Perm.sign_swap hij]`. Simplify using the standard rewrite rules. Establish `hinv : ∀ y ∈ X.map (alt (firstG m k)), (∑ j ∈ Finset.univ.filter (fun j : Fin m => (j:ℕ) < k), xJ E₁ j) y ∈ X.map (alt (firstG m k))`. Introduce `y hy`. Take `⟨ξ, hξ, rfl⟩` from `Submodule.mem_map.mp hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [xJ, LinearMap.sum_apply, LinearMap.add_apply, Finset.sum_add_distrib]`. Use `Submodule.add_mem _ ?_ (Submodule.sum_mem _ fun j hj => Submodule.sum_mem _ fun i hi => ?_)` and prove the remaining obligations. Rewrite using `[← om_alt E₁ hOmC k ξ]`. Conclude with `Submodule.mem_map_of_mem (Submodule.sum_mem _ fun j _ => hOm j ξ hξ)`. Establish `hi'` using `(Finset.mem_filter.mp hi).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hj'` using `(Finset.mem_filter.mp hj).2`. Rewrite using `[hsw ξ i j (ne_of_lt hi') (lt_trans (show (i:ℕ) < (j:ℕ) from hi') hj') hj']`. Conclude with `Submodule.neg_mem _ (Submodule.mem_map_of_mem hξ)`. Take `⟨ξ1, hξ1X, hξ1⟩` from `hPk`. Take `⟨L₁, hL₁⟩` from `(hS n M E₁ h₁ (fun _ => s₁) s₁ hc₁ (fun _ => ⟨0, by simp⟩) m).1 k hkm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨L₂, hL₂⟩` from `(hS n M E₂ h₂ (fun _ => s₂) s₂ hc₂ (fun _ => ⟨0, by simp⟩) m).1 k hkm`. Take `⟨w, hwY, hw0, r₁, hw1⟩` from `eigen (X.map (alt (firstG m k))) _ hinv (fun r : ℕ => (k:ℂ) * s₁ + r) L₁ hL₁ (alt (firstG m k) ξ1) (Submodule.mem_map_of_mem hξ1X) hξ1`. Take `⟨ζ, hζ, rfl⟩` from `Submodule.mem_map.mp hwY`. Establish `hwX : alt (firstG m k) ζ ∈ X` using `alt_mem X hperm ζ hζ`. Establish `hw` using `fun a b => htot a b _ hwX`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set w := alt (firstG m k) ζ with hwdef`. Establish `hT : ∀ E : Fin n → Fin n → Module.End ℂ M, (∑ j ∈ Finset.univ.filter (fun j : Fin m => (j:ℕ) < k), xJ E j) w = ∑ j ∈ Finset.univ.filter (fun j : Fin m => (j:ℕ) < k), Om E j w + ∑ j ∈ Finset.univ.filter (fun j : Fin m => (j:ℕ) < k), ∑ i ∈ Finset.univ.filter (fun i : Fin m => i < j …`. Introduce `E`. Simplify using `only [xJ, LinearMap.sum_apply, LinearMap.add_apply, Finset.sum_add_distrib]`. Establish `hsplit : ∀ j : Fin m, (j:ℕ) < k → ∑ p ∈ Finset.univ.filter (fun p : Fin m => p ≠ j), pm (Equiv.swap j p) w = ∑ p ∈ Finset.univ.filter (fun p : Fin m => (p:ℕ) < k ∧ p ≠ j), pm (Equiv.swap j p) w + ∑ p ∈ Finset.univ.filter (fun p : Fin m => k ≤ (p:ℕ)), pm (Equiv.swap j p) w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `j hj`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, Finset.sum_filter, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : p = j`. Substitute `h1` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[not_le.mpr hj]`. Distinguish the cases in `h2 : (p:ℕ) < k`. Simplify using `[h1, h2, not_le.mpr h2]`. Simplify using `[h1, h2, not_lt.mp h2]`. Establish `e1 : ∑ j ∈ Finset.univ.filter (fun j : Fin m => (j:ℕ) < k), ∑ p ∈ Finset.univ.filter (fun p : Fin m => p ≠ j), pm (Equiv.swap j p) w = ∑ j ∈ Finset.univ.filter (fun j : Fin m => (j:ℕ) < k), (∑ p ∈ Finset.univ.filter (fun p : Fin m => (p:ℕ) < k ∧ p ≠ j), pm (Equiv.swap j p) w + ∑ …` using `Finset.sum_congr rfl fun j hj => hsplit j (Finset.mem_filter.mp hj).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ∑ p ∈ Finset.univ.filter (fun p : Fin m => k ≤ (p:ℕ)), ∑ j ∈ Finset.univ.filter (fun j : Fin m => (j:ℕ) < k), pm (Equiv.swap j p) w = ∑ p ∈ Finset.univ.filter (fun p : Fin m => k ≤ (p:ℕ)), w` using `Finset.sum_congr rfl fun p hp => hout ζ hζ p (Finset.mem_filter.mp hp).2`. Establish `e3 : ∑ j ∈ Finset.univ.filter (fun j : Fin m => (j:ℕ) < k), ∑ p ∈ Finset.univ.filter (fun p : Fin m => (p:ℕ) < k ∧ p ≠ j), pm (Equiv.swap j p) w = 2 • ∑ j ∈ Finset.univ.filter (fun j : Fin m => (j:ℕ) < k), ∑ i ∈ Finset.univ.filter (fun i : Fin m => i < j), pm (Equiv.swap i j) w` using `symm_sum (fun i j => pm (Equiv.swap i j) w) (fun i j => by simp only [Equiv.swap_comm i j])`. Establish `hmid : ∑ j ∈ Finset.univ.filter (fun j : Fin m => (j:ℕ) < k), ∑ p ∈ Finset.univ.filter (fun p : Fin m => p ≠ j), pm (Equiv.swap j p) w = 2 • ∑ j ∈ Finset.univ.filter (fun j : Fin m => (j:ℕ) < k), ∑ i ∈ Finset.univ.filter (fun i : Fin m => i < j), pm (Equiv.swap i j) w + ((m:ℂ) - …`. Rewrite using `[e1, Finset.sum_add_distrib, e3, Finset.sum_comm, e2, Finset.sum_const, card_highS hkm, ← Nat.cast_smul_eq_nsmul ℂ (m - k), Nat.cast_sub hkm]`. Establish `hsum : ∑ j ∈ Finset.univ.filter (fun j : Fin m => (j:ℕ) < k), (Om E₁ j w + Om E₂ j w + ∑ p ∈ Finset.univ.filter (fun p : Fin m => p ≠ j), pm (Equiv.swap j p) w + (n:ℂ) • w) = ∑ j ∈ Finset.univ.filter (fun j : Fin m => (j:ℕ) < k), c • w` using `Finset.sum_congr rfl fun j _ => contr E₁ E₂ c w hw j`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Finset.sum_add_distrib, Finset.sum_const, card_lowS hkm] at hsum`. Rewrite `hsum` using `[hmid]`. Establish `h1` using `hw1`. Rewrite `h1` using `[hT E₁]`. Establish `hT2 : (∑ j ∈ Finset.univ.filter (fun j : Fin m => (j:ℕ) < k), xJ E₂ j) w = ((k:ℂ) * c - k * n - (m - k) - ((k:ℂ) * s₁ + r₁)) • w`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hT E₂]`. Take the linear combination `(norm := module) hsum - h1`. Take `⟨r₂, hr₂⟩` from `eigen_val _ (fun r : ℕ => (k:ℂ) * s₂ + r) L₂ hL₂ w hw0 _ hT2`. Establish `hr : (k:ℂ) * c - k * n - (m - k) - ((k:ℂ) * s₁ + r₁) = k * s₂ + r₂` using `hr₂`. Establish `hfin : (m:ℂ) * k = m * n + n * (r₁ + r₂)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Take the linear combination `(n:ℂ) * hr + (k:ℂ) * eqA`. Establish `hnat : m * k = m * n + n * (r₁ + r₂)` using `by exact_mod_cast hfin`. Establish `h3 : m * (k + 1) ≤ m * n` using `Nat.mul_le_mul_left m hkn`. Use polynomial arithmetic with `[Nat.zero_le (n * (r₁ + r₂))]`. Establish `hall : ∀ k, k ≤ n → k ≤ m ∧ ∃ ξ ∈ X, alt (firstG m k) ξ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_`. Conclude with `⟨Nat.zero_le _, ξ0, hξ0X, by rwa [alt_zero]⟩`.
-
-Consider the case `succ k ih`. Introduce `hk`. Take `⟨hkm, hP⟩` from `ih (Nat.le_of_succ_le hk)`. Conclude with `key k (Nat.lt_of_succ_le hk) hkm hP`. Conclude with `hall n le_rfl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem wallAlg_of (hA : TensorGl) (_hJ : JMComm) (hQ : QdetFacts) (hS : Spectrum) : WallAlg := by
   unfold WallAlg

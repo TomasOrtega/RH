@@ -25,7 +25,7 @@ namespace GlobalTheory.MemLoc.CrisRegular
 variable {l : ℕ} [Fact l.Prime] (C : Core l)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `FrobLaws.exists_ext C.σ`. Use `⟨g, fun ζ m hm hlm hζ => ?_⟩` and prove the remaining obligations. Set `c : ↥(MaximalUnramifiedExtension l)` to `⟨ζ, IntermediateField.subset_adjoin _ _ ⟨m, hm, hlm, hζ⟩⟩`. Use `C.σ_root c m hm hlm (Subtype.ext hζ)` as an intermediate fact. Rewrite using `[show ζ = (c : Om l) from rfl, hg, this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -38,12 +38,12 @@ theorem exists_frob (C : Core l) :
   rw [show ζ = (c : Om l) from rfl, hg, this]; rfl
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.localPeriodRingsData_unramified_laws l C).2.2.1 z`.
+A detailed English derivation is pending.
 -/
 theorem qB_coe (z : ℤ_[l]) : C.qB (z : ℚ_[l]) = Per.zB l z := (GlobalTheory.T.localPeriodRingsData_unramified_laws l C).2.2.1 z
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.RingIface.aB_eq_alg, C.ι_j, GlobalTheory.RingIface.tower, C.j_cris.on0, Subalgebra.coe_algebraMap]`. Simplify using `only [aDp, RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ι_aB (a : Per.Ainf l) :
     C.ι (Per.aB l a) = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l a) := by
@@ -51,7 +51,7 @@ theorem ι_aB (a : Per.Ainf l) :
   simp only [aDp, RingHom.comp_apply]
 
 /- English proof (translation)
-Establish `h1` using `congrArg C.ι hx`. Rewrite `h1` using `[(GlobalTheory.T.localPeriodRingsData_unramified_laws l C).2.2.2.2.1, map_mul, h, (ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.1, show C.ι (C.qB x) = _ from C.ι_u _, ← map_mul]`. Establish `h2` using `congrArg (Per.θD l) ((BdRField.bdR_isField l).2.1 h1)`. Rewrite `h2` using `[(thetaD_props l).2.2.2.2, map_mul, C.o_sec.th]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_eig {b : Per.Bcris l} {y : Per.BdRp l}
     (h : C.ι b = algebraMap (Per.BdRp l) (Per.BdR l) y) {g : GQ l} {x : ℚ_[l]}
@@ -65,28 +65,28 @@ theorem theta_eig {b : Per.Bcris l} {y : Per.BdRp l}
   exact h2
 
 /- English proof (translation)
-Rewrite using `[qB_coe, Core.tB, (ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.2.2.1, TAct.t_act l C g, map_mul, GlobalTheory.RingIface.zB_eq_aB_zA, GlobalTheory.RingIface.aB_eq_alg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σB_tB (g : GQ l) : Per.σB g C.tB = C.qB ((C.χ g : ℤ_[l]) : ℚ_[l]) * C.tB := by
   rw [qB_coe, Core.tB, (ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.2.2.1, TAct.t_act l C g, map_mul,
     GlobalTheory.RingIface.zB_eq_aB_zA, GlobalTheory.RingIface.aB_eq_alg]
 
 /- English proof (translation)
-Take `⟨η, hη⟩` from `GlobalTheory.T.exists_unitCharacter_of_galoisStable_line_cLTate l _ hy fun g => (hb g).imp fun x hx => theta_eig C h hx`. Take `⟨N, hN, hI⟩` from `GlobalTheory.T.tate_character_finite_on_inertia_of_eigenvector l η _ hy hη`. Take `⟨F, hF⟩` from `exists_frob C`. Take `⟨w, hw, hwI, hwF, hwφ⟩` from `GlobalTheory.T.exists_unramified_period_ainf_unit l F hF (η F ^ N)⁻¹`. Establish `h2 : C.ι (b ^ N * Per.aB l w) = algebraMap (Per.BdRp l) (Per.BdR l) (y ^ N * aDp l w)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_pow, h, ι_aB, map_mul, map_pow]`. Establish `hθ : Per.θD l (y ^ N * aDp l w) ≠ 0`. Rewrite using `[map_mul, map_pow]`. Conclude with `mul_ne_zero (pow_ne_zero _ hy) ((hw.map _).map _).ne_zero`. Establish `hact : ∀ g : GQ l, Per.σC g (Per.θD l (y ^ N * aDp l w)) = algebraMap ℚ_[l] ℂ_[l] (((η g ^ N : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) * Per.θD l y ^ N * Per.θD l (aDp l (Per.σA g w))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[map_mul, map_mul, map_pow, map_pow, hη, ← (thetaD_props l).2.2.2.2, (ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.2.1, mul_pow, ← map_pow, Units.val_pow_eq_pow_val, PadicInt.coe_pow]`. Establish `hfix` using `GlobalTheory.T.fixed_of_fixed_inertia_of_fixed_frobenius l F hF (Per.θD l (y ^ N * aDp l w)) (fun g hg => by rw [hact, hI g hg, hwI g hg]; simp) (by`. Rewrite using `[hact, hwF, map_mul, map_mul, ← C.o_sec.z, C.o_sec.th, map_mul, map_pow]`. Establish `e : algebraMap ℚ_[l] ℂ_[l] (((η F ^ N : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) * algebraMap ℚ_[l] ℂ_[l] ((((η F ^ N)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ← PadicInt.coe_mul, Units.mul_inv, PadicInt.coe_one, map_one]`. Establish `e' : ((algebraMap ℚ_[l] (Om l) ((((η F ^ N)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) : Om l) : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] ((((η F ^ N)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])` using `rfl`. Rewrite using `[e']`. Take the linear combination `(Per.θD l y ^ N * Per.θD l (aDp l w)) * e)`. Establish `hinv : ∀ g : GQ l, Per.σB g (b ^ N * Per.aB l w) = b ^ N * Per.aB l w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Take `⟨x, hx⟩` from `hb g`. Take `⟨z, hz⟩` from `GlobalTheory.T.ainf_frobenius_unit_eigenvector_galois_line l w _ hw hwφ g`. Establish `e : Per.σB g (b ^ N * Per.aB l w) = C.qB (x ^ N * z) * (b ^ N * Per.aB l w)`. Rewrite using `[map_mul, map_pow, hx, hz, map_mul, map_pow, qB_coe]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2` using `theta_eig C h2 e`. Rewrite `e2` using `[hfix]`. Establish `e3 : algebraMap ℚ_[l] ℂ_[l] (x ^ N * z) = 1` using `mul_right_cancel₀ hθ (by rw [one_mul, ← e2])`. Establish `e4 : x ^ N * (z : ℚ_[l]) = 1` using `(algebraMap ℚ_[l] ℂ_[l]).injective (by rw [e3, map_one])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, e4, map_one, one_mul]`. Take `⟨c, -, hc⟩` from `GlobalTheory.T.galoisInvariants_Bcris_eq_maxUnramified l C ⟨⊥, inferInstance⟩ _ fun g _ => hinv g`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `h2` using `[← hc, map_zero, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hθ` to reduce the goal to its premises. Rewrite using `[(BdRField.bdR_isField l).2.1 (h2.symm.trans (map_zero _).symm), map_zero]`. Establish `hu : IsUnit (b ^ N * Per.aB l w)` using `hc ▸ (Ne.isUnit hc0).map C.u`. Conclude with `(isUnit_pow_iff hN.ne').1 (isUnit_of_mul_isUnit_left hu)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_of_theta {b : Per.Bcris l} {y : Per.BdRp l}
     (h : C.ι b = algebraMap (Per.BdRp l) (Per.BdR l) y) (hy : Per.θD l y ≠ 0)
@@ -140,13 +140,11 @@ theorem isUnit_of_theta {b : Per.Bcris l} {y : Per.BdRp l}
   exact (isUnit_pow_iff hN.ne').1 (isUnit_of_mul_isUnit_left hu)
 
 /- English proof (translation)
-Take `⟨m, n, b', y, e, hy, hθ⟩` from `GlobalTheory.T.bcris_exists_tPow_mul_theta_ne_zero l C b h0`. Establish `ht : IsUnit C.tB` using `(core_t_unit_fil l C).1`. Establish `hu : IsUnit b'` using `isUnit_of_theta C hy hθ fun g => by`. Take `⟨x, hx⟩` from `hb g`. Use `set a : ℚ_[l] := ((C.χ g : ℤ_[l]) : ℚ_[l]) with ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha0 : a ≠ 0`. Rewrite using `[ha]`. Conclude with `PadicInt.coe_ne_zero.2 (C.χ g).ne_zero`. Use `⟨x * a ^ m * (a ^ n)⁻¹, ?_⟩` and prove the remaining obligations. Establish `e1` using `congrArg (Per.σB g) e`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e1` using `[map_mul, map_mul, map_pow, map_pow, hx, σB_tB, ← ha]`. Establish `e2 : C.qB a ^ n * C.qB (a ^ n)⁻¹ = 1`. Rewrite using `[← map_pow, ← map_mul, mul_inv_cancel₀ (pow_ne_zero _ ha0), map_one]`. Apply `(ht.pow n).mul_left_cancel` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_pow]`.
-
-Take the linear combination `(-C.qB (a ^ n)⁻¹) * e1 + (C.qB x * C.qB a ^ m * C.qB (a ^ n)⁻¹) * e - (C.tB ^ n * Per.σB g b') * e2`. Conclude with `isUnit_of_mul_isUnit_left (e ▸ (ht.pow n).mul hu)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isUnit_of_line (b : Per.Bcris l) (h0 : b ≠ 0)
     (hb : ∀ g : GQ l, ∃ x : ℚ_[l], Per.σB g b = C.qB x * b) : IsUnit b := by
@@ -174,13 +172,13 @@ end GlobalTheory.MemLoc.CrisRegular
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.bcris_regular_of_full_galois_line_units l C (CrisRegular.isUnit_of_line C)`.
+A detailed English derivation is pending.
 -/
 theorem core_regular (l : ℕ) [Fact l.Prime] (C : Core l) : C.Regular :=
   GlobalTheory.T.bcris_regular_of_full_galois_line_units l C (CrisRegular.isUnit_of_line C)
 
 /- English proof (translation)
-Introduce `l _ C _` and use `core_regular l C`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem regular_of_tensorInj : ∀ (l : ℕ) [Fact l.Prime] (C : Core l), C.TensorInj → C.Regular :=
   fun l _ C _ => core_regular l C

@@ -6,21 +6,21 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 namespace GlobalTheory.FlagCoef
 
 /- English proof (translation)
-Establish `hxa : x ∈ Submodule.span E (F.fl.e '' {i | i.1 < j})` using `hx`. Take `⟨l, hl, hlx⟩` from `(Finsupp.mem_span_image_iff_linearCombination E).1 hxa`. Establish `hxw : x = ∑ i, l i • F.fl.e i`. Rewrite using `[← hlx, Finsupp.linearCombination_apply, Finsupp.sum_fintype]`. Introduce `i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Use `⟨fun c => l c, hxw, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Assume the negation of the conclusion as `h`. Establish `hmem : c.val < j` using `hl (Finsupp.mem_support_iff.2 h)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `P hgP c`. Use `P.isPrime` as an intermediate fact. Establish `key : ∀ {L : Submodule (𝓞 E) S.V} {y : S.V}, y ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal L ↔ ∃ u ∈ P.asIdeal.primeCompl, u • y ∈ L` using `Iff.rfl`. Take `⟨s, hs, hsx⟩` from `key.1 (hP P hgP)`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hxX : x ∈ Submodule.span E (Set.range F.fl.e)` using `Submodule.span_mono (Set.image_subset_range _ _) hxa`. Establish `hsX : s • x ∈ Formalism.MainNotions.S.Lat.XLam Λ F`. Use `Submodule.mem_inf.2 ⟨hsx, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.smul_of_tower_mem _ s hxX`. Take `⟨cc, -, hc1, heq⟩` from `hc.1 P`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hloc : s • x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Formalism.MainNotions.S.Lat.XLam Λ F)` using `key.2 ⟨1, P.asIdeal.primeCompl.one_mem, by rw [one_smul]; exact hsX⟩`. Establish `hfun : (fun a => cc a • F.fl.e a) = F.fl.e`. Use function extensionality and compare the values at `fun a => by rw [hc1 hgP a, one_smul]`. Rewrite `hloc` using `[heq, hfun]`. Take `⟨t, ht, htx⟩` from `key.1 hloc`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨o, ho⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).1 htx`. Establish `h1 : ∑ i, ((o i : 𝓞 E) : E) • F.fl.e i = t • s • x`. Rewrite using `[← ho]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `algebraMap_smul E (o i) (F.fl.e i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h2 : t • s • x = ∑ i, (((t * s : 𝓞 E) : E) * l i) • F.fl.e i`. Rewrite using `[← mul_smul, ← algebraMap_smul E (t * s) x, hxw, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul]`. Establish `hsum : ∑ i, (((o i : 𝓞 E) : E) - ((t * s : 𝓞 E) : E) * l i) • F.fl.e i = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [sub_smul, Finset.sum_sub_distrib, h1, ← h2, sub_self]`. Establish `hc0` using `Fintype.linearIndependent_iff.1 F.fl.e_indep _ hsum c`. Conclude with `⟨t * s, P.asIdeal.primeCompl.mul_mem ht hs, o c, (sub_eq_zero.1 hc0).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coef_integral_of_flag {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
     (Λ : Submodule (𝓞 E) S.V) (g : ℕ) {T : E} (F : LFlag S r T) (hc : IsFixedConv Λ g F)

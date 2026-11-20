@@ -63,11 +63,11 @@ def LeadingBlocksRelevant : Prop :=
       MatRel ((Zhat F F').submatrix (Fin.castLE hj) (Fin.castLE hj))
 
 /- English proof (translation)
-Take `⟨L, U, σ, t, hL, hU, hσ, ht, hZ⟩` from `h3 K n Z hdet`. Establish `hm : MatRel (mono σ t)` using `h1 K n L (mono σ t) U hL hU (hZ ▸ hrel)`. Establish `hc` using `h4 K n σ t hσ ht hm`. Establish `hε : ∀ b : Fin n, ((-1 : K) ^ (r - b.val)) ≠ 0` using `fun b => pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)`. Take `⟨U', hU', hE⟩` from `h2 K n (fun b => (-1 : K) ^ (r - b.val)) L U σ t hε hU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `h5 K n σ (fun b => (-1 : K) ^ (r - b.val) * t b) hσ (fun b => mul_ne_zero (hε b) (ht b)) (by`. Introduce `c b hcb hv`. Take `⟨e1, e2⟩` from `hc c b hcb hv`. Use `⟨e1, ?_⟩` and prove the remaining obligations. Establish `hb : b.val < n` using `b.isLt`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e3 : r - c.val = (r - b.val) + 1` using `by omega`. Rewrite using `[e2, e3, pow_succ]`. Use the proof step `ring)`. Use `⟨p, L, U', hL, hU', ?_⟩` and prove the remaining obligations. Rewrite using `[hp, ← hE, hZ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_of_matRel (h1 : RelevanceUnipotentInvariant) (h2 : ColumnScalingBruhatShape) (h3 : BruhatDecomposition) (h4 : RelevantMonomialConsecutive) (h5 : MonomialMatrixIsPoint)
     {K : Type} [Field K] [StarRing K] {n r : ℕ} (hn : n ≤ r + 1) (Z : Matrix (Fin n) (Fin n) K) (hdet : Z.det ≠ 0)

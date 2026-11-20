@@ -13,11 +13,9 @@ variable {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddComm
   [NormedSpace ℝ F]
 
 /- English proof (translation)
-Establish `hz : HasDerivAt (fun τ : ℝ ↦ x₀ + τ • y) y t`. Simplify using `using ((hasDerivAt_id t).smul_const y).const_add x₀`. Establish `hd : DifferentiableAt ℝ (iteratedFDeriv ℝ k f) (x₀ + t • y)` using `(hf.contDiffAt (hs.mem_nhds ht)).differentiableAt_iteratedFDeriv (by`. Conclude with `ENat.natCast_lt_top k)` after adjusting the coercions. Establish `h1` using `hd.hasFDerivAt.comp_hasDerivAt t hz`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(ContinuousMultilinearMap.apply ℝ (fun _ : Fin k ↦ E) F (fun _ ↦ y)).hasFDerivAt.comp_hasDerivAt t h1`. Establish `e : iteratedFDeriv ℝ (k + 1) f (x₀ + t • y) (fun _ ↦ y) = (fderiv ℝ (iteratedFDeriv ℝ k f) (x₀ + t • y) y) (fun _ ↦ y)`. Rewrite using `[iteratedFDeriv_succ_apply_left]`. Both sides reduce to the same expression. Rewrite using `[e]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_iteratedFDeriv_line {f : E → F} {s : Set E} (hs : IsOpen s)
     (hf : ContDiffOn ℝ ∞ f s) (x₀ y : E) (k : ℕ) {t : ℝ} (ht : x₀ + t • y ∈ s) :
@@ -38,9 +36,9 @@ theorem hasDerivAt_iteratedFDeriv_line {f : E → F} {s : Set E} (hs : IsOpen s)
   exact h2
 
 /- English proof (translation)
-Proceed by induction on `k generalizing t with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hU : IsOpen {τ : ℝ | x₀ + τ • y ∈ s}` using `hs.preimage (by fun_prop)`. Establish `hev : iteratedDeriv k (fun τ : ℝ ↦ f (x₀ + τ • y)) =ᶠ[𝓝 t] fun τ ↦ iteratedFDeriv ℝ k f (x₀ + τ • y) (fun _ ↦ y)` using `by filter_upwards [hU.mem_nhds ht] with τ hτ using ih hτ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[iteratedDeriv_succ, hev.deriv_eq]`. Conclude with `(hasDerivAt_iteratedFDeriv_line hs hf x₀ y k ht).deriv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_line_eq {f : E → F} {s : Set E} (hs : IsOpen s)
     (hf : ContDiffOn ℝ ∞ f s) (x₀ y : E) (k : ℕ) {t : ℝ} (ht : x₀ + t • y ∈ s) :
@@ -57,43 +55,39 @@ theorem iteratedDeriv_line_eq {f : E → F} {s : Set E} (hs : IsOpen s)
     exact (hasDerivAt_iteratedFDeriv_line hs hf x₀ y k ht).deriv
 
 /- English proof (translation)
-Use `set M' : ℝ := |M| + 1 with hM'`. Establish `hM'pos : 0 < M'` using `by positivity`. Establish `hb' : ∀ y ∈ Metric.ball x₀ r, ∀ k : ℕ, ‖iteratedFDeriv ℝ k f y‖ ≤ |C| * M' ^ k * k.factorial`. Introduce `y hy k`. Use `(hb y hy k).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : C * M ^ k ≤ |C| * M' ^ k`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `mul_le_mul_of_nonneg_right h1 (by positivity)`. Use `set ρ : ℝ := min r (1 / M') / 2 with hρ`.
+Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρpos : 0 < ρ` using `by positivity`. Establish `hρr : ρ < r`. Use `min_le_left r (1 / M')` as an intermediate fact. Rewrite using `[hρ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hρM : M' * ρ ≤ 1 / 2`. Establish `h` using `min_le_right r (1 / M')`. Rewrite using `[hρ]`. Establish `: M' * (min r (1 / M')) ≤ 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set p : FormalMultilinearSeries ℝ E F := fun k ↦ ((k.factorial : ℝ)⁻¹) • iteratedFDeriv ℝ k f x₀ with hpdef`. Establish `hx₀ : x₀ ∈ Metric.ball x₀ r` using `Metric.mem_ball_self hr`. Establish `hp : ∀ k, ‖p k‖ ≤ |C| * M' ^ k`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hb' x₀ hx₀ k`. Establish `hk : (0 : ℝ) < k.factorial` using `by exact_mod_cast Nat.factorial_pos k`. Simplify using `only [hpdef, norm_smul, norm_inv, Real.norm_natCast]`. Rewrite using `[inv_mul_le_iff₀ hk]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨p, ENNReal.ofReal ρ, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: ((Real.toNNReal ρ : ℝ≥0) : ℝ≥0∞) ≤ p.radius`. Use `p.le_radius_of_bound (|C|) fun k ↦ ?_` and prove the remaining obligations. Rewrite using `[Real.coe_toNNReal _ hρpos.le]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `pow_le_one₀ (by positivity) (by linarith)`. Use `_ = |C| := mul_one _`. Conclude with `this`. Simplify using `using hρpos`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hy' : ‖y‖ < ρ`. Simplify `hy` using `[Metric.mem_eball, edist_zero_right, enorm_eq_nnnorm, ENNReal.ofReal, ← NNReal.coe_lt_coe, Real.coe_toNNReal _ hρpos.le]`. Use `set q : ℝ := M' * ‖y‖ with hq`. Establish `hq0 : 0 ≤ q` using `by positivity`. Establish `hq1 : q < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: M' * ‖y‖ < M' * ρ` using `mul_lt_mul_of_pos_left hy' hM'pos`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hterm : ∀ k, ‖p k (fun _ ↦ y)‖ ≤ |C| * q ^ k`. Introduce `k`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hsum : Summable fun k ↦ ‖p k (fun _ ↦ y)‖` using `Summable.of_nonneg_of_le (fun _ ↦ norm_nonneg _) hterm ((summable_geometric_of_lt_one hq0 hq1).mul_left _)`. Rewrite using `[hasSum_iff_tendsto_nat_of_summable_norm hsum]`. Rewrite using `[← Filter.tendsto_add_atTop_iff_nat 1]`. Use `set g : ℝ → F := fun τ ↦ f (x₀ + τ • y) with hg`. Establish `hline : ∀ τ ∈ Icc (0 : ℝ) 1, x₀ + τ • y ∈ Metric.ball x₀ r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ hτ`. Rewrite using `[Metric.mem_ball, dist_self_add_left, norm_smul, Real.norm_eq_abs, abs_of_nonneg hτ.1]`. Combine the equalities or inequalities in the displayed calculation. Establish `hgAt : ∀ τ ∈ Icc (0 : ℝ) 1, ContDiffAt ℝ ∞ g τ`. Introduce `τ hτ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ContDiffAt ℝ ∞ f (x₀ + τ • y)` using `hf.contDiffAt (Metric.isOpen_ball.mem_nhds (hline τ hτ))`. Conclude with `h1.comp τ (by fun_prop)`. Establish `hder : ∀ k, ∀ τ ∈ Icc (0 : ℝ) 1, iteratedDerivWithin k g (Icc 0 1) τ = iteratedFDeriv ℝ k f (x₀ + τ • y) (fun _ ↦ y)`. Introduce `k τ hτ`. Rewrite using `[iteratedDerivWithin_eq_iteratedDeriv (uniqueDiffOn_Icc zero_lt_one) ((hgAt τ hτ).of_le (by exact_mod_cast le_top)) hτ]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `iteratedDeriv_line_eq Metric.isOpen_ball hf x₀ y k (hline τ hτ)`. Establish `hrem : ∀ N : ℕ, ‖(∑ k ∈ Finset.range (N + 1), p k (fun _ ↦ y)) - f (x₀ + y)‖ ≤ |C| * (((N + 1 : ℕ) : ℝ) * q ^ (N + 1))`. Introduce `N`. Establish `hgC : ContDiffOn ℝ (N + 1) g (Icc 0 1)` using `fun τ hτ ↦ ((hgAt τ hτ).of_le (by exact_mod_cast le_top)).contDiffWithinAt`. Establish `hbd : ∀ τ ∈ Icc (0 : ℝ) 1, ‖iteratedDerivWithin (N + 1) g (Icc 0 1) τ‖ ≤ |C| * M' ^ (N + 1) * ((N + 1).factorial : ℝ) * ‖y‖ ^ (N + 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `τ hτ`. Rewrite using `[hder (N + 1) τ hτ]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hb' _ (hline τ hτ) _`. Establish `hT` using `taylor_mean_remainder_bound (f := g) (n := N) zero_le_one hgC (right_mem_Icc.2 zero_le_one) hbd`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hsumeq : taylorWithinEval g N (Icc 0 1) 0 1 = ∑ k ∈ Finset.range (N + 1), p k (fun _ ↦ y)`. Rewrite using `[taylor_within_apply]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[hder k 0 (left_mem_Icc.2 zero_le_one)]`. Simplify using `[hpdef]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hT` using `[hsumeq]`. Establish `hg1 : g 1 = f (x₀ + y)` using `by simp [hg]`. Rewrite `hT` using `[hg1, norm_sub_rev]`. Use `hT.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Nat.factorial_succ]`.
-
-Establish `hN : (N.factorial : ℝ) ≠ 0` using `by positivity`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hq, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `hlim : Tendsto (fun N : ℕ ↦ |C| * (((N + 1 : ℕ) : ℝ) * q ^ (N + 1))) atTop (𝓝 0)`. Establish `h` using `(tendsto_self_mul_const_pow_of_lt_one hq0 hq1).comp (tendsto_add_atTop_nat 1)`. Simplify using `using h.const_mul |C|`. Conclude with `squeeze_zero (fun _ ↦ norm_nonneg _) hrem hlim`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem analyticAt_of_norm_iteratedFDeriv_le {f : E → F} {x₀ : E} {r C M : ℝ} (hr : 0 < r)
     (hf : ContDiffOn ℝ ∞ f (Metric.ball x₀ r))
@@ -235,9 +229,9 @@ variable {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddComm
   [NormedSpace ℝ F] [CompleteSpace F]
 
 /- English proof (translation)
-Use `ContinuousMultilinearMap.opNorm_le_bound (by positivity) fun v ↦ ?_` and prove the remaining obligations. Rewrite using `[h.iteratedFDeriv_eq_sum_of_completeSpace v]`. Combine the equalities or inequalities in the displayed calculation. Use `((q k).le_opNorm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Equiv.prod_comp σ (fun i ↦ ‖v i‖)`. Use `_ = k.factorial * ‖q k‖ * ∏ i, ‖v i‖ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_le_of_hasFPowerSeriesOnBall {f : E → F}
     {q : FormalMultilinearSeries ℝ E F} {y : E} {R : ℝ≥0∞} (h : HasFPowerSeriesOnBall f q y R)
@@ -257,17 +251,15 @@ theorem norm_iteratedFDeriv_le_of_hasFPowerSeriesOnBall {f : E → F}
         ring
 
 /- English proof (translation)
-Establish `hsum` using `p.changeOriginSeries_summable_aux₂ hzr k`. Establish `h1` using `p.nnnorm_changeOrigin_le k hzr`. Rewrite `h1`, the goal using `[← ENNReal.coe_le_coe]`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[ENNReal.coe_tsum hsum, ENNReal.tsum_sigma']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hterm : ∀ l : ℕ, ∑' _b : { s : Finset (Fin (k + l)) // s.card = l }, ((‖p (k + l)‖₊ * ‖z‖₊ ^ l : ℝ≥0) : ℝ≥0∞) ≤ ((K * (2 / ρ) ^ k * (2⁻¹) ^ l : ℝ≥0) : ℝ≥0∞)`. Introduce `l`. Rewrite using `[tsum_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_finset_len, Fintype.card_fin, nsmul_eq_mul, ← ENNReal.coe_natCast, ← ENNReal.coe_mul, ENNReal.coe_le_coe, ← NNReal.coe_le_coe]`. Establish `hK'` using `hK (k + l)`. Rewrite `hK'` using `[← NNReal.coe_le_coe]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at hK' ⊢`. Establish `hz' : 4 * ‖z‖ ≤ (ρ : ℝ)` using `by exact_mod_cast hz`. Establish `hch : ((k + l).choose l : ℝ) ≤ 2 ^ (k + l)`. Conclude with `Nat.choose_le_two_pow _ _` after adjusting the coercions. Establish `hρ' : (0 : ℝ) < ρ` using `hρ`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (K : ℝ) * (2 / (ρ : ℝ)) ^ k * (2⁻¹) ^ l := by`. Establish `h4 : (4 : ℝ) ^ l = 2 ^ l * 2 ^ l` using `by rw [← mul_pow]; norm_num`. Rewrite using `[pow_add, pow_add, div_pow, div_pow, inv_pow, h4]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Use `(ENNReal.tsum_le_tsum hterm).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [ENNReal.coe_mul, ENNReal.coe_pow, ENNReal.coe_inv_two]`. Rewrite using `[ENNReal.tsum_mul_left, ENNReal.tsum_geometric, ENNReal.one_sub_inv_two, inv_inv]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem nnnorm_changeOrigin_le_of_bound (p : FormalMultilinearSeries ℝ E F) {ρ K : ℝ≥0}
     (hρ : 0 < ρ) (hK : ∀ n, ‖p n‖₊ ≤ K / ρ ^ n) {z : E} (hz : 4 * ‖z‖₊ ≤ ρ)
@@ -307,17 +299,15 @@ theorem nnnorm_changeOrigin_le_of_bound (p : FormalMultilinearSeries ℝ E F) {�
   ring
 
 /- English proof (translation)
-Take `⟨p, R, hp⟩` from `hf`. Take `⟨ρ, hρ0', hρR⟩` from `ENNReal.lt_iff_exists_nnreal_btwn.1 hp.r_pos`. Establish `hρ0 : 0 < ρ` using `ENNReal.coe_pos.1 hρ0'`. Take `⟨K, hK0, hK⟩` from `p.norm_le_div_pow_of_pos_of_lt_radius hρ0 (hρR.trans_le hp.r_le)`. Use `set K' : ℝ≥0 := ⟨K, hK0.le⟩ with hK'def`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hK' : ∀ n, ‖p n‖₊ ≤ K' / ρ ^ n` using `fun n ↦ by`. Rewrite using `[← NNReal.coe_le_coe]`. Use `push_cast`. Conclude with `hK n`. Establish `hρ' : (0 : ℝ) < ρ` using `hρ0`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(ρ : ℝ) / 4, by positivity, 2 * K, 2 / ρ, by positivity, by positivity, fun y hy k ↦ ?_⟩` and prove the remaining obligations. Use `set z := y - x₀ with hzdef`. Establish `hz : ‖z‖ < (ρ : ℝ) / 4` using `by rwa [Metric.mem_ball, dist_eq_norm] at hy`. Establish `hzρ : ‖z‖₊ < ρ`. Rewrite using `[← NNReal.coe_lt_coe, coe_nnnorm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `[norm_nonneg z]`. Establish `hzR : (‖z‖₊ : ℝ≥0∞) < R` using `lt_trans (by exact_mod_cast hzρ) hρR`. Establish `hq` using `hp.changeOrigin hzR`. Establish `hxy : x₀ + z = y` using `by simp [hzdef]`. Rewrite `hq` using `[hxy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(norm_iteratedFDeriv_le_of_hasFPowerSeriesOnBall hq k).trans ?_` and prove the remaining obligations. Establish `hb` using `nnnorm_changeOrigin_le_of_bound p hρ0 hK' (z := z) (by rw [← NNReal.coe_le_coe]; push_cast; linarith) (hzR.trans_le hp.r_le) k`. Rewrite `hb` using `[← NNReal.coe_le_coe]`. Move the coercions through the operations in `at hb`. Establish `hb' : ‖p.changeOrigin z k‖ ≤ 2 * (K * (2 / ρ) ^ k)` using `hb`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_norm_iteratedFDeriv_le_of_analyticAt {f : E → F} {x₀ : E}
     (hf : AnalyticAt ℝ f x₀) :

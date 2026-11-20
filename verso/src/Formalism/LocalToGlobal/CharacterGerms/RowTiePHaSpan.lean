@@ -17,15 +17,15 @@ section Sub
 variable {Ty : Type} (r : Ty → ℕ) (n : ℕ) (k : Type) [Field k] (cc : Ty → Ty) (isX : Ty → Prop) (a : Ty → ℕ → ℕ)
 
 /- English proof (translation)
-Use `⟨Submodule.zero_mem _, fun σ i i' _ t => map_zero _, fun m hm => by simp at hm⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hha_zero : (0 : MvPolynomial (Letter Ty r n) k) ∈ HHa r n k cc isX a := by
   refine ⟨Submodule.zero_mem _, fun σ i i' _ t => map_zero _, fun m hm => by simp at hm⟩
 
 /- English proof (translation)
-Take `⟨hP1, hP2, hP3⟩` from `hP`. Take `⟨hQ1, hQ2, hQ3⟩` from `hQ`. Use `⟨Submodule.add_mem _ hP1 hQ1, fun σ i i' hii t => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hP2 σ i i' hii t, hQ2 σ i i' hii t]`. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hP3 m h`. Conclude with `hQ3 m h`.
+A detailed English derivation is pending.
 -/
 theorem hha_add {P Q : MvPolynomial (Letter Ty r n) k} (hP : P ∈ HHa r n k cc isX a) (hQ : Q ∈ HHa r n k cc isX a) :
     P + Q ∈ HHa r n k cc isX a := by
@@ -38,7 +38,7 @@ theorem hha_add {P Q : MvPolynomial (Letter Ty r n) k} (hP : P ∈ HHa r n k cc 
     · exact hQ3 m h
 
 /- English proof (translation)
-Take `⟨hP1, hP2, hP3⟩` from `hP`. Use `⟨Submodule.smul_mem _ c hP1, fun σ i i' hii t => ?_, fun m hm => hP3 m (support_smul hm)⟩` and prove the remaining obligations. Rewrite using `[map_smul, hP2 σ i i' hii t]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hha_smul (c : k) {P : MvPolynomial (Letter Ty r n) k} (hP : P ∈ HHa r n k cc isX a) :
     c • P ∈ HHa r n k cc isX a := by
@@ -53,7 +53,7 @@ section Maps
 variable {Ty : Type} (r : Ty → ℕ) (n : ℕ)
 
 /- English proof (translation)
-Simplify using `[lap, Matrix.one_apply, pderiv_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lap_map {k k' : Type} [Field k] [Field k'] (φ : k →+* k') (τ τ' : Ty) (a0 : Fin (r τ)) (a1 : Fin (r τ'))
     (p : MvPolynomial (Letter Ty r n) k) :
@@ -61,7 +61,7 @@ theorem lap_map {k k' : Type} [Field k] [Field k'] (φ : k →+* k') (τ τ' : T
   simp [lap, Matrix.one_apply, pderiv_map]
 
 /- English proof (translation)
-Simplify using `only [rowShift, aeval_def, algebraMap_eq, map_eval₂]`. Use `congr 1`. Use function extensionality and compare the values at `ℓ`. Simplify using `only [Function.comp_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowShift_map {k k' : Type} [Field k] [Field k'] (φ : k →+* k') (σ0 : Ty) (i i' : Fin (r σ0)) (t : k)
     (p : MvPolynomial (Letter Ty r n) k) :
@@ -82,20 +82,20 @@ def comp (lam : K →ₗ[ℚ] ℚ) (P : MvPolynomial σ K) : MvPolynomial σ ℚ
   ∑ m ∈ P.support, monomial m (lam (P.coeff m))
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases h : coeff m P = 0 <;> simp [comp, coeff_sum, coeff_monomial, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_comp (lam : K →ₗ[ℚ] ℚ) (P : MvPolynomial σ K) (m : σ →₀ ℕ) :
     coeff m (comp lam P) = lam (coeff m P) := by
   by_cases h : coeff m P = 0 <;> simp [comp, coeff_sum, coeff_monomial, h]
 
 /- English proof (translation)
-Simplify using `[comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comp_zero (lam : K →ₗ[ℚ] ℚ) : comp lam (0 : MvPolynomial σ K) = 0 := by
   simp [comp]
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [coeff_comp, coeff_sum, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem comp_sum (lam : K →ₗ[ℚ] ℚ) {α : Type} (s : Finset α) (f : α → MvPolynomial σ K) :
     comp lam (∑ i ∈ s, f i) = ∑ i ∈ s, comp lam (f i) := by
@@ -103,7 +103,7 @@ theorem comp_sum (lam : K →ₗ[ℚ] ℚ) {α : Type} (s : Finset α) (f : α �
   simp only [coeff_comp, coeff_sum, map_sum]
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [coeff_comp, coeff_smul, coeff_map, smul_eq_mul]`. Rewrite using `[mul_comm c, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Conclude with `mul_comm _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_smul_map (lam : K →ₗ[ℚ] ℚ) (c : K) (p : MvPolynomial σ ℚ) :
     comp lam (c • map (algebraMap ℚ K) p) = lam c • p := by
@@ -113,11 +113,11 @@ theorem comp_smul_map (lam : K →ₗ[ℚ] ℚ) (c : K) (p : MvPolynomial σ ℚ
   exact mul_comm _ _
 
 /- English proof (translation)
-Establish `hP : P = ∑ m ∈ P.support, coeff m P • monomial m (1 : K)` using `by conv_lhs => rw [P.as_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Establish `hc : comp lam P = ∑ m ∈ P.support, lam (coeff m P) • monomial m (1 : ℚ)`. Unfold `comp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hc, map_sum]`. Use `conv_lhs => rw [hP]`. Rewrite using `[map_sum, comp_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul Φ, h, comp_smul_map, map_smul Ψ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_comm (lam : K →ₗ[ℚ] ℚ) (Φ : MvPolynomial σ K →ₗ[K] MvPolynomial σ K)
     (Ψ : MvPolynomial σ ℚ →ₗ[ℚ] MvPolynomial σ ℚ)
@@ -140,13 +140,13 @@ theorem comp_comm (lam : K →ₗ[ℚ] ℚ) (Φ : MvPolynomial σ K →ₗ[K] Mv
 variable {Ty : Type} (r : Ty → ℕ) (n : ℕ) {cc : Ty → Ty} {isX : Ty → Prop} {a : Ty → ℕ → ℕ}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hP`. Establish `hmono : ∀ m : Letter Ty r n →₀ ℕ, monomial m (1 : K) = map (algebraMap ℚ K) (monomial m (1 : ℚ))`. Introduce `m`. Rewrite using `[map_monomial, (algebraMap ℚ K).map_one]`. Use `⟨?_, fun σ i i' hii t => ?_, fun m hm => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [harmK, Submodule.mem_iInf, LinearMap.mem_ker] at h1 ⊢`. Introduce `τ hτ a0 a1`. Establish `hc` using `comp_comm lam (lap r n K 1 τ (cc τ) a0 a1) (lap r n ℚ 1 τ (cc τ) a0 a1) (fun m => by rw [hmono, lap_map]) P`. Rewrite `hc` using `[h1 τ hτ a0 a1, comp_zero]`. Conclude with `hc.symm`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `comp_comm lam (rowShift r n K σ i i' (algebraMap ℚ K t)).toLinearMap (rowShift r n ℚ σ i i' t).toLinearMap (fun m => by`. Simplify using `only [AlgHom.toLinearMap_apply]`. Rewrite using `[hmono, rowShift_map]) P`. Simplify using `only [AlgHom.toLinearMap_apply] at hc`. Rewrite `hc` using `[h2 σ i i' hii]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc.symm`. Rewrite `hm` using `[mem_support_iff, coeff_comp]`. Conclude with `h3 m (mem_support_iff.mpr fun h0 => hm (by rw [h0, map_zero]))`.
+A detailed English derivation is pending.
 -/
 theorem comp_mem (lam : K →ₗ[ℚ] ℚ) {P : MvPolynomial (Letter Ty r n) K} (hP : P ∈ HHa r n K cc isX a) :
     comp lam P ∈ HHa r n ℚ cc isX a := by
@@ -178,9 +178,9 @@ section Up
 variable {Ty : Type} {r : Ty → ℕ} {n : ℕ} {cc : Ty → Ty} {isX : Ty → Prop} {a : Ty → ℕ → ℕ}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hp`. Use `⟨?_, hR Ty r n K _ fun σ i i' hii q => ?_, fun m hm => h3 m (support_map_subset _ _ hm)⟩` and prove the remaining obligations. Simplify using `only [harmK, Submodule.mem_iInf, LinearMap.mem_ker] at h1 ⊢`. Introduce `τ hτ a0 a1`. Rewrite using `[lap_map, h1 τ hτ a0 a1, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((q : ℚ) : K) = algebraMap ℚ K q` using `(eq_ratCast (algebraMap ℚ K) q).symm`. Rewrite using `[e, rowShift_map, h2 σ i i' hii q]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mem (hR : RowInvUpSt) (K : Type) [Field K] [CharZero K] (p : MvPolynomial (Letter Ty r n) ℚ)
     (hp : p ∈ HHa r n ℚ cc isX a) : map (algebraMap ℚ K) p ∈ HHa r n K cc isX a := by
@@ -193,7 +193,7 @@ theorem map_mem (hR : RowInvUpSt) (K : Type) [Field K] [CharZero K] (p : MvPolyn
     rw [e, rowShift_map, h2 σ i i' hii q]
 
 /- English proof (translation)
-Establish `e : map (Int.castRingHom K) z = map (algebraMap ℚ K) (map (Int.castRingHom ℚ) z)`. Rewrite using `[map_map, RingHom.ext_int (Int.castRingHom K) ((algebraMap ℚ K).comp (Int.castRingHom ℚ))]`. Rewrite using `[e]`. Conclude with `map_mem hR K _ hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_int_mem (hR : RowInvUpSt) (K : Type) [Field K] [CharZero K] (z : MvPolynomial (Letter Ty r n) ℤ)
     (hz : map (Int.castRingHom ℚ) z ∈ HHa r n ℚ cc isX a) : map (Int.castRingHom K) z ∈ HHa r n K cc isX a := by
@@ -212,13 +212,11 @@ def poly {R : Type} [CommRing R] (Bd : Finset (L →₀ ℕ)) (v : Bd → R) : M
   ∑ b : Bd, monomial b.1 (v b)
 
 /- English proof (translation)
-Unfold `poly`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_monomial]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨m, h⟩]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `hbm`. Conclude with `hb (Subtype.ext hbm)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[if_neg]`.
-
-Introduce `hbm`. Conclude with `h (hbm ▸ b.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coeff_poly {R : Type} [CommRing R] (Bd : Finset (L →₀ ℕ)) (v : Bd → R) (m : L →₀ ℕ) :
     coeff m (poly Bd v) = if h : m ∈ Bd then v ⟨m, h⟩ else 0 := by
@@ -241,7 +239,7 @@ theorem coeff_poly {R : Type} [CommRing R] (Bd : Finset (L →₀ ℕ)) (v : Bd 
     exact h (hbm ▸ b.2)
 
 /- English proof (translation)
-Rewrite using `[coeff_map, coeff_poly, apply_dite φ, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_map_poly {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (Bd : Finset (L →₀ ℕ)) (v : Bd → R)
     (m : L →₀ ℕ) : coeff m (map φ (poly Bd v)) = if h : m ∈ Bd then φ (v ⟨m, h⟩) else 0 := by
@@ -284,11 +282,9 @@ def Wsub (Bd : Finset (Letter Ty r n →₀ ℕ)) : Submodule ℤ (Bd → ℤ) w
     exact hha_smul r n ℚ cc isX a _ hx
 
 /- English proof (translation)
-Establish `e : map (Int.castRingHom ℚ) (poly Bd (z • x)) = (z : ℚ) • map (Int.castRingHom ℚ) (poly Bd x)`. Use extensionality with `m`. Rewrite using `[coeff_smul, coeff_map_poly, coeff_map_poly]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hx' : map (Int.castRingHom ℚ) (poly Bd (z • x)) ∈ HHa r n ℚ cc isX a` using `hx`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `hx'` using `[e]`. Establish `hz' : (z : ℚ) ≠ 0` using `Int.cast_ne_zero.mpr hz`. Establish `h2` using `hha_smul r n ℚ cc isX a ((z : ℚ)⁻¹) hx'`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hz', one_smul]`. Use `show map (Int.castRingHom ℚ) (poly Bd x) ∈ HHa r n ℚ cc isX a`.
-
-Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wsub_sat (Bd : Finset (Letter Ty r n →₀ ℕ)) (z : ℤ) (x : Bd → ℤ) (hz : z ≠ 0)
     (hx : z • x ∈ Wsub r n cc isX a Bd) : x ∈ Wsub r n cc isX a Bd := by
@@ -309,7 +305,7 @@ end Main
 section Assembly
 
 /- English proof (translation)
-Use `⟨∏ b, (u b).den, Finset.prod_ne_zero_iff.mpr fun b _ => (u b).den_nz, fun b => (∏ b' ∈ Finset.univ.erase b, ((u b').den : ℤ)) * (u b).num, fun b => ?_⟩` and prove the remaining obligations. Establish `hq : u b * ((u b).den : ℚ) = ((u b).num : ℚ)` using `Rat.mul_den_eq_num (u b)`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun b' => (u b').den) (Finset.mem_univ b)]`. Use `push_cast`. Rewrite using `[← hq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -324,7 +320,7 @@ theorem exists_clear (s : Type) [Fintype s] (u : s → ℚ) :
   ring
 
 /- English proof (translation)
-Establish `hz' : z = ∑ b, z b • (Pi.single b (1 : ℤ) : ι → ℤ)`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 -/
 private theorem fix_sum_lemma {ι : Type} [Fintype ι] [DecidableEq ι] (ρ : (ι → ℤ) →ₗ[ℤ] (ι → ℤ)) (z : ι → ℤ)
     (hz : ρ z = z) (j : ι) : z j = ∑ b, z b * ρ (Pi.single b 1) j := by
@@ -337,25 +333,23 @@ private theorem fix_sum_lemma {ι : Type} [Fintype ι] [DecidableEq ι] (ρ : (�
       simp only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `HaSpanSt`. Introduce `Ty _ r n cc isX a K _ _ O P hP`. Take `⟨hPH, hPO⟩` from `hP`. Take `⟨Bd, hBd⟩ : ∃ Bd, Bd = P.support` from `⟨_, rfl⟩`. Take `⟨ρ, hρW, hρfix⟩` from `hS Bd (Wsub r n cc isX a Bd) (fun z x hz hx => wsub_sat r n cc isX a Bd z x hz hx)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ j : Bd, coeff j.1 P = ∑ b : Bd, coeff b.1 P * ((ρ (Pi.single b 1) j : ℤ) : K)`. Introduce `j`. Rewrite using `[← sub_eq_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℚ _).mp fun lam => ?_` and prove the remaining obligations. Take `⟨N, hN, z, hz⟩` from `exists_clear Bd (fun b => lam (coeff b.1 P))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hzW : z ∈ Wsub r n cc isX a Bd`. Establish `e : map (Int.castRingHom ℚ) (poly Bd z) = (N : ℚ) • comp lam P`. Use extensionality with `m`. Rewrite using `[coeff_map_poly, coeff_smul, coeff_comp, smul_eq_mul]`. Use `split_ifs with h`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hz ⟨m, h⟩`. Establish `h0 : coeff m P = 0`. Assume the negation of the conclusion as `hc`. Conclude with `h (by rw [hBd]; exact mem_support_iff.mpr hc)`. Rewrite using `[h0, map_zero, mul_zero]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show map (Int.castRingHom ℚ) (poly Bd z) ∈ HHa r n ℚ cc isX a`. Rewrite using `[e]`. Conclude with `hha_smul r n ℚ cc isX a _ (comp_mem r n lam hPH)`. Establish `hfix` using `fix_sum_lemma ρ z (hρfix z hzW) j`. Establish `hN' : (N : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr hN`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : (z j : ℚ) = ∑ b, (z b : ℚ) * ((ρ (Pi.single b 1) j : ℤ) : ℚ)` using `by exact_mod_cast hfix`. Simplify using `only [hz] at hq`. Rewrite using `[map_sub, map_sum, sub_eq_zero]`. Establish `hl : lam (coeff j.1 P) = ∑ b : Bd, lam (coeff b.1 P) * ((ρ (Pi.single b 1) j : ℤ) : ℚ)`. Apply `mul_left_cancel₀ hN'` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hq, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`. Rewrite using `[hl]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hs : coeff b.1 P * ((ρ (Pi.single b 1) j : ℤ) : K) = (ρ (Pi.single b 1) j) • coeff b.1 P`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zsmul_eq_mul, mul_comm]`. Rewrite using `[hs, map_zsmul, zsmul_eq_mul, mul_comm]`. Establish `hmain : P = ∑ b : Bd, coeff b.1 P • map (Int.castRingHom K) (poly Bd (ρ (Pi.single b 1)))`. Use extensionality with `m`. Rewrite using `[coeff_sum]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [coeff_smul, coeff_map_poly, smul_eq_mul]`. Distinguish the cases in `h : m ∈ Bd`. Simplify using `only [dif_pos h, eq_intCast]`. Conclude with `key ⟨m, h⟩`. Simplify using `only [dif_neg h, mul_zero, Finset.sum_const_zero]`.
-
-Assume the negation of the conclusion as `hc`. Conclude with `h (by rw [hBd]; exact mem_support_iff.mpr hc)`. Establish `hsum : ∑ i : Fin (Fintype.card Bd), coeff ((Fintype.equivFin Bd).symm i).1 P • map (Int.castRingHom K) (poly Bd (ρ (Pi.single ((Fintype.equivFin Bd).symm i) 1))) = ∑ b : Bd, coeff b.1 P • map (Int.castRingHom K) (poly Bd (ρ (Pi.single b 1)))` using `Equiv.sum_comp (Fintype.equivFin Bd).symm (fun b : Bd => coeff b.1 P • map (Int.castRingHom K) (poly Bd (ρ (Pi.single b 1))))`. Use `⟨Fintype.card Bd, fun i => coeff ((Fintype.equivFin Bd).symm i).1 P, fun i => poly Bd (ρ (Pi.single ((Fintype.equivFin Bd).symm i) 1)), fun i => hPO _, fun i K' _ _ => map_int_mem hR K' _ (hρW _), ?_⟩` and prove the remaining obligations. Conclude with `hmain.trans hsum.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem haSpanSt_of (hS : SatRetrSt) (hR : RowInvUpSt) : HaSpanSt := by
   unfold HaSpanSt

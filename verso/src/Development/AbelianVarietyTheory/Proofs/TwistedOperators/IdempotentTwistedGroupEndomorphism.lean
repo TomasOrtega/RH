@@ -29,7 +29,7 @@ theorem cutGL_val (b : A) (hb : b * b = b) (g : GL n A) :
     (cutGL b hb g).val = b • g.val + (1 - b) • 1 := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_cut (φ : A →+* B) (b : A) (M : Matrix n n A) :
     (b • M + (1 - b) • (1 : Matrix n n A)).map φ = φ b • M.map φ + (1 - φ b) • (1 : Matrix n n B) := by
@@ -37,7 +37,7 @@ theorem map_cut (φ : A →+* B) (b : A) (M : Matrix n n A) :
   by_cases h : i = j <;> simp [h]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `Units.ext (map_cut φ b g.val)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem bc_cutGL (φ : A →+* B) (b : A) (hb : b * b = b) (b' : B) (hb' : b' * b' = b') (e : φ b = b')
     (g : GL n A) : bc φ (cutGL b hb g) = cutGL b' hb' (bc φ g) := by
@@ -45,14 +45,14 @@ theorem bc_cutGL (φ : A →+* B) (b : A) (hb : b * b = b) (b' : B) (hb' : b' * 
   exact Units.ext (map_cut φ b g.val)
 
 /- English proof (translation)
-Rewrite using `[bc_cutGL φ b hb _ (by rw [← map_mul, hb]) rfl, hg, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bc_cutGL_eq_one (φ : A →+* B) (b : A) (hb : b * b = b) {g : GL n A} (hg : bc φ g = 1) :
     bc φ (cutGL b hb g) = 1 := by
   rw [bc_cutGL φ b hb _ (by rw [← map_mul, hb]) rfl, hg, map_one]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [cutGL_val, Units.val_mul, mul_add, add_mul, mul_smul_comm, smul_mul_assoc, mul_one, Units.mul_inv]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem cutGL_conj (b : A) (hb : b * b = b) (β g : GL n A) :
     cutGL b hb (β * g * β⁻¹) = β * cutGL b hb g * β⁻¹ := by
@@ -60,11 +60,11 @@ theorem cutGL_conj (b : A) (hb : b * b = b) (β g : GL n A) :
   simp only [cutGL_val, Units.val_mul, mul_add, add_mul, mul_smul_comm, smul_mul_assoc, mul_one, Units.mul_inv]
 
 /- English proof (translation)
-Establish `hg' : cT σ g.val * J * g.val = J` using `hg`. Use `show cT σ (b • g.val + (1 - b) • 1) * J * (b • g.val + (1 - b) • 1) = J`. Establish `e : cT σ (b • g.val + (1 - b) • (1 : Matrix n n A)) = b • cT σ g.val + (1 - b) • 1`. Unfold `cT`. Rewrite using `[map_cut, hσ, transpose_add, transpose_smul, transpose_smul, transpose_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : b * (1 - b) = 0` using `by linear_combination -hb`. Establish `h2 : (1 - b) * b = 0` using `by linear_combination -hb`. Establish `h3 : (1 - b) * (1 - b) = 1 - b` using `by linear_combination hb`. Rewrite using `[e]`. Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_add, smul_smul, hb, h1, h2, h3, zero_smul, add_zero, zero_add, mul_one, one_mul, hg']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← add_smul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cutGL_mem_UJ (σ : A →+* A) (J : Matrix n n A) (b : A) (hb : b * b = b) (hσ : σ b = b) {g : GL n A}
     (hg : g ∈ UJ σ J) : cutGL b hb g ∈ UJ σ J := by
@@ -94,9 +94,9 @@ open scoped TensorProduct
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Introduce `v`. Establish `h : a v * a v = a v` using `congrArg (fun x : FiniteAdeleRing (𝓞 F) F => x v) ha`. Break down `eq_or_ne (a v) 0 with h0 | h0` into its components or cases. Rewrite using `[h0]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_left_cancel₀ h0 (h.trans (mul_one _).symm)]`. Conclude with `one_mem _`.
+A detailed English derivation is pending.
 -/
 theorem idem_mem_intAd (a : FiniteAdeleRing (𝓞 F) F) (ha : a * a = a) : a ∈ intAd F := by
   intro v
@@ -106,9 +106,9 @@ theorem idem_mem_intAd (a : FiniteAdeleRing (𝓞 F) F) (ha : a * a = a) : a ∈
   · rw [mul_left_cancel₀ h0 (h.trans (mul_one _).symm)]; exact one_mem _
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hg`. Use `⟨cutGL (⟨b, hi⟩ : Formalism.L2.Herm.intAf F E) (Subtype.ext hb) y, ?_⟩` and prove the remaining obligations. Use `show β * intGL F E n _ * β⁻¹ = cutGL b hb (β * intGL F E n y * β⁻¹)`. Rewrite using `[cutGL_conj]`. Unfold `intGL`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bc_cutGL _ _ _ b hb rfl]`.
+A detailed English derivation is pending.
 -/
 theorem cutGL_mem_St (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (b : E ⊗[F] Formalism.L2.Herm.Af F) (hb : b * b = b)
     (hi : b ∈ Formalism.L2.Herm.intAf F E) {g : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hg : g ∈ St β) :
@@ -121,7 +121,7 @@ theorem cutGL_mem_St (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (b : E 
   rw [bc_cutGL _ _ _ b hb rfl]
 
 /- English proof (translation)
-Establish `hb' : φ b * φ b = φ b` using `by rw [← map_mul, hb]`. Rewrite using `[bc_cutGL φ b hb _ hb' rfl]`. Conclude with `cutGL_mem_St β _ hb' hi hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bc_cutGL_mem_St {A : Type} [CommRing A] (φ : A →+* E ⊗[F] Formalism.L2.Herm.Af F)
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (b : A) (hb : b * b = b)
@@ -138,14 +138,14 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Simplify using `[sigR, Algebra.TensorProduct.algebraMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_algebraMap {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) (r : R) : sigR R σ (algebraMap R (R ⊗[F] E) r) = algebraMap R (R ⊗[F] E) r := by
   simp [sigR, Algebra.TensorProduct.algebraMap_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cutUJ (sigR R σ) (JR R J) _ hb (sigR_algebraMap R σ r), fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_cutHA {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (r : R)
@@ -154,23 +154,23 @@ theorem exists_cutHA {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [
   ⟨cutUJ (sigR R σ) (JR R J) _ hb (sigR_algebraMap R σ r), fun _ => rfl⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_GfC_iff {D : D7} (V : HSp D) (g : GA D V) :
     g ∈ GfC V ↔ Formalism.UG.bc (infPart D) (matHom V g) = 1 := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (finE_val V g)`.
+A detailed English derivation is pending.
 -/
 theorem finE_eq {D : D7} (V : HSp D) (g : GA D V) : finE V g = Formalism.UG.bc (toEAf D) (matHom V g) :=
   Units.ext (finE_val V g)
 
 /- English proof (translation)
-Introduce `D V β ε hε`. Establish `hb : algebraMap (AF D.host.F) (AE D) ε * algebraMap (AF D.host.F) (AE D) ε = algebraMap (AF D.host.F) (AE D) ε`. Rewrite using `[← map_mul, hε]`. Take `⟨κ, hκ⟩` from `exists_cutHA (AF D.host.F) D.sp.cm.sig V.gram ε hb`. Establish `hκ' : ∀ g, matHom V (κ g) = cutGL _ hb (matHom V g)` using `hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨κ, fun g => ⟨congrArg Units.val (hκ' g), fun h => ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations. Establish `h1` using `(mem_GfC_iff V g).1 h.1`. Rewrite using `[mem_GfC_iff, hκ']`. Conclude with `bc_cutGL_eq_one (infPart D) _ hb h1`. Establish `h1` using `h.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[finE_eq]`. Establish `hi : toEAf D (algebraMap (AF D.host.F) (AE D) ε) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `Subring.subset_closure (Or.inr ⟨⟨sndA D.host.F ε, idem_mem_intAd _ (by rw [← map_mul, hε])⟩, rfl⟩)`. Rewrite using `[finE_eq, hκ']`. Conclude with `bc_cutGL_mem_St (toEAf D) β _ hb hi h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cut : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (ε : AF D.host.F), ε * ε = ε → ∃ κ : GA D V →* GA D V, ∀ g, Formalism.L2.Theta.mt V (κ g) = algebraMap (AF D.host.F) (AE D) ε • Formalism.L2.Theta.mt V g + (1 - algebraMap (AF D.host.F) (AE D) ε) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) ∧ (Stab V β g → Stab V β (κ g)) := by
   intro D V β ε hε

@@ -26,43 +26,39 @@ open Classical in
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `h1 : μ 𝓕 = 1` using `hcv.2.2`. Establish `hU : ∀ ρ, IsURepOn (Formalism.QuantumDeterminants.UH (gramAt D W ρ)) (M.rep ρ)` using `fun ρ => (GlobalTheory.HolDict.ModelRep.model_rep D W S' M ρ).2.1`. Establish `hXU : ∀ g ρ, infMat D.sp.cm.sig W.gram (θ ρ) g ∈ Formalism.QuantumDeterminants.UH (gramAt D W ρ)` using `fun g ρ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ W g ρ`. Establish `hrep : ∀ ρ g h, M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) (g * h)) = (M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) g)).comp (M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) h))` using `fun ρ g h => by`. Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hU ρ).1.2 _ (hXU g ρ) _ (hXU h ρ)`. Establish `hrep1 : ∀ ρ, M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) 1) = 1` using `fun ρ => by`. Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_one]`. Conclude with `(hU ρ).1.1`. Establish `hωmul : ∀ g h f, ω (1, g) (ω (1, h) f) = ω (1, g * h) f` using `fun g h f => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `hA : ∀ τ, ∀ k ∈ Formalism.REAL.Kset (M.ε τ), ∀ (v : ∀ ρ, lowT M ρ) (u : lowT M τ), ((u : M.sm τ) : M.H τ) = M.σ τ k ((v τ : M.sm τ) : M.H τ) → ∀ ρ, (((Function.update v τ u ρ : lowT M ρ) : M.sm ρ) : M.H ρ) = M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) (atTau θ W τ ((M.fr τ)⁻¹ * k * …`. Introduce `τ k hk v u hu ρ`. Establish `hd : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `hg : (M.fr τ)⁻¹ * k * M.fr τ ∈ Formalism.QuantumDeterminants.UH (gramAt D W τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk' : kᴴ * Formalism.REAL.Jm (M.ε τ) * k = Formalism.REAL.Jm (M.ε τ)` using `kset_uj hk`. Establish `e1 : ((M.fr τ)⁻¹)ᴴ * (M.fr τ)ᴴ = 1`. Rewrite using `[← conjTranspose_mul, mul_nonsing_inv _ hd, conjTranspose_one]`. Express the relevant statement in the definitionally equal form `((M.fr τ)⁻¹ * k * M.fr τ)ᴴ * gramAt D W τ * ((M.fr τ)⁻¹ * k * M.fr τ) = gramAt D W τ`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← M.fr_gram τ]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = gramAt D W τ := by rw [e1, mul_nonsing_inv _ hd, Matrix.mul_one, Matrix.mul_one, hk', M.fr_gram]`. Establish `e2 : M.fr τ * ((M.fr τ)⁻¹ * k * M.fr τ) * (M.fr τ)⁻¹ = k`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hs` using `GlobalTheory.PointAtPlaceHom.atTau_spec hθ W τ hg`. Distinguish the cases in `c : ρ = τ`. Substitute `c` using the available equality. Rewrite using `[Function.update_self, hu, hs.2.1]`. Unfold `DSModel.rep`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e2]`. Rewrite using `[Function.update_of_ne c, hs.2.2 ρ c, (hU ρ).1.1]`. Both sides reduce to the same expression. Establish `hinv : ∀ ρ (a : GA D W) (y x : M.H ρ), ⟪M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) a⁻¹) y, x⟫_ℂ = ⟪y, M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) a) x⟫_ℂ`. Introduce `ρ a y x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `L : M.H ρ →ₗᵢ[ℂ] M.H ρ` to `{ toLinearMap := (M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) a)).toLinearMap, norm_map' := (hU ρ).2.1 _ (hXU a ρ) }`. Establish `e : M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) a) (M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) a⁻¹) y) = y`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hrep, mul_inv_cancel, hrep1]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation.
+Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show L (M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) a⁻¹) y) = y from e]`. Both sides reduce to the same expression. Take `⟨e0, he0⟩` from `exists_isExtVec M hLS`. Set `e : ∀ ρ, lowT M ρ` to `fun ρ => ⟨e0 ρ, (he0 ρ).2.1⟩`. Establish `hext : IsExtVec M (fun ρ => (e ρ : M.sm ρ))` using `he0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∀ ρ, e ρ ≠ 0` using `fun ρ h => by`. Establish `h'` using `(he0 ρ).1`. Establish `h0 : ((e0 ρ : M.sm ρ) : M.H ρ) = 0`. Use `congrArg (fun x : lowT M ρ => ((x : M.sm ρ) : M.H ρ)) h` as an intermediate fact. Simplify `this` using `[e]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h'` using `[h0, norm_zero]`. Conclude with `zero_ne_one h'`. Establish `st1 : ∀ v', ∀ g ∈ GinfC W, thetaIP μ 𝓕 (J e) (ω (1, g) (J v')) = thetaIP μ 𝓕 (J e) (J e) * ∏ ρ, ⟪((e ρ : M.sm ρ) : M.H ρ), M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) g) ((v' ρ : M.sm ρ) : M.H ρ)⟫_ℂ`. Introduce `v'`. Establish `key` using `GlobalTheory.DefLift.mem_of_translates hLS hLI (thR hω h1 J hJ (J e) (hJ e) - thetaIP μ 𝓕 (J e) (J e) • prodR θ M (fun ρ => ((e ρ : M.sm ρ) : M.H ρ))) (offReal W) e hne ?_ ?_ v'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Use `key g hg` as an intermediate fact. Simplify using `only [MultilinearMap.sub_apply, MultilinearMap.smul_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, prodR_apply, thR_apply] at this`. Conclude with `sub_eq_zero.1 this`. Introduce `g hg`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MultilinearMap.sub_apply, MultilinearMap.smul_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, prodR_apply, thR_apply]`. Conclude with `sub_eq_zero.2 (hX e hext g hg)`. Introduce `τ k hk v' u hu hv' g hg`. Use `hv' (g * atTau θ W τ ((M.fr τ)⁻¹ * k * M.fr τ)) (mul_mem hg (GlobalTheory.PointAtPlaceHom.atTau_mem W τ _))` as an intermediate fact. Simplify using `only [MultilinearMap.sub_apply, MultilinearMap.smul_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, prodR_apply, thR_apply] at this ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hK τ k hk v' u hu, hωmul]`. Establish `hp : ∏ ρ, ⟪((e ρ : M.sm ρ) : M.H ρ), M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) g) (((Function.update v' τ u ρ : lowT M ρ) : M.sm ρ) : M.H ρ)⟫_ℂ = ∏ ρ, ⟪((e ρ : M.sm ρ) : M.H ρ), M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) (g * atTau θ W τ ((M.fr τ)⁻¹ * k * M.fr τ))) ((v' ρ : M.sm ρ) …` using `Finset.prod_congr rfl fun ρ _ => by rw [hA τ k hk v' u hu ρ, hrep]; rfl`. Rewrite using `[hp]`. Conclude with `this`. Establish `hconj : ∀ (x y : ∀ ρ, M.H ρ), ∏ ρ, ⟪y ρ, x ρ⟫_ℂ = star (∏ ρ, ⟪x ρ, y ρ⟫_ℂ)` using `fun x y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[star_prod]`. Conclude with `Finset.prod_congr rfl fun ρ _ => (inner_conj_symm _ _).symm`. Establish `st2 : ∀ v v', ∀ g ∈ GinfC W, thetaIP μ 𝓕 (J v) (ω (1, g) (J v')) = thetaIP μ 𝓕 (J e) (J e) * ∏ ρ, ⟪((v ρ : M.sm ρ) : M.H ρ), M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) g) ((v' ρ : M.sm ρ) : M.H ρ)⟫_ℂ`. Introduce `v v'`. Establish `key` using `GlobalTheory.DefLift.mem_of_translates hLS hLI (thL hω h1 J hJ (J v') (hJ v') - star (thetaIP μ 𝓕 (J e) (J e)) • prodL θ M (fun ρ => ((v' ρ : M.sm ρ) : M.H ρ))) (offReal W) e hne ?_ ?_ v`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Use `key g hg` as an intermediate fact. Simplify using `only [MultilinearMap.sub_apply, MultilinearMap.smul_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, prodL_apply, thL_apply] at this`. Rewrite `this` using `[sub_eq_zero, hconj, ← star_mul']`. Conclude with `star_injective this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g hg`. Simplify using `only [MultilinearMap.sub_apply, MultilinearMap.smul_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, prodL_apply, thL_apply]`. Rewrite using `[st1 v' g hg, star_mul', ← hconj, sub_self]`. Introduce `τ k hk v u hu hv g hg set a := atTau θ W τ ((M.fr τ)⁻¹ * k * M.fr τ) with ha`. Use `hv (a⁻¹ * g) (mul_mem (inv_mem (GlobalTheory.PointAtPlaceHom.atTau_mem W τ _)) hg)` as an intermediate fact.
-
-Simplify using `only [MultilinearMap.sub_apply, MultilinearMap.smul_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, prodL_apply, thL_apply] at this ⊢`. Establish `e1 : ω (1, g) (J v') = ω (1, a) (ω (1, a⁻¹ * g) (J v'))` using `by rw [hωmul, mul_inv_cancel_left]`. Rewrite using `[hK τ k hk v u hu, e1, GlobalTheory.WeilPairing.thetaInner_weilRep D ψ V W χV χW ω μ 𝓕 hω hcv (1, a) _ _ (hJ v) (hω.om_pres _ _ (hJ v'))]`. Establish `hp : ∏ ρ, ⟪M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) g) ((v' ρ : M.sm ρ) : M.H ρ), (((Function.update v τ u ρ : lowT M ρ) : M.sm ρ) : M.H ρ)⟫_ℂ = ∏ ρ, ⟪M.rep ρ (infMat D.sp.cm.sig W.gram (θ ρ) (a⁻¹ * g)) ((v' ρ : M.sm ρ) : M.H ρ), ((v ρ : M.sm ρ) : M.H ρ)⟫_ℂ` using `Finset.prod_congr rfl fun ρ _ => by`. Rewrite using `[hA τ k hk v u hu ρ, hrep, ContinuousLinearMap.comp_apply, hinv]`.
-
-Rewrite using `[hp]`. Conclude with `this`. Conclude with `⟨_, st2⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pair_of_ext (θ : InfFam D) (hθ : IsInfFam θ) (M : DSModel W S') (hLS : LowSm M) (hLI : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.LowIrr M)
     (hω : IsWeilDatumO ψ V W χV χW ω) (hcv : IsCovolOne (ratL W V) μ 𝓕)
@@ -217,15 +213,15 @@ namespace GlobalTheory.RawLift.FockPair
 open GlobalTheory.DefLift GlobalTheory.RawLift Formalism.IndefR.FWT in
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om hθ hom Sp M hM hwt μ 𝓧 hcv c hc pt hpt Δ io hio hΔ w`. Take `⟨wt, hw⟩` from `hwt`. Take `⟨hLS, hLI⟩` from `GlobalTheory.HolLowOnce.lowSm_and_lowIrr D T Sp M hM`. Set `J : MultilinearMap ℂ (fun ρ => lowT M ρ) (WO S T → ℂ)` to `(pt.comp (io.flip w)).compMultilinearMap (PiTensorProduct.tprod ℂ)`. Establish `hJv : ∀ v, J v = pt (io (PiTensorProduct.tprod ℂ v) w)` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hJ : ∀ v, IsThetaFunO ψ S T (J v)` using `fun v => hpt _`. Take `⟨N, hN⟩` from `pair_of_ext θ hθ M hLS hLI hom hcv J hJ (fun τ k hk v u hu => (hio.2.1 τ k hk v u hu w).symm) (fun v hv u hu => GlobalTheory.RawLift.FockCoef.coef_eq hom hcv hθ M hM hw hv (hpt _) (fun a ha => GlobalTheory.RawLift.FockCoef.holAd_coef hom hcv hθ M hM hw c hc pt hpt Δ io hio hΔ v h …`. Use `⟨N, fun g hg e e' => ?_⟩` and prove the remaining obligations. Establish `hmem : realElt θ T g ∈ GinfC T`. Use `list_prod_mem fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨τ, -, rfl⟩` from `List.mem_map.1 hy`. Conclude with `GlobalTheory.PointAtPlaceHom.atTau_mem _ τ _`. Establish `hinf : ∀ ρ, infMat D.sp.cm.sig T.gram (θ ρ) (realElt θ T g) = g ρ` using `fun ρ => by`. Rewrite using `[realElt, GlobalTheory.RealTransSm.infMat_list_prod hθ g hg ρ _ (Finset.nodup_toList _), if_pos (Finset.mem_toList.2 (Finset.mem_univ ρ))]`. Establish `key` using `hN e' e _ hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hJv, hJv]`. Simplify using `only [hinf] at key`. Rewrite using `[← key]`. Use `show (∫ x in 𝓧, _ ∂μ) = ∫ x in 𝓧, _ ∂μ`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[starRingEnd_apply, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem coef_one_vector : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsInfFam θ → IsWeilDatumO ψ S T χS χT om → ∀ (Sp : D.what₂.Tau → SPar) (M : DSModel T Sp), GlobalTheory.HolDict.HolShape M → (∃ wt, GlobalTheory.HolDict.WtIs M wt) → ∀ (μ : Measure (WO S T)) (𝓧 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓧 → ∀ c : CoefA S, c.Is → ∀ pt : PolF D T.rank S.rank →ₗ[ℂ] (WO S T → ℂ), (∀ P, IsThetaFunO ψ S T (pt P)) → ∀ (Δ : PolF D T.rank S.rank) (io : LowT M →ₗ[ℂ] c.W →ₗ[ℂ] PolF D T.rank S.rank), IsIoW θ M c om (fun P => pt P) Δ io → GlobalTheory.RawLift.FockCoef.Killed om θ M (pt Δ) → ∀ w : c.W, ∃ N : ℂ, ∀ g : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ, (∀ ρ, g ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D T ρ)) → ∀ (e e' : ∀ ρ, lowT M ρ), l2 μ 𝓧 (om (1, realElt θ T g) (pt (io (PiTensorProduct.tprod ℂ e) w))) (pt (io (PiTensorProduct.tprod ℂ e') w)) = N * (∏ ρ, ⟪((e' ρ : M.sm ρ) : M.H ρ), M.rep ρ (g ρ) ((e ρ : M.sm ρ) : M.H ρ)⟫_ℂ) := by
   intro D ψ θ S T χS χT om hθ hom Sp M hM hwt μ 𝓧 hcv c hc pt hpt Δ io hio hΔ w

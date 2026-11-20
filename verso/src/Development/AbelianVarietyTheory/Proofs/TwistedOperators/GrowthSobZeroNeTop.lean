@@ -43,7 +43,7 @@ theorem avgList_cons (θ : InfFam D) (N : GlobalTheory.Grid.Node D) (e : ∀ τ,
     avgList θ N e (τ :: l) φ = GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) (e τ) (avgList θ N e l φ) := rfl
 
 /- English proof (translation)
-Set `M : Submodule ℂ (GA D V → ℂ)` to `{ carrier := {f | growthSize V 0 f ≠ ∞} add_mem' := fun a b => ne_top_of_le_ne_top (ENNReal.add_ne_top.2 ⟨a, b⟩) growthSize_add_le zero_mem' := (growthSize_const (0 : ℂ)).trans_ne enorm_ne_top smul_mem' := fun c _ a => (growthSize_smul c).trans_ne (ENNReal.mul_ne_top enorm_ne_top …`. Establish `hM : φ ∈ allDer θ V M` using `⟨h.smooth, fun l hl => modGrowthExp_iff.1 ((h.decay l hl).bounded.imp fun _ hC g => (hC g).trans_eq (by simp))⟩`. Use `wordSum_ne_top_iff.2 fun l _ => ?_` and prove the remaining obligations. Conclude with `(wordAct_rel (A := glDer θ V) (B := glDer θ V) (R := fun f _ => f ∈ allDer θ V M) l (fun a _ _ _ hf => RderC_mem_allDer hf a.1 _) (y := φ) hM).2 [] (fun _ h => by simp at h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem growthSob_zero_ne_top {θ : InfFam D} {V : HSp D} {φ : GA D V → ℂ} (h : RapidDecSm θ V φ) (d : ℕ) :
     growthSob θ V d 0 φ ≠ ∞ := by
@@ -61,31 +61,31 @@ theorem growthSob_zero_ne_top {θ : InfFam D} {V : HSp D} {φ : GA D V → ℂ} 
 def Good (θ : InfFam D) (V : HSp D) (f : GA D V → ℂ) : Prop := RapidDecSm θ V f ∧ IsCuspFun V f
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.add h'.1, GlobalTheory.MultMem.isCuspFun_add h.1.toIsAutFun h'.1.toIsAutFun h.2 h'.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_add {θ : InfFam D} {V : HSp D} {f f' : GA D V → ℂ} (h : Good θ V f) (h' : Good θ V f') :
     Good θ V (f + f') :=
   ⟨h.1.add h'.1, GlobalTheory.MultMem.isCuspFun_add h.1.toIsAutFun h'.1.toIsAutFun h.2 h'.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.smul c, GlobalTheory.MultMem.isCuspFun_smul c h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_smul {θ : InfFam D} {V : HSp D} {f : GA D V → ℂ} (c : ℂ) (h : Good θ V f) : Good θ V (c • f) :=
   ⟨h.1.smul c, GlobalTheory.MultMem.isCuspFun_smul c h.2⟩
 
 /- English proof (translation)
-Use `⟨rapidDecSm_iff.2 ⟨zero_mem _, ⊤, isOpen_univ, fun _ _ _ _ => rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `fun _ _ _ _ _ _ _ _ => by simp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_zero (θ : InfFam D) (V : HSp D) : Good θ V 0 := by
   refine ⟨rapidDecSm_iff.2 ⟨zero_mem _, ⊤, isOpen_univ, fun _ _ _ _ => rfl⟩, ?_⟩
   exact fun _ _ _ _ _ _ _ _ => by simp
 
 /- English proof (translation)
-Take `⟨U, hU, rfl⟩` from `Submodule.mem_map.1 hΦ`. Use `clear hΦ`. Establish `hU' : ∀ w, Good θ N.V (U w)`. Proceed by induction on `hU using Submodule.span_induction with`. Consider the case `mem x hx => exact fun w => ⟨rapidDecSm_of_cuspForm hP hθ (hx.aut w) (hx.cusp w), hx.cusp w⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact fun w => good_zero θ N.V`. Consider the case `add x y _ _ hx hy => exact fun w => good_add (hx w) (hy w)`. Consider the case `smul c x _ hx => exact fun w => good_smul c (hx w)`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f => simpa using good_smul r (hU' f)`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simpa using good_add hx hy`.
+A detailed English derivation is pending.
 -/
 theorem good_value (hP : GlobalTheory.Published.CuspRapidDecay) {θ : InfFam D} (hθ : IsInfFam θ) (N : GlobalTheory.Grid.Node D) {Φ : N.Maps}
     (hΦ : Φ ∈ N.Cusp θ) (v : SmT N.M) : Good θ N.V (Φ v) := by

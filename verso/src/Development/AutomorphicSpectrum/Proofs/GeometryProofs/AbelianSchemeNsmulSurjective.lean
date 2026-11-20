@@ -15,17 +15,11 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
 /- English proof (translation)
-Introduce `K _ A _ hA n hn`. Use `haveI : Smooth A.hom := IsAbelianScheme.smooth (self := hA)`. Use `haveI : IsProper A.hom := IsAbelianScheme.proper (self := hA)`. Use `haveI : GeometricallyConnected A.hom := IsAbelianScheme.geomConnected (self := hA)`. Use `haveI : IsLocallyNoetherian (Sp K) := inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of K)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : ConnectedSpace (Sp K) := inferInstanceAs (ConnectedSpace (Spec (CommRingCat.of K)))`. Establish `hw : ((𝟙 A) ^ n : A ⟶ A).left ≫ A.hom = A.hom` using `Over.w _`. Use `haveI : Flat ((𝟙 A) ^ n : A ⟶ A).left := GlobalTheory.CompanionTheory.Ar.BT.flat_mul_semiAbelian (Sp K) A (GlobalTheory.isSemiAbelian_of_isAbelianScheme A hA) n (Nat.one_le_iff_ne_zero.mpr hn)`. Use `haveI : LocallyOfFiniteType ((𝟙 A) ^ n : A ⟶ A).left := HasRingHomProperty.of_comp (fun _ _ h => RingHom.FiniteType.of_comp_finiteType h) (by rw [hw]; infer_instance)`. Use `haveI : IsLocallyNoetherian A.left := LocallyOfFiniteType.isLocallyNoetherian A.hom`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : LocallyOfFinitePresentation ((𝟙 A) ^ n : A ⟶ A).left := by`. Rewrite using `[locallyOfFinitePresentation_iff]`. Introduce `U hU V hV e`. Use `haveI := IsLocallyNoetherian.component_noetherian (X := A.left) ⟨U, hU⟩`. Conclude with `RingHom.FinitePresentation.of_finiteType.mp (LocallyOfFiniteType.finiteType_of_affine_subset _ hU hV e)`.
-
-Use `haveI : UniversallyOpen ((𝟙 A) ^ n : A ⟶ A).left := UniversallyOpen.of_flat _`. Use `haveI : IsProper (((𝟙 A) ^ n : A ⟶ A).left ≫ A.hom) := by rw [hw]; infer_instance`. Use `haveI : IsProper ((𝟙 A) ^ n : A ⟶ A).left := IsProper.of_comp _ A.hom`. Use `haveI : UniversallyOpen A.hom := UniversallyOpen.of_flat _`. Use `haveI : ConnectedSpace A.left := GeometricallyConnected.connectedSpace A.hom A.hom.isOpenMap`.
-
-Establish `hclopen : IsClopen (Set.range ((𝟙 A) ^ n : A ⟶ A).left)` using `⟨(Scheme.Hom.isClosedMap _).isClosed_range, (Scheme.Hom.isOpenMap _).isOpen_range⟩`. Use `⟨fun y => ?_⟩` and prove the remaining obligations. Break down `isClopen_iff.mp hclopen with h | h` into its components or cases. Establish `hy` using `Set.mem_range_self (f := ⇑((𝟙 A) ^ n : A ⟶ A).left) y`. Rewrite `hy` using `[h]`.
-
-Conclude with `hy.elim`. Establish `hy : y ∈ Set.range ⇑((𝟙 A) ^ n : A ⟶ A).left` using `by rw [h]; trivial`. Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem surjective_pow_of_isAbelianScheme :
     ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ n : ℕ, n ≠ 0 →

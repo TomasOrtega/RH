@@ -16,17 +16,17 @@ def ballSub (r : ℝ) (hr : 0 ≤ r) : AddSubgroup (PadicAlgCl l) where
   neg_mem' := fun {a} ha => by simpa [Set.mem_setOf_eq, norm_neg] using ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ballSub {r : ℝ} {hr : 0 ≤ r} {x : PadicAlgCl l} : x ∈ ballSub r hr ↔ ‖x‖ ≤ r := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem cg_iff {n : ℕ} {a b : Qbar l} : Cg n a b ↔ a - b ∈ ballSub (l := l) ‖((l : ℕ) : Qbar l) ^ n‖ (norm_nonneg _) := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_ballSub, norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hk).trans hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_ballSub {r : ℝ} {hr : 0 ≤ r} {k x : PadicAlgCl l} (hk : ‖k‖ ≤ 1) (hx : x ∈ ballSub r hr) :
     k * x ∈ ballSub r hr := by
@@ -34,9 +34,9 @@ theorem mul_mem_ballSub {r : ℝ} {hr : 0 ≤ r} {k x : PadicAlgCl l} (hk : ‖k
   exact (mul_le_of_le_one_left (norm_nonneg _) hk).trans hx
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegralNormLeOne.norm_le_one_of_isIntegral`. Consider the case `exact _root_.GlobalTheory.IntegralNormLeOne.norm_le_one_of_isIntegral`. Consider the case `(apply _root_.GlobalTheory.IntegralNormLeOne.norm_le_one_of_isIntegral <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegralNormLeOne.norm_le_one_of_isIntegral <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntegralNormLeOne.norm_le_one_of_isIntegral <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralNormLeOne.norm_le_one_of_isIntegral ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_int (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
   first
@@ -48,7 +48,7 @@ theorem norm_le_one_of_int (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) : ‖x
   | (intros; exact _root_.GlobalTheory.IntegralNormLeOne.norm_le_one_of_isIntegral ..)
 
 /- English proof (translation)
-The claim follows from `norm_le_one_of_int x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mem (c : Coef l) {x : Qbar l} (hx : x ∈ c.O) : ‖x‖ ≤ 1 :=
   norm_le_one_of_int x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)
@@ -58,33 +58,31 @@ end GlobalTheory.BrTame
 open GlobalTheory.BrTame in
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ c n w B ψ h σ hn hB hdiv ⟨τ, hτ, hψτ⟩ hO _ hIne ⟨u, hucont, huO, hu⟩ hσ`. Use `set S := ballSub (l := l) ‖((l : ℕ) : Qbar l) ^ n‖ (norm_nonneg _) with hS`. Establish `hu1 : ∀ s, ‖u s‖ ≤ 1` using `fun s => norm_le_one_of_mem c (huO s)`. Establish `heps : ∀ s ∈ Dec (F` using `ℚ) B, eps l s - 1 ∈ S := fun s hs => GlobalTheory.T.cyclotomicChar_congruent_one_on_decompositionGroup l Ω n w B hB hdiv hn s hs`. Establish `hnat : ∀ k : ℕ, ‖((k : ℕ) : Qbar l)‖ ≤ 1` using `fun k => IsUltrametricDist.norm_natCast_le_one _ k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : ∀ k x : Qbar l, ‖k‖ ≤ 1 → x ∈ S → k * x ∈ S` using `fun k x hk hx => mul_mem_ballSub hk hx`. Establish `hIne' : ∀ s ∈ Ine (F` using `ℚ) B, h s ∈ S := fun s hs => by`. Use `cg_iff.1 (hIne s hs)` as an intermediate fact. Rewrite `this` using `[sub_zero]`. Then use the resulting hypothesis. Establish `hIneDec : ∀ s ∈ Ine (F` using `ℚ) B, s ∈ Dec (F := ℚ) B := fun s hs => Ine_le_Dec B hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set T := ballSub (l := l) 1 zero_le_one with hT`. Set `M` to `T ⧸ S.comap T.subtype`. Set `f : G ℚ Ω → M` to `fun s => QuotientAddGroup.mk ⟨u s, hu1 s⟩`. Establish `hf : ∀ s t, f s = f t ↔ u s - u t ∈ S` using `fun s t => by show (QuotientAddGroup.mk _ : M) = QuotientAddGroup.mk _ ↔ _`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_comap]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `-u s + u t ∈ S ↔ _`. Establish `e : -u s + u t = -(u s - u t)` using `by ring`. Rewrite using `[e, S.neg_mem_iff]`. Establish `hlpos : 0 < ‖((l : ℕ) : Qbar l) ^ n‖` using `norm_pos_iff.2 (pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero))`. Establish `htors : ∀ x : M, l ^ n • x = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `x`. Proceed by induction on `x using QuotientAddGroup.induction_on with`. Consider the case `H y`. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_comap, AddSubgroup.coe_subtype, AddSubgroup.coe_nsmul, nsmul_eq_mul, mem_ballSub, norm_mul, Nat.cast_pow]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) y.2`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hloc : IsLocallyConstant (fun s : Ine (F` using `ℚ) B => f s) := by`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Establish `hc : Continuous (fun s : Ine (F` using `ℚ) B => u s) := (hucont.mono (fun s hs => hIneDec s hs)).comp_continuous continuous_subtype_val (fun s => s.2)`. Use `⟨(fun s : Ine (F := ℚ) B => u s) ⁻¹' Metric.ball (u x) ‖((l : ℕ) : Qbar l) ^ n‖, Metric.isOpen_ball.preimage hc, Metric.mem_ball_self hlpos, fun y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hf, mem_ballSub]`. Use `Metric.mem_ball.1 hy` as an intermediate fact. Rewrite `this` using `[dist_eq_norm]`. Conclude with `this.le`. Establish `hadd : ∀ s ∈ Ine (F` using `ℚ) B, ∀ t ∈ Ine (F := ℚ) B, f (s * t) = f s + f t := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs t ht`. Establish `e : f s + f t = QuotientAddGroup.mk (⟨u s, hu1 s⟩ + ⟨u t, hu1 t⟩ : T)` using `rfl`. Rewrite using `[e]`. Use `show (QuotientAddGroup.mk _ : M) = QuotientAddGroup.mk _`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_comap]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `-u (s * t) + (u s + u t) ∈ S`. Establish `h1` using `hu s (hIneDec s hs) t (hIneDec t ht)`. Establish `h2` using `hmul _ _ (hnat ((ψ s).toAdd.val)) (hIne' t ht)`. Establish `h3` using `hmul _ _ (hu1 t) (heps s (hIneDec s hs))`. Rewrite `h1` using `[cg_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : -u (s * t) + (u s + u t) = -((((ψ s).toAdd.val : ℕ) : Qbar l) * h t - (eps l s * u t - u (s * t) + u s)) + (((ψ s).toAdd.val : ℕ) : Qbar l) * h t - u t * (eps l s - 1)` using `by ring`. Rewrite using `[e2]`. Conclude with `S.sub_mem (S.add_mem (S.neg_mem h1) h2) h3`. Establish `hconj` using `GlobalTheory.T.inertiaTorsionQuotient_conj_invariant_decomposition l Ω n w B M f hB hdiv hn htors hloc hadd σ hσ τ hτ`. Rewrite `hconj` using `[hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set τ' := σ * τ * σ⁻¹ with hτ'`. Establish `hτ'I : τ' ∈ Ine (F` using `ℚ) B := conj_mem_Ine hσ hτ`. Establish `hprod : τ' * σ = σ * τ` using `by rw [hτ']; group`. Establish `hψ' : ((ψ τ').toAdd.val : Qbar l) = 1`. Establish `e : ψ τ' = ψ τ` using `by rw [hτ', map_mul, map_mul, mul_comm (ψ σ), mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl1 : 1 < l ^ n` using `Nat.one_lt_pow (by omega) (Fact.out : l.Prime).one_lt`. Rewrite using `[e, hψτ, ZMod.val_one_eq_one_mod, Nat.mod_eq_of_lt hl1, Nat.cast_one]`. Establish `hA` using `hu τ' (hIneDec τ' hτ'I) σ hσ`. Establish `hB'` using `hu σ hσ τ (hIneDec τ hτ)`. Simplify using `only at hA hB'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hA` using `[cg_iff, hprod, hψ', one_mul]`. Rewrite `hB'` using `[cg_iff]`. Establish `hC` using `hmul _ _ (hnat ((ψ σ).toAdd.val)) (hIne' τ hτ)`. Establish `hD` using `hmul _ _ (hu1 σ) (heps τ' (hIneDec τ' hτ'I))`. Establish `hF` using `hmul _ _ (hu1 τ) (heps σ hσ)`.
-
-Rewrite using `[cg_iff, sub_zero]`. Establish `e : h σ = (h σ - (eps l τ' * u σ - u (σ * τ) + u τ')) + u σ * (eps l τ' - 1) + (u τ' - u τ) - ((((ψ σ).toAdd.val : ℕ) : Qbar l) * h τ - (eps l σ * u τ - u (σ * τ) + u σ)) + (((ψ σ).toAdd.val : ℕ) : Qbar l) * h τ - u τ * (eps l σ - 1)` using `by ring`. Rewrite using `[e]`. Conclude with `S.sub_mem (S.add_mem (S.sub_mem (S.add_mem (S.add_mem hA hD) hconj) hB') hC) hF`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.br_tame : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (c : Coef l) (n : ℕ) (w : Pl) (B : ValuationSubring Ω) (ψ : G ℚ Ω →* Multiplicative (ZMod (l ^ n))) (h : G ℚ Ω → Qbar l) (σ : G ℚ Ω), 1 ≤ n → IsPlaceOver B w → l ^ n ∣ normV w - 1 → (∃ τ ∈ Ine (F := ℚ) B, (ψ τ).toAdd = 1) → (∀ s, h s ∈ c.O) → (∀ s ∈ Dec (F := ℚ) B, ∀ t ∈ Dec (F := ℚ) B, Cg n (h (s * t)) (h s + h t)) → (∀ s ∈ Ine (F := ℚ) B, Cg n (h s) 0) → Cob2 c n (Dec (F := ℚ) B) (fun s t => (((ψ s).toAdd.val : ℕ) : Qbar l) * h t) → σ ∈ Dec (F := ℚ) B → Cg n (h σ) 0 := by
   intro l _ Ω _ _ _ c n w B ψ h σ hn hB hdiv ⟨τ, hτ, hψτ⟩ hO _ hIne ⟨u, hucont, huO, hu⟩ hσ

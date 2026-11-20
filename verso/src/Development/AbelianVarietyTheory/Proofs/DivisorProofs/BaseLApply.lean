@@ -26,14 +26,14 @@ def pt (z : V n) (u : ∀ a, Low (r a) → ℂ) : V D :=
   WithLp.toLp 2 fun j => Sum.elim (fun b => z b) (fun s => u s.1 s.2) (ε j)
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[base, pt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem base_pt (z : V n) (u : ∀ a, Low (r a) → ℂ) : base ε (pt ε z u) = z := by
   ext j
   simp [base, pt]
 
 /- English proof (translation)
-Use extensionality with `a s`. Simplify using `[fib, pt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fib_pt (z : V n) (u : ∀ a, Low (r a) → ℂ) : fib ε (pt ε z u) = u := by
   ext a s

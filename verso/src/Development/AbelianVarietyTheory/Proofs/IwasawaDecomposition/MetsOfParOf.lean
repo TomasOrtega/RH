@@ -26,14 +26,14 @@ variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : Final
   (k : s.Comp) (σ : D.what₂.LL →+* ℂ)
 
 /- English proof (translation)
-Simplify using `only [metsOf, FlagCpt.met, FlagCpt.genSq, Pi.zero_apply, zpow_zero, Finset.prod_const_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem metsOf_zero (R R' : Option ℝ) : metsOf x Φ k R σ 0 = metsOf x Φ k R' σ 0 := by
   simp only [metsOf, FlagCpt.met, FlagCpt.genSq, Pi.zero_apply, zpow_zero, Finset.prod_const_one]
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `h0 : w = 0`. Substitute `h0` using the available equality. Rewrite using `[LineTest.expo_zero]`. Conclude with `metsOf_zero x Φ k σ _ _`. Rewrite using `[LineTest.parOf_eq h0 hw]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem metsOf_parOf {R : ℝ} {w : Sym D.host.E →₀ ℤ} (hw : ∀ a ∈ w.support, a.2.1 = some R) :
     metsOf x Φ k (parOf w) σ (expo S.Dw w) = metsOf x Φ k (some R) σ (expo S.Dw w) := by

@@ -15,27 +15,27 @@ def WB (k r : ℕ) (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) 
   ∀ i j : Fin (2 * r + k + 1), ¬ (inW k r i ∧ inW k r j) → a i j = if i = j then 1 else 0
 
 /- English proof (translation)
-Introduce `i j hij` and use `uw_block hh i j hij`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wb_of_mem_UW {z : Fin (2 * r + k + 1) → ℂ} {h : 𝕄} (hh : h ∈ UWset k r z) : WB k r h :=
   fun i j hij => uw_block hh i j hij
 
 /- English proof (translation)
-Introduce `i j hj hi`. Distinguish the cases in `hjr : j.val < r`. Establish `hjW : ¬ inW k r j` using `by unfold inW; omega`. Establish `hji : j.val ≤ i.val` using `by omega`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb j j (fun h => hjW h.2), if_pos rfl, mul_one, Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite using `[hm j j hj (by omega), if_pos rfl, mul_one]`. Conclude with `ha i j (fun h => hjW h.2)`. Introduce `p _ hpj`. Distinguish the cases in `hp : j.val ≤ p.val`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm p j hj (by omega), if_neg hpj, mul_zero]`. Establish `hpW : ¬ inW k r p` using `by unfold inW; omega`. Establish `hip : i ≠ p` using `by intro e; subst e; omega`. Rewrite using `[ha i p (fun h => hpW h.2), if_neg hip, zero_mul]`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ j) h`. Introduce `q _ hqj`. Rewrite using `[hb q j (fun h => hjW h.2), if_neg hqj, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjW : inW k r j` using `by unfold inW; omega`. Establish `hir : r ≤ i.val` using `by omega`. Establish `key : ∀ q : Fin (2 * r + k + 1), (a * m) i q * b q j = a i q * b q j`. Introduce `q`. Distinguish the cases in `hqW : inW k r q`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single q]`. Rewrite using `[hm q q hqW.2 (by unfold inW at hqW; omega), if_pos rfl, mul_one]`. Introduce `p _ hpq`. Distinguish the cases in `hp : r ≤ p.val`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hm p q hqW.2 (by unfold inW at hqW; omega), if_neg hpq, mul_zero]`. Establish `hpW : ¬ inW k r p` using `by unfold inW; omega`. Establish `hip : i ≠ p` using `by intro e; subst e; omega`. Rewrite using `[ha i p (fun h => hpW h.2), if_neg hip, zero_mul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Finset.mem_univ q) h`. Establish `hqj : q ≠ j` using `by intro e; subst e; exact hqW hjW`. Rewrite using `[hb q j (fun h => hqW h.1), if_neg hqj, mul_zero, mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_congr rfl (fun q _ => key q), ← Matrix.mul_apply, hab, Matrix.one_apply]`.
+A detailed English derivation is pending.
 -/
 theorem nc_conj {a b m : 𝕄} (ha : WB k r a) (hb : WB k r b) (hab : a * b = 1) (hm : NC k r m) :
     NC k r (a * m * b) := by
@@ -81,7 +81,7 @@ theorem nc_conj {a b m : 𝕄} (ha : WB k r a) (hb : WB k r b) (hab : a * b = 1)
       Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite `hm`, the goal using `[mem_Nset_iff]`. Conclude with `⟨mul_mem_UH (mul_mem_UH haU hm.1) hbU, nc_conj ha hb hab hm.2⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem conj_mem_N {a b m : 𝕄} (ha : WB k r a) (hb : WB k r b) (hab : a * b = 1)
     (haU : a ∈ UH (Hpk k r)) (hbU : b ∈ UH (Hpk k r)) (hm : m ∈ Nset k r) :
@@ -90,13 +90,13 @@ theorem conj_mem_N {a b m : 𝕄} (ha : WB k r a) (hb : WB k r b) (hab : a * b =
   exact ⟨mul_mem_UH (mul_mem_UH haU hm.1) hbU, nc_conj ha hb hab hm.2⟩
 
 /- English proof (translation)
-Establish `e : {g : 𝕄 | NC k r g} = ⋂ i : Fin (2 * r + k + 1), ⋂ j : Fin (2 * r + k + 1), {g : 𝕄 | j.val ≤ r + k → min j.val r ≤ i.val → g i j = if i = j then 1 else 0}`. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_iInter]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `isClosed_iInter fun i => isClosed_iInter fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : j.val ≤ r + k ∧ min j.val r ≤ i.val`. Establish `e2 : {g : 𝕄 | j.val ≤ r + k → min j.val r ≤ i.val → g i j = if i = j then 1 else 0} = {g : 𝕄 | g i j = if i = j then 1 else 0}`. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, h.1, h.2, forall_const]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2]`. Conclude with `isClosed_eq ((continuous_apply j).comp (continuous_apply i)) continuous_const`. Establish `e2 : {g : 𝕄 | j.val ≤ r + k → min j.val r ≤ i.val → g i j = if i = j then 1 else 0} = Set.univ`. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_univ, iff_true]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1 h2`. Conclude with `absurd ⟨h1, h2⟩ h`. Rewrite using `[e2]`. Conclude with `isClosed_univ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_NC : IsClosed {g : 𝕄 | NC k r g} := by
   have e : {g : 𝕄 | NC k r g} = ⋂ i : Fin (2 * r + k + 1), ⋂ j : Fin (2 * r + k + 1),
@@ -117,9 +117,9 @@ theorem isClosed_NC : IsClosed {g : 𝕄 | NC k r g} := by
     rw [e2]; exact isClosed_univ
 
 /- English proof (translation)
-Establish `e : Nset k r = UH (Hpk k r) ∩ {g : 𝕄 | NC k r g}`. Use extensionality with `g`. Rewrite using `[mem_Nset_iff]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(unitary_hermitian_group k r).1.inter isClosed_NC`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_Nset : IsClosed (Nset k r) := by
   have e : Nset k r = UH (Hpk k r) ∩ {g : 𝕄 | NC k r g} := by
@@ -130,9 +130,9 @@ theorem isClosed_Nset : IsClosed (Nset k r) := by
 variable {z : Fin (2 * r + k + 1) → ℂ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, m, hm, rfl⟩`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, inv_mul_UH' hh.1, Matrix.one_mul]`. Conclude with `hm`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h, hh, hm⟩`. Use `⟨h, hh, h⁻¹ * g, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, mul_inv_UH hh.1, Matrix.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Sset_iff (g : 𝕄) : g ∈ Sset k r z ↔ ∃ h ∈ UWset k r z, h⁻¹ * g ∈ Nset k r := by
   constructor
@@ -145,13 +145,11 @@ theorem mem_Sset_iff (g : 𝕄) : g ∈ Sset k r z ↔ ∃ h ∈ UWset k r z, h�
     rw [← Matrix.mul_assoc, mul_inv_UH hh.1, Matrix.one_mul]
 
 /- English proof (translation)
-Use `haveI : CompactSpace (UWset k r z) := isCompact_iff_compactSpace.1 (unitary_weyl_compact k r z hz hT)`. Establish `hc : Continuous fun p : UWset k r z × 𝕄 => Hpk k r * (p.1 : 𝕄)ᴴ * Hpk k r * p.2` using `(((continuous_const.matrix_mul (continuous_subtype_val.comp continuous_fst).matrix_conjTranspose).matrix_mul continuous_const).matrix_mul continuous_snd)`. Establish `hT' : IsClosed {p : UWset k r z × 𝕄 | Hpk k r * (p.1 : 𝕄)ᴴ * Hpk k r * p.2 ∈ Nset k r}` using `isClosed_Nset.preimage hc`. Establish `e : Sset k r z = Prod.snd '' {p : UWset k r z × 𝕄 | Hpk k r * (p.1 : 𝕄)ᴴ * Hpk k r * p.2 ∈ Nset k r}`. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_Sset_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, hm⟩`. Use `⟨(⟨h, hh⟩, g), ?_, rfl⟩` and prove the remaining obligations. Use `show Hpk k r * hᴴ * Hpk k r * g ∈ Nset k r`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← inv_eq_UH hh.1]`. Conclude with `hm`. Introduce and unpack `⟨⟨⟨h, hh⟩, g'⟩, hm, rfl⟩`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Use `show h⁻¹ * g' ∈ Nset k r`.
-
-Rewrite using `[inv_eq_UH hh.1]`. Conclude with `hm`. Rewrite using `[e]`. Conclude with `isClosedMap_snd_of_compactSpace _ hT'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_Sset (hz : inWb k r z) (hT : 0 < Tz k r z) : IsClosed (Sset k r z) := by
   haveI : CompactSpace (UWset k r z) := isCompact_iff_compactSpace.1 (unitary_weyl_compact k r z hz hT)
@@ -178,15 +176,15 @@ theorem isClosed_Sset (hz : inWb k r z) (hT : 0 < Tz k r z) : IsClosed (Sset k r
   exact isClosedMap_snd_of_compactSpace _ hT'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_mem_UW, 1, (nilpotent_subgroup k r).1, (Matrix.one_mul 1).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_Sset : (1 : 𝕄) ∈ Sset k r z :=
   ⟨1, one_mem_UW, 1, (nilpotent_subgroup k r).1, (Matrix.one_mul 1).symm⟩
 
 /- English proof (translation)
-Take `⟨h, hh, m, hm, rfl⟩` from `ha`. Take `⟨h', hh', m', hm', rfl⟩` from `hb`. Establish `hconj : h'⁻¹ * m * h' ∈ Nset k r` using `conj_mem_N (wb_of_mem_UW (inv_mem_UW hh')) (wb_of_mem_UW hh') (inv_mul_UH' hh'.1) (inv_mem_UH hh'.1) hh'.1 hm`. Use `⟨h * h', mul_mem_UW hh hh', h'⁻¹ * m * h' * m', (nilpotent_subgroup k r).2.1 _ hconj _ hm', ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_inv_UH hh'.1, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = h * h' * (h'⁻¹ * m * h' * m') := by simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_mem_Sset {a b : 𝕄} (ha : a ∈ Sset k r z) (hb : b ∈ Sset k r z) :
     a * b ∈ Sset k r z := by
@@ -201,9 +199,9 @@ theorem mul_mem_Sset {a b : 𝕄} (ha : a ∈ Sset k r z) (hb : b ∈ Sset k r z
     _ = h * h' * (h'⁻¹ * m * h' * m') := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨h, hh, m, hm, rfl⟩` from `ha`. Establish `hmi : m⁻¹ ∈ Nset k r` using `((nilpotent_subgroup k r).2.2 m hm)`. Establish `hconj : h * m⁻¹ * h⁻¹ ∈ Nset k r` using `conj_mem_N (wb_of_mem_UW hh) (wb_of_mem_UW (inv_mem_UW hh)) (mul_inv_UH hh.1) hh.1 (inv_mem_UH hh.1) hmi`. Use `⟨h⁻¹, inv_mem_UW hh, h * m⁻¹ * h⁻¹, hconj, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_inv_rev]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_mem_Sset {a : 𝕄} (ha : a ∈ Sset k r z) : a⁻¹ ∈ Sset k r z := by
   obtain ⟨h, hh, m, hm, rfl⟩ := ha
@@ -217,7 +215,7 @@ theorem inv_mem_Sset {a : 𝕄} (ha : a ∈ Sset k r z) : a⁻¹ ∈ Sset k r z 
     _ = h⁻¹ * (h * m⁻¹ * h⁻¹) := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `k r z hz hT`. Use `⟨isClosed_Sset hz hT, one_mem_Sset, fun a ha b hb => mul_mem_Sset ha hb, fun a ha => ⟨inv_mem_Sset ha, ?_⟩⟩` and prove the remaining obligations. Take `⟨h, hh, m, hm, rfl⟩` from `ha`. Conclude with `mul_inv_UH (mul_mem_UH hh.1 hm.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stabilizer_closed_matrix_group : SsetGroup := by
   intro k r z hz hT

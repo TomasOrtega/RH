@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacte
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Ex
 open scoped BigOperators
 /- English proof (citation)
-Apply `GlobalTheory.PsiQuadratic.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FDegenerationDataPsiQuadraticGeneratorsLinear.lean&line=48#L48)
 -/

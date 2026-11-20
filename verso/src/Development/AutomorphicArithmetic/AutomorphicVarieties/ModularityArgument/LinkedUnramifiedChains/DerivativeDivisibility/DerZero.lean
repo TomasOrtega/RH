@@ -5,11 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open Polynomial UpperTheory.V.Alg
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h1` using `hL 1 1`. Simplify using `only [mul_one, map_one, one_mul] at h1`. Rewrite using `[pow_zero, Nat.cast_zero, zero_mul, zero_mul]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-1 : K) * h1`. Consider the case `succ k ih`. Rewrite using `[pow_succ, hL, ih, map_pow]`. Consider the cases of `k with`. Consider the case `zero => simp`.
+Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ m`. Simplify using `only [Nat.add_sub_cancel]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem derivation_pow_eq_nsmul_pow_pred_mul {O B K : Type} [CommRing O] [CommRing B] [Field K] [Algebra O B]
     [Algebra O K] (x : B →ₐ[O] K) (δ : B →ₗ[O] K)
@@ -31,9 +31,9 @@ private theorem derivation_pow_eq_nsmul_pow_pred_mul {O B K : Type} [CommRing O]
       ring
 
 /- English proof (translation)
-Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p r hp hr`. Rewrite using `[eval₂_add, map_add, hp, hr, derivative_add, eval₂_add, map_add, add_mul]`. Consider the case `monomial n c`. Rewrite using `[derivative_monomial, eval₂_monomial, eval₂_monomial]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `δ (lam c * t ^ n) = x (lam (c * n) * t ^ (n - 1)) * δ t`. Rewrite using `[hL, hlam, mul_zero, add_zero, derivation_pow_eq_nsmul_pow_pred_mul x δ hL]`. Simplify using `only [map_mul, map_natCast, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem derivation_eval2_eq_eval2_derivative_mul {O Λ B K : Type} [CommRing O] [CommRing Λ] [CommRing B] [Field K]
     [Algebra O Λ] [Algebra O B] [Algebra O K] (lam : Λ →ₐ[O] B) (x : B →ₐ[O] K) (δ : B →ₗ[O] K)
@@ -51,9 +51,9 @@ private theorem derivation_eval2_eq_eval2_derivative_mul {O Λ B K : Type} [Comm
     ring
 
 /- English proof (translation)
-Establish `hF0 : F ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`. Take `⟨q, hq, hnd⟩` from `exists_eq_pow_rootMultiplicity_mul_and_not_dvd F hF0 a`. Rewrite `hq` using `[h, pow_one]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hq, derivative_mul, derivative_sub, derivative_X, derivative_C, sub_zero, one_mul, eval_add, eval_mul, eval_sub, eval_X, eval_C, sub_self, zero_mul, add_zero]`. Rewrite `hnd` using `[dvd_iff_isRoot]`. Conclude with `hnd`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eval_derivative_ne_zero_of_rootMultiplicity_eq_one {K : Type} [Field K] (F : K[X]) (a : K) (h : rootMultiplicity a F = 1) :
     eval a (derivative F) ≠ 0 := by
@@ -68,23 +68,19 @@ private theorem eval_derivative_ne_zero_of_rootMultiplicity_eq_one {K : Type} [F
   exact hnd
 
 /- English proof (translation)
-Unfold `UpperTheory.V.J.DerZero`. Introduce `O Λ B K _ _ _ _ _ _ _ _ _ _ lam J t s g hC x i hker hmult δ hδ hJ hlam`. Establish `hL : ∀ f g : B, δ (f * g) = x f * δ g + x g * δ f` using `fun f g => hδ f g`. Establish `hx : ∀ q : Λ[X], x (eval₂ (lam : Λ →+* B) t q) = eval (x t) (map ((x.comp lam : Λ →ₐ[O] K) : Λ →+* K) q)`. Introduce `q`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eval_map]`. Conclude with `Polynomial.hom_eval₂ q (lam : Λ →+* B) (x : B →+* K) t`. Establish `hD : ∀ q : Λ[X], δ (eval₂ (lam : Λ →+* B) t q) = x (eval₂ (lam : Λ →+* B) t (derivative q)) * δ t` using `fun q => derivation_eval2_eq_eval2_derivative_mul lam x δ hL hlam t q`. Establish `hprod : (∏ j, g j) = g i * ∏ j ∈ Finset.univ.erase i, g j` using `(Finset.mul_prod_erase _ _ (Finset.mem_univ i)).symm`. Establish `hF' : x (eval₂ (lam : Λ →+* B) t (derivative (∏ j, g j))) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `eval_derivative_ne_zero_of_rootMultiplicity_eq_one _ _ hmult`. Rewrite `h` using `[derivative_map, ← hx]`. Then use the resulting hypothesis. Establish `hδt : δ t = 0`. Establish `h1` using `hD (∏ j, g j)`. Rewrite `h1` using `[hJ _ hC.kill]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.mp h1.symm).resolve_left hF'`. Establish `hδP : ∀ q : Λ[X], δ (eval₂ (lam : Λ →+* B) t q) = 0`. Introduce `q`. Rewrite using `[hD, hδt, mul_zero]`. Establish `hgi : x (eval₂ (lam : Λ →+* B) t (g i)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : eval₂ (lam : Λ →+* B) t (g i) ∈ UpperTheory.V.J.cmp lam J t g i`. Rewrite using `[UpperTheory.V.J.cmp, Submodule.mem_colon_singleton, smul_eq_mul, ← eval₂_mul, ← hprod]`. Conclude with `hC.kill`. Conclude with `RingHom.mem_ker.mp (hker hm)`. Rewrite `hF'` using `[hprod, derivative_mul, eval₂_add, eval₂_mul, eval₂_mul, map_add, map_mul, map_mul, hgi, zero_mul, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgd` using `left_ne_zero_of_mul hF'`. Establish `hEn` using `right_ne_zero_of_mul hF'`. Establish `hcmp : ∀ b ∈ UpperTheory.V.J.cmp lam J t g i, δ b = 0`. Introduce `b hb`. Establish `hxb : x b = 0` using `RingHom.mem_ker.mp (hker hb)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hbe : b * eval₂ (lam : Λ →+* B) t (∏ j ∈ Finset.univ.erase i, g j) ∈ J`. Rewrite `hb` using `[UpperTheory.V.J.cmp, Submodule.mem_colon_singleton]`. Conclude with `hb`. Establish `h1` using `hL b (eval₂ (lam : Λ →+* B) t (∏ j ∈ Finset.univ.erase i, g j))`. Rewrite `h1` using `[hJ _ hbe, hxb, zero_mul, zero_add]`.
-
-Conclude with `(mul_eq_zero.mp h1.symm).resolve_left hEn`. Use extensionality with `a`. Take `⟨P, hP⟩` from `UpperTheory.V.J.cond O Λ B lam J t s g hC i a`. Establish `h1` using `hcmp _ hP`. Rewrite `h1` using `[map_sub, hδP, sub_zero, hL, hδP, mul_zero, add_zero]`.
-
-Conclude with `(mul_eq_zero.mp h1).resolve_left hgd`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.J.derZero :
     UpperTheory.V.J.DerZero := by

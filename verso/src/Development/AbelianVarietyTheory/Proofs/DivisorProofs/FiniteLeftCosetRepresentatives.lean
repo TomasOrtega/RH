@@ -9,13 +9,11 @@ noncomputable section
 namespace GlobalTheory.OrbFinCmd
 
 /- English proof (translation)
-Use `set L := K.map (MulAut.conj s).toMonoidHom with hL`. Use `haveI : Finite (K ⧸ L.subgroupOf K) := by haveI : (L.subgroupOf K).FiniteIndex := ⟨h⟩`. Conclude with `Subgroup.finite_quotient_of_finiteIndex`. Use `haveI : Fintype (K ⧸ L.subgroupOf K) := Fintype.ofFinite _`. Use `⟨Finset.univ.image fun q : K ⧸ L.subgroupOf K => ((Quotient.out q : K) : H) * s, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k hk`. Use `set q : K ⧸ L.subgroupOf K := QuotientGroup.mk ⟨k, hk⟩`. Establish `hq : (Quotient.out q)⁻¹ * (⟨k, hk⟩ : K) ∈ L.subgroupOf K`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Rewrite `hq` using `[Subgroup.mem_subgroupOf]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx, hxe⟩` from `hq`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, Subgroup.coe_mul, Subgroup.coe_inv] at hxe`. Use `⟨((Quotient.out q : K) : H) * s, Finset.mem_image_of_mem _ (Finset.mem_univ _), x, hx, ?_⟩` and prove the remaining obligations. Establish `: k = ((Quotient.out q : K) : H) * (s * x * s⁻¹)`. Rewrite using `[hxe, mul_inv_cancel_left]`.
-
-Rewrite using `[this]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_mul_eq_of_relIndex {H : Type} [Group H] (K : Subgroup H) (s : H)
     (h : (K.map (MulAut.conj s).toMonoidHom).relIndex K ≠ 0) :
@@ -44,7 +42,7 @@ end GlobalTheory.OrbFinCmd
 open GlobalTheory.OrbFinCmd in
 
 /- English proof (translation)
-Introduce `p _ G r hr s`. Conclude with `exists_finset_mul_eq_of_relIndex _ s ((GlobalTheory.T.unitarySimilitudeIntegralSubgroup_commensurated_frobenius p G r hr).1 s).1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.orbFin_KHT_cmd :
     ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (r : ℕ), 0 < r → ∀ s : Gr G r, ∃ S : Finset (Gr G r),

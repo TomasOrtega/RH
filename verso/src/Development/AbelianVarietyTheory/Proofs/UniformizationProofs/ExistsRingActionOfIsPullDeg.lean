@@ -17,13 +17,11 @@ namespace GlobalTheory
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Introduce `hG R R' _ _ _ _ φ D D' hD O _ _ _ ιD`. Establish `gp` using `pull_grp hD`. Take `⟨o', ho'⟩` from `polOActPull _ _ _ D.P D'.P _ gp (LBIso.symm ⟨hD.w, hD.w_gen⟩) O ιD.onB`. Use `letI inst : Module O D'.X := hD.xe.module O`. Establish `hs : ∀ (a : O) (y : D'.X), hD.xe (a • y) = a • hD.xe y` using `fun a y => hD.xe.apply_symm_apply _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `he : ∀ a, o'.act a ≫ hD.e.hom = hD.e.hom ≫ (Over.pullback (specOf φ)).map (ιD.onB.act a)` using `fun a => by`. Use `Over.OverMorphism.ext (pullback.hom_ext ?_ ?_)` and prove the remaining obligations. Use `ho' a` as an intermediate fact. Simplify using `only [Over.comp_left, Category.assoc, Over.pullback_map_left] at this ⊢`. Use `erw [pullback.lift_fst]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Conclude with `(Over.w (o'.act a ≫ hD.e.hom)).trans (Over.w (hD.e.hom ≫ (Over.pullback (specOf φ)).map (ιD.onB.act a))).symm`. Use `⟨inst, ⟨o', fun a y => ?_, fun a => ?_⟩, hs, he⟩` and prove the remaining obligations. Use `Over.OverMorphism.ext (gp.1.hom_ext ?_ (by rw [Over.w, Over.w]))` and prove the remaining obligations. Rewrite using `[hD.c_pr, hs, ιD.c_lin, Over.comp_left, Over.comp_left, Category.assoc, ho', ← Category.assoc, ← Category.assoc (D'.c y).left, hD.c_pr]`.
-
-Conclude with `tauBal_of_isPullDeg hG R R' φ D D' hD _ _ _ _ (ιD.onB.hom a) (ιD.onB.hom (star a)) (ιD.onB.rosati a) (he a) (he (star a)) _ _ _ _ (hs a) (hs (star a)) (ιD.c_lin a) (ιD.c_lin (star a)) (ιD.tau_bal a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_oAct_of_isPullDeg : GlobalFnsSt → ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (φ : R →+* R') (D : DegPre R) (D' : DegPre R') (hD : IsPullDeg φ D D') (O : Type) [CommRing O] [StarRing O] [Module O D.X] (ιD : D.OAct O), ∃ (_ : Module O D'.X) (ιD' : D'.OAct O), (∀ (a : O) (y : D'.X), hD.xe (a • y) = a • hD.xe y) ∧ (∀ a, ιD'.onB.act a ≫ hD.e.hom = hD.e.hom ≫ (Over.pullback (specOf φ)).map (ιD.onB.act a)) := by
   intro hG R R' _ _ _ _ φ D D' hD O _ _ _ ιD

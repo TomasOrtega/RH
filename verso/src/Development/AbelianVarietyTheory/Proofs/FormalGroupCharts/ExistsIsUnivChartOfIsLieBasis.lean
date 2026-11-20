@@ -12,9 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ G _ _ hG d v hv`. Take `⟨x, h₁, h₂, h₃⟩` from `GlobalTheory.exists_jetPoints_of_isLieBasis R G hG d v hv`. Use `⟨x, ⟨h₁, h₂, ?_⟩, h₃⟩` and prove the remaining obligations. Introduce `A _ _ aug m hm y hy`. Take `⟨ψ, hψ, hyψ⟩` from `GlobalTheory.T.exists_jetChart_coordinates_nilpotent R G hG d v hv x h₁ h₂ h₃ A aug m hm y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨ψ, ⟨hψ, hyψ⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `ψ' ⟨hψ', hyψ'⟩`. Conclude with `GlobalTheory.T.jetChart_coordinates_unique_commGroup R G hG d v hv x h₁ h₂ h₃ A aug m hm ψ' ψ hψ' hψ (hyψ'.symm.trans hyψ)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_isUnivChart_of_isLieBasis :
     ∀ (R : Type) [CommRing R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G],

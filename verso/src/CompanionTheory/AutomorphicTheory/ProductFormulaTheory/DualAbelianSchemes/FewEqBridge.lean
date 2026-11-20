@@ -13,7 +13,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace CompanionTheory.PfDual
 
 /- English proof (translation)
-Introduce `R _ _ _ A _ g hab hsm M hM I hI hJ`. Use `hF R A.left A.hom g hab.smooth hab.proper ?_ M hM I hI hJ` and prove the remaining obligations. Introduce `X' s' φ hP`. Take `⟨_, hab', hsm'⟩` from `GlobalTheory.CompanionTheory.Hodge.FormBC.exists_grp A g hab hsm s' φ hP`. Conclude with `hLe _ (Over.mk s') g hab' hsm'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fewEquations_of_fewEqSt (hF : FewEqSt) (hLe : H1StructureDimLe) : FewEquations := by
   intro R _ _ _ A _ g hab hsm M hM I hI hJ
@@ -23,7 +23,7 @@ theorem fewEquations_of_fewEqSt (hF : FewEqSt) (hLe : H1StructureDimLe) : FewEqu
   exact hLe _ (Over.mk s') g hab' hsm'
 
 /- English proof (translation)
-Introduce `hLe` and use `fewEquations_of_fewEqSt GlobalTheory.T.FewEquationsStatement hLe`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fewEquations_pf : H1StructureDimLe → FewEquations := fun hLe => fewEquations_of_fewEqSt GlobalTheory.T.FewEquationsStatement hLe
 

@@ -20,17 +20,17 @@ namespace GlobalTheory
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Introduce `hS E _ _ _ H Dw l Xo c σ r U hU a n`. Establish `h : ∀ (p : TRing c.F) (y : FrPt Xo c p.R) (ψ : p.R →ₐ[c.F] CAt σ), ∃ (k : U.Comp) (x : (U.X k).dom) (u : ℂ), ∀ f ∈ sec Xo c a n, cvalR σ (ψ (f p y)) = u * rdU U f k x.1` using `fun p y ψ => GlobalTheory.T.test_point_value_eq_const_mul_reading hS E H Dw l Xo c σ r U hU a n p y ψ`. Establish `: CharZero c.F` using `RingHom.charZero σ`. Use `⟨fun m b hb hli => ?_, fun f hf h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Establish `hθ : ∀ θ : Module.Dual c.F (CAt σ), ∀ i, θ (toCAt σ (w i)) = 0`. Introduce `θ`. Establish `hz : ∑ i, θ (toCAt σ (w i)) • b i = 0`. Use function extensionality and compare the values at `p y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hpt` using `descend_cpts σ p (fun i => b i p y) w (fun ψ => by`. Take `⟨k', x, u, hk⟩` from `h p y ψ`. Establish `e1 : ∀ i, w i * cvalR σ (ψ (b i p y)) = u * (w i * rdU U (b i) k' x.1)`. Introduce `i`. Rewrite using `[hk (b i) (hb i)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2` using `congrFun (congrFun hw k') x.1`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at e2`. Repeatedly rewrite using `[e1]`. Rewrite using `[← Finset.mul_sum, e2, mul_zero]) θ`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify `hpt` using `[Finset.sum_apply]`. Conclude with `fun i => Fintype.linearIndependent_iff.1 hli _ hz i`. Introduce `i`. Conclude with `(Module.forall_dual_apply_eq_zero_iff c.F (toCAt σ (w i))).1 fun θ => hθ θ i`. Use function extensionality and compare the values at `p y show f p y = 0`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_zero_of_cpts σ p _ fun ψ => ?_` and prove the remaining obligations. Take `⟨k, x, u, hk⟩` from `h p y ψ`. Establish `e` using `hk f hf`. Rewrite `e` using `[h0 k x.1 x.2, mul_zero]`. Conclude with `e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reading_linearIndependent_and_injective : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), IsUnf U → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), (∀ (m : ℕ) (b : Fin m → Rul Xo c), (∀ i, b i ∈ sec Xo c a n) → LinearIndependent c.F b → LinearIndependent ℂ (fun i => rdU U (b i))) ∧ ∀ f ∈ sec Xo c a n, (∀ k, ∀ x ∈ (U.X k).dom, rdU U f k x = 0) → f = 0 := by
   intro hS E _ _ _ H Dw l Xo c σ r U hU a n

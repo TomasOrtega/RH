@@ -708,7 +708,7 @@ noncomputable def UpperTheory.Reformulated.B.Qj20.inLie :
               Complex Complex.instZero)))
 
 /- English proof (translation)
-Introduce `n`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qj20.aux4 :
     ∀ (n : Nat),
@@ -797,7 +797,7 @@ noncomputable def UpperTheory.Reformulated.B.Qj20.bvec :
         (@OfNat.ofNat Complex (nat_lit 1) (@One.toOfNat1 Complex Complex.instOne))
 
 /- English proof (translation)
-Introduce `k r a`. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem UpperTheory.Reformulated.B.Qj20.aux8 :
     ∀ (k r : Nat) (a : Fin r),
@@ -948,7 +948,7 @@ noncomputable def UpperTheory.Reformulated.B.Qj20.qminorOp.{u_1} :
                 (b k)))
 
 /- English proof (translation)
-Conclude with `⟨by decide⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.Qj20.aux12 :
     (@HAdd.hAdd Nat Nat Nat (@instHAdd Nat instAddNat) (@OfNat.ofNat Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
@@ -1475,7 +1475,7 @@ namespace UpperTheory.Reformulated.B.Qj20
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Hpk_herm (k r : ℕ) : (Hpk k r).conjTranspose = Hpk k r := by
   ext i j
@@ -1483,11 +1483,11 @@ private theorem Hpk_herm (k r : ℕ) : (Hpk k r).conjTranspose = Hpk k r := by
   split_ifs <;> first | omega | simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Rewrite using `[Matrix.mul_apply]`. Apply the tactic sequence `obtain ⟨s, hs⟩ : ∃ s : Fin (2 * r + k + 1), (s : ℕ) = if r ≤ (i : ℕ) ∧ (i : ℕ) ≤ r + k then (i : ℕ) else 2 * r + k - i := ⟨⟨if r ≤ (i : ℕ) ∧ (i : ℕ) ≤ r + k then (i : ℕ) else 2 * r + k - i, by split_ifs <;> omega⟩, rfl⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Finset.sum_eq_single s]`. Apply the tactic sequence `simp only [Hpk, Matrix.one_apply, Fin.ext_iff] split_ifs at hs <;> split_ifs <;> first | omega | simp`. Introduce `b _ hb`. Establish `hb' : (b : ℕ) ≠ s` using `fun h => hb (Fin.ext h)`. Establish `h0 : Hpk k r i b = 0`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs at hs <;> split_ifs <;> first | omega | rfl`. Rewrite using `[h0, zero_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem Hpk_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   ext i j
@@ -1510,13 +1510,13 @@ private theorem Hpk_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   · simp
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv (Hpk_sq k r)`.
+A detailed English derivation is pending.
 -/
 private theorem Hpk_inv (k r : ℕ) : (Hpk k r)⁻¹ = Hpk k r :=
   Matrix.inv_eq_right_inv (Hpk_sq k r)
 
 /- English proof (translation)
-Establish `h2 : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Simplify using `only [inLie, hpart1, Hpk_inv, Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Hpk_herm, h2, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, Hpk_sq, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc (Hpk k r) (Hpk k r), Hpk_sq, Matrix.one_mul, ← smul_add]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem inLie_hpart1 (k r : ℕ) (Z : Mat k r) : inLie k r (hpart1 (Hpk k r) Z) := by
   have h2 : star (1 / 2 : ℂ) = 1 / 2 := by simp
@@ -1528,7 +1528,7 @@ private theorem inLie_hpart1 (k r : ℕ) (Z : Mat k r) : inLie k r (hpart1 (Hpk 
   simp
 
 /- English proof (translation)
-Establish `h2 : star (1 / (2 * Complex.I) : ℂ) = -(1 / (2 * Complex.I))`. Simplify using the standard rewrite rules. Simplify using `only [inLie, hpart2, Hpk_inv, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Hpk_herm, h2, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, Hpk_sq, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc (Hpk k r) (Hpk k r), Hpk_sq, Matrix.one_mul, neg_smul, add_comm (Hpk k r * Z), neg_add_cancel]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem inLie_hpart2 (k r : ℕ) (Z : Mat k r) : inLie k r (hpart2 (Hpk k r) Z) := by
   have h2 : star (1 / (2 * Complex.I) : ℂ) = -(1 / (2 * Complex.I)) := by
@@ -1541,21 +1541,21 @@ private theorem inLie_hpart2 (k r : ℕ) (Z : Mat k r) : inLie k r (hpart2 (Hpk 
     add_comm (Hpk k r * Z), neg_add_cancel]
 
 /- English proof (translation)
-The claim follows from `contDiff_apply_apply ℝ ℂ i j`.
+A detailed English derivation is pending.
 -/
 private theorem contDiff_entry {n : ℕ} (i j : Fin n) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun g : Matrix (Fin n) (Fin n) ℂ => g i j) :=
   contDiff_apply_apply ℝ ℂ i j
 
 /- English proof (translation)
-The claim follows from `contDiff_const`.
+A detailed English derivation is pending.
 -/
 private theorem contDiff_cst {n : ℕ} (c : ℂ) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun _ : Matrix (Fin n) (Fin n) ℂ => c) :=
   contDiff_const
 
 /- English proof (translation)
-Simplify using `only [herm, dotProduct, Matrix.mulVec]`. Use `ContDiff.sum fun a _ => contDiff_const.mul ?_` and prove the remaining obligations. Use `ContDiff.sum fun b _ => contDiff_const.mul ?_` and prove the remaining obligations. Apply the tactic sequence `exact ContDiff.sum fun c _ => (contDiff_entry b c).mul contDiff_const`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem contDiff_herm {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (v w : Fin n → ℂ) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞)
@@ -1566,7 +1566,7 @@ private theorem contDiff_herm {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (v w : 
   exact ContDiff.sum fun c _ => (contDiff_entry b c).mul contDiff_const
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply', Matrix.of_apply]`. Conclude with `ContDiff.sum fun σ _ => contDiff_const.mul (contDiff_prod fun l _ => hA _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem contDiff_det {n m : ℕ} (A : Matrix (Fin n) (Fin n) ℂ → Fin m → Fin m → ℂ)
     (hA : ∀ a l, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun g => A g a l)) :
@@ -1575,7 +1575,7 @@ private theorem contDiff_det {n m : ℕ} (A : Matrix (Fin n) (Fin n) ℂ → Fin
   exact ContDiff.sum fun σ _ => contDiff_const.mul (contDiff_prod fun l _ => hA _ _)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `hadd _ _ (hF a) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem closed_sum {X E ι : Type*} [AddCommMonoid E] (P : (X → E) → Prop)
     (hadd : ∀ f₁ f₂, P f₁ → P f₂ → P fun x => f₁ x + f₂ x) (h0 : P fun _ => 0)
@@ -1588,7 +1588,7 @@ private theorem closed_sum {X E ι : Type*} [AddCommMonoid E] (P : (X → E) →
     exact hadd _ _ (hF a) ih
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact hf`. Consider the case `cons T L ih`. Conclude with `hL T (List.mem_cons_self ..) _ (ih fun S hS => hL S (List.mem_cons_of_mem _ hS))`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem closed_foldr {Y : Type*} (P : Y → Prop) (f : Y) (hf : P f) (L : List (Y → Y))
     (hL : ∀ T ∈ L, ∀ y, P y → P (T y)) : P (L.foldr (fun T h => T h) f) := by
@@ -1601,17 +1601,15 @@ end UpperTheory.Reformulated.B.Qj20
 end helpers
 
 /- English proof (translation)
-Introduce `k r E inst inst_1 P hR hadd hmul h0 m hm u f hf`. Establish `hc : ∀ (c : ℂ) (f : UpperTheory.Reformulated.B.Qj20.Mat k r → E), P f → P fun x => c • f x` using `fun c f hf => hmul (fun _ => c) (UpperTheory.Reformulated.B.Qj20.contDiff_cst c) f hf`. Establish `hE : ∀ a b (f : UpperTheory.Reformulated.B.Qj20.Mat k r → E), P f → P (UpperTheory.Reformulated.B.Qj20.EabH (UpperTheory.Reformulated.B.Qj20.Hpk k r) a b f)` using `fun a b f hf => hadd _ _ (hR _ f (UpperTheory.Reformulated.B.Qj20.inLie_hpart1 k r _) hf) (hc _ _ (hR _ f (UpperTheory.Reformulated.B.Qj20.inLie_hpart2 k r _) hf))`. Establish `hT : ∀ (v : ℂ) a b (f : UpperTheory.Reformulated.B.Qj20.Mat k r → E), P f → P (UpperTheory.Reformulated.B.Qj20.Top (UpperTheory.Reformulated.B.Qj20.EabH (UpperTheory.Reformulated.B.Qj20.Hpk k r)) v a b f)`. Introduce `v a b f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hadd (fun g => if a = b then v • f g else 0) _ ?_ (hE a b f hf)` and prove the remaining obligations. Distinguish the cases in `hab : a = b`. Simplify using `only [if_pos hab]`. Conclude with `hc v f hf`. Simplify using `only [if_neg hab]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h0`. Establish `hQ : ∀ (a b : Fin m → Fin (2 * r + k + 1)), P (UpperTheory.Reformulated.B.Qj20.qminorOp (UpperTheory.Reformulated.B.Qj20.EabH (UpperTheory.Reformulated.B.Qj20.Hpk k r)) a b u f)`. Introduce `a b`. Unfold `UpperTheory.Reformulated.B.Qj20.qminorOp`. Rewrite using `[Finset.sum_fn]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `UpperTheory.Reformulated.B.Qj20.closed_sum P hadd h0 _ _ fun σ => ?_` and prove the remaining obligations. Use `hc _ _ (UpperTheory.Reformulated.B.Qj20.closed_foldr P f hf _ fun T hTm => ?_)` and prove the remaining obligations. Take `⟨l, rfl⟩` from `List.mem_ofFn.1 hTm`. Conclude with `hT _ _ _`. Unfold `UpperTheory.Reformulated.B.Qj20.AAop`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `UpperTheory.Reformulated.B.Qj20.closed_sum P hadd h0 _ _ fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hcm : StrictMono c`. Simplify using `only [if_pos hcm]`. Conclude with `hmul _ (UpperTheory.Reformulated.B.Qj20.contDiff_det _ fun a l => UpperTheory.Reformulated.B.Qj20.contDiff_herm _ _ _) _ (hQ _ c)`. Simplify using `only [if_neg hcm]`.
-
-Conclude with `h0`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qj20.aa_closed.{u_1} :
     ∀ {k r : Nat} {E : Type u_1} [inst : NormedAddCommGroup E]

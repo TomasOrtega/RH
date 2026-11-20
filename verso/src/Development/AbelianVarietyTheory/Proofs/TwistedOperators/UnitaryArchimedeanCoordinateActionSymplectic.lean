@@ -10,11 +10,11 @@ open scoped Matrix Classical SchwartzMap
 namespace GlobalTheory.ArchLine
 
 /- English proof (translation)
-Establish `tr : ∀ N : Matrix α α E, ∑ i, ∑ k, JA i k * N i k = (JAᵀ * N).trace` using `fun N => by`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply]`. Conclude with `Finset.sum_comm`. Establish `h1 : ((p.1 : GL α E) : Matrix α α E)ᵀ * JA * ((p.1 : GL α E) : Matrix α α E).map c = JA` using `p.1.2`. Establish `h2 : ((p.2 : GL β E) : Matrix β β E)ᵀ * JB * ((p.2 : GL β E) : Matrix β β E).map c = JB` using `p.2.2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Coord.hTens_eq, Coord.hTens_eq, tr, tr, actAB, actAB]`. Generalize the expression as in `((p.1 : GL α E) : Matrix α α E) = g at h1 ⊢`. Generalize the expression as in `((p.2 : GL β E) : Matrix β β E) = h at h2 ⊢`. Establish `e1 : ((g * y * hᵀ).map c)ᵀ = h.map c * (y.map c)ᵀ * (g.map c)ᵀ`. Rewrite using `[Matrix.map_mul (f := c), Matrix.map_mul (f := c), Matrix.transpose_mul, Matrix.transpose_mul, Matrix.mul_assoc]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e2 : JAᵀ * (g * x * hᵀ * JB * (h.map c * (y.map c)ᵀ * (g.map c)ᵀ)) = JAᵀ * g * (x * (hᵀ * JB * h.map c) * (y.map c)ᵀ) * (g.map c)ᵀ` using `by simp only [Matrix.mul_assoc]`. Establish `e3 : (g.map c)ᵀ * (JAᵀ * g) = JAᵀ` using `by conv_rhs => rw [← h1]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose]`. Rewrite using `[e1, e2, h2, Matrix.trace_mul_comm, ← Matrix.mul_assoc, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hTens_actAB_unitary {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E) {α β : Type}
     [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] {JA : Matrix α α E} {JB : Matrix β β E}
@@ -39,7 +39,7 @@ theorem hTens_actAB_unitary {R E : Type} [CommRing R] [CommRing E] [Algebra R E]
   rw [e1, e2, h2, Matrix.trace_mul_comm, ← Matrix.mul_assoc, e3]
 
 /- English proof (translation)
-Establish `hv` using `coordI_lift M v`. Establish `hv'` using `coordI_lift M v'`. Use `conv_rhs => rw [← hv, ← hv']`. Rewrite using `[archAct, archAct, omega_coordI, omega_coordI]`. Simplify using `only [sympM, symp, hTens_actAB_unitary]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem omega_archAct {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (h : UA σ W.J)

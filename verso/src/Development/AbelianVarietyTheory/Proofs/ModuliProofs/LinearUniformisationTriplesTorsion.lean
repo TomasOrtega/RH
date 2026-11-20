@@ -16,7 +16,7 @@ namespace GlobalTheory.LN
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField in
 
 /- English proof (translation)
-Take `⟨hLaws, hTwist, hTheta, hTorsion, hRank⟩` from `_root_.GlobalTheory.lawsAndExpansions`. Conclude with `_root_.GlobalTheory.PELOfUnif.main hLaws hTwist hTheta hTorsion hRank`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LN.pelSt_holds : _root_.GlobalTheory.LN.PelSt := by
   obtain ⟨hLaws, hTwist, hTheta, hTorsion, hRank⟩ := _root_.GlobalTheory.lawsAndExpansions

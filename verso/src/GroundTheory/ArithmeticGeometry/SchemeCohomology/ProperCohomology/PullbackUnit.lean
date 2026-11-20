@@ -18,9 +18,9 @@ section Affine
 variable {X : Scheme.{u}}
 
 /- English proof (translation)
-Establish `hB : Opens.IsBasis (Set.range fun U : X.affineOpens => (U : X.Opens))`. Rewrite using `[Subtype.range_coe]`. Conclude with `X.isBasis_affineOpens`. Establish `: IsIso (modulesAbMap f)` using `TopCat.Sheaf.isIso_iff_isIso_basis hB fun U => (ConcreteCategory.isIso_iff_bijective _).2 (h U.1 U.2)`. Use `isIso_of_bijective_app f fun U => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : IsIso ((sheafToPresheaf _ _).map (modulesAbMap f))` using `inferInstance`. Establish `h2` using `NatIso.isIso_app_of_isIso ((sheafToPresheaf _ _).map (modulesAbMap f)) (op U)`. Conclude with `(ConcreteCategory.isIso_iff_bijective _).1 h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma isIso_of_bijective_app_affine {M N : X.Modules} (f : M ⟶ N)
     (h : ∀ U : X.Opens, IsAffineOpen U → Function.Bijective (f.app U)) : IsIso f := by
@@ -35,9 +35,9 @@ lemma isIso_of_bijective_app_affine {M N : X.Modules} (f : M ⟶ N)
   exact (ConcreteCategory.isIso_iff_bijective _).1 h2
 
 /- English proof (translation)
-Establish `hR : IsIso ((Scheme.Modules.restrictFunctor W.ι).map f)` using `isIso_of_bijective_app_affine _ fun V' hV' => h _ (hV'.image_of_isOpenImmersion W.ι) ((W.ι.image_le_opensRange V').trans (by simp))`. Introduce `V hV`. Establish `hE : W.ι ''ᵁ (W.ι ⁻¹ᵁ V) = V`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `inf_eq_right.2 hV`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hE]`. Conclude with `ConcreteCategory.bijective_of_isIso (((Scheme.Modules.restrictFunctor W.ι).map f).app (W.ι ⁻¹ᵁ V))`.
+A detailed English derivation is pending.
 -/
 lemma bijective_app_of_bijective_app_affine {M N : X.Modules} (f : M ⟶ N) (W : X.Opens)
     (h : ∀ V : X.Opens, IsAffineOpen V → V ≤ W → Function.Bijective (f.app V)) :
@@ -60,21 +60,21 @@ section Section
 variable {T U : Scheme.{u}}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Set `K` to `RingHom.ker g.appTop.hom`. Establish `hM : Module.IsTorsionBySet Γ(U, ⊤) Γ(N, ⊤) (K : Set Γ(U, ⊤))` using `fun n a => hker a.1 a.2 n`. Set `_ : Module (Γ(U, ⊤) ⧸ K) Γ(N, ⊤)` to `hM.module`. Set `e` to `RingHom.quotientKerEquivOfSurjective (f := g.appTop.hom) hg`.
+Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_ : Module Γ(T, ⊤) Γ(N, ⊤)` to `Module.compHom _ e.symm.toRingHom`. Take `⟨ψ', hψ', -⟩` from `Etale.existsUnique_pullbackSection g N Γ(N, ⊤) (AddMonoidHom.id _) (fun a n => by`. Express the relevant statement in the definitionally equal form `a • n = e.symm (g.appTop a) • n`. Establish `he : e.symm (g.appTop a) = Ideal.Quotient.mk K a` using `e.symm_apply_eq.2 (RingHom.quotientKerEquivOfSurjective_apply_mk hg a).symm`. Rewrite using `[he, hM.mk_smul])`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y hxy`. Use `congrArg ψ' hxy` as an intermediate fact. Rewrite `this` using `[hψ', hψ']`. Then use the resulting hypothesis. Introduce `p`. Set `P` to `Γ((Scheme.Modules.pullback g).obj N, ⊤)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `L : Submodule Γ(T, ⊤) P` to `Submodule.span Γ(T, ⊤) (Set.range (Etale.pullbackSection g N))`. Establish `hL : L = ⊤`. Take `⟨ψ', -, huniq⟩` from `Etale.existsUnique_pullbackSection g N (P ⧸ L) 0 (fun a n => by simp)`. Establish `h0 : (0 : P →ₗ[Γ(T, ⊤)] (P ⧸ L)) = ψ'` using `huniq 0 (fun n => by simp)`. Establish `h1 : L.mkQ = ψ'` using `huniq L.mkQ (fun n => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using (Submodule.Quotient.mk_eq_zero L).2 (Submodule.subset_span ⟨n, rfl⟩))`. Rewrite using `[eq_top_iff]`. Introduce `q _`. Use `LinearMap.congr_fun (h1.trans h0.symm) q` as an intermediate fact. Conclude with `(Submodule.Quotient.mk_eq_zero L).1 this`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : p ∈ L` using `hL ▸ Submodule.mem_top`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add x y _ _ hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, map_add _ _ _⟩`. Consider the case `smul s x _ hx`. Take `⟨n, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hg s`. Conclude with `⟨a • n, Etale.pullbackSection_smul g N a n⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bijective_pullbackSection_of_surjective (g : T ⟶ U) [IsAffine T] [IsAffine U]
     (N : U.Modules) [N.IsQuasicoherent] (hg : Function.Surjective g.appTop)
@@ -129,9 +129,9 @@ section Move
 variable {V T U : Scheme.{u}}
 
 /- English proof (translation)
-Establish `hc` using `ConcreteCategory.bijective_of_isIso (((Scheme.Modules.pullbackComp f g).inv.app N).app ((f ≫ g) ⁻¹ᵁ O))`. Establish `hf` using `Etale.pullbackUnitApp_bijective f ((Scheme.Modules.pullback g).obj N) hO`. Establish `e : ⇑(ConcreteCategory.hom (((Scheme.Modules.pullbackComp f g).inv.app N).app ((f ≫ g) ⁻¹ᵁ O))) ∘ ⇑(Etale.pullbackUnitApp (f ≫ g) N O) = ⇑(Etale.pullbackUnitApp f _ (g ⁻¹ᵁ O)) ∘ ⇑(Etale.pullbackUnitApp g N O)`. Use function extensionality and compare the values at `(Etale.pullbackUnitApp_comp f g N O)`. Rewrite using `[← Function.Bijective.of_comp_iff' hc, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Function.Bijective.of_comp_iff' hf _`.
+A detailed English derivation is pending.
 -/
 lemma bijective_pullbackUnitApp_comp_left_iff (f : V ⟶ T) [IsOpenImmersion f] (g : T ⟶ U)
     (N : U.Modules) (O : U.Opens) (hO : g ⁻¹ᵁ O ≤ f.opensRange) :
@@ -149,9 +149,9 @@ lemma bijective_pullbackUnitApp_comp_left_iff (f : V ⟶ T) [IsOpenImmersion f] 
   exact Function.Bijective.of_comp_iff' hf _
 
 /- English proof (translation)
-Establish `hc` using `ConcreteCategory.bijective_of_isIso (((Scheme.Modules.pullbackComp g h).inv.app N).app ((g ≫ h) ⁻¹ᵁ O))`. Establish `hh` using `Etale.pullbackUnitApp_bijective h N hO`. Establish `e : ⇑(ConcreteCategory.hom (((Scheme.Modules.pullbackComp g h).inv.app N).app ((g ≫ h) ⁻¹ᵁ O))) ∘ ⇑(Etale.pullbackUnitApp (g ≫ h) N O) = ⇑(Etale.pullbackUnitApp g _ (h ⁻¹ᵁ O)) ∘ ⇑(Etale.pullbackUnitApp h N O)`. Use function extensionality and compare the values at `(Etale.pullbackUnitApp_comp g h N O)`. Rewrite using `[← Function.Bijective.of_comp_iff' hc, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Function.Bijective.of_comp_iff _ hh`.
+A detailed English derivation is pending.
 -/
 lemma bijective_pullbackUnitApp_comp_right_iff (g : V ⟶ T) (h : T ⟶ U) [IsOpenImmersion h]
     (N : U.Modules) (O : U.Opens) (hO : O ≤ h.opensRange) :
@@ -169,7 +169,7 @@ lemma bijective_pullbackUnitApp_comp_right_iff (g : V ⟶ T) (h : T ⟶ U) [IsOp
   exact Function.Bijective.of_comp_iff _ hh
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma bijective_pullbackUnitApp_congr (g : T ⟶ U) (N : U.Modules) {O O' : U.Opens} (h : O = O') :
     Function.Bijective (Etale.pullbackUnitApp g N O) ↔
@@ -184,15 +184,15 @@ section Unit
 variable {X Y : Scheme.{u}}
 
 /- English proof (translation)
-Rewrite using `[← bijective_pullbackUnitApp_comp_left_iff (ψ ⁻¹ᵁ V).ι ψ F V (by simp), ← morphismRestrict_ι ψ V, bijective_pullbackUnitApp_comp_right_iff (ψ ∣_ V) V.ι F V (by simp), bijective_pullbackUnitApp_congr _ _ (Scheme.Opens.ι_preimage_self V)]`. Establish `: IsAffine V` using `hV`. Take `⟨hT, hsurj⟩` from `IsClosedImmersion.isAffine_surjective_of_isAffine (ψ ∣_ V)`. Set `e` to `(Scheme.Modules.restrictFunctorIsoPullback V.ι).app F`. Establish `: ((Scheme.Modules.pullback V.ι).obj F).IsQuasicoherent` using `(SheafOfModules.isQuasicoherent V.toScheme.ringCatSheaf).prop_of_iso e inferInstance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `bijective_pullbackSection_of_surjective (ψ ∣_ V) _ hsurj fun a ha n => ?_` and prove the remaining obligations. Establish `ha' : ψ.app (V.ι ''ᵁ ⊤) a = 0`. Rewrite `ha` using `[morphismRestrict_appTop]`. Establish `hinj` using `(ConcreteCategory.bijective_of_isIso (Y.presheaf.map (eqToHom (image_morphismRestrict_preimage ψ V ⊤)).op)).1`. Conclude with `hinj (by rw [map_zero]; exact ha)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ n' : Γ(F.restrict V.ι, ⊤), a • n' = 0` using `fun n' => by`. Establish `hi` using `ConcreteCategory.bijective_of_isIso (F.restrictAppIso V.ι ⊤).hom`. Apply `hi.1` to reduce the goal to its premises. Establish `hs` using `congrArg (fun φ : Γ(F.restrict V.ι, ⊤) ⟶ Γ(F, V.ι ''ᵁ ⊤) => φ n') (Scheme.Modules.smul_restrictAppIso_hom V.ι F ⊤ a)`. Simplify using `only [ConcreteCategory.comp_apply, Scheme.Opens.ι_appIso, Iso.refl_inv] at hs`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(F.restrictAppIso V.ι ⊤).hom (a • n') = _`. Rewrite using `[map_zero]`. Use `(show _ = _ from hs).trans ?_` and prove the remaining obligations. Conclude with `hkill a ha' _`. Establish `h1 : n = e.hom.app ⊤ (e.inv.app ⊤ n)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, e.inv_hom_id]`. Both sides reduce to the same expression. Rewrite using `[h1, ← Scheme.Modules.Hom.app_smul, key, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_pullbackUnitApp_of_isClosedImmersion (ψ : Y ⟶ X) (F : X.Modules)
     [F.IsQuasicoherent] {V : X.Opens} (hV : IsAffineOpen V) [IsClosedImmersion (ψ ∣_ V)]
@@ -230,9 +230,9 @@ theorem bijective_pullbackUnitApp_of_isClosedImmersion (ψ : Y ⟶ X) (F : X.Mod
   rw [h1, ← Scheme.Modules.Hom.app_smul, key, map_zero]
 
 /- English proof (translation)
-Use `bijective_app_of_bijective_app_affine _ W fun V hV hVW => ?_` and prove the remaining obligations. Establish `hE : W.ι ''ᵁ (W.ι ⁻¹ᵁ V) = V`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `inf_eq_right.2 hVW`. Establish `hci : IsClosedImmersion (ψ ∣_ V)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `morphismRestrictRestrict ψ W (W.ι ⁻¹ᵁ V)`. Establish `h` using `(MorphismProperty.arrow_mk_iso_iff @IsClosedImmersion e).1 inferInstance`. Rewrite `h` using `[hE]`. Then use the resulting hypothesis. Establish `hVtop : V.ι ''ᵁ ⊤ = V` using `Scheme.Opens.ι_image_top V`. Conclude with `bijective_pullbackUnitApp_of_isClosedImmersion ψ F hV fun a ha m => hkill _ (by rw [hVtop]; exact hV) (hVtop.le.trans hVW) a ha m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_unit_app_of_le (ψ : Y ⟶ X) (F : X.Modules) [F.IsQuasicoherent] (W : X.Opens)
     [IsClosedImmersion (ψ ∣_ W)]
@@ -253,15 +253,13 @@ theorem bijective_unit_app_of_le (ψ : Y ⟶ X) (F : X.Modules) [F.IsQuasicohere
     hkill _ (by rw [hVtop]; exact hV) (hVtop.le.trans hVW) a ha m
 
 /- English proof (translation)
-Set `adj` to `Scheme.Modules.pullbackPushforwardAdjunction j`. Set `P` to `(Scheme.Modules.pushforward j).obj G`. Establish `: P.IsQuasicoherent` using `isQuasicoherent_pushforward_of_isAffineHom j G`. Establish `: IsClosedImmersion (j ∣_ ⊤)` using `inferInstance`. Establish `hu : IsIso (adj.unit.app P)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isIso_of_bijective_app _ fun V => ?_` and prove the remaining obligations. Use `bijective_unit_app_of_le j P ⊤ (fun V _ _ a ha m => ?_) V le_top` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `j.app V a • (show Γ(G, j ⁻¹ᵁ V) from m) = 0`. Rewrite using `[ha, zero_smul]`. Establish `htri` using `adj.right_triangle_components G`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : IsIso ((Scheme.Modules.pushforward j).map (adj.counit.app G))`. Establish `: (Scheme.Modules.pushforward j).map (adj.counit.app G) = inv (adj.unit.app P)`. Rewrite using `[← cancel_epi (adj.unit.app P), IsIso.hom_inv_id]`. Conclude with `htri`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `infer_instance`. Use `isIso_of_bijective_app _ fun V => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨U, rfl⟩ : ∃ U : X.Opens, j ⁻¹ᵁ U = V := by`. Take `⟨U, hU, hUV⟩` from `j.isClosedEmbedding.isInducing.isOpen_iff.1 V.isOpen`. Conclude with `⟨⟨U, hU⟩, Opens.ext hUV⟩`.
-
-Conclude with `ConcreteCategory.bijective_of_isIso (((Scheme.Modules.pushforward j).map (adj.counit.app G)).app U)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isIso_counit_of_isClosedImmersion (j : Y ⟶ X) [IsClosedImmersion j] (G : Y.Modules)
     [G.IsQuasicoherent] :

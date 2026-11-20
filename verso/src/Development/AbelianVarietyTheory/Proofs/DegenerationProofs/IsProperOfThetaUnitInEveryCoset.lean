@@ -26,9 +26,7 @@ noncomputable section
 namespace GlobalTheory.CosetGood
 
 /- English proof (translation)
-Use `haveI : Fact n.Prime := ⟨hn⟩`. Set `b` to `Module.Free.chooseBasis ℤ X`. Use `haveI : IsEmpty (Module.Free.ChooseBasisIndex ℤ X) := ⟨fun i => by`. Use `h ((Int.castAddHom (ZMod n)).comp (b.coord i).toAddMonoidHom) (b i)` as an intermediate fact. Simplify using `at this⟩`.
-
-Conclude with `b.repr.toEquiv.subsingleton`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_forall_hom {X : Type} [AddCommGroup X] [Module.Free ℤ X] {n : ℕ} (hn : n.Prime)
     (h : ∀ (l : X →+ ZMod n) (y : X), l y = 0) : Subsingleton X := by
@@ -40,19 +38,19 @@ theorem subsingleton_of_forall_hom {X : Type} [AddCommGroup X] [Module.Free ℤ 
   exact b.repr.toEquiv.subsingleton
 
 /- English proof (translation)
-Take `⟨hA, hB, -⟩` from `GlobalTheory.T.tx_coset_norm_one_and_ne_zero C N Q hQ n g hn ho h1 hT j (by omega)`. Take `⟨q₀, -, -, hq₀⟩` from `hB 1 rfl`. Take `⟨a₀, ha₀⟩` from `cot (1 * q₀)`. Establish `tot' : ∀ a, ∃ q, r q a ∧ (a = a₀ → q = 1 * q₀)` using `fun a => by`. Distinguish the cases in `e : a = a₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨_, e ▸ ha₀, fun _ => rfl⟩`. Take `⟨q, hq⟩` from `tot a`. Conclude with `⟨q, hq, fun e' => absurd e' e⟩`. Use `choose q hq hq' using tot'`. Take `⟨c, hc⟩` from `hv q hq`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `c1 : ‖c‖ ≤ 1`. Use `hle a₀` as an intermediate fact. Rewrite `this` using `[hc, hq' a₀ rfl, norm_mul, hq₀, _root_.mul_one]`. Then use the resulting hypothesis. Establish `hu : ∀ a, ‖v a‖ = 1 → ‖N.tx (n ^ j) (q a)‖ = 1` using `fun a ha => by`. Rewrite `ha` using `[hc, norm_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(hA (q a)).1` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg c, norm_nonneg (N.tx (n ^ j) (q a))]`. Use `subsingleton_of_forall_hom hn fun l y => ?_` and prove the remaining obligations. Establish `hl : ∀ (i : ℕ) (z : N.X), i ≠ 0 → l (n ^ i • z) = 0` using `fun i z hi => by`. Rewrite using `[map_nsmul, nsmul_eq_mul, Nat.cast_pow, ZMod.natCast_self, zero_pow hi, zero_mul]`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : ∀ p p' : N.QT ((n ^ j) ^ 2), N.QEq p p' → l p'.1.1.toAdd = l p.1.1.toAdd`. Introduce and unpack `p p' ⟨z, hz, -⟩`. Rewrite using `[hz, map_add, show (n ^ j) ^ 2 • z = n ^ (j * 2) • z by rw [pow_mul], hl _ _ (by omega), add_zero]`. Set `Y : La →+ ZMod n` to `AddMonoidHom.mk' (fun a => l (q a).1.1.toAdd) fun a a' => (he _ _ (inj _ _ _ (mul _ _ _ _ (hq a) (hq a')) (hq (a + a')))).trans (map_add l _ _)`. Establish `hY : ∀ a, Y a = 0` using `fun a => by`.
+Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `hco a`. Take `⟨z, hz⟩` from `(hA _).2 (hu _ hh)`. Establish `e : Y (a + n ^ (j - 1) • h) = 0` using `(congrArg l hz).trans (hl _ _ (by omega))`. Rewrite `e` using `[map_add, map_nsmul, nsmul_eq_mul, Nat.cast_pow, ZMod.natCast_self, zero_pow (by omega), zero_mul, add_zero]`. Then use the resulting hypothesis. Establish `hn0 : (n : C) ≠ 0` using `fun e => by rw [e, norm_zero] at h1; exact zero_ne_one h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `(GlobalTheory.T.degenerationData_torsion_structure_algClosed C N n g hn0 hT (j * 2)).2.2.1 y`. Rewrite `hs` using `[pow_mul]`. Take `⟨p, rfl⟩` from `hs`. Take `⟨a, ha⟩` from `cot p`. Conclude with `(he _ _ (inj _ _ _ (hq a) ha)).trans (hY a)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_labels {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C]
     [IsAlgClosed C] (N : NumD C) (Q : QuadraticMap ℤ N.X ℝ) (hQ : N.Int Q) {n g j : ℕ} (hn : n.Prime) (ho : Odd n)
@@ -101,7 +99,7 @@ theorem subsingleton_of_labels {C : Type} [NontriviallyNormedField C] [IsUltrame
   exact (he _ _ (inj _ _ _ (hq a) ha)).trans (hY a)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(NormedField.valuation (K := C)).valuationSubring, fun x => by rw [Valuation.mem_valuationSubring_iff, NormedField.valuation_apply] rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_unitBall (C : Type) [NormedField C] [IsUltrametricDist C] :
     ∃ S : ValuationSubring C, ∀ x, x ∈ S ↔ ‖x‖ ≤ 1 :=
@@ -110,25 +108,23 @@ theorem exists_unitBall (C : Type) [NormedField C] [IsUltrametricDist C] :
     rfl⟩
 
 /- English proof (translation)
-Use `letI := H.starRing`. Establish `hL : Laws` using `hV.1.1`. Establish `hL2 : Laws2` using `hV.1.2.1`. Take `⟨hdvr, hcomp, hchar⟩` from `(GlobalTheory.LN.cDvr_iff M.W).1 M.cdv`. Establish `hR : AdmBase M.W (IsLocalRing.maximalIdeal M.W)` using `⟨inferInstance, inferInstance, inferInstance, hcomp⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hev` using `M.P.D.psi_even`. Establish `hbi` using `M.P.D.tau_bimult`. Take `⟨S, hS⟩` from `exists_unitBall C`. Take `⟨N, ν, hν⟩` from `GlobalTheory.ValuesExist.exists_integral_values hL M.W M.P.D.toPre hev hbi C S fun r => (hS _).2 (M.ext.1 r)`. Establish `hI : ν.IntN` using `⟨S, hS, hν⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Q, hQ⟩` from `GlobalTheory.T.degenerationValues_int_of_admissibleBase M.W _ hR M.P.D C M.ext N ν hI`. Establish `hT` using `GlobalTheory.T.abelianPartValues_torsion_pairing_separation_integral hL hL2 (GlobalTheory.T.abelianPartValues_of_expansionLaws hL) M.W M.P.D.toPre hev hbi C ⟨M.ext.1, fun r hr => M.ext.2 r (bot_le (a := IsLocalRing.maximalIdeal M.W) hr)⟩ N ν hI n hn ho h1`. Take `⟨g₁, g₂, g₃, -, g₅⟩` from `GlobalTheory.T.torus_torsion_points_correspond_values M.W M.P.D.toPre hev hbi C N ν`. Establish `hk : 0 < (n ^ j) ^ 2` using `pow_pos (pow_pos hn.pos _) _`. Take `⟨g₆, g₇, g₈⟩` from `g₅ ((n ^ j) ^ 2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, f₁, f₂, f₃, f₄, -⟩` from `GlobalTheory.T.uniformisation_torsion_identification_with_pairing hV.1 M.W _ hR M.P.D M.P.A M.t.G M.t.semi M.P.U C _ hk`. Take `⟨e, he⟩` from `exists_mulEquiv_of_isGrpPullback M.cart (𝟙 (Sp C)) (jFK (R := M.W) C) (Category.id_comp _).symm`. Set `x : D.La → (TFK (R` to `M.W) C ⟶ M.P.A.A) := fun a => e (o.I.ev ((n ^ j) ^ 2) a)`. Establish `hp : ∀ a, o.I.ev ((n ^ j) ^ 2) a ^ (n ^ j) ^ 2 = 1` using `fun a => (o.I.onto _ hk _).2 ⟨a, rfl⟩`. Establish `hx : ∀ a, x a ^ (n ^ j) ^ 2 = 1` using `fun a => (map_pow e _ _).symm.trans ((congrArg e (hp a)).trans (map_one e))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : IsThetaPt M.P.A (n ^ j) x fun a => fnOf (v a)`. Establish `key : ∀ (s : Sp C ⟶ (TK M.W).left) (_ : s = 𝟙 _ ≫ jFK (R` using `M.W) C) (y : D.La → (Over.mk s ⟶ M.P.A.A)), (∀ a, (y a).left = (o.I.ev ((n ^ j) ^ 2) a).left ≫ M.φ) → IsThetaPt M.P.A (n ^ j) y fun a => fnOf (v a) := by`. Introduce and unpack `s rfl y hy`. Conclude with `(ThetaPtUp.isThetaPt_iff (T := baseOver (Sp C)) M.cart M.lb hy hp _).1 hv`. Conclude with `key _ (Category.id_comp _).symm x fun a => he _`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm : ((n ^ j : ℕ) : C) ≠ 0` using `Nat.cast_ne_zero.2 (pow_pos hn.pos _).ne'`. Take `⟨-, c₂, c₃, -⟩` from `GlobalTheory.T.thetaCoordinates_exist_unique_separate_points hL C _ M.P.A (jFK (R := M.W) C) (n ^ j) ho.pow hm D.La x hx`. Use `haveI := subsingleton_of_labels N Q hQ hn ho h1 hT hj (fun q a => ∃ p, ν.QPt p q ∧ f p = x a) (fun a => ?_) (fun q => ?_) ?_ ?_ v (fun q hq => ?_) hle hco`. Conclude with `ν.eX.symm.toEquiv.subsingleton`. Take `⟨p, hp⟩` from `f₂ _ (hx a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, -⟩` from `g₆ p`. Conclude with `⟨q, p, hq, hp⟩`. Take `⟨p, hp⟩` from `g₇ q`. Take `⟨w, hw⟩` from `M.P.U.toUnifPre.ext`. Establish `h₀ : f p ^ (n ^ j) ^ 2 = 1` using `((f₁ p (f p)).2 rfl w hw).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `(o.I.onto _ hk (e.symm (f p))).1 ((map_pow e.symm _ _).symm.trans ((congrArg e.symm h₀).trans (map_one e.symm)))`. Conclude with `⟨a, p, hp, ((congrArg e ha).trans (e.apply_symm_apply _)).symm⟩`. Introduce and unpack `q q' a a' ⟨p, hp, e₁⟩ ⟨p', hp', e₂⟩`. Take `⟨p'', hp''⟩` from `g₇ (q * q')`. Use `⟨p'', hp'', (f₄ p p' p'' ⟨p'', ?_, (g₃ _ _ _ _ _ _ hp.2 hp'.2 hp''.2).2 rfl, qk_equiv_refl hbi _⟩).trans ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hp''.1, ← hp.1, ← hp'.1, ← map_add]`. Both sides reduce to the same expression. Rewrite using `[e₁, e₂]`. Conclude with `((congrArg e (o.I.add _ a a')).trans (map_mul e _ _)).symm`. Introduce and unpack `q q' a ⟨p, hp, e₁⟩ ⟨p', hp', e₂⟩`.
-
-Conclude with `(g₈ p p' q q' hp hp').1 ((f₃ p p').1 (e₁.trans e₂.symm))`. Use `choose p hp hp' using hq`. Establish `ht` using `GlobalTheory.T.theta_constants_eq_degeneration_series hV GlobalTheory.T.torus_torsion_points_correspond_values (GlobalTheory.T.families_values_correspond hL hL2) M.W _ M.cdv rfl M.P.D M.P.A M.t.G M.t.semi M.P.U C M.ext N ν (n ^ j) ho.pow D.La p q x (fun a => (f₁ _ _).2 (hp' a).sy …`. Take `⟨c, hc⟩` from `(c₂ 1 _ v ((c₃ _).1 ht)).1 ((c₃ _).1 hv')`. Conclude with `⟨c, fun a => congrFun hc a⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem subsingleton_lattice (hV : HV) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] [CharZero C]
@@ -192,7 +188,7 @@ theorem subsingleton_lattice (hV : HV) {E : Type} [Field E] [NumberField E] [IsC
     exact ⟨c, fun a => congrFun hc a⟩
 
 /- English proof (translation)
-Introduce `hV _ _ _ _ _ _ E _ _ _ H D C _ _ _ _ _ o M n j hn ho h1 hj v hv hle hco`. Take `⟨hdvr, hcomp, hchar⟩` from `(GlobalTheory.LN.cDvr_iff M.W).1 M.cdv`. Conclude with `(isAbelianScheme_of_unif_of_subsingleton hV.1.1 hV.1.2.1 M.W hcomp M.P.D M.P.A M.t.G M.t.semi M.P.U (subsingleton_lattice hV o M hn ho h1 hj v hv hle hco)).proper`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isProper_of_unit_in_cosets : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.LN.HomExtSt → ThetaPtDeterminesSt → EndDeterminedOnTorsionSt → ThetaUnifAV → AllD fun D => ∀ (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] [CharZero C] (o : Full D C) (M : Mdl o) (n j : ℕ), n.Prime → Odd n → ‖(n : C)‖ = 1 → 2 ≤ j → ∀ v, o.Theta (n ^ j) v → (∀ x, ‖v x‖ ≤ 1) → (∀ x, ∃ h, ‖v (x + n ^ (j - 1) • h)‖ = 1) → IsProper M.t.G.hom := by
   intro hV _ _ _ _ _ _ E _ _ _ H D C _ _ _ _ _ o M n j hn ho h1 hj v hv hle hco

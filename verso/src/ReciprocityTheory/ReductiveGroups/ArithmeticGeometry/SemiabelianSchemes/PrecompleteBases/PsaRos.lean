@@ -6,41 +6,37 @@ open AddMonoidAlgebra
 namespace ReciprocityTheory.ChartRestriction.G.Semi
 
 /- English proof (translation)
-Establish `hone0 : (1 : AddMonoidAlgebra R A).coeff 0 = 1`. Rewrite using `[AddMonoidAlgebra.one_def, AddMonoidAlgebra.coeff_single, Finsupp.single_eq_same]`. Establish `hone1 : ∀ x : A, x ≠ 0 → (1 : AddMonoidAlgebra R A).coeff x = 0`. Introduce `x hx`. Rewrite using `[AddMonoidAlgebra.one_def, AddMonoidAlgebra.coeff_single]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finsupp.single_apply, hx, Ne.symm hx, if_false]`. Establish `hf : f ≠ 0`. Introduce and unpack `rfl`. Rewrite `h` using `[zero_mul]`. Conclude with `zero_ne_one h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : g ≠ 0`. Introduce and unpack `rfl`. Rewrite `h` using `[mul_zero]`. Conclude with `zero_ne_one h`. Establish `hfs : f.coeff.support.Nonempty`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finsupp.support_nonempty_iff]`. Introduce `h0`. Apply `hf` to reduce the goal to its premises. Apply `AddMonoidAlgebra.ext` to reduce the goal to its premises. Rewrite using `[h0, AddMonoidAlgebra.coeff_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgs : g.coeff.support.Nonempty`. Rewrite using `[Finsupp.support_nonempty_iff]`. Introduce `h0`. Apply `hg` to reduce the goal to its premises. Apply `AddMonoidAlgebra.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0, AddMonoidAlgebra.coeff_zero]`. Establish `hcard : f.coeff.support.card * g.coeff.support.card ≤ 1`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨p1, hp1, p2, hp2, hne, hu1, hu2⟩` from `TwoUniqueSums.uniqueAdd_of_one_lt_card hlt`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hp1`, `hp2` using `[Finset.mem_product]`. Establish `hc : ∀ p : A × A, p.1 ∈ f.coeff.support → p.2 ∈ g.coeff.support → UniqueAdd f.coeff.support g.coeff.support p.1 p.2 → p.1 + p.2 = 0`. Introduce `p hpa hpb hu`. Establish `e1` using `AddMonoidAlgebra.coeff_mul_add_of_uniqueAdd hu`. Rewrite `e1` using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hz`. Rewrite `e1` using `[hone1 _ hz]`. Conclude with `mul_ne_zero (Finsupp.mem_support_iff.mp hpa) (Finsupp.mem_support_iff.mp hpb) e1.symm`. Establish `s1` using `hc p1 hp1.1 hp1.2 hu1`. Establish `s2` using `hc p2 hp2.1 hp2.2 hu2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h12` using `hu1 hp2.1 hp2.2 (s2.trans s1.symm)`. Conclude with `hne (Prod.ext h12.1 h12.2).symm`. Establish `hc1` using `hfs.card_pos`. Establish `hc2` using `hgs.card_pos`. Establish `hcf : f.coeff.support.card = 1` using `by nlinarith`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcg : g.coeff.support.card = 1` using `by nlinarith`. Take `⟨a, ha⟩` from `Finset.card_eq_one.mp hcf`. Take `⟨b, hb⟩` from `Finset.card_eq_one.mp hcg`. Establish `hfa : f = single a (f.coeff a)`. Apply `AddMonoidAlgebra.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddMonoidAlgebra.coeff_single]`. Use extensionality with `x`. Distinguish the cases in `hx : x = a`. Substitute `hx` using the available equality. Rewrite using `[Finsupp.single_eq_same]`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Finsupp.single_apply, hx, Ne.symm hx, if_false]`. Assume the negation of the conclusion as `hne`. Establish `hmem : x ∈ f.coeff.support` using `Finsupp.mem_support_iff.mpr hne`. Rewrite `hmem` using `[ha, Finset.mem_singleton]`. Conclude with `hx hmem`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hgb : g = single b (g.coeff b)`. Apply `AddMonoidAlgebra.ext` to reduce the goal to its premises. Rewrite using `[AddMonoidAlgebra.coeff_single]`. Use extensionality with `x`. Distinguish the cases in `hx : x = b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hx` using the available equality. Rewrite using `[Finsupp.single_eq_same]`. Simplify using `only [Finsupp.single_apply, hx, Ne.symm hx, if_false]`. Assume the negation of the conclusion as `hne`. Establish `hmem : x ∈ g.coeff.support` using `Finsupp.mem_support_iff.mpr hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hmem` using `[hb, Finset.mem_singleton]`. Conclude with `hx hmem`. Establish `hu : UniqueAdd f.coeff.support g.coeff.support a b`. Introduce `a' b' ha' hb' _`. Rewrite `ha'` using `[ha, Finset.mem_singleton]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hb'` using `[hb, Finset.mem_singleton]`. Conclude with `⟨ha', hb'⟩`. Establish `e1` using `AddMonoidAlgebra.coeff_mul_add_of_uniqueAdd hu`. Rewrite `e1` using `[h]`. Establish `hfa0 : f.coeff a ≠ 0` using `Finsupp.mem_support_iff.mp (by rw [ha]; exact Finset.mem_singleton_self a)`.
-
-Establish `hgb0 : g.coeff b ≠ 0` using `Finsupp.mem_support_iff.mp (by rw [hb]; exact Finset.mem_singleton_self b)`. Establish `hab : a + b = 0`. Assume the negation of the conclusion as `hz`. Rewrite `e1` using `[hone1 _ hz]`. Conclude with `mul_ne_zero hfa0 hgb0 e1.symm`.
-
-Rewrite `e1` using `[hab, hone0]`. Conclude with `⟨a, b, hab, e1.symm, hfa, hgb⟩`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eq_single_of_mul_eq_one {R A : Type*} [CommRing R] [IsDomain R] [AddCommMonoid A]
     [TwoUniqueSums A] {f g : AddMonoidAlgebra R A} (h : f * g = 1) :

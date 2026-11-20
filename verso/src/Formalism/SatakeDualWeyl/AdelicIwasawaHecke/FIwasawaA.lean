@@ -15,9 +15,9 @@ def fIwasawaH (x y : Fin n → L) : L := ∑ j, σ (x (Fin.rev j)) * y j
 def fIwasawaUn (M : Matrix (Fin n) (Fin n) L) : Prop := cT σ M * antiJ L n * M = antiJ L n
 
 /- English proof (translation)
-Unfold `antiJ`. Apply the tactic sequence `try simp only [Matrix.of_apply]`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Establish `hiff : ((i : ℕ) + (j : ℕ) + 1 = n) ↔ (j = Fin.rev i)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.ext_iff, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h : j = Fin.rev i`. Rewrite using `[if_pos h, if_pos (hiff.mpr h)]`. Rewrite using `[if_neg h, if_neg (fun h' => h (hiff.mp h'))]`.
+Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fIwasawa_antiJ (i j : Fin n) : antiJ L n i j = if j = Fin.rev i then 1 else 0 := by
   unfold antiJ
@@ -31,13 +31,13 @@ theorem fIwasawa_antiJ (i j : Fin n) : antiJ L n i j = if j = Fin.rev i then 1 e
   · rw [if_neg h, if_neg (fun h' => h (hiff.mp h'))]
 
 /- English proof (translation)
-Apply the tactic sequence `first | rfl | simp [cT] | (unfold cT; simp)`.
+A detailed English derivation is pending.
 -/
 private theorem cT_apply' (M : Matrix (Fin n) (Fin n) L) (i j : Fin n) : cT σ M i j = σ (M j i) := by
   first | rfl | simp [cT] | (unfold cT; simp)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [cT_apply', Matrix.mul_apply, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl (fun k _ => mul_comm _ _)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cT_mul_adelic_iwasawa_hecke (A B : Matrix (Fin n) (Fin n) L) : cT σ (A * B) = cT σ B * cT σ A := by
   ext i j
@@ -45,9 +45,9 @@ private theorem cT_mul_adelic_iwasawa_hecke (A B : Matrix (Fin n) (Fin n) L) : c
   exact Finset.sum_congr rfl (fun k _ => mul_comm _ _)
 
 /- English proof (translation)
-Unfold `fIwasawaH`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.rev k)]`. Simplify using `[fIwasawa_antiJ, cT_apply']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `l _ hl`. Establish `: k ≠ Fin.rev l` using `fun h => hl (by rw [h, Fin.rev_rev])`. Simplify using `[fIwasawa_antiJ, this]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fIwasawa_gram (M : Matrix (Fin n) (Fin n) L) (a b : Fin n) :
     (cT σ M * antiJ L n * M) a b = fIwasawaH σ (fun i => M i a) (fun i => M i b) := by
@@ -62,9 +62,9 @@ theorem fIwasawa_gram (M : Matrix (Fin n) (Fin n) L) (a b : Fin n) :
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Unfold `fIwasawaH`. Rewrite using `[Finset.sum_eq_single (Fin.rev p)]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Establish `: Fin.rev j ≠ p` using `fun h => hj (by rw [← h, Fin.rev_rev])`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Pi.single_apply, this]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fIwasawa_H_single_left (p : Fin n) (w : Fin n → L) :
     fIwasawaH σ (Pi.single p 1) w = w (Fin.rev p) := by
@@ -77,11 +77,11 @@ theorem fIwasawa_H_single_left (p : Fin n) (w : Fin n → L) :
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `hc : ∀ a : Fin n, (fun i => M i a) = M *ᵥ Pi.single a 1`. Introduce `a`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Unfold `fIwasawaUn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use extensionality with `a b`. Rewrite using `[fIwasawa_gram, hc a, hc b, h, fIwasawa_H_single_left, fIwasawa_antiJ]`. Distinguish the cases in `hb : b = Fin.rev a`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, hb, Ne.symm hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fIwasawa_un_of_isometry (M : Matrix (Fin n) (Fin n) L)
     (h : ∀ x y, fIwasawaH σ (M *ᵥ x) (M *ᵥ y) = fIwasawaH σ x y) : fIwasawaUn σ M := by
@@ -95,7 +95,7 @@ theorem fIwasawa_un_of_isometry (M : Matrix (Fin n) (Fin n) L)
   · simp [Pi.single_apply, hb, Ne.symm hb]
 
 /- English proof (translation)
-Unfold `fIwasawaUn at *`. Rewrite using `[cT_mul_adelic_iwasawa_hecke, show cT σ B * cT σ A * antiJ L n * (A * B) = cT σ B * (cT σ A * antiJ L n * A) * B by`. Simplify using `only [Matrix.mul_assoc], hA, hB]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fIwasawa_un_mul (A B : Matrix (Fin n) (Fin n) L) (hA : fIwasawaUn σ A) (hB : fIwasawaUn σ B) :
     fIwasawaUn σ (A * B) := by
@@ -104,11 +104,11 @@ theorem fIwasawa_un_mul (A B : Matrix (Fin n) (Fin n) L) (hA : fIwasawaUn σ A) 
     simp only [Matrix.mul_assoc], hA, hB]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.rev i)]`. Rewrite using `[fIwasawa_antiJ, fIwasawa_antiJ, Fin.rev_rev]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, h, Ne.symm h]`. Introduce `k _ hk`. Simplify using `[fIwasawa_antiJ, hk]`. Introduce `h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem fIwasawa_antiJ_mul_antiJ : antiJ L n * antiJ L n = 1 := by
   ext i j
@@ -125,7 +125,7 @@ def fIwasawaInv (M : Matrix (Fin n) (Fin n) L) : Matrix (Fin n) (Fin n) L :=
   antiJ L n * cT σ M * antiJ L n
 
 /- English proof (translation)
-Unfold `fIwasawaInv`. Unfold `fIwasawaUn at hM`. Rewrite using `[show antiJ L n * cT σ M * antiJ L n * M = antiJ L n * (cT σ M * antiJ L n * M) by`. Simplify using `only [Matrix.mul_assoc], hM, fIwasawa_antiJ_mul_antiJ]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fIwasawa_inv_mul (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) :
     fIwasawaInv σ M * M = 1 := by
@@ -135,7 +135,7 @@ theorem fIwasawa_inv_mul (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) :
     simp only [Matrix.mul_assoc], hM, fIwasawa_antiJ_mul_antiJ]
 
 /- English proof (translation)
-Establish `h` using `fIwasawa_inv_mul σ M hM`. Use `first`. Consider the case `exact mul_eq_one_comm.mp h`. Consider the case `(rw [← Matrix.inv_eq_left_inv h]; exact Matrix.mul_nonsing_inv _ (Matrix.isUnit_det_of_left_inverse h))`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fIwasawa_mul_inv (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) :
     M * fIwasawaInv σ M = 1 := by
@@ -154,7 +154,7 @@ theorem fIwasawa_mk_val (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) :
     (((fIwasawaMk σ M hM : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = M := rfl
 
 /- English proof (translation)
-The claim follows from `g.2`.
+A detailed English derivation is pending.
 -/
 theorem fIwasawa_mem_un (g : GU σ n) :
     fIwasawaUn σ (((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) := g.2

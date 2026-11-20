@@ -28,7 +28,7 @@ def IsPl {n d d₁ : ℕ} (hd : d = d₁ + 2) {R : Type} [Zero R] (γ : Fin n ×
   ∀ p, γ ((idx hd).symm (Sum.inl p)) = 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, piInf, compInf, inclR, infEmb_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_map_piInf_emb {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {m k : Type}
     (J : Matrix m k E) {w : InfinitePlace F} (τ : EmbOver E w) : (incM F J).map (piInf τ) = J.map τ.1 := by
@@ -36,21 +36,21 @@ theorem incM_map_piInf_emb {F E : Type} [Field F] [NumberField F] [Field E] [Num
   simp [incM, piInf, compInf, inclR, infEmb_tmul]
 
 /- English proof (translation)
-Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : AF F).1 = 0`. Rewrite using `[show (0 : AF F).1 = 0 from rfl, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evI_zero_eq {F : Type} [Field F] [NumberField F] : evI F (0 : AF F) = 0 := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : AF F).1 = 0
   rw [show (0 : AF F).1 = 0 from rfl, map_zero]
 
 /- English proof (translation)
-Introduce `t ht` and use `by rw [← Matrix.smul_mul, hz t ht, Matrix.zero_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_mul_right_of {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {a b c : Type}
     [Fintype b] {z : Matrix a b (AE F E)} (hz : At (evI F) z) (N : Matrix b c (AE F E)) : At (evI F) (z * N) :=
   fun t ht => by rw [← Matrix.smul_mul, hz t ht, Matrix.zero_mul]
 
 /- English proof (translation)
-Simplify using `[dH]`.
+Simplify using the standard rewrite rules.
 -/
 example {F : Type} [Field F] [NumberField F] (f : (Fin 1 → mixedEmbedding.mixedSpace F) → ℂ) (x : Fin 1 → mixedEmbedding.mixedSpace F) :
     dH 0 0 f x = fderiv ℝ f x 0 := by simp [dH]

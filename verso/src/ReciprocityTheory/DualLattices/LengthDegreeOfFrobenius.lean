@@ -8,18 +8,18 @@ import ReciprocityTheory.DualLattices.LengthDegreeOfWdetFrobenius
 namespace ReciprocityTheory.PGsh.Up
 
 /- English proof (translation)
-The claim follows from `cokernelLengthComparison_of wdetLen (wdetDegree_of_smith_restrict hS restrict_hopfOrder_length restrictedHopfOrderApproximation)`.
+A detailed English derivation is pending.
 -/
 theorem wdet_of_smith_normal_form (hS : EigenQuotientSmithStatement) : CokernelLengthComparisonStatement :=
   cokernelLengthComparison_of wdetLen (wdetDegree_of_smith_restrict hS restrict_hopfOrder_length restrictedHopfOrderApproximation)
 
 /- English proof (translation)
-The claim follows from `wdet_of_smith_normal_form smith_normal_form_statement`.
+A detailed English derivation is pending.
 -/
 theorem u6 : CokernelLengthComparisonStatement := wdet_of_smith_normal_form smith_normal_form_statement
 
 /- English proof (translation)
-The claim follows from `lengthDegree_of_wdet_frobenius u6 hU7`.
+A detailed English derivation is pending.
 -/
 theorem lengthDegree_of_frobenius (hU7 : UnramifiedCokernelLengthStatement) : CokernelLowerBoundStatement := lengthDegree_of_wdet_frobenius u6 hU7
 

@@ -17,17 +17,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.ColumnSplitting
 
 /- English proof (translation)
-Introduce `D n t B W d hn I μ hμ x₀ y`. Establish `hring` using `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Take `⟨i1, i2, i3, i4, i5⟩` from `top_mx (D := D) W.rank t`. Take `⟨-, j2, j3, j4, j5⟩` from `top_mx (D := D) t n`. Take `⟨k1, -, -, -, -⟩` from `top_mx (D := D) B.rank t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, g2, g3, -, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Establish `: BorelSpace (GA D W)` using `⟨rfl⟩`. Take `⟨hc, 𝓕, hf⟩` from `I.cov₁`. Use `hf.1` as an intermediate fact. Use `I.haar` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `I.probK` as an intermediate fact. Establish `hQ` using `sigmaFinite_parameter_product_measure I μ hμ`. Take `⟨p1, p2⟩` from `top_pair (D := D) B.rank W.rank t`. Establish `o1 : OpensMeasurableSpace (Mx D B.rank W.rank × Mx D B.rank t)` using `p1.opensMeasurable`. Establish `hS : Measurable fun z : Mx D B.rank W.rank × Mx D B.rank t => (z.1, z.2 + mm z.1 y)` using `(continuous_fst.prodMk (continuous_snd.add (continuous_fst.matrix_mul continuous_const))).measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : MeasurePreserving (fun p : I.l.K × Par D n t W => (p.1, p.2.1, p.2.2.1, p.2.2.2 + y)) (I.νK.prod (Q0 I μ)) (I.νK.prod (Q0 I μ))`. Unfold `Q0`. Conclude with `(MeasurePreserving.id _).prod ((MeasurePreserving.id _).prod ((MeasurePreserving.id _).prod (measurePreserving_add_right μ y)))`. Establish `hπ` using `measurable_pi (d := d) hn I x₀`. Establish `hcomp : (fun z : Mx D B.rank W.rank × Mx D B.rank t => (z.1, z.2 + mm z.1 y)) ∘ (fun p : I.l.K × Par D n t W => ac B ((p.1 : GA D B)⁻¹) (zp d hn x₀ p.2)) = (fun p : I.l.K × Par D n t W => ac B ((p.1 : GA D B)⁻¹) (zp d hn x₀ p.2)) ∘ (fun p : I.l.K × Par D n t W => (p.1, p.2.1, p.2 …`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `p`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Establish `key : ∀ {a b c : ℕ} (g : Mx D a a) (ξ : Mx D a b) (u : Mx D a c) (y' y : Mx D b c), mm g (mm ξ y' + u) + mm (mm g ξ) y = mm g (mm ξ (y' + y) + u)`. Introduce `a b c g ξ u y' y`. Simplify using `only [mm, Matrix.mul_add, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Conclude with `key _ _ _ _ _`. Unfold `nuT`. Rewrite using `[Measure.map_map hS hπ, hcomp, ← Measure.map_map hπ hτ.measurable, hτ.map_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuT_shear_invariant : ∀ (D : D7) (n t : ℕ) (B W : HSp D) (d : HypDec B W t) (hn : W.rank + t = n) (I : IkD d n)
     (μ : Measure (Mx D W.rank t)), μ.IsAddHaarMeasure → ∀ x₀ (y : Mx D W.rank t),

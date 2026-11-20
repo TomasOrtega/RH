@@ -14,19 +14,17 @@ namespace GlobalTheory.ThetaLeast
 open MvPowerSeries ReciprocityTheory.ChartRestriction.G.TB ReciprocityTheory.ChartRestriction.G.TB.WickVanishing GlobalTheory.QuadDeriv GlobalTheory.GaugeBaseChange in
 
 /- English proof (translation)
-Use `set ψ := algebraMap S S' with hψ`. Establish `eF : (fun i => MvPowerSeries.map ψ (B.FK S i)) = B.FK S'`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `MvPowerSeries.map ψ (MvPowerSeries.map (algebraMap S S) (B.G.F i)) = MvPowerSeries.map (algebraMap S S') (B.G.F i)`. Use extensionality with `e`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[coeff_map, hψ]`. Establish `eA : mapP ψ (B.actK S w0) = B.actK S' w0`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `MvPowerSeries.map ψ (MvPowerSeries.map (algebraMap S S) (B.A.act w0 i)) = MvPowerSeries.map (algebraMap S S') (B.A.act w0 i)`. Use extensionality with `e`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[coeff_map, hψ]`. Establish `gC : GP (comp1 (B.actK S w0) (pt S (n` using `1) d 0)) := gp_comp1 _ _ (gp_actK B w0) (gp_pt 0)`. Establish `cL : constantCoeff (B.hL S h w0) = 0` using `gt_const_ev _ (pair_points_zero_constant (gp_pt 0) gC) h hc`. Establish `eL : MvPowerSeries.map ψ (B.hL S h w0) = B.hL S' (MvPowerSeries.map ψ h) w0`. Unfold `FB.hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_ev_two _ _ _ (gp_pt _) gC, baseChange_comp1 _ _ _ (gp_pt _), eA, baseChange_pt]`. Establish `g1 : ∀ (b : Fin n) (j : Fin 1), GP ((![pt S d b] : Fin 1 → Pt S n d) j)`. Introduce `b j`. Use `fin_cases j`. Conclude with `gp_pt b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `cb : ∀ b : Fin n, constantCoeff (ev (n` using `n) ![pt S d b] (B.hL S h w0)) = 0 := fun b => gt_const_ev _ (g1 b) _ cL`. Establish `eb : ∀ b : Fin n, MvPowerSeries.map ψ (ev (n` using `n) ![pt S d b] (B.hL S h w0)) = ev (n := n) ![pt S' d b] (B.hL S' (MvPowerSeries.map ψ h) w0) := by`. Introduce `b`. Rewrite using `[map_ev ψ _ (g1 b), eL]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Use `fin_cases j`. Conclude with `baseChange_pt ψ b`. Unfold `nabValN`. Rewrite using `[← MvPowerSeries.constantCoeff_map, ← GlobalTheory.dpolyN_map, eF, map_mul, map_expS _ _ (by`.
-
-Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, map_sum, Finset.sum_eq_zero fun b _ => cb b, mul_zero]),`. Use the proof step `MvPowerSeries.smul_eq_C_mul, MvPowerSeries.smul_eq_C_mul, map_mul, map_C, map_natCast ψ, map_sum,`. Use the proof step `Finset.sum_congr rfl fun b _ => eb b]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabValN_algebraMap (S S' : Type) [CommRing S] [Algebra ℚ S] [CommRing S'] [Algebra ℚ S'] [Algebra S S']
     (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB S d O) (h : PS S 2 d)
@@ -75,7 +73,7 @@ theorem nabValN_algebraMap (S S' : Type) [CommRing S] [Algebra ℚ S] [CommRing 
     Finset.sum_congr rfl fun b _ => eb b]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Submodule.smul_mem _ s hP.1, fun σ i i' hi t => by rw [map_smul, hP.2.1 σ i i' hi t], fun m hm => hP.2.2 m (MvPolynomial.support_smul hm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem smul_mem_HHa {Ty : Type} {r : Ty → ℕ} {n : ℕ} {k : Type} [Field k] {cc : Ty → Ty} {isX : Ty → Prop}
     {a : Ty → ℕ → ℕ} (s : k) {P : MvPolynomial (Letter Ty r n) k} (hP : P ∈ HHa r n k cc isX a) :
@@ -84,7 +82,7 @@ theorem smul_mem_HHa {Ty : Type} {r : Ty → ℕ} {n : ℕ} {k : Type} [Field k]
     fun m hm => hP.2.2 m (MvPolynomial.support_smul hm)⟩
 
 /- English proof (translation)
-Establish `h : ∀ x : 𝓞 K, ∃ z : V, algebraMap V L z = io (x : K)` using `fun x => IsIntegrallyClosed.algebraMap_eq_of_integral (IsIntegral.tower_top (R := ℤ) (map_isIntegral_int io x.isIntegral_coe))`. Use `choose g hg using h`. Establish `inj` using `IsFractionRing.injective V L`. Apply the tactic sequence `refine ⟨⟨⟨⟨g, inj ?_⟩, fun x y => inj ?_⟩, inj ?_, fun x y => inj ?_⟩, hg⟩ <;> simp [hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_lift_integers (K : Type) [Field K] [NumberField K] (V L : Type) [CommRing V] [IsDomain V]
     [IsIntegrallyClosed V] [Field L] [Algebra V L] [IsFractionRing V L] (io : K →+* L) :
@@ -97,23 +95,19 @@ theorem exists_lift_integers (K : Type) [Field K] [NumberField K] (V L : Type) [
   refine ⟨⟨⟨⟨g, inj ?_⟩, fun x y => inj ?_⟩, inj ?_, fun x y => inj ?_⟩, hg⟩ <;> simp [hg]
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `exists_lift_integers K T.V T.Fr io`. Set `p : Ideal (𝓞 K)` to `(IsLocalRing.maximalIdeal T.V).comap φ`. Use `haveI hp : p.IsPrime := Ideal.comap_isPrime _ _`. Establish `hS : p.primeCompl ≤ nonZeroDivisors (𝓞 K)` using `p.primeCompl_le_nonZeroDivisors`. Set `V` to `Localization.subalgebra.ofField K p.primeCompl hS`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsLocalRing V := IsLocalization.AtPrime.isLocalRing V p`. Use `haveI : IsDedekindDomain V := IsLocalization.isDedekindDomain (𝓞 K) hS V`. Use `haveI : IsPrincipalIdealRing V := ((tfae_of_isNoetherianRing_of_isLocalRing_of_isDomain V).out 2 0).1 ‹IsDedekindDomain V›`. Establish `hu : ∀ s : p.primeCompl, IsUnit (φ s)` using `fun s => by`. Assume the negation of the conclusion as `hn`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `s.2 ((IsLocalRing.mem_maximalIdeal _).2 hn)`. Establish `hV : ∀ x : V, io (algebraMap V K x) ∈ (algebraMap T.V T.Fr).range`. Introduce and unpack `⟨x, a, s, hs, rfl⟩`. Take `⟨u, hu'⟩` from `hu ⟨s, hs⟩`. Use `⟨φ a * (u⁻¹ : T.Vˣ), ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `_ = io (algebraMap _ K a * (algebraMap _ K s)⁻¹)`. Rewrite using `[map_mul, map_mul, map_inv₀, map_units_inv, hu', hφ, hφ]`. Take `⟨s, c, Q, hc, hQ, hsum⟩` from `GlobalTheory.exists_integral_combination_of_mem_HaO Ty r n V K T.Fr io _ hV cc isX a P hP`. Establish `hden : ∀ j, ∃ b : p.primeCompl, ∀ m, (((b : 𝓞 K) : K) • Q j).coeff m ∈ (integralClosure ℤ K).toSubring`. Introduce `j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose g hg using (hQ j).2`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples p.primeCompl (Q j).support g`. Use `⟨b, fun m => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hm : m ∈ (Q j).support`. Take `⟨z, hz⟩` from `hb m hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: (((b : 𝓞 K) : K) • Q j).coeff m = (z : K)`. Rewrite using `[MvPolynomial.coeff_smul, ← hg m]`. Use `congrArg (algebraMap V K) hz` as an intermediate fact. Rewrite `this` using `[← IsScalarTower.algebraMap_apply, Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply]`. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `z.isIntegral_coe`. Rewrite using `[MvPolynomial.coeff_smul, MvPolynomial.notMem_support_iff.1 hm, smul_zero]`. Conclude with `Subring.zero_mem _`. Use `choose b hb using hden`.
-
-Use `choose c' hc' using hc`. Use `choose u hu' using hu`. Use `⟨s, fun j => c' j * ((u (b j))⁻¹ : T.Vˣ), fun j => ((b j : 𝓞 K) : K) • Q j, fun j => ⟨smul_mem_HHa _ (hQ j).1, hb j⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Establish `h0 : io ((b j : 𝓞 K) : K) ≠ 0`. Rewrite using `[← hφ, ← hu']`. Conclude with `((u (b j)).isUnit.map _).ne_zero`. Use `beta_reduce`. Rewrite using `[MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul (MvPolynomial.map io), MvPolynomial.map_C, ← mul_assoc, ← map_mul, map_mul (algebraMap T.V T.Fr), map_units_inv, hu', hφ, hc', mul_assoc, inv_mul_cancel₀ h0, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_combination_integers (K : Type) [Field K] [NumberField K] (T : CDVR) (io : K →+* T.Fr)
     (Ty : Type) (r : Ty → ℕ) (n : ℕ) (cc : Ty → Ty) (isX : Ty → Prop) (a : Ty → ℕ → ℕ)
@@ -172,9 +166,9 @@ theorem exists_combination_integers (K : Type) [Field K] [NumberField K] (T : CD
     ← map_mul, map_mul (algebraMap T.V T.Fr), map_units_inv, hu', hφ, hc', mul_assoc, inv_mul_cancel₀ h0, mul_one]
 
 /- English proof (translation)
-Establish `key : ∀ m ∈ P.support, (m.sum fun _ e => e) = DF Dw a`. Introduce `m hm`. Rewrite using `[Finsupp.sum_fintype _ _ (by simp), Fintype.sum_sigma, DF]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => hP.1.2.2 m hm τ i`. Conclude with `Finset.sup_le fun m' hm' => (key m' hm').le`.
+A detailed English derivation is pending.
 -/
 theorem totalDegree_le_DF {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     (T : CDVR) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {P : MvPolynomial (LtN Dw n) T.Fr} (hP : P ∈ FFV (Dw := Dw) T a n) :
@@ -188,7 +182,7 @@ theorem totalDegree_le_DF {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   exact Finset.sup_le fun m' hm' => (key m' hm').le
 
 /- English proof (translation)
-Distinguish the cases in `hx : algebraMap T.V T.Fr x = 0`. Rewrite using `[hx, map_zero, AddValuation.map_zero]`. Conclude with `le_top`. Rewrite using `[hv _ hx]`. Conclude with `GlobalTheory.vV_algebraMap_nonneg_dvr T x` after adjusting the coercions.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_algebraMap_nonneg (T : CDVR) {F : Type} [Field F] [Algebra T.Fr F] (v : AddValuation F (WithTop ℚ))
     (hv : ∀ x : T.Fr, x ≠ 0 → v (algebraMap T.Fr F x) = (((vV T.V x : ℤ) : ℚ) : WithTop ℚ)) (x : T.V) :
@@ -199,11 +193,11 @@ theorem val_algebraMap_nonneg (T : CDVR) {F : Type} [Field F] [Algebra T.Fr F] (
     exact_mod_cast GlobalTheory.vV_algebraMap_nonneg_dvr T x
 
 /- English proof (translation)
-Establish `hz : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hρ` using `[map_zero, mul_zero, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe hρ`. Rewrite `hρ` using `[AddValuation.map_mul, hv z hz]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (((vV T.V z : ℤ) : ℚ) : WithTop ℚ) ≤ (ρ : WithTop ℚ)` using `hρ ▸ le_add_of_nonneg_left hε`. Establish `h2 : ((vV T.V z : ℤ) : ℚ) ≤ ρ` using `WithTop.coe_le_coe.1 h1`. Establish `h3 : ((vV T.V z : ℤ) : ℝ) ≤ (ρ : ℝ)` using `by exact_mod_cast h2`. Rewrite using `[nval_of_ne hz, nval_of_ne hx, ← EReal.coe_add, EReal.coe_le_coe_iff, ← add_div]`. Use `div_le_div_of_nonneg_right ?_ (Nat.cast_nonneg e)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle` using `[Rat.cast_intCast]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nval_le_of_val (T : CDVR) {F : Type} [Field F] [Algebra T.Fr F] (v : AddValuation F (WithTop ℚ))
     (hv : ∀ x : T.Fr, x ≠ 0 → v (algebraMap T.Fr F x) = (((vV T.V x : ℤ) : ℚ) : WithTop ℚ))
@@ -224,7 +218,7 @@ theorem nval_le_of_val (T : CDVR) {F : Type} [Field F] [Algebra T.Fr F] (v : Add
   linarith
 
 /- English proof (translation)
-Rewrite using `[← EReal.sub_le_iff_le_add (Or.inl (EReal.coe_ne_bot δ)) (Or.inl (EReal.coe_ne_top δ))]`. Conclude with `le_iInf fun i => (EReal.sub_le_iff_le_add (Or.inl (EReal.coe_ne_bot δ)) (Or.inl (EReal.coe_ne_top δ))).2 (h i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_iInf_add_coe {ι : Sort*} {X : EReal} {g : ι → EReal} {δ : ℝ} (h : ∀ i, X ≤ g i + (δ : EReal)) :
     X ≤ (⨅ i, g i) + (δ : EReal) := by

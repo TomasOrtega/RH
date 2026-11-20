@@ -6,13 +6,11 @@ open GlobalTheory.KZ GlobalTheory.CyclotomicQExpansion GlobalTheory.Glue
 open scoped MatrixGroups
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X A N l _ n w b b' _ _ c c' φ φ' h h'`. Take `⟨f, hfi, hfc, hfd, hfl⟩` from `h`. Take `⟨f', hfi', hfc', hfd', hfl'⟩` from `h'`. Use `⟨f ^ (c.appr n) * f' ^ (c'.appr n), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `GlobalTheory.ThAdd.inv_mul (GlobalTheory.ThAdd.inv_pow hfi _) (GlobalTheory.ThAdd.inv_pow hfi' _)`. Rewrite using `[← GlobalTheory.ThAdd.cls_comb, ← hfc, ← hfc', ← map_smul, ← map_smul, ← map_add]`. Both sides reduce to the same expression. Introduce `δ hδ hδ'`. Take `⟨g, hgi, hg⟩` from `hfd δ hδ hδ'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hgi', hg'⟩` from `hfd' δ hδ hδ'`. Use `⟨g ^ (c.appr n) * g' ^ (c'.appr n), GlobalTheory.ThAdd.inv_mul (GlobalTheory.ThAdd.inv_pow hgi _) (GlobalTheory.ThAdd.inv_pow hgi' _), ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val]`.
-
-Conclude with `GlobalTheory.ThAdd.isDl_mul (GlobalTheory.ThAdd.isDl_pow hfl _) (GlobalTheory.ThAdd.isDl_pow hfl' _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.theta_basis_linear_combination : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (A : ValuationSubring Ω) (N l : ℕ) [Fact l.Prime] (n w : ℕ) (b b' : X.Fn l), b ∈ X.B N l w → b' ∈ X.B N l w → ∀ (c c' : ℤ_[l]) (φ φ' : HahnSeries ℚ Ω),
   IsThB X A N l n b φ → IsThB X A N l n b' φ' →

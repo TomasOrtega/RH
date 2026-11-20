@@ -24,25 +24,25 @@ variable {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model �
 variable {n' : ℕ} {X' : Spc F E n'}
 
 /- English proof (translation)
-Take `⟨j, j1, j2⟩` from `exists_inv' b`. Take `⟨j', j1', j2'⟩` from `exists_inv' b'`. Introduce `φ' p1' Ψ hΨ`. Use `schA_le (LinearMap.eqLocus (L φ' ∘ₛₗ om (u, 1)) (L φ')) (fun f φ p1 p2 => ?_) hΨ` and prove the remaining obligations. Take `⟨T, t1, t2, t3⟩` from `intersection_update_fsHerm_neg_one v f p1 p2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `N : (Fv F v)ˣ →* ℂˣ` to `MonoidHom.toHomUnits ⟨⟨fun x => apow x ((d : ℂ) / 2), apow_one _⟩, fun x y => apow_mul x y _⟩`. Establish `hN : ∀ x, ((ν * N⁻¹) x : ℂ) = ν x * (apow x ((d : ℂ) / 2))⁻¹` using `fun x => by simp [N]`. Establish `cj : ∀ {z : ℂ}, ‖z‖ = 1 → starRingEnd ℂ z = z⁻¹` using `fun h => (Complex.inv_eq_conj h).symm`. Establish `cj' : ∀ (x : (Fv F v)ˣ) (m : ℕ), starRingEnd ℂ (apow x ((m : ℂ) / 2)) = apow x ((m : ℂ) / 2)` using `fun x m => by`. Take `⟨r, -, h⟩` from `apow_real x m`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h, Complex.conj_ofReal]`. Set `β : SB (Matrix (Fin n) (Fin d) (Fv F v)) →ₗ[ℂ] SB (Matrix (Fin n') (Fin d) (Fv F v)) →ₗ[ℂ] ℂ` to `LinearMap.mk₂ ℂ (fun a b => L (j' b.1) (T (j (star a.1)))) (fun _ _ _ => by simp) (fun _ _ _ => by simp) (fun _ _ _ => by simp) fun _ _ _ => by simp`. Set `g₁` to `Matrix.GeneralLinearGroup.mkOfDetNeZero g₀.1ᵀ (by rw [Matrix.det_transpose]; exact g₀.det_ne_zero)`. Establish `key` using `TC.locBil hL v e (ν * N⁻¹) (fun t ht h => hne (Units.ext ?_)) β (fun a b h₀ => ?_) ⟨_, sb_star (b.1 (p1 v))⟩ ⟨_, b'.1 p1'⟩ g₁`. Establish `k2` using `t3 _ _ (p1 v) _ (acts_of_reads hu j2 (p1 v)).2`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `k2` using `[omB_left, map_smul, map_smul, t1, Function.update_eq_self]`. Express the relevant statement in the definitionally equal form `L _ (T (j (star fun y => star (ι (φ v) (g₀.1ᵀ * y))))) = _ * L _ (T (j (star (star _)))) at key`. Rewrite `key` using `[star_star, j2 _ (p1 v), j2' _ p1', t1 (φ v), Function.update_eq_self, hN, show Matrix.GeneralLinearGroup.det g₁ = gdet g₀ from Units.ext (Matrix.det_transpose _), ← Pi.star_def, star_star]`. Express the relevant statement in the definitionally equal form `L _ (om (u, 1) _) = _`. Rewrite using `[k2, map_smulₛₗ, key, map_mul, cj (n1 _), cj', smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `apow_ne_zero (gdet g₀) ((d : ℂ) / 2)` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take `⟨r, hr, e1⟩` from `apow_real (unifAt v) d`. Rewrite `h` using `[hN, e1, mul_inv_eq_iff_eq_mul₀ (by exact_mod_cast hr.ne'), ← Complex.ofReal_mul]`. Use `n1 (unifAt v)` as an intermediate fact.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h, Complex.norm_real, Real.norm_of_nonneg (mul_pos ht hr).le]`. Rewrite using `[h, this]`. Both sides reduce to the same expression. Take `⟨h, r1, r2, r3⟩` from `hh h₀`. Establish `a1` using `j1 _ (sb_star a.2)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `b1` using `j1' _ b.2`. Establish `k1` using `t3 _ _ a1.1 _ (acts_of_reads r1 j2 a1.1).2`. Establish `k3` using `r3 _ b1.1 _ (acts_of_reads r2 j2' b1.1).1 (acts_of_reads r2 j2' b1.1).2 _ (t2 _ a1.1)`. Rewrite `k3` using `[k1, a1.2, b1.2, omB_right, omB_right]`. Simplify using `only [map_smul, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_mul, cj (n2 _), cj'] at k3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hd : (d : ℂ) / 2 = (n : ℂ) / 2 + (n' : ℂ) / 2`. Use `Fintype.card_congr e` as an intermediate fact. Simplify using `only [Fintype.card_sum, Fintype.card_fin] at this`. Rewrite using `[← this]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `L (j' fun y => b.1 (y * h₀.1)) (T (j fun y => star a.1 (y * h₀.1))) = _ * L (j' b.1) (T (j (star a.1)))`. Rewrite using `[← k3, hN, hν, hd, apow_add]`. Use `apow_ne_zero (gdet h₀) ((n : ℂ) / 2)` as an intermediate fact. Use `apow_ne_zero (gdet h₀) ((n' : ℂ) / 2)` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Units.val_div_eq_div_val]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem inv_loc₂ (hL : LocDist) (e : Fin n ⊕ Fin n' ≃ Fin d) {v : Pl F} {om : Rep σ X W} {om' : Rep σ X' W}
     {ι : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) (Fv F v) → ℂ)}
@@ -104,7 +104,7 @@ theorem inv_loc₂ (hL : LocDist) (e : Fin n ⊕ Fin n' ≃ Fin d) {v : Pl F} {o
     field_simp
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `S.subtype.exists_leftInverse_of_injective S.ker_subtype`. Take `⟨q', hq'⟩` from `S'.subtype.exists_leftInverse_of_injective S'.ker_subtype`. Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun a x => P (q a) (q' x)) (fun a b x => by simpa using h1 _ (q a).2 _ (q b).2 _ (q' x).2) (fun c a x => by simpa using h2 c (q a) (q' x)) (fun a x y => by simpa using h3 _ (q a).2 _ (q' x).2 _ (q' y).2) (fun c a x => by simpa usi …` and prove the remaining obligations. Conclude with `congrArg₂ P (congrArg Subtype.val (LinearMap.congr_fun hq ⟨a, ha⟩)) (congrArg Subtype.val (LinearMap.congr_fun hq' ⟨x, hx⟩))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_ext {A A' : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup A'] [Module ℂ A'] (S : Submodule ℂ A)
     (S' : Submodule ℂ A') (P : A → A' → ℂ) (h1 : ∀ a ∈ S, ∀ b ∈ S, ∀ x ∈ S', P (a + b) x = P a x + P b x)
@@ -120,7 +120,7 @@ theorem exists_ext {A A' : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup A
   exact congrArg₂ P (congrArg Subtype.val (LinearMap.congr_fun hq ⟨a, ha⟩)) (congrArg Subtype.val (LinearMap.congr_fun hq' ⟨x, hx⟩))
 
 /- English proof (translation)
-The claim follows from `let h := hU F E σ hp.base.cm d W.J (-1) (fun i j => by simpa using hp.skew.skew i j) (hE F E σ B hp.base d W _ _ (Or.inr hp.skew)).1.2 ⟨h.1, h.2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem uniW (hE : EpsOf) (hU : PositivityTheory.ThKF.Unimod) (hp : IsPair B M χX χW om r s r' s') :
     Countable (ratU σ W.J) ∧ ∀ μ : Measure (UA σ W.J), μ.IsHaarMeasure → μ.IsMulRightInvariant :=
@@ -129,9 +129,9 @@ theorem uniW (hE : EpsOf) (hU : PositivityTheory.ThKF.Unimod) (hp : IsPair B M �
   ⟨h.1, h.2.2⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `uniW hE hU hp`. Use `h2 μ hμ` as an intermediate fact. Establish `: BorelSpace (UA σ W.J)` using `⟨rfl⟩`. Establish `e : ∀ x, theta om (om (1, h) Ψ) g x = theta om Ψ g (x * h)` using `fun x => by`. Simplify using `only [theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [th, pet, e]`. Conclude with `PositivityTheory.ThKF.L2.integral_right hD (fun x => f x * star (theta om Ψ g x)) (fun γ hγ x => by simp only [hf.2.1 γ hγ, theta_rat hB hp hΨ g γ hγ]) h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem th_right (hB : ThetaBasic) (hE : EpsOf) (hU : PositivityTheory.ThKF.Unimod) (hp : IsPair B M χX χW om r s r' s')
     {μ : Measure (UA σ W.J)} {D : Set (UA σ W.J)} (hμ : μ.IsHaarMeasure) (hD : IsFundamentalDomain (ratU σ W.J) D μ) {f}
@@ -146,7 +146,7 @@ theorem th_right (hB : ThetaBasic) (hE : EpsOf) (hU : PositivityTheory.ThKF.Unim
     (fun γ hγ x => by simp only [hf.2.1 γ hγ, theta_rat hB hp hΨ g γ hγ]) h
 
 /- English proof (translation)
-Simplify using `only [th, pet, Finset.sum_apply, Finset.sum_mul]`. Conclude with `integral_finset_sum _ fun i _ => th_int hB hE hV hp hμ hD (hf i) hΨ g`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem th_addf (hB : ThetaBasic) (hE : EpsOf) (hV : FinVolU) (hp : IsPair B M χX χW om r s r' s') {μ : Measure (UA σ W.J)}
     {D : Set (UA σ W.J)} (hμ : μ.IsHaarMeasure) (hD : IsFundamentalDomain (ratU σ W.J) D μ) {ι : Type} (S : Finset ι)
@@ -156,13 +156,13 @@ theorem th_addf (hB : ThetaBasic) (hE : EpsOf) (hV : FinVolU) (hp : IsPair B M �
   exact integral_finset_sum _ fun i _ => th_int hB hE hV hp hμ hD (hf i) hΨ g
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp n' X' M' χX' χW' om' r₁ s₁ hp' hn hχ v t hne μ D hμ hD f ⟨m, T, φ, hT, e⟩ Ψ hΨ u hu g`. Rewrite using `[e, th_addf hB hE hV hp hμ hD _ (fun i => (hT i).1.1 _ (hT i).2) hΨ, th_addf hB hE hV hp hμ hD _ (fun i => (hT i).1.1 _ (hT i).2) hΨ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨⟨t1, t2⟩, t3⟩` from `hT i`. Take `⟨L, hLP⟩` from `exists_ext (SB _) (schA F (Fin n × Fin d)) (fun a x => th om μ D (T i a) x g) (fun a ha b hb x hx => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [th, pet, map_add, Pi.add_apply, add_mul]`. Conclude with `integral_add (th_int hB hE hV hp hμ hD (t1 a ha) hx g) (th_int hB hE hV hp hμ hD (t1 b hb) hx g))`. Use the proof step `(fun c a x => by simp only [th, pet, map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul])`. Use the proof step `(fun a ha x hx y hy => th_add hB hE hV hp hμ hD (t1 a ha) hx hy g) fun c a x hx => th_smul hp μ D _ c hx g`. Take `⟨o1, ι, b, l1, r1⟩` from `hS F E σ B n d X W M χX χW om r s r' s' hp v t`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, ι', b', -, r2⟩` from `hS F E σ B n' d X' W M' χX' χW' om' r₁ s₁ r' s' hp' v t`. Take `⟨g₀, hg₀⟩` from `l1 u hu`. Establish `pr` using `(IsUWeilPair.isUSplitting hp.weil).pres`. Rewrite using `[← th_left, ← hLP _ t3 _ (pr _ _ hΨ), ← hLP _ t3 _ hΨ]`. Use `inv_loc₂ hL (finSumFinEquiv.trans (finCongr hn)) b b' (ν' := chrW χW' t) (α' := chrW χX' t) (om' := om') (fun x => Circle.norm_coe _) (fun x => Circle.norm_coe _) (fun x => ?_) hne L (fun h₀ => ?_) hg₀ _ t3 Ψ hΨ` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hχ, chrW, locChar, MonoidHom.comp_apply, MonoidHom.div_apply, map_div]`. Take `⟨h, hh, e₀⟩` from `o1 h₀`. Use `⟨h, r1 h hh h₀ e₀, r2 h hh h₀ e₀, fun a ha a₁ ha₁ hA x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hLP _ ha₁ _ (pr _ _ hx), hLP _ ha _ hx, t2 h hh a ha a₁ ha₁ hA, th_right hB hE hU hp hμ hD (t1 a ha) hx]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairLoc_of (hB : ThetaBasic) (hE : EpsOf) (hV : FinVolU) (hU : PositivityTheory.ThKF.Unimod) (hL : LocDist) (hS : SplitB) :
     PairLoc := by

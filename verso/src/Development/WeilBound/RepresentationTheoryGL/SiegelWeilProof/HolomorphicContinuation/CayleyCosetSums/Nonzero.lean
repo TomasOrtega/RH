@@ -18,9 +18,9 @@ def psi (m : ℕ) (e : ℤ) (μK : Measure (KR n)) (u : GR n) : ℂ :=
   ∫ k : KR n, (F0 m 0 e (k : GR n))⁻¹ * F0 m 0 e ((k : GR n) * u) ∂μK
 
 /- English proof (translation)
-Establish `hF : Continuous (Function.uncurry fun (u : GR n) (k : KR n) => (F0 m 0 e (k : GR n))⁻¹ * F0 m 0 e ((k : GR n) * u))` using `by show Continuous fun p : GR n × KR n => (F0 m 0 e (p.2 : GR n))⁻¹ * F0 m 0 e ((p.2 : GR n) * p.1)`. Use `Continuous.mul ?_ ?_` and prove the remaining obligations. Conclude with `((Vac.continuous_weight_factor detU1 m 0 e).comp (continuous_subtype_val.comp continuous_snd)).inv₀ fun p => Vac.spherical_section_ne_zero detU1 m 0 e _`. Conclude with `(Vac.continuous_weight_factor detU1 m 0 e).comp ((continuous_subtype_val.comp continuous_snd).mul continuous_fst)`. Use `continuous_parametric_integral_of_continuous (μ := μK) hF isCompact_univ` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : psi m e μK = fun u => ∫ k : KR n, (F0 m 0 e (k : GR n))⁻¹ * F0 m 0 e ((k : GR n) * u) ∂μK` using `rfl`. Rewrite using `[e]`. Simplify `this` using `[Measure.restrict_univ]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem psi_continuous (m : ℕ) (e : ℤ) (μK : Measure (KR n)) [IsFiniteMeasure μK] : Continuous (psi m e μK) := by
   have hF : Continuous (Function.uncurry fun (u : GR n) (k : KR n) =>
@@ -36,9 +36,9 @@ theorem psi_continuous (m : ℕ) (e : ℤ) (μK : Measure (KR n)) [IsFiniteMeasu
   simpa [Measure.restrict_univ] using this
 
 /- English proof (translation)
-Unfold `psi`. Simplify using `only [mul_one]`. Establish `h : ∀ k : KR n, (F0 m 0 e (k : GR n))⁻¹ * F0 m 0 e (k : GR n) = 1` using `fun k => inv_mul_cancel₀ (Vac.spherical_section_ne_zero detU1 _ _ _ _)`. Simplify using `only [h]`. Rewrite using `[integral_const]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Measure.real]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_one (m : ℕ) (e : ℤ) (μK : Measure (KR n)) : psi m e μK 1 = (μK Set.univ).toReal := by
   unfold psi
@@ -50,9 +50,9 @@ theorem psi_one (m : ℕ) (e : ℤ) (μK : Measure (KR n)) : psi m e μK 1 = (μ
   simp [Measure.real]
 
 /- English proof (translation)
-Establish `hk : (mR (k : GR n))ᴴ * mR (k : GR n) = 1` using `(show InK (mR (k : GR n)) from k.2).2`. Establish `h1 : mR (k : GR n) * mR ((k : GR n)⁻¹) = 1`. Rewrite using `[← mR_mul, mul_inv_cancel]`. Simplify using `[mR]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h1, Matrix.mul_one]`. Use `_ = mR ((k : GR n)⁻¹) := by rw [← Matrix.mul_assoc, hk, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mR_conjTranspose_eq_mR_inv_of_KR (k : KR n) : (mR (k : GR n))ᴴ = mR ((k : GR n)⁻¹) := by
   have hk : (mR (k : GR n))ᴴ * mR (k : GR n) = 1 := (show InK (mR (k : GR n)) from k.2).2
@@ -64,29 +64,27 @@ private theorem mR_conjTranspose_eq_mR_inv_of_KR (k : KR n) : (mR (k : GR n))ᴴ
     _ = mR ((k : GR n)⁻¹) := by rw [← Matrix.mul_assoc, hk, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hF` using `Vac.continuous_weight_factor (n := n) detU1 m 0 e`. Establish `hFne : ∀ g, F0 (n` using `n) m 0 e g ≠ 0 := fun g => Vac.spherical_section_ne_zero detU1 m 0 e g`. Establish `hCc : IsCompact (mR ⁻¹' (tsupport β))` using `isCompact_preimage_mR hβs.isCompact`. Establish `hk : Continuous (fun p : GR n × KR n => ((p.2 : GR n)))` using `continuous_subtype_val.comp continuous_snd`. Set `A : GR n × KR n → ℂ` to `fun p => F0 m 0 e p.1 * ((F0 m 0 e (p.2 : GR n))⁻¹ * (β (mR ((p.2 : GR n)⁻¹ * p.1)) : ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `B : GR n × KR n → ℂ` to `fun p => (β (mR p.1) : ℂ) * ((F0 m 0 e (p.2 : GR n))⁻¹ * F0 m 0 e ((p.2 : GR n) * p.1))`. Establish `hAc : Continuous A`. Use `(hF.comp continuous_fst).mul (((hF.comp hk).inv₀ fun p => hFne _).mul ?_)` and prove the remaining obligations. Conclude with `Complex.continuous_ofReal.comp (hβc.comp (continuous_mR.comp (hk.inv.mul continuous_fst)))`. Establish `hBc : Continuous B`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Complex.continuous_ofReal.comp (hβc.comp (continuous_mR.comp continuous_fst))).mul (((hF.comp hk).inv₀ fun p => hFne _).mul (hF.comp (hk.mul continuous_fst)))` and prove the remaining obligations. Establish `hAs : HasCompactSupport A`. Use `HasCompactSupport.intro ((((isCompact_univ (X := KR n)).prod hCc).image ((continuous_subtype_val.comp continuous_fst).mul continuous_snd)).prod (isCompact_univ (X := KR n))) ?_` and prove the remaining obligations. Introduce `p hp`. Establish `hz : β (mR ((p.2 : GR n)⁻¹ * p.1)) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Apply `hp` to reduce the goal to its premises. Use `⟨⟨⟨p.2, (p.2 : GR n)⁻¹ * p.1⟩, ⟨Set.mem_univ _, subset_tsupport _ hne⟩, ?_⟩, Set.mem_univ _⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[A, hz]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hBs : HasCompactSupport B`. Use `HasCompactSupport.intro (hCc.prod (isCompact_univ (X := KR n))) ?_` and prove the remaining obligations. Introduce `p hp`. Establish `hz : β (mR p.1) = 0`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Conclude with `hp ⟨subset_tsupport _ hne, Set.mem_univ _⟩`. Simplify using `[B, hz]`. Establish `hAi : Integrable A (ν.prod μK)` using `hAc.integrable_of_hasCompactSupport hAs`. Establish `hBi : Integrable B (ν.prod μK)` using `hBc.integrable_of_hasCompactSupport hBs`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `cw`. Use `congr 1`. Use extensionality with `u`. Unfold `phi tw`. Rewrite using `[Complex.cpow_zero, mul_one, ← integral_const_mul]`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `k`. Simplify using `only [A]`. Rewrite using `[mR_conjTranspose_eq_mR_inv_of_KR, ← mR_mul]`. Use `_ = ∫ k, ∫ u, A (u, k) ∂ν ∂μK := integral_integral_swap hAi`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the equality to equality of the corresponding arguments.
 
-Use `_ = ∫ k, ∫ v, A ((k : GR n) * v, k) ∂ν ∂μK := by`. Use `congr 1`. Use extensionality with `k`. Conclude with `(integral_mul_left_eq_self (fun u => A (u, k)) (k : GR n)).symm`. Use `_ = ∫ k, ∫ v, B (v, k) ∂ν ∂μK := by`.
+By extensionality, compare the relevant components. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `k`. Use `congr 1`. Use extensionality with `v`. Simplify using `only [A, B]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_mul_cancel_left]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ v, ∫ k, B (v, k) ∂μK ∂ν := (integral_integral_swap hBi).symm`. Use `_ = ∫ u : GR n, (β (mR u) : ℂ) * psi m e μK u ∂ν := by`. Use `congr 1`.
-
-Use extensionality with `v`. Simplify using `only [B, psi]`. Rewrite using `[integral_const_mul]`.
+A detailed English derivation is pending.
 -/
 theorem cw_zero (m : ℕ) (e : ℤ) (ν : Measure (GR n)) [ν.IsHaarMeasure] (μK : Measure (KR n)) [μK.IsHaarMeasure]
     {β : M2 n → ℝ} (hβc : Continuous β) (hβs : HasCompactSupport β) :
@@ -159,23 +157,21 @@ theorem cw_zero (m : ℕ) (e : ℤ) (ν : Measure (GR n)) [ν.IsHaarMeasure] (μ
         rw [integral_const_mul]
 
 /- English proof (translation)
-Establish `hpc : Continuous (psi m e μK)` using `psi_continuous m e μK`. Establish `h1 : mR (1 : GR n) = 1` using `by simp [mR]`. Establish `hp1 : 0 < (psi m e μK 1).re`. Rewrite using `[psi_one, Complex.ofReal_re]`. Conclude with `ENNReal.toReal_pos (isOpen_univ.measure_ne_zero μK Set.univ_nonempty) (measure_ne_top _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hO : IsOpen {u : GR n | 0 < (psi m e μK u).re}` using `isOpen_lt continuous_const (Complex.continuous_re.comp hpc)`. Take `⟨O, hOo, hOeq⟩` from `isClosedEmbedding_mR.isInducing.isOpen_iff.mp hO`. Establish `h1O : (1 : M2 n) ∈ O`. Establish `h : (1 : GR n) ∈ mR ⁻¹' O`. Rewrite using `[hOeq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hp1`. Simplify `h` using `[h1]`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp hOo 1 h1O`. Set `b : ContDiffBump (1 : M2 n)` to `⟨r / 2, r, by positivity, by linarith⟩`. Use `⟨⇑b, b.contDiff, b.hasCompactSupport, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[cw_zero m e ν μK b.continuous b.hasCompactSupport]`. Use `set g : GR n → ℂ := fun u => (b (mR u) : ℂ) * psi m e μK u with hg`. Establish `hgs : HasCompactSupport g`. Establish `h` using `(b.hasCompactSupport.comp_isClosedEmbedding isClosedEmbedding_mR).comp_left (g := Complex.ofReal) Complex.ofReal_zero`. Conclude with `h.mul_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgc : Continuous g` using `(Complex.continuous_ofReal.comp (b.continuous.comp continuous_mR)).mul hpc`. Establish `hre : ∀ u, (g u).re = b (mR u) * (psi m e μK u).re` using `fun u => Complex.re_ofReal_mul _ _`. Establish `hpos : 0 < ∫ u, (g u).re ∂ν`. Use `Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) (Complex.continuous_re.comp hgc) (hgs.comp_left Complex.zero_re) ?_ ?_` and prove the remaining obligations. Introduce `u show 0 ≤ (g u).re`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hre]`. Distinguish the cases in `hu : b (mR u) = 0`. Simplify using `[hu]`. Establish `hmem : mR u ∈ Metric.ball (1 : M2 n) r`. Establish `hs : mR u ∈ Function.support b` using `hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hs` using `[b.support_eq]`. Then use the resulting hypothesis. Establish `hu' : u ∈ mR ⁻¹' O` using `hball hmem`. Rewrite `hu'` using `[hOeq]`. Conclude with `mul_nonneg b.nonneg (le_of_lt hu')`. Use `show (g 1).re ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hre, h1, b.one_of_mem_closedBall (Metric.mem_closedBall_self (by positivity)), one_mul]`. Conclude with `ne_of_gt hp1`. Introduce `h`. Establish `hz : (∫ u, g u ∂ν).re = 0`. Rewrite using `[h]`.
-
-Simplify using the standard rewrite rules. Establish `hgi : Integrable g ν` using `hgc.integrable_of_hasCompactSupport hgs`. Establish `hint` using `integral_re hgi`. Simplify using `only [RCLike.re_to_complex] at hint`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_bump (m : ℕ) (e : ℤ) (ν : Measure (GR n)) [ν.IsHaarMeasure] (μK : Measure (KR n)) [μK.IsHaarMeasure] :
     ∃ β : M2 n → ℝ, ContDiff ℝ ∞ β ∧ HasCompactSupport β ∧ cw m e ν μK β 0 ≠ 0 := by

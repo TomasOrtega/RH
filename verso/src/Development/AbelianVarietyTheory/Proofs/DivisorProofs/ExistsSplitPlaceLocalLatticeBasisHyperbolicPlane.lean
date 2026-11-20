@@ -13,11 +13,11 @@ namespace GlobalTheory.PlaneSkewBasis
 open GlobalTheory.AdelicU GlobalTheory.PlaneBasis
 
 /- English proof (translation)
-Set `φ : (E × E) × (Fin n₁ → E) →ₗ[E] (Fin (n₁ + 2) → E)` to `((LinearMap.fst E E E).smulRight x).comp (LinearMap.fst E (E × E) (Fin n₁ → E)) + (Matrix.mulVecLin ι).comp (LinearMap.snd E (E × E) (Fin n₁ → E)) + ((LinearMap.snd E E E).smulRight y).comp (LinearMap.fst E (E × E) (Fin n₁ → E))`. Establish `hφ : ∀ p, φ p = p.1.1 • x + ι *ᵥ p.2 + p.1.2 • y` using `fun p => rfl`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨⟨s, t⟩, u⟩ h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `h` using `[hφ]`. Take `⟨rfl, rfl, rfl⟩` from `hind s t u h`. Both sides reduce to the same expression. Establish `hdim : Module.finrank E ((E × E) × (Fin n₁ → E)) = Module.finrank E (Fin (n₁ + 2) → E)`. Simplify using `[Module.finrank_prod]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨p, hp⟩` from `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).1 hinj z`. Conclude with `⟨p.1.1, p.1.2, p.2, by rw [← hp, hφ]⟩`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_decomp {E : Type} [Field E] {n₁ : ℕ} (x y : Fin (n₁ + 2) → E) (ι : Matrix (Fin (n₁ + 2)) (Fin n₁) E)
     (hind : ∀ (s t : E) (u : Fin n₁ → E), s • x + ι *ᵥ u + t • y = 0 → s = 0 ∧ t = 0 ∧ u = 0)
@@ -39,59 +39,51 @@ theorem exists_decomp {E : Type} [Field E] {n₁ : ℕ} (x y : Fin (n₁ + 2) �
   exact ⟨p.1.1, p.1.2, p.2, by rw [← hp, hφ]⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ v τ n₁ L x y ι β₁ i₀ i₁ h01 h1n hdec hind hxP hyP hβ₁`. Establish `hx : (∀ c : E, c • x ∈ L → Valued.v (τ c) ≤ 1) ∧ ∃ c : E, c • x ∈ L ∧ Valued.v (τ c) = 1`. Simplify using `only [valued_apply_eq_valuation]`. Conclude with `hxP`. Establish `hy : (∀ c : E, c • y ∈ L → Valued.v (τ c) ≤ 1) ∧ ∃ c : E, c • y ∈ L ∧ Valued.v (τ c) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [valued_apply_eq_valuation]`. Conclude with `hyP`. Establish `hO : ∀ a : v.adicCompletion F, a ∈ v.adicCompletionIntegers F ↔ Valued.v a ≤ 1` using `fun a => HeightOneSpectrum.mem_adicCompletionIntegers _ _ _`. Use `set M := colMat τ x y ι β₁.1 i₀ i₁ with hM`. Use `set P := Submodule.span (v.adicCompletionIntegers F) (Set.range fun i r => M r i) with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Q := LinearMap.range M.mulVecLin with hQ`. Establish `hsmul : ∀ (c : E) (z : Fin (n₁ + 2) → E), (fun r => τ ((c • z) r)) = τ c • fun r => τ (z r)` using `fun c z => funext fun r => by simp`. Establish `hτmul : ∀ u : Fin n₁ → E, (fun r => τ ((ι *ᵥ u) r)) = ι.map τ *ᵥ fun r => τ (u r)` using `fun u => funext fun r => by simp [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Establish `hc0 : (fun r => M r ⟨i₀, by omega⟩) = fun r => τ (x r)` using `funext fun r => by simp [hM, colMat]`. Establish `hc1 : (fun r => M r ⟨i₁, h1n⟩) = fun r => τ (y r)` using `funext fun r => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hM, colMat, h01.ne']`. Establish `hcj : ∀ j : Fin n₁, (fun r => M r ⟨skip i₀ i₁ j, skip_lt j.2⟩) = fun r => (ι.map τ * β₁.1) r j` using `fun j => funext fun r => by`. Simplify using `[hM, colMat, skip_ne_left h01, skip_ne_right h01, unskip_skip h01, j.2]`. Establish `hPx : (fun r => τ (x r)) ∈ P` using `hc0 ▸ Submodule.subset_span ⟨_, rfl⟩`. Establish `hPy : (fun r => τ (y r)) ∈ P` using `hc1 ▸ Submodule.subset_span ⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hPcol : ∀ j : Fin n₁, (fun r => (ι.map τ * β₁.1) r j) ∈ P` using `fun j => hcj j ▸ Submodule.subset_span ⟨_, rfl⟩`. Establish `hcolsum : ∀ w₁ : Fin n₁ → v.adicCompletion F, (ι.map τ * β₁.1) *ᵥ w₁ = ∑ j, w₁ j • (fun r => (ι.map τ * β₁.1) r j)`. Introduce `w₁`. Use function extensionality and compare the values at `r`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPimg : ∀ w₁ : Fin n₁ → v.adicCompletion F, (∀ j, w₁ j ∈ v.adicCompletionIntegers F) → (ι.map τ * β₁.1) *ᵥ w₁ ∈ P`. Introduce `w₁ hw`. Rewrite using `[hcolsum]`. Conclude with `sum_mem fun j _ => smul_mem_int (hw j) (hPcol j)`. Establish `hQcolv : ∀ i, (fun r => M r i) ∈ Q` using `fun i => ⟨Pi.single i 1, funext fun r => by simp [Matrix.mulVec_single_one, Matrix.transpose_apply]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQx : (fun r => τ (x r)) ∈ Q` using `hc0 ▸ hQcolv _`. Establish `hQy : (fun r => τ (y r)) ∈ Q` using `hc1 ▸ hQcolv _`. Establish `hQimg : ∀ w₁ : Fin n₁ → v.adicCompletion F, (ι.map τ * β₁.1) *ᵥ w₁ ∈ Q`. Introduce `w₁`. Rewrite using `[hcolsum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `sum_mem fun j _ => Submodule.smul_mem _ _ (hcj j ▸ hQcolv _)`. Establish `hsplit : ∀ (s t : E) (u : Fin n₁ → E), (fun r => τ ((s • x + ι *ᵥ u + t • y) r)) = τ s • (fun r => τ (x r)) + (ι.map τ * β₁.1) *ᵥ ((β₁⁻¹).1 *ᵥ fun r => τ (u r)) + τ t • fun r => τ (y r)`. Introduce `s t u`. Establish `e : (fun r => τ (u r)) = β₁.1 *ᵥ ((β₁⁻¹).1 *ᵥ fun r => τ (u r))`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mulVec_mulVec, ← e, ← hτmul, ← hsmul, ← hsmul]`. Use function extensionality and compare the values at `r`. Simplify using the standard rewrite rules. Establish `hSub : ∀ z ∈ L, (fun r => τ (z r)) ∈ P`. Introduce `z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨s, t, u, hs, ht, hu, rfl⟩` from `hdec z hz`. Establish `hu' : u ∈ lowLat ι L` using `hu`. Establish `h1` using `(hβ₁ ((β₁⁻¹).1 *ᵥ fun r => τ (u r))).2 (by rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]; exact tau_mem_splitLat τ hu')`. Rewrite using `[hsplit]`. Conclude with `add_mem (add_mem (smul_mem_int ((hO _).2 (hx.1 s hs)) hPx) (hPimg _ h1)) (smul_mem_int ((hO _).2 (hy.1 t ht)) hPy)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hImg : ∀ u ∈ splitLat τ (lowLat ι L), ι.map τ *ᵥ u ∈ splitLat τ L` using `fun u hu => splitLat_induction τ _ (p := fun u => ι.map τ *ᵥ u ∈ splitLat τ L) (fun a ha z hz => by`. Rewrite using `[Matrix.mulVec_smul, ← hτmul]`. Conclude with `smul_mem_int ha (tau_mem_splitLat τ hz))`. Use the proof step `(by rw [Matrix.mulVec_zero]; exact zero_mem _)`. Use the proof step `(fun u w hu hw => by rw [Matrix.mulVec_add]; exact add_mem hu hw)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use the proof step `(fun u hu => by rw [Matrix.mulVec_neg]; exact neg_mem hu) hu`. Establish `hunit : ∀ z : Fin (n₁ + 2) → E, ((∀ c : E, c • z ∈ L → Valued.v (τ c) ≤ 1) ∧ ∃ c : E, c • z ∈ L ∧ Valued.v (τ c) = 1) → (fun r => τ (z r)) ∈ splitLat τ L`. Introduce and unpack `z ⟨-, c, hc, hv⟩`. Establish `hne : τ c ≠ 0` using `by intro h0; rw [h0, map_zero] at hv; exact zero_ne_one hv`. Establish `h2` using `tau_mem_splitLat τ hc`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite `h2` using `[hsmul]`. Establish `hinv : (τ c)⁻¹ ∈ v.adicCompletionIntegers F` using `(hO _).2 (by rw [map_inv₀, hv, inv_one])`. Use `smul_mem_int hinv h2` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hne, one_smul]`. Then use the resulting hypothesis. Establish `hColSL : ∀ i, (fun r => M r i) ∈ splitLat τ L`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `i`. Distinguish the cases in `h0 : i.1 = i₀`. Use `hunit x hx using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r`. Simplify using `[hM, colMat, h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h1 : i.1 = i₁`. Use `hunit y hy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r`. Simplify using `only [hM, colMat, if_neg h0, if_pos h1]`. Distinguish the cases in `h2 : unskip i₀ i₁ i.1 < n₁`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (fun r => M r i) = ι.map τ *ᵥ (β₁.1 *ᵥ Pi.single ⟨_, h2⟩ 1)`. Use function extensionality and compare the values at `r`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`. Simplify using `only [hM, colMat, if_neg h0, if_neg h1, dif_pos h2, Matrix.transpose_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `hImg _ ((hβ₁ _).1 fun k => ?_)` and prove the remaining obligations. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `zero_mem (splitLat τ L) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r`. Simplify using `[hM, colMat, h0, h1, h2]`. Establish `hPle : P ≤ splitLat τ L` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hColSL i)`. Establish `hSLle : ∀ u ∈ splitLat τ L, u ∈ P` using `fun u hu => splitLat_induction τ L (p := (· ∈ P)) (fun a ha z hz => smul_mem_int ha (hSub z hz)) (zero_mem _) (fun _ _ => add_mem) (fun _ => neg_mem) hu`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hR : ∀ z : Fin (n₁ + 2) → E, (fun r => τ (z r)) ∈ Q`. Introduce `z`. Take `⟨s, t, u, rfl⟩` from `exists_decomp x y ι hind z`. Rewrite using `[hsplit]`. Conclude with `add_mem (add_mem (Submodule.smul_mem _ _ hQx) (hQimg _)) (Submodule.smul_mem _ _ hQy)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective M.mulVec`. Introduce `u`. Establish `: u ∈ Q`. Rewrite using `[← Finset.univ_sum_single u]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : Pi.single k (u k) = u k • fun r => τ ((Pi.single k (1 : E) : Fin (n₁ + 2) → E) r)`. Use function extensionality and compare the values at `r`. Distinguish the cases in `h : r = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (hR _)`. Take `⟨w, hw⟩` from `this`. Conclude with `⟨w, hw⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hU : IsUnit M` using `Matrix.mulVec_surjective_iff_isUnit.1 hsurj`. Use `⟨hU.unit, ?_, fun i => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `u`. Rewrite using `[IsUnit.unit_spec]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce `hu`. Conclude with `hPle (mem_colSpan.2 ⟨u, hu, rfl⟩)`. Introduce `hu`. Take `⟨w, hw, e⟩` from `mem_colSpan.1 (hSLle _ hu)`. Use `Matrix.mulVec_injective_iff_isUnit.2 hU e` as an intermediate fact.
-
-Rewrite using `[← this]`. Conclude with `hw`. Introduce `h r`. Rewrite using `[IsUnit.unit_spec]`. Simplify using `[hM, colMat, h]`.
-
-Introduce `h r`. Rewrite using `[IsUnit.unit_spec]`. Simplify using `[hM, colMat, h, h01.ne']`. Introduce `j h r`. Rewrite using `[IsUnit.unit_spec]`.
-
-Establish `: i = ⟨skip i₀ i₁ j, skip_lt j.2⟩` using `Fin.ext h`. Substitute `this` using the available equality. Conclude with `congrFun (hcj j) r`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_isSplitBasis_plane_of_indep : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (v : HeightOneSpectrum (𝓞 F)) (τ : E →ₐ[F] Fv F v) (n₁ : ℕ) (L : Submodule (𝓞 E) (Fin (n₁ + 2) → E))

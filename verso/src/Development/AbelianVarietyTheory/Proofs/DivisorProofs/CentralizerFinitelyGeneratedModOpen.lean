@@ -15,27 +15,23 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.CentFG
 
 /- English proof (translation)
-Take `⟨v, c, hv⟩` from `GlobalTheory.T.centralizer_bounded_valuation_kernel p L hL n N hN`. Establish `hfg : v.range.FG`. Rewrite using `[Subgroup.fg_iff_add_fg]`. Conclude with `(Submodule.fg_iff_addSubgroup_fg (AddSubgroup.toIntSubmodule v.range.toAddSubgroup)).1 (IsNoetherian.noetherian (R := ℤ) (M := Additive (Multiplicative (Fin n → ℤ))) _)`. Take `⟨S, hS⟩` from `hfg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpre : ∀ s : S, ∃ z : Subgroup.centralizer {N}, v z = s` using `fun s => (show (s : Multiplicative (Fin n → ℤ)) ∈ v.range from hS ▸ Subgroup.subset_closure s.2)`. Use `choose pre hpre using hpre`. Set `B : Subgroup (GL (Fin n) L)` to `v.ker.map (Subgroup.centralizer {N}).subtype`. Take `⟨T, hT, hTB⟩` from `GlobalTheory.T.bounded_subgroup_finite_cosets p L hL n B c (by`. Introduce and unpack `_ ⟨z, hz, rfl⟩ i j`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hv z hz i j)`. Use `⟨Finset.univ.image (fun s => ((pre s : Subgroup.centralizer {N}) : GL (Fin n) L)) ∪ T, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Break down `Finset.mem_union.1 hg with h | h` into its components or cases. Take `⟨s, -, rfl⟩` from `Finset.mem_image.1 h`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Conclude with `(pre s).2`. Take `⟨z, -, rfl⟩` from `hT g h`. Conclude with `z.2`. Introduce `z hz set C := Subgroup.closure (((Finset.univ.image (fun s => ((pre s : Subgroup.centralizer {N}) : GL (Fin n) L)) ∪ T : Finset _) : Set (GL (Fin n) L)) ∪ ((Subgroup.centralizer {N} ⊓ GlobalTheory.LKLoc.KintK p L n : Subgroup _) : Set (GL (Fin n) L)))`. Set `W : Subgroup (Subgroup.centralizer {N})` to `Subgroup.closure (Set.range pre)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `hW : W.map v = v.range`. Rewrite using `[MonoidHom.map_closure, ← hS]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨_, ⟨s, rfl⟩, rfl⟩`. Rewrite using `[hpre]`. Conclude with `s.2`. Introduce `hx`. Conclude with `⟨pre ⟨x, hx⟩, ⟨_, rfl⟩, hpre _⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨w, hw, hwv⟩ : v ⟨z, hz⟩ ∈ W.map v` from `by rw [hW]; exact ⟨_, rfl⟩`. Establish `hWle : W ≤ C.comap (Subgroup.centralizer {N}).subtype`. Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`. Use `Subgroup.subset_closure (Or.inl ?_)` and prove the remaining obligations.
+Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Finset.coe_union, Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_union, Set.mem_range]`. Conclude with `Or.inl ⟨s, rfl⟩`. Establish `hWC : ∀ y ∈ W, (y : GL (Fin n) L) ∈ C` using `fun y hy => hWle hy`. Establish `hk : w⁻¹ * ⟨z, hz⟩ ∈ v.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hwv, inv_mul_cancel]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨t, htT, ht⟩` from `hTB _ ⟨_, hk, rfl⟩`. Establish `htZ : t ∈ Subgroup.centralizer {N}`. Take `⟨y, -, rfl⟩` from `hT t htT`. Conclude with `y.2`. Establish `hrest : t⁻¹ * ((w : GL (Fin n) L)⁻¹ * z) ∈ C`.
-
-Use `Subgroup.subset_closure (Or.inr ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `(Subgroup.centralizer {N}).mul_mem ((Subgroup.centralizer {N}).inv_mem htZ) ((Subgroup.centralizer {N}).mul_mem ((Subgroup.centralizer {N}).inv_mem w.2) hz)`. Simplify using `using ht`. Establish `htC : t ∈ C` using `Subgroup.subset_closure (Or.inl (by simp [htT]))`. Establish `: z = (w : GL (Fin n) L) * t * (t⁻¹ * ((w : GL (Fin n) L)⁻¹ * z))` using `by group`.
-
-Rewrite using `[this]`. Conclude with `C.mul_mem (C.mul_mem (hWC w hw) htC) hrest`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem field_case (p : ℕ) [Fact p.Prime] (L : IntermediateField ℚ_[p] (PadicAlgCl p))
     (hL : FiniteDimensional ℚ_[p] L) (n : ℕ) (N : GL (Fin n) L) (hN : N.val.charpoly.Separable) :
@@ -100,9 +96,9 @@ theorem field_case (p : ℕ) [Fact p.Prime] (L : IntermediateField ℚ_[p] (Padi
     exact C.mul_mem (C.mul_mem (hWC w hw) htC) hrest
 
 /- English proof (translation)
-Introduce `p _ K hK n r hr N hN`. Take `⟨f, -, hf⟩` from `qK_eq_pow p K hK`. Take `⟨e, -, -, -, -, -, -, hint⟩` from `GlobalTheory.T.unramified_extension_product_decomposition p K hK f r hf hr`. Establish `hd : 0 < Nat.gcd f r` using `Nat.gcd_pos_of_pos_right _ hr`. Establish `hfin : FiniteDimensional ℚ_[p] (Kn p K (r / Nat.gcd f r))` using `finiteDimensional_Kn p K hK (Nat.div_pos (Nat.gcd_le_right _ hr) hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `Nat.gcd f r = g at *`. Take `⟨k, rfl⟩ : ∃ k, g = k + 1` from `⟨g - 1, by omega⟩`. Conclude with `GlobalTheory.T.centralizer_finite_generation_transfer _ _ k n e (intKQ p K r) (GlobalTheory.LKLoc.intR p K (r / (k + 1))) hint (fun N' hN' => field_case p _ hfin n N' hN') N hN`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem centralizer_le_closure : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)), FiniteDimensional ℚ_[p] K →
     ∀ (n r : ℕ), 0 < r →

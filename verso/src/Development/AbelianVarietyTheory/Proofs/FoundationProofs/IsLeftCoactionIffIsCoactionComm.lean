@@ -24,7 +24,7 @@ structure IsLeftCoaction (ρ : M →ₗ[R] C ⊗[R] M) : Prop where
 variable (R C) in
 
 /- English proof (translation)
-The claim follows from `coassoc_apply m counit m := lTensor_counit_comul m`.
+A detailed English derivation is pending.
 -/
 theorem isCoaction_comul : IsCoaction (comul : C →ₗ[R] C ⊗[R] C) where
   coassoc m := coassoc_apply m
@@ -33,7 +33,7 @@ theorem isCoaction_comul : IsCoaction (comul : C →ₗ[R] C ⊗[R] C) where
 variable (R C) in
 
 /- English proof (translation)
-The claim follows from `coassoc_apply m counit m := rTensor_counit_comul m`.
+A detailed English derivation is pending.
 -/
 theorem isLeftCoaction_comul : IsLeftCoaction (comul : C →ₗ[R] C ⊗[R] C) where
   coassoc m := coassoc_apply m
@@ -42,7 +42,7 @@ theorem isLeftCoaction_comul : IsLeftCoaction (comul : C →ₗ[R] C ⊗[R] C) w
 variable (M) in
 
 /- English proof (translation)
-Simplify using `[hg.comul_eq_tmul_self] counit m := by simp [hg.counit_eq_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isCoaction_of_isGroupLikeElem {g : C} (hg : IsGroupLikeElem R g) :
     IsCoaction ((TensorProduct.mk R M C).flip g) where
@@ -50,14 +50,14 @@ theorem isCoaction_of_isGroupLikeElem {g : C} (hg : IsGroupLikeElem R g) :
   counit m := by simp [hg.counit_eq_one]
 
 /- English proof (translation)
-Simplify using `[h.counit]`.
+Simplify using the standard rewrite rules.
 -/
 theorem IsCoaction.rid_counit {ρ : M →ₗ[R] M ⊗[R] C} (h : IsCoaction ρ) (m : M) :
     TensorProduct.rid R M ((Coalgebra.counit : C →ₗ[R] R).lTensor M (ρ m)) = m := by
   simp [h.counit]
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.injective (g := fun t => TensorProduct.rid R M ((Coalgebra.counit : C →ₗ[R] R).lTensor M t)) h.rid_counit`.
+A detailed English derivation is pending.
 -/
 theorem IsCoaction.injective {ρ : M →ₗ[R] M ⊗[R] C} (h : IsCoaction ρ) : Function.Injective ρ :=
   Function.LeftInverse.injective
@@ -65,21 +65,21 @@ theorem IsCoaction.injective {ρ : M →ₗ[R] M ⊗[R] C} (h : IsCoaction ρ) :
     h.rid_counit
 
 /- English proof (translation)
-Set `e : C ⊗[R] (C ⊗[R] M) ≃ₗ[R] M ⊗[R] (C ⊗[R] C)` to `(TensorProduct.assoc R C C M).symm ≪≫ₗ TensorProduct.comm R _ _ ≪≫ₗ (TensorProduct.comm R C C).lTensor M`. Establish `h1 : ∀ t : C ⊗[R] M, e (ρ.lTensor C t) = TensorProduct.assoc R M C C (((TensorProduct.comm R C M).toLinearMap ∘ₗ ρ).rTensor C (TensorProduct.comm R C M t))`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul c m`. Simplify using `only [LinearMap.lTensor_tmul, comm_tmul, LinearMap.rTensor_tmul, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Generalize the expression as in `ρ m = s`. Proceed by induction on `s with`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, tmul_add, add_tmul, ha, hb]`. Consider the case `tmul c' m' => simp [e]`. Establish `h2 : ∀ t : C ⊗[R] M, e (TensorProduct.assoc R C C M ((comul : C →ₗ[R] C ⊗[R] C).rTensor M t)) = (comul : C →ₗ[R] C ⊗[R] C).lTensor M (TensorProduct.comm R C M t)`. Introduce `t`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul c m => simp [e]`. Establish `h3 : ∀ t : C ⊗[R] M, TensorProduct.comm R R M ((Coalgebra.counit : C →ₗ[R] R).rTensor M t) = (Coalgebra.counit : C →ₗ[R] R).lTensor M (TensorProduct.comm R C M t)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul c m => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun m => ?_, fun m => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← h1, ← h2, h.coassoc]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← h3, h.counit, comm_tmul]`. Introduce `h`. Use `⟨fun m => e.injective ?_, fun m => (TensorProduct.comm R R M).injective ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h.coassoc m).symm`. Rewrite using `[h3, comm_tmul]`. Conclude with `h.counit m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLeftCoaction_iff_isCoaction_comm [IsCocomm R C] (ρ : M →ₗ[R] C ⊗[R] M) :
     IsLeftCoaction ρ ↔ IsCoaction ((TensorProduct.comm R C M).toLinearMap ∘ₗ ρ) := by
@@ -133,7 +133,7 @@ def coactionWeightSpace (ρ : M →ₗ[R] M ⊗[R] C) (g : C) : Submodule R M :=
 
 omit [Coalgebra R C] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem mem_coactionWeightSpace {ρ : M →ₗ[R] M ⊗[R] C} {g : C} {m : M} :
     m ∈ coactionWeightSpace ρ g ↔ ρ m = m ⊗ₜ[R] g := Iff.rfl
@@ -141,7 +141,7 @@ Unfold both sides. The equivalence is reflexive.
 omit [Coalgebra R C] in
 
 /- English proof (translation)
-Rewrite `hm`, the goal using `[mem_coactionWeightSpace]`. Rewrite using `[hf, hm, LinearMap.rTensor_tmul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mem_coactionWeightSpace {ρ : M →ₗ[R] M ⊗[R] C} {ρ' : M' →ₗ[R] M' ⊗[R] C}
     {f : M →ₗ[R] M'} (hf : ∀ m, ρ' (f m) = f.rTensor C (ρ m)) {g : C} {m : M}

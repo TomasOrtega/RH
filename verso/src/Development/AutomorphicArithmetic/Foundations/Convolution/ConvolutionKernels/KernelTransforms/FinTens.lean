@@ -22,7 +22,7 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Rewrite using `[AdelicGLn.finiteRestrictedEquiv_apply, finAt_apply]`. Establish `h` using `congrArg (fun z => (z.2 : AdelicGLn.FiniteAdelicGL K n) a b v) (prodEquiv_finEmb (K := K) (n := n) g)`. Conclude with `h.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ft_comp (K : Type) [Field K] [NumberField K] (n : ℕ) (g : AdelicGLn.FiniteAdelicGL K n) (v : Pl K) :
     (AdelicGLn.finiteRestrictedEquiv K n g v : GL (Fin n) (v.adicCompletion K)) = finAt v (finEmb K n g) := by
@@ -32,7 +32,7 @@ private theorem ft_comp (K : Type) [Field K] [NumberField K] (n : ℕ) (g : Adel
   exact h.symm
 
 /- English proof (translation)
-Rewrite using `[← ft_comp]`. Conclude with `(AdelicGLn.mem_integralFiniteGL_iff_forall K n).1 hg v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ft_int (K : Type) [Field K] [NumberField K] (n : ℕ) (g : AdelicGLn.FiniteAdelicGL K n) (hg : g ∈ AdelicGLn.integralFiniteGL K n) (v : Pl K) :
     finAt v (finEmb K n g) ∈ GLnLocal.integralGL (v.adicCompletion K) n := by
@@ -40,20 +40,20 @@ private theorem ft_int (K : Type) [Field K] [NumberField K] (n : ℕ) (g : Adeli
   exact (AdelicGLn.mem_integralFiniteGL_iff_forall K n).1 hg v
 
 /- English proof (translation)
-Rewrite using `[map_mul, finAt_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ft_mul (K : Type) [Field K] [NumberField K] (n : ℕ) (v : Pl K) (a b : AdelicGLn.FiniteAdelicGL K n) :
     finAt v (finEmb K n (a * b)) = finAt v (finEmb K n a) * finAt v (finEmb K n b) := by
   rw [map_mul, finAt_mul]
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => rintro - ⟨a, ha, -⟩`. Simplify using `at ha`. Consider the case `cons a t ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `h1 h2`. Distinguish the cases in `ht : ∃ b ∈ t, b * x = b`. Rewrite using `[List.prod_cons, mul_assoc, ih (fun b hb => h1 b (List.mem_cons_of_mem _ hb)) ht]`. Establish `ha : a * x = a`. Take `⟨b, hb, hbx⟩` from `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Break down `List.mem_cons.1 hb with rfl | hb` into its components or cases. Conclude with `hbx`. Conclude with `absurd ⟨b, hb, hbx⟩ ht`. Establish `hc : Commute t.prod x`. Use `Commute.list_prod_left _ _ fun b hb => ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `h1 b (List.mem_cons_of_mem _ hb) with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd ⟨b, hb, h⟩ ht`. Rewrite using `[List.prod_cons, mul_assoc, hc.eq, ← mul_assoc, ha]`.
+A detailed English derivation is pending.
 -/
 private theorem ft_list {M : Type*} [Monoid M] (x : M) : ∀ l : List M, (∀ a ∈ l, Commute a x ∨ a * x = a) → (∃ a ∈ l, a * x = a) →
     l.prod * x = l.prod := by
@@ -77,7 +77,7 @@ private theorem ft_list {M : Type*} [Monoid M] (x : M) : ∀ l : List M, (∀ a 
       rw [List.prod_cons, mul_assoc, hc.eq, ← mul_assoc, ha]
 
 /- English proof (translation)
-Distinguish the cases in `hb : b ∈ S`. Rewrite using `[Set.indicator_of_mem hb, Set.indicator_of_mem (h.2 hb)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hb, Set.indicator_of_notMem (fun ha => hb (h.1 ha))]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ft_ind {X : Type*} (S : Set X) {a b : X} (h : a ∈ S ↔ b ∈ S) :
     S.indicator (1 : X → ℂ) a = S.indicator (1 : X → ℂ) b := by
@@ -86,7 +86,7 @@ private theorem ft_ind {X : Type*} (S : Set X) {a b : X} (h : a ∈ S ↔ b ∈ 
   · rw [Set.indicator_of_notMem hb, Set.indicator_of_notMem (fun ha => hb (h.1 ha))]
 
 /- English proof (translation)
-Establish `h : c • X = c • (k • (A ∘L Pus))`. Rewrite using `[← hG, h1, hE0, ContinuousLinearMap.comp_smul, hP, hu, mul_smul]`. Conclude with `smul_right_injective _ hc h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem operator_factorization_identity {E : Type*} [AddCommGroup E] [Module ℂ E] [TopologicalSpace E] [IsTopologicalAddGroup E] [ContinuousConstSMul ℂ E]
     (X G E0 Pu Pus A : E →L[ℂ] E) (c u k : ℂ) (hc : c ≠ 0) (hG : G = c • X) (h1 : G = A ∘L E0) (hE0 : E0 = u • Pu)
@@ -96,7 +96,7 @@ private theorem operator_factorization_identity {E : Type*} [AddCommGroup E] [Mo
   exact smul_right_injective _ hc h
 
 /- English proof (translation)
-Establish `hcl : IsClopen (V : Set X)` using `⟨V.isClosed_of_isOpen ho, ho⟩`. Conclude with `⟨⟨⟨(V : Set X).indicator 1, hcl.continuous_indicator continuous_const⟩, HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩, fun _ => rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem ft_cc {X : Type*} [Group X] [TopologicalSpace X] [IsTopologicalGroup X] (V : Subgroup X) (ho : IsOpen (V : Set X))
     (hc : IsCompact (V : Set X)) : ∃ κ : CompactlySupportedContinuousMap X ℂ, ∀ x, κ x = (V : Set X).indicator 1 x := by
@@ -105,7 +105,7 @@ private theorem ft_cc {X : Type*} [Group X] [TopologicalSpace X] [IsTopologicalG
     HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩, fun _ => rfl⟩
 
 /- English proof (translation)
-Use `show ∫ x, S.indicator (fun _ => (1 : ℂ)) x ∂m = _`. Rewrite using `[integral_indicator_const (μ := m) (1 : ℂ) hS]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ft_intInd {X : Type*} [MeasurableSpace X] (m : Measure X) (S : Set X) (hS : MeasurableSet S) :
     ∫ x, S.indicator (1 : X → ℂ) x ∂m = ((m.real S : ℝ) : ℂ) := by
@@ -114,53 +114,45 @@ private theorem ft_intInd {X : Type*} [MeasurableSpace X] (m : Measure X) (S : S
   simp
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ m _ r w hw f hf hoff`. Use `choose J hJco hJle hJinv using fun i => UpperTheory.exists_compactOpen_biinvariant_of_test K n (w i) (f (w i)) (hf i)`. Take `⟨U, hUm, hUo, hUc⟩` from `UpperTheory.exists_open_compact_level_subgroup K n r w J hJco`. Set `R : AdelicGLn.FiniteAdelicGL K n → ℂ` to `({y | ∀ v, v ∉ Set.range w → finAt v (finEmb K n y) ∈ GLnLocal.integralGL (v.adicCompletion K) n} : Set (AdelicGLn.FiniteAdelicGL K n)).indicator 1`. Establish `hfree : ∀ i y x, R (AdelicGLn.localEmbedding (w i) y * x) = R x` using `fun i y x => UpperTheory.indicator_integral_away_mul_localEmbedding K n r w i y x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ψ : ∀ i, CompactlySupportedContinuousMap (Gw n (w i)) ℂ` to `fun i => ⟨⟨f (w i), (hf i).1.continuous⟩, (hf i).2⟩`. Establish `hψ : ∀ i, ∀ k ∈ J i, ∀ x, ψ i (x * k) = ψ i x` using `fun i k hk x => (hJinv i k hk x).2`. Take `⟨e', he', hOe'⟩` from `UpperTheory.ConvolutionTheory.Tf.prjFix K n μ m U hUo hUc`. Establish `hUpos : (m.real (U : Set (AdelicGLn.FiniteAdelicGL K n))) ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨(hUo.measure_pos m ⟨1, U.one_mem⟩).ne', hUc.measure_ne_top⟩`. Establish `hUposC : ((m.real (U : Set (AdelicGLn.FiniteAdelicGL K n)) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hUpos`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e₀ : TF K n` to `((m.real (U : Set (AdelicGLn.FiniteAdelicGL K n)) : ℝ) : ℂ) • e'`. Establish `he₀U : ∀ x, e₀ x = (U : Set (AdelicGLn.FiniteAdelicGL K n)).indicator (1 : AdelicGLn.FiniteAdelicGL K n → ℂ) x` using `fun x => by show ((m.real (U : Set (AdelicGLn.FiniteAdelicGL K n)) : ℝ) : ℂ) • e' x = _`. Rewrite using `[he']`. Distinguish the cases in `hx : x ∈ (U : Set (AdelicGLn.FiniteAdelicGL K n))`. Simplify using `only [Set.indicator_of_mem hx, smul_eq_mul, Pi.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `mul_inv_cancel₀ hUposC`. Simplify using `only [Set.indicator_of_notMem hx, smul_zero]`. Establish `he₀ : ∀ x, e₀ x = R x * ∏ i, (J i : Set (Gw n (w i))).indicator 1 (finAt (w i) (finEmb K n x))` using `fun x => by`. Rewrite using `[he₀U]`. Conclude with `UpperTheory.indicator_level_eq_prod_local_indicator K n r w J hJle U hUm x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `hex : ∃ e : TF K n, ∀ x, e x = R x * ∏ i, f (w i) (finAt (w i) (finEmb K n x))`. Use `letI : ∀ i, MeasurableSpace (Gw n (w i)) := fun _ => borel _`. Use `haveI : ∀ i, BorelSpace (Gw n (w i)) := fun _ => ⟨rfl⟩`. Set `mw : ∀ i, Measure (Gw n (w i))` to `fun i => Measure.haar`. Use `haveI : ∀ i, (mw i).IsHaarMeasure := fun i => inferInstanceAs (Measure.haar : Measure (Gw n (w i))).IsHaarMeasure`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg, -, -⟩` from `UpperTheory.exists_testFunction_integral_prod_local_factors K n m r w hw mw J hJco ψ hψ R hfree e₀ he₀`. Establish `hne : (∏ i, (((mw i).real (J i : Set (Gw n (w i))) : ℝ) : ℂ)) ≠ 0`. Use `Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations. Establish `: (mw i).real (J i : Set (Gw n (w i))) ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨((hJco i).2.measure_pos (mw i) ⟨1, (J i).one_mem⟩).ne', (hJco i).1.measure_ne_top⟩`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(∏ i, (((mw i).real (J i : Set (Gw n (w i))) : ℝ) : ℂ))⁻¹ • g, fun x => ?_⟩` and prove the remaining obligations. Use `show (∏ i, (((mw i).real (J i : Set (Gw n (w i))) : ℝ) : ℂ))⁻¹ • g x = _`. Rewrite using `[hg, smul_eq_mul, inv_mul_cancel_left₀ hne]`. Both sides reduce to the same expression. Take `⟨e, he⟩` from `hex`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hRl : ∀ u h, u ∈ AdelicGLn.integralFiniteGL K n → R (u * h) = R h` using `fun u h hu => by`. Establish `hiff : (u * h ∈ {y : AdelicGLn.FiniteAdelicGL K n | ∀ v, v ∉ Set.range w → finAt v (finEmb K n y) ∈ GLnLocal.integralGL (v.adicCompletion K) n}) ↔ h ∈ {y : AdelicGLn.FiniteAdelicGL K n | ∀ v, v ∉ Set.range w → finAt v (finEmb K n y) ∈ GLnLocal.integralGL (v.adicCompletion K) n}`. Simplify using `only [Set.mem_setOf_eq, ft_mul]`. Conclude with `forall_congr' fun v => imp_congr_right fun _ => Subgroup.mul_mem_cancel_left _ (ft_int K n u hu v)`. Conclude with `ft_ind _ hiff`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hRr : ∀ u h, u ∈ AdelicGLn.integralFiniteGL K n → R (h * u) = R h` using `fun u h hu => by`. Establish `hiff : (h * u ∈ {y : AdelicGLn.FiniteAdelicGL K n | ∀ v, v ∉ Set.range w → finAt v (finEmb K n y) ∈ GLnLocal.integralGL (v.adicCompletion K) n}) ↔ h ∈ {y : AdelicGLn.FiniteAdelicGL K n | ∀ v, v ∉ Set.range w → finAt v (finEmb K n y) ∈ GLnLocal.integralGL (v.adicCompletion K) n}`. Simplify using `only [Set.mem_setOf_eq, ft_mul]`. Conclude with `forall_congr' fun v => imp_congr_right fun _ => Subgroup.mul_mem_cancel_right _ (ft_int K n u hu v)`. Conclude with `ft_ind _ hiff`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨e, fun h => ?_, ⟨U, hUo, fun u hu h => ⟨?_, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `(UpperTheory.finprod_local_eq_indicator_mul_prod K n r w hw f hoff h).symm`. Rewrite using `[he, he]`. Establish `hk` using `(hUm u).1 hu`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congr 1`. Use `hRl u h hk.1` and prove the remaining obligations. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ft_mul]`. Conclude with `(hJinv i _ (hk.2 i) _).1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[he, he]`. Establish `hk` using `(hUm u).1 hu`. Use `congr 1`. Use `hRr u h hk.1` and prove the remaining obligations. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[ft_mul]`. Conclude with `(hJinv i _ (hk.2 i) _).2`. Introduce `_ _ mw hmw hmK T hT US hUS haveI := hmw`. Establish `hvne : ∀ i, (((mw i).real (J i : Set (Gw n (w i))) : ℝ) : ℂ) ≠ 0` using `fun i => by`. Establish `: (mw i).real (J i : Set (Gw n (w i))) ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨((hJco i).2.measure_pos (mw i) ⟨1, (J i).one_mem⟩).ne', (hJco i).1.measure_ne_top⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hc : (∏ i, (((mw i).real (J i : Set (Gw n (w i))) : ℝ) : ℂ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hvne i`. Take `⟨g, hg, -, hgop⟩` from `UpperTheory.exists_testFunction_integral_prod_local_factors K n m r w hw mw J hJco ψ hψ R hfree e₀ he₀`. Establish `hT' : (fun i => (((rightRegularRep (rationalGLOne K n) μ).compHom (MultiplicityOne.finProj K n) MultiplicityOne.continuous_finProj).compHom (AdelicGLn.localEmbedding (w i)) (UpperTheory.ConvolutionTheory.Tf.locEmb K n (w i)).1).integrated (mw i) (UnitaryRep.ccToL1 (mw i) (ψ i))) …`. Use function extensionality and compare the values at `fun i => UpperTheory.integrated_rightRegular_eq_localOperator K n μ (w i) (mw i) (ψ i) (T i) (hT i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : Ofin μ m g = (List.ofFn T).prod ∘L Ofin μ m e₀`. Use `hgop (LL μ) ((rightRegularRep (rationalGLOne K n) μ).compHom (MultiplicityOne.finProj K n) MultiplicityOne.continuous_finProj)` as an intermediate fact. Rewrite `this` using `[hT']`. Conclude with `this`. Set `ν : Measure (archGroup K n)` to `Measure.haar`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Prove the second alternative. Prove the first alternative.
 
-Establish `hsm` using `fun (c : ℂ) (e : TF K n) => ((UpperTheory.ConvolutionTheory.Tf.opAlg K n μ ν m).2.2.1 c 0 e).2`. Establish `hge : g = (∏ i, (((mw i).real (J i : Set (Gw n (w i))) : ℝ) : ℂ)) • e`. Use extensionality with `x`. Use `show g x = (∏ i, (((mw i).real (J i : Set (Gw n (w i))) : ℝ) : ℂ)) • e x`. Rewrite using `[hg, he, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Establish `he₀op : Ofin μ m e₀ = ((m.real (U : Set (AdelicGLn.FiniteAdelicGL K n)) : ℝ) : ℂ) • prj (fixF μ U)`. Rewrite using `[← hOe']`. Conclude with `hsm _ _`. Establish `hA : ∀ i, ∀ k ∈ J i, (List.ofFn T).prod ∘L rhoL μ (w i) k = (List.ofFn T).prod`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `i k hk`. Use `ft_list (rhoL μ (w i) k) (List.ofFn T) ?_ ⟨T i, (List.mem_ofFn' _ _).2 ⟨i, rfl⟩, UpperTheory.localOperator_comp_rhoL_eq_of_right_invariant K n μ (w i) (mw i) (J i) (hJco i) (f (w i)) (fun k hk x => (hJinv i k hk x).2) (T i) (hT i) k hk⟩` and prove the remaining obligations. Introduce `a ha`. Take `⟨j, rfl⟩` from `(List.mem_ofFn' _ _).1 ha`. Distinguish the cases in `hij : j = i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Substitute `hij` using the available equality. Conclude with `Or.inr (UpperTheory.localOperator_comp_rhoL_eq_of_right_invariant K n μ (w j) (mw j) (J j) (hJco j) (f (w j)) (fun k hk x => (hJinv j k hk x).2) (T j) (hT j) k hk)`. Conclude with `Or.inl (UpperTheory.localOperator_commute_rhoF_of_trivial_at_place K n μ (w j) (mw j) (f (w j)) (T j) (hT j) _ ((UpperTheory.ConvolutionTheory.Tf.locEmb K n (w i)).2.2.1 (w j) (fun h => hij (hw h)) k))`. Establish `hP` using `UpperTheory.comp_proj_fixed_level_eq_of_local_invariance K n μ m r w hw J U US hUo hUc hUm hUS (List.ofFn T).prod hA`. Establish `hvol : ((m.real (U : Set (AdelicGLn.FiniteAdelicGL K n)) : ℝ) : ℂ) = (∏ i, (((mw i).real (J i : Set (Gw n (w i))) : ℝ) : ℂ)) * ((m.real (AdelicGLn.integralFiniteGL K n) : ℝ) : ℂ)` using `by choose κ hκv using fun i => ft_cc (GLnLocal.integralGL ((w i).adicCompletion K) n) (GLnLocal.isOpen_integralGL _ n) (GLnLocal.isCompact_integralGL _ n)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hκ : ∀ i, ∀ k ∈ J i, ∀ x, κ i (x * k) = κ i x` using `fun i k hk x => by`. Rewrite using `[hκv, hκv]`. Conclude with `ft_ind _ (Subgroup.mul_mem_cancel_right _ (hJle i hk))`. Take `⟨gK, hgK, hint, -⟩` from `UpperTheory.exists_testFunction_integral_prod_local_factors K n m r w hw mw J hJco κ hκ R hfree e₀ he₀`. Establish `hgKv : ∀ x, gK x = (∏ i, (((mw i).real (J i : Set (Gw n (w i))) : ℝ) : ℂ)) * (AdelicGLn.integralFiniteGL K n : Set (AdelicGLn.FiniteAdelicGL K n)).indicator (1 : AdelicGLn.FiniteAdelicGL K n → ℂ) x` using `fun x => by`.
-
-Rewrite using `[hgK, UpperTheory.indicator_level_eq_prod_local_indicator K n r w (fun i => GLnLocal.integralGL ((w i).adicCompletion K) n) (fun _ => le_rfl) (AdelicGLn.integralFiniteGL K n : Set (AdelicGLn.FiniteAdelicGL K n)) (fun h => ⟨fun hh => ⟨hh, fun i => ft_int K n h hh (w i)⟩, And.left⟩ …`. Simplify using `only [hκv]`. Both sides reduce to the same expression. Establish `hKm : MeasurableSet (AdelicGLn.integralFiniteGL K n : Set (AdelicGLn.FiniteAdelicGL K n))` using `(AdelicGLn.isOpen_integralFiniteGL K n).measurableSet`. Establish `i1 : ∫ x, gK x ∂m = (∏ i, (((mw i).real (J i : Set (Gw n (w i))) : ℝ) : ℂ)) * ((m.real (AdelicGLn.integralFiniteGL K n) : ℝ) : ℂ)`.
-
-Simplify using `only [hgKv]`. Rewrite using `[integral_const_mul, ft_intInd m _ hKm]`. Establish `i2 : ∀ i, ∫ y, κ i y ∂(mw i) = 1` using `fun i => by`. Simplify using `only [hκv]`. Rewrite using `[ft_intInd (mw i) _ (GLnLocal.isOpen_integralGL _ n).measurableSet, Measure.real, hmK i]`.
-
-Simplify using the standard rewrite rules. Establish `i3 : ∫ x, e₀ x ∂m = ((m.real (U : Set (AdelicGLn.FiniteAdelicGL K n)) : ℝ) : ℂ)`. Simplify using `only [he₀U]`. Conclude with `ft_intInd m _ hUo.measurableSet`. Rewrite using `[← i1, hint, i3]`.
-
-Simplify using `only [i2, Finset.prod_const_one, one_mul]`. Conclude with `operator_factorization_identity (Ofin μ m e) (Ofin μ m g) (Ofin μ m e₀) (prj (fixF μ U)) (prj (fixF μ US)) (List.ofFn T).prod _ _ _ hc (by rw [hge]; exact hsm _ e) h1 he₀op hP hvol`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.finTens :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure] (r : ℕ) (w : Fin r → Pl K), Function.Injective w →

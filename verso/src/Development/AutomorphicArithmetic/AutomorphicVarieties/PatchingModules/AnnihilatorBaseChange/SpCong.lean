@@ -9,17 +9,15 @@ variable {R : Type} [CommRing R] {A S S' : Type} [CommRing A] [CommRing S] [Comm
   [Algebra R A] [Algebra R S] [Algebra R S'] (I a : Ideal R) (M : Type) [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-Establish `h1 : ∀ m ∈ (a • ⊤ : Submodule R M), ∀ t : S, t ⊗ₜ[R] m ∈ (a.map (algebraMap R S) • ⊤ : Submodule S (S ⊗[R] M))`. Introduce `m hm t`. Use `Submodule.smul_induction_on hm ?_ ?_` and prove the remaining obligations. Introduce `r hr m _`. Rewrite using `[TensorProduct.tmul_smul, ← algebraMap_smul S r]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ hr) Submodule.mem_top`. Introduce `x y hx hy`. Rewrite using `[TensorProduct.tmul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Establish `h2 : ∀ i ∈ I, ∀ w : S ⊗[R] M, algebraMap R S i • w ∈ (a.map (algebraMap R S) • ⊤ : Submodule S (S ⊗[R] M))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `i hi w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t m`. Rewrite using `[algebraMap_smul, ← TensorProduct.tmul_smul]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 _ (hI (Submodule.smul_mem_smul hi Submodule.mem_top)) t`. Consider the case `add x y hx hy`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Proceed by induction on `hs using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`. Conclude with `h2 i hi w`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
-
-Rewrite using `[add_smul]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[smul_eq_mul, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Pa.Core.spCong_killI (hI : (I • ⊤ : Submodule R M) ≤ a • ⊤) (s : S)
     (hs : s ∈ I.map (algebraMap R S)) (w : S ⊗[R] M) :
@@ -58,16 +56,16 @@ private theorem UpperTheory.V.Pa.Core.spCong_killI (hI : (I • ⊤ : Submodule 
     exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_map, AlgHom.comp_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.V.Pa.Core.spCong_map (f : A →ₐ[R] S) (J : Ideal R) :
     (J.map (algebraMap R A)).map (f : A →+* S) = J.map (algebraMap R S) := by
   rw [Ideal.map_map, AlgHom.comp_algebraMap]
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `UpperTheory.V.Pa.Core.spCong_killI I a M hI _ ?_ w` and prove the remaining obligations. Take `⟨b, hb, c, hc, rfl⟩` from `Submodule.mem_sup.1 hz`. Rewrite using `[map_add, (RingHom.mem_ker).1 hb, zero_add, ← UpperTheory.V.Pa.Core.spCong_map f I]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_map_of_mem (f : A →+* S) hc`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Pa.Core.spCong_kill (hI : (I • ⊤ : Submodule R M) ≤ a • ⊤) (f : A →ₐ[R] S) (z : A)
     (hz : z ∈ RingHom.ker f ⊔ I.map (algebraMap R A))
@@ -80,7 +78,7 @@ private theorem UpperTheory.V.Pa.Core.spCong_kill (hI : (I • ⊤ : Submodule R
   exact Ideal.mem_map_of_mem (f : A →+* S) hc
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t m => simp [TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem UpperTheory.V.Pa.Core.spCong_smul (f : A →ₐ[R] S) (z : A) (x : A ⊗[R] M) :
     f.toLinearMap.rTensor M (z • x) = f z • f.toLinearMap.rTensor M x := by
@@ -90,19 +88,19 @@ private theorem UpperTheory.V.Pa.Core.spCong_smul (f : A →ₐ[R] S) (z : A) (x
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
 /- English proof (translation)
-Establish `hF : Function.Surjective (f.toLinearMap.rTensor M)` using `LinearMap.rTensor_surjective M hf`. Establish `h1 : ∀ y ∈ (a.map (algebraMap R S) • ⊤ : Submodule S (S ⊗[R] M)), ∃ x, f.toLinearMap.rTensor M x = y ∧ f'.toLinearMap.rTensor M x ∈ (a.map (algebraMap R S') • ⊤ : Submodule S' (S' ⊗[R] M))`. Introduce `y hy`. Use `Submodule.smul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `s hs w _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hs` using `[← UpperTheory.V.Pa.Core.spCong_map f a]`. Take `⟨z, hz, rfl⟩` from `(Ideal.mem_map_iff_of_surjective (f : A →+* S) hf).1 hs`. Take `⟨x, rfl⟩` from `hF w`. Use `⟨z • x, UpperTheory.V.Pa.Core.spCong_smul M f z x, ?_⟩` and prove the remaining obligations. Rewrite using `[UpperTheory.V.Pa.Core.spCong_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations. Rewrite using `[← UpperTheory.V.Pa.Core.spCong_map f' a]`. Conclude with `Ideal.mem_map_of_mem (f' : A →+* S') hz`. Introduce and unpack `_ _ ⟨x, rfl, hx⟩ ⟨y, rfl, hy⟩`. Conclude with `⟨x + y, map_add _ _ _, by rw [map_add]; exact Submodule.add_mem _ hx hy⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h2 : ∀ w : (LinearMap.ker f.toLinearMap) ⊗[R] M, f'.toLinearMap.rTensor M ((LinearMap.ker f.toLinearMap).subtype.rTensor M w) ∈ (a.map (algebraMap R S') • ⊤ : Submodule S' (S' ⊗[R] M))`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t m`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h` using `UpperTheory.V.Pa.Core.spCong_kill I a M hI f' t (hk t.2) (Submodule.Quotient.mk (1 ⊗ₜ[R] m))`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Simplify `h` using `[TensorProduct.smul_tmul']`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.add_mem _ hx hy`. Take `⟨x', hx', hm⟩` from `h1 _ hx`. Establish `hex` using `rTensor_exact M (LinearMap.exact_subtype_ker_map f.toLinearMap) hf`. Take `⟨w, hw⟩` from `(hex (x - x')).1 (by rw [map_sub, hx', sub_self])`. Establish `h3` using `h2 w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h3` using `[hw, map_sub]`. Simplify using `using Submodule.add_mem _ h3 hm`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Pa.Core.spCong_ker (hI : (I • ⊤ : Submodule R M) ≤ a • ⊤) (f : A →ₐ[R] S)
     (f' : A →ₐ[R] S') (hf : Function.Surjective f)
@@ -146,15 +144,15 @@ private theorem UpperTheory.V.Pa.Core.spCong_ker (hI : (I • ⊤ : Submodule R 
   simpa using Submodule.add_mem _ h3 hm
 
 /- English proof (translation)
-Set `φ : A ⊗[R] M →+ ((S ⊗[R] M) ⧸ (a.map (algebraMap R S) • ⊤ : Submodule S (S ⊗[R] M)))` to `(Submodule.mkQ _).toAddMonoidHom.comp (f.toLinearMap.rTensor M).toAddMonoidHom`. Set `φ' : A ⊗[R] M →+ ((S' ⊗[R] M) ⧸ (a.map (algebraMap R S') • ⊤ : Submodule S' (S' ⊗[R] M)))` to `(Submodule.mkQ _).toAddMonoidHom.comp (f'.toLinearMap.rTensor M).toAddMonoidHom`. Establish `e : ∀ x, φ x = Submodule.Quotient.mk (f.toLinearMap.rTensor M x)` using `fun _ => rfl`. Establish `e' : ∀ x, φ' x = Submodule.Quotient.mk (f'.toLinearMap.rTensor M x)` using `fun _ => rfl`. Establish `hφ : Function.Surjective φ` using `(Submodule.Quotient.mk_surjective _).comp (LinearMap.rTensor_surjective M (g := f.toLinearMap) hf)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ' : Function.Surjective φ'` using `(Submodule.Quotient.mk_surjective _).comp (LinearMap.rTensor_surjective M (g := f'.toLinearMap) hf')`. Establish `hker : φ.ker = φ'.ker`. Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_ker, AddMonoidHom.mem_ker, e, e', Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨UpperTheory.V.Pa.Core.spCong_ker I a M hI f f' hf hk x, UpperTheory.V.Pa.Core.spCong_ker I a M hI f' f hf' hk' x⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Set `κ` to `((QuotientAddGroup.quotientKerEquivOfSurjective φ hφ).symm.trans (QuotientAddGroup.quotientAddEquivOfEq hker)).trans (QuotientAddGroup.quotientKerEquivOfSurjective φ' hφ')`. Establish `hκ : ∀ x, κ (φ x) = φ' x`. Introduce `x`. Establish `: (QuotientAddGroup.quotientKerEquivOfSurjective φ hφ).symm (φ x) = QuotientAddGroup.mk x`. Rewrite using `[AddEquiv.symm_apply_eq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [κ, AddEquiv.trans_apply, this]`. Both sides reduce to the same expression. Use `⟨κ, fun z x => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hφ x`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : f z • φ x = φ (z • x)`. Rewrite using `[e, e, UpperTheory.V.Pa.Core.spCong_smul, Submodule.Quotient.mk_smul]`. Rewrite using `[h1, hκ, hκ, e', e', UpperTheory.V.Pa.Core.spCong_smul, Submodule.Quotient.mk_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.V.Pa.Core.spCong_gen (hI : (I • ⊤ : Submodule R M) ≤ a • ⊤) (f : A →ₐ[R] S)
     (f' : A →ₐ[R] S') (hf : Function.Surjective f) (hf' : Function.Surjective f')
@@ -194,7 +192,7 @@ private theorem UpperTheory.V.Pa.Core.spCong_gen (hI : (I • ⊤ : Submodule R 
   rw [h1, hκ, hκ, e', e', UpperTheory.V.Pa.Core.spCong_smul, Submodule.Quotient.mk_smul]
 
 /- English proof (translation)
-Unfold `spIdeal`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, k, rfl⟩`. Use `Submodule.mem_sup.2 ⟨_, Ideal.subset_span ⟨j, k, rfl⟩, _, Ideal.mem_map_of_mem _ (h j k), ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.coeff_sub, Polynomial.coeff_map, map_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -211,11 +209,11 @@ private theorem UpperTheory.V.Pa.Core.spCong_ideal {q n : ℕ} (P P' : Fin q →
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `R _ q n P P' ut I a M _ _ h hI`. Establish `hk : ∀ Q : Fin q → Polynomial R, RingHom.ker (Sp.mk Q ut) = spIdeal Q ut` using `fun Q => Ideal.Quotient.mkₐ_ker R (spIdeal Q ut)`. Establish `hs : ∀ Q : Fin q → Polynomial R, Function.Surjective (Sp.mk Q ut)` using `fun Q => Ideal.Quotient.mkₐ_surjective R (spIdeal Q ut)`. Establish `hC : (MvPowerSeries.C : R →+* MvPowerSeries (Fin q × Fin n) R) = algebraMap R (MvPowerSeries (Fin q × Fin n) R)` using `by ext1 r`. Simplify using `[MvPowerSeries.algebraMap_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h' : ∀ j k, (P' j).coeff k - (P j).coeff k ∈ I` using `fun j k => by`. Rewrite using `[← neg_sub]`. Conclude with `I.neg_mem (h j k)`. Take `⟨κ, hκ⟩` from `UpperTheory.V.Pa.Core.spCong_gen I a M hI (Sp.mk P ut) (Sp.mk P' ut) (hs P) (hs P') (by rw [hk, hk, ← hC]; exact UpperTheory.V.Pa.Core.spCong_ideal I P P' ut h') (by rw [hk, hk, ← hC]; exact UpperTheory.V.Pa.Core.spCong_ideal I P' P ut h)`. Use `⟨κ, hκ, fun z hz x => UpperTheory.V.Pa.Core.spCong_kill I a M hI _ z ?_ x⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, ← hC]`. Conclude with `hz`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.spCong :
     ∀ (R : Type) [CommRing R] (q n : ℕ) (P P' : Fin q → Polynomial R) (ut : Fin q → Fin n → R) (I a : Ideal R) (M : Type) [AddCommGroup M] [Module R M], (∀ j k, (P j).coeff k - (P' j).coeff k ∈ I) → (I • ⊤ : Submodule R M) ≤ a • ⊤ → ∃ κ : ((Sp P ut ⊗[R] M) ⧸ (a.map (algebraMap R (Sp P ut)) • ⊤ : Submodule (Sp P ut) (Sp P ut ⊗[R] M))) ≃+ ((Sp P' ut ⊗[R] M) ⧸ (a.map (algebraMap R (Sp P' ut)) • ⊤ : Submodule (Sp P' ut) (Sp P' ut ⊗[R] M))), (∀ z x, κ (Sp.mk P ut z • x) = Sp.mk P' ut z • κ x) ∧ ∀ z ∈ spIdeal P ut ⊔ I.map (MvPowerSeries.C : R →+* MvPowerSeries (Fin q × Fin n) R), ∀ x : (Sp P ut ⊗[R] M) ⧸ (a.map (algebraMap R (Sp P ut)) • ⊤ : Submodule (Sp P ut) (Sp P ut ⊗[R] M)), Sp.mk P ut z • x = 0 := by

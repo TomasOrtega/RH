@@ -12,15 +12,15 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan.TwistedStarLabelling
 
 /- English proof (translation)
-Establish `fwd : ∀ (σ : O ≃+* O), σ w0 = w0 → ∀ (n : ℕ) (B : (Fin n → O) → (Fin n → O) → ℝ), IsCentreRay w (Fin n → O) B → IsCentreRay w (Fin n → O) (fun a b => B (fun i => σ (a i)) fun i => σ (b i))`. Introduce `σ hσ n B h`. Unfold `IsCentreRay at h ⊢`. Take `⟨t, ht, β, hβ, hB⟩` from `h`. Set `τ : (Fin n → O) →ₗ[ℤ] (Fin n → O)` to `{ toFun := fun a i => σ (a i) map_add' := fun a b => by ext i; simp map_smul' := fun k a => by ext i; simp }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `β' : LinearMap.BilinForm ℤ (Fin n → O)` to `β.compl₁₂ τ τ`. Establish `h1 : w.evalZ β' = w.evalZ β`. Unfold `GlobalTheory.LocM.InvFun.evalZ`. Rewrite using `[GlobalTheory.LocM.InvFun.eval_pi, GlobalTheory.LocM.InvFun.eval_pi]`. Conclude with `hw σ hσ n (fun a b => ((β a) b : ℝ))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨t, ht, β', h1.trans hβ, fun a b => hB (τ a) (τ b)⟩`. Introduce `σ hσ n B`. Establish `hσ' : σ.symm w0 = w0`. Rewrite using `[RingEquiv.symm_apply_eq]`. Conclude with `hσ.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hiff : IsCentreRay w (Fin n → O) (fun a b => B (fun i => σ (a i)) fun i => σ (b i)) ↔ IsCentreRay w (Fin n → O) B`. Use `⟨fun h => ?_, fwd σ hσ n B⟩` and prove the remaining obligations. Establish `h2` using `fwd σ.symm hσ' n _ h`. Simplify using `only [RingEquiv.apply_symm_apply] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.LocM.InvFun.eval_pi, ← GlobalTheory.LocM.InvFun.eval_pi, starLab_eval, starLab_eval, GlobalTheory.LocM.InvFun.eval_pi, GlobalTheory.LocM.InvFun.eval_pi, hl σ hσ n B]`. Distinguish the cases in `hc : IsCentreRay w (Fin n → O) B`. Rewrite using `[if_pos (hiff.mpr hc), if_pos hc]`. Rewrite using `[if_neg (mt hiff.mp hc), if_neg hc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTwG_starLab {O : Type} [CommRing O] (w0 : O) {lab w : InvFun O}
     (hl : IsTwG w0 lab) (hw : IsTwG w0 w) : IsTwG w0 (starLab lab w) := by
@@ -57,33 +57,29 @@ theorem isTwG_starLab {O : Type} [CommRing O] (w0 : O) {lab w : InvFun O}
   · rw [if_neg (mt hiff.mp hc), if_neg hc]
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar w0 hb q φ lab w ψ' hDom hφ hlab hSL hw hC _ _ hS`. Use `⟨starLab lab w, isTwG_starLab w0 hlab hw, fun X _ _ _ _ hX β hβ hp k hk => starLab_evalZ_smul lab w β hk (hSL.1 X hX β hβ hp k hk), fun X _ _ _ _ hX n γ' hγ' => ?_⟩` and prove the remaining obligations. Break down `hS.2.2 X hX n γ' hγ' with ⟨m, γ, hγ, hfree, hin⟩ | ⟨m, γ, β₀, m', s, h, hγ, hb₀, hp₀, hw₀, hin₀, hf, hpos, hin⟩` into its components or cases. Take `⟨m₁, δ, hδ, hli, hinj, hγδ⟩` from `hSL.2 X hX m γ hγ`. Take `⟨g, hg1, hg2, hg3⟩` from `exists_cut_of_cell_le O bar φ X m₁ m δ γ hδ hγ hγδ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m₂, s, hfs⟩` from `exists_isFaceCut δ g hg1`. Establish `hδs : IsCell bar φ (fun j => δ (s j))` using `GlobalTheory.T.cell_face_restriction O bar hb q φ hφ X hX (hDom X) m₁ δ hδ m₂ s g hfs`. Establish `hfree' : ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → InRCone (fun j => δ (s j)) β → w.evalZ β = 0` using `fun β hb hp hc => hfree β hb hp (hg3 β hb hp (inRCone_of_sub s hc) (IsFaceCut.apply_eq_zero hfs hc))`. Establish `hcell'` using `hS.1 X hX m₂ _ hδs hfree'`. Establish `hnc : ∀ j, ¬ IsCentreRay w X (fun a b => (δ (s j) a b : ℝ))` using `fun j hc => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht, β', hb', hp', hw', e⟩` from `exists_of_isCentreRay w (hδs.mem j) (hδs.nonneg j) hc`. Use `hfree' β' hb' hp' (InRCone.of_toReal_eq_smul (inRCone_self (fun j => δ (s j)) j) ht.le e)` as an intermediate fact. Rewrite `this` using `[hw']`. Evaluate the numerical expressions using `at this`. Use `⟨m₂, _, hcell', hli.comp _ s.injective, fun i j hij => ?_, fun j => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [starLab_evalZ_of_not lab w (hnc i), starLab_evalZ_of_not lab w (hnc j)] at hij`. Conclude with `s.injective (hinj (Real.exp_injective (by linarith)))`. Conclude with `inRCone_trans (fun k => inRCone_face hfs (hγδ k) (hg2 k)) (hin j)`. Take `⟨m₁, δ, hδ, hli, hinj, hγδ⟩` from `hSL.2 X hX m γ hγ`. Establish `hγs : IsCell bar φ (fun j => γ (s j))` using `GlobalTheory.T.cell_face_restriction O bar hb q φ hφ X hX (hDom X) m γ hγ m' s h hf`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg1, hg2, hg3⟩` from `exists_cut_of_cell_le O bar φ X m₁ m' δ (fun j => γ (s j)) hδ hγs (fun k => hγδ (s k))`. Take `⟨m₂, s', hfs⟩` from `exists_isFaceCut δ g hg1`. Establish `hβ₀δ : InRCone δ β₀` using `inRCone_trans hγδ hin₀`. Establish `hgpos : 0 < g β₀`. Break down `(hβ₀δ.apply_nonneg g hg1).lt_or_eq with h' | h'` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h'`. Conclude with `(hpos.ne' (IsFaceCut.apply_eq_zero hf (hg3 β₀ hb₀ hp₀ hβ₀δ h'.symm))).elim`. Establish `hcell'` using `hS.2.1 X hX m₁ δ hδ β₀ hb₀ hp₀ hw₀ hβ₀δ m₂ s' g hfs hgpos`. Establish `hnc : ∀ j, ¬ IsCentreRay w X (fun a b => (δ (s' j) a b : ℝ))` using `fun j hc => by`. Take `⟨t, ht, β', hb', hp', hw', e⟩` from `exists_of_isCentreRay w (hδ.mem (s' j)) (hδ.nonneg (s' j)) hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hβ'δ : InRCone δ β'` using `InRCone.of_toReal_eq_smul (inRCone_self δ (s' j)) ht.le e`. Establish `heq : β' = β₀` using `(hC X hX).2.2 m₁ δ hδ β' hb' hp' β₀ hb₀ hp₀ hw' hw₀ hβ'δ hβ₀δ`. Establish `h0 : g β' = 0` using `IsFaceCut.apply_eq_zero hfs (InRCone.of_toReal_eq_smul (inRCone_self (fun j => δ (s' j)) j) ht.le e)`. Rewrite `h0` using `[heq]`. Conclude with `hgpos.ne' h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv0 : (starLab lab w).evalZ β₀ = -1` using `starLab_evalZ_of_eq_one lab w hw₀`. Establish `hvs : ∀ j, (starLab lab w).evalZ (δ (s' j)) = Real.exp (lab.evalZ (δ (s' j))) - 1` using `fun j => starLab_evalZ_of_not lab w (hnc j)`. Establish `hsp : Submodule.span ℤ (Set.range fun j => δ (s' j)) ≤ LinearMap.ker g` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact LinearMap.mem_ker.2 ((hfs.2 (s' j)).2 ⟨j, rfl⟩))`. Establish `hself : ∀ j, InRCone (Fin.cons β₀ fun j => δ (s' j) : Fin (m₂ + 1) → LinearMap.BilinForm ℤ X) (δ (s' j))` using `fun j => by simpa using inRCone_self (Fin.cons β₀ fun j => δ (s' j) : Fin (m₂ + 1) → LinearMap.BilinForm ℤ X) j.succ`. Use `⟨m₂ + 1, Fin.cons β₀ fun j => δ (s' j), hcell', ?_, ?_, fun j => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `LinearIndependent.fin_cons' β₀ _ (hli.comp _ s'.injective) fun c y hy hz => ?_` and prove the remaining obligations. Establish `h1 : g y = 0` using `LinearMap.mem_ker.1 (hsp hy)`. Establish `h2` using `congrArg g hz`. Rewrite `h2` using `[map_add, map_smul, h1, add_zero, map_zero, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h2).resolve_right hgpos.ne'`.
+Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Introduce `i j hij`. Simplify using `only at hij`. Consider the cases of `i using Fin.cases with`. Consider the case `zero`. Consider the cases of `j using Fin.cases with`.
+Treat this case separately. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => rfl`. Consider the case `succ j`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, hv0, hvs] at hij`. Combine the linear relations using `[Real.exp_pos (lab.evalZ (δ (s' j)))]`. Consider the case `succ i`.
+Treat this case separately. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the cases of `j using Fin.cases with`. Consider the case `zero`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, hv0, hvs] at hij`. Combine the linear relations using `[Real.exp_pos (lab.evalZ (δ (s' i)))]`. Consider the case `succ j`.
-
-Simplify using `only [Fin.cons_succ, hvs] at hij`. Conclude with `congrArg Fin.succ (s'.injective (hinj (Real.exp_injective (by linarith))))`. Use `inRCone_trans (fun k => ?_) (hin j)` and prove the remaining obligations. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `using inRCone_self (Fin.cons β₀ fun j => δ (s' j) : Fin (m₂ + 1) → LinearMap.BilinForm ℤ X) 0`.
-
-Simplify using `only [Fin.cons_succ]`. Conclude with `inRCone_trans hself (inRCone_face hfs (hγδ (s k)) (hg2 k))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isTwG_simpLab_star : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (w0 : O), CMOrd O bar → ∀ (q : ℕ) (φ lab w ψ' : InvFun O),
     (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) →

@@ -11,11 +11,11 @@ namespace PI.JetsPhW.Low
 open PI.JetsPhW
 
 /- English proof (translation)
-Take `⟨hl0, hle, -⟩` from `logOk_low hlog`. Establish `hAl : MvPowerSeries.constantCoeff (PowerSeries.subst A l : MvPowerSeries (Fin 2) ℂ_[p]) = 0`. Rewrite using `[const_subst hA]`. Conclude with `hl0`. Establish `hI : MvPowerSeries.constantCoeff (MvPowerSeries.C c * PowerSeries.subst A l : MvPowerSeries (Fin 2) ℂ_[p]) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hAl, mul_zero]`. Establish `e : mulBy l ex c A = PowerSeries.subst (MvPowerSeries.C c * PowerSeries.subst A l) ex` using `rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, const_subst hI]`. Conclude with `hlog.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[e, coeff_expX_subst hI, MvPowerSeries.coeff_C_mul, coeff_expX_subst hA]`. Take the linear combination `(c * MvPowerSeries.coeff E0 A) * hle`. Rewrite using `[e, coeff_expY_subst hI, MvPowerSeries.coeff_C_mul, coeff_expY_subst hA]`. Take the linear combination `(c * MvPowerSeries.coeff E1 A) * hle`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma coeff_mulBy_low_degree {p : ℕ} [Fact p.Prime] {l ex : PowerSeries ℂ_[p]} (hlog : LogOk l ex) (c : ℂ_[p])
     {A : MvPowerSeries (Fin 2) ℂ_[p]} (hA : MvPowerSeries.constantCoeff A = 0) :
@@ -37,15 +37,13 @@ private lemma coeff_mulBy_low_degree {p : ℕ} [Fact p.Prime] {l ex : PowerSerie
     linear_combination (c * MvPowerSeries.coeff E1 A) * hle
 
 /- English proof (translation)
-Take `⟨hl0, hle, -⟩` from `logOk_low hlog`. Establish `hAl : MvPowerSeries.constantCoeff (PowerSeries.subst A l : MvPowerSeries (Fin 2) ℂ_[p]) = 0`. Rewrite using `[const_subst hA]`. Conclude with `hl0`. Establish `hBl : MvPowerSeries.constantCoeff (PowerSeries.subst B l : MvPowerSeries (Fin 2) ℂ_[p]) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[const_subst hB]`. Conclude with `hl0`. Establish `hS : MvPowerSeries.constantCoeff (PowerSeries.subst A l + PowerSeries.subst B l : MvPowerSeries (Fin 2) ℂ_[p]) = 0`. Rewrite using `[map_add, hAl, hBl, add_zero]`. Establish `ea : add l ex A B = PowerSeries.subst (PowerSeries.subst A l + PowerSeries.subst B l) ex` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hadd : MvPowerSeries.constantCoeff (add l ex A B) = 0`. Rewrite using `[ea, const_subst hS]`. Conclude with `hlog.1`. Establish `eb : be l ex ph A B = PowerSeries.subst (add l ex A B) ph - PowerSeries.subst A ph - PowerSeries.subst B ph` using `rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eb, map_sub, map_sub, coeff_expX_subst hadd, coeff_expX_subst hA, coeff_expX_subst hB, ea, coeff_expX_subst hS, map_add, coeff_expX_subst hA, coeff_expX_subst hB, hB0]`. Take the linear combination `(PowerSeries.coeff 1 ph * MvPowerSeries.coeff E0 A) * hle`. Rewrite using `[eb, map_sub, map_sub, coeff_expY_subst hadd, coeff_expY_subst hA, coeff_expY_subst hB, ea, coeff_expY_subst hS, map_add, coeff_expY_subst hA, coeff_expY_subst hB, hA1]`. Take the linear combination `(PowerSeries.coeff 1 ph * MvPowerSeries.coeff E1 B) * hle`. Rewrite using `[eb, map_sub, map_sub, coeff_expXY_subst hadd, coeff_expXY_subst hA, coeff_expXY_subst hB, ea, coeff_expXY_subst hS, coeff_expX_subst hS, coeff_expY_subst hS, map_add, map_add, map_add, coeff_expXY_subst hA, coeff_expXY_subst hB, coeff_expX_subst hA, coeff_expX_subst hB, coeff_ex …`.
-
-Take the linear combination `(PowerSeries.coeff 1 ph * (MvPowerSeries.coeff bivariateExponentMonomial A + MvPowerSeries.coeff bivariateExponentMonomial B) + 2 * MvPowerSeries.coeff E0 A * MvPowerSeries.coeff E1 B * PowerSeries.coeff 2 ph * (PowerSeries.coeff 1 ex * PowerSeries.coeff 1 l + 1)) * hle`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma coeff_be_low_degree {p : ℕ} [Fact p.Prime] {l ex : PowerSeries ℂ_[p]} (ph : PowerSeries ℂ_[p])
     (hlog : LogOk l ex) {A B : MvPowerSeries (Fin 2) ℂ_[p]} (hA : MvPowerSeries.constantCoeff A = 0)
@@ -84,25 +82,23 @@ private lemma coeff_be_low_degree {p : ℕ} [Fact p.Prime] {l ex : PowerSeries �
         (PowerSeries.coeff 1 ex * PowerSeries.coeff 1 l + 1)) * hle
 
 /- English proof (translation)
-Introduce `p _ l ex ph a b hlog hsim`. Take `⟨hl0, hle, he1⟩` from `logOk_low hlog`. Establish `hex0 : PowerSeries.constantCoeff ex = 0` using `hlog.1`. Establish `cX : ∀ i : Fin 2, MvPowerSeries.constantCoeff (Xv i : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `fun i => by`. Simplify using `[Xv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `x00 : MvPowerSeries.coeff E0 (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) = 1`. Simplify using `[Xv, MvPowerSeries.coeff_X, E0, E1, Finsupp.single_eq_single_iff]`. Establish `x01 : MvPowerSeries.coeff E1 (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) = 0`. Simplify using `[Xv, MvPowerSeries.coeff_X, E0, E1, Finsupp.single_eq_single_iff]`. Establish `x10 : MvPowerSeries.coeff E0 (Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Xv, MvPowerSeries.coeff_X, E0, E1, Finsupp.single_eq_single_iff]`. Establish `x11 : MvPowerSeries.coeff E1 (Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) = 1`. Simplify using `[Xv, MvPowerSeries.coeff_X, E0, E1, Finsupp.single_eq_single_iff]`. Take `⟨ma0, ma1, ma2⟩` from `coeff_mulBy_low_degree hlog a (cX 0)`. Take `⟨mb0, mb1, mb2⟩` from `coeff_mulBy_low_degree hlog b (cX 1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u0, u1, u2⟩` from `coeff_be_low_degree ph hlog ma0 (cX 1) (by rw [ma2, x01, mul_zero]) x10`. Take `⟨v0, v1, v2⟩` from `coeff_be_low_degree ph hlog (cX 0) mb0 x01 (by rw [mb1, x10, mul_zero])`. Use `set D := (be l ex ph (mulBy l ex a (Xv 0)) (Xv 1) - be l ex ph (Xv 0) (mulBy l ex b (Xv 1)) : MvPowerSeries (Fin 2) ℂ_[p]) with hD`. Establish `hD0 : MvPowerSeries.constantCoeff D = 0` using `hsim.1`. Establish `d0 : MvPowerSeries.coeff E0 D = 0` using `by rw [hD, map_sub, u0, v0, sub_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1 : MvPowerSeries.coeff E1 D = 0` using `by rw [hD, map_sub, u1, v1, sub_zero]`. Establish `hs : (bivariateExponentMonomial.sum fun _ k => k) = 2` using `degree_expXY`. Establish `hexp : MvPowerSeries.coeff bivariateExponentMonomial (expMv D) = MvPowerSeries.coeff bivariateExponentMonomial D`. Express the relevant statement in the definitionally equal form `(∑ n ∈ Finset.range ((bivariateExponentMonomial.sum fun _ k => k) + 1), MvPowerSeries.coeff bivariateExponentMonomial (D ^ n) / (n.factorial : ℂ_[p])) = _`. Rewrite using `[hs, Finset.sum_range_succ, Finset.sum_range_succ, Finset.sum_range_one, pow_two, coeff_expXY_mul hD0 hD0, d0, d1]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[MvPowerSeries.coeff_one, expXY_ne_zero]`. Establish `hint : ‖MvPowerSeries.coeff bivariateExponentMonomial D‖ ≤ 1`. Rewrite using `[← hexp]`. Conclude with `hsim.2 bivariateExponentMonomial`. Establish `hjet : jet ex ph 2 = 2 * (PowerSeries.coeff 1 ph * PowerSeries.coeff 2 ex + PowerSeries.coeff 2 ph * PowerSeries.coeff 1 ex ^ 2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `jet`. Rewrite using `[pcoeff2_subst hex0 ph]`. Evaluate the numerical expressions. Establish `hval : MvPowerSeries.coeff bivariateExponentMonomial D = (a - b) * jet ex ph 2 * PowerSeries.coeff 1 l ^ 2`. Rewrite using `[hD, map_sub, u2, v2, ma1, mb2, x00, x11, hjet]`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(-2 * (a - b) * PowerSeries.coeff 2 ph * (PowerSeries.coeff 1 ex * PowerSeries.coeff 1 l + 1)) * hle`. Establish `hl1 : 1 ≤ ‖PowerSeries.coeff 1 l‖`. Establish `h` using `congrArg norm hle`. Rewrite `h` using `[norm_mul, norm_one]`. Assume the negation of the conclusion as `hlt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_neg at hlt`. Use polynomial arithmetic with `[norm_nonneg (PowerSeries.coeff 1 ex), norm_nonneg (PowerSeries.coeff 1 l)]`. Rewrite `hint` using `[hval, norm_mul, norm_pow]`. Unfold `IsIntP`. Establish `hxy` using `norm_nonneg ((a - b) * jet ex ph 2)`.
-
-Use `mul_le_mul_of_nonneg_left (one_le_pow₀ (n := 2) hl1) hxy` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem secondJetIntegralGeneral_holds : TwoG := by
   intro p _ l ex ph a b hlog hsim

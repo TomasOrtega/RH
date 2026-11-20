@@ -24,7 +24,7 @@ def clampHom (n m : ℕ) (f : ℕ → ℕ) (hf : Monotone f) : SimplexCategory.m
 def faceFun (i : ℕ) (j : ℕ) : ℕ := if j < i then j else j + 1
 
 /- English proof (translation)
-Introduce `a b h`. Unfold `faceFun`. Apply the tactic sequence `split_ifs <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem faceFun_mono (i : ℕ) : Monotone (faceFun i) := by
   intro a b h
@@ -94,7 +94,7 @@ def ev (Y : SimplicialObject (SimplicialObject C)) : BOp ⥤ C where
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Simplify using `[ev, bop]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ev_map_bop (Y : SimplicialObject (SimplicialObject C)) {n m p q : ℕ}
     (α : SimplexCategory.mk p ⟶ SimplexCategory.mk n) (β : SimplexCategory.mk q ⟶ SimplexCategory.mk m) :

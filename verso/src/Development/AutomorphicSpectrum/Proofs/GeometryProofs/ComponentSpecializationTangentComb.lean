@@ -16,7 +16,7 @@ variable {S S' : Scheme.{0}} {f : S' ⟶ S} {G' : Over S'} [GrpObj G'] {G : Over
   {φ : G'.left ⟶ G.left}
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Conclude with `hφ.2 T x y x₀ y₀ hx hy`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem grpPull_mul (hφ : IsGrpPullback G' G f φ) (T : Over S') {g : T.left ⟶ S} (hg : g = T.hom ≫ f)
     (x y : T ⟶ G') (x₀ y₀ : Over.mk g ⟶ G) (hx : x₀.left = x.left ≫ φ) (hy : y₀.left = y.left ≫ φ) :
@@ -25,9 +25,9 @@ theorem grpPull_mul (hφ : IsGrpPullback G' G f φ) (T : Over S') {g : T.left �
   exact hφ.2 T x y x₀ y₀ hx hy
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Establish `hw : ((1 : T ⟶ G').left ≫ φ) ≫ G.hom = T.hom ≫ f`. Rewrite using `[Category.assoc, hφ.1.w, ← Category.assoc]`. Conclude with `congrArg (· ≫ f) (Over.w (1 : T ⟶ G'))`. Set `e : Over.mk (T.hom ≫ f) ⟶ G` to `Over.homMk ((1 : T ⟶ G').left ≫ φ) hw`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `hφ.2 T 1 1 e e rfl rfl`. Rewrite `h` using `[_root_.mul_one]`. Establish `h2 : e * e = e` using `Over.OverMorphism.ext h`. Establish `h3 : e = 1` using `mul_eq_left.1 h2`. Conclude with `(congrArg (fun q : Over.mk (T.hom ≫ f) ⟶ G => q.left) h3).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem grpPull_one (hφ : IsGrpPullback G' G f φ) (T : Over S') {g : T.left ⟶ S} (hg : g = T.hom ≫ f) :
     (1 : Over.mk g ⟶ G).left = (1 : T ⟶ G').left ≫ φ := by
@@ -52,7 +52,7 @@ section Same
 variable {Y : Model Xo c β} {F : Type} [Field F] {y : Sp F ⟶ Xo.XF c}
 
 /- English proof (translation)
-Set `T : Over (Xo.XF c)` to `epsAt y`. Use `⟨(1 : T ⟶ Y.oF.t.G).left, Over.w _, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(grpPull_one Y.m0.cart T (Category.assoc _ _ _).symm).symm`. Conclude with `(grpPull_one Y.m.cart T (Category.assoc _ _ _).symm).symm`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sameVec_one (Y : Model Xo c β) (y : Sp F ⟶ Xo.XF c) : SameVec Y y 1 1 := by
   let T : Over (Xo.XF c) := epsAt y
@@ -61,9 +61,9 @@ theorem sameVec_one (Y : Model Xo c β) (y : Sp F ⟶ Xo.XF c) : SameVec Y y 1 1
   · exact (grpPull_one Y.m.cart T (Category.assoc _ _ _).symm).symm
 
 /- English proof (translation)
-Take `⟨u₁, p₁, q₁, r₁⟩` from `h₁`. Take `⟨u₂, p₂, q₂, r₂⟩` from `h₂`. Set `T : Over (Xo.XF c)` to `epsAt y`. Set `x₁ : T ⟶ Y.oF.t.G` to `Over.homMk u₁ p₁`. Set `x₂ : T ⟶ Y.oF.t.G` to `Over.homMk u₂ p₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨(x₁ * x₂).left, Over.w (x₁ * x₂), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(grpPull_mul Y.m0.cart T (Category.assoc _ _ _).symm x₁ x₂ a b q₁.symm q₂.symm).symm`. Conclude with `(grpPull_mul Y.m.cart T (Category.assoc _ _ _).symm x₁ x₂ a' b' r₁.symm r₂.symm).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sameVec_mul {a b : epsAt (under y) ⟶ Xo.univ.t.G} {a' b' : epsAt (y ≫ Y.j) ⟶ Y.t.G}
     (h₁ : SameVec Y y a a') (h₂ : SameVec Y y b b') : SameVec Y y (a * b) (a' * b') := by
@@ -77,7 +77,7 @@ theorem sameVec_mul {a b : epsAt (under y) ⟶ Xo.univ.t.G} {a' b' : epsAt (y �
   · exact (grpPull_mul Y.m.cart T (Category.assoc _ _ _).symm x₁ x₂ a' b' r₁.symm r₂.symm).symm
 
 /- English proof (translation)
-Take `⟨u₀, p, q, t⟩` from `h`. Use `⟨spMap (GlobalTheory.CompanionTheory.Ar.epsMul r) ≫ u₀, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, p, ← Category.assoc, LieTangent.spec_eps_alg]`. Rewrite using `[Category.assoc, q, hu]`. Rewrite using `[Category.assoc, t]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -94,11 +94,11 @@ theorem sameVec_scale {a u : epsAt (under y) ⟶ Xo.univ.t.G} {a' : epsAt (y ≫
 end Same
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `⟨1, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using Z.M.valAt_zero hg`. Simplify using `using sameVec_one Y y`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ n ih`. Take `⟨a, ha, hb⟩` from `h 0`. Take `⟨w', hw, hs⟩` from `ih (fun i => e i.succ) (fun i => u i.succ) fun i => h i.succ`. Use `⟨a * w', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_succ]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha.add hw`. Rewrite using `[List.ofFn_succ, List.prod_cons]`. Conclude with `sameVec_mul hb hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valFam_sum {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U) {F : Type} [Field F]
     (y : Sp F ⟶ Xo.XF c) (hg : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j)) {n : ℕ} (e : Fin n → Z.V)
@@ -120,9 +120,9 @@ theorem valFam_sum {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U) {F 
       exact sameVec_mul hb hs
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y U Z F _ y n b v s r w hg h hs hw`. Take `⟨u, hu, rfl⟩` from `hw`. Use `valFam_sum Z y hg _ u fun j => ?_` and prove the remaining obligations. Take `⟨h1, t, e1, e2⟩` from `hs j`. Take `⟨a, ha, hb⟩` from `h j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `ha.smul h1 t`. Rewrite `h2` using `[e1, e2]`. Conclude with `⟨_, h2, sameVec_scale hb (r j) (hu j)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem valFam_sum_comb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (F : Type) [Field F] (y : Sp F ⟶ Xo.XF c) (n : ℕ) (b : Fin n → Z.V) (v : Vecs y n) (s : Fin n → Z.Ω) (r : Fin n → F) (w : epsAt (under y) ⟶ Xo.univ.t.G), genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j) → IsValFam Z y b v → (∀ j, ValAt (Z.ξ₀ ≫ Y.j) (y ≫ Y.j) (s j) (r j)) → IsComb r v w → ∃ w', Z.M.ValAt (y ≫ Y.j) (∑ j, s j • b j) w' ∧ SameVec Y y w w' := by
   intro E _ _ _ H D l Xo c O _ β Y U Z F _ y n b v s r w hg h hs hw

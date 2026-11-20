@@ -9,9 +9,9 @@ open Polynomial
 section Alg
 
 /- English proof (translation)
-Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `x`. Take `⟨u, rfl⟩` from `hc`. Take `⟨y, rfl⟩ : ∃ y, x = (u : R) * y` from `⟨((u⁻¹ : Rˣ) : R) * x, by rw [← mul_assoc, Units.mul_inv, one_mul]⟩`. Rewrite using `[scaleRoots_eval_mul, Matrix.charpoly_natDegree_eq_dim, Matrix.eval_charpoly, Matrix.eval_charpoly, ← Matrix.det_smul, smul_sub]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use extensionality with `a b`. Simplify using `only [Matrix.smul_apply, Matrix.scalar_apply, Matrix.diagonal_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem charpoly_smul_unit {R : Type} [CommRing R] [IsDomain R] [Infinite R] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) R) {c : R} (hc : IsUnit c) :
@@ -28,7 +28,7 @@ theorem charpoly_smul_unit {R : Type} [CommRing R] [IsDomain R] [Infinite R] {n 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `c S hc ih`. Rewrite using `[Finset.prod_insert hc, Finset.prod_insert hc, mul_scaleRoots_of_noZeroDivisors, ih, X_sub_C_scaleRoots, mul_comm (a c) s]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem scaleRoots_prod_Icc {R : Type} [CommRing R] [IsDomain R] (a : ℕ → R) (s : R) (S : Finset ℕ) :
     (∏ c ∈ S, (X - C (a c))).scaleRoots s = ∏ c ∈ S, (X - C (s * a c)) := by
@@ -39,7 +39,7 @@ theorem scaleRoots_prod_Icc {R : Type} [CommRing R] [IsDomain R] (a : ℕ → R)
       mul_comm (a c) s]
 
 /- English proof (translation)
-Rewrite using `[(Matrix.charpoly_monic B).natDegree_mul (monic_prod_of_monic _ _ fun c _ => monic_X_sub_C (a c)), Matrix.charpoly_natDegree_eq_dim, natDegree_prod_of_monic _ _ fun c _ => monic_X_sub_C (a c)]`. Simplify using `[natDegree_X_sub_C]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem natDegree_blk {R : Type} [CommRing R] [Nontrivial R] {r : ℕ} (B : Matrix (Fin r) (Fin r) R)
     (a : ℕ → R) (t : ℕ) : (B.charpoly * ∏ c ∈ Finset.Icc 1 t, (X - C (a c))).natDegree = r + t := by
@@ -48,7 +48,7 @@ theorem natDegree_blk {R : Type} [CommRing R] [Nontrivial R] {r : ℕ} (B : Matr
   simp [natDegree_X_sub_C]
 
 /- English proof (translation)
-Rewrite using `[coeff_sub, coeff_scaleRoots, coeff_scaleRoots, hdeg, ← sub_mul]`. Conclude with `J.mul_mem_right _ (by simpa [coeff_sub] using h k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_mem {R : Type} [CommRing R] (J : Ideal R) (p q : R[X]) (hdeg : p.natDegree = q.natDegree) (s : R)
     (h : ∀ k, (p - q).coeff k ∈ J) (k : ℕ) : (p.scaleRoots s - q.scaleRoots s).coeff k ∈ J := by
@@ -56,9 +56,9 @@ theorem scale_mem {R : Type} [CommRing R] (J : Ideal R) (p q : R[X]) (hdeg : p.n
   exact J.mul_mem_right _ (by simpa [coeff_sub] using h k)
 
 /- English proof (translation)
-Set `ψ : IsLocalRing.ResidueField O →+* S` to `Ideal.Quotient.lift (IsLocalRing.maximalIdeal O) f hf`. Establish `hfψ : ∀ p : O[X], p.map f = (p.map (IsLocalRing.residue O)).map ψ` using `fun p => by`. Rewrite using `[Polynomial.map_map]`. Conclude with `congrArg (fun g : O →+* S => p.map g) (RingHom.ext fun a => rfl)`. Rewrite using `[hfψ, hfψ, ← Matrix.charpoly_map, h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.map_mul, Polynomial.map_prod, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, Matrix.charpoly_map]`.
+A detailed English derivation is pending.
 -/
 theorem congr_mod {O S : Type} [CommRing O] [IsLocalRing O] [CommRing S] (f : O →+* S)
     (hf : ∀ a ∈ IsLocalRing.maximalIdeal O, f a = 0) {n r : ℕ} (A : Matrix (Fin n) (Fin n) O)
@@ -75,9 +75,9 @@ theorem congr_mod {O S : Type} [CommRing O] [IsLocalRing O] [CommRing S] (f : O 
     Matrix.charpoly_map]
 
 /- English proof (translation)
-Establish `H` using `congr_mod ((Ideal.Quotient.mk J).comp φ) (fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 (hφ a ha)) A B χ t h`. Establish `e : (B.map φ).charpoly * ∏ c ∈ Finset.Icc 1 t, (X - C (φ (χ c))) = (B.charpoly * ∏ c ∈ Finset.Icc 1 t, (X - C (χ c))).map φ`. Simplify using `only [Polynomial.map_mul, Polynomial.map_prod, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, Matrix.charpoly_map]`. Establish `H2 : (A.map φ).charpoly.map (Ideal.Quotient.mk J) = ((B.map φ).charpoly * ∏ c ∈ Finset.Icc 1 t, (X - C (φ (χ c)))).map (Ideal.Quotient.mk J)`. Rewrite using `[e, Matrix.charpoly_map, Polynomial.map_map, Polynomial.map_map, H]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← Polynomial.coeff_map, Polynomial.map_sub, H2, sub_self, coeff_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mod_ideal {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] (φ : O →+* R) (J : Ideal R)
     (hφ : ∀ a ∈ IsLocalRing.maximalIdeal O, φ a ∈ J) {n r : ℕ} (A : Matrix (Fin n) (Fin n) O)
@@ -102,13 +102,13 @@ section Val
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Distinguish the cases in `hx0 : x = 0`. Substitute `hx0` using the available equality. Rewrite `hx` using `[map_zero]`. Conclude with `absurd hx not_isUnit_zero`. Establish `hx0' : (x : ↥LL.1) ≠ 0` using `fun e => hx0 (Subtype.ext e)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `hx`. Establish `hinv : IsIntegral ℤ_[l] ((x : ↥LL.1)⁻¹)`. Establish `hy : IsIntegral ℤ_[l] (((u⁻¹ : (↥(OL LL'))ˣ) : ↥(OL LL')) : ↥LL'.1)` using `(((u⁻¹ : (↥(OL LL'))ˣ) : ↥(OL LL'))).2`. Establish `he : IntermediateField.inclusion h ((x : ↥LL.1)⁻¹) = (((u⁻¹ : (↥(OL LL'))ˣ) : ↥(OL LL')) : ↥LL'.1)`. Rewrite using `[map_inv₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ((incO h x : ↥(OL LL')) : ↥LL'.1) = IntermediateField.inclusion h (x : ↥LL.1)` using `rfl`. Rewrite using `[← h1, ← hu]`. Establish `h2 : ((u : ↥(OL LL')) : ↥LL'.1) * (((u⁻¹ : (↥(OL LL'))ˣ) : ↥(OL LL')) : ↥LL'.1) = 1`. Rewrite using `[← Subalgebra.coe_mul, Units.mul_inv, Subalgebra.coe_one]`. Conclude with `inv_eq_of_mul_eq_one_right h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hy` using `[← he]`. Conclude with `(isIntegral_algHom_iff ((IntermediateField.inclusion h).restrictScalars ℤ_[l]) (IntermediateField.inclusion h).injective).1 hy`. Use `isUnit_iff_exists_inv.2 ⟨⟨(x : ↥LL.1)⁻¹, hinv⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (x : ↥LL.1) * (x : ↥LL.1)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ hx0'`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_incO {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) (x : ↥(OL LL)) (hx : IsUnit (incO h x)) :
     IsUnit x := by
@@ -135,17 +135,17 @@ theorem isUnit_of_incO {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) (x : ↥(OL LL))
   exact mul_inv_cancel₀ hx0'
 
 /- English proof (translation)
-Distinguish the cases in `hy0 : y = 0`. Rewrite using `[hy0]`. Conclude with `dvd_zero lam`. Establish `hl0 : (lam : ↥LL.1) ≠ 0` using `fun e => hl.ne_zero (Subtype.ext e)`. Establish `hy0' : (y : ↥LL.1) ≠ 0` using `fun e => hy0 (Subtype.ext e)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu0 : (y : ↥LL.1) / lam ≠ 0` using `div_ne_zero hy0' hl0`. Establish `key : 0 ≤ P.v LL ((y : ↥LL.1) / lam) ∨ 0 ≤ P.v LL ((y : ↥LL.1) / lam)⁻¹`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨h1, h2⟩` from `hc`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : P.v LL ((y : ↥LL.1) / lam) + P.v LL ((y : ↥LL.1) / lam)⁻¹ = 0`. Rewrite using `[← AddValuation.map_mul, mul_inv_cancel₀ hu0, AddValuation.map_one]`. Take `⟨a, ha⟩` from `WithTop.ne_top_iff_exists.1 (ne_top_of_lt h1)`. Take `⟨b, hb⟩` from `WithTop.ne_top_iff_exists.1 (ne_top_of_lt h2)`. Rewrite `h1`, `hs` using `[← ha]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2`, `hs` using `[← hb]`. Establish `hab : a + b = 0` using `by exact_mod_cast hs`. Establish `ha' : a < 0` using `by exact_mod_cast h1`. Establish `hb' : b < 0` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Break down `key with h | h` into its components or cases. Use `⟨⟨(y : ↥LL.1) / lam, (P.v_O LL _).1 h⟩, Subtype.ext ?_⟩ show (y : ↥LL.1) = lam * ((y : ↥LL.1) / lam)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Establish `hlam : lam = y * ⟨((y : ↥LL.1) / lam)⁻¹, (P.v_O LL _).1 h⟩` using `Subtype.ext (by show (lam : ↥LL.1) = y * ((y : ↥LL.1) / lam)⁻¹`. Rewrite using `[inv_div]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use the proof step `field_simp)`. Take `⟨z, hz⟩ : ∃ z : ↥(OL LL), lam = y * z` from `⟨_, hlam⟩`. Break down `hl.isUnit_or_isUnit hz with h' | h'` into its components or cases. Conclude with `absurd h' hy`. Conclude with `⟨((h'.unit⁻¹ : (↥(OL LL))ˣ) : ↥(OL LL)), by rw [hz, mul_assoc, h'.mul_val_inv, mul_one]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dvd_of_not_isUnit (P : LocPrime l) (LL : FinExt l) {lam y : ↥(OL LL)} (hl : Irreducible lam)
     (hy : ¬ IsUnit y) : lam ∣ y := by
@@ -188,11 +188,11 @@ open Polynomial
 
 set_option synthInstance.maxHeartbeats 200000 in
 /- English proof (translation)
-Establish `hn : n = r + t`. Establish `h1` using `congrArg natDegree h`. Establish `h2` using `natDegree_blk (B.map (IsLocalRing.residue O)) (fun c => IsLocalRing.residue O (χ c)) t`. Rewrite `h1` using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Conclude with `h1.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[charpoly_smul_unit _ hs, charpoly_smul_unit _ hs, ← scaleRoots_prod_Icc (fun c => φ (χ c)) s, ← mul_scaleRoots_of_noZeroDivisors]`. Establish `hdeg : (A.map φ).charpoly.natDegree = ((B.map φ).charpoly * ∏ c ∈ Finset.Icc 1 t, (X - C (φ (χ c)))).natDegree`. Rewrite using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, hn]`. Conclude with `(natDegree_blk (B.map φ) (fun c => φ (χ c)) t).symm`. Establish `hmem` using `scale_mem (Ideal.span {lam}) _ _ hdeg s (mod_ideal φ (Ideal.span {lam}) (fun a ha => Ideal.mem_span_singleton.2 (hφ a ha)) A B χ t h) k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 hmem`. Conclude with `⟨y, by rw [← hy, mul_comm]⟩`.
+A detailed English derivation is pending.
 -/
 theorem core {R O : Type} [CommRing R] [IsDomain R] [Infinite R] [CommRing O] [IsLocalRing O]
     (φ : O →+* R) (lam : R) (hφ : ∀ a ∈ IsLocalRing.maximalIdeal O, lam ∣ φ a) {n r : ℕ}
@@ -232,7 +232,7 @@ theorem locOC_apply (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) {k 
     locOC C M g = (M (decS D.nd w (Br.iota D.nbr i w hw g))).map (phiC C) := rfl
 
 /- English proof (translation)
-Establish `h : LinearMap.charpoly (repV C N g) = ((N g).map (algebraMap ↥(OL C.LL) ↥C.LL.1)).charpoly` using `Matrix.charpoly_toLin' _`. Rewrite using `[h, Matrix.charpoly_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_repV (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) {k : ℕ} (N : Br.G D.nbr i w hw →* Matrix (Fin k) (Fin k) ↥(OL C.LL))
     (g : Br.G D.nbr i w hw) :
@@ -243,7 +243,7 @@ theorem charpoly_repV (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) {
 
 set_option synthInstance.maxHeartbeats 200000 in
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [twistM, MonoidHom.coe_mk, OneHom.coe_mk, locOC_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem twist_locOC (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (θ : Br.G D.nbr i w hw →* (↥(OL C.LL))ˣ) {k : ℕ}
     (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (χ : GE D.nd →* (D.nd.O i)ˣ) (g : Br.G D.nbr i w hw) :
@@ -265,7 +265,7 @@ theorem chiOC_val (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (χ :
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `e : ((chiT C θ c g : (↥(OL C.LL))ˣ) : ↥(OL C.LL)) = ((chiOC C (chiU D.nd i c * (chiU D.nd i 1)⁻¹) g : (↥(OL C.LL))ˣ) : ↥(OL C.LL)) * ((θ g : (↥(OL C.LL))ˣ) : ↥(OL C.LL))` using `rfl`. Establish `e2 : ((((chiU D.nd i c * (chiU D.nd i 1)⁻¹) (decS D.nd w (Br.iota D.nbr i w hw g))) : (D.nd.O i)ˣ) : D.nd.O i) = ((chiU D.nd i c (decS D.nd w (Br.iota D.nbr i w hw g)) : (D.nd.O i)ˣ) : D.nd.O i) * ((((chiU D.nd i 1)⁻¹ (decS D.nd w (Br.iota D.nbr i w hw g))) : (D.nd.O i)ˣ) : D.nd. …` using `rfl`. Rewrite using `[e, chiOC_val C (chiU D.nd i c * (chiU D.nd i 1)⁻¹) g, e2, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chiT_val (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (θ : Br.G D.nbr i w hw →* (↥(OL C.LL))ˣ) (c : ℕ)
     (g : Br.G D.nbr i w hw) :
@@ -288,17 +288,15 @@ set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D i r ρ π w hw C θ lam hlam hG3 x g k`. Use `haveI : CharZero ↥C.LL.1 := charZero_of_injective_algebraMap (algebraMap ℚ_[D.nd.l i] ↥C.LL.1).injective`. Use `haveI : Infinite ↥(OL C.LL) := Infinite.of_injective (fun n : ℕ => (n : ↥(OL C.LL))) (fun a b hab => by`. Use `congrArg (fun z : ↥(OL C.LL) => (z : ↥C.LL.1)) hab` as an intermediate fact. Simplify using `using this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs_def⟩ : ∃ s : ↥(OL C.LL), s = ((θ g : (↥(OL C.LL))ˣ) : ↥(OL C.LL)) * phiC C ((((chiU D.nd i 1)⁻¹ (decS D.nd w (Br.iota D.nbr i w hw g))) : (D.nd.O i)ˣ) : D.nd.O i)` from `⟨_, rfl⟩`. Establish `hs : IsUnit s` using `hs_def ▸ (θ g).isUnit.mul ((Units.isUnit _).map (phiC C))`. Establish `e1 : twistM (locOC C (rTwO D.nd i r x)) θ g = s • (rO D.nd i r x (decS D.nd w (Br.iota D.nbr i w hw g))).map (phiC C)`. Rewrite using `[hs_def]`. Conclude with `twist_locOC C θ (rO D.nd i r x) (chiU D.nd i 1)⁻¹ g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : twistM (locOC C (WpO D.nd i ρ π)) θ g = s • (rhoO D.nd i ρ π (decS D.nd w (Br.iota D.nbr i w hw g))).map (phiC C)`. Rewrite using `[hs_def]`. Conclude with `twist_locOC C θ (rhoO D.nd i ρ π) (chiU D.nd i 1)⁻¹ g`. Establish `hprod : ∏ c ∈ Finset.Icc 1 D.R.t, (X - Polynomial.C (((tableLineDegreeTwo.charL (LL` using `↥C.LL.1) (chiT C θ c) g : (↥C.LL.1)ˣ)) : ↥C.LL.1)) = (∏ c ∈ Finset.Icc 1 D.R.t, (X - Polynomial.C (s * phiC C ((chiU D.nd i c (decS D.nd w (Br.iota D.nbr i w hw g)) : (D.nd.O i)ˣ) : D.nd.O i)))).map (algebraMap ↥(OL C.LL) ↥C.LL.1) := by`. Rewrite using `[Polynomial.map_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, hs_def, ← chiT_val]`. Both sides reduce to the same expression. Establish `hφ : ∀ a ∈ IsLocalRing.maximalIdeal (D.nd.O i), lam ∣ phiC C a`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `dvd_of_not_isUnit (D.loc (D.nd.l i)) C.LL hlam` to reduce the goal to its premises. Introduce `hu`. Establish `h1` using `isUnit_of_incO C.le ((D.nbr i w hw).eO a) hu`. Establish `h2 : IsUnit a` using `by simpa using h1.map (D.nbr i w hw).eO.symm`. Conclude with `(IsLocalRing.mem_maximalIdeal a).1 ha h2`.
-
-Take `⟨y, hy⟩` from `core (phiC C) lam hφ (rO D.nd i r x (decS D.nd w (Br.iota D.nbr i w hw g))) (rhoO D.nd i ρ π (decS D.nd w (Br.iota D.nbr i w hw g))) (fun c => ((chiU D.nd i c (decS D.nd w (Br.iota D.nbr i w hw g)) : (D.nd.O i)ˣ) : D.nd.O i)) D.R.t (hG3.2.1 x _) s hs k`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[charpoly_repV, e1, tableLineDegreeTwo.resPoly, charpoly_repV, e2, hprod, ← Polynomial.map_mul, ← Polynomial.map_sub, Polynomial.coeff_map, hy]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_congr : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (θ : Br.G D.nbr i w hw →* (↥(OL C.LL))ˣ) (lam : ↥(OL C.LL)), Irreducible lam → TruncatedSeriesCountingIdentities.admG3 i r ρ π → ∀ (x : D.nd.X i) (g : Br.G D.nbr i w hw) (k : ℕ), ∃ y : ↥(OL C.LL), (LinearMap.charpoly (repV C (twistM (locOC C (rTwO D.nd i r x)) θ) g) - tableLineDegreeTwo.resPoly (repV C (twistM (locOC C (WpO D.nd i ρ π)) θ)) (chiT C θ) D.R.t g).coeff k = algebraMap (↥(OL C.LL)) (↥C.LL.1) (lam * y) := by
   intro D i r ρ π w hw C θ lam hlam hG3 x g k

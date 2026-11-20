@@ -11,9 +11,9 @@ namespace GlobalTheory.LocEltLocal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨e, f, g, hpi, hg, hx, hs⟩` from `h`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Take `⟨-, ε, hε, rfl⟩` from `GlobalTheory.IdemSupport.of_isPrimeIdem hΦ hpi`. Establish `h1` using `(GlobalTheory.HeckeRowsCompare.suppF_iff V hε hg).1 hs`. Rewrite `h1` using `[GlobalTheory.HeckeRowsCompare.mem_locGrp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : GlobalTheory.HeckeRowsCompare.fin V g = x` using `Subtype.ext hx.symm`. Rewrite `h1` using `[h2]`. Conclude with `(GlobalTheory.HeckeRowsCompare.locAt_iff V _ x).2 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locAt_of_isLocElt {D : Formalism.BasicNotions.D7} (V : Formalism.BasicNotions.TH.HSp D) (P : Formalism.L2.DIV.Pl D.host.E)
     (x : Formalism.IndefR.Bridge.Gf V) (_hP : GlobalTheory.IndefiniteRowSideFullHecke.HeckeIntertwinersInert.IsInertPl P) (h : Formalism.IndefR.Links.IsLocElt V P x) :
@@ -28,7 +28,7 @@ theorem locAt_of_isLocElt {D : Formalism.BasicNotions.D7} (V : Formalism.BasicNo
   exact (GlobalTheory.HeckeRowsCompare.locAt_iff V _ x).2 h1
 
 /- English proof (translation)
-Introduce `V P x hP h` and use `locAt_of_isLocElt V P x hP h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {D : Formalism.BasicNotions.D7} (V : Formalism.BasicNotions.TH.HSp D) (P : Formalism.L2.DIV.Pl D.host.E) (x : Formalism.IndefR.Bridge.Gf V),
     GlobalTheory.IndefiniteRowSideFullHecke.HeckeIntertwinersInert.IsInertPl P → Formalism.IndefR.Links.IsLocElt V P x →

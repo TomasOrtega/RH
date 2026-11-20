@@ -5,11 +5,11 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.ClopProjFiniteEtaleO
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory
 
 /- English proof (translation)
-Establish `h : IsPullback (y ▷ G) (fst T' G) (fst T G) y`. Use `⟨⟨by simp⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => lift s.snd (s.fst ≫ snd _ _)) ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `s`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[s.condition]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `s`. Simplify using the standard rewrite rules. Introduce `s m h1 h2`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using h2`. Simplify using `only [lift_snd]`. Rewrite using `[← h1, Category.assoc, whiskerRight_snd]`. Conclude with `h.map (Over.forget S)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma UpperTheory.isPullback_whisker_fst {S : Scheme.{0}} {T T' G : Over S} (y : T' ⟶ T) :
     IsPullback (y ▷ G).left (fst T' G).left (fst T G).left y.left := by
@@ -29,7 +29,7 @@ private lemma UpperTheory.isPullback_whisker_fst {S : Scheme.{0}} {T T' G : Over
   exact h.map (Over.forget S)
 
 /- English proof (translation)
-Introduce `S T T' G y V hfin het hcl t`. Take `⟨hF, hE⟩` from `UpperTheory.clopProj_finite_etale_of_isClosed V hfin het hcl`. Establish `hsq` using `(isPullback_morphismRestrict (y ▷ G).left V).paste_vert (UpperTheory.isPullback_whisker_fst y)`. Conclude with `Scheme.Hom.finrank_of_isPullback _ _ _ _ hsq t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.clopProj_finrank_pullback :
     ∀ {S : Scheme.{0}} {T T' G : Over S} (y : T' ⟶ T) (V : (T ⊗ G).left.Opens), IsFinite G.hom → Etale G.hom → IsClosed (V : Set (T ⊗ G).left) → ∀ t : T'.left, (UpperTheory.RepresentationRank.proj ((y ▷ G).left ⁻¹ᵁ V)).finrank t = (UpperTheory.RepresentationRank.proj V).finrank (y.left t) := by

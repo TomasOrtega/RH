@@ -3,13 +3,13 @@ import Mathlib
 open Polynomial Matrix
 
 /- English proof (translation)
-Introduce `K G ι _ _ _ _ ρ ρ' P Q hs hP h1 h2`. Take `⟨U, rfl⟩` from `hP`. Establish `key : ∀ M : Matrix ι ι K, M * ((↑U⁻¹ : Matrix ι ι K) * Q) = ((↑U⁻¹ : Matrix ι ι K) * Q) * M`. Introduce `M`. Establish `hM : M ∈ Submodule.span K (Set.range ρ)` using `hs ▸ Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Establish `e : ρ g * (↑U⁻¹ : Matrix ι ι K) = (↑U⁻¹ : Matrix ι ι K) * ρ' g`. Rewrite using `[Units.eq_inv_mul_iff_mul_eq, ← mul_assoc, h1, mul_assoc, Units.mul_inv, mul_one]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, e, mul_assoc, mul_assoc, h2]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul, mul_add, hx, hy]`. Consider the case `smul a x _ hx => rw [smul_mul_assoc, mul_smul_comm, hx]`. Take `⟨c, hc⟩` from `Matrix.mem_range_scalar_of_commute_single (M := (↑U⁻¹ : Matrix ι ι K) * Q) fun i j _ => key _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `: Q = (U : Matrix ι ι K) * ((↑U⁻¹ : Matrix ι ι K) * Q)` using `by rw [← mul_assoc, Units.mul_inv, one_mul]`. Rewrite using `[this, ← hc, Matrix.scalar_apply, ← Matrix.smul_one_eq_diagonal, mul_smul_comm, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.schurLine :
     ∀ {K G ι : Type} [Field K] [Monoid G] [Fintype ι] [DecidableEq ι] (ρ ρ' : G →* Matrix ι ι K) (P Q : Matrix ι ι K),

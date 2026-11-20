@@ -5,13 +5,13 @@ namespace GlobalTheory.TargetStatementSixOneSixtyEight
 open NumberField
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x z _ _ h1 h2`. Take `⟨c1, hc1, h1⟩` from `h1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c2, hc2, h2⟩` from `h2`. Use `⟨c1 * c2, mul_ne_zero hc1 hc2, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, mul_comm c1 c2, mul_smul, mul_comm c2 c1, mul_smul]`. Conclude with `L.add_mem (L.smul_mem c2 h1) (L.smul_mem c1 h2)`. Consider the case `smul a x _ h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c0, hc0, h0⟩` from `h`. Take `⟨⟨b, s⟩, hs⟩` from `IsLocalization.surj (nonZeroDivisors (RingOfIntegers E)) a`. Use `⟨c0 * (s : RingOfIntegers E), mul_ne_zero hc0 (nonZeroDivisors.coe_ne_zero s), ?_⟩` and prove the remaining obligations. Establish `key : (s : RingOfIntegers E) • (a • x) = b • x`. Rewrite using `[← algebraMap_smul E (s : RingOfIntegers E), smul_smul, mul_comm, hs, algebraMap_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul, key, smul_comm c0 b x]`. Conclude with `L.smul_mem b h0`.
+A detailed English derivation is pending.
 -/
 theorem main {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V] [Module E V]
     [Module (RingOfIntegers E) V] [IsScalarTower (RingOfIntegers E) E V]
@@ -36,7 +36,7 @@ theorem main {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V] [M
     exact L.smul_mem b h0
 
 /- English proof (translation)
-Introduce `L _ hy` and use `main L hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem target : ∀ {E : Type} [inst : Field E] [NumberField E] {V : Type} [inst_2 : AddCommGroup V]
     [inst_3 : Module E V] [inst_4 : Module (NumberField.RingOfIntegers E) V]

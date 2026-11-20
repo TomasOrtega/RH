@@ -38,7 +38,7 @@ def embO (w : InfinitePlace L) : 𝓞 L →+* ℂ := w.embedding.comp (algebraMa
 def mat (h : HS L N) (w : InfinitePlace L) : Matrix (Fin N) (Fin N) ℂ := Matrix.of (h.1 w)
 
 /- English proof (translation)
-The claim follows from `h.2 w`.
+A detailed English derivation is pending.
 -/
 theorem mat_herm (h : HS L N) (w : InfinitePlace L) : (mat h w).IsHermitian := h.2 w
 
@@ -60,7 +60,7 @@ Both sides reduce to the same expression.
 @[simp] theorem mat_zero (w : InfinitePlace L) : mat (0 : HS L N) w = 0 := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun w => e w)`.
+A detailed English derivation is pending.
 -/
 theorem HS_ext {h k : HS L N} (e : ∀ w, mat h w = mat k w) : h = k :=
   Subtype.ext (funext fun w => e w)
@@ -131,7 +131,7 @@ instance : PartialOrder (Cell L N) := Subtype.partialOrder _
 variable {L N}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem Cell.le_def {F F' : Cell L N} : F ≤ F' ↔ F.1 ⊆ F'.1 := Iff.rfl
 
@@ -168,26 +168,26 @@ theorem mat_pull (A : Matrix (Fin N) (Fin N) (𝓞 L)) (h : HS L N) (w : Infinit
     mat (pull A h) w = (A.map (embO w))ᴴ * mat h w * A.map (embO w) := rfl
 
 /- English proof (translation)
-The claim follows from `HS_ext fun w => by simp [mat_pull]`.
+A detailed English derivation is pending.
 -/
 theorem pull_one (h : HS L N) : pull 1 h = h := HS_ext fun w => by simp [mat_pull]
 
 /- English proof (translation)
-The claim follows from `HS_ext fun w => by simp [mat_pull, Matrix.map_mul, Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem pull_mul (A B : Matrix (Fin N) (Fin N) (𝓞 L)) (h : HS L N) :
     pull (A * B) h = pull B (pull A h) := HS_ext fun w => by
   simp [mat_pull, Matrix.map_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[toR, mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toR_mulVec (A : Matrix (Fin N) (Fin N) (𝓞 L)) (y : Lat L N) (w : InfinitePlace L) :
     toR (A *ᵥ y) w = A.map (embO w) *ᵥ toR y w := by
   ext a; simp [toR, mulVec, dotProduct]
 
 /- English proof (translation)
-Simplify using `only [q, qR, mat_pull, toR_mulVec]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[star_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem q_pull (A : Matrix (Fin N) (Fin N) (𝓞 L)) (h : HS L N) (y : Lat L N) :
     q (pull A h) y = q h (A *ᵥ y) := by
@@ -206,13 +206,13 @@ instance : DistribMulAction (Gm L N) (HS L N) where
   smul_add g := map_add (pull _)
 
 /- English proof (translation)
-The claim follows from `q_pull _ h y`.
+A detailed English derivation is pending.
 -/
 theorem q_smul (g : Gm L N) (h : HS L N) (y : Lat L N) : q (g • h) y = q h (g⁻¹ • y) :=
   q_pull _ h y
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite using `[q_smul]`. Conclude with `hh _ (fun e => hy (by rw [← smul_inv_smul g y, e, smul_zero]))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_Ry (g : Gm L N) {h : HS L N} (hh : h ∈ Ry L N) : g • h ∈ Ry L N := by
   intro y hy
@@ -220,11 +220,11 @@ theorem smul_mem_Ry (g : Gm L N) {h : HS L N} (hh : h ∈ Ry L N) : g • h ∈ 
   exact hh _ (fun e => hy (by rw [← smul_inv_smul g y, e, smul_zero]))
 
 /- English proof (translation)
-Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, ⟨hk, hM⟩, rfl⟩`. Use `⟨smul_mem_Ry g hk, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `hM hy` as an intermediate fact. Simplify `this` using `[minVec, q_smul]`. Introduce and unpack `⟨hk, hM⟩`. Use `⟨g⁻¹ • h, ⟨smul_mem_Ry _ hk, fun y hy => ?_⟩, by simp⟩` and prove the remaining obligations. Use `hM ⟨y, hy, rfl⟩` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[minVec, q_smul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem image_face (g : Gm L N) (M : Set (Lat L N)) :
     (fun h => g • h) '' face M = face ((fun y => g • y) '' M) := by
@@ -241,11 +241,11 @@ theorem image_face (g : Gm L N) (M : Set (Lat L N)) :
     simpa [minVec, q_smul] using this
 
 /- English proof (translation)
-Set `f : Gm L N → (Fin N → L) →ₗ[L] (Fin N → L)` to `fun g => Matrix.mulVecLin ((g : Matrix (Fin N) (Fin N) (𝓞 L)).map (algebraMap (𝓞 L) L))`. Establish `hf : ∀ g y, f g (toL y) = toL (g • y)` using `fun g y => by`. Use extensionality with `a`. Simplify using `[f, toL, smul_lat, mulVec, dotProduct]`. Establish `hs : Function.Surjective (f g)` using `fun v => ⟨f g⁻¹ v, by`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [f, mulVecLin_apply, mulVec_mulVec, ← Matrix.map_mul, ← Units.val_mul]`. Use the proof step `simp⟩`. Establish `e : toL '' ((fun y => g • y) '' M) = f g '' (toL '' M)`. Simplify using `only [Set.image_image, hf]`. Unfold `Spans spanL at *`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Submodule.span_image, hM, Submodule.map_top, LinearMap.range_eq_top.2 hs]`.
+A detailed English derivation is pending.
 -/
 theorem Spans.image (g : Gm L N) {M : Set (Lat L N)} (hM : Spans M) :
     Spans ((fun y => g • y) '' M) := by
@@ -276,13 +276,13 @@ Both sides reduce to the same expression.
 theorem Cell.smul_val (g : Gm L N) (F : Cell L N) : (g • F).1 = (fun h => g • h) '' F.1 := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Set.image_mono h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Cell.smul_mono (g : Gm L N) : Monotone (fun F : Cell L N => g • F) :=
   fun _ _ h => Set.image_mono h
 
 /- English proof (translation)
-The claim follows from `(Cell.smul_mono g).strictMono_of_injective (MulAction.injective g)`.
+A detailed English derivation is pending.
 -/
 theorem Cell.smul_strictMono (g : Gm L N) : StrictMono (fun F : Cell L N => g • F) :=
   (Cell.smul_mono g).strictMono_of_injective (MulAction.injective g)

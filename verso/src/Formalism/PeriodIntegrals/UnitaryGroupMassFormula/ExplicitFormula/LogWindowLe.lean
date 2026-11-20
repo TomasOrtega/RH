@@ -10,9 +10,9 @@ open Complex Metric Filter Topology Set DirichletCharacter
 variable {N : ℕ} [NeZero N]
 
 /- English proof (translation)
-Establish `hN : (1 : ℝ) ≤ N` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)`. Establish `ht` using `abs_nonneg t`. Establish `hu0` using `abs_nonneg u`. Rewrite using `[LL.eq_1]`. Establish `hpos : 0 < (N : ℝ) * (|u| + 2)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (N : ℝ) * (|u| + 2) ≤ N * (|t| + 4)` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Establish `h2 : |t| + 4 ≤ (|t| + 2) ^ 2` using `by nlinarith`. Establish `h3 : (N : ℝ) * (|t| + 4) ≤ (N : ℝ) ^ 2 * (|t| + 2) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 lemma log_window_le (N : ℕ) [NeZero N] {t u : ℝ} (hu : |u| ≤ |t| + 2) :
     Real.log (N * (|u| + 2)) ≤ 2 * LL N t := by
@@ -33,7 +33,7 @@ lemma log_window_le (N : ℕ) [NeZero N] {t u : ℝ} (hu : |u| ≤ |t| + 2) :
     _ = 2 * Real.log (N * (|t| + 2)) := by rw [Real.log_pow]; norm_num
 
 /- English proof (translation)
-Rewrite using `[Metric.mem_closedBall, ctr.eq_1, Complex.dist_eq]`. Establish `h : s - (2 + (s.im : ℂ) * Complex.I) = ((s.re - 2 : ℝ) : ℂ)`. Apply the tactic sequence `apply Complex.ext <;> simp`. Rewrite using `[h, Complex.norm_real, Real.norm_eq_abs, abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_ball_ctr (s : ℂ) (h1 : -1 / 2 ≤ s.re) (h2 : s.re ≤ 3) :
     s ∈ closedBall (ctr s.im) (5 / 2) := by
@@ -44,29 +44,27 @@ theorem mem_ball_ctr (s : ℂ) (h1 : -1 / 2 ≤ s.re) (h2 : s.re ≤ 3) :
   constructor <;> linarith
 
 /- English proof (translation)
-Establish `hsub : ZerosNear χ t ⊆ DZ χ t`. Introduce `ρ hρ`. Rewrite `hρ` using `[ZerosNear.eq_1]`. Take `⟨h0, h1, him, hL⟩` from `hρ`. Rewrite using `[DZ.eq_1, Set.mem_setOf_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, ctr.eq_1, Complex.dist_eq]`. Establish `hre : (ρ - (2 + (t : ℂ) * Complex.I)).re = ρ.re - 2` using `by simp`. Establish `him' : (ρ - (2 + (t : ℂ) * Complex.I)).im = ρ.im - t` using `by simp`. Take `⟨ha, hb⟩` from `abs_le.mp him`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← sq_le_sq₀ (norm_nonneg _) (by norm_num), Complex.sq_norm, Complex.normSq_apply, hre, him']`. Use the polynomial consequences of the given equalities and inequalities. Establish `hne : ρ ≠ 1`. Introduce `h`. Rewrite `h1` using `[h]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at h1`. Rewrite using `[Lent.eq_1]`. Use `split_ifs with hχ`. Substitute `hχ` using the available equality. Establish `key : DirichletCharacter.LFunctionTrivChar₁ N ρ = (ρ - 1) * DirichletCharacter.LFunctionTrivChar N ρ` using `by first`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `simp [DirichletCharacter.LFunctionTrivChar₁, Function.update_apply, hne]`. Consider the case `(unfold DirichletCharacter.LFunctionTrivChar₁; rw [Function.update_of_ne hne])`. Consider the case `exact DirichletCharacter.LFunctionTrivChar₁_apply_ne_one N hne`. Rewrite using `[key]`. Conclude with `mul_eq_zero_of_right _ hL`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hL`. Establish `h0Z : (0 : ℂ) ∉ ZerosNear χ t`. Introduce `h`. Rewrite `h` using `[ZerosNear.eq_1]`. Take `⟨h0, -⟩` from `h`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `at h0`. Establish `hZ : (ZerosNear χ t).Finite` using `hfin.subset hsub`. Use `⟨(hfin.toFinset.filter (fun ρ => ρ ∉ ZerosNear χ t)).filter (fun ρ => ρ ≠ 0), ?_, ?_⟩` and prove the remaining obligations. Introduce `ρ hρ`. Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset] at hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨hρ.1.1, hρ.1.2, hρ.2⟩`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum F hfin, finsum_mem_eq_finite_toFinset_sum F hZ, ← Finset.sum_filter_add_sum_filter_not hfin.toFinset (fun ρ => ρ ∈ ZerosNear χ t)]`. Establish `e1 : hfin.toFinset.filter (fun ρ => ρ ∈ ZerosNear χ t) = hZ.toFinset`. Use extensionality with `ρ`. Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `⟨fun h => h.2, fun h => ⟨hsub h, h⟩⟩`. Rewrite using `[e1, add_assoc]`. Use `congr 1`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not (hfin.toFinset.filter (fun ρ => ρ ∉ ZerosNear χ t)) (fun ρ => ρ ≠ 0)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hD`. Establish `e2 : (hfin.toFinset.filter (fun ρ => ρ ∉ ZerosNear χ t)).filter (fun ρ => ¬ ρ ≠ 0) = {0}`. Use extensionality with `ρ`. Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset, Finset.mem_singleton, ne_eq, not_not]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨-, h⟩`. Conclude with `h`. Introduce and unpack `rfl`. Conclude with `⟨⟨hD, h0Z⟩, rfl⟩`. Rewrite using `[e2, Finset.sum_singleton]`.
-
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `ρ hρ`. Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset, ne_eq, not_not] at hρ`. Conclude with `absurd (hρ.2 ▸ hρ.1.1) hD`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma sum_DZ_eq {χ : DirichletCharacter ℂ N} (t : ℝ)
     (hfin : (DZ χ t).Finite) (F : ℂ → ℂ) :
@@ -142,17 +140,17 @@ lemma sum_DZ_eq {χ : DirichletCharacter ℂ N} (t : ℝ)
       exact absurd (hρ.2 ▸ hρ.1.1) hD
 
 /- English proof (translation)
-Introduce `hLA hG hZL hW`. Take `⟨A, C, hA, hC, hG⟩` from `hG`. Take `⟨Cw, hCw, hW⟩` from `hW`. Take `⟨C₀, hC₀, hloc⟩` from `hLA (5 / 2) (11 / 4) 6 (by norm_num) (by norm_num) (by norm_num)`. Use `⟨C₀ * (2 * |Real.log (2 * C)| + 3 * A) + 4 * Cw + 2, by positivity, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `N _ χ hχ s h1 h2 hLs hs1`. Establish `hc0 : Lent χ (ctr s.im) ≠ 0`. Use `half_le_norm_Lent_ctr hI χ s.im` as an intermediate fact. Conclude with `norm_pos_iff.1 (lt_of_lt_of_le (by norm_num) this)`. Take `⟨hfin, hbound⟩` from `hloc (Lent χ) (ctr s.im) (Mfun A C N s.im) (fun z _ => (differentiable_Lent χ).analyticAt z) hc0 (Mfun_nonneg hA N s.im) (Lent_disc_bound hA hC hG hI hχ s.im)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLs' : Lent χ s ≠ 0` using `fun h => hLs ((Lent_eq_zero_iff χ hs1).1 h)`. Establish `hb` using `hbound s (mem_ball_ctr s h1 h2) hLs'`. Establish `hfin' : (DZ χ s.im).Finite` using `hfin`. Establish `econgr : ∑ᶠ ρ ∈ {ρ | ρ ∈ closedBall (ctr s.im) (11 / 4) ∧ Lent χ ρ = 0}, (analyticOrderNatAt (Lent χ) ρ : ℂ) / (s - ρ) = ∑ᶠ ρ ∈ DZ χ s.im, (mult χ ρ : ℂ) / (s - ρ)` using `finsum_mem_congr rfl (fun ρ hρ => by rw [order_Lent χ (DZ_facts hZL hχ hρ).1])`. Rewrite `hb` using `[econgr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨E, hE, hdec⟩` from `sum_DZ_eq s.im hfin' (fun ρ => (mult χ ρ : ℂ) / (s - ρ))`. Establish `hfar` using `far_sum_le hW hZL hχ s rfl E hE`. Establish `hzero` using `zero_term_le hZL hχ s rfl`. Establish `hM` using `Mfun_le (C := C) hA N s.im`. Establish `hw1` using `log_window_le N (t := s.im) (u := s.im + 2) ((abs_add_le _ _).trans (by norm_num))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw2` using `log_window_le N (t := s.im) (u := s.im - 2) ((abs_sub _ _).trans (by norm_num))`. Establish `hL1` using `one_le_two_LL N s.im`. Establish `key : logDeriv (LFunction χ) s - ∑ᶠ ρ ∈ ZerosNear χ s.im, (mult χ ρ : ℂ) / (s - ρ) - eps0 χ / s + del1 χ / (s - 1) = (logDeriv (Lent χ) s - ∑ᶠ ρ ∈ DZ χ s.im, (mult χ ρ : ℂ) / (s - ρ)) + ∑ ρ ∈ E, (mult χ ρ : ℂ) / (s - ρ) + ((open Classical in if (0 : ℂ) ∈ DZ χ s.im then (mult χ 0 …`. Rewrite using `[logDeriv_Lent χ hs1 hLs, hdec]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Establish `hMnn` using `Mfun_nonneg (C := C) hA N s.im`. Combine the equalities or inequalities in the displayed calculation. Unfold `LL`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem localLemma_of (hI : PI.LInvRight) : GlueLocalLemma := by
   intro hLA hG hZL hW

@@ -18,17 +18,17 @@ namespace GlobalTheory.PlaceInt
 open GlobalTheory.NabLinear in
 
 /- English proof (translation)
-Introduce `α`. Set `_ : Algebra ℚ S` to `((algebraMap c.F S).comp (algebraMap ℚ c.F)).toAlgebra`. Take `⟨C, hex, hval⟩` from `hnab.2 S y`. Take `⟨f, hf⟩` from `hex k F`. Establish `hf' : IsGerm y C.d C.x C.B.A.act C.e C.wP k F' (MvPowerSeries.C r * f)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `IsGerm at hf ⊢`. Introduce `m`. Take `⟨F₁, τ, h1, hc, hv⟩` from `hf m`. Take `⟨F₂, h2⟩` from `Formalism.MainNotions.ModuliIntegralCharts.H1.GermD.exists_pullSec Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (jBase y C.d m 1 ▷ Xo.univ.t.G) (whiskerRight_snd _ _) F'`. Use `⟨F₂, τ, h2, hc, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs` using `GlobalTheory.NabLinear.isValueAt_scale Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (jBase y C.d m 1) hF h1 h2 hv`. Use `hs using 1` and compare the differences between its conclusion and the goal. Establish `hj : (jBase y C.d m 1).left = spMap (algebraMap S (Jet S (Fin 1 × Fin C.d) m))` using `rfl`. Rewrite using `[hj, GlobalTheory.NabLinear.appTop_toΓ, ← map_mul, ← GlobalTheory.NabLinear.psJet_C]`. Use `congr 1`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `clear hval hex hs h1 h2 hv hc hF hnab hj F₁ F₂ hf`. Unfold `psJet`. Rewrite using `[← map_mul]`. Use `congr 1`. Unfold `psTrunc`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h0 : (0 : Fin 1 × Fin C.d →₀ ℕ) ∈ degLE m`. Unfold `degLE`. Simplify using the standard rewrite rules. Conclude with `⟨fun _ => 0, by ext; simp⟩`. Establish `hC : ∑ e ∈ degLE m, MvPolynomial.monomial e (MvPowerSeries.coeff e (MvPowerSeries.C r : MvPowerSeries (Fin 1 × Fin C.d) S)) = MvPolynomial.monomial 0 r`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single_of_mem 0 h0 (fun e _ he => by rw [MvPowerSeries.coeff_C, if_neg he, map_zero]), MvPowerSeries.coeff_C, if_pos rfl]`. Rewrite using `[hC, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_C_mul, MvPolynomial.monomial_mul, zero_add]`. Conclude with `(hval k F' _ hf' α).trans ((GlobalTheory.NabLinear.nabVal_C_mul C.B C.h H.w0 k r f C.uvec _).trans (congrArg (r * ·) (hval k F f hf α).symm))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nab_smul_secN {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c nab)
@@ -72,11 +72,11 @@ theorem nab_smul_secN {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
     (congrArg (r * ·) (hval k F f hf α).symm))
 
 /- English proof (translation)
-Establish `hsub : (MvPolynomial.C s * P).support ⊆ P.support`. Rewrite using `[MvPolynomial.C_mul']`. Conclude with `MvPolynomial.support_smul`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_subset hsub` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m _ hm`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, not_not]`. Rewrite using `[hm, map_zero, zero_mul]`. Use `_ = algebraMap K S s * ∑ m ∈ P.support, algebraMap K S (P.coeff m) * g m := by`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_C_mul, map_mul, _root_.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem sum_support_C_mul {σ K S : Type} [CommRing K] [CommRing S] [Algebra K S] (P : MvPolynomial σ K) (s : K)
     (g : (σ →₀ ℕ) → S) :
@@ -98,13 +98,13 @@ theorem sum_support_C_mul {σ K S : Type} [CommRing K] [CommRing S] [Algebra K S
         rw [MvPolynomial.coeff_C_mul, map_mul, _root_.mul_assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ _ nab hnab S _ _ y n P`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k F F' r hF`. Unfold `hv`. Rewrite using `[Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `key : ∀ b, nab y (k : ℤ) (F' b) (colOf m b) = r b * nab y (k : ℤ) (F b) (colOf m b)` using `fun b => nab_smul_secN Xo c nab hnab y k (F b) (F' b) (r b) (hF b) _`. Simplify using `only [key, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Introduce `k F s`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `hv`. Conclude with `sum_support_C_mul P s _`. Introduce `N F`. Unfold `hv sqN`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`.
+A detailed English derivation is pending.
 -/
 theorem hv_linear : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ nab : NabV Xo c, IsNab Xo c nab → ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (n : ℕ) (P : MvPolynomial (LtN Dw n) c.F), (∀ (k : ℕ) (F F' : Fin n → SecN Xo y.x k) (r : Fin n → S), (∀ b j, (F' b).f j = liftFun Xo.univ.t.G _ (T := ptO Xo y.x) (toΓ S (r b)) * (F b).f j) → hv Xo c nab y k F' P = (∏ b, r b) * hv Xo c nab y k F P) ∧ (∀ (k : ℕ) (F : Fin n → SecN Xo y.x k) (s : c.F), hv Xo c nab y k F (MvPolynomial.C s * P) = algebraMap c.F S s * hv Xo c nab y k F P) ∧ ∀ (N : ℕ) (F : Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (ptO Xo y.x))), ∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * ∏ b, nab y ((N : ℤ) ^ 2) (F b) (colOf m b) = hv Xo c nab y (N ^ 2) (fun b => sqN Xo N (F b)) P := by
   intro E _ _ _ H Dw l Xo c _ _ nab hnab S _ _ y n P

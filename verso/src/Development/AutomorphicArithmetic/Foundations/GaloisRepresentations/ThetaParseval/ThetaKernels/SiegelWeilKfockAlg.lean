@@ -15,14 +15,14 @@ namespace PositivityTheory.SiegelWeilFormula.KFock
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d)
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.RD_k.tens, Pi.add_apply, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tens_add_k (w : InfinitePlace F) (f : (Fin d.m → Fin d.n → ℂ) → ℂ) (Ψ Ψ' : Mx F E d.m d.n → ℂ) :
     R.tens w f (Ψ + Ψ') = R.tens w f Ψ + R.tens w f Ψ' := by
   funext X
   simp only [_root_.PositivityTheory.SiegelWeilFormula.RD_k.tens, Pi.add_apply, mul_add]
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.RD_k.tens, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tens_smul_k (w : InfinitePlace F) (f : (Fin d.m → Fin d.n → ℂ) → ℂ) (a : ℂ) (Ψ : Mx F E d.m d.n → ℂ) :
     R.tens w f (a • Ψ) = a • R.tens w f Ψ := by
@@ -35,19 +35,19 @@ def tensL_k (w : InfinitePlace F) (f : (Fin d.m → Fin d.n → ℂ) → ℂ) : 
   map_smul' a Ψ := _root_.PositivityTheory.SiegelWeilFormula.KFock.tens_smul_k R w f a Ψ
 omit R in
 /- English proof (translation)
-The claim follows from `Matrix.map_add _ (map_add _) X Z`.
+A detailed English derivation is pending.
 -/
 theorem cw_add_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (w : InfinitePlace F) (X Z : Mx F E d.m d.n) : d.cw w (X + Z) = d.cw w X + d.cw w Z :=
   Matrix.map_add _ (map_add _) X Z
 /- English proof (translation)
-Unfold `_root_.PositivityTheory.SiegelWeilFormula.RD_k.loc`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFock.cw_add_k, h, add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem loc_add_of_k (w : InfinitePlace F) (X Z : Mx F E d.m d.n) (h : d.cw w Z = 0) : R.loc w (X + Z) = R.loc w X := by
   unfold _root_.PositivityTheory.SiegelWeilFormula.RD_k.loc
   rw [_root_.PositivityTheory.SiegelWeilFormula.KFock.cw_add_k, h, add_zero]
 omit R in
 /- English proof (translation)
-Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.crd`. Rewrite using `[Matrix.add_apply, map_add, Finsupp.add_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem crd_add_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (X Z : Mx F E d.m d.n) (k : Fin d.m × Fin d.n × Fin 2) :
     d.crd (X + Z) k = d.crd X k + d.crd Z k := by
@@ -55,9 +55,9 @@ theorem crd_add_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (X Z :
   rw [Matrix.add_apply, map_add, Finsupp.add_apply]
 omit R in
 /- English proof (translation)
-Establish `e1 : d.crd (finOne F • Z) k = finOne F * d.crd Z k`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.crd`. Rewrite using `[Matrix.smul_apply, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Establish `e2 : d.crd (finOne F • Z) k = 0`. Rewrite using `[h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.crd`. Rewrite using `[Matrix.zero_apply, map_zero, Finsupp.zero_apply]`. Establish `e3 : (finOne F * d.crd Z k).2 = (d.crd Z k).2` using `by show (finOne F).2 * (d.crd Z k).2 = _`. Rewrite using `[show (finOne F).2 = 1 from rfl, one_mul]`. Rewrite using `[← e3, ← e1, e2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -76,13 +76,11 @@ theorem crd_fin_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (Z : M
   rw [← e3, ← e1, e2]
   rfl
 /- English proof (translation)
-Introduce `X Z hZ hf`. Proceed by induction on `hΨ using Submodule.span_induction generalizing X with`. Consider the case `mem x hx`. Take `⟨P, g, -, rfl⟩` from `hx`. Establish `e1 : ∀ w' ∈ Finset.univ.erase w, fP (P w') (R.loc w' (X + Z)) = fP (P w') (R.loc w' X)` using `fun w' hw' => by`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFock.loc_add_of_k R w' X Z (hZ w' (Finset.ne_of_mem_erase hw'))]`. Establish `e2 : (fun k => (d.crd (X + Z) k).2) = fun k => (d.crd X k).2`. Use function extensionality and compare the values at `k`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFock.crd_add_k]`. Use `show (d.crd X k).2 + (d.crd Z k).2 = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFock.crd_fin_k d Z hf k, add_zero]`. Use `show (∏ w' ∈ Finset.univ.erase w, fP (P w') (R.loc w' (X + Z))) * g (fun k => (d.crd (X + Z) k).2) = (∏ w' ∈ Finset.univ.erase w, fP (P w') (R.loc w' X)) * g (fun k => (d.crd X k).2)`. Rewrite using `[Finset.prod_congr rfl e1, e2]`. Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => simp only [Pi.add_apply, hx, hy]`.
-
-Consider the case `smul a x _ hx => simp only [Pi.smul_apply, hx]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem away_inv_k (w : InfinitePlace F) (Ψ : Mx F E d.m d.n → ℂ) (hΨ : Ψ ∈ R.away w) :
     ∀ X Z, (∀ w', w' ≠ w → d.cw w' Z = 0) → finOne F • Z = 0 → Ψ (X + Z) = Ψ X := by
@@ -104,9 +102,9 @@ theorem away_inv_k (w : InfinitePlace F) (Ψ : Mx F E d.m d.n → ℂ) (hΨ : Ψ
   | add x y _ _ hx hy => simp only [Pi.add_apply, hx, hy]
   | smul a x _ hx => simp only [Pi.smul_apply, hx]
 /- English proof (translation)
-Establish `h : R.away w ≤ R.fock.comap (_root_.PositivityTheory.SiegelWeilFormula.KFock.tensL_k R w (fP P))`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨P', g, hg, rfl⟩`. Use `Submodule.subset_span ⟨Function.update P' w P, g, hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `X`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show fP P (R.loc w X) * ((∏ w' ∈ Finset.univ.erase w, fP (P' w') (R.loc w' X)) * g fun k => (d.crd X k).2) = (∏ w', fP (Function.update P' w P w') (R.loc w' X)) * g fun k => (d.crd X k).2`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ w), Function.update_self, mul_assoc]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun w' hw' => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hw')]`. Conclude with `h hΨ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem away_tens_k (w : InfinitePlace F) (Ψ : Mx F E d.m d.n → ℂ) (hΨ : Ψ ∈ R.away w) (P : PX d.m d.n) :
     R.tens w (fP P) Ψ ∈ R.fock := by
@@ -122,7 +120,7 @@ theorem away_tens_k (w : InfinitePlace F) (Ψ : Mx F E d.m d.n → ℂ) (hΨ : �
     exact Finset.prod_congr rfl fun w' hw' => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hw')]
   exact h hΨ
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Glb2.fock_dec_k <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fock_dec_k (w : InfinitePlace F) (f : Mx F E d.m d.n → ℂ) (hf : f ∈ R.fock) :
     ∃ (k : ℕ) (P : Fin k → PX d.m d.n) (Ψ : Fin k → Mx F E d.m d.n → ℂ),
@@ -130,9 +128,9 @@ theorem fock_dec_k (w : InfinitePlace F) (f : Mx F E d.m d.n → ℂ) (hf : f �
   by apply _root_.UpperTheory.Reformulated.B.Glb2.fock_dec_k <;> assumption
 omit R in
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Use `show d.l (d.dd.rho d.B.ψ _ (Φ + Φ')) = d.l (d.dd.rho d.B.ψ _ Φ) + d.l (d.dd.rho d.B.ψ _ Φ')`. Rewrite using `[← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Darboux.rho, schr, Pi.add_apply, mul_add]`.
+A detailed English derivation is pending.
 -/
 theorem T_add_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (Φ Φ' : d.Fn) : d.T (Φ + Φ') = d.T Φ + d.T Φ' := by
   funext X
@@ -143,9 +141,9 @@ theorem T_add_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (Φ Φ' 
   simp only [Darboux.rho, schr, Pi.add_apply, mul_add]
 omit R in
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Use `show d.l (d.dd.rho d.B.ψ _ (a • Φ)) = a • d.l (d.dd.rho d.B.ψ _ Φ)`. Rewrite using `[← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem T_smul_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (a : ℂ) (Φ : d.Fn) : d.T (a • Φ) = a • d.T Φ := by
   funext X

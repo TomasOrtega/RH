@@ -42,7 +42,7 @@ def LeviOntoC : Prop :=
   ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word), Formalism.L2.SG.Pf.NormSteps.LeviOntoS Y.TR (Y.cs u)
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.NormSteps.column_lattice_representatives (Y.cs u) Y.hK (Y.rowsOK u)`.
+A detailed English derivation is pending.
 -/
 theorem colLatRepC (D : D7) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word) :
     Formalism.L2.SG.Pf.NormSteps.ColLatRepS (Y.cs u) Y.hK :=
@@ -51,15 +51,15 @@ theorem colLatRepC (D : D7) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word
 def MassAC : Prop := ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word), MassA Y.TR (X.Fu u) (Y.cs u)
 
 /- English proof (translation)
-Introduce `_ X Y u u'` and use `chiNIndep_of_frameTie (cs := Y.cs u) (cs' := Y.cs u') (hTF := Full.frameTie (X := X) u u')`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chiNIndepC_holds : ChiNIndepC := fun _ X Y u u' =>
   chiNIndep_of_frameTie (cs := Y.cs u) (cs' := Y.cs u') (hTF := Full.frameTie (X := X) u u')
 
 /- English proof (translation)
-Introduce `D X Y u u' _ _ _ hAbs`. Take `⟨hSg, hSn⟩` from `hS D X Y u u' ‹_› ‹_› ‹_›`. Establish `hTF` using `Full.frameTie (X := X) u u'`. Establish `hF` using `colFree_steps (TR := Y.TR) (F0 := X.Fu u) (cs := Y.cs u) (hK := Y.hK) (hR := Y.colReps u) (hCL := hCL D X Y u) (hO := hO D X Y u) (hRep := colLatRepC D X Y u) (hMass := hM D X Y u)`. Establish `hF'` using `colFree_steps (TR := Y.TR) (F0 := X.Fu u') (cs := Y.cs u') (hK := Y.hK) (hR := Y.colReps u') (hCL := hCL D X Y u') (hO := hO D X Y u') (hRep := colLatRepC D X Y u') (hMass := hM D X Y u')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `normExpSat_of (TR := Y.TR) (cs := Y.cs u) (cs' := Y.cs u') (FdN := Y.FN u) (FdN' := Y.FN u') (hHS := hilbert_schmidt_blocks) (hGam := Formalism.L2.SG.NormCut.gamma_product_sum_holds) (hPsi := Formalism.L2.SG.NormCut.psi_natural_equiv_holds) (hAbs := hAbs) (hChi := chiNIndep_of_fr …`.
+A detailed English derivation is pending.
 -/
 theorem normExpSatC'_of (hCL : NeatC) (hO : LeviOntoC) (hM : MassAC) (hS : SatGramC') : NormExpSatC' := by
   intro D X Y u u' _ _ _ hAbs

@@ -33,9 +33,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam
 /- English proof (translation)
-Introduce `hL p K q c b hW hX hR`. Take `⟨hOk, hPins, hTw, hStdC, hTS⟩` from `_root_.GlobalTheory.Fam.colsStd_of_bWit_alt q b hW`. Take `⟨hChr, hXi, hQ, hLev, hRec, hRP, hOk3, hIdE, hLM⟩` from `_root_.GlobalTheory.T.characters_match_bundle_alt q b hW`. Establish `hTop` using `_root_.GlobalTheory.T.exists_read_at_packB_of_bWit q b hW hX`. Establish `hTW : _root_.GlobalTheory.Fam.ValidRealPackage (_root_.GlobalTheory.Fam.packB_alt b)` using `⟨hOk, hPins, hTw, hStdC, hChr, ⟨1, hTop⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTQ : _root_.GlobalTheory.Fam.GeometricFamilyConditions (_root_.GlobalTheory.Fam.packB_alt b)` using `⟨hXi, hQ, hTop⟩`. Take `⟨hRec'⟩` from `hRec`. Establish `hPk : _root_.GlobalTheory.Fam.PackageHypotheses (_root_.GlobalTheory.Fam.packB_alt b)` using `_root_.GlobalTheory.Fam.pkHyp_of_real_alt (_root_.GlobalTheory.Fam.packB_alt b) hR.join hLM hR.dc hR.frames hRP hR.see hRec' hR.ex hR.prim.1 hR.prim.2 hOk3 hIdE hR.gapS hR.fin hR.gap hTW hTQ`. Conclude with `_root_.GlobalTheory.Fam.TruePackAlt.mk _ ⟨hPk, hTW, hTQ, hTS, hLev, ⟨hRec'⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem truePack_of_bWit_alt : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ}
     (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c), _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b → Nonempty (Bl.RXs q.x.what₂) → _root_.GlobalTheory.Fam.BundlePointConditions b → _root_.GlobalTheory.Fam.TruePackAlt (_root_.GlobalTheory.Fam.packB_alt b) := by

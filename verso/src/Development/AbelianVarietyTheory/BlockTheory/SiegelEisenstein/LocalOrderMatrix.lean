@@ -97,9 +97,9 @@ def Statement : Prop :=
     MatchEntries Ch sel mu cst P σ₀ ι S ν ∧ MatchPsi Ch sel mu cst P σ₀ ι S ∧ MatchTop Ch sel mu cst P σ₀ ι S ν hm
 
 /- English proof (translation)
-Rewrite using `[LinearMap.pi_apply_eq_sum_univ η y, map_sum, ← e.sum_comp]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `: (fun j => if e s = j then (1 : E) else 0) = Pi.single (e s) 1`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply, eq_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[locRow, locVec, this, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 example {E k : Type} [Field E] [Field k] (ι : E →+* k) {a : ℕ} {J : Type} [Fintype J] (e : J ≃ Fin a)
     (η : (Fin a → E) →ₗ[E] E) (y : Fin a → E) : locRow ι e η ⬝ᵥ locVec ι e y = ι (η y) := by

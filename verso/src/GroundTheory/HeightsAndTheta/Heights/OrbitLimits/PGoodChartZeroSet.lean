@@ -17,18 +17,18 @@ namespace GoodChartZeroSet
 section Lemmas
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Ydc1.eval_smul_of_isHomogeneous hφ c w`.
+A detailed English derivation is pending.
 -/
 theorem eval_smul_of_isHomogeneous {τ : Type*} {φ : MvPolynomial τ ℂ} {n : ℕ} (hφ : φ.IsHomogeneous n)
     (c : ℂ) (w : τ → ℂ) : eval (c • w) φ = c ^ n * eval w φ :=
   _root_.UpperTheory.Reformulated.B.Ydc1.eval_smul_of_isHomogeneous hφ c w
 
 /- English proof (translation)
-Establish `hf : f = ∑ d ∈ range (D + 1), homogeneousComponent d f` using `by conv_lhs => rw [← sum_homogeneousComponent f]`. Use `Finset.sum_subset (Finset.range_subset_range.2 (by omega)) fun d _ hd' => ?_` and prove the remaining obligations. Conclude with `homogeneousComponent_eq_zero (n := d) (φ := f) (by simp at hd'; omega)`. Use `conv_rhs => rw [hf]`. Rewrite using `[map_mul, map_sum, map_sum, eval_X, Finset.mul_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hdD : d ≤ D` using `by simp at hd; omega`. Rewrite using `[eval_smul_of_isHomogeneous (homogeneousComponent_isHomogeneous d f), map_mul, map_pow, eval_X]`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hdD`. Rewrite using `[Nat.add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hinv : w a ^ d * (w a)⁻¹ ^ d = 1` using `by rw [← mul_pow, mul_inv_cancel₀ hw, one_pow]`. Take the linear combination `(-(w a * w a ^ k * eval w (homogeneousComponent d f))) * hinv`.
+A detailed English derivation is pending.
 -/
 theorem eval_homogenize {m : ℕ} (f : MvPolynomial (Fin m) ℂ) {D : ℕ} (hD : f.totalDegree ≤ D) (a : Fin m)
     (w : Fin m → ℂ) (hw : w a ≠ 0) :
@@ -53,7 +53,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `show ∏ k, (if k = k0 then c else 1) * z ⟨k, j k⟩ = c * ∏ k, z ⟨k, j k⟩`. Rewrite using `[Finset.prod_mul_distrib]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem segre_scaleBlock [DecidableEq K] (k0 : K) (c : ℂ) (z : (Σ k, ι k) → ℂ) :
     segre (scaleBlock k0 c z) = c • segre z := by
@@ -69,9 +69,9 @@ def linForm {m e : ℕ} (σ : Fin m ≃ ((k : K) → ι k))
   ∑ a, C (Ψ (fun i' => if σ a = i' then (1 : ℂ) else 0) 0) * X a
 
 /- English proof (translation)
-Rewrite using `[linForm]`. Establish `hv : (fun i' => x (σ.symm i')) = ∑ a, x a • fun i' => if σ a = i' then (1 : ℂ) else 0`. Rewrite using `[pi_eq_sum_univ (fun i' => x (σ.symm i'))]`. Conclude with `(Equiv.sum_comp σ _).symm.trans (by simp)`. Rewrite using `[hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, Finset.sum_apply, map_smul, Pi.smul_apply, smul_eq_mul, map_mul, eval_C, eval_X]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_linForm {m e : ℕ} (σ : Fin m ≃ ((k : K) → ι k))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (x : Fin m → ℂ) :
@@ -87,7 +87,7 @@ theorem eval_linForm {m e : ℕ} (σ : Fin m ≃ ((k : K) → ι k))
   rw [mul_comm]
 
 /- English proof (translation)
-Distinguish the cases in `h : IsEmpty K`. Conclude with `⟨z, hz, by rw [hK h, one_smul]⟩`. Take `⟨k0⟩` from `not_isEmpty_iff.1 h`. Conclude with `⟨scaleBlock k0 c z, scaleBlock_mem_zeroLocus P hP k0 hc hz, segre_scaleBlock k0 c z⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_segre_smul (P : Ideal (MRing ι)) (hP : IsMultiHomogIdeal P) {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts P) {c : ℂ} (hc : c ≠ 0) (hK : IsEmpty K → c = 1) :
@@ -101,7 +101,7 @@ theorem exists_segre_smul (P : Ideal (MRing ι)) (hP : IsMultiHomogIdeal P) {z :
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Simplify using `[segre]`.
+Simplify using the standard rewrite rules.
 -/
 theorem segre_of_isEmpty (hK : IsEmpty K) (z : (Σ k, ι k) → ℂ) (j : (k : K) → ι k) : segre z j = 1 := by
   simp [segre]
@@ -109,27 +109,25 @@ theorem segre_of_isEmpty (hK : IsEmpty K) (z : (Σ k, ι k) → ℂ) (j : (k : K
 end Lemmas
 
 /- English proof (translation)
-Introduce `K _ ι _ P e m σ Ψ hP`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Use `swap`. Introduce `x hx q hq`. Rewrite `hq` using `[projChartIdeal, mem_vanishingIdeal_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hq x hx`. Introduce `x hx`. Establish `hv : ∀ q : MvPolynomial (Fin m) ℂ, (∀ y ∈ projChartSet P σ Ψ, eval y q = 0) → eval x q = 0` using `fun q hq => hx q (by rw [projChartIdeal, mem_vanishingIdeal_iff]; exact hq)`. Establish `hseg : ∀ z : (Σ k, ι k) → ℂ, (fun i' => segre z (σ (σ.symm i'))) = segre z` using `fun z => by`. Use function extensionality and compare the values at `i'`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Equiv.apply_symm_apply]`. Establish `hx1 : Ψ (fun i' => x (σ.symm i')) 0 = 1`. Establish `h` using `hv (linForm σ Ψ - 1) (by`. Introduce and unpack `_ ⟨z, -, hz1, rfl⟩`. Rewrite using `[map_sub, eval_linForm, map_one, hseg, hz1, sub_self])`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[map_sub, eval_linForm, map_one]`. Conclude with `sub_eq_zero.1 h`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, x a ≠ 0 := by`. Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, ne_eq, not_not] at h`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : (fun i' => x (σ.symm i')) = 0` using `funext fun i' => h _`. Rewrite `hx1` using `[h0, map_zero]`. Conclude with `zero_ne_one hx1`. Establish `ha1 : IsEmpty K → x a = 1` using `fun hK => by`. Establish `h` using `hv (X a - 1) (by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨z, -, -, rfl⟩`. Simplify using `[segre_of_isEmpty hK])`. Simplify `h` using `[sub_eq_zero]`. Establish `hzero : (x a)⁻¹ • x ∈ zeroSet (segreChartIdeal P σ (σ a))`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Rewrite `hf` using `[segreChartIdeal, mem_vanishingIdeal_iff]`. Establish `hg` using `hv (X a * ∑ d ∈ range (f.totalDegree + 1), X a ^ (f.totalDegree - d) * homogeneousComponent d f) (by`. Introduce and unpack `_ ⟨z, hz, -, rfl⟩`. Distinguish the cases in `h0 : segre z (σ a) = 0`. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval_homogenize f le_rfl a _ h0]`. Take `⟨z', hz', hz'e⟩` from `exists_segre_smul P hP hz (inv_ne_zero h0) (fun hK => by rw [segre_of_isEmpty hK, inv_one])`. Use `mul_eq_zero_of_right _ (hf _ ⟨z', hz', ?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[hz'e, Pi.smul_apply, smul_eq_mul, inv_mul_cancel₀ h0]`. Use function extensionality and compare the values at `b`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hz'e]`. Use the proof step `rfl)`. Rewrite `hg` using `[eval_homogenize f le_rfl a x ha]`. Conclude with `(mul_eq_zero.1 hg).resolve_left (pow_ne_zero _ ha)`. Rewrite `hzero` using `[SegreChartZeroSet.proof K ι P m σ (σ a) hP]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨z', hz', -, hz'e⟩` from `hzero`. Take `⟨z, hz, hze⟩` from `exists_segre_smul P hP hz' ha ha1`. Establish `hxz : x = fun b => segre z (σ b)`. Use function extensionality and compare the values at `b`. Establish `hb` using `congrFun hz'e b`.
-
-Simplify using `only [Pi.smul_apply, smul_eq_mul] at hb`. Rewrite using `[hze, Pi.smul_apply, smul_eq_mul, ← hb, ← mul_assoc, mul_inv_cancel₀ ha, one_mul]`. Use `⟨z, hz, ?_, hxz⟩` and prove the remaining obligations. Rewrite using `[← hseg z, ← hx1, hxz]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : Statement := by
   intro K _ ι _ P e m σ Ψ hP

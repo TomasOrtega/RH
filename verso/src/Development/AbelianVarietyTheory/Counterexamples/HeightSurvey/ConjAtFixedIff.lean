@@ -14,9 +14,9 @@ section Lin
 variable {n : ℕ} {H : Matrix (Fin n) (Fin n) ℂ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: H * Z = -(Zᴴ * H)` using `by conv_lhs => rw [← h]`. Rewrite using `[mul_neg, ← mul_assoc, ← mul_assoc, mul_nonsing_inv _ hu, one_mul]`. Rewrite using `[this, add_neg_cancel]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `: Zᴴ * H = -(H * Z)` using `eq_neg_of_add_eq_zero_left h`. Rewrite using `[mul_assoc, this, mul_neg, neg_neg, ← mul_assoc, nonsing_inv_mul _ hu, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_fixed_iff (hu : IsUnit H.det) (Z : Matrix (Fin n) (Fin n) ℂ) :
     -(H⁻¹ * Zᴴ * H) = Z ↔ Zᴴ * H + H * Z = 0 := by
@@ -31,7 +31,7 @@ theorem conj_fixed_iff (hu : IsUnit H.det) (Z : Matrix (Fin n) (Fin n) ℂ) :
     rw [mul_assoc, this, mul_neg, neg_neg, ← mul_assoc, nonsing_inv_mul _ hu, one_mul]
 
 /- English proof (translation)
-Rewrite using `[conjTranspose_neg, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, hH, neg_mul, mul_assoc, mul_assoc, nonsing_inv_mul _ hu, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conjT_conj_mul (hH : Hᴴ = H) (hu : IsUnit H.det) (Z : Matrix (Fin n) (Fin n) ℂ) :
     (-(H⁻¹ * Zᴴ * H))ᴴ * H = -(H * Z) := by
@@ -39,13 +39,13 @@ theorem conjT_conj_mul (hH : Hᴴ = H) (hu : IsUnit H.det) (Z : Matrix (Fin n) (
     neg_mul, mul_assoc, mul_assoc, nonsing_inv_mul _ hu, mul_one]
 
 /- English proof (translation)
-Rewrite using `[mul_neg, ← mul_assoc, ← mul_assoc, mul_nonsing_inv _ hu, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_conj (hu : IsUnit H.det) (Z : Matrix (Fin n) (Fin n) ℂ) : H * (-(H⁻¹ * Zᴴ * H)) = -(Zᴴ * H) := by
   rw [mul_neg, ← mul_assoc, ← mul_assoc, mul_nonsing_inv _ hu, one_mul]
 
 /- English proof (translation)
-Rewrite using `[conjTranspose_smul, conjTranspose_add, smul_mul_assoc, mul_smul_comm, add_mul, mul_add, conjT_conj_mul hH hu, mul_conj hu]`. Establish `: star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Rewrite using `[this, ← smul_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem re_mem (hH : Hᴴ = H) (hu : IsUnit H.det) (Z : Matrix (Fin n) (Fin n) ℂ) :
     ((1 / 2 : ℂ) • (Z + -(H⁻¹ * Zᴴ * H)))ᴴ * H + H * ((1 / 2 : ℂ) • (Z + -(H⁻¹ * Zᴴ * H))) = 0 := by
@@ -56,7 +56,7 @@ theorem re_mem (hH : Hᴴ = H) (hu : IsUnit H.det) (Z : Matrix (Fin n) (Fin n) �
   simp
 
 /- English proof (translation)
-Rewrite using `[conjTranspose_smul, conjTranspose_sub, smul_mul_assoc, mul_smul_comm, sub_mul, mul_sub, conjT_conj_mul hH hu, mul_conj hu]`. Establish `: star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I))` using `by simp`. Rewrite using `[this, neg_smul, sub_neg_eq_add, sub_neg_eq_add, add_comm (H * Z), neg_add_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem im_mem (hH : Hᴴ = H) (hu : IsUnit H.det) (Z : Matrix (Fin n) (Fin n) ℂ) :
     ((1 / (2 * Complex.I)) • (Z - -(H⁻¹ * Zᴴ * H)))ᴴ * H + H * ((1 / (2 * Complex.I)) • (Z - -(H⁻¹ * Zᴴ * H))) = 0 := by
@@ -66,9 +66,9 @@ theorem im_mem (hH : Hᴴ = H) (hu : IsUnit H.det) (Z : Matrix (Fin n) (Fin n) �
   rw [this, neg_smul, sub_neg_eq_add, sub_neg_eq_add, add_comm (H * Z), neg_add_cancel]
 
 /- English proof (translation)
-Establish `hu' : IsUnit H` using `(isUnit_iff_isUnit_det H).2 hu`. Establish `e : (t • X)ᴴ = H * (-(t • X)) * H⁻¹`. Establish `h1 : Xᴴ * H = -(H * X)` using `eq_neg_of_add_eq_zero_left hX`. Establish `h2 : Xᴴ = -(H * X) * H⁻¹` using `by rw [← h1, mul_assoc, mul_nonsing_inv _ hu, mul_one]`. Rewrite using `[conjTranspose_smul, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `show (NormedSpace.exp (t • X))ᴴ * H * NormedSpace.exp (t • X) = H`. Rewrite using `[← Matrix.exp_conjTranspose, e, Matrix.exp_conj _ _ hu', mul_assoc _ H⁻¹, nonsing_inv_mul _ hu, mul_one, mul_assoc, ← Matrix.exp_add_of_commute _ _ (Commute.refl (t • X)).neg_left, neg_add_cancel, NormedSpace.exp_zero, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_mem_UH (hu : IsUnit H.det) {X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ * H + H * X = 0) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH H := by
@@ -87,13 +87,11 @@ end Lin
 variable {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv, h0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Establish `hx : ∀ y, V.hT y (∑ j, v j • V.frame j) = 0`. Introduce `y`. Rewrite using `[← V.frame.sum_repr y]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, RingHom.id_apply, smul_eq_mul]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Use `congrFun h0 i` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [mulVec, dotProduct, HSpace.gram, Pi.zero_apply] at this`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Use `_ = 0 := by rw [this, mul_zero]`. Use `V.nondeg.2 _ hx` as an intermediate fact.
-
-Conclude with `hv (funext (Fintype.linearIndependent_iff.1 V.frame.linearIndependent v this))`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gram_det_ne : V.gram.det ≠ 0 := by
   intro h
@@ -114,7 +112,7 @@ theorem gram_det_ne : V.gram.det ≠ 0 := by
   exact hv (funext (Fintype.linearIndependent_iff.1 V.frame.linearIndependent v this))
 
 /- English proof (translation)
-Establish `: (gramAt D V τ).det = tauE D τ V.gram.det` using `(RingHom.map_det _ _).symm`. Rewrite using `[this, isUnit_iff_ne_zero]`. Conclude with `(map_ne_zero _).2 (gram_det_ne V)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramAt_unit (τ : D.what₂.Tau) : IsUnit (gramAt D V τ).det := by
   have : (gramAt D V τ).det = tauE D τ V.gram.det := (RingHom.map_det _ _).symm
@@ -122,9 +120,9 @@ theorem gramAt_unit (τ : D.what₂.Tau) : IsUnit (gramAt D V τ).det := by
   exact (map_ne_zero _).2 (gram_det_ne V)
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hcm` using `D.host.isCMField_hostE`. Establish `h1 : star (V.hT (V.frame j) (V.frame i)) = V.hT (V.frame i) (V.frame j)` using `V.herm.eq _ _`. Simplify using `only [conjTranspose_apply, gramAt, map_apply, HSpace.gram]`. Rewrite using `[← h1]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(NumberField.IsCMField.complexEmbedding_complexConj _ (tauE D τ) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem gramAt_herm (τ : D.what₂.Tau) : (gramAt D V τ)ᴴ = gramAt D V τ := by
   ext i j
@@ -135,20 +133,20 @@ theorem gramAt_herm (τ : D.what₂.Tau) : (gramAt D V τ)ᴴ = gramAt D V τ :=
   exact (NumberField.IsCMField.complexEmbedding_complexConj _ (tauE D τ) _).symm
 
 /- English proof (translation)
-The claim follows from `conj_fixed_iff (gramAt_unit V τ) Z`.
+A detailed English derivation is pending.
 -/
 theorem conjAt_fixed_iff (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     conjAt V τ Z = Z ↔ Z ∈ lieAt V τ := conj_fixed_iff (gramAt_unit V τ) Z
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨re_mem (gramAt_herm V τ) (gramAt_unit V τ) Z, im_mem (gramAt_herm V τ) (gramAt_unit V τ) Z⟩`.
+Supply the required witnesses or components.
 -/
 theorem parts_mem (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     (1 / 2 : ℂ) • (Z + conjAt V τ Z) ∈ lieAt V τ ∧ (1 / (2 * Complex.I)) • (Z - conjAt V τ Z) ∈ lieAt V τ :=
   ⟨re_mem (gramAt_herm V τ) (gramAt_unit V τ) Z, im_mem (gramAt_herm V τ) (gramAt_unit V τ) Z⟩
 
 /- English proof (translation)
-Establish `: Complex.I * (1 / (2 * Complex.I)) = 1 / 2` using `by field_simp`. Rewrite using `[smul_smul, this, ← smul_add, add_add_sub_cancel, ← two_smul ℂ Z, smul_smul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem parts_sum (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     (1 / 2 : ℂ) • (Z + conjAt V τ Z) + Complex.I • ((1 / (2 * Complex.I)) • (Z - conjAt V τ Z)) = Z := by
@@ -157,9 +155,9 @@ theorem parts_sum (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ
   simp
 
 /- English proof (translation)
-Unfold `RderC`. Rewrite using `[(conjAt_fixed_iff V τ X).2 hX, sub_self, smul_zero, ← two_smul ℂ X, smul_smul]`. Establish `: Rder θ V τ 0 φ = 0`. Use function extensionality and compare the values at `g`. Simplify using `[Rder, oneP]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem RderC_eq (τ : D.what₂.Tau) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) (φ : GA D V → ℂ) :
     RderC θ V τ X φ = Rder θ V τ X φ := by
@@ -172,7 +170,7 @@ theorem RderC_eq (τ : D.what₂.Tau) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
   simp
 
 /- English proof (translation)
-Establish `h` using `(T.actR.2 θ hθ V τ _ (exp_mem_UH (gramAt_unit V τ) hY t)).1`. Unfold `oneP atTau`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneP_spec {X : ThetaX D} (T : ThetaTied D X) (hθ : IsInfFam (D := D) θ) (τ : D.what₂.Tau)
     {Y : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hY : Y ∈ lieAt V τ) (t : ℝ) :
@@ -185,7 +183,7 @@ theorem oneP_spec {X : ThetaX D} (T : ThetaTied D X) (hθ : IsInfFam (D := D) θ
 def reSig (s : (D.host.E →+* ℂ) → ℕ × ℕ) : HSp D := { V with sig := s }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨⟨h.left, h.level, h.cont⟩, h.smooth, h.zfin, h.growth⟩, fun h => ⟨⟨h.left, h.level, h.cont⟩, h.smooth, h.zfin, h.growth⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAutFunSm_reSig (s : (D.host.E →+* ℂ) → ℕ × ℕ) (φ : GA D V → ℂ) :
     IsAutFunSm θ (reSig V s) φ ↔ IsAutFunSm θ V φ :=

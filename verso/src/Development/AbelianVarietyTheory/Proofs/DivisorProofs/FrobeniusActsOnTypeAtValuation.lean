@@ -13,11 +13,9 @@ section ResidueField
 variable {k : Type} [Field k] {p : ℕ} [Fact p.Prime] [CharP k p] {d : ℕ}
 
 /- English proof (translation)
-Introduce `h`. Establish `h2k : (2 : k) ≠ 0`. Introduce `h0`. Establish `: p ∣ 2` using `(CharP.cast_eq_zero_iff k p 2).1 (by exact_mod_cast h0)`. Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0 : r = 0`. Establish `: 2 * r = 0` using `by linear_combination h`. Conclude with `(mul_eq_zero.1 this).resolve_left h2k`. Establish `hdk : (d : k) = 0`. Rewrite `hr` using `[hr0]`.
-
-Take the linear combination `hr`. Conclude with `hd ((ZMod.natCast_eq_zero_iff d p).2 ((CharP.cast_eq_zero_iff k p d).1 hdk))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sqrtNeg_ne_neg (h2 : p ≠ 2) (hd : (d : ZMod p) ≠ 0) {r : k} (hr : r ^ 2 = -(d : k)) : r ≠ -r := by
   intro h
@@ -34,9 +32,9 @@ theorem sqrtNeg_ne_neg (h2 : p ≠ 2) (hd : (d : ZMod p) ≠ 0) {r : k} (hr : r 
   exact hd ((ZMod.natCast_eq_zero_iff d p).2 ((CharP.cast_eq_zero_iff k p d).1 hdk))
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `hs`. Establish `h1 : r ^ 2 = (ZMod.castHom (dvd_refl p) k m) ^ 2`. Rewrite using `[hr, ← map_pow, sq, ← hm, map_neg, map_natCast]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases. Rewrite using `[h, ← map_pow, ZMod.pow_card]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, ← map_neg, ← map_pow, ZMod.pow_card]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sqrtNeg_pow_of_isSquare (hs : IsSquare (-(d : ZMod p))) {r : k} (hr : r ^ 2 = -(d : k)) : r ^ p = r := by
   obtain ⟨m, hm⟩ := hs
@@ -47,13 +45,13 @@ theorem sqrtNeg_pow_of_isSquare (hs : IsSquare (-(d : ZMod p))) {r : k} (hr : r 
   · rw [h, ← map_neg, ← map_pow, ZMod.pow_card]
 
 /- English proof (translation)
-Establish `hd : (d : ZMod p) ≠ 0` using `fun h => hs (by rw [h, neg_zero]; exact IsSquare.zero)`. Establish `hd' : -(d : ZMod p) ≠ 0` using `neg_ne_zero.2 hd`. Establish `h2 : p ≠ 2`. Introduce and unpack `rfl`. Apply `hs` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Generalize the expression as in `(-(d : ZMod 2)) = x`. Conclude with `⟨x, by rw [← sq, ZMod.pow_card]⟩`. Establish `he : (-(d : ZMod p)) ^ (p / 2) = -1` using `(ZMod.pow_div_two_eq_neg_one_or_one p hd').resolve_left fun h => hs ((ZMod.euler_criterion p hd').2 h)`. Establish `hk : (-(d : k)) ^ (p / 2) = -1`. Use `congrArg (ZMod.castHom (dvd_refl p) k) he` as an intermediate fact.
+Replace the chosen expression with an arbitrary variable. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_pow, map_neg, map_neg, map_natCast, map_one]`. Then use the resulting hypothesis. Establish `hp : p = 2 * (p / 2) + 1`. Use `(Fact.out : p.Prime).eq_two_or_odd.resolve_left h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h3 : r ^ p = -r` using `by conv_lhs => rw [hp]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[pow_succ, pow_mul, hr, hk, neg_one_mul]`. Rewrite using `[h3]`. Conclude with `(sqrtNeg_ne_neg h2 hd hr).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqrtNeg_pow_ne_of_not_isSquare (hs : ¬ IsSquare (-(d : ZMod p))) {r : k} (hr : r ^ 2 = -(d : k)) :
     r ^ p ≠ r := by
@@ -83,18 +81,18 @@ end ResidueField
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H}
 
 /- English proof (translation)
-Use `congrArg (σ.comp (algebraMap (𝓞 E) E)) H.rt_sq` as an intermediate fact. Rewrite `this` using `[map_pow, map_neg, map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem label_rt_sq (H : Host E) (σ : E →+* ℂ) : σ (H.rt : E) ^ 2 = -(H.d : ℂ) := by
   have := congrArg (σ.comp (algebraMap (𝓞 E) E)) H.rt_sq
   rwa [map_pow, map_neg, map_natCast] at this
 
 /- English proof (translation)
-Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `h` using `label_rt_sq H σ`. Generalize the expression as in `σ (H.rt : E) = z at h`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `h1` using `congrArg Complex.re h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Complex.im h`. Simplify using `[sq] at h1 h2`. Establish `h3 : z.re = 0`. Assume the negation of the conclusion as `h0`. Establish `h4 : z.im = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: z.re * z.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_left h0`. Rewrite `h1` using `[h4]`. Use polynomial arithmetic with `[mul_self_nonneg z.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem conj_label_rt (H : Host E) (σ : E →+* ℂ) :
     ComplexEmbedding.conjugate σ (H.rt : E) = -σ (H.rt : E) := by
@@ -115,9 +113,9 @@ theorem conj_label_rt (H : Host E) (σ : E →+* ℂ) :
   apply Complex.ext <;> simp [h3]
 
 /- English proof (translation)
-Use `⟨(H.d + 1) / 8, ?_⟩` and prove the remaining obligations. Establish `h8 : ((H.d : ℕ) : 𝓞 E) + 1 = 8 * (((H.d + 1) / 8 : ℕ) : 𝓞 E)`. Establish `: H.d + 1 = 8 * ((H.d + 1) / 8)` using `by have := H.d_mod; omega`. Conclude with `this` after adjusting the coercions. Establish `h4 : (4 : 𝓞 E) ≠ 0` using `by norm_num`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_left_cancel₀ h4` to reduce the goal to its premises. Establish `h1` using `H.two_weight_eq_one_add_root`. Establish `h2` using `H.rt_sq`. Take the linear combination `(2 * H.w0 - 1 + H.rt) * h1 + h2 - h8`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_w0_sq_even_constant (H : Host E) : ∃ n : ℕ, H.w0 ^ 2 = H.w0 - 2 * n := by
   refine ⟨(H.d + 1) / 8, ?_⟩
@@ -133,7 +131,7 @@ theorem exists_w0_sq_even_constant (H : Host E) : ∃ n : ℕ, H.w0 ^ 2 = H.w0 -
 variable {c : Coeff l} {T : CDVR} (io : c.F →+* T.Fr) {p : ℕ} [Fact p.Prime] (X : ValExt T p)
 
 /- English proof (translation)
-Establish `h1 : embK c σ' a = embK c σ b` using `Subtype.ext h`. Establish `h2 : embO io X σ' a = embO io X σ b` using `X.ints.hom_inj (by`. Rewrite using `[algebraMap_embO, algebraMap_embO, embX, embX, RingHom.comp_apply, RingHom.comp_apply, RingHom.comp_apply, RingHom.comp_apply, h1])`. Rewrite using `[red, red, RingHom.comp_apply, RingHom.comp_apply, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem red_eq_of_label_eq {σ σ' : E →+* ℂ} {a b : 𝓞 E} (h : σ' (a : E) = σ (b : E)) :
     red io X σ' a = red io X σ b := by
@@ -144,21 +142,21 @@ theorem red_eq_of_label_eq {σ σ' : E →+* ℂ} {a b : 𝓞 E} (h : σ' (a : E
   rw [red, red, RingHom.comp_apply, RingHom.comp_apply, h2]
 
 /- English proof (translation)
-Introduce `σ σ' hF`. Use `haveI := charP_residueField_of_irreducible X`. Establish `hred : ∀ a, red io X σ' a = red io X σ a ^ p` using `fun a => (red_eq_pow_iff io X σ σ' a p).2 (hF a)`. Establish `hr : red io X σ H.rt ^ 2 = -(H.d : ResidueField X.O)`. Rewrite using `[← map_pow, H.rt_sq, map_neg, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpm : σ' (H.rt : E) = σ (H.rt : E) ∨ σ' (H.rt : E) = -σ (H.rt : E)` using `sq_eq_sq_iff_eq_or_eq_neg.1 (by rw [label_rt_sq, label_rt_sq])`. Use `⟨fun hs => ?_, fun hi => ?_⟩` and prove the remaining obligations. Establish `key : σ' (H.rt : E) = σ (H.rt : E)`. Use `hpm.resolve_right fun h => ?_` and prove the remaining obligations. Distinguish the cases in `h2 : p = 2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h2` using the available equality. Take `⟨n, hn⟩` from `exists_w0_sq_even_constant H`. Establish `hw : ∀ τ : E →+* ℂ, 2 * τ (H.w0 : E) = 1 + τ (H.rt : E)` using `fun τ => by`. Use `congrArg (τ.comp (algebraMap (𝓞 E) E)) H.two_weight_eq_one_add_root` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, map_ofNat]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1 : σ' (H.w0 : E) = σ ((1 - H.w0 : 𝓞 E) : E)`. Establish `e : σ ((1 - H.w0 : 𝓞 E) : E) = 1 - σ (H.w0 : E)`. Use `map_sub (σ.comp (algebraMap (𝓞 E) E)) 1 H.w0` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(1 / 2) * hw σ' + (1 / 2) * hw σ + (1 / 2) * h`. Establish `h3` using `red_eq_of_label_eq io X h1`. Rewrite `h3` using `[hred, ← map_pow, hn, map_sub, map_sub, map_mul, map_one, map_ofNat]`. Establish `h4 : (2 : ResidueField X.O) = 0`. Conclude with `CharP.cast_eq_zero (ResidueField X.O) 2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `one_ne_zero (α := ResidueField X.O)` to reduce the goal to its premises. Take the linear combination `-h3 + (red io X σ H.w0 - red io X σ n) * h4`. Establish `h1 : σ' (H.rt : E) = σ ((-H.rt : 𝓞 E) : E)`. Rewrite using `[h]`. Conclude with `(map_neg (σ.comp (algebraMap (𝓞 E) E)) H.rt).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `red_eq_of_label_eq io X h1`. Rewrite `h3` using `[hred, sqrtNeg_pow_of_isSquare hs.2 hr, map_neg]`. Conclude with `sqrtNeg_ne_neg h2 hs.1 hr h3`. Rewrite using `[InPsi, InPsi, key]`. Establish `key : σ' (H.rt : E) = -σ (H.rt : E)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hpm.resolve_left fun h => ?_` and prove the remaining obligations. Establish `h3` using `red_eq_of_label_eq io X h`. Rewrite `h3` using `[hred]`. Conclude with `sqrtNeg_pow_ne_of_not_isSquare hi hr h3`. Rewrite using `[InPsi, InPsi, key, conj_label_rt]`.
+A detailed English derivation is pending.
 -/
 theorem frobOnType : FrobOnType io X := by
   intro σ σ' hF
@@ -203,7 +201,7 @@ theorem frobOnType : FrobOnType io X := by
     rw [InPsi, InPsi, key, conj_label_rt]
 
 /- English proof (translation)
-The claim follows from `frobOnType io X`.
+A detailed English derivation is pending.
 -/
 theorem frobOnType_all (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l)
     (p : ℕ) [Fact p.Prime] (T : CDVR) (io : c.F →+* T.Fr) (X : ValExt T p) : FrobOnType io X :=

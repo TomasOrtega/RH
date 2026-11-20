@@ -13,11 +13,11 @@ open GlobalTheory.SqTop
 open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Introduce `_`. Use `GlobalTheory.SqStepBig.gbig_two GlobalTheory.T.towerStage_seesawDictionary_framesSignatures GlobalTheory.T.towerStage_seesawDictionary_framesSignatures ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b q1 _ W _ i j p q A A' WW X lam t Bs hX _ hB`. Take `⟨FA, FA', FW, a, b, -, -, -, hd⟩` from `q1 W i j p q A A' WW X hX`. Take `⟨hp, hq, hrA, hrA', hnA, hnA', hnW, hXi⟩` from `hX`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨hψ, -⟩, hBs, hemb, -, -, hκ⟩` from `hB`. Establish `hsz` using `GlobalTheory.StageDict.stage_sizes i j hp hq hrA hrA'`. Take `⟨Γ, hp', hq', hg, hS⟩` from `UpperTheory.exists_geo_of_signature_rank_bounds D W.ψ T A A' WW X FA FA' FW hXi.rank Bs p q hBs hψ hemb hXi.rigA hXi.rigA' hXi.rigW hXi.meas hXi.meas' hnA hnA' hnW hsz.1 hsz.2.1 hsz.2.2.1 hκ`. Use `⟨FA, FA', FW, Γ, ⟨⟨rfl, hS.JA, hS.latA.1⟩, ⟨rfl, hS.JB, hS.latB.1⟩, ⟨hXi.rank.symm, hS.pairA.JW, hS.latA.2⟩⟩, hp', hq', hg, fun s _ => ?_⟩` and prove the remaining obligations. Take `⟨-, -, f1, f2, k1, k2⟩` from `hd s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨f1, f2, k1, k2, fun om om' hT => ?_⟩` and prove the remaining obligations. Take `⟨cA, cB, hO, -⟩` from `UpperTheory.exists_seesaw_intertwiners_of_triple D W.ψ W.θ hXi.isVac.2.inf T A A' WW X FA FA' FW hXi.rank Bs Γ hS (GlobalTheory.SqStep.chs G i j s) om om' hT (X.ω s) (X.ω' s) (hXi.weil s) (hXi.weil' s)`. Conclude with `⟨_, cA, cB, hO⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.T.exists_good_geometry_over_carried_frames : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D)

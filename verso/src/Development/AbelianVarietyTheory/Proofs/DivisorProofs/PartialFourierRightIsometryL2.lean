@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.DoublingEv.L2RightPartial
 
 /- English proof (translation)
-Introduce `F _ _ κ κ' _ _ A hmem hA μ hμ`. Conclude with `GlobalTheory.DblEval.L2RightPartial.partR_lintegral_sq_eq_const_mul_of_mem_schA (κ := κ) A hA hmem μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem partR_lintegral_sq_eq_const_mul_of_mem_schA : ∀ (F : Type) [Field F] [NumberField F] (κ κ' : Type) [Fintype κ] [Fintype κ']
     (A : ((κ' → AF F) → ℂ) →ₗ[ℂ] ((κ' → AF F) → ℂ)),

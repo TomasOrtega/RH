@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.DRRead
 
 /- English proof (translation)
-Unfold `GlobalTheory.GoodMetric.rootDiscr MixDens.vdm`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `Finset.prod_comm' fun j i => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem rootDiscr_eq_vdm {ι : Type} [Fintype ι] (m : ι → ℕ) : GlobalTheory.GoodMetric.rootDiscr m = MixDens.vdm m := by
   unfold GlobalTheory.GoodMetric.rootDiscr MixDens.vdm
@@ -38,13 +38,13 @@ def pol : MvPolynomial (EigWhole.Var O) ℝ :=
     (∑ i : Fin (D.R.f * O.N), X (Sum.inr (Sum.inr i))) ^ (dimGr D.what₂.Tau O.N O.j - 1)
 
 /- English proof (translation)
-Establish `hT : 1 ∉ (∅ : Finset ℕ)` using `by simp`. Establish `e0 : ArIn.ind ∅ = fun _ => false` using `by funext q; simp [ArIn.ind]`. Establish `e1 : ((arIn O.s O.Φ O.met.hm).mixEv ∅ R 1 c).comp (DV.tagDR D.what₂.Tau O.N) = rename fun x => (arIn O.s O.Φ O.met.hm).root (ArIn.ind ∅) R x c`. Use extensionality with `x : 1`. Simplify using `[ArIn.mixEv, DV.tagDR, EigWhole.update_ind_one ∅ hT]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e2` using `congrArg (fun f => f (CovTestDR.vdmCl D.what₂.Tau O.N O.j)) e1`. Simplify using `only [AlgHom.comp_apply] at e2`. Unfold `termW cNum pol`. Use `congr 1`. Rewrite using `[map_mul, map_mul (rename _)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `(congrArg _ e2).trans ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, rename_rename]`. Use `congr 1`. Simplify using `only [ArIn.mixEv, aeval_X, EigWhole.update_ind_one ∅ hT, map_sum, map_pow, rename_X, map_mul, algHom_C]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions. Both sides reduce to the same expression. Rewrite using `[map_pow, map_sum, ← e0]`. Simplify using `only [rename_X]`. Both sides reduce to the same expression.
+Evaluate the numerical expressions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem termW_eq (R : ℝ) (c : O.s.Comp) : termW O c R =
     numL ((arIn O.s O.Φ O.met.hm).num c) (dimFl D.what₂.Tau O.N + 1) (rename (EigWhole.fam O ∅ R) (pol O)) := by
@@ -71,13 +71,13 @@ theorem termW_eq (R : ℝ) (c : O.s.Comp) : termW O c R =
     rfl
 
 /- English proof (translation)
-Establish `hι : 0 < Fintype.card D.what₂.Tau` using `Fintype.card_pos_iff.2 ⟨D.eTau.symm (Classical.arbitrary _)⟩`. Establish `hj : 1 ≤ O.j` using `O.indef.1`. Establish `hjN : O.j < O.N` using `O.indef.2`. Establish `hpos : 1 ≤ dimGr D.what₂.Tau O.N O.j`. Unfold `dimGr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Nat.mul_pos hι (Nat.mul_pos hj (by omega))`. Establish `hV` using `RelabDR.vdmCl_isHomogeneous D.what₂.Tau hjN.le`. Establish `hdim : dimGr D.what₂.Tau O.N O.j + Fintype.card D.what₂.Tau * ∑ i : Fin O.N, (if (i : ℕ) < O.j then O.j - 1 - (i : ℕ) else O.N - 1 - (i : ℕ)) = dimFl D.what₂.Tau O.N`. Establish `h` using `congrArg (Fintype.card D.what₂.Tau * ·) (GlobalTheory.Mean4.WholeShift.sum_exp (N := O.N) O.j hjN.le)`. Simplify using `only [mul_add] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `dimFl dimGr`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Generalize the expression as in `Fintype.card D.what₂.Tau * ∑ i : Fin O.N, (if (i : ℕ) < O.j then O.j - 1 - (i : ℕ) else O.N - 1 - (i : ℕ)) = e at hV hdim`. Establish `h1` using `(isHomogeneous_C (EigWhole.Var O) (1 / 2 : ℝ)).mul (IsHomogeneous.sum (Finset.univ : Finset (Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N))) (fun l => (X (Sum.inr l : EigWhole.Var O) : MvPolynomial (EigWhole.Var O) ℝ) ^ 2) 2 fun l _ => isHomogeneous_X_pow _ 2)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hV.rename_isHomogeneous (f := (Sum.inl : DV.Rt D.what₂.Tau O.N → EigWhole.Var O))`. Establish `h3` using `(IsHomogeneous.sum (Finset.univ : Finset (Fin (D.R.f * O.N))) (fun i => (X (Sum.inr (Sum.inr i) : EigWhole.Var O) : MvPolynomial (EigWhole.Var O) ℝ)) 1 fun l _ => isHomogeneous_X _ _).pow (dimGr D.what₂.Tau O.N O.j - 1)`. Establish `e4 : dimFl D.what₂.Tau O.N + 1 = 0 + 2 + e + 1 * (dimGr D.what₂.Tau O.N O.j - 1)` using `by omega`. Rewrite using `[e4]`. Conclude with `(h1.mul h2).mul h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pol_isHomogeneous : (pol O).IsHomogeneous (dimFl D.what₂.Tau O.N + 1) := by
   have hι : 0 < Fintype.card D.what₂.Tau := Fintype.card_pos_iff.2 ⟨D.eTau.symm (Classical.arbitrary _)⟩
@@ -109,15 +109,15 @@ theorem pol_isHomogeneous : (pol O).IsHomogeneous (dimFl D.what₂.Tau O.N + 1) 
   exact (h1.mul h2).mul h3
 
 /- English proof (translation)
-Establish `hsq : ∀ i, (C (RelabDR.sg O i : ℝ) * X (RelabDR.ix O i) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ) ^ 2 = X (RelabDR.ix O i) ^ 2`. Introduce `i`. Rewrite using `[mul_pow, ← C_pow, RelabDR.sg_sq_real, C_1, one_mul]`. Establish `hR : ∑ x, (X (Sum.inl (RelabDR.rootL O x)) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ) ^ 2 = ∑ z, X (Sum.inl z) ^ 2` using `Fintype.sum_bijective _ (RelabDR.rootL_bijective_sqs O) _ _ (fun _ => rfl)`. Establish `h1` using `RelabDR.aeval_halfWholeSq_sub_rootSq D O`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1' : aeval (fun i => (C (RelabDR.sg O i : ℝ) * X (RelabDR.ix O i) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ)) (∑ x, X (Sum.inl x) ^ 2 : MvPolynomial (EigWhole.Var O) ℝ) = ∑ z, X (Sum.inl z) ^ 2`. Rewrite using `[← hR]`. Simplify using `only [map_sum, map_pow, aeval_X, hsq]`. Both sides reduce to the same expression. Rewrite `h1` using `[map_sub, h1', sub_left_inj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : ((fun i => (C (RelabDR.sg O i : ℝ) * X (RelabDR.ix O i) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ)) ∘ (Sum.inl : DV.Rt D.what₂.Tau O.N → EigWhole.Var O)) = fun x => rename Sum.inl (RelabDR.rootSub O x)`. Use function extensionality and compare the values at `x`. Simplify using `[RelabDR.sg, RelabDR.ix, RelabDR.rootSub]`. Establish `hc2 : ∀ P : MvPolynomial (DV.Rt D.what₂.Tau O.N) ℝ, aeval (fun x => rename Sum.inl (RelabDR.rootSub O x)) P = rename (Sum.inl : Letter O.S.Dw → Letter O.S.Dw ⊕ Letter O.S.Dw) (aeval (RelabDR.rootSub O) P)` using `fun P => (congrArg (fun φ => φ P) (comp_aeval (RelabDR.rootSub O) (rename (Sum.inl : Letter O.S.Dw → Letter O.S.Dw ⊕ Letter O.S.Dw)))).symm`. Establish `h3 : aeval (fun i => (C (RelabDR.sg O i : ℝ) * X (RelabDR.ix O i) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ)) (∑ i : Fin (D.R.f * O.N), X (Sum.inr (Sum.inr i)) : MvPolynomial (EigWhole.Var O) ℝ) = -∑ z, X (Sum.inr z)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ((RelabDR.wholeL_bijective_sqs O).comp Fin.revPerm.bijective).sum_comp (fun z => (X (Sum.inr z) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ)), ← Finset.sum_neg_distrib, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[RelabDR.sg, RelabDR.ix]`. Establish `hf : (∏ σ, ((O.S.Dw.mult σ).factorial : ℝ))⁻¹ = ((O.j.factorial : ℝ)⁻¹ * ((O.N - O.j).factorial : ℝ)⁻¹) ^ Fintype.card D.what₂.Tau`. Rewrite using `[← Nat.cast_prod, RelabDRVdm.prod_fact, ← mul_inv, inv_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Unfold `pol pairPol`. Rewrite using `[map_mul, map_mul, h1, map_pow, h3, aeval_rename, hc, hc2, RelabDRVdm.aeval_vdmCl, ← RelabDRVdm.rootDiscr_eq, rootDiscr_eq_vdm, hf, map_mul, rename_C, smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aeval_pol : aeval (fun i => (C (RelabDR.sg O i : ℝ) * X (RelabDR.ix O i) :
       MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ)) (pol O) =
@@ -163,27 +163,25 @@ theorem aeval_pol : aeval (fun i => (C (RelabDR.sg O i : ℝ) * X (RelabDR.ix O 
   ring
 
 /- English proof (translation)
-Introduce `hC hD D O hO R hR c V x₁ x₂ h₁ h₂ Φ hΦ`. Take `⟨hsg, hfam⟩` from `RelabDR.fam_eq_single D O`. Take `⟨t, P, hW⟩` from `id hO`. Establish `hm` using `hW.hm_eq`. Take `⟨-, h2⟩` from `GlobalTheory.ArTopTrue.arTop_true hC hD GlobalTheory.ShFam.Pad.HTBound.htBound D O.A O.N O.j O.S O.κ O.s t O.Φ c R hR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M, L, m, Ψ, hI, hΨ, hnum⟩` from `h2 (EigWhole.Var O) (EigWhole.fam O ∅ R) (EigWhole.fam_support O _ R)`. Establish `hdim : (O.var c).dim = dimFl D.what₂.Tau O.N` using `O.dim_eq c`. Establish `hnum' : ∀ μ : Multiset (EigWhole.Var O), Multiset.card μ = dimFl D.what₂.Tau O.N + 1 → (arIn O.s O.Φ O.met.hm).num c (μ.map (EigWhole.fam O ∅ R)) = Ψ ((μ.map X).prod) / ((((m : ℕ) : ℝ)) ^ ((O.var c).dim + 1) * (Module.finrank ℚ D.what₂.LL : ℝ))`. Introduce `μ hμ`. Rewrite using `[hm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hnum μ (hμ.trans (congrArg (· + 1) hdim.symm))`. Establish `key` using `GlobalTheory.NumLRename.numL_rename_of_agree _ _ _ Ψ _ hnum' _ (pol_isHomogeneous O)`. Establish `hL : ∀ i, (adlOf (O.Φ.C c) (O.met.hm c) (EigWhole.fam O ∅ R i)).Induced M (L i) m 0`. Rewrite using `[hm]`. Conclude with `hI`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `set ix := RelabDR.ix O with hix`. Use `set sg := RelabDR.sg O with hsgd`. Set `x : Letter O.S.Dw ⊕ Letter O.S.Dw → HermLB V.p` to `Sum.elim x₁ x₂`. Set `L' : EigWhole.Var O → HermLB V.p` to `fun i => if sg i = 1 then x (ix i) else (x (ix i)).dual`. Establish `hIso : ArIso` using `hC.2.2.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hΦ'` using `((hIso _ V.X V.p _ V.ar).2 _ x Φ hΦ).2.2 _ L' (fun i => Pi.single (ix i) (sg i)) fun i => by`. Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations. Rewrite using `[icls_comb, Finset.sum_eq_single (ix i) (fun j _ hj => by rw [Pi.single_eq_of_ne hj, zero_smul]) (by simp), Pi.single_eq_same]`. Break down `hsg i with e₁ | e₁` into its components or cases. Simplify using `only [L', e₁, if_true, one_smul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [L', e₁, neg_smul, one_smul]`. Rewrite using `[if_neg (by norm_num), HermLB.icls_dual]`. Establish `hind : ∀ i, V.Induces (adlOf (O.Φ.C c) (O.met.hm c) (EigWhole.fam O ∅ R i)) (L' i) 1` using `fun i => by`. Establish `key (st) (hst : V.Induces (lineAdl O R c st 1) (x (ix i)) 1) : V.Induces (lineAdl O R c st (sg i)) (L' i) 1`. Break down `hsg i with e₁ | e₁` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify `hst` using `only [L', e₁, if_true]`. Simplify using `only [L', e₁]`. Rewrite using `[if_neg (by norm_num)]`. Conclude with `GlobalTheory.TwoLat.induces_lineAdl_neg D O hO R c V st _ hst`. Break down `hfam R i with ⟨z, hz, e₁⟩ | ⟨z, k, hz, hk, e₁⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e₁]`. Conclude with `key _ (by rw [hz]; exact h₁ z)`. Rewrite using `[e₁]`. Conclude with `key _ (by rw [hz]; exact h₂ k z hk)`. Establish `hcmp` using `GlobalTheory.CoverModelTop.top_eq hC hD (O.var c) (Equiv.refl _) _ (fun _ => rfl) M L m Ψ hL hΨ V L' _ hind hΦ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨I, _, a, b, hs⟩` from `FlagCmp.exists_sum_pow (pol_isHomogeneous O)`. Establish `hA : (fun j : EigWhole.Var O => lin fun i => (((Pi.single (ix j) (sg j) : _ → ℤ) i : ℤ) : ℝ)) = fun i => (C (sg i : ℝ) * X (ix i) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ)` using `funext fun j => by`. Rewrite using `[lin, Finset.sum_eq_single (ix j) (fun i _ hi => by rw [Pi.single_eq_of_ne hi]; simp) (by simp), Pi.single_eq_same]`. Establish `halg` using `aeval_pol O`. Rewrite `halg` using `[← hix, ← hsgd, ← hA]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hfin : Φ (pairPol O.S.Dw.mult (dimGr D.what₂.Tau O.N O.j - 1)) / ((∏ σ, ((O.S.Dw.mult σ).factorial : ℝ)) * V.ν) = Φ ((∏ σ, ((O.S.Dw.mult σ).factorial : ℝ))⁻¹ • pairPol O.S.Dw.mult (dimGr D.what₂.Tau O.N O.j - 1)) / V.ν`. Rewrite using `[map_smul, smul_eq_mul, inv_mul_eq_div, div_div]`. Use `(termW_eq O R c).trans (key.trans ?_)` and prove the remaining obligations. Rewrite using `[hfin, ← halg, ← hs, map_sum, Finset.sum_div, map_sum, map_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Use `hcmp (b j)` as an intermediate fact. Rewrite `this`, the goal using `[hdim]`. Rewrite using `[map_smul, map_smul, map_smul, smul_eq_mul, smul_eq_mul, mul_div_assoc, mul_div_assoc, this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem termW_read : ArCalc → ArDegree → ∀ (D : D7) (O : Setup D), O.Core → ∀ R : ℝ, 2 ≤ R → ∀ (c : O.s.Comp) (V : Cover (O.var c)) (x x' : Letter O.S.Dw → HermLB V.p), (∀ z : Letter O.S.Dw, V.Induces (lineAdl O R c (.inl (z.1, z.2)) 1) (x z) 1) → (∀ (k : ℕ) (z : Letter O.S.Dw), (letters O.S.Dw)[k]? = some z → V.Induces (lineAdl O R c (.inr k) 1) (x' z) 1) → ∀ Φ : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ →ₗ[ℝ] ℝ, IsArFun (Sum.elim x x') (O.var c).dim Φ → termW O c R = Φ (pairPol O.S.Dw.mult (dimGr D.what₂.Tau O.N O.j - 1)) / ((∏ σ, ((O.S.Dw.mult σ).factorial : ℝ)) * V.ν) := by
   intro hC hD D O hO R hR c V x₁ x₂ h₁ h₂ Φ hΦ

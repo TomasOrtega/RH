@@ -24,13 +24,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.TwistSph
 
 /- English proof (translation)
-Introduce `E _ _ _ a w σ s h`. Establish `hK : GlobalTheory.SplitWeil.KO (w.adicCompletion E) (Fin a) = GlobalTheory.LFun.KGL w a` using `GlobalTheory.SmGL.SphCompletion.KO_completion w a`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 h`. Rewrite `hv` using `[← hK]`. Use `(Submodule.ne_bot_iff _).2 ⟨v, fun g => ?_, hv0⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : CuspSub.locDet a (GlobalTheory.HeckeGal.Model.absPow E s) w g.1 = 1` using `by show (GlobalTheory.HeckeGal.Model.absPow E s).loc w (Matrix.GeneralLinearGroup.det g.1) = 1`. Rewrite using `[GlobalTheory.HeightCounting.Blocks.loc_of_isAbsPow (GlobalTheory.HeckeGal.Model.absPow_isAbsPow E s) w]`. Use `isUnram_absPow _ _ _ ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `g.2`. Rewrite using `[← hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (algebraMap (ValuativeRel.valuation (w.adicCompletion E)).integer (w.adicCompletion E)) u) : (w.adicCompletion E)ˣ) : w.adicCompletion E) = algebraMap (ValuativeRel.valuation (w.adicCompletion E)).integer (w.adic …`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[h2]`. Conclude with `(Valuation.Integers.isUnit_iff_valuation_eq_one (Valuation.integer.integers _)).1 ((Matrix.isUnit_iff_isUnit_det _).1 u.isUnit)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `hv g`. Use `show ((CuspSub.locDet a (GlobalTheory.HeckeGal.Model.absPow E s) w g.1 : ℂˣ) : ℂ) • σ.ρ g.1 v = _`. Rewrite using `[h1, Units.val_one, one_smul]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSpherical_twist_absPow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (w : HeightOneSpectrum (𝓞 E))
     (σ : SmIrr (GL (Fin a) (w.adicCompletion E))) (s : ℝ), GlobalTheory.LGrp.IsSpherical σ.ρ (GlobalTheory.LFun.KGL w a) →

@@ -24,9 +24,9 @@ def Same {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (w : Pl E)
     FiniteDimensional ℂ ↥(fixed (prodAt D' w) K)
 
 /- English proof (translation)
-Introduce `w hw`. Take `⟨k, Dl, hD⟩` from `joins_fin hSJ F₀.μ F₀.C.a kA kB PA PB`. Establish `hs : ∀ D D' : Pre E n, Strict D D' → Same w (F₀.d₀.K' w) D D'` using `same_of_strict hSPr hII hAd w _ (F₀.ok₀.K' w hw).1 (F₀.ok₀.K' w hw).2.1`. Use `⟨k, Dl, fun i s₁ s₂ Pa Pb D hc => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hD i Pa Pb D hc.ctx.join (hcls i s₁ s₂ Pa Pb D hc).1 (hcls i s₁ s₂ Pa Pb D hc).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨j, hs D (Dl j) hj⟩`.
+Supply the required witnesses or components.
 -/
 theorem part2 (hSPr : StrictProd) (hSJ : StrictJoin) (hII : IsoInv) (hAd : AdmProd) {hR : Rd.ReadLimit} {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {π : Submodule ℂ (UA E n → ℂ)}
     {S : Finset (Pl E)} (F₀ : Frame0 hR π S) (d : LocData E n) (kA kB : F₀.C.ι → ℕ)

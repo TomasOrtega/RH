@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsEquivalenceFin
 open CategoryTheory AlgebraicGeometry GlobalTheory.EtC
 
 /- English proof (translation)
-Rewrite using `[← Polynomial.map_cyclotomic q (algebraMap A (AdjoinRoot (Polynomial.cyclotomic q A))), Polynomial.eval_map_algebraMap, AdjoinRoot.aeval_eq, AdjoinRoot.mk_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem evalRoot {A : Type} [CommRing A] (q : ℕ) :
     Polynomial.eval (AdjoinRoot.root (Polynomial.cyclotomic q A))
@@ -13,9 +13,9 @@ private theorem evalRoot {A : Type} [CommRing A] (q : ℕ) :
     Polynomial.eval_map_algebraMap, AdjoinRoot.aeval_eq, AdjoinRoot.mk_self]
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial (AdjoinRoot (Polynomial.cyclotomic q A)) with h | h` into its components or cases. Conclude with `isUnit_of_subsingleton _`. Establish `hq' : IsUnit ((q : ℕ) : AdjoinRoot (Polynomial.cyclotomic q A))`. Simplify using `using hq.map (algebraMap A (AdjoinRoot (Polynomial.cyclotomic q A)))`. Use `LateralTheory.E.LeafClosedSH0PfPrim.derivUnit q _ hq' (evalRoot q)` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[← Polynomial.map_cyclotomic q (algebraMap A (AdjoinRoot (Polynomial.cyclotomic q A))), Polynomial.derivative_map, Polynomial.eval_map_algebraMap, AdjoinRoot.aeval_eq]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem unitDeriv {A : Type} [CommRing A] (q : ℕ) (hq : IsUnit ((q : ℕ) : A)) :
     IsUnit (AdjoinRoot.mk (Polynomial.cyclotomic q A)
@@ -29,9 +29,9 @@ private theorem unitDeriv {A : Type} [CommRing A] (q : ℕ) (hq : IsUnit ((q : �
       Polynomial.derivative_map, Polynomial.eval_map_algebraMap, AdjoinRoot.aeval_eq] at this
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `h0`. Rewrite `ha` using `[AdjoinRoot.algebraMap_eq, AdjoinRoot.of, RingHom.comp_apply, AdjoinRoot.mk_eq_zero]`. Use `(Polynomial.cyclotomic.monic q A).not_dvd_of_degree_lt (Polynomial.C_ne_zero.2 h0) ?_ ha` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.degree_cyclotomic, Polynomial.degree_C h0]`. Conclude with `Nat.totient_pos.2 (NeZero.pos q)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem injOf {A : Type} [CommRing A] [Nontrivial A] (q : ℕ) [NeZero q] :
     Function.Injective (algebraMap A (AdjoinRoot (Polynomial.cyclotomic q A))) := by
@@ -45,9 +45,9 @@ private theorem injOf {A : Type} [CommRing A] [Nontrivial A] (q : ℕ) [NeZero q
   exact_mod_cast Nat.totient_pos.2 (NeZero.pos q)
 
 /- English proof (translation)
-Introduce `p`. Use `(Polynomial.cyclotomic.monic q A).finite_adjoinRoot` as an intermediate fact. Take `⟨Q, -, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := AdjoinRoot (Polynomial.cyclotomic q A)) p.asIdeal ⊥ (by`. Rewrite using `[← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).1 (injOf q)]`. Conclude with `bot_le)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨Q, hQ⟩, PrimeSpectrum.ext hQc⟩`.
+A detailed English derivation is pending.
 -/
 private theorem surjOf {A : Type} [CommRing A] [Nontrivial A] (q : ℕ) [NeZero q] :
     Function.Surjective
@@ -67,13 +67,13 @@ private noncomputable def rootPrim {A : Type} [CommRing A] (q : ℕ) (hq : IsUni
     exact evalRoot q⟩
 
 /- English proof (translation)
-Introduce `q _ X hq x`. Take `⟨W, hW, hxW, -⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial`. Take `⟨p, hp⟩ : x ∈ Set.range hW.fromSpec` from `by rw [hW.range_fromSpec]; exact hxW`. Establish `hnt : Nontrivial Γ(X, W)`. Break down `subsingleton_or_nontrivial Γ(X, W) with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd (Subsingleton.elim _ _) p.2.ne_top`. Conclude with `h`. Establish `hqW : IsUnit ((q : ℕ) : Γ(X, W))`. Simplify using `using hq.map (X.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op).hom`. Establish `het : Algebra.Etale Γ(X, W) (AdjoinRoot (Polynomial.cyclotomic q Γ(X, W)))` using `GlobalTheory.etale_adjoinRoot_of_isUnit_derivative (Polynomial.cyclotomic.monic q _) (unitDeriv q hqW)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : CommRingCat.of Γ(X, W) ⟶ CommRingCat.of (AdjoinRoot (Polynomial.cyclotomic q Γ(X, W)))` to `CommRingCat.ofHom (algebraMap _ _)`. Establish `hφ : Etale (Spec.map φ)` using `(HasRingHomProperty.Spec_iff (P := @Etale)).2 ((RingHom.etale_algebraMap).2 het)`. Take `⟨y0, hy0⟩` from `surjOf (A := Γ(X, W)) q p`. Set `y : Spec (CommRingCat.of (AdjoinRoot (Polynomial.cyclotomic q Γ(X, W))))` to `y0`. Establish `hy : Spec.map φ y = p` using `hy0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Spec (CommRingCat.of (AdjoinRoot (Polynomial.cyclotomic q Γ(X, W)))), Spec.map φ ≫ hW.fromSpec, inferInstance, y, Prim.map (Scheme.ΓSpecIso _).inv.hom (rootPrim q hqW), ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply, hy, hp]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_etale_nbhd_primitiveRoot_of_isUnit_natCast :
     ∀ (q : ℕ) [NeZero q] (X : Scheme.{0}), IsUnit ((q : ℕ) : Γ(X, ⊤)) → ∀ x : X, ∃ (V : Scheme.{0}) (f : V ⟶ X) (_ : Etale f) (y : V) (_ : Prim q Γ(V, ⊤)), f y = x := by

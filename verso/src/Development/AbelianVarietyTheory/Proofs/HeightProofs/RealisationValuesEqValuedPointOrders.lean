@@ -56,21 +56,21 @@ def pullVal {L : Type} [Field L] (U : CDVR) (ι : L →+* U.Fr) : AddValuation L
       push_cast; rfl)
 
 /- English proof (translation)
-Simplify using `[pullVal, hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pullVal_of_ne {L : Type} [Field L] (U : CDVR) (ι : L →+* U.Fr) {x : L} (hx : x ≠ 0) :
     pullVal U ι x = ((vV U.V (ι x) : ℤ) : WithTop ℤ) := by
   simp [pullVal, hx]
 
 /- English proof (translation)
-Simplify using `[vV]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vV_zero' (U : CDVR) : vV U.V (0 : U.Fr) = 0 := by simp [vV]
 
 /- English proof (translation)
-Establish `h0 : la.valuation K (a : K) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `ha` after adjusting the coercions. Rewrite using `[← la.valuation_lt_one_iff_mem (K := K) a]`. Rewrite using `[← WithZero.log_lt_log h0 one_ne_zero, WithZero.log_one, vLa]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem vLa_pos_iff' {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) {a : 𝓞 K} (ha : a ≠ 0) :
     0 < vLa la (a : K) ↔ a ∈ la.asIdeal := by
@@ -82,9 +82,9 @@ theorem vLa_pos_iff' {K : Type} [Field K] [NumberField K] (la : HeightOneSpectru
   omega
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `la.intValuation_exists_uniformizer`. Establish `h1 : la.valuation K (π : K) = WithZero.exp (-1 : ℤ)`. Rewrite using `[← hπ]`. Conclude with `la.valuation_of_algebraMap π`. Use `⟨π, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using `at hπ`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Rewrite using `[vLa, h1, WithZero.log_exp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_vLa_eq_one {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) :
     ∃ a : 𝓞 K, a ≠ 0 ∧ vLa la (a : K) = 1 := by
@@ -98,13 +98,13 @@ theorem exists_vLa_eq_one {K : Type} [Field K] [NumberField K] (la : HeightOneSp
   · rw [vLa, h1, WithZero.log_exp]; rfl
 
 /- English proof (translation)
-Establish `he' : (0 : ℤ) < e` using `by exact_mod_cast he`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[hv _ (by exact_mod_cast ha), ← vLa_pos_iff' la ha]`. Rewrite using `[show (0 : WithTop ℤ) = ((0 : ℤ) : WithTop ℤ) from rfl, WithTop.coe_lt_coe]`. Conclude with `mul_pos_iff_of_pos_left he'`. Use `IsLeast.csInf_eq ⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨a, ha, h1⟩` from `exists_vLa_eq_one la`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, (vLa_pos_iff' la ha).1 (by omega), ha, ?_⟩` and prove the remaining obligations. Rewrite using `[hv _ (by exact_mod_cast ha), h1, mul_one]`. Introduce and unpack `n ⟨a, hm, ha, hn⟩`. Rewrite `hn` using `[hv _ (by exact_mod_cast ha), WithTop.coe_eq_coe]`. Use `(vLa_pos_iff' la ha).2 hm` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem over_and_ramIdx {K L : Type} [Field K] [NumberField K] [Field L] [Algebra K L]
     (v : AddValuation L (WithTop ℤ)) (la : HeightOneSpectrum (𝓞 K)) {e : ℕ} (he : 0 < e)
@@ -132,19 +132,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨hL, -, -, hA⟩` from `GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold E H Dw l Xo c`. Take `⟨C, ψ0, z0, t', hz0, hb0⟩` from `hA h L y`. Establish `G` using `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c`. Establish `e1 : ∀ a n, ∀ f ∈ sec Xo c a n, ((evR Xo c f C.y : C.R) : Om C.Z) = wchar (ex Dw a n) C.t * evC h C.Z f` using `fun a n f hf => (GlobalTheory.Reg.evR_baseChange_of_isReduced E H Dw l Xo c hL a n f hf _ _ C.R.val _ _ C.gen).symm.trans (hL.wt a n f hf _ C.t _ _ (hL.test _ _) (hL.test _ _) C.bor)`. Establish `e2 : ∀ a n, ∀ f ∈ sec Xo c a n, evR Xo c f y = wchar (ex Dw a n) t' * ψ0 (evR Xo c f C.y)` using `fun a n f hf => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.Reg.evR_baseChange_of_isReduced E H Dw l Xo c hL a n f hf _ _ ψ0 _ _ hz0]`. Conclude with `hL.wt a n f hf _ t' _ _ (hL.test _ _) (hL.test _ _) hb0`. Establish `hCZ : C.Z = Z`. Assume the negation of the conclusion as `hne`. Take `⟨a, n, f, hf, h1, h2⟩` from `hZ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h1` to reduce the goal to its premises. Establish `: evR Xo c f C.y = 0` using `Subtype.ext (by rw [e1 a n f hf, h2 _ hne, mul_zero]; rfl)`. Rewrite using `[e2 a n f hf, this, map_zero, mul_zero]`. Substitute `hCZ` using the available equality. Establish `hinj : Function.Injective ψ0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Assume the negation of the conclusion as `hr0`. Take `⟨a, n, f, hf, g, hg, h1, h2⟩` from `hR r (fun e => hr0 (Subtype.ext e))`. Apply `h2` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: evR Xo c f C.y = r * evR Xo c g C.y` using `Subtype.ext (by`. Rewrite using `[Subalgebra.coe_mul, e1 a n f hf, e1 a n g hg, h1]`. Use the proof step `ring)`. Rewrite using `[e2 a n f hf, this, map_mul, hr, zero_mul, mul_zero]`. Use `haveI : IsFractionRing C.R (Om C.Z) := IsFractionRing.of_field _ _ fun x => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Take `⟨a, ha, b, hb, hb0, hx⟩` from `C.frac x`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, (eq_div_iff hb0).2 hx⟩`. Set `ψ : Om C.Z →ₐ[c.F] L` to `IsFractionRing.liftAlgHom hinj`. Establish `hψ : ψ.comp C.R.val = ψ0`. Use extensionality with `r`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsFractionRing.lift_algebraMap hinj r`. Take `⟨z, hz⟩` from `hL.bc _ _ ψ (genFr h C.Z)`. Establish `m1 : FrMap ψ C.yg z0` using `frMap_cancel _ _ _ C.R.val ψ C.y C.yg z0 C.gen (by rw [hψ]; exact hz0)`. Establish `b1` using `frBorBC _ _ ψ C.t _ _ z z0 C.bor hz m1`. Conclude with `⟨ψ, z, _, hz, (G L).2.1 _ _ _ _ _ b1 hb0⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem generic_of_ne_zero (h : GenFrEx Xo c) (Z : Comp Xo c) (L : Type) [Field L] [Algebra c.F L]
     (y : FrPt Xo c L)
@@ -192,9 +192,9 @@ theorem generic_of_ne_zero (h : GenFrEx Xo c) (Z : Comp Xo c) (L : Type) [Field 
   exact ⟨ψ, z, _, hz, (G L).2.1 _ _ _ _ _ b1 hb0⟩
 
 /- English proof (translation)
-Take `⟨hL, -⟩` from `GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold E H Dw l Xo c`. Establish `e : ∀ f ∈ sec Xo c a n, evR Xo c f y = wchar (ex Dw a n) t * ψ (evC h Z f)` using `fun f hf => by`. Rewrite using `[evC, ← GlobalTheory.Reg.evR_baseChange_of_isReduced E H Dw l Xo c hL a n f hf _ _ ψ _ _ hz]`. Conclude with `hL.wt a n f hf _ t _ _ (hL.test _ _) (hL.test _ _) hb`. Rewrite using `[e f hf, e g hg, hr, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem ratio_of_generic (h : GenFrEx Xo c) (Z : Comp Xo c) (L : Type) [Field L] [Algebra c.F L]
     {y z : FrPt Xo c L} {ψ : Om Z →ₐ[c.F] L} {t : Ix Dw → Lˣ} (hz : FrMap ψ (genFr h Z) z) (hb : FrBor t z y)
@@ -207,7 +207,7 @@ theorem ratio_of_generic (h : GenFrEx Xo c) (Z : Comp Xo c) (L : Type) [Field L]
   rw [e f hf, e g hg, hr, map_mul]; ring
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Take `⟨ψ, z, t, hz, hb⟩` from `generic_of_ne_zero h Z T.Fr y.1 hZ hR`. Conclude with `⟨ψ.toRingHom, RingHom.ext ψ.commutes, ⟨z, t, hz, hb⟩, fun a n f hf g hg r hr => ratio_of_generic h Z T.Fr hz hb hf hg hr⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem generic_int (h : GenFrEx Xo c) (Z : Comp Xo c) (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io)
     (hZ : ∃ a n, ∃ f ∈ sec Xo c a n, evI y f ≠ 0 ∧ ∀ Z', Z' ≠ Z → evC h Z' f = 0)
@@ -224,11 +224,9 @@ theorem generic_int (h : GenFrEx Xo c) (Z : Comp Xo c) (T : CDVR) (io : c.F →+
     fun a n f hf g hg r hr => ratio_of_generic h Z T.Fr hz hb hf hg hr⟩
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases hx : x = 0 <;> by_cases hy : y = 0`. Substitute `hx hy` using the available equality. Simplify using `[vV_zero']`. Rewrite `hxy` using `[hx, nval_zero, nval_of_ne hy]`. Conclude with `absurd hxy.symm (EReal.coe_ne_top _)`.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hxy` using `[hy, nval_zero, nval_of_ne hx]`. Conclude with `absurd hxy (EReal.coe_ne_top _)`. Use `⟨by simp [hx, hy], ?_⟩` and prove the remaining obligations. Rewrite `hxy` using `[nval_of_ne hx, nval_of_ne hy, EReal.coe_eq_coe_iff, div_eq_div_iff (by exact_mod_cast he.ne') (by exact_mod_cast he'.ne')]`. Establish `: ((e' : ℤ) : ℝ) * (vV T.V x : ℝ) = ((e : ℤ) : ℝ) * (vV U.V y : ℝ)` using `by push_cast; linarith`.
-
-Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nval_eq_nval {T U : CDVR} {e e' : ℕ} (he : 0 < e) (he' : 0 < e') {x : T.Fr} {y : U.Fr}
     (hxy : nval T.V e x = nval U.V e' y) : (x = 0 ↔ y = 0) ∧ (e' : ℤ) * vV T.V x = (e : ℤ) * vV U.V y := by
@@ -245,11 +243,11 @@ theorem nval_eq_nval {T U : CDVR} {e e' : ℕ} (he : 0 < e) (he' : 0 < e') {x : 
     exact_mod_cast this
 
 /- English proof (translation)
-Establish `hx : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `ho` using `[nval_zero, EReal.mul_top_of_pos (by exact_mod_cast hr)]`. Conclude with `EReal.coe_ne_top _ ho`. Use `⟨hx, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ho` using `[nval_of_ne hx, ← EReal.coe_mul, EReal.coe_eq_coe_iff]`. Establish `he' : (e : ℝ) ≠ 0` using `by exact_mod_cast he.ne'`. Establish `: ((e : ℤ) : ℝ) * (o : ℝ) = ((r : ℤ) : ℝ) * (vV T.V x : ℝ)`. Rewrite using `[ho]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem int_eq_mul_nval {T : CDVR} {e r : ℕ} (he : 0 < e) (hr : 0 < r) {x : T.Fr} {o : ℤ}
     (ho : ((o : ℝ) : EReal) = ((((r : ℕ) : ℤ) : ℝ) : EReal) * nval T.V e x) :
@@ -266,7 +264,7 @@ theorem int_eq_mul_nval {T : CDVR} {e r : ℕ} (he : 0 < e) (hr : 0 < r) {x : T.
   exact_mod_cast this
 
 /- English proof (translation)
-Apply `WithTop.coe_injective` to reduce the goal to its premises. Rewrite using `[valC, ordC_single _ _ _ hf, pullVal_of_ne _ _ hf]`. Use `push_cast`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem ordC_valC (h : GenFrEx Xo c) (Z : Comp Xo c) (U : CDVR) (ι : Om Z →+* U.Fr) (δ : Ix Dw → ℤ) (a n)
     {f : Rul Xo c} (hf : evC h Z f ≠ 0) :
@@ -276,35 +274,33 @@ theorem ordC_valC (h : GenFrEx Xo c) (Z : Comp Xo c) (U : CDVR) (ι : Om Z →+*
   push_cast; rfl
 
 /- English proof (translation)
-Take `⟨_, ⟨_, T₁, io₁, e₁, ho₁, y₁, _, _, _, rfl⟩, rfl⟩` from `p`. Establish `hv₁ : ∀ w (F : M w), (evI y₁ F.1 = 0 ↔ ev w F = 0) ∧ (ep : ℤ) * vV T₁.V (evI y₁ F.1) = (e₁ : ℤ) * vV U.V (ev w F)` using `fun w F => nval_eq_nval ho₁.1 hep (hv w F)`. Establish `hev : ∀ w (F F' : M w) (r : Om Z), evC h Z F'.1 ≠ 0 → evC h Z F.1 = r * evC h Z F'.1 → ev w F = ι r * ev w F'` using `fun w F F' r h0 hr => by`. Use `hrat w F F'` as an intermediate fact. Rewrite `this` using `[hr, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_left_cancel₀ ((map_ne_zero ι).2 h0) (by linear_combination -this)`. Take `⟨w₀, -, F₀, hF₀, hF₀', -⟩` from `hR 1`. Take `⟨G₀, hG₀, hG₀'⟩` from `hsp w₀ F₀`. Establish `hG₀v : ev w₀ G₀ ≠ 0`. Rewrite using `[hev w₀ G₀ F₀ 1 hF₀ (by rw [hG₀, one_mul]), map_one, one_mul]; exact hF₀'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ₁, hψ₁, hg₁, hr₁⟩` from `generic_int h Z T₁ io₁ y₁ ⟨_, _, _, hM _ G₀, fun e => hG₀v ((hv₁ _ _).1.1 e), hG₀'⟩ (fun r hr => by`. Take `⟨w, F, F', a1, a2, a3⟩` from `hR r`. Use `⟨_, _, _, hM _ F, _, hM _ F', a3, fun e => ?_⟩` and prove the remaining obligations. Use `(hv₁ _ _).1.1 e` as an intermediate fact. Rewrite `this` using `[hev w F F' r a1 a3]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `mul_ne_zero ((map_ne_zero ι).2 hr) a2 this)`. Substitute `hψ₁` using the available equality. Establish `hep' : (ep : ℤ) ≠ 0` using `by exact_mod_cast hep.ne'`. Establish `he₁' : (e₁ : ℤ) ≠ 0` using `by exact_mod_cast ho₁.1.ne'`. Establish `k₁ : ∀ r : Om Z, (ep : ℤ) * vV T₁.V (ψ₁ r) = (e₁ : ℤ) * vV U.V (ι r)` using `fun r => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hr : r = 0`. Substitute `hr` using the available equality. Simplify using `[vV_zero']`. Take `⟨w, F, F', a1, a2, a3⟩` from `hR r`. Establish `b1` using `(hv₁ w F).2`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `b2` using `(hv₁ w F').2`. Rewrite `b1` using `[hr₁ _ _ _ (hM _ F) _ (hM _ F') r a3, hev w F F' r a1 a3, vV_mul ((map_ne_zero ψ₁).2 hr) (fun e => a2 ((hv₁ _ _).1.1 e)), vV_mul ((map_ne_zero ι).2 hr) a2]`. Take the linear combination `b1 - b2`. Establish `hnd : ReciprocityTheory.ChartRestriction.G.T0.IsNormDiscrete (pullVal U ι)`. Use `⟨fun a ha => by rw [pullVal_of_ne _ _ ha]; exact WithTop.coe_ne_top, ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `hone`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `[vV_zero'] at ha`. Conclude with `⟨a, by rw [pullVal_of_ne _ _ ha0, ha]; rfl⟩`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hov, hram⟩` from `over_and_ramIdx (pullVal U ι) la hep (fun a ha => by`. Rewrite using `[pullVal_of_ne _ _ ((map_ne_zero _).2 ha)]`. Use `congr 1`. Establish `b1` using `k₁ (algebraMap c.F (Om Z) a)`. Establish `b2 : vV T₁.V (ψ₁ (algebraMap c.F (Om Z) a)) = _` using `ho₁.2 a`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `b1` using `[b2]`. Conclude with `mul_left_cancel₀ he₁' (by linear_combination -b1))`. Use `⟨hnd, hov, ?_⟩` and prove the remaining obligations. Take `⟨⟨_, T₂, io₂, e₂, ho₂, y₂, _, _, _, rfl⟩, hy₂⟩` from `hδ Z _ la hnd hov`. Rewrite `hy₂` using `[hram]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hv₂ : ∀ w (F : M w), evC h Z F.1 ≠ 0 → evI y₂ F.1 ≠ 0 ∧ (e₂ : ℤ) * ordC (δ Z (pullVal U ι)) (pullVal U ι) (wtZ (wa w) (wn w)) (valC h (wa w) (wn w) F.1 Z) = (ep : ℤ) * vV T₂.V (evI y₂ F.1)` using `fun w F hF => int_eq_mul_nval ho₂.1 hep (hy₂ _ _ _ (hM w F) hF)`. Take `⟨ψ₂, hψ₂, hg₂, hr₂⟩` from `generic_int h Z T₂ io₂ y₂ ⟨_, _, _, hM _ G₀, (hv₂ _ G₀ (hG₀ ▸ hF₀)).1, hG₀'⟩ (fun r hr => by`. Take `⟨w, F, F', a1, -, a3⟩` from `hR r`. Conclude with `⟨_, _, _, hM _ F, _, hM _ F', a3, (hv₂ _ F (a3 ▸ mul_ne_zero hr a1)).1⟩)`. Substitute `hψ₂` using the available equality.
+Supply the required witnesses or components. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `he₂' : (e₂ : ℤ) ≠ 0` using `by exact_mod_cast ho₂.1.ne'`. Establish `k₂ : ∀ r : Om Z, (ep : ℤ) * vV T₂.V (ψ₂ r) = (e₂ : ℤ) * vV U.V (ι r)` using `fun r => by`. Distinguish the cases in `hr : r = 0`. Substitute `hr` using the available equality. Simplify using `[vV_zero']`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, F, F', a1, a2, a3⟩` from `hR r`. Establish `a4 : evC h Z F.1 ≠ 0` using `a3 ▸ mul_ne_zero hr a1`. Establish `b1` using `(hv₂ w F a4).2`. Establish `b2` using `(hv₂ w F' a1).2`. Rewrite `b2` using `[ordC_valC h Z U ι _ _ _ a1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `b1` using `[ordC_valC h Z U ι _ _ _ a4, hr₂ _ _ _ (hM _ F) _ (hM _ F') r a3, a3, map_mul, vV_mul ((map_ne_zero ψ₂).2 hr) (hv₂ w F' a1).1, vV_mul ((map_ne_zero ι).2 hr) ((map_ne_zero ι).2 a1)]`. Take the linear combination `b2 - b1`. Introduce `w F hF`. Take `⟨c1, c2⟩` from `Proportional.proportional_values E H Dw l Xo c h1 h2 h3 h Z T₁ T₂ ψ₁ ψ₂ y₁ y₂ e₁ e₂ ho₁.1 ho₂.1 hg₁ hg₂ (by`. Take `⟨a, ha⟩` from `hone`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨a, fun e => ?_⟩` and prove the remaining obligations. Use `k₁ a` as an intermediate fact. Rewrite `this` using `[e, ha]`. Conclude with `he₁' (by linear_combination -this))`. Use the proof step `(fun r => mul_left_cancel₀ hep' (by linear_combination (e₂ : ℤ) * k₁ r - (e₁ : ℤ) * k₂ r)) _ _ _ (hM w F)`.
-
-Use `⟨fun e => hF (c1.1 ((hv₁ w F).1.2 e)), mul_left_cancel₀ (mul_ne_zero he₁' he₂') ?_⟩` and prove the remaining obligations. Take the linear combination `(ep : ℤ) * c2 - (e₂ : ℤ) * (hv₁ w F).2 - (e₁ : ℤ) * (hv₂ w F hF).2`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem values_eq_ord (h1 : 1 ≤ Dw.p + Dw.q) (h2 : ∀ p : ℕ, p.Prime → l.GoodAt p) (h3 : l.A = 1)
     (h : GenFrEx Xo c) (Z : Comp Xo c) (la : HeightOneSpectrum (𝓞 c.F)) (U : CDVR) (ι : Om Z →+* U.Fr)
@@ -408,9 +404,9 @@ section Record
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.Gaps.EtaleWeightGaps
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `hs.s0.ne_zero` to reduce the goal to its premises. Rewrite using `[Formalism.MainNotions.Gaps.EtaleWeightGaps.sec, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, map_mul]`. Conclude with `mul_eq_zero_of_right _ (hc k)`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_ne_zero {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {E : PtExt X}
     {hM : IntAtExt X E} {ka wL wF : WeightFamilies.Wt D j} {G : GlobalFamilyData (xplus X E hM) ka wL wF}
@@ -427,11 +423,11 @@ theorem exists_gen_ne_zero {D : D7} {B : WeightFamilies.Prov D} {P : ModuliInteg
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hw1 : ((G.w i : (recB h.toLawsCore).Cusp j wL) : T.R j) ∈ cutR T.C j (addL (wt0 D j) wL 1)`. Rewrite using `[add_zero_weight_one_eq]`. Conclude with `(G.w i).2`. Take `⟨k, g, Pw, hP, hne, he⟩` from `hB Z a`. Establish `hg : (g : T.R j) ∈ cutR T.C j (addL (wt0 D j) wL k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[addL, zero_weight_add]`. Conclude with `g.2`. Establish `hq` using `esec_hom_mem h hj (fun i => ((G.w i : (recB h.toLawsCore).Cusp j wL) : T.R j)) (fun i => (G.w i).2) (Pw * MvPolynomial.X i) (hP.mul (MvPolynomial.isHomogeneous_X _ i))`. Establish `hv` using `esec_evC_aeval h hj hG hT Z (fun i => ((G.w i : (recB h.toLawsCore).Cusp j wL) : T.R j)) (Pw * MvPolynomial.X i)`. Rewrite `hv` using `[map_mul (MvPolynomial.aeval fun i => evC hG Z _), MvPolynomial.aeval_X]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `⟨k, ⟨_, esec_mem_mulL h hj hg hw1⟩, ⟨_, hq⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun h0 => mul_ne_zero hne hi (hv.symm.trans h0)`. Use `Eq.trans ?_ (congrArg (fun t => a * t) hv).symm` and prove the remaining obligations. Use `(map_mul (evCAlg hG hT Z) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[evCAlg_apply, evCAlg_apply, ← mul_assoc, he]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratio {D : D7} {T : Top D} (h : LawsP T) {j : ℕ} (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c)
     (hT : GenFromTest (T.Q.Xo j) T.Q.c hG) {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (recPlus h j hj) ka wL wF)
@@ -468,13 +464,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D T h j hj hG _ ka wL wF G S g0 hH hI hC hB y hw _ _ δ hδ la ζ`. Establish `hT : GenFromTest (T.Q.Xo j) T.Q.c hG` using `fun Z => (GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold _ _ _ _ (T.Q.Xo j) T.Q.c).1.test _ _`. Take `⟨n1, n2, -, -, -, -, n3⟩` from `GlobalTheory.PinNum.numerics_of_pins D T.Q h.pins`. Take `⟨n4, n5, -⟩` from `n3 j hj`. Take `⟨Zc, ι, h1, h2, h3, -⟩` from `GlobalTheory.T.generic_section_points_inequivalent_valuations D T h j hj hG hT ka wL wF G S g0 la hH hI hC hB (y la) (hw la)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `GlobalTheory.RealisationValues.exists_gen_ne_zero (hw la ζ).toSecPt`. Establish `hL : ∀ k, ∃ u : (recB h.toLawsCore).Cusp j (addL (wt0 D j) wL (k + 1)), (hw la ζ).ev (emb (recPlus h j hj) la G.N ((recPJ h j hj).inc _ u)) ≠ 0` using `fun k => by`. Rewrite using `[← esecW_eq]`. Use `⟨esecPow h hj (G.w i) k, ?_⟩` and prove the remaining obligations. Rewrite using `[esec_inc_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h0 => pow_ne_zero (k + 1) hi (((map_pow ((hw la ζ).ev.comp (emb (recPlus h j hj) la G.N)) _ _).symm).trans h0)`. Take `⟨c1, c2, c3⟩` from `GlobalTheory.RealisationValues.values_eq_ord (n4 ▸ n5) n1 n2 hG (Zc ζ) la (hw la ζ).T (ι ζ) (hw la ζ).ep_pos (Wt := WeightFamilies.Wt D j) wtA (fun w => w.n) (fun w => cutR T.C j w) (fun w F => cusp_le_sec (T.Q.Xo j) T.Q.c (T.U j) _ _ (cutR_le T.C j w F.2)) (fun w F => (hw la ζ). …`. Take `⟨k, p, q, a1, a2⟩` from `GlobalTheory.RealisationValues.exists_ratio h hj hG hT G hB (Zc ζ) i (fun h0 => hi (h2 ζ wL (G.w i) h0)) r`. Take `⟨u, hu⟩` from `hL k`. Use `⟨_, p, q, a1, fun e => ?_, a2⟩` and prove the remaining obligations.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `h3 ζ _ q u` as an intermediate fact. Conclude with `mul_ne_zero ((map_ne_zero _).2 a1) hu (this.trans (mul_eq_zero_of_right _ e))) δ hδ`. Conclude with `⟨Zc ζ, _, c1, c2, fun w F => ⟨h2 ζ w F, c3 w F⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RealisationValues.values_eq_orders : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) [Fintype (Comp (T.Q.Xo j) T.Q.c)] (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (S : Scal (recB h.toLawsCore)) (g0 : (recB h.toLawsCore).Cusp j wF), CurveHyp h j hj hG ka wL wF G S g0 → GenValInjSt h j hG → CompSplitSt h j hG → BIRSt h j hj hG G → ∀ (y : ∀ la, PtsG G la → (extAll h j hj).Pt' la) (hw : ∀ la ζ, FromW (E := extAll h j hj) (hM := intAtExt_extAll h j hj) ζ (y la ζ)), (∀ la, (secQ (E := extAll h j hj) (hM := intAtExt_extAll h j hj) (y la) (fun ζ => (hw la ζ).toSecPt) g0).InCurve) → (∀ la, (secQ (E := extAll h j hj) (hM := intAtExt_extAll h j hj) (y la) (fun ζ => (hw la ζ).toSecPt) g0).InTie S) → ∀ (δ : ∀ Z : Comp (T.Q.Xo j) T.Q.c, AddValuation (Om Z) (WithTop ℤ) → Ix (T.Q.Dw j) → ℤ), OrdTie hG δ (trivialClassCondition (T.Q.Xo j) T.Q.c) (fun _ => Unit) (fun _ _ _ _ _ => True) → ∀ la (ζ : PtsG G la), ∃ (Z : Comp (T.Q.Xo j) T.Q.c) (v : AddValuation (Om Z) (WithTop ℤ)), ReciprocityTheory.ChartRestriction.G.T0.IsNormDiscrete v ∧ ReciprocityTheory.ChartRestriction.G.T0.IsOver (K := T.Q.c.F) v la ∧ ∀ (w : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j w), (evC hG Z F.1 = 0 → (hw la ζ).ev (emb (recPlus h j hj) la G.N ((recPJ h j hj).inc w F)) = 0) ∧ (evC hG Z F.1 ≠ 0 → (hw la ζ).ev (emb (recPlus h j hj) la G.N ((recPJ h j hj).inc w F)) ≠ 0 ∧ vV (hw la ζ).T.V ((hw la ζ).ev (emb (recPlus h j hj) la G.N ((recPJ h j hj).inc w F))) = ordC (δ Z v) v (wtZ (wtA w) w.n) (valC hG (wtA w) w.n F.1 Z)) := by
   intro D T h j hj hG _ ka wL wF G S g0 hH hI hC hB y hw _ _ δ hδ la ζ

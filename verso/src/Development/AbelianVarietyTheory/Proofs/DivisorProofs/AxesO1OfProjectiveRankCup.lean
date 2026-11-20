@@ -17,13 +17,11 @@ noncomputable section
 namespace GlobalTheory.Obs.Axes
 
 /- English proof (translation)
-Take `⟨e, -, -⟩` from `((LinearMap.exact_subtype_ker_map N).splitSurjectiveEquiv (LinearMap.ker N).injective_subtype ⟨P, hNP⟩)`. Use `haveI : Module.Projective R (LinearMap.ker N × Q) := Module.Projective.of_equiv e`. Apply the tactic sequence `haveI : Module.Projective R (LinearMap.ker N) := Module.Projective.of_split (LinearMap.inl R _ Q) (LinearMap.fst R _ Q) (by ext x <;> simp)`. Use `haveI : Module.Finite R (LinearMap.ker N) := Module.Finite.of_surjective ((LinearMap.fst R _ Q) ∘ₗ e.toLinearMap) (fun x ↦ ⟨e.symm (x, 0), by simp⟩)`. Establish `h1` using `Module.rankAtStalk_eq_of_equiv e`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Module.rankAtStalk_prod]`. Establish `h0 : Module.rankAtStalk (R` using `R) (LinearMap.ker N) = 0 := by`. Use function extensionality and compare the values at `p`. Use `congrFun h1 p` as an intermediate fact. Simplify using `only [Pi.add_apply] at this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[hr p]`. Simplify using `using this`. Use `haveI := Module.rankAtStalk_eq_zero_iff_subsingleton.1 h0`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `x hx`.
-
-Conclude with `congrArg Subtype.val (Subsingleton.elim (⟨x, hx⟩ : LinearMap.ker N) 0)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem injective_of_section {R M Q : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup Q]
     [Module R Q] [Module.Finite R M] [Module.Projective R M] [Module.Finite R Q] [Module.Projective R Q]
@@ -53,7 +51,7 @@ theorem injective_of_section {R M Q : Type} [CommRing R] [AddCommGroup M] [Modul
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem isPullO_congr {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R} {φ₁ φ₂ : X' ⟶ X} (e : φ₁ = φ₂)
     (h₁ : φ₁ ≫ s = s' ≫ spMap (RingHom.id R)) (h₂ : φ₂ ≫ s = s' ≫ spMap (RingHom.id R)) {a : HO1 s}
@@ -61,7 +59,7 @@ theorem isPullO_congr {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R} {�
   subst e; rfl
 
 /- English proof (translation)
-Unfold `IsPullO`. Use `CoefMap.pullCohomologyOne_eq_of_natTrans (pairPull h) (pairRes (𝟙 X) s) { app := fun p ↦ (homOfLE (show p.unop.1.1 ≤ p.unop.1.2 from p.unop.2)).op naturality := fun _ _ _ ↦ Subsingleton.elim _ _ } ?_ a` and prove the remaining obligations. Introduce `p b`. Simplify using `only [pairRes, pairPull, secPull, Sec.res, CoefMap.restrict]`. Simplify using `[Scheme.Hom.appLE, mp]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -79,9 +77,7 @@ theorem isPullO_id {X : Scheme.{0}} (s : X ⟶ Sp R) (h : 𝟙 X ≫ s = s ≫ s
 abbrev pb {Y A : Over (Sp R)} (f : Y ⟶ A) : HO1 A.hom →ₗ[R] HO1 Y.hom := pullHO1 (overW f)
 
 /- English proof (translation)
-Establish `h'' : (f.left ≫ g.left) ≫ A.hom = Z.hom ≫ spMap (RingHom.id R)`. Establish `e : (f ≫ g).left = f.left ≫ g.left` using `by simp`. Rewrite using `[← e]`. Conclude with `overW (f ≫ g)`. Establish `k` using `(GlobalTheory.T.structureSheaf_pullback_relations_basic R A.left Y.left A.hom Y.hom g.left (overW g)).2.2 Z.left Z.hom f.left (overW f) h'' a (pb g a) (pb f (pb g a)) (isPullO_pullHO1 _ a) (isPullO_pullHO1 _ _)`.
-
-Conclude with `((isPullO_congr (show f.left ≫ g.left = (f ≫ g).left by simp) h'' (overW (f ≫ g))).1 k).eq_pullHO1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pb_comp {Z Y A : Over (Sp R)} (f : Z ⟶ Y) (g : Y ⟶ A) (a : HO1 A.hom) :
     pb (f ≫ g) a = pb f (pb g a) := by
@@ -93,7 +89,7 @@ theorem pb_comp {Z Y A : Over (Sp R)} (f : Z ⟶ Y) (g : Y ⟶ A) (a : HO1 A.hom
   exact ((isPullO_congr (show f.left ≫ g.left = (f ≫ g).left by simp) h'' (overW (f ≫ g))).1 k).eq_pullHO1.symm
 
 /- English proof (translation)
-Establish `h : 𝟙 A.left ≫ A.hom = A.hom ≫ spMap (RingHom.id R)`. Rewrite using `[← Over.id_left]`. Conclude with `overW (𝟙 A)`. Conclude with `((isPullO_congr (Over.id_left A).symm h (overW (𝟙 A))).1 (isPullO_id A.hom h a)).eq_pullHO1.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pb_id (A : Over (Sp R)) (a : HO1 A.hom) : pb (𝟙 A) a = a := by
   have h : 𝟙 A.left ≫ A.hom = A.hom ≫ spMap (RingHom.id R) := by
@@ -101,7 +97,7 @@ theorem pb_id (A : Over (Sp R)) (a : HO1 A.hom) : pb (𝟙 A) a = a := by
   exact ((isPullO_congr (Over.id_left A).symm h (overW (𝟙 A))).1 (isPullO_id A.hom h a)).eq_pullHO1.symm
 
 /- English proof (translation)
-Use `haveI : IsAffine (𝟙_ (Over (Sp R))).left := inferInstanceAs (IsAffine (Spec (CommRingCat.of R)))`. Rewrite using `[pb_comp, (GlobalTheory.T.abelian_square_affine_h1_vanish R).2 _ _ (pb η[A] a), map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pb_one (Y A : Over (Sp R)) [GrpObj A] (u : Y ⟶ 𝟙_ (Over (Sp R))) (a : HO1 A.hom) :
     pb (u ≫ η[A]) a = 0 := by
@@ -109,7 +105,7 @@ theorem pb_one (Y A : Over (Sp R)) [GrpObj A] (u : Y ⟶ 𝟙_ (Over (Sp R))) (a
   rw [pb_comp, (GlobalTheory.T.abelian_square_affine_h1_vanish R).2 _ _ (pb η[A] a), map_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun e ↦ e.eq_pullHO1.symm, fun e ↦ e ▸ isPullO_pullHO1 _ c⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPullO_zero_iff {Y A : Over (Sp R)} (f : Y ⟶ A) (c : HO1 A.hom) : IsPullO (overW f) c 0 ↔ pb f c = 0 :=
   ⟨fun e ↦ e.eq_pullHO1.symm, fun e ↦ e ▸ isPullO_pullHO1 _ c⟩
@@ -119,13 +115,13 @@ end Axes
 open Axes in
 
 /- English proof (translation)
-Introduce `hS R _ A _ g hA hg c h₁ h₂`. Take `⟨hA2, hg2⟩` from `(GlobalTheory.T.abelian_square_affine_h1_vanish R).1 A g hA hg`. Take `⟨⟨f1, p1, r1⟩, -⟩` from `hS R A g hA hg`. Take `⟨⟨f2, p2, r2⟩, -⟩` from `hS R (A ⊗ A) (g + g) hA2 hg2`. Set `N : HO1 (A ⊗ A).hom →ₗ[R] HO1 A.hom × HO1 A.hom` to `LinearMap.prod (pb (lift (𝟙 A) 1)) (pb (lift 1 (𝟙 A)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `P : HO1 A.hom × HO1 A.hom →ₗ[R] HO1 (A ⊗ A).hom` to `LinearMap.coprod (pb (fst A A)) (pb (snd A A))`. Establish `hNP : N ∘ₗ P = LinearMap.id`. Use `LinearMap.ext fun x ↦ Prod.ext ?_ ?_` and prove the remaining obligations. Use `show pb (lift (𝟙 A) 1) (pb (fst A A) x.1 + pb (snd A A) x.2) = x.1`. Rewrite using `[map_add, ← pb_comp, ← pb_comp, lift_fst, lift_snd, pb_id]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (1 : A ⟶ A) = toUnit A ≫ η[A] from rfl, pb_one, add_zero]`. Use `show pb (lift 1 (𝟙 A)) (pb (fst A A) x.1 + pb (snd A A) x.2) = x.2`. Rewrite using `[map_add, ← pb_comp, ← pb_comp, lift_fst, lift_snd, pb_id]`. Rewrite using `[show (1 : A ⟶ A) = toUnit A ≫ η[A] from rfl, pb_one, zero_add]`. Establish `hinj` using `injective_of_section N P hNP (fun p ↦ by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Module.rankAtStalk_prod, Pi.add_apply, r1, r2])`. Use `hinj (?_ : N c = N 0)` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `Prod.ext ((isPullO_zero_iff _ c).1 h₁) ((isPullO_zero_iff _ c).1 h₂)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem axesO1_of_cohomology_structure : (∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → (Module.Finite R (HO1 A.hom) ∧ Module.Projective R (HO1 A.hom) ∧

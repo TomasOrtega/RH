@@ -71,7 +71,7 @@ def IntNormSt : Prop :=
           C * fF D * (2 * (N : ℝ)) ^ 2 * B * Real.log Q)
 
 /- English proof (translation)
-Take `⟨C, hC, h⟩` from `h`. Use `⟨C, hC, fun D δ t0 Q _ _ hQ K _ _ _ σ ι N B L P P' zA zA' hN hB h1 hL hs hc hn => ?_⟩` and prove the remaining obligations. Take `⟨S, del, -, -, h3⟩` from `h D Q N B L hQ hN hB h1 hL`. Set `: StarRing K` to `starRingOfComm`. Conclude with `⟨_, h3 δ t0 K σ ι P P' zA zA' hs hc hn⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem IntSt.norms (h : IntSt) : IntNormSt := by
   obtain ⟨C, hC, h⟩ := h
@@ -88,11 +88,11 @@ open Formalism.PairingDivisionLocalBalance (Pl wt)
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {S : Finset ℕ} {del : ℕ → ℝ} {b : ℝ}
 
 /- English proof (translation)
-Unfold `wt`. Use `Finset.sum_eq_single p (fun l hl hne => ?_) fun hS => by rw [h.2.2.1 p hS, zero_mul]` and prove the remaining obligations. Establish `hn : (l : 𝓞 K) ∉ w.asIdeal` using `fun hm => by`. Take `⟨x, y, e⟩` from `(Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes (h.1 l hl) hp).2 hne)).map (Int.castRingHom (𝓞 K))`. Use `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (by simpa using hm)) (Ideal.mul_mem_left _ _ (by simpa using hw))`. Use `GlobalTheory.Square.vw_eq_zero_of_notMem w hn` as an intermediate fact. Simplify using `only [map_natCast] at this`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem Exponents.wt_eq (h : Exponents S del b) {p : ℕ} (hp : p.Prime) (w : Pl K) (hw : (p : 𝓞 K) ∈ w.asIdeal) :
     wt S del w = del p * (vw w (p : K) : ℝ) := by
@@ -109,7 +109,7 @@ theorem Exponents.wt_eq (h : Exponents S del b) {p : ℕ} (hp : p.Prime) (w : Pl
   rw [this]; simp
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `Formalism.PairingDivisionLocalBalance.weight_sum' K S del`. Establish `h0` using `h3 fun l _ => h.2.1 l`. Use `⟨h0, fun F => le_trans ?_ (h2 ▸ h.2.2.2)⟩` and prove the remaining obligations. Rewrite using `[finsum_eq_sum_of_support_subset (s := F ∪ h1.toFinset) _ (fun w hw => Finset.mem_coe.2 (Finset.mem_union_right _ (h1.mem_toFinset.2 hw)))]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg Finset.subset_union_left fun w _ _ => mul_nonneg (div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)) (h0 w)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Exponents.wt_size [IsTotallyComplex K] (h : Exponents S del b) :
     (∀ w : Pl K, 0 ≤ wt S del w) ∧ ∀ F : Finset (Pl K), ∑ w ∈ F, Formalism.DivisionValues.lw w * wt S del w ≤ b := by
@@ -122,7 +122,7 @@ theorem Exponents.wt_size [IsTotallyComplex K] (h : Exponents S del b) :
     mul_nonneg (div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)) (h0 w)
 
 /- English proof (translation)
-Use `⟨h.wt_size.1, h.wt_size.2, fun _ => ⟨one_ne_zero, one_ne_zero, fun w => ?_⟩⟩` and prove the remaining obligations. Use `h.wt_size.1 w` as an intermediate fact. Simplify using `only [Formalism.DivisionValues.ValuationRepresentative.vw_one, Int.cast_zero, and_self]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 example [IsTotallyComplex K] (h : Exponents S del b) :
     NonArchimedeanDefectBound (K := K) (ι := Unit) (wt S del) (fun _ => 1) (fun _ => 1) b := by
@@ -132,7 +132,7 @@ example [IsTotallyComplex K] (h : Exponents S del b) :
   linarith
 
 /- English proof (translation)
-Unfold `wt`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Formalism.DivisionValues.ValuationRepresentative.vw_star, star_natCast]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem wt_conjPl (S : Finset ℕ) (del : ℕ → ℝ) (w : Pl K) : wt S del (conjPl w) = wt S del w := by
   unfold wt
@@ -144,7 +144,7 @@ def conjQbar : Qbar →+* Qbar :=
     mem_algebraicClosure_iff.2 ((mem_algebraicClosure_iff.1 x.2).algHom ((starRingEnd ℂ).toRatAlgHom))
 
 /- English proof (translation)
-Establish `h1` using `h (lam.comp conjQbar)`. Establish `hz' : (starRingEnd ℂ) z ∈ Qbar` using `(conjQbar ⟨z, hz⟩).2`. Rewrite `h1` using `[lamC, dif_pos hz]`. Rewrite using `[lamC, dif_pos hz']`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_bound {p : ℕ} [Fact p.Prime] {z : ℂ} {r : ℝ} (hz : z ∈ Qbar) (h : ∀ lam : Qbar →+* ℂ_[p], ‖lamC lam z‖ ≤ r)
     (lam : Qbar →+* ℂ_[p]) : ‖lamC lam ((starRingEnd ℂ) z)‖ ≤ r := by
@@ -155,19 +155,17 @@ theorem conj_bound {p : ℕ} [Fact p.Prime] {z : ℂ} {r : ℝ} (hz : z ∈ Qbar
   exact h1
 
 /- English proof (translation)
-Establish `: Fact p.Prime` using `⟨hp⟩`. Take `⟨-, h2, h3⟩` from `h δ t0 p Q' hQ P hP`. Establish `key : ∀ (v : Pl K), (p : 𝓞 K) ∈ v.asIdeal → ∀ x : K, (∀ lam : Qbar →+* ℂ_[p], ‖lamC lam (σ x)‖ ≤ (p : ℝ) ^ del p) → -wt S del v ≤ (vw v x : ℝ)`. Introduce `v hv x hx`. Rewrite using `[hE.wt_eq hp v hv]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Break down `eq_or_ne x 0 with rfl | h0` into its components or cases. Use `GlobalTheory.Square.TwoStep.vw_natCast_nonneg v p` as an intermediate fact. Use `hE.2.1 p` as an intermediate fact. Rewrite using `[Formalism.DivisionValues.ValuationRepresentative.vw_zero]`. Simplify using `only [Int.cast_zero, Left.neg_nonpos_iff]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Check the signs of the components of the expression. Conclude with `GlobalTheory.PadicPlaceBound.neg_mul_vw_le_vw K σ x p v (del p) h0 hv hx`. Prove the components needed by the constructor for the conclusion. Use `key w hw _ fun lam => ?_` and prove the remaining obligations. Take `⟨h0, hv⟩` from `h2 g`.
+Check the signs of the components of the expression. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : σ ((1 : K) / (gam D P.J g : K)) = (((gam D P.J g : Qbar)⁻¹ : Qbar) : ℂ)` using `by simp`. Establish `hn : ‖((gam D P.J g : ℕ) : ℂ_[p])‖⁻¹ = (p : ℝ) ^ (padicValNat p (gam D P.J g) : ℝ)`. Establish `h1 : ((gam D P.J g : ℕ) : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] (gam D P.J g : ℚ_[p])` using `by simp`. Rewrite using `[h1, norm_algebraMap', Padic.norm_eq_zpow_neg_valuation (by exact_mod_cast h0), Padic.valuation_natCast]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, lamC, dif_pos (Subtype.property _), Subtype.coe_eta, map_inv₀, map_natCast, norm_inv, hn]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hp.one_le) hv`. Introduce `hg T x hx`. Take `⟨hm, hb⟩` from `h3 g hg T`. Establish `hx' : ∀ lam : Qbar →+* ℂ_[p], ‖lamC lam (σ x)‖ ≤ (p : ℝ) ^ del p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rcases hx with e | e <;> rw [e]`. Conclude with `hb`. Conclude with `conj_bound hm hb`. Use `⟨key w hw x hx', ?_⟩` and prove the remaining obligations. Rewrite using `[← wt_conjPl]`.
-
-Use `key _ ?_ x hx'` and prove the remaining obligations. Use `Ideal.mem_map_of_mem (Formalism.DivisionValues.cO K) hw` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem CoordInt.at_place {D : D7} {N Q : ℕ} {B : ℝ} (hE : Exponents S del b) (h : CoordInt D N B Q del) (σ : K →+* ℂ)
     {p : ℕ} (hp : p.Prime) (w : Pl K) (hw : (p : 𝓞 K) ∈ w.asIdeal) {δ t0 : ℂ} {Q' : ℕ}
@@ -213,7 +211,7 @@ theorem CoordInt.at_place {D : D7} {N Q : ℕ} {B : ℝ} (hE : Exponents S del b
 end Places
 
 /- English proof (translation)
-Take `⟨δ, t0, P, -, hd, hn, hJ, -⟩` from `Mass.exists_pairPoint D 1 0`. Take `⟨h0, hv⟩` from `(h δ t0 2 1 (by simp) P ⟨by omega, fun τ => by rw [hn]; simpa using hB⟩).2.1 1`. Rewrite `h0`, `hv` using `[hJ]`. Use `one_le_padicValNat_of_dvd h0 (Mass.two_dvd_gam D (d := P.d) (by omega))` as an intermediate fact. Conclude with `le_trans (by exact_mod_cast this) hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem CoordInt.one_le_two {D : D7} {N Q : ℕ} {B : ℝ} {del : ℕ → ℝ} (h : CoordInt D N B Q del) (hN : 1 ≤ N) (hB : 0 ≤ B) :
     1 ≤ del 2 := by
@@ -224,9 +222,9 @@ theorem CoordInt.one_le_two {D : D7} {N Q : ℕ} {B : ℝ} {del : ℕ → ℝ} (
   exact le_trans (by exact_mod_cast this) hv
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `q`. Take `⟨γ, k, γ', h1, h2, h3⟩` from `exists_rep_trivial_at D P.d p hp.out q.out`. Use `⟨γ * q.out, ?_, k, (mem_intG k).2 h2, h3⟩` and prove the remaining obligations. Rewrite using `[← DoubleCoset.out_eq' (ratG D P.d) P.J q, DoubleCoset.eq]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨γ⁻¹, inv_mem ((mem_ratG γ).2 ⟨γ', h1⟩), 1, one_mem _, by simp [DoubleCoset.out_eq']⟩`. Introduce `h`. Take `⟨h0, hd, -⟩` from `GlobalTheory.StabOrder.gam_ne_zero_dvd_invariant D P.d P.J P.J_le h`. Conclude with `⟨h0, (padicValNat_dvd_iff_le (by positivity)).1 (pow_padicValNat_dvd.trans hd)⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem reps_and_stabilisers {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {Q : ℕ} (P : Pair D cc δ t0 Q) (p : ℕ)
     [hp : Fact p.Prime] :
@@ -244,7 +242,7 @@ theorem reps_and_stabilisers {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ}
     exact ⟨h0, (padicValNat_dvd_iff_le (by positivity)).1 (pow_padicValNat_dvd.trans hd)⟩
 
 /- English proof (translation)
-Establish `: (⟨1, one_mem _⟩ : Qbar) = 1` using `rfl`. Use `⟨one_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[lamC, dif_pos (one_mem _), this, map_one, norm_one]`. Conclude with `Real.one_le_rpow (by exact_mod_cast hp.out.one_le) he`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example {p : ℕ} [hp : Fact p.Prime] (e : ℝ) (he : 0 ≤ e) (lam : Qbar →+* ℂ_[p]) :
     (1 : ℂ) ∈ Qbar ∧ ‖lamC lam 1‖ ≤ (p : ℝ) ^ e := by
@@ -254,7 +252,7 @@ example {p : ℕ} [hp : Fact p.Prime] (e : ℝ) (he : 0 ≤ e) (lam : Qbar →+*
   exact Real.one_le_rpow (by exact_mod_cast hp.out.one_le) he
 
 /- English proof (translation)
-Introduce `i`. Simplify using `[Formalism.PairingDivisionLocalBalance.meanInf, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 example {K : Type} [Field K] [NumberField K] (b : ℝ) (hb : 0 ≤ b) :
     ArchimedeanHeightBound (K := K) (ι := Unit) (fun _ => 1) (fun _ => 1) b := by

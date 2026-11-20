@@ -13,9 +13,9 @@ namespace GlobalTheory.RedDense
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Set `u : ℤ_[l]` to `⟨(χ g : ℚ_[l]), hχ.norm_le_one g⟩`. Establish `hu : IsUnit u` using `PadicInt.isUnit_iff.2 (hχ.norm_eq_one g)`. Establish `h3 : PadicInt.toZMod (u ^ (l - 1) - 1) = 0`. Rewrite using `[map_sub, map_pow, map_one, ZMod.pow_card_sub_one_eq_one (hu.map _).ne_zero, sub_self]`. Establish `h4 : u ^ (l - 1) - 1 ∈ Ideal.span {(l : ℤ_[l]) ^ 1}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_one, ← PadicInt.maximalIdeal_eq_span_p, ← PadicInt.ker_toZMod]`. Conclude with `h3`. Establish `h5` using `(PadicInt.norm_le_pow_iff_mem_span_pow _ 1).2 h4`. Rewrite `h5` using `[PadicInt.norm_def]`. Conclude with `h5`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pow_pred_sub_one_le {χ : GQ l →* ℚ_[l]ˣ} (hχ : IsCyc χ) (g : GQ l) :
     ‖(χ g : ℚ_[l]) ^ (l - 1) - 1‖ ≤ (l : ℝ) ^ (-((1 : ℕ) : ℤ)) := by
@@ -31,25 +31,23 @@ theorem norm_pow_pred_sub_one_le {χ : GQ l →* ℚ_[l]ˣ} (hχ : IsCyc χ) (g 
   exact h5
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `hχ : IsCyc P.χQ` using `P.χQ_cyc`. Establish `ha : IsActC AI.actC` using `⟨AI.actC_ext, AI.actC_norm⟩`. Take `⟨-, -, hG⟩` from `cyc_basic l P.χQ hχ`. Establish `hH0 : ∀ x ∈ Hinf K, x ∈ (K0 K).fixingSubgroup` using `fun x hx y => hx ⟨y.1, (le_sup_left : K0 K ≤ Kinf K) y.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hH : Hinf K ≤ GK K`. Introduce `x hx`. Establish `h1 : x ∈ Gj K s` using `((hG K x (hH0 x hx)).1 s).2 (by`. Rewrite using `[(hG K x (hH0 x hx)).2.1 hx, Units.val_one, sub_self, norm_zero]`. Use the proof step `positivity)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun y => h1 ⟨y.1, hK y.2⟩`. Establish `hj : Lev l 1` using `⟨le_rfl, fun e => absurd e h2⟩`. Establish `hN : ¬ l ∣ l - 1`. Use `hl.two_le` as an intermediate fact. Conclude with `Nat.not_dvd_of_pos_of_lt (by omega) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow` using `norm_pow_pred_sub_one_le hχ`. Establish `hN0 : l - 1 ≠ 0` using `by have := hl.two_le; omega`. Use `⟨?_, fun γ hγ U hU hp g => ?_⟩` and prove the remaining obligations. Establish `htor : ∀ δ ∈ W.DelF, δ ^ (l - 1) = 1`. Introduce `δ hδ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `W.resΓ_onto δ`. Take `⟨k, hk, hk'⟩` from `(W.DelF_def _).1 hδ`. Rewrite `hk'`, the goal using `[res_pow_eq_one_iff]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `eq_one_of_pow hj (hpow g) hk.ne' ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, ← Units.val_pow_eq_pow_val, hk', Units.val_one, one_pow]`. Establish `h1Δ : (1 : W.Gam) ∈ W.DelF` using `(mem_DelF_iff W _).2 (one_mem _)`. Introduce `hdv`. Use `haveI : Finite ↥(CommGroup.torsion W.Gam) := Nat.finite_of_card_ne_zero (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[card_torsion]`. Conclude with `Finset.card_ne_zero.2 ⟨1, h1Δ⟩)`. Rewrite `hdv` using `[← card_torsion]`. Take `⟨x, hx⟩` from `exists_prime_orderOf_dvd_card' l hdv`. Apply `hN` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3 : orderOf x ∣ l - 1` using `orderOf_dvd_iff_pow_eq_one.2 (Subtype.ext (htor x ((mem_DelF_iff W _).2 x.2)))`. Rewrite `h3` using `[hx]`. Then use the resulting hypothesis. Establish `hmemΔ : ∀ g : ↥(GK K), P.χQ g ^ (l - 1) = 1 → W.resΓ g ∈ W.DelF` using `fun g hg => (W.DelF_def _).2 ⟨l - 1, Nat.pos_of_ne_zero hN0, (res_pow_eq_one_iff W g _).2 hg⟩`. Take `⟨γ', hγ'⟩` from `W.resΓ_onto γ`. Establish `hv : (P.χQ γ' : ℚ_[l]) = 1 + l`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `(algebraMap ℚ_[l] ↥LL.1).injective` to reduce the goal to its premises. Rewrite using `[← chi_res W γ', hγ', hγ]`. Simplify using the standard rewrite rules. Establish `hn : ‖(P.χQ γ' : ℚ_[l]) - 1‖ = (l : ℝ) ^ (-((1 : ℕ) : ℤ))`. Rewrite using `[hv, add_sub_cancel_left, Padic.norm_p]`.
-
-Simplify using the standard rewrite rules. Use `mem_of_tors_gen ha hχ K hH hj hN hN (fun x _ => hpow x) (fun x _ hx => hx) U hU (fun x hx => hp x (Or.inl (hmemΔ x hx))) γ' (hp γ' (Or.inr hγ')) (fun x => ?_) g` and prove the remaining obligations. Rewrite using `[norm_pow_sub_one hj hn.le hN, hn]`. Conclude with `hpow x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_and_dense {P : LocPrime l} (AI : LocAinf l P) {K LL : FinExt l} {s : ℕ} (h2 : l ≠ 2)
     (hK : K.1 ≤ Ks K s)
@@ -111,13 +109,11 @@ theorem card_and_dense {P : LocPrime l} (AI : LocAinf l P) {K LL : FinExt l} {s 
     exact hpow x
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `hq.1 t`. Establish `hlc : IsLocallyConstant fun g => q (latRep T.L g x)` using `GlobalTheory.FiniteAdm.isLocallyConstant_comp hO T.L.T T.L.fg T.L.span hc q (fun y => by rw [← algebraMap_smul k, hk, zero_smul]) _ (T.cont x)`. Set `U : Subgroup G` to `{ carrier := {g | A.ρ g (q x) = q x} mul_mem' := fun {a b} ha hb => by`. Express the relevant statement in the definitionally equal form `A.ρ a (q x) = q x at ha`. Express the relevant statement in the definitionally equal form `A.ρ b (q x) = q x at hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `A.ρ (a * b) (q x) = q x`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := fun {a} ha => by`. Express the relevant statement in the definitionally equal form `A.ρ a (q x) = q x at ha`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `A.ρ a⁻¹ (q x) = q x`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Use `⟨U, ?_, fun g => Iff.rfl⟩` and prove the remaining obligations. Use `hlc.isClosed_fiber (q x)` as an intermediate fact.
-
-Simplify using `only [hq.2] at this`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_closed_stab {G Qp LL O k : Type} [Group G] [TopologicalSpace G] [Field Qp] [Field LL]
     [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] [IsTopologicalRing LL] [Field k]
@@ -148,9 +144,9 @@ theorem exists_closed_stab {G Qp LL O k : Type} [Group G] [TopologicalSpace G] [
   exact this
 
 /- English proof (translation)
-Introduce `l _ P AI H S k _ _ _ _`. Establish `hl : l.Prime` using `Fact.out`. Take `⟨h1, h2⟩` from `card_and_dense AI S.hyp.1.2.1.2.1 S.hyp.1.2.1.2.2.2.2.1 (S.W H)`. Use `⟨fun h => h1 ((CharP.cast_eq_zero_iff k l _).1 h), fun γ hγ T A q hq t ht => ?_⟩` and prove the remaining obligations. Use `haveI : IsTopologicalRing ↥S.LL.1 := inferInstanceAs (IsTopologicalRing ↥S.LL.1.toSubalgebra.toSubring)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hm⟩` from `exists_closed_stab (c := (l : S.O)) (GlobalTheory.LocalIntegers.isOpen_integers l S.LL) (by rw [map_natCast]; exact Nat.cast_ne_zero.2 hl.ne_zero) (by rw [map_natCast, CharP.cast_eq_zero]) T A q hq t`. Conclude with `fun g => (hm g).1 (h2 γ hγ U hU (fun g hg => (hm g).2 (ht g hg)) g)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem fixed_of_fixed_lifts : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (H : LocHW l P) (S : TopSit P) (k : Type) [Field k] [Algebra S.O k] [CharP k l], S.IsRes k → (((S.W H).DelF.card : ℕ) : k) ≠ 0 ∧ ∀ γ : (S.W H).Gam, ((S.W H).χΓ γ : S.O) = 1 + (l : S.O) → ∀ (T : LocLat S.G ℚ_[l] ↥S.LL.1 S.O) (A : Ob k S.G) (q : ↥T.L.T →ₗ[S.O] (Fin A.m → k)), Onto T A q → ∀ t : Fin A.m → k, (∀ g, ((S.W H).resΓ g ∈ (S.W H).DelF ∨ (S.W H).resΓ g = γ) → A.ρ g t = t) → ∀ g, A.ρ g t = t := by
   intro l _ P AI H S k _ _ _ _

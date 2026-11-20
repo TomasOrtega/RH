@@ -32,7 +32,7 @@ def sesqOf (D : D7) (T : Tor D) (N N' : ℕ) : Sesq (VC D N N') :=
         mul_div_assoc])
 
 /- English proof (translation)
-Introduce `x y`. Express the relevant statement in the definitionally equal form `Hf D T y x = starRingEnd ℂ (Hf D T x y)`. Simplify using `only [Hf, map_div₀, map_sum, map_mul, Complex.conj_ofReal, Complex.conj_conj, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem isHerm_sesqOf (D : D7) (T : Tor D) (N N' : ℕ) : IsHerm (sesqOf D T N N') := by
   intro x y
@@ -42,11 +42,11 @@ theorem isHerm_sesqOf (D : D7) (T : Tor D) (N N' : ℕ) : IsHerm (sesqOf D T N N
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {N N' : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨c, hc, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨a * c, cc.mul_mem_left a hc, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `AddSubgroup.add_mem _ ha hb`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `neg a _ ha => rw [mul_neg]`. Conclude with `AddSubgroup.neg_mem _ ha`.
+A detailed English derivation is pending.
 -/
 theorem lam_mul_mem (a : 𝓞 D.host.K) {w : ℂ} (hw : w ∈ lamOf D cc δ) :
     D.host.φ₀ (((a : D.host.K) : D.host.E)) * w ∈ lamOf D cc δ := by
@@ -62,11 +62,11 @@ theorem lam_mul_mem (a : 𝓞 D.host.K) {w : ℂ} (hw : w ∈ lamOf D cc δ) :
   | neg a _ ha => rw [mul_neg]; exact AddSubgroup.neg_mem _ ha
 
 /- English proof (translation)
-Break down `hA with ⟨r, b, hb, rfl⟩ | ⟨L, L', hL, hL', rfl⟩` into its components or cases. Use `⟨Set.range b, hb.2, ?_⟩` and prove the remaining obligations. Unfold `LaB`. Use `congr 1`. Use extensionality with `z`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[tor0]`. Use `⟨YYl D L L', ?_, rfl⟩` and prove the remaining obligations. Take `⟨r, y, y', hy, -, h⟩` from `GlobalTheory.HomDual.exists_dual_family_hom D (GlobalTheory.exists_trace_dual_family_halfDifferent D) N N' L L' hL hL'`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h x]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (hy i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem klat_gen {A : AddSubgroup (VC D N N')} (hA : KLat D (tor0 D cc δ) A) :
     ∃ S : Set (Matrix (Fin N') (Fin N) D.host.E), Submodule.span D.host.K S = ⊤ ∧
@@ -85,9 +85,9 @@ theorem klat_gen {A : AddSubgroup (VC D N N')} (hA : KLat D (tor0 D cc δ) A) :
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (hy i))
 
 /- English proof (translation)
-Take `⟨S, -, rfl⟩` from `klat_gen hA`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨w, hw, B, hB, rfl⟩` from `hw`. Conclude with `AddSubgroup.subset_closure ⟨_, lam_mul_mem a hw, B, hB, smul_smul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `AddSubgroup.add_mem _ ha hb`. Consider the case `neg a _ ha => rw [smul_neg]`. Conclude with `AddSubgroup.neg_mem _ ha`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem klat_smul_mem {A : AddSubgroup (VC D N N')} (hA : KLat D (tor0 D cc δ) A) (a : 𝓞 D.host.K)
     {x : VC D N N'} (hx : x ∈ A) : D.host.φ₀ (((a : D.host.K) : D.host.E)) • x ∈ A := by
@@ -101,7 +101,7 @@ theorem klat_smul_mem {A : AddSubgroup (VC D N N')} (hA : KLat D (tor0 D cc δ) 
   | neg a _ ha => rw [smul_neg]; exact AddSubgroup.neg_mem _ ha
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Express the relevant statement in the definitionally equal form `embT D τ ((k : D.host.E) * B i j) = D.host.φ₀ (k : D.host.E) * embT D τ (B i j)`. Rewrite using `[map_mul, h τ k]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem embV_smul (h : GL3Theta.InducedCMType D) (k : D.host.K) (B : Matrix (Fin N') (Fin N) D.host.E) :
     embV D (tor0 D cc δ) (k • B) = D.host.φ₀ (k : D.host.E) • embV D (tor0 D cc δ) B := by
@@ -110,7 +110,7 @@ theorem embV_smul (h : GL3Theta.InducedCMType D) (k : D.host.K) (B : Matrix (Fin
   rw [map_mul, h τ k]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Conclude with `map_add (embT D τ) _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem embV_add (B B' : Matrix (Fin N') (Fin N) D.host.E) :
     embV D (tor0 D cc δ) (B + B') = embV D (tor0 D cc δ) B + embV D (tor0 D cc δ) B' := by
@@ -118,24 +118,24 @@ theorem embV_add (B B' : Matrix (Fin N') (Fin N) D.host.E) :
   exact map_add (embT D τ) _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Conclude with `map_zero (embT D τ)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem embV_zero : embV D (tor0 D cc δ) (0 : Matrix (Fin N') (Fin N) D.host.E) = 0 := by
   funext τ i j
   exact map_zero (embT D τ)
 
 /- English proof (translation)
-Take `⟨S, -, rfl⟩` from `klat_gen hA`. Establish `hl : ∀ w ∈ lamOf D cc δ, ∃ k : D.host.K, w = δ * D.host.φ₀ (k : D.host.E)`. Introduce `w hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw => obtain ⟨c, -, rfl⟩ := hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `⟨c, rfl⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨k, rfl⟩` from `ha`. Take `⟨k', rfl⟩` from `hb`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k + k', by simp [mul_add]⟩`. Consider the case `neg a _ ha`. Take `⟨k, rfl⟩` from `ha`. Conclude with `⟨-k, by simp⟩`. Proceed by induction on `hx using AddSubgroup.closure_induction with`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Proceed by induction.
 
-Consider the case `mem w hw`. Take `⟨w, hw, B, -, rfl⟩` from `hw`. Take `⟨k, rfl⟩` from `hl w hw`. Conclude with `⟨k • B, by rw [embV_smul h, smul_smul]⟩`. Consider the case `zero => exact ⟨0, by rw [embV_zero, smul_zero]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨B, rfl⟩` from `ha`. Take `⟨B', rfl⟩` from `hb`. Conclude with `⟨B + B', by rw [embV_add, smul_add]⟩`. Consider the case `neg a _ ha`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨B, rfl⟩` from `ha`. Conclude with `⟨(-1 : D.host.K) • B, by rw [embV_smul h]; simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem klat_rat (h : GL3Theta.InducedCMType D) {A : AddSubgroup (VC D N N')} (hA : KLat D (tor0 D cc δ) A)
     {x : VC D N N'} (hx : x ∈ A) : ∃ B, x = δ • embV D (tor0 D cc δ) B := by
@@ -167,21 +167,21 @@ theorem klat_rat (h : GL3Theta.InducedCMType D) {A : AddSubgroup (VC D N N')} (h
     exact ⟨(-1 : D.host.K) • B, by rw [embV_smul h]; simp⟩
 
 /- English proof (translation)
-Establish `hA'` using `hA`. Take `⟨S, hS, hAS⟩` from `klat_gen hA'`. Establish `hB : B ∈ Submodule.span D.host.K S` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hB using Submodule.span_induction with`. Consider the case `mem B hB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Use `⟨Ideal.absNorm cc, Nat.pos_of_ne_zero (fun e => hcc (Ideal.absNorm_eq_zero_iff.1 e)), ?_⟩` and prove the remaining obligations. Rewrite using `[hAS]`. Use `AddSubgroup.subset_closure ⟨(Ideal.absNorm cc : ℂ) * δ, AddSubgroup.subset_closure ⟨_, Ideal.absNorm_mem cc, by simp [mul_comm]⟩, B, hB, ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_smul, Nat.cast_smul_eq_nsmul]`. Consider the case `zero => exact ⟨1, one_pos, by simp [embV_zero]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨m, hm, ha⟩` from `ha`. Take `⟨n, hn, hb⟩` from `hb`. Use `⟨m * n, by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[embV_add, smul_add, smul_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `A.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `A.nsmul_mem ha _`. Rewrite using `[mul_smul]`. Conclude with `A.nsmul_mem hb _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul k B _ hB`. Take `⟨m, hm, hB⟩` from `hB`. Take `⟨n, hn, hk⟩` from `exists_integral_multiples ℤ ℚ ({k} : Finset D.host.K)`. Establish `hk' : IsIntegral ℤ (n.natAbs • k)`. Use `hk k (Finset.mem_singleton_self k)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Int.natAbs_eq n with e | e` into its components or cases. Rewrite `this` using `[e]`. Simplify using `using this`. Rewrite `this` using `[e]`. Simplify using `using this.neg`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `⟨m * n.natAbs, Nat.mul_pos hm (Int.natAbs_pos.2 hn), ?_⟩` and prove the remaining obligations. Use `klat_smul_mem hA ⟨_, hk'⟩ hB using 1` and compare the differences between its conclusion and the goal. Rewrite using `[embV_smul h]`. Simplify using `only [← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `_ = D.host.φ₀ ((n.natAbs • k : D.host.K) : D.host.E) * _`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem klat_mul_mem (h : GL3Theta.InducedCMType D) (hcc : cc ≠ ⊥) {A : AddSubgroup (VC D N N')}
     (hA : KLat D (tor0 D cc δ) A) (B : Matrix (Fin N') (Fin N) D.host.E) :
@@ -223,7 +223,7 @@ theorem klat_mul_mem (h : GL3Theta.InducedCMType D) (hcc : cc ≠ ⊥) {A : AddS
     ring
 
 /- English proof (translation)
-The claim follows from `finite_quot hfg fun x hx => by obtain ⟨B, rfl⟩ := klat_rat h h₂ hx exact klat_mul_mem h hcc h₁ B`.
+A detailed English derivation is pending.
 -/
 theorem klat_finite (h : GL3Theta.InducedCMType D) (hcc : cc ≠ ⊥) {A₁ A₂ : AddSubgroup (VC D N N')}
     (h₁ : KLat D (tor0 D cc δ) A₁) (h₂ : KLat D (tor0 D cc δ) A₂) (hfg : A₂.FG) :
@@ -233,9 +233,9 @@ theorem klat_finite (h : GL3Theta.InducedCMType D) (hcc : cc ≠ ⊥) {A₁ A₂
     exact klat_mul_mem h hcc h₁ B
 
 /- English proof (translation)
-Take `⟨-, -, h1, h2, h3, h4, h5⟩` from `GlobalTheory.ConjNorm.Line.theta_line D (GlobalTheory.InducedType.induced_type D).1 cc δ hc N N' A hA`. Use `⟨h3, h4, le_antisymm h2 h1, ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `GlobalTheory.NormSum.exists_integer_map_eq_w0 D`. Use `isSemiChar_round (isHerm_sesqOf D _ N N') (Real.sqrt D.host.d) h1 (fun x hx => ?_) h5` and prove the remaining obligations. Use `klat_smul_mem hA a hx` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[ha]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem klat_facts (hc : Crv D cc δ) {A : AddSubgroup (VC D N N')} (hA : KLat D (tor0 D cc δ) A) :
     A.FG ∧ Submodule.span ℝ (A : Set (VC D N N')) = ⊤ ∧ IsSelfDual (sesqOf D (tor0 D cc δ) N N') A ∧
@@ -252,11 +252,11 @@ end GlobalTheory.ConjNorm.Inter
 open GlobalTheory.ThetaInter GlobalTheory.ConjNorm.Inter in
 
 /- English proof (translation)
-Introduce `D cc δ hc N N' A₁ A₂ h₁ h₂ th hth`. Take `⟨f₁, s₁, d₁, c₁⟩` from `klat_facts hc h₁`. Take `⟨f₂, s₂, d₂, c₂⟩` from `klat_facts hc h₂`. Establish `hH` using `isHerm_sesqOf D (tor0 D cc δ) N N'`. Establish `hψ` using `(GlobalTheory.InducedType.induced_type D).1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `klat_finite hψ hc.1.1 h₁ h₂ f₂` as an intermediate fact. Use `klat_finite hψ hc.1.1 h₂ h₁ f₁` as an intermediate fact. Establish `: (MeasureTheory.volume : MeasureTheory.Measure (Fin N' → Fin N → ℂ)).IsAddHaarMeasure` using `MeasureTheory.Measure.pi.isAddHaarMeasure _`. Establish `: (MeasureTheory.volume : MeasureTheory.Measure (VC D N N')).IsAddHaarMeasure` using `MeasureTheory.Measure.pi.isAddHaarMeasure _`. Establish `t₁` using `discrete_of_selfDual hH d₁ f₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t₂` using `discrete_of_selfDual hH d₂ f₂`. Establish `hF : th ∈ Formalism.L2.Th1.H.fixedBy (sesqOf D (tor0 D cc δ) N N') (al D (tor0 D cc δ)) A₁` using `hth.2`. Conclude with `⟨fun x => mean_opU MeasureTheory.volume hH t₁ s₁ c₁ hth.1.continuous hF x, ⟨differentiable_inter (H := sesqOf D (tor0 D cc δ) N N') (α := al D (tor0 D cc δ)) A₁ A₂ hth.1, inter_mem_fixedBy hH c₁ d₂ c₂ hF⟩, mean_inter MeasureTheory.volume hH t₁ s₁ t₂ s₂ d₁ c₁ d₂ c₂ hth.1 hF, inter …`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.ConjNorm.unitary_all : ∀ D : D7, IntertwinerUnitary D := by
   intro D cc δ hc N N' A₁ A₂ h₁ h₂ th hth

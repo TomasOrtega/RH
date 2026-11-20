@@ -28,7 +28,7 @@ def iS (i : Fin n) : Fin N := ⟨i.1 + 1, by have := i.2; omega⟩
 def iL : Fin N := ⟨n, by omega⟩
 
 /- English proof (translation)
-Introduce `i j h`. Conclude with `Fin.ext (by simpa [iC] using h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem iC_inj : Function.Injective (iC hN) := by
   intro i j h
@@ -83,7 +83,7 @@ variable {K : Type} [Field K] {ι : Type} {N n : ℕ} (hN : N = n + 1)
 def upVar (v : ι × Fin n × Fin n) : ι × Fin N × Fin N := (v.1, iC hN v.2.1, iC hN v.2.2)
 
 /- English proof (translation)
-Introduce `v w h`. Simplify using `only [upVar, Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (Prod.ext (iC_inj hN h.2.1) (iC_inj hN h.2.2))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem upVar_inj : Function.Injective (upVar (ι := ι) hN) := by
   intro v w h
@@ -101,7 +101,7 @@ def coefLast (b : ι → Fin n → ℕ) : Pol K ι N →ₗ[K] Pol K ι n :=
 
 open Classical in
 /- English proof (translation)
-Establish `h : (basisMonomials (ι × Fin N × Fin N) K) m = monomial m 1`. Rewrite using `[coe_basisMonomials]`. Rewrite using `[coefLast, ← h, Module.Basis.constr_basis]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coefLast_monomial (b : ι → Fin n → ℕ) (m : ι × Fin N × Fin N →₀ ℕ) :
     coefLast (K := K) hN b (monomial m 1) =
@@ -167,7 +167,7 @@ def extGH : GLG E n SG →* GLG E N SG := by
   exact extG
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Conclude with `DecoSet.til_smul a d hT hG`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem DecoSet.tilH_smul (a : UF E n × GLG E n SG) (d : DecoSet E n ∅ SG) {pi : 𝓞 E}
     (hT : ∀ P : ST, cO E pi ∉ P.1.asIdeal) (hG : ∀ w : SG, pi ∉ w.1.asIdeal) :
@@ -181,7 +181,7 @@ def Deco.res (h : SG ⊆ SG') (d : Deco E n ST SG') : Deco E n ST SG where
   be w := d.be ⟨w.1, h w.2⟩
 
 /- English proof (translation)
-The claim follows from `hd.lat uni := hd.uni f_add := hd.f_add f_smul := hd.f_smul f_off := hd.f_off f_ne := hd.f_ne be_add w := hd.be_add ⟨w.1, h w.2⟩ be_smul w := hd.be_smul ⟨w.1, h w.2⟩ be_off w := hd.be_off ⟨w.1, h w.2⟩ be_surj w := hd.be_surj ⟨w.1, h w.2⟩ be_ker w := hd.be_ker ⟨w.1, h w.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem Deco.Ok.res {d : Deco E n ST SG'} (hd : d.Ok) (h : SG ⊆ SG') : (d.res h).Ok where
   lat := hd.lat
@@ -201,7 +201,7 @@ def DecoSet.res (h : SG ⊆ SG') (d : DecoSet E n ST SG') : DecoSet E n ST SG :=
 end Cast
 
 /- English proof (translation)
-Use `R.N_pos R.m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem N_m_succ (R : Ranks) : R.N R.m = (R.N R.m - 1) + 1 := by
   have := R.N_pos R.m
@@ -494,9 +494,9 @@ def R1cond (r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) : Prop :=
 
 variable {k n c} in
 /- English proof (translation)
-Use `⟨fun i v hv => hr.1 i _ (hs.1 i v hv), ?_, fun i => ?_⟩` and prove the remaining obligations. Use `show r (s _) = _`. Rewrite using `[hs.2.1, hr.2.1]`. Establish `h1 : (r * s) (eN k (n + c) (n + i)) - eN k (n + c) (n + i) = r (s (eN k (n + c) (n + i)) - eN k (n + c) (n + i)) + (r (eN k (n + c) (n + i)) - eN k (n + c) (n + i))`. Rewrite using `[map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `show r (s _) - _ = _`. Normalize the expressions using the abelian group laws. Rewrite using `[h1]`. Conclude with `add_mem (hr.1 i _ (hs.2.2 i)) (hr.2.2 i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem R1cond.mul {r s : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hr : R1cond k n c r) (hs : R1cond k n c s) :
     R1cond k n c (r * s) := by
@@ -512,7 +512,7 @@ theorem R1cond.mul {r s : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hr
     exact add_mem (hr.1 i _ (hs.2.2 i)) (hr.2.2 i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ hv => hv, rfl, fun i => by show eN k (n + c) (n + i) - eN k (n + c) (n + i) ∈ _ rw [sub_self] exact zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem R1cond_one : R1cond k n c 1 :=
   ⟨fun _ _ hv => hv, rfl, fun i => by
@@ -1201,7 +1201,7 @@ variable {X : Fields} {Pr : Primes X}
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
 /- English proof (translation)
-Simplify using `only [locLat, Submodule.mem_iInf, Submodule.mem_comap]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_locLat {E : Type} [Field E] [NumberField E] {n : ℕ} (SB : Finset (HeightOneSpectrum (𝓞 E)))
     (N : Submodule (𝓞 E) (Sp E n)) (e : SB → ℤ) (z : Sp E n) :
@@ -1210,7 +1210,7 @@ theorem mem_locLat {E : Type} [Field E] [NumberField E] {n : ℕ} (SB : Finset (
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_locLat, mem_locLat]`. Use `forall_congr' fun P => ?_` and prove the remaining obligations. Rewrite using `[mem_localization_gmap, map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_locLat_gmap {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} (SB : Finset (HeightOneSpectrum (𝓞 E)))
     (N : Submodule (𝓞 E) (Sp E n)) (e : SB → ℤ) (γ : Sp E n ≃ₗ[E] Sp E n) (z : Sp E n) :
@@ -1220,13 +1220,13 @@ theorem mem_locLat_gmap {E : Type} [Field E] [NumberField E] [StarRing E] {n : �
   rw [mem_localization_gmap, map_smul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hY⟩`. Use `⟨γ.symm y, (mem_locLat_gmap _ _ _ _ _).1 hy, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Establish `h1 : z ∈ Y ↔ γ z ∈ (fun v => γ v) '' Y` using `⟨fun h => ⟨z, h, rfl⟩, fun ⟨z', h', e⟩ => by rwa [← γ.injective e]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[h1, hY, Set.mem_ofPred_eq, Set.mem_ofPred_eq, mem_locLat_gmap, map_sub, LinearEquiv.symm_apply_apply]`. Introduce and unpack `⟨y, hy, hY⟩`. Use `⟨γ y, (mem_locLat_gmap _ _ _ _ _).2 (by rwa [LinearEquiv.symm_apply_apply]), ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Rewrite using `[Set.mem_ofPred_eq, mem_locLat_gmap, map_sub, LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z', h', rfl⟩`. Rewrite `h'` using `[hY]`. Simplify using `using h'`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨γ.symm z, ?_, LinearEquiv.apply_symm_apply γ z⟩` and prove the remaining obligations. Rewrite using `[hY]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ybSet_gmap {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) (γ : Sp X.E n ≃ₗ[X.E] Sp X.E n) (Y : Set (Sp X.E n)) :
     (fun v => γ v) '' Y ∈ ybSet sel mu cst (gmap γ N) ↔ Y ∈ ybSet sel mu cst N := by
@@ -1424,7 +1424,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.Word R} {Ch : Ch
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))}
 
 /- English proof (translation)
-Conclude with `(piChar_apply (fun P => (LevQFam.top E K n Q P).H) (fun P => (LevQFam.top E K n Q P).lam) c).trans (Finset.prod_eq_one fun _ _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem LevQFam.top_chr {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n : ℕ}
     {Q : Finset (HeightOneSpectrum (𝓞 E))} (c : ↥(LevQFam.top E K n Q).grp) : (LevQFam.top E K n Q).chr c = 1 := by
@@ -1432,9 +1432,9 @@ theorem LevQFam.top_chr {E K : Type} [Field E] [NumberField E] [StarRing E] [Fie
     (Finset.prod_eq_one fun _ _ => rfl)
 
 /- English proof (translation)
-Substitute `hΛ hΘ` using the available equality. Introduce `g p`. Establish `h1` using `φ.2 (g.1, g.2.1) p.deco`. Use `show (φ : (colGSD W Ch u 0).D → (colGSD W Ch u 0).V) ((g.1, g.2.1) • p.deco) = _`. Rewrite using `[h1]`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : frmRho (colValF W sel mu u 0) (colLev Ch 0) (LevQFam.top X.E X.K (R.N 0) _) g = formRho (colVal W u 0 (Pr.vT u) Pr.vGs) (colLev Ch 0) (g.1, g.2.1)` using `by show ((((colLev Ch 0).chr g.2.1 * (LevQFam.top X.E X.K (R.N 0) _).chr g.2.2 : X.Kˣ)) : X.K) • (colValF W sel mu u 0).rho g.1 = _`. Rewrite using `[LevQFam.top_chr, mul_one]`. Both sides reduce to the same expression. Conclude with `(LinearMap.congr_fun h2 _).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem start_mem (u : Pr.Word) (Λ : LevFam X.E X.K (R.N 0) Pr.vGs)
     (Θ : LevQFam X.E X.K (R.N 0) (QE sel (mu : Chr X.F X.E X.K))) (hΛ : Λ = colLev Ch 0) (hΘ : Θ = LevQFam.top X.E X.K (R.N 0) _)

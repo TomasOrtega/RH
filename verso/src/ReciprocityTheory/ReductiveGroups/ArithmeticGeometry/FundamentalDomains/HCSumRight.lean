@@ -14,9 +14,9 @@ variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 variable {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Take `⟨g, hg⟩ : ∃ g : ℕ → M, ∀ j (h : j < r), g j = f ⟨j, h⟩` from `⟨fun j => if h : j < r then f ⟨j, h⟩ else 0, fun j h => dif_pos h⟩`. Establish `h1 : ∑ j, f j = ∑ j : Fin r, g j` using `Finset.sum_congr rfl fun j _ => (hg j j.isLt).symm`. Establish `h2 : ∑ a : Fin X.p0, f (Fin.castLE X.p0_le a) = ∑ a : Fin X.p0, g a` using `Finset.sum_congr rfl fun a _ => (hg a (lt_of_lt_of_le a.isLt X.p0_le)).symm`. Establish `h3 : ∑ m : Fin (r - X.p0), f ⟨X.p0 + m, by have` using `m.isLt; have := X.p0_le; omega⟩ = ∑ m : Fin (r - X.p0), g (X.p0 + m) := Finset.sum_congr rfl fun m _ => (hg (X.p0 + m) (by have := m.isLt; have := X.p0_le; omega)).symm`. Rewrite using `[h1, h2, h3, Fin.sum_univ_eq_sum_range g r, Fin.sum_univ_eq_sum_range g X.p0, Fin.sum_univ_eq_sum_range (fun m => g (X.p0 + m)) (r - X.p0)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← Nat.add_sub_of_le X.p0_le]`. Conclude with `Finset.sum_range_add g X.p0 (r - X.p0)`.
+A detailed English derivation is pending.
 -/
 theorem sum_split' {M : Type*} [AddCommMonoid M] (f : Fin r → M) :
     ∑ j, f j = ∑ a : Fin X.p0, f (Fin.castLE X.p0_le a) +
@@ -37,7 +37,7 @@ theorem sum_split' {M : Type*} [AddCommMonoid M] (f : Fin r → M) :
   exact Finset.sum_range_add g X.p0 (r - X.p0)
 
 /- English proof (translation)
-Simplify using `only [hermC, Finset.sum_apply, map_sum, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem hC_sum_right' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {ι : Type*} (s : Finset ι)
     (u : Fin r → ℂ) (f : ι → Fin r → ℂ) : hermC τ G u (∑ i ∈ s, f i) = ∑ i ∈ s, hermC τ G u (f i) := by
@@ -48,21 +48,21 @@ theorem hC_sum_right' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {ι : Ty
     _ = ∑ i ∈ s, ∑ a, ∑ b, u a * τ (G a b) * conj (f i b) := Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hermC_add_left_eq_add (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u u' w : Fin r → ℂ) :
     hermC τ G (u + u') w = hermC τ G u w + hermC τ G u' w := by
   simp only [hermC, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hermC_smul_left_eq_smul_mul (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (c : ℂ)
     (u w : Fin r → ℂ) : hermC τ G (c • u) w = c * hermC τ G u w := by
   simp only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on`. Simplify using `[hermC]`. Name the introduced variables `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hermC_add_left_eq_add, hermC_smul_left_eq_smul_mul, ih]`.
+Proceed by induction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hermC_finset_sum_smul_left (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {ι : Type*}
     (s : Finset ι) (c : ι → ℂ) (v : ι → Fin r → ℂ) (w : Fin r → ℂ) :
@@ -74,9 +74,9 @@ private theorem hermC_finset_sum_smul_left (τ : E →+* ℂ) (G : Matrix (Fin r
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hermC_add_left_eq_add, hermC_smul_left_eq_smul_mul, ih]
 
 /- English proof (translation)
-Rewrite using `[hermC_finset_sum_smul_left]`. Establish `hab : ∀ a, hermC τ.1 X.Gm (col (mat x0 τ) a) (col (mat x0 τ) b) = if a = b then ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) else 0`. Introduce `a`. Establish `h` using `congrFun (congrFun (ho τ) a) b`. Rewrite `h` using `[Matrix.diagonal_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Simplify using `[hab, mul_ite]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comb_col {x0 : Frame X.Ψ r} (ho : X.IsOrtho x0) (τ : X.Ψ) (c : Fin r → ℂ) (b : Fin r) :
     hermC τ.1 X.Gm (∑ a, c a • col (mat x0 τ) a) (col (mat x0 τ) b) = c b * ((sgn X.p0 (b : ℕ) : ℝ) : ℂ) := by
@@ -90,7 +90,7 @@ theorem comb_col {x0 : Frame X.Ψ r} (ho : X.IsOrtho x0) (τ : X.Ψ) (c : Fin r 
   simp [hab, mul_ite]
 
 /- English proof (translation)
-Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hermC_smul_right_eq_conj_mul (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (c : ℂ)
     (u v : Fin r → ℂ) : hermC τ G u (c • v) = conj c * hermC τ G u v := by
@@ -98,7 +98,7 @@ private theorem hermC_smul_right_eq_conj_mul (τ : E →+* ℂ) (G : Matrix (Fin
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 /- English proof (translation)
-Rewrite using `[hC_sum_right']`. Simplify using `only [hermC_smul_right_eq_conj_mul, comb_col X ho τ c]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comb_comb {x0 : Frame X.Ψ r} (ho : X.IsOrtho x0) (τ : X.Ψ) (c d : Fin r → ℂ) :
     hermC τ.1 X.Gm (∑ a, c a • col (mat x0 τ) a) (∑ b, d b • col (mat x0 τ) b) =

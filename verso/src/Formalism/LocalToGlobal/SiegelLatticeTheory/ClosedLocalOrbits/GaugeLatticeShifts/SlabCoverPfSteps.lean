@@ -42,9 +42,9 @@ def RatLeviC : Prop := ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), Ra
 def PsiDdC : Prop := ∀ (D : D7) (X : HidaSetting D), PsiDd X
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.sfin_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Establish `e` using `h.2 (X.eR a) (by simp [fixSet])`. Apply the tactic sequence `try beta_reduce`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, e, sub_self]`. Conclude with `Submodule.zero_mem _`. Establish `e` using `h.2 (X.zR u) (by simp [fixSet])`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, e, sub_self]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hfin_sfin {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (h : Hfin X u) :
     (h : X.B.I.Gf) ∈ SfinU X u := by
@@ -60,11 +60,11 @@ theorem hfin_sfin {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (h : Hfin X 
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hγ`. Take `⟨h21, h22⟩` from `h2`. Use `⟨h1, Subgroup.subset_closure ⟨?_, hfin_sfin X u ⟨γ.2, h22⟩⟩⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.sinf_iff]`. Introduce `v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Establish `e` using `h21 v (X.eR a) (by simp [fixSet])`. Apply the tactic sequence `try beta_reduce`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, e, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Establish `e` using `h21 v (X.zR u) (by simp [fixSet])`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, e, sub_self]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gam_srat {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (γ : X.B.I.GA) (hγ : γ ∈ Gam X u) :
     γ ∈ Srat X u := by

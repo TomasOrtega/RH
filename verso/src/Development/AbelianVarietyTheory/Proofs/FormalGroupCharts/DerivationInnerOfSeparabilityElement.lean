@@ -8,17 +8,17 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `Φ : TensorProduct ℤ O O →ₗ[ℤ] V` to `TensorProduct.lift (LinearMap.mk₂ ℤ (fun a b => l a (δ b)) (fun a a' b => by simp) (fun n a b => by simp) (fun a b b' => by simp) (fun n a b => by rw [map_zsmul, map_zsmul]))`. Establish `hΦ : ∀ a b, Φ (TensorProduct.tmul ℤ a b) = l a (δ b)` using `fun a b => TensorProduct.lift.tmul a b`. Establish `h1 : ∀ (c : O) (t : TensorProduct ℤ O O), Φ (TensorProduct.tmul ℤ c (1 : O) * t) = l c (Φ t)`. Introduce `c t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a b => simp [Algebra.TensorProduct.tmul_mul_tmul, hΦ]`. Consider the case `add x y hx hy => simp [mul_add, hx, hy]`. Establish `h2 : ∀ (c : O) (t : TensorProduct ℤ O O), Φ (TensorProduct.tmul ℤ (1 : O) c * t) = l (Algebra.TensorProduct.lmul' ℤ t) (δ c) + r c (Φ t)`. Introduce `c t`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Establish `h` using `LinearMap.congr_fun (hlr a c).eq (δ b)`. Simplify using `only [Module.End.mul_apply] at h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, hΦ, hδ, h]`. Consider the case `add x y hx hy`. Simplify using `only [mul_add, map_add, hx, hy, LinearMap.add_apply]`. Normalize the expressions using the abelian group laws. Establish `hN' : (N : ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Use `⟨(N : ℚ)⁻¹ • Φ e, fun c => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Φ (hc c)`. Rewrite `h` using `[sub_mul, map_sub, h1, h2, he, map_zero, map_natCast, Module.End.natCast_apply]`. Establish `h' : l c (Φ e) - r c (Φ e) = (N : ℚ) • δ c`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[sub_eq_zero]`. Rewrite using `[h]`. Normalize the expressions using the abelian group laws. Rewrite using `[map_smul, map_smul, ← smul_sub, h', smul_smul, inv_mul_cancel₀ hN', one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem derivation_inner_of_separability_element (O : Type) [CommRing O] (N : ℕ)
     (e : TensorProduct ℤ O O) (hN : 0 < N) (he : Algebra.TensorProduct.lmul' ℤ e = (N : O))
@@ -63,7 +63,7 @@ theorem derivation_inner_of_separability_element (O : Type) [CommRing O] (N : �
   rw [map_smul, map_smul, ← smul_sub, h', smul_smul, inv_mul_cancel₀ hN', one_smul]
 
 /- English proof (translation)
-Introduce `H O _ _ _ _ V _ _ l r hlr δ hδ`. Take `⟨N, e, hN, he, hc⟩` from `H O`. Conclude with `derivation_inner_of_separability_element O N e hN he hc V l r hlr δ hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem derivation_inner_of_reduced_order :
     (∀ (O : Type) [CommRing O] [Module.Free ℤ O] [Module.Finite ℤ O] [IsReduced O], ∃ (N : ℕ) (e : TensorProduct ℤ O O), 0 < N ∧ Algebra.TensorProduct.lmul' ℤ e = (N : O) ∧ ∀ c : O, (TensorProduct.tmul ℤ c (1 : O) - TensorProduct.tmul ℤ (1 : O) c) * e = 0) → ∀ (O : Type) [CommRing O] [Module.Free ℤ O] [Module.Finite ℤ O] [IsReduced O] (V : Type) [AddCommGroup V] [Module ℚ V] (l r : O →+* Module.End ℚ V), (∀ a b, Commute (l a) (r b)) → ∀ δ : O →+ V, (∀ a b, δ (a * b) = l b (δ a) + r a (δ b)) → ∃ v : V, ∀ a, δ a = l a v - r a v := by

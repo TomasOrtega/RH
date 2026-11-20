@@ -26,7 +26,7 @@ section General
 variable {C : Type*} [Category C] [CartesianMonoidalCategory C] [BraidedCategory C]
 
 /- English proof (translation)
-The claim follows from `map_prod (MonoidHom.mk ⟨fun x : Y ⟶ M => f ≫ x, MonObj.comp_one f⟩ (fun a b => MonObj.comp_mul f a b)) g s`.
+A detailed English derivation is pending.
 -/
 theorem comp_prod {X Y M : C} [MonObj M] [IsCommMonObj M] {J : Type*} (s : Finset J) (f : X ⟶ Y)
     (g : J → (Y ⟶ M)) : f ≫ ∏ l ∈ s, g l = ∏ l ∈ s, f ≫ g l :=
@@ -34,7 +34,7 @@ theorem comp_prod {X Y M : C} [MonObj M] [IsCommMonObj M] {J : Type*} (s : Finse
     (fun a b => MonObj.comp_mul f a b)) g s
 
 /- English proof (translation)
-The claim follows from `map_prod (IsMonHom.monoidHom f X) g s`.
+A detailed English derivation is pending.
 -/
 theorem prod_comp {X M N : C} [MonObj M] [IsCommMonObj M] [MonObj N] [IsCommMonObj N] {J : Type*}
     (s : Finset J) (g : J → (X ⟶ M)) (f : M ⟶ N) [IsMonHom f] :
@@ -42,7 +42,7 @@ theorem prod_comp {X M N : C} [MonObj M] [IsCommMonObj M] [MonObj N] [IsCommMonO
   map_prod (IsMonHom.monoidHom f X) g s
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, Category.assoc, hpr, hn, ← Category.assoc, hm, prod_comp, comp_prod]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hab, ← Category.assoc, ← hpr, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem row_comm {M N M' N' : C} [MonObj M] [IsCommMonObj M] [MonObj N] [IsCommMonObj N]
     {j : ℕ} (p : Fin j → (M' ⟶ M)) (r : Fin j → (N' ⟶ N)) (q : M ⟶ N) (hq : IsMonHom q)
@@ -57,7 +57,7 @@ theorem row_comm {M N M' N' : C} [MonObj M] [IsCommMonObj M] [MonObj N] [IsCommM
 end General
 
 /- English proof (translation)
-Rewrite using `[← Functor.map_comp, h]`. Use `(map_prod ((Over.pullback f).homMonoidHom (X := G') (M := G)) _ _).trans ?_` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun l _ => (Over.pullback f).map_comp (p l) (a l)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pullback_row {S S' : Scheme.{0}} (f : S' ⟶ S) {G G' : Over S} [GrpObj G] [IsCommMonObj G]
     {j : ℕ} (p : Fin j → (G' ⟶ G)) (a : Fin j → (G ⟶ G)) (m : G' ⟶ G') (i : Fin j)
@@ -69,7 +69,7 @@ theorem pullback_row {S S' : Scheme.{0}} (f : S' ⟶ S) {G G' : Over S} [GrpObj 
   exact Finset.prod_congr rfl fun l _ => (Over.pullback f).map_comp (p l) (a l)
 
 /- English proof (translation)
-The claim follows from `(isLimitOfPreserves (Over.pullback f) p.lim).hom_ext fun i => h i.as`.
+A detailed English derivation is pending.
 -/
 theorem pullback_hom_ext {S S' : Scheme.{0}} (f : S' ⟶ S) {G' G : Over S} [GrpObj G']
     [GrpObj G] {j : ℕ} (p : IsPowGrp G' G j) {Z : Over S'} {a b : Z ⟶ (Over.pullback f).obj G'}
@@ -77,7 +77,7 @@ theorem pullback_hom_ext {S S' : Scheme.{0}} (f : S' ⟶ S) {G' G : Over S} [Grp
   (isLimitOfPreserves (Over.pullback f) p.lim).hom_ext fun i => h i.as
 
 /- English proof (translation)
-Use `forall_congr' fun χ => ?_` and prove the remaining obligations. Establish `: (res (fun x _ => show t.left.base x ∈ (⊤ : TopologicalSpace.Opens _) from trivial) (pullU t.left ⊤ (charUnit S X χ)) : Γ((splitTorus S X).left, ⊤)ˣ).val = t.left.appTop.hom (charUnit S X χ).val`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[← this, Units.ext_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem torusEndOf_iff {S : Scheme.{0}} {X : Type} [AddCommGroup X] (h : X → X)
     (t : splitTorus S X ⟶ splitTorus S X) : TorusEndOf X h t ↔
@@ -90,7 +90,7 @@ theorem torusEndOf_iff {S : Scheme.{0}} {X : Type} [AddCommGroup X] (h : X → X
   rw [← this, Units.ext_iff]
 
 /- English proof (translation)
-Rewrite using `[Over.comp_left, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appTop_comp {S : Scheme.{0}} {A B C : Over S} (a : A ⟶ B) (b : B ⟶ C)
     (r : Γ(C.left, ⊤)) :
@@ -102,15 +102,15 @@ local instance splitTorus_isCommMonObj (S : Scheme.{0}) (X : Type) [AddCommGroup
   inferInstanceAs (IsCommMonObj ((Over.pullback (toZ S)).obj (splitTorusAff ZU X)))
 
 /- English proof (translation)
-Set `E'` to `splitTorusPointsEquiv S X' (splitTorus S X')`. Set `E` to `splitTorusPointsEquiv S X (splitTorus S X')`. Establish `hu : ∀ x, (E' (𝟙 _) (Multiplicative.ofAdd x)).val = (charUnit S X' x).val` using `fun x => by`. Rewrite using `[splitTorusPointsEquiv_val]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨t', ht'⟩` from `E'.surjective ((E' (𝟙 _)).comp (AddMonoidHom.toMultiplicative h'))`. Establish `key : ∀ x, t'.left.appTop.hom (charUnit S X' x).val = (charUnit S X' (h' x)).val`. Introduce `x`. Rewrite using `[← splitTorusPointsEquiv_val, ← hu]`. Conclude with `congrArg (fun φ => (φ (Multiplicative.ofAdd x)).val) ht'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t', (torusEndOf_iff _ _).2 key, fun s => E.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `MonoidHom.ext fun χ => Units.ext ?_` and prove the remaining obligations. Take `⟨χ, rfl⟩` from `Multiplicative.ofAdd.surjective χ`. Establish `e : h' (xe.symm (Pi.single s χ)) = ∑ l, xe.symm (Pi.single l (h s l χ))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `xe.injective` to reduce the goal to its premises. Rewrite using `[← map_sum, xe.apply_symm_apply, Finset.univ_sum_single]`. Use function extensionality and compare the values at `l`. Conclude with `hh s χ l`. Rewrite using `[MonoidHom.finset_prod_apply, Units.coe_prod, splitTorusPointsEquiv_val, appTop_comp, hpr, key, e, ← hu, ofAdd_sum, map_prod, Units.coe_prod]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hu, splitTorusPointsEquiv_val, appTop_comp, (torusEndOf_iff _ _).1 (ht s l), hpr]`.
+A detailed English derivation is pending.
 -/
 theorem exists_torus_matrix {S : Scheme.{0}} {X X' : Type} [AddCommGroup X] [AddCommGroup X']
     {j : ℕ} (xe : X' ≃+ (Fin j → X)) (pr : Fin j → (splitTorus S X' ⟶ splitTorus S X))
@@ -152,13 +152,11 @@ attribute [local instance] PowMatrixLinear.splitTorus_isCommMonObj in
 open PowMatrixLinear in
 
 /- English proof (translation)
-Introduce `R _ _ I j D D' A A' G G' _ _ _ _ pD pA pG U' U P O _ _ _ _ ιD ιA ιG ιD' ιA' ιG' hU hxe hD hA hG`. Use `⟨fun m => ?_, fun e m => ?_, fun e m => ?_⟩` and prove the remaining obligations. Use `Fan.IsLimit.hom_ext pA.lim _ _ fun i => ?_` and prove the remaining obligations. Conclude with `row_comm _ pA.pr U.gen.hom U.gen_hom U'.gen.hom P.gen_pr _ _ (fun l => hU.ext (m i l)) _ _ i (pullback_row _ _ _ _ i (hG m i)) (hA m i)`. Use `pullback_hom_ext (thick R I e) pD.pw fun i => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `row_comm _ _ (U.gt e).q (U.gt e).q_hom (U'.gt e).q (P.q_pr e) _ _ (fun l => hU.q_lin e (m i l)) _ _ i (pullback_row _ _ _ _ i (hG m i)) (pullback_row _ _ _ _ i (hD m i))`. Use `choose pr hi hc using GlobalTheory.PowTorusProj.exists_torus_proj R I j D D' A A' G G' pD pA pG U' U P e choose t ht hti using hU.i_lin e`. Take `⟨t', h₁, h₂⟩` from `exists_torus_matrix pD.xe pr hc (fun s l χ => star (m s l) • χ) (DistribSMul.toAddMonoidHom _ (star m)) (fun s χ l => by`. Express the relevant statement in the definitionally equal form `pD.xe (star m • _) l = _`. Rewrite using `[hxe, pD.xe.apply_symm_apply, Finset.sum_eq_single s]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_same, Matrix.star_apply]`. Introduce `k _ hk`. Rewrite using `[Pi.single_eq_of_ne hk, smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ s) h)`.
-
-Use the proof step `(fun s l => t (m s l)) (fun s l => ht (m s l))`. Use `⟨t', h₁, pullback_hom_ext (thick R I e) pG fun s => ?_⟩` and prove the remaining obligations. Conclude with `(row_comm pr _ (U.gt e).i (U.gt e).i_hom (U'.gt e).i hi _ _ (fun l => (hti (m s l)).symm) _ _ s (h₂ s) (pullback_row _ _ _ _ s (hG m s))).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem oLinear_matrix_of_unifPow : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (j : ℕ) (D D' : DegData R I) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G G' : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'] (pD : IsPowDeg D'.toPre D.toPre j) (pA : IsPowPolAV A' A j) (pG : IsPowGrp G' G j) (U' : Unif I D' A' G') (U : Unif I D A G) (_ : UnifPowOf2 pD pA pG U' U) (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X] [Module (Matrix (Fin j) (Fin j) O) D'.toPre.X] (ιD : D.OAct O) (ιA : A.OAct O) (ιG : RingAct G O) (ιD' : D'.OAct (Matrix (Fin j) (Fin j) O)) (ιA' : A'.OAct (Matrix (Fin j) (Fin j) O)) (ιG' : RingAct G' (Matrix (Fin j) (Fin j) O)), U.OLinear O ιD ιA ιG → (∀ (m : (Matrix (Fin j) (Fin j) O)) (x : D'.toPre.X) (i : Fin j), pD.xe (m • x) i = ∑ l, m i l • pD.xe x l) → (∀ (m : (Matrix (Fin j) (Fin j) O)) (i : Fin j), ιD'.onB.act m ≫ pD.pw.pr i = ∏ l, pD.pw.pr l ≫ ιD.onB.act (m i l)) → (∀ (m : (Matrix (Fin j) (Fin j) O)) (i : Fin j), ιA'.act m ≫ pA.pr i = ∏ l, pA.pr l ≫ ιA.act (m i l)) → (∀ (m : (Matrix (Fin j) (Fin j) O)) (i : Fin j), ιG'.act m ≫ pG.pr i = ∏ l, pG.pr l ≫ ιG.act (m i l)) → U'.OLinear (Matrix (Fin j) (Fin j) O) ιD' ιA' ιG' := by
   intro R _ _ I j D D' A A' G G' _ _ _ _ pD pA pG U' U P O _ _ _ _ ιD ιA ιG ιD' ιA' ιG'

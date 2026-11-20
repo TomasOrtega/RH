@@ -7,19 +7,17 @@ open scoped InnerProductSpace Topology
 namespace GlobalTheory.TypeSum
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ h v hv X hX`. Take `⟨S, h1, h2, h3⟩` from `hv`. Establish `hS : S ≤ smooth (Jm ε) σ` using `fun s hs => h.2.2.1 s ⟨S, h1, hs, h3⟩`. Set `b` to `Module.finBasis ℝ (lie (Jm ε))`. Set `L : Fin (Module.finrank ℝ (lie (Jm ε))) → (S →ₗ[ℂ] H)` to `fun i => (smooth (Jm ε) σ).subtype ∘ₗ dOp (isUnit_Jm ε) h.1 (b i).2 ∘ₗ Submodule.inclusion hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hL : ∀ i (s : S), L i s = dRep σ (b i) s` using `fun _ _ => rfl`. Set `T : Submodule ℂ H` to `⨆ i, LinearMap.range (L i)`. Establish `hT : ∀ Y ∈ lieSet ε, ∀ s ∈ S, dRep σ Y s ∈ T`. Introduce `Y hY s hs`. Establish `e : Y = ∑ i, b.repr ⟨Y, hY⟩ i • (b i : Mx n)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Subtype.val (b.sum_repr ⟨Y, hY⟩)` as an intermediate fact. Simplify `this.symm` using `only [AddSubmonoidClass.coe_finsetSum, SetLike.val_smul]`. Rewrite using `[e, h.dRep_sum (fun i => (b i).2) (hS hs)]`. Use `T.sum_mem fun i _ => T.smul_mem _ ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem i ⟨⟨s, hs⟩, rfl⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨T, inferInstance, hT X hX v h2, fun k hk w hw => ?_⟩` and prove the remaining obligations. Establish `hg` using `K_le_UJ hk`. Establish `: T ≤ T.comap (σ k : H →ₗ[ℂ] H)`. Use `iSup_le fun i => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hinv : (k⁻¹)⁻¹ = k` using `Matrix.inv_eq_left_inv (mul_inv_UJ hg)`. Establish `hY : k * (b i : Mx n) * k⁻¹ ∈ lieSet ε`. Use `conj_mem_lie (isUnit_Jm ε) (inv_mem_UJ hg) (b i).2` as an intermediate fact. Rewrite `this` using `[hinv]`. Then use the resulting hypothesis. Establish `e` using `Dw_translate h.1 hg (hS s.2) (l := [k * (b i : Mx n) * k⁻¹]) (by simpa using hY)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : k⁻¹ * (k * (b i : Mx n) * k⁻¹) * k = b i`. Rewrite using `[← mul_assoc, ← mul_assoc, inv_mul_UJ hg, one_mul, mul_assoc, inv_mul_UJ hg, mul_one]`. Simplify using `only [Dw, List.map_cons, List.map_nil, List.foldr_cons, List.foldr_nil, e2] at e`. Use `show σ k (dRep σ (b i) s) ∈ T`. Rewrite using `[← e]`.
-
-Conclude with `hT _ hY _ (h3 k hk s s.2)`. Conclude with `this hw`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isKFin_dRep : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∀ v, IsKFin ε σ v → ∀ X ∈ lieSet ε,

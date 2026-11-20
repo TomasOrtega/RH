@@ -58,9 +58,9 @@ def JABddSSn : Prop := BddClassOp ssnSet
 def JABddSSnStar : Prop := BddClassOp ssnStarSet
 
 /- English proof (translation)
-Unfold `MA.bddSet at hb`. Break down `hb with ((h | h) | h) | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (Or.inl h)`. Conclude with `Or.inr (Or.inr (Or.inl h))`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Prove the second alternative.
 
-Conclude with `Or.inr (Or.inr (Or.inr h))`.
+Prove the second alternative.
 -/
 theorem bddSet_cases (P : M.Par) (L : R.LevelData (MA.A P (MA.DQ P)) P.r) (b : MA.A P (MA.DQ P))
     (hb : b ∈ MA.bddSet P L) :
@@ -73,13 +73,11 @@ theorem bddSet_cases (P : M.Par) (L : R.LevelData (MA.A P (MA.DQ P)) P.r) (b : M
   · exact Or.inr (Or.inr (Or.inr h))
 
 /- English proof (translation)
-Take `⟨K1, hK1, h1⟩` from `h1`. Take `⟨K2, hK2, h2⟩` from `h2`. Take `⟨K3, hK3, h3⟩` from `h3`. Take `⟨K4, hK4, h4⟩` from `h4`. Use `set K := max (max K1 K2) (max K3 K4) with hK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : K1 ≤ K` using `le_trans (le_max_left _ _) (le_max_left _ _)`. Establish `e2 : K2 ≤ K` using `le_trans (le_max_right _ _) (le_max_left _ _)`. Establish `e3 : K3 ≤ K` using `le_trans (le_max_left _ _) (le_max_right _ _)`. Establish `e4 : K4 ≤ K` using `le_trans (le_max_right _ _) (le_max_right _ _)`. Use `⟨K, K, le_trans hK1 e1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL b hb`. Break down `bddSet_cases _ L b hb with h | h | h | h` into its components or cases. Conclude with `h1 K K e1 e1 E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL b h`. Conclude with `h2 K K e2 e2 E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL b h`. Conclude with `h3 K K e3 e3 E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL b h`.
-
-Conclude with `h4 K K e4 e4 E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL b h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem jABddOp_of_bddLeaves (h1 : JABddScal) (h2 : JABddKap) (h3 : JABddSSn) (h4 : JABddSSnStar) : JABddOp := by
   obtain ⟨K1, hK1, h1⟩ := h1
@@ -118,7 +116,7 @@ def JABddOpQQ : Prop :=
           MA.actA (D.parOf S v) b (trJ S T v e J) = trJ S T v e (B.opApply Θ J)
 
 /- English proof (translation)
-Take `⟨Cc, Cb, hCb, h⟩` from `h`. Conclude with `⟨Cc, Cb, hCb, fun E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hGa _ hL => h E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jABddOpQQ_of_jABddOp (h : JABddOp) : JABddOpQQ := by
   obtain ⟨Cc, Cb, hCb, h⟩ := h
@@ -141,7 +139,7 @@ def BddClassOpQQ (cls : ∀ P : M.Par, R.LevelData (MA.A P (MA.DQ P)) P.r → Se
       ∀ b ∈ cls (D.parOf S v) L, BddReal S T v e Cb b
 
 /- English proof (translation)
-Take `⟨K, hK, h⟩` from `h`. Conclude with `⟨K, hK, fun Cc Cb h1 h2 E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hGa _ hL => h Cc Cb h1 h2 E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bddClassOpQQ_of (cls : ∀ P : M.Par, R.LevelData (MA.A P (MA.DQ P)) P.r → Set (MA.A P (MA.DQ P)))
     (h : BddClassOp cls) : BddClassOpQQ cls := by
@@ -156,13 +154,11 @@ def JABddSSnQQ : Prop := BddClassOpQQ ssnSet
 def JABddSSnStarQQ : Prop := BddClassOpQQ ssnStarSet
 
 /- English proof (translation)
-Take `⟨K1, hK1, h1⟩` from `bddClassOpQQ_of scalSet h1`. Take `⟨K2, hK2, h2⟩` from `h2`. Take `⟨K3, hK3, h3⟩` from `h3`. Take `⟨K4, hK4, h4⟩` from `h4`. Use `set K := max (max K1 K2) (max K3 K4) with hK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : K1 ≤ K` using `le_trans (le_max_left _ _) (le_max_left _ _)`. Establish `e2 : K2 ≤ K` using `le_trans (le_max_right _ _) (le_max_left _ _)`. Establish `e3 : K3 ≤ K` using `le_trans (le_max_left _ _) (le_max_right _ _)`. Establish `e4 : K4 ≤ K` using `le_trans (le_max_right _ _) (le_max_right _ _)`. Use `⟨K, K, le_trans hK1 e1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hGa hQQ hL b hb`. Break down `bddSet_cases _ L b hb with h | h | h | h` into its components or cases. Conclude with `h1 K K e1 e1 E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hQQ hL b h`. Conclude with `h2 K K e2 e2 E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hQQ hL b h`. Conclude with `h3 K K e3 e3 E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hQQ hL b h`.
-
-Conclude with `h4 K K e4 e4 E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGa hQQ hL b h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem jABddOpQQ_of_bddLeaves (h1 : JABddScal) (h2 : JABddKapQQ) (h3 : JABddSSnQQ) (h4 : JABddSSnStarQQ) :
     JABddOpQQ := by

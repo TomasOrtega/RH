@@ -14,11 +14,9 @@ open ReciprocityTheory.AnForm.A (IsPsh Mollifier molli coordDiv limsupExt polyMa
 noncomputable section
 
 /- English proof (translation)
-Unfold `RegChartData.trunc limsupExt`. Use `split_ifs with hA`. Use `ReciprocityTheory.AnForm.A.PlurisubharmonicExtension.nebot_diff (S := R.S j) (R.chart j).open_target (hVt hy)` as an intermediate fact. Establish `hbdd : IsBoundedUnder (· ≤ ·) (𝓝[(R.chart j).target \ coordDiv (R.S j)] y) (fun y => max (R.u j y) (-K))`. Use `isBoundedUnder_of_eventually_le (a := B) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [mem_nhdsWithin_of_mem_nhds (hVo.mem_nhds hy), self_mem_nhdsWithin] with y' hy'V hy'`. Establish `h` using `hb y' hy'V`. Simplify using `only [RegChartData.trunc, limsupExt, if_neg hy'.2] at h`. Conclude with `h`. Use `le_limsup_of_le hbdd (fun b hb' => ?_)` and prove the remaining obligations.
-
-Take `⟨y', hy'⟩` from `hb'.exists`. Conclude with `(le_max_right _ _).trans hy'`. Conclude with `le_max_right (R.u j y) (-K)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem trunc_ge_of_bdd {D : ℕ} {X : Type*} [TopologicalSpace X] {A : ReciprocityTheory.AnForm.M.FinHolAtlas D X}
     (R : RegChartData A) (K B : ℝ) (j : Fin R.N) {V : Set (Fin D → ℂ)} (hVo : IsOpen V)
@@ -41,11 +39,11 @@ theorem trunc_ge_of_bdd {D : ℕ} {X : Type*} [TopologicalSpace X] {A : Reciproc
   · exact le_max_right (R.u j y) (-K)
 
 /- English proof (translation)
-Take `⟨-, hi⟩` from `ReciprocityTheory.AnForm.A.phiC hU hφ (isCompact_closedBall z t) hz`. Rewrite using `[ReciprocityTheory.AnForm.A.molli_eq_C ρ ht (subset_refl _)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_mul_const, ReciprocityTheory.AnForm.A.integral_scaled ρ ht, one_mul]`. Use `_ ≤ _ := by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_mono ((ReciprocityTheory.AnForm.A.integrable_scaled ρ ht).mul_const _) (ReciprocityTheory.AnForm.A.integrable_kC ρ ht hi z) fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : ρ.scaled t y = 0`. Simplify using `[hy]`. Use `mul_le_mul_of_nonneg_left ?_ (ReciprocityTheory.AnForm.A.scaled_nonneg ρ ht y)` and prove the remaining obligations. Establish `hmem` using `ReciprocityTheory.AnForm.A.mem_ball_sub ρ ht hy z`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[indicator_of_mem hmem]`. Conclude with `hc _ hmem`.
+A detailed English derivation is pending.
 -/
 theorem le_molli_of_ge {D : ℕ} (ρ : Mollifier D) {U : Set (Fin D → ℂ)} {φ : (Fin D → ℂ) → ℝ}
     (hU : IsOpen U) (hφ : IsPsh U φ) {t c : ℝ} (ht : 0 < t) {z : Fin D → ℂ}
@@ -65,23 +63,21 @@ theorem le_molli_of_ge {D : ℕ} (ρ : Mollifier D) {U : Set (Fin D → ℂ)} {�
       exact hc _ hmem
 
 /- English proof (translation)
-Introduce `X _ _ _ D A R ρ`. Take `⟨δ, B, hδ, hV⟩` from `h X D A R`. Use `choose V hVo hVt hVball hVpsh using hV`. Establish `hcpt : ∀ j, IsCompact (R.chart j '' closure (R.mid j))` using `fun j => isClosed_closure.isCompact.image_of_continuousOn ((R.chart j).continuousOn.mono (R.closure_mid j))`. Establish `himg : ∀ j, R.chart j '' closure (R.mid j) ⊆ (R.chart j).target`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `j _ ⟨x, hx, rfl⟩`. Conclude with `(R.chart j).map_source (R.closure_mid j hx)`. Use `choose r hr hrt using fun j => (hcpt j).exists_cthickening_subset_open (R.chart j).open_target (himg j)`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε, hεr⟩ : ∃ ε : ℝ, 0 < ε ∧ ∀ j, ε ≤ r j := by`. Break down `isEmpty_or_nonempty (Fin R.N) with hN | hN` into its components or cases.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨1, one_pos, fun j => (IsEmpty.false j).elim⟩`. Take `⟨j₀, -, hj₀⟩` from `Finset.univ.exists_min_image r Finset.univ_nonempty`. Conclude with `⟨r j₀, hr j₀, fun j => hj₀ j (Finset.mem_univ j)⟩`. Use `choose Cq hCq using fun j => (hcpt j).exists_bound_of_continuousOn (((R.q_smooth j).continuousOn).mono (himg j))`. Use `⟨max B 0 + ∑ j, |Cq j|, min δ ε, lt_min hδ hε, fun t ht ht₀ => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `j x hx`. Conclude with `(closedBall_subset_cthickening (mem_image_of_mem _ hx) t).trans ((cthickening_mono ((ht₀.trans_le (min_le_right _ _)).le.trans (hεr j)) _).trans (hrt j))`. Introduce `K hK j x hx`. Establish `hxs : x ∈ (R.chart j).source` using `R.closure_mid j (subset_closure hx)`. Take `⟨hpsh, hbd⟩` from `hVpsh j K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htδ : t ≤ δ` using `(ht₀.trans_le (min_le_left _ _)).le`. Establish `hball : closedBall (R.chart j x) t ⊆ V j` using `(closedBall_subset_closedBall htδ).trans (hVball j x hx)`. Establish `hq : |R.q j (R.chart j x)| ≤ ∑ j, |Cq j|`. Establish `h1` using `hCq j (R.chart j x) (mem_image_of_mem _ (subset_closure hx))`. Rewrite `h1` using `[Real.norm_eq_abs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h1.trans ((le_abs_self _).trans (Finset.single_le_sum (f := fun j => |Cq j|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j)))`. Establish `hlow : -K ≤ molli ρ t (R.trunc K j) (R.chart j x)` using `le_molli_of_ge ρ (hVo j) hpsh ht hball fun y hy => trunc_ge_of_bdd R K _ j (hVo j) (hVt j) hbd (hball hy)`. Establish `hup : molli ρ t (R.trunc K j) (R.chart j x) ≤ max B 0`. Establish `h1` using `ReciprocityTheory.AnForm.A.molli_le_polyMax ρ (hVo j) hpsh ht (z := R.chart j x) hball`. Use `h1.trans (ReciprocityTheory.AnForm.A.polyMax_le' ht.le fun y hy => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `(hbd y (hball hy)).trans (max_le_max le_rfl (by linarith))`. Establish `hphReg : R.phReg ρ K t j x = molli ρ t (R.trunc K j) (R.chart j x) - R.q j (R.chart j x)` using `rfl`. Use `⟨?_, ?_, fun hY => ?_⟩` and prove the remaining obligations. Rewrite using `[hphReg]`. Combine the linear relations using `[neg_abs_le (R.q j (R.chart j x)), le_abs_self (R.q j (R.chart j x)), le_max_right B 0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hphReg]`. Combine the linear relations using `[neg_abs_le (R.q j (R.chart j x)), le_abs_self (R.q j (R.chart j x)), le_max_right B 0]`. Establish `hA : R.chart j x ∉ coordDiv (R.S j)` using `(R.mem_Yo j x hxs).1 hY`. Establish `htr : R.trunc K j (R.chart j x) = max (R.u j (R.chart j x)) (-K)`. Simplify using `only [RegChartData.trunc, limsupExt, if_neg hA]`.
-
-Establish `hu : R.u j (R.chart j x) = R.q j (R.chart j x) + R.ph x`. Simplify using `only [RegChartData.u, PotentialCharts.chartFun, (R.chart j).left_inv hxs]`. Establish `hle` using `ReciprocityTheory.AnForm.A.le_molli ρ (hVo j) hpsh ht (z := R.chart j x) hball`. Rewrite using `[hphReg]`. Combine the linear relations using `[le_max_left (R.u j (R.chart j x)) (-K)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ChartMollifiedBounds.proof (h : TruncPsh.Statement) : ChartMollifiedBounds.Statement := by
   intro X _ _ _ D A R ρ

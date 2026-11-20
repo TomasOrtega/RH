@@ -18,21 +18,21 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨m, δ, Δ, s, hΔ, hδu, hs, hd0, ⟨φ⟩⟩` from `hG k _ _ x.rep x.2.rep.smooth x.2.rep.irr hu hg`. Set `y : Fin d → Fin m → IrrGL k` to `fun i j => ((δ j).nu (s j)).nu (((d : ℂ) - 1) / 2 - (i : ℕ))`. Establish `hN : ∀ i, ∑ j, (y i j).1 = (spehFactor x d i).1` using `fun _ => hd0`. Set `Y : Fin (d * m) → IrrGL k` to `fun p => y (finProdFinEquiv.symm p).1 (finProdFinEquiv.symm p).2`. Establish `hM' : ∑ p, (Y p).1 = N`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← hd, ← finProdFinEquiv.sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Y, Equiv.symm_apply_apply]`. Conclude with `hN i`. Set `e1 : ∀ i : Fin d, (spehFactor x d i).rep.Equiv (prodIrr (y i) (hN i))` to `fun i => (x.twEquiv _ (isSmoothChar_absPow _)).symm.trans ((twistEquiv φ _).trans (prodIrrTwistEquiv _ hd0 _ (isSmoothChar_absPow _)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨e2⟩` from `GlobalTheory.T.parabolicInduction_in_stages_product_of_products k d m y (fun i => (spehFactor x d i).1) N hN hd hM'`. Set `E` to `(multiProdEquiv _ e1).trans e2`. Set `Γs : Fin (d * m) → Segment k` to `fun p => ((Δ (finProdFinEquiv.symm p).2).nu (s (finProdFinEquiv.symm p).2)).nu ((((d : ℝ) - 1) / 2 - ((finProdFinEquiv.symm p).1 : ℕ) : ℝ) : ℂ)`. Establish `hcast : ∀ i : ℕ, (((((d : ℝ) - 1) / 2 - i : ℝ)) : ℂ) = ((d : ℂ) - 1) / 2 - (i : ℕ)` using `fun i => by push_cast; ring`. Establish `hL : ∀ p, IsLSeg (Γs p) (Y p).rep` using `fun p => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Γs, Y, y, hcast]`. Conclude with `GlobalTheory.isLSeg_nu (GlobalTheory.isLSeg_nu (hΔ _) _) _`. Establish `hord : ∀ p p' : Fin (d * m), p < p' → ¬ (Γs p).Precedes (Γs p')`. Introduce `p p' hpp' hP`. Take `⟨⟨i, j⟩, rfl⟩` from `finProdFinEquiv.surjective p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨i', j'⟩, rfl⟩` from `finProdFinEquiv.surjective p'`. Establish `hii : (i : ℕ) ≤ i'`. Assume the negation of the conclusion as `hlt`. Establish `h1 : (i' : ℕ) + 1 ≤ i` using `by omega`. Establish `h2` using `Nat.mul_le_mul_left m h1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `Fin.lt_def.1 hpp'`. Simplify using `only [finProdFinEquiv_apply_val] at h3`. Use `j.2` as an intermediate fact. Use `j'.2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Γs, Equiv.symm_apply_apply, GlobalTheory.segment_nu_nu] at hP`. Establish `key` using `PositivityTheory.RgUd.UOrder.add_one_le_of_precedes_u k (δ j) (δ j') (Δ j) (Δ j') (hΔ j) (hδu j) (hΔ j') (hδu j') (s j + (((d : ℝ) - 1) / 2 - (i : ℕ))) (s j' + (((d : ℝ) - 1) / 2 - (i' : ℕ))) (by push_cast at hP ⊢; exact hP)`. Establish `hi : ((i : ℕ) : ℝ) ≤ (i' : ℕ)` using `by exact_mod_cast hii`. Use `abs_lt.1 (hs j)` as an intermediate fact. Use `abs_lt.1 (hs j')` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLF : LFactors (↑((List.range d).flatMap fun i : ℕ => (List.ofFn fun j => (Δ j).nu (s j)).map fun Γ => Γ.nu ((((d : ℝ) - 1) / 2 - i : ℝ) : ℂ))) Y` using `⟨Γs, ⟨GlobalTheory.univ_map_speh_segments d m Δ s, hord⟩, hL⟩`. Take `⟨π, hπ⟩` from `hSC k _ (d * m) N Y hM' hLF`. Conclude with `⟨_, _, _, π.ρ, hπ.of_equiv (.refl _) E.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem spehCosocle_uc (hG : PositivityTheory.RgUd.Exp.GenUnitCC) (hSC : GlobalTheory.Published.StandardCosocleGL)
     [CharZero k] (x : GlobalTheory.LocGL.IrrGL k) (hg : GlobalTheory.LocGL.IsGeneric x.rep)

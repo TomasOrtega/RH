@@ -13,7 +13,7 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Introduce `R R' _ _ _ f A x φ`. Use `⟨fun h => ⟨?_, h.1, LBIso.symm h.2⟩, fun h => ⟨h.2.1, LBIso.symm h.2.2⟩⟩` and prove the remaining obligations. Conclude with `H1.dim_unique _ x.P.smoothDim ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1.1 A.smoothDim) (eSec x.P.A (Classical.arbitrary (PrimeSpectrum R')))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isFibreOf_iff_isPolFibre : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Nontrivial R'] (f : R →+* R') (A : Out.PolAV (Sp R)) (x : KeyIn R') (φ : x.P.A.left ⟶ A.A.left), IsFibreOf A x (spMap f) φ ↔ IsPolFibre f A x.P φ := by
   intro R R' _ _ _ f A x φ

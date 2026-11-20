@@ -29,15 +29,15 @@ open Module
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hg : Good (D.nbr i w hw).Kw 1 C.LL` using `hC.good_one hl (le_trans (le_inf le_rfl hur) le_sup_left)`. Establish `hA` using `caseA_of_unram (D.loc (D.nd.l i)) (HW (D.nd.l i)) hg hur hl`. Introduce `V1 _ _ _ _ _ _ _ _ _ _ _ ρ1 L1 hc1 hs1 V2 _ _ _ _ _ _ _ _ _ _ _ ρ2 L2 hc2 hs2 F hF'`. Set `T₁ : LocLat (Br.G D.nbr i w hw) ℚ_[D.nd.l i] ↥C.LL.1 ↥(OL C.LL)` to `{ V := V1, ρ := ρ1, cont := hc1, L := L1 }`. Set `T₂ : LocLat (Br.G D.nbr i w hw) ℚ_[D.nd.l i] ↥C.LL.1 ↥(OL C.LL)` to `{ V := V2, ρ := ρ2, cont := hc2, L := L2 }`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨hcr1, hj1⟩` from `subquot_crys (PD := Br.PD D.loc D.nbr i w hw) Ms hc hF (S := fun _ => Set.Icc (-(M : ℤ)) h) hcr hS T₁ hs1`. Take `⟨hcr2, -⟩` from `subquot_crys (PD := Br.PD D.loc D.nbr i w hw) Ms hc hF (S := fun _ => Set.Icc (-(M : ℤ)) h) hcr hS T₂ hs2`. Establish `hJ : Formalism.MainNotions.LiftingTheory.JumpsLet ((HW (D.nd.l i)).W (D.nbr i w hw).Kw 1 C.LL hg) T₁ (fun _ => M) (fun _ => h)` using `fun _ τ _ => hj1 τ`. Establish `h1` using `h54.1 (D.nd.l i) (D.nbr i w hw).Kw 1 C.LL hg hA T₁ T₂ F (fun _ => M) (fun _ => h) ⟨hcr1, hcr2, hF'⟩ hJ`. Establish `h2` using `(h54.2.2.2.1 (D.nd.l i) (D.nbr i w hw).Kw 1 C.LL hg T₁ (fun _ => M) (fun _ => h) hcr1 hJ).1 hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `LiftF_mono _ F ?_ h1` and prove the remaining obligations. Establish `hp : (((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw).p : ℝ) = (D.nd.l i : ℝ)`. Rewrite using `[(D.loc (D.nd.l i)).PD_p]`. Establish `hl1 : (1 : ℝ) < (D.nd.l i : ℝ)` using `by exact_mod_cast (D.nd.lPrime i).out.one_lt`. Establish `hH : ((Formalism.MainNotions.LiftingTheory.Hmax (Module.finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw)) (fun _ => M) (fun _ => h) : ℕ) : ℝ) ≤ ((M + h : ℕ) : ℝ)` using `by exact_mod_cast Hmax_const_le _ M h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[hp]`. Establish `h3 : CA * (1 + ((Formalism.MainNotions.LiftingTheory.Hmax (Module.finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw)) (fun _ => M) (fun _ => h) : ℕ) : ℝ) / (D.nd.l i : ℝ) + (1 + Real.logb (D.nd.l i) (((Formalism.MainNotions.LiftingTheory.Hmax (Module.finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i …`. Apply `mul_le_mul_of_nonneg_left _ hCA` to reduce the goal to its premises. Establish `ha` using `div_le_div_of_nonneg_right hH (le_of_lt (lt_trans zero_lt_one hl1))`. Establish `hb` using `Real.logb_le_logb_of_le hl1 (by positivity) (add_le_add_left hH 1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(h2.trans (h3.trans he))` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lift_of_window (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : Formalism.MainNotions.TruncatedSeriesCountingIdentities.CoefExt D i w hw) (hC : C.IsGood)
@@ -87,7 +87,7 @@ theorem lift_of_window (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
   exact_mod_cast (h2.trans (h3.trans he))
 
 /- English proof (translation)
-Unfold `eA`. Conclude with `Nat.le_ceil _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem shape_le_eA (L : SizeData₂ D) (CA : ℝ) (l : ℕ) :
     CA * (1 + ((Formalism.MainNotions.N.hN L + Formalism.MainNotions.N.hN L : ℕ) : ℝ) / (l : ℝ) +
@@ -96,9 +96,9 @@ theorem shape_le_eA (L : SizeData₂ D) (CA : ℝ) (l : ℕ) :
   exact Nat.le_ceil _
 
 /- English proof (translation)
-Establish `h1 : a.natAbs ≤ Formalism.MainNotions.N.hN L`. Unfold `Formalism.MainNotions.N.hN`. Apply `Nat.le_floor` to reduce the goal to its premises. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`. Conclude with `ha`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> omega`.
+A detailed English derivation is pending.
 -/
 theorem mem_window (L : SizeData₂ D) (a : ℤ) (ha : |(a : ℝ)| ≤ Formalism.MainNotions.TwistedPlaces.hB L) :
     a ∈ Set.Icc (-(Formalism.MainNotions.N.hN L : ℤ)) (Formalism.MainNotions.N.hN L) := by
@@ -116,25 +116,23 @@ end
 namespace GlobalTheory.LiftExpSplit
 
 /- English proof (translation)
-Introduce `hP D L P nch HW F Cm X C₂ hS i hTw hg hR hsp`. Establish `hAJ : AdmissibleParameterJ.AdmJ L` using `hS.facts.admJ L hS.par`. Establish `hJ : AdmissibleParameterJ.JumpConditions L` using `GlobalTheory.JumpStatement.holds_all D L hAJ`. Take `⟨⟨ep, hA⟩, -, -, -, he, -, -⟩` from `hJ`. Establish `hgood : ∀ i, GoodR D.nd i (X.r i)` using `hS.canon.fam.good`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAA : SumRepresentations.AdmA D` using `hS.facts.toCore.admA`. Establish `hUC` using `GlobalTheory.HubX.unrCrysAtRangePrime hP.font D L X hgood hAA.1 hAA.2.2.2.1 hAA.2.2.2.2.2.2 hS.facts.g2.1 hS.facts.block hS.facts.muUnr i hTw hg hR hsp`. Establish `hg0 : D.nd.l i ≠ D.host.g 0` using `fun h => hg (by simp [TwistedPlaces.gset, h])`. Establish `hg1 : D.nd.l i ≠ D.host.g 1` using `fun h => hg (by simp [TwistedPlaces.gset, h])`. Establish `hG2 : EmbeddingTypes.admG2 i (X.r i) ep` using `GlobalTheory.T.admG2_twist_setup hP D L P nch HW F Cm X C₂ hS ep hA i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : D.nd.l i ≠ 2` using `fun h => hR.1 (Or.inl (h ▸ D.host.two_mem_small))`. Establish `heS : X.eS i = eA L 23 (D.nd.l i)` using `hS.canon.data.eS i hsp`. Establish `h54 : LiftingTheory.LiftTheoremAllCases D HW F 23 32 32` using `(GlobalTheory.T.localConstants_from_admitted_local_Galois_statements hP.bk hP.tate hP.euler D HW F Cm).2.2.2.2.2.2.2`. Establish `hcont : TruncatedSeriesCountingIdentities.FamilyContinuous (D` using `D) i (X.r i) := continuous_family_of D i (X.r i) (hgood i)`. Establish `hFont : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL (D` using `D) i := GlobalTheory.T.fontaineAtPlacesOverL D i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj` using `D.nd.j_range i`. Establish `hhB : AdmissibleParameterJ.hJ L + 2 = Formalism.MainNotions.TwistedPlaces.hB L`. Unfold `AdmissibleParameterJ.hJ Formalism.MainNotions.TwistedPlaces.hB`. Expand and normalize the polynomial expressions, which then agree. Establish `hwinT : ∀ w (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (x : D.nd.X i) τ, JumpsInV (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i (X.r i) x))) τ (Set.Icc (-(Formalism.MainNotions.N.h …`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `w hw C x τ a ha`. Take `⟨g, ρ, -, hx, -⟩` from `hA i (X.r i) (hgood i) w hw C τ`. Establish `hq` using `(hx x a).1.mp ha`. Establish `hb` using `he.1 (D.nd.j i) hj.1 hj.2 ρ _ _ hq`. Establish `hb2` using `he.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mem_window L a` to reduce the goal to its premises. Establish `hc : (((a : ℚ) : ℝ)) = (a : ℝ)` using `by push_cast; rfl`. Rewrite `hb` using `[hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hwinD : ∀ w (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (x : D.nd.X i) τ, JumpsInV (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rDuO D.nd i (X.r i) x))) τ (Set.Icc (-(Formalism.MainNotions.N.h …`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `w hw C x τ a ha`. Take `⟨g, ρ, -, hx, -⟩` from `hA i (X.r i) (hgood i) w hw C τ`. Establish `hq` using `(hx x a).2.2.1.mp ha`. Establish `hb` using `he.1 (D.nd.j i) hj.1 hj.2 ρ _ _ hq`. Establish `hb2` using `he.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mem_window L a` to reduce the goal to its premises. Establish `hc : (((-(a : ℚ) - 1 : ℚ)) : ℝ) = -(a : ℝ) - 1` using `by push_cast; rfl`. Rewrite `hb` using `[hc]`. Rewrite `hb`, the goal using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [hb.1, hb.2]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[heS]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `w hw _ C hC`. Conclude with `lift_of_window i w hw C hC (hUC.1 w hw) h2 (fun x => TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i (X.r i) x)) (fun x v => locC_cont D i _ (rTwO_cont D i (X.r i) hcont x) w hw C v) (hFont w hw C) (Formalism.MainNotions.N.hN L) (Formalism.MainNotions.N.hN L) (fun x => (hG2 …`. Introduce `w hw _ C hC`.
-
-Conclude with `lift_of_window i w hw C hC (hUC.1 w hw) h2 (fun x => TruncatedSeriesCountingIdentities.locC C (rDuO D.nd i (X.r i) x)) (fun x v => locC_cont D i _ (rDuO_cont i (X.r i) hcont x) w hw C v) (hFont w hw C) (Formalism.MainNotions.N.hN L) (Formalism.MainNotions.N.hN L) (fun x => hUC.2 …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : Hypotheses₂ → ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (X : KillingConditions.HubData D) (C₂ : ℝ), Setup L nch HW X C₂ → ∀ i, TwistedPlaces.TwLoc D i → D.nd.l i ∉ TwistedPlaces.gset D → KillingConditions.RangeAD L X.exc (D.nd.l i) → TwistedPlaces.SplitK D (D.nd.l i) → EmbeddingTypes.LiftExponentColumn i (X.r i) (X.dc i) (X.eS i) ∧ EmbeddingTypes.LiftExponentDualPlaces i (X.r i) (X.dc i) (X.eS i) := by
   intro hP D L P nch HW F Cm X C₂ hS i hTw hg hR hsp

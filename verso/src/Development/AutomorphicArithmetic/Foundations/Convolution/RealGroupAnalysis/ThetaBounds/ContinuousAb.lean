@@ -8,7 +8,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Unfold `wt`. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 private theorem wt_nonneg' {K : Type} [Field K] [NumberField K]
     (S : Set (Fin 4 → FiniteAdeleRing (𝓞 K) K)) (N : ℕ) (v : V4 K) : 0 ≤ wt S N v := by
@@ -18,28 +18,28 @@ private theorem wt_nonneg' {K : Type} [Field K] [NumberField K]
   · exact le_rfl
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp (IdeleGroup.continuous_ideleModule (K := K))`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_ab {K : Type} [Field K] [NumberField K] :
     Continuous (ab : (A K)ˣ → ℝ) :=
   continuous_subtype_val.comp (IdeleGroup.continuous_ideleModule (K := K))
 
 /- English proof (translation)
-The claim follows from `(IdeleGroup.ideleModule K a).2`.
+A detailed English derivation is pending.
 -/
 private theorem ab_pos {K : Type} [Field K] [NumberField K] (a : (A K)ˣ) : 0 < ab a :=
   (IdeleGroup.ideleModule K a).2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W ι s Φ hΦ C hC`. Take `⟨K, hK, hΦ⟩` from `hΦ`. Take `⟨ρ, hρ, hact, hnu, -, -⟩` from `actCont F E D`. Set `r : GL (Fin 2) (A E) → GL (Fin 4) (A F)` to `fun h => ρ h⁻¹`. Establish `hr : Continuous r` using `hρ.comp continuous_inv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨K', hK', hlin⟩` from `wtLin F (r '' C) (hC.image hr) K hK`. Set `β : GL (Fin 2) (A E) → ℝ` to `fun h => (ab (nu F h))⁻¹`. Establish `hβ : Continuous β` using `(continuous_ab.comp hnu).inv₀ fun h => (ab_pos _).ne'`. Take `⟨A₀, hA₀⟩` from `(hC.image hβ).bddAbove`. Use `⟨K', hK', fun N => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨B, hB⟩` from `hΦ N`. Take `⟨B', hB'⟩` from `hlin N`. Use `⟨|A₀| * (|B| * B'), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨h, i⟩ ⟨hh, hi⟩ v`. Establish `hβ0 : 0 ≤ β h` using `(inv_pos.2 (ab_pos _)).le`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hβA : β h ≤ |A₀|` using `(hA₀ ⟨h, hh, rfl⟩).trans (le_abs_self _)`. Establish `hnorm : ‖(W.L h (Φ i)).1 v‖ = β h * ‖(Φ i).1 (D.act h⁻¹ v)‖`. Rewrite using `[W.L_apply, norm_mul, Complex.norm_real, Real.norm_of_nonneg hβ0]`. Establish `h1 : ‖(Φ i).1 (D.act h⁻¹ v)‖ ≤ |B| * (B' * wt K' N v)`. Establish `h2 : wt K N ((r h).val *ᵥ v) ≤ B' * wt K' N v` using `hB' (r h) ⟨h, hh, rfl⟩ v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hB i hi (D.act h⁻¹ v)`. Rewrite `h3`, the goal using `[hact h⁻¹ v]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.lDom :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), LDom W := by

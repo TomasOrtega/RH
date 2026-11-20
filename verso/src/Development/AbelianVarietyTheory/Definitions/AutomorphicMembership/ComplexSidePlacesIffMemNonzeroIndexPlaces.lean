@@ -45,7 +45,7 @@ def restrict (hH : Holds z.R z.F) (Wt' : Set X.B.places.Pl) (h : Wt' ⊆ Wt) (hc
   Ks_le := z.Ks_le
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem restrict_Xg_tr_core (hH : Holds z.R z.F) (h : Wt' ⊆ Wt) (hc : ConjStable X Wt') :
     (z.restrict hH Wt' h hc).Xg = z.Xg ∧ (z.restrict hH Wt' h hc).tr = z.tr ∧ (z.restrict hH Wt' h hc).core = z.core := ⟨rfl, rfl, rfl⟩
@@ -56,7 +56,7 @@ Both sides reduce to the same expression.
 theorem restrict_R (hH : Holds z.R z.F) (h : Wt' ⊆ Wt) (hc : ConjStable X Wt') : (z.restrict hH Wt' h hc).R = z.resR h := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem restrictRealData_constant_error (h : Wt' ⊆ Wt) : (z.resR h).kap = z.R.kap ∧ (z.resR h).err0 = z.R.err0 := ⟨rfl, rfl⟩
 
@@ -69,12 +69,12 @@ theorem restrictRealData_lift_scalar (h : Wt' ⊆ Wt) (i : Fin X.toD7.R.m) (t : 
     (z.resR h).lam3 i t = z.R.lam3 i (inclU I (usedOf_mono I T h) t) := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem resR_mu_twPl (h : Wt' ⊆ Wt) : (z.resR h).mu = z.resMu h ∧ (z.resR h).twPl = z.resTw Wt' := ⟨rfl, rfl⟩
 
 /- English proof (translation)
-The claim follows from `z.holds_resR h hH`.
+A detailed English derivation is pending.
 -/
 theorem restrict_holds (hH : Holds z.R z.F) (h : Wt' ⊆ Wt) (hc : ConjStable X Wt') :
     Holds (z.restrict hH Wt' h hc).R (z.restrict hH Wt' h hc).F := z.holds_resR h hH
@@ -82,14 +82,14 @@ theorem restrict_holds (hH : Holds z.R z.F) (h : Wt' ⊆ Wt) (hc : ConjStable X 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `Res.inGeo_iff (A := (famR X I hX (usedOf I T Wt) z.Xg z.tr).A) (f := inclU I (usedOf_mono I T h)) (μ := mu0F (X := X.B.fields) (tuOf I (usedOf I T Wt'))) (R := z.R.toRealDat) (z.resMu h) (z.resTw Wt') (g := z.geo)`.
+A detailed English derivation is pending.
 -/
 theorem inGeo_resGeo_iff (h : Wt' ⊆ Wt) : GlobalTheory.RealGeo.InGeo (z.resGeo h) ↔ GlobalTheory.RealGeo.InGeo z.geo :=
   Res.inGeo_iff (A := (famR X I hX (usedOf I T Wt) z.Xg z.tr).A) (f := inclU I (usedOf_mono I T h))
     (μ := mu0F (X := X.B.fields) (tuOf I (usedOf I T Wt'))) (R := z.R.toRealDat) (z.resMu h) (z.resTw Wt') (g := z.geo)
 
 /- English proof (translation)
-The claim follows from `z.inGeo_resGeo_iff h`.
+A detailed English derivation is pending.
 -/
 theorem restrict_inGeo_iff (hH : Holds z.R z.F) (h : Wt' ⊆ Wt) (hc : ConjStable X Wt') :
     GlobalTheory.RealGeo.InGeo (z.restrict hH Wt' h hc).geo ↔ GlobalTheory.RealGeo.InGeo z.geo := z.inGeo_resGeo_iff h
@@ -97,9 +97,9 @@ theorem restrict_inGeo_iff (hH : Holds z.R z.F) (h : Wt' ⊆ Wt) (hc : ConjStabl
 variable (F0 : HeightOneSpectrum (𝓞 X.toD7.what₂.LL) → Fin X.toD7.R.m → ℝ)
 
 /- English proof (translation)
-Use `exists_congr fun j => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨w', rfl | rfl, h⟩`. Conclude with `Or.inl h`. Conclude with `Or.inr h`. Introduce and unpack `(h | h)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, Or.inl rfl, h⟩`. Conclude with `⟨_, Or.inr rfl, h⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem mem_nonzero_index_places_iff_at_place_or_conjugate (w : X.B.places.Pl) :
     w ∈ z.W1 F0 ↔ ∃ j, NzAt z.R z.F F0 j (plB X w) ∨ NzAt z.R z.F F0 j (Formalism.DivisionValues.conjPl (plB X w)) := by
@@ -112,7 +112,7 @@ theorem mem_nonzero_index_places_iff_at_place_or_conjugate (w : X.B.places.Pl) :
     · exact ⟨_, Or.inr rfl, h⟩
 
 /- English proof (translation)
-Introduce `w hw`. Rewrite `hw`, the goal using `[mem_nonzero_index_places_iff_at_place_or_conjugate]`. Rewrite using `[plB_conj, Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]`. Conclude with `hw.imp fun _ h => h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonzero_index_places_conj_stable : ConjStable X (z.W1 F0) := by
   intro w hw
@@ -123,7 +123,7 @@ theorem nonzero_index_places_conj_stable : ConjStable X (z.W1 F0) := by
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Rewrite using `[columnChoiceReferenceFace_eq_bareFaceTwoLevels, columnChoiceReferenceFace_eq_bareFaceTwoLevels]`. Conclude with `nzAt_res (A3 := famR X I hX (usedOf I T Wt) z.Xg z.tr) (Ks := z.core.Q.c.F) (f := inclU I (usedOf_mono I T h)) (μ := mu0F (X := X.B.fields) (tuOf I (usedOf I T Wt'))) z.R (z.resMu h) (z.resTw Wt') (lev0 I) (chr0 I) (lev1 I) (chr1 I) F0 j v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nzAt_resR (h : Wt' ⊆ Wt) (j : Fin X.toD7.R.m) (v : HeightOneSpectrum (𝓞 X.toD7.what₂.LL)) :
     NzAt (z.resR h) (face0 X I hX (usedOf I T Wt') z.Xg z.tr) F0 j v ↔ NzAt z.R (face0 X I hX (usedOf I T Wt) z.Xg z.tr) F0 j v := by
@@ -132,7 +132,7 @@ theorem nzAt_resR (h : Wt' ⊆ Wt) (j : Fin X.toD7.R.m) (v : HeightOneSpectrum (
     (μ := mu0F (X := X.B.fields) (tuOf I (usedOf I T Wt'))) z.R (z.resMu h) (z.resTw Wt') (lev0 I) (chr0 I) (lev1 I) (chr1 I) F0 j v
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[mem_nonzero_index_places_iff_at_place_or_conjugate, mem_nonzero_index_places_iff_at_place_or_conjugate]`. Conclude with `exists_congr fun j => or_congr (z.nzAt_resR F0 h j _) (z.nzAt_resR F0 h j _)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrict_nonzero_places_eq (hH : Holds z.R z.F) (h : Wt' ⊆ Wt) (hc : ConjStable X Wt') : (z.restrict hH Wt' h hc).W1 F0 = z.W1 F0 := by
   ext w
@@ -140,7 +140,7 @@ theorem restrict_nonzero_places_eq (hH : Holds z.R z.F) (h : Wt' ⊆ Wt) (hc : C
   exact exists_congr fun j => or_congr (z.nzAt_resR F0 h j _) (z.nzAt_resR F0 h j _)
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Conclude with `(complexSide_nonzeroIndexPlaces_iff z.R z.F kap lam err Dc Sp Zsc N (plB X w)).trans (z.mem_nonzero_index_places_iff_at_place_or_conjugate N.F0 w).symm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem complex_side_places_iff_mem_nonzero_index_places (kap lam err) (Dc Sp Zsc) (N : IndefNum (famR X I hX (usedOf I T Wt) z.Xg z.tr).fam3.base3) (hN : N.F0 = F0)
     (w : X.B.places.Pl) :
@@ -149,7 +149,7 @@ theorem complex_side_places_iff_mem_nonzero_index_places (kap lam err) (Dc Sp Zs
   exact (complexSide_nonzeroIndexPlaces_iff z.R z.F kap lam err Dc Sp Zsc N (plB X w)).trans (z.mem_nonzero_index_places_iff_at_place_or_conjugate N.F0 w).symm
 
 /- English proof (translation)
-The claim follows from `z.complex_side_places_iff_mem_nonzero_index_places F0 kap lam err Dc Sp Zsc _ ((complexSide_numberContents_eq_scaleAtSubspaces z.R z.F kap lam err Dc Sp Zsc C CH).trans hZ) w`.
+A detailed English derivation is pending.
 -/
 theorem complex_side_face_numbers_iff_mem_nonzero_index_places (kap lam err) (Dc Sp Zsc) (C CH : ℝ) (hZ : (Zsc (zsOf z.R z.F)).F0 = F0) (w : X.B.places.Pl) :
     (((z.R.updS kap lam).withErr err).toCx3 (reFace z.F Dc Sp Zsc)).W1 (reFace z.F Dc Sp Zsc).cr
@@ -157,7 +157,7 @@ theorem complex_side_face_numbers_iff_mem_nonzero_index_places (kap lam err) (Dc
   z.complex_side_places_iff_mem_nonzero_index_places F0 kap lam err Dc Sp Zsc _ ((complexSide_numberContents_eq_scaleAtSubspaces z.R z.F kap lam err Dc Sp Zsc C CH).trans hZ) w
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `(plB X).surjective v`. Conclude with `(z.plB_mem_twPl w).trans ((Set.ext_iff.1 hW w).symm.trans (z.complex_side_face_numbers_iff_mem_nonzero_index_places F0 kap lam err Dc Sp Zsc C CH hZ w).symm)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem twisted_places_eq_complex_side_of_eq_nonzero_index (hW : z.W1 F0 = Wt) (kap lam err) (Dc Sp Zsc) (C CH : ℝ) (hZ : (Zsc (zsOf z.R z.F)).F0 = F0)
     (v : HeightOneSpectrum (𝓞 X.toD7.what₂.LL)) :
@@ -170,13 +170,13 @@ theorem twisted_places_eq_complex_side_of_eq_nonzero_index (hW : z.W1 F0 = Wt) (
 def restrictNonzero (hH : Holds z.R z.F) (h : z.W1 F0 ⊆ Wt) : Dat X I hX T (z.W1 F0) := z.restrict hH (z.W1 F0) h (z.nonzero_index_places_conj_stable F0)
 
 /- English proof (translation)
-The claim follows from `z.restrict_nonzero_places_eq F0 hH h (z.nonzero_index_places_conj_stable F0)`.
+A detailed English derivation is pending.
 -/
 theorem restrictNonzero_nonzero_places (hH : Holds z.R z.F) (h : z.W1 F0 ⊆ Wt) : (z.restrictNonzero F0 hH h).W1 F0 = z.W1 F0 :=
   z.restrict_nonzero_places_eq F0 hH h (z.nonzero_index_places_conj_stable F0)
 
 /- English proof (translation)
-Rewrite using `[restrictNonzero_nonzero_places]`. Conclude with `(z.restrictNonzero F0 hH h).plB_mem_twPl w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictNonzero_mem_twisted_iff (hH : Holds z.R z.F) (h : z.W1 F0 ⊆ Wt) (w : X.B.places.Pl) :
     X.toD7.plEq w ∈ (z.restrictNonzero F0 hH h).R.twPl ↔ w ∈ (z.restrictNonzero F0 hH h).W1 F0 := by
@@ -184,19 +184,19 @@ theorem restrictNonzero_mem_twisted_iff (hH : Holds z.R z.F) (h : z.W1 F0 ⊆ Wt
   exact (z.restrictNonzero F0 hH h).plB_mem_twPl w
 
 /- English proof (translation)
-The claim follows from `z.restrict_holds hH h (z.nonzero_index_places_conj_stable F0)`.
+A detailed English derivation is pending.
 -/
 theorem restrictNonzero_holds (hH : Holds z.R z.F) (h : z.W1 F0 ⊆ Wt) : Holds (z.restrictNonzero F0 hH h).R (z.restrictNonzero F0 hH h).F :=
   z.restrict_holds hH h (z.nonzero_index_places_conj_stable F0)
 
 /- English proof (translation)
-The claim follows from `z.restrict_inGeo_iff hH h (z.nonzero_index_places_conj_stable F0)`.
+A detailed English derivation is pending.
 -/
 theorem restrictNonzero_geometry_iff (hH : Holds z.R z.F) (h : z.W1 F0 ⊆ Wt) :
     GlobalTheory.RealGeo.InGeo (z.restrictNonzero F0 hH h).geo ↔ GlobalTheory.RealGeo.InGeo z.geo := z.restrict_inGeo_iff hH h (z.nonzero_index_places_conj_stable F0)
 
 /- English proof (translation)
-The claim follows from `(z.restrictNonzero F0 hH h).twisted_places_eq_complex_side_of_eq_nonzero_index F0 (z.restrictNonzero_nonzero_places F0 hH h) kap lam err Dc Sp Zsc C CH hZ v`.
+A detailed English derivation is pending.
 -/
 theorem restrictNonzero_twisted_iff_complex (hH : Holds z.R z.F) (h : z.W1 F0 ⊆ Wt) (kap lam err) (Dc Sp Zsc) (C CH : ℝ)
     (hZ : (Zsc (zsOf (z.restrictNonzero F0 hH h).R (z.restrictNonzero F0 hH h).F)).F0 = F0) (v : HeightOneSpectrum (𝓞 X.toD7.what₂.LL)) :
@@ -230,7 +230,7 @@ section Ex
 variable (e : z.R.toRealDat.ExAt) (h : Wt' ⊆ Wt) (hc : ConjStable X Wt')
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem restrictE_Xg_tr_core :
     (z.restrictE e Wt' h hc).Xg = z.Xg ∧ (z.restrictE e Wt' h hc).tr = z.tr ∧ (z.restrictE e Wt' h hc).core = z.core := ⟨rfl, rfl, rfl⟩
@@ -243,7 +243,7 @@ theorem restrictE_R : (z.restrictE e Wt' h hc).R = (z.resR h).updS (Res.kapNew (
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `z.restrictRealData_lift_scalar h i t`.
+A detailed English derivation is pending.
 -/
 theorem restrictOfExists_lift_scalar (i : Fin X.toD7.R.m) (t : TupU I (usedOf I T Wt')) :
     (z.restrictE e Wt' h hc).R.lam3 i t = z.R.lam3 i (inclU I (usedOf_mono I T h) t) := z.restrictRealData_lift_scalar h i t
@@ -251,39 +251,39 @@ theorem restrictOfExists_lift_scalar (i : Fin X.toD7.R.m) (t : TupU I (usedOf I 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem restrictOfExists_error_tuples_twisted : (z.restrictE e Wt' h hc).R.err0 = z.R.err0 ∧ (z.restrictE e Wt' h hc).R.mu = z.resMu h ∧
     (z.restrictE e Wt' h hc).R.twPl = z.resTw Wt' := ⟨rfl, rfl, rfl⟩
 
 /- English proof (translation)
-The claim follows from `z.resRE_of_thmB h hB`.
+A detailed English derivation is pending.
 -/
 theorem restrictE_R_of_thmB (hB : z.R.PThmB) : (z.restrictE e Wt' h hc).R = z.resR h := z.resRE_of_thmB h hB
 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `(Res.kapNew_of_thmB (z.resR h) (z.thmB_resR h hB)).trans (z.restrictRealData_constant_error h).1`.
+A detailed English derivation is pending.
 -/
 theorem restrictE_kap (hB : z.R.PThmB) : (z.restrictE e Wt' h hc).R.kap = z.R.kap :=
   (Res.kapNew_of_thmB (z.resR h) (z.thmB_resR h hB)).trans (z.restrictRealData_constant_error h).1
 
 /- English proof (translation)
-The claim follows from `z.resRE_of_thmB h hH.prim.thmB`.
+A detailed English derivation is pending.
 -/
 theorem restrictE_R_eq_restrict (hH : Holds z.R z.F) : (z.restrictE e Wt' h hc).R = (z.restrict hH Wt' h hc).R :=
   z.resRE_of_thmB h hH.prim.thmB
 
 /- English proof (translation)
-The claim follows from `z.exAt_resRE h e`.
+A detailed English derivation is pending.
 -/
 theorem restrictE_exAt : (z.restrictE e Wt' h hc).R.toRealDat.ExAt := z.exAt_resRE h e
 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Rewrite using `[z.restrictE_R_of_thmB e h hc hH.prim.thmB]`. Conclude with `z.holds_resR h hH`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictE_holds (hH : Holds z.R z.F) : Holds (z.restrictE e Wt' h hc).R (z.restrictE e Wt' h hc).F := by
   rw [z.restrictE_R_of_thmB e h hc hH.prim.thmB]
@@ -292,7 +292,7 @@ theorem restrictE_holds (hH : Holds z.R z.F) : Holds (z.restrictE e Wt' h hc).R 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `(Res.inGeo_geoScal_iff (z.resGeo h) (Res.kapNew (z.resR h)) (z.resR h).lam (z.resR h).err0).trans (z.inGeo_resGeo_iff h)`.
+A detailed English derivation is pending.
 -/
 theorem restrictE_inGeo_iff : GlobalTheory.RealGeo.InGeo (z.restrictE e Wt' h hc).geo ↔ GlobalTheory.RealGeo.InGeo z.geo :=
   (Res.inGeo_geoScal_iff (z.resGeo h) (Res.kapNew (z.resR h)) (z.resR h).lam (z.resR h).err0).trans (z.inGeo_resGeo_iff h)
@@ -300,7 +300,7 @@ theorem restrictE_inGeo_iff : GlobalTheory.RealGeo.InGeo (z.restrictE e Wt' h hc
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[mem_nonzero_index_places_iff_at_place_or_conjugate, mem_nonzero_index_places_iff_at_place_or_conjugate]`. Establish `key : ∀ j v, NzAt ((z.resR h).updS (Res.kapNew (z.resR h)) (z.resR h).lam3) (face0 X I hX (usedOf I T Wt') z.Xg z.tr) F0 j v ↔ NzAt z.R z.F F0 j v` using `fun j v => (Res.nzAt_scal _ _ _ _ F0 j v).trans (z.nzAt_resR F0 h j v)`. Conclude with `exists_congr fun j => or_congr (key j _) (key j _)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem restrictOfExists_nonzero_places : (z.restrictE e Wt' h hc).W1 F0 = z.W1 F0 := by
   ext w
@@ -312,7 +312,7 @@ theorem restrictOfExists_nonzero_places : (z.restrictE e Wt' h hc).W1 F0 = z.W1 
 end Ex
 
 /- English proof (translation)
-The claim follows from `z.exAt_resR h hH.aux.ex`.
+A detailed English derivation is pending.
 -/
 theorem restrict_exAt (hH : Holds z.R z.F) (h : Wt' ⊆ Wt) (hc : ConjStable X Wt') : (z.restrict hH Wt' h hc).R.toRealDat.ExAt :=
   z.exAt_resR h hH.aux.ex
@@ -325,18 +325,18 @@ section ExW
 variable (e : z.R.toRealDat.ExAt) (h : z.W1 F0 ⊆ Wt)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem restrictNonzeroOfExists_characters_eq :
     (z.restrictNonzeroOfExists F0 e h).Xg = z.Xg ∧ (z.restrictNonzeroOfExists F0 e h).tr = z.tr ∧ (z.restrictNonzeroOfExists F0 e h).core = z.core := ⟨rfl, rfl, rfl⟩
 
 /- English proof (translation)
-The claim follows from `z.restrictOfExists_nonzero_places F0 e h (z.nonzero_index_places_conj_stable F0)`.
+A detailed English derivation is pending.
 -/
 theorem restrictNonzeroOfExists_nonzero_places : (z.restrictNonzeroOfExists F0 e h).W1 F0 = z.W1 F0 := z.restrictOfExists_nonzero_places F0 e h (z.nonzero_index_places_conj_stable F0)
 
 /- English proof (translation)
-Rewrite using `[restrictNonzeroOfExists_nonzero_places]`. Conclude with `(z.restrictNonzeroOfExists F0 e h).plB_mem_twPl w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictNonzeroOfExists_mem_twisted_iff (w : X.B.places.Pl) :
     X.toD7.plEq w ∈ (z.restrictNonzeroOfExists F0 e h).R.twPl ↔ w ∈ (z.restrictNonzeroOfExists F0 e h).W1 F0 := by
@@ -344,24 +344,24 @@ theorem restrictNonzeroOfExists_mem_twisted_iff (w : X.B.places.Pl) :
   exact (z.restrictNonzeroOfExists F0 e h).plB_mem_twPl w
 
 /- English proof (translation)
-The claim follows from `z.restrictE_exAt e h (z.nonzero_index_places_conj_stable F0)`.
+A detailed English derivation is pending.
 -/
 theorem restrictNonzeroOfExists_exists_lifts : (z.restrictNonzeroOfExists F0 e h).R.toRealDat.ExAt := z.restrictE_exAt e h (z.nonzero_index_places_conj_stable F0)
 
 /- English proof (translation)
-The claim follows from `z.restrictE_holds e h (z.nonzero_index_places_conj_stable F0) hH`.
+A detailed English derivation is pending.
 -/
 theorem restrictNonzeroOfExists_holds (hH : Holds z.R z.F) : Holds (z.restrictNonzeroOfExists F0 e h).R (z.restrictNonzeroOfExists F0 e h).F :=
   z.restrictE_holds e h (z.nonzero_index_places_conj_stable F0) hH
 
 /- English proof (translation)
-The claim follows from `z.restrictE_inGeo_iff e h (z.nonzero_index_places_conj_stable F0)`.
+A detailed English derivation is pending.
 -/
 theorem restrictNonzeroOfExists_geometry_iff : GlobalTheory.RealGeo.InGeo (z.restrictNonzeroOfExists F0 e h).geo ↔ GlobalTheory.RealGeo.InGeo z.geo :=
   z.restrictE_inGeo_iff e h (z.nonzero_index_places_conj_stable F0)
 
 /- English proof (translation)
-The claim follows from `(z.restrictNonzeroOfExists F0 e h).twisted_places_eq_complex_side_of_eq_nonzero_index F0 (z.restrictNonzeroOfExists_nonzero_places F0 e h) kap lam err Dc Sp Zsc C CH hZ v`.
+A detailed English derivation is pending.
 -/
 theorem restrictNonzeroOfExists_twisted_iff_complex (kap lam err) (Dc Sp Zsc) (C CH : ℝ)
     (hZ : (Zsc (zsOf (z.restrictNonzeroOfExists F0 e h).R (z.restrictNonzeroOfExists F0 e h).F)).F0 = F0) (v : HeightOneSpectrum (𝓞 X.toD7.what₂.LL)) :
@@ -374,31 +374,31 @@ theorem restrictNonzeroOfExists_twisted_iff_complex (kap lam err) (Dc Sp Zsc) (C
 end ExW
 
 /- English proof (translation)
-The claim follows from `Finset.eq_empty_of_forall_notMem fun v hv => (Dat.mem_twPl _ v).1 hv`.
+A detailed English derivation is pending.
 -/
 example (e : z.R.toRealDat.ExAt) : (z.restrictE e ∅ (Set.empty_subset _) fun _ h => h.elim).R.twPl = ∅ :=
   Finset.eq_empty_of_forall_notMem fun v hv => (Dat.mem_twPl _ v).1 hv
 
 /- English proof (translation)
-The claim follows from `Res.kapNew_of_scal z.R z.pins.char.scal.kap`.
+A detailed English derivation is pending.
 -/
 example : Res.kapNew z.R = z.R.kap := Res.kapNew_of_scal z.R z.pins.char.scal.kap
 
 /- English proof (translation)
-The claim follows from `Finset.eq_empty_of_forall_notMem fun v hv => (Dat.mem_twPl _ v).1 hv`.
+A detailed English derivation is pending.
 -/
 example (hH : Holds z.R z.F) : (z.restrict hH ∅ (Set.empty_subset _) fun _ h => h.elim).R.twPl = ∅ :=
   Finset.eq_empty_of_forall_notMem fun v hv => (Dat.mem_twPl _ v).1 hv
 
 /- English proof (translation)
-The claim follows from `Finset.ext fun v => (z.mem_resTw subset_rfl v).trans (z.mem_twPl v).symm`.
+A detailed English derivation is pending.
 -/
 example : z.resTw Wt = z.R.twPl := Finset.ext fun v => (z.mem_resTw subset_rfl v).trans (z.mem_twPl v).symm
 
 include z in
 
 /- English proof (translation)
-Introduce `w hw`. Establish `ht` using `z.pins.char.tup`. Rewrite using `[← z.plB_mem_twPl, plB_conj]`. Assume the negation of the conclusion as `hn`. Conclude with `ht.mu_ne _ ((z.plB_mem_twPl w).2 hw) ((ht.mu_conj _).symm.trans (ht.mu_off _ hn))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem conjStable : ConjStable X Wt := by
   intro w hw
@@ -408,7 +408,7 @@ theorem conjStable : ConjStable X Wt := by
   exact ht.mu_ne _ ((z.plB_mem_twPl w).2 hw) ((ht.mu_conj _).symm.trans (ht.mu_off _ hn))
 
 /- English proof (translation)
-The claim follows from `(z.mem_nonzero_index_places_iff_at_place_or_conjugate F0 w).2 ⟨j, Or.inl (Or.inr (Or.inr h))⟩`.
+A detailed English derivation is pending.
 -/
 example (w : X.B.places.Pl) (j : Fin X.toD7.R.m) (h : F0 (plB X w) j ≠ 0) : w ∈ z.W1 F0 :=
   (z.mem_nonzero_index_places_iff_at_place_or_conjugate F0 w).2 ⟨j, Or.inl (Or.inr (Or.inr h))⟩

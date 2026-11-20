@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[adj, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem adj_map_ringHom {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (M : M4 R) :
     adj (M.map f) = (adj M).map f := by
@@ -11,7 +11,7 @@ private theorem adj_map_ringHom {R R' : Type} [CommRing R] [CommRing R'] (f : R 
   simp [adj, Matrix.map_apply]
 
 /- English proof (translation)
-Simplify using `only [IsGSp] at h ⊢`. Rewrite using `[adj_map_ringHom, ← Matrix.map_mul, h]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sxPdMap_lemma_2 {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (c : R) (M : M4 R)
     (h : IsGSp c M) : IsGSp (f c) (M.map f) := by
@@ -21,21 +21,21 @@ private theorem sxPdMap_lemma_2 {R R' : Type} [CommRing R] [CommRing R'] (f : R 
   by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
 
 /- English proof (translation)
-Introduce `O Γ _ _ Φ R R' _ _ a f P`. Establish `hr : ∀ s, mapRep f P.r s = (P.r s).map f` using `fun s => by`. Use extensionality with `i j`. Rewrite using `[mapRep_apply, Matrix.map_apply]`. Establish `hψ : ∀ v i s, (P.map f).ψ v i s = f (P.ψ v i s)` using `fun v i s => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [PD.map, PD.ψ]`. Rewrite using `[hr, adj_map_ringHom, ← Matrix.map_mul, ← Matrix.map_mul, Matrix.map_apply]`. Use `⟨hψ, fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `h`. Use `⟨fun g => ?_, fun g hg => ?_, ?_, fun v => ?_, fun v s hs => ?_, fun v s hs i => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [PD.map, hr]`. Conclude with `sxPdMap_lemma_2 f _ _ (h1 g)`. Simplify using `only [PD.map, hr, h2 g hg, Matrix.map_one, map_zero, map_one]`. Simplify using `only [PD.map, hr]`. Conclude with `h3.map (map_zero f)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h4 v` as an intermediate fact. Simplify using `only [IsLow] at this ⊢`. Simplify using `only [PD.map]`. Establish `hg` using `sxPdMap_lemma_2 f _ _ this.1`. Rewrite `hg` using `[map_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hg, fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, this.2.1 i, map_one]`. Rewrite using `[Matrix.map_apply, this.2.2 i j hij, map_zero]`. Use `h5 v s hs` as an intermediate fact. Simplify using `only [IsUp] at this ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [PD.map, hr]`. Introduce `i j hij`. Rewrite using `[adj_map_ringHom, ← Matrix.map_mul, ← Matrix.map_mul, Matrix.map_apply, this i j hij, map_zero]`. Rewrite using `[hψ, h6 v s hs i, map_one]`. Take `⟨h1, h2, h3⟩` from `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun g i => ?_, fun v s hs i => ?_, ?_⟩` and prove the remaining obligations. Use `show mapRep f P.r g i i = _`. Rewrite using `[mapRep_apply, h1 g i]`. Both sides reduce to the same expression. Rewrite using `[hψ, h2 v s hs i]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Both sides reduce to the same expression. Simplify using `only [Supp, SuppM, PD.map] at h3 ⊢`. Break down `h3 with ⟨hA, hB⟩ | hC` into its components or cases. Conclude with `Or.inl ⟨fun g i j h h' => by rw [mapRep_apply, hA g i j h h', map_zero], fun v i j h h' => by rw [Matrix.map_apply, hB v i j h h', map_zero]⟩`. Conclude with `Or.inr fun g i j h h' => by rw [mapRep_apply, hC g i j h h', map_zero]`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.sxPdMap :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] {Φ : Fr O Γ} {R R' : Type} [CommRing R] [CommRing R'] (a : O →+* R) (f : R →+* R') (P : PD Φ.ι Γ R), (∀ v i s, (P.map f).ψ v i s = f (P.ψ v i s)) ∧ (Φ.IsPair a P → Φ.IsPair (f.comp a) (P.map f)) ∧ (Φ.Res a P → Φ.Res (f.comp a) (P.map f)) := by

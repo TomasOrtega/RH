@@ -5,29 +5,27 @@ open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `P Γ _ _ _ _ _ _ r h x γ π hden huniv hγ hπo hπl hπr G _ _ _ _ _ q hqo g hg hz`. Take `⟨z, hzd⟩` from `hz`. Take `⟨f, hf, hfx⟩` from `huniv G (Fin.append g (fun j => (z j : G)))`. Establish `hfl : ∀ i, f (x (Fin.castAdd h i)) = g i` using `fun i => by`. Rewrite using `[hfx, Fin.append_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfr : ∀ j, f (x (Fin.natAdd r j)) = z j` using `fun j => by`. Rewrite using `[hfx, Fin.append_right]`. Use `⟨f, hf, ?_, ?_, hfl⟩` and prove the remaining obligations. Use `haveI : T2Space G := inferInstance`. Establish `hRc : IsClosed (Set.range f)` using `(isCompact_range hf).isClosed`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : ∀ k : q.ker, (k : G) ∈ Set.range f`. Set `S : Set q.ker` to `Subtype.val ⁻¹' Set.range f`. Establish `hSc : IsClosed S` using `hRc.preimage continuous_subtype_val`. Establish `hsub : ((Subgroup.closure (Set.range z) : Subgroup q.ker) : Set q.ker) ⊆ S`. Establish `: Subgroup.closure (Set.range z) ≤ f.range.comap q.ker.subtype`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨x (Fin.natAdd r j), hfr j⟩`. Introduce `a ha`. Conclude with `this ha`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdS : Dense S` using `hzd.mono hsub`. Introduce `k`. Establish `: k ∈ S`. Rewrite using `[← hSc.closure_eq, hdS.closure_eq]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Introduce `a`. Take `⟨i, hi⟩` from `hγ (q a)`. Establish `hmem : (g i)⁻¹ * a ∈ q.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hg i, hi, inv_mul_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p1, hp1⟩` from `hker ⟨_, hmem⟩`. Use `⟨x (Fin.castAdd h i) * p1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hfl, hp1]`. Simplify using the standard rewrite rules. Use `set φ := q.comp f with hφ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Establish `hgen : Set.EqOn φ π (Set.range x)`. Introduce and unpack `_ ⟨k, rfl⟩`. Proceed by induction on `k using Fin.addCases with`. Consider the case `left i => simp [hφ, hfl, hg, hπl]`. Consider the case `right j`.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hφ, MonoidHom.comp_apply, hfr, hπr]`. Conclude with `(z j).2`. Establish `hcl : Set.EqOn φ π (Subgroup.closure (Set.range x))` using `MonoidHom.eqOn_closure hgen`. Establish `hφo : IsOpen (φ.ker : Set P)`. Establish `: (φ.ker : Set P) = f ⁻¹' (q.ker : Set G)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Introduce a local definition for the expression.
 
-Use extensionality with `a`. Simplify using `[hφ]`. Rewrite using `[this]`. Conclude with `hqo.preimage hf`. Use extensionality with `p`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `V : Set P` to `(fun a => p⁻¹ * a) ⁻¹' ((π.ker : Set P) ∩ (φ.ker : Set P))`. Establish `hVo : IsOpen V` using `(hπo.inter hφo).preimage (continuous_const.mul continuous_id)`. Establish `hpV : p ∈ V`. Simplify using `[V]`. Take `⟨d, ⟨hd1, hd2⟩, hdD⟩` from `hden.inter_open_nonempty V hVo ⟨p, hpV⟩`.
-
-Establish `e1 : π (p⁻¹ * d) = 1` using `hd1`. Establish `e2 : φ (p⁻¹ * d) = 1` using `hd2`. Rewrite `e1`, `e2` using `[map_mul, map_inv, inv_mul_eq_one]`. Rewrite using `[e2, hcl hdD, ← e1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.exists_surj_over_finite :
     ∀ (P Γ : Type) [Group P] [TopologicalSpace P] [IsTopologicalGroup P] [CompactSpace P] [TotallyDisconnectedSpace P] [Group Γ] (r h : ℕ) (x : Fin (r + h) → P) (γ : Fin r → Γ) (π : P →* Γ), TopGen (Set.range x) →

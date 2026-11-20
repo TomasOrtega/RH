@@ -11,7 +11,7 @@ namespace Formalism.FourierDecayAlt.P.PBG
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, fun g hg hne => hε.trans (h.2.2 g hg hne)⟩`.
+Supply the required witnesses or components.
 -/
 theorem nice_mono {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] {Bs : B.RealPlaceData k ρ Wp Wq} {ε ε' : ℝ} {F : B.Mat k ρ → (Wq →L[ℂ] Wp)}
@@ -19,13 +19,11 @@ theorem nice_mono {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProd
   ⟨h.1, h.2.1, fun g hg hne => hε.trans (h.2.2 g hg hne)⟩
 
 /- English proof (translation)
-Use `set τ : Fin n → ℂ := fun i => (((i : ℕ) : ℝ) : ℂ) with hτdef`. Establish `hτ : Function.Injective τ`. Introduce `a b hab`. Simplify using `only [hτdef, Complex.ofReal_inj, Nat.cast_inj] at hab`. Conclude with `Fin.ext hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ (C : Fin n → V) (l : Fin n), C l = ∑ i : Fin n, (Matrix.vandermonde τ)⁻¹ l i • ∑ m : Fin n, (τ i ^ (m : ℕ)) • C m`. Introduce `C l`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [vand_row τ hτ l, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use function extensionality and compare the values at `l`. Rewrite using `[key A l, key B l]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`.
-
-Use `congr 1`. Conclude with `h ((i : ℕ) : ℝ)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem poly_coeff_unique {V : Type} [AddCommGroup V] [Module ℂ V] (n : ℕ) (A B : Fin n → V)
     (h : ∀ y : ℝ, ∑ l : Fin n, ((y : ℂ) ^ (l : ℕ)) • A l = ∑ l : Fin n, ((y : ℂ) ^ (l : ℕ)) • B l) : A = B := by
@@ -54,11 +52,11 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `e` using `Finset.sum_map (Finset.univ : Finset (Fin (d + 1))) (Fin.castLEEmb (by omega : d + 1 ≤ n + 1)) (fun l : Fin (n + 1) => (y ^ (l : ℕ)) • (if hl : (l : ℕ) ≤ d then c ⟨l, by omega⟩ else 0))`. Use `symm`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ ((Finset.univ : Finset (Fin (d + 1))).map (Fin.castLEEmb (by omega : d + 1 ≤ n + 1)))) ?_, e]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `m _`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Fin.castLEEmb_apply, Fin.val_castLE]`. Rewrite using `[dif_pos (by omega)]`. Introduce `l _ hl`. Rewrite using `[dif_neg, smul_zero]`. Introduce `hle`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hl` to reduce the goal to its premises. Rewrite using `[Finset.mem_map]`. Conclude with `⟨⟨l, by omega⟩, Finset.mem_univ _, Fin.ext (by simp)⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sum_pad {V : Type} [AddCommGroup V] [Module ℂ V] {d n : ℕ} (hdn : d ≤ n) (c : Fin (d + 1) → V) (y : ℂ) :
     ∑ m : Fin (d + 1), (y ^ (m : ℕ)) • c m =
@@ -81,25 +79,21 @@ theorem sum_pad {V : Type} [AddCommGroup V] [Module ℂ V] {d n : ℕ} (hdn : d 
     exact ⟨⟨l, by omega⟩, Finset.mem_univ _, Fin.ext (by simp)⟩
 
 /- English proof (translation)
-Take `⟨C1, -, hC1n, hC1⟩` from `hSP w' b δ 1`. Take `⟨εN, hεN⟩` from `hN`. Use `set E : Fin (j + 1) → Wd.Ix (Fin w'.length) → B.Mat k (r - j) → (Wq →L[ℂ] Wp) := fun l => if (l : ℕ) < j - s then C1 l else if (l : ℕ) = j - s then cLift s τ b • KB.slv T F j hj w' (h ++ [(s, τ)]) ha else 0 with hE`. Use `choose εC hεC using hC1n`. Use `set ε0 : ℝ := min εN (Finset.univ.inf' Finset.univ_nonempty εC) with hε0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC1n' : ∀ l a', JC.NiceCoef (T.bs j) ε0 (C1 l a')` using `fun l a' => nice_mono (hεC l a') ((min_le_right _ _).trans (Finset.inf'_le _ (Finset.mem_univ l)))`. Establish `hNn' : ∀ a', JC.NiceCoef (T.bs j) ε0 (KB.slv T F j hj w' (h ++ [(s, τ)]) ha a')` using `fun a' => nice_mono (hεN a') (min_le_left _ _)`. Establish `hEn : ∀ l a', JC.NiceCoef (T.bs j) ε0 (E l a')`. Introduce `l a'`. Simplify using `only [hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Conclude with `hC1n' l a'`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.mn_nice_smul _ (hNn' a')`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.mn_nice_zero`. Use `⟨E, fun l => ⟨ε0, hEn l⟩, fun l hl => ?_, ?_, fun y a' g hg => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hE]; rw [if_neg (by omega), if_neg (by omega)]`. Simplify using `only [hE]; rw [if_neg (by simp), if_pos (by simp)]`. Establish `hsum : ∀ (y : ℝ) (V : Fin (j + 1) → Wd.Ix (Fin w'.length) → B.Mat k (r - j) → (Wq →L[ℂ] Wp)), (∀ l, JC.NiceCoef (T.bs j) ε0 (V l a')) → B.JF (T.bs j) ((∑ l : Fin (j + 1), ((y : ℂ) ^ (l : ℕ)) • V l) a') g = ∑ l : Fin (j + 1), ((y : ℂ) ^ (l : ℕ)) • B.JF (T.bs j) (V l a') g`. Introduce `y V hV`. Establish `e1 : (∑ l : Fin (j + 1), ((y : ℂ) ^ (l : ℕ)) • V l) a' = ∑ l : Fin (j + 1), ((y : ℂ) ^ (l : ℕ)) • V l a'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Finset.sum_apply]`. Rewrite using `[e1, Formalism.FourierDecayAlt.P.JCx2.bc_JF_sum Finset.univ (fun l : Fin (j + 1) => ((y : ℂ) ^ (l : ℕ)) • V l a') (fun l _ => Formalism.FourierDecayAlt.P.JCx2.mn_nice_smul _ (hV l)) hg]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.bc_JF_smul _ _ _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hgGV : g ∈ B.GV k (r - j)` using `hg.1`. Establish `hL : ∀ y' : ℝ, B.JF (T.bs j) (KB.slv T F j hj ((b, y' + δ) :: w') (h ++ [(s, τ)]) ha (Fin.cons 1 a')) g = ∑ l : Fin (j + 1), ((y' : ℂ) ^ (l : ℕ)) • B.JF (T.bs j) (C1 l a') g`. Introduce `y'`. Rewrite using `[Formalism.FourierDecayAlt.P.JCx2.sq_jf_congr (T.bs j) (fun g' hg' => hC1 y' a' g' hg') hgGV]`. Conclude with `hsum y' C1 (fun l => hC1n' l a')`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨c, hcl, hcy⟩` from `hLD w' a' b δ g hg`. Establish `hcomp` using `poly_coeff_unique (j + 1) (fun l => B.JF (T.bs j) (C1 l a') g) (fun l => if hl : (l : ℕ) ≤ j - s then c ⟨l, by omega⟩ else 0) (fun y' => by`. Rewrite using `[← hL y', hcy y', sum_pad (n := j) (by omega) c (y' : ℂ)])`. Rewrite using `[hL y, hsum y E (fun l => hEn l a')]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `l _`. Use `congr 1`. Establish `hcl'` using `congrFun hcomp l`. Distinguish the cases in `h1 : (l : ℕ) < j - s`. Simplify using `only [hE, if_pos h1]`.
-
-Rewrite using `[show B.JF (T.bs j) (C1 l a') g = _ from hcl']`. Distinguish the cases in `h2 : (l : ℕ) = j - s`. Simplify using `only [hE, if_neg h1, if_pos h2]`. Rewrite using `[dif_pos (by omega)]`. Establish `e3 : (⟨(l : ℕ), by omega⟩ : Fin (j - s + 1)) = Fin.last (j - s)` using `Fin.ext (by simp [h2])`.
-
-Rewrite using `[e3, hcl]`. Conclude with `(Formalism.FourierDecayAlt.P.JCx2.bc_JF_smul _ _ _).symm`. Simplify using `only [hE, if_neg h1, if_neg h2]`. Rewrite using `[dif_neg (by omega)]`. Conclude with `(Formalism.FourierDecayAlt.P.JCx2.bc_JF_zero g).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduceJ {k r : ℕ} (T : D.LevTower k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (j s : ℕ) (hj : j ≤ r)
     (h : C.LPt) (τ : ℂ) (ha : D.ptSize (h ++ [(s, τ)]) = j) (hs : s ≤ j)
@@ -178,9 +172,9 @@ theorem reduceJ {k r : ℕ} (T : D.LevTower k r Wp Wq) (F : B.Mat k r → (Wq �
         exact (Formalism.FourierDecayAlt.P.JCx2.bc_JF_zero g).symm
 
 /- English proof (translation)
-Use `choose ε hε using hV`. Use `⟨Finset.univ.inf' Finset.univ_nonempty ε, fun a => ?_⟩` and prove the remaining obligations. Establish `e : (∑ l, c l • V l) a = fun g => ∑ l, c l • V l a g`. Use function extensionality and compare the values at `g`. Simplify using `[Finset.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.mn_nice_sum Finset.univ (fun l g => c l • V l a g) (fun l _ => Formalism.FourierDecayAlt.P.JCx2.mn_nice_smul _ (nice_mono (hε l a) (Finset.inf'_le _ (Finset.mem_univ l))))`.
+A detailed English derivation is pending.
 -/
 theorem nice_lincomb {k ρ : ℕ} {Bs : B.RealPlaceData k ρ Wp Wq} {S ι : Type} [Fintype S] [Fintype ι] [Nonempty ι]
     (V : ι → Wd.Ix S → B.Mat k ρ → (Wq →L[ℂ] Wp)) (hV : ∀ l, ∃ ε, ∀ a, JC.NiceCoef Bs ε (V l a)) (c : ι → ℂ) :

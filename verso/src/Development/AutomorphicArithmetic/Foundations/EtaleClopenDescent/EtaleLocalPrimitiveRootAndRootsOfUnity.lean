@@ -11,9 +11,9 @@ namespace UpperTheory.Cb.PrimLoc
 open Polynomial
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `h.exists_right_inv`. Take `⟨p, rfl⟩` from `AdjoinRoot.mk_surjective v`. Rewrite `hv` using `[← map_mul, ← map_one (AdjoinRoot.mk f), ← sub_eq_zero, ← map_sub, AdjoinRoot.mk_eq_zero]`. Take `⟨c, hc⟩` from `hv`. Set `P : StandardEtalePair A` to `{ f := f, monic_f := hf, g := 1, cond := ⟨p, -c, 1, by rw [pow_one]; linear_combination hc⟩ }`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hX : eval₂ (↑(Algebra.ofId A P.Ring)) P.X f = 0`. Simplify `P.hasMap_X.1` using `[aeval_def]`. Establish `hR : P.HasMap (AdjoinRoot.root f)` using `⟨by simp [P, AdjoinRoot.aeval_eq], by simp [P]⟩`. Set `e : AdjoinRoot f ≃ₐ[A] P.Ring` to `AlgEquiv.ofAlgHom (AdjoinRoot.liftAlgHom f (Algebra.ofId A P.Ring) P.X hX) (P.lift (AdjoinRoot.root f) hR) (P.hom_ext (by simp)) (AdjoinRoot.algHom_ext (by simp))`. Conclude with `Algebra.Etale.of_equiv e.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 private theorem etale_adjoinRoot {A : Type} [CommRing A] (f : A[X]) (hf : f.Monic)
     (h : IsUnit (AdjoinRoot.mk f (derivative f))) : Algebra.Etale A (AdjoinRoot f) := by
@@ -36,7 +36,7 @@ private theorem etale_adjoinRoot {A : Type} [CommRing A] (f : A[X]) (hf : f.Moni
   exact Algebra.Etale.of_equiv e.symm
 
 /- English proof (translation)
-Take `⟨i, y, hy⟩` from `U.affineCover.exists_eq x`. Use `haveI : IsOpenImmersion (U.affineCover.f i) := U.affineCover.map_prop i`. Use `⟨U.affineCover.X i, U.affineCover.f i, ?_, inferInstance, ⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Simplify using `[Scheme.affineCover] infer_instance`. Conclude with `RingHom.domain_nontrivial ((U.affineCover.X i).presheaf.germ ⊤ y trivial).hom`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 private theorem exists_affine (U : Scheme.{0}) (x : U) :
     ∃ (V : Scheme.{0}) (j : V ⟶ U), IsAffine V ∧ Etale j ∧ x ∈ Set.range j ∧ Nontrivial Γ(V, ⊤) := by
@@ -48,17 +48,15 @@ private theorem exists_affine (U : Scheme.{0}) (x : U) :
   · exact RingHom.domain_nontrivial ((U.affineCover.X i).presheaf.germ ⊤ y trivial).hom
 
 /- English proof (translation)
-Use `haveI : Module.Free Γ(V₀, ⊤) (AdjoinRoot f) := Module.Free.of_basis (AdjoinRoot.powerBasis' hf).basis`. Use `haveI : Module.Finite Γ(V₀, ⊤) (AdjoinRoot f) := Module.Finite.of_basis (AdjoinRoot.powerBasis' hf).basis`. Use `haveI : Nontrivial (AdjoinRoot f) := by`. Assume the negation of the conclusion as `hB`. Rewrite `hB` using `[not_nontrivial_iff_subsingleton]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hdim : 0 < (AdjoinRoot.powerBasis' hf).dim`. Rewrite using `[AdjoinRoot.powerBasis'_dim]`. Conclude with `hd`. Conclude with `(AdjoinRoot.powerBasis' hf).basis.ne_zero ⟨0, hdim⟩ (Subsingleton.elim _ _)`. Set `φ : Γ(V₀, ⊤) ⟶ CommRingCat.of (AdjoinRoot f)` to `CommRingCat.ofHom (algebraMap Γ(V₀, ⊤) (AdjoinRoot f))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hφ : Etale (Spec.map φ)` using `HasRingHomProperty.Spec_iff.mpr ((RingHom.etale_algebraMap (R := Γ(V₀, ⊤)) (S := AdjoinRoot f)).mpr (etale_adjoinRoot f hf h))`. Establish `hsφ : Surjective (Spec.map φ)`. Rewrite using `[surjective_iff]`. Introduce `y`. Take `⟨p, hp⟩` from `PrimeSpectrum.comap_surjective_of_faithfullyFlat (A := Γ(V₀, ⊤)) (B := AdjoinRoot f) y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨p, ?_⟩` and prove the remaining obligations. Use `show (Spec.map φ).base p = y`. Rewrite using `[Spec.map_base]`. Conclude with `hp`. Use `⟨Spec (CommRingCat.of (AdjoinRoot f)), Spec.map φ ≫ V₀.isoSpec.inv, (Scheme.ΓSpecIso (CommRingCat.of (AdjoinRoot f))).inv.hom (AdjoinRoot.root f), inferInstance, inferInstance, (surjective_iff _).mp inferInstance, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : V₀.isoSpec.inv.appTop = (Scheme.ΓSpecIso Γ(V₀, ⊤)).inv`. Use `congrArg Scheme.Hom.appTop (Scheme.isoSpec_inv_toSpecΓ V₀)` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.comp_appTop, Scheme.toSpecΓ_appTop, Scheme.Hom.id_appTop]`. Rewrite using `[← cancel_epi (Scheme.ΓSpecIso Γ(V₀, ⊤)).hom, this, Iso.hom_inv_id]`. Establish `e2 : (Spec.map φ).appTop = (Scheme.ΓSpecIso _).hom ≫ φ ≫ (Scheme.ΓSpecIso (CommRingCat.of (AdjoinRoot f))).inv`.
-
-Rewrite using `[← Category.assoc, ← Scheme.ΓSpecIso_naturality, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[Scheme.Hom.comp_appTop, e1, e2, Iso.inv_hom_id_assoc, CommRingCat.hom_comp, ← hom_eval₂]`. Simplify using `[φ, AdjoinRoot.algebraMap_eq, AdjoinRoot.eval₂_root]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_cover (V₀ : Scheme.{0}) [IsAffine V₀] [Nontrivial Γ(V₀, ⊤)] (f : Γ(V₀, ⊤)[X])
     (hf : f.Monic) (hd : 0 < f.natDegree) (h : IsUnit (AdjoinRoot.mk f (derivative f))) :
@@ -104,9 +102,9 @@ private theorem exists_cover (V₀ : Scheme.{0}) [IsAffine V₀] [Nontrivial Γ(
   simp [φ, AdjoinRoot.algebraMap_eq, AdjoinRoot.eval₂_root]
 
 /- English proof (translation)
-Establish `hb` using `Scheme.Opens.ι_preimage_self (X.basicOpen a)`. Rewrite `hb` using `[Scheme.preimage_basicOpen]`. Apply `RingedSpace.isUnit_of_isUnit_germ _ ⊤` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : x ∈ (X.basicOpen a).toScheme.basicOpen ((ConcreteCategory.hom ((X.basicOpen a).ι.app ⊤)) a)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hb]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `(Scheme.mem_basicOpen _ _ x hx).mp hx'`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 private theorem isUnit_restrict_basicOpen (X : Scheme.{0}) (a : Γ(X, ⊤)) :
     IsUnit ((X.basicOpen a).ι.appTop.hom a) := by
@@ -121,25 +119,21 @@ private theorem isUnit_restrict_basicOpen (X : Scheme.{0}) (a : Γ(X, ⊤)) :
   exact (Scheme.mem_basicOpen _ _ x hx).mp hx'
 
 /- English proof (translation)
-Set `p : ℕ → Γ(U, ⊤)` to `fun a => ∏ b ∈ s.erase a, (y - t b)`. Set `O : s → U.Opens` to `fun a => U.basicOpen (p a)`. Establish `hcov : TopologicalSpace.IsOpenCover O`. Apply `eq_top_iff.mpr` to reduce the goal to its premises. Introduce `x _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `g` to `ConcreteCategory.hom (U.presheaf.germ ⊤ x trivial)`. Establish `hz : ∏ a ∈ s, g (y - t a) = 0` using `by rw [← map_prod, hp, map_zero]`. Establish `hex : ∃ a ∈ s, ¬ IsUnit (g (y - t a))`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hu : IsUnit (∏ a ∈ s, g (y - t a))` using `IsUnit.prod_iff.mpr hne`. Rewrite `hu` using `[hz]`. Conclude with `not_isUnit_zero hu`. Take `⟨a, ha, hna⟩` from `hex`. Establish `hoth : ∀ b ∈ s.erase a, IsUnit (g (y - t b))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `b hb`. Take `⟨hba, hbs⟩` from `Finset.mem_erase.mp hb`. Assume the negation of the conclusion as `hnb`. Establish `hu : IsUnit (g (t a - t b))` using `(hd a ha b hbs (Ne.symm hba)).map g`. Establish `he : g (t a - t b) = g (y - t b) + -(g (y - t a))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hu` using `[he]`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add hu with h1 | h1` into its components or cases. Conclude with `hnb h1`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hna (IsUnit.neg_iff _ |>.mp h1)`. Establish `hx : x ∈ O ⟨a, ha⟩` using `by show x ∈ U.basicOpen (p a)`. Rewrite using `[Scheme.mem_basicOpen_top]`. Use `show IsUnit (g (p a))`. Rewrite using `[map_prod]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `IsUnit.prod_iff.mpr hoth`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨a, ha⟩, hx⟩`. Set `C` to `U.openCoverOfIsOpenCover O hcov`. Use `⟨Sieve.ofArrows C.X C.f, Scheme.zariskiTopology_le_etaleTopology _ (Scheme.Cover.mem_grothendieckTopology C), ?_⟩` and prove the remaining obligations. Introduce `V g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨a, ha⟩, c, rfl⟩` from `(Sieve.mem_ofArrows_iff _ _ g).mp hg`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit ((U.basicOpen (p a)).ι.appTop.hom (p a))` using `isUnit_restrict_basicOpen U (p a)`. Establish `hprod : (y - t a) * p a = 0`. Rewrite using `[Finset.mul_prod_erase s (fun b => y - t b) ha]`.
-
-Conclude with `hp`. Establish `h2` using `congrArg (U.basicOpen (p a)).ι.appTop.hom hprod`. Rewrite `h2` using `[map_mul, map_zero]`. Establish `h3` using `(hu.mul_left_eq_zero).mp h2`. Rewrite `h3` using `[map_sub, sub_eq_zero]`.
-
-Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, RingHom.comp_apply]`. Conclude with `congrArg c.appTop.hom h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem local_eq (U : Scheme.{0}) (s : Finset ℕ) (y : Γ(U, ⊤)) (t : ℕ → Γ(U, ⊤))
     (hd : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → IsUnit (t a - t b)) (hp : ∏ a ∈ s, (y - t a) = 0) :
@@ -196,11 +190,11 @@ private theorem local_eq (U : Scheme.{0}) (s : Finset ℕ) (y : Γ(U, ⊤)) (t :
   exact congrArg c.appTop.hom h3
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `cyclotomic.dvd_X_pow_sub_one q A`. Establish `hm` using `congrArg (AdjoinRoot.mk (cyclotomic q A)) (congrArg derivative hg)`. Rewrite `hm` using `[derivative_mul, map_add, map_mul, map_mul, AdjoinRoot.mk_self, zero_mul, add_zero]`. Establish `hX : IsUnit (AdjoinRoot.mk (cyclotomic q A) (X : A[X]))`. Establish `h1` using `congrArg (AdjoinRoot.mk (cyclotomic q A)) hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul, AdjoinRoot.mk_self, zero_mul, map_sub, map_pow, map_one, sub_eq_zero]`. Conclude with `IsUnit.of_pow_eq_one h1 (NeZero.ne q)`. Establish `hl : IsUnit (AdjoinRoot.mk (cyclotomic q A) (derivative (X ^ q - 1 : A[X])))`. Rewrite using `[derivative_sub, derivative_one, sub_zero, derivative_X_pow, map_mul, map_pow]`. Use `IsUnit.mul ?_ (hX.pow _)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hq.map (AdjoinRoot.of (cyclotomic q A))`. Rewrite `hl` using `[hm]`. Conclude with `isUnit_of_mul_isUnit_left hl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unit_deriv_cyclotomic {A : Type} [CommRing A] (q : ℕ) [NeZero q]
     (hq : IsUnit (q : A)) :
@@ -220,9 +214,9 @@ private theorem unit_deriv_cyclotomic {A : Type} [CommRing A] (q : ℕ) [NeZero 
   exact isUnit_of_mul_isUnit_left hl
 
 /- English proof (translation)
-Establish `hr : (AdjoinRoot.root (X ^ q - C u)) ^ q = AdjoinRoot.of (X ^ q - C u) u`. Establish `h1` using `AdjoinRoot.eval₂_root (X ^ q - C u)`. Simplify `h1` using `[sub_eq_zero]`. Establish `hR : IsUnit (AdjoinRoot.root (X ^ q - C u))`. Rewrite using `[← isUnit_pow_iff (NeZero.ne q), hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu.map _`. Rewrite using `[derivative_sub, derivative_C, sub_zero, derivative_X_pow, map_mul, map_pow, AdjoinRoot.mk_X]`. Use `IsUnit.mul ?_ (hR.pow _)` and prove the remaining obligations. Simplify using `using hq.map (AdjoinRoot.of (X ^ q - C u))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem unit_deriv_kummer {A : Type} [CommRing A] (q : ℕ) [NeZero q]
     (hq : IsUnit (q : A)) (u : A) (hu : IsUnit u) :
@@ -238,11 +232,11 @@ private theorem unit_deriv_kummer {A : Type} [CommRing A] (q : ℕ) [NeZero q]
   simpa using hq.map (AdjoinRoot.of (X ^ q - C u))
 
 /- English proof (translation)
-Use `(GlobalTheory.T.etaleLocally_iff_affine_etale_point_cover U _ ?_).2 fun x => ?_` and prove the remaining obligations. Introduce and unpack `V W g k ⟨ζ⟩`. Conclude with `⟨ζ.map k.appTop.hom⟩`. Take `⟨V₀, j, hV, hj, ⟨y, hy⟩, hnt⟩` from `exists_affine U x`. Establish `hq₀ : IsUnit ((q : ℕ) : Γ(V₀, ⊤))` using `by simpa using hq.map j.appTop.hom`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨V, g, θ, hVa, hg, hs, hθ⟩` from `exists_cover V₀ (cyclotomic q Γ(V₀, ⊤)) (cyclotomic.monic q _) (by rw [natDegree_cyclotomic]; exact Nat.totient_pos.2 (NeZero.pos q)) (unit_deriv_cyclotomic q hq₀)`. Take `⟨z, hz⟩` from `hs y`. Use `⟨V, g ≫ j, hVa, inferInstance, ⟨z, by simp [hz, hy]⟩, ⟨Subtype.mk θ ⟨by simpa using hq₀.map g.appTop.hom, ?_⟩⟩⟩` and prove the remaining obligations. Rewrite `hθ` using `[← map_cyclotomic_int, eval₂_map]`. Rewrite using `[aeval_def]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show algebraMap ℤ Γ(V, ⊤) = g.appTop.hom.comp (Int.castRingHom Γ(V₀, ⊤)) from Subsingleton.elim _ _]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem part_prim (q : ℕ) [NeZero q] (U : Scheme.{0}) (hq : IsUnit (q : Γ(U, ⊤))) :
     Loc U fun V _ => Nonempty (Prim q Γ(V, ⊤)) := by
@@ -263,13 +257,13 @@ private theorem part_prim (q : ℕ) [NeZero q] (U : Scheme.{0}) (hq : IsUnit (q 
     Subsingleton.elim _ _]
 
 /- English proof (translation)
-Use `(GlobalTheory.T.etaleLocally_iff_affine_etale_point_cover U _ ?_).2 fun x => ?_` and prove the remaining obligations. Introduce and unpack `V W g k ⟨v, hv⟩`. Use `⟨Units.map k.appTop.hom.toMonoidHom v, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, hv]`. Use `ext`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Units.coe_map, Scheme.Hom.comp_appTop, CommRingCat.hom_comp]`. Both sides reduce to the same expression. Take `⟨V₀, j, hV, hj, ⟨y, hy⟩, hnt⟩` from `exists_affine U x`. Establish `hq₀ : IsUnit ((q : ℕ) : Γ(V₀, ⊤))` using `by simpa using hq.map j.appTop.hom`. Establish `hu₀ : IsUnit (j.appTop.hom (u : Γ(U, ⊤)))` using `u.isUnit.map _`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V, g, θ, hVa, hg, hs, hθ⟩` from `exists_cover V₀ (X ^ q - C (j.appTop.hom (u : Γ(U, ⊤)))) (monic_X_pow_sub_C _ (NeZero.ne q)) (by rw [natDegree_X_pow_sub_C]; exact NeZero.pos q) (unit_deriv_kummer q hq₀ _ hu₀)`. Take `⟨z, hz⟩` from `hs y`. Establish `h1 : θ ^ q = g.appTop.hom (j.appTop.hom (u : Γ(U, ⊤)))`. Simplify `hθ` using `[eval₂_sub, sub_eq_zero]`. Establish `hθu : IsUnit θ` using `(isUnit_pow_iff (NeZero.ne q)).1 (h1 ▸ hu₀.map _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨V, g ≫ j, hVa, inferInstance, ⟨z, by simp [hz, hy]⟩, hθu.unit, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `only [Units.val_pow_eq_pow_val, IsUnit.unit_spec, Units.coe_map, Scheme.Hom.comp_appTop, CommRingCat.hom_comp]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem part_kummer (q : ℕ) [NeZero q] (U : Scheme.{0}) (hq : IsUnit (q : Γ(U, ⊤)))
     (u : (Γ(U, ⊤))ˣ) :
@@ -302,19 +296,19 @@ end UpperTheory.Cb.PrimLoc
 
 open UpperTheory.Cb.PrimLoc in
 /- English proof (translation)
-Introduce `q _ U`. Use `⟨part_prim q U, ?_, ?_, part_kummer q U⟩` and prove the remaining obligations. Introduce `ζ ξ`. Establish `hprod` using `(GlobalTheory.T.primitiveRoot_pow_unit_sub_prod_properties q Γ(U, ⊤)).2.2.2.2.1 ζ ξ`. Establish `hdist : ∀ a ∈ (Finset.range q).filter (fun a => a.Coprime q), ∀ b ∈ (Finset.range q).filter (fun a => a.Coprime q), a ≠ b → IsUnit (ζ.1 ^ a - ζ.1 ^ b)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a ha b hb hab`. Rewrite `ha`, `hb` using `[Finset.mem_filter, Finset.mem_range]`. Apply `(GlobalTheory.T.primitiveRoot_pow_unit_sub_prod_properties q _).2.2.1 ζ a b` to reduce the goal to its premises. Introduce `hmod`. Apply `hab` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `hmod` using `[Nat.ModEq, Nat.mod_eq_of_lt ha.1, Nat.mod_eq_of_lt hb.1]`. Take `⟨S, hS, hall⟩` from `local_eq U _ ξ.1 (fun a => ζ.1 ^ a) hdist hprod`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, he⟩` from `hall V g hg`. Rewrite `ha` using `[Finset.mem_filter, Finset.mem_range]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨ZMod.unitOfCoprime a ha.2, ?_⟩` and prove the remaining obligations. Rewrite using `[he, map_pow]`. Use `congr 1`. Simplify using `[ZMod.val_natCast, Nat.mod_eq_of_lt ha.1]`. Introduce `ζ x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hprod` using `(GlobalTheory.T.primitiveRoot_pow_unit_sub_prod_properties q Γ(U, ⊤)).2.2.2.1 ζ x hx`. Establish `hdist : ∀ a ∈ Finset.range q, ∀ b ∈ Finset.range q, a ≠ b → IsUnit (ζ.1 ^ a - ζ.1 ^ b)`. Introduce `a ha b hb hab`. Rewrite `ha`, `hb` using `[Finset.mem_range]`. Apply `(GlobalTheory.T.primitiveRoot_pow_unit_sub_prod_properties q _).2.2.1 ζ a b` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hmod`. Apply `hab` to reduce the goal to its premises. Simplify `hmod` using `[Nat.ModEq, Nat.mod_eq_of_lt ha, Nat.mod_eq_of_lt hb]`. Take `⟨S, hS, hall⟩` from `local_eq U _ x (fun a => ζ.1 ^ a) hdist hprod`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, -, he⟩` from `hall V g hg`. Conclude with `⟨a, by rw [he, map_pow]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Cb.etaleLocal_primitiveRoot_and_roots_of_unity :
     ∀ (q : ℕ) [NeZero q] (U : Scheme.{0}), (IsUnit (q : Γ(U, ⊤)) → Loc U fun V _ => Nonempty (Prim q Γ(V, ⊤))) ∧ (∀ ζ ξ : Prim q Γ(U, ⊤), Loc U fun _ g => ∃ a : (ZMod q)ˣ, g.appTop.hom ξ.1 = g.appTop.hom ζ.1 ^ (a : ZMod q).val) ∧ (∀ (ζ : Prim q Γ(U, ⊤)) (x : Γ(U, ⊤)), x ^ q = 1 → Loc U fun _ g => ∃ a : ℕ, g.appTop.hom x = g.appTop.hom ζ.1 ^ a) ∧ (IsUnit (q : Γ(U, ⊤)) → ∀ u : (Γ(U, ⊤))ˣ, Loc U fun V g => ∃ v : (Γ(V, ⊤))ˣ, v ^ q = Units.map g.appTop.hom.toMonoidHom u) := by

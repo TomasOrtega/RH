@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SphStd
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Establish `h1` using `h (-x) (neg_mem hx)`. Rewrite `h1` using `[AddChar.inv_apply, neg_neg]`. Then use the resulting hypothesis. Introduce `h x hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AddChar.inv_apply]`. Conclude with `h (-x) (neg_mem hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTrivialOn_inv_iff {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (ψ : AddChar F Circle) (n : ℤ) :
@@ -28,7 +28,7 @@ theorem isTrivialOn_inv_iff {F : Type} [Field F] [ValuativeRel F] [TopologicalSp
     exact h (-x) (neg_mem hx)
 
 /- English proof (translation)
-Unfold `addCharConductor`. Use `congr 1`. Use extensionality with `n`. Conclude with `isTrivialOn_inv_iff ψ n`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem addCharConductor_inv {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (ψ : AddChar F Circle) :
@@ -39,7 +39,7 @@ theorem addCharConductor_inv {F : Type} [Field F] [ValuativeRel F] [TopologicalS
   exact isTrivialOn_inv_iff ψ n
 
 /- English proof (translation)
-Use `⟨?_, inv_ne_one.2 hψ.2.1, ?_⟩` and prove the remaining obligations. Conclude with `(hψ.1.comp continuous_neg).congr fun x => (AddChar.inv_apply ψ x).symm`. Rewrite using `[addCharConductor_inv]`. Conclude with `hψ.2.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isStd_inv {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {ψ : AddChar F Circle} (hψ : IsStd ψ) : IsStd ψ⁻¹ := by
@@ -49,13 +49,13 @@ theorem isStd_inv {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     exact hψ.2.2
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.RankinQ.isStd_local v`.
+A detailed English derivation is pending.
 -/
 theorem isStd_psiF (v : Ad3.Pl) : Ad3.IsStd (Ad3.GP.psiF v) :=
   GlobalTheory.CompanionTheory.RankinQ.isStd_local v
 
 /- English proof (translation)
-Introduce `v` and use `isStd_inv (isStd_psiF v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isStd_psiF_inv : ∀ v : Ad3.Pl, Ad3.IsStd (Ad3.GP.psiF v)⁻¹ :=
   fun v => isStd_inv (isStd_psiF v)

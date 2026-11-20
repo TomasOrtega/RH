@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
     orthSum B₁ B₂ u v = B₁ u.1 v.1 + B₂ u.2 v.2 := rfl
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`. Conclude with `((isPosDef_iff_basis e B).1 h c hc).le`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_basis_nonneg {K : Type} [Fintype K] (e : Module.Basis K ℤ X₁) {B : X₁ →ₗ[ℤ] X₁ →ₗ[ℤ] ℝ} (h : IsPosDef B)
     (c : K → ℝ) : 0 ≤ ∑ k, ∑ l, c k * c l * B (e k) (e l) := by
@@ -34,11 +34,9 @@ theorem sum_basis_nonneg {K : Type} [Fintype K] (e : Module.Basis K ℤ X₁) {B
   · exact ((isPosDef_iff_basis e B).1 h c hc).le
 
 /- English proof (translation)
-Rewrite using `[isPosDef_iff_basis (e₁.prod e₂)]`. Introduce `c hc`. Establish `key : ∑ i, ∑ j, c i * c j * orthSum B₁ B₂ ((e₁.prod e₂) i) ((e₁.prod e₂) j) = (∑ k, ∑ l, c (Sum.inl k) * c (Sum.inl l) * B₁ (e₁ k) (e₁ l)) + ∑ k, ∑ l, c (Sum.inr k) * c (Sum.inr l) * B₂ (e₂ k) (e₂ l)`. Simplify using `[Fintype.sum_sum_type, Finset.sum_add_distrib]`. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : (fun k => c (Sum.inl k)) = 0`. Establish `h3 : (fun k => c (Sum.inr k)) ≠ 0` using `fun h3 => hc (by`. Use extensionality with `(k | k)`. Conclude with `congrFun h0 k`. Conclude with `congrFun h3 k)`.
-
-Conclude with `add_pos_of_nonneg_of_pos (sum_basis_nonneg e₁ h₁ _) ((isPosDef_iff_basis e₂ B₂).1 h₂ _ h3)`. Conclude with `add_pos_of_pos_of_nonneg ((isPosDef_iff_basis e₁ B₁).1 h₁ _ h0) (sum_basis_nonneg e₂ h₂ _)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isPosDef_orthSum {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂] (e₁ : Module.Basis K₁ ℤ X₁)
     (e₂ : Module.Basis K₂ ℤ X₂) {B₁ : X₁ →ₗ[ℤ] X₁ →ₗ[ℤ] ℝ} {B₂ : X₂ →ₗ[ℤ] X₂ →ₗ[ℤ] ℝ}
@@ -59,7 +57,7 @@ theorem isPosDef_orthSum {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂] (e₁ 
   · exact add_pos_of_pos_of_nonneg ((isPosDef_iff_basis e₁ B₁).1 h₁ _ h0) (sum_basis_nonneg e₂ h₂ _)
 
 /- English proof (translation)
-Introduce `n x hx c hc` and use `by simpa using h n (fun i => j (x i)) (hx.map' j (LinearMap.ker_eq_bot.2 hj)) c hc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isPosDef_compl_injective {Y : Type} [AddCommGroup Y] {C : X₁ →ₗ[ℤ] X₁ →ₗ[ℤ] ℝ} (h : IsPosDef C)
     (j : Y →ₗ[ℤ] X₁) (hj : Function.Injective j) : IsPosDef (C.compl₁₂ j j) := fun n x hx c hc => by
@@ -72,11 +70,9 @@ section DedekindLFunctions
 variable (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O]
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ M` using `Module.Finite.trans O M`. Establish `: IsAddTorsionFree M`. Use `⟨fun n hn a b hab => ?_⟩` and prove the remaining obligations. Establish `h0 : ((n : ℕ) : O) ≠ 0` using `by exact_mod_cast hn`. Establish `h1 : ((n : ℕ) : O) • (a - b) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at hab`. Rewrite using `[Nat.cast_smul_eq_nsmul, smul_sub, hab, sub_self]`. Establish `h2 : a - b ∈ Submodule.torsion O M` using `(Submodule.mem_torsion_iff _).2 ⟨⟨_, mem_nonZeroDivisors_of_ne_zero h0⟩, h1⟩`. Rewrite `h2` using `[ht]`. Conclude with `sub_eq_zero.1 h2`.
-
-Conclude with `Module.free_of_finite_type_torsion_free'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem free_int_of_torsion_eq_bot (M : Type) [AddCommGroup M] [Module O M] [Module.Finite O M]
     (ht : Submodule.torsion O M = ⊥) : Module.Free ℤ M := by
@@ -96,19 +92,19 @@ theorem free_int_of_torsion_eq_bot (M : Type) [AddCommGroup M] [Module O M] [Mod
 end DedekindLFunctions
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar X _ _ _ B B' hB hB'`. Take `⟨X₁, _, _, _, r₁, B₁, hr₁, hb₁, hd₁, he₁⟩` from `hB`. Take `⟨X₂, _, _, _, r₂, B₂, hr₂, hb₂, hd₂, he₂⟩` from `hB'`. Establish `: Module.Finite O X₁` using `Module.Finite.of_surjective r₁ hr₁`. Establish `: Module.Finite O X₂` using `Module.Finite.of_surjective r₂ hr₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht₁ : Submodule.torsion O X₁ = ⊥` using `IsDedekindDomain.flat_iff_torsion_eq_bot.1 inferInstance`. Establish `ht₂ : Submodule.torsion O X₂ = ⊥` using `IsDedekindDomain.flat_iff_torsion_eq_bot.1 inferInstance`. Establish `: Module.Free ℤ X₁` using `free_int_of_torsion_eq_bot O X₁ ht₁`. Establish `: Module.Free ℤ X₂` using `free_int_of_torsion_eq_bot O X₂ ht₂`. Establish `: Module.Finite ℤ X₁` using `Module.Finite.trans O X₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite ℤ X₂` using `Module.Finite.trans O X₂`. Establish `hdef` using `isPosDef_orthSum (Module.Free.chooseBasis ℤ X₁) (Module.Free.chooseBasis ℤ X₂) hd₁ hd₂`. Set `r : X →ₗ[O] X₁ × X₂` to `r₁.prod r₂`. Set `P` to `LinearMap.range r`. Establish `htP : Submodule.torsion O P = ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ht : Submodule.torsion O (X₁ × X₂) = ⊥` using `IsDedekindDomain.flat_iff_torsion_eq_bot.1 inferInstance`. Use `(Submodule.eq_bot_iff _).2 fun u hu => ?_` and prove the remaining obligations. Take `⟨a, hau⟩` from `(Submodule.mem_torsion_iff u).1 hu`. Establish `h1 : (u : X₁ × X₂) ∈ Submodule.torsion O (X₁ × X₂)` using `(Submodule.mem_torsion_iff _).2 ⟨a, by simpa using congrArg Subtype.val hau⟩`. Rewrite `h1` using `[ht]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subtype.ext h1`. Establish `: Module.Flat O P` using `IsDedekindDomain.flat_iff_torsion_eq_bot.2 htP`. Establish `: Module.FinitePresentation O P` using `Module.finitePresentation_of_finite _ _`. Establish `hproj : Module.Projective O P` using `Module.Flat.projective_of_finitePresentation`. Set `j : P →ₗ[ℤ] X₁ × X₂` to `P.subtype.toAddMonoidHom.toIntLinearMap`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨P, inferInstance, inferInstance, hproj, r.rangeRestrict, (orthSum B₁ B₂).compl₁₂ j j, r.surjective_rangeRestrict, ⟨fun y z => ?_, fun a y z => ?_⟩, isPosDef_compl_injective hdef j Subtype.val_injective, fun a b => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `B₁ _ _ + B₂ _ _ = B₁ _ _ + B₂ _ _`. Rewrite using `[hb₁.1, hb₂.1]`. Express the relevant statement in the definitionally equal form `B₁ (a • _) _ + B₂ (a • _) _ = B₁ _ (bar a • _) + B₂ _ (bar a • _)`. Rewrite using `[hb₁.2, hb₂.2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `B a b + B' a b = B₁ (r₁ a) (r₁ b) + B₂ (r₂ a) (r₂ b)`. Rewrite using `[he₁, he₂]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_mem_psdCone : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] (B B' : X →ₗ[ℤ] X →ₗ[ℤ] ℝ), B ∈ psdCone bar X → B' ∈ psdCone bar X → B + B' ∈ psdCone bar X := by
   intro O _ _ _ _ bar X _ _ _ B B' hB hB'

@@ -11,7 +11,7 @@ def radJ (k : ℕ) : ℝ := ∫ r in Ioi (0 : ℝ), r ^ k * exp (-r ^ 2)
 def radK (k : ℕ) : ℝ := ∫ r in Ioi (0 : ℝ), r ^ k * log r * exp (-r ^ 2)
 
 /- English proof (translation)
-Establish `h` using `integrableOn_rpow_mul_exp_neg_rpow (p := 2) (s := (k : ℝ)) (by linarith [(Nat.cast_nonneg k : (0:ℝ) ≤ k)]) two_pos`. Use `h.congr_fun (fun r _ => ?_) measurableSet_Ioi` and prove the remaining obligations. Simplify using `only [Real.rpow_natCast, Real.rpow_two]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem integrableOn_radJ (k : ℕ) :
     IntegrableOn (fun r : ℝ => r ^ k * exp (-r ^ 2)) (Ioi 0) := by
@@ -20,7 +20,7 @@ theorem integrableOn_radJ (k : ℕ) :
   simp only [Real.rpow_natCast, Real.rpow_two]
 
 /- English proof (translation)
-Establish `h` using `integral_rpow_mul_exp_neg_rpow (p := 2) (q := (k : ℝ)) two_pos (by linarith [(Nat.cast_nonneg k : (0:ℝ) ≤ k)])`. Simplify using `only [Real.rpow_natCast, Real.rpow_two] at h`. Rewrite using `[radJ, h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem radJ_eq (k : ℕ) : radJ k = Gamma (((k : ℝ) + 1) / 2) / 2 := by
   have h := integral_rpow_mul_exp_neg_rpow (p := 2) (q := (k : ℝ)) two_pos (by linarith [(Nat.cast_nonneg k : (0:ℝ) ≤ k)])
@@ -29,14 +29,14 @@ theorem radJ_eq (k : ℕ) : radJ k = Gamma (((k : ℝ) + 1) / 2) / 2 := by
   ring
 
 /- English proof (translation)
-Rewrite using `[radJ_eq]`. Conclude with `div_pos (Real.Gamma_pos_of_pos (by positivity)) two_pos`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radJ_pos (k : ℕ) : 0 < radJ k := by
   rw [radJ_eq]
   exact div_pos (Real.Gamma_pos_of_pos (by positivity)) two_pos
 
 /- English proof (translation)
-Rewrite using `[radJ_eq, radJ_eq]`. Establish `h : (((k + 2 : ℕ) : ℝ) + 1) / 2 = ((k : ℝ) + 1) / 2 + 1` using `by push_cast; ring`. Rewrite using `[h, Real.Gamma_add_one (by positivity)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem radJ_add_two (k : ℕ) : radJ (k + 2) = ((k : ℝ) + 1) / 2 * radJ k := by
   rw [radJ_eq, radJ_eq]
@@ -45,15 +45,15 @@ theorem radJ_add_two (k : ℕ) : radJ (k + 2) = ((k : ℝ) + 1) / 2 * radJ k := 
   ring
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Use `((integrableOn_radJ (m + 2)).add (integrableOn_radJ m)).mono' ?_ ?_` and prove the remaining obligations. Conclude with `(Measurable.aestronglyMeasurable (by fun_prop))`. Use `(ae_restrict_iff' measurableSet_Ioi).2 (Filter.Eventually.of_forall fun r (hr : 0 < r) => ?_)` and prove the remaining obligations. Establish `hlog : |log r| ≤ r + r⁻¹`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_or_gt 0 (log r) with h | h` into its components or cases. Rewrite using `[abs_of_nonneg h]`. Use `Real.log_le_sub_one_of_pos hr` as an intermediate fact. Establish `: 0 < r⁻¹` using `inv_pos.2 hr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[abs_of_neg h, ← Real.log_inv]`. Use `Real.log_le_sub_one_of_pos (inv_pos.2 hr)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `he` using `exp_pos (-r ^ 2)`. Establish `hpow : r ^ (m + 1) * (r + r⁻¹) = r ^ (m + 2) + r ^ m`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hmain : r ^ (m + 1) * |log r| ≤ r ^ (m + 2) + r ^ m`. Rewrite using `[← hpow]`. Conclude with `mul_le_mul_of_nonneg_left hlog (by positivity)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Pi.add_apply, Real.norm_eq_abs, abs_mul, abs_of_pos he, abs_of_pos (pow_pos hr _)]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem integrableOn_radK {k : ℕ} (hk : 1 ≤ k) :
     IntegrableOn (fun r : ℝ => r ^ k * log r * exp (-r ^ 2)) (Ioi 0) := by
@@ -83,11 +83,11 @@ theorem integrableOn_radK {k : ℕ} (hk : 1 ≤ k) :
       _ = r ^ (m + 2) * exp (-r ^ 2) + r ^ m * exp (-r ^ 2) := by ring
 
 /- English proof (translation)
-Establish `hA : Tendsto (fun r : ℝ => (r ^ 2) ^ (m + 3) * exp (-(r ^ 2))) atTop (𝓝 0)` using `(Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero (m + 3)).comp (tendsto_pow_atTop two_ne_zero)`. Use `squeeze_zero_norm' ?_ hA` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_ge_atTop (1 : ℝ)] with r hr`. Establish `hr0 : 0 < r` using `by linarith`. Establish `hl0 : 0 ≤ log r` using `Real.log_nonneg hr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : log r ≤ r` using `(Real.log_le_sub_one_of_pos hr0).trans (by linarith)`. Establish `he` using `exp_pos (-r ^ 2)`. Establish `hp : r ^ (m + 3) ≤ (r ^ 2) ^ (m + 3)`. Rewrite using `[← pow_mul]`. Conclude with `pow_le_pow_right₀ hr (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `nn : 0 ≤ r ^ (m + 1) * (r * log r) * exp (-r ^ 2)` using `mul_nonneg (mul_nonneg (by positivity) (mul_nonneg hr0.le hl0)) he.le`. Establish `key : r ^ (m + 1) * (r * log r) * exp (-r ^ 2) ≤ (r ^ 2) ^ (m + 3) * exp (-(r ^ 2))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.norm_eq_abs, abs_le]`. Apply the tactic sequence `constructor <;> nlinarith`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem tendsto_radK_boundary (m : ℕ) :
     Tendsto (fun r : ℝ => -(1 / 2) * (r ^ (m + 1) * (r * log r) * exp (-r ^ 2))) atTop (𝓝 0) := by
@@ -113,23 +113,23 @@ theorem tendsto_radK_boundary (m : ℕ) :
   constructor <;> nlinarith
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Establish `hu : ∀ x ∈ Ioi (0 : ℝ), HasDerivAt (fun x : ℝ => x ^ (m + 2) * log x) (((m : ℝ) + 2) * x ^ (m + 1) * log x + x ^ (m + 1)) x`. Introduce `x hx`. Establish `hx0 : x ≠ 0` using `ne_of_gt hx`. Establish `h2 : x ^ (m + 2) * x⁻¹ = x ^ (m + 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_succ, mul_assoc, mul_inv_cancel₀ hx0, mul_one]`. Use `((hasDerivAt_pow (m + 2) x).mul (Real.hasDerivAt_log hx0)).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[show m + 2 - 1 = m + 1 from rfl, h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hv : ∀ x ∈ Ioi (0 : ℝ), HasDerivAt (fun x : ℝ => -(1 / 2) * exp (-x ^ 2)) (x * exp (-x ^ 2)) x`. Introduce `x _`. Use `(((hasDerivAt_pow 2 x).neg.exp).const_mul (-(1 / 2 : ℝ))).congr_deriv ?_` and prove the remaining obligations. Simplify using `only [Pi.neg_apply, show (2 : ℕ) - 1 = 1 from rfl, pow_one, Nat.cast_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `huv' : IntegrableOn ((fun x : ℝ => x ^ (m + 2) * log x) * fun x : ℝ => x * exp (-x ^ 2)) (Ioi 0)` using `(integrableOn_radK (k := m + 3) (by omega)).congr_fun (fun r _ => by simp only [Pi.mul_apply]; ring) measurableSet_Ioi`. Establish `hu'v : IntegrableOn ((fun x : ℝ => ((m : ℝ) + 2) * x ^ (m + 1) * log x + x ^ (m + 1)) * fun x : ℝ => -(1 / 2) * exp (-x ^ 2)) (Ioi 0)` using `IntegrableOn.congr_fun (((integrableOn_radK (k := m + 1) (by omega)).const_mul (-(1 / 2) * ((m : ℝ) + 2))).add ((integrableOn_radJ (m + 1)).const_mul (-(1 / 2)))) (fun r _ => by simp only [Pi.mul_apply, Pi.add_apply]; ring) measurableSet_Ioi`. Establish `hc : Continuous (fun r : ℝ => -(1 / 2) * (r ^ (m + 1) * (r * log r) * exp (-r ^ 2)))`. Use `Real.continuous_mul_log` as an intermediate fact. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF0 : (-(1 / 2) * ((0 : ℝ) ^ (m + 1) * (0 * log 0) * exp (-(0 : ℝ) ^ 2))) = 0` using `by simp`. Establish `h0 : Tendsto ((fun x : ℝ => x ^ (m + 2) * log x) * fun x : ℝ => -(1 / 2) * exp (-x ^ 2)) (𝓝[>] 0) (𝓝 0)`. Use `(hc.tendsto 0).mono_left (nhdsWithin_le_nhds (s := Ioi (0 : ℝ)))` as an intermediate fact. Rewrite `this` using `[hF0]`. Use `this.congr (fun r => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hinf : Tendsto ((fun x : ℝ => x ^ (m + 2) * log x) * fun x : ℝ => -(1 / 2) * exp (-x ^ 2)) atTop (𝓝 0)` using `(tendsto_radK_boundary m).congr (fun r => by simp only [Pi.mul_apply]; ring)`. Establish `key : ∫ x in Ioi (0 : ℝ), x ^ (m + 2) * log x * (x * exp (-x ^ 2)) = 0 - 0 - ∫ x in Ioi (0 : ℝ), (((m : ℝ) + 2) * x ^ (m + 1) * log x + x ^ (m + 1)) * (-(1 / 2) * exp (-x ^ 2))` using `integral_Ioi_mul_deriv_eq_deriv_mul hu hv huv' hu'v h0 hinf`. Establish `e1 : radK (m + 1 + 2) = ∫ x in Ioi (0 : ℝ), x ^ (m + 2) * log x * (x * exp (-x ^ 2))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[radK]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (fun x : ℝ => (((m : ℝ) + 2) * x ^ (m + 1) * log x + x ^ (m + 1)) * (-(1 / 2) * exp (-x ^ 2))) = fun x => (-(1 / 2) * ((m : ℝ) + 2)) * (x ^ (m + 1) * log x * exp (-x ^ 2)) + (-(1 / 2)) * (x ^ (m + 1) * exp (-x ^ 2))`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, key, e2, integral_add ((integrableOn_radK (k := m + 1) (by omega)).const_mul _) ((integrableOn_radJ (m + 1)).const_mul _), integral_const_mul, integral_const_mul]`. Rewrite using `[radK, radJ]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem radK_add_two {k : ℕ} (hk : 1 ≤ k) :
     radK (k + 2) = ((k + 1) * radK k + radJ k) / 2 := by
@@ -192,7 +192,7 @@ theorem radK_add_two {k : ℕ} (hk : 1 ≤ k) :
   ring
 
 /- English proof (translation)
-Establish `hJ` using `radJ_pos k`. Rewrite using `[radK_add_two hk, radJ_add_two]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem radRatio_add_two {k : ℕ} (hk : 1 ≤ k) :
     radK (k + 2) / radJ (k + 2) = radK k / radJ k + 1 / ((k : ℝ) + 1) := by
@@ -201,9 +201,9 @@ theorem radRatio_add_two {k : ℕ} (hk : 1 ≤ k) :
   field_simp
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h` using `radRatio_add_two (k := 2 * n + 1) (by omega)`. Rewrite using `[show 2 * (n + 1) + 1 = 2 * n + 1 + 2 by ring, h, ih, harmonic_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem radRatio_odd (m : ℕ) :
     radK (2 * m + 1) / radJ (2 * m + 1) = radK 1 / radJ 1 + (harmonic m : ℝ) / 2 := by

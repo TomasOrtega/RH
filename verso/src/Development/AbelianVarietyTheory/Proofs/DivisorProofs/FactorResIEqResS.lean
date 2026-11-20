@@ -22,7 +22,7 @@ def resI (I : Ideal (𝓞 E)) (hI : I ≠ ⊥) : Formalism.L2.Herm.intAf F E →
 variable {F}
 
 /- English proof (translation)
-Unfold `resI`. Rewrite using `[RingHom.comp_apply]`. Use `show (RingEquiv.ofBijective (cmpS F I) _).symm _ = _`. Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem resI_oToS (I : Ideal (𝓞 E)) (hI : I ≠ ⊥) (a : 𝓞 E) :
     resI F I hI (oToS F E a) = Ideal.Quotient.mk I a := by
@@ -33,7 +33,7 @@ theorem resI_oToS (I : Ideal (𝓞 E)) (hI : I ≠ ⊥) (a : 𝓞 E) :
   rfl
 
 /- English proof (translation)
-Unfold `resI`. Rewrite using `[RingHom.comp_apply]`. Use `show (RingEquiv.ofBijective (cmpS F I) _).symm _ = _ ↔ _`. Rewrite using `[map_eq_zero_iff _ (RingEquiv.injective _), Ideal.Quotient.eq_zero_iff_mem]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resI_eq_zero_iff (I : Ideal (𝓞 E)) (hI : I ≠ ⊥) (s : Formalism.L2.Herm.intAf F E) :
     resI F I hI s = 0 ↔ s ∈ idS F I := by
@@ -43,7 +43,7 @@ theorem resI_eq_zero_iff (I : Ideal (𝓞 E)) (hI : I ≠ ⊥) (s : Formalism.L2
   rw [map_eq_zero_iff _ (RingEquiv.injective _), Ideal.Quotient.eq_zero_iff_mem]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (resI F I hI s)`. Conclude with `⟨a, (resI_eq_zero_iff I hI _).1 (by rw [map_sub, resI_oToS, ha, sub_self])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sub_mem (I : Ideal (𝓞 E)) (hI : I ≠ ⊥) (s : Formalism.L2.Herm.intAf F E) :
     ∃ a : 𝓞 E, s - oToS F E a ∈ idS F I := by
@@ -51,7 +51,7 @@ theorem exists_sub_mem (I : Ideal (𝓞 E)) (hI : I ≠ ⊥) (s : Formalism.L2.H
   exact ⟨a, (resI_eq_zero_iff I hI _).1 (by rw [map_sub, resI_oToS, ha, sub_self])⟩
 
 /- English proof (translation)
-Rewrite using `[← resI_eq_zero_iff I hI, map_sub, resI_oToS, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem resI_eq_mk_iff (I : Ideal (𝓞 E)) (hI : I ≠ ⊥) (s : Formalism.L2.Herm.intAf F E) (a : 𝓞 E) :
     resI F I hI s = Ideal.Quotient.mk I a ↔ s - oToS F E a ∈ idS F I := by
@@ -63,7 +63,7 @@ Both sides reduce to the same expression.
 theorem resS_eq_resI (w : Pl E) : resS F w = resI F w.asIdeal w.ne_bot := rfl
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_sub_mem I hI s`. Rewrite using `[(resI_eq_mk_iff I hI s a).2 ha, (resI_eq_mk_iff J hJ s a).2 (Ideal.map_mono h ha)]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem factor_resI {I J : Ideal (𝓞 E)} (hI : I ≠ ⊥) (hJ : J ≠ ⊥) (h : I ≤ J) (s : Formalism.L2.Herm.intAf F E) :
     Ideal.Quotient.factor h (resI F I hI s) = resI F J hJ s := by
@@ -72,7 +72,7 @@ theorem factor_resI {I J : Ideal (𝓞 E)} (hI : I ≠ ⊥) (hJ : J ≠ ⊥) (h 
   rfl
 
 /- English proof (translation)
-The claim follows from `factor_resI hI w.ne_bot h s`.
+A detailed English derivation is pending.
 -/
 theorem factor_resI_eq_resS {I : Ideal (𝓞 E)} (hI : I ≠ ⊥) (w : Pl E) (h : I ≤ w.asIdeal)
     (s : Formalism.L2.Herm.intAf F E) : Ideal.Quotient.factor h (resI F I hI s) = resS F w s :=
@@ -88,11 +88,11 @@ def crtHom (hle : ∀ w : ↥Pg, I ≤ w.1.asIdeal) : 𝓞 E ⧸ I →+* ∀ w :
   RingHom.pi fun w => Ideal.Quotient.factor (hle w)
 
 /- English proof (translation)
-Establish `hc : Pairwise (fun v w : ↥Pg => IsCoprime v.1.asIdeal w.1.asIdeal)` using `fun v w h => HeightOneSpectrum.isCoprime_of_ne _ _ (fun e => h (Subtype.ext e))`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, hP, ← Finset.prod_coe_sort Pg, Ideal.prod_eq_iInf_of_pairwise_isCoprime (fun v _ w _ h => hc h)]`. Simplify using `only [Finset.mem_univ, iInf_pos, Ideal.mem_iInf]`. Introduce `w`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (congrFun hx w)`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `Ideal.pi_quotient_surjective hc x`. Conclude with `⟨Ideal.Quotient.mk I a, funext fun w => ha w⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem crtHom_bijective (hP : I = ∏ w ∈ Pg, w.asIdeal) (hle : ∀ w : ↥Pg, I ≤ w.1.asIdeal) :
     Function.Bijective (crtHom hle) := by
@@ -126,16 +126,16 @@ def chiProd {K : Type} [Field K] (hle : ∀ w : ↥Pg, I ≤ w.1.asIdeal) (χ : 
   ∏ w : ↥Pg, (χ w).comp (Units.map (Ideal.Quotient.factor (hle w)).toMonoidHom)
 
 /- English proof (translation)
-Simplify using `[chiProd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chiProd_apply {K : Type} [Field K] (hle : ∀ w : ↥Pg, I ≤ w.1.asIdeal) (χ : ∀ w : ↥Pg, (kP w.1)ˣ →* Kˣ)
     (u : (𝓞 E ⧸ I)ˣ) : chiProd hle χ u = ∏ w : ↥Pg, χ w (Units.map (Ideal.Quotient.factor (hle w)).toMonoidHom u) := by
   simp [chiProd]
 
 /- English proof (translation)
-Set `e : (𝓞 E ⧸ I)ˣ ≃* ∀ w : ↥Pg, (kP w.1)ˣ` to `(Units.mapEquiv (crt hP hle).toMulEquiv).trans MulEquiv.piUnits`. Use `⟨fun w => (χ'.comp e.symm.toMonoidHom).comp (MonoidHom.mulSingle (fun w : ↥Pg => (kP w.1)ˣ) w), ?_⟩` and prove the remaining obligations. Use `ext1 u`. Rewrite using `[chiProd_apply]`. Establish `h : ∀ w, Units.map (Ideal.Quotient.factor (hle w)).toMonoidHom u = e u w` using `fun w => Units.ext rfl`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, MonoidHom.comp_apply, MonoidHom.mulSingle_apply]`. Rewrite using `[← map_prod, ← map_prod, Finset.univ_prod_mulSingle]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_chiProd_eq {K : Type} [Field K] (hP : I = ∏ w ∈ Pg, w.asIdeal) (hle : ∀ w : ↥Pg, I ≤ w.1.asIdeal)
     (χ' : (𝓞 E ⧸ I)ˣ →* Kˣ) : ∃ χ, chiProd hle χ = χ' := by

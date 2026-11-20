@@ -23,9 +23,9 @@ noncomputable section
 namespace GlobalTheory.EisAL
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [dif]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.mul_sum]`. Establish `h : ∑ s ∈ Finset.range L, ∑ r ∈ Finset.range L', F (x + (s : ℤ) • v + (r : ℤ) • w) = ∑ r ∈ Finset.range L', ∑ s ∈ Finset.range L, F (x + (r : ℤ) • w + (s : ℤ) • v)`. Rewrite using `[Finset.sum_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[add_right_comm]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dif_comm' (L L' : ℕ) (v w : ℤ × ℤ) (F : ℤ × ℤ → ℂ) :
     dif L v (dif L' w F) = dif L' w (dif L v F) := by
@@ -41,9 +41,9 @@ theorem dif_comm' (L L' : ℕ) (v w : ℤ × ℤ) (F : ℤ × ℤ → ℂ) :
   ring
 
 /- English proof (translation)
-Use `set T : ℤ × ℤ → ℂ := fun y => trm j 0 ((y.1 : ℂ) * τ + y.2) with hT`. Establish `hsv` using `GlobalTheory.LatSumZ.latsum_summable j L v τ hj hL`. Establish `hsw` using `GlobalTheory.LatSumZ.latsum_summable j L' w τ hj hL'`. Simplify using `only [lat]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `c1 : ∀ F : ℤ × ℤ → ℂ, dif L' w (dif L v (dif L v F)) = dif L v (dif L v (dif L' w F))`. Introduce `F`. Rewrite using `[dif_comm' L' L w v (dif L v F), dif_comm' L' L w v F]`. Rewrite using `[c1 T, c1 (dif L' w T)]`. Use `_ = ∑' x, Φ x * dif L' w (dif L' w T) x := sum_dif_dif L v Φ _ hL hΦ hv hsw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_indep2 (j L L' : ℕ) (v w : ℤ × ℤ) (Φ : ℤ × ℤ → ℂ) (τ : ℍ) (hj : 1 ≤ j) (hL : 0 < L) (hL' : 0 < L')
     (hΦ : ∃ C : ℝ, ∀ x, ‖Φ x‖ ≤ C) (hv : Kills L v Φ) (hw : Kills L' w Φ) :
@@ -62,9 +62,9 @@ theorem lat_indep2 (j L L' : ℕ) (v w : ℤ × ℤ) (Φ : ℤ × ℤ → ℂ) (
     _ = ∑' x, Φ x * dif L' w (dif L' w T) x := sum_dif_dif L v Φ _ hL hΦ hv hsw
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `h1` using `h (-1) (by simp) τ`. Establish `e : ((-1 : SL(2, ℤ)) • τ) = τ`. Rewrite using `[ModularGroup.SL_neg_smul, one_smul]`. Rewrite `h1` using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h1`. Establish `: (1 - χ (-1) * (-1) ^ k) * f τ = 0` using `by linear_combination h1`. Break down `mul_eq_zero.mp this with h2 | h2` into its components or cases. Conclude with `absurd (by linear_combination -h2) hp`. Simplify using `using h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inv_eq_zero_of_parity (k L : ℕ) (χ : ℤ → ℂ) (f : ℍ → ℂ) (h : Inv k L χ f)
     (hp : χ (-1) * (-1) ^ k ≠ 1) : f = 0 := by
@@ -80,23 +80,21 @@ theorem inv_eq_zero_of_parity (k L : ℕ) (χ : ℤ → ℂ) (f : ℍ → ℂ) (
   · simpa using h2
 
 /- English proof (translation)
-Use `set K := a 0 - a' 0 with hK`. Establish `hd : ∀ τ, qs a τ = qs a' τ + K`. Introduce `τ`. Establish `s` using `GlobalTheory.EisM.CharTwist.summable_of_polyB ha.1 τ`. Establish `s'` using `GlobalTheory.EisM.CharTwist.summable_of_polyB ha'.1 τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `qs`. Rewrite using `[s.tsum_eq_zero_add, s'.tsum_eq_zero_add]`. Establish `: ∀ n : ℕ, a (n + 1) = a' (n + 1)` using `fun n => h _ (Nat.succ_ne_zero n)`. Simplify using `only [this, hK]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. It suffices to establish `hK0 : K = 0 by funext τ; rw [hd, hK0, add_zero]`. Set `γ : SL(2, ℤ)` to `⟨!![1, 0; (L : ℤ), 1], by simp [Matrix.det_fin_two]⟩`. Set `τ0 : ℍ` to `⟨2 * Complex.I, by simp⟩`. Establish `i1` using `ha.2 γ (by simp [γ]) τ0`.
+Reduce the argument to an intermediate assertion. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i2` using `ha'.2 γ (by simp [γ]) τ0`. Establish `j1` using `ha.2 1 (by simp) τ0`. Establish `j2` using `ha'.2 1 (by simp) τ0`. Simplify using `only [one_smul] at j1 j2`. Rewrite `i1` using `[hd, hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[γ] at i1 i2 j1 j2`. Use `set w : ℂ := ((L : ℂ) * τ0 + 1) ^ k with hw`. Establish `hw1 : w ≠ 1`. Introduce `hw1`. Establish `hn : ‖((L : ℂ) * τ0 + 1)‖ ≥ 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Complex.abs_im_le_norm ((L : ℂ) * τ0 + 1)` as an intermediate fact. Establish `him : ((L : ℂ) * τ0 + 1).im = 2 * L` using `by simp [τ0]; ring`. Rewrite `this` using `[him]`. Establish `hL1 : (1 : ℝ) ≤ L` using `by exact_mod_cast hL`. Rewrite `this` using `[abs_of_nonneg (by positivity)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `: ‖w‖ = 1` using `by rw [hw1]; simp`. Rewrite `this` using `[hw, norm_pow]`. Establish `h2 : (2 : ℝ) ^ k ≤ ‖((L : ℂ) * τ0 + 1)‖ ^ k` using `pow_le_pow_left₀ (by norm_num) hn k`. Establish `h3 : (1 : ℝ) < 2 ^ k` using `one_lt_pow₀ (by norm_num) (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `j1` using `[hd]`. Establish `hK1 : K = χ 1 * K` using `by linear_combination j1 - j2`. Establish `hK2 : K = χ 1 * w * K` using `by linear_combination i1 - i2`. Establish `h0 : (w - 1) * K = 0` using `by linear_combination w * hK1 - hK2`.
-
-Conclude with `(mul_eq_zero.mp h0).resolve_left (sub_ne_zero.mpr hw1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem qs_eq_of_MF (k L : ℕ) (χ : ℤ → ℂ) (a a' : ℕ → ℂ) (hk : 1 ≤ k) (hL : 0 < L)
     (ha : MF k L χ a) (ha' : MF k L χ a') (h : ∀ n, n ≠ 0 → a n = a' n) : qs a = qs a' := by
@@ -147,7 +145,7 @@ end GlobalTheory.EisAL
 namespace GlobalTheory.EisAL
 
 /- English proof (translation)
-Unfold `slz`. Simplify using `[Matrix.det_fin_two]`. Use `left`. Rewrite using `[UpperHalfPlane.ofComplex_apply_of_im_pos hτ']`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slz_diag (j N : ℕ) (g : ℍ → ℂ) (τ : ℍ) (hτ' : 0 < ((N : ℂ) * τ).im) :
     slz j !![(N : ℤ), 0; 0, 1] g τ = (N : ℂ) ^ (j - 1) * g ⟨(N : ℂ) * τ, hτ'⟩ := by
@@ -160,13 +158,13 @@ end GlobalTheory.EisAL
 namespace GlobalTheory.EisAL
 
 /- English proof (translation)
-Take `⟨⟨C, A, hC⟩, hI⟩` from `h`. Establish `hq : qs (r • a) = fun τ => r * qs a τ`. Use function extensionality and compare the values at `τ`. Unfold `qs`. Rewrite using `[← tsum_mul_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `n`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨‖r‖ * C, A, fun n => ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC n) (norm_nonneg r)`. Introduce `γ hγ τ`. Rewrite using `[hq]`. Simplify using `only`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI γ hγ τ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem MF_smul (k L : ℕ) (χ : ℤ → ℂ) (a : ℕ → ℂ) (r : ℂ) (h : MF k L χ a) : MF k L χ (r • a) := by
   obtain ⟨⟨C, A, hC⟩, hI⟩ := h
@@ -180,7 +178,7 @@ theorem MF_smul (k L : ℕ) (χ : ℤ → ℂ) (a : ℕ → ℂ) (r : ℂ) (h : 
     rw [hI γ hγ τ]; ring
 
 /- English proof (translation)
-Unfold `qs`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -188,67 +186,59 @@ theorem qs_smul (a : ℕ → ℂ) (r : ℂ) (τ : ℍ) : qs (r • a) τ = r * q
   unfold qs; rw [← tsum_mul_left]; congr 1; funext n; simp only [Pi.smul_apply, smul_eq_mul]; ring
 
 /- English proof (translation)
-Introduce `j N l ω ν c₁ c₂ a b c d hdet hj hN hl hlN h1 h2`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Establish `hl0 : 0 < l` using `hl.pos`. Use `haveI : NeZero l := ⟨hl.ne_zero⟩`. Use `haveI : NeZero N := ⟨hN.ne'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hNl : 0 < N * l` using `Nat.mul_pos hN hl0`. Use `set E₁ := eis j c₁ (ch ω) (ch ν) with hE₁`. Use `set E₂ := eis j c₂ (fun x => ch ω x * hat ν x) (fun _ => 1) with hE₂`. Establish `hν1 : ch ν⁻¹ (-1) = ch ν (-1)`. Unfold `ch`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e : ν ((-1 : ℤ) : ZMod N) * ν ((-1 : ℤ) : ZMod N) = 1` using `by rw [← map_mul]; simp`. Rewrite using `[MulChar.inv_apply_eq_inv']`. Conclude with `inv_eq_of_mul_eq_one_right e`. Establish `hs : ((-1 : ℂ) ^ j) ^ 2 = 1` using `by rw [← pow_mul, mul_comm, pow_mul]; simp`. Distinguish the cases in `hpar : ch ω (-1) * ch ν (-1) = (-1) ^ j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `swap`. Establish `z1 : qs E₁ = 0` using `inv_eq_zero_of_parity j (N * l) _ _ h1.2 (by`. Introduce `h`. Apply `hpar` to reduce the goal to its premises. Take the linear combination `(-1 : ℂ) ^ j * h - (ch ω (-1) * ch ν (-1)) * hs)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `z2 : qs E₂ = 0` using `inv_eq_zero_of_parity j (N * l) _ _ h2.2 (by`. Introduce `h`. Apply `hpar` to reduce the goal to its premises. Rewrite `h` using `[hν1]`. Take the linear combination `(-1 : ℂ) ^ j * h - (ch ω (-1) * ch ν (-1)) * hs)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[z1, z2]`. Use function extensionality and compare the values at `τ`. Simplify using `[slz]`. Take `⟨φ, hφsum, hφtw⟩` from `GlobalTheory.EisM.CharTwist.exists_coeffs ω`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hhat : ∀ x : ℤ, hat φ x = ch ω x` using `fun x => by rw [hat_eq_sum_std]; exact hφsum _`. Establish `hω0 : ch ω 0 = 0` using `by simp only [ch, Int.cast_zero]; exact MulChar.map_zero ω`. Take `⟨c', hMF', hlat'⟩` from `GlobalTheory.EisForm.eis_latF_mf j l N (ch ν) (ch ω) (ch ν) φ hj hl0 hN (by rw [hhat, hω0]) (fun x => by simp [ch]) (fun d hd => by`. Establish `hd' : IsCoprime d (l : ℤ)` using `by push_cast at hd; exact hd.of_mul_right_left`. Establish `hu : IsUnit (d : ZMod l)` using `isUnit_of_isCoprime d hd'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun y => ?_, fun x => by simp [ch, mul_comm]⟩` and prove the remaining obligations. Rewrite using `[hφtw (d : ZMod l) y hu, mul_comm y]`. Use the proof step `rfl) hpar`. Establish `hfun : hat φ = ch ω` using `funext hhat`. Rewrite `hMF'`, `hlat'` using `[hfun]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hMF'` using `[mul_comm l N]`. Establish `hq1 : qs E₁ = qs (eis j c' (ch ω) (ch ν))` using `qs_eq_of_MF j (N * l) _ _ _ hj hNl h1 hMF' (fun n hn => by simp [hE₁, eis, hn])`. Establish `hcop : N.Coprime l` using `((Nat.Prime.coprime_iff_not_dvd hl).mpr hlN).symm`. Establish `hcu : IsUnit (c : ZMod N)` using `isUnit_of_isCoprime c ⟨-(l * b), a * d, by linear_combination hdet⟩`. Establish `hau : IsUnit (a : ZMod l)` using `isUnit_of_isCoprime a ⟨N * d, -(b * c), by linear_combination hdet⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set φ₂ : ZMod (N * l) → ℂ := fun z => ν (-(c : ZMod N) * ZMod.castHom (Dvd.intro l rfl) (ZMod N) z) * φ ((a : ZMod l) * ZMod.castHom (Dvd.intro_left N rfl) (ZMod l) z) with hφ₂`. Take `⟨⟨C, hC0, hChat0⟩, hφ₂tw0⟩` from `GlobalTheory.T.dirichletFourier_mixed_twist_multiple N l ν ω φ a c hN hl0 hcop hhat hφtw hcu hau`. Establish `hChat : ∀ x : ℤ, hat φ₂ x = C * (ch ω x * hat ν x)` using `hChat0`. Establish `hφ₂tw : ∀ d : ℤ, IsCoprime d (N * l : ℕ) → ∀ y, φ₂ y = ch ω d * ch ν⁻¹ d * φ₂ (y * d)` using `hφ₂tw0`. Establish `hhat0₂ : hat φ₂ 0 = 0` using `by rw [hChat, hω0]; ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨c'', hMF'', hlat''⟩` from `GlobalTheory.EisForm.eis_latF_mf j (N * l) 1 (fun _ => 1) (fun d => ch ω d * ch ν⁻¹ d) (fun _ => 1) φ₂ hj hNl one_pos hhat0₂ (fun _ => rfl) (fun d hd => ⟨fun y => hφ₂tw d (by rwa [mul_one] at hd) y, fun x => by simp⟩) (by rw [mul_one, hν1]; exact hpar)`. Simplify using `only [mul_one] at hMF''`. Establish `hq2 : qs (C⁻¹ • eis j c'' (hat φ₂) fun _ => 1) = qs E₂` using `qs_eq_of_MF j (N * l) _ _ _ hj hNl (MF_smul _ _ _ _ _ hMF'') h2 (fun n hn => by`. Simplify using `only [hE₂, eis, Pi.smul_apply, smul_eq_mul, if_neg hn, hChat, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `field_simp)`. Use `set Φ₁ := latF l (ch ν) φ with hΦ₁`. Use `set Ψ := latF (N * l) (fun _ => 1) φ₂ with hΨ`. Use `set K₁ : ℂ := 2 * (-2 * π * Complex.I / l) ^ j / (j - 1).factorial with hK₁`. Use `set K₂ : ℂ := 2 * (-2 * π * Complex.I / ((N * l : ℕ) : ℂ)) ^ j / (j - 1).factorial with hK₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hK₁0 : K₁ ≠ 0`. Establish `: (l : ℂ) ≠ 0` using `by exact_mod_cast hl0.ne'`. Simplify using `[hK₁, Real.pi_ne_zero, Complex.I_ne_zero, this, Nat.factorial_ne_zero]`. Establish `hK₂0 : K₂ ≠ 0`. Establish `h1 : (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2 : (l : ℂ) ≠ 0` using `by exact_mod_cast hl0.ne'`. Simplify using `[hK₂, Real.pi_ne_zero, Complex.I_ne_zero, h1, h2, Nat.factorial_ne_zero]`. Establish `hE₁lat : ∀ τ, qs E₁ τ = K₁⁻¹ * lat j 0 l (0, 1) Φ₁ τ` using `fun τ => by`. Rewrite using `[hlat' τ, hq1, ← mul_assoc, inv_mul_cancel₀ hK₁0, one_mul]`. Establish `hE₂lat : ∀ τ, lat j 0 (N * l) (0, 1) Ψ τ = K₂ * C * qs E₂ τ` using `fun τ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `hlat'' τ`. Establish `e2 : qs (eis j c'' (hat φ₂) fun _ => 1) τ = C * qs E₂ τ`. Rewrite using `[← hq2, qs_smul, ← mul_assoc, mul_inv_cancel₀ hC0, one_mul]`. Rewrite using `[e, e2]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Set `γ₀ : SL(2, ℤ)` to `⟨!![a, b; l * c, N * d], by simp [Matrix.det_fin_two]; linear_combination hdet⟩`. Establish `hδ : !![(N : ℤ) * a, b; N * l * c, N * d] = (γ₀ : M2) * !![(N : ℤ), 0; 0, 1]`. Apply the tactic sequence `ext i k; fin_cases i <;> fin_cases k <;> simp [γ₀] <;> ring`. Establish `hdet0 : 0 < (γ₀ : M2).det` using `by rw [γ₀.2]; exact one_pos`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hdet1 : 0 < (!![(N : ℤ), 0; 0, 1] : M2).det` using `by simp [Matrix.det_fin_two]; exact_mod_cast hN`. Take `⟨hcomp, hSL, -⟩` from `GlobalTheory.EisM.slz_props j (qs E₁) hj`. Use `⟨(N : ℂ) ^ (j - 1) * K₁⁻¹ * (K₂ * C), by` and prove the remaining obligations. Establish `: (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Conclude with `mul_ne_zero (mul_ne_zero (pow_ne_zero _ this) (inv_ne_zero hK₁0)) (mul_ne_zero hK₂0 hC0), ?_⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hδ, hcomp _ _ hdet0 hdet1]`. Use function extensionality and compare the values at `τ`. Establish `hτ' : 0 < ((N : ℂ) * τ).im` using `by simp; exact mul_pos (by exact_mod_cast hN) τ.2`. Use `set τ' : ℍ := ⟨(N : ℂ) * τ, hτ'⟩ with hτ'def`. Establish `hout : slz j !![(N : ℤ), 0; 0, 1] (slz j (γ₀ : M2) (qs E₁)) τ = (N : ℂ) ^ (j - 1) * slz j (γ₀ : M2) (qs E₁) τ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `slz_diag j N _ τ hτ'`. Rewrite using `[hout, hSL γ₀ τ', hE₁lat]`. Use `set Φ₁' : ℤ × ℤ → ℂ := fun y => Φ₁ (y.1 * (N * d) - y.2 * (l * c), -(y.1 * b) + y.2 * a) with hΦ₁'`. Establish `htr : ∀ x : ℤ × ℤ, Φ₁' (x.1 * γ₀ 0 0 + x.2 * γ₀ 1 0, x.1 * γ₀ 0 1 + x.2 * γ₀ 1 1) = Φ₁ x`. Introduce `x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hΦ₁', γ₀]`. Simplify using the standard rewrite rules. Use `congr 1`. Use `ext`. Simplify using `only`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take the linear combination `x.1 * hdet`. Simplify using `only`. Take the linear combination `x.2 * hdet`. Rewrite using `[GlobalTheory.EisM.lat_smul j l (0, 1) Φ₁ Φ₁' γ₀ τ' htr]`. Establish `hv : ((0 : ℤ) * γ₀ 0 0 + 1 * γ₀ 1 0, (0 : ℤ) * γ₀ 0 1 + 1 * γ₀ 1 1) = ((l : ℤ) * c, (N : ℤ) * d)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Simplify using `[γ₀]`. Simplify using `only [Prod.fst, Prod.snd] at hv ⊢`. Rewrite using `[hv, GlobalTheory.T.regularizedEisensteinLatticeSum_dilate j l N _ Φ₁' τ τ' hN rfl]`. Establish `hrow : (fun y : ℤ × ℤ => if (N : ℤ) ∣ y.1 then Φ₁' (y.1 / N, y.2) else 0) = Ψ`. Use function extensionality and compare the values at `y`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation.
 
-Conclude with `GlobalTheory.T.latticeFunctionDivisibleFirst_substitution N l ν φ a b c d hdet hN hl0 y`. Rewrite using `[hrow]`. Establish `hΨb : ∃ C : ℝ, ∀ x, ‖Ψ x‖ ≤ C`. Use `⟨∑ z, ‖φ₂ z‖, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [hΨ, latF]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `split_ifs`. Rewrite using `[one_mul]`. Conclude with `Finset.single_le_sum (f := fun z => ‖φ₂ z‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ _)`. Simplify using `using Finset.sum_nonneg fun z (_ : z ∈ Finset.univ) => norm_nonneg (φ₂ z)`. Establish `hKl : Kills (N * l) (0, 1) Ψ`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `using GlobalTheory.EisForm.latF_kills (N * l) 1 hNl (fun _ => 1) φ₂ (fun _ => rfl) hhat0₂ 0 1 (by simp)`. Establish `hKv : Kills l ((N : ℤ) * ((l : ℤ) * c), (N : ℤ) * d) Ψ`. Establish `hsum0 : ∑ y, φ y = 0` using `by rw [← GlobalTheory.EisForm.hat_zero, hhat, hω0]`. Establish `hdl : (N : ZMod l) * (a : ZMod l) * (d : ZMod l) = 1`. Use `congrArg (fun z : ℤ => (z : ZMod l)) hdet` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Move the coercions through the operations in `at this`. Rewrite `this` using `[ZMod.natCast_self]`. Take the linear combination `this`. Introduce `x`. Distinguish the cases in `h : ((N * l : ℕ) : ℤ) ∣ x.1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Simplify using `only [hΨ, latF, Prod.fst_sub, Prod.snd_sub, Prod.smul_mk, smul_eq_mul]`. Rewrite using `[if_pos (by obtain ⟨m, hm⟩ := h; exact ⟨m - r * c, by push_cast at hm ⊢; rw [hm]; ring⟩)]`. Simplify using `only [hφ₂, one_mul, map_intCast]`.
-
-Use `congr 2`. Use `push_cast`. Rewrite using `[ZMod.natCast_self]`. Expand and normalize the polynomial expressions, which then agree. Use `push_cast`.
-
-Take the linear combination `(-(r : ZMod l)) * hdl`. Use `_ = 0 := by rw [← Finset.mul_sum, GlobalTheory.EisForm.sum_shift l φ _ _ isUnit_one.neg, hsum0, mul_zero]`. Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations. Simplify using `only [hΨ, latF, Prod.fst_sub, Prod.snd_sub, Prod.smul_mk, smul_eq_mul]`. Rewrite using `[if_neg]`.
-
-Introduce `h2`. Apply `h` to reduce the goal to its premises. Establish `h3 : ((N * l : ℕ) : ℤ) ∣ (r : ℤ) * ((N : ℤ) * ((l : ℤ) * c))` using `⟨r * c, by push_cast; ring⟩`. Simplify using `using dvd_add h2 h3`. Rewrite using `[lat_indep2 j l (N * l) _ (0, 1) Ψ τ hj hl0 hNl hΨb hKv hKl, hE₂lat]`.
-
-Establish `hD : (((γ₀ 1 0 : ℤ) : ℂ) * τ' + ((γ₀ 1 1 : ℤ) : ℂ)) ≠ 0`. Use `UpperHalfPlane.denom_ne_zero γ₀ τ'` as an intermediate fact. Simplify `this` using `[UpperHalfPlane.denom]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem atkin_lehner_eis : ∀ (j N l : ℕ) (ω : DirichletCharacter ℂ l) (ν : DirichletCharacter ℂ N) (c₁ c₂ : ℂ) (a₀ b₀ c₀ d₀ : ℤ), N * a₀ * d₀ - l * b₀ * c₀ = 1 → 1 ≤ j → 0 < N → l.Prime → ¬ l ∣ N → MF j (N * l) (fun d => ch ω d * ch ν d) (eis j c₁ (ch ω) (ch ν)) → MF j (N * l) (fun d => ch ω d * ch ν⁻¹ d) (eis j c₂ (fun x => ch ω x * hat ν x) fun _ => 1) → ∃ κ : ℂ, κ ≠ 0 ∧ slz j !![(N : ℤ) * a₀, b₀; N * l * c₀, N * d₀] (qs (eis j c₁ (ch ω) (ch ν))) = κ • qs (eis j c₂ (fun x => ch ω x * hat ν x) fun _ => 1) := by
   intro j N l ω ν c₁ c₂ a b c d hdet hj hN hl hlN h1 h2

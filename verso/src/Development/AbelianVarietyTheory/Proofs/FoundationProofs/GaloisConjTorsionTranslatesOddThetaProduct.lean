@@ -17,7 +17,7 @@ open scoped BigOperators
 namespace GlobalTheory.ProdThetaConj
 
 /- English proof (translation)
-Simplify using `only [ee, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ee_add (a b : ℝ) : ee (a + b) = ee a * ee b := by
   simp only [ee, ← Complex.exp_add]
@@ -26,7 +26,7 @@ theorem ee_add (a b : ℝ) : ee (a + b) = ee a * ee b := by
   ring
 
 /- English proof (translation)
-Simplify using `only [ee, ← Complex.exp_sum]`. Use `congr 1`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ee_sum {κ : Type*} [Fintype κ] (a : κ → ℝ) : ee (∑ j, a j) = ∏ j, ee (a j) := by
   simp only [ee, ← Complex.exp_sum]
@@ -35,9 +35,9 @@ theorem ee_sum {κ : Type*} [Fintype κ] (a : κ → ℝ) : ee (∑ j, a j) = �
   rw [Finset.mul_sum]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [U1, ee, gl3FieldFirst]`. Rewrite using `[mul_assoc, ← Complex.exp_add, mul_left_comm, ← Complex.exp_add, add_assoc]`. Use `congr 2`. Establish `h` using `Complex.sub_conj (y * (starRingEnd ℂ) (x / 2))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [map_mul, Complex.conj_conj, map_div₀, map_ofNat, map_add] at h ⊢`. Move the coercions through the operations in `at h ⊢`. Simplify using `only [div_eq_mul_inv, mul_inv] at h ⊢`. Take the linear combination `(Real.pi : ℂ) * (area Λ : ℂ)⁻¹ * h`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem thetaTranslation_comp_eq_cocycle_mul (Λ : AddSubgroup ℂ) (x y : ℂ) (g : ℂ → ℂ) :
     U1 Λ x (U1 Λ y g) = fun z => ee (gl3FieldFirst Λ y (x / 2)) * U1 Λ (x + y) g z := by
@@ -52,7 +52,7 @@ theorem thetaTranslation_comp_eq_cocycle_mul (Λ : AddSubgroup ℂ) (x y : ℂ) 
   linear_combination (Real.pi : ℂ) * (area Λ : ℂ)⁻¹ * h
 
 /- English proof (translation)
-Unfold `U1`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_U1 (Λ : AddSubgroup ℂ) (x : ℂ) {g : ℂ → ℂ} (hg : Differentiable ℂ g) :
     Differentiable ℂ (U1 Λ x g) := by
@@ -60,7 +60,7 @@ theorem differentiable_U1 (Λ : AddSubgroup ℂ) (x : ℂ) {g : ℂ → ℂ} (hg
   fun_prop
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [U1, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem thetaTranslation_const_mul (Λ : AddSubgroup ℂ) (x a : ℂ) (g : ℂ → ℂ) :
     U1 Λ x (fun z => a * g z) = fun z => a * U1 Λ x g z := by
@@ -68,7 +68,7 @@ theorem thetaTranslation_const_mul (Λ : AddSubgroup ℂ) (x a : ℂ) (g : ℂ �
   simp only [U1, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[coef1, coef1, iteratedDeriv_const_mul_field, mul_div_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem taylorCoeffAtZero_const_mul (a : ℂ) (g : ℂ → ℂ) (n : ℕ) :
     coef1 (fun z => a * g z) n = a * coef1 g n := by
@@ -78,21 +78,21 @@ def OddLaw (Λ : AddSubgroup ℂ) (g : ℂ → ℂ) : Prop :=
   deriv g 0 = 1 ∧ ∀ ω ∈ Λ, ∀ z, U1 Λ ω g z = (if ω / 2 ∈ Λ then 1 else -1) * g z
 
 /- English proof (translation)
-Simplify using `only [gl3FieldFirst, mul_assoc, Complex.im_ofReal_mul, mul_div_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem riemannFormImag_real_smul_left (Λ : AddSubgroup ℂ) (r : ℝ) (x y : ℂ) :
     gl3FieldFirst Λ (r * x) y = r * gl3FieldFirst Λ x y := by
   simp only [gl3FieldFirst, mul_assoc, Complex.im_ofReal_mul, mul_div_assoc]
 
 /- English proof (translation)
-Simplify using `only [gl3FieldFirst, Complex.mul_im, Complex.conj_im, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem riemannFormImag_swap (Λ : AddSubgroup ℂ) (x y : ℂ) : gl3FieldFirst Λ y x = -gl3FieldFirst Λ x y := by
   simp only [gl3FieldFirst, Complex.mul_im, Complex.conj_im, Complex.conj_re]
   ring
 
 /- English proof (translation)
-Rewrite using `[riemannFormImag_swap, riemannFormImag_real_smul_left, riemannFormImag_swap Λ x y]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem riemannFormImag_real_smul_right (Λ : AddSubgroup ℂ) (r : ℝ) (x y : ℂ) :
     gl3FieldFirst Λ x (r * y) = r * gl3FieldFirst Λ x y := by
@@ -100,11 +100,11 @@ theorem riemannFormImag_real_smul_right (Λ : AddSubgroup ℂ) (r : ℝ) (x y : 
   ring
 
 /- English proof (translation)
-Take `⟨z, hz⟩ : ∃ z, g z ≠ 0` from `by by_contra! h0`. Establish `h1` using `h.1`. Rewrite `h1` using `[show g = fun _ => 0 from funext h0]`. Simplify using `at h1`. Establish `h2 : (2 * b) ∈ Λ` using `by rw [two_mul]; exact Λ.add_mem hb hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1` using `congrFun (thetaTranslation_comp_eq_cocycle_mul Λ (2 * b) a g) z`. Apply the tactic sequence `have hne : (if a / 2 ∈ Λ then (1 : ℂ) else -1) ≠ 0 := by split_ifs <;> simp`. Rewrite `e1` using `[funext (h.2 a ha), thetaTranslation_const_mul, h.2 _ (Λ.add_mem h2 ha)]`. Simplify using `only at e1`. Rewrite `e1` using `[h.2 _ h2, show 2 * b / 2 = b by ring, if_pos hb, show (2 * b + a) / 2 = b + a / 2 by ring]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Λ.add_mem_cancel_left hb, one_mul] at e1`. Conclude with `(mul_right_cancel₀ (mul_ne_zero hne hz) (by rw [one_mul]; exact e1)).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem OddLaw.ee_eq_one {Λ : AddSubgroup ℂ} {g : ℂ → ℂ} (h : OddLaw Λ g) {a b : ℂ}
     (ha : a ∈ Λ) (hb : b ∈ Λ) : ee (gl3FieldFirst Λ a b) = 1 := by
@@ -123,15 +123,15 @@ theorem OddLaw.ee_eq_one {Λ : AddSubgroup ℂ} {g : ℂ → ℂ} (h : OddLaw Λ
   exact (mul_right_cancel₀ (mul_ne_zero hne hz) (by rw [one_mul]; exact e1)).symm
 
 /- English proof (translation)
-Establish `hmμ : (m : ℂ) * μ ∈ Λ` using `by simpa using Λ.nsmul_mem hμ m`. Establish `h2 : (2 * m * μ : ℂ) ∈ Λ`. Rewrite using `[mul_assoc, two_mul]`. Conclude with `Λ.add_mem hmμ hmμ`. Establish `hω : U1 Λ (2 * m * μ) g = g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[h.2 _ h2, show (2 * m * μ : ℂ) / 2 = m * μ by ring, if_pos hmμ, one_mul]`. Establish `e1` using `thetaTranslation_comp_eq_cocycle_mul Λ (x + t) (2 * m * μ) g`. Establish `f1 : gl3FieldFirst Λ (2 * m * μ) ((x + t) / 2) = gl3FieldFirst Λ μ (m * x + m * t)`. Establish `a1` using `riemannFormImag_real_smul_left Λ (2 * m) μ ((x + t) / 2)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `riemannFormImag_real_smul_right Λ (2 * m) μ ((x + t) / 2)`. Move the coercions through the operations in `at a1 a2`. Rewrite using `[a1, ← a2]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `f2 : gl3FieldFirst Λ t ((x + 2 * m * μ) / 2) = gl3FieldFirst Λ t (x / 2) + gl3FieldFirst Λ (m * t) μ`. Establish `a1` using `riemannFormImag_real_smul_left Λ m t μ`. Establish `a2` using `riemannFormImag_real_smul_right Λ m t μ`. Move the coercions through the operations in `at a1 a2`. Rewrite using `[a1, ← a2, show (x + 2 * m * μ) / 2 = x / 2 + m * μ by ring]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [gl3FieldFirst, map_add, mul_add, Complex.add_im, add_div]`. Rewrite `e1` using `[hω, f1, h.ee_eq_one hμ (Λ.add_mem hx ht)]`. Rewrite using `[thetaTranslation_comp_eq_cocycle_mul, thetaTranslation_comp_eq_cocycle_mul, f2, ee_add, h.ee_eq_one ht hμ, e1, add_right_comm]`. Simplify using `only [one_mul, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem OddLaw.doubleTranslate_shift_lattice_mod_two_mul {Λ : AddSubgroup ℂ} {g : ℂ → ℂ} (h : OddLaw Λ g) {x t μ : ℂ} {m : ℕ}
     (hx : (m : ℂ) * x ∈ Λ) (ht : (m : ℂ) * t ∈ Λ) (hμ : μ ∈ Λ) :
@@ -164,7 +164,7 @@ noncomputable def topHom (s : ℂ →+* ℂ) : (⊤ : IntermediateField ℚ ℂ)
   s.toRatAlgHom.comp (IntermediateField.val ⊤)
 
 /- English proof (translation)
-Simplify using `only [cj, TaylorLogMetric.liftM, IntermediateField.mem_top, dif_pos]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cj_topHom (s : ℂ →+* ℂ) (x : ℂ) : cj ⊤ (topHom s) x = s x := by
   simp only [cj, TaylorLogMetric.liftM, IntermediateField.mem_top, dif_pos]
@@ -175,7 +175,7 @@ section GenusOne
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {s : ℂ →+* ℂ}
 
 /- English proof (translation)
-Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Take `⟨u, hu⟩` from `(GlobalTheory.T.galStar_complexMultiplication_points D cc δ hc ⊤ _ hK trivial trivial).1 (t / n) ⟨m * n, by positivity, by`. Rewrite using `[show ((m * n : ℕ) : ℂ) * (t / n) = m * t by push_cast; field_simp]; exact ht⟩`. Use the proof step `(Or.inr ⟨trivial, trivial⟩)`. Conclude with `⟨n * u, by rwa [Adp1, mul_div_cancel_left₀ _ hn']⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_adp (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {t : ℂ} {m : ℕ} (hm : 0 < m)
     (ht : (m : ℂ) * t ∈ lamOf D cc δ) {n : ℕ} (hn : 0 < n) :
@@ -188,7 +188,7 @@ theorem exists_adp (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {t : ℂ} {m 
   exact ⟨n * u, by rwa [Adp1, mul_div_cancel_left₀ _ hn']⟩
 
 /- English proof (translation)
-Rewrite using `[Adp1, add_div, add_div]`. Conclude with `(GlobalTheory.T.galStar_complexMultiplication_points D cc δ hc ⊤ _ hK trivial trivial).2.2.2.1 _ _ _ _ hx ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adp_add (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {n : ℕ} {x x' t t' : ℂ}
     (hx : Adp1 ⊤ (topHom s) (lamOf D cc δ) n x x') (ht : Adp1 ⊤ (topHom s) (lamOf D cc δ) n t t') :
@@ -197,7 +197,7 @@ theorem adp_add (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {n : ℕ} {x x' 
   exact (GlobalTheory.T.galStar_complexMultiplication_points D cc δ hc ⊤ _ hK trivial trivial).2.2.2.1 _ _ _ _ hx ht
 
 /- English proof (translation)
-Establish `h` using `adp_add hc hK hx hx`. Establish `e : ∀ y : ℂ, (y + y) / ((2 * n : ℕ) : ℂ) = y / n` using `fun y => by`. Use `push_cast`. Rewrite using `[← two_mul, mul_div_mul_left _ _ two_ne_zero]`. Rewrite `h` using `[Adp1, e, e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem adp_half (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {n : ℕ} {x x' : ℂ}
     (hx : Adp1 ⊤ (topHom s) (lamOf D cc δ) (2 * n) x x') :
@@ -209,7 +209,7 @@ theorem adp_half (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {n : ℕ} {x x'
   rwa [Adp1, e, e] at h
 
 /- English proof (translation)
-Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `h` using `(GlobalTheory.T.galStar_complexMultiplication_points D cc δ hc ⊤ _ hK trivial trivial).2.2.2.2.2.1 (m * n) _ _ hx`. Establish `e : ∀ y : ℂ, ((m * n : ℕ) : ℂ) * (y / n) = m * y` using `fun y => by push_cast; field_simp`. Rewrite `h` using `[e, e]`. Conclude with `h.1 hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adp_mem (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {n m : ℕ} (hn : 0 < n) {x x' : ℂ}
     (hx : Adp1 ⊤ (topHom s) (lamOf D cc δ) n x x') (hm : (m : ℂ) * x ∈ lamOf D cc δ) :
@@ -222,7 +222,7 @@ theorem adp_mem (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {n m : ℕ} (hn 
   exact h.1 hm
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.OddTheta.sgStar_laws _ (GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hc).1).1`. Conclude with `⟨h.1, h.2.1, h.2.2.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem sgStar_law (hc : Crv D cc δ) :
     Differentiable ℂ (sgStar (lamOf D cc δ)) ∧ OddLaw (lamOf D cc δ) (sgStar (lamOf D cc δ)) := by
@@ -231,7 +231,7 @@ theorem sgStar_law (hc : Crv D cc δ) :
   exact ⟨h.1, h.2.1, h.2.2.2⟩
 
 /- English proof (translation)
-Take `⟨cc', δ', hc', -, h⟩` from `GlobalTheory.T.conjugate_curveDatum_lattice_isCurveLattice D cc δ hc ⊤ _ hK trivial trivial 1 one_pos`. Rewrite using `[h]`. Conclude with `sgStar_law hc'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sgStar_conj_law (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) :
     Differentiable ℂ (sgStar (lamConj ⊤ (topHom s) (lamOf D cc δ))) ∧
@@ -241,7 +241,7 @@ theorem sgStar_conj_law (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) :
   exact sgStar_law hc'
 
 /- English proof (translation)
-Rewrite using `[← cj_topHom]`. Use `GlobalTheory.T.galois_conj_taylor_thetaTranslate D cc δ hc ⊤ _ hK trivial trivial t t' (2 * m) (by positivity) ?_ ha (fun _ => trivial) n` and prove the remaining obligations. Rewrite using `[show ((2 * m : ℕ) : ℂ) * (t / 2) = m * t by push_cast; ring]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem coef_translate (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {m : ℕ} (hm : 0 < m) {t t' : ℂ}
     (ht : (m : ℂ) * t ∈ lamOf D cc δ) (ha : Adp1 ⊤ (topHom s) (lamOf D cc δ) (2 * (2 * m)) t t')
@@ -254,13 +254,13 @@ theorem coef_translate (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {m : ℕ}
   rwa [show ((2 * m : ℕ) : ℂ) * (t / 2) = m * t by push_cast; ring]
 
 /- English proof (translation)
-Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Take `⟨y, hy⟩` from `exists_adp hc hK hm hx (n := 2 * (2 * m)) (by positivity)`. Establish `hμ` using `((GlobalTheory.T.galStar_complexMultiplication_points D cc δ hc ⊤ _ hK trivial trivial).2.1 _ _ _ (adp_half hc hK hy)).1 hxa`. Establish `hsh` using `(sgStar_conj_law hc hK).2.doubleTranslate_shift_lattice_mod_two_mul (adp_mem hc hK (by positivity) hxa hx) (adp_mem hc hK (by positivity) ha ht) hμ`. Rewrite `hsh` using `[show x' + 2 * m * (y / ((2 * m : ℕ) : ℂ) - x' / ((2 * m : ℕ) : ℂ)) = y by push_cast; field_simp; ring]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hsh, thetaTranslation_comp_eq_cocycle_mul, thetaTranslation_comp_eq_cocycle_mul, taylorCoeffAtZero_const_mul, taylorCoeffAtZero_const_mul, map_mul, coef_translate hc hK hm (by rw [mul_add]; exact AddSubgroup.add_mem _ hx ht) (adp_add hc hK hy ha), ← cj_topHom]`. Use `congr 1`. Use `GlobalTheory.T.weilPairing_galois_equivariant_cm_torsion D cc δ hc ⊤ _ hK trivial trivial t (x / 2) t' (y / 2) (2 * m) (by positivity) ?_ ?_ (adp_half hc hK ha) ?_ trivial` and prove the remaining obligations. Rewrite using `[show ((2 * m : ℕ) : ℂ) * t = m * t + m * t by push_cast; ring]`. Conclude with `AddSubgroup.add_mem _ ht ht`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[show ((2 * m : ℕ) : ℂ) * (x / 2) = m * x by push_cast; ring]` and apply the resulting hypothesis. Establish `e : ∀ w : ℂ, w / 2 / ((2 * m : ℕ) : ℂ) = w / ((2 * (2 * m) : ℕ) : ℂ)` using `fun w => by`. Rewrite using `[div_div]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Adp1, e, e]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem coef_translate₂ (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {m : ℕ} (hm : 0 < m)
     {x x' t t' : ℂ} (hx : (m : ℂ) * x ∈ lamOf D cc δ) (ht : (m : ℂ) * t ∈ lamOf D cc δ)
@@ -306,16 +306,16 @@ Both sides reduce to the same expression.
 theorem coordL_apply (j : Fin r) (z : VC D N N') : coordL T b j z = coordB D T b j z := rfl
 
 /- English proof (translation)
-Simplify using `[coordL_apply, coordB, coordV, ite_and]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordL_coordV (j : Fin r) (k : D.what₂.Tau × Fin N' × Fin N) :
     coordL T b j (coordV D k) = (starRingEnd ℂ) (T.emb k.1 (b j k.2.1 k.2.2)) := by
   simp [coordL_apply, coordB, coordV, ite_and]
 
 /- English proof (translation)
-Rewrite using `[Hf, ← Finset.sum_div]`. Use `congr 1`. Simplify using `only [coordB, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, embV, Finset.mul_sum, Finset.sum_mul]`. Use `symm`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -339,7 +339,7 @@ variable {T b} (hT : ∀ i j, coordB D T b j (embV D T (b i)) = if i = j then 1 
 include hT
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `coordL T b j _ = _`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Simplify using `[coordL_apply, hT]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coordB_sum (c : Fin r → ℂ) (j : Fin r) :
     coordB D T b j (∑ i, c i • embV D T (b i)) = c j := by
@@ -349,9 +349,9 @@ theorem coordB_sum (c : Fin r → ℂ) (j : Fin r) :
   simp [coordL_apply, hT]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [U, U1, Hf_sum, coordB_sum hT, Finset.prod_mul_distrib, ← Complex.exp_sum, map_add]`. Use `congr 1`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show coordL T b j (∑ j, c j • embV D T (b j)) = c j from coordB_sum hT c j]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.sum_div, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = -(Real.pi : ℂ) * coordB D T b j z * _ / _ - _`. Simplify using `only [div_eq_mul_inv, mul_inv]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -371,7 +371,7 @@ theorem U_prod (c : Fin r → ℂ) (g : Fin r → ℂ → ℂ) :
     ring
 
 /- English proof (translation)
-Rewrite using `[wdPh, ← ee_sum, qH, Hf_sum, Complex.re_sum, Finset.mul_sum, Finset.sum_div]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[coordB_sum hT, q1, Complex.mul_conj, ← Complex.ofReal_div, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem wdPh_sum (c : Fin r → ℂ) :
     wdPh D T (∑ j, c j • embV D T (b j)) = ∏ j, ee (q1 D T.abelian₂ (c j) / 2) := by
@@ -383,11 +383,11 @@ theorem wdPh_sum (c : Fin r → ℂ) :
 
 omit hT in
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨w, hw, j, rfl⟩` from `hz`. Use `⟨Pi.single j w, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.single_apply] split_ifs exacts [hw, T.abelian₂.zero_mem]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Pi.single_apply, ite_smul]`. Consider the case `zero => exact ⟨0, fun _ => T.abelian₂.zero_mem, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨w, hw, rfl⟩` from `hx`. Take `⟨v, hv, rfl⟩` from `hy`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w + v, fun j => T.abelian₂.add_mem (hw j) (hv j), by simp [add_smul, Finset.sum_add_distrib]⟩`. Consider the case `neg x _ hx`. Take `⟨w, hw, rfl⟩` from `hx`. Conclude with `⟨-w, fun j => T.abelian₂.neg_mem (hw j), by simp⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_mem_LaB {x : VC D N N'} (hx : x ∈ LaB D T b) :
     ∃ w : Fin r → ℂ, (∀ j, w j ∈ T.abelian₂) ∧ x = ∑ j, w j • embV D T (b j) := by
@@ -410,7 +410,7 @@ theorem exists_of_mem_LaB {x : VC D N N'} (hx : x ∈ LaB D T b) :
 
 omit hT in
 /- English proof (translation)
-Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Take `⟨w, hw, h⟩` from `exists_of_mem_LaB hx`. Use `⟨fun j => (m : ℂ)⁻¹ * w j, fun j => by rw [mul_inv_cancel_left₀ hm']; exact hw j, ?_⟩` and prove the remaining obligations. Simplify using `only [mul_smul]`. Rewrite using `[← Finset.smul_sum, ← h, ← Nat.cast_smul_eq_nsmul ℂ, inv_smul_smul₀ hm']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_of_nsmul_mem_LaB {x : VC D N N'} {m : ℕ} (hm : 0 < m) (hx : m • x ∈ LaB D T b) :
     ∃ w : Fin r → ℂ, (∀ j, (m : ℂ) * w j ∈ T.abelian₂) ∧ x = ∑ j, w j • embV D T (b j) := by
@@ -422,7 +422,7 @@ theorem exists_of_nsmul_mem_LaB {x : VC D N N'} {m : ℕ} (hm : 0 < m) (hx : m �
 
 omit hT in
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [U, Finset.sum_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem U_comb {k : ℕ} (x : VC D N N') (c : Fin k → ℂ) (F : Fin k → VC D N N' → ℂ) :
     U D T x (fun z => ∑ i, c i * F i z) = fun z => ∑ i, c i * U D T x (F i) z := by
@@ -437,14 +437,14 @@ variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {s : ℂ →+* ℂ} {N
   {b : Fin r → Matrix (Fin N') (Fin N) D.host.E}
 
 /- English proof (translation)
-The claim follows from `D.host.conjE_apply φ x`.
+A detailed English derivation is pending.
 -/
 theorem emb_conj (φ : D.host.E →+* ℂ) (x : D.host.E) :
     φ (D.host.conj x) = starRingEnd ℂ (φ x) :=
   D.host.conjE_apply φ x
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1.2]`. Establish `h` using `hb.1 i j`. Rewrite `h` using `[hYY]`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_emb_pair (hb : OnB D b) (i j : Fin r) :
     ∑ τ, embT D τ (∑ a, ∑ c, b i a c * D.host.conj (b j a c)) = if i = j then 1 else 0 := by
@@ -455,13 +455,13 @@ theorem sum_emb_pair (hb : OnB D b) (i j : Fin r) :
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `cj_topHom s _`.
+A detailed English derivation is pending.
 -/
 theorem torConj_emb (τ : D.what₂.Tau) (x : D.host.E) :
     (torConj D (tor0 D cc δ) ⊤ (topHom s)).emb τ x = s.comp (embT D τ) x := cj_topHom s _
 
 /- English proof (translation)
-Rewrite using `[← sum_emb_pair hb]`. Simplify using `only [coordB, embV, tor0, map_sum, map_mul, emb_conj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frameCoordinate_orthonormal_baseTorus (hb : OnB D b) (i j : Fin r) :
     coordB D (tor0 D cc δ) b j (embV D (tor0 D cc δ) (b i)) = if i = j then 1 else 0 := by
@@ -469,7 +469,7 @@ theorem frameCoordinate_orthonormal_baseTorus (hb : OnB D b) (i j : Fin r) :
   simp only [coordB, embV, tor0, map_sum, map_mul, emb_conj]
 
 /- English proof (translation)
-Establish `h` using `congrArg s (sum_emb_pair hb i j)`. Rewrite `h` using `[apply_ite s, map_one, map_zero, map_sum]`. Rewrite using `[← h]`. Simplify using `only [coordB, embV, torConj_emb, ← emb_conj]`. Simplify using `only [map_sum, map_mul, RingHom.comp_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ortho_torConj (hb : OnB D b) (i j : Fin r) :
     coordB D (torConj D (tor0 D cc δ) ⊤ (topHom s)) b j
@@ -481,7 +481,7 @@ theorem ortho_torConj (hb : OnB D b) (i j : Fin r) :
   simp only [map_sum, map_mul, RingHom.comp_apply]
 
 /- English proof (translation)
-The claim follows from `ConjPair.prod fun j => ConjPair.comp_form (hg j) (hg' j) (h j) _ _ fun k => by rw [coordL_coordV, coordL_coordV, torConj_emb, ← emb_conj] exact congrArg s (emb_conj (embT D k.1) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem conjPair_prod {g g' : Fin r → ℂ → ℂ} (hg : ∀ j, Differentiable ℂ (g j))
     (hg' : ∀ j, Differentiable ℂ (g' j)) (h : ∀ j n, s (coef1 (g j) n) = coef1 (g' j) n) :
@@ -492,17 +492,13 @@ theorem conjPair_prod {g g' : Fin r → ℂ → ℂ} (hg : ∀ j, Differentiable
     exact congrArg s (emb_conj (embT D k.1) _).symm
 
 /- English proof (translation)
-Establish `hum : ∀ j, (m : ℂ) * u j ∈ lamOf D cc δ` using `fun j => by`. Take `⟨w, hw, h⟩` from `exists_of_nsmul_mem_LaB hm hx`. Use `congrArg (coordB D (tor0 D cc δ) b j) h` as an intermediate fact. Rewrite `this` using `[coordB_sum (frameCoordinate_orthonormal_baseTorus hb), coordB_sum (frameCoordinate_orthonormal_baseTorus hb)]`. Rewrite using `[this]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw j`. Use `choose w hw htw using fun i => exists_of_nsmul_mem_LaB hm (ht i)`. Use `choose w' hw' using fun i j => exists_adp hc hK hm (hw i j) (n := 2 * (2 * m)) (by positivity)`. Establish `hd` using `(sgStar_law hc).1`. Establish `hd'` using `(sgStar_conj_law hc hK).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hG : comb D (tor0 D cc δ) c t (pullB D (tor0 D cc δ) b (sgStar (lamOf D cc δ))) = fun z => ∑ i, c i * ∏ j, U1 (lamOf D cc δ) (w i j) (sgStar (lamOf D cc δ)) (coordL (tor0 D cc δ) b j z)`. Use function extensionality and compare the values at `z`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[htw i]`. Conclude with `congrArg (c i * ·) (congrFun (U_prod (frameCoordinate_orthonormal_baseTorus hb) (w i) fun _ => sgStar (lamOf D cc δ)) z)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨fun z => ∑ i, s (c i) * ∏ j, U1 (lamConj ⊤ (topHom s) (lamOf D cc δ)) (w' i j) (sgStar (lamConj ⊤ (topHom s) (lamOf D cc δ))) (coordL (torConj D (tor0 D cc δ) ⊤ (topHom s)) b j z), ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hG]`. Conclude with `ConjPair.sum fun i => (conjPair_prod (fun j => differentiable_U1 _ _ hd) (fun j => differentiable_U1 _ _ hd') fun j n => coef_translate hc hK hm (hw i j) (hw' i j) n).const_mul (c i)`. Rewrite using `[hG, U_comb, U_comb]`. Use `ConjPair.sum fun i => ConjPair.const_mul ?_ (c i)` and prove the remaining obligations.
-
-Rewrite using `[U_prod (frameCoordinate_orthonormal_baseTorus hb), U_prod (ortho_torConj hb)]`. Conclude with `conjPair_prod (fun j => differentiable_U1 _ _ (differentiable_U1 _ _ hd)) (fun j => differentiable_U1 _ _ (differentiable_U1 _ _ hd')) fun j n => coef_translate₂ hc hK hm (hum j) (hw i j) (hu j) (hw' i j) n`. Rewrite using `[wdPh_sum (frameCoordinate_orthonormal_baseTorus hb), wdPh_sum (ortho_torConj hb), map_prod]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← cj_topHom]`.
-
-Conclude with `(GlobalTheory.T.cmQuadraticPhase_equivariant_embeddings D cc δ hc).2 ⊤ _ hK trivial trivial _ _ m hm (hum j) (hu j) trivial`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conjPair (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) (hb : OnB D b) {k : ℕ}
     (c : Fin k → ℂ) (t : Fin k → VC D N N') (u u' : Fin r → ℂ) {m : ℕ} (hm : 0 < m)
@@ -556,21 +552,19 @@ theorem exists_conjPair (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) (hb : On
 end Main
 
 /- English proof (translation)
-Introduce `D cc δ hc M ρ hK hM N N' r b hb k c t x x' m hm hx ht ⟨u, u', _, hxu, hxu', hu⟩ hG hUG`. Use `set G := comb D (tor0 D cc δ) c t (pullB D (tor0 D cc δ) b (sgStar (lamOf D cc δ))) with hGdef`. Set `S : Set ℂ` to `Set.range (fun p : D.what₂.Tau × D.host.E => embT D p.1 p.2) ∪ Set.range D.host.φ₀ ∪ {g2 (lamOf D cc δ), g3 (lamOf D cc δ), wdPh D (tor0 D cc δ) x} ∪ Set.range (TaylorLogMetric.taylor D G) ∪ Set.range (TaylorLogMetric.taylor D (U D (tor0 D cc δ) x G)) ∪ Set.range (TaylorLogMetric …`. Establish `: Countable D.host.E` using `(Module.finBasis ℚ D.host.E).equivFun.injective.countable`. Establish `hS : S.Countable`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [S, Set.countable_union, Set.countable_range, Set.countable_insert, Set.countable_singleton, and_self]`. Take `⟨s, hs⟩` from `exists_endo_eq_cj M ρ hS`. Establish `hK' : FixK D ⊤ (topHom s)` using `fun a => ⟨trivial, by rw [cj_topHom, ← hs _ (by simp [S]) (hK a).1, (hK a).2]⟩`. Establish `hΛ : lamConj M ρ (lamOf D cc δ) = lamConj ⊤ (topHom s) (lamOf D cc δ)`. Establish `h2` using `(hs (g2 (lamOf D cc δ)) (by simp [S]) hM.2.1).trans (cj_topHom s _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(hs (g3 (lamOf D cc δ)) (by simp [S]) hM.2.2).trans (cj_topHom s _).symm`. Simplify using `only [cj] at h2 h3`. Simplify using `only [lamConj, h2, h3]`. Establish `hT : torConj D (tor0 D cc δ) M ρ = torConj D (tor0 D cc δ) ⊤ (topHom s)`. Simplify using `only [torConj, Tor.mk.injEq]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨funext fun τ => funext fun y => ?_, hΛ⟩` and prove the remaining obligations. Conclude with `(hs (embT D τ y) (Or.inl (Or.inl (Or.inl (Or.inl (Or.inl (Or.inl (Or.inl ⟨(τ, y), rfl⟩))))))) (hM.1 τ y)).trans (cj_topHom s _).symm`. Establish `hu' : ∀ j, Adp1 ⊤ (topHom s) (lamOf D cc δ) (2 * m) (u j) (u' j)` using `fun j => by`. Establish `h` using `hu j`. Express the relevant statement in the definitionally equal form `StarPt M ρ (lamOf D cc δ) _ _ at h`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[StarPt, hΛ]`. Use `h.imp id fun ⟨h1, h2, h3, h4, h5, h6⟩ => ⟨h1, h2, trivial, trivial, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h5, cj_topHom, hs _ (by simp [S]) h3]`. Rewrite using `[h6, cj_topHom, hs _ (by simp [S]) h4]`. Rewrite `hxu'`, the goal using `[hT]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨G', h1, h2⟩, h3⟩` from `exists_conjPair hc hK' hb c t u u' hm (hxu ▸ hx) ht hu'`. Rewrite `h2`, `h3` using `[← hxu, ← hxu']`. Rewrite `h1`, `h2` using `[← hGdef]`. Rewrite using `[h1.fnConj_eq fun α => hs _ (by simp [S]) (hG α)]`. Use `⟨h2.fnConj_eq fun α => hs _ (by simp [S]) (hUG α), fun hw => ⟨(hs _ (by simp [S]) hw).trans h3, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `h2.const_mul (wdPh D (tor0 D cc δ) x)`. Rewrite `h4` using `[h3]`. Use `h4.fnConj_eq fun α => hs _ ?_ ?_` and prove the remaining obligations. Conclude with `Or.inl (Or.inl (Or.inr ⟨α, rfl⟩))`. Rewrite using `[taylor_const_mul h2.1]`.
-
-Conclude with `M.mul_mem hw (hUG α)`.
+Reduce the conclusion to the remaining proof obligations. Prove the first alternative. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galB_all : ∀ D : D7, galB D := by
   intro D cc δ hc M ρ hK hM N N' r b hb k c t x x' m hm hx ht ⟨u, u', _, hxu, hxu', hu⟩ hG hUG

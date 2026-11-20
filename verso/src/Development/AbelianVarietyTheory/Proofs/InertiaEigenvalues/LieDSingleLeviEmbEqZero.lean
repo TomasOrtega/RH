@@ -8,11 +8,11 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.SmGL GlobalTheory.
 namespace GlobalTheory.UnipZero
 
 /- English proof (translation)
-Use `mem_unipRad.2 ⟨mem_parab.2 fun i j hij => ?_, fun a i j => ?_⟩` and prove the remaining obligations. Establish `hne : ¬ (i = p ∧ j = q)`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `lt_asymm hij hpq`. Rewrite using `[hu i j hne, Matrix.one_apply_ne]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hij`. Establish `hne : ¬ (e ⟨a, i⟩ = p ∧ e ⟨a, j⟩ = q)`. Introduce and unpack `⟨h1, h2⟩`. Establish `h1' : blk e p = a` using `by rw [← h1, blk_apply]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2' : blk e q = a` using `by rw [← h2, blk_apply]`. Rewrite `hpq` using `[h1', h2']`. Conclude with `lt_irrefl _ hpq`. Rewrite using `[hu _ _ hne]`. Simplify using `[Matrix.one_apply, e.injective.eq_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_unipRad_of_eq_one {R : Type} [CommRing R] {c N : ℕ} {n : Fin c → ℕ}
     {e : (Σ i, Fin (n i)) ≃ Fin N} {p q : Fin N} (hpq : blk e p < blk e q) (u : GL (Fin N) R)
@@ -39,19 +39,17 @@ end GlobalTheory.UnipZero
 namespace GlobalTheory.UnipZero
 
 /- English proof (translation)
-Use `set S : Matrix (Fin N) (Fin N) (Cinf E) := Matrix.single p q x with hS`. Establish `hpq' : p ≠ q` using `by rintro rfl; exact lt_irrefl _ hpq`. Establish `hSS : S * S = 0` using `by rw [hS]; simp [hpq'.symm]`. Set `cc : ℝ → GL (Fin N) (Cinf E)` to `fun t => ⟨1 + t • S, 1 - t • S, by`. Rewrite using `[add_mul, one_mul, mul_sub, mul_one, smul_mul_smul_comm, hSS, smul_zero]; abel, by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_mul, one_mul, mul_add, mul_one, smul_mul_smul_comm, hSS, smul_zero]`. Use the proof step `abel⟩`. Establish `h0 : cc 0 = 1` using `Units.ext (by simp [cc])`. Establish `hc : HasDerivAt (fun t => toL (cc t).val) (toL S) 0`. Establish `h : HasDerivAt (fun t : ℝ => toL (1 : Matrix (Fin N) (Fin N) (Cinf E)) + t • toL S) ((1 : ℝ) • toL S) 0` using `((hasDerivAt_id (0 : ℝ)).smul_const (toL S)).const_add _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[one_smul]`. Conclude with `h`. Use `set g := leviEmb (Ad E) e m`. Establish `hmem : ∀ t, infGL E N (cc t) ∈ unipRad (Ad E) e`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `mem_unipRad_of_eq_one hpq _ fun i j hij => ?_` and prove the remaining obligations. Establish `hij' : ((cc t : GL (Fin N) (Cinf E)) : Matrix (Fin N) (Fin N) (Cinf E)) i j = (1 : Matrix (Fin N) (Fin N) (Cinf E)) i j`. Express the relevant statement in the definitionally equal form `((1 : Matrix (Fin N) (Fin N) (Cinf E)) + t • S) i j = _`. Establish `h1 : S i j = 0`. Rewrite using `[hS, Matrix.single_apply_of_ne]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => hij ⟨h.1.symm, h.2.symm⟩`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, h1, smul_zero, add_zero]`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin N) (Fin N) (Ad E)) i j - sInf E ((1 : Matrix (Fin N) (Fin N) (Cinf E)) i j) + sInf E (((cc t : GL (Fin N) (Cinf E)) : Matrix (Fin N) (Fin N) (Cinf E)) i j) = _`. Rewrite using `[hij', sub_add_cancel]`. Establish `hconst : (fun t => ψ.1 (g * infGL E N (cc t))) = fun _ => ψ.1 g`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use function extensionality and compare the values at `t`. Establish `hconj : g * infGL E N (cc t) * g⁻¹ ∈ unipRad (Ad E) e` using `(Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer (Ad E) e m) _).1 (hmem t)`. Use `hψ _ hconj g` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis. Establish `hd` using `hasDerivAt_curve ψ g cc (toL S) h0 hc`.
-
-Rewrite `hd` using `[hconst]`. Rewrite using `[lie_apply]`. Conclude with `hd.unique (hasDerivAt_const _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieD_single_leviEmb_eq_zero (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] {c N : ℕ}
     (n : Fin c → ℕ) (e : (Σ i, Fin (n i)) ≃ Fin N) (ψ : Sm E N)

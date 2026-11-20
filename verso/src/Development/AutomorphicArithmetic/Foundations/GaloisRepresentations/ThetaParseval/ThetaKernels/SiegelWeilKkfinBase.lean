@@ -25,7 +25,7 @@ def kfS_k : Submodule ℂ d.Fn where
   smul_mem' := fun c _ ⟨N, h, h0, h1, h2⟩ => ⟨N, h, h0, N.smul_mem c h1, h2⟩
 variable {d}
 /- English proof (translation)
-Take `⟨N, _, h0, h1, h2⟩` from `h`. Use `⟨h0 h1, Submodule.finiteDimensional_of_le (S₂ := N) (Submodule.span_le.2 ?_)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `h2 k.1 k.2 Φ h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem kFin_of_mem_k {Φ : d.Fn} (h : Φ ∈ _root_.PositivityTheory.SiegelWeilFormula.KK.kfS_k d) : d.KFin Φ := by
   obtain ⟨N, _, h0, h1, h2⟩ := h
@@ -33,7 +33,7 @@ theorem kFin_of_mem_k {Φ : d.Fn} (h : Φ ∈ _root_.PositivityTheory.SiegelWeil
   rintro _ ⟨k, rfl⟩
   exact h2 k.1 k.2 Φ h1
 /- English proof (translation)
-Take `⟨N, _, h0, h1, -⟩` from `h`. Conclude with `h0 h1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_sch_k {Φ : d.Fn} (h : Φ ∈ _root_.PositivityTheory.SiegelWeilFormula.KK.kfS_k d) : Φ ∈ d.sch := by
   obtain ⟨N, _, h0, h1, -⟩ := h

@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Univ
 
 /- English proof (translation)
-Take `⟨i1, τ⟩` from `i`. Take `⟨k1, τ'⟩` from `k`. Distinguish the cases in `h : τ = τ'`. Substitute `h` using the available equality. Apply the tactic sequence `rcases i1 with i1 | i1 <;> rcases k1 with k1 | k1 <;>`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[bigZ, emb, blockDiagonal_apply, mul_comm]`. Simplify using `[bigZ, blockDiagonal_apply_ne _ _ _ h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem emb_mul_bigZ {E : Type} [Field E] [NumberField E] {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {j j' n : ℕ}
     (σ : Ψ → (𝓞 E →+* ℂ)) (q : Ψ × Fin j × Fin j' ≃ Fin n) (t : Fin n → ℂ) (a : 𝓞 E) (i k : Ix Ψ j j') :
@@ -27,13 +27,13 @@ theorem emb_mul_bigZ {E : Type} [Field E] [NumberField E] {Ψ : Type} [Fintype �
   · simp [bigZ, blockDiagonal_apply_ne _ _ _ h]
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ _ j j' n g σ e q t B _ hB a x`. Use function extensionality and compare the values at `i`. Establish `hsub : B a (tz (bigZe e q t) x) i = B a x i - B a (bigZe e q t *ᵥ star x) i`. Simplify using `only [tz, map_sub, Pi.sub_apply]`. Rewrite using `[hsub]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [tz, Pi.sub_apply]`. Use `congr 1`. Rewrite using `[hB a (bigZe e q t *ᵥ star x) i]`. Simplify using `only [mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk` using `emb_mul_bigZ σ q t a (e.symm i) (e.symm k)`. Establish `hx : star (B a x) k = star (emb σ (e.symm k) a) * star (x k)`. Simplify using `[hB, mul_comm]`. Rewrite using `[hx, ← mul_assoc, ← mul_assoc]`. Simplify using `only [bigZe, submatrix_apply, Pi.star_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tz_bigZe_comm : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {j j' n g : ℕ} (σ : Ψ → (𝓞 E →+* ℂ)) (e : Ix Ψ j j' ≃ Fin g) (q : Ψ × Fin j × Fin j' ≃ Fin n) (t : Fin n → ℂ) (B : 𝓞 E →+* Module.End ℂ (Fin g → ℂ)), IsCMFam σ → (∀ a x k, B a x k = emb σ (e.symm k) a * x k) → ∀ a x, tz (bigZe e q t) (B a x) = B a (tz (bigZe e q t) x) := by
   intro E _ _ _ Ψ _ _ j j' n g σ e q t B _ hB a x

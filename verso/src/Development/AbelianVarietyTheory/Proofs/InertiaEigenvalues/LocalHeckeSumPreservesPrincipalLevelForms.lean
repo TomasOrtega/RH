@@ -18,19 +18,17 @@ open GlobalTheory.RawLift
 namespace GlobalTheory.LocalHeckeLevel
 
 /- English proof (translation)
-Establish `hmem : ∀ k ∈ K, ∀ δ ∈ C, ∃ k₁ ∈ K, ∃ k₂ ∈ K, k * δ = k₁ * α * k₂`. Introduce `k hk δ hδ`. Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `h1 δ hδ`. Conclude with `⟨k * k₁, K.mul_mem hk hk₁, k₂, hk₂, by simp only [mul_assoc]⟩`. Set `s : Gp → Gp → Gp` to `fun k δ => if h : ∃ k₁ ∈ K, ∃ k₂ ∈ K, k * δ = k₁ * α * k₂ then (h2 _ h).exists.choose else δ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hs : ∀ k ∈ K, ∀ δ ∈ C, s k δ ∈ C ∧ (s k δ)⁻¹ * (k * δ) ∈ K`. Introduce `k hk δ hδ`. Establish `h` using `hmem k hk δ hδ`. Establish `e : s k δ = (h2 _ h).exists.choose` using `dif_pos h`. Rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h2 _ h).exists.choose_spec`. Establish `huniq : ∀ k ∈ K, ∀ δ ∈ C, ∀ γ ∈ C, γ⁻¹ * (k * δ) ∈ K → s k δ = γ`. Introduce `k hk δ hδ γ hγ hγK`. Conclude with `(h2 _ (hmem k hk δ hδ)).unique (hs k hk δ hδ) ⟨hγ, hγK⟩`. Establish `hinv : ∀ δ ∈ C, s k₀⁻¹ (s k₀ δ) = δ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `δ hδ`. Take `⟨hm, hK⟩` from `hs k₀ hk₀ δ hδ`. Apply `huniq _ (K.inv_mem hk₀) _ hm _ hδ` to reduce the goal to its premises. Establish `e : δ⁻¹ * (k₀⁻¹ * s k₀ δ) = ((s k₀ δ)⁻¹ * (k₀ * δ))⁻¹` using `by group`. Rewrite using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `K.inv_mem hK`. Establish `hinv' : ∀ δ ∈ C, s k₀ (s k₀⁻¹ δ) = δ`. Introduce `δ hδ`. Take `⟨hm, hK⟩` from `hs k₀⁻¹ (K.inv_mem hk₀) δ hδ`. Apply `huniq _ hk₀ _ hm _ hδ` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : δ⁻¹ * (k₀ * s k₀⁻¹ δ) = ((s k₀⁻¹ δ)⁻¹ * (k₀⁻¹ * δ))⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `K.inv_mem hK`. Use `Finset.sum_nbij' (s k₀) (s k₀⁻¹) (fun δ hδ => (hs k₀ hk₀ δ hδ).1) (fun δ hδ => (hs _ (K.inv_mem hk₀) δ hδ).1) hinv hinv' ?_` and prove the remaining obligations. Introduce `δ hδ`.
-
-Take `⟨_, hK⟩` from `hs k₀ hk₀ δ hδ`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_mul_left_eq {Gp M : Type} [Group Gp] [AddCommMonoid M] (K : Subgroup Gp) (α : Gp) (C : Finset Gp)
     (h1 : ∀ γ ∈ C, ∃ k₁ ∈ K, ∃ k₂ ∈ K, γ = k₁ * α * k₂)
@@ -77,29 +75,29 @@ theorem sum_mul_left_eq {Gp M : Type} [Group Gp] [AddCommMonoid M] (K : Subgroup
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_mul, Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_mul (V : HSp D) (a b : GA D V) : mt V (a * b) = mt V a * mt V b := by
   unfold Formalism.L2.Theta.mt
   rw [map_mul, Units.val_mul]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_one, Units.val_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_one (V : HSp D) : mt V 1 = 1 := by
   unfold Formalism.L2.Theta.mt
   rw [map_one, Units.val_one]
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective (Units.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem mt_injective (V : HSp D) {a b : GA D V} (h : mt V a = mt V b) : a = b :=
   Subtype.val_injective (Units.ext h)
 
 /- English proof (translation)
-Introduce `i j`. Establish `e : mt V (a * b) - 1 = (mt V a - 1) * mt V b + (mt V b - 1)`. Rewrite using `[mt_mul, sub_mul, one_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, Matrix.add_apply, Matrix.mul_apply, mul_add, Finset.mul_sum, hb i j]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ha i l]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem suppF_mul {V : HSp D} {f : AE D} {a b : GA D V} (ha : SuppF V f a) (hb : SuppF V f b) :
     SuppF V f (a * b) := by
@@ -112,9 +110,9 @@ theorem suppF_mul {V : HSp D} {f : AE D} {a b : GA D V} (ha : SuppF V f a) (hb :
   rw [← mul_assoc, ha i l]
 
 /- English proof (translation)
-Introduce `i j`. Establish `e : mt V a⁻¹ - 1 = -(mt V a⁻¹ * (mt V a - 1))`. Rewrite using `[mul_sub, ← mt_mul, inv_mul_cancel, mt_one, mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, Matrix.neg_apply, Matrix.mul_apply, mul_neg, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ha l j]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem suppF_inv {V : HSp D} {f : AE D} {a : GA D V} (ha : SuppF V f a) : SuppF V f a⁻¹ := by
   intro i j
@@ -126,7 +124,7 @@ theorem suppF_inv {V : HSp D} {f : AE D} {a : GA D V} (ha : SuppF V f a) : SuppF
   rw [mul_left_comm, ha l j]
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `[mt_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem suppF_one (V : HSp D) (f : AE D) : SuppF V f (1 : GA D V) := by
   intro i j
@@ -139,11 +137,11 @@ def suppSub (V : HSp D) (f : AE D) : Subgroup (GA D V) where
   inv_mem' := suppF_inv
 
 /- English proof (translation)
-Apply `mt_injective` to reduce the goal to its premises. Establish `hAB : (mt V a - 1) * (mt V b - 1) = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ha i l, mul_assoc, mul_left_comm, hb l j, mul_zero]`. Establish `hBA : (mt V b - 1) * (mt V a - 1) = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ha l j, mul_left_comm, ← mul_assoc, hb i l, zero_mul]`. Establish `e1 : mt V a * mt V b = (mt V a - 1) * (mt V b - 1) + mt V a + mt V b - 1` using `by noncomm_ring`. Establish `e2 : mt V b * mt V a = (mt V b - 1) * (mt V a - 1) + mt V b + mt V a - 1` using `by noncomm_ring`. Rewrite using `[mt_mul, mt_mul, e1, e2, hAB, hBA, zero_add, zero_add, add_comm (mt V a)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_of_suppF_trivAt {V : HSp D} {f : AE D} {a b : GA D V} (ha : SuppF V f a) (hb : TrivAt V f b) :
     a * b = b * a := by
@@ -163,11 +161,11 @@ theorem comm_of_suppF_trivAt {V : HSp D} {f : AE D} {a b : GA D V} (ha : SuppF V
   rw [mt_mul, mt_mul, e1, e2, hAB, hBA, zero_add, zero_add, add_comm (mt V a)]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R i hLP v f hf α _ C hC hrep Tm hT`. Take `⟨hle, hchi, cmp, hcmp1, hcmp2⟩` from `hLP`. Establish `hT' : IsMultMap R.θ (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv)) Tm` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 hT`. Use `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).2 (GlobalTheory.HeckeParts.isMultMap_heckeOn hT' (fun γ hγ => (hrep.1 γ hγ).1) ?_)` and prove the remaining obligations. Introduce `w κ hκ g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hκ' : κ ∈ levW R i` using `hκ`. Rewrite using `[hchi κ hκ', one_mul]`. Use `show ∑ δ ∈ C, Tm w (g * κ * δ) = ∑ δ ∈ C, Tm w (g * δ)`. Establish `hF : ∀ x, ∀ c ∈ levW R i, Tm w (x * c) = Tm w x` using `fun x c hc => by`. Rewrite using `[hT'.lev w c hc x, hchi c hc, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hs, ht⟩` from `hcmp1 v f hf κ`. Establish `hkv : cmp v κ ∈ levW R i` using `((hcmp2 κ (hle hκ')).1.1 hκ') v`. Establish `hk' : κ * (cmp v κ)⁻¹ ∈ levW R i` using `mul_mem hκ' (inv_mem hkv)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← comm_of_suppF_trivAt (hC δ hδ) ht, ← mul_assoc, hF _ _ hk']`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeOn_mem_wall : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m}, LevProd R i → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (f : AE D), IsFinIdem D v f → ∀ (α : GA D (Wc D i)), SuppF (Wc D i) f α → ∀ (C : Finset (GA D (Wc D i))), (∀ γ ∈ C, SuppF (Wc D i) f γ) → IsCosetRep (Wc D i) {k | k ∈ levW R i ∧ SuppF (Wc D i) f k} α C → ∀ T ∈ R.Wall i (sg0 D A), heckeOn (R.MW i (sg0 D A)) C T ∈ R.Wall i (sg0 D A) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R i hLP v f hf α _ C hC hrep Tm hT

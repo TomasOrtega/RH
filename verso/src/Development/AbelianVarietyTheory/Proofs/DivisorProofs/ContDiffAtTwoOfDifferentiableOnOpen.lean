@@ -6,7 +6,7 @@ open Filter Topology
 namespace GlobalTheory.HoloNormed
 
 /- English proof (translation)
-The claim follows from `(contDiffOn_nat hW 2 hf).contDiffAt (hW.mem_nhds hw)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_two_complex {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f : E → ℂ} {W : Set E} {w : E}
     (hW : IsOpen W) (hw : w ∈ W) (hf : DifferentiableOn ℂ f W) : ContDiffAt ℂ 2 f w :=

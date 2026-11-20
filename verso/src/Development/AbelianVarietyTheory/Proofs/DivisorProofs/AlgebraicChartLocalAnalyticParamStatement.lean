@@ -15,7 +15,7 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 open GlobalTheory.HorComp
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HorComp.exists_straightening_range_up` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FAlgebraicChartLocalAnalyticParam.lean&line=16#L16)
 -/

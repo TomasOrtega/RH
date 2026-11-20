@@ -4,19 +4,17 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `R _ _ N r hr A A' B B' X hAB hBA hAB' hBA' hX`. Establish `canc : ∀ P Q : Matrix (Fin N) (Fin N) R, r • P = r • Q → P = Q`. Introduce `P Q h`. Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Conclude with `mul_left_cancel₀ hr this`. Establish `hg : r • (1 + A' * X) = A' * B`. Rewrite using `[smul_add, ← Matrix.mul_smul, ← hX, Matrix.mul_sub, hAB']`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hh : r • (1 - A * X) = A * B'`. Rewrite using `[smul_sub, ← Matrix.mul_smul, ← hX, Matrix.mul_sub, hAB]`. Normalize the expressions using the abelian group laws. Establish `h1 : (1 + A' * X) * (1 - A * X) = 1`. Apply `canc` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `canc` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul]`. Use `_ = A' * (B * A) * B' := by rw [hg, hh]; simp only [Matrix.mul_assoc]`. Use `_ = r • r • (1 : Matrix (Fin N) (Fin N) R) := by`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hBA, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hAB']`. Establish `h2 : (1 - A * X) * (1 + A' * X) = 1`. Apply `canc` to reduce the goal to its premises. Apply `canc` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul]`. Use `_ = A * (B' * A') * B := by rw [hg, hh]; simp only [Matrix.mul_assoc]`. Use `_ = r • r • (1 : Matrix (Fin N) (Fin N) R) := by`. Rewrite using `[hBA', Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hAB]`. Use `⟨⟨1 + A' * X, 1 - A * X, h1, h2⟩, ?_⟩` and prove the remaining obligations.
-
-Apply `canc` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `r • ((1 + A' * X) * A) = r • A'`. Rewrite using `[← Matrix.smul_mul, hg, Matrix.mul_assoc, hBA, Matrix.mul_smul, Matrix.mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.hnfeq :
     ∀ (R : Type) [CommRing R] [IsDomain R] (N : ℕ) (r : R), r ≠ 0 → ∀ A A' B B' X : Matrix (Fin N) (Fin N) R,

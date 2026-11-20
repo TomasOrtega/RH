@@ -5,23 +5,23 @@ open scoped TensorProduct
 namespace GlobalTheory.LocAcyc
 
 /- English proof (translation)
-Introduce `B B' D _ _ _ _ _ q hq act hD`. Take `⟨h1, h2, h3, h4⟩` from `hD`. Use `haveI : NeZero q := ⟨hq.ne'⟩`. Set `act' : Multiplicative (ZMod q) →* ((B' ⊗[B] D) ≃ₐ[B'] (B' ⊗[B] D))` to `{ toFun := fun g => Algebra.TensorProduct.congr (AlgEquiv.refl : B' ≃ₐ[B'] B') (act g) map_one' := by`. Apply `AlgEquiv.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b x => simp [Algebra.TensorProduct.congr_apply]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `map_mul' := by`. Introduce `g h`. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul b x => simp [Algebra.TensorProduct.congr_apply, AlgEquiv.mul_apply]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy] }`. Establish `hact : ∀ (g : Multiplicative (ZMod q)) (b : B') (x : D), act' g (b ⊗ₜ[B] x) = b ⊗ₜ[B] act g x`. Introduce `g b x`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[act', Algebra.TensorProduct.congr_apply]`. Use `⟨act', hact, inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Set `Φ` to `Algebra.TensorProduct.productMap (Pi.algHom B (fun _ : Multiplicative (ZMod q) => D) (fun _ => AlgHom.id B D)) (Pi.algHom B (fun _ : Multiplicative (ZMod q) => D) (fun g => (act g).toAlgHom))`. Set `e` to `(LinearEquiv.ofBijective Φ.toLinearMap h4).lTensor B'`. Set `dBC` to `TensorProduct.AlgebraTensorModule.distribBaseChange B B' D D`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `pR` to `TensorProduct.piRight B B' B' (fun _ : Multiplicative (ZMod q) => D)`. Establish `key : ∀ z, (Algebra.TensorProduct.productMap (Pi.algHom B' (fun _ : Multiplicative (ZMod q) => B' ⊗[B] D) (fun _ => AlgHom.id B' _)) (Pi.algHom B' (fun _ : Multiplicative (ZMod q) => B' ⊗[B] D) (fun g => (act' g).toAlgHom))) (dBC z) = pR (e z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `tmul b t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Use function extensionality and compare the values at `g`.
+Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `[dBC, pR, e, Φ, TensorProduct.AlgebraTensorModule.distribBaseChange_tmul, Algebra.TensorProduct.productMap_apply_tmul, hact, Algebra.TensorProduct.tmul_mul_tmul, LinearEquiv.ofBijective_apply]`. Both sides reduce to the same expression. Consider the case `add s t hs ht => rw [TensorProduct.tmul_add, map_add, map_add, map_add, map_add, hs, ht]`. Consider the case `add s t hs ht => rw [map_add, map_add, map_add, map_add, hs, ht]`. Establish `hfun : ⇑(Algebra.TensorProduct.productMap (Pi.algHom B' (fun _ : Multiplicative (ZMod q) => B' ⊗[B] D) (fun _ => AlgHom.id B' _)) (Pi.algHom B' (fun _ : Multiplicative (ZMod q) => B' ⊗[B] D) (fun g => (act' g).toAlgHom))) = fun w => pR (e (dBC.symm w))`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[← key, dBC.apply_symm_apply]`. Rewrite using `[hfun]`. Conclude with `pR.bijective.comp (e.bijective.comp dBC.symm.bijective)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZModTorsor_baseChange : ∀ (B B' D : Type) [CommRing B] [CommRing B'] [CommRing D]
     [Algebra B B'] [Algebra B D]

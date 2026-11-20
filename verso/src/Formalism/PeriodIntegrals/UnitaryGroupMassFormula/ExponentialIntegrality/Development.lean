@@ -16,9 +16,9 @@ def StepIII : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (x : ℂ_[p]), InWf x → ‖x‖ ≤ 1 → x ∈ Wp p
 
 /- English proof (translation)
-Introduce `p _ σ f hf hs`. Take `⟨h0, hint⟩` from `hs`. Rewrite `h0`, `hint` using `[sub_zero]`. Use `⟨by rw [sub_zero]; exact h0, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Conclude with `h3 p _ (h1 p σ f hf n) (hint n)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem expIntW_of_steps (h1 : StepI) (h3 : StepIII) : ExpIntW := by
   intro p _ σ f hf hs

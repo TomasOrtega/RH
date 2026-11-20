@@ -4,23 +4,21 @@ open scoped TensorProduct Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ C _ _ y`. Use `set Z := Subalgebra.centralizer ℚ ({y} : Set C) with hZ`. Establish `hmap : ∀ w', Algebra.TensorProduct.map (AlgHom.id K K) Z.val w' = LinearMap.lTensor K Z.val.toLinearMap w'`. Introduce `w'`. Proceed by induction on `w' using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Set `ad : C →ₗ[ℚ] C` to `LinearMap.mulRight ℚ y - LinearMap.mulLeft ℚ y`. Establish `hex : Function.Exact Z.val.toLinearMap ad`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨⟨x, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Subalgebra.mem_centralizer_iff]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Rewrite `hg` using `[Set.mem_singleton_iff]`. Substitute `hg` using the available equality. Establish `: x * g - g * x = 0` using `by simpa [ad] using hx`. Conclude with `(sub_eq_zero.mp this).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨z, rfl⟩`. Establish `hz` using `z.2`. Rewrite `hz` using `[Subalgebra.mem_centralizer_iff]`. Use `hz y (Set.mem_singleton y)` as an intermediate fact. Simplify using `[ad, this]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexK` using `Module.Flat.lTensor_exact K hex`. Establish `hadK : ∀ w : K ⊗[ℚ] C, LinearMap.lTensor K ad w = w * ((1 : K) ⊗ₜ[ℚ] y) - ((1 : K) ⊗ₜ[ℚ] y) * w`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a b => simp [ad, TensorProduct.tmul_sub]`. Consider the case `add a b ha hb => rw [map_add, ha, hb, add_mul, mul_add]`. Normalize the expressions using the abelian group laws. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`.
+Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hab` using `[hmap, hmap]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ Subtype.val_injective hab`. Introduce `w hw`. Establish `h0 : LinearMap.lTensor K ad w = 0`. Rewrite using `[hadK, hw.eq, sub_self]`.
-
-Take `⟨w', hw'⟩` from `(hexK w).mp h0`. Conclude with `⟨w', by rw [hmap]; exact hw'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tensor_centralizer_flat : ∀ (K : Type) [Field K] [Algebra ℚ K] (C : Type) [Ring C] [Algebra ℚ C] (y : C),
     Function.Injective (Algebra.TensorProduct.map (AlgHom.id K K) (Subalgebra.centralizer ℚ ({y} : Set C)).val) ∧

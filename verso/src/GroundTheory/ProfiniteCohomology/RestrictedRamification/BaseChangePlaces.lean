@@ -26,7 +26,7 @@ def tensorLiftOfAlgHom :
     (tensorEquiv L v).symm.toAlgHom
 
 /- English proof (translation)
-Simplify using `[tensorLiftOfAlgHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensorLiftOfAlgHom_tensorEquiv (t : v.adicCompletion F ⊗[F] L) :
     tensorLiftOfAlgHom j (tensorEquiv L v t) = Algebra.TensorProduct.lift (Algebra.ofId _ _) j
@@ -34,7 +34,7 @@ theorem tensorLiftOfAlgHom_tensorEquiv (t : v.adicCompletion F ⊗[F] L) :
   simp [tensorLiftOfAlgHom]
 
 /- English proof (translation)
-Rewrite using `[tensorLiftOfAlgHom_tensorEquiv, Algebra.TensorProduct.lift_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tensorLiftOfAlgHom_tensorEquiv_tmul (a : v.adicCompletion F) (x : L) :
     tensorLiftOfAlgHom j (tensorEquiv L v (a ⊗ₜ x)) =
@@ -43,7 +43,7 @@ theorem tensorLiftOfAlgHom_tensorEquiv_tmul (a : v.adicCompletion F) (x : L) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← tensorEquiv_one_tmul, tensorLiftOfAlgHom_tensorEquiv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tensorLiftOfAlgHom_algebraMap (x : L) :
     tensorLiftOfAlgHom j (algebraMap L (CompletionsOver L v) x) = j x := by
@@ -52,7 +52,7 @@ theorem tensorLiftOfAlgHom_algebraMap (x : L) :
 
 open Classical in
 /- English proof (translation)
-The claim follows from `exists_unique_map_single_one_eq_one (tensorLiftOfAlgHom j).toRingHom`.
+A detailed English derivation is pending.
 -/
 theorem exists_unique_tensorLiftOfAlgHom_single :
     ∃! w : PlacesOver L v, tensorLiftOfAlgHom j (Pi.single w 1) = 1 :=
@@ -63,7 +63,7 @@ def placeOfAlgHom : PlacesOver L v :=
 
 open Classical in
 /- English proof (translation)
-The claim follows from `(exists_unique_tensorLiftOfAlgHom_single j).exists.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem tensorLiftOfAlgHom_single_placeOfAlgHom :
     tensorLiftOfAlgHom j (Pi.single (placeOfAlgHom j) 1) = 1 :=
@@ -71,14 +71,14 @@ theorem tensorLiftOfAlgHom_single_placeOfAlgHom :
 
 open Classical in
 /- English proof (translation)
-The claim follows from `(exists_unique_tensorLiftOfAlgHom_single j).unique h (tensorLiftOfAlgHom_single_placeOfAlgHom j)`.
+A detailed English derivation is pending.
 -/
 theorem eq_placeOfAlgHom_of_tensorLiftOfAlgHom {w : PlacesOver L v}
     (h : tensorLiftOfAlgHom j (Pi.single w 1) = 1) : w = placeOfAlgHom j :=
   (exists_unique_tensorLiftOfAlgHom_single j).unique h (tensorLiftOfAlgHom_single_placeOfAlgHom j)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hu]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pi_single_algebraMap_completionsOver {w : PlacesOver L v} [DecidableEq (PlacesOver L v)]
     (a : v.adicCompletion F) :
@@ -106,7 +106,7 @@ def completionEmbeddingOfAlgHom :
       mul_one]
 
 /- English proof (translation)
-Conclude with `map_eq_map_single_of_map_single_one (φ := (tensorLiftOfAlgHom j).toRingHom) (tensorLiftOfAlgHom_single_placeOfAlgHom j) y`. Use the proof step `@[simp]`.
+A detailed English derivation is pending.
 -/
 theorem tensorLiftOfAlgHom_eq (y : CompletionsOver L v) :
     tensorLiftOfAlgHom j y = completionEmbeddingOfAlgHom j (y (placeOfAlgHom j)) := by
@@ -116,7 +116,7 @@ theorem tensorLiftOfAlgHom_eq (y : CompletionsOver L v) :
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[← tensorLiftOfAlgHom_algebraMap j x, tensorLiftOfAlgHom_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem completionEmbeddingOfAlgHom_algebraMap (x : L) :
     completionEmbeddingOfAlgHom j (algebraMap L ((placeOfAlgHom j).1.adicCompletion L) x) = j x := by
@@ -126,11 +126,11 @@ theorem completionEmbeddingOfAlgHom_algebraMap (x : L) :
 end General
 
 /- English proof (translation)
-Establish `key : (f.comp (Pi.evalAlgHom _ _ w)).comp (tensorEquiv L v).toAlgHom = (g.comp (Pi.evalAlgHom _ _ w)).comp (tensorEquiv L v).toAlgHom`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a x`. Express the relevant statement in the definitionally equal form `f ((tensorEquiv L v (a ⊗ₜ x)) w) = g ((tensorEquiv L v (a ⊗ₜ x)) w)`. Rewrite using `[tensorEquiv_tmul, Pi.mul_apply, map_mul, map_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `f (algebraMap _ _ a) = g (algebraMap _ _ a)`. Rewrite using `[AlgHom.commutes, AlgHom.commutes]`. Conclude with `h x`. Use extensionality with `y`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `(tensorEquiv L v).surjective (Pi.single w y)`. Use `DFunLike.congr_fun key t` as an intermediate fact. Simplify using `only [AlgHom.comp_apply, Pi.evalAlgHom_apply] at this`. Rewrite `this` using `[show (tensorEquiv L v).toAlgHom t = tensorEquiv L v t from rfl, ht, Pi.single_eq_same]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adicCompletion_algHom_ext {B : Type*} [Semiring B] [Algebra F B]
     [Algebra (v.adicCompletion F) B] [IsScalarTower F (v.adicCompletion F) B]
@@ -160,11 +160,11 @@ section Place
 variable (j : L →ₐ[F] AlgebraicClosure (v.adicCompletion F))
 
 /- English proof (translation)
-Establish `key : tensorLiftOfAlgHom j = c.comp (Pi.evalAlgHom _ _ w)`. Establish `: (tensorLiftOfAlgHom j).comp (tensorEquiv L v).toAlgHom = (c.comp (Pi.evalAlgHom _ _ w)).comp (tensorEquiv L v).toAlgHom`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a x`. Express the relevant statement in the definitionally equal form `tensorLiftOfAlgHom j (tensorEquiv L v (a ⊗ₜ x)) = c ((tensorEquiv L v (a ⊗ₜ x)) w)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[tensorLiftOfAlgHom_tensorEquiv_tmul, tensorEquiv_tmul, Pi.mul_apply, map_mul, ← hc x]`. Use `congr 1`. Conclude with `(c.commutes a).symm`. Use extensionality with `y`. Take `⟨t, rfl⟩` from `(tensorEquiv L v).surjective y`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `DFunLike.congr_fun this t`. Apply `eq_placeOfAlgHom_of_tensorLiftOfAlgHom` to reduce the goal to its premises. Use `(DFunLike.congr_fun key _).trans ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, Pi.evalAlgHom_apply, Pi.single_eq_same, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_placeOfAlgHom {w : PlacesOver L v}
     (c : w.1.adicCompletion L →ₐ[v.adicCompletion F] AlgebraicClosure (v.adicCompletion F))
@@ -187,7 +187,7 @@ theorem eq_placeOfAlgHom {w : PlacesOver L v}
   rw [AlgHom.comp_apply, Pi.evalAlgHom_apply, Pi.single_eq_same, map_one]
 
 /- English proof (translation)
-The claim follows from `Module.finite_of_finrank_pos (by rw [finrank_eq_ramificationIdx_mul_inertiaDeg] exact Nat.mul_pos (Ideal.ramificationIdx_pos w.1.asIdeal (𝓞 F)) (Ideal.inertiaDeg_pos w.1.asIdeal (𝓞 F)))`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_adicCompletion_of_placesOver (w : PlacesOver L v) :
     FiniteDimensional (v.adicCompletion F) (w.1.adicCompletion L) :=
@@ -197,7 +197,7 @@ theorem finiteDimensional_adicCompletion_of_placesOver (w : PlacesOver L v) :
       (Ideal.inertiaDeg_pos w.1.asIdeal (𝓞 F)))
 
 /- English proof (translation)
-Use `finiteDimensional_adicCompletion_of_placesOver w` as an intermediate fact. Set `c : w.1.adicCompletion L →ₐ[v.adicCompletion F] AlgebraicClosure (v.adicCompletion F)` to `IsAlgClosed.lift`. Set `j : L →ₐ[F] AlgebraicClosure (v.adicCompletion F)` to `(c.restrictScalars F).comp (IsScalarTower.toAlgHom F L (w.1.adicCompletion L))`. Conclude with `⟨j, (eq_placeOfAlgHom j c fun _ => rfl).symm⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_placeOfAlgHom_eq (w : PlacesOver L v) :
     ∃ j : L →ₐ[F] AlgebraicClosure (v.adicCompletion F), placeOfAlgHom j = w := by
@@ -209,7 +209,7 @@ theorem exists_placeOfAlgHom_eq (w : PlacesOver L v) :
   exact ⟨j, (eq_placeOfAlgHom j c fun _ => rfl).symm⟩
 
 /- English proof (translation)
-The claim follows from `(eq_placeOfAlgHom _ ((g : AlgebraicClosure (v.adicCompletion F) →ₐ[v.adicCompletion F] AlgebraicClosure (v.adicCompletion F)).comp (completionEmbeddingOfAlgHom j)) fun x => by rw [AlgHom.comp_apply, completionEmbeddingOfAlgHom_algebraMap] rfl).symm`.
+A detailed English derivation is pending.
 -/
 theorem placeOfAlgHom_comp (g : Gal(AlgebraicClosure (v.adicCompletion F) / v.adicCompletion F)) :
     placeOfAlgHom (((g : AlgebraicClosure (v.adicCompletion F) →ₐ[v.adicCompletion F]
@@ -220,9 +220,9 @@ theorem placeOfAlgHom_comp (g : Gal(AlgebraicClosure (v.adicCompletion F) / v.ad
     rfl).symm
 
 /- English proof (translation)
-Set `χ : c.fieldRange ≃ₐ[v.adicCompletion F] c'.fieldRange` to `c.equivFieldRange.symm.trans c'.equivFieldRange`. Use `⟨χ.liftNormal (AlgebraicClosure (v.adicCompletion F)), fun y => ?_⟩` and prove the remaining obligations. Establish `h` using `χ.liftNormal_commutes (AlgebraicClosure (v.adicCompletion F)) ⟨c y, y, rfl⟩`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c' y = ((c'.equivFieldRange (c.equivFieldRange.symm ⟨c y, y, rfl⟩)) : _)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: c.equivFieldRange.symm ⟨c y, y, rfl⟩ = y` using `c.equivFieldRange.symm_apply_eq.2 (Subtype.ext rfl)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_algEquiv_comp_eq {K : Type*} [Field K] [Algebra (v.adicCompletion F) K]
     (c c' : K →ₐ[v.adicCompletion F] AlgebraicClosure (v.adicCompletion F)) :
@@ -239,9 +239,9 @@ theorem exists_algEquiv_comp_eq {K : Type*} [Field K] [Algebra (v.adicCompletion
   rfl
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨c', hc'⟩ : ∃ c' : (placeOfAlgHom j).1.adicCompletion L →ₐ[v.adicCompletion F] AlgebraicClosure (v.adicCompletion F), ∀ x, c' (algebraMap L _ x) = j' x := by`. Rewrite using `[h]`. Conclude with `⟨completionEmbeddingOfAlgHom j', completionEmbeddingOfAlgHom_algebraMap j'⟩`. Take `⟨g, hg⟩` from `exists_algEquiv_comp_eq (completionEmbeddingOfAlgHom j) c'`. Use `⟨g, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hc' x, hg, completionEmbeddingOfAlgHom_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_algEquiv_of_placeOfAlgHom_eq (j j' : L →ₐ[F] AlgebraicClosure (v.adicCompletion F))
     (h : placeOfAlgHom j = placeOfAlgHom j') :
@@ -255,7 +255,7 @@ theorem exists_algEquiv_of_placeOfAlgHom_eq (j j' : L →ₐ[F] AlgebraicClosure
   rw [← hc' x, hg, completionEmbeddingOfAlgHom_algebraMap]
 
 /- English proof (translation)
-Establish `: ((g : AlgebraicClosure (v.adicCompletion F) →ₐ[v.adicCompletion F] AlgebraicClosure (v.adicCompletion F)).comp (completionEmbeddingOfAlgHom j)) = completionEmbeddingOfAlgHom j` using `adicCompletion_algHom_ext fun x => by`. Rewrite using `[AlgHom.comp_apply, completionEmbeddingOfAlgHom_algebraMap]`. Conclude with `hg x`. Conclude with `DFunLike.congr_fun this y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_completionEmbeddingOfAlgHom_of_forall
     (g : Gal(AlgebraicClosure (v.adicCompletion F) / v.adicCompletion F)) (hg : ∀ x, g (j x) = j x)

@@ -21,13 +21,13 @@ open GlobalTheory.UPel.HT.MapComp
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
 
 /- English proof (translation)
-Establish `w : m.φ ≫ o.A.hom = o'.A.hom ≫ f` using `m.cart.1.w`. Use `set ψ := m'.cart.1.lift m.φ o'.A.hom w`. Establish `hψ : ψ ≫ m'.φ = m.φ` using `m'.cart.1.lift_fst _ _ _`. Establish `hψ₀ : ψ ≫ o'.A.hom = o'.A.hom` using `m'.cart.1.lift_snd _ _ _`. Establish `hψ' : ψ ≫ o'.A.hom = o'.A.hom ≫ 𝟙 S'` using `by rw [Category.comp_id]; exact hψ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n : IsGrpPullback o'.A o.A (𝟙 S' ≫ f) (ψ ≫ m'.φ)` using `by rw [hψ, Category.id_comp]; exact m.cart`. Take `⟨ψ₂, sq⟩` from `exists_isSquare hψ'`. Establish `e : m.φ₂ = ψ₂ ≫ m'.φ₂` using `isSquare_unique m.sq (hψ ▸ isSquare_comp sq m'.sq)`. Establish `hact : ∀ c, (o'.act.act c).left ≫ ψ = ψ ≫ (o'.act.act c).left`. Introduce `c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `m'.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψ, m.act, Category.assoc, m'.act, ← Category.assoc, hψ]`. Rewrite using `[Category.assoc, hψ₀, Over.w, Category.assoc, Over.w, hψ₀]`. Establish `heta : ∀ y, (o'.eta y).left ≫ ψ = 𝟙 S' ≫ (o'.eta y).left`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `m'.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψ, m.eta, Category.id_comp, m'.eta]`. Rewrite using `[Category.assoc, hψ₀, Category.id_comp]`. Conclude with `⟨{ φ := ψ φ₂ := ψ₂ cart := m'.cart.cancel n hψ' sq := sq act := hact pol := LBIso.trans o'.isLB (pull_isLB o.isLB _) (pull_isLB o'.isLB _) m.pol (LBIso.symm (lbIso_pull_comp m'.pol ψ₂ e)) eta := heta }, hψ⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_auto {S S' : Scheme.{0}} {s : S ⟶ Sp R} {s' : S' ⟶ Sp R} {o' : Obj b N s'} {o : Obj b N s}
     {f : S' ⟶ S} (m m' : ObjMap o' o f) : ∃ a : ObjMap o' o' (𝟙 S'), a.φ ≫ m'.φ = m.φ := by
@@ -59,7 +59,7 @@ theorem exists_auto {S S' : Scheme.{0}} {s : S ⟶ Sp R} {s' : S' ⟶ Sp R} {o' 
            eta := heta }, hψ⟩
 
 /- English proof (translation)
-Introduce `p _ D R _ b N hN hNp S S' s s' o' o f m m'`. Take `⟨a, ha⟩` from `exists_auto m m'`. Establish `h1` using `GlobalTheory.UPel.HT.Rigid.eq_id p D R b N hN hNp S' s' o' a`. Rewrite using `[← ha, h1, Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem objMap_φ_unique : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : Base D R)
     (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (S S' : Scheme.{0}) (s : S ⟶ Sp R) (s' : S' ⟶ Sp R) (o' : Obj b N s')

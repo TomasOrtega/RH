@@ -22,19 +22,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.VacuumCharacterDeterminant (realOf 
 open scoped ComplexOrder
 
 /- English proof (translation)
-Take `⟨p, q, B, B', hBB', hB'B, hG, hs⟩` from `GlobalTheory.exists_basis_adapted_to_cartan_involution n G s h.1 h.2.1 h.2.2`. Establish `hpq : p + q = n`. Establish `h1 : Fintype.card (Fin n) ≤ Fintype.card (Fin p ⊕ Fin q)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Fintype.card (Fin p ⊕ Fin q) ≤ Fintype.card (Fin n)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Fintype.card_fin, Fintype.card_sum] at h1 h2`. Use linear arithmetic over natural numbers and integers. Substitute `hpq` using the available equality. Set `e : Fin (p + q) ≃ Fin p ⊕ Fin q` to `finSumFinEquiv.symm`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Introduce a local definition for the expression.
 
-Establish `hd : (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = Matrix.diagonal (Sum.elim (fun _ => 1) (fun _ => -1))`. Apply the tactic sequence `ext i j; rcases i with i | i <;> rcases j with j | j <;> simp [Matrix.fromBlocks, Matrix.diagonal, Matrix.one_apply] <;> split_ifs <;> simp`. Establish `he : ∀ a : Fin (p + q), Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1) (e a) = ((if (a : ℕ) < p then 1 else -1 : ℤ) : ℂ)`. Introduce `a`. Use `Fin.addCases (fun i => ?_) (fun j => ?_) a` and prove the remaining obligations.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[e, i.isLt]`. Simplify using `[e]`. Use `⟨p, B.submatrix id e, fun a => if (a : ℕ) < p then 1 else -1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Distinguish the cases in `ha : (a : ℕ) < p`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl ⟨by simp [ha], ha⟩`. Conclude with `Or.inr ⟨by simp [ha], by omega⟩`. Establish `: (B.submatrix id e)ᴴ * G * B.submatrix id e = (Bᴴ * G * B).submatrix e e`. Rewrite using `[Matrix.submatrix_mul _ _ _ id _ Function.bijective_id, Matrix.submatrix_mul _ _ _ id _ Function.bijective_id, Matrix.submatrix_id_id, Matrix.conjTranspose_submatrix]`. Rewrite using `[this, hG, hd, Matrix.submatrix_diagonal_equiv]`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `congr 1; funext a; rw [Function.comp_apply, he a]; split_ifs with hh <;> simp [hh]`. Establish `: s * B.submatrix id e = (s * B).submatrix id e`. Rewrite using `[Matrix.submatrix_mul _ _ _ id _ Function.bijective_id, Matrix.submatrix_id_id]`. Rewrite using `[this, hs, hd]`. Use extensionality with `i j`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.submatrix_apply, Matrix.mul_diagonal, id]`. Use `erw [Matrix.mul_diagonal]`. Rewrite using `[he j]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_isONBasis {n : ℕ} {G s : Matrix (Fin n) (Fin n) ℂ} (h : IsCartanInv G s) :
     ∃ (p : ℕ) (B : Matrix (Fin n) (Fin n) ℂ), IsONBasis G s B p := by

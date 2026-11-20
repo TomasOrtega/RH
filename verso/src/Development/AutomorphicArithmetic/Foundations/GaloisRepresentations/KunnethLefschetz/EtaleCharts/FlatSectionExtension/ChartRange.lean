@@ -26,7 +26,7 @@ def uV (B : Blow q i π D d) (α : B.ι) (k : Fin d) {V : Scheme.{0}} (y : V ⟶
   (y.appLE ((B.c α).C k) ⊤ h).hom ((B.c α).u k m)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Simplify using `using h (Set.mem_univ x)`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem chart_range (B : Blow q i π D d) (α : B.ι) (k : Fin d) {V : Scheme.{0}} (y : V ⟶ Y) (h : ⊤ ≤ y ⁻¹ᵁ (B.c α).C k) :
     Set.range y ⊆ Set.range ((B.c α).C k).ι := by
@@ -37,7 +37,7 @@ def secOf (B : Blow q i π D d) (α : B.ι) (k : Fin d) {V : Scheme.{0}} (y : V 
   IsOpenImmersion.lift ((B.c α).C k).ι y (chart_range B α k y h) ≫ B.σ α k
 
 /- English proof (translation)
-Unfold `secOf`. Rewrite using `[Category.assoc, B.σ_f, IsOpenImmersion.lift_fac]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem secOf_f (B : Blow q i π D d) (α : B.ι) (k : Fin d) {V : Scheme.{0}} (y : V ⟶ Y) (h : ⊤ ≤ y ⁻¹ᵁ (B.c α).C k) :
     secOf B α k y h ≫ D.f = y := by
@@ -63,18 +63,16 @@ def tI (B : Blow q i π D d) (j : T ⟶ Y) (p : B.ι × Fin d) : (oT B j p : Sch
   Sigma.ι (fun p : B.ι × Fin d => (oT B j p : Scheme.{0})) p
 
 /- English proof (translation)
-Introduce `x _`. Simplify using `using x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem oT_le (B : Blow q i π D d) (j : T ⟶ Y) (p : B.ι × Fin d) : ⊤ ≤ ((oT B j p).ι ≫ j) ⁻¹ᵁ (B.c p.1).C p.2 := by
   intro x _
   simpa using x.2
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Establish `h1 : (j x.1 : Y) ∈ (B.c p.1).C p.2` using `x.2`. Establish `h2 : π (j x.1) ∈ B.V p.1` using `(B.c p.1).C_le p.2 h1`. Establish `h3 : i (r x.1) = π (j x.1)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hw]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : r x.1 ∈ oW B p.1`. Express the relevant statement in the definitionally equal form `i (r x.1) ∈ B.V p.1`. Rewrite using `[h3]`. Conclude with `h2`. Rewrite using `[Scheme.Hom.comp_apply, Scheme.Opens.range_ι]`.
-
-Conclude with `h4`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_range (B : Blow q i π D d) (j : T ⟶ Y) (r : T ⟶ W) (hw : j ≫ π = r ≫ i) (p : B.ι × Fin d) :
     Set.range ((oT B j p).ι ≫ r) ⊆ Set.range (oW B p.1).ι := by

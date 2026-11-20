@@ -11,7 +11,7 @@ variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 
 omit [Fintype n] [DecidableEq n] [DecidableEq n'] in
 /- English proof (translation)
-Use extensionality with `(r | l)`. Simplify using `[mulVec, dotProduct, Fintype.sum_sum_type, affPt, basePt, Free, Pi.single_apply]`. Simplify using `[mulVec, dotProduct, Fintype.sum_sum_type, affPt, basePt, Free, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem aff_low (x₀ : Matrix n n' k) (y) (w : n' → k) (s : k) :
     affPt (c := c + 1) 1 x₀ y *ᵥ Sum.elim w (Pi.single 0 s) = Sum.elim (x₀ *ᵥ w) (Pi.single 0 s) := by
@@ -21,7 +21,7 @@ theorem aff_low (x₀ : Matrix n n' k) (y) (w : n' → k) (s : k) :
 
 omit [Fintype n] [DecidableEq n] [DecidableEq n'] in
 /- English proof (translation)
-Establish `: ∀ r, affPt (c` using `c) 1 x₀ y (.inr l) (.inl r) = 0 := fun r => by simp [affPt, basePt, Free]`. Simplify using `[mulVec, dotProduct, Fintype.sum_sum_type, this, Pi.single_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem aff_row (x₀ : Matrix n n' k) (y) (w : n' → k) (i : Fin (c + 1)) (s : k) (l : Fin c) :
     (affPt (c := c) 1 x₀ y *ᵥ Sum.elim w (Pi.single i s)) (.inr l) = affPt 1 x₀ y (.inr l) (.inr i) * s := by
@@ -30,7 +30,7 @@ theorem aff_row (x₀ : Matrix n n' k) (y) (w : n' → k) (i : Fin (c + 1)) (s :
 
 omit [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] in
 /- English proof (translation)
-Establish `: ¬ l < i` using `not_lt.2 h`. Simplify using `[affPt, basePt, Free, this, Fin.ext_iff]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem aff_diag (x₀ : Matrix n n' k) (y) (i l : Fin c) (h : i ≤ l) :
     affPt (c := c) 1 x₀ y (.inr l) (.inr i.castSucc) = if l = i then 1 else 0 := by
@@ -43,7 +43,7 @@ variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [M
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [BorelSpace k] [DecidableEq n]
   [DecidableEq n'] in
 /- English proof (translation)
-Assume the negation of the conclusion as `H`. Use `push Not at H`. Conclude with `h (by simp [opE, H])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_supp {p : ℕ} {Ψ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ} {x₀ : Matrix n n' k}
     (h : opE ψ ν p Ψ x₀ ≠ 0) : ∃ y, Ψ (affPt p x₀ y) ≠ 0 := by
@@ -52,19 +52,19 @@ theorem exists_supp {p : ℕ} {Ψ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k 
   exact h (by simp [opE, H])
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Take `⟨v, hv, hv0, hvi⟩ : (ϖ : k) ^ a ∈ topCoord (latOf h) i` from `ha ▸ (zpow_mem_pow hϖ).2 le_rfl`. Establish `key : -((ϖ : k) * ((ϖ : k) ^ (-e' i.succ) * (ϖ : k) ^ a)) ∈ 𝒪[k]`. Use `Unram.mem_of_psi hψ fun t ht => ?_` and prove the remaining obligations. Set `y : Matrix (n ⊕ Fin (c + 1)) (n' ⊕ Fin (c + 1 + 1)) k` to `Matrix.of fun r s => if s = .inr i.succ then t * (ϖ : k) ^ (-e' i.succ) * v r else 0`.
+Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hy : MapsLat y (latOf (nfBasis ϖ g' e' z')) (latOf h)` using `fun w hw => by`. Establish `: y *ᵥ w = (t * ((ϖ : k) ^ (-e' i.succ) * w (.inr i.succ))) • v`. Use extensionality with `r`. Simplify using `[y, mulVec, dotProduct]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Use `smul_mem_lat (mul_mem ht ?_) hv` and prove the remaining obligations. Rewrite using `[← mem_pow_zero (ϖ := ϖ), zpow_mul_mem_pow]`. Simplify using `using (mem_nf.1 hw).2 i.succ`. Use `Unram.psi_ch_eq_one ψ ν Ψ x₀ h0 ((ϖ : k) • y) (fun r s hf => ?_) fun x => hp x y hy` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `[ch, y, hvi]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [y, Matrix.smul_apply, Matrix.of_apply] split_ifs with e`. Substitute `e` using the available equality.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Break down `r with r | r` into its components or cases. Simplify using `[Free] at hf`. Rewrite using `[hv0 r (by simp only [Free, Fin.val_succ] at hf; rw [Fin.lt_def]; omega)]; simp`. Simplify using the standard rewrite rules. Rewrite `key` using `[neg_mem_iff, ← mem_pow_zero (ϖ := ϖ), ← zpow_add₀ ϖ.ne_zero, ← zpow_one_add₀ ϖ.ne_zero, zpow_mem_pow hϖ]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨y, hy⟩` from `exists_supp h0`. Use `hs _ hy _ (col_mem_nf i.castSucc ((zpow_mem_pow hϖ).2 le_rfl))` as an intermediate fact. Rewrite using `[← zpow_mem_pow hϖ, ← ha]`. Use `⟨_, this, fun l hl => ?_, ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[aff_row, aff_diag _ _ _ _ hl.le, if_neg hl.ne', zero_mul]`. Rewrite using `[aff_row, aff_diag _ _ _ _ le_rfl, if_pos rfl, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bounds (hϖ : valuation k (ϖ : k) = uniformizer k) (hψ : HasConductor ψ 1) [ν.IsAddHaarMeasure]
     {g' : GL n' k} {e' : Fin (c + 1 + 1) → ℤ} {z' : n' → k} {h : GL (n ⊕ Fin (c + 1)) k}
@@ -108,11 +108,11 @@ theorem bounds (hϖ : valuation k (ϖ : k) = uniformizer k) (hψ : HasConductor 
 
 omit [BorelSpace k] in
 /- English proof (translation)
-Take `⟨y, hy⟩` from `exists_supp h0`. Prove the components needed by the constructor for the conclusion. Use `hs _ hy _ (col_mem_nf 0 ((zpow_mem_pow hϖ).2 le_rfl))` as an intermediate fact. Rewrite `this` using `[aff_low]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `(r | l)`. Simplify using `[mulVec, dotProduct, Finset.mul_sum, mul_left_comm]`. Simplify using `[Pi.single_apply]`. Introduce `w hw`. Use `hs _ hy (Sum.elim w (Pi.single 0 0)) (mem_nf.2 ⟨by simpa using hw, fun i => by simpa using zero_mem_pow⟩)` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[aff_low]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem first_mem (hϖ : valuation k (ϖ : k) = uniformizer k)
     {g' : GL n' k} {e' : Fin (c + 1 + 1) → ℤ} {z' : n' → k} {h : GL (n ⊕ Fin (c + 1)) k}
@@ -135,15 +135,15 @@ theorem first_mem (hϖ : valuation k (ϖ : k) = uniformizer k)
     simpa using this
 
 /- English proof (translation)
-Take `⟨u, hu, g, e, z, hl, hm⟩` from `H ϖ hϖ n (c + 1) h`. Establish `ht : ∀ i, topCoord (latOf h) i = powInt ϖ (e i)` using `fun i => by`. Rewrite using `[← topCoord_R (Subgroup.mem_sup_right hu) h i, hl, topCoord_nf]`. Use `⟨embX _ g⁻¹ * u, mul_mem (Subgroup.mem_sup_left ⟨_, rfl⟩) (Subgroup.mem_sup_right hu), e, (g⁻¹).val *ᵥ z, fun i => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `bounds hϖ hψ hs hp h0 i (ht i)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `he' i.succ` as an intermediate fact. Use `he' i.castSucc` as an intermediate fact. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Take `⟨h1, h2⟩` from `first_mem hϖ hs h0`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `(hm _).1 (h2 z' (mem_latOf_one.2 hz'))`. Rewrite `h1` using `[← mulVec_mem_latOf u, N_fix hu _ (fun l hl => by simp [Fin.ext_iff, hl.ne']), hl]`. Establish `h4` using `smul_mem_lat (t := (ϖ : k) ^ (-e' 0)) (mem_pow_zero.1 ((zpow_mem_pow hϖ).2 (by have := he' 0; omega))) (mem_nf.1 h1).1`. Establish `h5` using `sub_mem h3 h4`. Express the relevant statement in the definitionally equal form `z ∈ latOf g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `h5 using 1` and compare the differences between its conclusion and the goal. Establish `: (ϖ : k) ^ e' 0 ≠ 0` using `zpow_ne_zero _ ϖ.ne_zero`. Use extensionality with `r`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_assoc, latOf_mul_congr _ hl, embX_mul_nf, inv_mul_cancel, nfBasis_one]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem step_normal (H : NormalFormModN k) (hϖ : valuation k (ϖ : k) = uniformizer k) (hψ : HasConductor ψ 1)
     [ν.IsAddHaarMeasure] {j : ℕ} {e' : Fin (c + 1 + 1) → ℤ} {z' : n' → k}

@@ -73,7 +73,7 @@ section Basic₂
 variable {F Y : Type} [Field F] [AddCommGroup Y] [Module F Y] {c : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ _ => rfl, fun i => by show a i - a i ∈ _ rw [sub_self] exact zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnip_one (X : Submodule F Y) (a : Fin c → Y) : IsUnip X a 1 :=
   ⟨fun _ _ => rfl, fun _ _ => rfl, fun i => by
@@ -82,7 +82,7 @@ theorem isUnip_one (X : Submodule F Y) (a : Fin c → Y) : IsUnip X a 1 :=
     exact zero_mem _⟩
 
 /- English proof (translation)
-Use `Submodule.mem_sup_right (Submodule.mem_iSup_of_mem 0 (Submodule.subset_span ?_))` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 example {O : Type} [CommRing O] [Algebra O F] [Module O Y] (q : O) (M : Submodule O Y) (a : Fin (c + 1) → Y)
     (e : Fin (c + 1) → ℤ) (z : Y) : (algebraMap O F q) ^ (e 0) • (a 0 + z) ∈ normalForm F q M a e z := by
@@ -90,11 +90,11 @@ example {O : Type} [CommRing O] [Algebra O F] [Module O Y] (q : O) (M : Submodul
   simp
 
 /- English proof (translation)
-Use `⟨by simp [linearIndependent_unique_iff], ?_⟩` and prove the remaining obligations. Establish `h : Submodule.span ℚ (Set.range (fun _ : Fin 1 => ((0, 1) : ℚ × ℚ))) = LinearMap.range (LinearMap.inr ℚ ℚ ℚ)`. Use extensionality with `x`. Simplify using `only [Set.range_const, Submodule.mem_span_singleton, LinearMap.mem_range, LinearMap.coe_inr]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨t, by simp⟩`. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨t, by simp⟩`. Rewrite using `[h]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.isCompl_range_inl_inr`.
+A detailed English derivation is pending.
 -/
 example : IsFrame (F := ℚ) (LinearMap.range (LinearMap.inl ℚ ℚ ℚ)) (fun _ : Fin 1 => ((0, 1) : ℚ × ℚ)) := by
   refine ⟨by simp [linearIndependent_unique_iff], ?_⟩

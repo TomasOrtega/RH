@@ -7,7 +7,7 @@ namespace UpperTheory.NonzeroTypeTheory.MaschkeCompactGroup
 variable {K : Type} [Group K] {m : ℕ}
 
 /- English proof (translation)
-Use `Subgroup.isOpen_of_mem_nhds (MonoidHom.ker V) (g := 1) (Filter.mem_of_superset ((isOpen_iInter_of_finite fun i : Fin m => hs (Pi.single i 1)).mem_nhds (by simp)) fun g hg => ?_)` and prove the remaining obligations. Use `MonoidHom.mem_ker.2 ((Pi.basisFun ℂ (Fin m)).ext fun i => ?_)` and prove the remaining obligations. Rewrite using `[Pi.basisFun_apply]`. Conclude with `Set.mem_iInter.1 hg i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_isOpen [TopologicalSpace K] [IsTopologicalGroup K] (V : Representation ℂ K (Fin m → ℂ))
     (hs : GlobalTheory.PRep.IsSmooth V) : IsOpen ((MonoidHom.ker V : Subgroup K) : Set K) := by
@@ -18,25 +18,25 @@ theorem ker_isOpen [TopologicalSpace K] [IsTopologicalGroup K] (V : Representati
   exact Set.mem_iInter.1 hg i
 
 /- English proof (translation)
-Establish `: Finite (K ⧸ MonoidHom.ker V)` using `Subgroup.quotient_finite_of_isOpen _ (ker_isOpen V hs)`. Set `_ : Fintype (K ⧸ MonoidHom.ker V)` to `Fintype.ofFinite _`. Set `ρ : K ⧸ MonoidHom.ker V →* Module.End ℂ (Fin m → ℂ)` to `QuotientGroup.lift (MonoidHom.ker V) V le_rfl`. Establish `hρ : ∀ k : K, ρ (k : K ⧸ MonoidHom.ker V) = V k` using `fun k => rfl`. Establish `hmul : ∀ a b : K ⧸ MonoidHom.ker V, ∀ w, ρ a (ρ b w) = ρ (a * b) w` using `fun a b w => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `hρU : ∀ g, ∀ u ∈ U, ρ g u ∈ U`. Introduce `g u hu`. Take `⟨k, rfl⟩` from `QuotientGroup.mk_surjective g`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hρ]`. Conclude with `hU k u hu`. Take `⟨T, hT⟩` from `Submodule.exists_isCompl U`. Set `π` to `U.projection T hT`. Establish `hπU : ∀ v, π v ∈ U` using `fun v => Submodule.projection_apply_mem hT v`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπid : ∀ u ∈ U, π u = u` using `fun u hu => Submodule.projection_apply_of_mem_left hT hu`. Set `P : Module.End ℂ (Fin m → ℂ)` to `∑ g : K ⧸ MonoidHom.ker V, (ρ g).comp (π.comp (ρ g⁻¹))`. Establish `hP : ∀ v, P v = ∑ g : K ⧸ MonoidHom.ker V, ρ g (π (ρ g⁻¹ v))` using `fun v => by`. Simplify using `only [P, LinearMap.sum_apply, LinearMap.comp_apply]`. Establish `hPU : ∀ v, P v ∈ U` using `fun v => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP]`. Conclude with `Submodule.sum_mem _ fun g _ => hρU g _ (hπU _)`. Establish `hPid : ∀ u ∈ U, P u = Fintype.card (K ⧸ MonoidHom.ker V) • u`. Introduce `u hu`. Establish `h1 : ∀ g : K ⧸ MonoidHom.ker V, ρ g (π (ρ g⁻¹ u)) = u` using `fun g => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hπid _ (hρU _ _ hu), hmul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression. Rewrite using `[hP, Finset.sum_congr rfl fun g _ => h1 g, Finset.sum_const, Finset.card_univ]`. Establish `hPeq : ∀ h v, P (ρ h v) = ρ h (P v)`. Introduce `h v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hP, hP, map_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft h⁻¹) _ _ fun x => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft]`. Rewrite using `[hmul h, mul_inv_cancel_left, mul_inv_rev, inv_inv, ← hmul]`. Establish `hc : (Fintype.card (K ⧸ MonoidHom.ker V) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : (Fin m → ℂ) →ₗ[ℂ] U` to `LinearMap.codRestrict U (((Fintype.card (K ⧸ MonoidHom.ker V) : ℂ)⁻¹) • P) (fun v => U.smul_mem _ (hPU v))`. Establish `hf : ∀ x : U, f x = x`. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((Fintype.card (K ⧸ MonoidHom.ker V) : ℂ)⁻¹) • P x = x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hPid _ x.2, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Establish `hker : ∀ x, x ∈ LinearMap.ker f ↔ P x = 0`. Introduce `x`. Rewrite using `[LinearMap.mem_ker, ← Submodule.coe_eq_zero]`. Express the relevant statement in the definitionally equal form `((Fintype.card (K ⧸ MonoidHom.ker V) : ℂ)⁻¹) • P x = 0 ↔ P x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_eq_zero]`. Simplify using `[hc]`. Use `⟨LinearMap.ker f, LinearMap.isCompl_of_proj hf, fun k s hs => ?_⟩` and prove the remaining obligations. Rewrite `hs`, the goal using `[hker]`. Rewrite using `[← hρ, hPeq, hs, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maschke [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K]
     (V : Representation ℂ K (Fin m → ℂ)) (hs : GlobalTheory.PRep.IsSmooth V)
@@ -102,29 +102,27 @@ namespace UpperTheory.NonzeroTypeTheory
 
 open MaschkeCompactGroup in
 /- English proof (translation)
-Introduce `K _ _ _ _ m V hs v0 hv0`. Establish `hbot : (∀ k, ∀ w ∈ (⊥ : Submodule ℂ (Fin m → ℂ)), V k w ∈ (⊥ : Submodule ℂ (Fin m → ℂ))) ∧ v0 ∉ (⊥ : Submodule ℂ (Fin m → ℂ))`. Use `⟨fun k w hw => ?_, fun h => hv0 ((Submodule.mem_bot ℂ).1 h)⟩` and prove the remaining obligations. Rewrite `hw`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hw, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨U, ⟨hUst, hv0U⟩, hUmax⟩` from `set_has_maximal_iff_noetherian.mpr inferInstance {W : Submodule ℂ (Fin m → ℂ) | (∀ k, ∀ w ∈ W, V k w ∈ W) ∧ v0 ∉ W} ⟨⊥, hbot⟩`. Take `⟨S, hUS, hSst⟩` from `maschke V hs U hUst`. Set `p` to `S.projection U hUS.symm`. Establish `hpS : ∀ v, p v ∈ S` using `fun v => Submodule.projection_apply_mem hUS.symm v`. Establish `hpid : ∀ s ∈ S, p s = s` using `fun s hs => Submodule.projection_apply_of_mem_left hUS.symm hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : ∀ v, p v = 0 ↔ v ∈ U` using `fun v => Submodule.projection_apply_eq_zero_iff hUS.symm`. Establish `hdec : ∀ v, v - p v ∈ U` using `fun v => Submodule.sub_projection_mem hUS.symm v`. Establish `hpU : ∀ u ∈ U, p u = 0` using `fun u hu => (hp0 u).2 hu`. Establish `hpv0 : p v0 ≠ 0` using `fun h => hv0U ((hp0 v0).1 h)`. Establish `key : ∀ W : Submodule ℂ (Fin m → ℂ), W ≤ S → (∀ k, ∀ w ∈ W, V k w ∈ W) → W ≠ ⊥ → p v0 ∈ W`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `W hWS hWst hW0`. Establish `hsup : ∀ k, ∀ x ∈ U ⊔ W, V k x ∈ U ⊔ W`. Introduce `k x hx`. Take `⟨u, hu, w, hw, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem_sup (hUst k u hu) (hWst k w hw)`. Establish `hmem : v0 ∈ U ⊔ W`. Assume the negation of the conclusion as `hn`. Use `hUmax (U ⊔ W) ⟨hsup, hn⟩ (lt_of_le_of_ne le_sup_left fun heq => hW0 ?_)` and prove the remaining obligations. Use `eq_bot_iff.2 ((le_inf (le_sup_right.trans heq.ge) hWS).trans (disjoint_iff.1 hUS.disjoint).le)` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, w, hw, hsum⟩` from `Submodule.mem_sup.1 hmem`. Rewrite using `[← hsum, map_add, hpU u hu, zero_add, hpid w (hWS hw)]`. Conclude with `hw`. Use `⟨S, p, fun h => hpv0 ?_, hSst, fun S' hS'S hS'st => ?_, hpS, hpid, fun k v => ?_, hpv0⟩` and prove the remaining obligations. Use `hpS v0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `this`. Distinguish the cases in `h0 : S' = ⊥`. Conclude with `Or.inl h0`. Use `right`.
+Prove the first alternative. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1` using `key S' hS'S hS'st h0`. Take `⟨T, hST, hTst⟩` from `maschke V hs S' hS'st`. Establish `hST0 : S ⊓ T = ⊥`. Assume the negation of the conclusion as `hn`. Establish `h2` using `key (S ⊓ T) inf_le_left (fun k x hx => Submodule.mem_inf.2 ⟨hSst k x (Submodule.mem_inf.1 hx).1, hTst k x (Submodule.mem_inf.1 hx).2⟩) hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : p v0 ∈ S' ⊓ T` using `Submodule.mem_inf.2 ⟨h1, (Submodule.mem_inf.1 h2).2⟩`. Rewrite `h3` using `[disjoint_iff.1 hST.disjoint, Submodule.mem_bot]`. Conclude with `hpv0 h3`. Use `le_antisymm hS'S fun s hs => ?_` and prove the remaining obligations. Establish `hs' : s ∈ S' ⊔ T` using `by rw [hST.sup_eq_top]; exact Submodule.mem_top`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, ha, t, ht, hat⟩` from `Submodule.mem_sup.1 hs'`. Establish `htS : t ∈ S`. Establish `: t = s - a` using `by rw [← hat]; abel`. Rewrite using `[this]`. Conclude with `S.sub_mem hs (hS'S ha)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht0 : t = 0`. Establish `: t ∈ S ⊓ T` using `Submodule.mem_inf.2 ⟨htS, ht⟩`. Rewrite `this` using `[hST0, Submodule.mem_bot]`. Then use the resulting hypothesis. Rewrite using `[← hat, ht0, add_zero]`. Conclude with `ha`.
-
-Establish `hv : V k v = V k (p v) + V k (v - p v)`. Rewrite using `[← map_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[hv, map_add, hpid _ (hSst k _ (hpS v)), hpU _ (hUst k _ (hdec v)), add_zero]`.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariantComplement_holds : SmoothRepIrreducibleSubcontainingVector := by
   intro K _ _ _ _ m V hs v0 hv0

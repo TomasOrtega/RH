@@ -20,7 +20,7 @@ open Formalism.REAL (Jm inG UJ Jm_mul_self Jm_conjTranspose)
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Jm_mul_self, Matrix.one_mul, ← Matrix.mulVec_mulVec, Matrix.star_mulVec, Matrix.dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_adj (X : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     star x ⬝ᵥ (Jm ε *ᵥ ((Jm ε * Xᴴ * Jm ε) *ᵥ y)) = star (X *ᵥ x) ⬝ᵥ (Jm ε *ᵥ y) := by
@@ -28,7 +28,7 @@ theorem form_adj (X : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     ← Matrix.mulVec_mulVec, Matrix.star_mulVec, Matrix.dotProduct_mulVec]
 
 /- English proof (translation)
-Establish `h2` using `congrArg star h`. Rewrite `h2` using `[Matrix.star_dotProduct, star_star, Matrix.star_mulVec, Jm_conjTranspose, ← Matrix.dotProduct_mulVec, star_zero]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_symm {x y : Fin n → ℂ} (h : star x ⬝ᵥ (Jm ε *ᵥ y) = 0) : star y ⬝ᵥ (Jm ε *ᵥ x) = 0 := by
   have h2 := congrArg star h
@@ -37,15 +37,13 @@ theorem form_symm {x y : Fin n → ℂ} (h : star x ⬝ᵥ (Jm ε *ᵥ y) = 0) :
   exact h2
 
 /- English proof (translation)
-Establish `h0 : Xᴴ * Jm ε + Jm ε * X = 0` using `h`. Establish `h1 : Xᴴ * Jm ε = -(Jm ε * X)` using `eq_neg_of_add_eq_zero_left h0`. Establish `hg : (uMat m)ᴴ * Jm ε * uMat m = Jm ε` using `m.2`. Establish `hgi : (uMat m⁻¹)ᴴ * Jm ε * uMat m⁻¹ = Jm ε` using `(m⁻¹).2`. Establish `hr : uMat m * uMat m⁻¹ = 1` using `GlobalTheory.FlagLeviGroup.uMat_mul_inv m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : uMat m⁻¹ * uMat m = 1` using `GlobalTheory.FlagLeviGroup.uMat_inv_mul m`. Establish `e1 : (uMat m)ᴴ * Jm ε = Jm ε * uMat m⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : (uMat m⁻¹)ᴴ * Jm ε = Jm ε * uMat m`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `show (uMat m * X * uMat m⁻¹)ᴴ * Jm ε + Jm ε * (uMat m * X * uMat m⁻¹) = 0`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (uMat m⁻¹)ᴴ * (Xᴴ * Jm ε) * uMat m⁻¹ + Jm ε * (uMat m * X * uMat m⁻¹) := by`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = -((uMat m⁻¹)ᴴ * Jm ε * X * uMat m⁻¹) + Jm ε * (uMat m * X * uMat m⁻¹) := by`. Rewrite using `[h1]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`.
-
-Use `_ = 0 := by`. Rewrite using `[e2]`. Simplify using `only [Matrix.mul_assoc]`. Conclude with `neg_add_cancel _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inG_conj (m : UJ ε) {X : Matrix (Fin n) (Fin n) ℂ} (h : inG ε X) : inG ε (uMat m * X * uMat m⁻¹) := by
   have h0 : Xᴴ * Jm ε + Jm ε * X = 0 := h
@@ -85,7 +83,7 @@ def perpJ (V : Submodule ℂ (Fin n → ℂ)) : Submodule ℂ (Fin n → ℂ) wh
     rw [Matrix.mulVec_smul, dotProduct_smul, hy x hx, smul_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_perpJ {V : Submodule ℂ (Fin n → ℂ)} {y : Fin n → ℂ} :
     y ∈ perpJ ε V ↔ ∀ x ∈ V, star x ⬝ᵥ (Jm ε *ᵥ y) = 0 := Iff.rfl
@@ -126,52 +124,50 @@ def dblFlag (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)) (s : ℕ) : Subm
 variable {j : Fin a → ℕ} {W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)}
 
 /- English proof (translation)
-Rewrite using `[dblFlag, if_pos hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dblFlag_le {s : ℕ} (hs : s ≤ a) : dblFlag ε W s = natFlag W s := by rw [dblFlag, if_pos hs]
 
 /- English proof (translation)
-Rewrite using `[dblFlag_le (Nat.lt_succ_iff.mp i.isLt)]`. Conclude with `congrArg W (Fin.ext (min_eq_left (Nat.lt_succ_iff.mp i.isLt)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dblFlag_fin (i : Fin (a + 1)) : dblFlag ε W i = W i := by
   rw [dblFlag_le (Nat.lt_succ_iff.mp i.isLt)]
   exact congrArg W (Fin.ext (min_eq_left (Nat.lt_succ_iff.mp i.isLt)))
 
 /- English proof (translation)
-Rewrite using `[← Fin.val_succ]`. Conclude with `dblFlag_fin i.succ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dblFlag_succ (i : Fin a) : dblFlag ε W (i + 1) = W i.succ := by
   rw [← Fin.val_succ]
   exact dblFlag_fin i.succ
 
 /- English proof (translation)
-Establish `h` using `dblFlag_fin (ε := ε) (W := W) i.castSucc`. Rewrite `h` using `[Fin.val_castSucc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dblFlag_castSucc (i : Fin a) : dblFlag ε W i = W i.castSucc := by
   have h := dblFlag_fin (ε := ε) (W := W) i.castSucc
   rwa [Fin.val_castSucc] at h
 
 /- English proof (translation)
-Establish `h` using `dblFlag_fin (ε := ε) (W := W) (Fin.last a)`. Rewrite `h` using `[Fin.val_last]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dblFlag_last : dblFlag ε W a = W (Fin.last a) := by
   have h := dblFlag_fin (ε := ε) (W := W) (Fin.last a)
   rwa [Fin.val_last] at h
 
 /- English proof (translation)
-Rewrite using `[dblFlag_le hs, dblFlag, if_neg (by omega), show 2 * a + 1 - (2 * a + 1 - s) = s by omega]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem dblFlag_sub {s : ℕ} (hs : s ≤ a) : dblFlag ε W (2 * a + 1 - s) = perpJ ε (dblFlag ε W s) := by
   rw [dblFlag_le hs, dblFlag, if_neg (by omega), show 2 * a + 1 - (2 * a + 1 - s) = s by omega]
 
 /- English proof (translation)
-Distinguish the cases in `h : s ≤ a`. Conclude with `dblFlag_sub h`. Establish `ht : 2 * a + 1 - s ≤ a` using `by omega`. Establish `e` using `dblFlag_sub (ε := ε) (W := W) ht`. Rewrite `e` using `[show 2 * a + 1 - (2 * a + 1 - s) = s by omega]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `h40` using `GlobalTheory.T.signedFormOrthogonal_finrank_det_unitary n ε (dblFlag ε W (2 * a + 1 - s)) (perpJ ε (dblFlag ε W (2 * a + 1 - s))) (fun y => mem_perpJ)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite using `[mem_perpJ]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Rewrite `hy` using `[mem_perpJ]`. Conclude with `form_symm (hy x hx)`. Introduce `x hx`. Rewrite `hx` using `[mem_perpJ]`.
-
-Conclude with `h40.2.1 x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dblFlag_dual {s : ℕ} (hs : s ≤ 2 * a + 1) :
     dblFlag ε W (2 * a + 1 - s) = perpJ ε (dblFlag ε W s) := by
@@ -194,15 +190,13 @@ theorem dblFlag_dual {s : ℕ} (hs : s ≤ 2 * a + 1) :
       exact h40.2.1 x hx
 
 /- English proof (translation)
-Establish `nm : ∀ {s t : ℕ}, s ≤ t → natFlag W s ≤ natFlag W t` using `fun {s t} h => hW.2.1 (show (⟨min s a, by omega⟩ : Fin (a + 1)) ≤ ⟨min t a, by omega⟩ from Fin.mk_le_mk.2 (min_le_min_right a h))`. Establish `anti : ∀ {V V' : Submodule ℂ (Fin n → ℂ)}, V ≤ V' → perpJ ε V' ≤ perpJ ε V`. Introduce `V V' h y hy`. Rewrite `hy`, the goal using `[mem_perpJ]`. Conclude with `fun x hx => hy x (h hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hl : natFlag W a = W (Fin.last a)` using `congrArg W (Fin.ext (min_self a))`. Establish `iso : natFlag W a ≤ perpJ ε (natFlag W a)`. Rewrite using `[hl]`. Introduce `x hx`. Rewrite using `[mem_perpJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x' hx'`. Conclude with `hW.2.2.2 x' hx' x hx`. Introduce `s t hst`. Distinguish the cases in `ht : t ≤ a`. Rewrite using `[dblFlag_le (hst.trans ht), dblFlag_le ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `nm hst`. Establish `et : dblFlag ε W t = perpJ ε (natFlag W (2 * a + 1 - t))` using `by rw [dblFlag, if_neg ht]`. Distinguish the cases in `hs : s ≤ a`. Rewrite using `[dblFlag_le hs, et]`. Conclude with `(nm hs).trans (iso.trans (anti (nm (by omega))))`.
-
-Establish `es : dblFlag ε W s = perpJ ε (natFlag W (2 * a + 1 - s))` using `by rw [dblFlag, if_neg hs]`. Rewrite using `[es, et]`. Conclude with `anti (nm (by omega))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dblFlag_mono (hW : IsIsoFlag ε j W) : Monotone (dblFlag ε W) := by
   have nm : ∀ {s t : ℕ}, s ≤ t → natFlag W s ≤ natFlag W t := fun {s t} h =>
@@ -232,7 +226,7 @@ theorem dblFlag_mono (hW : IsIsoFlag ε j W) : Monotone (dblFlag ε W) := by
       exact anti (nm (by omega))
 
 /- English proof (translation)
-Rewrite using `[dblFlag_le (Nat.zero_le a)]`. Establish `e : (⟨min 0 a, by omega⟩ : Fin (a + 1)) = 0` using `Fin.ext (by simp)`. Use `show W ⟨min 0 a, by omega⟩ = ⊥`. Rewrite using `[e]`. Conclude with `hW.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dblFlag_zero (hW : IsIsoFlag ε j W) : dblFlag ε W 0 = ⊥ := by
   rw [dblFlag_le (Nat.zero_le a)]
@@ -242,9 +236,9 @@ theorem dblFlag_zero (hW : IsIsoFlag ε j W) : dblFlag ε W 0 = ⊥ := by
   exact hW.1
 
 /- English proof (translation)
-Establish `e` using `dblFlag_sub (ε := ε) (W := W) (Nat.zero_le a)`. Rewrite `e` using `[Nat.sub_zero, dblFlag_zero hW]`. Rewrite using `[e, eq_top_iff]`. Introduce `y _`. Rewrite using `[mem_perpJ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite using `[(Submodule.mem_bot ℂ).1 hx, star_zero, zero_dotProduct]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem dblFlag_top (hW : IsIsoFlag ε j W) : dblFlag ε W (2 * a + 1) = ⊤ := by
   have e := dblFlag_sub (ε := ε) (W := W) (Nat.zero_le a)
@@ -256,11 +250,9 @@ theorem dblFlag_top (hW : IsIsoFlag ε j W) : dblFlag ε W (2 * a + 1) = ⊤ := 
   rw [(Submodule.mem_bot ℂ).1 hx, star_zero, zero_dotProduct]
 
 /- English proof (translation)
-Introduce `y hy`. Distinguish the cases in `hs : s ≤ a`. Rewrite `hy`, the goal using `[dblFlag_le hs]`. Conclude with `hm _ y hy`. Establish `e : dblFlag ε W s = perpJ ε (natFlag W (2 * a + 1 - s))` using `by rw [dblFlag, if_neg hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hy`, the goal using `[e, mem_perpJ]`. Introduce `x hx`. Establish `h1` using `GlobalTheory.FlagLeviGroup.form_inv m⁻¹ x y`. Rewrite `h1` using `[inv_inv]`. Rewrite using `[h1]`.
-
-Conclude with `hy _ (GlobalTheory.FlagMeas.UnipRad.inv_keeps m (natFlag W (2 * a + 1 - s)) (hm _) x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dblFlag_keeps (m : UJ ε) (hm : ∀ i, ∀ y ∈ W i, uMat m *ᵥ y ∈ W i) (s : ℕ) :
     ∀ y ∈ dblFlag ε W s, uMat m *ᵥ y ∈ dblFlag ε W s := by
@@ -277,11 +269,11 @@ theorem dblFlag_keeps (m : UJ ε) (hm : ∀ i, ∀ y ∈ W i, uMat m *ᵥ y ∈ 
     exact hy _ (GlobalTheory.FlagMeas.UnipRad.inv_keeps m (natFlag W (2 * a + 1 - s)) (hm _) x hx)
 
 /- English proof (translation)
-Establish `hX' : ∀ s, s < 2 * a + 1 → ∀ y ∈ dblFlag ε W (s + 1), X *ᵥ y ∈ dblFlag ε W s` using `hX`. Use `show ∀ s, s < 2 * a + 1 → ∀ y ∈ dblFlag ε W (s + 1), (Jm ε * Xᴴ * Jm ε) *ᵥ y ∈ dblFlag ε W s`. Introduce `s hs y hy`. Establish `e1 : dblFlag ε W s = perpJ ε (dblFlag ε W (2 * a + 1 - s))`. Establish `h` using `dblFlag_dual (ε := ε) (W := W) (s := 2 * a + 1 - s) (by omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[show 2 * a + 1 - (2 * a + 1 - s) = s by omega]`. Then use the resulting hypothesis. Establish `e2 : dblFlag ε W (s + 1) = perpJ ε (dblFlag ε W (2 * a - s))`. Establish `h` using `dblFlag_dual (ε := ε) (W := W) (s := 2 * a - s) (by omega)`. Rewrite `h` using `[show 2 * a + 1 - (2 * a - s) = s + 1 by omega]`. Then use the resulting hypothesis. Rewrite using `[e1, mem_perpJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[e2, mem_perpJ]`. Introduce `x hx`. Rewrite using `[form_adj]`. Establish `hx' : x ∈ dblFlag ε W (2 * a - s + 1)` using `by rwa [show 2 * a - s + 1 = 2 * a + 1 - s by omega]`. Conclude with `hy _ (hX' (2 * a - s) (by omega) x hx')`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adj_mem_lower {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lower (dblFlag ε W) (2 * a + 1)) :
     Jm ε * Xᴴ * Jm ε ∈ lower (dblFlag ε W) (2 * a + 1) := by
@@ -302,15 +294,15 @@ theorem adj_mem_lower {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lower (dblFla
   exact hy _ (hX' (2 * a - s) (by omega) x hx')
 
 /- English proof (translation)
-Establish `ea1 : dblFlag ε W (a + 1) = perpJ ε (W (Fin.last a))`. Establish `h` using `dblFlag_sub (ε := ε) (W := W) (le_refl a)`. Rewrite `h` using `[show 2 * a + 1 - a = a + 1 by omega, dblFlag_last]`. Then use the resulting hypothesis. Prove the components needed by the constructor for the conclusion. Introduce `hX`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hX' : ∀ s, s < a + 1 → ∀ y ∈ dblFlag ε W (s + 1), X *ᵥ y ∈ dblFlag ε W s` using `hX`. Use `⟨fun i y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h` using `hX' i (by omega) y (by rw [dblFlag_succ]; exact hy)`. Rewrite `h` using `[dblFlag_castSucc]`. Then use the resulting hypothesis. Establish `h` using `hX' a (by omega) y (by rw [ea1, mem_perpJ]; exact hy)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h` using `[dblFlag_last]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩ show ∀ s, s < a + 1 → ∀ y ∈ dblFlag ε W (s + 1), X *ᵥ y ∈ dblFlag ε W s`. Introduce `s hs y hy`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hs with hs | rfl` into its components or cases. Establish `e1 : dblFlag ε W (s + 1) = W ⟨s + 1, by omega⟩` using `dblFlag_succ (ε := ε) (W := W) ⟨s, hs⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `e2 : dblFlag ε W s = W ⟨s, by omega⟩` using `dblFlag_castSucc (ε := ε) (W := W) ⟨s, hs⟩`. Rewrite `hy` using `[e1]`. Rewrite using `[e2]`. Conclude with `h1 ⟨s, hs⟩ y hy`. Rewrite `hy` using `[ea1, mem_perpJ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dblFlag_last]`. Conclude with `h2 y hy`.
+A detailed English derivation is pending.
 -/
 theorem mem_lower_half {X : Matrix (Fin n) (Fin n) ℂ} : X ∈ lower (dblFlag ε W) (a + 1) ↔
     (∀ i : Fin a, ∀ y ∈ W i.succ, X *ᵥ y ∈ W i.castSucc) ∧
@@ -340,7 +332,7 @@ theorem mem_lower_half {X : Matrix (Fin n) (Fin n) ℂ} : X ∈ lower (dblFlag �
       exact h2 y hy
 
 /- English proof (translation)
-Establish `hX' : ∀ s, s < r → ∀ y ∈ F (s + 1), X *ᵥ y ∈ F s` using `hX`. Use `show ∀ s, s < r → ∀ y ∈ F (s + 1), (uMat m * X * uMat m⁻¹) *ᵥ y ∈ F s`. Introduce `s hs y hy`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `hm s _ (hX' s hs _ (GlobalTheory.FlagMeas.UnipRad.inv_keeps m (F (s + 1)) (hm (s + 1)) y hy))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_lower {F : ℕ → Submodule ℂ (Fin n → ℂ)} {r : ℕ} (m : UJ ε)
     (hm : ∀ s, ∀ y ∈ F s, uMat m *ᵥ y ∈ F s) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lower F r) :
@@ -352,61 +344,55 @@ theorem conj_mem_lower {F : ℕ → Submodule ℂ (Fin n → ℂ)} {r : ℕ} (m 
   exact hm s _ (hX' s hs _ (GlobalTheory.FlagMeas.UnipRad.inv_keeps m (F (s + 1)) (hm (s + 1)) y hy))
 
 /- English proof (translation)
-Introduce `n ε a j W hj hW μ hμ m hm`. Take `⟨⟨N, hN⟩, hNc, -⟩` from `GlobalTheory.FlagMeas.UnipRad.flagN_subgroup_closed_keeps n ε a j W hW`. Take `⟨⟨M, hM⟩, -, -, -, hconj⟩` from `GlobalTheory.FlagLeviGroup.levi_compact_subgroups n ε a W`. Establish `hmk : ∀ i, ∀ y ∈ W i, uMat m *ᵥ y ∈ W i` using `fun i y hy => (hm i y hy).1`. Establish `hkeep : ∀ s, ∀ y ∈ dblFlag ε W s, uMat m *ᵥ y ∈ dblFlag ε W s` using `dblFlag_keeps m hmk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmi : m⁻¹ ∈ flagM ε W`. Rewrite using `[← hM]`. Conclude with `M.inv_mem (by rw [← SetLike.mem_coe, hM]; exact hm)`. Establish `hS : ∀ g, g ∈ N ↔ m * g * m⁻¹ ∈ N`. Introduce `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← SetLike.mem_coe, ← SetLike.mem_coe, hN]`. Use `⟨hconj m hm g, fun h => ?_⟩` and prove the remaining obligations. Establish `h2` using `hconj m⁻¹ hmi _ h`. Establish `e : m⁻¹ * (m * g * m⁻¹) * m⁻¹⁻¹ = g` using `by group`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hNinv : ∀ g, g ∈ flagN ε W → g⁻¹ ∈ flagN ε W`. Introduce `g hg`. Rewrite `hg`, the goal using `[← hN]`. Conclude with `N.inv_mem hg`. Establish `half : ∀ g : UJ ε, g ∈ flagN ε W ↔ uMat g - 1 ∈ lower (dblFlag ε W) (a + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Rewrite using `[mem_lower_half]`. Simplify using `only [Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `Iff.rfl`. Establish `hNA : ∀ g : UJ ε, g ∈ flagN ε W ↔ uMat g - 1 ∈ lower (dblFlag ε W) (2 * a + 1)`.
+Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `h1 : ∀ s, s < a + 1 → ∀ y ∈ dblFlag ε W (s + 1), (uMat g - 1) *ᵥ y ∈ dblFlag ε W s` using `(half g).1 hg`. Establish `h2 : ∀ s, s < a + 1 → ∀ y ∈ dblFlag ε W (s + 1), (uMat g⁻¹ - 1) *ᵥ y ∈ dblFlag ε W s` using `(half g⁻¹).1 (hNinv g hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `show ∀ s, s < 2 * a + 1 → ∀ y ∈ dblFlag ε W (s + 1), (uMat g - 1) *ᵥ y ∈ dblFlag ε W s`. Introduce `s hs y hy`. Distinguish the cases in `hsa : s < a + 1`. Conclude with `h1 s hsa y hy`. Establish `e1 : dblFlag ε W s = perpJ ε (dblFlag ε W (2 * a + 1 - s))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `dblFlag_dual (ε := ε) (W := W) (s := 2 * a + 1 - s) (by omega)`. Rewrite `h` using `[show 2 * a + 1 - (2 * a + 1 - s) = s by omega]`. Then use the resulting hypothesis. Establish `e2 : dblFlag ε W (s + 1) = perpJ ε (dblFlag ε W (2 * a - s))`. Establish `h` using `dblFlag_dual (ε := ε) (W := W) (s := 2 * a - s) (by omega)`. Rewrite `h` using `[show 2 * a + 1 - (2 * a - s) = s + 1 by omega]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e1, mem_perpJ]`. Rewrite `hy` using `[e2, mem_perpJ]`. Introduce `x hx`. Establish `h3` using `GlobalTheory.FlagLeviGroup.form_inv g⁻¹ x y`. Rewrite `h3` using `[inv_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, dotProduct_sub, h3, ← sub_dotProduct, ← star_sub]`. Establish `e3 : uMat g⁻¹ *ᵥ x - x = (uMat g⁻¹ - 1) *ᵥ x` using `by rw [Matrix.sub_mulVec, Matrix.one_mulVec]`. Rewrite using `[e3]`. Conclude with `hy _ (h2 (2 * a - s) (by omega) x (by rwa [show 2 * a - s + 1 = 2 * a + 1 - s by omega]))`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(half g).2` to reduce the goal to its premises. Establish `h' : ∀ s, s < 2 * a + 1 → ∀ y ∈ dblFlag ε W (s + 1), (uMat g - 1) *ᵥ y ∈ dblFlag ε W s` using `h`. Use `show ∀ s, s < a + 1 → ∀ y ∈ dblFlag ε W (s + 1), (uMat g - 1) *ᵥ y ∈ dblFlag ε W s`. Conclude with `fun s hs => h' s (by omega)`. Establish `hAmul : ∀ X ∈ lower (dblFlag ε W) (2 * a + 1), ∀ Y ∈ lower (dblFlag ε W) (2 * a + 1), X * Y ∈ lower (dblFlag ε W) (2 * a + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `X hX Y hY`. Establish `hX' : ∀ s, s < 2 * a + 1 → ∀ y ∈ dblFlag ε W (s + 1), X *ᵥ y ∈ dblFlag ε W s` using `hX`. Establish `hY' : ∀ s, s < 2 * a + 1 → ∀ y ∈ dblFlag ε W (s + 1), Y *ᵥ y ∈ dblFlag ε W s` using `hY`. Use `show ∀ s, s < 2 * a + 1 → ∀ y ∈ dblFlag ε W (s + 1), (X * Y) *ᵥ y ∈ dblFlag ε W s`. Introduce `s hs y hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mulVec_mulVec]`. Break down `s with _ | s` into its components or cases. Establish `h0 : Y *ᵥ y ∈ dblFlag ε W 0` using `hY' 0 hs y hy`. Rewrite `h0` using `[dblFlag_zero hW, Submodule.mem_bot]`. Rewrite using `[h0, Matrix.mulVec_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Conclude with `dblFlag_mono hW (Nat.le_succ s) (hX' s (by omega) _ (hY' (s + 1) hs y hy))`. Take `⟨d, E, hEo, hEli, hEspan⟩` from `GlobalTheory.T.exists_orthonormal_basis_re_trace_mul_conjTranspose' n ((lower (dblFlag ε W) (2 * a + 1)).restrictScalars ℝ ⊓ lieSub ε)`. Establish `hE : ∀ X, (X ∈ lower (dblFlag ε W) (2 * a + 1) ∧ inG ε X) ↔ X ∈ Submodule.span ℝ (Set.range E)`. Introduce `X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hEspan]`. Conclude with `Iff.rfl`. Establish `h55` using `GlobalTheory.T.finrank_and_det_of_real_basis_skew_part n ε (lower (dblFlag ε W) (2 * a + 1)) d E (fun X hX => adj_mem_lower hX) hEli hE`. Establish `hdet1 : ‖(uMat m).det‖ = 1` using `((GlobalTheory.T.signedFormOrthogonal_finrank_det_unitary n ε ⊥ (perpJ ε ⊥) (fun y => mem_perpJ)).2.2 m).1`. Establish `h38` using `GlobalTheory.T.flagNilradical_finrank_and_abs_det_conj n (uMat m) (uMat m⁻¹) (2 * a + 1) (dblFlag ε W) (lower (dblFlag ε W) (2 * a + 1)) (GlobalTheory.FlagLeviGroup.uMat_mul_inv m) hdet1 (dblFlag_mono hW) (dblFlag_zero hW) (dblFlag_top hW) hkeep (fun X => Iff.rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hDpos : ∀ s, 0 < detOn (uMat m) (dblFlag ε W s)` using `fun s => (((GlobalTheory.T.signedFormOrthogonal_finrank_det_unitary n ε (dblFlag ε W s) (perpJ ε (dblFlag ε W s)) (fun y => mem_perpJ)).2.2 m).2 (hkeep s)).2.2`. Establish `hD0 : detOn (uMat m) (dblFlag ε W 0) = 1`. Rewrite using `[dblFlag_zero hW]`. Establish `hb : ∀ y ∈ (⊥ : Submodule ℂ (Fin n → ℂ)), Matrix.toLin' (uMat m) y ∈ (⊥ : Submodule ℂ (Fin n → ℂ))`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(Submodule.mem_bot ℂ).1 hy, map_zero]`. Conclude with `zero_mem _`. Unfold `detOn`. Rewrite using `[dif_pos hb, LinearMap.det_eq_one_of_subsingleton, norm_one]`. Establish `hν0 : Module.finrank ℂ (dblFlag ε W 0) = 0` using `by rw [dblFlag_zero hW, finrank_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hνs : ∀ i : Fin a, Module.finrank ℂ (dblFlag ε W (i + 1)) = Module.finrank ℂ (dblFlag ε W i) + j i`. Introduce `i`. Rewrite using `[dblFlag_succ, dblFlag_castSucc]`. Conclude with `hW.2.2.1 i`. Establish `h2ν : 2 * Module.finrank ℂ (dblFlag ε W a) ≤ n`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h40` using `(GlobalTheory.T.signedFormOrthogonal_finrank_det_unitary n ε (dblFlag ε W a) (perpJ ε (dblFlag ε W a)) (fun y => mem_perpJ)).1`. Establish `hle : dblFlag ε W a ≤ perpJ ε (dblFlag ε W a)`. Rewrite using `[dblFlag_last]`. Introduce `x hx`. Rewrite using `[mem_perpJ]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x' hx'`. Conclude with `hW.2.2.2 x' hx' x hx`. Establish `h3` using `Submodule.finrank_mono hle`. Use linear arithmetic over natural numbers and integers. Establish `hsym : ∀ s, s ≤ a → detOn (uMat m) (dblFlag ε W (2 * a + 1 - s)) = detOn (uMat m) (dblFlag ε W s) ∧ Module.finrank ℂ (dblFlag ε W (2 * a + 1 - s)) + Module.finrank ℂ (dblFlag ε W s) = n`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Introduce `s hs`. Establish `h40` using `GlobalTheory.T.signedFormOrthogonal_finrank_det_unitary n ε (dblFlag ε W s) (perpJ ε (dblFlag ε W s)) (fun y => mem_perpJ)`. Rewrite using `[dblFlag_sub hs]`. Conclude with `⟨((h40.2.2 m).2 (hkeep s)).2.1, h40.1⟩`. Establish `h56` using `GlobalTheory.T.doubledFlag_sum_eq_unipotentDim_and_layerProd n a j (fun s => detOn (uMat m) (dblFlag ε W s)) (fun s => Module.finrank ℂ (dblFlag ε W s)) hj hDpos hD0 hν0 hνs h2ν hsym`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconjE : ∀ k, uMat m * E k * uMat m⁻¹ ∈ Submodule.span ℝ (Set.range E)`. Introduce `k`. Establish `hk` using `(hE (E k)).2 (Submodule.subset_span ⟨k, rfl⟩)`. Conclude with `(hE _).1 ⟨conj_mem_lower m hkeep hk.1, inG_conj m hk.2⟩`. Use `choose z hz using fun k => (Submodule.mem_span_range_iff_exists_fun ℝ).1 (hconjE k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `L : Matrix (Fin d) (Fin d) ℝ` to `Matrix.of fun i k => z k i`. Establish `hL : ∀ k, uMat m * E k * uMat m⁻¹ = ∑ i, L i k • E i` using `fun k => (hz k).symm`. Set `φ : lower (dblFlag ε W) (2 * a + 1) →ₗ[ℂ] lower (dblFlag ε W) (2 * a + 1)` to `{ toFun := fun X => ⟨uMat m * X * uMat m⁻¹, conj_mem_lower m hkeep X.2⟩ map_add' := fun X Y => by ext1`. Simplify using `[Matrix.mul_add, Matrix.add_mul]`. Use the proof step `map_smul' := fun c X => by ext1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `}`. Establish `hφ : ∀ X : lower (dblFlag ε W) (2 * a + 1), ((φ X : lower (dblFlag ε W) (2 * a + 1)) : Matrix (Fin n) (Fin n) ℂ) = uMat m * X * uMat m⁻¹` using `fun X => rfl`. Establish `hdetφ : LinearMap.det φ = ((L.det : ℝ) : ℂ)` using `h55.2 φ L (fun k _ => hL k)`. Establish `hnorm` using `h38.2 φ hφ`. Establish `habs : |L.det| = ∏ s ∈ Finset.range (2 * a + 1), detOn (uMat m) (dblFlag ε W s) ^ Module.finrank ℂ (dblFlag ε W (s + 1)) / detOn (uMat m) (dblFlag ε W (s + 1)) ^ Module.finrank ℂ (dblFlag ε W s)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hnorm, hdetφ, Complex.norm_real, Real.norm_eq_abs]`. Establish `hP : 0 < ∏ s ∈ Finset.range (2 * a + 1), detOn (uMat m) (dblFlag ε W s) ^ Module.finrank ℂ (dblFlag ε W (s + 1)) / detOn (uMat m) (dblFlag ε W (s + 1)) ^ Module.finrank ℂ (dblFlag ε W s)` using `Finset.prod_pos fun s _ => div_pos (pow_pos (hDpos s) _) (pow_pos (hDpos (s + 1)) _)`. Establish `hLne : L.det ≠ 0` using `abs_pos.1 (by rw [habs]; exact hP)`. Establish `hd : d = dimN n j`. Rewrite using `[← h55.1, h38.1]`.
-
-Conclude with `h56.1`. Establish `hNA' : ∀ g, g ∈ N ↔ uMat g - 1 ∈ (lower (dblFlag ε W) (2 * a + 1)).restrictScalars ℝ`. Introduce `g`. Rewrite using `[← SetLike.mem_coe, hN]`. Conclude with `hNA g`.
-
-Establish `h28` using `GlobalTheory.T.map_conj_gaugeMeasure_eq_inv_det_smul n ε ((lower (dblFlag ε W) (2 * a + 1)).restrictScalars ℝ) d E N hAmul hEo hE hNA' (by rw [hN]; exact hNc) μ (by rw [hN, hd]; exact hμ) m L hS hL hLne`. Establish `hloc : locSize j W (uMat m) = fun i : Fin a => (detOn (uMat m) (dblFlag ε W (i + 1)) / detOn (uMat m) (dblFlag ε W i)) ^ (-(1 : ℝ) / j i)`. Use function extensionality and compare the values at `i`. Rewrite using `[dblFlag_succ, dblFlag_castSucc]`. Both sides reduce to the same expression.
-
-Establish `hfin : layerProd n 1 j (locSize j W (uMat m)) id = |L.det|⁻¹`. Rewrite using `[hloc, habs]`. Conclude with `h56.2`. Rewrite using `[h28, hfin]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modulus : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), (∀ i, 1 ≤ j i) → IsIsoFlag ε j W → ∀ μ, IsGaugeSub (flagN ε W) (dimN n j) μ → ∀ m ∈ flagM ε W, μ.map (fun u => m * u * m⁻¹) = ENNReal.ofReal (layerProd n 1 j (locSize j W (uMat m)) id) • μ := by
   intro n ε a j W hj hW μ hμ m hm

@@ -30,7 +30,7 @@ open UpperTheory.Gal.CertificateRingHomMap (GUf Gam0 Plc comp rat mat)
 namespace UpperTheory.Gal.W2.Seed
 
 /- English proof (translation)
-Introduce `E _ _ _ A n hn` and use `by obtain ⟨a, h1, h2⟩ := UpperTheory.Gal.G1.IsoEx_holds E A n hn refine ⟨a, ?_, h2⟩ rw [Matrix.diagonal_map (map_zero _)] at h1 exact h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isoEx'_holds : IsoEx' := fun E _ _ _ A n hn => by
   obtain ⟨a, h1, h2⟩ := UpperTheory.Gal.G1.IsoEx_holds E A n hn
@@ -39,22 +39,22 @@ theorem isoEx'_holds : IsoEx' := fun E _ _ _ A n hn => by
   exact h1
 
 /- English proof (translation)
-The claim follows from `pAdTEx pAdQEx pAdTensor pIdemP`.
+A detailed English derivation is pending.
 -/
 theorem adTEx_holds : AdTEx := pAdTEx pAdQEx pAdTensor pIdemP
 
 /- English proof (translation)
-The claim follows from `pTrEx adTEx_holds pMuEx isoEx'_holds (pJEx pMuStar) pJEq (pJSurj pIdemP pMuStar)`.
+A detailed English derivation is pending.
 -/
 theorem trEx_holds : TrEx := pTrEx adTEx_holds pMuEx isoEx'_holds (pJEx pMuStar) pJEq (pJSurj pIdemP pMuStar)
 
 /- English proof (translation)
-The claim follows from `pLatCoord pRepLaws`.
+A detailed English derivation is pending.
 -/
 theorem latCoord_holds : LatCoord := pLatCoord pRepLaws
 
 /- English proof (translation)
-The claim follows from `pVecCoord latCoord_holds pEvEx`.
+A detailed English derivation is pending.
 -/
 theorem vecCoord_holds : VecCoord := pVecCoord latCoord_holds pEvEx
 
@@ -65,12 +65,12 @@ namespace UpperTheory.Gal.Int.Geo.Pl
 open UpperTheory.Gal.W2.Seed
 
 /- English proof (translation)
-Introduce `E _ _ _ n g` and use `pIntCof E n (mat g)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intCof_holds : UpperTheory.Gal.Int.Geo.Pl.IntCof := fun E _ _ _ n g => pIntCof E n (mat g)
 
 /- English proof (translation)
-Introduce `E _ _ _ A n p _ S hn` and use `by obtain ⟨T⟩ := trEx_holds E A n p S hn obtain ⟨vec, v1, v2, v3, v4, v5, v6⟩ := vecCoord_holds E A n p S T obtain ⟨B, x, hx, hm, he⟩ := pStdForm2 pMuStar E A n p S T exact ⟨{ j := T.j surj := fun h => ⟨T.sec h, T.j_sec h⟩ ker := fun g => by simpa using T.j_eq g 1 a := fun w => G …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem frameEx_holds : FrameEx := fun E _ _ _ A n p _ S hn => by
   obtain ⟨T⟩ := trEx_holds E A n p S hn

@@ -11,13 +11,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.ProjCone
 
 /- English proof (translation)
-Establish `hred : IsReduced (Proj 𝒜)`. Establish `(x : Proj 𝒜) : _root_.IsReduced ((Proj 𝒜).presheaf.stalk x)`. Set `x' : ProjectiveSpectrum 𝒜` to `x`. Establish `h1 : _root_.IsReduced (HomogeneousLocalization.AtPrime 𝒜 x'.asHomogeneousIdeal.toIdeal)` using `isReduced_of_injective (algebraMap _ (Localization.AtPrime x'.asHomogeneousIdeal.toIdeal)) (HomogeneousLocalization.val_injective _)`. Conclude with `isReduced_of_injective (Proj.stalkIso' 𝒜 x') (Proj.stalkIso' 𝒜 x').injective`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `isReduced_of_isReduced_stalk _`. Set `η : ProjectiveSpectrum 𝒜` to `⟨⊥, Ideal.isPrime_bot, fun h => hf0 (by`. Establish `: f ∈ HomogeneousIdeal.irrelevant 𝒜`. Rewrite using `[HomogeneousIdeal.mem_irrelevant_iff, GradedRing.proj_apply, DirectSum.decompose_of_mem_ne 𝒜 hf hm.ne']`. Conclude with `h this)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcl : closure ({η} : Set (ProjectiveSpectrum 𝒜)) = Set.univ`. Use `Set.eq_univ_of_forall fun y => ?_` and prove the remaining obligations. Conclude with `(ProjectiveSpectrum.le_iff_mem_closure 𝒜 η y).1 (by show η.asHomogeneousIdeal ≤ y.asHomogeneousIdeal`. Conclude with `bot_le)`. Establish `hirr : IrreducibleSpace (ProjectiveSpectrum 𝒜)`.
-
-Use `(isIrreducible_singleton (x := η)).closure` as an intermediate fact. Rewrite `this` using `[hcl]`. Conclude with `(irreducibleSpace_def _).2 this`. Establish `: IrreducibleSpace (Proj 𝒜)` using `hirr`. Conclude with `isIntegral_of_irreducibleSpace_of_isReduced _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegral_proj {A : Type} [CommRing A] [IsDomain A] [Algebra ℂ A] (𝒜 : ℕ → Submodule ℂ A) [GradedAlgebra 𝒜]
     {f : A} {m : ℕ} (hf : f ∈ 𝒜 m) (hm : 0 < m) (hf0 : f ≠ 0) : IsIntegral (Proj 𝒜) := by
@@ -51,14 +49,14 @@ abbrev coord (c : σ) : MvPolynomial σ ℂ ⧸ I := Ideal.Quotient.mk I (X c)
 
 omit [GradedAlgebra (quotGrading I)] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X c, (mem_homogeneousSubmodule 1 _).mpr (isHomogeneous_X ℂ c), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem coord_mem (c : σ) : coord I c ∈ quotGrading I 1 :=
   ⟨X c, (mem_homogeneousSubmodule 1 _).mpr (isHomogeneous_X ℂ c), rfl⟩
 
 omit [GradedAlgebra (quotGrading I)] in
 /- English proof (translation)
-Simplify using `using coord_mem I c`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coord_mem_one_smul (c : σ) : coord I c ∈ quotGrading I (1 • 1) := by
   simpa using coord_mem I c
@@ -73,7 +71,7 @@ abbrev invCoord (c : σ) : Localization.Away (coord I c) := Localization.mk 1 �
 
 omit [GradedAlgebra (quotGrading I)] in
 /- English proof (translation)
-Rewrite using `[Localization.mk_pow, Localization.mk_mul]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `ext`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mk_pow_eq_mul_invCoord (c : σ) (a : MvPolynomial σ ℂ ⧸ I) (n : ℕ)
     (h : coord I c ^ n ∈ Submonoid.powers (coord I c)) :
@@ -86,18 +84,18 @@ theorem mk_pow_eq_mul_invCoord (c : σ) (a : MvPolynomial σ ℂ ⧸ I) (n : ℕ
 
 omit [GradedAlgebra (quotGrading I)] in
 /- English proof (translation)
-Rewrite using `[Localization.mk_mul, mul_one, one_mul]`. Conclude with `Localization.mk_self (⟨coord I c, 1, pow_one _⟩ : Submonoid.powers (coord I c))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_one_mul_invCoord (c : σ) : Localization.mk (coord I c) 1 * invCoord I c = 1 := by
   rw [Localization.mk_mul, mul_one, one_mul]
   exact Localization.mk_self (⟨coord I c, 1, pow_one _⟩ : Submonoid.powers (coord I c))
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [dehom, coe_eval₂Hom, eval₂_C, RingHom.coe_comp, Function.comp_apply]`. Rewrite using `[HomogeneousLocalization.algebraMap_eq]`. Rewrite using `[IsScalarTower.algebraMap_apply ℂ (MvPolynomial σ ℂ ⧸ I) (Localization.Away (coord I c)), ← Localization.mk_one_eq_algebraMap]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `add f g hf hg`. Simplify using `only [map_add, HomogeneousLocalization.val_add, hf, hg, eval₂_add]`. Consider the case `mul_X f q hf`. Rewrite using `[map_mul, HomogeneousLocalization.val_mul, hf, eval₂_mul, eval₂_X]`.
+Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [dehom, coe_eval₂Hom, eval₂_X, awayRatio, HomogeneousLocalization.Away.val_mk]`. Rewrite using `[mk_pow_eq_mul_invCoord, pow_one]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_dehom (c : σ) (f : MvPolynomial σ ℂ) :
     (dehom I c f).val = eval₂ (algebraMap ℂ (Localization.Away (coord I c)))
@@ -118,7 +116,7 @@ theorem val_dehom (c : σ) (f : MvPolynomial σ ℂ) :
     rw [mk_pow_eq_mul_invCoord, pow_one]
 
 /- English proof (translation)
-Rewrite using `[val_dehom, eval₂_mul_const_of_isHomogeneous _ _ _ hf]`. Use `congr 1`. Rewrite using `[eval₂_mk_one I _ X f, aeval_X_left_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_dehom_of_isHomogeneous (c : σ) {f : MvPolynomial σ ℂ} {n : ℕ} (hf : f.IsHomogeneous n) :
     (dehom I c f).val = Localization.mk (Ideal.Quotient.mk I f) 1 * invCoord I c ^ n := by
@@ -127,9 +125,9 @@ theorem val_dehom_of_isHomogeneous (c : σ) {f : MvPolynomial σ ℂ} {n : ℕ} 
   rw [eval₂_mk_one I _ X f, aeval_X_left_apply]
 
 /- English proof (translation)
-Introduce `z`. Take `⟨n, a, ha, rfl⟩` from `HomogeneousLocalization.Away.mk_surjective (quotGrading I) (coord_mem I c) z`. Take `⟨h, hh, rfl⟩` from `Submodule.mem_map.mp ha`. Establish `hhom : h.IsHomogeneous n`. Simplify `(mem_homogeneousSubmodule _ h).mp hh` using `[smul_eq_mul, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨h, HomogeneousLocalization.val_injective _ ?_⟩` and prove the remaining obligations. Rewrite using `[val_dehom_of_isHomogeneous I c hhom, HomogeneousLocalization.Away.val_mk, mk_pow_eq_mul_invCoord]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dehom_surjective (c : σ) : Function.Surjective (dehom I c) := by
   intro z
@@ -142,7 +140,7 @@ theorem dehom_surjective (c : σ) : Function.Surjective (dehom I c) := by
   rfl
 
 /- English proof (translation)
-Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Rewrite using `[val_dehom, eval₂_X, mk_one_mul_invCoord, HomogeneousLocalization.val_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem dehom_X_self (c : σ) : dehom I c (X c) = 1 := by
   apply HomogeneousLocalization.val_injective
@@ -150,7 +148,7 @@ theorem dehom_X_self (c : σ) : dehom I c (X c) = 1 := by
 
 attribute [local instance] MvPolynomial.gradedAlgebra in
 /- English proof (translation)
-Rewrite using `[← sum_homogeneousComponent F, map_sum]`. Use `Finset.sum_eq_zero fun n _ => ?_` and prove the remaining obligations. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Rewrite using `[val_dehom_of_isHomogeneous I c (homogeneousComponent_isHomogeneous n F), Ideal.Quotient.eq_zero_iff_mem.mpr (homogeneousComponent_mem_of_mem hI hF n), Localization.mk_zero, zero_mul, HomogeneousLocalization.val_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem dehom_eq_zero_of_mem (hI : I.IsHomogeneous (homogeneousSubmodule σ ℂ)) (c : σ) {F : MvPolynomial σ ℂ}
     (hF : F ∈ I) : dehom I c F = 0 := by
@@ -162,15 +160,13 @@ theorem dehom_eq_zero_of_mem (hI : I.IsHomogeneous (homogeneousSubmodule σ ℂ)
     HomogeneousLocalization.val_zero]
 
 /- English proof (translation)
-Set `ψA : (MvPolynomial σ ℂ ⧸ I) →+* ℂ` to `Ideal.Quotient.lift I (eval p) hp`. Establish `hψA : ∀ q, ψA (coord I q) = p q` using `fun q => by simp [ψA, coord]`. Establish `hu : IsUnit (ψA (coord I c))` using `by rw [hψA]; exact hc.isUnit`. Set `ψL : Localization.Away (coord I c) →+* ℂ` to `IsLocalization.Away.lift (coord I c) hu`. Establish `h1 : ∀ a, ψL (Localization.mk a 1) = ψA a` using `fun a => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Localization.mk_one_eq_algebraMap]`. Conclude with `IsLocalization.Away.lift_eq _ _ _`. Establish `h2 : ψL (invCoord I c) = (p c)⁻¹`. Use `congrArg ψL (mk_one_mul_invCoord I c)` as an intermediate fact. Rewrite `this` using `[map_mul, h1, hψA, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `eq_inv_of_mul_eq_one_right this`. Use `⟨ψL.comp (algebraMap _ (Localization.Away (coord I c))), fun F => ?_⟩` and prove the remaining obligations. Use `show ψL (dehom I c F).val = _`. Rewrite using `[val_dehom, eval₂_comp_left]`. Establish `h3 : ψL.comp (algebraMap ℂ (Localization.Away (coord I c))) = RingHom.id ℂ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `a`. Rewrite using `[RingHom.comp_apply, IsScalarTower.algebraMap_apply ℂ (MvPolynomial σ ℂ ⧸ I) (Localization.Away (coord I c)), IsLocalization.Away.lift_eq]`. Use `show eval p (C a) = a`. Simplify using the standard rewrite rules. Rewrite using `[h3, eval₂_id]`.
-
-Use `congr 2`. Use function extensionality and compare the values at `q`. Simplify using `only [Function.comp_apply, map_mul, h1, h2, hψA, div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_evalAway (c : σ) (p : σ → ℂ) (hp : ∀ F ∈ I, eval p F = 0) (hc : p c ≠ 0) :
     ∃ e : HomogeneousLocalization.Away (quotGrading I) (coord I c) →+* ℂ,
@@ -202,15 +198,15 @@ theorem exists_evalAway (c : σ) (p : σ → ℂ) (hp : ∀ F ∈ I, eval p F = 
 
 attribute [local instance] MvPolynomial.gradedAlgebra in
 /- English proof (translation)
-Set `φ : (MvPolynomial σ ℂ ⧸ I) →+* HomogeneousLocalization.Away (quotGrading I) (coord I c)` to `Ideal.Quotient.lift I (dehom I c) (fun F hF => dehom_eq_zero_of_mem I hI c hF)`. Establish `hφ : Function.Surjective φ` using `fun z => by`. Take `⟨F, rfl⟩` from `dehom_surjective I c z`. Conclude with `⟨Ideal.Quotient.mk I F, rfl⟩`. Establish `h0 : Ideal.Quotient.mk I (X c - 1) ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1` using `homogeneousComponent_mem_of_mem hI (Ideal.Quotient.eq_zero_iff_mem.mp h) 0`. Rewrite `h1` using `[homogeneousComponent_zero]`. Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h1`. Establish `hz : φ (Ideal.Quotient.mk I (X c - 1)) = 0` using `by show dehom I c (X c - 1) = 0`. Rewrite using `[map_sub, dehom_X_self, map_one, sub_self]`. Establish `h` using `(ringKrullDim_succ_le_of_surjective φ hφ (mem_nonZeroDivisors_of_ne_zero h0) hz).trans hg`. Generalize the expression as in `ringKrullDim (HomogeneousLocalization.Away (quotGrading I) (coord I c)) = d at h`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe d`. Proceed by induction on `d using ENat.recTopCoe with`. Consider the case `top => exact absurd h (by norm_cast)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `coe d`. Normalize the coercions in `at h ⊢`. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ringKrullDim_away_le (hI : I.IsHomogeneous (homogeneousSubmodule σ ℂ)) (hP : I.IsPrime) (c : σ) (g : ℕ)
     (hg : ringKrullDim (MvPolynomial σ ℂ ⧸ I) ≤ (g + 1 : ℕ)) :
@@ -245,9 +241,9 @@ def toSpecC : Proj (quotGrading I) ⟶ Sp ℂ :=
   Proj.toSpecZero (quotGrading I) ≫ Spec.map (CommRingCat.ofHom (algebraMap ℂ (quotGrading I 0)))
 
 /- English proof (translation)
-Introduce and unpack `⟨a, h, hh, rfl⟩`. Establish `hC` using `(mem_homogeneousSubmodule 0 h).mp hh`. Rewrite `hC` using `[← totalDegree_zero_iff_isHomogeneous, totalDegree_eq_zero_iff_eq_C]`. Use `⟨coeff 0 h, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show algebraMap ℂ (MvPolynomial σ ℂ ⧸ I) (coeff 0 h) = Ideal.Quotient.mkₐ ℂ I h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Use `conv_rhs => rw [hC]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_zero_surjective : Function.Surjective (algebraMap ℂ (quotGrading I 0)) := by
   rintro ⟨a, h, hh, rfl⟩
@@ -259,9 +255,9 @@ theorem algebraMap_zero_surjective : Function.Surjective (algebraMap ℂ (quotGr
   rfl
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Conclude with `Subalgebra.algebraMap_mem _ (⟨Ideal.Quotient.mk _ (C a), ⟨C a, (mem_homogeneousSubmodule 0 _).mpr (isHomogeneous_C _ a), rfl⟩⟩ : quotGrading I 0)`. Consider the case `add g h hg hh => rw [map_add]`. Conclude with `add_mem hg hh`. Consider the case `mul_X g q hg => rw [map_mul]`. Conclude with `mul_mem hg (Algebra.subset_adjoin ⟨q, rfl⟩)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem adjoin_coord_eq_top : Algebra.adjoin (quotGrading I 0) (Set.range (coord I)) = ⊤ := by
   rw [eq_top_iff]
@@ -275,7 +271,7 @@ theorem adjoin_coord_eq_top : Algebra.adjoin (quotGrading I 0) (Set.range (coord
   | mul_X g q hg => rw [map_mul]; exact mul_mem hg (Algebra.subset_adjoin ⟨q, rfl⟩)
 
 /- English proof (translation)
-Use `haveI : Algebra.FiniteType (quotGrading I 0) (MvPolynomial σ ℂ ⧸ I) := ⟨⟨Finset.univ.image (coord I), by rw [Finset.coe_image, Finset.coe_univ, Set.image_univ, adjoin_coord_eq_top]⟩⟩`. Use `haveI h2 : IsClosedImmersion (Spec.map (CommRingCat.ofHom (algebraMap ℂ (quotGrading I 0)))) := IsClosedImmersion.spec_of_surjective _ (algebraMap_zero_surjective I)`. Conclude with `inferInstanceAs (IsProper (Proj.toSpecZero (quotGrading I) ≫ Spec.map (CommRingCat.ofHom (algebraMap ℂ (quotGrading I 0)))))`.
+A detailed English derivation is pending.
 -/
 theorem isProper_toSpecC [Fintype σ] : IsProper (toSpecC I) := by
   classical
@@ -289,13 +285,13 @@ theorem isProper_toSpecC [Fintype σ] : IsProper (toSpecC I) := by
 abbrev chart (c : σ) : (Proj (quotGrading I)).Opens := Proj.basicOpen (quotGrading I) (coord I c)
 
 /- English proof (translation)
-The claim follows from `Proj.iSup_basicOpen_eq_top' (quotGrading I) (coord I) (fun p => ⟨1, coord_mem I p⟩) (adjoin_coord_eq_top I)`.
+A detailed English derivation is pending.
 -/
 theorem iSup_chart : ⨆ c, chart I c = ⊤ :=
   Proj.iSup_basicOpen_eq_top' (quotGrading I) (coord I) (fun p => ⟨1, coord_mem I p⟩) (adjoin_coord_eq_top I)
 
 /- English proof (translation)
-The claim follows from `Proj.isAffineOpen_basicOpen _ _ (coord_mem I c) one_pos`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_chart (c : σ) : IsAffineOpen (chart I c) :=
   Proj.isAffineOpen_basicOpen _ _ (coord_mem I c) one_pos
@@ -312,13 +308,11 @@ theorem awayEquiv_apply (c : σ) (a : HomogeneousLocalization.Away (quotGrading 
 def ratio (c c' : σ) : Γ(Proj (quotGrading I), chart I c) := awayEquiv I c (awayRatio I c c')
 
 /- English proof (translation)
-Establish `hk` using `toSpecZero_appLE_basicOpen (quotGrading I) (coord_mem I c) one_pos`. Establish `hC : (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ (toSpecC I).appLE ⊤ (chart I c) le_top = CommRingCat.ofHom (algebraMap ℂ (quotGrading I 0)) ≫ CommRingCat.ofHom (HomogeneousLocalization.fromZeroRingHom (quotGrading I) (Submonoid.powers (coord I c))) ≫ Proj.awayToSection (quotGradi …`. Establish `h3` using `Scheme.Hom.comp_appLE (Proj.toSpecZero (quotGrading I)) (Spec.map (CommRingCat.ofHom (algebraMap ℂ (quotGrading I 0)))) ⊤ (Proj.basicOpen (quotGrading I) (coord I c)) le_top`. Use `show (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ Scheme.Hom.appLE (Proj.toSpecZero (quotGrading I) ≫ Spec.map (CommRingCat.ofHom (algebraMap ℂ (quotGrading I 0)))) ⊤ (Proj.basicOpen (quotGrading I) (coord I c)) le_top = _`. Establish `h4` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap ℂ (quotGrading I 0)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, ← Category.assoc]`. Use `(congrArg (· ≫ _) h4.symm).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans (congrArg (CommRingCat.ofHom (algebraMap ℂ (quotGrading I 0)) ≫ ·) hk)`. Establish `hl : awayEquiv I c (dehom I c (C a)) = (Proj.awayToSection (quotGrading I) (coord I c)).hom (HomogeneousLocalization.fromZeroRingHom (quotGrading I) (Submonoid.powers (coord I c)) (algebraMap ℂ (quotGrading I 0) a))`. Rewrite using `[awayEquiv_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [dehom, coe_eval₂Hom, eval₂_C, RingHom.comp_apply]`. Both sides reduce to the same expression. Rewrite using `[hl]`. Use `show _ = ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ (toSpecC I).appLE ⊤ (chart I c) le_top).hom a`. Rewrite using `[hC]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem awayEquiv_dehom_C (c : σ) (a : ℂ) : awayEquiv I c (dehom I c (C a)) = constFn (toSpecC I) (chart I c) a := by
   have hk := toSpecZero_appLE_basicOpen (quotGrading I) (coord_mem I c) one_pos
@@ -349,9 +343,9 @@ theorem awayEquiv_dehom_C (c : σ) (a : ℂ) : awayEquiv I c (dehom I c (C a)) =
   rfl
 
 /- English proof (translation)
-Establish `h : (awayEquiv I c).toRingHom.comp (dehom I c) = eval₂Hom (RingHom.comp ((toSpecC I).appLE ⊤ (chart I c) le_top).hom (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom) (ratio I c)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, coe_eval₂Hom, eval₂_C]`. Conclude with `awayEquiv_dehom_C I c a`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, coe_eval₂Hom, eval₂_X, dehom]`. Both sides reduce to the same expression. Conclude with `RingHom.congr_fun h F`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem awayEquiv_dehom (c : σ) (F : MvPolynomial σ ℂ) :
     awayEquiv I c (dehom I c F) = eval₂ (RingHom.comp ((toSpecC I).appLE ⊤ (chart I c) le_top).hom
@@ -371,7 +365,7 @@ theorem awayEquiv_dehom (c : σ) (F : MvPolynomial σ ℂ) :
   exact RingHom.congr_fun h F
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hxc : x ∈ chart I c` using `(Proj (quotGrading I)).basicOpen_le _ hx`. Establish `h1` using `(Scheme.evaluation_ne_zero_iff_mem_basicOpen _ x hxc (ratio I c c')).2 hx`. Introduce `h2`. Conclude with `h1 ((evaluation_awayToSection_eq_zero_iff (quotGrading I) (coord I c) x hxc _).2 h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem basicOpen_ratio_le (c c' : σ) : (Proj (quotGrading I)).basicOpen (ratio I c c') ≤ chart I c' := by
   intro x hx
@@ -381,11 +375,11 @@ theorem basicOpen_ratio_le (c c' : σ) : (Proj (quotGrading I)).basicOpen (ratio
   exact h1 ((evaluation_awayToSection_eq_zero_iff (quotGrading I) (coord I c) x hxc _).2 h2)
 
 /- English proof (translation)
-Establish `key : ∀ (V : (Proj (quotGrading I)).Opens) (h1 : V ≤ chart I c) (h2 : V ≤ chart I c'), V = Proj.basicOpen (quotGrading I) (coord I c * coord I c') → resG _ h1 (ratio I c q) * resG _ h2 (ratio I c' c) = resG _ h2 (ratio I c' q)`. Introduce and unpack `V h1 h2 rfl`. Establish `e1 : ∀ a, resG _ h1 ((Proj.awayToSection (quotGrading I) (coord I c)).hom a) = (Proj.awayToSection (quotGrading I) (coord I c * coord I c')).hom (HomogeneousLocalization.awayMap (quotGrading I) (coord_mem I c') rfl a)` using `fun a => (congrArg (fun φ => φ.hom a) (Proj.awayMap_awayToSection (𝒜 := quotGrading I) (f := coord I c) (coord_mem I c') (hx := rfl))).symm`. Establish `e2 : ∀ a, resG _ h2 ((Proj.awayToSection (quotGrading I) (coord I c')).hom a) = (Proj.awayToSection (quotGrading I) (coord I c * coord I c')).hom (HomogeneousLocalization.awayMap (quotGrading I) (coord_mem I c) (mul_comm _ _) a)` using `fun a => (congrArg (fun φ => φ.hom a) (Proj.awayMap_awayToSection (𝒜 := quotGrading I) (f := coord I c') (coord_mem I c) (hx := mul_comm _ _))).symm`. Simplify using `only [ratio, awayEquiv_apply]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, e2]`. Use `(map_mul (Proj.awayToSection (quotGrading I) (coord I c * coord I c')).hom _ _).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `only [HomogeneousLocalization.val_mul, awayRatio, HomogeneousLocalization.awayMap_mk, HomogeneousLocalization.Away.val_mk, Localization.mk_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.coe_mul, OneMemClass.coe_one, pow_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `key _ inf_le_left inf_le_right (Proj.basicOpen_mul _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ratio_overlap (c c' q : σ) :
     resG _ (inf_le_left : chart I c ⊓ chart I c' ≤ _) (ratio I c q) *
@@ -427,15 +421,15 @@ open ProjCone
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
 /- English proof (translation)
-Use `letI : GradedAlgebra (quotGrading I) := Classical.choice (quot_gradedAlgebra I hI)`. Take `⟨c₀, hc₀⟩` from `hX`. Use `⟨Over.mk (toSpecC I), chart I, ratio I, isIntegral_proj (quotGrading I) (coord_mem I c₀) one_pos (fun h => hc₀ (Ideal.Quotient.eq_zero_iff_mem.mp h)), isProper_toSpecC I, iSup_chart I, isAffineOpen_chart I, fun c => ?_, fun c f => ?_, fun c F hF => ?_, fun c => ?_, fun c p hp hc …` and prove the remaining obligations. Conclude with `(ringKrullDim_eq_of_ringEquiv (awayEquiv I c)).ge.trans (ringKrullDim_away_le I hI hP c g hg)`. Take `⟨a, rfl⟩` from `(awayEquiv I c).surjective f`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F, rfl⟩` from `dehom_surjective I c a`. Conclude with `⟨F, awayEquiv_dehom I c F⟩`. Use `(awayEquiv_dehom I c F).symm.trans ?_` and prove the remaining obligations. Rewrite using `[dehom_eq_zero_of_mem I hI c hF, map_zero]`. Use `awayEquiv_dehom I c (X c)` as an intermediate fact.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[dehom_X_self, map_one, eval₂_X]`. Conclude with `this.symm`. Take `⟨e, he⟩` from `exists_evalAway I c p hp hc`. Use `⟨e.comp (awayEquiv I c).symm.toRingHom, fun a => ?_, fun c' => ?_⟩` and prove the remaining obligations. Use `he (C a)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[eval_C]`. Use `Eq.trans ?_ this` and prove the remaining obligations. Use `show e ((awayEquiv I c).symm (constFn (toSpecC I) (chart I c) a)) = _`. Rewrite using `[← awayEquiv_dehom_C, RingEquiv.symm_apply_apply]`. Use `he (X c')` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[eval_X]`. Use `Eq.trans ?_ this` and prove the remaining obligations. Use `show e ((awayEquiv I c).symm (awayEquiv I c (awayRatio I c c'))) = _`. Rewrite using `[RingEquiv.symm_apply_apply]`. Simplify using `only [dehom, coe_eval₂Hom, eval₂_X]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_projModel {σ : Type} [Fintype σ] (I : Ideal (MvPolynomial σ ℂ))
     (hI : I.IsHomogeneous (homogeneousSubmodule σ ℂ)) (hP : I.IsPrime) (hX : ∃ c, X c ∉ I) (g : ℕ)

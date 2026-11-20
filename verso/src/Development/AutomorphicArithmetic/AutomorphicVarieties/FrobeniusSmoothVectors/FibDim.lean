@@ -9,11 +9,11 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.RingKrul
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_quotient]`. Unfold `Order.krullDim`. Use `iSup_le fun s => ?_` and prove the remaining obligations. Set `q : PrimeSpectrum R` to `(s.head).1`. Establish `hIq : I ≤ q.asIdeal` using `(PrimeSpectrum.mem_zeroLocus _ _).mp s.head.2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hP` using `h q.asIdeal q.isPrime hIq`. Rewrite `hP` using `[ringKrullDim_quotient]`. Establish `hmem : ∀ i, (s i).1 ∈ PrimeSpectrum.zeroLocus (R` using `R) q.asIdeal := by`. Introduce `i`. Establish `hle : s.head ≤ s i` using `s.monotone (Fin.zero_le i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(PrimeSpectrum.mem_zeroLocus _ _).mpr hle`. Set `s' : LTSeries (PrimeSpectrum.zeroLocus (R` to `R) q.asIdeal) := { length := s.length toFun := fun i => ⟨(s i).1, hmem i⟩ step := fun i => s.step i }`. Conclude with `le_trans (Order.LTSeries.length_le_krullDim s') hP`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 private theorem dim_le_of_primes {R : Type} [CommRing R] (I : Ideal R) (d : WithBot ℕ∞)
     (h : ∀ P : Ideal R, P.IsPrime → I ≤ P → ringKrullDim (R ⧸ P) ≤ d) : ringKrullDim (R ⧸ I) ≤ d := by
@@ -35,9 +35,9 @@ private theorem dim_le_of_primes {R : Type} [CommRing R] (I : Ideal R) (d : With
   exact le_trans (Order.LTSeries.length_le_krullDim s') hP
 
 /- English proof (translation)
-Use `haveI := hm`. Use `letI : Field (B ⧸ η.comap (algebraMap B A)) := Ideal.Quotient.field _`. Use `haveI : IsDomain (A ⧸ η) := Ideal.Quotient.isDomain η`. Use `haveI : Algebra.FiniteType B (A ⧸ η) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ B η) (Ideal.Quotient.mkₐ_surjective B η)`. Use `haveI : Algebra.FiniteType (B ⧸ η.comap (algebraMap B A)) (A ⧸ η) := Algebra.FiniteType.of_restrictScalars_finiteType B _ _`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨d, hd1, hd2⟩` from `GlobalTheory.exists_ringKrullDim_eq_and_trdeg_eq (B ⧸ η.comap (algebraMap B A)) (A ⧸ η)`. Rewrite using `[hd2]`. Rewrite `h` using `[hd1]`. Establish `hdt : d ≤ t` using `by exact_mod_cast h`. Conclude with `hdt` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 private theorem trdeg_le_of_dim {B A : Type} [CommRing B] [CommRing A] [Algebra B A] [Algebra.FiniteType B A]
     (η : Ideal A) [η.IsPrime] (hm : (η.comap (algebraMap B A)).IsMaximal) (t : ℕ)
@@ -57,7 +57,7 @@ private theorem trdeg_le_of_dim {B A : Type} [CommRing B] [CommRing A] [Algebra 
   exact_mod_cast hdt
 
 /- English proof (translation)
-Use `set_option synthInstance.maxHeartbeats 400000 in`. Conclude with `⟨FractionRing D, inferInstance, algebraMap D _, IsFractionRing.injective D (FractionRing D)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_field_injective_ringHom_of_isDomain (D : Type) [CommRing D] [IsDomain D] :
     ∃ (K : Type) (_ : Field K) (j : D →+* K), Function.Injective j := by
@@ -66,23 +66,19 @@ private theorem exists_field_injective_ringHom_of_isDomain (D : Type) [CommRing 
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ n hF hn S x L hx`. Take `⟨hCO, hmB⟩` from `co_B hF hn S`. Use `haveI := hCO`. Take `⟨-, -, -, -, hft, -, -⟩` from `gr_A hF hn S`. Use `haveI := hft`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hl42` using `finrank_frameSpace_eq hF hn S`. Apply `dim_le_of_primes` to reduce the goal to its premises. Introduce `P hP hbP`. Establish `hπ : S.mB ≤ L.π P` using `by show S.mB ≤ Ideal.comap (S.inc : S.B →+* S.A) (Ideal.comap (L.ι : S.A →+* L.R) P)`. Rewrite using `[Ideal.comap_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.map_le_iff_le_comap.mp hbP`. Use `haveI hηp : (L.im P).IsPrime := Ideal.comap_isPrime _ P`. Establish `hπprime : (L.π P).IsPrime` using `by show (Ideal.comap (S.inc : S.B →+* S.A) (L.im P)).IsPrime`. Conclude with `Ideal.comap_isPrime _ _`. Establish `hmBmax : S.mB.IsMaximal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hmB]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal _`. Establish `hπeq : S.mB = L.π P` using `hmBmax.eq_of_le hπprime.ne_top hπ`. Establish `hπmax : (L.π P).IsMaximal` using `hπeq ▸ hmBmax`. Establish `hx0 : S.x0 ≤ L.im P`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Space.x0`. Conclude with `Ideal.map_le_iff_le_comap.mpr hπ`. Establish `hηx : L.im P ≤ x`. Establish `h1 : Ideal.comap (L.ι : S.A →+* L.R) P ≤ Ideal.comap (L.ι : S.A →+* L.R) (maximalIdeal L.R)` using `Ideal.comap_mono (IsLocalRing.le_maximalIdeal hP.ne_top)`. Conclude with `h1.trans L.lies.le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `haveI : IsDomain (S.A ⧸ L.im P) := Ideal.Quotient.isDomain _`. Take `⟨K, hK, j, hj⟩` from `exists_field_injective_ringHom_of_isDomain (S.A ⧸ L.im P)`. Establish `hker : RingHom.ker (j.comp (Ideal.Quotient.mk (L.im P))) = L.im P`. Rewrite using `[RingHom.ker_comp_of_injective _ hj, Ideal.mk_ker]`. Establish `htypes` using `(types hF hn S K (j.comp (Ideal.Quotient.mk (L.im P)))).2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `htypes` using `[hker]`. Establish `hM : S.u.triM ≤ L.im P`. Break down `htypes hπ with h | h` into its components or cases. Conclude with `absurd (le_trans h hηx) hx`. Conclude with `h`.
-
-Establish `hdimA : ringKrullDim (S.A ⧸ L.im P) ≤ ((2 * C₀ : ℕ) : WithBot ℕ∞)`. Establish `hle : S.x0 ⊔ S.u.triM ≤ L.im P` using `sup_le hx0 hM`. Conclude with `le_trans (ringKrullDim_le_of_surjective (Ideal.Quotient.factor hle) (Ideal.Quotient.factor_surjective hle)) hl42`. Establish `htd : S.td (L.im P) ≤ ((2 * C₀ : ℕ) : Cardinal)`. Unfold `Space.td`.
-
-Conclude with `trdeg_le_of_dim (L.im P) hπmax (2 * C₀) hdimA`. Establish `hd` using `(loc_dim hF hn S x L).1 P hP (2 * C₀) htd`. Establish `hB0 : ringKrullDim (S.B ⧸ L.π P) = 0` using `ringKrullDim_eq_zero_of_isField ((Ideal.Quotient.maximal_ideal_iff_isField_quotient _).mp hπmax)`. Rewrite `hd` using `[hB0, zero_add]`. Conclude with `hd`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.fib_dim :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, ∀ (x : Ideal S.A) (L : S.Loc x), ¬ S.u.triP ≤ x → ringKrullDim (L.R ⧸ S.mB.map L.b) ≤ (2 * C₀ : ℕ) := by

@@ -9,15 +9,15 @@ open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspS
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, ← Finset.add_sum_erase _ _ (Finset.mem_univ m)]`. Establish `hs : ∑ k ∈ Finset.univ.erase m, q i k * rowM m ξ k j = if j = m then 0 else q i j`. Establish `hk1 : ∀ k ∈ Finset.univ.erase m, q i k * rowM m ξ k j = q i k * (1 : Matrix (Fin n) (Fin n) R) k j`. Introduce `k hk`. Establish `hkm : k ≠ m` using `Finset.ne_of_mem_erase hk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[rowM, hkm]`. Rewrite using `[Finset.sum_congr rfl hk1]`. Use `split_ifs with hjm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k hk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_ne (by rw [hjm]; exact Finset.ne_of_mem_erase hk), mul_zero]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Matrix.one_apply_ne hb, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hj`. Conclude with `absurd (Finset.mem_erase.mpr ⟨hjm, Finset.mem_univ j⟩) hj`. Rewrite using `[hs, add_comm]`. Use `congr 1`. Distinguish the cases in `hjm : j ≤ m`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[rowM, hjm]`. Establish `hmj : m ≠ j` using `fun h => hjm (le_of_eq h.symm)`. Simplify using `[rowM, hjm, Matrix.one_apply_ne hmj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mul_rowM_apply {R : Type} [CommRing R] {n : ℕ} (m : Fin n) (ξ : Fin n → R)
     (q : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
@@ -49,23 +49,21 @@ private theorem mul_rowM_apply {R : Type} [CommRing R] {n : ℕ} (m : Fin n) (ξ
     simp [rowM, hjm, Matrix.one_apply_ne hmj]
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Af.Smo.RowStep IsY`. Introduce `R _ n m p s hp hs`. Establish `key : ∀ i j, (p : Matrix (Fin n) (Fin n) R) i j = (if j = m then 0 else ((p * s⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i j) + ((p * s⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i m * (if j ≤ m then (p : Matrix (Fin n) (Fin n) R) m j else 0)`. Introduce `i j`. Establish `h` using `mul_rowM_apply m ((p : Matrix (Fin n) (Fin n) R) m) ((p * s⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i j`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[← hs, ← Units.val_mul, inv_mul_cancel_right]`. Conclude with `h`. Establish `hu : ((s⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) m m * (p : Matrix (Fin n) (Fin n) R) m m = 1`. Establish `h` using `mul_rowM_apply m ((p : Matrix (Fin n) (Fin n) R) m) ((s⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) m m`. Rewrite `h` using `[← hs, ← Units.val_mul, inv_mul_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h.symm`. Generalize the expression as in `((s⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) m m = t at hu`. Generalize the expression as in `((p * s⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = Q at key ⊢`. Generalize the expression as in `(p : Matrix (Fin n) (Fin n) R) = P at key hu hp`. Introduce `i hi`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_lt_of_le hi with h | h` into its components or cases. Establish `him : i = m` using `Fin.ext h.symm`. Rewrite using `[him]`. Establish `k` using `key m m`. Rewrite `k` using `[if_pos rfl, if_pos le_rfl, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ : Q m m = 1` using `by linear_combination (-t) * k + (1 - Q m m) * hu`. Use `⟨hQ, fun j hj => ?_⟩` and prove the remaining obligations. Establish `k2` using `key m j`. Rewrite `k2` using `[if_neg (ne_of_lt hj), if_pos (le_of_lt hj), hQ, one_mul]`. Take the linear combination `-k2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hi1 : (m : ℕ) + 1 ≤ (i : ℕ)` using `h`. Take `⟨hpi, hpj⟩` from `hp i hi1`. Establish `hmi : m < i` using `h`. Establish `k` using `key i m`. Rewrite `k` using `[if_pos rfl, if_pos le_rfl, zero_add, hpj m hmi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hQm : Q i m = 0` using `by linear_combination (-Q i m) * hu - t * k`. Prove the components needed by the constructor for the conclusion. Establish `k2` using `key i i`. Rewrite `k2` using `[if_neg (ne_of_gt hmi), if_neg (not_le.mpr hmi), mul_zero, add_zero, hpi]`. Conclude with `k2.symm`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j hj`. Establish `k2` using `key i j`. Rewrite `k2` using `[hpj j hj]`. Distinguish the cases in `hjm : j = m`. Rewrite using `[hjm]`.
-
-Conclude with `hQm`. Rewrite `k2` using `[if_neg hjm, hQm, zero_mul, add_zero]`. Conclude with `k2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.rowStep :
     UpperTheory.V.Af.Smo.RowStep := by

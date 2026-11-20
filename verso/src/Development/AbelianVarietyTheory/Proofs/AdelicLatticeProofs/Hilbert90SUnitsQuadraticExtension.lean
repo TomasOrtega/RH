@@ -14,7 +14,7 @@ namespace GlobalTheory.QNorm
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Break down `lt_trichotomy r 1 with hr | hr | hr` into its components or cases. Conclude with `absurd h (ne_of_lt (pow_lt_one₀ zero_le' hr two_ne_zero))`. Conclude with `hr`. Conclude with `absurd h (ne_of_gt (one_lt_pow₀ hr two_ne_zero))`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private lemma eq_one_of_sq_eq_one_withZero_int {r : WithZero (Multiplicative ℤ)} (h : r ^ 2 = 1) :
     r = 1 := by
@@ -26,33 +26,31 @@ private lemma eq_one_of_sq_eq_one_withZero_int {r : WithZero (Multiplicative ℤ
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Take `⟨-, -, hram⟩` from `_root_.GlobalTheory.QNorm.places_over F E`. Take `⟨e, he0, hw⟩` from `hram w`. Use `set v := w.under (𝓞 F)`. Use `set V := w.valuation E`. It suffices to establish `he : e = 1 by rw [hw, he, pow_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV2 : V 2 = 1`. Use `hw 2` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Rewrite using `[this, h2, one_pow]`. Establish `hθ : V θ = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `eq_one_of_sq_eq_one_withZero_int` to reduce the goal to its premises. Rewrite using `[← map_pow, hq.sq, hw, hδ, one_pow]`. Establish `hσθ` using `hq.conj`. Establish `hθ0` using `hq.root_ne_zero`. Take `⟨x, hx⟩` from `HeightOneSpectrum.valuation_exists_uniformizer E w`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, b, hab⟩` from `hq.span x`. Establish `hσx : σ x = algebraMap F E a - algebraMap F E b * θ`. Rewrite using `[hab, map_add, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, hσθ]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨-, -, -, hnorm, -⟩` from `_root_.GlobalTheory.QNorm.isQuad_basic F E δ θ σ hq`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a', b', hN⟩` from `hnorm x`. Establish `hbθ : V (algebraMap F E b * θ) = V (algebraMap F E b)` using `by rw [map_mul, hθ, mul_one]`. Establish `hA : V x ≤ max (V (algebraMap F E a)) (V (algebraMap F E b))`. Rewrite using `[hab, ← hbθ]`. Conclude with `Valuation.map_add _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB : V (σ x) ≤ max (V (algebraMap F E a)) (V (algebraMap F E b))`. Rewrite using `[hσx, ← hbθ]`. Conclude with `Valuation.map_sub _ _ _`. Establish `ha : V (algebraMap F E a) ≤ max (V x) (V (σ x))`. Establish `h' : algebraMap F E a = (x + σ x) * (2 : E)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hσx, hab]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h', map_mul, map_inv₀, hV2, inv_one, mul_one]`. Conclude with `Valuation.map_add _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hb : V (algebraMap F E b) ≤ max (V x) (V (σ x))`. Establish `h' : algebraMap F E b = (x - σ x) * (2 * θ)⁻¹`. Rewrite using `[hσx, hab]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h', map_mul, map_inv₀, map_mul, hV2, hθ, one_mul, inv_one, mul_one]`. Conclude with `Valuation.map_sub _ _ _`. Establish `hmax : max (V x) (V (σ x)) = max (V (algebraMap F E a)) (V (algebraMap F E b))` using `le_antisymm (max_le hA hB) (max_le ha hb)`. Establish `hx0 : V x ≠ 0` using `by rw [hx]; exact WithZero.exp_ne_zero`. Establish `key : ∃ d : F, V x = v.valuation F d ^ e`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `hmem : max (V x) (V (σ x)) = V (algebraMap F E a) ∨ max (V x) (V (σ x)) = V (algebraMap F E b)`. Rewrite using `[hmax]`. Conclude with `max_choice _ _`. Break down `le_total (V (σ x)) (V x) with hle | hle` into its components or cases. Rewrite `hmem` using `[max_eq_left hle]`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Break down `hmem with h | h` into its components or cases. Conclude with `⟨a, h.trans (hw a)⟩`. Conclude with `⟨b, h.trans (hw b)⟩`. Rewrite `hmem` using `[max_eq_right hle]`. Establish `hc : ∃ c : F, V (σ x) = V (algebraMap F E c)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Break down `hmem with h | h` into its components or cases. Conclude with `⟨a, h⟩`. Conclude with `⟨b, h⟩`. Take `⟨c, hc⟩` from `hc`. Establish `hσ0 : V (σ x) ≠ 0` using `ne_of_gt (lt_of_lt_of_le (zero_lt_iff.mpr hx0) hle)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨(a' ^ 2 - δ * b' ^ 2) / c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hw, map_div₀, map_div₀, ← hN, ← hc, map_mul, mul_div_cancel_right₀ _ hσ0]`. Take `⟨d, hd⟩` from `key`. Rewrite `hd` using `[hx]`. Establish `hl` using `congrArg WithZero.log hd`.
-
-Rewrite `hl` using `[WithZero.log_exp, WithZero.log_pow, nsmul_eq_mul]`. Apply the tactic sequence `rcases Int.eq_one_or_neg_one_of_mul_eq_neg_one hl.symm with h1 | h1 <;> omega`.
+A detailed English derivation is pending.
 -/
 private lemma valuation_algebraMap_eq_of_unit_at_under {F E : Type} [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] {δ : F} {θ : E} {σ : E ≃ₐ[F] E}
@@ -125,27 +123,25 @@ open NumberField IsDedekindDomain in
 open scoped WithZero in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ δ θ σ hq S SE hSE hS hδ u hu hnu`. Take `⟨-, -, -, -, h90, -⟩` from `_root_.GlobalTheory.QNorm.isQuad_basic F E δ θ σ hq`. Take `⟨y, hy0, hy⟩` from `h90 u hnu`. Take `⟨-, hover, -⟩` from `_root_.GlobalTheory.QNorm.places_over F E`. Take `⟨-, hdich⟩` from `_root_.GlobalTheory.QNorm.conj_places_transitive F E δ θ σ hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose ch hch using hover`. Rewrite `hu` using `[_root_.GlobalTheory.QNorm.mem_sUnits]`. Establish `hadm` using `hS`. Unfold `_root_.GlobalTheory.QNorm.admitted at hadm`. Establish `hinv : ∀ w : HeightOneSpectrum (𝓞 E), w ∉ SE → w.valuation E (σ y) = w.valuation E y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Establish `h1` using `hu w hw`. Rewrite `h1` using `[hy, map_div₀]`. Establish `hσy0 : w.valuation E (σ y) ≠ 0` using `(Valuation.ne_zero_iff _).mpr ((map_ne_zero σ).mpr hy0)`. Conclude with `((div_eq_one_iff_eq hσy0).mp h1).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfib : ∀ w : HeightOneSpectrum (𝓞 E), w ∉ SE → w.valuation E y = (ch (w.under (𝓞 F))).valuation E y`. Introduce `w hw`. Establish `hv : (ch (w.under (𝓞 F))).under (𝓞 F) = w.under (𝓞 F)` using `hch _`. Establish `hw0 : ch (w.under (𝓞 F)) ∉ SE`. Rewrite using `[hSE, hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hw` using `[hSE]`. Then use the resulting hypothesis. Break down `hdich (ch (w.under (𝓞 F))) w hv.symm with h | h` into its components or cases. Rewrite using `[← h]`. Rewrite using `[h y, hinv _ hw0]`. Set `n : HeightOneSpectrum (𝓞 F) → ℤ` to `fun v => if v ∈ S then 0 else -((ch v).valuation E y).log`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hfin` using `_root_.GlobalTheory.QNorm.finite_valuation_ne_one E (Units.mk0 y hy0)`. Set `T : Finset (HeightOneSpectrum (𝓞 F))` to `hfin.toFinset.image (fun w => w.under (𝓞 F))`. Establish `hnT : ∀ v ∉ T, n v = 0`. Introduce `v hv`. Distinguish the cases in `hvS : v ∈ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[n, hvS]`. Establish `h1 : (ch v).valuation E y = 1`. Assume the negation of the conclusion as `hne`. Apply `hv` to reduce the goal to its premises. Use `Finset.mem_image.mpr ⟨ch v, ?_, hch v⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `hne`. Simplify using `[n, hvS, h1]`. Take `⟨a, ha⟩` from `_root_.GlobalTheory.QNorm.exists_unit_valuation_eq_of_adm F S T n hS hnT`. Establish `ha0 : algebraMap F E a ≠ 0` using `by simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Units.mk0 (y * algebraMap F E a) (mul_ne_zero hy0 ha0), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.QNorm.mem_sUnits]`. Introduce `w hw`. Establish `hvS : w.under (𝓞 F) ∉ S` using `by rwa [hSE] at hw`. Use `show w.valuation E (y * algebraMap F E a) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, valuation_algebraMap_eq_of_unit_at_under hq w (hadm _ hvS).1 (hδ _ hvS), ha _ hvS, hfib w hw]`. Establish `h0 : (ch (w.under (𝓞 F))).valuation E y ≠ 0` using `(Valuation.ne_zero_iff _).mpr hy0`. Simplify using `only [n, if_neg hvS]`. Use `nth_rewrite 1 [← WithZero.exp_log h0]`. Rewrite using `[← WithZero.exp_add, add_neg_cancel, WithZero.exp_zero]`.
-
-Use `show (u : E) = y * algebraMap F E a / σ (y * algebraMap F E a)`. Rewrite using `[hy, map_mul, AlgEquiv.commutes, mul_div_mul_right _ _ ha0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QNorm.hilbert90_sUnits_quadratic_extension_qnorm : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (δ : F) (θ : E) (σ : E ≃ₐ[F] E), _root_.GlobalTheory.QNorm.IsQuad δ θ σ →

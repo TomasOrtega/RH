@@ -28,53 +28,53 @@ import Formalism.GradedWeylDivisibility.FockSpaceTableaux.DualWeylDominanceOf
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-The claim follows from `bideterminantMem`.
+A detailed English derivation is pending.
 -/
 theorem bidetMem : BideterminantMem := bideterminantMem
 /- English proof (translation)
-The claim follows from `highestWeightVectorMem`.
+A detailed English derivation is pending.
 -/
 theorem hwMem : HWMem := highestWeightVectorMem
 /- English proof (translation)
-The claim follows from `highestWeightVectorNeZero`.
+A detailed English derivation is pending.
 -/
 theorem hwNe : HWNe := highestWeightVectorNeZero
 /- English proof (translation)
-The claim follows from `highestWeightVectorRowWeight`.
+A detailed English derivation is pending.
 -/
 theorem hwRowWeight : HWRowWeight := highestWeightVectorRowWeight
 /- English proof (translation)
-The claim follows from `dualWeylModuleSaturated`.
+A detailed English derivation is pending.
 -/
 theorem dualWeylSat : DualWeylSat := dualWeylModuleSaturated
 /- English proof (translation)
-The claim follows from `dualWeylModuleMemIff`.
+A detailed English derivation is pending.
 -/
 theorem dualWeylPoint : DualWeylPoint := dualWeylModuleMemIff
 /- English proof (translation)
-The claim follows from `dualWeylModuleRowActionStable`.
+A detailed English derivation is pending.
 -/
 theorem dualWeylRowStable : DualWeylRowStable := dualWeylModuleRowActionStable
 /- English proof (translation)
-The claim follows from `dualWeylModuleRowDividedPowerStable`.
+A detailed English derivation is pending.
 -/
 theorem rowDivStable : RowDivStable := dualWeylModuleRowDividedPowerStable
 /- English proof (translation)
-The claim follows from `dualWeylModuleRowGraded`.
+A detailed English derivation is pending.
 -/
 theorem dualWeylRowGraded : DualWeylRowGraded := dualWeylModuleRowGraded
 /- English proof (translation)
-The claim follows from `dualWeylModuleMap`.
+A detailed English derivation is pending.
 -/
 theorem dualWeylMap : DualWeylMap := dualWeylModuleMap
 /- English proof (translation)
-The claim follows from `dualWeylModuleIntRat`.
+A detailed English derivation is pending.
 -/
 theorem dualWeylIntRat : DualWeylIntRat := dualWeylModuleIntRat
 /- English proof (translation)
-Introduce `R _ r n hn ν hν`. Unfold `weyl`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Proceed by induction on `w with`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Consider the case `nil => exact hwMem R r n hn ν hν`. Consider the case `cons x w ih => exact rowDivStable R r n ν x.1 x.2.1 x.2.2 _ ih`.
+Treat this case separately. Treat this case separately.
 -/
 theorem weylLeDual : WeylLeDual := by
   intro R _ r n hn ν hν
@@ -85,55 +85,55 @@ theorem weylLeDual : WeylLeDual := by
   | nil => exact hwMem R r n hn ν hν
   | cons x w ih => exact rowDivStable R r n ν x.1 x.2.1 x.2.2 _ ih
 /- English proof (translation)
-The claim follows from `dualWeylModuleNonDominant`.
+A detailed English derivation is pending.
 -/
 theorem dualWeylNonDom : DualWeylNonDom := dualWeylModuleNonDominant
 /- English proof (translation)
-The claim follows from `bideterminantDominance`.
+A detailed English derivation is pending.
 -/
 theorem bidetDominance : BideterminantDominance := bideterminantDominance
 /- English proof (translation)
-The claim follows from `dualWeylModuleMul`.
+A detailed English derivation is pending.
 -/
 theorem dualWeylMul : DualWeylMul := dualWeylModuleMul
 /- English proof (translation)
-The claim follows from `highestWeightVectorRaising`.
+A detailed English derivation is pending.
 -/
 theorem hwRaise : HWRaise := highestWeightVectorRaising
 /- English proof (translation)
-The claim follows from `weylModuleRowDividedPowerStable`.
+A detailed English derivation is pending.
 -/
 theorem weylRowDivStable : WeylRowDivStable := weylModuleRowDividedPowerStable
 /- English proof (translation)
-The claim follows from `rowPartSum`.
+A detailed English derivation is pending.
 -/
 theorem rowNuSum : RowNuSum := rowPartSum
 /- English proof (translation)
-The claim follows from `fischerInnerConjSymm_holds`.
+A detailed English derivation is pending.
 -/
 theorem fockHerm : FockHerm := fischerInnerConjSymm_holds
 /- English proof (translation)
-The claim follows from `fischerInnerPos`.
+A detailed English derivation is pending.
 -/
 theorem fockPos : FockPos := fischerInnerPos
 /- English proof (translation)
-The claim follows from `fischerInnerWeightOrthogonal_holds`.
+A detailed English derivation is pending.
 -/
 theorem fockWeightOrth : FockWeightOrth := fischerInnerWeightOrthogonal_holds
 /- English proof (translation)
-The claim follows from `fischerInnerSubstitutionAdjoint`.
+A detailed English derivation is pending.
 -/
 theorem fockSubAdj : FockSubAdj := fischerInnerSubstitutionAdjoint
 /- English proof (translation)
-The claim follows from `fischerInnerRowActionAdjoint`.
+A detailed English derivation is pending.
 -/
 theorem fockRowAdj : FockRowAdj := fischerInnerRowActionAdjoint
 /- English proof (translation)
-The claim follows from `dominancePowerProduct_holds`.
+A detailed English derivation is pending.
 -/
 theorem domPow : DomPow := dominancePowerProduct_holds
 /- English proof (translation)
-The claim follows from `fockDiagBound_of domPow`.
+A detailed English derivation is pending.
 -/
 theorem fockDiagBound : FockDiagBound := fockDiagBound_of domPow
 

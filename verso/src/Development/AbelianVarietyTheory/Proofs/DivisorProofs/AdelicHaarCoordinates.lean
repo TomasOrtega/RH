@@ -13,15 +13,11 @@ noncomputable section
 namespace GlobalTheory.HaarCoord
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ ι _ b d μ hμ`. Use `letI mA : MeasurableSpace (Fin d → AE F E) := borel _`. Use `haveI : BorelSpace (Fin d → AE F E) := ⟨rfl⟩`. Use `letI mB : MeasurableSpace (Fin d × ι → AF F) := borel _`. Use `haveI : BorelSpace (Fin d × ι → AF F) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : ContinuousAdd (AE F E) := IsModuleTopology.toContinuousAdd (AF F) (AE F E)`. Use `haveI : ContinuousSMul (AF F) (AE F E) := IsModuleTopology.toContinuousSMul (AF F) (AE F E)`. Use `haveI : IsTopologicalAddGroup (AE F E) := IsModuleTopology.topologicalAddGroup (AF F) (AE F E)`. Use `set B := Algebra.TensorProduct.basis (AF F) b with hB`. Set `L : (Fin d → AE F E) ≃ₗ[AF F] (Fin d × ι → AF F)` to `{ toFun := fun u p => B.repr (u p.1) p.2 invFun := fun t i => B.equivFun.symm (fun j => t (i, j)) map_add' := by intro u v; funext p; simp map_smul' := by intro r u; funext p; simp left_inv := by`.
+Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u`. Use function extensionality and compare the values at `i`. Conclude with `B.equivFun.symm_apply_apply (u i)`. Use `right_inv := by`. Introduce `t`.
-
-Use function extensionality and compare the values at `p`. Conclude with `congrFun (B.equivFun.apply_symm_apply (fun j => t (p.1, j))) p.2 }`. Establish `hc : Continuous L` using `IsModuleTopology.continuous_of_linearMap L.toLinearMap`. Establish `hs : Continuous L.symm` using `IsModuleTopology.continuous_of_linearMap L.symm.toLinearMap`. Set `h : (Fin d → AE F E) ≃ₜ (Fin d × ι → AF F)` to `⟨L.toEquiv, hc, hs⟩`.
-
-Establish `hH : (μ.map L.toAddEquiv).IsAddHaarMeasure` using `L.toAddEquiv.isAddHaarMeasure_map μ hc hs`. Establish `hmap : μ.map L.toAddEquiv = μ.map h.toMeasurableEquiv` using `rfl`. Use `⟨μ.map h.toMeasurableEquiv, hmap ▸ hH, fun g => ⟨fun hg => ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(integrable_map_equiv h.toMeasurableEquiv g).1 hg`. Conclude with `(integral_map_equiv h.toMeasurableEquiv g).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem haar_coord_transfer : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ι : Type) [Fintype ι] (b : Module.Basis ι F E) (d : ℕ)
     (μ : @Measure (Fin d → AE F E) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →

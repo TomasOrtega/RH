@@ -8,9 +8,9 @@ noncomputable def UpperTheory.Reformulated.B.CardinalityOfBand.band :
           (a.decLe (@Fin.val m i)) ((@Fin.val m i).decLt b))
 
 /- English proof (translation)
-Introduce `m a b hb`. Rewrite using `[← Nat.card_Ico a b, ← Finset.card_map Fin.valEmbedding]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_Ico, UpperTheory.Reformulated.B.CardinalityOfBand.band, decide_eq_true_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `hi`. Introduce `hx`. Conclude with `⟨⟨x, lt_of_lt_of_le hx.2 hb⟩, hx, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CardinalityOfBand.card_band :
     ∀ (m a b : Nat),

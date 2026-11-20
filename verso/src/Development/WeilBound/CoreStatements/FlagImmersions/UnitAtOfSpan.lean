@@ -17,11 +17,11 @@ namespace Smooth
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
 /- English proof (translation)
-Introduce `o ho`. Establish `h1 : ValAt ξ z (o : Ω) (o : ℂ)` using `LiesOver.valAt_int hc o`. Establish `h2` using `CxVal.inv h1 (by exact_mod_cast ho)`. Establish `h3` using `CxVal.mul h1 h2`. Establish `h0 : (o : Ω) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `h4 : ValAt ξ z (0 : Ω) (0 : ℂ)` using `by simpa using LiesOver.valAt_int hc 0`. Rewrite `h1` using `[h]`. Conclude with `ho (by exact_mod_cast CxVal.unique h1 h4)`. Take `⟨_, s, e, -⟩` from `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, s', e', -⟩` from `h2`. Conclude with `⟨by simpa using h0, ⟨s, by simpa using e⟩, ⟨s', by simpa using e'⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_genFibre (z : Spec (CommRingCat.of ℂ) ⟶ X) (hc : genPt ξ ⤳ centre z) :
     (⟨centre z, hc⟩ : Cpt ξ) ∈ genFibre ℤ ξ := by
@@ -39,7 +39,7 @@ theorem mem_genFibre (z : Spec (CommRingCat.of ℂ) ⟶ X) (hc : genPt ξ ⤳ ce
   exact ⟨by simpa using h0, ⟨s, by simpa using e⟩, ⟨s', by simpa using e'⟩⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hu.2.2`. Establish `h1` using `CxVal.mul hr (⟨hc, s, hs, rfl⟩ : ValAt ξ z u⁻¹ _)`. Rewrite `h1` using `[mul_inv_cancel₀ hu.1]`. Conclude with `left_ne_zero_of_mul_eq_one (CxVal.unique h1 (CxVal.one hc))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_ne_zero {z : Spec (CommRingCat.of ℂ) ⟶ X} {hc : genPt ξ ⤳ centre z} {u : Ω} {r : ℂ}
     (hu : unitAt ξ ⟨centre z, hc⟩ u) (hr : ValAt ξ z u r) : r ≠ 0 := by
@@ -49,11 +49,9 @@ theorem val_ne_zero {z : Spec (CommRingCat.of ℂ) ⟶ X} {hc : genPt ξ ⤳ cen
   exact left_ne_zero_of_mul_eq_one (CxVal.unique h1 (CxVal.one hc))
 
 /- English proof (translation)
-Establish `key : ∀ {s t : Ω}, t ≠ 0 → s ∈ Submodule.span (regAt ξ p) {t} → s / t ∈ regAt ξ p`. Introduce `s t ht hm`. Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.1 hm`. Establish `: s / t = r`. Rewrite using `[← hr]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_div_cancel_right₀ _ ht`. Rewrite using `[this]`. Conclude with `r.2`. Use `⟨div_ne_zero hs ht, key ht (h ▸ Submodule.mem_span_singleton_self s), ?_⟩` and prove the remaining obligations. Rewrite using `[inv_div]`.
-
-Conclude with `key hs (h ▸ Submodule.mem_span_singleton_self t)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_of_span {p : Cpt ξ} {s t : Ω} (hs : s ≠ 0) (ht : t ≠ 0)
     (h : Submodule.span (regAt ξ p) {s} = Submodule.span (regAt ξ p) {t}) : unitAt ξ p (s / t) := by
@@ -72,31 +70,29 @@ theorem unitAt_of_span {p : Cpt ξ} {s t : Ω} (hs : s ≠ 0) (ht : t ≠ 0)
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω}
 
 /- English proof (translation)
-Take `⟨z, hz, hco⟩` from `SheetDecomposition.ChartForm.exists_point hT w (fun k => (hw.1 k).imp fun _ h => IsUnit.mk0 _ h) (fun g hg => by rw [← evC_eq]; exact hw.2 g hg)`. Use `choose c hc using hco.1`. Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (hco.2 k _ (hc k)).1`. Establish `hY : ∀ m : K → ℕ, (∏ k, y ⟨k, c k⟩ ^ m k) ≠ 0` using `fun m => Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hy k)`. Establish `hW : ∀ m : K → ℕ, (∏ k, w ⟨k, c k⟩ ^ m k) ≠ 0` using `fun m => Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k).ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxc : (∏ k, y ⟨k, c k⟩) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hy k`. Set `p : Cpt ξ` to `⟨centre z, hz⟩`. Establish `hch : InChart ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) c p`. Use `⟨hxc, fun c' => ?_⟩` and prove the remaining obligations. Use `show (∏ k, y ⟨k, c' k⟩) / ∏ k, y ⟨k, c k⟩ ∈ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.prod_div_distrib]`. Use `Subring.prod_mem _ fun k _ => ?_` and prove the remaining obligations. Take `⟨r, ⟨_, s, e, -⟩, -⟩` from `(hco.2 k _ (hc k)).2 (c' k)`. Conclude with `⟨s, e⟩`. Establish `hYa : (∏ k, y ⟨k, c k⟩ ^ a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy k)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen` using `hg p (mem_genFibre z hz)`. Establish `hu : unitAt ξ p (c₀ / ∏ k, y ⟨k, c k⟩ ^ a k)`. Use `unitAt_of_span hgen.1 (mul_ne_zero hYa hD.1) (hgen.2.symm.trans (hD.2 p trivial c hch))` as an intermediate fact. Rewrite `this` using `[mul_div_mul_right _ _ hD.1]`. Then use the resulting hypothesis. Take `⟨U, hU, hmem⟩` from `hT.affine c hxc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpU : p.1 ∈ U` using `(hmem _).2 ⟨hz, hch⟩`. Establish `hgU : genPt ξ ∈ U` using `(hmem _).2 ⟨specializes_rfl, CoordBase.inChart_gen hT hxc⟩`. Take `⟨s, hs⟩` from `hu.2.1`. Use `letI := TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨p.1, hpU⟩ : U)`. Establish `hloc` using `hU.isLocalization_stalk ⟨p.1, hpU⟩`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨t, f⟩, e⟩` from `IsLocalization.surj (hU.primeIdealOf ⟨p.1, hpU⟩).asIdeal.primeCompl s`. Establish `e' : s * X.presheaf.germ U p.1 hpU f.1 = X.presheaf.germ U p.1 hpU t` using `e`. Establish `hfu : IsUnit (X.presheaf.germ U p.1 hpU f.1)` using `IsLocalization.map_units (X.presheaf.stalk p.1) f`. Establish `h2` using `congrArg (genMap ξ p) e'`. Rewrite `h2` using `[map_mul, hs, CoordBase.genMap_germ_val U hgU p hpU, CoordBase.genMap_germ_val U hgU p hpU]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfu' : unitAt ξ p (CoordBase.val U hgU f.1)`. Rewrite using `[← CoordBase.genMap_germ_val U hgU p hpU]`. Take `⟨v, hv⟩` from `hfu`. Rewrite using `[← hv]`. Conclude with `⟨(v.isUnit.map _).ne_zero, ⟨_, rfl⟩, ⟨v⁻¹.val, map_units_inv _ v⟩⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htu : unitAt ξ p (CoordBase.val U hgU t)` using `h2 ▸ ZUnit.mul hu hfu'`. Establish `hin : ∀ b : Γ(X, U), CoordBase.val U hgU b ∈ chartRingZ y c` using `fun b => by`. Rewrite using `[← CptIn.Intr.segre_chart y c hy]`. Conclude with `(CoordBase.mem_adjoin_iff hT hxc hU hmem hgU _).2 ⟨b, rfl⟩`. Take `⟨δt, Gt, ht1, ht2, ht3⟩` from `LiesOver.exists_form_valAt hz hco c hy hc (hin t)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨δf, Gf, hf1, hf2, hf3⟩` from `LiesOver.exists_form_valAt hz hco c hy hc (hin f.1)`. Establish `nt : evC w Gt ≠ 0` using `fun h => val_ne_zero htu ht3 (by rw [h, zero_div])`. Establish `nf : evC w Gf ≠ 0` using `fun h => val_ne_zero hfu' hf3 (by rw [h, zero_div])`. Establish `hm : ∀ m : K → ℕ, evC w (cMon c m) ≠ 0` using `fun m => by`. Rewrite using `[evC_eq, aeval_cMon]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `hW m`. Use `⟨Gt * cMon c δf * cMon c fun k => (a k).toNat, Gf * cMon c δt * cMon c fun k => (-a k).toNat, _, _, ⟨homog_mul (homog_mul ht1 (homog_cMon _ _)) (homog_cMon _ _), homog_mul (homog_mul hf1 (homog_cMon _ _)) (homog_cMon _ _), fun k => ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Establish `ea : (∏ k, y ⟨k, c k⟩ ^ (a k).toNat) = (∏ k, y ⟨k, c k⟩ ^ a k) * ∏ k, y ⟨k, c k⟩ ^ (-a k).toNat`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hy k)]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, aeval_cMon, ht2, hf2]`. Rewrite using `[ea, ← h2]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[evC_mul, evC_mul]`. Conclude with `mul_ne_zero (mul_ne_zero nt (hm _)) (hm _)`.
-
-Rewrite using `[evC_mul, evC_mul]`. Conclude with `mul_ne_zero (mul_ne_zero nf (hm _)) (hm _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pres_on (hT : CoordTie ℤ ξ fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) {L : Lat ξ Ω} {a : K → ℤ} {e₀ c₀ : Ω}
     (hD : L.IsDegOn Set.univ y a e₀) (hg : ∀ p ∈ genFibre ℤ ξ, L.IsGenAt p (c₀ * e₀))
@@ -173,15 +169,13 @@ end Smooth
 
 open Smooth in
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y F' _ _ ψ L a e₀ c₀ cinf n _ hT _ hO _ hvar hD hg hpos hconj`. Take `⟨A₀, ha, hsm, hcj, hn⟩` from `exists_unit_metric y a c₀ fun w hw => by`. Distinguish the cases in `h : w ∈ mcPts (mCoordIdeal y)`. Conclude with `pres_on hT hD hg h`. Conclude with `pres_off hvar.2.1.2.1 a c₀ hw h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu, huc⟩` from `GlobalTheory.T.exists_place_weight_conj_invariant K J Ω F' y ψ (fun σ => Real.log (cinf σ)) hO`. Establish `huc'` using `huc fun σ => by simp only [hconj]`. Use `⟨hu.shift A₀, ?_, ?_, fun z => ?_, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use `show A₀.a + 0 = a`. Rewrite using `[add_zero, ha]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `ContDiffOn.mul hsm hu.smooth.neg.exp`. Use `show A₀.h _ * Real.exp (-u _) = A₀.h z * Real.exp (-u z)`. Rewrite using `[hcj z, huc' z]`. Introduce `σ z g h dg dh hz h1 h2 h3 h4`. Establish `h3' : ∀ k, (dg k : ℤ) - dh k = a k` using `fun k => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h3 k]`. Use `show (A₀.a + 0) k = a k`. Rewrite using `[add_zero, ha]`. Rewrite using `[hn z hz.1 g h dg dh ⟨h1, h2, h3', h4⟩]`. Use `show _ = cinf σ * (A₀.h z * Real.exp (-u z)) * _`.
-
-Rewrite using `[(hu.near σ z hz).self_of_nhds, Real.exp_neg, Real.exp_log (hpos σ)]`. Use `(hpos σ).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take `⟨g, h, dg, dh, hP, -, hh⟩` from `pres_on hT hD hg hw`. Conclude with `⟨g, h, dg, dh, hP.1, hP.2.1, hP.2.2.1, hP.2.2.2, hh⟩`.
+Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smoothLine : SmoothLine := by
   intro X Ω _ ξ K _ J _ y F' _ _ ψ L a e₀ c₀ cinf n _ hT _ hO _ hvar hD hg hpos hconj

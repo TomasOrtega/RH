@@ -13,9 +13,9 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Introduce `K _ _ n w φ hφ`. Take `⟨U, hU, hf⟩` from `GlobalTheory.Orb.exists_biinvariant (G := Gw n w) (f := φ) ⟨hφ.1, hφ.2⟩`. Use `⟨U ⊓ GLnLocal.integralGL (w.adicCompletion K) n, ⟨?_, ?_⟩, inf_le_right, fun k hk x => hf k hk.1 x⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_inf]`. Conclude with `(GLnLocal.isCompact_integralGL (w.adicCompletion K) n).inter_left (U.isClosed_of_isOpen hU)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_inf]`. Conclude with `hU.inter (GLnLocal.isOpen_integralGL (w.adicCompletion K) n)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_compactOpen_biinvariant_of_test :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (w : Pl K) (φ : Gw n w → ℂ), Test φ →

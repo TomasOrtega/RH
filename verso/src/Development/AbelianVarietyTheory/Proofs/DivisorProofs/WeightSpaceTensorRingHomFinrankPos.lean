@@ -4,21 +4,21 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ C _ _ _ χ`. Set `φ : k ⊗[ℤ] C →ₐ[k] k` to `Algebra.TensorProduct.lift (Algebra.ofId k k) χ.toIntAlgHom (fun _ _ => Commute.all _ _)`. Establish `hφs : Function.Surjective φ` using `fun a => ⟨algebraMap k (k ⊗[ℤ] C) a, by rw [φ.commutes]; rfl⟩`. Set `m : Ideal (k ⊗[ℤ] C)` to `RingHom.ker φ`. Establish `hm : m.IsMaximal` using `RingHom.ker_isMaximal_of_surjective φ hφs`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsArtinianRing (k ⊗[ℤ] C) := IsArtinianRing.of_finite k (k ⊗[ℤ] C)`. Take `⟨N, hN⟩` from `IsArtinian.monotone_stabilizes (⟨fun j => OrderDual.toDual (m ^ j), fun a b h => Ideal.pow_le_pow_right h⟩ : ℕ →o (Ideal (k ⊗[ℤ] C))ᵒᵈ)`. Establish `hst : ∀ j, N ≤ j → m ^ N = m ^ j` using `fun j hj => hN j hj`. Establish `hJJ : IsIdempotentElem (m ^ (N + 1))` using `by show m ^ (N + 1) * m ^ (N + 1) = m ^ (N + 1)`. Rewrite using `[← pow_add, ← hst (N + 1 + (N + 1)) (by omega), hst (N + 1) (by omega)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, hJe⟩` from `(Ideal.isIdempotentElem_iff_of_fg _ (IsNoetherian.noetherian (m ^ (N + 1)))).mp hJJ`. Establish `hJe' : m ^ (N + 1) = Ideal.span {e}` using `hJe`. Establish `hv : (1 - e : k ⊗[ℤ] C) ≠ 0`. Introduce `h`. Establish `h1 : e = 1` using `(sub_eq_zero.mp h).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: m ^ (N + 1) = ⊤` using `by rw [hJe', h1, Ideal.span_singleton_one]`. Conclude with `hm.ne_top (top_le_iff.mp (this ▸ Ideal.pow_le_self (by omega)))`. Establish `key : ∀ x ∈ m, x ^ (N + 1) * (1 - e) = 0`. Introduce `x hx`. Establish `hx' : x ^ (N + 1) ∈ Ideal.span {e}` using `hJe' ▸ Ideal.pow_mem_pow hx (N + 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.mp hx'`. Rewrite using `[← ha, mul_assoc, mul_sub, mul_one, he.eq, sub_self, mul_zero]`. Use `lt_of_lt_of_le Nat.zero_lt_one (Submodule.one_le_finrank_iff.2 ?_)` and prove the remaining obligations. Rewrite using `[Submodule.ne_bot_iff]`. Use `⟨1 - e, ?_, hv⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.mem_iInf]`. Introduce `c`. Rewrite using `[Module.End.mem_maxGenEigenspace]`. Use `⟨N + 1, ?_⟩` and prove the remaining obligations. Set `x : k ⊗[ℤ] C` to `(1 : k) ⊗ₜ c - algebraMap k (k ⊗[ℤ] C) (χ c)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hxm : x ∈ m`. Simplify using `[m, x, φ, RingHom.mem_ker]`. Establish `hf : (((Algebra.lmul k (k ⊗[ℤ] C)).toRingHom.comp (Algebra.TensorProduct.includeRight : C →ₐ[ℤ] k ⊗[ℤ] C).toRingHom) c) - χ c • (1 : Module.End k (k ⊗[ℤ] C)) = Algebra.lmul k (k ⊗[ℤ] C) x`. Use extensionality with `y`. Simplify using `[x, sub_mul, Algebra.smul_def]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hf, ← map_pow]`. Simplify using `using key x hxm`.
+A detailed English derivation is pending.
 -/
 theorem weightSpace_tensor_ringHom_pos : ∀ (k : Type) [Field k] [IsAlgClosed k] (C : Type) [CommRing C] [Module.Free ℤ C] [Module.Finite ℤ C] (χ : C →+* k), 0 < Module.finrank k ↥(⨅ c : C, (((Algebra.lmul k (k ⊗[ℤ] C)).toRingHom.comp (Algebra.TensorProduct.includeRight : C →ₐ[ℤ] k ⊗[ℤ] C).toRingHom) c).maxGenEigenspace (χ c)) := by
   intro k _ _ C _ _ _ χ

@@ -7,17 +7,17 @@ namespace ReciprocityTheory.ChartRestriction.G.FD
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 /- English proof (translation)
-Introduce `r X la P z0 laStar w hSec hz0 hmax hpos hw hw1 hr hla0 hla1 hL'`. Take `⟨hO, -, hSF⟩` from `orthonormalFlagTranslate_holds (E := E) r X.toData`. Take `⟨b, hb, hob⟩` from `hO z0 hz0`. Establish `hx0 : rmul z0 b ∈ X.dom` using `OrthogonalFrameDomain.rmul_mem_dom (X := X.toData) hz0 hb`. Establish `hsf : X.SameFlag z0 (rmul z0 b)` using `FlagSpanBounds.sameFlag_rmul (X := X.toData) z0 hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmaj : X.maj z0 = X.maj (rmul z0 b)` using `(hSF z0 hz0 (rmul z0 b) hx0 hsf).2`. Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hwr : 1 ≤ w * (r : ℝ)` using `by nlinarith`. Establish `hsq : 1 ≤ Real.sqrt (w * r)`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.sqrt_le_sqrt hwr`. Establish `hρpos : 0 < frameRadius w r`. Unfold `frameRadius`. Establish `: 0 < 10 * Real.sqrt (w * r)` using `by linarith`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hρle : frameRadius w r ≤ 1 / 10`. Unfold `frameRadius`. Conclude with `one_div_le_one_div_of_le (by norm_num) (by linarith)`. Take `⟨lam, Z, hZ, hlam⟩` from `h41a r X z0 (rmul z0 b) laStar (3 * frameRadius w r / 5) hz0 hx0 hob hsf hla0 hla1 (by linarith) (by linarith) hL'`. Establish `hZ' : X.zN Z ≤ frameRadius w r / 5` using `by linarith`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hloc, -⟩` from `h6p1 r X.toData (rmul z0 b) hx0 hob (frameRadius w r / 5) (by linarith) (by linarith)`. Take `⟨hxdom, -, hmajb⟩` from `hloc Z hZ'`. Establish `hP : P (X.xZ (rmul z0 b) Z) ≠ 0` using `nonvanishingNearHalfMax_holds (E := E) r X.toData la P z0 (rmul z0 b) w hSec hz0 hob ⟨b, hb, rfl⟩ hmax hpos hw hw1 hr Z hZ'`. Establish `hden : 0 < 1 - frameRadius w r / 5` using `by linarith`. Establish `hc : (1 + frameRadius w r / 5) / (1 - frameRadius w r / 5) ≤ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[div_le_iff₀ hden]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨X.xZ (rmul z0 b) Z, lam, hxdom, hlam, hP, fun τ v => ?_⟩` and prove the remaining obligations. Establish `hm : 0 ≤ X.maj (rmul z0 b) τ v` using `FlagSpanBounds.maj_nonneg (X := X.toData) hx0 τ v`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem maxPointFrame_of_lower_bound (h41a : LatticeBoundAtMaximum (E := E)) (h6p1 : OrthonormalChartNormControl (E := E)) :
     FrameAtHalfMaximum (E := E) := by
@@ -61,7 +61,7 @@ theorem maxPointFrame_of_lower_bound (h41a : LatticeBoundAtMaximum (E := E)) (h6
     _ = 2 * X.maj z0 τ v := by rw [hmaj]
 
 /- English proof (translation)
-The claim follows from `maxPointFrame_of_lower_bound (latticeBoundAtMaximum_of_transference hD5) orthonormalChartNormControl_holds`.
+A detailed English derivation is pending.
 -/
 theorem maxPointFrame_of_transference (hD5 : CoveringRadiusStatement) : FrameAtHalfMaximum (E := E) := maxPointFrame_of_lower_bound (latticeBoundAtMaximum_of_transference hD5) orthonormalChartNormControl_holds
 

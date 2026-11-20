@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.SS.StalkGlue
 
 /- English proof (translation)
-The claim follows from `TopCat.Presheaf.section_ext X.sheaf U s t h`.
+A detailed English derivation is pending.
 -/
 theorem sec_ext {X : Scheme.{0}} (U : X.Opens) (s t : Γ(X, U))
     (h : ∀ (x : X) (hx : x ∈ U), (X.presheaf.germ U x hx).hom s = (X.presheaf.germ U x hx).hom t) :
@@ -20,7 +20,7 @@ theorem sec_ext {X : Scheme.{0}} (U : X.Opens) (s t : Γ(X, U))
   TopCat.Presheaf.section_ext X.sheaf U s t h
 
 /- English proof (translation)
-The claim follows from `TopCat.Presheaf.germ_res_apply X.presheaf i x hx s`.
+A detailed English derivation is pending.
 -/
 theorem germ_map {X : Scheme.{0}} {U V : X.Opens} (i : V ⟶ U) (x : X) (hx : x ∈ V) (s : Γ(X, U)) :
     (X.presheaf.germ V x hx).hom ((X.presheaf.map i.op).hom s) =
@@ -28,11 +28,9 @@ theorem germ_map {X : Scheme.{0}} {U V : X.Opens} (i : V ⟶ U) (x : X) (hx : x 
   TopCat.Presheaf.germ_res_apply X.presheaf i x hx s
 
 /- English proof (translation)
-Use `choose W hW t hx ht using H`. Establish `hcov : U ≤ iSup (fun p : U => W p.1 p.2)` using `fun x hxU => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hxU⟩, hx x hxU⟩`. Take `⟨s, hs, -⟩` from `TopCat.Sheaf.existsUnique_gluing' X.sheaf (fun p : U => W p.1 p.2) U (fun p => homOfLE (hW p.1 p.2)) hcov (fun p => t p.1 p.2) (by`. Introduce `p q`. Apply `sec_ext (W p.1 p.2 ⊓ W q.1 q.2)` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Conclude with `(germ_map (TopologicalSpace.Opens.infLELeft _ _) y hy _).trans (((ht p.1 p.2 y hy.1).symm.trans (ht q.1 q.2 y hy.2)).trans (germ_map (TopologicalSpace.Opens.infLERight _ _) y hy _).symm))`. Use `⟨s, fun x hxU => ?_⟩` and prove the remaining obligations. Establish `h1 : (X.presheaf.map (homOfLE (hW x hxU)).op).hom s = t x hxU` using `hs ⟨x, hxU⟩`. Rewrite using `[ht x hxU x (hx x hxU), ← h1]`.
-
-Conclude with `(germ_map (homOfLE (hW x hxU)) x (hx x hxU) s).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section {X : Scheme.{0}} (U : X.Opens) (g : ∀ (x : X), x ∈ U → X.presheaf.stalk x)
     (H : ∀ x : X, x ∈ U → ∃ (W : X.Opens) (h : W ≤ U) (t : Γ(X, W)), x ∈ W ∧
@@ -55,13 +53,13 @@ theorem exists_section {X : Scheme.{0}} (U : X.Opens) (g : ∀ (x : X), x ∈ U 
   exact (germ_map (homOfLE (hW x hxU)) x (hx x hxU) s).symm
 
 /- English proof (translation)
-Introduce `K _ X δ hL hc hloc`. Use `choose D hD using fun (U : X.left.Opens) (s : Γ(X.left, U)) => exists_section U (fun x hx => δ x ((X.left.presheaf.germ U x hx).hom s)) (hloc U s)`. Use `⟨⟨fun U => AddMonoidHom.mk' (D U) (fun a b => ?_), fun U a b => ?_, fun U c => ?_, fun U V h a => ?_⟩, fun U s x hx => hD U s x hx⟩` and prove the remaining obligations. Apply `sec_ext` to reduce the goal to its premises. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, hD]`. Apply `sec_ext` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [AddMonoidHom.mk'_apply, map_add, map_mul, hD, hL]`. Apply `sec_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Simplify using `only [AddMonoidHom.mk'_apply, map_zero, hD, hc]`. Apply `sec_ext` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [AddMonoidHom.mk'_apply]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD, germ_map, germ_map, hD]`.
+A detailed English derivation is pending.
 -/
 theorem exists_vf : ∀ (K : Type) [Field K] (X : Over (Sp K)) (δ : ∀ x : X.left, X.left.presheaf.stalk x →+ X.left.presheaf.stalk x), (∀ x a b, δ x (a * b) = a * δ x b + b * δ x a) → (∀ (U : X.left.Opens) (x : X.left) (hx : x ∈ U) (c : K), δ x ((X.left.presheaf.germ U x hx).hom (cstK X U c)) = 0) → (∀ (U : X.left.Opens) (s : Γ(X.left, U)) (x : X.left), x ∈ U → ∃ (W : X.left.Opens) (h : W ≤ U) (t : Γ(X.left, W)), x ∈ W ∧ ∀ (y : X.left) (hy : y ∈ W), δ y ((X.left.presheaf.germ U y (h hy)).hom s) = (X.left.presheaf.germ W y hy).hom t) → ∃ D : VF X, ∀ (U : X.left.Opens) (s : Γ(X.left, U)) (x : X.left) (hx : x ∈ U), (X.left.presheaf.germ U x hx).hom (D.D U s) = δ x ((X.left.presheaf.germ U x hx).hom s) := by
   intro K _ X δ hL hc hloc

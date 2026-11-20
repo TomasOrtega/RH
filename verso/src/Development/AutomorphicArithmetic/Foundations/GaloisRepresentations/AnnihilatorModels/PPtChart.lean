@@ -5,13 +5,13 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `Y V hV κ _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f g hfg`. Unfold `ptOf at hfg`. Establish `h` using `Spec.map_injective ((cancel_mono hV.fromSpec).mp hfg)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `congrArg CommRingCat.Hom.hom h`. Introduce `φ f m`. Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.iterate_succ_apply', ih, pow_succ']`. Unfold `twist ptOf`. Rewrite using `[← Spec.map_comp_assoc]`. Both sides reduce to the same expression. Introduce `Z r W hW h B _ ρ z`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `ptOf`. Rewrite using `[Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec r hV hW h, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.ptChart_of :
     PtChart := by

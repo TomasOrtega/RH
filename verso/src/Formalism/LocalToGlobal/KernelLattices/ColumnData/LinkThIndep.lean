@@ -14,7 +14,7 @@ open Formalism.MainNotions.TaylorLogMetric hiding admitted AdmittedStatements Al
 variable {D : Car} {N N' : ℕ}
 
 /- English proof (translation)
-Unfold `normSq`. Simplify using `only [norm_mul, mul_pow, mul_assoc]`. Rewrite using `[MeasureTheory.average_eq, MeasureTheory.average_eq, MeasureTheory.integral_const_mul, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem normSq_const_mul (T : Tor D) (La' : AddSubgroup (VC D N N')) (c : ℂ) (F : VC D N N' → ℂ) :
     normSq D T La' (fun z => c * F z) = ‖c‖ ^ 2 * normSq D T La' F := by
@@ -34,11 +34,11 @@ def ChiUnitDet (D : Car) (χ : IdE D → ℂ) : Prop :=
     IsSDLat D.host.E N L → IsSDLat D.host.E N L' → ‖χ (detId D L L')‖ = 1
 
 /- English proof (translation)
-Introduce `D cc hcc δ hδ χ e hχ hvec heq N N' L₁ L₁' L₂ L₂' h1 h2`. Take `⟨hN, hN', hs1, hs1'⟩` from `h1`. Take `⟨-, -, hs2, hs2'⟩` from `h2`. Establish `hU` using `hC D χ hχ`. Establish `hIso` using `hI D cc hcc δ hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA21 : admitted D N N' L₂ L₁'` using `⟨hN, hN', hs2, hs1'⟩`. Establish `hA11 : admitted D N N' L₁ L₁'` using `⟨hN, hN', hs1, hs1'⟩`. Establish `hA22 : admitted D N N' L₂ L₂'` using `⟨hN, hN', hs2, hs2'⟩`. Establish `e1` using `heq.2.1 N N' ⟨L₂, hs2⟩ ⟨L₁', hs1'⟩ ⟨L₂', hs2'⟩ hN hN'`. Establish `e2` using `heq.2.2 N N' ⟨L₁, hs1⟩ ⟨L₂, hs2⟩ ⟨L₁', hs1'⟩ hN hN'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at e1 e2`. Rewrite using `[e1, normSq_const_mul, hIso N N' L₂ L₁' L₂ L₂' hA21 hA22 _ (hvec N N' L₂ L₁' hA21).1, e2, normSq_const_mul, hIso N N' L₁ L₁' L₂ L₁' hA11 hA21 _ (hvec N N' L₁ L₁' hA11).1, norm_zpow, hU N' L₁' L₂' hN' hs1' hs2', norm_zpow, hU N L₁ L₂ hN hs1 hs2]`. Simplify using the standard rewrite rules.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem LinkThIndep_of
     (hI : ∀ D : Car, ∀ cc : Ideal (𝓞 D.host.K), IsCurveIdeal D cc → ∀ δ : ℂ, IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
@@ -74,11 +74,11 @@ open Formalism.MainNotions.TaylorLogMetric hiding admitted AdmittedStatements Al
 variable (D : Car)
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Set `ψ : D.host.E →+* ℂ` to `(IsAlgClosed.lift : D.host.E →ₐ[ℚ] ℂ).toRingHom`. Apply `ψ.injective` to reduce the goal to its premises. Establish `h2 : ψ (D.host.conj x) = starRingEnd ℂ (ψ x)` using `(D.host.der.conj_iff ψ D.host.conj).mpr (by simp [Formalism.HC.HostRaw.conj]) x`. Rewrite using `[h2]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsCMField D.host.E := by first`. Consider the case `exact D.host.isCMField_hostE`. Consider the case `exact D.host.der.cm`. Use `first`. Consider the case `exact NumberField.IsCMField.complexEmbedding_complexConj D.host.E ψ x`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact NumberField.IsCMField.complexEmbedding_complexConj (K := D.host.E) ψ x`. Consider the case `exact NumberField.IsCMField.complexEmbedding_complexConj (K := D.host.E) (φ := ψ) (x := x)`.
+A detailed English derivation is pending.
 -/
 theorem star_conj (x : D.host.E) : (letI := D.host.cmStar; star x) = D.host.conj x := by
   letI := D.host.cmStar
@@ -97,14 +97,14 @@ theorem star_conj (x : D.host.E) : (letI := D.host.cmStar; star x) = D.host.conj
   | exact NumberField.IsCMField.complexEmbedding_complexConj (K := D.host.E) (φ := ψ) (x := x)
 
 /- English proof (translation)
-The claim follows from `(D.host.der.conj_iff φ D.host.conj).mpr (by simp [Formalism.HC.HostRaw.conj]) x`.
+A detailed English derivation is pending.
 -/
 theorem emb_conj (φ : D.host.E →+* ℂ) (x : D.host.E) :
     φ (D.host.conj x) = starRingEnd ℂ (φ x) :=
   (D.host.der.conj_iff φ D.host.conj).mpr (by simp [Formalism.HC.HostRaw.conj]) x
 
 /- English proof (translation)
-Set `ψ : D.host.E →+* ℂ` to `(IsAlgClosed.lift : D.host.E →ₐ[ℚ] ℂ).toRingHom`. Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[emb_conj, emb_conj, Complex.conj_conj]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_conj (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   let ψ : D.host.E →+* ℂ := (IsAlgClosed.lift : D.host.E →ₐ[ℚ] ℂ).toRingHom
@@ -115,7 +115,7 @@ def conjO (r : 𝓞 D.host.E) : 𝓞 D.host.E :=
   ⟨D.host.conj r, r.isIntegral_coe.map (D.host.conj : D.host.E →+* D.host.E).toIntAlgHom⟩
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conj_smul (r : 𝓞 D.host.E) (x : D.host.E) :
     D.host.conj (r • x) = conjO D r • D.host.conj x := by
@@ -132,18 +132,18 @@ def cS (𝔞 : IdE D) : IdE D where
     rw [conj_smul]; exact 𝔞.smul_mem _ hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_cS (𝔞 : IdE D) (x : D.host.E) : x ∈ cS D 𝔞 ↔ D.host.conj x ∈ 𝔞 := Iff.rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[mem_cS]`. Establish `key : ∀ y ∈ 𝔞 * 𝔟, D.host.conj y ∈ cS D 𝔞 * cS D 𝔟`. Introduce `y hy`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.mul_induction_on (C := fun y => D.host.conj y ∈ cS D 𝔞 * cS D 𝔟) hy ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Rewrite using `[map_mul]`. Conclude with `Submodule.mul_mem_mul (by rw [mem_cS, conj_conj]; exact ha) (by rw [mem_cS, conj_conj]; exact hb)`. Introduce `y y' hy hy'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `add_mem hy hy'`. Use `key _ hx` as an intermediate fact. Rewrite `this` using `[conj_conj]`. Then use the resulting hypothesis. Rewrite using `[Submodule.mul_le]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha b hb`. Rewrite using `[mem_cS, map_mul]`. Conclude with `Submodule.mul_mem_mul ha hb`.
+A detailed English derivation is pending.
 -/
 theorem cS_mul (𝔞 𝔟 : IdE D) : cS D (𝔞 * 𝔟) = cS D 𝔞 * cS D 𝔟 := by
   apply le_antisymm
@@ -167,9 +167,9 @@ theorem cS_mul (𝔞 𝔟 : IdE D) : cS D (𝔞 * 𝔟) = cS D 𝔞 * cS D 𝔟 
     exact Submodule.mul_mem_mul ha hb
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_cS, Submodule.mem_one, Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Use `⟨conjO D y, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `D.host.conj (y : D.host.E) = x`. Rewrite using `[show ((y : D.host.E)) = algebraMap (𝓞 D.host.E) D.host.E y from rfl, hy, conj_conj]`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨conjO D y, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem cS_one : cS D 1 = 1 := by
   ext x
@@ -183,7 +183,7 @@ theorem cS_one : cS D 1 = 1 := by
     exact ⟨conjO D y, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero, cS_one]`. Consider the case `succ k ih => rw [pow_succ, pow_succ, cS_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cS_pow (𝔞 : IdE D) (k : ℕ) : cS D (𝔞 ^ k) = cS D 𝔞 ^ k := by
   induction k with
@@ -191,9 +191,9 @@ theorem cS_pow (𝔞 : IdE D) (k : ℕ) : cS D (𝔞 ^ k) = cS D 𝔞 ^ k := by
   | succ k ih => rw [pow_succ, pow_succ, cS_mul, ih]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_cS, Submodule.mem_span_singleton, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr⟩`. Use `⟨conjO D r, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← conj_smul, hr, conj_conj]`. Introduce and unpack `⟨r, rfl⟩`. Use `⟨conjO D r, ?_⟩` and prove the remaining obligations. Rewrite using `[conj_smul, conj_conj]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cS_span (β : D.host.E) :
     cS D (Submodule.span (𝓞 D.host.E) {β}) = Submodule.span (𝓞 D.host.E) {D.host.conj β} := by
@@ -208,7 +208,7 @@ theorem cS_span (β : D.host.E) :
     rw [conj_smul, conj_conj]
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_mul_span, Set.singleton_mul_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem span_singleton_mul_span_singleton_host (a b : D.host.E) :
     Submodule.span (𝓞 D.host.E) {a} * Submodule.span (𝓞 D.host.E) {b} =
@@ -216,9 +216,9 @@ theorem span_singleton_mul_span_singleton_host (a b : D.host.E) :
   rw [Submodule.span_mul_span, Set.singleton_mul_singleton]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨𝔟, h𝔟, hmul⟩`. Establish `e : 𝔟 = cS D 𝔞`. Use extensionality with `x`. Rewrite using `[h𝔟, mem_cS]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]` and apply the resulting hypothesis. Introduce `h`. Conclude with `⟨cS D 𝔞, fun x => mem_cS D 𝔞 x, h⟩`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem normOne_ideal_iff_mul_conj (𝔞 : IdE D) : N1 D 𝔞 ↔ 𝔞 * cS D 𝔞 = 1 := by
   constructor
@@ -231,16 +231,16 @@ theorem normOne_ideal_iff_mul_conj (𝔞 : IdE D) : N1 D 𝔞 ↔ 𝔞 * cS D �
     exact ⟨cS D 𝔞, fun x => mem_cS D 𝔞 x, h⟩
 
 /- English proof (translation)
-Rewrite `ha`, `hb`, the goal using `[normOne_ideal_iff_mul_conj]`. Rewrite using `[cS_mul, mul_mul_mul_comm, ha, hb, one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem normOne_ideal_mul {𝔞 𝔟 : IdE D} (ha : N1 D 𝔞) (hb : N1 D 𝔟) : N1 D (𝔞 * 𝔟) := by
   rw [normOne_ideal_iff_mul_conj] at ha hb ⊢
   rw [cS_mul, mul_mul_mul_comm, ha, hb, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero, normOne_ideal_iff_mul_conj, cS_one, one_mul]`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `normOne_ideal_mul D ih ha`.
+A detailed English derivation is pending.
 -/
 theorem normOne_ideal_pow {𝔞 : IdE D} (ha : N1 D 𝔞) (k : ℕ) : N1 D (𝔞 ^ k) := by
   induction k with
@@ -251,7 +251,7 @@ theorem normOne_ideal_pow {𝔞 : IdE D} (ha : N1 D 𝔞) (k : ℕ) : N1 D (𝔞
     exact normOne_ideal_mul D ih ha
 
 /- English proof (translation)
-Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base => rw [pow_one, pow_one]`. Consider the case `succ k hk ih`. Rewrite using `[pow_succ, hχ.1 _ _ (normOne_ideal_pow D ha k) ha, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_pow (χ : IdE D → ℂ) (hχ : IsChi D χ) {𝔞 : IdE D} (ha : N1 D 𝔞) (k : ℕ) (hk : 1 ≤ k) :
     χ (𝔞 ^ k) = χ 𝔞 ^ k := by
@@ -261,23 +261,23 @@ theorem chi_pow (χ : IdE D → ℂ) (hχ : IsChi D χ) {𝔞 : IdE D} (ha : N1 
     rw [pow_succ, hχ.1 _ _ (normOne_ideal_pow D ha k) ha, ih, pow_succ]
 
 /- English proof (translation)
-Establish `hm` using `(normOne_ideal_iff_mul_conj D 𝔞).mp ha`. Establish `hm' : cS D 𝔞 * 𝔞 = 1` using `by rw [mul_comm]; exact hm`. Establish `hfa : IsFractional (nonZeroDivisors (𝓞 D.host.E)) 𝔞` using `FractionalIdeal.isFractional_of_fg (Submodule.fg_of_isUnit ⟨⟨𝔞, cS D 𝔞, hm, hm'⟩, rfl⟩)`. Establish `hfb : IsFractional (nonZeroDivisors (𝓞 D.host.E)) (cS D 𝔞)` using `FractionalIdeal.isFractional_of_fg (Submodule.fg_of_isUnit ⟨⟨cS D 𝔞, 𝔞, hm', hm⟩, rfl⟩)`. Set `I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E` to `⟨𝔞, hfa⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `J : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E` to `⟨cS D 𝔞, hfb⟩`. Establish `hIJ : I * J = 1`. Apply `FractionalIdeal.coeToSubmodule_injective` to reduce the goal to its premises. Use `show ((I * J : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E) = ((1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[FractionalIdeal.coe_mul, FractionalIdeal.coe_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hm`. Establish `hJI : J * I = 1` using `by rw [mul_comm]; exact hIJ`. Set `u : (FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)ˣ` to `⟨I, J, hIJ, hJI⟩`. Use `set h := Fintype.card (ClassGroup (𝓞 D.host.E))`. Establish `hpos : 0 < h` using `Fintype.card_pos`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcl : ClassGroup.mk (K` using `D.host.E) (u ^ h) = 1 := by rw [map_pow, pow_card_eq_one]`. Rewrite `hcl` using `[ClassGroup.mk_eq_one_iff]`. Take `⟨β, hβ⟩` from `hcl.principal`. Establish `hah : 𝔞 ^ h = Submodule.span (𝓞 D.host.E) {β}`. Rewrite using `[← hβ, Units.val_pow_eq_pow_val, FractionalIdeal.coe_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hbh : cS D 𝔞 ^ h = Submodule.span (𝓞 D.host.E) {D.host.conj β}`. Rewrite using `[← cS_pow, hah, cS_span]`. Establish `hone : Submodule.span (𝓞 D.host.E) {β * D.host.conj β} = 1`. Rewrite using `[← span_singleton_mul_span_singleton_host D, ← hah, ← hbh, ← mul_pow, hm, one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hβ0 : β ≠ 0`. Introduce `h0`. Rewrite `hone` using `[h0, zero_mul, Submodule.span_singleton_eq_bot.mpr rfl]`. Establish `: (1 : D.host.E) ∈ (1 : IdE D)` using `Submodule.one_le.mp le_rfl`. Rewrite `this` using `[← hone]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `one_ne_zero ((Submodule.mem_bot _).mp this)`. Establish `hβc0 : D.host.conj β ≠ 0`. Introduce `h0`. Apply `hβ0` to reduce the goal to its premises. Rewrite using `[← conj_conj D β, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hinv : Submodule.span (𝓞 D.host.E) {(β * D.host.conj β)⁻¹} = 1`. Establish `h2 : Submodule.span (𝓞 D.host.E) {(β * D.host.conj β)⁻¹} * Submodule.span (𝓞 D.host.E) {β * D.host.conj β} = 1`. Rewrite using `[span_singleton_mul_span_singleton_host D, inv_mul_cancel₀ (mul_ne_zero hβ0 hβc0), ← Submodule.one_eq_span]`. Rewrite `h2` using `[hone, mul_one]`. Then use the resulting hypothesis. Use `⟨2 * h, by omega, β / D.host.conj β, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[map_div₀, conj_conj]`. Clear the denominators using the available nonvanishing facts. Establish `e : β / D.host.conj β = (β * β) * (β * D.host.conj β)⁻¹`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, ← span_singleton_mul_span_singleton_host D, hinv, mul_one, ← span_singleton_mul_span_singleton_host D, ← hah, two_mul, pow_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_unitary {𝔞 : IdE D} (ha : N1 D 𝔞) :
     ∃ k : ℕ, 1 ≤ k ∧ ∃ z : D.host.E, z * D.host.conj z = 1 ∧
@@ -332,17 +332,15 @@ theorem pow_unitary {𝔞 : IdE D} (ha : N1 D 𝔞) :
       ← span_singleton_mul_span_singleton_host D, ← hah, two_mul, pow_add]
 
 /- English proof (translation)
-Take `⟨k, hk, z, hz, hpow⟩` from `pow_unitary D ha`. Use `letI := D.host.cmStar`. Establish `hzu : z ∈ unitary D.host.E`. Establish `e1 : star z * z = 1` using `by rw [star_conj, mul_comm]; exact hz`. Establish `e2 : z * star z = 1` using `by rw [star_conj]; exact hz`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `first`. Consider the case `exact Unitary.mem_iff.mpr ⟨e1, e2⟩`. Consider the case `exact ⟨e1, e2⟩`. Establish `hn : ∀ τ, ‖embT D τ z‖ = 1`. Introduce `τ`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : embT D τ z * starRingEnd ℂ (embT D τ z) = 1`. Rewrite using `[← emb_conj, ← map_mul, hz, map_one]`. Establish `h2 : ((‖embT D τ z‖ ^ 2 : ℝ) : ℂ) = 1`. Rewrite using `[← h1]`. Use `first`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (Complex.mul_conj' _).symm`. Consider the case `(rw [Complex.mul_conj, Complex.normSq_eq_norm_sq])`. Establish `h3 : ‖embT D τ z‖ ^ 2 = 1` using `by exact_mod_cast h2`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).mp h3`. Establish `hχk : χ 𝔞 ^ k = ∏ τ, (embT D τ z)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← chi_pow D χ hχ ha k hk, hpow]`. Conclude with `hχ.2 ⟨z, hzu⟩`. Establish `hnorm : ‖χ 𝔞‖ ^ k = 1`. Rewrite using `[← norm_pow, hχk, norm_prod]`. Simplify using `[hn]`.
-
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by omega)).mp hnorm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_chi_eq_one_of_normOne (χ : IdE D → ℂ) (hχ : IsChi D χ) {𝔞 : IdE D} (ha : N1 D 𝔞) : ‖χ 𝔞‖ = 1 := by
   obtain ⟨k, hk, z, hz, hpow⟩ := pow_unitary D ha
@@ -389,7 +387,7 @@ def DetIdealsKernelNormOne (D : Car) : Prop :=
     IsSDLat D.host.E N L → IsSDLat D.host.E N L' → N1 D (detId D L L')
 
 /- English proof (translation)
-Introduce `N L L' hN hL hL'`. Conclude with `CU.norm_chi_eq_one_of_normOne D χ hχ (hd N L L' hN hL hL')`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chi_unit_of_det_norm_one (D : Car) (hd : DetIdealsKernelNormOne D) (χ : IdE D → ℂ) (hχ : IsChi D χ) :
     ChiUnitDet D χ := by
@@ -397,7 +395,7 @@ theorem chi_unit_of_det_norm_one (D : Car) (hd : DetIdealsKernelNormOne D) (χ :
   exact CU.norm_chi_eq_one_of_normOne D χ hχ (hd N L L' hN hL hL')
 
 /- English proof (translation)
-The claim follows from `LinkThIndep_of hI fun D χ hχ => chi_unit_of_det_norm_one D (hd D) χ hχ`.
+A detailed English derivation is pending.
 -/
 theorem theta_norm_indep_of_det_norm_one
     (hI : ∀ D : Car, ∀ cc : Ideal (𝓞 D.host.K), IsCurveIdeal D cc → ∀ δ : ℂ, IsDiscriminantTwelfthRootOfIdealLattice D cc δ →

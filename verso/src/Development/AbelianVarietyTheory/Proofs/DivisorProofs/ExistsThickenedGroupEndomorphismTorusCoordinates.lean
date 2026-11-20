@@ -12,27 +12,23 @@ noncomputable section
 namespace GlobalTheory.Mum.EndThick
 
 /- English proof (translation)
-Set `T` to `(Over.map (thick R I e)).obj (thickObj R I e G)`. Establish `hcT : ∀ χ, DegPre.cT D T (h' χ) = DegPre.cT D T χ ≫ a'` using `fun χ => by`. Simplify using `only [DegPre.cT, hc, Category.assoc]`. Establish `key : ∀ χ : D.X, ∃ s : LB.Gen (LB.LinComb D.P.L (DegPre.gtφT D T (g.pG ≫ a) χ) DegPre.gtε), s.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ T.left) (z : Z) (J), Good D.P.L z J → val s r z J = val (g.t (h' χ)) r z J * val (LB.pullGen D.P.L _ _ u (lift (DegPre.cT D T χ) g.pG).left) r z J`. Introduce `χ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs, hv⟩` from `exists_gen D.P.isLB (φ' := DegPre.gtφT D T (g.pG ≫ a) χ) (ε' := DegPre.gtε) (by`. Introduce `U _ f`. Use `(DVR.prod_sum₂ (K := Fin 4) (K' := Fin 6) (U := U) _ (c := (f (padd D.P.A g.pG (DegPre.cT D T (h' χ))).left)⁻¹ * f (DegPre.cT D T (h' χ)).left * f g.pG.left * (f (DegPre.zeroT D T).left)⁻¹) ?_ (prod_ros a' a (DegPre.cT D T χ) g.pG f)).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_four] show f _ ^ (-1 : ℤ) * f _ ^ (1 : ℤ) * f _ ^ (1 : ℤ) * f _ ^ (-1 : ℤ) = _`. Simplify using `only [zpow_neg, zpow_one]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[Fin.prod_univ_four] show _ = f (padd D.P.A (DegPre.cT D T χ) (g.pG ≫ a)).left ^ (-1 : ℤ) * f (DegPre.cT D T χ).left ^ (1 : ℤ) * f (g.pG ≫ a).left ^ (1 : ℤ) * f (DegPre.zeroT D T).left ^ (-1 : ℤ)`. Establish `p1 : padd D.P.A g.pG (DegPre.cT D T χ ≫ a') = (DegPre.cT D T χ ≫ a') * g.pG` using `mul_comm _ _`. Establish `p2 : padd D.P.A (DegPre.cT D T χ) (g.pG ≫ a) = DegPre.cT D T χ * (g.pG ≫ a)` using `rfl`. Rewrite using `[hcT χ, p1, p2]`.
+Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [zpow_neg, zpow_one]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`. Use the proof step `(LB.mulGen D.P.L _ _ _ _ (g.t (h' χ)) (LB.pullGen D.P.L _ _ u (lift (DegPre.cT D T χ) g.pG).left))`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (g.t_gen _) (DVR.pullGen_isGen _ _ _ _ hu _))`. Conclude with `⟨s, hs, fun Z r z J hJ => (hv Z r z J hJ).trans (val_mul hJ _ _ _)⟩`. Use `choose s hs hv using key`. Establish `vv : ∀ χ (y : T.left) J, Good D.P.L y J → val (s χ) (𝟙 _) y J = val (g.t (h' χ)) (𝟙 _) y J * val₂ u y J (DegPre.cT D T χ) g.pG` using `fun χ y J hJ => by`. Rewrite using `[hv χ _ _ y J hJ, val_pull hJ, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hm : ∀ χ χ' (y : T.left) J, Good D.P.L y J → val (s (χ + χ')) (𝟙 _) y J * cubV D.cub y J (DegPre.cT D T χ) (DegPre.cT D T χ') (g.pG ≫ a) = val (s χ) (𝟙 _) y J * val (s χ') (𝟙 _) y J` using `fun χ χ' y J hJ => by`. Establish `e1 : val (g.t (h' χ + h' χ')) (𝟙 _) y J * cubV D.cub y J (DegPre.cT D T χ ≫ a') (DegPre.cT D T χ' ≫ a') g.pG = val (g.t (h' χ)) (𝟙 _) y J * val (g.t (h' χ')) (𝟙 _) y J`. Use `GlobalTheory.TorusCoord.val_t_mul g (𝟙 _) (h' χ) (h' χ') y J hJ` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcT, ← hcT]`. Conclude with `this`. Establish `e2` using `(ros_add D.cub GlobalTheory.globalFns_holds D.P.isAb a' a u hu h₀ hJ (DegPre.cT D T χ) (DegPre.cT D T χ') g.pG).1`. Establish `hadd : DegPre.cT D T (χ + χ') = DegPre.cT D T χ * DegPre.cT D T χ'` using `DVR.cPoint_add D T χ χ'`. Rewrite using `[vv _ y J hJ, vv _ y J hJ, vv _ y J hJ, map_add, hadd, _root_.mul_assoc, e2, ← _root_.mul_assoc, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_mul_mul_comm _ _ _ _`. Establish `hcub : ∀ χ χ' (y : T.left) J, Good D.P.L y J → val (DegPre.cubAtT D T (DegPre.cT D T χ) (DegPre.cT D T χ') (g.pG ≫ a)) (𝟙 _) y J = cubV D.cub y J (DegPre.cT D T χ) (DegPre.cT D T χ') (g.pG ≫ a)` using `fun χ χ' y J hJ => by`. Conclude with `(val_cub D.cub (𝟙 T) hJ _ _ _).trans (by simp only [Category.id_comp])`. Establish `hmult : ∀ χ χ' : D.X, LB.Gen.Corr D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (s (χ + χ')) (DegPre.cubAtT D T (DegPre.cT D T χ) (DegPre.cT D T χ') (g.pG ≫ a))) (LB.mulGen D.P.L _ _ _ _ (s χ) (s χ'))` using `fun χ χ' => corr_of_val D.P.isLB fun y J hJ => by`. Conclude with `(val_mul hJ _ _ _).trans ((congrArg₂ (· * ·) rfl (hcub χ χ' y J hJ)).trans ((hm χ χ' y J hJ).trans (val_mul hJ _ _ _).symm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hzero : LB.Gen.Corr D.P.L _ _ _ _ (s 0) (LB.oneGen D.P.L)` using `corr_of_val D.P.isLB fun y J hJ => by`. Establish `h` using `hm 0 0 y J hJ`. Establish `c0 : DegPre.cT D T 0 = 1` using `cPoint_zero T`. Establish `c1 : cubV D.cub y J (DegPre.cT D T 0) (DegPre.cT D T 0) (g.pG ≫ a) = 1`. Rewrite using `[c0]`.
-
-Conclude with `(isCub_cubV D.cub hJ).face 1 _`. Rewrite `h` using `[c1, add_zero, _root_.mul_one]`. Conclude with `(mul_eq_left.1 h.symm).trans (val_one _).symm`. Set `ξ : GtPt D T` to `⟨g.pG ≫ a, s, hs, hzero, hmult⟩`. Take `⟨F, hF⟩` from `(GlobalTheory.TorusCoord.toGtPt_bijective g (T := thickObj R I e G)).2 ξ`.
-
-Establish `hP` using `(GlobalTheory.TorusCoord.toGtPt_eq_iff g F ξ).1 hF`. Use `⟨F, hP.1.symm, fun χ Z r z J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(val_pull hJ _ _ _).symm.trans ((val_corr hJ (hP.2 χ) r).symm.trans (hv χ Z r z J hJ))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isCoordEnd {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G)

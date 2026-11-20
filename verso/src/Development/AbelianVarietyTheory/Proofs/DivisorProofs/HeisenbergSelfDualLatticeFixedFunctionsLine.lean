@@ -19,13 +19,11 @@ noncomputable section
 namespace GlobalTheory.LatVacLine
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hψ hsd θ hθ φ₀ hφSB hφ0 hφ φ hψSB hψ'`. Use `set Λ := latAtV G.V G.W v with hΛ`. Use `set co := G.M.co with hco`. Establish `hAt : ∀ γ ∈ Λ, At (evFin F v) γ` using `(GlobalTheory.LatVac.latAtV_at_stable G.V G.W v).1`. Set `χ : (Fin a × Fin (a + a') → Fv F v) × (Fin a × Fin (a + a') → Fv F v) → ℂ` to `fun l => if h : ∃ γ ∈ Λ, GlobalTheory.LatVac.locCo co v γ = l then B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) h.choose h.choose) else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `loc : ∀ f : (Fin a × Fin (a + a') → Fv F v) → ℂ, f ∈ SB _ → (∀ γ ∈ Λ, Acts (evFin F v) (co.rho B.ψ γ) f (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) γ γ) • f)) → ∀ l ∈ Λ.map (GlobalTheory.LatVac.locCo co v), ∀ ξ, GlobalTheory.LatVac.psiAt B.ψ v (ξ ⬝ᵥ l.2 + (2 : Fv F v)⁻¹ * (l.1 ⬝ᵥ l.2)) * f (ξ + l.1) = χ l * f ξ := by`. Introduce `f hf hA l hl ξ`. Establish `h : ∃ γ ∈ Λ, GlobalTheory.LatVac.locCo co v γ = l` using `AddSubgroup.mem_map.mp hl`. Take `⟨r, hr, x₀, hx₀⟩` from `GlobalTheory.T.exists_nonzero_complementary_adelicSchwartz_function v f hf`. Establish `key` using `GlobalTheory.T.heisenbergEigen_latticePointAtPlace_localIdentity v co B.ψ h.choose f _ (hAt _ h.choose_spec.1) (hA _ h.choose_spec.1) r hr x₀ hx₀ ξ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [χ, dif_pos h]`. Rewrite `key` using `[h.choose_spec.2]`. Conclude with `key`. Take `⟨c, hc0, hcb⟩` from `GlobalTheory.T.tensorLattice_localDarbouxCoords_bounded G.V G.W v co hT.geo.hV.lat hT.geo.hW.lat`. Establish `hsd'` using `GlobalTheory.T.selfDual_localImage_latticeSupportedAtPlace v co B.ψ Λ hAt hsd`.
-
-Establish `hfill` using `GlobalTheory.T.selfDualLocalSubgroup_firstProj_eq_annihilator v (GlobalTheory.LatVac.psiAt B.ψ v) (Λ.map (GlobalTheory.LatVac.locCo co v)) c hc0 (fun x => hψ x) hsd' (fun l hl i => by`. Take `⟨γ, hγ, rfl⟩` from `AddSubgroup.mem_map.mp hl`. Conclude with `hcb γ hγ i)`. Conclude with `GlobalTheory.T.heisenbergEigen_proportional_localField (GlobalTheory.LatVac.psiAt B.ψ v) (Λ.map (GlobalTheory.LatVac.locCo co v)) χ φ₀ φ (loc φ₀ hφSB hφ) (loc φ hψSB hψ') hφ0 hfill`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem vacuum_line : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

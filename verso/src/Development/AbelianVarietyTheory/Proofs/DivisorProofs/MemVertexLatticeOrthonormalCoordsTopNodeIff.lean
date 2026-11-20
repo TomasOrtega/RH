@@ -22,7 +22,7 @@ namespace GlobalTheory.TopLatSplit
 open Formalism.L2.Col.Br
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Conclude with `Fin.forall_fin_succ'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem forall_idx {N n : ℕ} (hN : N = n + 1) (p : Fin N → Prop) :
     (∀ i, p i) ↔ (∀ k, p (iC hN k)) ∧ p (iL hN) := by
@@ -30,7 +30,7 @@ private theorem forall_idx {N n : ℕ} (hN : N = n + 1) (p : Fin N → Prop) :
   exact Fin.forall_fin_succ'
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.add_apply, Pi.smul_apply, smul_eq_mul, ← hC, ← hL]`. Rewrite using `[Fin.sum_univ_castSucc, mul_comm (t _)]`. Both sides reduce to the same expression.
+Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem frame_mulVec {R : Type} [CommRing R] {N n : ℕ} (hN : N = n + 1) (Fr : Matrix (Fin N) (Fin N) R)
     (Q : Matrix (Fin N) (Fin n) R) (a : Fin N → R) (hC : ∀ i k, Fr i (iC hN k) = Q i k) (hL : ∀ i, Fr i (iL hN) = a i)
@@ -42,13 +42,11 @@ private theorem frame_mulVec {R : Type} [CommRing R] {N n : ℕ} (hN : N = n + 1
   rfl
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨z, hzC, hzL⟩ : ∃ z : Fin N → R, (∀ k, z (iC hN k) = (((fr⁻¹ * B * fr)⁻¹).val *ᵥ fun k => v (iC hN k)) k) ∧ z (iL hN) = v (iL hN) := by`. Substitute `hN` using the available equality. Use `⟨Fin.snoc (α := fun _ => R) (((fr⁻¹ * B * fr)⁻¹).val *ᵥ fun k => v (iC rfl k)) (v (iL rfl)), fun k => ?_, ?_⟩` and prove the remaining obligations. Conclude with `Fin.snoc_castSucc (α := fun _ => R) _ _ k`. Conclude with `Fin.snoc_last (α := fun _ => R) _ _`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : B.val * fr.val * ((fr⁻¹ * B * fr)⁻¹).val = fr.val`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Use `group`. Establish `e2 : A.val *ᵥ (Fr.val *ᵥ z) = Fr.val *ᵥ v`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[frame_mulVec hN Fr.val _ a hC hL z, frame_mulVec hN Fr.val _ a hC hL v, funext hzC, hzL, Matrix.mulVec_add, Matrix.mulVec_smul, ha, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hP, Matrix.mul_assoc P, Matrix.mul_assoc P, e1]`. Establish `e3 : ((Fr⁻¹ * A * Fr)⁻¹).val *ᵥ v = z`. Establish `e4 : (Fr⁻¹ * A * Fr).val *ᵥ z = v`. Rewrite using `[Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e2, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Rewrite using `[← e4, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
-
-Rewrite using `[e3]`. Conclude with `⟨hzC, hzL⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem block {R : Type} [CommRing R] {N n : ℕ} (hN : N = n + 1) (A Fr : GL (Fin N) R) (B fr : GL (Fin n) R)
     (P : Matrix (Fin N) (Fin n) R) (a : Fin N → R) (hP : A.val * P = P * B.val) (ha : A.val *ᵥ a = a)
@@ -78,7 +76,7 @@ private theorem block {R : Type} [CommRing R] {N n : ℕ} (hN : N = n + 1) (A Fr
   exact ⟨hzC, hzL⟩
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Conclude with `(GlobalTheory.MovedSD.mem_globLat_move D (G.Λ X) (S.N.fr X) _ _ (S.N.u_lat X hX) v).trans (Formalism.L2.Col.mem_latS_std _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_latAt {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     (S : GridChoice W Set.univ) (X : Node) (hX : DefNode D.R.m X) (x : FinPt G X)
@@ -90,14 +88,14 @@ private theorem mem_latAt {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G :
   exact (GlobalTheory.MovedSD.mem_globLat_move D (G.Λ X) (S.N.fr X) _ _ (S.N.u_lat X hX) v).trans (Formalism.L2.Col.mem_latS_std _)
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem finE_val {D : D7} (V : HSp D) (g : Formalism.L2.Theta.GA D V) : (Lev.finE V g).val = (mt V g).map (toEAf D) := by
   ext i j
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_mul, Matrix.mul_assoc, hu, ← Matrix.mul_assoc, hx, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem emb_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {N n : ℕ} (x u : Matrix (Fin N) (Fin N) R)
     (y u' : Matrix (Fin n) (Fin n) R) (P : Matrix (Fin N) (Fin n) R) (hx : x * P = P * y) (hu : u * P = P * u') :
@@ -106,7 +104,7 @@ private theorem emb_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R'
     Matrix.mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[← Matrix.map_mul]`. Use `(RingHom.map_mulVec f (x * u) a i).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, hu, hx]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem vec_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {N : ℕ} (x u : Matrix (Fin N) (Fin N) R)
     (a : Fin N → R) (hx : x *ᵥ a = a) (hu : u *ᵥ a = a) :
@@ -121,15 +119,11 @@ end GlobalTheory.TopLatSplit
 open GlobalTheory.TopLatSplit in
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `D T L sc G W S y v`. Establish `hrel` using `finEmb_rel G.sp.topDec y`. Establish `hx1 : mt (G.V (.top D.R.m)) (finEmb G.sp.topDec y).1 * topEmb G = topEmb G * mt (G.V (.grid D.R.m D.R.m)) y.1` using `hrel.1`. Establish `hx2 : mt (G.V (.top D.R.m)) (finEmb G.sp.topDec y).1 *ᵥ topVec G = topVec G` using `hrel.2 (fun i => G.sp.topDec.a i 0) (funext fun k => congr_fun (congr_fun G.sp.topDec.perp k) 0)`. Establish `hb` using `block (R := Lev.EAf D) (N := (G.V (.top D.R.m)).rank) (n := (G.V (.grid D.R.m D.R.m)).rank) G.sp.topDec.rank.symm (Lev.finE (G.V (.top D.R.m)) (finEmb G.sp.topDec y).1 * Lev.finE (G.V (.top D.R.m)) (S.N.u (.top D.R.m)).1) (Formalism.UG.bc (eToEAf D) (S.N.fr (.top D.R.m))) (Lev.fi …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, Units.val_mul, finE_val, finE_val, finE_val, finE_val]`. Conclude with `emb_map (toEAf D) _ _ _ _ _ hx1 S.N.u_top)`. Use the proof step `(by`. Rewrite using `[Units.val_mul, finE_val, finE_val]`. Conclude with `vec_map (toEAf D) _ _ _ hx2 S.N.u_last)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun i k => by`. Establish `e` using `congrArg (eToEAf D) (S.N.fr_top i k)`. Conclude with `e.trans (congr_fun (congr_fun (Matrix.map_mul (f := eToEAf D)) i) k))`. Use the proof step `(fun i => congrArg (eToEAf D) (S.N.fr_last i))`. Use the proof step `(fun i => eToEAf D (v i))`.
-
-Use `(mem_latAt S (.top D.R.m) (le_refl D.R.m) (finEmb G.sp.topDec y) v).trans ?_` and prove the remaining obligations. Use `(forall_idx (N := (G.V (.top D.R.m)).rank) (n := (G.V (.grid D.R.m D.R.m)).rank) G.sp.topDec.rank.symm _).trans ?_` and prove the remaining obligations. Use `and_congr ?_ ?_` and prove the remaining obligations. Use `Iff.trans ?_ (mem_latAt S (.grid D.R.m D.R.m) ⟨le_refl _, rfl⟩ y _).symm` and prove the remaining obligations. Conclude with `forall_congr' fun k => Iff.of_eq (congrArg (· ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (hb.1 k))`.
-
-Use `(Iff.of_eq (congrArg (· ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) hb.2)).trans ?_` and prove the remaining obligations. Conclude with `GlobalTheory.NormSum.AdLattice.incl_mem_iff _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.mem_vertexLatticeOrthonormalCoords_topNode_iff : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} (S : GridChoice W Set.univ)
     (y : FinPt G (.grid D.R.m D.R.m)) (v : Fin (G.V (.top D.R.m)).rank → D.host.E),

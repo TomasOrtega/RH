@@ -12,9 +12,9 @@ open scoped Classical Pointwise
 namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Th
 
 /- English proof (translation)
-Take `⟨h, hh, k, hk, e⟩` from `(DoubleCoset.eq (twCent θ δ) K _ _).1 (DoubleCoset.out_eq' (twCent θ δ) K (DoubleCoset.mk (twCent θ δ) K x))`. Generalize the expression as in `Quotient.out (DoubleCoset.mk (twCent θ δ) K x) = o at e`. Establish `hc : h * δ = δ * θ h` using `hh`. Use `⟨k, hk, (θ k)⁻¹, K.inv_mem (hθ k hk), ?_⟩` and prove the remaining obligations. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Simplify using `only [_root_.mul_inv_rev, map_mul, mul_assoc, mul_inv_cancel_left, mul_inv_cancel_right]`. Rewrite using `[← mul_assoc δ (θ h), ← hc]`. Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma out_orbit {G : Type} [Group G] (θ : G →* G) (K : Subgroup G) (hθ : ∀ k ∈ K, θ k ∈ K) (δ x : G) :
     ∃ k ∈ K, ∃ k' ∈ K,
@@ -31,15 +31,13 @@ private lemma out_orbit {G : Type} [Group G] (θ : G →* G) (K : Subgroup G) (h
   simp [mul_assoc]
 
 /- English proof (translation)
-Introduce `C hC`. Establish `c1 : IsCompact ((K : Set G) * (Prod.fst '' C) * (K : Set G))` using `(hK.mul (hC.image continuous_fst)).mul hK`. Establish `c2 : IsCompact ((K' : Set H) * (Prod.snd '' C) * (K' : Set H))` using `(hK'.mul (hC.image continuous_snd)).mul hK'`. Set `φ : DoubleCoset.Quotient (twCent (θ.prodMap θ') (δ, δ') : Set (G × H)) ((K.prod K' : Subgroup (G × H)) : Set (G × H)) → DoubleCoset.Quotient (twCent θ δ : Set G) (K : Set G) × DoubleCoset.Quotient (twCent θ' δ' : Set H) (K' : Set H)` to `fun q => (DoubleCoset.mk _ _ (Quotient.out q).1, DoubleCoset.mk _ _ (Quotient.out q).2)`. Establish `hφ : Function.Injective φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `q q' e`. Take `⟨e1, e2⟩` from `Prod.mk.inj e`. Take `⟨a, ha, k, hk, f1⟩` from `(DoubleCoset.eq _ _ _ _).1 e1`. Take `⟨b, hb, l, hl, f2⟩` from `(DoubleCoset.eq _ _ _ _).1 e2`. Establish `hab : (a, b) ∈ twCent (θ.prodMap θ') (δ, δ')` using `Prod.ext (show a * δ = δ * θ a from ha) (show b * δ' = δ' * θ' b from hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : DoubleCoset.mk (twCent (θ.prodMap θ') (δ, δ')) (K.prod K') (Quotient.out q) = DoubleCoset.mk (twCent (θ.prodMap θ') (δ, δ')) (K.prod K') (Quotient.out q')` using `(DoubleCoset.eq _ _ _ _).2 ⟨(a, b), hab, (k, l), ⟨hk, hl⟩, Prod.ext f1 f2⟩`. Rewrite `key` using `[DoubleCoset.out_eq', DoubleCoset.out_eq']`. Then use the resulting hypothesis. Use `(Set.Finite.preimage hφ.injOn ((h1 _ c1).prod (h2 _ c2))).subset ?_` and prove the remaining obligations. Introduce `q hq`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk, k', hk', e⟩` from `out_orbit θ K hθ δ (Quotient.out q).1 show (Quotient.out (DoubleCoset.mk (twCent θ δ) K (Quotient.out q).1))⁻¹ * δ * θ (Quotient.out (DoubleCoset.mk (twCent θ δ) K (Quotient.out q).1)) ∈ (K : Set G) * (Prod.fst '' C) * (K : Set G)`. Rewrite using `[e]`. Conclude with `Set.mul_mem_mul (Set.mul_mem_mul hk ⟨_, hq, rfl⟩) hk'`. Take `⟨k, hk, k', hk', e⟩` from `out_orbit θ' K' hθ' δ' (Quotient.out q).2 show (Quotient.out (DoubleCoset.mk (twCent θ' δ') K' (Quotient.out q).2))⁻¹ * δ' * θ' (Quotient.out (DoubleCoset.mk (twCent θ' δ') K' (Quotient.out q).2)) ∈ (K' : Set H) * (Prod.snd '' C) * (K' : Set H)`. Rewrite using `[e]`.
-
-Conclude with `Set.mul_mem_mul (Set.mul_mem_mul hk ⟨_, hq, rfl⟩) hk'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orbFin_prod {G H : Type} [Group G] [Group H] [TopologicalSpace G] [TopologicalSpace H]
     [ContinuousMul G] [ContinuousMul H] (θ : G →* G) (θ' : H →* H) (K : Subgroup G) (K' : Subgroup H)
@@ -78,11 +76,9 @@ private theorem orbFin_prod {G H : Type} [Group G] [Group H] [TopologicalSpace G
     exact Set.mul_mem_mul (Set.mul_mem_mul hk ⟨_, hq, rfl⟩) hk'
 
 /- English proof (translation)
-Introduce `E _ _ _ hE a b w _`. Establish `ta` using `GlobalTheory.T.localTwist_continuous_involution_integral_properties E hE a w`. Establish `tb` using `GlobalTheory.T.localTwist_continuous_involution_integral_properties E hE b w`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(ta.1.comp continuous_fst).prodMk (tb.1.comp continuous_snd)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Conclude with `Prod.ext (ta.2.1 x.1) (tb.2.1 x.2)`. Introduce `k hk`. Conclude with `⟨ta.2.2.1 _ hk.1, tb.2.2.1 _ hk.2⟩`. Introduce and unpack `⟨y₁, y₂⟩ h₁ h₂`.
-
-Conclude with `orbFin_prod (thL a w) (thL b w) _ _ ta.2.2.2.2.2.1 tb.2.2.2.2.2.1 ta.2.2.1 tb.2.2.1 y₁ y₂ ((GlobalTheory.T.regularTwistedOrbit_local_finiteness E hE a w y₁ h₁ _ ⟨ta.2.2.2.2.1, le_rfl, ta.2.2.1⟩).2) ((GlobalTheory.T.regularTwistedOrbit_local_finiteness E hE b w y₂ h₂ _ ⟨tb.2.2.2.2 …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem theta_involution_facts : Th2 := by
   intro E _ _ _ hE a b w _

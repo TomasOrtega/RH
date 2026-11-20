@@ -13,39 +13,37 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D A B B₀ c ρ a d hA Λ 𝔟 v hv`. Take `⟨hc, he, s, he'⟩` from `hA`. Take `⟨y, hy, u, hu, rfl⟩` from `hv`. Establish `hGh : B.gramᴴ = B.gram` using `GlobalTheory.MixModel.gram_conjTranspose B`. Establish `hperp : (frameMat B A a.ι)ᴴ * B.gram * a.a = 0` using `a.perp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgram : a.aᴴ * B.gram * a.a = antiDiagonalSignGramMatrix c (-1)` using `a.gram`. Use `set N : Matrix (Fin c) (Fin c) D.host.E := antiDiagonalSignGramMatrix c (-1) with hN`. Establish `hK : a.aᴴ * B.gram * frameMat B A a.ι = 0`. Use `congrArg Matrix.conjTranspose hperp` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul, hGh, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hρc : ρ ≤ c` using `by omega`. Set `P : Matrix (Fin c) (Fin ρ) D.host.E` to `fun q p => if q = (Fin.castLE hρc p).rev then s p else 0`. Set `Q : Matrix (Fin c) (Fin ρ) D.host.E` to `fun q p => if q = Fin.castLE hρc p then (-D.host.xi0) ^ (p.1 + 1) else 0`. Establish `heP : d.e' = a.a * P`. Rewrite using `[he']`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i p`. Rewrite using `[Matrix.mul_apply]`. Simplify using `[colsOf, P, mul_comm]`. Establish `heQ : d.e = a.a * Q`. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i p`. Rewrite using `[Matrix.mul_apply]`. Simplify using `[colsOf, Q, mul_comm]`. Establish `hPN : ∀ p q, (Pᴴ * N) p q = if q = Fin.castLE hρc p then star (s p) else 0`. Introduce `p q`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.conjTranspose_apply]`. Simplify using `only [P, apply_ite star, star_zero, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `p.2` as an intermediate fact. Use `q.2` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hN, antiDiagonalSignGramMatrix, Fin.ext_iff, Fin.val_rev, Fin.val_castLE]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | ring`. Establish `hdiag : ∀ p : Fin ρ, star (s p) * (-D.host.xi0) ^ (p.1 + 1) = 1`. Introduce `p`. Establish `h1` using `d.e'e`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[heP, heQ, Matrix.conjTranspose_mul]`. Establish `h2 : Pᴴ * a.aᴴ * B.gram * (a.a * Q) = Pᴴ * N * Q`. Rewrite using `[← hgram]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `congrFun (congrFun h1 p) p`. Rewrite `h3` using `[Matrix.mul_apply]`. Simplify using `only [hPN, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Q, Matrix.one_apply_eq] at h3`. Simplify using `using h3`. Establish `hqX : d.qX = Pᴴ * a.aᴴ * B.gram`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HypDec.qX, heP, Matrix.conjTranspose_mul]`. Establish `ht : d.qX *ᵥ (frameMat B A a.ι *ᵥ y + a.a *ᵥ u) = (Pᴴ * N) *ᵥ u`. Establish `h1 : Pᴴ * a.aᴴ * B.gram * frameMat B A a.ι = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Pᴴ * a.aᴴ * B.gram * a.a = Pᴴ * N`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hgram]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[mulVec_add, mulVec_mulVec, mulVec_mulVec, hqX, h1, h2, zero_mulVec, zero_add]`. Establish `hu' : ∀ q : Fin c, (Q *ᵥ ((Pᴴ * N) *ᵥ u)) q = if q.1 < ρ then u q else 0`. Introduce `q`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [mulVec, dotProduct, hPN, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Q]`. Use `split_ifs with hq`. Rewrite using `[Finset.sum_eq_single ⟨q.1, hq⟩]`. Establish `e1 : q = Fin.castLE hρc ⟨q.1, hq⟩` using `Fin.ext rfl`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← mul_assoc, mul_comm ((-D.host.xi0) ^ _), hdiag, one_mul, if_pos e1, ← e1]`. Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `e`. Apply `hb` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `ext`. Simplify using `only [Fin.ext_iff, Fin.val_castLE, Fin.val_mk] at e ⊢`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `e`. Apply `hq` to reduce the goal to its premises. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨0, Λ.zero_mem, Q *ᵥ ((Pᴴ * N) *ᵥ u), fun q => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hu']`. Use `split_ifs`. Conclude with `hu q`. Conclude with `(𝔟 q).val.zero_mem`.
-
-Rewrite using `[mulVec_zero, zero_add, ← mulVec_mulVec, ht, heQ, ← mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projX_embedding_lattice : ∀ {D : D7} {A B B₀ : HSp D} {c ρ : ℕ} (a : HermitianOrthogonalExtensionData A B c (-1)) (d : HypDec B B₀ ρ), IsAuxiliaryVectorWittDec a d → ∀ (Λ : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)) (𝔟 : Fin c → FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (v : Fin B.rank → D.host.E), v ∈ a.lat Λ 𝔟 → (d.e * d.qX) *ᵥ v ∈ a.lat Λ 𝔟 := by
   intro D A B B₀ c ρ a d hA Λ 𝔟 v hv

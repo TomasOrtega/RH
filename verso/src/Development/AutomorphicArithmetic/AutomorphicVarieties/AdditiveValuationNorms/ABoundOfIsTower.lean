@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationN
 open NumberField Formalism.GaloisCohomology
 
 /- English proof (translation)
-Take `⟨γ, h₁, h₂, h₃⟩` from `UpperTheory.V.PropA.genLevel l L₀ ht.mu`. Conclude with `UpperTheory.V.PropA.aBound_of_descends hP hF hT ht h₂ h₃ (UpperTheory.V.PropA.descends l L₀ ht.mu γ h₁)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.PropA.aBound_of_isTower (hP : GlobalTheory.Published.PoitouTateDuality) (hF : LocalFinitenessK) (hT : LocalTateDualityK)
     (l : ℕ) [Fact l.Prime] (L₀ : Type) [Field L₀] [NumberField L₀] (R : ℕ) (ht : UpperTheory.V.Tower.IsTower l L₀ R) :

@@ -16,7 +16,7 @@ namespace PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuit
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[GlobalTheory.ThK.incV, map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incV_add {k : ℕ} (x y : Fin k → E) :
     GlobalTheory.ThK.incV F (x + y) = GlobalTheory.ThK.incV F x + GlobalTheory.ThK.incV F y := by
@@ -24,25 +24,25 @@ theorem incV_add {k : ℕ} (x y : Fin k → E) :
   simp [GlobalTheory.ThK.incV, map_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[GlobalTheory.ThK.incV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incV_zero {k : ℕ} : GlobalTheory.ThK.incV F (0 : Fin k → E) = 0 := by
   funext i
   simp [GlobalTheory.ThK.incV]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[GlobalTheory.ThK.incV, map_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem incV_neg {k : ℕ} (x : Fin k → E) : GlobalTheory.ThK.incV F (-x) = -GlobalTheory.ThK.incV F x := by
   funext i
   simp [GlobalTheory.ThK.incV, map_neg]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨0, incV_zero⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨X, rfl⟩` from `hx`. Take `⟨Z, rfl⟩` from `hy`. Conclude with `⟨X + Z, incV_add X Z⟩`. Consider the case `neg x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨X, rfl⟩` from `hx`. Conclude with `⟨-X, incV_neg X⟩`. Introduce and unpack `⟨X, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨X, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_ratVec {k : ℕ} {v : Fin k → AE F E} :
     v ∈ AddSubgroup.closure (Set.range (GlobalTheory.ThK.incV F : (Fin k → E) → _)) ↔ ∃ x, GlobalTheory.ThK.incV F x = v := by
@@ -62,7 +62,7 @@ theorem mem_ratVec {k : ℕ} {v : Fin k → AE F E} :
     exact AddSubgroup.subset_closure ⟨X, rfl⟩
 
 /- English proof (translation)
-Take `⟨C, hC, hCx⟩` from `kfour.exists_compact_AE (F := F) (E := E)`. Use `⟨Set.univ.pi fun _ => C, isCompact_univ_pi fun _ => hC, fun v => ?_⟩` and prove the remaining obligations. Use `choose X hX using fun i => hCx (v i)`. Conclude with `⟨GlobalTheory.ThK.incV F X, mem_ratVec.2 ⟨X, rfl⟩, fun i _ => hX i⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ratVec_cocompact (k : ℕ) : ∃ K : Set (Fin k → AE F E), IsCompact K ∧
     ∀ v, ∃ γ ∈ AddSubgroup.closure (Set.range (GlobalTheory.ThK.incV F : (Fin k → E) → _)), γ + v ∈ K := by
@@ -72,13 +72,13 @@ theorem ratVec_cocompact (k : ℕ) : ∃ K : Set (Fin k → AE F E), IsCompact K
   exact ⟨GlobalTheory.ThK.incV F X, mem_ratVec.2 ⟨X, rfl⟩, fun i _ => hX i⟩
 
 /- English proof (translation)
-Take `⟨V, hV, hV0⟩` from `kfour.exists_nhds_inclR (F := F) (E := E)`. Establish `hW : (⋂ i, (fun v : Fin k → AE F E => v i) ⁻¹' V) ∈ 𝓝 (0 : Fin k → AE F E)`. Use `Filter.iInter_mem.2 fun i => ?_` and prove the remaining obligations. Conclude with `(continuous_apply i).continuousAt.preimage_mem_nhds (by simpa using hV)`. Take `⟨O, hOW, hO, h0⟩` from `mem_nhds_iff.1 hW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `discreteTopology_of_isOpen_singleton_zero ?_` and prove the remaining obligations. Use `hO.preimage continuous_subtype_val using 1` and compare the differences between its conclusion and the goal. Use extensionality with `⟨x, hx⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : x = 0` using `congrArg Subtype.val (Set.mem_singleton_iff.1 h)`. Substitute `h1` using the available equality. Conclude with `h0`. Introduce `h`. Take `⟨X, rfl⟩` from `mem_ratVec.1 hx`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2 : X = 0`. Use function extensionality and compare the values at `i`. Conclude with `hV0 _ (Set.mem_iInter.1 (hOW h) i)`. Substitute `h2` using the available equality. Conclude with `Set.mem_singleton_iff.2 (Subtype.ext incV_zero)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ratVec_discrete (k : ℕ) :
     DiscreteTopology (AddSubgroup.closure (Set.range (GlobalTheory.ThK.incV F : (Fin k → E) → (Fin k → AE F E)))) := by
@@ -104,9 +104,7 @@ theorem ratVec_discrete (k : ℕ) :
     exact Set.mem_singleton_iff.2 (Subtype.ext incV_zero)
 
 /- English proof (translation)
-Use `haveI := kfour.countable_E (E := E)`. Establish `h : (AddSubgroup.closure (Set.range (GlobalTheory.ThK.incV F : (Fin k → E) → (Fin k → AE F E))) : Set (Fin k → AE F E)).Countable`. Use `(Set.countable_range (GlobalTheory.ThK.incV F : (Fin k → E) → (Fin k → AE F E))).mono fun v hv => ?_` and prove the remaining obligations. Take `⟨X, rfl⟩` from `mem_ratVec.1 hv`. Conclude with `⟨X, rfl⟩`.
-
-Conclude with `h.to_subtype`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ratVec_countable (k : ℕ) :
     Countable (AddSubgroup.closure (Set.range (GlobalTheory.ThK.incV F : (Fin k → E) → (Fin k → AE F E)))) := by

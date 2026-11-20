@@ -12,7 +12,7 @@ variable {E k : Type} [Field E] [NumberField E] [Field k] [ValuativeRel k]
   {P : HeightOneSpectrum (𝓞 E)} {ι : E →+* k}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Proof.mem_integralGLAtPrime_of_congruent_one_mod_pow.mem_stdAt]`. Conclude with `forall_congr' fun i => (hι _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stdAt_iff_int (hι : ∀ a, ι a ∈ 𝒪[k] ↔ IntAt P a) {M : ℕ} (v : Sp E M) :
     v ∈ stdAt E M P ↔ ∀ i, ι (v i) ∈ 𝒪[k] := by
@@ -20,9 +20,9 @@ theorem mem_stdAt_iff_int (hι : ∀ a, ι a ∈ 𝒪[k] ↔ IntAt P a) {M : ℕ
   exact forall_congr' fun i => (hι _).symm
 
 /- English proof (translation)
-Rewrite using `[mem_stdAt_iff_int hι]`. Introduce `i`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Rewrite using `[map_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.one_mem _`. Rewrite using `[map_zero]`. Conclude with `Subring.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem single_mem_stdAt (hι : ∀ a, ι a ∈ 𝒪[k] ↔ IntAt P a) {M : ℕ} (m : Fin M) :
     (Pi.single m 1 : Sp E M) ∈ stdAt E M P := by
@@ -34,9 +34,9 @@ theorem single_mem_stdAt (hι : ∀ a, ι a ∈ 𝒪[k] ↔ IntAt P a) {M : ℕ}
   · rw [map_zero]; exact Subring.zero_mem _
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[mem_stdAt_iff_int hι]`. Introduce `i`. Establish `e : y v = LinearMap.toMatrix' (y : Sp E M →ₗ[E] Sp E M) *ᵥ v` using `(LinearMap.toMatrix'_mulVec _ v).symm`. Rewrite using `[e]`. Simplify using `only [Matrix.mulVec, dotProduct, LinearMap.toMatrix'_apply, map_sum, map_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Subring.sum_mem _ fun m _ => Subring.mul_mem _ (hy i m) (hv m)`.
+A detailed English derivation is pending.
 -/
 theorem map_mem_stdAt (hι : ∀ a, ι a ∈ 𝒪[k] ↔ IntAt P a) {M : ℕ} (y : Sp E M ≃ₗ[E] Sp E M)
     (hy : ∀ i m, ι (y (Pi.single m 1) i) ∈ 𝒪[k]) {v : Sp E M} (hv : v ∈ stdAt E M P) : y v ∈ stdAt E M P := by
@@ -52,15 +52,15 @@ end GlobalTheory.VolBridge.StabRead
 open GlobalTheory.VolBridge.StabRead in
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SplitFlip.mem_KO_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : x⁻¹ ∈ stabL E M (stdAt E M P)` using `inv_mem hx`. Use `⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `ι (x (Pi.single (e b) 1) (e a)) ∈ 𝒪[k]`. Conclude with `(mem_stdAt_iff_int hι _).1 ((hx _).2 (single_mem_stdAt hι _)) _`. Express the relevant statement in the definitionally equal form `ι ((x⁻¹ : Sp E M ≃ₗ[E] Sp E M) (Pi.single (e b) 1) (e a)) ∈ 𝒪[k]`. Conclude with `(mem_stdAt_iff_int hι _).1 ((hx' _).2 (single_mem_stdAt hι _)) _`. Introduce and unpack `⟨h1, h2⟩`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i1 : ∀ i m, ι (x (Pi.single m 1) i) ∈ 𝒪[k]` using `fun i m => by`. Establish `h` using `h1 (e.symm i) (e.symm m)`. Express the relevant statement in the definitionally equal form `ι (x (Pi.single (e (e.symm m)) 1) (e (e.symm i))) ∈ 𝒪[k] at h`. Simplify `h` using `only [Equiv.apply_symm_apply]`. Establish `i2 : ∀ i m, ι ((x⁻¹ : Sp E M ≃ₗ[E] Sp E M) (Pi.single m 1) i) ∈ 𝒪[k]` using `fun i m => by`.
+Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h` using `h2 (e.symm i) (e.symm m)`. Express the relevant statement in the definitionally equal form `ι ((x⁻¹ : Sp E M ≃ₗ[E] Sp E M) (Pi.single (e (e.symm m)) 1) (e (e.symm i))) ∈ 𝒪[k] at h`. Simplify `h` using `only [Equiv.apply_symm_apply]`. Introduce `v`. Prove the components needed by the constructor for the conclusion.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hv`. Establish `h` using `map_mem_stdAt hι _ i2 hv`. Establish `ev : (x⁻¹ : Sp E M ≃ₗ[E] Sp E M) (x v) = v` using `x.symm_apply_apply v`. Rewrite `h` using `[ev]`. Then use the resulting hypothesis. Conclude with `map_mem_stdAt hι x i1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.VolBridge.mem_stabL_stdAt_iff_locHom_mem_KO {E k : Type} [Field E] [NumberField E] [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (P : HeightOneSpectrum (𝓞 E)) (ι : E →+* k)

@@ -4,15 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 open CategoryTheory UpperTheory.V.KH
 
 /- English proof (translation)
-Introduce `ι _ v b hv hb`. Use `haveI := Fintype.ofFinite ι`. Use `set N := Submodule.span ℤ (Set.range v)`. Set `bE : Module.Basis ι ℤ (ι →₀ ℤ)` to `Finsupp.basisSingleOne`. Set `bN : Module.Basis ι ℤ N` to `Module.Basis.span hv`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hfin : Finite ((ι →₀ ℤ) ⧸ N)`. Apply `Submodule.finiteQuotientOfFreeOfRankEq` to reduce the goal to its premises. Rewrite using `[Module.finrank_eq_card_basis bN, Module.finrank_eq_card_basis bE]`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.natAbs_det_basis_change bE N bN]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hcoe : ((↑) ∘ bN : ι → (ι →₀ ℤ)) = v`. Use function extensionality and compare the values at `i`. Conclude with `congrArg Subtype.val (Module.Basis.span_apply hv i)`. Rewrite using `[hcoe, Module.Basis.det_apply, ← Matrix.det_transpose]`. Use `(det_natAbs_le_prod_l1_norms ι _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hrow : ∀ i, ∑ k, ((bE.toMatrix v).transpose i k).natAbs = l1 (v i)`. Introduce `i`. Simplify using `only [Matrix.transpose_apply, Module.Basis.toMatrix_apply, bE, Finsupp.basisSingleOne_repr, LinearEquiv.refl_apply, l1]`. Rewrite using `[Finsupp.sum_fintype]`. Simplify using the standard rewrite rules.
-
-Repeatedly rewrite using `[hrow]`. Rewrite using `[Nat.card_eq_fintype_card, ← Finset.card_univ]`. Conclude with `Finset.prod_le_pow_card _ _ _ (fun i _ => hb i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KH.indexLe :
     ∀ (ι : Type) [Finite ι] (v : ι → (ι →₀ ℤ)) (b : ℕ), LinearIndependent ℤ v → (∀ i, l1 (v i) ≤ b) →

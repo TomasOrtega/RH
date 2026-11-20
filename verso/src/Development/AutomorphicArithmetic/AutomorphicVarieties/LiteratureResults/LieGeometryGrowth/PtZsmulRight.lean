@@ -9,13 +9,13 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (χ
   (G : Matrix (Fin d) (Fin d) ℂ) (g : GA E a)
 
 /- English proof (translation)
-The claim follows from `funext fun j => (cmp_ev x j g).symm`.
+A detailed English derivation is pending.
 -/
 private theorem ev_eq (x : Sm E a ⊗[ℂ] (Fin d → ℂ)) : ev x g = fun j => (cmp j x).1 g :=
   funext fun j => (cmp_ev x j g).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[ev_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem ev_add' (x y : Sm E a ⊗[ℂ] (Fin d → ℂ)) : ev (x + y) g = ev x g + ev y g := by
   funext j
@@ -30,25 +30,25 @@ private noncomputable def ptR (x : Sm E a ⊗[ℂ] (Fin d → ℂ)) : Sm E a ⊗
     simp only [pt, ev_add', mulVec_add, dotProduct_add, mul_add]
 
 /- English proof (translation)
-The claim follows from `map_sum (ptL χ G g y) x s`.
+A detailed English derivation is pending.
 -/
 private theorem pt_sum_left {ι : Type} (s : Finset ι) (x : ι → Sm E a ⊗[ℂ] (Fin d → ℂ)) (y : Sm E a ⊗[ℂ] (Fin d → ℂ)) :
     pt χ G (∑ i ∈ s, x i) y g = ∑ i ∈ s, pt χ G (x i) y g := map_sum (ptL χ G g y) x s
 
 /- English proof (translation)
-The claim follows from `map_sum (ptR χ G g x) y s`.
+A detailed English derivation is pending.
 -/
 private theorem pt_sum_right {ι : Type} (s : Finset ι) (x : Sm E a ⊗[ℂ] (Fin d → ℂ)) (y : ι → Sm E a ⊗[ℂ] (Fin d → ℂ)) :
     pt χ G x (∑ i ∈ s, y i) g = ∑ i ∈ s, pt χ G x (y i) g := map_sum (ptR χ G g x) y s
 
 /- English proof (translation)
-The claim follows from `map_zsmul (ptL χ G g y) k x`.
+A detailed English derivation is pending.
 -/
 private theorem pt_zsmul_left (k : ℤ) (x y : Sm E a ⊗[ℂ] (Fin d → ℂ)) :
     pt χ G (k • x) y g = k • pt χ G x y g := map_zsmul (ptL χ G g y) k x
 
 /- English proof (translation)
-The claim follows from `map_zsmul (ptR χ G g x) k y`.
+A detailed English derivation is pending.
 -/
 private theorem pt_zsmul_right (k : ℤ) (x y : Sm E a ⊗[ℂ] (Fin d → ℂ)) :
     pt χ G x (k • y) g = k • pt χ G x y g := map_zsmul (ptR χ G g x) k y
@@ -59,13 +59,13 @@ end UpperTheory.V.Lit.Geo.Pf
 
 open UpperTheory.V.Lit.Geo.Pf in
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ χ G n e q L β η g`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ i : Fin (q + 1), ∑ I : Fin (q + 1) → Fin n, pt χ G (β fun k => e (I k)) ((-1 : ℤ) ^ (i : ℕ) • L (toL (e (I i)).1) (η (i.removeNth fun k => e (I k)))) g = ∑ J : Fin q → Fin n, ∑ j, pt χ G (β (Matrix.vecCons (e j) fun i => e (J i))) (L (toL (e j).1) (η fun i => e (J i))) g` using `fun i => by`. Rewrite using `[← (Fin.insertNthEquiv (fun _ => Fin n) i).sum_comp, Fintype.sum_prod_type, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun J _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (fun k => e ((Fin.insertNthEquiv (fun _ => Fin n) i (j, J)) k)) = i.insertNth (α` using `fun _ => Herm E a) (e j) (fun k => e (J k)) := by`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `refine Fin.succAboveCases i ?_ (fun k => ?_) k <;> simp [Fin.insertNthEquiv]`. Establish `h2 : (Fin.insertNthEquiv (fun _ => Fin n) i (j, J)) i = j` using `by simp [Fin.insertNthEquiv]`. Rewrite using `[h1, h2, Fin.removeNth_insertNth, AlternatingMap.map_insertNth, pt_zsmul_left, pt_zsmul_right, smul_smul, ← mul_pow]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h0 : ptIp χ G e β (dCo L η) g = ∑ i : Fin (q + 1), ∑ I : Fin (q + 1) → Fin n, pt χ G (β fun k => e (I k)) ((-1 : ℤ) ^ (i : ℕ) • L (toL (e (I i)).1) (η (i.removeNth fun k => e (I k)))) g`. Rewrite using `[Finset.sum_comm, ptIp_eq]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[dCo_apply, pt_sum_right]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, Finset.sum_congr rfl fun i _ => key i]`. Simplify using the standard rewrite rules. Rewrite using `[ptIp_eq]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[del_apply, pt_sum_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Lit.Geo.Pf.ptD :
     UpperTheory.V.Lit.Geo.Pf.PtD := by

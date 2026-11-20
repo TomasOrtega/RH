@@ -24,21 +24,19 @@ open SqLevel in
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hG R _ _ _ I hI D D' A A' G _ _ hS U U' wL hwL hrig e β hβ hq`. Establish `hM` using `DVR.linComb_isLB D.toPre.P.L D.toPre.P.isLB (K := Fin 1) (fun _ => 𝟙 D.toPre.P.A.left) (fun _ => 2)`. Establish `hM'` using `DVR.linComb_isLB D'.toPre.P.L D'.toPre.P.isLB (K := Fin 1) (fun _ => 𝟙 D'.toPre.P.A.left) (fun _ => 2)`. Establish `hL` using `DVR.linComb_isLB U.LG.L U.LG.isLB (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => 2)`. Establish `hL'` using `DVR.linComb_isLB U'.LG.L U'.LG.isLB (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwL' : (isoPullId wL (rfl : 𝟙 G.left = 𝟙 G.left)).IsGen` using `(isGen_iff _).2 (isoPullId_pgen hwL rfl)`. Take `⟨u, hu, hu'⟩` from `LevelComparison.exists_comparison hM hM' hL hL' (sqIso_isGen (U.w_gen e)) (sqIso_isGen (U'.w_gen e)) hwL'`. Establish `sqrel : ∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G).left) (z : Z) (jM : D.toPre.P.L.ι) (jM' : D'.toPre.P.L.ι) (jL : U.LG.L.ι) (jL' : U'.LG.L.ι), (U.gt e).pG.left (r z) ∈ D.toPre.P.L.U jM → (U'.gt e).pG.left (r z) ∈ D'.toPre.P.L.U jM' → (fstG I e G).left (r z) ∈ U.LG.L.U jL → ( …`. Introduce `Z r z jM jM' jL jL' a₁ a₂ a₃ a₄`. Establish `h` using `hu' Z r z (fun _ => jM) (fun _ => jM') (fun _ => jL) (fun _ => jL') (mem_sq.2 a₁) (mem_sq.2 a₂) (mem_sq.2 a₃) (mem_sq.2 a₄)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[gw_sqIso (U'.w e) r z (fun _ => jM') (fun _ _ => jL') a₂ a₄, gw_sqIso (U.w e) r z (fun _ => jM) (fun _ _ => jL) a₁ a₃, gw_isoPullId wL rfl _ z (fun _ => jL) (fun _ => jL') (mem_sq.2 a₃) (mem_sq.2 a₄)]`. Conclude with `h`. Establish `inv` using `GlobalTheory.T.square_comparison_torus_invariant hG R I hI D D' A A' G hS U U' wL hwL (GlobalTheory.T.square_iso_carries_square_cubical hG R I hI D D' A A' G hS U U' wL hwL) (GlobalTheory.T.square_iso_respects_symmetry_pointwise hG R I hI D D' A A' G hS U U' wL hwL) e β hβ hq u h …`. Use `haveI := (U'.gt e).q_flat`. Use `haveI := (U'.gt e).q_surj`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := (U'.gt e).q_affine`. Use `haveI := (U.gt e).q_hom`. Establish `hql : (U'.gt e).q.left ≫ β.hom.left = (U.gt e).q.left` using `congrArg (·.left) hq`. Take `⟨v, hv, hv'⟩` from `LevelComparison.exists_iso_descend (U'.gt e).q.left (fstG I e D'.toPre.P.A).left (β.hom.left ≫ (fstG I e D.toPre.P.A).left) (p := (U.gt e).pG.left) (p' := (U'.gt e).pG.left) (by rw [← Category.assoc, hql]; rfl) rfl u hu (fun Z g₁ g₂ z j j' h a b => by`. Take `⟨a₀, rfl⟩ : ∃ a₀, j = fun _ => a₀` from `⟨j 0, funext fun k => congrArg j (Subsingleton.elim k 0)⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨b₀, rfl⟩ : ∃ b₀, j' = fun _ => b₀` from `⟨j' 0, funext fun k => congrArg j' (Subsingleton.elim k 0)⟩`. Set `Z' : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))` to `Over.mk (g₂ ≫ (thickObj R I e G).hom)`. Set `k₂ : Z' ⟶ thickObj R I e G` to `Over.homMk g₂ rfl`. Set `k₁ : Z' ⟶ thickObj R I e G` to `Over.homMk g₁ (by`. Express the relevant statement in the definitionally equal form `g₁ ≫ (thickObj R I e G).hom = g₂ ≫ (thickObj R I e G).hom`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.w (U'.gt e).q, reassoc_of% h])`. Establish `e₁ : k₁ ≫ (U'.gt e).q = k₂ ≫ (U'.gt e).q` using `Over.OverMorphism.ext h`. Establish `e' : k₁ ≫ (U.gt e).q = k₂ ≫ (U.gt e).q` using `by rw [← hq, reassoc_of% e₁]`. Establish `w : (k₁ * k₂⁻¹) ≫ (U.gt e).q = toUnit Z' ≫ η[thickObj R I e D.toPre.P.A]`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, e', mul_inv_cancel]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Establish `ht : ((U.gt e).isKernel.lift _ _ w ≫ (U.gt e).i) * k₂ = k₁`. Rewrite using `[(U.gt e).isKernel.lift_fst, inv_mul_cancel_right]`. Use `inv Z' ((U.gt e).isKernel.lift _ _ w) k₂ z a₀ b₀ (mem_sq.1 a) (mem_sq.1 b)` as an intermediate fact. Rewrite `this` using `[ht]`.
-
-Conclude with `this)`. Use `⟨v, hv, fun Z r z jM jM' jL jL' a₁ a₂ a₃ a₄ => ?_⟩` and prove the remaining obligations. Rewrite using `[hv' Z r z (fun _ => jM) (fun _ => jM') (mem_sq.2 a₁) (mem_sq.2 a₂)]`. Conclude with `sqrel Z r z jM jM' jL jL' a₁ a₂ a₃ a₄`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polarisation_squares_agree_at_level : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), AdmBase R I →
     ∀ (D D' : DegData R I) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R)))

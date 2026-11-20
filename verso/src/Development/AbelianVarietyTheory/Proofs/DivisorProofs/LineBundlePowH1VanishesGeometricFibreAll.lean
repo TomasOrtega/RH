@@ -21,13 +21,13 @@ open GlobalTheory.AbLaw.SecBC
 open GlobalTheory.AbLaw in
 
 /- English proof (translation)
-Set `s : Spec (CommRingCat.of K) ⟶ S` to `q ≫ T.hom`. Set `AK : Over (Spec (CommRingCat.of K))` to `(Over.pullback s).obj A`. Set `g : AK.left ⟶ A.left` to `pullback.fst A.hom s`. Establish `hg : IsPullback g AK.hom A.hom s` using `IsPullback.of_hasPullback A.hom s`. Set `M : LB AK.left` to `L.pull g`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hM : M.IsLB` using `LB.isLB_pull hL g`. Establish `hAK : IsAbelianScheme AK` using `GlobalTheory.isAbelianScheme_pullback_obj s A hA`. Take `⟨U, hU, hp, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := s (default : PrimeSpectrum K)) trivial`. Establish `hsub : Subsingleton (Spec (CommRingCat.of K))` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Establish `hMA : RelAmple AK M` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.relAmple_pull (w := ReciprocityTheory.ChartRestriction.G.Geo.Tor.idIso M) hg hL hM ((ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGen_iff _).1 (ReciprocityTheory.ChartRestriction.G.Geo.Tor.idIso_isGen hM)) U hU (fun y => by rwa [Subs …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK` using `hV K AK M hAK hM hMA a ha`. Establish `H` using `isPullback_snd A T`. Set `π : AK.left ⟶ (T ⊗ A).left` to `H.lift g (AK.hom ≫ q) (by rw [hg.w, Category.assoc])`. Establish `e₁ : π ≫ (snd T A).left = g` using `H.lift_fst _ _ _`. Establish `e₂ : π ≫ (fst T A).left = AK.hom ≫ q` using `H.lift_snd _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨AK.left, π, AK.hom, IsPullback.of_right (by rw [e₁]; exact hg) e₂ H, ?_⟩` and prove the remaining obligations. Use `h1Zero_of_isIso _ _ (𝟙 _) (pw M a) _ inferInstance (isLB_pw hM _) (LB.isLB_pull (LB.isLB_linComb hL _ _) π) ?_ hK` and prove the remaining obligations. Conclude with `ReciprocityTheory.ChartRestriction.G.Geo.Tor.LBIso.chartPull (chartOut L (fun _ : Fin 1 => (snd T A).left) (fun _ => (a : ℤ)) π (fun _ => 𝟙 _ ≫ g) fun _ => by rw [e₁, Category.id_comp]) (chartPw M a) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.LBIso.symm (ReciprocityTheory.Char …`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AbLaw.SecBC.exists_h1Zero_of_abVar
     (hV : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Spec (CommRingCat.of K))) [GrpObj B] [IsCommMonObj B]
@@ -65,7 +65,7 @@ theorem GlobalTheory.AbLaw.SecBC.exists_h1Zero_of_abVar
       (fun _ : Fin 1 => 𝟙 _) (fun _ => (a : ℤ))))
 
 /- English proof (translation)
-Introduce `hV S A _ _ L hA hL hAm a ha T K _ _ q`. Conclude with `GlobalTheory.AbLaw.SecBC.exists_h1Zero_of_abVar hV S A L hA hL hAm a ha T K q`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AbLaw.SecBC.exists_h1Zero_of_abVar_all : ((∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Spec (CommRingCat.of K))) [GrpObj B] [IsCommMonObj B] (M : LB B.left), IsAbelianScheme B → M.IsLB → RelAmple B M → ∀ a : ℕ, 1 ≤ a → GlobalTheory.AbLaw.FirstCohomologyVanishes (GlobalTheory.AbLaw.pw M (a : ℤ))) → ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : LB A.left), IsAbelianScheme A → L.IsLB → RelAmple A L → ∀ a : ℕ, 1 ≤ a → ∀ (T : Over S) (K : Type) [Field K] [IsAlgClosed K] (q : Spec (CommRingCat.of K) ⟶ T.left), ∃ (X' : Scheme.{0}) (π : X' ⟶ (T ⊗ A).left) (f' : X' ⟶ Spec (CommRingCat.of K)), IsPullback π f' (fst T A).left q ∧ GlobalTheory.AbLaw.FirstCohomologyVanishes ((LPow A L (a : ℤ) T).pull π)) := by
   intro hV S A _ _ L hA hL hAm a ha T K _ _ q

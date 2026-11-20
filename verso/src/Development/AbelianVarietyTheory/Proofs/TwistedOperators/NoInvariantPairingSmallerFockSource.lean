@@ -38,7 +38,7 @@ def invSub (p q : ℕ) (R : DSRep T₂) : Submodule ℂ (Pairing p q R) where
 variable (R : DSRep T₂)
 
 /- English proof (translation)
-Establish `hc` using `(GlobalTheory.FockAlg.fock_lie_and_commute p q r s).2.2.2 Z W`. Simplify using `using LinearMap.congr_fun hc P`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fock_comm (Z : Mat p q) (W : Mat r s) (P : Pol p q r s) :
     fockAct1 p q r s Z (fockAct2 p q r s W P) = fockAct2 p q r s W (fockAct1 p q r s Z P) := by
@@ -63,21 +63,21 @@ Both sides reduce to the same expression.
     ((pre1 R Z b : invSub p q R) : Pairing p q R) = b.1 ∘ₗ fockAct1 p q r s Z := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `P y`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem invariantFockPairingPrecompAction_add (Z W : Mat p q) (b : invSub p q R) :
     pre1 R (Z + W) b = pre1 R Z b + pre1 R W b := by
   apply Subtype.ext; ext P y; simp
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `P y`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem invariantFockPairingPrecompAction_smul (c : ℂ) (Z : Mat p q) (b : invSub p q R) :
     pre1 R (c • Z) b = c • pre1 R Z b := by
   apply Subtype.ext; ext P y; simp
 
 /- English proof (translation)
-Establish `hl` using `(GlobalTheory.FockAlg.fock_lie_and_commute p q r s).2.1 Z W`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `P y`. Simplify using `[hl]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem invariantFockPairingPrecompAction_commutator (Z W : Mat p q) (b : invSub p q R) :
     pre1 R (Z * W - W * Z) b = pre1 R W (pre1 R Z b) - pre1 R Z (pre1 R W b) := by
@@ -97,7 +97,7 @@ Both sides reduce to the same expression.
     evalB R P y b = b.1 P y := rfl
 
 /- English proof (translation)
-Use extensionality with `b`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem dualMap_evalB (Z : Mat p q) (P : Pol p q r s) (y : R.HK.V) :
     (pre1 R Z).dualMap (evalB R P y) = evalB R (fockAct1 p q r s Z P) y := by
@@ -107,15 +107,15 @@ def MM (p q : ℕ) : Submodule ℂ (Module.Dual ℂ (invSub p q R)) :=
   Submodule.span ℂ (Set.range fun x : Pol p q r s × R.HK.V => evalB R x.1 x.2)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨(P, y), rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem evalB_mem (P : Pol p q r s) (y : R.HK.V) : evalB R P y ∈ MM R p q :=
   Submodule.subset_span ⟨(P, y), rfl⟩
 
 /- English proof (translation)
-Introduce `φ hφ`. Establish `: MM R p q ≤ (MM R p q).comap (pre1 R Z).dualMap`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨P, y⟩, rfl⟩`. Use `show (pre1 R Z).dualMap (evalB R P y) ∈ MM R p q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dualMap_evalB]`. Conclude with `evalB_mem R _ _`. Conclude with `this hφ`.
+A detailed English derivation is pending.
 -/
 theorem dualMap_mem (Z : Mat p q) : ∀ φ ∈ MM R p q, (pre1 R Z).dualMap φ ∈ MM R p q := by
   intro φ hφ
@@ -154,14 +154,14 @@ Both sides reduce to the same expression.
     ((Ly R y P : MM R p q) : Module.Dual ℂ (invSub p q R)) = evalB R P y := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `b`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem MMact_Ly (Z : Mat p q) (y : R.HK.V) (P : Pol p q r s) :
     MMact R Z (Ly R y P) = Ly R y (fockAct1 p q r s Z P) := by
   apply Subtype.ext; ext b; rfl
 
 /- English proof (translation)
-Introduce `Z W`. Use extensionality with `φ b`. Rewrite using `[MMact_coe, invariantFockPairingPrecompAction_commutator]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lie_MMact : IsLieAct (MMact R (p := p) (q := q)) := by
   intro Z W
@@ -170,15 +170,15 @@ theorem lie_MMact : IsLieAct (MMact R (p := p) (q := q)) := by
   simp
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `v`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨P, y⟩, rfl⟩` from `hx`. Take `⟨W₀, hfin, hP, hK⟩` from `((GlobalTheory.FockPolGK.pol_locFin_weights p q r s).1 P).1`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨W₀.map (Ly R y), inferInstance, ⟨P, hP, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `Z hZ _ ⟨P', hP', rfl⟩`. Conclude with `⟨_, hK Z hZ P' hP', (MMact_Ly R Z y P').symm⟩`. Consider the case `zero => exact ⟨⊥, inferInstance, Submodule.zero_mem _, fun Z _ w hw => by`. Rewrite `hw`, the goal using `[Submodule.mem_bot]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hw, map_zero]⟩`. Consider the case `add x y hx hy ihx ihy`. Take `⟨W₁, f₁, m₁, k₁⟩` from `ihx`. Take `⟨W₂, f₂, m₂, k₂⟩` from `ihy`. Use `⟨W₁ ⊔ W₂, inferInstance, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.add_mem_sup m₁ m₂`. Introduce `Z hZ w hw`. Take `⟨a, ha, c, hc, rfl⟩` from `Submodule.mem_sup.1 hw`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (k₁ Z hZ a ha) (k₂ Z hZ c hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul c x hx ih`. Take `⟨W₁, f₁, m₁, k₁⟩` from `ih`. Conclude with `⟨W₁, f₁, W₁.smul_mem c m₁, k₁⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kfin_MMact (v : MM R p q) :
     ∃ W : Submodule ℂ (MM R p q), FiniteDimensional ℂ W ∧ v ∈ W ∧ KStable (MMact R) W := by
@@ -206,9 +206,9 @@ theorem kfin_MMact (v : MM R p q) :
     exact ⟨W₁, f₁, W₁.smul_mem c m₁, k₁⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨P, hP, rfl⟩`. Simplify using `only [SetLike.mem_coe, wtSub, Submodule.mem_iInf, LinearMap.mem_ker] at hP ⊢`. Introduce `a`. Use `hP a` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply] at this ⊢`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[MMact_Ly, ← map_smul, ← map_sub, this, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Ly_wt (y : R.HK.V) (μ : Ix p q → ℚ) :
     (wtSub (fockAct1 p q r s) μ).map (Ly R y) ≤ wtSub (MMact R) μ := by
@@ -220,11 +220,11 @@ theorem Ly_wt (y : R.HK.V) (μ : Ix p q → ℚ) :
   rw [MMact_Ly, ← map_smul, ← map_sub, this, map_zero]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `v`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨P, y⟩, rfl⟩` from `hx`. Establish `hP` using `((GlobalTheory.FockPolGK.pol_locFin_weights p q r s).1 P).2`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : Ly R y P ∈ (⨆ μ : Ix p q → ℚ, wtSub (fockAct1 p q r s) μ).map (Ly R y)` using `⟨P, hP, rfl⟩`. Rewrite `h1` using `[Submodule.map_iSup]`. Conclude with `(iSup_mono fun μ => Ly_wt R y μ) h1`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y hx hy ihx ihy => exact Submodule.add_mem _ ihx ihy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x hx ih => exact Submodule.smul_mem _ c ih`.
+A detailed English derivation is pending.
 -/
 theorem wts_MMact (v : MM R p q) : v ∈ ⨆ μ : Ix p q → ℚ, wtSub (MMact R) μ := by
   obtain ⟨v, hv⟩ := v
@@ -260,11 +260,11 @@ Both sides reduce to the same expression.
 @[simp] theorem BB_apply (P : Pol p q r s) (y : R.HK.V) : BB R P y = Ly R y P := rfl
 
 /- English proof (translation)
-Establish `hinv : ∀ Z ∈ upq r s, ∀ (P : Pol p q r s) (y : R.HK.V), BB R (fockAct2 p q r s Z P) y + BB R P (R.HK.act Z y) = 0`. Introduce `Z hZ P y`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `c`. Establish `hc : IsInvPairing R c.1` using `c.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using hc Z hZ P y`. Take `⟨f, h2, hB, hc⟩` from `GlobalTheory.InvPairingTensor.exists_tensor_map p q r s T₂ R hadm (MM R p q) (BB R) hinv`. Establish `h1 : ∀ Z, f ∘ₗ fockAct1 p q r s Z = TensorProduct.map (MMact R Z) LinearMap.id ∘ₗ f` using `fun Z => hc _ _ fun P y => by simp [MMact_Ly]`. Establish `hf : f = 0` using `hno (MMgk R p q) f h1 h2`. Use `LinearMap.ext fun P => LinearMap.ext fun y => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hB P y`. Rewrite `h` using `[hf]`. Simplify using `only [LinearMap.zero_apply, map_zero, BB_apply] at h`. Establish `h'` using `congrArg (fun φ : MM R p q => (φ : Module.Dual ℂ (invSub p q R)) ⟨b, hb⟩) h`. Simplify using `using h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_noIntw (hadm : AdmGK R.HK)
     (hno : ∀ (M : GKMod p q) (f : Pol p q r s →ₗ[ℂ] TensorProduct ℂ M.V R.HK.V),
@@ -290,7 +290,7 @@ theorem eq_zero_of_noIntw (hadm : AdmGK R.HK)
   simpa using h'
 
 /- English proof (translation)
-The claim follows from `eq_zero_of_noIntw R hadm (fun M f h1 h2 => hno M f ⟨h1, h2⟩) b hb`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_noIntw' {T₀ : GrpData (p * r + q * s) (p * s + q * r)} {T₁ : GrpData p q}
     (F : FockData T₀ T₁ T₂) (hadm : AdmGK R.HK)
@@ -300,7 +300,7 @@ theorem eq_zero_of_noIntw' {T₀ : GrpData (p * r + q * s) (p * s + q * r)} {T�
   eq_zero_of_noIntw R hadm (fun M f h1 h2 => hno M f ⟨h1, h2⟩) b hb
 
 /- English proof (translation)
-The claim follows from `(((hUnit r s h).1 (X.ds r s lam').U ⟨(X.ds r s lam').nontriv, (X.ds r s lam').irred⟩).2.2 _ (X.ds r s lam').ι ⟨(X.ds r s lam').ι_inj, (X.ds r s lam').ι_range, (X.ds r s lam').der⟩).1`.
+A detailed English derivation is pending.
 -/
 theorem admissible_discreteSeries_harishChandraModule (X : ProvA) (hUnit : admQ5 X) (r s : ℕ) (h : 1 ≤ r + s) (lam' : Ix r s → ℚ) :
     AdmGK (X.ds r s lam').HK :=
@@ -308,13 +308,13 @@ theorem admissible_discreteSeries_harishChandraModule (X : ProvA) (hUnit : admQ5
     (X.ds r s lam').ι ⟨(X.ds r s lam').ι_inj, (X.ds r s lam').ι_range, (X.ds r s lam').der⟩).1
 
 /- English proof (translation)
-Consider the cases of `a with`. Consider the case `inl i`. Establish `hi : (i : ℕ) < (al ++ be).length` using `by simp`. Establish `hm : (al ++ be).getD i 0 ∈ al ++ be`. Rewrite using `[List.getD_eq_getElem _ _ hi]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `List.getElem_mem hi`. Simplify using `only [lamA, ofBlocks]`. Simplify using `only [List.mem_append] at hm ⊢`. The claim follows by propositional logic. Consider the case `inr j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. The claim follows by propositional logic. Treat this case separately. Establish an intermediate fact.
 
-Establish `hj : (j : ℕ) < (ga ++ de).length` using `by simp`. Establish `hm : (ga ++ de).getD j 0 ∈ ga ++ de`. Rewrite using `[List.getD_eq_getElem _ _ hj]`. Conclude with `List.getElem_mem hj`. Simplify using `only [lamA, ofBlocks]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Simplify using `only [List.mem_append] at hm ⊢`. The claim follows by propositional logic.
+A detailed English derivation is pending.
 -/
 theorem lamA_mem (al be ga de : List ℚ) (a : Ix (al.length + be.length) (ga.length + de.length)) :
     lamA al be ga de a ∈ al ++ be ++ ga ++ de := by
@@ -335,11 +335,11 @@ theorem lamA_mem (al be ga de : List ℚ) (a : Ix (al.length + be.length) (ga.le
     tauto
 
 /- English proof (translation)
-Introduce `X hUnit hAR5 t al be ga de hD hbig i hi1 hip hiq b hb`. Establish `ht : 1 ≤ t` using `hD.1.1`. Establish `hadm` using `admissible_discreteSeries_harishChandraModule X hUnit _ _ (by omega) (lamA' t al be ga de)`. Establish `hv` using `hAR5.1 t al be ga de hD`. Use `eq_zero_of_noIntw' (X.ds _ _ (lamA' t al be ga de)) (X.fock _ _ _ _) hadm ?_ b hb` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `M f hf`. Use `hv (Or.inl ?_) i hi1 hip hiq M f hf` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩`. Establish `h` using `hbig _ (lamA_mem al be ga de a)`. Rewrite `h` using `[ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : (0 : ℚ) ≤ ((t : ℚ) + 1) / 2` using `by positivity`. Rewrite `h` using `[abs_of_nonneg hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem no_pairing_smaller_source : ∀ X : ProvA, admQ5 X → ArchimedeanRallisFifth X → ∀ (t : ℕ) (al be ga de : List ℚ), DataAR t al be ga de → (∀ e ∈ al ++ be ++ ga ++ de, ((t : ℚ) + 3) / 2 ≤ |e|) → ∀ i : ℕ, 1 ≤ i → i ≤ al.length + be.length → i ≤ ga.length + de.length → ∀ b : Pol (al.length + be.length - i) (ga.length + de.length - i) _ _ →ₗ[ℂ] (X.ds _ _ (lamA' t al be ga de)).HK.V →ₛₗ[starRingEnd ℂ] ℂ, (∀ Z ∈ upq _ _, ∀ P y, b (fockAct2 _ _ _ _ Z P) y + b P ((X.ds _ _ (lamA' t al be ga de)).HK.act Z y) = 0) → b = 0 := by
   intro X hUnit hAR5 t al be ga de hD hbig i hi1 hip hiq b hb

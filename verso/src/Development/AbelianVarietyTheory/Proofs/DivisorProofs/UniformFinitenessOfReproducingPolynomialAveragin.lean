@@ -45,7 +45,7 @@ abbrev mat (g : Formalism.REAL.UJ ε) : Matrix (Fin n) (Fin n) ℂ :=
   ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext (Units.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mat_injective : Function.Injective (mat ε) := fun _ _ h => Subtype.ext (Units.ext h)
 
@@ -53,30 +53,30 @@ def rep (π : Formalism.REAL.UJ ε →* (X →L[ℂ] X)) (x : Matrix (Fin n) (Fi
   classical exact if h : ∃ g, mat ε g = x then π h.choose else 1
 
 /- English proof (translation)
-Establish `h : ∃ g', mat ε g' = mat ε g` using `⟨g, rfl⟩`. Rewrite using `[rep, dif_pos h, mat_injective ε h.choose_spec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_mat (π : Formalism.REAL.UJ ε →* (X →L[ℂ] X)) (g : Formalism.REAL.UJ ε) : rep ε π (mat ε g) = π g := by
   have h : ∃ g', mat ε g' = mat ε g := ⟨g, rfl⟩
   rw [rep, dif_pos h, mat_injective ε h.choose_spec]
 
 /- English proof (translation)
-The claim follows from `(Formalism.REAL.isClosedEmbeddingMatrix n ε).2`.
+A detailed English derivation is pending.
 -/
 theorem range_mat : Set.range (mat ε) = Formalism.MainNotions.S.UJset ε := (Formalism.REAL.isClosedEmbeddingMatrix n ε).2
 
 /- English proof (translation)
-The claim follows from `range_mat ε ▸ ⟨g, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mat_mem (g : Formalism.REAL.UJ ε) : mat ε g ∈ Formalism.MainNotions.S.UJset ε := range_mat ε ▸ ⟨g, rfl⟩
 
 /- English proof (translation)
-Rewrite `hx` using `[← range_mat ε]`. Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mat {x : Matrix (Fin n) (Fin n) ℂ} (hx : x ∈ Formalism.MainNotions.S.UJset ε) : ∃ g, mat ε g = x := by
   rw [← range_mat ε] at hx; exact hx
 
 /- English proof (translation)
-The claim follows from `(Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem isEmbedding_mat : Topology.IsEmbedding (mat ε) := (Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isEmbedding
 
@@ -87,15 +87,13 @@ namespace GlobalTheory.PsCo.PcEF.UF
 open GlobalTheory.PsCo.PcEF.UF.MatrixRepresentation
 
 /- English proof (translation)
-Introduce `n ε U _ _ π hπ hi`. Use `⟨rep ε π, ⟨⟨?_, fun a ha b hb => ?_⟩, fun a ha v => ?_, fun v => ?_⟩, fun S hS hinv => ?_, fun g => rep_mat ε π g⟩` and prove the remaining obligations. Establish `h1 : mat ε 1 = 1` using `rfl`. Rewrite using `[← h1, rep_mat, map_one]`. Take `⟨g, rfl⟩` from `exists_mat ε ha`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h, rfl⟩` from `exists_mat ε hb`. Establish `hm : mat ε g * mat ε h = mat ε (g * h)` using `rfl`. Rewrite using `[hm, rep_mat, rep_mat, rep_mat, map_mul]`. Both sides reduce to the same expression. Take `⟨g, rfl⟩` from `exists_mat ε ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[rep_mat]`. Conclude with `hπ.norm_apply g v`. Establish `hr : Formalism.MainNotions.S.UJset ε = Set.range (mat ε)` using `(range_mat ε).symm show ContinuousOn (fun g => rep ε π g v) (Formalism.MainNotions.S.UJset ε)`. Rewrite using `[hr, continuousOn_iff_continuous_domRestrict]`. Set `E` to `(isEmbedding_mat ε).toHomeomorph`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hE : ∀ y, (fun g => π g v) (E.symm y) = rep ε π (y : Matrix (Fin n) (Fin n) ℂ) v`. Introduce `y`. Take `⟨g, rfl⟩` from `E.surjective y`. Use `show π (E.symm (E g)) v = rep ε π (mat ε g) v`. Rewrite using `[E.symm_apply_apply, rep_mat]`.
-
-Conclude with `((hπ.continuous_apply v).comp E.symm.continuous).congr hE`. Conclude with `hi.2 S ⟨hS, fun g v hv => by simpa [rep_mat] using hinv _ (mat_mem ε g) v hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitaryRep_upq_matrixFunction : MatRepP := by
   intro n ε U _ _ π hπ hi
@@ -136,7 +134,7 @@ namespace GlobalTheory.PsCo.PcEF.UF
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Take `⟨hu, hc⟩` from `hg`. Use `⟨Matrix.mem_unitaryGroup_iff.2 (by rw [Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]; exact Matrix.mem_unitaryGroup_iff'.1 hu), ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Matrix.conjTranspose hc`. Simplify using `only [Matrix.conjTranspose_mul, Formalism.REAL.Jm_conjTranspose] at h`. Conclude with `h.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sumTypes_conjT_mem {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) : gᴴ ∈ Formalism.REAL.Kset ε := by
   obtain ⟨hu, hc⟩ := hg
@@ -146,17 +144,17 @@ theorem sumTypes_conjT_mem {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalis
   exact h.symm
 
 /- English proof (translation)
-The claim follows from `Matrix.mem_unitaryGroup_iff.1 hg.1`.
+A detailed English derivation is pending.
 -/
 theorem sumTypes_mul_conjT {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) : g * gᴴ = 1 :=
   Matrix.mem_unitaryGroup_iff.1 hg.1
 
 /- English proof (translation)
-Establish `hK` using `Formalism.REAL.kFacts n ε`. Establish `hgU : g ∈ UJset ε` using `hK.1 g hg`. Establish `hgU' : gᴴ ∈ UJset ε` using `hK.1 _ (sumTypes_conjT_mem hg)`. Set `f : H →ₗᵢ[ℂ] H` to `{ (σ g : H →ₗ[ℂ] H) with norm_map' := hσ.2.1 g hgU }`. Establish `e : σ g (σ gᴴ r) = r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `hσ.1.2 g hgU gᴴ hgU'`. Rewrite `h1` using `[sumTypes_mul_conjT hg, hσ.1.1]`. Use `congrArg (fun T : H →L[ℂ] H => T r) h1` as an intermediate fact. Simplify using `using this.symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e]`. Use `_ = ⟪σ gᴴ r, v⟫_ℂ := f.inner_map_map _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumTypes_inner {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) (r v : H) :
@@ -176,19 +174,17 @@ theorem sumTypes_inner {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (h�
     _ = ⟪σ gᴴ r, v⟫_ℂ := f.inner_map_map _ _
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ hσ S hSfd hSK`. Use `set R : Submodule ℂ H := sSup {S' | S' ≤ S ∧ ∃ μ, Formalism.MainNotions.S.IsKTypeOf ε σ μ S'} with hR`. Establish `hRS : R ≤ S` using `sSup_le fun S' hS' => hS'.1`. Establish `: FiniteDimensional ℂ R` using `Submodule.finiteDimensional_of_le hRS`. Establish `hRK : Formalism.MainNotions.S.IsKStableOn ε σ R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg v hv`. Establish `hle : R ≤ Submodule.comap (σ g : H →ₗ[ℂ] H) R` using `sSup_le fun S' hS' x hx => by`. Take `⟨μ, hμ⟩` from `hS'.2`. Conclude with `Submodule.mem_sSup_of_mem hS' (hμ.2.1 g hg x hx)`. Conclude with `hle hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hRoK : Formalism.MainNotions.S.IsKStableOn ε σ Rᗮ`. Introduce `g hg v hv r hr`. Rewrite using `[sumTypes_inner hσ hg]`. Conclude with `hv _ (hRK _ (sumTypes_conjT_mem hg) r hr)`. Use `set T : Submodule ℂ H := S ⊓ Rᗮ`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hT : T = ⊥`. Assume the negation of the conclusion as `h0`. Establish `: FiniteDimensional ℂ T` using `Submodule.finiteDimensional_of_le inf_le_left`. Take `⟨μ, S', hS'T, hS'⟩` from `GlobalTheory.KTypeExists.exists_kType n ε H σ hσ T inferInstance (fun g hg v hv => Submodule.mem_inf.2 ⟨hSK g hg v (Submodule.mem_inf.1 hv).1, hRoK g hg v (Submodule.mem_inf.1 hv).2⟩) h0`. Take `⟨v, hv, hv0, -⟩` from `hS'.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvR : v ∈ R` using `Submodule.mem_sSup_of_mem (show S' ∈ {S' | S' ≤ S ∧ ∃ μ, Formalism.MainNotions.S.IsKTypeOf ε σ μ S'} from ⟨hS'T.trans inf_le_left, μ, hS'⟩) hv`. Establish `hvRo : v ∈ Rᗮ` using `(hS'T hv).2`. Conclude with `hv0 (inner_self_eq_zero.1 (hvRo v hvR))`. Introduce `v hv`. Take `⟨y, hy, z, hz, rfl⟩` from `R.exists_add_mem_mem_orthogonal v`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hzS : z ∈ S`. Use `sub_mem hv (hRS hy)` as an intermediate fact. Simplify using `using this`. Establish `hz0 : z ∈ T` using `⟨hzS, hz⟩`. Rewrite `hz0` using `[hT, Submodule.mem_bot]`.
-
-Rewrite using `[hz0, add_zero]`. Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem finDimStable_isSumOfKTypes : SumTypesP := by
   intro n ε H _ _ σ hσ S hSfd hSK
@@ -242,13 +238,11 @@ def typesIn (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [InnerProduc
   ⨆ μ : A, (sSup {S : Submodule ℂ H | S ≤ ⊤ ∧ Formalism.MainNotions.S.IsKTypeOf ε σ μ S} : Submodule ℂ H)
 
 /- English proof (translation)
-Introduce `g hg v hv`. Unfold `typesIn at hv ⊢`. Use `Submodule.iSup_induction _ (motive := fun v => σ g v ∈ _) hv (fun μ y hy => ?_) (by simp) ?_` and prove the remaining obligations. Rewrite `hy` using `[sSup_eq_iSup]`. Use `Submodule.iSup_induction _ (motive := fun z => σ g z ∈ _) hy (fun S w hw => ?_) (by simp) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.iSup_induction _ (motive := fun w => σ g w ∈ _) hw (fun hS u hu => ?_) (by simp) ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem μ (Submodule.mem_sSup_of_mem hS (hS.2.2.1 g hg u hu))`. Introduce `a b ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`. Introduce `a b ha hb`. Rewrite using `[map_add]`.
-
-Conclude with `add_mem ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typesIn_kStable (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : GlobalTheory.PsCo.Pc1.Mat n → (H →L[ℂ] H)) (A : Set (Fin n → ℝ)) : Formalism.MainNotions.S.IsKStableOn ε σ (typesIn ε σ A) := by
@@ -264,9 +258,7 @@ theorem typesIn_kStable (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] 
   · intro a b ha hb; rw [map_add]; exact add_mem ha hb
 
 /- English proof (translation)
-Establish `hσ' : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ`. Rewrite using `[mir_isURepOn_iff, mir_UJset_eq]`. Conclude with `hσ`. Establish `hadm` using `GlobalTheory.PsCo.TrAdm.isAdmissibleSub_top n ε H σ hσ' hirr`. Use `haveI : Finite A := hA.to_subtype`.
-
-Establish `: ∀ μ : A, FiniteDimensional ℂ (sSup {S : Submodule ℂ H | S ≤ ⊤ ∧ Formalism.MainNotions.S.IsKTypeOf ε σ μ S} : Submodule ℂ H)` using `fun μ => hadm μ`. Conclude with `Submodule.finiteDimensional_iSup _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem typesIn_fd (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (σ : GlobalTheory.PsCo.Pc1.Mat n → (H →L[ℂ] H)) (hσ : IsURepOn (UJset ε) σ)
@@ -282,13 +274,13 @@ theorem typesIn_fd (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [Inne
   exact Submodule.finiteDimensional_iSup _
 
 /- English proof (translation)
-Introduce `hST hPA n ε H _ _ _ σ hσ hirr d`. Take `⟨A, hAf, hA⟩` from `hPA n ε d`. Use `set M := typesIn ε σ A with hMdef`. Establish `hMf : FiniteDimensional ℂ M` using `typesIn_fd ε σ hσ hirr hAf`. Establish `hMK : Formalism.MainNotions.S.IsKStableOn ε σ M` using `typesIn_kStable ε σ A`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ' : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ`. Rewrite using `[mir_isURepOn_iff, mir_UJset_eq]`. Conclude with `hσ`. Establish `hMD : M ≤ smD ε σ` using `fun v hv => CompanionTheory.D.gk.HC.mem_smD_of_isKFin hσ' hirr ⟨M, hMf, hv, hMK⟩`. Use `⟨M.comap (smD ε σ).subtype, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Module.Finite.of_injective ((smD ε σ).subtype.restrict (p := M.comap (smD ε σ).subtype) (q := M) fun x hx => hx) (fun x y h => Subtype.ext (Subtype.ext (by simpa using congrArg Subtype.val h)))`. Introduce `P hP u`. Rewrite using `[Submodule.map_comap_subtype, inf_eq_right.2 hMD]`. Take `⟨S, hSf, hSK, hSP, hSA⟩` from `hA H σ hσ u`. Use `(hST n ε H σ hσ S hSf hSK).trans (sSup_le fun S' hS' => ?_) (hSP P hP)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hS'S, μ, hμ⟩` from `hS'`. Take `⟨v, hv, hv0, hvw⟩` from `hμ.2.2.2.1`. Establish `hμA : μ ∈ A` using `hSA μ v (hS'S hv) hv0 hvw`. Conclude with `le_iSup_of_le (⟨μ, hμA⟩ : A) (le_sSup ⟨le_top, hμ⟩)`.
+A detailed English derivation is pending.
 -/
 theorem irrepAveragesFinDimSmooth_of_kTypes_and_polyAverages : SumTypesP → PolyAvgP → RangeFDP := by
   intro hST hPA n ε H _ _ _ σ hσ hirr d
@@ -326,21 +318,19 @@ open scoped InnerProductSpace
 namespace GlobalTheory.PsCo.Pc3
 
 /- English proof (translation)
-Introduce `hR hPA n ε U _ _ _ π hπ hirr d`. Take `⟨σ, hσ, hσirr, hσπ⟩` from `GlobalTheory.PsCo.PcEF.UF.unitaryRep_upq_matrixFunction n ε U π hπ hirr`. Take `⟨L, hLf, hL⟩` from `GlobalTheory.PsCo.PcEF.UF.irrepAveragesFinDimSmooth_of_kTypes_and_polyAverages GlobalTheory.PsCo.PcEF.UF.finDimStable_isSumOfKTypes hPA n ε U σ hσ hσirr d`. Take `⟨Q, hQd, hQ⟩` from `hR n ε d`. Use `hLf` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨L.map (ReciprocityTheory.ChartRestriction.DS.smD ε σ).subtype, inferInstance, fun v hv => ?_, fun v hv Z hZ => ?_⟩` and prove the remaining obligations. Establish `hint : Integrable (fun k : KG ε => ev (toMK k) Q • σ (toMK k) v) (muK ε)`. Establish `hc : Continuous (fun k : KG ε => ev (toMK k) Q • σ (toMK k) v)`. Use `Continuous.smul ?_ ?_` and prove the remaining obligations. Conclude with `(MvPolynomial.continuous_eval Q).comp (continuous_pi fun i => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `i with x | x` into its components or cases. Conclude with `(continuous_apply x.2).comp ((continuous_apply x.1).comp (by fun_prop))`. Conclude with `continuous_star.comp ((continuous_apply x.2).comp ((continuous_apply x.1).comp (by fun_prop))))`. Establish `: (fun k : KG ε => σ (toMK k) v) = fun k : KG ε => π (k : UJ ε) v` using `funext fun k => by`. Rewrite using `[← hσπ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Conclude with `(hπ.continuous_apply v).comp continuous_subtype_val`. Conclude with `hc.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `key : ∫ k : KG ε, ev (toMK k) Q • σ (toMK k) v ∂(muK ε) = v`. Use `ext_inner_left ℂ fun l => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_inner hint]`. Take `⟨P, hPd, hP⟩` from `hv l`. Establish `e1 : ∀ k : KG ε, ⟪l, ev (toMK k) Q • σ (toMK k) v⟫_ℂ = ev (toMK k) Q * ev (toMK k) P`. Introduce `k`. Rewrite using `[inner_smul_right, show σ (toMK k) = π (k : UJ ε) from hσπ _, hP]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Repeatedly rewrite using `[e1]`. Rewrite using `[← hQ P hPd]`. Establish `h1` using `hP 1`. Simplify using `only [map_one, OneMemClass.coe_one] at h1`. Express the relevant statement in the definitionally equal form `ev (toMK (1 : KG ε)) P = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Both sides reduce to the same expression. Rewrite using `[← key]`. Conclude with `hL Q hQd v`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hv`.
-
-Establish `hD` using `(ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE hσ).deriv Z hZ w`. Use `⟨_, hD.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)⟩` and prove the remaining obligations. Simplify using `only [Submodule.coe_subtype]`. Rewrite using `[← hσπ, Formalism.REAL.toM_expG ε Z t hZ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uFin_of' : Repro → GlobalTheory.PsCo.PcEF.UF.PolyAvgP → UFin := by
   intro hR hPA n ε U _ _ _ π hπ hirr d

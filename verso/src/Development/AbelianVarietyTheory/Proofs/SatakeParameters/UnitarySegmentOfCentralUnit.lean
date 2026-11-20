@@ -32,9 +32,9 @@ def stabForm {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Represen
             Module.End.one_eq_id, LinearMap.comp_id]
 
 /- English proof (translation)
-Introduce `g ⟨h1, h2⟩`. Establish `h2' : detChar (Fin N) χ g = 1` using `h2`. Express the relevant statement in the definitionally equal form `l ∘ₗ π g = l at h1`. Express the relevant statement in the definitionally equal form `l ∘ₗ twist π (detChar (Fin N) χ) g = l`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.comp_apply, twist_apply, h2', Units.val_one, one_smul, ← LinearMap.comp_apply, h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stab_le {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V)
     (χ : kˣ →* ℂˣ) (l : Module.Dual ℂ V) :
@@ -47,7 +47,7 @@ theorem stab_le {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Repre
   rw [LinearMap.comp_apply, twist_apply, h2', Units.val_one, one_smul, ← LinearMap.comp_apply, h1]
 
 /- English proof (translation)
-Introduce `_ _ μ hμ v l hl`. Establish `ho : IsOpen ((stabForm (twist π (detChar (Fin N) χ)) l : Subgroup (GL (Fin N) k)) : Set (GL (Fin N) k))` using `Subgroup.isOpen_mono (stab_le π χ l) (IsOpen.inter hl (hχ.detChar (n := Fin N)))`. Take `⟨F, hF, hm⟩` from `h μ hμ v l ho`. Use `⟨F, fun g => ?_, hm⟩` and prove the remaining obligations. Rewrite using `[hF, twist_apply, map_smul, norm_smul, detChar_apply, hu, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeffLp_of_twist {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {p : ℝ}
     {π : Representation ℂ (GL (Fin N) k) V} {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) (hu : ∀ z, ‖(χ z : ℂ)‖ = 1)
@@ -60,9 +60,9 @@ theorem coeffLp_of_twist {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {p
   rw [hF, twist_apply, map_smul, norm_smul, detChar_apply, hu, one_mul]
 
 /- English proof (translation)
-Take `⟨B, h1, h2, h3⟩` from `h`. Use `⟨B, h1, h2, fun g v w => ?_⟩` and prove the remaining obligations. Establish `e` using `h3 g v w`. Establish `: (detChar (Fin N) χ g : ℂ) * starRingEnd ℂ (detChar (Fin N) χ g) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, detChar_apply, hu]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `e` using `[twist_apply, twist_apply, B.map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, smul_eq_mul, ← mul_assoc, this, one_mul]`. Conclude with `e`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnitarisable_of_twist {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin N) k) V} {χ : kˣ →* ℂˣ} (hu : ∀ z, ‖(χ z : ℂ)‖ = 1)
@@ -77,9 +77,9 @@ theorem isUnitarisable_of_twist {N : ℕ} {V : Type} [AddCommGroup V] [Module �
   exact e
 
 /- English proof (translation)
-Take `⟨B, h1, h2, h3⟩` from `h`. Use `⟨(B.comp E.toLinearMap).compl₂ E.toLinearMap, fun v w => h1 _ _, fun v hv => h2 _ ?_, fun g v w => ?_⟩` and prove the remaining obligations. Conclude with `fun h => hv (E.toLinearEquiv.map_eq_zero_iff.1 h)`. Use `show B (E.toIntertwiningMap (π g v)) (E.toIntertwiningMap (π g w)) = _`. Rewrite using `[E.toIntertwiningMap.isIntertwining, E.toIntertwiningMap.isIntertwining, h3]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isUnitarisable_of_equiv' {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {π : Representation ℂ G V} {σ : Representation ℂ G W} (E : π.Equiv σ) (h : IsUnitarisable σ) : IsUnitarisable π := by
@@ -94,13 +94,13 @@ end GlobalTheory.UnitLSeg
 
 open GlobalTheory.UnitLSeg in
 /- English proof (translation)
-Introduce `hP k _ _ _ _ _ δ Δ ω hL hω hωu`. Establish `hd : 1 ≤ δ.1`. Establish `h1` using `hL.deg_eq`. Use `Nat.mul_pos Δ.len_pos Δ.d_pos` as an intermediate fact. Simplify using `only [Segment.deg] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨χ, hχ, hsq⟩` from `(hP k δ hd).2 ⟨Δ, hL⟩`. Establish `hU : IsUnitarisable (δ.tw χ hχ).rep` using `GlobalTheory.T.unitarisable_of_square_integrable k _ _ _ (δ.tw χ hχ).2.rep.smooth (δ.tw χ hχ).2.rep.irr (fun {c d} => @hsq c d)`. Use `haveI := Model.nontrivial_of_isIrreducible (δ.tw χ hχ).2.rep.irr`. Establish `hc` using `hasCentralChar_of_equiv (δ.twEquiv χ hχ) (hasCentralChar_twist hω χ)`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχu : ∀ z, ‖(χ z : ℂ)‖ = 1` using `fun z => by`. Establish `h1` using `GlobalTheory.LocLanglands.TemperedRec.norm_centralChar_eq_one hU hc z`. Rewrite `h1` using `[Fintype.card_fin, MonoidHom.mul_apply, MonoidHom.pow_apply, Units.val_mul, Units.val_pow_eq_pow_val, norm_mul, norm_pow, hωu, one_mul]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by omega)).1 h1`. Establish `hU' : IsUnitarisable δ.rep` using `isUnitarisable_of_twist hχu (isUnitarisable_of_equiv' (δ.twEquiv χ hχ) hU)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : CoeffLp 2 (δ.tw χ hχ).rep` using `hsq`. Establish `h2 : CoeffLp 2 (twist δ.rep (detChar (Fin δ.1) χ))` using `@GlobalTheory.Published.TemperedProduct.coeffLp_of_equiv k _ _ _ _ _ _ _ _ δ.1 2 _ _ (δ.twEquiv χ hχ).symm @h1`. Establish `hsq' : IsSqIntCoeff δ.rep` using `coeffLp_of_twist hχ hχu h2`. Conclude with `⟨hd, hsq', ⟨Δ, hL⟩, hU'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UnitLSeg.main : GlobalTheory.Published.EssSquareIntegrableSegments → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (δ : IrrGL k) (Δ : Segment k) (ω : kˣ →* ℂˣ), IsLSeg Δ δ.rep → HasCentralChar δ.rep ω → (∀ z, ‖(ω z : ℂ)‖ = 1) → 1 ≤ δ.1 ∧ IsSqIntCoeff δ.rep ∧ GlobalTheory.GenericUnitary.IsUnitaryLSeg δ := by
   intro hP k _ _ _ _ _ δ Δ ω hL hω hωu

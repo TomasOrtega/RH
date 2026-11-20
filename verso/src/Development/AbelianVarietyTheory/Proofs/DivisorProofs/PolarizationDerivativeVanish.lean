@@ -4,15 +4,15 @@ open MvPolynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set a : ℕ → ℝ := fun k => ((m + 1).choose k : ℝ) * Φ (P ^ k * L ^ (m + 1 - k)) with ha`. Use `set q : Polynomial ℝ := ∑ k ∈ Finset.range (m + 2), Polynomial.C (a k) * Polynomial.X ^ k with hq`. Establish `heval : ∀ t : ℝ, q.eval t = Φ ((L + C t * P) ^ (m + 1))`. Introduce `t`. Rewrite using `[add_comm, add_pow, map_sum, hq, Polynomial.eval_finset_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Establish `: (C t * P) ^ k * L ^ (m + 1 - k) * ((m + 1).choose k : MvPolynomial σ ℝ) = (t ^ k * ((m + 1).choose k : ℝ)) • (P ^ k * L ^ (m + 1 - k))`. Rewrite using `[← MvPolynomial.C_mul', mul_pow, ← map_pow, map_mul]`. Simplify using `only [map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, map_smul, smul_eq_mul, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, ha]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzero : q - Polynomial.C (Φ (L ^ (m + 1))) = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Apply `Set.Infinite.mono _ (Set.infinite_range_of_injective (Int.cast_injective (α := ℝ)))` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨t, rfl⟩`. Simplify using `only [Set.mem_setOf_eq, Polynomial.IsRoot, Polynomial.eval_sub, Polynomial.eval_C, heval, h t, sub_self]`. Establish `hc` using `congrArg (fun p => Polynomial.coeff p 1) hzero`. Simplify using `only [Polynomial.coeff_sub, Polynomial.coeff_C, Polynomial.coeff_zero, hq, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul_X_pow] at hc`. Rewrite `hc` using `[Finset.sum_ite_eq (Finset.range (m + 2)) 1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_range, show 1 < m + 2 by omega, if_true, one_ne_zero, if_false, sub_zero, ha, Nat.choose_one_right, pow_one, Nat.add_sub_cancel] at hc`. Establish `hm : ((m : ℝ) + 1) ≠ 0` using `by positivity`. Move the coercions through the operations in `at hc`. Conclude with `(mul_eq_zero.mp hc).resolve_left hm`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem linFunctional_translate_pow_firstOrder_eq_zero (σ : Type) (Φ : MvPolynomial σ ℝ →ₗ[ℝ] ℝ)
     (L P : MvPolynomial σ ℝ) (m : ℕ)

@@ -17,7 +17,7 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] [DecidableEq K] {ι : K 
   {Ω : Type} [Field Ω] [Algebra S Ω] (y : (Σ k, ι k) → Ω)
 
 /- English proof (translation)
-Break down `Int.eq_nat_or_neg n with ⟨m, rfl | rfl⟩` into its components or cases. Rewrite using `[zpow_natCast]`. Conclude with `pow_mem hu m`. Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `pow_mem hu' m`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_mem_subalgebra_of_inv_mem (A : Subalgebra S Ω) {u : Ω} (hu : u ∈ A) (hu' : u⁻¹ ∈ A) (n : ℤ) :
     u ^ n ∈ A := by
@@ -28,7 +28,7 @@ theorem zpow_mem_subalgebra_of_inv_mem (A : Subalgebra S Ω) {u : Ω} (hu : u �
     exact pow_mem hu' m
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_sum_type]`. Simplify using `[pullDeg, baseDeg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem prod_segreChart_twist (d c : ∀ k, ι k) (β : K → ℤ) (n : ℤ) :
     ∏ k, segreJoin y ⟨k, segreChart d c k⟩ ^ (-(pullDeg β + n • baseDeg (Sum.inl ()) : Unit ⊕ K → ℤ) k) =
@@ -40,7 +40,7 @@ theorem prod_segreChart_twist (d c : ∀ k, ι k) (β : K → ℤ) (n : ℤ) :
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Establish `e : ∀ k, y ⟨k, c k⟩ ^ (-(β + fun _ => n : K → ℤ) k) = y ⟨k, c k⟩ ^ (-n) * y ⟨k, c k⟩ ^ (-β k)` using `fun k => by`. Rewrite using `[Pi.add_apply, neg_add, zpow_add₀ (hc k), mul_comm]`. Simplify using `only [e, Finset.prod_mul_distrib, Finset.prod_zpow]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem prod_add_const (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (β : K → ℤ) (n : ℤ) :
     ∏ k, y ⟨k, c k⟩ ^ (-(β + fun _ => n : K → ℤ) k) = segreVec y c ^ (-n) * ∏ k, y ⟨k, c k⟩ ^ (-β k) := by
@@ -50,15 +50,15 @@ theorem prod_add_const (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (β 
   rfl
 
 /- English proof (translation)
-Use extensionality with `s`. Simplify using `only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply, Subalgebra.mem_toSubmodule]`. Prove the components needed by the constructor for the conclusion. Introduce `h c hc`. Use `h (segreChart c c) (segreChart_adm y (segreVec_ne_zero y hc) hc)` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[prod_segreChart_twist]`. Rewrite using `[prod_add_const y c hc]`. Conclude with `segre_diag_le y c this`. Introduce `h C hC`. Take `⟨d, c, rfl⟩` from `segreChart_eta C`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : segreVec y d ≠ 0` using `hC (Sum.inl ())`. Establish `hc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => hC (Sum.inr k)`. Establish `hc0 : segreVec y c ≠ 0` using `segreVec_ne_zero y hc`. Establish `hs` using `chartRingOver_le_segre y d c (h c hc)`. Rewrite `hs` using `[prod_add_const y c hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set R := chartRingOver S (segreJoin y) (segreChart d c)`. Establish `hu : segreVec y c / segreVec y d ∈ R` using `Algebra.subset_adjoin ⟨⟨Sum.inl (), c⟩, rfl⟩`. Establish `hu' : (segreVec y c / segreVec y d)⁻¹ ∈ R`. Rewrite using `[inv_div]`. Conclude with `chartRingOver_le_segre y d c (segreVec_div_mem y c d)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `e : s * (segreVec y d ^ (-n) * ∏ k, y ⟨k, c k⟩ ^ (-β k)) = s * (segreVec y c ^ (-n) * ∏ k, y ⟨k, c k⟩ ^ (-β k)) * (segreVec y c / segreVec y d) ^ n`. Rewrite using `[div_zpow, zpow_neg, zpow_neg]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[prod_segreChart_twist, e]`. Conclude with `mul_mem hs (zpow_mem_subalgebra_of_inv_mem R hu hu' n)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secOver_segreJoin_twist (β : K → ℤ) (n : ℤ) :
     secOver S (segreJoin y) (pullDeg β + n • baseDeg (Sum.inl ())) = secOver S y (β + fun _ => n) := by
@@ -93,7 +93,7 @@ theorem secOver_segreJoin_twist (β : K → ℤ) (n : ℤ) :
 end Twist
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ Ω _ _ y _ β c`. Conclude with `secOver_segreJoin_twist y β c`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem SegreTwist.proof : SegreTwist.Statement := by
   intro S _ K _ _ ι _ Ω _ _ y _ β c

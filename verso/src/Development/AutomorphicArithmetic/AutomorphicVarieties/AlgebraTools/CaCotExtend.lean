@@ -4,17 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CotIn
 open IsLocalRing UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `R _ _ _ κ _ x hx`. Take `⟨hm, hli⟩` from `(cotInd_iff R x).mp hx`. Use `set v : κ → CotangentSpace R := fun k => (maximalIdeal R).toCotangent ⟨x k, hm k⟩ with hv`. Set `bW` to `Module.Basis.span hli`. Set `bQ` to `Module.finBasis (ResidueField R) (CotangentSpace R ⧸ Submodule.span (ResidueField R) (Set.range v))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B` to `Module.Basis.sumQuot bW bQ`. Use `choose z hz using fun i => (maximalIdeal R).toCotangent_surjective (B (Sum.inr i))`. Use `⟨_, fun i => (z i : R), ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ j, Sum.elim x (fun i => (z i : R)) j ∈ maximalIdeal R`. Introduce and unpack `(k | i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hm k`. Conclude with `(z i).2`. Establish `hB : (fun j => (maximalIdeal R).toCotangent ⟨Sum.elim x (fun i => (z i : R)) j, hmem j⟩) = ⇑B`. Use function extensionality and compare the values at `j`. Break down `j with k | i` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[B, bW, Module.Basis.span_apply, hv]`. Simplify using `using hz i`. Establish `hfg : (maximalIdeal R).FG` using `IsNoetherian.noetherian _`. Use `⟨(cotInd_iff R _).mpr ⟨hmem, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hB]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `B.linearIndependent`. Set `g : κ ⊕ Fin _ → maximalIdeal R` to `fun j => ⟨Sum.elim x (fun i => (z i : R)) j, hmem j⟩`. Establish `hspan : Submodule.span R (Set.range g) = ⊤`. Rewrite using `[← CotangentSpace.span_image_eq_top_iff, ← Set.range_comp]`. Establish `: (maximalIdeal R).toCotangent ∘ g = ⇑B` using `hB`.
-
-Rewrite using `[this, B.span_eq]`. Use `congrArg (Submodule.map (maximalIdeal R).subtype) hspan` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`. Conclude with `this`. Rewrite using `[spanFinrank_maximalIdeal_eq_finrank_cotangentSpace_of_fg hfg, Module.finrank_eq_card_basis B, Fintype.card_sum, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.cotInd_extend :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (κ : Type) [Fintype κ] (x : κ → R), CotInd R x →

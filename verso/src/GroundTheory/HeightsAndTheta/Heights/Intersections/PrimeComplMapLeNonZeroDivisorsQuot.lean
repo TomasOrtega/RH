@@ -15,7 +15,7 @@ variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `fun h => hg (hPW h)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem primeCompl_map_le_nonZeroDivisors_quot (P W : Ideal (MRing ι)) [P.IsPrime] [W.IsPrime]
     (hPW : P ≤ W) : W.primeCompl.map (Ideal.Quotient.mk P) ≤ nonZeroDivisors (MRing ι ⧸ P) := by
@@ -33,9 +33,9 @@ instance coneLocRing.isLocalization (P W : Ideal (MRing ι)) [P.IsPrime] [W.IsPr
   Localization.subalgebra.isLocalization_ofField _ _ _
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hle : locRing P W ≤ (coneLocRing P W hPW).toSubring`. Use `Subring.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, a, hv, hvW, -, -, rfl⟩`. Conclude with `⟨Ideal.Quotient.mk P u, Ideal.Quotient.mk P v, ⟨v, hvW, rfl⟩, by rw [IsFractionRing.mk'_eq_div, div_eq_mul_inv]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `hle hx`.
+A detailed English derivation is pending.
 -/
 theorem locRing_le_coneLocRing (P W : Ideal (MRing ι)) [P.IsPrime] [W.IsPrime] (hPW : P ≤ W) :
     ∀ x ∈ locRing P W, x ∈ coneLocRing P W hPW := by

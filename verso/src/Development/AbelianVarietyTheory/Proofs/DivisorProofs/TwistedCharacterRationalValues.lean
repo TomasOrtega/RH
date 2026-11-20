@@ -22,7 +22,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn.LevVal
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hχ_of R j t (fun PP hP u => let ⟨a, ha⟩ := GlobalTheory.ConjForms.chi_mem R h.grp.chiW j PP hP u; ⟨a, ha.symm⟩) (fun PP hP u => let ⟨a, ha⟩ := GlobalTheory.PinsOverField.xiR_mem R h.lev h.fam t PP hP u; ⟨a, ha.symm⟩) k`. Conclude with `⟨a, ha.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem envV_chi_mem {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (h : R.Char F)
@@ -34,7 +34,7 @@ theorem envV_chi_mem {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {
   exact ⟨a, ha.symm⟩
 
 /- English proof (translation)
-The claim follows from `AtTw.of_forall fun _ _ _ _ p hr hm _ _ j k => envV_chi_mem (R2 p) (F2 p) (GlobalTheory.BigOn.links2_of_rows _ _ _ _ _ _ _ _ _ _ p hr hm.1).1 j _ k`.
+A detailed English derivation is pending.
 -/
 theorem chi_val : AtTw fun Fm x hx i p w j => ∀ k, ∃ a : (Fm.D x i).what₂.LL,
   (Fm.D x i).what₂.embLL a = (((GlobalTheory.TraceIncl.envV (R2 p) j ((R2 p).mu ((Fm.D x i).plEq w))).χ k : ℂˣ) : ℂ) :=

@@ -22,9 +22,9 @@ noncomputable section
 namespace GlobalTheory.SelfDualBaseFrame
 
 /- English proof (translation)
-Introduce `D V`. Establish `hl : frameLat V = GlobalTheory.Member.latC V` using `SetLike.coe_injective ((GlobalTheory.AdelicU.hermitianSpaceBaseLattice_eq_frameLattice V).symm.trans (GlobalTheory.Member.coe_selfDualLatticeInFrameCoordinates_eq V).symm)`. Establish `hd : Formalism.L2.Herm.dualL D.sp.cm V (frameLat V) = frameLat V`. Rewrite using `[hl]`. Conclude with `Formalism.L2.Herm.coordinate_lattice_self_dual D.sp.cm V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨β, c, hc⟩` from `GlobalTheory.AdelicFrame.exists_isSDFrame D V (frameLat V) (GlobalTheory.AdelicU.hermitianSpaceBaseLattice_eq_frameLattice V).symm hd`. Rewrite `hc` using `[one_pow]`. Conclude with `⟨β, ⟨0, by rwa [pow_zero]⟩, hc⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_baseFrame_frameLat : ∀ (D : D7) (V : HSp D), ∃ β₀ : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D), IsSDFrame V β₀ (frameLat V) 1 ∧ IsBaseFrame V β₀ (frameLat V) 1 := by
   intro D V

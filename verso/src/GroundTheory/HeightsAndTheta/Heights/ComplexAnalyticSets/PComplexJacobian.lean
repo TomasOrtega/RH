@@ -9,7 +9,7 @@ open Matrix
 noncomputable section
 
 /- English proof (translation)
-Use extensionality with `⟨i, a⟩ ⟨k, c⟩`. Simplify using `only [realForm, Matrix.mul_apply, Matrix.of_apply, Fintype.sum_prod_type, Fin.sum_univ_two, Complex.re_sum, Complex.im_sum]`. Apply the tactic sequence `fin_cases a <;> fin_cases c <;>`. Apply the tactic sequence `simp only [Complex.mul_re, Complex.mul_im, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib, ← Finset.sum_neg_distrib, Fin.zero_eta, Fin.mk_one, Fin.isValue, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, Matrix.head_cons] <;>`. Use `Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem realForm_mul {p q r : ℕ} (A : Matrix (Fin p) (Fin q) ℂ) (B : Matrix (Fin q) (Fin r) ℂ) :
     realForm (A * B) = realForm A * realForm B := by
@@ -23,7 +23,7 @@ theorem realForm_mul {p q r : ℕ} (A : Matrix (Fin p) (Fin q) ℂ) (B : Matrix 
     refine Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Use extensionality with `⟨i, a⟩ ⟨k, c⟩`. Apply the tactic sequence `fin_cases a <;> fin_cases c <;> simp [realForm] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem realForm_add {p q : ℕ} (A B : Matrix (Fin p) (Fin q) ℂ) :
     realForm (A + B) = realForm A + realForm B := by
@@ -31,14 +31,14 @@ theorem realForm_add {p q : ℕ} (A B : Matrix (Fin p) (Fin q) ℂ) :
   fin_cases a <;> fin_cases c <;> simp [realForm] <;> ring
 
 /- English proof (translation)
-Use extensionality with `⟨i, a⟩ ⟨k, c⟩`. Apply the tactic sequence `by_cases h : i = k <;> fin_cases a <;> fin_cases c <;> simp [realForm, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem realForm_one {q : ℕ} : realForm (1 : Matrix (Fin q) (Fin q) ℂ) = 1 := by
   ext ⟨i, a⟩ ⟨k, c⟩
   by_cases h : i = k <;> fin_cases a <;> fin_cases c <;> simp [realForm, Matrix.one_apply, h]
 
 /- English proof (translation)
-Use extensionality with `⟨i, a⟩ ⟨k, c⟩`. Apply the tactic sequence `fin_cases a <;> fin_cases c <;> simp [realForm]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem realForm_conjTranspose {p q : ℕ} (A : Matrix (Fin p) (Fin q) ℂ) :
     realForm Aᴴ = (realForm A)ᵀ := by
@@ -46,9 +46,9 @@ theorem realForm_conjTranspose {p q : ℕ} (A : Matrix (Fin p) (Fin q) ℂ) :
   fin_cases a <;> fin_cases c <;> simp [realForm]
 
 /- English proof (translation)
-Set `B : Module.Basis (Fin q × Fin 2) ℝ (Fin q → ℂ)` to `Complex.basisOneI.smulTower' (Pi.basisFun ℂ (Fin q))`. Establish `hM : LinearMap.toMatrix B B ((Matrix.toLin' A).restrictScalars ℝ) = realForm A`. Use extensionality with `⟨i, a⟩ ⟨j, b⟩`. Rewrite using `[LinearMap.toMatrix_apply]`. Simplify using `only [B, Module.Basis.smulTower'_repr_mk, Module.Basis.smulTower'_apply, LinearMap.restrictScalars_apply, Pi.basisFun_repr, Pi.basisFun_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;>`. Simplify using `[realForm, Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[← hM, LinearMap.det_toMatrix, LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_realForm {q : ℕ} (A : Matrix (Fin q) (Fin q) ℂ) :
     (realForm A).det = Complex.normSq A.det := by
@@ -65,11 +65,11 @@ theorem det_realForm {q : ℕ} (A : Matrix (Fin q) (Fin q) ℂ) :
     Algebra.norm_complex_apply]
 
 /- English proof (translation)
-Introduce `p q M`. Establish `hR : 1 + (realForm M)ᵀ * realForm M = realForm (1 + Mᴴ * M)`. Rewrite using `[realForm_add, realForm_one, realForm_mul, realForm_conjTranspose]`. Use `set z := (1 + Mᴴ * M).det with hz`. Establish `hstar : star z = z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, ← Matrix.det_conjTranspose, Matrix.conjTranspose_add, Matrix.conjTranspose_one, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Establish `him : z.im = 0`. Use `congrArg Complex.im hstar` as an intermediate fact. Simplify using `only [Complex.star_def, Complex.conj_im] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR, det_realForm, Complex.normSq_apply, him]`. Apply the tactic sequence `apply Complex.ext <;> simp [sq, him, ← hz]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ComplexJacobian.proof : ComplexJacobian.Statement := by
   intro p q M

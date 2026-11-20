@@ -13,7 +13,7 @@ set_option autoImplicit false
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ p s _ E' E hO y hy f hf`. Take `⟨a, rfl⟩` from `hf`. Use `(hO _).2 (hy _ ⟨s.stalkMap y a, ?_⟩)` and prove the remaining obligations. Conclude with `(GlobalTheory.functionFieldMap_algebraMap s y a).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem DivOver.Over.through_image : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (s : Y ⟶ X) [IsDominant s] (E' : DivOver (s ≫ p)) (E : DivOver p), DivOver.Over s E' E → ∀ y : Y, E'.Through y → E.Through (s y) := by
   intro k _ X Y _ _ p s _ E' E hO y hy f hf

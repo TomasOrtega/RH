@@ -10,17 +10,17 @@ namespace GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D X d e J hJ y`. Take `⟨u, hu⟩ : ∃ u : GL (Fin X.rank) (AE D), u.1 = (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat y).submatrix e e` from `⟨Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e.symm).toMonoidHom y.1, rfl⟩`. Take `⟨M, hM⟩ : ∃ M : Matrix (Fin d) (Fin d) (AE D), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat y = M` from `⟨_, rfl⟩`. Take `⟨Gt, hGt⟩ : ∃ Gt : Matrix (Fin X.rank) (Fin X.rank) (AE D), GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM X.gramᵀ = Gt` from `⟨_, rfl⟩`. Establish `hy : (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat y)ᵀ * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM J * (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat y).map (cA D) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.in …` using `y.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (reindex e e X.gramᵀ) = reindex e e Gt` using `by rw [← hGt]; rfl`. Rewrite `hy` using `[hM, hJ, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM_smul, Matrix.mul_smul, Matrix.smul_mul, e1]`. Establish `hx : incA D D.host.xi0⁻¹ * incA D D.host.xi0 = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero, map_one]`. Establish `h1 : Mᵀ * reindex e e Gt * M.map (cA D) = reindex e e Gt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun A => incA D D.host.xi0⁻¹ • A) hy` as an intermediate fact. Simplify `this` using `only [smul_smul, hx, one_smul]`. Establish `h2 : (M.submatrix e e)ᵀ * Gt * (M.submatrix e e).map (cA D) = Gt`. Use `congrArg (fun A => A.submatrix e e) h1` as an intermediate fact. Rewrite `this` using `[← submatrix_mul_equiv _ _ _ e _, ← submatrix_mul_equiv _ _ _ e _]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[reindex_apply, transpose_submatrix, submatrix_submatrix, ← Matrix.submatrix_map]`. Establish `hT : Gtᵀ = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM X.gram` using `by rw [← hGt]; exact Matrix.ext fun _ _ => rfl`. Establish `h3` using `congrArg transpose h2`. Rewrite `h3` using `[transpose_mul, transpose_mul, transpose_transpose, ← Matrix.mul_assoc, hT]`. Rewrite `h3` using `[← hM, ← hu]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨(⟨u, h3⟩ : HR (AF D.host.F) D.sp.cm.sig X.gram), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show reindex e e u.1 = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat y`. Rewrite using `[hu]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kapX_surjective : ∀ (D : D7) (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • Matrix.reindex e e X.gramᵀ), Function.Surjective (GlobalTheory.SquareAgree.kapX X e hJ) := by

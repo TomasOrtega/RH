@@ -11,27 +11,25 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions.Dens
 open Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.ZD Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Use `set q := qd M T with hqdef`. Use `set x : ℝ := (M : ℝ) * T with hx`. Establish `hM' : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hx6 : 6 ≤ x` using `by rw [hx]; nlinarith`. Establish `hxq : x ≤ q` using `Nat.le_ceil x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqx1 : (q : ℝ) < x + 1` using `Nat.ceil_lt_add_one (by linarith)`. Establish `hqx : (q : ℝ) ≤ 2 * x` using `by linarith`. Establish `hq' : (256 : ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hl1 : 1 ≤ Real.log x` using `one_le_log_of_three_le_second (by linarith)`. Establish `hLq1 : 1 ≤ Real.log q` using `one_le_log_of_three_le_second (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLq : Real.log q ≤ 2 * Real.log x`. Establish `h1 : Real.log q ≤ Real.log (2 * x)` using `Real.log_le_log (by linarith) hqx`. Rewrite `h1` using `[Real.log_mul (by norm_num) (by linarith)]`. Establish `h2 : Real.log 2 ≤ Real.log x` using `Real.log_le_log (by norm_num) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : 1 ≤ U` using `le_trans (Nat.one_le_pow _ _ (by omega)) hU1`. Establish `hU' : (1 : ℝ) ≤ U` using `by exact_mod_cast hU`. Establish `hJ : ((pJd M T : ℕ) : ℝ) ≤ 24 * Real.log q` using `dyadic_index_le_log_second q (by omega)`. Establish `hJ0 : (0 : ℝ) < (pJd M T : ℝ)`. Establish `: 0 < pJd M T` using `by unfold pJd; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hl0 : 0 ≤ Real.log (2 * (U : ℝ))` using `Real.log_nonneg (by linarith)`. Establish `hl : 1 + Real.log (2 * (U : ℝ)) ≤ 13 * Real.log q`. Establish `h1 : (2 * (U : ℝ)) ≤ (q : ℝ) ^ 12` using `by exact_mod_cast hU2`. Establish `h2 : Real.log (2 * (U : ℝ)) ≤ Real.log ((q : ℝ) ^ 12)` using `Real.log_le_log (by linarith) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h2` using `[Real.log_pow]`. Move the coercions through the operations in `at h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hG : 9 + 8 * Real.log (2 * T + 1) ≤ 17 * Real.log x`. Establish `h1 : Real.log (2 * T + 1) ≤ Real.log x` using `Real.log_le_log (by linarith) (by rw [hx]; nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hG0 : 0 ≤ 9 + 8 * Real.log (2 * T + 1)`. Establish `: 0 ≤ Real.log (2 * T + 1)` using `Real.log_nonneg (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK0 : 0 ≤ 8 * ((M : ℝ) + 1) * (2 + 2 * T)` using `by positivity`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hK : 8 * ((M : ℝ) + 1) * (2 + 2 * T) ≤ 48 * q`. Establish `: 8 * ((M : ℝ) + 1) * (2 + 2 * T) ≤ 48 * x` using `by rw [hx]; nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hθ : (0 : ℝ) < 1 / (2 * (pJd M T : ℝ))` using `by positivity`. Establish `hsmall` using `second_small_condition ((U : ℝ) ^ (1 - 2 * σ)) (1 + Real.log (2 * (U : ℝ))) (8 * ((M : ℝ) + 1) * (2 + 2 * T)) (pJd M T : ℝ) q (Real.sqrt q) (Real.log q) (by linarith) (Real.sqrt_pos.2 (by linarith)) (rpow_neg_exponent_bound_second q U σ (by omega) hσ hU1) (by linarith) hl hK0 hK …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmain` using `dyadic_block_count S (fun p n => p.1 (n : ZMod M)) (fun p => p.2) (pYd M T) (pNd M T) U σ (1 / (2 * (pJd M T : ℝ))) (9 + 8 * Real.log (2 * T + 1)) (8 * ((M : ℝ) + 1) * (2 + 2 * T)) hU hθ (by linarith) hG0 hK0 (fun p _ n => DirichletCharacter.norm_le_one _ _) (fun p hp => (hS p hp …`. Use `hmain.trans ?_` and prove the remaining obligations. Establish `hu2` using `rpow_pos_exponent_bound_second q U x σ (by linarith) hqx hσ hσ1 (by omega)`. Establish `hu0 : 0 ≤ (U : ℝ) ^ (2 - 2 * σ)` using `by positivity`. Establish `he : 4 * (U : ℝ) ^ (2 - 2 * σ) * (1 + Real.log (2 * (U : ℝ))) ^ 3 * (9 + 8 * Real.log (2 * T + 1)) / (1 / (2 * (pJd M T : ℝ))) ^ 2 = 4 * (U : ℝ) ^ (2 - 2 * σ) * (1 + Real.log (2 * (U : ℝ))) ^ 3 * (9 + 8 * Real.log (2 * T + 1)) * (4 * (pJd M T : ℝ) ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Establish `hl' : 1 + Real.log (2 * (U : ℝ)) ≤ 26 * Real.log x` using `by linarith`. Establish `hJ' : (pJd M T : ℝ) ≤ 48 * Real.log x` using `by linarith`.
-
-Establish `hl00 : 0 ≤ 1 + Real.log (2 * (U : ℝ))` using `by linarith`. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem second_block_count (M : ℕ) [NeZero M] (T σ : ℝ) (S : Finset (DirichletCharacter ℂ M × ℂ)) (U : ℕ)
     (hM : 3 ≤ M) (hT : 2 ≤ T) (hσ : 3 / 4 ≤ σ) (hσ1 : σ ≤ 1) (hq : 256 ≤ qd M T)
@@ -108,29 +106,27 @@ theorem second_block_count (M : ℕ) [NeZero M] (T σ : ℝ) (S : Finset (Dirich
   gcongr
 
 /- English proof (translation)
-Take `⟨q₁, hq₁⟩` from `log_pow_five_le_sqrt 971882496`. Use `⟨48 * (4 * 64 * 26 ^ 3 * 17 * (4 * 48 ^ 2)), max q₁ 256, ?_⟩` and prove the remaining obligations. Introduce `M _ T σ S hM hT hσ hq hS hsp`. Establish `hq256 : 256 ≤ qd M T` using `le_trans (le_max_right _ _) hq`. Establish `hc` using `hq₁ (qd M T) (le_trans (le_max_left _ _) hq)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM' : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hx6 : 6 ≤ (M : ℝ) * T` using `by nlinarith`. Establish `hl1 : 1 ≤ Real.log ((M : ℝ) * T)` using `one_le_log_of_three_le_second (by linarith)`. Establish `hX0 : 0 ≤ ((M : ℝ) * T) ^ (24 * (1 - σ))` using `by positivity`. Break down `S.eq_empty_or_nonempty with rfl | ⟨p₀, hp₀⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [card_empty, Nat.cast_zero]`. Check the signs of the components of the expression. Establish `hσ1 : σ ≤ 1`. Take `⟨-, h1, h2, -⟩` from `hS p₀ hp₀`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `set B : ℝ := 4 * (64 * ((M : ℝ) * T) ^ (24 * (1 - σ))) * (26 * Real.log ((M : ℝ) * T)) ^ 3 * (17 * Real.log ((M : ℝ) * T)) * (4 * (48 * Real.log ((M : ℝ) * T)) ^ 2) with hB`. Establish `hB0 : 0 ≤ B` using `by rw [hB]; positivity`. Set `Sj : ℕ → Finset (DirichletCharacter ℂ M × ℂ)` to `fun j => S.filter (fun p => 1 / (2 * (pJd M T : ℝ)) ≤ ‖blkD (pYd M T) (pNd M T) (pYd M T * 2 ^ j) (fun n => p.1 (n : ZMod M)) p.2‖)`. Establish `hsub : S ⊆ (range (pJd M T)).biUnion Sj`. Introduce `p hp`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3, h4, h5⟩` from `hS p hp`. Take `⟨j, hj, hjb⟩` from `zero_detection_second M p.1 h1 T hT hM p.2 (by linarith) h4 h5`. Conclude with `mem_biUnion.2 ⟨j, hj, mem_filter.2 ⟨hp, hjb⟩⟩`. Establish `hj : ∀ j ∈ range (pJd M T), ((Sj j).card : ℝ) ≤ B`. Introduce `j hj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjJ : j < pJd M T` using `mem_range.1 hj`. Establish `hYN : qd M T ^ 3 * 2 ^ pJd M T ≤ qd M T ^ 12` using `dyadic_size_le_pow_twelve_second (qd M T) hq256`. Apply `second_block_count M T σ (Sj j) (pYd M T * 2 ^ j) hM hT hσ hσ1 hq256 hc` to reduce the goal to its premises. Conclude with `Nat.le_mul_of_pos_right _ (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Evaluate the numerical expressions. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Evaluate the numerical expressions. Use linear arithmetic over natural numbers and integers. Use `_ ≤ _ := hYN`. Introduce `p hp`. Take `⟨-, h2, h3, h4, -⟩` from `hS p (mem_filter.1 hp).1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨h2, h3.le, h4⟩`. Introduce `p hp p' hp'`. Conclude with `hsp p (mem_filter.1 hp).1 p' (mem_filter.1 hp').1`. Introduce `p hp`. Conclude with `(mem_filter.1 hp).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1 : (S.card : ℝ) ≤ ∑ j ∈ range (pJd M T), ((Sj j).card : ℝ)`. Use `(card_le_card hsub).trans card_biUnion_le` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `h2 : ∑ j ∈ range (pJd M T), ((Sj j).card : ℝ) ≤ (pJd M T : ℝ) * B`. Use `sum_le_card_nsmul (range (pJd M T)) (fun j => ((Sj j).card : ℝ)) B hj` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `hJ' : (pJd M T : ℝ) ≤ 48 * Real.log ((M : ℝ) * T)`. Establish `hJ : ((pJd M T : ℕ) : ℝ) ≤ 24 * Real.log (qd M T)` using `dyadic_index_le_log_second (qd M T) (by omega)`. Establish `hqx1 : ((qd M T : ℕ) : ℝ) < (M : ℝ) * T + 1` using `Nat.ceil_lt_add_one (by linarith)`. Establish `hq' : (256 : ℝ) ≤ (qd M T : ℝ)` using `by exact_mod_cast hq256`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : Real.log (qd M T) ≤ Real.log (2 * ((M : ℝ) * T))` using `Real.log_le_log (by linarith) (by linarith)`. Rewrite `h3` using `[Real.log_mul (by norm_num) (by linarith)]`. Establish `h4 : Real.log 2 ≤ Real.log ((M : ℝ) * T)` using `Real.log_le_log (by norm_num) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (pJd M T : ℝ) * B ≤ 48 * Real.log ((M : ℝ) * T) * B` using `by gcongr`.
-
-Establish `h4 : 48 * Real.log ((M : ℝ) * T) * B = 48 * (4 * 64 * 26 ^ 3 * 17 * (4 * 48 ^ 2)) * ((M : ℝ) * T) ^ (24 * (1 - σ)) * Real.log ((M : ℝ) * T) ^ 7`. Rewrite using `[hB]`. Expand and normalize the polynomial expressions, which then agree. Establish `h5 : Real.log ((M : ℝ) * T) ^ 7 ≤ Real.log ((M : ℝ) * T) ^ 10` using `pow_le_pow_right₀ hl1 (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem zero_count_second : Count1 := by
   obtain ⟨q₁, hq₁⟩ := log_pow_five_le_sqrt 971882496

@@ -26,11 +26,11 @@ namespace GlobalTheory.ThK.EulerMeas
 open MeasureTheory.Measure
 
 /- English proof (translation)
-Establish `hK1 : ∀ k, (μf k).map (jf k) (Kb k) = μf k (K k)` using `fun k => by`. Rewrite using `[Measure.map_apply (hjf k) (hKbm k), hKb k]`. Use `⟨h.vol_one.mono fun k hk => (hK1 k).trans hk, fun S hS A B hA hB => ?_⟩` and prove the remaining obligations. Establish `e : GlobalTheory.RestrMeas.cyl (fun i g => ja i (p i g)) (fun k g => jf k (q k g)) Kb S A B = GlobalTheory.AdelicU.cyl p q K S (fun i => ja i ⁻¹' A i) (fun k => jf k ⁻¹' B k)`. Use extensionality with `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [GlobalTheory.RestrMeas.mem_cyl, GlobalTheory.AdelicU.mem_cyl, Set.mem_preimage]`. Use `and_congr_right fun _ => and_congr_right fun _ => forall₂_congr fun k _ => ?_` and prove the remaining obligations. Use `show q k g ∈ jf k ⁻¹' Kb k ↔ _`. Rewrite using `[hKb k]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, h.measure_cyl S (fun k hk => (hK1 k).symm.trans (hS k hk)) _ _ (fun i => hja i (hA i)) (fun k hk => hjf k (hB k hk))]`. Simplify using `only [Measure.map_apply (hja _) (hA _)]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun k hk => (Measure.map_apply (hjf k) (hB k hk)).symm`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem cylProd_of_restrProd {G ι κ : Type} {H : ι → Type} {P : κ → Type} {Ya : ι → Type} {Yf : κ → Type}
     [Fintype ι] [Group G] [∀ i, Group (H i)] [∀ k, Group (P k)] [TopologicalSpace G] [∀ i, TopologicalSpace (H i)]
@@ -67,11 +67,7 @@ namespace GlobalTheory.ThK.EulerMeas
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
-
-Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Use `haveI : LocallyCompactSpace (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`.
-
-Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → AE F E))`. Use `haveI : T2Space (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (T2Space (Fin n → Fin n → AE F E))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (GL (Fin n) (AE F E)) := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `⟨inferInstance, inferInstance, Units.isClosedEmbedding_embedProduct.locallyCompactSpace, Units.isEmbedding_embedProduct.secondCountableTopology, inferInstance, ⟨rfl⟩, inferInstance, inferInstance, ⟨rfl⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem topFacts (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     IsTopologicalRing (AE F E) ∧ T2Space (AE F E) ∧ LocallyCompactSpace (AE F E)ˣ ∧
@@ -148,30 +144,30 @@ def kSub (v : Pl F) : Subgroup (KAt K (evFin F v) × idelesAt E (evFin F v)) :=
   (⊤ : Subgroup (KAt K (evFin F v))).prod ((unitsAt E v).subgroupOf (idelesAt E (evFin F v)))
 
 /- English proof (translation)
-Simplify using `[kSub, Subgroup.mem_prod, Subgroup.mem_subgroupOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_kSub {v : Pl F} {x : KAt K (evFin F v) × idelesAt E (evFin F v)} : x ∈ kSub K v ↔ x.2.1 ∈ unitsAt E v := by
   simp [kSub, Subgroup.mem_prod, Subgroup.mem_subgroupOf]
 
 /- English proof (translation)
-The claim follows from `continuous_induced_rng.2 (((GlobalTheory.ThK.ConeEuler.continuous_components F E σ n X.J).2).comp continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_kArch (hK : ∀ k ∈ K, compArch σ X.J k ∈ K) : Continuous (kArch hK) :=
   continuous_induced_rng.2 (((GlobalTheory.ThK.ConeEuler.continuous_components F E σ n X.J).2).comp continuous_subtype_val)
 
 /- English proof (translation)
-The claim follows from `continuous_induced_rng.2 (((GlobalTheory.ThK.ConeEuler.continuous_components F E σ n X.J).1 v).comp continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_kAt (hK : ∀ k ∈ K, ∀ v, compAt σ X.J v k ∈ K) (v : Pl F) : Continuous (kAt hK v) :=
   continuous_induced_rng.2 (((GlobalTheory.ThK.ConeEuler.continuous_components F E σ n X.J).1 v).comp continuous_subtype_val)
 
 /- English proof (translation)
-The claim follows from `continuous_induced_rng.2 (GlobalTheory.ThK.ConeEuler.continuous_unitAt_unitArch F E).2`.
+A detailed English derivation is pending.
 -/
 theorem continuous_lArch : Continuous (lArch F E) := continuous_induced_rng.2 (GlobalTheory.ThK.ConeEuler.continuous_unitAt_unitArch F E).2
 
 /- English proof (translation)
-The claim follows from `continuous_induced_rng.2 ((GlobalTheory.ThK.ConeEuler.continuous_unitAt_unitArch F E).1 v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_lAt (v : Pl F) : Continuous (lAt E v) := continuous_induced_rng.2 ((GlobalTheory.ThK.ConeEuler.continuous_unitAt_unitArch F E).1 v)
 
@@ -183,11 +179,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {X : Spc F E n}
 
 /- English proof (translation)
-Establish `sK` using `GlobalTheory.ThK.ConeEuler.SuppOne.comp_of_supp F E σ n X`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact fun _ _ => ⟨a, haK, ((sK a).2 ha).1, by simp, fun v _ => ((sK a).2 ha).2 v⟩`. Consider the case `insert w S hw ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `hy hyK`. Take `⟨k, hk, h1, h2, h3⟩` from `ih (fun v hv => hy v (Finset.mem_insert_of_mem hv)) (fun v hv => hyK v (Finset.mem_insert_of_mem hv))`. Establish `hyw` using `hy w (Finset.mem_insert_self w S)`. Use `⟨k * y w, K.mul_mem hk (hyK w (Finset.mem_insert_self w S)), ?_, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, h1, ((sK _).1 w hyw).2.1, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Break down `Finset.mem_insert.1 hv with rfl | hv'` into its components or cases. Rewrite using `[h3 v hw, ((sK _).1 v hyw).1, one_mul]`. Rewrite using `[h2 v hv', ((sK _).1 w hyw).2.2 v (fun e => hw (e ▸ hv')), mul_one]`. Rewrite using `[map_mul, h3 v (fun h => hv (Finset.mem_insert_of_mem h)), ((sK _).1 w hyw).2.2 v (fun e => hv (e ▸ Finset.mem_insert_self _ _)), one_mul]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_glueK (K : Subgroup (UA σ X.J)) (a : UA σ X.J) (ha : a ∈ UAt σ X (evI F)) (haK : a ∈ K)
     (y : Pl F → UA σ X.J) : ∀ S : Finset (Pl F), (∀ v ∈ S, y v ∈ UAt σ X (evFin F v)) → (∀ v ∈ S, y v ∈ K) →
@@ -219,23 +215,21 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {X : Spc F E n} {K : Subgroup (UA σ X.J)}
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _⟩` from `topFacts (F := F) (E := E) σ X.J`. Establish `cp : ∀ i, Continuous (pG (σ` using `σ) (X := X) hA i) := fun _ => (continuous_kArch hA).prodMap continuous_lArch`. Establish `cq : ∀ v, Continuous (qG (σ` using `σ) (X := X) hF v) := fun v => (continuous_kAt hF v).prodMap (continuous_lAt v)`. Establish `oK : ∀ v, IsOpen (kSub K v : Set (KAt K (evFin F v) × idelesAt E (evFin F v)))` using `fun v => by`. Use `isOpen_univ.prod (isCompact_isOpen_unitsAt (E := E) v).2 using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `x`. Simplify using `[mem_kSub]`. Use `⟨cp, cq, oK, ?_, fun S A B hAc hBc => ?_, fun S x y => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.T.unit_ideles_open F E).preimage continuous_snd using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `[mem_kSub, qG]`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hcpt`. Establish `hC` using `GlobalTheory.T.ideles_compact_of_local_bounds F E S (Subtype.val '' (Prod.snd '' A ())) (fun v => Subtype.val '' (Prod.snd '' B v)) (((hAc ()).image continuous_snd).image continuous_subtype_val) fun v hv => ((hBc v hv).image continuous_snd).image continuous_subtype_val`. Use `(isCompact_univ.prod hC).of_isClosed_subset ?_ ?_` and prove the remaining obligations. Establish `e : GlobalTheory.AdelicU.cyl (pG hA) (qG hF) (kSub K) S A B = (⋂ i, pG hA i ⁻¹' A i) ∩ ((⋂ k ∈ S, qG hF k ⁻¹' B k) ∩ ⋂ k ∈ (↑S : Set (Pl F))ᶜ, qG hF k ⁻¹' (kSub K k : Set _))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `g`. Simplify using `[GlobalTheory.AdelicU.mem_cyl]`. Rewrite using `[e]`. Conclude with `(isClosed_iInter fun i => (hAc i).isClosed.preimage (cp i)).inter ((isClosed_biInter fun k hk => (hBc k hk).isClosed.preimage (cq k)).inter (isClosed_biInter fun k _ => (Subgroup.isClosed_of_isOpen _ (oK k)).preimage (cq k)))`. Introduce and unpack `g ⟨h1, h2, h3⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Set.mem_univ _, ⟨_, ⟨_, h1 (), rfl⟩, rfl⟩, fun v hv => ⟨_, ⟨_, h2 v hv, rfl⟩, rfl⟩, fun v hv => ?_⟩` and prove the remaining obligations. Conclude with `mem_kSub.1 (h3 v hv)`. Establish `sU` using `GlobalTheory.ThK.ConeEuler.unitAt_unitArch_of_mem_idelesAt F E`. Establish `hx2 : (x ()).2.1 ∈ idelesAt E (evI F)` using `(x ()).2.2`. Establish `hy2 : ∀ v : S, (y v).2.1 ∈ idelesAt E (evFin F v.1)` using `fun v => (y v).2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `y' : Pl F → UA σ X.J` to `fun v => if h : v ∈ S then (y ⟨v, h⟩).1.1 else 1`. Establish `ey : ∀ v : S, y' v.1 = (y v).1.1` using `fun v => by simp [y', v.2]`. Take `⟨k, hk, h1, h2, h3⟩` from `exists_glueK K (x ()).1.1 (x ()).1.2.2 (x ()).1.2.1 y' S (fun v hv => by rw [show y' v = (y ⟨v, hv⟩).1.1 from dif_pos hv]; exact (y ⟨v, hv⟩).1.2.2) (fun v hv => by rw [show y' v = (y ⟨v, hv⟩).1.1 from dif_pos hv]; exact (y ⟨v, hv⟩).1.2.1)`. Use `⟨(⟨k, hk⟩, (x ()).2.1 * ∏ v : S, (y v).2.1), fun _ => ?_, fun v => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Use `Prod.ext (Subtype.ext ?_) (Subtype.ext ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `compArch σ X.J k = _`. Conclude with `h1`. Express the relevant statement in the definitionally equal form `unitArch F E ((x ()).2.1 * ∏ v : S, (y v).2.1) = _`. Rewrite using `[map_mul, map_prod, (sU (x ()).2.1).2 hx2 |>.1, Finset.prod_eq_one fun v _ => ((sU (y v).2.1).1 v.1 (hy2 v)).2.1, mul_one]`. Use `Prod.ext (Subtype.ext ?_) (Subtype.ext ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `compAt σ X.J v.1 k = _`. Conclude with `(h2 v.1 v.2).trans (ey v)`. Express the relevant statement in the definitionally equal form `unitAt E v.1 ((x ()).2.1 * ∏ v : S, (y v).2.1) = _`. Rewrite using `[map_mul, map_prod, ((sU (x ()).2.1).2 hx2).2 v.1, one_mul, Finset.prod_eq_single v (fun u _ hu => ((sU (y u).2.1).1 u.1 (hy2 u)).2.2 v.1 fun h => hu (Subtype.ext h.symm)) (by simp), ((sU (y v).2.1).1 v.1 (hy2 v)).1]`. Use `mem_kSub.2 ?_` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `unitAt E v ((x ()).2.1 * ∏ v : S, (y v).2.1) ∈ unitsAt E v`. Rewrite using `[map_mul, map_prod, ((sU (x ()).2.1).2 hx2).2 v, one_mul, Finset.prod_eq_one fun u _ => ((sU (y u).2.1).1 u.1 (hy2 u)).2.2 v fun h => hv (h ▸ u.2)]`. Conclude with `one_mem _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRestrGroup (hcpt : IsCompact (K : Set (UA σ X.J))) (hA : ∀ k ∈ K, compArch σ X.J k ∈ K)
     (hF : ∀ k ∈ K, ∀ v, compAt σ X.J v k ∈ K) :
@@ -302,7 +296,7 @@ end GlobalTheory.ThK.EulerMeas
 namespace GlobalTheory.ThK.EulerMeas
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Conclude with `⟨inferInstance, inferInstance, TopologicalSpace.Subtype.secondCountableTopology _, inferInstance, inferInstance⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem subgroup_facts {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
     [T2Space G] [MeasurableSpace G] [BorelSpace G] {K : Subgroup G} (hK : IsCompact (K : Set G)) :
@@ -311,7 +305,7 @@ theorem subgroup_facts {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalG
   exact ⟨inferInstance, inferInstance, TopologicalSpace.Subtype.secondCountableTopology _, inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _⟩` from `hG`. Take `⟨_, _, _, _, _⟩` from `hH`. Conclude with `⟨⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance⟩, inferInstance, ⟨inferInstance, inferInstance⟩, inferInstance, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem prod_facts {G H : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [Group H] [TopologicalSpace H]
     [MeasurableSpace H]
@@ -326,29 +320,23 @@ theorem prod_facts {G H : Type} [Group G] [TopologicalSpace G] [MeasurableSpace 
     ⟨inferInstance, inferInstance⟩, inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hP B n X r s hB hX K hK μK μ hμK hμ μKv hKv μEv hEv μKi hKi μEi hEi`. Establish `hcpt : IsCompact (K : Set (UA σ X.J))`. Take `⟨K', -, -, hK', hc, -⟩` from `GlobalTheory.StabHaar.stabEx hP F E σ B n X r s hB hX`. Establish `e : K = K'` using `Subgroup.ext fun g => (hK g).trans (hK' g).symm`. Conclude with `e ▸ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `GlobalTheory.ThK.ConeEuler.StabComp.comp_mem_of_isStab F E σ B n X K hK`. Establish `hA : ∀ k ∈ K, compArch σ X.J k ∈ K` using `fun k hk => (hS k hk).2`. Establish `hF : ∀ k ∈ K, ∀ v, compAt σ X.J v k ∈ K` using `fun k hk => (hS k hk).1`. Take `⟨_, _, _, _, _, _, _, _, _⟩` from `topFacts (F := F) (E := E) σ X.J`. Use `haveI gU : IsTopologicalGroup (UA σ X.J) := inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI gE : IsTopologicalGroup (AE F E)ˣ := inferInstance`. Take `⟨⟨_, _, _, _, _⟩, _, ⟨sK, _⟩, sE, _⟩` from `prod_facts (subgroup_facts hcpt) ⟨gE, ‹_›, ‹_›, ‹_›, ‹_›⟩ μK μ hμK hμ`. Take `⟨⟨_, _, _, _, _⟩, hi, ⟨sKi, _⟩, sEi, _⟩` from `prod_facts (subgroup_facts (isCompact_KAt hcpt (evI F))) (idelesAt_facts E (evI F)) μKi μEi hKi.1 hEi`. Establish `pv` using `fun v : Pl F => prod_facts (subgroup_facts (isCompact_KAt hcpt (evFin F v))) (idelesAt_facts E (evFin F v)) (μKv v) (μEv v) (hKv v).1 (hEv v).1`. Use `haveI := fun v => (pv v).1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := fun v => (pv v).1.2.1`. Use `haveI := fun v => (pv v).1.2.2.1`. Use `haveI := fun v => (pv v).1.2.2.2.1`. Use `haveI := fun v => (pv v).1.2.2.2.2`. Use `haveI := fun v => (pv v).2.2.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Use `haveI := fun v => (pv v).2.2.1.2`. Use `haveI := fun v => (pv v).2.2.2.1`. Use `haveI := fun v => (pv v).2.2.2.2`. Establish `eKi : MeasurableEmbedding (Subtype.val : KAt K (evI F) → UA σ X.J)` using `MeasurableEmbedding.subtype_coe (isCompact_KAt hcpt _).measurableSet`. Establish `eKv : ∀ v, MeasurableEmbedding (Subtype.val : KAt K (evFin F v) → UA σ X.J)` using `fun v => MeasurableEmbedding.subtype_coe (isCompact_KAt hcpt _).measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `eEi : MeasurableEmbedding (Subtype.val : idelesAt E (evI F) → (AE F E)ˣ)` using `MeasurableEmbedding.subtype_coe (isClosed_idelesAt _).measurableSet`. Establish `eEv : ∀ v, MeasurableEmbedding (Subtype.val : idelesAt E (evFin F v) → (AE F E)ˣ)` using `fun v => MeasurableEmbedding.subtype_coe (isClosed_idelesAt _).measurableSet`. Establish `hU : ∀ v : Pl F, MeasurableSet {l : (AE F E)ˣ | l ∈ unitsAt E v}` using `fun v => by`. Use `((isCompact_isOpen_unitsAt (E := E) v).1.image continuous_subtype_val).measurableSet` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `l`. Conclude with `⟨fun h => ⟨⟨l, h.1⟩, h, rfl⟩, fun ⟨m, h, e⟩ => e ▸ h⟩`. Establish `hM : ∀ v, MeasurableSet {q : UA σ X.J × (AE F E)ˣ | q.1 ∈ KAt K (evFin F v) ∧ q.2 ∈ unitsAt E v}` using `fun v => (isCompact_KAt hcpt _).measurableSet.prod (hU v)`. Establish `hpre : ∀ v, Prod.map Subtype.val Subtype.val ⁻¹' {q : UA σ X.J × (AE F E)ˣ | q.1 ∈ KAt K (evFin F v) ∧ q.2 ∈ unitsAt E v} = (kSub K v : Set (KAt K (evFin F v) × idelesAt E (evFin F v)))` using `fun v => by`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SetLike.mem_coe, mem_kSub]`. Conclude with `⟨fun h => h.2, fun h => ⟨x.1.2, h⟩⟩`. Establish `h1 : ∀ v, (μKv v).prod (μEv v) (kSub K v) = 1` using `fun v => by`. Establish `e : (kSub K v : Set (KAt K (evFin F v) × idelesAt E (evFin F v))) = Set.univ ×ˢ {l | l.1 ∈ unitsAt E v}`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[mem_kSub]`. Rewrite using `[e, Measure.prod_prod, (hKv v).2, (hEv v).2, one_mul]`. Establish `mi` using `Measure.map_prod_map μKi μEi eKi.measurable eEi.measurable`. Establish `mv` using `fun v => Measure.map_prod_map (μKv v) (μEv v) (eKv v).measurable (eEv v).measurable`. Establish `cK` using `GlobalTheory.ThK.ConeEuler.continuous_components F E σ n X.J`.
-
-Establish `cU` using `GlobalTheory.ThK.ConeEuler.continuous_unitAt_unitArch F E`. Use `⟨sK, sE, eKi.sigmaFinite_map, eEi.sigmaFinite_map, fun v => ⟨(eKv v).sigmaFinite_map, (eEv v).sigmaFinite_map⟩, fun v => ?_, ?_, hM, fun v => ?_, fun p => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(((cK.1 v).measurable.comp measurable_subtype_coe).comp measurable_fst).prodMk ((cU.1 v).measurable.comp measurable_snd)`. Conclude with `((cK.2.measurable.comp measurable_subtype_coe).comp measurable_fst).prodMk (cU.2.measurable.comp measurable_snd)`. Rewrite using `[mv, Measure.map_apply ((eKv v).measurable.prodMap (eEv v).measurable) (hM v), hpre, h1]`.
-
-Conclude with `(GlobalTheory.ThK.ConeEuler.eventually_unitAt_mem_unitsAt F E p.2).mono fun v hv => ⟨⟨hF _ p.1.2 v, compAt_mem v _⟩, hv⟩`. Take `⟨c, hc, h⟩` from `(isRestrGroup hcpt hA hF).exists_smul (μi := fun _ => μKi.prod μEi) (μf := fun v => (μKv v).prod (μEv v)) (fun _ => hi) (fun v => (pv v).2.1) (Eventually.of_forall h1) (μK.prod μ)`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Use `cylProd_of_restrProd (Ya := fun _ => UA σ X.J × (AE F E)ˣ) (Yf := fun _ => UA σ X.J × (AE F E)ˣ) h (fun _ => Prod.map Subtype.val Subtype.val) (fun _ => Prod.map Subtype.val Subtype.val) (fun _ => eKi.measurable.prodMap eEi.measurable) (fun v => (eKv v).measurable.prodMap (eEv v) …` as an intermediate fact. Simplify using `only [mi, mv]`.
-
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem haar_isCylProd : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), GlobalTheory.FunPr.Hypotheses₂ → ∀ (B : Base F E) (n : ℕ) (X : Spc F E n) (r s : ℕ), B.IsGood σ → X.IsHerm σ B r s →
     ∀ (K : Subgroup (UA σ X.J)), IsStab B K → ∀ (μK : Measure K) (μ : Measure (AE F E)ˣ), μK.IsHaarMeasure → μ.IsHaarMeasure →

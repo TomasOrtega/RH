@@ -6,39 +6,35 @@ namespace GlobalTheory
 open Matrix
 
 /- English proof (translation)
-Introduce `n a b J Q hJ hQ X₁ Y₁ Xb Yb h11 h1b hbb h1Y h1Yb hYbYb hbYb`. Establish `hYb1 : Ybᴴ * J * X₁ = 0`. Use `congrArg conjTranspose h1Yb` as an intermediate fact. Simplify `this` using `[conjTranspose_mul, hJ, Matrix.mul_assoc]`. Establish `hYbb : Ybᴴ * J * Xb = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg conjTranspose hbYb` as an intermediate fact. Simplify `this` using `[conjTranspose_mul, hJ, Matrix.mul_assoc]`. Establish `hY1 : Y₁ᴴ * J * X₁ = 1`. Use `congrArg conjTranspose h1Y` as an intermediate fact. Simplify `this` using `[conjTranspose_mul, hJ, Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hinj : Function.Injective X₁.mulVec`. Introduce `x y hxy`. Use `congrArg (fun w => (Y₁ᴴ * J) *ᵥ w) hxy` as an intermediate fact. Simplify using `only [mulVec_mulVec] at this`. Simplify `this` using `[hY1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set G := X₁ᴴ * Q * X₁ with hG`. Establish `hGpd : G.PosDef` using `hQ.conjTranspose_mul_mul_same hinj`. Establish `hGu : IsUnit G` using `hGpd.isUnit`. Establish `hGdet : IsUnit G.det` using `(Matrix.isUnit_iff_isUnit_det G).mp hGu`. Use `set A : Matrix (Fin a) (Fin b) ℂ := -(G⁻¹ * (X₁ᴴ * Q * Xb)) with hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set T : Matrix (Fin n) (Fin n) ℂ := X₁ * A * Ybᴴ * J - Yb * Aᴴ * X₁ᴴ * J with hT`. Establish `hT2 : T * T = 0`. Simplify using `only [hT, sub_mul, mul_sub]`. Establish `e1 : X₁ * A * Ybᴴ * J * (X₁ * A * Ybᴴ * J) = X₁ * A * (Ybᴴ * J * X₁) * A * Ybᴴ * J`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : X₁ * A * Ybᴴ * J * (Yb * Aᴴ * X₁ᴴ * J) = X₁ * A * (Ybᴴ * J * Yb) * Aᴴ * X₁ᴴ * J`. Simplify using `only [Matrix.mul_assoc]`. Establish `e3 : Yb * Aᴴ * X₁ᴴ * J * (X₁ * A * Ybᴴ * J) = Yb * Aᴴ * (X₁ᴴ * J * X₁) * A * Ybᴴ * J`. Simplify using `only [Matrix.mul_assoc]`. Establish `e4 : Yb * Aᴴ * X₁ᴴ * J * (Yb * Aᴴ * X₁ᴴ * J) = Yb * Aᴴ * (X₁ᴴ * J * Yb) * Aᴴ * X₁ᴴ * J`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e1, e2, e3, e4, hYb1, hYbYb, h11, h1Yb]`. Simplify using the standard rewrite rules. Establish `hTJ : Tᴴ * J = -(J * T)`. Simplify using `only [hT, conjTranspose_sub, conjTranspose_mul, conjTranspose_conjTranspose, hJ, sub_mul, mul_sub, Matrix.mul_assoc, neg_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `u : GL (Fin n) ℂ` to `⟨1 + T, 1 - T, by`. Rewrite using `[mul_sub, mul_one, add_mul, one_mul, hT2]`. Use the proof step `abel,`. Use `by rw [sub_mul, one_mul, mul_add, mul_one, hT2]; abel⟩`. Use `⟨u, A, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show (1 + T)ᴴ * J * (1 + T) = J`. Rewrite using `[conjTranspose_add, conjTranspose_one, add_mul, one_mul, add_mul, mul_add, mul_add, hTJ]`. Simplify using `only [mul_one, neg_mul, Matrix.mul_assoc, hT2, mul_zero, neg_zero, add_zero]`. Normalize the expressions using the abelian group laws. Use `show (1 + T) * X₁ = X₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: T * X₁ = 0`. Simplify using `only [hT, Matrix.sub_mul]`. Establish `e1 : X₁ * A * Ybᴴ * J * X₁ = X₁ * A * (Ybᴴ * J * X₁)` using `by simp only [Matrix.mul_assoc]`. Establish `e2 : Yb * Aᴴ * X₁ᴴ * J * X₁ = Yb * Aᴴ * (X₁ᴴ * J * X₁)` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[e1, e2, hYb1, h11]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.add_mul, Matrix.one_mul, this, add_zero]`. Use `show (1 + T) * Xb = Xb + X₁ * A`. Establish `: T * Xb = X₁ * A`. Simplify using `only [hT, Matrix.sub_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : X₁ * A * Ybᴴ * J * Xb = X₁ * A * (Ybᴴ * J * Xb)` using `by simp only [Matrix.mul_assoc]`. Establish `e2 : Yb * Aᴴ * X₁ᴴ * J * Xb = Yb * Aᴴ * (X₁ᴴ * J * Xb)` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[e1, e2, hYbb, h1b]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.add_mul, Matrix.one_mul, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (1 + T) * Yb = Yb`. Establish `: T * Yb = 0`. Simplify using `only [hT, Matrix.sub_mul]`. Establish `e1 : X₁ * A * Ybᴴ * J * Yb = X₁ * A * (Ybᴴ * J * Yb)` using `by simp only [Matrix.mul_assoc]`. Establish `e2 : Yb * Aᴴ * X₁ᴴ * J * Yb = Yb * Aᴴ * (X₁ᴴ * J * Yb)` using `by simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, hYbYb, h1Yb]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.add_mul, Matrix.one_mul, this, add_zero]`. Introduce `v hv show (1 + T) *ᵥ v = v + X₁ *ᵥ (A *ᵥ ((Ybᴴ * J) *ᵥ v))`. Rewrite using `[add_mulVec, one_mulVec]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Simplify using `only [hT, sub_mulVec]`. Establish `e1 : (X₁ * A * Ybᴴ * J) *ᵥ v = X₁ *ᵥ (A *ᵥ ((Ybᴴ * J) *ᵥ v))`. Simplify using `only [mulVec_mulVec, Matrix.mul_assoc]`. Establish `e2 : (Yb * Aᴴ * X₁ᴴ * J) *ᵥ v = (Yb * Aᴴ) *ᵥ ((X₁ᴴ * J) *ᵥ v)`.
-
-Simplify using `only [mulVec_mulVec, Matrix.mul_assoc]`. Rewrite using `[e1, e2, hv, mulVec_zero, sub_zero]`. Rewrite using `[Matrix.mul_add]`. Establish `: X₁ᴴ * Q * (X₁ * A) = G * A` using `by rw [hG]; simp only [Matrix.mul_assoc]`. Rewrite using `[this, hA, Matrix.mul_neg, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv G hGdet, Matrix.one_mul]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levi_element_cpx : ∀ (n a b : ℕ) (J Q : Matrix (Fin n) (Fin n) ℂ), J.conjTranspose = J → Q.PosDef →
     ∀ (X₁ Y₁ : Matrix (Fin n) (Fin a) ℂ) (Xb Yb : Matrix (Fin n) (Fin b) ℂ),

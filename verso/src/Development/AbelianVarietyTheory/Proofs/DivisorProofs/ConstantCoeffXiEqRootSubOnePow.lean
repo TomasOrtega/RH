@@ -6,9 +6,9 @@ open Ideal WittVector Polynomial
 namespace GlobalTheory.Sandwich
 
 /- English proof (translation)
-Establish `key : ((X : (ZMod p)[X]) - 1) ^ (p - 1) = ∑ i ∈ Finset.range p, (X : (ZMod p)[X]) ^ i`. Establish `h1 : ((X : (ZMod p)[X]) - 1) ^ p = (∑ i ∈ Finset.range p, (X : (ZMod p)[X]) ^ i) * ((X : (ZMod p)[X]) - 1)`. Rewrite using `[geom_sum_mul, sub_pow_char, one_pow]`. Establish `h2 : ((X : (ZMod p)[X]) - 1) ^ p = ((X : (ZMod p)[X]) - 1) ^ (p - 1) * ((X : (ZMod p)[X]) - 1)`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hp.out.one_lt.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ((X : (ZMod p)[X]) - 1) ≠ 0` using `X_sub_C_ne_zero 1`. Conclude with `mul_right_cancel₀ hne (h2.symm.trans h1)`. Use `congrArg (eval₂RingHom (ZMod.castHom (dvd_refl p) R) x) key` as an intermediate fact. Simplify `this` using `[map_sum, map_pow, map_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem charP_sub_one_pow_pred_eq_geom_sum {p : ℕ} [hp : Fact p.Prime] {R : Type*} [CommRing R] [CharP R p]
     (x : R) : (x - 1) ^ (p - 1) = ∑ i ∈ Finset.range p, x ^ i := by
@@ -25,7 +25,7 @@ theorem charP_sub_one_pow_pred_eq_geom_sum {p : ℕ} [hp : Fact p.Prime] {R : Ty
   simpa [map_sum, map_pow, map_sub] using this
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ ε`. Rewrite using `[charP_sub_one_pow_pred_eq_geom_sum, xi, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_xi : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (ε : PreTilt O p),

@@ -15,9 +15,9 @@ open GlobalTheory.TUniq
 namespace GlobalTheory.TUniq
 
 /- English proof (translation)
-Take `⟨c, rfl, -⟩` from `t.bij K x y hy`. Set `F : (Over.mk x ⟶ t.A) →* (Over.mk x ⟶ t.A)` to `IsMonHom.monoidHom θ (Over.mk x)`. Use `(map_list_prod F _).trans (congrArg List.prod ?_)` and prove the remaining obligations. Rewrite using `[List.map_ofFn]`. Use `congrArg List.ofFn (funext fun i => (map_pow F _ _).trans (congrArg (· ^ (c i).val) ?_))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (_ ≫ t.pt i) ≫ θ = _`. Rewrite using `[Category.assoc, hpt]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_geometric_torsion {o : Type} [CommRing o] {g k : ℕ} {J : Type} {b : TBase o k} {S : Scheme.{0}}
     {s : S ⟶ Sp o} (t : TObj g k J b s) (θ : t.A ⟶ t.A) [IsMonHom θ] (hpt : ∀ i, t.pt i ≫ θ = t.pt i)
@@ -31,15 +31,13 @@ theorem fix_geometric_torsion {o : Type} [CommRing o] {g k : ℕ} {J : Type} {b 
   rw [Category.assoc, hpt]
 
 /- English proof (translation)
-Introduce `hL o _ g k J b S S' s s' t t' f hk φ φ' hφ hφ' hl hl' hpt`. Take `⟨θ, hθ, e⟩` from `grpPullback_iso hφ hφ'`. Establish `hη : ∀ i, t.pt i ≫ θ.hom = t.pt i` using `fun i => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hφ'.1.hom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Over.comp_left, Category.assoc, e]`. Conclude with `hpt i`. Rewrite using `[Over.w, Over.w]`. Establish `h₁ : LBIso (t.L.pull θ.hom.left) (t'.L.pull φ)` using `LBIso.chartPull (chartPullPull t.L _ θ.hom.left rfl) (chartPullSame t'.L _ _ _ θ.hom.left fun _ => e.symm) hl'`. Take `⟨w, hw⟩ : LBIso t.L (t.L.pull θ.hom.left)` from `LBIso.trans t.isLB (pull_isLB t'.isLB φ) (pull_isLB t.isLB _) hl h₁.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hku : IsUnit (k : Γ(S, ⊤))`. Simplify using `using b.unit.map ((Scheme.ΓSpecIso (CommRingCat.of o)).inv ≫ s.appTop).hom`. Use `t.ab.comm` as an intermediate fact. Use `t.ab.smooth` as an intermediate fact. Establish `: Etale (Out.mulA t.A k).left` using `GrpTangent.etale_id_pow t.A hku`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : θ.hom = 𝟙 _`. Use `serre_any_base hL t.pol k hk θ hθ (fun _ => ⟨⊤, trivial, ?_⟩) (fix_torsion_of_forall_geometric t.A k θ.hom (fix_geometric_torsion t θ.hom hη))` and prove the remaining obligations. Take `⟨u, hu⟩` from `gen_of_iso ((isGen_iff w).1 hw) (t.A.hom ⁻¹ᵁ ⊤).ι`. Use `gen_chartPull (chartPullOut t.L _ _ _ _ fun n => ?_) u hu` and prove the remaining obligations. Use `fin_cases n`.
-
-Use `exacts [rfl, (Category.comp_id _).symm]`. Rewrite using `[← e, h, Over.id_left, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tObj_rigid : Out.Laws → ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (S S' : Scheme.{0}) (s : S ⟶ Sp o) (s' : S' ⟶ Sp o) (t : TObj g k J b s) (t' : TObj g k J b s') (f : S ⟶ S'), 3 ≤ k → ∀ φ φ' : t.A.left ⟶ t'.A.left, IsGrpPullback t.A t'.A f φ → IsGrpPullback t.A t'.A f φ' → LBIso t.L (t'.L.pull φ) → LBIso t.L (t'.L.pull φ') → (∀ i, (t.pt i).left ≫ φ = (t.pt i).left ≫ φ') → φ = φ' := by
   intro hL o _ g k J b S S' s s' t t' f hk φ φ' hφ hφ' hl hl' hpt

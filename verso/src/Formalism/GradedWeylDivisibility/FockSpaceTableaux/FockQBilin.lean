@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `_ f f' g c` and use `⟨lfockq_add_left f f' g, lfockq_smul_left c f g⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem fischerInnerRatBilinear : FockQBilin := fun _ f f' g c =>
   ⟨lfockq_add_left f f' g, lfockq_smul_left c f g⟩

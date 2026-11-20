@@ -16,7 +16,7 @@ namespace GlobalTheory
 open MvPolynomial in
 
 /- English proof (translation)
-Simplify using `only [lap, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, map_sum, Derivation.coeFn_coe, MvPolynomial.smul_eq_C_mul, map_mul, map_C, pderiv_map]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Use `congr 2`. Apply the tactic sequence `by_cases h : b = b' <;> simp [Matrix.one_apply, h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_lap_one {T : Type} (r : T → ℕ) (n : ℕ) {k k' : Type} [Field k] [Field k'] (f : k →+* k')
     (τ τ' : T) (a : Fin (r τ)) (a' : Fin (r τ')) (P : MvPolynomial (Letter T r n) k) :
@@ -30,9 +30,9 @@ theorem map_lap_one {T : Type} (r : T → ℕ) (n : ℕ) {k k' : Type} [Field k]
 open MvPolynomial in
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [rowShift]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p s hp`. Simplify using `only [map_mul, hp, map_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [rowShift, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_rowShift {T : Type} (r : T → ℕ) (n : ℕ) {k k' : Type} [Field k] [Field k'] (f : k →+* k')
     (σ : T) (i i' : Fin (r σ)) (t : k) (P : MvPolynomial (Letter T r n) k) :
@@ -47,9 +47,9 @@ theorem map_rowShift {T : Type} (r : T → ℕ) (n : ℕ) {k k' : Type} [Field k
     split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hP`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [harmK, Submodule.mem_iInf, LinearMap.mem_ker] at h1 ⊢`. Introduce `τ hτ b b'`. Rewrite using `[map_lap_one, h1 τ hτ b b', map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ i i' hi t`. Take `⟨s, rfl⟩` from `hf t`. Rewrite using `[map_rowShift, h2 σ i i' hi s]`. Introduce `m hm`. Conclude with `h3 m (MvPolynomial.support_map_subset f P hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem map_mem_HHa {T : Type} (r : T → ℕ) (n : ℕ) {k k' : Type} [Field k] [Field k'] (f : k →+* k')
     (hf : Function.Surjective f) (cc : T → T) (isX : T → Prop) (a : T → ℕ → ℕ)
@@ -67,13 +67,11 @@ theorem map_mem_HHa {T : Type} (r : T → ℕ) (n : ℕ) {k k' : Type} [Field k]
     exact h3 m (MvPolynomial.support_map_subset f P hm)
 
 /- English proof (translation)
-Use `set N := Submodule.span R (Set.range x) with hN`. Take `⟨r, hr1, hr⟩` from `Submodule.exists_sub_one_mem_and_smul_le_of_fg_of_le_sup (N := N) (N' := ⊤) (P := ⊤) (I := I) Module.Finite.fg_top le_rfl (by rw [h])`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Apply `hI` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Simplify using `using I.neg_mem hr1`. Establish `hmem : ∀ m : M, (r • (LinearMap.id : M →ₗ[R] M)) m ∈ N` using `fun m => hr (Submodule.smul_mem_pointwise_smul m r ⊤ Submodule.mem_top)`. Establish `hinj : Function.Injective ((r • (LinearMap.id : M →ₗ[R] M)).codRestrict N hmem)`. Introduce `u v huv`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: r • u = r • v` using `congrArg Subtype.val huv`. Conclude with `smul_right_injective M hr0 this`. Use `haveI : Module.Finite R N := Module.Finite.span_of_finite R (Set.finite_range x)`. Establish `h1` using `LinearMap.finrank_le_finrank_of_injective hinj`. Establish `h2 : Module.finrank R N ≤ n`.
-
-Simplify `finrank_range_le_card (R := R) x` using `[Set.finrank]`. Conclude with `h1.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_le_of_span_sup_smul_top {R M : Type} [CommRing R] [IsDomain R] [AddCommGroup M] [Module R M]
     [Module.Finite R M] [Module.Projective R M] {n : ℕ} (x : Fin n → M) (I : Ideal R) (hI : I ≠ ⊤)
@@ -99,11 +97,11 @@ theorem finrank_le_of_span_sup_smul_top {R M : Type} [CommRing R] [IsDomain R] [
   exact h1.trans h2
 
 /- English proof (translation)
-Introduce `h`. Establish `hb : l.Mb = ⊤`. Rewrite `h`, the goal using `[Ideal.eq_top_iff_one]`. Take `⟨y, hy, hy1⟩` from `(Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) H.bar.surjective).1 h`. Establish `: y = 1` using `H.bar.injective (by simpa using hy1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this ▸ hy`. Establish `hp` using `l.prod`. Rewrite `hp` using `[hb, Ideal.map_top, Ideal.top_mul]`. Establish `hn` using `congrArg Ideal.absNorm hp`. Rewrite `hn` using `[Ideal.absNorm_top, Ideal.absNorm_span_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `l.three_le`. Establish `hpos : 0 < Module.finrank ℤ (𝓞 E)` using `Module.finrank_pos`. Apply the tactic sequence `rcases Nat.pow_eq_one.1 hn.symm with h' | h' <;> omega`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Mfr_ne_top {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (l : Level H) :
     Mfr l ≠ ⊤ := by
@@ -122,11 +120,9 @@ theorem Mfr_ne_top {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
   rcases Nat.pow_eq_one.1 hn.symm with h' | h' <;> omega
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c n d`. Use `⟨fun rk x0 hx => ?_, fun a P hP => ?_⟩` and prove the remaining obligations. Use `swap`. Establish `hs : Function.Surjective (d.eF : c.F →+* d.c₂.F)` using `fun y => ⟨d.eF.symm y, d.eF.apply_symm_apply y⟩`. Generalize the expression as in `(d.eF : c.F →+* d.c₂.F) = f at hs ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_mem_HHa Dw.mult n f hs _ _ _ P hP`. Use `haveI := Dw.fin`. Use `haveI := Dw.proj`. Rewrite using `[← Dw.rank]`. Use `finrank_le_of_span_sup_smul_top x0 (Mfr l) (Mfr_ne_top l) ?_` and prove the remaining obligations.
-
-Unfold `AdmX at hx`. Use `top_le_iff.1 (hx.ge.trans ?_)` and prove the remaining obligations. Conclude with `sup_le_sup_right (Submodule.span_mono (Set.image_subset_range _ _)) _`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem admissible_columns_le_and_harmonic_map_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n), (∀ (rk : Bool) (x0 : Fin n → Dw.La), AdmX (l := l) rk x0 → Dw.p + Dw.q ≤ n) ∧ ∀ (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) → MvPolynomial.map (d.eF : c.F →+* d.c₂.F) P ∈ HHa Dw.mult n d.c₂.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) := by
   intro E _ _ _ H Dw l Xo c n d

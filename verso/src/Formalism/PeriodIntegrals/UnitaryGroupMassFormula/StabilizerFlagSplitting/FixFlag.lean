@@ -7,11 +7,11 @@ noncomputable section
 namespace PI.StabSplit
 
 /- English proof (translation)
-Establish `hw' : w = ∑ i : Fin (2 * r + k + 1), w i • bvec i`. Use extensionality with `j`. Simplify using `[bvec, Pi.single_apply, Finset.sum_apply]`. Rewrite using `[hw']`. Use `Submodule.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hi : a.val ≤ i.val`. Simplify using `[hw i hi]`. Use `push_neg at hi`. Establish `hr : i.val < r` using `by omega`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨⟨i.val, by omega⟩, Fin.lt_def.mpr hi⟩, ?_⟩)` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hr' : (⟨i.val, by omega⟩ : Fin (r + 1)).val < r` using `hr`. Simplify using `only [fvec, dif_pos hr']`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private lemma mem_flagSpan_of_eq_zero_of_le {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (a : Fin (r + 1))
     (w : Fin (2 * r + k + 1) → ℂ) (hw : ∀ i : Fin (2 * r + k + 1), a.val ≤ i.val → w i = 0) :
@@ -31,9 +31,9 @@ private lemma mem_flagSpan_of_eq_zero_of_le {k r : ℕ} (z : Fin (2 * r + k + 1)
     congr 1
 
 /- English proof (translation)
-Unfold `flagSpan at *`. Establish `hle : Submodule.span ℂ (Set.range fun b : {b : Fin (r + 1) // b < a} => fvec k r z b.1) ≤ (Submodule.span ℂ (Set.range fun b : {b : Fin (r + 1) // b < a} => fvec k r z b.1)).comap (Matrix.mulVecLin h)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, Matrix.mulVecLin_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf]`. Conclude with `Submodule.subset_span ⟨b, rfl⟩`. Conclude with `hle hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mulVec_mem_flagSpan_of_fixes_fvec {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (a : Fin (r + 1))
     (h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
@@ -51,27 +51,23 @@ private lemma mulVec_mem_flagSpan_of_fixes_fvec {k r : ℕ} (z : Fin (2 * r + k 
   exact hle hw
 
 /- English proof (translation)
-Unfold `SubFlag`. Introduce `k r z hz s hs`. Take `⟨h, hh, m, hm, rfl⟩` from `hs`. Take `⟨hhU, hhe, hhz⟩` from `hh`. Take `⟨hmU, hmc, hmd⟩` from `hm`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hhU' : hᴴ * Hpk k r * h = Hpk k r` using `hhU`. Establish `hmU' : mᴴ * Hpk k r * m = Hpk k r` using `hmU`. Establish `hfix : ∀ b, h *ᵥ fvec k r z b = fvec k r z b`. Introduce `b`. Unfold `fvec`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `split_ifs with hb`. Conclude with `(hhe ⟨b.val, hb⟩).1`. Conclude with `hhz`. Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations. Use `show (h * m)ᴴ * Hpk k r * (h * m) = Hpk k r`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [hhU']; exact hmU'`. Establish `hm1 : m *ᵥ fvec k r z a - fvec k r z a ∈ flagSpan k r z a`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Apply `mem_flagSpan_of_eq_zero_of_le` to reduce the goal to its premises. Introduce `i hi`. Rewrite using `[Pi.sub_apply, sub_eq_zero]`. Unfold `fvec`. Use `split_ifs with ha`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct, bvec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `hmc ⟨a.val, ha⟩ i hi`. Establish `hri : r ≤ i.val` using `by omega`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single i]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hzi : z i = 0`. Simplify using `[hzi]`. Establish `hik : i.val ≤ r + k`. Assume the negation of the conclusion as `hc`. Conclude with `hzi (hz i (Or.inr (by omega)))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hmd i i hri hik hri, if_pos rfl, one_mul]`. Introduce `j _ hji`. Distinguish the cases in `hzj : z j = 0`. Simplify using `[hzj]`. Establish `h1 : r ≤ j.val`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hzj (hz j (Or.inl (by omega)))`. Establish `h2 : j.val ≤ r + k`. Assume the negation of the conclusion as `hc`. Conclude with `hzj (hz j (Or.inr (by omega)))`.
-
-Rewrite using `[hmd i j h1 h2 hri, if_neg (Ne.symm hji), zero_mul]`. Introduce `hi'`. Conclude with `absurd (Finset.mem_univ i) hi'`. Establish `heq : (h * m) *ᵥ fvec k r z a - fvec k r z a = h *ᵥ (m *ᵥ fvec k r z a - fvec k r z a)`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.mulVec_sub, hfix]`.
-
-Rewrite using `[heq]`. Conclude with `mulVec_mem_flagSpan_of_fixes_fvec z a h hfix _ hm1`.
+A detailed English derivation is pending.
 -/
 theorem stabilizer_subgroup_flag : SubFlag := by
   unfold SubFlag

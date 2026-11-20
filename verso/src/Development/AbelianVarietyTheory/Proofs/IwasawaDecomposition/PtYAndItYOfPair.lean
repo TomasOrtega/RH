@@ -16,7 +16,7 @@ namespace GlobalTheory.Chain.InnerSteps
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `(GlobalTheory.OrientedHeis.pureTensorL_intertwine (IsThetaFunO ψ S T) GlobalTheory.OrientedHeis.theta_zero (fun _ _ => GlobalTheory.OrientedHeis.theta_add) (fun c _ => GlobalTheory.OrientedHeis.theta_smul c) (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT) (aPlusAl …` and prove the remaining obligations. Take `⟨τ, i, j⟩` from `k`. Conclude with `GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.OrientedHeis.theta_sub (GlobalTheory.OrientedHeis.theta_dRho hθ hψ τ _ hf) (GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.OrientedHeis.theta_dRho hθ hψ τ _ hf)))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem theta_pureTensorO {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
@@ -35,9 +35,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
 /- English proof (translation)
-Use `⟨fun t k hk P => theta_pureTensorO (hω t k hk).std hθ _ _ _ _ (hS t ⟨k, by omega⟩ hk).2.theta P, ?_⟩` and prove the remaining obligations. Establish `h : ∀ k, k + 1 < D.R.m → ∃ y, ∀ t, IsItW R.θ (R.MY k) (R.MY (k + 1)) (R.ωY t k) (R.ptY t k) y`. Introduce `k hk`. Establish `hk0 : k < D.R.m` using `by omega`. Take `⟨It, h⟩` from `exists_intertwiner_of_index_eq hP ⟨k, hk0⟩ (hC _) (Yc D k) (Yc D (k + 1)) (min k D.R.m) (min (k + 1) D.R.m) (min_eq_left hk0.le) (min_eq_left hk.le) (R.MY k) (R.MY (k + 1)) R.θ R.ψ hθ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨It, fun t => h _ _ (hS t ⟨k, hk0⟩ hk).1 (hS t ⟨k, hk0⟩ hk).2⟩`. Use `⟨fun k => if hk : k + 1 < D.R.m then (h k hk).choose else 0, fun t k hk => ?_⟩` and prove the remaining obligations. Use `show IsItW R.θ (R.MY k) (R.MY (k + 1)) (R.ωY t k) (R.ptY t k) (if hk : k + 1 < D.R.m then (h k hk).choose else 0)`. Rewrite using `[dif_pos hk]`. Conclude with `(h k hk).choose_spec t`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptY_and_ItY_of_pair (hP : ItPair D) (hC : ∀ k, ChainPar D k) (hθ : IsInfFam R.θ) (hω : R.chain_ωY)
     (hS : ∀ t (k : Fin D.R.m), (k : ℕ) + 1 < D.R.m → IsStepWeil k R.ψ (Yc D k) (Yc D (k + 1)) (R.ωY t k) ∧

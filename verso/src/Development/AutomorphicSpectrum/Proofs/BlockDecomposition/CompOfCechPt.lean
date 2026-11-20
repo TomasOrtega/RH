@@ -18,7 +18,7 @@ def compOf {k : ℕ} {U : Scheme.{0}} (z : Sx (cech f) k U) (i : Fin (k + 1)) : 
   (WidePullback.π (fun _ : Fin (k + 1) => yoneda.map f) i).app (op U) z
 
 /- English proof (translation)
-Establish `e` using `WidePullback.π_arrow (fun _ : Fin (k + 1) => yoneda.map f) i`. Use `congrArg (fun t => t.app (op U) z) e` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compOf_comp {k : ℕ} {U : Scheme.{0}} (z : Sx (cech f) k U) (i : Fin (k + 1)) :
     compOf f z i ≫ f = baseOf f z := by
@@ -27,11 +27,9 @@ theorem compOf_comp {k : ℕ} {U : Scheme.{0}} (z : Sx (cech f) k U) (i : Fin (k
   exact this
 
 /- English proof (translation)
-Apply `yonedaEquiv.symm.injective` to reduce the goal to its premises. Apply `WidePullback.hom_ext (fun _ : Fin (k + 1) => yoneda.map f)` to reduce the goal to its premises. Introduce `i`. Establish `: yonedaEquiv (yonedaEquiv.symm z ≫ WidePullback.π (fun _ : Fin (k + 1) => yoneda.map f) i) = yonedaEquiv (yonedaEquiv.symm z' ≫ WidePullback.π (fun _ : Fin (k + 1) => yoneda.map f) i)`. Rewrite using `[yonedaEquiv_comp, yonedaEquiv_comp, Equiv.apply_symm_apply, Equiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc i`. Conclude with `yonedaEquiv.injective this`. Establish `: yonedaEquiv (yonedaEquiv.symm z ≫ WidePullback.base (fun _ : Fin (k + 1) => yoneda.map f)) = yonedaEquiv (yonedaEquiv.symm z' ≫ WidePullback.base (fun _ : Fin (k + 1) => yoneda.map f))`. Rewrite using `[yonedaEquiv_comp, yonedaEquiv_comp, Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Conclude with `hb`.
-
-Conclude with `yonedaEquiv.injective this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_comp {k : ℕ} {U : Scheme.{0}} (z z' : Sx (cech f) k U)
     (hb : baseOf f z = baseOf f z') (hc : ∀ i, compOf f z i = compOf f z' i) : z = z' := by
@@ -50,7 +48,7 @@ theorem ext_comp {k : ℕ} {U : Scheme.{0}} (z z' : Sx (cech f) k U)
     exact yonedaEquiv.injective this
 
 /- English proof (translation)
-Establish `e` using `WidePullback.lift_base (arrows := fun _ : Fin (k + 1) => yoneda.map f) (yoneda.map x) (fun i => yoneda.map (y i)) (fun i => by rw [← yoneda.map_comp, h i])`. Conclude with `(congrArg (fun t => t.app (op U) (𝟙 U)) e).trans (Category.id_comp x)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem baseOf_cechPt {k : ℕ} {U : Scheme.{0}} (x : U ⟶ X) (y : Fin (k + 1) → (U ⟶ Y)) (h : ∀ i, y i ≫ f = x) :
     baseOf f (cechPt f k x y h) = x := by
@@ -59,7 +57,7 @@ theorem baseOf_cechPt {k : ℕ} {U : Scheme.{0}} (x : U ⟶ X) (y : Fin (k + 1) 
   exact (congrArg (fun t => t.app (op U) (𝟙 U)) e).trans (Category.id_comp x)
 
 /- English proof (translation)
-Establish `e` using `WidePullback.lift_π (arrows := fun _ : Fin (k + 1) => yoneda.map f) (yoneda.map x) (fun i => yoneda.map (y i)) (fun i => by rw [← yoneda.map_comp, h i]) i`. Conclude with `(congrArg (fun t => t.app (op U) (𝟙 U)) e).trans (Category.id_comp (y i))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compOf_cechPt {k : ℕ} {U : Scheme.{0}} (x : U ⟶ X) (y : Fin (k + 1) → (U ⟶ Y)) (h : ∀ i, y i ≫ f = x)
     (i : Fin (k + 1)) : compOf f (cechPt f k x y h) i = y i := by
@@ -68,21 +66,21 @@ theorem compOf_cechPt {k : ℕ} {U : Scheme.{0}} (x : U ⟶ X) (y : Fin (k + 1) 
   exact (congrArg (fun t => t.app (op U) (𝟙 U)) e).trans (Category.id_comp (y i))
 
 /- English proof (translation)
-The claim follows from `NatTrans.naturality_apply (WidePullback.base (fun _ : Fin (k + 1) => yoneda.map f)) g.op z`.
+A detailed English derivation is pending.
 -/
 theorem baseOf_res {k : ℕ} {U V : Scheme.{0}} (g : V ⟶ U) (z : Sx (cech f) k U) :
     baseOf f (Sx.res g z) = g ≫ baseOf f z :=
   NatTrans.naturality_apply (WidePullback.base (fun _ : Fin (k + 1) => yoneda.map f)) g.op z
 
 /- English proof (translation)
-The claim follows from `NatTrans.naturality_apply (WidePullback.π (fun _ : Fin (k + 1) => yoneda.map f) i) g.op z`.
+A detailed English derivation is pending.
 -/
 theorem compOf_res {k : ℕ} {U V : Scheme.{0}} (g : V ⟶ U) (z : Sx (cech f) k U) (i : Fin (k + 1)) :
     compOf f (Sx.res g z) i = g ≫ compOf f z i :=
   NatTrans.naturality_apply (WidePullback.π (fun _ : Fin (k + 1) => yoneda.map f) i) g.op z
 
 /- English proof (translation)
-Establish `e` using `WidePullback.lift_base (arrows := fun _ : Fin (p + 1) => yoneda.map f) (WidePullback.base (fun _ : Fin (k + 1) => yoneda.map f)) (fun i => WidePullback.π (fun _ : Fin (k + 1) => yoneda.map f) (θ.toOrderHom i)) (by simp)`. Conclude with `congrArg (fun t => t.app (op U) z) e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem baseOf_along {p k : ℕ} {U : Scheme.{0}} (z : Sx (cech f) k U)
     (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk k) :
@@ -93,7 +91,7 @@ theorem baseOf_along {p k : ℕ} {U : Scheme.{0}} (z : Sx (cech f) k U)
   exact congrArg (fun t => t.app (op U) z) e
 
 /- English proof (translation)
-Establish `e` using `WidePullback.lift_π (arrows := fun _ : Fin (p + 1) => yoneda.map f) (WidePullback.base (fun _ : Fin (k + 1) => yoneda.map f)) (fun i => WidePullback.π (fun _ : Fin (k + 1) => yoneda.map f) (θ.toOrderHom i)) (by simp) i`. Conclude with `congrArg (fun t => t.app (op U) z) e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compOf_along {p k : ℕ} {U : Scheme.{0}} (z : Sx (cech f) k U)
     (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk k) (i : Fin (p + 1)) :
@@ -110,13 +108,13 @@ theorem map_aug {k : ℕ} {U : Scheme.{0}} (z : Sx (cech f) k U) :
     Sx.map (cechAug f) z = baseOf f z := rfl
 
 /- English proof (translation)
-Introduce `Y X f k U`. Use `⟨fun z => ⟨baseOf f z, compOf f z, compOf_comp f z, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `ext_comp f _ _ (baseOf_cechPt f _ _ _).symm fun i => (compOf_cechPt f _ _ _ i).symm`. Introduce `x y h x' y' h' e`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← compOf_cechPt f x y h i, e, compOf_cechPt]`. Introduce `x y h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_aug, baseOf_cechPt]`. Introduce `V g`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ext_comp` to reduce the goal to its premises. Rewrite using `[baseOf_res, baseOf_cechPt, baseOf_cechPt]`. Introduce `i`. Rewrite using `[compOf_res, compOf_cechPt, compOf_cechPt]`. Introduce `p θ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ext_comp` to reduce the goal to its premises. Rewrite using `[baseOf_along, baseOf_cechPt, baseOf_cechPt]`. Introduce `i`. Rewrite using `[compOf_along, compOf_cechPt, compOf_cechPt]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cechPt_spec : CrystallineSemistableComparison.E.CechPt := by
   intro Y X f k U

@@ -10,7 +10,7 @@ namespace GlobalTheory.SecJet.TanComb
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `show spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[← Spec.map_id]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem zeroPt_w : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ (epsR R).hom = (𝟙_ (Over (Sp R))).hom := by
   show spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _
@@ -24,9 +24,9 @@ def zeroPt : 𝟙_ (Over (Sp R)) ⟶ epsR R :=
 variable {G : Over (Sp R)} [GrpObj G]
 
 /- English proof (translation)
-Establish `h1 : (1 : 𝟙_ (Over (Sp R)) ⟶ G) = η[G]`. Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Rewrite using `[h1, IsTangent]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify `h` using `[zeroPt]`. Introduce `h`. Simplify `congrArg (fun q => q.left) h` using `[zeroPt]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isTangent_iff (v : epsR R ⟶ G) : IsTangent v ↔ zeroPt ≫ v = 1 := by
   have h1 : (1 : 𝟙_ (Over (Sp R)) ⟶ G) = η[G] := by
@@ -40,9 +40,9 @@ theorem isTangent_iff (v : epsR R ⟶ G) : IsTangent v ↔ zeroPt ≫ v = 1 := b
     simpa [zeroPt] using congrArg (fun q => q.left) h
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (epsScaleR c) = spMap (TrivSqZeroExt.fstHom R R R).toRingHom`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply `RingHom.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Simplify using `[epsScaleR]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zeroPt_epsScale (c : R) : zeroPt ≫ epsScale R c = zeroPt := by
   apply Over.OverMorphism.ext
@@ -54,7 +54,7 @@ theorem zeroPt_epsScale (c : R) : zeroPt ≫ epsScale R c = zeroPt := by
   simp [epsScaleR]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Rewrite using `[List.prod_nil, Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (zeroPt ≫ toUnit _) (toUnit _)]`. Consider the case `cons a l ih`. Rewrite using `[List.prod_cons, MonObj.comp_mul, hl a (List.mem_cons_self ..), ih (fun x hx => hl x (List.mem_cons_of_mem _ hx)), _root_.mul_one]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem zeroPt_prod (l : List (epsR R ⟶ G)) (hl : ∀ x ∈ l, zeroPt ≫ x = 1) : zeroPt ≫ l.prod = 1 := by
   induction l with
@@ -68,9 +68,9 @@ end GlobalTheory.SecJet.TanComb
 namespace GlobalTheory.SecJet
 
 /- English proof (translation)
-Introduce `hv`. Rewrite using `[TanComb.isTangent_iff, tanComb]`. Use `TanComb.zeroPt_prod _ fun x hx => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hx`. Rewrite using `[← Category.assoc, TanComb.zeroPt_epsScale, ← TanComb.isTangent_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv i`.
+A detailed English derivation is pending.
 -/
 theorem isTangent_tanComb (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] (m : ℕ) (v : Fin m → (epsR R ⟶ G))
     (c : Fin m → R) : (∀ i, IsTangent (v i)) → IsTangent (tanComb c v) := by

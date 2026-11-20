@@ -16,9 +16,9 @@ variable {O V W : Type*} [CommRing O] [AddCommGroup V] [Module O V] [AddCommGrou
 abbrev ql (A B : Submodule O V) : ℕ∞ := Module.length O (↥A ⧸ B.comap A.subtype)
 
 /- English proof (translation)
-Use `(Module.length_le_of_surjective (Submodule.factor h) ?_).trans (Module.length_le_of_injective ((LinearMap.ker φ).liftQ φ le_rfl) ?_)` and prove the remaining obligations. Introduce `q`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`. Rewrite using `[← LinearMap.ker_eq_bot]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ le_rfl`.
+A detailed English derivation is pending.
 -/
 private theorem len_quot_le_lemma {M Q : Type*} [AddCommGroup M] [Module O M] [AddCommGroup Q]
     [Module O Q] (S : Submodule O M) (φ : M →ₗ[O] Q) (h : LinearMap.ker φ ≤ S) :
@@ -32,7 +32,7 @@ private theorem len_quot_le_lemma {M Q : Type*} [AddCommGroup M] [Module O M] [A
     exact Submodule.ker_liftQ_eq_bot _ _ _ le_rfl
 
 /- English proof (translation)
-Use `len_quot_le_lemma _ ((P.comap L.subtype).mkQ ∘ₗ f.codRestrict L h1) ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h2 x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ql_le_of_map {A S : Submodule O V} {L P : Submodule O W} (f : ↥A →ₗ[O] W)
     (h1 : ∀ x, f x ∈ L) (h2 : ∀ x, f x ∈ P → (x : V) ∈ S) : ql A S ≤ ql L P := by
@@ -43,19 +43,19 @@ theorem ql_le_of_map {A S : Submodule O V} {L P : Submodule O W} (f : ↥A →�
   exact h2 x hx
 
 /- English proof (translation)
-The claim follows from `ql_le_of_map A.subtype (fun x => h x.2) (fun _ hx => hx)`.
+A detailed English derivation is pending.
 -/
 theorem ql_mono_left {A A' B : Submodule O V} (h : A ≤ A') : ql A B ≤ ql A' B :=
   ql_le_of_map A.subtype (fun x => h x.2) (fun _ hx => hx)
 
 /- English proof (translation)
-The claim follows from `ql_le_of_map A.subtype (fun x => x.2) (fun _ hx => h hx)`.
+A detailed English derivation is pending.
 -/
 theorem ql_anti_right {A B B' : Submodule O V} (h : B ≤ B') : ql A B' ≤ ql A B :=
   ql_le_of_map A.subtype (fun x => x.2) (fun _ hx => h hx)
 
 /- English proof (translation)
-Establish `e` using `LinearMap.quotientInfEquivSupQuotient A B`. Establish `h1 : ql (A ⊔ B) B ≤ ql A (A ⊓ B)` using `Module.length_le_of_surjective e.toLinearMap e.surjective`. Establish `h2 : ql A (A ⊓ B) ≤ ql A B` using `ql_le_of_map (A := A) (S := A ⊓ B) (L := A) (P := B) A.subtype (fun x => x.2) (fun x hx => Submodule.mem_inf.2 ⟨x.2, hx⟩)`. Conclude with `h1.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ql_sup_le (A B : Submodule O V) : ql (A ⊔ B) B ≤ ql A B := by
   have e := LinearMap.quotientInfEquivSupQuotient A B
@@ -67,19 +67,19 @@ theorem ql_sup_le (A B : Submodule O V) : ql (A ⊔ B) B ≤ ql A B := by
   exact h1.trans h2
 
 /- English proof (translation)
-The claim follows from `(ql_mono_left h).trans (ql_sup_le A' B)`.
+A detailed English derivation is pending.
 -/
 theorem ql_le_of_le_sup {A A' B : Submodule O V} (h : A ≤ A' ⊔ B) : ql A B ≤ ql A' B :=
   (ql_mono_left h).trans (ql_sup_le A' B)
 
 /- English proof (translation)
-Use `set N : Submodule O (M ⧸ Q) := LinearMap.range (Q.mkQ ∘ₗ P.subtype) with hN`. Rewrite using `[Module.length_eq_add_of_exact N.subtype N.mkQ N.injective_subtype N.mkQ_surjective (LinearMap.exact_subtype_mkQ N), add_comm]`. Use `gcongr`. Use `Module.length_le_of_surjective (P.liftQ (N.mkQ ∘ₗ Q.mkQ) ?_) ?_` and prove the remaining obligations. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Introduce `q`. Take `⟨q, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨Submodule.Quotient.mk m, rfl⟩`. Use `Module.length_le_of_surjective ((Q.comap P.subtype).liftQ (Q.mkQ ∘ₗ P.subtype).rangeRestrict ?_) ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[LinearMap.mem_ker]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.codRestrict_apply, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.subtype_apply, ZeroMemClass.coe_zero, LinearMap.rangeRestrict, Submodule.Quotient.mk_eq_zero]`. Conclude with `hx`. Introduce `q`. Take `⟨x, hx⟩` from `LinearMap.surjective_rangeRestrict (Q.mkQ ∘ₗ P.subtype) q`. Conclude with `⟨Submodule.Quotient.mk x, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem len_quot_tri_lemma_2 {M : Type*} [AddCommGroup M] [Module O M] (P Q : Submodule O M) :
     Module.length O (M ⧸ Q) ≤ Module.length O (M ⧸ P) + Module.length O (↥P ⧸ Q.comap P.subtype) := by
@@ -111,7 +111,7 @@ private theorem len_quot_tri_lemma_2 {M : Type*} [AddCommGroup M] [Module O M] (
       exact ⟨Submodule.Quotient.mk x, hx⟩
 
 /- English proof (translation)
-Use `(len_quot_tri_lemma_2 (B.comap A.subtype) (C.comap A.subtype)).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `ql_le_of_map (V := ↥A) (A := B.comap A.subtype) (S := C.comap A.subtype) (A.subtype ∘ₗ (B.comap A.subtype).subtype) (fun x => x.2) (fun _ hx => hx)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ql_triangle (A B C : Submodule O V) : ql A C ≤ ql A B + ql B C := by
   refine (len_quot_tri_lemma_2 (B.comap A.subtype) (C.comap A.subtype)).trans ?_
@@ -120,7 +120,7 @@ theorem ql_triangle (A B C : Submodule O V) : ql A C ≤ ql A B + ql B C := by
     (A.subtype ∘ₗ (B.comap A.subtype).subtype) (fun x => x.2) (fun _ hx => hx)
 
 /- English proof (translation)
-Use `(ql_sup_le X Θ).trans ((ql_triangle X ((X ⊓ NK) ⊔ T) Θ).trans ?_)` and prove the remaining obligations. Rewrite using `[add_comm]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem reduction (X Θ N₀ T NK : Submodule O V) (h1 : N₀ ≤ Θ) (h2 : T ≤ Θ) :
     ql (X ⊔ Θ) Θ ≤ ql ((X ⊓ NK) ⊔ N₀) N₀ + ql X ((X ⊓ NK) ⊔ T) := by
@@ -132,19 +132,15 @@ theorem reduction (X Θ N₀ T NK : Submodule O V) (h1 : N₀ ≤ Θ) (h2 : T �
     _ ≤ ql ((X ⊓ NK) ⊔ N₀) N₀ := ql_mono_left le_sup_left
 
 /- English proof (translation)
-Use `set Y : Submodule O V := (AA.comap ρ).map N'.subtype with hYdef`. Use `set Y' : Submodule O V := (N₁'.comap ρ).map N'.subtype with hY'def`. Establish `hYN : Y ≤ N'`. Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `y.2`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `s1 : ql M₁ Y ≤ ql AA' AA` using `ql_le_of_map (ρ ∘ₗ Submodule.inclusion hM) (fun x => hρ _) (fun x hx => ⟨Submodule.inclusion hM x, hx, rfl⟩)`. Establish `s2 : ql Y Y' ≤ ql AA N₁'`. Use `ql_le_of_map (ρ ∘ₗ Submodule.inclusion hYN) (fun x => ?_) (fun x hx => ⟨Submodule.inclusion hYN x, hx, rfl⟩)` and prove the remaining obligations. Take `⟨y, hy, hyx⟩` from `Submodule.mem_map.1 x.2`. Establish `hxy : Submodule.inclusion hYN x = y` using `Subtype.ext hyx.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.comp_apply, hxy]`. Conclude with `hy`. Establish `s3 : ql Y' (N₁ ⊔ Z) ≤ ql Zm Z`. Establish `hsub : Y' ≤ Zm ⊔ (N₁ ⊔ Z)`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy' : ρ y ∈ (N₁.comap N'.subtype).map ρ`. Rewrite using `[himg]`. Conclude with `hy`. Take `⟨z, hz, hzy⟩` from `Submodule.mem_map.1 hy'`. Establish `hk : y - z ∈ LinearMap.ker ρ`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, map_sub, hzy, sub_self]`. Rewrite `hk` using `[hker]`. Establish `hsplit : N'.subtype y = ((y - z : ↥N') : V) + (z : V)`. Simplify using the standard rewrite rules. Rewrite using `[hsplit]`.
-
-Conclude with `Submodule.add_mem_sup hk (Submodule.mem_sup_left hz)`. Conclude with `(ql_le_of_le_sup hsub).trans (ql_anti_right le_sup_right)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `ql_triangle _ _ _`. Use `_ ≤ ql AA' AA + (ql AA N₁' + ql Zm Z) := by gcongr`.
-
-Use `_ = ql AA' AA + ql AA N₁' + ql Zm Z := by rw [add_assoc]`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem levels (N' M₁ N₁ Z Zm : Submodule O V) (AA AA' N₁' : Submodule O W) (ρ : ↥N' →ₗ[O] W)
     (hM : M₁ ≤ N') (hρ : ∀ x, ρ x ∈ AA')
@@ -196,9 +192,7 @@ variable {O K V : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [F
   [IsScalarTower O K V]
 
 /- English proof (translation)
-Use `choose a ha using h`. Establish `hy : y = ∑ i, a i • Pi.basisFun K (Fin n) i`. Use extensionality with `j`. Simplify using `[ha, Finset.sum_apply, Pi.single_apply, Algebra.smul_def]`. Rewrite using `[hy]`.
-
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_basisFun (n : ℕ) (y : Fin n → K) (h : ∀ i, ∃ a : O, y i = algebraMap O K a) :
     y ∈ Submodule.span O (Set.range (Pi.basisFun K (Fin n))) := by
@@ -210,31 +204,27 @@ theorem mem_span_basisFun (n : ℕ) (y : Fin n → K) (h : ∀ i, ∃ a : O, y i
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Use `set p : K := algebraMap O K ϖ with hp`. Establish `hp0 : p ≠ 0`. Rewrite using `[hp]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hϖ.ne_zero`. Use `set Tj : Submodule O V := Submodule.span O (Set.range fun j => p ^ e • th j) with hTj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hTX : Tj ≤ X` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact hth j)`. Set `b` to `Pi.basisFun K (Fin n)`. Set `f : V →ₗ[O] (Fin n → K)` to `((p ^ ((be : ℤ) - (e : ℤ))) • c).restrictScalars O`. Establish `hf : ∀ x, f x = p ^ ((be : ℤ) - (e : ℤ)) • c x` using `fun x => rfl`. Set `w : Fin n → (Fin n → K)` to `fun j => f (p ^ e • th j)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hw' : ∀ j, w j = p ^ be • c (th j)`. Introduce `j`. Use `show f (p ^ e • th j) = _`. Rewrite using `[hf, map_smul, smul_smul, ← zpow_natCast p e, ← zpow_add₀ hp0, sub_add_cancel, zpow_natCast]`. Establish `hfX : ∀ x ∈ X, f x ∈ Submodule.span O (Set.range b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Apply `mem_span_basisFun` to reduce the goal to its premises. Introduce `i`. Take `⟨u, hu⟩` from `hX x hx i`. Use `⟨u, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hf, Pi.smul_apply, hu, smul_eq_mul, ← mul_assoc, ← zpow_add₀ hp0]`. Simplify using the standard rewrite rules. Establish `hmat : b.toMatrix w = p ^ be • (Matrix.of fun i j => c (th j) i)`. Use extensionality with `i j`. Rewrite using `[Basis.toMatrix_apply, hw']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[b]`. Establish `hC0 : (Matrix.of fun i j => c (th j) i).det ≠ 0`. Introduce `h0`. Rewrite `hdet` using `[h0, zero_mul]`. Conclude with `ha ((map_eq_zero_iff _ (IsFractionRing.injective O K)).1 hdet)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hdw : (b.toMatrix w).det = (p ^ be) ^ n * (Matrix.of fun i j => c (th j) i).det`. Rewrite using `[hmat, Matrix.det_smul, Fintype.card_fin]`. Establish `hdw0 : (b.toMatrix w).det ≠ 0`. Rewrite using `[hdw]`. Conclude with `mul_ne_zero (pow_ne_zero _ (pow_ne_zero _ hp0)) hC0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨e0, he0, hlen⟩` from `Formalism.LatticeIndexTer.LatticeIndexDeterminant.len_span (O := O) b w (fun j => hfX _ (hth j)) hdw0`. Establish `hle : ql X ((X ⊓ N.restrictScalars O) ⊔ Tj) ≤ IsDiscreteValuationRing.addVal O e0`. Rewrite using `[← hlen]`. Use `ql_le_of_map (f ∘ₗ X.subtype) (fun x => hfX _ x.2) ?_` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hx' : f (x : V) ∈ Submodule.span O (Set.range w)` using `hx`. Establish `hmap : Submodule.span O (Set.range w) = Tj.map f`. Rewrite using `[hTj, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite `hx'` using `[hmap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht, htx⟩` from `hx'`. Establish `hker : (x : V) - t ∈ LinearMap.ker c`. Rewrite using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Rewrite `htx` using `[hf, hf]`. Conclude with `(smul_right_injective _ (zpow_ne_zero _ hp0) htx).symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `: (x : V) = ((x : V) - t) + t` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup ⟨X.sub_mem x.2 (hTX ht), hN hker⟩ ht`. Establish `hrel : e0 * a' = ϖ ^ (n * be) * a`. Apply `IsFractionRing.injective O K` to reduce the goal to its premises.
-
-Rewrite using `[map_mul, map_mul, map_pow, he0, hdw, hdet, ← hp, ← pow_mul, mul_comm be n]`. Expand and normalize the polynomial expressions, which then agree. Establish `hval : IsDiscreteValuationRing.addVal O e0 + IsDiscreteValuationRing.addVal O a' = IsDiscreteValuationRing.addVal O a + ((n * be : ℕ) : ℕ∞)`. Rewrite using `[← IsDiscreteValuationRing.addVal_mul, hrel, IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer hϖ, add_comm]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[← hval]`. Conclude with `add_le_add hle le_rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_core (ϖ : O) (hϖ : Irreducible ϖ) (n : ℕ) (c : V →ₗ[K] (Fin n → K))
     (N : Submodule K V) (hN : LinearMap.ker c ≤ N) (X : Submodule O V) (e be : ℕ)
@@ -321,15 +311,13 @@ end BQuot
 
 open BQuot in
 /- English proof (translation)
-Introduce `O K V _ _ _ _ _ _ _ _ _ _ ϖ hϖ n c N hN X e be th hX hth a a' ha ha' hdet`. Simplify using `only`. Establish `hq` using `quot_core (K := K) ϖ hϖ n c N hN X e be th hX hth a a' ha hdet`. Establish `hva : IsDiscreteValuationRing.addVal O a ≠ ⊤`. Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha`. Establish `hva' : IsDiscreteValuationRing.addVal O a' ≠ ⊤`. Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]`. Conclude with `ha'`. Use `lift IsDiscreteValuationRing.addVal O a to ℕ using hva with A hA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `lift IsDiscreteValuationRing.addVal O a' to ℕ using hva' with A' hA'`. Establish `hfin : ql X ((X ⊓ N.restrictScalars O) ⊔ Submodule.span O (Set.range fun j => (algebraMap O K ϖ) ^ e • th j)) ≠ ⊤`. Introduce `htop`. Rewrite `hq` using `[htop, top_add]`. Conclude with `(ENat.coe_ne_top _) (top_le_iff.1 (by exact_mod_cast hq))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `lift ql X ((X ⊓ N.restrictScalars O) ⊔ Submodule.span O (Set.range fun j => (algebraMap O K ϖ) ^ e • th j)) to ℕ using hfin with m hm`. Use `⟨m, rfl, ?_⟩` and prove the remaining obligations. Establish `hq' : m + A' ≤ A + n * be` using `by exact_mod_cast hq`. Simplify using `only [ENat.toNat_coe]`. Establish `hq'' : (m : ℤ) + A' ≤ A + n * be` using `by exact_mod_cast hq'`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem quotientLength : QuotientLength := by
   intro O K V _ _ _ _ _ _ _ _ _ _ ϖ hϖ n c N hN X e be th hX hth a a' ha ha' hdet
@@ -358,21 +346,17 @@ theorem quotientLength : QuotientLength := by
 
 open BQuot in
 /- English proof (translation)
-Introduce `O K V W _ _ _ _ _ _ _ _ _ _ _ _ ϖ hϖ M Θ N₁ Z Zm N' e be n th c AA AA' N₁' ρ a a'`. Simplify using `only`. Introduce `hN1Z hthM hthΘ hkc hMint ha ha' hdet hXNK hN1N' hZZm hZmN' hρ hkerρ himg hN1'AA hAA`. Use `set X : Submodule O V := M.map ((ϖ ^ e) • (LinearMap.id : V →ₗ[O] V)) with hXdef`. Use `set NK : Submodule O V := (Submodule.span K ((N₁ ⊔ Z : Submodule O V) : Set V)).restrictScalars O with hNKdef`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Tj : Submodule O V := Submodule.span O (Set.range fun j => (algebraMap O K ϖ) ^ e • th j) with hTjdef`. Establish `hϖ0 : algebraMap O K ϖ ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective O K)]`. Conclude with `hϖ.ne_zero`. Establish `hTΘ : Tj ≤ Θ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hTjdef, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `show (algebraMap O K ϖ) ^ e • th j ∈ Θ`. Rewrite using `[← map_pow, algebraMap_smul]`. Conclude with `Θ.smul_mem _ (hthΘ j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hX' : ∀ x ∈ X, ∀ i, ∃ u : O, c x i = (algebraMap O K ϖ) ^ ((e : ℤ) - (be : ℤ)) * algebraMap O K u`. Introduce `x hx i`. Take `⟨m, hm, rfl⟩` from `Submodule.mem_map.1 hx`. Take `⟨u, hu⟩` from `hMint m hm i`. Use `⟨u, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, ← algebraMap_smul K (ϖ ^ e) m, map_smul, Pi.smul_apply, smul_eq_mul, hu, map_pow, sub_eq_add_neg, zpow_add₀ hϖ0, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hth' : ∀ j, (algebraMap O K ϖ) ^ e • th j ∈ X`. Introduce `j`. Rewrite using `[← map_pow, algebraMap_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_map.2 ⟨th j, hthM j, by simp⟩`. Take `⟨m, hm, hmΔ⟩` from `quotientLength O K V ϖ hϖ n c (Submodule.span K ((N₁ ⊔ Z : Submodule O V) : Set V)) hkc X e be th hX' hth' a a' ha ha' hdet`. Establish `hql : ql X ((X ⊓ NK) ⊔ Tj) = m` using `hm`. Establish `hlev` using `levels N' ((X ⊓ NK) ⊔ (N₁ ⊔ Z)) N₁ Z Zm AA AA' N₁' ρ (sup_le hXNK (sup_le hN1N' (hZZm.trans hZmN'))) hρ hkerρ himg`. Establish `hred` using `reduction X Θ (N₁ ⊔ Z) Tj NK hN1Z hTΘ`.
-
-Establish `hmle : (m : ℕ∞) ≤ ((((IsDiscreteValuationRing.addVal O a).toNat : ℤ) - ((IsDiscreteValuationRing.addVal O a').toNat : ℤ) + (n : ℤ) * (be : ℤ)).toNat : ℕ)`. Establish `h1` using `hmΔ.trans (Int.self_le_toNat _)`. Establish `h2 : m ≤ (((IsDiscreteValuationRing.addVal O a).toNat : ℤ) - ((IsDiscreteValuationRing.addVal O a').toNat : ℤ) + (n : ℤ) * (be : ℤ)).toNat`. Conclude with `h1` after adjusting the coercions. Conclude with `h2` after adjusting the coercions.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hql]`. Use `gcongr`. Use `_ ≤ _ := by gcongr`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localAssembly : LocalAssembly := by
   intro O K V W _ _ _ _ _ _ _ _ _ _ _ _ ϖ hϖ M Θ N₁ Z Zm N' e be n th c AA AA' N₁' ρ a a'

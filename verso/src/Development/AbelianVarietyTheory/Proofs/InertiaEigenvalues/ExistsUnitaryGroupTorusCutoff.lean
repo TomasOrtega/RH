@@ -10,21 +10,19 @@ namespace GlobalTheory.JR.TorusCutOff
 
 open Matrix MeasureTheory Filter Topology in
 /- English proof (translation)
-Use `haveI : Module.Finite E A.L := Module.Finite.equiv (A.push).out.equiv`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Rewrite using `[Matrix.charpoly, Matrix.det_isEmpty]`. Conclude with `Polynomial.separable_one`. Use `haveI : Nonempty (Fin r) := ⟨⟨0, hr⟩⟩`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨hli, hfin, -⟩` from `hτ`. Use `haveI : CharZero F := _root_.GlobalTheory.JR.Unram.charZero E`. Set `b : Module.Basis (Fin r) F A.K` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp [hfin])`. Set `pb : PowerBasis F A.K` to `⟨τ, r, b, fun i => by simp [b]⟩`. Establish `h1 : (LinearMap.mul F A.K τ).charpoly = minpoly F τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.charpoly_toMatrix _ b]`. Conclude with `charpoly_leftMulMatrix pb`. Set `e` to `(A.push).out.equiv`. Set `f : Module.End E A.L` to `LinearMap.mul E A.L (algebraMap A.K A.L τ)`. Establish `key : ∀ w, e ((LinearMap.mul F A.K τ).baseChange E w) = f (e w)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c k => simp [e, f, IsBaseChange.equiv_tmul, mul_smul_comm]`. Consider the case `add w₁ w₂ h₁ h₂ => simp only [map_add, h₁, h₂]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3 : e.conj ((LinearMap.mul F A.K τ).baseChange E) = f`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Rewrite using `[LinearEquiv.conj_apply]`. Simplify using `[key]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h4 : M.charpoly = f.charpoly`. Establish `: Matrix.toLin' M = j.conj f`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Take `⟨z, rfl⟩` from `j.surjective v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[LinearEquiv.conj_apply, f, hM]`. Rewrite using `[← Matrix.charpoly_toLin', this, LinearEquiv.charpoly_conj]`. Rewrite using `[h4, ← h3, LinearEquiv.charpoly_conj, LinearMap.charpoly_baseChange, h1]`. Use `Polynomial.Separable.map ?_` and prove the remaining obligations. Rewrite using `[PerfectField.separable_iff_squarefree]`.
-
-Conclude with `(minpoly.isRadical F τ).squarefree (minpoly.ne_zero (Algebra.IsIntegral.isIntegral τ))`.
+A detailed English derivation is pending.
 -/
 private lemma charpoly_separable_of_isGen {F E : Type} [NontriviallyNormedField F]
     [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
@@ -75,15 +73,15 @@ private lemma charpoly_separable_of_isGen {F E : Type} [NontriviallyNormedField 
 
 open Matrix MeasureTheory Filter Topology in
 /- English proof (translation)
-Establish `hK : ∀ k : A.K, ∀ w, φ (algebraMap A.K A.L k * w) = algebraMap A.K A.L k * φ w`. Introduce `k`. Establish `hk : k ∈ Algebra.adjoin F {τ}` using `by rw [hτ]; trivial`. Proceed by induction on `hk using Algebra.adjoin_induction with`. Consider the case `mem k hk => rw [Set.mem_singleton_iff.1 hk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `hφ`. Consider the case `algebraMap c`. Introduce `w`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← Algebra.smul_def, ← Algebra.smul_def, ← algebraMap_smul E c w, ← algebraMap_smul E c (φ w), map_smul]`. Consider the case `add k₁ k₂ _ _ h₁ h₂ => intro w`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, add_mul, map_add, h₁, h₂, add_mul]`. Consider the case `mul k₁ k₂ _ _ h₁ h₂ => intro w`. Rewrite using `[RingHom.map_mul, mul_assoc, h₁, h₂, ← mul_assoc]`. Introduce `y`. Take `⟨u, rfl⟩` from `(A.push).out.equiv.surjective y`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => intro w`. Simplify using the standard rewrite rules. Consider the case `tmul c k`. Introduce `w`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsBaseChange.equiv_tmul, smul_mul_assoc, map_smul, smul_mul_assoc]`. Simplify using `only [AlgHom.toLinearMap_apply, IsScalarTower.coe_toAlgHom']`. Rewrite using `[hK]`. Consider the case `add u₁ u₂ h₁ h₂ => intro w`. Rewrite using `[map_add, add_mul, map_add, h₁, h₂, add_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma map_mul_of_commute_generator {F E : Type} [NontriviallyNormedField F]
     [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
@@ -117,9 +115,9 @@ private lemma map_mul_of_commute_generator {F E : Type} [NontriviallyNormedField
 
 open Matrix MeasureTheory Filter Topology in
 /- English proof (translation)
-Take `⟨hli, hfin, -⟩` from `hτ`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Use `haveI : Subsingleton A.K := Module.finrank_zero_iff.1 hfin`. Use `eq_top_iff.2 fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim k 1]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Subalgebra.one_mem _`. Use `haveI : Nonempty (Fin r) := ⟨⟨0, hr⟩⟩`. Set `b : Module.Basis (Fin r) F A.K` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp [hfin])`. Set `pb : PowerBasis F A.K` to `⟨τ, r, b, fun i => by simp [b]⟩`. Conclude with `pb.adjoin_gen_eq_top`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 private lemma adjoin_eq_whole_of_isGen {F E : Type} [NontriviallyNormedField F]
     [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
@@ -139,17 +137,17 @@ private lemma adjoin_eq_whole_of_isGen {F E : Type} [NontriviallyNormedField F]
 
 open Matrix MeasureTheory Filter Topology in
 /- English proof (translation)
-Establish `hform : ∀ a b, star (j a) ⬝ᵥ j b = Algebra.trace E A.L (algebraMap A.K A.L x * star a * b)` using `hx`. Establish `hpres : ∀ v w : Fin r → E, star (t.1 *ᵥ v) ⬝ᵥ (t.1 *ᵥ w) = star v ⬝ᵥ w`. Introduce `v w`. Rewrite using `[Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.star_eq_conjTranspose, t.2.1, Matrix.vecMul_one]`. Establish `hnd : ∀ w : Fin r → E, (∀ a, star (j a) ⬝ᵥ w = 0) → w = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `w hw`. Use function extensionality and compare the values at `i`. Use `hw (j.symm (Pi.single i 1))` as an intermediate fact. Simplify using `using this`. Establish `hc : star y * y = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h0 : ∀ b, (star y * y - 1) * b = 0`. Introduce `b`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `hnd` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a`. Establish `h` using `hpres (j a) (j b)`. Rewrite `h` using `[hy, hy, hform, hform]`. Rewrite using `[hform, sub_mul, mul_sub, map_sub, sub_eq_zero, one_mul, ← h, star_mul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify `h0 1` using `[sub_eq_zero]`. Establish `hs : y ∈ unitary A.L` using `⟨hc, by rw [mul_comm]; exact hc⟩`. Use `⟨⟨y, hs⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.JR.Et.uHom_apply]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Take `⟨z, rfl⟩` from `j.surjective v`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, _root_.GlobalTheory.JR.Et.mulMat_mulVec_apply, hy]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private lemma exists_uHom_eq_of_mulVec_eq {F E : Type} [NontriviallyNormedField F]
     [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
@@ -194,25 +192,21 @@ private lemma exists_uHom_eq_of_mulVec_eq {F E : Type} [NontriviallyNormedField 
 
 open Matrix MeasureTheory Filter Topology in
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace F := _root_.GlobalTheory.JR.Unram.lcF E`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by`. Rewrite using `[_root_.GlobalTheory.JR.Unram.finrank_eq (F := F) (E := E)]`. Use the proof step `norm_num)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsModuleTopology F E := isModuleTopologyOfFiniteDimensional`. Establish `hj : Continuous j` using `IsModuleTopology.continuous_of_linearMap (R := F) (j.toLinearMap.restrictScalars F)`. Establish `hjs : Continuous j.symm` using `IsModuleTopology.continuous_of_linearMap (R := F) (j.symm.toLinearMap.restrictScalars F)`. Use `haveI : T2Space A.L := (Homeomorph.mk j.toEquiv hj hjs).isEmbedding.t2Space`. Use `set u := A.uHom hx with hu`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu_mulVec : ∀ s v, (u s).1 *ᵥ v = j (s.1 * j.symm v)`. Introduce `s v`. Rewrite using `[hu, _root_.GlobalTheory.JR.Et.uHom_apply, _root_.GlobalTheory.JR.Et.mulMat_mulVec]`. Set `f : Matrix (Fin r) (Fin r) E → A.L` to `fun m => j.symm (m *ᵥ j 1)`. Establish `hf : Continuous f` using `hjs.comp (continuous_id.matrix_mulVec continuous_const)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : Continuous (fun s => (u s).1)`. Use `continuous_pi fun i => continuous_pi fun k => ?_` and prove the remaining obligations. Establish `: (fun s => (u s).1 i k) = fun s => (j (s.1 * j.symm (Pi.single k 1))) i`. Use function extensionality and compare the values at `s`. Rewrite using `[← hu_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Matrix.mulVec_single]`. Rewrite using `[this]`. Conclude with `(continuous_apply i).comp (hj.comp (continuous_subtype_val.mul continuous_const))`. Establish `hfg : ∀ s, f (u s).1 = s.1`. Introduce `s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `[f, hu_mulVec]`. Establish `hemb : IsEmbedding (fun s => (u s).1)` using `IsEmbedding.of_comp hg hf (by`. Establish `: f ∘ (fun s => (u s).1) = Subtype.val` using `funext hfg`. Rewrite using `[this]`. Conclude with `IsEmbedding.subtypeVal)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hrange : Set.range (fun s => (u s).1) = {m | f m ∈ unitary A.L} ∩ ⋂ v, {m | m *ᵥ v = j (f m * j.symm v)}`. Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩`. Use `⟨by simp [hfg], Set.mem_iInter.2 fun v => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_setOf_eq, hfg, hu_mulVec]`. Introduce and unpack `⟨h₁, h₂⟩`. Use `⟨⟨f m, h₁⟩, ?_⟩` and prove the remaining obligations. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
-
-Introduce `v`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, hu_mulVec]`. Conclude with `(Set.mem_iInter.1 h₂ v).symm`. Establish `hclosed : IsClosed (Set.range (fun s => (u s).1))`. Rewrite using `[hrange]`.
-
-Conclude with `(isClosed_unitary.preimage hf).inter (isClosed_iInter fun v => isClosed_eq (continuous_id.matrix_mulVec continuous_const) (hj.comp (hf.mul continuous_const)))`. Establish `hval : IsClosedEmbedding (Subtype.val : Matrix.unitaryGroup (Fin r) E → Matrix (Fin r) (Fin r) E)` using `(isClosed_unitary (R := Matrix (Fin r) (Fin r) E)).isClosedEmbedding_subtypeVal`. Conclude with `(IsClosedEmbedding.of_comp_iff hval).1 ⟨hemb, hclosed⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma isClosedEmbedding_uHom {F E : Type} [NontriviallyNormedField F]
     [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
@@ -283,23 +277,17 @@ private lemma isClosedEmbedding_uHom {F E : Type} [NontriviallyNormedField F]
 open Matrix MeasureTheory Filter Topology in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A r τ p hτ x j hx Ax hAx ν _ Z hZ`. Use `haveI : LocallyCompactSpace E := _root_.GlobalTheory.JR.Unram.lcE F`. Use `haveI : IsUltrametricDist E := _root_.GlobalTheory.JR.Unram.ultraE F`. Use `haveI : ContinuousStar E := ⟨(AddMonoidHomClass.isometry_of_norm (starAddEquiv : E ≃+ E) (_root_.GlobalTheory.JR.Unram.norm_star F)).continuous⟩`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.GlobalTheory.JR.Unram.finrank_eq (F := F) (E := E)]`. Use the proof step `norm_num)`. Use `haveI : Module.Finite E A.L := Module.Finite.equiv (A.push).out.equiv`. Use `haveI : Module.Finite F A.L := Module.Finite.trans E _`. Use `haveI : IsTopologicalRing A.L := IsModuleTopology.isTopologicalRing F _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `haveI : ContinuousStar A.L := by`. Use `⟨?_⟩` and prove the remaining obligations. Set `σ : A.L →ₗ[F] A.L` to `{ toFun := star map_add' := star_add map_smul' := fun a y => by`. Rewrite using `[Algebra.smul_def, star_mul, IsScalarTower.algebraMap_apply F E A.L, A.star_E, _root_.GlobalTheory.JR.Unram.star_fix, ← IsScalarTower.algebraMap_apply, ← Algebra.commutes, ← Algebra.smul_def]`. Use `rfl }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsModuleTopology.continuous_of_linearMap (R := F) σ`. Use `haveI : LocallyCompactSpace (Matrix (Fin r) (Fin r) E) := (inferInstance : LocallyCompactSpace (Fin r → Fin r → E))`. Use `haveI : TotallyDisconnectedSpace (Matrix (Fin r) (Fin r) E) := (inferInstance : TotallyDisconnectedSpace (Fin r → Fin r → E))`. Use `haveI : LocallyCompactSpace (Matrix.unitaryGroup (Fin r) E) := (isClosed_unitary (R := Matrix (Fin r) (Fin r) E)).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `hsep : Ax.1.charpoly.Separable` using `charpoly_separable_of_isGen A r τ p hτ j Ax.1 hAx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcent : ∀ t : Matrix.unitaryGroup (Fin r) E, t.1 * Ax.1 = Ax.1 * t.1 → ∃ s, A.uHom hx s = t`. Introduce `t ht`. Set `φ : A.L →ₗ[E] A.L` to `j.symm.toLinearMap ∘ₗ Matrix.toLin' t.1 ∘ₗ j.toLinearMap`. Establish `hφ : ∀ w, φ (algebraMap A.K A.L τ * w) = algebraMap A.K A.L τ * φ w`. Introduce `w`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `j.injective` to reduce the goal to its premises. Simplify using `only [φ, LinearMap.comp_apply, LinearEquiv.coe_coe, Matrix.toLin'_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[hAx, hAx, LinearEquiv.apply_symm_apply, Matrix.mulVec_mulVec, ht, ← Matrix.mulVec_mulVec]`. Establish `hmul` using `map_mul_of_commute_generator A τ (adjoin_eq_whole_of_isGen A r τ p hτ) φ hφ`. Use `exists_uHom_eq_of_mulVec_eq A r x j hx t (φ 1) (fun z => ?_)` and prove the remaining obligations.
-
-Establish `h1 : j (φ z) = t.1 *ᵥ j z` using `by simp [φ]`. Rewrite using `[← h1, mul_comm, ← hmul, mul_one]`. Establish `hemb : IsClosedEmbedding (A.uHom hx)` using `isClosedEmbedding_uHom A r x j hx`. Take `⟨C, hC, hCg⟩` from `(_root_.GlobalTheory.OrbCpt.orbit_cpt F E r).2 Ax.1 Ax.2 hsep Z hZ`. Set `i : unitary A.L →* Matrix.unitaryGroup (Fin r) E` to `(A.uHom hx).comp invMonoidHom`.
-
-Establish `hi : IsClosedEmbedding i` using `hemb.comp (Homeomorph.inv _).isClosedEmbedding`. Take `⟨α, h₁, h₂, h₃, h₄⟩` from `_root_.GlobalTheory.CutOff.exists_cutoff (Matrix.unitaryGroup (Fin r) E) (unitary A.L) i hi ν C hC`. Use `⟨α, h₁, h₂, h₃, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, t, ht, rfl⟩` from `hCg g hg`. Take `⟨s, rfl⟩` from `hcent t ht`.
-
-Use `h₄ c hc s⁻¹` as an intermediate fact. Simplify `this` using `[i, mul_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.JR.TorusCutOff.exists_unitary_cutoff : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [_root_.GlobalTheory.JR.Unram F E] (A : _root_.GlobalTheory.JR.Et F E) (r : ℕ) (τ : A.K) (p : Fin r → F), A.IsGen τ p → ∀ (x : A.K) (j : A.L ≃ₗ[E] (Fin r → E)) (hx : A.IsIsom x j) (Ax : selfAdjoint (Matrix (Fin r) (Fin r) E)), (∀ z, j (algebraMap A.K A.L τ * z) = Ax.1 *ᵥ j z) → ∀ (ν : Measure (unitary A.L)), ν.IsHaarMeasure → ∀ Z : Set (Matrix (Fin r) (Fin r) E), IsCompact Z → ∃ α : Matrix.unitaryGroup (Fin r) E → ℝ, IsLocallyConstant α ∧ HasCompactSupport α ∧ (∀ g, 0 ≤ α g) ∧ ∀ g : Matrix.unitaryGroup (Fin r) E, g.1 * Ax.1 * star g.1 ∈ Z → ∫ t, α (g * (A.uHom hx t)⁻¹) ∂ν = 1 := by
   intro F E _ _ _ _ _ A r τ p hτ x j hx Ax hAx ν _ Z hZ

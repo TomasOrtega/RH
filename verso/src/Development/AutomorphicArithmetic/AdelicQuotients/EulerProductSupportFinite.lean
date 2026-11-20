@@ -2,35 +2,31 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnaly
 open UpperTheory.ConvolutionTheory.G UpperTheory.ConvolutionTheory.T4
 
 /- English proof (translation)
-Introduce `V G _ _ _ _ _ _ _ _ Gi _ _ _ _ _ _ _ _ Gv _ _ _ _ _ _ _ _ q p K T _ _ _ _ _ _ _ _ Ti _ _ _ _ _ _ _ _ Tv _ _ _ _ _ _ _ _ qT pT KT hR hRT j ji jv hq hp hK S Fi Fv hFi hFii hFv hS`. Establish `hKA : ∀ v x, x ∈ K v → ∃ t, ∃ y ∈ K v, x = jv v t * y` using `fun v x hx => ⟨1, x, hx, by simp⟩`. Establish `hfin : ∀ g, (Function.mulSupport fun v => Fv v (p v g)).Finite`. Introduce `g`. Use `((Filter.eventually_cofinite.1 (hR.ae g)).union S.finite_toSet).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, Finset.mem_coe, not_or, not_not] at hc`. Conclude with `hv ((hS v hc.2 _).1 (hKA v _ hc.1))`. Take `⟨W, hW⟩ : ∃ W : Set G, W = {g | ∀ v ∉ S, ∃ t, ∃ y ∈ K v, p v g = jv v t * y}` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ∀ g, g ∈ W ↔ ∀ v ∉ S, ∃ t, ∃ y ∈ K v, p v g = jv v t * y`. Introduce `g`. Rewrite using `[hW]`. Both sides reduce to the same expression. Establish `hoff : ∀ g, g ∉ W → ∏ᶠ v, Fv v (p v g) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Rewrite `hg` using `[hmem]`. Use `push_neg at hg`. Take `⟨v, hv, hx⟩` from `hg`. Use `finprod_eq_zero _ v ((hS v hv _).2 ?_) (hfin g)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨t, y, hy, e⟩`. Conclude with `hx t y hy e`. Establish `hon : ∀ g ∈ W, ∏ᶠ v, Fv v (p v g) = ∏ v ∈ S, Fv v (p v g)`. Introduce `g hg`. Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `v hv`. Assume the negation of the conclusion as `hc`. Conclude with `hv ((hS v hc _).1 ((hmem g).1 hg v hc))`. Establish `hWopen : IsOpen W`. Rewrite using `[isOpen_iff_forall_mem_open]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg`. Use `⟨(fun x => g⁻¹ * x) ⁻¹' (US p K S : Set G), ?_, (continuous_const.mul continuous_id).isOpen_preimage _ (hR.opnU S), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Use `(hmem x).2 fun v hv => ?_` and prove the remaining obligations. Take `⟨t, y, hy, e⟩` from `(hmem g).1 hg v hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hx' : p v (g⁻¹ * x) ∈ K v` using `hx v hv`. Use `⟨t, y * p v (g⁻¹ * x), mul_mem hy hx', ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← e, ← map_mul, mul_inv_cancel_left]`. Simplify using `only [Set.mem_preimage, inv_mul_cancel]`. Conclude with `one_mem (US p K S)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hqm : Measurable q` using `hR.cq.measurable`. Establish `hpm : ∀ v, Measurable (p v)` using `fun v => (hR.cp v).measurable`. Establish `hmeas : Measurable fun g => Fi (q g) * ∏ v ∈ S, Fv v (p v g)` using `(hFi.comp hqm).mul (Finset.measurable_prod _ fun v _ => (hFv v).1.comp (hpm v))`. Establish `hEq : (fun g => Fi (q g) * ∏ᶠ v, Fv v (p v g)) = W.indicator (fun g => Fi (q g) * ∏ v ∈ S, Fv v (p v g))`. Use function extensionality and compare the values at `g`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hg : g ∈ W`. Rewrite using `[Set.indicator_of_mem hg, hon g hg]`. Rewrite using `[Set.indicator_of_notMem hg, hoff g hg, mul_zero]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hEq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hmeas.indicator hWopen.measurableSet`. Introduce `g h`. Establish `hgW : g ∈ W`. Assume the negation of the conclusion as `hc`. Conclude with `h (by rw [hoff g hc, mul_zero])`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hch : ∀ v, ∃ t : Tv v, (p v g ∈ K v → t = 1) ∧ (v ∉ S → (jv v t)⁻¹ * p v g ∈ K v)`. Introduce `v`. Distinguish the cases in `hk : p v g ∈ K v`. Conclude with `⟨1, fun _ => rfl, fun _ => by simpa using hk⟩`. Distinguish the cases in `hv : v ∈ S`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨1, fun h => absurd h hk, fun h => absurd hv h⟩`. Take `⟨t, y, hy, e⟩` from `(hmem g).1 hgW v hv`. Conclude with `⟨t, fun h => absurd h hk, fun _ => by rw [e]; simpa using hy⟩`. Use `choose tv ht1 ht2 using hch`. Take `⟨t, -, ht⟩` from `hRT.surj 1 tv ((hR.ae g).mono fun v hv => by rw [ht1 v hv]; exact one_mem _)`.
-
-Use `Set.mem_mul.2 ⟨j t, ⟨t, rfl⟩, (j t)⁻¹ * g, ?_, mul_inv_cancel_left _ _⟩` and prove the remaining obligations. Use `SetLike.mem_coe.2 (mem_US.2 fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, hp, ht]`. Conclude with `ht2 v hv`. Introduce `u hu`.
-
-Establish `huW : u ∈ W` using `(hmem u).2 fun v hv => hKA v _ (hu v hv)`. Rewrite using `[hon u huW, Finset.prod_coe_sort S (fun v => Fv v (p v u))]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.euler_product_support_finite :
     EulerSupp := by

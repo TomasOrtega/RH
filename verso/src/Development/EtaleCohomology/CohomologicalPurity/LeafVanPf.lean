@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite
 namespace LateralTheory.CohomologicalPurity.Cl
 
 /- English proof (translation)
-Use `P.cl` as an intermediate fact. Establish `hsupp : (P.ι.ker.support : Set P.X) = Set.range P.ι`. Rewrite using `[Scheme.Hom.support_ker, P.ι.isClosedEmbedding.isClosed_range.closure_eq]`. Use extensionality with `y`. Establish `hmem : V.2.fromSpec y ∈ V.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[← SetLike.mem_coe, ← V.2.range_fromSpec]`. Conclude with `Set.mem_range_self y`. Establish `h1` using `Set.ext_iff.mp (V.2.fromSpec_preimage_zeroLocus ((P.ι.ker.ideal V : Ideal Γ(P.X, V.1)) : Set Γ(P.X, V.1))) y`. Establish `h2` using `Scheme.IdealSheafData.mem_support_iff_of_mem (I := P.ι.ker) hmem`. Establish `h3 : V.2.fromSpec y ∈ (P.U : Set P.X) ↔ V.2.fromSpec y ∉ Set.range P.ι` using `by rw [P.hU]; rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : V.2.fromSpec y ∈ P.ι.ker.support ↔ V.2.fromSpec y ∈ Set.range P.ι`. Rewrite using `[← SetLike.mem_coe, hsupp]`. Conclude with `(not_congr (h1.symm.trans (h2.symm.trans h4))).trans h3.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem van_preimage {d : ℕ} (P : SP d) (V : P.X.affineOpens) :
     off Γ(P.X, V.1) (P.ι.ker.ideal V) = V.2.fromSpec ⁻¹ᵁ P.U := by
@@ -28,11 +28,9 @@ theorem van_preimage {d : ℕ} (P : SP d) (V : P.X.affineOpens) :
   exact (not_congr (h1.symm.trans (h2.symm.trans h4))).trans h3.symm
 
 /- English proof (translation)
-Introduce `hH d q _ P hq i x W hxW`. Take `⟨V, hxV, hVW, -, hch⟩` from `hC d P x W hxW`. Establish `hqV : IsUnit (q : Γ(P.X, V.1))`. Use `hq.map (P.X.presheaf.map (homOfLE le_top : V.1 ⟶ ⊤).op).hom` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨⟨Spec (CommRingCat.of Γ(P.X, V.1)), V.2.fromSpec, V.2.isOpenImmersion_fromSpec, off Γ(P.X, V.1) (P.ι.ker.ideal V), van_preimage P V⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[V.2.range_fromSpec]`. Conclude with `hxV`. Rewrite using `[V.2.range_fromSpec]`. Conclude with `hVW`.
-
-Introduce `n hn`. Conclude with `hR hH d q Γ(P.X, V.1) _ hch hqV n i hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LeafVan_of (hC : LeafChart) (hR : LeafVanRing) : LeafVan := by
   intro hH d q _ P hq i x W hxW

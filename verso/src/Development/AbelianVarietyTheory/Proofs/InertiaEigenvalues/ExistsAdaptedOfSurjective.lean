@@ -36,23 +36,21 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [FiniteDimensional Qp K] [CharZero Qp] [FiniteDimensional Qp LL]
 
 /- English proof (translation)
-Establish `hle : ∀ a, (FildR PD ρ τ a).map (ext Qp F g) ≤ FildR PD ρ' τ a`. Introduce and unpack `a _ ⟨x, hx, rfl⟩`. Conclude with `ext_mem_FildR PD ρ ρ' g hg τ hx`. Take `⟨m, d, k, hli, hA⟩` from `GlobalTheory.filtration_adapted_basis (fun a => (FildR PD ρ τ a).map (ext Qp F g)) (fun a b hab => Submodule.map_mono (FildR_antitone PD ρ τ hab)) (Submodule.finiteDimensional_of_le (S₂ := DdR PD ρ') (iSup_le fun a y hy => (hle a hy).1.1)) (fun x hx => eq_zero_of_forall_mem_FilV …`. Establish `hmem : ∀ i, d i ∈ FildR PD ρ' τ (k i)` using `fun i => hle _ ((hA (k i)).ge (Submodule.subset_span ⟨i, le_refl (k i), rfl⟩))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `had : Adapted PD ρ' τ d k`. Use `⟨hmem, GlobalTheory.DRFil.indep_of_linearIndependent_DdRE PD ρ' τ d hF (fun i => (hmem i).1) hli, fun n y hy => ?_⟩` and prove the remaining obligations. Set `q : V' ⊗[Qp] F → Prop` to `fun y => ∃ r : Fin m → LL ⊗[Qp] F, (∀ i, r i ∈ FilV PD (LL := LL) (V := LL) (n - k i)) ∧ y = ∑ i, sm Qp F LL V' (r i) (d i)`. Establish `q0 : q 0` using `⟨0, fun _ => Submodule.zero_mem _, by simp⟩`. Establish `qa : ∀ x y, q x → q y → q (x + y)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x y ⟨r, hr, hx⟩ ⟨s, hs, hy⟩`. Conclude with `⟨r + s, fun p => Submodule.add_mem _ (hr p) (hs p), by`. Simplify using `only [map_add, hx, hy, Pi.add_apply, LinearMap.add_apply, Finset.sum_add_distrib]⟩`. Establish `qs : ∀ (c : LL) x, q x → q (c • x)`. Introduce and unpack `c x ⟨r, hr, hx⟩`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨c • r, fun p => Submodule.smul_mem _ _ (hr p), by`. Simplify using `only [map_smul, hx, Pi.smul_apply, LinearMap.smul_apply, Finset.smul_sum]⟩`. Establish `qm : ∀ (a : ℤ) (b : F), b ∈ PD.Fil (n - a) → ∀ x ∈ Submodule.span LL (d '' {i | a ≤ k i}), q (mulR Qp F LL V' b x)`. Introduce `a b hb x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simpa using q0`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `qa _ _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `qs _ _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`. Use `⟨Pi.single i ((1 : LL) ⊗ₜ[Qp] b), fun j => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_same]`. Conclude with `tmul_mem_FilV PD _ (fil_antitone PD (sub_le_sub_left hi n) hb)`. Rewrite using `[Pi.single_eq_of_ne hj]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_eq_of_ne hj]) (by simp), Pi.single_eq_same, sm_one_tmul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx, rfl⟩` from `exists_ext_mem_FilV PD g hs hy`. Take `⟨m', k', b, e, he, rfl⟩` from `h n x hx`. Express the relevant statement in the definitionally equal form `q _`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_induction _ q qa q0 fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[ext_mulR, ← sm_one_tmul, sm_comm, sm_one_tmul, ← ext_sm]`. Use `qm (k' i) (b i) (he i).2.2 _ ((hA (k' i)).le ⟨_, ⟨?_, ?_⟩, rfl⟩)` and prove the remaining obligations. Conclude with `sm_idem_mem_DdRE PD ρ τ (he i).1`. Conclude with `sm_idem_mem_FilV PD τ (he i).2.1`. Conclude with `⟨⟨m, d, k, had⟩, fun a => (hA a).trans (had.fil_eq a).symm⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_adapted_of_surjective (hF : IsField F) [FiniteDimensional LL V'] (ρ : Representation LL G V)
     (ρ' : Representation LL G V') [FiniteDimensional LL ↥(DdR PD ρ')] (g : V →ₗ[LL] V')
@@ -112,7 +110,7 @@ theorem exists_adapted_of_surjective (hF : IsField F) [FiniteDimensional LL V'] 
   exact ⟨⟨m, d, k, had⟩, fun a => (hA a).trans (had.fil_eq a).symm⟩
 
 /- English proof (translation)
-The claim follows from `(exists_adapted_of_surjective PD hF ρ ρ LinearMap.id (fun _ _ => rfl) Function.surjective_id h τ).1`.
+A detailed English derivation is pending.
 -/
 theorem exists_adapted (hF : IsField F) [FiniteDimensional LL V] (ρ : Representation LL G V)
     [FiniteDimensional LL ↥(DdR PD ρ)] (h : FilSpans PD ρ) (τ : K →ₐ[Qp] LL) :
@@ -121,9 +119,9 @@ theorem exists_adapted (hF : IsField F) [FiniteDimensional LL V] (ρ : Represent
 
 omit [FiniteDimensional Qp K] [CharZero Qp] [FiniteDimensional Qp LL] in
 /- English proof (translation)
-Take `⟨Φ, hD, hF⟩` from `exists_twist_equiv PD ρ ρ' htw u hu hu'`. Use `⟨?_, fun τ a => ?_⟩` and prove the remaining obligations. Take `⟨e, -⟩` from `htw`. Rewrite using `[IsDR, ← hD, LinearEquiv.finrank_map_eq, h, e.finrank_eq]`. Establish `e1 : a - 1 + 1 = a + 1 - 1` using `by ring`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `IsJumpV multV`. Rewrite using `[e1, ← hF, ← hF, LinearEquiv.finrank_map_eq, LinearEquiv.finrank_map_eq]`. Conclude with `⟨(Submodule.map_injective_of_injective Φ.injective).ne_iff, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem twist_jumps (ρ : Representation LL G V) (ρ' : Representation LL G V')
     (htw : IsTwistRep (cycLL PD LL) ρ ρ') (u : F) (hu : PD.ι PD.t * u = 1) (hu' : u ∈ PD.Fil (-1))
@@ -140,7 +138,7 @@ theorem twist_jumps (ρ : Representation LL G V) (ρ' : Representation LL G V')
 
 omit [FiniteDimensional Qp LL] in
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_component_equiv PD h ρ hs τ (τ.comp (IsScalarTower.toAlgHom Qp K₀ K)) fun _ => rfl`. Use `⟨e, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `sub_sm_idem_mem PD ρ τ (ιV_mem_DdR PD ρ x.2.1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem component_iso (h : TensInj PD) (ρ : Representation LL G V)
     (hs : ∀ y ∈ DdR PD ρ, ∃ (m : ℕ) (c : Fin m → K) (x : Fin m → V ⊗[Qp] B),
@@ -160,16 +158,16 @@ theorem component_iso (h : TensInj PD) (ρ : Representation LL G V)
 end Generic
 
 /- English proof (translation)
-Rewrite using `[zpow_neg, Units.inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zpow_neg_mul_cancel {R : Type} [CommRing R] (u : Rˣ) (k : ℤ) (b : R) :
     ((u ^ (-k) : Rˣ) : R) * (((u ^ k : Rˣ) : R) * b) = b := by
   rw [zpow_neg, Units.inv_mul_cancel_left]
 
 /- English proof (translation)
-Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [ite_mul, one_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_eq, if_pos (hS i)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => if_congr (by omega) rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem sum_conv {ι ι' : Type} [Fintype ι] [Fintype ι'] (k : ι → ℤ) (k' : ι' → ℤ) (S : Finset ℤ)
     (hS : ∀ i, k i ∈ S) (c : ℤ) : (∑ p : ι × ι', if k p.1 + k' p.2 = c then (1 : ℤ) else 0) =
@@ -185,7 +183,7 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (T : LocTi
 include T
 
 /- English proof (translation)
-Take `⟨C, -⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T`. Take `⟨_, _, -, -, -, -, _⟩` from `GlobalTheory.MemLoc.BdRDVR.core_dvr l C`. Conclude with `T.eD.toMulEquiv.isField (IsFractionRing.toField (K := Per.BdR l) (Per.BdRp l)).toIsField`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isField_dR : IsField P.R.BdR := by
   obtain ⟨C, -⟩ := GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T
@@ -193,9 +191,9 @@ theorem isField_dR : IsField P.R.BdR := by
   exact T.eD.toMulEquiv.isField (IsFractionRing.toField (K := Per.BdR l) (Per.BdRp l)).toIsField
 
 /- English proof (translation)
-Take `⟨s, hs, h⟩` from `GlobalTheory.ThetaTie.exists_inverse_fontaineElement_mem_fil_neg_one T`. Rewrite `hu` using `[P.PD_ι, P.period_datum_t_eq]`. Establish `e : u = s`. Rewrite using `[← one_mul u, ← h, mul_right_comm, hu, one_mul]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(T.fil K _ _).2 ((T.fil _ _ _).1 hs)`.
+A detailed English derivation is pending.
 -/
 theorem inv_t_mem (K : FinExt l) (u : P.R.BdR) (hu : (P.PD K).ι (P.PD K).t * u = 1) :
     u ∈ (P.PD K).Fil (-1) := by
@@ -207,7 +205,7 @@ theorem inv_t_mem (K : FinExt l) (u : P.R.BdR) (hu : (P.PD K).ι (P.PD K).t * u 
   exact (T.fil K _ _).2 ((T.fil _ _ _).1 hs)
 
 /- English proof (translation)
-Introduce `m c hc b hb` and use `GlobalTheory.T.injective_tensor_Bcris_to_BdR l P AI T K m c hc b (by simpa only [P.PD_ι] using hb)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tensInj (K : FinExt l) : TensInj (P.PD K) := fun m c hc b hb =>
   GlobalTheory.T.injective_tensor_Bcris_to_BdR l P AI T K m c hc b (by simpa only [P.PD_ι] using hb)
@@ -218,7 +216,7 @@ variable (K LL : FinExt l) {V : Type} [AddCommGroup V] [Module ↥LL.1 V] [Modul
   [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V)
 
 /- English proof (translation)
-Use `K.2` as an intermediate fact. Use `LL.2` as an intermediate fact. Take `⟨h1, h2⟩` from `GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL V ρ`. Conclude with `le_antisymm h2 (GlobalTheory.DRFil.finrank_mul_le_finrank_DdR_of_spans (P.PD K) ρ h1 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isDR_of_spans (h : Spans (P.PD K) ρ) : IsDR (P.PD K) ρ := by
   have := K.2
@@ -227,12 +225,12 @@ theorem isDR_of_spans (h : Spans (P.PD K) ρ) : IsDR (P.PD K) ρ := by
   exact le_antisymm h2 (GlobalTheory.DRFil.finrank_mul_le_finrank_DdR_of_spans (P.PD K) ρ h1 h)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.deRham_comparison_isFiltered l P AI T K LL V ρ h`.
+A detailed English derivation is pending.
 -/
 theorem filSpans (h : IsDR (P.PD K) ρ) : FilSpans (P.PD K) ρ := GlobalTheory.T.deRham_comparison_isFiltered l P AI T K LL V ρ h
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL V ρ`. Conclude with `isDR_of_isCrys (P.PD K) (tensInj T K) ρ h2 h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem crys (h : IsCrys (P.PD K) ρ) : IsDR (P.PD K) ρ ∧ ∀ y ∈ DdR (P.PD K) ρ,
     ∃ (m : ℕ) (c : Fin m → ↥K.1) (x : Fin m → V ⊗[ℚ_[l]] P.R.B), (∀ i, x i ∈ Dcris (P.PD K) ρ) ∧
@@ -248,14 +246,12 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence
 variable (K LL : FinExt l)
 
 /- English proof (translation)
-Introduce `L h` and use `(crys T K LL L.ρ h).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem crysDeRhamAt : CrysDeRhamAt P K LL := fun L h => (crys T K LL L.ρ h).1
 
 /- English proof (translation)
-Introduce `L h`. Use `le_antisymm (fun y hy => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Take `⟨m, c, x, hx, rfl⟩` from `(crys T K LL L.ρ h).2 y hy`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨c i, x i, hx i, rfl⟩`. Introduce and unpack `_ ⟨c, x, hx, rfl⟩`.
-
-Conclude with `mulR_mem_DdR (P.PD K) L.ρ c (ιV_mem_DdR (P.PD K) L.ρ hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ddRSpanAt : DdRSpanAt P K LL := by
   intro L h
@@ -266,13 +262,13 @@ theorem ddRSpanAt : DdRSpanAt P K LL := by
     exact mulR_mem_DdR (P.PD K) L.ρ c (ιV_mem_DdR (P.PD K) L.ρ hx)
 
 /- English proof (translation)
-Introduce `_ _ m c x hc _ h` and use `(tensInj T K).tensor (LL := ↥LL.1) m c hc x h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ddRInjAt : DdRInjAt P K LL := fun _ _ m c x hc _ h =>
   (tensInj T K).tensor (LL := ↥LL.1) m c hc x h
 
 /- English proof (translation)
-Introduce `L h τ`. Use `K.2` as an intermediate fact. Conclude with `component_iso (P.PD K) (tensInj T K) L.ρ (crys T K LL L.ρ h).2 τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem componentIsoAt : ComponentIsoAt P K LL := by
   intro L h τ
@@ -280,9 +276,9 @@ theorem componentIsoAt : ComponentIsoAt P K LL := by
   exact component_iso (P.PD K) (tensInj T K) L.ρ (crys T K LL L.ρ h).2 τ
 
 /- English proof (translation)
-Introduce `hK L h`. Use `le_antisymm ?_ fun y hy => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `ιV_mem_DdR (P.PD K) L.ρ hx`. Take `⟨m, c, x, hx, rfl⟩` from `(crys T K LL L.ρ h).2 y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun i _ => ⟨_, mulR_mem_Dcris (P.PD K) L.ρ ⟨(c i).1, (c i).2, hK (c i).2⟩ (hx i), ?_⟩` and prove the remaining obligations. Rewrite using `[ιV_mulR, AlgHom.commutes]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unramOntoAt : UnramOntoAt P K LL := by
   intro hK L h
@@ -295,9 +291,9 @@ theorem unramOntoAt : UnramOntoAt P K LL := by
     rfl
 
 /- English proof (translation)
-Establish `h1 : (tdR P K : P.R.BdR) ∈ (P.PD K).Fil 1` using `(P.PD K).mem_filtration_one`. Establish `h2 : ((tdR P K)⁻¹ : P.R.BdRˣ).1 ∈ (P.PD K).Fil (-1)` using `inv_t_mem T K _ (tdR P K).mul_inv`. Proceed by induction on `a using Int.induction_on with`. Consider the case `zero => simpa using (P.PD K).one_mem`. Consider the case `succ n ih`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[zpow_add_one, Units.val_mul]`. Conclude with `(P.PD K).Fil_mul _ _ _ _ ih h1`. Consider the case `pred n ih`. Rewrite using `[zpow_sub_one, Units.val_mul]`. Conclude with `(P.PD K).Fil_mul _ _ _ _ ih h2`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tdR_zpow_mem (a : ℤ) : ((tdR P K ^ a : P.R.BdRˣ) : P.R.BdR) ∈ (P.PD K).Fil a := by
   have h1 : (tdR P K : P.R.BdR) ∈ (P.PD K).Fil 1 := (P.PD K).mem_filtration_one
@@ -312,9 +308,9 @@ theorem tdR_zpow_mem (a : ℤ) : ((tdR P K ^ a : P.R.BdRˣ) : P.R.BdR) ∈ (P.PD
     exact (P.PD K).Fil_mul _ _ _ _ ih h2
 
 /- English proof (translation)
-Introduce `L h`. Use `le_antisymm (fun y hy => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Take `⟨m, k, b, d, hd, rfl⟩` from `filSpans T K LL L.ρ h 0 y hy`. Use `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨k i, ((tdR P K ^ k i : P.R.BdRˣ) : P.R.BdR) * b i, ?_, d i, ⟨(hd i).1, (hd i).2.1⟩, ?_⟩` and prove the remaining obligations. Simplify using `using (P.PD K).Fil_mul _ _ _ _ (tdR_zpow_mem T K (k i)) (hd i).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `congrArg (fun c => mulVR L c (d i)) (zpow_neg_mul_cancel (tdR P K) (k i) (b i)).symm`. Introduce and unpack `_ ⟨a, b, hb, d, hd, rfl⟩`. Use `mulR_mem_FilV (P.PD K) (LL := ↥LL.1) ((P.PD K).Fil_mul _ _ _ _ (tdR_zpow_mem T K (-a)) hb) hd.2` as an intermediate fact. Rewrite `this` using `[add_zero, neg_add_cancel]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem filZeroAt : FilZeroAt P K LL := by
   intro L h
@@ -330,11 +326,11 @@ theorem filZeroAt : FilZeroAt P K LL := by
     rwa [add_zero, neg_add_cancel] at this
 
 /- English proof (translation)
-Introduce and unpack `L₀ L₁ L₂ f g ⟨hf, hg, hi, hex, hs⟩ - h₁ - τ a`. Use `K.2` as an intermediate fact. Use `LL.2` as an intermediate fact. Use `(GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL L₂.V L₂.ρ).1` as an intermediate fact. Use `⟨fun x _ hx => ext_injective f hi (hx.trans (map_zero _).symm), fun y => ⟨?_, ?_⟩, fun z => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨ext_mem_FildR _ _ _ f hf τ hx, (ext_exact f g hex hs _).2 ⟨x, rfl⟩⟩`. Introduce and unpack `⟨hy, h0⟩`. Take `⟨x, rfl⟩` from `(ext_exact f g hex hs y).1 h0`. Conclude with `⟨x, mem_FildR_of_ext _ _ _ f hf hi τ hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[← (exists_adapted_of_surjective (P.PD K) (isField_dR T) L₁.ρ L₂.ρ g hg hs (filSpans T K LL L₁.ρ h₁) τ).2 a]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem strictAt : StrictAt P K LL := by
   rintro L₀ L₁ L₂ f g ⟨hf, hg, hi, hex, hs⟩ - h₁ - τ a
@@ -352,9 +348,9 @@ theorem strictAt : StrictAt P K LL := by
     rfl
 
 /- English proof (translation)
-Introduce and unpack `L L' β ⟨hβ, hβ'⟩ h`. Use `K.2` as an intermediate fact. Use `LL.2` as an intermediate fact. Use `(GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL L.V L.ρ).1` as an intermediate fact. Establish `hs` using `filSpans T K LL L.ρ h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨isDR_of_spans T K LL L'.ρ (GlobalTheory.DRFil.spans_dual_of_spans (P.PD K) L.ρ L'.ρ β (isField_dR T) hβ hβ' (hs.spans _)), fun τ a => ?_⟩` and prove the remaining obligations. Take `⟨m, d, k, had⟩` from `exists_adapted (P.PD K) (isField_dR T) L.ρ hs τ`. Take `⟨d', had'⟩` from `had.dual L'.ρ β hβ hβ'`. Rewrite using `[had.isJumpV_iff, had'.isJumpV_iff, had.multV_eq, had'.multV_eq]`. Simplify using `only [neg_eq_iff_eq_neg, and_self]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dualJumpsAt : DualJumpsAt P K LL := by
   rintro L L' β ⟨hβ, hβ'⟩ h
@@ -370,13 +366,13 @@ theorem dualJumpsAt : DualJumpsAt P K LL := by
   simp only [neg_eq_iff_eq_neg, and_self]
 
 /- English proof (translation)
-Introduce `L₁ L₂ L₃ e he h₁ h₂`. Use `K.2` as an intermediate fact. Use `LL.2` as an intermediate fact. Use `(GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL L₁.V L₁.ρ).1` as an intermediate fact. Use `(GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL L₂.V L₂.ρ).1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs₁` using `filSpans T K LL L₁.ρ h₁`. Establish `hs₂` using `filSpans T K LL L₂.ρ h₂`. Use `⟨isDR_of_spans T K LL L₃.ρ (Spans.tensor _ e he (hs₁.spans _) (hs₂.spans _)), fun τ c => ?_⟩` and prove the remaining obligations. Take `⟨m, d, k, had⟩` from `exists_adapted (P.PD K) (isField_dR T) L₁.ρ hs₁ τ`. Take `⟨m', d', k', had'⟩` from `exists_adapted (P.PD K) (isField_dR T) L₂.ρ hs₂ τ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `had₃` using `had.tensor had' L₃.ρ e he`. Use `⟨?_, fun S hS => ?_⟩` and prove the remaining obligations. Simplify using `only [had.isJumpV_iff, had'.isJumpV_iff, had₃.isJumpV_iff]`. Conclude with `⟨fun ⟨p, hp⟩ => ⟨_, _, ⟨p.1, rfl⟩, ⟨p.2, rfl⟩, hp⟩, fun ⟨_, _, ⟨i, hi⟩, ⟨j, hj⟩, h⟩ => ⟨(i, j), by rw [hi, hj, h]⟩⟩`. Simplify using `only [had.multV_eq, had'.multV_eq, had₃.multV_eq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Conclude with `sum_conv k k' S (fun i => hS _ ((had.isJumpV_iff _).2 ⟨i, rfl⟩)) c`.
+A detailed English derivation is pending.
 -/
 theorem tensorJumpsAt : TensorJumpsAt P K LL := by
   intro L₁ L₂ L₃ e he h₁ h₂
@@ -398,13 +394,13 @@ theorem tensorJumpsAt : TensorJumpsAt P K LL := by
     exact sum_conv k k' S (fun i => hS _ ((had.isJumpV_iff _).2 ⟨i, rfl⟩)) c
 
 /- English proof (translation)
-Introduce `L L' htw h` and use `twist_jumps (P.PD K) L.ρ L'.ρ htw _ (tdR P K).mul_inv (inv_t_mem T K _ (tdR P K).mul_inv) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twistJumpsAt : TwistJumpsAt P K LL := fun L L' htw h =>
   twist_jumps (P.PD K) L.ρ L'.ρ htw _ (tdR P K).mul_inv (inv_t_mem T K _ (tdR P K).mul_inv) h
 
 /- English proof (translation)
-Introduce `L K' hK h` and use `isDR_of_spans T K LL L.ρ (GlobalTheory.DRFil.spans_descent l P K K' LL hK L.V L.ρ ((filSpans T K' LL _ (crys T K' LL _ h).1).spans _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem potCrysDeRhamAt : PotCrysDeRhamAt P K LL := fun L K' hK h =>
   isDR_of_spans T K LL L.ρ (GlobalTheory.DRFil.spans_descent l P K K' LL hK L.V L.ρ
@@ -413,7 +409,7 @@ theorem potCrysDeRhamAt : PotCrysDeRhamAt P K LL := fun L K' hK h =>
 omit T in
 
 /- English proof (translation)
-Take `⟨T⟩` from `h`. Conclude with `⟨fun K _ LL _ => crysDeRhamAt T K LL, fun K _ LL _ => ddRSpanAt T K LL, fun K _ LL _ => componentIsoAt T K LL, fun K _ LL _ => unramOntoAt T K LL, fun K _ LL _ => filZeroAt T K LL, fun K _ LL _ => strictAt T K LL, fun K _ LL _ => dualJumpsAt T K LL, fun K _ LL _ => tensorJumpsAt …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem deRhamComparison (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P)
     (h : GlobalTheory.Per.IsStd P AI) : DeRhamComparison l P := by

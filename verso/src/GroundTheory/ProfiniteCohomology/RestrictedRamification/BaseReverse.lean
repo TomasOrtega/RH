@@ -17,9 +17,9 @@ section Twisted
 variable {k : Type u} [CommRing k] {M N P M' N' : CochainComplex (ModuleCat.{u} k) ℕ}
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `homologyπ_hom_surjective M r x`. Take `⟨y, rfl⟩` from `homologyπ_hom_surjective N s y`. Rewrite using `[homologyMap_homologyπ_apply, homologyMap_homologyπ_apply, LeibnizPairing.homology_homologyπ, LeibnizPairing.homology_homologyπ, homologyMap_homologyπ_apply, ← map_smul]`. Use `congr 1`. Apply `iCycles_hom_injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[iCycles_cyclesMap_apply, LeibnizPairing.iCycles_cycles, map_smul, LeibnizPairing.iCycles_cycles, iCycles_cyclesMap_apply, iCycles_cyclesMap_apply]`. Conclude with `hF h h' _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeibnizPairing.homologyMap_homology_eq_smul (μ₁ : LeibnizPairing M N P)
     (μ₂ : LeibnizPairing N' M' P) (F : P ⟶ P) (G : N ⟶ N') (H : M ⟶ M') (c : ℕ → ℕ → k)
@@ -46,7 +46,7 @@ section Reverse
 variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => (continuous_apply i.rev).inv`.
+A detailed English derivation is pending.
 -/
 theorem continuous_revInv (n : ℕ) : Continuous fun x : Fin n → G => revInv x :=
   continuous_pi fun i => (continuous_apply i.rev).inv
@@ -54,7 +54,7 @@ theorem continuous_revInv (n : ℕ) : Continuous fun x : Fin n → G => revInv x
 variable (A : Rep.{u} k G) [IsDiscreteRep A]
 
 /- English proof (translation)
-The claim follows from `(isLocallyConstant_ρ_apply A ((continuous_apply (Fin.last n)).comp (continuous_partialProd n)) (hf.comp_continuous (continuous_revInv n))).comp ((-1 : k) ^ triangle n • ·)`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_revCochain {n : ℕ} {f : (Fin n → G) → A} (hf : IsLocallyConstant f) :
     IsLocallyConstant (revCochain n f) :=
@@ -85,7 +85,7 @@ variable {A}
 omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep A] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[revCochain_apply, triangle_zero, pow_zero, one_smul, show Fin.last 0 = 0 from rfl, Fin.partialProd_zero, map_one, Module.End.one_apply]`. Conclude with `congrArg f (Subsingleton.elim _ _)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem revCochain_zero (f : (Fin 0 → G) → A) : revCochain 0 f = f := by
   funext x
@@ -94,11 +94,11 @@ theorem revCochain_zero (f : (Fin 0 → G) → A) : revCochain 0 f = f := by
   exact congrArg f (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Use `HomologicalComplex.hom_ext _ _ fun n => ModuleCat.hom_ext (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `h`. Express the relevant statement in the definitionally equal form `f.hom (revCochain (A := A) n (cochainOf A x) (⇑φ ∘ h)) = revCochain (A := B) n (fun h' => f.hom (cochainOf A x (⇑φ ∘ h'))) h`. Rewrite using `[revCochain_apply, revCochain_apply, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `e1 : Fin.partialProd (⇑φ ∘ h) (Fin.last n) = φ (Fin.partialProd h (Fin.last n))` using `partialProd_comp_monoidHom φ h (Fin.last n)`. Establish `e2 : revInv (⇑φ ∘ h) = ⇑φ ∘ revInv h`. Use function extensionality and compare the values at `i`. Simplify using `[revInv_apply]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2]`. Conclude with `Rep.hom_comm_apply f _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem revLC_comp_cochainsMapAlong {H : Type u} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     (φ : H →* G) (hφ : Continuous φ) {B : Rep.{u} k H} [IsDiscreteRep B] (f : Rep.res φ A ⟶ B) :
@@ -125,7 +125,7 @@ section Homotopy
 variable {k G : Type u} [CommRing k] [Group G] {A : Rep.{u} k G}
 
 /- English proof (translation)
-Establish `h : ∀ x : Fin 0 → G, f x = f Fin.elim0` using `fun x => by rw [Subsingleton.elim x Fin.elim0]`. Simplify using `[inhomogeneousCochains.d_hom_apply, h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem revD_zero_apply (f : (Fin 0 → G) → A) (g : G) :
     (inhomogeneousCochains.d A 0).hom f ![g] = A.ρ g (f Fin.elim0) - f Fin.elim0 := by
@@ -134,13 +134,13 @@ theorem revD_zero_apply (f : (Fin 0 → G) → A) (g : G) :
   abel
 
 /- English proof (translation)
-Establish `e1 : (fun i : Fin 1 => (![g, h] : Fin 2 → G) i.succ) = ![h]`. Use function extensionality and compare the values at `i`. Rewrite using `[Fin.fin_one_eq_zero i]`. Both sides reduce to the same expression. Establish `e2 : Fin.contractNth 0 (· * ·) (![g, h] : Fin 2 → G) = ![g * h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Fin.fin_one_eq_zero i]`. Simplify using `[Fin.contractNth]`. Establish `e3 : Fin.contractNth 1 (· * ·) (![g, h] : Fin 2 → G) = ![g]`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Fin.fin_one_eq_zero i]`. Simplify using `[Fin.contractNth]`. Simplify using `only [inhomogeneousCochains.d_hom_apply]`. Simplify using `only [e1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, e3]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem revD_one_apply (w : (Fin 1 → G) → A) (g h : G) :
     (inhomogeneousCochains.d A 1).hom w ![g, h] = A.ρ g (w ![h]) - w ![g * h] + w ![g] := by
@@ -157,15 +157,15 @@ theorem revD_one_apply (w : (Fin 1 → G) → A) (g h : G) :
   abel
 
 /- English proof (translation)
-Rewrite using `[inhomogeneousCochains.d_hom_apply, Fin.sum_univ_three]`. Establish `h0 : Fin.contractNth (0 : Fin 3) (· * ·) (![a, b, c] : Fin 3 → G) = ![a * b, c]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Rewrite using `[Fin.contractNth_apply_of_eq _ _ _ _ (by simp)]; rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.contractNth_apply_of_gt _ _ _ _ (by simp)]; rfl`. Establish `h1 : Fin.contractNth (1 : Fin 3) (· * ·) (![a, b, c] : Fin 3 → G) = ![a, b * c]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Rewrite using `[Fin.contractNth_apply_of_lt _ _ _ _ (by simp)]; rfl`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fin.contractNth_apply_of_eq _ _ _ _ (by simp)]; rfl`. Establish `h2 : Fin.contractNth (2 : Fin 3) (· * ·) (![a, b, c] : Fin 3 → G) = ![a, b]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Rewrite using `[Fin.contractNth_apply_of_lt _ _ _ _ (by simp)]; rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Fin.contractNth_apply_of_lt _ _ _ _ (by simp)]; rfl`. Establish `h3 : (fun i : Fin 2 => (![a, b, c] : Fin 3 → G) i.succ) = ![b, c]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[h0, h1, h2, h3]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.val_zero, Fin.val_one, Fin.val_two, zero_add, pow_one, neg_smul, one_smul, Nat.reduceAdd, even_two, Even.neg_pow, one_pow]`. Establish `: ((-1 : k) ^ 3) = -1` using `by norm_num`. Rewrite using `[this, neg_smul, one_smul]`. Simplify using `only [Matrix.cons_val_zero]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem revD_two_apply (f : (Fin 2 → G) → A) (a b c : G) :
     (inhomogeneousCochains.d A 2).hom f ![a, b, c] =
@@ -198,9 +198,9 @@ theorem revD_two_apply (f : (Fin 2 → G) → A) (a b c : G) :
   abel
 
 /- English proof (translation)
-Rewrite using `[revCochain_apply]`. Establish `e1 : Fin.partialProd (![g] : Fin 1 → G) (Fin.last 1) = g`. Rewrite using `[show (Fin.last 1 : Fin 2) = (0 : Fin 1).succ from rfl, Fin.partialProd_succ, Fin.castSucc_zero, Fin.partialProd_zero, one_mul]`. Both sides reduce to the same expression. Establish `e2 : revInv (![g] : Fin 1 → G) = ![g⁻¹]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Fin.fin_one_eq_zero i]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, show GroundTheory.GroupCoh.triangle 1 = 1 from rfl, pow_one, neg_one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem revCochain_one_apply (f : (Fin 1 → G) → A) (g : G) :
     revCochain 1 f ![g] = -A.ρ g (f ![g⁻¹]) := by
@@ -216,9 +216,9 @@ theorem revCochain_one_apply (f : (Fin 1 → G) → A) (g : G) :
   rw [e1, e2, show GroundTheory.GroupCoh.triangle 1 = 1 from rfl, pow_one, neg_one_smul]
 
 /- English proof (translation)
-Rewrite using `[revCochain_apply]`. Establish `e1 : Fin.partialProd (![a, b] : Fin 2 → G) (Fin.last 2) = a * b`. Rewrite using `[show (Fin.last 2 : Fin 3) = (1 : Fin 2).succ from rfl, Fin.partialProd_succ, show ((1 : Fin 2).castSucc : Fin 3) = (0 : Fin 2).succ from rfl, Fin.partialProd_succ, Fin.castSucc_zero, Fin.partialProd_zero, one_mul]`. Both sides reduce to the same expression. Establish `e2 : revInv (![a, b] : Fin 2 → G) = ![b⁻¹, a⁻¹]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[e1, e2, show GroundTheory.GroupCoh.triangle 2 = 3 from rfl]`. Establish `: ((-1 : k) ^ 3) = -1` using `by norm_num`. Rewrite using `[this, neg_one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem revCochain_two_apply (x : (Fin 2 → G) → A) (a b : G) :
     revCochain 2 x ![a, b] = -A.ρ (a * b) (x ![b⁻¹, a⁻¹]) := by
@@ -247,7 +247,7 @@ def revHtpyTwo (x : (Fin 2 → G) → A) : (Fin 1 → G) → A :=
 
 omit [Group G] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Fin.fin_one_eq_zero i]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fin_one_eq_vec (g : Fin 1 → G) : g = ![g 0] := by
   funext i
@@ -256,16 +256,16 @@ theorem fin_one_eq_vec (g : Fin 1 → G) : g = ![g 0] := by
 
 omit [Group G] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fin_two_eq_vec (g : Fin 2 → G) : g = ![g 0, g 1] := by
   funext i
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Rewrite using `[fin_one_eq_vec g]`. Simplify using `only [Pi.sub_apply, Pi.add_apply]`. Rewrite using `[revCochain_one_apply, revD_zero_apply]`. Simplify using `only [revHtpyOne, revHtpyTwo, Matrix.cons_val_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[revD_one_apply, revD_one_apply, mul_inv_cancel, one_mul]`. Simplify using `only [map_add, map_sub, map_one, Module.End.one_apply]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem revCochain_one_sub (f : (Fin 1 → G) → A) :
     revCochain 1 f - f = (inhomogeneousCochains.d A 0).hom (revHtpyOne A f) +
@@ -280,15 +280,15 @@ theorem revCochain_one_sub (f : (Fin 1 → G) → A) :
   abel
 
 /- English proof (translation)
-Establish `C : ∀ a b c : G, A.ρ a (x ![b, c]) - x ![a * b, c] + x ![a, b * c] - x ![a, b] = 0` using `fun a b c => (revD_two_apply x a b c).symm.trans (congrFun hx ![a, b, c])`. Use function extensionality and compare the values at `v`. Rewrite using `[fin_two_eq_vec v]`. Simplify using `only [Pi.sub_apply]`. Rewrite using `[revCochain_two_apply, revD_one_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [revHtpyTwo, Matrix.cons_val_zero]`. Use `set a := v 0`. Use `set b := v 1`. Establish `C1 : x ![a * b, b⁻¹ * a⁻¹] = A.ρ a (x ![b, b⁻¹ * a⁻¹]) + x ![a, a⁻¹] - x ![a, b]`. Establish `h` using `C a b (b⁻¹ * a⁻¹)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h` using `[mul_inv_cancel_left]`. Combine the equalities or inequalities in the displayed calculation. Establish `C2 : x ![b, b⁻¹ * a⁻¹] = x ![1, a⁻¹] - A.ρ b (x ![b⁻¹, a⁻¹]) + x ![b, b⁻¹]`. Establish `h` using `C b b⁻¹ a⁻¹`. Rewrite `h` using `[mul_inv_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `C3 : x ![1, a⁻¹] = x ![1, 1]`. Establish `h` using `C 1 1 a⁻¹`. Rewrite `h` using `[one_mul, one_mul, map_one, Module.End.one_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_inv_rev, C1, C2, C3]`. Simplify using `only [map_add, map_sub, map_neg, map_mul, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem revCochain_two_sub (x : (Fin 2 → G) → A) (hx : (inhomogeneousCochains.d A 2).hom x = 0) :
     revCochain 2 x - x = (inhomogeneousCochains.d A 1).hom (revHtpyTwo A x) := by
@@ -332,7 +332,7 @@ section Identity
 variable {k : Type u} [CommRing k]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `homologyπ_hom_surjective P (m + 1) y`. Rewrite using `[homologyMap_homologyπ_apply]`. Take `⟨c, hc⟩` from `h z`. Conclude with `homologyπ_eq_of_iCycles_sub_eq_d P _ _ c (by rw [iCycles_cyclesMap_apply]; exact hc)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem homologyMap_hom_apply_eq_self {P : CochainComplex (ModuleCat.{u} k) ℕ} (F : P ⟶ P) (m : ℕ)
     (h : ∀ z : P.cycles (m + 1), ∃ c : P.X m,
@@ -344,7 +344,7 @@ theorem homologyMap_hom_apply_eq_self {P : CochainComplex (ModuleCat.{u} k) ℕ}
   exact homologyπ_eq_of_iCycles_sub_eq_d P _ _ c (by rw [iCycles_cyclesMap_apply]; exact hc)
 
 /- English proof (translation)
-The claim follows from `(hom_apply_hom_apply_of_comp_eq (P.iCycles_d n j) z).trans rfl`.
+A detailed English derivation is pending.
 -/
 theorem d_iCycles_hom_apply (P : CochainComplex (ModuleCat.{u} k) ℕ) (n j : ℕ) (z : P.cycles n) :
     (P.d n j).hom ((P.iCycles n).hom z) = 0 :=
@@ -359,13 +359,13 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
 
 omit [IsTopologicalGroup G] [IsDiscreteRep A] in
 /- English proof (translation)
-The claim follows from `IsLocallyConstant.const _`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_revHtpyOne (f : (Fin 1 → G) → A) : IsLocallyConstant (revHtpyOne A f) :=
   IsLocallyConstant.const _
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Conclude with `continuous_apply 0`. Conclude with `(continuous_apply 0).inv`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_vec_inv : Continuous fun g : Fin 1 → G => (![g 0, (g 0)⁻¹] : Fin 2 → G) := by
   refine continuous_pi fun i => ?_
@@ -375,7 +375,7 @@ theorem continuous_vec_inv : Continuous fun g : Fin 1 → G => (![g 0, (g 0)⁻�
 
 omit [IsTopologicalGroup G] in
 /- English proof (translation)
-Establish `h1 : IsLocallyConstant fun g : Fin 1 → G => x ![g 0, (g 0)⁻¹]` using `hx.comp_continuous continuous_vec_inv`. Establish `h2 : IsLocallyConstant fun g : Fin 1 → G => A.ρ (g 0) (x ![1, 1])` using `isLocallyConstant_ρ_apply A (continuous_apply 0) (IsLocallyConstant.const _)`. Conclude with `(h1.comp Neg.neg).comp₂ h2 (· - ·)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_revHtpyTwo [IsTopologicalGroup G] {x : (Fin 2 → G) → A} (hx : IsLocallyConstant x) :
     IsLocallyConstant (revHtpyTwo A x) := by
@@ -400,16 +400,16 @@ noncomputable def revHtpyTwoLC (x : (cochainsComplex A).X 2) : (cochainsComplex 
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[revHtpyTwo]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem revHtpyTwo_zero : revHtpyTwo A (0 : (Fin 2 → G) → A) = 0 := by
   funext g
   simp [revHtpyTwo]
 
 /- English proof (translation)
-Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[cochainOf_add, cochainOf_sub', cochainOf_revLC, revCochain_one_sub]`. Establish `e1` using `cochainOf_d (A := A) (revHtpyOneLC x)`. Establish `e2` using `cochainOf_d (A := A) x`. Use `congrArg₂ (· + ·) e1.symm ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `revHtpyTwo A ((inhomogeneousCochains.d A 1).hom (cochainOf A x)) = revHtpyTwo A (cochainOf A (((cochainsComplex A).d 1 2).hom x))`. Rewrite using `[← e2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem revLC_one_sub (x : (cochainsComplex A).X 1) :
     ((revLC A).f 1).hom x - x = ((cochainsComplex A).d 0 1).hom (revHtpyOneLC x) +
@@ -424,7 +424,7 @@ theorem revLC_one_sub (x : (cochainsComplex A).X 1) :
   rw [← e2]
 
 /- English proof (translation)
-Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[cochainOf_sub', cochainOf_revLC, cochainOf_d]`. Use `revCochain_two_sub (cochainOf A x) ?_` and prove the remaining obligations. Rewrite using `[← cochainOf_d, hx]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem revLC_two_sub (x : (cochainsComplex A).X 2) (hx : ((cochainsComplex A).d 2 3).hom x = 0) :
     ((revLC A).f 2).hom x - x = ((cochainsComplex A).d 1 2).hom (revHtpyTwoLC x) := by
@@ -435,13 +435,13 @@ theorem revLC_two_sub (x : (cochainsComplex A).X 2) (hx : ((cochainsComplex A).d
   rfl
 
 /- English proof (translation)
-The claim follows from `cochainOf_injective revHtpyTwo_zero`.
+A detailed English derivation is pending.
 -/
 theorem revHtpyTwoLC_zero : revHtpyTwoLC (0 : (cochainsComplex A).X 2) = 0 :=
   cochainOf_injective revHtpyTwo_zero
 
 /- English proof (translation)
-The claim follows from `homologyMap_hom_apply_eq_self (revLC A) 0 (fun z => ⟨revHtpyOneLC (((cochainsComplex A).iCycles 1).hom z), by rw [revLC_one_sub, d_iCycles_hom_apply, revHtpyTwoLC_zero, add_zero]⟩) y`.
+A detailed English derivation is pending.
 -/
 theorem homologyMap_revLC_one (y : cohomology A 1) :
     (HomologicalComplex.homologyMap (revLC A) 1).hom y = y :=
@@ -449,7 +449,7 @@ theorem homologyMap_revLC_one (y : cohomology A 1) :
     rw [revLC_one_sub, d_iCycles_hom_apply, revHtpyTwoLC_zero, add_zero]⟩) y
 
 /- English proof (translation)
-The claim follows from `homologyMap_hom_apply_eq_self (revLC A) 1 (fun z => ⟨revHtpyTwoLC (((cochainsComplex A).iCycles 2).hom z), revLC_two_sub _ (d_iCycles_hom_apply _ 2 3 z)⟩) y`.
+A detailed English derivation is pending.
 -/
 theorem homologyMap_revLC_two (y : cohomology A 2) :
     (HomologicalComplex.homologyMap (revLC A) 2).hom y = y :=
@@ -465,9 +465,9 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   (ψ : H →* G) (hψ : Continuous ψ) {B : Rep.{u} k H} [IsDiscreteRep B] (f : Rep.res ψ A ⟶ B)
 
 /- English proof (translation)
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `f.hom (revHtpyTwo A (cochainOf A x) (⇑ψ ∘ g)) = revHtpyTwo B (fun h => f.hom (cochainOf A x (⇑ψ ∘ h))) g`. Simplify using `only [revHtpyTwo, Function.comp_apply, map_sub, map_neg]`. Establish `e1 : (⇑ψ ∘ ![g 0, (g 0)⁻¹] : Fin 2 → G) = ![ψ (g 0), (ψ (g 0))⁻¹]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `funext i; fin_cases i <;> simp`. Establish `e2 : (⇑ψ ∘ ![(1 : H), 1] : Fin 2 → G) = ![1, 1]`. Apply the tactic sequence `funext i; fin_cases i <;> simp`. Rewrite using `[e1, e2, ← Rep.hom_comm_apply f (g 0)]`. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cochainsMapAlong_revHtpyTwoLC (x : (cochainsComplex A).X 2) :
     ((cochainsMapAlong ψ hψ f).f 1).hom (revHtpyTwoLC x) =
@@ -494,7 +494,7 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   (Aᵥ : ∀ v, Rep.{u} k (H v)) [∀ v, IsDiscreteRep (Aᵥ v)] (a : ∀ v, Rep.res (φ v).toMonoidHom A ⟶ Aᵥ v)
 
 /- English proof (translation)
-Use `HomologicalComplex.hom_ext _ _ fun n => ModuleCat.hom_ext (LinearMap.ext fun x => funext fun v => ?_)` and prove the remaining obligations. Conclude with `(congrArg (fun F => (F.f n).hom x) (revLC_comp_cochainsMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (a v))).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem localRes_comp_piMap_revLC :
     localRes φ A Aᵥ a ≫ piMap (fun v => revLC (Aᵥ v)) = revLC A ≫ localRes φ A Aᵥ a := by
@@ -506,9 +506,9 @@ noncomputable def revCone : compactCochains φ A Aᵥ a ⟶ compactCochains φ A
   mappingCoconeNat.map (revLC A) (piMap fun v => revLC (Aᵥ v)) (localRes_comp_piMap_revLC φ A Aᵥ a)
 
 /- English proof (translation)
-Establish `key : ∀ x : (piComplex fun v => cochainsComplex (Aᵥ v)).X 2, ((piComplex fun v => cochainsComplex (Aᵥ v)).d 2 3).hom x = 0 → (((piMap fun v => revLC (Aᵥ v)).f 2).hom x - x = ((piComplex fun v => cochainsComplex (Aᵥ v)).d 1 2).hom (fun v => revHtpyTwoLC (x v)))`. Introduce `x hx`. Use function extensionality and compare the values at `v`. Establish `hz` using `congrFun hx v`. Rewrite `hz` using `[piComplex_d_hom_apply']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(revLC_two_sub (x v) hz).trans (piComplex_d_hom_apply' (fun v => cochainsComplex (Aᵥ v)) 1 2 (fun v => revHtpyTwoLC (x v)) v).symm`. Conclude with `homologyMap_hom_apply_eq_self _ 1 (fun z => ⟨_, key _ (d_iCycles_hom_apply (piComplex fun v => cochainsComplex (Aᵥ v)) 2 3 z)⟩) y`.
+A detailed English derivation is pending.
 -/
 theorem homologyMap_piMap_revLC_two (y : (piComplex fun v => cochainsComplex (Aᵥ v)).homology 2) :
     (HomologicalComplex.homologyMap (piMap fun v => revLC (Aᵥ v)) 2).hom y = y := by
@@ -526,7 +526,7 @@ theorem homologyMap_piMap_revLC_two (y : (piComplex fun v => cochainsComplex (A�
     (d_iCycles_hom_apply (piComplex fun v => cochainsComplex (Aᵥ v)) 2 3 z)⟩) y
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun F => F.hom ((localCohomologyIso Aᵥ 2).inv.hom ξ)) (mappingCoconeNat.homologyδ_naturality (revLC A) (piMap fun v => revLC (Aᵥ v)) (localRes_comp_piMap_revLC φ A Aᵥ a) 2)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at h`. Rewrite `h` using `[homologyMap_piMap_revLC_two]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homologyMap_revCone_localToCompact (ξ : ∀ v, cohomology (Aᵥ v) 2) :
     (HomologicalComplex.homologyMap (revCone φ A Aᵥ a) 3).hom ((localToCompact φ A Aᵥ a 2).hom ξ) =
@@ -564,14 +564,14 @@ theorem coconeMkSucc_smul {n : ℕ} (c : k) (x : K.X (n + 1)) (y : L.X n) :
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨congrArg Prod.fst h, congrArg Prod.snd h⟩, fun h => by rw [h.1, h.2]⟩`.
+Supply the required witnesses or components.
 -/
 theorem coconeMkSucc_eq_iff {n : ℕ} (x x' : K.X (n + 1)) (y y' : L.X n) :
     coconeMkSucc f x y = coconeMkSucc f x' y' ↔ x = x' ∧ y = y' :=
   ⟨fun h => ⟨congrArg Prod.fst h, congrArg Prod.snd h⟩, fun h => by rw [h.1, h.2]⟩
 
 /- English proof (translation)
-Rewrite using `[mappingCoconeNat_d]`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(f.f (n + 1)).hom x + -(L.d n (n + 1)).hom y = (f.f (n + 1)).hom x - (L.d n (n + 1)).hom y`. Conclude with `(sub_eq_add_neg _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem d_coconeMkSucc {n : ℕ} (x : K.X (n + 1)) (y : L.X n) :
     ((mappingCoconeNat f).d (n + 1) (n + 1 + 1)).hom (coconeMkSucc f x y) =
@@ -582,7 +582,7 @@ theorem d_coconeMkSucc {n : ℕ} (x : K.X (n + 1)) (y : L.X n) :
   exact (sub_eq_add_neg _ _).symm
 
 /- English proof (translation)
-Rewrite using `[mappingCoconeNat_d]`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(f.f 0).hom x + 0 = (f.f 0).hom x`. Conclude with `add_zero _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem d_coconeMkZero (x : K.X 0) :
     ((mappingCoconeNat f).d 0 1).hom (coconeMkZero f x) =
@@ -641,7 +641,7 @@ theorem compactMkSucc_sub {n : ℕ} (x x' : (cochainsComplex A).X (n + 1))
   rfl
 
 /- English proof (translation)
-The claim follows from `coconeMkSucc_eq_iff (localRes φ A Aᵥ a) x x' y y'`.
+A detailed English derivation is pending.
 -/
 theorem compactMkSucc_eq_iff {n : ℕ} (x x' : (cochainsComplex A).X (n + 1))
     (y y' : (piComplex fun v => cochainsComplex (Aᵥ v)).X n) :
@@ -649,7 +649,7 @@ theorem compactMkSucc_eq_iff {n : ℕ} (x x' : (cochainsComplex A).X (n + 1))
   coconeMkSucc_eq_iff (localRes φ A Aᵥ a) x x' y y'
 
 /- English proof (translation)
-The claim follows from `d_coconeMkSucc (localRes φ A Aᵥ a) x y`.
+A detailed English derivation is pending.
 -/
 theorem d_compactMkSucc {n : ℕ} (x : (cochainsComplex A).X (n + 1))
     (y : (piComplex fun v => cochainsComplex (Aᵥ v)).X n) :
@@ -659,7 +659,7 @@ theorem d_compactMkSucc {n : ℕ} (x : (cochainsComplex A).X (n + 1))
   d_coconeMkSucc (localRes φ A Aᵥ a) x y
 
 /- English proof (translation)
-The claim follows from `d_coconeMkZero (localRes φ A Aᵥ a) x`.
+A detailed English derivation is pending.
 -/
 theorem d_compactMkZero (x : (cochainsComplex A).X 0) :
     ((compactCochains φ A Aᵥ a).d 0 1).hom (compactMkZero φ A Aᵥ a x) =
@@ -676,7 +676,7 @@ theorem revCone_f_compactMkSucc {n : ℕ} (x : (cochainsComplex A).X (n + 1))
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(a v).hom (cochainOf A x (⇑(φ v).toMonoidHom ∘ ![1])) = _`. Use `congr 2`. Use function extensionality and compare the values at `i`. Rewrite using `[Fin.fin_one_eq_zero i]`. Conclude with `map_one (φ v)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cochainOf_localRes_one_apply (x : (cochainsComplex A).X 1) (v : ι) :
     cochainOf (Aᵥ v) (((localRes φ A Aᵥ a).f 1).hom x v) ![1] = (a v).hom (cochainOf A x ![1]) := by
@@ -687,7 +687,7 @@ theorem cochainOf_localRes_one_apply (x : (cochainsComplex A).X 1) (v : ι) :
   exact map_one (φ v)
 
 /- English proof (translation)
-Rewrite using `[cochainOf_d, revD_zero_apply, map_one, Module.End.one_apply, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cochainOf_d_zero_one_apply {K : Type u} [Group K] [TopologicalSpace K] [IsTopologicalGroup K]
     {B : Rep.{u} k K} [IsDiscreteRep B] (y : (cochainsComplex B).X 0) :
@@ -695,11 +695,11 @@ theorem cochainOf_d_zero_one_apply {K : Type u} [Group K] [TopologicalSpace K] [
   rw [cochainOf_d, revD_zero_apply, map_one, Module.End.one_apply, sub_self]
 
 /- English proof (translation)
-Rewrite using `[revCone_f_compactMkSucc, compactMkSucc_sub, d_compactMkZero, compactMkSucc_eq_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[revLC_one_sub, hx, revHtpyTwoLC_zero, add_zero]`. Use function extensionality and compare the values at `v`. Apply `cochainOf_injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `t`. Establish `hv` using `congrArg (fun w => cochainOf (Aᵥ v) (w v) ![1]) hy`. Express the relevant statement in the definitionally equal form `cochainOf (Aᵥ v) (((localRes φ A Aᵥ a).f 1).hom x v) ![1] - cochainOf (Aᵥ v) (((piComplex fun v => cochainsComplex (Aᵥ v)).d 0 1).hom y v) ![1] = 0 at hv`. Rewrite `hv` using `[cochainOf_localRes_one_apply, piComplex_d_hom_apply', cochainOf_d_zero_one_apply, sub_zero]`. Express the relevant statement in the definitionally equal form `cochainOf (Aᵥ v) (((revLC (Aᵥ v)).f 0).hom (y v) - y v) t = (a v).hom (cochainOf A x ![1])`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hv, cochainOf_sub', cochainOf_revLC, revCochain_zero, sub_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem revCone_one_sub (x : (cochainsComplex A).X (0 + 1))
     (y : (piComplex fun v => cochainsComplex (Aᵥ v)).X 0)
@@ -745,7 +745,7 @@ theorem compactMkSucc_zero {n : ℕ} :
   rfl
 
 /- English proof (translation)
-Establish `e` using `(d_compactMkSucc φ A Aᵥ a (coconeFst (localRes φ A Aᵥ a) p) (coconeSndSucc (localRes φ A Aᵥ a) p)).symm.trans (hp.trans (compactMkSucc_zero φ A Aᵥ a).symm)`. Conclude with `(compactMkSucc_eq_iff φ A Aᵥ a _ _ _ _).1 e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cocycle_components {n : ℕ} (p : (compactCochains φ A Aᵥ a).X (n + 1))
     (hp : ((compactCochains φ A Aᵥ a).d (n + 1) (n + 1 + 1)).hom p = 0) :
@@ -757,7 +757,7 @@ theorem cocycle_components {n : ℕ} (p : (compactCochains φ A Aᵥ a).X (n + 1
   exact (compactMkSucc_eq_iff φ A Aᵥ a _ _ _ _).1 e
 
 /- English proof (translation)
-The claim follows from `homologyMap_hom_apply_eq_self (revCone φ A Aᵥ a) 0 (fun z => by obtain ⟨hx, hy⟩ := cocycle_components φ A Aᵥ a _ (d_iCycles_hom_apply _ (0 + 1) (0 + 1 + 1) z) exact ⟨_, revCone_one_sub φ A Aᵥ a _ _ hx hy⟩) y`.
+A detailed English derivation is pending.
 -/
 theorem homologyMap_revCone_one (y : compactCohomology φ A Aᵥ a 1) :
     (HomologicalComplex.homologyMap (revCone φ A Aᵥ a) 1).hom y = y :=
@@ -766,9 +766,9 @@ theorem homologyMap_revCone_one (y : compactCohomology φ A Aᵥ a 1) :
     exact ⟨_, revCone_one_sub φ A Aᵥ a _ _ hx hy⟩) y
 
 /- English proof (translation)
-Rewrite using `[revCone_f_compactMkSucc, compactMkSucc_sub, d_compactMkSucc, compactMkSucc_eq_iff]`. Use `⟨revLC_two_sub x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Establish `hv` using `congrFun hy v`. Express the relevant statement in the definitionally equal form `((localRes φ A Aᵥ a).f 2).hom x v - ((cochainsComplex (Aᵥ v)).d 1 2).hom (y v) = 0 at hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((revLC (Aᵥ v)).f 1).hom (y v) - y v = ((localRes φ A Aᵥ a).f 1).hom (revHtpyTwoLC x) v - ((cochainsComplex (Aᵥ v)).d 0 1).hom (-revHtpyOneLC (y v))`. Rewrite using `[revLC_one_sub, ← sub_eq_zero.1 hv, map_neg, sub_neg_eq_add, add_comm]`. Use `congr 1`. Conclude with `(cochainsMapAlong_revHtpyTwoLC (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (a v) x).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem revCone_two_sub (x : (cochainsComplex A).X (1 + 1))
     (y : (piComplex fun v => cochainsComplex (Aᵥ v)).X 1)
@@ -792,7 +792,7 @@ theorem revCone_two_sub (x : (cochainsComplex A).X (1 + 1))
   exact (cochainsMapAlong_revHtpyTwoLC (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (a v) x).symm
 
 /- English proof (translation)
-The claim follows from `homologyMap_hom_apply_eq_self (revCone φ A Aᵥ a) 1 (fun z => by obtain ⟨hx, hy⟩ := cocycle_components φ A Aᵥ a _ (d_iCycles_hom_apply _ (1 + 1) (1 + 1 + 1) z) exact ⟨_, revCone_two_sub φ A Aᵥ a _ _ hx hy⟩) y`.
+A detailed English derivation is pending.
 -/
 theorem homologyMap_revCone_two (y : compactCohomology φ A Aᵥ a 2) :
     (HomologicalComplex.homologyMap (revCone φ A Aᵥ a) 2).hom y = y :=
@@ -801,7 +801,7 @@ theorem homologyMap_revCone_two (y : compactCohomology φ A Aᵥ a 2) :
     exact ⟨_, revCone_two_sub φ A Aᵥ a _ _ hx hy⟩) y
 
 /- English proof (translation)
-Take `⟨ξ, rfl⟩` from `hsurj y`. Conclude with `homologyMap_revCone_localToCompact φ A Aᵥ a ξ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem homologyMap_revCone_three (hsurj : Function.Surjective (localToCompact φ A Aᵥ a 2).hom)
     (y : compactCohomology φ A Aᵥ a 3) :
@@ -825,14 +825,14 @@ noncomputable abbrev resPairingAlong {H : Type u} [Group H] (ψ : H →* G) (μ 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRep C] in
 
 /- English proof (translation)
-Rewrite using `[revCochain_apply, revCochain_apply, map_smul, Rep.hom_comm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem revCochain_hom {X Y : Rep.{u} k G} (μ : X ⟶ Y) {n : ℕ} (F : (Fin n → G) → X) (σ : Fin n → G) :
     revCochain n (fun τ => μ.hom (F τ)) σ = μ.hom (revCochain n F σ) := by
   rw [revCochain_apply, revCochain_apply, map_smul, Rep.hom_comm_apply]
 
 /- English proof (translation)
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Rewrite using `[cochainOf_revLC, cochainOf_smul, cochainOf_cupPairingCochains, Pi.smul_apply, cochainOf_cupPairingCochains, cochainOf_revLC, cochainOf_revLC, revCochain_hom, revCochain_cupCochain h h', map_smul]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem revLC_cupPairingCochains (μ : A ⊗ B ⟶ C) {p q n : ℕ} (h : p + q = n) (h' : q + p = n)
     (x : (cochainsComplex A).X p) (z : (cochainsComplex B).X q) :
@@ -849,7 +849,7 @@ theorem revLC_cupPairingCochains (μ : A ⊗ B ⟶ C) {p q n : ℕ} (h : p + q =
 omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRep C] in
 
 /- English proof (translation)
-Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.toLinearMap_injective` to reduce the goal to its premises. Conclude with `TensorProduct.ext' fun b a => rfl`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem braiding_comp_resPairingAlong {H : Type u} [Group H] (ψ : H →* G) (μ : A ⊗ B ⟶ C) :
     (β_ (Rep.res ψ B) (Rep.res ψ A)).hom ≫ resPairingAlong ψ μ = resPairingAlong ψ ((β_ B A).hom ≫ μ) := by
@@ -891,7 +891,7 @@ noncomputable abbrev compactCupRightLeibnizRes (μ : B ⊗ A ⟶ C) :
     (fun v => resFunctor_map_comp_id (φ v).toMonoidHom μ)
 
 /- English proof (translation)
-The claim follows from `coconeMkSucc_smul _ c x y`.
+A detailed English derivation is pending.
 -/
 theorem compactMkSucc_smul {D : Rep.{u} k G} [IsDiscreteRep D] {n : ℕ} (c : k)
     (x : (cochainsComplex D).X (n + 1))
@@ -902,7 +902,7 @@ theorem compactMkSucc_smul {D : Rep.{u} k G} [IsDiscreteRep D] {n : ℕ} (c : k)
 
 omit [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRep C] in
 /- English proof (translation)
-Rewrite using `[Nat.succ_mul, pow_add, mul_assoc, ← mul_pow, neg_one_mul, neg_neg, one_pow, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem neg_one_pow_succ_mul_mul (r s : ℕ) :
     (-1 : k) ^ ((r + 1) * s) * (-1 : k) ^ s = (-1 : k) ^ (r * s) := by
@@ -911,11 +911,11 @@ theorem neg_one_pow_succ_mul_mul (r s : ℕ) :
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `rfl : m = r + s` from `by omega`. Establish `eL : (compactCupLeibnizRes φ μ).μ h (compactMkSucc φ A (fun v => Rep.res (φ v).toMonoidHom A) (fun _ => 𝟙 _) x y) z = compactMkSucc φ C (fun v => Rep.res (φ v).toMonoidHom C) (fun _ => 𝟙 _) (cupPairingCochains μ h x z) ((LeibnizPairing.pi fun v => cupLeibniz (resPairingAlong (φ v …`. Both sides reduce to the same expression. Establish `eR : (compactCupRightLeibnizRes φ ((β_ B A).hom ≫ μ)).μ h' (((revLC B).f s).hom z) (compactMkSucc φ A (fun v => Rep.res (φ v).toMonoidHom A) (fun _ => 𝟙 _) (((revLC A).f (r + 1)).hom x) (((piMap fun v => revLC (Rep.res (φ v).toMonoidHom A)).f r).hom y)) = compactMkSucc φ C (fun v …`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Rewrite using `[eL, revCone_f_compactMkSucc, revCone_f_compactMkSucc, eR, compactMkSucc_smul, compactMkSucc_eq_iff]`. Use `⟨revLC_cupPairingCochains μ h h' x z, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Establish `e` using `congrArg (fun F => (F.f s).hom z v) (localRes_comp_piMap_revLC φ B _ (fun _ => 𝟙 _))`. Express the relevant statement in the definitionally equal form `((revLC (Rep.res (φ v).toMonoidHom B)).f s).hom (((localRes φ B (fun v => Rep.res (φ v).toMonoidHom B) (fun _ => 𝟙 _)).f s).hom z v) = ((localRes φ B (fun v => Rep.res (φ v).toMonoidHom B) (fun _ => 𝟙 _)).f s).hom (((revLC B).f s).hom z) v at e`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `key` using `revLC_cupPairingCochains (resPairingAlong (φ v).toMonoidHom μ) (rfl : r + s = r + s) (Nat.add_comm s r) (y v) (((localRes φ B (fun v => Rep.res (φ v).toMonoidHom B) (fun _ => 𝟙 _)).f s).hom z v)`. Rewrite `key` using `[e, braiding_comp_resPairingAlong, ← neg_one_pow_succ_mul_mul r s, ← smul_smul]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem revCone_compactCup_succ (μ : A ⊗ B ⟶ C) {r s m : ℕ} (h : r + 1 + s = m + 1)
     (h' : s + (r + 1) = m + 1) (x : (cochainsComplex A).X (r + 1))
@@ -960,7 +960,7 @@ theorem revCone_compactCup_succ (μ : A ⊗ B ⟶ C) {r s m : ℕ} (h : r + 1 + 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `revLC_cupPairingCochains μ h h' x z`. Express the relevant statement in the definitionally equal form `(shiftNegOneMapF (piMap fun v => revLC (Rep.res (φ v).toMonoidHom C)) s).hom 0 = (-1 : k) ^ (0 * s) • ((-1 : k) ^ s • 0)`. Rewrite using `[map_zero, smul_zero, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem revCone_compactCup_zero (μ : A ⊗ B ⟶ C) {s : ℕ} (h : 0 + s = s) (h' : s + 0 = s)
     (x : (cochainsComplex A).X 0) (z : (cochainsComplex B).X s) :
@@ -987,9 +987,9 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   {A B C : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRep C]
 
 /- English proof (translation)
-Consider the cases of `r with`. Consider the case `zero`. Take `rfl : n = s` from `by omega`. Conclude with `revCone_compactCup_zero φ μ h h' (coconeFst _ p) z`. Consider the case `succ r`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨r + s, by omega⟩`. Conclude with `revCone_compactCup_succ φ μ h h' (coconeFst _ p) (coconeSndSucc _ p) z`.
+A detailed English derivation is pending.
 -/
 theorem revCone_compactCupLeibnizRes (μ : A ⊗ B ⟶ C) {r s n : ℕ} (h : r + s = n) (h' : s + r = n)
     (p : (compactCochains φ A (fun v => Rep.res (φ v).toMonoidHom A) (fun _ => 𝟙 _)).X r)
@@ -1007,7 +1007,7 @@ theorem revCone_compactCupLeibnizRes (μ : A ⊗ B ⟶ C) {r s n : ℕ} (h : r +
     exact revCone_compactCup_succ φ μ h h' (coconeFst _ p) (coconeSndSucc _ p) z
 
 /- English proof (translation)
-Establish `key` using `LeibnizPairing.homologyMap_homology_eq_smul (compactCupLeibnizRes φ μ) (compactCupRightLeibnizRes φ ((β_ B A).hom ≫ μ)) (revCone φ C (fun v => Rep.res (φ v).toMonoidHom C) (fun _ => 𝟙 _)) (revLC B) (revCone φ A (fun v => Rep.res (φ v).toMonoidHom A) (fun _ => 𝟙 _)) (fun r s => (- …`. Establish `key'` using `(homologyMap_revCone_three φ C (fun v => Rep.res (φ v).toMonoidHom C) (fun _ => 𝟙 _) hsurj ((compactCupLeibnizRes φ μ).homology h y x)).symm.trans key`. Take `⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ : (p = 1 ∧ q = 2) ∨ (p = 2 ∧ q = 1)` from `by omega`. Conclude with `key'.trans (congrArg₂ (fun a b => (-1 : k) ^ (1 * 2) • (compactCupRightLeibnizRes φ ((β_ B A).hom ≫ μ)).homology h' a b) (homologyMap_revLC_two x) (homologyMap_revCone_one φ A _ _ y))`. Conclude with `key'.trans (congrArg₂ (fun a b => (-1 : k) ^ (2 * 1) • (compactCupRightLeibnizRes φ ((β_ B A).hom ≫ μ)).homology h' a b) (homologyMap_revLC_one x) (homologyMap_revCone_two φ A _ _ y))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem compactCupRes_eq_neg_one_pow_smul_compactCupRightRes (μ : A ⊗ B ⟶ C)
     (hsurj : Function.Surjective

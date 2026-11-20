@@ -112,7 +112,7 @@ def CarrierOf (I : CarrierIn X u u') (Mo : ModelsFor (sOf I)) : Parts X u u' whe
   Ll' := Mo.Ll'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl, hr, hk, hg1, hg2, rfl, rfl, hf⟩`.
+Supply the required witnesses or components.
 -/
 theorem pins_carrierOf (I : CarrierIn X u u') (Mo : ModelsFor (sOf I))
     (hr : I.G.r = D.R.rS) (hk : I.G.k = D.R.k) (hg1 : I.G.g1 = D.host.g 0) (hg2 : I.G.g2 = D.host.g 1)
@@ -120,7 +120,7 @@ theorem pins_carrierOf (I : CarrierIn X u u') (Mo : ModelsFor (sOf I))
   ⟨rfl, rfl, rfl, rfl, rfl, hr, hk, hg1, hg2, rfl, rfl, hf⟩
 
 /- English proof (translation)
-Use `⟨hrest.1, fun v => ⟨?_, (hrest.2 v).1, (hrest.2 v).2.1, (hrest.2 v).2.2.1, (hrest.2 v).2.2.2.1, (hrest.2 v).2.2.2.2⟩⟩` and prove the remaining obligations. Conclude with `congrArg (fun t => Formalism.FourierDecayAlt.D.componentFamilySetting_ofSetting (I.T v) (I.fc v) I.χ t (I.ν' v) (I.m₀ v) (I.top v) ((I.G.g1 * I.G.g2 : ℕ) : ℝ) (Formalism.FourierDecayAlt.S6.rd D.host.E) 1) (hsg v)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem built_carrierOf (I : CarrierIn X u u') (Mo : ModelsFor (sOf I))
     (hsg : ∀ v, I.sg v = Formalism.FourierDecayAlt.M.sgn (Formalism.FourierDecayAlt.D.parOf (sOf I) v) ((sOf I).l + 1))

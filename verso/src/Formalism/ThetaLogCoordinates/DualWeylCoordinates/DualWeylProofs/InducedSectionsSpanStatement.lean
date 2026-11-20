@@ -9,15 +9,15 @@ namespace Formalism.InvariantFactorPaths.ColumnFamilies
 variable {n : ℕ} {R : Type} [CommRing R]
 
 /- English proof (translation)
-Take `⟨N, P, hNP⟩` from `IsLocalization.Away.surj (genMat R n).det f`. Establish `hk : ∀ a, 0 ≤ mu a + ((N + (Finset.univ.sup fun b => (-mu b).toNat) : ℕ) : ℤ)`. Introduce `a`. Establish `h1` using `Int.self_le_toNat (-mu a)`. Establish `h2 : (-mu a).toNat ≤ Finset.univ.sup fun b => (-mu b).toNat` using `Finset.le_sup (f := fun b => (-mu b).toNat) (Finset.mem_univ a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Use linear arithmetic over natural numbers and integers. Use `set M : ℕ := Finset.univ.sup fun b => (-mu b).toNat with hM`. Establish `hswap : rename Prod.swap (rename Prod.swap (P * (genMat R n).det ^ M)) = P * (genMat R n).det ^ M`. Rewrite using `[rename_rename, Prod.swap_swap_eq, rename_id_apply]`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmain : algebraMap _ (GLCoord R n) (rename Prod.swap (rename Prod.swap (P * (genMat R n).det ^ M))) = f * algebraMap _ (GLCoord R n) (genMat R n).det ^ (N + M)`. Rewrite using `[hswap, map_mul, map_pow, pow_add, ← mul_assoc, hNP]`. Establish `hunit : ((qhDet R n ^ ((N + M : ℕ) : ℤ) : (GLCoord R n)ˣ) : GLCoord R n) = algebraMap _ (GLCoord R n) (genMat R n).det ^ (N + M)`. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val, qhDet_val]`. Use `⟨N + M, rename Prod.swap (P * (genMat R n).det ^ M), hk, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmain, ← hunit, mul_comm f, ← mul_assoc, ← Units.val_mul, ← zpow_add, neg_add_cancel, zpow_zero, Units.val_one, one_mul]`. Establish `hmem : algebraMap _ (GLCoord R n) (rename Prod.swap (rename Prod.swap (P * (genMat R n).det ^ M))) ∈ inducedSections R (fun a => ((mu a + ((N + M : ℕ) : ℤ)).toNat : ℤ))`. Rewrite using `[hmain, mul_comm, ← hunit]`. Establish `h` using `qh_mul_mem (qh_det_zpow_mem (R := R) (n := n) ((N + M : ℕ) : ℤ)) hf`. Establish `e : (fun a => ((mu a + ((N + M : ℕ) : ℤ)).toNat : ℤ)) = (fun _ : Fin n => ((N + M : ℕ) : ℤ)) + mu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[Pi.add_apply, Int.toNat_of_nonneg (hk a), add_comm]`. Rewrite using `[e]`. Conclude with `h`. Conclude with `qh_mem_dualWeyl _ _ hmem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qh_reduce [IsDomain R] (mu : Fin n → ℤ) (f : GLCoord R n) (hf : f ∈ inducedSections R mu) :
     ∃ (k : ℕ) (Q : MvPolynomial (Fin n × Fin n) R), (∀ a, 0 ≤ mu a + k) ∧
@@ -56,7 +56,7 @@ lemma qh_reduce [IsDomain R] (mu : Fin n → ℤ) (f : GLCoord R n) (hf : f ∈ 
     exact qh_mem_dualWeyl _ _ hmem
 
 /- English proof (translation)
-Set `L : MvPolynomial (Fin n × Fin n) R →ₗ[R] GLCoord R n` to `(LinearMap.mulLeft R u).comp ((IsScalarTower.toAlgHom R (MvPolynomial (Fin n × Fin n) R) (GLCoord R n)).toLinearMap.comp (rename Prod.swap).toLinearMap)`. Establish `hle : Submodule.span R S ≤ T.comap L` using `Submodule.span_le.mpr (fun x hx => h x hx)`. Conclude with `hle hQ`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma qh_span_transfer (T : Submodule R (GLCoord R n)) (u : GLCoord R n)
     (S : Set (MvPolynomial (Fin n × Fin n) R))
@@ -70,11 +70,9 @@ lemma qh_span_transfer (T : Submodule R (GLCoord R n)) (u : GLCoord R n)
   exact hle hQ
 
 /- English proof (translation)
-Introduce `a b hab`. Take `⟨a, ha⟩` from `a`. Take `⟨b, hb⟩` from `b`. Simplify using `only [Fin.mk_le_mk] at hab`. Use `revert hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Proceed by induction.
 
-Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base => intro hb`. Conclude with `le_rfl`. Consider the case `succ b hab ih`. Introduce `hb`.
-
-Conclude with `(h ⟨b, by omega⟩ ⟨b + 1, hb⟩ rfl).trans (ih (by omega))`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem antitone_of_step_lemma {n : ℕ} (g : Fin n → ℤ) (h : ∀ l j : Fin n, (j : ℕ) = l + 1 → g j ≤ g l) :
     Antitone g := by
@@ -90,23 +88,21 @@ private theorem antitone_of_step_lemma {n : ℕ} (g : Fin n → ℤ) (h : ∀ l 
     exact (h ⟨b, by omega⟩ ⟨b + 1, hb⟩ rfl).trans (ih (by omega))
 
 /- English proof (translation)
-Introduce `n _ mu R _ _ _`. Prove the components needed by the constructor for the conclusion. Introduce `hmu`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, Q, hk, hfQ, hQ⟩` from `qh_reduce mu f hf`. Rewrite `hQ` using `[Formalism.GradedWeylDivisibility.standardMonomialSpanDomain R n n]`. Rewrite using `[SetLike.mem_coe, hfQ]`. Use `qh_span_transfer (Submodule.span R (Set.range fun I : TIdx mu => mapCoord R (brk mu I))) _ _ ?_ Q hQ` and prove the remaining obligations. Introduce and unpack `x ⟨K, sz, hsz, I, hsh, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `qh_bidet_mem hmu k (hk _) sz hsz I (fun t => by rw [hsh]; exact Int.toNat_of_nonneg (hk t))`. Conclude with `qh_span_le (by rintro _ ⟨I, rfl⟩; exact qh_brk_mem hmu I)`. Introduce `hmu`. Use extensionality with `f`. Simplify using `only [Set.mem_singleton_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hf`. Take `⟨k, Q, hk, hfQ, hQ⟩` from `qh_reduce mu f hf`. Assume the negation of the conclusion as `hf0`. Establish `hQ0 : Q ≠ 0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `rfl`. Apply `hf0` to reduce the goal to its premises. Rewrite using `[hfQ]`. Simplify using the standard rewrite rules. Apply `hmu` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hInt` using `Formalism.GradedWeylDivisibility.leadInterlaced R n n _ Q hQ hQ0`. Establish `hcol` using `Formalism.GradedWeylDivisibility.colSums R n n _ Q hQ _ (MonomialOrder.degree_mem_support (m := Formalism.GradedWeylDivisibility.colLex n n) hQ0)`. Use `set m := (Formalism.GradedWeylDivisibility.colLex n n).degree Q`. Apply `antitone_of_step_lemma mu` to reduce the goal to its premises. Introduce `l j hlj`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : Formalism.GradedWeylDivisibility.InterlacedAt 0 l j m` using `hInt l j hlj`. Establish `hI2` using `hI (lastIdx n)`. Establish `e1 : (∑ b : Fin n with b ≤ lastIdx n, m (b, j)) = ∑ b, m (b, j)`. Rewrite using `[Finset.filter_true_of_mem (fun b _ => qh_le_last b)]`. Establish `e2 : (∑ b : Fin n with b < lastIdx n, m (b, l)) ≤ ∑ b, m (b, l)` using `Finset.sum_le_sum_of_subset (Finset.filter_subset _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cj` using `hcol j`. Establish `cl` using `hcol l`. Establish `tj` using `Int.toNat_of_nonneg (hk j)`. Establish `tl` using `Int.toNat_of_nonneg (hk l)`. Use linear arithmetic over natural numbers and integers.
-
-Introduce and unpack `rfl`. Conclude with `qh_zero_mem mu`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem highest_weight_corollary_one : InducedSectionsSpanStatement := by
   intro n _ mu R _ _ _

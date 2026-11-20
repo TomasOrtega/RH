@@ -12,15 +12,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UCanon
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c φ k _ m e C hC`. Take `⟨h1, h2⟩` from `GlobalTheory.T.ringKrullDim_add_trdeg_completion_polynomial c.F hC.L.W (ChartRing k m e) hC.L.b hC.L.ft (Fin C.m ⊕ Fin hC.N) hC.ψ hC.compl hC.ψ_loc C.b hC.base`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Take `⟨a, t, ha, ht, hat⟩` from `hC.L.dim`. Take `⟨a', t', ha', ht', hat'⟩` from `h2 a t ha ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdimR : ringKrullDim (ChartRing k m e) = ((m + e : ℕ) : WithBot ℕ∞)`. Rewrite using `[GlobalTheory.FormalIsogeny.ringKrullDim_mvPowerSeries k (Fin m ⊕ Fin e), ringKrullDim_eq_zero_of_field]`. Simplify using `[Nat.card_sum]`. Establish `hma : a' = m + e`. Rewrite `ha'` using `[hdimR]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ha'.symm` after adjusting the coercions. Establish `hcard : Fintype.card (Fin C.m ⊕ Fin hC.N) = Module.finrank ℚ E / 2 * Module.finrank (𝓞 E) hC.L.D.X * Module.finrank (𝓞 E) hC.L.D.X`. Rewrite using `[← GlobalTheory.T.finrank_balancedSymmIntBilinForms_eq H hC.L.D.X, Module.finrank_eq_card_basis hC.ε]`. Establish `hr : Module.finrank (𝓞 E) C.P.D.toPre.X = Module.finrank (𝓞 E) hC.L.D.X` using `hC.e.finrank_eq`. Establish `hp` using `hC.hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `hC.hq`. Rewrite `hp`, `hq` using `[hr]`. Establish `key : a' + t' = Dw.dim`. Rewrite using `[hat', hat, hcard, Datum.dim, Datum.dim, ← hp, ← hq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht', ← hma]`. Conclude with `key` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem canon_residue_dim : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ {k : Type} [Field k] {m e : ℕ} (C : MonoFam Xo c φ (ChartRing k m e)), Canon C → ((residue (ChartRing k m e)).comp C.b).EssFiniteType ∧ (letI := ((residue (ChartRing k m e)).comp C.b).toAlgebra; ((m + e : ℕ) : Cardinal) + Algebra.trdeg c.F (ResidueField (ChartRing k m e)) = Dw.dim) := by
   intro E _ _ _ H Dw l Xo c φ k _ m e C hC

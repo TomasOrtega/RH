@@ -17,7 +17,7 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] [LinearOrder K] {ι : K 
   [∀ k, Fintype (ι k)] [∀ k, LinearOrder (ι k)]
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨m₁, h₁, m₂, h₂, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul p q hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hp m₁ h₁ k, hq m₂ h₂ k]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_mul {p q : MRingOver S ι} {a b : K → ℕ} (hp : IsMultiHomog p a)
     (hq : IsMultiHomog q b) : IsMultiHomog (p * q) (a + b) := by
@@ -27,11 +27,11 @@ theorem isMultiHomog_mul {p q : MRingOver S ι} {a b : K → ℕ} (hp : IsMultiH
   simp only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hp m₁ h₁ k, hq m₂ h₂ k]
 
 /- English proof (translation)
-Introduce `m hm l`. Rewrite using `[Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset hm)]`. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Simplify using `[Finsupp.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: ∀ j : ι l, (Finsupp.single (⟨k, i⟩ : Σ k, ι k) 1) ⟨l, j⟩ = 0`. Introduce `j`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Conclude with `hl (congrArg Sigma.fst h).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[this, hl]`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_X (k : K) (i : ι k) :
     IsMultiHomog (X ⟨k, i⟩ : MRingOver S ι) (fun l => if l = k then 1 else 0) := by
@@ -49,9 +49,9 @@ theorem isMultiHomog_X (k : K) (i : ι k) :
     simp [this, hl]
 
 /- English proof (translation)
-Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem f hf`. Take `⟨k, i, -, rfl⟩` from `hf`. Conclude with `⟨_, isMultiHomog_X k i⟩`. Consider the case `one => exact ⟨0, isMultiHomog_one_zero⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `mul f f' _ _ hf hf'`. Take `⟨a, ha⟩` from `hf`. Take `⟨b, hb⟩` from `hf'`. Conclude with `⟨a + b, isMultiHomog_mul ha hb⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cellMon_homog {I : ∀ k, Finset (ι k)} {u : MRingOver S ι} (hu : u ∈ KH.cellMon S I) :
     ∃ e : K → ℕ, IsMultiHomog u e := by
@@ -71,7 +71,7 @@ variable {M : Type*} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M]
   [IsScalarTower S (MRingOver S ι) M] {𝓜 : (K → ℤ) → Submodule S M}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨m, t, a, ht, hm, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mk_mem_locPart {T : Submonoid (MRingOver S ι)} {c : K → ℤ} (m : M) (t : T) (a : K → ℕ)
     (ht : IsMultiHomog (t : MRingOver S ι) a) (hm : m ∈ 𝓜 (c + fun k => (a k : ℤ))) :
@@ -79,13 +79,13 @@ theorem mk_mem_locPart {T : Submonoid (MRingOver S ι)} {c : K → ℤ} (m : M) 
   Submodule.subset_span ⟨m, t, a, ht, hm, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨0, 1, 0, isMultiHomog_one_zero, zero_mem _, (LocalizedModule.zero_mk 1).symm⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨m, t, a, ht, hm, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m', t', a', ht', hm', rfl⟩` from `hy`. Establish `e : ∀ a a' : K → ℕ, (c + fun k => ((a + a') k : ℤ)) = (c + fun k => (a k : ℤ)) + fun k => (a' k : ℤ)`. Introduce `a a'`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Nat.cast_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨t' • m + t • m', t * t', a + a', isMultiHomog_mul ht ht', add_mem ?_ ?_, LocalizedModule.mk_add_mk⟩` and prove the remaining obligations. Rewrite using `[Submonoid.smul_def, e]`. Conclude with `h𝓜.2 _ _ _ _ ht' hm`. Rewrite using `[Submonoid.smul_def, add_comm a a', e]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `h𝓜.2 _ _ _ _ ht hm'`. Consider the case `smul s x _ hx`. Take `⟨m, t, a, ht, hm, rfl⟩` from `hx`. Conclude with `⟨s • m, t, a, ht, Submodule.smul_mem _ s hm, LocalizedModule.smul'_mk s m t⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locPart_normal (h𝓜 : KH.IsMGraded S ι 𝓜) {T : Submonoid (MRingOver S ι)} {c : K → ℤ}
     {x : LocalizedModule T M} (hx : x ∈ KH.locPart ι 𝓜 T c) :
@@ -114,9 +114,9 @@ theorem locPart_normal (h𝓜 : KH.IsMGraded S ι 𝓜) {T : Submonoid (MRingOve
     exact ⟨s • m, t, a, ht, Submodule.smul_mem _ s hm, LocalizedModule.smul'_mk s m t⟩
 
 /- English proof (translation)
-Take `⟨m, t, b, ht, hm, rfl⟩` from `locPart_normal h𝓜 hx`. Rewrite using `[LocalizedModule.smul'_mk]`. Use `mk_mem_locPart _ t b ht ?_` and prove the remaining obligations. Establish `e : ((c + fun k => (a k : ℤ)) + fun k => (b k : ℤ)) = (c + fun k => (b k : ℤ)) + fun k => (a k : ℤ)`. Use function extensionality and compare the values at `k`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h𝓜.2 _ _ _ _ hp hm`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_locPart (h𝓜 : KH.IsMGraded S ι 𝓜) {T : Submonoid (MRingOver S ι)} {c : K → ℤ}
     {p : MRingOver S ι} {a : K → ℕ} (hp : IsMultiHomog p a) {x : LocalizedModule T M}
@@ -137,7 +137,7 @@ abbrev locMap {N : Type*} [AddCommGroup N] [Module (MRingOver S ι) N] (T : Subm
   IsLocalizedModule.map T (LocalizedModule.mkLinearMap T M) (LocalizedModule.mkLinearMap T N) f
 
 /- English proof (translation)
-Rewrite using `[IsLocalizedModule.mk_eq_mk', IsLocalizedModule.map_mk', ← IsLocalizedModule.mk_eq_mk']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locMap_mk {N : Type*} [AddCommGroup N] [Module (MRingOver S ι) N] {T : Submonoid (MRingOver S ι)}
     (f : M →ₗ[MRingOver S ι] N) (m : M) (t : T) :
@@ -145,17 +145,15 @@ theorem locMap_mk {N : Type*} [AddCommGroup N] [Module (MRingOver S ι) N] {T : 
   rw [IsLocalizedModule.mk_eq_mk', IsLocalizedModule.map_mk', ← IsLocalizedModule.mk_eq_mk']
 
 /- English proof (translation)
-Establish `key : ∃ y ∈ 𝓜' c, g m' - g y ∈ ⨆ (j) (_ : j ≠ c), 𝓜 j`. Establish `hx : m' ∈ ⨆ j, 𝓜' j`. Rewrite using `[h𝓜'.1.submodule_iSup_eq_top]`. Conclude with `Submodule.mem_top`. Use `Submodule.iSup_induction (motive := fun x => ∃ y ∈ 𝓜' c, g x - g y ∈ ⨆ (j) (_ : j ≠ c), 𝓜 j) 𝓜' hx ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j x hx`. Distinguish the cases in `hj : j = c`. Substitute `hj` using the available equality. Conclude with `⟨x, hx, by rw [sub_self]; exact zero_mem _⟩`. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, sub_zero]`. Conclude with `Submodule.mem_iSup_of_mem j (Submodule.mem_iSup_of_mem hj (hg j x hx))`. Conclude with `⟨0, zero_mem _, by rw [map_zero, sub_zero]; exact zero_mem _⟩`. Introduce `x₁ x₂ h₁ h₂`. Take `⟨y₁, hy₁, e₁⟩` from `h₁`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y₂, hy₂, e₂⟩` from `h₂`. Use `⟨y₁ + y₂, add_mem hy₁ hy₂, ?_⟩` and prove the remaining obligations. Establish `: g (x₁ + x₂) - g (y₁ + y₂) = (g x₁ - g y₁) + (g x₂ - g y₂)`. Simplify using `only [map_add]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `add_mem e₁ e₂`. Take `⟨y, hy, hd⟩` from `key`. Establish `hc : g m' - g y ∈ 𝓜 c` using `sub_mem hm (hg c y hy)`. Establish `h0 : g m' - g y = 0` using `Submodule.disjoint_def.mp (h𝓜.1.submodule_iSupIndep c) _ hc hd`.
-
-Rewrite `h0` using `[sub_eq_zero]`. Rewrite using `[hinj h0]`. Conclude with `hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_map_mem {M' : Type*} [AddCommGroup M'] [Module (MRingOver S ι) M'] [Module S M']
     [IsScalarTower S (MRingOver S ι) M'] {𝓜' : (K → ℤ) → Submodule S M'} (h𝓜' : KH.IsMGraded S ι 𝓜')
@@ -195,35 +193,33 @@ theorem mem_of_map_mem {M' : Type*} [AddCommGroup M'] [Module (MRingOver S ι) M
 end Loc
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ _ M' _ _ _ _ M _ _ _ _ M'' _ _ _ _ 𝓜' 𝓜 𝓜'' g h h𝓜' h𝓜 h𝓜'' hg hh hinj hsurj hex d hH1 hgen' hgen'' I x hx`. Take `⟨m₀, t₀, a₀, ht₀, hm₀, rfl⟩` from `locPart_normal h𝓜 hx`. Establish `hx'' : LocalizedModule.mk (h m₀) t₀ ∈ KH.locPart ι 𝓜'' (KH.cellMon S I.1) d` using `mk_mem_locPart _ _ a₀ ht₀ (hh _ _ hm₀)`. Take `⟨t₁, a₁, r, p, z'', ht₁T, ht₁, hp, hz'', e₁⟩` from `hgen'' I _ hx''`. Establish `hlift` using `fun j => (hSES S K ι M' M M'' 𝓜' 𝓜 𝓜'' g h h𝓜' h𝓜 h𝓜'' hg hh hinj hsurj hex d 0).2.2.2.2.1 hH1 (z'' j) (hz'' j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose z hz hzmap using hlift`. Establish `hzI : ∀ j, z j I ∈ KH.locPart ι 𝓜 (KH.cellMon S I.1) d` using `fun j => Submodule.mem_pi.mp (hz j).1 I (Set.mem_univ _)`. Establish `hzh : ∀ j, locMap (KH.cellMon S I.1) h (z j I) = z'' j I` using `fun j => congrFun (hzmap j) I`. Take `⟨y, hy_def⟩ : ∃ y, y = t₁ • LocalizedModule.mk m₀ t₀ - ∑ j, p j • z j I` from `⟨_, rfl⟩`. Establish `hLy : locMap (KH.cellMon S I.1) h y = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy_def, map_sub, map_smul, map_sum, locMap_mk, e₁, sub_eq_zero]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hzh]`. Establish `hyloc : y ∈ KH.locPart ι 𝓜 (KH.cellMon S I.1) (d + fun k => (a₁ k : ℤ))`. Rewrite using `[hy_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `sub_mem (smul_mem_locPart h𝓜 ht₁ hx) (Submodule.sum_mem _ fun j _ => smul_mem_locPart h𝓜 (hp j) (hzI j))`. Take `⟨m, s, b, hs, hm, hys⟩` from `locPart_normal h𝓜 hyloc`. Establish `h0 : LocalizedModule.mk (h m) s = 0` using `by rw [← locMap_mk, ← hys]; exact hLy`. Rewrite `h0` using `[← LocalizedModule.zero_mk (1 : KH.cellMon S I.1), LocalizedModule.mk_eq]`. Take `⟨u, hu⟩` from `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu` using `[one_smul, smul_zero, smul_zero]`. Establish `hker : u • m ∈ LinearMap.ker h`. Rewrite using `[LinearMap.mem_ker, Submonoid.smul_def, map_smul, ← Submonoid.smul_def]`. Conclude with `hu`. Rewrite `hker` using `[← hex]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m', hm'⟩` from `hker`. Take `⟨e, hue⟩` from `cellMon_homog u.2`. Establish `hm'deg : m' ∈ 𝓜' (((d + fun k => (a₁ k : ℤ)) + fun k => (b k : ℤ)) + fun k => (e k : ℤ))`. Use `mem_of_map_mem h𝓜' h𝓜 hg hinj ?_` and prove the remaining obligations. Rewrite using `[hm', Submonoid.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h𝓜.2 _ _ _ _ hue hm`. Set `v : KH.cellMon S I.1` to `⟨t₁, ht₁T⟩ * u * s`. Establish `hv : IsMultiHomog (v : MRingOver S ι) (a₁ + e + b)` using `isMultiHomog_mul (isMultiHomog_mul ht₁ hue) hs`. Establish `hy'' : LocalizedModule.mk m' v ∈ KH.locPart ι 𝓜' (KH.cellMon S I.1) d`. Use `mk_mem_locPart _ v _ hv ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `edeg : (d + fun k => ((a₁ + e + b) k : ℤ)) = ((d + fun k => (a₁ k : ℤ)) + fun k => (b k : ℤ)) + fun k => (e k : ℤ)`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Nat.cast_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[edeg]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hm'deg`. Take `⟨t₂, a₂, r', p', z', ht₂T, ht₂, hp', hz', e₂⟩` from `hgen' I _ hy''`. Establish `hw : ∀ l, KH.cechMap S ι g 0 (z' l) ∈ KH.cechZc ι 𝓜 d 0`. Introduce `l`. Take `⟨h1, h2⟩` from `hMap S K ι M' M 𝓜' 𝓜 g d 0 hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨h1 _ (hz' l).1, LinearMap.mem_ker.mpr ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, h2, LinearMap.comp_apply, LinearMap.mem_ker.mp (hz' l).2, map_zero]`. Establish `hgv : (t₁ : MRingOver S ι) • locMap (KH.cellMon S I.1) g (LocalizedModule.mk m' v) = y`. Rewrite using `[locMap_mk, LocalizedModule.smul'_mk, hm', hys]`. Establish `: (t₁ : MRingOver S ι) • (u • m) = ((⟨t₁, ht₁T⟩ * u : KH.cellMon S I.1) • m)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submonoid.smul_def, Submonoid.smul_def, Submonoid.coe_mul, mul_smul]`. Rewrite using `[this]`. Conclude with `LocalizedModule.mk_cancel_common_left _ _ _`. Establish `hgy : t₂ • y = t₁ • ∑ l, p' l • KH.cechMap S ι g 0 (z' l) I`. Rewrite using `[← hgv, ← mul_smul, mul_comm, mul_smul, ← map_smul, e₂, map_sum]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg _ (Finset.sum_congr rfl fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul]`. Both sides reduce to the same expression. Use `⟨t₂ * t₁, a₂ + a₁, r + r', Fin.append (fun j => t₂ * p j) (fun l => t₁ * p' l), Fin.append z (fun l => KH.cechMap S ι g 0 (z' l)), mul_mem ht₂T ht₁T, isMultiHomog_mul ht₂ ht₁, fun j => ?_, fun j => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun j => ?_) (fun l => ?_) j` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.append_left]`. Conclude with `isMultiHomog_mul ht₂ (hp j)`. Rewrite using `[Fin.append_right, add_comm]`. Conclude with `isMultiHomog_mul ht₁ (hp' l)`. Use `Fin.addCases (fun j => ?_) (fun l => ?_) j` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.append_left]`. Conclude with `hz j`. Rewrite using `[Fin.append_right]`. Conclude with `hw l`. Rewrite using `[Fin.sum_univ_add]`.
-
-Simplify using `only [Fin.append_left, Fin.append_right]`. Establish `hyeq : t₁ • LocalizedModule.mk m₀ t₀ = y + ∑ j, p j • z j I`. Rewrite using `[hy_def, sub_add_cancel]`. Rewrite using `[mul_smul, hyeq, smul_add, hgy, Finset.smul_sum, Finset.smul_sum, add_comm]`. Simplify using `only [smul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem proof (hSES : KH.CechSESStatement) (hMap : KH.CechMapDegStatement) : GenSESStep.Statement := by
   intro S _ K _ _ ι _ _ M' _ _ _ _ M _ _ _ _ M'' _ _ _ _ 𝓜' 𝓜 𝓜'' g h h𝓜' h𝓜 h𝓜'' hg hh hinj hsurj hex d

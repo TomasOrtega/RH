@@ -8,11 +8,11 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 open MeasureTheory GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `E _ _ _ a K w hw hK U hU ⟨φ, hφU, hφ0, hφK⟩`. Take `⟨ho, hc⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a`. Take `⟨σ, hcomp, v, hv0, hv⟩` from `GlobalTheory.T.exists_localComponent_eigenvector_splitPlace E a U hU w hw (GlobalTheory.LFun.KGL w a) ho hc 1 φ hφU hφ0 (fun x hx hxJ => by`. Use `hφK x ((hK x hx).2 hxJ)` as an intermediate fact. Simplify using `using this)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hfix : GlobalTheory.PRep.fixed σ.ρ (GlobalTheory.LFun.KGL w a) ≠ ⊥` using `(Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 (fun k hk => by`. Use `hv ⟨k, hk⟩` as an intermediate fact. Simplify using `using this), hv0⟩`. Take `⟨B, hB⟩` from `GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible σ.smooth σ.irred hfix`. Choose the witnesses or unpack the hypotheses as in `⟨z, rfl⟩ : ∃ z : Fin a → ℂˣ, Finset.univ.val.map z = B := by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l, rfl⟩` from `Quotient.exists_rep B`. Establish `hl : l.length = a` using `hB.card`. Substitute `hl` using the available equality. Conclude with `⟨l.get, by rw [Fin.univ_val_map, List.ofFn_get]; rfl⟩`. Conclude with `⟨z, σ, hcomp, hB⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.Gen.satEx_pf :
     UpperTheory.Gal.Gen.SatEx := by

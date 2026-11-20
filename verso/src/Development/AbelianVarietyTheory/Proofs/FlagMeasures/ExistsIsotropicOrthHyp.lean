@@ -10,13 +10,13 @@ namespace GlobalTheory.IsoOrthHyp
 open Matrix
 
 /- English proof (translation)
-Use `set e : Fin S.rank ≃ Fin n := finCongr h with he`. Use `set M : Matrix (Fin n) (Fin n) E := ((C⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) with hM`. Use `set i₀ : Fin n := ⟨0, hn⟩ with hi₀`. Use `⟨∑ j : Fin n, M j i₀ • S.frame (e.symm j), ?_⟩` and prove the remaining obligations. Establish `hCM : C.1 * M = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hM, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hstar : (C.1.map (starRingEnd E))ᵀ = C.1ᴴ` using `rfl`. Establish `hprod : Mᴴ * S.gram.reindex e e * M = (C.1 * M)ᴴ * (C.1 * M)`. Rewrite using `[← hC, hstar, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : (Mᴴ * S.gram.reindex e e * M) i₀ i₀ = 1`. Rewrite using `[hprod, hCM]`. Simplify using the standard rewrite rules. Rewrite using `[← key]`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.reindex_apply, Matrix.submatrix_apply, HSpace.gram, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Finset.mul_sum, Finset.sum_mul, RingHom.id_apply]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_norm_one {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) (n : ℕ) (h : S.rank = n)
     (hn : 0 < n) (C : GL (Fin n) E)
@@ -45,9 +45,9 @@ theorem exists_norm_one {E : Type} [Field E] [NumberField E] [StarRing E] (S : H
   ring
 
 /- English proof (translation)
-Use `D.host.isCMField_hostE` as an intermediate fact. Take `⟨ψ⟩` from `(inferInstance : Nonempty (D.host.E →+* ℂ))`. Apply `ψ.injective` to reduce the goal to its premises. Establish `h1 : ∀ y, ψ (D.host.conj y) = starRingEnd ℂ (ψ y)` using `(D.host.der.conj_iff ψ D.host.conj).2 (MulEquiv.apply_symm_apply _ _)`. Rewrite using `[h1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `NumberField.IsCMField.complexEmbedding_complexConj D.host.E ψ x`.
+A detailed English derivation is pending.
 -/
 theorem star_eq_hostConj (D : D7) (x : D.host.E) : starRingEnd D.host.E x = D.host.conj x := by
   have := D.host.isCMField_hostE
@@ -59,21 +59,19 @@ theorem star_eq_hostConj (D : D7) (x : D.host.E) : starRingEnd D.host.E x = D.ho
   exact NumberField.IsCMField.complexEmbedding_complexConj D.host.E ψ x
 
 /- English proof (translation)
-Introduce `D hF`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hi : (0 : ℕ) ≤ D.R.m` using `Nat.zero_le _`. Take `⟨C, hC, -⟩` from `hF.val0.de`. Establish `hN : 0 < D.R.N 0` using `by show 0 < D.R.k + 0 * (D.R.t + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hC' : (C.1.map (starRingEnd D.host.E))ᵀ * C.1 = (D.sp.X 0).gram.reindex (finCongr (Formalism.L2.Forms.rankN D 0 hi)) (finCongr (Formalism.L2.Forms.rankN D 0 hi))` using `hC`. Take `⟨x, hx⟩` from `exists_norm_one (D.sp.X 0) (D.R.N 0) (Formalism.L2.Forms.rankN D 0 hi) hN C hC'`. Establish `hπ : (hF.atT.piU : D.host.E) * D.host.conj (hF.atT.piU : D.host.E) = ((D.mem D.u₀).A.T : D.host.E)` using `hF.atT.piU_norm`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hT0 : ((D.mem D.u₀).A.T : D.host.E) ≠ 0`. Rewrite using `[← D.sp_T]`. Conclude with `D.sp.T_prime.ne_zero` after adjusting the coercions. Establish `hsym : ∀ a b : (VS D).V, (VS D).hT a b = 0 → (VS D).hT b a = 0`. Introduce `a b hab`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (VS D).herm.eq a b, hab, map_zero]`. Establish `hvv : (VS D).hT (D.sp.iXY 0 ((hF.atT.piU : D.host.E) • x)) (D.sp.iXY 0 ((hF.atT.piU : D.host.E) • x)) = ((D.mem D.u₀).A.T : D.host.E)`. Rewrite using `[D.sp.iXY_isom 0 hm]`. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, hx, mul_one, RingHom.id_apply, star_eq_hostConj]`. Take the linear combination `hπ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hvz : (VS D).hT (D.sp.iXY 0 ((hF.atT.piU : D.host.E) • x)) D.sp.zm = 0` using `D.sp.zm_orth _`. Establish `hzv` using `hsym _ _ hvz`. Establish `hzz : (VS D).hT D.sp.zm D.sp.zm = -((D.mem D.u₀).A.T : D.host.E)`. Rewrite using `[D.sp.zm_norm, D.sp_T]`. Use `⟨D.sp.iXY 0 ((hF.atT.piU : D.host.E) • x) + D.sp.zm, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `h1 : (VS D).hT (D.sp.iXY 0 ((hF.atT.piU : D.host.E) • x) + D.sp.zm) D.sp.zm = 0`. Rewrite using `[h0, map_zero, LinearMap.zero_apply]`. Rewrite `h1` using `[map_add, LinearMap.add_apply, hvz, hzz, zero_add, neg_eq_zero]`. Conclude with `hT0 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_add, LinearMap.add_apply, hvv, hvz, hzv, hzz]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i`. Prove the components needed by the constructor for the conclusion. Rewrite using `[map_add, hsym _ _ (D.sp.hyp_orthX i _).1, hsym _ _ (D.sp.hyp_orthz i).1, add_zero]`.
-
-Rewrite using `[map_add, hsym _ _ (D.sp.hyp_orthX i _).2, hsym _ _ (D.sp.hyp_orthz i).2, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isotropic_orth_hyp : ∀ (D : D7), Formalism.L2.Forms.Forms0 D D.u₀ → ∃ w : (VS D).V, w ≠ 0 ∧ (VS D).hT w w = 0 ∧ ∀ i, (VS D).hT (D.sp.hypE i) w = 0 ∧ (VS D).hT (D.sp.hypF i) w = 0 := by
   intro D hF

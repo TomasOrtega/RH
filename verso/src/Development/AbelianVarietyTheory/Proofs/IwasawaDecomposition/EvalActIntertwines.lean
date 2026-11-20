@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.Mem.SRe
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.FinsetSumSmulCoe.main`. Consider the case `exact _root_.GlobalTheory.FinsetSumSmulCoe.main`. Consider the case `(apply _root_.GlobalTheory.FinsetSumSmulCoe.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FinsetSumSmulCoe.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.FinsetSumSmulCoe.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FinsetSumSmulCoe.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coeFn_sum_smul {α : Type} [MeasurableSpace α] {μ : Measure α} {ι : Type} [Fintype ι] (c : ι → ℂ)
     (u : ι → Lp ℂ 2 μ) :
@@ -27,7 +27,7 @@ theorem coeFn_sum_smul {α : Type} [MeasurableSpace α] {μ : Measure α} {ι : 
   | (intros; exact _root_.GlobalTheory.FinsetSumSmulCoe.main ..)
 
 /- English proof (translation)
-Rewrite using `[LinearMap.sum_apply, Finset.sum_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_smul_apply {ι α : Type} [Fintype ι] (L : ι → (α → ℂ) →ₗ[ℂ] (α → ℂ)) (c : ι → ℂ) (φ : α → ℂ) (y : α) :
     (∑ i, c i • L i) φ y = ∑ i, c i * L i φ y := by
@@ -35,9 +35,9 @@ theorem sum_smul_apply {ι α : Type} [Fintype ι] (L : ι → (α → ℂ) →�
   simp
 
 /- English proof (translation)
-Establish `aux : ∀ (I : Formalism.MainNotions.S.AutInst) (hI : I = Formalism.L2.SG.InstExistsPf.instOf D) (z : I.GA), z ∈ I.GFset → ((Formalism.IndefR.RationalEmbedding.iota D).trans (castGA hI.symm)).symm z ∈ GQ (D.sp.Y 0)`. Introduce `I hI z hz`. Substitute `hI` using the available equality. Establish `e : ((Formalism.IndefR.RationalEmbedding.iota D).trans (castGA (rfl : Formalism.L2.SG.InstExistsPf.instOf D = _).symm)).symm z = (Formalism.IndefR.RationalEmbedding.iota D).symm z` using `rfl`. Rewrite using `[e, Formalism.IndefR.RationalEmbedding.iota_rat, ContinuousMulEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz`. Conclude with `aux X.B.I h z hz`.
+A detailed English derivation is pending.
 -/
 theorem iotaX_symm_rat {D : D7} (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (z : X.B.I.GA)
     (hz : z ∈ X.B.I.GFset) : (iotaX X h).symm z ∈ GQ (D.sp.Y 0) := by
@@ -52,9 +52,9 @@ theorem iotaX_symm_rat {D : D7} (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG
   exact aux X.B.I h z hz
 
 /- English proof (translation)
-Establish `hk'` using `hB.2 k hk S hS v₀ ((iotaX X h).symm x * t)`. Use `Eq.trans ?_ hk'` and prove the remaining obligations. Establish `e : (iotaX X h).symm (x * (1, k)) * t = (iotaX X h).symm x * t * (show GA D (D.sp.Y 0) from kap X h t k)`. Unfold `kap`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Use `show S v₀ _ = S v₀ _`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ev_translate {D : D7} {G' : Type} [Group G'] [Fintype G'] {Pl0 T : Type} {A : FamIn D.what₂.LL G' Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : HidaSetting D)
@@ -74,23 +74,19 @@ theorem ev_translate {D : D7} {G' : Type} [Group G'] [Fintype G'] {Pl0 T : Type}
   rfl
 
 /- English proof (translation)
-Introduce `D G' _ _ Pl0 T A Ks _ _ _ R F _ X h t v₀ σ red hB S hS f hf hinv a s hs`. Establish `hU : X.B.μf.IsMulRightInvariant` using `Formalism.L2.SG.Closed.GfUnimod_holds X.B.I X.B.μf`. Use `Formalism.MainNotions.LeviCoordinates.rr_muA_left X.B.I X.B.μf` as an intermediate fact. Establish `hFD` using `Formalism.MainNotions.LeviCoordinates.rr_FD_of X.B.I X.B.μf X.B.fund X.B.fund_spec`. Establish `hφinv : ∀ γ ∈ X.B.I.GFset, ∀ y : X.B.I.GA, ev (MP R) v₀ S ((iotaX X h).symm (γ * y) * t) = ev (MP R) v₀ S ((iotaX X h).symm y * t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `γ hγ y`. Use `show S v₀ _ = S v₀ _`. Rewrite using `[map_mul, mul_assoc]`. Conclude with `hinv _ (iotaX_symm_rat X h γ hγ) _`. Establish `key : ∀ k ∈ X.B.I.Kset, ((X.B.R (1, k) f : L2X X) : X.B.I.GA → ℂ) =ᵐ[muX X] fun x => actL (Yc D 0) (R.βY 0) (R.dat0 R.triv) (R.eG (σ (red k))) (S v₀) ((iotaX X h).symm x * t)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k hk`. Establish `hP : Formalism.L2.SG.Pf.RPres (X.B.I.muA X.B.μf) ((1, k) : X.B.I.GA)` using `Formalism.L2.SG.Pf.RowDictPf.rp_fin X.B.I X.B.μf k`. Establish `hPi : Formalism.L2.SG.Pf.RPres (X.B.I.muA X.B.μf) (((1, k) : X.B.I.GA)⁻¹)`. Establish `: ((1, k) : X.B.I.GA)⁻¹ = (1, k⁻¹)` using `Prod.ext inv_one rfl`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Formalism.L2.SG.Pf.RowDictPf.rp_fin X.B.I X.B.μf k⁻¹`. Take `⟨h1, h2⟩` from `Formalism.L2.SG.Pf.rp_map hFD hP hPi`. Establish `e1` using `X.B.R_spec (1, k) f`. Establish `e3 : ∀ᵐ x ∂(muX X), (f : X.B.I.GA → ℂ) (X.B.I.rep X.B.fund (x * (1, k))) = ev (MP R) v₀ S ((iotaX X h).symm (X.B.I.rep X.B.fund (x * (1, k))) * t)`. Use `ae_of_ae_map (p := fun y => (f : X.B.I.GA → ℂ) y = ev (MP R) v₀ S ((iotaX X h).symm y * t)) h1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `hf`. Use `filter_upwards [e1, e3] with x a1 a3`. Rewrite using `[a1]`. Use `show (f : X.B.I.GA → ℂ) (X.B.I.rep X.B.fund (x * (1, k))) = _`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[a3]`. Take `⟨γ, hγ, hrep, -⟩` from `Formalism.MainNotions.LeviCoordinates.rr_rep_spec hFD (x * (1, k))`. Rewrite using `[Formalism.MainNotions.LeviCoordinates.rr_rep_eq_rep, show (Formalism.MainNotions.LeviCoordinates.rr_rep X.B.I.GFset X.B.fund (x * (1, k))) = γ * (x * (1, k)) from hrep, hφinv γ hγ]`. Conclude with `ev_translate R F X h t v₀ σ red hB S hS k hk x`. Establish `hall : ∀ᵐ x ∂(muX X), ∀ γ, ((X.B.R (1, s γ) f : L2X X) : X.B.I.GA → ℂ) x = actL (Yc D 0) (R.βY 0) (R.dat0 R.triv) (R.eG (σ (red (s γ)))) (S v₀) ((iotaX X h).symm x * t)` using `ae_all_iff.2 fun γ => key (s γ) (hs γ).1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum` using `coeFn_sum_smul (μ := muX X) (fun γ => star (a γ)) (fun γ => star (X.B.R (1, s γ) (star f)))`. Use `filter_upwards [hsum, hall] with x b1 b2`. Rewrite using `[b1]`. Simplify using `only [Formalism.L2.SG.Pf.RowDictPf.R_star, star_star]`. Simplify using `only [b2, (hs _).2]`.
-
-Unfold `gaL`. Use `Eq.trans ?_ (sum_smul_apply _ _ _ _).symm` and prove the remaining obligations. Use `Fintype.sum_equiv σ.toEquiv _ _ (fun γ => ?_)` and prove the remaining obligations. Use `show _ = star (a (σ.symm (σ γ))) * _`. Rewrite using `[MulEquiv.symm_apply_apply]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem evalAct_intertwines : ∀ (D : D7) (G' : Type) [Group G'] [Fintype G'] (Pl0 T : Type) (A : FamIn D.what₂.LL G' Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) [Fintype (G0g D.nd)] (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (t : GA D (D.sp.Y 0)) (v₀ : (MP R).Vec) (σ : G0g D.nd ≃* G') (red : X.B.I.Gf → G0g D.nd), LevelMatchB R F X h t σ red → ∀ S ∈ MultR R F, ∀ f : L2X X, (f =ᵐ[muX X] fun x => ev (MP R) v₀ S ((iotaX X h).symm x * t)) → (∀ γ ∈ GQ (D.sp.Y 0), ∀ g, S v₀ (γ * g) = S v₀ g) → ∀ (a : G0g D.nd → ℂ) (s : G0g D.nd → X.B.I.Gf), (∀ γ, s γ ∈ X.B.I.Kset ∧ red (s γ) = γ) → (∑ γ, star (a γ) • star (X.B.R (1, s γ) (star f)) : L2X X) =ᵐ[muX X] fun x => gaL (Yc D 0) (R.βY 0) (R.dat0 R.triv) R.eG (fun g => star (a (σ.symm g))) (S v₀) ((iotaX X h).symm x * t) := by
   intro D G' _ _ Pl0 T A Ks _ _ _ R F _ X h t v₀ σ red hB S hS f hf hinv a s hs

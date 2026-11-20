@@ -8,9 +8,9 @@ set_option autoImplicit false
 namespace GlobalTheory.GenericFibreInj
 
 /- English proof (translation)
-Use `IsArithVar.asIdeal_eq_bot_of_under_eq_bot F X q d hq _ (eq_bot_iff.2 fun c hc => ?_)` and prove the remaining obligations. Rewrite `hc` using `[GlobalTheory.SteinFibre.mem_under_iff, ← Scheme.mem_basicOpen X (U := ⊤) _ _ trivial]`. Assume the negation of the conclusion as `h0`. Apply `hc` to reduce the goal to its premises. Establish `hne : (X.basicOpen c : Set X).Nonempty`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[Set.nonempty_iff_ne_empty]`. Introduce `he`. Conclude with `h0 ((basicOpen_eq_bot_iff c).1 (TopologicalSpace.Opens.ext he))`. Conclude with `((genericPoint_spec X).mem_open_set_iff (X.basicOpen c).isOpen).2 (by simpa using hne)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem asIdeal_genericPoint {F : Type} [Field F] [NumberField F] {X : Scheme.{0}} [IsIntegral X]
     {q : X ⟶ Sp (𝓞 F)} {d : ℕ} (hq : IsArithVar q d) : (q (genericPoint X)).asIdeal = ⊥ := by
@@ -25,9 +25,9 @@ theorem asIdeal_genericPoint {F : Type} [Field F] [NumberField F] {X : Scheme.{0
   exact ((genericPoint_spec X).mem_open_set_iff (X.basicOpen c).isOpen).2 (by simpa using hne)
 
 /- English proof (translation)
-Use `hq.isIntegral` as an intermediate fact. Establish `e : q (genericPoint X) = spMap (algebraMap (𝓞 F) F) (⊥ : PrimeSpectrum F)`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Rewrite using `[asIdeal_genericPoint hq]`. Express the relevant statement in the definitionally equal form `⊥ = Ideal.comap (algebraMap (𝓞 F) F) ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(Ideal.comap_bot_of_injective _ (IsFractionRing.injective (𝓞 F) F)).symm`. Take `⟨w, hw, -⟩` from `Scheme.exists_preimage_of_isPullback pb _ _ e`. Use `⟨Dense.mono (Set.singleton_subset_iff.2 ⟨w, hw⟩) ?_⟩` and prove the remaining obligations. Conclude with `dense_iff_closure_eq.2 (genericPoint_spec X)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isDominant {F : Type} [Field F] [NumberField F] {X W : Scheme.{0}} {q : X ⟶ Sp (𝓞 F)} {s : W ⟶ Sp F}
     {jB : W ⟶ X} {d : ℕ} (hq : IsArithVar q d) (pb : IsPullback jB s q (spMap (algebraMap (𝓞 F) F))) :
@@ -43,9 +43,9 @@ theorem isDominant {F : Type} [Field F] [NumberField F] {X W : Scheme.{0}} {q : 
   exact dense_iff_closure_eq.2 (genericPoint_spec X)
 
 /- English proof (translation)
-Introduce `F _ _ X W q s jB d hq pb V _`. Use `hq.isIntegral` as an intermediate fact. Use `isDominant hq pb` as an intermediate fact. Establish `: QuasiCompact jB` using `MorphismProperty.of_isPullback pb.flip inferInstance`. Use `IsSchemeTheoreticallyDominant.of_isDominant jB` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `jB.app_injective V`.
+A detailed English derivation is pending.
 -/
 theorem app_injective : ∀ {F : Type} [Field F] [NumberField F] {X W : Scheme.{0}} {q : X ⟶ Sp (𝓞 F)}
     {s : W ⟶ Sp F} {jB : W ⟶ X} {d : ℕ},

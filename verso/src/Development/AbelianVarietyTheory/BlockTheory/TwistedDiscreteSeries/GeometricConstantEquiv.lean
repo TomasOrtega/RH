@@ -77,7 +77,7 @@ def GeoAct : Prop :=
     ∀ (i : Fin D.R.m) (w : WeightFamilies.Wt D ((i : ℕ) + 1)), IsKappa i w → ConstEquiv T R i w → GeoActAt T R i w
 
 /- English proof (translation)
-Take `⟨lev, hl, -⟩` from `h`. Take `⟨κ, hκ, -⟩` from `hl g`. Conclude with `⟨κ, hκ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsGeo.exists_lift {ρ : G →* Module.End T.Q.c.F (Cusp T i w)} (h : IsGeo T R i w ρ) (g : G) :
     ∃ κ, IsLift T R i g κ := by

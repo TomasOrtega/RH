@@ -18,9 +18,9 @@ attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toI
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Th
 open UpperTheory.V.Ws.Eb
 /- English proof (translation)
-Establish `e1` using `h g`. Rewrite `e1` using `[hg]`. Establish `e2 : (ρ g : Matrix (Fin n) (Fin n) K) = 1`. Use extensionality with `i j`. Use `congrArg TrivSqZeroExt.fst (e1 i j)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases h : i = j <;> simpa [Matrix.one_apply, h] using this.symm`. Use extensionality with `i j`. Use `congrArg TrivSqZeroExt.snd (e1 i j)` as an intermediate fact. Rewrite `this` using `[e2, mul_one]`. Apply the tactic sequence `by_cases h : i = j <;> simpa [Matrix.one_apply, h] using this.symm`.
+Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem tan_one {K H : Type} [CommRing K] [Group H] {n : ℕ} {ρ : H →* GL (Fin n) K} {y : H → Matrix (Fin n) (Fin n) K}
     {ρ' : H →* GL (Fin n) (DualNumber K)} (h : IsTan ρ y ρ') (g : H) (hg : ρ' g = 1) : y g = 0 := by
@@ -35,9 +35,9 @@ private theorem tan_one {K H : Type} [CommRing K] [Group H] {n : ℕ} {ρ : H �
   rw [e2, mul_one] at this
   by_cases h : i = j <;> simpa [Matrix.one_apply, h] using this.symm
 /- English proof (translation)
-Establish `e1 : (R.comp (F.η.ker.subtype.comp (F.φ v)) : Representation (PadicAlgCl l) (F.Gv v) (Matrix (Fin n) (Fin n) (PadicAlgCl l))) = Loc.adGL (ρ.comp (F.φ v))` using `MonoidHom.ext fun g => LinearMap.ext fun X => hR.ad _ X`. Rewrite using `[e1]`. Simplify using `only [hzy]`. Use `locL hP φ hφ (ρ.comp (F.φ v)) (hcont.comp (F.φ_cont v)) _ ⟨hy.1.comp (F.φ_cont v), fun g h => ?_⟩ _ (htan.comp (F.φ v)) _ m k hfl hm hk fun i g hg => ⟨?_, h2 i g ((h1 g).1 hg)⟩` and prove the remaining obligations. Conclude with `(congrArg y (map_mul _ g h)).trans (hy.2 _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2` using `congrArg Units.val (DFunLike.congr_fun (W.LamObj.toPair_spec r Λ B.u v i) ⟨g, (h1 g).1 hg⟩)`. Conclude with `(congrArg (fun b => (x' b).snd) e2).symm.trans (hΛ _)`.
+A detailed English derivation is pending.
 -/
 private theorem at_l (hP : Loc.LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {F : W.GFrame l} {c : Coef l} {n : ℕ} {r : W.Resid F c.O n}
     (B : W.UniversalOrdinaryDeterminantRing r) (Λ : W.LamObj r) (x' : B.B →ₐ[c.O] DualNumber (PadicAlgCl l)) (hΛ : ∀ a, (x' (Λ.toPair B.u a)).snd = 0)
@@ -65,14 +65,14 @@ section
 variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
   {s : W.HidaSetting l L Ω} {V : s.Lev} {c : Coef l} {n : ℕ} {r : W.Resid V.frame c.O n} {B : W.UniversalOrdinaryDeterminantRing r}
 /- English proof (translation)
-Simplify using `using (s.hA v _).2 v.2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem over_l (v : W.Vl l L) : (s.A v).valuation (l : Ω) < 1 := by
   simpa using (s.hA v _).2 v.2
 /- English proof (translation)
-Establish `hl : ∀ v : W.Vl l L, ((l : ℕ) : 𝓞 L) ∈ (s.w v).asIdeal` using `fun v => by`. Use `(s.hw v _).1 ?_` and prove the remaining obligations. Simplify using `using over_l (s := s) v`. Use `⟨fun v τ i j hij => ?_, fun v j => ?_⟩` and prove the remaining obligations. Use `hm v i j hij` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only`. Use linear arithmetic over natural numbers and integers. Conclude with `UpperTheory.V.Loc.laArith hP.toClassicalTheorems.litN.aut.art (s.hw v) (hl v) _ (Ws.Pt.psi_cont x v j) (m v j) k hk (hw v j)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem arith (hP : _root_.UpperTheory.V.Af.HypothesesH') (x : B.Pt) (m : W.Vl l L → Fin n → ℤ) (hm : ∀ v i j, i < j → m v j + 2 ≤ m v i) (k : ℕ) (hk : 0 < k)
     (hw : ∀ (v : W.Vl l L) i (g : Dec (F := L) (s.A v)), (g : G L Ω) ∈ Ine (F := L) (s.A v) →
@@ -86,15 +86,15 @@ private theorem arith (hP : _root_.UpperTheory.V.Af.HypothesesH') (x : B.Pt) (m 
     omega
   · exact UpperTheory.V.Loc.laArith hP.toClassicalTheorems.litN.aut.art (s.hw v) (hl v) _ (Ws.Pt.psi_cont x v j) (m v j) k hk (hw v j)
 /- English proof (translation)
-Introduce `hij`. Establish `hne : 1 - m v i + m v j ≠ 0`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Use `hm v i j h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers. Use `hm v j i h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨g, hg, hg1⟩` from `Ws.Pt.cycIne L Ω l (s.A v) (over_l v) ((1 - m v i + m v j) * k) (mul_ne_zero hne (by exact_mod_cast hk.ne'))`.
+Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `hgD : g ∈ Dec (F` using `L) (s.A v) := (GlobalTheory.WeilDeligne.Weil_le_Dec (s.hw v)) (GlobalTheory.WeilDeligne.ineIncl (s.hw v) ⟨g, hg⟩).2`. Establish `h1` using `hw v i ⟨g, hgD⟩ hg`. Establish `h2` using `hw v j ⟨g, hgD⟩ hg`. Establish `e : x.psi v i ⟨g, hgD⟩ = x.psi v j ⟨g, hgD⟩ * cycBar L Ω l g`. Rewrite using `[hij]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Apply `hg1` to reduce the goal to its premises. Establish `e2 : x.psi v i ⟨g, hgD⟩ * cycBar L Ω l g ^ (-m v i) = (x.psi v j ⟨g, hgD⟩ * cycBar L Ω l g ^ (-m v j)) * cycBar L Ω l g ^ (1 - m v i + m v j)`. Rewrite using `[e, mul_assoc, mul_assoc, ← zpow_add, ← zpow_one_add]`. Use `congr 2`.
+Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `(x.psi v i ⟨g, hgD⟩ * cycBar L Ω l g ^ (-m v i)) ^ k = 1 at h1`. Express the relevant statement in the definitionally equal form `(x.psi v j ⟨g, hgD⟩ * cycBar L Ω l g ^ (-m v j)) ^ k = 1 at h2`. Rewrite `h1` using `[e2, mul_pow, h2, one_mul]`. Rewrite using `[zpow_mul, zpow_natCast, h1]`.
+Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem noRatio (x : B.Pt) (m : W.Vl l L → Fin n → ℤ) (hm : ∀ v i j, i < j → m v j + 2 ≤ m v i) (k : ℕ) (hk : 0 < k)
     (hw : ∀ (v : W.Vl l L) i (g : Dec (F := L) (s.A v)), (g : G L Ω) ∈ Ine (F := L) (s.A v) →
@@ -128,7 +128,7 @@ private theorem noRatio (x : B.Pt) (m : W.Vl l L → Fin n → ℤ) (hm : ∀ v 
   rw [e2, mul_pow, h2, one_mul] at h1
   rw [zpow_mul, zpow_natCast, h1]
 /- English proof (translation)
-Introduce `v` and use `⟨m v, k, fun i j h => by have := hm v i j h; omega, hk, fun i j g hg => by have e : x.psi v i g / x.psi v j g * cycBar L Ω l g ^ (m v j - m v i) = (x.psi v i g * cycBar L Ω l g ^ (-m v i)) / (x.psi v j g * cycBar L Ω l g ^ (-m v j)) := by rw [mul_div_mul_comm, div_eq_mul_inv (_ ^ …`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private theorem par (x : B.Pt) (m : W.Vl l L → Fin n → ℤ) (hm : ∀ v i j, i < j → m v j + 2 ≤ m v i) (k : ℕ) (hk : 0 < k)
     (hw : ∀ (v : W.Vl l L) i (g : Dec (F := L) (s.A v)), (g : G L Ω) ∈ Ine (F := L) (s.A v) →
@@ -141,7 +141,7 @@ private theorem par (x : B.Pt) (m : W.Vl l L → Fin n → ℤ) (hm : ∀ v i j,
       ring
     rw [e, div_pow, hw v i g hg, hw v j g hg, div_one]⟩
 /- English proof (translation)
-Introduce `v : W.Vl l L` and use `by obtain ⟨g, hg, hf⟩ := _root_.UpperTheory.V.Z.Win.RR.exists_cycZ_eq_one_freeRatios_of_ne_mul_cycBar hP L Ω l s.odd ι n hn ρ hρ haut (s.A v) (over_l v) (x.psi v) (m v) k (hfl v) (fun i j h => by have := hm v i j h; omega) hk (hw v) (noRatio x m hm k hk hw v) refine ⟨g, ?_, hf⟩ h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem free (hP : _root_.UpperTheory.V.Af.HypothesesH') (hn : 1 ≤ n) (ι : PadicAlgCl l ≃+* ℂ) (x : B.Pt) (ρ : G L Ω →* GL (Fin n) (PadicAlgCl l))
     (m : W.Vl l L → Fin n → ℤ) (hρ : Continuous ρ) (haut : _root_.UpperTheory.V.Z.Win.IsAutCsdA ι ρ) (hm : ∀ v i j, i < j → m v j + 2 ≤ m v i)
@@ -155,23 +155,19 @@ private theorem free (hP : _root_.UpperTheory.V.Af.HypothesesH') (hn : 1 ≤ n) 
   exact e.trans hg
 end
 /- English proof (translation)
-Introduce `hU hAd l _ L Ω _ _ _ _ _ _ s V hV hζ c hc r B Λ ι J hJ h0 hC hD4 x ρ m hJx hx hρ haut hv0 hirr hm hfl ⟨k, hk, hkk⟩`. Take `⟨Λ', ⟨e'⟩⟩` from `hU.lam l L Ω s V c 4 r`. Take `⟨e₁⟩` from `lamIso Λ' Λ`. Take `⟨e, he⟩ : ∃ e : MvPowerSeries (Fin (4 * Module.finrank ℚ (W.Lp L))) c.O →ₐ[c.O] Λ.Λ, Function.Bijective e` from `⟨(e'.symm.trans e₁ :), (e'.symm.trans e₁).bijective⟩`. Use `regOfTan c _ B.B ((Λ.toPair B.u).comp e) J ?_ (fun a ha b hb => ?_) x hJx fun x' hx' hΛ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hJ.ring.fin.comp (RingHom.Finite.of_surjective (e : MvPowerSeries (Fin (4 * Module.finrank ℚ (W.Lp L))) c.O →+* Λ.Λ) he.2)`. Conclude with `hJ.ring.tf (e a) ((map_ne_zero_iff e he.1).2 ha) b hb`. Establish `hΛ' : ∀ a, (x' (Λ.toPair B.u a)).snd = 0` using `fun a => by`. Take `⟨a, rfl⟩` from `he.2 a`. Conclude with `hΛ a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hxx : (dF _).comp (x' : B.B →+* DualNumber (PadicAlgCl l)) = (x : B.B →+* PadicAlgCl l)` using `RingHom.ext hx'`. Establish `hn1 : 1 ≤ 4` using `by omega`. Take `⟨ρ₀, rfl, hfull, hD⟩` from `factor V B x ρ hn1 hx hirr`. Take `⟨ρ', y, hD', hred, hfull', hcont, hy, htan⟩` from `liftRep B x' ρ₀ hn1 hfull (by rw [hxx, hD])`. Take `⟨hO, hI⟩` from `relKill B x' ρ' hfull' hD'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P', hP'⟩` from `relForm B x' ρ' hfull' hD'`. Take `⟨hP, hrel⟩` from `cocRel V.frame c.O ρ₀ y ρ' P' htan hP'`. Take `⟨R, hR⟩` from `adExt V.frame c.O ρ₀ _ hfull hP`. Take `⟨Z, hZ⟩` from `hrel R hR`. Take `⟨z, hz, hzy⟩` from `cocExt V.frame ρ₀ _ R hfull hcont hR y hy Z hZ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinj : ∀ v : V.frame.Vl, Function.Injective fun i => W.pushCh ((dF _).comp (x' : B.B →+* DualNumber (PadicAlgCl l))) (B.u.ψ v i)` using `fun v => by`. Rewrite using `[hxx]`. Use `psiInj (s.A v.1) (s.w v.1) (s.hw v.1) ?_ (x.psi v) (m v) k (StrictAnti.injective fun i j h => by have := hm v i j h; omega) hk (hkk v)` and prove the remaining obligations. Establish `h1` using `(s.hA v.1 ((l : ℕ) : 𝓞 (W.Lp L))).2 v.2`. Conclude with `(s.hw v.1 _).1 (by simpa using h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfl₀ : ∀ v : V.frame.Vl, W.HasFlag (ρ₀.comp (V.frame.φ v)) fun i => W.pushCh ((dF _).comp (x' : B.B →+* DualNumber (PadicAlgCl l))) (B.u.ψ v i)` using `fun v => by`. Rewrite using `[hxx]`. Conclude with `hfl v`. Establish `hfl' : ∀ v : V.frame.Vl, W.HasFlag (ρ'.comp (V.frame.φ v)) fun i => W.pushCh (x' : B.B →+* DualNumber (PadicAlgCl l)) (B.u.ψ v i)` using `fun v => flagDual _ _ (hinj v) (by rw [← hred] at hfl₀; exact hfl₀ v) (hO v)`. Establish `hbk` using `bkAb V R z hz (fun v φ hφ h1 h2 => at_l hU.coh.loc B Λ x' hΛ' hcont hy htan hR hzy v (hfl' v) (m v) k (hm v) hk φ hφ h1 fun i g hg => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hxx, h2]`. Conclude with `hkk v i g hg)`. Use the proof step `(bkAw V hV r R z hz (fun u g hg => (hzy g).trans (tan_one htan g (hI u g hg))) fun g hg => (hzy g).trans (cocycle_vanishes_on_inertia_of_point_pseudodeformation V B x ρ₀ h0 hD hcont y hy g hg))`. Establish `hapt : _root_.UpperTheory.V.Th.AutomorphicPointGalois ι x ρ₀` using `⟨hcont, hx, ⟨_, arith hU.pr x m hm k hk hkk⟩, haut, by`. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
-
-Conclude with `hv0 g hg, hfl⟩`. Establish `hirr₀ : U3.MatIrr ⊤ (W.mat ρ₀)` using `fun N hN => (AlgebraTools.Det.irrIffSpan (W.mat ρ₀)).2 hfull N fun g v hv => hN g trivial v hv`. Establish `hnice` using `_root_.UpperTheory.V.Th.nice0four_alt ι x ρ₀ hapt hirr₀ (free hU.pr hn1 ι x _ m hρ haut hm hfl k hk hkk) hC hD4`. Take `⟨X, hX⟩` from `hAd l L Ω s V hV hζ c hc 4 (by omega) le_rfl r h0 B ι x ρ₀ hnice (par x m hm k hk hkk) _ R hP hR z hz hbk`. Take `⟨Q, hQ⟩` from `conjOf ρ₀ y ρ' X htan fun g => by rw [← hzy, hX, hR.ad]`.
-
-Conclude with `constOf B x' ρ₀ ρ' Q hD' hQ hinj hfl₀ hfl'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.eigenbasis_rank_four :
     _root_.UpperTheory.V.Ws.UnramifiedInputs → _root_.UpperTheory.V.Th.AdjointLiftingTheorem → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : W.HidaSetting l L Ω) (V : s.Lev), V.S' = s.S → (¬ ∃ ζ : L, IsPrimitiveRoot ζ l) → ∀ (c : Coef l), W.Large L c → ∀ (r : W.Resid V.frame c.O 4) (B : W.UniversalOrdinaryDeterminantRing r) (Λ : W.LamObj r) (ι : PadicAlgCl l ≃+* ℂ) (J : Ideal B.B), B.HidaPropsAlt ι J Λ → r.V0ok → (∀ η : V.frame.G₀ →* (ResidueField c.O)ˣ, η ^ 2 = 1 → (V.frame.eps c.O (ResidueField c.O)).ker ≤ η.ker → (∀ i, ∃ j, η * r.chib i = r.chib j) → η = 1) → (∃ i j, ∀ m : ℕ, 0 < m → m ≤ 4 → (r.chib i / r.chib j) ^ m ≠ 1) → ∀ (x : B.Pt) (ρ : G L Ω →* GL (Fin 4) (PadicAlgCl l)) (m : W.Vl l L → Fin 4 → ℤ), J ≤ RingHom.ker x → x.IsRep ρ → Continuous ρ →

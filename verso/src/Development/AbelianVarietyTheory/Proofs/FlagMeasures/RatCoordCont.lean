@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hq` using `q.2`. Simplify using `only [GlobalTheory.LoopV.roots, Finset.mem_filter] at hq`. Establish `h` using `hq.2.1`. Establish `h2` using `q.1.2.2`. Rewrite `h` using `[Fin.lt_def]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -33,7 +33,7 @@ def ratCoord (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u' : D.what₂.Wor
     (uMat ((γ⁻¹ * (s⁻¹ * y * s) * γ) (X.pl.symm τ)) *ᵥ Formalism.L2.SG.RealObj.frm X u' 1 (X.pl.symm τ) q.1.2)
 
 /- English proof (translation)
-Unfold `ratCoord Formalism.L2.SG.HidaSetting.hJ`. Use `continuous_pi fun τ => continuous_pi fun q => ?_` and prove the remaining obligations. Use `Continuous.dotProduct continuous_const (Continuous.matrix_mulVec continuous_const ?_)` and prove the remaining obligations. Use `Continuous.matrix_mulVec ?_ continuous_const` and prove the remaining obligations. Conclude with `Units.continuous_val.comp (continuous_subtype_val.comp ((continuous_apply _).comp ((continuous_const.mul ((continuous_const.mul continuous_id).mul continuous_const)).mul continuous_const)))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ratCoord_cont (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1))
     (γ s : X.B.I.Ginf) : Continuous (ratCoord X u' w γ s) := by

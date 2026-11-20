@@ -13,7 +13,7 @@ set_option autoImplicit false in
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 /- English proof (translation)
-Establish `hsmul : ∀ j, (ε • x) j = ((ε : 𝓞 F) : F) * x j` using `fun j => rfl`. Simplify using `only [_root_.GlobalTheory.HilbFam.coord, hsmul, map_mul, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem coord_unit_smul {F : Type} [Field F]
     (b a : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℂ) (ε : (𝓞 F)ˣ) (x : Fin 2 → F) (τ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F) :
@@ -28,9 +28,9 @@ open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 
 /- English proof (translation)
-Introduce `F _ _ _ k σ b a ε x hk`. Establish `hprod : ∏ τ, _root_.GlobalTheory.HilbFam.coord b a (ε • x) τ = ((Algebra.norm ℚ ((ε : 𝓞 F) : F) : ℚ) : ℂ) * ∏ τ, _root_.GlobalTheory.HilbFam.coord b a x τ`. Simplify using `only [coord_unit_smul, Finset.prod_mul_distrib]`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.prod_emb]`. Establish `hN : Algebra.norm ℚ ((ε : 𝓞 F) : F) = 1 ∨ Algebra.norm ℚ ((ε : 𝓞 F) : F) = -1` using `abs_eq (zero_le_one) |>.mp (NumberField.Units.norm F ε)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `_root_.GlobalTheory.HilbFam.gTerm`. Rewrite using `[hprod]`. Apply the tactic sequence `rcases hN with hN | hN <;> simp [hN, hk.neg_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.HilbFam.gTerm_unit_smul : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (σ : ℂ) (b a : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℂ)
     (ε : (𝓞 F)ˣ) (x : Fin 2 → F), Even k → _root_.GlobalTheory.HilbFam.gTerm k σ b a (ε • x) = _root_.GlobalTheory.HilbFam.gTerm k σ b a x := by

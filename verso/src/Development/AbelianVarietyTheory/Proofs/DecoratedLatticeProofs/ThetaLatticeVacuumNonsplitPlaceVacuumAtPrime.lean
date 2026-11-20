@@ -20,19 +20,17 @@ namespace GlobalTheory.VacInertAt
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨α, rfl, h1, h0⟩` from `hε`. Establish `h2F : (2 : D.host.F) ≠ 0` using `two_ne_zero`. Use `set γ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F := α * algebraMap D.host.F _ ((2 : D.host.F)⁻¹) with hγdef`. Establish `hγ : γ ∈ intAf D.host.F` using `fun w => by`. Rewrite using `[hγdef, map_mul, AlgHom.commutes]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[h1, one_mul, HeightOneSpectrum.mem_adicCompletionIntegers, GlobalTheory.Idele.valued_algebraMap, map_inv₀]`. Establish `: HeightOneSpectrum.valuation D.host.F w (2 : D.host.F) = 1`. Rewrite using `[← map_ofNat (algebraMap (𝓞 D.host.F) D.host.F) 2, HeightOneSpectrum.valuation_of_algebraMap]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `HeightOneSpectrum.intValuation_eq_one_iff.2 h2`. Rewrite using `[this, inv_one]`. Rewrite using `[h0 w hw, zero_mul]`. Conclude with `zero_mem _`. Establish `hγv : ∀ w, ¬ w = v → evalV D.host.F w γ = 0` using `fun w hw => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγdef, map_mul, h0 w hw, zero_mul]`. Establish `hαγ : α = γ + γ`. Rewrite using `[← two_mul, hγdef, mul_comm α, ← mul_assoc, ← map_ofNat (algebraMap D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F)) 2, ← map_mul, mul_inv_cancel₀ h2F, map_one, one_mul]`. Use `set a₀ := algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 γ) with ha₀`. Set `φ : WO S T →+ WO S T` to `DistribMulAction.toAddMonoidHom (WO S T) a₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : latO S T (L0c D S) (L0c D T) (fun _ => True) ≤ (latO S T (frameLat S : Set (Fin S.rank → D.host.E)) (frameLat T : Set (Fin T.rank → D.host.E)) (fun x => x = v)).comap φ`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨β, hβ, -, a, ha, s, hs, t, ht, rfl⟩`. Use `AddSubgroup.subset_closure ⟨γ * β, GlobalTheory.VacLat.intAf_mul hγ hβ, fun w hw => by rw [map_mul, hγv w hw, zero_mul], a, ha, s, by rw [← hermitianSpaceBaseLattice_eq_frameLattice]; exact hs, t, by rw [← hermitianSpaceBaseLattice_eq_frameLattice]; exact ht, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [φ, DistribMulAction.toAddMonoidHom_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Rewrite using `[ha₀, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, Algebra.algebraMap_self, RingHom.id_apply, GlobalTheory.VacLat.pairA_mul]`. Use `⟨a₀ • u, key hu, ?_⟩` and prove the remaining obligations. Establish `he : algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) = a₀ + a₀`. Rewrite using `[ha₀, ← map_add, hαγ]`.
-
-Use `congr 1`. Conclude with `Prod.ext (add_zero 0).symm rfl`. Use extensionality with `i j`. Rewrite using `[two_nsmul, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, ← add_mul, ← he]`. Conclude with `(hh i j).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_eq_two_smul {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε)
     (h2 : (2 : 𝓞 D.host.F) ∉ v.asIdeal) (S T : HSp D) (u : WO S T)
@@ -82,11 +80,11 @@ theorem half_eq_two_smul {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host
   exact (hh i j).symm
 
 /- English proof (translation)
-Introduce `D v w hv hw ψ S T f hf`. Take `⟨ε, hε, -, hc, hpi⟩` from `GlobalTheory.VacFixInert.inert_data hw`. Establish `h2` using `GlobalTheory.VacFixInert.two_not_mem hc`. Rewrite `hε`, `h2` using `[hv]`. Use `⟨hf.1, fun e f' he u hu hhalf => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hee` using `(hpi e f' he).1`. Establish `hh : IsHalf (algebraMap (AF D.host.F) (AE D) ε) u`. Break down `hhalf with h | h` into its components or cases. Rewrite `h` using `[hee]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hee, GlobalTheory.IdemSupport.cA_algebraMap]`. Conclude with `h`. Take `⟨u', hu', rfl⟩` from `half_eq_two_smul hε h2 S T u hu hh`. Conclude with `hf.2.1 u' hu'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isVacAt_of_vacFin : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)),
     w.under (𝓞 D.host.F) = v → Formalism.DivisionValues.conjPl w = w → ∀ (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ),

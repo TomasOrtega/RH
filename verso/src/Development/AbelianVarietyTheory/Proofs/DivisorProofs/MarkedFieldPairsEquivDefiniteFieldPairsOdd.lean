@@ -17,11 +17,11 @@ namespace GlobalTheory.LKDef.Move
 variable {p : ℕ} [Fact p.Prime] {G : HTGroup p}
 
 /- English proof (translation)
-Establish `hp : ∀ k : ℕ, ((y : G.C) * x * ((y⁻¹ : G.Cˣ) : G.C)) ^ k = (y : G.C) * x ^ k * ((y⁻¹ : G.Cˣ) : G.C)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ, ih, pow_succ]`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`. Proceed by induction on `A using Polynomial.induction_on' with`. Consider the case `add f g hf hg => rw [map_add, map_add, hf, hg, mul_add, add_mul]`. Consider the case `monomial n a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Polynomial.aeval_monomial, Polynomial.aeval_monomial, hp n, ← mul_assoc, ← mul_assoc, Algebra.commutes a (y : G.C)]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aeval_conj (y : G.Cˣ) (x : G.C) (A : Polynomial G.F) :
     Polynomial.aeval ((y : G.C) * x * ((y⁻¹ : G.Cˣ) : G.C)) A =
@@ -42,7 +42,7 @@ theorem aeval_conj (y : G.Cˣ) (x : G.C) (A : Polynomial G.F) :
     simp only [mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[aeval_conj, hb, ← mul_assoc, ← Algebra.commutes s]`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem move (y : G.Cˣ) (s : ℚ) (g b b' : G.C) (A : Polynomial G.F)
     (hb : b' = algebraMap ℚ G.C s * (y * b * sh G y)) :
@@ -52,7 +52,7 @@ theorem move (y : G.Cˣ) (s : ℚ) (g b b' : G.C) (A : Polynomial G.F)
   simp only [mul_assoc, Units.inv_mul_cancel_left]
 
 /- English proof (translation)
-Establish `hX : X = (u : R) * ((b⁻¹ : Rˣ) : R)` using `by rw [← hu, mul_assoc, Units.mul_inv, mul_one]`. Establish `hl : (b : R) * ((u⁻¹ : Rˣ) : R) * X = 1`. Rewrite using `[hX, mul_assoc, ← mul_assoc ((u⁻¹ : Rˣ) : R), Units.inv_mul, one_mul, Units.mul_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem cancel {R : Type*} [Ring R] (X w : R) (b u : Rˣ) (hu : X * b = u) (h : X * b = X * w) :
     (b : R) = w := by
@@ -64,7 +64,7 @@ theorem cancel {R : Type*} [Ring R] (X w : R) (b u : Rˣ) (hu : X * b = u) (h : 
     _ = w := by rw [hl, one_mul]
 
 /- English proof (translation)
-Establish `hint : IsIntegral G.F x`. Assume the negation of the conclusion as `h`. Conclude with `hi.ne_zero (minpoly.eq_zero h)`. Conclude with `minpoly.monic hint`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem minpoly_monic_of_irreducible (x : G.C)
     (hi : Irreducible (minpoly G.F x)) : (minpoly G.F x).Monic := by
@@ -74,7 +74,7 @@ private theorem minpoly_monic_of_irreducible (x : G.C)
   exact minpoly.monic hint
 
 /- English proof (translation)
-Rewrite `h` using `[aeval_conj]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left, Units.inv_mul, mul_one]`. Use `_ = 0 := by rw [h, mul_zero, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem aeval_eq_zero_of_aeval_conj_eq_zero (y : G.Cˣ) (g : G.C)
     (q : Polynomial G.F) (h : Polynomial.aeval ((y : G.C) * g * ((y⁻¹ : G.Cˣ) : G.C)) q = 0) :
@@ -86,7 +86,7 @@ private theorem aeval_eq_zero_of_aeval_conj_eq_zero (y : G.Cˣ) (g : G.C)
     _ = 0 := by rw [h, mul_zero, zero_mul]
 
 /- English proof (translation)
-The claim follows from `minpoly.eq_of_irreducible_of_monic hi (aeval_eq_zero_of_aeval_conj_eq_zero y g _ (minpoly.aeval _ _)) (minpoly_monic_of_irreducible _ hi)`.
+A detailed English derivation is pending.
 -/
 private theorem minpoly_conj_eq_of_irreducible (y : G.Cˣ) (g : G.C)
     (hi : Irreducible (minpoly G.F ((y : G.C) * g * ((y⁻¹ : G.Cˣ) : G.C)))) :
@@ -101,37 +101,31 @@ namespace GlobalTheory.LKDef
 open GlobalTheory.LKDef.Move
 
 /- English proof (translation)
-Introduce `p hp G ha hn sel hsel`. Choose the witnesses or unpack the hypotheses as in `⟨v0, hv0⟩ : ∃ v : InfinitePlace G.F, sigPosH (G.gram_herm v) = 1 := by`. Establish `h1 : 0 < G.a` using `by rw [ha]; exact Nat.one_pos`. Take `⟨x⟩` from `Fintype.card_pos_iff.mp h1`. Conclude with `⟨x.1, x.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `key` using `fun (P0 : Polynomial G.F) (hi : Irreducible P0) (hm : P0.Monic) (hd : P0.natDegree = G.n) => GlobalTheory.T.exists_polynomial_move_definiteSimilitudePair_marked p G ha hn P0 (sel P0) v0 hv0 hi (hsel v0 hv0 P0 hm hd)`. Use `choose! A hA1 hA2 using key`. Establish `hF` using `fun (P : Pair G) (hi : Irreducible P.pol) (hm : P.Mark (sel P.pol)) => hA2 P.pol hi (minpoly_monic_of_irreducible (P.γ : G.C) hi) P.reg.1 P rfl hm`. Use `choose FQ hFγ hFc hFβ hFu using hF`. Establish `hB` using `fun (Q : DPair G) (hi : Irreducible Q.pol) => hA1 Q.pol hi (minpoly_monic_of_irreducible (Q.γ : G.C) hi) Q.reg.1 Q rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose BP hBγ hBc hBβ hBm hBu using hB`. Establish `hpolP : ∀ P P' : Pair G, P'.Rel P → Irreducible P.pol → P'.pol = P.pol`. Introduce `P P' hr hi`. Take `⟨y, s, -, -, hγ⟩` from `hr`. Establish `e : (P.γ : G.C) = (y : G.C) * P'.γ * ((y⁻¹ : G.Cˣ) : G.C)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγ, Units.val_mul, Units.val_mul]`. Establish `hi' : Irreducible (minpoly G.F ((y : G.C) * P'.γ * ((y⁻¹ : G.Cˣ) : G.C)))`. Rewrite using `[← e]`. Conclude with `hi`. Use `show minpoly G.F (P'.γ : G.C) = minpoly G.F (P.γ : G.C)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(minpoly_conj_eq_of_irreducible y _ hi').symm`. Establish `hFirr : ∀ (P : Pair G) (hi : Irreducible P.pol) (hm : P.Mark (sel P.pol)), Irreducible (Quot.out (Quot.mk (DPair.Rel (G` using `G)) (FQ P hi hm) : DCls G)).pol := by`. Introduce `P hi hm`. Rewrite using `[DPair.pol_eq_of_rel (DPair.rel_out (FQ P hi hm))]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show Irreducible (minpoly G.F ((FQ P hi hm).γ : G.C))`. Rewrite using `[hFγ P hi hm]`. Conclude with `hi`. Establish `hBok : ∀ (Q : DPair G) (hi : Irreducible Q.pol), Irreducible (Quot.out (Quot.mk (Pair.Rel (G` using `G)) (BP Q hi) : Cls G)).pol ∧ (Quot.out (Quot.mk (Pair.Rel (G := G)) (BP Q hi) : Cls G)).Mark (sel (Quot.out (Quot.mk (Pair.Rel (G := G)) (BP Q hi) : Cls G)).pol) := by`. Introduce `Q hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hr` using `(Pair.mk_eq_iff_rel_and_out_rel p G (BP Q hi) (BP Q hi)).2`. Establish `hPpol : (BP Q hi).pol = Q.pol` using `by show minpoly G.F ((BP Q hi).γ : G.C) = minpoly G.F (Q.γ : G.C)`. Rewrite using `[hBγ Q hi]`. Establish `hPi : Irreducible (BP Q hi).pol` using `by rw [hPpol]; exact hi`. Rewrite using `[hpolP _ _ hr hPi, Pair.mark_iff_of_rel p G _ _ _ hr, hPpol]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨hi, hBm Q hi⟩`. Establish `hleft : ∀ (P : Pair G) (hi : Irreducible P.pol) (hm : P.Mark (sel P.pol)), P.Rel (BP _ (hFirr P hi hm))`. Introduce `P hi hm`. Take `⟨y, s, hs, hβ, hγ⟩` from `DPair.rel_out (FQ P hi hm)`. Establish `hpol : (Quot.out (Quot.mk (DPair.Rel (G` using `G)) (FQ P hi hm) : DCls G)).pol = P.pol := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[DPair.pol_eq_of_rel (DPair.rel_out (FQ P hi hm))]`. Use `show minpoly G.F ((FQ P hi hm).γ : G.C) = minpoly G.F (P.γ : G.C)`. Rewrite using `[hFγ P hi hm]`. Use `⟨y, s, hs, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hBβ _ (hFirr P hi hm), hpol, hγ, Units.val_mul, Units.val_mul, GlobalTheory.LKDef.Move.move y s ((FQ P hi hm).γ : G.C) _ _ (A P.pol) hβ, hFγ P hi hm, ← hFβ P hi hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBγ _ (hFirr P hi hm), hγ, hFγ P hi hm]`. Establish `hright : ∀ (Q : DPair G) (hi : Irreducible Q.pol), (FQ _ (hBok Q hi).1 (hBok Q hi).2).Rel Q`. Introduce `Q hi`. Establish `hr` using `(Pair.mk_eq_iff_rel_and_out_rel p G (BP Q hi) (BP Q hi)).2`. Establish `hPpol : (BP Q hi).pol = Q.pol` using `by show minpoly G.F ((BP Q hi).γ : G.C) = minpoly G.F (Q.γ : G.C)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBγ Q hi]`. Establish `hPi : Irreducible (BP Q hi).pol` using `by rw [hPpol]; exact hi`. Establish `hP'pol : (Quot.out (Quot.mk (Pair.Rel (G` using `G)) (BP Q hi) : Cls G)).pol = Q.pol := by`. Rewrite using `[hpolP _ _ hr hPi, hPpol]`. Establish `hA' : A (Quot.out (Quot.mk (Pair.Rel (G` using `G)) (BP Q hi) : Cls G)).pol = A Q.pol := by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hP'pol]`. Take `⟨y, s, hs, hβ, hγ⟩` from `id hr`. Establish `hc : (y : G.C) * (Quot.out (Quot.mk (Pair.Rel (G` using `G)) (BP Q hi) : Cls G)).γ * ((y⁻¹ : G.Cˣ) : G.C) = Q.γ := by`. Rewrite using `[← hBγ Q hi, hγ, Units.val_mul, Units.val_mul]`. Use `⟨y, s, hs, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.LKDef.Move.cancel (Polynomial.aeval (Q.γ : G.C) (A Q.pol)) _ Q.β (BP Q hi).β (hBβ Q hi).symm ?_` and prove the remaining obligations. Rewrite using `[← hBβ Q hi, hβ, hFβ _ (hBok Q hi).1 (hBok Q hi).2, ← GlobalTheory.LKDef.Move.move y s _ _ _ _ rfl, hc, hA']`. Rewrite using `[hFγ _ (hBok Q hi).1 (hBok Q hi).2, ← hBγ Q hi, hγ]`. Establish `hterm : ∀ (P : Pair G) (hi : Irreducible P.pol) (hm : P.Mark (sel P.pol)), (Quot.out (Quot.mk (DPair.Rel (G` using `G)) (FQ P hi hm) : DCls G)).pol = P.pol ∧ ∀ (Kf : Subgroup G.GAf) (f : G.GAf → ℂ) (r : ℕ) (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ), 0 < r → (∀ k ∈ Kf, ∀ g, f (k⁻¹ * g * k) = f g) → (∀ k ∈ K, ∀ g, φ (k⁻¹ * g * sigG G r k) = φ g) → (Quot.out (Quot.mk (DPair.Rel (G := G)) (FQ P hi h …`. Introduce `P hi hm`.
-
-Establish `h9` using `GlobalTheory.T.related_pairs_orbital_term_eq p G (FQ P hi hm) _ (DPair.rel_out (FQ P hi hm))`. Use `⟨?_, fun Kf f r K φ hr hf hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[← h9.1] show minpoly G.F ((FQ P hi hm).γ : G.C) = minpoly G.F (P.γ : G.C)`. Rewrite using `[hFγ P hi hm]`. Rewrite using `[← h9.2.2 Kf f r K φ hr hf hφ]`.
-
-Apply the tactic sequence `exact (GlobalTheory.T.kottwitzTerm_eq_definitePair_of_local_isometry p G P (FQ P hi hm) (hFγ P hi hm).symm (hFc P hi hm).symm (hFu P hi hm) Kf f r K φ hr hf hφ).symm`. Use `⟨⟨fun q => ⟨(Quot.mk (DPair.Rel (G := G)) (FQ _ q.2.1 q.2.2) : DCls G), hFirr _ q.2.1 q.2.2⟩, fun q => ⟨(Quot.mk (Pair.Rel (G := G)) (BP _ q.2) : Cls G), hBok _ q.2⟩, fun q => ?_, fun q => ?_⟩, fun q => hterm _ q.2.1 q.2.2⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `((Pair.mk_eq_iff_rel_and_out_rel p G _ _).1.mpr (hleft _ q.2.1 q.2.2)).symm.trans (Quot.out_eq q.1)`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Conclude with `((DPair.mk_eq_iff _ _).mpr (hright _ q.2)).trans (Quot.out_eq q.1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem cls_equiv_dcls_irr : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 → Odd G.n → ∀ (sel : Polynomial G.F → ℂ), IsSel G sel → ∃ e : {q : Cls G // Irreducible (Quot.out q).pol ∧ (Quot.out q).Mark (sel (Quot.out q).pol)} ≃ {q : DCls G // Irreducible (Quot.out q).pol}, ∀ q, (Quot.out (e q).1).pol = (Quot.out q.1).pol ∧ ∀ (Kf : Subgroup G.GAf) (f : G.GAf → ℂ) (r : ℕ) (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ), 0 < r → (∀ k ∈ Kf, ∀ g, f (k⁻¹ * g * k) = f g) → (∀ k ∈ K, ∀ g, φ (k⁻¹ * g * sigG G r k) = φ g) → (Quot.out (e q).1).term Kf f r K φ = (Quot.out q.1).term Kf f r K φ := by
   intro p hp G ha hn sel hsel

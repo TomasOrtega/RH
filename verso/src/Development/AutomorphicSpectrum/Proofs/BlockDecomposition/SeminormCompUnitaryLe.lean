@@ -26,9 +26,9 @@ theorem rowMul_apply (A : Matrix (Fin 2) (Fin 2) ℂ) (v : Fin 2 → ℂ) :
     rowMul A v = Matrix.vecMul v A := rfl
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun h i) i`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.conjTranspose_apply, Matrix.one_apply_eq, Complex.star_def, Complex.mul_conj'] at h1`. Establish `h2 : ‖κ i 0‖ ^ 2 + ‖κ i 1‖ ^ 2 = 1` using `by exact_mod_cast h1`. Use `fin_cases j`. Use `show ‖κ i 0‖ ≤ 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[norm_nonneg (κ i 0), sq_nonneg (‖κ i 1‖)]`. Use `show ‖κ i 1‖ ≤ 1`. Use polynomial arithmetic with `[norm_nonneg (κ i 1), sq_nonneg (‖κ i 0‖)]`.
+A detailed English derivation is pending.
 -/
 theorem entry_le_one {κ : Matrix (Fin 2) (Fin 2) ℂ} (h : κ * κᴴ = 1) (i j : Fin 2) :
     ‖κ i j‖ ≤ 1 := by
@@ -43,11 +43,11 @@ theorem entry_le_one {κ : Matrix (Fin 2) (Fin 2) ℂ} (h : κ * κᴴ = 1) (i j
     nlinarith [norm_nonneg (κ i 1), sq_nonneg (‖κ i 0‖)]
 
 /- English proof (translation)
-Use `ContinuousLinearMap.opNorm_le_bound _ (by norm_num) fun v => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_` and prove the remaining obligations. Establish `h0 : ‖v 0‖ ≤ ‖v‖` using `norm_le_pi_norm v 0`. Establish `h1 : ‖v 1‖ ≤ ‖v‖` using `norm_le_pi_norm v 1`. Establish `e : rowMul A v j = v 0 * A 0 j + v 1 * A 1 j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[rowMul_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ ‖v‖ * 1 + ‖v‖ * 1 := by gcongr`. Conclude with `hA 0 j`. Conclude with `hA 1 j`. Use `_ = 2 * ‖v‖ := by ring`.
+A detailed English derivation is pending.
 -/
 theorem norm_rowMul_le {A : Matrix (Fin 2) (Fin 2) ℂ} (hA : ∀ i j, ‖A i j‖ ≤ 1) :
     ‖rowMul A‖ ≤ 2 := by
@@ -68,11 +68,11 @@ theorem norm_rowMul_le {A : Matrix (Fin 2) (Fin 2) ℂ} (hA : ∀ i j, ‖A i j�
     _ = 2 * ‖v‖ := by ring
 
 /- English proof (translation)
-Use `SchwartzMap.seminorm_le_bound ℝ i j f' (by positivity) fun z => ?_` and prove the remaining obligations. Establish `hcomp : (f' : E → ℂ) = (f : E → ℂ) ∘ L` using `funext hf`. Establish `hz : ‖z‖ ≤ 2 * ‖L z‖`. Combine the equalities or inequalities in the displayed calculation. Establish `hD : ‖iteratedFDeriv ℝ j (f' : E → ℂ) z‖ ≤ ‖iteratedFDeriv ℝ j (f : E → ℂ) (L z)‖ * 2 ^ j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[hcomp, L.iteratedFDeriv_comp_right (f.smooth ⊤) z (by exact_mod_cast le_top)]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Use `gcongr`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ 2 ^ (i + j) * SchwartzMap.seminorm ℝ i j f := by gcongr`. Conclude with `SchwartzMap.le_seminorm ℝ i j f (L z)`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem seminorm_comp_le {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (L L' : E →L[ℝ] E) (hLL : ∀ z, L' (L z) = z) (hL : ‖L‖ ≤ 2) (hL' : ‖L'‖ ≤ 2)
@@ -100,17 +100,15 @@ theorem seminorm_comp_le {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
         exact SchwartzMap.le_seminorm ℝ i j f (L z)
 
 /- English proof (translation)
-Introduce `N`. Use `⟨4 ^ N, by positivity, fun κ hκ f => ?_⟩` and prove the remaining obligations. Establish `hκ' : κᴴ * κ = 1` using `mul_eq_one_comm.1 hκ`. Establish `hb : ∀ i j, ‖κ i j‖ ≤ 1` using `entry_le_one hκ`. Establish `hb' : ∀ i j, ‖κᴴ i j‖ ≤ 1` using `fun i j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.conjTranspose_apply, norm_star]`. Conclude with `hb j i`. Establish `h12 : ∀ z, rowMul κᴴ (rowMul κ z) = z` using `fun z => by`. Simplify using `[rowMul_apply, Matrix.vecMul_vecMul, hκ]`. Establish `h21 : ∀ z, rowMul κ (rowMul κᴴ z) = z` using `fun z => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[rowMul_apply, Matrix.vecMul_vecMul, hκ']`. Set `e : (Fin 2 → ℂ) ≃L[ℝ] (Fin 2 → ℂ)` to `ContinuousLinearEquiv.equivOfInverse (rowMul κ) (rowMul κᴴ) h12 h21`. Set `f' : SchwartzMap (Fin 2 → ℂ) ℂ` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℝ e f`. Establish `hf' : ∀ v, f' v = f (rowMul κ v)` using `fun v => rfl`. Use `⟨f', fun v => hf' v, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsem : ∀ i ∈ Finset.range (N + 1), ∀ j ∈ Finset.range (N + 1), SchwartzMap.seminorm ℝ i j f' ≤ 4 ^ N * SchwartzMap.seminorm ℝ i j f`. Introduce `i hi j hj`. Establish `hi' : i ≤ N` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Establish `hj' : j ≤ N` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hj)`. Use `(seminorm_comp_le (rowMul κ) (rowMul κᴴ) h12 (norm_rowMul_le hb) (norm_rowMul_le hb') f f' hf' i j).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Unfold `pS`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations.
-
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun j hj => hsem i hi j hj`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_unitary_bounded : ∀ N : ℕ, ∃ C : ℝ, 0 ≤ C ∧ ∀ κ : Matrix (Fin 2) (Fin 2) ℂ, κ * κᴴ = 1 →
     ∀ f : SchwartzMap (Fin 2 → ℂ) ℂ, ∃ f' : SchwartzMap (Fin 2 → ℂ) ℂ,

@@ -20,23 +20,23 @@ namespace GlobalTheory.LevNorm
 open Formalism.BasicNotions.TH
 
 /- English proof (translation)
-Introduce `_ _ h` and use `congrArg Prod.fst (o.emb_injective (d.wittDecomp_anisotropicEmbedding_injective h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem embA_injective {D : D7} {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L) :
     Function.Injective (embA d o) := fun _ _ h =>
   congrArg Prod.fst (o.emb_injective (d.wittDecomp_anisotropicEmbedding_injective h))
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, CenAct.map_sand p m j hm, h, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finf_sand {D : D7} {k n : ℕ} (p : Mx D k n) (m : Mx D n n) (j : Mx D n k) (hm : m.map (CenAct.finf D) = 1)
     (h : p ⬝ j = 1) : (p ⬝ (m ⬝ j)).map (CenAct.finf D) = 1 := by
   rw [← Matrix.mul_assoc, CenAct.map_sand p m j hm, h, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Rewrite `h` using `[embA_apply, CenAct.mem_GfC_iff]`. Establish `h1` using `finf_sand d.p0 _ d.j0 h d.p0_j0`. Rewrite `h1` using `[d.wittDecomp_anisotropicEmbedding_inclAnisotropic, cancel₂ d.p0_j0, Matrix.one_mul]`. Establish `h2` using `finf_sand o.pA _ o.jA h1 o.pA_jA`. Rewrite `h2` using `[o.emb_jA, cancel₂ o.pA_jA, Matrix.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(CenAct.mem_GfC_iff _ _).2 h2`.
+A detailed English derivation is pending.
 -/
 theorem mem_GfC_of_embA {D : D7} {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L) {a : GA D A}
     (h : embA d o a ∈ GfC S) : a ∈ GfC A := by
@@ -48,17 +48,15 @@ theorem mem_GfC_of_embA {D : D7} {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S
   exact (CenAct.mem_GfC_iff _ _).2 h2
 
 /- English proof (translation)
-Set `j : X.B.I.Gf →* GA D (D.sp.Y 0)` to `((iotaX X h).symm.toMulEquiv.toMonoidHom).comp (MonoidHom.inr _ _)`. Establish `hj : ∀ x, iotaX X h (j x) = (1, x)` using `fun x => (iotaX X h).apply_symm_apply _`. Establish `hjG : ∀ x, j x ∈ GfC (D.sp.Y 0)` using `fun x => (GlobalTheory.SeeConjRead.iotaX_fst_eq_one_iff X h _).1 (by rw [hj])`. Establish `hjJ : ∀ x, j x ∈ rowJ X h ↔ x ∈ X.K2` using `fun x => by show (iotaX X h (j x)).1 = 1 ∧ (iotaX X h (j x)).2 ∈ X.K2 ↔ _`. Rewrite using `[hj]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `and_iff_right rfl`. Establish `hjχ : ∀ x, rowChi X h (j x) = star (X.chi2 x)` using `fun x => by show star (X.chi2 (iotaX X h (j x)).2) = _`. Rewrite using `[hj]`. Take `⟨y, hy⟩ : ∃ y, j y = t * t'⁻¹` from `⟨_, GlobalTheory.SeeConjRead.eq_symm_one X h _ ((GlobalTheory.SeeConjRead.iotaX_fst_eq_one_iff X h _).2 (mul_mem ht.1 (inv_mem ht'.1)))⟩`. Establish `e1 : ∀ x, t'⁻¹⁻¹ * (t'⁻¹ * j x * t') * t'⁻¹ = j x` using `fun x => by group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∀ x, t⁻¹⁻¹ * (t'⁻¹ * j x * t') * t⁻¹ = j (y * x * y⁻¹)` using `fun x => by`. Rewrite using `[map_mul, map_mul, map_inv, hy]`. Use `group`. Establish `hJ : ∀ x, t'⁻¹ * j x * t' ∈ J ↔ x ∈ X.K2` using `fun x => by rw [(ht'.2 _).1, e1, hjJ]`. Take `⟨z, hz, w, hw, hw', k, hk, e⟩` from `setting_normaliser X h hρ u y fun x => ⟨by rw [← hJ, (ht.2 _).1, e2, hjJ], fun hx => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hjχ, ← hjχ, ← e2, (ht.2 _).2 ((hJ x).2 hx), ← (ht'.2 _).2 ((hJ x).2 hx), e1]⟩`. Take `⟨a, ha⟩` from `(B.tieH (j w)).2 (by rw [hj]; exact ⟨one_mem _, hw⟩)`. Use `⟨j z, hjG z, Subgroup.mem_center_iff.2 fun g => (iotaX X h).injective ?_, a, mem_GfC_of_embA B.d B.o (ha ▸ hjG w), Subgroup.mem_center_iff.2 fun b => embA_injective B.d B.o ((iotaX X h).injective ?_), t'⁻¹ * j k * t', (hJ k).2 hk, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hj]`. Conclude with `Prod.ext (by simp) (Subgroup.mem_center_iff.1 hz _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, map_mul, map_mul, ha, hj]`. Conclude with `Prod.ext (by simp) (hw' _ ((B.tieH _).1 ⟨b, rfl⟩).2).symm`. Use `show t = (j (X.xu u))⁻¹ * embA B.d B.o a * j (X.xu u) * j z * t' * (t'⁻¹ * j k * t')`. Rewrite using `[ha]`. Establish `e3` using `congrArg j e`.
-
-Rewrite `e3` using `[hy, map_mul, map_mul, map_mul, map_mul, map_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem matches_differ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (hρ : 1 ≤ D.R.rS)
     (u : D.what₂.Word) {ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) ℂ} {A : HSp D} (B : SBes X h u ψ A)
@@ -102,7 +100,7 @@ theorem matches_differ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) 
 end GlobalTheory.LevNorm
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W _ hρ u B t _ t' _ ht ht'`. Conclude with `GlobalTheory.LevNorm.matches_differ W.S.X W.Q.instEq hρ u B ht ht'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MiTop.matches_differ_central : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), BotHyp W → 1 ≤ D.R.rS → ∀ (u : D.what₂.Word) (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)), ∀ t ∈ GfC (D.sp.Y 0), ∀ t' ∈ GfC (D.sp.Y 0), Matches W.S.X W.Q.instEq (rJ W) (rChi W) t → Matches W.S.X W.Q.instEq (rJ W) (rChi W) t' → ∃ z ∈ GfC (D.sp.Y 0), z ∈ Subgroup.center (GA D (D.sp.Y 0)) ∧ ∃ a ∈ GfC (D.sp.X 0), a ∈ Subgroup.center (GA D (D.sp.X 0)) ∧ ∃ k ∈ rJ W, t = ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u))⁻¹ * embA B.d B.o a * (iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * z * t' * k := by
   intro D L hT Gi Gl Kc Yd cX ex W _ hρ u B t _ t' _ ht ht'

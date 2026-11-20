@@ -55,9 +55,9 @@ def ULogBound.Statement (D : FullerData II Ψ K ι Ω E Em) : Prop :=
           C * Real.log ((D.chart a).logR t)
 
 /- English proof (translation)
-Unfold `SncChart.logR`. Use `le_add_of_nonneg_right (Finset.sum_nonneg fun i _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Establish `h1 : ‖t i‖ ≤ 1` using `(norm_le_pi_norm t i).trans (ht.trans (by norm_num))`. Rewrite using `[one_div, Real.log_inv, Real.log_pow]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Real.log_nonpos (norm_nonneg (t i)) h1` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_rfl`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exp_one_le_logR {P : Ideal (MRing ι)} {n : ℕ} {Bd : Set ((Σ k, ι k) → ℂ)}
     (χ : SncChart P n Bd) {t : Fin n → ℂ} (ht : ‖t‖ ≤ 1 / 2) : Real.exp 1 ≤ χ.logR t := by
@@ -72,7 +72,7 @@ theorem exp_one_le_logR {P : Ideal (MRing ι)} {n : ℕ} {Bd : Set ((Σ k, ι k)
   · exact le_rfl
 
 /- English proof (translation)
-Establish `h` using `exp_one_le_logR χ ht`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem one_le_log_logR {P : Ideal (MRing ι)} {n : ℕ} {Bd : Set ((Σ k, ι k) → ℂ)}
     (χ : SncChart P n Bd) {t : Fin n → ℂ} (ht : ‖t‖ ≤ 1 / 2) : 1 ≤ Real.log (χ.logR t) := by
@@ -81,11 +81,11 @@ theorem one_le_log_logR {P : Ideal (MRing ι)} {n : ℕ} {Bd : Set ((Σ k, ι k)
     _ ≤ Real.log (χ.logR t) := Real.log_le_log (Real.exp_pos 1) h
 
 /- English proof (translation)
-Establish `hr0 : 0 ≤ Real.log r` using `Real.log_nonneg hr`. Establish `hC' : Real.log C ≤ |Real.log C|` using `le_abs_self _`. Establish `hCa : 0 ≤ |Real.log C|` using `abs_nonneg _`. Unfold `Real.posLog`. Use `max_le (by linarith) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Break down `eq_or_ne y 0 with hy | hy` into its components or cases. Rewrite using `[hy, Real.log_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hy2 : 0 < y ^ 2` using `by positivity`. Establish `h2 : Real.log (y ^ 2) ≤ Real.log (C * r)` using `Real.log_le_log hy2 h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Real.log_pow, Real.log_mul hC.ne' (by linarith)]`. Move the coercions through the operations in `at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem posLog_le_of_sq_le {y C r : ℝ} (hC : 0 < C) (hr : 1 ≤ r) (h : y ^ 2 ≤ C * r) :
     Real.posLog y ≤ (|Real.log C| + Real.log r) / 2 := by
@@ -104,23 +104,21 @@ theorem posLog_le_of_sq_le {y C r : ℝ} (hC : 0 < C) (hr : 1 ≤ r) (h : y ^ 2 
     linarith
 
 /- English proof (translation)
-The claim follows from `le_max_left _ _`.
+A detailed English derivation is pending.
 -/
 theorem FullerData.cuspU_nonneg (D : FullerData II Ψ K ι Ω E Em) (z : (Σ k, ι k) → ℂ) : 0 ≤ D.cuspU z :=
   le_max_left _ _
 
 /- English proof (translation)
-Introduce `A0 hA0 hsm a`. Take `⟨C1, hC1, h1⟩` from `hlam a`. Take `⟨C2, hC2, h2⟩` from `hphi A0 hA0 hsm a`. Use `set fj : ℝ := ((Fintype.card Ψ * (D.N - D.j) : ℕ) : ℝ) with hfj`. Use `set c3 : ℝ := Real.log (2 * fj * rootDiscr Em) with hc3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfj0 : 0 ≤ fj` using `Nat.cast_nonneg _`. Use `set Cu : ℝ := fj * (|Real.log C1| + 1 + |c3|) with hCu`. Establish `hCu0 : 0 ≤ Cu` using `mul_nonneg hfj0 (by positivity)`. Use `⟨Cu + C2, by linarith, fun t ht hz => ?_⟩` and prove the remaining obligations. Use `set L : ℝ := Real.log ((D.chart a).logR t) with hLdef`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : 1 ≤ L` using `one_le_log_logR (D.chart a) ht`. Establish `hr1 : 1 ≤ (D.chart a).logR t` using `le_trans (by linarith [Real.add_one_le_exp (1 : ℝ)]) (exp_one_le_logR (D.chart a) ht)`. Establish `hp : Real.posLog (D.lam1 ((D.chart a).γ t))⁻¹ ≤ (|Real.log C1| + L) / 2` using `posLog_le_of_sq_le hC1 hr1 (h1 t ht hz)`. Establish `hUb` using `hU _ hz`. Establish `hc3a : c3 ≤ |c3|` using `le_abs_self _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hUL : D.cuspU ((D.chart a).γ t) ≤ Cu * L`. Establish `step1 : D.cuspU ((D.chart a).γ t) ≤ fj * (|Real.log C1| + L + |c3|)` using `hUb.trans (mul_le_mul_of_nonneg_left (by linarith) hfj0)`. Establish `step2 : |Real.log C1| + L + |c3| ≤ (|Real.log C1| + 1 + |c3|) * L`. Use polynomial arithmetic with `[abs_nonneg (Real.log C1), abs_nonneg c3]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hphiL` using `h2 t ht hz`. Establish `hU0` using `D.cuspU_nonneg ((D.chart a).γ t)`. Establish `hLpos : 0 ≤ L` using `by linarith`. Establish `hC2L : 0 ≤ C2 * L` using `mul_nonneg hC2.le hLpos`. Use `⟨by nlinarith, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hphiL`, the goal using `[abs_le]`. Apply the tactic sequence `constructor <;> nlinarith`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ULogBound.proof (D : FullerData II Ψ K ι Ω E Em) (hlam : LamOneChart.Statement D)
     (hU : ULamOne.Statement D) (hphi : PhiHomLog.Statement D) : ULogBound.Statement D := by

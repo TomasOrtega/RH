@@ -16,13 +16,11 @@ section Sums
 variable {K E : Type*} [Field K] [NumberField K] [Field E] [NumberField E]
 
 /- English proof (translation)
-Set `p : A → T` to `fun u ↦ ⟨π u, hπ u u.2⟩`. Establish `hcard' : ∀ v : T, Nat.card {u // p u = v} = n`. Introduce `v`. Rewrite using `[← hcard v.1 v.2]`. Conclude with `Nat.card_congr { toFun := fun u ↦ ⟨u.1.1, u.1.2, congrArg Subtype.val u.2⟩ invFun := fun u ↦ ⟨⟨u.1, u.2.1⟩, Subtype.ext u.2.2⟩ left_inv := fun _ ↦ rfl right_inv := fun _ ↦ rfl }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : ∀ v : T, Finite {u // p u = v}` using `fun v ↦ Nat.finite_of_card_ne_zero (by rw [hcard']; exact hn)`. Establish `hsumA` using `summable_absNorm_rpow_neg_subtype A hs`. Rewrite using `[Set.primeIdealZetaSum_def, Set.primeIdealZetaSum_def, ← (Equiv.sigmaFiberEquiv p).tsum_eq, Summable.tsum_sigma' (f := fun q ↦ (Ideal.absNorm ((Equiv.sigmaFiberEquiv p) q).1.asIdeal : ℝ) ^ (-s)) (fun v ↦ by have := hfin v; exact Summable.of_finite) ((Equiv.sigmaFiberEquiv p).summ …`. Use `tsum_congr fun v ↦ ?_` and prove the remaining obligations. Use `hfin v` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `_` to `Fintype.ofFinite {u // p u = v}`. Rewrite using `[tsum_fintype]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Equiv.sigmaFiberEquiv_apply, hN u.1.1 u.1.2, show π u.1.1 = v.1 from congrArg Subtype.val u.2]`. Use `_ = _ := by`.
-
-Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, hcard', nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeIdealZetaSum_eq_mul_of_card_fiber {A : Set (HeightOneSpectrum (𝓞 E))}
     {T : Set (HeightOneSpectrum (𝓞 K))} (π : HeightOneSpectrum (𝓞 E) → HeightOneSpectrum (𝓞 K))
@@ -62,7 +60,7 @@ theorem primeIdealZetaSum_eq_mul_of_card_fiber {A : Set (HeightOneSpectrum (𝓞
         rw [Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, hcard', nsmul_eq_mul]
 
 /- English proof (translation)
-Unfold `Set.HasDirichletDensity at *`. Use `(hA.add hB).congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Rewrite using `[primeIdealZetaSum_union hd hs, add_div]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasDirichletDensity.union {A B : Set (HeightOneSpectrum (𝓞 K))} {a b : ℝ}
     (hA : A.HasDirichletDensity a) (hB : B.HasDirichletDensity b) (hd : Disjoint A B) :
@@ -79,9 +77,9 @@ section Class
 variable {G : Type*} [Group G]
 
 /- English proof (translation)
-Establish `horb : MulAction.orbit (ConjAct G) σ = {τ : G | IsConj σ τ}`. Use extensionality with `τ`. Rewrite using `[ConjAct.mem_orbit_conjAct, isConj_comm]`. Both sides reduce to the same expression. Establish `hstab : Nat.card (Subgroup.centralizer {σ}) = Nat.card (MulAction.stabilizer (ConjAct G) σ)` using `Nat.card_congr (Equiv.subtypeEquiv ConjAct.toConjAct.toEquiv fun g ↦ by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.mem_centralizer_singleton_iff]`. Express the relevant statement in the definitionally equal form `_ ↔ ConjAct.toConjAct g • σ = σ`. Rewrite using `[ConjAct.toConjAct_smul, mul_inv_eq_iff_eq_mul])`. Rewrite using `[Nat.card_coe_set_eq, ← horb, ← MulAction.index_stabilizer, hstab, mul_comm, Subgroup.card_mul_index]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem natCard_isConj_mul_natCard_centralizer (σ : G) :
     Nat.card {τ : G | IsConj σ τ} * Nat.card (Subgroup.centralizer {σ}) = Nat.card G := by
@@ -107,11 +105,11 @@ variable {K L : Type u} [Field K] [NumberField K] [Field L] [NumberField L] [Alg
   [IsGalois K L]
 
 /- English proof (translation)
-Use `isMulCommutative_gal_fixedField_zpowers σ` as an intermediate fact. Establish `hab` using `hasDirichletDensity_setOf_arithFrobAt_eq (K := fixedField (Subgroup.zpowers σ)) (L := L) (galFixedZpowers σ)`. Rewrite `hab` using `[natCard_gal_fixedField_zpowers]`. Establish `h1` using `(hasDirichletDensity_inter_degreeOnePrimes_iff K _ _).2 hab`. Use `(hasDirichletDensity_iff_of_subset_of_isBoundedUnder ?_ (isBoundedUnder_primeIdealZetaSum_of_finite (((finite_setOf_ramificationIdx_ne_one K L).image (HeightOneSpectrum.under (𝓞 (fixedField (Subgroup.zpowers σ))))).subset ?_)) _).2 h1` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu`. Use `⟨fun w hw ↦ ⟨?_, (hu.2 w hw).2⟩, hu.1⟩` and prove the remaining obligations. Establish `h` using `Ideal.ramificationIdx_tower (R := 𝓞 K) u.asIdeal w.asIdeal`. Rewrite `h` using `[(hu.2 w hw).1]`. Conclude with `(mul_eq_one.1 h.symm).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `u ⟨⟨hab, hdeg⟩, hnot⟩`. Assume the negation of the conclusion as `hu`. Use `hnot ⟨hdeg, fun w hw ↦ ⟨?_, (hab w hw).2⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `he`. Conclude with `hu ⟨w, he, HeightOneSpectrum.ext hw.over.symm⟩`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem hasDirichletDensity_deuringSet (σ : Gal(L/K)) :
     (deuringSet σ).HasDirichletDensity (1 / orderOf σ) := by
@@ -136,19 +134,17 @@ theorem hasDirichletDensity_deuringSet (σ : Gal(L/K)) :
     exact hu ⟨w, he, HeightOneSpectrum.ext hw.over.symm⟩
 
 /- English proof (translation)
-Use `set E := fixedField (Subgroup.zpowers σ)`. Use `set T := chebotarevSet {τ : Gal(L/K) | IsConj σ τ}`. Use `set A := deuringSet σ`. Use `set n := Nat.card (Subgroup.centralizer {σ}) / orderOf σ with hndef`. Establish `hm : 0 < orderOf σ` using `orderOf_pos σ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : Subgroup.zpowers σ ≤ Subgroup.centralizer {σ}` using `Subgroup.zpowers_le.2 (Subgroup.mem_centralizer_singleton_iff.2 rfl)`. Establish `hZ : n * orderOf σ = Nat.card (Subgroup.centralizer {σ})`. Use `Nat.div_mul_cancel ?_` and prove the remaining obligations. Rewrite using `[← Nat.card_zpowers]`. Conclude with `Subgroup.card_dvd_of_le hle`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : n ≠ 0`. Introduce `h`. Rewrite `hZ` using `[h, zero_mul]`. Conclude with `Nat.card_pos.ne' hZ.symm`. Establish `hcard : ∀ v ∈ T, Nat.card {u // u ∈ A ∧ HeightOneSpectrum.under (𝓞 K) u = v} = n` using `fun v hv ↦ Nat.eq_of_mul_eq_mul_right hm ((card_fiber_deuringSet_mul_orderOf σ hv).trans hZ.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hsum : ∀ s : ℝ, 1 < s → A.primeIdealZetaSum s = n * T.primeIdealZetaSum s` using `fun s hs ↦ primeIdealZetaSum_eq_mul_of_card_fiber (HeightOneSpectrum.under (𝓞 K)) (fun u hu ↦ under_mem_chebotarevSet σ hu) (fun u hu ↦ absNorm_eq_of_inertiaDeg_eq_one u hu.1) hn hcard hs`. Establish `hA` using `hasDirichletDensity_deuringSet σ`. Establish `hEK` using `tendsto_primeIdealZetaSum_univ_div_univ E K`. Establish `hEpos` using `(tendsto_primeIdealZetaSum_univ_atTop E).eventually_gt_atTop 0`. Establish `hKpos` using `(tendsto_primeIdealZetaSum_univ_atTop K).eventually_gt_atTop 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Unfold `Set.HasDirichletDensity at hA ⊢`. Establish `hlim` using `(hA.const_mul (n : ℝ)⁻¹).mul hEK`. Establish `hval : (n : ℝ)⁻¹ * (1 / orderOf σ) * 1 = 1 / Nat.card (Subgroup.centralizer {σ})`. Rewrite using `[← hZ]`. Use `push_cast`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (n : ℝ) ≠ 0` using `by exact_mod_cast hn`. Establish `: (orderOf σ : ℝ) ≠ 0` using `by exact_mod_cast hm.ne'`. Clear the denominators using the available nonvanishing facts. Rewrite `hlim` using `[hval]`. Use `hlim.congr' ?_` and prove the remaining obligations.
-
-Use `filter_upwards [self_mem_nhdsWithin, hEpos, hKpos] with s hs hE hK`. Rewrite using `[hsum s hs]`. Establish `: (n : ℝ) ≠ 0` using `by exact_mod_cast hn`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem hasDirichletDensity_chebotarevSet_isConj (σ : Gal(L/K)) :
     (chebotarevSet {τ : Gal(L/K) | IsConj σ τ}).HasDirichletDensity
@@ -201,7 +197,7 @@ variable {K L : Type u} [Field K] [NumberField K] [Field L] [NumberField L] [Alg
   [IsGalois K L]
 
 /- English proof (translation)
-The claim follows from `isConj_arithFrobAt (𝓞 K) Gal(L/K) w.asIdeal w'.asIdeal (hw.over.symm.trans hw'.over)`.
+A detailed English derivation is pending.
 -/
 theorem isConj_arithFrobAt_of_liesOver {v : HeightOneSpectrum (𝓞 K)} (w w' : HeightOneSpectrum (𝓞 L))
     (hw : w.asIdeal.LiesOver v.asIdeal) (hw' : w'.asIdeal.LiesOver v.asIdeal) :
@@ -209,7 +205,7 @@ theorem isConj_arithFrobAt_of_liesOver {v : HeightOneSpectrum (𝓞 K)} (w w' : 
   isConj_arithFrobAt (𝓞 K) Gal(L/K) w.asIdeal w'.asIdeal (hw.over.symm.trans hw'.over)
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [mem_empty_iff_false, iff_false]`. Introduce `hv`. Take `⟨⟨w, hw⟩⟩` from `nonempty_placesOver L v`. Conclude with `(hv w hw).2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chebotarevSet_empty : chebotarevSet (∅ : Set Gal(L/K)) = ∅ := by
   ext v
@@ -219,14 +215,14 @@ theorem chebotarevSet_empty : chebotarevSet (∅ : Set Gal(L/K)) = ∅ := by
   exact (hv w hw).2
 
 /- English proof (translation)
-The claim follows from `fun _ hv w hw ↦ ⟨(hv w hw).1, h (hv w hw).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem chebotarevSet_mono {C C' : Set Gal(L/K)} (h : C ⊆ C') :
     chebotarevSet C ⊆ chebotarevSet C' :=
   fun _ hv w hw ↦ ⟨(hv w hw).1, h (hv w hw).2⟩
 
 /- English proof (translation)
-Use `Set.disjoint_left.2 fun v h1 h2 ↦ ?_` and prove the remaining obligations. Take `⟨⟨w, hw⟩⟩` from `nonempty_placesOver L v`. Conclude with `Set.disjoint_left.1 h (h1 w hw).2 (h2 w hw).2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem disjoint_chebotarevSet {C C' : Set Gal(L/K)} (h : Disjoint C C') :
     Disjoint (chebotarevSet C) (chebotarevSet C') := by
@@ -235,9 +231,9 @@ theorem disjoint_chebotarevSet {C C' : Set Gal(L/K)} (h : Disjoint C C') :
   exact Set.disjoint_left.1 h (h1 w hw).2 (h2 w hw).2
 
 /- English proof (translation)
-Use `Subset.antisymm (fun v hv ↦ ?_) (union_subset (chebotarevSet_mono inter_subset_left) (chebotarevSet_mono sdiff_subset))` and prove the remaining obligations. Take `⟨⟨w1, hw1⟩⟩` from `nonempty_placesOver L v`. Distinguish the cases in `h : IsConj σ (arithFrobAt (𝓞 K) Gal(L/K) w1.asIdeal)`. Use `Or.inl fun w hw ↦ ⟨(hv w hw).1, (hv w hw).2, ?_⟩` and prove the remaining obligations. Conclude with `h.trans (isConj_arithFrobAt_of_liesOver w1 w hw1 hw)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inr fun w hw ↦ ⟨(hv w hw).1, (hv w hw).2, fun h' ↦ h ?_⟩` and prove the remaining obligations. Conclude with `h'.trans (isConj_arithFrobAt_of_liesOver w w1 hw hw1)`.
+A detailed English derivation is pending.
 -/
 theorem chebotarevSet_eq_union (C : Set Gal(L/K)) (σ : Gal(L/K)) :
     chebotarevSet C = chebotarevSet (C ∩ {τ | IsConj σ τ}) ∪
@@ -252,19 +248,19 @@ theorem chebotarevSet_eq_union (C : Set Gal(L/K)) (σ : Gal(L/K)) :
     exact h'.trans (isConj_arithFrobAt_of_liesOver w w1 hw hw1)
 
 /- English proof (translation)
-It suffices to establish `h : ∀ n : ℕ, ∀ C : Set Gal(L/K), (∀ σ ∈ C, ∀ τ : Gal(L/K), τ * σ * τ⁻¹ ∈ C) → Nat.card C = n → (chebotarevSet C).HasDirichletDensity (n / Nat.card Gal(L/K)) from h _ C hC rfl`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `C hC hn`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `C.eq_empty_or_nonempty with rfl | ⟨σ, hσ⟩` into its components or cases. Substitute `hn` using the available equality. Rewrite using `[chebotarevSet_empty]`. Simplify using `using Set.hasDirichletDensity_empty`. Use `set cl := {τ : Gal(L/K) | IsConj σ τ} with hcldef`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hcl : cl ⊆ C` using `fun τ hτ ↦ by`. Take `⟨c, rfl⟩` from `isConj_iff.1 hτ`. Conclude with `hC σ hσ c`. Establish `hC' : ∀ ρ ∈ C \ cl, ∀ τ : Gal(L/K), τ * ρ * τ⁻¹ ∈ C \ cl` using `fun ρ hρ τ ↦ ⟨hC ρ hρ.1 τ, fun h ↦ hρ.2 (h.trans (isConj_iff.2 ⟨τ, rfl⟩).symm)⟩`. Establish `hcard : Nat.card ↥(C \ cl) + Nat.card ↥cl = n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_coe_set_eq, Nat.card_coe_set_eq, Set.ncard_sdiff_add_ncard_of_subset hcl (Set.toFinite C), ← Nat.card_coe_set_eq, hn]`. Establish `hclpos : 0 < Nat.card ↥cl`. Establish `: Nonempty ↥cl` using `⟨⟨σ, IsConj.refl σ⟩⟩`. Conclude with `Nat.card_pos`. Establish `h1` using `ih _ (by omega) (C \ cl) hC' rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hasDirichletDensity_chebotarevSet_isConj σ`. Establish `hd` using `disjoint_chebotarevSet (L := L) (disjoint_sdiff_right : Disjoint cl (C \ cl))`. Establish `hU` using `HasDirichletDensity.union h2 h1 hd`. Rewrite using `[chebotarevSet_eq_union C σ, inter_eq_right.2 hcl]`. Use `hU using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hG` using `natCard_isConj_mul_natCard_centralizer σ`. Rewrite `hG` using `[← hcldef]`. Establish `hZ : (Nat.card (Subgroup.centralizer {σ}) : ℝ) ≠ 0` using `by exact_mod_cast Nat.card_pos.ne'`. Establish `hcl' : (Nat.card ↥cl : ℝ) ≠ 0` using `by exact_mod_cast hclpos.ne'`. Rewrite using `[← hcard, ← hG]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hasDirichletDensity_chebotarevSet (C : Set Gal(L/K))
     (hC : ∀ σ ∈ C, ∀ τ : Gal(L/K), τ * σ * τ⁻¹ ∈ C) :
@@ -308,7 +304,7 @@ theorem hasDirichletDensity_chebotarevSet (C : Set Gal(L/K))
   ring
 
 /- English proof (translation)
-The claim follows from `hasDirichletDensity_chebotarevSet C hC`.
+A detailed English derivation is pending.
 -/
 theorem hasDirichletDensity_setOf_arithFrobAt_mem (C : Set Gal(L/K))
     (hC : ∀ σ ∈ C, ∀ τ : Gal(L/K), τ * σ * τ⁻¹ ∈ C) :
@@ -318,11 +314,11 @@ theorem hasDirichletDensity_setOf_arithFrobAt_mem (C : Set Gal(L/K))
   hasDirichletDensity_chebotarevSet C hC
 
 /- English proof (translation)
-Use `hasDirichletDensity_chebotarevSet C hC using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨he, w1, hw1, hC1⟩ w hw`. Use `⟨he w hw, ?_⟩` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `isConj_iff.1 (isConj_arithFrobAt_of_liesOver w1 w hw1 hw)`. Rewrite using `[← hc]`. Conclude with `hC _ hC1 c`. Introduce `hv`. Take `⟨⟨w, hw⟩⟩` from `nonempty_placesOver L v`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨fun w' hw' ↦ (hv w' hw').1, w, hw, (hv w hw).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem hasDirichletDensity_setOf_exists_arithFrobAt_mem (C : Set Gal(L/K))
     (hC : ∀ σ ∈ C, ∀ τ : Gal(L/K), τ * σ * τ⁻¹ ∈ C) :

@@ -19,7 +19,7 @@ def keyOf : TL J Dt.nL r × Fin r → Option ((ZMod J × Fin r) × Fin r)
   | (⟨j, Sum.inr m⟩, a) => some ((j, m), a)
 
 /- English proof (translation)
-Break down `v with ⟨⟨j, l | m⟩, a⟩` into its components or cases. Conclude with `(Nat.div_one _).symm`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem liftExp_eq (mo : TL J Dt.nL r × Fin r →₀ ℕ) (v : TL J Dt.nL r × Fin r) :
     Dt.liftExp mo v = mo v / Pof Dt v := by
@@ -28,9 +28,9 @@ theorem liftExp_eq (mo : TL J Dt.nL r × Fin r →₀ ℕ) (v : TL J Dt.nL r × 
   · rfl
 
 /- English proof (translation)
-Apply the tactic sequence `rintro ⟨⟨j, l | m⟩, a⟩ ⟨⟨j', l' | m'⟩, a'⟩ h <;>`. Simplify using `only [SignedChainData.liftVar, Prod.mk.injEq, reduceCtorEq, ML.ll.injEq, ML.wc.injEq, false_and] at h`. Take `⟨⟨rfl, h1⟩, rfl⟩` from `h`. Consider the cases of `h1`. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 
-Take `⟨⟨rfl, rfl⟩, rfl⟩` from `h`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem liftVar_inj : Function.Injective Dt.liftVar := by
   rintro ⟨⟨j, l | m⟩, a⟩ ⟨⟨j', l' | m'⟩, a'⟩ h <;>
@@ -59,9 +59,9 @@ def liftMon (mo : TL J Dt.nL r × Fin r →₀ ℕ) : ML J Dt.nL r × Fin r →�
   Finsupp.mapDomain Dt.liftVar (liftE Dt mo)
 
 /- English proof (translation)
-Establish `hsub : (liftE Dt mo).support ⊆ mo.support`. Introduce `v hv`. Rewrite `hv`, the goal using `[Finsupp.mem_support_iff]`. Rewrite `hv` using `[liftE_apply]`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hv` to reduce the goal to its premises. Simplify using `[h0]`. Rewrite using `[liftMon, MvPolynomial.monomial_eq, C_1, one_mul, Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), Finsupp.prod_of_support_subset _ hsub _ (fun _ _ => pow_zero _)]`. Use `Finset.prod_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[liftE_apply, liftExp_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_lift (mo : TL J Dt.nL r × Fin r →₀ ℕ) :
     ∏ v ∈ mo.support, (X (Dt.liftVar v) : MvPolynomial (ML J Dt.nL r × Fin r) (KK O)) ^ Dt.liftExp mo v =
@@ -80,9 +80,9 @@ theorem prod_lift (mo : TL J Dt.nL r × Fin r →₀ ℕ) :
   rw [liftE_apply, liftExp_eq]
 
 /- English proof (translation)
-Unfold `SignedChainData.Fdig`. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[support_monomial, if_neg hc, Finset.filter_singleton] split_ifs with h`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_singleton, coeff_monomial, if_pos rfl, prod_lift, C_mul_monomial, mul_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Fdig_mono (rho : (ZMod J × Fin r) × Fin r → ℕ) (mo : TL J Dt.nL r × Fin r →₀ ℕ) (c : KK O) :
     Dt.Fdig rho (monomial mo c) = if Dt.digOK rho mo then monomial (liftMon Dt mo) c else 0 := by
@@ -96,7 +96,7 @@ theorem Fdig_mono (rho : (ZMod J × Fin r) × Fin r → ℕ) (mo : TL J Dt.nL r 
     · simp
 
 /- English proof (translation)
-Rewrite using `[liftMon, Finsupp.mapDomain_apply (liftVar_inj Dt)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem liftMon_w (mo : TL J Dt.nL r × Fin r →₀ ℕ) (v : TL J Dt.nL r × Fin r) :
     liftMon Dt mo (Dt.liftVar v) = mo v / Pof Dt v := by

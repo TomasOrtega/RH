@@ -19,15 +19,13 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.WpFam.LatTorsVal
 
 /- English proof (translation)
-Establish `hom` using `GlobalTheory.T.weierstrassP_homogeneity_of_isTauOf L c τ hτ`. Establish `tm` using `GlobalTheory.WpFam.TorsMem.main M τ`. Establish `hc : c ≠ 0` using `hτ.1`. Establish `hPz : P = c * (P / c)` using `by field_simp`. Establish `hMz : (M : ℂ) * (P / c) ∈ (tauPair τ).lattice`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hom.1]`. Establish `: c * ((M : ℂ) * (P / c)) = (M : ℂ) * P` using `by rw [hPz]; field_simp`. Rewrite using `[this]`. Conclude with `hP`. Take `⟨x, hx⟩` from `tm.2.2.2.2 (P / c) hMz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Use `(hom.1 _).2 hx` as an intermediate fact. Rewrite `this` using `[mul_sub, ← hPz]`. Then use the resulting hypothesis. Introduce and unpack `hPL rfl`. Apply `hPL` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h0` using `(tm.2.2.1 0).2 rfl`. Establish `: P / c ∈ (tauPair τ).lattice`. Use `add_mem hx h0` as an intermediate fact. Simplify using `using this`. Rewrite using `[hPz]`.
-
-Conclude with `(hom.1 _).2 this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tors {L : PeriodPair} {c : ℂ} {τ : ℍ} (hτ : IsTauOf L c τ) (M : ℕ) [NeZero M] (P : ℂ)
     (hP : (M : ℂ) * P ∈ L.lattice) :
@@ -53,7 +51,7 @@ theorem exists_tors {L : PeriodPair} {c : ℂ} {τ : ℍ} (hτ : IsTauOf L c τ)
     rw [hPz]; exact (hom.1 _).2 this
 
 /- English proof (translation)
-Establish `e : P = c * tors M τ x + ((⟨P - c * tors M τ x, h⟩ : L.lattice) : ℂ)` using `by simp`. Prove the components needed by the constructor for the conclusion. Rewrite using `[e, L.weierstrassP_add_coe]`. Rewrite using `[e, L.derivWeierstrassP_add_coe]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem wp_eq {L : PeriodPair} {c : ℂ} {τ : ℍ} (M : ℕ) (P : ℂ) (x : Fin 2 → ZMod M)
     (h : P - c * tors M τ x ∈ L.lattice) :
@@ -65,13 +63,11 @@ theorem wp_eq {L : PeriodPair} {c : ℂ} {τ : ℍ} (M : ℕ) (P : ℂ) (x : Fin
   · rw [e, L.derivWeierstrassP_add_coe]
 
 /- English proof (translation)
-Introduce `L β Ω M hβ hβi hΩ hM`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Take `⟨c, τ, hτ⟩` from `latTau L`. Establish `hj` using `GlobalTheory.T.isIntegral_jInvariant_of_complexMultiplication L c τ β hτ hβ hβi`. Establish `hω` using `(GlobalTheory.QFam.jT_eq_and_pow_twelve_eq_DD L c τ hτ).2 Ω hΩ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `st` using `(GlobalTheory.T.eisensteinWeierstrass_values_lattice_tau L c Ω τ hτ).2 M`. Use `⟨fun P hP => ?_, fun P Q hP hQ hMP hMQ => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, -⟩` from `exists_tors hτ M P hP`. Take `⟨e1, e2⟩` from `wp_eq M P x hx`. Establish `hv` using `GlobalTheory.T.isIntegral_weierstrassP_torsion_integral_j M τ _ hj hω x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, mul_div_assoc, mul_div_assoc, ← (st x).1, ← (st x).2, ← mul_div_assoc, ← mul_div_assoc]`. Conclude with `hv`. Take `⟨x, hx, hx0⟩` from `exists_tors hτ M P hMP`. Take `⟨y, hy, hy0⟩` from `exists_tors hτ M Q hMQ`. Establish `hv` using `GlobalTheory.T.isIntegral_weierstrassP_torsion_difference M τ _ hj hω x y (hx0 hP) (hy0 hQ)`.
-
-Rewrite using `[(wp_eq M P x hx).1, (wp_eq M Q y hy).1, mul_div_assoc, sub_div, ← (st x).1, ← (st y).1, ← sub_div, ← mul_div_assoc]`. Conclude with `hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (L : PeriodPair) (β Ω : ℂ) (M : ℕ), MulStable L β → β.im ≠ 0 → Ω ^ 12 = latDisc L → 0 < M → (∀ P, (M : ℂ) * P ∈ L.lattice → IsIntegral ℤ (12 * (M : ℂ) ^ 2 * L.weierstrassP P / Ω ^ 2) ∧ IsIntegral ℤ ((M : ℂ) ^ 3 * L.derivWeierstrassP P / Ω ^ 3)) ∧ ∀ P Q, P ∉ L.lattice → Q ∉ L.lattice → (M : ℂ) * P ∈ L.lattice → (M : ℂ) * Q ∈ L.lattice → IsIntegral ℤ ((M : ℂ) ^ 2 * (L.weierstrassP P - L.weierstrassP Q) / Ω ^ 2) := by
   intro L β Ω M hβ hβi hΩ hM

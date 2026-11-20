@@ -20,7 +20,7 @@ namespace GlobalTheory.DblWeilCoord
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Simplify using `only [dotProduct]`. Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [pairVec_inl, pairVec_inr]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dotProduct_pairVec {A : Type} [CommRing A] {n : ℕ} (x y x' y' : Fin n → A) :
     pairVec finSumFinEquiv x y ⬝ᵥ pairVec finSumFinEquiv x' y' = x ⬝ᵥ x' + y ⬝ᵥ y' := by
@@ -29,7 +29,7 @@ theorem dotProduct_pairVec {A : Type} [CommRing A] {n : ℕ} (x y x' y' : Fin n 
   simp only [pairVec_inl, pairVec_inr]
 
 /- English proof (translation)
-Establish `hs : (fun i => σ (pairVec finSumFinEquiv x₁ x₂ i)) = pairVec finSumFinEquiv (fun i => σ (x₁ i)) (fun i => σ (x₂ i))`. Apply the tactic sequence `funext j; obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective j <;> simp only [pairVec_inl, pairVec_inr]`. Simplify using `only [form, hs, dblGram, blkMat_mulVec, dotProduct_pairVec, Matrix.neg_mulVec, dotProduct_neg, sub_eq_add_neg]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem form_dblGram {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (y₁ y₂ x₁ x₂ : Fin n → E) :
     form σ (dblGram finSumFinEquiv J) (pairVec finSumFinEquiv y₁ y₂) (pairVec finSumFinEquiv x₁ x₂) =
@@ -40,11 +40,11 @@ theorem form_dblGram {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (y₁ y₂ x₁ x�
   simp only [form, hs, dblGram, blkMat_mulVec, dotProduct_pairVec, Matrix.neg_mulVec, dotProduct_neg, sub_eq_add_neg]
 
 /- English proof (translation)
-Take `⟨hd, A, hA⟩` from `h`. Set `f : Fin (r + s) ⊕ Fin (s + r) → (Fin r ⊕ Fin s) ⊕ (Fin r ⊕ Fin s)` to `Sum.elim (Sum.elim (Sum.inl ∘ Sum.inl) (Sum.inr ∘ Sum.inr) ∘ finSumFinEquiv.symm) (Sum.elim (Sum.inl ∘ Sum.inr) (Sum.inr ∘ Sum.inl) ∘ finSumFinEquiv.symm)`. Use `⟨by omega, (Matrix.fromBlocks A 0 0 A).submatrix finSumFinEquiv.symm f, ?_⟩` and prove the remaining obligations. Establish `key : (Matrix.fromBlocks A 0 0 A)ᵀ * Matrix.fromBlocks M 0 0 (-M) * (Matrix.fromBlocks A 0 0 A).map star = Matrix.fromBlocks (Aᵀ * M * A.map star) 0 0 (-(Aᵀ * M * A.map star))`. Rewrite using `[Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.transpose_submatrix, ← Matrix.submatrix_map, blkMat, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, key, hA]`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `obtain ⟨i, rfl⟩ := finSumFinEquiv.surjective i <;> obtain ⟨j, rfl⟩ := finSumFinEquiv.surjective j <;>`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [f, Matrix.one_apply] <;> simp [Fin.ext_iff] <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hasSig_dbl {d r s : ℕ} (M : Matrix (Fin d) (Fin d) ℂ) (h : HasSig M r s) :
     HasSig (blkMat finSumFinEquiv M (-M)) (r + s) (s + r) := by
@@ -65,25 +65,23 @@ theorem hasSig_dbl {d r s : ℕ} (M : Matrix (Fin d) (Fin d) ℂ) (h : HasSig M 
     rcases i with i | i <;> rcases j with j | j <;> simp [f, Matrix.one_apply] <;> simp [Fin.ext_iff] <;> omega
 
 /- English proof (translation)
-Simplify using `[form, Pi.zero_apply, map_zero, ← Pi.zero_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_zero_right {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (y : Fin n → E) : form σ J y 0 = 0 := by
   simp [form, Pi.zero_apply, map_zero, ← Pi.zero_def]
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Use `haveI : Submodule.IsLattice E W.L := hW.lat`. Establish `hex : ∀ v : B.P, ∃ β, IsSplitBasis (B.τ v) (sumLat finSumFinEquiv W.L W.L) β` using `fun v => exists_isSplitBasis (B.τ v) _ hcm`. Use `⟨sumLat finSumFinEquiv W.L W.L, fun w => blkMat finSumFinEquiv (W.θ w) (-W.θ w), fun v => if h : v ∈ B.P then (hex ⟨v, h⟩).choose else 1, ⟨?_, ?_, inferInstance, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `i j show σ (dblGram finSumFinEquiv W.J j i) = -dblGram finSumFinEquiv W.J i j`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `only [dblGram, blkMat, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, map_zero, map_neg, neg_zero, hW.skew]`. Introduce `w show HasSig (Complex.I • (dblGram finSumFinEquiv W.J).map (B.emb w).1) (r + s) (s + r)`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dblGram, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _), GlobalTheory.DblUnfoldCont.smul_blkMat, smul_neg]`. Conclude with `hasSig_dbl _ (hW.sig w)`. Introduce `y show y ∈ sumLat finSumFinEquiv W.L W.L ↔ ∀ x ∈ sumLat finSumFinEquiv W.L W.L, ∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E (o * form σ (dblGram finSumFinEquiv W.J) y x))`. Use `⟨fun hy x hx o => ?_, fun H => ?_⟩` and prove the remaining obligations. Rewrite `hy`, the goal using `[← pairVec_eta finSumFinEquiv y]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx`, the goal using `[← pairVec_eta finSumFinEquiv x]`. Rewrite `hy`, `hx` using `[pairVec_mem_sumLat]`. Rewrite using `[form_dblGram, mul_sub, map_sub]`. Conclude with `((hW.dual _).1 hy.1 _ hx.1 o).sub ((hW.dual _).1 hy.2 _ hx.2 o)`. Rewrite using `[← pairVec_eta finSumFinEquiv y, pairVec_mem_sumLat]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Use `(hW.dual _).2 fun x hx o => ?_` and prove the remaining obligations. Establish `h1` using `H (pairVec finSumFinEquiv x 0) ((pairVec_mem_sumLat _).2 ⟨hx, zero_mem _⟩) o`. Rewrite `h1` using `[← pairVec_eta finSumFinEquiv y, form_dblGram, form_zero_right, sub_zero]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hW.dual _).2 fun x hx o => ?_` and prove the remaining obligations. Establish `h1` using `H (pairVec finSumFinEquiv 0 x) ((pairVec_mem_sumLat _).2 ⟨zero_mem _, hx⟩) (-o)`. Rewrite `h1` using `[← pairVec_eta finSumFinEquiv y, form_dblGram, form_zero_right, zero_sub, show ((-o : 𝓞 E) : E) = -(o : E) by simp, neg_mul_neg]`. Conclude with `h1`. Introduce `w show IsCartan (Complex.I • (dblGram finSumFinEquiv W.J).map (B.emb w).1) (blkMat finSumFinEquiv (W.θ w) (-W.θ w))`.
-
-Rewrite using `[dblGram, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _), GlobalTheory.DblUnfoldCont.smul_blkMat, smul_neg]`. Conclude with `GlobalTheory.DblUnfoldCont.isCartan_dbl _ _ (hW.cartan w)`. Introduce `v show IsSplitBasis (B.τ v) (sumLat finSumFinEquiv W.L W.L) (if h : (v : Pl F) ∈ B.P then (hex ⟨v, h⟩).choose else 1)`. Rewrite using `[dif_pos v.2]`. Conclude with `(hex v).choose_spec`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isSkew_dbl (B : Base F E) (hcm : IsCMExt F E σ) {n r s : ℕ} (W : Spc F E n) (hW : W.IsSkew σ B r s)
     (J₂ : Matrix (Fin (n + n)) (Fin (n + n)) E) (hJ : J₂ = dblGram finSumFinEquiv W.J) :
@@ -138,17 +136,15 @@ theorem exists_isSkew_dbl (B : Base F E) (hcm : IsCMExt F E σ) {n r s : ℕ} (W
     exact (hex v).choose_spec
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B n d Xs W M χX χW om r s' r₁ s₁ hpair W₂ hJ co hco`. Establish `hB` using `hpair.base`. Establish `hV` using `hpair.herm`. Take `⟨L, θ, bas, hS⟩` from `exists_isSkew_dbl B hB.cm W hpair.skew W₂.J hJ`. Set `S : Spc F E (d + d)` to `⟨W₂.J, L, θ, bas⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨μ, 𝓕, hμ, h𝓕⟩` from `GlobalTheory.ModelEx.exists_haar_fundDom F E σ n Xs.J`. Establish `hI` using `GlobalTheory.VacIndic.eventually_isVac_indicator B hB Xs S _ _ _ _ hV hS co hco`. Set `M₀ : Model σ Xs S` to `⟨co, fun _ => 0, 0, ∅⟩`. Set `ind : ∀ v : Pl F, (Fin n × Fin (d + d) → Fv F v) → ℂ` to `fun v => Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`. Set `vac : ∀ v : Pl F, (Fin n × Fin (d + d) → Fv F v) → ℂ` to `fun v => if M₀.IsVac B.ψ v (ind v) then ind v else (GlobalTheory.T.exists_finitePlace_vacuum_any_darboux_coordinates B hB Xs S _ _ _ _ hV hS co v).choose`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `M₂ : Model σ Xs S` to `⟨co, vac, μ, 𝓕⟩`. Establish `hM : M₂.IsGood B.ψ`. Use `⟨hco, fun v => ?_, ?_, hμ, h𝓕⟩` and prove the remaining obligations. Use `show M₀.IsVac B.ψ v (vac v)`. Distinguish the cases in `h : M₀.IsVac B.ψ v (ind v)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [vac, if_pos h]`. Conclude with `h`. Simplify using `only [vac, if_neg h]`. Conclude with `(GlobalTheory.T.exists_finitePlace_vacuum_any_darboux_coordinates B hB Xs S _ _ _ _ hV hS co v).choose_spec`. Use `filter_upwards [hI] with v hv show vac v = ind v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `if_pos hv`. Establish `h1 : IsHecke F E (1 : Chr F E)` using `⟨continuous_const, fun _ => rfl⟩`. Establish `hr1 : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range (1 : Chr F E) (d + d)`. Introduce `x`. Rewrite using `[(show Even (d + d) from ⟨_, rfl⟩).neg_one_pow, ite_self]`.
-
-Simplify using the standard rewrite rules. Take `⟨om₂, hom₂⟩` from `GlobalTheory.WeilExGen.exists_isWeil hP F E σ B hB n _ Xs S _ _ _ _ hV hS M₂ hM χX 1 hpair.hX h1 hpair.resX hr1`. Conclude with `⟨om₂, hom₂⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_weil : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E)

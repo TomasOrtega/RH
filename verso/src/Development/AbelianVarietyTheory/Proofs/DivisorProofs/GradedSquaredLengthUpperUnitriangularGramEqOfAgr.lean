@@ -11,7 +11,7 @@ set_option autoImplicit false
 namespace GlobalTheory.FlagCell2
 
 /- English proof (translation)
-Simplify using `only [upU, Matrix.of_apply]`. Use `split_ifs with hk`. Conclude with `h ⟨(k, a), hk⟩ ha`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem upU_row_eq {s : ℕ} (y y' : Low s → ℂ) (i : Fin s)
     (h : ∀ j : Low s, j.1.2 ≤ i → y' j = y j) (a : Fin s) (ha : a ≤ i) (k : Fin s) :
@@ -23,7 +23,7 @@ theorem upU_row_eq {s : ℕ} (y y' : Low s → ℂ) (i : Fin s)
   · rfl
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, upU_row_eq y y' i h a ha, upU_row_eq y y' i h c hc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem upU_gram_entry_eq {s : ℕ} (G : Matrix (Fin s) (Fin s) ℂ) (y y' : Low s → ℂ) (i : Fin s)
     (h : ∀ j : Low s, j.1.2 ≤ i → y' j = y j) (a c : Fin s) (ha : a ≤ i) (hc : c ≤ i) :
@@ -32,9 +32,9 @@ theorem upU_gram_entry_eq {s : ℕ} (G : Matrix (Fin s) (Fin s) ℂ) (y y' : Low
     upU_row_eq y y' i h c hc]
 
 /- English proof (translation)
-Unfold `leadMinor`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply]`. Apply `upU_gram_entry_eq G y y' i h` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Fin.le_def]`. Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Fin.le_def]`. Use `b.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -50,7 +50,7 @@ theorem leadMinor_upU_gram_eq {s : ℕ} (G : Matrix (Fin s) (Fin s) ℂ) (y y' :
   · rw [Fin.le_def]; have := b.2; omega
 
 /- English proof (translation)
-Introduce `s G y y' i h`. Unfold `grD`. Rewrite using `[leadMinor_upU_gram_eq G y y' i h _ (by simp), leadMinor_upU_gram_eq G y y' i h _ (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem grD_upU_gram_eq : ∀ (s : ℕ) (G : Matrix (Fin s) (Fin s) ℂ) (y y' : Low s → ℂ) (i : Fin s), (∀ j : Low s, j.1.2 ≤ i → y' j = y j) → grD (upU y' * G * (upU y')ᴴ) i = grD (upU y * G * (upU y)ᴴ) i := by
   intro s G y y' i h

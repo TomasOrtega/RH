@@ -9,43 +9,43 @@ namespace PI.TwNormLat.W
 variable {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
 
 /- English proof (translation)
-Introduce `h` and use `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_notMem' : (1 : 𝓞 E) ∉ P.asIdeal :=
   fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h)
 
 /- English proof (translation)
-Introduce `h` and use `(P.isPrime.mem_or_mem h).elim hs ht`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_notMem' {s t : 𝓞 E} (hs : s ∉ P.asIdeal) (ht : t ∉ P.asIdeal) : s * t ∉ P.asIdeal :=
   fun h => (P.isPrime.mem_or_mem h).elim hs ht
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, 1, PI.TwNormLat.W.one_notMem' P, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_alg (x : 𝓞 E) : IntAt P (algebraMap (𝓞 E) E x) :=
   ⟨x, 1, PI.TwNormLat.W.one_notMem' P, by simp⟩
 
 /- English proof (translation)
-Conclude with `⟨0, 1, PI.TwNormLat.W.one_notMem' P, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_zero : IntAt P (0 : E) := by
   exact ⟨0, 1, PI.TwNormLat.W.one_notMem' P, by simp⟩
 
 /- English proof (translation)
-Conclude with `⟨1, 1, PI.TwNormLat.W.one_notMem' P, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_one : IntAt P (1 : E) := by
   exact ⟨1, 1, PI.TwNormLat.W.one_notMem' P, by simp⟩
 
 /- English proof (translation)
-Conclude with `⟨k, 1, PI.TwNormLat.W.one_notMem' P, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_natCast (k : ℕ) : IntAt P (k : E) := by
   exact ⟨k, 1, PI.TwNormLat.W.one_notMem' P, by simp⟩
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `ha`. Take `⟨r', s', hs', h'⟩` from `hb`. Use `⟨r * s' + s * r', s * s', PI.TwNormLat.W.mul_notMem' P hs hs', ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul]`. Rewrite using `[← h, ← h']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -58,7 +58,7 @@ theorem intAt_add {a b : E} (ha : IntAt P a) (hb : IntAt P b) : IntAt P (a + b) 
   ring
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `ha`. Take `⟨r', s', hs', h'⟩` from `hb`. Use `⟨r * r', s * s', PI.TwNormLat.W.mul_notMem' P hs hs', ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul]`. Rewrite using `[← h, ← h']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -71,7 +71,7 @@ theorem intAt_mul {a b : E} (ha : IntAt P a) (hb : IntAt P b) : IntAt P (a * b) 
   ring
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `ha`. Use `⟨-r, s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, ← h]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem intAt_neg {a : E} (ha : IntAt P a) : IntAt P (-a) := by
   obtain ⟨r, s, hs, h⟩ := ha
@@ -80,14 +80,14 @@ theorem intAt_neg {a : E} (ha : IntAt P a) : IntAt P (-a) := by
   ring
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `PI.TwNormLat.W.intAt_add P ha (PI.TwNormLat.W.intAt_neg P hb)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_sub {a b : E} (ha : IntAt P a) (hb : IntAt P b) : IntAt P (a - b) := by
   rw [sub_eq_add_neg]
   exact PI.TwNormLat.W.intAt_add P ha (PI.TwNormLat.W.intAt_neg P hb)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using PI.TwNormLat.W.intAt_one P`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Conclude with `PI.TwNormLat.W.intAt_mul P ih ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_pow {a : E} (ha : IntAt P a) (k : ℕ) : IntAt P (a ^ k) := by
   induction k with
@@ -97,7 +97,7 @@ theorem intAt_pow {a : E} (ha : IntAt P a) (k : ℕ) : IntAt P (a ^ k) := by
     exact PI.TwNormLat.W.intAt_mul P ih ha
 
 /- English proof (translation)
-Conclude with `Finset.sum_induction f (IntAt P) (fun _ _ ha hb => PI.TwNormLat.W.intAt_add P ha hb) (PI.TwNormLat.W.intAt_zero P) h`.
+A detailed English derivation is pending.
 -/
 theorem intAt_sum {ι : Type*} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, IntAt P (f i)) : IntAt P (∑ i ∈ s, f i) := by
   exact Finset.sum_induction f (IntAt P) (fun _ _ ha hb => PI.TwNormLat.W.intAt_add P ha hb) (PI.TwNormLat.W.intAt_zero P) h
@@ -105,20 +105,18 @@ theorem intAt_sum {ι : Type*} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, 
 abbrev qE : E := ((Ideal.absNorm P.asIdeal : ℕ) : E)
 
 /- English proof (translation)
-Use `show ((Ideal.absNorm P.asIdeal : ℕ) : E) ≠ 0`. Conclude with `Nat.cast_ne_zero.mpr hp.ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem qE_ne_zero (hp : (Ideal.absNorm P.asIdeal).Prime) : qE P ≠ 0 := by
   show ((Ideal.absNorm P.asIdeal : ℕ) : E) ≠ 0
   exact Nat.cast_ne_zero.mpr hp.ne_zero
 
 /- English proof (translation)
-Establish `hqP : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∈ P.asIdeal` using `Ideal.absNorm_mem P.asIdeal`. Establish `hle : Ideal.span {((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E)} ≤ P.asIdeal` using `(Ideal.span_singleton_le_iff_mem _).mpr hqP`. Take `⟨J, hJ⟩` from `Ideal.dvd_iff_le.mpr hle`. Establish `hJP : ¬ J ≤ P.asIdeal`. Introduce `hJ'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hq` to reduce the goal to its premises. Establish `hsq : Ideal.span {((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E)} ≤ P.asIdeal ^ 2`. Rewrite using `[hJ, pow_two]`. Conclude with `Ideal.mul_mono_right hJ'`. Conclude with `hsq (Ideal.mem_span_singleton_self _)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hsJ, hsP⟩` from `SetLike.not_le_iff_exists.mp hJP`. Establish `hmem : s * r ∈ Ideal.span {((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E)}`. Rewrite using `[hJ, mul_comm s r]`. Conclude with `Ideal.mul_mem_mul hr hsJ`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp hmem`.
-
-Conclude with `⟨s, t, hsP, ht⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem uniform_continuity_galois_group (hq : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {r : 𝓞 E} (hr : r ∈ P.asIdeal) :
     ∃ s t : 𝓞 E, s ∉ P.asIdeal ∧ t * ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) = s * r := by
@@ -141,15 +139,15 @@ theorem uniform_continuity_galois_group (hq : ((Ideal.absNorm P.asIdeal : ℕ) :
   exact ⟨s, t, hsP, ht⟩
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `hy`. Distinguish the cases in `hr : r ∈ P.asIdeal`. It suffices to derive a contradiction. Take `⟨s', t, hs', ht⟩` from `PI.TwNormLat.W.uniform_continuity_galois_group P hq hr`. Apply `hy'` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨t, s * s', PI.TwNormLat.W.mul_notMem' P hs hs', ?_⟩` and prove the remaining obligations. Establish `hq0` using `PI.TwNormLat.W.qE_ne_zero P hp`. Establish `ht' : algebraMap (𝓞 E) E t * qE P = algebraMap (𝓞 E) E s' * algebraMap (𝓞 E) E r`. Establish `e` using `congrArg (algebraMap (𝓞 E) E) ht`. Simplify using `using e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[map_mul, mul_div_assoc', div_eq_iff hq0, ht', ← h]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨s, r, hr, ?_⟩` and prove the remaining obligations. Establish `hr0 : algebraMap (𝓞 E) E r ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hr` to reduce the goal to its premises. Establish `hr' : r = 0` using `IsFractionRing.injective (𝓞 E) E (by rw [h0, map_zero])`. Rewrite using `[hr']`. Conclude with `P.asIdeal.zero_mem`. Establish `hy0 : y ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Apply `hr0` to reduce the goal to its premises. Rewrite using `[← h, mul_zero]`. Rewrite using `[← h, mul_assoc, mul_inv_cancel₀ hy0, mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_of_not_div (hp : (Ideal.absNorm P.asIdeal).Prime)
     (hq : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {y : E} (hy : IntAt P y)
@@ -180,11 +178,11 @@ theorem unit_of_not_div (hp : (Ideal.absNorm P.asIdeal).Prime)
     rw [← h, mul_assoc, mul_inv_cancel₀ hy0, mul_one]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∃ s ∈ P.asIdeal.primeCompl, s • v ∈ stdLat E n) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hv⟩ l`. Establish `hl : (s • v) l ∈ (1 : Submodule (𝓞 E) E)` using `Submodule.mem_pi.mp hv l (Set.mem_univ l)`. Take `⟨r, hr⟩` from `Submodule.mem_one.mp hl`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨r, s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, Pi.smul_apply, Algebra.smul_def]`. Introduce `h choose r s hs hrs using h`. Use `⟨∏ l, s l, Submonoid.prod_mem _ (fun l _ => hs l), ?_⟩` and prove the remaining obligations. Use `Submodule.mem_pi.mpr fun l _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_one.mpr ⟨(∏ l' ∈ Finset.univ.erase l, s l') * r l, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Algebra.smul_def, ← Finset.mul_prod_erase Finset.univ s (Finset.mem_univ l), map_mul, map_mul, ← hrs l]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mem_stdAt {n : ℕ} (v : Sp E n) : v ∈ stdAt E n P ↔ ∀ l, IntAt P (v l) := by
   change (∃ s ∈ P.asIdeal.primeCompl, s • v ∈ stdLat E n) ↔ _
@@ -204,7 +202,7 @@ theorem mem_stdAt {n : ℕ} (v : Sp E n) : v ∈ stdAt E n P ↔ ∀ l, IntAt P 
     ring
 
 /- English proof (translation)
-Use `show v ∈ Submodule.comap _ (stdAt E (N + c) P) ↔ _`. Rewrite using `[Submodule.mem_comap, ← mem_stdAt P]`. Use `Iff.of_eq (congrArg (· ∈ stdAt E (N + c) P) ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `l`. Simplify using `[LocE.scE]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_lam (N c : ℕ) (v : Sp E (N + c)) :
     v ∈ LocE.lamY P (Ideal.absNorm P.asIdeal) N c 0 ↔ ∀ l, IntAt P (v l) := by

@@ -15,18 +15,18 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 variable {g : ℕ} {ty : Fin g → (E →+* ℂ)} {p q : ℕ} (hty : IsTypeFn H p q ty)
 
 /- English proof (translation)
-Unfold `blk`. Apply the tactic sequence `split_ifs with h <;> simp [h]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk_isLeft (k : Fin g) : (blk hty k).isLeft = true ↔ ty k (H.rt : E) = H.rt0 := by
   unfold blk
   split_ifs with h <;> simp [h]
 
 /- English proof (translation)
-Establish `key : ∀ (τ τ' : E →+* ℂ), τ = τ' → ∀ (h : τ (H.rt : E) = H.rt0) (h' : τ' (H.rt : E) = H.rt0) (a : {j : Fin g // ty j = τ}) (b : {j : Fin g // ty j = τ'}), eP hty τ h a = eP hty τ' h' b → (a : Fin g) = b`. Introduce and unpack `τ τ' rfl h h' a b hab`. Conclude with `congrArg Subtype.val ((eP hty τ h).injective hab)`. Establish `key' : ∀ (τ τ' : E →+* ℂ), τ = τ' → ∀ (h : τ (H.rt : E) ≠ H.rt0) (h' : τ' (H.rt : E) ≠ H.rt0) (a : {j : Fin g // ty j = τ}) (b : {j : Fin g // ty j = τ'}), eQ hty τ h a = eQ hty τ' h' b → (a : Fin g) = b`. Introduce and unpack `τ τ' rfl h h' a b hab`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions.
 
-Conclude with `congrArg Subtype.val ((eQ hty τ h).injective hab)`. Unfold `blk at hb`. Distinguish the cases in `h : ty k (H.rt : E) = H.rt0`. Establish `h' : ty k' (H.rt : E) = H.rt0` using `ht ▸ h`. Rewrite `hb` using `[dif_pos h, dif_pos h']`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key _ _ ht h h' ⟨k, rfl⟩ ⟨k', rfl⟩ (Sum.inl.inj hb)`. Establish `h' : ty k' (H.rt : E) ≠ H.rt0` using `ht ▸ h`. Rewrite `hb` using `[dif_neg h, dif_neg h']`. Conclude with `key' _ _ ht h h' ⟨k, rfl⟩ ⟨k', rfl⟩ (Sum.inr.inj hb)`.
+A detailed English derivation is pending.
 -/
 theorem blk_inj {k k' : Fin g} (ht : ty k = ty k') (hb : blk hty k = blk hty k') : k = k' := by
   have key : ∀ (τ τ' : E →+* ℂ), τ = τ' → ∀ (h : τ (H.rt : E) = H.rt0) (h' : τ' (H.rt : E) = H.rt0)
@@ -51,9 +51,9 @@ theorem blk_inj {k k' : Fin g} (ht : ty k = ty k') (hb : blk hty k = blk hty k')
 variable {D : Datum H} (x : Fin p ⊕ Fin q → D.La) (c : D.La →ₗ[𝓞 E] (Fin p ⊕ Fin q →₀ 𝓞 E)) (n : ℕ)
 
 /- English proof (translation)
-Establish `hn : (n : ℂ) ≠ 0` using `by exact_mod_cast hn0.ne'`. Simplify using `only [per, AddMonoidHom.coe_mk, ZeroHom.coe_mk, map_smul, hcx, Finsupp.smul_single, smul_eq_mul]`. Rewrite using `[Finsupp.single_apply]`. Distinguish the cases in `h : blk hty k = m`. Rewrite using `[if_pos h.symm, if_pos h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[map_mul, map_natCast]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[if_neg (Ne.symm h), if_neg h]`. Simplify using the standard rewrite rules.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem per_bx (hn0 : 0 < n) (hcx : ∀ m, c (x m) = Finsupp.single m (n : 𝓞 E)) (b : 𝓞 E) (m : Fin p ⊕ Fin q)
     (k : Fin g) : per hty c n (b • x m) k = if blk hty k = m then ty k (b : E) else 0 := by
@@ -72,31 +72,29 @@ def conjPerm : Equiv.Perm (E →+* ℂ) :=
   Function.Involutive.toPerm ComplexEmbedding.conjugate (fun σ => by ext x; simp)
 
 /- English proof (translation)
-Establish `side : ∀ k k' : Fin g, blk hty k = blk hty k' → ComplexEmbedding.conjugate (ty k) ≠ ty k'`. Introduce `k k' hkk he`. Establish `h1` using `blk_isLeft hty k`. Establish `h2` using `blk_isLeft hty k'`. Establish `h3` using `conjugate_rt (H := H) (ty k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[he]`. Rewrite `h1` using `[hkk]`. The claim follows by propositional logic. Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. The claim follows by propositional logic. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `set l : Fin g → ℂ := fun k => ((f (Pi.single k (1 : ℂ)) : ℝ) : ℂ) - Complex.I * ((f (Pi.single k Complex.I) : ℝ) : ℂ) with hl`. Establish `hsingle : ∀ (k : Fin g) (z : ℂ), f (Pi.single k z) = (l k * z).re`. Introduce `k z`. Establish `hz : (Pi.single k z : Fin g → ℂ) = z.re • (Pi.single k (1 : ℂ) : Fin g → ℂ) + z.im • (Pi.single k Complex.I : Fin g → ℂ)`. Use extensionality with `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne j k with rfl | hj` into its components or cases. Simplify using `[Complex.ext_iff]`. Simplify using `[hj]`. Rewrite using `[hz, map_add, map_smul, map_smul]`. Apply the tactic sequence `simp [hl, Complex.mul_re, smul_eq_mul] <;> ring`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hf : ∀ v : Fin g → ℂ, f v = (∑ k, l k * v k).re`. Introduce `v`. Use `conv_lhs => rw [← Finset.univ_sum_single v]`. Rewrite using `[map_sum, Complex.re_sum]`. Conclude with `Finset.sum_congr rfl (fun k _ => hsingle k (v k))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hl0 : ∀ k0, l k0 = 0`. Introduce `k0`. Use `set S := Finset.univ.filter (fun k => blk hty k = blk hty k0) with hS`. Establish `hre : ∀ b : 𝓞 E, (∑ k ∈ S, l k * ty k (b : E)).re = 0`. Introduce `b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : f (per hty c n (b • x (blk hty k0))) = 0` using `hle (Submodule.subset_span ⟨b • x (blk hty k0), rfl⟩)`. Rewrite `h1` using `[hf]`. Simplify using `only [per_bx hty x c n hn0 hcx, mul_ite, mul_zero] at h1`. Rewrite using `[hS, Finset.sum_filter]`. Conclude with `h1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set L : (E →+* ℂ) → ℂ := fun σ => ∑ k ∈ S, ((if ty k = σ then l k else 0) + (if ComplexEmbedding.conjugate (ty k) = σ then conj (l k) else 0)) with hL`. Establish `hL0 : L = 0`. Apply `emb_indep` to reduce the goal to its premises. Introduce `b`. Establish `hterm : ∀ k, l k * ty k (b : E) + conj (l k) * conj (ty k (b : E)) = ((2 * (l k * ty k (b : E)).re : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Rewrite using `[← map_mul, Complex.add_conj]`. Simplify using `only [hL, Finset.sum_mul, add_mul, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true, ComplexEmbedding.conjugate_coe_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Finset.sum_add_distrib, Finset.sum_congr rfl (fun k _ => hterm k)]`. Rewrite using `[← Complex.ofReal_sum, ← Finset.mul_sum, ← Complex.re_sum, hre b]`. Simplify using the standard rewrite rules. Establish `h0` using `congrFun hL0 (ty k0)`. Simplify using `only [hL, Pi.zero_apply] at h0`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h0` using `[Finset.sum_eq_single k0]`. Simplify `h0` using `[side k0 k0 rfl]`. Introduce `k hk hne`. Establish `hk' : blk hty k = blk hty k0` using `by simpa [hS] using hk`. Rewrite using `[if_neg (fun h => hne (blk_inj hty h hk')), if_neg (side k k0 hk'), add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (by simp [hS]) h`. Apply `hf0` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
-
-Rewrite using `[hf v]`. Simplify using `[hl0]`.
+A detailed English derivation is pending.
 -/
 theorem per_span (hn0 : 0 < n) (hcx : ∀ m, c (x m) = Finsupp.single m (n : 𝓞 E)) :
     Submodule.span ℝ (Set.range (per hty c n)) = ⊤ := by
@@ -171,9 +169,9 @@ theorem per_span (hn0 : 0 < n) (hcx : ∀ m, c (x m) = Finsupp.single m (n : �
   simp [hl0]
 
 /- English proof (translation)
-Use `⟨((eP hty σ h).symm i).1, ((eP hty σ h).symm i).2, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (τ : E →+* ℂ), τ = σ → ∀ (h1 : τ (H.rt : E) = H.rt0) (a : {j : Fin g // ty j = τ}), (a : Fin g) = ((eP hty σ h).symm i).1 → eP hty τ h1 a = i`. Introduce and unpack `τ rfl h1 a ha`. Establish `ha' : a = (eP hty τ h).symm i` using `Subtype.ext ha`. Rewrite using `[ha']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(eP hty τ h).apply_symm_apply i`. Establish `hk` using `((eP hty σ h).symm i).2`. Unfold `blk`. Rewrite using `[dif_pos (by rw [hk]; exact h)]`. Conclude with `congrArg Sum.inl (key _ hk _ ⟨_, rfl⟩ rfl)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_blk_inl_of_rt_eq_rt0 (σ : E →+* ℂ) (h : σ (H.rt : E) = H.rt0) (i : Fin p) :
     ∃ k, ty k = σ ∧ blk hty k = Sum.inl i := by
@@ -190,9 +188,9 @@ private theorem exists_blk_inl_of_rt_eq_rt0 (σ : E →+* ℂ) (h : σ (H.rt : E
   exact congrArg Sum.inl (key _ hk _ ⟨_, rfl⟩ rfl)
 
 /- English proof (translation)
-Use `⟨((eQ hty σ h).symm j).1, ((eQ hty σ h).symm j).2, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (τ : E →+* ℂ), τ = σ → ∀ (h1 : τ (H.rt : E) ≠ H.rt0) (a : {i : Fin g // ty i = τ}), (a : Fin g) = ((eQ hty σ h).symm j).1 → eQ hty τ h1 a = j`. Introduce and unpack `τ rfl h1 a ha`. Establish `ha' : a = (eQ hty τ h).symm j` using `Subtype.ext ha`. Rewrite using `[ha']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(eQ hty τ h).apply_symm_apply j`. Establish `hk` using `((eQ hty σ h).symm j).2`. Unfold `blk`. Rewrite using `[dif_neg (by rw [hk]; exact h)]`. Conclude with `congrArg Sum.inr (key _ hk _ ⟨_, rfl⟩ rfl)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_blk_inr_of_rt_ne_rt0 (σ : E →+* ℂ) (h : σ (H.rt : E) ≠ H.rt0) (j : Fin q) :
     ∃ k, ty k = σ ∧ blk hty k = Sum.inr j := by
@@ -209,23 +207,21 @@ private theorem exists_blk_inr_of_rt_ne_rt0 (σ : E →+* ℂ) (h : σ (H.rt : E
   exact congrArg Sum.inr (key _ hk _ ⟨_, rfl⟩ rfl)
 
 /- English proof (translation)
-Establish `hrt0 : H.rt0 ≠ 0`. Introduce `h0`. Establish `h` using `H.sqrt_neg_disc_sq`. Rewrite `h` using `[h0]`. Establish `hd : (H.d : ℂ) = 0` using `by linear_combination h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `H.d_prime.ne_zero (by exact_mod_cast hd)`. Establish `big : ∀ y : D.La, per hty c n y ≠ 0 → 1 / (n : ℝ) ≤ ‖per hty c n y‖`. Introduce `y hy`. Establish `hcy : c y ≠ 0` using `fun h => hy (by rw [hc y h, map_zero])`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m, c y m ≠ 0 := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hcy (Finsupp.ext hcon)`. Establish `hk : ∃ k, blk hty k = m ∧ 1 ≤ ‖ty k (c y m : E)‖`. Break down `m with i | j` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ, hb⟩` from `exists_big (H := H) (c y (Sum.inl i)) hm true`. Simplify using `only [if_true] at hσ`. Take `⟨k, hk1, hk2⟩` from `exists_blk_inl_of_rt_eq_rt0 hty σ hσ i`. Conclude with `⟨k, hk2, by rw [hk1]; exact hb⟩`. Take `⟨σ, hσ, hb⟩` from `exists_big (H := H) (c y (Sum.inr j)) hm false`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Bool.false_eq_true, if_false] at hσ`. Establish `hne : σ (H.rt : E) ≠ H.rt0`. Rewrite using `[hσ]`. Introduce `h`. Apply `hrt0` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take the linear combination `(-1 / 2 : ℂ) * h`. Take `⟨k, hk1, hk2⟩` from `exists_blk_inr_of_rt_ne_rt0 hty σ hne j`. Conclude with `⟨k, hk2, by rw [hk1]; exact hb⟩`. Take `⟨k, hk1, hk2⟩` from `hk`. Establish `hn : (0 : ℝ) < n` using `by exact_mod_cast hn0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[discreteTopology_iff_isOpen_singleton_zero, Metric.isOpen_singleton_iff]`. Establish `hn : (0 : ℝ) < n` using `by exact_mod_cast hn0`. Use `⟨1 / (n : ℝ), by positivity, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨z, hzmem⟩` from `z`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Take `⟨y, rfl⟩` from `AddMonoidHom.mem_range.mp hzmem`. Assume the negation of the conclusion as `hne`. Establish `hne' : per hty c n y ≠ 0` using `fun h => hne (Subtype.ext h)`. Establish `hb` using `big y hne'`. Establish `hz' : ‖per hty c n y‖ < 1 / (n : ℝ)`.
-
-Simplify `hz` using `[Subtype.dist_eq, dist_zero_right]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem per_discrete (hn0 : 0 < n) (hc : ∀ y, c y = 0 → y = 0) : DiscreteTopology (per hty c n).range := by
   have hrt0 : H.rt0 ≠ 0 := by

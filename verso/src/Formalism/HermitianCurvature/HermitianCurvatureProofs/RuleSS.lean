@@ -7,33 +7,33 @@ open Matrix Formalism.FourierDecayAlt.R Formalism.FourierDecayAlt.R.LevelData
 variable {A : Type} [Ring A] [Algebra ℂ A]
 
 /- English proof (translation)
-Rewrite using `[mul_assoc, hb, ← mul_assoc, ha, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem I_mul {h a a' b b' : A} (ha : a * h = h * a') (hb : b * h = h * b') :
     a * b * h = h * (a' * b') := by
   rw [mul_assoc, hb, ← mul_assoc, ha, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[add_mul, ha, hb, mul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem I_add {h a a' b b' : A} (ha : a * h = h * a') (hb : b * h = h * b') :
     (a + b) * h = h * (a' + b') := by
   rw [add_mul, ha, hb, mul_add]
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, h1, mul_assoc, h2, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem I_comp {h k a a' a'' : A} (h1 : a * h = h * a') (h2 : a' * k = k * a'') :
     a * (h * k) = (h * k) * a'' := by
   rw [← mul_assoc, h1, mul_assoc, h2, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `hc.eq`.
+A detailed English derivation is pending.
 -/
 theorem I_of_comm {h a : A} (hc : Commute a h) : a * h = h * a := hc.eq
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _ => by simp | n + 1, f, g, h => by rw [List.ofFn_succ, List.ofFn_succ, List.reverse_cons, List.reverse_cons, List.prod_append, List.prod_append, List.prod_singleton, List.prod_singleton, mul_assoc, h 0, ← mul_assoc, rev_prod_inter d n (fun i => f i.succ) (fun i => g i …`.
+A detailed English derivation is pending.
 -/
 theorem rev_prod_inter {M : Type} [Monoid M] (d : M) :
     ∀ (n : ℕ) (f g : Fin n → M), (∀ i, f i * d = d * g i) →
@@ -45,7 +45,7 @@ theorem rev_prod_inter {M : Type} [Monoid M] (d : M) :
         rev_prod_inter d n (fun i => f i.succ) (fun i => g i.succ) (fun i => h i.succ), mul_assoc]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _ => by simp | n + 1, f, k, h => by have ih := ofFn_shift x n (fun i => f i.succ) (fun i => k i.succ) (fun i => h i.succ) rw [List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ, map_add] set P := (List.ofFn fun i => f i.succ).prod calc x * (f 0 * P) = (x * f 0) * P := b …`.
+A detailed English derivation is pending.
 -/
 theorem ofFn_shift (x : A) :
     ∀ (n : ℕ) (f : Fin n → A) (k : Fin n → ℂ), (∀ m, x * f m = f m * (x + algebraMap ℂ A (k m))) →
@@ -62,28 +62,28 @@ theorem ofFn_shift (x : A) :
         _ = _ := by noncomm_ring
 
 /- English proof (translation)
-Rewrite using `[add_mul, hx, Algebra.commutes Y h, hY, map_add]`. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_shift {x h : A} {s : ℂ} (hx : x * h = h * (x + algebraMap ℂ A s)) (Y Y' : ℂ)
     (hY : Y' = Y + s) : (algebraMap ℂ A Y + x) * h = h * (algebraMap ℂ A Y' + x) := by
   rw [add_mul, hx, Algebra.commutes Y h, hY, map_add]; noncomm_ring
 
 /- English proof (translation)
-Rewrite using `[sub_mul, hx, Algebra.commutes Y h, hY, map_sub]`. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_shift {x h : A} {s : ℂ} (hx : x * h = h * (x + algebraMap ℂ A s)) (Y Y' : ℂ)
     (hY : Y' = Y - s) : (algebraMap ℂ A Y - x) * h = h * (algebraMap ℂ A Y' - x) := by
   rw [sub_mul, hx, Algebra.commutes Y h, hY, map_sub]; noncomm_ring
 
 /- English proof (translation)
-The claim follows from `((Algebra.commute_algebraMap_left Y h).add_left hx).eq`.
+A detailed English derivation is pending.
 -/
 theorem add_comm0 {x h : A} (hx : Commute x h) (Y : ℂ) :
     (algebraMap ℂ A Y + x) * h = h * (algebraMap ℂ A Y + x) :=
   ((Algebra.commute_algebraMap_left Y h).add_left hx).eq
 
 /- English proof (translation)
-The claim follows from `((Algebra.commute_algebraMap_left Y h).sub_left hx).eq`.
+A detailed English derivation is pending.
 -/
 theorem sub_comm0 {x h : A} (hx : Commute x h) (Y : ℂ) :
     (algebraMap ℂ A Y - x) * h = h * (algebraMap ℂ A Y - x) :=
@@ -92,11 +92,11 @@ theorem sub_comm0 {x h : A} (hx : Commute x h) (Y : ℂ) :
 variable {r : ℕ} (L : LevelData A r)
 
 /- English proof (translation)
-Establish `key : L.Tprod Y * diagonal (fun _ : Fin 2 => h) = diagonal (fun _ => h) * L.Tprod Y'`. Unfold `LevelData.Tprod`. Apply `rev_prod_inter` to reduce the goal to its premises. Introduce `l`. Use extensionality with `i j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[mul_diagonal, diagonal_mul]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [LevelData.Tl, hp l, hc l, hci l]`. Establish `k00` using `congrFun (congrFun key 0) 0`. Establish `k10` using `congrFun (congrFun key 1) 0`. Rewrite `k00`, `k10` using `[mul_diagonal, diagonal_mul]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨k00, k10⟩`.
+Supply the required witnesses or components.
 -/
 theorem Ar_inter (h : A) (Y Y' : ℂ)
     (hp : ∀ l, (algebraMap ℂ A Y + L.p l) * h = h * (algebraMap ℂ A Y' + L.p l))
@@ -115,11 +115,11 @@ theorem Ar_inter (h : A) (Y Y' : ℂ)
   exact ⟨k00, k10⟩
 
 /- English proof (translation)
-Establish `key : L.Tvprod Y * diagonal (fun _ : Fin 2 => h) = diagonal (fun _ => h) * L.Tvprod Y'`. Unfold `LevelData.Tvprod`. Apply `rev_prod_inter` to reduce the goal to its premises. Introduce `l`. Use extensionality with `i j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[mul_diagonal, diagonal_mul]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [LevelData.Tvl, hp l, hc l, hci l]`. Establish `k00` using `congrFun (congrFun key 0) 0`. Establish `k10` using `congrFun (congrFun key 1) 0`. Rewrite `k00`, `k10` using `[mul_diagonal, diagonal_mul]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨k00, k10⟩`.
+Supply the required witnesses or components.
 -/
 theorem Avr_inter (h : A) (Y Y' : ℂ)
     (hp : ∀ l, (algebraMap ℂ A Y - L.pb l) * h = h * (algebraMap ℂ A Y' - L.pb l))
@@ -138,46 +138,46 @@ theorem Avr_inter (h : A) (Y Y' : ℂ)
   exact ⟨k00, k10⟩
 
 /- English proof (translation)
-The claim follows from `L.fns_comm x hx y hy`.
+A detailed English derivation is pending.
 -/
 theorem fcomm {x y : A} (hx : x ∈ L.fns) (hy : y ∈ L.fns) : Commute x y := L.fns_comm x hx y hy
 
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_c (l) : L.c l ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ci (l) : L.ci l ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_cb (l) : L.cb l ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_cbi (l) : L.cbi l ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ζ : L.ζ ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ζb : L.ζb ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_GG : L.GG ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_GGi : L.GGi ∈ L.fns := by simp [LevelData.fns]
 
 omit [Algebra ℂ A] in
 /- English proof (translation)
-The claim follows from `Commute.list_prod_right _ _ (by intro a ha obtain ⟨i, rfl⟩ := List.mem_ofFn.mp ha exact h i)`.
+A detailed English derivation is pending.
 -/
 theorem comm_ofFn {n : ℕ} {x : A} {f : Fin n → A} (h : ∀ i, Commute x (f i)) :
     Commute x (List.ofFn f).prod :=
@@ -187,7 +187,7 @@ theorem comm_ofFn {n : ℕ} {x : A} {f : Fin n → A} (h : ∀ i, Commute x (f i
     exact h i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨comm_ofFn fun m => fcomm L hx (mem_c L m), comm_ofFn fun m => fcomm L hx (mem_ci L m), comm_ofFn fun m => fcomm L hx (mem_cb L m), comm_ofFn fun m => fcomm L hx (mem_cbi L m)⟩`.
+Supply the required witnesses or components.
 -/
 theorem comm_fns_D {x : A} (hx : x ∈ L.fns) :
     Commute x L.Dr ∧ Commute x L.Dri ∧ Commute x L.Drb ∧ Commute x L.Drbi :=
@@ -195,7 +195,7 @@ theorem comm_fns_D {x : A} (hx : x ∈ L.fns) :
     comm_ofFn fun m => fcomm L hx (mem_cb L m), comm_ofFn fun m => fcomm L hx (mem_cbi L m)⟩
 
 /- English proof (translation)
-Establish `h` using `ofFn_shift (L.p l) r L.c (fun m => if l = m then 1 else 0) (fun m => by`. Apply the tactic sequence `rw [L.p_c]; split_ifs <;> simp [mul_add])`. Rewrite `h` using `[show (∑ m : Fin r, if l = m then (1:ℂ) else 0) = 1 by simp]`. Conclude with `h`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_Dr (l) : L.p l * L.Dr = L.Dr * (L.p l + algebraMap ℂ A 1) := by
   have h := ofFn_shift (L.p l) r L.c (fun m => if l = m then 1 else 0) (fun m => by
@@ -204,7 +204,7 @@ theorem p_Dr (l) : L.p l * L.Dr = L.Dr * (L.p l + algebraMap ℂ A 1) := by
   exact h
 
 /- English proof (translation)
-Establish `h` using `ofFn_shift (L.p l) r L.ci (fun m => if l = m then -1 else 0) (fun m => by`. Apply the tactic sequence `rw [L.p_ci]; split_ifs <;> simp [mul_add, sub_eq_add_neg])`. Rewrite `h` using `[show (∑ m : Fin r, if l = m then (-1:ℂ) else 0) = -1 by simp]`. Conclude with `h`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_Dri (l) : L.p l * L.Dri = L.Dri * (L.p l + algebraMap ℂ A (-1)) := by
   have h := ofFn_shift (L.p l) r L.ci (fun m => if l = m then -1 else 0) (fun m => by
@@ -213,7 +213,7 @@ theorem p_Dri (l) : L.p l * L.Dri = L.Dri * (L.p l + algebraMap ℂ A (-1)) := b
   exact h
 
 /- English proof (translation)
-Establish `h` using `ofFn_shift (L.pb l) r L.cb (fun m => if l = m then 1 else 0) (fun m => by`. Apply the tactic sequence `rw [L.pb_cb]; split_ifs <;> simp [mul_add])`. Rewrite `h` using `[show (∑ m : Fin r, if l = m then (1:ℂ) else 0) = 1 by simp]`. Conclude with `h`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pb_Drb (l) : L.pb l * L.Drb = L.Drb * (L.pb l + algebraMap ℂ A 1) := by
   have h := ofFn_shift (L.pb l) r L.cb (fun m => if l = m then 1 else 0) (fun m => by
@@ -222,7 +222,7 @@ theorem pb_Drb (l) : L.pb l * L.Drb = L.Drb * (L.pb l + algebraMap ℂ A 1) := b
   exact h
 
 /- English proof (translation)
-Establish `h` using `ofFn_shift (L.pb l) r L.cbi (fun m => if l = m then -1 else 0) (fun m => by`. Apply the tactic sequence `rw [L.pb_cbi]; split_ifs <;> simp [mul_add, sub_eq_add_neg])`. Rewrite `h` using `[show (∑ m : Fin r, if l = m then (-1:ℂ) else 0) = -1 by simp]`. Conclude with `h`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pb_Drbi (l) : L.pb l * L.Drbi = L.Drbi * (L.pb l + algebraMap ℂ A (-1)) := by
   have h := ofFn_shift (L.pb l) r L.cbi (fun m => if l = m then -1 else 0) (fun m => by
@@ -231,7 +231,7 @@ theorem pb_Drbi (l) : L.pb l * L.Drbi = L.Drbi * (L.pb l + algebraMap ℂ A (-1)
   exact h
 
 /- English proof (translation)
-Unfold `LevelData.l0`. Conclude with `((hn.neg_left).sub_left ((Algebra.commute_algebraMap_left _ h).mul_left (hz.mul_left hg))).eq`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem leftCorrection_intertwine {h : A} (hn : Commute L.nab h) (hz : Commute L.ζb h) (hg : Commute L.GGi h) (Y : ℂ) :
     L.l0 Y * h = h * L.l0 Y := by
@@ -239,7 +239,7 @@ theorem leftCorrection_intertwine {h : A} (hn : Commute L.nab h) (hz : Commute L
   exact ((hn.neg_left).sub_left ((Algebra.commute_algebraMap_left _ h).mul_left (hz.mul_left hg))).eq
 
 /- English proof (translation)
-Unfold `LevelData.m0`. Conclude with `((hn.neg_left).sub_left ((Algebra.commute_algebraMap_left _ h).mul_left (hz.mul_left hg))).eq`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dualCorrection_intertwine {h : A} (hn : Commute L.nabs h) (hz : Commute L.ζ h) (hg : Commute L.GGi h) (Y : ℂ) :
     L.m0 Y * h = h * L.m0 Y := by
@@ -248,7 +248,7 @@ theorem dualCorrection_intertwine {h : A} (hn : Commute L.nabs h) (hz : Commute 
 
 omit L in
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Algebra.commutes e S, Algebra.commutes c S]`. Use `_ = S * (-n - algebraMap ℂ A (c + e) * z) := by rw [map_add]; noncomm_ring`. Use `_ = _ := by rw [hc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_shift (n z S : A) (c c' e : ℂ) (hn : n * S = S * n + algebraMap ℂ A e * (z * S))
     (hz : z * S = S * z) (hc : c' = c + e) :
@@ -262,7 +262,7 @@ theorem lin_shift (n z S : A) (c c' e : ℂ) (hn : n * S = S * n + algebraMap �
     _ = _ := by rw [hc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨I_mul hDr.eq hA, I_mul (I_mul hDrb.eq hGG.eq) (I_add (I_mul hl hA) hB), I_mul hDrb.eq hAv, I_mul (I_mul hDr.eq hGG.eq) (I_add (I_mul hm hAv) hBv)⟩`.
+Supply the required witnesses or components.
 -/
 theorem four_inter (h : A) (Ya Y1 Yl Yl' Yv Yv' Ym Ym' : ℂ)
     (hA : L.Ar Ya * h = h * L.Ar Y1) (hB : L.Br Ya * h = h * L.Br Y1)
@@ -278,19 +278,17 @@ theorem four_inter (h : A) (Ya Y1 Yl Yl' Yv Yv' Ym Ym' : ℂ)
     I_mul (I_mul hDr.eq hGG.eq) (I_add (I_mul hm hAv) hBv)⟩
 
 /- English proof (translation)
-Introduce `A _ _ r L SS SSs hSf hSp hSpb hSn hSns hTf hTp hTpb hTn hTns Y`. Establish `DD : ∀ {x : A}, x ∈ L.fns → Commute x L.Dr ∧ Commute x L.Dri ∧ Commute x L.Drb ∧ Commute x L.Drbi` using `fun hx => comm_fns_D L hx`. Establish `cDrDrb : Commute L.Dr L.Drb` using `(comm_ofFn fun m => ((DD (mem_c L m)).2.2.1).symm).symm`. Establish `cDrDri : Commute L.Dr L.Dri` using `(comm_ofFn fun m => ((DD (mem_c L m)).2.1).symm).symm`. Establish `cDrDrbi : Commute L.Dr L.Drbi` using `(comm_ofFn fun m => ((DD (mem_c L m)).2.2.2).symm).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cDrbDri : Commute L.Drb L.Dri` using `(comm_ofFn fun m => ((DD (mem_cb L m)).2.1).symm).symm`. Establish `cDrbDrbi : Commute L.Drb L.Drbi` using `(comm_ofFn fun m => ((DD (mem_cb L m)).2.2.2).symm).symm`. Establish `sDrb` using `four_inter L L.Drb Y Y Y Y Y (Y - 1) Y Y (Ar_inter L _ Y Y (fun l => add_comm0 (comm_ofFn fun m => L.p_cb l m) Y) (fun l => (DD (mem_c L l)).2.2.1.eq) (fun l => (DD (mem_ci L l)).2.2.1.eq)).1 (Ar_inter L _ Y Y (fun l => add_comm0 (comm_ofFn fun m => L.p_cb l m) Y) (fun l => (DD ( …`. Establish `sDri` using `four_inter L L.Dri Y (Y - 1) Y Y (Y - 1) (Y - 1) Y Y (Ar_inter L _ Y (Y - 1) (fun l => add_shift (p_Dri L l) Y (Y - 1) (by ring)) (fun l => (DD (mem_c L l)).2.1.eq) (fun l => (DD (mem_ci L l)).2.1.eq)).1 (Ar_inter L _ Y (Y - 1) (fun l => add_shift (p_Dri L l) Y (Y - 1) (by ring)) …`. Establish `hlS : L.l0 Y * SS = SS * L.l0 (Y - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `LevelData.l0`. Conclude with `lin_shift _ _ _ (Y + 1/2) (Y - 1 + 1/2) (-1) (by rw [hSn, map_neg, map_one, neg_one_mul, sub_eq_add_neg]) (Commute.mul_left (hSf _ (mem_ζb L)) (hSf _ (mem_GGi L))).eq (by ring)`. Establish `hmS : L.m0 Y * SS = SS * L.m0 (Y - 1)`. Unfold `LevelData.m0`. Conclude with `lin_shift _ _ _ (Y - 1/2) (Y - 1 - 1/2) (-1) (by rw [hSns, map_neg, map_one, neg_one_mul, sub_eq_add_neg]) (Commute.mul_left (hSf _ (mem_ζ L)) (hSf _ (mem_GGi L))).eq (by ring)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sSS` using `four_inter L SS (Y - 1) (Y - 1) Y (Y - 1) (Y - 1) (Y - 1) Y (Y - 1) (Ar_inter L SS (Y - 1) (Y - 1) (fun l => add_comm0 (hSp l) _) (fun l => hSf _ (mem_c L l)) (fun l => hSf _ (mem_ci L l))).1 (Ar_inter L SS (Y - 1) (Y - 1) (fun l => add_comm0 (hSp l) _) (fun l => hSf _ (mem_c L l …`. Establish `hlT : L.l0 Y * SSs = SSs * L.l0 (Y + 1)`. Unfold `LevelData.l0`. Conclude with `lin_shift _ _ _ (Y + 1/2) (Y + 1 + 1/2) 1 (by rw [hTn, map_one, one_mul]) (Commute.mul_left (hTf _ (mem_ζb L)) (hTf _ (mem_GGi L))).eq (by ring)`. Establish `hmT : L.m0 Y * SSs = SSs * L.m0 (Y + 1)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `LevelData.m0`. Conclude with `lin_shift _ _ _ (Y - 1/2) (Y + 1 - 1/2) 1 (by rw [hTns, map_one, one_mul]) (Commute.mul_left (hTf _ (mem_ζ L)) (hTf _ (mem_GGi L))).eq (by ring)`. Establish `sSSs` using `four_inter L SSs Y Y Y (Y + 1) Y Y Y (Y + 1) (Ar_inter L SSs Y Y (fun l => add_comm0 (hTp l) _) (fun l => hTf _ (mem_c L l)) (fun l => hTf _ (mem_ci L l))).1 (Ar_inter L SSs Y Y (fun l => add_comm0 (hTp l) _) (fun l => hTf _ (mem_c L l)) (fun l => hTf _ (mem_ci L l))).2 hlT (Avr_ …`. Establish `sDr` using `four_inter L L.Dr Y (Y + 1) (Y + 1) (Y + 1) Y Y (Y + 1) (Y + 1) (Ar_inter L _ Y (Y + 1) (fun l => add_shift (p_Dr L l) Y (Y + 1) rfl) (fun l => (DD (mem_c L l)).1.eq) (fun l => (DD (mem_ci L l)).1.eq)).1 (Ar_inter L _ Y (Y + 1) (fun l => add_shift (p_Dr L l) Y (Y + 1) rfl) (fun l …`. Establish `sDrbi` using `four_inter L L.Drbi (Y + 1) (Y + 1) (Y + 1) (Y + 1) Y (Y + 1) (Y + 1) (Y + 1) (Ar_inter L _ (Y + 1) (Y + 1) (fun l => add_comm0 (comm_ofFn fun m => L.p_cbi l m) _) (fun l => (DD (mem_c L l)).2.2.2.eq) (fun l => (DD (mem_ci L l)).2.2.2.eq)).1 (Ar_inter L _ (Y + 1) (Y + 1) (fun l = …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, b1, c1, d1⟩` from `sDrb`. Take `⟨a2, b2, c2, d2⟩` from `sDri`. Take `⟨a3, b3, c3, d3⟩` from `sSS`. Take `⟨a4, b4, c4, d4⟩` from `sSSs`. Take `⟨a5, b5, c5, d5⟩` from `sDr`.
-
-Take `⟨a6, b6, c6, d6⟩` from `sDrbi`. Conclude with `⟨I_comp (I_comp a1 a2) a3, I_comp (I_comp b1 b2) b3, I_comp (I_comp c1 c2) c3, I_comp (I_comp d1 d2) d3, I_comp a4 (I_comp a5 a6), I_comp b4 (I_comp b5 b6), I_comp c4 (I_comp c5 c6), I_comp d4 (I_comp d5 d6)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.P.intertwinerConjugation : Formalism.FourierDecayAlt.R.RuleSS := by
   intro A _ _ r L SS SSs hSf hSp hSpb hSn hSns hTf hTp hTpb hTn hTns Y

@@ -18,13 +18,13 @@ set_option backward.isDefEq.respectTransparency false
 namespace GlobalTheory.MixedLocalChains
 
 /- English proof (translation)
-Establish `hr : (Scheme.Modules.restrictFunctor U.ι).map a = (Scheme.Modules.restrictFunctor U.ι).map b`. Rewrite using `[← cancel_mono ((Scheme.Modules.restrictFunctorIsoPullback U.ι).hom.app G), NatTrans.naturality, NatTrans.naturality, e]`. Use `Scheme.Modules.hom_ext _ _ fun W => ?_` and prove the remaining obligations. Use extensionality with `s`. Distinguish the cases in `hη : genericPoint X ∈ W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Establish `hle : U.ι ''ᵁ (U.ι ⁻¹ᵁ W) ≤ W` using `U.ι.image_preimage_le W`. Establish `hη' : genericPoint X ∈ U.ι ''ᵁ (U.ι ⁻¹ᵁ W)` using `⟨⟨_, hU⟩, hη, rfl⟩`. Establish `happ : a.app (U.ι ''ᵁ (U.ι ⁻¹ᵁ W)) = b.app (U.ι ''ᵁ (U.ι ⁻¹ᵁ W))` using `congrArg (fun φ => Scheme.Modules.Hom.app φ (U.ι ⁻¹ᵁ W)) hr`. Use `sub_eq_zero.1 (h W hη _ ?_)` and prove the remaining obligations. Establish `na` using `ConcreteCategory.congr_hom (a.mapPresheaf.naturality (homOfLE hle).op) s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `nb` using `ConcreteCategory.congr_hom (b.mapPresheaf.naturality (homOfLE hle).op) s`. Establish `e' : G.presheaf.map (homOfLE hle).op (a.app W s) = G.presheaf.map (homOfLE hle).op (b.app W s)` using `na.symm.trans ((ConcreteCategory.congr_hom happ _).trans nb)`. Rewrite using `[map_sub, sub_eq_zero]`. Use `erw [← G.presheaf.germ_res_apply (homOfLE hle) _ hη' (a.app W s), ← G.presheaf.germ_res_apply (homOfLE hle) _ hη' (b.app W s), e']`. Establish `hW : W = ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Take `⟨x, hx⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty W).1 hne`. Conclude with `hη (GlobalTheory.VB.genericPoint_mem hx)`. Substitute `hW` using the available equality. Conclude with `TopCat.Sheaf.eq_of_locally_eq' ⟨G.presheaf, G.isSheaf⟩ (fun _ : Empty => ⊥) ⊥ (fun i => i.elim) bot_le _ _ (fun i => i.elim)`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem hom_ext_of_pullback_ι {X : Scheme.{0}} [IsIntegral X] {F G : X.Modules}
     (h : GlobalTheory.VB.IsTorsionFree G) (a b : F ⟶ G) (U : X.Opens) (hU : genericPoint X ∈ U)
@@ -58,7 +58,7 @@ theorem hom_ext_of_pullback_ι {X : Scheme.{0}} [IsIntegral X] {F G : X.Modules}
       (fun i => i.elim) bot_le _ _ (fun i => i.elim)
 
 /- English proof (translation)
-Introduce `_ _ _ _ Z _ _ _ a b hG e` and use `hom_ext_of_pullback_ι hG.isTorsionFree a b Z.gen Z.genericPoint_mem_gen e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hom_ext_of_genRes : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (Z : GlobalTheory.Vert.Model O) (F G : Z.X.Modules) (m : ℕ) (a b : F ⟶ G),

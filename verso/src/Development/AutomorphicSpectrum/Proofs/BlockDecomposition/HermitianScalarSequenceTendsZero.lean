@@ -19,7 +19,7 @@ def invInf (F : Type) [Field F] [NumberField F] (n : ℕ) : Ainf F :=
 
 omit [NumberField F] in
 /- English proof (translation)
-Establish `h` using `(NumberField.InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) ((n : w.Completion) + 1)`. Rewrite using `[← h, map_add, map_natCast, map_one]`. Establish `: ((n : ℂ) + 1) = ((n + 1 : ℕ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_natCast]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -33,7 +33,7 @@ theorem norm_natCast_add_one (w : NumberField.InfinitePlace F) (n : ℕ) :
   push_cast; ring
 
 /- English proof (translation)
-Introduce `h`. Use `norm_natCast_add_one w n` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Establish `h2 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem natCast_add_one_ne_zero (w : NumberField.InfinitePlace F) (n : ℕ) :
     ((n : w.Completion) + 1) ≠ 0 := by
@@ -44,7 +44,7 @@ theorem natCast_add_one_ne_zero (w : NumberField.InfinitePlace F) (n : ℕ) :
   linarith
 
 /- English proof (translation)
-Establish `key : ((n : ∀ w : NumberField.InfinitePlace F, w.Completion) + 1) * (fun w : NumberField.InfinitePlace F => ((n : w.Completion) + 1)⁻¹) = 1`. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.mul_apply, Pi.add_apply, Pi.natCast_apply, Pi.one_apply]`. Conclude with `mul_inv_cancel₀ (natCast_add_one_ne_zero w n)`. Conclude with `key`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_invInf (n : ℕ) : ((n : Ainf F) + 1) * invInf F n = 1 := by
   have key : ((n : ∀ w : NumberField.InfinitePlace F, w.Completion) + 1) *
@@ -55,9 +55,9 @@ theorem mul_invInf (n : ℕ) : ((n : Ainf F) + 1) * invInf F n = 1 := by
   exact key
 
 /- English proof (translation)
-Use `tendsto_pi_nhds.2 fun w => ?_` and prove the remaining obligations. Establish `key : Filter.Tendsto (fun n : ℕ => ((n : w.Completion) + 1)⁻¹) Filter.atTop (nhds 0)`. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `e : ∀ n : ℕ, ‖((n : w.Completion) + 1)⁻¹‖ = 1 / ((n : ℝ) + 1)` using `fun n => by`. Rewrite using `[norm_inv, norm_natCast_add_one, one_div]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e]`. Conclude with `tendsto_one_div_add_atTop_nhds_zero_nat`. Conclude with `key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_invInf : Filter.Tendsto (invInf F) Filter.atTop (nhds 0) := by
   refine tendsto_pi_nhds.2 fun w => ?_
@@ -72,7 +72,7 @@ theorem tendsto_invInf : Filter.Tendsto (invInf F) Filter.atTop (nhds 0) := by
 def seqA (F : Type) [Field F] [NumberField F] (n : ℕ) : AF F := pairA F (invInf F n) 0
 
 /- English proof (translation)
-Establish `: Filter.Tendsto (fun n => (invInf F n, (0 : Af F))) Filter.atTop (nhds ((0 : Ainf F), (0 : Af F)))` using `tendsto_invInf.prodMk_nhds tendsto_const_nhds`. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_seqA : Filter.Tendsto (seqA F) Filter.atTop (nhds 0) := by
   have : Filter.Tendsto (fun n => (invInf F n, (0 : Af F))) Filter.atTop (nhds ((0 : Ainf F), (0 : Af F))) :=
@@ -83,9 +83,9 @@ def seqE (D : D7) (r n : ℕ) : Mx D r r :=
   Matrix.diagonal fun _ => seqA D.host.F n ⊗ₜ[D.host.F] (1 : D.host.E)
 
 /- English proof (translation)
-Use `show GlobalTheory.MixModel.adj (seqE D r n) = seqE D r n`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[GlobalTheory.MixModel.adj, seqE, sigR]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.MixModel.adj, seqE, Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (Ne.symm h)]`.
+A detailed English derivation is pending.
 -/
 theorem seqE_mem (D : D7) (r n : ℕ) : seqE D r n ∈ hermA D r := by
   show GlobalTheory.MixModel.adj (seqE D r n) = seqE D r n
@@ -96,11 +96,11 @@ theorem seqE_mem (D : D7) (r n : ℕ) : seqE D r n ∈ hermA D r := by
   · simp [GlobalTheory.MixModel.adj, seqE, Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (Ne.symm h)]
 
 /- English proof (translation)
-Establish `hc : ContinuousSMul (AF D.host.F) (AE D)` using `IsModuleTopology.toContinuousSMul _ _`. Establish `h1 : Filter.Tendsto (fun n => seqA D.host.F n ⊗ₜ[D.host.F] (1 : D.host.E)) Filter.atTop (nhds (0 : AE D))`. Establish `h2 : Filter.Tendsto (fun n => seqA D.host.F n • (1 : AE D)) Filter.atTop (nhds ((0 : AF D.host.F) • (1 : AE D)))` using `tendsto_seqA.smul_const _`. Rewrite `h2` using `[zero_smul]`. Use `h2.congr fun n => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Use `show Filter.Tendsto (fun n => seqE D r n i j) Filter.atTop (nhds (0 : AE D))`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.congr fun n => ?_` and prove the remaining obligations. Conclude with `(Matrix.diagonal_apply_eq (fun _ => seqA D.host.F n ⊗ₜ[D.host.F] (1 : D.host.E)) i).symm`. Use `(tendsto_const_nhds (x := (0 : AE D))).congr fun n => ?_` and prove the remaining obligations. Conclude with `(Matrix.diagonal_apply_ne (fun _ => seqA D.host.F n ⊗ₜ[D.host.F] (1 : D.host.E)) h).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tendsto_seqE (D : D7) (r : ℕ) : Filter.Tendsto (seqE D r) Filter.atTop (nhds 0) := by
   have hc : ContinuousSMul (AF D.host.F) (AE D) := IsModuleTopology.toContinuousSMul _ _
@@ -120,11 +120,11 @@ theorem tendsto_seqE (D : D7) (r : ℕ) : Filter.Tendsto (seqE D r) Filter.atTop
     exact (Matrix.diagonal_apply_ne (fun _ => seqA D.host.F n ⊗ₜ[D.host.F] (1 : D.host.E)) h).symm
 
 /- English proof (translation)
-Establish `e1 : infPart D (seqA D.host.F n ⊗ₜ[D.host.F] (1 : D.host.E)) = invInf D.host.F n ⊗ₜ[D.host.F] (1 : D.host.E)` using `rfl`. Rewrite using `[e1]`. Establish `e2 : (((n : Ainf D.host.F) + 1) ⊗ₜ[D.host.F] (1 : D.host.E)) * (invInf D.host.F n ⊗ₜ[D.host.F] (1 : D.host.E)) = 1`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_invInf, mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e3 : (((n : Ainf D.host.F) + 1) ⊗ₜ[D.host.F] (1 : D.host.E)) = ((n : Ainf D.host.F ⊗[D.host.F] D.host.E) + 1)`. Rewrite using `[TensorProduct.add_tmul, ← Algebra.TensorProduct.one_def]`. Use `congr 1`. Establish `e4` using `congrArg (θ ρ) e2`. Rewrite `e4` using `[e3, map_mul, map_add, map_natCast, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn : ((n : ℂ) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero n`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `e4`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem theta_seqE (D : D7) (θ : InfFam D) (ρ : D.what₂.Tau) (n : ℕ) :
     θ ρ (infPart D (seqA D.host.F n ⊗ₜ[D.host.F] (1 : D.host.E))) = (((1 : ℝ) / ((n : ℝ) + 1) : ℝ) : ℂ) := by
@@ -144,9 +144,9 @@ theorem theta_seqE (D : D7) (θ : InfFam D) (ρ : D.what₂.Tau) (n : ℕ) :
   linear_combination e4
 
 /- English proof (translation)
-Introduce `D θ _ r`. Use `⟨seqE D r, seqE_mem D r, tendsto_seqE D r, fun n ρ => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [compAt, seqE, Matrix.map_apply, Matrix.diagonal_apply_eq, Matrix.smul_apply, Matrix.one_apply_eq]`. Rewrite using `[theta_seqE]`. Simplify using the standard rewrite rules. Simplify using `[compAt, seqE, Matrix.diagonal_apply_ne _ h, Matrix.one_apply_ne h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_herm_seq : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ r : ℕ, ∃ e : ℕ → Mx D r r, (∀ n, e n ∈ hermA D r) ∧ Filter.Tendsto e Filter.atTop (nhds 0) ∧ ∀ (n : ℕ) (ρ : D.what₂.Tau), compAt θ ρ (e n) = (((1 : ℝ) / ((n : ℝ) + 1) : ℝ) : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ) := by
   intro D θ _ r

@@ -11,7 +11,7 @@ open MvPolynomial Finset Formalism.MainNotions.G
 namespace Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[genMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma genMat_map_eval {n : ℕ} {R : Type} [CommRing R] (f : ℤ →+* R) (g : Matrix (Fin n) (Fin n) R) :
     (MvPolynomial.eval₂Hom f (fun ab : Fin n × Fin n => g ab.1 ab.2)).mapMatrix (genMat ℤ n) = g := by
@@ -24,7 +24,7 @@ def evGL {n : ℕ} {R : Type} [CommRing R] (g : GL (Fin n) R) : GLCoord ℤ n �
     (by rw [RingHom.map_det, genMat_map_eval]; exact Matrix.isUnits_det_units g)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[genMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma genMat_map_coord {n : ℕ} (F : Type) [CommRing F] :
     (MvPolynomial.map (Int.castRingHom F)).mapMatrix (genMat ℤ n) = genMat F n := by
@@ -53,7 +53,7 @@ abbrev TIdx {n : ℕ} [NeZero n] (mu : Fin n → ℤ) :=
   (c : ↥(TCols mu)) → {J : Finset (Fin n) // J.card = colH mu c}
 
 /- English proof (translation)
-Unfold `colH`. Conclude with `(Finset.card_filter_le _ _).trans (by simp)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma colH_le {n : ℕ} (mu : Fin n → ℤ) (c : ℤ) : colH mu c ≤ n := by
   unfold colH
@@ -171,7 +171,7 @@ def IsBlock {m : ℕ} {R : Type} [CommRing R] (h : GL (Fin (m + 1)) R) (g1 : GL 
   ∀ a : Fin m, h.val a.castSucc (Fin.last m) = 0 ∧ h.val (Fin.last m) a.castSucc = 0
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[genMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma genMat_map_evalR {n : ℕ} {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R']
     (g : Matrix (Fin n) (Fin n) R') :
@@ -504,7 +504,7 @@ def WeylDualityLattice (_D : Formalism.BasicNotions.D7) : Prop :=
 def PathColumnBasis (D : Formalism.BasicNotions.D7) : Prop := HyperplaneRank D
 
 /- English proof (translation)
-Unfold `PathColumnBasis HyperplaneRank`. Introduce `O _ _ _ N n _ LL B`. Conclude with `h O N n LL B`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem path_basis_of_field_basis (D : Formalism.BasicNotions.D7) (h : PathBasisOverRing D) : PathColumnBasis D := by
   unfold PathColumnBasis HyperplaneRank
@@ -520,7 +520,7 @@ def HodgeTateFromSandwich (D : Formalism.BasicNotions.D7) : Prop := admitted D �
 def Stmt (D : Formalism.BasicNotions.D7) : Prop := admitted D → AdmB D → Conclusion1 D ∧ Conclusion2 D
 
 /- English proof (translation)
-Introduce `hA hB`. Establish `p1` using `h1 hA`. Conclude with `⟨p1, h2 hA p1.2.1 hB⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem statement_of_degree_and_bound (D : Formalism.BasicNotions.D7) (h1 : IntegralityFromMetric D) (h2 : HodgeTateFromSandwich D) : Stmt D := by
   intro hA hB

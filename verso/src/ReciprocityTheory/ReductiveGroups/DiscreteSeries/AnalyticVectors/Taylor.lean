@@ -15,9 +15,9 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => intro w`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `w`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[iteratedDeriv_succ']`. Establish `hd : deriv (fun s : ℝ => φ (σ (NormedSpace.exp ((s : ℂ) • X)) (w : H))) = fun s : ℝ => φ (σ (NormedSpace.exp ((s : ℂ) • X)) ((actM E X w : D) : H))`. Use function extensionality and compare the values at `s`. Conclude with `(φ.hasFDerivAt.comp_hasDerivAt s (hasDerivAt_orbit hσ hD hX w s)).deriv`. Rewrite using `[hd, ih (actM E X w), pow_succ, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_dual_orbit (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (φ : H →L[ℝ] ℝ) (m : ℕ) : ∀ w : D,
@@ -35,7 +35,7 @@ theorem iteratedDeriv_dual_orbit (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedO
     rw [hd, ih (actM E X w), pow_succ, Module.End.mul_apply]
 
 /- English proof (translation)
-The claim follows from `φ.contDiff.comp (contDiff_orbit hσ hD hX w N)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_dual_orbit (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (φ : H →L[ℝ] ℝ) (w : D) (N : ℕ) :
@@ -43,19 +43,17 @@ theorem contDiff_dual_orbit (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε 
   φ.contDiff.comp (contDiff_orbit hσ hD hX w N)
 
 /- English proof (translation)
-Break down `eq_or_ne t₀ t with rfl | htt` into its components or cases. Establish `h0 : σ (NormedSpace.exp ((t₀ : ℂ) • X)) (v : H) - ∑ m ∈ range (N + 1), (((t₀ - t₀) ^ m / (m.factorial : ℝ) : ℝ) : ℂ) • σ (NormedSpace.exp ((t₀ : ℂ) • X)) ((((actM E X) ^ m) v : D) : H) = 0`. Rewrite using `[Finset.sum_range_succ']`. Simplify using the standard rewrite rules. Rewrite using `[h0, norm_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `set R := σ (NormedSpace.exp ((t : ℂ) • X)) (v : H) - ∑ m ∈ range (N + 1), (((t - t₀) ^ m / (m.factorial : ℝ) : ℝ) : ℂ) • σ (NormedSpace.exp ((t₀ : ℂ) • X)) ((((actM E X) ^ m) v : D) : H) with hR`. Take `⟨φ, hφ1, hφR⟩` from `exists_dual_vector'' ℝ R`. Use `set g : ℝ → ℝ := fun s => φ (σ (NormedSpace.exp ((s : ℂ) • X)) (v : H)) with hg`. Establish `hgd` using `iteratedDeriv_dual_orbit hσ hD hX φ`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : UniqueDiffOn ℝ (Set.uIcc t₀ t)` using `uniqueDiffOn_uIcc htt`. Establish `hwithin : ∀ k : ℕ, iteratedDerivWithin k g (Set.uIcc t₀ t) t₀ = φ (σ (NormedSpace.exp ((t₀ : ℂ) • X)) ((((actM E X) ^ k) v : D) : H))`. Introduce `k`. Rewrite using `[iteratedDerivWithin_eq_iteratedFDerivWithin, iteratedFDerivWithin_eq_iteratedFDeriv hu ((contDiff_dual_orbit hσ hD hX φ v k).contDiffAt) Set.left_mem_uIcc, ← iteratedDeriv_eq_iteratedFDeriv, hgd k v]`. Establish `hf : ContDiffOn ℝ (N + 1) g (Set.uIcc t₀ t)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `contDiff_dual_orbit hσ hD hX φ v (N + 1)` as an intermediate fact. Conclude with `this.contDiffOn` after adjusting the coercions. Take `⟨x', -, heq⟩` from `taylor_mean_remainder_lagrange_iteratedDeriv htt hf`. Establish `hφsum : φ R = g t - taylorWithinEval g N (Set.uIcc t₀ t) t₀ t`. Rewrite using `[taylor_within_apply, hR, map_sub, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.coe_smul, φ.map_smul, hwithin k, smul_eq_mul, smul_eq_mul, div_eq_inv_mul]`. Establish `hD1 : |iteratedDeriv (N + 1) g x'| ≤ a (N + 1)`. Rewrite using `[hgd (N + 1) v]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_orbit_apply hσ hX]`. Conclude with `mul_le_mul_of_nonneg_right hφ1 (norm_nonneg _)`. Use `_ ≤ a (N + 1) := by rw [one_mul]; exact ha _`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hφsum, heq]`. Use `_ ≤ |iteratedDeriv (N + 1) g x' * (t - t₀) ^ (N + 1) / ((N + 1).factorial : ℝ)| := le_abs_self _`. Use `_ = |iteratedDeriv (N + 1) g x'| * |t - t₀| ^ (N + 1) / ((N + 1).factorial : ℝ) := by`. Rewrite using `[abs_div, abs_mul, abs_pow, Nat.abs_cast]`. Use `_ ≤ a (N + 1) * |t - t₀| ^ (N + 1) / ((N + 1).factorial : ℝ) := by gcongr`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_orbit_sub_partial_le (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (v : D) (a : ℕ → ℝ)
@@ -114,11 +112,11 @@ theorem norm_orbit_sub_partial_le (hσ : IsURepOn (UJset ε) σ) (hD : IsDerived
     _ ≤ a (N + 1) * |t - t₀| ^ (N + 1) / ((N + 1).factorial : ℝ) := by gcongr
 
 /- English proof (translation)
-Establish `hterm : ∀ m, ‖(((t - t₀) ^ m / (m.factorial : ℝ) : ℝ) : ℂ) • σ (NormedSpace.exp ((t₀ : ℂ) • X)) ((((actM E X) ^ m) v : D) : H)‖ ≤ a m * |t - t₀| ^ m / (m.factorial : ℝ)`. Introduce `m`. Rewrite using `[norm_smul, norm_orbit_apply hσ hX, Complex.norm_real, Real.norm_eq_abs, abs_div, abs_pow, Nat.abs_cast]`. Establish `hp : 0 ≤ |t - t₀| ^ m / (m.factorial : ℝ)` using `by positivity`. Use `mul_le_mul_of_nonneg_left (ha m) hp` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hsumm` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hterm hs`. Rewrite using `[hasSum_iff_tendsto_nat_of_summable_norm hsumm, ← Filter.tendsto_add_atTop_iff_nat 1, tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun N => ?_) ((Filter.tendsto_add_atTop_iff_nat 1).2 hs.tendsto_atTop_zero)` and prove the remaining obligations. Rewrite using `[norm_sub_rev]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_orbit_sub_partial_le hσ hD hX v a ha t₀ t N`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_orbit_of_bound (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (v : D) (a : ℕ → ℝ)

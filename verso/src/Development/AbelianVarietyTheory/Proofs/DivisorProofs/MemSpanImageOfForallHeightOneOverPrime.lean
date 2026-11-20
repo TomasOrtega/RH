@@ -6,21 +6,19 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc.LocalDescent
 
 /- English proof (translation)
-Introduce `R F _ _ _ _ _ c₀ hc p hp hp1 T hT`. Set `B` to `Localization.AtPrime p`. Use `haveI := GlobalTheory.isDiscreteValuationRing_of_height_eq_one p hp1 B`. Establish `hu : ∀ y : p.primeCompl, IsUnit (c₀ y)` using `fun y => IsUnit.mk0 _ fun h => y.2 (((injective_iff_map_eq_zero c₀).mp hc _ h) ▸ p.zero_mem)`. Set `l : B →+* F` to `IsLocalization.lift hu`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hl : ∀ r, l (algebraMap R B r) = c₀ r` using `fun r => IsLocalization.lift_eq hu r`. Establish `hinj` using `IsLocalization.injective B p.primeCompl_le_nonZeroDivisors`. Establish `hli : Function.Injective l`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨r, s⟩, e⟩` from `IsLocalization.surj p.primeCompl z`. Establish `h0 : c₀ r = 0` using `by rw [← hl, ← e, map_mul, hz, zero_mul]`. Rewrite `e` using `[(injective_iff_map_eq_zero c₀).mp hc _ h0, map_zero]`. Conclude with `(IsLocalization.map_units B s).mul_left_eq_zero.mp e`. Use `letI : Algebra B F := l.toAlgebra`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hsm : ∀ (z : B) (v : F), z • v = l z * v` using `fun _ _ => rfl`. Use `haveI : FaithfulSMul B F := (faithfulSMul_iff_algebraMap_injective B F).mpr hli`. Set `E` to `Submodule.span B T`. Use `haveI : Module.Finite B E := Module.Finite.span_of_finite B hT`. Use `haveI : Module.Free B E := inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Set `e` to `Module.finBasis B E`. Establish `clear : ∀ {ι : Type} [Finite ι] (z : ι → B), ∃ t, t ∉ p ∧ ∃ g : ι → R, ∀ i, c₀ (g i) = c₀ t * l (z i)` using `fun z => by`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite p.primeCompl z`. Use `choose h hh using hd`. Conclude with `⟨d, d.2, h, fun i => by rw [← hl, hh, Algebra.smul_def, map_mul, hl]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨_, fun j => (e j : F), fun j => ?_, fun r hr => ?_, ?_⟩` and prove the remaining obligations. Take `⟨n, z, v, hv⟩` from `Submodule.mem_span_set'.mp (e j).2`. Take `⟨t, ht, g, hg⟩` from `clear z`. Use `⟨n, g, fun i => v i, t, ht, fun i => (v i).2, ?_⟩` and prove the remaining obligations. Simplify using `only [← hv, hg, hsm, Finset.mul_sum, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Fintype.linearIndependent_iff.mp e.linearIndependent (fun j => algebraMap R B (r j)) (Subtype.ext (by simpa [hsm, hl] using hr))` as an intermediate fact. Use function extensionality and compare the values at `j`. Conclude with `(injective_iff_map_eq_zero _).mp hinj _ (this j)`. Use `haveI : Finite T := hT`. Take `⟨t, ht, g, hg⟩` from `clear fun z : T × Fin (Module.finrank B E) => e.repr ⟨z.1, Submodule.subset_span z.1.2⟩ z.2`.
-
-Use `⟨t, ht, fun v hv => ⟨fun j => g (⟨v, hv⟩, j), ?_⟩⟩` and prove the remaining obligations. Use `congrArg Subtype.val (e.sum_repr ⟨v, Submodule.subset_span hv⟩)` as an intermediate fact. Simplify using `only [AddSubmonoidClass.coe_finsetSum, SetLike.val_smul, hsm] at this`. Simplify using `only [hg, mul_assoc, ← Finset.mul_sum, this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_basis_of_finite : ∀ (R F : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [Field F] (c₀ : R →+* F), Function.Injective c₀ → ∀ (p : Ideal R), p.IsPrime → p.height = 1 → ∀ (T : Set F), T.Finite → ∃ (k : ℕ) (b : Fin k → F), (∀ j, ∃ (n : ℕ) (g : Fin n → R) (v : Fin n → F) (t : R), t ∉ p ∧ (∀ i, v i ∈ T) ∧ c₀ t * b j = ∑ i, c₀ (g i) * v i) ∧ (∀ r : Fin k → R, ∑ j, c₀ (r j) * b j = 0 → r = 0) ∧ ∃ t : R, t ∉ p ∧ ∀ v ∈ T, ∃ g : Fin k → R, c₀ t * v = ∑ j, c₀ (g j) * b j := by
   intro R F _ _ _ _ _ c₀ hc p hp hp1 T hT
@@ -69,19 +67,17 @@ theorem exists_basis_of_finite : ∀ (R F : Type) [CommRing R] [IsDomain R] [IsN
     simp only [hg, mul_assoc, ← Finset.mul_sum, this]
 
 /- English proof (translation)
-Introduce `R₁ F₁ _ _ _ _ _ c₁ hc S hS k b hind x a ha ⟨t, g, ht, e⟩ hloc`. Establish `hle : S ≤ nonZeroDivisors R₁` using `fun y hy => mem_nonZeroDivisors_of_ne_zero fun h => hS (h ▸ hy)`. Set `A` to `Localization S`. Use `haveI : IsDomain A := IsLocalization.isDomain_of_le_nonZeroDivisors A hle`. Use `haveI : IsNoetherianRing A := IsLocalization.isNoetherianRing S A inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsIntegrallyClosed A := isIntegrallyClosed_of_isLocalization A S hle`. Establish `hinj` using `IsLocalization.injective A hle`. Establish `hdvd : ∀ j, algebraMap R₁ A a ∣ algebraMap R₁ A (g j)` using `fun j => by`. Use `GlobalTheory.dvd_of_forall_height_eq_one ((map_ne_zero_iff _ hinj).mpr ha) fun Q hQ h1 haQ => ?_` and prove the remaining obligations. Take `⟨hq, hd⟩` from `(IsLocalization.isPrime_iff_isPrime_disjoint S A Q).mp hQ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨s, hs, t', g', ht', e'⟩` from `hloc (Q.comap (algebraMap R₁ A)) hq (by rw [IsLocalization.height_comap S Q, h1]) haQ hd`. Establish `h0` using `hind (fun j => t' * s * g j - t * a * g' j) (by`. Simplify using `only [map_sub, map_mul, sub_mul, mul_assoc, Finset.sum_sub_distrib, ← Finset.mul_sum, ← e, ← e']`. Use the proof step `ring)`. Establish `h1 : t' * s * g j = t * a * g' j` using `sub_eq_zero.mp (congrFun h0 j)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨algebraMap R₁ A s, hs, (IsLocalization.map_units A ⟨t', ht'⟩).dvd_mul_left.mp ?_⟩` and prove the remaining obligations. Use `⟨algebraMap R₁ A (t * g' j), ?_⟩` and prove the remaining obligations. Simplify using `only [← map_mul]`. Use `congr 1`. Take the linear combination `h1`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose y hy using hdvd`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite S y`. Use `choose h hh using hd`. Use `⟨d * t, h, S.mul_mem d.2 ht, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ j, (d : R₁) * g j = a * h j` using `fun j => hinj (by`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, hh, hy, Algebra.smul_def]`. Use the proof step `ring)`. Apply `mul_left_cancel₀ ((map_ne_zero_iff c₁ hc).mpr ha)` to reduce the goal to its premises. Establish `: c₁ a * (c₁ (d * t) * x) = c₁ d * (c₁ (t * a) * x)` using `by simp only [map_mul]; ring`. Rewrite using `[this, e, Finset.mul_sum, Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, ← map_mul, ← map_mul, h1]`.
+A detailed English derivation is pending.
 -/
 theorem span_test : ∀ (R₁ F₁ : Type) [CommRing R₁] [IsDomain R₁] [IsNoetherianRing R₁] [IsIntegrallyClosed R₁] [Field F₁] (c₁ : R₁ →+* F₁), Function.Injective c₁ → ∀ (S : Submonoid R₁), (0 : R₁) ∉ S → ∀ (k : ℕ) (b : Fin k → F₁), (∀ r : Fin k → R₁, ∑ j, c₁ (r j) * b j = 0 → r = 0) → ∀ (x : F₁) (a : R₁), a ≠ 0 → (∃ (t : R₁) (g : Fin k → R₁), t ∈ S ∧ c₁ (t * a) * x = ∑ j, c₁ (g j) * b j) → (∀ q : Ideal R₁, q.IsPrime → q.height = 1 → a ∈ q → Disjoint (S : Set R₁) (q : Set R₁) → ∃ s, s ∉ q ∧ ∃ (t : R₁) (g : Fin k → R₁), t ∈ S ∧ c₁ (t * s) * x = ∑ j, c₁ (g j) * b j) → ∃ (t : R₁) (g : Fin k → R₁), t ∈ S ∧ c₁ t * x = ∑ j, c₁ (g j) * b j := by
   intro R₁ F₁ _ _ _ _ _ c₁ hc S hS k b hind x a ha ⟨t, g, ht, e⟩ hloc
@@ -120,39 +116,33 @@ theorem span_test : ∀ (R₁ F₁ : Type) [CommRing R₁] [IsDomain R₁] [IsNo
   rw [← mul_assoc, ← mul_assoc, ← map_mul, ← map_mul, h1]
 
 /- English proof (translation)
-Introduce `R R₁ F F₁ _ _ _ _ _ _ _ _ _ _ ρ c₀ c₁ θ f hf _ hρ hc₀ hcomp hlin p hp hp1 _ W hWt hWadd hWsmul hWdiv x hx hloc`. Establish `hθ : ∀ r, θ (c₀ r) = c₁ (ρ r)` using `fun r => RingHom.congr_fun hcomp r`. Establish `hc₁ : Function.Injective c₁`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hlin 1 (fun _ => 1) (fun g hg => by` as an intermediate fact. Use function extensionality and compare the values at `i`. Establish `h0 : c₀ (g 0) = 0` using `by simpa using hg`. Rewrite using `[Subsingleton.elim i 0]`. Conclude with `(injective_iff_map_eq_zero c₀).mp hc₀ _ h0) (fun _ => r) (by simpa using hr)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrFun this 0`. Establish `hW0 : (0 : F) ∈ W` using `by simpa using hWt 0`. Establish `hWsum : ∀ (n : ℕ) (g : Fin n → R) (v : Fin n → F), (∀ i, v i ∈ W) → ∑ i, c₀ (g i) * v i ∈ W` using `fun n g v hv => Finset.sum_induction _ (· ∈ W) (fun a b ha hb => hWadd a ha b hb) hW0 fun i _ => hWsmul _ _ (hv i)`. Establish `hne : ∀ t, t ∉ p → c₀ t ≠ 0` using `fun t ht h => ht (((injective_iff_map_eq_zero c₀).mp hc₀ _ h) ▸ p.zero_mem)`. Establish `hρf : ρ f ≠ 0` using `fun h => hf ((injective_iff_map_eq_zero ρ).mp hρ _ h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, r, u', hu', rfl⟩` from `hx`. Use `choose u hu using hu'`. Take `rfl : u' = fun i => θ (u i)` from `funext fun i => (hu i).symm`. Use `set x := ∑ i, c₁ (r i) * θ (u i) with hxdef`. Use `choose m hm using hWt`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Set `M` to `Finset.univ.sup fun i => m (u i)`. Establish `hM : ∀ i, c₀ f ^ M * u i ∈ W` using `fun i => by`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le (Finset.le_sup (f := fun i => m (u i)) (Finset.mem_univ i) : m (u i) ≤ M)`. Use `hWsmul (f ^ d) _ (hm (u i))` as an intermediate fact. Rewrite `this` using `[map_pow, ← mul_assoc, ← pow_add, add_comm, ← hd]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `S : Submonoid R₁` to `p.primeCompl.map ρ`. Set `G : Set (PrimeSpectrum R₁)` to `{q | q.asIdeal.height = 1 ∧ ρ f ∈ q.asIdeal ∧ Disjoint (S : Set R₁) (q.asIdeal : Set R₁)}`. Establish `hG : G.Finite` using `(GlobalTheory.finite_height_eq_one_mem hρf).subset fun q hq => ⟨hq.1, hq.2.1⟩`. Establish `H : ∀ q : G, ∃ (s : R₁) (N : ℕ) (g : Fin N → R₁) (w : Fin N → F), s ∉ q.1.asIdeal ∧ (∀ l, w l ∈ W) ∧ c₁ s * x = ∑ l, c₁ (g l) * θ (w l)`. Introduce and unpack `⟨q, h1, h2, h3⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hle : q.asIdeal.comap ρ ≤ p` using `fun t ht => by_contra fun htp => Set.disjoint_left.mp h3 ⟨t, htp, rfl⟩ ht`. Establish `heq : q.asIdeal.comap ρ = p` using `le_antisymm hle ((GlobalTheory.mem_minimalPrimes_span_singleton_of_height_eq_one hp1 hf (hle h2)).2 ⟨Ideal.comap_isPrime ρ _, (Ideal.span_singleton_le_iff_mem _).mpr h2⟩ hle)`. Take `⟨s, hs, N, g, w', hw', e⟩` from `hloc q.asIdeal q.isPrime h1 h2 heq`. Use `choose w hw hw' using hw'`. Conclude with `⟨s, N, g, w, hs, hw, by simp only [hw', e]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose s N g w hs hw he using H`. Use `haveI : Finite G := hG`. Set `T : Set F` to `Set.range (fun i => c₀ f ^ M * u i) ∪ ⋃ q : G, Set.range (w q)`. Establish `hT : T.Finite` using `(Set.finite_range _).union (Set.finite_iUnion fun q => Set.finite_range _)`. Establish `hTW : T ⊆ W`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ (⟨i, rfl⟩ | ⟨_, ⟨q, rfl⟩, l, rfl⟩)`. Conclude with `hM i`. Conclude with `hw q l`. Take `⟨k, b, hb, hind, t, ht, hexp⟩` from `exists_basis_of_finite R F c₀ hc₀ p hp hp1 T hT`. Establish `hbW : ∀ j, b j ∈ W` using `fun j => by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n', g', v, t', ht', hv, e⟩` from `hb j`. Use `hWdiv t' ht' _ (hWsum n' g' v fun i => hTW (hv i))` as an intermediate fact. Rewrite `this` using `[← e, inv_mul_cancel_left₀ (hne t' ht')]`. Then use the resulting hypothesis. Establish `key : ∀ (n' : ℕ) (g' : Fin n' → R₁) (v : Fin n' → F), (∀ i, v i ∈ T) → ∃ h : Fin k → R₁, c₁ (ρ t) * ∑ i, c₁ (g' i) * θ (v i) = ∑ j, c₁ (h j) * θ (b j)`. Introduce `n' g' v hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Use `choose h hh using fun i => hexp (v i) (hv i)`. Use `⟨fun j => ∑ i, g' i * ρ (h i j), ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_left_comm, ← hθ, ← map_mul, hh, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hθ, mul_assoc]`. Establish `htS : ρ t ∈ S` using `⟨t, ht, rfl⟩`. Take `⟨_, h, ⟨t₀, ht₀, rfl⟩, e⟩` from `span_test R₁ F₁ c₁ hc₁ S (by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨t₀, ht₀, e⟩`. Conclude with `ht₀ (((injective_iff_map_eq_zero ρ).mp hρ _ e) ▸ p.zero_mem))`. Use `k (fun j => θ (b j)) (hlin k b hind) x (ρ f ^ M) (pow_ne_zero _ hρf)`. Use the proof step `(by`. Take `⟨h, e⟩` from `key n r (fun i => c₀ f ^ M * u i) fun i => Or.inl ⟨i, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, h, htS, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, map_mul, mul_assoc, hxdef, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_pow, hθ, mul_left_comm])`.
-
-Use the proof step `(by`. Introduce `q hq h1 h2 h3`. Set `q' : G` to `⟨⟨q, hq⟩, h1, hq.mem_of_pow_mem _ h2, h3⟩`. Take `⟨h, e⟩` from `key _ (g q') (w q') fun l => Or.inr (Set.mem_iUnion.mpr ⟨q', l, rfl⟩)`. Conclude with `⟨s q', hs q', _, h, htS, by rw [← e, ← he, map_mul, mul_assoc]⟩)`.
-
-Use `⟨k, h, fun j => θ ((c₀ t₀)⁻¹ * b j), fun j => ⟨_, hWdiv t₀ ht₀ _ (hbW j), rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h0 : c₁ (ρ t₀) ≠ 0` using `by rw [← hθ]; exact (map_ne_zero θ).mpr (hne t₀ ht₀)`. Apply `mul_left_cancel₀ h0` to reduce the goal to its premises. Rewrite using `[e, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Use `beta_reduce`. Rewrite using `[map_mul, map_inv₀, hθ, mul_left_comm, mul_inv_cancel_left₀ h0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_spanBy_of_forall_height_one : ∀ (R R₁ F F₁ : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CommRing R₁] [IsDomain R₁] [IsNoetherianRing R₁] [IsIntegrallyClosed R₁] [Field F] [Field F₁] (ρ : R →+* R₁) (c₀ : R →+* F) (c₁ : R₁ →+* F₁) (θ : F →+* F₁) (f : R), f ≠ 0 → ρ.Flat → Function.Injective ρ → Function.Injective c₀ → θ.comp c₀ = c₁.comp ρ → LinDisj c₀ c₁ θ → ∀ (p : Ideal R), p.IsPrime → p.height = 1 → f ∈ p → ∀ (W : Set F), (∀ u, ∃ m : ℕ, c₀ f ^ m * u ∈ W) → (∀ a ∈ W, ∀ b ∈ W, a + b ∈ W) → (∀ r, ∀ a ∈ W, c₀ r * a ∈ W) → (∀ s, s ∉ p → ∀ a ∈ W, (c₀ s)⁻¹ * a ∈ W) → ∀ x ∈ spanBy c₁ (Set.range θ), (∀ q : Ideal R₁, q.IsPrime → q.height = 1 → ρ f ∈ q → q.comap ρ = p → ∃ s, s ∉ q ∧ c₁ s * x ∈ spanBy c₁ (θ '' W)) → x ∈ spanBy c₁ (θ '' W) := by
   intro R R₁ F F₁ _ _ _ _ _ _ _ _ _ _ ρ c₀ c₁ θ f hf _ hρ hc₀ hcomp hlin p hp hp1 _ W hWt hWadd hWsmul hWdiv x hx hloc

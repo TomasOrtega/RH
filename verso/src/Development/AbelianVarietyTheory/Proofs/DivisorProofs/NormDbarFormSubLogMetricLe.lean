@@ -11,15 +11,15 @@ open Matrix Complex ComplexConjugate
 namespace GlobalTheory.CurveDens
 
 /- English proof (translation)
-Establish `e : -Complex.I * kappa = ((1 / (2 * Real.pi) : ℝ) : ℂ)`. Rewrite using `[kappa, ← mul_div_assoc, neg_mul, Complex.I_mul_I]`. Simplify using the standard rewrite rules. Establish `hX : (x * da + y * (A*q + da*((A:ℂ)⁻¹*C))) - (x * A + y * C) * (((A⁻¹:ℝ):ℂ) * da) = y * A * q`. Establish `: (A:ℂ) ≠ 0` using `by exact_mod_cast hA.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hT : (((Dr - normSq C / A : ℝ)) : ℂ)⁻¹ * conj (-q) * A * (-q) = ((A * normSq q / (Dr - normSq C / A) : ℝ) : ℂ)`. Establish `h0 : conj (-q) * (-q) = (normSq q : ℂ)` using `by rw [map_neg, neg_mul_neg, mul_comm, Complex.mul_conj]`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ0 : (Dr - normSq C / A) ≠ 0` using `hQpos.ne'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hX, hT, ← mul_assoc (-I) kappa, e, ← ofReal_mul, ofReal_re, Complex.sq_norm, Complex.sq_norm]`. Establish `hF : (x * A * conj x + x * conj C * conj y + y * C * conj x + y * Dr * conj y).re = A * normSq x + 2 * (x * conj C * conj y).re + Dr * normSq y`. Simplify using `[normSq_apply, mul_re, mul_im, conj_re, conj_im]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hK : A * (x * A * conj x + x * conj C * conj y + y * C * conj x + y * Dr * conj y).re - normSq (x*A + y*C) = A * normSq y * (Dr - normSq C / A)`. Rewrite using `[hF]`. Simplify using `only [normSq_apply, mul_re, mul_im, conj_re, conj_im, add_re, add_im, ofReal_re, ofReal_im]`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hK, normSq_mul, normSq_mul, normSq_ofReal]`. Establish `hpi : 0 < Real.pi` using `Real.pi_pos`. Generalize the expression as in `Dr - normSq C / A = Qr at hQpos ⊢`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts.
 -/
 theorem proj_rank_two_identity (A Dr : ℝ) (C x y da q : ℂ) (hA : 0 < A) (hQpos : 0 < Dr - normSq C / A) :
     ‖(x * da + y * (A*q + da*((A:ℂ)⁻¹*C))) - (x * A + y * C) * (((A⁻¹:ℝ):ℂ) * da)‖^2 =
@@ -51,29 +51,27 @@ theorem proj_rank_two_identity (A Dr : ℝ) (C x y da q : ℂ) (hA : 0 < A) (hQp
   field_simp
 
 /- English proof (translation)
-Use `set i₁ : Fin 1 ⊕ Fin 1 := Sum.inl 0 with hi₁`. Use `set i₂ : Fin 1 ⊕ Fin 1 := Sum.inr 0 with hi₂`. Establish `hz : (G z).PosDef` using `hP.self_of_nhds`. Establish `hform1 : ∀ x, form (G x) (s x) (Pi.single i₁ 1) = s x i₁ * G x i₁ i₁ + s x i₂ * G x i₂ i₁` using `fun x => by simp [i₁, i₂, form_eq_sum, Fintype.sum_sum_type, Pi.single_apply]`. Establish `hformss : form (G z) (s z) (s z) = s z i₁ * G z i₁ i₁ * conj (s z i₁) + s z i₁ * G z i₁ i₂ * conj (s z i₂) + s z i₂ * G z i₂ i₁ * conj (s z i₁) + s z i₂ * G z i₂ i₂ * conj (s z i₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[i₁, i₂, form_eq_sum, Fintype.sum_sum_type]`. Expand and normalize the polynomial expressions, which then agree. Establish `hda : DifferentiableAt ℝ (fun x => G x i₁ i₁) z` using `(hG i₁ i₁).differentiableAt one_ne_zero`. Establish `hdc : DifferentiableAt ℝ (fun x => G x i₂ i₁) z` using `(hG i₂ i₁).differentiableAt one_ne_zero`. Establish `hsR : ∀ i, DifferentiableAt ℝ (fun x => s x i) z` using `fun i => (hs i).restrictScalars ℝ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : dbar (fun x => form (G x) (s x) (Pi.single i₁ 1)) z ξ = s z i₁ * dbar (fun x => G x i₁ i₁) z ξ + s z i₂ * dbar (fun x => G x i₂ i₁) z ξ`. Simplify using `only [hform1]`. Rewrite using `[dbar_add ((hsR i₁).fun_mul hda) ((hsR i₂).fun_mul hdc), ContinuousLinearMap.add_apply, dbar_mul (hsR i₁) hda, dbar_mul (hsR i₂) hdc, dbar_eq_zero (hs i₁), dbar_eq_zero (hs i₂)]`. Simplify using the standard rewrite rules. Establish `hreal : ∀ᶠ x in 𝓝 z, G x i₁ i₁ = ((G x i₁ i₁).re : ℂ)` using `hP.mono fun x hx => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Complex.lt_def.1 (hx.diag_pos (i := i₁))).2` as an intermediate fact. Conclude with `Complex.ext (by simp) (by simp [← this])`. Establish `hApos : 0 < (G z i₁ i₁).re` using `(Complex.lt_def.1 (hz.diag_pos (i := i₁))).1`. Establish `h2 : dbar (fun x => (Real.log (G x i₁ i₁).re : ℂ)) z ξ = (((G z i₁ i₁).re)⁻¹ : ℝ) * dbar (fun x => G x i₁ i₁) z ξ`. Establish `hg : DifferentiableAt ℝ (fun x => (G x i₁ i₁).re) z` using `(Complex.reCLM.differentiableAt).comp z hda`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[dbar_ofReal_comp (t := fun x => (G x i₁ i₁).re) (Real.hasDerivAt_log hApos.ne') hg, dbar_congr (hreal.mono fun x hx => hx.symm)]`. Establish `hoc : ∀ x, orthCoeff (G x) 0 0 = (G x i₁ i₁)⁻¹ * G x i₂ i₁` using `fun x => by`. Simplify using `[orthCoeff, Matrix.mul_apply, Matrix.inv_def, Matrix.det_unique, i₁, i₂]`. Both sides reduce to the same expression. Establish `hane : ∀ᶠ x in 𝓝 z, G x i₁ i₁ ≠ 0` using `hP.mono fun x hx => (hx.diag_pos (i := i₁)).ne'`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdoc : DifferentiableAt ℝ (fun x => (G x i₁ i₁)⁻¹ * G x i₂ i₁) z` using `(hda.inv hane.self_of_nhds).fun_mul hdc`. Establish `h3 : G z i₁ i₁ * dbar (fun x => (G x i₁ i₁)⁻¹ * G x i₂ i₁) z ξ + dbar (fun x => G x i₁ i₁) z ξ * ((G z i₁ i₁)⁻¹ * G z i₂ i₁) = dbar (fun x => G x i₂ i₁) z ξ`. Rewrite using `[← dbar_mul hda hdoc]`. Use `congr 1`. Conclude with `dbar_congr (hane.mono fun x hx => by simp only; field_simp)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hb : extForm G z ξ 0 0 = -dbar (fun x => (G x i₁ i₁)⁻¹ * G x i₂ i₁) z ξ`. Rewrite using `[extForm_eq_neg_mdbar]`. Simplify using `only [Matrix.neg_apply, mdbar_apply, hoc]`. Establish `htr : extTrace G z ξ ξ = kappa * ((quotGram (G z) 0 0)⁻¹ * conj (extForm G z ξ 0 0) * G z i₁ i₁ * extForm G z ξ 0 0)`. Simplify using `[extTrace, extFormAdj, adj, Matrix.trace_fin_one, Matrix.mul_apply, Matrix.inv_def, Matrix.det_unique, subGram, Matrix.toBlocks₁₁, i₁]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hQ : quotGram (G z) 0 0 = G z i₂ i₂ - G z i₂ i₁ * (G z i₁ i₁)⁻¹ * G z i₁ i₂`. Simplify using `[quotGram, Matrix.mul_apply, Matrix.inv_def, Matrix.det_unique, i₁, i₂]`. Both sides reduce to the same expression. Establish `hQpos` using `(Complex.lt_def.1 ((posDef_quotGram hz).diag_pos (i := 0))).1`. Establish `hGb : G z i₁ i₂ = conj (G z i₂ i₁)` using `(hz.isHermitian.apply i₁ i₂).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hGd : G z i₂ i₂ = ((G z i₂ i₂).re : ℂ)`. Use `(Complex.lt_def.1 (hz.diag_pos (i := i₂))).2` as an intermediate fact. Conclude with `Complex.ext (by simp) (by simp [← this])`. Rewrite using `[diagVal, htr, hQ, hb, h1, h2, hform1 z, hformss, ← h3, hGb, hGd]`. Take `⟨A, hGa⟩ : ∃ A : ℝ, G z i₁ i₁ = A` from `⟨_, hreal.self_of_nhds⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hQpos` using `[hQ, hGb, hGd]`. Rewrite `hQpos`, the goal using `[hGa]`. Simplify using `only [ofReal_re] at hQpos ⊢`. Establish `hQC : ((G z i₂ i₂).re : ℂ) - G z i₂ i₁ * (A : ℂ)⁻¹ * conj (G z i₂ i₁) = (((G z i₂ i₂).re - normSq (G z i₂ i₁) / A : ℝ) : ℂ)`. Rewrite using `[mul_comm (G z i₂ i₁), mul_assoc, Complex.mul_conj]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hQpos`, the goal using `[hQC]`. Rewrite `hQpos` using `[Complex.zero_re, ofReal_re]`. Rewrite `hApos` using `[hGa, ofReal_re]`.
-
-Conclude with `proj_rank_two_identity A _ _ _ _ _ _ hApos hQpos`.
+A detailed English derivation is pending.
 -/
 theorem norm_sq_dbar_proj_rank_two (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E] (G : E → Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ) (s : E → Fin 1 ⊕ Fin 1 → ℂ) (ξ z : E) (hG : MContDiffAt 1 G z) (hP : ∀ᶠ x in 𝓝 z, (G x).PosDef) (hs : ∀ i, DifferentiableAt ℂ (fun x => s x i) z) : ‖dbar (fun x => form (G x) (s x) (Pi.single (Sum.inl 0) 1)) z ξ - form (G z) (s z) (Pi.single (Sum.inl 0) 1) * dbar (fun x => (Real.log (G x (Sum.inl 0) (Sum.inl 0)).re : ℂ)) z ξ‖ ^ 2 = ((G z (Sum.inl 0) (Sum.inl 0)).re * (form (G z) (s z) (s z)).re - ‖form (G z) (s z) (Pi.single (Sum.inl 0) 1)‖ ^ 2) * (Real.pi * (2 * diagVal (extTrace G z) ξ)) := by
   set i₁ : Fin 1 ⊕ Fin 1 := Sum.inl 0 with hi₁

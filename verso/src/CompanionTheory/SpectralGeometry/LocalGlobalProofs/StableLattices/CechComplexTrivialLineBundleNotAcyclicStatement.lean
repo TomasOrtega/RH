@@ -23,7 +23,7 @@ open GlobalTheory.CompanionTheory.PointSurjectivity
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.PointSurjectivity.not_acyclic_cechLB_of_triv` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FCechComplexTrivialLineBundleNotAcyclic.lean&line=24#L24)
 -/

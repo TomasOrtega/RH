@@ -3,11 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Establish `hC : IsIrreducible (irreducibleComponent s)` using `isIrreducible_irreducibleComponent`. Establish `hcl : IsClosed (irreducibleComponent s)` using `isClosed_irreducibleComponent`. Establish `ht : IsGenericPoint hC.genericPoint (irreducibleComponent s)` using `hC.isGenericPoint_genericPoint hcl`. Use `⟨hC.genericPoint, ht.specializes mem_irreducibleComponent, ?_⟩` and prove the remaining obligations. Introduce `t' h'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : irreducibleComponent s ⊆ closure {t'}`. Rewrite using `[← ht.def]`. Conclude with `h'.closure_subset`. Establish `heq : closure ({t'} : Set S) = irreducibleComponent s` using `eq_irreducibleComponent isIrreducible_singleton.closure.isPreirreducible hsub`. Establish `ht' : IsGenericPoint t' (irreducibleComponent s)` using `heq`.
-
-Conclude with `ht'.eq ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem genPt_exists_spec {S : Scheme.{0}} (s : S) : ∃ t : S, t ⤳ s ∧ GenPt t := by
   have hC : IsIrreducible (irreducibleComponent s) := isIrreducible_irreducibleComponent
@@ -25,9 +23,9 @@ private theorem genPt_exists_spec {S : Scheme.{0}} (s : S) : ∃ t : S, t ⤳ s 
   exact ht'.eq ht
 
 /- English proof (translation)
-Establish `he` using `j.isOpenEmbedding`. Prove the components needed by the constructor for the conclusion. Introduce `h t hts`. Conclude with `he.injective (h _ (hts.map he.continuous))`. Introduce `h t hts`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : t ∈ Set.range j` using `hts.mem_open he.isOpen_range ⟨s, rfl⟩`. Take `⟨t', rfl⟩` from `hmem`. Establish `: t' ⤳ s` using `he.isInducing.specializes_iff.1 hts`. Rewrite using `[h t' this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem genPt_open {U S : Scheme.{0}} (j : U ⟶ S) [IsOpenImmersion j] (s : U) :
     GenPt (j s) ↔ GenPt s := by
@@ -42,7 +40,7 @@ private theorem genPt_open {U S : Scheme.{0}} (j : U ⟶ S) [IsOpenImmersion j] 
     rw [h t' this]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(h _ (genericPoint_specializes s)).symm`. Introduce and unpack `rfl t ht`. Conclude with `(ht.antisymm (genericPoint_specializes t)).eq`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem genPt_integral (S : Scheme.{0}) [IsIntegral S] (s : S) :
     GenPt s ↔ s = genericPoint S := by
@@ -53,7 +51,7 @@ private theorem genPt_integral (S : Scheme.{0}) [IsIntegral S] (s : S) :
     exact (ht.antisymm (genericPoint_specializes t)).eq
 
 /- English proof (translation)
-Use `⟨fun S => ?_, fun j _ s => genPt_open j s, fun S _ s => genPt_integral S s⟩` and prove the remaining obligations. Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `N hN ⟨s, hs⟩`. Take `⟨t, hts, ht⟩` from `genPt_exists_spec s`. Conclude with `⟨t, hts.mem_open hN hs, ht⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.genBasic_of :
     GenBasic := by

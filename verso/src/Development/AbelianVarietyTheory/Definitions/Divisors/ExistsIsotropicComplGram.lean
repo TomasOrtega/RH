@@ -22,7 +22,7 @@ variable {σ}
 omit [NumberField E] in
 
 /- English proof (translation)
-Rewrite using `[incM, incM, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem incM_mul_inv {k : ℕ} (T : GL (Fin k) E) : incM F T.1 * incM F (T⁻¹).1 = 1 := by
   rw [incM, incM, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]
@@ -30,7 +30,7 @@ theorem incM_mul_inv {k : ℕ} (T : GL (Fin k) E) : incM F T.1 * incM F (T⁻¹)
 omit [NumberField E] in
 
 /- English proof (translation)
-Rewrite using `[inBasis, ← Matrix.mul_assoc, ← Matrix.mul_assoc, incM_mul_inv, Matrix.one_mul, Matrix.mul_assoc, incM_mul_inv, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_eq_inBasis (T : GL (Fin (n + n)) E) (g : UA σ J₂) :
     mat g = incM F T.1 * inBasis σ T g * incM F (T⁻¹).1 := by
@@ -40,7 +40,7 @@ theorem mat_eq_inBasis (T : GL (Fin (n + n)) E) (g : UA σ J₂) :
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `e : mat (g * h) = mat g * mat h` using `rfl`. Rewrite using `[inBasis, inBasis, inBasis, e]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incM F T.1), incM_mul_inv, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem inBasis_mul (T : GL (Fin (n + n)) E) (g h : UA σ J₂) :
     inBasis σ T (g * h) = inBasis σ T g * inBasis σ T h := by
@@ -56,7 +56,7 @@ variable {T : GL (Fin (n + n)) E} {w w' : UA σ J₂}
 omit [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `WittModel.exists_weyl hσ hl hJ h₂ hT`.
+A detailed English derivation is pending.
 -/
 theorem exists_isWeylElt (hσ : ∀ x, σ (σ x) = x) {J : Matrix (Fin n) (Fin n) E} {l : E} (hl : l ≠ 0)
     (hJ : ∀ i j, σ ((l⁻¹ • J) j i) = -(l⁻¹ • J) i j) (h₂ : J₂ = dblGram finSumFinEquiv J) (hT : IsWittBasis σ J l T) :
@@ -65,7 +65,7 @@ theorem exists_isWeylElt (hσ : ∀ x, σ (σ x) = x) {J : Matrix (Fin n) (Fin n
 omit [NumberField E] in
 
 /- English proof (translation)
-Rewrite using `[← h, inBasis, ← Matrix.mul_assoc, ← Matrix.mul_assoc, incM_mul_inv, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsWeylElt.mat_mul (h : IsWeylElt σ T w) : mat w * incM F T.1 = incM F T.1 * blk 0 1 (-1) 0 := by
   rw [← h, inBasis, ← Matrix.mul_assoc, ← Matrix.mul_assoc, incM_mul_inv, Matrix.one_mul]
@@ -73,9 +73,9 @@ theorem IsWeylElt.mat_mul (h : IsWeylElt σ T w) : mat w * incM F T.1 = incM F T
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `e : (blk 0 1 (-1) 0 * blk 0 1 (-1) 0 : Matrix (Fin (n + n)) (Fin (n + n)) (AE F E)) = -1`. Rewrite using `[WittModel.blk_mul, ← WittModel.blk_one]`. Use `congrArg (fun X : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E) => X.submatrix finSumFinEquiv.symm finSumFinEquiv.symm) (a₂ := -Matrix.fromBlocks 1 0 0 1) ?_` and prove the remaining obligations. Rewrite using `[Matrix.fromBlocks_neg]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mat_eq_inBasis T, inBasis_mul, h, e, Matrix.mul_neg, Matrix.mul_one, Matrix.neg_mul, incM_mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsWeylElt.mat_mul_self (h : IsWeylElt σ T w) : mat (w * w) = -1 := by
   have e : (blk 0 1 (-1) 0 * blk 0 1 (-1) 0 : Matrix (Fin (n + n)) (Fin (n + n)) (AE F E)) = -1 := by
@@ -89,9 +89,9 @@ theorem IsWeylElt.mat_mul_self (h : IsWeylElt σ T w) : mat (w * w) = -1 := by
 omit [NumberField E] in
 
 /- English proof (translation)
-Take `⟨Z, -, hZ⟩` from `hT`. Establish `hT : incM F T.1 = blk 1 (incM F Z) 1 (-incM F Z)`. Simplify using `only [hZ, incM, blk, ← Matrix.submatrix_map, Matrix.fromBlocks_map, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_neg _ (map_neg (inclR (F := F) (E := E) (AF F)))]`. Establish `hb : ∀ (a b c d : Matrix (Fin n) (Fin n) (AE F E)) (x y : Fin n → AE F E), blk a b c d *ᵥ pairVec finSumFinEquiv x y = pairVec finSumFinEquiv (a *ᵥ x + b *ᵥ y) (c *ᵥ x + d *ᵥ y)` using `fun a b c d x y => by simp [mulVec_pairVec, blk]`. Take `⟨x, rfl⟩` from `(mem_diagSub _).1 hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e : pairVec finSumFinEquiv x x = incM F T.1 *ᵥ pairVec finSumFinEquiv x 0` using `by simp [hT, hb]`. Rewrite using `[e, Matrix.mulVec_mulVec, h.mat_mul, ← Matrix.mulVec_mulVec, hT, hb, hb, pairVec_mem_antiSub]`. Simplify using `[Matrix.neg_mulVec, Matrix.mulVec_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsWeylElt.mulVec_diag (h : IsWeylElt σ T w) {J : Matrix (Fin n) (Fin n) E} {l : E} (hT : IsWittBasis σ J l T)
     {v : Fin (n + n) → AE F E} (hv : v ∈ diagSub (AE F E) finSumFinEquiv) :
@@ -110,7 +110,7 @@ theorem IsWeylElt.mulVec_diag (h : IsWeylElt σ T w) {J : Matrix (Fin n) (Fin n)
 omit [NumberField E] in
 
 /- English proof (translation)
-Introduce `hw` and use `by haveI : Invertible (2 : F) := invertibleOfNonzero two_ne_zero haveI : Invertible (2 : AE F E) := Invertible.copy (Invertible.map (algebraMap F (AE F E)) 2) 2 (map_ofNat _ 2).symm haveI : Nontrivial (AF F) := (AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial haveI : Nontrivia …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsWeylElt.not_mem_siegelOf (h : IsWeylElt σ T w) {J : Matrix (Fin n) (Fin n) E} {l : E} (hT : IsWittBasis σ J l T)
     (hn : 1 ≤ n) : w ∉ siegelOf finSumFinEquiv (UG (cA σ) (incM F J₂)).subtype := fun hw => by
@@ -155,21 +155,21 @@ variable {νN w} {f f' : UA σ J₂ → ℂ} {g : UA σ J₂}
 omit [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `Integrable.add h h'`.
+A detailed English derivation is pending.
 -/
 theorem IntConv.add (h : IntConv νN w f g) (h' : IntConv νN w f' g) : IntConv νN w (f + f') g := Integrable.add h h'
 
 omit [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `Integrable.smul c h`.
+A detailed English derivation is pending.
 -/
 theorem IntConv.smul (h : IntConv νN w f g) (c : ℂ) : IntConv νN w (c • f) g := Integrable.smul c h
 
 omit [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `integral_const_mul c _`.
+A detailed English derivation is pending.
 -/
 theorem intM_smul (c : ℂ) (f : UA σ J₂ → ℂ) (g : UA σ J₂) : intM νN w (c • f) g = c * intM νN w f g :=
   integral_const_mul c _
@@ -212,7 +212,7 @@ Both sides reduce to the same expression.
 omit [NumberField E] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨_, h, fun k hk => Submodule.subset_span ⟨k, hk, rfl⟩⟩, fun ⟨_, _, h⟩ => Submodule.finiteDimensional_of_le (Submodule.span_le.2 (by rintro _ ⟨k, hk, rfl⟩; exact h k hk))⟩`.
+Supply the required witnesses or components.
 -/
 theorem kFin_iff (Φ : (κ → AF F) → ℂ) : FiniteDimensional ℂ (Submodule.span ℂ {Ψ | ∃ k ∈ K, Ψ = om (1, k) Φ}) ↔
     ∃ W : Submodule ℂ ((κ → AF F) → ℂ), FiniteDimensional ℂ W ∧ ∀ k ∈ K, om (1, k) Φ ∈ W :=
@@ -240,7 +240,7 @@ variable {om K}
 omit [NumberField E] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨Φ, h, e⟩ => ⟨Φ, h.1, h.2, e.symm⟩, fun ⟨Φ, h, h', e⟩ => ⟨Φ, ⟨h, h'⟩, e.symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_secSpace {f : UA σ J₂ → ℂ} : f ∈ secSpace om K ↔
     ∃ Φ ∈ schA F κ, FiniteDimensional ℂ (Submodule.span ℂ {Ψ | ∃ k ∈ K, Ψ = om (1, k) Φ}) ∧
@@ -259,7 +259,7 @@ def complGram (l : L) (JV : Matrix (Fin m) (Fin m) L) (t : ℕ) : Matrix (Fin (m
 end Compl
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [complGram, blkMat, blk, finSumFinEquiv, Fin.addCases, Matrix.fromBlocks]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : complGram (2 : ℚ) !![3] 1 = !![3, 0, 0; 0, 0, 1 / 2; 0, 1 / 2, 0] := by
   ext i j
@@ -272,7 +272,7 @@ example : (blk (n := 1) 0 1 (-1) 0 : Matrix (Fin 2) (Fin 2) ℤ) = !![0, 1; -1, 
   decide
 
 /- English proof (translation)
-The claim follows from `integral_dirac' _ _ (hf.comp hm).stronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 example (w g : UA σ J₂) (f : UA σ J₂ → ℂ) (hf : Measurable f) (x : unipN σ J₂)
     (hm : Measurable fun y : unipN σ J₂ => w * y * g) : intM (Measure.dirac x) w f g = f (w * x * g) :=

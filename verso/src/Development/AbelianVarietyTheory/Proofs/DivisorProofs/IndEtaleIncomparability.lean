@@ -3,13 +3,11 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `B O _ _ _ ⟨ι, _, _, _, Si, _, hcov, hloc⟩ p p' hp hp' hle hcomap`. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx', hx⟩ : ∃ x, x ∈ p' ∧ x ∉ p := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hne (le_antisymm hle h)`. Take `⟨i, hi⟩` from `hcov x`. Take `⟨E, _, _, _, P, _, ⟨e⟩⟩` from `hloc i`. Use `haveI : Algebra.QuasiFinite B (Localization.AtPrime P) := inferInstance`. Use `haveI : Algebra.QuasiFinite B (Si i) := (Algebra.QuasiFinite.iff_of_algEquiv e).mp inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `Algebra.QuasiFinite.eq_of_le_of_under_eq (R := B) (p.comap (algebraMap (Si i) O)) (p'.comap (algebraMap (Si i) O)) (Ideal.comap_mono hle) (by`. Simplify using `only [Ideal.under, Ideal.comap_comap, ← IsScalarTower.algebraMap_eq]`. Conclude with `hcomap)`. Establish `h1 : (⟨x, hi⟩ : Si i) ∈ p'.comap (algebraMap (Si i) O)` using `hx'`. Rewrite `h1` using `[← key]`.
-
-Conclude with `hx h1`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_le_of_comap_eq_of_indEtale : ∀ (B O : Type) [CommRing B] [CommRing O] [Algebra B O], (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra B O), Monotone Si ∧ (∀ s : O, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (E : Type) (_ : CommRing E) (_ : Algebra B E) (_ : Algebra.Etale B E) (P : Ideal E) (_ : P.IsPrime), Nonempty (Localization.AtPrime P ≃ₐ[B] Si i)) → ∀ p p' : Ideal O, p.IsPrime → p'.IsPrime → p ≤ p' → p.comap (algebraMap B O) = p'.comap (algebraMap B O) → p = p' := by
   intro B O _ _ _ ⟨ι, _, _, _, Si, _, hcov, hloc⟩ p p' hp hp' hle hcomap

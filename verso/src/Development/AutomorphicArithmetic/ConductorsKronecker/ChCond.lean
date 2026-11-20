@@ -7,15 +7,15 @@ section
 variable {A : Type} [AddCommGroup A] [Fintype A] [DecidableEq A]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← Nat.prod_factorization_pow_eq_self hn]`. Rewrite using `[Nat.prod_factorization_eq_prod_primeFactors, map_prod, Int.cast_prod]`. Unfold `primVal`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `p hp`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpp : p.Prime` using `Nat.prime_of_mem_primeFactors hp`. Establish `hi : n.factorization p ≠ 0`. Use `(Nat.support_factorization n ▸ hp : p ∈ n.factorization.support)` as an intermediate fact. Conclude with `Finsupp.mem_support_iff.1 this`. Rewrite using `[map_pow, Int.cast_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hpc : p ∣ c`. Take `⟨h0, u, hu, hu1⟩` from `hram p hpp hpc`. Rewrite using `[cosetMean_of_nontrivial, h0, Int.cast_zero, zero_pow hi]`. Introduce `h`. Use `h _ ((mem_inertia_iff q d r p _).2 ⟨u, (mem_localUnits_iff p u).2 hu, rfl⟩)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite `this` using `[hψ, hu1]`. Evaluate the numerical expressions using `at this`. Establish `hcd : c ∣ ordCompl[p] N` using `Nat.dvd_ordCompl_of_dvd_not_dvd hc hpc`. Rewrite using `[cosetMean_of_trivial, AddChar.map_nsmul_eq_pow]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ψ (Multiplicative.toAdd (r (frobUnit N p))) = _`. Rewrite using `[hψ, hF _ _ ((frobUnit_modEq hpp).1.of_dvd hcd)]`. Introduce `x hx`. Take `⟨u, hu, rfl⟩` from `(mem_inertia_iff q d r p _).1 hx`. Rewrite using `[hψ, hF _ _ (((mem_localUnits_iff p u).1 hu).of_dvd hcd), map_one, Int.cast_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.GL.primVal_of_periodic {N c : ℕ} [NeZero N] (q d : ℕ)
     (r : (ZMod N)ˣ →* Multiplicative (E0 × A)) (ψ : AddChar (E0 × A) ℂ) (F : ℕ →* ℤ) (hc : c ∣ N)
@@ -51,9 +51,9 @@ private theorem UpperTheory.GL.primVal_of_periodic {N c : ℕ} [NeZero N] (q d :
       rw [hψ, hF _ _ (((mem_localUnits_iff p u).1 hu).of_dvd hcd), map_one, Int.cast_one]
 
 /- English proof (translation)
-Apply `Nat.dvd_antisymm` to reduce the goal to its premises. Rewrite using `[← DirichletCharacter.mem_conductorSet_iff_conductor_dvd _ hc, DirichletCharacter.mem_conductorSet_iff, DirichletCharacter.factorsThrough_iff_ker_unitsMap hc]`. Introduce `u hu`. Rewrite `hu` using `[MonoidHom.mem_ker, unitsMap_eq_one_iff]`. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, dirChar_unit, Units.val_one, hψ, hF _ _ hu, map_one, Int.cast_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hh`. Take `⟨u, hu, hu1⟩` from `hram`. Use `(inertia_conductor (H := A) N 0 0 r ψ c (NeZero.ne N) hp).2 hh _ ((mem_inertia_iff 0 0 r c _).2 ⟨u, (mem_localUnits_iff c u).2 hu, rfl⟩)` as an intermediate fact. Rewrite `this` using `[hψ, hu1]`. Evaluate the numerical expressions using `at this`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 private theorem UpperTheory.GL.conductor_of_periodic {N c : ℕ} [NeZero N]
     (r : (ZMod N)ˣ →* Multiplicative (E0 × A)) (ψ : AddChar (E0 × A) ℂ) (F : ℕ →* ℤ) (hc : c ∣ N) (hp : c.Prime)
@@ -84,11 +84,11 @@ private def UpperTheory.GL.jac (l : ℕ) : ℕ →* ℤ where
   map_mul' a b := by rw [Nat.cast_mul, jacobiSym.mul_left]
 
 /- English proof (translation)
-Establish `: Fact l.Prime` using `⟨hl⟩`. Establish `hN0` using `NeZero.ne N`. Establish `hcop : (ordProj[l] N).Coprime (ordCompl[l] N)` using `(Nat.coprime_ordCompl hl hN0).pow_left _`. Establish `hlP : l ∣ ordProj[l] N` using `Nat.dvd_ordProj_of_dvd hN0 hl hN`. Establish `: NeZero (ordProj[l] N)` using `⟨pow_ne_zero _ hl.ne_zero⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `quadraticChar_exists_neg_one' (F := ZMod l) (by rwa [ZMod.ringChar_zmod_n])`. Take `⟨y, hy⟩` from `ZMod.unitsMap_surjective hlP x`. Take `⟨u, hu1, hu2⟩` from `exists_unit_crt (Nat.ordProj_mul_ordCompl_eq_self N l).symm hcop (Nat.ordProj_dvd N l) (Nat.ordCompl_dvd N l) y 1`. Use `⟨u, (unitsMap_eq_one_iff _ u).1 hu2, ?_⟩` and prove the remaining obligations. Establish `h3 : ZMod.unitsMap hN u = x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hy, ← hu1, ← MonoidHom.comp_apply, ZMod.unitsMap_comp]`. Rewrite using `[← jacobiSym.legendreSym.to_jacobiSym, legendreSym, Int.cast_natCast, ← hx, ← h3, ZMod.unitsMap_val, ZMod.natCast_val]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.GL.exists_nonres {N l : ℕ} [NeZero N] (hl : l.Prime) (h2 : l ≠ 2) (hN : l ∣ N) :
     ∃ u : (ZMod N)ˣ, (u : ZMod N).val ≡ 1 [MOD ordCompl[l] N] ∧ jacobiSym ((u : ZMod N).val : ℤ) l = -1 := by
@@ -108,7 +108,7 @@ private theorem UpperTheory.GL.exists_nonres {N l : ℕ} [NeZero N] (hl : l.Prim
     ZMod.natCast_val]
 
 /- English proof (translation)
-Rewrite using `[sgn2_toAdd_eq_ite]`. Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem UpperTheory.GL.sgn_val (s : ℤˣ) :
     (if Multiplicative.toAdd (Formalism.LFunctionChainParameters.LHost.sgn2 s) = 0 then (1 : ℂ) else -1) = (((s : ℤˣ) : ℤ) : ℂ) := by
@@ -116,25 +116,23 @@ private theorem UpperTheory.GL.sgn_val (s : ℤˣ) :
   rcases Int.units_eq_one_or s with rfl | rfl <;> simp
 
 /- English proof (translation)
-Introduce `φ H`. Establish `hd` using `H.d_prime`. Establish `hq` using `H.q_prime`. Establish `ed` using `exists_nonres hd H.d_ne_two H.d_dvd_condN`. Establish `eq` using `exists_nonres hq H.q_ne_two H.q_dvd_condN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hch : ∀ u : (ZMod H.condN)ˣ, (chC : AddChar (E0 × φ.A) ℂ) (Multiplicative.toAdd (recH H.toHostRaw u)) = ((jac H.d (u : ZMod H.condN).val : ℤ) : ℂ)`. Introduce `u`. Express the relevant statement in the definitionally equal form `_ = ((jacobiSym _ _ : ℤ) : ℂ)`. Rewrite using `[← H.der.art_ch u]`. Conclude with `sgn_val _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `one : ∀ l : ℕ, l.Prime → (∃ u : (ZMod H.condN)ˣ, (u : ZMod H.condN).val ≡ 1 [MOD ordCompl[l] H.condN] ∧ jacobiSym ((u : ZMod H.condN).val : ℤ) l = -1) → ∀ p, p.Prime → p ∣ l → jac l p = 0 ∧ ∃ u : (ZMod H.condN)ˣ, (u : ZMod H.condN).val ≡ 1 [MOD ordCompl[p] H.condN] ∧ jac l (u : Z …`. Introduce `l hl e p hp hpl`. Take `rfl` from `(Nat.prime_dvd_prime_iff_eq hp hl).1 hpl`. Conclude with `⟨jac_self p hp.one_lt, e⟩`. Use `⟨conductor_of_periodic _ _ (jac H.d) H.d_dvd_condN hd (fun _ _ h => jacobi_congr h) hch ed, primVal_of_periodic _ _ _ _ (jac H.d) H.d_dvd_condN (fun _ _ h => jacobi_congr h) hch (one _ hd ed), fun hP => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hps : ∀ u : (ZMod H.condN)ˣ, (psC : AddChar (E0 × φ.A) ℂ) (Multiplicative.toAdd (recH H.toHostRaw u)) = ((jac H.q (u : ZMod H.condN).val : ℤ) : ℂ)`. Introduce `u`. Express the relevant statement in the definitionally equal form `_ = ((jacobiSym _ _ : ℤ) : ℂ)`. Rewrite using `[← hP u]`. Conclude with `sgn_val _`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨conductor_of_periodic _ _ (jac H.q) H.q_dvd_condN hq (fun _ _ h => jacobi_congr h) hps eq, primVal_of_periodic _ _ _ _ (jac H.q) H.q_dvd_condN (fun _ _ h => jacobi_congr h) hps (one _ hq eq), ?_⟩` and prove the remaining obligations. Use `primVal_of_periodic (c := H.d * H.q) _ _ _ _ (jac H.d * jac H.q) (H.coprime_q_d.symm.mul_dvd_of_dvd_of_dvd H.d_dvd_condN H.q_dvd_condN) (fun x y h => ?_) (fun u => ?_) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `jacobiSym _ _ * jacobiSym _ _ = jacobiSym _ _ * jacobiSym _ _`. Rewrite using `[jacobi_congr (h.of_dvd (dvd_mul_right _ _)), jacobi_congr (h.of_dvd (dvd_mul_left _ _))]`. Unfold `chpsC`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AddChar.mul_apply, hch, hps, MonoidHom.mul_apply, Int.cast_mul]`. Introduce `p hp hpl`. Break down `hp.dvd_mul.1 hpl with h | h` into its components or cases. Take `rfl` from `(Nat.prime_dvd_prime_iff_eq hp hd).1 h`. Take `⟨u, hu, hu1⟩` from `ed`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hqd : H.q ∣ ordCompl[H.d] H.condN` using `Nat.dvd_ordCompl_of_dvd_not_dvd H.q_dvd_condN (fun hh => H.q_ne_d ((Nat.prime_dvd_prime_iff_eq hd hq).1 hh).symm)`. Use `⟨?_, u, hu, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `jacobiSym _ _ * jacobiSym _ _ = 0`. Rewrite using `[jac_self _ hd.one_lt, zero_mul]`. Express the relevant statement in the definitionally equal form `jacobiSym _ _ * jacobiSym _ _ = -1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu1, jacobi_congr (hu.of_dvd hqd)]`. Simplify using the standard rewrite rules. Take `rfl` from `(Nat.prime_dvd_prime_iff_eq hp hq).1 h`. Take `⟨u, hu, hu1⟩` from `eq`. Establish `hqd : H.d ∣ ordCompl[H.q] H.condN` using `Nat.dvd_ordCompl_of_dvd_not_dvd H.d_dvd_condN (fun hh => H.q_ne_d ((Nat.prime_dvd_prime_iff_eq hq hd).1 hh))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨?_, u, hu, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `jacobiSym _ _ * jacobiSym _ _ = 0`. Rewrite using `[jac_self _ hq.one_lt, mul_zero]`. Express the relevant statement in the definitionally equal form `jacobiSym _ _ * jacobiSym _ _ = -1`. Rewrite using `[hu1, jacobi_congr (hu.of_dvd hqd)]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.GL.ch_cond :
     ∀ {φ : Frame} (H : HostAx φ), (dirChar (recH H.toHostRaw) chC).conductor = H.d ∧

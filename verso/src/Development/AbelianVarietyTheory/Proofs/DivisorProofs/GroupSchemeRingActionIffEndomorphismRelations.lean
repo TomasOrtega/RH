@@ -15,27 +15,27 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
 def prodPow {r : ℕ} (f : Fin r → (A ⟶ A)) (c : Fin r → ℤ) : A ⟶ A := ∏ k, f k ^ c k
 
 /- English proof (translation)
-Simplify using `[prodPow, zpow_add, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prodPow_add {r : ℕ} (f : Fin r → (A ⟶ A)) (c d : Fin r → ℤ) :
     prodPow f (c + d) = prodPow f c * prodPow f d := by
   simp [prodPow, zpow_add, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Simplify using `[prodPow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prodPow_zero {r : ℕ} (f : Fin r → (A ⟶ A)) : prodPow f 0 = 1 := by
   simp [prodPow]
 
 /- English proof (translation)
-Simplify using `[prodPow, zpow_mul', Finset.prod_zpow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prodPow_zsmul {r : ℕ} (f : Fin r → (A ⟶ A)) (n : ℤ) (c : Fin r → ℤ) :
     prodPow f (n • c) = prodPow f c ^ n := by
   simp [prodPow, zpow_mul', Finset.prod_zpow]
 
 /- English proof (translation)
-Unfold `prodPow`. Rewrite using `[Finset.prod_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -50,7 +50,7 @@ def prodPowHom {r : ℕ} (f : Fin r → (A ⟶ A)) : Multiplicative (Fin r → �
   MonoidHom.mk' (fun c => prodPow f c.toAdd) (fun c d => prodPow_add f c.toAdd d.toAdd)
 
 /- English proof (translation)
-Use `map_prod (prodPowHom f) (fun i => Multiplicative.ofAdd (g i)) s` as an intermediate fact. Rewrite `this` using `[← ofAdd_sum]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodPow_sum {r : ℕ} (f : Fin r → (A ⟶ A)) {J : Type} (s : Finset J) (g : J → Fin r → ℤ) :
     prodPow f (∑ i ∈ s, g i) = ∏ i ∈ s, prodPow f (g i) := by
@@ -69,13 +69,11 @@ end GlobalTheory.ActRel
 namespace GlobalTheory.ActRel
 
 /- English proof (translation)
-Use `haveI : IsMonHom (prodPow f d) := isMonHom_prodPow f hf d`. Establish `h1 : prodPow f c ≫ prodPow f d = ∏ k, (f k ≫ prodPow f d) ^ c k`. Use `map_prod (postcompHom (prodPow f d)) (fun k => f k ^ c k) Finset.univ` as an intermediate fact. Use `this.trans (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations. Use `show (f k ^ c k) ≫ prodPow f d = _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GrpObj.zpow_comp (f k) (c k) (prodPow f d)`. Establish `h2 : ∀ k, f k ≫ prodPow f d = ∏ l, prodPow f (cm k l) ^ d l`. Introduce `k`. Use `map_prod (precompHom (f k)) (fun l => f l ^ d l) Finset.univ` as an intermediate fact. Use `this.trans (Finset.prod_congr rfl fun l _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show f k ≫ f l ^ d l = _`. Rewrite using `[GrpObj.comp_zpow, hm]`. Rewrite using `[h1, prodPow_sum]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[h2, prodPow_sum, ← Finset.prod_zpow]`.
-
-Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[prodPow_zsmul, ← zpow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodPow_comp {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {r : ℕ} (f : Fin r → (A ⟶ A))
     (hf : ∀ k, IsMonHom (f k)) (cm : Fin r → Fin r → Fin r → ℤ) (hm : ∀ i j, f i ≫ f j = prodPow f (cm i j))
@@ -100,33 +98,29 @@ theorem prodPow_comp {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {
   rw [prodPow_zsmul, ← zpow_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `O _ r e he`. Set `φ : (Fin r → ℤ) →ₗ[ℤ] O` to `{ toFun := fun c => ∑ k, c k • e k map_add' := fun c d => by simp [add_smul, Finset.sum_add_distrib] map_smul' := fun n c => by simp [Finset.smul_sum, mul_smul] }`. Establish `hφ : ∀ c, φ c = ∑ k, c k • e k` using `fun _ => rfl`. Establish `hsurj : ∀ a, ∃ c, φ c = a` using `fun a => by`. Establish `: a ∈ Submodule.span ℤ (Set.range e)` using `he ▸ Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).mp this`. Conclude with `⟨c, hc⟩`. Take `⟨m, N, hN⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp (IsNoetherian.noetherian (LinearMap.ker φ))`. Use `choose coef hcoef using hsurj`. Use `⟨m, N, coef 1, fun i j => coef (e i * e j), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S A _ _ f hf`. Establish `hker : (∀ j, prodPow f (N j) = 1) → ∀ c ∈ LinearMap.ker φ, prodPow f c = 1`. Introduce `hNj c hc`. Rewrite `hc` using `[← hN]`. Proceed by induction on `hc using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => obtain ⟨j, rfl⟩ := hx`. Conclude with `hNj j`. Consider the case `zero => exact prodPow_zero f`. Consider the case `add x y _ _ hx hy => rw [prodPow_add, hx, hy, _root_.mul_one]`. Consider the case `smul n x _ hx => rw [prodPow_zsmul, hx, one_zpow]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwd : (∀ j, prodPow f (N j) = 1) → ∀ c d, φ c = φ d → prodPow f c = prodPow f d`. Introduce `hNj c d h`. Establish `hcd : c - d ∈ LinearMap.ker φ` using `by simp [LinearMap.mem_ker, map_sub, h]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmul : ∀ c d : Fin r → ℤ, φ c * φ d = ∑ k, ∑ l, (c k * d l) • (e k * e l)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c d`. Rewrite using `[hφ, hφ, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[smul_mul_assoc, mul_smul_comm, mul_smul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨act, hact, hek⟩`. Establish `h0 : act 0 = 1`. Use `hact.2.2.2 0 0` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.mp this.symm`. Set `H : Multiplicative O →* (A ⟶ A)` to `MonoidHom.mk' (fun a => act a.toAdd) (fun a b => hact.2.2.2 a.toAdd b.toAdd)`. Establish `hact' : ∀ c, act (φ c) = prodPow f c`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: act (φ c) = H (Multiplicative.ofAdd (∑ k, c k • e k))` using `rfl`. Rewrite using `[this, ofAdd_sum, map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[ofAdd_zsmul, map_zpow]`. Use `show act (e k) ^ c k = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hek]`. Use `⟨fun j => ?_, ?_, fun i j => ?_⟩` and prove the remaining obligations. Use `show prodPow f (N j) = 1`. Establish `hNj : N j ∈ LinearMap.ker φ` using `hN ▸ Submodule.subset_span ⟨j, rfl⟩`. Rewrite using `[← hact', LinearMap.mem_ker.mp hNj, h0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show prodPow f (coef 1) = 𝟙 A`. Rewrite using `[← hact', hcoef, hact.2.1]`. Use `show f i ≫ f j = prodPow f (coef (e i * e j))`. Rewrite using `[← hact', hcoef, hact.2.2.1, hek, hek]`. Introduce and unpack `⟨hNj, h1, hm⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun a => prodPow f (coef a), ⟨fun a => isMonHom_prodPow f hf _, h1, fun a b => ?_, fun a b => ?_⟩, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[prodPow_comp f hf _ hm]`. Apply `hwd hNj` to reduce the goal to its premises. Rewrite using `[hcoef, map_sum]`. Simplify using `only [map_sum, map_zsmul, hcoef]`.
-
-Rewrite using `[← hmul, hcoef, hcoef]`. Rewrite using `[← prodPow_add]`. Apply `hwd hNj` to reduce the goal to its premises. Rewrite using `[map_add, hcoef, hcoef, hcoef]`. Use `show prodPow f (coef (e k)) = f k`.
-
-Rewrite using `[hwd hNj (coef (e k)) (Pi.single k 1) (by rw [hcoef, hφ]; simp [Pi.single_apply]), prodPow_single]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringAct_iff_relations : ∀ (O : Type) [Ring O] (r : ℕ) (e : Fin r → O),
     Submodule.span ℤ (Set.range e) = ⊤ → ∃ (m : ℕ) (N : Fin m → Fin r → ℤ) (c1 : Fin r → ℤ)

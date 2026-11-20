@@ -5,15 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCpl
 open IsLocalRing UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `R _ _ p B _ _ _ h`. Use `haveI := h.isPrime`. Use `haveI := IsCplAt.flat R p B h`. Use `⟨fun q hq hqp => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Use `haveI := hq haveI : (maximalIdeal B).LiesOver p := ⟨h.comap_eq.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Take `⟨P, -, hP, hlo⟩` from `Ideal.exists_ideal_le_liesOver_of_le (maximalIdeal B) hqp`. Conclude with `⟨P, hP, hlo.over.symm⟩`. Set `Rp` to `Localization.AtPrime p haveI : IsNoetherianRing Rp := IsLocalization.isNoetherianRing p.primeCompl Rp inferInstance`. Establish `hmem : ∀ n : ℕ, algebraMap R Rp a ∈ (maximalIdeal Rp) ^ n`. Introduce `n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs, hsa⟩` from `h.strict n a (by rw [ha]; exact zero_mem _)`. Establish `hu : IsUnit (algebraMap R Rp s)` using `IsLocalization.map_units Rp (⟨s, hs⟩ : p.primeCompl)`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, ← Ideal.map_pow]`. Use `Ideal.mem_map_of_mem (algebraMap R Rp) hsa` as an intermediate fact. Rewrite `this` using `[map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu).mp this`. Establish `hbot` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal Rp) (IsLocalRing.maximalIdeal.isMaximal Rp).ne_top`. Establish `h0 : algebraMap R Rp a = 0`. Establish `: algebraMap R Rp a ∈ ⨅ i, (maximalIdeal Rp) ^ i` using `Ideal.mem_iInf.mpr hmem`. Rewrite `this` using `[hbot]`.
-
-Conclude with `(Ideal.mem_bot).mp this`. Take `⟨⟨s, hs⟩, hsa⟩` from `(IsLocalization.map_eq_zero_iff p.primeCompl Rp a).mp h0`. Conclude with `⟨s, hs, hsa⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.IsCplAt.exists_prime_over :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (p : Ideal R) (B : Type) [CommRing B] [IsLocalRing B] [Algebra R B], IsCplAt R p B →

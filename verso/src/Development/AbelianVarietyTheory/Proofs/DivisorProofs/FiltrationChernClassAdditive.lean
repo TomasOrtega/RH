@@ -20,21 +20,21 @@ open GlobalTheory.FrobFilt
 namespace GlobalTheory.FrobFilt
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B hN g hg r Qs Rs h0 hr hQ hR hE`. Establish `hRs : ∀ i, ∃ R' : Pres B, IsFrob p (Rs i).mod R'.mod` using `fun i => GlobalTheory.T.frobenius_presentation_exists O p B g hg (Rs i) (hr i) (hR i)`. Use `choose Rs' hRs' using hRs`. Establish `hstep : ∀ i : Fin r, NoEmb B ((frob p B).obj (Qs i.castSucc).mod) → ∃ S : ShortComplex B.X.Modules, S.ShortExact ∧ Nonempty (S.X₁ ≅ (Qs i.castSucc).mod) ∧ Nonempty (S.X₂ ≅ (Qs i.succ).mod) ∧ Nonempty (S.X₃ ≅ (Rs i).mod) ∧ (S.map (frob p B)).ShortExact ∧ NoEmb B ((frob p B).obj S. …`. Introduce `i hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS, ⟨e1⟩, ⟨e2⟩, ⟨e3⟩⟩` from `hE i`. Establish `k1` using `kills_of_iso (hQ i.castSucc) e1.symm`. Establish `k2` using `kills_of_iso (hQ i.succ) e2.symm`. Establish `k3` using `kills_of_iso (hR i) e3.symm`. Establish `hne1 : NoEmb B ((frob p B).obj S.X₁)` using `hne.of_iso ((frob p B).mapIso e1.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex` using `GlobalTheory.T.killed_presentation_extension_frobenius O p B hN g hg S hS ⟨Qs i.castSucc, ⟨e1⟩⟩ ⟨Qs i.succ, ⟨e2⟩⟩ ⟨Rs i, ⟨e3⟩⟩ k1 k2 k3 hne1`. Establish `hne3 : NoEmb B ((frob p B).obj S.X₃)` using `(GlobalTheory.T.normal_model_frobenius_no_embedding O p B hN g hg (Rs i) (hr i) (hR i)).of_iso ((frob p B).mapIso e3.symm)`. Conclude with `⟨S, hS, ⟨e1⟩, ⟨e2⟩, ⟨e3⟩, hex, GlobalTheory.T.no_embedding_extension_closed O B (S.map (frob p B)) hex hne1 hne3⟩`. Establish `key : ∀ i : Fin (r + 1), (∃ S : Pres B, IsFrob p (Qs i).mod S.mod) ∧ NoEmb B ((frob p B).obj (Qs i).mod)`. Introduce `i`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `i using Fin.induction with`. Consider the case `zero`. Establish `hz` using `isZero_frob_obj p (B := B) h0`. Use `⟨⟨presZero B, isFrob_iff.2 ⟨isZero_presZero_mod.iso hz⟩⟩, ?_⟩` and prove the remaining obligations. Introduce `U V h _ s t _`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ∀ u : Γ((frob p B).obj (Qs 0).mod, U), u = 0` using `fun u => by`. Use `congrArg (fun φ => φ.app U u) (hz.eq_of_src (𝟙 _) 0)` as an intermediate fact. Simplify using `using this`. Rewrite using `[h1 s, h1 t]`. Consider the case `succ i ih`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨S0, hS0⟩, hne⟩` from `ih`. Take `⟨S, -, ⟨e1⟩, ⟨e2⟩, ⟨e3⟩, hex, hne2⟩` from `hstep i hne`. Take `⟨f0⟩` from `isFrob_iff.1 hS0`. Take `⟨f3⟩` from `isFrob_iff.1 (hRs' i)`. Take `⟨P, ⟨eP⟩⟩` from `GlobalTheory.T.presentation_extension_closed O p B (S.map (frob p B)) hex ⟨S0, ⟨(frob p B).mapIso e1 ≪≫ f0.symm⟩⟩ ⟨Rs' i, ⟨(frob p B).mapIso e3 ≪≫ f3.symm⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨P, isFrob_iff.2 ⟨eP.symm ≪≫ (frob p B).mapIso e2⟩⟩, hne2.of_iso ((frob p B).mapIso e2)⟩`. Use `choose Ss hSs using fun i => (key i).1`. Use `⟨Ss, Rs', ?_, hSs, hRs', fun i => ?_⟩` and prove the remaining obligations. Take `⟨f⟩` from `isFrob_iff.1 (hSs 0)`. Conclude with `(isZero_frob_obj p (B := B) h0).of_iso f`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, -, ⟨e1⟩, ⟨e2⟩, ⟨e3⟩, hex, -⟩` from `hstep i (key i.castSucc).2`. Take `⟨f1⟩` from `isFrob_iff.1 (hSs i.castSucc)`. Take `⟨f2⟩` from `isFrob_iff.1 (hSs i.succ)`. Take `⟨f3⟩` from `isFrob_iff.1 (hRs' i)`. Conclude with `⟨S.map (frob p B), hex, ⟨(frob p B).mapIso e1 ≪≫ f1.symm⟩, ⟨(frob p B).mapIso e2 ≪≫ f2.symm⟩, ⟨(frob p B).mapIso e3 ≪≫ f3.symm⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frob_filtration : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (g : Γ(B.X, ⊤)), IsRootOfP p g p → ∀ (r : ℕ) (Qs : Fin (r + 1) → Pres B) (Rs : Fin r → Pres B), IsZero (Qs 0).mod → (∀ i, (Rs i).r = 1) → (∀ i, Kills g (Qs i).mod) → (∀ i, Kills g (Rs i).mod) → (∀ i : Fin r, IsExt (Qs i.castSucc).mod (Qs i.succ).mod (Rs i).mod) → ∃ (Ss : Fin (r + 1) → Pres B) (Rs' : Fin r → Pres B), IsZero (Ss 0).mod ∧ (∀ i, IsFrob p (Qs i).mod (Ss i).mod) ∧ (∀ i, IsFrob p (Rs i).mod (Rs' i).mod) ∧ ∀ i : Fin r, IsExt (Ss i.castSucc).mod (Ss i.succ).mod (Rs' i).mod := by
   intro O _ _ _ p _ _ _ B hN g hg r Qs Rs h0 hr hQ hR hE

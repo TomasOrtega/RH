@@ -38,7 +38,7 @@ Both sides reduce to the same expression.
 theorem ipc_apply (z w : ℂ) : ipc z w = starRingEnd ℂ z * w := rfl
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `z _`. Conclude with `Submodule.mem_span_singleton.mpr ⟨z, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem span_one_C : Submodule.span ℂ {(1 : ℂ)} = ⊤ := by
   rw [eq_top_iff]
@@ -46,7 +46,7 @@ theorem span_one_C : Submodule.span ℂ {(1 : ℂ)} = ⊤ := by
   exact Submodule.mem_span_singleton.mpr ⟨z, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `f _`. Conclude with `Submodule.mem_span_singleton.mpr ⟨f () (), by funext _ _; simp⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem span_one_FU : Submodule.span ℂ {(fun _ _ => 1 : FU)} = ⊤ := by
   rw [eq_top_iff]
@@ -65,7 +65,7 @@ abbrev oneHLat : HLat K where
   L := Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin 1)))
 
 /- English proof (translation)
-Use `show Submodule.span K ((Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin 1))) : Submodule (𝓞 K) (Fin 1 → K)) : Set (Fin 1 → K)) = ⊤`. Rewrite using `[Submodule.span_span_of_tower]`. Conclude with `(Pi.basisFun K (Fin 1)).span_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneHLat_span : Submodule.span K ((oneHLat K).L : Set (oneHLat K).V) = ⊤ := by
   show Submodule.span K ((Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin 1))) :
@@ -74,7 +74,7 @@ theorem oneHLat_span : Submodule.span K ((oneHLat K).L : Set (oneHLat K).V) = �
   exact (Pi.basisFun K (Fin 1)).span_eq
 
 /- English proof (translation)
-Use `⟨fun _ => ?_, Submodule.fg_span (Set.finite_range _), oneHLat_span K⟩` and prove the remaining obligations. Rewrite using `[show (oneHLat K).X _ = 1 from rfl, Matrix.det_one]`. Conclude with `isUnit_one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneHLat_good : (oneHLat K).Good := by
   refine ⟨fun _ => ?_, Submodule.fg_span (Set.finite_range _), oneHLat_span K⟩
@@ -82,7 +82,7 @@ theorem oneHLat_good : (oneHLat K).Good := by
   exact isUnit_one
 
 /- English proof (translation)
-Use `show Module.finrank K (Submodule.span K ((oneHLat K).L : Set (oneHLat K).V)) = 1`. Rewrite using `[oneHLat_span, finrank_top]`. Conclude with `(Module.finrank_fin_fun K)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneHLat_rank : (oneHLat K).rank = 1 := by
   show Module.finrank K (Submodule.span K ((oneHLat K).L : Set (oneHLat K).V)) = 1
@@ -102,9 +102,9 @@ def slF : (Fin 1 → K) →ₛₗ[σ] FU where
   map_smul' c x := by funext _ _; simp
 
 /- English proof (translation)
-Establish `h : (fun i => slC σ ((oneHLat K).b i)) = fun _ : Fin 1 => (1 : ℂ)`. Use function extensionality and compare the values at `i`. Use `show σ ((Pi.basisFun K (Fin 1)) i 0) = 1`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Use `⟨LinearIndependent.of_subsingleton 0 one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.range_const]`. Conclude with `span_one_C`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slC_basis : LinearIndependent ℂ (fun i => slC σ ((oneHLat K).b i)) ∧
     Submodule.span ℂ (Set.range (fun i => slC σ ((oneHLat K).b i))) = ⊤ := by
@@ -117,9 +117,9 @@ theorem slC_basis : LinearIndependent ℂ (fun i => slC σ ((oneHLat K).b i)) �
   rw [Set.range_const]; exact span_one_C
 
 /- English proof (translation)
-Establish `h : (fun i => slF σ ((oneHLat K).b i)) = fun _ : Fin 1 => (fun _ _ => 1 : FU)`. Use function extensionality and compare the values at `i _ _`. Use `show σ ((Pi.basisFun K (Fin 1)) i 0) = 1`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Use `⟨LinearIndependent.of_subsingleton 0 (fun h0 => one_ne_zero (congrFun (congrFun h0 ()) ())), ?_⟩` and prove the remaining obligations. Rewrite using `[Set.range_const]`. Conclude with `span_one_FU`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slF_basis : LinearIndependent ℂ (fun i => slF σ ((oneHLat K).b i)) ∧
     Submodule.span ℂ (Set.range (fun i => slF σ ((oneHLat K).b i))) = ⊤ := by
@@ -132,7 +132,7 @@ theorem slF_basis : LinearIndependent ℂ (fun i => slF σ ((oneHLat K).b i)) �
   rw [Set.range_const]; exact span_one_FU
 
 /- English proof (translation)
-Rewrite using `[Subsingleton.elim i 0]`. Simplify using `[Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fcoord_one (v : InfinitePlace K) (x : Fin 1 → K) (i : Fin 1) :
     Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K (Fin 1)) (fun _ => (1 : Matrix (Fin 1) (Fin 1) ℂ)) v x i =
@@ -141,7 +141,7 @@ theorem fcoord_one (v : InfinitePlace K) (x : Fin 1 → K) (i : Fin 1) :
   simp [Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt]
 
 /- English proof (translation)
-Use `show (∑ i : Fin 1, star (Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K (Fin 1)) (fun _ => 1) _ x i) * Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K (Fin 1)) (fun _ => 1) _ x i).re = _`. Simplify using `only [fcoord_one, Finset.univ_unique, Finset.sum_singleton, Complex.star_def]`. Rewrite using `[Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re, InfinitePlace.norm_embedding_eq, InfinitePlace.apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maj_one (x : Fin 1 → K) :
     (Formalism.HermitianLatticesTheory.majAt (oneHLat K).b (oneHLat K).X (InfinitePlace.mk σ) x x).re = ‖σ (x 0)‖ ^ 2 := by
@@ -152,7 +152,7 @@ theorem maj_one (x : Fin 1 → K) :
     InfinitePlace.apply]
 
 /- English proof (translation)
-Use `show Real.sqrt (∑ i : Fin 1, ‖Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K (Fin 1)) (fun _ => 1) _ x i‖ ^ 2) = _`. Simplify using `only [fcoord_one, Finset.univ_unique, Finset.sum_singleton]`. Rewrite using `[Real.sqrt_sq (norm_nonneg _), InfinitePlace.norm_embedding_eq, InfinitePlace.apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normAt_one (x : Fin 1 → K) :
     Formalism.HermitianLatticesTheory.normAt (oneHLat K).b (oneHLat K).X (InfinitePlace.mk σ) x = ‖σ (x 0)‖ := by
@@ -170,7 +170,7 @@ def chiU : (ZMod T)ˣ →* ℂˣ :=
   ((quadraticChar (ZMod T)).ringHomComp (Int.castRingHom ℂ)).toUnitHom
 
 /- English proof (translation)
-Unfold `chiU`. Rewrite using `[MulChar.coe_toUnitHom]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chiU_val (a : (ZMod T)ˣ) :
     ((chiU T a : ℂˣ) : ℂ) = ((quadraticChar (ZMod T) (a : ZMod T) : ℤ) : ℂ) := by
@@ -179,18 +179,18 @@ theorem chiU_val (a : (ZMod T)ˣ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[chiU_val]`. Apply the tactic sequence `rcases quadraticChar_dichotomy a.ne_zero with h | h <;> rw [h] <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chiU_pm (a : (ZMod T)ˣ) : ((chiU T a : ℂˣ) : ℂ) = 1 ∨ ((chiU T a : ℂˣ) : ℂ) = -1 := by
   rw [chiU_val]
   rcases quadraticChar_dichotomy a.ne_zero with h | h <;> rw [h] <;> simp
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `quadraticChar_exists_neg_one (F := ZMod T) (by rw [ZMod.ringChar_zmod_n]; exact hT2)`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hb`. Establish `h1 : ((chiU T (Units.mk0 b hb0) : ℂˣ) : ℂ) = -1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[chiU_val, Units.val_mk0, hb]`. Simplify using the standard rewrite rules. Establish `h2 : ∑ a : (ZMod T)ˣ, ((chiU T a : ℂˣ) : ℂ) = ∑ a : (ZMod T)ˣ, ((chiU T (Units.mk0 b hb0 * a) : ℂˣ) : ℂ)` using `(Fintype.sum_equiv (Equiv.mulLeft (Units.mk0 b hb0)) _ _ (fun _ => rfl)).symm`. Establish `h3 : ∑ a : (ZMod T)ˣ, ((chiU T (Units.mk0 b hb0 * a) : ℂˣ) : ℂ) = -∑ a : (ZMod T)ˣ, ((chiU T a : ℂˣ) : ℂ)`. Rewrite using `[← Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_mul, h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3]`. Conclude with `self_eq_neg.mp h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiU_sum (hT2 : T ≠ 2) [Fintype (ZMod T)ˣ] : ∑ a : (ZMod T)ˣ, ((chiU T a : ℂˣ) : ℂ) = 0 := by
   obtain ⟨b, hb⟩ := quadraticChar_exists_neg_one (F := ZMod T) (by rw [ZMod.ringChar_zmod_n]; exact hT2)
@@ -237,7 +237,7 @@ abbrev chain1 : ColumnChain R0 Tau (fun _ => hc0) :=
     unf := fun _ _ _ => LinearMap.id }
 
 /- English proof (translation)
-Use `show (((Nat.card Unit : ℕ) : ℂ))⁻¹ = 1`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chain1_wt (i : ℕ) (c : (chain1 Tau).cls i) : (chain1 Tau).wt i c = 1 := by
   show (((Nat.card Unit : ℕ) : ℂ))⁻¹ = 1
@@ -269,7 +269,7 @@ abbrev baseColumnsAt (Dst : ℝ) (hD : 0 < Dst) : ColumnsAtT R0 (chain1 Tau) :=
     one_lt_gammaP := one_lt_two }
 
 /- English proof (translation)
-Use `LinearMap.ext fun φ => ?_` and prove the remaining obligations. Use `show (∑ c : (ZMod T)ˣ, rho1 T c) φ = 0`. Rewrite using `[LinearMap.sum_apply]`. Simplify using `only [first_order_lift_apply]`. Rewrite using `[← Finset.sum_smul, chiU_sum T hT2, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivialColumns_norm_zero (hT2 : T ≠ 2) (Dst : ℝ) (hD : 0 < Dst) (v : (baseColumnsAt Tau T Dst hD).vT) :
     (baseColumnsAt Tau T Dst hD).Nm v = 0 := by
@@ -280,14 +280,14 @@ theorem trivialColumns_norm_zero (hT2 : T ≠ 2) (Dst : ℝ) (hD : 0 < Dst) (v :
   rw [← Finset.sum_smul, chiU_sum T hT2, zero_smul]
 
 /- English proof (translation)
-Unfold `ColumnsAtT.Mram`. Simplify using `only [trivialColumns_norm_zero Tau T hT2, LinearMap.ker_zero, iInf_top, inf_top_eq]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem trivialColumns_ramified_top (hT2 : T ≠ 2) (Dst : ℝ) (hD : 0 < Dst) : (baseColumnsAt Tau T Dst hD).Mram = ⊤ := by
   unfold ColumnsAtT.Mram
   simp only [trivialColumns_norm_zero Tau T hT2, LinearMap.ker_zero, iInf_top, inf_top_eq]
 
 /- English proof (translation)
-Unfold `ColumnsAtT.du`. Rewrite using `[trivialColumns_ramified_top Tau T hT2, finrank_top]`. Conclude with `(cst.finrank_eq).symm.trans (Module.finrank_self ℂ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivialColumns_du_eq_one (hT2 : T ≠ 2) (Dst : ℝ) (hD : 0 < Dst) : (baseColumnsAt Tau T Dst hD).du = 1 := by
   unfold ColumnsAtT.du
@@ -398,7 +398,7 @@ def forms1 : MemberForms LL embLL Pl Tau (fun _ => hc0) (chain1 Tau) (baseColumn
   thFree_nonneg := fun _ _ _ _ => zero_le_one
 
 /- English proof (translation)
-Use `show ∑ c : Unit, (chain1 Tau).wt 0 c * ip1 (φ c) (ψ c) = _`. Simplify using `only [chain1_wt, one_mul, Finset.univ_unique, Finset.sum_singleton, trivialInner_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem forms1_ipC (φ ψ : FU) :
     (forms1 Tau T embLL Pl hTau Dst hD).ipC 0 φ ψ = starRingEnd ℂ (φ () ()) * ψ () () := by

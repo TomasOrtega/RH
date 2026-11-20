@@ -8,27 +8,27 @@ open scoped ComplexOrder in
 open Matrix in
 
 /- English proof (translation)
-Introduce `n d J P X Y y₀ hJ hP hXX hYY hXY hPX hPY k hk m G`. Establish `hki : (k⁻¹).1 = k.1ᴴ`. Combine the equalities or inequalities in the displayed calculation. Establish `hm : m.1 = y₀.1 * k.1 * (y₀⁻¹).1` using `by simp [m]`. Establish `hmi : (m⁻¹).1 = y₀.1 * k.1ᴴ * (y₀⁻¹).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [m, _root_.mul_inv_rev, inv_inv, Units.val_mul, hki, Matrix.mul_assoc]`. Establish `hab : y₀.1ᴴ * (y₀⁻¹).1ᴴ = 1`. Rewrite using `[← conjTranspose_mul, Units.inv_mul, conjTranspose_one]`. Establish `hAm : m.1ᴴ * ((y₀⁻¹).1ᴴ * (y₀⁻¹).1) * m.1 = (y₀⁻¹).1ᴴ * (y₀⁻¹).1`. Rewrite using `[hm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc y₀.1ᴴ, hab, Matrix.one_mul, ← Matrix.mul_assoc (y₀⁻¹).1 y₀.1, Units.inv_mul, Matrix.one_mul, ← Matrix.mul_assoc k.1ᴴ k.1, hk, Matrix.one_mul]`. Establish `hBm : (m⁻¹).1 * (y₀.1 * y₀.1ᴴ) * (m⁻¹).1ᴴ = y₀.1 * y₀.1ᴴ`. Rewrite using `[hmi]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc (y₀⁻¹).1 y₀.1, Units.inv_mul, Matrix.one_mul, ← Matrix.mul_assoc y₀.1ᴴ, hab, Matrix.one_mul, ← Matrix.mul_assoc k.1ᴴ k.1, hk, Matrix.one_mul]`. Establish `hAh : ((y₀⁻¹).1ᴴ * (y₀⁻¹).1)ᴴ = (y₀⁻¹).1ᴴ * (y₀⁻¹).1`. Rewrite using `[conjTranspose_mul, conjTranspose_conjTranspose]`. Establish `hBh : (y₀.1 * y₀.1ᴴ)ᴴ = y₀.1 * y₀.1ᴴ`. Rewrite using `[conjTranspose_mul, conjTranspose_conjTranspose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [G]`. Generalize the expression as in `(y₀⁻¹).1ᴴ * (y₀⁻¹).1 = A at hPX hAm hAh`. Generalize the expression as in `y₀.1 * y₀.1ᴴ = B at hPY hBm hBh`. Generalize the expression as in `m.1 = m₁ at hAm`. Generalize the expression as in `(m⁻¹).1 = m₂ at hBm`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hYX : Yᴴ * J * X = 1`. Establish `h` using `congrArg conjTranspose hXY`. Simplify `h` using `[conjTranspose_mul, hJ, Matrix.mul_assoc]`. Establish `hXP : Xᴴ * P = A * (Yᴴ * J)`. Establish `h` using `congrArg conjTranspose hPX`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h` using `[conjTranspose_mul, hJ, hP, hAh, Matrix.mul_assoc]`. Establish `hYP : Yᴴ * P = B * (Xᴴ * J)`. Establish `h` using `congrArg conjTranspose hPY`. Simplify `h` using `[conjTranspose_mul, hJ, hP, hBh, Matrix.mul_assoc]`. Establish `r1 : ∀ {c : Type} [Fintype c] (Z : Matrix (Fin d) c ℂ), Xᴴ * (J * (X * Z)) = 0` using `fun Z => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [← Matrix.mul_assoc, hXX, Matrix.zero_mul]`. Establish `r2 : ∀ {c : Type} [Fintype c] (Z : Matrix (Fin d) c ℂ), Yᴴ * (J * (Y * Z)) = 0` using `fun Z => by`. Simplify using `only [← Matrix.mul_assoc, hYY, Matrix.zero_mul]`. Establish `r3 : ∀ {c : Type} [Fintype c] (Z : Matrix (Fin d) c ℂ), Xᴴ * (J * (Y * Z)) = Z` using `fun Z => by`. Simplify using `only [← Matrix.mul_assoc, hXY, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `r4 : ∀ {c : Type} [Fintype c] (Z : Matrix (Fin d) c ℂ), Yᴴ * (J * (X * Z)) = Z` using `fun Z => by`. Simplify using `only [← Matrix.mul_assoc, hYX, Matrix.one_mul]`. Establish `r5 : ∀ {c : Type} [Fintype c] (Z : Matrix (Fin d) c ℂ), P * (X * Z) = J * (Y * (A * Z))` using `fun Z => by`. Simplify using `only [← Matrix.mul_assoc, hPX]`. Establish `r6 : ∀ {c : Type} [Fintype c] (Z : Matrix (Fin d) c ℂ), P * (Y * Z) = J * (X * (B * Z))` using `fun Z => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [← Matrix.mul_assoc, hPY]`. Establish `r7 : ∀ {c : Type} [Fintype c] (Z : Matrix (Fin n) c ℂ), Xᴴ * (P * Z) = A * (Yᴴ * (J * Z))` using `fun Z => by`. Simplify using `only [← Matrix.mul_assoc, hXP]`. Establish `r8 : ∀ {c : Type} [Fintype c] (Z : Matrix (Fin n) c ℂ), Yᴴ * (P * Z) = B * (Xᴴ * (J * Z))` using `fun Z => by`. Simplify using `only [← Matrix.mul_assoc, hYP]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `r9 : ∀ {c : Type} [Fintype c] (Z : Matrix (Fin d) c ℂ), m₁ᴴ * (A * (m₁ * Z)) = A * Z` using `fun Z => by`. Simplify using `only [← Matrix.mul_assoc, hAm]`. Establish `r10 : ∀ {c : Type} [Fintype c] (Z : Matrix (Fin d) c ℂ), m₂ * (B * (m₂ᴴ * Z)) = B * Z` using `fun Z => by`. Simplify using `only [← Matrix.mul_assoc, hBm]`. Simplify using `only [conjTranspose_add, conjTranspose_mul, conjTranspose_sub, conjTranspose_one, conjTranspose_conjTranspose, hJ, Matrix.add_mul, Matrix.mul_add, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, hXP, hYP, …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/

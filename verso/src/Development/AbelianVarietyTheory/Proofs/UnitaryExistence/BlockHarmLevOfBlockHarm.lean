@@ -29,9 +29,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {E : Type} [Field E] [NumberField E] in
 variable {n₁ n₂ : ℕ} in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.BetaEx.mem_std]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun j => h _, fun j => h _⟩`. Introduce and unpack `⟨h₁, h₂⟩ j`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Conclude with `h₁ i`. Conclude with `h₂ i`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ShortLawsCompare.mem_std_block (v : Fin (n₁ + n₂) → E) :
     v ∈ _root_.Formalism.L2.Pj.stdLat E (n₁ + n₂) ↔
@@ -52,9 +52,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {E : Type} [Field E] [NumberField E] in
 variable {n₁ n₂ : ℕ} in
 /- English proof (translation)
-Rewrite using `[Submodule.smul_le]`. Introduce `r hr v hv`. Rewrite `hv`, the goal using `[Submodule.mem_inf, Submodule.mem_comap, Submodule.mem_comap]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h₁ (Submodule.smul_mem_smul hr hv.1)`. Rewrite using `[map_smul]`. Conclude with `h₂ (Submodule.smul_mem_smul hr hv.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smul_inf_comap_funLeft_le (I : Ideal (𝓞 E)) (L₁ P₁ : Submodule (𝓞 E) (Fin n₁ → E))
     (L₂ P₂ : Submodule (𝓞 E) (Fin n₂ → E)) (h₁ : I • L₁ ≤ P₁) (h₂ : I • L₂ ≤ P₂) :
@@ -77,7 +77,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {E : Type} [Field E] [NumberField E] in
 variable {n₁ n₂ : ℕ} in
 /- English proof (translation)
-Use extensionality with `v`. Conclude with `_root_.GlobalTheory.ShortLawsCompare.mem_std_block v`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem stdLat_add_eq_inf_comap_funLeft :
     _root_.Formalism.L2.Pj.stdLat E (n₁ + n₂) =
@@ -92,9 +92,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {E : Type} [Field E] [NumberField E] in
 variable {n₁ n₂ : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.L2.Pj.GenLat.LevOK _root_.Formalism.L2.Pj.GenLat.Ln at *`. Use `⟨h₁.1, h₁.2.1, ?_⟩` and prove the remaining obligations. Establish `key` using `smul_inf_comap_funLeft_le (Ideal.span {((N : ℕ) : 𝓞 E)}) _ _ _ _ h₁.2.2 h₂.2.2`. Rewrite using `[stdLat_add_eq_inf_comap_funLeft]`. Use `key.trans ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.BlockProductLattices.blockLat, Submodule.mem_inf, Submodule.mem_comap] at hv ⊢`. The claim follows by propositional logic.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem _root_.GlobalTheory.ShortLawsCompare.levOK_block {Λ₁ : _root_.Formalism.L2.Pj.GenLat E n₁} {Λ₂ : _root_.Formalism.L2.Pj.GenLat E n₂} {N M : ℕ}
     (h₁ : Λ₁.LevOK N M) (h₂ : Λ₂.LevOK N M) :
@@ -114,7 +114,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {E : Type} [Field E] [NumberField E] in
 variable {n₁ n₂ : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.L2.Pj.GenLat.TrivAt`. Apply the tactic sequence `refine ⟨1, Nat.coprime_one_left _, ?_, ?_⟩ <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.ShortLawsCompare.trivAt_std (n b : ℕ) :
     _root_.Formalism.L2.Pj.GenLat.TrivAt (⟨_root_.Formalism.L2.Pj.stdLat E n⟩ : _root_.Formalism.L2.Pj.GenLat E n) b := by
@@ -127,7 +127,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {E : Type} [Field E] [NumberField E] in
 variable {n₁ n₂ : ℕ} in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨RingOfIntegers.mapRingHom (IsCMField.complexConj E : E →+* E) a, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem complexConj_coe_mem_range_algebraMap [IsCMField E] (a : 𝓞 E) :
     IsCMField.complexConj E (a : E) ∈ (algebraMap (𝓞 E) E).range :=
@@ -139,19 +139,19 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {E : Type} [Field E] [NumberField E] in
 variable {n₁ n₂ : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.L2.Pj.GenLat.Unimod`. Introduce `v`. Use `show v ∈ _root_.Formalism.L2.Pj.stdLat E n ↔ ∀ w ∈ _root_.Formalism.L2.Pj.stdLat E n, _`. Prove the components needed by the constructor for the conclusion. Introduce `hv w hw`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv`, `hw` using `[_root_.GlobalTheory.BetaEx.mem_std]`. Use `Subring.sum_mem _ fun j _ => Subring.mul_mem _ ?_ ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hv j`. Rewrite using `[← ha]`. Conclude with `complexConj_coe_mem_range_algebraMap a`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨b, hb⟩` from `hw j`. Conclude with `⟨b, hb⟩`. Introduce `h`. Rewrite using `[_root_.GlobalTheory.BetaEx.mem_std]`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsingle : (Pi.single j 1 : Fin n → E) ∈ _root_.Formalism.L2.Pj.stdLat E n`. Rewrite using `[_root_.GlobalTheory.BetaEx.mem_std]`. Introduce `i`. Use `⟨if i = j then 1 else 0, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hij : i = j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`. Establish `hc` using `h _ hsingle`. Simplify using `only [Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at hc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hc`. Take `⟨a, ha⟩` from `complexConj_coe_mem_range_algebraMap b`. Use `⟨a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(algebraMap (𝓞 E) E) a = v j`. Rewrite using `[ha]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `IsCMField.complexConj E ((algebraMap (𝓞 E) E) b) = v j`. Rewrite using `[hb, _root_.mul_one, IsCMField.complexConj_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ShortLawsCompare.unimod_std [IsCMField E] (n : ℕ) :
     _root_.Formalism.L2.Pj.GenLat.Unimod (⟨_root_.Formalism.L2.Pj.stdLat E n⟩ : _root_.Formalism.L2.Pj.GenLat E n) := by
@@ -203,23 +203,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.Reciproc
   {l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} in
 variable (c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) in
 /- English proof (translation)
-Unfold `_root_.Formalism.L2.Pj.idealAt`. Take `⟨k, hk, -, hkstd⟩` from `hT`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `hb (Nat.coprime_zero_left _ |>.mp hk)`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hfrac` using `_root_.GlobalTheory.BetaEx.frac_of_bdd (_root_.GlobalTheory.BetaEx.bdd_of_unimod Λ hU)`. Take `⟨s, hs⟩` from `FractionalIdeal.fg_of_isNoetherianRing le_rfl (⟨_, hfrac⟩ : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)`. Establish `hspan : Submodule.span (𝓞 c.F) (_root_.Formalism.L2.Pj.embF c τ '' _root_.Formalism.L2.Pj.detSet Λ.La) = Submodule.span (𝓞 c.F) (_root_.Formalism.L2.Pj.embF c τ '' (s : Set E))`. Rewrite using `[← _root_.GlobalTheory.BetaEx.span_image_span (_root_.Formalism.L2.Pj.embF c τ) (_root_.Formalism.L2.Pj.detSet Λ.La), ← _root_.GlobalTheory.BetaEx.span_image_span (_root_.Formalism.L2.Pj.embF c τ) (s : Set E)]`. Use `congr 2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Both sides reduce to the same expression. Establish `hfg : (Submodule.span (𝓞 c.F) (_root_.Formalism.L2.Pj.embF c τ '' _root_.Formalism.L2.Pj.detSet Λ.La)).FG`. Rewrite using `[hspan]`. Conclude with `Submodule.fg_span (s.finite_toSet.image _)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `J : FractionalIdeal (nonZeroDivisors (𝓞 c.F)) c.F` to `⟨_, FractionalIdeal.isFractional_of_fg hfg⟩`. Establish `hdet : ((k : E) ^ n) ∈ _root_.Formalism.L2.Pj.detSet Λ.La`. Rewrite using `[_root_.GlobalTheory.BetaEx.mem_detSet]`. Use `⟨(k : E) • (1 : Matrix (Fin n) (Fin n) E), fun i => ?_, by simp [Matrix.det_smul]⟩` and prove the remaining obligations. Establish `hrow : ((k : E) • (1 : Matrix (Fin n) (Fin n) E)) i = ((k : ℕ) : 𝓞 E) • (1 : Matrix (Fin n) (Fin n) E) i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `j`. Simplify using `[Algebra.smul_def]`. Rewrite using `[hrow]`. Apply `hkstd` to reduce the goal to its premises. Use `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[_root_.GlobalTheory.BetaEx.mem_std]`. Introduce `j`. Use `⟨if i = j then 1 else 0, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJ : J ≠ 0`. Introduce `h0`. Establish `hbot : (J : Submodule (𝓞 c.F) c.F) = ⊥`. Rewrite using `[h0]`. Conclude with `FractionalIdeal.coe_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : _root_.Formalism.L2.Pj.embF c τ ((k : E) ^ n) ∈ (J : Submodule (𝓞 c.F) c.F)` using `Submodule.subset_span ⟨_, hdet, rfl⟩`. Rewrite `hmem` using `[hbot, Submodule.mem_bot, map_eq_zero]`. Conclude with `pow_ne_zero n (Nat.cast_ne_zero.mpr hk0) hmem`. Use `isUnit_iff_exists_inv.mpr ⟨((J⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 c.F)) c.F) : Submodule (𝓞 c.F) c.F), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(J : Submodule (𝓞 c.F) c.F) * _ = 1`.
-
-Rewrite using `[← FractionalIdeal.coe_mul, mul_inv_cancel₀ hJ, FractionalIdeal.coe_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ShortLawsCompare.isUnit_idealAt {n b : ℕ} {Λ : _root_.Formalism.L2.Pj.GenLat E n}
     (hT : Λ.TrivAt b) (hU : Λ.Unimod) (hb : b ≠ 1) (τ : E →+* ℂ) :
@@ -282,17 +280,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.Reciproc
 variable (c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.BlockLatticeAdmissibility.IsBeta _root_.Formalism.L2.Pj.BetaIs _root_.Formalism.L2.Pj.BetaAbs at h h'`. Take `⟨hβ, hs, hn⟩` from `h`. Take `⟨-, hs', hn'⟩` from `h'`. Establish `hP : IsUnit (∏ τ, _root_.Formalism.L2.Pj.idealAt c Λ.La τ ^ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.mult Dw τ)`. Use `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one (fun τ _ => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `l.three_le`. Conclude with `(_root_.GlobalTheory.ShortLawsCompare.isUnit_idealAt c hT hU (by omega) τ).pow _`. Establish `heq : (𝓞 c.F ∙ β) = 𝓞 c.F ∙ β'` using `hP.mul_right_cancel (hs.trans hs'.symm)`. Take `⟨u, hu⟩` from `Submodule.span_singleton_eq_span_singleton.mp heq`. Establish `hβ'eq : β' = ((u : 𝓞 c.F) : c.F) * β`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu]`. Both sides reduce to the same expression. Use `⟨((u : 𝓞 c.F) : c.F), ?_, hβ'eq⟩` and prove the remaining obligations. Establish `htors : u ∈ NumberField.Units.torsion c.F`. Rewrite using `[NumberField.Units.mem_torsion]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Rewrite using `[← w.mk_embedding, NumberField.InfinitePlace.apply]`. Establish `h1` using `hn w.embedding`. Establish `h2` using `hn' w.embedding`. Establish `hne : ‖w.embedding β‖ ≠ 0` using `by simpa using hβ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : ‖w.embedding ((u : 𝓞 c.F) : c.F)‖ ^ 2 * ‖w.embedding β‖ ^ 2 = 1 * ‖w.embedding β‖ ^ 2`. Rewrite using `[_root_.one_mul, ← _root_.mul_pow, ← norm_mul, ← map_mul, ← hβ'eq, h2, h1]`. Establish `hsq'` using `mul_right_cancel₀ (pow_ne_zero 2 hne) hsq`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp hsq'`. Take `⟨m, hm, hum⟩` from `isOfFinOrder_iff_pow_eq_one.mp ((CommGroup.mem_torsion _).mp htors)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `isOfFinOrder_iff_pow_eq_one.mpr ⟨m, hm, ?_⟩` and prove the remaining obligations. Use `congrArg (fun x : (𝓞 c.F)ˣ => ((x : 𝓞 c.F) : c.F)) hum` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ShortLawsCompare.isBeta_ratio {n : ℕ} {Λ : _root_.Formalism.L2.Pj.GenLat E n} (hU : Λ.Unimod)
     (hT : Λ.TrivAt l.M) {β β' : c.F}
@@ -337,15 +335,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.Reciproc
 variable (c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.BlockLatticeAdmissibility.IsBeta _root_.Formalism.L2.Pj.BetaIs _root_.Formalism.L2.Pj.BetaAbs at h ⊢`. Take `⟨hβ, hspan, hnorm⟩` from `h`. Take `⟨k, hk, hζk⟩` from `isOfFinOrder_iff_pow_eq_one.mp hζ`. Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hζk` using `[zero_pow hk.ne']`. Conclude with `zero_ne_one hζk`. Establish `hint : IsIntegral ℤ ζ` using `IsIntegral.of_pow hk (by rw [hζk]; exact isIntegral_one)`. Establish `hint' : IsIntegral ℤ ζ⁻¹` using `IsIntegral.of_pow hk (by rw [inv_pow, hζk, inv_one]; exact isIntegral_one)`. Establish `hsp : (𝓞 c.F ∙ (ζ * β)) = 𝓞 c.F ∙ β`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`. Conclude with `⟨⟨ζ, hint⟩, rfl⟩`. Rewrite using `[Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`. Use `⟨⟨ζ⁻¹, hint'⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ζ⁻¹ * (ζ * β) = β`. Rewrite using `[← _root_.mul_assoc, inv_mul_cancel₀ hζ0, _root_.one_mul]`. Use `⟨mul_ne_zero hζ0 hβ, by rw [hsp]; exact hspan, fun σ => ?_⟩` and prove the remaining obligations. Establish `hσ : ‖σ ζ‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, hζk, map_one]) hk.ne'`. Rewrite using `[map_mul, norm_mul, hσ, _root_.one_mul]`.
-
-Conclude with `hnorm σ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ShortLawsCompare.isBeta_mul {n : ℕ} {Λ : _root_.Formalism.L2.Pj.GenLat E n} {β ζ : c.F}
     (h : _root_.GlobalTheory.IndefiniteRowSideFullHecke.BlockLatticeAdmissibility.IsBeta Dw c Λ β) (hζ : IsOfFinOrder ζ) :
@@ -375,7 +371,7 @@ theorem _root_.GlobalTheory.ShortLawsCompare.isBeta_mul {n : ℕ} {Λ : _root_.F
   exact hnorm σ
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.BetaEx.betaExists E H Dw l c n b hK Λ hU hT`. Unfold `betaH`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBeta_betaH (hK : KPsiIn (Dw := Dw) c) {n b : ℕ} {Λ : GenLat E n} (hU : Λ.Unimod) (hT : Λ.TrivAt b) :
     BlockLatticeAdmissibility.IsBeta Dw c Λ (betaH (Dw := Dw) c Λ) := by
@@ -404,7 +400,7 @@ Both sides reduce to the same expression.
 theorem blockLat_eq (Λ₁ : GenLat E n₁) (Λ₂ : GenLat E n₂) : BlockLatticeAdmissibility.blockLat Λ₁ Λ₂ = BlockProductLattices.blockLat Λ₁ Λ₂ := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem latAdm_iff {n : ℕ} (bad : ℕ) (Λ : GenLat E n) : BlockLatticeAdmissibility.LatAdm l bad Λ ↔ BlockProductLattices.LatOK bad l.M Λ := Iff.rfl
 
@@ -414,11 +410,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {E : Type} [Field E] [NumberField E] in
 variable {n₁ n₂ : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.L2.Pj.GenLat.Unimod at *`. Introduce `v`. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.BlockProductLattices.mem_blockLat, Fin.sum_univ_add]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv₁, hv₂⟩ w ⟨hw₁, hw₂⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `add_mem ((h₁ _).1 hv₁ _ hw₁) ((h₂ _).1 hv₂ _ hw₂)`. Introduce `h`. Use `⟨(h₁ _).2 fun w₁ hw₁ => ?_, (h₂ _).2 fun w₂ hw₂ => ?_⟩` and prove the remaining obligations. Establish `hz : (fun j => (0 : Fin n₂ → E) j) ∈ Λ₂.La` using `Λ₂.La.zero_mem`. Use `h (Fin.append w₁ 0) ⟨by simpa using hw₁, by simpa using hz⟩` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hz : (fun j => (0 : Fin n₁ → E) j) ∈ Λ₁.La` using `Λ₁.La.zero_mem`. Use `h (Fin.append 0 w₂) ⟨by simpa using hz, by simpa using hw₂⟩` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem blockLat_unimod [IsCMField E] {Λ₁ : _root_.Formalism.L2.Pj.GenLat E n₁}
     {Λ₂ : _root_.Formalism.L2.Pj.GenLat E n₂} (h₁ : Λ₁.Unimod) (h₂ : Λ₂.Unimod) :
@@ -444,9 +440,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 variable {E : Type} [Field E] [NumberField E] in
 variable {n₁ n₂ : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.L2.Pj.GenLat.TrivAt at *`. Take `⟨k₁, hk₁, a₁, b₁⟩` from `h₁`. Take `⟨k₂, hk₂, a₂, b₂⟩` from `h₂`. Establish `hle₁ : Ideal.span {((k₁ * k₂ : ℕ) : 𝓞 E)} ≤ Ideal.span {((k₁ : ℕ) : 𝓞 E)}` using `Ideal.span_singleton_le_span_singleton.mpr ⟨(k₂ : 𝓞 E), by push_cast; ring⟩`. Establish `hle₂ : Ideal.span {((k₁ * k₂ : ℕ) : 𝓞 E)} ≤ Ideal.span {((k₂ : ℕ) : 𝓞 E)}` using `Ideal.span_singleton_le_span_singleton.mpr ⟨(k₁ : 𝓞 E), by push_cast; ring⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨k₁ * k₂, Nat.Coprime.mul hk₁ hk₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[stdLat_add_eq_inf_comap_funLeft]`. Conclude with `smul_inf_comap_funLeft_le _ _ _ _ _ ((Submodule.smul_mono_left hle₁).trans a₁) ((Submodule.smul_mono_left hle₂).trans a₂)`. Rewrite using `[stdLat_add_eq_inf_comap_funLeft]`. Conclude with `smul_inf_comap_funLeft_le _ _ _ _ _ ((Submodule.smul_mono_left hle₁).trans b₁) ((Submodule.smul_mono_left hle₂).trans b₂)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem blockLat_trivAt {Λ₁ : _root_.Formalism.L2.Pj.GenLat E n₁} {Λ₂ : _root_.Formalism.L2.Pj.GenLat E n₂} {b : ℕ}
     (h₁ : Λ₁.TrivAt b) (h₂ : Λ₂.TrivAt b) : (_root_.GlobalTheory.IndefiniteRowSideFullHecke.BlockProductLattices.blockLat Λ₁ Λ₂).TrivAt b := by
@@ -472,7 +468,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.Reciproc
   {l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} in
 variable (c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) {n₁ n₂ : ℕ} in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨blockLat_unimod h₁.1 h₂.1, blockLat_trivAt h₁.2.1 h₂.2.1, blockLat_trivAt h₁.2.2 h₂.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.ShortLawsCompare.latOK_block {bad : ℕ} {Λ₁ : _root_.Formalism.L2.Pj.GenLat E n₁} {Λ₂ : _root_.Formalism.L2.Pj.GenLat E n₂}
     (h₁ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.BlockProductLattices.LatOK bad l.M Λ₁)
@@ -486,11 +482,11 @@ end Objects
 variable (Xo : Moduli Dw l) (c : Coeff l)
 
 /- English proof (translation)
-Establish `key : ∀ (S' : Type) [CommRing S'] [Algebra c.F S'] (φ : S →ₐ[c.F] S') (a b d : c.F) (Z : S'), φ v = algebraMap c.F S' (β⁻¹ * a * b * d) * Z ↔ φ (algebraMap c.F S β * v) = algebraMap c.F S' (1⁻¹ * a * b * d) * Z`. Introduce `S' _ _ φ a b d Z`. Establish `hu : IsUnit (algebraMap c.F S' β)` using `(IsUnit.mk0 β hβ).map _`. Rewrite using `[map_mul φ, φ.commutes, ← hu.mul_right_inj, ← _root_.mul_assoc, ← map_mul]`. Establish `: β * (β⁻¹ * a * b * d) = 1⁻¹ * a * b * d` using `by field_simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S', i1, i2, φ, y', z, tp, F, h1, h2, h3, h4, h5, h6, h7⟩`. Conclude with `⟨S', i1, i2, φ, y', z, tp, F, h1, h2, h3, h4, h5, h6, (key S' φ _ _ _ _).1 h7⟩`. Introduce and unpack `⟨S', i1, i2, φ, y', z, tp, F, h1, h2, h3, h4, h5, h6, h7⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨S', i1, i2, φ, y', z, tp, F, h1, h2, h3, h4, h5, h6, (key S' φ _ _ _ _).2 h7⟩`.
+Supply the required witnesses or components.
 -/
 theorem shortValAt_beta (nab : NabV Xo c) {n : ℕ} (w : (Fin n → LevQ Dw l) → c.F) (Λ : GenLat E n) {β : c.F}
     (hβ : β ≠ 0) (N : ℕ) (P : MvPolynomial (LtN Dw n) c.F) {S : Type} [CommRing S] [Algebra c.F S]

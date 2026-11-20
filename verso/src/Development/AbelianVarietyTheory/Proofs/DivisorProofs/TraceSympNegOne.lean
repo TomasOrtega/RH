@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.ThK.EvAt0.PlaneQ
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM τ n d JX JW u v`. Use `haveI : IsTotallyReal F := hCM.1`. Rewrite using `[trace_rho]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[symp, rho_trace hCM (τ w)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_neg, map_one, hTens, map_sum, incM, Matrix.map_apply, piInf_inclR, GlobalTheory.WrongSignPair.piInf_cA hCM, neg_one_mul, Complex.neg_re]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem trace_symp_neg_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (τ : ∀ w : InfinitePlace F, EmbOver E w) (n d : ℕ) (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E)

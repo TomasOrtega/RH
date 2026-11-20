@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.LN.PelModel
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Use `haveI := h.2.1`. Use `haveI := h.2.2.2`. Conclude with `not_subsingleton R (IsHausdorff.subsingleton (inferInstance : IsHausdorff (⊤ : Ideal R) R))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_top_of_admissibleBase {R : Type} [CommRing R] {I : Ideal R} (h : AdmBase R I) : I ≠ ⊤ := by
   rintro rfl
@@ -22,7 +22,7 @@ theorem ne_top_of_admissibleBase {R : Type} [CommRing R] {I : Ideal R} (h : AdmB
   exact not_subsingleton R (IsHausdorff.subsingleton (inferInstance : IsHausdorff (⊤ : Ideal R) R))
 
 /- English proof (translation)
-The claim follows from `admissibleBase_powerSeries ℚ`.
+A detailed English derivation is pending.
 -/
 theorem admissibleBase_powerSeries_span_X : AdmBase (PowerSeries ℚ) (Ideal.span {PowerSeries.X}) := admissibleBase_powerSeries ℚ
 
@@ -46,7 +46,7 @@ Both sides reduce to the same expression.
 theorem zeroU_LG [IsHausdorff I R] : (zeroU H R I).LG = (zeroTriple H R I).PP := rfl
 
 /- English proof (translation)
-Use `haveI := h.2.2.2`. Conclude with `⟨_, _, _, zeroU H R I, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hyp (h : AdmBase R I) : ∃ (t : SAB H (Sp R)) (D : DegData R I) (A : PolAV (Sp (FractionRing R)))
     (U : Unif I D A t.G), U.LG = t.PP := by
@@ -72,7 +72,7 @@ def zeroP [IsHausdorff I R] : PELUnif I (zeroTriple H R I) :=
     w0 := ToricData.psi_weight_zero_linear_combination _ (𝓞 E) _ _ (fun _ => by simp [ToricData.polar]) }
 
 /- English proof (translation)
-Use `haveI : CharZero (PowerSeries ℚ) := algebraRat.charZero _`. Take `⟨t, D, A, U, hU⟩` from `exists_hyp GlobalTheory.HostModel.host _ _ (admissibleBase_powerSeries_span_X)`. Take `⟨P, -, -, -, hP⟩` from `h _ _ _ _ (admissibleBase_powerSeries_span_X) t D A U hU`. Conclude with `⟨t, P, hP⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem apply_zero (h : PelSt) : ∃ (t : SAB GlobalTheory.HostModel.host (Sp (PowerSeries ℚ)))
     (P : PELUnif (Ideal.span {PowerSeries.X}) t), P.TorsionIso := by

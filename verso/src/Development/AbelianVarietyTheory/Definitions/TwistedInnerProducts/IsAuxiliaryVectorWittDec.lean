@@ -109,25 +109,25 @@ section Stab
 variable {S : HSp D} {LS : Lat S} {P : GlobalTheory.FinPl.Pl D → Prop}
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hz j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_idAt {m n : ℕ} (M : Mx D m n) {z : Fin n → AE D} (hz : ∀ j, z j ∈ idAt D P) (i : Fin m) : (M *ᵥ z) i ∈ idAt D P := by
   simp only [Matrix.mulVec, dotProduct]
   exact Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hz j)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_mem _, fun z _ => by rw [mt_one, one_mulVec]⟩`.
+Supply the required witnesses or components.
 -/
 theorem inK_one : InK S LS P 1 := ⟨one_mem _, fun z _ => by rw [mt_one, one_mulVec]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_mem h.1 h'.1, fun z hz => by rw [mt_mul, ← mulVec_mulVec, h'.2 z hz, h.2 _ (mulVec_idAt _ hz)]⟩`.
+Supply the required witnesses or components.
 -/
 theorem inK_mul {κ κ' : GA D S} (h : InK S LS P κ) (h' : InK S LS P κ') : InK S LS P (κ * κ') :=
   ⟨mul_mem h.1 h'.1, fun z hz => by rw [mt_mul, ← mulVec_mulVec, h'.2 z hz, h.2 _ (mulVec_idAt _ hz)]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inv_mem h.1, fun z hz => by rw [h.2 _ (mulVec_idAt _ hz), mulVec_mulVec, mt_mul_inv, one_mulVec]⟩`.
+Supply the required witnesses or components.
 -/
 theorem inK_inv {κ : GA D S} (h : InK S LS P κ) : InK S LS P κ⁻¹ :=
   ⟨inv_mem h.1, fun z hz => by rw [h.2 _ (mulVec_idAt _ hz), mulVec_mulVec, mt_mul_inv, one_mulVec]⟩
@@ -136,20 +136,20 @@ variable {V₀ W W₀ : HSp D} {ρ σ : ℕ} {dW : HypDec W W₀ σ} {p : Pieces
   {LW : Lat W} {h κ : GA D W}
 
 /- English proof (translation)
-Simplify `H 1 inK_one` using `only [mul_one]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem CondK.cond (H : CondK dW p x y ψ LW P h) : Cond dW p x y ψ P h := by
   simpa only [mul_one] using H 1 inK_one
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H k hk => by simpa only [mul_assoc, mul_inv_cancel_left] using H _ (inK_mul (inK_inv hκ) hk), fun H k hk => by simpa only [mul_assoc] using H _ (inK_mul hκ hk)⟩`.
+Supply the required witnesses or components.
 -/
 theorem condK_mul (hκ : InK W LW P κ) : CondK dW p x y ψ LW P (h * κ) ↔ CondK dW p x y ψ LW P h :=
   ⟨fun H k hk => by simpa only [mul_assoc, mul_inv_cancel_left] using H _ (inK_mul (inK_inv hκ) hk),
     fun H k hk => by simpa only [mul_assoc] using H _ (inK_mul hκ hk)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨r, a, b, k, hk, e⟩ => ⟨r, a, b, _, inK_mul hk (inK_inv hκ), by rw [← mul_assoc, ← e, mul_inv_cancel_right]⟩, fun ⟨r, a, b, k, hk, e⟩ => ⟨r, a, b, _, inK_mul hk hκ, by rw [e, mul_assoc]⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem cosetAt_mul {R : Subgroup (GA D W)} {v : GlobalTheory.FinPl.Pl D} (hκ : InK W LW (· = v) κ) :
     CosetAt W R LW v (h * κ) ↔ CosetAt W R LW v h :=
@@ -157,7 +157,7 @@ theorem cosetAt_mul {R : Subgroup (GA D W)} {v : GlobalTheory.FinPl.Pl D} (hκ :
     fun ⟨r, a, b, k, hk, e⟩ => ⟨r, a, b, _, inK_mul hk hκ, by rw [e, mul_assoc]⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_mem _, one_mem _, κ, hκ, (one_mul κ).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem cosetAt_of_inK {R : Subgroup (GA D W)} {v : GlobalTheory.FinPl.Pl D} (hκ : InK W LW (· = v) κ) : CosetAt W R LW v κ :=
   ⟨1, one_mem _, one_mem _, κ, hκ, (one_mul κ).symm⟩
@@ -221,7 +221,7 @@ def OnStd (Q : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridDa
   All fun {_} _ _ _ {G} W _ => ∀ F : Frames G, Std F → Q W F
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, HasCompactSupport.zero, ⟨⊤, isOpen_univ, fun _ _ _ _ => rfl⟩, fun _ _ _ _ _ => contDiff_const⟩`.
+Supply the required witnesses or components.
 -/
 example {m n : ℕ} : IsBump (0 : Mx D m n → ℂ) :=
   ⟨continuous_const, HasCompactSupport.zero, ⟨⊤, isOpen_univ, fun _ _ _ _ => rfl⟩, fun _ _ _ _ _ => contDiff_const⟩

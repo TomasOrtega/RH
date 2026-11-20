@@ -11,11 +11,11 @@ namespace GlobalTheory.FlipTopChain
 open Classical in
 
 /- English proof (translation)
-Substitute `hX hY` using the available equality. Take `rfl` from `eq_of_heq h1`. Take `rfl` from `eq_of_heq h2`. Take `rfl` from `eq_of_heq h3`. Take `rfl` from `eq_of_heq h4`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hθ using 2` and compare the differences between its conclusion and the goal. Name the introduced variables `x`. Distinguish the cases in `h : IsHalf e x ∧ IsIntM (Comparison₂.fr βT βS (x.map (toEAf D)))`. Establish `h' : IsHalf e x ∧ IsIntM (frMapO S S' βS βT x)` using `h`. Rewrite using `[if_pos h, if_pos h']`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hN _ h.2).symm`. Establish `h' : ¬ (IsHalf e x ∧ IsIntM (frMapO S S' βS βT x))` using `h`. Rewrite using `[if_neg h, if_neg h']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T) (k : ℕ)
     (P : Finset (Pl D.host.E)) (ψ : AddChar (AF D.host.F) ℂ) (e : AE D)
@@ -54,13 +54,13 @@ end GlobalTheory.FlipTopChain
 namespace GlobalTheory.FlipTopChain
 
 /- English proof (translation)
-Introduce and unpack `_ rfl`. Conclude with `colY_m L`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem colY_eq_m {D : D7} {T : Type} (L : LevCh D T) : ∀ n, n = D.R.m → columnBlock L n = ⟨D.sp.X', L.ΛX⟩ := by
   rintro _ rfl; exact colY_m L
 
 /- English proof (translation)
-Introduce and unpack `_ rfl`. Conclude with `colFrame_m L`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem colFrame_eq_m {D : D7} {T : Type} (L : LevCh D T) : ∀ n, n = D.R.m → HEq (colFrame L n) L.βX := by
   rintro _ rfl; exact colFrame_m L
@@ -68,11 +68,11 @@ theorem colFrame_eq_m {D : D7} {T : Type} (L : LevCh D T) : ∀ n, n = D.R.m →
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R F large₂ hS ch hch t j g hj hg`. Take `⟨k, hk⟩` from `j`. Simplify using `only at hj`. Take `rfl : k = D.R.m - 1` from `by omega`. Take `⟨-, e', he', hθ⟩` from `hS.core.chain.vX t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨e', he', ?_⟩` and prove the remaining obligations. Establish `hm : D.R.m - 1 < D.R.m` using `hk`. Establish `hb' : D.sp.X'.rank = D.R.r + (D.R.m - 1 + 1) * D.R.t`. Rewrite using `[hj]`. Conclude with `D.sp.X'_rank`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN` using `(Comparison₂.local_factors ch.S.B t hS.core.lev).2.2 (D.R.m - 1) hm _ hb'`. Establish `hchi : R.toLevCh.chi (D.R.m - 1 + 1) = R.toLevCh.chi D.R.m` using `by rw [hj]`. Rewrite `hN` using `[hchi]`. Unfold `GlobalTheory.FlipTop.topFn`. Conclude with `transport ch.G t (D.R.m - 1) _ ch.W.ψ e' (X := ch.G.node (.grid 0 (D.R.m - 1))) (Y := ch.G.node (.grid 0 (D.R.m - 1 + 1))) (colY_lt R.toLevCh hm) (colY_eq_m R.toLevCh _ hj) (colFrame_lt R.toLevCh hm) (colFrame_eq_m R.toLevCh _ hj) (hch.vac.2 _ hj) hg _ _ (Comparison₂.rank_Yc hm.l …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem last_step_theta : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A} {large₂ : SizeData₂ D},

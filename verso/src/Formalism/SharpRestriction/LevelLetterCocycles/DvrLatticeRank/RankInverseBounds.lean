@@ -18,7 +18,7 @@ abbrev InvQ (γ : V →ₗ[O] V) (K' P : Submodule O V) : Type _ :=
 abbrev Gr (P P' : Submodule O V) : Type _ := ↥P ⧸ P'.comap P.subtype
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Iff.rfl`. Consider the case `simp only [Inv, Submodule.mem_inf, Submodule.mem_comap, LinearMap.sub_apply, LinearMap.id_apply]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem mem_Inv_iff_mem_and_sub_mem {γ : V →ₗ[O] V} {K' P : Submodule O V} {x : V} :
     x ∈ Inv γ K' P ↔ x ∈ P ∧ γ x - x ∈ K' := by
@@ -28,7 +28,7 @@ private theorem mem_Inv_iff_mem_and_sub_mem {γ : V →ₗ[O] V} {K' P : Submodu
       LinearMap.id_apply]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨h1, h2⟩` from `mem_Inv_iff_mem_and_sub_mem.mp hx`. Conclude with `mem_Inv_iff_mem_and_sub_mem.mpr ⟨h h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inv_mono (γ : V →ₗ[O] V) (K' : Submodule O V) {P P' : Submodule O V} (h : P' ≤ P) :
     Inv γ K' P' ≤ Inv γ K' P := by
@@ -37,7 +37,7 @@ theorem inv_mono (γ : V →ₗ[O] V) (K' : Submodule O V) {P P' : Submodule O V
   exact mem_Inv_iff_mem_and_sub_mem.mpr ⟨h h1, h2⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact rank_eq_zero_iff.mpr fun x => ⟨a, ha, h x⟩`. Consider the case `exact (rank_eq_zero_iff (R := O) (M := M)).mpr fun x => ⟨a, ha, h x⟩`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rank_eq_zero_of_smul {M : Type*} [AddCommGroup M] [Module O M] (a : O) (ha : a ≠ 0)
     (h : ∀ x : M, a • x = 0) : Module.rank O M = 0 := by
@@ -46,33 +46,29 @@ theorem rank_eq_zero_of_smul {M : Type*} [AddCommGroup M] [Module O M] (a : O) (
   | exact (rank_eq_zero_iff (R := O) (M := M)).mpr fun x => ⟨a, ha, h x⟩
 
 /- English proof (translation)
-Establish `hle : Inv γ K' F1 ≤ Inv γ K' F0` using `inv_mono γ K' h10`. Set `f : InvQ γ K' F1 →ₗ[O] InvQ γ K' F0` to `Submodule.mapQ (K'.comap (Inv γ K' F1).subtype) (K'.comap (Inv γ K' F0).subtype) (Submodule.inclusion hle) (by`. Introduce `x hx`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_inclusion] at hx ⊢`. Conclude with `hx)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `π : ↥(Inv γ K' F0) →ₗ[O] InvQ γ K' F0 ⧸ LinearMap.range f` to `(LinearMap.range f).mkQ ∘ₗ (K'.comap (Inv γ K' F0).subtype).mkQ`. Establish `hπ : Function.Surjective π`. Introduce `y`. Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective _ y`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, rfl⟩`. Establish `key : ∀ x : ↥(Inv γ K' F0), (K'.comap (Inv γ K' F0).subtype).mkQ x ∈ LinearMap.range f → π x = 0`. Introduce `x hx`. Simplify using `only [π, LinearMap.comp_apply]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).mpr hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hquot : Module.rank O (InvQ γ K' F0 ⧸ LinearMap.range f) ≤ (if c = 1 then Module.rank O (Gr F0 F1) else 0)` using `by split_ifs with hc1`. Set `ψ : ↥(Inv γ K' F0) →ₗ[O] Gr F0 F1` to `(F1.comap F0.subtype).mkQ ∘ₗ Submodule.inclusion (fun y hy => (mem_Inv_iff_mem_and_sub_mem.mp hy).1)`. Establish `hker : LinearMap.ker ψ ≤ LinearMap.ker π`. Introduce `x hx`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Establish `hxF1 : (x : V) ∈ F1` using `by first`. Consider the case `(simp only [ψ, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_inclusion] at hx`. Conclude with `hx)`. Consider the case `simpa [ψ] using hx`. Apply `key` to reduce the goal to its premises.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Establish `hx1 : (x : V) ∈ Inv γ K' F1` using `mem_Inv_iff_mem_and_sub_mem.mpr ⟨hxF1, (mem_Inv_iff_mem_and_sub_mem.mp x.2).2⟩`. Use `LinearMap.mem_range.mpr ⟨Submodule.Quotient.mk ⟨x, hx1⟩, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `rfl`. Consider the case `(simp only [f, Submodule.mapQ_apply, Submodule.mkQ_apply]; rfl)`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `g : ↥(Inv γ K' F0) ⧸ LinearMap.ker ψ →ₗ[O] InvQ γ K' F0 ⧸ LinearMap.range f` to `(LinearMap.ker ψ).liftQ π hker`. Establish `hg : Function.Surjective g`. Introduce `b`. Take `⟨a, rfl⟩` from `hπ b`. Conclude with `⟨Submodule.Quotient.mk a, rfl⟩`.
+Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `le_of_eq` to reduce the goal to its premises. Apply `rank_eq_zero_of_smul (c - 1) (sub_ne_zero.mpr hc1)` to reduce the goal to its premises. Introduce `y`. Take `⟨x, rfl⟩` from `hπ y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← map_smul π]`. Apply `key` to reduce the goal to its premises. Take `⟨hxF0, hxK⟩` from `mem_Inv_iff_mem_and_sub_mem.mp x.2`. Establish `hmem : c • (x : V) - γ x ∈ Inv γ K' F1`. Use `mem_Inv_iff_mem_and_sub_mem.mpr ⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← neg_sub]`. Conclude with `F1.neg_mem (hγ _ hxF0)`. Establish `e : γ (c • (x : V) - γ x) - (c • (x : V) - γ x) = c • (γ x - x) - γ (γ x - x)`. Simplify using `only [map_sub, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Rewrite using `[e]`. Conclude with `K'.sub_mem (K'.smul_mem c hxK) (hK _ hxK)`. Use `LinearMap.mem_range.mpr ⟨Submodule.Quotient.mk ⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : f (Submodule.Quotient.mk ⟨_, hmem⟩) = (Submodule.Quotient.mk (Submodule.inclusion hle ⟨_, hmem⟩) : InvQ γ K' F0)` using `by first`. Consider the case `rfl`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation.
 
-Consider the case `simp only [f, Submodule.mapQ_apply]`. Rewrite using `[e1, Submodule.mkQ_apply, Submodule.Quotient.eq, Submodule.mem_comap]`. Use `K'.neg_mem hxK using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_sub, map_smul, Submodule.subtype_apply, Submodule.coe_inclusion, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(rank_quotient_add_rank_of_isDomain _).symm`. Use `_ ≤ (if c = 1 then Module.rank O (Gr F0 F1) else 0) + Module.rank O (InvQ γ K' F1) := add_le_add hquot (by first`. Consider the case `exact LinearMap.rank_le_of_surjective f.rangeRestrict f.surjective_rangeRestrict`. Consider the case `exact LinearMap.rank_le_of_surjective f.rangeRestrict (fun y => by`.
-
-Take `⟨x, hx⟩` from `LinearMap.mem_range.mp y.2`. Conclude with `⟨x, Subtype.ext hx⟩))`. Use `_ = _ := add_comm _ _`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem step (γ : V →ₗ[O] V) (K' : Submodule O V) (hK : ∀ x ∈ K', γ x ∈ K')
     (F0 F1 : Submodule O V) (c : O) (h10 : F1 ≤ F0) (hγ : ∀ x ∈ F0, γ x - c • x ∈ F1) :

@@ -12,13 +12,13 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 namespace GlobalTheory.HTW.Rec
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons x s ih`. Distinguish the cases in `hx : |x| ≤ (η : ℤ)`. Establish `hm : x ∈ Finset.Icc (-(η : ℤ)) η` using `Finset.mem_Icc.2 (abs_le.1 hx)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[Multiset.filter_cons_of_pos (p := fun u : ℤ => |u| ≤ (η : ℤ)) _ hx, Multiset.card_cons, ← Finset.add_sum_erase _ _ hm, Multiset.count_cons_self]`. Establish `he : ∑ u ∈ (Finset.Icc (-(η : ℤ)) η).erase x, ((Multiset.count u (x ::ₘ s) : ℕ) : ℤ) = ∑ u ∈ (Finset.Icc (-(η : ℤ)) η).erase x, ((Multiset.count u s : ℕ) : ℤ)` using `Finset.sum_congr rfl fun u hu => by`. Rewrite using `[Multiset.count_cons_of_ne (Finset.ne_of_mem_erase hu)]`. Rewrite using `[he]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← ih, ← Finset.add_sum_erase _ _ hm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm : x ∉ Finset.Icc (-(η : ℤ)) η` using `fun h => hx (abs_le.2 (Finset.mem_Icc.1 h))`. Rewrite using `[Multiset.filter_cons_of_neg (p := fun u : ℤ => |u| ≤ (η : ℤ)) _ hx, ← ih]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Multiset.count_cons_of_ne (fun h => hm (by rw [← h]; exact hu))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_count_Icc (s : Multiset ℤ) (η : ℕ) :
     ∑ u ∈ Finset.Icc (-(η : ℤ)) η, ((s.count u : ℕ) : ℤ) =
@@ -44,21 +44,19 @@ theorem sum_count_Icc (s : Multiset ℤ) (η : ℕ) :
       rw [Multiset.count_cons_of_ne (fun h => hm (by rw [← h]; exact hu))]
 
 /- English proof (translation)
-Simplify using `[letter]`.
+Simplify using the standard rewrite rules.
 -/
 theorem letter_one_zero {φ : Formalism.HC.Frame} (τ : φ.GG) : letter τ 1 (0 : ZMod (orderOf (1 : φ.GG))) = τ := by
   simp [letter]
 
 /- English proof (translation)
-Introduce `D L C j ε n g hR a`. Take `⟨hT1, hbox⟩` from `GlobalTheory.T.twistedDualPageWord_jumps_in_windows L C j ε (g a) 1 hR`. Take `⟨hT2, hcard⟩` from `GlobalTheory.T.pageWord_T2_and_J2_card_of_roomy L C j ε (g a) 1 hR`. Take `⟨hsz, hMi, hhi, -⟩` from `GlobalTheory.T.twistedDualSizeWord_letter_eq_pageWord L C j ε (g a) 1 hR 0`. Establish `hl` using `letter_one_zero (g a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `t1` using `hT1 0`. Establish `t2` using `hT2 0`. Establish `bx` using `hbox 0`. Establish `cd` using `(hcard 0).2`. Simplify using `only [pageWord, recWord, WordData.Mi, WordData.hi, hl] at t1 t2 bx cd hsz hMi hhi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun u hu => ?_, fun u hu => (t2.1 u hu), ?_⟩` and prove the remaining obligations. Establish `h1` using `t1 u hu`. Establish `h2` using `bx u hu`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [NWord.win, recWord, Set.mem_setOf_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsz]`. Conclude with `h1`. Simplify using `only [recWord, Set.mem_Icc]`. Rewrite using `[hMi, hhi]`. Conclude with `h2`.
-
-Rewrite using `[sum_count_Icc, cd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem recWord_jumps : ∀ {D : D7} (L : SizeData₂ D) (C : ℝ) (j : Fin D.R.m) (ε : ℤˣ) {n : ℕ} (g : ZMod n → D.R.GG), Roomy L C → ∀ a, (∀ u ∈ jT1 (hcAt D (g a)) j (pos ε (g a)), u ∈ (recWord L j ε g).win a ∧ u ∈ Set.Icc (-((recWord L j ε g).Mi a : ℤ)) ((recWord L j ε g).hi a : ℤ)) ∧ (∀ u ∈ jT2 (hcAt D (g a)) j (pos ε (g a)), u ∈ jT1 (hcAt D (g a)) j (pos ε (g a))) ∧ ∑ u ∈ Finset.Icc (-(etaHat L : ℤ)) (etaHat L), (((jT2 (hcAt D (g a)) j (pos ε (g a))).count u : ℕ) : ℤ) ≤ D.R.m := by
   intro D L C j ε n g hR a

@@ -15,9 +15,9 @@ private noncomputable def tU (S : Type) [CommRing S] : (LaurentPolynomial S)ˣ :
     by rw [← LaurentPolynomial.T_add]; simp⟩
 
 /- English proof (translation)
-Take `⟨k, rfl | rfl⟩` from `n.eq_nat_or_neg`. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val]`. Express the relevant statement in the definitionally equal form `(LaurentPolynomial.T 1 : LaurentPolynomial S) ^ k = _`. Rewrite using `[LaurentPolynomial.T_pow]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow, Units.val_pow_eq_pow_val]`. Express the relevant statement in the definitionally equal form `(LaurentPolynomial.T (-1) : LaurentPolynomial S) ^ k = _`. Rewrite using `[LaurentPolynomial.T_pow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem tU_zpow (n : ℤ) : (((tU S) ^ n : (LaurentPolynomial S)ˣ) : LaurentPolynomial S) = LaurentPolynomial.T n := by
   obtain ⟨k, rfl | rfl⟩ := n.eq_nat_or_neg
@@ -29,11 +29,11 @@ private theorem tU_zpow (n : ℤ) : (((tU S) ^ n : (LaurentPolynomial S)ˣ) : La
     rw [LaurentPolynomial.T_pow]; simp
 
 /- English proof (translation)
-Establish `hu : Units.map f.toMonoidHom (tU S) = Units.map g.toMonoidHom (tU S)` using `Units.ext h2`. Establish `hT : ∀ n : ℤ, f (LaurentPolynomial.T n) = g (LaurentPolynomial.T n)`. Introduce `n`. Rewrite using `[← tU_zpow n]`. Establish `h : Units.map f.toMonoidHom (tU S ^ n) = Units.map g.toMonoidHom (tU S ^ n)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_zpow, map_zpow, hu]`. Conclude with `congrArg (fun v : Rˣ => (v : R)) h`. Use `RingHom.ext fun p => ?_` and prove the remaining obligations. Proceed by induction on `p using LaurentPolynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `C_mul_T n a => rw [map_mul, map_mul, hT n]`. Conclude with `congrArg (· * _) (RingHom.congr_fun h1 a)`.
+A detailed English derivation is pending.
 -/
 private theorem lp_hom_ext {R : Type} [CommRing R] {f g : LaurentPolynomial S →+* R}
     (h1 : f.comp LaurentPolynomial.C = g.comp LaurentPolynomial.C)
@@ -57,7 +57,7 @@ private noncomputable def iot (q : ℕ) (hq : IsUnit (q : S)) : LqR q →+* Laur
   LaurentPolynomial.eval₂ (LaurentPolynomial.C.comp (lam q hq)) (tU S)
 
 /- English proof (translation)
-Rewrite using `[iot, LaurentPolynomial.eval₂_T, tU_zpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem inclusion_T (q : ℕ) (hq : IsUnit (q : S)) : iot q hq (LaurentPolynomial.T 1) = LaurentPolynomial.T 1 := by
   rw [iot, LaurentPolynomial.eval₂_T, tU_zpow]
@@ -66,21 +66,21 @@ private noncomputable def chi (q : ℕ) {R : Type} [CommRing R] (φ : LqR q →+
   LaurentPolynomial.eval₂ ψ (Units.map φ.toMonoidHom (tR q))
 
 /- English proof (translation)
-Rewrite using `[chi, LaurentPolynomial.eval₂_T, zpow_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem character_T (q : ℕ) {R : Type} [CommRing R] (φ : LqR q →+* R) (ψ : S →+* R) :
     chi q φ ψ (LaurentPolynomial.T 1) = φ (LaurentPolynomial.T 1) := by
   rw [chi, LaurentPolynomial.eval₂_T, zpow_one]; rfl
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => LaurentPolynomial.eval₂_C _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem chi_C (q : ℕ) {R : Type} [CommRing R] (φ : LqR q →+* R) (ψ : S →+* R) :
     (chi q φ ψ).comp LaurentPolynomial.C = ψ :=
   RingHom.ext fun a => LaurentPolynomial.eval₂_C _ _ _
 
 /- English proof (translation)
-Use `lp_hom_ext ?_ ?_` and prove the remaining obligations. Use `IsLocalization.ringHom_ext (Submonoid.powers (q : ℤ)) (RingHom.ext_int _ _)` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, inclusion_T, character_T]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem chi_iot (q : ℕ) (hq : IsUnit (q : S)) {R : Type} [CommRing R] (φ : LqR q →+* R) (ψ : S →+* R) :
     (chi q φ ψ).comp (iot q hq) = φ := by
@@ -89,7 +89,7 @@ private theorem chi_iot (q : ℕ) (hq : IsUnit (q : S)) {R : Type} [CommRing R] 
   · rw [RingHom.comp_apply, inclusion_T, character_T]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.LaurentCharacterLambda.chi_uniq q hq φ ψ χ h1 h2`.
+A detailed English derivation is pending.
 -/
 private theorem chi_uniq (q : ℕ) (hq : IsUnit (q : S)) {R : Type} [CommRing R] (φ : LqR q →+* R) (ψ : S →+* R)
     (χ : LaurentPolynomial S →+* R) (h1 : χ.comp (iot q hq) = φ) (h2 : χ.comp LaurentPolynomial.C = ψ) :
@@ -100,13 +100,13 @@ private noncomputable def sec {X : Scheme.{0}} {R : CommRingCat.{0}} (f : X ⟶ 
   (Scheme.ΓSpecIso R).inv ≫ f.appTop
 
 /- English proof (translation)
-The claim follows from `ext_of_isAffine ((cancel_epi (Scheme.ΓSpecIso R).inv).1 h)`.
+A detailed English derivation is pending.
 -/
 private theorem sec_inj {X : Scheme.{0}} {R : CommRingCat.{0}} {f g : X ⟶ Spec R} (h : sec f = sec g) : f = g :=
   ext_of_isAffine ((cancel_epi (Scheme.ΓSpecIso R).inv).1 h)
 
 /- English proof (translation)
-Simplify using `only [sec, Scheme.Hom.comp_appTop]`. Rewrite using `[← Category.assoc, ← Scheme.ΓSpecIso_inv_naturality, Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sec_comp {X : Scheme.{0}} {R R' : CommRingCat.{0}} (f : X ⟶ Spec R') (ψ : R ⟶ R') :
     sec (f ≫ Spec.map ψ) = ψ ≫ sec f := by
@@ -114,7 +114,7 @@ private theorem sec_comp {X : Scheme.{0}} {R R' : CommRingCat.{0}} (f : X ⟶ Sp
   rw [← Category.assoc, ← Scheme.ΓSpecIso_inv_naturality, Category.assoc]
 
 /- English proof (translation)
-Rewrite using `[sec_comp, sec, Scheme.toSpecΓ_appTop, Iso.inv_hom_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sec_to {X : Scheme.{0}} {R : CommRingCat.{0}} (φ : R ⟶ Γ(X, ⊤)) : sec (X.toSpecΓ ≫ Spec.map φ) = φ := by
   rw [sec_comp, sec, Scheme.toSpecΓ_appTop, Iso.inv_hom_id, Category.comp_id]
@@ -138,9 +138,9 @@ private noncomputable def isProd (q : ℕ) (hq : IsUnit (q : S)) :
       rw [← chi_uniq q hq _ _ _ e1 e2]; rfl))
 
 /- English proof (translation)
-Establish `h0 : IsUnit ((q : ℕ) : Localization.Away (q : ℤ))`. Use `IsLocalization.Away.algebraMap_isUnit (S := Localization.Away (q : ℤ)) (q : ℤ)` as an intermediate fact. Simplify using `using this`. Establish `h1 : IsUnit ((q : ℕ) : LqR q)`. Simplify using `using h0.map (LaurentPolynomial.C : Localization.Away (q : ℤ) →+* LqR q)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1.map (Scheme.ΓSpecIso (CommRingCat.of (LqR q))).inv.hom`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem isUnit_q (q : ℕ) : IsUnit ((q : ℕ) : Γ(Gq q, ⊤)) := by
   have h0 : IsUnit ((q : ℕ) : Localization.Away (q : ℤ)) := by
@@ -151,7 +151,7 @@ private theorem isUnit_q (q : ℕ) : IsUnit ((q : ℕ) : Γ(Gq q, ⊤)) := by
   simpa using h1.map (Scheme.ΓSpecIso (CommRingCat.of (LqR q))).inv.hom
 
 /- English proof (translation)
-Establish `n` using `congrArg (fun k => k.hom (LaurentPolynomial.T 1 : LqR q)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (iot q hq)))`. Establish `n' : (Scheme.ΓSpecIso (CommRingCat.of (LaurentPolynomial S))).inv.hom (iot q hq (LaurentPolynomial.T 1)) = (Spec.map (CommRingCat.ofHom (iot q hq))).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (LqR q))).inv.hom (LaurentPolynomial.T 1))` using `n`. Rewrite `n'` using `[inclusion_T]`. Conclude with `n'.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coord (q : ℕ) (hq : IsUnit (q : S)) :
     ((Units.map (Spec.map (CommRingCat.ofHom (iot q hq))).appTop.hom.toMonoidHom (tq q) :
@@ -166,7 +166,7 @@ private theorem coord (q : ℕ) (hq : IsUnit (q : S)) :
   exact n'.symm
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.cup_hypercohomologyPullback (ZMod q) (twPair q i j) s rfl x y`.
+A detailed English derivation is pending.
 -/
 private theorem pull_cup {q : ℕ} {E E' : Spc} (s : E ⟶ E') {n m i j : ℤ} (x : Ht q E' n i) (y : Ht q E' m j) :
     pull _ s _ _ (cup q x y) = cup q (pull _ s _ _ x) (pull _ s _ _ y) :=
@@ -175,13 +175,13 @@ private theorem pull_cup {q : ℕ} {E E' : Spc} (s : E ⟶ E') {n m i j : ℤ} (
 end UpperTheory.KG
 
 /- English proof (translation)
-Introduce `q _ O _ hO hq m j`. Set `i0` to `IsLimit.conePointUniqueUpToIso (UpperTheory.KG.isProd q hq) (prodIsProd (Gq q) (Spec (CommRingCat.of O)))`. Set `i : Spec (CommRingCat.of (LaurentPolynomial O)) ≅ Gq q ⨯ Spec (CommRingCat.of O)` to `i0`. Establish `h1 : i.hom ≫ (prod.fst : Gq q ⨯ Spec (CommRingCat.of O) ⟶ Gq q) = Spec.map (CommRingCat.ofHom (UpperTheory.KG.iot q hq))` using `IsLimit.conePointUniqueUpToIso_hom_comp (UpperTheory.KG.isProd q hq) (prodIsProd _ _) ⟨WalkingPair.left⟩`. Establish `h2 : i.hom ≫ (prod.snd : Gq q ⨯ Spec (CommRingCat.of O) ⟶ Spec (CommRingCat.of O)) = Spec.map (CommRingCat.ofHom (LaurentPolynomial.C : O →+* LaurentPolynomial O))` using `IsLimit.conePointUniqueUpToIso_hom_comp (UpperTheory.KG.isProd q hq) (prodIsProd _ _) ⟨WalkingPair.right⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective (pull _ (sch.map i.hom) (tw q (j + 1)) (m + 1))`. Use `Function.bijective_iff_has_inverse.2 ⟨pull _ (sch.map i.inv) _ _, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.EtC.pull_comp, ← Functor.map_comp, i.inv_hom_id, CategoryTheory.Functor.map_id, GlobalTheory.EtC.pull_id]`. Rewrite using `[← GlobalTheory.EtC.pull_comp, ← Functor.map_comp, i.hom_inv_id, CategoryTheory.Functor.map_id, GlobalTheory.EtC.pull_id]`. Establish `hk` using `UpperTheory.bijective_etaleCohomology_laurentPolynomial_of_coordinate_unit q O hO hq _ (UpperTheory.KG.coord q hq) m j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(Function.Bijective.of_comp_iff' hbij _).1 ?_` and prove the remaining obligations. Use `(congrArg Function.Bijective (funext fun p => ?_)).mpr hk` and prove the remaining obligations. Establish `hκ : pull _ (sch.map i.hom) _ _ (pull _ (sch.map (prod.fst : Gq q ⨯ Spec (CommRingCat.of O) ⟶ Gq q)) _ _ (kappa q)) = kum q (Units.map (Spec.map (CommRingCat.ofHom (UpperTheory.KG.iot q hq))).appTop.hom.toMonoidHom (tq q))`. Rewrite using `[← GlobalTheory.EtC.pull_comp, ← Functor.map_comp, h1]`. Conclude with `(GlobalTheory.T.kummerClassOfUnit_cocycle_natural_additive q).2.1 _ _ (UpperTheory.KG.isUnit_q q)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, map_add, UpperTheory.KG.pull_cup, hκ]`. Rewrite using `[← GlobalTheory.EtC.pull_comp, ← GlobalTheory.EtC.pull_comp, ← Functor.map_comp, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.bijective_etaleCohomology_multiplicativeGroup_prod :
     ∀ (q : ℕ) [NeZero q] (O : Type) [CommRing O], SH O → IsUnit (q : O) → ∀ m j : ℤ,

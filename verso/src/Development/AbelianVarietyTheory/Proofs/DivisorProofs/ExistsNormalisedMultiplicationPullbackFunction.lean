@@ -21,9 +21,9 @@ namespace GlobalTheory.MBLow.Cl.MulFrame
 open GlobalTheory.ThetaFn GlobalTheory.CubeValues GlobalTheory.SymmetricSemicharacter
 
 /- English proof (translation)
-Establish `h : ∀ i, ∃ n : ℤ, 2 * a i = n` using `fun i => by`. Break down `ha i with h | h` into its components or cases. Conclude with `⟨0, by simp [h]⟩`. Conclude with `⟨1, by simp [h]⟩`. Use `choose n hn using h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ i, n i * M i, ?_⟩` and prove the remaining obligations. Simplify using `only [dotProduct, cv, Finset.mul_sum, ← _root_.mul_assoc, hn]`. Use `push_cast`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_two_mul_dot {g : ℕ} {a : Fin g → ℂ} (ha : Half a) (M : Fin g → ℤ) :
     ∃ n : ℤ, 2 * (a ⬝ᵥ cv M) = n := by
@@ -38,23 +38,23 @@ theorem exists_two_mul_dot {g : ℕ} {a : Fin g → ℂ} (ha : Half a) (M : Fin 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[cv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cv_nsmul {g : ℕ} (m : ℕ) (M : Fin g → ℤ) : cv (m • M) = (m : ℂ) • cv M := by
   funext i
   simp [cv]
 
 /- English proof (translation)
-Rewrite using `[perV, perV, cv_nsmul, cv_nsmul, Matrix.mulVec_smul, smul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem perV_nsmul {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (m : ℕ) (M N : Fin g → ℤ) :
     perV τ (m • M) (m • N) = (m : ℂ) • perV τ M N := by
   rw [perV, perV, cv_nsmul, cv_nsmul, Matrix.mulVec_smul, smul_add]
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `exists_two_mul_dot ha M`. Take `⟨q, hq⟩` from `exists_two_mul_dot hb N`. Take `⟨k, hk⟩` from `Int.even_mul_pred_self (m : ℤ)`. Establish `hk' : (m : ℂ) * (m - 1) = k + k` using `by exact_mod_cast hk`. Rewrite using `[autV, autV, ← Complex.exp_nat_mul, Complex.exp_eq_exp_iff_exists_int]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨-(k * (p - q)), ?_⟩` and prove the remaining obligations. Simplify using `only [cv_nsmul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul]`. Use `push_cast`. Rewrite using `[← hp, ← hq]`. Take the linear combination `(-(2 * Real.pi * Complex.I * (a ⬝ᵥ cv M - b ⬝ᵥ cv N))) * hk'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem autV_nsmul {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) {a b : Fin g → ℂ} (ha : Half a) (hb : Half b) (m : ℕ)
     (M N : Fin g → ℤ) (z : Fin g → ℂ) :
@@ -76,9 +76,9 @@ variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} {u : HolUnif A
   {T : Over (Sp ℂ)} {p : 𝟙_ (Over (Sp ℂ)) ⟶ T}
 
 /- English proof (translation)
-Establish `he` using `comp_ptSecT u p (comp_one_eq_ex_zero u p)`. Establish `h1 : ⊤ ≤ p.left ⁻¹ᵁ LB.wchart L (fun k => (ptSecT A (1 : T ⟶ A)).left ≫ ![(snd T A).left, m.left] k) (fun _ => i)`. Rewrite `hj` using `[← he]`. Conclude with `fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 (hj hy) k`. Establish `h2` using `(mem_ptChart_iff (comp_one_eq_ex_zero u p) (fun _ => i)).2 hi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `h12` using `(le_preimage_inf p.left _ _).2 ⟨h1, h2⟩`. Establish `e` using `congrArg (fun t => valAt' p.left _ (Units.val t)) (hn (fun _ => i) (fun _ => i) (fun _ _ _ => rfl) (fun _ _ _ => rfl) (fun _ _ _ => rfl))`. Use `Eq.trans ?_ (((ThetaFn.valAt'_res p.left inf_le_left h12 _).symm.trans (e.trans (ThetaFn.valAt'_res p.left inf_le_right h12 _))).trans (valAt'_rigT p hrig c (fun _ => i) hi))` and prove the remaining obligations. Rewrite using `[← he]`. Conclude with `(valAt'_appLE' p.left (ptSecT A (1 : T ⟶ A)).left _ h1 _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_origin {rig : LB.Gen (L.pull (eSec A))} (hrig : u.IsRig rig) {m : T ⊗ A ⟶ A} {ε : Fin 2 → ℤ} {c : ℤ}
     {α : LB.Gen (LB.LinComb L (K := Fin 2) ![(snd T A).left, m.left] ε)}
@@ -103,9 +103,9 @@ theorem val_origin {rig : LB.Gen (L.pull (eSec A))} (hrig : u.IsRig rig) {m : T 
 end Origin
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h j z hj`. Take `⟨i, rfl⟩ : ∃ i, j = fun _ => i` from `⟨j 0, funext fun k => congrArg j (Subsingleton.elim _ _)⟩`. Rewrite using `[zpow_natCast]`. Conclude with `h i z ((exAt_mem_chart_iff u basePt _ _ z).1 hj)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h i z hi`. Rewrite using `[← zpow_natCast]`. Conclude with `h (fun _ => i) z ((exAt_mem_chart_iff u basePt _ _ z).2 hi)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fnT_iff {g : ℕ} {P : PolAV (Sp ℂ)} (u : HolUnif P.A P.L g) (k : ℕ)
     (t : LB.Sec (LPow P.A P.L (k : ℤ) (baseOver (Sp ℂ)))) (f : (Fin g → ℂ) → ℂ) :
@@ -126,23 +126,21 @@ namespace GlobalTheory.MBLow.Cl
 open GlobalTheory.ThetaFn GlobalTheory.CubeValues GlobalTheory.SymmetricSemicharacter MulFrame in
 
 /- English proof (translation)
-Introduce `g x hg u τ a b c W hNF m th f hf`. Establish `hfr` using `frame_eq_autV_mul g x hg u τ a b c W hNF`. Take `⟨-, -, ha, hb, -, hΛ, hrig, -⟩` from `hNF`. Establish `hL` using `x.P.isLB`. Establish `H` using `GlobalTheory.exists_mulPull_gen_over GlobalTheory.abelianSchemeLaws_all.1.mulPull x.P (baseOver (Sp ℂ)) m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `H` using `[← Nat.cast_pow]`. Take `⟨α₀, hα₀⟩` from `H`. Take `⟨α, hα, hn⟩` from `NormTheta.exists_normalised hL x.rig_gen m ((m ^ 2 : ℕ) : ℤ) ((1 : ℕ) : ℤ) (((m ^ 2 : ℕ) : ℤ) - 1) rfl α₀ hα₀`. Take `⟨s₁, hs₁⟩` from `ThetaPtExist.exists_isTwistPull hL (mulT x.P.A (baseOver (Sp ℂ)) m) (snd (baseOver (Sp ℂ)) x.P.A ^ m) (lift_snd _ _) ((m ^ 2 : ℕ) : ℤ) ((1 : ℕ) : ℤ) α hα th`. Use `⟨α, s₁, hα, hn, hs₁, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hψ` using `exAt_mulT u basePt m`. Establish `hΦ : ∀ z, exAt u basePt z ≫ (snd (baseOver (Sp ℂ)) x.P.A ^ m).left = (u.ex ((m : ℂ) • z)).left` using `fun z => by`. Rewrite using `[← lift_snd (fst (baseOver (Sp ℂ)) x.P.A) (snd (baseOver (Sp ℂ)) x.P.A ^ m), Over.comp_left, ← Category.assoc]`. Conclude with `(congrArg (· ≫ _) (hψ z)).trans (exAt_snd _ _ _)`. Take `⟨r, hr, hne, hrj⟩` from `exists_fn_of_isGen (Φ := fun z => (m : ℂ) • z) hL (by fun_prop) hΦ hα`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := u.discrete`. Take `⟨-, -, k3⟩` from `appellHumbert_trivial_of_nowhere_vanishing g u.Λ u.full 0 (fun _ => 1) r Matrix.isHermitian_zero (fun _ => norm_one) hr hne (fun l z => by`. Take `⟨i, hi⟩` from `exists_chart u valueRules hL z`. Take `⟨i', hi'⟩` from `exists_chart u valueRules hL ((m : ℂ) • z)`. Establish `hj` using `(exAt_mem_pairChart_iff (hΦ z) ![i, i']).2 ⟨hi, hi'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hj'` using `hj`. Rewrite `hj'` using `[← exAt_add_period u basePt z l l.2]`. Rewrite using `[hrj _ _ hj', hrj _ _ hj, exAt_add_period u basePt z l l.2]`. Take `⟨M, N, hl⟩` from `(hΛ l).1 l.2`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, hermForm, Matrix.zero_mulVec, dotProduct_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hfr M N i z hi, hfr (m • M) (m • N) i' _ hi', autV_nsmul τ ha hb, perV_nsmul, hl, smul_add]`. Establish `n1 : autV τ a b M N z ≠ 0` using `Complex.exp_ne_zero _`. Simplify using `only [_root_.zpow_neg, zpow_natCast, mul_pow, pow_one, mul_zero, add_zero, Complex.exp_zero]`. Use the proof step `field_simp)`. Establish `h0 : r 0 = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `exists_chart u valueRules hL 0`. Establish `hj` using `(exAt_mem_pairChart_iff (hΦ 0) (fun _ => i)).2 ⟨hi, by rw [smul_zero]; exact hi⟩`. Establish `n` using `u.fr_ne i 0 hi`. Rewrite using `[hrj _ _ hj, val_origin hrig hn i hi hj, smul_zero, ← zpow_add₀ n, ← zpow_add₀ n]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : IsPullConst u basePt (fun z => (m : ℂ) • z) ((m ^ 2 : ℕ) : ℤ) ((1 : ℕ) : ℤ) α 1` using `fun j z hj => by`. Establish `n` using `zpow_ne_zero ((m ^ 2 : ℕ) : ℤ) (u.fr_ne _ _ ((exAt_mem_pairChart_iff (hΦ z) j).1 hj).1)`. Rewrite using `[← h0, ← k3 z, hrj j z hj, _root_.zpow_neg, inv_mul_cancel_right₀ n]`. Establish `h2` using `isFnAt_fnAt u basePt hL _ s₁`. Establish `e` using `funext (hc.fn_eq hL hψ hs₁ ((fnT_iff u 1 th f).1 hf) h2)`.
-
-Rewrite using `[fnT_iff]`. Simplify `h2` using `only [e, _root_.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_normalised_mulPull_fnT : ∀ (g : ℕ) (x : KeyIn ℂ) (hg : x.P.g = g) (u : HolUnif x.P.A x.P.L g) (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (c : ℂ) (W : Fin g → Fin g → ℂ), NF x hg u τ a b c W → ∀ (m : ℕ) (th : LB.Sec (LPow x.P.A x.P.L ((1 : ℕ) : ℤ) (baseOver (Sp ℂ)))) (f : (Fin g → ℂ) → ℂ), FnT u 1 th f → ∃ (α : LB.Gen (LB.LinComb x.P.L (K := Fin 2) ![(snd (baseOver (Sp ℂ)) x.P.A).left, (snd (baseOver (Sp ℂ)) x.P.A ^ m).left] ![((m ^ 2 : ℕ) : ℤ), -((1 : ℕ) : ℤ)])) (s₁ : LB.Sec (LPow x.P.A x.P.L ((m ^ 2 : ℕ) : ℤ) (baseOver (Sp ℂ)))), α.IsGen ∧ LB.Gen.Corr x.P.L _ _ _ _ (LB.pullGen x.P.L _ _ α (ptSecT x.P.A 1).left) (rigT x.P.A x.P.L x.rig (baseOver (Sp ℂ)) (((m ^ 2 : ℕ) : ℤ) - 1)) ∧ IsTwistPull x.P.A x.P.L (mulT x.P.A (baseOver (Sp ℂ)) m) (snd (baseOver (Sp ℂ)) x.P.A ^ m) (lift_snd _ _) ((m ^ 2 : ℕ) : ℤ) ((1 : ℕ) : ℤ) α th s₁ ∧ FnT u (m ^ 2) s₁ fun z => f ((m : ℂ) • z) := by
   intro g x hg u τ a b c W hNF m th f hf

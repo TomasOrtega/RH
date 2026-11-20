@@ -13,15 +13,15 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ZM
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ M` using `Module.Finite.trans O M`. Take `⟨f, hf⟩` from `exists_linearIndependent_of_le_finrank (R := O) (M := M) le_rfl`. Set `F : Submodule O M` to `Submodule.span O (Set.range f)`. Set `bF : Module.Basis (Fin (Module.finrank O M)) O F` to `Module.Basis.span hf`. Establish `: Module.Free O F` using `Module.Free.of_basis bF`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : Module.finrank O F = Module.finrank O M`. Rewrite using `[Module.finrank_eq_card_basis bF, Fintype.card_fin]`. Establish `h2 : Module.finrank O (M ⧸ F) = 0`. Use `Submodule.finrank_quotient_add_finrank F` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h3 : Module.finrank ℤ (M ⧸ F.restrictScalars ℤ) = 0`. Rewrite `h2`, the goal using `[Module.finrank_eq_zero_iff]`. Introduce `x`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨a, ha, hax⟩` from `h2 (Submodule.Quotient.mk x)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, c, hc⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ℤ) a).exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero ha)`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Rewrite `hax`, the goal using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.restrictScalars_mem, ← algebraMap_smul O r x, hc, mul_comm, mul_smul]`. Conclude with `F.smul_mem c hax`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `Submodule.finrank_quotient_add_finrank (F.restrictScalars ℤ)`. Establish `h5 : Module.finrank ℤ (F.restrictScalars ℤ) = Module.finrank ℤ O * Module.finrank O F` using `(Module.finrank_mul_finrank ℤ O F).symm`. Rewrite using `[← h4, h3, zero_add, h5, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_int_eq_mul (O M : Type) [CommRing O] [IsDomain O] [CharZero O] [Module.Free ℤ O] [Module.Finite ℤ O]
     [AddCommGroup M] [Module O M] [Module.Finite O M] :
@@ -53,7 +53,7 @@ theorem finrank_int_eq_mul (O M : Type) [CommRing O] [IsDomain O] [CharZero O] [
   rw [← h4, h3, zero_add, h5, h1]
 
 /- English proof (translation)
-Use `D.fin` as an intermediate fact. Rewrite using `[finrank_int_eq_mul (𝓞 E) D.La, D.rank, RingOfIntegers.rank, IsTotallyComplex.finrank E, Nat.mul_div_cancel_left _ two_pos, Nat.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_int_lattice {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) :
     Module.finrank ℤ D.La = 2 * (Module.finrank ℚ E / 2 * (D.p + D.q)) := by
@@ -62,15 +62,15 @@ theorem finrank_int_lattice {E : Type} [Field E] [NumberField E] [IsCMField E] {
     Nat.mul_div_cancel_left _ two_pos, Nat.mul_assoc]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_isSymplecticBasis_of_finrank hB hp hg`. Set `e : Fin g ⊕ Fin g ≃ Fin (2 * g)` to `finSumFinEquiv.trans (finCongr (two_mul g).symm)`. Establish `hl : ∀ i, ((e (Sum.inl i) : Fin (2 * g)) : ℕ) = i` using `fun i => by simp [e]`. Establish `hr : ∀ i, ((e (Sum.inr i) : Fin (2 * g)) : ℕ) = g + i` using `fun i => by simp [e]; omega`. Use `⟨(b.reindex e).equivFun.symm, fun i j => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`. Establish `hs : ∀ k, (b.reindex e).equivFun.symm (Pi.single (e k) 1) = b k` using `fun k => by`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Simplify using `[Pi.single_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs, hs, Out.stdSymp]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> have := i.2 <;> have := j.2`. Rewrite using `[hb.left_left, hl, hl, if_neg (by omega), if_neg (by omega)]`. Rewrite using `[hb.left_right, hl, hr]`. Distinguish the cases in `h : i = j`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h; rw [if_pos rfl, if_pos (by omega)]` using the available equality. Establish `: (i : ℕ) ≠ j` using `fun a => h (Fin.ext a)`. Rewrite using `[if_neg h, if_neg (by omega), if_neg (by omega)]`. Rewrite using `[hb.right_left hB, hl, hr]`. Distinguish the cases in `h : i = j`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h; rw [if_pos rfl, if_neg (by omega), if_pos (by omega)]` using the available equality. Establish `: (i : ℕ) ≠ j` using `fun a => h (Fin.ext a)`. Rewrite using `[if_neg h, if_neg (by omega), if_neg (by omega)]`. Rewrite using `[hb.right_right, hr, hr, if_neg (by omega), if_neg (by omega)]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_equiv_stdSymp {M : Type} [AddCommGroup M] [Module.Free ℤ M] [Module.Finite ℤ M]
     {B : LinearMap.BilinForm ℤ M} (hB : B.IsAlt) (hp : Function.Bijective B) {g : ℕ}
@@ -102,9 +102,9 @@ theorem exists_equiv_stdSymp {M : Type} [AddCommGroup M] [Module.Free ℤ M] [Mo
   · rw [hb.right_right, hr, hr, if_neg (by omega), if_neg (by omega)]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D`. Use `D.fin` as an intermediate fact. Use `D.proj` as an intermediate fact. Establish `: Module.Finite ℤ D.La` using `Module.Finite.trans (𝓞 E) D.La`. Establish `: Module.Flat ℤ D.La` using `Module.Flat.trans ℤ (𝓞 E) D.La`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Free ℤ D.La` using `inferInstance`. Conclude with `exists_equiv_stdSymp D.alt D.unimod (finrank_int_lattice D)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isSympBasis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H),
     ∃ bas : (Fin (2 * (Module.finrank ℚ E / 2 * (D.p + D.q))) → ℤ) ≃ₗ[ℤ] D.La, IsSympBasis D bas := by

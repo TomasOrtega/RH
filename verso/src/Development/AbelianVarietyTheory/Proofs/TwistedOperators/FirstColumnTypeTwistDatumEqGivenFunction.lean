@@ -12,41 +12,37 @@ noncomputable section
 namespace GlobalTheory.FlipTop
 
 /- English proof (translation)
-Introduce `D T L sc G B μ₀ hL t e e' he he' hAA Φ j hj`. Establish `hsub : GlobalTheory.FlipTop.topPl L t ⊆ locPl G t`. Introduce `w hw`. Break down `Finset.mem_union.1 hw with h | h` into its components or cases. Conclude with `Finset.mem_union_left _ (levelChainTypePlaces_subset_chosenPlaces G hL t h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.mem_union_right _ h`. Take `⟨he₁, -⟩` from `GlobalTheory.T.isIdemSum_sub_of_subset_and_orthogonal he he' hsub`. Establish `h1` using `GlobalTheory.PlaceDatum.idemSum_mul_self he'`. Establish `h2` using `GlobalTheory.PlaceDatum.idemSum_mul_self he₁`. Take `⟨-, c1, c0⟩` from `GlobalTheory.FunObj.Comparison₂.cpt_idemSum he'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, d1, -⟩` from `GlobalTheory.FunObj.Comparison₂.cpt_idemSum he₁`. Establish `ha` using `GlobalTheory.FlipTop.rank_col G hj.le`. Establish `hb` using `GlobalTheory.FlipTop.rank_col G hj`. Use function extensionality and compare the values at `x`. Rewrite using `[GlobalTheory.HalfProd.prodHalf_apply, add_sub_cancel]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Unfold `GlobalTheory.FlipStart.givenFn`. Distinguish the cases in `hx : IsHalf e x`. Use `swap`. Rewrite using `[if_neg hx, if_neg hx, mul_zero]`. Rewrite using `[if_pos hx, if_pos hx, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set N := GlobalTheory.FunObj.Comparison₂.fr (B.β 0 (j + 1)) (B.β 0 j) (x.map (toEAf D)) with hN`. Establish `hfr : ∀ a : AE D, GlobalTheory.FunObj.Comparison₂.fr (B.β 0 (j + 1)) (B.β 0 j) ((a • x).map (toEAf D)) = toEAf D a • N`. Introduce `a`. Rewrite using `[hN, ← GlobalTheory.FunObj.Comparison₂.fr_smul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `p q`. Simplify using `[Matrix.map_apply, Matrix.smul_apply, RingHom.map_mul]`. Establish `hcomp : ∀ (a : AE D) (w : Pl D.host.E), cpt (D` using `D) w (toEAf D a) = 1 → (GlobalTheory.FunObj.Comparison₂.fr (B.β 0 (j + 1)) (B.β 0 j) ((a • x).map (toEAf D))).map (cpt (D := D) w) = N.map (cpt (D := D) w) := by`. Introduce `a w hw`. Rewrite using `[hfr]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `p q`. Simplify using `[Matrix.map_apply, Matrix.smul_apply, RingHom.map_mul, hw]`. Establish `hsubm : ∀ w : Pl D.host.E, GlobalTheory.StepData.IntM ((N.map (cpt (D` using `D) w)).submatrix (GlobalTheory.FunObj.Comparison₂.ixOf G t w hb) (GlobalTheory.FunObj.Comparison₂.ixOf G t w ha)) ↔ GlobalTheory.StepData.IntM (N.map (cpt (D := D) w)) := fun w => ⟨fun h i l => by simpa using h ((GlobalTheory.FunObj.Comparison₂.ixOf G t w hb).symm i) ((GlobalTheo …`. Establish `hR : ∀ w, givenDatum t w B Φ (edgeOf (.down t 0 j)) (locArg B t w (.down t 0 j) x) = stepFn L t w j ((N.map (cpt (D` using `D) w)).submatrix (GlobalTheory.FunObj.Comparison₂.ixOf G t w hb) (GlobalTheory.FunObj.Comparison₂.ixOf G t w ha)) := by`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hla : locArg B t w (.down t 0 j) x = B.coord t w (X` using `(0, j + 1)) (Y := (0, j)) ⟨Nat.zero_le _, hj⟩ ⟨Nat.zero_le _, hj.le⟩ ((x.map (toEAf D)).map (cpt (D := D) w)) := by`. Rewrite using `[Matrix.map_map]`. Conclude with `dif_pos ⟨Nat.zero_le _, hj⟩`. Rewrite using `[hla]`. Conclude with `GlobalTheory.FunObj.Comparison₂.givenDatum_theta_coord B t w Φ hj ha hb (x.map (toEAf D))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_congr rfl fun w _ => hR w, ← Finset.prod_sdiff hsub]`. Establish `hout : ∀ w ∈ locPl G t \ GlobalTheory.FlipTop.topPl L t, stepFn L t w j ((N.map (cpt (D` using `D) w)).submatrix (GlobalTheory.FunObj.Comparison₂.ixOf G t w hb) (GlobalTheory.FunObj.Comparison₂.ixOf G t w ha)) = if GlobalTheory.StepData.IntM (N.map (cpt (D := D) w)) then 1 else 0 := by`. Introduce `w hw`. Take `⟨-, hw2⟩` from `Finset.mem_sdiff.1 hw`. Establish `hP : w ∉ L.Pg` using `fun h => hw2 (Finset.mem_union_left _ h)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hQ : w ∉ L.Q t` using `fun h => hw2 (Finset.mem_union_right _ h)`. Unfold `stepFn`. Rewrite using `[if_neg hP, if_neg hQ, Set.indicator_apply]`. Conclude with `if_congr (hsubm w) rfl rfl`. Rewrite using `[Finset.prod_congr rfl hout, Finset.prod_boole]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : IsHalf (e - e') ((e - e') • x)` using `fun p q => by`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, h2]`. Establish `hS : IsSelfDualC (G.pS (.mu t 0 j)) (G.latS (.mu t 0 j))` using `(colY_isV D T L μ₀ hL j hj.le).sd`. Establish `hT : IsSelfDualC (G.pT (.mu t 0 j)) (G.latT (.mu t 0 j))` using `(colY_isV D T L μ₀ hL (j + 1) hj).sd`. Establish `hAA' : ∀ w ∈ locPl G t \ GlobalTheory.FlipTop.topPl L t, ((∀ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) ≤ 1) ∧ ∃ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) = 1)` using `fun w hw => hAA w (Finset.mem_sdiff.1 hw).1 (Finset.mem_sdiff.1 hw).2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hlat` using `GlobalTheory.T.mem_completedHomLattice_iff_integral_on_unit_half hS hT (B.isFrame_β hL (Nat.zero_le _) hj.le) (B.isFrame_β hL (Nat.zero_le _) hj) he₁ hAA' ((e - e') • x) hx1`. Establish `k1 : halfInd (e - e') (latO (G.pS (.mu t 0 j)) (G.pT (.mu t 0 j)) (G.latS (.mu t 0 j) : Set _) (G.latT (.mu t 0 j) : Set _) fun _ => True) ((e - e') • x) = if ∀ w ∈ locPl G t \ GlobalTheory.FlipTop.topPl L t, GlobalTheory.StepData.IntM (N.map (cpt (D` using `D) w)) then 1 else 0 := by`. Unfold `halfInd`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Rewrite using `[and_iff_left hx1, hlat]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `forall₂_congr fun w hw => by rw [hcomp _ w (d1 w hw)]`. Establish `hint : IsIntM (toEAf D e' • N) ↔ ∀ w ∈ GlobalTheory.FlipTop.topPl L t, GlobalTheory.StepData.IntM (N.map (cpt (D` using `D) w)) := by`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw i l`. Use `(mem_OA_iff _).1 (h i l) w` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul, RingHom.map_mul, c1 w hw, one_mul]`. Conclude with `(GlobalTheory.FunObj.Comparison₂.vEq w).le_one_iff_le_one.2 this`. Introduce `h i l`. Use `(mem_OA_iff _).2 fun w => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, RingHom.map_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w ∈ GlobalTheory.FlipTop.topPl L t`. Rewrite using `[c1 w hw, one_mul]`. Conclude with `(GlobalTheory.FunObj.Comparison₂.vEq w).le_one_iff_le_one.1 (h w hw i l)`. Rewrite using `[c0 w hw, zero_mul]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hx0 : IsHalf e' (e' • x)` using `fun p q => by`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, h1]`. Establish `k0 : GlobalTheory.FlipTop.topFn B t e' j ha hb (e' • x) = ∏ w ∈ GlobalTheory.FlipTop.topPl L t, stepFn L t w j ((N.map (cpt (D` using `D) w)).submatrix (GlobalTheory.FunObj.Comparison₂.ixOf G t w hb) (GlobalTheory.FunObj.Comparison₂.ixOf G t w ha)) := by`. Unfold `GlobalTheory.FlipTop.topFn`. Rewrite using `[Finset.prod_congr rfl fun w hw => by rw [hcomp e' w (c1 w hw)]]`.
-
-Distinguish the cases in `H : ∀ w ∈ GlobalTheory.FlipTop.topPl L t, GlobalTheory.StepData.IntM (N.map (cpt (D := D) w))`. Rewrite using `[if_pos ⟨hx0, by rw [hfr]; exact hint.2 H⟩]`. Rewrite `H` using `[if_neg fun h => H (by have h' := h.2; rw [hfr] at h'; exact hint.1 h')] push_neg`. Take `⟨w, hw, hn⟩` from `H`. Use `(Finset.prod_eq_zero hw ?_).symm` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `h0`. Conclude with `hn ((hsubm w).1 (GlobalTheory.FunObj.LocTest.intM_of_stepFn t w j h0))`. Rewrite using `[k0, k1, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodHalf_topFn_eq_givenFn : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (B : Frames G) {μ₀ : T}, L.Is μ₀ →
     ∀ (t : T) {e e' : AE D}, IsIdemSum e (locPl G t) → IsIdemSum e' (GlobalTheory.FlipTop.topPl L t) → (∀ w ∈ locPl G t, w ∉ GlobalTheory.FlipTop.topPl L t → ((∀ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) ≤ 1) ∧ ∃ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) = 1)) → ∀ (Φ : G.Datum) (j : ℕ) (hj : j < D.R.m),

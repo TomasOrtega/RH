@@ -74,9 +74,9 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `hGV : Q.wCell P.k P.r (Fin.last P.r) c * g ∈ B.GV P.k P.r` using `Formalism.FourierDecayAlt.P.PBF.wCell_mul_GV hc hg`. Use `⟨hGV, fun g₀ hg₀ => ?_⟩` and prove the remaining obligations. Rewrite `hg₀` using `[Set.mem_singleton_iff]`. Substitute `hg₀` using the available equality. Establish `hG0 : Q.wCell P.k P.r (Fin.last P.r) c * g ∈ Q.Glev P.k P.r 0` using `⟨hGV, fun a ha => absurd ha (Nat.not_lt_zero _)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Take `⟨U, F, hU, hmem, hF, hJF⟩` from `hJ.1 _ ⟨hG0, hcg⟩`. Use `⟨U, F, hU, hmem, hF.of_le ?_, fun x hx hxG => hJF x hx ⟨hxG, fun a ha => absurd ha (Nat.not_lt_zero _)⟩⟩` and prove the remaining obligations. Conclude with `le_top` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem capa_J_ck (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) {J : B.Mat P.k P.r → (Wq →L[ℂ] Wp)}
     (hJ : J ∈ Q.FFl P.k P.r Bs.z Bs.z' Bs.π Bs.π' 0 (Gauge.OmB Bs)) {c : Fin P.r → ℂ} (hc : c ∈ OmX P.r)
@@ -96,11 +96,11 @@ theorem capa_J_ck (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) {J : B.Mat P.
 end assembly
 
 /- English proof (translation)
-Introduce `Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v y`. Take `⟨hIB, -, -, -⟩` from `hB`. Take `⟨-, -, -, hIsB, -, -, -, -, -, -, hk, -⟩` from `hIB`. Establish `hpl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hIsB.2 v).2.2.2.1`. Take `⟨Θ, Θv, hP, hPv, hO, hOv, hA, hAv⟩` from `hR S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Θ, Θv, hP, hPv, (hI _ _ (D.parOf S v) (T v).base hpl hk y Θ hO.ge).1 hA, (hI _ _ (D.parOf S v) (T v).base hpl hk y Θv hOv.ge).2 hAv, fun J hJ c hc g hg hcg => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨hGV, hCk⟩` from `capa_J_ck (D.parOf S v) (T v).base hJ hc hg hcg (B.opOrder Θ)`. Rewrite using `[← hT _ _ (D.parOf S v) (T v).base hpl hk y J hJ c hc g hg hcg]`. Simplify using `only [Q.resG]`. Rewrite using `[hA J _ hGV hCk]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hGV, hCk⟩` from `capa_J_ck (D.parOf S v) (T v).base hJ hc hg hcg (B.opOrder Θv)`. Rewrite using `[← hTv _ _ (D.parOf S v) (T v).base hpl hk y J hJ c hc g hg hcg]`. Simplify using `only [Q.resG]`. Rewrite using `[hAv J _ hGV hCk]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem jDAGrp_of_parts (hR : JDACapRep) (hI : JDACapInv) (hT : JDACapToda) (hTv : JDACapTodaV) : JDAGrp := by
   intro Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v y

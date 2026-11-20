@@ -24,13 +24,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies
 variable {D : D7} {m n : ℕ}
 
 /- English proof (translation)
-Establish `h : ∀ᶠ u in 𝓝 (0 : M), ∀ x ∈ tsupport Φ, Φ (x + u) = Φ x ∧ Φ (x - u) = Φ x`. Apply `h2.isCompact.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `x _`. Establish `a1` using `(h1.comp_continuous (show Continuous fun z : M × M => z.2 + z.1 by fun_prop)).eventually_eq (0, x)`. Establish `a2` using `(h1.comp_continuous (show Continuous fun z : M × M => z.2 - z.1 by fun_prop)).eventually_eq (0, x)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `(h1.comp_continuous (show Continuous fun z : M × M => z.2 by fun_prop)).eventually_eq (0, x)`. Use `filter_upwards [a1, a2, a3] with z b1 b2 b3`. Simplify using `only [Function.comp, add_zero, sub_zero] at b1 b2 b3`. Conclude with `⟨b1.trans b3.symm, b2.trans b3.symm⟩`. Use `filter_upwards [h] with u hu x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ tsupport Φ`. Conclude with `(hu x hx).1`. Distinguish the cases in `hx' : x + u ∈ tsupport Φ`. Use `(hu _ hx').2` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`.
-
-Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hx']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_invariant {M : Type} [AddCommGroup M] [TopologicalSpace M] [IsTopologicalAddGroup M] {Φ : M → ℂ}
     (h1 : IsLocallyConstant Φ) (h2 : HasCompactSupport Φ) : ∀ᶠ u in 𝓝 (0 : M), ∀ x, Φ (x + u) = Φ x := by
@@ -62,14 +60,14 @@ def periods {M : Type} [AddCommGroup M] (Φ : M → ℂ) : AddSubgroup M where
     exact this.symm
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.isOpen_of_mem_nhds _ (eventually_invariant h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_periods {M : Type} [AddCommGroup M] [TopologicalSpace M] [IsTopologicalAddGroup M] {Φ : M → ℂ}
     (h1 : IsLocallyConstant Φ) (h2 : HasCompactSupport Φ) : IsOpen (periods Φ : Set M) :=
   AddSubgroup.isOpen_of_mem_nhds _ (eventually_invariant h1 h2)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⊤, isOpen_univ, fun _ _ _ _ => rfl⟩ supp := ⟨∅, isCompact_empty, fun _ h => absurd rfl h⟩ schwartz := fun _ _ _ _ _ => ⟨0, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem zero : IsSchwartzBruhat (0 : Mx D m n → ℂ) where
   level := ⟨⊤, isOpen_univ, fun _ _ _ _ => rfl⟩
@@ -77,11 +75,11 @@ theorem zero : IsSchwartzBruhat (0 : Mx D m n → ℂ) where
   schwartz := fun _ _ _ _ _ => ⟨0, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨U, hU, h⟩` from `hφ.level`. Take `⟨U', hU', h'⟩` from `hψ.level`. Use `⟨U ⊓ U', hU.inter hU', fun u hu h0 x => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, h u hu.1 h0, h' u hu.2 h0]`. Use `supp := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK, h⟩` from `hφ.supp`. Take `⟨K', hK', h'⟩` from `hψ.supp`. Use `⟨K ∪ K', hK.union hK', fun x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : φ x = 0`. Conclude with `Or.inr (h' x fun h2 => hx (by simp [h1, h2]))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative.
 
-Conclude with `Or.inl (h x h1)`. Use `schwartz := fun k L hL hi x => by`. Take `⟨g, hg⟩` from `hφ.schwartz k L hL hi x`. Take `⟨g', hg'⟩` from `hψ.schwartz k L hL hi x`. Conclude with `⟨g + g', fun t => by simp [hg, hg']⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem add {φ ψ : Mx D m n → ℂ} (hφ : IsSchwartzBruhat φ) (hψ : IsSchwartzBruhat ψ) : IsSchwartzBruhat (φ + ψ) where
   level := by
@@ -102,9 +100,9 @@ theorem add {φ ψ : Mx D m n → ℂ} (hφ : IsSchwartzBruhat φ) (hψ : IsSchw
     exact ⟨g + g', fun t => by simp [hg, hg']⟩
 
 /- English proof (translation)
-Take `⟨U, hU, h⟩` from `hφ.level`. Conclude with `⟨U, hU, fun u hu h0 x => by simp only [Pi.smul_apply, h u hu h0]⟩`. Use `supp := by`. Take `⟨K, hK, h⟩` from `hφ.supp`. Conclude with `⟨K, hK, fun x hx => h x fun h1 => hx (by simp [h1])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `schwartz := fun k L hL hi x => by`. Take `⟨g, hg⟩` from `hφ.schwartz k L hL hi x`. Conclude with `⟨c • g, fun t => by simp [hg]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smul (c : ℂ) {φ : Mx D m n → ℂ} (hφ : IsSchwartzBruhat φ) : IsSchwartzBruhat (c • φ) where
   level := by
@@ -118,7 +116,7 @@ theorem smul (c : ℂ) {φ : Mx D m n → ℂ} (hφ : IsSchwartzBruhat φ) : IsS
     exact ⟨c • g, fun t => by simp [hg]⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [compAt, Matrix.map_apply, Matrix.add_apply]`. Rewrite using `[(infPart D).map_add, (θ τ).map_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem compAt_add (θ : InfFam D) (τ : D.what₂.Tau) (x y : Mx D m n) :
     compAt θ τ (x + y) = compAt θ τ x + compAt θ τ y := by
@@ -132,7 +130,7 @@ def realVec {k : ℕ} (θ : InfFam D) (L : (Fin k → ℝ) →+ Mx D m n) : (Fin
   map_add' a b := by ext τ i j; simp [compAt_add]
 
 /- English proof (translation)
-Unfold `GlobalTheory.Unf.realSize`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_compAt_le (θ : InfFam D) (x : Mx D m n) (τ : D.what₂.Tau) (i : Fin m) (j : Fin n) :
     ‖compAt θ τ x i j‖ ≤ GlobalTheory.Unf.realSize θ x := by
@@ -146,13 +144,13 @@ theorem norm_compAt_le (θ : InfFam D) (x : Mx D m n) (τ : D.what₂.Tau) (i : 
           (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ τ)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem realSize_nonneg (θ : InfFam D) (x : Mx D m n) : 0 ≤ GlobalTheory.Unf.realSize θ x :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
 
 /- English proof (translation)
-The claim follows from `(pi_norm_le_iff_of_nonneg (realSize_nonneg θ x)).2 fun τ => (pi_norm_le_iff_of_nonneg (realSize_nonneg θ x)).2 fun i => (pi_norm_le_iff_of_nonneg (realSize_nonneg θ x)).2 fun j => norm_compAt_le θ x τ i j`.
+A detailed English derivation is pending.
 -/
 theorem norm_vec_le (θ : InfFam D) (x : Mx D m n) :
     ‖(fun τ i j => compAt θ τ x i j : D.what₂.Tau → Fin m → Fin n → ℂ)‖ ≤ GlobalTheory.Unf.realSize θ x :=
@@ -161,7 +159,7 @@ theorem norm_vec_le (θ : InfFam D) (x : Mx D m n) :
       (pi_norm_le_iff_of_nonneg (realSize_nonneg θ x)).2 fun j => norm_compAt_le θ x τ i j
 
 /- English proof (translation)
-Use `set v : D.what₂.Tau → Fin m → Fin n → ℂ := fun τ i j => compAt θ τ x i j with hv`. Unfold `GlobalTheory.Unf.realSize`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem realSize_le (θ : InfFam D) (x : Mx D m n) :
     GlobalTheory.Unf.realSize θ x ≤ (Fintype.card D.what₂.Tau * (m * n) : ℝ) *
@@ -174,7 +172,7 @@ theorem realSize_le (θ : InfFam D) (x : Mx D m n) :
     _ = _ := by simp [Finset.sum_const]; ring
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.Unf.realSize, compAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem realSize_zero (θ : InfFam D) : GlobalTheory.Unf.realSize θ (0 : Mx D m n) = 0 := by
   simp [GlobalTheory.Unf.realSize, compAt]
@@ -185,32 +183,30 @@ def finVec : Mx D m n →+ (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host
   map_add' a b := by ext i j; exact (finPart D).map_add _ _
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => continuous_pi fun j => (GlobalTheory.Member.continuous_finPart D).comp ((continuous_apply j).comp (continuous_apply i))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finVec : Continuous (finVec (D := D) (m := m) (n := n)) :=
   continuous_pi fun i => continuous_pi fun j =>
     (GlobalTheory.Member.continuous_finPart D).comp ((continuous_apply j).comp (continuous_apply i))
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩`. Use `haveI : IsTopologicalAddGroup (Af D.host.F ⊗[D.host.F] D.host.E) := IsModuleTopology.topologicalAddGroup (Af D.host.F) _`. Use `set P := (finVec : Mx D m n →+ (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E)) with hP`. Use `⟨(periods g).comap P, (isOpen_periods hg.1 hg.2).preimage continuous_finVec, fun u hu h0 x => ?_⟩` and prove the remaining obligations. Establish `e1 : ∀ τ, compAt θ τ (x + u) = compAt θ τ x` using `fun τ => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[compAt_add]`. Use extensionality with `i j`. Establish `h` using `congrFun (congrFun h0 i) j`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply] at h`. Simplify using `only [Matrix.add_apply, compAt, Matrix.map_apply, h, (θ τ).map_zero, add_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (fun i j => finPart D ((x + u) i j)) = (fun i j => finPart D (x i j)) + P u` using `P.map_add x u`. Simplify using `only [e1, e2]`. Rewrite using `[show g ((fun i j => finPart D (x i j)) + P u) = g (fun i j => finPart D (x i j)) from hu _]`. Use `supp := ⟨tsupport g, hg.2.isCompact, fun x hx => subset_tsupport g (right_ne_zero_of_mul hx)⟩`. Use `schwartz := fun k L hL hi x => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨C₁, hC₁⟩, hlow⟩` from `GlobalTheory.T.adelicMatrixRealSize_bounds_along_real_parametrisation D θ hθ m n k L hL`. Take `⟨C₂, hC₂⟩` from `hlow hi`. Establish `hAb : ∀ t, ‖realVec θ L t‖ ≤ C₁ * ‖t‖` using `fun t => (norm_vec_le θ (L t)).trans (hC₁ t)`. Establish `hAc : Continuous (realVec θ L)` using `AddMonoidHomClass.continuous_of_bound (realVec θ L) C₁ hAb`. Use `set Al := (realVec θ L).toRealLinearMap hAc with hAl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAlt : ∀ t, Al t = realVec θ L t` using `fun t => rfl`. Establish `hker : (Al : (Fin k → ℝ) →ₗ[ℝ] (D.what₂.Tau → Fin m → Fin n → ℂ)).ker = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `t ht`. Establish `h0 : realVec θ L t = 0` using `by rw [← hAlt]; exact ht`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hC₂ 0 t`. Rewrite `h1` using `[zero_add, realSize_zero, add_zero]`. Establish `h2` using `realSize_le θ (L t)`. Establish `h3 : (fun τ i j => compAt θ τ (L t) i j : D.what₂.Tau → Fin m → Fin n → ℂ) = 0` using `h0`. Rewrite `h2` using `[h3, norm_zero, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : GlobalTheory.Unf.realSize θ (L t) = 0` using `le_antisymm h2 (realSize_nonneg θ _)`. Rewrite `h1` using `[h4, mul_zero]`. Conclude with `norm_le_zero_iff.mp h1`. Take `⟨K, -, hK⟩` from `(Al : (Fin k → ℝ) →ₗ[ℝ] (D.what₂.Tau → Fin m → Fin n → ℂ)).exists_antilipschitzWith hker`. Use `set a : D.what₂.Tau → Fin m → Fin n → ℂ := fun τ i j => compAt θ τ x i j with ha`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hgr : Function.HasTemperateGrowth (fun t => a + Al t)` using `(Function.HasTemperateGrowth.const a).add Al.hasTemperateGrowth`. Establish `hanti : AntilipschitzWith K (fun t => a + Al t)` using `AntilipschitzWith.of_le_mul_dist fun s t => by rw [dist_add_left]; exact hK.le_mul_dist s t`. Use `⟨g (fun i j => finPart D (x i j)) • SchwartzMap.compCLMOfAntilipschitz ℂ hgr hanti f, fun t => ?_⟩` and prove the remaining obligations. Establish `e1 : (fun τ i j => compAt θ τ (x + L t) i j : D.what₂.Tau → Fin m → Fin n → ℂ) = a + Al t`. Use extensionality with `τ i j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hAlt, compAt_add]`. Both sides reduce to the same expression. Establish `e2 : (fun i j => finPart D ((x + L t) i j)) = (fun i j => finPart D (x i j))`. Use extensionality with `i j`. Establish `h` using `congrFun (congrFun (hL.2 t) i) j`.
-
-Simplify using `only [Matrix.map_apply, Matrix.zero_apply] at h`. Rewrite using `[Matrix.add_apply, (finPart D).map_add, h, add_zero]`. Simplify using `only [e1, e2, SchwartzMap.smul_apply, SchwartzMap.compCLMOfAntilipschitz_apply, Function.comp_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pure (θ : InfFam D) (hθ : IsInfFam θ) (f : SchwartzMap (D.what₂.Tau → Fin m → Fin n → ℂ) ℂ)
     (g : (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ)
@@ -272,9 +268,9 @@ theorem pure (θ : InfFam D) (hθ : IsInfFam θ) (f : SchwartzMap (D.what₂.Tau
     ring
 
 /- English proof (translation)
-Introduce `D θ hθ m n φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Conclude with `pure θ hθ f g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact zero`. Consider the case `add _ _ _ _ h1 h2 => exact add h1 h2`. Consider the case `smul c _ _ h => exact smul c h`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isSchwartzBruhat_of_mem_schwartzA : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (m n : ℕ),
     ∀ φ ∈ GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz.schwartzA θ m n, GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat φ := by

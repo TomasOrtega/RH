@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.ChainOnto.RealData
 
 /- English proof (translation)
-Use extensionality with `a c`. Apply the tactic sequence `rcases a with i | i <;> rcases c with j | j <;>`. Simplify using `[Formalism.UG.Jpq, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromBlocks, Matrix.one_apply]`. Rewrite using `[hb (Sum.inl i) (Sum.inr j) (by simp [sameBlock]), neg_zero]`. Rewrite using `[hb (Sum.inr i) (Sum.inl j) (by simp [sameBlock]), neg_zero]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isKC_comm_Jpq {p q : ℕ} {b : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (hb : IsKC b) :
     b * Formalism.UG.Jpq p q = Formalism.UG.Jpq p q * b := by
@@ -29,19 +29,17 @@ theorem isKC_comm_Jpq {p q : ℕ} {b : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q
   · rw [hb (Sum.inr i) (Sum.inl j) (by simp [sameBlock]), neg_zero]
 
 /- English proof (translation)
-Establish `hdet : IsUnit fr.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hfr`. Establish `hinv : fr * fr⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Use `set X := b.submatrix e e with hX`. Establish `hXfr : X * fr = fr * g`. Establish `h1` using `congrArg (fun N => N.submatrix e id) hbA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Matrix.submatrix_mul _ _ _ _ _ e.bijective, Matrix.submatrix_mul _ _ _ id _ Function.bijective_id]`. Simplify `h1` using `[Matrix.submatrix_submatrix]`. Establish `hXe : fr * g * fr⁻¹ = X`. Rewrite using `[← hXfr, Matrix.mul_assoc, hinv, Matrix.mul_one]`. Rewrite using `[hXe]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomm : X * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * X`. Rewrite using `[← hJ, hX, ← Matrix.submatrix_mul _ _ _ _ _ e.bijective, ← Matrix.submatrix_mul _ _ _ _ _ e.bijective, isKC_comm_Jpq hb]`. Establish `hiso : Xᴴ * Formalism.REAL.Jm ε * X = Formalism.REAL.Jm ε`. Establish `hgX : g = fr⁻¹ * X * fr`. Rewrite using `[Matrix.mul_assoc, hXfr, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinvH : (fr⁻¹)ᴴ * frᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, hinv, Matrix.conjTranspose_one]`. Establish `key : X = fr * g * fr⁻¹` using `hXe.symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (fr⁻¹)ᴴ * frᴴ * Formalism.REAL.Jm ε * (fr * fr⁻¹) := by`. Rewrite using `[hg]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [hinvH, hinv, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨?_, hcomm⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Express the relevant statement in the definitionally equal form `Xᴴ * X = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (Xᴴ * Formalism.REAL.Jm ε) X, hcomm]`.
-
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hiso, Formalism.REAL.Jm_mul_self]`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_mem_Kset {n p q : ℕ} (ε : Fin n → Bool) (e : Fin n ≃ Fin p ⊕ Fin q)
     (hJ : (Formalism.UG.Jpq p q).submatrix e e = Formalism.REAL.Jm ε) (fr g : Matrix (Fin n) (Fin n) ℂ) (hfr : IsUnit fr)
@@ -85,9 +83,9 @@ theorem conj_mem_Kset {n p q : ℕ} (ε : Fin n → Bool) (e : Fin n ≃ Fin p �
     _ = 1 := by rw [hiso, Formalism.REAL.Jm_mul_self]
 
 /- English proof (translation)
-Introduce `D θ V S M hV k hθ hk τ`. Take `⟨-, hkτ⟩` from `GlobalTheory.Cusp.mem_Kinf.1 hk`. Take `⟨b, hb, hbA⟩` from `hkτ τ`. Establish `hU` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V k τ`. Establish `hU' : (infMat D.sp.cm.sig V.gram (θ τ) k)ᴴ * ((M.fr τ)ᴴ * Formalism.REAL.Jm (M.ε τ) * M.fr τ) * infMat D.sp.cm.sig V.gram (θ τ) k = (M.fr τ)ᴴ * Formalism.REAL.Jm (M.ε τ) * M.fr τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[M.fr_gram τ]`. Conclude with `hU`. Conclude with `conj_mem_Kset (M.ε τ) (signEquiv (M.ε τ) (card_true M hV τ) (card_false M hV τ)) (Jpq_submatrix _ _) (M.fr τ) _ (M.fr_unit τ) hU' b hb hbA`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_Kset_of_mem_Kinf : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (hV : V.SigOK) (k : GA D V), IsInfFam θ → k ∈ GlobalTheory.Cusp.Kinf θ V (GlobalTheory.ChainOnto.RealData.sortedFrame M hV) → ∀ τ, M.fr τ * infMat D.sp.cm.sig V.gram (θ τ) k * (M.fr τ)⁻¹ ∈ Formalism.REAL.Kset (M.ε τ) := by
   intro D θ V S M hV k hθ hk τ

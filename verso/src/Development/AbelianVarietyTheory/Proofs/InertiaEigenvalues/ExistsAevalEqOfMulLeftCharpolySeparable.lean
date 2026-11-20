@@ -6,9 +6,9 @@ open Polynomial
 namespace GlobalTheory.SepGenElt
 
 /- English proof (translation)
-Introduce `E A _ _ _ _ g hs x`. Establish `hx : x ∈ Algebra.adjoin E ({g} : Set A)`. Rewrite using `[GlobalTheory.SepGen.adjoin_eq_top g hs]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `hx` using `[Algebra.adjoin_singleton_eq_range_aeval]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_aeval_eq : ∀ (E A : Type) [Field E] [CommRing A] [Algebra E A] [Module.Finite E A] (g : A),
     (LinearMap.mulLeft E g).charpoly.Separable → ∀ x : A, ∃ p : E[X], aeval g p = x := by

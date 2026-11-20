@@ -25,7 +25,7 @@ namespace GlobalTheory.SymFinExt
 open GlobalTheory.RigidTranslate
 
 /- English proof (translation)
-Introduce `R R₀ _ _ f A G _ α hα`. Establish `hw` using `(isGen_iff _).1 (GlobalTheory.UU.pullIso_isGen A.isLB α)`. Conclude with `⟨pull_isLB A.isLB α, GlobalTheory.PolBaseChange.rigidified_pull hα A.rigid, GlobalTheory.PolBaseChange.sym_pull hα A.sym, relAmple_pull hα.1 A.isLB (pull_isLB A.isLB α) hw ⊤ (isAffineOpen_top _) (fun _ => trivial) A.ample, kTriv_pull hα A.isLB (pull_isLB A.isLB α) hw A.ktriv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pull_pol : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (f : Sp R ⟶ Sp R₀) (A : PolAV (Sp R₀)) (G : Over (Sp R)) [GrpObj G] (α : G.left ⟶ A.A.left), IsGrpPullback G A.A f α → (A.L.pull α).IsLB ∧ Rigidified G (A.L.pull α) ∧ Sym G (A.L.pull α) ∧ RelAmple G (A.L.pull α) ∧ KTriv G (A.L.pull α) := by
   intro R R₀ _ _ f A G _ α hα
@@ -35,9 +35,9 @@ theorem pull_pol : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (f : Sp R �
     kTriv_pull hα A.isLB (pull_isLB A.isLB α) hw A.ktriv⟩
 
 /- English proof (translation)
-Introduce `S S' G' G φ φ₂ φ₂' h h'`. Establish `e : φ₂ ≫ (G ⊗ G).hom = φ₂' ≫ (G ⊗ G).hom`. Rewrite using `[← Over.w (fst G G), ← Category.assoc, ← Category.assoc, h.1, h'.1]`. Set `u : Over.mk (φ₂ ≫ (G ⊗ G).hom) ⟶ G ⊗ G` to `Over.homMk φ₂ rfl`. Set `v : Over.mk (φ₂ ≫ (G ⊗ G).hom) ⟶ G ⊗ G` to `Over.homMk φ₂' e.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: u = v` using `CartesianMonoidalCategory.hom_ext _ _ (Over.OverMorphism.ext (by simpa [u, v] using h.1.trans h'.1.symm)) (Over.OverMorphism.ext (by simpa [u, v] using h.2.trans h'.2.symm))`. Conclude with `congrArg (fun z => z.left) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSquare_unique : ∀ {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} (φ : G'.left ⟶ G.left) (φ₂ φ₂' : (G' ⊗ G').left ⟶ (G ⊗ G).left), IsSquare φ φ₂ → IsSquare φ φ₂' → φ₂ = φ₂' := by
   intro S S' G' G φ φ₂ φ₂' h h'
@@ -55,7 +55,7 @@ namespace GlobalTheory.SymFinExt
 open GlobalTheory.RigidTranslate GlobalTheory.GtCoordCompare
 
 /- English proof (translation)
-Introduce `X Y₁ Y₂ Z M g₁ g₂ u₁ v₁ u₂ v₂ q₁ q₂ hM hu hv`. Use `lbIso_of_refines hM ((((refines_self (L := M) (fun _ : PUnit => g₁) (fun _ => 1)).linComb _ _)).linComb _ _) ((((refines_self (L := M) (fun _ : PUnit => g₂) (fun _ => 1)).linComb _ _)).linComb _ _) _ isGen_one fun U _ f => ?_` and prove the remaining obligations. Simplify using `[Fintype.prod_prod_type, Fin.prod_univ_two, hu, hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lbIso_diff_pull_pull : ∀ (X Y₁ Y₂ Z : Scheme.{0}) (M : LB X) (g₁ : Y₁ ⟶ X) (g₂ : Y₂ ⟶ X) (u₁ v₁ : Y₁ ⟶ Y₁) (u₂ v₂ : Y₂ ⟶ Y₂) (q₁ : Z ⟶ Y₁) (q₂ : Z ⟶ Y₂), M.IsLB → q₁ ≫ u₁ ≫ g₁ = q₂ ≫ u₂ ≫ g₂ → q₁ ≫ v₁ ≫ g₁ = q₂ ≫ v₂ ≫ g₂ → LBIso ((LB.LinComb (M.pull g₁) (K := Fin 2) ![u₁, v₁] ![1, -1]).pull q₁) ((LB.LinComb (M.pull g₂) (K := Fin 2) ![u₂, v₂] ![1, -1]).pull q₂) := by
   intro X Y₁ Y₂ Z M g₁ g₂ u₁ v₁ u₂ v₂ q₁ q₂ hM hu hv
@@ -70,21 +70,19 @@ namespace GlobalTheory.SymFinExt
 open GlobalTheory.RigidTranslate
 
 /- English proof (translation)
-Introduce `S S₁ S₀ G G₁ A _ _ _ f f₁ φ φ₁ h h₁ x t Z q q₁ e ec`. Set `T : Over S` to `Over.mk (q ≫ G.hom)`. Set `T₁ : Over S₁` to `Over.mk (q₁ ≫ G₁.hom)`. Set `a : T ⟶ G` to `Over.homMk q rfl`. Set `a₁ : T₁ ⟶ G₁` to `Over.homMk q₁ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `k : q ≫ (GlobalTheory.PolTranslate.transl x).left = (a * (toUnit T ≫ x)).left` using `comp_transl_left a x`. Establish `k₁ : q₁ ≫ (GlobalTheory.PolTranslate.transl t).left = (a₁ * (toUnit T₁ ≫ t)).left` using `comp_transl_left a₁ t`. Establish `hw : (q ≫ G.hom) ≫ f = (q₁ ≫ G₁.hom) ≫ f₁`. Rewrite using `[Category.assoc, Category.assoc, ← h.1.w, ← h₁.1.w, ← Category.assoc, ← Category.assoc, e]`. Set `x₀ : Over.mk (T.hom ≫ f) ⟶ A` to `Over.homMk (a.left ≫ φ) (by show (q ≫ φ) ≫ A.hom = (q ≫ G.hom) ≫ f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Category.assoc, h.1.w, Category.assoc])`. Set `y₀ : Over.mk (T.hom ≫ f) ⟶ A` to `Over.homMk ((toUnit T ≫ x).left ≫ φ) (by show ((toUnit T ≫ x).left ≫ φ) ≫ A.hom = (q ≫ G.hom) ≫ f`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w (toUnit T ≫ x)]`. Use the proof step `rfl)`. Set `x₁ : Over.mk (T₁.hom ≫ f₁) ⟶ A` to `Over.homMk (a₁.left ≫ φ₁) (by show (q₁ ≫ φ₁) ≫ A.hom = (q₁ ≫ G₁.hom) ≫ f₁`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, h₁.1.w, Category.assoc])`. Set `y₁ : Over.mk (T₁.hom ≫ f₁) ⟶ A` to `Over.homMk ((toUnit T₁ ≫ t).left ≫ φ₁) (by show ((toUnit T₁ ≫ t).left ≫ φ₁) ≫ A.hom = (q₁ ≫ G₁.hom) ≫ f₁`. Rewrite using `[Category.assoc, h₁.1.w, ← Category.assoc, Over.w (toUnit T₁ ≫ t)]`. Use the proof step `rfl)`. Establish `E` using `h.2 T a (toUnit T ≫ x) x₀ y₀ rfl rfl`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `E₁` using `h₁.2 T₁ a₁ (toUnit T₁ ≫ t) x₁ y₁ rfl rfl`. Set `j : Over.mk (T.hom ≫ f) ⟶ Over.mk (T₁.hom ≫ f₁)` to `Over.homMk (𝟙 Z) (by show 𝟙 Z ≫ (q₁ ≫ G₁.hom) ≫ f₁ = (q ≫ G.hom) ≫ f`. Rewrite using `[Category.id_comp, hw])`. Establish `hx : j ≫ x₁ = x₀` using `Over.OverMorphism.ext (by show 𝟙 Z ≫ q₁ ≫ φ₁ = q ≫ φ`. Rewrite using `[Category.id_comp, e])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : j ≫ y₁ = y₀` using `Over.OverMorphism.ext (by show 𝟙 Z ≫ (toUnit T₁ ≫ t).left ≫ φ₁ = (toUnit T ≫ x).left ≫ φ`. Establish `k2 : (toUnit T ≫ x).left = q ≫ (toUnit G ≫ x).left`. Simplify using `only [Over.comp_left]`. Use `show (q ≫ G.hom) ≫ x.left = q ≫ (G.hom ≫ x.left)`. Rewrite using `[Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `k3 : (toUnit T₁ ≫ t).left = q₁ ≫ (toUnit G₁ ≫ t).left`. Simplify using `only [Over.comp_left]`. Use `show (q₁ ≫ G₁.hom) ≫ t.left = q₁ ≫ (G₁.hom ≫ t.left)`. Rewrite using `[Category.assoc]`. Rewrite using `[Category.id_comp, k2, k3, Category.assoc, Category.assoc]`.
-
-Conclude with `ec.symm)`. Establish `H` using `congrArg (fun z => z.left) (MonObj.comp_mul j x₁ y₁)`. Rewrite `H` using `[hx, hy]`. Rewrite using `[← Category.assoc, ← Category.assoc, k, k₁, ← E, ← E₁, ← H]`. Conclude with `Category.id_comp _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transl_comp_eq : ∀ {S S₁ S₀ : Scheme.{0}} (G : Over S) (G₁ : Over S₁) (A : Over S₀) [GrpObj G] [GrpObj G₁] [GrpObj A] (f : S ⟶ S₀) (f₁ : S₁ ⟶ S₀) (φ : G.left ⟶ A.left) (φ₁ : G₁.left ⟶ A.left), IsGrpPullback G A f φ → IsGrpPullback G₁ A f₁ φ₁ → ∀ (x : 𝟙_ (Over S) ⟶ G) (t : 𝟙_ (Over S₁) ⟶ G₁) (Z : Scheme.{0}) (q : Z ⟶ G.left) (q₁ : Z ⟶ G₁.left), q ≫ φ = q₁ ≫ φ₁ → q ≫ (toUnit G ≫ x).left ≫ φ = q₁ ≫ (toUnit G₁ ≫ t).left ≫ φ₁ → q ≫ (GlobalTheory.PolTranslate.transl x).left ≫ φ = q₁ ≫ (GlobalTheory.PolTranslate.transl t).left ≫ φ₁ := by
   intro S S₁ S₀ G G₁ A _ _ _ f f₁ φ φ₁ h h₁ x t Z q q₁ e ec
@@ -140,25 +138,25 @@ namespace GlobalTheory.SymFinExt
 open GlobalTheory.RigidTranslate
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullId L) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull L (𝟙 X) (𝟙 X) rfl) (GlobalTheory.PolBaseChange.lbIso_refl hL)`.
+A detailed English derivation is pending.
 -/
 theorem lam_pull_id {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) : LBIso L (L.pull (𝟙 X)) :=
   LBIso.chartPull (chartPullId L) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull L (𝟙 X) (𝟙 X) rfl) (GlobalTheory.PolBaseChange.lbIso_refl hL)
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ ga A A' α α₂ hα hsq hΛ`. Use `A.isAb.comm` as an intermediate fact. Use `A'.isAb.comm` as an intermediate fact. Take `⟨hLB, hrig, hsym, hamp, hK⟩` from `pull_pol Ω K (spMap ga) A A'.A α hα`. Set `P : PolAV (Sp Ω)` to `⟨A'.A, A'.isAb, A'.g, A'.smoothDim, A.L.pull α, hLB, hrig, hsym, hamp, hK⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hΛA : (abelian₂ A.A A.L).IsLB` using `DVR.linComb_isLB _ A.isLB _ _`. Take `⟨β₂, hβ, hT⟩` from `lbIso_lam_pull_of_isGrpPullback _ _ (spMap ga) A.A A'.A α hα`. Establish `e₁` using `hT A.L (A.L.pull α) _ (abelian₂ A.A A.L) (𝟙 _) A.isLB hLB hΛA (GlobalTheory.PolBaseChange.lbIso_refl hLB) (lam_pull_id hΛA)`. Rewrite `e₁` using `[Category.comp_id, isSquare_unique α β₂ α₂ hβ hsq]`. Establish `hΛ' : LBIso (abelian₂ P.A A'.L) (abelian₂ P.A P.L)` using `LBIso.trans (DVR.linComb_isLB _ A'.isLB _ _) (pull_isLB hΛA _) (DVR.linComb_isLB _ hLB _ _) hΛ e₁.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨x, hx2, hxL⟩` from `GlobalTheory.T.exists_twoTorsion_rigidTranslate_same_mumfordBundle Ω P A'.L A'.isLB A'.rigid A'.sym hΛ'`. Take `⟨K', _, io, l, y, hfin, hcomp, hy2, hy⟩` from `GlobalTheory.T.exists_finite_ext_twoTorsion_point_abelianVariety K Ω ga A A'.A α hα x hx2`. Take `⟨A₁, α₁, α₁₂, t, hα₁, hsq₁, hΛ₁, ht, hL₁⟩` from `GlobalTheory.T.exists_baseChange_polarisation_translate_two_torsion K K' io A y hy2`. Establish `hid : spMap (RingHom.id Ω) = 𝟙 _` using `Spec.map_id _`. Establish `w : (pullback.fst A'.A.hom (spMap (RingHom.id Ω)) ≫ α) ≫ A.A.hom = (pullback.snd A'.A.hom (spMap (RingHom.id Ω)) ≫ spMap l) ≫ spMap io`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hα.1.w, ← Category.assoc, pullback.condition, Category.assoc, Category.assoc]`. Use `congr 1`. Rewrite using `[← hcomp, hid, Category.id_comp]`. Use `show Spec.map (CommRingCat.ofHom (l.comp io)) = _`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `p` to `hα₁.1.lift _ _ w`. Establish `hp1 : p ≫ α₁ = pullback.fst _ _ ≫ α` using `hα₁.1.lift_fst _ _ _`. Establish `hp2 : p ≫ A₁.A.hom = pullback.snd _ _ ≫ spMap l` using `hα₁.1.lift_snd _ _ _`. Use `⟨K', inferInstance, io, Ω, inferInstance, RingHom.id Ω, l, A₁, α₁, α₁₂, p, hfin, by rw [hcomp]; rfl, hα₁, hsq₁, hΛ₁, hp1, hp2, ?_⟩` and prove the remaining obligations. Establish `hc : pullback.fst A'.A.hom (spMap (RingHom.id Ω)) ≫ (toUnit A'.A ≫ x).left ≫ α = p ≫ (toUnit A₁.A ≫ t).left ≫ α₁`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsnd : pullback.snd A'.A.hom (spMap (RingHom.id Ω)) ≫ spMap (RingHom.id Ω) = pullback.snd _ _`. Rewrite using `[hid, Category.comp_id]`. Use `show pullback.fst _ _ ≫ (A'.A.hom ≫ x.left) ≫ α = p ≫ (A₁.A.hom ≫ t.left) ≫ α₁`. Rewrite using `[Category.assoc, ← Category.assoc (pullback.fst _ _), pullback.condition, hsnd, Category.assoc, ← Category.assoc p, hp2, Category.assoc, ht, hy]`. Establish `htr` using `transl_comp_eq A'.A A₁.A A.A (spMap ga) (spMap io) α α₁ hα hα₁ x t _ _ p hp1.symm hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE` using `lbIso_diff_pull_pull _ _ _ _ A.L α α₁ _ _ _ _ (pullback.fst A'.A.hom (spMap (RingHom.id Ω))) p A.isLB htr hc`. Establish `hR₁ : (rigTransl (A.L.pull α₁) t).IsLB` using `DVR.linComb_isLB _ (pull_isLB A.isLB _) _ _`. Establish `hR : (rigTransl (A.L.pull α) x).IsLB` using `DVR.linComb_isLB _ (pull_isLB A.isLB _) _ _`. Conclude with `LBIso.trans (pull_isLB A'.isLB _) (pull_isLB hR _) (pull_isLB A₁.isLB _) (GlobalTheory.RigidBundleGlue.LBIso.pull hxL _) (LBIso.trans (pull_isLB hR _) (pull_isLB hR₁ _) (pull_isLB A₁.isLB _) hE (GlobalTheory.RigidBundleGlue.LBIso.pull hL₁.symm _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_finite_ext : ∀ (K Ω : Type) [Field K] [CharZero K] [Field Ω] (ga : K →+* Ω) (A : PolAV (Sp K)) (A' : PolAV (Sp Ω)) (α : A'.A.left ⟶ A.A.left) (α₂ : (G2 A'.A).left ⟶ (G2 A.A).left), IsGrpPullback A'.A A.A (spMap ga) α → Geo.Tor.IsSquare α α₂ → LBIso (abelian₂ A'.A A'.L) ((abelian₂ A.A A.L).pull α₂) → ∃ (K' : Type) (_ : Field K') (io : K →+* K') (Ω' : Type) (_ : Field Ω') (j : Ω →+* Ω') (l : K' →+* Ω') (A₁ : PolAV (Sp K')) (α₁ : A₁.A.left ⟶ A.A.left) (α₁₂ : (G2 A₁.A).left ⟶ (G2 A.A).left) (p : pullback A'.A.hom (spMap j) ⟶ A₁.A.left), io.Finite ∧ l.comp io = j.comp ga ∧ IsGrpPullback A₁.A A.A (spMap io) α₁ ∧ Geo.Tor.IsSquare α₁ α₁₂ ∧ LBIso (abelian₂ A₁.A A₁.L) ((abelian₂ A.A A.L).pull α₁₂) ∧ p ≫ α₁ = pullback.fst _ _ ≫ α ∧ p ≫ A₁.A.hom = pullback.snd _ _ ≫ spMap l ∧ LBIso (A'.L.pull (pullback.fst A'.A.hom (spMap j))) (A₁.L.pull p) := by
   intro K Ω _ _ _ ga A A' α α₂ hα hsq hΛ

@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.SpanOfResidue
 
 /- English proof (translation)
-Rewrite using `[Matrix.matrix_eq_sum_single d]`. Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `h : Matrix.single i j (d i j) = d i j • Matrix.single i j (1 : A)`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul (hd i j) Submodule.mem_top`.
+A detailed English derivation is pending.
 -/
 theorem mem_smul_top_of_entries {A : Type} [CommRing A] {r : ℕ} (I : Ideal A)
     (d : Matrix (Fin r) (Fin r) A) (hd : ∀ i j, d i j ∈ I) :
@@ -18,19 +18,19 @@ theorem mem_smul_top_of_entries {A : Type} [CommRing A] {r : ℕ} (I : Ideal A)
   exact Submodule.smul_mem_smul (hd i j) Submodule.mem_top
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ Submodule.span (IsLocalRing.ResidueField A) (Set.range fun (i : ι) ↦ Matrix.map (f i) (⇑(IsLocalRing.residue A) : A → IsLocalRing.ResidueField A)), ∃ n ∈ Submodule.span A (Set.range f), Matrix.map n (⇑(IsLocalRing.residue A) : A → IsLocalRing.ResidueField A) = y`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f i, Submodule.subset_span ⟨i, rfl⟩, rfl⟩`. Consider the case `zero`. Use `⟨0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨n, hn, rfl⟩` from `hx`. Take `⟨m, hm, rfl⟩` from `hy`. Use `⟨n + m, Submodule.add_mem _ hn hm, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Consider the case `smul c x _ hx`. Take `⟨n, hn, rfl⟩` from `hx`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective c`. Use `⟨a • n, Submodule.smul_mem _ a hn, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[eq_top_iff]`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := IsLocalRing.maximalIdeal A) Module.Finite.fg_top (IsLocalRing.maximalIdeal_le_jacobson _) ?_` and prove the remaining obligations. Introduce `x _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨n, hn, hnx⟩` from `key (Matrix.map x (IsLocalRing.residue A)) (h ▸ Submodule.mem_top)`. Establish `hx : x = n + (x - n)` using `by abel`. Rewrite using `[hx]`. Use `Submodule.add_mem_sup hn (mem_smul_top_of_entries _ _ fun i j => ?_)` and prove the remaining obligations. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, Matrix.sub_apply, map_sub, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrFun (congrFun hnx i) j).symm`.
+A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_residue {ι A : Type} [CommRing A] [IsLocalRing A] {r : ℕ}
     (f : ι → Matrix (Fin r) (Fin r) A)

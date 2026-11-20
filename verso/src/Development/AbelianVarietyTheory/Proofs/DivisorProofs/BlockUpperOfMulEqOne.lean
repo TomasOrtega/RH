@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.BotPairSmall
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, s, hs, rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨b, hb, x * s, (OhE D).mul_mem hx hs, by ring⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ h1 h2 => rw [mul_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg y _ h => rw [mul_neg]`. Conclude with `neg_mem h`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hatId_mul_of_mem_OhE (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) {x y : AE D} (hx : x ∈ OhE D)
     (hy : y ∈ hatId D 𝔪) : x * y ∈ hatId D 𝔪 := by
@@ -41,13 +41,13 @@ def blockUpperSub (R : Type) [CommRing R] (N a : ℕ) : Subalgebra R (Matrix (Fi
     simp [Algebra.algebraMap_eq_smul_one, Matrix.one_apply_ne this]
 
 /- English proof (translation)
-Establish `hA' : A ∈ blockUpperSub R N a` using `hA`. Establish `hBA : B * A = 1` using `mul_eq_one_comm.1 hAB`. Use `set p := A.charpoly`. Establish `hq : Polynomial.aeval A p.divX ∈ blockUpperSub R N a` using `Algebra.adjoin_le (Set.singleton_subset_iff.2 hA') (Polynomial.aeval_mem_adjoin_singleton R _)`. Establish `hCH : Polynomial.aeval A p = 0` using `Matrix.aeval_self_charpoly A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hCH` using `[← Polynomial.X_mul_divX_add p, map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C]`. Establish `h2 : p.coeff 0 • B = -Polynomial.aeval A p.divX`. Use `congrArg (fun M => B * M) hCH` as an intermediate fact. Simplify using `only [mul_add, ← mul_assoc, hBA, one_mul, mul_zero, Algebra.algebraMap_eq_smul_one, Matrix.mul_smul, mul_one] at this`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hdet : A.det * B.det = 1` using `by rw [← Matrix.det_mul, hAB, Matrix.det_one]`. Rewrite `hdet` using `[Matrix.det_eq_sign_charpoly_coeff]`. Establish `hB : B ∈ blockUpperSub R N a`. Establish `hu : ((-1) ^ Fintype.card (Fin N) * B.det) * p.coeff 0 = 1` using `by linear_combination hdet`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: B = ((-1) ^ Fintype.card (Fin N) * B.det) • (p.coeff 0 • B)` using `by rw [smul_smul, hu, one_smul]`. Rewrite using `[this, h2]`. Conclude with `Subalgebra.smul_mem _ (neg_mem hq) _`. Conclude with `hB`.
+A detailed English derivation is pending.
 -/
 theorem blockUpper_of_mul_eq_one {R : Type} [CommRing R] {N a : ℕ} {A B : Matrix (Fin N) (Fin N) R}
     (hAB : A * B = 1) (hA : ∀ i j : Fin N, j.1 < a → a ≤ i.1 → A i j = 0) :
@@ -123,9 +123,7 @@ def blockLevelSub (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (a N : ℕ) : Subgroup
     exact hm
 
 /- English proof (translation)
-Introduce `D 𝔪 a N h`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Conclude with `(Subgroup.closure_le (blockLevelSub D 𝔪 a N)).2 (fun _ hx => hx) hh`. Introduce `hh`.
-
-Conclude with `Subgroup.subset_closure hh`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem blockJ_mem_iff_blockSet : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (a N : ℕ) (h : GA D N),
     h ∈ GlobalTheory.BotPairSmall.blockJ D 𝔪 a N ↔ h ∈ GlobalTheory.BotPairSmall.blockSet D 𝔪 a N := by

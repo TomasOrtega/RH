@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.FibreInt
 
 /- English proof (translation)
-Establish `h1 : (fun k => ((Pi.single i (1 : ℂ) : Fin g → ℂ) k).im) = 0`. Apply the tactic sequence `ext k; by_cases h : k = i <;> simp [h]`. Establish `h2 : (fun k => ((Pi.single i (1 : ℂ) : Fin g → ℂ) k).re) = Pi.single i (1 : ℝ)`. Apply the tactic sequence `ext k; by_cases h : k = i <;> simp [h]`. Simplify using `only [flatOf, h1, h2, Matrix.zero_vecMul, sub_zero]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem flatOf_single_one {g : ℕ} (τ0 : Matrix (Fin g) (Fin g) ℂ) (i : Fin g) :
     flatOf τ0 (Pi.single i 1) = Sum.elim (0 : Fin g → ℝ) (Pi.single i (1 : ℝ)) := by
@@ -23,7 +23,7 @@ theorem flatOf_single_one {g : ℕ} (τ0 : Matrix (Fin g) (Fin g) ℂ) (i : Fin 
   simp only [flatOf, h1, h2, Matrix.zero_vecMul, sub_zero]
 
 /- English proof (translation)
-Establish `h1 : (fun k => ((Pi.single i Complex.I : Fin g → ℂ) k).im) = Pi.single i (1 : ℝ)`. Apply the tactic sequence `ext k; by_cases h : k = i <;> simp [h]`. Establish `h2 : (fun k => ((Pi.single i Complex.I : Fin g → ℂ) k).re) = 0`. Apply the tactic sequence `ext k; by_cases h : k = i <;> simp [h]`. Simplify using `only [flatOf, h1, h2, Matrix.single_one_vecMul, zero_sub]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -38,11 +38,11 @@ theorem flatOf_single_I {g : ℕ} (τ0 : Matrix (Fin g) (Fin g) ℂ) (i : Fin g)
   rfl
 
 /- English proof (translation)
-Rewrite using `[flatOf_single_one, flatOf_single_one, flatOf_single_I, flatOf_single_I]`. Use `⟨by simp [riem], ?_, ?_⟩` and prove the remaining obligations. Establish `hX : (τ0.map Complex.re).IsSymm`. Rewrite using `[Matrix.IsSymm, ← Matrix.transpose_map, hs.eq]`. Use `set X := τ0.map Complex.re`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set a := (τ0.map Complex.im)⁻¹ i`. Use `set c := (τ0.map Complex.im)⁻¹ j`. Establish `e : riem (Sum.elim a (-(a ᵥ* X))) (Sum.elim c (-(c ᵥ* X))) = -((a ᵥ* X) ⬝ᵥ c) + (c ᵥ* X) ⬝ᵥ a`. Simplify using `only [riem, Sum.elim_inl, Sum.elim_inr, Pi.neg_apply, dotProduct, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : (c ᵥ* X) ⬝ᵥ a = (a ᵥ* X) ⬝ᵥ c`. Rewrite using `[← Matrix.dotProduct_mulVec c, dotProduct_comm, ← Matrix.vecMul_transpose, hX.eq]`. Rewrite using `[e, e2]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[riem, Pi.single_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem riem_flatOf_single {g : ℕ} (τ0 : Matrix (Fin g) (Fin g) ℂ) (hs : τ0.IsSymm) (i j : Fin g) :
     riem (flatOf τ0 (Pi.single i 1)) (flatOf τ0 (Pi.single j 1)) = 0 ∧
@@ -75,11 +75,11 @@ theorem flatForm_apply {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace 
     om0 τ P ![u, w] = riem (dflat τ P u) (dflat τ P w) := rfl
 
 /- English proof (translation)
-Introduce `g E _ _ _ B τ hτ b hb`. Take `⟨hsym, hpos⟩` from `hτ.2.2 b hb`. Establish `hc : ∀ z : Fin g → ℂ, wedgePow (om0 τ (b, z)) g (fun k => ((0 : E), Pi.single k.1 (if k.2 = 0 then (1 : ℂ) else Complex.I))) / (g.factorial : ℝ) = ((τ b).map Complex.im)⁻¹.det`. Introduce `z`. Rewrite using `[GlobalTheory.T.wedge_power_eq_factorial_det (om0 τ (b, z)) g _ ((τ b).map Complex.im)⁻¹ᵀ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_transpose]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `all_goals intro i j`. Simplify using `only [flatForm_apply, GlobalTheory.T.period_map_flat_derivative hτ b hb]`. Simplify using `using (riem_flatOf_single (τ b) hsym i j).1`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (riem_flatOf_single (τ b) hsym i j).2.1`. Simplify using `using (riem_flatOf_single (τ b) hsym i j).2.2`. Unfold `fibreInt`. Simplify using `only [hc]`. Rewrite using `[setIntegral_const, measureReal_def, GlobalTheory.T.volume_period_torus_eq_det_imaginary, ENNReal.toReal_ofReal (abs_nonneg _), abs_of_pos hpos.det_pos, smul_eq_mul, det_nonsing_inv, Ring.inverse_eq_inv', mul_inv_cancel₀ hpos.det_pos.ne']`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibreIntegral_flatForm : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ},

@@ -14,7 +14,7 @@ open scoped TensorProduct NNReal Matrix
 open scoped Classical
 namespace PositivityTheory.ThKF0
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.ThKF0.thetaBasic_of_k _root_.PositivityTheory.ThKF0.weil_schwartz_decay_bound`.
+A detailed English derivation is pending.
 -/
 theorem thetaBasic_k : _root_.GlobalTheory.ThK.ThetaBasic_k := _root_.PositivityTheory.ThKF0.thetaBasic_of_k _root_.PositivityTheory.ThKF0.weil_schwartz_decay_bound
 end PositivityTheory.ThKF0

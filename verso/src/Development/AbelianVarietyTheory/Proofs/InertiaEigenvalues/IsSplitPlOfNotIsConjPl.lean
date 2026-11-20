@@ -9,7 +9,7 @@ open scoped Classical
 namespace GlobalTheory.FixedPlaceSplit
 
 /- English proof (translation)
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[D.host.toHostAx.conjE_apply, D.host.toHostAx.conjE_apply]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem host_conj_conj (D : Formalism.BasicNotions.D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   apply D.host.φ₀.injective
@@ -17,11 +17,11 @@ theorem host_conj_conj (D : Formalism.BasicNotions.D7) (x : D.host.E) : D.host.c
   simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hs`. Apply `h` to reduce the goal to its premises. Establish `key : ∀ x y : 𝓞 D.host.E, (y : D.host.E) = D.host.conj (x : D.host.E) → x ∈ w.asIdeal → y ∈ w.asIdeal`. Introduce `x y hxy hx`. Assume the negation of the conclusion as `hy`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hs` to reduce the goal to its premises. Use `⟨x, hx, fun y' hy' => ?_⟩` and prove the remaining obligations. Establish `: y' = y`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `hy'.trans hxy.symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[this]` and apply the resulting hypothesis. Introduce `x y hxy`. Use `⟨key x y hxy, key y x ?_⟩` and prove the remaining obligations. Rewrite using `[hxy, host_conj_conj]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSplitPl_of_not_isConjPl (D : Formalism.BasicNotions.D7) (w : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E))
     (h : ¬ Formalism.BasicNotions.IsConjPl D.host w w) : Formalism.BasicNotions.IsSplitPl D.host w := by
@@ -42,7 +42,7 @@ theorem isSplitPl_of_not_isConjPl (D : Formalism.BasicNotions.D7) (w : IsDedekin
   rw [hxy, host_conj_conj]
 
 /- English proof (translation)
-Introduce `D k v` and use `isSplitPl_of_not_isConjPl D _ (D.naut.plGw_nconj k v v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSplitPl_plGw : ∀ (D : Formalism.BasicNotions.D7) (k : Fin 2) (v : D.nd.PlG k),
     Formalism.BasicNotions.IsSplitPl D.host (D.naut.plGw k v) :=

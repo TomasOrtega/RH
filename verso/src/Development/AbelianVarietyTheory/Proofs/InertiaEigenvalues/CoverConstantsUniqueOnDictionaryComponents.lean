@@ -20,29 +20,27 @@ namespace GlobalTheory.LevelSeries
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hT _ _ _ _ _ _ i _ _ C hC c hP hP' h`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Establish `hσ : GoodEmb T.Q.c T.σ₀` using `T.toCore.good_σ₀`. Take `⟨θ, hθ⟩` from `(GlobalTheory.Member.infiniteAdele_bijective D).1`. Take `⟨hr, -⟩` from `hT.modelW _ hj _ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hk⟩` from `GlobalTheory.T.exists_nonzero_dominant_section_each_component D T hT _ hj _ hσ (κ i).n (κ i).n_even`. Use `set k₀ := (T.dict ((i : ℕ) + 1) T.σ₀ h).1 with hk₀`. Take `⟨f, hf, x, hx, hne⟩` from `hk k₀`. Establish `hU` using `hT.unf _ hj _ hσ`. Establish `hS` using `hU.2.2.2.2.1 a _ ha f hf k₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x₁, b, hb, ho, hx₁⟩` from `(GlobalTheory.UnitFrames.frame_mul_triangular_orthonormal D.host.E _ _ _ _ ((T.U ((i : ℕ) + 1) T.σ₀).X k₀).Gm_herm).1 x hx`. Establish `hne₁ : rdU (T.U ((i : ℕ) + 1) T.σ₀) f k₀ x₁ ≠ 0`. Rewrite using `[hx₁, hS.2.1 x hx b hb]`. Conclude with `mul_ne_zero (GlobalTheory.CoverIndep.bchar_ne_zero' _ hb) hne`. Establish `ho' : GlobalTheory.CoverDescSpan.IsOrthFr ((T.U ((i : ℕ) + 1) T.σ₀).X k₀) x₁` using `ho`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hxu⟩` from `(GlobalTheory.CoverDescSpan.base_orth hT hj hσ hr hθ h).2 x₁ ho'`. Take `⟨γ, hγ, hdu⟩` from `GlobalTheory.CoverDescSpan.base_real hT hj hσ hr hθ h u hu`. Rewrite `hdu` using `[← hxu]`. Establish `hne₂ : rdU (T.U ((i : ℕ) + 1) T.σ₀) f (T.dict ((i : ℕ) + 1) T.σ₀ (h * u)).1 (T.dict ((i : ℕ) + 1) T.σ₀ (h * u)).2 ≠ 0`. Rewrite using `[hdu]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show rdU (T.U ((i : ℕ) + 1) T.σ₀) f k₀ (lact γ x₁) ≠ 0`. Rewrite using `[hS.2.2 γ hγ x₁ ho'.mem_dom]`. Use `mul_ne_zero ?_ hne₁` and prove the remaining obligations. Take `⟨N, hN, hN1⟩` from `((T.U ((i : ℕ) + 1) T.σ₀).X k₀).χ_fin (laU (T.U ((i : ℕ) + 1) T.σ₀) a (κ i).n k₀)`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hN1 γ hγ` as an intermediate fact. Rewrite `this` using `[h0, zero_pow hN.ne']`. Conclude with `zero_ne_one this`. Establish `hl : ((lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) a : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (lieFac_pos _ _ _).ne'`. Establish `hphi : T.phiJ ((i : ℕ) + 1) T.σ₀ a f (h * u) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `eb : T.phiJ ((i : ℕ) + 1) T.σ₀ a f (h * u) = ((lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) a : ℝ) : ℂ) * ((T.cE ((i : ℕ) + 1) T.σ₀ (T.dict ((i : ℕ) + 1) T.σ₀ (h * u)).1 * T.mu ((i : ℕ) + 1) T.σ₀ (h * u)) * rdU (T.U ((i : ℕ) + 1) T.σ₀) f (T.dict ((i : ℕ) + 1) T.σ₀ (h * u)).1 (T.dict ((i …` using `rfl`. Rewrite using `[eb]`. Use `mul_ne_zero hl (mul_ne_zero (mul_ne_zero ?_ ?_) hne₂)` and prove the remaining obligations. Conclude with `norm_ne_zero_iff.1 (by rw [hT.cUnit _ hj _ hσ]; exact one_ne_zero)`. Conclude with `norm_ne_zero_iff.1 (by rw [(hT.muVal _ hj _ hσ).norm]; exact one_ne_zero)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : (C.dict₂ (h * u)).1 = (C.dict₂ h).1`. Use `(GlobalTheory.CoverDescSpan.cover_real hT hj hσ hr hθ C hC h 1 u (one_mem _) hu).1` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Take `⟨f₂, hf₂, hpull⟩` from `GlobalTheory.CovPull.exists_pull D T hT _ hj _ hσ C hC.1 a (κ i).n f hf`. Establish `e1` using `congrFun ((hP a ha).2 f hf f₂ hf₂ hpull) (h * u)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `congrFun ((hP' a ha).2 f hf f₂ hf₂ hpull) (h * u)`. Establish `ec : C.rd a f₂ (h * u) = ((lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) a : ℝ) : ℂ) * ((C.cc₂ (C.dict₂ (h * u)).1 * T.mu ((i : ℕ) + 1) T.σ₀ (h * u)) * rdU C.U₂ f₂ (C.dict₂ (h * u)).1 (C.dict₂ (h * u)).2)` using `rfl`. Establish `ec' : ({ C with cc₂` using `c } : Cover T ((i : ℕ) + 1) T.σ₀).rd a f₂ (h * u) = ((lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) a : ℝ) : ℂ) * ((c (C.dict₂ (h * u)).1 * T.mu ((i : ℕ) + 1) T.σ₀ (h * u)) * rdU C.U₂ f₂ (C.dict₂ (h * u)).1 (C.dict₂ (h * u)).2) := rfl`. Rewrite `e1` using `[ec]`. Rewrite `e2` using `[ec']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hne₃` using `e1 ▸ hphi`. Establish `hm : T.mu ((i : ℕ) + 1) T.σ₀ (h * u) ≠ 0`. Introduce `h0`. Rewrite `hne₃` using `[h0]`. Simplify using `at hne₃`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hX : rdU C.U₂ f₂ (C.dict₂ (h * u)).1 (C.dict₂ (h * u)).2 ≠ 0`. Introduce `h0`. Rewrite `hne₃` using `[h0]`. Simplify using `at hne₃`. Establish `key` using `e1.trans e2.symm`.
-
-Rewrite using `[← hcomp]`. Establish `k2 : C.cc₂ (C.dict₂ (h * u)).1 * (((lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) a : ℝ) : ℂ) * T.mu ((i : ℕ) + 1) T.σ₀ (h * u) * rdU C.U₂ f₂ (C.dict₂ (h * u)).1 (C.dict₂ (h * u)).2) = c (C.dict₂ (h * u)).1 * (((lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) a : ℝ) : ℂ) * T.mu ((i : ℕ) + 1) T.σ₀ …`. Take the linear combination `key`. Conclude with `mul_right_cancel₀ (mul_ne_zero (mul_ne_zero hl hm) hX) k2`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cc_unique_of_pinned : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), LawsJ T → R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsFam → R.IsModels → R.IsThP → TieIn T R κ v₀ → ∀ (i : Fin D.R.m), VStd D i → ∀ hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i, ∀ C : Cover T ((i : ℕ) + 1) T.σ₀, C.IsUnif → ∀ c : C.U₂.Comp → ℂ, (∀ a, Dom a (κ i).n → C.IsPinned a (κ i).n) → (∀ a, Dom a (κ i).n → ({ C with cc₂ := c } : Cover T ((i : ℕ) + 1) T.σ₀).IsPinned a (κ i).n) → ∀ h, C.cc₂ (C.dict₂ h).1 = c (C.dict₂ h).1 := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hT _ _ _ _ _ _ i _ _ C hC c hP hP' h

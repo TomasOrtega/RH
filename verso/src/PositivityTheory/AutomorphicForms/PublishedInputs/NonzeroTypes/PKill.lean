@@ -13,7 +13,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n : ℕ} (G : Grp k n)
 
 /- English proof (translation)
-Unfold `Grp.PJ`. Rewrite using `[smul_finsum]`. Use `congr 1`. Use function extensionality and compare the values at `c`. Rewrite using `[map_smul, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem PJ_smul {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (r : ℕ)
     (a : ℂ) (v : V) : G.PJ π r (a • v) = a • G.PJ π r v := by
@@ -24,11 +24,11 @@ theorem PJ_smul {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation 
   rw [map_smul, smul_comm]
 
 /- English proof (translation)
-Take `⟨j, hjJ, hyj, hne⟩` from `hj`. Establish `hx' : ∀ g ∈ G.JSet, π g x = G.lam g • x` using `hx`. Establish `hjw : π j (π y x) = G.lam (y⁻¹ * j * y) • π y x`. Establish `e : j * y = y * (y⁻¹ * j * y)` using `by group`. Establish `e1 : π j (π y x) = π (j * y) x` using `by rw [map_mul]; rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : π (y * (y⁻¹ * j * y)) x = π y (π (y⁻¹ * j * y) x)` using `by rw [map_mul]; rfl`. Rewrite using `[e1, e, e2, hx' _ hyj, map_smul]`. Establish `key` using `hmul (π y x) hfix j hjJ`. Rewrite `key` using `[hjw, PJ_smul]`. Establish `h0 : (G.lam (y⁻¹ * j * y) - G.lam j) • G.PJ π r (π y x) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_smul, key, sub_self]`. Conclude with `(smul_eq_zero.mp h0).resolve_left (sub_ne_zero.mpr hne)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core_mul {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (r : ℕ)
     (hmul : ∀ v : V, (∀ u ∈ KC k n r, π u v = v) → ∀ j ∈ G.JSet, G.PJ π r (π j v) = G.lam j • G.PJ π r v)
@@ -48,7 +48,7 @@ theorem core_mul {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation
   exact (smul_eq_zero.mp h0).resolve_left (sub_ne_zero.mpr hne)
 
 /- English proof (translation)
-The claim follows from `core_mul G π r (fun v hv => (hPJ.2 v hv).2.1) x hx y hfix hj`.
+A detailed English derivation is pending.
 -/
 theorem core {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (r : ℕ)
     (hPJ : Finite (↥G.Jg ⧸ (KCg k n r).subgroupOf G.Jg) ∧
@@ -68,7 +68,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n : ℕ} (G : Grp k n)
 
 /- English proof (translation)
-Introduce `hcb hccB hΔU hΔM h1 h2 h3 h4 h5 h6 hPJ V _ _ π r hr x hx y hfix hj`. Conclude with `P_kill.core G π r (hPJ hcb hccB hΔU hΔM h1 h2 h3 h4 h5 h6 V π r hr) x hx y hfix hj`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem step_kill : G.AnnihilationProp := by
   intro hcb hccB hΔU hΔM h1 h2 h3 h4 h5 h6 hPJ V _ _ π r hr x hx y hfix hj

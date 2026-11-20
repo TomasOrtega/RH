@@ -25,7 +25,7 @@ def embInf (x : InfiniteAdeleRing F) : AF F := (x, 0)
 def embFin (y : FiniteAdeleRing (𝓞 F) F) : AF F := (0, y)
 
 /- English proof (translation)
-Use `show x = ((x.1 + 0, 0 + x.2) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)`. Rewrite using `[add_zero, zero_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_embInf_add_embFin (x : AF F) : x = embInf (Prod.fst x) + embFin (Prod.snd x) := by
   show x = ((x.1 + 0, 0 + x.2) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)
@@ -33,7 +33,7 @@ theorem eq_embInf_add_embFin (x : AF F) : x = embInf (Prod.fst x) + embFin (Prod
   rfl
 
 /- English proof (translation)
-Use `show ((0, (n : FiniteAdeleRing (𝓞 F) F) * a) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F) = ((n • (0 : InfiniteAdeleRing F), n • a) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)`. Rewrite using `[smul_zero, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embFin_natCast_mul (n : ℕ) (a : FiniteAdeleRing (𝓞 F) F) :
     embFin ((n : FiniteAdeleRing (𝓞 F) F) * a) = n • embFin a := by
@@ -42,7 +42,7 @@ theorem embFin_natCast_mul (n : ℕ) (a : FiniteAdeleRing (𝓞 F) F) :
   rw [smul_zero, nsmul_eq_mul]
 
 /- English proof (translation)
-Use `show ((0 + 0, a + -a) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F) = 0`. Rewrite using `[add_zero, add_neg_cancel]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem embFin_add_neg (a : FiniteAdeleRing (𝓞 F) F) : embFin a + embFin (-a) = 0 := by
   show ((0 + 0, a + -a) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F) = 0
@@ -50,9 +50,9 @@ theorem embFin_add_neg (a : FiniteAdeleRing (𝓞 F) F) : embFin a + embFin (-a)
   rfl
 
 /- English proof (translation)
-Introduce `s hs`. Establish `hs' : InfiniteAdeleRing.ringEquiv_mixedSpace F s.1 = 0` using `hs`. Establish `h1 : s.1 = 0` using `(map_eq_zero_iff _ (RingEquiv.injective _)).1 hs'`. Use `show ((s.1 * x, s.2 * 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F) = 0`. Rewrite using `[h1, zero_mul, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem at_embInf (x : InfiniteAdeleRing F) : At (evI F) (embInf x) := by
   intro s hs
@@ -63,26 +63,26 @@ theorem at_embInf (x : InfiniteAdeleRing F) : At (evI F) (embInf x) := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[hψ.2.2 a ha, Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_of_at {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {a : AF F} (ha : At (evI F) a) : ‖ψ a‖ = 1 := by
   rw [hψ.2.2 a ha, Complex.norm_exp]
   simp
 
 /- English proof (translation)
-Use `set K := {a : FiniteAdeleRing (𝓞 F) F | ∀ v, a v ∈ HeightOneSpectrum.adicCompletionIntegers F v} with hKdef`. Establish `hK : IsCompact K` using `GlobalTheory.AdeleCocompact.isCompact_integral F`. Establish `hφ : Continuous fun a : FiniteAdeleRing (𝓞 F) F => ψ (embFin a)` using `hc.comp (continuous_const.prodMk continuous_id)`. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn hφ.continuousOn`. Establish `hmul : ∀ (n : ℕ) (a : FiniteAdeleRing (𝓞 F) F), ψ (embFin ((n : FiniteAdeleRing (𝓞 F) F) * a)) = ψ (embFin a) ^ n`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n a`. Rewrite using `[embFin_natCast_mul, AddChar.map_nsmul_eq_pow]`. Establish `hKn : ∀ a ∈ K, ∀ n : ℕ, (n : FiniteAdeleRing (𝓞 F) F) * a ∈ K` using `fun a ha n v => by`. Rewrite using `[GlobalTheory.IntegralFinAdele.mul_apply', GlobalTheory.IntegralFinAdele.natCast_apply]`. Conclude with `mul_mem (HeightOneSpectrum.coe_mem_adicCompletionIntegers v _) (ha v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : ∀ a ∈ K, ‖ψ (embFin a)‖ ≤ 1`. Introduce `a ha`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt M h`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `hM _ (hKn a ha n)` as an intermediate fact. Rewrite `this` using `[hmul, norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hneg : ∀ a ∈ K, -a ∈ K` using `fun a ha v => by`. Establish `: (-a) v = -(a v)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `neg_mem (ha v)`. Establish `h1 : ∀ a ∈ K, ‖ψ (embFin a)‖ = 1`. Introduce `a ha`. Establish `e : ψ (embFin a) * ψ (embFin (-a)) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← AddChar.map_add_eq_mul, embFin_add_neg, AddChar.map_zero_eq_one]`. Establish `e2` using `congrArg norm e`. Rewrite `e2` using `[norm_mul, norm_one]`. Use `hle a ha` as an intermediate fact. Use `hle (-a) (hneg a ha)` as an intermediate fact.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use polynomial arithmetic with `[norm_nonneg (ψ (embFin a)), norm_nonneg (ψ (embFin (-a)))]`. Take `⟨N, hN, hNa⟩` from `GlobalTheory.IntegralFinAdele.exists_nat_mul_integral F y`. Use `h1 _ hNa` as an intermediate fact. Rewrite `this` using `[hmul, norm_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hN.ne').1 this`.
+A detailed English derivation is pending.
 -/
 theorem norm_fin {ψ : AddChar (AF F) ℂ} (hc : Continuous ψ) (y : FiniteAdeleRing (𝓞 F) F) :
     ‖ψ (embFin y)‖ = 1 := by
@@ -125,7 +125,7 @@ theorem norm_fin {ψ : AddChar (AF F) ℂ} (hc : Continuous ψ) (y : FiniteAdele
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hN.ne').1 this
 
 /- English proof (translation)
-Rewrite using `[eq_embInf_add_embFin x, AddChar.map_add_eq_mul, norm_mul, norm_of_at hψ (at_embInf _), norm_fin hψ.1, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_psi {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (x : AF F) : ‖ψ x‖ = 1 := by
   rw [eq_embInf_add_embFin x, AddChar.map_add_eq_mul, norm_mul, norm_of_at hψ (at_embInf _), norm_fin hψ.1, one_mul]
@@ -140,30 +140,30 @@ variable {F : Type} [Field F] [NumberField F]
 variable {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → AF F} {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Rewrite using `[map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem e_smul (d : Darboux B κ) (r : AF F) (u : W) : d.e (r • u) = (r • (d.e u).1, r • (d.e u).2) := by
   rw [map_smul]
   rfl
 
 /- English proof (translation)
-Simplify using `only [realAd, map_add]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem realAd_add (s h : ℝ) : realAd F (s + h) = realAd F s + realAd F h := by
   simp only [realAd, map_add]
   rfl
 
 /- English proof (translation)
-Simplify using `only [realAd, map_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem realAd_zero : realAd F 0 = 0 := by
   simp only [realAd, map_zero]
   rfl
 
 /- English proof (translation)
-Simplify using `only [Darboux.rho, schr, e_smul, realAd_add]`. Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Simplify using `only [dotProduct_smul, smul_dotProduct, add_dotProduct, dotProduct_add, smul_eq_mul, add_smul]`. Establish `h2 : ⅟(2 : AF F) * 2 = 1` using `invOf_mul_self 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take the linear combination `(realAd F s * realAd F h * ((d.e u).1 ⬝ᵥ (d.e u).2)) * h2`. Simplify using `only [add_smul]`. Normalize the expressions using the abelian group laws.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem rho_line_add (d : Darboux B κ) (ψ : AddChar (AF F) ℂ) (u : W) (s h : ℝ) (Ψ : (κ → AF F) → ℂ)
     (z : κ → AF F) :
@@ -178,7 +178,7 @@ theorem rho_line_add (d : Darboux B κ) (ψ : AddChar (AF F) ℂ) (u : W) (s h :
     abel
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[Darboux.rho, schr, realAd_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_zero (d : Darboux B κ) (ψ : AddChar (AF F) ℂ) (u : W) (Ψ : (κ → AF F) → ℂ) :
     d.rho ψ (realAd F 0 • u) Ψ = Ψ := by
@@ -186,9 +186,9 @@ theorem rho_zero (d : Darboux B κ) (ψ : AddChar (AF F) ℂ) (u : W) (Ψ : (κ 
   simp [Darboux.rho, schr, realAd_zero]
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun h : ℝ => d.rho ψ (realAd F (t + h) • u) Φ z) (d.rho ψ (realAd F t • u) Φ' z) (t - t)`. Establish `e : (fun h : ℝ => d.rho ψ (realAd F (t + h) • u) Φ z) = fun h => ψ (z ⬝ᵥ (d.e (realAd F t • u)).2 + ⅟(2 : AF F) * ((d.e (realAd F t • u)).1 ⬝ᵥ (d.e (realAd F t • u)).2)) * d.rho ψ (realAd F h • u) Φ (z + (d.e (realAd F t • u)).1)`. Use function extensionality and compare the values at `h`. Rewrite using `[rho_line_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e, sub_self]`. Conclude with `(hd (z + (d.e (realAd F t • u)).1)).const_mul _`. Establish `h2` using `h1.comp_sub_const t t`. Simplify `h2` using `only [add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_line (d : Darboux B κ) (ψ : AddChar (AF F) ℂ) (u : W) {Φ Φ' : (κ → AF F) → ℂ}
     (hd : ∀ x, HasDerivAt (fun t : ℝ => d.rho ψ (realAd F t • u) Φ x) (Φ' x) 0) (z : κ → AF F) (t : ℝ) :
@@ -206,7 +206,7 @@ theorem hasDerivAt_line (d : Darboux B κ) (ψ : AddChar (AF F) ℂ) (u : W) {Φ
   simpa only [add_sub_cancel] using h2
 
 /- English proof (translation)
-Simplify using `only [Darboux.rho, schr, norm_mul, norm_psi hψ, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_rho {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (d : Darboux B κ) (w : W) (Ψ : (κ → AF F) → ℂ)
     (z : κ → AF F) : ‖d.rho ψ w Ψ z‖ = ‖Ψ (z + (d.e w).1)‖ := by
@@ -222,9 +222,9 @@ open scoped Classical
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Use `Summable.of_norm_bounded_eventually (ZLattice.summable_norm_pow_inv L _ (Nat.lt_succ_self _)) ?_` and prove the remaining obligations. Use `(Set.finite_singleton (0 : L)).subset fun z hz => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Apply `hz` to reduce the goal to its premises. Establish `hz0 : 0 < ‖z‖` using `norm_pos_iff.2 h0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `show ‖(1 + ‖z‖)⁻¹ ^ (Module.finrank ℤ L + 1)‖ ≤ ‖z‖⁻¹ ^ (Module.finrank ℤ L + 1)`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem summable_one_add_norm_inv_pow (L : Submodule ℤ (κ → mixedEmbedding.mixedSpace F)) [DiscreteTopology L] :
     Summable fun z : L => (1 + ‖z‖)⁻¹ ^ (Module.finrank ℤ L + 1) := by
@@ -239,7 +239,7 @@ theorem summable_one_add_norm_inv_pow (L : Submodule ℤ (κ → mixedEmbedding.
   linarith
 
 /- English proof (translation)
-Unfold `pureA`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply]`. Rewrite using `[show ((algebraMap F (AF F) (ξ i) + y i) : AF F).1 = (algebraMap F (AF F) (ξ i)).1 + (y i).1 from rfl, map_add, InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -257,27 +257,21 @@ theorem pureA_add (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ �
   rfl
 
 /- English proof (translation)
-Take `⟨Bg, hB⟩` from `hg.1.continuous.bounded_above_of_compact_support hg.2`. Use `set K := (fun x => x - yf) '' tsupport g with hKdef`. Establish `hKc : IsCompact K` using `hg.2.isCompact.image (continuous_id.sub continuous_const)`. Take `⟨N, hN, hK⟩` from `exists_nat_mul_integral_of_isCompact F hKc`. Use `haveI := discreteTopology_denomLattice F κ hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L := denomLattice F κ N with hL`. Use `set k := Module.finrank ℤ L + 1 with hk`. Establish `hw` using `summable_one_add_norm_inv_pow L`. Use `set C := 2 ^ k * ((Finset.Iic (k, 0)).sup fun m => SchwartzMap.seminorm ℂ m.1 m.2) f with hCdef`. Establish `hC : ∀ x, (1 + ‖x‖) ^ k * ‖f x‖ ≤ C` using `fun x => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (k, 0)) le_rfl le_rfl f x` as an intermediate fact. Rewrite `this` using `[norm_iteratedFDeriv_zero]`. Then use the resulting hypothesis. Establish `hC0 : 0 ≤ C` using `le_trans (by positivity) (hC 0)`. Use `set R' := max R 0 with hR'`. Use `set ι : (κ → F) → (κ → mixedEmbedding.mixedSpace F) := fun ξ i => mixedEmbedding F (ξ i) with hι`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `set S : Set (κ → F) := {ξ | ι ξ ∈ L} with hS`. Use `set h : (κ → F) → ℝ := fun ξ => max Bg 0 * C * (1 + R') ^ k * (1 + ‖ι ξ‖)⁻¹ ^ k with hh`. Use `⟨S.indicator h, ?_, fun ξ y hyf hyR => ?_⟩` and prove the remaining obligations. Rewrite using `[← summable_subtype_iff_indicator]`. Set `j : S → L` to `fun ξ => ⟨ι ξ.1, ξ.2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hj : Function.Injective j` using `fun a b hab => Subtype.ext (funext fun i => mixedEmbedding_injective F (congrFun (congrArg Subtype.val hab) i))`. Use `(hw.comp_injective hj).mul_left (max Bg 0 * C * (1 + R') ^ k)` as an intermediate fact. Conclude with `this`. Rewrite using `[pureA_add, norm_mul]`. Distinguish the cases in `hg0 : g (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i) + Prod.snd (y i)) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg0, norm_zero, mul_zero]`. Conclude with `Set.indicator_nonneg (fun ξ _ => by positivity) ξ`. Establish `hmem : ξ ∈ S` using `by show ∀ i, _`. Introduce `i`. Establish `hsupp : (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i) + yf i) ∈ tsupport g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `subset_tsupport` to reduce the goal to its premises. Simplify `hg0` using `[hyf]`. Establish `hKm : (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) ∈ K` using `⟨_, hsupp, by funext i; simp⟩`. Take `⟨z, hz⟩` from `(GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F).2.2.2.1 ((N : F) * ξ i) fun v => by`. Rewrite using `[map_mul, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hK _ hKm i v`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (mixedEmbedding F) hz`. Rewrite `h2` using `[← nsmul_eq_mul, map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ]`. Conclude with `h2.symm`.
-
-Rewrite using `[Set.indicator_of_mem hmem]`. Use `set x := ι ξ + fun i => evI F (y i) with hx`. Establish `hxR : ‖ι ξ‖ ≤ ‖x‖ + R'`. Establish `: ι ξ = x - fun i => evI F (y i)` using `by rw [hx]; abel`. Rewrite using `[this]`.
-
-Conclude with `(norm_sub_le _ _).trans (add_le_add le_rfl (hyR.trans (le_max_left _ _)))`. Establish `hR0 : 0 ≤ R'` using `le_max_right _ _`. Establish `h1 : 1 + ‖ι ξ‖ ≤ (1 + R') * (1 + ‖x‖)` using `by nlinarith [norm_nonneg x]`. Establish `hfx : ‖f x‖ * (1 + ‖ι ξ‖) ^ k ≤ C * (1 + R') ^ k`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hpos : 0 < (1 + ‖ι ξ‖) ^ k` using `by positivity`. Establish `hf : ‖f x‖ ≤ C * (1 + R') ^ k * (1 + ‖ι ξ‖)⁻¹ ^ k`. Rewrite using `[inv_pow, ← div_eq_mul_inv, le_div_iff₀ hpos]`. Conclude with `hfx`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem majorant_pure (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) (yf : κ → FiniteAdeleRing (𝓞 F) F) (R : ℝ) :
@@ -349,11 +343,11 @@ theorem majorant_pure (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
       _ = h ξ := by rw [hh]; ring
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Conclude with `majorant_pure f hg yf R`. Consider the case `zero => exact ⟨0, summable_zero, fun ξ y _ _ => by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add Φ Ψ _ _ h1 h2`. Take `⟨c1, hs1, hb1⟩` from `h1`. Take `⟨c2, hs2, hb2⟩` from `h2`. Conclude with `⟨c1 + c2, hs1.add hs2, fun ξ y hy hyR => (norm_add_le _ _).trans (add_le_add (hb1 ξ y hy hyR) (hb2 ξ y hy hyR))⟩`. Consider the case `smul a Φ _ h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hs, hb⟩` from `h`. Use `⟨fun ξ => ‖a‖ * c ξ, hs.mul_left _, fun ξ y hy hyR => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hb ξ y hy hyR) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem majorant {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) (yf : κ → FiniteAdeleRing (𝓞 F) F) (R : ℝ) :
     ∃ c : (κ → F) → ℝ, Summable c ∧ ∀ (ξ : κ → F) (y : κ → AF F), (∀ i, Prod.snd (y i) = yf i) →
@@ -384,7 +378,7 @@ open scoped Classical
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Unfold `evI`. Rewrite using `[show Prod.fst (x + realAd F t * z) = Prod.fst x + Prod.fst (realAd F t) * Prod.fst z from rfl, map_add, map_mul, show Prod.fst (realAd F t) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ t) from rfl, RingEquiv.apply_symm_apply, Algebra.smul_def]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem evI_add_realAd_mul (t : ℝ) (x z : AF F) : evI F (x + realAd F t * z) = evI F x + t • evI F z := by
   unfold evI
@@ -393,7 +387,7 @@ theorem evI_add_realAd_mul (t : ℝ) (x z : AF F) : evI F (x + realAd F t * z) =
     RingEquiv.apply_symm_apply, Algebra.smul_def]
 
 /- English proof (translation)
-Rewrite using `[show Prod.snd (x + realAd F t * z) = Prod.snd x + Prod.snd (realAd F t) * Prod.snd z from rfl, show Prod.snd (realAd F t) = 0 from rfl, zero_mul, add_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem snd_add_realAd_mul (t : ℝ) (x z : AF F) : Prod.snd (x + realAd F t * z) = Prod.snd x := by
   rw [show Prod.snd (x + realAd F t * z) = Prod.snd x + Prod.snd (realAd F t) * Prod.snd z from rfl,
@@ -404,21 +398,17 @@ end GlobalTheory.HeisLineTheta
 open GlobalTheory.HeisLineTheta in
 
 /- English proof (translation)
-Introduce `F _ _ W _ _ B κ _ d ψ hψ u hu Φ hΦ Φ' hΦ' hd u'`. Use `set a' := (d.e u').1 with ha'`. Use `set a := (d.e u).1 with ha`. Use `set y : ℝ → κ → AF F := fun t i => a' i + GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd F t * a i with hy`. Establish `hyf : ∀ t i, Prod.snd (y t i) = Prod.snd (a' i)` using `fun t i => snd_add_realAd_mul t _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set R := ‖fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (a' i)‖ + ‖fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (a i)‖ with hR`. Establish `hyR : ∀ t : ℝ, |t| ≤ 1 → ‖fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (y t i)‖ ≤ R`. Introduce `t ht`. Establish `e : (fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (y t i)) = (fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (a' i)) + t • (fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (a i))`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hy, evI_add_realAd_mul, Pi.add_apply, Pi.smul_apply]`. Rewrite using `[e]`. Use `(norm_add_le _ _).trans (add_le_add le_rfl ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hval : ∀ (Ψ : (κ → AF F) → ℂ) (ξ : κ → F) (t : ℝ), ‖d.rho ψ u' (d.rho ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd F t • u) Ψ) (fun i => algebraMap F (AF F) (ξ i))‖ = ‖Ψ ((fun i => algebraMap F (AF F) (ξ i)) + y t)‖`. Introduce `Ψ ξ t`. Rewrite using `[norm_rho hψ, norm_rho hψ, e_smul]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hy, add_assoc]`. Both sides reduce to the same expression. Take `⟨c, hc, hcb⟩` from `majorant hΦ' (fun i => Prod.snd (a' i)) R`. Take `⟨c0, hc0, hcb0⟩` from `majorant hΦ (fun i => Prod.snd (a' i)) R`. Establish `hmem : (0 : ℝ) ∈ Set.Ioo (-1 : ℝ) 1` using `⟨by norm_num, by norm_num⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set G : (κ → F) → ℝ → ℂ := fun ξ s => d.rho ψ u' (d.rho ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd F s • u) Φ) (fun i => algebraMap F (AF F) (ξ i)) with hG`. Use `set G' : (κ → F) → ℝ → ℂ := fun ξ s => d.rho ψ u' (d.rho ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd F s • u) Φ') (fun i => algebraMap F (AF F) (ξ i)) with hG'`. Establish `hv : GlobalTheory.WeilM.thetaSum F (d.rho ψ u' Φ') = ∑' ξ : κ → F, G' ξ 0`. Simplify using `only [hG', rho_zero]`. Both sides reduce to the same expression.
-
-Rewrite using `[hv]`. Use `show HasDerivAt (fun t : ℝ => ∑' ξ : κ → F, G ξ t) (∑' ξ : κ → F, G' ξ 0) 0`. Use `hasDerivAt_tsum_of_isPreconnected (g := G) (g' := G') hc isOpen_Ioo isPreconnected_Ioo (fun ξ t _ => ?_) (fun ξ t ht => ?_) hmem ?_ hmem` and prove the remaining obligations. Conclude with `(hasDerivAt_line d ψ u hd _ t).const_mul _`. Rewrite using `[hG', hval]`.
-
-Conclude with `hcb ξ (y t) (hyf t) (hyR t (abs_le.2 ⟨ht.1.le, ht.2.le⟩))`. Use `Summable.of_norm_bounded hc0 fun ξ => ?_` and prove the remaining obligations. Rewrite using `[hG, hval]`. Conclude with `hcb0 ξ (y 0) (hyf 0) (hyR 0 (by simp))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeisLineTheta.hasDerivAt_thetaSum_line : ∀ {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → AF F}
     {κ : Type} [Fintype κ] (d : GlobalTheory.WeilM.Darboux B κ) (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ →

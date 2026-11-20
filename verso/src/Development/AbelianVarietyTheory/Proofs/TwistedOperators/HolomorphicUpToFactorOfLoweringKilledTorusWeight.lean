@@ -23,41 +23,39 @@ namespace GlobalTheory.AdSpan.ConjHol
 open GlobalTheory.HolRead in
 
 /- English proof (translation)
-Introduce `D S T C B hB la m φ hL htor g`. Establish `R : GlobalTheory.SmoothForms.RealPoints C.θ T` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 C.θ C.inf T`. Take `⟨U1, U2, U3⟩` from `GlobalTheory.T.conjugateModel_unitFrames_eq_movedOrthonormalFrames D S T C B hB`. Take `⟨dMul, dNe, dExp⟩` from `GlobalTheory.T.realPlaceDeterminantPower_mul_ne_zero_exp D C.θ C.inf T m`. Set `F : Frame C.X.Ψ T.rank → ℂ` to `fun y => if h : IsUnitFr C.X y then φ (g * (U2 y h).choose) / detPow C.θ T m (U2 y h).choose else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hF : ∀ a ∈ GinfC T, F (C.xB (C.mvB a B)) = φ (g * a) / detPow C.θ T m a`. Introduce `a ha`. Establish `hy` using `U1 a`. Simplify using `only [F, dif_pos hy]`. Rewrite using `[U3 _ (U2 _ hy).choose_spec.1 a ha (U2 _ hy).choose_spec.2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Q, Q1, Q2⟩` from `GlobalTheory.T.exists_extension_torusEquivariant_orthonormalFrames _ _ C.X la F (by`. Introduce `y hy t`. Take `⟨a, ha, rfl⟩` from `U2 y hy`. Set `s : D.what₂.Tau → Fin T.rank → ℝ` to `fun ρ c => -t (C.m.e ρ) c`. Take `⟨hk, hk2⟩` from `GlobalTheory.T.compactTorusProductRealPlaces_spec D S T C B hB s`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `e1` using `xB_mvB_mul C B hB a (torProd C.θ T B s) (fun τ => diagonal fun c => cexp ((t τ c : ℂ) * I)) fun ρ => ?_`. Use `erw [← e1]`. Rewrite using `[hF _ (mul_mem ha hk), hF a ha, ← mul_assoc,`. Use `apply_mul_torProd C.θ T B _ φ htor, apply_mul_torProd C.θ T B _ _ (GlobalTheory.T.realPlaceDeterminantPower_mul_compactTorusElement D S T C B hB m)]`. Establish `hb : (bchar la fun τ => (diagonal fun c => cexp ((t τ c : ℂ) * I) : Matrix (Fin T.rank) (Fin T.rank) ℂ)) = cexp (((∑ ρ, ∑ c, ((la (C.m.e ρ) c : ℝ)) * t (C.m.e ρ) c : ℝ) : ℂ) * I)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `bchar`. Rewrite using `[← Equiv.prod_comp C.m.e]`. Use `push_cast`. Rewrite using `[Finset.sum_mul, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_mul, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[diagonal_apply_eq, ← Complex.exp_int_mul, mul_assoc]`. Establish `hA : cexp (((∑ ρ, ∑ c, ((m ρ - la (C.m.e ρ) c : ℤ) : ℝ) * s ρ c : ℝ) : ℂ) * I) = cexp (((∑ ρ, ∑ c, ((m ρ : ℤ) : ℝ) * s ρ c : ℝ) : ℂ) * I) * cexp (((∑ ρ, ∑ c, ((la (C.m.e ρ) c : ℝ)) * t (C.m.e ρ) c : ℝ) : ℂ) * I)`. Rewrite using `[← Complex.exp_add, ← add_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[← Complex.ofReal_add, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [s]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hb, hA]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Clear denominators, using `[dNe a, Complex.exp_ne_zero]` for the nonvanishing conditions. Rewrite using `[hk2] show _ = B ρ * (diagonal fun c => cexp ((t (C.m.e ρ) c : ℂ) * I)).map (starRingEnd ℂ) * (B ρ)⁻¹`. Rewrite using `[diagonal_map (map_zero _)]`. Use `congr 3`. Use function extensionality and compare the values at `c`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Complex.exp_conj, map_mul, Complex.conj_ofReal, Complex.conj_I]`. Simplify using `only [s]`. Use `push_cast`. Use the proof step `ring_nf)`. Establish `hQ : ∀ a ∈ GinfC T, Q (C.xB (C.mvB a B)) = φ (g * a) / detPow C.θ T m a` using `fun a ha => by`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Q1 _ (U1 a), hF a ha]`. Use `⟨Q, GlobalTheory.T.differentiableOn_frames_of_killedNilpotentDerivative _ _ C.X la Q Q2 fun y hy => ?_, Q2, fun a ha => ?_⟩` and prove the remaining obligations. Use `swap`. Rewrite using `[hQ a ha]`. Clear denominators, using `[dNe a]` for the nonvanishing conditions.
+Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨a, ha, rfl⟩` from `U2 y hy`. Establish `hs : DifferentiableAt ℝ (fun Y : GlobalTheory.SmoothForms.LieN T => φ (g * a * GlobalTheory.SmoothForms.expInf C.θ T Y)) 0` using `(((GlobalTheory.SmoothForms.isSmoothInf_iff φ).1 ((GlobalTheory.SmoothForms.smooth_iff R φ).1 hL.1) (g * a)).differentiable (by simp)) 0`. Set `L : Frame C.X.Ψ T.rank →L[ℝ] GlobalTheory.SmoothForms.LieN T` to `LinearMap.toContinuousLinearMap (toLieC C R B)`. Set `lam : GlobalTheory.SmoothForms.LieN T →L[ℝ] ℂ` to `trCL T m`. Set `f : GlobalTheory.SmoothForms.LieN T → ℂ` to `fun Y => (detPow C.θ T m a)⁻¹ * (φ (g * a * GlobalTheory.SmoothForms.expInf C.θ T Y) * cexp (-lam Y))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ Z ∈ unitLie C.X, Q (rmul (C.xB (C.mvB a B)) (expFr Z)) = f (L Z)`. Introduce `Z hZ`. Establish `he` using `GlobalTheory.SmoothForms.isExpFam_expInf R (L Z)`. Rewrite using `[← xB_mvB_mul C B hB a _ _ fun ρ => ?_, hQ _ (mul_mem ha he.1), dMul, dExp]`. Simplify using `only [f, lam, trCL_apply, mul_assoc, Complex.exp_neg]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Clear denominators, using `[dNe a]` for the nonvanishing conditions. Use `show infMat _ _ (C.θ ρ) _ = _`. Rewrite using `[he.2 ρ]`. Express the relevant statement in the definitionally equal form `NormedSpace.exp ((toLieC C R B Z ρ).1) = _`. Rewrite using `[(GlobalTheory.T.conjFrameToRealLieAlgebra_spec D S T C R B hB Z hZ).1 ρ, Matrix.exp_conj _ _ ((isUnit_iff_isUnit_det _).2 (isUnit_det_B C hB ρ))]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `congr 2`. Conclude with `(exp_map_conj _).symm`. Establish `h0 : (0 : Frame C.X.Ψ T.rank) ∈ unitLie C.X` using `fun τ => by`. Establish `: mat (0 : Frame C.X.Ψ T.rank) τ = 0` using `rfl`. Simplify using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `Dφ` to `fderiv ℝ (fun Y : GlobalTheory.SmoothForms.LieN T => φ (g * a * GlobalTheory.SmoothForms.expInf C.θ T Y)) 0`. Establish `hE : HasFDerivAt (fun Y : GlobalTheory.SmoothForms.LieN T => cexp (-lam Y)) (cexp (-lam 0) • -lam) 0` using `lam.hasFDerivAt.neg.cexp`. Establish `hfd` using `(hs.hasFDerivAt.mul hE).const_mul (detPow C.θ T m a)⁻¹`. Establish `hfd' : HasFDerivAt f ((detPow C.θ T m a)⁻¹ • (φ (g * a * GlobalTheory.SmoothForms.expInf C.θ T 0) • (cexp (-lam 0) • -lam) + cexp (-lam 0) • Dφ)) (L 0)`. Establish `h0L : L 0 = 0` using `map_zero L`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h0L]`. Conclude with `hfd`. Use `⟨_ , (hfd'.comp (0 : Frame C.X.Ψ T.rank) L.hasFDerivAt).hasFDerivWithinAt.congr key (key 0 h0), ?_⟩` and prove the remaining obligations. Introduce `τ c d hcd Z hZ Z' hZ' e`. Take `⟨ρ, rfl⟩` from `C.m.e.surjective τ`.
-
-Establish `hD` using `GlobalTheory.T.fderiv_conjFrameToRealLie_loweringOperator_eq_zero D S T C R B hB φ hL (g * a) ρ c d hcd Z Z' hZ hZ' e`. Establish `hT` using `GlobalTheory.T.weightedTrace_conjFrameToRealLie_loweringOperator D S T C R B hB m ρ c d hcd Z Z' hZ hZ' e`. Establish `hℓ : ∀ W : Frame C.X.Ψ T.rank, ((detPow C.θ T m a)⁻¹ • (φ (g * a * GlobalTheory.SmoothForms.expInf C.θ T 0) • (cexp (-lam 0) • -lam) + cexp (-lam 0) • Dφ)).comp L W = (detPow C.θ T m a)⁻¹ * (φ (g * a * GlobalTheory.SmoothForms.expInf C.θ T 0) * (cexp (-lam 0) * -trLin T m (toLieC …` using `fun W => rfl`. Rewrite using `[hℓ, hℓ]`. Take the linear combination `((detPow C.θ T m a)⁻¹ * cexp (-lam 0)) * hD - ((detPow C.θ T m a)⁻¹ * φ (g * a * GlobalTheory.SmoothForms.expInf C.θ T 0) * cexp (-lam 0)) * hT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem holUpTo_of_lowKilled : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (B : C.Bas), C.IsB B → ∀ (la : Wt C.X.Ψ T.rank) (m : D.what₂.Tau → ℤ) (φ : GA D T → ℂ), LowKilled C.θ T B φ → (∀ (ρ : D.what₂.Tau) (t : Fin T.rank → ℝ) (g : GA D T), φ (g * torAt C.θ T B ρ t) = cexp (((∑ a, ((m ρ - la (C.m.e ρ) a : ℤ) : ℝ) * t a : ℝ) : ℂ) * I) * φ g) → HolUpTo C B la (detPow C.θ T m) φ := by
   intro D S T C B hB la m φ hL htor g

@@ -7,9 +7,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hmap : ((Over.pullback p).map η[G]).left ≫ pullback.fst G.hom p = pullback.fst (𝟙_ (Over S)).hom p ≫ (η[G]).left` using `by simp; exact pullback.lift_fst _ _ _`. Establish `hε : (Functor.LaxMonoidal.ε (Over.pullback p)).left ≫ pullback.fst (𝟙_ (Over S)).hom p = p`. Establish `h1 : pullback.fst (𝟙_ (Over S)).hom p = pullback.snd (𝟙_ (Over S)).hom p ≫ p`. Rewrite using `[← pullback.condition]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : (Functor.LaxMonoidal.ε (Over.pullback p)).left ≫ pullback.snd (𝟙_ (Over S)).hom p = 𝟙 _` using `Over.w (Functor.LaxMonoidal.ε (Over.pullback p))`. Rewrite using `[h1, ← Category.assoc, h2, Category.id_comp]`. Use `show (Functor.LaxMonoidal.ε (Over.pullback p) ≫ (Over.pullback p).map η[G]).left ≫ pullback.fst G.hom p = _`. Rewrite using `[Over.comp_left, Category.assoc, hmap, ← Category.assoc, hε]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem overPullback_unit_comp_fst {S S' : Scheme.{0}} (p : S' ⟶ S) (G : Over S) [GrpObj G] :
     (η[(Over.pullback p).obj G]).left ≫ pullback.fst G.hom p = p ≫ (η[G]).left := by
@@ -26,31 +26,27 @@ theorem overPullback_unit_comp_fst {S S' : Scheme.{0}} (p : S' ⟶ S) (G : Over 
   rw [Over.comp_left, Category.assoc, hmap, ← Category.assoc, hε]
 
 /- English proof (translation)
-Introduce `S G _ hsm U y hU hy`. Set `K` to `↑(G.left.residueField y)`. Set `ω : Spec (CommRingCat.of K) ⟶ G.left` to `G.left.fromSpecResidueField y`. Establish `hω : ∀ t, ω t = y` using `fun t => Scheme.fromSpecResidueField_apply y t`. Set `p : Spec (CommRingCat.of K) ⟶ S` to `ω ≫ G.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `P` to `Over.pullback p`. Set `G' : Over (Spec (CommRingCat.of K))` to `P.obj G`. Set `q : G'.left ⟶ G.left` to `pullback.fst G.hom p`. Establish `hsm' : Smooth G'.hom` using `by show Smooth (pullback.snd G.hom p); infer_instance`. Set `y' : 𝟙_ (Over (Spec (CommRingCat.of K))) ⟶ G'` to `Over.homMk (pullback.lift ω (𝟙 _) (by simp [p])) (pullback.lift_snd _ _ _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hy'q : y'.left ≫ q = ω` using `pullback.lift_fst _ _ _`. Establish `heq : (η[G']).left ≫ q = p ≫ (η[G]).left` using `overPullback_unit_comp_fst p G`. Establish `hZ` using `GlobalTheory.T.preimage_section_connectedComponentIn_of_isPullback G.left S G'.left (Spec (CommRingCat.of K)) G.hom G'.hom p q (η[G]).left (η[G']).left hsm (IsPullback.of_hasPullback G.hom p) (Over.w η[G]) (Over.w η[G']) heq`. Set `pt : Spec (CommRingCat.of K)` to `IsLocalRing.closedPoint K`. Establish `hy'Z : y'.left pt ∈ connectedComponent ((η[G']).left pt)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : y'.left pt ∈ q ⁻¹' {x : G.left | x ∈ connectedComponentIn (G.hom ⁻¹' {G.hom x}) ((η[G]).left (G.hom x))}`. Rewrite using `[Set.mem_preimage, ← Scheme.Hom.comp_apply, hy'q, hω]`. Conclude with `hy`. Rewrite `h1` using `[hZ]`. Establish `h2 : G'.hom ⁻¹' {G'.hom (y'.left pt)} = Set.univ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `t`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_univ, iff_true]`. Conclude with `Subsingleton.elim _ _`. Establish `h3 : G'.hom (y'.left pt) = pt` using `Subsingleton.elim _ _`. Establish `h1' : y'.left pt ∈ connectedComponentIn (G'.hom ⁻¹' {G'.hom (y'.left pt)}) ((η[G']).left (G'.hom (y'.left pt)))` using `h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1'` using `[h2, h3, connectedComponentIn_univ]`. Then use the resulting hypothesis. Establish `hU' : (η[G']).left pt ∈ q ⁻¹ᵁ U`. Rewrite using `[Scheme.Hom.mem_preimage, ← Scheme.Hom.comp_apply, heq, Scheme.Hom.comp_apply]`. Establish `: p pt = G.hom y` using `by show G.hom (ω pt) = _`. Rewrite using `[hω]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `hU`. Take `⟨z, hz1, hz2⟩` from `GlobalTheory.T.exists_mem_rightTranslate_mem_identityComponent K G' hsm' (q ⁻¹ᵁ U) y' hU' hy'Z`. Set `L : G' ⟶ P.obj (G ⊗ G)` to `lift (𝟙 G') (toUnit G' ≫ y') ≫ Functor.LaxMonoidal.μ P G G`. Establish `hmap : ∀ {A B : Over S} (f : A ⟶ B), (P.map f).left ≫ pullback.fst B.hom p = pullback.fst A.hom p ≫ f.left`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `A B f`. Simplify using `[P]`. Conclude with `pullback.lift_fst _ _ _`. Establish `key : ∀ (M : G' ⟶ P.obj (G ⊗ G)) {B : Over S} (f : G ⊗ G ⟶ B), f.left (pullback.fst (G ⊗ G).hom p (M.left z)) = pullback.fst B.hom p ((M ≫ P.map f).left z)`. Introduce `M B f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Over.comp_left, Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply _ (pullback.fst B.hom p), hmap, Scheme.Hom.comp_apply]`. Use `⟨pullback.fst (G ⊗ G).hom p (L.left z), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key L]`. Establish `: L ≫ P.map (fst G G) = 𝟙 G'` using `by show (lift (𝟙 G') (toUnit G' ≫ y') ≫ Functor.LaxMonoidal.μ P G G) ≫ _ = _`. Rewrite using `[Category.assoc, Functor.Monoidal.μ_fst, lift_fst]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Over.id_left]`. Conclude with `(Scheme.Hom.mem_preimage _).1 hz1`. Rewrite using `[key L]`. Establish `: L ≫ P.map μ[G] = 𝟙 G' * (toUnit G' ≫ y')` using `by show (lift (𝟙 G') (toUnit G' ≫ y') ≫ Functor.LaxMonoidal.μ P G G) ≫ _ = _`. Rewrite using `[Category.assoc]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(Scheme.Hom.mem_preimage _).1 hz2`. Rewrite using `[key L]`. Establish `: L ≫ P.map (snd G G) = toUnit G' ≫ y'` using `by show (lift (𝟙 G') (toUnit G' ≫ y') ≫ Functor.LaxMonoidal.μ P G G) ≫ _ = _`.
-
-Rewrite using `[Category.assoc, Functor.Monoidal.μ_snd, lift_snd]`. Rewrite using `[this]`. Rewrite using `[Over.comp_left, ← Scheme.Hom.comp_apply, Category.assoc]`. Use `show ((toUnit G').left ≫ y'.left ≫ q) z = y`. Rewrite using `[hy'q]`.
-
-Conclude with `hω _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unitComponent_mul_mem :
     ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], Smooth G.hom → ∀ (U : G.left.Opens) (y : G.left),

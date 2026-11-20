@@ -27,9 +27,7 @@ namespace GlobalTheory.LevDict
 open GlobalTheory.UPel.HT GlobalTheory.DrinLev.HT
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨(Equiv.finite_iff e).2 h1, ?_, fun c f => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_congr e]`. Conclude with `h2`. Rewrite using `[h3 c f]`.
-
-Conclude with `(finprod_comp_equiv e (f := fun i => c.ev (P i) f)).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFullSet_comp_equiv {S : Scheme.{0}} {Z : Over S} {J J' : Type} {P : J → (𝟙_ (Over S) ⟶ Z)}
     (h : GlobalTheory.DrinLev.IsFullSet Z P) (e : J' ≃ J) : GlobalTheory.DrinLev.IsFullSet Z (P ∘ e) := by

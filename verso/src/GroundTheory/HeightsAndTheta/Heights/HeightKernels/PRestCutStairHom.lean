@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `f N`. Establish `hsum : (∑ i : Fin N, (i : ℕ)) = N * (N - 1) / 2` using `(Nat.div_eq_of_eq_mul_left (by norm_num) (KRest.sum_fin_val_mul_two N).symm).symm`. Establish `hinner : ∀ τ : Fin f, (∏ i : Fin N, (X (τ, i) : RestTerms.RootRing f N) ^ (i : ℕ)).IsHomogeneous (∑ i : Fin N, (i : ℕ))` using `fun τ => IsHomogeneous.prod _ _ _ fun i _ => isHomogeneous_X_pow _ _`. Establish `h` using `IsHomogeneous.prod (Finset.univ : Finset (Fin f)) _ _ fun τ _ => hinner τ`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `restStair RestTerms.topDegree`. Rewrite using `[← hsum]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RestCutStairHom.proof : RestCutStairHom.Statement := by
   intro f N

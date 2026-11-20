@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UCanon
 
 /- English proof (translation)
-Take `⟨k, _, m, e, C, ξ, hT, hy, hξ⟩` from `GlobalTheory.T.exists_pointRigid_tautological_chart_unitary_boundary Xo c φ hpq hφ hns zs i OZ N d J π j BD hP hS x hx`. Establish `hE` using `GlobalTheory.T.tautologicalChart_isEtaleCompletion_localRing Xo c φ hpq hφ hns zs i OZ N d J π j BD hP hS C hT ξ hy`. Take `⟨hset, hred, a, ha, hbd⟩` from `GlobalTheory.T.tautologicalChart_boundary_equations Xo c φ hpq hφ hns zs i OZ N d J π j BD hP hS C hT ξ hy`. Conclude with `⟨k, inferInstance, m, e, C, ξ, a, hT.1, hy, hξ, hE, hred, hset, ha, hbd⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem uPre_of_boundary_pointRigid {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)) (hpq : 1 ≤ Dw.p + Dw.q)

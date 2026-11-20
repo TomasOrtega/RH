@@ -16,14 +16,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun _ hN => hN.1 f₀ h`.
+A detailed English derivation is pending.
 -/
 theorem mem_pol_of_isGauss (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, EmbOver E w)
     {f₀ : SInf F (Fin n × Fin d)} (h : M.IsGauss ψ τ f₀) : f₀ ∈ M.Pol ψ τ :=
   Submodule.mem_sInf.2 fun _ hN => hN.1 f₀ h
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun N hN => hN.2 u hu f (Submodule.mem_sInf.1 hf N hN) f₁ h`.
+A detailed English derivation is pending.
 -/
 theorem mem_pol_of_actsD (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, EmbOver E w)
     {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evI F) u) {f f₁ : SInf F (Fin n × Fin d)} (hf : f ∈ M.Pol ψ τ)
@@ -33,9 +33,9 @@ theorem mem_pol_of_actsD (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (τ : ∀ 
 open scoped Classical in
 
 /- English proof (translation)
-Take `⟨u, hu, hD⟩` from `GlobalTheory.HeisDerivArch.exists_heisLine_actsD_eq M ψ hψ (v, a)`. Take `⟨D, hDa⟩` from `GlobalTheory.HeisDeriv.exists_actsD_heisLine M ψ hψ u hu`. Establish `e : D f = f₁`. Use `SchwartzMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[hD f (D f) (hDa f) y, h₁ y]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e ▸ mem_pol_of_actsD M ψ τ hu hf (hDa f)`.
+A detailed English derivation is pending.
 -/
 theorem pol_stable (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (τ : ∀ w : InfinitePlace F, EmbOver E w)
     (v a : Fin n × Fin d → mixedEmbedding.mixedSpace F) {f f₁ : SInf F (Fin n × Fin d)} (hf : f ∈ M.Pol ψ τ)
@@ -51,15 +51,15 @@ theorem pol_stable (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Take `⟨g, hg, Q, c, hc, hQ, hgQ⟩` from `GlobalTheory.T.exists_gaussVacuum_nondegenerate_gaussian_dualPair F E σ B n d X W M χX χW om r s r' s' hP`. Use `GlobalTheory.T.schwartzSubmodule_eq_top_of_gaussian_mem_derivStable _ _ g Q c hc hQ hgQ (mem_pol_of_isGauss M B.ψ B.emb hg) ?_ ?_` and prove the remaining obligations. Introduce `v f f₁ hf h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `pol_stable M B.ψ hψ B.emb v 0 hf fun y => ?_` and prove the remaining obligations. Rewrite using `[h₁ y]`. Simplify using `[GlobalTheory.ArchUniq.trP]`. Introduce `ℓ f f₁ hf h₁`. Establish `hnd` using `GlobalTheory.ArchSch.mixedTracePairing_nondegenerate F (Fin n × Fin d)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, ∀ y, GlobalTheory.ArchUniq.trP F (Fin n × Fin d) y a = ℓ y := by`. Set `e` to `(GlobalTheory.ArchSch.trP F (Fin n × Fin d)).flip.toDual hnd.flip`. Use `⟨e.symm ℓ.toLinearMap, fun y => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [e, LinearMap.BilinForm.toDual_def]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `_ = ℓ y := by rw [e.apply_symm_apply]; rfl`. Establish `hmem : (-(2 * Real.pi * Complex.I)) • f₁ ∈ M.Pol B.ψ B.emb`. Use `pol_stable M B.ψ hψ B.emb 0 a hf fun y => ?_` and prove the remaining obligations. Simplify using `[h₁ y, ha y]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hne : (-(2 * Real.pi * Complex.I)) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Use `(M.Pol B.ψ B.emb).smul_mem (-(2 * Real.pi * Complex.I))⁻¹ hmem` as an intermediate fact. Rewrite `this` using `[inv_smul_smul₀ hne]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pol_dense : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),

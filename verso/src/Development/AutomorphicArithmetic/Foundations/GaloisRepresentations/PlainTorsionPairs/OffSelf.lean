@@ -12,7 +12,7 @@ open private det_comap tw_flag unramified_at_base_place irr_of_mat pt_flag w_ne 
 namespace UpperTheory.Gal.projectedFormsSystemPart
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl : w = w'` from `IsDedekindDomain.HeightOneSpectrum.ext (Ideal.ext fun x => (h x).symm.trans (h' x))`. Take `rfl : ψ = ψ'` from `funext fun j => MonoidHom.ext fun g => hψ j g g rfl`. Conclude with `⟨wt, hm, hl⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem la_move {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
     {A A' : ValuationSubring Ω} {w w' : W.Plc F} (h : IsPlaceOver A w) (h' : IsPlaceOver A' w') (e : A = A')
@@ -40,14 +40,14 @@ def EndPt (R : CReal k c₁ f 3 ka) (ι : Qbar l ≃+* ℂ) (φ : R.B₀.B →�
     ∀ x : R.B₀.Pt, x = (ξ.comp R.S.inc).comp φ → x.Arith h → IsAutCsd ι ((R.K.tw (ptRep R.S ξ)).toHomUnits.comp R.V.pr)
 
 /- English proof (translation)
-The claim follows from `funext fun i => (TwLink.IsPhi.maps R.K hφ ξ).2 v i`.
+A detailed English derivation is pending.
 -/
 private theorem psi_eq (R : CReal k c₁ f 3 ka) {φ : R.B₀.B →ₐ[c₁.O] R.S.B} (hφ : R.T.IsPhi φ) (ξ : R.S.A →ₐ[c₁.O] Qbar l) (v) :
     W.UniversalOrdinaryDeterminantRing.Pt.psi (B := R.B₀) ((ξ.comp R.S.inc).comp φ) v = R.K.twψ (ptRep R.S ξ) v :=
   funext fun i => (TwLink.IsPhi.maps R.K hφ ξ).2 v i
 
 /- English proof (translation)
-Establish `hD : W.UniversalOrdinaryDeterminantRing.Pt.D (B` using `R.B₀) ((ξ.comp R.S.inc).comp φ) = W.GDet.ofRep (R.K.tw (ptRep R.S ξ)) := (TwLink.IsPhi.maps R.K hφ ξ).1`. Establish `hrep : W.UniversalOrdinaryDeterminantRing.Pt.IsRep (B` using `R.B₀) ((ξ.comp R.S.inc).comp φ) ((R.K.tw (ptRep R.S ξ)).toHomUnits.comp R.V.pr) := by`. Use `(congrArg (fun D : W.GDet 3 (Qbar l) R.V.frame.G₀ => D.comap R.V.pr) hD).trans (det_comap (R.K.tw (ptRep R.S ξ)) R.V.pr (W.mat ((R.K.tw (ptRep R.S ξ)).toHomUnits.comp R.V.pr)) fun g => rfl)` and prove the remaining obligations. Conclude with `end2o R.v0 hE ((ξ.comp R.S.inc).comp φ) h _ (fun b hb => hg _ (RingHom.ker_isPrime _) hTI (Ideal.mem_map_of_mem φ hb)) ha hrep (irr_of_mat _ R.V.pr (Pr.pr_surj R.V) (R.K.tw_irr _ (irrTI l c₁ _ R.C₀ 3 R.ok (Or.inr rfl) R.S ξ hV.1 hTI)))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem off_self (R : CReal k c₁ f 3 ka) {ι : Qbar l ≃+* ℂ} {φ : R.B₀.B →ₐ[c₁.O] R.S.B} (hφ : R.T.IsPhi φ)
     {J : Ideal R.B₀.B} (hg : AllGood R.S (J.map φ)) (hE : R.B₀.arithmeticPointClassicality ι J) (h : R.s.Wt 3) (ξ : R.S.A →ₐ[c₁.O] Qbar l)
@@ -63,12 +63,12 @@ private theorem off_self (R : CReal k c₁ f 3 ka) {ι : Qbar l ≃+* ℂ} {φ :
     (irr_of_mat _ R.V.pr (Pr.pr_surj R.V) (R.K.tw_irr _ (irrTI l c₁ _ R.C₀ 3 R.ok (Or.inr rfl) R.S ξ hV.1 hTI)))
 
 /- English proof (translation)
-The claim follows from `Units.ext (R.κ_pr g)`.
+A detailed English derivation is pending.
 -/
 private theorem kap (R : CReal k c₁ f 3 ka) (g : G L Ω) : R.K.κA (Qbar l) (R.V.pr g) = ka g := Units.ext (R.κ_pr g)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[k.j_inj u (Subtype.ext h)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private theorem psi_j (ρ : Fr.NRep (Φ.ext f) 3 (Qbar l)) {u u' : Φ.V} (e : u = u') (j : Fin 3) (a : Φ.Gv u) (a' : Φ.Gv u')
     (h : (k.j u a).1 = (k.j u' a').1) : ρ.ψ u j a = ρ.ψ u' j a' := by

@@ -27,7 +27,7 @@ section
 variable {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `X.χ_fin la`. Introduce `h0`. Use `h γ hγ` as an intermediate fact. Rewrite `this` using `[h0, zero_pow hn.ne']`. Conclude with `zero_ne_one this`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_ne_zero (la : Wt X.Ψ r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : X.χ la γ ≠ 0 := by
   obtain ⟨n, hn, h⟩ := X.χ_fin la
@@ -37,7 +37,7 @@ theorem chi_ne_zero (la : Wt X.Ψ r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : X
   exact zero_ne_one this
 
 /- English proof (translation)
-Use `⟨differentiableOn_const _, fun x _ b _ => by simp [bchar], fun γ hγ x _ => ?_⟩` and prove the remaining obligations. Establish `h` using `X.χ_add 0 0 γ hγ`. Rewrite `h` using `[add_zero]`. Rewrite using `[mul_one]`. Conclude with `mul_left_cancel₀ (chi_ne_zero X 0 hγ) (by rw [mul_one]; exact h)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSec_one : X.IsSec 0 (fun _ => (1 : ℂ)) := by
   refine ⟨differentiableOn_const _, fun x _ b _ => by simp [bchar], fun γ hγ x _ => ?_⟩
@@ -49,7 +49,7 @@ theorem isSec_one : X.IsSec 0 (fun _ => (1 : ℂ)) := by
 variable {X}
 
 /- English proof (translation)
-Use `⟨hP.1.mul hQ.1, fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [hP.2.1 x hx b hb, hQ.2.1 x hx b hb, bchar_add X hb]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hP.2.2 γ hγ x hx, hQ.2.2 γ hγ x hx, X.χ_add la la' γ hγ]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isSec_mul {la la' : Wt X.Ψ r} {P Q : Frame X.Ψ r → ℂ} (hP : X.IsSec la P)
     (hQ : X.IsSec la' Q) : X.IsSec (la + la') (fun x => P x * Q x) := by
@@ -60,7 +60,7 @@ theorem isSec_mul {la la' : Wt X.Ψ r} {P Q : Frame X.Ψ r → ℂ} (hP : X.IsSe
     ring
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using isSec_one X`. Consider the case `succ m ih => simpa only [succ_nsmul, pow_succ] using isSec_mul ih hP`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem isSec_pow {L : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec L P) (m : ℕ) :
     X.IsSec (m • L) (fun x => P x ^ m) := by
@@ -69,9 +69,9 @@ theorem isSec_pow {L : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec L P) 
   | succ m ih => simpa only [succ_nsmul, pow_succ] using isSec_mul ih hP
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset (Fin n), X.IsSec ((∑ k ∈ S, α k) • L) (fun x => ∏ k ∈ S, s k x ^ α k)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using isSec_one X`. Consider the case `insert a S ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify `isSec_mul (isSec_pow (hs a) (α a)) ih` using `only [Finset.sum_insert ha, Finset.prod_insert ha, add_nsmul]`. Conclude with `key Finset.univ`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isSec_monoM {n : ℕ} {L : Wt X.Ψ r} {s : Fin n → Frame X.Ψ r → ℂ}
     (hs : ∀ k, X.IsSec L (s k)) (α : Fin n → ℕ) : X.IsSec ((∑ k, α k) • L) (monoM X s α) := by
@@ -86,13 +86,11 @@ theorem isSec_monoM {n : ℕ} {L : Wt X.Ψ r} {s : Fin n → Frame X.Ψ r → �
   exact key Finset.univ
 
 /- English proof (translation)
-Take `⟨c, hc, hWL'⟩` from `hWL`. Establish `hka1 : ∀ z ∈ OmF X x0, kaF X x0 bb z ≤ 1` using `fun z hz => by`. Unfold `kaF`. Rewrite using `[Real.exp_le_one_iff]`. Use `mul_nonneg hbb (ExF.rhF_nonneg X x0 ho hz)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `hExt r X x0 ho la F hF fun Cs _ _ => ?_` and prove the remaining obligations. Establish `hpt : ∀ᵐ z ∂muF X x0, ENNReal.ofReal (‖F z‖ ^ 2 * Real.exp (-phla X la (cpt X x0 z))) ≤ ENNReal.ofReal (1 / c) * (ENNReal.ofReal (‖F z‖ ^ 2 / kaF X x0 bb z) * W (cpt X x0 z))`. Use `(OntoH.ae_mem_Om X x0).mono fun z hz => ?_` and prove the remaining obligations. Establish `hk : 0 < kaF X x0 bb z` using `Real.exp_pos _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : ‖F z‖ ^ 2 * Real.exp (-phla X la (cpt X x0 z)) = 1 / c * (‖F z‖ ^ 2 * (c * Real.exp (-phla X la (cpt X x0 z))))` using `by field_simp`. Rewrite using `[e, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul (by positivity)]`. Use `gcongr`. Conclude with `le_div_self (by positivity) hk (hka1 z hz)`. Conclude with `hWL' _ hz`.
-
-Use `((setLIntegral_le_lintegral _ _).trans (lintegral_mono_ae hpt)).trans_lt ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hI`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extension (hExt : ExtFStatement (E := E)) {x0 : Frame X.Ψ r} (ho : IsOrth X x0)
     {la : Wt X.Ψ r} {W : Frame X.Ψ r → ℝ≥0∞} (hWL : WLower X la W) {bb : ℝ} (hbb : 0 ≤ bb)
@@ -120,11 +118,11 @@ theorem exists_extension (hExt : ExtFStatement (E := E)) {x0 : Frame X.Ψ r} (ho
   exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top hI
 
 /- English proof (translation)
-Unfold `poin`. Establish `e : ∀ γ : X.Γ, (X.χ (la + la') γ.1)⁻¹ * P (lact γ.1 x) = ∑ i ∈ S, g i x * ((X.χ la γ.1)⁻¹ * Q i (lact γ.1 x))`. Introduce `γ`. Rewrite using `[hP _ (OntoS.dom_lact X γ.2 hx), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `chi_ne_zero X la γ.2`. Establish `h2` using `chi_ne_zero X la' γ.2`. Rewrite using `[(hg i hi).2.2 γ.1 γ.2 x hx, X.χ_add la la' γ.1 γ.2]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[tsum_congr e, Summable.tsum_finsetSum fun i hi => ((hQ i hi).of_norm).mul_left (g i x)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => tsum_mul_left`.
+A detailed English derivation is pending.
 -/
 theorem poin_sum_mul {ι : Type*} (S : Finset ι) {la la' : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ}
     {g Q : ι → Frame X.Ψ r → ℂ} (hg : ∀ i ∈ S, X.IsSec la' (g i))
@@ -147,25 +145,23 @@ theorem poin_sum_mul {ι : Type*} (S : Finset ι) {la la' : Wt X.Ψ r} {P : Fram
 end
 
 /- English proof (translation)
-Introduce `hN hPo hOn hExt hMI r X Xa Fl hPD hfin ⟨bb, m, hbb, hbm, hmar⟩ _ _ _ hcusp ⟨K, gs, hgs⟩ δ t ht _ x0 ho FF hFF f hf hfi cc hvan`. Establish `h2` using `Xa.n_ge`. Establish `hT` using `Xa.T_ge`. Establish `hnT : nd X ≤ Xa.T` using `by nlinarith`. Establish `hbb0 : 0 ≤ bb` using `le_trans (by positivity) hbb.le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbm' : bb ≤ m`. Establish `: 0 ≤ bb ^ 2 * ((X.Ψ.card * min X.p0 (r - X.p0) : ℕ) : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : ∀ k, X.IsSec Xa.L (Fl.s k)` using `fun k => (Fl.s_van k).1.1.1`. Take `⟨hg, hgC⟩` from `GlobalTheory.LeadBound.main r X Xa Fl Xa.Fp Xa.T (Xa.T - nd X) δ (by omega) t ht cc`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set g := leadM X Fl.s Fl.w0 t Xa.T (Xa.T - nd X) cc with hgdef`. Establish `hf' : X.IsBddSec (Xa.Fp + Xa.T • Xa.L) (fun x => f x - g x)`. Establish `h` using `bdd_add X hf.1 (bdd_smul X (-1) hg)`. Establish `e : f + (-1 : ℂ) • g = fun x => f x - g x`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[sub_eq_add_neg]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hIn` using `DivInFFPf.divInFF_of hN hMI r X Xa Fl hfin x0 ho FF hFF f g hf.1.1 hg.1 hfi hgC hvan`. Take `⟨hMT, hLT, hET⟩` from `DivMetricPf.divMetric_of hN r X Xa Fl Xa.T (by omega)`. Take `⟨hMn, hLn, -⟩` from `DivMetricPf.divMetric_of hN r X Xa Fl (nd X) (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨k0, z0, hz0, hz0'⟩, hLev⟩` from `divLevi_holds r X Xa Fl Xa.T (by omega) x0 ho`. Take `⟨F, P, hF, hFI, hP, hPF, hpo⟩` from `hOn r X x0 ho hPD _ (Wdiv X Xa Fl Xa.T) (Psdiv X Xa Fl Xa.T) (fun z => Fl.s k0 (cpt X x0 z)) bb m hMT hLT hbb hbm (OntoB.hol_comp X x0 (hs k0).1) ⟨z0, hz0, hz0'⟩ (hLev k0).1 (fun z hz hz' => hET _ hz ⟨k0, hz'⟩) (fun z hz hz' ξ => (hmar x0 ho z hz ξ).trans ((hLev k0).2 z hz hz' ξ) …`. Take `⟨H, hH, hFH⟩` from `divUp_holds r X Xa Fl x0 ho bb (fun z hz ξ => (mul_le_mul_of_nonneg_right hbm' (OntoB.levi_rh_nonneg RhGradFStatement_holds ho hz ξ)).trans (hmar x0 ho z hz ξ)) ⟨k0, z0, hz0, hz0'⟩ F hF hFI`. Use `choose Q hQ hQH using fun α => exists_extension hExt ho hLn hbb0 (hH α).1 (hH α).2`. Establish `hPQ` using `fun α => hPo r X x0 ho hPD _ _ bb hMn hLn hbb (H α) (Q α) (hH α).1 (hH α).2 (hQ α) (hQH α)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmono : ∀ α ∈ Finset.Nat.antidiagonalTuple (nd X) (Xa.T - nd X), X.IsSec ((Xa.T - nd X) • Xa.L) (monoM X Fl.s α)`. Introduce `α hα`. Establish `h` using `isSec_monoM hs α`. Rewrite `h` using `[Finset.Nat.mem_antidiagonalTuple.1 hα]`. Then use the resulting hypothesis. Establish `hwt : Xa.Fp + Xa.T • Xa.L = Xa.Fp + nd X • Xa.L + (Xa.T - nd X) • Xa.L`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[add_assoc, ← add_nsmul, Nat.add_sub_cancel' hnT]`. Establish `hsum : ∀ y ∈ X.dom, P y = ∑ α ∈ Finset.Nat.antidiagonalTuple (nd X) (Xa.T - nd X), monoM X Fl.s α y * Q α y`. Introduce `y hy`. Use `sub_eq_zero.1 (bigCellStatement_holds r X x0 ho (Xa.Fp + Xa.T • Xa.L) (fun y => P y - ∑ α ∈ Finset.Nat.antidiagonalTuple (nd X) (Xa.T - nd X), monoM X Fl.s α y * Q α y) ⟨?_, fun x hx b hb => ?_⟩ (fun z hz => ?_) y hy)` and prove the remaining obligations. Conclude with `hP.1.sub (DifferentiableOn.fun_sum fun α hα => (hmono α hα).1.mul (hQ α).1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `beta_reduce`. Rewrite using `[mul_sub, hP.2 x hx b hb, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Rewrite using `[(hmono α hα).2.1 x hx b hb, (hQ α).2 x hx b hb, hwt, bchar_add X hb _ ((Xa.T - nd X) • Xa.L)]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `beta_reduce`. Rewrite using `[hPF z hz, hFH z hz, sub_eq_zero]`. Conclude with `Finset.sum_congr rfl fun α _ => by rw [hQH α z hz]`. Use `⟨fun α => poin X (Xa.Fp + nd X • Xa.L) (Q α), fun α _ => (hPQ α).2.1, fun x hx => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hpo x hx, hwt]`. Conclude with `poin_sum_mul _ hmono hsum hx fun α _ => (hPQ α).1 x hx`.
+A detailed English derivation is pending.
 -/
 theorem divCore_of :
     (NfacRmulStatement (E := E) ∧ NfacLactStatement (E := E) ∧ PnormInvStatement (E := E)) →

@@ -23,7 +23,7 @@ def toH0OfCocycle (φ : M →ₗ[R] Cech.Cochain G 0) (hφ : ∀ m, Cech.d G ρ 
     (fun m => LinearMap.mem_ker.mpr (hφ m))
 
 /- English proof (translation)
-Establish `e : toH0OfCocycle φ hφ m = (Submodule.Quotient.mk (⟨φ m, LinearMap.mem_ker.mpr (hφ m)⟩ : LinearMap.ker (Cech.d G ρ 0)) : Cech.H G ρ 0)` using `rfl`. Rewrite using `[e]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).trans (Submodule.mem_comap.trans (Submodule.mem_bot R))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toH0OfCocycle_eq_zero_iff (φ : M →ₗ[R] Cech.Cochain G 0) (hφ : ∀ m, Cech.d G ρ 0 (φ m) = 0) (m : M) :
     toH0OfCocycle φ hφ m = 0 ↔ φ m = 0 := by
@@ -33,9 +33,9 @@ theorem toH0OfCocycle_eq_zero_iff (φ : M →ₗ[R] Cech.Cochain G 0) (hφ : ∀
   exact (Submodule.Quotient.mk_eq_zero _).trans (Submodule.mem_comap.trans (Submodule.mem_bot R))
 
 /- English proof (translation)
-Introduce `ξ`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ ξ`. Take `⟨m, hm⟩` from `h z (LinearMap.mem_ker.mp z.2)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `e : toH0OfCocycle φ hφ m = (Submodule.Quotient.mk (⟨φ m, LinearMap.mem_ker.mpr (hφ m)⟩ : LinearMap.ker (Cech.d G ρ 0)) : Cech.H G ρ 0)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext hm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toH0OfCocycle_surjective (φ : M →ₗ[R] Cech.Cochain G 0) (hφ : ∀ m, Cech.d G ρ 0 (φ m) = 0)
     (h : ∀ z : Cech.Cochain G 0, Cech.d G ρ 0 z = 0 → ∃ m, φ m = z) : Function.Surjective (toH0OfCocycle φ hφ) := by
@@ -49,7 +49,7 @@ theorem toH0OfCocycle_surjective (φ : M →ₗ[R] Cech.Cochain G 0) (hφ : ∀ 
   exact congrArg Submodule.Quotient.mk (Subtype.ext hm)
 
 /- English proof (translation)
-Establish `hker : LinearMap.ker (toH0OfCocycle φ hφ) = K`. Use extensionality with `m`. Rewrite using `[LinearMap.mem_ker, toH0OfCocycle_eq_zero_iff, hK]`. Rewrite using `[← hker]`. Conclude with `(LinearMap.quotKerEquivOfSurjective _ (toH0OfCocycle_surjective φ hφ h)).length_eq`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quotient_eq_length_H0 (φ : M →ₗ[R] Cech.Cochain G 0) (hφ : ∀ m, Cech.d G ρ 0 (φ m) = 0)
     (h : ∀ z : Cech.Cochain G 0, Cech.d G ρ 0 z = 0 → ∃ m, φ m = z) (K : Submodule R M)
@@ -61,7 +61,7 @@ theorem length_quotient_eq_length_H0 (φ : M →ₗ[R] Cech.Cochain G 0) (hφ : 
   exact (LinearMap.quotKerEquivOfSurjective _ (toH0OfCocycle_surjective φ hφ h)).length_eq
 
 /- English proof (translation)
-Rewrite using `[Cech.sgn, ← mul_pow]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem sgn_mul_self' (L : Finset (Fin n)) (j : Fin n) : Cech.sgn L j * Cech.sgn L j = 1 := by
   rw [Cech.sgn, ← mul_pow]
@@ -75,7 +75,7 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-The claim follows from `(Submodule.mem_iInf _).mp ht I`.
+A detailed English derivation is pending.
 -/
 theorem mem_sub_of_mem_secs {F : SubSystem S x Ω} {t : Ω} (ht : t ∈ F.secs) (I : Chart x) :
     t ∈ F.sub I :=
@@ -93,7 +93,7 @@ def toCochain (F₁ F₂ : SubSystem S x Ω) :
   LinearMap.pi fun I : Cech.Idx (support x) 0 => secsTo F₁ F₂ I.1
 
 /- English proof (translation)
-Establish `hv : ∀ (I J : Chart x) (h : I.1 ⊆ J.1), SubSystem.quotRes F₁ F₂ I J h (secsTo F₁ F₂ I t) = secsTo F₁ F₂ J t` using `fun _ _ _ => rfl`. Conclude with `Cech.d_zero_of_compat (fun I => secsTo F₁ F₂ I t) hv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem d_toCochain (F₁ F₂ : SubSystem S x Ω) (t : F₁.secs) :
     Cech.d (fun I => F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I) (SubSystem.quotRes F₁ F₂) 0
@@ -106,7 +106,7 @@ def sing {a : Fin (N + 1)} (ha : a ∈ support x) : Cech.Idx (support x) 0 :=
   ⟨⟨{a}, Finset.singleton_nonempty a, Finset.singleton_subset_iff.mpr ha⟩, Finset.card_singleton a⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Finset.card_eq_one.mp I.2`. Establish `hmem : a ∈ support x` using `I.1.2.2 (by rw [ha]; exact Finset.mem_singleton_self a)`. Conclude with `⟨a, hmem, Subtype.ext (Subtype.ext ha)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem eq_sing (I : Cech.Idx (support x) 0) : ∃ (a : Fin (N + 1)) (ha : a ∈ support x), I = sing ha := by
   obtain ⟨a, ha⟩ := Finset.card_eq_one.mp I.2
@@ -114,11 +114,11 @@ theorem eq_sing (I : Cech.Idx (support x) 0) : ∃ (a : Fin (N + 1)) (ha : a ∈
   exact ⟨a, hmem, Subtype.ext (Subtype.ext ha)⟩
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[SubSystem.secs, Submodule.mem_iInf]`. Introduce `T`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, haT⟩` from `T.2.1`. Establish `ha : a ∈ support x` using `T.2.2 haT`. Establish `h1 : (Submodule.Quotient.mk (⟨(t : Ω), mem_sub_of_mem_secs t.2 _⟩ : F₁.sub (sing ha).1) : F₁.sub (sing ha).1 ⧸ SubSystem.quotSub F₁ F₂ (sing ha).1) = 0` using `congrFun h (sing ha)`. Establish `h2 : (t : Ω) ∈ F₂.sub (sing ha).1` using `(Submodule.Quotient.mk_eq_zero (SubSystem.quotSub F₁ F₂ (sing ha).1)).mp h1`. Conclude with `F₂.mono _ T (Finset.singleton_subset_iff.mpr haT) _ h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use function extensionality and compare the values at `I`. Use `show (Submodule.Quotient.mk (⟨(t : Ω), mem_sub_of_mem_secs t.2 _⟩ : F₁.sub I.1) : F₁.sub I.1 ⧸ SubSystem.quotSub F₁ F₂ I.1) = 0`. Conclude with `(Submodule.Quotient.mk_eq_zero (SubSystem.quotSub F₁ F₂ I.1)).mpr (mem_sub_of_mem_secs h I.1)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem toCochain_eq_zero_iff (F₁ F₂ : SubSystem S x Ω) (t : F₁.secs) :
     toCochain F₁ F₂ t = 0 ↔ t ∈ F₂.secs.comap F₁.secs.subtype := by
@@ -141,9 +141,9 @@ theorem toCochain_eq_zero_iff (F₁ F₂ : SubSystem S x Ω) (t : F₁.secs) :
     exact (Submodule.Quotient.mk_eq_zero (SubSystem.quotSub F₁ F₂ I.1)).mpr (mem_sub_of_mem_secs h I.1)
 
 /- English proof (translation)
-Rewrite using `[Cech.d_apply]`. Establish `: (⟨∑ j : J.1.1, Cech.sgn J.1.1 j • u (Cech.face J j), Submodule.sum_mem _ fun j _ => zsmul_mem (F₁.mono _ _ (Cech.face_subset J j) _ (hu (Cech.face J j))) _⟩ : F₁.sub J.1) = ∑ j : J.1.1, Cech.sgn J.1.1 j • F₁.res _ J.1 (Cech.face_subset J j) ⟨u (Cech.face J j), hu _⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[SubSystem.res]`. Rewrite using `[this, ← Submodule.mkQ_apply, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_zsmul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem d_mk (F₁ F₂ : SubSystem S x Ω) (u : Cech.Idx (support x) 0 → Ω) (hu : ∀ I, u I ∈ F₁.sub I.1)
     (J : Cech.Idx (support x) 1) :
@@ -166,33 +166,31 @@ theorem d_mk (F₁ F₂ : SubSystem S x Ω) (u : Cech.Idx (support x) 0 → Ω) 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hrep : ∀ I : Cech.Idx (support x) 0, ∃ v : Ω, ∃ hv : v ∈ F₁.sub I.1, (Submodule.Quotient.mk ⟨v, hv⟩ : F₁.sub I.1 ⧸ SubSystem.quotSub F₁ F₂ I.1) = z I`. Introduce `I`. Take `⟨⟨v, hv⟩, h⟩` from `Submodule.Quotient.mk_surjective _ (z I)`. Conclude with `⟨v, hv, h⟩`. Use `choose v hv hvz using hrep`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hz' : z = fun I => Submodule.Quotient.mk ⟨v I, hv I⟩` using `funext fun I => (hvz I).symm`. Establish `hpair : ∀ J : Cech.Idx (support x) 1, ∑ j : J.1.1, Cech.sgn J.1.1 j • v (Cech.face J j) ∈ F₂.sub J.1`. Introduce `J`. Establish `e` using `congrFun hz J`. Rewrite `e` using `[hz', d_mk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(Submodule.Quotient.mk_eq_zero (SubSystem.quotSub F₁ F₂ J.1)).mp e`. Set `V : Finset (Fin (N + 1)) → Ω` to `fun T => if h : (T.Nonempty ∧ T ⊆ support x) ∧ T.card = 0 + 1 then v ⟨⟨T, h.1⟩, h.2⟩ else 0`. Establish `hV : ∀ I : Cech.Idx (support x) 0, V I.1.1 = v I` using `fun I => by`. Simplify using `only [V]`. Rewrite using `[dif_pos ⟨I.1.2, I.2⟩]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hVpair : ∀ (a b : Fin (N + 1)) (ha : a ∈ support x) (hb : b ∈ support x) (T : Chart x), a ∈ T.1 → b ∈ T.1 → V {a} - V {b} ∈ F₂.sub T`. Introduce `a b ha hb T haT hbT`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[sub_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Establish `hsupp : ({a, b} : Finset (Fin (N + 1))) ⊆ support x`. Rewrite using `[Finset.insert_subset_iff, Finset.singleton_subset_iff]`. Conclude with `⟨ha, hb⟩`. Set `J : Cech.Idx (support x) 1` to `⟨⟨{a, b}, Finset.insert_nonempty _ _, hsupp⟩, Finset.card_pair hab⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `hpair J`. Establish `hj : ∀ j : J.1.1, v (Cech.face J j) = V (J.1.1.erase j)` using `fun j => (hV (Cech.face J j)).symm`. Simplify using `only [hj] at e`. Establish `e2` using `Cech.sum_sgn_of_card_two (J := ({a, b} : Finset (Fin (N + 1)))) (Finset.card_pair hab)`. Rewrite `e` using `[Finset.sum_coe_sort ({a, b} : Finset (Fin (N + 1))) (fun j => Cech.sgn {a, b} j • V (({a, b} : Finset (Fin (N + 1))).erase j))]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e`, `e2` using `[Finset.sum_pair hab]`. Establish `ea : ({a, b} : Finset (Fin (N + 1))).erase a = {b}` using `Finset.erase_insert (by simpa using hab)`. Establish `eb : ({a, b} : Finset (Fin (N + 1))).erase b = {a}`. Rewrite using `[Finset.pair_comm]`. Conclude with `Finset.erase_insert (by simpa using Ne.symm hab)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[ea, eb, eq_neg_of_add_eq_zero_right e2, neg_smul, ← sub_eq_add_neg, ← smul_sub]`. Establish `e3` using `zsmul_mem e (Cech.sgn {a, b} a)`. Rewrite `e3` using `[smul_smul, sgn_mul_self', one_smul]`. Establish `e4 : V {a} - V {b} ∈ F₂.sub J.1`. Rewrite using `[← neg_sub]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `neg_mem e3`. Use `F₂.mono J.1 T ?_ _ e4` and prove the remaining obligations. Rewrite using `[Finset.insert_subset_iff, Finset.singleton_subset_iff]`. Conclude with `⟨haT, hbT⟩`. Set `s : Chart x → Ω` to `fun I => V {I.1.min' I.2.1}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∀ I, s I ∈ F₁.sub I`. Introduce `I`. Establish `hm` using `I.1.min'_mem I.2.1`. Establish `h1 : V {I.1.min' I.2.1} ∈ F₁.sub (sing (I.2.2 hm)).1`. Rewrite using `[show V {I.1.min' I.2.1} = v (sing (I.2.2 hm)) from hV (sing (I.2.2 hm))]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv _`. Conclude with `F₁.mono _ I (Finset.singleton_subset_iff.mpr hm) _ h1`. Establish `hcomp : ∀ I₁ I₂ : Chart x, I₁.1 ⊆ I₂.1 → s I₁ - s I₂ ∈ F₂.sub I₂`. Introduce `I₁ I₂ h`. Conclude with `hVpair _ _ (I₁.2.2 (I₁.1.min'_mem I₁.2.1)) (I₂.2.2 (I₂.1.min'_mem I₂.2.1)) I₂ (h (I₁.1.min'_mem I₁.2.1)) (I₂.1.min'_mem I₂.2.1)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨t, ht, hts⟩` from `hlift s hs hcomp`. Use `⟨⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hz']`. Use function extensionality and compare the values at `I`. Take `⟨a, ha, rfl⟩` from `eq_sing I`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (⟨t, mem_sub_of_mem_secs ht _⟩ : F₁.sub (sing ha).1) : F₁.sub (sing ha).1 ⧸ SubSystem.quotSub F₁ F₂ (sing ha).1) = Submodule.Quotient.mk ⟨v (sing ha), hv _⟩`. Rewrite using `[Submodule.Quotient.eq]`. Express the relevant statement in the definitionally equal form `t - v (sing ha) ∈ F₂.sub (sing ha).1`. Establish `hsa : s (sing ha).1 = v (sing ha)`. Establish `hmin : ({a} : Finset (Fin (N + 1))).min' (Finset.singleton_nonempty a) = a` using `Finset.min'_singleton a`.
-
-Express the relevant statement in the definitionally equal form `V {({a} : Finset (Fin (N + 1))).min' _} = v (sing ha)`. Rewrite using `[hmin]`. Conclude with `hV (sing ha)`. Rewrite using `[← hsa]`. Conclude with `hts _`.
+A detailed English derivation is pending.
 -/
 theorem exists_toCochain_eq (F₁ F₂ : SubSystem S x Ω)
     (hlift : ∀ s : Chart x → Ω, (∀ I, s I ∈ F₁.sub I) →
@@ -286,7 +284,7 @@ theorem exists_toCochain_eq (F₁ F₂ : SubSystem S x Ω)
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hφ` using `d_toCochain F₁ F₂`. Establish `hh` using `exists_toCochain_eq F₁ F₂ hlift`. Establish `hK` using `toCochain_eq_zero_iff F₁ F₂`. Establish `e : Module.length S (F₁.secs ⧸ F₂.secs.comap F₁.secs.subtype) = Module.length S (Cech.H (fun I : Chart x => F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I) (SubSystem.quotRes F₁ F₂) 0)` using `length_quotient_eq_length_H0 (toCochain F₁ F₂) hφ hh _ hK`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

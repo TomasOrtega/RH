@@ -33,17 +33,17 @@ theorem alt2_apply {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [Ad
     (f : M →ₗ[R] M →ₗ[R] N) (hf : ∀ x, f x x = 0) (v : Fin 2 → M) : alt2 f hf v = f (v 0) (v 1) := rfl
 
 /- English proof (translation)
-Establish `hlt : ∀ q : PrimeSpectrum R, Function.Bijective (l.lTensor q.asIdeal.ResidueField)`. Introduce `q`. Establish `e : ⇑(l.lTensor q.asIdeal.ResidueField) = ⇑(l.baseChange q.asIdeal.ResidueField)`. Use function extensionality and compare the values at `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Rewrite using `[e]`. Conclude with `h q`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `GlobalTheory.split_injective_of_forall_lTensor_residueField_injective l (fun m hm => (hlt ⟨m, hm.isPrime⟩).1)`. Conclude with `Function.LeftInverse.injective (g := r) fun x => LinearMap.congr_fun hr x`. Establish `hQ : Subsingleton (C ⧸ LinearMap.range l)`. Apply `GlobalTheory.subsingleton_of_residueField_fibres R` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `q`. Establish `h2` using `(hlt q).2`. Establish `h3 : Function.Surjective ((LinearMap.range l).mkQ.lTensor q.asIdeal.ResidueField)` using `LinearMap.lTensor_surjective _ (Submodule.mkQ_surjective _)`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Establish `key : ∀ a : q.asIdeal.ResidueField ⊗[R] (C ⧸ LinearMap.range l), a = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a`. Take `⟨x, rfl⟩` from `h3 a`. Take `⟨y, rfl⟩` from `h2 x`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, LinearMap.range_mkQ_comp]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key a, key b]`. Rewrite using `[← LinearMap.range_eq_top, ← Submodule.Quotient.subsingleton_iff]`. Conclude with `hQ`.
+A detailed English derivation is pending.
 -/
 theorem bijective_of_fibres {R B C : Type} [CommRing R] [AddCommGroup B] [Module R B] [AddCommGroup C]
     [Module R C] [Module.Finite R B] [Module.Finite R C] [Module.Projective R C] (l : B →ₗ[R] C)
@@ -89,22 +89,22 @@ def wedgeMap (hsq : ∀ x : HO1 s, cup _ x x = 0) : ⋀[R]^2 (HO1 s) →ₗ[R] H
   exteriorPower.alternatingMapLinearEquiv (alt2 (cup _) hsq)
 
 /- English proof (translation)
-Simplify using `only [wedgeMap, exteriorPower.alternatingMapLinearEquiv_apply_ιMulti, alt2_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wedgeMap_ιMulti (hsq : ∀ x : HO1 s, cup _ x x = 0) (v : Fin 2 → HO1 s) :
     wedgeMap s hsq (exteriorPower.ιMulti R 2 v) = cup _ (v 0) (v 1) := by
   simp only [wedgeMap, exteriorPower.alternatingMapLinearEquiv_apply_ιMulti, alt2_apply]
 
 /- English proof (translation)
-Establish `hcup` using `((GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id).2.1 R k X X' s s' (algebraMap R k) φ hpb).1`. Set `β` to `(GlobalTheory.TopForm.isBaseChange_exteriorPower (TensorProduct.isBaseChange R (HO1 s) k) 2).equiv`. Set `T : k ⊗[R] ⋀[R]^2 (HO1 s) →ₗ[k] k ⊗[R] HO2 s` to `e2.symm.toLinearMap ∘ₗ w.toLinearMap ∘ₗ exteriorPower.map 2 e1.toLinearMap ∘ₗ β.toLinearMap`. Establish `hT : T = (wedgeMap s hsq).baseChange k`. Use `TensorProduct.AlgebraTensorModule.ext fun c x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_one c, ← smul_eq_mul, ← TensorProduct.smul_tmul', map_smul, map_smul]`. Use `congr 1`. Establish `hl : (T.restrictScalars R) ∘ₗ TensorProduct.mk R k _ 1 = (((wedgeMap s hsq).baseChange k).restrictScalars R) ∘ₗ TensorProduct.mk R k _ 1`. Apply `exteriorPower.linearMap_ext` to reduce the goal to its premises. Use extensionality with `v`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `only [LinearMap.compAlternatingMap_apply, LinearMap.comp_apply, LinearMap.restrictScalars_apply, TensorProduct.mk_apply, LinearMap.baseChange_tmul, wedgeMap_ιMulti, T, LinearEquiv.coe_coe, β, IsBaseChange.equiv_tmul, one_smul, GlobalTheory.exteriorPowerMapOver_ιMulti, exteriorPow …`. Establish `hv : (⇑e1 ∘ fun i => (1 : k) ⊗ₜ[R] v i) = ![pullHO1 hpb (v 0), pullHO1 hpb (v 1)]`. Apply the tactic sequence `funext i; fin_cases i <;> simp [he1]`. Rewrite using `[hv, hw, LinearEquiv.symm_apply_eq, he2, hcup]`. Conclude with `LinearMap.congr_fun hl x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hT]`. Establish `hm : Function.Bijective (exteriorPower.map 2 e1.toLinearMap)`. Use `Function.bijective_iff_has_inverse.2 ⟨exteriorPower.map 2 e1.symm.toLinearMap, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Rewrite using `[← LinearMap.comp_apply, ← exteriorPower.map_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[exteriorPower.map_id]`. Introduce `x`. Rewrite using `[← LinearMap.comp_apply, ← exteriorPower.map_comp]`. Simplify using `[exteriorPower.map_id]`. Conclude with `e2.symm.bijective.comp (w.bijective.comp (hm.comp β.bijective))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem baseChange_wedgeMap_bijective (hsq : ∀ x : HO1 s, cup _ x x = 0) (k : Type) [CommRing k]
     [Algebra R k] (X' : Scheme.{0}) (s' : X' ⟶ Sp k) (φ : X' ⟶ X)
@@ -150,11 +150,9 @@ end GlobalTheory.AbCoh.Wedge
 namespace GlobalTheory.AbCoh.Wedge
 
 /- English proof (translation)
-Introduce `R _ X s hF1 hP1 hF2 hP2 hB1 hB2 hsq hfib`. Establish `hbij : Function.Bijective (wedgeMap s hsq)`. Use `bijective_of_fibres _ fun q => ?_` and prove the remaining obligations. Take `⟨X', s', φ, hpb⟩ : ∃ (X' : Scheme.{0}) (s' : X' ⟶ Sp q.asIdeal.ResidueField) (φ : X' ⟶ X), IsPullback φ s' s (spMap (algebraMap R q.asIdeal.ResidueField))` from `⟨_, _, _, IsPullback.of_hasPullback _ _⟩`. Take `⟨e1, he1⟩` from `hB1 _ _ _ _ hpb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e2, he2⟩` from `hB2 _ _ _ _ hpb`. Take `⟨w, hw⟩` from `hfib _ _ _ _ hpb`. Conclude with `baseChange_wedgeMap_bijective s hsq _ X' s' φ hpb.w e1 he1 e2 he2 w hw`. Conclude with `⟨LinearEquiv.ofBijective _ hbij, fun a b => by`. Rewrite using `[LinearEquiv.ofBijective_apply, wedgeMap_ιMulti]`.
-
-Use the proof step `rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wedgeO_of_fibres : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R), Module.Finite R (HO1 s) → Module.Projective R (HO1 s) → Module.Finite R (HO2 s) → Module.Projective R (HO2 s) → StructureSheafH1BaseChange s → StructureSheafH2BaseChange s → (∀ x : HO1 s, cup _ x x = 0) → (∀ (k : Type) [Field k] [Algebra R k] (X' : Scheme.{0}) (s' : X' ⟶ Sp k) (φ : X' ⟶ X) (h : IsPullback φ s' s (spMap (algebraMap R k))), WedgeO (OAff s')) → WedgeO (OAff s) := by
   intro R _ X s hF1 hP1 hF2 hP2 hB1 hB2 hsq hfib

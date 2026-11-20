@@ -10,19 +10,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SmoothNilLift
 
 /- English proof (translation)
-Take `⟨n, f, hf, hker⟩` from `Algebra.FinitePresentation.out (R := R) (A := A)`. Use `choose w hw using fun i : Fin n => hρ (φ (f (MvPolynomial.X i)))`. Set `g : MvPolynomial (Fin n) R →ₐ[R] W` to `MvPolynomial.aeval w`. Establish `hg : ρ.comp g = φ.comp f`. Use extensionality with `i`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[g, hw]`. Establish `hg' : ∀ p, ρ (g p) = φ (f p)` using `fun p => AlgHom.congr_fun hg p`. Set `J : Ideal W` to `(RingHom.ker f.toRingHom).map g.toRingHom`. Establish `hJ : J ≤ RingHom.ker ρ`. Use `Ideal.map_le_iff_le_comap.mpr fun p hp => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hp' : f p = 0` using `hp`. Express the relevant statement in the definitionally equal form `ρ (g p) = 0`. Rewrite using `[hg', hp', map_zero]`. Establish `hJfg : J.FG` using `hker.map _`. Establish `hJn : IsNilpotent J` using `(Ideal.FG.isNilpotent_iff_le_nilradical hJfg).mpr fun a ha => hn a (hJ ha)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `g₀ : (MvPolynomial (Fin n) R ⧸ RingHom.ker f) →ₐ[R] W ⧸ J` to `Ideal.Quotient.liftₐ (RingHom.ker f) ((Ideal.Quotient.mkₐ R J).comp g) fun p hp => Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_map_of_mem g.toRingHom hp)`. Set `E` to `Ideal.quotientKerAlgEquivOfSurjective hf`. Set `ψ₀ : A →ₐ[R] W ⧸ J` to `g₀.comp E.symm.toAlgHom`. Establish `hψ₀ : ∀ p, ψ₀ (f p) = Ideal.Quotient.mk J (g p)`. Introduce `p`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : E.symm (f p) = Ideal.Quotient.mk _ p`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `g₀ (E.symm (f p)) = _`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨ψ, hψ⟩` from `Algebra.FormallySmooth.exists_lift J hJn ψ₀`. Use `⟨ψ, AlgHom.ext fun a => ?_⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `hf a`. Establish `h2 : Ideal.Quotient.mk J (ψ (f p)) = Ideal.Quotient.mk J (g p)` using `(AlgHom.congr_fun hψ (f p)).trans (hψ₀ p)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ρ (ψ (f p) - g p) = 0` using `hJ (Ideal.Quotient.eq.mp h2)`. Rewrite `h3` using `[map_sub, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `ρ (ψ (f p)) = _`. Rewrite using `[h3, hg']`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_of_nil {R A W K : Type} [CommRing R] [CommRing A] [CommRing W] [CommRing K]
     [Algebra R A] [Algebra R W] [Algebra R K] [Algebra.Smooth R A] (ρ : W →ₐ[R] K)
@@ -68,23 +68,19 @@ theorem exists_lift_of_nil {R A W K : Type} [CommRing R] [CommRing A] [CommRing 
   rw [h3, hg']
 
 /- English proof (translation)
-Set `x : Spec (CommRingCat.of K) ⟶ X.left` to `z.left`. Take `⟨_, ⟨U, hU, rfl⟩, hmem, -⟩` from `X.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (x (IsLocalRing.closedPoint K))) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`. Establish `hx : ⊤ ≤ x ⁻¹ᵁ U` using `fun p _ => by`. Establish `hsp : (p : PrimeSpectrum K) ⤳ IsLocalRing.closedPoint K` using `(PrimeSpectrum.le_iff_specializes _ _).mp (IsLocalRing.le_maximalIdeal (p : PrimeSpectrum K).isPrime.ne_top)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hsp.mem_open (x ⁻¹ᵁ U).isOpen hmem`. Set `a0 : R₀ →+* Γ(X.left, U)` to `((Scheme.ΓSpecIso (CommRingCat.of R₀)).inv ≫ X.hom.appLE ⊤ U le_top).hom`. Use `letI : Algebra R₀ Γ(X.left, U) := a0.toAlgebra`. Establish `hover : hU.fromSpec ≫ X.hom = Spec.map (CommRingCat.ofHom a0)`. Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec X.hom (isAffineOpen_top (Spec (CommRingCat.of R₀))) hU (le_top : U ≤ X.hom ⁻¹ᵁ ⊤)`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Rewrite using `[← h, CommRingCat.ofHom_hom, Spec.map_comp]`. Use `haveI : Algebra.Smooth R₀ Γ(X.left, U) := by`. Establish `h1 : RingHom.Smooth (X.hom.appLE ⊤ U le_top).hom` using `HasRingHomProperty.appLE (P := @Smooth) X.hom inferInstance ⟨⊤, isAffineOpen_top (Spec (CommRingCat.of R₀))⟩ ⟨U, hU⟩ le_top`. Establish `h2 : RingHom.Smooth (Scheme.ΓSpecIso (CommRingCat.of R₀)).inv.hom` using `RingHom.Smooth.of_bijective (Scheme.ΓSpecIso (CommRingCat.of R₀)).symm.commRingCatIsoToRingEquiv.bijective`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `h2.comp h1`. Set `φ` to `x.appLE U ⊤ hx ≫ (Scheme.ΓSpecIso (CommRingCat.of K)).hom`. Establish `hφx : Spec.map φ ≫ hU.fromSpec = x`. Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec x hU (isAffineOpen_top (Spec (CommRingCat.of K))) hx`. Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Spec.map_comp, Category.assoc, h, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`. Establish `hφ : φ.hom.comp a0 = algebraMap R₀ K`. Establish `e : Spec.map (CommRingCat.ofHom (φ.hom.comp a0)) = Spec.map (CommRingCat.ofHom (algebraMap R₀ K))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Spec.map_comp]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Use `_ = Spec.map φ ≫ hU.fromSpec ≫ X.hom := by rw [hover]`. Use `_ = x ≫ X.hom := by rw [← Category.assoc, hφx]`. Use `_ = Spec.map (CommRingCat.ofHom (algebraMap R₀ K)) := Over.w z`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Set `φ' : Γ(X.left, U) →ₐ[R₀] K` to `⟨φ.hom, fun r => RingHom.congr_fun hφ r⟩`. Take `⟨ψ, hψ⟩` from `exists_lift_of_nil ρ hρ hn φ'`. Use `⟨Over.homMk (Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ hU.fromSpec) ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [sp, Over.mk_hom]`. Rewrite using `[Category.assoc, hover, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
-
-Use `congr 2`. Conclude with `ψ.comp_algebraMap`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom ρ.toRingHom) ≫ Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ hU.fromSpec = x`. Rewrite using `[← hφx, ← Category.assoc, ← Spec.map_comp]`.
-
-Use `congr 2`. Use extensionality with `a`. Conclude with `AlgHom.congr_fun hψ a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_point_lift {R₀ : Type} [CommRing R₀] (X : Over (Spec (CommRingCat.of R₀)))
     [Smooth X.hom] {W K : Type} [CommRing W] [CommRing K] [Algebra R₀ W] [Algebra R₀ K]
@@ -149,7 +145,7 @@ theorem exists_point_lift {R₀ : Type} [CommRing R₀] (X : Over (Spec (CommRin
     exact AlgHom.congr_fun hψ a
 
 /- English proof (translation)
-Introduce `R₀ _ G _ _ B e hb _ hnat hsm K W ρW hρ`. Use `⟨hρ, fun x => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `exists_point_lift G ρW.1 hρ.1 hρ.2 (e K x)`. Take `⟨y', rfl⟩` from `(hb W).2 y`. Conclude with `⟨y', (hb K).1 (by rw [hnat, hy])⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main :
   (∀ {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRingCat.of R₀))) [GrpObj G] [IsCommMonObj G] (B : BX R₀) (e : ∀ R : LAlg R₀, B.G R → (sp (R₀ := R₀) (R : Type) ⟶ G)), (∀ R, Function.Bijective (e R)) → (∀ R x y, e R (x + y) = e R x * e R y) →

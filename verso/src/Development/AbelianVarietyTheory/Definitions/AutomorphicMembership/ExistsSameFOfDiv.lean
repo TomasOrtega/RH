@@ -44,32 +44,32 @@ section API
 variable {F : ∀ u, Forms0 D u} (P : SPack D F) {F' : ∀ u, Forms0 (reD D Z) u} (h : SameForms0LevelsAndValues Z F F') (hF : FinX (reY Z P.Y))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (HEq.refl P.ψ :))`.
+A detailed English derivation is pending.
 -/
 theorem SPack.re_ψ : HEq (P.re Z h hF).ψ P.ψ := (by with_unfolding_all exact (HEq.refl P.ψ :))
 
 end API
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (Eq.refl (eHHre Z X (conjHH X G x)) :))`.
+A detailed English derivation is pending.
 -/
 theorem conjHH_eEECre {X : HidaSetting D} (G : GoodOp X) (x : EEC X G) :
     conjHH (reX Z X) (reG Z G) (eEECre Z G x) = eHHre Z X (conjHH X G x) := (by with_unfolding_all exact (Eq.refl (eHHre Z X (conjHH X G x)) :))
 
 /- English proof (translation)
-The claim follows from `(eEECre Z G).toLinearEquiv.finrank_eq`.
+A detailed English derivation is pending.
 -/
 example {X : HidaSetting D} (G : GoodOp X) :
     Module.finrank ℂ (EEC X G) = Module.finrank ℂ (EEC (reX Z X) (reG Z G)) := (eEECre Z G).toLinearEquiv.finrank_eq
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (P.inst :))`.
+A detailed English derivation is pending.
 -/
 example {F : ∀ u, Forms0 D u} (P : SPack D F) {F' : ∀ u, Forms0 (reD D Z) u} (h : SameForms0LevelsAndValues Z F F') (hF : FinX (reY Z P.Y)) :
     (P.re Z h hF).X.B.I = Formalism.L2.SG.InstExistsPf.instOf D := (by with_unfolding_all exact (P.inst :))
 
 /- English proof (translation)
-Set `G : ∀ u : D.what₂.Word, Forms0 (GlobalTheory.EX.OB.setDiv D N ht) u` to `fun u => { F u with atT := { (F u).atT with } cls0 := { (F u).cls0 with } val0 := { (F u).val0 with } lv0 := { (F u).lv0 with } }`. Use `⟨(by with_unfolding_all exact (G :)), fun u => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (Eq.refl (F u).cls0.lev :))`. Conclude with `(by with_unfolding_all exact (Eq.refl (F u).cls0.y :))`. Conclude with `(by with_unfolding_all exact (Eq.refl (F u).val0.eY :))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_sameF_ofDiv (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (ht : D.what₂.Word → ℝ) (F : ∀ u, Forms0 D u) :
     ∃ F' : ∀ u, Forms0 (reD D (New.ofDiv D N ht)) u, SameForms0LevelsAndValues (New.ofDiv D N ht) F F' := by
@@ -85,7 +85,7 @@ theorem exists_sameF_ofDiv (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u
   · exact (by with_unfolding_all exact (Eq.refl (F u).val0.eY :))
 
 /- English proof (translation)
-The claim follows from `(exists_sameF_ofDiv N ht F).elim fun F' h => ⟨F', P.re _ h (finX_reY D _ P.X P.Y P.fin), rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem SPack.exists_re_ofDiv (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (ht : D.what₂.Word → ℝ) {F : ∀ u, Forms0 D u}
     (P : SPack D F) :

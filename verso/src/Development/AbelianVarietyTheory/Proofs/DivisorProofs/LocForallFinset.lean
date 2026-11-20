@@ -9,9 +9,9 @@ universe u
 namespace GlobalTheory.LocalizedFinsetForAll
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Conclude with `⟨⊤, GrothendieckTopology.top_mem _ _, fun _ _ _ i hi => absurd hi (Finset.notMem_empty i)⟩`. Consider the case `insert a s _ ih`. Take `⟨S, hS, hSP⟩` from `h a (Finset.mem_insert_self a s)`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT, hTP⟩` from `ih fun i hi => h i (Finset.mem_insert_of_mem hi)`. Use `⟨S ⊓ T, GrothendieckTopology.intersection_covering _ hS hT, fun V g hg i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `hSP V g hg.1`. Conclude with `hTP V g hg.2 i hi`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem loc_forall_finset {U : Scheme.{0}} {ι : Type u} (s : Finset ι)
     {P : ι → (V : Scheme.{0}) → (V ⟶ U) → Prop} (h : ∀ i ∈ s, GlobalTheory.EtC.Loc U (P i)) :

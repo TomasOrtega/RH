@@ -7,13 +7,13 @@ namespace GlobalTheory
 open Polynomial in
 
 /- English proof (translation)
-Proceed by induction on `R using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Simplify using `only [eval_add, map_add, derivative_add]`. Conclude with `hp.add hq`. Consider the case `monomial n a`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [eval_monomial, derivative_monomial]`. Establish `h1 : ∀ (m : ℕ) (t : ℝ), Φ (a * (algebraMap ℝ A t) ^ m) = t ^ m * Φ a`. Introduce `m t`. Rewrite using `[← map_pow, mul_comm, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Establish `h2 : Φ (a * (n : A) * (algebraMap ℝ A τ) ^ (n - 1)) = (n : ℝ) * τ ^ (n - 1) * Φ a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: a * (n : A) * (algebraMap ℝ A τ) ^ (n - 1) = n • (a * (algebraMap ℝ A τ) ^ (n - 1))`. Rewrite using `[nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, map_nsmul, h1, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h3 : (fun t : ℝ => Φ (a * (algebraMap ℝ A t) ^ n)) = fun t => t ^ n * Φ a` using `funext (h1 n)`. Rewrite using `[h3, h2]`. Conclude with `(hasDerivAt_pow n τ).mul_const (Φ a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_linearMap_eval_algebraMap {A : Type*} [CommRing A] [Algebra ℝ A]
     (Φ : A →ₗ[ℝ] ℝ) (R : Polynomial A) (τ : ℝ) :
@@ -37,37 +37,33 @@ theorem hasDerivAt_linearMap_eval_algebraMap {A : Type*} [CommRing A] [Algebra �
     exact (hasDerivAt_pow n τ).mul_const (Φ a)
 
 /- English proof (translation)
-Introduce `D Φ hyp`. Establish `hΦC : ∀ (r : ℝ) (q : MvPolynomial (Fin 2) ℝ), Φ (MvPolynomial.C r * q) = r * Φ q`. Introduce `r q`. Rewrite using `[MvPolynomial.C_mul', map_smul, smul_eq_mul]`. Use `set a : MvPolynomial (Fin 2) ℝ := MvPolynomial.X 1 with ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set b : MvPolynomial (Fin 2) ℝ := MvPolynomial.X 0 - MvPolynomial.X 1 with hb`. Use `set Q : Polynomial (MvPolynomial (Fin 2) ℝ) := (Polynomial.C a + Polynomial.X * Polynomial.C b) ^ (D + 1) with hQ`. Use `set R : Polynomial (MvPolynomial (Fin 2) ℝ) := Polynomial.C b * (Polynomial.C a + Polynomial.X * Polynomial.C b) ^ D with hR`. Use `set g : ℝ → ℝ := fun t => Φ (Q.eval (algebraMap ℝ _ t)) with hg`. Use `set f : ℝ → ℝ := fun t => Φ (R.eval (algebraMap ℝ _ t)) with hf`.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgd : ∀ τ, HasDerivAt g (((D : ℝ) + 1) * f τ) τ`. Introduce `τ`. Use `hasDerivAt_linearMap_eval_algebraMap Φ Q τ using 1` and compare the differences between its conclusion and the goal. Simplify using `[hf, hQ, hR, Polynomial.derivative_pow]`. Establish `hc : ((D : MvPolynomial (Fin 2) ℝ) + 1) = MvPolynomial.C ((D : ℝ) + 1)` using `by simp`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc, mul_assoc, hΦC]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hfc : Continuous f`. Rewrite using `[continuous_iff_continuousAt]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ`. Conclude with `(hasDerivAt_linearMap_eval_algebraMap Φ R τ).continuousAt`. Establish `hfrat : ∀ x n : ℕ, 0 < n → x ≤ n → 0 ≤ f ((x : ℝ) / n)`. Introduce `x n hn hxn`. Establish `hn' : (n : ℝ) ≠ 0` using `by exact_mod_cast hn.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e : a + MvPolynomial.C ((x : ℝ) / n) * b = MvPolynomial.C (1 / (n : ℝ)) * (MvPolynomial.C (x : ℝ) * MvPolynomial.X 0 + MvPolynomial.C (((n - x : ℕ)) : ℝ) * a)`. Rewrite using `[Nat.cast_sub hxn]`. Establish `h1 : MvPolynomial.C (1 / (n : ℝ)) * MvPolynomial.C (x : ℝ) = (MvPolynomial.C ((x : ℝ) / n) : MvPolynomial (Fin 2) ℝ)`. Rewrite using `[← map_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : MvPolynomial.C (1 / (n : ℝ)) * MvPolynomial.C ((n : ℝ) - x) = (1 - MvPolynomial.C ((x : ℝ) / n) : MvPolynomial (Fin 2) ℝ)`. Rewrite using `[← map_mul, ← map_one MvPolynomial.C, ← map_sub]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ha, hb]`. Take the linear combination `(-(MvPolynomial.X 0 : MvPolynomial (Fin 2) ℝ)) * h1 - (MvPolynomial.X 1) * h2`. Establish `hfx : f ((x : ℝ) / n) = (1 / (n : ℝ)) ^ D * Φ (b * (MvPolynomial.C (x : ℝ) * MvPolynomial.X 0 + MvPolynomial.C (((n - x : ℕ)) : ℝ) * a) ^ D)`. Simplify using `only [hf, hR, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_add, Polynomial.eval_X, MvPolynomial.algebraMap_eq]`. Rewrite using `[e, mul_pow, ← map_pow, mul_left_comm, hΦC]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hfx]`. Conclude with `mul_nonneg (pow_nonneg (by positivity) _) (hyp _ _)`. Establish `hfpos : ∀ τ ∈ Set.Ioo (0 : ℝ) 1, 0 ≤ f τ`. Introduce `τ hτ`. Assume the negation of the conclusion as `hneg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at hneg`. Establish `hev : ∀ᶠ t in 𝓝 τ, f t < 0` using `hfc.continuousAt.eventually (Iio_mem_nhds hneg)`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff.mp hev`. Take `⟨q, hq1, hq2⟩` from `exists_rat_btwn (show max 0 (τ - ε) < τ from max_lt hτ.1 (by linarith))`. Establish `hq0 : (0 : ℝ) < q` using `lt_of_le_of_lt (le_max_left _ _) hq1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqε : τ - ε < q` using `lt_of_le_of_lt (le_max_right _ _) hq1`. Establish `hq0' : (0 : ℚ) < q` using `by exact_mod_cast hq0`. Establish `hnum : 0 < q.num` using `Rat.num_pos.mpr hq0'`. Establish `hx : ((q.num.toNat : ℕ) : ℝ) = (q.num : ℝ)`. Use `Int.toNat_of_nonneg hnum.le` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hqdef : (q : ℝ) = (q.num.toNat : ℝ) / (q.den : ℝ)`. Rewrite using `[hx]`. Conclude with `(Rat.num_div_den q).symm` after adjusting the coercions. Establish `hden : (0 : ℝ) < q.den` using `by exact_mod_cast q.den_pos`.
+Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hle : q.num.toNat ≤ q.den`. Establish `h1 : (q : ℝ) < 1` using `by linarith [hτ.2]`. Rewrite `h1` using `[hqdef, div_lt_one hden]`. Conclude with `h1.le` after adjusting the coercions. Establish `h0` using `hfrat q.num.toNat q.den q.den_pos hle`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[← hqdef]`. Establish `hd : dist (q : ℝ) τ < ε`. Apply the tactic sequence `rw [Real.dist_eq, abs_lt]; constructor <;> linarith`. Combine the linear relations using `[hball hd]`. Establish `hgdiff : ∀ τ, DifferentiableAt ℝ g τ` using `fun τ => (hgd τ).differentiableAt`.
-
-Establish `hmono : MonotoneOn g (Set.Icc 0 1)`. Apply `monotoneOn_of_deriv_nonneg (convex_Icc 0 1)` to reduce the goal to its premises. Conclude with `fun τ _ => (hgdiff τ).continuousAt.continuousWithinAt`. Conclude with `fun τ _ => (hgdiff τ).differentiableWithinAt`. Introduce `τ hτ`.
-
-Rewrite `hτ` using `[interior_Icc]`. Rewrite using `[(hgd τ).deriv]`. Conclude with `mul_nonneg (by positivity) (hfpos τ hτ)`. Establish `h01` using `hmono (Set.left_mem_Icc.mpr zero_le_one) (Set.right_mem_Icc.mpr zero_le_one) zero_le_one`. Simplify `h01` using `[hg, hQ, ha, hb]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem monotone_form_along_segment : ∀ (D : ℕ) (Φ : MvPolynomial (Fin 2) ℝ →ₗ[ℝ] ℝ),
     (∀ x y : ℕ, 0 ≤ Φ ((MvPolynomial.X 0 - MvPolynomial.X 1) *

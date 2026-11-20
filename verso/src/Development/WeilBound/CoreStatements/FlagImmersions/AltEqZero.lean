@@ -12,17 +12,17 @@ def lower (a : Ψ → Fin N → ℕ) (τ : Ψ) (l : Fin N) (m : ℕ) : Ψ → Fi
   fun τ' c => if τ' = τ ∧ c = l then a τ' c - m else a τ' c
 
 /- English proof (translation)
-Establish `h1 : ∀ σ : Ψ → Equiv.Perm (Fin N), (pk τ m * G).coeff (expo a σ) = ∑ l, if m ≤ a τ l then G.coeff (expo (lower a τ l m) σ) else 0`. Introduce `σ`. Rewrite using `[← Equiv.sum_comp (σ τ), pk, Finset.sum_mul, coeff_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[X_pow_eq_monomial, coeff_monomial_mul', one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (Finsupp.single (τ, i) m ≤ expo a σ) ↔ m ≤ a τ (σ τ i)`. Rewrite using `[Finsupp.single_le_iff]`. Simplify using `[expo]`. Establish `e2 : expo a σ - Finsupp.single (τ, i) m = expo (lower a τ (σ τ i) m) σ`. Use extensionality with `⟨t, b⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [expo, lower, Finsupp.coe_tsub, Pi.sub_apply, Finsupp.equivFunOnFinite_symm_apply_apply, Finsupp.single_apply, Prod.mk.injEq]`. Distinguish the cases in `ht : t = τ`. Substitute `ht` using the available equality. Distinguish the cases in `hb : b = i`. Substitute `hb` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `: ¬ i = b` using `fun h => hb h.symm`. Simplify using `[hb, this]`. Establish `: ¬ τ = t` using `fun h => ht h.symm`. Simplify using `[ht, this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2]`. Distinguish the cases in `h : m ≤ a τ (σ τ i)`. Rewrite using `[if_pos (e1.mpr h), if_pos h]`. Rewrite using `[if_neg (fun h' => h (e1.mp h')), if_neg h]`. Simplify using `only [alt, h1, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem alt_pk (a : Ψ → Fin N → ℕ) (τ : Ψ) (m : ℕ) (G : RP Ψ N) :
     alt a (pk τ m * G) = ∑ l, if m ≤ a τ l then alt (lower a τ l m) G else 0 := by
@@ -56,9 +56,9 @@ theorem alt_pk (a : Ψ → Fin N → ℕ) (τ : Ψ) (m : ℕ) (G : RP Ψ N) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `alt`. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft π), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem alt_perm (a : Ψ → Fin N → ℕ) (π : Ψ → Equiv.Perm (Fin N)) (G : RP Ψ N) :
     alt a G = (∏ τ, ((Equiv.Perm.sign (π τ) : ℤ) : ℝ)) * alt (fun τ c => a τ (π τ c)) G := by
@@ -71,11 +71,11 @@ theorem alt_perm (a : Ψ → Fin N → ℕ) (π : Ψ → Equiv.Perm (Fin N)) (G 
     simp
 
 /- English proof (translation)
-Rewrite using `[alt_perm a (Function.update 1 τ (Equiv.swap p q)) G]`. Establish `e : (fun t c => a t (Function.update (1 : Ψ → Equiv.Perm (Fin N)) τ (Equiv.swap p q) t c)) = b`. Use function extensionality and compare the values at `t c`. Distinguish the cases in `ht : t = τ`. Substitute `ht` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[h1]`. Simplify using `[ht, h2 t ht]`. Rewrite using `[e, Finset.prod_eq_single τ]`. Simplify using `[Equiv.Perm.sign_swap hpq]`. Introduce `t _ ht`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[ht]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem alt_swap (a b : Ψ → Fin N → ℕ) (τ : Ψ) (p q : Fin N) (hpq : p ≠ q) (G : RP Ψ N)
     (h1 : ∀ c, b τ c = a τ (Equiv.swap p q c)) (h2 : ∀ t, t ≠ τ → b t = a t) :
@@ -92,9 +92,9 @@ theorem alt_swap (a b : Ψ → Fin N → ℕ) (τ : Ψ) (p q : Fin N) (hpq : p �
   · simp
 
 /- English proof (translation)
-Use `alt_swap a a τ p q hpq G (fun c => by` as an intermediate fact. Rewrite using `[Equiv.swap_apply_def]`. Use `split_ifs with h1 h2`. Rewrite using `[h1, h]`. Rewrite using `[h2, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use the proof step `rfl) (fun _ _ => rfl)`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem alt_eq_zero (a : Ψ → Fin N → ℕ) (τ : Ψ) (p q : Fin N) (hpq : p ≠ q) (h : a τ p = a τ q)
     (G : RP Ψ N) : alt a G = 0 := by
@@ -107,11 +107,11 @@ theorem alt_eq_zero (a : Ψ → Fin N → ℕ) (τ : Ψ) (p q : Fin N) (hpq : p 
   linarith
 
 /- English proof (translation)
-Rewrite using `[alt_pk]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite `h` using `[ha]`. Establish `hl` using `l.isLt`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : l ≠ ⟨l + m, by omega⟩` using `fun e => by`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Use `alt_eq_zero _ τ l ⟨l + m, by omega⟩ hne ?_ G` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [lower, true_and, if_true, if_neg hne.symm, ha]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem alt_pk_zero (a : Ψ → Fin N → ℕ) (τ : Ψ) (ha : ∀ c : Fin N, a τ c = N - 1 - (c : ℕ)) (m : ℕ) (hm : 1 ≤ m)
     (G : RP Ψ N) : alt a (pk τ m * G) = 0 := by
@@ -128,35 +128,35 @@ theorem alt_pk_zero (a : Ψ → Fin N → ℕ) (τ : Ψ) (ha : ∀ c : Fin N, a 
   · rfl
 
 /- English proof (translation)
-The claim follows from `alt_pk_zero rho τ (fun _ => rfl) m hm G`.
+A detailed English derivation is pending.
 -/
 theorem alt_rho_pk (τ : Ψ) (m : ℕ) (hm : 1 ≤ m) (G : RP Ψ N) : alt rho (pk τ m * G) = 0 :=
   alt_pk_zero rho τ (fun _ => rfl) m hm G
 
 /- English proof (translation)
-Establish `hl` using `l.isLt`. Use `split_ifs with h1 h2`. Use `set l' : Fin N := ⟨l + m, h1⟩ with hl'`. Establish `hv : (l' : ℕ) = l + m` using `rfl`. Establish `hne : l ≠ l'` using `fun e => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `congrArg Fin.val e` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_eq_add l l' hne]`. Rewrite using `[if_pos (by simp [bump]; omega), if_pos (by simp [bump]; omega)]`. Rewrite using `[alt_swap (lower (bump τ l k) τ l m) (lower (bump τ l' k) τ l m) τ l l' hne G]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `c`. Rewrite using `[Equiv.swap_apply_def]`. Use `split_ifs with c1 c2`. Substitute `c1` using the available equality.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Substitute using the available equality.
 
-Simplify using `[lower, bump, hne, hne.symm]`. Use linear arithmetic over natural numbers and integers. Substitute `c2` using the available equality. Simplify using `[lower, bump, hne, hne.symm]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[lower, bump, c1, c2]`. Introduce `t ht`. Use function extensionality and compare the values at `c`. Simplify using `[lower, bump, ht]`. Introduce `c _ hc split_ifs with h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `alt_eq_zero _ τ l l' hne ?_ G` and prove the remaining obligations. Simplify using `[lower, bump, hne.symm, hc.1.symm, hc.2.symm]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Substitute `h2` using the available equality. Rewrite using `[Finset.sum_eq_single l]`. Rewrite using `[if_pos (by simp [bump])]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use function extensionality and compare the values at `t c`. Simplify using `only [lower, bump, rho]`. Apply the tactic sequence `split_ifs <;> omega`. Introduce `c _ hc`. Rewrite using `[if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Simplify using `[bump, hc.symm]`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun c _ => ?_ split_ifs with h` and prove the remaining obligations. Distinguish the cases in `hc : l = c`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `hc` using the available equality. Simplify using `only [bump, true_and, if_true] at h`. Use `set q : Fin N := ⟨N - 1 - (N - 1 - l + k - m), by omega⟩ with hq`. Establish `hv : (q : ℕ) = N - 1 - (N - 1 - l + k - m)` using `rfl`. Establish `hne : l ≠ q` using `fun e => by`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congrArg Fin.val e` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `alt_eq_zero _ τ l q hne ?_ G` and prove the remaining obligations. Simplify using `only [lower, bump, true_and, if_true, if_neg hne.symm]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
 
-It suffices to derive a contradiction. Simplify using `[bump, hc] at h`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem col_sum (τ : Ψ) (k m : ℕ) (hk : 1 ≤ k) (hkN : k ≤ N) (hm : 1 ≤ m) (G : RP Ψ N) (l : Fin N) :
     (∑ c, if m ≤ bump τ c k τ l then alt (lower (bump τ c k) τ l m) G else 0) =
@@ -217,13 +217,13 @@ theorem col_sum (τ : Ψ) (k m : ℕ) (hk : 1 ≤ k) (hkN : k ≤ N) (hm : 1 ≤
     · rfl
 
 /- English proof (translation)
-Distinguish the cases in `ht : τ' = τ`. Substitute `ht` using the available equality. Simplify using `only [lam, alt_pk, true_and]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [col_sum τ' k m hk hkN hm G]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : m = k`. Substitute `h` using the available equality. Simplify using `only [if_true]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun l => if l + m < N then 0 else alt rho G) N, Finset.sum_ite, Finset.sum_const_zero, zero_add, Finset.sum_const, nsmul_eq_mul]`. Establish `: (Finset.range N).filter (fun l => ¬ l + m < N) = Finset.Ico (N - m) N`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, Nat.card_Ico]`. Use `congr 2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[h]`. Rewrite using `[if_neg (fun h => ht h.1)]`. Use `Finset.sum_eq_zero fun c _ => alt_pk_zero _ τ' (fun c' => ?_) m hm G` and prove the remaining obligations. Simplify using `[bump, ht]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lam_pk (τ τ' : Ψ) (k m : ℕ) (hk : 1 ≤ k) (hkN : k ≤ N) (hm : 1 ≤ m) (hmN : m ≤ N) (G : RP Ψ N) :
     lam τ k (pk τ' m * G) = if τ' = τ ∧ m = k then (k : ℝ) * alt rho G else 0 := by

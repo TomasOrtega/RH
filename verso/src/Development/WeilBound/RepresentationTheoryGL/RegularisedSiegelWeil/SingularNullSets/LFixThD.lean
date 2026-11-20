@@ -29,7 +29,7 @@ open PositivityTheory.Rg.Rsw.L
 variable {D : D7} {ρ p n : ℕ}
 
 /- English proof (translation)
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq]`. Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne]`. Conclude with `fun h' => h (Fin.castAdd_injective _ _ h')`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_cc {R : Type} [Ring R] (i j : Fin n) :
     (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) (Fin.castAdd n i) (Fin.castAdd n j) = (1 : Matrix (Fin n) (Fin n) R) i j := by
@@ -40,7 +40,7 @@ theorem one_cc {R : Type} [Ring R] (i j : Fin n) :
     exact fun h' => h (Fin.castAdd_injective _ _ h')
 
 /- English proof (translation)
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, map_one]`. Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne h, map_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_one_apply {R : Type} [Ring R] (f : AE D →+* R) (i j : Fin n) :
     f ((1 : Mx D n n) i j) = (1 : Matrix (Fin n) (Fin n) R) i j := by
@@ -50,9 +50,9 @@ theorem map_one_apply {R : Type} [Ring R] (f : AE D →+* R) (i j : Fin n) :
   · rw [Matrix.one_apply_ne h, Matrix.one_apply_ne h, map_zero]
 
 /- English proof (translation)
-Establish `h1 : (a⁻¹).1 * a.1 = 1` using `a.inv_mul`. Establish `h2 : adj a.1 * adj (a⁻¹).1 = 1` using `by delta GlobalTheory.MixModel.adj`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Establish `hprod : blk4 (a⁻¹).1 0 0 (adj a.1) * blk4 a.1 0 0 (adj (a⁻¹).1) = 1` using `by delta GlobalTheory.StdUnn.blk4`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, h1, h2, Matrix.fromBlocks_one]`. Conclude with `Matrix.submatrix_one_equiv _`. Use `delta GlobalTheory.StdUnn.mat at ha ⊢`. Rewrite using `[map_inv]`. Conclude with `Units.inv_eq_of_mul_eq_one_left (by rw [ha]; exact hprod)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_inv_levi {g : G D p} {a : GL (Fin p) (AE D)} (ha : mat g = blk4 a.1 0 0 (adj (a⁻¹).1)) :
     mat g⁻¹ = blk4 (a⁻¹).1 0 0 (adj a.1) := by
@@ -71,7 +71,7 @@ theorem mat_inv_levi {g : G D p} {a : GL (Fin p) (AE D)} (ha : mat g = blk4 a.1 
   exact Units.inv_eq_of_mul_eq_one_left (by rw [ha]; exact hprod)
 
 /- English proof (translation)
-Use `delta GlobalTheory.AdelicU.proj GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapH`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem matHom_proj_fst_eq_mat_map_cv (g : G D p) (v : Pl D) :
     (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig (GlobalTheory.StdUnn.Jst D p)
@@ -80,15 +80,13 @@ private theorem matHom_proj_fst_eq_mat_map_cv (g : G D p) (v : Pl D) :
   rfl
 
 /- English proof (translation)
-Use `delta PositivityTheory.Rg.Rsw.L.KOff GlobalTheory.AdelicU.levelOff GlobalTheory.AdelicU.finAwayPts at hh`. Take `⟨hfa, hoff⟩` from `Subgroup.mem_inf.mp hh`. Take `⟨hfin, haway⟩` from `Subgroup.mem_inf.mp hfa`. Use `⟨fun w i j => ?_, fun v hv i j => ?_, fun v hv i j => ?_⟩` and prove the remaining obligations. Use `delta GlobalTheory.AdelicU.finPts at hfin`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun u : GL (Fin (p + p)) _ => u.1 i j) (MonoidHom.mem_ker.mp hfin)`. Establish `h2 : (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA _) (AlgHom.id (↥D.host.F) D.host.E)) (mat h i j) = (1 : Matrix (Fin (p + p)) (Fin (p + p)) _) i j` using `h1`. Establish `e` using `Algebra.TensorProduct.map_comp (GlobalTheory.AutFunCompare.evW w) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA (↥D.host.F)) (AlgHom.id (↥D.host.F) D.host.E) (AlgHom.id (↥D.host.F) D.host.E)`. Rewrite `e` using `[AlgHom.id_comp]`. Establish `hc : compInf D.host.F D.host.E w (mat h i j) = (Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id (↥D.host.F) D.host.E)) ((Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA _) (AlgHom.id (↥D.host.F) D.host.E)) (mat h i …` using `DFunLike.congr_fun e (mat h i j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hc, h2]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, map_one]`. Rewrite using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne hij, map_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `delta GlobalTheory.AdelicU.awayPts at haway`. Establish `hker` using `MonoidHom.mem_ker.mp (Subgroup.mem_iInf.mp (Subgroup.mem_iInf.mp haway v) hv)`. Establish `h3` using `matHom_proj_fst_eq_mat_map_cv h v`. Rewrite `h3` using `[hker, map_one]`. Establish `h4` using `congrArg (fun M : Matrix (Fin (p + p)) (Fin (p + p)) _ => M i j) h3`.
-
-Conclude with `h4.symm`. Establish `hs` using `(GlobalTheory.AdelicU.mem_stabLoc_stdLattice_iff.mp (Subgroup.mem_comap.mp (Subgroup.mem_iInf.mp (Subgroup.mem_iInf.mp hoff v) hv))).1 i j`. Rewrite `hs` using `[matHom_proj_fst_eq_mat_map_cv]`. Conclude with `hs`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_mat_apply_eq_one_at_S_and_int_off_S {S : Finset (Pl D)} {h : G D p} (hh : h ∈ KOff D p S) :
     (∀ (w : NumberField.InfinitePlace D.host.F) (i j : Fin (p + p)),
@@ -127,15 +125,13 @@ private theorem exists_mat_apply_eq_one_at_S_and_int_off_S {S : Finset (Pl D)} {
     exact hs
 
 /- English proof (translation)
-Establish `hgi : g⁻¹ ∈ KOff D p S` using `inv_mem hg`. Take `⟨hI, hS, hO⟩` from `exists_mat_apply_eq_one_at_S_and_int_off_S hg`. Take `⟨hI', hS', hO'⟩` from `exists_mat_apply_eq_one_at_S_and_int_off_S hgi`. Establish `hA : ∀ i j, mat g (Fin.castAdd p i) (Fin.castAdd p j) = a.1 i j`. Introduce `i j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ha]`. Use `delta GlobalTheory.StdUnn.blk4`. Rewrite using `[Matrix.submatrix_apply, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_castAdd, Matrix.fromBlocks_apply₁₁]`. Establish `hAi : ∀ i j, mat g⁻¹ (Fin.castAdd p i) (Fin.castAdd p j) = (a⁻¹).1 i j`. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mat_inv_levi ha]`. Use `delta GlobalTheory.StdUnn.blk4`. Rewrite using `[Matrix.submatrix_apply, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_castAdd, Matrix.fromBlocks_apply₁₁]`. Introduce `i j`. Use `⟨fun w => ⟨?_, ?_⟩, fun v hv => ⟨?_, ?_⟩, fun v hv => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hA, hI, one_cc]`. Rewrite using `[← hAi, hI', one_cc]`. Rewrite using `[← hA, hS v hv, one_cc]`. Rewrite using `[← hAi, hS' v hv, one_cc]`. Rewrite using `[← hA]`.
-
-Conclude with `hO v hv _ _`. Rewrite using `[← hAi]`. Conclude with `hO' v hv _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_blocks {S : Finset (Pl D)} {g : G D p} (hg : g ∈ KOff D p S) {a : GL (Fin p) (AE D)}
     (ha : mat g = blk4 a.1 0 0 (adj (a⁻¹).1)) :
@@ -171,21 +167,19 @@ theorem levi_blocks {S : Finset (Pl D)} {g : G D p} (hg : g ∈ KOff D p S) {a :
     exact hO' v hv _ _
 
 /- English proof (translation)
-Establish `hb` using `levi_blocks hg ha`. Establish `he1 : ∀ k j, e * a.1 k j = e * (1 : Mx D p p) k j`. Introduce `k j`. Apply `PositivityTheory.Rg.Rsw.L.LIdemEx.ae_ext` to reduce the goal to its premises. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, map_mul, ((hb k j).1 w).1, map_one_apply]`. Introduce `v`. Rewrite using `[map_mul, map_mul, map_one_apply]`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[((hb k j).2.1 v hv).1]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he.2 v, if_neg hv, zero_mul, zero_mul]`. Establish `hsmul : e • (y * a.1) = e • y`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Use `_ = ∑ k, y i k * (e * (1 : Mx D p p) k j) := Finset.sum_congr rfl fun k _ => by rw [he1]`. Use `_ = e * ∑ k, y i k * (1 : Mx D p p) k j := by`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Use `_ = e * y i j := by rw [← Matrix.mul_apply, Matrix.mul_one]`. Establish `hint : ∀ (x : Mx D ρ p) (b : Mx D p p), IntOff S x → (∀ v ∉ S, ∀ k j, cv D v (b k j) ∈ intLoc D.host.F D.host.E v) → IntOff S (x * b)`. Introduce `x b hx hb' v hv i j`. Rewrite using `[Matrix.mul_apply, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Subring.sum_mem _ fun k _ => by`. Rewrite using `[map_mul]`. Conclude with `Subring.mul_mem _ (hx v hv i k) (hb' v hv k j)`. Establish `hyI : IntOff S (y * a.1) ↔ IntOff S y`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `h'` using `hint _ (a⁻¹).1 h fun v hv k j => ((hb k j).2.2 v hv).2`. Rewrite `h'` using `[Matrix.mul_assoc, a.mul_inv, Matrix.mul_one]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `hint _ a.1 h fun v hv k j => ((hb k j).2.2 v hv).1`.
-
-Rewrite using `[hf (y * a.1), hf y, hsmul]`. Distinguish the cases in `h : IntOff S y`. Rewrite using `[if_pos (hyI.mpr h), if_pos h]`. Rewrite using `[if_neg (fun h' => h (hyI.mp h')), if_neg h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_good {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) {g : G D p} (hg : g ∈ KOff D p S)
     {a : GL (Fin p) (AE D)} (ha : mat g = blk4 a.1 0 0 (adj (a⁻¹).1)) (f : Mx D ρ p → ℂ) (hf : Good S e f)

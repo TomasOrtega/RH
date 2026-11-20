@@ -8,13 +8,11 @@ open scoped ENNReal
 namespace PositivityTheory.SiegelWeilFormula.Act
 
 /- English proof (translation)
-Establish `hsum : HasSum (fun i => ∫ u, ∫ v, g i (u, v) ∂m ∂μ) (∫ p, ∑' i, g i p ∂(μ.prod m))`. Establish `h` using `hasSum_integral_of_summable_integral_norm hi hs`. Rewrite using `[show (fun i => ∫ p, g i p ∂(μ.prod m)) = fun i => ∫ u, ∫ v, g i (u, v) ∂m ∂μ from`. Use function extensionality and compare the values at `fun i => integral_prod (g i) (hi i)] at h`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hint : Integrable (fun p => ∑' i, g i p) (μ.prod m)`. Use `⟨AEStronglyMeasurable.tsum fun i => (hi i).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[ofReal_integral_norm_eq_lintegral_enorm (hi i)]`. Use `_ = ENNReal.ofReal (∑' i, ∫ p, ‖g i p‖ ∂(μ.prod m)) := (ENNReal.ofReal_tsum_of_nonneg (fun i => integral_nonneg fun p => norm_nonneg _) hs).symm`. Use `_ < ⊤ := ENNReal.ofReal_lt_top`. Use `⟨hsum.summable, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hsum.tsum_eq, integral_prod _ hint]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exch {α β ι : Type*} [MeasurableSpace α] [MeasurableSpace β] [Countable ι] {μ : Measure α} {m : Measure β}
     [SFinite μ] [SFinite m] (g : ι → α × β → ℂ) (hi : ∀ i, Integrable (g i) (μ.prod m))

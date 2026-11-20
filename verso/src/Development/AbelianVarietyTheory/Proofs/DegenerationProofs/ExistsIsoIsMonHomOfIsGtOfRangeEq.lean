@@ -18,7 +18,7 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `le_trans ?_ (ReducedSubgroup.vanishingIdeal_le_ker g ⟨Set.range f, f.isClosedEmbedding.isClosed_range⟩ h)` and prove the remaining obligations. Rewrite using `[← Scheme.IdealSheafData.le_support_iff_le_vanishingIdeal]`. Conclude with `f.range_subset_ker_support`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_le_ker_of_range_subset_of_isReduced {X T Y : Scheme.{0}} [IsReduced T] (f : X ⟶ Y)
     [IsClosedImmersion f] (g : T ⟶ Y) (h : Set.range g ⊆ Set.range f) : f.ker ≤ g.ker := by
@@ -28,11 +28,11 @@ theorem ker_le_ker_of_range_subset_of_isReduced {X T Y : Scheme.{0}} [IsReduced 
   exact f.range_subset_ker_support
 
 /- English proof (translation)
-Introduce `k _ _ Y E E' G G' _ _ _ _ f f' h h' hf hf' hr h1`. Establish `hs` using `(UnitRigidity.smooth_geometricallyConnected_of_isGt E G h).1`. Establish `hs'` using `(UnitRigidity.smooth_geometricallyConnected_of_isGt E' G' h').1`. Establish `: IsReduced G.left` using `isReduced_of_smooth_of_isReduced G.hom`. Establish `: IsReduced G'.left` using `isReduced_of_smooth_of_isReduced G'.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : f'.left.ker = f.left.ker` using `le_antisymm (ker_le_ker_of_range_subset_of_isReduced _ _ hr.le) (ker_le_ker_of_range_subset_of_isReduced _ _ hr.ge)`. Use `IsClosedImmersion.isIso_lift f'.left f.left hk` as an intermediate fact. Establish `hl` using `IsClosedImmersion.lift_fac f'.left f.left hk.le`. Set `e : G ≅ G'` to `Over.isoMk (asIso (IsClosedImmersion.lift f'.left f.left hk.le)) (by`. Rewrite using `[asIso_hom, ← Over.w f', reassoc_of% hl, Over.w f])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `he : e.hom ≫ f' = f` using `Over.OverMorphism.ext hl`. Establish `: Mono f'` using `Over.mono_of_mono_left f'`. Use `⟨e, isMonHom_of_isGt_of_one k E E' G G' h h' e.hom ?_, he⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono f', Category.assoc, he, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_iso_isMonHom_of_isGt_of_range_eq :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (Y : Over (Sp k)) (E E' : SplitExt (Sp k)) (G G' : Over (Sp k)) [GrpObj G] [GrpObj G'] [IsCommMonObj G] [IsCommMonObj G'] (f : G ⟶ Y) (f' : G' ⟶ Y), E.IsGt G → E'.IsGt G' → IsClosedImmersion f.left → IsClosedImmersion f'.left → Set.range f.left = Set.range f'.left → η[G] ≫ f = η[G'] ≫ f' → ∃ e : G ≅ G', IsMonHom e.hom ∧ e.hom ≫ f' = f := by

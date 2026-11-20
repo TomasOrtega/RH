@@ -9,7 +9,7 @@ open Module NumberField IsDedekindDomain Formalism.BasicNotions Formalism.Divisi
 open scoped Matrix ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.IntegralDualSlope.muMaxDual_nonpos` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHermitianSelfDualMaxSlope.lean&line=69#L69)
 -/

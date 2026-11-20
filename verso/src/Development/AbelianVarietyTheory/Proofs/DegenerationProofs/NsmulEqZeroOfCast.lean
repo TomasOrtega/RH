@@ -11,9 +11,9 @@ open Classical
 namespace GlobalTheory.ZH.WeightBundle
 
 /- English proof (translation)
-Use `split_ifs with hf`. Simplify using `[hf]`. Establish `h` using `AddChar.sum_eq_zero_of_ne_one (ψ := (AddChar.zmodChar N hw.pow_eq_one).compAddMonoidHom (-f)) (by`. Introduce `h`. Use `hf (AddMonoidHom.ext fun a => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `DFunLike.congr_fun h a`. Rewrite `h1` using `[AddChar.compAddMonoidHom_apply, AddChar.zmodChar_apply, AddChar.one_apply, hw.pow_eq_one_iff_dvd]`. Establish `h2` using `Nat.eq_zero_of_dvd_of_lt h1 (ZMod.val_lt _)`. Simplify using `using h2)`. Simplify `h` using `[AddChar.zmodChar_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_pow_neg_val {o G : Type} [CommRing o] [IsDomain o] [AddCommGroup G] [Fintype G] {N : ℕ} [NeZero N]
     {w : o} (hw : IsPrimitiveRoot w N) (f : G →+ ZMod N) :
@@ -32,7 +32,7 @@ theorem sum_pow_neg_val {o G : Type} [CommRing o] [IsDomain o] [AddCommGroup G] 
     simpa [AddChar.zmodChar_apply] using h
 
 /- English proof (translation)
-Take `⟨n, rfl⟩` from `ZMod.natCast_zmod_surjective x`. Rewrite `h` using `[map_natCast, ZMod.natCast_eq_zero_iff]`. Rewrite using `[nsmul_eq_mul, ← Nat.cast_mul, ZMod.natCast_eq_zero_iff]`. Conclude with `Nat.mul_dvd_mul_left r h`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_eq_zero_of_cast {r N : ℕ} [NeZero (r * N)] (x : ZMod (r * N))
     (h : ZMod.castHom (dvd_mul_left N r) (ZMod N) x = 0) : r • x = 0 := by
@@ -52,19 +52,19 @@ instance finite_hom (T : AddSubgroup S.Gam) : Finite (T →+ ZMod S.N) :=
   Finite.of_injective _ DFunLike.coe_injective
 
 /- English proof (translation)
-The claim follows from `S.prim.pow (Nat.pos_of_ne_zero (pow_ne_zero _ (NeZero.ne _))) (by ring)`.
+A detailed English derivation is pending.
 -/
 theorem isPrimitiveRoot_root : IsPrimitiveRoot S.ζN S.N :=
   S.prim.pow (Nat.pos_of_ne_zero (pow_ne_zero _ (NeZero.ne _))) (by ring)
 
 /- English proof (translation)
-Take `⟨d, ⟨e⟩⟩` from `hT.2`. Establish `hw` using `isPrimitiveRoot_root S`. Establish `hu : IsUnit (Nat.card T : o)`. Rewrite using `[Nat.card_congr e.toEquiv, Nat.card_fun, Nat.card_zmod, Nat.cast_pow]`. Conclude with `S.unit.pow _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ t : T, ∑ c : T →+ ZMod S.N, S.ζN ^ (-(c t)).val • S.ρ t = (∑ c : T →+ ZMod S.N, S.ζN ^ (-(c t)).val) • (1 : Matrix S.J S.J o)`. Introduce `t`. Rewrite using `[← Finset.sum_smul]`. Establish `h` using `sum_pow_neg_val hw (AddMonoidHom.eval t : (T →+ ZMod S.N) →+ ZMod S.N)`. Simplify using `only [AddMonoidHom.eval_apply_apply] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs at h with h0`. Rewrite using `[S.ρ_one]`. Establish `: S.r • e t = 0` using `funext fun i => nsmul_eq_zero_of_cast _ (DFunLike.congr_fun h0 ((ZMod.castHom (dvd_mul_left S.N S.r) (ZMod S.N)).toAddMonoidHom.comp ((Pi.evalAddMonoidHom _ i).comp e.toAddMonoidHom)))`. Rewrite `this` using `[← map_nsmul, map_eq_zero_iff e e.injective]`. Conclude with `congrArg Subtype.val this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, zero_smul, zero_smul]`. Simplify using `only [ThetaSys.proj, finsum_eq_sum_of_fintype]`. Rewrite using `[← Finset.smul_sum, Finset.sum_comm, Finset.sum_congr rfl fun t _ => key t, ← Finset.sum_smul, Finset.sum_comm, Finset.sum_congr rfl fun c _ => sum_pow_neg_val hw c, Finset.sum_ite_eq']`. Simplify using `only [Finset.mem_univ, if_true]`. Rewrite using `[← Nat.card_eq_fintype_card, smul_smul, Ring.inverse_mul_cancel _ hu, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_proj [IsDomain o] (T : AddSubgroup S.Gam) (hT : S.IsoFree T) [Fintype (T →+ ZMod S.N)] :
     ∑ c, S.proj T c = 1 := by
@@ -100,7 +100,7 @@ abbrev gens (z : M.Z) : Set (S.J → Ω) :=
     x₀ ∈ S.supI M z ∧ v = fun j => S.th x₀ / S.FF _ c k * algebraMap o Ω (S.proj _ c j i)}
 
 /- English proof (translation)
-Rewrite using `[ThetaSys.FF, finsum_eq_sum_of_fintype]`. Conclude with `sum_mem fun t _ => mul_mem (S.R.algebraMap_mem _) (sum_mem fun j _ => mul_mem (S.R.algebraMap_mem _) (S.ev_mem _ _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FF_mem (T : AddSubgroup S.Gam) (c : T →+ ZMod S.N) (k) : S.FF T c k ∈ S.R := by
   rw [ThetaSys.FF, finsum_eq_sum_of_fintype]
@@ -108,17 +108,15 @@ theorem FF_mem (T : AddSubgroup S.Gam) (c : T →+ ZMod S.N) (k) : S.FF T c k �
     (sum_mem fun j _ => mul_mem (S.R.algebraMap_mem _) (S.ev_mem _ _))
 
 /- English proof (translation)
-Establish `hO : M.ringOn U₀ ≤ M.O ξ` using `RatModel.ringOn_le_O hξ`. Establish `hR : S.R ≤ M.O ξ` using `hA.1.le.trans hO`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, k, x₀, i, hk, -, rfl⟩`. Use `(RatModel.Lat.mem_const_iff M).2 fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_mem (mul_mem (hR (S.th_mem _)) (hO (hA.1.FF_unit _ _ _ hT hk.1))) (Subalgebra.algebraMap_mem _ _)`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨x₀, hx⟩` from `hA.1.div z`. Use `Fintype.ofFinite (S.TT M z →+ ZMod S.N)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (Pi.single i (1 : Ω) : S.J → Ω) = ∑ c : S.TT M z →+ ZMod S.N, fun j => algebraMap o Ω (S.proj _ c j i)`. Use extensionality with `j`. Rewrite using `[Finset.sum_apply, ← map_sum, ← Matrix.sum_apply, sum_proj S _ hT]`. Simplify using `[Matrix.one_apply, Pi.single_apply]`. Use `show (Pi.single i (1 : Ω) : S.J → Ω) ∈ Submodule.span (M.O ξ) (gens S M z)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `sum_mem fun c _ => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `hA.2 _ c hT (hF c) z`. Establish `hm : S.FF _ c k * (S.th x₀)⁻¹ ∈ M.O ξ` using `mul_mem (hR (FF_mem S _ _ _)) (hO (hA.1.th_unit _ hx.1))`. Establish `e2 : (fun j => algebraMap o Ω (S.proj _ c j i)) = (⟨_, hm⟩ : M.O ξ) • fun j => S.th x₀ / S.FF _ c k * algebraMap o Ω (S.proj _ c j i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `j`. Establish `h1` using `hx.1`. Establish `h2` using `hk.1`. Simplify using `only [Pi.smul_apply, Subalgebra.smul_def, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[e2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, k, x₀, i, hk, hx, rfl⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_gens_eq [IsDomain o] {U₀ : M.Z.Opens} (hA : S.admitted M U₀) (z : M.Z) (hT : S.IsoFree (S.TT M z))
     (hF : ∀ c, S.FF (S.TT M z) c ≠ 0) {ξ : M.Z} (hξ : ξ ∈ U₀) :
@@ -155,17 +153,15 @@ theorem span_gens_eq [IsDomain o] {U₀ : M.Z.Opens} (hA : S.admitted M U₀) (z
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, k, x₀, i, hk, hx, rfl⟩)
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ hb S M U₀ hA hJ h0 hF hht hloc`. Use `hb.ded` as an intermediate fact. Use `choose b W hW hb0 hbW using hloc`. Establish `hn` using `hA.1.normal`. Take `⟨EE, h1, h2⟩` from `GlobalTheory.ZH.exists_lat_of_height_le_one o Ω M hn S.J b (fun ξ => Submodule.span (M.O ξ) (gens S M ξ)) hb0 (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Establish `hfin` using `(GlobalTheory.ZH.normalModel_height_le_one o Ω M hn z).2.2 U₀ hA.1.ne`. Establish `hfin' : {ξ : M.Z | (ξ ∉ U₀ ∧ ValuationRing (M.O ξ)) ∧ ¬ ξ ⤳ z}.Finite` using `hfin.subset fun _ h => h.1`. Establish `hcl : IsClosed (⋃ ξ ∈ {ξ : M.Z | (ξ ∉ U₀ ∧ ValuationRing (M.O ξ)) ∧ ¬ ξ ⤳ z}, closure {ξ})` using `hfin'.isClosed_biUnion fun _ _ => isClosed_closure`. Use `⟨W z ⊓ ⟨_, hcl.isOpen_compl⟩, ⟨hW z, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨ξ, hξ, h⟩` from `Set.mem_iUnion₂.1 h`. Conclude with `hξ.2 (specializes_iff_mem_closure.2 h)`. Introduce and unpack `ξ ⟨hξW, hξ⟩ hv`. Rewrite using `[← hbW z ξ hξW]`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hU : ξ ∈ U₀`. Conclude with `(span_gens_eq S M hA z (h0.1 z).1 (hF z) hU).trans (span_gens_eq S M hA ξ (h0.1 ξ).1 (hF ξ) hU).symm`. Use `hht z ξ hz ?_ hv` and prove the remaining obligations. Assume the negation of the conclusion as `hs`. Conclude with `hξ (Set.mem_iUnion₂.2 ⟨ξ, ⟨⟨hU, hv⟩, hs⟩, subset_closure rfl⟩))`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `⟨EE, fun z hz => (h1 z hz).trans (hbW z z (hW z)).symm, ?_⟩` and prove the remaining obligations. Use `h2 U₀ (Matrix.of fun i => Pi.single i 1) ?_ fun ξ hξ _ => span_gens_eq S M hA ξ (h0.1 ξ).1 (hF ξ) hξ` and prove the remaining obligations. Establish `: (Matrix.of fun i => Pi.single i 1 : Matrix S.J S.J Ω) = 1`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`.
-
-Rewrite using `[this, Matrix.det_one]`. Conclude with `one_ne_zero`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lat : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (M : RatModel o Ω) (U₀ : M.Z.Opens), S.admitted M U₀ → JacobsonSpace M.Z → ((∀ ξ : M.Z, S.IsoFree (S.TT M ξ) ∧ S.perp (S.TT M ξ) = S.HH M ξ) ∧ (∀ ξ z : M.Z, ξ ⤳ z → S.supI M z ⊆ S.supI M ξ) ∧ (∀ ξ ∈ U₀, S.TT M ξ = ⊥) ∧ (∀ (ξ : M.Z) (W : M.Z.Opens), ξ ∈ W → ∃ x ∈ W, IsClosed ({x} : Set M.Z) ∧ ξ ⤳ x ∧ S.supI M x = S.supI M ξ)) → (∀ (ξ : M.Z) (c : S.TT M ξ →+ ZMod S.N), S.FF (S.TT M ξ) c ≠ 0) → (∀ z ξ : M.Z, IsClosed ({z} : Set M.Z) → ξ ⤳ z → ValuationRing (M.O ξ) → Submodule.span (M.O ξ) {v | ∃ (c : S.TT M z →+ ZMod S.N) (k : _) (x₀ : S.Gam) (i : S.J), M.Div (S.FF (S.TT M z) c) k z ∧ x₀ ∈ S.supI M z ∧ v = fun j => S.th x₀ / S.FF _ c k * algebraMap o Ω (S.proj _ c j i)} = Submodule.span (M.O ξ) {v | ∃ (c : S.TT M ξ →+ ZMod S.N) (k : _) (x₀ : S.Gam) (i : S.J), M.Div (S.FF (S.TT M ξ) c) k ξ ∧ x₀ ∈ S.supI M ξ ∧ v = fun j => S.th x₀ / S.FF _ c k * algebraMap o Ω (S.proj _ c j i)}) → (∀ z : M.Z, ∃ (b : Matrix S.J S.J Ω) (W : M.Z.Opens), z ∈ W ∧ b.det ≠ 0 ∧ ∀ x ∈ W, Submodule.span (M.O x) {v | ∃ (c : S.TT M z →+ ZMod S.N) (k : _) (x₀ : S.Gam) (i : S.J), M.Div (S.FF (S.TT M z) c) k z ∧ x₀ ∈ S.supI M z ∧ v = fun j => S.th x₀ / S.FF _ c k * algebraMap o Ω (S.proj _ c j i)} = Submodule.span (M.O x) (Set.range b)) → ∃ EE : M.Lat S.J, (∀ z : M.Z, IsClosed ({z} : Set M.Z) → EE.E z = Submodule.span (M.O z) {v | ∃ (c : S.TT M z →+ ZMod S.N) (k : _) (x₀ : S.Gam) (i : S.J), M.Div (S.FF (S.TT M z) c) k z ∧ x₀ ∈ S.supI M z ∧ v = fun j => S.th x₀ / S.FF _ c k * algebraMap o Ω (S.proj _ c j i)}) ∧ ∀ z ∈ U₀, EE.E z = Submodule.span (M.O z) (Set.range fun i => Pi.single i (1 : Ω)) := by
   intro o Ω _ _ _ hb S M U₀ hA hJ h0 hF hht hloc

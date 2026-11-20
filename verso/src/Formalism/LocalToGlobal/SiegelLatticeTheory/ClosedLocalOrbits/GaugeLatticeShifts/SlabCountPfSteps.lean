@@ -22,11 +22,11 @@ def LeviFinC : Prop :=
           ∃ f ∈ F Λ₁ Λ₂, f⁻¹ * σ ∈ NLam Λ₂ (lf D (X.Fu u'))
 
 /- English proof (translation)
-Rewrite using `[← (Equiv.sigmaFiberEquiv φ).tsum_eq, ENNReal.tsum_sigma', ← ENNReal.tsum_mul_left]`. Use `ENNReal.tsum_le_tsum fun k => ?_` and prove the remaining obligations. Take `⟨S, e, hS, he⟩` from `hfib k`. Rewrite using `[ENNReal.tsum_eq_iSup_sum]`. Use `iSup_le fun s => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : s.card ≤ M`. Use `le_trans ?_ hS` and prove the remaining obligations. Use `Finset.card_le_card_of_injOn (fun i => e (i : ι)) (fun i _ => (he i.1 i.2).1) ?_` and prove the remaining obligations. Introduce `i _ j _ hij`. Conclude with `Subtype.ext ((he i.1 i.2).2 j.1 j.2 hij)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[i.2]`. Use `_ = (s.card : ℝ≥0∞) * g k := by rw [Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ (M : ℝ≥0∞) * g k := by gcongr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_comp_le_of_fibre {ι κ β : Type*} (φ : ι → κ) (g : κ → ℝ≥0∞) (M : ℕ)
     (hfib : ∀ k, ∃ (S : Finset β) (e : ι → β), S.card ≤ M ∧

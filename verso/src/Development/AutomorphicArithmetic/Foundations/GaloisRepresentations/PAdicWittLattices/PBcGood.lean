@@ -5,11 +5,11 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Introduce `hS hG B B' R _ T g hT`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `Z W p r c hc G _ _ a hgal`. Establish `ha : ∀ x, a x ≫ r = r` using `fun x => by`. Rewrite using `[← hc, ← Category.assoc, hgal.2.2.2.2.2.1 x]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hT.inj (pullback.snd p g) (pullback.snd r g) (bcMap g c hc) (bcMap_snd g c hc) G (fun x => bcMap g (a x) (ha x)) (hG g p r c hc G a ha hgal)`. Introduce `Z Y p q s _ _ hs`. Take `⟨hfin, het, -⟩` from `hS g p q q s hs s hs Empty Empty.elim (fun j => j.elim)`. Take `⟨tr, htr⟩` from `hT.tr (pullback.snd p g) (pullback.snd q g) (bcMap g s hs) (bcMap_snd g s hs)`. Use `⟨tr, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W r c hc J _ σ hσ hspl x`. Conclude with `htr (pullback r g) (pullback.snd r g) (bcMap g c hc) (bcMap_snd g c hc) J (fun j => bcMap g (σ j) (hσ j)) (fun j => bcMap_snd g (σ j) (hσ j)) ((hS g p q r s hs c hc J σ hσ).2.2 hspl) x`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pBcGood :
     BcSplits → BcGal → BcGood.{u} := by

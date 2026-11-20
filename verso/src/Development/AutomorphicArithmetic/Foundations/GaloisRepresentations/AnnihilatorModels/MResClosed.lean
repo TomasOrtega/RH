@@ -8,15 +8,15 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce `V _ _ _ _`. Use `IsAlgClosed.of_exists_root _ ?_` and prove the remaining obligations. Introduce `p hm hirr`. Establish `hsurj : Function.Surjective (IsLocalRing.residue V)` using `IsLocalRing.residue_surjective`. Establish `hl : p ∈ Polynomial.lifts (IsLocalRing.residue V)` using `Polynomial.mem_lifts _ |>.2 (Polynomial.map_surjective _ hsurj p)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨P, hP, hdeg, hPm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl hm`. Establish `hinj : Function.Injective (algebraMap V (FractionRing V))` using `IsFractionRing.injective V (FractionRing V)`. Establish `hpos : 0 < P.natDegree` using `hdeg ▸ hirr.natDegree_pos`. Establish `hd : (P.map (algebraMap V (FractionRing V))).degree ≠ 0`. Rewrite using `[Polynomial.degree_map_eq_of_injective hinj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Polynomial.natDegree_pos_iff_degree_pos.1 hpos).ne'`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_root _ hd`. Establish `hint : IsIntegral V x`. Use `⟨P, hPm, ?_⟩` and prove the remaining obligations. Simplify `hx` using `[Polynomial.IsRoot.def, Polynomial.eval_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Establish `hy : P.eval y = 0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, ← Polynomial.eval₂_at_apply, ← Polynomial.eval_map]`. Conclude with `hx`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨IsLocalRing.residue V y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hP, Polynomial.eval_map, Polynomial.eval₂_at_apply, hy, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.resClosed_of :
     ResClosed := by

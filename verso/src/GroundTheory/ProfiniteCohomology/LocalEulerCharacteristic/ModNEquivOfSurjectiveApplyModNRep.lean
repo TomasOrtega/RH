@@ -46,7 +46,7 @@ theorem modNEquivOfSurjective_mk (φ : A →+ X) (hs : Function.Surjective φ)
   rfl
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[modNRep_mk, modNEquivOfSurjective_mk, modNEquivOfSurjective_mk]`. Conclude with `hφ γ a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modNEquivOfSurjective_apply_modNRep {Γ : Type*} [Group Γ] [DistribMulAction Γ A]
     (ρ : Representation (ZMod n) Γ X) (φ : A →+ X) (hs : Function.Surjective φ)
@@ -70,7 +70,7 @@ abbrev trivialIntAction (Γ : Type*) [Monoid Γ] : DistribMulAction Γ (ULift.{u
   smul_add _ _ _ := rfl
 
 /- English proof (translation)
-Set `e : ULift.{u} ℤ ≃+ ℤ` to `AddEquiv.ulift`. Set `b : Module.Basis Unit ℤ (ULift.{u} ℤ)` to `(Module.Basis.singleton Unit ℤ).map e.symm.toIntLinearEquiv`. Conclude with `Finite.of_equiv _ (ModN.basis (n := l) b).equivFun.symm.toEquiv`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem finite_modN_uliftInt (l : ℕ) [NeZero l] : Finite (ModN (ULift.{u} ℤ) l) := by
   let e : ULift.{u} ℤ ≃+ ℤ := AddEquiv.ulift
@@ -79,11 +79,9 @@ theorem finite_modN_uliftInt (l : ℕ) [NeZero l] : Finite (ModN (ULift.{u} ℤ)
   exact Finite.of_equiv _ (ModN.basis (n := l) b).equivFun.symm.toEquiv
 
 /- English proof (translation)
-Establish `: Subsingleton (TorsN (ULift.{u} ℤ) l)` using `⟨fun x y ↦ by`. Establish `hx` using `(mem_ker_lsmul_iff l (x : ULift.{u} ℤ)).mp x.2`. Establish `hy` using `(mem_ker_lsmul_iff l (y : ULift.{u} ℤ)).mp y.2`. Establish `h0 : ∀ z : ULift.{u} ℤ, l • z = 0 → z = 0` using `fun z hz ↦ by`. Establish `h` using `congrArg (AddEquiv.ulift : ULift.{u} ℤ ≃+ ℤ) hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_nsmul, map_zero, nsmul_eq_mul, mul_eq_zero]`. Break down `h with h | h` into its components or cases. Conclude with `absurd h (by exact_mod_cast NeZero.ne l)`. Conclude with `AddEquiv.ulift.injective (h.trans (map_zero _).symm)`. Conclude with `Subtype.ext ((h0 _ hx).trans (h0 _ hy).symm)⟩`.
-
-Use `infer_instance`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem finite_torsN_uliftInt (l : ℕ) [NeZero l] : Finite (TorsN (ULift.{u} ℤ) l) := by
   have : Subsingleton (TorsN (ULift.{u} ℤ) l) := ⟨fun x y ↦ by
@@ -122,9 +120,9 @@ theorem ordHom_apply (x : Additive Fˣ) : ordHom F x = ULift.up (ord ((x.toMul :
   rfl
 
 /- English proof (translation)
-Introduce `m`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Use `⟨Additive.ofMul ((unitsEquivIntProd hϖ).symm (Multiplicative.ofAdd m.down, 1)), ?_⟩` and prove the remaining obligations. Apply `ULift.ext` to reduce the goal to its premises. Use `unitsEquivIntProd_fst hϖ ((unitsEquivIntProd hϖ).symm (Multiplicative.ofAdd m.down, 1))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Rewrite using `[ordHom_apply]`. Conclude with `(Multiplicative.ofAdd.injective this).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordHom_surjective : Function.Surjective (ordHom F) := by
   intro m
@@ -137,11 +135,11 @@ theorem ordHom_surjective : Function.Surjective (ordHom F) := by
   exact (Multiplicative.ofAdd.injective this).symm
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[ordHom_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h0 : ord ((x.toMul : Fˣ) : F) = 0` using `congrArg ULift.down h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : normalizedValuation F ((x.toMul : Fˣ) : F) = 1`. Rewrite using `[normalizedValuation_eq_exp_ord x.toMul.ne_zero, h0, neg_zero, WithZero.exp_zero]`. Take `⟨u, hu⟩` from `mem_range_unitsIncl_iff.mpr h1`. Conclude with `⟨Additive.ofMul u, by simp [hu]⟩`. Introduce and unpack `⟨u, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Apply `ULift.ext` to reduce the goal to its premises. Simplify using `[ord_unit]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem ordHom_exact : Function.Exact (unitsIncl F).toAdditive (ordHom F) := by
   intro x
@@ -162,11 +160,11 @@ end Valuation
 section Subgroup
 
 /- English proof (translation)
-Establish `h : (H.subtype.toAdditive).range = H.toAddSubgroup`. Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_range]`. Express the relevant statement in the definitionally equal form `_ ↔ x.toMul ∈ H`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, rfl⟩`. Conclude with `a.toMul.2`. Introduce `hx`. Conclude with `⟨Additive.ofMul ⟨x.toMul, hx⟩, rfl⟩`. Rewrite using `[h]`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: H.toAddSubgroup.FiniteIndex` using `⟨by rw [Subgroup.index_toAddSubgroup]; exact Subgroup.FiniteIndex.index_ne_zero⟩`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem finite_quotient_range_toAdditive {G : Type*} [CommGroup G] (H : Subgroup G)
     [H.FiniteIndex] : Finite (Additive G ⧸ (H.subtype.toAdditive).range) := by
@@ -185,14 +183,14 @@ theorem finite_quotient_range_toAdditive {G : Type*} [CommGroup G] (H : Subgroup
   infer_instance
 
 /- English proof (translation)
-The claim follows from `fun _ _ h ↦ Additive.toMul.injective (Subtype.ext (Additive.ofMul.injective h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toAdditive_subtype_injective {G : Type*} [CommGroup G] (H : Subgroup G) :
     Function.Injective H.subtype.toAdditive :=
   fun _ _ h ↦ Additive.toMul.injective (Subtype.ext (Additive.ofMul.injective h))
 
 /- English proof (translation)
-Establish `hfh : Function.Exact f (QuotientAddGroup.mk' f.range)` using `fun y ↦ by rw [QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]; rfl`. Establish `: Finite (ModN (A ⧸ f.range) n)` using `Finite.of_surjective _ (Submodule.Quotient.mk_surjective _)`. Conclude with `finite_modN_of_exact (QuotientAddGroup.mk'_surjective f.range) hfh`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_modN_of_finite_cokernel {A B : Type*} [AddCommGroup A] [AddCommGroup B] {n : ℕ}
     (f : B →+ A) [Finite (A ⧸ f.range)] [Finite (ModN B n)] : Finite (ModN A n) := by
@@ -207,7 +205,7 @@ end Subgroup
 section Torsion
 
 /- English proof (translation)
-The claim follows from `have : Subsingleton (TorsN A n) := ⟨fun x y ↦ Subtype.ext ((h _ ((mem_ker_lsmul_iff n _).mp x.2)).trans (h _ ((mem_ker_lsmul_iff n _).mp y.2)).symm)⟩ Finite.of_subsingleton`.
+A detailed English derivation is pending.
 -/
 theorem finite_torsN_of_torsion_trivial {A : Type*} [AddCommGroup A] {n : ℕ}
     (h : ∀ a : A, n • a = 0 → a = 0) : Finite (TorsN A n) :=
@@ -218,7 +216,7 @@ theorem finite_torsN_of_torsion_trivial {A : Type*} [AddCommGroup A] {n : ℕ}
 variable {F : Type*} [Field F] [ValuativeRel F]
 
 /- English proof (translation)
-Establish `hm' : (m : 𝒪[F]) ≠ 0` using `fun h ↦ hm (by simpa using congrArg Subtype.val h)`. Establish `h` using `congrArg (fun x : H ↦ (x : 𝒪[F])) ha`. Simplify using `only [AddSubgroup.coe_nsmul, nsmul_eq_mul, ZeroMemClass.coe_zero, mul_eq_zero, hm', false_or] at h`. Conclude with `Subtype.ext h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integer_subgroup_torsion {m : ℕ} (hm : (m : F) ≠ 0) (H : AddSubgroup 𝒪[F]) (a : H)
     (ha : m • a = 0) : a = 0 := by
@@ -247,9 +245,9 @@ variable [Fact p.Prime]
 omit [TopologicalSpace E] [IsNonarchimedeanLocalField E] in
 
 /- English proof (translation)
-Establish `hp` using `(Fact.out : p.Prime)`. Establish `hcard : Nat.card (ModN 𝒪[E] p) = p ^ n` using `(Nat.card_congr modNIntegerEquiv.toEquiv).trans hn`. Establish `hfin : Finite (ModN 𝒪[E] p)` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ hp.ne_zero)`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Use `Fintype.ofFinite (ModN 𝒪[E] p)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `Module.card_eq_pow_finrank (K := ZMod p) (V := ModN 𝒪[E] p)`. Rewrite `h` using `[ZMod.card, ← Nat.card_eq_fintype_card, hcard]`. Conclude with `(Nat.pow_right_injective hp.two_le h).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_modN_integer {n : ℕ} (hn : Nat.card (𝒪[E] ⧸ Ideal.span {(p : 𝒪[E])}) = p ^ n) :
     Finite (ModN 𝒪[E] p) ∧ Module.finrank (ZMod p) (ModN 𝒪[E] p) = n := by
@@ -263,11 +261,11 @@ theorem finrank_modN_integer {n : ℕ} (hn : Nat.card (𝒪[E] ⧸ Ideal.span {(
   exact (Nat.pow_right_injective hp.two_le h).symm
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[E]`. Establish `hp' : (p : 𝒪[E]) ≠ 0` using `fun h ↦ hp0 (by simpa using congrArg Subtype.val h)`. Take `⟨m, ε, hm⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hp' hπ`. Establish `hfin : Finite (𝒪[E] ⧸ Ideal.span {(p : 𝒪[E])})`. Use `IsLocalRing.finite_quotient_iff.mpr ⟨m, fun x hx ↦ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, rfl⟩` from `(mem_maximalIdeal_pow_iff hπ).mp hx`. Rewrite using `[Ideal.mem_span_singleton', hm]`. Conclude with `⟨((ε⁻¹ : 𝒪[E]ˣ) : 𝒪[E]) * a, by`. Use `ε.inv_mul` as an intermediate fact. Take the linear combination `(π ^ m * a) * this⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hfin' : Finite (ModN 𝒪[E] p)` using `Finite.of_equiv _ modNIntegerEquiv.symm.toEquiv`. Use `Fintype.ofFinite (ModN 𝒪[E] p)` as an intermediate fact. Use `⟨Module.finrank (ZMod p) (ModN 𝒪[E] p), ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.card_congr modNIntegerEquiv.toEquiv, Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := ZMod p), ZMod.card]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_card_quotient_eq_pow (hp0 : (p : E) ≠ 0) :
     ∃ n, Nat.card (𝒪[E] ⧸ Ideal.span {(p : 𝒪[E])}) = p ^ n := by
@@ -296,13 +294,13 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 include hϖ hpe
 
 /- English proof (translation)
-Establish `hfin : Finite (𝒪[F] ⧸ 𝓂[F] ^ (k + e))` using `IsLocalRing.finite_quotient_iff.mpr ⟨k + e, le_rfl⟩`. Set `φ : maxPow F k →+ 𝒪[F] ⧸ 𝓂[F] ^ (k + e)` to `(Ideal.Quotient.mk (𝓂[F] ^ (k + e))).toAddMonoidHom.comp (maxPow F k).subtype`. Establish `hφ : ∀ a : maxPow F k, φ a = 0 ↔ a ∈ LinearMap.range (LinearMap.lsmul ℤ (maxPow F k) p)`. Introduce `a`. Rewrite using `[mem_range_lsmul_iff]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (a : 𝒪[F]) = 0 ↔ _`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, mem_maximalIdeal_pow_add_iff hϖ hpe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`. Conclude with `⟨⟨y, hy⟩, Subtype.ext (by simp [h])⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, y.2, by simp⟩`. Set `L` to `(LinearMap.range (LinearMap.lsmul ℤ (maxPow F k) p)).liftQ φ.toIntLinearMap fun a ha ↦ LinearMap.mem_ker.mpr ((hφ a).mpr ha)`. Use `Finite.of_injective L ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `(Submodule.Quotient.mk_eq_zero _).mpr ((hφ a).mp hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_modN_maxPow (k : ℕ) : Finite (ModN (maxPow F k) p) := by
   have hfin : Finite (𝒪[F] ⧸ 𝓂[F] ^ (k + e)) :=
@@ -337,20 +335,20 @@ variable {E F : Type u} [Field E] [ValuativeRel E] [TopologicalSpace E]
   [Algebra E F] [ValuativeExtension E F] [FiniteDimensional E F]
 
 /- English proof (translation)
-Rewrite using `[ord, ord, (normalizedValuation_eq_iff).mpr (valuation_algEquiv_apply E F σ x)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_algEquiv (σ : F ≃ₐ[E] F) (x : F) : ord (σ x) = ord x := by
   rw [ord, ord, (normalizedValuation_eq_iff).mpr (valuation_algEquiv_apply E F σ x)]
 
 /- English proof (translation)
-Rewrite using `[ordHom_apply, ordHom_apply]`. Conclude with `congrArg ULift.up (ord_algEquiv σ ((x.toMul : Fˣ) : F))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordHom_smul (σ : F ≃ₐ[E] F) (x : Additive Fˣ) : ordHom F (σ • x) = ordHom F x := by
   rw [ordHom_apply, ordHom_apply]
   exact congrArg ULift.up (ord_algEquiv σ ((x.toMul : Fˣ) : F))
 
 /- English proof (translation)
-The claim follows from `congrArg Additive.ofMul (unitsIncl_smul σ a.toMul)`.
+A detailed English derivation is pending.
 -/
 theorem unitsIncl_toAdditive_smul (σ : F ≃ₐ[E] F) (a : Additive 𝒪[F]ˣ) :
     (unitsIncl F).toAdditive (σ • a) = σ • (unitsIncl F).toAdditive a :=
@@ -360,9 +358,9 @@ omit [Algebra E F] [ValuativeExtension E F] [FiniteDimensional E F] [Topological
   [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Establish `hl : 0 < l` using `Nat.pos_of_ne_zero (NeZero.ne l)`. Establish `key : ∀ x : TorsN (Additive 𝒪[F]ˣ) l, (((x : Additive 𝒪[F]ˣ).toMul : 𝒪[F]ˣ) : 𝒪[F]) ∈ Polynomial.nthRootsFinset l (1 : 𝒪[F])`. Introduce `x`. Rewrite using `[Polynomial.mem_nthRootsFinset hl, ← Units.val_pow_eq_pow_val, ← toMul_nsmul, (mem_ker_lsmul_iff l _).mp x.2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Finite.of_injective (fun x : TorsN (Additive 𝒪[F]ˣ) l ↦ (⟨_, key x⟩ : (Polynomial.nthRootsFinset l (1 : 𝒪[F]) : Set 𝒪[F]))) ?_` and prove the remaining obligations. Introduce `x y h`. Conclude with `Subtype.ext (Additive.toMul.injective (Units.ext (congrArg Subtype.val h)))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_torsN_integerUnits (l : ℕ) [NeZero l] : Finite (TorsN (Additive 𝒪[F]ˣ) l) := by
   classical
@@ -382,9 +380,9 @@ theorem finite_torsN_integerUnits (l : ℕ) [NeZero l] : Finite (TorsN (Additive
 variable {l : ℕ} [NeZero l] (d : AdditiveFunction.{u} l (F ≃ₐ[E] F))
 
 /- English proof (translation)
-Set `` to `trivialIntAction.{u} (F ≃ₐ[E] F)`. Use `finite_torsN_integerUnits (F := F) l` as an intermediate fact. Use `finite_modN_uliftInt.{u} l` as an intermediate fact. Use `finite_torsN_uliftInt.{u} l` as an intermediate fact. Establish `hinj : Function.Injective (unitsIncl F).toAdditive` using `fun _ _ h ↦ Additive.toMul.injective (unitsIncl_injective (Additive.ofMul.injective h))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[d.g_add (unitsIncl F).toAdditive (ordHom F) unitsIncl_toAdditive_smul (fun σ x ↦ ordHom_smul σ x) hinj ordHom_exact ordHom_surjective, d.g_of_trivial_int (ULift.{u} ℤ) (fun _ _ ↦ rfl) AddEquiv.ulift, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem g_units_eq_one_add [Finite (ModN (Additive 𝒪[F]ˣ) l)] :
     d.g (Additive Fˣ) = d.one + d.g (Additive 𝒪[F]ˣ) := by
@@ -405,7 +403,7 @@ attribute [local instance] maxPowAction normalSubAction
 omit [FiniteDimensional E F] in
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(mem_maximalIdeal_pow_iff hϖ).mp hx`. Rewrite using `[Subring.coe_mul, map_mul, SubmonoidClass.coe_pow, map_pow]`. Conclude with `mul_le_of_le_one_right' a.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_le_of_mem_maxPow {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) {k : ℕ} {x : 𝒪[F]}
     (hx : x ∈ 𝓂[F] ^ k) : valuation F (x : F) ≤ valuation F (ϖ : F) ^ k := by
@@ -414,9 +412,9 @@ theorem valuation_le_of_mem_maxPow {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) {k : �
   exact mul_le_of_le_one_right' a.2
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[E]`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Establish `hopen` using `isOpen_normalLattice π θ hπ hθ 0`. Rewrite `hopen` using `[normalLattice_zero_eq]`. Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff _).mp (hopen.mem_nhds (Submodule.zero_mem _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j, -, hj⟩` from `exists_pow_lt hϖ γ.ne_zero`. Use `⟨j, fun k hk x hx ↦ mem_normalSub.mpr (hγ ?_)⟩` and prove the remaining obligations. Establish `h1 : valuation F (ϖ : F) ≤ 1` using `ϖ.2`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_maxPow_le_normalSub [IsGalois E F] {θ : F}
     (hθ : LinearIndependent E fun σ : F ≃ₐ[E] F ↦ σ θ) :
@@ -438,11 +436,11 @@ omit [TopologicalSpace E] [IsNonarchimedeanLocalField E] [ValuativeExtension E F
   [FiniteDimensional E F] in
 
 /- English proof (translation)
-Establish `hr : (AddSubgroup.inclusion hle).range = (maxPow F k).addSubgroupOf (normalSub E θ)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Establish `hfin : Finite (𝒪[F] ⧸ maxPow F k)` using `IsLocalRing.finite_quotient_iff.mpr ⟨k, le_rfl⟩`. Establish `hidx : (maxPow F k).index ≠ 0` using `AddSubgroup.index_ne_zero_of_finite`. Establish `hrel : (maxPow F k).relIndex (normalSub E θ) ≠ 0` using `fun h ↦ hidx (Nat.eq_zero_of_zero_dvd (h ▸ AddSubgroup.relIndex_dvd_index_of_le hle))`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`. Establish `: ((maxPow F k).addSubgroupOf (normalSub E θ)).FiniteIndex` using `⟨hrel⟩`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_quotient_maxPow {θ : F} {k : ℕ} (hle : maxPow F k ≤ normalSub E θ) :
     Finite (normalSub E θ ⧸ (AddSubgroup.inclusion hle).range) := by
@@ -475,27 +473,27 @@ variable {E F : Type u} [Field E] [ValuativeRel E] [TopologicalSpace E]
 attribute [local instance] integerAction unitFiltrationAction maxPowAction normalSubAction
 
 /- English proof (translation)
-Establish `hlp : l.Prime` using `Fact.out`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Establish `hl' : (l : 𝒪[F]) ≠ 0` using `fun h ↦ hl (by simpa using congrArg Subtype.val h)`. Choose the witnesses or unpack the hypotheses as in `⟨e, ε, hpe⟩ : ∃ (e : ℕ) (ε : 𝒪[F]ˣ), (l : 𝒪[F]) = ϖ ^ e * ε := by`. Take `⟨e, ε, h⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hl' hϖ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e, ε, by rw [h, mul_comm]⟩`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[E]`. Take `⟨θ, hθ, hθO⟩` from `exists_normalBasis_integer (K := E) (L := F) hπ`. Take `⟨j, hj⟩` from `exists_maxPow_le_normalSub hθ`. Establish `hk : e + 1 ≤ max j (e + 1)` using `le_max_right _ _`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : maxPow F (max j (e + 1)) ≤ normalSub E θ` using `hj _ (le_max_left _ _)`. Use `set k := max j (e + 1)`. Take `⟨hfinE, hrank⟩` from `finrank_modN_integer (E := E) hn`. Set `b : Module.Basis (Fin n) (ZMod l) (ModN 𝒪[E] l)` to `Module.finBasisOfFinrankEq _ _ hrank`. Use `set U := unitFiltration F k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hUt : ∀ a : Additive U, l • a = 0 → a = 0`. Introduce `a ha`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Establish `h1 : (a.toMul : 𝒪[F]ˣ) ^ l = 1`. Use `congrArg (fun b : Additive U ↦ ((b.toMul : U) : 𝒪[F]ˣ)) ha` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify using `using this`. Conclude with `Subtype.ext (eq_one_of_mem_unitFiltration_of_pow_eq_one hϖ hlp hpe hk a.toMul.2 h1)`. Set `e1` to `modNEquivOfSurjective (unitToModN hϖ hpe (Nat.le_of_succ_le hk)) (unitToModN_surjective hϖ hpe hk) (unitToModN_eq_zero_iff hϖ hpe hlp hk)`. Establish `he1` using `modNEquivOfSurjective_apply_modNRep (modNRep (F ≃ₐ[E] F) (maxPow F k) l) (unitToModN hϖ hpe (Nat.le_of_succ_le hk)) (unitToModN_surjective hϖ hpe hk) (unitToModN_eq_zero_iff hϖ hpe hlp hk) (unitToModN_smul ϖ hϖ hpe _)`. Use `finite_modN_maxPow hϖ hpe k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (ModN (Additive U) l)` using `Finite.of_equiv _ e1.symm.toEquiv`. Use `finite_torsN_of_torsion_trivial hUt` as an intermediate fact. Establish `hPt : ∀ a : maxPow F k, l • a = 0 → a = 0` using `integer_subgroup_torsion hl _`. Use `finite_torsN_of_torsion_trivial hPt` as an intermediate fact. Set `N` to `normalSubEquiv hθ hθO`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ : normalSub E θ →+ (Fin n → MonoidAlgebra (ZMod l) (F ≃ₐ[E] F))` to `(coeffToRegular b).comp N.symm.toAddMonoidHom`. Establish `hφs : Function.Surjective φ` using `(coeffToRegular_surjective (F ≃ₐ[E] F) b).comp N.symm.surjective`. Establish `hφk : ∀ t, φ t = 0 ↔ t ∈ LinearMap.range (LinearMap.lsmul ℤ (normalSub E θ) l)`. Introduce `t`. Express the relevant statement in the definitionally equal form `coeffToRegular b (N.symm t) = 0 ↔ _`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[coeffToRegular_eq_zero_iff, mem_range_lsmul_iff, mem_range_lsmul_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨N y, by rw [← map_nsmul, hy, AddEquiv.apply_symm_apply]⟩`. Introduce and unpack `⟨y, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨N.symm y, by rw [map_nsmul]⟩`. Establish `hφγ : ∀ (σ : F ≃ₐ[E] F) (t : normalSub E θ), φ (σ • t) = piRep (Fin n) (Representation.leftRegular (ZMod l) (F ≃ₐ[E] F)) σ (φ t)`. Introduce `σ t`. Take `⟨c, rfl⟩` from `N.surjective t`. Express the relevant statement in the definitionally equal form `coeffToRegular b (N.symm (σ • N c)) = piRep (Fin n) (Representation.leftRegular (ZMod l) (F ≃ₐ[E] F)) σ (coeffToRegular b (N.symm (N c)))`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[AddEquiv.symm_apply_apply, normalSubEquiv_apply, smul_normalSubOfCoeff, ← normalSubEquiv_apply hθ, AddEquiv.symm_apply_apply, coeffToRegular_perm]`. Set `e2` to `modNEquivOfSurjective φ hφs hφk`. Establish `he2` using `modNEquivOfSurjective_apply_modNRep _ φ hφs hφk hφγ`. Establish `: Finite (ModN (normalSub E θ) l)` using `Finite.of_equiv _ e2.symm.toEquiv`. Establish `hTt : ∀ a : normalSub E θ, l • a = 0 → a = 0` using `integer_subgroup_torsion hl _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `finite_quotient_maxPow hle` as an intermediate fact. Use `finite_quotient_range_toAdditive U` as an intermediate fact. Use `⟨finite_modN_of_finite_cokernel U.subtype.toAdditive, ?_⟩` and prove the remaining obligations. Rewrite using `[d.g_eq_of_finite_cokernel U.subtype.toAdditive (fun _ _ ↦ rfl) (toAdditive_subtype_injective U), d.g_eq_of_torsion_trivial (Additive U) hUt, d.toFun_congr _ _ e1 he1, ← d.g_eq_of_torsion_trivial (maxPow F k) hPt, ← d.g_eq_of_finite_cokernel (AddSubgroup.inclusion hle) (fun _ _ ↦ …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g_integerUnits_eq (hl : (l : F) ≠ 0) {n : ℕ}
     (hn : Nat.card (𝒪[E] ⧸ Ideal.span {(l : 𝒪[E])}) = l ^ n) :
@@ -574,7 +572,7 @@ theorem g_integerUnits_eq (hl : (l : F) ≠ 0) {n : ℕ}
     d.g_eq_of_torsion_trivial (normalSub E θ) hTt, d.toFun_congr _ _ e2 he2, d.toFun_pi]
 
 /- English proof (translation)
-Establish `hlF : (l : F) ≠ 0`. Rewrite using `[← map_natCast (algebraMap E F)]`. Conclude with `(map_ne_zero _).mpr hl`. Take `⟨hfin, hg⟩` from `g_integerUnits_eq d hlF hn`. Rewrite using `[g_units_eq_one_add d, hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g_units_eq (hl : (l : E) ≠ 0) {n : ℕ}
     (hn : Nat.card (𝒪[E] ⧸ Ideal.span {(l : 𝒪[E])}) = l ^ n) :

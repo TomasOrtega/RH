@@ -10,7 +10,7 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Mb.fin_closure`.
+A detailed English derivation is pending.
 -/
 theorem finite_integralClosure_of_essFiniteType_int : ∀ (A : Type) [CommRing A] [IsDomain A] [Algebra.EssFiniteType ℤ A] (K : Type) [Field K] [Algebra A K] [IsFractionRing A K] (L : Type) [Field L] [Algebra K L] [FiniteDimensional K L] [Algebra A L] [IsScalarTower A K L], Module.Finite A (integralClosure A L) :=
   @PositivityTheory.HtPt.Mb.fin_closure

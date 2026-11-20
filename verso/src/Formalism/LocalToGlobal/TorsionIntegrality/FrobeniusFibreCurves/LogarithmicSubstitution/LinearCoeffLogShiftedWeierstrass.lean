@@ -11,9 +11,9 @@ open PowerSeries
 open Formalism.L2.Th1.C (wpShift HasSecondLogDeriv)
 
 /- English proof (translation)
-Introduce `G _ G1 β β' hβ hβ' hinj t0 t' t'' h0 h1 h2 h3 h4`. Establish `key : t0 ∉ G1`. Introduce `hm`. Establish `h5 : β' t0 = t''` using `by rw [h0, map_add, h1, h2, zero_add]`. Establish `h6 : t'' ∈ G1` using `h5 ▸ hβ' t0 hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h3 (hinj t'' h6 h4)`. Use `⟨key, ?_⟩` and prove the remaining obligations. Introduce `Q hQ hm`. Conclude with `key (hQ ▸ hβ Q hm)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem curve_not_reduced : NotReduce := by
   intro G _ G1 β β' hβ hβ' hinj t0 t' t'' h0 h1 h2 h3 h4
@@ -29,7 +29,7 @@ theorem curve_not_reduced : NotReduce := by
 variable {K : Type} [Field K] [CharZero K]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[dz, coeff_derivative, coeff_rescale, coeff_C_mul, coeff_rescale, coeff_derivative]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dz_rescale (a : K) (f : PowerSeries K) :
     dz (rescale a f) = C a * rescale a (dz f) := by
@@ -38,7 +38,7 @@ theorem dz_rescale (a : K) (f : PowerSeries K) :
   ring
 
 /- English proof (translation)
-Rewrite using `[dz_rescale, dz_mul, dz_C, dz_rescale, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem second_derivative_rescale (a : K) (f : PowerSeries K) :
     dz (dz (rescale a f)) = C (a ^ 2) * rescale a (dz (dz f)) := by
@@ -46,7 +46,7 @@ theorem second_derivative_rescale (a : K) (f : PowerSeries K) :
   ring
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_rescale, coeff_C]`. Use `split_ifs with h`. Rewrite using `[h, pow_zero, one_mul]`. Rewrite using `[mul_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rescale_C' (a c : K) : rescale a (C c : PowerSeries K) = C c := by
   ext n
@@ -56,18 +56,18 @@ theorem rescale_C' (a c : K) : rescale a (C c : PowerSeries K) = C c := by
   · rw [mul_zero]
 
 /- English proof (translation)
-The claim follows from `map_nsmul _ n f`.
+A detailed English derivation is pending.
 -/
 theorem dz_nsmul (n : ℕ) (f : PowerSeries K) : dz (n • f) = n • dz f := map_nsmul _ n f
 
 /- English proof (translation)
-Rewrite using `[dz_nsmul, dz_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem second_derivative_nsmul (n : ℕ) (f : PowerSeries K) : dz (dz (n • f)) = n • dz (dz f) := by
   rw [dz_nsmul, dz_nsmul]
 
 /- English proof (translation)
-Establish `h : fExp (0 : PowerSeries K) * fExp (0 : PowerSeries K) = fExp (0 : PowerSeries K)`. Rewrite using `[← fExp_add (map_zero _) (map_zero _), add_zero]`. Establish `h1 : constantCoeff (fExp (0 : PowerSeries K)) = 1` using `constantCoeff_fExp (map_zero _)`. Establish `hne : fExp (0 : PowerSeries K) ≠ 0` using `ne_zero_of_constantCoeff (by rw [h1]; exact one_ne_zero)`. Conclude with `mul_left_cancel₀ hne (by rw [h, mul_one])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fExp_zero : fExp (0 : PowerSeries K) = 1 := by
   have h : fExp (0 : PowerSeries K) * fExp (0 : PowerSeries K) = fExp (0 : PowerSeries K) := by
@@ -77,7 +77,7 @@ theorem fExp_zero : fExp (0 : PowerSeries K) = 1 := by
   exact mul_left_cancel₀ hne (by rw [h, mul_one])
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero, fExp_zero]`. Consider the case `succ m ih`. Establish `hm : constantCoeff (m • f) = 0` using `by rw [map_nsmul, hf, smul_zero]`. Rewrite using `[succ_nsmul, fExp_add hm hf, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fExp_nsmul {f : PowerSeries K} (hf : constantCoeff f = 0) (n : ℕ) :
     fExp (n • f) = fExp f ^ n := by
@@ -88,9 +88,9 @@ theorem fExp_nsmul {f : PowerSeries K} (hf : constantCoeff f = 0) (n : ℕ) :
     rw [succ_nsmul, fExp_add hm hf, ih, pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.prod_empty, fExp_zero]`. Consider the case `insert a s ha ih`. Establish `hs : constantCoeff (∑ i ∈ s, f i) = 0`. Rewrite using `[map_sum]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun i _ => hf i`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, fExp_add (hf a) hs, ih]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fExp_sum {ι : Type} (s : Finset ι) (f : ι → PowerSeries K)
     (hf : ∀ i, constantCoeff (f i) = 0) : fExp (∑ i ∈ s, f i) = ∏ i ∈ s, fExp (f i) := by
@@ -103,9 +103,9 @@ theorem fExp_sum {ι : Type} (s : Finset ι) (f : ι → PowerSeries K)
     rw [Finset.sum_insert ha, Finset.prod_insert ha, fExp_add (hf a) hs, ih]
 
 /- English proof (translation)
-Establish `hne : f ≠ 0` using `ne_zero_of_constantCoeff (by rw [hf]; exact one_ne_zero)`. Establish `hL1 : f * dz (fLog f) = dz f` using `Sq.mul_dz_fLog hf`. Establish `hL2 : f * dz (dz (fLog f)) + dz (fLog f) * dz f = dz (dz f)`. Use `congrArg dz hL1` as an intermediate fact. Rewrite `this` using `[dz_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h' : dz (dz f) * f - dz f ^ 2 = g * f ^ 2` using `h`. Apply `mul_left_cancel₀ (pow_ne_zero 2 hne)` to reduce the goal to its premises. Take the linear combination `f * hL2 - dz f * hL1 + h'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem second_derivative_formal_log {f g : PowerSeries K} (hf : constantCoeff f = 1) (h : HasSecondLogDeriv f g) :
     dz (dz (fLog f)) = g := by
@@ -119,19 +119,19 @@ theorem second_derivative_formal_log {f g : PowerSeries K} (hf : constantCoeff f
   linear_combination f * hL2 - dz f * hL1 + h'
 
 /- English proof (translation)
-Simplify using `[wpShift]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_wpShift (P : PowerSeries K) (c : K) : constantCoeff (wpShift P c) = 1 := by
   simp [wpShift]
 
 /- English proof (translation)
-Use `dz_X_pow (K := K) 1` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `this`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dz_X_sq : dz ((X : PowerSeries K) ^ 2) = 2 * X := by
   have := dz_X_pow (K := K) 1; push_cast at this; linear_combination this
 
 /- English proof (translation)
-Establish `h` using `congrArg constantCoeff (Sq.mul_dz_fLog (constantCoeff_wpShift P c))`. Rewrite `h` using `[map_mul, constantCoeff_wpShift, one_mul]`. Rewrite using `[h, wpShift, dz_add, dz_mul, dz_one, dz_X_sq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linear_coeff_log_shifted_weierstrass (P : PowerSeries K) (c : K) :
     constantCoeff (dz (fLog (wpShift P c))) = 0 := by
@@ -141,19 +141,19 @@ theorem linear_coeff_log_shifted_weierstrass (P : PowerSeries K) (c : K) :
   simp
 
 /- English proof (translation)
-Take `⟨hF1, hF2⟩` from `weierstrassReducedEquations K g2 g3 P hP`. Establish `hZW : wpShift P e1 = 1 + X ^ 2 * P - C e1 * X ^ 2` using `by rw [wpShift]; ring`. Rewrite using `[hZW]`. Use `set Ze : PowerSeries K := 1 + X ^ 2 * P - C e1 * X ^ 2 with hZe`. Establish `hZ0 : constantCoeff Ze = 1` using `by simp [hZe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ0' : constantCoeff Ze ≠ 0` using `by rw [hZ0]; exact one_ne_zero`. Establish `hw : wOf e1 P * Ze = X ^ 2`. Unfold `wOf`. Rewrite using `[mul_assoc, PowerSeries.inv_mul_cancel _ hZ0', mul_one]`. Establish `e2 : dz ((X : PowerSeries K) ^ 2) = 2 * X` using `dz_X_sq`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ1 : dz Ze = X ^ 2 * dz P + P * (2 * X) - C e1 * (2 * X)`. Rewrite using `[hZe]`. Simplify using `only [dz_sub, dz_add, dz_mul, dz_one, dz_C, e2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hZ2 : dz (dz Ze) = X ^ 2 * dz (dz P) + 4 * X * dz P + 2 * P - 2 * C e1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZ1]`. Simplify using `only [dz_sub, dz_add, dz_mul, dz_two, dz_X, dz_C, e2]`. Expand and normalize the polynomial expressions, which then agree. Establish `c2 : 2 * (C (3 * e1 ^ 2 - g2 / 4) : PowerSeries K) = 6 * C e1 ^ 2 - C (g2 / 2)`. Simplify using `only [← map_ofNat (C (R := K)), ← map_mul, ← map_pow, ← map_sub]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `c3 : 2 * C (g2 / 2) = (C g2 : PowerSeries K)`. Rewrite using `[← map_ofNat (C (R := K)) 2, ← map_mul]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `he' : 4 * (C e1 : PowerSeries K) ^ 3 - C g2 * C e1 - C g3 = 0`. Simplify using `only [← map_ofNat (C (R := K)), ← map_mul, ← map_pow, ← map_sub]`. Rewrite using `[he, map_zero]`. Generalize the expression as in `3 * e1 ^ 2 - g2 / 4 = kap at c2 ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hB : Ze * dz (dz Ze) - dz Ze ^ 2 = (2 * P - 2 * C e1) * Ze ^ 2 - 2 * C kap * X ^ 2 * Ze`. Rewrite using `[hZ2, hZ1, hZe]`. Take the linear combination `(-1 : PowerSeries K) * hF1 + (1 + X ^ 2 * P - C e1 * X ^ 2) * hF2 - X ^ 4 * he' + X ^ 2 * (1 + X ^ 2 * P - C e1 * X ^ 2) * c2 - X ^ 2 * (1 + X ^ 2 * P - C e1 * X ^ 2) * c3`. Use `show dz (dz Ze) * Ze - dz Ze ^ 2 = _`. Take the linear combination `hB + 2 * C kap * Ze * hw`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem second_log_derivative_two_isogeny (g2 g3 e1 : K) (P : PowerSeries K) (hP : IsWp g2 g3 P)
     (he : 4 * e1 ^ 3 - g2 * e1 - g3 = 0) :
@@ -189,35 +189,31 @@ theorem second_log_derivative_two_isogeny (g2 g3 e1 : K) (P : PowerSeries K) (hP
   linear_combination hB + 2 * C kap * Ze * hw
 
 /- English proof (translation)
-Introduce `K _ _ g2 g3 s2 c0 xT al S P ι _ c wp wm hP he hF hS`. Take `⟨hF1, hF2⟩` from `hF`. Establish `hD` using `second_log_derivative_two_isogeny g2 g3 (xT + c0) P hP he`. Unfold `thTw thZ sigma1`. Generalize the expression as in `xT + c0 = e1 at *`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `3 * e1 ^ 2 - g2 / 4 = kap at *`. Generalize the expression as in `wOf e1 P = w at *`. Use `set n : ℕ := Fintype.card ι with hn`. Establish `hS1 : constantCoeff (sigmaOneSeries e1 kap w) = 0` using `Sq.constantCoeff_sig1S _ _ _`. Establish `hq : constantCoeff (-(C (s2 / 2) * X ^ 2) : PowerSeries K) = 0` using `by simp`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← fExp_add hS1 hq]`. Use `set abelian₂ : PowerSeries K := sigmaOneSeries e1 kap w + -(C (s2 / 2) * X ^ 2) with hLam`. Establish `hL0 : constantCoeff abelian₂ = 0` using `by rw [hLam, map_add, hS1, hq, add_zero]`. Establish `hL1 : dz abelian₂ = -prim (C e1 + C kap * w) - C s2 * X`. Establish `c3 : 2 * C (s2 / 2) = (C s2 : PowerSeries K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← map_ofNat (C (R := K)) 2, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hLam, sigmaOneSeries]`. Simplify using `only [dz_add, dz_neg, dz_prim, dz_mul, dz_C, dz_X_sq]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(-X : PowerSeries K) * c3`. Establish `hL2 : dz (dz abelian₂) = -(C e1 + C kap * w) - C s2`. Rewrite using `[hL1]`. Simplify using `only [dz_sub, dz_neg, dz_prim, dz_mul, dz_C, dz_X]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL1c : constantCoeff (dz abelian₂) = 0`. Rewrite using `[hL1]`. Simplify using `[constantCoeff_prim]`. Establish `hR0 : constantCoeff (rescale al abelian₂) = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_rescale, coeff_zero_eq_constantCoeff_apply, hL0, mul_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ1 : ∀ a : K, constantCoeff (wpShift P a) = 1` using `constantCoeff_wpShift P`. Establish `hZl : ∀ a : K, constantCoeff (fLog (wpShift P a)) = 0` using `fun a => constantCoeff_fLog (hZ1 a)`. Use `clear_value abelian₂`. Establish `key : rescale al abelian₂ + n • fLog (wpShift P e1) = (2 * n) • abelian₂ + ∑ Q, fLog (wpShift P (c Q))`. Use `derivative.ext (derivative.ext ?_ ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show dz (dz _) = dz (dz _)`. Establish `hsum : dz (dz (∑ Q, fLog (wpShift P (c Q)))) = ∑ Q, (2 * P - wp Q - wm Q)`. Rewrite using `[dz, dz, map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun Q _ => second_derivative_formal_log (hZ1 _) (hF1 Q)`. Establish `hsum2 : ∑ Q, (2 * P - wp Q - wm Q) = (n : PowerSeries K) * (2 * P) - ∑ Q, (wp Q + wm Q)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: ∀ Q, 2 * P - wp Q - wm Q = 2 * P - (wp Q + wm Q)` using `fun Q => by ring`. Rewrite using `[Finset.sum_congr rfl fun Q _ => this Q, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `hSC : C (al ^ 2) * C s2 - 2 * (n : PowerSeries K) * C s2 = C S`. Rewrite using `[← hS, ← map_natCast (C (R := K)) n, ← map_ofNat (C (R := K)) 2]`. Simplify using `only [← map_mul, ← map_sub]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dz_add, dz_add, dz_add, dz_add, hsum, hsum2, second_derivative_rescale, hL2, second_derivative_nsmul, second_derivative_nsmul, hL2, second_derivative_formal_log (hZ1 _) hD, map_sub, map_neg, rescale_C', nsmul_eq_mul, nsmul_eq_mul]`. Use `push_cast`. Take the linear combination `(-1 : PowerSeries K) * hF2 - hSC`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show constantCoeff (dz _) = constantCoeff (dz _)`. Establish `hsum : constantCoeff (dz (∑ Q, fLog (wpShift P (c Q)))) = 0`. Rewrite using `[dz, map_sum, map_sum]`. Conclude with `Finset.sum_eq_zero fun Q _ => linear_coeff_log_shifted_weierstrass P _`. Establish `hr : constantCoeff (rescale al (dz abelian₂)) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_rescale, coeff_zero_eq_constantCoeff_apply, hL1c, mul_zero]`. Rewrite using `[dz_add, dz_add, map_add, map_add, hsum, dz_rescale, map_mul, hr, dz_nsmul, dz_nsmul, map_nsmul, map_nsmul, linear_coeff_log_shifted_weierstrass, hL1c]`. Simplify using the standard rewrite rules. Rewrite using `[map_add, map_add, hR0, map_nsmul, map_nsmul, hZl, hL0, map_sum, Finset.sum_eq_zero fun Q _ => hZl _]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Sq.rescale_fExp al hL0]`. Establish `e1' : wpShift P e1 ^ n = fExp (n • fLog (wpShift P e1))`. Rewrite using `[fExp_nsmul (hZl _), fExp_fLog (hZ1 _)]`. Establish `e2' : ∏ Q, wpShift P (c Q) = fExp (∑ Q, fLog (wpShift P (c Q)))`. Rewrite using `[fExp_sum _ _ (fun Q => hZl _)]`.
-
-Conclude with `Finset.prod_congr rfl fun Q _ => (fExp_fLog (hZ1 _)).symm`. Establish `hn0 : constantCoeff (n • fLog (wpShift P e1)) = 0` using `by rw [map_nsmul, hZl, smul_zero]`. Establish `hn1 : constantCoeff ((2 * n) • abelian₂) = 0` using `by rw [map_nsmul, hL0, smul_zero]`. Establish `hn2 : constantCoeff (∑ Q, fLog (wpShift P (c Q))) = 0`. Rewrite using `[map_sum]`.
-
-Conclude with `Finset.sum_eq_zero fun Q _ => hZl _`. Rewrite using `[e1', e2', ← fExp_nsmul hL0, ← fExp_add hR0 hn0, ← fExp_add hn1 hn2, key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_zero_isogeny_holds : Th0Isogeny := by
   intro K _ _ g2 g3 s2 c0 xT al S P ι _ c wp wm hP he hF hS

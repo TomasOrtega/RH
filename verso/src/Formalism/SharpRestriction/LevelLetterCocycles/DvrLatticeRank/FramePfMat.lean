@@ -10,9 +10,9 @@ open PowerSeries DualFramesAlt.FrameAbs
 variable {O : Type} [CommRing O] [IsDomain O] {d : ℕ}
 
 /- English proof (translation)
-Establish `h0 : PowerSeries.constantCoeff ((X : PowerSeries O) * Fs) = 0` using `by simp`. Establish `ha : PowerSeries.HasSubst ((X : PowerSeries O) * Fs)` using `PowerSeries.HasSubst.of_constantCoeff_zero h0`. Use `(PowerSeries.constantCoeff_subst (R := O) ha g).trans ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `n hn`. Rewrite using `[map_pow]`. Express the relevant statement in the definitionally equal form `coeff n g • (PowerSeries.constantCoeff ((X : PowerSeries O) * Fs)) ^ n = 0`. Rewrite using `[h0, zero_pow hn, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem framepf_cc_subst (Fs g : PowerSeries O) :
     constantCoeff (subst ((X : PowerSeries O) * Fs) g) = constantCoeff g := by
@@ -28,50 +28,46 @@ theorem framepf_cc_subst (Fs g : PowerSeries O) :
     rw [h0, zero_pow hn, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[Ideal.mem_span_singleton, PowerSeries.X_dvd_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem framepf_mem_span_X (a : PowerSeries O) :
     a ∈ Ideal.span {(X : PowerSeries O)} ↔ constantCoeff a = 0 := by
   rw [Ideal.mem_span_singleton, PowerSeries.X_dvd_iff]
 
 /- English proof (translation)
-Establish `hG : HasSubst ((X : PowerSeries O) * Fs)` using `HasSubst.of_constantCoeff_zero' (by simp)`. Use `set σr : PowerSeries O →+* PowerSeries O := (substAlgHom hG).toRingHom with hσr`. Establish `hσ : ∀ g, σr g = subst ((X : PowerSeries O) * Fs) g` using `fun g => by`. Simplify using `[σr, coe_substAlgHom]`. Use `set Γ : Matrix (Fin d) (Fin d) (PowerSeries O) := 1 + (X : PowerSeries O) • R with hΓ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set ev : ℕ → PowerSeries O := fun y => C (c₀ ^ y - 1) with hev`. Establish `hAC : ∀ o : O, algebraMap O (PowerSeries O) o = C o` using `fun o => by`. Rewrite using `[PowerSeries.algebraMap_apply]`. Both sides reduce to the same expression. Establish `hyp : Hyp O σr Γ X ev`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[framepf_mem_span_X, map_sub, hσ, framepf_cc_subst, sub_self]`. Rewrite using `[hΓ, add_sub_cancel_left]`. Conclude with `MatIn.smul_self _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, RingHom.map_det]`. Establish `: (constantCoeff : PowerSeries O →+* O).mapMatrix Γ = 1`. Use extensionality with `p q`. Simplify using `[hΓ, Matrix.one_apply]`. Rewrite using `[this, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `isUnit_one`. Conclude with `mem_nonZeroDivisors_of_ne_zero X_ne_zero`. Introduce `y`. Rewrite using `[hσ, subst_pow hG, subst_X hG, hev]`. Rewrite using `[Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `sub_dvd_pow_sub_pow Fs (C c₀) y`. Establish `hX : (X : PowerSeries O) ∣ Fs - C c₀`. Rewrite using `[X_dvd_iff, map_sub, constantCoeff_C, hF, sub_self]`. Take `⟨u, hu⟩` from `hX`. Use `⟨u * t, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : C (c₀ ^ y - 1) + 1 = (C c₀) ^ y` using `by simp`. Rewrite using `[e, mul_pow, mul_comm ((C c₀) ^ y), ← mul_sub, ht, hu, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Introduce `y`. Rewrite using `[hσ, hev, subst_C]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `y a hy h`. Rewrite `h`, the goal using `[framepf_mem_span_X]`. Rewrite `h` using `[map_mul, constantCoeff_C]`. Conclude with `(mul_eq_zero.1 h).resolve_left (sub_ne_zero.2 (hc y hy))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `o`. Rewrite using `[hσ, ← PowerSeries.coe_substAlgHom hG, AlgHom.commutes]`. Introduce `a`. Use `⟨constantCoeff a, ?_⟩` and prove the remaining obligations. Rewrite using `[framepf_mem_span_X, map_sub, hAC, constantCoeff_C, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `o h`. Rewrite `h` using `[framepf_mem_span_X, hAC, constantCoeff_C]`. Conclude with `h`. Introduce `y`. Conclude with `⟨c₀ ^ y - 1, by rw [hAC]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hD : ∏ y ∈ Finset.Ico 1 M, ev y = C (∏ y ∈ Finset.Ico 1 M, (c₀ ^ y - 1))`. Rewrite using `[hev, map_prod]`. Establish `hc' : ∀ a : PowerSeries O, (∏ y ∈ Finset.Ico 1 M, ev y) * a ∈ Ideal.span {(X : PowerSeries O) ^ M} → a ∈ Ideal.span {(X : PowerSeries O) ^ M}`. Introduce `a h`. Rewrite `h`, the goal using `[Ideal.mem_span_singleton, X_pow_dvd_iff]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Use `h j hj` as an intermediate fact. Rewrite `this` using `[hD, coeff_C_mul]`. Conclude with `(mul_eq_zero.1 this).resolve_left (Finset.prod_ne_zero_iff.2 fun y hy => sub_ne_zero.2 (hc y (Finset.mem_Ico.1 hy).1))`. Take `⟨⟨H, hH⟩, -⟩` from `exists_frame hyp M hM`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF'⟩` from `exists_dualFrame hyp M hM`. Take `⟨hFH, hHF⟩` from `frame_products hyp M hM H F hH hF' hc'`. Establish `hmap : ∀ Z : Matrix (Fin d) (Fin d) (PowerSeries O), Z.map σr = Z.map (subst ((X : PowerSeries O) * Fs))`. Introduce `Z`. Use extensionality with `p q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hσ]`. Take `⟨K1, hK1⟩` from `hH.1.exists_smul`. Take `⟨K2, hK2⟩` from `hH.2.exists_smul`. Take `⟨K3, hK3⟩` from `hF'.1.exists_smul`. Take `⟨K4, hK4⟩` from `hF'.2.exists_smul`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K5, hK5⟩` from `hFH.exists_smul`. Take `⟨K6, hK6⟩` from `hHF.exists_smul`. Establish `hσa : σr (C aσ) = C aσ` using `by rw [hσ, subst_C]; rfl`. Rewrite `hK1`, `hK3`, `hK5`, `hK6` using `[hD]`. Establish `e1` using `(sub_eq_iff_eq_add.1 hK1).trans (add_comm _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3` using `(sub_eq_iff_eq_add.1 hK3).trans (add_comm _ _)`. Establish `e5` using `(sub_eq_iff_eq_add.1 hK5).trans (add_comm _ _)`. Establish `e6` using `(sub_eq_iff_eq_add.1 hK6).trans (add_comm _ _)`. Establish `hsc : ∀ Z : Matrix (Fin d) (Fin d) (PowerSeries O), (C aσ • Z).map σr = C aσ • Z.map σr`. Introduce `Z`.
+Put the polynomial expressions in normal form. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `p q`. Simplify using `[hσa]`. Establish `hsq : C aσ * C aσ * C (∏ y ∈ Finset.Ico 1 M, (c₀ ^ y - 1)) ^ 2 = C (lσ ^ 2)`. Rewrite using `[hl, ← map_mul, ← map_pow, ← map_mul]`. Put the polynomial expressions in normal form.
-
-Use `⟨C aσ • H, C aσ • F, ⟨C aσ • K1, ?_⟩, ⟨C aσ • K2, ?_⟩, ⟨C aσ • K3, ?_⟩, ⟨C aσ • K4, ?_⟩, ⟨(C aσ * C aσ) • K5, ?_⟩, ⟨(C aσ * C aσ) • K6, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e1, smul_add, smul_smul, ← map_mul, ← hl, smul_comm (C aσ) (X : PowerSeries O) K1]`. Rewrite using `[← hmap, hsc, Matrix.mul_smul, ← smul_sub, hK2, smul_comm]`. Rewrite using `[e3, smul_add, smul_smul, ← map_mul, ← hl, smul_comm (C aσ) (X : PowerSeries O) K3]`. Rewrite using `[← hmap, hsc, Matrix.smul_mul, ← smul_sub, hK4, smul_comm]`.
-
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, e5, smul_add, smul_smul, smul_comm _ _ K5, hsq]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, e6, smul_add, smul_smul, smul_comm _ _ K6, hsq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem framepf_mats (c₀ : O) (hc : ∀ y : ℕ, 1 ≤ y → c₀ ^ y ≠ 1) (Fs : PowerSeries O)
     (hF : constantCoeff Fs = c₀) (R : Matrix (Fin d) (Fin d) (PowerSeries O)) (M : ℕ) (hM : 1 ≤ M)

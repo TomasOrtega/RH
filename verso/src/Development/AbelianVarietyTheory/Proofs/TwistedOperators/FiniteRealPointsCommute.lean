@@ -12,9 +12,9 @@ open scoped TensorProduct
 namespace GlobalTheory.FinRealComm
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, TensorProduct.map_tmul, TensorProduct.map_tmul, ← TensorProduct.add_tmul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `ext <;> simp`. Consider the case `add u v hu hv`. Rewrite using `[map_add, map_add, map_add, map_add]`. Use `conv_lhs => rw [hu, hv]`. Normalize the expressions using the abelian group laws.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem eq_map_inl_fst_add_map_inr_snd_tmul {F A B E : Type} [CommRing F] [CommRing A] [CommRing B] [CommRing E]
     [Algebra F A] [Algebra F B] [Algebra F E] (z : (A × B) ⊗[F] E) :
@@ -35,7 +35,7 @@ private theorem eq_map_inl_fst_add_map_inr_snd_tmul {F A B E : Type} [CommRing F
     abel
 
 /- English proof (translation)
-Rewrite using `[eq_map_inl_fst_add_map_inr_snd_tmul x, eq_map_inl_fst_add_map_inr_snd_tmul y, h1, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tensor_prod_ext {F A B E : Type} [CommRing F] [CommRing A] [CommRing B] [CommRing E]
     [Algebra F A] [Algebra F B] [Algebra F E] (x y : (A × B) ⊗[F] E)
@@ -46,9 +46,9 @@ theorem tensor_prod_ext {F A B E : Type} [CommRing F] [CommRing A] [CommRing B] 
   rw [eq_map_inl_fst_add_map_inr_snd_tmul x, eq_map_inl_fst_add_map_inr_snd_tmul y, h1, h2]
 
 /- English proof (translation)
-Establish `hm : (matHom V x).1 = (matHom V y).1`. Use extensionality with `i j`. Establish `e1` using `congrArg (fun g => g.1 i j) h1`. Establish `e2` using `congrArg (fun g => g.1 i j) h2`. Simplify using `only [infHom, finHom, MonoidHom.comp_apply, Formalism.UG.bc, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, RingHom.mapMatrix_apply, Matrix.map_apply] at e1 e2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `tensor_prod_ext _ _ e1 e2`. Conclude with `Subtype.ext (Units.ext hm)`.
+A detailed English derivation is pending.
 -/
 theorem GA_ext_inf_fin {D : D7} (V : HSp D) (x y : GA D V)
     (h1 : infHom V x = infHom V y) (h2 : finHom V x = finHom V y) : x = y := by
@@ -62,9 +62,9 @@ theorem GA_ext_inf_fin {D : D7} (V : HSp D) (x y : GA D V)
   exact Subtype.ext (Units.ext hm)
 
 /- English proof (translation)
-Introduce `D V a b ha hb`. Establish `ha' : infHom V a = 1` using `ha`. Establish `hb' : finHom V b = 1` using `hb`. Apply `GA_ext_inf_fin V` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ha', one_mul, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, hb', one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finite_real_points_commute :
     ∀ {D : D7} (V : HSp D) (a b : GA D V), a ∈ GfC V → b ∈ GinfC V → a * b = b * a := by

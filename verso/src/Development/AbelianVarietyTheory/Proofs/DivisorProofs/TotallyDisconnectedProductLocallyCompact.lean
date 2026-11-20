@@ -25,9 +25,9 @@ def restrictEquiv {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
        exact ⟨⟨x, hx⟩, Subtype.ext hxy⟩⟩
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `exists_linear_of_bilinear_prodSB P Q (SB (P' × Q')) ((prodSBBil P' Q').compl₁₂ eP.toLinearMap eQ.toLinearMap)`. Take `⟨l', hl'⟩` from `exists_linear_of_bilinear_prodSB P' Q' (SB (P × Q)) ((prodSBBil P Q).compl₁₂ eP.symm.toLinearMap eQ.symm.toLinearMap)`. Establish `h1 : l.comp l' = LinearMap.id`. Use `LinearMap.ext_on_range (Span.span_prodSB_eq_top P' Q') fun q => ?_` and prove the remaining obligations. Simplify using `[hl, hl', prodSBBil]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h2 : l'.comp l = LinearMap.id`. Use `LinearMap.ext_on_range (Span.span_prodSB_eq_top P Q) fun q => ?_` and prove the remaining obligations. Simplify using `[hl, hl', prodSBBil]`. Use `⟨LinearEquiv.ofLinear l l' h1 h2, fun a b => ?_⟩` and prove the remaining obligations. Simplify using `[hl, prodSBBil]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_prod_equiv {P Q P' Q' : Type} [TopologicalSpace P] [T2Space P] [LocallyCompactSpace P]
     [TotallyDisconnectedSpace P] [TopologicalSpace Q] [T2Space Q] [LocallyCompactSpace Q]
@@ -49,13 +49,13 @@ theorem exists_prod_equiv {P Q P' Q' : Type} [TopologicalSpace P] [T2Space P] [L
   simp [hl, prodSBBil]
 
 /- English proof (translation)
-Introduce `P Q P' Q' Z Z' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ eZ eZ' f g hf hg`. Simplify using `only [GlobalTheory.WeilM.SB_eq] at hf hg ⊢`. Take `⟨L, hL⟩` from `exists_prod_equiv (restrictEquiv f hf) (restrictEquiv g hg)`. Set `E : SB Z ≃ₗ[ℂ] SB Z'` to `((comapEquiv eZ).symm.trans L).trans (comapEquiv eZ')`. Take `⟨h, hh⟩` from `LinearMap.exists_extend ((SB Z').subtype.comp E.toLinearMap)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `happ : ∀ F : SB Z, h F.1 = (E F).1` using `fun F => LinearMap.congr_fun hh F`. Use `⟨h, ⟨fun x hx => ?_, fun x hx y hy hxy => ?_, fun y hy => ?_⟩, fun a ha b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[happ ⟨x, hx⟩]`. Conclude with `(E _).2`. Rewrite `hxy` using `[happ ⟨x, hx⟩, happ ⟨y, hy⟩]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg Subtype.val (E.injective (Subtype.ext hxy))`. Use `⟨(E.symm ⟨y, hy⟩).1, (E.symm ⟨y, hy⟩).2, ?_⟩` and prove the remaining obligations. Rewrite using `[happ]`. Simplify using the standard rewrite rules. Establish `hF : (fun z => a (eZ z).1 * b (eZ z).2) = (comapEquiv eZ (prodSB ⟨a, ha⟩ ⟨b, hb⟩)).1` using `rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hF, happ]`. Use function extensionality and compare the values at `z'`. Simplify using `only [E, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, hL]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_linear_bijOn_prod : ∀ {P Q P' Q' Z Z' : Type} [TopologicalSpace P] [T2Space P] [LocallyCompactSpace P]
     [TotallyDisconnectedSpace P] [TopologicalSpace Q] [T2Space Q] [LocallyCompactSpace Q] [TotallyDisconnectedSpace Q]

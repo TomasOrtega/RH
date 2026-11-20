@@ -10,27 +10,25 @@ open scoped ENNReal ContDiff
 open MeasureTheory Filter Topology Metric in
 open scoped ENNReal ContDiff in
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ ι La _ A la U Ω β h hU hΩ hβ hh h0`. Take `⟨⟨hβhol, hβcoc⟩, hβne⟩` from `hβ`. Take `⟨hhhol, hhcoc⟩` from `hh`. Establish `hq : ∀ y, _root_.GlobalTheory.OTY.TwEst.quot A h β y = h (A.pick y) y / β (A.pick y) y` using `fun y => by`. Unfold `_root_.GlobalTheory.OTY.TwEst.quot`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Both sides reduce to the same expression. Establish `hβi : ∀ i, ∀ y ∈ (A.chart i).source, y ∈ U → β i y ≠ 0`. Introduce `i y hy hyU hzero`. Apply `hβne y hyU` to reduce the goal to its premises. Rewrite using `[hβcoc (A.pick y) i y hyU (A.mem_pick y) hy, hzero, mul_zero]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hqe : ∀ i, ∀ y ∈ (A.chart i).source, y ∈ U → _root_.GlobalTheory.OTY.TwEst.quot A h β y = h i y / β i y`. Introduce `i y hy hyU`. Rewrite using `[hq]`. Distinguish the cases in `hyΩ : y ∈ Ω`. Rewrite using `[hhcoc (A.pick y) i y hyΩ (A.mem_pick y) hy, hβcoc (A.pick y) i y hyU (A.mem_pick y) hy, mul_div_mul_left _ _ (A.g_ne la _ _ y (A.mem_pick y) hy)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0 _ _ hyΩ, h0 _ _ hyΩ, zero_div, zero_div]`. Establish `hdiff : ∀ i, DifferentiableOn ℂ (_root_.GlobalTheory.OTY.TwEst.quot A h β ∘ (A.chart i).symm) ((A.chart i).target ∩ (A.chart i).symm ⁻¹' (U ∩ Ω))`. Introduce `i`. Use `set S := (A.chart i).target ∩ (A.chart i).symm ⁻¹' (U ∩ Ω) with hS`. Establish `h1 : DifferentiableOn ℂ (h i ∘ (A.chart i).symm) S` using `(hhhol i).mono fun v hv => ⟨hv.1, hv.2.2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : DifferentiableOn ℂ (β i ∘ (A.chart i).symm) S` using `(hβhol i).mono fun v hv => ⟨hv.1, hv.2.1⟩`. Establish `h3 : ∀ v ∈ S, (β i ∘ (A.chart i).symm) v ≠ 0` using `fun v hv => hβi i _ ((A.chart i).map_target hv.1) hv.2.1`. Establish `hd : DifferentiableOn ℂ (fun v => (h i ∘ (A.chart i).symm) v * ((β i ∘ (A.chart i).symm) v)⁻¹) S` using `h1.mul (h2.inv h3)`. Use `hd.congr fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, ← div_eq_mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hqe i _ ((A.chart i).map_target hv.1) hv.2.1`. Use `⟨hdiff, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hopen : IsOpen (U ∩ Ω)` using `hU.inter hΩ`. Establish `hcont : ContinuousOn (_root_.GlobalTheory.OTY.TwEst.quot A h β) (U ∩ Ω)`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set i := A.pick y`. Establish `hys : y ∈ (A.chart i).source` using `A.mem_pick y`. Establish `hset : IsOpen ((A.chart i).target ∩ (A.chart i).symm ⁻¹' (U ∩ Ω))` using `(A.chart i).isOpen_inter_preimage_symm hopen`. Establish `hmem : A.chart i y ∈ (A.chart i).target ∩ (A.chart i).symm ⁻¹' (U ∩ Ω)` using `⟨(A.chart i).map_source hys, by`. Simplify using `only [Set.mem_preimage, (A.chart i).left_inv hys]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hy⟩`. Establish `hca : ContinuousAt (_root_.GlobalTheory.OTY.TwEst.quot A h β ∘ (A.chart i).symm) (A.chart i y)` using `((hdiff i).continuousOn).continuousAt (hset.mem_nhds hmem)`. Establish `hcomp : ContinuousAt ((_root_.GlobalTheory.OTY.TwEst.quot A h β ∘ (A.chart i).symm) ∘ A.chart i) y` using `hca.comp ((A.chart i).continuousAt hys)`. Use `(hcomp.congr ?_).continuousWithinAt` and prove the remaining obligations. Use `filter_upwards [(A.chart i).open_source.mem_nhds hys] with w hw`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Simplify using `[(A.chart i).left_inv hw]`. Establish `heq : _root_.GlobalTheory.OTY.TwEst.ext0 U (fun y : U => _root_.GlobalTheory.OTY.TwEst.quot A h β y) = (U ∩ Ω).piecewise (_root_.GlobalTheory.OTY.TwEst.quot A h β) 0`. Use function extensionality and compare the values at `y`. Unfold `_root_.GlobalTheory.OTY.TwEst.ext0`. Distinguish the cases in `hyU : y ∈ U`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hyΩ : y ∈ Ω`. Simplify using `[hyU, hyΩ, Set.piecewise]`. Simplify using `[hyU, hyΩ, Set.piecewise, hq, h0 _ _ hyΩ]`. Simplify using `[hyU, Set.piecewise]`. Rewrite using `[heq]`.
-
-Conclude with `hcont.measurable_piecewise continuousOn_const hopen.measurableSet`. Rewrite using `[hq, mul_div_cancel₀ _ (hβne y hy)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.OTY.TwEst.quot_holo_measurable : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y]
     [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La]

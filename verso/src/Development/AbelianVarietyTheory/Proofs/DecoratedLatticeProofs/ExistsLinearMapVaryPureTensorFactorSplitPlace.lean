@@ -12,43 +12,37 @@ open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW _hθ hB hC x f hx v φ e he BS BT Φ₀ Tm hT hxv`. Establish `hcoord` using `GlobalTheory.PlaceCoord.isCoord_mapCo D S T ΛS ΛT hB.2.2.1 hB.2.2.2.1 v φ e he BS BT`. Establish `hsplit` using `GlobalTheory.SplitCoordModel.bijOn_and_om_linear D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hC v e e he.1 he.2.1 (Or.inl rfl) T.rank S.rank (mapCo φ S T BS BT) hcoord.1 Tm hT`. Establish `honHalf : ∀ Φ, onHalf φ S T BS BT e Φ = pull e (mapCo φ S T BS BT) Φ` using `fun Φ => rfl`. Set `xf : GlobalTheory.SplitWeil.SB (Matrix (Fin T.rank) (Fin S.rank) (Fv D.host.F v)) → Place D → WO S T → ℂ` to `fun u => Function.update x (.inl v) (Tm (onHalf φ S T BS BT e u.1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hres : ∀ u, IsRestricted ψ θ S T sS sT ΛS ΛT f₀ (xf u)`. Introduce `u`. Use `⟨fun p => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hp : p = .inl v`. Substitute `hp` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [xf, Function.update_self]`. Rewrite using `[honHalf]`. Conclude with `hsplit.1.mapsTo u.2`. Simplify using `only [xf, Function.update_of_ne hp]`. Conclude with `hx.1.1 p`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(hx.1.2.union (Set.finite_singleton (Sum.inl v : Place D))).subset` to reduce the goal to its premises. Introduce `p hp`. Distinguish the cases in `h : p = .inl v`. Conclude with `Or.inr h`. Use `left`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify `hp` using `[xf, Function.update_of_ne h]`. Establish `hEU` using `fun u => GlobalTheory.PureTensorExists.existsUnique_isPure D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hC (xf u) (hres u)`. Set `F` to `fun u => (hEU u).exists.choose`. Establish `hF : ∀ u, IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ (xf u) (F u)` using `fun u => (hEU u).exists.choose_spec`. Establish `huniq : ∀ y f1 f2, IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ y f1 → IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ y f2 → f1 = f2` using `fun y f1 f2 h1 h2 => (GlobalTheory.PureTensorExists.existsUnique_isPure D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hC y h1.1).unique h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlin` using `(GlobalTheory.PureLinear.isPure_linear_and_dRho D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hC).1`. Establish `hscale : ∀ (y z : Place D → WO S T → ℂ) (g : WO S T → ℂ) (q : Place D) (c : ℂ), IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ y g → (∀ p, p ≠ q → z p = y p) → z q = c • y q → IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ z (c • g)`. Introduce `y z g q c hy hz hzq`. Use `hlin y y z g g q (c - 1) hy hy (fun _ _ => rfl) hz (by rw [hzq, sub_smul, one_smul, sub_add_cancel])` as an intermediate fact. Rewrite `this` using `[sub_smul, one_smul, sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hOnAdd : ∀ (Φ Ψ : Matrix (Fin T.rank) (Fin S.rank) (Fv D.host.F v) → ℂ), onHalf φ S T BS BT e (Φ + Ψ) = onHalf φ S T BS BT e Φ + onHalf φ S T BS BT e Ψ`. Introduce `Φ Ψ`. Use function extensionality and compare the values at `t`. Simplify using `only [onHalf, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hOnSmul : ∀ (c : ℂ) (Φ : Matrix (Fin T.rank) (Fin S.rank) (Fv D.host.F v) → ℂ), onHalf φ S T BS BT e (c • Φ) = c • onHalf φ S T BS BT e Φ`. Introduce `c Φ`. Use function extensionality and compare the values at `t`. Simplify using `only [onHalf, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `T₀ : GlobalTheory.SplitWeil.SB (Matrix (Fin T.rank) (Fin S.rank) (Fv D.host.F v)) →ₗ[ℂ] (WO S T → ℂ)` to `{ toFun := F map_add' := by`. Introduce `u u'`. Establish `hz` using `hlin (xf u) (xf u') (xf (u + u')) (F u) (F u') (.inl v) 1 (hF u) (hF u') (fun p hp => by simp only [xf, Function.update_of_ne hp]) (fun p hp => by simp only [xf, Function.update_of_ne hp]) (by`. Simplify using `only [xf, Function.update_self, Submodule.coe_add]`. Rewrite using `[hOnAdd, map_add, one_smul])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hz` using `[one_smul]`. Conclude with `huniq _ _ _ (hF (u + u')) hz`. Use the proof step `map_smul' := by`. Introduce `c u`. Establish `hz` using `hscale (xf u) (xf (c • u)) (F u) (.inl v) c (hF u) (fun p hp => by simp only [xf, Function.update_of_ne hp]) (by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [xf, Function.update_self, Submodule.coe_smul]`. Rewrite using `[hOnSmul, map_smul])`. Conclude with `huniq _ _ _ (hF (c • u)) hz }`. Establish `hT₀ : ∀ u, T₀ u = F u` using `fun u => rfl`. Use `⟨T₀, ?_, fun u => ⟨xf u, fun p hp => by simp only [xf, Function.update_of_ne hp], by simp only [xf, Function.update_self], hF u⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hT₀]`. Establish `hxx : xf Φ₀ = x`. Simplify using `only [xf]`. Rewrite using `[← hxv]`. Conclude with `Function.update_eq_self _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `huniq _ _ _ (hF Φ₀) (hxx ▸ hx)`. Introduce `g h hg hh a b ha hb u u' hu'`. Establish `laws` using `GlobalTheory.PlaceComponent.gAt_laws D`. Establish `hgp : ∀ p, p ≠ Sum.inl v → gAt S p g = 1` using `fun p hp => by`. Rewrite using `[← hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((laws.1 S (.inl v) g).2.2 p hp)`. Establish `hhp : ∀ p, p ≠ Sum.inl v → gAt T p h = 1` using `fun p hp => by`. Rewrite using `[← hh]`. Conclude with `((laws.1 T (.inl v) h).2.2 p hp)`. Establish `hsupp : ∀ (V : HSp D) (k : GA D V), gAt V (.inl v) k = k → SuppAt e V k`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `V k hk i j`. Establish `hm` using `(laws.1 V (.inl v) k).1`. Rewrite `hm` using `[hk]`. Establish `key : Formalism.L2.Theta.mt V k - 1 = idem D (Sum.inl v) • (Formalism.L2.Theta.mt V k - 1)` using `by conv_lhs => rw [hm]`. Rewrite using `[smul_sub, sub_smul, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[he.2.1]`. Use `congrFun (congrFun key i) j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `this.symm`.
-
-Establish `hom` using `GlobalTheory.PlaceTensor.PureOm.isPure_om D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW hB hC (xf u) (F u) (hF u) g h`. Establish `hact` using `hsplit.2 g h (hsupp S g hg) (hsupp T h hh) a b ha hb (grpCo φ S BS g) (grpCo φ T BT h) (hcoord.2 g h) u.1 u.2`. Establish `hz` using `hscale (xf u') (fun p => om (gAt S p g, gAt T p h) (xf u p)) (F u') (.inl v) ((splitFacO χS χT a b : Circle) : ℂ) (hF u') (fun p hp => by`. Simplify using `only [xf, Function.update_of_ne hp, hgp p hp, hhp p hp]`. Establish `h11 : ((1 : GA D S), (1 : GA D T)) = 1` using `rfl`.
-
-Rewrite using `[h11, map_one]`. Use the proof step `rfl)`. Use the proof step `(by`. Simplify using `only [xf, Function.update_self, hg, hh]`. Rewrite using `[honHalf, hact, honHalf, hu'])`.
-
-Conclude with `huniq _ _ _ hom hz`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.VarySplitFactor.exists_linearMap_pure : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : OmT S T) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsWeilDatumO ψ S T χS χT om → IsInfFam θ → IsBase ψ θ S T sS sT ΛS ΛT f₀ → IsCovolOne (ratL T S) μ 𝓕 → ∀ (x : Place D → WO S T → ℂ) (f : WO S T → ℂ), IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x f → ∀ (v : FinPl D) (φ : SplitProj D v) (e : AE D), IsIdemOf φ e → ∀ (BS : GL (Fin S.rank) (Fv D.host.F v)) (BT : GL (Fin T.rank) (Fv D.host.F v)) (Φ₀ : GlobalTheory.SplitWeil.SB (Matrix (Fin T.rank) (Fin S.rank) (Fv D.host.F v))), ∀ Tm, IsPlaceModel ψ (symplO S T) (heisO ψ S T) e (latO S T ΛS ΛT fun _ => True) 1 f₀ Tm → x (.inl v) = Tm (onHalf φ S T BS BT e Φ₀.1) → ∃ T₀ : GlobalTheory.SplitWeil.SB (Matrix (Fin T.rank) (Fin S.rank) (Fv D.host.F v)) →ₗ[ℂ] (WO S T → ℂ), T₀ Φ₀ = f ∧ (∀ u, ∃ x' : Place D → WO S T → ℂ, (∀ p, p ≠ .inl v → x' p = x p) ∧ x' (.inl v) = Tm (onHalf φ S T BS BT e u.1) ∧ IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x' (T₀ u)) ∧ ∀ g h, gAt S (.inl v) g = g → gAt T (.inl v) h = h → ∀ a b, IsDetAt e S g a → IsDetAt e T h b → ∀ u u' : GlobalTheory.SplitWeil.SB (Matrix (Fin T.rank) (Fin S.rank) (Fv D.host.F v)), u'.1 = linOm v (grpCo φ S BS g) (grpCo φ T BT h) u.1 → om (g, h) (T₀ u) = ((splitFacO χS χT a b : Circle) : ℂ) • T₀ u' := by
   intro D ψ θ S T χS χT om sS sT ΛS ΛT f₀ μ 𝓕 hW _hθ hB hC x f hx v φ e he BS BT Φ₀ Tm hT hxv

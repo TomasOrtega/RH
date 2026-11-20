@@ -37,7 +37,7 @@ def resLt {K K' LL : FinExt l} (hle : K.1 ≤ K'.1) (T : Lt K LL) : Lt K' LL whe
          span := T.L.span }
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[GlobalTheory.Cyc.mem_GKs_iff_mem_Gj, H.W_s, Subgroup.mem_subgroupOf]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gks_eq (P : LocPrime l) (H : LocHW l P) (K : FinExt l) (s : ℕ) (LL : FinExt l)
     (h : Good K s LL) :
@@ -47,15 +47,13 @@ theorem gks_eq (P : LocPrime l) (H : LocHW l P) (K : FinExt l) (s : ℕ) (LL : F
   rfl
 
 /- English proof (translation)
-Use `haveI hfin : FiniteDimensional ℚ_[l] ↥(Ks K s) := GlobalTheory.InvariantLift.finKs K s`. Take `⟨K', hK'⟩ : ∃ K' : FinExt l, K'.1 = Ks K s` from `⟨⟨_, hfin⟩, rfl⟩`. Establish `hle : K.1 ≤ K'.1` using `hK' ▸ h.2.2.1`. Establish `h0le : K0 K ≤ K0 K'` using `inf_le_inf_right _ hle`. Establish `hK0 : K0 K' = K0 K`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `GlobalTheory.Cyc.finrank_maxUnramified_eq_cyclotomicLevel K K' s h.1 hK' hle`. Conclude with `(IntermediateField.eq_of_le_of_finrank_eq h0le hr.symm).symm`. Establish `hKs : Ks K' s = K'.1`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[hK']`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sup_le (hK' ▸ inf_le_left) le_sup_right`. Rewrite using `[hK']`. Conclude with `sup_le_sup_right h0le _`. Establish `h' : Good K' s LL`. Use `⟨h.1, h.2.1, hKs.ge, fun τ x => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hKs' : Ks K' s = Ks K s` using `hKs.trans hK'`. Conclude with `h.2.2.2 (τ.comp (IntermediateField.equivOfEq hKs'.symm).toAlgHom) ⟨x.1, hKs' ▸ x.2⟩`. Use `⟨K', h', hle, hK0, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[gks_eq (D.loc l) (HW l) K' s LL h', hKs]`. Use extensionality with `g`.
-
-Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_top, iff_true]`. Conclude with `g.2`. Rewrite using `[gks_eq (D.loc l) (HW l) K s LL h, Subgroup.mem_subgroupOf] show _ ↔ (g : GQ l) ∈ K'.1.fixingSubgroup`. Rewrite using `[hK']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_setup (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (K : FinExt l) (s : ℕ) (LL : FinExt l)
     (h : Good K s LL) : ∃ (K' : FinExt l) (h' : Good K' s LL) (hle : K.1 ≤ K'.1), K0 K' = K0 K ∧
@@ -86,16 +84,16 @@ theorem base_setup (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (K : FinExt
     rw [hK']
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Per.TiedRestrict.restrict_crys_deRham l (D.loc l) (D.locA l) (D.locT l) K K' LL hle T.V T.ρ).1 hT`.
+A detailed English derivation is pending.
 -/
 theorem restrict_crys (D : Formalism.BasicNotions.D7) {K K' LL : FinExt l} (hle : K.1 ≤ K'.1) (T : Lt K LL)
     (hT : IsCrys ((D.loc l).PD K) T.ρ) : IsCrys ((D.loc l).PD K') (resLt (K := K) (K' := K') (LL := LL) hle T).ρ :=
   (GlobalTheory.Per.TiedRestrict.restrict_crys_deRham l (D.loc l) (D.locA l) (D.locT l) K K' LL hle T.V T.ρ).1 hT
 
 /- English proof (translation)
-Establish `hnpos : 0 < Module.finrank ℚ_[l] ↥(K0 K)` using `Module.finrank_pos`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨hnpos.ne'⟩`. Introduce `τ' i' _ a ha`. Establish `ha2` using `Ljumps τ' a ha`. Take `⟨i, hi⟩` from `((HW l).W K s LL h).emb_bij.2 ((τ'.comp (IntermediateField.inclusion hle)).comp (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm` using `hJ (τ'.comp (IntermediateField.inclusion hle)) i hi.symm a ha2`. Establish `hb1 : M i ≤ mx M` using `le_ciSup (Set.finite_range M).bddAbove i`. Establish `hb2 : hh i ≤ mx hh` using `le_ciSup (Set.finite_range hh).bddAbove i`. Simplify using `only [Set.mem_Icc] at hm ⊢`. Apply the tactic sequence `constructor <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem restrict_jumps (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (K : FinExt l) (s : ℕ) (LL : FinExt l)
     (h : Good K s LL) (K' : FinExt l) (h' : Good K' s LL) (hle : K.1 ≤ K'.1) (T : Lt K LL)
@@ -121,14 +119,14 @@ def eMap {K K' : FinExt l} (hle : K.1 ≤ K'.1) (H : Subgroup ↥(GK K)) (H' : S
   fun g => ⟨⟨((g : ↥(GK K')) : GQ l), GK_le hle (g : ↥(GK K')).2⟩, hm _⟩
 
 /- English proof (translation)
-The claim follows from `((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem eMap_cont {K K' : FinExt l} (hle : K.1 ≤ K'.1) (H : Subgroup ↥(GK K)) (H' : Subgroup ↥(GK K'))
     (hm : ∀ g : ↥(GK K'), (⟨(g : GQ l), GK_le hle g.2⟩ : ↥(GK K)) ∈ H) : Continuous (eMap hle H H' hm) :=
   ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _).subtype_mk _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun g => (c : ↥H → T.V) (eMap hle H H' hm g), ⟨⟨c.2.1.1.comp (eMap_cont hle H H' hm), fun g g' => c.2.1.2 (eMap hle H H' hm g) (eMap hle H H' hm g')⟩, fun g _ => c.2.2 _ trivial⟩⟩, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem pull_cocycle {K K' LL : FinExt l} (hle : K.1 ≤ K'.1) (T : Lt K LL) (H : Subgroup ↥(GK K))
     (H' : Subgroup ↥(GK K')) (hm : ∀ g : ↥(GK K'), (⟨(g : GQ l), GK_le hle g.2⟩ : ↥(GK K)) ∈ H)
@@ -139,7 +137,7 @@ theorem pull_cocycle {K K' LL : FinExt l} (hle : K.1 ≤ K'.1) (T : Lt K LL) (H 
     fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `g`. Rewrite using `[hc]`. Conclude with `(hx (eMap hle H H' hm g)).trans (congrArg (fun f : T.V ⊗[ℚ_[l]] P.R.B →ₗ[↥LL.1] T.V ⊗[ℚ_[l]] P.R.B => f x - x) (GlobalTheory.Cyc.actVB_inclusion P K K' LL hle T (g : ↥(GK K'))).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_f (P : LocPrime l) {K K' LL : FinExt l} (hle : K.1 ≤ K'.1) (T : Lt K LL)
     (H : Subgroup ↥(GK K)) (H' : Subgroup ↥(GK K'))
@@ -165,18 +163,16 @@ def fMap {K K' : FinExt l} (H : Subgroup ↥(GK K)) (H' : Subgroup ↥(GK K'))
   fun g => ⟨⟨((g : ↥(GK K)) : GQ l), hm g⟩, by rw [htop]; trivial⟩
 
 /- English proof (translation)
-The claim follows from `((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem fMap_cont {K K' : FinExt l} (H : Subgroup ↥(GK K)) (H' : Subgroup ↥(GK K'))
     (hm : ∀ g : ↥H, ((g : ↥(GK K)) : GQ l) ∈ GK K') (htop : H' = ⊤) : Continuous (fMap H H' hm htop) :=
   ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _).subtype_mk _
 
 /- English proof (translation)
-Establish `hres` using `W.χΓ_res g`. Rewrite `hres` using `[P.PD_χ]`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Rewrite `hres` using `[h1, map_one, Units.val_one, map_one, eq_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (P.χQ (g : GQ l) : ℚ_[l]) = 1` using `(algebraMap ℚ_[l] ↥LL.1).injective (by rw [hres, map_one])`. Conclude with `Units.ext this`. Introduce `h1`. Rewrite `hres` using `[h1, Units.val_one, map_one]`. Establish `h2 : ((W.χΓ (W.resΓ g) : ↥(OL LL))) = 1` using `Subtype.val_injective (by change algebraMap ↥(OL LL) ↥LL.1 _ = algebraMap ↥(OL LL) ↥LL.1 1; rw [hres, map_one])`.
-
-Conclude with `W.χΓ_inj (by rw [map_one]; exact Units.ext h2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem resΓ_one_iff (P : LocPrime l) (K LL : FinExt l) (n : ℕ)
     (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) n) (g : ↥(GK K)) :
@@ -198,13 +194,13 @@ theorem resΓ_one_iff (P : LocPrime l) (K LL : FinExt l) (n : ℕ)
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `e1 : (n • Submodule.Quotient.mk cκ' : LatticeCohomology (resLat (resLt (K` using `K) (K' := K') (LL := LL) hle T) H')) = Submodule.Quotient.mk (n • cκ') := (map_nsmul (Submodule.mkQ _) n cκ').symm`. Establish `e2 : (n • Submodule.Quotient.mk cκ : LatticeCohomology (resLat T H)) = Submodule.Quotient.mk (n • cκ)` using `(map_nsmul (Submodule.mkQ _) n cκ).symm`. Rewrite `h` using `[e1]`. Rewrite using `[e2]`. Establish `h3` using `(Submodule.Quotient.eq _).1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `(Submodule.Quotient.eq _).2` to reduce the goal to its premises. Rewrite `h3`, the goal using `[Submodule.mem_comap]`. Take `⟨t, ht, hteq⟩` from `h3`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `congrFun hteq (fMap H H' hm' htop g)`. Establish `hW' : @id (resLt (K` using `K) (K' := K') (LL := LL) hle T).V ((cW : ↥H → T.V) g) = (c'' : ↥H' → (resLt (K := K) (K' := K') (LL := LL) hle T).V) (fMap H H' hm' htop g) := hW g`. Establish `hκ'' : @id (resLt (K` using `K) (K' := K') (LL := LL) hle T).V ((cκ : ↥H → T.V) g) = (cκ' : ↥H' → (resLt (K := K) (K' := K') (LL := LL) hle T).V) (fMap H H' hm' htop g) := (hκ (fMap H H' hm' htop g)).symm`. Express the relevant statement in the definitionally equal form `(resLt (K := K) (K' := K') (LL := LL) hle T).ρ ((fMap H H' hm' htop g : ↥H') : ↥(GK K')) t - t = @id (resLt (K := K) (K' := K') (LL := LL) hle T).V ((cW : ↥H → T.V) g) - n • @id (resLt (K := K) (K' := K') (LL := LL) hle T).V ((cκ : ↥H → T.V) g)`. Rewrite using `[hW', hκ'']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem push_class {K K' LL : FinExt l} (hle : K.1 ≤ K'.1) (T : Lt K LL) (H : Subgroup ↥(GK K))
     (H' : Subgroup ↥(GK K')) (hm : ∀ g : ↥(GK K'), (⟨(g : GQ l), GK_le hle g.2⟩ : ↥(GK K)) ∈ H)
@@ -251,7 +247,7 @@ def Zf {P : LocPrime l} (AI : LocAinf l P) {K LL : FinExt l} (T : Lt K LL) (H : 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun g => (c' : ↥H' → (resLt (K := K) (K' := K') (LL := LL) hle T).V) (fMap H H' hm htop g), ⟨⟨c'.2.1.1.comp (fMap_cont H H' hm htop), fun g g' => c'.2.1.2 (fMap H H' hm htop g) (fMap H H' hm htop g')⟩, fun g _ => c'.2.2 _ trivial⟩⟩, fun _ => rfl, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem push_cocycle {P : LocPrime l} (AI : LocAinf l P) {K K' LL : FinExt l} (hle : K.1 ≤ K'.1) (T : Lt K LL)
     (H : Subgroup ↥(GK K)) (H' : Subgroup ↥(GK K')) (hm : ∀ g : ↥H, ((g : ↥(GK K)) : GQ l) ∈ GK K')
@@ -276,7 +272,7 @@ theorem toTW_zero {K K' LL : FinExt l} (hle : K.1 ≤ K'.1) (T : Lt K LL) : toTW
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `hκ.elim fun c hc => hc.1.2.2.elim fun x hx => (pull_cocycle hle T H H' hm c).elim fun c' hc' => ⟨c, c', hc.2, ⟨c', ⟨c'.2, c'.2.1, x, pull_f P hle T H H' hm _ _ hc' x hx⟩, rfl⟩, hc'⟩`.
+A detailed English derivation is pending.
 -/
 theorem pull_h1f (P : LocPrime l) {K K' LL : FinExt l} (hle : K.1 ≤ K'.1) (T : Lt K LL)
     (H : Subgroup ↥(GK K)) (H' : Subgroup ↥(GK K'))
@@ -292,9 +288,9 @@ theorem pull_h1f (P : LocPrime l) {K K' LL : FinExt l} (hle : K.1 ≤ K'.1) (T :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use `(((F l).E K s LL h).tie.cl_def T ⟨(y, z), hyz⟩ b hb).elim fun c hc => ⟨c, hc.1, fun g hg => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e` using `(hc.2 g ⟨_, GlobalTheory.HerrClassMaps.mem_T c g⟩ rfl).1 hg`. Unfold `Zf`. Rewrite using `[e]`. Conclude with `neg_add_cancel _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `(hc.2 g ⟨_, GlobalTheory.HerrClassMaps.mem_T c g⟩ rfl).2 hg`. Unfold `Zf`. Rewrite using `[e]`. Conclude with `sub_add_cancel _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cl_fit (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (K : FinExt l) (s : ℕ)
     (LL : FinExt l) (h : Good K s LL) (T : Lt K LL) (y z : ((HW l).W K s LL h).DD T) (hyz : (y, z) ∈ ((HW l).W K s LL h).divisibleCocycles T)
@@ -315,7 +311,7 @@ theorem cl_fit (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.lo
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.HWL.Coord.exists_gamma_coordinates l (D.loc l) K s LL h (gamOf ((HW l).W K s LL h) ((HW l).W_s K s LL h))).1`.
+A detailed English derivation is pending.
 -/
 theorem lam_exists (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) :
     ∃ lam : ↥((HW l).W K s LL h).GKs →* Multiplicative ℤ_[l], Continuous lam ∧

@@ -25,14 +25,14 @@ namespace GlobalTheory.KAvgDeriv
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Use `show 0 ≤ ∑ i, ∑ j, ‖g i j‖ ^ 2`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem hs_nonneg' (g : GlobalTheory.TypeSum.Mx n) : 0 ≤ hs g := by
   show 0 ≤ ∑ i, ∑ j, ‖g i j‖ ^ 2
   positivity
 
 /- English proof (translation)
-Use `show Continuous (fun g : GlobalTheory.TypeSum.Mx n => ∑ i, ∑ j, ‖g i j‖ ^ 2)`. Conclude with `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => (((continuous_apply j).comp (continuous_apply i)).norm).pow 2`.
+A detailed English derivation is pending.
 -/
 theorem continuous_hs' : Continuous (fun g : GlobalTheory.TypeSum.Mx n => hs g) := by
   show Continuous (fun g : GlobalTheory.TypeSum.Mx n => ∑ i, ∑ j, ‖g i j‖ ^ 2)
@@ -40,7 +40,7 @@ theorem continuous_hs' : Continuous (fun g : GlobalTheory.TypeSum.Mx n => hs g) 
     (((continuous_apply j).comp (continuous_apply i)).norm).pow 2
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.TypeSum.GrowthAtPlace.conj_exp hP X t, ← mul_assoc, ← mul_assoc, Matrix.mul_nonsing_inv P ((Matrix.isUnit_iff_isUnit_det P).mp hP), one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_exp_conj {P : GlobalTheory.TypeSum.Mx n} (hP : IsUnit P) (X : GlobalTheory.TypeSum.Mx n) (t : ℝ) :
     P * NormedSpace.exp (t • (P⁻¹ * X * P)) = NormedSpace.exp (t • X) * P := by
@@ -48,9 +48,9 @@ theorem mul_exp_conj {P : GlobalTheory.TypeSum.Mx n} (hP : IsUnit P) (X : Global
     Matrix.mul_nonsing_inv P ((Matrix.isUnit_iff_isUnit_det P).mp hP), one_mul]
 
 /- English proof (translation)
-Establish `hc : Continuous fun k : ↥(Formalism.REAL.KG ε) => 1 + hs (Formalism.REAL.toMK k)` using `continuous_const.add (continuous_hs'.comp (Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)))`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hc.continuousOn`. Use `⟨C, fun k => ?_⟩` and prove the remaining obligations. Establish `h` using `hC k (Set.mem_univ _)`. Rewrite `h` using `[Real.norm_eq_abs]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(le_abs_self _).trans h`.
+A detailed English derivation is pending.
 -/
 theorem bound_K (ε : Fin n → Bool) : ∃ M : ℝ, ∀ k : ↥(Formalism.REAL.KG ε), 1 + hs (Formalism.REAL.toMK k) ≤ M := by
   have hc : Continuous fun k : ↥(Formalism.REAL.KG ε) => 1 + hs (Formalism.REAL.toMK k) :=
@@ -63,16 +63,16 @@ theorem bound_K (ε : Fin n → Bool) : ∃ M : ℝ, ∀ k : ↥(Formalism.REAL.
   exact (le_abs_self _).trans h
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn he.continuousOn`. Conclude with `⟨max C 0, le_max_right _ _, fun k => (hC k (Set.mem_univ _)).trans (le_max_left _ _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bound_e (e : ↥(Formalism.REAL.KG ε) → ℂ) (he : Continuous e) : ∃ E : ℝ, 0 ≤ E ∧ ∀ k, ‖e k‖ ≤ E := by
   obtain ⟨C, hC⟩ := isCompact_univ.exists_bound_of_continuousOn he.continuousOn
   exact ⟨max C 0, le_max_right _ _, fun k => (hC k (Set.mem_univ _)).trans (le_max_left _ _)⟩
 
 /- English proof (translation)
-Establish `hs1 : Continuous fun t : ℝ => t • X` using `continuous_id.smul continuous_const`. Establish `hexp : Continuous fun t : ℝ => NormedSpace.exp (t • X)`. Establish `h : Continuous (NormedSpace.exp : GlobalTheory.TypeSum.Mx n → GlobalTheory.TypeSum.Mx n)` using `by open Matrix.Norms.Operator in exact NormedSpace.exp_continuous`. Conclude with `h.comp hs1`. Establish `hc : Continuous fun t : ℝ => 1 + hs (y * NormedSpace.exp (t • X))` using `continuous_const.add (continuous_hs'.comp (continuous_const.mul hexp))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `isCompact_Icc.exists_bound_of_continuousOn hc.continuousOn`. Use `⟨C, fun t ht => ?_⟩` and prove the remaining obligations. Establish `h` using `hC t ht`. Rewrite `h` using `[Real.norm_eq_abs]`. Conclude with `(le_abs_self _).trans h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound_line (y X : GlobalTheory.TypeSum.Mx n) :
     ∃ M : ℝ, ∀ t ∈ Set.Icc (-1 : ℝ) 1, 1 + hs (y * NormedSpace.exp (t • X)) ≤ M := by
@@ -90,26 +90,26 @@ theorem bound_line (y X : GlobalTheory.TypeSum.Mx n) :
   exact (le_abs_self _).trans h
 
 /- English proof (translation)
-The claim follows from `Units.isUnit _`.
+A detailed English derivation is pending.
 -/
 private theorem isUnit_toMK (k : ↥(Formalism.REAL.KG ε)) : IsUnit (Formalism.REAL.toMK k) :=
   Units.isUnit _
 
 /- English proof (translation)
-The claim follows from `(k : Formalism.REAL.UJ ε).2`.
+A detailed English derivation is pending.
 -/
 private theorem toMK_conjTranspose_mul_Jm_mul_toMK_eq_Jm (k : ↥(Formalism.REAL.KG ε)) :
     (Formalism.REAL.toMK k)ᴴ * Formalism.REAL.Jm ε * Formalism.REAL.toMK k = Formalism.REAL.Jm ε :=
   (k : Formalism.REAL.UJ ε).2
 
 /- English proof (translation)
-The claim follows from `toMK_conjTranspose_mul_Jm_mul_toMK_eq_Jm k`.
+A detailed English derivation is pending.
 -/
 private theorem toMK_mem_UJset (k : ↥(Formalism.REAL.KG ε)) : Formalism.REAL.toMK k ∈ UJset ε :=
   toMK_conjTranspose_mul_Jm_mul_toMK_eq_Jm k
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `hg`. Establish `hh' : hᴴ * Formalism.REAL.Jm ε * h = Formalism.REAL.Jm ε` using `hh`. Use `show (g * h)ᴴ * Formalism.REAL.Jm ε * (g * h) = Formalism.REAL.Jm ε`. Rewrite using `[Matrix.conjTranspose_mul, show hᴴ * gᴴ * Formalism.REAL.Jm ε * (g * h) = hᴴ * (gᴴ * Formalism.REAL.Jm ε * g) * h by`. Simplify using `only [mul_assoc], hg', hh']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mul_mem_UJset_height {g h : GlobalTheory.TypeSum.Mx n} (hg : g ∈ UJset ε) (hh : h ∈ UJset ε) :
     g * h ∈ UJset ε := by
@@ -121,7 +121,7 @@ private theorem mul_mem_UJset_height {g h : GlobalTheory.TypeSum.Mx n} (hg : g �
       simp only [mul_assoc], hg', hh']
 
 /- English proof (translation)
-Establish `hX' : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0` using `hX`. Establish `hG : Formalism.REAL.inG ε (t • X)` using `by show (t • X)ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * (t • X) = 0`. Rewrite using `[Matrix.conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX', smul_zero]`. Conclude with `Formalism.REAL.f1alg_exp_inUJ ε (t • X) hG`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exp_smul_mem_UJset_of_mem_lieSet' {X : GlobalTheory.TypeSum.Mx n} (hX : X ∈ lieSet ε) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ UJset ε := by
@@ -133,14 +133,14 @@ private theorem exp_smul_mem_UJset_of_mem_lieSet' {X : GlobalTheory.TypeSum.Mx n
   exact Formalism.REAL.f1alg_exp_inUJ ε (t • X) hG
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TypeSum.GrowthAtPlace.conj_lie (isUnit_toMK k) (toMK_conjTranspose_mul_Jm_mul_toMK_eq_Jm k) hX`.
+A detailed English derivation is pending.
 -/
 private theorem toMK_inv_mul_mul_toMK_mem_lieSet (k : ↥(Formalism.REAL.KG ε)) {X : GlobalTheory.TypeSum.Mx n} (hX : X ∈ lieSet ε) :
     (Formalism.REAL.toMK k)⁻¹ * X * Formalism.REAL.toMK k ∈ lieSet ε :=
   GlobalTheory.TypeSum.GrowthAtPlace.conj_lie (isUnit_toMK k) (toMK_conjTranspose_mul_Jm_mul_toMK_eq_Jm k) hX
 
 /- English proof (translation)
-Introduce `Y hY`. Take `⟨Z, hZ, rfl⟩` from `List.mem_map.mp hY`. Conclude with `toMK_inv_mul_mul_toMK_mem_lieSet k (hl Z hZ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem mem_lieSet_of_mem_map_toMK_conj (k : ↥(Formalism.REAL.KG ε)) {l : List (GlobalTheory.TypeSum.Mx n)}
     (hl : ∀ Y ∈ l, Y ∈ lieSet ε) :
@@ -150,16 +150,16 @@ private theorem mem_lieSet_of_mem_map_toMK_conj (k : ↥(Formalism.REAL.KG ε)) 
   exact toMK_inv_mul_mul_toMK_mem_lieSet k (hl Z hZ)
 
 /- English proof (translation)
-Use `hs_nonneg' g` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem one_add_hs_nonneg (g : GlobalTheory.TypeSum.Mx n) : 0 ≤ 1 + hs g := by
   have := hs_nonneg' g
   linarith
 
 /- English proof (translation)
-Establish `a0` using `one_add_hs_nonneg (1 : GlobalTheory.TypeSum.Mx n)`. Establish `k0` using `one_add_hs_nonneg k`. Establish `z0` using `one_add_hs_nonneg z`. Establish `h1 : 1 + hs (z * k) ≤ (1 + hs (1 : GlobalTheory.TypeSum.Mx n)) * MK * ML`. Establish `h` using `GlobalTheory.TypeSum.GrowthAtPlace.one_add_hs_conj_le (1 : GlobalTheory.TypeSum.Mx n) z k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[one_mul]`. Conclude with `h.trans (mul_le_mul (mul_le_mul_of_nonneg_left hMK a0) hML z0 (mul_nonneg a0 (k0.trans hMK)))`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem mul_one_add_hs_mul_pow_le_abs_mul_pow {N : ℕ} {C MK ML : ℝ} {z k : GlobalTheory.TypeSum.Mx n}
     (hMK : 1 + hs k ≤ MK) (hML : 1 + hs z ≤ ML) :
@@ -177,21 +177,19 @@ private theorem mul_one_add_hs_mul_pow_le_abs_mul_pow {N : ℕ} {C MK ML : ℝ} 
         mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (one_add_hs_nonneg _) h1 N) (abs_nonneg C)
 
 /- English proof (translation)
-Introduce `n ε N F hF hG hM e he`. Take `⟨E, hE0, hE⟩` from `bound_e e he`. Take `⟨MK, hMK⟩` from `bound_K (n := n) ε`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `l hl X hX g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hXl : ∀ Y ∈ X :: l, Y ∈ lieSet ε`. Introduce `Y hY`. Break down `List.mem_cons.mp hY with rfl | hY` into its components or cases. Conclude with `hX`. Conclude with `hl Y hY`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `hG (X :: l) hXl`. Take `⟨C0, hC0⟩` from `hG l hl`. Take `⟨ML, hML⟩` from `bound_line g X`. Establish `hgt : ∀ t : ℝ, g * NormedSpace.exp (t • X) ∈ UJset ε` using `fun t => mul_mem_UJset_height hg (exp_smul_mem_UJset_of_mem_lieSet' hX t)`. Establish `hb : ∀ (L : List (GlobalTheory.TypeSum.Mx n)) (C : ℝ), (∀ k : ↥(Formalism.REAL.KG ε), ∀ z ∈ UJset ε, ‖F (L.map fun Y => (Formalism.REAL.toMK k)⁻¹ * Y * Formalism.REAL.toMK k) z‖ ≤ C * (1 + hs z) ^ N) → ∀ k : ↥(Formalism.REAL.KG ε), ∀ t ∈ Set.Icc (-1 : ℝ) 1, ‖e k * F (L.map fun Y …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `L C hC k t ht`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hE k) ((hC k _ (mul_mem_UJset_height (hgt t) (toMK_mem_UJset k))).trans (mul_one_add_hs_mul_pow_le_abs_mul_pow (hMK k) (hML t ht))) (norm_nonneg _) hE0`. Establish `h0 : (0 : ℝ) ∈ Set.Icc (-1 : ℝ) 1` using `⟨by norm_num, by norm_num⟩`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := Formalism.REAL.muK ε) (x₀ := (0 : ℝ)) (F := fun (t : ℝ) (k : ↥(Formalism.REAL.KG ε)) => e k * F (l.map fun Y => (Formalism.REAL.toMK k)⁻¹ * Y * Formalism.REAL.toMK k) (g * NormedSpace.exp (t • X) * Formalism.REAL.toMK k)) (F' …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk` using `isUnit_toMK k`. Establish `hm : ∀ s : ℝ, g * NormedSpace.exp (s • X) * Formalism.REAL.toMK k = g * Formalism.REAL.toMK k * NormedSpace.exp (s • ((Formalism.REAL.toMK k)⁻¹ * X * Formalism.REAL.toMK k))`. Introduce `s`. Rewrite using `[mul_assoc g (Formalism.REAL.toMK k), mul_exp_conj hk X s, mul_assoc]`. Establish `hd` using `GlobalTheory.TypeSum.IsDerFam.hasDerivAt_exp hF (mem_lieSet_of_mem_map_toMK_conj k hl) (toMK_inv_mul_mul_toMK_mem_lieSet k hX) (mul_mem_UJset_height hg (toMK_mem_UJset k)) t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hm]`. Conclude with `hd.const_mul (e k))`. Use `key.2.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [zero_smul, NormedSpace.exp_zero, mul_one]`. Introduce `l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨C, hC⟩` from `hG l hl`. Use `⟨(Formalism.REAL.muK ε).real Set.univ * E * |C| * ((1 + hs (1 : GlobalTheory.TypeSum.Mx n)) * MK) ^ N, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hk : ∀ k : ↥(Formalism.REAL.KG ε), ‖e k * F (l.map fun Y => (Formalism.REAL.toMK k)⁻¹ * Y * Formalism.REAL.toMK k) (g * Formalism.REAL.toMK k)‖ ≤ E * (|C| * ((1 + hs (1 : GlobalTheory.TypeSum.Mx n)) * MK * (1 + hs g)) ^ N)`. Introduce `k`. Rewrite using `[norm_mul]`.
-
-Conclude with `mul_le_mul (hE k) ((hC k _ (mul_mem_UJset_height hg (toMK_mem_UJset k))).trans (mul_one_add_hs_mul_pow_le_abs_mul_pow (hMK k) le_rfl)) (norm_nonneg _) hE0`. Use `(norm_integral_le_of_norm_le_const (Filter.Eventually.of_forall hk)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem avg_derFam_growth : ∀ (n : ℕ) (ε : Fin n → Bool) (N : ℕ) (F : List (GlobalTheory.TypeSum.Mx n) → GlobalTheory.TypeSum.Mx n → ℂ),
     GlobalTheory.TypeSum.IsDerFam ε F →

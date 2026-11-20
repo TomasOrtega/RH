@@ -4,13 +4,13 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TermAttractorConstant.G
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `PI.TermAttrConst.UnitaryGroupMassFormula.termFun_of PI.TermAttrConst.UnitaryGroupMassFormula.genericity_constant_double_cosets D u u'`.
+A detailed English derivation is pending.
 -/
 theorem term_function_const (D : Formalism.BasicNotions.D7) (u u' : D.what₂.Word) : Formalism.L2.SG.TermDef.TermFun D u u' :=
   PI.TermAttrConst.UnitaryGroupMassFormula.termFun_of PI.TermAttrConst.UnitaryGroupMassFormula.genericity_constant_double_cosets D u u'
 
 /- English proof (translation)
-The claim follows from `PI.TermAttrConst.UnitaryGroupMassFormula.termGFun_holds D u u' F0 Λ hΛ`.
+A detailed English derivation is pending.
 -/
 theorem termAttrConst_gFun (D : Formalism.BasicNotions.D7) (u u' : D.what₂.Word)
     (F0 : Formalism.MainNotions.S.FlagG (Formalism.MainNotions.S.VS D) D.R.rS ((Formalism.MainNotions.S.Lat.Tu D u : ℕ) : D.host.E))

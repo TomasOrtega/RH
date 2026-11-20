@@ -21,7 +21,7 @@ section One
 variable {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (V : HSp D) (dict : GA D V → Σ k, Frame (U.X k).Ψ r)
 
 /- English proof (translation)
-Rewrite using `[Set.disjoint_left]`. Introduce and unpack `z ⟨_, hz⟩ ⟨_, hz'⟩`. Establish `s₀ : Sp (CAt σ)` using `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)`. Conclude with `Set.disjoint_left.1 (CompSplitPfD.cspD_comp_disj Xo c Z Z' h) (hz s₀) (hz' s₀)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem framesOn_disjoint {Z Z' : Comp Xo c} (h : Z ≠ Z') : Disjoint (framesOn U Z) (framesOn U Z') := by
   rw [Set.disjoint_left]
@@ -33,7 +33,7 @@ def sqN (la : ∀ k, Wt (U.X k).Ψ r) (f : Rul Xo c) : AutQ V → ENNReal :=
   fun q => ‖ptN la (rdU U f) (dict q.out)‖ₑ ^ (2 : ℝ)
 
 /- English proof (translation)
-Establish `h0 : rdU U f z.1 z.2 = 0` using `by simp [rdU, hz]`. Simplify using `only [ptN, Data.pnorm, h0, norm_zero, zero_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ptN_rdU_of_not_dom (la : ∀ k, Wt (U.X k).Ψ r) (f : Rul Xo c) {z : Σ k, Frame (U.X k).Ψ r}
     (hz : z.2 ∉ (U.X z.1).dom) : ptN la (rdU U f) z = 0 := by
@@ -41,9 +41,9 @@ theorem ptN_rdU_of_not_dom (la : ∀ k, Wt (U.X k).Ψ r) (f : Rul Xo c) {z : Σ 
   simp only [ptN, Data.pnorm, h0, norm_zero, zero_mul]
 
 /- English proof (translation)
-Introduce `q hq`. Assume the negation of the conclusion as `hn`. Apply `hq` to reduce the goal to its premises. Establish `h0 : ptN la (rdU U f) (dict q.out) = 0`. Simplify using `only [ptN, Data.pnorm, rdU_eq_zero U hf hn, norm_zero, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[sqN, h0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sqN_support (la : ∀ k, Wt (U.X k).Ψ r) {Z : Comp Xo c} {f : Rul Xo c} (hf : f ∈ suppOn Z) :
     Function.support (sqN U V dict la f) ⊆ classesOver V dict (framesOn U Z) := by
@@ -55,7 +55,7 @@ theorem sqN_support (la : ∀ k, Wt (U.X k).Ψ r) {Z : Comp Xo c} {f : Rul Xo c}
   simp [sqN, h0]
 
 /- English proof (translation)
-Unfold `petAt petE`. Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num), ENNReal.toReal_ofNat, ← ENNReal.toReal_rpow, mul_pow]`. Use `congr 1`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul ENNReal.toReal_nonneg]`. Evaluate the numerical expressions using `[sqN]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem petAt_sq (x : ℝ) (μ : Measure (AutQ V)) (G : WTZ D.host.E) (f : Rul Xo c) :
     petAt U x V dict μ G f ^ 2 = lieFacZ Dw x G ^ 2 * (∫⁻ q, sqN U V dict (modelWt U G) f q ∂μ).toReal := by
@@ -67,9 +67,9 @@ theorem petAt_sq (x : ℝ) (μ : Measure (AutQ V)) (G : WTZ D.host.E) (f : Rul X
   norm_num [sqN]
 
 /- English proof (translation)
-Establish `h : ∀ q : AutQ V, ‖ptN la (rdU U f) (dict q.out)‖ₑ ≤ supE U.X la (rdU U f)` using `fun q => by`. Rewrite using `[Real.enorm_eq_ofReal (ptN_nonneg _ _ _)]`. Distinguish the cases in `hd : (dict q.out).2 ∈ (U.X (dict q.out).1).dom`. Conclude with `le_iSup (fun p : FPt U.X => ENNReal.ofReal ((U.X p.1).pnorm (la p.1) (rdU U f p.1) p.2)) ⟨(dict q.out).1, ⟨(dict q.out).2, hd⟩⟩`. Rewrite using `[ptN_rdU_of_not_dom U la f hd, ENNReal.ofReal_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `bot_le`. Use `ne_top_of_le_ne_top ?_ (eLpNorm_le_of_ae_enorm_bound (Filter.Eventually.of_forall h))` and prove the remaining obligations. Rewrite using `[measure_univ, ENNReal.one_rpow, smul_eq_mul, mul_one]`. Conclude with `supE_ne_top U.X la hP`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem petE_rdU_ne_top (μ : Measure (AutQ V)) [IsProbabilityMeasure μ] (la : ∀ k, Wt (U.X k).Ψ r)
     {f : Rul Xo c} (hP : rdU U f ∈ holSub U.X la) : petE V dict μ la (rdU U f) ≠ ⊤ := by
@@ -85,9 +85,9 @@ theorem petE_rdU_ne_top (μ : Measure (AutQ V)) [IsProbabilityMeasure μ] (la : 
   exact supE_ne_top U.X la hP
 
 /- English proof (translation)
-Establish `h` using `petE_rdU_ne_top U V dict μ la hP`. Rewrite `h` using `[petE, eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num)]`. Introduce `ht`. Apply `h` to reduce the goal to its premises. Simplify using `only [sqN] at ht`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions using `at ht ⊢`. Rewrite using `[ht]`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lint_sqN_ne_top (μ : Measure (AutQ V)) [IsProbabilityMeasure μ] (la : ∀ k, Wt (U.X k).Ψ r)
     {f : Rul Xo c} (hP : rdU U f ∈ holSub U.X la) : ∫⁻ q, sqN U V dict la f q ∂μ ≠ ⊤ := by
@@ -100,17 +100,15 @@ theorem lint_sqN_ne_top (μ : Measure (AutQ V)) [IsProbabilityMeasure μ] (la : 
   rw [ht]
 
 /- English proof (translation)
-Establish `hdisj : Pairwise (Function.onFun Disjoint fun Z => classesOver V dict (framesOn U Z))` using `fun Z Z' h => Set.disjoint_left.2 fun q h1 h2 => Set.disjoint_left.1 (framesOn_disjoint U h) h1 h2`. Establish `hpt : ∀ Z, ∀ q ∈ classesOver V dict (framesOn U Z), sqN U V dict la (∑ Z, f Z) q = sqN U V dict la (f Z) q`. Introduce `Z q hq`. Establish `e : rdU U (∑ Z', f Z') (dict q.out).1 (dict q.out).2 = rdU U (f Z) (dict q.out).1 (dict q.out).2`. Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_apply, Finset.sum_eq_single Z]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `Z' _ hZ'`. Conclude with `rdU_eq_zero U (hf Z') fun h => Set.disjoint_left.1 (framesOn_disjoint U hZ') h hq`. Introduce `h`. Conclude with `absurd (Finset.mem_univ Z) h`. Simplify using `only [sqN, ptN, Data.pnorm, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsupp : Function.support (sqN U V dict la (∑ Z, f Z)) ⊆ ⋃ Z, classesOver V dict (framesOn U Z)`. Introduce `q hq`. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_iUnion, not_exists] at hn`. Apply `hq` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : rdU U (∑ Z', f Z') (dict q.out).1 (dict q.out).2 = 0`. Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_apply]`. Conclude with `Finset.sum_eq_zero fun Z _ => rdU_eq_zero U (hf Z) (hn Z)`. Establish `h0 : ptN la (rdU U (∑ Z', f Z')) (dict q.out) = 0`. Simplify using `only [ptN, Data.pnorm, e, norm_zero, zero_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sqN, h0]`. Simplify using the standard rewrite rules. Rewrite using `[← setLIntegral_eq_of_support_subset hsupp, lintegral_iUnion₀ hm (fun Z Z' h => (hdisj h).aedisjoint), tsum_fintype]`. Use `Finset.sum_congr rfl fun Z _ => ?_` and prove the remaining obligations. Rewrite using `[← setLIntegral_eq_of_support_subset (sqN_support U V dict la (hf Z))]`.
-
-Conclude with `lintegral_congr_ae ((ae_restrict_mem₀ (hm Z)).mono fun q hq => hpt Z q hq)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lint_sqN_sum [Fintype (Comp Xo c)] (μ : Measure (AutQ V))
     (hm : ∀ Z : Comp Xo c, NullMeasurableSet (classesOver V dict (framesOn U Z)) μ) (la : ∀ k, Wt (U.X k).Ψ r)
@@ -146,9 +144,9 @@ theorem lint_sqN_sum [Fintype (Comp Xo c)] (μ : Measure (AutQ V))
   exact lintegral_congr_ae ((ae_restrict_mem₀ (hm Z)).mono fun q hq => hpt Z q hq)
 
 /- English proof (translation)
-Rewrite using `[petAt_sq, petAt_sq]`. Unfold `muOn muPart ProbabilityTheory.cond`. Establish `key` using `setLIntegral_eq_of_support_subset (μ := muQ1 V) (sqN_support U V dict (modelWt U G) hf)`. Rewrite using `[lintegral_smul_measure, key]`. Distinguish the cases in `h0 : muQ1 V (classesOver V dict (framesOn U Z)) = 0`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hI : ∫⁻ q, sqN U V dict (modelWt U G) f q ∂muQ1 V = 0`. Rewrite using `[← key, Measure.restrict_eq_zero.2 h0, lintegral_zero_measure]`. Simplify using `[h0, hI]`. Establish `ha : (muQ1 V (classesOver V dict (framesOn U Z))).toReal ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨h0, measure_ne_top _ _⟩`. Rewrite using `[smul_eq_mul, ENNReal.toReal_mul, ENNReal.toReal_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -169,11 +167,11 @@ theorem petAt_muOn_sq (x : ℝ) (G : WTZ D.host.E) {Z : Comp Xo c} {f : Rul Xo c
     field_simp
 
 /- English proof (translation)
-Unfold `petAt`. Use `mul_le_mul_of_nonneg_left ?_ (lieFacZ_pos _ _).le` and prove the remaining obligations. Use `ENNReal.toReal_mono (petE_rdU_ne_top U V dict μ _ hP) ?_` and prove the remaining obligations. Unfold `petE`. Use `eLpNorm_mono fun q => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.norm_of_nonneg (ptN_nonneg _ _ _), Real.norm_of_nonneg (ptN_nonneg _ _ _)]`. Simplify using `only [ptN, Data.pnorm]`. Use `mul_le_mul_of_nonneg_right ?_ (pnorm_fac_nonneg _ _ _)` and prove the remaining obligations. Rewrite using `[GlobalTheory.AllWt.rdU_mul, Pi.mul_apply, Pi.mul_apply, norm_mul]`. Use `mul_le_of_le_one_left (norm_nonneg _) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : IsIdempotentElem (rdU U (GlobalTheory.FlatLine.idem Z) (dict q.out).1 (dict q.out).2)`. Use `congrFun (congrFun (GlobalTheory.AllWt.rdU_mul U (GlobalTheory.FlatLine.idem Z) (GlobalTheory.FlatLine.idem Z)) (dict q.out).1) (dict q.out).2` as an intermediate fact. Rewrite `this` using `[GlobalTheory.FlatLine.idem_mul_idem]`. Conclude with `this.symm`. Apply the tactic sequence `rcases IsIdempotentElem.iff_eq_zero_or_one.1 he with h | h <;> rw [h] <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem petAt_idem_le (x : ℝ) (μ : Measure (AutQ V)) [IsProbabilityMeasure μ] (G : WTZ D.host.E) (Z : Comp Xo c)
     {f : Rul Xo c} (hP : rdU U f ∈ holSub U.X (modelWt U G)) :
@@ -198,11 +196,11 @@ theorem petAt_idem_le (x : ℝ) (μ : Measure (AutQ V)) [IsProbabilityMeasure μ
 end One
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c r U V dict hc G`. Use `haveI := CompFin.finite_comp Xo c`. Use `letI : Fintype (Comp Xo c) := Fintype.ofFinite _`. Establish `hm : ∀ (σ : c.F →+* ℂ) (Z : Comp Xo c), NullMeasurableSet (classesOver (V (goodOf c σ)) (dict (goodOf c σ)) (framesOn (U (goodOf c σ)) Z)) (muQ1 (V (goodOf c σ)))` using `fun σ Z => GlobalTheory.ClassesMeas.nullMeasurableSet_classesOver_framesOn D H Dw l Xo c r U V dict hc _ (goodEmb_goodOf c σ) Z`. Use `⟨fun σ => ⟨fun f => ?_, fun Z f => ?_⟩, fun Z σ => ⟨ENNReal.toReal_nonneg, ?_⟩, fun Z σ f => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`. Simplify using `only [normRes, petW]`. Rewrite using `[petAt_sq, lint_sqN_sum _ _ _ _ (hm σ) _ _ fun Z => (Submodule.mem_inf.1 (f Z).2).2, ENNReal.toReal_sum fun Z _ => lint_sqN_ne_top _ _ _ _ _ ((mem_cuspW.1 (Submodule.mem_inf.1 (f Z).2).1).2 _ (goodEmb_goodOf c σ)), Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun Z _ => (petAt_sq _ _ _ _ _ _ _).symm`. Simplify using `only [normRes, normOn, petW, petOn, mass]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(petAt_muOn_sq _ _ _ _ _ (Submodule.mem_inf.1 f.2).2).symm`. Simplify using `only [mass]`. Conclude with `ENNReal.toReal_le_of_le_ofReal zero_le_one (by rw [ENNReal.ofReal_one]; exact prob_le_one)`. Simplify using `only [petW]`. Conclude with `petAt_idem_le _ _ _ _ _ _ _ ((mem_cuspW.1 f.2).2 _ (goodEmb_goodOf c σ))`.
+A detailed English derivation is pending.
 -/
 theorem orthogonal_mass_idem : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (V : (c.F →+* ℂ) → HSp D) (dict : ∀ σ, GA D (V σ) → Σ k, Frame ((U σ).X k).Ψ r), IsComplexData U V dict → ∀ G : WTZ D.host.E, Orthogonal U V dict G ∧ (∀ Z σ, 0 ≤ mass U V dict Z σ ∧ mass U V dict Z σ ≤ 1) ∧ ∀ (Z : Comp Xo c) (σ : c.F →+* ℂ) (f : cuspW Xo c U G), petW U (xiR D) V dict G σ (idem Z * (f : Rul Xo c)) ≤ petW U (xiR D) V dict G σ (f : Rul Xo c) := by
   intro D H Dw l Xo c r U V dict hc G

@@ -13,23 +13,23 @@ namespace GlobalTheory.AdmissibleDegree
 open Formalism.MainNotions.G GlobalTheory.IndefiniteRowSideFullHecke.LevelLossDegreeBounds
 
 /- English proof (translation)
-Introduce `u j hj`. Take `⟨j1, j2⟩` from `Finset.mem_Icc.1 hj`. Establish `hf` using `GlobalTheory.FockDegreeFine.degree_fine L h P hK hx u j hj`. Establish `w0 : ∀ τ, 0 ≤ wj D j τ` using `fun τ => (GlobalTheory.HCEntries.wj_bounds h hx j j1 j2 τ).1`. Establish `s0 : 0 ≤ sizeOffTops D j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `sizeOffTops`. Conclude with `Finset.sum_nonneg fun τ _ => w0 τ`. Establish `s1 : sizeOffTops D j ≤ ∑ τ : D.what₂.Tau, wj D j τ`. Unfold `sizeOffTops`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _) fun τ _ _ => w0 τ`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `GlobalTheory.LossItemsCompare.cube_le_eta P`. Establish `hm : (1 : ℝ) ≤ D.R.m` using `by exact_mod_cast (by have := D.R.two_le_m; omega : 1 ≤ D.R.m)`. Establish `ht : (1 : ℝ) ≤ D.R.t` using `GlobalTheory.HCEntries.one_le_letterBlockLength D`. Establish `hk : (1 : ℝ) ≤ D.R.k` using `GlobalTheory.HCEntries.one_le_k D`. Establish `he` using `L.etaSz_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `L.Sc_pos`. Establish `hN0 : (0 : ℝ) ≤ D.R.N D.R.m` using `Nat.cast_nonneg _`. Establish `hNm : Nm D = (D.R.N D.R.m : ℝ)` using `rfl`. Establish `hN2 : (D.R.N D.R.m : ℝ) ^ 2 ≤ (D.R.m : ℝ) * D.R.t * L.etaSz`. Establish `a1 : (D.R.N D.R.m : ℝ) ^ 2 ≤ 4 * (D.R.N D.R.m : ℝ) ^ 3 + 6`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities.
 
-Break down `le_total (D.R.N D.R.m : ℝ) 1 with hN1 | hN1` into its components or cases. Use polynomial arithmetic with `[pow_nonneg hN0 3]`. Use polynomial arithmetic with `[pow_nonneg hN0 2]`. Establish `a2 : L.etaSz ≤ (D.R.m : ℝ) * D.R.t * L.etaSz`. Establish `: (1 : ℝ) ≤ (D.R.m : ℝ) * D.R.t` using `by nlinarith`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf0 : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Establish `hc0 : 0 ≤ (D.host.TT.card : ℝ) * L.sc.b' / L.sc.x` using `div_nonneg (mul_nonneg (Nat.cast_nonneg _) (GlobalTheory.HCEntries.b'_pos L).le) (by linarith)`. Establish `hkN : 0 ≤ (D.R.k : ℝ) * Nm D` using `by rw [hNm]; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hdeg : degErr L ≤ 2 * ((D.R.f : ℝ) * ((D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * D.R.t * L.etaSz + (D.R.k : ℝ) * Nm D) + (D.host.TT.card : ℝ) * L.sc.b' / L.sc.x)`. Unfold `degErr`. Establish `: (D.R.f : ℝ) * ((D.R.k : ℝ) * L.Sc + Nm D ^ 2 + (D.R.m : ℝ) * (D.R.t : ℝ) * L.etaSz) ≤ 2 * ((D.R.f : ℝ) * ((D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * D.R.t * L.etaSz + (D.R.k : ℝ) * Nm D))`. Rewrite `hkN`, the goal using `[hNm]`. Establish `hkS : 0 ≤ (D.R.k : ℝ) * L.Sc` using `by positivity`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `mul_le_mul_of_nonneg_left (show (D.R.k : ℝ) * L.Sc + (D.R.N D.R.m : ℝ) ^ 2 + (D.R.m : ℝ) * D.R.t * L.etaSz ≤ 2 * ((D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * D.R.t * L.etaSz + (D.R.k : ℝ) * (D.R.N D.R.m : ℝ)) by linarith) hf0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Formalism.MainNotions.WeightDegreeSizes.DegreeCountBound Formalism.MainNotions.WeightDegreeSizes.errG Formalism.MainNotions.WeightDegreeSizes.sumA at *`. Express the relevant statement in the definitionally equal form `|degPi D u j - (fockDeg D j : ℝ) - topSum L| ≤ _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hf`, the goal using `[abs_le]`. Apply the tactic sequence `constructor <;> nlinarith [hf.1, hf.2]`.
+A detailed English derivation is pending.
 -/
 theorem admissibleDegree_count_at_parameter_const {D : D7} (L : SizeData₂ D) (h : SizesAt L) (P : ParameterChoice' D L) (hK : KapDef D) (hx : 2 ≤ L.sc.x) :
     Formalism.MainNotions.WeightDegreeSizes.DegreeCountBound D L 40 := by
@@ -80,7 +80,7 @@ theorem admissibleDegree_count_at_parameter_const {D : D7} (L : SizeData₂ D) (
   constructor <;> nlinarith [hf.1, hf.2]
 
 /- English proof (translation)
-Introduce `eps Fm _ _`. Use `⟨40, 2, by norm_num, fun x hx2 hx i => ?_⟩` and prove the remaining obligations. Establish `y` using `hx2`. Rewrite `y` using `[← Fm.L_x x i hx]`. Conclude with `admissibleDegree_count_at_parameter_const (Fm.L x i) (Fm.sizes x hx i) (Fm.params x hx i) (Fm.ex x hx i).kap_def y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissibleDegreeCount_along_family : ∀ {eps : ℝ} (Fm : FamP eps), 0 < eps → eps < 1 / 52 → ∃ C x0 : ℝ, 0 ≤ C ∧ ∀ x, x0 ≤ x →
     ∀ hx : Fm.x1 < x, ∀ i : Fm.Ix x, Formalism.MainNotions.WeightDegreeSizes.DegreeCountBound (Fm.D x i) (Fm.L x i) C := by

@@ -13,11 +13,11 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX P hA e x hG`. Take `⟨l, hl⟩` from `hG.cover (genericPoint X)`. Establish `hxl : x l ≠ 0` using `((GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P (e : ℤ) 0 (x l) (hG.mem l)).2.1).1 hl`. Take `⟨U, hU, hUeq, -, hreg, hft, hfrac, -⟩` from `GlobalTheory.T.nonvanishingLocus_ample_section_isAffine_model k X p D hX P hA e (x l) hG.pos (hG.mem l) hxl`. Take `⟨hch, htr⟩` from `GlobalTheory.T.projArith_functionField_charZero_trdeg k X p D hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.transcendenceBasis_sectionTupleQuotients X.functionField D x l (fnOf U hU).range htr hxl hft ?_ hfrac` and prove the remaining obligations. Introduce `w hw`. Use `GlobalTheory.T.isIntegral_quotientRing_sectionTuple_locus k X p D hX P e x hG l w hxl ?_` and prove the remaining obligations. Introduce `z hz`. Rewrite `hz` using `[← hUeq]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hreg w).2 hw z hz`.
+A detailed English derivation is pending.
 -/
 theorem gens_quot_trBasis : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → (∀ j, x j ≠ 0) ∧ AlgebraicIndependent ℤ (fun j : Fin D => x j.succ / x 0) ∧ FiniteDimensional (ratF x) X.functionField := by
   intro k _ X _ p D hX P hA e x hG

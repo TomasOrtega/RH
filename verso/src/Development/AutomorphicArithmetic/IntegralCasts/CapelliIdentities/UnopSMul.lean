@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `A _`. Conclude with `RingHomInvPair.ids`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk3.aux1 :
     ∀ {A : Type} [inst : CommRing A],
@@ -114,9 +114,9 @@ noncomputable def UpperTheory.Reformulated.B.Qk3.unopS :
               (@Algebra.toModule A E (@CommRing.toCommSemiring A inst) (@Ring.toSemiring E inst_1) inst_2))))
 
 /- English proof (translation)
-Introduce `A E _ _ _ S _ _ x y`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x₁ x₂ h₁ h₂ => rw [add_mul, map_add, map_add, h₁, h₂, mul_add]`. Consider the case `tmul s e`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y₁ y₂ h₁ h₂ => rw [mul_add, map_add, map_add, h₁, h₂, add_mul]`. Consider the case `tmul t f`. Simplify using `[UpperTheory.Reformulated.B.Qk3.unopS, Algebra.TensorProduct.tmul_mul_tmul, mul_comm s t]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.Qk3.unopS_mul :
     ∀ {A E : Type} [inst : CommRing A] [inst_1 : Ring E]

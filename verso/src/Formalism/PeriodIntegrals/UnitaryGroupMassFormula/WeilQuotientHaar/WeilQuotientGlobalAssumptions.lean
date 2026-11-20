@@ -13,20 +13,20 @@ variable {ι : Type} [Fintype ι] {G : ι → Type} [∀ v, Group (G v)] [∀ v,
   [∀ v, MeasurableMul₂ (G v)]
 
 /- English proof (translation)
-Use `⟨fun v _ => (hK v).1, fun a ha b hb v _ => (hK v).2.1 _ (ha v trivial) _ (hb v trivial), fun a ha v _ => (hK v).2.2 _ (ha v trivial)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isGrp_pi (K : ∀ v, Set (G v)) (hK : ∀ v, IsGrp (K v)) : IsGrp (Set.pi univ K) := by
   refine ⟨fun v _ => (hK v).1, fun a ha b hb v _ => (hK v).2.1 _ (ha v trivial) _ (hb v trivial),
     fun a ha v _ => (hK v).2.2 _ (ha v trivial)⟩
 
 /- English proof (translation)
-Use `haveI : ∀ v, SigmaFinite (μ v) := fun v => (h v).1`. Use `⟨inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `congrArg (fun m : Measure (∀ v, G v) => m univ) h0`. Simplify using `only [Measure.pi_univ, Measure.coe_zero, Pi.zero_apply, Finset.prod_eq_zero_iff, Finset.mem_univ, true_and] at h1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `h1`. Conclude with `(h v).2.1 (Measure.measure_univ_eq_zero.1 hv)`. Establish `e : (Set.pi univ K)ᶜ = ⋃ v, (fun x : (∀ v, G v) => x v) ⁻¹' (K v)ᶜ`. Use extensionality with `x`. Simplify using `[Set.mem_pi]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `measure_iUnion_null fun v => Measure.pi_eval_preimage_null μ ((h v).2.2.1)`. Introduce `s hs`. Establish `hmap : ∀ v, (μ v).map (fun x => s v * x) = μ v` using `fun v => (h v).2.2.2 (s v) (hs v trivial)`. Use `haveI : ∀ v, SigmaFinite ((μ v).map (fun x => s v * x)) := fun v => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmap v]`. Use `infer_instance`. Establish `e : (fun x : (∀ v, G v) => s * x) = fun x v => (fun y => s v * y) (x v)` using `rfl`. Rewrite using `[e, Measure.pi_map_pi (fun v => (measurable_const_mul (s v)).aemeasurable)]`. Simplify using `only [hmap]`.
+A detailed English derivation is pending.
 -/
 theorem invOn_pi (K : ∀ v, Set (G v)) (μ : ∀ v, Measure (G v)) (h : ∀ v, InvOn (μ v) (K v)) :
     InvOn (Measure.pi μ) (Set.pi univ K) := by
@@ -53,9 +53,9 @@ theorem invOn_pi (K : ∀ v, Set (G v)) (μ : ∀ v, Measure (G v)) (h : ∀ v, 
     simp only [hmap]
 
 /- English proof (translation)
-Establish `hm : Measurable (fun p : (∀ v, G v) × (∀ v, G v) => ∏ v, φ v (p.1 v * p.2 v))` using `Finset.measurable_prod _ fun v _ => (hφ v).comp (((measurable_pi_apply v).comp measurable_fst).mul ((measurable_pi_apply v).comp measurable_snd))`. Rewrite using `[lintegral_prod _ hm.aemeasurable]`. Establish `hin : ∀ x : (∀ v, G v), ∫⁻ y, ∏ v, φ v (x v * y v) ∂(Measure.pi ν) = ∏ v, ∫⁻ y, φ v (x v * y) ∂(ν v)` using `fun x => lintegral_fintype_prod (fun v y => φ v (x v * y)) (fun v => (hφ v).comp (measurable_const_mul _))`. Repeatedly rewrite using `[hin]`. Rewrite using `[lintegral_fintype_prod (fun v x => ∫⁻ y, φ v (x * y) ∂(ν v)) (fun v => ((hφ v).comp measurable_mul).lintegral_prod_right')]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[mulMap, lintegral_map (hφ v) measurable_mul, lintegral_prod (f := fun z : G v × G v => φ v (z.1 * z.2)) (show Measurable (fun z : G v × G v => φ v (z.1 * z.2)) from (hφ v).comp measurable_mul).aemeasurable]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem lintegral_pi_prod_mul (μ ν : ∀ v, Measure (G v)) [∀ v, SigmaFinite (μ v)]
     [∀ v, SigmaFinite (ν v)] (φ : ∀ v, G v → ℝ≥0∞) (hφ : ∀ v, Measurable (φ v)) :
@@ -80,21 +80,19 @@ theorem lintegral_pi_prod_mul (μ ν : ∀ v, Measure (G v)) [∀ v, SigmaFinite
 end Pi
 
 /- English proof (translation)
-Introduce `hU hL ι _ n ε N H hNc hHc hNg hHg hnorm hunim muN muH nuQ hmuN hmuH hW`. Establish `hloc` using `fun v => hL (Formalism.REAL.UJ (ε v)) (Formalism.REAL.muG (ε v)) (N v) (H v) (hNc v) (hHc v) (hNg v) (hHg v) (hnorm v) (hunim v)`. Use `choose μN μH β hμN hμH hμS hβm hβ1 hLW using hloc`. Use `haveI := fun v => (hμN v).1`. Use `haveI := fun v => (hμH v).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := fun v => (hμS v).1`. Take `⟨cN, hcN0, hcNt, hcN⟩` from `hU (∀ v, Formalism.REAL.UJ (ε v)) (Set.pi univ N) (isClosed_set_pi fun v _ => hNc v) (isGrp_pi N hNg) muN (Measure.pi μN) hmuN (invOn_pi N μN hμN)`. Take `⟨cH, hcH0, hcHt, hcH⟩` from `hU (∀ v, Formalism.REAL.UJ (ε v)) (Set.pi univ H) (isClosed_set_pi fun v _ => (hHc v).isClosed) (isGrp_pi H hHg) muH (Measure.pi μH) hmuH (invOn_pi H μH hμH)`. Use `⟨fun v => mulMap (μN v) (μH v), fun v => (Formalism.REAL.muG (ε v)).withDensity (β v), (cN * cH)⁻¹, ENNReal.inv_ne_zero.mpr (ENNReal.mul_ne_top hcNt hcHt), ENNReal.inv_ne_top.mpr (mul_ne_zero hcN0 hcH0), fun v => ⟨hμS v, hLW v⟩, ?_⟩` and prove the remaining obligations. Introduce `F hFm hFinv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `set f : (∀ v, Formalism.REAL.UJ (ε v)) → ℝ≥0∞ := fun x => ∏ v, β v (x v) * F v (x v) with hfdef`. Establish `hfm : Measurable f` using `Finset.measurable_prod _ fun v _ => ((hβm v).comp (measurable_pi_apply v)).mul ((hFm v).comp (measurable_pi_apply v))`. Establish `key` using `hW f hfm`. Establish `hL1 : ∫⁻ x, f x ∂(Measure.pi fun v => Formalism.REAL.muG (ε v)) = ∏ v, ∫⁻ y, F v y ∂((Formalism.REAL.muG (ε v)).withDensity (β v))`. Rewrite using `[hfdef, lintegral_fintype_prod (fun v y => β v y * F v y) (fun v => (hβm v).mul (hFm v))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ (hβm v) (hFm v)]`. Both sides reduce to the same expression. Establish `hin : ∀ x, ∫⁻ s, f (s * x) ∂((muN.prod muH).map (fun p => p.1 * p.2)) = (cN * cH) * ∏ v, F v (x v)`. Introduce `x`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lintegral_map (f := fun s => f (s * x)) (show Measurable (fun s => f (s * x)) from hfm.comp (measurable_mul_const x)) measurable_mul, hcN, hcH, Measure.prod_smul_left, Measure.prod_smul_right, lintegral_smul_measure, lintegral_smul_measure]`. Establish `h1 : ∀ p : (∀ v, Formalism.REAL.UJ (ε v)) × (∀ v, Formalism.REAL.UJ (ε v)), f (p.1 * p.2 * x) = ∏ v, (fun v z => β v (z * x v) * F v (z * x v)) v (p.1 v * p.2 v)` using `fun p => rfl`. Repeatedly rewrite using `[h1]`. Rewrite using `[lintegral_pi_prod_mul μN μH (fun v z => β v (z * x v) * F v (z * x v)) (fun v => ((hβm v).comp (measurable_mul_const _)).mul ((hFm v).comp (measurable_mul_const _)))]`. Establish `h2 : ∀ v, ∫⁻ s, β v (s * x v) * F v (s * x v) ∂(mulMap (μN v) (μH v)) = F v (x v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Introduce `v`. Establish `hae : ∀ᵐ s ∂(mulMap (μN v) (μH v)), s ∈ prodSet (N v) (H v)` using `mem_ae_iff.mpr (hμS v).2.2.1`. Rewrite using `[lintegral_congr_ae (g := fun s => β v (s * x v) * F v (x v)) (hae.mono fun s hs => by`. Take `⟨m, hm, h, hh, rfl⟩` from `hs`. Simplify using `only [hFinv v m hm h hh])]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lintegral_mul_const _ (show Measurable (fun s => β v (s * x v)) from (hβm v).comp (measurable_mul_const _)), hβ1 v, one_mul]`. Repeatedly rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hin]`. Establish `hPm : Measurable (fun x : (∀ v, Formalism.REAL.UJ (ε v)) => ∏ v, F v (x v))` using `Finset.measurable_prod _ fun v _ => (hFm v).comp (measurable_pi_apply v)`.
-
-Rewrite `key` using `[lintegral_const_mul _ hPm, hL1]`. Express the relevant statement in the definitionally equal form `_ = (cN * cH)⁻¹ * ∏ v, ∫⁻ y, F v y ∂((Formalism.REAL.muG (ε v)).withDensity (β v))`. Rewrite using `[key, ← mul_assoc, ENNReal.inv_mul_cancel (mul_ne_zero hcN0 hcH0) (ENNReal.mul_ne_top hcNt hcHt), one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_quotient_global_assumptions : GlobAsm := by
   intro hU hL ι _ n ε N H hNc hHc hNg hHg hnorm hunim muN muH nuQ hmuN hmuH hW

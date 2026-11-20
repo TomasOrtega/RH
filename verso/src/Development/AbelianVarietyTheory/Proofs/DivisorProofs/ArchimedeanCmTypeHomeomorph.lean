@@ -9,17 +9,13 @@ open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat 
 namespace GlobalTheory.InfAdeleCMType
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ θ hΨ hθ`. Establish `h : IsCMExt (maximalRealSubfield E) E (IsCMField.complexConj E).toAlgHom` using `⟨inferInstance, inferInstance, Algebra.IsQuadraticExtension.finrank_eq_two _ _, fun τ x => IsCMField.complexEmbedding_complexConj E τ x⟩`. Establish `hτ : GlobalTheory.Mem.Vol.IsCMFam (fun ρ : Ψ => ρ.1)`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `InfinitePlace.mk_eq_iff.1 hab with e | e` into its components or cases. Conclude with `Subtype.ext e`. Conclude with `absurd (e ▸ b.2) ((hΨ a.1).1 a.2)`. Introduce `w`. Distinguish the cases in `hw : w.embedding ∈ Ψ`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨⟨_, hw⟩, w.mk_embedding⟩`. Establish `hc : ComplexEmbedding.conjugate w.embedding ∈ Ψ`. Assume the negation of the conclusion as `hn`. Conclude with `hw ((hΨ _).2 hn)`. Conclude with `⟨⟨_, hc⟩, (InfinitePlace.mk_conjugate_eq _).trans w.mk_embedding⟩`.
+Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : Module.Finite (maximalRealSubfield E) E := Module.Finite.of_restrictScalars_finite ℚ _ E`. Use `haveI : IsModuleTopology (Ainf (maximalRealSubfield E)) (Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E) := IsModuleTopology.isTopologicalRing (Ainf (maximalRealSubfield E)) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_infiniteAdele (maximalRealSubfield E)`. Take `⟨e₀⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := maximalRealSubfield E) (E := E) (Ainf (maximalRealSubfield E))`.
-
-Use `haveI : LocallyCompactSpace (Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E) := e₀.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E) := e₀.secondCountableTopology`. Establish `hb` using `GlobalTheory.Mem.VolExists.infEmb_bijective h hτ hθ`. Set `Θ : Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E →+ (Ψ → ℂ)` to `(RingHom.pi θ).toAddMonoidHom`. Establish `hΘ : Continuous Θ` using `continuous_pi fun ρ => GlobalTheory.Mem.VolExists.infEmb_continuous (hθ ρ)`.
-
-Establish `ho : IsOpenMap Θ` using `AddMonoidHom.isOpenMap_of_sigmaCompact Θ hb.2 hΘ`. Conclude with `⟨(Equiv.ofBijective Θ hb).toHomeomorphOfContinuousOpen hΘ ho, fun _ _ => rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_homeomorph : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ))
     (θ : Ψ → (Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E →+* ℂ)),

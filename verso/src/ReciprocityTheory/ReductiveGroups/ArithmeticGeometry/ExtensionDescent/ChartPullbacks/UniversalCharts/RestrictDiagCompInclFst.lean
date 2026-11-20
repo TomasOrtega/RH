@@ -13,7 +13,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [spMap_left, Over.id_left]`. Conclude with `Spec.map_id _`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spMap_id (P : Type) [CommRing P] [Algebra R P] : spMap (AlgHom.id R P) = 𝟙 (sp (R₀ := R) P) := by
   apply Over.OverMorphism.ext
@@ -46,7 +46,7 @@ theorem qD_apply (i : Fin 2) (a : DualNumber R) :
     qD i a = algebraMap R _ a.fst + a.snd • zR (R := R) 1 i := rfl
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[AlgHom.comp_apply, qD_apply, map_add, map_smul, AlgHom.commutes, jetAug_zR, smul_zero, add_zero]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem jetAug_comp_qD (i : Fin 2) : (jetAug R (Fin 2) 1).comp (qD i) = fstD R := by
   ext a
@@ -54,7 +54,7 @@ theorem jetAug_comp_qD (i : Fin 2) : (jetAug R (Fin 2) 1).comp (qD i) = fstD R :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← le_bot_iff, pow_two, Ideal.mul_le]`. Introduce `a ha b hb`. Establish `ha0 : a.fst = 0` using `ha`. Establish `hb0 : b.fst = 0` using `hb`. Rewrite using `[Ideal.mem_bot, show a = TrivSqZeroExt.inr a.snd from TrivSqZeroExt.ext ha0 rfl, show b = TrivSqZeroExt.inr b.snd from TrivSqZeroExt.ext hb0 rfl, TrivSqZeroExt.inr_mul_inr]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem delta_sq : (RingHom.ker (TrivSqZeroExt.fstHom R R (R × R))) ^ (1 + 1) = ⊥ := by
   rw [← le_bot_iff, pow_two, Ideal.mul_le]
@@ -73,14 +73,14 @@ def rD (l : R × R →ₗ[R] R) : JetR R (Fin 2) 1 →ₐ[R] DualNumber R :=
   (TrivSqZeroExt.map l).comp deltaJ
 
 /- English proof (translation)
-Rewrite using `[rD, AlgHom.comp_apply, deltaJ, jetLift_zR, TrivSqZeroExt.map_inr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rD_zR (l : R × R →ₗ[R] R) (i : Fin 2) :
     rD l (zR 1 i) = TrivSqZeroExt.inr (l (if i = 0 then ((1 : R), (0 : R)) else (0, 1))) := by
   rw [rD, AlgHom.comp_apply, deltaJ, jetLift_zR, TrivSqZeroExt.map_inr]
 
 /- English proof (translation)
-Simplify using `only [rD, AlgHom.comp_apply, TrivSqZeroExt.snd_map, LinearMap.add_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snd_rD_add (a : JetR R (Fin 2) 1) :
     (rD (LinearMap.fst R R R + LinearMap.snd R R R) a).snd =
@@ -88,7 +88,7 @@ theorem snd_rD_add (a : JetR R (Fin 2) 1) :
   simp only [rD, AlgHom.comp_apply, TrivSqZeroExt.snd_map, LinearMap.add_apply]
 
 /- English proof (translation)
-The claim follows from `jet_ext fun i => by rw [AlgHom.comp_apply, rD_zR, jetAug_zR] exact inr_mem_kerD _`.
+A detailed English derivation is pending.
 -/
 theorem fstD_comp_rD (l : R × R →ₗ[R] R) : (fstD R).comp (rD l) = jetAug R (Fin 2) 1 :=
   jet_ext fun i => by
@@ -96,7 +96,7 @@ theorem fstD_comp_rD (l : R × R →ₗ[R] R) : (fstD R).comp (rD l) = jetAug R 
     exact inr_mem_kerD _
 
 /- English proof (translation)
-Apply `DualNumber.algHom_ext` to reduce the goal to its premises. Rewrite using `[AlgHom.comp_apply, qD_apply]`. Simplify using `only [DualNumber.fst_eps, DualNumber.snd_eps, map_zero, one_smul, zero_add, rD_zR]`. Use `show _ = TrivSqZeroExt.map _ (TrivSqZeroExt.inr 1)`. Rewrite using `[TrivSqZeroExt.map_inr, LinearMap.smul_apply, LinearMap.id_apply, smul_eq_mul, _root_.mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rD_comp_qD (l : R × R →ₗ[R] R) (i : Fin 2) :
     (rD l).comp (qD i) = TrivSqZeroExt.map ((l (if i = 0 then ((1 : R), (0 : R)) else (0, 1))) • LinearMap.id) := by
@@ -109,20 +109,20 @@ theorem rD_comp_qD (l : R × R →ₗ[R] R) (i : Fin 2) :
 variable {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
 
 /- English proof (translation)
-Rewrite using `[IsTan, MonObj.comp_mul, h₁, h₂, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isTan_mul {w₁ w₂ : sp (R₀ := R) (DualNumber R) ⟶ G} (h₁ : IsTan w₁) (h₂ : IsTan w₂) : IsTan (w₁ * w₂) := by
   rw [IsTan, MonObj.comp_mul, h₁, h₂, _root_.mul_one]
 
 /- English proof (translation)
-The claim follows from `comp_one' _`.
+A detailed English derivation is pending.
 -/
 theorem isTan_one : IsTan (1 : sp (R₀ := R) (DualNumber R) ⟶ G) := comp_one' _
 
 abbrev scaleD (c : R) : DualNumber R →ₐ[R] DualNumber R := TrivSqZeroExt.map (c • LinearMap.id)
 
 /- English proof (translation)
-Establish `: (fstD R).comp (scaleD c) = fstD R`. Use `ext`. Conclude with `TrivSqZeroExt.fst_map _ _`. Rewrite using `[IsTan, ← Category.assoc, spMap_comp, this]`. Conclude with `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTan_scale (c : R) {w : sp (R₀ := R) (DualNumber R) ⟶ G} (h : IsTan w) : IsTan (spMap (scaleD c) ≫ w) := by
   have : (fstD R).comp (scaleD c) = fstD R := by
@@ -132,7 +132,7 @@ theorem isTan_scale (c : R) {w : sp (R₀ := R) (DualNumber R) ⟶ G} (h : IsTan
   exact h
 
 /- English proof (translation)
-Apply `DualNumber.algHom_ext` to reduce the goal to its premises. Use `show TrivSqZeroExt.map _ (TrivSqZeroExt.inr 1) = TrivSqZeroExt.inr 1`. Rewrite using `[TrivSqZeroExt.map_inr, one_smul, LinearMap.id_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scaleD_one : scaleD (1 : R) = AlgHom.id R (DualNumber R) := by
   apply DualNumber.algHom_ext
@@ -140,7 +140,7 @@ theorem scaleD_one : scaleD (1 : R) = AlgHom.id R (DualNumber R) := by
   rw [TrivSqZeroExt.map_inr, one_smul, LinearMap.id_apply]
 
 /- English proof (translation)
-Apply `DualNumber.algHom_ext` to reduce the goal to its premises. Use `show TrivSqZeroExt.map _ (TrivSqZeroExt.inr 1) = (Algebra.ofId R (DualNumber R)) ((TrivSqZeroExt.inr (1 : R) : DualNumber R).fst)`. Rewrite using `[TrivSqZeroExt.map_inr, zero_smul, LinearMap.zero_apply, TrivSqZeroExt.fst_inr, map_zero, TrivSqZeroExt.inr_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scaleD_zero : scaleD (0 : R) = (Algebra.ofId R (DualNumber R)).comp (fstD R) := by
   apply DualNumber.algHom_ext
@@ -148,19 +148,19 @@ theorem scaleD_zero : scaleD (0 : R) = (Algebra.ofId R (DualNumber R)).comp (fst
   rw [TrivSqZeroExt.map_inr, zero_smul, LinearMap.zero_apply, TrivSqZeroExt.fst_inr, map_zero, TrivSqZeroExt.inr_zero]
 
 /- English proof (translation)
-Rewrite using `[scaleD_zero, ← spMap_comp, Category.assoc, h, comp_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_scaleD_zero {w : sp (R₀ := R) (DualNumber R) ⟶ G} (h : IsTan w) : spMap (scaleD (0 : R)) ≫ w = 1 := by
   rw [scaleD_zero, ← spMap_comp, Category.assoc, h, comp_one']
 
 /- English proof (translation)
-Rewrite using `[rD_comp_qD]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem restrictDiag_comp_incl_fst (l : R × R →ₗ[R] R) : (rD l).comp (qD 0) = scaleD (l ((1 : R), (0 : R))) := by
   rw [rD_comp_qD]; simp
 
 /- English proof (translation)
-Rewrite using `[rD_comp_qD]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem restrictDiag_comp_incl_snd (l : R × R →ₗ[R] R) : (rD l).comp (qD 1) = scaleD (l ((0 : R), (1 : R))) := by
   rw [rD_comp_qD]; simp
@@ -168,17 +168,17 @@ theorem restrictDiag_comp_incl_snd (l : R × R →ₗ[R] R) : (rD l).comp (qD 1)
 variable {n : ℕ} {x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin n) m) ⟶ G} (hx : IsUnivChart G n x)
 
 /- English proof (translation)
-Set `P : sp (R₀` to `R) (JetR R (Fin 2) 1) ⟶ G := (spMap (qD 0) ≫ w₁) * (spMap (qD 1) ≫ w₂)`. Establish `hP : spMap (jetAug R (Fin 2) 1) ≫ P = 1`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp, jetAug_comp_qD, jetAug_comp_qD, h₁, h₂, _root_.mul_one]`. Take `⟨ψ, ⟨hψ1, hψ2⟩, -⟩` from `hx.2.2 _ (jetAug R (Fin 2) 1) 1 (ker_jetAug_pow (Fin 2) 1) P hP`. Establish `key : ∀ l : R × R →ₗ[R] R, spMap (rD l) ≫ P = spMap (dualLift (fun j => (rD l (ψ (zR 1 j))).snd)) ≫ x 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `l`. Rewrite using `[hψ2, ← Category.assoc, spMap_comp, eq_dualLift ((rD l).comp ψ) (by rw [← AlgHom.comp_assoc, fstD_comp_rD, hψ1])]`. Both sides reduce to the same expression. Establish `hval : ∀ l : R × R →ₗ[R] R, spMap (rD l) ≫ P = (spMap (scaleD (l ((1 : R), (0 : R)))) ≫ w₁) * (spMap (scaleD (l ((0 : R), (1 : R)))) ≫ w₂)`. Introduce `l`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp, restrictDiag_comp_incl_fst, restrictDiag_comp_incl_snd]`. Establish `e1 : w₁ = spMap (dualLift (fun j => (rD (LinearMap.fst R R R) (ψ (zR 1 j))).snd)) ≫ x 1`. Rewrite using `[← key, hval]`. Simplify using `only [LinearMap.fst_apply, LinearMap.snd_apply]`. Rewrite using `[scaleD_one, spMap_id, Category.id_comp, spMap_scaleD_zero h₂, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : w₂ = spMap (dualLift (fun j => (rD (LinearMap.snd R R R) (ψ (zR 1 j))).snd)) ≫ x 1`. Rewrite using `[← key, hval]`. Simplify using `only [LinearMap.fst_apply, LinearMap.snd_apply]`. Rewrite using `[scaleD_one, spMap_id, Category.id_comp, spMap_scaleD_zero h₁, _root_.one_mul]`. Establish `e12 : w₁ * w₂ = spMap (dualLift (fun j => (rD (LinearMap.fst R R R + LinearMap.snd R R R) (ψ (zR 1 j))).snd)) ≫ x 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← key, hval]`. Simplify using `only [LinearMap.add_apply, LinearMap.fst_apply, LinearMap.snd_apply, add_zero, zero_add]`. Rewrite using `[scaleD_one, spMap_id, Category.id_comp, Category.id_comp]`. Rewrite using `[tcoord_eq hx _ _ _ e12, tcoord_eq hx _ _ _ e1, tcoord_eq hx _ _ _ e2]`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `snd_rD_add _`.
+A detailed English derivation is pending.
 -/
 theorem tcoord_mul {w₁ w₂ : sp (R₀ := R) (DualNumber R) ⟶ G} (h₁ : IsTan w₁) (h₂ : IsTan w₂) :
     tcoord hx (w₁ * w₂) (isTan_mul h₁ h₂) = tcoord hx w₁ h₁ + tcoord hx w₂ h₂ := by
@@ -215,9 +215,9 @@ theorem tcoord_mul {w₁ w₂ : sp (R₀ := R) (DualNumber R) ⟶ G} (h₁ : IsT
   exact snd_rD_add _
 
 /- English proof (translation)
-Apply `tcoord_eq` to reduce the goal to its premises. Use `conv_lhs => rw [tcoord_spec hx w h]`. Rewrite using `[← Category.assoc, spMap_comp]`. Use `congr 2`. Apply `jet_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[AlgHom.comp_apply, dualLift_zR, dualLift_zR, TrivSqZeroExt.map_inr, LinearMap.smul_apply, LinearMap.id_apply, Pi.smul_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tcoord_scale (c : R) {w : sp (R₀ := R) (DualNumber R) ⟶ G} (h : IsTan w) :
     tcoord hx (spMap (scaleD c) ≫ w) (isTan_scale c h) = c • tcoord hx w h := by
@@ -231,7 +231,7 @@ theorem tcoord_scale (c : R) {w : sp (R₀ := R) (DualNumber R) ⟶ G} (h : IsTa
     LinearMap.id_apply, Pi.smul_apply]
 
 /- English proof (translation)
-Apply `tcoord_eq` to reduce the goal to its premises. Establish `: dualLift (R` using `R) (0 : Fin n → R) = (Algebra.ofId R (DualNumber R)).comp (jetAug R (Fin n) 1) := jet_ext fun j => by`. Rewrite using `[dualLift_zR, AlgHom.comp_apply, jetAug_zR, map_zero, Pi.zero_apply, TrivSqZeroExt.inr_zero]`. Rewrite using `[this, ← spMap_comp, Category.assoc, spMap_jetAug_alt hx, comp_one']`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tcoord_one : tcoord hx (1 : sp (R₀ := R) (DualNumber R) ⟶ G) isTan_one = 0 := by
   apply tcoord_eq

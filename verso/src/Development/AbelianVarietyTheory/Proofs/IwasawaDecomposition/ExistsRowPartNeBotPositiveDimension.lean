@@ -47,19 +47,17 @@ variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `c hc`. Establish `hLI` using `GlobalTheory.Chain.LiftConv.liftInteg_of_cuspRapidDecay hCusp D`. Establish `hSch : SchurAll R.toRealDat` using `GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCusp R.toRealDat`. Establish `hTw` using `GlobalTheory.VmTwo.twoSided_goodInert hHowe R F hLI hCW hEx hSch`. Establish `hHk` using `(GlobalTheory.Hk3.inertJunk_iff A3).1 hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Tc, hTc, hx⟩` from `GlobalTheory.T.operatorFamily_adjointLift_single_eigensystem R F hLI hOk hCW hEx hSch hTw hHk`. Take `⟨x, hxc⟩` from `hx c`. Take `⟨w, hw, hw0⟩` from `(Submodule.ne_bot_iff _).1 hc`. Establish `hne : LinearMap.adjoint (R.Th A3.A.μ0) w ≠ 0` using `fun h => hw0 (hUp A3.A.μ0 (h.trans (map_zero _).symm))`. Set `b` to `(A3.A.fam.R A3.A.μ0).S.basis`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `j` to `R.jX A3.A.μ0`. Set `op` to `(A3.rowI A3.A.μ0).opAll`. Establish `hmodels` using `hCW.base.models`. Establish `hjX` using `GlobalTheory.OneFormTest.model_jX R.toRealDat hmodels.HX hmodels.jX A3.A.μ0`. Establish `hExt` using `(GlobalTheory.classPres_extMem_extBij_isom _ _ _ _ _ _ _ _ _ _ (R.B.R A3.A.μ0).pres).2.1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ f, (R.HX A3.A.μ0).e (R.jX A3.A.μ0 f) = (R.B.R A3.A.μ0).pres.extL f` using `hmodels.jX A3.A.μ0`. Establish `hli0 : LinearIndependent ℂ (fun k => (R.B.R A3.A.μ0).pres.extL ((A3.A.MtildeCSD A3.A.μ0).basis k))` using `hExt.1`. Establish `hli : LinearIndependent ℂ (fun k => j (b k))`. Use `LinearIndependent.of_comp (R.HX A3.A.μ0).e ?_` and prove the remaining obligations. Establish `h3 : ((R.HX A3.A.μ0).e ∘ fun k => j (b k)) = fun k => (R.B.R A3.A.μ0).pres.extL ((A3.A.MtildeCSD A3.A.μ0).basis k)` using `funext fun k => h2 _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `rewrite [h3]`. Conclude with `hli0`. Establish `hcomm : ∀ i f, j (op i f) = Tc i (j f)` using `hTc`. Establish `hpc : Formalism.L2.Col.PairComm op` using `(hOk.what₂ A3.A.μ0).comm`. Establish `hso : Formalism.L2.Col.SplitOver op`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `(i | k)`. Conclude with `(hOk.ok2.what₂ A3.A.μ0).split i`. Conclude with `(hOk.what₂ A3.A.μ0).split k`. Establish `hZ` using `(GlobalTheory.T.range_adjoint_le_span_jX_image_ZHg R F hLI hOk hCW hEx hSch hPG).1 A3.A.μ0`. Take `⟨s', hxs, heig, f, hf0, hfZ, hfE⟩` from `GlobalTheory.Div.exists_sys_of_mem_span D.what₂.embLL j b op Tc ((A3.A.fam.R A3.A.μ0).ZHg A3.A.X) hli hjX.2.2 hcomm hpc hso x (LinearMap.adjoint (R.Th A3.A.μ0) w) (hxc w hw) hne (hZ ⟨w, rfl⟩)`.
-
-Take `⟨p, hp⟩` from `GlobalTheory.Div.exists_ix_of_mem_eigAt A3 hOk s' f hf0 hfZ hfE`. Conclude with `⟨p, hc, GlobalTheory.Div.map_le_span_image j (LinearMap.adjoint (R.Th A3.A.μ0)) (R.EEc c) (Formalism.L2.Col.eigAt op s') ((A3.rowI A3.A.μ0).inertTypeEigenspaceSum p.1) (fun v hv => heig.le (Formalism.L2.Col.mem_eigAt_of_forall_apply (hxc v hv))) (Formalism.L2.Col.eigAt_le_eigSum …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem carries_of_upInj (hCusp : GlobalTheory.Published.CuspRapidDecay) (hHowe : HoweUnram) (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}
     (hOk : A3.fam3.Ok3 s) (hCW : R.WeakCharacterisation F) (hEx : R.toRealDat.ExAt) (hJ : GlobalTheory.Hk3.InertJunk A3) (hPG : R.PGEquiv F)
@@ -103,15 +101,13 @@ theorem carries_of_upInj (hCusp : GlobalTheory.Published.CuspRapidDecay) (hHowe 
     (fun v hv => heig.le (Formalism.L2.Col.mem_eigAt_of_forall_apply (hxc v hv))) (Formalism.L2.Col.eigAt_le_eigSum hp)⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hc0 : ∀ c, R.EEc c = ⊥`. Introduce `c`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `hcar c h`. Establish `hle : R.EEc c ≤ R.EEp3 p`. Unfold `RealDat3.EEp3`. Conclude with `le_iSup₂_of_le (f := fun c (_ : R.Carries p c) => R.EEc c) c hp le_rfl`. Rewrite `hle` using `[hne p, le_bot_iff]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h hle`. Take `⟨hCore, hSF, hEq, -⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hC hEx`. Take `⟨h, -, -, htop, -⟩` from `GlobalTheory.Hk3.OpsRows.exists_opsE R.toRealDat F.lv2 hCore (GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCusp R.toRealDat) R.SF hSF`. Establish `hbot : (⊤ : Submodule ℂ R.HE.H) = ⊥`. Rewrite using `[← htop]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [← hEq, hc0, iSup_bot]`. Establish `hzero : ∀ x : R.HE.H, x = 0` using `fun x => by`. Establish `hx : x ∈ (⊤ : Submodule ℂ R.HE.H)` using `Submodule.mem_top`. Rewrite `hx` using `[hbot]`. Conclude with `(Submodule.mem_bot ℂ).1 hx`.
-
-Take `⟨u, hu0, -⟩` from `GlobalTheory.RowsPosRed.exists_row R F hC.base.models hN false`. Conclude with `hu0 (hzero (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) u))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_rowPart_ne_bot_positiveDimension (hCusp : GlobalTheory.Published.CuspRapidDecay) (R : RealDat3 D A3 Ks) (F : Face3 D A3)
     (hC : R.WeakCharacterisation F) (hEx : R.toRealDat.ExAt) (hcar : ∀ c, R.EEc c ≠ ⊥ → ∃ p, R.Carries p c) (hN : RowsNe R.toRealDat F.lv2) :
@@ -141,7 +137,7 @@ theorem exists_rowPart_ne_bot_positiveDimension (hCusp : GlobalTheory.Published.
   exact hu0 (hzero (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) u))
 
 /- English proof (translation)
-Establish `hSchur` using `GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCusp R.toRealDat`. Establish `hSpan` using `GlobalTheory.T.cuspidal_multiplicity_carriers R F hOk hC hEx hSchur hGS hCD hME hCar`. Establish `hW` using `GlobalTheory.T.principalFormsSubspace_eq_good_forms R F hOk hC hEx hSpan hScal hA hLT hBlock`. Introduce `j`. Conclude with `(GlobalTheory.T.range_goodProjector_baseLevel_twistedModel R F hOk hC hEx hU j).trans (congrArg (· ⊓ _) (hW j).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem levW_of_span (hCusp : GlobalTheory.Published.CuspRapidDecay) (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}
     (hOk : A3.fam3.Ok3 s) (hC : R.WeakCharacterisation F) (hEx : R.toRealDat.ExAt) (hGS : GoodStable A3.A.X) (hCD : GlobalTheory.CuspMult.CuspDecomp D)
@@ -155,15 +151,13 @@ theorem levW_of_span (hCusp : GlobalTheory.Published.CuspRapidDecay) (R : RealDa
   exact (GlobalTheory.T.range_goodProjector_baseLevel_twistedModel R F hOk hC hEx hU j).trans (congrArg (· ⊓ _) (hW j).symm)
 
 /- English proof (translation)
-Establish `hS : SchurAll R.toRealDat` using `GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCRD R.toRealDat`. Take `⟨hCore, hSF, -, hWc⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hW hEx`. Establish `hirr : ∀ χ ∈ A3.A.X, IsAbsIrrChar χ` using `hOk.ok2.irr`. Establish `hspan` using `GlobalTheory.T.cuspidal_multiplicity_carriers R F hOk hW hEx hS hGS hCD hME hcar`. Establish `horth` using `GlobalTheory.T.W_forms_parts_of_distinct_types_orthogonal R F hOk hW hEx hS hOkH hkap hB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Establish `htype` using `GlobalTheory.T.range_goodProjector_baseLevel_twistedModel R F hOk hW hEx hU j`. Use `⟨fun p q hpq w hw w' hw' => ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.SumW.inner_tw_eq_zero (E := (R.HW j (sg0 D A3.A)).H) (twAt D.what₂.embLL A3.A.v0) w w' (horth j p q hpq _ hw.1 _ hw'.1)`. Take `⟨-, -, -, -, -, hst, -⟩` from `GlobalTheory.T.sphericalOperators_forms_on_rank_space_normal R.toRealDat F.lv2 hCore hS hirr R.SF hSF j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hstab : ∀ p g, (R.Wp3 j p).map (R.gW j (sg0 D A3.A) g) ≤ R.Wp3 j p`. Introduce `p g`. Unfold `RealDat3.Wp3`. Simplify using `only [Submodule.map_iSup]`. Conclude with `iSup₂_mono fun c _ => by rw [hWc]; exact hst c g`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hstabX : ∀ p g, ((R.toCx3 F).Wp j p).map (R.gWx F j g) ≤ (R.toCx3 F).Wp j p`. Introduce and unpack `p g _ ⟨y, hy, rfl⟩`. Conclude with `hstab p g (Submodule.mem_map_of_mem hy)`. Establish `hsumX : (⨆ p, (R.toCx3 F).Wp j p) = Tw.sub (twAt D.what₂.embLL A3.A.v0) (LinearMap.range (eH R.toRealDat j))` using `(GlobalTheory.SumW.tw_sub_iSup (twAt D.what₂.embLL A3.A.v0) (R.Wp3 j)).symm.trans (congrArg (Tw.sub (twAt D.what₂.embLL A3.A.v0)) (hspan j))`. Rewrite using `[htype]`.
-
-Unfold `typeSubspace`. Conclude with `GlobalTheory.SumW.iSup_inf_inf_typeSp _ (R.gWx F j) F.P0 F.ψ0⁻¹ ((R.toCx3 F).Wp j) _ hstabX hsumX`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem partsW_of_carried (hCRD : GlobalTheory.Published.CuspRapidDecay) (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}
     (hOk : A3.fam3.Ok3 s) (hW : R.WeakCharacterisation F) (hEx : R.toRealDat.ExAt) (hGS : GoodStable A3.A.X) (hCD : GlobalTheory.CuspMult.CuspDecomp D)
@@ -202,15 +196,15 @@ end Real
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨x₀, hx₀⟩` from `GlobalTheory.LiftRows.goodForms_definite_exist (GlobalTheory.DefFree.goodVectorsDefinite P.q12) eps heps`. Use `⟨x₀, ?_⟩` and prove the remaining obligations. Introduce `D G _ _ Pl0 I0 T0 A3 T _ R F κ v₀ O L hLe hLx hSz ⟨pV⟩ hT hG hM hInt`. Take `⟨hGiven, hGS, hCD, -, hTR, hUp, -⟩` from `GlobalTheory.T.multiplicity_one_gives_lift_data P R F hT hM`. Take `⟨hOk, hGU, hGE, hBlk, hA, hB⟩` from `GlobalTheory.T.multiplicity_one_gives_unit_equiv P R F hT hM`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hLT, hLTB, hML⟩` from `GlobalTheory.T.liftTests_modularLattice_of_coreCompatibility T R F κ v₀ O hT hG`. Establish `hU : R.toRealDat.LUnif` using `hG.unif`. Establish `hJ` using `(GlobalTheory.Hk3.inertJunk_iff A3).1 hT.junk`. Establish `hcore` using `GlobalTheory.CoreOfWeak.core_of_weak R F hT.char hT.ex`. Establish `hSch : SchurAll R.toRealDat` using `GlobalTheory.Hk3.schurAll_of_cuspRapidDecay P.q2 R.toRealDat`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRows : RowsNe R.toRealDat F.lv2` using `GlobalTheory.RowsNeProof.rowsNe R.toRealDat F.lv2 1 hT.ok.ok2 hcore.1 hSch R.SF hcore.2.1 hTR (hx₀ D L pV hLe hLx hSz R.toRealDat F.lv2 hGiven)`. Establish `hCar` using `carries_of_upInj P.q2 P.q1 R F hT.ok hT.char hT.ex hT.junk hGE hUp`. Take `⟨hScal, hMatch, -, -⟩` from `GlobalTheory.T.thetaLift_scalarIdentity_matching_adjointInjective P.q5 P.q3 P.q4 P.q6 P.q2 P.q1 P.q7 P.q8 (GlobalTheory.Published.siegelEisensteinContinuation_of_doublingMethod P.q9) P.q10 P.q11 R.toRealDat F.lv2 hGiven hT.ccK hT.char.allPl (GlobalTheory.FixAllGood.fixAll_of_good …`. Establish `hK` using `GlobalTheory.PosAtBase.pos_at_base R F hT.ok hT.char hT.ex hScal hMatch (GlobalTheory.CarriesOne.parts_eq_of_carries P.q1 P.q2 R F hT.ok hT.char hT.ex hJ hUp) (exists_rowPart_ne_bot_positiveDimension P.q2 R F hT.char hT.ex hCar hRows)`. Establish `hLev` using `levW_of_span P.q2 R F hT.ok hT.char hT.ex hGS hCD hM hBlk hCar hK hA hLT hU`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW` using `partsW_of_carried P.q2 R F hT.ok hT.char hT.ex hGS hCD hM hOk.1 hCar hK hB hU`. Take `⟨-, hH, hTS, -⟩` from `GlobalTheory.Hk3.HeckeClose.heckeClose P.q1 P.q3 P.q2 R F 1 hT.ok hT.char hT.ex hT.junk hT.ser hT.trSem hU hGU hGE hLev hA hB hK hW`. Establish `hOnto` using `GlobalTheory.T.partial_L_function_of_hypotheses P.q5 P.q4 P.q2 P.q1 P.q7 P.q9 P.q10 P.q11 hRSW hHL R F hT.ok hT.char hT.ex hT.host hT.params hT.ccK hT.guard hT.types hOk.2 hGE hU`. Take `⟨fw, hbar⟩` from `hG.fw`. Establish `hConj : R.toRealDat.PConj` using `GlobalTheory.ConjNorm.pConj T R.toRealDat F.lv2 κ v₀ hcore.1 hSch fw hbar hU`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLW : R.toRealDat.LLevelW F.lv2` using `GlobalTheory.LevelForms.levelW_of_irr _ _ hT.ok.ok2.irr hU hT.char.base.models.HW`. Conclude with `⟨hOk.1, hOk.2, hH, hGU, hGE, hBlk, hLT, hLTB, hOnto, hU, hML, hLev, hA, hW, ⟨hT.ex, hConj, hLW, hInt⟩, hT.ok, hTS⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem holdsL_of_ties (P : Hypotheses3) (hRSW : GlobalTheory.Published.RegularisedSiegelWeilFirstTerm) (hHL : GlobalTheory.Published.HeckeLPartialContinuation)
     (eps : ℝ) (heps : 0 < eps) : ∃ x₀ : ℝ, ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type}

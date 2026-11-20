@@ -5,19 +5,17 @@ open scoped NumberField
 namespace Formalism.IrreducibleCountingLemmas.Z
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ h2 P _ hP hf he`. Use `set p : Ideal (𝓞 F) := P.under (𝓞 F) with hp`. Establish `hfin : (p.primesOver (𝓞 E)).Finite` using `Algebra.QuasiFinite.finite_primesOver p`. Set `_ : Fintype (p.primesOver (𝓞 E))` to `hfin.fintype`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank p (𝓞 E)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrank : Module.finrank (𝓞 F) (𝓞 E) = 2`. Rewrite using `[← h2]`. Conclude with `(IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E).symm`. Rewrite `hsum` using `[hrank]`. Establish `hf1 : P.inertiaDeg (𝓞 F) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Ideal.inertiaDeg_tower (R := ℤ) p P` as an intermediate fact. Rewrite `this` using `[hf]`. Conclude with `Nat.eq_one_of_mul_eq_one_left this.symm`. Establish `hPmem : P ∈ p.primesOver (𝓞 E)` using `⟨inferInstance, ⟨rfl⟩⟩`. Establish `hpos : ∀ q : p.primesOver (𝓞 E), 1 ≤ q.1.ramificationIdx (𝓞 F) * q.1.inertiaDeg (𝓞 F)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `q`. Establish `: q.1.IsPrime` using `q.2.1`. Conclude with `Nat.mul_pos (Ideal.ramificationIdx_pos q.1 (𝓞 F)) (Ideal.inertiaDeg_pos q.1 (𝓞 F))`. Rewrite `hsum` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ (⟨P, hPmem⟩ : p.primesOver (𝓞 E)))]`. Simplify using `only [he, hf1, mul_one] at hsum`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hrest : ∑ q ∈ Finset.univ.erase (⟨P, hPmem⟩ : p.primesOver (𝓞 E)), q.1.ramificationIdx (𝓞 F) * q.1.inertiaDeg (𝓞 F) = 1` using `by omega`. Establish `hle : (Finset.univ.erase (⟨P, hPmem⟩ : p.primesOver (𝓞 E))).card ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hge : (Finset.univ.erase (⟨P, hPmem⟩ : p.primesOver (𝓞 E))).card ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[Finset.card_eq_zero]`. Rewrite `hrest` using `[h0]`. Simplify using `at hrest`. Rewrite `hle`, `hge` using `[Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ]`. Establish `key : Fintype.card { x // x ∈ p.primesOver (𝓞 E) } = 2` using `by omega`.
-
-Rewrite using `[← Nat.card_coe_set_eq, Nat.card_eq_fintype_card]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_one_split : DegreeOneSplit := by
   intro F E _ _ _ _ _ h2 P _ hP hf he

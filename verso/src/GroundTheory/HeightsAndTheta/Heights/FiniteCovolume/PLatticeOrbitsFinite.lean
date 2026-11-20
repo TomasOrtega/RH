@@ -15,7 +15,7 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Use `⟨finrank_span_singleton hx, ?_⟩` and prove the remaining obligations. Introduce `a ha b hb`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 ha`. Take `⟨d, rfl⟩` from `Submodule.mem_span_singleton.1 hb`. Simplify using `only [map_smul, LinearMap.map_smulₛₗ₂, hxx, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem isIsotropicLine_span_singleton (h : HermitianForm F E W) {x : W} (hx : x ≠ 0)
     (hxx : h.toSesq x x = 0) : IsIsotropicLine h (Submodule.span E {x}) := by
@@ -26,11 +26,11 @@ theorem isIsotropicLine_span_singleton (h : HermitianForm F E W) {x : W} (hx : x
   simp only [map_smul, LinearMap.map_smulₛₗ₂, hxx, smul_zero]
 
 /- English proof (translation)
-Introduce `D`. Take `⟨M⟩` from `h₂`. Take `⟨S₁, hS₁, K, -, hK⟩` from `h₁ M D 1 one_pos`. Take `⟨S₂, hS₂, hP⟩` from `h₄ D`. Use `⟨S₁ ∪ Prod.fst '' S₂, hS₁.union (hS₂.image _), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `La hLa`. Distinguish the cases in `hshort : ∃ x : W, x ∈ La ∧ x ≠ 0 ∧ M.len (invApply (1 : archUnitary h v) (vecAt v x)) < 1`. Take `⟨x, hxL, hx0, hxlt⟩` from `hshort`. Establish `hxx : h.toSesq x x = 0` using `h₃ M D La 1 x hLa hxL hxlt`. Take `⟨p, hp, g, hg, -⟩` from `hP La (Submodule.span E {x}) hLa (isIsotropicLine_span_singleton h hx0 hxx)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨p.1, Or.inr ⟨p, hp, rfl⟩, g, hg⟩`. Use `push Not at hshort`. Take `⟨γ, hγ, -⟩` from `hK La 1 hLa hshort`. Conclude with `⟨γ • La, Or.inl hγ, γ⁻¹, inv_smul_smul γ La⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem LatticeOrbitsFinite.proof (h : HermitianForm F E W) (v : Basis ι E W) [FiniteDimensional E W]
     (h₁ : MahlerCompactness.Statement h v) (h₂ : MajorantExists.Statement h v)

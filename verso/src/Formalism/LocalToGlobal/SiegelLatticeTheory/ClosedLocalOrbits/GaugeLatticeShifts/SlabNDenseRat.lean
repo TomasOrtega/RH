@@ -15,17 +15,17 @@ section CayInv
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {K : Type*} [CommRing K] [Invertible (2 : K)]
 
 /- English proof (translation)
-Rewrite using `[← add_smul, invOf_two_add_invOf_two, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem half_add_half' (M : Matrix ι ι K) : (⅟2 : K) • M + (⅟2 : K) • M = M := by
   rw [← add_smul, invOf_two_add_invOf_two, one_smul]
 
 /- English proof (translation)
-Use `set Y : Matrix ι ι K := (⅟2 : K) • Z with hY`. Use `set G := geo N Y with hG`. Establish `hBG : (1 - Y) * G = 1` using `by rw [hG, geo, mul_neg_geom_sum, hN, sub_zero]`. Establish `e1 : G = 1 + Y * G`. Use `hBG` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Matrix.sub_mul, Matrix.one_mul]`. Rewrite using `[← this]`. Normalize the expressions using the abelian group laws. Establish `e2 : Z = Y + Y` using `by rw [hY, half_add_half']`. Establish `e3 : cay N Z = 1 + Z * G` using `rfl`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e3, Matrix.add_mul, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem cay_eq {N : ℕ} {Z : Matrix ι ι K} (hN : ((⅟2 : K) • Z) ^ N = 0) :
     cay N Z = (1 + (⅟2 : K) • Z) * geo N ((⅟2 : K) • Z) := by
@@ -43,11 +43,11 @@ theorem cay_eq {N : ℕ} {Z : Matrix ι ι K} (hN : ((⅟2 : K) • Z) ^ N = 0) 
     _ = G + Y * G := by rw [← e1]
 
 /- English proof (translation)
-Establish `hN' : ((⅟2 : K) • -Z) ^ N = 0` using `by rw [smul_neg, neg_pow, hN, mul_zero]`. Rewrite using `[cay_eq hN, cay_eq hN', smul_neg]`. Use `set Y : Matrix ι ι K := (⅟2 : K) • Z with hY`. Establish `h1 : geo N (-Y) * (1 + Y) = 1`. Use `geom_sum_mul_neg (-Y) N` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[sub_neg_eq_add]`. Rewrite using `[geo, this, neg_pow, hN, mul_zero, sub_zero]`. Establish `h2 : (1 - Y) * geo N Y = 1` using `by rw [geo, mul_neg_geom_sum, hN, sub_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h1, Matrix.mul_one, h2]`.
+A detailed English derivation is pending.
 -/
 theorem cay_neg_mul {N : ℕ} {Z : Matrix ι ι K} (hN : ((⅟2 : K) • Z) ^ N = 0) : cay N (-Z) * cay N Z = 1 := by
   have hN' : ((⅟2 : K) • -Z) ^ N = 0 := by rw [smul_neg, neg_pow, hN, mul_zero]
@@ -82,12 +82,12 @@ variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 abbrev N0 (D : D7) : ℕ := 2 * D.R.rS + 2
 
 /- English proof (translation)
-Use `show lvk X k < 2 * D.R.rS + 2`. Use `lvk_le X k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lvk_lt (k : Kap X) : lvk X k < N0 D := by show lvk X k < 2 * D.R.rS + 2; have := lvk_le X k; omega
 
 /- English proof (translation)
-The claim follows from `pow_eq_zero_of_inPat hk (lvk_lt X) (inPat_smul c hY)`.
+A detailed English derivation is pending.
 -/
 theorem nil_of_pat {K : Type*} [CommRing K] {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) K}
     (hY : InPat (lvk X) k Y) (c : K) : (c • Y) ^ N0 D = 0 :=
@@ -97,7 +97,7 @@ def gE (Y : Matrix (Kap X) (Kap X) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n)
   Bm X * cay (N0 D) Y * Bm' X
 
 /- English proof (translation)
-Unfold `gE`. Establish `e : Bm X * cay (N0 D) (-Y) * Bm' X * (Bm X * cay (N0 D) Y * Bm' X) = Bm X * (cay (N0 D) (-Y) * ((Bm' X * Bm X) * cay (N0 D) Y)) * Bm' X` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[e, Bm'_mul_Bm, Matrix.one_mul, cay_neg_mul (nil_of_pat X hk hY _), Matrix.mul_one, Bm_mul_Bm']`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gE_mul {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y) :
     gE X (-Y) * gE X Y = 1 := by
@@ -107,7 +107,7 @@ theorem gE_mul {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY
   rw [e, Bm'_mul_Bm, Matrix.one_mul, cay_neg_mul (nil_of_pat X hk hY _), Matrix.mul_one, Bm_mul_Bm']
 
 /- English proof (translation)
-Use `gE_mul X hk (inPat_neg hY)` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gE_mul' {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y) :
     gE X Y * gE X (-Y) = 1 := by
@@ -115,7 +115,7 @@ theorem gE_mul' {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (h
   rwa [neg_neg] at this
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, conjTranspose_apply, Matrix.transpose_apply, Matrix.map_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cT_eq {m p : Type} (M : Matrix m p X.B.I.E) : Formalism.UG.cT (starRingEnd X.B.I.E) M = Mᴴ := by
   ext i j
@@ -123,9 +123,9 @@ theorem cT_eq {m p : Type} (M : Matrix m p X.B.I.E) : Formalism.UG.cT (starRingE
   rfl
 
 /- English proof (translation)
-Establish `hc` using `cay_unitary hYs (nil_of_pat X hk hY (⅟2 : X.B.I.E))`. Establish `hh : (Bm' X)ᴴ * (Bm X)ᴴ = 1` using `by rw [← conjTranspose_mul, Bm_mul_Bm', conjTranspose_one]`. Establish `hJB` using `JB_eq X`. Unfold `gE`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (Bm' X)ᴴ * (Bm X)ᴴ * X.B.I.J * (Bm X * Bm' X) := by`. Rewrite using `[← hJB, hc, hJB]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = X.B.I.J := by rw [hh, Bm_mul_Bm', Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gE_unitary {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y)
     (hYs : Yᴴ * JB X = -(JB X * Y)) : (gE X Y)ᴴ * X.B.I.J * gE X Y = X.B.I.J := by
@@ -145,7 +145,7 @@ def gGL {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPa
   ⟨gE X Y, gE X (-Y), gE_mul' X hk hY, gE_mul X hk hY⟩
 
 /- English proof (translation)
-Use `show Formalism.UG.cT (starRingEnd X.B.I.E) (gE X Y) * X.B.I.J * gE X Y = X.B.I.J`. Rewrite using `[cT_eq]`. Conclude with `gE_unitary X hk hY hYs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gGL_mem {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y)
     (hYs : Yᴴ * JB X = -(JB X * Y)) : gGL X hk hY ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J := by
@@ -154,12 +154,12 @@ theorem gGL_mem {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (h
   exact gE_unitary X hk hY hYs
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem sig_eq : (X.B.I.cm.sig : X.B.I.E →+* X.B.I.E) = starRingEnd X.B.I.E := RingHom.ext fun _ => rfl
 
 /- English proof (translation)
-Unfold `gE Bv Bv'`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cay_map]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gE_real (v : InfinitePlace X.B.I.F) (Y : Matrix (Kap X) (Kap X) X.B.I.E) :
     (X.B.I.P v)⁻¹ * (gE X Y).map (X.B.I.φ v) * X.B.I.P v =
@@ -169,7 +169,7 @@ theorem gE_real (v : InfinitePlace X.B.I.F) (Y : Matrix (Kap X) (Kap X) X.B.I.E)
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[JBv, map_conjTranspose, ← Matrix.map_mul, hYs, ← Matrix.map_mul, Matrix.map_neg]`. Conclude with `fun a => map_neg _ a`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem skew_map (v : InfinitePlace X.B.I.F) {Y : Matrix (Kap X) (Kap X) X.B.I.E}
     (hYs : Yᴴ * JB X = -(JB X * Y)) :
@@ -178,9 +178,9 @@ theorem skew_map (v : InfinitePlace X.B.I.F) {Y : Matrix (Kap X) (Kap X) X.B.I.E
   exact fun a => map_neg _ a
 
 /- English proof (translation)
-Rewrite using `[gE_real]`. Unfold `Formalism.REAL.inUJ`. Establish `hc` using `cay_unitary (skew_map X v hYs) (nil_of_pat X hk (inPat_map (X.B.I.φ v) hY) (⅟2 : ℂ))`. Establish `hh : (Bv' X v)ᴴ * (Bv X v)ᴴ = 1` using `by rw [← conjTranspose_mul, Bv_mul_Bv', conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (X.B.I.ε v) := by rw [hh, Bv_mul_Bv', Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inUJ_real {k : ℕ} (hk : 1 ≤ k) (v : InfinitePlace X.B.I.F) {Y : Matrix (Kap X) (Kap X) X.B.I.E}
     (hY : InPat (lvk X) k Y) (hYs : Yᴴ * JB X = -(JB X * Y)) :
@@ -205,14 +205,14 @@ def gA {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat
       ⟨gGL X hk hY, by rw [sig_eq]; exact gGL_mem X hk hY hYs⟩)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨gGL X hk hY, gGL_mem X hk hY hYs, fun v => rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem gA_GF {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y)
     (hYs : Yᴴ * JB X = -(JB X * Y)) : gA X hk hY hYs ∈ X.B.I.GFset :=
   ⟨gGL X hk hY, gGL_mem X hk hY hYs, fun v => rfl, rfl⟩
 
 /- English proof (translation)
-Unfold `Mv`. Use `show Bv' X v * ((X.B.I.P v)⁻¹ * (gE X Y).map (X.B.I.φ v) * X.B.I.P v) * Bv X v = _`. Rewrite using `[gE_real]`. Simplify using `only [← Matrix.mul_assoc, Bv'_mul_Bv, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Bv'_mul_Bv, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Mv_gA {k : ℕ} (hk : 1 ≤ k) (v : InfinitePlace X.B.I.F) {Y : Matrix (Kap X) (Kap X) X.B.I.E}
     (hY : InPat (lvk X) k Y) (hYs : Yᴴ * JB X = -(JB X * Y)) :
@@ -224,9 +224,9 @@ theorem Mv_gA {k : ℕ} (hk : 1 ≤ k) (v : InfinitePlace X.B.I.F) {Y : Matrix (
   rw [Matrix.mul_assoc, Bv'_mul_Bv, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `v`. Apply `inN_of_pat X u v` to reduce the goal to its premises. Use `Mv_gA X hk v hY hYs` as an intermediate fact. Unfold `Mv at this`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inPat_mono hk (cay_sub_one _ (inPat_map (X.B.I.φ v) hY))`.
+A detailed English derivation is pending.
 -/
 theorem gA_ninf {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y)
     (hYs : Yᴴ * JB X = -(JB X * Y)) : (gA X hk hY hYs).1 ∈ X.NinfU u := by

@@ -11,7 +11,7 @@ open Formalism.GradedWeylDivisibility Formalism.L2.G.Model.TS Formalism.MainNoti
 def cN (K : Type) [CommRing K] {n : ℕ} (ν : Fin n → ℕ) : K := fockR (hw K le_rfl ν) (hw K le_rfl ν)
 
 /- English proof (translation)
-Take `⟨N, hN, h⟩` from `Top.hWNorm n n le_rfl ν`. Unfold `cN`. Rewrite using `[h K]`. Conclude with `hN.ne'` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cN_ne (K : Type) [Field K] [CharZero K] {n : ℕ} (ν : Fin n → ℕ) : cN K ν ≠ 0 := by
   obtain ⟨N, hN, h⟩ := Top.hWNorm n n le_rfl ν
@@ -20,7 +20,7 @@ theorem cN_ne (K : Type) [Field K] [CharZero K] {n : ℕ} (ν : Fin n → ℕ) :
   exact_mod_cast hN.ne'
 
 /- English proof (translation)
-Take `⟨N, _, h⟩` from `Top.hWNorm n n le_rfl ν`. Unfold `cN`. Rewrite using `[h K, h Kc, map_natCast]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_cN (K Kc : Type) [CommRing K] [CommRing Kc] (φ : K →+* Kc) {n : ℕ} (ν : Fin n → ℕ) : φ (cN K ν) = cN Kc ν := by
   obtain ⟨N, _, h⟩ := Top.hWNorm n n le_rfl ν
@@ -28,32 +28,32 @@ theorem map_cN (K Kc : Type) [CommRing K] [CommRing Kc] (φ : K →+* Kc) {n : �
   rw [h K, h Kc, map_natCast]
 
 /- English proof (translation)
-The claim follows from `(Top.fockRBilin σ R f f' g 0).1`.
+A detailed English derivation is pending.
 -/
 theorem fockR_add_left {σ R : Type} [CommRing R] (f f' g : MvPolynomial σ R) : fockR (f + f') g = fockR f g + fockR f' g :=
   (Top.fockRBilin σ R f f' g 0).1
 
 /- English proof (translation)
-The claim follows from `(Top.fockRBilin σ R f 0 g a).2.1`.
+A detailed English derivation is pending.
 -/
 theorem fockR_smul_left {σ R : Type} [CommRing R] (a : R) (f g : MvPolynomial σ R) : fockR (a • f) g = a * fockR f g :=
   (Top.fockRBilin σ R f 0 g a).2.1
 
 /- English proof (translation)
-The claim follows from `(Top.fockRBilin σ R f 0 g 0).2.2`.
+A detailed English derivation is pending.
 -/
 theorem fockR_comm {σ R : Type} [CommRing R] (f g : MvPolynomial σ R) : fockR f g = fockR g f :=
   (Top.fockRBilin σ R f 0 g 0).2.2
 
 /- English proof (translation)
-Use `fockR_smul_left (0 : R) (0 : MvPolynomial σ R) g` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fockR_zero_left {σ R : Type} [CommRing R] (g : MvPolynomial σ R) : fockR 0 g = 0 := by
   have := fockR_smul_left (0 : R) (0 : MvPolynomial σ R) g
   rwa [zero_smul, zero_mul] at this
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [fockR_zero_left]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, fockR_add_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem fockR_sum_left {σ R ι : Type} [CommRing R] (s : Finset ι) (f : ι → MvPolynomial σ R) (g : MvPolynomial σ R) :
     fockR (∑ i ∈ s, f i) g = ∑ i ∈ s, fockR (f i) g := by
@@ -68,16 +68,16 @@ def fockL {σ R : Type} [CommRing R] (g : MvPolynomial σ R) : MvPolynomial σ R
   map_smul' a f := by rw [fockR_smul_left]; rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (fun φ : MvPolynomial (Fin k × Fin n) R →ₐ[R] MvPolynomial (Fin k × Fin n) R => φ F) (rowActMul R k n g h)`.
+A detailed English derivation is pending.
 -/
 theorem rowAct_rowAct {R : Type} [CommRing R] {k n : ℕ} (g h : Matrix (Fin k) (Fin k) R) (F : MvPolynomial (Fin k × Fin n) R) :
     rowAct R g (rowAct R h F) = rowAct R (h * g) F :=
   congrArg (fun φ : MvPolynomial (Fin k × Fin n) R →ₐ[R] MvPolynomial (Fin k × Fin n) R => φ F) (rowActMul R k n g h)
 
 /- English proof (translation)
-Establish `: rowAct R (n` using `n) (1 : Matrix (Fin k) (Fin k) R) = AlgHom.id R _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Unfold `rowAct`. Rewrite using `[aeval_X]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.one_apply, ite_mul]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rowAct_one {R : Type} [CommRing R] {k n : ℕ} (F : MvPolynomial (Fin k × Fin n) R) : rowAct R (1 : Matrix (Fin k) (Fin k) R) F = F := by
   have : rowAct R (n := n) (1 : Matrix (Fin k) (Fin k) R) = AlgHom.id R _ := by
@@ -89,7 +89,7 @@ theorem rowAct_one {R : Type} [CommRing R] {k n : ℕ} (F : MvPolynomial (Fin k 
   rw [this]; rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_deltaL' {O K : Type} [CommRing O] [Field K] [Algebra O K] {n : ℕ} {ν : Fin n → ℕ} {g : Matrix (Fin n) (Fin n) K}
     {F : MvPolynomial (Fin n × Fin n) K} :
@@ -113,11 +113,11 @@ def Ei' (i : ∀ b, ι b) : MvPolynomial τ K := ∏ b, rename (em b) (rowAct K 
 
 include hh in
 /- English proof (translation)
-Establish `hh' : ∀ b, h b * hi b = 1` using `fun b => mul_eq_one_comm.1 (hh b)`. Use `prod_span (R := K) (fun b => Set.range fun i : ι b => rename (em b) (rowAct K (hi b) (e b i))) _ ?_ _ ?_` and prove the remaining obligations. Introduce `f hf choose i hi' using hf`. Use `Submodule.subset_span ⟨i, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun b _ => hi' b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Establish `h2 : rowAct K (h b) (F b) ∈ Submodule.span K (Set.range (e b))` using `hsp b (dualWeylRowStable K n n (ν b) (h b) (F b) (hF b))`. Establish `h3 : F b = rowAct K (hi b) (rowAct K (h b) (F b))` using `by rw [rowAct_rowAct, hh' b, rowAct_one]`. Rewrite using `[h3]`. Establish `h4` using `Submodule.mem_map_of_mem (f := ((rename (em b) : MvPolynomial (Fin n × Fin n) K →ₐ[K] MvPolynomial τ K).comp (rowAct K (hi b))).toLinearMap) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem tgt1 (hsp : ∀ b, dualWeyl K n n (ν b) ≤ Submodule.span K (Set.range (e b)))
     (F : B → MvPolynomial (Fin n × Fin n) K) (hF : ∀ b, F b ∈ dualWeyl K n n (ν b)) :
@@ -139,9 +139,9 @@ theorem tgt1 (hsp : ∀ b, dualWeyl K n n (ν b) ≤ Submodule.span K (Set.range
     exact h4
 
 /- English proof (translation)
-Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tgt2 {ι' : Type} (E : ι' → MvPolynomial τ K) (t : MvPolynomial τ K) (ht : t ∈ Submodule.span K (Set.range E)) :
     map (algebraMap K Kc) t ∈ Submodule.span Kc (Set.range fun i => map (algebraMap K Kc) (E i)) := by
@@ -155,11 +155,11 @@ theorem tgt2 {ι' : Type} (E : ι' → MvPolynomial τ K) (t : MvPolynomial τ K
 
 include hem hh in
 /- English proof (translation)
-Unfold `Ei Ei'`. Rewrite using `[hFP K B (Fin n × Fin n) τ em hem]`. Establish `h4 : ∀ b, fockR (rowAct K (hi b) (e b (i b))) (rowAct K (h b).transpose (e' b (k b))) = if i b = k b then cN K (ν b) else 0`. Introduce `b`. Rewrite using `[Top.fockRRowAct, rowAct_rowAct, ← Matrix.transpose_mul, hh b, Matrix.transpose_one, rowAct_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hee b (i b) (k b)`. Rewrite using `[Finset.prod_congr rfl fun b _ => h4 b]`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hik]`. Take `⟨b, hb⟩` from `Function.ne_iff.1 hik`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ b) (if_neg hb)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tgt3 (hFP : FockProd)
     (hee : ∀ b i k, fockR (e b i) (e' b k) = if i = k then fockR (hw K le_rfl (ν b)) (hw K le_rfl (ν b)) else 0)
@@ -180,9 +180,9 @@ theorem tgt3 (hFP : FockProd)
 
 include hem hh in
 /- English proof (translation)
-Rewrite using `[fockR_sum_left, Finset.sum_eq_single k]`. Rewrite using `[fockR_smul_left, Top.fockRMap, tgt3 em hem ν h hi hh ι e e' hFP hee, if_pos rfl, map_prod]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun b _ => map_cN K Kc _ _`. Introduce `i _ hik`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fockR_smul_left, Top.fockRMap, tgt3 em hem ν h hi hh ι e e' hFP hee, if_neg hik, map_zero, mul_zero]`. Introduce `hk`. Conclude with `absurd (Finset.mem_univ k) hk`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tgt5 (hFP : FockProd)
     (hee : ∀ b i k, fockR (e b i) (e' b k) = if i = k then fockR (hw K le_rfl (ν b)) (hw K le_rfl (ν b)) else 0)
@@ -200,15 +200,13 @@ theorem tgt5 (hFP : FockProd)
 include hem hh in
 
 /- English proof (translation)
-Establish `: CharZero Kc` using `charZero_of_injective_algebraMap (algebraMap K Kc).injective`. Establish `h2 : y ∈ Submodule.span Kc (Set.range fun i => map (algebraMap K Kc) (Ei em hi ι e i))`. Use `(Submodule.span_le.2 ?_) hy` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Conclude with `tgt2 _ _ (tgt1 em ν h hi hh ι e hsp F hF)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun Kc).1 h2`. Establish `hc : (∏ b, cN Kc (ν b)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun b _ => cN_ne Kc (ν b)`. Establish `h6 : ∀ k, a k ∈ M`. Introduce `k`. Take `⟨a', ha', h7⟩` from `hp (fun b => e' b (k b)) fun b => he' b (k b)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h5` using `tgt5 (Kc := Kc) em hem ν h hi hh ι e e' hFP hee a k`. Rewrite `h5` using `[ha]`. Establish `: a k = a'` using `mul_right_cancel₀ hc (h5.symm.trans h7)`. Rewrite using `[this]`. Conclude with `ha'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ha]`. Use `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.subset_closure ?_` and prove the remaining obligations. Use `⟨a i, h6 i, fun b => rowAct K (hi b) (e b (i b)), fun b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_deltaL', rowAct_rowAct, hh b, rowAct_one]`. Conclude with `he b (i b)`.
-
-Unfold `Ei`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tgt_core (hFP : FockProd)
     (he : ∀ b i, e b i ∈ (weyl O n n le_rfl (ν b)).map (toK O K)) (he' : ∀ b i, e' b i ∈ (dualWeyl O n n (ν b)).map (toK O K))
@@ -257,7 +255,7 @@ variable {O K Kc : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [Fie
 
 include hem hν hh in
 /- English proof (translation)
-Use `choose ι fι dι e e' he he' hee hsp using fun b => hDB O K n (ν b) (hν b)`. Conclude with `@tgt_core O K Kc _ _ _ _ _ _ _ _ _ B τ _ _ n em hem ν h hi hh M ι fι dι e e' hFP he he' hee hsp y hy hp`.
+A detailed English derivation is pending.
 -/
 theorem tgt_abs (hDB : DualBases) (hFP : FockProd) (y : MvPolynomial τ Kc)
     (hy : y ∈ Submodule.span Kc {z | ∃ F : B → MvPolynomial (Fin n × Fin n) K, (∀ b, F b ∈ dualWeyl K n n (ν b)) ∧

@@ -19,21 +19,19 @@ variable {G K : Type} [Group G] [TopologicalSpace G] [NormedAddCommGroup K] [Inn
   {ρ : G →* (K →L[ℂ] K)}
 
 /- English proof (translation)
-Take `⟨ι, W, hW, hs⟩` from `exists_isHilbertSum hρ fun _ => hc.exists_irred_le hρ`. Establish `hcomp : ∀ i, CompleteSpace (W i)` using `fun i => (hW i).1.completeSpace`. Establish `hfin : Finite ι`. Distinguish the cases in `hne : Nonempty ι`. Take `⟨i0⟩` from `hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hπ` using `isIrrUnitary_rep hρ (hW i0)`. Establish `hset` using `(multIn_eq_ncard hρ hπ (hc.multIn_lt hρ hπ) hW hs).1`. Establish `huniv : {i | IsCopy (hW i0).1.rep ρ (W i)} = Set.univ` using `Set.eq_univ_of_forall fun i => by`. Use `⟨(hW i).1, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hπi` using `isIrrUnitary_rep hρ (hW i)`. Establish `hS : (W i).subtypeL ∈ homIn (hW i).1.rep ρ ⊤` using `mem_homIn_top.2 fun _ _ => rfl`. Establish `hle : isoPart (hW i0).1.rep ρ ⊤ ≤ (W i)ᗮ` using `isoPart_le (Submodule.isClosed_orthogonal _) fun T hT x => (Submodule.mem_orthogonal _ _).2 fun u hu => inner_eq_zero_of_not_uEquiv hπ hπi hρ hn hT hS x ⟨u, hu⟩`. Rewrite `hle` using `[hiso _ (hW i0), top_le_iff, Submodule.orthogonal_eq_top_iff]`. Conclude with `(hW i).2.1 hle`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Set.finite_univ_iff.1 (huniv ▸ hset)`. Use `haveI := not_nonempty_iff.1 hne infer_instance`. Use `Fintype.ofFinite ι` as an intermediate fact. Establish `hsum : ∀ x : K, ∑ i, (W i).starProjection x = x` using `fun x => by`. Use `hs.OrthogonalFamily.sum_projection_of_mem_iSup x ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hs.hasSum_linearIsometryEquiv_symm (hs.linearIsometryEquiv x)`. Rewrite `h1` using `[LinearIsometryEquiv.symm_apply_apply]`. Rewrite using `[h1.unique (hasSum_fintype _)]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i (Subtype.prop _)`. Set `Q : ι → Submodule ℂ K` to `fun i => (⨆ (T : V →ₗ[ℂ] W i) (_ : ∀ k w, T (τ k w) = (hW i).1.rep (j k) (T w)), LinearMap.range T : Submodule ℂ (W i)).map (W i).subtype`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hQ : ∀ i, FiniteDimensional ℂ (Q i)` using `fun i => by`. Use `hfd _ (hW i)` as an intermediate fact. Use `infer_instance`. Use `Submodule.finiteDimensional_of_le (S₂ := ⨆ i, Q i) (iSup₂_le fun T hT => ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hsum (T w)]`. Use `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i ?_` and prove the remaining obligations. Set `Ti : V →ₗ[ℂ] W i` to `LinearMap.codRestrict (W i) ((W i).starProjection.toLinearMap ∘ₗ T) fun w => (W i).starProjection_apply_mem _`. Use `⟨Ti w, Submodule.mem_iSup_of_mem Ti (Submodule.mem_iSup_of_mem (fun k w => Subtype.ext ?_) ⟨w, rfl⟩), rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(W i).starProjection (T (τ k w)) = ρ (j k) ((W i).starProjection (T w))`.
-
-Rewrite using `[hT, (hW i).1.starProjection_apply hρ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_types (hρ : IsUnitaryRep ρ) (hc : EnoughCompact ρ)
     (hiso : ∀ W (hW : IsIrredSubrep ρ W), isoPart hW.1.rep ρ ⊤ = ⊤)
@@ -87,25 +85,23 @@ theorem finiteDimensional_types (hρ : IsUnitaryRep ρ) (hc : EnoughCompact ρ)
   rw [hT, (hW i).1.starProjection_apply hρ]
 
 /- English proof (translation)
-Use `hX.completeSpace` as an intermediate fact. Establish `hI : IsSubrep hX.rep (isoPart π hX.rep ⊤)` using `isSubrep_isoPart`. Establish `hstab : ∀ S ∈ homIn hX.rep hX.rep ⊤, ∀ x ∈ isoPart π hX.rep ⊤, S x ∈ isoPart π hX.rep ⊤` using `fun S hS x hx => isoPart_le (W := (isoPart π hX.rep ⊤).comap (S : X →ₗ[ℂ] X)) (hI.1.preimage S.continuous) (fun T hT y => apply_mem_isoPart (T := S ∘L T) (mem_homIn_top.2 fun g x => by`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[hT.2, hS.2]) y) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `Y : Submodule ℂ L` to `(isoPart π hX.rep ⊤).map X.subtype`. Establish `hYc : IsClosed (Y : Set L)` using `hX.1.isClosedEmbedding_subtypeVal.isClosedMap _ hI.1`. Set `Sb : G' → (X →L[ℂ] X)` to `fun b => ((X.starProjection ∘L R (j b)) ∘L X.subtypeL).codRestrict X fun v => X.starProjection_apply_mem _`. Establish `hSb : ∀ b, Sb b ∈ homIn hX.rep hX.rep ⊤` using `fun b => mem_homIn_top.2 fun a x => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `X.starProjection (R (j b) (R (i a) x)) = R (i a) (X.starProjection (R (j b) x))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e : R (j b) (R (i a) x) = R (i a) (R (j b) (x : L))`. Use `congrArg (fun S : L →L[ℂ] L => S (x : L)) (congrArg R (hcomm a b))` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[e]`. Conclude with `hX.starProjection_apply hτ a _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `Z : Submodule ℂ L` to `(⨆ γ, Y.map (R γ : L →ₗ[ℂ] L)).topologicalClosure`. Establish `hZ : IsSubrep R Z` using `isSubrep_topologicalClosure fun g v hv => by`. Establish `h1 : (⨆ γ, Y.map (R γ : L →ₗ[ℂ] L)) ≤ (⨆ γ, Y.map (R γ : L →ₗ[ℂ] L)).comap (R g : L →ₗ[ℂ] L)` using `iSup_le fun γ => by`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `Submodule.mem_iSup_of_mem (g * γ) ⟨y, hy, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `h1 hv`. Establish `hYZ : Y ≤ Z` using `fun y hy => Submodule.le_topologicalClosure _ (Submodule.mem_iSup_of_mem 1 ⟨y, hy, by simp⟩)`. Establish `hZH : Z ≤ H` using `Submodule.topologicalClosure_minimal _ (iSup_le fun γ => by`. Introduce and unpack `_ ⟨_, ⟨x, -, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hH.1.2 γ _ (hXH x.2)) hH.1.1`. Establish `hZ0 : Z ≠ ⊥`. Take `⟨T, hT, hT0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`. Take `⟨x, hx⟩ : ∃ x, T x ≠ 0` from `by by_contra! hn`. Conclude with `hT0 (ContinuousLinearMap.ext hn)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `(Submodule.ne_bot_iff _).2 ⟨_, hYZ ⟨_, apply_mem_isoPart hT x, rfl⟩, fun e => hx (Subtype.ext e)⟩` and prove the remaining obligations. Establish `hZe : Z = H` using `(hH.2.2 Z hZH hZ).resolve_left hZ0`. Establish `hQZ : Z ≤ Y.comap (X.starProjection : L →ₗ[ℂ] L)` using `Submodule.topologicalClosure_minimal _ (iSup_le fun γ => by`. Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Take `⟨a, b, rfl⟩` from `hdec γ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : R (i a * j b) (x : L) = R (j b) (R (i a) x)`. Rewrite using `[hcomm]`. Simplify using the standard rewrite rules. Establish `h1 : hX.rep a x ∈ isoPart π hX.rep ⊤` using `hI.2 a x hx`. Conclude with `⟨_, hstab _ (hSb b) _ h1, by`.
+Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `X.starProjection (R (j b) (R (i a) x)) = X.starProjection (R (i a * j b) (x : L))`. Rewrite using `[e]⟩) (hYc.preimage X.starProjection.continuous)`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `hQZ (hZe ▸ hXH x.2)`. Establish `e' : y = x` using `Subtype.ext (e.trans (Submodule.starProjection_eq_self_iff.2 x.2))`.
-
-Conclude with `e' ▸ hy`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isoPart_eq_top {Γ G' L P : Type} [Group Γ] [Group G'] [NormedAddCommGroup L]
     [InnerProductSpace ℂ L] [CompleteSpace L] [NormedAddCommGroup P] [InnerProductSpace ℂ P]
@@ -167,7 +163,7 @@ theorem isoPart_eq_top {Γ G' L P : Type} [Group Γ] [Group G'] [NormedAddCommGr
   exact e' ▸ hy
 
 /- English proof (translation)
-The claim follows from `ext_inner_left ℂ fun y => by rw [← ContinuousLinearMap.adjoint_inner_left S, hA, hA] refine integral_congr_ae (.of_forall fun g => ?_) change f g * _ = f g * _ rw [← hS.2, ContinuousLinearMap.adjoint_inner_left]`.
+A detailed English derivation is pending.
 -/
 theorem commute_of_inner_eq_integral {Γ : Type} [MeasurableSpace Γ] {μ : Measure Γ} {p : Γ → G} {f : Γ → ℂ}
     {A : K →L[ℂ] K} (hA : ∀ y x, ⟪y, A x⟫_ℂ = ∫ g, f g * ⟪y, ρ (p g) x⟫_ℂ ∂μ) {S : K →L[ℂ] K}
@@ -178,11 +174,11 @@ theorem commute_of_inner_eq_integral {Γ : Type} [MeasurableSpace Γ] {μ : Meas
   rw [← hS.2, ContinuousLinearMap.adjoint_inner_left]
 
 /- English proof (translation)
-Introduce `e`. Establish `hcc : Continuous fun g => ⟪v, ρ (p g) v⟫_ℂ` using `continuous_const.inner ((hρ.continuous_apply v).comp hp)`. Establish `hc : Continuous fun g => (⟪v, ρ (p g) v⟫_ℂ).re` using `Complex.continuous_re.comp hcc`. Establish `hcf : Continuous fun g => (f g : ℂ)` using `Complex.continuous_ofReal.comp hf`. Establish `hcs : HasCompactSupport fun g => (f g : ℂ)` using `hs.comp_left (g := Complex.ofReal) rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `integral_re (𝕜 := ℂ) (μ := μ) ((hcf.mul hcc).integrable_of_hasCompactSupport hcs.mul_right)`. Establish `h4 : 0 < (⟪v, ρ (p 1) v⟫_ℂ).re`. Simplify `(re_inner_self_pos (𝕜 := ℂ)).2 hv` using `[hp1]`. Use `((hf.mul hc).integral_pos_of_hasCompactSupport_nonneg_nonzero (μ := μ) hs.mul_right (fun g => ?_) (mul_ne_zero h1 h4.ne')).ne' ?_` and prove the remaining obligations. Distinguish the cases in `hg : f g = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hg]`. Conclude with `mul_nonneg (h0 g) (hpos g hg).le`. Rewrite `hA` using `[e, inner_zero_right]`. Simplify `h3` using `[← hA]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem apply_ne_zero_of_inner_eq_integral {Γ : Type} [Group Γ] [TopologicalSpace Γ] [MeasurableSpace Γ]
     [OpensMeasurableSpace Γ] {μ : Measure Γ} [IsFiniteMeasureOnCompacts μ] [μ.IsOpenPosMeasure]
@@ -215,11 +211,11 @@ variable {G Γ G' L : Type} [Group G] [TopologicalSpace G] [Group Γ] [Topologic
   [NormedAddCommGroup L] [InnerProductSpace ℂ L] [CompleteSpace L]
 
 /- English proof (translation)
-Establish `hρ` using `hX.isUnitaryRep hτ`. Establish `hcpl` using `hX.completeSpace`. Establish `hfd` using `finiteDimensional_types hρ hc (fun W' hW' => isoPart_eq_top i j hτ hcomm hdec hH hXH hX (fun h0 => hW'.2.1 (by`. Establish `h1 : W'.subtypeL ∈ homIn hW'.1.rep hX.rep ⊤` using `mem_homIn_top.2 fun _ _ => rfl`. Rewrite `h1` using `[h0, Submodule.mem_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `eq_bot_iff.2 fun x hx => by`. Simplify using `using DFunLike.congr_fun h1 ⟨x, hx⟩)))`. Use `e τ (fun W' hW' => by`. Use `hW'.1.completeSpace` as an intermediate fact. Conclude with `hadm W' hW'.1.rep (hW'.1.isUnitaryRep hρ) (hW'.1.isIrredSubrep_iff.1 hW'))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Use `Submodule.finiteDimensional_of_le (S₂ := (⨆ (T : V →ₗ[ℂ] X) (_ : ∀ k w, T (τ k w) = hX.rep (e k) (T w)), LinearMap.range T : Submodule ℂ X).map X.subtype) (iSup₂_le fun T hT => ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Set `T' : V →ₗ[ℂ] X` to `T.codRestrict _ hT.2`. Conclude with `⟨T' w, Submodule.mem_iSup_of_mem T' (Submodule.mem_iSup_of_mem (fun k w => Subtype.ext (hT.1 k w)) ⟨w, rfl⟩), rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_types_of_irred {R : Γ →* (L →L[ℂ] L)} (i : G →* Γ) (j : G' →* Γ)
     (hτ : IsUnitaryRep (R.comp i)) (hcomm : ∀ a b, i a * j b = j b * i a) (hdec : ∀ γ, ∃ a b, γ = i a * j b)
@@ -255,7 +251,7 @@ def compress (X : Submodule ℂ L) [X.HasOrthogonalProjection] (T : L →L[ℂ] 
 omit [CompleteSpace L] in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `⟪(y : L), X.starProjection (T x)⟫_ℂ = _`. Rewrite using `[← Submodule.inner_starProjection_left_eq_right, Submodule.starProjection_eq_self_iff.2 y.2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_compress (X : Submodule ℂ L) [X.HasOrthogonalProjection] (T : L →L[ℂ] L) (y x : X) :
     ⟪y, compress X T x⟫_ℂ = ⟪(y : L), T x⟫_ℂ := by
@@ -265,9 +261,9 @@ theorem inner_compress (X : Submodule ℂ L) [X.HasOrthogonalProjection] (T : L 
 omit [CompleteSpace L] in
 
 /- English proof (translation)
-Set `i₁ : X →L[ℂ] Y` to `X.subtypeL.codRestrict Y fun x => hXY x.2`. Set `i₂ : Y →L[ℂ] X` to `(X.starProjection ∘L Y.subtypeL).codRestrict X fun _ => X.starProjection_apply_mem _`. Establish `e2 : compress X T = i₂ ∘L T' ∘L i₁`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `X.starProjection (T x) = X.starProjection _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `congrArg _ (hT (i₁ x)).symm`. Rewrite using `[e2]`. Conclude with `(hc.comp_clm i₁).clm_comp i₂`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompactOperator_compress {X Y : Submodule ℂ L} [X.HasOrthogonalProjection] (hXY : X ≤ Y)
     {T : L →L[ℂ] L} {T' : Y →L[ℂ] Y} (hT : ∀ y : Y, (T' y : L) = T y) (hc : IsCompactOperator T') :
@@ -282,11 +278,11 @@ theorem isCompactOperator_compress {X Y : Submodule ℂ L} [X.HasOrthogonalProje
   exact (hc.comp_clm i₁).clm_comp i₂
 
 /- English proof (translation)
-Introduce `v hv`. Establish `hcpl` using `hX.completeSpace`. Take `⟨f, hf, hfs, hf0, hf1, hfR, hpos⟩` from `htest v hv`. Establish `hfc : Continuous fun g => (f g : ℂ)` using `Complex.continuous_ofReal.comp hf`. Establish `hfcs : HasCompactSupport fun g => (f g : ℂ)` using `hfs.comp_left (g := Complex.ofReal) rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ y x : X, ⟪y, compress X (repOp R μ fun g => (f g : ℂ)) x⟫_ℂ = ∫ g, (f g : ℂ) * ⟪y, hX.rep (p g) x⟫_ℂ ∂μ`. Introduce `y x`. Rewrite using `[inner_compress, hR.inner_repOp hfc hfcs]`. Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations. Distinguish the cases in `h0 : f g = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h0]`. Express the relevant statement in the definitionally equal form `(f g : ℂ) * _ = (f g : ℂ) * ⟪(y : L), R (i (p g)) x⟫_ℂ`. Rewrite using `[hfR g h0 x x.2]`. Use `⟨_, isCompactOperator_compress hXY (hY.coe_repOp_rep (hR.isRepOp (μ := μ) hfc hfcs)).2 (hc _ hfc hfcs), fun S hS x => commute_of_inner_eq_integral hA hS x, ?_⟩` and prove the remaining obligations. Conclude with `apply_ne_zero_of_inner_eq_integral (μ := μ) (hX.isUnitaryRep hτ) hp hp1 hf hfs hf0 hf1 hv hpos (hA v v)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem enoughCompact_of_testFn [IsTopologicalGroup Γ] [MeasurableSpace Γ] [OpensMeasurableSpace Γ] {μ : Measure Γ}
     [IsFiniteMeasureOnCompacts μ] [μ.IsOpenPosMeasure] {R : Γ →* (L →L[ℂ] L)} (hR : IsUnitaryRep R) (i : G →* Γ)
@@ -321,7 +317,7 @@ section Concrete
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Establish `hs : Continuous (sInf E)` using `((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))`. Conclude with `Continuous.units_map (corner (matN a (sInf E))) (continuous_const.add (continuous_id.matrix_map hs))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_infGL : Continuous (infGL E a) := by
   have hs : Continuous (sInf E) := ((continuous_infEq E).prodMk continuous_const :
@@ -331,7 +327,7 @@ theorem continuous_infGL : Continuous (infGL E a) := by
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Establish `hs : Continuous (sFin E)` using `(continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))`. Conclude with `Continuous.units_map (corner (matN a (sFin E))) (continuous_const.add (continuous_id.matrix_map hs))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_finGL : Continuous (finGL E a) := by
   have hs : Continuous (sFin E) := (continuous_const.prodMk continuous_id :
@@ -341,7 +337,7 @@ theorem continuous_finGL : Continuous (finGL E a) := by
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace (Matrix (Fin a) (Fin a) (Cinf E)) := inferInstanceAs (LocallyCompactSpace (Fin a → Fin a → Cinf E))`. Use `haveI : LocallyCompactSpace (Matrix (Fin a) (Fin a) (Cinf E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Conclude with `Units.isClosedEmbedding_embedProduct.locallyCompactSpace`.
+A detailed English derivation is pending.
 -/
 theorem locallyCompactSpace_GL : LocallyCompactSpace (GL (Fin a) (Cinf E)) := by
   haveI : LocallyCompactSpace (Matrix (Fin a) (Fin a) (Cinf E)) :=
@@ -351,13 +347,11 @@ theorem locallyCompactSpace_GL : LocallyCompactSpace (GL (Fin a) (Cinf E)) := by
   exact Units.isClosedEmbedding_embedProduct.locallyCompactSpace
 
 /- English proof (translation)
-Use `haveI := locallyCompactSpace_GL (E := E) (a := a)`. Take `⟨φ, hφ, hφs, hφ0, hφ1, hφN⟩` from `GlobalTheory.CompanionTheory.Bump.exists_nonneg_bump (1 : GL (Fin a) (Cinf E)) N hN`. Establish `hpi` using `ContAut.continuous_map_pInf E a`. Establish `hpf` using `ContAut.continuous_map_pFin E a`. Set `χ : GL (Fin a) (Af E) → ℝ` to `(U : Set (GL (Fin a) (Af E))).indicator fun _ => 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hχ : Continuous χ`. Use `continuous_indicator (fun x hx => ?_) continuousOn_const` and prove the remaining obligations. Rewrite `hx` using `[IsClopen.frontier_eq ⟨U.isClosed_of_isOpen hU, hU⟩]`. Conclude with `absurd hx (Set.notMem_empty _)`. Use `⟨fun g => φ (GeneralLinearGroup.map (pInf E) g) * χ (GeneralLinearGroup.map (pFin E) g), (hφ.comp hpi).mul (hχ.comp hpf), ?_, fun g => ?_, ?_, fun g h => ⟨hφN (left_ne_zero_of_mul h), Set.mem_of_indicator_ne_zero (right_ne_zero_of_mul h)⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `HasCompactSupport.intro (K := (fun p : GL (Fin a) (Cinf E) × GL (Fin a) (Af E) => infGL E a p.1 * finGL E a p.2) '' (tsupport φ ×ˢ (U : Set (GL (Fin a) (Af E))))) ((hφs.isCompact.prod hUc).image ((continuous_infGL.comp continuous_fst).mul (continuous_finGL.comp continuous_snd))) …` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `h1 : φ (GeneralLinearGroup.map (pInf E) g) ≠ 0` using `left_ne_zero_of_mul h0`. Establish `h2 : χ (GeneralLinearGroup.map (pFin E) g) ≠ 0` using `right_ne_zero_of_mul h0`. Conclude with `hg ⟨(_, _), ⟨subset_tsupport _ h1, Set.mem_of_indicator_ne_zero h2⟩, infGL_mul_finGL g⟩`.
-
-Conclude with `mul_nonneg (hφ0 _) (Set.indicator_nonneg (fun _ _ => zero_le_one) _)`. Establish `h1 : χ 1 = 1` using `Set.indicator_of_mem (one_mem U) _`. Simplify `hφ1` using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_testFn {N : Set (GL (Fin a) (Cinf E))} (hN : N ∈ 𝓝 1) {U : Subgroup (GL (Fin a) (Af E))}
     (hU : IsOpen (U : Set (GL (Fin a) (Af E)))) (hUc : IsCompact (U : Set (GL (Fin a) (Af E)))) :
@@ -400,17 +394,15 @@ def fixedPart (H : Submodule ℂ (L2 (latticeGL E a) μ)) (U : Subgroup (GL (Fin
 variable {μ}
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fixedPart_le (H : Submodule ℂ (L2 (latticeGL E a) μ)) (U : Subgroup (GL (Fin a) (Af E))) :
     fixedPart μ H U ≤ H := fun _ h => h.1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `e : (fixedPart μ H U : Set (L2 (latticeGL E a) μ)) = (H : Set (L2 (latticeGL E a) μ)) ∩ ⋂ u ∈ U, {F | R (latticeGL E a) μ (finGL E a u) F = F}`. Use extensionality with `F`. Simplify using `[fixedPart]`. Rewrite using `[e]`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hH.1.inter (isClosed_biInter fun u _ => isClosed_eq (R (latticeGL E a) μ (finGL E a u)).continuous continuous_id)`. Introduce and unpack `y F ⟨h1, h2⟩`. Use `⟨hH.2 _ _ h1, fun u hu => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun S : L2 (latticeGL E a) μ →L[ℂ] L2 (latticeGL E a) μ => S F) (congrArg (R (latticeGL E a) μ) (infGL_comm y u))`. Simplify using `only [map_mul, ContinuousLinearMap.mul_apply, h2 u hu] at e`.
-
-Conclude with `e.symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSubrep_fixedPart {H : Submodule ℂ (L2 (latticeGL E a) μ)} (hH : IsSubrep (R (latticeGL E a) μ) H)
     (U : Subgroup (GL (Fin a) (Af E))) :
@@ -431,7 +423,7 @@ theorem isSubrep_fixedPart {H : Submodule ℂ (L2 (latticeGL E a) μ)} (hH : IsS
     exact e.symm
 
 /- English proof (translation)
-Use `conv_lhs => rw [← infGL_mul_finGL g, map_mul, ContinuousLinearMap.mul_apply, hF.2 _ hg]`.
+A detailed English derivation is pending.
 -/
 theorem R_apply_of_mem {H : Submodule ℂ (L2 (latticeGL E a) μ)} {U : Subgroup (GL (Fin a) (Af E))}
     {F : L2 (latticeGL E a) μ} (hF : F ∈ fixedPart μ H U) {g : GA E a}
@@ -440,9 +432,9 @@ theorem R_apply_of_mem {H : Submodule ℂ (L2 (latticeGL E a) μ)} {U : Subgroup
   conv_lhs => rw [← infGL_mul_finGL g, map_mul, ContinuousLinearMap.mul_apply, hF.2 _ hg]
 
 /- English proof (translation)
-Establish `hR` using `isUnitaryRep_R (latticeGL E a) μ`. Establish `hτ : IsUnitaryRep ((R (latticeGL E a) μ).comp (infGL E a))` using `isUnitaryRep_comp hR continuous_infGL`. Use `enoughCompact_of_testFn (μ := μ) hR (infGL E a) hτ (ContAut.continuous_map_pInf E a) (map_one _) ((fixedPart_le H U).trans hHc) (isSubrep_fixedPart hH U) (isSubrep_L2cusp μ) (GlobalTheory.T.cuspidal_convolution_compact E a μ) fun v hv => ?_` and prove the remaining obligations. Establish `hρ` using `(isSubrep_fixedPart hH U).isUnitaryRep hτ`. Establish `hcv : Continuous fun x : GL (Fin a) (Cinf E) => (⟪v, (isSubrep_fixedPart hH U).rep x v⟫_ℂ).re` using `Complex.continuous_re.comp (continuous_const.inner (hρ.continuous_apply v))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1v : 0 < (⟪v, (isSubrep_fixedPart hH U).rep 1 v⟫_ℂ).re`. Simplify using `using (re_inner_self_pos (𝕜 := ℂ)).2 hv`. Take `⟨f, hf, hfs, hf0, hf1, hfg⟩` from `exists_testFn ((isOpen_lt continuous_const hcv).mem_nhds h1v) hU hUc`. Conclude with `⟨f, hf, hfs, hf0, hf1, fun g h x hx => R_apply_of_mem hx (hfg g h).2, fun g h => (hfg g h).1⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem enoughCompact_fixedPart {H : Submodule ℂ (L2 (latticeGL E a) μ)} (hHc : H ≤ L2cusp μ)
     (hH : IsSubrep (R (latticeGL E a) μ) H) {U : Subgroup (GL (Fin a) (Af E))} (hU : IsOpen (U : Set (GL (Fin a) (Af E))))
@@ -462,9 +454,9 @@ theorem enoughCompact_fixedPart {H : Submodule ℂ (L2 (latticeGL E a) μ)} (hHc
 end Concrete
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ _ _ H hH hI U hU W _ _ _ ρ`. Take `⟨K0, hK0o, hK0c⟩` from `GlobalTheory.GLIntegral.exists_isOpen_isCompact E a`. Establish `hU' : IsOpen ((U ⊓ K0 : Subgroup _) : Set (GL (Fin a) (Af E)))` using `hU.inter hK0o`. Establish `hU'c : IsCompact ((U ⊓ K0 : Subgroup _) : Set (GL (Fin a) (Af E)))` using `hK0c.inter_left (U.isClosed_of_isOpen hU)`. Establish `hfd` using `finiteDimensional_types_of_irred (infGL E a) (finGL E a) (isUnitaryRep_comp (isUnitaryRep_R (latticeGL E a) μ) continuous_infGL) infGL_comm (fun g => ⟨_, _, (infGL_mul_finGL g).symm⟩) hI (fixedPart_le H _) (isSubrep_fixedPart hI.1 (U ⊓ K0)) (enoughCompact_fixedPart hH hI.1 hU' hU …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ {M : Type} [AddCommGroup M] [Module ℂ M] {S T : Submodule ℂ M}, FiniteDimensional ℂ T → S ≤ T → FiniteDimensional ℂ S` using `fun _ h => Submodule.finiteDimensional_of_le h`. Conclude with `key hfd (iSup₂_le fun T hT => le_iSup₂_of_le (f := fun (T : W →ₗ[ℂ] L2 (latticeGL E a) μ) (_ : (∀ k w, T (ρ k w) = R (latticeGL E a) μ (infGL E a (Unitary.toUnits k)) (T w)) ∧ ∀ w, T w ∈ fixedPart μ H (U ⊓ K0)) => LinearMap.range T) T ⟨hT.1, fun w => ⟨(hT.2 w).1, fun u hu => (hT. …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_isotypic : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (H : Submodule ℂ (L2 (latticeGL E a) μ)), H ≤ L2cusp μ → IsIrredSubrep (R (latticeGL E a) μ) H → ∀ (U : Subgroup (GL (Fin a) (Af E))), IsOpen (U : Set (GL (Fin a) (Af E))) → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (ρ : Representation ℂ (Kinf E a) W), FiniteDimensional ℂ ↥(⨆ (T : W →ₗ[ℂ] L2 (latticeGL E a) μ) (_ : (∀ k w, T (ρ k w) = R (latticeGL E a) μ (infGL E a (Unitary.toUnits k)) (T w)) ∧ ∀ w, T w ∈ H ∧ ∀ u ∈ U, R (latticeGL E a) μ (finGL E a u) (T w) = T w), LinearMap.range T : Submodule ℂ (L2 (latticeGL E a) μ)) := by
   intro E _ _ _ a μ _ _ H hH hI U hU W _ _ _ ρ

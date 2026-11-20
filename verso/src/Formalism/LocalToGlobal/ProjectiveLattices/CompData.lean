@@ -11,7 +11,7 @@ abbrev WTZ (E : Type) [Field E] : Type := ((E →+* ℂ) × ℕ → ℤ) × ℤ
 def wtZ {E : Type} [Field E] (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : WTZ E := (fun x => (a x : ℤ), (n : ℤ))
 
 /- English proof (translation)
-Unfold `wtZ`. Apply the tactic sequence `ext <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wtZ_add {E : Type} [Field E] (a a' : (E →+* ℂ) × ℕ → ℕ) (n n' : ℕ) :
     wtZ (a + a') (n + n') = wtZ a n + wtZ a' n' := by
@@ -24,12 +24,12 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 abbrev AC (Z : Comp Xo c) : Type := AddMonoidAlgebra (Om Z) (WTZ E)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (Z : Comp Xo c) : Algebra (𝓞 c.F) (AC Z) := inferInstance
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (Z : Comp Xo c) : IsScalarTower (𝓞 c.F) c.F (AC Z) := inferInstance
 
@@ -39,9 +39,9 @@ def AG (Z : Comp Xo c) (G : WTZ E) : Submodule (Om Z) (AC Z) :=
   Submodule.span (Om Z) {AddMonoidAlgebra.single G 1}
 
 /- English proof (translation)
-Unfold `AG`. Rewrite using `[Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, rfl⟩`. Conclude with `⟨r, by rw [AddMonoidAlgebra.smul_single', mul_one]⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨r, rfl⟩`. Conclude with `⟨r, by rw [AddMonoidAlgebra.smul_single', mul_one]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_AG {Z : Comp Xo c} {G : WTZ E} {f : AC Z} : f ∈ AG Z G ↔ ∃ r : Om Z, f = AddMonoidAlgebra.single G r := by
   unfold AG
@@ -61,15 +61,15 @@ instance gradedAG (Z : Comp Xo c) : SetLike.GradedMonoid (AG Z) where
     exact mem_AG.2 ⟨r * s, by rw [AddMonoidAlgebra.single_mul_single]⟩
 
 /- English proof (translation)
-The claim follows from `finrank_span_singleton (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_AG (Z : Comp Xo c) (G : WTZ E) : Module.finrank (Om Z) (AG Z G) = 1 :=
   finrank_span_singleton (by simp)
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `mem_AG.1 hf`. Take `⟨s, rfl⟩` from `mem_AG.1 hg`. Establish `hr : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `hf0 (by simp)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hs : s ≠ 0`. Introduce and unpack `rfl`. Conclude with `hg0 (by simp)`. Rewrite using `[AddMonoidAlgebra.single_mul_single]`. Simplify using `[hr, hs]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_ne_zero_AG {Z : Comp Xo c} {G G' : WTZ E} {f g : AC Z} (hf : f ∈ AG Z G) (hg : g ∈ AG Z G')
     (hf0 : f ≠ 0) (hg0 : g ≠ 0) : f * g ≠ 0 := by
@@ -88,7 +88,7 @@ def valC (h : GenFrEx Xo c) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f : Ru
   fun Z => AddMonoidAlgebra.single (wtZ a n) (evC h Z f)
 
 /- English proof (translation)
-The claim follows from `mem_AG.2 ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem valC_mem (h : GenFrEx Xo c) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f : Rul Xo c) (Z : Comp Xo c) :
     valC h a n f Z ∈ AG Z (wtZ a n) := mem_AG.2 ⟨_, rfl⟩

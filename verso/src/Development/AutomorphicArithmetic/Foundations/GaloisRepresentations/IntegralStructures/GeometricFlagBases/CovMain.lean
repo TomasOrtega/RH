@@ -44,197 +44,197 @@ namespace UpperTheory.Gal.Int.Geo.CovMain
 set_option linter.unusedVariables false
 
 /- English proof (translation)
-The claim follows from `UpperTheory.rational_splitting_exists`.
+A detailed English derivation is pending.
 -/
 theorem splitQ_of (I : MIn) : SplitQ := UpperTheory.rational_splitting_exists
 
 /- English proof (translation)
-The claim follows from `UpperTheory.baseExtension_holds`.
+A detailed English derivation is pending.
 -/
 theorem baseEx_of (I : MIn) : BaseEx := UpperTheory.baseExtension_holds
 
 /- English proof (translation)
-The claim follows from `UpperTheory.power_projector_exists`.
+A detailed English derivation is pending.
 -/
 theorem powProj_of (I : MIn) : PowProj := UpperTheory.power_projector_exists
 
 /- English proof (translation)
-The claim follows from `UpperTheory.site_exists_of_splitting_and_power_projector I (splitQ_of I) (baseEx_of I) (powProj_of I)`.
+A detailed English derivation is pending.
 -/
 theorem siteEx_of (I : MIn) : SiteEx := UpperTheory.site_exists_of_splitting_and_power_projector I (splitQ_of I) (baseEx_of I) (powProj_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.exists_generic_moduli_point`.
+A detailed English derivation is pending.
 -/
 theorem genEx_of (I : MIn) : GenEx := UpperTheory.exists_generic_moduli_point
 
 /- English proof (translation)
-The claim follows from `UpperTheory.exists_number_field_point_of_generic (genEx_of I)`.
+A detailed English derivation is pending.
 -/
 theorem numEx_of (I : MIn) : NumEx := UpperTheory.exists_number_field_point_of_generic (genEx_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.lattice_generation`.
+A detailed English derivation is pending.
 -/
 theorem latGen_of (I : MIn) : LatGen := UpperTheory.lattice_generation
 
 /- English proof (translation)
-The claim follows from `UpperTheory.group_scheme_pullback_exists`.
+A detailed English derivation is pending.
 -/
 theorem gPull_of (I : MIn) : GPull := UpperTheory.group_scheme_pullback_exists
 
 /- English proof (translation)
-The claim follows from `UpperTheory.power_map_cartesian`.
+A detailed English derivation is pending.
 -/
 theorem powCart_of (I : MIn) : PowCart := UpperTheory.power_map_cartesian
 
 /- English proof (translation)
-The claim follows from `UpperTheory.quotient_moduli_object_exists`.
+A detailed English derivation is pending.
 -/
 theorem qObj_of (I : MIn) : QObj := UpperTheory.quotient_moduli_object_exists
 
 /- English proof (translation)
-The claim follows from `UpperTheory.quotient_map_comp`.
+A detailed English derivation is pending.
 -/
 theorem qComp_of (I : MIn) : QComp := UpperTheory.quotient_map_comp
 
 /- English proof (translation)
-The claim follows from `UpperTheory.quotient_unique_of_comp (qComp_of I)`.
+A detailed English derivation is pending.
 -/
 theorem qUniq_of (I : MIn) : QUniq := UpperTheory.quotient_unique_of_comp (qComp_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.quotient_moduli_iso`.
+A detailed English derivation is pending.
 -/
 theorem qIso_of (I : MIn) : QIso := UpperTheory.quotient_moduli_iso
 
 /- English proof (translation)
-The claim follows from `UpperTheory.quotient_level_of_lattice_generation (latGen_of I)`.
+A detailed English derivation is pending.
 -/
 theorem qLev_of (I : MIn) : QLev := UpperTheory.quotient_level_of_lattice_generation (latGen_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.isogeny_class_exists_of_quotient (qObj_of I) (qComp_of I) (qUniq_of I) (qLev_of I)`.
+A detailed English derivation is pending.
 -/
 theorem clsEx_of (I : MIn) : ClsEx := UpperTheory.isogeny_class_exists_of_quotient (qObj_of I) (qComp_of I) (qUniq_of I) (qLev_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.trace_eta_identity`.
+A detailed English derivation is pending.
 -/
 theorem trEta_of (I : MIn) : TrEta := UpperTheory.trace_eta_identity
 
 /- English proof (translation)
-The claim follows from `UpperTheory.trace_eta_pointwise`.
+A detailed English derivation is pending.
 -/
 theorem trEtaPt_of (I : MIn) : TrEtaPt := UpperTheory.trace_eta_pointwise
 
 /- English proof (translation)
-The claim follows from `UpperTheory.multiplier_is_unit`.
+A detailed English derivation is pending.
 -/
 theorem multUnit_of (I : MIn) : MultUnit := UpperTheory.multiplier_is_unit
 
 /- English proof (translation)
-The claim follows from `UpperTheory.trace_pullback_identity`.
+A detailed English derivation is pending.
 -/
 theorem trBack_of (I : MIn) : TrBack := UpperTheory.trace_pullback_identity
 
 /- English proof (translation)
-The claim follows from `UpperTheory.trace_unit_of_pullback_multiplier (trBack_of I) (multUnit_of I)`.
+A detailed English derivation is pending.
 -/
 theorem trUnit_of (I : MIn) : TrUnit := UpperTheory.trace_unit_of_pullback_multiplier (trBack_of I) (multUnit_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.trace_identity_of_tjElement`.
+A detailed English derivation is pending.
 -/
 theorem trTj_of (I : MIn) : TrTj := UpperTheory.trace_identity_of_tjElement
 
 /- English proof (translation)
-The claim follows from `UpperTheory.congruenceCRT_of_latticeGen (latGen_of I)`.
+A detailed English derivation is pending.
 -/
 theorem congCRT_of (I : MIn) : CongCRT := UpperTheory.congruenceCRT_of_latticeGen (latGen_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.congruenceSubgroup_isLattice_statement`.
+A detailed English derivation is pending.
 -/
 theorem grpLat_of (I : MIn) : GrpLat := UpperTheory.congruenceSubgroup_isLattice_statement
 
 /- English proof (translation)
-The claim follows from `UpperTheory.arithmeticGroup_congruenceSubgroupProperty`.
+A detailed English derivation is pending.
 -/
 theorem grpCong_of (I : MIn) : GrpCong := UpperTheory.arithmeticGroup_congruenceSubgroupProperty
 
 /- English proof (translation)
-The claim follows from `UpperTheory.quotient_invariant_of_trace_unit_crt (numEx_of I) (qComp_of I) (qIso_of I) (clsEx_of I) (trEta_of I) (trUnit_of I) (congCRT_of I)`.
+A detailed English derivation is pending.
 -/
 theorem baseInv_of (I : MIn) : BaseInv := UpperTheory.quotient_invariant_of_trace_unit_crt (numEx_of I) (qComp_of I) (qIso_of I) (clsEx_of I) (trEta_of I) (trUnit_of I) (congCRT_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.tower_invariant_of_base_invariant_powerCartesian (baseInv_of I) (powCart_of I)`.
+A detailed English derivation is pending.
 -/
 theorem piInv_of (I : MIn) : PiInv := UpperTheory.tower_invariant_of_base_invariant_powerCartesian (baseInv_of I) (powCart_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.quotient_separated_of_trace_unit_crt (gPull_of I) (qComp_of I) (qIso_of I) (qUniq_of I) (trEta_of I) (trEtaPt_of I) (trUnit_of I) (congCRT_of I)`.
+A detailed English derivation is pending.
 -/
 theorem baseSep_of (I : MIn) : BaseSep := UpperTheory.quotient_separated_of_trace_unit_crt (gPull_of I) (qComp_of I) (qIso_of I) (qUniq_of I) (trEta_of I) (trEtaPt_of I) (trUnit_of I) (congCRT_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.tower_trivial_of_quotient_trace_powerCartesian I (qObj_of I) (qComp_of I) (qIso_of I) (qUniq_of I) (trEta_of I) (trUnit_of I) (powCart_of I)`.
+A detailed English derivation is pending.
 -/
 theorem piZero_of (I : MIn) : PiZero := UpperTheory.tower_trivial_of_quotient_trace_powerCartesian I (qObj_of I) (qComp_of I) (qIso_of I) (qUniq_of I) (trEta_of I) (trUnit_of I) (powCart_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.tower_finiteEtale_of_trivial_powerCartesian (piZero_of I) (powCart_of I)`.
+A detailed English derivation is pending.
 -/
 theorem piFet_of (I : MIn) : PiFet := UpperTheory.tower_finiteEtale_of_trivial_powerCartesian (piZero_of I) (powCart_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.tower_separated_of_trivial_powerCartesian (piZero_of I) (baseSep_of I) (powCart_of I)`.
+A detailed English derivation is pending.
 -/
 theorem piSep_of (I : MIn) : PiSep := UpperTheory.tower_separated_of_trivial_powerCartesian (piZero_of I) (baseSep_of I) (powCart_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.integralGeometricGalois_splitting`.
+A detailed English derivation is pending.
 -/
 theorem splitOf_of (I : MIn) : SplitOf := UpperTheory.integralGeometricGalois_splitting
 
 /- English proof (translation)
-The claim follows from `UpperTheory.tower_covering_of_invariant_finiteEtale_separated (piInv_of I) (piFet_of I) (piSep_of I) (splitOf_of I)`.
+A detailed English derivation is pending.
 -/
 theorem kSCover_of (I : MIn) : KSCover := UpperTheory.tower_covering_of_invariant_finiteEtale_separated (piInv_of I) (piFet_of I) (piSep_of I) (splitOf_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.heckeCorrespondence_isogeny_of_trace_crt (trEta_of I) (trBack_of I) (trTj_of I) (multUnit_of I) (congCRT_of I)`.
+A detailed English derivation is pending.
 -/
 theorem tjIsog_of (I : MIn) : TjIsog := UpperTheory.heckeCorrespondence_isogeny_of_trace_crt (trEta_of I) (trBack_of I) (trTj_of I) (multUnit_of I) (congCRT_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.hecke_lift_exists_of_quotient_level (numEx_of I) (qObj_of I) (qComp_of I) (qUniq_of I) (qLev_of I) (tjIsog_of I) (trEta_of I) (congCRT_of I)`.
+A detailed English derivation is pending.
 -/
 theorem liftEx_of (I : MIn) : LiftEx := UpperTheory.hecke_lift_exists_of_quotient_level (numEx_of I) (qObj_of I) (qComp_of I) (qUniq_of I) (qLev_of I) (tjIsog_of I) (trEta_of I) (congCRT_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.hecke_lift_separated_of_lattice_congruence (numEx_of I) (baseInv_of I) (trEta_of I) (trEtaPt_of I) (congCRT_of I) (grpLat_of I) (grpCong_of I)`.
+A detailed English derivation is pending.
 -/
 theorem liftSep_of (I : MIn) : LiftSep := UpperTheory.hecke_lift_separated_of_lattice_congruence (numEx_of I) (baseInv_of I) (trEta_of I) (trEtaPt_of I) (congCRT_of I) (grpLat_of I) (grpCong_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.tower_point_count_statement`.
+A detailed English derivation is pending.
 -/
 theorem count_of (I : MIn) : Count := UpperTheory.tower_point_count_statement
 
 /- English proof (translation)
-The claim follows from `UpperTheory.heckeCorrespondence_lies_in_tower_of_lift_count I (numEx_of I) (clsEx_of I) (powCart_of I) (piInv_of I) (piFet_of I) (liftEx_of I) (liftSep_of I) (count_of I)`.
+A detailed English derivation is pending.
 -/
 theorem tjLies_of (I : MIn) : TjLies := UpperTheory.heckeCorrespondence_lies_in_tower_of_lift_count I (numEx_of I) (clsEx_of I) (powCart_of I) (piInv_of I) (piFet_of I) (liftEx_of I) (liftSep_of I) (count_of I)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.standard_datum_exists`.
+A detailed English derivation is pending.
 -/
 theorem stdEx_of (I : MIn) : StdEx := UpperTheory.standard_datum_exists
 
 /- English proof (translation)
-The claim follows from `UpperTheory.tower_covering_congruence_of_hecke_lies I (siteEx_of I) (numEx_of I) (clsEx_of I) (kSCover_of I) (tjLies_of I)`.
+A detailed English derivation is pending.
 -/
 theorem kSCong_of (I : MIn) : KSCong := UpperTheory.tower_covering_congruence_of_hecke_lies I (siteEx_of I) (numEx_of I) (clsEx_of I) (kSCover_of I) (tjLies_of I)
 

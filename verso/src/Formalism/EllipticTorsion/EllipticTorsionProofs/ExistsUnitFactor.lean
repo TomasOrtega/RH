@@ -13,13 +13,13 @@ namespace WeierstrassCoordinateSubstitution
 variable {K : Type u} [Field K]
 
 /- English proof (translation)
-Take `⟨h0, heq⟩` from `hw`. Establish `hX : (X : PowerSeries K) ≠ 0` using `PowerSeries.X_ne_zero`. Take `⟨v, rfl⟩` from `PowerSeries.X_dvd_iff.mpr h0`. Establish `hv : v = X ^ 2 + C W.a₁ * X * v + C W.a₂ * X ^ 2 * v + C W.a₃ * X * v ^ 2 + C W.a₄ * X ^ 2 * v ^ 2 + C W.a₆ * X ^ 2 * v ^ 3`. Apply `mul_left_cancel₀ hX` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `heq`. Establish `hv0 : constantCoeff v = 0` using `by simpa using congrArg constantCoeff hv`. Take `⟨v₂, rfl⟩` from `PowerSeries.X_dvd_iff.mpr hv0`. Establish `hv₂ : v₂ = X + C W.a₁ * X * v₂ + C W.a₂ * X ^ 2 * v₂ + C W.a₃ * X ^ 2 * v₂ ^ 2 + C W.a₄ * X ^ 3 * v₂ ^ 2 + C W.a₆ * X ^ 4 * v₂ ^ 3`. Apply `mul_left_cancel₀ hX` to reduce the goal to its premises.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `hv`. Establish `hv₂0 : constantCoeff v₂ = 0` using `by simpa using congrArg constantCoeff hv₂`. Take `⟨u, rfl⟩` from `PowerSeries.X_dvd_iff.mpr hv₂0`. Establish `hu : u = 1 + C W.a₁ * X * u + C W.a₂ * X ^ 2 * u + C W.a₃ * X ^ 3 * u ^ 2 + C W.a₄ * X ^ 4 * u ^ 2 + C W.a₆ * X ^ 6 * u ^ 3`. Apply `mul_left_cancel₀ hX` to reduce the goal to its premises.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `hv₂`. Use `⟨u, by ring, ?_⟩` and prove the remaining obligations. Simplify using `using congrArg constantCoeff hu`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_unit_factor {W : WeierstrassCurve K} {w : PowerSeries K} (hw : WFixed W w) :
     ∃ u : PowerSeries K, w = X ^ 3 * u ∧ constantCoeff u = 1 := by
@@ -46,7 +46,7 @@ theorem exists_unit_factor {W : WeierstrassCurve K} {w : PowerSeries K} (hw : WF
   simpa using congrArg constantCoeff hu
 
 /- English proof (translation)
-Establish `ha : PowerSeries.HasSubst s` using `PowerSeries.HasSubst.of_constantCoeff_zero hs`. Rewrite using `[hwu, PowerSeries.subst_mul ha, PowerSeries.subst_pow ha, PowerSeries.subst_X ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_w {u w : PowerSeries K} (hwu : w = X ^ 3 * u) {σ : Type}
     (s : MvPowerSeries σ K) (hs : MvPowerSeries.constantCoeff s = 0) :
@@ -55,7 +55,7 @@ theorem subst_w {u w : PowerSeries K} (hwu : w = X ^ 3 * u) {σ : Type}
   rw [hwu, PowerSeries.subst_mul ha, PowerSeries.subst_pow ha, PowerSeries.subst_X ha]
 
 /- English proof (translation)
-Establish `ha : PowerSeries.HasSubst s` using `PowerSeries.HasSubst.of_constantCoeff_zero hs`. Take `⟨u', hu'⟩` from `PowerSeries.X_dvd_iff.mpr (show constantCoeff (u - 1) = 0 by simp [hu])`. Establish `h1 : u = 1 + X * u'` using `by rw [← hu']; ring`. Rewrite using `[MvPowerSeries.isUnit_iff_constantCoeff, h1, ← PowerSeries.coe_substAlgHom ha, map_add, map_one, map_mul, PowerSeries.coe_substAlgHom, PowerSeries.subst_X ha]`. Simplify using `[hs]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isUnit_subst {u : PowerSeries K} (hu : constantCoeff u = 1) {σ : Type}
     (s : MvPowerSeries σ K) (hs : MvPowerSeries.constantCoeff s = 0) :
@@ -68,7 +68,7 @@ theorem isUnit_subst {u : PowerSeries K} (hu : constantCoeff u = 1) {σ : Type}
   simp [hs]
 
 /- English proof (translation)
-Establish `hinj` using `IsFractionRing.injective (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K))`. Establish `hs' : algebraMap _ (FractionRing (MvPowerSeries σ K)) s ≠ 0` using `(map_ne_zero_iff _ hinj).mpr hne`. Establish `hu' : algebraMap _ (FractionRing (MvPowerSeries σ K)) (u.subst s) ≠ 0` using `(map_ne_zero_iff _ hinj).mpr (isUnit_subst hu s hs).ne_zero`. Rewrite using `[xOf, subst_w hwu s hs, map_mul, map_mul, map_pow, map_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem xOf_eq {u w : PowerSeries K} (hwu : w = X ^ 3 * u) (hu : constantCoeff u = 1)
     {σ : Type} (s : MvPowerSeries σ K) (hs : MvPowerSeries.constantCoeff s = 0) (hne : s ≠ 0) :
@@ -83,9 +83,9 @@ theorem xOf_eq {u w : PowerSeries K} (hwu : w = X ^ 3 * u) (hu : constantCoeff u
   field_simp
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[xOf_eq hwu hu s hs0 hs, xOf_eq hwu hu t ht0 ht, inv_inj]`. Establish `h2` using `IsFractionRing.injective (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K)) h`. Establish `h3` using `congrArg φ h2`. Rewrite `h3` using `[map_mul, map_mul, map_pow, map_pow, hφs]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hut : IsUnit (φ (u.subst t))` using `(isUnit_subst hu t ht0).map φ`. Establish `h4 : φ t ^ 2 * φ (u.subst t) ≠ 0` using `mul_ne_zero (pow_ne_zero _ hφt) hut.ne_zero`. Apply `h4` to reduce the goal to its premises. Rewrite using `[← h3]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem xOf_ne_of_hom {u w : PowerSeries K} (hwu : w = X ^ 3 * u) (hu : constantCoeff u = 1)
     {σ : Type} (φ : MvPowerSeries σ K →ₐ[K] MvPowerSeries σ K) (s t : MvPowerSeries σ K)
@@ -103,13 +103,11 @@ theorem xOf_ne_of_hom {u w : PowerSeries K} (hwu : w = X ^ 3 * u) (hu : constant
   simp
 
 /- English proof (translation)
-Establish `hinj` using `IsFractionRing.injective (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K))`. Establish `key : ∀ s : MvPowerSeries σ K, xOf w s = -(algebraMap _ (FractionRing (MvPowerSeries σ K)) s) * yOf w s`. Introduce `s`. Simplify using `only [xOf, yOf]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `zero_of : ∀ s : MvPowerSeries σ K, MvPowerSeries.constantCoeff s = 0 → yOf w s = 0 → s = 0`. Introduce `s hs hys`. Simplify using `only [yOf, div_eq_zero_iff, neg_eq_zero, one_ne_zero, false_or] at hys`. Establish `h1 : w.subst s = 0` using `(map_eq_zero_iff _ hinj).mp hys`. Rewrite `h1` using `[subst_w hwu s hs]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(pow_eq_zero_iff (by norm_num)).mp ((mul_eq_zero.mp h1).resolve_right (isUnit_subst hu s hs).ne_zero)`. Distinguish the cases in `hy0 : yOf w A = 0`. Rewrite using `[zero_of A hA hy0, zero_of B hB (by rw [← hy]; exact hy0)]`. Establish `hyB : yOf w B ≠ 0` using `by rw [← hy]; exact hy0`. Rewrite `hx` using `[key A, key B, hy]`.
-
-Conclude with `hinj (neg_inj.mp (mul_right_cancel₀ hyB hx))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_xy {u w : PowerSeries K} (hwu : w = X ^ 3 * u) (hu : constantCoeff u = 1)
     {σ : Type} (A B : MvPowerSeries σ K) (hA : MvPowerSeries.constantCoeff A = 0)
@@ -136,7 +134,7 @@ theorem eq_of_xy {u w : PowerSeries K} (hwu : w = X ^ 3 * u) (hu : constantCoeff
     exact hinj (neg_inj.mp (mul_right_cancel₀ hyB hx))
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Substitute `hy` using the available equality. Conclude with `⟨h, rfl⟩`.
+Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem some_congr {L : Type u} [Field L] {W' : WeierstrassCurve.Affine L} {x y x' y' : L}
     {h : W'.Nonsingular x y} (hx : x = x') (hy : y = y') :
@@ -157,9 +155,9 @@ namespace WeierstrassCoordinateSubstitution
 variable {K : Type u} [Field K]
 
 /- English proof (translation)
-Take `⟨hx, hy⟩` from `hch`. Rewrite using `[WeierstrassCurve.Affine.Point.add_some (fun h => hne h.1)]`. Use `some_congr ?_ ?_` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.Affine.slope_of_X_ne hne]`. Conclude with `hx.symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WeierstrassCurve.Affine.slope_of_X_ne hne]`. Conclude with `hy.symm`.
+A detailed English derivation is pending.
 -/
 theorem chord_add {W : WeierstrassCurve K} {w : PowerSeries K} {σ : Type}
     [DecidableEq (FractionRing (MvPowerSeries σ K))] (s t r : MvPowerSeries σ K)
@@ -181,7 +179,7 @@ theorem chord_add {W : WeierstrassCurve K} {w : PowerSeries K} {σ : Type}
     exact hy.symm
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg (MvPowerSeries.coeff (Finsupp.single i 1)) h`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem X_ne_zero' {σ : Type} (i : σ) : (MvPowerSeries.X i : MvPowerSeries σ K) ≠ 0 := by
   intro h
@@ -189,7 +187,7 @@ theorem X_ne_zero' {σ : Type} (i : σ) : (MvPowerSeries.X i : MvPowerSeries σ 
   simp at h1
 
 /- English proof (translation)
-Apply the tactic sequence `have hab : MvPowerSeries.HasSubst ![a, b] := MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => by fin_cases i <;> simp [ha, hb])`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hab hv]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem subst_subst_pair' {τ υ : Type} (F : MvPowerSeries (Fin 2) K)
     (a b : MvPowerSeries τ K) (ha : MvPowerSeries.constantCoeff a = 0)
@@ -205,11 +203,11 @@ private theorem subst_subst_pair' {τ υ : Type} (F : MvPowerSeries (Fin 2) K)
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `hv` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hv0`. Establish `h1` using `congrArg (MvPowerSeries.subst v) h`. Rewrite `h1` using `[subst_subst_pair' F _ _ (by simp) (by simp) v hv, MvPowerSeries.subst_X hv, MvPowerSeries.subst_X hv, hi, hj]`. Establish `h0 : MvPowerSeries.subst v (0 : MvPowerSeries (Fin 3) K) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← MvPowerSeries.coe_substAlgHom hv, map_zero]`. Establish `e : (![MvPowerSeries.X 0, MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) K) = MvPowerSeries.X`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> rfl`. Rewrite `h1` using `[h0, e, MvPowerSeries.subst_self, id_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hF1` using `[h1]`. Simplify using `at hF1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem subst_X_X_ne_zero (F : MvPowerSeries (Fin 2) K)
     (hF1 : MvPowerSeries.coeff (Finsupp.single 0 1) F = 1) (i j : Fin 3)
@@ -232,29 +230,27 @@ private theorem subst_X_X_ne_zero (F : MvPowerSeries (Fin 2) K)
   simp at hF1
 
 /- English proof (translation)
-Establish `cX : ∀ i : Fin 3, MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPowerSeries (Fin 3) K) = 0` using `fun i => by simp`. Establish `nX : ∀ i : Fin 3, (MvPowerSeries.X i : MvPowerSeries (Fin 3) K) ≠ 0` using `fun i => X_ne_zero' i`. Establish `cSub : ∀ a b : MvPowerSeries (Fin 3) K, MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff b = 0 → MvPowerSeries.constantCoeff (F.subst ![a, b]) = 0`. Introduce `a b ha hb`. Apply the tactic sequence `exact MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => by fin_cases i <;> simp [ha, hb])) (fun i => by fin_cases i <;> simp [ha, hb]) hF0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `ne_of : ∀ (v : Fin 3 → MvPowerSeries (Fin 3) K), (∀ i, MvPowerSeries.constantCoeff (v i) = 0) → ∀ s t : MvPowerSeries (Fin 3) K, MvPowerSeries.constantCoeff s = 0 → MvPowerSeries.constantCoeff t = 0 → s ≠ 0 → t ≠ 0 → MvPowerSeries.subst v s = 0 → MvPowerSeries.subst v t ≠ 0 → xOf …`. Introduce `v hv s t hs0 ht0 hs ht h1 h2`. Establish `hv'` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hv`. Conclude with `xOf_ne_of_hom hwu hu (MvPowerSeries.substAlgHom hv') s t hs0 ht0 hs ht (by rw [MvPowerSeries.coe_substAlgHom]; exact h1) (by rw [MvPowerSeries.coe_substAlgHom]; exact h2)`. Apply the tactic sequence `have g01 : F.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 1] ≠ 0 := subst_X_X_ne_zero F hF1 0 1 ![MvPowerSeries.X 0, MvPowerSeries.X 1, 0] (fun k => by fin_cases k <;> simp) rfl rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have g12 : F.subst ![(MvPowerSeries.X 1 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 2] ≠ 0 := subst_X_X_ne_zero F hF1 1 2 ![0, MvPowerSeries.X 0, MvPowerSeries.X 1] (fun k => by fin_cases k <;> simp) rfl rfl`. Establish `c01` using `cSub _ _ (cX 0) (cX 1)`. Establish `c12` using `cSub _ _ (cX 1) (cX 2)`. Apply the tactic sequence `have hv1 : ∀ i, MvPowerSeries.constantCoeff ((![0, MvPowerSeries.X 1, MvPowerSeries.X 2] : Fin 3 → MvPowerSeries (Fin 3) K) i) = 0 := fun i => by fin_cases i <;> simp`. Apply the tactic sequence `have hv2 : ∀ i, MvPowerSeries.constantCoeff ((![MvPowerSeries.X 0, MvPowerSeries.X 1, 0] : Fin 3 → MvPowerSeries (Fin 3) K) i) = 0 := fun i => by fin_cases i <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have hv3 : ∀ i, MvPowerSeries.constantCoeff ((![MvPowerSeries.X 0, 0, MvPowerSeries.X 2] : Fin 3 → MvPowerSeries (Fin 3) K) i) = 0 := fun i => by fin_cases i <;> simp`. Establish `ne1 : xOf w (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K) ≠ xOf w (MvPowerSeries.X 1)`. Use `ne_of _ hv1 _ _ (cX 0) (cX 1) (nX 0) (nX 1) ?_ ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hv1)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hv1)]`. Conclude with `nX 1`. Establish `ne2 : xOf w (F.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 1]) ≠ xOf w (MvPowerSeries.X 2)`. Use `Ne.symm (ne_of _ hv2 _ _ (cX 2) c01 (nX 2) g01 ?_ ?_)` and prove the remaining obligations. Rewrite using `[MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hv2)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[subst_subst_pair' F _ _ (cX 0) (cX 1) _ (MvPowerSeries.hasSubst_of_constantCoeff_zero hv2), MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hv2), MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hv2)]`. Conclude with `g01`. Establish `ne3 : xOf w (MvPowerSeries.X 1 : MvPowerSeries (Fin 3) K) ≠ xOf w (MvPowerSeries.X 2)`. Use `ne_of _ hv3 _ _ (cX 1) (cX 2) (nX 1) (nX 2) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hv3)]`. Both sides reduce to the same expression. Rewrite using `[MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hv3)]`. Conclude with `nX 2`. Establish `ne4 : xOf w (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K) ≠ xOf w (F.subst ![(MvPowerSeries.X 1 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 2])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `ne_of _ hv1 _ _ (cX 0) c12 (nX 0) g12 ?_ ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hv1)]`. Both sides reduce to the same expression. Rewrite using `[subst_subst_pair' F _ _ (cX 1) (cX 2) _ (MvPowerSeries.hasSubst_of_constantCoeff_zero hv1), MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hv1), MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hv1)]`. Conclude with `g12`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ch1` using `hS K W w hw F hF0 hch (Fin 3) _ _ (cX 0) (cX 1) (nX 0) (nX 1) ne1`. Establish `ch2` using `hS K W w hw F hF0 hch (Fin 3) _ _ c01 (cX 2) g01 (nX 2) ne2`. Establish `ch3` using `hS K W w hw F hF0 hch (Fin 3) _ _ (cX 1) (cX 2) (nX 1) (nX 2) ne3`. Establish `ch4` using `hS K W w hw F hF0 hch (Fin 3) _ _ (cX 0) c12 (nX 0) g12 ne4`. Establish `p0` using `hP K W w hw (Fin 3) _ (cX 0) (nX 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `p1` using `hP K W w hw (Fin 3) _ (cX 1) (nX 1)`. Establish `p2` using `hP K W w hw (Fin 3) _ (cX 2) (nX 2)`. Establish `p01` using `hP K W w hw (Fin 3) _ c01 g01`. Establish `p12` using `hP K W w hw (Fin 3) _ c12 g12`. Take `⟨h01, e1⟩` from `chord_add _ _ _ p0 p1 ne1 ch1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨hL, e2⟩` from `chord_add _ _ _ p01 p2 ne2 ch2`. Take `⟨h12, e3⟩` from `chord_add _ _ _ p1 p2 ne3 ch3`. Take `⟨hR, e4⟩` from `chord_add _ _ _ p0 p12 ne4 ch4`. Establish `key` using `e2.symm.trans (((congrArg (· + _) e1).symm.trans ((add_assoc _ _ _).trans (congrArg (_ + ·) e3))).trans e4)`. Simplify using `only [WeierstrassCurve.Affine.Point.some.injEq] at key`.
-
-Conclude with `eq_of_xy hwu hu _ _ (cSub _ _ c01 (cX 2)) (cSub _ _ (cX 0) c12) key.1 key.2`.
+A detailed English derivation is pending.
 -/
 theorem assoc_of (hS : WChordSubst.{u}) (hP : WPoint.{u}) {W : WeierstrassCurve K}
     {w : PowerSeries K} (hw : WFixed W w) {u : PowerSeries K} (hwu : w = X ^ 3 * u)
@@ -351,7 +347,7 @@ theorem assoc_of (hS : WChordSubst.{u}) (hP : WPoint.{u}) {W : WeierstrassCurve 
 end WeierstrassCoordinateSubstitution
 
 /- English proof (translation)
-Introduce `K _ W w hw`. Take `⟨F₂, hcoef, h0, h1, h2, hch⟩` from `hC K W w hw`. Take `⟨u, hwu, hu⟩` from `WeierstrassCoordinateSubstitution.exists_unit_factor hw`. Set `F : FormalGroup K` to `{ toPowerSeries := F₂ zero_constantCoeff := h0 lin_coeff_X := h1 lin_coeff_Y := h2 assoc := WeierstrassCoordinateSubstitution.assoc_of hS hP hw hwu hu F₂ h0 h1 hch }`. Conclude with `⟨F, hcoef, hch⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem wFormalGroup_of (hC : Formalism.ELL.WChordSeries.{u}) (hS : Formalism.ELL.WChordSubst.{u})
     (hP : Formalism.ELL.WPoint.{u}) : Formalism.ELL.WFormalGroup.{u} := by

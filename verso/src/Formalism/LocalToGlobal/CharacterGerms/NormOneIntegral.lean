@@ -16,13 +16,13 @@ variable {C : Type} [Field C]
 def ZP (C : Type) [Field C] (σ : Type) : Subring (MvPolynomial σ C) := (MvPolynomial.map (Int.castRingHom C)).range
 
 /- English proof (translation)
-The claim follows from `RingHom.mem_range.2 ⟨MvPolynomial.X x, MvPolynomial.map_X _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem X_mem_ZP {σ : Type} (x : σ) : (MvPolynomial.X x : MvPolynomial σ C) ∈ ZP C σ :=
   RingHom.mem_range.2 ⟨MvPolynomial.X x, MvPolynomial.map_X _ _⟩
 
 /- English proof (translation)
-Take `⟨Q, rfl⟩` from `RingHom.mem_range.1 h`. Conclude with `RingHom.mem_range.2 ⟨MvPolynomial.rename k Q, MvPolynomial.map_rename _ _ _⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rename_mem_ZP {σ τ : Type} (k : σ → τ) {P : MvPolynomial σ C} (h : P ∈ ZP C σ) :
     MvPolynomial.rename k P ∈ ZP C τ := by
@@ -30,7 +30,7 @@ theorem rename_mem_ZP {σ τ : Type} (k : σ → τ) {P : MvPolynomial σ C} (h 
   exact RingHom.mem_range.2 ⟨MvPolynomial.rename k Q, MvPolynomial.map_rename _ _ _⟩
 
 /- English proof (translation)
-Take `⟨Q, rfl⟩` from `RingHom.mem_range.1 h`. Rewrite using `[MvPolynomial.coeff_map, eq_intCast]`. Conclude with `intCast_mem O _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mem_of_ZP {σ : Type} {P : MvPolynomial σ C} (h : P ∈ ZP C σ) (O : Subring C) (m : σ →₀ ℕ) :
     P.coeff m ∈ O := by
@@ -39,7 +39,7 @@ theorem coeff_mem_of_ZP {σ : Type} {P : MvPolynomial σ C} (h : P ∈ ZP C σ) 
   exact intCast_mem O _
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `S.sum_mem fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `S.zsmul_mem (S.prod_mem fun i _ => h _ _) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem {R : Type} [CommRing R] (S : Subring R) {k : ℕ} (M : Matrix (Fin k) (Fin k) R) (h : ∀ i j, M i j ∈ S) :
     M.det ∈ S := by
@@ -49,7 +49,7 @@ theorem det_mem {R : Type} [CommRing R] (S : Subring R) {k : ℕ} (M : Matrix (F
   exact S.zsmul_mem (S.prod_mem fun i _ => h _ _) _
 
 /- English proof (translation)
-Unfold `minorK`. Use `split_ifs with h`. Conclude with `det_mem _ _ fun i j => X_mem_ZP _`. Conclude with `one_mem _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem minorK_mem_ZP (N N' k : ℕ) : minorK C N N' k ∈ ZP C (Fin N × Fin N') := by
   unfold minorK
@@ -58,7 +58,7 @@ theorem minorK_mem_ZP (N N' k : ℕ) : minorK C N N' k ∈ ZP C (Fin N × Fin N'
   · exact one_mem _
 
 /- English proof (translation)
-Unfold `monP`. Conclude with `prod_mem fun k _ => pow_mem (minorK_mem_ZP N N' k) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem minorMonomial_mem_ZP (N N' : ℕ) (e : ℕ → ℕ) : monP C N N' e ∈ ZP C (Fin N × Fin N') := by
   unfold monP
@@ -67,9 +67,9 @@ theorem minorMonomial_mem_ZP (N N' : ℕ) (e : ℕ → ℕ) : monP C N N' e ∈ 
 end Gen
 
 /- English proof (translation)
-Unfold `GlobalTheory.poly`. Consider the cases of `b with`. Consider the case `bi g a i y`. Conclude with `mul_mem (pow_mem (rename_mem_ZP _ (minorK_mem_ZP _ _ _)) _) (pow_mem (rename_mem_ZP _ (minorK_mem_ZP _ _ _)) _)`. Consider the case `ch g a u => exact pow_mem (rename_mem_ZP _ (minorK_mem_ZP _ _ _)) _`.
+Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mon g e N => exact prod_mem fun a _ => rename_mem_ZP _ (minorMonomial_mem_ZP _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem poly_mem_ZP {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → Type} [∀ g, Fintype (I g)]
     [∀ g, Fintype (J g)] (X : RowData C V d I J) (F : Flag X) (b : GlobalTheory d) : b.poly X F ∈ ZP C _ := by
@@ -82,7 +82,7 @@ theorem poly_mem_ZP {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d] {I J : 
   | mon g e N => exact prod_mem fun a _ => rename_mem_ZP _ (minorMonomial_mem_ZP _ _ _)
 
 /- English proof (translation)
-Unfold `blkProd toAll prodAll`. Conclude with `prod_mem fun o _ => rename_mem_ZP _ (prod_mem fun i _ => rename_mem_ZP _ (poly_mem_ZP _ _ _))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem blkProd_mem_ZP {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d] {Orb : Type} [Fintype Orb]
     {I J : Orb → Fin 2 → Type} [∀ o g, Fintype (I o g)] [∀ o g, Fintype (J o g)]
@@ -92,7 +92,7 @@ theorem blkProd_mem_ZP {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d] {Orb
   exact prod_mem fun o _ => rename_mem_ZP _ (prod_mem fun i _ => rename_mem_ZP _ (poly_mem_ZP _ _ _))
 
 /- English proof (translation)
-Introduce `C _ V d _ T r cc a Orb _ tau J _ X F Z ga n L pl _ O m`. Conclude with `coeff_mem_of_ZP (rename_mem_ZP _ (blkProd_mem_ZP _ _ _ _ _)) O m`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem norm_one_integral : NormOneIntegral := by
   intro C _ V d _ T r cc a Orb _ tau J _ X F Z ga n L pl _ O m

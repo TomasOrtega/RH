@@ -63,7 +63,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.Col2 GlobalTheory.Mem.R3
 
 /- English proof (translation)
-Introduce `sg hw g P hJ a12 K LM T3` and use `have s1 := GlobalTheory.WeilConv.weilConvergence sg P have s2 := GlobalTheory.SquareLM.localMatching hw P K LM have s3 := GlobalTheory.SquareAgree.thetaIntegralsAgree P.minguezThetaGL P K LM have j := GlobalTheory.RowClaim.Join.fiveClaims P K LM s1 s2 s3 have l := GlobalTheory.Sq …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RowTestAssembly.rowTest_atDat_of_join : GlobalTheory.Published.SiegelSetUnitary → GlobalTheory.Published.HoweDualityReal → GlobalTheory.Published.GreenCuspidal → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Mem.LiteralAutomorphy.JoinOut → GlobalTheory.Published.HeckeTateFunctionalEquation → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate → AtDat fun _ _ _ _ _ _ _ _ z => Formalism.IndefR.Rat.RowTest (z.R.toCx3 z.F) :=
   fun sg hw g P hJ a12 K LM T3 =>

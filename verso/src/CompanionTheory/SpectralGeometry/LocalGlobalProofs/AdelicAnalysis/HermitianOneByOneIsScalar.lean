@@ -10,9 +10,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨w⟩` from `(inferInstance : Nonempty (NumberField.InfinitePlace E))`. Establish `hreal : w.IsReal`. Rewrite using `[← NumberField.InfinitePlace.mk_embedding w, NumberField.InfinitePlace.isReal_mk_iff, NumberField.ComplexEmbedding.isReal_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`. Express the relevant statement in the definitionally equal form `star (w.embedding x) = w.embedding x`. Rewrite using `[← h.2.2.2, hc]`. Conclude with `NumberField.InfinitePlace.not_isReal_iff_isComplex.2 (h.2.1.isComplex w) hreal`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne (h : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
   by_contra hc
@@ -28,15 +28,15 @@ theorem exists_ne (h : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
   exact NumberField.InfinitePlace.not_isReal_iff_isComplex.2 (h.2.1.isComplex w) hreal
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hli : LinearIndependent F ![(1 : E), x]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `ht : t = 0`. Assume the negation of the conclusion as `ht`. Establish `htE : algebraMap F E t ≠ 0` using `(map_ne_zero _).2 ht`. Apply `hc (-(s / t))` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg, map_div₀]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hst`. Use `⟨?_, ht⟩` and prove the remaining obligations. Rewrite `hst` using `[ht, map_zero, zero_mul, add_zero]`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(map_eq_zero_iff _ (algebraMap F E).injective).1 hst`. Establish `hcard : Fintype.card (Fin 2) = Module.finrank F E`. Rewrite using `[Fintype.card_fin, h.2.2.1]`. Take `⟨y, hy⟩` from `exists_ne h`. Establish `hid : σ.toLinearMap = LinearMap.id`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `(basisOfLinearIndependentOfCardEqFinrank hli hcard).ext fun i ↦ ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [hx]`. Conclude with `hy (by simpa using LinearMap.congr_fun hid y)`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_algebraMap (h : IsCMExt F E σ) {x : E} (hx : σ x = x) :
     ∃ β : F, x = algebraMap F E β := by
@@ -69,11 +69,11 @@ end GlobalTheory.CompanionTheory.SW.HermOne
 namespace GlobalTheory.CompanionTheory.SW
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h T hT`. Take `⟨β, hβ⟩` from `HermOne.exists_eq_algebraMap h (hT 0 0)`. Establish `hTβ : T = fun _ _ => algebraMap F E β`. Use function extensionality and compare the values at `a b`. Rewrite using `[Subsingleton.elim a 0, Subsingleton.elim b 0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hβ`. Use `⟨β, hTβ, fun hd hb => hd ?_, fun R _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_fin_one, hβ, hb, map_zero]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim a 0, Subsingleton.elim b 0]`. Express the relevant statement in the definitionally equal form `inclR R (T 0 0) = (algebraMap F R β) ⊗ₜ[F] (1 : E)`. Rewrite using `[hβ, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one]`. Simplify using `[inclR, TensorProduct.smul_tmul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermOne_eq_scal : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (T : Matrix (Fin 1) (Fin 1) E) (hT : ∀ a b, σ (T b a) = T a b), ∃ β : F, T = (fun _ _ => algebraMap F E β) ∧ (T.det ≠ 0 → β ≠ 0) ∧ ∀ (R : Type) [CommRing R] [Algebra F R], hermOf R σ T hT = hermScal R σ (algebraMap F R β) := by
   intro F E _ _ _ _ _ σ h T hT

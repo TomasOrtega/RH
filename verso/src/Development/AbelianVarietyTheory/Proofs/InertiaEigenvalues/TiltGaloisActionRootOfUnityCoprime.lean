@@ -10,9 +10,9 @@ namespace GlobalTheory.MemLoc
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `: NeZero m` using `⟨hm.ne'⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Om l) m`. Establish `hζ'` using `hζ.map_of_injective (algebraMap (Om l) ℂ_[l]).injective`. Take `⟨i, -, rfl⟩` from `hζ'.eq_pow_of_pow_eq_one hx`. Establish `h1 : (ζ ^ i) ^ m = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : Per.σC g (algebraMap (Om l) ℂ_[l] (ζ ^ i)) = algebraMap (Om l) ℂ_[l] (g (ζ ^ i))` using `GlobalTheory.RingBasics.σC_coe g (ζ ^ i)`. Rewrite using `[← map_pow, h2, hg _ h1, map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem σC_root_of_unity {m n : ℕ} {g : GQ l} (hm : 0 < m) (hg : ∀ x : Om l, x ^ m = 1 → g x = x ^ n)
     {x : ℂ_[l]} (hx : x ^ m = 1) : Per.σC g x = x ^ n := by
@@ -26,9 +26,9 @@ theorem σC_root_of_unity {m n : ℕ} {g : GQ l} (hm : 0 < m) (hg : ∀ x : Om l
   rw [← map_pow, h2, hg _ h1, map_pow]
 
 /- English proof (translation)
-Establish `: IsDomain (Per.Fl l)` using `inferInstance`. Assume the negation of the conclusion as `hne`. Establish `h1 : (∑ i ∈ Finset.range m, c ^ i) * (c - 1) = 0` using `by rw [geom_sum_mul, hc, sub_self]`. Establish `h2 : (∑ i ∈ Finset.range m, c ^ i) = 0` using `(mul_eq_zero.1 h1).resolve_right (sub_ne_zero.2 hne)`. Establish `h3` using `congrArg (PreTilt.coeff (O := Per.OC l) (p := l) 0) h2`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_pow, h0, one_pow, Finset.sum_const, Finset.card_range, map_zero, nsmul_eq_mul, mul_one] at h3`. Conclude with `hlm ((CharP.cast_eq_zero_iff _ l m).1 h3)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tilt_root_eq_one {c : Per.Fl l} {m : ℕ} (hlm : ¬ l ∣ m) (hc : c ^ m = 1)
     (h0 : PreTilt.coeff 0 c = 1) : c = 1 := by
@@ -43,9 +43,9 @@ theorem tilt_root_eq_one {c : Per.Fl l} {m : ℕ} (hlm : ¬ l ∣ m) (hc : c ^ m
   exact hlm ((CharP.cast_eq_zero_iff _ l m).1 h3)
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Establish `hb' : b * b ^ k = 1` using `by rw [← pow_succ', hb]`. Establish `h0 : PreTilt.coeff 0 a = PreTilt.coeff 0 b`. Rewrite using `[← PreTilt.mk_untilt_eq_coeff_zero, ← PreTilt.mk_untilt_eq_coeff_zero, h]`. Establish `h1 : a * b ^ k = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `tilt_root_eq_one hlm ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ha, ← pow_mul, mul_comm k, pow_mul, hb, one_pow, one_mul]`. Rewrite using `[map_mul, h0, ← map_mul, hb', map_one]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem tilt_root_inj {a b : Per.Fl l} {m : ℕ} (hm : 0 < m) (hlm : ¬ l ∣ m) (ha : a ^ m = 1)
     (hb : b ^ m = 1) (h : a.untilt = b.untilt) : a = b := by
@@ -62,9 +62,9 @@ theorem tilt_root_inj {a b : Per.Fl l} {m : ℕ} (hm : 0 < m) (hlm : ¬ l ∣ m)
     _ = b := by rw [h1, one_mul]
 
 /- English proof (translation)
-Use `tilt_root_inj hm hlm ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← map_pow, he, map_one]`. Rewrite using `[← pow_mul, mul_comm, pow_mul, he, one_pow]`. Rewrite using `[GlobalTheory.RingBasics.untilt_σF, map_pow]`. Establish `h1 : e.untilt ^ m = 1` using `by rw [← map_pow, he, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((e.untilt : Per.OC l) : ℂ_[l]) ^ m = 1`. Simplify using `using congrArg Subtype.val h1`. Conclude with `Subtype.ext ((GlobalTheory.RingIface.sigO_coe l g _).trans ((σC_root_of_unity hm hg h2).trans (by simp)))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem σF_root_of_unity (l : ℕ) [Fact l.Prime] (e : Per.Fl l) (m n : ℕ) (g : GQ l) (hm : 0 < m)
     (hlm : ¬ l ∣ m) (he : e ^ m = 1) (hg : ∀ x : Om l, x ^ m = 1 → g x = x ^ n) :

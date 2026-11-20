@@ -16,7 +16,7 @@ namespace GlobalTheory.RealQuotProd
 variable {P Q P' Q' : ℕ}
 
 /- English proof (translation)
-Unfold `ActionCoordinates.act`. Rewrite using `[Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem act_mul (g h : UpqT P Q) (x : ActionCoordinates.Wsp P Q) :
     ActionCoordinates.act (g * h) x = ActionCoordinates.act g (ActionCoordinates.act h x) := by
@@ -24,12 +24,12 @@ theorem act_mul (g h : UpqT P Q) (x : ActionCoordinates.Wsp P Q) :
   rw [Matrix.mulVec_mulVec]; rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.one_mulVec x`.
+A detailed English derivation is pending.
 -/
 theorem act_one (x : ActionCoordinates.Wsp P Q) : ActionCoordinates.act (1 : UpqT P Q) x = x := Matrix.one_mulVec x
 
 /- English proof (translation)
-Establish `: ActionCoordinates.act a⁻¹ x = x` using `by conv_lhs => rw [← ha]`. Rewrite using `[← act_mul, inv_mul_cancel, act_one]`. Rewrite using `[_root_.mul_inv_rev, act_mul, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_mul_inv {a : UpqT P Q} {x : ActionCoordinates.Wsp P Q} (ha : ActionCoordinates.act a x = x) (g : UpqT P Q) :
     ActionCoordinates.act (a * g)⁻¹ x = ActionCoordinates.act g⁻¹ x := by
@@ -39,7 +39,7 @@ theorem act_mul_inv {a : UpqT P Q} {x : ActionCoordinates.Wsp P Q} (ha : ActionC
   rw [_root_.mul_inv_rev, act_mul, this]
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc P Q`. Conclude with `((GlobalTheory.UpqTopology.continuous_mat.comp continuous_inv).matrix_mulVec continuous_const).measurable`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem measurable_act_inv (x : ActionCoordinates.Wsp P Q) :
     Measurable fun g : UpqT P Q => ActionCoordinates.act g⁻¹ x := by
@@ -48,7 +48,7 @@ theorem measurable_act_inv (x : ActionCoordinates.Wsp P Q) :
     continuous_const).measurable
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc P Q`. Use `haveI : (c.cd P Q).IsHaarMeasure := c.haar P Q`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sigmaFinite_cd (c : CDHaar) (P Q : ℕ) : SigmaFinite (c.cd P Q) := by
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.UpqTopology.upq_lcsc P Q
@@ -56,11 +56,11 @@ theorem sigmaFinite_cd (c : CDHaar) (P Q : ℕ) : SigmaFinite (c.cd P Q) := by
   infer_instance
 
 /- English proof (translation)
-Take `⟨h1, -, h3⟩` from `H P Q β hβ x hx`. Use `choose! s hs using h1`. Establish `hae : ∀ᵐ y ∂(fib β), ActionCoordinates.qf y = β`. Take `⟨U, B, -, -, -, hF⟩` from `hfib`. Establish `h1 : ∀ᵐ y ∂(fib β), y ∈ ActionCoordinates.qf ⁻¹' {id β} ∩ U` using `hF.1 β`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `filter_upwards [h1] with y hy using hy.1`. Rewrite using `[(h3 P' Q' k ι hk).2 c fib hfib s hs (fun g => φ (ActionCoordinates.act g⁻¹ x) * u g) ((hφ.comp (measurable_act_inv x)).mul hu), Measure.restrict_eq_self_of_ae_mem (s := {y | ActionCoordinates.qf y = β}) hae]`. Use `congr 1`. Use `lintegral_congr_ae (hae.mono fun y hy => ?_)` and prove the remaining obligations. Establish `e : ∀ h, φ (ActionCoordinates.act (ι h * s y)⁻¹ x) = φ y` using `fun h => by`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[act_mul_inv (hk.2.2 h).1, hs y hy]`. Simplify using `only [e]`. Rewrite using `[lintegral_const_mul _ (hu' _).1, (hu' _).2, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_place (H : ActionCoordinates.QuotientMeasure) (c : CDHaar) {β : ℝ} (hβ : β = 1 ∨ β = -1)
     {x : ActionCoordinates.Wsp P Q} (hx : ActionCoordinates.qf x = β) {k : ActionCoordinates.Wsp P' Q' →ₗ[ℂ] ActionCoordinates.Wsp P Q}
@@ -89,11 +89,11 @@ theorem one_place (H : ActionCoordinates.QuotientMeasure) (c : CDHaar) {β : ℝ
   rw [lintegral_const_mul _ (hu' _).1, (hu' _).2, mul_one]
 
 /- English proof (translation)
-Introduce `H c T _ P Q P' Q' β hβ x hx k ι hk u hu j hj ν hν fib hfib φ hφ`. Use `haveI := sigmaFinite_cd c P Q`. Use `haveI := sigmaFinite_cd c P' Q'`. Set `f : T → UpqT P Q → ℝ≥0∞` to `fun ρ g => φ ρ (ActionCoordinates.act g⁻¹ (x ρ)) * u ρ g`. Establish `hf : ∀ ρ, Measurable (f ρ)` using `fun ρ => ((hφ ρ).comp (measurable_act_inv (x ρ))).mul (hu ρ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `hν (fun g => ∏ ρ, f ρ (g ρ)) (Finset.measurable_prod _ fun ρ _ => (hf ρ).comp (measurable_pi_apply ρ))`. Rewrite `key` using `[GlobalTheory.SnMass.Push.lintegral_fintype_prod f hf]`. Rewrite using `[← Finset.prod_congr rfl fun ρ _ => one_place H c hβ (hx ρ) (hk ρ) (hu ρ).1 (hu ρ).2 hfib (hφ ρ)]`. Use `Eq.trans (lintegral_congr fun s => ?_) key.symm` and prove the remaining obligations. Establish `e : ∀ h : T → UpqT P' Q', ∏ ρ, f ρ ((j h * s.out) ρ) = ∏ ρ, (fun ρ b => φ ρ (ActionCoordinates.act (s.out ρ)⁻¹ (x ρ)) * u ρ (ι ρ b * s.out ρ)) ρ (h ρ)` using `fun h => Finset.prod_congr rfl fun ρ _ => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [f, Pi.mul_apply, hj]`. Rewrite using `[act_mul_inv ((hk ρ).2.2 _).1]`. Rewrite using `[lintegral_congr e, GlobalTheory.SnMass.Push.lintegral_fintype_prod (fun ρ b => φ ρ (ActionCoordinates.act (s.out ρ)⁻¹ (x ρ)) * u ρ (ι ρ b * s.out ρ)) (fun ρ => (((hu ρ).2 _).1).const_mul _)]`. Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul _ ((hu ρ).2 _).1, ((hu ρ).2 _).2, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_integral_prod : ActionCoordinates.QuotientMeasure → ∀ (c : CDHaar) (T : Type) [Fintype T] (P Q P' Q' : ℕ) (β : ℝ), (β = 1 ∨ β = -1) → ∀ x : T → ActionCoordinates.Wsp P Q, (∀ ρ, ActionCoordinates.qf (x ρ) = β) → ∀ (k : T → (ActionCoordinates.Wsp P' Q' →ₗ[ℂ] ActionCoordinates.Wsp P Q)) (ι : T → UpqT P' Q' → UpqT P Q), (∀ ρ, ActionCoordinates.IsPerpFrame (x ρ) (k ρ) (ι ρ)) → ∀ u : T → UpqT P Q → ℝ≥0∞, (∀ ρ, Measurable (u ρ) ∧ ∀ g, Measurable (fun h => u ρ (ι ρ h * g)) ∧ ∫⁻ h, u ρ (ι ρ h * g) ∂(c.cd P' Q') = 1) → ∀ j : (T → UpqT P' Q') →* (T → UpqT P Q), (∀ b ρ, j b ρ = ι ρ (b ρ)) → ∀ ν : Measure (LatticeTensorUnfolding.RCosets j), LatticeTensorUnfolding.IsQuotMeasure j (Measure.pi fun _ => c.cd P Q) (Measure.pi fun _ => c.cd P' Q') ν → ∀ fib : ℝ → Measure (ActionCoordinates.Wsp P Q), ActionCoordinates.IsDxDq β fib → ∀ φ : T → ActionCoordinates.Wsp P Q → ℝ≥0∞, (∀ ρ, Measurable (φ ρ)) → ∫⁻ s : LatticeTensorUnfolding.RCosets j, ∏ ρ, φ ρ (ActionCoordinates.act (s.out ρ)⁻¹ (x ρ)) ∂ν = ∏ ρ, (ActionCoordinates.cM (P + Q))⁻¹ * ∫⁻ y, φ ρ y ∂(fib β) := by
   intro H c T _ P Q P' Q' β hβ x hx k ι hk u hu j hj ν hν fib hfib φ hφ

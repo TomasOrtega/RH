@@ -15,7 +15,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 instance fintypeResidue : Fintype 𝓀[F] := Fintype.ofFinite _
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_two_of]`. Establish `h : (GLnLocal.uniformizer F : F) ≠ 0` using `Cartan.uniformizer_ne_zero F`. Simplify using `using mul_ne_zero (pow_ne_zero i h) (pow_ne_zero j h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_rowMat (i j : ℕ) (c : F) :
     (!![(GLnLocal.uniformizer F : F) ^ i, c; 0, (GLnLocal.uniformizer F : F) ^ j]).det ≠ 0 := by

@@ -20,7 +20,7 @@ open GlobalTheory.HeightCounting.Up GlobalTheory.Mem.SRe GlobalTheory.Mem.R3.Rw
 namespace GlobalTheory.HeightCounting.Up
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨h.gal.R.trans h'.gal.R, h.gal.host.trans h'.gal.host, h.gal.loc.trans h'.gal.loc, h.gal.Om.trans h'.gal.Om, h.gal.instOm.trans h'.gal.instOm, h.gal.algOm.trans h'.gal.algOm, h.gal.plOm.trans h'.gal.plOm, h.gal.PlG.trans h'.gal.PlG⟩, ⟨h.set.cc.trans h'.set.cc, h.set.Tw.trans h'. …`.
+Supply the required witnesses or components.
 -/
 theorem kept_trans_layer {D D' D'' : D7} {c : NChoice D} {c' : NChoice D'} {c'' : NChoice D''} (h : Kept c c') (h' : Kept c' c'') :
     Kept c c'' :=
@@ -30,7 +30,7 @@ theorem kept_trans_layer {D D' D'' : D7} {c : NChoice D} {c' : NChoice D'} {c'' 
     h.br.trans h'.br, h.twI.trans h'.twI, h.sd.trans h'.sd, h.Q.trans h'.Q, h.k.trans h'.k, h.psi.trans h'.psi⟩
 
 /- English proof (translation)
-Take `⟨P, x, l, h1, h2, h3⟩` from `h`. Conclude with `⟨P, x, l, h1, h2, kept_trans_layer h3 hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem org_of_kept {hL : GlobalTheory.Published.LocalLanglandsGL} {cDep : ℝ} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B}
     {w : ColW B f T} {D D' : D7} {Wt : Set B.places.Pl} {nch : NChoice D} {nch' : NChoice D'}
@@ -41,13 +41,13 @@ theorem org_of_kept {hL : GlobalTheory.Published.LocalLanglandsGL} {cDep : ℝ} 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hL cDep S Γ`. Prove the components needed by the constructor for the conclusion. Introduce `K B f T w Z l S' N h`. Take `⟨p0', t', hs, hgeo, hpk, hrx⟩` from `GlobalTheory.T.adelicRowsDivision_transport_spectralStage_lattices K B f T w Z l.Wt l.p0 l.what₂ S' N h`. Take `⟨nch', xd', hk, -, hn, -, hnx⟩` from `GlobalTheory.T.exists_kept_choice_upper_lattice hL K B f T w Z l.Wt S' N h l.nch l.xd`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n'⟩` from `hn l.n`. Take `⟨rx'⟩` from `hrx ⟨l.rx⟩`. Take `⟨c, ⟨e, ⟨pin⟩⟩, ⟨org⟩⟩` from `l.nx`. Take `⟨⟨c', e'⟩⟩` from `hnx l.p0 l.what₂ l.n p0' t' n' hs hgeo ⟨c, e⟩`. Establish `pin'` using `GlobalTheory.Mem.GridMove.listPin_rowsSame cDep K.s.b K B f T w Z l.Wt S' N h l.p0 l.what₂ p0' t' hs pin`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨Lv3.mk ⟨l.g, l.coh, l.Wt, p0', t', rx'⟩ nch' n' xd' l.chiT ⟨c', ⟨e', ⟨pin'⟩⟩, ⟨org_of_kept org hk⟩⟩, hpk⟩`. Introduce `K B f T w Z l S' N h`. Take `⟨p0', t', hs, hgeo, hpk, hrx⟩` from `GlobalTheory.T.adelicRowsDivision_transport_spectralStage_lattices K B f T w Z l.Wt l.p0 l.what₂ S' N h`. Take `⟨nch', xd', hk, -, hn, hg, hnx⟩` from `GlobalTheory.T.exists_kept_choice_upper_lattice hL K B f T w Z l.Wt S' N h l.nch l.xd`. Take `⟨n'⟩` from `hn l.n`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨rx'⟩` from `hrx ⟨l.rx⟩`. Take `⟨c, ⟨⟨e, ⟨pin⟩⟩, ⟨org⟩⟩, ⟨good⟩⟩` from `l.nx`. Take `⟨⟨c', e'⟩⟩` from `hnx l.p0 l.what₂ l.n p0' t' n' hs hgeo ⟨c, e⟩`. Establish `pin'` using `GlobalTheory.Mem.GridMove.listPin_rowsSame cDep K.s.b K B f T w Z l.Wt S' N h l.p0 l.what₂ p0' t' hs pin`. Conclude with `⟨Lv3.mk ⟨l.g, l.coh, l.Wt, p0', t', rx'⟩ nch' n' xd' l.chiT ⟨c', ⟨⟨e', ⟨pin'⟩⟩, ⟨org_of_kept org hk⟩⟩, ⟨hg good⟩⟩, hpk⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem lv3Mv_true : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (cDep : ℝ) (S : SExt) (Γ : GeoP), LevelThreeCondition (prmR (NEo hL cDep) S Γ).s ∧ LevelThreeCondition (prmR (NEog hL cDep) S Γ).s := by
   intro hL cDep S Γ

@@ -11,7 +11,7 @@ namespace GlobalTheory.GLPath
 open Polynomial
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun φ => φ.hom r) (Scheme.ΓSpecIso_naturality g)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Rewrite using `[← e]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem appTop_spec_map {R S : CommRingCat} (g : R ⟶ S) (r : Γ(Spec R, ⊤)) :
     (Spec.map g).appTop r = (Scheme.ΓSpecIso S).inv (g ((Scheme.ΓSpecIso R).hom r)) := by
@@ -24,7 +24,7 @@ def line {L : Type} [Field L] {m : ℕ} (A : Matrix (Fin m) (Fin m) L) : Matrix 
   (1 - X : L[X]) • (1 : Matrix (Fin m) (Fin m) L[X]) + (X : L[X]) • A.map C
 
 /- English proof (translation)
-Simplify using `only [line, Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply, Matrix.map_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_line_zero {L : Type} [Field L] {m : ℕ} (A : Matrix (Fin m) (Fin m) L) (i j : Fin m) :
     eval 0 (line A i j) = (1 : Matrix (Fin m) (Fin m) L) i j := by
@@ -32,7 +32,7 @@ theorem eval_line_zero {L : Type} [Field L] {m : ℕ} (A : Matrix (Fin m) (Fin m
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [line, Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply, Matrix.map_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_line_one {L : Type} [Field L] {m : ℕ} (A : Matrix (Fin m) (Fin m) L) (i j : Fin m) :
     eval 1 (line A i j) = A i j := by
@@ -40,14 +40,14 @@ theorem eval_line_one {L : Type} [Field L] {m : ℕ} (A : Matrix (Fin m) (Fin m)
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `eval_line_zero A i j`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mapMatrix_line_zero {L : Type} [Field L] {m : ℕ} (A : Matrix (Fin m) (Fin m) L) :
     (evalRingHom (0 : L)).mapMatrix (line A) = 1 := by
   ext i j; exact eval_line_zero A i j
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `eval_line_one A i j`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mapMatrix_line_one {L : Type} [Field L] {m : ℕ} (A : Matrix (Fin m) (Fin m) L) :
     (evalRingHom (1 : L)).mapMatrix (line A) = A := by
@@ -59,25 +59,23 @@ namespace GlobalTheory.GLPath
 open Polynomial
 
 /- English proof (translation)
-Introduce `L _ ι _ n A hA`. Use `set p : L[X] := ∏ a, (line (A a)).det with hp_def`. Establish `hev : ∀ x : L, eval x p = ∏ a, ((evalRingHom x).mapMatrix (line (A a))).det`. Introduce `x`. Rewrite using `[hp_def, ← coe_evalRingHom, map_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl fun a _ => RingHom.map_det _ _`. Establish `hu0 : IsUnit ((evalRingHom (0 : L)) p)`. Rewrite using `[coe_evalRingHom, hev]`. Simplify using `only [mapMatrix_line_zero, Matrix.det_one, Finset.prod_const_one, isUnit_one]`. Establish `hu1 : IsUnit ((evalRingHom (1 : L)) p)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[coe_evalRingHom, hev]`. Simplify using `only [mapMatrix_line_one]`. Conclude with `Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one fun a _ => hA a`. Establish `hp0 : p ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite `hu0` using `[h, map_zero]`. Conclude with `not_isUnit_zero hu0`. Set `R` to `Localization.Away p`. Use `haveI : IsDomain R := IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors hp0)`. Set `c : Spec (CommRingCat.of R) ⟶ Spec (CommRingCat.of L)` to `Spec.map (CommRingCat.ofHom ((algebraMap L[X] R).comp C))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `f₁ : R →+* L` to `IsLocalization.Away.lift p hu0`. Set `f₂ : R →+* L` to `IsLocalization.Away.lift p hu1`. Establish `hf : ∀ (x : L) (hx : IsUnit ((evalRingHom x) p)) (q : L[X]), (IsLocalization.Away.lift (S` using `R) p hx) (algebraMap L[X] R q) = eval x q := by`. Introduce `x hx q`. Simplify using `[IsLocalization.Away.lift, IsLocalization.lift_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `hsec : ∀ (x : L) (hx : IsUnit ((evalRingHom x) p)), Spec.map (CommRingCat.ofHom (IsLocalization.Away.lift (S` using `R) p hx)) ≫ c = 𝟙 _ := by`. Introduce `x hx`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Use extensionality with `r`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[c, hf]`. Set `B : ∀ a, Matrix (Fin (n a)) (Fin (n a)) Γ(Spec (CommRingCat.of R), ⊤)` to `fun a => ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom.comp (algebraMap L[X] R)).mapMatrix (line (A a))`. Establish `hval : ∀ (x : L) (hx : IsUnit ((evalRingHom x) p)) a i j, (Spec.map (CommRingCat.ofHom (IsLocalization.Away.lift (S` using `R) p hx))).appTop (B a i j) = (Scheme.ΓSpecIso (CommRingCat.of L)).inv (eval x (line (A a) i j)) := by`. Introduce `x hx a i j`. Rewrite using `[appTop_spec_map]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[B, hf]`. Use `⟨Spec (CommRingCat.of R), c, _, _, hsec 0 hu0, hsec 1 hu1, B, inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Simplify using `only [B]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← RingHom.map_det]`. Establish `hdvd : (line (A a)).det ∣ p` using `Finset.dvd_prod_of_mem _ (Finset.mem_univ a)`. Establish `hpu : IsUnit (algebraMap L[X] R p)` using `IsLocalization.Away.algebraMap_isUnit p`. Rewrite using `[RingHom.comp_apply]`. Conclude with `(isUnit_of_dvd_unit (map_dvd (algebraMap L[X] R) hdvd) hpu).map _`.
-
-Introduce `a i j`. Rewrite using `[hval 0 hu0, eval_line_zero]`. Introduce `a i j`. Rewrite using `[hval 1 hu1, eval_line_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_path : ∀ (L : Type) [Field L] (ι : Type) [Fintype ι] (n : ι → ℕ)
     (A : ∀ a, Matrix (Fin (n a)) (Fin (n a)) L), (∀ a, IsUnit (A a).det) →

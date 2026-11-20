@@ -18,7 +18,7 @@ def whitImg (ψ : AddChar k Circle) (d : Fin 2 → ℕ) (J : Representation ℂ 
     exact ⟨J (firstEmb d g) t, T.apply_mem_toSubmodule _ ht, rfl⟩⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.map_mono (f := (whitKer ψ d J).mkQ) h`.
+A detailed English derivation is pending.
 -/
 theorem whitImg_mono (ψ : AddChar k Circle) (d : Fin 2 → ℕ) (J : Representation ℂ (Levi k fun a => Fin (d a)) X)
     {T T' : Subrepresentation J} (h : T' ≤ T) : whitImg ψ d J T' ≤ whitImg ψ d J T :=

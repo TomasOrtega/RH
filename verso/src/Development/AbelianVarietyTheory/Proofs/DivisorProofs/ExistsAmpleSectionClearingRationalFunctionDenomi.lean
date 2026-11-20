@@ -19,7 +19,7 @@ open GlobalTheory.LBGerm
 variable {X : Scheme.{0}} [IsIntegral X]
 
 /- English proof (translation)
-Introduce `c c' h` and use `by have l : (lbPow L τ).U c ⊓ (lbPow L τ).U c' ≤ L.U (c PUnit.unit) ⊓ L.U (c' PUnit.unit) := fun _ hx => ⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩ have e : (lbPow L τ).g c c' = res l (L.g (c PUnit.unit) (c' PUnit.unit)) ^ τ := by change ∏ _k : PUnit, _ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRatSec_lbPow {L : LB X} {r : L.ι → X.functionFieldˣ} (hr : IsRatSec L r) (τ : ℕ) :
     IsRatSec (lbPow L τ) fun c => r (c PUnit.unit) ^ τ := fun c c' h => by
@@ -34,7 +34,7 @@ theorem isRatSec_lbPow {L : LB X} {r : L.ι → X.functionFieldˣ} (hr : IsRatSe
   exact congrArg (fun a => (a * _) ^ τ) (fnOf_resG l h _).symm
 
 /- English proof (translation)
-The claim follows from `mem_secOn_of_germ _ fun y i j hV hi hj => by rw [gm_lbPow_g 0 (𝟙 X) y i j hi hj, pow_zero, Units.val_one, one_mul] exact (gs_res (𝟙 X) y _ (⟨hV, hi⟩ : y ∈ V ⊓ (lbPow L 0).U i) a).trans (gs_res (𝟙 X) y _ (⟨hV, hj⟩ : y ∈ V ⊓ (lbPow L 0).U j) a).symm`.
+A detailed English derivation is pending.
 -/
 theorem res_mem_secOn (L : LB X) (V : X.Opens) (a : Γ(X, V)) :
     (fun J : PUnit → L.ι => resG X (inf_le_left : V ⊓ powChart L J ≤ V) a) ∈ secOn (lbPow L 0) V :=
@@ -44,32 +44,28 @@ theorem res_mem_secOn (L : LB X) (V : X.Opens) (a : Γ(X, V)) :
       (gs_res (𝟙 X) y _ (⟨hV, hj⟩ : y ∈ V ⊓ (lbPow L 0).U j) a).symm
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Conclude with `(hc.map (algebraMap _ X.functionField)).ne_zero`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unitAt_ne_zero {X : Scheme.{0}} [IsIntegral X] {x : X} {f : X.functionField} (h : UnitAt x f) : f ≠ 0 := by
   obtain ⟨c, hc, rfl⟩ := h
   exact (hc.map (algebraMap _ X.functionField)).ne_zero
 
 /- English proof (translation)
-Introduce `k _ X _ p D _ P hA f`. Use `haveI := hA.compactSpace`. Use `haveI := hA.quasiSeparatedSpace`. Establish `hL` using `hA.isLB`. Take `⟨n, hn, s, hgs, haff⟩` from `hA.exists_affine (genericPoint X)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : Nonempty (nonzeroLocus s) := ⟨⟨_, hgs⟩⟩`. Use `haveI := functionField_isFractionRing_of_isAffineOpen X (nonzeroLocus s) haff`. Take `⟨a, b, hb, hf⟩` from `IsFractionRing.div_surjective (A := Γ(X, nonzeroLocus s)) f`. Express the relevant statement in the definitionally equal form `fnOf _ hgs a / fnOf _ hgs b = f at hf`. Establish `hβ : fnOf _ hgs b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Na, ha⟩` from `exists_sec_eq_pow_mul hL s _ (res_mem_secOn P.A.B (nonzeroLocus s) a)`. Take `⟨Nb, hb'⟩` from `exists_sec_eq_pow_mul hL s _ (res_mem_secOn P.A.B (nonzeroLocus s) b)`. Take `⟨u, hu⟩` from `ha (max Na Nb + 1) (by omega)`. Take `⟨v, hv⟩` from `hb' (max Na Nb + 1) (by omega)`. Establish `hρ` using `isRatSec_lbPow P.hr' (0 + n * (max Na Nb + 1))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `RepDict.exists_quot (isLB_lbPow hL (0 + n * (max Na Nb + 1))) hρ`. Establish `hmem : ∀ w : (lbPow P.A.B (0 + n * (max Na Nb + 1))).Sec, e w ∈ P.H 0 ((0 + n * (max Na Nb + 1) : ℕ) : ℤ)`. Introduce `w x i j _ hj`. Establish `hJ : x ∈ (lbPow P.A.B (0 + n * (max Na Nb + 1))).U (fun _ => j)` using `mem_powChart.2 hj`. Establish `h1` using `he w (fun _ => j) (gen_mem hJ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Pair.loc, zpow_zero, mul_one, zpow_natCast]`. Rewrite using `[← Units.val_pow_eq_pow_val, h1]`. Conclude with `regAt_fnOf hJ _ _`. Take `⟨j₀, hj₀⟩` from `exists_chart hL (genericPoint X)`. Establish `hJ₀ : genericPoint X ∈ powChart P.A.B (fun _ => j₀)` using `mem_powChart.2 hj₀`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hVJ : genericPoint X ∈ nonzeroLocus s ⊓ powChart P.A.B (fun _ => j₀)` using `⟨hgs, hJ₀⟩`. Establish `key : ∀ (w : (lbPow P.A.B (0 + n * (max Na Nb + 1))).Sec) (a' : Γ(X, nonzeroLocus s)), resG X (inf_le_right : nonzeroLocus s ⊓ powChart P.A.B (fun _ => j₀) ≤ powChart P.A.B (fun _ => j₀)) (powFn w (fun _ => j₀)) = resG X (inf_le_right : nonzeroLocus s ⊓ powChart P.A.B (fun _ => j …`. Introduce `w a' h`. Establish `h'` using `congrArg (fnOf _ hVJ) h`. Rewrite `h'` using `[map_mul, map_pow, fnOf_resG, fnOf_resG, fnOf_resG]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_pow_eq_pow_val]`. Conclude with `(he w _ hJ₀).trans h'`. Establish `eu` using `key u a (hu _)`. Establish `ev` using `key v b (hv _)`. Establish `hS : fnOf _ hJ₀ (powFn s (fun _ => j₀)) ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `unitAt_ne_zero ((unitAt_fnOf_iff hJ₀ hJ₀ _).2 ((mem_nonzeroLocus_iff_basicOpen s hJ₀).1 hgs))`. Establish `hR : (P.r' j₀ : X.functionField) ^ (0 + n * (max Na Nb + 1)) ≠ 0` using `pow_ne_zero _ (P.r' j₀).ne_zero`. Use `⟨0 + n * (max Na Nb + 1), e v, by positivity, fun h0 => ?_, hmem v, ?_⟩` and prove the remaining obligations. Rewrite `ev` using `[h0, zero_mul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hS) hβ ev.symm`.
-
-Establish `e1 : e u = _` using `eq_div_of_mul_eq hR eu`. Establish `e2 : e v = _` using `eq_div_of_mul_eq hR ev`. Establish `: e v * f = e u`. Rewrite using `[e1, e2, ← hf]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[this]`. Conclude with `hmem u`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den_one : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.A.B → ∀ (f : X.functionField),

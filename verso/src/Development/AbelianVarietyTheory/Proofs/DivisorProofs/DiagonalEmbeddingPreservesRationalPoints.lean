@@ -11,9 +11,9 @@ open GlobalTheory.Doubling GlobalTheory.ThK.DblKer
 namespace GlobalTheory.ThK.DblKer.RatPair
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n W W₂ _ i hi γ hγ γ' hγ'`. Rewrite `hγ`, `hγ'`, the goal using `[ratU, Subgroup.mem_subgroupOf]`. Take `⟨A, hA⟩` from `hγ`. Take `⟨A', hA'⟩` from `hγ'`. Use `⟨blkGL finSumFinEquiv (A, A'), Units.ext ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(blkMat finSumFinEquiv A.1 A'.1).map _ = mat (i (γ, γ'))`. Rewrite using `[hi, blkMat_map _ _ (map_zero _)]`. Establish `h1 : (A.1).map (inclR (F` using `F) (E := E) (AF F)) = mat γ := congrArg Units.val hA`. Establish `h2 : (A'.1).map (inclR (F` using `F) (E := E) (AF F)) = mat γ' := congrArg Units.val hA'`. Rewrite using `[h1, h2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_mem_ratU : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (W : Spc F E n) (W₂ : Spc F E (n + n)), W₂.J = dblGram finSumFinEquiv W.J →
     ∀ i : UA σ W.J × UA σ W.J →* UA σ W₂.J, (∀ h h', mat (i (h, h')) = blkMat finSumFinEquiv (mat h) (mat h')) →

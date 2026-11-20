@@ -13,7 +13,7 @@ namespace GlobalTheory.PhiTLat
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce and unpack `x ⟨s, hs, hx⟩`. Take `⟨t, ht, htx⟩` from `h hx`. Conclude with `⟨t * s, S.mul_mem ht hs, by rw [mul_smul]; exact htx⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem locS_le_of_le {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] (S : Submonoid R) {M M₁ : Submodule R W}
     (h : M ≤ Formalism.HermitianLatticesTheory.locS S M₁) : Formalism.HermitianLatticesTheory.locS S M ≤ Formalism.HermitianLatticesTheory.locS S M₁ := by
@@ -22,17 +22,15 @@ theorem locS_le_of_le {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] (
   exact ⟨t * s, S.mul_mem ht hs, by rw [mul_smul]; exact htx⟩
 
 /- English proof (translation)
-Introduce `x hx` and use `⟨1, S.one_mem, by simpa using hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_locS {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] (S : Submonoid R) (M : Submodule R W) :
     M ≤ Formalism.HermitianLatticesTheory.locS S M := fun x hx => ⟨1, S.one_mem, by simpa using hx⟩
 
 /- English proof (translation)
-Establish `hle : Formalism.HermitianLatticesTheory.hcompl (K` using `E) Q.asIdeal ≤ Q.asIdeal.primeCompl := by`. Use `Submonoid.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `s ⟨hs, -⟩`. Conclude with `hs`. Establish `key : ∀ {M M₁ : Submodule (𝓞 E) (Fin n → E)}, Formalism.HermitianLatticesTheory.loc (K` using `E) Q.asIdeal M = Formalism.HermitianLatticesTheory.loc (K := E) Q.asIdeal M₁ → Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal M ≤ Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal M₁ := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M M₁ hM`. Use `locS_le_of_le _ fun x hx => ?_` and prove the remaining obligations. Establish `h1 : x ∈ Formalism.HermitianLatticesTheory.loc (K` using `E) Q.asIdeal M₁ := hM ▸ le_locS _ M hx`. Take `⟨t, ht, htx⟩` from `h1`. Conclude with `⟨t, hle ht, htx⟩`.
-
-Conclude with `le_antisymm (key h) (key h.symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem localization_eq_of_semilocalization_eq' {E : Type} [Field E] [NumberField E] [StarRing E] (Q : HeightOneSpectrum (𝓞 E)) {n : ℕ}
     {Λ Λ₁ : Submodule (𝓞 E) (Fin n → E)} (h : Formalism.HermitianLatticesTheory.loc (K := E) Q.asIdeal Λ = Formalism.HermitianLatticesTheory.loc (K := E) Q.asIdeal Λ₁) :
@@ -51,9 +49,9 @@ theorem localization_eq_of_semilocalization_eq' {E : Type} [Field E] [NumberFiel
   exact le_antisymm (key h) (key h.symm)
 
 /- English proof (translation)
-Establish `key : ∀ {M M₁ : Submodule (𝓞 E) (Fin n → E)}, Formalism.HermitianLatticesTheory.loc (K` using `E) Q M = Formalism.HermitianLatticesTheory.loc (K := E) Q M₁ → Formalism.HermitianLatticesTheory.loc (K := E) Q (mvL g M) ≤ Formalism.HermitianLatticesTheory.loc (K := E) Q (mvL g M₁) := by`. Introduce `M M₁ hM`. Use `locS_le_of_le _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `h1 : y ∈ Formalism.HermitianLatticesTheory.loc (K` using `E) Q M₁ := hM ▸ le_locS _ M hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨t, ht, hty⟩` from `h1`. Use `⟨t, ht, ⟨t • y, hty, ?_⟩⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `le_antisymm (key h) (key h.symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_mvL {E : Type} [Field E] [NumberField E] [StarRing E] (Q : Ideal (𝓞 E)) {n : ℕ} (g : GL (Fin n) E)
     {Λ Λ₁ : Submodule (𝓞 E) (Fin n → E)} (h : Formalism.HermitianLatticesTheory.loc (K := E) Q Λ = Formalism.HermitianLatticesTheory.loc (K := E) Q Λ₁) :
@@ -70,7 +68,7 @@ theorem loc_mvL {E : Type} [Field E] [NumberField E] [StarRing E] (Q : Ideal (�
   exact le_antisymm (key h) (key h.symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨HeightOneSpectrum.under (𝓞 F) Q, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_over {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (Q : HeightOneSpectrum (𝓞 E)) :
     ∃ v : HeightOneSpectrum (𝓞 F), Formalism.L2.Col.IsOver v Q :=
@@ -80,7 +78,7 @@ section SeamLoc
 variable {D : D7} {X : Fields} (s : Seam D X) {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem tr_smul (c : 𝓞 X.E) (x : Sp X.E n) :
     (fun i => s.iE ((c • x) i)) = RingOfIntegers.mapRingEquiv s.iE c • (fun i => s.iE (x i)) := by
@@ -89,11 +87,11 @@ theorem tr_smul (c : 𝓞 X.E) (x : Sp X.E n) :
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact hy`. Consider the case `zero => exact ⟨0, N.zero_mem, by funext i; simp⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, rfl⟩` from `hy`. Take `⟨b, hb, rfl⟩` from `hz`. Conclude with `⟨a + b, N.add_mem ha hb, by funext i; simp⟩`. Consider the case `smul r y _ hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨a, ha, rfl⟩` from `hy`. Use `⟨(RingOfIntegers.mapRingEquiv s.iE).symm r • a, N.smul_mem _ ha, ?_⟩` and prove the remaining obligations. Rewrite using `[tr_smul, RingEquiv.apply_symm_apply]`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_lat_iff (N : Submodule (𝓞 X.E) (Sp X.E n)) (y : Fin n → D.host.E) :
     y ∈ s.lat N ↔ ∃ x ∈ N, (fun i => s.iE (x i)) = y := by
@@ -114,7 +112,7 @@ theorem mem_lat_iff (N : Submodule (𝓞 X.E) (Sp X.E n)) (y : Fin n → D.host.
     exact Submodule.subset_span ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Introduce `x y h`. Use function extensionality and compare the values at `i`. Conclude with `s.iE.injective (congrFun h i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem tr_inj : Function.Injective (fun (x : Sp X.E n) (i : Fin n) => s.iE (x i)) := by
   intro x y h
@@ -122,11 +120,11 @@ theorem tr_inj : Function.Injective (fun (x : Sp X.E n) (i : Fin n) => s.iE (x i
   exact s.iE.injective (congrFun h i)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, hcx⟩`. Use `⟨RingOfIntegers.mapRingEquiv s.iE c, fun h => hc ((mem_seamP s P c).1 h), ?_⟩` and prove the remaining obligations. Rewrite using `[← tr_smul]`. Conclude with `(mem_lat_iff s N _).2 ⟨_, hcx, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨d, hd, hdx⟩`. Take `⟨c, rfl⟩` from `(RingOfIntegers.mapRingEquiv s.iE).surjective d`. Use `⟨c, fun h => hd ((mem_seamP s P c).2 h), ?_⟩` and prove the remaining obligations. Rewrite `hdx` using `[← tr_smul]`. Take `⟨x', hx', e⟩` from `(mem_lat_iff s N _).1 hdx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx'` using `[tr_inj s e]`. Conclude with `hx'`.
+A detailed English derivation is pending.
 -/
 theorem mem_localization_lattice_iff (P : HeightOneSpectrum (𝓞 X.E)) (N : Submodule (𝓞 X.E) (Sp X.E n)) (x : Sp X.E n) :
     x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal N ↔ (fun i => s.iE (x i)) ∈ Formalism.HermitianLatticesTheory.localization₂ (seamP s P).asIdeal (s.lat N) := by
@@ -144,7 +142,7 @@ theorem mem_localization_lattice_iff (P : HeightOneSpectrum (𝓞 X.E)) (N : Sub
     exact hx'
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_localization_lattice_iff s P N₁ x, mem_localization_lattice_iff s P N x, h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem seam_locP (P : HeightOneSpectrum (𝓞 X.E)) (N N₁ : Submodule (𝓞 X.E) (Sp X.E n))
     (h : Formalism.HermitianLatticesTheory.localization₂ (seamP s P).asIdeal (s.lat N₁) = Formalism.HermitianLatticesTheory.localization₂ (seamP s P).asIdeal (s.lat N)) :
@@ -155,7 +153,7 @@ theorem seam_locP (P : HeightOneSpectrum (𝓞 X.E)) (N N₁ : Submodule (𝓞 X
 end SeamLoc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.localization_unimodularCompanion_eq sp J a Q Λ Λ₁ hΛ hΛ₁ h`.
+A detailed English derivation is pending.
 -/
 theorem loc_compan {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (sp : Spaces R F E) {N : ℕ} (J : Matrix (Fin N) (Fin N) E) (a : 𝓞 E) (Q : Ideal (𝓞 E))
@@ -165,7 +163,7 @@ theorem loc_compan {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] 
   GlobalTheory.T.localization_unimodularCompanion_eq sp J a Q Λ Λ₁ hΛ hΛ₁ h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.hermitianLocalisation_adelicPointLattice_eq hc Q v hv Lb hfin hspan x x₁ h`.
+A detailed English derivation is pending.
 -/
 theorem loc_latAd {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : Formalism.BasicNotions.CMData F E) (Q : HeightOneSpectrum (𝓞 E)) (v : HeightOneSpectrum (𝓞 F)) (hv : Formalism.L2.Col.IsOver v Q)
@@ -175,7 +173,7 @@ theorem loc_latAd {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   GlobalTheory.T.hermitianLocalisation_adelicPointLattice_eq hc Q v hv Lb hfin hspan x x₁ h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.adelicPointLattice_fg_of_full Lb hfin hspan x`.
+A detailed English derivation is pending.
 -/
 theorem latAd_fg {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {N : ℕ} (Lb : Submodule (𝓞 E) (Fin N → E)) (hfin : Module.Finite (𝓞 E) Lb) (hspan : Submodule.span E (Lb : Set (Fin N → E)) = ⊤)
@@ -183,11 +181,11 @@ theorem latAd_fg {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   GlobalTheory.T.adelicPointLattice_fg_of_full Lb hfin hspan x
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a _ hTie j hj β x x₁ p p₁ hp hp₁ hx P`. Establish `hSS` using `((isChainTop_iff _ _ _ _ _ _ _ _ _).1 hTie.isChainTop).1`. Establish `hmem : seamP t.seam P.1 ∈ ssRec t u μ` using `(mem_ssRec t u μ P.1).2 (by classical rw [hSS]; exact Finset.mem_union_left _ P.2)`. Take `⟨v, hv⟩` from `exists_over (F := D.host.F) (seamP t.seam P.1)`. Establish `hxv` using `hx v ⟨_, hmem, hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `seam_locP t.seam P.1 _ _ ?_` and prove the remaining obligations. Rewrite using `[hp₁.lat, hp.lat]`. Use `localization_eq_of_semilocalization_eq' _ ?_` and prove the remaining obligations. Unfold `latCo`. Use `loc_mvL _ _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `loc_compan _ _ _ _ _ _ (latAd_fg _ ((St j hj).K β).lev.Lb_fin ((St j hj).K β).lev.Lb_span _) (latAd_fg _ ((St j hj).K β).lev.Lb_fin ((St j hj).K β).lev.Lb_span _) ?_` and prove the remaining obligations. Conclude with `loc_latAd D.sp.cm _ v hv _ ((St j hj).K β).lev.Lb_fin ((St j hj).K β).lev.Lb_span _ _ hxv`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem phiT_lat : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ j (hj : j ≤ D.R.m) β x x₁ p p₁,
     IsPtAd A a j hj β x p → IsPtAd A a j hj β x₁ p₁ →

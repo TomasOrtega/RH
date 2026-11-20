@@ -5,19 +5,17 @@ open MeasureTheory
 namespace GlobalTheory.SeparatedSetCardBound
 
 /- English proof (translation)
-Use `letI : MeasurableSpace E := borel E`. Use `haveI : BorelSpace E := ⟨rfl⟩`. Take `⟨μ, hμ⟩ : ∃ μ : Measure E, μ.IsAddHaarMeasure` from `⟨Measure.addHaar, inferInstance⟩`. Use `haveI := hμ`. Use `set d := Module.finrank ℝ E`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hdisj : Set.PairwiseDisjoint (T : Set G) (fun h => Metric.ball (φ h) r)`. Introduce `a ha b hb hab`. Rewrite using `[Function.onFun, Set.disjoint_iff]`. Introduce and unpack `z ⟨hza, hzb⟩`. Establish `hs` using `hsep a ha b hb hab`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hza`, `hzb` using `[Metric.mem_ball, dist_eq_norm]`. Establish `h3 : ‖φ a - φ b‖ ≤ ‖z - φ b‖ + ‖z - φ a‖`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub : (⋃ h ∈ T, Metric.ball (φ h) r) ⊆ Metric.ball (0 : E) (R + r)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `z hz`. Simplify using `only [Set.mem_iUnion] at hz`. Take `⟨h, hh, hz⟩` from `hz`. Rewrite `hz` using `[Metric.mem_ball, dist_eq_norm]`. Rewrite using `[Metric.mem_ball, dist_zero_right]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h4 : ‖z‖ ≤ ‖z - φ h‖ + ‖φ h‖`. Combine the equalities or inequalities in the displayed calculation. Combine the linear relations using `[hT h hh]`. Establish `hle : μ (⋃ h ∈ T, Metric.ball (φ h) r) ≤ μ (Metric.ball (0 : E) (R + r))` using `measure_mono hsub`. Rewrite `hle` using `[measure_biUnion_finset hdisj (fun h _ => measurableSet_ball)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Measure.addHaar_ball_of_pos _ _ hr, Measure.addHaar_ball_of_pos _ _ (by linarith : (0 : ℝ) < R + r), Finset.sum_const, nsmul_eq_mul] at hle`. Establish `hB0 : μ (Metric.ball (0 : E) 1) ≠ 0` using `(Metric.measure_ball_pos μ _ one_pos).ne'`. Establish `hBt : μ (Metric.ball (0 : E) 1) ≠ ⊤` using `measure_ball_lt_top.ne`. Rewrite `hle` using `[← mul_assoc, ENNReal.mul_le_mul_iff_left hB0 hBt]`. Rewrite `hle` using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_le_ofReal_iff (by positivity)]`.
-
-Establish `hrd : 0 < r ^ d` using `pow_pos hr d`. Rewrite using `[div_pow, le_div_iff₀ hrd]`. Conclude with `hle`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_le_of_separated {G E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] (φ : G → E) (R r : ℝ) (hR : 0 ≤ R) (hr : 0 < r) (T : Finset G)
@@ -63,23 +61,19 @@ theorem card_le_of_separated {G E : Type} [NormedAddCommGroup E] [NormedSpace �
   exact hle
 
 /- English proof (translation)
-Introduce `G E _ _ _ _ _ _ μ _ _ _ _ _ φ _ W R r hR hr hW`. Set `P : Finset G → Prop` to `fun T => (∀ h ∈ T, ‖φ h‖ ≤ R) ∧ ∀ a ∈ T, ∀ b ∈ T, a ≠ b → 2 * r < ‖φ a - φ b‖`. Set `A : Set ℕ` to `{n | ∃ T, P T ∧ T.card = n}`. Establish `hA0 : A.Nonempty` using `⟨0, ∅, ⟨by simp, by simp⟩, rfl⟩`. Establish `hAb : BddAbove A`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⌈((R + r) / r) ^ Module.finrank ℝ E⌉₊, ?_⟩` and prove the remaining obligations. Introduce and unpack `n ⟨T, hT, rfl⟩`. Establish `h1` using `card_le_of_separated φ R r hR hr T hT.1 hT.2`. Establish `h2` using `h1.trans (Nat.le_ceil _)`. Conclude with `h2` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT, hTc⟩` from `Nat.sSup_mem hA0 hAb`. Establish `hcover : {g : G | ‖φ g‖ ≤ R} ⊆ ⋃ h ∈ T, (fun x => h⁻¹ * x) ⁻¹' W`. Introduce `g hg`. Assume the negation of the conclusion as `hne`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, not_exists] at hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hg' : ‖φ g‖ ≤ R` using `hg`. Establish `hgT : g ∉ T` using `fun hgT => hne g hgT (hW g g hg' (by simp; positivity))`. Establish `far : ∀ h ∈ T, 2 * r < ‖φ g - φ h‖`. Introduce `h hh`. Assume the negation of the conclusion as `hle`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hle`. Conclude with `hne h hh (hW g h (hT.1 h hh) hle)`. Establish `hP : P (insert g T)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h hh`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hh` using `[Finset.mem_insert]`. Break down `hh with rfl | hh` into its components or cases. Conclude with `hg'`. Conclude with `hT.1 h hh`. Introduce `a ha b hb hab`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ha`, `hb` using `[Finset.mem_insert]`. Apply the tactic sequence `rcases ha with rfl | ha <;> rcases hb with rfl | hb`. Conclude with `absurd rfl hab`. Conclude with `far b hb`. Rewrite using `[norm_sub_rev]`.
-
-Conclude with `far a ha`. Conclude with `hT.2 a ha b hb hab`. Establish `hmem : (insert g T).card ∈ A` using `⟨_, hP, rfl⟩`. Establish `hle` using `le_csSup hAb hmem`. Rewrite `hle` using `[Finset.card_insert_of_notMem hgT, ← hTc]`.
-
-Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_natCast]`. Conclude with `ENNReal.ofReal_le_ofReal (card_le_of_separated φ R r hR hr T hT.1 hT.2)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {G E : Type} [inst : Group G] [inst_1 : TopologicalSpace G] [IsTopologicalGroup G] [inst_3 : MeasurableSpace G] [BorelSpace G] [SecondCountableTopology G] (μ : MeasureTheory.Measure G) [MeasureTheory.Measure.IsMulLeftInvariant μ] [MeasureTheory.SFinite μ] [inst_8 : NormedAddCommGroup E] [inst_9 : NormedSpace ℝ E] [FiniteDimensional ℝ E] (φ : G → E), Continuous φ → ∀ (W : Set G) (R r : ℝ), (0 : ℝ) ≤ R → (0 : ℝ) < r → (∀ (g h : G), ‖φ h‖ ≤ R → ‖φ g - φ h‖ ≤ (2 : ℝ) * r → h⁻¹ * g ∈ W) → (μ : Set G → ENNReal) {g : G | ‖φ g‖ ≤ R} ≤ ENNReal.ofReal (((R + r) / r) ^ Module.finrank ℝ E) * (μ : Set G → ENNReal) W := by
   intro G E _ _ _ _ _ _ μ _ _ _ _ _ φ _ W R r hR hr hW

@@ -13,30 +13,28 @@ open UpperTheory.Gal.LocD UpperTheory.Gal.InertialTypesAlt.G UpperTheory.Gal.Joi
 open scoped Classical
 
 /- English proof (translation)
-The claim follows from `continuous_mulSingle (A := fun _ : Fin n => kˣ) i`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_mulSingle_units {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] {n : ℕ} (i : Fin n) :
     Continuous (MonoidHom.mulSingle (fun _ : Fin n => kˣ) i) :=
   continuous_mulSingle (A := fun _ : Fin n => kˣ) i
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π hsm hirr μ hexp`. Take `⟨y, hy0, hy⟩` from `hexp`. Establish `hJs : IsSmooth (jacB π)` using `isSmooth_jacB hsm`. Establish `hμ : IsSmoothChar μ` using `by show IsOpen (μ.ker : Set (Fin n → kˣ))`. Use `Subgroup.isOpen_of_mem_nhds μ.ker (g := 1) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.mem_of_superset ((hJs y).mem_nhds (by simp)) ?_` and prove the remaining obligations. Introduce `t ht`. Establish `h1 : ((μ t : ℂˣ) : ℂ) • y = (1 : ℂ) • y`. Rewrite using `[one_smul, ← hy t]`. Conclude with `ht`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((μ t : ℂˣ) : ℂ) = 1` using `smul_left_injective ℂ hy0 h1`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker]`. Conclude with `Units.ext h2`. Use `set ω : Fin n → kˣ →* ℂˣ := fun i => μ.comp (MonoidHom.mulSingle (fun _ : Fin n => kˣ) i) with hωdef`. Establish `hωμ : torusChar ω = μ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `MonoidHom.ext fun t => ?_` and prove the remaining obligations. Rewrite using `[torusChar_apply]`. Simplify using `only [hωdef, MonoidHom.comp_apply, MonoidHom.mulSingle_apply]`. Rewrite using `[← map_prod, Finset.univ_prod_mulSingle]`. Establish `hωs : ∀ i, IsSmoothChar (ω i)` using `fun i => hμ.comp _ (continuous_mulSingle_units i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hlen : HasFiniteLength (jacB π)`. Establish `hj` using `(GlobalTheory.T.bernstein_zelevinsky_finiteness k).2.1 (Fin n) (Fin n) (fun _ => Unit) (points (Fin n)) V π hsm (hasFiniteLength_of_isIrreducible hirr)`. Conclude with `(hasFiniteLength_comp_iff _ _ (leviTorus k (Fin n)).surjective).mpr hj`. Take `⟨ψ, l, hl0, hl, hψω⟩` from `GlobalTheory.T.exists_torusEigenform_of_compactTorus_eigenvector k n _ (jacB π) y ω hJs hlen hωs hy0 (fun t _ => by rw [hy t, hωμ])`. Establish `hψs : ∀ i, IsSmoothChar (ψ i)` using `fun i => GlobalTheory.TameIwahori.isSmoothChar_of_eq_on_units (hωs i) (hψω i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsubψ : IsSubquotient π (prinSeries ψ)` using `quotEmb k n V π hsm hirr ψ l hl0 hl`. Use `haveI : Nontrivial V := GroundTheory.Automorphic.RestrictedTensor.nontrivial_of_isIrreducible hirr`. Establish `hcyc : Cyc (RingEquiv.refl k) 1` using `⟨fun _ => rfl, one_pos, fun _ => rfl⟩`. Establish `hsemi : Semi (RingEquiv.refl k) π LinearMap.id`. Introduce `g v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Simplify using `[sg]`. Establish `hinv : ∀ i, UpperTheory.Gal.LocD.Inv (RingEquiv.refl k) (ψ i)`. Introduce `i x`. Use `congr 1`. Take `⟨-, hfd, -⟩` from `locDesc_holds k n (RingEquiv.refl k) 1 hcyc V π hirr ψ hψs hinv hsubψ LinearMap.id hsemi (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Conclude with `hv (by simpa using LinearMap.congr_fun h v))`. Use `haveI := hfd`. Take `⟨l', hl'0, hl'⟩` from `(subQuot (Fin n → kˣ) _ (jacB π) μ).2 ⟨y, hy0, hy⟩`.
-
-Use `⟨ω, hωμ.symm, hωs, quotEmb k n V π hsm hirr ω l' hl'0 ?_⟩` and prove the remaining obligations. Introduce `t z`. Rewrite using `[hωμ]`. Conclude with `hl' t z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Join.expSub :
     UpperTheory.Gal.Join.ExpSub := by

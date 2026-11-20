@@ -25,9 +25,9 @@ end GlobalTheory.TopAgree
 namespace GlobalTheory.TopAgree
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a _ _ t J hJ g`. Use `(_root_.GlobalTheory.TopVol.mem_level_twist_iff_conj_mem_levS_datXP g).trans ((levS_split _ (_root_.GlobalTheory.Fam.pk_z W).βX (datXP (_root_.GlobalTheory.Fam.pk_z W) (_root_.GlobalTheory.Fam.complexLevelStructure W) t) (_root_.GlobalTheory.TopVol.datSph_alt W).xq _).trans ((and …` and prove the remaining obligations. Establish `key` using `fun i => red_iff_levTop (J.G i) (J.E i).δ (J.E i).tame (J.E i).η g (parLev_St hS.2.1)`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h i => (key i).1 (h _ (J.mem i))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce `h PP hP`. Take `⟨i, rfl⟩` from `hJ.surj PP hP`. Conclude with `(key i).2 (h i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main_alt_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ (t : W.P.T) (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.Reads → ∀ g, g ∈ _root_.GlobalTheory.TopVol.twistedLevelSubgroup W a.g.bT t ↔ g ∈ _root_.GlobalTheory.TopVol.sphericalLevelSubgroup W a.g.bT ∧ ∀ i x, (mt (I.rec7 l Z).sp.X' g).map (J.G i).q.pr = (J.G i).FT.β * Units.val x * (J.G i).FT.γ → x ∈ ((J.G i).T (J.E i).δ (J.E i).tame (J.E i).η).levTop.J := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a _ _ t J hJ g

@@ -22,9 +22,9 @@ open scoped CategoryTheory.Obj
 namespace PositivityTheory.HtPt.Pquo
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ r tV hs hk P`. Take `⟨ψ, hψ⟩ : ∃ ψ : ℂ →+* V ⧸ IsLocalRing.maximalIdeal V, ψ.comp r = Ideal.Quotient.mk (IsLocalRing.maximalIdeal V)` from `⟨r.liftOfRightInverse _ (Function.rightInverse_surjInv hs) ⟨Ideal.Quotient.mk (IsLocalRing.maximalIdeal V), by rw [hk, Ideal.mk_ker]⟩, RingHom.liftOfRightInverse_comp _ _ _ _⟩`. Use `letI : Field (V ⧸ IsLocalRing.maximalIdeal V) := Ideal.Quotient.field _`. Establish `e : spMap ψ ≫ spMap r = spMap (Ideal.Quotient.mk (IsLocalRing.maximalIdeal V))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hψ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨T⟩` from `GlobalTheory.SS.nonempty_torusExtension_pullback (Ω := V ⧸ IsLocalRing.maximalIdeal V) (spMap ψ) P.tK.G ⟨P.τ⟩`. Take `⟨i, hi, -⟩` from `grpPullback_iso (((isGrpPullback_pullback P.tK.G (spMap ψ)).comp P.m.cart).congr e rfl) (isGrpPullback_pullback tV.G (spMap (Ideal.Quotient.mk (IsLocalRing.maximalIdeal V))))`. Conclude with `GlobalTheory.exists_splitExt_isGt_of_torusExtension (V ⧸ IsLocalRing.maximalIdeal V) _ ⟨torusExtOfIso i T⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (r : V →+* ℂ) (tV : SAB H (Sp V)), Function.Surjective r → RingHom.ker r = IsLocalRing.maximalIdeal V → ∀ P : AbPart tV (spMap r), GlobalTheory.LN.SplitOver tV.G (IsLocalRing.maximalIdeal V) := by
   intro E _ _ _ H V _ _ _ r tV hs hk P

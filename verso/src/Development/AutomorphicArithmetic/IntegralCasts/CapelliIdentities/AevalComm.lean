@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `L M N _ _ _ _ _ φ A A' h Q`. Proceed by induction on `Q using Polynomial.induction_on with`. Consider the case `C a`. Introduce `y`. Simplify using `[Module.algebraMap_end_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `add p q hp hq`. Introduce `y`. Simplify using `only [map_add, LinearMap.add_apply, hp, hq]`. Consider the case `monomial n a ih`. Introduce `y`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ, ← mul_assoc, map_mul (Polynomial.aeval A), map_mul (Polynomial.aeval A'), Polynomial.aeval_X, Polynomial.aeval_X, Module.End.mul_apply, Module.End.mul_apply, ih, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qk66.aeval_comm :
     ∀ {L M N : Type} [inst : Field L]

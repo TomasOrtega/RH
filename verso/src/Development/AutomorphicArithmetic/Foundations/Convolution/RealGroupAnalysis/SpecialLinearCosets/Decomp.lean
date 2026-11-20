@@ -32,13 +32,13 @@ private theorem pe_val (e : R) (he : e * e = e) (M : Matrix (Fin 2) (Fin 2) R) :
     pe e he M = 1 + e • (M - 1) := rfl
 
 /- English proof (translation)
-Take the linear combination `he`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem idem_compl (e : R) (he : e * e = e) : (1 - e) * (1 - e) = 1 - e := by
   linear_combination he
 
 /- English proof (translation)
-Establish `h1 : (c • X) * Y = 0` using `by rw [Matrix.smul_mul, ← Matrix.mul_smul, h, Matrix.mul_zero]`. Establish `h2 : Y * (c • X) = 0` using `by rw [Matrix.mul_smul, ← Matrix.smul_mul, h, Matrix.zero_mul]`. Express the relevant statement in the definitionally equal form `_ * _ = _ * _`. Simplify using `only [mul_add, add_mul, one_mul, mul_one, h1, h2]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem comm0 (c : R) (X Y : Matrix (Fin 2) (Fin 2) R) (h : c • Y = 0) :
     Commute (1 + c • X) (1 + Y) := by
@@ -49,9 +49,9 @@ private theorem comm0 (c : R) (X Y : Matrix (Fin 2) (Fin 2) R) (h : c • Y = 0)
   abel
 
 /- English proof (translation)
-Take `⟨X, rfl⟩ : ∃ X, M = 1 + X` from `⟨M - 1, by abel⟩`. Establish `h0 : (1 - e) * e = 0` using `by linear_combination -he`. Establish `h1 : ((1 - e) • X) * (e • X) = 0`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, h0, zero_smul]`. Establish `e1 : pe (1 - e) (idem_compl e he) (1 + X) = 1 + (1 - e) • X`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pe_val, add_sub_cancel_left]`. Establish `e2 : pe e he (1 + X) = 1 + e • X` using `by rw [pe_val, add_sub_cancel_left]`. Rewrite using `[e1, e2]`. Simplify using `only [mul_add, add_mul, one_mul, mul_one, h1]`. Rewrite using `[sub_smul, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -75,9 +75,9 @@ section Ad
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `h1` using `map_cornerGL_of_zero (sFin E) (RingHom.fst (InfiniteAdeleRing E) (Af E)) (fun _ => rfl) (Matrix.GeneralLinearGroup.map (pFin E) g)`. Establish `h2` using `pFin_finGL (E := E) (a := 2) (Matrix.GeneralLinearGroup.map (pFin E) g)`. Use `Units.ext (Matrix.ext fun i j => Prod.ext ?_ ?_)` and prove the remaining obligations. Establish `h3 : ((finGL E 2 (Matrix.GeneralLinearGroup.map (pFin E) g)).val i j).1 = (1 : Matrix (Fin 2) (Fin 2) (InfiniteAdeleRing E)) i j` using `congrArg (fun x : GL (Fin 2) (InfiniteAdeleRing E) => x.val i j) h1`. Rewrite using `[hg, h3, Matrix.one_apply, Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Conclude with `(congrArg (fun x : GL (Fin 2) (Af E) => x.val i j) h2).symm`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem fin_of_inf (g : GL (Fin 2) (A E))
     (hg : ∀ i j, (g.val i j).1 = ((1 : Matrix (Fin 2) (Fin 2) (A E)) i j).1) :
@@ -99,7 +99,7 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Introduce `h`. Establish `h' : algebraMap F (Kv v) 2 = 0` using `by rw [map_ofNat]; exact h`. Conclude with `two_ne_zero ((map_eq_zero _).1 h')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem two_ne (v : P F) : (2 : Kv v) ≠ 0 := by
   intro h
@@ -107,7 +107,7 @@ private theorem two_ne (v : P F) : (2 : Kv v) ≠ 0 := by
   exact two_ne_zero ((map_eq_zero _).1 h')
 
 /- English proof (translation)
-Take `⟨hadd, -⟩` from `sgLaws F v`. Use `hadd 0 0` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem sg_zero (v : P F) : sg v 0 = 0 := by
   obtain ⟨hadd, -⟩ := sgLaws F v
@@ -115,12 +115,12 @@ private theorem sg_zero (v : P F) : sg v 0 = 0 := by
   simpa using this
 
 /- English proof (translation)
-Simplify using `[Dat.mkE]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mk_zero (D : Dat F E) : D.mkE 0 0 = 0 := by simp [Dat.mkE]
 
 /- English proof (translation)
-Take `⟨hmul, -⟩` from `mkLaws F E D`. Take `⟨hadd, hsm, hcp, -⟩` from `sgLaws F v`. Establish `hr : cp v (rt D.δ) = θ ^ 2` using `by rw [hθ]; rfl`. Rewrite using `[hmul, hadd, hadd]`. Simplify using `only [hsm, hcp, hr]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pm (D : Dat F E) (v : P F) (θ : Kv v) (hθ : θ ^ 2 = algebraMap F (Kv v) D.δ) (a b c d : Kv v) :
     D.mkE (sg v a) (sg v b) * D.mkE (sg v c) (sg v d) =
@@ -134,7 +134,7 @@ private theorem pm (D : Dat F E) (v : P F) (θ : Kv v) (hθ : θ ^ 2 = algebraMa
 private noncomputable def ee (D : Dat F E) (v : P F) (θ : Kv v) : A E := D.mkE (sg v (1 / 2)) (sg v (-(1 / (2 * θ))))
 
 /- English proof (translation)
-Establish `h2` using `two_ne v`. Rewrite using `[ee, pm D v θ hθ]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -147,7 +147,7 @@ private theorem ee_idem (D : Dat F E) (v : P F) (θ : Kv v) (hθ : θ ^ 2 = alge
   · field_simp; ring
 
 /- English proof (translation)
-Establish `h2` using `two_ne v`. Rewrite using `[ee, sE, pm D v θ hθ]`. Establish `e1 : (1 / 2 * (k / 2) + θ ^ 2 * (-(1 / (2 * θ)) * (k / (2 * θ))) : Kv v) = 0` using `by field_simp; ring`. Establish `e2 : (1 / 2 * (k / (2 * θ)) + -(1 / (2 * θ)) * (k / 2) : Kv v) = 0` using `by field_simp; ring`. Rewrite using `[e1, e2, sg_zero, mk_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ee_sE (D : Dat F E) (v : P F) (θ : Kv v) (hθ : θ ^ 2 = algebraMap F (Kv v) D.δ) (h0 : θ ≠ 0) (k : Kv v) :
     ee D v θ * sE D v θ k = 0 := by
@@ -158,7 +158,7 @@ private theorem ee_sE (D : Dat F E) (v : P F) (θ : Kv v) (hθ : θ ^ 2 = algebr
   rw [e1, e2, sg_zero, mk_zero]
 
 /- English proof (translation)
-Establish `h2` using `two_ne v`. Rewrite using `[ee, pm D v θ hθ]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -171,9 +171,9 @@ private theorem squareRoot_idempotent_embed (D : Dat F E) (v : P F) (θ : Kv v) 
   · field_simp; ring
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, hs, -, -⟩` from `sgLaws F v`. Establish `h : ∀ x, (AdeleBaseChange.adeleMap F E (sg v x)).1 = 0` using `fun x => by`. Express the relevant statement in the definitionally equal form `InfinitePlace.infiniteAdeleRingMap (sg v x).1 = 0`. Rewrite using `[(hs x).1, map_zero]`. Express the relevant statement in the definitionally equal form `(AdeleBaseChange.adeleMap F E _).1 + (AdeleBaseChange.adeleMap F E _).1 * (rt D.θ).1 = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h, h, zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ee_fst (D : Dat F E) (v : P F) (θ : Kv v) : (ee D v θ).1 = 0 := by
   obtain ⟨-, -, -, -, -, -, -, hs, -, -⟩ := sgLaws F v
@@ -188,19 +188,19 @@ end Main
 end UpperTheory.ConvolutionTheory.R2.I
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ D v θ J hs h`. Establish `he` using `ee_idem D v θ hs.sq hs.ne`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, Units.map (pe (ee D v θ) he) h = finGL E 2 k := by`. Use `⟨_, fin_of_inf _ fun i j => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((1 + ee D v θ • (h.val - 1) : Matrix (Fin 2) (Fin 2) (A E)) i j).1 = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `((1 : Matrix (Fin 2) (Fin 2) (A E)) i j).1 + (ee D v θ).1 * _ = _`. Rewrite using `[ee_fst, zero_mul, add_zero]`. Use `⟨Units.map (pe (1 - ee D v θ) (idem_compl _ he)) h, k, ?_, fun s => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hk]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ext (split _ he h.val)`. Establish `hn : (nbar D v θ s).val = 1 + !![0, D.mkE (sg v (s / 2)) (sg v (-(s / (2 * θ)))); 0, 0]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(!![1, D.mkE (sg v (s / 2)) (sg v (-(s / (2 * θ)))); 0, 1] : Matrix (Fin 2) (Fin 2) (A E)) i j = _`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hz` using `squareRoot_idempotent_embed D v θ hs.sq hs.ne s`. Use `Units.ext ?_` and prove the remaining obligations. Use `comm0 (1 - ee D v θ) (h.val - 1) !![0, D.mkE (sg v (s / 2)) (sg v (-(s / (2 * θ)))); 0, 0] (by` as an intermediate fact. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [sub_mul, hz])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hn]`. Conclude with `this.eq`. Rewrite using `[← hk]`. Establish `hj : (J x).val = 1 + Matrix.of fun i j => sE D v θ (x.val i j - (1 : M2 v) i j)`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hs.val]`. Both sides reduce to the same expression. Use `Units.ext ?_` and prove the remaining obligations. Use `comm0 (ee D v θ) (h.val - 1) (Matrix.of fun i j => sE D v θ (x.val i j - (1 : M2 v) i j)) (by` as an intermediate fact. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[ee_sE D v θ hs.sq hs.ne])`. Rewrite `this` using `[← hj]`. Conclude with `this.eq`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.decomp :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyComplex E] (D : Dat F E) (v : P F) (θ : Kv v) (J : GLv v →* GL (Fin 2) (A E)), Splt D v θ J → ∀ h : GL (Fin 2) (A E),

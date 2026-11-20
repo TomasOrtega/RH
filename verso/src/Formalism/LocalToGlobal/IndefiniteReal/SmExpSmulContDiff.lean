@@ -18,7 +18,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `PI.BesselDerivW.exp_contDiff X`. Simplify `h` using `only [Complex.coe_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma sm_exp_smul_contDiff (X : Matrix (Fin n) (Fin n) ℂ) :
     ContDiff ℝ ∞ (fun s : ℝ => NormedSpace.exp (s • X)) := by
@@ -26,7 +26,7 @@ lemma sm_exp_smul_contDiff (X : Matrix (Fin n) (Fin n) ℂ) :
   simpa only [Complex.coe_smul] using h
 
 /- English proof (translation)
-The claim follows from `| 0, Xs => by simpa using (contDiff_const : ContDiff ℝ ∞ fun _ : Fin 0 → ℝ => (1 : Matrix (Fin n) (Fin n) ℂ)) | k + 1, Xs => by have ih := sm_prod_exp_contDiff k (fun i => Xs i.succ) have h1 : ContDiff ℝ ∞ (fun t : Fin (k + 1) → ℝ => NormedSpace.exp (t 0 • Xs 0)) := (sm_exp_smul_ …`.
+A detailed English derivation is pending.
 -/
 lemma sm_prod_exp_contDiff : ∀ (k : ℕ) (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ),
     ContDiff ℝ ∞ (fun t : Fin k → ℝ => (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod)
@@ -42,7 +42,7 @@ lemma sm_prod_exp_contDiff : ∀ (k : ℕ) (Xs : Fin k → Matrix (Fin n) (Fin n
     exact PI.KFinSmoothW.Gard.contDiff_mat_mul h1 h2
 
 /- English proof (translation)
-The claim follows from `| 0, Xs, _, t => by simp | k + 1, Xs, hX, t => by have ih := sm_prod_exp_mem G k (fun i => Xs i.succ) (fun i => hX i.succ) (fun i => t i.succ) have hl : (t 0 • Xs 0)ᴴ * G + G * (t 0 • Xs 0) = 0 := by have h := CCRuleCW.lie_smul G (Xs 0) (hX 0) (t 0) simpa only [Complex.coe_smul] …`.
+A detailed English derivation is pending.
 -/
 lemma sm_prod_exp_mem (G : Matrix (Fin n) (Fin n) ℂ) : ∀ (k : ℕ) (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ),
     (∀ i, (Xs i)ᴴ * G + G * Xs i = 0) → ∀ t : Fin k → ℝ,
@@ -60,13 +60,11 @@ lemma sm_prod_exp_mem (G : Matrix (Fin n) (Fin n) ℂ) : ∀ (k : ℕ) (Xs : Fin
     exact hm
 
 /- English proof (translation)
-Introduce `k Xs hX`. Establish `hinv : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P ((Matrix.isUnit_iff_isUnit_det P).1 hP)`. Establish `hc : ContDiff ℝ ∞ (fun t : Fin k → ℝ => P * (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod * P⁻¹)` using `PI.KFinSmoothW.Gard.contDiff_mat_mul (PI.KFinSmoothW.Gard.contDiff_mat_mul contDiff_const (sm_prod_exp_contDiff k Xs)) contDiff_const`. Establish `hmem : ∀ t : Fin k → ℝ, PI.UpqRep.inUH (PI.UpqRep.Jm ε) (P * (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod * P⁻¹)`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQ` using `sm_prod_exp_mem G k Xs (fun i => hLie _ (hX i)) t`. Use `set Q := (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod`. Use `show (P * Q * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * Q * P⁻¹) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (P⁻¹)ᴴ * (Pᴴ * Formalism.REAL.Jm ε * P) * P⁻¹ := by rw [hG, hQ]`. Use `_ = (P * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * P⁻¹) := by`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [hinv]; simp`. Rewrite using `[contDiff_iff_contDiffAt]`.
-
-Introduce `t0`. Take `⟨U, F, hU, h0, hF, hEq⟩` from `hs _ (hmem t0)`. Establish `hev : (fun t : Fin k → ℝ => σ (P * (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod * P⁻¹) w) =ᶠ[𝓝 t0] fun t => F (P * (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod * P⁻¹)` using `by filter_upwards [hc.continuous.continuousAt.preimage_mem_nhds (hU.mem_nhds h0)] with t ht`. Conclude with `hEq _ ht (hmem t)`. Conclude with `((hF.contDiffAt (hU.mem_nhds h0)).comp t0 hc.contDiffAt).congr_of_eventuallyEq hev`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma sm_transfer {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ε : Fin n → Bool)
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (P G : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P)
@@ -103,9 +101,9 @@ lemma sm_transfer {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (�
   exact ((hF.contDiffAt (hU.mem_nhds h0)).comp t0 hc.contDiffAt).congr_of_eventuallyEq hev
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_ne (0 : H)`. Take `⟨Φ, hΦ, hΦc, -, hle⟩` from `PI.KFinSmoothW.dense_weak_vectors n ε H σ hσ (ℂ ∙ x) inferInstance`. Use `⟨PI.KFinSmoothW.gv ε σ Φ x, ?_, PI.KFinSmoothW.garding_vectors_smooth n ε H σ hσ Φ hΦ hΦc x⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `hle x (Submodule.mem_span_singleton_self x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0, zero_sub, norm_neg]`. Establish `hpos : 0 < ‖x‖` using `norm_pos_iff.2 hx`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma sm_exists_smoothJ_ne (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] [Nontrivial H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
@@ -121,7 +119,7 @@ lemma sm_exists_smoothJ_ne (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup 
   linarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨h.1.1, fun a ha b hb => h.1.2 a ha b hb⟩, fun g hg v => h.2.1 g hg v, fun v => h.2.2 v⟩`.
+Supply the required witnesses or components.
 -/
 lemma sm_isURepOn_bridge (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (h : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) :
@@ -140,9 +138,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Introduce `τ`. Take `⟨hc, hnt, hU, -⟩` from `M.ds τ`. Use `hc` as an intermediate fact. Use `hnt` as an intermediate fact. Take `⟨w, hw0, hws⟩` from `sm_exists_smoothJ_ne (M.ε τ) (M.σ τ) (sm_isURepOn_bridge (M.ε τ) (M.σ τ) hU)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsv : SmoothVec (lieAt V τ) (M.rep τ) w` using `sm_transfer (M.ε τ) (M.σ τ) (M.fr τ) _ (M.fr_unit τ) (M.fr_gram τ) (lieAt V τ) (fun X hX => hX) w hws`. Use `⟨⟨w, Submodule.subset_span hsv⟩, ?_⟩` and prove the remaining obligations. Introduce `h`. Conclude with `hw0 (congrArg Subtype.val h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smNonzero (M : DSModel V S) : SmNonzero M := by
   intro τ

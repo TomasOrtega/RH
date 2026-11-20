@@ -10,7 +10,7 @@ open scoped TensorProduct
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.LKGeo.eq_zero_of_forall_nsmul_laHat) | (exact GlobalTheory.LKGeo.eq_zero_of_forall_nsmul_laHat) | (intros; apply GlobalTheory.LKGeo.eq_zero_of_forall_nsmul_laHat <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.eq_zero_of_divisible_in_lattice : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (z : AfP p ⊗[ℚ] VQ D), (∀ n : ℕ, 0 < n → n.Coprime p → ∃ w ∈ LaHat D, z = n • w) → z = 0 := by
   first | (exact @GlobalTheory.LKGeo.eq_zero_of_forall_nsmul_laHat) | (exact GlobalTheory.LKGeo.eq_zero_of_forall_nsmul_laHat) | (intros; apply GlobalTheory.LKGeo.eq_zero_of_forall_nsmul_laHat <;> assumption)

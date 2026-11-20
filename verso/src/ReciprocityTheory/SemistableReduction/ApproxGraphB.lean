@@ -7,7 +7,7 @@ namespace ReciprocityTheory.MultiplicativeHeights.ApproximationGraph
 open ComplexConjugate
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `only [posPart, negPart, Pi.zero_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma posPart_posPart (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : posPart p (posPart p u) = posPart p u := by
   ext k
@@ -15,7 +15,7 @@ lemma posPart_posPart (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : posPart p (posPa
   split_ifs <;> rfl
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `only [posPart, negPart, Pi.zero_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma posPart_negPart (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : posPart p (negPart p u) = 0 := by
   ext k
@@ -23,7 +23,7 @@ lemma posPart_negPart (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : posPart p (negPa
   split_ifs <;> rfl
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `only [posPart, negPart, Pi.zero_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma negPart_posPart (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : negPart p (posPart p u) = 0 := by
   ext k
@@ -31,7 +31,7 @@ lemma negPart_posPart (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : negPart p (posPa
   split_ifs <;> rfl
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `only [posPart, negPart, Pi.zero_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma negPart_negPart (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : negPart p (negPart p u) = negPart p u := by
   ext k
@@ -39,50 +39,48 @@ lemma negPart_negPart (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : negPart p (negPa
   split_ifs <;> rfl
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[posPart]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma posPart_zero (p : ℕ) {r : ℕ} : posPart p (0 : Fin r → ℂ) = 0 := by
   ext k
   simp [posPart]
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[negPart]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma negPart_zero (p : ℕ) {r : ℕ} : negPart p (0 : Fin r → ℂ) = 0 := by
   ext k
   simp [negPart]
 
 /- English proof (translation)
-Introduce `j hj` and use `by simp [posPart, not_lt.mpr hj]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma posPart_supp (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : ∀ j : Fin r, p ≤ (j : ℕ) → posPart p u j = 0 := fun j hj => by
   simp [posPart, not_lt.mpr hj]
 
 /- English proof (translation)
-Unfold `approxR`. Conclude with `div_nonneg (mul_nonneg (mul_nonneg (by norm_num) (Real.sqrt_nonneg _)) hμ.le) hρ.le`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma approxR_nonneg (r : ℕ) {μ ρ : ℝ} (hμ : 0 < μ) (hρ : 0 < ρ) : 0 ≤ approxR r μ ρ := by
   unfold approxR
   exact div_nonneg (mul_nonneg (mul_nonneg (by norm_num) (Real.sqrt_nonneg _)) hμ.le) hρ.le
 
 /- English proof (translation)
-Use `set R := approxR r μ ρ with hRdef`. Establish `hR0 : 0 ≤ R` using `approxR_nonneg r hμ hρ`. Use `set E : Fin r → ℂ := ∑ j, w j • (X j - (R : ℂ) • (Pi.single j 1 : Fin r → ℂ)) with hE`. Establish `hEn : ‖euc E‖ ≤ √(r : ℝ) * μ * ‖euc w‖` using `norm_err_le X hX hμ.le w hw`. Establish `hsum : ∑ j, w j • X j = (R : ℂ) • w + E`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `k`. Simplify using `[hE, Finset.sum_apply, Pi.single_apply, mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpw : posPart p w = w`. Use extensionality with `k`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [posPart]`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(hw k (not_lt.mp h)).symm`. Establish `hnw : negPart p w = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `k`. Simplify using `only [negPart, Pi.zero_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `hw k (not_lt.mp h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : posPart p (∑ j, w j • X j) = (R : ℂ) • w + posPart p E`. Rewrite using `[hsum, posPart_add, posPart_smul, hpw]`. Establish `hneg : negPart p (∑ j, w j • X j) = negPart p E`. Rewrite using `[hsum, negPart_add, negPart_smul, hnw, smul_zero, zero_add]`. Use `set s := √(r : ℝ) * μ * ‖euc w‖ with hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hs0 : 0 ≤ s` using `mul_nonneg (mul_nonneg (Real.sqrt_nonneg _) hμ.le) (norm_nonneg _)`. Establish `hnegle : ‖euc (negPart p (∑ j, w j • X j))‖ ≤ s`. Rewrite using `[hneg]`. Conclude with `(norm_negPart_le p E).trans hEn`. Establish `hRw : ‖euc ((R : ℂ) • w)‖ = 4 * s / ρ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[euc_smul, norm_smul, Complex.norm_real, Real.norm_of_nonneg hR0, hRdef, approxR, hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hposge : 4 * s / ρ - s ≤ ‖euc (posPart p (∑ j, w j • X j))‖`. Rewrite using `[hpos, euc_add]`. Establish `h1` using `norm_sub_le (euc ((R : ℂ) • w) + euc (posPart p E)) (euc (posPart p E))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[add_sub_cancel_right]`. Establish `h2` using `(norm_posPart_le p E).trans hEn`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq : 4 * s ≤ 4 * s / ρ`. Rewrite using `[le_div_iff₀ hρ]`.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish `hqρ : 4 * s / ρ * ρ = 4 * s` using `div_mul_cancel₀ _ hρ.ne'`. Use `⟨?_, by linarith⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma graph_bound {r p : ℕ} {μ ρ : ℝ} (X : Fin r → Fin r → ℂ) (hμ : 0 < μ) (hρ : 0 < ρ)
     (hρ1 : ρ ≤ 1)
@@ -139,13 +137,11 @@ lemma graph_bound {r p : ℕ} {μ ρ : ℝ} (X : Fin r → Fin r → ℂ) (hμ :
       mul_le_mul_of_nonneg_left hposge (by positivity)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `graph_bound X hμ hρ hρ1 hX w hw`. Use `⟨?_, fun hw0 => ?_⟩` and prove the remaining obligations. Rewrite using `[negSq_eq, posSq_eq, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) h1 2`. Rewrite using `[posSq_eq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hwpos : 0 < ‖euc w‖`. Rewrite using `[norm_pos_iff]`. Introduce `h`. Conclude with `hw0 (euc_eq_zero h)`. Establish `hr : 0 < r`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Break down `Nat.eq_zero_or_pos r with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `absurd (Subsingleton.elim w 0) hw0`. Conclude with `h`. Establish `hsq : 0 < √(r : ℝ)` using `Real.sqrt_pos.mpr (Nat.cast_pos.mpr hr)`.
-
-Establish `h3 : 0 < 3 * (√(r : ℝ) * μ * ‖euc w‖)` using `mul_pos (by norm_num) (mul_pos (mul_pos hsq hμ) hwpos)`. Conclude with `pow_pos (lt_of_lt_of_le h3 h2) 2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma approxGraph_one {r p : ℕ} {μ ρ : ℝ} (X : Fin r → Fin r → ℂ) (hμ : 0 < μ) (hρ : 0 < ρ)
     (hρ1 : ρ ≤ 1)
@@ -187,17 +183,17 @@ lemma graphMap_apply (p : ℕ) {r : ℕ} (X : Fin r → Fin r → ℂ) (w : Fin 
     graphMap p X w = posPart p (∑ j, posPart p w j • X j) + negPart p w := rfl
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (graphMap p X)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `u hu`. Rewrite `hu` using `[graphMap_apply]`. Establish `hn : negPart p u = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (negPart p) hu` as an intermediate fact. Rewrite `this` using `[negPart_add, negPart_posPart, zero_add, negPart_negPart, negPart_zero]`. Then use the resulting hypothesis. Establish `hp : posPart p (∑ j, posPart p u j • X j) = 0`. Use `congrArg (posPart p) hu` as an intermediate fact. Rewrite `this` using `[posPart_add, posPart_posPart, posPart_negPart, add_zero, posPart_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `(graph_bound X hμ hρ hρ1 hX (posPart p u) (posPart_supp p u)).2`. Rewrite `h2` using `[hp, euc_zero, norm_zero]`. Establish `hu0 : posPart p u = 0`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Conclude with `Subsingleton.elim _ _`. Establish `hsq : 0 < √(r : ℝ)` using `Real.sqrt_pos.mpr (Nat.cast_pos.mpr hr)`. Establish `hle : ‖euc (posPart p u)‖ ≤ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `mul_pos (by norm_num : (0 : ℝ) < 3) (mul_pos (mul_pos hsq hμ) hc)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `euc_eq_zero (norm_le_zero_iff.mp hle)`. Rewrite using `[← posPart_add_negPart p u, hu0, hn, add_zero]`. Take `⟨u, hu⟩` from `(LinearMap.injective_iff_surjective.mp hinj) (posPart p b)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨posPart p u, posPart_supp p u, ?_⟩` and prove the remaining obligations. Use `congrArg (posPart p) hu` as an intermediate fact. Rewrite `this` using `[graphMap_apply, posPart_add, posPart_posPart, posPart_negPart, add_zero, posPart_posPart]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 lemma exists_graph_pos {r p : ℕ} {μ ρ : ℝ} (X : Fin r → Fin r → ℂ) (hμ : 0 < μ) (hρ : 0 < ρ)
     (hρ1 : ρ ≤ 1)

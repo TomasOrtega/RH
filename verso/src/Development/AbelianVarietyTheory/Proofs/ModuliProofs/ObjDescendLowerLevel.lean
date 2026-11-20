@@ -20,9 +20,9 @@ namespace GlobalTheory.ObjDesc
 open GlobalTheory.ObjPull
 
 /- English proof (translation)
-Establish `hJ` using `LocallyOfFiniteType.jacobsonSpace (pullback.snd π x)`. Take `⟨p, -⟩` from `(pullback.snd π x).surjective (IsLocalRing.closedPoint k)`. Take `⟨c, -, hc⟩` from `nonempty_inter_closedPoints (Set.nonempty_of_mem (Set.mem_univ p)) isOpen_univ.isLocallyClosed`. Establish `hc' : IsClosed {c}` using `hc`. Establish `hpt` using `pointOfClosedPoint_comp (pullback.snd π x) c hc'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨pointOfClosedPoint (pullback.snd π x) c hc' ≫ pullback.fst π x, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hpt, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_geomPt_lift {X Y : Scheme.{0}} (π : X ⟶ Y) [LocallyOfFiniteType π] [Surjective π]
     (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ Y) : ∃ y : Sp k ⟶ X, y ≫ π = x := by
@@ -41,7 +41,7 @@ section Sections
 variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
 
 /- English proof (translation)
-Introduce `e₁ e₂ he`. Establish `key : f ≫ e₁.left = f ≫ e₂.left`. Rewrite using `[← secPull_left h e₁, ← secPull_left h e₂, he]`. Conclude with `Over.OverMorphism.ext ((cancel_epi f).1 key)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secPull_injective [Epi f] (h : IsGrpPullback G' G f φ) : Function.Injective (secPull h) := by
   intro e₁ e₂ he
@@ -50,7 +50,7 @@ theorem secPull_injective [Epi f] (h : IsGrpPullback G' G f φ) : Function.Injec
   exact Over.OverMorphism.ext ((cancel_epi f).1 key)
 
 /- English proof (translation)
-Use `Over.OverMorphism.ext (h.1.hom_ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[secPull_left, he]`. Conclude with `(Over.w _).trans (Over.w e').symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secPull_eq (h : IsGrpPullback G' G f φ) {e : 𝟙_ (Over S) ⟶ G} {e' : 𝟙_ (Over S') ⟶ G'}
     (he : e'.left ≫ φ = f ≫ e.left) : secPull h e = e' := by
@@ -60,7 +60,7 @@ theorem secPull_eq (h : IsGrpPullback G' G f φ) {e : 𝟙_ (Over S) ⟶ G} {e' 
   · exact (Over.w _).trans (Over.w e').symm
 
 /- English proof (translation)
-Establish `hsec : g ≫ G.hom = (𝟙_ (Over S)).hom`. Apply `(cancel_epi f).1` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hg, Category.assoc, h.1.w, ← Category.assoc, Over.w e']`. Simplify using the standard rewrite rules. Conclude with `⟨Over.homMk g hsec, hg.symm⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_sec [Epi f] (h : IsGrpPullback G' G f φ) (e' : 𝟙_ (Over S') ⟶ G') (g : S ⟶ G.left)
     (hg : f ≫ g = e'.left ≫ φ) : ∃ e : 𝟙_ (Over S) ⟶ G, e'.left ≫ φ = f ≫ e.left := by
@@ -135,11 +135,11 @@ def lowerBase {l₂ : Level H} (h : l.Dvd l₂) (b₂ : Base l₂ B') : Base l B
 end GlobalTheory.ObjDesc
 
 /- English proof (translation)
-Introduce `_ _ E _ _ _ H D l l₂ B B₂ _ _ b b₂ j X Y π s s₂ Ga _ ρ ob₂ ν t' m hdvd hρ hζ hs hG hν hlow hp ha hk`. Establish `: Epi π` using `⟨fun g₁ g₂ hg => (hG.existsUnique_desc (π ≫ g₁) (fun a => by rw [← Category.assoc, hG.inv])).unique rfl hg.symm⟩`. Establish `: IsFinite π` using `hG.fin`. Establish `: Surjective π` using `hG.onto`. Set `o` to `GlobalTheory.ObjLower.lower (b := GlobalTheory.ObjDesc.lowerBase hdvd b₂) ob₂ hdvd rfl rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `desc : ∀ u : D.La → (𝟙_ (Over X) ⟶ ob₂.t.G), (∀ c a, ρ c ≫ (u a).left = (u a).left ≫ ν c) → ∃ w : D.La → (𝟙_ (Over Y) ⟶ t'.G), ∀ a, (u a).left ≫ m.φ = π ≫ (w a).left`. Introduce `u hu`. Establish `hex : ∀ a, ∃ w : 𝟙_ (Over Y) ⟶ t'.G, (u a).left ≫ m.φ = π ≫ w.left`. Introduce `a`. Take `⟨g, hg, -⟩` from `hG.existsUnique_desc ((u a).left ≫ m.φ) (fun c => by rw [← Category.assoc, hu c a, Category.assoc, hν c])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.ObjDesc.exists_sec m.cart (u a) g hg`. Conclude with `⟨fun a => (hex a).choose, fun a => (hex a).choose_spec⟩`. Take `⟨e, he⟩` from `desc (fun a => ob₂.eta a ^ (l₂.M / l.M)) (fun c a => ((hlow c).1 a).symm)`. Take `⟨eA, heA⟩` from `desc (fun a => ob₂.etaA a ^ (l₂.A / l.A)) (fun c a => ((hlow c).2 a).symm)`. Conclude with `⟨GlobalTheory.ObjDesc.descend (b' := GlobalTheory.ObjDesc.lowerBase hdvd b₂) j hρ hζ hs o t' m hp ha hk e eA (fun a => GlobalTheory.ObjDesc.secPull_eq m.cart (he a)) (fun a => GlobalTheory.ObjDesc.secPull_eq m.cart (heA a)), m, he, heA⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.obj_descend_lower_level : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l₂ : Level H) (B B₂ : Type) [CommRing B] [CommRing B₂] (b : Base l B) (b₂ : Base l₂ B₂) (j : B →+* B₂) (X Y : Scheme.{0}) (π : X ⟶ Y) (s : Y ⟶ Sp B) (s₂ : X ⟶ Sp B₂) (Ga : Type) [Group Ga] (ρ : Ga → (X ⟶ X)) (ob₂ : Obj D l₂ b₂ s₂) (ν : Ga → (ob₂.t.G.left ⟶ ob₂.t.G.left)) (t' : SAB H Y) (m : SABMap ob₂.t t' π), l.Dvd l₂ → j b.ρ = b₂.ρ → j b.ζ = b₂.ζ ^ (l₂.A / l.A) → π ≫ s = s₂ ≫ spMap j → IsGaloisCover Ga ρ π → (∀ a, ν a ≫ m.φ = m.φ) → (∀ a, Lowers l ob₂ (fun x => ob₂.eta x ^ (l₂.M / l.M)) (fun x => ob₂.etaA x ^ (l₂.A / l.A)) (ρ a) (ν a)) → IsProper t'.G.hom → Out.RelAmple t'.G t'.PP.L → Out.KTriv t'.G t'.PP.L → ∃ (ob : Obj D l b s) (m' : SABMap ob₂.t ob.t π), (∀ a, (ob₂.eta a ^ (l₂.M / l.M)).left ≫ m'.φ = π ≫ (ob.eta a).left) ∧ ∀ a, (ob₂.etaA a ^ (l₂.A / l.A)).left ≫ m'.φ = π ≫ (ob.etaA a).left := by
   intro _ _ E _ _ _ H D l l₂ B B₂ _ _ b b₂ j X Y π s s₂ Ga _ ρ ob₂ ν t' m hdvd hρ hζ hs hG hν hlow hp ha hk

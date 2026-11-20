@@ -8,7 +8,7 @@ namespace MassDataLevelSSteps
 open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 /- English proof (translation)
-Introduce `D X`. Use `⟨⟨X.B.I.cm.totReal, X.B.I.cm.cmUnram.1, X.B.I.cm.deg2, fun τ x => X.B.I.cm.cmUnram.2.1 τ x⟩, fun i j => ?_, X.B.I.J_det⟩` and prove the remaining obligations. Establish `h` using `congrFun (congrFun X.B.I.J_herm i) j`. Establish `h' : (starRingEnd X.B.I.E) (X.B.I.J j i) = X.B.I.J i j` using `by simpa [Formalism.UG.cT] using h`. Conclude with `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cmInst_holds : CMInst := by
   intro D X

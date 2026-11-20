@@ -11,7 +11,7 @@ open scoped Pointwise
 namespace GlobalTheory.Bauer
 
 /- English proof (translation)
-Establish `: Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Conclude with `Nat.one_le_iff_ne_zero.mpr this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_absNorm {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) :
     (1 : ℝ) ≤ ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) := by
@@ -20,33 +20,29 @@ theorem one_le_absNorm {K : Type} [Field K] [NumberField K] (v : HeightOneSpectr
   exact_mod_cast Nat.one_le_iff_ne_zero.mpr this
 
 /- English proof (translation)
-Introduce `h`. Use `choose P P' hne hP hP' hN hN' using h`. Establish `huniq : ∀ (Q : HeightOneSpectrum (𝓞 M)) (v w : HeightOneSpectrum (𝓞 K)), Q.asIdeal.LiesOver v.asIdeal → Q.asIdeal.LiesOver w.asIdeal → v = w`. Introduce `Q v w hv hw`. Conclude with `HeightOneSpectrum.ext (hv.over.trans hw.over.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `i : (Sᶜ : Set _) ⊕ (Sᶜ : Set _) → HeightOneSpectrum (𝓞 M)` to `Sum.elim (fun v => P v.1 v.2) (fun v => P' v.1 v.2)`. Establish `hi : Function.Injective i`. Introduce and unpack `(⟨v, hv⟩ | ⟨v, hv⟩) (⟨w, hw⟩ | ⟨w, hw⟩) e`. Establish `e' : P v hv = P w hw` using `e`. Use `huniq _ v w (hP v hv) (e' ▸ hP w hw)` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Substitute `this` using the available equality. Both sides reduce to the same expression. Establish `e' : P v hv = P' w hw` using `e`. Use `huniq _ v w (hP v hv) (e' ▸ hP' w hw)` as an intermediate fact. Substitute `this` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd e' (hne v hv)`. Establish `e' : P' v hv = P w hw` using `e`. Use `huniq _ v w (hP' v hv) (e' ▸ hP w hw)` as an intermediate fact. Substitute `this` using the available equality. Conclude with `absurd e'.symm (hne v hv)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Establish `e' : P' v hv = P' w hw` using `e`. Use `huniq _ v w (hP' v hv) (e' ▸ hP' w hw)` as an intermediate fact. Substitute `this` using the available equality. Both sides reduce to the same expression. Use `set c : ℝ := ∑' v : S, ((Ideal.absNorm v.1.asIdeal : ℕ) : ℝ)⁻¹ with hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ s : ℝ, 1 < s → 2 * ((∑' v : HeightOneSpectrum (𝓞 K), ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ (-s)) - c) ≤ ∑' Q : HeightOneSpectrum (𝓞 M), ((Ideal.absNorm Q.asIdeal : ℕ) : ℝ) ^ (-s)`. Introduce `s hs`. Establish `hf` using `((GlobalTheory.countable_ideal_and_summable_absNorm_rpow K).2 s hs).2`. Establish `hg` using `((GlobalTheory.countable_ideal_and_summable_absNorm_rpow M).2 s hs).2`. Establish `h0` using `hf.tsum_subtype_add_tsum_subtype_compl S`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∑' v : S, ((Ideal.absNorm v.1.asIdeal : ℕ) : ℝ) ^ (-s) ≤ c`. Use `(hf.subtype S).tsum_le_tsum (fun v => ?_) hS` and prove the remaining obligations. Rewrite using `[← Real.rpow_neg_one]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (one_le_absNorm _) (by linarith)`. Establish `hT` using `(hf.subtype (Sᶜ : Set _)).hasSum`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hsum : HasSum ((fun Q : HeightOneSpectrum (𝓞 M) => ((Ideal.absNorm Q.asIdeal : ℕ) : ℝ) ^ (-s)) ∘ i) ((∑' v : (Sᶜ : Set _), ((Ideal.absNorm v.1.asIdeal : ℕ) : ℝ) ^ (-s)) + ∑' v : (Sᶜ : Set _), ((Ideal.absNorm v.1.asIdeal : ℕ) : ℝ) ^ (-s))`. Apply `HasSum.sum` to reduce the goal to its premises. Use `hT.congr_fun ?_` and prove the remaining obligations. Introduce and unpack `⟨v, hv⟩`. Use `show ((Ideal.absNorm (P v hv).asIdeal : ℕ) : ℝ) ^ (-s) = _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hN v hv]`. Both sides reduce to the same expression. Use `hT.congr_fun ?_` and prove the remaining obligations. Introduce and unpack `⟨v, hv⟩`. Use `show ((Ideal.absNorm (P' v hv).asIdeal : ℕ) : ℝ) ^ (-s) = _`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hN' v hv]`. Both sides reduce to the same expression. Establish `hle` using `tsum_comp_le_tsum_of_inj hg (fun _ => by positivity) hi`. Rewrite `hle` using `[hsum.tsum_eq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨C, hC⟩` from `(GlobalTheory.ChebCyc.primeSum_add_log_isBigO K).bound`. Take `⟨D, hD⟩` from `(GlobalTheory.ChebCyc.primeSum_add_log_isBigO M).bound`. Establish `hlog : Tendsto (fun s : ℝ => Real.log (s - 1)) (𝓝[>] 1) atBot`. Use `Real.tendsto_log_nhdsGT_zero.comp ?_` and prove the remaining obligations. Apply `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: Tendsto (fun s : ℝ => s - 1) (𝓝 1) (𝓝 (1 - 1))` using `(continuous_id.sub continuous_const).tendsto 1`. Rewrite `this` using `[sub_self]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Simplify using `using hs`.
-
-Establish `hev` using `hlog.eventually_lt_atBot (-(2 * C + D + 2 * c))`. Establish `: ∀ᶠ s : ℝ in 𝓝[>] 1, False` using `by filter_upwards [hC, hD, hev, self_mem_nhdsWithin] with s h1 h2 h3 hs`. Establish `h4` using `key s hs`. Rewrite `h1`, `h2` using `[norm_one, mul_one, Real.norm_eq_abs, abs_le]`. Combine the linear relations using `[h1.1, h2.2]`.
-
-Conclude with `this.exists.elim fun _ h => h`.
+A detailed English derivation is pending.
 -/
 theorem not_forall_two_liesOver (K M : Type) [Field K] [NumberField K] [Field M] [NumberField M]
     [Algebra K M] (S : Set (HeightOneSpectrum (𝓞 K)))
@@ -126,9 +122,9 @@ theorem not_forall_two_liesOver (K M : Type) [Field K] [NumberField K] [Field M]
   exact this.exists.elim fun _ h => h
 
 /- English proof (translation)
-Use `set f : HeightOneSpectrum (𝓞 K) → ℝ := fun v => ((Ideal.absNorm v.asIdeal : ℕ) : ℝ)⁻¹`. Establish `f0 : ∀ v, 0 ≤ f v` using `fun v => by positivity`. Establish `h1 : Summable (S.indicator f)` using `summable_subtype_iff_indicator.1 (hS.summable f)`. Establish `h2 : Summable (Set.indicator {v | ¬ (Ideal.absNorm v.asIdeal).Prime} f)` using `summable_subtype_iff_indicator.1 (GlobalTheory.summable_inv_absNorm_of_not_prime K)`. Use `(summable_subtype_iff_indicator (f := f)).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Summable.of_nonneg_of_le (fun v => Set.indicator_nonneg (fun v _ => f0 v) v) (fun v => ?_) (h1.add h2)` and prove the remaining obligations. Use `f0 v` as an intermediate fact. Apply the tactic sequence `by_cases a : v ∈ S <;> by_cases b : (Ideal.absNorm v.asIdeal).Prime <;>`. Simplify using `[Set.indicator, a, b, this]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem summable_finite_union_not_prime (K : Type) [Field K] [NumberField K]
     (S : Set (HeightOneSpectrum (𝓞 K))) (hS : S.Finite) :
@@ -147,17 +143,17 @@ theorem summable_finite_union_not_prime (K : Type) [Field K] [NumberField K]
     simp [Set.indicator, a, b, this]
 
 /- English proof (translation)
-Use `haveI : IsGalois M N := IsGalois.tower_top_of_isGalois K M N`. Use `haveI : P.IsMaximal := Ideal.IsPrime.isMaximal inferInstance hP`. Establish `h1` using `Ideal.card_stabilizer_eq (G := N ≃ₐ[K] N) (P.under (𝓞 K)) P`. Establish `h2` using `Ideal.card_stabilizer_eq (G := N ≃ₐ[M] N) (P.under (𝓞 M)) P`. Rewrite `h1` using `[Ideal.ramificationIdxIn_eq_ramificationIdx _ P (N ≃ₐ[K] N), Ideal.inertiaDegIn_eq_inertiaDeg _ P (N ≃ₐ[K] N), Ideal.ramificationIdx_tower (P.under (𝓞 M)) P, Ideal.inertiaDeg_tower (P.under (𝓞 M)) P]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Ideal.ramificationIdxIn_eq_ramificationIdx _ P (N ≃ₐ[M] N), Ideal.inertiaDegIn_eq_inertiaDeg _ P (N ≃ₐ[M] N)]`. Establish `h3 : Nat.card (MulAction.stabilizer (N ≃ₐ[K] N) P) = ((P.under (𝓞 M)).ramificationIdx (𝓞 K) * (P.under (𝓞 M)).inertiaDeg (𝓞 K)) * Nat.card (MulAction.stabilizer (N ≃ₐ[M] N) P)`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Set `j : MulAction.stabilizer (N ≃ₐ[M] N) P → MulAction.stabilizer (N ≃ₐ[K] N) P` to `fun σ => ⟨σ.1.restrictScalars K, σ.2⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hj : Function.Injective j`. Introduce `a b e`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `AlgEquiv.restrictScalars_injective K (congrArg Subtype.val e)`. Establish `hpos : 0 < Nat.card (MulAction.stabilizer (N ≃ₐ[M] N) P)` using `Nat.card_pos`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hs : Function.Surjective j`. Introduce and unpack `⟨σ, hσ⟩`. Conclude with `⟨⟨AlgEquiv.ofRingEquiv (f := σ.toRingEquiv) (h σ hσ), hσ⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Nat.card_eq_of_bijective j ⟨hj, hs⟩` as an intermediate fact. Rewrite `this` using `[h3]`. Conclude with `(Nat.eq_of_mul_eq_mul_right hpos (by rw [← this, one_mul])).symm`. Introduce `h σ hσ x`. Rewrite `h3` using `[h, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `(Nat.bijective_iff_injective_and_card j).2 ⟨hj, h3.symm⟩`. Take `⟨τ, hτ⟩` from `hb.2 ⟨σ, hσ⟩`. Establish `: σ = τ.1.restrictScalars K` using `(congrArg Subtype.val hτ).symm`. Rewrite using `[this]`. Conclude with `τ.1.commutes x`.
+A detailed English derivation is pending.
 -/
 theorem stabilizer_fixes_iff (K M N : Type) [Field K] [NumberField K] [Field M] [NumberField M]
     [Field N] [NumberField N] [Algebra K M] [Algebra M N] [Algebra K N] [IsScalarTower K M N]
@@ -201,9 +197,9 @@ theorem stabilizer_fixes_iff (K M N : Type) [Field K] [NumberField K] [Field M] 
     exact τ.1.commutes x
 
 /- English proof (translation)
-Rewrite using `[← Set.ncard_image_of_injective _ (f := HeightOneSpectrum.asIdeal) (fun _ _ h => HeightOneSpectrum.ext h)]`. Use `congr 1`. Use extensionality with `Q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, hQ, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨Q.isPrime, ⟨Eq.symm hQ⟩⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨Q, h1, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, h2.over.symm, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem ncard_eq_ncard_primesOver (K M : Type) [Field K] [NumberField K] [Field M] [NumberField M]
     [Algebra K M] (v : HeightOneSpectrum (𝓞 K)) :
@@ -220,11 +216,9 @@ theorem ncard_eq_ncard_primesOver (K M : Type) [Field K] [NumberField K] [Field 
     exact ⟨⟨Q, h1, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, h2.over.symm, rfl⟩
 
 /- English proof (translation)
-Use `haveI := v.isPrime`. Use `haveI := v.isMaximal`. Use `haveI : Fintype (v.asIdeal.primesOver (𝓞 M)) := (IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 M)).fintype`. Establish `h` using `Ideal.sum_ramification_inertia_eq_finrank v.asIdeal (𝓞 M)`. Establish `h' : Module.finrank (𝓞 K) (𝓞 M) = Module.finrank K M` using `(Algebra.IsAlgebraic.finrank_of_isFractionRing (𝓞 K) K (𝓞 M) M).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (v.asIdeal.primesOver (𝓞 M)).ncard = ∑ _q : v.asIdeal.primesOver (𝓞 M), 1`. Rewrite using `[Finset.sum_const, smul_eq_mul, mul_one, Finset.card_univ, ← Nat.card_eq_fintype_card, Nat.card_coe_set_eq]`. Rewrite using `[← h', ← h, h1, Finset.sum_eq_sum_iff_of_le]`. Simplify using `only [Finset.mem_univ, forall_true_left, Subtype.forall]`. Conclude with `forall₂_congr fun _ _ => eq_comm`.
-
-Introduce and unpack `⟨Q, hQ, _⟩ -`. Conclude with `Nat.mul_pos (Ideal.ramificationIdx_pos Q _) (Ideal.inertiaDeg_pos Q _)`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ncard_eq_finrank_iff (K M : Type) [Field K] [NumberField K] [Field M] [NumberField M]
     [Algebra K M] (v : HeightOneSpectrum (𝓞 K)) :
@@ -247,15 +241,11 @@ theorem ncard_eq_finrank_iff (K M : Type) [Field K] [NumberField K] [Field M] [N
     exact Nat.mul_pos (Ideal.ramificationIdx_pos Q _) (Ideal.inertiaDeg_pos Q _)
 
 /- English proof (translation)
-Set `N` to `IntermediateField.normalClosure K T (AlgebraicClosure T)`. Use `haveI : NumberField N := NumberField.of_module_finite K N`. Use `haveI : IsGalois K N := IsGalois.normalClosure K T (AlgebraicClosure T)`. Use `letI : Algebra R N := ((algebraMap T N).comp (algebraMap R T)).toAlgebra`. Use `letI : Algebra M N := ((algebraMap T N).comp (algebraMap M T)).toAlgebra`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsScalarTower R T N := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower M T N := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower K R N := IsScalarTower.of_algebraMap_eq fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply R T N, ← IsScalarTower.algebraMap_apply K R T, ← IsScalarTower.algebraMap_apply K T N]`. Use `haveI : IsScalarTower K M N := IsScalarTower.of_algebraMap_eq fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply M T N, ← IsScalarTower.algebraMap_apply K M T, ← IsScalarTower.algebraMap_apply K T N]`. Take `⟨⟨P, hP, hPQ⟩⟩` from `Q.nonempty_primesOver (S := 𝓞 N)`. Establish `hP0 : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot hQ P`. Establish `hQP : Q = P.under (𝓞 T)` using `hPQ.over`. Rewrite `hR`, `hM` using `[hQP, Ideal.under_under]`.
-
-Rewrite using `[hQP, ← stabilizer_fixes_iff K T N P hP0]`. Rewrite `hR` using `[← stabilizer_fixes_iff K R N P hP0]`. Rewrite `hM` using `[← stabilizer_fixes_iff K M N P hP0]`. Introduce `σ hσ x`. Use `hgen N ((σ : N →ₐ[K] N).comp (IsScalarTower.toAlgHom K T N)) (IsScalarTower.toAlgHom K T N) (hR σ hσ) (hM σ hσ)` as an intermediate fact.
-
-Conclude with `DFunLike.congr_fun this x`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ef_eq_one_of_generate (K R M T : Type) [Field K] [NumberField K] [Field R] [NumberField R]
     [Field M] [NumberField M] [Field T] [NumberField T] [Algebra K R] [Algebra K M] [Algebra K T]
@@ -293,23 +283,19 @@ theorem ef_eq_one_of_generate (K R M T : Type) [Field K] [NumberField K] [Field 
   exact DFunLike.congr_fun this x
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `hS1 : ((fun v : HeightOneSpectrum (𝓞 R) => v.under (𝓞 K)) ⁻¹' F).Finite`. Use `hF.preimage' fun p _ => ?_` and prove the remaining obligations. Use `haveI := p.isMaximal`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.Finite.of_finite_image (f := HeightOneSpectrum.asIdeal) ((IsDedekindDomain.primesOver_finite p.asIdeal (𝓞 R)).subset ?_) (fun _ _ _ _ h => HeightOneSpectrum.ext h)` and prove the remaining obligations. Introduce and unpack `_ ⟨Q, rfl, rfl⟩`. Conclude with `⟨Q.isPrime, ⟨rfl⟩⟩`. Establish `hS2 : {v : HeightOneSpectrum (𝓞 R) | v.asIdeal ∣ differentIdeal (𝓞 K) (𝓞 R)}.Finite` using `Ideal.finite_factors differentIdeal_ne_bot`. Use `not_forall_two_liesOver R T _ (summable_finite_union_not_prime R _ (hS1.union hS2)) ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Simplify using `only [Set.mem_union, Set.mem_preimage, Set.mem_setOf_eq, not_or, not_not] at hv`. Take `⟨⟨hvF, hvd⟩, hvp⟩` from `hv`. Use `haveI := v.isPrime`. Use `set p : HeightOneSpectrum (𝓞 K) := v.under (𝓞 K) with hp`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := p.isPrime`. Use `haveI : v.asIdeal.LiesOver p.asIdeal := ⟨rfl⟩`. Use `haveI : Algebra.IsUnramifiedAt (𝓞 K) v.asIdeal := not_dvd_differentIdeal_iff.1 hvd`. Establish `he : v.asIdeal.ramificationIdx (𝓞 K) = 1` using `Ideal.ramificationIdx_eq_one _ _`. Establish `hn` using `Ideal.absNorm_pow_inertiaDeg p.asIdeal v.asIdeal`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hf : v.asIdeal.inertiaDeg (𝓞 K) = 1` using `(hn ▸ hvp).eq_one_of_pow`. Rewrite `hn` using `[hf, pow_one]`. Establish `hR : (p.asIdeal.primesOver (𝓞 R)).ncard = Module.finrank K R`. Use `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn p.asIdeal (𝓞 R) (R ≃ₐ[K] R)` as an intermediate fact. Rewrite `this` using `[Ideal.ramificationIdxIn_eq_ramificationIdx _ v.asIdeal (R ≃ₐ[K] R), Ideal.inertiaDegIn_eq_inertiaDeg _ v.asIdeal (R ≃ₐ[K] R), he, hf, mul_one, mul_one, IsGalois.card_aut_eq_finrank]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hM` using `(ncard_eq_finrank_iff K M p).1 (h p hvF (hn ▸ hvp) hR)`. Establish `hT : ∀ Q ∈ v.asIdeal.primesOver (𝓞 T), Q.ramificationIdx (𝓞 R) * Q.inertiaDeg (𝓞 R) = 1`. Introduce and unpack `Q ⟨hQ, hQv⟩`. Use `haveI : Q.LiesOver p.asIdeal := Ideal.LiesOver.trans Q v.asIdeal p.asIdeal`. Establish `h1` using `ef_eq_one_of_generate K R M T hgen Q (Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q) (by rw [← hQv.over, he, hf]) (hM _ ⟨inferInstance, inferInstance⟩)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Ideal.ramificationIdx_tower v.asIdeal Q, Ideal.inertiaDeg_tower v.asIdeal Q, he, hf, one_mul, one_mul]`. Then use the resulting hypothesis. Establish `hN : ∀ Q ∈ v.asIdeal.primesOver (𝓞 T), Ideal.absNorm Q = Ideal.absNorm v.asIdeal`. Introduce and unpack `Q hQ`. Establish `h1` using `Nat.eq_one_of_mul_eq_one_left (hT Q hQ)`. Take `⟨_, _⟩` from `hQ`.
-
-Rewrite using `[← Ideal.absNorm_pow_inertiaDeg v.asIdeal Q, h1, pow_one]`. Rewrite `hlt` using `[← (ncard_eq_finrank_iff R T v).2 hT, Set.one_lt_ncard_iff_nontrivial_and_finite]`. Take `⟨⟨Q, hQ, Q', hQ', hne⟩, -⟩` from `hlt`. Use `haveI := hQ.2`. Use `haveI := hQ'.2`.
-
-Conclude with `⟨⟨Q, hQ.1, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, ⟨Q', hQ'.1, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q'⟩, fun e => hne (congrArg HeightOneSpectrum.asIdeal e), hQ.2, hQ'.2, hN Q hQ, hN Q' hQ'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finrank_le_one_of_generate (K R M T : Type) [Field K] [NumberField K] [Field R]
     [NumberField R] [Field M] [NumberField M] [Field T] [NumberField T] [Algebra K R] [Algebra K M]
@@ -378,15 +364,13 @@ theorem finrank_le_one_of_generate (K R M T : Type) [Field K] [NumberField K] [F
     fun e => hne (congrArg HeightOneSpectrum.asIdeal e), hQ.2, hQ'.2, hN Q hQ, hN Q' hQ'⟩
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ R M _ _ _ hfin`. Set `T : IntermediateField K Ω` to `R ⊔ M`. Use `haveI : NumberField T := NumberField.of_module_finite K T`. Use `letI : Algebra R T := (IntermediateField.inclusion (le_sup_left : R ≤ T)).toRingHom.toAlgebra`. Use `letI : Algebra M T := (IntermediateField.inclusion (le_sup_right : M ≤ T)).toRingHom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower K R T := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower K M T := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `h1 : Module.finrank R T ≤ 1`. Use `finrank_le_one_of_generate K R M T ?_ _ hfin ?_` and prove the remaining obligations. Introduce `N _ _ φ ψ hR hM`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `IntermediateField.algHom_ext_of_eq_adjoin K (IntermediateField.sup_def R M) ?_` and prove the remaining obligations. Introduce and unpack `x (hx | hx)`. Conclude with `hR ⟨x, hx⟩`. Conclude with `hM ⟨x, hx⟩`. Introduce `p hp hpp hR`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hR`, the goal using `[← ncard_eq_ncard_primesOver]`. Assume the negation of the conclusion as `hM`. Conclude with `hp ⟨hpp, hR, hM⟩`. Establish `h2 : Module.finrank K T ≤ Module.finrank K R` using `by haveI : Module.Free R T := Module.Free.of_divisionRing R T`. Rewrite using `[← Module.finrank_mul_finrank K R T]`.
-
-Conclude with `mul_le_of_le_one_right' h1`. Establish `h3 : R = T` using `IntermediateField.eq_of_le_of_finrank_le le_sup_left h2`. Conclude with `h3 ▸ (le_sup_right : M ≤ T)`.
+A detailed English derivation is pending.
 -/
 theorem le_of_finite_split_not_split :
     ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (R M : IntermediateField K Ω) [NumberField R] [NumberField M] [IsGalois K R], {𝔭 : HeightOneSpectrum (𝓞 K) | (Ideal.absNorm 𝔭.asIdeal).Prime ∧ {Q : HeightOneSpectrum (𝓞 R) | Q.asIdeal.comap (algebraMap (𝓞 K) (𝓞 R)) = 𝔭.asIdeal}.ncard = Module.finrank K R ∧ ¬ {Q : HeightOneSpectrum (𝓞 M) | Q.asIdeal.comap (algebraMap (𝓞 K) (𝓞 M)) = 𝔭.asIdeal}.ncard = Module.finrank K M}.Finite → M ≤ R := by

@@ -10,7 +10,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.USep
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GSep.exists_uLink_regAt_chart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsLinkedThetaSystemRegularMonomialFamily.lean&line=15#L15)
 -/

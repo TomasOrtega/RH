@@ -10,9 +10,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.ArchSch
 
 /- English proof (translation)
-Introduce `F _ _ κ _ V _ _ B d w w'`. Set `f : AF F →+* mixedEmbedding.mixedSpace F` to `{ toFun := fun a => evI F a map_one' := by simp only [evI]; exact map_one (InfiniteAdeleRing.ringEquiv_mixedSpace F) map_mul' := fun a b => by simp only [evI]; exact map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1 map_zero' := by simp only [evI]; exact map_zero (Infini …`. Establish `hf : ∀ a, f a = evI F a` using `fun _ => rfl`. Establish `hsum : ∀ (x y : κ → AF F), evI F (x ⬝ᵥ y) = ∑ i, arch F x i * arch F y i` using `fun x y => by`. Rewrite using `[← hf, dotProduct, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => map_mul f _ _`. Rewrite using `[d.form, ← hf, map_sub, hf, hf, hsum, hsum, map_sub, mixedTracePairing_apply, mixedTracePairing_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_evI_darboux : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {V : Type} [AddCommGroup V] [Module (AF F) V]
     {B : V → V → AF F} (d : Darboux B κ) (w w' : V),

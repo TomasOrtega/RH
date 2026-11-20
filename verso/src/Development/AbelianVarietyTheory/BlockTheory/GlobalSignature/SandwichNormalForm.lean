@@ -77,7 +77,7 @@ def NormalForm : Prop :=
     InclAt Pr R ∧ RepAt Ch sel mu ∧ ChoiceAt Ch sel mu
 
 /- English proof (translation)
-Unfold `lamYat LocE.lamY LocE.sclLat stdAt`. Rewrite using `[if_neg hP, Submodule.mem_comap, mem_localization_standardLattice]`. Simplify using `[LocE.scE]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_lamYat {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.vGs) (y : Sp X.E (R.N j + cOf R j)) :
     y ∈ lamYat (Pr := Pr) (R := R) j P ↔ ∀ l, IntAt P (y l) := by
@@ -86,15 +86,15 @@ theorem mem_lamYat {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.v
   simp [LocE.scE]
 
 /- English proof (translation)
-Use `⟨0, 0, fun i => ⟨by simp, le_rfl⟩, zero_mem _, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (l : Sp X.E (R.N j)) (s : Fin (cOf R j) → X.E) (p : Fin (R.N j + cOf R j)), (Loc.inX X.E (R.N j) (cOf R j) l + ∑ i, s i • nfGen (qOf P) (R.N j) (cOf R j) 0 0 i : Sp X.E (R.N j + cOf R j)) p = Fin.addCases (motive` using `fun _ => X.E) l s p := by`. Introduce `l s p`. Use `Fin.addCases (fun a => ?_) (fun b => ?_) p` and prove the remaining obligations. Establish `: ∀ i : Fin (cOf R j), ¬ (a.1 = R.N j + i.1)` using `fun i => by omega`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[Loc.inX, nfGen, Loc.eN, Finset.sum_apply, this]`. Simplify using `[Loc.inX, nfGen, Loc.eN, Finset.sum_apply, Fin.val_inj]`. Use extensionality with `y`. Simplify using `only [Set.mem_image, SetLike.mem_coe, mem_lamYat hP, nfLat, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨fun a => x (Fin.castAdd _ a), (mem_localization_standardLattice _ _).2 fun a => hx _, fun b => x (Fin.natAdd _ b), fun b => hx _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Rewrite using `[key]`. Apply the tactic sequence `refine Fin.addCases (fun a => ?_) (fun b => ?_) p <;> simp`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce and unpack `⟨l, hl, s, hs, rfl⟩`. Use `⟨_, fun p => ?_, rfl⟩` and prove the remaining obligations. Establish `hk` using `key l s p`. Rewrite `hk` using `[Pi.add_apply]`. Rewrite using `[hk]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Fin.addCases (fun a => ?_) (fun b => ?_) p` and prove the remaining obligations. Simplify using `using (mem_localization_standardLattice _ _).1 hl a`. Simplify using `using hs b`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nf_one (j : ℕ) {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.vGs) : NF (R := R) Pr j P 1 := by
   refine ⟨0, 0, fun i => ⟨by simp, le_rfl⟩, zero_mem _, ?_⟩

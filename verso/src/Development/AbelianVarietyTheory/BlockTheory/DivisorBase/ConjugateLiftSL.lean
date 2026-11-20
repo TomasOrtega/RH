@@ -23,7 +23,7 @@ def OverK (σ : D.what₂.LL →+* ℂ) : Prop :=
   ∀ a : D.host.K, σ (D.embE (algebraMap D.host.K D.host.E a)) = D.what₂.embLL (D.embE (algebraMap D.host.K D.host.E a))
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 example : OverK D D.what₂.embLL := fun _ => rfl
 
@@ -47,7 +47,7 @@ def IsCompUnit (V : HSp D) (J : Subgroup (GA D V)) (u : GA D V → ℂ) : Prop :
     ∀ k ∈ J, ∀ g, u (g * k) = u g
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => norm_one, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (V : HSp D) (J : Subgroup (GA D V)) : IsCompUnit V J fun _ => 1 :=
   ⟨fun _ => norm_one, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩
@@ -210,7 +210,7 @@ def castSL {K X Z : Type} [Field K] [AddCommGroup X] [Module K X] [AddCommGroup 
 
 include R in
 /- English proof (translation)
-The claim follows from `(sgAt_mk _ R.hv0).symm`.
+A detailed English derivation is pending.
 -/
 theorem sign_at_base_place_eq_embedding : D.what₂.embLL = sg0 D A := (sgAt_mk _ R.hv0).symm
 

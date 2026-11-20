@@ -17,55 +17,49 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} {r q r' q' : ℕ}
 
 /- English proof (translation)
-Take `⟨j, hj, hjS⟩` from `intersection_update_fsHerm_neg_one hP hp f h1 h2 v`. Take `⟨ω, ρ, hω⟩` from `PositivityTheory.ThKH.Locrep.locRepEx F E σ n d B X W M om ⟨hp.base, ⟨_, _, hp.herm⟩, ⟨_, _, hp.skew⟩, hp.good, ⟨_, _, hp.weil⟩⟩ v`. Take `⟨hΓ, μ, 𝓕, hμ, h𝓕, hr⟩` from `uniW hU hp`. Establish `: BorelSpace (UA σ W.J)` using `⟨rfl⟩`. Take `⟨hinv, hmul, -⟩` from `hL F E σ d W v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `o1 : (1 : UA σ X.J) ∈ UAt σ X (evFin F v)` using `fun u _ => by simp [mat]`. Establish `o2 : (1 : UA σ W.J) ∈ UAt σ W (evFin F v)` using `fun u _ => by simp [mat]`. Set `Q` to `SB (Fin n × Fin d → Fv F v)`. Establish `jc : ∀ x : Q, j x ∈ 𝓒` using `fun x => hj x ▸ h𝓒 x x.2`. Set `u : Q →ₗ[ℂ] (UA σ W.J → ℂ)` to `{ toFun := fun x => M.I om (j x) map_add' := fun x y => by rw [Submodule.coe_add, map_add, I_add' hp hc (jc x) (jc y)] map_smul' := fun c x => funext fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[Submodule.coe_smul, map_smul]`. Conclude with `PositivityTheory.ThKG.I_smul M om c _ h }`. Establish `hu' : ∀ x, u x = M.I om (j x)` using `fun _ => rfl`. Establish `uc : ∀ x, Continuous (u x)` using `fun x => hc.cont _ (jc x)`. Establish `u2 : ∀ x, IntegrableOn (fun g => ‖u x g‖ ^ 2) 𝓕 μ` using `fun x => hc.sq μ 𝓕 hμ h𝓕 _ (jc x) (hj x ▸ Submodule.subset_span ⟨f, hf, _, upd_sb h1 x.2, upd_cof h2 v x, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ui : ∀ x, L2.Inv (ratU σ W.J) (u x)` using `fun x => I_inv hT hp (hc.sch (jc x))`. Establish `augle : augAt om v ≤ Q` using `hN.1.trans hN.2.1`. Establish `uaug : ∀ z ∈ augAt om v, M.I om (j z) = 0` using `fun z hz => by`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z h`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, x, hx, y, hy, hxy, rfl⟩` from `h`. Establish `e : j y = j (y - x) + j x` using `by rw [← map_add, sub_add_cancel]`. Establish `e2` using `I_add' hp hc (jc ⟨y - x, sub_mem hy hx⟩) (jc ⟨x, hx⟩)`. Rewrite `e2` using `[← e, ← hjS _ x hx y hxy, I_left hU hT hp (hc.sch (jc ⟨x, hx⟩))]`. Conclude with `(left_eq_add.1 (e2.trans (add_comm _ _)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `PositivityTheory.ThKG.I_zero M om`. Consider the case `add a b ha hb iha ihb => rw [map_add, I_add' hp hc (jc ⟨a, augle ha⟩) (jc ⟨b, augle hb⟩), iha, ihb, add_zero]`. Consider the case `smul c a _ iha => funext h`. Rewrite using `[map_smul, PositivityTheory.ThKG.I_smul, iha]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Break down `hsa with hsa | hsa` into its components or cases. Use `swap`. Establish `e` using `(hsa N hN).resolve_right hNe`. Use `uaug _ (e ▸ hv)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite `this` using `[hj, upd_eq]`. Then use the resulting hypothesis. Take `⟨s, hs⟩` from `hsa ω ρ hω`. Take `⟨β, hβ, -, -⟩` from `exists_beta 𝓕 μ u uc u2`. Set `A : ∀ h ∈ UAt σ W (evFin F v), Module.End ℂ Q` to `fun h hh => (ω (1, h)).restrict (hω.pres 1 o1 h hh)`. Establish `hA : ∀ h hh (x : Q), (A h hh x : _ → ℂ) = ω (1, h) x` using `fun _ _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `uA : ∀ h hh x g, u (A h hh x) g = u x (g * h)` using `fun h hh x g => by`. Rewrite using `[hu', hu', hA h hh, ← hjS (om (1, h)) x x.2 _ ((hω.acts 1 o1 h hh x x.2 _).2 rfl), I_right]`. Establish `iso : ∀ h hh x y, β (A h hh x) (A h hh y) = β x y` using `fun h hh x y => by`. Simplify using `only [hβ, uA]`. Conclude with `L2.form_right h𝓕 (ui x) (ui y) h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Amul : ∀ h hh h' hh' x, A (h * h') (hmul h hh h' hh') x = A h hh (A h' hh' x)` using `fun h hh h' hh' x => Subtype.ext (by`. Use `hω.mul 1 o1 h hh 1 o1 h' hh' x x.2` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `this)`. Establish `Aone : ∀ x, A 1 o2 x = x` using `fun x => Subtype.ext (hω.one x x.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `st` using `stab_of hω hN`. Establish `sN : s ∉ N` using `Stab.not_mem hs.gen st hNe`. Establish `bz : ∀ x y : Q, y.1 ∈ augAt om v → β x y = 0` using `fun x y hy => by`. Rewrite using `[hβ, show u y = 0 from (hu' y).trans (uaug _ hy)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `bz' : ∀ x y : Q, x.1 ∈ augAt om v → β x y = 0` using `fun x y hx => by`. Rewrite using `[hβ, show u x = 0 from (hu' x).trans (uaug _ hx)]`. Simplify using the standard rewrite rules. Set `sQ : Q` to `⟨s, hs.mem⟩`. Establish `s0 : s ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `rfl`. Use `hNe (le_antisymm hN.2.1 fun φ hφ => (sup_le hN.1 (Submodule.span_le.2 ?_)) (hs.gen φ hφ))` and prove the remaining obligations. Introduce and unpack `_ ⟨h, hh, rfl⟩`. Rewrite using `[map_zero]`. Conclude with `N.zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `kA : ∀ y : Q, y.1 ∈ N → β sQ y = 0` using `fun y hy => by`. Take `⟨m, k, w, c, hw, hc⟩` from `hs.line y.1 y.2`. Establish `hsum : ∑ i, w i • ω (1, k i) y.1 ∈ N` using `N.sum_mem fun i _ => N.smul_mem _ (st.2.2 (k i) (hw i).1 y.1 hy)`. Establish `hcs : c • s ∈ N`. Use `N.sub_mem hsum (hN.1 hc)` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `c0 : c = 0`. Assume the negation of the conclusion as `hc0`. Use `N.smul_mem c⁻¹ hcs` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sN this`. Rewrite `hc` using `[c0, zero_smul, sub_zero]`. Set `z : Q` to `∑ i, w i • A (k i) (hw i).1 y`. Establish `hz : (z : _ → ℂ) = ∑ i, w i • ω (1, k i) y.1`. Simplify using `only [z, Submodule.coe_sum, Submodule.coe_smul, hA]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : β sQ z = 0` using `bz sQ z (by rw [hz]; exact hc)`. Establish `hk : ∀ i, β sQ (A (k i) (hw i).1 y) = starRingEnd ℂ (w i) * β sQ y` using `fun i => by`. Establish `e : sQ = w i • A (k i) (hw i).1 sQ` using `Subtype.ext (by`. Rewrite using `[Submodule.coe_smul, hA (k i) (hw i).1]`. Conclude with `((hw i).2).symm)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e]`. Use `_ = starRingEnd ℂ (w i) * β sQ y := by`. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, iso (k i) (hw i).1, smul_eq_mul]`. Establish `e3 : β sQ z = (∑ i, w i * starRingEnd ℂ (w i)) * β sQ y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [z, map_sum, map_smul, hk, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite `e3` using `[h0]`. Establish `w0 : w 0 ≠ 0` using `fun e => s0 (by`. Use `(hw 0).2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `this` using `[e, zero_smul]`. Conclude with `this.symm)`. Establish `pos : (0 : ℝ) < ∑ i, Complex.normSq (w i)` using `lt_of_lt_of_le (Complex.normSq_pos.2 w0) (Finset.single_le_sum (fun i _ => Complex.normSq_nonneg (w i)) (Finset.mem_univ 0))`. Establish `hne : (∑ i, w i * starRingEnd ℂ (w i)) ≠ 0`. Repeatedly rewrite using `[Complex.mul_conj]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← Complex.ofReal_sum]`. Conclude with `pos.ne'` after adjusting the coercions. Conclude with `(mul_eq_zero.1 e3.symm).resolve_left hne`. Establish `kB : ∀ y : Q, y.1 ∈ N → ∀ h (hh : h ∈ UAt σ W (evFin F v)), β (A h hh sQ) y = 0` using `fun y hy h hh => by`. Establish `e : A h hh (A h⁻¹ (hinv h hh) y) = y`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← Amul h hh h⁻¹ (hinv h hh)]`. Simplify using `only [mul_inv_cancel, Aone]`. Combine the equalities or inequalities in the displayed calculation. Establish `kC : ∀ y : Q, y.1 ∈ N → ∀ z : Q, β z y = 0` using `fun y hy z => by`. Establish `hle : augAt om v ⊔ Submodule.span ℂ {z | ∃ h ∈ UAt σ W (evFin F v), z = ω (1, h) s} ≤ (LinearMap.ker (β.flip y)).map Q.subtype`.
-
-Use `sup_le ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce `a ha`. Conclude with `⟨⟨a, augle ha⟩, by rw [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.flip_apply]; exact bz' _ _ ha, rfl⟩`. Introduce and unpack `_ ⟨h, hh, rfl⟩`. Conclude with `⟨A h hh sQ, by rw [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.flip_apply]; exact kB y hy h hh, rfl⟩`.
-
-Take `⟨z', hz', e⟩` from `hle (hs.gen z.1 z.2)`. Rewrite using `[show z = z' from (Subtype.ext e).symm]`. Establish `h0 : β.flip y z' = 0` using `hz'`. Rewrite `h0` using `[LinearMap.flip_apply]`. Then use the resulting hypothesis. Establish `key : β ⟨φ v, h1 v⟩ ⟨φ v, h1 v⟩ = 0` using `kC _ hv _`.
-
-Use `L2.eq_zero h𝓕 (uc _) (ui _) (u2 _) ((hβ _ _).symm.trans key)` as an intermediate fact. Rewrite `this` using `[hu', hj, upd_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem killFin3 (hU : Unimod) (hT : ThetaBasic) (hP : PureAct) (hL : LocCpt) (hp : IsPair B M χX χW om r q r' q') {𝓒}
     (hc : Cls B M om 𝓒) (v : Pl F) (hsa : SphAt M B.ψ om v ∨ IrrAt om v) {N}
@@ -203,21 +197,19 @@ theorem killFin3 (hU : Unimod) (hT : ThetaBasic) (hP : PureAct) (hL : LocCpt) (h
   rwa [hu', hj, upd_eq] at this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf m`. Establish `p1` using `PositivityTheory.ThKG.pairV m.triple`. Establish `p2` using `PositivityTheory.ThKG.pairV' m.triple`. Establish `c1` using `clsV hW hC hS m.triple`. Establish `c2` using `clsV' hD hK hc hC hS m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sch : ∀ (f : SInf F _) φ, (∀ v, φ v ∈ SB _) → (∀ᶠ v in cofinite, φ v = G.M.vac v) → pure f φ ∈ schA F _` using `fun f φ h1 h2 => by`. Take `⟨g, hg, e⟩` from `PositivityTheory.ThKG.pure_eq_pureA p1.good φ h1 h2`. Rewrite using `[e]`. Conclude with `PositivityTheory.ThKG.pureA_mem f hg`. Use `⟨fun f hf φ h1 h2 h => ?_, fun f hf φ h1 h2 h3 h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `h with h | ⟨v, h⟩` into its components or cases. Conclude with `killInf' unimodularity_holds hT hO hL hQ exists_maximal_compact_infinite p1 (hAi F E σ B a a' G X om om' m.triple).1 c1 (maxInfP hO hL hQ m).1 (hH F E σ B a a' G X om om' m.triple).1 h1 h2 (fun f => sch f φ h1 h2) ⟨h, hf⟩`. Conclude with `killFin3 unimodularity_holds hT pureAct local_compact_open_subgroups p1 c1 v (hSph F E σ B a a' G X om om' m.triple v).1 (maxFinP m v).1.prop.1 (maxFinP m v).1.prop.2 hf h1 h2 (fun x hx => sch f _ (upd_sb h1 hx) (upd_cof h2 v x)) ⟨h, h1 v⟩`. Break down `h with h | ⟨v, h⟩` into its components or cases. Conclude with `killInf' unimodularity_holds hT hO hL hQ exists_maximal_compact_infinite p2 (hAi F E σ B a a' G X om om' m.triple).2 c2 (maxInfP hO hL hQ m).2 (hH F E σ B a a' G X om om' m.triple).2 h1 h2 (fun f => upd_eq φ B.v₁ ▸ pure_soK m.triple f h1 h2 h3) ⟨h, hf⟩`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `e : v = B.v₁`. Substitute `e` using the available equality. Establish `ha` using `hSo F E σ B a a' G X om om' m.triple _ h3 ((((hK F E σ B a a' G X om om' R Rf m).1 _ m.triple.chars.good).2.1 _ (h1 _)).1 h)`. Take `⟨j, hj, hjS⟩` from `intersection_update_fsHerm_neg_one pureAct p2 f h1 h2 B.v₁`. Establish `key : ∀ z ∈ augOn om' B.v₁ (G.M'.SoLoc B.ψ B.τ₁), j z ∈ G.M'.So B.ψ B.τ₁ ∧ G.M'.I om' (j z) = 0` using `fun z hz => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z h`. Take `⟨g, hg, x, hx, y, hy, hxy, rfl⟩` from `h`. Establish `a1 : j x ∈ G.M'.So B.ψ B.τ₁` using `hj x ▸ pure_soK m.triple f h1 h2 (Submodule.subset_span hx)`. Establish `a2 : j y ∈ G.M'.So B.ψ B.τ₁` using `hjS _ x hx.1 y hxy ▸ (hK F E σ B a a' G X om om' R Rf m).2 _ _ a1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `a3 : j (y - x) ∈ G.M'.So B.ψ B.τ₁` using `by rw [map_sub]; exact sub_mem a2 a1`. Establish `e2` using `I_add' p2 c2 a3 a1`. Rewrite `e2` using `[← map_add, sub_add_cancel, ← hjS _ x hx.1 y hxy, I_left unimodularity_holds hT p2 (c2.sch a1)]`. Conclude with `⟨a3, left_eq_add.1 (e2.trans (add_comm _ _))⟩`. Consider the case `zero => rw [map_zero]`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨zero_mem _, PositivityTheory.ThKG.I_zero _ _⟩`. Consider the case `add a b _ _ iha ihb => rw [map_add, I_add' p2 c2 iha.1 ihb.1, iha.2, ihb.2, add_zero]`. Conclude with `⟨add_mem iha.1 ihb.1, rfl⟩`. Consider the case `smul c a _ iha`. Rewrite using `[map_smul]`.
-
-Conclude with `⟨Submodule.smul_mem _ _ iha.1, funext fun h => by rw [PositivityTheory.ThKG.I_smul, iha.2]; simp⟩`. Use `(key _ ha).2` as an intermediate fact. Rewrite `this` using `[hj, upd_eq]`. Then use the resulting hypothesis. Conclude with `killFin3 unimodularity_holds hT pureAct local_compact_open_subgroups p2 c2 v (hSph F E σ B a a' G X om om' m.triple v).2 (maxFinP m v).2.prop.1 (maxFinP m v).2.prop.2 hf h1 h2 (fun x hx => upd_eq (upd φ v x) B.v₁ ▸ pure_soK m.triple f (upd_sb h1 hx) (upd_cof h2 v x) (by rwa [upd_ …`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem theta_kills_cusp_forms_spherical (hT : ThetaBasic) (hW : WeilConv) (hc : SoCont) (hS : SqInt) (hD : KDecay) (hK : KCoinv) (hC : ICont)
     (hO : ArchOp) (hL : ArchLie) (hQ : ArchUniq) (hAi : RadMax) (hSph : SphTri) (hH : PositivityTheory.ThKR.JoinTri)

@@ -13,15 +13,13 @@ section Cat
 variable {𝒞 : Type*} [Category 𝒞] [CartesianMonoidalCategory 𝒞]
 
 /- English proof (translation)
-Establish `hl : ∀ {T : 𝒞} (a b : T ⟶ N), lift a b ≫ m ≫ ν = (a ≫ ν) * (b ≫ ν)`. Introduce `T a b`. Rewrite using `[hm, lift_map_assoc, Hom.mul_def]`. Establish `hm' : m ≫ ν = (fst N N ≫ ν) * (snd N N ≫ ν)`. Rewrite using `[← hl, lift_fst_snd, Category.id_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he' : ∀ {T : 𝒞} (a : T ⟶ 𝟙_ 𝒞), a ≫ e ≫ ν = 1`. Introduce `T a`. Rewrite using `[he, Hom.one_def, toUnit_unique a (toUnit T)]`. Establish `hi' : i ≫ ν = ν⁻¹` using `by rw [hi, Hom.inv_def]`. Use `letI M : MonObj N := { one := e mul := m one_mul := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Rewrite using `[← cancel_mono ν, Category.assoc, hm', comp_mul, whiskerRight_fst_assoc, whiskerRight_snd_assoc, he', _root_.one_mul, leftUnitor_hom]`. Use `mul_one := by`. Rewrite using `[← cancel_mono ν, Category.assoc, hm', comp_mul, whiskerLeft_fst_assoc, whiskerLeft_snd_assoc, he', _root_.mul_one, rightUnitor_hom]`. Use `mul_assoc := by`. Rewrite using `[← cancel_mono ν]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc]`. Use `conv_lhs => rw [hm', comp_mul, whiskerRight_fst_assoc, whiskerRight_snd_assoc, hm', comp_mul]`. Use `conv_rhs => rw [hm', comp_mul, whiskerLeft_fst_assoc, whiskerLeft_snd_assoc, hm', comp_mul, comp_mul, comp_mul]`. Simplify using `[_root_.mul_assoc] }`. Use `⟨{ inv := i, left_inv := ?_, right_inv := ?_ }, ⟨he, hm⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[← cancel_mono ν, Category.assoc, Category.assoc]`. Conclude with `(hl i (𝟙 N)).trans (by rw [hi', Category.id_comp, inv_mul_cancel]; exact (he' _).symm)`. Rewrite using `[← cancel_mono ν, Category.assoc, Category.assoc]`. Conclude with `(hl (𝟙 N) i).trans (by rw [hi', Category.id_comp, mul_inv_cancel]; exact (he' _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_grpObj_of_mono {N B : 𝒞} [GrpObj B] (ν : N ⟶ B) [Mono ν] (e : 𝟙_ 𝒞 ⟶ N)
     (m : N ⊗ N ⟶ N) (i : N ⟶ N) (he : e ≫ ν = η[B]) (hm : m ≫ ν = (ν ⊗ₘ ν) ≫ μ[B])
@@ -67,7 +65,7 @@ universe u
 open Scheme.IdealSheafData in
 
 /- English proof (translation)
-Establish `: ∀ U, IsReduced ((vanishingIdeal Z).subschemeCover.openCover.X U)` using `fun U => by`. Use `(affine_isReduced_iff (.of (Γ(X, U.1) ⧸ (vanishingIdeal Z).ideal U))).mpr ?_` and prove the remaining obligations. Use `(Ideal.isRadical_iff_quotient_reduced _).mp ?_` and prove the remaining obligations. Conclude with `PrimeSpectrum.isRadical_vanishingIdeal _`. Conclude with `IsReduced.of_openCover _ (vanishingIdeal Z).subschemeCover.openCover`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isReduced_subscheme_vanishingIdeal {X : Scheme.{u}} (Z : TopologicalSpace.Closeds X) :
     IsReduced (vanishingIdeal Z).subscheme := by
@@ -80,9 +78,9 @@ theorem isReduced_subscheme_vanishingIdeal {X : Scheme.{u}} (Z : TopologicalSpac
 open Scheme.IdealSheafData in
 
 /- English proof (translation)
-Use `le_ofIdeals_iff.mpr fun U a ha => ?_` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, ← basicOpen_eq_bot_iff, ← Scheme.preimage_basicOpen, eq_bot_iff]`. Introduce `t ht`. Establish `h1 : g t ∈ (vanishingIdeal Z).support` using `h ⟨t, rfl⟩`. Establish `h2` using `((coe_support_inter (vanishingIdeal Z) U).le ⟨h1, X.basicOpen_le a ht⟩).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((Scheme.mem_zeroLocus_iff _ _ _).mp h2 a ha ht).elim`.
+A detailed English derivation is pending.
 -/
 theorem vanishingIdeal_le_ker {T X : Scheme.{u}} [IsReduced T] (g : T ⟶ X)
     (Z : TopologicalSpace.Closeds X) (h : Set.range g ⊆ Z) : vanishingIdeal Z ≤ g.ker := by
@@ -95,11 +93,11 @@ theorem vanishingIdeal_le_ker {T X : Scheme.{u}} [IsReduced T] (g : T ⟶ X)
   exact ((Scheme.mem_zeroLocus_iff _ _ _).mp h2 a ha ht).elim
 
 /- English proof (translation)
-Use `⟨geometrically_iff_of_commRing_of_isClosedUnderIsomorphisms.mpr fun K _ _ => ?_⟩` and prove the remaining obligations. Set `𝒰` to `Scheme.Pullback.openCoverOfLeft X.affineOpenCover.openCover f (Spec.map (CommRingCat.ofHom (algebraMap k K)))`. Establish `: ∀ i, IsReduced (𝒰.X i)` using `fun i => by`. Use `X.affineOpenCover.map_prop i` as an intermediate fact. Establish `h0 : IsReduced (Spec (X.affineOpenCover.X i))` using `isReduced_of_isOpenImmersion (X.affineOpenCover.f i)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(affine_isReduced_iff _).mp h0`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (X.affineOpenCover.f i ≫ f)`. Express the relevant statement in the definitionally equal form `IsReduced (pullback (X.affineOpenCover.f i ≫ f) _)`. Rewrite using `[← hφ]`. Use `letI : Algebra k (X.affineOpenCover.X i) := φ.hom.toAlgebra`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Establish `h2` using `ReducedAlg.isReduced_tensor (k := k) (X.affineOpenCover.X i) K`. Establish `h3` using `(affine_isReduced_iff (.of (TensorProduct k (X.affineOpenCover.X i) K))).mpr h2`. Conclude with `isReduced_of_isOpenImmersion (pullbackSpecIso k (X.affineOpenCover.X i) K).hom`. Conclude with `IsReduced.of_openCover _ 𝒰`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geometricallyReduced_of_perfectField {k : Type u} [Field k] [PerfectField k]
     {X : Scheme.{u}} [IsReduced X] (f : X ⟶ Spec (.of k)) : GeometricallyReduced f := by
@@ -124,9 +122,9 @@ theorem geometricallyReduced_of_perfectField {k : Type u} [Field k] [PerfectFiel
 end Reduced
 
 /- English proof (translation)
-Use `LocallyOfFiniteType.jacobsonSpace T.hom` as an intermediate fact. Introduce and unpack `_ ⟨t, rfl⟩`. Assume the negation of the conclusion as `ht`. Take `⟨x, hx, hxc⟩` from `nonempty_inter_closedPoints (Z := (g.left ⁻¹' Z)ᶜ) ⟨t, ht⟩ (hZ.preimage g.left.continuous).isOpen_compl.isLocallyClosed`. Set `x' : 𝟙_ (Over (Sp k)) ⟶ T` to `Over.homMk (pointOfClosedPoint T.hom x hxc) (pointOfClosedPoint_comp T.hom x hxc)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `hx (h x' ⟨IsLocalRing.closedPoint k, ?_⟩)` and prove the remaining obligations. Conclude with `congrArg g.left (pointOfClosedPoint_apply T.hom x hxc _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem range_subset_of_points {k : Type} [Field k] [IsAlgClosed k] {T B : Over (Sp k)}
     [LocallyOfFiniteType T.hom] (g : T ⟶ B) {Z : Set B.left} (hZ : IsClosed Z)
@@ -144,25 +142,23 @@ theorem range_subset_of_points {k : Type} [Field k] [IsAlgClosed k] {T B : Over 
 open Scheme.IdealSheafData in
 
 /- English proof (translation)
-Set `I : B.left.IdealSheafData` to `vanishingIdeal ⟨Z, hZ⟩`. Set `N : Over (Sp k)` to `Over.mk (I.subschemeι ≫ B.hom)`. Set `ν : N ⟶ B` to `Over.homMk I.subschemeι rfl`. Establish `hν : IsClosedImmersion ν.left` using `inferInstanceAs (IsClosedImmersion I.subschemeι)`. Establish `hr : Set.range ν.left = Z`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Set.range I.subschemeι = Z`. Rewrite using `[range_subschemeι]`. Both sides reduce to the same expression. Establish `: Mono ν` using `(Over.forget _).mono_of_mono_map (inferInstanceAs (Mono ν.left))`. Establish `hred : IsReduced N.left` using `isReduced_subscheme_vanishingIdeal _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hft : LocallyOfFiniteType N.hom` using `inferInstanceAs (LocallyOfFiniteType (I.subschemeι ≫ B.hom))`. Establish `hgr : GeometricallyReduced N.hom` using `geometricallyReduced_of_perfectField N.hom`. Establish `hnoeth : IsLocallyNoetherian N.left` using `LocallyOfFiniteType.isLocallyNoetherian N.hom`. Establish `hlift : ∀ {T : Over (Sp k)} [IsReduced T.left] [LocallyOfFiniteType T.hom] (g : T ⟶ B), (∀ x : 𝟙_ (Over (Sp k)) ⟶ T, x ≫ g ∈ C) → ∃ l : T ⟶ N, l ≫ ν = g`. Introduce `T _ _ g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `range_subset_of_points g hZ fun x => (hC _).mp (hg x)`. Establish `h2 : I.subschemeι.ker ≤ g.left.ker`. Rewrite using `[ker_subschemeι]`. Conclude with `vanishingIdeal_le_ker g.left ⟨Z, hZ⟩ h1`. Establish `h3` using `IsClosedImmersion.lift_fac I.subschemeι g.left h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Over.homMk (IsClosedImmersion.lift I.subschemeι g.left h2) ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ I.subschemeι ≫ B.hom = _`. Rewrite using `[← Category.assoc, h3, Over.w]`. Use `ext1`. Conclude with `h3`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hmem : ∀ x : 𝟙_ (Over (Sp k)) ⟶ N, x ≫ ν ∈ C` using `fun x => by`. Rewrite using `[hC, ← hr]`. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `⟨x.left t, rfl⟩`. Establish `: IsReduced (𝟙_ (Over (Sp k))).left` using `inferInstanceAs (IsReduced (Sp k))`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyOfFiniteType (𝟙_ (Over (Sp k))).hom` using `inferInstanceAs (LocallyOfFiniteType (𝟙 (Sp k)))`. Establish `: IsReduced (N ⊗ N).left` using `inferInstanceAs (IsReduced (pullback N.hom N.hom))`. Establish `: LocallyOfFiniteType (N ⊗ N).hom` using `inferInstanceAs (LocallyOfFiniteType (pullback.fst N.hom N.hom ≫ N.hom))`. Take `⟨e, he⟩` from `hlift η[B] fun x => by`. Rewrite using `[toUnit_unique x (toUnit _), ← Hom.one_def]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `C.one_mem`. Take `⟨m, hm⟩` from `hlift ((ν ⊗ₘ ν) ≫ μ[B]) fun x => by`. Establish `: x ≫ (ν ⊗ₘ ν) ≫ μ[B] = ((x ≫ fst N N) ≫ ν) * ((x ≫ snd N N) ≫ ν)`. Rewrite using `[Hom.mul_def, ← lift_map, Category.assoc, ← comp_lift, lift_fst_snd, Category.comp_id]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `C.mul_mem (hmem _) (hmem _)`. Take `⟨i, hi⟩` from `hlift (ν ≫ GrpObj.inv) fun x => by`. Rewrite using `[← Category.assoc, ← Hom.inv_def]`. Conclude with `C.inv_mem (hmem _)`. Take `⟨G, hG⟩` from `exists_grpObj_of_mono ν e m i he hm hi`.
-
-Use `⟨N, G, ν, hG, hν, ?_, hr⟩` and prove the remaining obligations. Use `letI : GrpObj (Over.mk N.hom) := G`. Conclude with `smooth_of_grpObj N.hom`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem exists_smooth_closed_subgroup (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k))
     [GrpObj B] (hB : LocallyOfFiniteType B.hom) (C : Subgroup (𝟙_ (Over (Sp k)) ⟶ B))

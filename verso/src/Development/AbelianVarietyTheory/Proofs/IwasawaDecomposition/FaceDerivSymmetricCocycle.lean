@@ -15,7 +15,7 @@ open MvPowerSeries
 variable {S : Type} [CommRing S] {ρ : Type} [Fintype ρ] [DecidableEq ρ]
 
 /- English proof (translation)
-Rewrite using `[pderiv_blin]`. Simplify using `[hM, ite_smul, Finset.sum_ite_eq']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_blin_of_col {K K' : Type} [Fintype K] [DecidableEq K] [Fintype K'] [DecidableEq K']
     (M : K → K' → ℤ) (F : MvPowerSeries (K × ρ) S) (j : K') (k₀ : K)
@@ -25,17 +25,15 @@ theorem pderiv_blin_of_col {K K' : Type} [Fintype K] [DecidableEq K] [Fintype K'
   simp [hM, ite_smul, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Take `⟨h0, h01, h12, hc⟩` from `hG`. Simplify using `only [linSub_eq_blin] at h0 h01 h12 hc`. Establish `e2 : pderiv S ((2 : Fin 3), r) G = blin (fun k i => if i ∈ (![{1}, {0}, {2}] : Fin 3 → Finset (Fin 3)) k then (1 : ℤ) else 0) (pderiv S ((2 : Fin 3), r) G)` using `by conv_lhs => rw [← h01]`. Apply the tactic sequence `exact pderiv_blin_of_col _ _ _ 2 (by intro k; fin_cases k <;> simp) r`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : pderiv S ((2 : Fin 3), r) G = blin (fun k i => if i ∈ (![{0}, {2}, {1}] : Fin 3 → Finset (Fin 3)) k then (1 : ℤ) else 0) (pderiv S ((1 : Fin 3), r) G)` using `by conv_lhs => rw [← h12]`. Apply the tactic sequence `exact pderiv_blin_of_col _ _ _ 1 (by intro k; fin_cases k <;> simp) r`. Establish `hk : blin (fun k i => if i ∈ (![{0}, {1}, ∅] : Fin 3 → Finset (Fin 3)) k then (1 : ℤ) else 0) (pderiv S ((1 : Fin 3), r) G) = 0`. Apply the tactic sequence `rw [← pderiv_blin_of_col _ _ (1 : Fin 3) 1 (by intro k; fin_cases k <;> simp) r, h0, map_zero]`. Establish `hk'` using `congrArg constantCoeff hk`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `hk'` using `[constantCoeff_blin, map_zero]`. Rewrite using `[faceDeriv, constantCoeff_blin, e1, constantCoeff_blin, hk']`. Use `conv_rhs => rw [faceDeriv, e2]`. Rewrite using `[faceDeriv, blin_blin, blin_blin]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k j`. Apply the tactic sequence `fin_cases k <;> fin_cases j <;> simp [Fin.sum_univ_three, Fin.sum_univ_two]`. Establish `key : ∀ (A : Fin 3 → Finset (Fin 4)) (B : Fin 2 → Fin 3 → ℤ), (∀ k, (if (3 : Fin 4) ∈ A k then (1 : ℤ) else 0) = if k = 2 then 1 else 0) → (∀ k j, ∑ i, (if i ∈ A k then (1 : ℤ) else 0) * (![![1, 0, 0], ![0, 1, 0], ![0, 0, 1], ![0, 0, 0]] : Fin 4 → Fin 3 → ℤ) i j = ∑ i, (![![1, 0] …`. Introduce `A B hA hB`. Rewrite using `[pderiv_blin_of_col (fun k i => if i ∈ A k then (1 : ℤ) else 0) G (3 : Fin 4) (2 : Fin 3) hA r, blin_blin, faceDeriv, blin_blin]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `k j`. Conclude with `hB k j`. Establish `hc'` using `congrArg (fun F => blin (![![1, 0, 0], ![0, 1, 0], ![0, 0, 1], ![0, 0, 0]] : Fin 4 → Fin 3 → ℤ) (pderiv S ((3 : Fin 4), r) F)) hc`. Simplify using `only [map_add, blin_add] at hc'`.
-
-Apply the tactic sequence `rw [key _ (![![1, 1, 0], ![0, 0, 1]]) (by intro k; fin_cases k <;> simp) (by intro k j; fin_cases k <;> fin_cases j <;> simp [Fin.sum_univ_four, Fin.sum_univ_three]), key _ (![![1, 0, 0], ![0, 1, 0]]) (by intro k; fin_cases k <;> simp) (by intro k j; fin_cases k <;> fin_cases j < …`. Conclude with `hc'`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem faceDeriv_constantCoeff_and_isSymCoc (G : MvPowerSeries (Fin 3 × ρ) S) (hG : IsAddCub G)
     (r : ρ) :
@@ -97,7 +95,7 @@ theorem faceDeriv_constantCoeff_and_isSymCoc (G : MvPowerSeries (Fin 3 × ρ) S)
 end GlobalTheory.CubeSeries
 
 /- English proof (translation)
-Introduce `G hG r` and use `GlobalTheory.CubeSeries.faceDeriv_constantCoeff_and_isSymCoc G hG r`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ {S : Type} [CommRing S] {ρ : Type} [Fintype ρ] [DecidableEq ρ] (G : MvPowerSeries (Fin 3 × ρ) S), GlobalTheory.CubeSeries.IsAddCub G → ∀ r : ρ, MvPowerSeries.constantCoeff (GlobalTheory.CubeSeries.faceDeriv G r) = 0 ∧ GlobalTheory.CubeSeries.IsSymCoc (GlobalTheory.CubeSeries.faceDeriv G r) :=
   fun G hG r => GlobalTheory.CubeSeries.faceDeriv_constantCoeff_and_isSymCoc G hG r

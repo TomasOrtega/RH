@@ -64,9 +64,9 @@ def PointCarriesObject : Prop :=
 def CMExists : Prop := (TensorExists ∧ TensorIsObject) ∧ PointCarriesObject
 
 /- English proof (translation)
-Use `⟨hP, fun V f => ?_, U.ex_add i Pe hP, U.ex_onto i Pe hP, U.ex_ker i Pe hP, U.ex_lin i Pe hP, U.ex_weil i Pe hP⟩` and prove the remaining obligations. Take `⟨h₁, h₂⟩` from `(U.hol i 0 Set.univ (fun _ => Pe) isOpen_univ ⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩).2 V f`. Establish `hd : Differentiable ℂ fun z : Fin g → ℂ => ((0 : Fin 0 → ℂ), z)` using `by fun_prop`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `using h₁.preimage hd.continuous`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h₃` using `DifferentiableOn.comp (s := {z ∈ Set.univ | ⊤ ≤ (U.ex i Pe z).left ⁻¹ᵁ V}) h₂ hd.differentiableOn fun z hz => Set.mem_sep (Set.mk_mem_prod (Set.mem_univ _) (Set.mem_univ _)) hz.2`. Simplify `h₃` using `only [Function.comp_def]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isExpAt_of_familyUnif {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (U : FamilyUnif Xo σ ty) (i : Fin U.n) (Pe : (U.Di i).La →+ (Fin g → ℂ))
@@ -83,7 +83,7 @@ theorem isExpAt_of_familyUnif {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ 
     simpa only [Function.comp_def] using h₃
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x y => (((ε : ℤ) * (D.EF (H.w0 • x) y - D.EF x y) : ℤ) : OK H) + (((ε : ℤ) * D.EF x y : ℤ) : OK H) * wK H, fun x y => by simp [wK]⟩`.
+Supply the required witnesses or components.
 -/
 example (D : Datum H) (ε : ℤˣ) : ∃ h : D.La → D.La → OK H, IsKForm D ε h :=
   ⟨fun x y => (((ε : ℤ) * (D.EF (H.w0 • x) y - D.EF x y) : ℤ) : OK H) + (((ε : ℤ) * D.EF x y : ℤ) : OK H) * wK H,

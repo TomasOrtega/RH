@@ -6,9 +6,9 @@ namespace GlobalTheory
 
 open Finset in
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro s _ _`. Simplify using the standard rewrite rules. Consider the case `succ j ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `s hs hsj`. Establish `h1` using `ih (s + 1) (by omega) (by omega)`. Establish `h2` using `h s hs (by omega)`. Rewrite using `[show s + (j + 1) = s + 1 + j by ring]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -28,9 +28,9 @@ private lemma lam_add_two_mul_le_of_consecutive (k : ℕ) (c : ℝ) (lam : ℕ �
 
 open Finset in
 /- English proof (translation)
-Establish `hD0 : 0 ≤ D` using `by nlinarith`. Establish `h1 : 2 * m * (D + c) ≤ (2 * m + 1) * D` using `by nlinarith`. Establish `h2 : (2 * m * (D + c)) ^ 2 ≤ ((2 * m + 1) * D) ^ 2` using `pow_le_pow_left₀ (by nlinarith) h1 2`. Establish `h2m : 0 ≤ 2 * m - 1` using `by linarith`. Establish `h3 : 4 * m ^ 2 * ((2 * m - 1) * (D + c) ^ 2) ≤ 4 * m ^ 2 * ((2 * m + 1) * D ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 h2m, mul_nonneg (by linarith : (0:ℝ) ≤ 2 * m + 1) (sq_nonneg D)]`. Establish `h4 : (2 * m - 1) * (D + c) ^ 2 ≤ (2 * m + 1) * D ^ 2` using `le_of_mul_le_mul_left h3 (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private lemma two_mul_sub_one_mul_le_two_mul_add_one_mul (m c D a p : ℝ) (hm : 1 ≤ m) (hc : 1 ≤ c)
     (hD : 7 / 2 + 2 * c * m ≤ D) (ha : a ≤ (D + c) ^ 2) (hp : D ^ 2 ≤ p) :
@@ -51,19 +51,19 @@ private lemma two_mul_sub_one_mul_le_two_mul_add_one_mul (m c D a p : ℝ) (hm :
 
 open Finset in
 /- English proof (translation)
-Establish `hK : 1 ≤ (1 + 2 * c / 7) ^ 2` using `by nlinarith`. Establish `hK0 : 0 ≤ (1 + 2 * c / 7) ^ 2` using `by positivity`. Establish `hp0 : ∀ m ≤ n, 0 ≤ ∏ j ∈ range m, p j` using `fun m hm => prod_nonneg fun j hj => le_trans (sq_nonneg _) (h j (by simp at hj; omega)).2.2.2`. Establish `key : ∀ m, m + 1 ≤ n → ∏ j ∈ range (m + 1), a j ≤ (1 + 2 * c / 7) ^ 2 * (2 * (m : ℝ) + 1) * ∏ j ∈ range (m + 1), p j`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `hm`. Take `⟨_, ha, hd, hp⟩` from `h 0 (by omega)`. Simplify using `only [prod_range_one, Nat.cast_zero, mul_zero, zero_add, mul_one]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.cast_zero, mul_zero, add_zero] at hd`. Establish `h1 : d 0 + 1 + c ≤ (1 + 2 * c / 7) * (d 0 + 1)` using `by nlinarith`. Establish `h2 : (d 0 + 1 + c) ^ 2 ≤ ((1 + 2 * c / 7) * (d 0 + 1)) ^ 2` using `pow_le_pow_left₀ (by linarith) h1 2`. Combine the equalities or inequalities in the displayed calculation. Consider the case `succ m ih`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Treat this case separately.
 
-Introduce `hm`. Establish `ih'` using `ih (by omega)`. Take `⟨ha0, ha, hd, hp⟩` from `h (m + 1) (by omega)`. Move the coercions through the operations in `at hd`. Establish `hstep` using `two_mul_sub_one_mul_le_two_mul_add_one_mul ((m : ℝ) + 1) c (d (m + 1) + 1) (a (m + 1)) (p (m + 1)) (by have := m.cast_nonneg (α := ℝ); linarith) hc (by linarith) ha hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hP` using `hp0 (m + 1) (by omega)`. Rewrite using `[prod_range_succ a (m + 1), prod_range_succ p (m + 1)]`. Combine the equalities or inequalities in the displayed calculation. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `using hK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Establish `h1` using `key m le_rfl`. Establish `hP` using `hp0 (m + 1) le_rfl`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hP` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_le_mul_of_nonneg_left _ hK0` to reduce the goal to its premises. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma prod_le_mul_odd_mul_prod_of_bracket_chain (c : ℝ) (hc : 1 ≤ c) (a d p : ℕ → ℝ) (n : ℕ)
     (h : ∀ j < n, 0 ≤ a j ∧ a j ≤ (d j + 1 + c) ^ 2 ∧ 5 / 2 + 2 * c * (j : ℝ) ≤ d j ∧
@@ -120,9 +120,9 @@ private lemma prod_le_mul_odd_mul_prod_of_bracket_chain (c : ℝ) (hc : 1 ≤ c)
 
 open Finset in
 /- English proof (translation)
-Establish `hP : 0 ≤ ∏ j ∈ range n, p j` using `prod_nonneg fun j hj => le_trans (sq_nonneg _) (h j (by simpa using hj)).2.2.2`. Establish `h1 : 1 + 2 * c / 7 ≤ b / 2` using `by linarith`. Establish `h2 : (1 + 2 * c / 7) ^ 2 ≤ (b / 2) ^ 2` using `pow_le_pow_left₀ (by linarith) h1 2`. Establish `hn0 : (0:ℝ) ≤ n` using `n.cast_nonneg`. Establish `hK : (1 + 2 * c / 7) ^ 2 * (2 * (n : ℝ) + 1) ≤ b ^ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul h2 (by linarith : 2 * (n:ℝ) + 1 ≤ 2 * b + 1) (by positivity) (by positivity), mul_nonneg (sq_nonneg b) (by linarith : (0:ℝ) ≤ 2 * b - 1)]`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 -/
 private lemma prod_le_cube_mul_prod_of_bracket_chain (b c : ℝ) (n : ℕ) (hn : (n : ℝ) ≤ b) (hc : 1 ≤ c)
     (hcb : c + 2 ≤ b) (a d p : ℕ → ℝ)
@@ -142,7 +142,7 @@ private lemma prod_le_cube_mul_prod_of_bracket_chain (b c : ℝ) (n : ℕ) (hn :
 
 open Finset in
 /- English proof (translation)
-Rewrite using `[abs_mul, sq]`. Conclude with `mul_le_mul h h' hD (abs_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sq_le_abs_mul_of_le_abs (D X X' : ℝ) (hD : 0 ≤ D) (h : D ≤ |X|) (h' : D ≤ |X'|) :
     D ^ 2 ≤ |X * X'| := by
@@ -151,51 +151,49 @@ private lemma sq_le_abs_mul_of_le_abs (D X X' : ℝ) (hD : 0 ≤ D) (h : D ≤ |
 
 open Finset in
 /- English proof (translation)
-Take `⟨hY1, hY2⟩` from `hY`. Establish `hb1 : 1 ≤ b` using `by linarith`. Establish `hb0 : 0 ≤ b` using `by linarith`. Establish `hYb1 : -b + 2 ≤ -Y` using `by have := (abs_le.mp hul).1; linarith`. Establish `hYb2 : -Y ≤ b - 2` using `by have := (abs_le.mp hu'l).2; linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspread` using `lam_add_two_mul_le_of_consecutive k c lam hsp`. Establish `hA0 : ∀ s, 0 ≤ (|Y + lam s| + c) * (|Y + 1 + lam s| + c)` using `fun s => mul_nonneg (by linarith [abs_nonneg (Y + lam s)]) (by linarith [abs_nonneg (Y + 1 + lam s)])`. Rewrite using `[← prod_mul_distrib]`. Establish `hLR : Disjoint (Ico 1 (l - 1)) (Ico (l + 1) k)`. Rewrite using `[disjoint_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s h1 h2`. Simplify using `only [mem_Ico] at h1 h2`. Use linear arithmetic over natural numbers and integers. Establish `hsub : Ico 1 (l - 1) ∪ Ico (l + 1) k ⊆ Icc 1 (k + 2 * r + 1)`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [mem_union, mem_Ico, mem_Icc] at hs ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← prod_sdiff hsub, prod_union hLR]`. Establish `hA : ∀ s ∈ Icc 1 (k + 2 * r + 1), (|Y + lam s| + c) * (|Y + 1 + lam s| + c) ≤ b ^ 4`. Introduce `s hs`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl` using `abs_le.mp (hlam s hs)`. Establish `e1 : |Y + lam s| ≤ 2 * b - 2` using `abs_le.mpr ⟨by linarith, by linarith⟩`. Establish `e2 : |Y + 1 + lam s| ≤ 2 * b - 1` using `abs_le.mpr ⟨by linarith, by linarith⟩`. Establish `e3 : (|Y + lam s| + c) * (|Y + 1 + lam s| + c) ≤ (3 * b) * (3 * b)` using `mul_le_mul (by linarith) (by linarith) (by linarith [abs_nonneg (Y + 1 + lam s)]) (by linarith)`. Establish `hb9 : 9 ≤ b ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hb9 (sq_nonneg b)]`. Establish `hT : ∏ s ∈ Icc 1 (k + 2 * r + 1) \ (Ico 1 (l - 1) ∪ Ico (l + 1) k), (|Y + lam s| + c) * (|Y + 1 + lam s| + c) ≤ b ^ (4 * (2 * r + 4))`. Establish `hcard : (Icc 1 (k + 2 * r + 1) \ (Ico 1 (l - 1) ∪ Ico (l + 1) k)).card ≤ 2 * r + 4`. Establish `h1` using `card_sdiff_add_card_eq_card hsub`. Rewrite `h1` using `[card_union_of_disjoint hLR, Nat.card_Icc, Nat.card_Ico, Nat.card_Ico]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Establish `hL : ∏ s ∈ Ico 1 (l - 1), (|Y + lam s| + c) * (|Y + 1 + lam s| + c) ≤ b ^ 3 * ∏ i ∈ Ico 1 (l - 1), |(Y + 1 / 2 + u i) * (Y + 1 / 2 + u' i)|`. Rewrite using `[prod_Ico_eq_prod_range, prod_Ico_eq_prod_range]`. Establish `r1 : ∏ j ∈ range (l - 1 - 1), (|Y + lam (1 + (l - 1 - 1 - 1 - j))| + c) * (|Y + 1 + lam (1 + (l - 1 - 1 - 1 - j))| + c) = ∏ j ∈ range (l - 1 - 1), (|Y + lam (1 + j)| + c) * (|Y + 1 + lam (1 + j)| + c)` using `prod_range_reflect (fun j => (|Y + lam (1 + j)| + c) * (|Y + 1 + lam (1 + j)| + c)) _`.
+Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `r2 : ∏ j ∈ range (l - 1 - 1), |(Y + 1 / 2 + u (1 + (l - 1 - 1 - 1 - j))) * (Y + 1 / 2 + u' (1 + (l - 1 - 1 - 1 - j)))| = ∏ j ∈ range (l - 1 - 1), |(Y + 1 / 2 + u (1 + j)) * (Y + 1 / 2 + u' (1 + j))|` using `prod_range_reflect (fun j => |(Y + 1 / 2 + u (1 + j)) * (Y + 1 / 2 + u' (1 + j))|) _`. Rewrite using `[← r1, ← r2]`. Establish `hn : ((l - 1 - 1 : ℕ) : ℝ) ≤ b`. Establish `: ((l - 1 - 1 : ℕ) : ℝ) ≤ k` using `by exact_mod_cast (by omega : l - 1 - 1 ≤ k)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Apply `prod_le_cube_mul_prod_of_bracket_chain b c (l - 1 - 1) hn hc hcb _ (fun j => Y + lam (1 + (l - 1 - 1 - 1 - j)))` to reduce the goal to its premises. Introduce `j hj`. Use `beta_reduce`. Use `set s := 1 + (l - 1 - 1 - 1 - j) with hs`. Establish `hs1 : 1 ≤ s` using `by omega`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsj : s + j = l - 2` using `by omega`. Establish `e0` using `hspread j s hs1 (by omega)`. Rewrite `e0` using `[hsj]`. Establish `e1` using `(hint (l - 2) (by omega) (by omega)).2 (by omega)`. Rewrite `e1` using `[show l - 2 + 1 = l - 1 by omega]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `(hdec (l - 1) (by omega) (by omega)).2.2.2`. Rewrite `e2` using `[show l - 1 + 1 = l by omega]`. Establish `f1` using `(hint s hs1 (by omega)).1 (by omega)`. Establish `f2` using `(hint' s hs1 (by omega)).1 (by omega)`. Establish `hc0 : (0:ℝ) ≤ 2 * c * j` using `mul_nonneg (by linarith) (Nat.cast_nonneg j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hA0 s, ?_, by linarith, ?_⟩` and prove the remaining obligations. Rewrite using `[abs_of_nonneg (by linarith), abs_of_nonneg (by linarith)]; nlinarith`. Conclude with `sq_le_abs_mul_of_le_abs _ _ _ (by linarith) (le_abs.mpr (Or.inl (by linarith))) (le_abs.mpr (Or.inl (by linarith)))`. Establish `hR : ∏ s ∈ Ico (l + 1) k, (|Y + lam s| + c) * (|Y + 1 + lam s| + c) ≤ b ^ 3 * ∏ i ∈ Ico (l + 2) (k + 1), |(Y + 1 / 2 + u i) * (Y + 1 / 2 + u' i)|`. Rewrite using `[prod_Ico_eq_prod_range, prod_Ico_eq_prod_range, show k + 1 - (l + 2) = k - (l + 1) by omega]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hn : ((k - (l + 1) : ℕ) : ℝ) ≤ b`. Establish `: ((k - (l + 1) : ℕ) : ℝ) ≤ k` using `by exact_mod_cast (by omega : k - (l + 1) ≤ k)`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `prod_le_cube_mul_prod_of_bracket_chain b c (k - (l + 1)) hn hc hcb _ (fun j => -Y - lam (l + 1 + j) - 1)` to reduce the goal to its premises. Introduce `j hj`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `beta_reduce`. Establish `e0` using `hspread j (l + 1) (by omega) (by omega)`. Establish `e1` using `(hint (l + 1) (by omega) (by omega)).1 (by omega)`. Establish `e2` using `(hdec l h1l (by omega)).1`. Establish `f1` using `(hint (l + 1 + j) (by omega) (by omega)).2 (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `f2` using `(hint' (l + 1 + j) (by omega) (by omega)).2 (by omega)`. Rewrite `f1`, `f2` using `[show l + 1 + j + 1 = l + 2 + j by ring]`. Establish `hc0 : (0:ℝ) ≤ 2 * c * j` using `mul_nonneg (by linarith) (Nat.cast_nonneg j)`. Use `⟨hA0 _, ?_, by linarith, ?_⟩` and prove the remaining obligations. Rewrite using `[abs_of_nonpos (by linarith), abs_of_nonpos (by linarith)]; nlinarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sq_le_abs_mul_of_le_abs _ _ _ (by linarith) (le_abs.mpr (Or.inr (by linarith))) (le_abs.mpr (Or.inr (by linarith)))`. Establish `hLn : 0 ≤ ∏ i ∈ Ico 1 (l - 1), |(Y + 1 / 2 + u i) * (Y + 1 / 2 + u' i)|` using `prod_nonneg fun _ _ => abs_nonneg _`. Establish `hRn : 0 ≤ ∏ i ∈ Ico (l + 2) (k + 1), |(Y + 1 / 2 + u i) * (Y + 1 / 2 + u' i)|` using `prod_nonneg fun _ _ => abs_nonneg _`. Establish `hPQ : (∏ i ∈ Ico 1 (l - 1), |(Y + 1 / 2 + u i) * (Y + 1 / 2 + u' i)|) * ∏ i ∈ Ico (l + 2) (k + 1), |(Y + 1 / 2 + u i) * (Y + 1 / 2 + u' i)| ≤ ∏ i ∈ Icc 1 k, |(Y + 1 / 2 + u i) * (Y + 1 / 2 + u' i)|`. Establish `hLR' : Disjoint (Ico 1 (l - 1)) (Ico (l + 2) (k + 1))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[disjoint_left]`. Introduce `s h1 h2`. Simplify using `only [mem_Ico] at h1 h2`. Use linear arithmetic over natural numbers and integers. Establish `hsub' : Ico 1 (l - 1) ∪ Ico (l + 2) (k + 1) ⊆ Icc 1 k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `s hs`. Simplify using `only [mem_union, mem_Ico, mem_Icc] at hs ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← prod_sdiff hsub', prod_union hLR']`. Establish `hrest : (1:ℝ) ≤ ∏ i ∈ Icc 1 k \ (Ico 1 (l - 1) ∪ Ico (l + 2) (k + 1)), |(Y + 1 / 2 + u i) * (Y + 1 / 2 + u' i)|`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `prod_le_prod (fun _ _ => zero_le_one)` to reduce the goal to its premises. Introduce `i hi`. Simplify using `only [mem_sdiff, mem_union, mem_Ico, mem_Icc] at hi`. Rewrite using `[abs_mul]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key : 1 ≤ |Y + 1 / 2 + u i| ∧ 1 ≤ |Y + 1 / 2 + u' i|`. Break down `(by omega : (i = l - 1 ∧ 2 ≤ l) ∨ i = l ∨ (i = l + 1 ∧ l + 1 ≤ k)) with ⟨hi1, hl2⟩ | hi1 | ⟨hi1, hl2⟩` into its components or cases. Establish `e` using `hdec (l - 1) (by omega) (by omega)`. Rewrite `e` using `[show l - 1 + 1 = l by omega]`. Rewrite using `[hi1]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨le_abs.mpr (Or.inl (by linarith [e.2.2.2])), le_abs.mpr (Or.inl (by linarith [e.2.1]))⟩`. Rewrite using `[hi1]`. Conclude with `⟨le_abs.mpr (Or.inr (by linarith)), le_abs.mpr (Or.inl (by linarith))⟩`. Establish `e` using `hdec l h1l (by omega)`. Rewrite using `[hi1]`.
+Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨le_abs.mpr (Or.inr (by linarith [e.1])), le_abs.mpr (Or.inr (by linarith [e.2.2.2]))⟩`. Conclude with `one_le_mul_of_one_le_of_one_le key.1 key.2`. Combine the equalities or inequalities in the displayed calculation. Establish `hb3 : 0 ≤ b ^ 3` using `pow_nonneg hb0 3`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[pow_add, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ b ^ (11 * (2 * r + 2)) * ∏ i ∈ Finset.Icc 1 k, |(Y + 1 / 2 + u i) * (Y + 1 / 2 + u' i)| := mul_le_mul (pow_le_pow_right₀ hb1 (by omega)) hPQ (mul_nonneg hLn hRn) (pow_nonneg hb0 _)`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma bracket_product_le_of_neg_between_lemma (k r l : ℕ) (b c Y : ℝ) (lam u u' : ℕ → ℝ)
     (h1l : 1 ≤ l) (hlk : l ≤ k) (hc : 1 ≤ c) (hcb : c + 2 ≤ b) (hkb : (k : ℝ) ≤ b)
@@ -359,9 +357,9 @@ private lemma bracket_product_le_of_neg_between_lemma (k r l : ℕ) (b c Y : ℝ
 open Finset in
 
 /- English proof (translation)
-Introduce `k r l b c Y lam u u' h1l hlk hc hcb hkb hul hu'l hlam hsp hint hint' hdec hY`. Break down `hY with hY | hY` into its components or cases. Conclude with `bracket_product_le_of_neg_between_lemma k r l b c Y lam u u' h1l hlk hc hcb hkb hul hu'l hlam hsp hint hint' hdec hY`. Establish `h` using `bracket_product_le_of_neg_between_lemma k r l b c Y lam u' u h1l hlk hc hcb hkb hu'l hul hlam hsp hint' hint (fun i hi hik => by`. Take `⟨a1, a2, a3, a4⟩` from `hdec i hi hik`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a2, a1, a4, a3⟩) hY`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Conclude with `prod_congr rfl fun i _ => by rw [mul_comm]`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.two_brackets_le_pow_mul_prod_entries : ∀ (k r l : ℕ) (b c Y : ℝ) (lam u u' : ℕ → ℝ), 1 ≤ l → l ≤ k → 1 ≤ c → c + 2 ≤ b → (k : ℝ) ≤ b → |u l| ≤ b → |u' l| ≤ b → (∀ s ∈ Finset.Icc 1 (k + 2 * r + 1), |lam s| ≤ b) → (∀ s : ℕ, 1 ≤ s → s + 1 ≤ k - 1 → lam (s + 1) + 2 * c ≤ lam s) → (∀ s : ℕ, 1 ≤ s → s + 1 ≤ k → (s ≠ l → lam s + 1 / 2 ≤ u s) ∧ (s + 1 ≠ l → u (s + 1) + 1 / 2 ≤ lam s)) → (∀ s : ℕ, 1 ≤ s → s + 1 ≤ k → (s ≠ l → lam s + 1 / 2 ≤ u' s) ∧ (s + 1 ≠ l → u' (s + 1) + 1 / 2 ≤ lam s)) → (∀ i : ℕ, 1 ≤ i → i ≤ k - 1 → u (i + 1) ≤ u i - 1 ∧ u' (i + 1) ≤ u' i - 1 ∧ u (i + 1) ≤ u' i - 1 ∧ u' (i + 1) ≤ u i - 1) → ((u l + 2 ≤ -Y ∧ -Y ≤ u' l - 2) ∨ (u' l + 2 ≤ -Y ∧ -Y ≤ u l - 2)) → (∏ s ∈ Finset.Icc 1 (k + 2 * r + 1), (|Y + lam s| + c)) * (∏ s ∈ Finset.Icc 1 (k + 2 * r + 1), (|Y + 1 + lam s| + c)) ≤ b ^ (11 * (2 * r + 2)) * ∏ i ∈ Finset.Icc 1 k, |(Y + 1 / 2 + u i) * (Y + 1 / 2 + u' i)| := by
   intro k r l b c Y lam u u' h1l hlk hc hcb hkb hul hu'l hlam hsp hint hint' hdec hY

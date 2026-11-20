@@ -12,14 +12,14 @@ section SlopeTestRemainingChoices
 variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E] [IsGalois F E]
 
 /- English proof (translation)
-Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hσ, IsGalois.card_aut_eq_finrank, hm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem orderOf_gen (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) {m : ℕ}
     (hm : Module.finrank F E = m + 1) : orderOf σ = m + 1 := by
   rw [orderOf_eq_card_of_forall_mem_zpowers hσ, IsGalois.card_aut_eq_finrank, hm]
 
 /- English proof (translation)
-Establish `ho` using `orderOf_gen σ hσ hm`. Introduce `i j hij`. Use `pow_injOn_Iio_orderOf (x := σ) (by simp only [ho, Set.mem_Iio]; exact i.2) (by simp only [ho, Set.mem_Iio]; exact j.2) hij` as an intermediate fact. Conclude with `Fin.ext this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pow_inj (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) {m : ℕ}
     (hm : Module.finrank F E = m + 1) :
@@ -31,7 +31,7 @@ private theorem pow_inj (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ �
   exact Fin.ext this
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.DeterminantNonzero.det_ne σ hσ hm b`.
+A detailed English derivation is pending.
 -/
 private theorem det_ne (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) {m : ℕ}
     (hm : Module.finrank F E = m + 1) (b : Module.Basis (Fin (m + 1)) F E) :
@@ -46,32 +46,30 @@ private noncomputable def phi (σ : E ≃ₐ[F] E) (p : E →ₐ[F] A) (m : ℕ)
     (Pi.algHom F _ fun _ => AlgHom.id F A)
 
 /- English proof (translation)
-Simplify using `[phi]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem phi_tmul (σ : E ≃ₐ[F] E) (p : E →ₐ[F] A) (m : ℕ) (x : E) (a : A) (i : Fin (m + 1)) :
     phi σ p m (x ⊗ₜ a) i = p ((σ ^ (i : ℕ)) x) * a := by
   simp [phi]
 
 /- English proof (translation)
-Set `b : Module.Basis (Fin (m + 1)) F E` to `Module.finBasisOfFinrankEq F E hm`. Set `M : Matrix (Fin (m + 1)) (Fin (m + 1)) E` to `Matrix.of fun i j => (σ ^ (i : ℕ)) (b j)`. Establish `hunit : IsUnit M.det` using `isUnit_iff_ne_zero.2 (det_ne σ hσ hm b)`. Set `N` to `M⁻¹`. Establish `hMN : M * N = 1` using `Matrix.mul_nonsing_inv _ hunit`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hNM : N * M = 1` using `Matrix.nonsing_inv_mul _ hunit`. Set `Ψ : (Fin (m + 1) → A) → E ⊗[F] A` to `fun f => ∑ j, b j ⊗ₜ[F] (∑ i, p (N j i) * f i)`. Establish `hr : Function.RightInverse Ψ (phi σ p m)`. Introduce `f`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Ψ, map_sum, Finset.sum_apply, phi_tmul]`. Establish `h1 : ∀ i, ∑ j, p ((σ ^ (k : ℕ)) (b j)) * p (N j i) = if k = i then 1 else 0` using `fun i => by`. Establish `h2` using `congrArg p (congrFun (congrFun hMN k) i)`. Simplify using `only [Matrix.mul_apply, Matrix.one_apply, M, Matrix.of_apply, map_sum, map_mul] at h2`. Rewrite using `[h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = f k := by`. Simplify using `only [h1, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hadd : ∀ f g, Ψ (f + g) = Ψ f + Ψ g` using `fun f g => by`. Simplify using `only [Ψ, Pi.add_apply, mul_add, Finset.sum_add_distrib, TensorProduct.tmul_add]`. Establish `hl : Function.LeftInverse Ψ (phi σ p m)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp [Ψ]`. Consider the case `add s t hs ht => rw [map_add, hadd, hs, ht]`. Consider the case `tmul x a`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `c : Fin (m + 1) → E` to `fun l => algebraMap F E (b.repr x l)`. Establish `hx : (fun i : Fin (m + 1) => (σ ^ (i : ℕ)) x) = M.mulVec c`. Use function extensionality and compare the values at `i`. Use `conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct, M, Matrix.of_apply, c]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def, mul_comm]`. Establish `hc : ∀ j, ∑ i, N j i * (σ ^ (i : ℕ)) x = c j` using `fun j => by`. Establish `: N.mulVec (fun i : Fin (m + 1) => (σ ^ (i : ℕ)) x) = c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hx, Matrix.mulVec_mulVec, hNM, Matrix.one_mulVec]`. Conclude with `congrFun this j`. Establish `h3 : ∀ j, ∑ i, p (N j i) * (p ((σ ^ (i : ℕ)) x) * a) = b.repr x j • a` using `fun j => by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sum, map_mul, Finset.sum_mul, mul_assoc]`.
-
-Use `_ = _ := by rw [hc]; simp only [c, p.commutes, Algebra.smul_def]`. Simplify using `only [Ψ, phi_tmul, h3, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Rewrite using `[← TensorProduct.sum_tmul, b.sum_repr]`. Conclude with `⟨hl.injective, hr.surjective⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem phi_bij (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) {m : ℕ}
     (hm : Module.finrank F E = m + 1) (p : E →ₐ[F] A) : Function.Bijective (phi σ p m) := by
@@ -126,9 +124,9 @@ private theorem phi_bij (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ �
   exact ⟨hl.injective, hr.surjective⟩
 
 /- English proof (translation)
-Establish `h1 : σ ^ (m + 1) = 1` using `by rw [← orderOf_gen σ hσ hm]; exact pow_orderOf_eq_one σ`. Establish `hv : ((i + 1 : Fin (m + 1)) : ℕ) = ((i : ℕ) + 1) % (m + 1)` using `by simp [Fin.val_add]`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, Pi.add_apply, hs, ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul x a`. Rewrite using `[Algebra.TensorProduct.map_tmul, phi_tmul, phi_tmul, hv, ← pow_eq_pow_mod _ h1, pow_succ]`. Both sides reduce to the same expression.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem phi_shift (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) {m : ℕ}
     (hm : Module.finrank F E = m + 1) (p : E →ₐ[F] A) (t : E ⊗[F] A) (i : Fin (m + 1)) :
@@ -148,9 +146,9 @@ end UpperTheory.ConvolutionTheory.L1
 
 open UpperTheory.ConvolutionTheory.L1 in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ m hm A B _ _ _ _ e₀ p`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Use `⟨e₀.symm.toRingEquiv.trans (RingEquiv.ofBijective (phi σ p m) (phi_bij σ hσ hm p)), fun x a i => ?_, fun b i => ?_⟩` and prove the remaining obligations. Use `show phi σ p m (e₀.symm (e₀ (x ⊗ₜ a))) i = _`. Rewrite using `[AlgEquiv.symm_apply_apply, phi_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show phi σ p m (e₀.symm (galOf e₀ σ b)) i = phi σ p m (e₀.symm b) (i + 1)`. Rewrite using `[← phi_shift σ hσ hm p]`. Establish `h : e₀.symm (galOf e₀ σ b) = Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F A) (e₀.symm b)` using `e₀.symm_apply_apply _`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.galSplit :
     UpperTheory.ConvolutionTheory.L1.GalSplit := by

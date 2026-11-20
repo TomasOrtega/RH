@@ -34,7 +34,7 @@ section Inhabitants
 open ProjLine
 
 /- English proof (translation)
-Introduce `dg dh g h' z hg hh hdeg he hz`. Rewrite using `[one_mul]`. Conclude with `h dg dh g h' z hg hh hdeg he hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBoundedH_one_of_isSmallH {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type}
     [Field Ω] {P : Ideal (MRing ι)} {y : (Σ k, ι k) → Ω} {A : HermLine ι} {τ : ℕ} {s : Ω}
@@ -44,7 +44,7 @@ theorem isBoundedH_one_of_isSmallH {K : Type} [Fintype K] {ι : K → Type} [∀
   exact h dg dh g h' z hg hh hdeg he hz
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IntegralClosureFinite.hyps_inhabited.2.1, coord_mem_chartLat, generatesOn_coords⟩`.
+Supply the required witnesses or components.
 -/
 theorem SectionRingFinite.hyps_inhabited :
     (∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) ∧ (∀ j : Fin 2, y ⟨(), j⟩ ∈ chartLat (ι := GlobalTheory (Fin 2)) y fsLine1.a 1) ∧
@@ -52,7 +52,7 @@ theorem SectionRingFinite.hyps_inhabited :
   ⟨IntegralClosureFinite.hyps_inhabited.2.1, coord_mem_chartLat, generatesOn_coords⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨coord_mem_chartLat, generatesOn_coords, isSmallH_coord⟩`.
+Supply the required witnesses or components.
 -/
 theorem SectionBounded.hyps_inhabited :
     (∀ j : Fin 2, y ⟨(), j⟩ ∈ chartLat (ι := GlobalTheory (Fin 2)) y fsLine1.a 1) ∧
@@ -61,7 +61,7 @@ theorem SectionBounded.hyps_inhabited :
   ⟨coord_mem_chartLat, generatesOn_coords, isSmallH_coord⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨coord_mem_chartLat 0, coord_mem_chartLat 1, isBoundedH_one_of_isSmallH (isSmallH_coord 0), isBoundedH_one_of_isSmallH (isSmallH_coord 1)⟩`.
+Supply the required witnesses or components.
 -/
 theorem SectionBoundedMul.hyps_inhabited :
     y ⟨(), 0⟩ ∈ chartLat (ι := GlobalTheory (Fin 2)) y fsLine1.a 1 ∧ y ⟨(), 1⟩ ∈ chartLat (ι := GlobalTheory (Fin 2)) y fsLine1.a 1 ∧

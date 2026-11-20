@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `A A' C Ω _ _ _ _ _ _ u v h₁ h₂`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul c b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e : c ⊗ₜ[A] b = (c ⊗ₜ[A] (1 : A')) * ((1 : C) ⊗ₜ[A] b)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[e, map_mul, map_mul, h₁, h₂]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem UpperTheory.Reformulated.B.Qk54.tensor_hom_ext :
     ∀ {A A' C Ω : Type}

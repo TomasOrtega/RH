@@ -16,13 +16,11 @@ noncomputable section
 namespace GlobalTheory.SplitInt
 
 /- English proof (translation)
-Establish `he` using `GlobalTheory.UpMem.finPart_e_int q`. Rewrite using `[q.int_iff, q.int_iff, q.sec_pr, q.sec_pr, map_mul, map_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Conclude with `⟨GlobalTheory.FinPl.FrameLat.mul_mem_intAE he h, GlobalTheory.FinPl.FrameLat.mul_mem_intAE he (GlobalTheory.IdemSupport.finPart_cA_mem h)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨ha, ?_⟩` and prove the remaining obligations. Establish `hsum : a = q.e * a + cA D (q.e * cA D a)`. Rewrite using `[map_mul, Formalism.L2.Theta.cA_cA, ← add_mul]`. Conclude with `((GlobalTheory.FinPl.FrameLat.idem_iff q a).1 ha).symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : finPart D (cA D (q.e * cA D a)) ∈ intAE D`. Apply `GlobalTheory.IdemSupport.finPart_cA_mem` to reduce the goal to its premises. Rewrite using `[map_mul]`. Conclude with `h2`. Rewrite using `[hsum, (finPart D).map_add, (finPart D).map_mul]`.
-
-Conclude with `add_mem h1 h3`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_iff_pr (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : GlobalTheory.FinPl.SplitPt D k) (a : AE D) (ha : a ∈ GlobalTheory.FinPl.idAt D (· = q.v)) :

@@ -14,7 +14,7 @@ section
 variable {k R : Type} [CommRing k] [CommRing R] [Algebra k R] {n : ℕ}
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ct c ((a * b)⁻¹ : GL (Fin n) R).val = ct c (a⁻¹ : GL (Fin n) R).val * ct c (b⁻¹ : GL (Fin n) R).val`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ct, ct, ct, Matrix.map_mul, Matrix.transpose_mul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem twistedInverse_mul (c : R ≃ₐ[k] R) (a b : GL (Fin n) R) :
     th c (a * b) = th c a * th c b := by
@@ -24,7 +24,7 @@ private theorem twistedInverse_mul (c : R ≃ₐ[k] R) (a b : GL (Fin n) R) :
   rw [_root_.mul_inv_rev, Units.val_mul, ct, ct, ct, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ct c ((1 : GL (Fin n) R)⁻¹ : GL (Fin n) R).val = 1`. Rewrite using `[inv_one, Units.val_one, ct, Matrix.map_one _ (map_zero c) (map_one c), Matrix.transpose_one]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem twistedInverse_one (c : R ≃ₐ[k] R) : th c (1 : GL (Fin n) R) = 1 := by
   refine Units.ext ?_
@@ -32,14 +32,14 @@ private theorem twistedInverse_one (c : R ≃ₐ[k] R) : th c (1 : GL (Fin n) R)
   rw [inv_one, Units.val_one, ct, Matrix.map_one _ (map_zero c) (map_one c), Matrix.transpose_one]
 
 /- English proof (translation)
-Simplify using `only [thConj, twistedInverse_mul, _root_.mul_inv_rev, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem twistedConj_mul (c : R ≃ₐ[k] R) (u v d : GL (Fin n) R) :
     thConj c (u * v) d = thConj c v (thConj c u d) := by
   simp only [thConj, twistedInverse_mul, _root_.mul_inv_rev, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [thConj, twistedInverse_one, inv_one, one_mul, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem twistedConj_one (c : R ≃ₐ[k] R) (d : GL (Fin n) R) : thConj c 1 d = d := by
   simp only [thConj, twistedInverse_one, inv_one, one_mul, mul_one]
@@ -49,11 +49,11 @@ end
 end UpperTheory.ConvolutionTheory.D
 
 /- English proof (translation)
-Introduce `k R _ _ _ _ c hG hN n d d' hsep hcp`. Use `haveI : Nontrivial R := hG.inj.nontrivial`. Establish `hP` using `(UpperTheory.ConvolutionTheory.D.csrOf k R c hG.pow n).2 d`. Take `⟨A, _, _, b, g, hg, hgP⟩` from `UpperTheory.ConvolutionTheory.D.modelEx k R c hG n _ hP hsep`. Take `⟨w, hw⟩` from `UpperTheory.ConvolutionTheory.D.tBase k R A n b c hG g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, y, hx⟩` from `UpperTheory.ConvolutionTheory.D.tClass k R A n b c hG g hg w hw d hgP.symm`. Take `⟨x', y', hx'⟩` from `UpperTheory.ConvolutionTheory.D.tClass k R A n b c hG g hg w hw d' (hcp.trans hgP.symm)`. Take `⟨z, hz⟩` from `hN A n b (x' / x)`. Establish `h2` using `(((UpperTheory.ConvolutionTheory.D.tIso k R A n b c hG g hg w hw).2 x x' _ _ hx hx').2 (UpperTheory.ConvolutionTheory.D.matU b z)).2 ⟨z, rfl, hz⟩`. Use `⟨y * UpperTheory.ConvolutionTheory.D.matU b z * y'⁻¹, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[UpperTheory.ConvolutionTheory.D.twistedConj_mul, UpperTheory.ConvolutionTheory.D.twistedConj_mul c y, ← h2, ← UpperTheory.ConvolutionTheory.D.twistedConj_mul, mul_inv_cancel, UpperTheory.ConvolutionTheory.D.twistedConj_one]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.twistedConj_of_charpoly_mul_galConj_eq_of_separable :
     ∀ (k R : Type) [CommRing k] [IsLocalRing k] [CommRing R] [Algebra k R] (c : R ≃ₐ[k] R), UpperTheory.ConvolutionTheory.D.IsGal c 2 →

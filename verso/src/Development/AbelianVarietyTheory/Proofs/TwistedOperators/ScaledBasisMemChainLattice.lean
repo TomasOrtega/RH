@@ -20,7 +20,7 @@ open scoped Pointwise in
 variable {k : Type} [Field k] [ValuativeRel k] in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.act]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.RootEx.UnfoldShape.mem_act {g : GL ι k} {M : Submodule 𝒪[k] (ι → k)} {v : ι → k} :
     v ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.act g M ↔ ∃ w ∈ M, g.val *ᵥ w = v := by
@@ -31,9 +31,9 @@ open scoped Pointwise in
 variable {k : Type} [Field k] [ValuativeRel k] in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.RootEx.UnfoldShape.mem_act]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce `hv`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨_, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.RootEx.UnfoldShape.mem_act_iff_inv {g : GL ι k} {M : Submodule 𝒪[k] (ι → k)} {v : ι → k} :
     v ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.act g M ↔ (g⁻¹).val *ᵥ v ∈ M := by
@@ -50,7 +50,7 @@ open scoped Pointwise in
 variable {k : Type} [Field k] [ValuativeRel k] in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[_root_.GlobalTheory.RootEx.UnfoldShape.mem_act_iff_inv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.RootEx.UnfoldShape.act_one (M : Submodule 𝒪[k] (ι → k)) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.act (1 : GL ι k) M = M := by
@@ -62,7 +62,7 @@ open scoped Pointwise in
 variable {k : Type} [Field k] [ValuativeRel k] in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [_root_.GlobalTheory.RootEx.UnfoldShape.mem_act_iff_inv, _root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mulVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.RootEx.UnfoldShape.act_mul (g h : GL ι k) (M : Submodule 𝒪[k] (ι → k)) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.act (g * h) M = _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.act g (_root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.act h M) := by
@@ -75,7 +75,7 @@ variable {k : Type} [Field k] [ValuativeRel k] in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[Submodule.mem_smul_pointwise_iff_exists]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.RootEx.UnfoldShape.mem_smul_iff {ϖ : 𝒪[k]} {M : Submodule 𝒪[k] (ι → k)} {v : ι → k} :
     v ∈ ϖ • M ↔ ∃ w ∈ M, (ϖ : k) • w = v := by
@@ -84,9 +84,9 @@ theorem _root_.GlobalTheory.RootEx.UnfoldShape.mem_smul_iff {ϖ : 𝒪[k]} {M : 
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[mem_smul_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Rewrite using `[inv_smul_smul₀ h]` and apply the resulting hypothesis. Introduce `hv`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, hv, smul_inv_smul₀ h v⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_smul_iff_inv {ϖ : 𝒪[k]} (h : (ϖ : k) ≠ 0) {M : Submodule 𝒪[k] (ι → k)} {v : ι → k} :
     v ∈ ϖ • M ↔ (ϖ : k)⁻¹ • v ∈ M := by
@@ -103,7 +103,7 @@ variable {k : Type} [Field k] [ValuativeRel k] in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.stdLat, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]`. Use `forall_congr' fun i => ⟨?_, fun h => ⟨⟨v i, h⟩, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩`. Rewrite using `[← ha]`. Conclude with `a.2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RootEx.UnfoldShape.mem_stdLat {v : ι → k} :
     v ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.stdLat k ι ↔ ∀ i, v i ∈ 𝒪[k] := by
@@ -126,7 +126,7 @@ theorem inX_apply (v : n → k) : inX k n c v = Sum.elim v 0 := rfl
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Yle {i : ℕ} {v : n ⊕ Fin c → k} :
     v ∈ Yle k n c i ↔ ∀ l : Fin c, i < l.val + 1 → v (Sum.inr l) = 0 := Iff.rfl
@@ -137,11 +137,11 @@ variable {k : Type} [Field k] [ValuativeRel k] in
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} in
 omit [Fintype n] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.chainLat`. Rewrite using `[Submodule.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, z, hz, rfl⟩`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hz`. Use `⟨?_, fun i => ⟨a i, ?_⟩⟩` and prove the remaining obligations. Simplify `hw` using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.inX, _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.aux, Finset.sum_apply, Pi.single_apply]`. Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.inX, _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.aux, Finset.sum_apply, Pi.single_apply, Subring.smul_def]`. Introduce and unpack `⟨hL, ha⟩ choose a ha using ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `⟨_root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.inX k n c (fun r => v (Sum.inl r)), Submodule.mem_map_of_mem hL, ∑ i, a i • ((ϖ : k) ^ (i.val + 1) • _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.aux k n i), Submodule.sum_mem _ fun i _ => Submodule.smu …` and prove the remaining obligations. Use function extensionality and compare the values at `r`. Break down `r with r | i` into its components or cases. Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.inX, _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.aux, Finset.sum_apply, Pi.single_apply]`. Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.inX, _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.aux, Finset.sum_apply, Pi.single_apply, Subring.smul_def, ha i]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.RootEx.UnfoldShape.mem_chainLat {ϖ : 𝒪[k]} {L : Submodule 𝒪[k] (n → k)} {v : n ⊕ Fin c → k} :
     v ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.chainLat ϖ c L ↔
@@ -176,7 +176,7 @@ variable {k : Type} [Field k] [ValuativeRel k] in
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} in
 omit [Fintype n] in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.RootEx.UnfoldShape.mem_chainLat]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, fun i => ⟨0, by simp [_root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.inX]⟩⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.RootEx.UnfoldShape.inX_mem_chainLat {ϖ : 𝒪[k]} {L : Submodule 𝒪[k] (n → k)} {v : n → k} :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.inX k n c v ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.chainLat ϖ c L ↔ v ∈ L := by
@@ -189,7 +189,7 @@ variable {k : Type} [Field k] [ValuativeRel k] in
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} in
 omit [Fintype n] in
 /- English proof (translation)
-The claim follows from `Submodule.mem_sup_right (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RootEx.UnfoldShape.scaled_basis_mem_chainLattice (ϖ : 𝒪[k]) (L : Submodule 𝒪[k] (n → k)) (i : Fin c) :
     (ϖ : k) ^ (i.val + 1) • _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.aux k n i ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.chainLat ϖ c L :=
@@ -215,7 +215,7 @@ Both sides reduce to the same expression.
 theorem pt_eq (x₀ : Matrix n n' k) (y : Fin c → (n ⊕ Fin c → k)) : pt x₀ y = basePt c x₀ + colMat n' y := rfl
 
 /- English proof (translation)
-Use extensionality with `r (s | s)`. Simplify using `[colMat]`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) s <;> simp [colMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem colMat_add (y z : Fin c → (n ⊕ Fin c → k)) : colMat n' (y + z) = colMat n' y + colMat n' z := by
   ext r (s | s)
@@ -228,7 +228,7 @@ variable {k : Type} [Field k] [ValuativeRel k] in
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} in
 omit [ValuativeRel k] [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] in
 /- English proof (translation)
-Use extensionality with `r (s | j)`. Simplify using `[_root_.GlobalTheory.RootEx.UnfoldShape.colMat]`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) j <;> simp [_root_.GlobalTheory.RootEx.UnfoldShape.colMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.RootEx.UnfoldShape.colMat_smul (a : k) (y : Fin c → (n ⊕ Fin c → k)) :
     _root_.GlobalTheory.RootEx.UnfoldShape.colMat n' (a • y) = a • _root_.GlobalTheory.RootEx.UnfoldShape.colMat n' y := by
@@ -237,21 +237,21 @@ theorem _root_.GlobalTheory.RootEx.UnfoldShape.colMat_smul (a : k) (y : Fin c �
   · refine Fin.cases ?_ (fun i => ?_) j <;> simp [_root_.GlobalTheory.RootEx.UnfoldShape.colMat]
 
 /- English proof (translation)
-Rewrite using `[pt_eq, pt_eq, colMat_add, add_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_add (x₀ : Matrix n n' k) (y z : Fin c → (n ⊕ Fin c → k)) :
     pt x₀ (y + z) = pt x₀ y + colMat n' z := by
   rw [pt_eq, pt_eq, colMat_add, add_assoc]
 
 /- English proof (translation)
-Apply the tactic sequence `ext (r | r) (s | s) <;> simp [pt_eq, basePt, colMat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pt_add_base (x₀ x₁ : Matrix n n' k) (y : Fin c → (n ⊕ Fin c → k)) :
     pt (x₀ + x₁) y = pt x₀ y + fromBlocks x₁ 0 0 0 := by
   ext (r | r) (s | s) <;> simp [pt_eq, basePt, colMat]
 
 /- English proof (translation)
-Use extensionality with `i r`. Simplify using `only [col, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem col_add (e e' : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free 1 rs} → k) :
     col (e + e') = col e + col e' := by
@@ -260,7 +260,7 @@ theorem col_add (e e' : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free 1 rs
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i r`. Simplify using `only [col, Pi.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem col_smul (a : k) (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free 1 rs} → k) :
     col (a • e) = a • col e := by
@@ -269,9 +269,9 @@ theorem col_smul (a : k) (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Fre
   split_ifs <;> simp
 
 /- English proof (translation)
-Break down `s with s | s` into its components or cases. Rewrite using `[dif_neg]`. Simplify using `[colMat]`. Apply the tactic sequence `rcases r with r | r <;> simp [Free]`. Use `Fin.cases ?_ (fun i => ?_) s` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dif_neg]`. Simplify using `[colMat]`. Apply the tactic sequence `rcases r with r | r <;> simp [Free]`. Simplify using `[colMat, col]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem colMat_col (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free 1 rs} → k) (r s) :
     colMat n' (col e) r s = open Classical in if h : Free 1 (r, s) then e ⟨(r, s), h⟩ else 0 := by
@@ -286,7 +286,7 @@ theorem colMat_col (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free 1 rs
     · simp [colMat, col]
 
 /- English proof (translation)
-Use extensionality with `r s`. Simplify using `only [affPt, pt_eq, Matrix.add_apply, Matrix.of_apply, colMat_col]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem affPt_eq_pt (x₀ : Matrix n n' k) (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free 1 rs} → k) :
     affPt 1 x₀ e = pt x₀ (col e) := by
@@ -294,7 +294,7 @@ theorem affPt_eq_pt (x₀ : Matrix n n' k) (e : {rs : (n ⊕ Fin c) × (n' ⊕ F
   simp only [affPt, pt_eq, Matrix.add_apply, Matrix.of_apply, colMat_col]
 
 /- English proof (translation)
-Simplify using `[ch, pt_eq, basePt, colMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ch_pt (x₀ : Matrix n n' k) (y : Fin c → (n ⊕ Fin c → k)) : ch (pt x₀ y) = ∑ i, y i (Sum.inr i) := by
   simp [ch, pt_eq, basePt, colMat]
@@ -305,7 +305,7 @@ section
 omit [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 
 /- English proof (translation)
-Introduce `l hl`. Rewrite using `[col, dif_neg]`. Simplify using `only [Free, Fin.val_succ]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem col_mem_Yle (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free 1 rs} → k) (i : Fin c) :
     col e i ∈ Yle k n c (i.val + 1) := by
@@ -315,9 +315,9 @@ theorem col_mem_Yle (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free 1 r
   omega
 
 /- English proof (translation)
-Use extensionality with `i r`. Rewrite using `[col]`. Use `split_ifs with h`. Simplify using `[uncol, colMat]`. Break down `r with r | r` into its components or cases.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[Free] at h`. Simplify using `only [Free, Fin.val_succ] at h`. Conclude with `(hy i r (by omega)).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem col_uncol {y : Fin c → (n ⊕ Fin c → k)} (hy : ∀ i, y i ∈ Yle k n c (i.val + 1)) :
     col (uncol n' y) = y := by
@@ -336,7 +336,7 @@ section
 omit [ValuativeRel k] [Fintype n] [DecidableEq n] [DecidableEq n']
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `[colMat, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, Finset.sum_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem colMat_mulVec (y : Fin c → (n ⊕ Fin c → k)) (v : n' ⊕ Fin (c + 1) → k) :
     colMat n' y *ᵥ v = ∑ i, v (Sum.inr i.succ) • y i := by
@@ -344,9 +344,9 @@ theorem colMat_mulVec (y : Fin c → (n ⊕ Fin c → k)) (v : n' ⊕ Fin (c + 1
   simp [colMat, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `(r | r)`. Simplify using `[basePt, Matrix.mulVec, dotProduct]`. Simplify using `only [basePt, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, zero_add, Matrix.of_apply, Sum.elim_inr]`. Rewrite using `[Finset.sum_eq_single r.castSucc]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j _ hj`. Rewrite using `[if_neg, zero_mul]`. Introduce `h`. Conclude with `hj (Fin.ext (by simp [h]))`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem basePt_mulVec (x₀ : Matrix n n' k) (v : n' ⊕ Fin (c + 1) → k) :
     basePt c x₀ *ᵥ v = Sum.elim (x₀ *ᵥ fun s => v (Sum.inl s)) fun l => v (Sum.inr l.castSucc) := by
@@ -366,7 +366,7 @@ end
 
 omit [Fintype n] [DecidableEq n] [DecidableEq n'] in
 /- English proof (translation)
-Rewrite using `[pt_eq, Matrix.add_mulVec, colMat_mulVec, basePt_mulVec]`. Apply the tactic sequence `ext (r | r) <;> simp [inX_apply]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pt_mulVec_inX (x₀ : Matrix n n' k) (y : Fin c → (n ⊕ Fin c → k)) (v : n' → k) :
     pt x₀ y *ᵥ inX k n' (c + 1) v = inX k n c (x₀ *ᵥ v) := by
@@ -382,11 +382,9 @@ variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 variable [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Introduce `v hv`. Take `⟨-, ha⟩` from `_root_.GlobalTheory.RootEx.UnfoldShape.mem_chainLat.1 hv`. Use `choose a ha using ha`. Establish `hsum : _root_.GlobalTheory.RootEx.UnfoldShape.colMat n' y *ᵥ v = ∑ i : Fin c, a i.succ • ((ϖ : k) ^ (i.val + 2) • y i)`. Use function extensionality and compare the values at `r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct, _root_.GlobalTheory.RootEx.UnfoldShape.colMat, Matrix.of_apply, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, zero_mul, Finset.sum_const_zero, zero_add, Fin.sum_univ_succ, Fin.cases_zero, Fin.cases_succ, Finset.sum_apply, Pi.smul_apply, smul_e …`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ha i.succ, Fin.val_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`.
-
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hy i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RootEx.UnfoldShape.mapsInto_colMat {ϖ : 𝒪[k]} {L' : Submodule 𝒪[k] (n' → k)}
     {Λ : Submodule 𝒪[k] (n ⊕ Fin c → k)} {y : Fin c → (n ⊕ Fin c → k)}
@@ -408,7 +406,7 @@ theorem _root_.GlobalTheory.RootEx.UnfoldShape.mapsInto_colMat {ϖ : 𝒪[k]} {L
 
 omit [Fintype n] in
 /- English proof (translation)
-Introduce `v hv`. Rewrite using `[basePt_mulVec, mem_chainLat]`. Take `⟨h1, h2⟩` from `mem_chainLat.1 hv`. Conclude with `⟨h _ h1, fun i => h2 i.castSucc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mapsInto_basePt {ϖ : 𝒪[k]} {L' : Submodule 𝒪[k] (n' → k)} {L : Submodule 𝒪[k] (n → k)}
     {x₀ : Matrix n n' k} (h : MapsInto x₀ L' L) :
@@ -422,7 +420,7 @@ variable [MeasurableSpace k] [BorelSpace k]
 
 open Classical in
 /- English proof (translation)
-Simplify using `only [opE, affPt_eq_pt, ch_pt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem opE_one_eq (ψ : AddChar k Circle) (ν : Measure k) (Ψ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ)
     (x₀ : Matrix n n' k) :
@@ -436,9 +434,9 @@ variable {k : Type} [Field k] [ValuativeRel k] in
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} in
 omit [ValuativeRel k] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.RootEx.affPt _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.pt`. Use `congr 1`. Use extensionality with `r s`. Break down `s with s | j` into its components or cases. Apply the tactic sequence `rcases r with r | l <;> simp [_root_.GlobalTheory.RootEx.Free]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Apply the tactic sequence `rcases r with r | l <;> simp [_root_.GlobalTheory.RootEx.Free]`. Apply the tactic sequence `by_cases h : _root_.GlobalTheory.RootEx.Free (n' := n') 1 (r, Sum.inr i.succ) <;>`. Simplify using `[_root_.GlobalTheory.RootEx.UnfoldShape.col, h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem affPt_eq_pt_col (x₀ : Matrix n n' k)
     (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // _root_.GlobalTheory.RootEx.Free 1 rs} → k) :
@@ -459,7 +457,7 @@ variable {k : Type} [Field k] [ValuativeRel k] in
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} in
 omit [ValuativeRel k] in
 /- English proof (translation)
-Introduce `l hl`. Simplify using `only [_root_.GlobalTheory.RootEx.UnfoldShape.col]`. Rewrite using `[dif_neg]`. Simplify using `only [_root_.GlobalTheory.RootEx.Free, Fin.val_succ]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem col_mem_Yle' [ValuativeRel k]
     (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // _root_.GlobalTheory.RootEx.Free 1 rs} → k) (i : Fin c) :
@@ -477,9 +475,9 @@ variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 variable [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 variable [MeasurableSpace k] [BorelSpace k] in
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `h` to reduce the goal to its premises. Establish `hzero : ∀ e, Ψ (_root_.GlobalTheory.RootEx.affPt 1 x₀ e) = 0` using `fun e => by`. Rewrite using `[affPt_eq_pt_col]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `hne _ fun i => col_mem_Yle' e i`. Unfold `_root_.GlobalTheory.RootEx.opE`. Simplify using `[hzero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RootEx.UnfoldShape.exists_pt_ne_zero {ψ : AddChar k Circle} {ν : Measure k}
     {Ψ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ} {x₀ : Matrix n n' k} (h : _root_.GlobalTheory.RootEx.opE ψ ν 1 Ψ x₀ ≠ 0) :
@@ -500,11 +498,11 @@ variable {k : Type} [Field k] [ValuativeRel k] in
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} in
 omit [ValuativeRel k] in
 /- English proof (translation)
-Break down `s with s | j` into its components or cases. Simplify using `[_root_.GlobalTheory.RootEx.UnfoldShape.colMat]`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp [_root_.GlobalTheory.RootEx.UnfoldShape.colMat]`. Consider the case `succ i`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [_root_.GlobalTheory.RootEx.UnfoldShape.colMat, Matrix.of_apply, Sum.elim_inr, Fin.cases_succ]`. Break down `r with r | l` into its components or cases. Conclude with `absurd (by simp [_root_.GlobalTheory.RootEx.Free]) h`. Apply `hy i l` to reduce the goal to its premises. Simplify using `only [_root_.GlobalTheory.RootEx.Free, Fin.val_succ] at h`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem colMat_eq_zero_of_not_free [ValuativeRel k] {y : Fin c → (n ⊕ Fin c → k)}
     (hy : ∀ i, y i ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.Yle k n c (i.val + 1)) {r : n ⊕ Fin c} {s : n' ⊕ Fin (c + 1)}
@@ -527,9 +525,9 @@ variable {k : Type} [Field k] [ValuativeRel k] in
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} in
 omit [ValuativeRel k] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.RootEx.affPt`. Rewrite using `[add_assoc]`. Use `congr 1`. Use extensionality with `r s`. Distinguish the cases in `h : _root_.GlobalTheory.RootEx.Free 1 (r, s)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h, _root_.GlobalTheory.RootEx.UnfoldShape.uncol]`. Simplify using `[h, colMat_eq_zero_of_not_free hy h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem affPt_add_uncol [ValuativeRel k] (x₀ : Matrix n n' k) {y : Fin c → (n ⊕ Fin c → k)}
     (hy : ∀ i, y i ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.Yle k n c (i.val + 1))
@@ -550,7 +548,7 @@ variable {k : Type} [Field k] [ValuativeRel k] in
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} in
 omit [ValuativeRel k] in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.RootEx.ch, Finset.sum_add_distrib, _root_.GlobalTheory.RootEx.UnfoldShape.colMat]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ch_add_colMat (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)
     (y : Fin c → (n ⊕ Fin c → k)) :
@@ -566,9 +564,9 @@ variable [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 variable [MeasurableSpace k] [BorelSpace k] in
 
 /- English proof (translation)
-Use `haveI := _root_.GlobalTheory.SplitWeil.secondCountable k`. Unfold `_root_.GlobalTheory.RootEx.opE`. Use `conv_lhs => rw [← integral_add_right_eq_self _ (_root_.GlobalTheory.RootEx.UnfoldShape.uncol n' y)]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `e`. Rewrite using `[affPt_add_uncol x₀ hy, hΨ, ch_add_colMat, neg_add, AddChar.map_add_eq_mul, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RootEx.UnfoldShape.opE_translate (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure]
     {Ψ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ} {y : Fin c → (n ⊕ Fin c → k)}
@@ -591,7 +589,7 @@ def volFree (ν : Measure k) (n n' : Type) [Fintype n] [Fintype n'] (c : ℕ) :
     Measure ({rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free 1 rs} → k) := Measure.pi fun _ => ν
 
 /- English proof (translation)
-The claim follows from `opE_one_eq ψ ν Ψ x₀`.
+A detailed English derivation is pending.
 -/
 theorem opE_one_eq_volFree (ψ : AddChar k Circle) (ν : Measure k)
     (Ψ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ) (x₀ : Matrix n n' k) :
@@ -618,7 +616,7 @@ def perLat (ϖ : 𝒪[k]) (n' : Type) (c : ℕ) (L : Submodule 𝒪[k] (n → k)
 
 omit [MeasurableSpace k] [BorelSpace k] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_perLat {ϖ : 𝒪[k]} {L : Submodule 𝒪[k] (n → k)}
     {e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free 1 rs} → k} :

@@ -6,13 +6,13 @@ open GlobalTheory.EtC
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `A A' A'' _ _ _ _ _ _ _ h h1 h2`. Take `⟨e1, s1, i1⟩` from `h1`. Take `⟨e2, s2, i2⟩` from `h2`. Establish `hsc : ∀ x : A, algebraMap A A'' x = algebraMap A' A'' (algebraMap A A' x)` using `fun x => IsScalarTower.algebraMap_apply A A' A'' x`. Use `⟨Algebra.Etale.comp A A' A'', ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a''`. Take `⟨a', ha'⟩` from `s2 a''`. Take `⟨a, ha⟩` from `s1 a'`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite `ha`, `ha'`, the goal using `[Ideal.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `ha`. Establish `key : a'' - algebraMap A A'' a = (a'' - algebraMap A' A'' a') + algebraMap A' A'' (algebraMap A A' h) * algebraMap A' A'' c`. Rewrite using `[← map_mul, ← hc, map_sub, hsc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, hsc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_add ha' (dvd_mul_right _ _)`. Introduce `a ha`. Rewrite `ha` using `[hsc, hsc]`. Conclude with `i1 a (i2 _ ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isExcisionNbhd_trans :
     ∀ (A A' A'' : Type) [CommRing A] [CommRing A'] [CommRing A''] [Algebra A A'] [Algebra A' A''] [Algebra A A'']

@@ -5,7 +5,7 @@ open MvPowerSeries
 variable {O : Type} [CommRing O] [IsLocalRing O] {a : ℕ}
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_constantCoeff, constantCoeff_C]`. Conclude with `hr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma C_mem_max {r : O} (hr : r ∈ IsLocalRing.maximalIdeal O) :
     (C r : MvPowerSeries (Fin a) O) ∈ IsLocalRing.maximalIdeal (MvPowerSeries (Fin a) O) := by
@@ -13,7 +13,7 @@ lemma C_mem_max {r : O} (hr : r ∈ IsLocalRing.maximalIdeal O) :
   exact hr
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_constantCoeff, constantCoeff_X]`. Conclude with `not_isUnit_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma X_mem_max (i : Fin a) :
     (X i : MvPowerSeries (Fin a) O) ∈ IsLocalRing.maximalIdeal (MvPowerSeries (Fin a) O) := by
@@ -21,7 +21,7 @@ lemma X_mem_max (i : Fin a) :
   exact not_isUnit_zero
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`. Conclude with `C_mem_max hr`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma map_le_max :
     Ideal.map (C : O →+* MvPowerSeries (Fin a) O) (IsLocalRing.maximalIdeal O)
@@ -31,7 +31,7 @@ lemma map_le_max :
   exact C_mem_max hr
 
 /- English proof (translation)
-Proceed by induction on `v using Finsupp.induction with`. Consider the case `zero => simp`. Consider the case `single_add i k w hi hk ih`. Rewrite using `[← one_mul (1 : O), ← monomial_mul_monomial, map_add, Finsupp.degree_single, pow_add, ← X_pow_eq]`. Conclude with `Ideal.mul_mem_mul (Ideal.pow_mem_pow (X_mem_max i) k) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma monomial_one_mem (v : Fin a →₀ ℕ) :
     (monomial v (1 : O)) ∈ IsLocalRing.maximalIdeal (MvPowerSeries (Fin a) O) ^ (Finsupp.degree v) := by
@@ -42,11 +42,9 @@ lemma monomial_one_mem (v : Fin a →₀ ℕ) :
     exact Ideal.mul_mem_mul (Ideal.pow_mem_pow (X_mem_max i) k) ih
 
 /- English proof (translation)
-Introduce `O _ _ a N v c hc`. Establish `h1 : (C c : MvPowerSeries (Fin a) O) ∈ IsLocalRing.maximalIdeal (MvPowerSeries (Fin a) O) ^ (N - Finsupp.degree v)`. Establish `: (C c : MvPowerSeries (Fin a) O) ∈ Ideal.map (C : O →+* MvPowerSeries (Fin a) O) (IsLocalRing.maximalIdeal O ^ (N - Finsupp.degree v))` using `Ideal.mem_map_of_mem _ hc`. Rewrite `this` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono map_le_max _ this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : monomial v c = C c * monomial v (1 : O)`. Rewrite using `[← monomial_zero_eq_C, monomial_mul_monomial, zero_add, mul_one]`. Rewrite using `[h2]`. Use `Ideal.pow_le_pow_right (by omega : N ≤ (N - Finsupp.degree v) + Finsupp.degree v) ?_` and prove the remaining obligations. Rewrite using `[pow_add]`.
-
-Conclude with `Ideal.mul_mem_mul h1 (monomial_one_mem v)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {O : Type} [inst : CommRing O] [inst_1 : IsLocalRing O] {a N : ℕ} (v : Fin a →₀ ℕ) {c : O}, c ∈ IsLocalRing.maximalIdeal O ^ (N - (Finsupp.degree : (Fin a →₀ ℕ) → ℕ) v) → (MvPowerSeries.monomial v : O → MvPowerSeries (Fin a) O) c ∈ IsLocalRing.maximalIdeal (MvPowerSeries (Fin a) O) ^ N := by
   intro O _ _ a N v c hc

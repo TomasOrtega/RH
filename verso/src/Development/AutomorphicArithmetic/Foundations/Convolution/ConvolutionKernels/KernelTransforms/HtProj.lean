@@ -15,9 +15,9 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Use `set e : ℝ := ((n * Module.finrank ℚ K : ℝ))⁻¹ with he`. Establish `he0 : 0 ≤ e` using `by positivity`. Establish `he1 : e ≤ 1`. Rewrite using `[he, ← Nat.cast_mul]`. Conclude with `Nat.cast_inv_le_one _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `key : ∀ x : ℝ, 0 ≤ x → x ≤ L → x ^ e ≤ L` using `fun x hx hxL =>`. Combine the equalities or inequalities in the displayed calculation. Use `height_diagUnits_posIdele_le (K := K) (n := n) (ρ := fun _ => (s : ℝ) ^ e) (fun _ => Real.rpow_pos_of_pos s.2 e) hL fun _ => ⟨key _ s.2.le h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← Real.inv_rpow s.2.le]`. Conclude with `key _ (inv_pos.2 s.2).le h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.Tf.height_centralSection_le (K : Type) [Field K] [NumberField K] (n : ℕ)
     (s : {r : ℝ // 0 < r}) {L : ℝ} (hL : 1 ≤ L) (h1 : (s : ℝ) ≤ L) (h2 : (s : ℝ)⁻¹ ≤ L) :
@@ -37,13 +37,13 @@ private theorem UpperTheory.ConvolutionTheory.Tf.height_centralSection_le (K : T
   exact key _ (inv_pos.2 s.2).le h2
 
 /- English proof (translation)
-Introduce `K _ _ n`. Take `⟨D, N, -, hD⟩` from `UpperTheory.adelicNorm_det_le_height_pow K n`. Use `set m := 2 * Fintype.card (InfinitePlace K) with hm`. Establish `hC : 1 ≤ heightConst K n` using `one_le_heightConst`. Establish `hD1 : (1 : ℝ) ≤ max 1 D` using `le_max_left _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨heightConst K n * max 1 D ^ m, N * m + 1, one_le_mul_of_one_le_of_one_le hC (one_le_pow₀ hD1), fun g => ?_⟩` and prove the remaining obligations. Establish `hg` using `one_le_height g`. Establish `hb : ∀ x : AdelicGLn.AdelicGL K n, AutomorphicForm.height x = AutomorphicForm.height g → (detModule K n x : ℝ) ≤ max 1 D * AutomorphicForm.height g ^ N` using `fun x hx => by`. Use `(hD x).trans ?_` and prove the remaining obligations. Rewrite using `[hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right (le_max_right _ _) (by positivity)`. Establish `h2 : (detModule K n g : ℝ)⁻¹ ≤ max 1 D * AutomorphicForm.height g ^ N`. Use `hb g⁻¹ (height_inv g)` as an intermediate fact. Rewrite `this` using `[map_inv, Positive.coe_inv]`. Then use the resulting hypothesis. Establish `hz` using `UpperTheory.ConvolutionTheory.Tf.height_centralSection_le K n (detModule K n g) (one_le_mul_of_one_le_of_one_le hD1 (one_le_pow₀ hg)) (hb g rfl) h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coe_retractOne]`. Use `(height_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[height_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.htProj :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), ∃ (C : ℝ) (c : ℕ), 1 ≤ C ∧ ∀ g : AdelicGLn.AdelicGL K n,

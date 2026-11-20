@@ -5,11 +5,9 @@ open scoped ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g Λ _ F Fd hspan hF hper hFd`. Use `haveI : IsZLattice ℝ Λ := ⟨hspan⟩`. Use `haveI : MeasurableVAdd Λ (Fin g → ℂ) := (inferInstance : MeasurableVAdd Λ.toAddSubgroup (Fin g → ℂ))`. Use `haveI : VAddInvariantMeasure Λ (Fin g → ℂ) volume := (inferInstance : VAddInvariantMeasure Λ.toAddSubgroup (Fin g → ℂ) volume)`. Set `b` to `Module.Free.chooseBasis ℤ Λ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP` using `ZLattice.isAddFundamentalDomain b (volume : Measure (Fin g → ℂ))`. Establish `hinv : ∀ (l : Λ) (x : Fin g → ℂ), F (l +ᵥ x) = F x`. Introduce `l x`. Rewrite using `[Submodule.vadd_def, vadd_eq_add, add_comm]`. Conclude with `hper l x`.
-
-Rewrite using `[hFd.integrableOn_iff hP hinv]`. Establish `hbdd` using `ZSpan.fundamentalDomain_isBounded (b.ofZLatticeBasis ℝ)`. Establish `hcpt : IsCompact (closure (ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ)))` using `hbdd.isCompact_closure`. Conclude with `(hF.continuousOn.integrableOn_compact hcpt).mono_set subset_closure`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrableOn_fundamentalDomain_of_periodic :
     ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ] (F : (Fin g → ℂ) → ℝ)

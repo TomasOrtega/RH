@@ -56,7 +56,7 @@ def PLLocal : Prop :=
     ∀ g ∈ levelAfL σ J Lb, ∀ v, bc (prV (E := E) v) g ∈ levelVL σ J v Lb
 
 /- English proof (translation)
-Unfold `bc`. Use function extensionality and compare the values at `j`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bc_mulVec {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (φ : A →+* B)
     (g : GL (Fin n) A) (y : Fin n → A) :
@@ -68,13 +68,13 @@ theorem bc_mulVec {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (φ : A →+*
   rfl
 
 /- English proof (translation)
-Use `haveI : K.FiniteIndex := ⟨hK⟩`. Establish `hr : ∀ a b : G, (QuotientGroup.leftRel (K.comap f)) a b → (QuotientGroup.leftRel K) (f a) (f b)`. Introduce `a b hab`. Rewrite `hab`, the goal using `[QuotientGroup.leftRel_apply]`. Rewrite `hab` using `[Subgroup.mem_comap, map_mul, map_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hab`. Set `g : G ⧸ K.comap f → H ⧸ K` to `Quotient.map' f hr`. Establish `hinj : Function.Injective g`. Introduce `q1 q2`. Proceed by induction on `q1 using QuotientGroup.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `H a`. Proceed by induction on `q2 using QuotientGroup.induction_on with`. Consider the case `H b`. Introduce `h`. Establish `h1 : ((f a : H) : H ⧸ K) = ((f b : H) : H ⧸ K)` using `h`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[QuotientGroup.eq]`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_comap, map_mul, map_inv]`. Conclude with `h1`. Use `haveI : Finite (G ⧸ K.comap f) := Finite.of_injective g hinj`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+A detailed English derivation is pending.
 -/
 private theorem index_comap_ne_zero_lemma {G H : Type*} [Group G] [Group H] (f : G →* H)
     (K : Subgroup H) (hK : K.index ≠ 0) : (K.comap f).index ≠ 0 := by
@@ -101,23 +101,19 @@ private theorem index_comap_ne_zero_lemma {G H : Type*} [Group G] [Group H] (f :
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Unfold `PI.LevelProdIdx`. Introduce `F E _ _ _ _ _ n σ J Lb Uloc U hfin _ hUdef hle hfinite hidx`. Establish `hsub : U ≤ levelAfL σ J Lb`. Introduce `x hx`. Establish `hx'` using `(hUdef x).1 hx`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨hx'.1, ?_⟩` and prove the remaining obligations. Introduce `y`. Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 F), (fun j => prV (E` using `E) v (((x : Matrix (Fin n) (Fin n) _) *ᵥ y) j)) = ((bc (prV (E := E) v) x : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ (fun j => prV (E := E) v (y j)) := fun v => bc_mulVec (prV (E := E) v) x y`. Establish `hxv : ∀ v : HeightOneSpectrum (𝓞 F), bc (prV (E` using `E) v) x ∈ levelVL σ J v Lb := fun v => hle v (hx'.2 v)`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hy`. Use `hU F E n Lb hfin _ fun v => ?_` and prove the remaining obligations. Rewrite using `[hloc v]`. Conclude with `((hxv v).2 _).1 (hD F E n Lb v y hy)`. Introduce `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hU F E n Lb hfin _ fun v => ?_` and prove the remaining obligations. Establish `h1` using `hD F E n Lb v _ hy`. Rewrite `h1` using `[hloc v]`. Conclude with `((hxv v).2 _).2 h1`. Use `⟨hsub, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `set S := {v | Uloc v ≠ levelVL σ J v Lb} with hS`. Use `haveI : Finite S := hfinite.to_subtype`. Set `φ : ∀ v : HeightOneSpectrum (𝓞 F), (levelAfL σ J Lb) →* (levelVL σ J v Lb)` to `fun v => ((bc (prV (E := E) v)).comp (levelAfL σ J Lb).subtype).codRestrict (levelVL σ J v Lb) (fun x => hL F E n σ J Lb hfin x.1 x.2 v)`. Set `K : S → Subgroup (levelAfL σ J Lb)` to `fun v => ((Uloc v.1).subgroupOf (levelVL σ J v.1 Lb)).comap (φ v.1)`. Establish `hK : ∀ v : S, (K v).FiniteIndex`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Conclude with `⟨index_comap_ne_zero_lemma (φ v.1) _ (hidx v.1)⟩`. Establish `hle2 : (⨅ v : S, K v) ≤ U.subgroupOf (levelAfL σ J Lb)`. Introduce `x hx`. Rewrite `hx` using `[Subgroup.mem_iInf]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.mem_subgroupOf, hUdef]`. Use `⟨x.2.1, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`. Establish `h1` using `hx ⟨v, hv⟩`. Rewrite `h1` using `[Subgroup.mem_comap, Subgroup.mem_subgroupOf]`.
-
-Conclude with `h1`. Establish `h2 : Uloc v = levelVL σ J v Lb`. Simplify `hv` using `[hS]`. Rewrite using `[h2]`. Conclude with `hL F E n σ J Lb hfin x.1 x.2 v`.
-
-Use `haveI : (⨅ v : S, K v).FiniteIndex := Subgroup.finiteIndex_iInf hK`. Use `haveI : (U.subgroupOf (levelAfL σ J Lb)).FiniteIndex := Subgroup.finiteIndex_of_le hle2`. Conclude with `Subgroup.FiniteIndex.index_ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelProdIdx_of (hD : PLDown) (hU : PLUp) (hL : PLLocal) : PI.LevelProdIdx := by
   unfold PI.LevelProdIdx

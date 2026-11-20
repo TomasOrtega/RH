@@ -18,14 +18,14 @@ section twist
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : Mat k r → (H →L[ℂ] H)} {t : Mat k r}
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[gv_mul_inv ht, Matrix.mul_one, ← Matrix.mul_assoc, gv_mul_inv ht, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_cancel (ht : t ∈ GV k r) (g : Mat k r) : t * (t⁻¹ * g * t) * t⁻¹ = g := by
   simp only [Matrix.mul_assoc]
   rw [gv_mul_inv ht, Matrix.mul_one, ← Matrix.mul_assoc, gv_mul_inv ht, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `S hS hst`. Use `hσ S hS fun g hg v hv => ?_` and prove the remaining obligations. Use `hst (t⁻¹ * g * t) (gv_mul (gv_mul (gv_inv ht) hg) ht) v hv` as an intermediate fact. Simplify `this` using `only [tw_cancel ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tw_irr (hσ : Formalism.MainNotions.S.IsIrredOn (GV k r) σ) (ht : t ∈ GV k r) :
     Formalism.MainNotions.S.IsIrredOn (GV k r) (fun g => σ (t * g * t⁻¹)) := by

@@ -12,17 +12,17 @@ import BuildAid.D5
 open Filter Topology GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult UpperTheory.Lit.Cas
 
 /- English proof (translation)
-Establish `hAB : ∀ x ∈ A₀, x ∉ A₁` using `fun x hx hx' => hU x hx x hx' 0 (by simp) (by simp)`. Establish `hn₁ : (A₁.map Sigma.fst).sum = n`. Establish `h` using `hA.sum_fst`. Rewrite `h` using `[Multiset.map_add, Multiset.sum_add, hm₀, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hS₁ : HasSupport π (Finset.univ.val.map u)` using `⟨s, u, rfl, hA.isIrreducible, fun a => ⟨(hc a).1, (u a).2.rep.irr, (hc a).2⟩, e₃, .of_injective φ hφ⟩`. Establish `hm : Finset.univ.val.map u = A₀ + A₁` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_unique hG hBZ hS₁ hA`. Set `S : Finset (Fin s)` to `Finset.univ.filter fun a => u a ∈ A₁`. Set `σ : ∀ a, GlobalTheory.SplitRead.Irr k (u a).1` to `fun a => GlobalTheory.SplitRead.Irr.ofIrrRep (u a).2.rep`. Establish `mem : ∀ a, u a ∈ A₀ ∨ u a ∈ A₁` using `fun a => Multiset.mem_add.1 (hm ▸ Multiset.mem_map_of_mem u (Finset.mem_univ a))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `mem1 : ∀ a, a ∈ S → u a ∈ A₁` using `fun a ha => (Finset.mem_filter.1 ha).2`. Establish `mem0 : ∀ a, a ∉ S → u a ∈ A₀` using `fun a ha => (mem a).resolve_right fun h => ha (Finset.mem_filter.2 ⟨Finset.mem_univ _, h⟩)`. Establish `mS : S.val.map u = A₁`. Establish `h : S.val.map u = (Finset.univ.val.map u).filter (· ∈ A₁)`. Rewrite using `[Multiset.filter_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h, hm, Multiset.filter_add, Multiset.filter_eq_nil.2 (fun x hx => hAB x hx), Multiset.filter_eq_self.2 (fun x hx => hx), zero_add]`. Establish `mC : Sᶜ.val.map u = A₀`. Establish `h : Sᶜ.val.map u = (Finset.univ.val.map u).filter (· ∉ A₁)`. Rewrite using `[Multiset.filter_map, Finset.compl_filter]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h, hm, Multiset.filter_add, Multiset.filter_eq_self.2 (fun x hx => hAB x hx), Multiset.filter_eq_nil.2 (fun x hx h => h hx), add_zero]`. Establish `deg : ∀ (T : Finset (Fin s)) (C : Multiset (IrrGL k)), T.val.map u = C → ∑ a : Fin T.card, (u (T.orderEmbOfFin rfl a)).1 = (C.map Sigma.fst).sum`. Introduce `T C h`. Rewrite using `[← h, ← GlobalTheory.CompanionTheory.Hypotheses₂.TD.map_orderEmb T u, Multiset.map_map]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `c₁ : ∑ a : Fin Sᶜ.card, (u (Sᶜ.orderEmbOfFin rfl a)).1 = m` using `(deg _ _ mC).trans hm₀`. Establish `c₂ : ∑ a : Fin S.card, (u (S.orderEmbOfFin rfl a)).1 = n` using `(deg _ _ mS).trans hn₁`. Establish `hΦ` using `GlobalTheory.T.parabolicProduct_equiv_product_of_partition k s (fun a => (u a).1) σ S m n e₃ (stdBlocks (fun a => (u (Sᶜ.orderEmbOfFin rfl a)).1) c₁) (stdBlocks (fun a => (u (S.orderEmbOfFin rfl a)).1) c₂) (fun a b ha hb n _ _ f f' => GlobalTheory.CompanionTheory.Hypotheses₂.TDZ. …`. Conclude with `hΦ.elim fun Φ => ⟨_, _, fun a => u (Sᶜ.orderEmbOfFin rfl a), fun a => u (S.orderEmbOfFin rfl a), c₁, c₂, (GlobalTheory.CompanionTheory.Hypotheses₂.TD.map_orderEmb _ u).trans mC, Φ.toIntertwiningMap.comp φ, Φ.toLinearEquiv.injective.comp hφ⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Lit.Mix.front_support_decomposition (hG : GlobalTheory.Published.GeometricLemma) (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness)
     (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
@@ -77,7 +77,7 @@ private theorem UpperTheory.Lit.Mix.front_support_decomposition (hG : GlobalTheo
     (GlobalTheory.CompanionTheory.Hypotheses₂.TD.map_orderEmb _ u).trans mC, Φ.toIntertwiningMap.comp φ, Φ.toLinearEquiv.injective.comp hφ⟩
 
 /- English proof (translation)
-Introduce `hG hBZ hZ k _ _ _ _ m n V _ _ π A₀ A₁ hA hm₀ hU`. Conclude with `(GlobalTheory.CompanionTheory.CuspEmbed.main hBZ hG k _ (GlobalTheory.SplitRead.Irr.mk V π hA.isSmooth hA.isIrreducible)).elim fun s H => H.elim fun u H => H.elim fun e H => H.2.elim fun φ hφ => UpperTheory.Lit.Mix.front_support_decomposition hG hBZ hZ k m n V π A₀ A₁ hA hm₀ hU s …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Mix.front :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (m n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (σ : Representation ℂ (GL (Fin (m + n)) k) V) (A₀ A₁ : Multiset (IrrGL k)), HasSupport σ (A₀ + A₁) → (A₀.map Sigma.fst).sum = m → (∀ x ∈ A₀, ∀ y ∈ A₁, ∀ j : ℤ, |j| ≤ 1 → x ≠ y.nu (j : ℂ)) → ∃ (h h' : ℕ) (u : Fin h → IrrGL k) (w : Fin h' → IrrGL k) (hu : ∑ a, (u a).1 = m) (hw : ∑ a, (w a).1 = n), Finset.univ.val.map u = A₀ ∧ ∃ f : σ.IntertwiningMap (prod₂ (prodIrr u hu) (prodIrr w hw)), Function.Injective f := by

@@ -19,11 +19,11 @@ namespace GlobalTheory.CoordsOrigin
 variable {R : Type} [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G]
 
 /- English proof (translation)
-Use extensionality with `r`. Rewrite using `[GlobalTheory.HodgeTateCompare.strMap_eq]`. Establish `h1 : (StructureSheaf.toStalk R (G.hom (origin G))).hom r = ((Spec (CommRingCat.of R)).presheaf.germ ⊤ (G.hom (origin G)) trivial).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)`. Rewrite using `[Scheme.ΓSpecIso_inv]`. Conclude with `(congrArg (fun q => q.hom r) (StructureSheaf.toOpen_germ (R := R) ⊤ (G.hom (origin G)) trivial)).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) (Scheme.Hom.germ_stalkMap G.hom ⊤ (origin G) trivial)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at h2`. Express the relevant statement in the definitionally equal form `_ = (G.hom.stalkMap (origin G)).hom ((StructureSheaf.toStalk R (G.hom (origin G))).hom r)`. Rewrite using `[h1, h2]`. Simplify using `[constO, Scheme.Hom.appLE]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `first`. Consider the case `(erw [CommRingCat.comp_apply, TopCat.Presheaf.germ_res_apply]; done)`. Consider the case `(erw [CommRingCat.comp_apply, TopCat.Presheaf.germ_res_apply]; rfl)`. Consider the case `(rw [← CommRingCat.comp_apply, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Category.assoc, TopCat.Presheaf.germ_res]; rfl)`. Consider the case `(simp only [← CommRingCat.comp_apply, Category.assoc, TopCat.Presheaf.germ_res]; rfl)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem constO_eq_strMap : constO G = (GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateCharacterSystems.strMap G).hom := by
   ext r
@@ -46,7 +46,7 @@ theorem constO_eq_strMap : constO G = (GlobalTheory.IndefiniteRowSideFullHecke.H
     | (simp only [← CommRingCat.comp_apply, Category.assoc, TopCat.Presheaf.germ_res]; rfl)
 
 /- English proof (translation)
-Substitute `hφ` using the available equality. Take `⟨h1, h2⟩` from `GlobalTheory.HodgeTateCompare.finite_projective_of_smooth (G := G)`. Express the relevant statement in the definitionally equal form `Module.Free R (GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateCharacterSystems.Cotangent G) ∧ Module.Finite R (GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateCharacterSystems.Cotangent G)`. Conclude with `⟨Module.free_of_flat_of_isLocalRing, h1⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components.
 -/
 theorem free_finite_cotangent_of_eq [Smooth G.hom] (φ : R →+* G.left.presheaf.stalk (origin G))
     (hφ : φ = (GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateCharacterSystems.strMap G).hom) :
@@ -60,7 +60,7 @@ theorem free_finite_cotangent_of_eq [Smooth G.hom] (φ : R →+* G.left.presheaf
 end GlobalTheory.CoordsOrigin
 
 /- English proof (translation)
-Introduce `R _ _ _ G _ hs`. Use `haveI := hs`. Use `haveI : IsLocallyNoetherian G.left := LocallyOfFiniteType.isLocallyNoetherian G.hom`. Conclude with `⟨inferInstance, GlobalTheory.CoordsOrigin.free_finite_cotangent_of_eq G _ (GlobalTheory.CoordsOrigin.constO_eq_strMap G)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CoordsOrigin.noetherian_free_cotangent : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     (G : Over (Sp R)) [GrpObj G], Smooth G.hom → IsNoetherianRing (G.left.presheaf.stalk (origin G)) ∧

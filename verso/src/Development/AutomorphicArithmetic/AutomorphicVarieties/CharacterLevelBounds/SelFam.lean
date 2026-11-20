@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PartsSign
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Chr
 
 /- English proof (translation)
-Rewrite using `[Module.length_eq_add_of_exact (LinearMap.ker f).subtype f.rangeRestrict (Submodule.subtype_injective _) f.surjective_rangeRestrict (by`. Rewrite using `[LinearMap.exact_iff, LinearMap.ker_rangeRestrict, Submodule.range_subtype])]`. Conclude with `add_le_add (Module.length_le_of_injective g hg) (Module.length_le_of_injective _ (Submodule.subtype_injective _))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem selFam_length_le {R A B : Type} [CommRing R] [AddCommGroup A] [Module R A]
     [AddCommGroup B] [Module R B] {C : Type} [AddCommGroup C] [Module R C] (f : A →ₗ[R] B)
@@ -17,9 +17,9 @@ private theorem selFam_length_le {R A B : Type} [CommRing R] [AddCommGroup A] [M
     (Module.length_le_of_injective _ (Submodule.subtype_injective _))
 
 /- English proof (translation)
-Set `f : A →ₗ[R] (∀ i, LinearMap.ker (q i))` to `LinearMap.pi fun i => LinearMap.codRestrict _ ((p i).comp A.subtype) (fun x => h1 i x.1 x.2)`. Establish `hk : ∀ x : LinearMap.ker f, (A.subtype.comp (LinearMap.ker f).subtype) x ∈ B` using `fun x => h2 x.1.1 x.1.2 fun i => congrArg Subtype.val (congrFun (LinearMap.mem_ker.1 x.2) i)`. Use `selFam_length_le f (LinearMap.codRestrict _ _ hk) (by` as an intermediate fact. Introduce `a b hab`. Establish `h1` using `congrArg Subtype.val hab`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (Subtype.ext h1))`. Rewrite `this` using `[Module.length_pi_of_fintype]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem selFam_abs {R X : Type} [CommRing R] [AddCommGroup X] [Module R X] {ι : Type} [Fintype ι]
     {Y Z : ι → Type} [∀ i, AddCommGroup (Y i)] [∀ i, Module R (Y i)] [∀ i, AddCommGroup (Z i)] [∀ i, Module R (Z i)]
@@ -37,11 +37,11 @@ private theorem selFam_abs {R X : Type} [CommRing R] [AddCommGroup X] [Module R 
   rwa [Module.length_pi_of_fintype] at this
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `(resU_mk_eq_zero ρ _ z).1 hi`. Use `⟨ρ u m - z.1 ⟨u, hu⟩, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hy : u⁻¹ * x.1 * u ∈ U` using `U.mul_mem (U.mul_mem (U.inv_mem hu) x.2) hu`. Establish `h1 : z.1 ⟨u⁻¹ * x.1 * u, hy⟩ = ρ (u⁻¹ * x.1 * u) m - m` using `hm ⟨_, hy, hux x.1 ⟨x.2, hx⟩⟩`. Establish `e1 : (⟨u, hu⟩ : U) * ⟨_, hy⟩ = x * ⟨u, hu⟩` using `Subtype.ext (by simp [mul_assoc])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `congrArg z.1 e1`. Rewrite `e2` using `[z.2.2, z.2.2]`. Establish `e3 : z.1 ⟨u, hu⟩ + ρ u (z.1 ⟨_, hy⟩) = z.1 x + ρ x (z.1 ⟨u, hu⟩)` using `e2`. Establish `e4 : ρ u (ρ (u⁻¹ * x.1 * u) m) = ρ x (ρ u m)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_assoc]`. Rewrite `e3` using `[h1, map_sub, e4]`. Rewrite using `[eq_sub_of_add_eq e3.symm, map_sub]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem selFam_conj {R G M : Type} [CommRing R] [Group G] [TopologicalSpace G] [AddCommGroup M] [Module R M]
     [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul R M] (ρ : Representation R G M)
@@ -64,9 +64,9 @@ private theorem selFam_conj {R G M : Type} [CommRing R] [Group G] [TopologicalSp
   abel
 
 /- English proof (translation)
-Introduce `R G M _ _ _ _ _ _ _ _ _ _ ρ U 𝒟 𝒟' ι _ I D h hI hc`. Use `selFam_abs (LocSel ρ U 𝒟) (LocSel ρ U 𝒟') (fun i => resU ρ (inf_le_left : U ⊓ D i ≤ U)) (fun i => resU ρ (inf_le_inf_left U (h i))) (fun i x hx => ?_) (fun x hx hi => ?_)` and prove the remaining obligations. Conclude with `(resU_resU ρ _ _ x).trans (mem_locSel.1 hx (I i) (hI i))`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `mk_mem_locSel.2 fun D' hD' => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hc D' hD' with hle | ⟨i, u, hu, hux⟩` into its components or cases. Conclude with `mk_mem_locSel.1 hx D' hle`. Conclude with `selFam_conj ρ U (D i) D' u hu hux z (hi i)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Chr.selFam :
     ∀ (R G M : Type) [CommRing R] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup M] [Module R M]

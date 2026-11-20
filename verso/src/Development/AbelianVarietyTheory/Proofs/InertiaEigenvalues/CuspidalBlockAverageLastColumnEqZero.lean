@@ -16,11 +16,11 @@ def cuspBlockIndexEquivLastColumnIndex (a r : ℕ) : BlockIx a r ≃ UnipotentBl
   right_inv _ := rfl
 
 /- English proof (translation)
-Simplify using `only [posM, Matrix.sum_apply]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨(i, j), h⟩]`. Simplify using `[Matrix.single_apply]`. Introduce `t _ ht`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `ht (Subtype.ext (Prod.ext h1 h2))`. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Use `t.2` as an intermediate fact. Rewrite `this` using `[h1, h2]`. Conclude with `h this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posM_apply_of_blkIx {R : Type} [CommRing R] {a r m : ℕ} (x : UnipotentBlockColumnIndex a r m → R) (i j : Fin a) :
     posM Subtype.val x i j = if h : (i : ℕ) < r ∧ r ≤ (j : ℕ) ∧ (j : ℕ) ≤ m then x ⟨(i, j), h⟩ else 0 := by
@@ -42,11 +42,11 @@ theorem posM_apply_of_blkIx {R : Type} [CommRing R] {a r m : ℕ} (x : Unipotent
     exact h this
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 + posM Subtype.val x : Matrix (Fin a) (Fin a) R) i j = (1 + nilM _ : Matrix (Fin a) (Fin a) R) i j`. Rewrite using `[Matrix.add_apply, Matrix.add_apply, posM_apply_of_blkIx]`. Simplify using `only [nilM, Matrix.of_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Establish `hj` using `j.2`. Distinguish the cases in `h : (i : ℕ) < r ∧ r ≤ (j : ℕ)`. Rewrite using `[dif_pos h, dif_pos ⟨h.1, h.2, by omega⟩]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[dif_neg h, dif_neg (fun h' => h ⟨h'.1, h'.2.1⟩)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blkU_eq_unip {R : Type} [CommRing R] {a r : ℕ} (x : UnipotentBlockColumnIndex a r (a - 1) → R) :
     (blkU x : GL (Fin a) R) = unip (fun p => x (cuspBlockIndexEquivLastColumnIndex a r p)) := by
@@ -63,19 +63,15 @@ theorem blkU_eq_unip {R : Type} [CommRing R] {a r : ℕ} (x : UnipotentBlockColu
   · rw [dif_neg h, dif_neg (fun h' => h ⟨h'.1, h'.2.1⟩)]
 
 /- English proof (translation)
-Introduce `E _ _ _ a F _ _ hF r hr0 hr g`. Establish `hra : r < a` using `by omega`. Use `letI : MeasurableSpace (UnipotentBlockColumnIndex a r (a - 1) → Ad E) := borel _`. Use `haveI : BorelSpace (UnipotentBlockColumnIndex a r (a - 1) → Ad E) := ⟨rfl⟩`. Use `letI : MeasurableSpace (BlockIx a r → Ad E) := borel _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Simplify using the standard rewrite rules.
 
-Use `haveI : BorelSpace (BlockIx a r → Ad E) := ⟨rfl⟩`. Simplify using `only [avg]`. Use `split_ifs with h`. Use `swap`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨hμ, h𝓕, -⟩` from `h.choose_spec`. Use `set μ := h.choose.1`. Use `set 𝓕 := h.choose.2`. Set `e` to `cuspBlockIndexEquivLastColumnIndex a r`. Set `β : (UnipotentBlockColumnIndex a r (a - 1) → Ad E) ≃ₜ+ (BlockIx a r → Ad E)` to `{ toFun := fun x p => x (e p) invFun := fun y q => y (e.symm q) left_inv := fun x => funext fun q => congrArg x (e.apply_symm_apply q) right_inv := fun y => funext fun p => congrArg y (e.symm_apply_apply p) map_add' := fun _ _ => rfl continuous_toFun := continuous_pi fun p => con …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `q : ratN E a r ≃ ratV E (UnipotentBlockColumnIndex a r (a - 1))` to `{ toFun := fun y => ⟨β.symm y, by`. Take `⟨c, hc⟩` from `y.2`. Conclude with `⟨fun t => c (e.symm t), by rw [← hc]; rfl⟩⟩`. Use `invFun := fun x => ⟨β x, by`. Take `⟨c, hc⟩` from `x.2`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun p => c (e p), by rw [← hc]; rfl⟩⟩`. Use `left_inv := fun y => Subtype.ext (β.apply_symm_apply y)`. Use `right_inv := fun x => Subtype.ext (β.symm_apply_apply x) }`. Set `m` to `β.toHomeomorph.toMeasurableEquiv`. Establish `h2` using `hF r hr0 hra (μ.map m) (m '' 𝓕) (β.isAddHaarMeasure_map μ) (h𝓕.image_of_equiv m.toEquiv (MeasurePreserving.symm m ⟨m.measurable, rfl⟩).quasiMeasurePreserving q fun y x => by`.
-
-Express the relevant statement in the definitionally equal form `β (β.symm y + x) = y + β x`. Rewrite using `[map_add, β.apply_symm_apply]) g`. Rewrite `h2` using `[m.measurableEmbedding.setIntegral_map, m.injective.preimage_image]`. Rewrite using `[← h2]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `x`. Rewrite using `[blkU_eq_unip]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem avg_blk_last_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (F : GA E a → ℂ),
     Continuous F → (∀ (γ : GL (Fin a) E) (g : GA E a), F (ratGL E a γ * g) = F g) → GlobalTheory.CuspRep.IsCuspidal F →

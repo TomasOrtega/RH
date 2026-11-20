@@ -10,9 +10,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Use `⟨inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Establish `: IsAdicComplete (IsLocalRing.maximalIdeal k) k`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot]`. Use `infer_instance`. Establish `h` using `ReciprocityTheory.P1.isAdicComplete_ps (R := k)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[PowerSeries.maximalIdeal_eq_span_X]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem admissibleBase_powerSeries (k : Type) [Field k] : Out.AdmBase (PowerSeries k) (Ideal.span {PowerSeries.X}) := by
   refine ⟨inferInstance, inferInstance, inferInstance, ?_⟩
@@ -22,7 +22,7 @@ theorem admissibleBase_powerSeries (k : Type) [Field k] : Out.AdmBase (PowerSeri
   rwa [PowerSeries.maximalIdeal_eq_span_X] at h
 
 /- English proof (translation)
-Simplify using `[Out.specOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem specOf_id (R : Type) [CommRing R] : Out.specOf (RingHom.id R) = 𝟙 _ := by
   simp [Out.specOf]
@@ -33,27 +33,25 @@ variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Set `_` to `H.starRing`. Establish `hs` using `specOf_id R`. Establish `gp₁ : IsGrpPullback W.t.G W'.t.G (Out.specOf (RingHom.id R)) ψ.hom.left` using `(isGrpPullback_of_iso ψ).congr hs.symm rfl`. Take `⟨bc, mbc, hbc⟩` from `grpPullback_iso gp₁ (isGrpPullback_pullback W'.t.G (Out.specOf (RingHom.id R)))`. Establish `gpG : IsGrpPullback W'.P.A.A W'.t.G (Out.jK R) (W'.P.U.gen.inv.left ≫ pullback.fst W'.t.G.hom (Out.jK R))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `W'.P.U.gen_hom` as an intermediate fact. Establish `: IsMonHom W'.P.U.gen.symm.hom` using `by show IsMonHom W'.P.U.gen.inv; infer_instance`. Conclude with `((isGrpPullback_of_iso W'.P.U.gen.symm).comp (isGrpPullback_pullback W'.t.G (Out.jK R))).congr (Category.id_comp _) rfl`. Establish `gp₂ : IsGrpPullback ((Over.pullback (Out.jK R)).obj W.t.G) W'.t.G (Out.jK R) (pullback.fst W.t.G.hom (Out.jK R) ≫ ψ.hom.left)` using `((isGrpPullback_pullback W.t.G (Out.jK R)).comp (isGrpPullback_of_iso ψ)).congr (Category.comp_id _) rfl`. Take `⟨eA, mE, heA⟩` from `grpPullback_iso gp₂ gpG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgi : W'.P.U.gen.inv.left ≫ W'.P.U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `wA : LBIso (W'.P.A.L.pull eA.hom.left) (W'.P.U.LG.L.pull (pullback.fst W.t.G.hom (Out.jK R) ≫ bc.hom.left ≫ pullback.fst W'.t.G.hom (Out.specOf (RingHom.id R))))` using `LBIso.chartPull (h := eA.hom.left ≫ W'.P.U.gen.inv.left) (chartPullSame W'.P.A.L (fun _ => eA.hom.left) (fun _ => W'.P.U.gen.hom.left) _ _ fun _ => by`. Rewrite using `[Category.assoc, hgi, Category.comp_id])`. Use the proof step `(chartPullSame W'.P.U.LG.L _ (fun _ => pullback.fst W'.t.G.hom (Out.jK R)) _ _ fun _ => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hbc, ← heA]`. Simplify using `only [Category.assoc]) W'.P.U.ext`. Take `⟨wL', he', gL, rL⟩` from `rigIso_congr W'.P.bundle (CubeMap.ofHom ψ.hom) (sabMap_cubical W.m W'.m ψ hφ) hbc (e := Out.specOf (RingHom.id R)) hs`. Take `⟨Wo, hWo, hψW⟩` from `h5.psiOnExists R I hR W'.P.D`. Establish `hgen : (Out.specOf (RingHom.id R)).base (genericPoint (Spec (CommRingCat.of R))) ∈ Wo`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Conclude with `hWo`. Establish `hI : I.map (RingHom.id R) ≤ I` using `by rw [Ideal.map_id]`. Take `⟨D'', hD, U'', hLG, hgenU, hPU⟩` from `hU R R I I hR hR (RingHom.id R) hI W'.P.D W'.P.A W'.t.G W'.t.semi W'.P.U Wo hψW hgen W.t.G bc mbc W'.P.A rfl eA mE wA W.t.PP wL' he' gL rL`. Establish `hbcact : ∀ x, W.t.act.toRingAct.act x ≫ bc.hom = bc.hom ≫ (Over.pullback (Out.specOf (RingHom.id R))).map (W'.t.act.toRingAct.act x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `a₂ : ((Over.pullback (Out.specOf (RingHom.id R))).map (W'.t.act.act x)).left ≫ pullback.fst W'.t.G.hom (Out.specOf (RingHom.id R)) = pullback.fst _ _ ≫ (W'.t.act.act x).left` using `pullback.lift_fst _ _ _ show (W.t.act.act x ≫ bc.hom).left ≫ _ = (bc.hom ≫ (Over.pullback (Out.specOf (RingHom.id R))).map (W'.t.act.act x)).left ≫ _`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, a₂, hbc, ← Category.assoc, hbc, ← Over.comp_left, hact, Over.comp_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Over.w (W.t.act.act x ≫ bc.hom)).trans (Over.w (bc.hom ≫ (Over.pullback (Out.specOf (RingHom.id R))).map (W'.t.act.act x))).symm`. Establish `actA : ∀ x, (W'.P.oA.act x).left ≫ W'.P.U.gen.inv.left ≫ pullback.fst W'.t.G.hom (Out.jK R) = W'.P.U.gen.inv.left ≫ pullback.fst W'.t.G.hom (Out.jK R) ≫ (W'.t.act.act x).left`. Introduce `x`. Establish `e : W'.P.oA.act x ≫ W'.P.U.gen.inv = W'.P.U.gen.inv ≫ (Over.pullback (Out.jK R)).map (W'.t.act.act x)`. Rewrite using `[Iso.comp_inv_eq, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Iso.inv_comp_eq _).2 (W'.P.lin.ext x)).symm`. Rewrite using `[← Category.assoc, ← Over.comp_left, e, Over.comp_left, Category.assoc]`. Conclude with `congrArg _ (pullback.lift_fst _ _ _)`. Establish `extA : ∀ x, (Over.pullback (Out.jK R)).map (W.t.act.toRingAct.act x) ≫ U''.gen.hom = U''.gen.hom ≫ W'.P.oA.act x`. Introduce `x`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgenU]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `gpG.1.hom_ext` to reduce the goal to its premises. Establish `a₁ : ((Over.pullback (Out.jK R)).map (W.t.act.act x)).left ≫ pullback.fst W.t.G.hom (Out.jK R) = pullback.fst W.t.G.hom (Out.jK R) ≫ (W.t.act.act x).left` using `pullback.lift_fst _ _ _`. Establish `a₃ : (W.t.act.act x).left ≫ ψ.hom.left = ψ.hom.left ≫ (W'.t.act.act x).left`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, hact, Over.comp_left]`. Use `show ((Over.pullback (Out.jK R)).map (W.t.act.act x) ≫ eA.hom).left ≫ _ = (eA.hom ≫ W'.P.oA.act x).left ≫ _`. Rewrite using `[Over.comp_left, Category.assoc, heA, ← Category.assoc, a₁, Category.assoc, a₃, Over.comp_left, Category.assoc, actA, reassoc_of% heA]`. Rewrite using `[Over.w, Over.w]`. Take `⟨mod'', oD'', xl, el, lin'', w0''⟩` from `h5.oLinBaseChange R R I I hR hR (RingHom.id R) W'.P.D W'.P.A W'.t.G W'.P.U W.t.G bc mbc W'.P.A D'' hD U'' hPU (𝓞 E) W'.P.oD W'.P.oA W'.t.act.toRingAct W'.P.lin W.t.act.toRingAct hbcact W'.P.oA extA`.
-
-Use `⟨bc, D'', hD, U'', mod'', oD'', mbc, hbc, hLG.trans W.P.bundle.symm, ?_, hPU, xl, el, lin'', w0'' H.w0 W'.P.w0⟩` and prove the remaining obligations. Rewrite using `[hgenU]`. Conclude with `heA`.
+A detailed English derivation is pending.
 -/
 theorem ArcWit.uwMove (hU : Out.UnifBaseChangeSt) (h5 : Out.Laws5) {Y : Model Xo c β} {O' : Type} [CommRing O']
     [IsDomain O'] {b : O →+* O'} {a : ArcIn D l β O' b} {R : Type} [CommRing R] [IsDomain R] {I : Ideal R}

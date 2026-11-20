@@ -12,25 +12,25 @@ section CMap
 variable {K L σ : Type} [CommRing K] [CommRing L] (f : K →+ L)
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [coeff_add, coeff_cmap, map_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cmap_add (y z : MvPolynomial σ K) : cmap f (y + z) = cmap f y + cmap f z := by
   ext m; simp only [coeff_add, coeff_cmap, map_add]
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [coeff_cmap, coeff_zero, map_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cmap_zero : cmap f (0 : MvPolynomial σ K) = 0 := by
   ext m; simp only [coeff_cmap, coeff_zero, map_zero]
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [coeff_cmap, coeff_neg, map_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cmap_neg (y : MvPolynomial σ K) : cmap f (-y) = -cmap f y := by
   ext m; simp only [coeff_cmap, coeff_neg, map_neg]
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_cmap, coeff_monomial, coeff_monomial]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cmap_monomial (n : σ →₀ ℕ) (c : K) : cmap f (monomial n c) = monomial n (f c) := by
   classical
@@ -44,16 +44,16 @@ def cmapHom : MvPolynomial σ K →+ MvPolynomial σ L where
   map_add' := cmap_add f
 
 /- English proof (translation)
-Rewrite using `[X, monomial_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem X_mul_monomial' (v : σ) (n : σ →₀ ℕ) (c : K) :
     (X v : MvPolynomial σ K) * monomial n c = monomial (Finsupp.single v 1 + n) c := by
   rw [X, monomial_mul, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `y using MvPolynomial.induction_on' with`. Consider the case `monomial n c`. Rewrite using `[pderiv_monomial, cmap_monomial, pderiv_monomial, X_mul_monomial', X_mul_monomial', cmap_monomial]`. Use `congr 1`. Rewrite using `[mul_comm c, mul_comm (f c)]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ((n w : ℕ) : K) * c = (n w) • c` using `(nsmul_eq_mul _ _).symm`. Establish `e2 : ((n w : ℕ) : L) * f c = (n w) • f c` using `(nsmul_eq_mul _ _).symm`. Rewrite using `[e1, e2, map_nsmul]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, mul_add, cmap_add, hp, hq, cmap_add, map_add, mul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem cmap_X_pderiv (v w : σ) (y : MvPolynomial σ K) :
     cmap f (X v * pderiv w y) = X v * pderiv w (cmap f y) := by
@@ -76,15 +76,15 @@ section Fun
 variable {O : Type} [CommRing O] [IsDomain O] {p : ℕ} [Fact p.Prime] (f : KK O →+ ℚ_[p])
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.G.glAct Formalism.GM.M.glAct`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply]`. Use `show cmapHom f _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `show cmap f _ = _`. Distinguish the cases in `hi : (i : ℕ) < j`. Establish `hi' : i ∈ {i : Fin N | (i : ℕ) < j}` using `hi`. Rewrite using `[if_pos hi', if_pos hi]`. Distinguish the cases in `hv : LL.vec i = true`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : (gmL LL).vec i = true` using `hv`. Establish `hv'' : (⟨LL.vec⟩ : Letters (Fin N)).vec i = true` using `hv`. Rewrite using `[if_pos hv'', if_pos hv']`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearMap.mulLeft_apply]`. Conclude with `cmap_X_pderiv f _ _ y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv' : ¬ (gmL LL).vec i = true` using `hv`. Establish `hv'' : ¬ (⟨LL.vec⟩ : Letters (Fin N)).vec i = true` using `hv`. Rewrite using `[if_neg hv'', if_neg hv']`. Simplify using `only [LinearMap.neg_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.mulLeft_apply]`. Rewrite using `[cmap_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg Neg.neg (cmap_X_pderiv f _ _ y)`. Establish `hi' : i ∉ {i : Fin N | (i : ℕ) < j}` using `hi`. Rewrite using `[if_neg hi', if_neg hi]`. Simplify using `only [LinearMap.zero_apply]`. Conclude with `cmap_zero f`.
+A detailed English derivation is pending.
 -/
 theorem cmap_glAct {N r : ℕ} (LL : ChainLetters N) (j : ℕ) (c d : Fin r) (y : MvPolynomial (Fin N × Fin r) (KK O)) :
     cmap f (glAct (KK O) (⟨LL.vec⟩ : Letters (Fin N)) {i : Fin N | (i : ℕ) < j} c d y) =
@@ -116,7 +116,7 @@ theorem cmap_glAct {N r : ℕ} (LL : ChainLetters N) (j : ℕ) (c d : Fin r) (y 
     exact cmap_zero f
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm`, the goal using `[mem_support_iff]`. Introduce `h0`. Apply `hm` to reduce the goal to its premises. Rewrite using `[coeff_cmap, h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cmap_support_subset {σ : Type} (y : MvPolynomial σ (KK O)) : (cmap f y).support ⊆ y.support := by
   intro m hm
@@ -126,7 +126,7 @@ theorem cmap_support_subset {σ : Type} (y : MvPolynomial σ (KK O)) : (cmap f y
   rw [coeff_cmap, h0, map_zero]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.G.YCond`. Introduce `x hx`. Establish `: sSup {S : Submodule (KK O) (MvPolynomial (Fin N × Fin r) (KK O)) | S ≤ restrictSupport (KK O) {m : Fin N × Fin r →₀ ℕ | ((chWt LL j 0 m : ℤ) : WithTop ℤ) ≤ Mt} ∧ chStable (KK O) LL j S} ≤ (sSup {S : Submodule (KK O) (MvPolynomial (Fin N × Fin r) (KK O)) | S ≤ restrictSupport (K …` using `sSup_le fun S hS x hx => le_sSup hS (hS.2 c d x hx)`. Conclude with `this hx`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sk_ycond_stable {N r : ℕ} [NeZero r] (LL : ChainLetters N) (j : ℕ) (Mt : WithTop ℤ) (c d : Fin r) :
     ∀ x ∈ Formalism.MainNotions.G.YCond (KK O) (r := r) LL j Mt,
@@ -143,7 +143,7 @@ theorem sk_ycond_stable {N r : ℕ} [NeZero r] (LL : ChainLetters N) (j : ℕ) (
   exact this hx
 
 /- English proof (translation)
-The claim follows from `sSup_le fun _ hS => hS.1`.
+A detailed English derivation is pending.
 -/
 theorem sk_ycond_supp {N r : ℕ} [NeZero r] (LL : ChainLetters N) (j : ℕ) (Mt : WithTop ℤ) :
     Formalism.MainNotions.G.YCond (KK O) (r := r) LL j Mt ≤
@@ -151,7 +151,7 @@ theorem sk_ycond_supp {N r : ℕ} [NeZero r] (LL : ChainLetters N) (j : ℕ) (Mt
   sSup_le fun _ hS => hS.1
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[mem_restrictSupport_iff]`. Conclude with `(Finset.coe_subset.2 (cmap_support_subset f y)).trans hy`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmap_mem_restrictSupport {σ : Type} {s : Set (σ →₀ ℕ)} (y : MvPolynomial σ (KK O))
     (hy : y ∈ restrictSupport (KK O) s) : cmap f y ∈ restrictSupport ℚ_[p] s := by
@@ -159,15 +159,11 @@ theorem cmap_mem_restrictSupport {σ : Type} {s : Set (σ →₀ ℕ)} (y : MvPo
   exact (Finset.coe_subset.2 (cmap_support_subset f y)).trans hy
 
 /- English proof (translation)
-Use `set S' : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]) := Submodule.span ℚ_[p] (cmap f '' (Formalism.MainNotions.G.YCond (KK O) (r := r) LL j Mt : Set _)) with hS'`. Establish `h1 : S' ≤ restrictSupport ℚ_[p] {m | ((Formalism.GM.M.wt (gmL LL) j 0 m : ℤ) : WithTop ℤ) ≤ Mt}`. Rewrite using `[hS', Submodule.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `cmap_mem_restrictSupport f z (sk_ycond_supp LL j Mt hz)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : Formalism.GM.M.GlStable p (gmL LL) j S'`. Introduce `c d x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨z, hz, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[← cmap_glAct]`. Conclude with `Submodule.subset_span ⟨_, sk_ycond_stable LL j Mt c d z hz, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `S'.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
-
-Conclude with `S'.add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `S'.smul_mem a hx`. Establish `h3 : S' ≤ Formalism.GM.M.YCond p (r` using `r) (gmL LL) j Mt := by`. Unfold `Formalism.GM.M.YCond`.
-
-Conclude with `le_sSup ⟨h1, h2⟩`. Conclude with `h3 (Submodule.subset_span ⟨y, hy, rfl⟩)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cmap_ycond (ι : ℚ_[p] →+* KK O) (_hf : ∀ (a : ℚ_[p]) (x : KK O), f (ι a * x) = a * f x)
     {N r : ℕ} [NeZero r] (LL : ChainLetters N) (j : ℕ) (Mt : WithTop ℤ)
@@ -197,9 +193,9 @@ theorem cmap_ycond (ι : ℚ_[p] →+* KK O) (_hf : ∀ (a : ℚ_[p]) (x : KK O)
 end Fun
 
 /- English proof (translation)
-Introduce `O _ _ p _ ι N r _ LL q J M f hf y hy`. Take `⟨hP, hC⟩` from `hy`. Use `⟨cmap_mem_restrictSupport f y hP, ?_⟩` and prove the remaining obligations. Establish `hC' : y ∈ ⨅ k, Formalism.MainNotions.G.YCond (KK O) (r` using `r) LL (J k) (M k) := hC`. Use `show cmap f y ∈ ⨅ k, Formalism.GM.M.YCond p (r := r) (gmL LL) (J k) (M k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hC'`, the goal using `[Submodule.mem_iInf]`. Conclude with `fun k => cmap_ycond f ι hf LL (J k) (M k) y (hC' k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem restFunY_proved : RestFunY := by
   intro O _ _ p _ ι N r _ LL q J M f hf y hy

@@ -13,39 +13,35 @@ noncomputable section
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Introduce `k r g _ hr`. Establish `hM` using `g.pos`. Establish `hLpos : 0 < g.M * r` using `Nat.mul_pos hM (by omega)`. Establish `hdvd : g.M ∣ g.M * (g.M * r) ^ 2` using `dvd_mul_right _ _`. Establish `hLN : g.M * r ∣ g.M * (g.M * r) ^ 2` using `(dvd_pow_self _ two_ne_zero).mul_left g.M`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcop : ∀ n : ℕ, n.Coprime (g.M * (g.M * r) ^ 2) ↔ n.Coprime (g.M * r)`. Introduce `n`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h.coprime_dvd_right hLN`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `Nat.Coprime.mul_right (h.coprime_dvd_right (dvd_mul_right _ _)) (Nat.Coprime.pow_right 2 h)`. Use `set χ : DirichletCharacter ℂ (g.M * (g.M * r) ^ 2) := DirichletCharacter.changeLevel hdvd g.χ with hχdef`. Establish `hχZ : ∀ d : ℤ, IsCoprime d ((g.M * (g.M * r) ^ 2 : ℕ) : ℤ) → ch χ d = g.χ (d : ZMod g.M)`. Introduce `d hd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `DirichletCharacter.changeLevel_eq_cast_of_dvd' g.χ hdvd hd`. Establish `hχN : ∀ d : ℕ, d.Coprime (g.M * (g.M * r) ^ 2) → χ d = g.χ d`. Introduce `d hd`. Use `hχZ d (Nat.isCoprime_iff_coprime.2 hd)` as an intermediate fact. Simplify `this` using `[ch]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨χ, ?_, hχN⟩` and prove the remaining obligations. Establish `hcf0` using `((gamma1_char_elementary k g.M g.χ hM).2 g.f g.char).2`. Establish `htw` using `GlobalTheory.T.isCuspFormCoeffSeq_dirichletTwist_level_mul_sq k g.M (g.M * r) g.χ (1 : DirichletCharacter ℂ (g.M * r)) (coef g.f) hLpos hcf0`. Establish `hseq : (fun n : ℕ => (1 : DirichletCharacter ℂ (g.M * r)) n * coef g.f n) = (fun n => if n.Coprime (g.M * r) then g.a n else 0)`. Use function extensionality and compare the values at `n`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : n.Coprime (g.M * r)`. Rewrite using `[if_pos h, MulChar.one_apply ((ZMod.isUnit_iff_coprime n _).2 h), one_mul]`. Both sides reduce to the same expression. Rewrite using `[if_neg h, MulChar.map_nonunit _ (fun hu => h ((ZMod.isUnit_iff_coprime n _).1 hu)), zero_mul]`. Rewrite `htw` using `[hseq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlin` using `(GlobalTheory.T.modularFormCoeffSeq_linear_structure k (g.M * (g.M * r) ^ 2) (fun d => ch g.χ d * ch (1 : DirichletCharacter ℂ (g.M * r)) d ^ 2)).2.2.2.1 (ch χ) _ ?_ htw.1`. Use `swap`. Introduce `d hd`. Establish `hdL : IsCoprime d ((g.M * r : ℕ) : ℤ)` using `hd.of_isCoprime_of_dvd_right (Int.natCast_dvd_natCast.2 hLN)`. Rewrite using `[hχZ d hd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ch]`. Rewrite using `[← ZMod.coe_unitOfIsCoprime d hdL, MulChar.one_apply_coe, one_pow, mul_one]`. Use `⟨⟨hlin, htw.2⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : ℕ).Coprime (g.M * r)` using `Nat.coprime_one_left _`. Simplify using `only [if_pos h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `g.one`. Introduce `n hn`. Establish `: ¬ n.Coprime (g.M * r)` using `fun h => hn ((hcop n).2 h)`. Simplify using `only [if_neg this]`. Introduce `q hq hqN`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hqL : q.Coprime (g.M * r)` using `(Nat.Prime.coprime_iff_not_dvd hq).2 (fun h => hqN (h.trans hLN))`. Establish `hqM : ¬ q ∣ g.M` using `fun h => hqN (h.trans hdvd)`. Establish `hchq : ch χ (q : ℤ) = g.χ (q : ZMod g.M)`. Rewrite using `[hχZ (q : ℤ) (Nat.isCoprime_iff_coprime.2 ((hcop q).2 hqL))]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `heig` using `g.eig q hq hqM`. Use function extensionality and compare the values at `n`. Simplify using `only [To, Vo, hchq, if_pos hqL]`. Distinguish the cases in `hn : n.Coprime (g.M * r)`. Establish `hn1 : 1 ≤ n`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos n with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Rewrite `hn` using `[Nat.coprime_zero_left]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `h0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hqn : (q * n).Coprime (g.M * r)` using `Nat.Coprime.mul hqL hn`. Rewrite using `[if_pos hqn, if_pos hn]`. Establish `e` using `heig n hn1`. Distinguish the cases in `hd : q ∣ n`. Establish `hnq : (n / q).Coprime (g.M * r)` using `hn.coprime_dvd_left (Nat.div_dvd_of_dvd hd)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hd, if_pos hnq]`. Rewrite `e` using `[if_pos hd]`. Conclude with `e`. Rewrite using `[if_neg hd]`. Rewrite `e` using `[if_neg hd]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`. Establish `hqn : ¬ (q * n).Coprime (g.M * r)` using `fun h => hn (Nat.Coprime.coprime_mul_left h)`. Rewrite using `[if_neg hqn, if_neg hn, mul_zero]`. Distinguish the cases in `hd : q ∣ n`. Establish `hnq : ¬ (n / q).Coprime (g.M * r)`.
-
-Introduce `h`. Apply `hn` to reduce the goal to its premises. Rewrite using `[← Nat.mul_div_cancel' hd]`. Conclude with `Nat.Coprime.mul hqL h`. Rewrite using `[if_pos hd, if_neg hnq]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[if_neg hd]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem depleted_newform_prim : ∀ (k r : ℕ) (g : Newform k), 1 ≤ k → 2 ≤ r → ∃ χ : DirichletCharacter ℂ (g.M * (g.M * r) ^ 2), Prim k _ χ (fun n => if n.Coprime (g.M * r) then g.a n else 0) ∧ ∀ d : ℕ, d.Coprime (g.M * (g.M * r) ^ 2) → χ d = g.χ d := by
   intro k r g _ hr

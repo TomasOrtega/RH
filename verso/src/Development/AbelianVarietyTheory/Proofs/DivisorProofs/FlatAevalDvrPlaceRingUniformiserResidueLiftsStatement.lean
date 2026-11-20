@@ -12,7 +12,7 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrep
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GraphLocal.FlatPlace.flat_aeval_placeAlg | exact GlobalTheory.GraphLocal.FlatPlace.flat_aeval_placeAlg | (intros; apply GlobalTheory.GraphLocal.FlatPlace.flat_aeval_placeAlg <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.flat_aeval_dvrPlaceRing_uniformiser_residueLifts : ∀ {K κ : Type} [Field K] [Field κ] [Algebra ℂ K] [Algebra ℂ κ] (k : ℕ) (R : Subring K)
     (π : R →+* κ) (E : Place (algebraMap ℂ K)) (hER : E.Contains R) (t : E.ring) (zR : Fin k → R),

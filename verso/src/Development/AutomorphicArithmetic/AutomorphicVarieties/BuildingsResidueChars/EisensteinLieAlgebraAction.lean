@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.Pe
 open UpperTheory.V.Sd.Eis
 
 /- English proof (translation)
-Establish `hw : w = -x` using `by linear_combination hp1`. Establish `hs : y + z = -2 * Complex.I * x`. Take the linear combination `(norm := skip) (Complex.I) * hp3 + (Complex.I) * hp1`. Put the polynomial expressions in normal form. Simplify using `only [Complex.I_sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
 
-Put the polynomial expressions in normal form. Establish `hy : y = -Complex.I * x + Complex.I * κ / 2`. Take the linear combination `(1/2) * hs + (1/2) * hp2`. Establish `hz : z = -Complex.I * x - Complex.I * κ / 2`. Take the linear combination `(1/2) * hs - (1/2) * hp2`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Substitute `hw hy hz` using the available equality. Apply `mul_left_cancel₀ hc` to reduce the goal to its premises. Take the linear combination `(norm := skip) (a - Complex.I * b) * hE + (-κ/2) * (Complex.I * d - c) * h1 + (-κ/2) * (a - Complex.I * b) * h2`. Put the polynomial expressions in normal form. Simplify using `only [Complex.I_sq, Complex.I_pow_four]`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
 
 Put the polynomial expressions in normal form.
 -/
@@ -31,17 +31,17 @@ private theorem complex_linear_combination_eq_half_of_relations (a b c d e f x y
   ring_nf; simp only [Complex.I_sq, Complex.I_pow_four]; ring_nf
 
 /- English proof (translation)
-Introduce `h p κ hp1 hp2 hp3 hE`. Establish `hMN : (h : Matrix (Fin 2) (Fin 2) ℝ) * ((h⁻¹ : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `e1` using `congrFun (congrFun hMN 0) 0`. Establish `e2` using `congrFun (congrFun hMN 1) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_eq, Matrix.one_apply_ne (show (1 : Fin 2) ≠ 0 by decide)] at e1 e2`. Establish `hdet : (h : Matrix (Fin 2) (Fin 2) ℝ).det ≠ 0`. Introduce `h0`. Use `congrArg Matrix.det hMN` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`. Rewrite `hdet` using `[Matrix.det_fin_two]`. Establish `hc : ((h : Matrix (Fin 2) (Fin 2) ℝ) 1 0 : ℂ) - Complex.I * ((h : Matrix (Fin 2) (Fin 2) ℝ) 1 1 : ℂ) ≠ 0`. Introduce `h0`. Establish `hre` using `congrArg Complex.re h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `him` using `congrArg Complex.im h0`. Simplify using `at hre him`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[hre, him]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hent : ∀ (k i j : Fin 2), (((h⁻¹ : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ) * Matrix.single (0 : Fin 2) k (1 : ℝ) * (h : Matrix (Fin 2) (Fin 2) ℝ)) i j = ((h⁻¹ : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ) i 0 * (h : Matrix (Fin 2) (Fin 2) ℝ) k j`. Introduce `k i j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.single_apply]`. Simplify using `only [hent, Fin.sum_univ_two, Complex.ofReal_mul] at hE ⊢`. Establish `e1' : ((h : Matrix (Fin 2) (Fin 2) ℝ) 0 0 : ℂ) * (((h⁻¹ : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ) 0 0 : ℂ) + ((h : Matrix (Fin 2) (Fin 2) ℝ) 0 1 : ℂ) * (((h⁻¹ : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ) 1 0 : ℂ) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e1` after adjusting the coercions. Establish `e2' : ((h : Matrix (Fin 2) (Fin 2) ℝ) 1 0 : ℂ) * (((h⁻¹ : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ) 0 0 : ℂ) + ((h : Matrix (Fin 2) (Fin 2) ℝ) 1 1 : ℂ) * (((h⁻¹ : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ) 1 0 : ℂ) = 0`. Conclude with `e2` after adjusting the coercions. Use `complex_linear_combination_eq_half_of_relations _ _ _ _ _ _ (p 0 0) (p 0 1) (p 1 0) (p 1 1) κ hc e1' e2' hp1 hp2 hp3 (by linear_combination hE)` as an intermediate fact. Take the linear combination `this`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.eisenstein_lie_algebra_action :
     UpperTheory.V.Sd.Eis.LieAlg := by

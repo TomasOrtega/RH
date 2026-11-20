@@ -18,7 +18,7 @@ namespace PositivityTheory.Rg.Sw.Glob.GenGlueH
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a e => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compAt_sigR (v : GlobalTheory.FinPl.Pl D) (z : AE D) :
     GlobalTheory.FinPl.compAt D v (sigR (AF D.host.F) D.sp.cm.sig z) =
@@ -29,7 +29,7 @@ theorem compAt_sigR (v : GlobalTheory.FinPl.Pl D) (z : AE D) :
   | tmul a e => rfl
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨s, -, hs⟩ := GenUnitH.glueEntry z hz`. Use `⟨Formalism.IndefR.Eqv.glueA D (Formalism.IndefR.Eqv.splitInv D f) (finPart D s), fun τ => Formalism.IndefR.Eqv.psiT_glueA D τ f _, fun v => ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D v (finPart D _) = _`. Rewrite using `[Formalism.IndefR.Eqv.finPart_glueA]`. Conclude with `hs v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glueFull (f : D.what₂.Tau → ℂ) (z : ∀ v : GlobalTheory.FinPl.Pl D, Ev D v)
     (hz : ∀ v, z v ∈ intLoc D.host.F D.host.E v) :
@@ -42,7 +42,7 @@ theorem glueFull (f : D.what₂.Tau → ℂ) (z : ∀ v : GlobalTheory.FinPl.Pl 
   exact hs v
 
 /- English proof (translation)
-Use `symm`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv M h, Matrix.map_one _ (map_zero f) (map_one f)]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_inv_of {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (M : Matrix (Fin n) (Fin n) R)
     (h : IsUnit M.det) : (M⁻¹).map f = (M.map f)⁻¹ := by
@@ -51,7 +51,7 @@ theorem map_inv_of {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (M : M
   rw [← Matrix.map_mul, Matrix.mul_nonsing_inv M h, Matrix.map_one _ (map_zero f) (map_one f)]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [GlobalTheory.MixModel.adj, Matrix.map_apply, Matrix.transpose_apply]`. Conclude with `hf _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adj_map {S : Type} [CommRing S] (f : AE D →+* S) (σS : S →+* S)
     (hf : ∀ z, f (sigR (AF D.host.F) D.sp.cm.sig z) = σS (f z)) (x : Matrix (Fin n) (Fin n) (AE D)) :
@@ -61,7 +61,7 @@ theorem adj_map {S : Type} [CommRing S] (f : AE D →+* S) (σS : S →+* S)
   exact hf _
 
 /- English proof (translation)
-Take `⟨-, z', -, hz⟩` from `h`. Conclude with `⟨⟨z, z', hz, by rw [mul_comm]; exact hz⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isUnit_of_intUnit {v : GlobalTheory.FinPl.Pl D} {z : Ev D v} (h : IsIntUnit z) : IsUnit z := by
   obtain ⟨-, z', -, hz⟩ := h
@@ -74,15 +74,13 @@ namespace PositivityTheory.Rg.Sw.Glob
 open GenGlueH
 
 /- English proof (translation)
-Introduce `D n a hint hdet`. Establish `hE : ∀ i j, ∃ x : AE D, (∀ τ, Formalism.IndefR.Eqv.psiT D τ x = (1 : Matrix (Fin n) (Fin n) ℂ) i j) ∧ ∀ v, GlobalTheory.FinPl.compAt D v x = a v i j` using `fun i j => glueFull _ (fun v => a v i j) (fun v => hint v i j)`. Use `choose A hAτ hAv using hE`. Set `A' : Matrix (Fin n) (Fin n) (AE D)` to `Matrix.of A`. Establish `hτ : ∀ τ, A'.map (Formalism.IndefR.Eqv.psiT D τ) = 1` using `fun τ => by ext i j; exact hAτ i j τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ v, A'.map (GlobalTheory.FinPl.compAt D v) = a v` using `fun v => by ext i j; exact hAv i j v`. Establish `hdetA : IsUnit A'.det`. Apply `unitAE D` to reduce the goal to its premises. Introduce `τ`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hτ τ, Matrix.det_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `one_ne_zero`. Introduce `v`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hv v]`. Conclude with `hdet v`. Set `u : GL (Fin n) (AE D)` to `((Matrix.isUnit_iff_isUnit_det A').2 hdetA).unit`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : (u : Matrix (Fin n) (Fin n) (AE D)) = A'` using `IsUnit.unit_spec _`. Establish `hui : ((u⁻¹ : GL (Fin n) (AE D)) : Matrix (Fin n) (Fin n) (AE D)) = A'⁻¹`. Rewrite using `[Matrix.coe_units_inv, hu]`. Take `⟨m, hm⟩` from `GlobalTheory.StdUnn.Model.exists_levi u`. Use `⟨m, Or.inr (Or.inl ⟨_, _, hm⟩), fun v => ?_, fun τ => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[show cTv (a v) = ((a v).map (sigR (Fv D.host.F v) D.sp.cm.sig))ᵀ from rfl, hm, PlaceFactsH.block_matrix_map, hu, hv v, hui, adj_map (GlobalTheory.FinPl.compAt D v) (sigR (Fv D.host.F v) D.sp.cm.sig) (compAt_sigR v), map_inv_of (GlobalTheory.FinPl.compAt D v) A' hdetA, hv v, map_ …`. Rewrite using `[hm, PlaceFactsH.block_matrix_map, hu, hτ τ, hui, adj_map (Formalism.IndefR.Eqv.psiT D τ) (starRingEnd ℂ) (fun z => Formalism.IndefR.Eqv.psiT_sigR D τ z), map_inv_of (Formalism.IndefR.Eqv.psiT D τ) A' hdetA, hτ τ, inv_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpo …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glueLevi : GlueLevi := by
   intro D n a hint hdet
@@ -118,21 +116,21 @@ theorem glueLevi : GlueLevi := by
       Matrix.map_zero _ (map_zero _), PlaceFactsH.block_matrix_one]
 
 /- English proof (translation)
-Introduce `D n I`. Establish `hE : ∀ i, ∃ x : AE D, (∀ τ, Formalism.IndefR.Eqv.psiT D τ x = 0) ∧ ∀ v, GlobalTheory.FinPl.compAt D v x = if i ∈ I v then 1 else 0` using `fun i => glueFull _ _ (fun v => by split_ifs; exacts [one_mem _, zero_mem _])`. Use `choose e heτ hev using hE`. Establish `hσe : ∀ i, sigR (AF D.host.F) D.sp.cm.sig (e i) = e i` using `fun i => by`. Apply `Formalism.IndefR.Eqv.ae_ext' D` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Rewrite using `[Formalism.IndefR.Eqv.psiT_sigR, heτ, map_zero]`. Apply `GenUnitH.finExt` to reduce the goal to its premises. Introduce `v`. Use `show GlobalTheory.FinPl.compAt D v (sigR (AF D.host.F) D.sp.cm.sig (e i)) = GlobalTheory.FinPl.compAt D v (e i)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[compAt_sigR, hev]`. Apply the tactic sequence `split_ifs <;> simp`. Set `B : Matrix (Fin n) (Fin n) (AE D)` to `Matrix.diagonal e`. Establish `hB : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) B = B`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, B, Matrix.diagonal_apply]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[hσe]`. Simplify using `[h, Ne.symm h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB' : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (-B) = -B` using `by rw [GenInfH.cT_neg', hB]`. Establish `h1 : GenInfH.nEl B hB ∈ genSet D n` using `Or.inl ⟨B, GenInfH.mat_nEl B hB⟩`. Establish `h2 : GenInfH.nBarEl (-B) hB' ∈ genSet D n` using `Or.inr (Or.inr ⟨-B, GenInfH.mat_nBarEl _ _⟩)`. Use `⟨GenInfH.nEl B hB * GenInfH.nBarEl (-B) hB' * GenInfH.nEl B hB, Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.subset_closure h1) (Subgroup.subset_closure h2)) (Subgroup.subset_closure h1), fun v => ?_, fun τ => ?_⟩` and prove the remaining obligations. Establish `hBv : B.map (GlobalTheory.FinPl.compAt D v) = eI (I v)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, B, Matrix.diagonal_apply, eI]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[hev]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h]`. Use `show (blk4 1 B 0 1 * blk4 1 0 (-B) 1 * blk4 1 B 0 1).map (GlobalTheory.FinPl.compAt D v) = wIm (I v)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, PlaceFactsH.block_matrix_map, PlaceFactsH.block_matrix_map, hBv, Matrix.map_neg _ (map_neg _), hBv, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _), GenInfH.weyl_idem _ (GenInfH.eI_mul_self _)]`. Both sides reduce to the same expression. Establish `hBτ : B.map (Formalism.IndefR.Eqv.psiT D τ) = 0`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, B, Matrix.diagonal_apply, Matrix.zero_apply]`. Apply the tactic sequence `split_ifs <;> simp [heτ]`. Use `show (blk4 1 B 0 1 * blk4 1 0 (-B) 1 * blk4 1 B 0 1).map (Formalism.IndefR.Eqv.psiT D τ) = 1`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, PlaceFactsH.block_matrix_map, PlaceFactsH.block_matrix_map, hBτ, Matrix.map_neg _ (map_neg _), hBτ, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _), neg_zero, PlaceFactsH.block_matrix_one, Matrix.one_mul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glueW : GlueW := by
   intro D n I

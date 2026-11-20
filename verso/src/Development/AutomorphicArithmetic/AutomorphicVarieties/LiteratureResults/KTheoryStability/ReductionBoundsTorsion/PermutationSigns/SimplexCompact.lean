@@ -11,9 +11,9 @@ variable {L : Type} [Field L] [NumberField L] {N : ℕ}
 open scoped MatrixOrder in
 open ComplexOrder in
 /- English proof (translation)
-Take `⟨B, hB⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hA.posSemidef.nonneg`. Establish `hdet : IsUnit B.det`. Establish `h1 : IsUnit (star B * B).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (hB ▸ hA.isUnit)`. Rewrite `h1` using `[Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_right h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit B` using `(Matrix.isUnit_iff_isUnit_det _).mpr hdet`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Simplify `hB` using `[Matrix.star_eq_conjTranspose]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sqrt_fac {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.PosDef) :
     ∃ B : GL (Fin N) ℂ, A = (B : Matrix (Fin N) (Fin N) ℂ)ᴴ * B := by
@@ -28,7 +28,7 @@ theorem sqrt_fac {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.PosDef) :
   simpa [Matrix.star_eq_conjTranspose] using hB
 
 /- English proof (translation)
-Simplify using `[actL, actM, mat, mkHS]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem mat_actL_eq_conjTranspose_inv_mul_mul_inv (g : Gp L N) (h : HS L N) (w : InfinitePlace L) :
     mat (actL g h) w = ((g w : Matrix (Fin N) (Fin N) ℂ)⁻¹)ᴴ * mat h w * (g w : Matrix (Fin N) (Fin N) ℂ)⁻¹ := by
@@ -36,30 +36,30 @@ private theorem mat_actL_eq_conjTranspose_inv_mul_mul_inv (g : Gp L N) (h : HS L
   rfl
 
 /- English proof (translation)
-Simplify using `[one, mat, mkHS]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem UpqT_mat_one' (w : InfinitePlace L) : mat (one L N).1 w = 1 := by
   simp [one, mat, mkHS]
   rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp B.isUnit)`.
+A detailed English derivation is pending.
 -/
 private theorem gl_coe_mul_coe_inv_eq_one (B : GL (Fin N) ℂ) :
     (B : Matrix (Fin N) (Fin N) ℂ) * (B : Matrix (Fin N) (Fin N) ℂ)⁻¹ = 1 :=
   Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp B.isUnit)
 
 /- English proof (translation)
-The claim follows from `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp B.isUnit)`.
+A detailed English derivation is pending.
 -/
 private theorem gl_coe_inv_mul_coe_eq_one (B : GL (Fin N) ℂ) :
     (B : Matrix (Fin N) (Fin N) ℂ)⁻¹ * (B : Matrix (Fin N) (Fin N) ℂ) = 1 :=
   Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp B.isUnit)
 
 /- English proof (translation)
-Simplify using `only [Pos, Set.mem_setOf_eq] at hh`. Use `choose B hB using fun w => sqrt_fac (hh w)`. Use `⟨B, HS_ext fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[mat_actL_eq_conjTranspose_inv_mul_mul_inv, UpqT_mat_one', hB w]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [gl_coe_mul_coe_inv_eq_one]; simp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trans_pos {h : HS L N} (hh : h ∈ Pos L N) : ∃ g : Gp L N, actL g h = (one L N).1 := by
   simp only [Pos, Set.mem_setOf_eq] at hh
@@ -73,15 +73,15 @@ theorem trans_pos {h : HS L N} (hh : h ∈ Pos L N) : ∃ g : Gp L N, actL g h =
     _ = 1 := by rw [gl_coe_mul_coe_inv_eq_one]; simp
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (trans_pos hh)`.
+A detailed English derivation is pending.
 -/
 theorem actL_sec {h : HS L N} (hh : h ∈ Pos L N) : actL (sec h) h = (one L N).1 :=
   Classical.epsilon_spec (trans_pos hh)
 
 /- English proof (translation)
-Use `HS_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[mat_actL_eq_conjTranspose_inv_mul_mul_inv, mat_actL_eq_conjTranspose_inv_mul_mul_inv]`. Establish `e : ((g⁻¹ w : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)⁻¹ = (g w : Matrix (Fin N) (Fin N) ℂ)`. Rewrite using `[Pi.inv_apply, Matrix.coe_units_inv, Matrix.nonsing_inv_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp (g w).isUnit)]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = mat h w := by rw [gl_coe_inv_mul_coe_eq_one]; simp`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem actL_inv_actL' (g : Gp L N) (h : HS L N) : actL g⁻¹ (actL g h) = h := by
   refine HS_ext fun w => ?_
@@ -97,13 +97,13 @@ private theorem actL_inv_actL' (g : Gp L N) (h : HS L N) : actL g⁻¹ (actL g h
     _ = mat h w := by rw [gl_coe_inv_mul_coe_eq_one]; simp
 
 /- English proof (translation)
-Rewrite using `[← actL_sec hh, actL_inv_actL']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actL_inv_sec {h : HS L N} (hh : h ∈ Pos L N) : actL (sec h)⁻¹ (one L N).1 = h := by
   rw [← actL_sec hh, actL_inv_actL']
 
 /- English proof (translation)
-Use `HS_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[mat_actL_eq_conjTranspose_inv_mul_mul_inv, mat_actL_eq_conjTranspose_inv_mul_mul_inv, mat_actL_eq_conjTranspose_inv_mul_mul_inv, Pi.mul_apply, Units.val_mul, Matrix.mul_inv_rev, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem actL_mul' (a b : Gp L N) (x : HS L N) : actL (a * b) x = actL a (actL b x) := by
   refine HS_ext fun w => ?_
@@ -113,9 +113,9 @@ private theorem actL_mul' (a b : Gp L N) (x : HS L N) : actL (a * b) x = actL a 
 
 open ComplexOrder in
 /- English proof (translation)
-Simplify using `only [Pos, Set.mem_setOf_eq] at hh ⊢`. Introduce `w`. Rewrite using `[mat_actL_eq_conjTranspose_inv_mul_mul_inv, ← Matrix.coe_units_inv]`. Establish `hB : IsUnit (((g w)⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)` using `Units.isUnit _`. Establish `hBh : IsUnit (((g w)⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)ᴴ`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Matrix.isUnit_iff_isUnit_det _).mpr ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp hB).star`. Conclude with `((hh w).posSemidef.conjTranspose_mul_mul_same _).posDef_iff_isUnit.mpr ((hBh.mul (hh w).isUnit).mul hB)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem actL_mem_Pos (g : Gp L N) {h : HS L N} (hh : h ∈ Pos L N) : actL g h ∈ Pos L N := by
   simp only [Pos, Set.mem_setOf_eq] at hh ⊢
@@ -130,13 +130,13 @@ private theorem actL_mem_Pos (g : Gp L N) {h : HS L N} (hh : h ∈ Pos L N) : ac
     ((hBh.mul (hh w).isUnit).mul hB)
 
 /- English proof (translation)
-Introduce `h hh`. Establish `hgh` using `actL_mem_Pos g hh`. Establish `e1 : actL (sec (actL g h)) (actL g h) = (one L N).1` using `actL_sec hgh`. Establish `hu : actL (sec (actL g h) * g * (sec h)⁻¹) (one L N).1 = (one L N).1`. Rewrite using `[actL_mul', actL_mul', actL_inv_sec hh, e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hβu` using `hβ _ hu`. Establish `hmul : sec (actL g h) * g = (sec (actL g h) * g * (sec h)⁻¹) * sec h` using `by group`. Use extensionality with `v`. Simplify using `only [ContinuousAlternatingMap.compContinuousLinearMap_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← actL_mul', ← actL_mul', ← hmul]`. Use `_ = β (fun i => actL (sec h) (v i)) := by`. Use `congrArg (fun f => f (fun i => actL (sec h) (v i))) hβu` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Function.comp_def]`.
+A detailed English derivation is pending.
 -/
 theorem fInv_ext {q : ℕ} {β : HS L N [⋀^Fin q]→L[ℝ] ℝ} (hβ : UInv β) (g : Gp L N) : FInv (ext β) g := by
   intro h hh
@@ -158,7 +158,7 @@ theorem fInv_ext {q : ℕ} {β : HS L N [⋀^Fin q]→L[ℝ] ℝ} (hβ : UInv β
         simpa [Function.comp_def] using this
 
 /- English proof (translation)
-Establish `hu` using `hβ (sec (one L N).1) (actL_sec (one L N).2)`. Use extensionality with `v`. Use `congrArg (fun f => f v) hu` as an intermediate fact. Simplify `this` using `[ext, Function.comp_def]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ext_one {q : ℕ} {β : HS L N [⋀^Fin q]→L[ℝ] ℝ} (hβ : UInv β) : ext β (one L N).1 = β := by
   have hu := hβ (sec (one L N).1) (actL_sec (one L N).2)
@@ -167,9 +167,9 @@ theorem ext_one {q : ℕ} {β : HS L N [⋀^Fin q]→L[ℝ] ℝ} (hβ : UInv β)
   simpa [ext, Function.comp_def] using this
 
 /- English proof (translation)
-Establish `h1` using `hω (sec h)`. Unfold `FInv at h1`. Establish `h2` using `h1 h hh`. Rewrite `h2` using `[actL_sec hh]`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `v`. Simplify using `[ext]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ext_uniq {q : ℕ} {ω : Form (HS L N) q} (hω : ∀ g, FInv ω g) {h : HS L N} (hh : h ∈ Pos L N) :
     ω h = ext (ω (one L N).1) h := by
@@ -182,9 +182,9 @@ theorem ext_uniq {q : ℕ} {ω : Form (HS L N) q} (hω : ∀ g, FInv ω g) {h : 
   simp [ext]
 
 /- English proof (translation)
-Unfold `UInv`. Introduce `u hu`. Establish `h1` using `hω u`. Unfold `FInv at h1`. Establish `h2` using `h1 _ (one L N).2`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite `h2` using `[hu]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem uInv_of {q : ℕ} {ω : Form (HS L N) q} (hω : ∀ g, FInv ω g) : UInv (ω (one L N).1) := by
   unfold UInv
@@ -195,7 +195,7 @@ theorem uInv_of {q : ℕ} {ω : Form (HS L N) q} (hω : ∀ g, FInv ω g) : UInv
   rwa [hu] at h2
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[ext, ContinuousAlternatingMap.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ext_sum {q : ℕ} {ι : Type} [Fintype ι] (c : ι → ℝ) (β : ι → HS L N [⋀^Fin q]→L[ℝ] ℝ) (h : HS L N) :
     ext (∑ x, c x • β x) h = ∑ x, c x • ext (β x) h := by
@@ -203,7 +203,7 @@ theorem ext_sum {q : ℕ} {ι : Type} [Fintype ι] (c : ι → ℝ) (β : ι →
   simp [ext, ContinuousAlternatingMap.sum_apply]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[ext]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ext_smul {q : ℕ} (c : ℝ) (β : HS L N [⋀^Fin q]→L[ℝ] ℝ) (h : HS L N) :
     ext (c • β) h = c • ext β h := by
@@ -211,7 +211,7 @@ theorem ext_smul {q : ℕ} (c : ℝ) (β : HS L N [⋀^Fin q]→L[ℝ] ℝ) (h :
   simp [ext]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[ext]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ext_zero {q : ℕ} (h : HS L N) : ext (0 : HS L N [⋀^Fin q]→L[ℝ] ℝ) h = 0 := by
   ext v
@@ -219,11 +219,11 @@ theorem ext_zero {q : ℕ} (h : HS L N) : ext (0 : HS L N [⋀^Fin q]→L[ℝ] �
 
 open ComplexOrder in
 /- English proof (translation)
-Introduce `x hx y hy a b ha hb hab`. Simplify using `only [Pos, Set.mem_setOf_eq] at *`. Introduce `w`. Establish `hm : mat (a • x + b • y) w = (a : ℂ) • mat x w + (b : ℂ) • mat y w` using `by simp [mat]`. Rewrite using `[hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `ha.lt_or_eq with ha' | ha'` into its components or cases. Conclude with `(Matrix.PosDef.smul (hx w) (Complex.zero_lt_real.mpr ha')).add_posSemidef ((hy w).posSemidef.smul (Complex.zero_le_real.mpr hb))`. Substitute `ha'` using the available equality. Establish `hb1 : b = 1` using `by linarith`. Substitute `hb1` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hy w`.
+A detailed English derivation is pending.
 -/
 theorem convex_pos : Convex ℝ (Pos L N) := by
   intro x hx y hy a b ha hb hab
@@ -240,9 +240,9 @@ theorem convex_pos : Convex ℝ (Pos L N) := by
     simpa using hy w
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `ht`. Establish `hw : ∀ i ∈ (Finset.univ : Finset (Fin (q + 1))), 0 ≤ (Fin.cons (1 - ∑ j, t j) t : Fin (q + 1) → ℝ) i`. Introduce `i _`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify `h1` using `[sub_nonneg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h0 j`. Establish `key` using `convex_pos.sum_mem hw (by simp [Fin.sum_univ_succ]) (fun i _ => hy i)`. Use `key using 1` and compare the differences between its conclusion and the goal. Simplify using `[Fin.sum_univ_succ, smul_sub, Finset.sum_sub_distrib, sub_smul, ← Finset.sum_smul]`. Normalize the expressions using the abelian group laws.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem simplex_mem {q : ℕ} {y : Fin (q + 1) → HS L N} (hy : ∀ j, y j ∈ Pos L N) {t : Fin q → ℝ}
     (ht : (∀ j, 0 ≤ t j) ∧ ∑ j, t j ≤ 1) : y 0 + ∑ j, t j • (y j.succ - y 0) ∈ Pos L N := by
@@ -259,14 +259,14 @@ theorem simplex_mem {q : ℕ} {y : Fin (q + 1) → HS L N} (hy : ∀ j, y j ∈ 
   abel
 
 /- English proof (translation)
-Use extensionality with `t`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem simplex_eq {q : ℕ} : {t : Fin q → ℝ | (∀ j, 0 ≤ t j) ∧ ∑ j, t j ≤ 1} =
     (⋂ j, {t : Fin q → ℝ | 0 ≤ t j}) ∩ {t | ∑ j, t j ≤ 1} := by
   ext t; simp
 
 /- English proof (translation)
-Rewrite using `[simplex_eq]`. Use `(isClosed_iInter fun j => ?_).inter ?_` and prove the remaining obligations. Conclude with `isClosed_le continuous_const (continuous_apply j)`. Conclude with `isClosed_le (continuous_finset_sum _ fun j _ => continuous_apply j) continuous_const`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem isClosed_nonneg_sum_le_one_simplex {q : ℕ} :
     IsClosed {t : Fin q → ℝ | (∀ j, 0 ≤ t j) ∧ ∑ j, t j ≤ 1} := by
@@ -276,12 +276,12 @@ private theorem isClosed_nonneg_sum_le_one_simplex {q : ℕ} :
   · exact isClosed_le (continuous_finset_sum _ fun j _ => continuous_apply j) continuous_const
 
 /- English proof (translation)
-The claim follows from `isClosed_nonneg_sum_le_one_simplex.measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem simplex_meas {q : ℕ} : MeasurableSet {t : Fin q → ℝ | (∀ j, 0 ≤ t j) ∧ ∑ j, t j ≤ 1} := isClosed_nonneg_sum_le_one_simplex.measurableSet
 
 /- English proof (translation)
-Use `(isCompact_univ_pi fun _ : Fin q => isCompact_Icc (a := (0 : ℝ)) (b := 1)).of_isClosed_subset isClosed_nonneg_sum_le_one_simplex ?_` and prove the remaining obligations. Introduce and unpack `t ⟨h0, h1⟩ j -`. Use `⟨h0 j, le_trans ?_ h1⟩` and prove the remaining obligations. Conclude with `Finset.single_le_sum (fun i _ => h0 i) (Finset.mem_univ j)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem simplex_compact {q : ℕ} : IsCompact {t : Fin q → ℝ | (∀ j, 0 ≤ t j) ∧ ∑ j, t j ≤ 1} := by
   refine (isCompact_univ_pi fun _ : Fin q => isCompact_Icc (a := (0 : ℝ)) (b := 1)).of_isClosed_subset
@@ -291,7 +291,7 @@ theorem simplex_compact {q : ℕ} : IsCompact {t : Fin q → ℝ | (∀ j, 0 ≤
   exact Finset.single_le_sum (fun i _ => h0 i) (Finset.mem_univ j)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Unfold `intP intS`. Use `setIntegral_congr_fun simplex_meas fun t ht => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hω _ (simplex_mem (fun j => (y j).2) ht)]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem intP_congr {q : ℕ} {ω ω' : Form (HS L N) q} (hω : ∀ h ∈ Pos L N, ω h = ω' h) :
     intP ω = intP ω' := by
@@ -302,9 +302,9 @@ theorem intP_congr {q : ℕ} {ω ω' : Form (HS L N) q} (hω : ∀ h ∈ Pos L N
   rw [hω _ (simplex_mem (fun j => (y j).2) ht)]
 
 /- English proof (translation)
-Unfold `intS pullF`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [ContinuousAlternatingMap.compContinuousLinearMap_apply]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [map_add, map_sum, map_sub, map_smul, add_sub_add_right_eq_sub]`. Normalize the expressions using the abelian group laws. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem intS_pull {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup V']
     [NormedSpace ℝ V'] {q : ℕ} (ω : Form V' q) (P : V →L[ℝ] V') (e : V') (y : Fin (q + 1) → V) :
@@ -320,7 +320,7 @@ theorem intS_pull {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [Norm
     simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Unfold `intP intS`. Simplify using `only [ContinuousAlternatingMap.smul_apply, smul_eq_mul]`. Conclude with `integral_const_mul c _`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem intP_smul {q : ℕ} (c : ℝ) (ω : Form (HS L N) q) :
     intP (fun h => c • ω h) = fun y => c * intP ω y := by
@@ -330,7 +330,7 @@ theorem intP_smul {q : ℕ} (c : ℝ) (ω : Form (HS L N) q) :
   exact integral_const_mul c _
 
 /- English proof (translation)
-Apply `ContinuousOn.integrableOn_compact simplex_compact` to reduce the goal to its premises. Establish `ha : Continuous (fun t : Fin q → ℝ => (y 0).1 + ∑ j, t j • ((y j.succ).1 - (y 0).1))` using `by fun_prop`. Establish `hc : ContinuousOn (fun t : Fin q → ℝ => ω ((y 0).1 + ∑ j, t j • ((y j.succ).1 - (y 0).1))) {t : Fin q → ℝ | (∀ j, 0 ≤ t j) ∧ ∑ j, t j ≤ 1}` using `hω.comp ha.continuousOn (fun t ht => simplex_mem (fun j => (y j).2) ht)`. Conclude with `(continuous_eval_const (fun j => (y j.succ).1 - (y 0).1)).comp_continuousOn hc`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem intP_integrable {q : ℕ} {ω : Form (HS L N) q} (hω : ContinuousOn ω (Pos L N)) (y : Fin (q + 1) → Pos L N) :
     IntegrableOn (fun t : Fin q → ℝ => ω ((y 0).1 + ∑ j, t j • ((y j.succ).1 - (y 0).1))
@@ -344,9 +344,9 @@ theorem intP_integrable {q : ℕ} {ω : Form (HS L N) q} (hω : ContinuousOn ω 
   exact (continuous_eval_const (fun j => (y j.succ).1 - (y 0).1)).comp_continuousOn hc
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Unfold `intP intS`. Establish `e : ∀ p (v : Fin q → HS L N), (∑ x, c x • ω x p) v = ∑ x, c x * ω x p v`. Introduce `p v`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`. Rewrite using `[MeasureTheory.integral_finset_sum _ fun x _ => (intP_integrable (hω x) y).const_mul (c x)]`. Simplify using `only [MeasureTheory.integral_const_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem intP_sum {q : ℕ} {ι : Type} [Fintype ι] (c : ι → ℝ) (ω : ι → Form (HS L N) q)
     (hω : ∀ x, ContinuousOn (ω x) (Pos L N)) :
@@ -361,9 +361,9 @@ theorem intP_sum {q : ℕ} {ι : Type} [Fintype ι] (c : ι → ℝ) (ω : ι �
   simp only [MeasureTheory.integral_const_mul]
 
 /- English proof (translation)
-Establish `hs : ∀ p : Pos L N, ((g • p : Pos L N) : HS L N) = actL g p.1` using `fun p => rfl`. Unfold `intP intS`. Use `MeasureTheory.setIntegral_congr_fun simplex_meas fun t ht => ?_` and prove the remaining obligations. Simplify using `only [hs]`. Establish `hmem` using `simplex_mem (fun j => (y j).2) ht`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hF` using `hω g`. Unfold `FInv at hF`. Establish `h1` using `hF _ hmem`. Rewrite using `[← h1]`. Simplify using `only [ContinuousAlternatingMap.compContinuousLinearMap_apply, map_add, map_sum, map_sub, map_smul, Function.comp_def]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem intP_inv {q : ℕ} {ω : Form (HS L N) q} (hω : ∀ g, FInv ω g) (g : Gp L N) (y : Fin (q + 1) → Pos L N) :
     intP ω (fun j => g • y j) = intP ω y := by
@@ -391,7 +391,7 @@ theorem evL_apply {G H Y : Type} [Group G] [Group H] [MulAction H Y] (ρ : G →
   rfl
 
 /- English proof (translation)
-Proceed by induction on `j using Fin.induction with`. Consider the case `zero => simp`. Consider the case `succ j ih => simp [Fin.partialProd_succ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem partialProd_map {G H : Type} [Group G] [Group H] (f : G →* H) {m : ℕ} (g : Fin m → G) (j : Fin (m + 1)) :
     Fin.partialProd (fun i => f (g i)) j = f (Fin.partialProd g j) := by
@@ -400,7 +400,7 @@ theorem partialProd_map {G H : Type} [Group G] [Group H] (f : G →* H) {m : ℕ
   | succ j ih => simp [Fin.partialProd_succ, ih]
 
 /- English proof (translation)
-Simplify using `[ev, cmap]`. Rewrite using `[Finsupp.sum_mapDomain_index (fun _ => by simp) (fun _ _ _ => by ring)]`. Simplify using `[partialProd_map]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ev_cmap {G H K Y : Type} [Group G] [Group H] [Group K] [MulAction K Y] (ρ : H →* K) (f : G →* H)
     {m : ℕ} (F : (Fin (m + 1) → Y) → ℝ) (y : Y) (z : Chn G m) :
@@ -410,7 +410,7 @@ theorem ev_cmap {G H K Y : Type} [Group G] [Group H] [Group K] [MulAction K Y] (
   simp [partialProd_map]
 
 /- English proof (translation)
-Simplify using `only [ev, Finsupp.sum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun g _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ev_sum {G H Y : Type} [Group G] [Group H] [MulAction H Y] (ρ : G →* H) {m : ℕ} {ι : Type} [Fintype ι]
     (c : ι → ℝ) (F : ι → (Fin (m + 1) → Y) → ℝ) (y : Y) (z : Chn G m) :
@@ -420,7 +420,7 @@ theorem ev_sum {G H Y : Type} [Group G] [Group H] [MulAction H Y] (ρ : G →* H
   refine Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun g _ => by ring
 
 /- English proof (translation)
-Simplify using `[ev, Finsupp.sum, Finset.mul_sum, mul_left_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_mul {G H Y : Type} [Group G] [Group H] [MulAction H Y] (ρ : G →* H) {m : ℕ}
     (c : ℝ) (F : (Fin (m + 1) → Y) → ℝ) (y : Y) (z : Chn G m) :

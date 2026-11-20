@@ -5,9 +5,9 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTri
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `F _ _ v f a₀ hf h0 h1`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (v.adicCompletionIntegers F)`. Use `haveI : IsPrecomplete (IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)) (v.adicCompletionIntegers F) := Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.completion_integers_precomplete v hϖ`. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)) (v.adicCompletionIntegers F) := {}`. Use `haveI := IsAdicComplete.henselianRing (v.adicCompletionIntegers F) (IsLocalRing.maximalIdeal (v.adicCompletionIntegers F))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha, hm⟩` from `HenselianRing.is_henselian (I := IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)) f hf a₀ (by rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]; exact h0) (h1.map (Ideal.Quotient.mk _))`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G1.pHenselV :
     HenselV := by

@@ -14,23 +14,23 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Introduce `F _ _ δ u S₀ hδ hu hδs hus huδs`. Take `⟨E, _, _, _, θ, σ, hq⟩` from `exists_isQuad F δ hδs`. Establish `hbasic` using `isQuad_basic F E δ θ σ hq`. Establish `huE : ¬ IsSquare (algebraMap F E u)` using `fun h => (hbasic.2.2.2.2.2.1 u h).elim hus huδs`. Establish `hu0E : algebraMap F E u ≠ 0` using `(map_ne_zero_iff _ (algebraMap F E).injective).mpr hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S, hS₀, hSunits⟩` from `exists_superset_mem_sUnits F {Units.mk0 (2 : F) two_ne_zero, Units.mk0 u hu, Units.mk0 (u * δ) (mul_ne_zero hu hδ)} S₀`. Establish `hgood : ∀ v, v ∉ S → ∀ x ∈ ({Units.mk0 (2 : F) two_ne_zero, Units.mk0 u hu, Units.mk0 (u * δ) (mul_ne_zero hu hδ)} : Finset Fˣ), v.valuation F (x : F) = 1` using `fun v hv x hx => (mem_sUnits F S x).mp (hSunits S subset_rfl x hx) v hv`. Take `⟨hover, -, -⟩` from `places_over F E`. Take `⟨SE, hSE⟩` from `hover S`. Take `⟨w, hwS, hwu⟩` from `GlobalTheory.T.exists_place_not_isSquare_adicCompletion E (algebraMap F E u) SE hu0E huE`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hvS : w.under (𝓞 F) ∉ S` using `fun h => hwS ((hSE w).mpr h)`. Take `⟨φ, hφ⟩` from `exists_ringHom_adicCompletion_under F E w`. Establish `hθ : algebraMap E (w.adicCompletion E) θ ≠ 0` using `(map_ne_zero_iff _ (algebraMap E (w.adicCompletion E)).injective).mpr hq.root_ne_zero`. Establish `hnu : ¬ IsSquare (algebraMap F ((w.under (𝓞 F)).adicCompletion F) u)`. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hwu` to reduce the goal to its premises. Establish `h'` using `h.map φ`. Rewrite `h'` using `[hφ]`. Then use the resulting hypothesis. Establish `hnuδ : ¬ IsSquare (algebraMap F ((w.under (𝓞 F)).adicCompletion F) (u * δ))`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hwu` to reduce the goal to its premises. Establish `h'` using `h.map φ`. Rewrite `h'` using `[hφ, map_mul, map_mul, ← hq.sq, map_pow]`. Take `⟨r, hr⟩` from `h'`. Use `⟨r / algebraMap E (w.adicCompletion E) θ, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[div_mul_div_comm, ← hr]`. Clear the denominators using the available nonvanishing facts. Establish `hval : ∀ x : F, Valued.v (algebraMap F ((w.under (𝓞 F)).adicCompletion F) x) = (w.under (𝓞 F)).valuation F x` using `fun x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (w.under (𝓞 F)) x`. Establish `h2 : Valued.v (2 : (w.under (𝓞 F)).adicCompletion F) = 1`. Rewrite using `[show (2 : (w.under (𝓞 F)).adicCompletion F) = algebraMap F _ 2 from (map_ofNat _ 2).symm, hval]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hgood _ hvS (Units.mk0 (2 : F) two_ne_zero) (Finset.mem_insert_self _ _)`. Establish `hvu : Valued.v (algebraMap F ((w.under (𝓞 F)).adicCompletion F) u) = 1`. Rewrite using `[hval]`. Simplify using `using hgood _ hvS (Units.mk0 u hu) (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))`. Establish `hvuδ : Valued.v (algebraMap F ((w.under (𝓞 F)).adicCompletion F) (u * δ)) = 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hval]`. Simplify using `using hgood _ hvS (Units.mk0 (u * δ) (mul_ne_zero hu hδ)) (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_singleton_self _)))`. Take `⟨s, hs⟩` from `isSquare_mul_of_nonsquare_units F (w.under (𝓞 F)) h2 _ _ hvu hvuδ hnu hnuδ`. Establish `ha : algebraMap F ((w.under (𝓞 F)).adicCompletion F) u ≠ 0` using `(map_ne_zero_iff _ (algebraMap F _).injective).mpr hu`. Use `⟨w.under (𝓞 F), fun h => hvS (hS₀ h), ⟨s / algebraMap F _ u, ?_⟩, hnu⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[div_mul_div_comm, ← hs, map_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_place_isSquare_and_not_isSquare :
     ∀ (F : Type) [Field F] [NumberField F] (δ u : F) (S₀ : Finset (HeightOneSpectrum (𝓞 F))), δ ≠ 0 → u ≠ 0 → ¬ IsSquare δ → ¬ IsSquare u → ¬ IsSquare (u * δ) → ∃ v, v ∉ S₀ ∧ IsSquare (algebraMap F (v.adicCompletion F) δ) ∧ ¬ IsSquare (algebraMap F (v.adicCompletion F) u) := by

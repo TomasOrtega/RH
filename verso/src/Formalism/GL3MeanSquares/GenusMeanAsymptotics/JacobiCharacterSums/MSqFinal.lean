@@ -7,11 +7,11 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds
 
 /- English proof (translation)
-Introduce `ε hε hε1`. Take `⟨C, x₀, h⟩` from `meanSquareHypW_of_pnt hP ε hε hε1`. Use `⟨max C 1, max x₀ 1, lt_of_lt_of_le one_pos (le_max_right _ _), ?_⟩` and prove the remaining obligations. Introduce `x X m₀ a₀ κ hx h8 hp ha h4 h1 h2 h3 hk hm`. Take `⟨ha', hb⟩` from `h x X m₀ a₀ κ (le_trans (le_max_left _ _) hx) h8 hp ha h4 h1 h2 h3 hk hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨ha', le_trans hb ?_⟩` and prove the remaining obligations. Establish `hx1 : 1 ≤ x` using `le_trans (le_max_right _ _) hx`. Establish `hl : 0 ≤ Real.log x` using `Real.log_nonneg hx1`. Establish `hc : (0 : ℝ) ≤ ((Formalism.HermitianLattices.ZeroFreeRegionGL2.PPset m₀ a₀ X).card : ℝ)` using `Nat.cast_nonneg _`. Establish `hxl : 0 ≤ x * Real.log x * ((Formalism.HermitianLattices.ZeroFreeRegionGL2.PPset m₀ a₀ X).card : ℝ)` using `mul_nonneg (mul_nonneg (by linarith) hl) hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_right (le_max_left C 1) hxl` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mean_square_of_pnt_progressions (hP : PNTAPRelW) :
     ∀ ε : ℝ, 0 < ε → ε ≤ 1 → ∃ C x₀ : ℝ, 0 < C ∧ Formalism.HermitianLattices.WeakMeanSquareEstimates.MeanSquareHypW ε C x₀ := by

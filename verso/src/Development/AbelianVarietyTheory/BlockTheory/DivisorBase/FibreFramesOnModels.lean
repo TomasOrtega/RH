@@ -106,7 +106,7 @@ def IsBaseRing (β : O →+* c.F) : Prop :=
   Function.Injective β ∧ ∀ x : c.F, IsIntegral ℤ x → x ∈ Set.range β
 
 /- English proof (translation)
-Use `⟨Subtype.val_injective, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h : IsIntegral (c.V W) x` using `hx.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral h`. Conclude with `⟨y, hy⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isBaseRing_local (c : Coeff l) (W : ValuationSubring ℂ) : IsBaseRing (c.V W).subtype := by
   refine ⟨Subtype.val_injective, fun x hx => ?_⟩

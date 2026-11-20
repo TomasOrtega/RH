@@ -13,7 +13,7 @@ namespace GlobalTheory.MulVecTensorResolution
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, TensorProduct.tmul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_map_tmul {v : HeightOneSpectrum (𝓞 F)} {k l : ℕ} (M : Matrix (Fin k) (Fin l) E)
     (a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) (x : Fin l → E) :
@@ -24,11 +24,9 @@ theorem mulVec_map_tmul {v : HeightOneSpectrum (𝓞 F)} {k l : ℕ} (M : Matrix
     TensorProduct.tmul_sum]
 
 /- English proof (translation)
-Use `GlobalTheory.AdelicU.latLoc_induction (p := fun w => Matrix.mulVec (Matrix.map M fun x : E ↦ (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) ⊗ₜ[F] x) w ∈ GlobalTheory.AdelicU.latLoc F L₂ v) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations. Introduce `a ha x hx`. Rewrite using `[mulVec_map_tmul]`. Conclude with `GlobalTheory.AdelicU.tmul_mem_latLoc ha (hM x hx)`. Rewrite using `[Matrix.mulVec_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zero_mem _`. Introduce `y z hy hz`. Rewrite using `[Matrix.mulVec_add]`. Conclude with `add_mem hy hz`. Introduce `y hy`.
-
-Rewrite using `[Matrix.mulVec_neg]`. Conclude with `neg_mem hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_latLoc {v : HeightOneSpectrum (𝓞 F)} {k l : ℕ} (M : Matrix (Fin k) (Fin l) E)
     {L₁ : Submodule (𝓞 E) (Fin l → E)} {L₂ : Submodule (𝓞 E) (Fin k → E)}
@@ -48,7 +46,7 @@ theorem map_mem_latLoc {v : HeightOneSpectrum (𝓞 F)} {k l : ℕ} (M : Matrix 
     rw [Matrix.mulVec_neg]; exact neg_mem hy
 
 /- English proof (translation)
-Establish `h'` using `congrArg φ.mapMatrix h`. Simplify using `only [map_add, map_one, RingHom.mapMatrix_apply, Matrix.map_mul] at h'`. Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.add_mulVec]`. Rewrite using `[h', Matrix.one_mulVec]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_map_resolution {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {n m t : ℕ}
     {e e' : Matrix (Fin n) (Fin t) R} {i₀ : Matrix (Fin n) (Fin m) R} {qX qY : Matrix (Fin t) (Fin n) R}
@@ -60,11 +58,11 @@ theorem mulVec_map_resolution {R S : Type} [CommRing R] [CommRing S] (φ : R →
   rw [h', Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ n m t e e' i₀ qX qY q0 hsum hXe hXi hXe' h0e h0i h0e' hYe hYi hYe' L L' L₁ hL v y`. Establish `mX : ∀ x ∈ L, Matrix.mulVec qX x ∈ L₁` using `fun x hx => ((hL x).1 hx).1`. Establish `m0 : ∀ x ∈ L, Matrix.mulVec q0 x ∈ L'` using `fun x hx => ((hL x).1 hx).2.1`. Establish `mY : ∀ x ∈ L, Matrix.mulVec qY x ∈ L₁` using `fun x hx => ((hL x).1 hx).2.2`. Establish `me : ∀ x ∈ L₁, Matrix.mulVec e x ∈ L` using `fun x hx => (hL _).2 ⟨by rw [Matrix.mulVec_mulVec, hXe, Matrix.one_mulVec]; exact hx, by rw [Matrix.mulVec_mulVec, h0e, Matrix.zero_mulVec]; exact zero_mem _, by rw [Matrix.mulVec_mulVec, hYe, Matrix.zero_mulVec]; exact zero_mem _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mi : ∀ x ∈ L', Matrix.mulVec i₀ x ∈ L` using `fun x hx => (hL _).2 ⟨by rw [Matrix.mulVec_mulVec, hXi, Matrix.zero_mulVec]; exact zero_mem _, by rw [Matrix.mulVec_mulVec, h0i, Matrix.one_mulVec]; exact hx, by rw [Matrix.mulVec_mulVec, hYi, Matrix.zero_mulVec]; exact zero_mem _⟩`. Establish `me' : ∀ x ∈ L₁, Matrix.mulVec e' x ∈ L` using `fun x hx => (hL _).2 ⟨by rw [Matrix.mulVec_mulVec, hXe', Matrix.zero_mulVec]; exact zero_mem _, by rw [Matrix.mulVec_mulVec, h0e', Matrix.zero_mulVec]; exact zero_mem _, by rw [Matrix.mulVec_mulVec, hYe', Matrix.one_mulVec]; exact hx⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨map_mem_latLoc qX mX hy, map_mem_latLoc q0 m0 hy, map_mem_latLoc qY mY hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2, h3⟩`. Establish `key : y = Matrix.mulVec (Matrix.map e fun x : E ↦ (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) ⊗ₜ[F] x) (Matrix.mulVec (Matrix.map qX fun x : E ↦ (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) ⊗ₜ[F] x) y) + Matrix.mulVec (Matrix.m …` using `mulVec_map_resolution (Algebra.TensorProduct.includeRight : E →ₐ[F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v ⊗[F] E).toRingHom hsum y`. Rewrite using `[key]`. Conclude with `add_mem (add_mem (map_mem_latLoc e me h1) (map_mem_latLoc i₀ mi h2)) (map_mem_latLoc e' me' h3)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {F E : Type} [inst : Field F] [inst_1 : NumberField F] [inst_2 : Field E] [inst_3 : Algebra F E] {n m t : ℕ} {e e' : Matrix (Fin n) (Fin t) E} {i₀ : Matrix (Fin n) (Fin m) E} {qX qY : Matrix (Fin t) (Fin n) E} {q0 : Matrix (Fin m) (Fin n) E}, e * qX + i₀ * q0 + e' * qY = (1 : Matrix (Fin n) (Fin n) E) → qX * e = (1 : Matrix (Fin t) (Fin t) E) → qX * i₀ = (0 : Matrix (Fin t) (Fin m) E) → qX * e' = (0 : Matrix (Fin t) (Fin t) E) → q0 * e = (0 : Matrix (Fin m) (Fin t) E) → q0 * i₀ = (1 : Matrix (Fin m) (Fin m) E) → q0 * e' = (0 : Matrix (Fin m) (Fin t) E) → qY * e = (0 : Matrix (Fin t) (Fin t) E) → qY * i₀ = (0 : Matrix (Fin t) (Fin m) E) → qY * e' = (1 : Matrix (Fin t) (Fin t) E) → ∀ {L : Submodule (NumberField.RingOfIntegers E) (Fin n → E)} {L' : Submodule (NumberField.RingOfIntegers E) (Fin m → E)} {L₁ : Submodule (NumberField.RingOfIntegers E) (Fin t → E)}, (∀ (z : Fin n → E), z ∈ L ↔ Matrix.mulVec qX z ∈ L₁ ∧ Matrix.mulVec q0 z ∈ L' ∧ Matrix.mulVec qY z ∈ L₁) → ∀ (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) (y : Fin n → TensorProduct F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) E), y ∈ GlobalTheory.AdelicU.latLoc F L v ↔ Matrix.mulVec (Matrix.map qX fun (x : E) ↦ (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) ⊗ₜ[F] x) y ∈ GlobalTheory.AdelicU.latLoc F L₁ v ∧ Matrix.mulVec (Matrix.map q0 fun (x : E) ↦ (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) ⊗ₜ[F] x) y ∈ GlobalTheory.AdelicU.latLoc F L' v ∧ Matrix.mulVec (Matrix.map qY fun (x : E) ↦ (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) ⊗ₜ[F] x) y ∈ GlobalTheory.AdelicU.latLoc F L₁ v := by
   intro F E _ _ _ _ n m t e e' i₀ qX qY q0 hsum hXe hXi hXe' h0e h0i h0e' hYe hYi hYe' L L' L₁ hL v y

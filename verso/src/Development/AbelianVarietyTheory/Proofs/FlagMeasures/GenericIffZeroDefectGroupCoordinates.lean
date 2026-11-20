@@ -25,13 +25,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HL.GenCoord
 
 /- English proof (translation)
-Establish `hrows` using `Y.rowsOK u`. Establish `hBF` using `Formalism.L2.SG.Pf.big_block_function_holds D u u'`. Establish `hT` using `Formalism.L2.SG.Pf.bbTie_holds D Z`. Establish `hMI : ∀ (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (Λ : Submodule (𝓞 D.host.E) (VS D).V) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)), Formalism.L2.SG.Saturated.MplusIndep Λ (lf D F0) (gS D) F'` using `fun F0 Λ F' => Formalism.L2.SG.Pf.m_plus_independent _ _ _ _`. Establish `hg` using `genIffLocBB_of Z hT u u' hBF hMI (X.Fu u) (Y.what₂ u) hrows t₀.toTerm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show t₀.toTerm.generic ↔ _`. Rewrite using `[hg]`. Use `forall_congr' fun p => not_congr ?_` and prove the remaining obligations. Establish `hL` using `hrows.1 t₀.lam t₀.mem`. Use `((termBBne_iff_loc Z hT hrows hBF (hMI (X.Fu u)) t₀.toTerm p).symm.trans ?_).trans (GlobalTheory.T.signedLocalTerm_defect_iff_unsignedLocalTerm Z p t₀.lam (lf D (X.Fu u)) t₀.frame (Tu D u) (Tu D u'))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Iff.trans ?_ (hT u u' (X.Fu u) t₀.lam t₀.frame hL t₀.rep.2.2.2.2 (hMI _ _ _) p)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, hm⟩, P, hP, hbb⟩`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Establish `e` using `Formalism.L2.SG.TermDef.const_of_mk (fun y : Formalism.L2.SG.TermDef.Carrier (Formalism.L2.SG.TermDef.PD D t₀.lam (lf D (X.Fu u)) u') => Formalism.L2.SG.Saturated.BBneP t₀.lam (gS D) (lf D (X.Fu u)) y.1 P) (fun a b hab => propext (hBF (X.Fu u) t₀.lam hL P a b hab)) hm`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `e ▸ hbb`. Introduce `h`. Conclude with `⟨t₀.frame, ⟨t₀.rep.2.2.2.2, rfl⟩, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem generic_iff_locU {D : D7} (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word) (Z : LocDat D)
     (t₀ : TauC Y u u') : t₀.generic ↔
@@ -62,15 +62,15 @@ theorem generic_iff_locU {D : D7} (X : HidaSetting D) (Y : Full X) (u u' : D.wha
     exact ⟨t₀.frame, ⟨t₀.rep.2.2.2.2, rfl⟩, h⟩
 
 /- English proof (translation)
-Introduce `D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv`. Establish `hρ : ρ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `hMv.1`. Rewrite using `[generic_iff_locU X Y u u' (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) t₀]`. Use `forall_congr' fun p => ?_` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨g, hgExt, hgU, -, -, -⟩ := GlobalTheory.T.rational_isometry_extends_local_isometry D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p ρ hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hGv : Gval (lf D (X.Fu u)) t₀.frame ≠ 0` using `fun h => hG ((GlobalTheory.T.gramInvariant_isometry_unitriangular_moves F00 F'0 _ _ ρ U U' hMv).symm.trans h)`. Establish `hRL : IsRowLat D (X.Fu u) t₀.lam` using `(Y.rowsOK u).1 t₀.lam t₀.mem`. Take `⟨hIT, hTri'⟩` from `GlobalTheory.LocOver.locU_isTerm D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) u u' (X.Fu u) t₀.lam hRL t₀.frame t₀.rep.2.2.2.2 hGv p`. Establish `hOK : (Y.M p).OK` using `(Y.agree p).1`. Establish `htIT` using `GlobalTheory.T.localTerm_move_unitary_isTerm (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) g hgU _ hIT`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hTA, hTB⟩` from `GlobalTheory.T.localFrames_movedTerm_unitriangular_change (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 _ _ ρ U U' g _ hMv hgExt hTri'`. Take `⟨hA1, hA2, hA3, hA4⟩` from `(hAt p).1`. Rewrite `hTA` using `[← hA1]`. Rewrite `hTB` using `[← hA2]`. Take `⟨d, hd⟩` from `GlobalTheory.T.exists_datum_of_two_congruent_frames (Y.M p) hOK (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS (FP p) (move g (locU (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p t₀.lam (lf D (X.Fu u)) t₀.frame (Tu D u) (Tu D u'))) htIT hA3.symm hA4.symm hTA hTB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hW` using `((GlobalTheory.T.terms_orbits_heights_amplitudes_in_coordinates (Y.M p) hOK (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS D.R.k (FP p) (G.S p) (c.c p)).1 d _ hd)`. Establish `hlat` using `(GlobalTheory.T.rational_unipotent_groups_lattices_global_coordinates D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv).2.2.2.2.1 ρ hρ p g t₀.lam hgExt`. Use `haveI := ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).lf`. Use `haveI := ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).char0`. Establish `hlat' : (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).lat p (c.lat ρ t₀.lam) = (c.c p).lat (move g (locU (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p t₀.lam (lf D (X.Fu u)) t₀.frame (Tu D u) (Tu D u'))).abelian₂` using `hlat`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdat` using `GlobalTheory.HL.DatumOf.datOf_term (G.S p) hW.1`. Use `show _ ↔ (G.S p).BBzero ((G.S p).datOf ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).lat p (c.lat ρ t₀.lam))) ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).lat p (c.lat ρ t₀.lam))`. Rewrite using `[hlat', ← hdat, ← GlobalTheory.T.localTermDefect_ne_iff_move_linearEquiv (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) g, hW.2.2]`. Conclude with `not_not`.
+A detailed English derivation is pending.
 -/
 theorem generic_iff_gen : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), ∀ (t₀ : TauC Y u u') (ρ : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (U U' : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) t₀.frame ρ U U' → (t₀.generic ↔ G.Gen (G.datOf (c.lat ρ t₀.lam)) (c.lat ρ t₀.lam)) := by
   intro D X Y u u' hSt hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv

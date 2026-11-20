@@ -18,31 +18,31 @@ noncomputable section
 namespace ComplexMetric
 
 /- English proof (translation)
-The claim follows from `ProjPointContinuous.proof`.
+A detailed English derivation is pending.
 -/
 theorem ProjPointContinuous.full : ProjPointContinuous.Statement.{u} :=
   ProjPointContinuous.proof
 
 /- English proof (translation)
-The claim follows from `FractionContinuous.proof`.
+A detailed English derivation is pending.
 -/
 theorem FractionContinuous.full : FractionContinuous.Statement.{u} :=
   FractionContinuous.proof
 
 /- English proof (translation)
-The claim follows from `GermFraction.proof`.
+A detailed English derivation is pending.
 -/
 theorem GermFraction.full : GermFraction.Statement.{u} :=
   GermFraction.proof
 
 /- English proof (translation)
-The claim follows from `LocalLift.proof`.
+A detailed English derivation is pending.
 -/
 theorem LocalLift.full : LocalLift.Statement.{u} :=
   LocalLift.proof
 
 /- English proof (translation)
-The claim follows from `RegularContinuous.proof ProjPointContinuous.full FractionContinuous.full GermFraction.full LocalLift.full`.
+A detailed English derivation is pending.
 -/
 theorem RegularContinuous.full : RegularContinuous.Statement.{u} :=
   RegularContinuous.proof ProjPointContinuous.full FractionContinuous.full GermFraction.full

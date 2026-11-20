@@ -21,7 +21,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree GroundTheory.Heights₂.Heights.FubiniStudyLeviForm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Express the relevant statement in the definitionally equal form `Real.log ‖WithLp.toLp 2 z‖ = _`. Rewrite using `[EuclideanSpace.norm_eq, Real.log_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`. Simplify using `only [FubiniLevi.phi, FubiniLevi.sqSum, PiLp.toLp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_rho_eq_phi (I : Type) [Fintype I] :
     (fun z : I → ℂ => Real.log ((fsMetric I).ρ z)) = FubiniLevi.phi := by
@@ -34,9 +34,7 @@ theorem log_rho_eq_phi (I : Type) [Fintype I] :
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `choose c hc using h`. Conclude with `hw c (funext fun p => by`. Take `⟨k, i⟩` from `p`.
-
-Conclude with `congrFun (hc k) i)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_block_ne {z w : (Σ k, J k) → ℂ} (hw : ∀ c : K → ℂ, w ≠ torusSmul c z) :
     ∃ k, ∀ c : ℂ, (fun i => w ⟨k, i⟩) ≠ fun i => c * z ⟨k, i⟩ := by
@@ -48,21 +46,17 @@ theorem exists_block_ne {z w : (Σ k, J k) → ℂ} (hw : ∀ c : K → ℂ, w �
     exact congrFun (hc k) i)
 
 /- English proof (translation)
-Take `⟨k₀, hk₀⟩` from `exists_block_ne hw`. Use `set F : K → ((Σ k, J k) → ℂ) → ℝ := fun k y => Real.log ((fsMetric (J k)).ρ (fun i => y ⟨k, i⟩)) with hF`. Establish `hev : (fun y => Real.log ((fsMulti J).h y)) =ᶠ[𝓝 z] fun y => ∑ k ∈ Finset.univ, F k y`. Establish `hopen : ∀ k, ∀ᶠ y in 𝓝 z, ∃ i, y ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `hz k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Filter.mem_of_superset (((continuous_apply _).isOpen_preimage _ isOpen_ne).mem_nhds hi) fun y hy => ⟨i, hy⟩`. Use `filter_upwards [Filter.eventually_all.mpr hopen] with y hy`. Establish `hpos : ∀ k, 0 < (fsMetric (J k)).ρ (fun i => y ⟨k, i⟩)` using `fun k => by`. Take `⟨i, hi⟩` from `hy k`. Conclude with `(fsMetric (J k)).pos _ fun h0 => hi (congrFun h0 i)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [fsMulti, HermLine.ofMetrics, zpow_one, hF]`. Conclude with `Real.log_prod fun k _ => (hpos k).ne'`. Establish `hk0 : ∀ k, (fun i => z ⟨k, i⟩) ≠ 0` using `fun k h0 => by`. Take `⟨i, hi⟩` from `hz k`. Conclude with `hi (congrFun h0 i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hφ : ∀ k, ContDiffAt ℝ 2 (fun u => Real.log ((fsMetric (J k)).ρ u)) (blockProj J k z)` using `fun k => ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.adens_contDiffAt_logρ_id (HilbertSamuel.ProjLine.isSmoothMetric_fs (J := J k)) (hk0 k)`. Establish `hFk : ∀ k, F k = (fun u => Real.log ((fsMetric (J k)).ρ u)) ∘ blockProj J k` using `fun k => rfl`. Establish `hC : ∀ k, ContDiffAt ℝ 2 (F k) z` using `fun k => hFk k ▸ (hφ k).comp z ((blockProj J k).restrictScalars ℝ).contDiff.contDiffAt`. Establish `hL : ∀ k v, ReciprocityTheory.AnForm.levi (F k) z v = leviForm (fun u => Real.log ((fsMetric (J k)).ρ u)) (fun i => z ⟨k, i⟩) (fun i => v ⟨k, i⟩)` using `fun k v => by`. Rewrite using `[hFk, ReciprocityTheory.AnForm.levi_comp v ((blockProj J k).analyticAt z) (hφ k), (blockProj J k).fderiv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hnn : ∀ k v, 0 ≤ ReciprocityTheory.AnForm.levi (F k) z v` using `fun k v => by`. Rewrite using `[hL]`. Conclude with `HilbertSamuel.ProjLine.leviForm_log_fs_nonneg (hk0 k) _`. Establish `hpos : 0 < ReciprocityTheory.AnForm.levi (F k₀) z w`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, log_rho_eq_phi]`. Conclude with `FubiniLevi.levi_phi_pos_of_ne (hz k₀) hk₀`. Establish `hsum` using `levi_sum_nonneg F (fun k => hC k) hnn w (Finset.univ.erase k₀)`. Express the relevant statement in the definitionally equal form `0 < ReciprocityTheory.AnForm.levi _ z w`. Rewrite using `[ReciprocityTheory.AnForm.levi_congr hev]`.
-
-Establish `hsplit : (fun y => ∑ k ∈ Finset.univ, F k y) = fun y => F k₀ y + 1 * ∑ k ∈ Finset.univ.erase k₀, F k y`. Use function extensionality and compare the values at `y`. Rewrite using `[_root_.one_mul]`. Conclude with `(Finset.add_sum_erase Finset.univ (fun k => F k y) (Finset.mem_univ k₀)).symm`. Rewrite using `[hsplit, ReciprocityTheory.AnForm.levi_add_smul 1 (hC k₀) hsum.1 w]`.
-
-Combine the linear relations using `[hsum.2]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem levi_fsMulti_pos {z w : (Σ k, J k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
     (hw : ∀ c : K → ℂ, w ≠ torusSmul c z) :
@@ -113,13 +107,13 @@ theorem levi_fsMulti_pos {z w : (Σ k, J k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k,
   linarith [hsum.2]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨FsLineSmooth.proof K J, fun _ hz _ _ hw => levi_fsMulti_pos hz.1 hw⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPositiveRel_fsMulti (P : Ideal (MRing J)) : IsPositiveRel P (fsMulti J) :=
   ⟨FsLineSmooth.proof K J, fun _ hz _ _ hw => levi_fsMulti_pos hz.1 hw⟩
 
 /- English proof (translation)
-Introduce `z`. Simplify using `[fsMulti, HermLine.ofMetrics, fsMetric, EuclideanSpace.norm_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isConjInvariantH_fsMulti : IsConjInvariantH (fsMulti J) := by
   intro z
@@ -128,7 +122,7 @@ theorem isConjInvariantH_fsMulti : IsConjInvariantH (fsMulti J) := by
 def chartForm (c : ∀ k, J k) : MRing J := ∏ k, X ⟨k, c k⟩
 
 /- English proof (translation)
-Establish `h` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_xpow c (fun _ : K => 1)`. Simplify `h` using `[chartForm, fsMulti, HermLine.ofMetrics, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.xpow]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isMultiHomog_chartForm (c : ∀ k, J k) :
     IsMultiHomog (chartForm c) fun k => ((fsMulti J).a k).toNat := by
@@ -137,9 +131,9 @@ theorem isMultiHomog_chartForm (c : ∀ k, J k) :
   simpa [chartForm, fsMulti, HermLine.ofMetrics, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.xpow] using h
 
 /- English proof (translation)
-Establish `e : eval z (map (Int.castRingHom ℂ) (chartForm c)) = ∏ k, z ⟨k, c k⟩`. Simplify using `[chartForm, map_prod]`. Rewrite using `[e, norm_prod]`. Simplify using `only [fsMulti, HermLine.ofMetrics, zpow_one]`. Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `PiLp.norm_apply_le (WithLp.toLp 2 (fun i => z ⟨k, i⟩)) (c k)`.
+A detailed English derivation is pending.
 -/
 theorem chartForm_le (c : ∀ k, J k) (z : (Σ k, J k) → ℂ) :
     ‖eval z (map (Int.castRingHom ℂ) (chartForm c))‖ ≤ (fsMulti J).h z := by
@@ -151,7 +145,7 @@ theorem chartForm_le (c : ∀ k, J k) (z : (Σ k, J k) → ℂ) :
   exact PiLp.norm_apply_le (WithLp.toLp 2 (fun i => z ⟨k, i⟩)) (c k)
 
 /- English proof (translation)
-Use `choose c hc using hQ.2.2`. Use `⟨c, fun h => ?_⟩` and prove the remaining obligations. Take `⟨k, -, hk⟩` from `(hQ.1.prod_mem_iff).1 h`. Conclude with `hc k hk`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_chartForm_notMem {Q : Ideal (MRing J)} (hQ : IsMultiProjPrime Q) :
     ∃ c, chartForm c ∉ Q := by
@@ -161,9 +155,7 @@ theorem exists_chartForm_notMem {Q : Ideal (MRing J)} (hQ : IsMultiProjPrime Q) 
   exact hc k hk
 
 /- English proof (translation)
-Set `e` to `Fintype.equivFin (∀ k, J k)`. Use `HilbertSamuel.SmallGenHeightsNonneg.proof K J ⊥ (fsMulti J) II _ (fun j => chartForm (e.symm j)) hII (FsLineSmooth.proof K J) (fun k => ?_) (fun j => isMultiHomog_chartForm _) (fun Q hQ _ => ?_) (fun j z _ => chartForm_le _ z) W hW bot_le` and prove the remaining obligations. Use `show (0 : ℤ) ≤ 1`. Conclude with `zero_le_one`. Take `⟨c, hc⟩` from `exists_chartForm_notMem hQ`.
-
-Conclude with `⟨e c, by simpa using hc⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem heights_fsMulti {II : IntersectionSystem} (hII : IsIntersectionSystem II) {W : Ideal (MRing J)}
     (hW : IsArithVar W 1) : 0 ≤ II K J W 1 ![fsMulti J] := by
@@ -185,7 +177,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GroundTheory.Heights₂.Heights.LowerBoundFree
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ P hII` and use `⟨GroundTheory.Heights₂.Heights.fsMulti _, fun _ => rfl, FS.isPositiveRel_fsMulti P, FS.isConjInvariantH_fsMulti, fun _ hW => FS.heights_fsMulti hII.1 hW⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_fubiniStudy_line :
     ∀ (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (P : Ideal (MRing J)),

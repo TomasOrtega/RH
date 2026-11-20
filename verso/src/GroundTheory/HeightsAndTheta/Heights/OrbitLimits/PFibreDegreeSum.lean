@@ -20,51 +20,45 @@ section Generic
 open NumbersDVR
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hPprime : P.IsPrime` using `hP.2.1.1`. Establish `hhor : ∀ r : ℤ, (C r : MRing ι ℤ) ∈ P → r = 0`. Introduce `r hr`. Establish `hr' : r ∈ P.comap (C : ℤ →+* MRing ι ℤ)` using `hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hr'` using `[show P.comap (C : ℤ →+* MRing ι ℤ) = ⊥ from hP.2.2.1]`. Conclude with `(Ideal.mem_bot).mp hr'`. Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Use `set 𝔭 : Ideal ℤ := Ideal.span {(p : ℤ)} with h𝔭def`. Establish `h𝔭max : 𝔭.IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible hpZ.irreducible`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h𝔭 : 𝔭.IsPrime` using `h𝔭max.isPrime`. Establish `h𝔭0 : 𝔭 ≠ ⊥`. Rewrite using `[h𝔭def, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hpZ.ne_zero`. Set `O` to `Localization.AtPrime 𝔭`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsDiscreteValuationRing O` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain ℤ h𝔭0 O`. Set `ϖ : O` to `(p : O)`. Establish `hmax : IsLocalRing.maximalIdeal O = Ideal.span {ϖ}`. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal 𝔭 O]`. Express the relevant statement in the definitionally equal form `Ideal.map (algebraMap ℤ O) (Ideal.span {(p : ℤ)}) = _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Ideal.map_span, Set.image_singleton]`. Simplify using `[ϖ]`. Establish `hϖ : Irreducible ϖ` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mpr hmax`. Set `M : Submonoid (MRing ι ℤ)` to `𝔭.primeCompl.map (C (σ := Σ k, ι k))`. Set `φ` to `algebraMap (MRing ι ℤ) (MRing ι O)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `P' : Ideal (MRing ι O)` to `P.map φ`. Establish `hPdisj : Disjoint (M : Set (MRing ι ℤ)) P`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨r, hr, rfl⟩ hrP`. Establish `h0` using `hhor r hrP`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hr` using `[h0]`. Conclude with `hr 𝔭.zero_mem`. Establish `hP'prime : P'.IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint M (MRing ι O) P hPprime hPdisj`. Establish `hP'comap : P'.comap φ = P` using `IsLocalization.under_map_of_isPrime_disjoint M (MRing ι O) hPprime hPdisj`. Establish `hmp : IsMultiProjPrime P'` using `{ isPrime := hP'prime multiHomog := WeightedDegree.isMultiHomogIdeal_map 𝔭.primeCompl ((Bridge.isMultiHomogIdeal_iff P).mpr hP.2.1.2.1) relevant := fun k ↦ by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, hi⟩` from `hP.2.1.2.2 k`. Use `⟨i, fun h ↦ hi ?_⟩` and prove the remaining obligations. Establish `h' : φ (X ⟨k, i⟩) ∈ P'`. Rewrite using `[show φ (X ⟨k, i⟩) = X ⟨k, i⟩ from map_X _ _]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h'' : (X ⟨k, i⟩ : MRing ι ℤ) ∈ P'.comap φ` using `h'`. Rewrite `h''` using `[hP'comap]`. Conclude with `h'' }`. Establish `hnt : P'.comap (C : O →+* MRing ι O) = ⊥`. Rewrite using `[eq_bot_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap]`. Rewrite using `[Ideal.mem_bot]`. Take `⟨⟨m, s⟩, hms⟩` from `IsLocalization.surj 𝔭.primeCompl x`. Simplify using `only at hms`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem : φ (C m) ∈ P'`. Rewrite using `[show φ (C m) = C (algebraMap ℤ O m) from map_C _ _, ← hms, map_mul]`. Conclude with `P'.mul_mem_right _ hx`. Establish `hmem' : (C m : MRing ι ℤ) ∈ P'.comap φ` using `hmem`. Rewrite `hmem'` using `[hP'comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm0 : m = 0` using `hhor m hmem'`. Rewrite `hms` using `[hm0, map_zero]`. Conclude with `((IsLocalization.map_units O s).mul_left_eq_zero).mp hms`. Establish `hdimle : ringKrullDim (MRing ι O ⧸ P') ≤ ((e + 1 + Fintype.card K : ℕ) : WithBot ℕ∞)` using `(WeightedDegree.ringKrullDim_quotient_map_le 𝔭.primeCompl P).trans_eq hP.2.2.2`. Establish `key` using `ConservationOfNumberLE.proof.{0} IntNumAssoc.full SpecialCycleEval.full SpecialPieceRank.full GenericPieceRank.full SpecialIdealMultiHomog.full O ϖ hϖ K ι P' e hmp hnt hdimle a`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hinjO : Function.Injective (Int.castRingHom O)`. Rewrite using `[RingHom.ext_int (Int.castRingHom O) (algebraMap ℤ O)]`. Conclude with `IsLocalization.injective O 𝔭.primeCompl_le_nonZeroDivisors`. Establish `: CharZero (FractionRing O)` using `WeightedDegree.charZero_fractionRing O hinjO`. Establish `hgen : gNum P' a = intNum ℚ (P.map (MvPolynomial.map (Int.castRingHom ℚ))) a`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : genFib P' = (P.map (MvPolynomial.map (Int.castRingHom ℚ))).map (MvPolynomial.map (algebraMap ℚ (FractionRing O)))`. Unfold `genFib`. Rewrite using `[Ideal.map_map, Ideal.map_map]`. Use `congr 1`. Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `MvPolynomial.map _ (MvPolynomial.map _ x) = MvPolynomial.map _ (MvPolynomial.map _ x)`. Rewrite using `[MvPolynomial.map_map, MvPolynomial.map_map]`. Conclude with `congrArg (fun g ↦ MvPolynomial.map g x) (RingHom.ext_int _ _)`. Unfold `gNum`. Rewrite using `[hcomp]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(FieldNumbers.IntNumBaseChange.intersectionNumber_baseChange.1 ℚ (FractionRing O) K ι _).2 e a`. Establish `: CharP (IsLocalRing.ResidueField O) p` using `(CharP.charP_iff_prime_eq_zero hp).mpr (by`. Rewrite using `[show ((p : ℕ) : IsLocalRing.ResidueField O) = IsLocalRing.residue O ϖ by simp [ϖ], IsLocalRing.residue_eq_zero_iff, hmax]`. Conclude with `Ideal.subset_span rfl)`. Set `: Algebra (ZMod p) (IsLocalRing.ResidueField O)` to `(ZMod.castHom (dvd_refl p) (IsLocalRing.ResidueField O)).toAlgebra`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hspec : ∀ W : Ideal (MRing ι ℤ), vNum (W.map φ) a = intNum (ZMod p) (W.map (MvPolynomial.map (Int.castRingHom (ZMod p)))) a`. Introduce `W`. Establish `hcomp : specialIdeal (W.map φ) = (W.map (MvPolynomial.map (Int.castRingHom (ZMod p)))).map (MvPolynomial.map (algebraMap (ZMod p) (IsLocalRing.ResidueField O)))`. Unfold `specialIdeal`. Rewrite using `[Ideal.map_map, Ideal.map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `congr 1`. Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MvPolynomial.map _ (MvPolynomial.map _ x) = MvPolynomial.map _ (MvPolynomial.map _ x)`. Rewrite using `[MvPolynomial.map_map, MvPolynomial.map_map]`. Conclude with `congrArg (fun g ↦ MvPolynomial.map g x) (RingHom.ext_int _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `vNum`. Rewrite using `[hcomp]`. Conclude with `(FieldNumbers.IntNumBaseChange.intersectionNumber_baseChange.1 (ZMod p) (IsLocalRing.ResidueField O) K ι _).2 e a`. Establish `hWdisj : ∀ W ∈ (P ⊔ Ideal.span {(C (p : ℤ) : MRing ι ℤ)}).minimalPrimes, Disjoint (M : Set (MRing ι ℤ)) W`. Introduce `W hW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: W.IsPrime` using `hW.1.1`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨r, hr, rfl⟩ hrW`. Establish `hle : 𝔭 ≤ W.comap (C : ℤ →+* MRing ι ℤ)`. Rewrite using `[h𝔭def, Ideal.span_le, Set.singleton_subset_iff]`.
-
-Conclude with `hW.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))`. Establish `heq` using `h𝔭max.eq_of_le (Ideal.comap_isPrime (C : ℤ →+* MRing ι ℤ) W).ne_top hle`. Establish `hr' : r ∈ W.comap (C : ℤ →+* MRing ι ℤ)` using `hrW`. Rewrite `hr'` using `[← heq]`. Conclude with `hr hr'`.
-
-Establish `hmain` using `WeightedDegree.cycEval_divCycle_map (R' := O) 𝔭.primeCompl P (C (p : ℤ)) hWdisj (fun W' : Ideal (MRing ι O) ↦ vNum W' a)`. Establish `hCp : (C ϖ : MRing ι O) = φ (C (p : ℤ))`. Rewrite using `[show φ (C (p : ℤ)) = C (algebraMap ℤ O (p : ℤ)) from map_C _ _]`. Simplify using `[ϖ]`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `congr 1`. Use function extensionality and compare the values at `W`. Conclude with `hspec W`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem FibreDegreeSum.intNum_eq_cycEval (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type)
     [∀ k, Fintype (ι k)] (P : Ideal (MRing ι ℤ)) (e : ℕ) (a : Fin e → K → ℤ) (p : ℕ)
@@ -218,17 +212,15 @@ end Generic
 open ReciprocityTheory.ChartRestriction.G
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P e a p hP hp`. Establish `: Fact p.Prime` using `⟨hp⟩`. Rewrite using `[FibreDegreeSum.intNum_eq_cycEval K ι P e a p hP, NumbersDVR.cycEval, finsum_mem_def]`. Use `finsum_congr fun W ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hW : W ∈ Geo.divSupp P (C (p : ℤ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem hW]`. Establish `hW' : W ∈ (P ⊔ Ideal.span {C (p : ℤ)}).minimalPrimes ∧ NumbersDVR.IsRelevant W` using `hW`. Establish `hWp : W.IsPrime` using `hW.1.1.1`. Establish `hpW : (C (p : ℤ) : Geo.MRing ι) ∈ W` using `hW.1.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))`. Establish `hC : Geo.IsMultiHomog (C (p : ℤ) : Geo.MRing ι) 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m hm k`. Establish `h0` using `MvPolynomial.mem_support_iff.mp hm`. Rewrite `h0` using `[coeff_C]`. Use `split_ifs at h0 with h`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `absurd rfl h0`. Establish `hMP : Geo.IsMultiProjPrime W` using `⟨hWp, ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_isMultiHomogIdeal_of_mem_minimalPrimes hP.2.1.2.1 hC hW.1, hW.2⟩`. Establish `hdimW : ringKrullDim (Geo.MRing ι ⧸ W) = ((e + Fintype.card K : ℕ) : WithBot ℕ∞)`. Use `FibreCompDimZ.full (Σ k, ι k) P hP.2.1.1 hP.2.2.1 (e + Fintype.card K) p hp ?_ W hW.1` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show e + Fintype.card K + 1 = e + 1 + Fintype.card K by omega]`. Conclude with `hP.2.2.2`. Establish `hm : Geo.multAt (P ⊔ Ideal.span {C (p : ℤ)}) W = (NumbersDVR.multAt (P ⊔ Ideal.span {C (p : ℤ)}) W).toNat` using `Bridge.multAt_eq_toNat _ _`. Rewrite using `[NumbersDVR.divCycle, dif_pos hW', hm, Bridge.intNum_map_eq_geoNum p e W hMP hpW hdimW a]`. Establish `hW' : ¬(W ∈ (P ⊔ Ideal.span {C (p : ℤ)}).minimalPrimes ∧ NumbersDVR.IsRelevant W)` using `hW`.
-
-Rewrite using `[Set.indicator_of_notMem hW, NumbersDVR.divCycle, dif_neg hW', zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FibreDegreeSum.proof : FibreDegreeSum.Statement := by
   intro K _ _ ι _ P e a p hP hp

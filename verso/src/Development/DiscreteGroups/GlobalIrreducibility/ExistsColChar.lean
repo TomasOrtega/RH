@@ -18,23 +18,23 @@ variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 variable (π : Representation ℂ (GL (Fin n) k) V) (ψ : AddChar k Circle)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by rw [KUS_empty, sup_bot_eq]; exact h0⟩`. Consider the case `insert a S ha ih`. Take `⟨ξ, hξ⟩` from `ih`. Set `σ : k → V →ₗ[ℂ] V` to `fun t => π (colU j (Pi.single a t))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hadd : ∀ s t, σ (s + t) = σ s * σ t` using `fun s t => by`. Simplify using `only [σ]`. Rewrite using `[Pi.single_add, colU_add, map_mul]`. Establish `hW : ∀ t, ∀ w ∈ KN π ψ (j + 1) ⊔ KUS π ψ j S ξ, σ t w ∈ KN π ψ (j + 1) ⊔ KUS π ψ j S ξ` using `fun t w hw => W_stable π ψ j S ξ _ hw`. Take `⟨ξa, hξa⟩` from `exists_character_sup_ne_top ψ σ hc hadd _ hW (fun v => smooth_col π hs j hj a v) hξ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Function.update ξ a ξa, fun htop => hξa (eq_top_iff.2 ?_)⟩` and prove the remaining obligations. Rewrite using `[← htop]`. Use `sup_le (le_sup_left.trans le_sup_left) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hcS, v, rfl⟩`. Use `set cS := Function.update c a 0 with hcS'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hcS0 : ∀ r ∉ S, cS r = 0`. Introduce `r hr`. Distinguish the cases in `hra : r = a`. Substitute `hra` using the available equality. Simplify using `[cS]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcS', Function.update_of_ne hra]; exact hcS r (by simp [hra, hr])`. Establish `hsplit : c = Pi.single a (c a) + cS`. Use function extensionality and compare the values at `r`. Distinguish the cases in `hra : r = a`. Substitute `hra` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[cS]`. Simplify using `[cS, hra, Pi.single_apply]`. Establish `hdot : dotj j (Function.update ξ a ξa) c = dotj j (Function.update ξ a ξa) (Pi.single a (c a)) + dotj j ξ cS` using `by conv_lhs => rw [hsplit]`. Rewrite using `[dotj_add, dotj_update j ξ cS a ξa (by simp [cS])]`. Establish `e : π (colU j c) v - ((ψ (dotj j (Function.update ξ a ξa) c) : Circle) : ℂ) • v = σ (c a) (π (colU j cS) v - ((ψ (dotj j ξ cS) : Circle) : ℂ) • v) + ((ψ (dotj j ξ cS) : Circle) : ℂ) • (σ (c a) v - ((ψ (dotj j (Function.update ξ a ξa) (Pi.single a (c a))) : Circle) : ℂ) • v)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcol : π (colU j c) v = σ (c a) (π (colU j cS) v)` using `by conv_lhs => rw [hsplit]`. Rewrite using `[colU_add, map_mul, Module.End.mul_apply]`. Rewrite using `[hcol, hdot, AddChar.map_add_eq_mul, Circle.coe_mul, map_sub, map_smul, smul_sub, smul_smul, mul_comm ((ψ (dotj j (Function.update ξ a ξa) (Pi.single a (c a))) : Circle) : ℂ)]`. Normalize the expressions using the abelian group laws. Use `show _ ∈ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `Submodule.add_mem _ (Submodule.mem_sup_left (hW _ _ (Submodule.mem_sup_right (Submodule.subset_span ⟨cS, hcS0, v, rfl⟩)))) (Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Rewrite using `[dotj_single]`. Distinguish the cases in `haj : a.val < j`. Rewrite using `[if_pos haj, Function.update_self]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨c a, v, rfl⟩)`. Rewrite using `[if_neg haj, AddChar.map_zero_eq_one, Circle.coe_one, one_smul]`. Simplify using `only [σ]`. Rewrite using `[colU_single_of_ge j (by omega), map_one, Module.End.one_apply, sub_self]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_col_char {c : kˣ} (hc : HasConductor ψ c) (hs : IsSmooth π) (j : ℕ) (hj : j < n)
     (h0 : KN π ψ (j + 1) ≠ ⊤) (S : Finset (Fin n)) : ∃ ξ : Fin n → k, KN π ψ (j + 1) ⊔ KUS π ψ j S ξ ≠ ⊤ := by

@@ -4,17 +4,17 @@ open NumberField
 namespace GlobalTheory.CompanionTheory.NumberFieldCoord
 
 /- English proof (translation)
-Introduce `E _ _ I _ τ hτ`. Use `set Lc := LinearMap.toContinuousLinearMap (mixedEmbedding.latticeBasis E).equivFun.toLinearMap with hLc`. Use `⟨‖Lc‖ + 1, by positivity, fun e R hR k => ?_⟩` and prove the remaining obligations. Establish `hR0 : 0 ≤ R`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, -⟩` from `hτ w`. Conclude with `(norm_nonneg _).trans (hR i)`. Establish `hw : ∀ w : InfinitePlace E, w (e : E) ≤ R`. Introduce `w`. Take `⟨i, rfl⟩` from `hτ w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hR i` using `only [InfinitePlace.apply]`. Establish `hn : ‖mixedEmbedding E (e : E)‖ ≤ R`. Rewrite using `[Prod.norm_def]`. Use `max_le ?_ ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg hR0).2 fun w => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hw w.1`. Rewrite `h` using `[← InfinitePlace.norm_embedding_of_isReal w.2]`. Simplify `h` using `[mixedEmbedding]`. Use `(pi_norm_le_iff_of_nonneg hR0).2 fun w => ?_` and prove the remaining obligations. Establish `h` using `hw w.1`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h` using `[← InfinitePlace.norm_embedding_eq]`. Simplify `h` using `[mixedEmbedding]`. Establish `hval : Lc (mixedEmbedding E (e : E)) k = (((RingOfIntegers.basis E).repr e k : ℤ) : ℝ)`. Express the relevant statement in the definitionally equal form `(mixedEmbedding.latticeBasis E).equivFun (mixedEmbedding E (e : E)) k = _`. Rewrite using `[Module.Basis.equivFun_apply, mixedEmbedding.latticeBasis_repr_apply]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `integralBasis_repr_apply E e k` as an intermediate fact. Rewrite using `[show (e : E) = algebraMap (𝓞 E) E e from rfl, this]`. Simplify using the standard rewrite rules. Rewrite using `[← hval, ← Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem abs_repr_le_of_forall_norm_embedding_le :
     ∀ {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] (τ : I → (E →+* ℂ)),

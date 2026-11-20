@@ -14,9 +14,9 @@ variable {F G V W : Type} [Field F] [Group G] [AddCommGroup V] [Module F V]
   [AddCommGroup W] [Module F W]
 
 /- English proof (translation)
-Establish `: twKer σ N 1 ≤ (twKer ρ N 1).map p.toLinearMap` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨n, w, rfl⟩`. Take `⟨v, rfl⟩` from `hp w`. Use `⟨_, Submodule.subset_span ⟨n, v, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[p.isIntertwining])`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `this hw`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_twKer {ρ : Representation F G V} {σ : Representation F G W}
     (p : ρ.IntertwiningMap σ) (hp : Function.Surjective p) (N : Subgroup G) {w : W}
@@ -35,13 +35,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [AddCommGroup U] [Module ℂ U]
 
 /- English proof (translation)
-Unfold `wordMult`. Use `split_ifs`. Use `swap`. Simplify using the standard rewrite rules. Use `jhMult_exact (compMap (jacMap (points _) ι) _) (compMap (jacMap (points _) p) _) (isIrreducible_ofChar _) (GlobalTheory.T.jacquetModule_map_injective_of_injective k _ _ _ (points _) W V π₁ π ι hπ hι) (fun x => ?_) (fun x => ?_) (fun x hx => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨v, rfl⟩` from `hp u`. Conclude with `⟨Submodule.Quotient.mk v, rfl⟩`. Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ x show Submodule.Quotient.mk (p (ι u)) = 0`. Rewrite using `[he.apply_apply_eq_zero]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1 : p v ∈ twKer π₂ (unipRad k (points (Fin n))) 1` using `(Submodule.Quotient.mk_eq_zero _).1 hx`. Take `⟨v', hv', h2⟩` from `exists_mem_twKer p hp _ h1`. Take `⟨u, hu⟩` from `(he (v - v')).1 (by rw [map_sub, h2, sub_self])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Submodule.Quotient.mk u, ?_⟩` and prove the remaining obligations. Use `show Submodule.Quotient.mk (ι u) = Submodule.Quotient.mk v`. Rewrite using `[hu]`. Conclude with `(Submodule.Quotient.eq _).2 (by simpa using hv')`.
+A detailed English derivation is pending.
 -/
 theorem wordMult_exact {π : Representation ℂ (GL (Fin n) k) V}
     {π₁ : Representation ℂ (GL (Fin n) k) W} {π₂ : Representation ℂ (GL (Fin n) k) U}
@@ -73,7 +73,7 @@ theorem wordMult_exact {π : Representation ℂ (GL (Fin n) k) V}
     exact (Submodule.Quotient.eq _).2 (by simpa using hv')
 
 /- English proof (translation)
-Unfold `wordMult`. Use `split_ifs`. Establish `: Subsingleton (Jacquet π (unipB k (Fin n)))` using `(Submodule.Quotient.mk_surjective _).subsingleton`. Conclude with `jhMult_of_subsingleton (isIrreducible_ofChar _) _`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem wordMult_of_subsingleton [Subsingleton V] (π : Representation ℂ (GL (Fin n) k) V)
     (w : List ℂˣ) : wordMult π w = 0 := by
@@ -85,7 +85,7 @@ theorem wordMult_of_subsingleton [Subsingleton V] (π : Representation ℂ (GL (
   · rfl
 
 /- English proof (translation)
-Rewrite using `[Finsupp.sum_of_support_subset (x + y) Finsupp.support_add _ (by simp), Finsupp.sum_of_support_subset x Finset.subset_union_left _ (by simp), Finsupp.sum_of_support_subset y Finset.subset_union_right _ (by simp), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.add_apply, Int.toNat_add (hx c) (hy c), Nat.cast_add, add_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_add {I : Type 1} (f : I → ℕ∞) (x y : I →₀ ℤ) (hx : ∀ c, 0 ≤ x c) (hy : ∀ c, 0 ≤ y c) :
     ((x + y).sum fun c a => (a.toNat : ℕ∞) * f c) =
@@ -99,19 +99,19 @@ theorem sum_add {I : Type 1} (f : I → ℕ∞) (x y : I →₀ ℤ) (hx : ∀ c
   rw [Finsupp.add_apply, Int.toNat_add (hx c) (hy c), Nat.cast_add, add_mul]
 
 /- English proof (translation)
-Establish `φ` using `Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := π)`. Take `⟨_, _⟩` from `isFiniteLength_iff_isNoetherian_isArtinian.1 h`. Establish `: WellFoundedGT (Subrepresentation π)` using `φ.toOrderEmbedding.wellFoundedGT`. Establish `: WellFoundedLT (Subrepresentation π)` using `φ.toOrderEmbedding.wellFoundedLT`. Establish `hfl : ∀ S : Subrepresentation π, HasFiniteLength S.toRepresentation` using `fun S => IsFiniteLength.of_injective h (f := Representation.IntertwiningMap.equivLinearMapAsModule S.toRepresentation π ⟨S.toSubmodule.subtype, fun _ => rfl⟩) Subtype.val_injective`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : ∀ S : Subrepresentation π, IsSmooth S.toRepresentation` using `fun S => (IsSubquotient.of_injective (σ := S.toRepresentation) (ρ := π) ⟨S.toSubmodule.subtype, fun _ => rfl⟩ Subtype.val_injective).isSmooth hπ`. Establish `key : ∀ S : Subrepresentation π, wordMult S.toRepresentation w = (cls S.toRepresentation (hfl S)).sum fun c a => (a.toNat : ℕ∞) * wordMult c.rep.ρ w`. Introduce `S`. Proceed by induction on `S using WellFoundedLT.induction with`. Consider the case `ind S ih`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Break down `eq_or_ne S ⊥ with rfl | hS` into its components or cases. Establish `: Subsingleton (⊥ : Subrepresentation π).toSubmodule` using `inferInstanceAs (Subsingleton (⊥ : Submodule ℂ V))`. Establish `h0 : cls (⊥ : Subrepresentation π).toRepresentation (hfl ⊥) = 0`. Use extensionality with `c`. Simplify using `[cls_apply, jhMult_of_subsingleton (IrrRep.irr _)]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0, wordMult_of_subsingleton, Finsupp.sum_zero_index]`. Take `⟨T, -, hT⟩` from `exists_le_covBy_of_lt (bot_lt_iff_ne_bot.2 hS)`. Set `ι : T.toRepresentation.IntertwiningMap S.toRepresentation` to `⟨Submodule.inclusion hT.le, fun _ => rfl⟩`. Set `p : S.toRepresentation.IntertwiningMap (subQuot S T)` to `⟨Submodule.mkQ _, fun _ => rfl⟩`. Establish `hp : ∀ v, p v = 0 ↔ v.1 ∈ T.toSubmodule` using `fun v => Submodule.Quotient.mk_eq_zero _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hι : Function.Injective ι` using `Submodule.inclusion_injective hT.le`. Establish `hps : Function.Surjective p` using `Submodule.Quotient.mk_surjective _`. Establish `he : Function.Exact ι p` using `fun v => ⟨fun hv => ⟨⟨v.1, (hp v).1 hv⟩, rfl⟩, by`. Introduce and unpack `⟨u, rfl⟩`. Conclude with `(hp _).2 u.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `σ : IrrRep (GL (Fin n) k)` to `⟨_, subQuot S T, (IsSubquotient.of_surjective p hps).isSmooth (hsm S), isIrreducible_subQuot hT⟩`. Establish `hσ : cls (subQuot S T) σ.hasFiniteLength = Finsupp.single σ.cl 1` using `cls_irr σ _`. Take `⟨ψ⟩` from `σ.nonempty_equiv_rep`. Rewrite using `[wordMult_exact ι p (hsm S) hι hps he, cls_exact ι p hι hps he _ (hfl T) σ.hasFiniteLength, sum_add _ _ _ (fun c => by simp [cls_apply]) (fun c => by simp [cls_apply]), ih T hT.lt, hσ, Finsupp.sum_single_index (by simp), wordMult_congr ψ]`. Simplify using `[σ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← wordMult_congr (topEquiv π), key ⊤, cls_congr (topEquiv π) _ h]`.
+A detailed English derivation is pending.
 -/
 theorem wordMult_eq_sum (π : Representation ℂ (GL (Fin n) k) V) (h : HasFiniteLength π)
     (hπ : IsSmooth π) (w : List ℂˣ) :
@@ -162,7 +162,7 @@ theorem wordMult_eq_sum (π : Representation ℂ (GL (Fin n) k) V) (h : HasFinit
   rw [← wordMult_congr (topEquiv π), key ⊤, cls_congr (topEquiv π) _ h]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ π h hπ w` and use `wordMult_eq_sum π h hπ w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wordMult_additive : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (h : HasFiniteLength π), IsSmooth π → ∀ w : List ℂˣ, wordMult π w = (cls π h).sum fun c a => (a.toNat : ℕ∞) * wordMult c.rep.ρ w :=
   fun _ _ _ _ _ _ _ _ _ π h hπ w => wordMult_eq_sum π h hπ w

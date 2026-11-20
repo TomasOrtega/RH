@@ -18,17 +18,15 @@ namespace GlobalTheory.UChart.Fam
 open Classical
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c R _ _ _ hB C`. Take `⟨hadm, hch⟩` from `hB`. Use `haveI : IsNoetherianRing R := hadm.1`. Use `haveI : CharZero R := hch`. Take `⟨tK, ⟨m₁⟩, ⟨m₂⟩⟩` from `C.gen`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `K` to `AlgebraicClosure (FractionRing R)`. Set `g : FractionRing R →+* K` to `algebraMap (FractionRing R) K`. Set `f : R →+* K` to `g.comp (algebraMap R (FractionRing R))`. Establish `hf : Function.Injective f` using `(algebraMap (FractionRing R) K).injective.comp (IsFractionRing.injective R (FractionRing R))`. Use `haveI : CharZero K := ⟨fun a b h => Nat.cast_injective (R := R) (hf (by simpa using h))⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `x' : Sp K ⟶ Xo.X` to `spMap g ≫ C.y ≫ pullback.fst _ _`. Take `⟨β₀, hβ₀⟩` from `Spec.map_surjective (x' ≫ Xo.s)`. Establish `hβ : x' ≫ Xo.s = spMap β₀.hom` using `hβ₀.symm`. Establish `hdet` using `(Xo.univ.geom K x' β₀.hom hβ).1`. Establish `hr : (β₀.hom (baseKA l).ρ) ^ 2 = -(H.d : K)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, (baseKA l).ρ_sq, map_neg, map_natCast]`. Establish `hjK : spMap g ≫ jK R = spMap f` using `by show Spec.map _ ≫ Spec.map _ = _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `bound : ∀ (τ : 𝓞 E →+* K) (N : ℕ), LieMult Xo.univ.t.act x' τ N → Module.finrank (𝓞 E) C.P.D.toPre.X ≤ N`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ N hN`. Establish `h₅` using `(GlobalTheory.lieMult_iff_of_isGrpPullback m₂.cart tK.act Xo.univ.t.act m₂.act (spMap g) τ N).2 hN`. Establish `h₆` using `(GlobalTheory.lieMult_iff_of_isGrpPullback m₁.cart tK.act C.t.act m₁.act (spMap g) τ N).1 h₅`. Rewrite `h₆` using `[hjK]`. Take `⟨n, -, hn⟩` from `GlobalTheory.CharRank.lieMult_unif_loc H R C.t C.P K f hf τ N h₆`.
-
-Use linear arithmetic over natural numbers and integers. Take `⟨τ₁, τ₂, h₁, h₂⟩` from `GlobalTheory.CharRank.exists_chars H K _ hr`. Conclude with `le_min (bound τ₁ _ ((hdet τ₁).1 h₁)) (bound τ₂ _ ((hdet τ₂).2 h₂))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finrank_le_min : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     (Xo : Moduli Dw l) (c : Coeff l) (R : Type) [CommRing R] [IsDomain R]

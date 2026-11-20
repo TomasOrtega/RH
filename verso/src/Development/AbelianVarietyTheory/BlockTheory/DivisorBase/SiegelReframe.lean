@@ -262,7 +262,7 @@ def FlatCubical : Prop :=
     UniversalProps g
 
 /- English proof (translation)
-Simplify using `[riem, Matrix.J, dotProduct, Matrix.mulVec, Fintype.sum_sum_type, Matrix.one_apply, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem riem_eq_J {g : ℕ} (x y : Fl g) : riem x y = x ⬝ᵥ (Matrix.J (Fin g) ℝ *ᵥ y) := by
   simp [riem, Matrix.J, dotProduct, Matrix.mulVec, Fintype.sum_sum_type, Matrix.one_apply,
@@ -274,11 +274,9 @@ def thetaExp {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (l : Fl g) (z : Fin g �
     (fun i => (l (Sum.inl i) : ℂ)) ⬝ᵥ z
 
 /- English proof (translation)
-Use `set p : Fin g → ℂ := fun i => (l (Sum.inl i) : ℂ) with hp`. Use `set p' : Fin g → ℂ := fun i => (l' (Sum.inl i) : ℂ) with hp'`. Use `set q' : Fin g → ℂ := fun i => (l' (Sum.inr i) : ℂ) with hq'`. Establish `h1 : (fun i => (((l + l') (Sum.inl i) : ℝ) : ℂ)) = p + p'`. Use extensionality with `i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hp, hp']`. Establish `h2 : (p ᵥ* τ) ⬝ᵥ p' = (p' ᵥ* τ) ⬝ᵥ p`. Rewrite using `[← Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose, hτ.eq, dotProduct_comm]`. Establish `h3 : ∑ i, (l (Sum.inl i) : ℂ) * (l' (Sum.inr i) : ℂ) = p ⬝ᵥ q'` using `rfl`. Simplify using `only [thetaExp, per, h1, h3, ← hp, ← hp', ← hq', Matrix.add_vecMul, add_dotProduct, dotProduct_add]`.
-
-Rewrite using `[dotProduct_comm p (p' ᵥ* τ), h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem thetaExp_add {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm) (l l' : Fl g)
     (z : Fin g → ℂ) :
@@ -298,15 +296,15 @@ theorem thetaExp_add {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSym
   ring
 
 /- English proof (translation)
-Establish `hint : ∀ l ∈ stdLat g, ∀ i, ∃ k : ℤ, l i = k`. Introduce `l hl i`. Take `⟨k, hk⟩` from `((Pi.basisFun ℝ (Fin g ⊕ Fin g)).mem_span_iff_repr_mem ℤ l).1 hl i`. Conclude with `⟨k, by simpa using hk.symm⟩`. Use `⟨⟨fun l _ => ⟨?_, fun _ _ => Complex.exp_ne_zero _⟩, fun l hl l' hl' P hP => ?_⟩, fun b hb => ⟨thetaExp (τ b), fun l _ => ⟨?_, fun _ => rfl⟩, fun l _ l' _ z => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : ∀ i j, DifferentiableOn ℂ (fun P : Pt E g => τ P.1 i j) (cov B g)` using `fun i j => (hτ.2.1 i j).comp differentiableOn_fst fun P hP => hP.1`. Simplify using `only [thetaExp, dotProduct, Matrix.vecMul, div_eq_mul_inv]`. Establish `hz : ∀ i, DifferentiableOn ℂ (fun P : Pt E g => P.2 i) (cov B g)` using `fun i => Differentiable.differentiableOn (by fun_prop)`. Use `DifferentiableOn.cexp (DifferentiableOn.const_mul (DifferentiableOn.sub (DifferentiableOn.mul_const (DifferentiableOn.neg (DifferentiableOn.fun_sum fun i _ => DifferentiableOn.mul_const (DifferentiableOn.fun_sum fun k _ => (hd k i).const_mul _) _)) _) (DifferentiableOn.fun_sum fu …` and prove the remaining obligations. Use `choose a ha using hint l hl choose a' ha' using hint l' hl'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs : ∑ i, (l (Sum.inl i) : ℂ) * (l' (Sum.inr i) : ℂ) = ((∑ i, a (Sum.inl i) * a' (Sum.inr i) : ℤ) : ℂ)` using `by simp [ha, ha']`. Simplify using `only [transl]`. Rewrite using `[thetaExp_add (hτ.2.2 _ hP.1).1, hs, mul_add, mul_add, Complex.exp_add, Complex.exp_add, mul_comm (2 * π * Complex.I) ((_ : ℤ) : ℂ), Complex.exp_int_mul_two_pi_mul_I, mul_one]`. Unfold `thetaExp dotProduct fun_prop`. Establish `e1` using `thetaExp_add (hτ.2.2 b hb).1 l l' z`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `thetaExp_add (hτ.2.2 b hb).1 l' l z`. Rewrite `e2` using `[add_comm l' l]`. Establish `e3 : (riem l l' : ℂ) = ∑ i, (l' (Sum.inl i) : ℂ) * (l (Sum.inr i) : ℂ) - ∑ i, (l (Sum.inl i) : ℂ) * (l' (Sum.inr i) : ℂ)`. Simplify using `[riem, mul_comm]`. Rewrite using `[e3]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `e2 - e1`.
+A detailed English derivation is pending.
 -/
 theorem theta_factor {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ} {B : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ} (hτ : IsPeriodMap B τ) :

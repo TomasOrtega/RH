@@ -14,41 +14,35 @@ open NumberField Module ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheor
 namespace GlobalTheory.DefiniteFin
 
 /- English proof (translation)
-Substitute `hDom` using the available equality. Establish `hT : ∀ i, ∃ T : Set (A i), T ⊆ D i ∧ T.Finite ∧ ∀ w ∈ W i, (∀ t ∈ T, w t = 0) → ∀ t ∈ D i, w t = 0`. Introduce `i`. Set `ev : A i → Module.Dual ℂ (W i)` to `fun t => (LinearMap.proj t : (A i → ℂ) →ₗ[ℂ] ℂ).comp (W i).subtype`. Take `⟨b, hb, hspan, hli⟩` from `exists_linearIndependent ℂ (ev '' D i)`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hbfin : b.Finite` using `hli.setFinite`. Take `⟨T, hTD, hTfin, hTb⟩` from `Set.exists_subset_image_finite_and.1 ⟨b, hb, hbfin, rfl⟩`. Use `⟨T, hTD, hTfin, fun w hw h0 t ht => ?_⟩` and prove the remaining obligations. Establish `hmem : ev t ∈ Submodule.span ℂ b`. Rewrite using `[hspan]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨t, ht, rfl⟩`. Establish `hall : ∀ φ ∈ Submodule.span ℂ b, φ ⟨w, hw⟩ = 0`. Introduce `φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ hφ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hφ` using `[hTb]`. Take `⟨s, hs, rfl⟩` from `hφ`. Conclude with `h0 s hs`. Consider the case `zero => rfl`. Consider the case `add φ ψ _ _ h1 h2 => simp [h1, h2]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Consider the case `smul c φ _ h => simp [h]`. Conclude with `hall _ hmem`. Use `choose T hTD hTfin hTz using hT`. Set `G : Set (∀ i, A i)` to `Set.univ.pi T`. Establish `hGfin : G.Finite` using `Set.Finite.pi (fun i => hTfin i)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hGD : G ⊆ Set.univ.pi D` using `Set.pi_mono (fun i _ => hTD i)`. Set `V : Submodule ℂ ((∀ i, A i) → ℂ)` to `{ carrier := {g | ∀ x ∈ Set.univ.pi D, ∀ i, ∃ w ∈ W i, ∀ t ∈ D i, g (Function.update x i t) = w t} add_mem' := by`. Introduce `f g hf hg x hx i`. Take `⟨w, hw, hfw⟩` from `hf x hx i`. Take `⟨w', hw', hgw⟩` from `hg x hx i`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨w + w', (W i).add_mem hw hw', fun t ht => by simp [hfw t ht, hgw t ht]⟩`. Use the proof step `zero_mem' := by`. Introduce `x hx i`. Conclude with `⟨0, (W i).zero_mem, fun t ht => by simp⟩`. Use the proof step `smul_mem' := by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c f hf x hx i`. Take `⟨w, hw, hfw⟩` from `hf x hx i`. Conclude with `⟨c • w, (W i).smul_mem c hw, fun t ht => by simp [hfw t ht]⟩ }`. Establish `key : ∀ g ∈ V, (∀ x ∈ G, g x = 0) → ∀ x ∈ Set.univ.pi D, g x = 0`. Introduce `g hg h0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : ∀ s : Finset ι, ∀ x ∈ Set.univ.pi D, (∀ i ∉ s, x i ∈ T i) → g x = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro x _ hx`. Conclude with `h0 x (fun i _ => hx i (Finset.notMem_empty i))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `insert j s hj ih`. Introduce `x hx hxT`. Take `⟨w, hw, hgw⟩` from `hg x hx j`. Establish `hwT : ∀ t ∈ T j, w t = 0`. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← hgw t (hTD j ht)]`. Apply `ih` to reduce the goal to its premises. Introduce `i _`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hTD i ht`. Simplify `hx i trivial` using `[h]`. Introduce `i hi`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using `using ht`. Simplify `hxT i (by simp [h, hi])` using `[h]`. Establish `h1` using `hTz j w hw hwT (x j) (hx j trivial)`. Rewrite using `[← h1, ← hgw (x j) (hx j trivial), Function.update_eq_self]`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `hs Finset.univ x hx (fun i hi => absurd (Finset.mem_univ i) hi)`. Set `resD : ((∀ i, A i) → ℂ) →ₗ[ℂ] (Set.univ.pi D → ℂ)` to `LinearMap.funLeft ℂ ℂ Subtype.val`. Set `resG : (Set.univ.pi D → ℂ) →ₗ[ℂ] (G → ℂ)` to `LinearMap.funLeft ℂ ℂ (Set.inclusion hGD)`. Establish `hsub : Submodule.span ℂ ((fun g : (∀ i, A i) → ℂ => fun x : Set.univ.pi D => g x) '' S) ≤ V.map resD`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `⟨g, hS g hg, rfl⟩`. Use `haveI : Finite G := hGfin.to_subtype`. Establish `hinj : Function.Injective (resG.domRestrict (V.map resD))`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`.
-
-Introduce and unpack `⟨φ, g, hg, rfl⟩ hφ`. Rewrite `hφ` using `[LinearMap.mem_ker]`. Rewrite using `[Submodule.mem_bot]`. Use extensionality with `⟨x, hx⟩`. Establish `hz : ∀ y ∈ G, g y = 0`.
-
-Introduce `y hy`. Use `congrFun (show resG (resD g) = 0 from hφ) ⟨y, hy⟩` as an intermediate fact. Conclude with `this`. Conclude with `key g hg hz x hx`. Use `haveI : FiniteDimensional ℂ (V.map resD) := Module.Finite.of_injective _ hinj`.
-
-Conclude with `Submodule.finiteDimensional_of_le hsub`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_span_of_slices (ι : Type) [Fintype ι] [DecidableEq ι] (A : ι → Type) (D : ∀ i, Set (A i))
     (W : ∀ i, Submodule ℂ (A i → ℂ)) (hW : ∀ i, FiniteDimensional ℂ (W i)) (Dom : Set (∀ i, A i))
@@ -144,17 +138,15 @@ theorem finiteDimensional_span_of_slices (ι : Type) [Fintype ι] [DecidableEq �
   exact Submodule.finiteDimensional_of_le hsub
 
 /- English proof (translation)
-Introduce `E _ _ _ r X hp la`. Establish `hdom : ∀ x : Frame X.Ψ r, x ∈ X.dom ↔ ∀ τ, (mat x τ).det ≠ 0`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hx τ).1`. Introduce `hx τ`. Conclude with `⟨hx τ, GlobalTheory.T.re_dmin_sign_pos_of_definite E r X hp x τ (hx τ)⟩`. Use `set N : ℕ := ∑ τ, ∑ i, (la τ i).natAbs with hN`. Establish `hNle : ∀ τ i, 0 ≤ la τ i + N`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `τ i`. Establish `h1 : (la τ i).natAbs ≤ N`. Combine the equalities or inequalities in the displayed calculation. Use linear arithmetic over natural numbers and integers. Set `d : X.Ψ → ℕ` to `fun τ => ∑ i, (la τ i + N).toNat`.
+Chain the equalities or inequalities of the calculation. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ev : MvPolynomial (Fin r × Fin r) ℂ →ₗ[ℂ] ((Fin r → Fin r → ℂ) → ℂ)` to `{ toFun := fun F y => MvPolynomial.eval (fun ij => y ij.1 ij.2) F * ((Matrix.of y).det)⁻¹ ^ N map_add' := by intro F G; funext y; simp [add_mul] map_smul' := by intro c F; funext y; simp [mul_assoc] }`. Set `W : X.Ψ → Submodule ℂ ((Fin r → Fin r → ℂ) → ℂ)` to `fun τ => (MvPolynomial.restrictTotalDegree (Fin r × Fin r) ℂ (d τ)).map ev`. Establish `hW : ∀ τ, FiniteDimensional ℂ (W τ)` using `fun τ => inferInstance`. Use `finiteDimensional_span_of_slices X.Ψ (fun _ => Fin r → Fin r → ℂ) (fun _ => {y | (Matrix.of y).det ≠ 0}) W hW X.dom ?_ (X.SS la) ?_` and prove the remaining obligations. Use extensionality with `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, Set.mem_setOf_eq]`. Conclude with `hdom x`. Introduce `g hg x hx τ`. Take `⟨F, hF, hFy⟩` from `GlobalTheory.T.frameSection_slice_eq_poly_div_det_pow E r X hdom la N hNle g hg.1.1 x hx τ`. Use `⟨ev F, ⟨F, ?_, rfl⟩, fun t ht => hFy t ht⟩` and prove the remaining obligations.
-
-Rewrite using `[SetLike.mem_coe, MvPolynomial.mem_restrictTotalDegree]`. Conclude with `hF.totalDegree_le`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_cusp_definite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r),
     (X.p0 = 0 ∨ X.p0 = r) → ∀ la : Wt X.Ψ r,

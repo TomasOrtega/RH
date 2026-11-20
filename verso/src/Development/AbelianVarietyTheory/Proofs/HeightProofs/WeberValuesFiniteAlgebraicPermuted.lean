@@ -10,13 +10,11 @@ open scoped IntermediateField
 namespace GlobalTheory.FieldSize
 
 /- English proof (translation)
-Establish `hn0 : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `hnZ : (0 : ℤ) < n` using `by exact_mod_cast hn`. Set `f : ℤ × ℤ → ℂ` to `fun s => L.g₂ * L.g₃ / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) * L.weierstrassP ((s.1 * L.ω₁ + s.2 * L.ω₂) / n)`. Use `Set.Finite.insert _ ((((Set.finite_Ico (0 : ℤ) n).prod (Set.finite_Ico (0 : ℤ) n)).image f).subset ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, -, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨a, b, rfl⟩` from `PeriodPair.mem_lattice.1 hz`. Use `⟨(a % n, b % n), ⟨⟨Int.emod_nonneg _ hnZ.ne', Int.emod_lt_of_pos _ hnZ⟩, ⟨Int.emod_nonneg _ hnZ.ne', Int.emod_lt_of_pos _ hnZ⟩⟩, ?_⟩` and prove the remaining obligations. Establish `e : (a * L.ω₁ + b * L.ω₂) / n = (((a % n : ℤ) : ℂ) * L.ω₁ + ((b % n : ℤ) : ℂ) * L.ω₂) / n + (((a / n : ℤ) : ℂ) * L.ω₁ + ((b / n : ℤ) : ℂ) * L.ω₂)`. Establish `a1 : ((a % n : ℤ) : ℂ) + n * ((a / n : ℤ) : ℂ) = a`. Conclude with `Int.emod_add_mul_ediv a n` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : ((b % n : ℤ) : ℂ) + n * ((b / n : ℤ) : ℂ) = b`. Conclude with `Int.emod_add_mul_ediv b n` after adjusting the coercions. Rewrite using `[← a1, ← a2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using `only [f]`. Rewrite using `[e, L.weierstrassP_add_coe _ ⟨_, PeriodPair.mem_lattice.2 ⟨_, _, rfl⟩⟩]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem weberSet_finite (L : PeriodPair) {n : ℕ} (hn : 0 < n) : (weberSet L n).Finite := by
   have hn0 : (n : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hn.ne'
@@ -42,21 +40,19 @@ theorem weberSet_finite (L : PeriodPair) {n : ℕ} (hn : 0 < n) : (weberSet L n)
   rw [e, L.weierstrassP_add_coe _ ⟨_, PeriodPair.mem_lattice.2 ⟨_, _, rfl⟩⟩]
 
 /- English proof (translation)
-Establish `hD` using `g₂_cube_sub_g₃_sq_ne_zero L`. Use `set J := L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) with hJ`. Use `set u := L.g₂ * L.g₃ / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) with hu`. Establish `hu0 : u ≠ 0` using `div_ne_zero (mul_ne_zero h2 h3) hD`. Take `⟨m, hm⟩` from `IsAlgClosed.exists_pow_nat_eq u⁻¹ (n := 2) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hu0 (by simpa using hm.symm)`. Establish `hmu : (m ^ 2)⁻¹ = u` using `by rw [hm, inv_inv]`. Establish `H` using `isHomothetic_scalePeriods L m hm0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set L' := scalePeriods L m hm0`. Establish `hJ1 : J - 1 = 27 * L.g₃ ^ 2 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)`. Rewrite using `[hJ, div_sub_one hD, sub_sub_cancel]`. Establish `e2 : L'.g₂ = J * (J - 1) / 27`. Rewrite using `[H.g₂_eq, show (m ^ 4)⁻¹ = ((m ^ 2)⁻¹) ^ 2 by ring, hmu, hJ1, hu, hJ]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `L.g₂ ^ 3 - 27 * L.g₃ ^ 2 = D`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : L'.g₃ = J * (J - 1) ^ 2 / 729`. Rewrite using `[H.g₃_eq, show (m ^ 6)⁻¹ = ((m ^ 2)⁻¹) ^ 3 by ring, hmu, hJ1, hu, hJ]`. Generalize the expression as in `L.g₂ ^ 3 - 27 * L.g₃ ^ 2 = D`.
+Replace the chosen expression with an arbitrary variable. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `f2 : L'.g₂ = τ L'.g₂`. Rewrite using `[e2]`. Simplify using `[hτ, map_ofNat]`. Establish `f3 : L'.g₃ = τ L'.g₃`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e3]`. Simplify using `[hτ, map_ofNat]`. Take `⟨s, -, hc⟩` from `GlobalTheory.ConjPoint.exists_conjEquiv f2 f3`. Take `⟨w, hw⟩` from `latticePoint_surjective L' (s (latticePoint L' (m * t)))`. Take `⟨t', rfl⟩ : ∃ t', w = m * t'` from `⟨m⁻¹ * w, by field_simp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hconj` using `(hc _ _).2 hw.symm`. Establish `h1` using `(hconj.nsmul_mem_iff f2 f3 n).1 (by rw [mul_left_comm]; exact (H _).2 hnt)`. Rewrite `h1` using `[mul_left_comm]`. Take `⟨-, h4, h5, -⟩` from `hconj.resolve_left fun h => ht ((H t).1 h.1)`. Use `⟨t', (H _).1 h1, fun h => h4 ((H _).2 h), ?_⟩` and prove the remaining obligations.
-
-Rewrite `h5` using `[H.weierstrassP_mul, H.weierstrassP_mul, hmu]`. Conclude with `h5.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_map_weber_eq (L : PeriodPair) (n : ℕ) (h2 : L.g₂ ≠ 0) (h3 : L.g₃ ≠ 0) (τ : ℂ ≃+* ℂ)
     (hτ : τ (L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)) = L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2))
@@ -101,9 +97,7 @@ theorem exists_map_weber_eq (L : PeriodPair) (n : ℕ) (h2 : L.g₂ ≠ 0) (h3 :
   exact h5.symm
 
 /- English proof (translation)
-Introduce `L n hn h2 h3`. Establish `hn0 : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Use `⟨weberSet_finite L hn, fun hj => ?_, exists_map_weber_eq L n h2 h3⟩` and prove the remaining obligations. Introduce and unpack `_ (rfl | ⟨z, hz, hz', rfl⟩)`. Conclude with `hj`.
-
-Conclude with `GlobalTheory.WeberField.weber_isAlgebraic L hj hn hz' (by rwa [mul_div_cancel₀ _ hn0])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem weberSet_finite_algebraic_permuted : ∀ (L : PeriodPair) (n : ℕ), 0 < n → L.g₂ ≠ 0 → L.g₃ ≠ 0 → (weberSet L n).Finite ∧ (IsAlgebraic ℚ (L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)) → ∀ w ∈ weberSet L n, IsAlgebraic ℚ w) ∧ ∀ τ : ℂ ≃+* ℂ, τ (L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)) = (L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)) → ∀ t, (n : ℂ) * t ∈ L.lattice → t ∉ L.lattice → ∃ t', (n : ℂ) * t' ∈ L.lattice ∧ t' ∉ L.lattice ∧ τ (L.g₂ * L.g₃ / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) * L.weierstrassP t) = (L.g₂ * L.g₃ / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) * L.weierstrassP t') := by
   intro L n hn h2 h3

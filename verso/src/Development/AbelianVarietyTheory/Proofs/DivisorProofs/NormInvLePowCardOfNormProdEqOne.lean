@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `B M hM hB hprod b hb`. Establish `aux : ∀ C : Multiset ℂˣ, (∀ c ∈ C, ‖(c : ℂ)‖ ≤ M) → ‖(C.map fun c : ℂˣ => (c : ℂ)).prod‖ ≤ M ^ C.card`. Introduce `C`. Proceed by induction on `C using Multiset.induction_on with`. Consider the case `empty => intro _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `cons a C ih`. Introduce `hC`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, Multiset.card_cons, pow_succ, norm_mul, mul_comm (M ^ _)]`. Conclude with `mul_le_mul (hC a (Multiset.mem_cons_self a C)) (ih fun c hc => hC c (Multiset.mem_cons_of_mem hc)) (norm_nonneg _) (by linarith)`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨C, rfl⟩` from `Multiset.exists_cons_of_mem hb`. Establish `hC : ∀ c ∈ C, ‖(c : ℂ)‖ ≤ M` using `fun c hc => hB c (Multiset.mem_cons_of_mem hc)`. Rewrite `hprod` using `[Multiset.map_cons, Multiset.prod_cons, norm_mul]`. Establish `hinv : ‖((b⁻¹ : ℂˣ) : ℂ)‖ = ‖(C.map fun c : ℂˣ => (c : ℂ)).prod‖`. Rewrite using `[Units.val_inv_eq_inv_val, norm_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(eq_inv_of_mul_eq_one_right hprod).symm`. Rewrite using `[hinv, Multiset.card_cons]`. Conclude with `(aux C hC).trans (pow_le_pow_right₀ hM (Nat.le_succ _))`.
+A detailed English derivation is pending.
 -/
 theorem norm_inv_le_pow_card_of_norm_prod_eq_one :
     ∀ (B : Multiset ℂˣ) (M : ℝ), 1 ≤ M → (∀ b ∈ B, ‖(b : ℂ)‖ ≤ M) →

@@ -21,7 +21,7 @@ def IsUnitNorm (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (a : R
   ∃ s : R ⊗[F] E, IsUnit s ∧ s * sigR R σ s = a
 
 /- English proof (translation)
-Take `⟨s, hs, rfl⟩` from `h`. Conclude with `hs.mul (hs.map (sigR R σ))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsUnitNorm.isUnit {R : Type} [CommRing R] [Algebra F R] {σ : E →ₐ[F] E} {a : R ⊗[F] E}
     (h : IsUnitNorm R σ a) : IsUnit a := by

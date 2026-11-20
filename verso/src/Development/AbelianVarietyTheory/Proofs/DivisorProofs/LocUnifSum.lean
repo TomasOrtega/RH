@@ -38,7 +38,7 @@ def EisGood {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (b : ℕ) (Eis : ℂ → UA
       (∀ s ∈ U, ‖Eis s g‖ ≤ C * (ht g : ℝ) ^ N) ∧ Eis (-((((b + 2 : ℕ) : ℂ) - 1) / 2)) g = 1
 
 /- English proof (translation)
-Introduce `_ _ _ _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {d d₁ : ℕ} {W : Spc F E d} (W₁ : Spc F E d₁) (H' : Plane E d d₁) (χ : Chr F E) (z : ℂ) :
     HasLawC (σ := σ) (W := W) W₁ H' χ z 0 := fun _ _ _ _ => by simp

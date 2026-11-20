@@ -27,7 +27,7 @@ def De (P : Ideal (MRing ι)) {n : ℕ} (L : Fin n → HermLine ι) (A A' : Herm
       ptsIntegral P (Fin.cons (fun z => Real.log (A.h z)) (pot L)) (logNorm A' s'))
 
 /- English proof (translation)
-Unfold `De`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem De_swap (P : Ideal (MRing ι)) {n : ℕ} (L : Fin n → HermLine ι) (A A' : HermLine ι)
     (s s' : MRing ι) : De P L A' A s' s = -De P L A A' s s' := by
@@ -58,9 +58,9 @@ def DeLeSemiPos.Statement : Prop :=
     De P L A A' s s' ≤ 0
 
 /- English proof (translation)
-Use `⟨fun _ => 1, fun _ => rfl, fun m hm k => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using `[Finsupp.single_apply]`. Rewrite using `[Submodule.mem_bot]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `X_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem isSectionOn_coordinate_plane (i : Fin 3) : IsSectionOn (⊥ : Ideal (MRing (PBlk 3))) (fsLine 3) (Xc 3 i) := by
   refine ⟨fun _ => 1, fun _ => rfl, fun m hm k => ?_, ?_⟩

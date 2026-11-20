@@ -13,7 +13,7 @@ noncomputable def UpperTheory.Reformulated.B.CuspidalIrreducibleSubrep.ev :
         ((MultilinearMap.mkPiAlgebra ℂ I ℂ).compLinearMap f)
 
 /- English proof (translation)
-Introduce `I _ _ W _ _ f m`. Simplify using `[UpperTheory.Reformulated.B.CuspidalIrreducibleSubrep.ev]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.CuspidalIrreducibleSubrep.ev_tprod :
     ∀ {I : Type} [inst : Fintype I] [dI : DecidableEq I] {W : I → Type} [inst_1 : (i : I) → AddCommGroup (W i)]

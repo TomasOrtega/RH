@@ -26,7 +26,7 @@ def KerAlong {S : Scheme.{0}} (A : Over S) [GrpObj A] (P : LB (A ⊗ A).left) {S
   ∀ (T : Over S) (a : T.left ⟶ S'), a ≫ g = T.hom → ∀ x : T ⟶ A, IsTrivial (slice A P x) → x = 1
 
 /- English proof (translation)
-Introduce `T a ha` and use `h T (a ≫ f) ((Category.assoc _ _ _).trans ha)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem KerAlong.comp {S S' S'' : Scheme.{0}} {A : Over S} [GrpObj A] {P : LB (A ⊗ A).left} {g : S' ⟶ S}
     (h : KerAlong A P g) (f : S'' ⟶ S') : KerAlong A P (f ≫ g) :=

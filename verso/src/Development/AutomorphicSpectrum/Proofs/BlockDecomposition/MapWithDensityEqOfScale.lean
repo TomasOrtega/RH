@@ -16,11 +16,11 @@ def HaarNM : Prop := ∀ {Q : Type} [Group Q] [TopologicalSpace Q] [IsTopologica
     νQ = ((νN.prod νM).withDensity fun p => δ p.2).map (fun p : N × M => (p.1 : Q) * (p.2 : Q))
 
 /- English proof (translation)
-Use extensionality with `A hA`. Rewrite using `[map_apply hS hA, withDensity_apply _ (hS hA), withDensity_apply _ hA]`. Establish `key : ∫⁻ x, (A.indicator f) x ∂(ρ.map S) = a * ∫⁻ x, A.indicator f x ∂ρ`. Rewrite using `[hρ, lintegral_smul_measure]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `key` using `[lintegral_map (hf.indicator hA) hS]`. Establish `h2 : (fun x => A.indicator f (S x)) = fun x => a * (S ⁻¹' A).indicator f x`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : S x ∈ A`. Establish `hx' : x ∈ S ⁻¹' A` using `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx', hfS]`. Establish `hx' : x ∉ S ⁻¹' A` using `hx`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hx', mul_zero]`. Rewrite `key` using `[h2, lintegral_const_mul _ (hf.indicator (hS hA)), lintegral_indicator (hS hA), lintegral_indicator hA]`. Conclude with `(ENNReal.mul_right_inj ha0 hat).1 key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_withDensity_eq_of_scale {X : Type*} [MeasurableSpace X] (ρ : Measure X) (S : X → X)
     (hS : Measurable S) (f : X → ℝ≥0∞) (hf : Measurable f) (a : ℝ≥0∞) (ha0 : a ≠ 0) (hat : a ≠ ∞)
@@ -63,7 +63,7 @@ theorem conjCE_coe (N : Subgroup Q) [N.Normal] (g : Q) (u : N) :
     ((conjCE N g u : N) : Q) = g * u * g⁻¹ := rfl
 
 /- English proof (translation)
-Use extensionality with `u`. Simplify using `[conjCE_coe, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjCE_mul (N : Subgroup Q) [N.Normal] (g h : Q) :
     conjCE N (g * h) = (conjCE N h).trans (conjCE N g) := by
@@ -78,20 +78,20 @@ noncomputable def modInv (m : M) : ℝ≥0∞ :=
   ((mulEquivHaarChar (conjCE N (m : Q)) : ℝ≥0) : ℝ≥0∞)⁻¹
 
 /- English proof (translation)
-Establish `h` using `(mulEquivHaarChar_pos (conjCE N (m : Q))).ne'`. Simplify using `[modInv, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem modInv_ne_top (m : M) : modInv N M m ≠ ∞ := by
   have h := (mulEquivHaarChar_pos (conjCE N (m : Q))).ne'
   simp [modInv, h]
 
 /- English proof (translation)
-Simplify using `[modInv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modInv_ne_zero (m : M) : modInv N M m ≠ 0 := by
   simp [modInv]
 
 /- English proof (translation)
-Establish `h1` using `(mulEquivHaarChar_pos (conjCE N (m : Q))).ne'`. Establish `h2` using `(mulEquivHaarChar_pos (conjCE N (m' : Q))).ne'`. Simplify using `only [modInv, Subgroup.coe_mul, conjCE_mul, mulEquivHaarChar_trans, ENNReal.coe_mul]`. Rewrite using `[ENNReal.mul_inv (Or.inr ENNReal.coe_ne_top) (Or.inl ENNReal.coe_ne_top), mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem modInv_mul (m m' : M) : modInv N M (m * m') = modInv N M m * modInv N M m' := by
   have h1 := (mulEquivHaarChar_pos (conjCE N (m : Q))).ne'
@@ -100,9 +100,9 @@ theorem modInv_mul (m m' : M) : modInv N M (m * m') = modInv N M m * modInv N M 
   rw [ENNReal.mul_inv (Or.inr ENNReal.coe_ne_top) (Or.inl ENNReal.coe_ne_top), mul_comm]
 
 /- English proof (translation)
-Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : N)`. Use `haveI : ν.Regular := regular_of_isMulLeftInvariant hK ⟨1, mem_interior_iff_mem_nhds.2 hK1⟩ hK.measure_lt_top.ne`. Establish `h` using `mulEquivHaarChar_smul_map ν (conjCE N (m : Q))`. Establish `hc : ((mulEquivHaarChar (conjCE N (m : Q)) : ℝ≥0) : ℝ≥0∞) ≠ 0`. Simplify using `using (mulEquivHaarChar_pos (conjCE N (m : Q))).ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[ENNReal.smul_def]`. Use `conv_rhs => rw [← h]`. Rewrite using `[smul_smul, modInv, ENNReal.inv_mul_cancel hc ENNReal.coe_ne_top, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_conj (ν : Measure N) [ν.IsHaarMeasure] (m : M) :
     ν.map (conjCE N (m : Q)) = modInv N M m • ν := by
@@ -117,15 +117,13 @@ theorem map_conj (ν : Measure N) [ν.IsHaarMeasure] (m : M) :
   rw [smul_smul, modInv, ENNReal.inv_mul_cancel hc ENNReal.coe_ne_top, one_smul]
 
 /- English proof (translation)
-Set `ν : Measure N` to `haar`. Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : N)`. Establish `hs : IsOpen (interior K)` using `isOpen_interior`. Establish `hs0 : ν (interior K) ≠ 0` using `(hs.measure_pos ν ⟨1, mem_interior_iff_mem_nhds.2 hK1⟩).ne'`. Establish `hst : ν (interior K) ≠ ∞` using `((measure_mono interior_subset).trans_lt hK.measure_lt_top).ne`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `F : M × N → N` to `fun p => conjCE N (p.1 : Q) p.2`. Establish `hF : Continuous F`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Establish `: Continuous fun p : M × N => (p.1 : Q) * (p.2 : Q) * (p.1 : Q)⁻¹` using `by fun_prop`. Conclude with `this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : MeasurableSet (F ⁻¹' interior K)` using `(hs.preimage hF).measurableSet`. Establish `hm` using `measurable_measure_prodMk_left (ν := ν) hB`. Establish `he : modInv N M = fun m => ν (Prod.mk m ⁻¹' (F ⁻¹' interior K)) / ν (interior K)`. Use function extensionality and compare the values at `m`. Establish `h` using `congrArg (fun μ : Measure N => μ (interior K)) (map_conj N M ν m)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Measure.smul_apply, smul_eq_mul] at h`. Rewrite `h` using `[map_apply (map_continuous _).measurable hs.measurableSet]`. Establish `h3 : Prod.mk m ⁻¹' (F ⁻¹' interior K) = conjCE N (m : Q) ⁻¹' interior K` using `rfl`. Rewrite using `[h3, h, ENNReal.mul_div_cancel_right hs0 hst]`. Rewrite using `[he]`.
-
-Conclude with `hm.div_const _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_modInv : Measurable (modInv N M) := by
   let ν : Measure N := haar
@@ -152,11 +150,11 @@ theorem measurable_modInv : Measurable (modInv N M) := by
   exact hm.div_const _
 
 /- English proof (translation)
-Establish `hS1 : Measurable fun x : N => u * conjCE N (m : Q) x` using `(continuous_const.mul (map_continuous _)).measurable`. Establish `hS2 : Measurable fun x : M => m * x` using `(continuous_const.mul continuous_id).measurable`. Use `map_withDensity_eq_of_scale _ _ (hS1.prodMap hS2) _ ((measurable_modInv N M).comp measurable_snd) (modInv N M m) (modInv_ne_zero N M m) (modInv_ne_top N M m) ?_ ?_` and prove the remaining obligations. Establish `h1 : νN.map (fun x : N => u * conjCE N (m : Q) x) = modInv N M m • νN`. Establish `h0 : (fun x : N => u * conjCE N (m : Q) x) = (fun x => u * x) ∘ conjCE N (m : Q)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h0, ← map_map (measurable_const_mul u) (map_continuous _).measurable, map_conj, Measure.map_smul, map_mul_left_eq_self]`. Establish `h2 : νM.map (fun x : M => m * x) = νM` using `map_mul_left_eq_self νM m`. Establish `h3` using `map_prod_map νN νM hS1 hS2`. Rewrite `h3` using `[h1, h2]`. Use `show map (Prod.map _ _) _ = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h3, prod_smul_left]`. Introduce `x`. Conclude with `modInv_mul N M m x.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem map_translate (νN : Measure N) [νN.IsHaarMeasure] (νM : Measure M) [νM.IsHaarMeasure]
     [LocallyCompactSpace M] (u : N) (m : M) :
@@ -184,11 +182,9 @@ theorem map_translate (νN : Measure N) [νN.IsHaarMeasure] (νM : Measure M) [�
 end
 
 /- English proof (translation)
-Introduce and unpack `⟨u, m⟩ ⟨u', m'⟩ h`. Establish `h' : (u : Q) * m = u' * m'` using `h`. Establish `h1 : (u' : Q)⁻¹ * u = m' * (m : Q)⁻¹`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, eq_mul_inv_iff_mul_eq]`. Conclude with `h'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (u' : Q)⁻¹ * u ∈ N ⊓ M` using `⟨N.mul_mem (N.inv_mem u'.2) u.2, by rw [h1]; exact M.mul_mem m'.2 (M.inv_mem m.2)⟩`. Rewrite `h2` using `[hinf, Subgroup.mem_bot]`. Establish `hu : (u : Q) = u'` using `(inv_mul_eq_one.1 h2).symm`. Establish `hm : (m : Q) = m'`. Rewrite `h'` using `[hu]`.
-
-Conclude with `mul_left_cancel h'`. Conclude with `Prod.ext (Subtype.ext hu) (Subtype.ext hm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulMap_injective {Q : Type} [Group Q] (N M : Subgroup Q) (hinf : N ⊓ M = ⊥) :
     Function.Injective (fun p : N × M => (p.1 : Q) * (p.2 : Q)) := by
@@ -207,23 +203,17 @@ theorem mulMap_injective {Q : Type} [Group Q] (N M : Subgroup Q) (hinf : N ⊓ M
   exact Prod.ext (Subtype.ext hu) (Subtype.ext hm)
 
 /- English proof (translation)
-Introduce `Q _ _ _ _ _ _ _ _ νQ _ N M _ hNc hMc hdec hinf νN _ νM _`. Use `haveI : LocallyCompactSpace N := hNc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : LocallyCompactSpace M := hMc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Use `haveI : SecondCountableTopology M := Topology.IsEmbedding.subtypeVal.secondCountableTopology`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : PolishSpace N := PI.VolStabS.TopoPolish.polish_of_lcsc N`. Use `haveI : PolishSpace M := PI.VolStabS.TopoPolish.polish_of_lcsc M`. Set `φ : N × M → Q` to `fun p => (p.1 : Q) * (p.2 : Q)`. Establish `φc : Continuous φ` using `by fun_prop`. Establish `φemb : MeasurableEmbedding φ` using `φc.measurableEmbedding (mulMap_injective N M hinf)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `f : N × M → ℝ≥0∞` to `fun p => modInv N M p.2`. Establish `hf : Measurable f` using `(measurable_modInv N M).comp measurable_snd`. Set `ρ : Measure (N × M)` to `(νN.prod νM).withDensity f`. Set `ν' : Measure Q` to `ρ.map φ`. Use `haveI : SigmaFinite ρ := SigmaFinite.withDensity_of_ne_top (Filter.Eventually.of_forall fun p => modInv_ne_top N M p.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : SigmaFinite ν' := φemb.sigmaFinite_map`. Use `haveI : ν'.IsMulLeftInvariant := ⟨fun q => by`. Take `⟨u, hu, m, hm, rfl⟩` from `hdec q`. Establish `hS1 : Measurable fun x : N => (⟨u, hu⟩ : N) * conjCE N m x` using `(continuous_const.mul (map_continuous _)).measurable`. Establish `hS2 : Measurable fun x : M => (⟨m, hm⟩ : M) * x` using `(continuous_const.mul continuous_id).measurable`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hS : Measurable fun p : N × M => ((⟨u, hu⟩ : N) * conjCE N m p.1, (⟨m, hm⟩ : M) * p.2)` using `hS1.prodMap hS2`. Establish `hcomm : (fun x => u * m * x) ∘ φ = φ ∘ fun p : N × M => ((⟨u, hu⟩ : N) * conjCE N m p.1, (⟨m, hm⟩ : M) * p.2)`. Use function extensionality and compare the values at `p`. Use `show (u * m) * ((p.1 : Q) * p.2) = (u * ((m * p.1) * m⁻¹)) * (m * p.2)`. Use `group`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show map (fun x => u * m * x) (map φ ρ) = map φ ρ`. Rewrite using `[map_map (measurable_const_mul _) φemb.measurable, hcomm, ← map_map φemb.measurable hS]`. Conclude with `congrArg (map φ) (map_translate N M νN νM ⟨u, hu⟩ ⟨m, hm⟩)⟩`. Establish `hν0 : ν' Set.univ ≠ 0`. Introduce `h0`.
-
-Rewrite `h0` using `[φemb.map_apply, Set.preimage_univ]`. Establish `hac : (νN.prod νM) ≪ ρ` using `withDensity_absolutelyContinuous' hf.aemeasurable (Filter.Eventually.of_forall fun p => modInv_ne_zero N M p.2)`. Conclude with `(isOpen_univ.measure_pos (νN.prod νM) Set.univ_nonempty).ne' (hac h0)`. Take `⟨n, hn⟩ : ∃ n, ν' (spanningSets (ν' + νQ) n) ≠ 0` from `by by_contra! h`. Conclude with `hν0 (by rw [← iUnion_spanningSets (ν' + νQ)]; exact measure_iUnion_null h)`.
-
-Establish `hfin` using `measure_spanningSets_lt_top (ν' + νQ) n`. Rewrite `hfin` using `[Measure.add_apply]`. Take `⟨h1, h2⟩` from `ENNReal.add_lt_top.1 hfin`. Establish `key` using `measure_eq_div_smul νQ ν' hn h1.ne`. Establish `hc : νQ (spanningSets (ν' + νQ) n) / ν' (spanningSets (ν' + νQ) n) ≠ ∞` using `ENNReal.div_ne_top h2.ne hn`.
-
-Generalize the expression as in `νQ (spanningSets (ν' + νQ) n) / ν' (spanningSets (ν' + νQ) n) = c at key hc`. Use `⟨fun m => c * modInv N M m, (measurable_modInv N M).const_mul c, fun m => ENNReal.mul_ne_top hc (modInv_ne_top N M m), key.trans ?_⟩` and prove the remaining obligations. Establish `h3 : (fun p : N × M => c * modInv N M p.2) = c • f` using `rfl`. Rewrite using `[h3, withDensity_smul c hf, Measure.map_smul]`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haarNM : HaarNM := by
   intro Q _ _ _ _ _ _ _ _ νQ _ N M _ hNc hMc hdec hinf νN _ νM _

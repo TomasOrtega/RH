@@ -12,11 +12,11 @@ namespace GlobalTheory.CompanionTheory.SiegelNM
 open GlobalTheory.StdUnn.Model
 
 /- English proof (translation)
-Introduce `D p q hq a ha`. Take `⟨m, u, b, e, hm, hu⟩` from `GlobalTheory.StdUnn.LeftInvSect.exists_levi_unip hq a ha`. Take `⟨m', hm'⟩` from `GlobalTheory.StdUnn.Model.exists_levi (D := D) (n := p) a⁻¹`. Rewrite `hm'` using `[inv_inv]`. Establish `hmm : m * m' = 1` using `GlobalTheory.StdUnn.LeftInvSect.mat_inj (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.StdUnn.LeftInvSect.mat_mul, GlobalTheory.StdUnn.LeftInvSect.mat_one, hm, hm', GlobalTheory.StdUnn.LeftInvSect.levi_mul_inv])`. Establish `hmm' : m' * m = 1`. Rewrite using `[eq_inv_of_mul_eq_one_right hmm, inv_mul_cancel]`. Establish `h2 : (adj (a⁻¹).1 : Mx D p p) * adj a.1 = 1`. Rewrite using `[← adj_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[adj_one]`. Use `⟨m * u * m', m, a.1 * b * adj a.1, ?_, ?_, hm⟩` and prove the remaining obligations. Rewrite using `[mul_assoc (m * u), hmm', mul_one, e]`. Rewrite using `[GlobalTheory.StdUnn.LeftInvSect.mat_mul, GlobalTheory.StdUnn.LeftInvSect.mat_mul, hm, hu, hm']`. Simplify using `[GlobalTheory.StdUnn.Model.submatrix_fromBlocks_mul, h2, -Matrix.coe_units_inv]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unip_mul_levi : ∀ (D : D7) (p : ℕ) (q : G D p), q ∈ P D p → ∀ a : GL (Fin p) (AE D), blkA (mat q) = a.1 →
     ∃ (g₁ g₂ : G D p) (b : Mx D p p), q = g₁ * g₂ ∧ mat g₁ = blk4 1 b 0 1 ∧ mat g₂ = blk4 a.1 0 0 (adj (a⁻¹).1) := by

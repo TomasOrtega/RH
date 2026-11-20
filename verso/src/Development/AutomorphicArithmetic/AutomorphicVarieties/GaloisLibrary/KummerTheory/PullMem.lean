@@ -8,15 +8,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ U hU N R M _ _ _ hN`. Take `⟨hD, hI, hc, hH⟩` from `toGalDict F Ω K U hU`. Take `⟨hS, hL⟩` from `artSurj K Ω`. Take `⟨-, hP, hT, hA⟩` from `placeDict K Ω`. Use `⟨?_, fun h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨θ, ⟨hm, hv⟩, rfl⟩`. Set `θ' : ClassGroup (𝓞 K) →* Multiplicative M` to `MonoidHom.mk' (fun c => Multiplicative.ofAdd (θ c)) fun a b => by`. Rewrite using `[hm, ofAdd_add]`. Establish `h1 : θ 1 = 0` using `congrArg Multiplicative.toAdd θ'.map_one`. Use `⟨?_, fun a b => ?_, fun A u hu => ?_, fun A hAN u hu => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hL.comp_continuous hc).comp θ`. Rewrite using `[clPull_apply, clPull_apply, clPull_apply, map_mul, map_mul, hm]`. Rewrite using `[clPull_apply, (artIne K Ω).1 A _ ((hI A u).2 hu), h1]`. Take `⟨v, hAv⟩` from `hP A (hT A N hN hAN)`. Establish `hvN` using `(hA A v N hAv).1 hAN`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : artCl K Ω (toGal K hU u) ∈ Subgroup.zpowers (primeCl v)`. Rewrite using `[← artDec K Ω A v hAv]`. Conclude with `Subgroup.mem_map_of_mem _ ((hD A u).2 hu)`. Establish `hle : Subgroup.zpowers (primeCl v) ≤ θ'.ker`. Rewrite using `[Subgroup.zpowers_le, MonoidHom.mem_ker]`.
-
-Conclude with `congrArg Multiplicative.ofAdd (hv v hvN)`. Rewrite using `[clPull_apply]`. Conclude with `congrArg Multiplicative.toAdd (MonoidHom.mem_ker.1 (hle hmem))`. Conclude with `LinearMap.funLeft_injective_of_surjective R M _ (hS.comp (hH h).1.surjective)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.pullMem :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (U : Subgroup (G F Ω)) (hU : U ≤ galOf F K Ω) (N : ℕ) (R M : Type) [CommRing R] [AddCommGroup M] [Module R M], N ≠ 0 → (ClDual K N R M).map (clPull K hU R M) ≤ XDual N U R M ∧ (galOf F K Ω ≤ U → Function.Injective (clPull K hU R M)) := by

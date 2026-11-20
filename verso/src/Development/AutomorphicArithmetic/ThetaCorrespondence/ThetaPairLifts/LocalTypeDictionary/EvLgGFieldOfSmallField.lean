@@ -17,9 +17,9 @@ namespace GlobalTheory.TwInputs.SmallField
 open Formalism.MainNotions.N Formalism.L2 Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Introduce `hP`. Use `evG_good.imp fun K C5 c6 Cb hG _ => ?_` and prove the remaining obligations. Use `(lg_fieldOk hP.rayF K).imp fun B f _ hO h _ T w Z => ?_` and prove the remaining obligations. Take `⟨-, h1, h2⟩` from `h w.C Z.W Z.V Z.S Z.N Z.G`. Rewrite using `[cf_eq_at]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨L, a, b, c, d, e⟩` from `h2 (auxiliary_prime_ne_type_prime K C5 c6 Cb hG B.toPre hO)`. Conclude with `⟨h1, L, c, a, b, d, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem evLgG_field_of_small_field : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayer → EvLgG fun K B f _ => KPx B f → ∀ (T : TwDat B) (w : ColW B f T) (Z : w.Lt),
     (∀ X : GlobalTheory.TwInputs.RealSide (w.st Z).toD7, X.R.C = (TC.cf w.I w.l Z) → GlobalTheory.TwInputs.FieldOk X) ∧

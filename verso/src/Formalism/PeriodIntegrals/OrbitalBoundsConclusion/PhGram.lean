@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GramSubstitutionIntegra
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GramSubstitutionIntegral.Expand
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.PhGram.phGram_of_steps PI.UnitaryGroupMassFormula.PhGram.gram_bilinear_expansion PI.UnitaryGroupMassFormula.PhGram.gram_sum_first_variable`.
+A detailed English derivation is pending.
 -/
 theorem phase_gram' : PI.FglGram.PhGram :=
   PI.UnitaryGroupMassFormula.PhGram.phGram_of_steps PI.UnitaryGroupMassFormula.PhGram.gram_bilinear_expansion PI.UnitaryGroupMassFormula.PhGram.gram_sum_first_variable

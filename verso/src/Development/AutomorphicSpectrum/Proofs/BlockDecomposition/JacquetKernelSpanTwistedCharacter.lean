@@ -13,43 +13,41 @@ variable {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Subtype.ext (Subtype.ext (funext h)))`.
+A detailed English derivation is pending.
 -/
 theorem cInd_ext {H : Subgroup G} {σ : Representation ℂ H W} {a b : cIndSpace H σ}
     (h : ∀ g, a.1.1.1 g = b.1.1.1 g) : a = b :=
   Subtype.ext (Subtype.ext (Subtype.ext (funext h)))
 
 /- English proof (translation)
-The claim follows from `a.1.1.2 ⟨h, hh⟩ g`.
+A detailed English derivation is pending.
 -/
 theorem cInd_left {H : Subgroup G} {σ : Representation ℂ H W} (a : cIndSpace H σ) {h : G}
     (hh : h ∈ H) (g : G) : a.1.1.1 (h * g) = σ ⟨h, hh⟩ (a.1.1.1 g) :=
   a.1.1.2 ⟨h, hh⟩ g
 
 /- English proof (translation)
-Establish `hR : ∀ (g : G) (u : U), g * (u : G) ∈ E ↔ g ∈ E`. Introduce `g u`. Establish `e : g * (u : G) = (g * (u : G) * g⁻¹) * g` using `by group`. Rewrite using `[e]`. Conclude with `hE.1 _ (hUH (hU.conj_mem _ u.2 g)) g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `twKer at ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, v, rfl⟩` from `hx`. Introduce `a' h1 h2`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v', hv1, hv2⟩` from `exists_indicator H σ hE v`. Establish `e : a' = cInd H σ (u : G) v' - (θ u : ℂ) • v'`. Apply `cInd_ext` to reduce the goal to its premises. Introduce `g`. Distinguish the cases in `hg : g ∈ E`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[h1 g hg] show v.1.1.1 (g * u) - (θ u : ℂ) • v.1.1.1 g = v'.1.1.1 (g * u) - (θ u : ℂ) • v'.1.1.1 g`. Rewrite using `[hv1 g hg, hv1 _ ((hR g u).2 hg)]`. Rewrite using `[h2 g hg] show (0 : W) = v'.1.1.1 (g * u) - (θ u : ℂ) • v'.1.1.1 g`. Rewrite using `[hv2 g hg, hv2 _ (fun c => hg ((hR g u).1 c))]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨u, v', rfl⟩`. Consider the case `zero`. Introduce `a' h1 h2`. Establish `e : a' = 0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `cInd_ext` to reduce the goal to its premises. Introduce `g`. Distinguish the cases in `hg : g ∈ E`. Conclude with `h1 g hg`. Conclude with `h2 g hg`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Introduce `a' h1 h2`. Take `⟨x', hx1, hx2⟩` from `exists_indicator H σ hE x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨y', hy1, hy2⟩` from `exists_indicator H σ hE y`. Establish `e : a' = x' + y'`. Apply `cInd_ext` to reduce the goal to its premises. Introduce `g`. Distinguish the cases in `hg : g ∈ E`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1 g hg] show x.1.1.1 g + y.1.1.1 g = x'.1.1.1 g + y'.1.1.1 g`. Rewrite using `[hx1 g hg, hy1 g hg]`. Rewrite using `[h2 g hg] show (0 : W) = x'.1.1.1 g + y'.1.1.1 g`. Rewrite using `[hx2 g hg, hy2 g hg, add_zero]`. Rewrite using `[e]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Submodule.add_mem _ (hx x' hx1 hx2) (hy y' hy1 hy2)`. Consider the case `smul c x _ hx`. Introduce `a' h1 h2`. Take `⟨x', hx1, hx2⟩` from `exists_indicator H σ hE x`. Establish `e : a' = c • x'`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `cInd_ext` to reduce the goal to its premises. Introduce `g`. Distinguish the cases in `hg : g ∈ E`. Rewrite using `[h1 g hg] show c • x.1.1.1 g = c • x'.1.1.1 g`. Rewrite using `[hx1 g hg]`.
-
-Rewrite using `[h2 g hg] show (0 : W) = c • x'.1.1.1 g`. Rewrite using `[hx2 g hg, smul_zero]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ c (hx x' hx1 hx2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indicator_mem (H U : Subgroup G) (hUH : U ≤ H) (hU : U.Normal) (θ : U →* ℂˣ)
     (σ : Representation ℂ H W) {E : Set G} (hE : IsHK H E) (a : cIndSpace H σ)
@@ -123,11 +121,11 @@ theorem indicator_mem (H U : Subgroup G) (hUH : U ≤ H) (hU : U.Normal) (θ : U
     exact Submodule.smul_mem _ c (hx x' hx1 hx2)
 
 /- English proof (translation)
-Take `⟨K, hK, hKi⟩` from `cInd_right_inv H σ (f - f')`. Establish `hE` using `isHK_doubleCoset H K hK g₀`. Use `⟨{g | ∃ a ∈ H, ∃ x ∈ K, g = a * g₀ * x}, ⟨1, one_mem H, 1, one_mem K, by simp⟩, hE, ?_⟩` and prove the remaining obligations. Take `⟨b, hb1, hb2⟩` from `exists_indicator H σ hE f'`. Use `⟨b, indicator_mem H U hUH hU θ σ hE f' hf' b hb1 hb2, ?_, hb2⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `g ⟨a, ha, x, hx, rfl⟩`. Rewrite using `[hb1 _ ⟨a, ha, x, hx, rfl⟩]`. Establish `h0 : (f - f').1.1.1 g₀ = 0` using `by show f.1.1.1 g₀ - f'.1.1.1 g₀ = 0`. Rewrite using `[he, sub_self]`. Establish `h1 : (f - f').1.1.1 (a * g₀ * x) = 0`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hKi _ x hx, cInd_left (f - f') ha, h0, map_zero]`. Establish `h2 : f.1.1.1 (a * g₀ * x) - f'.1.1.1 (a * g₀ * x) = 0` using `h1`. Conclude with `(sub_eq_zero.1 h2).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_local (H U : Subgroup G) (hUH : U ≤ H) (hU : U.Normal) (θ : U →* ℂˣ)
     (σ : Representation ℂ H W) (f f' : cIndSpace H σ) (hf' : f' ∈ twKer (cInd H σ) U θ) (g₀ : G)
@@ -150,19 +148,17 @@ theorem exists_local (H U : Subgroup G) (hUH : U ≤ H) (hU : U.Normal) (θ : U 
   exact (sub_eq_zero.1 h2).symm
 
 /- English proof (translation)
-Take `⟨C, hC, hf⟩` from `f.2`. Establish `key : ∃ E : Set G, C ⊆ E ∧ IsHK H E ∧ ∃ b ∈ twKer (cInd H σ) U θ, (∀ g ∈ E, b.1.1.1 g = f.1.1.1 g) ∧ (∀ g, g ∉ E → b.1.1.1 g = 0)`. Use `hC.induction_on (p := fun S => ∃ E : Set G, S ⊆ E ∧ IsHK H E ∧ ∃ b ∈ twKer (cInd H σ) U θ, (∀ g ∈ E, b.1.1.1 g = f.1.1.1 g) ∧ (∀ g, g ∉ E → b.1.1.1 g = 0)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `⟨∅, subset_rfl, ⟨by simp, ⊤, isOpen_univ, by simp⟩, 0, Submodule.zero_mem _, by simp, fun g _ => rfl⟩` and prove the remaining obligations. Introduce and unpack `S T hST ⟨E, hTE, r⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨E, hST.trans hTE, r⟩`. Introduce and unpack `S T ⟨E, hSE, hE, b, hb, hb1, hb2⟩ ⟨E', hTE, hE', b', hb', hb1', hb2'⟩`. Take `⟨c, hc1, hc2⟩` from `exists_indicator H σ hE.compl b'`. Use `⟨E ∪ E', Set.union_subset_union hSE hTE, hE.union hE', b + c, Submodule.add_mem _ hb (indicator_mem H U hUH hU θ σ hE.compl b' hb' c hc1 hc2), ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg show b.1.1.1 g + c.1.1.1 g = f.1.1.1 g`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : g ∈ E`. Rewrite using `[hb1 g h, hc2 g (fun c => c h), add_zero]`. Rewrite using `[hb2 g h, hc1 g h, zero_add]`. Conclude with `hb1' g (hg.resolve_left h)`. Introduce `g hg show b.1.1.1 g + c.1.1.1 g = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h : g ∉ E` using `fun c => hg (Or.inl c)`. Establish `h' : g ∉ E'` using `fun c => hg (Or.inr c)`. Rewrite using `[hb2 g h, hc1 g h, hb2' g h', add_zero]`. Introduce `x _`. Take `⟨E, hx, hE, r⟩` from `hloc x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨E, mem_nhdsWithin_of_mem_nhds (hE.isOpen.mem_nhds hx), E, subset_rfl, hE, r⟩`. Take `⟨E, hCE, hE, b, hb, hb1, hb2⟩` from `key`. Establish `e : f = b`. Apply `cInd_ext` to reduce the goal to its premises. Introduce `g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hg : g ∈ E`. Conclude with `(hb1 g hg).symm`. Rewrite using `[hb2 g hg]`. Assume the negation of the conclusion as `h0`. Take `⟨h, hh, c, hc, rfl⟩` from `hf g h0`.
-
-Conclude with `hg ((hE.1 h hh c).2 (hCE hc))`. Rewrite using `[e]`. Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_local (H U : Subgroup G) (hUH : U ≤ H) (hU : U.Normal) (θ : U →* ℂˣ)
     (σ : Representation ℂ H W) (f : cIndSpace H σ)
@@ -213,23 +209,21 @@ theorem mem_of_local (H U : Subgroup G) (hUH : U ≤ H) (hU : U.Normal) (θ : U 
 end Abstract
 
 /- English proof (translation)
-Use `mem_of_local H U hUH hU θ σ f fun g₀ => ?_` and prove the remaining obligations. It suffices to establish `hp : ∃ f' ∈ twKer (cInd H σ) U θ, f'.1.1.1 g₀ = f.1.1.1 g₀ by`. Take `⟨f', hf', he⟩` from `hp`. Conclude with `exists_local H U hUH hU θ σ f f' hf' g₀ he`. Break down `hdich g₀ with ⟨h, hh, x, rfl⟩ | ⟨u, hx, hfix, hθ⟩` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hval : ∀ y ∈ Submodule.span ℂ {y | ∃ (u : U) (v : W), y = σ ⟨u, hUH u.2⟩ v - (θ u : ℂ) • v}, ∃ f' ∈ twKer (cInd H σ) U θ, f'.1.1.1 (ι x) = y`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨v, w, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hm, hθ⟩` from `hst x⁻¹ v`. Take `⟨e, he⟩` from `exists_cInd_value H σ hσ hbase (ι x) w`. Use `⟨cInd H σ _ e - (θ ⟨_, hm⟩ : ℂ) • e, Submodule.subset_span ⟨⟨_, hm⟩, e, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : ι x * (ι x⁻¹ * (v : G) * (ι x⁻¹)⁻¹) = (v : G) * ι x`. Simplify using `only [map_inv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Use `show e.1.1.1 (ι x * (ι x⁻¹ * (v : G) * (ι x⁻¹)⁻¹)) - (θ ⟨_, hm⟩ : ℂ) • e.1.1.1 (ι x) = _`. Rewrite using `[e1, cInd_left e (hUH v.2), he, hθ]`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, rfl⟩`. Consider the case `add a b _ _ ha hb`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a', ha', ea⟩` from `ha`. Take `⟨b', hb', eb⟩` from `hb`. Use `⟨a' + b', Submodule.add_mem _ ha' hb', ?_⟩` and prove the remaining obligations. Use `show a'.1.1.1 (ι x) + b'.1.1.1 (ι x) = _`. Rewrite using `[ea, eb]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c a _ ha`. Take `⟨a', ha', ea⟩` from `ha`. Use `⟨c • a', Submodule.smul_mem _ c ha', ?_⟩` and prove the remaining obligations. Use `show c • a'.1.1.1 (ι x) = _`. Rewrite using `[ea]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨f', hf', he⟩` from `hval _ ((hq _).1 (hf x))`. Conclude with `⟨f', hf', by rw [cInd_left f' hh, cInd_left f hh, he]⟩`. Establish `hne : (1 : ℂ) - (θ u : ℂ) ≠ 0`. Introduce `h0`. Apply `hθ` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `using (sub_eq_zero.1 h0).symm`. Take `⟨e, he⟩` from `exists_cInd_value H σ hσ hbase g₀ (((1 : ℂ) - (θ u : ℂ))⁻¹ • f.1.1.1 g₀)`. Use `⟨cInd H σ (u : G) e - (θ u : ℂ) • e, Submodule.subset_span ⟨u, e, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : g₀ * (u : G) = (g₀ * (u : G) * g₀⁻¹) * g₀` using `by group`.
-
-Use `show e.1.1.1 (g₀ * u) - (θ u : ℂ) • e.1.1.1 g₀ = _`. Rewrite using `[e1, cInd_left e hx, hfix, he]`. Establish `e2 : ∀ y : W, y - (θ u : ℂ) • y = ((1 : ℂ) - (θ u : ℂ)) • y` using `fun y => by`. Rewrite using `[sub_smul, one_smul]`. Rewrite using `[e2, smul_smul, mul_inv_cancel₀ hne, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_twKer_of_restrict_zero {G G' W W' : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [Group G']

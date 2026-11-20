@@ -13,7 +13,7 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 /- English proof (translation)
-Simplify using `only [evT, ex, AddMonoidAlgebra.lift_single, one_smul]`. Rewrite using `[AddMonoidAlgebra.lift_apply]`. Simplify using `only [Finsupp.sum, cf, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem evT_sum {n : ℕ} (θ : Wt n) (c : FR n) :
     evT θ c = ∑ μ ∈ c.coeff.support, cf c μ * evT θ (ex μ) := by
@@ -22,27 +22,25 @@ private theorem evT_sum {n : ℕ} (θ : Wt n) (c : FR n) :
   simp only [Finsupp.sum, cf, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `n N _ _ _ σ F hF hσ B c hB hc θ k hk`. Take `⟨s, hs0, hsup, hind⟩` from `wtDec n N F hF ⊤ inferInstance (fun _ _ _ _ => Submodule.mem_top)`. Use `set W : Wt n → Submodule ℂ N := fun μ => wsp F μ ⊓ ⊤ with hW`. Establish `hBW : ∀ μ, ∀ v ∈ W μ, B v ∈ W μ`. Introduce `μ v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hv`, the goal using `[Submodule.mem_inf]`. Use `⟨?_, Submodule.mem_top⟩` and prove the remaining obligations. Establish `hv1 : IsWeight F μ v` using `hv.1`. Use `show IsWeight F μ (B v)`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `congrArg (fun T : Module.End ℂ N => T v) (hB.1 a a)`. Simplify using `only [Module.End.mul_apply] at h1`. Rewrite using `[← h1, hv1 a, map_smul]`. Establish `hσW : ∀ μ, ∀ v ∈ W μ, σ k v = evT θ (ex μ) • v` using `fun μ v hv => (derAt n N σ F hσ).1 μ θ k v hk (Submodule.mem_inf.1 hv).1`. Establish `hfW : ∀ μ, Set.MapsTo (σ k * B) (W μ) (W μ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `μ v hv`. Use `show σ k (B v) ∈ W μ`. Rewrite using `[hσW μ _ (hBW μ v hv)]`. Conclude with `(W μ).smul_mem _ (hBW μ v hv)`. Establish `hint : DirectSum.IsInternal (fun i : s => W i)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top` to reduce the goal to its premises. Conclude with `iSupIndep.comp hind Subtype.val_injective`. Rewrite using `[← hsup, iSup_subtype']`. Establish `hterm : ∀ μ, LinearMap.trace ℂ (W μ) ((σ k * B).restrict (hfW μ)) = evT θ (ex μ) * cf c μ`. Introduce `μ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hr : (σ k * B).restrict (hfW μ) = evT θ (ex μ) • B.restrict (hBW μ)`. Use extensionality with `v`. Simplify using `only [LinearMap.restrict_coe_apply, LinearMap.smul_apply, Module.End.mul_apply, Submodule.coe_smul]`. Conclude with `hσW μ _ (hBW μ v v.2)`. Rewrite using `[hr, map_smul, smul_eq_mul, hc μ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `trOn`. Rewrite using `[dif_pos (hBW μ)]`. Establish `hz : ∀ μ, μ ∉ s → cf c μ = 0`. Introduce `μ hμ`. Rewrite using `[hc μ, hs0 μ hμ]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Unfold `trOn`. Use `split_ifs with h`. Establish `h0 : B.restrict h = 0`. Use extensionality with `x`. Rewrite using `[h0, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Rewrite using `[LinearMap.trace_eq_sum_trace_restrict hint (fun i => hfW i)]`. Simplify using `only [hterm]`. Rewrite using `[Finset.sum_coe_sort s (fun μ => evT θ (ex μ) * cf c μ)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_subset Finset.subset_union_left` to reduce the goal to its premises. Introduce `μ _ hμ`. Rewrite using `[hz μ hμ, mul_zero]`. Use `_ = ∑ μ ∈ s ∪ c.coeff.support, cf c μ * evT θ (ex μ) := Finset.sum_congr rfl (fun μ _ => mul_comm _ _)`. Use `_ = ∑ μ ∈ c.coeff.support, cf c μ * evT θ (ex μ) := by`.
-
-Use `symm`. Apply `Finset.sum_subset Finset.subset_union_right` to reduce the goal to its premises. Introduce `μ _ hμ`. Rewrite using `[show cf c μ = 0 from Finsupp.notMem_support_iff.1 hμ, zero_mul]`. Use `_ = evT θ c := (evT_sum θ c).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.chEv :
     ∀ (n : ℕ) (N : Type) [NormedAddCommGroup N] [InnerProductSpace ℂ N] [FiniteDimensional ℂ N] (σ : UK n →* (N →ₗ[ℂ] N))

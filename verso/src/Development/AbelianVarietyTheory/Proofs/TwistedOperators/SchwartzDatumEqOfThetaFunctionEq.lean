@@ -33,7 +33,7 @@ def embI (F : Type) [Field F] [NumberField F] : F →+* mixedEmbedding.mixedSpac
   (evIHom F).comp (algebraMap F (AF F))
 
 /- English proof (translation)
-The claim follows from `(Module.finBasis ℚ F).equivFun.injective.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_F : Countable F :=
   (Module.finBasis ℚ F).equivFun.injective.countable
@@ -42,14 +42,14 @@ def infAd (m : mixedEmbedding.mixedSpace F) : AF F :=
   (((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm m, 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)
 
 /- English proof (translation)
-Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm m) = m`. Conclude with `RingEquiv.apply_symm_apply _ m`.
+A detailed English derivation is pending.
 -/
 theorem evIHom_infAd (m : mixedEmbedding.mixedSpace F) : evIHom F (infAd m) = m := by
   show (InfiniteAdeleRing.ringEquiv_mixedSpace F) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm m) = m
   exact RingEquiv.apply_symm_apply _ m
 
 /- English proof (translation)
-Establish `h1 : u.1 = 0`. Establish `: (InfiniteAdeleRing.ringEquiv_mixedSpace F) u.1 = 0` using `hu`. Conclude with `(map_eq_zero_iff _ (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective).mp this`. Use `show (u.1 * _, u.2 * 0) = ((0 : InfiniteAdeleRing F), (0 : FiniteAdeleRing (𝓞 F) F))`. Rewrite using `[h1, zero_mul, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_infAd {u : AF F} (hu : evIHom F u = 0) (m : mixedEmbedding.mixedSpace F) : u * infAd m = 0 := by
   have h1 : u.1 = 0 := by
@@ -75,15 +75,15 @@ def mI {κ : Type} (t : κ × Fin (Module.finrank ℝ (mixedEmbedding.mixedSpace
   (-(1 / (2 * Real.pi))) • ∑ j, t (i, j) • bI F j
 
 /- English proof (translation)
-Use `set a := (fun i => algebraMap F (AF F) (ξ i)) ⬝ᵥ fun i => infAd (mI t i) with ha`. Establish `hAt : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) a`. Introduce `u hu`. Rewrite `hu` using `[evI_eq]`. Use `show u * a = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [ha, dotProduct, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, mul_infAd hu, mul_zero]`. Rewrite using `[hψ.2.2 a hAt, evI_eq]`. Establish `hev : evIHom F a = ∑ i, embI F (ξ i) * mI t i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [ha, dotProduct, map_sum, map_mul, evIHom_infAd, embI, RingHom.comp_apply]`. Establish `htr : Algebra.trace ℝ _ (evIHom F a) = -(1 / (2 * Real.pi)) * ∑ ij, pI ξ ij * t ij`. Rewrite using `[hev, map_sum, Fintype.sum_prod_type, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [mI, mul_smul_comm, Finset.mul_sum, map_smul, map_sum, smul_eq_mul, pI]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[htr]`. Use `congr 1`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr Real.pi_ne_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem psi_dot {ψ : AddChar (AF F) ℂ} (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) {κ : Type} [Fintype κ]
     (t : κ × Fin (Module.finrank ℝ (mixedEmbedding.mixedSpace F)) → ℝ) (ξ : κ → F) :
@@ -118,9 +118,9 @@ namespace GlobalTheory.ThetaInj
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Assume the negation of the conclusion as `hne`. Establish `hz : ∀ z, Algebra.trace ℝ _ (embI F (ξ i) * z) = 0`. Introduce `z`. Rewrite using `[← (bI F).sum_repr z, Finset.mul_sum, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, show Algebra.trace ℝ _ (embI F (ξ i) * bI F j) = 0 from congrFun h (i, j), smul_zero]`. Establish `h1` using `hz (embI F (ξ i)⁻¹)`. Rewrite `h1` using `[← map_mul, mul_inv_cancel₀ hne, map_one, ← map_one (algebraMap ℝ (mixedEmbedding.mixedSpace F)), Algebra.trace_algebraMap, mixedEmbedding.finrank, nsmul_eq_mul, mul_one, Nat.cast_eq_zero]`. Conclude with `(Module.finrank_pos (R := ℚ) (M := F)).ne' h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pI_eq_zero {κ : Type} {ξ : κ → F} (h : pI ξ = 0) : ξ = 0 := by
   funext i
@@ -137,24 +137,22 @@ theorem pI_eq_zero {κ : Type} {ξ : κ → F} (h : pI ξ = 0) : ξ = 0 := by
   exact (Module.finrank_pos (R := ℚ) (M := F)).ne' h1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ij`. Simplify using `[pI]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pI_zero {κ : Type} : pI (0 : κ → F) = 0 := by
   funext ij
   simp [pI]
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (κ → F) := ⊤`. Use `haveI : MeasurableSingletonClass (κ → F) := ⟨fun _ => MeasurableSpace.measurableSet_top⟩`. Use `haveI : Countable F := countable_F`. Establish `hint : Integrable c Measure.count` using `integrable_count_iff.mpr hc`. Establish `hp : Measurable (pI (F` using `F) (κ := κ)) := fun _ _ => MeasurableSpace.measurableSet_top`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.FourierPush.setIntegral_preimage_eq_zero (κ → F) Measure.count c hint (κ × Fin (Module.finrank ℝ (mixedEmbedding.mixedSpace F)) → ℝ) pI hp ?_ {0} (measurableSet_singleton 0)`. Establish `hpre : pI ⁻¹' {0} = ({0} : Set (κ → F))`. Use extensionality with `ξ`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff]`. Conclude with `⟨pI_eq_zero, fun h => h ▸ pI_zero⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `key` using `[hpre, integral_singleton]`. Simplify using `using key`. Introduce `l`. Establish `hI : Integrable (fun ξ => Complex.exp ((l (pI ξ) : ℂ) * Complex.I) * c ξ) Measure.count`. Use `integrable_count_iff.mpr (hc.congr fun ξ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, Complex.norm_exp_ofReal_mul_I, one_mul]`. Rewrite using `[integral_countable hI]`. Establish `hl : ∀ ξ : κ → F, l (pI ξ) = ∑ ij, pI ξ ij * l (fun k => if ij = k then 1 else 0)`. Introduce `ξ`. Rewrite using `[show l (pI ξ) = l.toLinearMap (pI ξ) from rfl, LinearMap.pi_apply_eq_sum_univ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[smul_eq_mul]`. Use `h (fun ij => l (fun k => if ij = k then 1 else 0))` as an intermediate fact. Rewrite using `[← this]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[psi_dot hψ, ← hl]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_zero {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ)
     (c : (κ → F) → ℂ) (hc : Summable fun ξ => ‖c ξ‖)
@@ -195,19 +193,17 @@ end GlobalTheory.ThetaInj
 namespace GlobalTheory.ThetaInj
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d Y Wd M ψ hψ Z crd Φ₁ Φ₂ f h₁ h₂`. Use function extensionality and compare the values at `x`. Establish `hs : ∀ Φ, Φ ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d) → Summable fun ξ : Fin n × Fin d → F => ‖Φ ((fun i => algebraMap F (AF F) (ξ i)) + x)‖`. Introduce `Φ hΦ`. Use `GlobalTheory.WeilM.summable_norm_of_mem_schA F (GlobalTheory.SchwartzTranslate.schA_translate F x hΦ)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hsum : Summable fun ξ : Fin n × Fin d → F => ‖Φ₁ ((fun i => algebraMap F (AF F) (ξ i)) + x) - Φ₂ ((fun i => algebraMap F (AF F) (ξ i)) + x)‖`. Use `((hs Φ₁ h₁.1).add (hs Φ₂ h₂.1)).of_nonneg_of_le (fun _ => norm_nonneg _) (fun _ => norm_sub_le _ _)` and prove the remaining obligations. Establish `key` using `coeff_zero hψ (fun ξ => Φ₁ ((fun i => algebraMap F (AF F) (ξ i)) + x) - Φ₂ ((fun i => algebraMap F (AF F) (ξ i)) + x)) hsum ?_`. Establish `h0 : (fun i => algebraMap F (AF F) ((0 : Fin n × Fin d → F) i)) + x = x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Simplify using `only [h0, sub_eq_zero] at key`. Conclude with `key`. Introduce `t`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ∀ ξ : Fin n × Fin d → F, ‖ψ ((fun i => algebraMap F (AF F) (ξ i)) ⬝ᵥ fun i => infAd (mI t i))‖ = 1` using `fun ξ => by`. Rewrite using `[psi_dot hψ]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`. Establish `hS : ∀ Φ, Φ ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d) → Summable fun ξ : Fin n × Fin d → F => ψ ((fun i => algebraMap F (AF F) (ξ i)) ⬝ᵥ fun i => infAd (mI t i)) * Φ ((fun i => algebraMap F (AF F) (ξ i)) + x)` using `fun Φ hΦ => Summable.of_norm ((hs Φ hΦ).congr fun ξ => by rw [norm_mul, hn, one_mul])`. Establish `hT : ∀ Φ, IsDatum M ψ crd Φ f → ψ (⅟(2 : AF F) * (x ⬝ᵥ fun i => infAd (mI t i))) * ∑' ξ : Fin n × Fin d → F, ψ ((fun i => algebraMap F (AF F) (ξ i)) ⬝ᵥ fun i => infAd (mI t i)) * Φ ((fun i => algebraMap F (AF F) (ξ i)) + x) = f (crd (M.co.e.symm (x, fun i => infAd (mI t i))))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `Φ hΦ`. Rewrite using `[← hΦ.2 (M.co.e.symm (x, fun i => infAd (mI t i))), ← tsum_mul_left]`. Simplify using `only [GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, LinearEquiv.apply_symm_apply, AddChar.map_add_eq_mul]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : ψ (⅟(2 : AF F) * (x ⬝ᵥ fun i => infAd (mI t i))) ≠ 0`. Introduce `h0`. Use `AddChar.map_add_eq_mul ψ (⅟(2 : AF F) * (x ⬝ᵥ fun i => infAd (mI t i))) (-(⅟(2 : AF F) * (x ⬝ᵥ fun i => infAd (mI t i))))` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h0, zero_mul]`. Conclude with `one_ne_zero this`.
-
-Establish `e2` using `mul_left_cancel₀ hne ((hT Φ₁ h₁).trans (hT Φ₂ h₂).symm)`. Simplify using `only [mul_sub]`. Rewrite using `[(hS Φ₁ h₁.1).tsum_sub (hS Φ₂ h₂.1), e2, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_inj : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd)

@@ -3,29 +3,27 @@ import Mathlib
 namespace GlobalTheory.DerivativeOfAdditiveContinuous
 
 /- English proof (translation)
-Take `⟨δ, hδ, hball⟩` from `Metric.continuous_iff.mp hc 0 (1 / 2) (by norm_num)`. Use `set η := δ / 2 with hη`. Establish `hη0 : 0 < η` using `by positivity`. Use `set c := ∫ t in (0 : ℝ)..η, χ t with hcdef`. Establish `hc0 : c ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : c = (η : ℂ) + ∫ t in (0 : ℝ)..η, (χ t - 1)`. Rewrite using `[hcdef, intervalIntegral.integral_sub (hc.intervalIntegrable _ _) intervalIntegrable_const]`. Simplify using the standard rewrite rules. Establish `hbound : ‖∫ t in (0 : ℝ)..η, (χ t - 1)‖ ≤ 1 / 2 * |η - 0|`. Apply `intervalIntegral.norm_integral_le_of_norm_le_const` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `t ht`. Rewrite `ht` using `[Set.uIoc_of_le hη0.le]`. Establish `h1 : dist t 0 < δ`. Rewrite using `[Real.dist_eq, sub_zero, abs_of_pos ht.1]`. Combine the linear relations using `[ht.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hball t h1`. Rewrite `h2` using `[dist_eq_norm, h0]`. Conclude with `h2.le`. Introduce `hzero`. Rewrite `hzero` using `[hsplit]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ‖∫ t in (0 : ℝ)..η, (χ t - 1)‖ = η`. Rewrite using `[eq_neg_of_add_eq_zero_right hzero, norm_neg, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hη0]`. Rewrite `hbound` using `[h3, sub_zero, abs_of_pos hη0]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set F : ℝ → ℂ := fun x => ∫ t in (0 : ℝ)..x, χ t with hF`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hFd : ∀ x, HasDerivAt F (χ x) x` using `fun x => (hc.integral_hasStrictDerivAt 0 x).hasDerivAt`. Establish `hrep : ∀ x, χ x * c = F (x + η) - F x`. Introduce `x`. Establish `h1 : ∫ t in (0 : ℝ)..η, χ (x + t) = χ x * c`. Simplify using `only [hadd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[intervalIntegral.integral_const_mul]`. Establish `h2 : ∫ t in (0 : ℝ)..η, χ (x + t) = ∫ t in x..(x + η), χ t`. Rewrite using `[intervalIntegral.integral_comp_add_left]`. Simplify using the standard rewrite rules. Rewrite using `[← h1, h2, hF]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only`. Rewrite using `[intervalIntegral.integral_interval_sub_left (hc.intervalIntegrable _ _) (hc.intervalIntegrable _ _)]`. Establish `hdiff : ∀ x, DifferentiableAt ℝ χ x`. Introduce `x`. Establish `hχ : χ = fun y => (F (y + η) - F y) / c`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[← hrep y, mul_div_cancel_right₀ _ hc0]`. Rewrite using `[hχ]`. Conclude with `(((hFd (x + η)).comp_add_const x η).sub (hFd x)).differentiableAt.div_const c`. Establish `hd0 : HasDerivAt χ (deriv χ 0) (s - s)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[sub_self]`. Conclude with `(hdiff 0).hasDerivAt`. Establish `hcomp : HasDerivAt (fun y => χ (y - s)) (deriv χ 0) s` using `hd0.comp_sub_const s s`. Establish `hmul` using `hcomp.const_mul (χ s)`. Establish `hfun : (fun y => χ s * χ (y - s)) = χ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[← hadd]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hmul` using `[hfun]`.
-
-Rewrite using `[mul_comm]`. Conclude with `hmul`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_of_continuous_of_map_add (χ : ℝ → ℂ) (hc : Continuous χ)
     (hadd : ∀ s t : ℝ, χ (s + t) = χ s * χ t) (h0 : χ (0 : ℝ) = (1 : ℂ)) (s : ℝ) :

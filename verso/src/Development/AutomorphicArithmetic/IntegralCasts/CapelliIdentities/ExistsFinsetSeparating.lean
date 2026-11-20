@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `V _ hn`. Distinguish the cases in `hV : ∀ v ∈ V, v = 0`. Conclude with `⟨∅, fun v hv _ => hV v hv⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨w, hw⟩` from `not_forall.mp hV`. Take `⟨hwV, hw0⟩` from `Classical.not_imp.mp hw`. Take `⟨x, hx⟩` from `Function.ne_iff.mp hw0`. Set `U : Submodule ℂ (X → ℂ)` to `V ⊓ LinearMap.ker (LinearMap.proj x : (X → ℂ) →ₗ[ℂ] ℂ)`. Establish `hle : U ≤ V` using `inf_le_left`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hlt : U < V`. Use `lt_of_le_of_ne hle ?_` and prove the remaining obligations. Introduce `h`. Establish `hwU : w ∈ U` using `h ▸ hwV`. Conclude with `hx (LinearMap.mem_ker.mp (Submodule.mem_inf.mp hwU).2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ U := Submodule.finiteDimensional_of_le hle`. Establish `hr : Module.finrank ℂ U < n` using `hn ▸ Submodule.finrank_lt_finrank_of_lt hlt`. Take `⟨T, hT⟩` from `ih _ hr U rfl`. Use `⟨insert x T, fun v hv h => hT v ?_ fun y hy => h y (Finset.mem_insert_of_mem hy)⟩` and prove the remaining obligations. Conclude with `Submodule.mem_inf.mpr ⟨hv, LinearMap.mem_ker.mpr (h x (Finset.mem_insert_self x T))⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Qp2.aux {X : Type} (n : ℕ) :
     ∀ (V : Submodule ℂ (X → ℂ)) [FiniteDimensional ℂ ↥V], Module.finrank ℂ V = n →
@@ -35,7 +35,7 @@ private theorem UpperTheory.Reformulated.B.Qp2.aux {X : Type} (n : ℕ) :
       exact Submodule.mem_inf.mpr ⟨hv, LinearMap.mem_ker.mpr (h x (Finset.mem_insert_self x T))⟩
 
 /- English proof (translation)
-Introduce `X V _`. Conclude with `UpperTheory.Reformulated.B.Qp2.aux _ V rfl`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qp2.exists_finset_separating :
     ∀ {X : Type} (V : Submodule ℂ (X → ℂ)) [FiniteDimensional ℂ ↥V],

@@ -163,9 +163,9 @@ def coreWS (W : LocWach PD LL O v n) : Prop :=
           (Hmax n Mi hi : ℝ) / ((PD.p : ℝ) - 1) ^ j
 
 /- English proof (translation)
-Establish `hq0 : 0 < q` using `by linarith`. Establish `hq1 : 0 < q - 1` using `by linarith`. Establish `h3 : x' / q ≤ (b * q / (q - 1) + y / q ^ j) / q` using `div_le_div_of_nonneg_right h2 hq0.le`. Establish `h4 : (b * q / (q - 1) + y / q ^ j) / q = b / (q - 1) + y / q ^ (j + 1)`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h5 : b + b / (q - 1) = b * q / (q - 1)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ws_step (b q x x' y w : ℝ) (j : ℕ) (hq : 2 ≤ q) (h1 : x ≤ w + x' / q) (hw : w ≤ b)
     (h2 : x' ≤ b * q / (q - 1) + y / q ^ j) : x ≤ b * q / (q - 1) + y / q ^ (j + 1) := by
@@ -181,21 +181,21 @@ theorem ws_step (b q x x' y w : ℝ) (j : ℕ) (hq : 2 ≤ q) (h1 : x ≤ w + x'
   linarith
 
 /- English proof (translation)
-Introduce `hA T₁ T₂ F Mi hi hS hJ`. Establish `hH : ∀ i : ZMod n, sI W F i ≤ Hmax n Mi hi`. Introduce `i`. Apply `Nat.sInf_le` to reduce the goal to its premises. Establish `h` using `hX T₁ T₂ F Mi hi hS hJ i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hXπ : W.X = letπ` using `by simp [LocWach.X, hA.2.1]`. Rewrite `h` using `[hXπ]`. Then use the resulting hypothesis. Introduce `i`. Use `⟨hH i, ?_⟩` and prove the remaining obligations. Introduce `j Gc hG`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp3 : 3 ≤ PD.p`. Establish `h1` using `PD.hp.two_le`. Establish `h2` using `hA.2.2`. Use linear arithmetic over natural numbers and integers. Establish `hq : (2 : ℝ) ≤ (PD.p : ℝ) - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `: (3 : ℝ) ≤ (PD.p : ℝ)` using `by exact_mod_cast hp3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpq : (PD.p : ℝ) - 2 = ((PD.p : ℝ) - 1) - 1` using `by ring`. Rewrite using `[hpq]`. Proceed by induction on `j generalizing i with`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `zero`. Introduce `_`. Establish `h1 : (sI W F i : ℝ) ≤ Hmax n Mi hi` using `by exact_mod_cast hH i`. Establish `hc : (0 : ℝ) ≤ (cH PD.p (Hmax n Mi hi) : ℝ)` using `Nat.cast_nonneg _`. Establish `h3 : 0 ≤ (2 * Gc + cH PD.p (Hmax n Mi hi) + 3) * ((PD.p : ℝ) - 1) / (((PD.p : ℝ) - 1) - 1)` using `div_nonneg (mul_nonneg (by linarith) (by linarith)) (by linarith)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [pow_zero, div_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ j ih`. Introduce `hB`. Establish `hw` using `h2 hA T₁ T₂ F Mi hi hS hJ (i + 1)`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hw` using `[add_sub_cancel_right]`. Establish `hB1` using `hB 1 le_rfl (by omega)`. Rewrite `hB1` using `[Nat.cast_one]`. Establish `hi'` using `ih (i + 1) (fun a ha1 ha2 => by`. Establish `h` using `hB (a + 1) (by omega) (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : i + ((a + 1 : ℕ) : ZMod n) = i + 1 + (a : ZMod n)` using `by push_cast; ring`. Rewrite using `[e] at h)` and apply the resulting hypothesis. Conclude with `ws_step _ _ _ _ _ _ j hq hw (by linarith) hi'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coreWS_of (W : LocWach PD LL O v n) (hX : coreWX W) (h2 : WachExponentRecursion W) : coreWS W := by
   intro hA T₁ T₂ F Mi hi hS hJ
@@ -494,9 +494,9 @@ def resFun (ι : G →* G') (T : LocLat G' Qp LL O) : (G' → T.V) →ₗ[O] (G 
   LinearMap.funLeft O T.V ι
 
 /- English proof (translation)
-Take `⟨⟨hcont, hcoc⟩, hT⟩` from `hc`. Use `⟨⟨hcont.comp hι, fun g h => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [resFun, LinearMap.funLeft_apply, map_mul, hcoc]`. Both sides reduce to the same expression. Introduce `g _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hT (ι g) (Set.mem_univ _)`.
+A detailed English derivation is pending.
 -/
 theorem resFun_Z1T (ι : G →* G') (hι : Continuous ι) (T : LocLat G' Qp LL O) (c : G' → T.V)
     (hc : c ∈ latticeCocycles T.L) : resFun ι T c ∈ latticeCocycles (resLoc ι hι T).L := by
@@ -508,7 +508,7 @@ theorem resFun_Z1T (ι : G →* G') (hι : Continuous ι) (T : LocLat G' Qp LL O
     exact hT (ι g) (Set.mem_univ _)
 
 /- English proof (translation)
-Take `⟨x, hx, rfl⟩` from `hc`. Conclude with `⟨x, hx, by funext g; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem resFun_B1T (ι : G →* G') (hι : Continuous ι) (T : LocLat G' Qp LL O) (c : G' → T.V)
     (hc : c ∈ latticeCoboundaries T.L) : resFun ι T c ∈ latticeCoboundaries (resLoc ι hι T).L := by
@@ -578,7 +578,7 @@ def WachExponentUpperBound (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW
     coreWS ((HW l).W K s LL h)
 
 /- English proof (translation)
-Introduce `l _ K s LL h` and use `coreWS_of _ (hX l K s LL h) (h2 l K s LL h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wach_exponent_bound_of_kills (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (hX : WachKillsQuotients D HW F) (h2 : WachExponentRecursionAll D HW F) : WachExponentUpperBound D HW F :=
   fun l _ K s LL h => coreWS_of _ (hX l K s LL h) (h2 l K s LL h)

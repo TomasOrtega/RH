@@ -21,14 +21,14 @@ def bO (b : Basis κ K V) : Basis κ (𝓞 K) (spanO b) :=
   Basis.span (b.linearIndependent.restrict_scalars' (𝓞 K))
 
 /- English proof (translation)
-The claim follows from `Basis.coe_span_apply _ i`.
+A detailed English derivation is pending.
 -/
 theorem bO_apply (b : Basis κ K V) (i : κ) : (bO b i : V) = b i := Basis.coe_span_apply _ i
 
 def crd (b : Basis κ K V) (y : spanO b) : κ → 𝓞 K := (bO b).equivFun y
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (bO b).sum_equivFun y]`. Rewrite using `[Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, bO_apply, algebraMap_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coe_eq_sum (b : Basis κ K V) (y : spanO b) :
     (y : V) = ∑ i, algebraMap (𝓞 K) K (crd b y i) • b i := by
@@ -39,9 +39,9 @@ theorem coe_eq_sum (b : Basis κ K V) (y : spanO b) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[coe_eq_sum b y, map_sum, LinearMap.sum_apply, dotProduct, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[coe_eq_sum b y', map_smulₛₗ, LinearMap.smul_apply, map_sum, map_mul, mulVec, dotProduct, map_sum, smul_eq_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, smul_eq_mul, map_mul, hH, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_eq (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V) {H : Matrix κ κ (𝓞 K)}
     (hH : ∀ i j, algebraMap (𝓞 K) K (H i j) = h (b i) (b j)) (y y' : spanO b) :
@@ -55,11 +55,11 @@ theorem form_eq (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V) {H : Matri
   rw [map_smul, smul_eq_mul, map_mul, hH, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, z, hz, e⟩`. Establish `e' : z = ι t * (a - c)`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[e, map_mul, map_sub]`. Both sides reduce to the same expression. Establish `ht' : t ∉ 𝔭 ^ (0 + 1)` using `by rwa [zero_add, pow_one]`. Conclude with `mem_of_mul_mem h𝔭 ht' (by rw [zero_add, ← e']; exact hz)`. Introduce `hm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨1, fun h1 => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h1), a - c, hm, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem congrP_int {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) (a c : 𝓞 K) :
     CongrP 𝔭 k (algebraMap (𝓞 K) K a) (algebraMap (𝓞 K) K c) ↔
@@ -86,9 +86,9 @@ theorem redL_apply (b : Basis κ K V) (J : Ideal (𝓞 K)) (y : spanO b) :
     redL b J y = fun i => Ideal.Quotient.mk J (crd b y i) := rfl
 
 /- English proof (translation)
-Introduce `x`. Use `choose c hc using fun i => Ideal.Quotient.mk_surjective (x i)`. Use `⟨(bO b).equivFun.symm c, ?_⟩` and prove the remaining obligations. Rewrite using `[redL_apply]`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[crd, LinearEquiv.apply_symm_apply, hc]`.
+A detailed English derivation is pending.
 -/
 theorem redL_surjective (b : Basis κ K V) (J : Ideal (𝓞 K)) : Function.Surjective (redL b J) := by
   intro x
@@ -99,11 +99,11 @@ theorem redL_surjective (b : Basis κ K V) (J : Ideal (𝓞 K)) : Function.Surje
   rw [crd, LinearEquiv.apply_symm_apply, hc]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Rewrite `hy` using `[LinearMap.mem_ker, redL_apply]`. Rewrite using `[← (bO b).sum_equivFun y]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul ?_ trivial` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (congrFun hy i)`. Rewrite using `[Submodule.smul_le]`. Introduce `a ha y _`. Rewrite using `[LinearMap.mem_ker, map_smul]`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, redL_apply, Algebra.smul_def]`. Establish `: algebraMap (𝓞 K) (𝓞 K ⧸ J) a = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 ha`. Rewrite using `[this, zero_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ker_redL (b : Basis κ K V) (J : Ideal (𝓞 K)) :
     LinearMap.ker (redL b J) = (J • ⊤ : Submodule (𝓞 K) (spanO b)) := by
@@ -136,7 +136,7 @@ theorem qE_mk (b : Basis κ K V) (J : Ideal (𝓞 K)) (y : spanO b) :
 variable [Fact (IsFixF K F)]
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_dotProduct]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec _ H c' i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mk_form (𝔭 : Ideal (𝓞 F)) (k : ℕ) (H : Matrix κ κ (𝓞 K)) (c c' : κ → 𝓞 K) :
     Ideal.Quotient.mk (extP K 𝔭 ^ k) (star c ⬝ᵥ (H *ᵥ c')) =
@@ -148,11 +148,11 @@ theorem mk_form (𝔭 : Ideal (𝓞 F)) (k : ℕ) (H : Matrix κ κ (𝓞 K)) (c
   exact RingHom.map_mulVec _ H c' i
 
 /- English proof (translation)
-Unfold `nkCount`. Use `Nat.card_congr ((qE b (extP K 𝔭 ^ k)).toEquiv.subtypeEquiv fun x => ?_)` and prove the remaining obligations. Establish `key : ∀ y : spanO b, CongrP 𝔭 k (h (y : V) (y : V)) (algebraMap F K (n : F)) ↔ star (qE b (extP K 𝔭 ^ k) (Submodule.Quotient.mk y)) ⬝ᵥ (H.map (Ideal.Quotient.mk (extP K 𝔭 ^ k)) *ᵥ (qE b (extP K 𝔭 ^ k) (Submodule.Quotient.mk y))) = Ideal.Quotient.mk _ (ι n)`. Introduce `y`. Rewrite using `[form_eq h b hH, ← MeanB.algebraMap_comp, congrP_int h𝔭, mk_form, qE_mk]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl, hy⟩`. Conclude with `(key y).1 hy`. Introduce `hx`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, rfl, (key y).2 hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem nkCount_free (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V) {H : Matrix κ κ (𝓞 K)}
     (hH : ∀ i j, algebraMap (𝓞 K) K (H i j) = h (b i) (b j)) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
@@ -175,16 +175,16 @@ theorem nkCount_free (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V) {H : 
     exact ⟨y, rfl, (key y).2 hx⟩
 
 /- English proof (translation)
-Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_mulVec {A : Type*} [CommRing A] [StarRing A] (M N : Matrix κ κ A) (u v : κ → A) :
     star (M *ᵥ u) ⬝ᵥ (N *ᵥ (M *ᵥ v)) = star u ⬝ᵥ ((Mᴴ * N * M) *ᵥ v) := by
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `: star (Pi.single i (1 : A) : κ → A) = Pi.single i 1`. Use function extensionality and compare the values at `l`. Distinguish the cases in `hl : l = i`. Substitute `hl` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hl]`. Rewrite using `[this, mulVec_single_one, single_one_dotProduct]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem form_single {A : Type*} [CommRing A] [StarRing A] (N : Matrix κ κ A) (i j : κ) :
     star (Pi.single i (1 : A)) ⬝ᵥ (N *ᵥ Pi.single j (1 : A)) = N i j := by
@@ -197,9 +197,9 @@ theorem form_single {A : Type*} [CommRing A] [StarRing A] (N : Matrix κ κ A) (
   rfl
 
 /- English proof (translation)
-Rewrite using `[qE_mk]`. Use function extensionality and compare the values at `l`. Rewrite using `[crd, Basis.equivFun_self]`. Distinguish the cases in `hl : i = l`. Substitute `hl` using the available equality.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg hl, map_zero, Pi.single_eq_of_ne (Ne.symm hl)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem qE_bO (b : Basis κ K V) (J : Ideal (𝓞 K)) (i : κ) :
     qE b J (Submodule.Quotient.mk (bO b i)) = Pi.single i 1 := by
@@ -217,7 +217,7 @@ def eM (b : Basis κ K V) (J : Ideal (𝓞 K)) :
       Ideal.Quotient.mk_surjective).toEquiv.trans LinearMap.toMatrix'.toEquiv)
 
 /- English proof (translation)
-Establish `: eM b J X = LinearMap.toMatrix' (LinearMap.extendScalarsOfSurjectiveEquiv (R` using `𝓞 K) (S := 𝓞 K ⧸ J) Ideal.Quotient.mk_surjective ((qE b J).conj X)) := rfl`. Rewrite using `[this, LinearMap.toMatrix'_mulVec]`. Use `show (qE b J).conj X (qE b J q) = _`. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eM_mulVec (b : Basis κ K V) (J : Ideal (𝓞 K))
     (X : Module.End (𝓞 K) (spanO b ⧸ (J • ⊤ : Submodule (𝓞 K) (spanO b)))) (q) :
@@ -229,11 +229,11 @@ theorem eM_mulVec (b : Basis κ K V) (J : Ideal (𝓞 K))
   rw [LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Unfold `akCount`. Use `Nat.card_congr ((eM b (extP K 𝔭 ^ k)).subtypeEquiv fun X => ?_)` and prove the remaining obligations. Establish `key : ∀ x y x' y' : spanO b, Submodule.Quotient.mk x' = X (Submodule.Quotient.mk x) → Submodule.Quotient.mk y' = X (Submodule.Quotient.mk y) → (CongrP 𝔭 k (h (x' : V) (y' : V)) (h (x : V) (y : V)) ↔ star (qE b (extP K 𝔭 ^ k) (Submodule.Quotient.mk x)) ⬝ᵥ (((eM b (extP K 𝔭 ^ k) X) …`. Introduce `x y x' y' hx hy`. Rewrite using `[form_eq h b hH, form_eq h b hH, congrP_int h𝔭, mk_form, mk_form, ← qE_mk, ← qE_mk, ← qE_mk, ← qE_mk, hx, hy, ← eM_mulVec, ← eM_mulVec, form_mulVec]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hX`. Use extensionality with `i j`. Take `⟨x', hx'⟩` from `Submodule.Quotient.mk_surjective _ (X (Submodule.Quotient.mk (bO b i)))`. Take `⟨y', hy'⟩` from `Submodule.Quotient.mk_surjective _ (X (Submodule.Quotient.mk (bO b j)))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `(key _ _ x' y' hx' hy').1 (hX _ _ x' y' hx' hy')` as an intermediate fact. Rewrite `this` using `[qE_bO, qE_bO, form_single, form_single]`. Then use the resulting hypothesis. Introduce `hX x y x' y' hx hy`. Rewrite using `[key x y x' y' hx hy, hX]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem akCount_free (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V) {H : Matrix κ κ (𝓞 K)}
     (hH : ∀ i j, algebraMap (𝓞 K) K (H i j) = h (b i) (b j)) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
@@ -265,7 +265,7 @@ theorem akCount_free (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V) {H : 
     rw [key x y x' y' hx hy, hX]
 
 /- English proof (translation)
-Establish `hF : IsFixF K F` using `Fact.out`. Rewrite using `[← nkCount_free h b hH h𝔭, ← nkCount_locF hF h L 𝔭 h𝔭, ← hb, nkCount_locF hF h _ 𝔭 h𝔭]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nkCount_eq (h : V →ₗ⋆[K] V →ₗ[K] K) {L : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) (b : Basis κ K V) (hb : locF 𝔭 (spanO b) = locF 𝔭 L) {H : Matrix κ κ (𝓞 K)}
@@ -276,7 +276,7 @@ theorem nkCount_eq (h : V →ₗ⋆[K] V →ₗ[K] K) {L : Submodule (𝓞 K) V}
   rw [← nkCount_free h b hH h𝔭, ← nkCount_locF hF h L 𝔭 h𝔭, ← hb, nkCount_locF hF h _ 𝔭 h𝔭]
 
 /- English proof (translation)
-Establish `hF : IsFixF K F` using `Fact.out`. Rewrite using `[← akCount_free h b hH h𝔭, ← akCount_locF hF h L 𝔭 h𝔭, ← hb, akCount_locF hF h _ 𝔭 h𝔭]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem akCount_eq (h : V →ₗ⋆[K] V →ₗ[K] K) {L : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) (b : Basis κ K V) (hb : locF 𝔭 (spanO b) = locF 𝔭 L) {H : Matrix κ κ (𝓞 K)}

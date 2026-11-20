@@ -14,9 +14,9 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Formalis
 namespace PositivityTheory.LocalTateOrthogonality.Bk.Eul
 
 /- English proof (translation)
-Establish `hcyc : GlobalTheory.Cyc.IsCyc (D.loc l).χQ` using `(D.loc l).χQ_cyc`. Set `χZ : Formalism.GaloisCohomology.GK l K.1 →* ℤ_[l]ˣ` to `(cyclotomicCharacter (PadicAlgCl l) l).comp (MulSemiringAction.toRingAut (Formalism.GaloisCohomology.GK l K.1) (PadicAlgCl l))`. Establish `hχZ : ∀ g, ((χZ g : ℤ_[l]) : ℚ_[l]) = ((D.loc l).χQ (K.1.fixingSubgroupEquiv.symm g : GQ l) : ℚ_[l])` using `fun g => by`. Rewrite using `[GlobalTheory.Cyc.TwistLift.isCyc_unique hcyc (GlobalTheory.Cyc.isCyc_cycChar l)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨(χZ (K.1.fixingSubgroupEquiv g) : ℤ_[l]), ?_, rfl⟩` and prove the remaining obligations. Establish `h1` using `hχZ (K.1.fixingSubgroupEquiv g)`. Rewrite `h1` using `[show K.1.fixingSubgroupEquiv.symm (K.1.fixingSubgroupEquiv g) = g from K.1.fixingSubgroupEquiv.symm_apply_apply g, ← (D.loc l).PD_χ K g]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_tie (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l) (n : ℕ) (g : ↥(GK K)) :
     ∃ u : ℤ_[l], (u : ℚ_[l]) = ((((D.loc l).PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) ∧
@@ -39,7 +39,7 @@ variable {G : Type} [Group G] {Qp LL O V : Type} [Field Qp] [Field LL] [Algebra 
   [IsScalarTower O LL V] {ρ : Representation LL G V}
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (actT L 1 x) = _`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ρ 1 (x : V) = x`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
 Simplify using the standard rewrite rules.
 -/
@@ -53,9 +53,9 @@ theorem actQ_one' (L : Lattice (O := O) ρ) (I : Submodule O ↥L.T) (hI : Stabl
   simp
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (actT L (g * h) x) = Submodule.Quotient.mk (actT L g (actT L h x))`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ρ (g * h) (x : V) = ρ g (ρ h x)`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[Module.End.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actQ_mul' (L : Lattice (O := O) ρ) (I : Submodule O ↥L.T) (hI : StableSub L I)
     (g h : G) (m : ↥L.T ⧸ I) : actQ L I hI (g * h) m = actQ L I hI g (actQ L I hI h m) := by
@@ -69,13 +69,11 @@ theorem actQ_mul' (L : Lattice (O := O) ρ) (I : Submodule O ↥L.T) (hI : Stabl
 end Act
 
 /- English proof (translation)
-Establish `hl : NeZero (l ^ n)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `set m : ℕ := (PadicInt.toZModPow n u : ZMod (l ^ n)).val with hm`. Establish `hmc : ((m : ℕ) : ZMod (l ^ n)) = PadicInt.toZModPow n u` using `ZMod.natCast_zmod_val _`. Establish `hk : u - (m : ℤ_[l]) ∈ Ideal.span {(l : ℤ_[l]) ^ n}`. Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, hmc, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `Ideal.mem_span_singleton'.1 hk`. Establish `hu : u = (m : ℤ_[l]) + v * (l : ℤ_[l]) ^ n` using `by rw [hv]; ring`. Establish `h2 : Ideal.Quotient.mk J (ι u * p) = m • Ideal.Quotient.mk J p`. Rewrite using `[← map_nsmul, Ideal.Quotient.eq]`. Establish `: ι u * p - m • p = (ι v * p) * ((l ^ n : ℕ) : O)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast, nsmul_eq_mul, Nat.cast_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `J.mul_mem_left _ hN`.
-
-Rewrite using `[h2, map_nsmul, nsmul_eq_mul, hmc]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_unit {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] (ι : ℤ_[l] →+* O) (J : Ideal O)
     (n : ℕ) (hN : ((l ^ n : ℕ) : O) ∈ J) (ψ : (O ⧸ J) →+ ZMod (l ^ n)) (u : ℤ_[l]) (p : O) :
@@ -98,9 +96,9 @@ theorem psi_unit {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] (ι : ℤ_[l] 
   rw [h2, map_nsmul, nsmul_eq_mul, hmc]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective I x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective I' y`. Take `⟨p, hp⟩` from `(hd.2 y).1 y.2 x x.2`. Establish `h1 : P (actT LA g x) (actT LA' g y) = algebraMap O LL (ι u * p)`. Express the relevant statement in the definitionally equal form `P (A.ρ g x) (A'.ρ g y) = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hd.1.1 g x y, hp, map_mul, hι, hu]`. Both sides reduce to the same expression. Rewrite using `[hB x y p hp, ← map_mul]`. Conclude with `hB _ _ _ h1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equivariant_B (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL]
     [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL] (ι : ℤ_[l] →+* O)
@@ -125,11 +123,11 @@ theorem equivariant_B (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : Typ
   exact hB _ _ _ h1
 
 /- English proof (translation)
-Establish `hsm : ∀ (o : O) (b : O ⧸ J), Ideal.Quotient.mk J o * b = o • b` using `fun o b => by`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Rewrite using `[← map_mul]`. Both sides reduce to the same expression. Use `⟨AddMonoidHom.mk' (fun x => ψ₀.comp (B x).toAddMonoidHom) (fun x y => by` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `z`. Use the proof step `simp), fun _ _ => rfl, fun x hx => hBl x fun y => hψ _ fun o => ?_,`. Use `fun y hy => hBr y fun x => hψ _ fun o => ?_⟩`. Take `⟨o, rfl⟩` from `Ideal.Quotient.mk_surjective o`. Rewrite using `[hsm, ← map_smul]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx _`. Take `⟨o, rfl⟩` from `Ideal.Quotient.mk_surjective o`. Rewrite using `[hsm, ← LinearMap.smul_apply, ← map_smul]`. Conclude with `hy _`.
+A detailed English derivation is pending.
 -/
 theorem exists_pair {O W W' : Type} [CommRing O] [AddCommGroup W] [Module O W] [AddCommGroup W']
     [Module O W'] (J : Ideal O) (N : ℕ) (B : W →ₗ[O] W' →ₗ[O] (O ⧸ J)) (ψ₀ : (O ⧸ J) →+ ZMod N)
@@ -153,7 +151,7 @@ theorem exists_pair {O W W' : Type} [CommRing O] [AddCommGroup W] [Module O W] [
     exact hy _
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, ← Nat.cast_smul_eq_nsmul O]`. Conclude with `Submodule.smul_mem_smul hN trivial`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_killed {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] (J : Ideal O) (N : ℕ)
     (hN : (N : O) ∈ J) (m : M ⧸ (J • ⊤ : Submodule O M)) : N • m = 0 := by
@@ -162,7 +160,7 @@ theorem quot_killed {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] (J :
   exact Submodule.smul_mem_smul hN trivial
 
 /- English proof (translation)
-Apply `Nat.eq_of_mul_eq_mul_right hw` to reduce the goal to its premises. Rewrite using `[hC, hZ, pow_succ, pow_mul, ← hq]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem final_count (h1 w z h0 h0' q a d : ℕ) (hw : 0 < w) (hq : w = q ^ a)
     (hC : h1 * w = z * h0) (hZ : z = h0' * w ^ (d + 1)) : h1 = h0 * h0' * q ^ (a * d) := by
@@ -173,21 +171,19 @@ theorem final_count (h1 w z h0 h0' q a d : ℕ) (hw : 0 < w) (hq : w = q ^ a)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hT hE D l _ K LL _ _ _ O _ _ hO A A' LA LA' P hd ϖ hϖ r hI hI'`. Take `⟨-, hqf, -, ⟨-, hl, -⟩, -, -⟩` from `GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hO ϖ hϖ`. Take `⟨ι, hι⟩` from `GlobalTheory.TateTop.exists_ringHom hO`. Take `⟨⟨hdom, hdvr, hfr⟩, -⟩` from `id hO`. Use `hdom` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hdvr` as an intermediate fact. Use `hfr` as an intermediate fact. Use `hqf` as an intermediate fact. Establish `hfinO : Finite (O ⧸ Ideal.span {ϖ ^ r})`. Use `Ideal.finite_quotient_pow (I := Ideal.span {ϖ}) ⟨{ϖ}, by simp⟩ r` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Ideal.span_singleton_pow]`. Then use the resulting hypothesis. Establish `hpos : 0 < l ^ (r + 1)` using `pow_pos (Fact.out : l.Prime).pos _`. Establish `hN : ((l ^ (r + 1) : ℕ) : O) ∈ Ideal.span {ϖ ^ r}`. Establish `h1 : (l : O) ^ r ∈ Ideal.span {ϖ ^ r}`. Rewrite using `[← Ideal.span_singleton_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.pow_mem_pow hl r`. Rewrite using `[Nat.cast_pow, pow_succ]`. Conclude with `Ideal.mul_mem_right _ _ h1`. Take `⟨hW, hcW⟩` from `cardQ l K LL O hO A LA ϖ hϖ r`. Take `⟨hW', -⟩` from `cardQ l K LL O hO A' LA' ϖ hϖ r`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ₀, hψ, -⟩` from `GlobalTheory.T.exists_perfect_character_quotient O ϖ hϖ r (l ^ (r + 1)) hpos hfinO hN`. Take `⟨B, hB, hBl, hBr⟩` from `pairO D l K LL O hO A A' LA LA' P hd ϖ hϖ r`. Take `⟨Pb, hPb, hL, hR⟩` from `exists_pair _ _ B ψ₀ hψ hBl hBr`. Establish `hlc` using `locconst D l K LL O hO A LA ϖ hϖ r hI`. Establish `heq : ∀ g x y, Pb ((actQ LA _ hI g).toAddMonoidHom x) ((actQ LA' _ hI' g).toAddMonoidHom y) = (Formalism.GaloisCohomology.cycK l K.1 (r + 1) (K.1.fixingSubgroupEquiv g) : ZMod (l ^ (r + 1))) * Pb x y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g x y`. Take `⟨u, hu, hu'⟩` from `chi_tie D l K (r + 1) g`. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (B x y)`. Establish `e1` using `equivariant_B D l K LL O ι hι A A' LA LA' P hd _ _ _ hI hI' B hB g x y u hu`. Rewrite `e1` using `[← hb, ← map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3` using `psi_unit ι _ (r + 1) hN ψ₀ u b`. Rewrite `e3` using `[hu', hb, ← hPb, ← e1, ← hPb]`. Conclude with `e3`. Establish `hZ` using `cocycles hT hE l K (r + 1) (Nat.succ_pos r) _ (fun g => (actQ LA _ hI g).toAddMonoidHom) (actQ_one' LA _ hI) (fun g h m => actQ_mul' LA _ hI g h m) hlc (quot_killed _ _ hN) _ (fun g => (actQ LA' _ hI' g).toAddMonoidHom) (actQ_one' LA' _ hI') (fun g h m => actQ_mul' LA' _ hI' g h …`. Establish `hC` using `h1count l K LL O A LA _ hI hW hlc`.
-
-Conclude with `final_count _ _ _ _ _ _ _ _ Nat.card_pos hcW hC hZ`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem euler_quot : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK → ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (LA' : Lattice (O := O) A'.ρ) (P : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDualLat1 ((D.loc l).PD K) LA LA' P → ∀ ϖ : O, Irreducible ϖ → ∀ (r : ℕ) (hI : StableSub LA (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)), ∀ hI' : StableSub LA' (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA'.T), Nat.card (QuotientCohomology LA _ hI) = Nat.card {x : ↥LA.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T) // ∀ g, actQ LA _ hI g x = x} * Nat.card {x : ↥LA'.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA'.T) // ∀ g, actQ LA' _ hI' g x = x} * Nat.card (O ⧸ Ideal.span {ϖ}) ^ (r * finrank LL A.V * finrank ℚ_[l] ↥K.1) := by
   intro hT hE D l _ K LL _ _ _ O _ _ hO A A' LA LA' P hd ϖ hϖ r hI hI'

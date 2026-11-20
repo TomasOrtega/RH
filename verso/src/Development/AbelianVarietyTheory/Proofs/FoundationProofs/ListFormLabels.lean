@@ -12,15 +12,13 @@ namespace GlobalTheory.Proof.ListFormLabels
 open Formalism.BasicNotions GlobalTheory.IndefiniteRowSideFullHecke.BlockRootsCuspidal
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨L, h1, h2, h3⟩`. Use `⟨((L.map fun p => ((p.1, p.2.1), p.2.2) : List ((ℕ × ℕ) × Multiset F)) : Multiset _), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1, Multiset.map_coe, List.map_map]`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `p hp`. Take `⟨q, hq, rfl⟩` from `List.mem_map.1 (Multiset.mem_coe.1 hp)`. Conclude with `h2 q hq`. Rewrite using `[h3, Multiset.map_coe, Multiset.sum_coe, List.map_map]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨M, h1, h2, h3⟩`. Proceed by induction on `M using Quotient.inductionOn with`. Consider the case `_ M`. Use `⟨M.map fun p => (p.1.1, p.1.2, p.2), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1, List.map_map]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `p hp`. Take `⟨q, hq, rfl⟩` from `List.mem_map.1 hp`. Conclude with `h2 q (Multiset.mem_coe.2 hq)`. Rewrite using `[← h3, List.map_map]`.
-
-Conclude with `Multiset.sum_coe _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blocks_iff {F : Type} [Monoid F] (g : ℕ) (B : Multiset (ℕ × ℕ)) (Rt : Multiset F) :
     (∃ L : List (ℕ × ℕ × Multiset F),
@@ -47,7 +45,7 @@ theorem blocks_iff {F : Type} [Monoid F] (g : ℕ) (B : Multiset (ℕ × ℕ)) (
       exact Multiset.sum_coe _
 
 /- English proof (translation)
-The claim follows from `(D.ntypes.tg_gen k v).2`.
+A detailed English derivation is pending.
 -/
 theorem tameGen_tg (D : D7) (k : Fin 2) (v : D.nd.PlG k) :
     Formalism.MainNotions.N.TameGen D.nd (D.nd.plOm.1 (D.naut.plGw k v)) (D.ntypes.tg k v) :=
@@ -71,12 +69,12 @@ def ListFormAt (D : D7) (σ : D.what₂.FT) (k : Fin 2) (v : D.nd.PlG k) : Prop 
         D.ntypes.rbar σ w (φ * D.ntypes.tg k v * φ⁻¹) = D.ntypes.rbar σ w (D.ntypes.tg k v) ^ D.host.g k)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem listForm_iff_forall (D : D7) : Formalism.MainNotions.ArithmeticCylinders.ArchimedeanSignatureMatching D ↔ ∀ σ k v, ListFormAt D σ k v := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `and_congr (blocks_iff _ _ _) (forall_congr' fun _ => ⟨fun h => h (tameGen_tg D k v), fun h _ => h⟩)`.
+A detailed English derivation is pending.
 -/
 theorem clause_iff (D : D7) (σ : D.what₂.FT) (k : Fin 2) (v : D.nd.PlG k) :
     ListFormAt D σ k v ↔
@@ -87,7 +85,7 @@ theorem clause_iff (D : D7) (σ : D.what₂.FT) (k : Fin 2) (v : D.nd.PlG k) :
     (forall_congr' fun _ => ⟨fun h => h (tameGen_tg D k v), fun h _ => h⟩)
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun σ => forall_congr' fun _ => forall_congr' fun k => forall_congr' fun v => (clause_iff D σ k v).symm`.
+A detailed English derivation is pending.
 -/
 theorem labels_iff_listForm_good (D : D7) :
     LabelsAndTameInertia D ↔ ∀ σ, D.nd.goodRow σ → ∀ k v, ListFormAt D σ k v :=
@@ -95,13 +93,13 @@ theorem labels_iff_listForm_good (D : D7) :
     (clause_iff D σ k v).symm
 
 /- English proof (translation)
-The claim follows from `(labels_iff_listForm_good D).2 fun σ _ k v => h σ k v`.
+A detailed English derivation is pending.
 -/
 theorem labels_of_listForm (D : D7) (h : Formalism.MainNotions.ArithmeticCylinders.ArchimedeanSignatureMatching D) : LabelsAndTameInertia D :=
   (labels_iff_listForm_good D).2 fun σ _ k v => h σ k v
 
 /- English proof (translation)
-Use `⟨fun h => ⟨labels_of_listForm D h, fun σ _ k v => h σ k v⟩, fun ⟨h₁, h₂⟩ σ k v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hσ : D.nd.goodRow σ`. Conclude with `(labels_iff_listForm_good D).1 h₁ σ hσ k v`. Conclude with `h₂ σ hσ k v`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem listForm_iff_labels_and_bad (D : D7) :
     Formalism.MainNotions.ArithmeticCylinders.ArchimedeanSignatureMatching D ↔
@@ -112,14 +110,14 @@ theorem listForm_iff_labels_and_bad (D : D7) :
   · exact h₂ σ hσ k v
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨labels_of_listForm D, fun h σ k v => (labels_iff_listForm_good D).1 h σ (hD σ) k v⟩`.
+Supply the required witnesses or components.
 -/
 theorem listForm_iff_labels (D : D7) (hD : GoodFTAll D) :
     Formalism.MainNotions.ArithmeticCylinders.ArchimedeanSignatureMatching D ↔ LabelsAndTameInertia D :=
   ⟨labels_of_listForm D, fun h σ k v => (labels_iff_listForm_good D).1 h σ (hD σ) k v⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨listForm_iff_forall D, labels_iff_listForm_good D, labels_of_listForm D, listForm_iff_labels D⟩`.
+Supply the required witnesses or components.
 -/
 theorem comparison (D : D7) :
     (Formalism.MainNotions.ArithmeticCylinders.ArchimedeanSignatureMatching D ↔ ∀ σ k v, ListFormAt D σ k v) ∧

@@ -16,15 +16,15 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M} {lam : Fin n → ℝ}
 
 /- English proof (translation)
-Establish `hVfd : FiniteDimensional ℂ V` using `hV.1`. Establish `hVk : IsKStableSub ε E V` using `hV.2.1`. Take `⟨P, hP, hP0, hPμ, hPperp⟩` from `lift_layer hE hU hVfd hVk hw hperp hμ hw0`. Use `⟨khw_big_weight hE hV hP hP0 hPμ, ?_⟩` and prove the remaining obligations. Establish `hposition : ∀ i κ, slice i κ P ∈ Wp ε E V`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `i`. Use `position_perp hE hU hV hmono hh hbig i hP ?_` and prove the remaining obligations. Introduce `F hF hFm`. Conclude with `hPperp F hF (phi_Wm_position hE hU hV hc hmono hh hbig i hF hFm)`. Establish `hB` using `bochner_ineq hE hU hV hmono hh hbig hP hposition`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcas : casimirK ε (bAct E (k + 1)) P = ((casValK ε μ : ℝ) : ℂ) • P` using `casimirK_khwVec ε (bAct_isGlRep hE (k + 1)) hPμ`. Establish `hre : RCLike.re (inner ℂ (((casValK ε μ : ℝ) : ℂ) • P) P) = casValK ε μ * ‖P‖ ^ 2` using `by first`. Consider the case `(rw [inner_smul_left, Complex.conj_ofReal, RCLike.re_to_complex, Complex.re_ofReal_mul, ← RCLike.re_to_complex, inner_self_eq_norm_sq]; done)`. Consider the case `(rw [inner_smul_real_left, RCLike.smul_re, inner_self_eq_norm_sq, smul_eq_mul]; done)`. Consider the case `(simp [inner_smul_left, inner_self_eq_norm_sq_to_K]; done)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp [inner_smul_left, inner_self_eq_norm_sq_to_K]; ring)`. Rewrite `hB` using `[hcas, hre]`. Establish `hpos : 0 < ‖P‖ ^ 2`. Use `norm_pos_iff.mpr hP0` as an intermediate fact. Check the signs of the components of the expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hle` using `le_of_mul_le_mul_right hB hpos`. Move the coercions through the operations in `at hle`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem khw_layer_succ_bound (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)

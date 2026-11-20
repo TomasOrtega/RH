@@ -13,11 +13,11 @@ section Scale
 variable {σ K : Type*} [Field K]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial d a`. Rewrite using `[aeval_monomial, coeff_monomial]`. Establish `h1 : (d.prod fun i k => (C (c i) * X i : MvPolynomial σ K) ^ k) = C (d.prod fun x n => c x ^ n) * monomial d 1`. Rewrite using `[monomial_eq, C_1, one_mul]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, ← map_pow, ← map_prod]`. Rewrite using `[h1, algebraMap_eq, ← mul_assoc, ← map_mul, coeff_C_mul, coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add f g hf hg => rw [map_add, coeff_add, coeff_add, hf, hg, mul_add]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coeff_aeval_scale (c : σ → K) (f : MvPolynomial σ K) (m : σ →₀ ℕ) :
     coeff m (aeval (fun x => C (c x) * X x) f) = (m.prod fun x n => c x ^ n) * coeff m f := by
@@ -43,9 +43,9 @@ def Gtor (v0 : Fin P.nV) (a0 : Fin (P.m + 1)) : ∀ v, Fin (P.n' v) → Matrix (
   fun v _ => Matrix.diagonal fun a => if v = v0 ∧ a = a0 then (2 : Kf)⁻¹ else 1
 
 /- English proof (translation)
-Use `MvPolynomial.algHom_ext fun x => ?_` and prove the remaining obligations. Rewrite using `[Places.subst, aeval_X, aeval_X, Finset.sum_eq_single x.2.2.1]`. Simplify using `[Gtor, Matrix.diagonal_apply_eq]`. Introduce `b _ hb`. Rewrite using `[Gtor, Matrix.diagonal_apply_ne _ (Ne.symm hb), C_0, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem subst_Gtor (v0 : Fin P.nV) (a0 : Fin (P.m + 1)) :
     P.subst (Gtor P v0 a0) = aeval fun x => C (if x.1 = v0 ∧ x.2.2.1 = a0 then (2 : Kf)⁻¹ else 1) * X x := by
@@ -58,9 +58,9 @@ theorem subst_Gtor (v0 : Fin P.nV) (a0 : Fin (P.m + 1)) :
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Finsupp.prod, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, om, smul_eq_mul]`. Distinguish the cases in `h : x.1 = v0 ∧ x.2.2.1 = a0`. Establish `: (v0, a0) = (x.1, x.2.2.1)` using `Prod.ext h.1.symm h.2.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos h, if_pos this, mul_one]`. Establish `: (v0, a0) ≠ (x.1, x.2.2.1)` using `fun e => h ⟨(congrArg Prod.fst e).symm, (congrArg Prod.snd e).symm⟩`. Rewrite using `[if_neg h, if_neg this, one_pow, mul_zero, pow_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_tor (v0 : Fin P.nV) (a0 : Fin (P.m + 1))
     (m : (Σ v : Fin P.nV, Fin (P.n' v) × (Fin (P.m + 1) × Fin (P.m + 1))) →₀ ℕ) :
@@ -77,7 +77,7 @@ theorem prod_tor (v0 : Fin P.nV) (a0 : Fin (P.m + 1))
     rw [if_neg h, if_neg this, one_pow, mul_zero, pow_zero]
 
 /- English proof (translation)
-Rewrite `h` using `[inv_pow, inv_pow, inv_inj]`. Establish `h2 : ((2 ^ a : ℕ) : Kf) = ((2 ^ b : ℕ) : Kf)` using `by push_cast; exact h`. Conclude with `Nat.pow_right_injective le_rfl (Nat.cast_injective h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem two_inv_pow_inj {a b : ℕ} (h : (2 : Kf)⁻¹ ^ a = (2 : Kf)⁻¹ ^ b) : a = b := by
   rw [inv_pow, inv_pow, inv_inj] at h
@@ -85,9 +85,9 @@ theorem two_inv_pow_inj {a b : ℕ} (h : (2 : Kf)⁻¹ ^ a = (2 : Kf)⁻¹ ^ b) 
   exact Nat.pow_right_injective le_rfl (Nat.cast_injective h2)
 
 /- English proof (translation)
-Take `⟨mE, hmE⟩` from `ne_zero_iff.mp hE0`. Introduce `m hm`. Use function extensionality and compare the values at `y`. Take `⟨v0, a0⟩` from `y`. Establish `h1` using `congrArg (coeff m) (he v0 a0)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (coeff mE) (hEt v0 a0)`. Rewrite `h1`, `h2` using `[subst_Gtor, coeff_aeval_scale, prod_tor, coeff_smul, smul_eq_mul]`. Establish `h3 : (2 : Kf)⁻¹ ^ (Finsupp.weight (om P) m (v0, a0)) = t v0 a0` using `mul_right_cancel₀ hm h1`. Establish `h4 : (2 : Kf)⁻¹ ^ (Finsupp.weight (om P) mE (v0, a0)) = t v0 a0` using `mul_right_cancel₀ hmE h2`. Rewrite using `[two_inv_pow_inj (h3.trans h4.symm), hE hmE]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isWH_of_eigen (e E : P.Xsp) (hE0 : E ≠ 0) (hE : IsWeightedHomogeneous (om P) E (LamTot P))
     (t : Fin P.nV → Fin (P.m + 1) → Kf)

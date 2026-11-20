@@ -8,20 +8,20 @@ namespace GlobalTheory.SchurExt
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-The claim follows from `Prod.ext (one_mul _) (mul_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem idemS_mul_sInf (S : Finset (HeightOneSpectrum (𝓞 E))) (x : Cinf E) : idemS S * sInf E x = sInf E x :=
   Prod.ext (one_mul _) (mul_zero _)
 
 /- English proof (translation)
-Rewrite using `[sub_mul, one_mul, idemS_mul_sInf, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_sub_idemS_mul_sInf (S : Finset (HeightOneSpectrum (𝓞 E))) (x : Cinf E) :
     (1 - idemS S) * sInf E x = 0 := by
   rw [sub_mul, one_mul, idemS_mul_sInf, sub_self]
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin a) (Fin a) (Ad E)) i j - idemS S * (1 : Matrix (Fin a) (Fin a) (Ad E)) i j + idemS S * ((1 : Matrix (Fin a) (Fin a) (Ad E)) i j - sInf E ((1 : Matrix (Fin a) (Fin a) (Cinf E)) i j) + sInf E (y i j)) = (1 : Matrix (Fin a) (Fin a) (Ad E)) i j - sInf E ((1 : Matrix …`. Rewrite using `[mul_add, mul_sub, idemS_mul_sInf, idemS_mul_sInf]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prS_infGL (S : Finset (HeightOneSpectrum (𝓞 E))) (a : ℕ) (y : GL (Fin a) (Cinf E)) :
     prS S a (infGL E a y) = infGL E a y := by
@@ -34,7 +34,7 @@ theorem prS_infGL (S : Finset (HeightOneSpectrum (𝓞 E))) (a : ℕ) (y : GL (F
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin a) (Fin a) (Ad E)) i j - (1 - idemS S) * (1 : Matrix (Fin a) (Fin a) (Ad E)) i j + (1 - idemS S) * ((1 : Matrix (Fin a) (Fin a) (Ad E)) i j - sInf E ((1 : Matrix (Fin a) (Fin a) (Cinf E)) i j) + sInf E (y i j)) = (1 : Matrix (Fin a) (Fin a) (Ad E)) i j`. Rewrite using `[mul_add, mul_sub, one_sub_idemS_mul_sInf, one_sub_idemS_mul_sInf]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prO_infGL (S : Finset (HeightOneSpectrum (𝓞 E))) (a : ℕ) (y : GL (Fin a) (Cinf E)) :
     prO S a (infGL E a y) = 1 := by
@@ -47,7 +47,7 @@ theorem prO_infGL (S : Finset (HeightOneSpectrum (𝓞 E))) (a : ℕ) (y : GL (F
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ a S g y`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, prS_infGL]`. Rewrite using `[map_mul, prO_infGL, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prS_prO_mul_infGL : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (g : GA E a) (y : GL (Fin a) (Cinf E)),

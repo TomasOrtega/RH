@@ -23,7 +23,7 @@ def IsMaxContactHypersurface (A : X.IdealSheafData) (m : ℕ) (H : X.IdealSheafD
         restrictIdeal H U = c.coordIdeal {j} ∧ IsMaxContactCoord k p A m c j))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isMaxContactHypersurface_iff (A : X.IdealSheafData) (m : ℕ) (H : X.IdealSheafData) :
     IsMaxContactHypersurface k p A m H ↔
@@ -41,13 +41,11 @@ variable {k : Type u} [Field k] [CharZero k] {X : Scheme.{u}}
   {p : X ⟶ Spec (CommRingCat.of k)} [LocallyOfFiniteType p] [AlgebraicGeometry.Smooth p]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨U, hU, hxU, hcase⟩` from `h x`. Break down `hcase with ⟨hdisj, -⟩ | ⟨n, c, j, hH, hmc⟩` into its components or cases. Conclude with `absurd hxU (Set.disjoint_left.mp hdisj hx)`. Establish `hmem : c.coord j ∈ (maxContactIdeal k p A m).ideal ⟨U, hU⟩` using `(isMaxContactCoord_iff_coord_mem k p A m hU c j).mp hmc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHideal : H.ideal ⟨U, hU⟩ = Ideal.span (c.coord '' (({j} : Finset (Fin n)) : Set (Fin n)))` using `c.ideal_eq_span_coord hU H {j} hH`. Establish `hle : H.ideal ⟨U, hU⟩ ≤ (maxContactIdeal k p A m).ideal ⟨U, hU⟩`. Rewrite using `[hHideal, Finset.coe_singleton, Set.image_singleton, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hmem`. Establish `hst : stalkIdeal H x ≤ stalkIdeal (maxContactIdeal k p A m) x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[stalkIdeal_eq_map_germ H x ⟨U, hU⟩ hxU, stalkIdeal_eq_map_germ (maxContactIdeal k p A m) x ⟨U, hU⟩ hxU]`. Conclude with `Ideal.map_mono hle`. Establish `hx' : x ∈ (maxContactIdeal k p A m).support` using `mem_support_maxContactIdeal_of_mem_orderAtLeastLocus k p A hm hx`. Rewrite `hx'` using `[mem_support_iff_stalkIdeal_le_maximalIdeal]`. Establish `hfin : x ∈ H.support`.
-
-Rewrite using `[mem_support_iff_stalkIdeal_le_maximalIdeal]`. Conclude with `hst.trans hx'`. Conclude with `hfin`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsMaxContactHypersurface.orderAtLeastLocus_subset_support {A : X.IdealSheafData} {m : ℕ}
     {H : X.IdealSheafData} (h : IsMaxContactHypersurface k p A m H) (hm : 1 ≤ m) :

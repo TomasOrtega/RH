@@ -19,9 +19,9 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ hb S M U₀ EE hT hO hE`. Use `hb.ft` as an intermediate fact. Use `hb.char` as an intermediate fact. Establish `h1` using `classical_points_and_local_regularity o Ω M U₀ hO.normal`. Establish `h2` using `exists_at_test_of_cen o Ω S M U₀ hT hO`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `ThetaSys.mem_supI_iff_and_HH_eq_ker o Ω S M U₀ hO`. Establish `h4` using `isoFree_TT_and_supI_specializes o Ω S M U₀ hO h1 h2 h3`. Establish `h5` using `EE_contains_stable_weightZero o Ω S M U₀ EE hO h1 h2 h3 h4 hE`. Establish `h6` using `coord_regular_and_unit o Ω S M U₀ EE hO h1 h2 h3 h4 hE`. Conclude with `⟨hO, hE, h1.2, fun z p _ y y₀ τ hc ha => (h3 z p y y₀ τ hc ha).2, h4.1, h4.2.2.1, fun ξ => (h5 ξ).1, fun ξ => (h5 ξ).2.1, fun ξ => (h5 ξ).2.2, h6⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem baseFacts_of_isEE :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), S.HasTests → S.Over₀ M U₀ → S.IsEE M U₀ EE → BaseFacts S M U₀ EE := by

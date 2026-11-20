@@ -7,21 +7,19 @@ namespace UpperTheory.Mu
 variable {L : Type} [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 L))
 
 /- English proof (translation)
-Establish `hv' : v.asIdeal ≠ ⊤` using `v.isPrime.ne_top`. Establish `hpos` using `Units.torsionOrder_pos L`. Establish `hn : ((Units.torsionOrder L : ℕ) : 𝓞 L) ∉ v.asIdeal`. Introduce `hn`. Establish `hcop : Nat.Coprime (Units.torsionOrder L) p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Nat.coprime_comm, hp.coprime_iff_not_dvd]`. Introduce `hd`. Use `Nat.le_of_dvd hpos hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hcop`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (1 : 𝓞 L) = (a : 𝓞 L) * ((Units.torsionOrder L : ℕ) : 𝓞 L) + (b : 𝓞 L) * ((p : ℕ) : 𝓞 L)`. Use `congrArg (Int.cast : ℤ → 𝓞 L) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this.symm`. Apply `hv'` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.eq_top_iff_one, h1]`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hn) (v.asIdeal.mul_mem_left _ hv)`. Establish `hN : Units.torsionOrder L + 1 < Ideal.absNorm v.asIdeal`. Establish `hd : Ideal.absNorm v.asIdeal ∣ p ^ Module.finrank ℤ (𝓞 L)`. Establish `h1` using `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).mpr hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[Ideal.absNorm_span_singleton, show ((p : ℕ) : 𝓞 L) = algebraMap ℤ (𝓞 L) (p : ℤ) by simp, Algebra.norm_algebraMap, Int.natAbs_pow, Int.natAbs_natCast]`. Then use the resulting hypothesis. Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow hp).1 hd`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `hv' (Ideal.absNorm_eq_one_iff.1 (by simpa using hk))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hk]`. Conclude with `lt_of_lt_of_le hw (Nat.le_self_pow hk0 p)`. Take `⟨θ, hθ, hθε⟩` from `tame_ext L v hn hN (ε.comp (Units.torsion L).subtype)`. Use `⟨θ, hθ, fun ζ hζ => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, hζm⟩` from `hζ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmem : ζ ∈ Units.torsion L`. Rewrite using `[Units.torsion, CommGroup.mem_torsion, isOfFinOrder_iff_pow_eq_one]`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
-
-Simplify using `using hζm`. Conclude with `hθε ⟨ζ, hmem⟩`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tame_ext_prime {p : ℕ} (hp : p.Prime) (hw : Units.torsionOrder L + 1 < p) (hv : (p : 𝓞 L) ∈ v.asIdeal)
     (ε : (𝓞 L)ˣ →* ℂˣ) :
@@ -67,9 +65,9 @@ theorem tame_ext_prime {p : ℕ} (hp : p.Prime) (hw : Units.torsionOrder L + 1 <
   exact hθε ⟨ζ, hmem⟩
 
 /- English proof (translation)
-Set `f : I → (𝓞 L)ˣ →* ℂˣ` to `fun i => (zpowGroupHom (e i)).comp (Units.map ((φ i).toMonoidHom.comp (algebraMap (𝓞 L) L).toMonoidHom))`. Take `⟨θ, hθ, hθε⟩` from `tame_ext_prime v hp hw hv (∏ i, f i)⁻¹`. Use `⟨θ, hθ, fun ζ hζ => ?_⟩` and prove the remaining obligations. Establish `hf : (((∏ i, f i ζ : ℂˣ)) : ℂ) = ∏ i, φ i ((ζ : 𝓞 L) : L) ^ e i`. Rewrite using `[Units.coe_prod]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[f, Units.val_zpow_eq_zpow_val]`. Rewrite using `[hθε ζ hζ, MonoidHom.inv_apply, MonoidHom.finset_prod_apply, ← hf]`. Conclude with `Units.mul_inv _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tame_par {p : ℕ} (hp : p.Prime) (hw : Units.torsionOrder L + 1 < p) (hv : (p : 𝓞 L) ∈ v.asIdeal)
     {I : Type} [Fintype I] (φ : I → L →+* ℂ) (e : I → ℤ) :
@@ -88,11 +86,9 @@ theorem tame_par {p : ℕ} (hp : p.Prime) (hw : Units.torsionOrder L + 1 < p) (h
   exact Units.mul_inv _
 
 /- English proof (translation)
-Take `⟨m, hm, hzm⟩` from `hz`. Establish `hint : IsIntegral ℤ z`. Use `IsIntegral.of_pow hm ?_` and prove the remaining obligations. Rewrite using `[hzm]`. Conclude with `isIntegral_one`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `y : 𝓞 L` to `⟨z, hint⟩`. Establish `hy : y ^ m = 1`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `push_cast`. Conclude with `hzm`.
-
-Conclude with `⟨(IsUnit.of_pow_eq_one hy hm.ne').unit, rfl⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_root {z : L} (hz : ∃ m : ℕ, 0 < m ∧ z ^ m = 1) : ∃ ζ : (𝓞 L)ˣ, ((ζ : 𝓞 L) : L) = z := by
   obtain ⟨m, hm, hzm⟩ := hz

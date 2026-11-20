@@ -15,9 +15,9 @@ namespace GlobalTheory.Poinc.HHFibre
 open GlobalTheory.ZH GlobalTheory.ZH.RatModel
 
 /- English proof (translation)
-Use `show Y.pt ≫ q = spMap (AlgHom.id o Ω).toRingHom ≫ M.pt`. Rewrite using `[hq]`. Establish `: spMap (AlgHom.id o Ω).toRingHom = 𝟙 _` using `by show Spec.map (CommRingCat.ofHom (RingHom.id Ω)) = 𝟙 _`. Rewrite using `[← Spec.map_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Category.id_comp]`.
+A detailed English derivation is pending.
 -/
 theorem isHom_of_pt {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M Y : RatModel o Ω} {q : Y.Z ⟶ M.Z}
     (hq : Y.pt ≫ q = M.pt) : M.IsHom Y (AlgHom.id o Ω) q := by
@@ -29,18 +29,18 @@ theorem isHom_of_pt {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M Y : 
   rw [this, Category.id_comp]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X.residueField w, inferInstance, X.fromSpecResidueField w, Scheme.fromSpecResidueField_apply _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_pt (X : Scheme.{0}) (w : X) : ∃ (K : Type) (_ : Field K) (y : Sp K ⟶ X),
     y (IsLocalRing.closedPoint K) = w :=
   ⟨X.residueField w, inferInstance, X.fromSpecResidueField w, Scheme.fromSpecResidueField_apply _ _⟩
 
 /- English proof (translation)
-Take `⟨K, _, y, hy0⟩` from `exists_pt Y.Z w`. Establish `hy : Set.range y = {w}` using `hy0 ▸ range_eq_singleton y (IsLocalRing.closedPoint K)`. Establish `hyq : Set.range (y ≫ q) = {q w}`. Use `range_eq_singleton (y ≫ q) (IsLocalRing.closedPoint K)` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hy0]`. Both sides reduce to the same expression. Rewrite using `[← val_ne_zero_iff hyq]`. Rewrite `hu` using `[← val_ne_zero_iff hy]`. Establish `ha2 : a ∈ M.O (q (y (IsLocalRing.closedPoint K)))` using `by rw [hy0]; exact ha`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `hq.val_comp y (IsLocalRing.closedPoint K) ha2`. Simplify using `only [AlgHom.id_apply] at e`. Use `show M.val (y ≫ q) a ≠ 0`. Rewrite using `[e]`. Conclude with `hu`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_isUnit_comap {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M Y : RatModel o Ω}
     {q : Y.Z ⟶ M.Z} (hq : M.IsHom Y (AlgHom.id o Ω) q) (w : Y.Z) {a : Ω} (ha : a ∈ M.O (q w))
@@ -62,11 +62,11 @@ theorem isUnit_of_isUnit_comap {o Ω : Type} [CommRing o] [Field Ω] [Algebra o 
   exact hu
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ S M Y q hq hdiv w`. Establish `hh` using `isHom_of_pt hq`. Unfold `ThetaSys.HH`. Use `congr 1`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [ThetaSys.supI, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨x₀, h₀⟩` from `hdiv (q w)`. Establish `h₀' : Y.Div S.th x₀ w` using `by simpa using hh.div h₀`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[h₀.div_iff_isUnit]`. Conclude with `isUnit_of_isUnit_comap hh w _ _ ((h₀'.div_iff_isUnit x).1 hx)`. Introduce `hx`. Simplify using `using hh.div hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem HH_eq_of_hom : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (M Y : RatModel o Ω)
     (q : Y.Z ⟶ M.Z), Y.pt ≫ q = M.pt → M.HasDiv S.th → ∀ w : Y.Z, S.HH Y w = S.HH M (q w) := by

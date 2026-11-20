@@ -15,7 +15,7 @@ namespace AlgType
 variable {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Introduce `k hk` and use `by have e : (χ * χ').inf k = χ.inf k * χ'.inf k := rfl rw [e, Units.val_mul, h k hk, h' k hk, ← Finset.prod_mul_distrib] exact Finset.prod_congr rfl fun φ _ => (zpow_add₀ ((map_ne_zero φ).2 k.ne_zero) _ _).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem isAlgPos_mul {χ χ' : HChar K} {n n' : (K →+* ℂ) → ℤ} (h : IsAlgPos χ n) (h' : IsAlgPos χ' n') :
     IsAlgPos (χ * χ') (n + n') := fun k hk => by
@@ -24,7 +24,7 @@ private theorem isAlgPos_mul {χ χ' : HChar K} {n n' : (K →+* ℂ) → ℤ} (
   exact Finset.prod_congr rfl fun φ _ => (zpow_add₀ ((map_ne_zero φ).2 k.ne_zero) _ _).symm
 
 /- English proof (translation)
-Introduce `k hk` and use `by have e : (χ⁻¹).inf k = (χ.inf k)⁻¹ := rfl rw [e, Units.val_inv_eq_inv_val, h k hk, ← Finset.prod_inv_distrib] exact Finset.prod_congr rfl fun φ _ => (zpow_neg _ _).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem isAlgPos_inv {χ : HChar K} {n : (K →+* ℂ) → ℤ} (h : IsAlgPos χ n) : IsAlgPos χ⁻¹ (-n) := fun k hk => by
   have e : (χ⁻¹).inf k = (χ.inf k)⁻¹ := rfl
@@ -35,7 +35,7 @@ def Good (art : Ideles K →* Gab K Ω) (ι : Qbar l ≃+* ℂ) (t : (K →+* �
   ∃ Y : HChar K, IsAlgPos Y t ∧ IsLAdicOf art ι Y t ψ
 
 /- English proof (translation)
-Substitute `ht hψ` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem good_cong {art : Ideles K →* Gab K Ω} {ι : Qbar l ≃+* ℂ} {t t' : (K →+* ℂ) → ℤ}
     {ψ ψ' : G K Ω →* (Qbar l)ˣ} (h : Good art ι t ψ) (ht : t = t') (hψ : ψ = ψ') : Good art ι t' ψ' := by
@@ -43,7 +43,7 @@ theorem good_cong {art : Ideles K →* Gab K Ω} {ι : Qbar l ≃+* ℂ} {t t' :
   exact h
 
 /- English proof (translation)
-Take `⟨Y, h1, h2⟩` from `h`. Take `⟨Y', h1', h2'⟩` from `h'`. Conclude with `⟨Y * Y', isAlgPos_mul h1 h1', h2.mul h2'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem good_mul {art : Ideles K →* Gab K Ω} {ι : Qbar l ≃+* ℂ} {t t' : (K →+* ℂ) → ℤ}
     {ψ ψ' : G K Ω →* (Qbar l)ˣ} (h : Good art ι t ψ) (h' : Good art ι t' ψ') : Good art ι (t + t') (ψ * ψ') := by
@@ -52,7 +52,7 @@ theorem good_mul {art : Ideles K →* Gab K Ω} {ι : Qbar l ≃+* ℂ} {t t' : 
   exact ⟨Y * Y', isAlgPos_mul h1 h1', h2.mul h2'⟩
 
 /- English proof (translation)
-Take `⟨Y, h1, h2⟩` from `h`. Conclude with `good_cong ⟨Y * Y⁻¹, isAlgPos_mul h1 (isAlgPos_inv h1), h2.mul h2.inv⟩ (add_neg_cancel t) (mul_inv_cancel ψ)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem good_one {art : Ideles K →* Gab K Ω} {ι : Qbar l ≃+* ℂ} {t : (K →+* ℂ) → ℤ}
     {ψ : G K Ω →* (Qbar l)ˣ} (h : Good art ι t ψ) : Good art ι 0 1 := by
@@ -60,9 +60,9 @@ theorem good_one {art : Ideles K →* Gab K Ω} {ι : Qbar l ≃+* ℂ} {t : (K 
   exact good_cong ⟨Y * Y⁻¹, isAlgPos_mul h1 (isAlgPos_inv h1), h2.mul h2.inv⟩ (add_neg_cancel t) (mul_inv_cancel ψ)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.Published.CharAboveModel.absPow_isAlgPos K 1`. Take `⟨μ, hμ, hL⟩` from `ha.exists_isLAdicOf ι h`. Establish `e : μ = cycBar K Ω l ^ 1` using `GlobalTheory.Published.CharAboveModel.eq_cyc_pow ha hμ hL`. Rewrite `e` using `[pow_one]`. Substitute `e` using the available equality.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `good_cong ⟨_, h, hL⟩ (funext fun _ => Nat.cast_one) rfl`.
+A detailed English derivation is pending.
 -/
 theorem good_cyc {art : Ideles K →* Gab K Ω} (ha : IsGlobalArtin art) (ι : Qbar l ≃+* ℂ) :
     Good art ι (fun _ => 1) (cycBar K Ω l) := by
@@ -77,13 +77,13 @@ end AlgType
 
 open AlgType in
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _ l _ ι art Y a κ ha h1 h2 n j`. Establish `H : Good art ι a κ` using `⟨Y, h1, h2⟩`. Establish `H1 : Good art ι (fun _ => 1) (cycBar K Ω l)` using `good_cyc ha ι`. Establish `H0 : Good art ι 0 1` using `good_one H`. Establish `key0 : ∀ j : ℕ, Good art ι (fun _ => (j : ℤ)) (cycBar K Ω l ^ j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => exact good_cong H0 (funext fun _ => by simp) (pow_zero _).symm`. Consider the case `succ j ih`. Apply the tactic sequence `exact good_cong (good_mul ih H1) (funext fun _ => by simp only [Pi.add_apply, Nat.cast_add, Nat.cast_one] <;> ring) (pow_succ _ _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `key : ∀ n : ℕ, Good art ι (fun e => (n : ℤ) * a e + j) (κ ^ n * cycBar K Ω l ^ j)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact good_cong (key0 j) (funext fun _ => by simp) (by simp)`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `good_cong (good_mul ih H) (funext fun e => ?_) ?_` and prove the remaining obligations. Apply the tactic sequence `simp only [Pi.add_apply, Nat.cast_add, Nat.cast_one] <;> ring`. Rewrite using `[pow_succ]`. Conclude with `mul_right_comm _ _ _`. Conclude with `key n`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algType (hP : Af.Hypotheses₂) : AlgType := by
   intro K Ω _ _ _ _ _ l _ ι art Y a κ ha h1 h2 n j

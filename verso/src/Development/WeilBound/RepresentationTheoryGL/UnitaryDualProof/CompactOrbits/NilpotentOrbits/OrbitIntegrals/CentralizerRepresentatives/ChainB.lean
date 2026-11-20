@@ -12,33 +12,29 @@ open Module Submodule
 variable {E W : Type} [Field E] [AddCommGroup W] [Module E W]
 
 /- English proof (translation)
-Establish `hne : a ≠ b` using `by rintro rfl; simp at hab`. Use `set i0 := l a - l b with hi0`. Use `set d := s a - (s b + i0) with hd`. Establish `hdpos : 0 < d` using `by omega`. Use `set y' : ι → W := Function.update (Function.update y b (y b - (N ^ i0) (y a))) a (y a + (N ^ d) (y a)) with hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s' : ι → ℕ := Function.update s a (s b + i0) with hs'`. Establish `y'a : y' a = y a + (N ^ d) (y a)` using `by simp [y']`. Establish `y'b : y' b = y b - (N ^ i0) (y a)` using `by simp [y', hne.symm]`. Establish `y'c : ∀ c, c ≠ a → c ≠ b → y' c = y c` using `by intro c h1 h2; simp [y', h1, h2]`. Establish `s'a : s' a = s b + i0` using `by simp [s']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `s'c : ∀ c, c ≠ a → s' c = s c` using `by intro c h; simp [s', h]`. Establish `hy0' : ∀ c, (N ^ l c) (y' c) = 0`. Introduce `c`. Distinguish the cases in `hca : c = a`. Rewrite using `[hca, y'a, map_add, hy0, cb_pow_pow, cb_pow_zero_of_le N (hy0 a) (by omega), add_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hcb : c = b`. Rewrite using `[hcb, y'b, map_sub, hy0, cb_pow_pow, cb_pow_zero_of_le N (hy0 a) (by omega), sub_zero]`. Rewrite using `[y'c c hca hcb, hy0]`. Establish `hgen : ∀ c, B ⟨c, ⟨0, hl c⟩⟩ ∈ span E (Set.range (cbFam N l y')) ⊔ LinearMap.range N` using `by set T := span E (Set.range (cbFam N l y')) ⊔ LinearMap.range N with hT`. Establish `hmemS : ∀ c, y' c ∈ T` using `fun c => Submodule.mem_sup_left (subset_span ⟨⟨c, ⟨0, hl c⟩⟩, by simp [cbFam]⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmemR : ∀ j x, 0 < j → (N ^ j) x ∈ T` using `fun j x hj => Submodule.mem_sup_right ⟨(N ^ (j - 1)) x, by rw [cb_pow_succ, show j - 1 + 1 = j by omega]⟩`. Establish `hya : y a ∈ T`. Establish `: y a = y' a - (N ^ d) (y a)` using `by rw [y'a]; abel`. Rewrite using `[this]`. Conclude with `T.sub_mem (hmemS a) (hmemR d _ hdpos)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hyb : y b ∈ T`. Establish `: y b = y' b + (N ^ i0) (y a)` using `by rw [y'b]; abel`. Rewrite using `[this]`. Use `T.add_mem (hmemS b) ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos i0 with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h, pow_zero, Module.End.one_apply]`. Conclude with `hya`. Conclude with `hmemR i0 _ h`. Introduce `c`. Establish `hc : B ⟨c, ⟨0, hl c⟩⟩ = y c` using `by rw [hBy]; simp [cbFam]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hc]`. Distinguish the cases in `hca : c = a`. Rewrite using `[hca]`. Conclude with `hya`. Distinguish the cases in `hcb : c = b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcb]`. Conclude with `hyb`. Rewrite using `[← y'c c hca hcb]`. Conclude with `hmemS c`. Take `⟨B', hB', hB'y⟩` from `cb_exists_chain_of_gen N hN B hB hl y' hy0' hgen`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hsle : ∀ c, s' c ≤ l c`. Introduce `c`. Distinguish the cases in `hca : c = a`. Rewrite using `[hca, s'a]`. Use `hs a` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[s'c c hca]`. Conclude with `hs c`. Establish `hterm : ∀ c, (N ^ s' c) (y' c) = (N ^ s c) (y c) + ((if c = a then (N ^ (s b + i0)) (y a) else 0) - (if c = b then (N ^ (s b + i0)) (y a) else 0))`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hca : c = a`. Rewrite using `[hca, s'a, y'a, if_pos rfl, if_neg hne, map_add, cb_pow_pow, show s b + i0 + d = s a by omega]`. Normalize the expressions using the abelian group laws. Distinguish the cases in `hcb : c = b`. Rewrite using `[hcb, s'c b (fun h => hne h.symm), y'b, if_neg (fun h => hne h.symm), if_pos rfl, map_sub, cb_pow_pow]`.
-
-Normalize the expressions using the abelian group laws. Rewrite using `[s'c c hca, y'c c hca hcb, if_neg hca, if_neg hcb, sub_zero, add_zero]`. Establish `hv' : v = ∑ c, (N ^ s' c) (y' c)`. Rewrite using `[hv, Finset.sum_congr rfl (fun c _ => hterm c), Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Simplify using the standard rewrite rules.
-
-Establish `hsum : ∑ c, s' c < ∑ c, s c`. Rewrite using `[hs', Finset.sum_update_of_mem (Finset.mem_univ a), Finset.sdiff_singleton_eq_erase, ← Finset.add_sum_erase Finset.univ s (Finset.mem_univ a)]`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨y', s', hy0', ⟨B', hB', hB'y⟩, hsle, hv', hsum⟩`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cb_step (N : W →ₗ[E] W) (hN : IsNilpotent N) {ι : Type} [Fintype ι] [DecidableEq ι] {l : ι → ℕ}
     (hl : ∀ a, 0 < l a) (v : W) (y : ι → W) (s : ι → ℕ) (hy0 : ∀ a, (N ^ l a) (y a) = 0)
@@ -115,15 +111,13 @@ theorem cb_step (N : W →ₗ[E] W) (hN : IsNilpotent N) {ι : Type} [Fintype ι
   exact ⟨y', s', hy0', ⟨B', hB', hB'y⟩, hsle, hv', hsum⟩
 
 /- English proof (translation)
-Take `⟨ι, _, e, u, he, hu0, hli, hsp⟩` from `GlobalTheory.CompanionTheory.JordanChain.exists_chain_basis N hN`. Set `B0 : Module.Basis (Σ a, Fin (e a)) E W` to `Basis.mk hli (by rw [hsp])`. Establish `hB0p : ∀ p, B0 p = cbFam N e u p` using `fun p => by simp [B0, cbFam]`. Establish `hB0 : IsChain N e B0` using `cb_isChain_of_fam N e u hu0 B0 hB0p`. Take `⟨y, s, hy0, hyg, hs, hv⟩` from `cb_init N B0 hB0 he v`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨B1, hB1, hB1y⟩` from `cb_exists_chain_of_gen N hN B0 hB0 he y hy0 hyg`. Establish `hex : ∃ k, ∃ (y : ι → W) (s : ι → ℕ), ((∀ a, (N ^ e a) (y a) = 0) ∧ (∃ B : Module.Basis (Σ a, Fin (e a)) E W, IsChain N e B ∧ ∀ p, B p = cbFam N e y p) ∧ (∀ a, s a ≤ e a) ∧ v = ∑ a, (N ^ s a) (y a)) ∧ ∑ a, s a = k` using `⟨_, y, s, ⟨hy0, ⟨B1, hB1, hB1y⟩, hs, hv⟩, rfl⟩`. Take `⟨y, s, ⟨hy0, ⟨B, hB, hBy⟩, hs, hv⟩, hk⟩` from `Nat.find_spec hex`. Establish `hC : ∀ a b, s a ≤ s b + (e a - e b)`. Introduce `a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hab`. Use `push Not at hab`. Take `⟨y', s', h1, h2, h3, h4, h5⟩` from `cb_step N hN he v y s hy0 B hB hBy hs hv a b hab`. Conclude with `Nat.find_min hex (hk ▸ h5) ⟨y', s', ⟨h1, h2, h3, h4⟩, rfl⟩`. Use `⟨ι, inferInstance, e, s, B, hB, he, hs, hC, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hv]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[hBy]`. Both sides reduce to the same expression.
-
-Rewrite using `[show s a = e a by have := hs a; omega, hy0]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_good [FiniteDimensional E W] (N : W →ₗ[E] W) (hN : IsNilpotent N) (v : W) :
     ∃ (ι : Type) (_ : Fintype ι) (l s : ι → ℕ) (B : Module.Basis (Σ a, Fin (l a)) E W), IsChain N l B ∧

@@ -26,7 +26,7 @@ noncomputable section
 namespace GlobalTheory.MomentPointwise
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[Finset.sum_comm]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_sq_eq_trace {n : Type} [Fintype n] (A : Matrix n n ℂ) :
     ((∑ i, ∑ j, ‖A i j‖ ^ 2 : ℝ) : ℂ) = (Aᴴ * A).trace := by
@@ -37,9 +37,9 @@ theorem sum_sq_eq_trace {n : Type} [Fintype n] (A : Matrix n n ℂ) :
   rw [Complex.star_def, Complex.conj_mul']
 
 /- English proof (translation)
-Establish `h1 : Qᴴ * Q = 1` using `Matrix.mem_unitaryGroup_iff'.1 hQ`. Establish `hinv : Q⁻¹ = Qᴴ` using `Matrix.inv_eq_left_inv h1`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[sum_sq_eq_trace, sum_sq_eq_trace, hinv]`. Establish `: (Q * X * Qᴴ)ᴴ * (Q * X * Qᴴ) = Q * (Xᴴ * X * Qᴴ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Qᴴ Q, h1, Matrix.one_mul]`. Rewrite using `[this, Matrix.trace_mul_comm, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_sq_conj {n : Type} [Fintype n] [DecidableEq n] (Q X : Matrix n n ℂ)
     (hQ : Q ∈ Matrix.unitaryGroup n ℂ) :
@@ -54,7 +54,7 @@ theorem sum_sq_conj {n : Type} [Fintype n] [DecidableEq n] (Q X : Matrix n n ℂ
   rw [this, Matrix.trace_mul_comm, Matrix.mul_assoc, h1, Matrix.mul_one]
 
 /- English proof (translation)
-Use `CCRuleCW.exp_mem_UH (Formalism.QuantumDeterminants.Hpk k r) _ ?_` and prove the remaining obligations. Establish `hL : Xᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * X = 0` using `hX`. Rewrite using `[Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hL, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_mem {k r : ℕ} {X : Mx k r} (hX : PI.UpqRep.InLieHpk k r X) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) ∈ GG k r := by
@@ -64,7 +64,7 @@ theorem exp_mem {k r : ℕ} {X : Mx k r} (hX : PI.UpqRep.InLieHpk k r X) (t : �
       Matrix.mul_smul, ← smul_add, hL, smul_zero]
 
 /- English proof (translation)
-Use `⟨?_, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩` and prove the remaining obligations. Use `show (1 : Mx k r)ᴴ * Formalism.QuantumDeterminants.Hpk k r * 1 = Formalism.QuantumDeterminants.Hpk k r`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_UW (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : (1 : Mx k r) ∈ Formalism.QuantumDeterminants.UWset k r z := by
   refine ⟨?_, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩
@@ -72,25 +72,23 @@ theorem one_mem_UW (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : (1 : Mx k r) 
   simp
 
 /- English proof (translation)
-Introduce `hK k r ε mu R Wp _ _ _ _ z π u μW μN μG νq l Q E hR hS hl hQ hE g hg a w`. Take `⟨hz, hT, ⟨u₀, hπ⟩, -⟩` from `hS`. Establish `hπ1 : π 1 = 1` using `(Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_facts hT hπ).1`. Take `⟨hmul, -, -, hsm, -⟩` from `GlobalTheory.T.discreteSeries_unitary_smooth_basic hK k r ε mu R hR`. Take `⟨hact, -, -, hcomp⟩` from `GlobalTheory.T.smooth_maps_closure hK k r ε mu mu mu R R R hR hR hR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨X, hX, hXn, hXt⟩` from `GlobalTheory.T.exists_lie_unitary_element_simple_root k r z hz hT g hg a`. Take `⟨-, -, hexp⟩` from `GlobalTheory.T.derivedAction_expand_matrixUnits hK k r ε mu R hR Q E hQ.1.1 hE`. Take `⟨ladd, lsmul, leq, lcont⟩` from `hl`. Establish `hla : 0 ≤ lenA k r z g a.castSucc` using `Metric.infDist_nonneg`. Establish `hla1 : 0 ≤ lenA k r z g a.succ` using `Metric.infDist_nonneg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hla.eq_or_lt with h0 | hpos` into its components or cases. Rewrite using `[← h0]`. Simplify using `only [div_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_mul]`. Check the signs of the components of the expression. Use `set L := lenA k r z g a.succ with hL`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `badd : ∀ v ∈ R.sm, ∀ v' ∈ R.sm, l (R.σ g (v + v')) = l (R.σ g v) + l (R.σ g v')`. Introduce `v hv v' hv'`. Rewrite using `[map_add]`. Conclude with `ladd _ (hsm g hg v hv) _ (hsm g hg v' hv')`. Establish `bsmul : ∀ (c : ℂ), ∀ v ∈ R.sm, l (R.σ g (c • v)) = c • l (R.σ g v)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c v hv`. Rewrite using `[map_smul]`. Conclude with `lsmul _ _ (hsm g hg v hv)`. Establish `hder` using `(GlobalTheory.T.frechetContinuous_continuousOn_orbit_hasDerivAt hK k r ε mu R hR Wp (fun v => l (R.σ g v)) badd bsmul (hcomp Wp _ l (hact g hg) lcont) w w.2).2 X hX`. Establish `hfun : (fun t : ℝ => l (R.σ g (R.σ (NormedSpace.exp ((t : ℂ) • X)) w))) = fun t : ℝ => Complex.exp (-(2 * (L : ℂ) * (t : ℂ)) * Complex.I) • l (R.σ g w)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `t`. Take `⟨m, hm, hgm, hψ⟩` from `hXt t`. Rewrite using `[← hmul g hg _ (exp_mem hX t), hgm, hmul m hm.1 g hg, ← hψ]`. Use `leq 1 (one_mem_UW k r z) m hm _ (hsm g hg w w.2)` as an intermediate fact. Rewrite `this` using `[Matrix.one_mul, hπ1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hd2 : HasDerivAt (fun t : ℝ => Complex.exp (-(2 * (L : ℂ) * (t : ℂ)) * Complex.I) • l (R.σ g w)) ((-(2 * (L : ℂ)) * Complex.I) • l (R.σ g w)) 0`. Establish `h1 : HasDerivAt (fun t : ℝ => -(2 * (L : ℂ) * (t : ℂ)) * Complex.I) (-(2 * (L : ℂ)) * Complex.I) 0`. Use `(((Complex.ofRealCLM.hasDerivAt (x := 0)).const_mul (2 * (L : ℂ))).neg).mul_const Complex.I` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `h1.cexp.smul_const (l (R.σ g w))`. Simplify using `using h2`. Rewrite `hder` using `[hfun]`. Establish `heq` using `hd2.unique hder`. Set `B : R.smSub →ₗ[ℂ] Wp` to `{ toFun := fun v => l (R.σ g v) map_add' := fun v v' => badd v v.2 v' v'.2 map_smul' := fun c v => bsmul c v v.2 }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : l (R.σ g (PI.UpqRep.dsig (k` using `k) (r := r) R.σ X w)) = ∑ p : Fin (2 * r + k + 1) × Fin (2 * r + k + 1), (Q * X * Q⁻¹) p.1 p.2 • l (R.σ g (E p.1 p.2 w)) := by`. Establish `h1 : B (∑ c, ∑ e, (Q * X * Q⁻¹) c e • E c e w) = ∑ c, ∑ e, (Q * X * Q⁻¹) c e • B (E c e w)`. Simplify using `only [map_sum, map_smul]`. Rewrite using `[Fintype.sum_prod_type, hexp X hX w]`. Use `Eq.trans ?_ h1` and prove the remaining obligations.
-
-Use `show _ = l (R.σ g ((∑ c, ∑ e, (Q * X * Q⁻¹) c e • E c e w : R.smSub) : R.H))`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Establish `key` using `Formalism.HermitianLatticeCounting.P.majorant_cauchy_schwarz_holds Wp (Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) (fun p => (Q * X * Q⁻¹) p.1 p.2) (fun p => l (R.σ g (E p.1 p.2 w))) (l (R.σ g w)) (-(2 * (L : ℂ)) * Complex.I) 1 _ L hpos (by simp [abs_of_nonneg hla1]) (heq.trans hs …`. Rewrite `key` using `[Fintype.sum_prod_type, one_mul]`. Conclude with `key`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pointwise : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)) (l : R.H → Wp) (Q : Mx k r) (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ R.smSub), R.IsDG ε mu → SideG k r z π u μW μN μG νq → IsBes R z π l → PI.UpqRep.IsCayleyU k r ε Q → R.IsE Q E → ∀ g ∈ GG k r, ∀ (a : Fin r) (w : R.smSub), (lenA k r z g a.succ / lenA k r z g a.castSucc) ^ 2 * ‖l (R.σ g w)‖ ^ 2 ≤ ∑ c, ∑ e, ‖l (R.σ g (E c e w))‖ ^ 2 := by
   intro hK k r ε mu R Wp _ _ _ _ z π u μW μN μG νq l Q E hR hS hl hQ hE g hg a w

@@ -12,7 +12,7 @@ namespace GlobalTheory.DriftCovolume
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ClosedFiniteMeasure.finMu_of_covolume GlobalTheory.T.exists_finite_measure_cover_unitary_lattice`.
+A detailed English derivation is pending.
 -/
 theorem finMu_unconditional : ∀ (r : ℕ) (X : Data E r), FinMu X :=
   GlobalTheory.ClosedFiniteMeasure.finMu_of_covolume GlobalTheory.T.exists_finite_measure_cover_unitary_lattice

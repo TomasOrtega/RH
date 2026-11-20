@@ -3,31 +3,25 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set v := A.valuation with hv`. Use `set b := v ℓ with hb`. Establish `hb0 : 0 < b` using `lt_of_le_of_ne zero_le' (Ne.symm ((Valuation.ne_zero_iff v).2 hℓ))`. Use `set t : ℕ → A.ValueGroup := fun i => v (c i * π ^ i) with ht`. Establish `hpow : ∀ i (k : ℤ), v (c i) = b ^ k → t i ^ N = b ^ ((N : ℤ) * k + i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `i k hk`. Simplify using `only [ht, map_mul, map_pow, hk]`. Rewrite using `[mul_pow, ← pow_mul, mul_comm i N, pow_mul, hπ, zpow_add₀ hb0.ne', mul_comm (N : ℤ) k, zpow_mul, zpow_natCast, zpow_natCast]`. Establish `hdist : ∀ i < N, ∀ j < N, c i ≠ 0 → c j ≠ 0 → t i = t j → i = j`. Introduce `i hi j hj hci hcj hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `hc i hi hci`. Take `⟨l, hl⟩` from `hc j hj hcj`. Establish `e : b ^ ((N : ℤ) * k + i) = b ^ ((N : ℤ) * l + j)`. Rewrite using `[← hpow i k hk, ← hpow j l hl, hij]`. Establish `e2` using `(zpow_right_strictAnti₀ hb0 hℓ1).injective e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ((N : ℤ) * k + i) % N = (i : ℤ)`. Rewrite using `[add_comm, Int.add_mul_emod_self_left, Int.emod_eq_of_lt (by omega) (by omega)]`. Establish `h2 : ((N : ℤ) * l + j) % N = (j : ℤ)`. Rewrite using `[add_comm, Int.add_mul_emod_self_left, Int.emod_eq_of_lt (by omega) (by omega)]`. Establish `: (i : ℤ) = j` using `by rw [← h1, ← h2, e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion.
 
-Conclude with `this` after adjusting the coercions. Establish `hle : ∀ i ∈ Finset.range N, t i ≤ 1`. Take `⟨j, hj, hmax⟩` from `Finset.exists_max_image (Finset.range N) t ⟨0, Finset.mem_range.2 hN⟩`. It suffices to establish `t j ≤ 1 from fun i hi => (hmax i hi).trans this`. Distinguish the cases in `htj : t j = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[htj]`. Conclude with `zero_le'`. Establish `hcj : c j ≠ 0`. Introduce `h`. Apply `htj` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[ht, h]`. Establish `hlt : ∀ i ∈ Finset.range N \ {j}, v (c i * π ^ i) < v (c j * π ^ j)`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_sdiff, Finset.mem_singleton]`. Use `lt_of_le_of_ne (hmax i hi.1) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `heq`. Distinguish the cases in `hci : c i = 0`. Apply `htj` to reduce the goal to its premises. Use `show v (c j * π ^ j) = 0`. Rewrite using `[← heq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hci]`. Conclude with `hi.2 (hdist i (Finset.mem_range.1 hi.1) j (Finset.mem_range.1 hj) hci hcj heq)`. Use `Valuation.map_sum_eq_of_lt v hj hlt` as an intermediate fact. Rewrite `hsum` using `[← (A.valuation_le_one_iff _)]`. Use `show v (c j * π ^ j) ≤ 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `hsum`. Introduce `i hi`. Distinguish the cases in `hci : c i = 0`. Rewrite using `[hci]`.
-
-Conclude with `A.zero_mem`. Take `⟨k, hk⟩` from `hc i hi hci`. Establish `h1 : t i ^ N ≤ 1` using `pow_le_one₀ zero_le' (hle i (Finset.mem_range.2 hi))`. Rewrite `h1` using `[hpow i k hk, zpow_le_one_iff_right_of_lt_one₀ hb0 hℓ1]`. Establish `hk0 : 0 ≤ k`.
-
-Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `: (N : ℤ) * k ≤ -(N : ℤ)` using `by nlinarith`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← A.valuation_le_one_iff, hk]`.
-
-Conclude with `zpow_le_one₀ hb0 hℓ1.le hk0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_sum_mul_pow_mem_of_valuation_zpow (Ω : Type) [Field Ω] (A : ValuationSubring Ω)
     (N : ℕ) (π ℓ : Ω) (c : ℕ → Ω) (hN : 0 < N) (hℓ : ℓ ≠ 0)

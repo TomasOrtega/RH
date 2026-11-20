@@ -29,7 +29,7 @@ def SchwartzDensInf : Prop :=
       ∀ S : HermR (Ainf F) σ n, IsUnit (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).det → Integrable φ (m S)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `IsUnit ((inclR (F := F) R).mapMatrix T).det`. Rewrite using `[← RingHom.map_det]`. Conclude with `(isUnit_iff_ne_zero.2 hd).map _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_hermOf {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {n : ℕ} (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b) (hd : T.det ≠ 0) :

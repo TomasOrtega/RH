@@ -11,7 +11,7 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.L2PairingPolar
 
 /- English proof (translation)
-Rewrite using `[MeasureTheory.L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hu.coeFn_toLp, hv.coeFn_toLp] with x hx hy`. Rewrite using `[hx, hy]`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_mul_conj_eq_inner {X : Type} [MeasurableSpace X] {μ : Measure X} {u v : X → ℂ}
     (hu : MemLp u 2 μ) (hv : MemLp v 2 μ) :
@@ -23,7 +23,7 @@ theorem integral_mul_conj_eq_inner {X : Type} [MeasurableSpace X] {μ : Measure 
   simp [mul_comm]
 
 /- English proof (translation)
-Establish `h2 : (2 : ENNReal) ≠ 0` using `by norm_num`. Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm h2 ENNReal.ofNat_ne_top, eLpNorm_eq_lintegral_rpow_enorm h2 ENNReal.ofNat_ne_top]`. Simplify using `only [ENNReal.toReal_ofNat, ENNReal.rpow_two]`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eLpNorm_two_eq {X : Type} [MeasurableSpace X] {μ : Measure X} {u v : X → ℂ}
     (h : ∫⁻ x, ‖u x‖ₑ ^ 2 ∂μ = ∫⁻ x, ‖v x‖ₑ ^ 2 ∂μ) : eLpNorm u 2 μ = eLpNorm v 2 μ := by
@@ -34,15 +34,15 @@ theorem eLpNorm_two_eq {X : Type} [MeasurableSpace X] {μ : Measure X} {u v : X 
   rw [h]
 
 /- English proof (translation)
-Introduce `F _ _ κ _ T hpres hiso`. Use `letI : MeasurableSpace (κ → AF F) := borel _`. Introduce `μ hμ f hf g hg`. Establish `hmem : ∀ φ ∈ schA F κ, MemLp φ 2 μ` using `fun φ hφ => GlobalTheory.WeilM.schA_memLp_two F κ μ hμ φ hφ`. Establish `hf2` using `hmem f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg2` using `hmem g hg`. Establish `hTf2` using `hmem (T f) (hpres f hf)`. Establish `hTg2` using `hmem (T g) (hpres g hg)`. Rewrite using `[integral_mul_conj_eq_inner hTf2 hTg2, integral_mul_conj_eq_inner hf2 hg2]`. Establish `hN : ∀ c : ℂ, ‖hTg2.toLp + c • hTf2.toLp‖ = ‖hg2.toLp + c • hf2.toLp‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c`. Establish `hw : g + c • f ∈ schA F κ` using `(schA F κ).add_mem hg ((schA F κ).smul_mem c hf)`. Establish `h` using `eLpNorm_two_eq (hiso μ hμ _ hw)`. Rewrite `h` using `[map_add, map_smul]`. Rewrite using `[← MemLp.toLp_const_smul, ← MemLp.toLp_add, ← MemLp.toLp_const_smul, ← MemLp.toLp_add, Lp.norm_toLp, Lp.norm_toLp, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ‖hTg2.toLp + hTf2.toLp‖ = ‖hg2.toLp + hf2.toLp‖` using `by simpa using hN 1`. Establish `e2 : ‖hTg2.toLp - hTf2.toLp‖ = ‖hg2.toLp - hf2.toLp‖`. Simplify `hN (-1)` using `[sub_eq_add_neg]`. Establish `e3 : ‖hTg2.toLp + (RCLike.I : ℂ) • hTf2.toLp‖ = ‖hg2.toLp + (RCLike.I : ℂ) • hf2.toLp‖` using `hN _`. Establish `e4 : ‖hTg2.toLp - (RCLike.I : ℂ) • hTf2.toLp‖ = ‖hg2.toLp - (RCLike.I : ℂ) • hf2.toLp‖`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hN (-(RCLike.I : ℂ))` as an intermediate fact. Simplify `this` using `only [neg_smul, ← sub_eq_add_neg]`. Rewrite using `[inner_eq_sum_norm_sq_div_four, inner_eq_sum_norm_sq_div_four, e1, e2, e3, e4]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairing_eq : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (T : Module.End ℂ ((κ → AF F) → ℂ)),
     (∀ φ ∈ schA F κ, T φ ∈ schA F κ) →

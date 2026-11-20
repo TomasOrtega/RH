@@ -16,21 +16,17 @@ open GroundTheory.Automorphic GlobalTheory.CompanionTheory.HeckeMult Zls
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hsm : GroundTheory.Automorphic.IsSmooth π` using `fun v => hπ v`. Establish `hmem : x - y ∈ coinvariantsKer π K`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `φ`. Use `hxy (φ ∘ₗ (coinvariantsKer π K).mkQ) (fun g hg => by` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `u`. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply]`. Use `congr 1`. Conclude with `(Submodule.Quotient.eq _).2 (sub_mem_coinvariantsKer hg u))`. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply] at this`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.Quotient.mk_sub, map_sub, this, sub_self]`. Take `⟨U, hU, hUz⟩` from `exists_nhds_cosetSum_eq_zero hsm hmem`. Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Use `haveI : NonarchimedeanAddGroup k := ⟨fun W hW => by`. Take `⟨s, hs⟩` from `GlobalTheory.SplitWeil.exists_cball_subset hW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨⟨⟨⟨GlobalTheory.SplitWeil.cball s, GlobalTheory.SplitWeil.add_mem_cball⟩, by simp [GlobalTheory.SplitWeil.cball]⟩, GlobalTheory.SplitWeil.neg_mem_cball⟩, GlobalTheory.SplitWeil.isOpen_cball s⟩, hs⟩⟩`. Use `haveI : TotallyDisconnectedSpace k := inferInstance`. Use `haveI : TotallyDisconnectedSpace (Matrix (Fin N) (Fin N) k) := inferInstanceAs (TotallyDisconnectedSpace (Fin N → Fin N → k))`. Use `haveI : TotallyDisconnectedSpace (GL (Fin N) k) := ⟨(isTotallyDisconnected_of_image (f := fun g : GL (Fin N) k => g.val) GlobalTheory.SplitFlip.isEmbedding_val_GL.continuous.continuousOn GlobalTheory.SplitFlip.isEmbedding_val_GL.injective (isTotallyDisconnected_of_totallyDisconne …`. Take `⟨M, -, -, hMU, hnorm, hfin⟩` from `exists_normal_subgroup (K := KO k (Fin N)) GlobalTheory.SplitFlip.isCompact_KO GlobalTheory.SplitFlip.isOpen_KO hU`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : (M.subgroupOf (KO k (Fin N))).FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Establish `h2 : (M.subgroupOf (KO k (Fin N))).comap (Subgroup.inclusion hK) = M.subgroupOf K`. Use extensionality with `g`. Simplify using `[Subgroup.mem_subgroupOf]`. Use `haveI : (M.subgroupOf K).FiniteIndex := by`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h2]`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.index_comap]`. Conclude with `(inferInstance : (((M.subgroupOf (KO k (Fin N))).subgroupOf (Subgroup.inclusion hK).range).FiniteIndex)).index_ne_zero`. Use `haveI : Finite (K ⧸ M.subgroupOf K) := Subgroup.finite_quotient_of_finiteIndex`.
-
-Use `letI : Fintype (K ⧸ M.subgroupOf K) := Fintype.ofFinite _`. Establish `h0` using `hUz M hMU (fun g hg n hn => hnorm g (hK hg) n hn) inferInstance`. Rewrite `h0` using `[map_sub, cosetSum_of_mem π (v := y) hy, sub_eq_zero, cosetSum_apply]`. Establish `h1` using `congrArg f h0`. Rewrite `h1` using `[map_sum, map_smul]`.
-
-Establish `h3 : ∀ q : K ⧸ M.subgroupOf K, f (π ((Quotient.out q : K) : GL (Fin N) k) x) = f x` using `fun q => hf _ (Quotient.out q).2`. Simplify using `only [h3, Finset.sum_const, Finset.card_univ, smul_eq_mul, nsmul_eq_mul] at h1`. Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.2 Fintype.card_ne_zero) h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_of_orbit_const {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V) (hπ : GlobalTheory.PRep.IsSmooth π)
@@ -88,9 +84,9 @@ abbrev idl (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarch
     (m : ℕ) : Ideal 𝒪[k] := Ideal.span {unif k ^ m}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hu`. Establish `hmax : s ∈ IsLocalRing.maximalIdeal 𝒪[k]` using `hu`. Establish `hpow : unif k ^ m ∈ IsLocalRing.maximalIdeal 𝒪[k]` using `Ideal.pow_mem_of_mem _ (show unif k ∈ IsLocalRing.maximalIdeal 𝒪[k] from irreducible_unif.not_isUnit) m (by omega)`. Establish `hle : idl k m ≤ IsLocalRing.maximalIdeal 𝒪[k]` using `(Ideal.span_singleton_le_iff_mem _).mpr hpow`. Establish `h1m : (1 : 𝒪[k]) ∈ IsLocalRing.maximalIdeal 𝒪[k]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.sub_mem _ hmax (hle hs)` as an intermediate fact. Simplify using `using this`. Conclude with `(Ideal.ne_top_iff_one _).mp (IsLocalRing.maximalIdeal.isMaximal 𝒪[k]).ne_top h1m`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isUnit_of_sub_one_mem {m : ℕ} (hm : 1 ≤ m) (s : 𝒪[k]) (hs : s - 1 ∈ idl k m) : IsUnit s := by
   by_contra hu
@@ -105,11 +101,11 @@ theorem isUnit_of_sub_one_mem {m : ℕ} (hm : 1 ≤ m) (s : 𝒪[k]) (hs : s - 1
   exact (Ideal.ne_top_iff_one _).mp (IsLocalRing.maximalIdeal.isMaximal 𝒪[k]).ne_top h1m
 
 /- English proof (translation)
-Establish `hred : A.map (Ideal.Quotient.mk (idl k m)) = 1`. Use extensionality with `i j`. Establish `h` using `(Ideal.Quotient.eq (I := idl k m)).2 (hA i j)`. Rewrite using `[Matrix.map_apply, h, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hdet : IsUnit A.det`. Use `isUnit_of_sub_one_mem hm _ ?_` and prove the remaining obligations. Use `(Ideal.Quotient.eq (I := idl k m)).1 ?_` and prove the remaining obligations. Use `RingHom.map_det (Ideal.Quotient.mk (idl k m)) A` as an intermediate fact. Rewrite using `[this, map_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (Ideal.Quotient.mk (idl k m)).mapMatrix A = 1` using `hred`. Rewrite using `[e, Matrix.det_one]`. Use `⟨Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) (Matrix.GeneralLinearGroup.mk'' A hdet), ⟨Matrix.GeneralLinearGroup.mk'' A hdet, ?_, rfl⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker]`. Conclude with `Units.ext hred`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_Km {N m : ℕ} (hm : 1 ≤ m) (A : Matrix (Fin N) (Fin N) 𝒪[k])
     (hA : CongOne (idl k m) A) :
@@ -132,11 +128,11 @@ theorem exists_mem_Km {N m : ℕ} (hm : 1 ≤ m) (A : Matrix (Fin N) (Fin N) �
   exact Units.ext hred
 
 /- English proof (translation)
-Take `⟨h, hh, rfl⟩` from `hg`. Use `⟨h.val, fun i j => ?_, rfl⟩` and prove the remaining obligations. Establish `h1 : (Matrix.GeneralLinearGroup.map (n` using `Fin N) (Ideal.Quotient.mk (idl k m)) h).val = 1 := by`. Rewrite `hh` using `[SetLike.mem_coe, MonoidHom.mem_ker]`. Rewrite using `[hh]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2` using `congrFun (congrFun h1 i) j`. Use `(Ideal.Quotient.eq (I := idl k m)).1 ?_` and prove the remaining obligations. Use `Eq.trans h2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_cong_of_mem_Km {N m : ℕ} {g : GL (Fin N) k} (hg : g ∈ Km k N m) :
     ∃ A : Matrix (Fin N) (Fin N) 𝒪[k], CongOne (idl k m) A ∧ g.val = A.map (algebraMap 𝒪[k] k) := by
@@ -152,7 +148,7 @@ theorem exists_cong_of_mem_Km {N m : ℕ} {g : GL (Fin N) k} (hg : g ∈ Km k N 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[diagPow, unifU, Matrix.diagonal_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem diagPow_val (N : ℕ) (a : Fin N → ℤ) :
     (diagPow k N a).val = Matrix.diagonal (fun i => (algebraMap 𝒪[k] k (unif k)) ^ (a i)) := by
@@ -160,9 +156,9 @@ theorem diagPow_val (N : ℕ) (a : Fin N → ℤ) :
   simp [diagPow, unifU, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Establish `h0 : algebraMap 𝒪[k] k (unif k) ≠ 0` using `(unifU k).ne_zero`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, diagPow_val, diagPow_val, diagPow_val, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use extensionality with `i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[zpow_add₀ h0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diagPow_add (N : ℕ) (a b : Fin N → ℤ) :
     diagPow k N (a + b) = diagPow k N a * diagPow k N b := by
@@ -174,11 +170,11 @@ theorem diagPow_add (N : ℕ) (a b : Fin N → ℤ) :
   simp [zpow_add₀ h0]
 
 /- English proof (translation)
-Establish `h0 : algebraMap 𝒪[k] k (unif k) ≠ 0` using `(unifU k).ne_zero`. Take `⟨A, hA, hgA⟩` from `exists_cong_of_mem_Km hg`. Take `⟨U, L, hU, hL, hUt, hLt, rfl⟩` from `exists_upper_lower _ (isUnit_of_sub_one_mem hm) N A hA`. Take `⟨Vq, hVq, hVe⟩` from `conj_upper (K := k) (unif k) h0 a ha U hU hUt`. Take `⟨Wr, hWr, hWe⟩` from `conj_lower (K := k) (unif k) h0 b hb L hL hLt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, hpv⟩` from `exists_mem_Km hm U hU`. Take `⟨l, hl, hlv⟩` from `exists_mem_Km hm L hL`. Take `⟨q, hq, hqv⟩` from `exists_mem_Km hm Vq hVq`. Take `⟨r, hr, hrv⟩` from `exists_mem_Km hm Wr hWr`. Use `⟨p, hp, l, hl, q, hq, r, hr, Units.ext ?_, Units.ext ?_, Units.ext ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hgA, Units.val_mul, hpv, hlv, Matrix.map_mul]`. Rewrite using `[Units.val_mul, Units.val_mul, hpv, hqv, diagPow_val, hVe]`. Rewrite using `[Units.val_mul, Units.val_mul, hlv, hrv, diagPow_val, hWe]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_split {N m : ℕ} (hm : 1 ≤ m) {a b : Fin N → ℤ} (ha : Antitone a) (hb : Antitone b)
     {g : GL (Fin N) k} (hg : g ∈ Km k N m) :
@@ -199,20 +195,20 @@ theorem exists_split {N m : ℕ} (hm : 1 ≤ m) {a b : Fin N → ℤ} (ha : Anti
   · rw [Units.val_mul, Units.val_mul, hlv, hrv, diagPow_val, hWe]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨h, -, rfl⟩`. Conclude with `⟨h, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem Km_le_KO (N m : ℕ) : Km k N m ≤ KO k (Fin N) := by
   rintro _ ⟨h, -, rfl⟩
   exact ⟨h, rfl⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N V _ _ π hπ m hm a b ha hb T T' hT hT' v l hl`. Establish `hfix : ∀ (w : fixed π (Km k N m)), ∀ g ∈ Km k N m, π g (w : V) = w`. Introduce `w g hg`. Use `w.2 ⟨g, hg⟩` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hlg : ∀ g ∈ Km k N m, ∀ u, l (π g u) = l u` using `fun g hg u => congrArg (fun t : Module.Dual ℂ V => t u) (hl g hg)`. Establish `key` using `eq_of_orbit_const π hπ (Km_le_KO N m) (x := π (diagPow k N b) (v : V)) (y := ((T' v : fixed π (Km k N m)) : V)) (hfix _) (fun l' hl' => hT' v l' hl') (l ∘ₗ π (diagPow k N a)) (by`. Introduce `g hg`. Take `⟨p, hp, l0, hl0, q, hq, r, hr, rfl, e1, e2⟩` from `exists_split hm ha hb hg`. Simplify using `only [LinearMap.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul, Module.End.mul_apply]`. Use `_ = l (π q (π (diagPow k N a) (π (diagPow k N b) (π r (v : V))))) := by`. Rewrite using `[e1, e2]`. Simplify using `only [map_mul, Module.End.mul_apply]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = l (π (diagPow k N a) (π (diagPow k N b) (v : V))) := by`. Rewrite using `[hlg q hq, hfix v r hr])`. Simplify using `only [LinearMap.comp_apply] at key`. Rewrite using `[diagPow_add, map_mul, Module.End.mul_apply, key]`. Conclude with `hT (T' v) l hl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHeckeOp_mul : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), GlobalTheory.PRep.IsSmooth π → ∀ m : ℕ, 1 ≤ m → ∀ (a b : Fin N → ℤ), Antitone a → Antitone b → ∀ (T T' : Module.End ℂ (fixed π (Zls.Km k N m))), Zls.IsHeckeOp π m (Zls.diagPow k N a) T → Zls.IsHeckeOp π m (Zls.diagPow k N b) T' → Zls.IsHeckeOp π m (Zls.diagPow k N (a + b)) (T * T') := by
   intro k _ _ _ _ N V _ _ π hπ m hm a b ha hb T T' hT hT' v l hl

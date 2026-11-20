@@ -9,13 +9,11 @@ noncomputable section
 namespace GlobalTheory.WigSh
 
 /- English proof (translation)
-Establish `hP : ∏ i, d i = ∏ j : Fin n, d (l.succAbove j)`. Rewrite using `[Fin.prod_univ_succAbove d l, hl, one_mul]`. Establish `h1` using `Fin.prod_univ_succ d`. Establish `h2` using `Fin.prod_univ_castSucc d`. Establish `h3 : (∏ j : Fin n, d (if j.castSucc < l then j.succ else j.castSucc)) * ∏ j : Fin n, d (l.succAbove j) = (∏ j : Fin n, d j.succ) * ∏ j : Fin n, d j.castSucc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Unfold `Fin.succAbove`. Use `split_ifs`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `mul_comm _ _`. Establish `hpos : 0 < ∏ j : Fin n, d (l.succAbove j)` using `Finset.prod_pos fun j _ => hd _`. Apply `mul_right_cancel₀ hpos.ne'` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h3]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [← h1, ← h2, hP]`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem prod_other_neighbour_raise {n : ℕ} (d : Fin (n + 1) → ℝ) (l : Fin (n + 1))
     (hd : ∀ i, 0 < d i) (hl : d l = 1) :
@@ -42,27 +40,25 @@ theorem prod_other_neighbour_raise {n : ℕ} (d : Fin (n + 1) → ℝ) (l : Fin 
     _ = _ := by rw [← h1, ← h2, hP]
 
 /- English proof (translation)
-Use `set e : Fin (n + 1) → ℤ := fun i => max |L i - L l| 1 with he`. Use `set d : Fin (n + 1) → ℝ := fun i => (e i : ℝ) with hd`. Establish `hdpos : ∀ i, 0 < d i` using `fun i => by`. Establish `: 0 < e i` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Simplify using `only [hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hdl : d l = 1` using `by simp [hd, he]`. Establish `key` using `prod_other_neighbour_raise d l hdpos hdl`. Establish `hd0 : d 0 ≤ D`. Establish `a : L l ≤ L 0` using `hL.antitone (Fin.zero_le _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `a' : (L l : ℝ) ≤ L 0` using `by exact_mod_cast a`. Simplify using `only [hd, he]`. Use `push_cast`. Conclude with `max_le (by rw [abs_of_nonneg (by linarith)]; exact h0) hD`. Establish `hdn : d (Fin.last n) ≤ D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `a : L (Fin.last n) ≤ L l` using `hL.antitone (Fin.le_last _)`. Establish `a' : (L (Fin.last n) : ℝ) ≤ L l` using `by exact_mod_cast a`. Simplify using `only [hd, he]`. Use `push_cast`. Conclude with `max_le (by rw [abs_of_nonpos (by linarith)]; linarith) hD`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hden : ∏ j : Fin n, |(L (l.succAbove j) : ℝ) - L l| = ∏ j : Fin n, d (l.succAbove j)`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `a : L (l.succAbove j) ≠ L l` using `fun h => Fin.succAbove_ne l j (hL.injective h)`. Establish `b : 1 ≤ |L (l.succAbove j) - L l|` using `Int.one_le_abs (sub_ne_zero.2 a)`. Simplify using `only [hd, he, max_eq_left b]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hnum : (∏ j : Fin n, d (if j.castSucc < l then j.succ else j.castSucc)) ≤ ∏ j : Fin n, |(M j : ℝ) - 1 - L l|`. Use `Finset.prod_le_prod (fun j _ => (hdpos _).le) fun j _ => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hM j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `hne j`. Establish `: e (if j.castSucc < l then j.succ else j.castSucc) ≤ |M j - 1 - L l|` using `by split_ifs with hl`. Establish `a2 : L l ≤ L j.succ` using `hL.antitone (Fin.castSucc_lt_iff_succ_le.1 hl)`. Simplify using `only [he]`. Rewrite using `[abs_of_nonneg (by omega), abs_of_nonneg (by omega)]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `a2 : L j.castSucc ≤ L l` using `hL.antitone (not_lt.1 hl)`. Simplify using `only [he]`. Rewrite using `[abs_of_nonpos (by omega), abs_of_nonpos (by omega)]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hd]`. Conclude with `this` after adjusting the coercions. Rewrite using `[← abs_of_nonneg (Model.placeWeight_nonneg hM l)]`. Unfold `wP`. Rewrite using `[Model.prod_erase_eq, abs_div, Finset.abs_prod, Finset.abs_prod, hden, ← key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ : 0 < ∏ j : Fin n, d (if j.castSucc < l then j.succ else j.castSucc)` using `Finset.prod_pos fun j _ => hdpos _`. Establish `hm : d 0 * d (Fin.last n) ≤ D ^ 2`. Rewrite using `[sq]; exact mul_le_mul hd0 hdn (hdpos _).le (by linarith)`. Establish `hmpos : 0 < d 0 * d (Fin.last n)` using `mul_pos (hdpos _) (hdpos _)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[div_mul_eq_div_div, div_self hQ.ne', one_div]`. Use `_ ≤ _ := div_le_div_of_nonneg_right hnum (mul_pos hQ hmpos).le`.
+A detailed English derivation is pending.
 -/
 theorem inv_sq_le_wP (n : ℕ) (L : Fin (n+1) → ℤ) (M : Fin n → ℤ) (l : Fin (n+1)) (D : ℝ)
     (hL : StrictAnti L) (hM : ∀ j : Fin n, L j.succ < M j ∧ M j ≤ L j.castSucc)

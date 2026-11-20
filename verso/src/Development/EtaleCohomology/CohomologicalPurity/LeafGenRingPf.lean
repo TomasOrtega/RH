@@ -7,17 +7,17 @@ namespace LateralTheory.CohomologicalPurity.GenRingPf
 open LateralTheory.CohomologicalPurity
 
 /- English proof (translation)
-Set `_` to `φ.toAlgebra`. Establish `_ : Algebra.Etale A B` using `h.1`. Set `e` to `RingEquiv.ofBijective _ h.2`. Set `f : B →ₐ[A] A ⧸ I` to `{ toRingHom := e.symm.toRingHom.comp (Ideal.Quotient.mk (I.map φ)) commutes' := fun a => by`. Express the relevant statement in the definitionally equal form `e.symm (Ideal.Quotient.mk _ (φ a)) = Ideal.Quotient.mk I a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e.symm_apply_eq]`. Use `rfl }`. Set `g : A ⧸ I ^ 2 →ₐ[A] A ⧸ I` to `Ideal.Quotient.factorₐ A (Ideal.pow_le_self two_ne_zero)`. Establish `hg : Function.Surjective g` using `Ideal.Quotient.factor_surjective (Ideal.pow_le_self two_ne_zero)`. Establish `hn : IsNilpotent (RingHom.ker (g : A ⧸ I ^ 2 →+* A ⧸ I))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.zero_eq_bot, ← le_bot_iff]`. Use `le_trans (le_of_eq (pow_two _)) ?_` and prove the remaining obligations. Use `Ideal.mul_le.mpr fun x hx z hz => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Establish `hx' : x ∈ I` using `Ideal.Quotient.eq_zero_iff_mem.mp hx`. Establish `hz' : z ∈ I` using `Ideal.Quotient.eq_zero_iff_mem.mp hz`. Rewrite using `[Ideal.mem_bot, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, pow_two]`. Conclude with `Ideal.mul_mem_mul hx' hz'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `σ` to `Algebra.FormallySmooth.liftOfSurjective f g hg hn`. Establish `hσ : ∀ a, σ (φ a) = Ideal.Quotient.mk (I ^ 2) a` using `fun a => σ.commutes a`. Establish `hc : (σ : B →+* A ⧸ I ^ 2).comp φ = Ideal.Quotient.mk (I ^ 2)` using `RingHom.ext hσ`. Establish `h0` using `Ideal.mem_map_of_mem (σ : B →+* A ⧸ I ^ 2) hy`. Rewrite `h0` using `[Ideal.map_map, hc, Ideal.map_quotient_self, Ideal.mem_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `σ (φ y) = 0 at h0`. Rewrite `h0` using `[hσ]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inj_sq {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (I : Ideal A) (h : Nbhd φ I) (y : A)
     (hy : φ y ∈ (I ^ 2).map φ) : y ∈ I ^ 2 := by
@@ -53,15 +53,15 @@ theorem inj_sq {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (I : Idea
   exact Ideal.Quotient.eq_zero_iff_mem.mp h0
 
 /- English proof (translation)
-Establish `hle : Ideal.span T ≤ I.map φ` using `Ideal.span_le.mpr fun t ht => (hT t ht).1`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem t ht => exact (hT t ht).2`. Consider the case `zero => exact ⟨0, J.zero_mem, by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ ihx ihy`. Take `⟨c, hc, hxc⟩` from `ihx`. Take `⟨c', hc', hyc⟩` from `ihy`. Use `⟨c + c', J.add_mem hc hc', ?_⟩` and prove the remaining obligations. Establish `: x + y - φ (c + c') = (x - φ c) + (y - φ c')` using `by rw [map_add]; ring`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Ideal.add_mem _ hxc hyc`. Consider the case `smul b x hx ih`. Take `⟨c, hc, hxc⟩` from `ih`. Take `⟨c', hbc⟩` from `hs b`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c' * c, J.mul_mem_left _ hc, ?_⟩` and prove the remaining obligations. Establish `: b • x - φ (c' * c) = (b - φ c') * x + φ c' * (x - φ c)`. Rewrite using `[map_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.add_mem _ ?_ (Ideal.mul_mem_left _ _ hxc)` and prove the remaining obligations. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul hbc (hle hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem approx {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (I : Ideal A)
     (hs : ∀ b : B, ∃ c : A, b - φ c ∈ I.map φ) (J : Ideal A) (T : Set B)
@@ -93,19 +93,17 @@ end LateralTheory.CohomologicalPurity.GenRingPf
 
 open LateralTheory.CohomologicalPurity.GenRingPf in
 /- English proof (translation)
-Introduce `d A _ I hI hC`. Take `⟨B, _, φ, ψ, hN, _, hspan, _⟩` from `hC`. Establish `hs : ∀ b : B, ∃ c : A, b - φ c ∈ I.map φ`. Introduce `b`. Take `⟨x, hx⟩` from `hN.2.2 (Ideal.Quotient.mk _ b)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[Ideal.quotientMap_mk, Ideal.Quotient.eq]`. Use `(I.map φ).neg_mem hx` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hI1 : ∀ z ∈ I.map φ, ∃ c ∈ I, z - φ c ∈ I.map φ ^ 2` using `approx φ I hs I (φ '' I) (fun t ht => by`. Take `⟨i, hi, rfl⟩` from `ht`. Conclude with `⟨Ideal.mem_map_of_mem _ hi, i, hi, by simp⟩)`. Establish `hX : ∀ j, ∃ c ∈ I, ψ (MvPolynomial.X j) - φ c ∈ I.map φ ^ 2` using `fun j => hI1 _ (hspan ▸ Ideal.subset_span ⟨j, rfl⟩)`. Use `choose a ha hax using hX`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : I ≤ Ideal.span (Set.range a) ⊔ I • I`. Introduce `y hy`. Establish `hy' : φ y ∈ Ideal.span (Set.range fun j => ψ (MvPolynomial.X j))` using `hspan ▸ Ideal.mem_map_of_mem _ hy`. Take `⟨c, hc, hyc⟩` from `approx φ I hs (Ideal.span (Set.range a)) _ (fun t ht => by`. Take `⟨j, rfl⟩` from `ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨hspan ▸ Ideal.subset_span ⟨j, rfl⟩, a j, Ideal.subset_span ⟨j, rfl⟩, hax j⟩) _ hy'`. Establish `h2 : y - c ∈ I ^ 2` using `inj_sq φ I hN _ (by rw [map_sub, Ideal.map_pow]; exact hyc)`. Establish `: y = c + (y - c)` using `by ring`. Rewrite using `[this]`. Use `Submodule.add_mem_sup hc ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.smul_eq_mul, ← pow_two]`. Conclude with `h2`. Take `⟨r, hr, hrle⟩` from `Submodule.exists_sub_one_mem_and_smul_le_of_fg_of_le_sup hI le_rfl hle`. Use `⟨a, r, hr, ha, fun y hy => ?_⟩` and prove the remaining obligations. Use `hrle (Submodule.smul_mem_pointwise_smul y r I hy)` as an intermediate fact.
-
-Simplify `this` using `[smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem LateralTheory.CohomologicalPurity.Cl.LeafGenRing_of : LateralTheory.CohomologicalPurity.Cl.LeafGenRing := by
   intro d A _ I hI hC

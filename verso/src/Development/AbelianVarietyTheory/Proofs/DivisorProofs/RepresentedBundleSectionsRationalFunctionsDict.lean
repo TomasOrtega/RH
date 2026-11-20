@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.VolBr.RepDict
 
 /- English proof (translation)
-Take `⟨c₀, h₀⟩ : ∃ c, genericPoint X ∈ B.U c` from `Opens.mem_iSup.1 (hB.cover.ge (Opens.mem_top _))`. Use `⟨fun u => fnOf _ h₀ (u.f c₀) / ρ c₀, fun u c hc => ?_⟩` and prove the remaining obligations. Establish `e : fnOf _ hc (u.f c) = fnOf _ (memInf hc h₀) (B.g c c₀ : Γ(X, B.U c ⊓ B.U c₀)) * fnOf _ h₀ (u.f c₀)`. Rewrite using `[← fnOf_resG inf_le_left (memInf hc h₀), ← fnOf_resG inf_le_right (memInf hc h₀), ← map_mul]`. Conclude with `congrArg _ (u.compat c c₀)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hρ c c₀ (memInf hc h₀)]`. Use `(ρ c₀).ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_quot {X : Scheme.{0}} [IsIntegral X] {B : LB X} (hB : B.IsLB) {ρ : B.ι → X.functionFieldˣ}
     (hρ : IsRatSec B ρ) : ∃ e : B.Sec → X.functionField,
@@ -30,11 +30,11 @@ theorem exists_quot {X : Scheme.{0}} [IsIntegral X] {B : LB X} (hB : B.IsLB) {ρ
   field_simp
 
 /- English proof (translation)
-Establish `h : ∀ c, ∃ a : Γ(X, B.U c), ∀ hc, fnOf _ hc a = f * ρ c` using `fun c => by`. Distinguish the cases in `hc : genericPoint X ∈ B.U c`. Take `⟨a, ha⟩` from `exists_fnOf_eq hc (hf c)`. Conclude with `⟨a, fun _ => ha⟩`. Conclude with `⟨0, fun h => (hc h).elim⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose a ha using h`. Use `⟨⟨a, fun i j => Cartier.fn_ext fun h => ?_⟩, ha⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `(fnOf_resG _ h _).trans (Eq.trans ?_ (congrArg (_ * ·) (fnOf_resG _ h _).symm))` and prove the remaining obligations. Rewrite using `[ha, ha, hρ i j h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_sec {X : Scheme.{0}} [IsIntegral X] {B : LB X} {ρ : B.ι → X.functionFieldˣ}
     (hρ : IsRatSec B ρ) {f : X.functionField} (hf : ∀ c, ∀ x ∈ B.U c, RegAt x (f * ρ c)) :
@@ -52,25 +52,25 @@ theorem exists_sec {X : Scheme.{0}} [IsIntegral X] {B : LB X} {ρ : B.ι → X.f
   ring
 
 /- English proof (translation)
-Introduce `k _ X _ p P a b M ⟨ρ, hρ, hu, hn⟩`. Take `⟨e, he⟩` from `exists_quot M.isLB hρ`. Establish `hcov {B : LB X} (hB : B.IsLB) (x : X) : ∃ c, x ∈ B.U c` using `Opens.mem_iSup.1 (hB.cover.ge (Opens.mem_top _))`. Establish `hl (f : X.functionField) c i j : P.loc a b f i j * ((ρ c : X.functionField) / P.loc a b 1 i j) = f * ρ c`. Use `(P.r i).ne_zero` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(P.r' j).ne_zero` as an intermediate fact. Simplify using `only [Pair.loc]`. Clear the denominators using the available nonvanishing facts. Establish `hl' (f : X.functionField) c i j : P.loc a b f i j = f * ρ c * ((ρ c : X.functionField) / P.loc a b 1 i j)⁻¹`. Use `(P.r i).ne_zero` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(P.r' j).ne_zero` as an intermediate fact. Use `(ρ c).ne_zero` as an intermediate fact. Simplify using `only [Pair.loc]`. Clear the denominators using the available nonvanishing facts. Establish `hmem u : e u ∈ P.H a b` using `fun x i j hi hj => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hcov M.isLB x`. Rewrite using `[hl' _ c, he u c (gen_mem hc)]`. Conclude with `(regAt_fnOf hc _ _).mul (hu x c i j hc hi hj).inv.regAt`. Use `⟨e, fun u v huv => ?_, ?_, fun u σ y => ?_, fun u x i j hi hj => ?_⟩` and prove the remaining obligations. Use `ReciprocityTheory.ChartRestriction.G.DVR.SecOps.sec_ext fun c => Cartier.fn_ext fun hc => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he, ← he, huv]`. Use `Set.Subset.antisymm (Set.range_subset_iff.2 hmem) fun f hf => ?_` and prove the remaining obligations. Take `⟨u, hu'⟩` from `exists_sec hρ (f := f) fun c x hc => by`. Take `⟨i, hi⟩` from `hcov P.L.isLB x`. Take `⟨j, hj⟩` from `hcov P.A.isLB x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hl f c i j]`. Conclude with `(hf x i j hi hj).mul (hu x c i j hc hi hj).regAt`. Take `⟨c, hc⟩` from `hcov M.isLB (genericPoint X)`. Conclude with `⟨u, mul_right_cancel₀ (ρ c).ne_zero ((he u c hc).trans (hu' c hc))⟩`. Establish `hi` using `mem_pick (P.L.φ σ).isLB y`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj` using `mem_pick (P.A.φ σ).isLB y`. Establish `hc` using `mem_pick (M.φ σ).isLB y`. Establish `hU` using `hu _ _ _ _ (mem_ptsIn.1 hc) (mem_ptsIn.1 hi) (mem_ptsIn.1 hj)`. Establish `h1` using `hn σ y _ _ _ hc hi hj`. Establish `h2` using `ratVal_mul (y := y) (hmem u _ _ _ (mem_ptsIn.1 hi) (mem_ptsIn.1 hj)) hU.regAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[hl, he u _ (gen_mem (mem_ptsIn.1 hc)), ratVal_fnOf hc]`. Establish `h3` using `norm_pos_iff.2 (ratVal_ne_zero hU)`. Rewrite using `[Pair.nu, Weight.nsq, secVal_apply, h2, ← h1, Real.exp_sub, Real.exp_log h3, norm_mul, Real.exp_neg]`. Establish `h4 : Real.exp ((M.φ σ).φ (pick (M.φ σ).isLB y) y) = Real.exp ((M.φ σ).φ (pick (M.φ σ).isLB y) y / 2) ^ 2`. Rewrite using `[← Real.exp_nat_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4]`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hcov M.isLB x`. Establish `hU` using `hu x c i j hc hi hj`. Rewrite using `[mem_nonzeroLocus_iff u c hc, ← unitAt_fnOf_iff hc (gen_mem hc), ← he]`. Conclude with `⟨fun h => hl' (e u) c i j ▸ h.mul hU.inv, fun h => hl (e u) c i j ▸ h.mul hU⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rep_dict : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (P : Pair p), ∀ (a b : ℤ) (M : HermLB p), P.Rep a b M → ∃ e : M.B.Sec → X.functionField, Function.Injective e ∧ Set.range e = (P.H a b : Set X.functionField) ∧ (∀ u (σ : k →+* ℂ) (y : CxPts p σ), P.nu a b σ y (e u) ^ 2 = (M.φ σ).nsq (secVal p σ u) y) ∧ ∀ u (x : X) i j, x ∈ P.L.B.U i → x ∈ P.A.B.U j → (x ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus u ↔ UnitAt x (P.loc a b (e u) i j)) := by
   intro k _ X _ p P a b M ⟨ρ, hρ, hu, hn⟩

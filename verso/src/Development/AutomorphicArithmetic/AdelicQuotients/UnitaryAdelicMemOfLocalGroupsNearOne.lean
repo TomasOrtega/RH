@@ -8,9 +8,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.Dbl GlobalTheory.PRep Formalism.BasicNotions UpperTheory.TP
 
 /- English proof (translation)
-Establish `h : PositivityTheory.ThKG.Loc.idem F v • (mat g - 1) = 0` using `Matrix.ext fun i j => Bad.idem_off (by`. Use `congrFun₂ hg i j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply]`. Simplify using `[this, Matrix.one_apply, apply_ite (compFin F E v)])`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Euler.cut (PositivityTheory.ThKG.Loc.idem F v) (mat g) = 1`. Rewrite using `[← sub_eq_zero, Euler.cut_sub, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prj_of_off {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {X : Spc F E n} {v : Pl F} {g : UA σ X.J} (hg : OffAt v g) : Euler.prj v g = 1 := by
@@ -23,15 +23,13 @@ private theorem prj_of_off {F E : Type} [Field F] [NumberField F] [Field E] [Num
   rw [← sub_eq_zero, Euler.cut_sub, h]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n X S H hO hb`. Use `choose! O hOo h1 hOH using hO`. Set `K : Subgroup (gAt σ X S)` to `(⨆ v ∈ S, H v).subgroupOf (gAt σ X S)`. Establish `hK : IsOpen (K : Set (gAt σ X S))`. Use `Subgroup.isOpen_of_mem_nhds K (g := 1) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `U : Set (gAt σ X S)` to `⋂ v ∈ S, (fun b : gAt σ X S => Euler.prj v b.1) ⁻¹' O v`. Establish `oU : IsOpen U` using `isOpen_biInter_finset fun v hv => (hOo v hv).preimage (Euler.cont_prj.comp continuous_subtype_val)`. Establish `mU : (1 : gAt σ X S) ∈ U`. Use `Set.mem_iInter₂.2 fun v hv => ?_` and prove the remaining obligations. Use `show Euler.prj v (1 : UA σ X.J) ∈ O v`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_one]`. Conclude with `h1 v hv`. Use `Filter.mem_of_superset (oU.mem_nhds mU) fun b hbU => ?_` and prove the remaining obligations. Take `⟨c, hc, hoff, hlast⟩` from `hb b.1 b.2`. Use `Subgroup.mem_subgroupOf.2 (hlast _ fun v hv => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : Euler.prj v b.1 = c v`. Use `prj_of_off (hoff v hv)` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, Euler.mem_loc.1 (hc v), inv_mul_eq_one]`. Conclude with `this.symm`. Establish `hm : c v ∈ O v` using `e ▸ (Set.mem_iInter₂.1 hbU v hv)`.
-
-Conclude with `(le_iSup₂_of_le v hv le_rfl : H v ≤ ⨆ v ∈ S, H v) (hOH v hv _ (hc v) hm)`. Conclude with `hK`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.unitaryAdelic_mem_of_localGroups_near_one :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {X : Spc F E n} (S : Finset (Pl F)) (H : Pl F → Subgroup (UA σ X.J)), (∀ v ∈ S, ∃ O : Set (UA σ X.J), IsOpen O ∧ 1 ∈ O ∧ ∀ g ∈ locGrp σ X v, g ∈ O → g ∈ H v) → (∀ b ∈ gAt σ X S, ∃ c : Pl F → UA σ X.J, (∀ v, c v ∈ locGrp σ X v) ∧ (∀ v ∈ S, OffAt v ((c v)⁻¹ * b)) ∧ ∀ H : Subgroup (UA σ X.J), (∀ v ∈ S, c v ∈ H) → b ∈ H) → IsOpen {b : gAt σ X S | b.1 ∈ ⨆ v ∈ S, H v} := by

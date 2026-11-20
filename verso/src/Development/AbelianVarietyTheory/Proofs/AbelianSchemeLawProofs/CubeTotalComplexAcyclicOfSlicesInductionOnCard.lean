@@ -18,7 +18,7 @@ def comap (g : Finset κ → Finset ι) (hg : Monotone g) (A : Cube.{v} ι R) : 
     (fun _ _ => res_self A _ _) (fun _ _ _ => res_res A _ _ _)
 
 /- English proof (translation)
-Take `rfl : g = g'` from `funext h`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem comap_congr {g g' : Finset κ → Finset ι} (hg : Monotone g) (hg' : Monotone g')
     (h : ∀ s, g s = g' s) (A : Cube.{v} ι R) : comap g hg A = comap g' hg' A := by
@@ -32,7 +32,7 @@ def comapMap (g : Finset κ → Finset ι) (hg : Monotone g) {A B : Cube.{v} ι 
 variable [LinearOrder ι] [LinearOrder κ]
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Finset.union_subset_union_right (Finset.map_subset_map.2 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem monotone_union_map (f : κ ↪o ι) (s : Finset ι) :
     Monotone fun t : Finset κ => s ∪ t.map f.toEmbedding :=
@@ -42,7 +42,7 @@ def slice (f : κ ↪o ι) (s : Finset ι) (A : Cube.{v} ι R) : Cube.{v} κ R :
   comap (fun t => s ∪ t.map f.toEmbedding) (monotone_union_map f s) A
 
 /- English proof (translation)
-The claim follows from `comap_congr _ (fun _ _ h => Finset.map_subset_map.2 h) (fun _ => Finset.empty_union _) A`.
+A detailed English derivation is pending.
 -/
 theorem slice_empty (f : κ ↪o ι) (A : Cube.{v} ι R) : slice f ∅ A = lowerFace f A :=
   comap_congr _ (fun _ _ h => Finset.map_subset_map.2 h) (fun _ => Finset.empty_union _) A
@@ -51,13 +51,13 @@ noncomputable def part (e : κ ↪o ι) (u : Finset ι) : Finset κ := u.preimag
 
 @[simp]
 /- English proof (translation)
-The claim follows from `Finset.mem_preimage`.
+A detailed English derivation is pending.
 -/
 theorem mem_part (e : κ ↪o ι) (u : Finset ι) (k : κ) : k ∈ part e u ↔ e k ∈ u :=
   Finset.mem_preimage
 
 /- English proof (translation)
-Introduce `_ _ h _ hk` and use `(mem_part e _ _).2 (h ((mem_part e _ _).1 hk))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem monotone_part (e : κ ↪o ι) : Monotone (part e) :=
   fun _ _ h _ hk => (mem_part e _ _).2 (h ((mem_part e _ _).1 hk))
@@ -95,14 +95,14 @@ noncomputable def suppEquiv (A : Cube.{v} ι R) (hP : P.OrdConnected) {s : Finse
   right_inv _ := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => funext fun h => absurd h.down hs⟩`.
+Supply the required witnesses or components.
 -/
 theorem subsingleton_supp (A : Cube.{v} ι R) (hP : P.OrdConnected) {s : Finset ι}
     (hs : s ∉ P) : Subsingleton ((supp A P hP).obj s) :=
   ⟨fun _ _ => funext fun h => absurd h.down hs⟩
 
 /- English proof (translation)
-The claim follows from `congrArg (fun g : (supp A P hP).obj s →ₗ[R] A.obj t => g x) (dif_pos hs)`.
+A detailed English derivation is pending.
 -/
 theorem suppEquiv_res {s t : Finset ι} (h : s ⊆ t) (hs : s ∈ P) (ht : t ∈ P)
     (x : (supp A P hP).obj s) :
@@ -110,14 +110,14 @@ theorem suppEquiv_res {s t : Finset ι} (h : s ⊆ t) (hs : s ∈ P) (ht : t ∈
   congrArg (fun g : (supp A P hP).obj s →ₗ[R] A.obj t => g x) (dif_pos hs)
 
 /- English proof (translation)
-The claim follows from `funext fun hs => h hs.down`.
+A detailed English derivation is pending.
 -/
 theorem supp_ext {s : Finset ι} {x y : (supp A P hP).obj s}
     (h : ∀ hs : s ∈ P, suppEquiv A hP hs x = suppEquiv A hP hs y) : x = y :=
   funext fun hs => h hs.down
 
 /- English proof (translation)
-Take `rfl : P = P'` from `Set.ext h`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem supp_congr (A : Cube.{v} ι R) (h : ∀ s, s ∈ P ↔ s ∈ P') :
     supp A P hP = supp A P' hP' := by
@@ -138,7 +138,7 @@ noncomputable def suppMapApp (φ : A ⟶ B) (hP : P.OrdConnected) (hP' : P'.OrdC
     if hs : s ∈ P then (φ.app s).hom ∘ₗ (suppEquiv A hP hs).toLinearMap else 0
 
 /- English proof (translation)
-The claim follows from `congrArg (fun g : (supp A P hP).obj s →ₗ[R] B.obj s => g x) (dif_pos hs)`.
+A detailed English derivation is pending.
 -/
 theorem suppEquiv_suppMapApp (φ : A ⟶ B) {s : Finset ι} (hs : s ∈ P) (hs' : s ∈ P')
     (x : (supp A P hP).obj s) :
@@ -171,9 +171,9 @@ theorem suppMap_app (φ : A ⟶ B) (h) (s : Finset ι) :
     ((suppMap φ hP hP' h).app s).hom = suppMapApp φ hP hP' s := rfl
 
 /- English proof (translation)
-Distinguish the cases in `hs : s ∈ P`. Rewrite using `[← Function.Bijective.of_comp_iff' (suppEquiv B hP' (h.1 hs)).bijective]`. Establish `: suppEquiv B hP' (h.1 hs) ∘ suppMapApp φ hP hP' s = (φ.app s).hom ∘ suppEquiv A hP hs` using `funext (suppEquiv_suppMapApp φ hs _)`. Rewrite using `[this]`. Conclude with `(hφ hs).comp (suppEquiv A hP hs).bijective`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `subsingleton_supp A hP hs` as an intermediate fact. Use `subsingleton_supp B hP' (mt h.2 hs)` as an intermediate fact. Conclude with `⟨Function.injective_of_subsingleton _, Function.surjective_to_subsingleton _⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem suppMapApp_bijective (φ : A ⟶ B) {s : Finset ι} (h : s ∈ P ↔ s ∈ P')
     (hφ : s ∈ P → Function.Bijective (φ.app s).hom) :
@@ -189,7 +189,7 @@ theorem suppMapApp_bijective (φ : A ⟶ B) {s : Finset ι} (h : s ∈ P ↔ s �
     exact ⟨Function.injective_of_subsingleton _, Function.surjective_to_subsingleton _⟩
 
 /- English proof (translation)
-The claim follows from `haveI : ∀ s, IsIso (φ.app s) := fun s => (ConcreteCategory.isIso_iff_bijective _).2 (h s) NatIso.isIso_of_isIso_app φ`.
+A detailed English derivation is pending.
 -/
 theorem isIso_of_bijective (φ : A ⟶ B) (h : ∀ s, Function.Bijective (φ.app s).hom) : IsIso φ :=
   haveI : ∀ s, IsIso (φ.app s) := fun s => (ConcreteCategory.isIso_iff_bijective _).2 (h s)
@@ -237,7 +237,7 @@ noncomputable def suppIncl (A : Cube.{v} ι R) (hP : P.OrdConnected) (hU : IsUpp
       simp only [map_zero]
 
 /- English proof (translation)
-The claim follows from `dif_pos hs`.
+A detailed English derivation is pending.
 -/
 theorem suppIncl_app (A : Cube.{v} ι R) (hP : P.OrdConnected) (hU : IsUpperSet P) {s : Finset ι}
     (hs : s ∈ P) : ((suppIncl A hP hU).app s).hom = (suppEquiv A hP hs).toLinearMap :=
@@ -260,11 +260,11 @@ noncomputable def suppSequence (A : Cube.{v} ι R) (hP₁ : P₁.OrdConnected) (
         simp only [map_zero])
 
 /- English proof (translation)
-Establish `key : Function.Exact (suppMapApp (𝟙 A) hP₁ hP s) (suppMapApp (𝟙 A) hP hP₂ s) ∧ Function.Injective (suppMapApp (𝟙 A) hP₁ hP s) ∧ Function.Surjective (suppMapApp (𝟙 A) hP hP₂ s)`. Distinguish the cases in `hs : s ∈ P₁`. Use `subsingleton_supp A hP₂ (hd s hs)` as an intermediate fact. Establish `hb : Function.Bijective (suppMapApp (𝟙 A) hP₁ hP s)` using `suppMapApp_bijective _ (iff_of_true hs ((h s).2 (Or.inl hs))) fun _ => Function.bijective_id`. Conclude with `⟨fun y => iff_of_true (Subsingleton.elim _ _) (hb.2 y), hb.1, Function.surjective_to_subsingleton _⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `subsingleton_supp A hP₁ hs` as an intermediate fact. Establish `hb : Function.Bijective (suppMapApp (𝟙 A) hP hP₂ s)` using `suppMapApp_bijective _ (by simp [h s, hs]) fun _ => Function.bijective_id`. Use `⟨fun y => ?_, Function.injective_of_subsingleton _, hb.2⟩` and prove the remaining obligations. Rewrite using `[map_eq_zero_iff _ hb.1]`. Conclude with `⟨fun hy => ⟨0, by rw [map_zero, hy]⟩, by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, rfl⟩`. Rewrite using `[Subsingleton.elim x 0, map_zero]⟩`. Conclude with `ModuleCat.shortComplex_shortExact _ key.1 key.2.1 key.2.2`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppSequence_shortExact (A : Cube.{v} ι R) (hP₁ : P₁.OrdConnected) (hP : P.OrdConnected)
     (hP₂ : P₂.OrdConnected) (h : ∀ s, s ∈ P ↔ s ∈ P₁ ∨ s ∈ P₂) (hd : ∀ s ∈ P₁, s ∉ P₂)
@@ -306,14 +306,14 @@ noncomputable def cechHomologyMapIso {A B : Cube.{v} ι R} (φ : A ≅ B) (n : �
   homologyMapIso ((cechFunctor ι R).mapIso φ) n
 
 /- English proof (translation)
-Introduce `n` and use `(h n).of_iso ((cubeFunctor ι R).mapIso φ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cubeComplex_acyclic_of_iso {A B : Cube.{v} ι R} (φ : A ≅ B)
     (h : (cubeComplex A).Acyclic) : (cubeComplex B).Acyclic :=
   fun n => (h n).of_iso ((cubeFunctor ι R).mapIso φ)
 
 /- English proof (translation)
-The claim follows from `haveI : Subsingleton (Cube.Term A p) := ⟨fun _ _ => funext fun s => (h s.1 s.2).elim _ _⟩ ModuleCat.isZero_of_subsingleton (ModuleCat.of R (Cube.Term A p))`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cubeComplex_X_of_subsingleton (A : Cube.{v} ι R) (p : ℕ)
     (h : ∀ s : Finset ι, s.card = p → Subsingleton (A.obj s)) : IsZero ((cubeComplex A).X p) :=
@@ -321,7 +321,7 @@ theorem isZero_cubeComplex_X_of_subsingleton (A : Cube.{v} ι R) (p : ℕ)
   ModuleCat.isZero_of_subsingleton (ModuleCat.of R (Cube.Term A p))
 
 /- English proof (translation)
-Rewrite using `[IsZero.iff_id_eq_zero]`. Conclude with `HomologicalComplex.hom_ext _ _ fun p => (isZero_cubeComplex_X_of_subsingleton A p fun s _ => h s).eq_of_src _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZero_cubeComplex_of_subsingleton (A : Cube.{v} ι R)
     (h : ∀ s : Finset ι, Subsingleton (A.obj s)) : IsZero (cubeComplex A) := by
@@ -330,24 +330,22 @@ theorem isZero_cubeComplex_of_subsingleton (A : Cube.{v} ι R)
     (isZero_cubeComplex_X_of_subsingleton A p fun s _ => h s).eq_of_src _ _
 
 /- English proof (translation)
-Introduce `p` and use `ExactAt.of_isZero (isZero_cubeComplex_X_of_subsingleton A p fun s _ => h s)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cubeComplex_acyclic_of_subsingleton (A : Cube.{v} ι R)
     (h : ∀ s : Finset ι, Subsingleton (A.obj s)) : (cubeComplex A).Acyclic :=
   fun p => ExactAt.of_isZero (isZero_cubeComplex_X_of_subsingleton A p fun s _ => h s)
 
 /- English proof (translation)
-Establish `: ∀ p, IsIso ((cubeLowerProj e A).f p)` using `fun p => by`. Rewrite using `[ConcreteCategory.isIso_iff_bijective]`. Express the relevant statement in the definitionally equal form `Function.Bijective (Cube.termLower e A p)`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `⟨t, ht⟩`. Distinguish the cases in `h' : ∃ j ∈ t, j ∉ Set.range e`. Conclude with `(h t h').elim _ _`. Use `push_neg at h'`. Choose the witnesses or unpack the hypotheses as in `⟨s, rfl⟩ : ∃ s : Finset κ, t = s.map e.toEmbedding := by`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨Cube.part e t, Finset.ext fun j => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_map, Cube.mem_part]`. Use `⟨fun hj => ?_, by rintro ⟨k, hk, rfl⟩; exact hk⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `h' j hj`. Conclude with `⟨k, hj, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `congrFun hxy ⟨s, (Finset.card_map _).symm.trans ht⟩`. Introduce `y`. Establish `hsub : ∀ t : Finset ι, (Cube.part e t).map e.toEmbedding ⊆ t` using `fun t j hj => by`. Take `⟨k, hk, rfl⟩` from `Finset.mem_map.1 hj`. Conclude with `(Cube.mem_part e t k).1 hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun t => Cube.res A (hsub t.1) (Cube.extend (Cube.lowerFace e A) p y (Cube.part e t.1)), funext fun s => ?_⟩` and prove the remaining obligations. Establish `key : ∀ (s' : Finset κ) (_ : s' = s.1) (h : s'.map e.toEmbedding ⊆ s.1.map e.toEmbedding), Cube.res A h (Cube.extend (Cube.lowerFace e A) p y s') = y s`. Introduce and unpack `_ rfl h`. Rewrite using `[Cube.extend_apply_of_eq _ y s.2]`. Conclude with `Cube.res_self A h _`.
-
-Conclude with `key _ (Cube.preimage_map_orderEmbedding s.1) _`. Conclude with `HomologicalComplex.Hom.isIso_of_components _`.
+A detailed English derivation is pending.
 -/
 theorem isIso_cubeLowerProj_of_subsingleton (e : κ ↪o ι) (A : Cube.{v} ι R)
     (h : ∀ u : Finset ι, (∃ j ∈ u, j ∉ Set.range e) → Subsingleton (A.obj u)) :
@@ -384,7 +382,7 @@ theorem isIso_cubeLowerProj_of_subsingleton (e : κ ↪o ι) (A : Cube.{v} ι R)
   exact HomologicalComplex.Hom.isIso_of_components _
 
 /- English proof (translation)
-The claim follows from `(cubeFaceSequence_shortExact he A).isIso_f_iff.2 (isZero_cubeComplex_of_subsingleton _ fun s => h _ (Cube.notMem_map_of_range_eq he s))`.
+A detailed English derivation is pending.
 -/
 theorem isIso_cubeUpperIncl_of_subsingleton {e : κ ↪o ι} {i : ι} (he : Set.range e = {i}ᶜ)
     (A : Cube.{v} ι R) (h : ∀ u : Finset ι, i ∉ u → Subsingleton (A.obj u)) :
@@ -401,7 +399,7 @@ noncomputable def cubeHomologySuccIsoCech (A : Cube.{v} ι R) (h : Subsingleton 
   | n + 1 => (cechHomologySuccIso A n).symm
 
 /- English proof (translation)
-Establish `h0 : ∀ n, IsZero (S.X₁.homology n)` using `fun n => (exactAt_iff_isZero_homology _ _).1 (h n)`. Establish `: Mono (homologyMap S.g n)` using `(hS.homology_exact₂ n).mono_g ((h0 n).eq_of_src _ _)`. Establish `: Epi (homologyMap S.g n)` using `(hS.homology_exact₃ n (n + 1) rfl).epi_f ((h0 (n + 1)).eq_of_tgt _ _)`. Conclude with `isIso_of_mono_of_epi _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_homologyMap_g_of_acyclic {S : ShortComplex (CochainComplex (ModuleCat.{v} R) ℕ)}
     (hS : S.ShortExact) (h : S.X₁.Acyclic) (n : ℕ) : IsIso (homologyMap S.g n) := by
@@ -418,19 +416,19 @@ section Slices
 variable {κ : Type} [LinearOrder κ] {R : Type u} [Ring R]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `μ _ f I hI hn A hA`. Take `rfl` from `Finset.card_eq_zero.1 hn`. Establish `hf : Function.Surjective f` using `fun j => by simpa using hI j`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `isIso_cubeLowerProj hf A` as an intermediate fact. Establish `h` using `hA ∅ (subset_refl _)`. Rewrite `h` using `[Cube.slice_empty]`. Conclude with `fun p => (h p).of_iso (asIso (cubeLowerProj f A)).symm`. Consider the case `succ n ih`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately.
 
-Introduce `μ _ f I hI hn A hA`. Take `⟨i, hi⟩ : I.Nonempty` from `Finset.card_pos.1 (by omega)`. Establish `hfi : ∀ k, f k ≠ i` using `fun k hk => (hI i).1 hi ⟨k, hk⟩`. Set `f' : κ ↪o {j : μ // j ≠ i}` to `OrderEmbedding.ofMapLEIff (fun k => ⟨f k, hfi k⟩) fun _ _ => f.le_iff_le`. Establish `hI' : ∀ j, j ∈ I.subtype (· ≠ i) ↔ j ∉ Set.range f'` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_subtype, hI]`. Conclude with `not_congr ⟨fun ⟨k, hk⟩ => ⟨k, Subtype.ext hk⟩, fun ⟨k, hk⟩ => ⟨k, congrArg Subtype.val hk⟩⟩`. Establish `hn' : (I.subtype (· ≠ i)).card = n`. Rewrite using `[Finset.card_subtype, Finset.filter_ne', Finset.card_erase_of_mem hi, hn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hm : ∀ (s : Finset {j : μ // j ≠ i}) (t : Finset κ), (s ∪ t.map f'.toEmbedding).map (otherDirections i).toEmbedding = s.map (otherDirections i).toEmbedding ∪ t.map f.toEmbedding` using `fun s t => by`. Rewrite using `[Finset.map_union, Finset.map_map]`. Both sides reduce to the same expression. Establish `hs : ∀ s ⊆ I.subtype (· ≠ i), s.map (otherDirections i).toEmbedding ⊆ I`. Introduce `s hs j hj`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, rfl⟩` from `Finset.mem_map.1 hj`. Conclude with `Finset.mem_subtype.1 (hs hk)`. Use `cubeComplex_acyclic_of_faces (range_otherDirections i) A (ih _ f' _ hI' hn' _ fun s hsI => ?_) (ih _ f' _ hI' hn' _ fun s hsI => ?_)` and prove the remaining obligations. Establish `: Cube.slice f' s (Cube.lowerFace (otherDirections i) A) = Cube.slice f (s.map (otherDirections i).toEmbedding) A` using `Cube.comap_congr (fun _ _ h => Finset.map_subset_map.2 (Cube.monotone_union_map f' s h)) _ (hm s) A`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA _ (hs s hsI)`. Establish `: Cube.slice f' s (Cube.upperFace (otherDirections i) i A) = Cube.slice f (insert i (s.map (otherDirections i).toEmbedding)) A` using `Cube.comap_congr (fun _ _ h => Finset.insert_subset_insert i (Finset.map_subset_map.2 (Cube.monotone_union_map f' s h))) _ (fun t => (congrArg (insert i) (hm s t)).trans (Finset.insert_union _ _ _).symm) A`. Rewrite using `[this]`. Conclude with `hA _ (Finset.insert_subset hi (hs s hsI))`.
+A detailed English derivation is pending.
 -/
 theorem cubeTotalComplex_acyclic_of_slices_induction_on_card (n : ℕ) :
     ∀ (μ : Type) [LinearOrder μ] (f : κ ↪o μ) (I : Finset μ) (_ : ∀ j, j ∈ I ↔ j ∉ Set.range f)
@@ -484,9 +482,9 @@ theorem cubeTotalComplex_acyclic_of_slices_induction_on_card (n : ℕ) :
 variable {ι μ : Type} [LinearOrder ι] [LinearOrder μ] {e : ι ↪o μ} {f : κ ↪o μ}
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Use `cubeTotalComplex_acyclic_of_slices_induction_on_card _ μ f (Finset.univ.map e.toEmbedding) (fun j => ?_)` and prove the remaining obligations. Use `rfl A fun s hs => ?_`. Rewrite using `[← Set.mem_compl_iff, ← h.eq_compl]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨s', -, rfl⟩` from `Finset.subset_map_iff.1 hs`. Conclude with `hA s'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cubeComplex_acyclic_of_slices [Finite ι] (h : IsCompl (Set.range e) (Set.range f))
     (A : Cube.{v} μ R)
@@ -509,7 +507,7 @@ section Parts
 variable {ι κ μ : Type} [LinearOrder ι] [LinearOrder κ] [LinearOrder μ] {e : ι ↪o μ} {f : κ ↪o μ}
 
 /- English proof (translation)
-Use extensionality with `i`. Establish `: ∀ k, f k ≠ e i` using `fun k hk => Set.disjoint_left.1 h ⟨i, rfl⟩ ⟨k, hk⟩`. Simplify using `[this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem part_union_left (h : Disjoint (Set.range e) (Set.range f)) (s : Finset ι) (t : Finset κ) :
     part e (s.map e.toEmbedding ∪ t.map f.toEmbedding) = s := by
@@ -518,16 +516,16 @@ theorem part_union_left (h : Disjoint (Set.range e) (Set.range f)) (s : Finset �
   simp [this]
 
 /- English proof (translation)
-Rewrite using `[Finset.union_comm, part_union_left h.symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem part_union_right (h : Disjoint (Set.range e) (Set.range f)) (s : Finset ι) (t : Finset κ) :
     part f (s.map e.toEmbedding ∪ t.map f.toEmbedding) = t := by
   rw [Finset.union_comm, part_union_left h.symm]
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `only [Finset.mem_union, Finset.mem_map, mem_part]`. Apply the tactic sequence `refine ⟨by rintro (⟨_, h, rfl⟩ | ⟨_, h, rfl⟩) <;> exact h, fun hj => ?_⟩`. Establish `: j ∈ Set.range e ∪ Set.range f`. Conclude with `(codisjoint_iff.1 h).ge (Set.mem_univ j)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `this with ⟨i, rfl⟩ | ⟨k, rfl⟩` into its components or cases. Conclude with `Or.inl ⟨i, hj, rfl⟩`. Conclude with `Or.inr ⟨k, hj, rfl⟩`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem map_part_union_map_part (h : Codisjoint (Set.range e) (Set.range f)) (u : Finset μ) :
     (part e u).map e.toEmbedding ∪ (part f u).map f.toEmbedding = u := by
@@ -543,7 +541,7 @@ theorem map_part_union_map_part (h : Codisjoint (Set.range e) (Set.range f)) (u 
 omit [LinearOrder ι] in
 
 /- English proof (translation)
-Introduce `_ _ h hs` and use `Finset.Nonempty.mono h hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUpperSet_nonempty : IsUpperSet {s : Finset ι | s.Nonempty} :=
   fun _ _ h hs => Finset.Nonempty.mono h hs
@@ -551,7 +549,7 @@ theorem isUpperSet_nonempty : IsUpperSet {s : Finset ι | s.Nonempty} :=
 omit [LinearOrder ι] in
 
 /- English proof (translation)
-The claim follows from `isUpperSet_nonempty.ordConnected`.
+A detailed English derivation is pending.
 -/
 theorem ordConnected_nonempty : Set.OrdConnected {s : Finset ι | s.Nonempty} :=
   isUpperSet_nonempty.ordConnected
@@ -563,7 +561,7 @@ def partsIn (Q : Set (Finset ι)) (T : Set (Finset κ)) : Set (Finset μ) :=
 
 @[simp]
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_partsIn {Q : Set (Finset ι)} {T : Set (Finset κ)} {u : Finset μ} :
     u ∈ partsIn e f Q T ↔ part e u ∈ Q ∧ part f u ∈ T := Iff.rfl
@@ -571,7 +569,7 @@ theorem mem_partsIn {Q : Set (Finset ι)} {T : Set (Finset κ)} {u : Finset μ} 
 variable (e f) in
 
 /- English proof (translation)
-The claim follows from `(hQ.preimage_mono (monotone_part e)).inter (hT.preimage_mono (monotone_part f))`.
+A detailed English derivation is pending.
 -/
 theorem ordConnected_partsIn {Q : Set (Finset ι)} {T : Set (Finset κ)} (hQ : Q.OrdConnected)
     (hT : T.OrdConnected) : (partsIn e f Q T).OrdConnected :=
@@ -580,7 +578,7 @@ theorem ordConnected_partsIn {Q : Set (Finset ι)} {T : Set (Finset κ)} (hQ : Q
 variable {R : Type u} [Ring R]
 
 /- English proof (translation)
-The claim follows from `supp_congr A fun _ => and_comm`.
+A detailed English derivation is pending.
 -/
 theorem supp_partsIn_comm {Q : Set (Finset ι)} {T : Set (Finset κ)} (hQ : Q.OrdConnected)
     (hT : T.OrdConnected) (A : Cube.{v} μ R) :
@@ -603,13 +601,13 @@ noncomputable def truncBoth (A : Cube.{v} μ R) : Cube.{v} μ R :=
   truncOver e f {s | s.Nonempty} ordConnected_nonempty A
 
 /- English proof (translation)
-The claim follows from `supp_partsIn_comm ordConnected_nonempty ordConnected_nonempty A`.
+A detailed English derivation is pending.
 -/
 theorem truncBoth_comm (A : Cube.{v} μ R) : truncBoth e f A = truncBoth f e A :=
   supp_partsIn_comm ordConnected_nonempty ordConnected_nonempty A
 
 /- English proof (translation)
-The claim follows from `(comap_supp _ _ A).trans (supp_congr _ fun t => by simp [part_union_left h, part_union_right h, hs])`.
+A detailed English derivation is pending.
 -/
 theorem slice_supp_partsIn_of_mem (h : Disjoint (Set.range e) (Set.range f))
     {Q : Set (Finset ι)} {T : Set (Finset κ)} (hQ : Q.OrdConnected) (hT : T.OrdConnected)
@@ -620,7 +618,7 @@ theorem slice_supp_partsIn_of_mem (h : Disjoint (Set.range e) (Set.range f))
     simp [part_union_left h, part_union_right h, hs])
 
 /- English proof (translation)
-The claim follows from `subsingleton_supp A (ordConnected_partsIn e f hQ hT) (by simp [part_union_left h, hs])`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_slice_supp_partsIn (h : Disjoint (Set.range e) (Set.range f))
     {Q : Set (Finset ι)} {T : Set (Finset κ)} (hQ : Q.OrdConnected) (hT : T.OrdConnected)
@@ -650,7 +648,7 @@ noncomputable def truncHomologyIso (A : Cube.{v} ι R) (n : ℕ) :
     homologyMapIso (cechTruncIso A) n
 
 /- English proof (translation)
-The claim follows from `ExactAt.of_isZero (isZero_cubeComplex_X_of_subsingleton _ 0 fun s hs => Cube.subsingleton_supp A _ (by simp [Finset.card_eq_zero.1 hs]))`.
+A detailed English derivation is pending.
 -/
 theorem cubeComplex_trunc₁_exactAt_zero (A : Cube.{v} ι R) :
     (cubeComplex (Cube.trunc₁ A)).ExactAt 0 :=
@@ -658,9 +656,7 @@ theorem cubeComplex_trunc₁_exactAt_zero (A : Cube.{v} ι R) :
     Cube.subsingleton_supp A _ (by simp [Finset.card_eq_zero.1 hs]))
 
 /- English proof (translation)
-Use `⟨fun h n => ?_, fun h n => ?_⟩` and prove the remaining obligations. Conclude with `(exactAt_iff_isZero_homology _ _).2 (((exactAt_iff_isZero_homology _ _).1 (h (n + 1))).of_iso (truncHomologyIso A n).symm)`. Consider the cases of `n with`. Consider the case `zero => exact cubeComplex_trunc₁_exactAt_zero A`. Consider the case `succ n`.
-
-Conclude with `(exactAt_iff_isZero_homology _ _).2 (((exactAt_iff_isZero_homology _ _).1 (h n)).of_iso (truncHomologyIso A n))`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cubeComplex_trunc₁_acyclic_iff (A : Cube.{v} ι R) :
     (cubeComplex (Cube.trunc₁ A)).Acyclic ↔ (cechComplex A).Acyclic := by
@@ -683,7 +679,7 @@ variable {ι κ μ : Type} [LinearOrder ι] [LinearOrder κ] [LinearOrder μ] {e
   {R : Type u} [Ring R]
 
 /- English proof (translation)
-Use `cubeComplex_acyclic_of_slices h _ fun s => ?_` and prove the remaining obligations. Distinguish the cases in `hs : s ∈ Q`. Rewrite using `[slice_supp_partsIn_of_mem h.disjoint hQ hT A hs]`. Conclude with `hA s hs`. Conclude with `cubeComplex_acyclic_of_subsingleton _ (subsingleton_slice_supp_partsIn h.disjoint hQ hT A hs)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cubeComplex_supp_partsIn_acyclic [Finite ι] (h : IsCompl (Set.range e) (Set.range f))
     {Q : Set (Finset ι)} {T : Set (Finset κ)} (hQ : Q.OrdConnected) (hT : T.OrdConnected)
@@ -698,7 +694,7 @@ theorem cubeComplex_supp_partsIn_acyclic [Finite ι] (h : IsCompl (Set.range e) 
       (subsingleton_slice_supp_partsIn h.disjoint hQ hT A hs)
 
 /- English proof (translation)
-Rewrite using `[← h.compl_eq]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_range_of_notMem_range (h : IsCompl (Set.range e) (Set.range f)) {j : μ}
     (hj : j ∉ Set.range e) : j ∈ Set.range f := by
@@ -779,7 +775,7 @@ noncomputable def truncOverHomologyIsoEmpty [Finite ι] (h : IsCompl (Set.range 
 omit [LinearOrder κ] in
 
 /- English proof (translation)
-Introduce and unpack `s t hst ⟨hs, hs'⟩`. Use `⟨hs.mono hst, fun ht => ?_⟩` and prove the remaining obligations. Rewrite `hst` using `[ht]`. Conclude with `(Finset.subset_singleton_iff.1 hst).elim hs.ne_empty hs'`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Cube.isUpperSet_nonempty_ne_singleton (k : κ) :
     IsUpperSet {t : Finset κ | t.Nonempty ∧ t ≠ {k}} := by
@@ -847,7 +843,7 @@ def inrEmb : κ ↪o ι ⊕ₗ κ := OrderEmbedding.ofStrictMono _ Sum.Lex.inr_s
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem inlEmb_apply (i : ι) : inlEmb ι κ i = toLex (Sum.inl i) := rfl
 
@@ -860,7 +856,7 @@ theorem inrEmb_apply (k : κ) : inrEmb ι κ k = toLex (Sum.inr k) := rfl
 variable (ι κ) in
 
 /- English proof (translation)
-The claim follows from `Set.isCompl_range_inl_range_inr`.
+A detailed English derivation is pending.
 -/
 theorem isCompl_range_inlEmb_inrEmb : IsCompl (Set.range (inlEmb ι κ)) (Set.range (inrEmb ι κ)) :=
   Set.isCompl_range_inl_range_inr
@@ -870,7 +866,7 @@ def sumVertex (s : Finset ι) (t : Finset κ) : Finset (ι ⊕ₗ κ) :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `part_union_left (isCompl_range_inlEmb_inrEmb ι κ).disjoint s t @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem part_inlEmb_sumVertex (s : Finset ι) (t : Finset κ) :
     part (inlEmb ι κ) (sumVertex s t) = s :=
@@ -878,7 +874,7 @@ theorem part_inlEmb_sumVertex (s : Finset ι) (t : Finset κ) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `part_union_right (isCompl_range_inlEmb_inrEmb ι κ).disjoint s t @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem part_inrEmb_sumVertex (s : Finset ι) (t : Finset κ) :
     part (inrEmb ι κ) (sumVertex s t) = t :=
@@ -886,7 +882,7 @@ theorem part_inrEmb_sumVertex (s : Finset ι) (t : Finset κ) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `map_part_union_map_part (isCompl_range_inlEmb_inrEmb ι κ).codisjoint u @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem sumVertex_part (u : Finset (ι ⊕ₗ κ)) :
     sumVertex (part (inlEmb ι κ) u) (part (inrEmb ι κ) u) = u :=
@@ -894,7 +890,7 @@ theorem sumVertex_part (u : Finset (ι ⊕ₗ κ)) :
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[← inlEmb_apply, ← mem_part, part_inlEmb_sumVertex]`. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inl_mem_sumVertex {s : Finset ι} {t : Finset κ} {i : ι} :
     toLex (Sum.inl i) ∈ sumVertex s t ↔ i ∈ s := by
@@ -902,14 +898,14 @@ theorem inl_mem_sumVertex {s : Finset ι} {t : Finset κ} {i : ι} :
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[← inrEmb_apply, ← mem_part, part_inrEmb_sumVertex]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inr_mem_sumVertex {s : Finset ι} {t : Finset κ} {k : κ} :
     toLex (Sum.inr k) ∈ sumVertex s t ↔ k ∈ t := by
   rw [← inrEmb_apply, ← mem_part, part_inrEmb_sumVertex]
 
 /- English proof (translation)
-Use extensionality with `j`. Take `⟨j, rfl⟩` from `toLex.surjective j`. Apply the tactic sequence `cases j <;> simp`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sumVertex_eq_map_disjSum (s : Finset ι) (t : Finset κ) :
     sumVertex s t = (s.disjSum t).map toLex.toEmbedding := by
@@ -918,7 +914,7 @@ theorem sumVertex_eq_map_disjSum (s : Finset ι) (t : Finset κ) :
   cases j <;> simp
 
 /- English proof (translation)
-The claim follows from `Finset.union_subset_union (Finset.map_subset_map.2 hs) (Finset.map_subset_map.2 ht)`.
+A detailed English derivation is pending.
 -/
 theorem sumVertex_mono {s s' : Finset ι} {t t' : Finset κ} (hs : s ⊆ s') (ht : t ⊆ t') :
     sumVertex s t ⊆ sumVertex s' t' :=
@@ -937,20 +933,20 @@ theorem sliceSnd_eq_slice (A : Cube.{v} (ι ⊕ₗ κ) R) (s : Finset ι) :
     sliceSnd A s = slice (inrEmb ι κ) (s.map (inlEmb ι κ).toEmbedding) A := rfl
 
 /- English proof (translation)
-The claim follows from `comap_congr _ _ (fun _ => Finset.union_comm _ _) A`.
+A detailed English derivation is pending.
 -/
 theorem sliceFst_eq_slice (A : Cube.{v} (ι ⊕ₗ κ) R) (t : Finset κ) :
     sliceFst A t = slice (inlEmb ι κ) (t.map (inrEmb ι κ).toEmbedding) A :=
   comap_congr _ _ (fun _ => Finset.union_comm _ _) A
 
 /- English proof (translation)
-Rewrite using `[sliceSnd_eq_slice, Finset.map_empty, slice_empty]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sliceSnd_empty (A : Cube.{v} (ι ⊕ₗ κ) R) : sliceSnd A ∅ = lowerFace (inrEmb ι κ) A := by
   rw [sliceSnd_eq_slice, Finset.map_empty, slice_empty]
 
 /- English proof (translation)
-Rewrite using `[sliceFst_eq_slice, Finset.map_empty, slice_empty]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sliceFst_empty (A : Cube.{v} (ι ⊕ₗ κ) R) : sliceFst A ∅ = lowerFace (inlEmb ι κ) A := by
   rw [sliceFst_eq_slice, Finset.map_empty, slice_empty]
@@ -959,7 +955,7 @@ noncomputable def trunc₂ (A : Cube.{v} (ι ⊕ₗ κ) R) : Cube.{v} (ι ⊕ₗ
   truncBoth (inlEmb ι κ) (inrEmb ι κ) A
 
 /- English proof (translation)
-The claim follows from `(isUpperSet_nonempty.preimage (monotone_part e)).inter (isUpperSet_nonempty.preimage (monotone_part f))`.
+A detailed English derivation is pending.
 -/
 theorem isUpperSet_partsIn_nonempty {μ : Type} [LinearOrder μ] (e : ι ↪o μ) (f : κ ↪o μ) :
     IsUpperSet (partsIn e f {s | s.Nonempty} {t | t.Nonempty}) :=
@@ -974,7 +970,7 @@ noncomputable def trunc₂Incl (A : Cube.{v} (ι ⊕ₗ κ) R) : trunc₂ A ⟶ 
     (isUpperSet_partsIn_nonempty _ _)
 
 /- English proof (translation)
-The claim follows from `(suppIncl_app A ordConnected_nonempty isUpperSet_nonempty hs) ▸ (suppEquiv A ordConnected_nonempty hs).bijective`.
+A detailed English derivation is pending.
 -/
 theorem trunc₁Incl_bijective (A : Cube.{v} ι R) {s : Finset ι} (hs : s.Nonempty) :
     Function.Bijective ((trunc₁Incl A).app s).hom :=
@@ -982,13 +978,13 @@ theorem trunc₁Incl_bijective (A : Cube.{v} ι R) {s : Finset ι} (hs : s.Nonem
     (suppEquiv A ordConnected_nonempty hs).bijective
 
 /- English proof (translation)
-The claim follows from `subsingleton_supp A ordConnected_nonempty (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_trunc₁_empty (A : Cube.{v} ι R) : Subsingleton ((trunc₁ A).obj ∅) :=
   subsingleton_supp A ordConnected_nonempty (by simp)
 
 /- English proof (translation)
-The claim follows from `have h : sumVertex s t ∈ partsIn (inlEmb ι κ) (inrEmb ι κ) {s | s.Nonempty} {t | t.Nonempty} := by simp [hs, ht] (suppIncl_app A (ordConnected_partsIn _ _ ordConnected_nonempty ordConnected_nonempty) (isUpperSet_partsIn_nonempty _ _) h) ▸ (suppEquiv A _ h).bijective`.
+A detailed English derivation is pending.
 -/
 theorem trunc₂Incl_bijective (A : Cube.{v} (ι ⊕ₗ κ) R) {s : Finset ι} {t : Finset κ}
     (hs : s.Nonempty) (ht : t.Nonempty) :
@@ -999,7 +995,7 @@ theorem trunc₂Incl_bijective (A : Cube.{v} (ι ⊕ₗ κ) R) {s : Finset ι} {
     (isUpperSet_partsIn_nonempty _ _) h) ▸ (suppEquiv A _ h).bijective
 
 /- English proof (translation)
-The claim follows from `subsingleton_supp A (ordConnected_partsIn _ _ ordConnected_nonempty ordConnected_nonempty) (by rcases h with rfl | rfl <;> simp)`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_trunc₂ (A : Cube.{v} (ι ⊕ₗ κ) R) {s : Finset ι} {t : Finset κ}
     (h : s = ∅ ∨ t = ∅) : Subsingleton ((trunc₂ A).obj (sumVertex s t)) :=
@@ -1095,14 +1091,14 @@ def Cube.firstEmb : ι ↪o (ι ⊕ₗ κ) ⊕ₗ ν := (inlEmb ι κ).trans (in
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem Cube.lastTwoEmb_inl (k : κ) :
     lastTwoEmb ι κ ν (toLex (Sum.inl k)) = toLex (Sum.inl (toLex (Sum.inr k))) := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem Cube.lastTwoEmb_inr (l : ν) :
     lastTwoEmb ι κ ν (toLex (Sum.inr l)) = toLex (Sum.inr l) := rfl
@@ -1117,9 +1113,9 @@ theorem Cube.firstEmb_apply (i : ι) :
 variable (ι κ ν) in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨j, rfl⟩ ⟨i, hi⟩`. Apply the tactic sequence `rcases j with j | j <;> cases hi`. Rewrite using `[codisjoint_iff]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `Set.eq_univ_of_forall fun j => ?_` and prove the remaining obligations. Break down `j with (i | k) | l` into its components or cases. Conclude with `Or.inr ⟨i, rfl⟩`. Conclude with `Or.inl ⟨toLex (Sum.inl k), rfl⟩`. Conclude with `Or.inl ⟨toLex (Sum.inr l), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative. Prove the first alternative.
 -/
 theorem Cube.isCompl_range_lastTwoEmb_firstEmb :
     IsCompl (Set.range (lastTwoEmb ι κ ν)) (Set.range (firstEmb ι κ ν)) := by
@@ -1135,7 +1131,7 @@ theorem Cube.isCompl_range_lastTwoEmb_firstEmb :
     · exact Or.inl ⟨toLex (Sum.inr l), rfl⟩
 
 /- English proof (translation)
-Simplify using `only [sumVertex, Finset.map_union, Finset.map_map]`. Rewrite using `[Finset.union_comm, ← Finset.union_assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Cube.map_lastTwoEmb_union (s : Finset ι) (t : Finset κ) (w : Finset ν) :
     (sumVertex t w).map (lastTwoEmb ι κ ν).toEmbedding ∪ s.map (firstEmb ι κ ν).toEmbedding =
@@ -1145,7 +1141,7 @@ theorem Cube.map_lastTwoEmb_union (s : Finset ι) (t : Finset κ) (w : Finset ν
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Cube.map_lastTwoEmb_union, Finset.map_empty, Finset.union_empty]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Cube.map_lastTwoEmb (t : Finset κ) (w : Finset ν) :
     (sumVertex t w).map (lastTwoEmb ι κ ν).toEmbedding =
@@ -1153,7 +1149,7 @@ theorem Cube.map_lastTwoEmb (t : Finset κ) (w : Finset ν) :
   rw [← Cube.map_lastTwoEmb_union, Finset.map_empty, Finset.union_empty]
 
 /- English proof (translation)
-The claim follows from `comap_congr (fun _ _ h => Finset.map_subset_map.2 (sumVertex_mono (subset_refl t) h)) _ (fun w => Cube.map_lastTwoEmb t w) A`.
+A detailed English derivation is pending.
 -/
 theorem Cube.sliceSnd_lowerFace_lastTwoEmb (A : Cube.{v} ((ι ⊕ₗ κ) ⊕ₗ ν) R) (t : Finset κ) :
     sliceSnd (lowerFace (lastTwoEmb ι κ ν) A) t = sliceSnd A (sumVertex ∅ t) :=
@@ -1200,7 +1196,7 @@ end Three
 section Examples
 
 /- English proof (translation)
-Introduce `h` and use `by have h' := h.of_iso (trunc₂HomologyIsoFst (Cube.const (Fin 1 ⊕ₗ Fin 1) (ModuleCat.of ℤ ℤ)) (fun s _ => cubeComplex_acyclic_of_bijective _ 0 fun _ _ => Function.bijective_id) 0).symm rw [← exactAt_iff_isZero_homology, cochainComplex_exactAt_zero_iff, cechComplex_d _ 0] at h' ha …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ¬ IsZero ((cubeComplex (Cube.trunc₂
     (Cube.const (Fin 1 ⊕ₗ Fin 1) (ModuleCat.of ℤ ℤ)))).homology 2) := fun h => by

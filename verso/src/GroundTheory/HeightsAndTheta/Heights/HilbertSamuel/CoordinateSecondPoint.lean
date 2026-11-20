@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `| 0, V, a, _ => by unfold geoNum split_ifs <;> simp | n + 1, V, a, ha => by unfold geoNum split_ifs with h · refine Finset.sum_nonneg fun k _ ↦ mul_nonneg (ha _ _) (finsum_nonneg fun W ↦ finsum_nonneg fun _ ↦ ?_) exact mul_nonneg (Nat.cast_nonneg _) (geoNum_nonneg n W _ fun j k ↦ …`.
+A detailed English derivation is pending.
 -/
 theorem geoNum_nonneg {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] :
     ∀ (n : ℕ) (V : Ideal (MRing ι)) (a : Fin n → K → ℤ), (∀ j k, 0 ≤ a j k) → 0 ≤ geoNum n V a
@@ -25,7 +25,7 @@ theorem geoNum_nonneg {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype
     · exact le_rfl
 
 /- English proof (translation)
-The claim follows from `fun W _ _ _ _ ↦ geoNum_nonneg 1 W _ fun _ k ↦ ha k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nefOnFibres_of_nonneg {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
     (P : Ideal (MRing ι)) {a : K → ℤ} (ha : ∀ k, 0 ≤ a k) : NefOnFibres P a :=
@@ -34,17 +34,17 @@ theorem nefOnFibres_of_nonneg {K : Type*} [Fintype K] {ι : K → Type*} [∀ k,
 namespace P1
 
 /- English proof (translation)
-Rewrite using `[sum_twoPoint, Fin.sum_univ_two]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_blk (m : J2 →₀ ℕ) : ∑ i : Fin 2, m ⟨(), i⟩ = ∑ q, m q := by
   rw [sum_twoPoint, Fin.sum_univ_two]; rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h m hm`. Use `h m (mem_support_iff.mpr hm) ()` as an intermediate fact. Rewrite `this` using `[sum_blk]`. Simplify using `only [Finsupp.weight_apply, Pi.one_apply, smul_eq_mul, mul_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finsupp.sum_fintype _ _ (by simp)]`. Conclude with `this`. Introduce `h m hm k`. Use `h (mem_support_iff.mp hm)` as an intermediate fact. Simplify using `only [Finsupp.weight_apply, Pi.one_apply, smul_eq_mul, mul_one] at this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Finsupp.sum_fintype _ _ (by simp)]`. Rewrite using `[sum_blk]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_iff (f : MvPolynomial J2 ℤ) (d : ℕ) :
     IsMultiHomog (ι := GlobalTheory (Fin 2)) f (fun _ ↦ d) ↔ f.IsHomogeneous d := by
@@ -63,13 +63,13 @@ theorem isMultiHomog_iff (f : MvPolynomial J2 ℤ) (d : ℕ) :
     exact this
 
 /- English proof (translation)
-The claim follows from `(isMultiHomog_iff _ 1).mpr (isHomogeneous_X ℤ q)`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_X (q : J2) : IsMultiHomog (ι := GlobalTheory (Fin 2)) (X q : MvPolynomial J2 ℤ) fun _ ↦ 1 :=
   (isMultiHomog_iff _ 1).mpr (isHomogeneous_X ℤ q)
 
 /- English proof (translation)
-The claim follows from `(isMultiHomog_iff _ 0).mpr (isHomogeneous_one _ _)`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_one : IsMultiHomog (ι := GlobalTheory (Fin 2)) (1 : MvPolynomial J2 ℤ) fun _ ↦ 0 :=
   (isMultiHomog_iff _ 0).mpr (isHomogeneous_one _ _)
@@ -77,7 +77,7 @@ theorem isMultiHomog_one : IsMultiHomog (ι := GlobalTheory (Fin 2)) (1 : MvPoly
 abbrev Afs : HermLine (GlobalTheory (Fin 2)) := HermLine.ofCone fs
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨q, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ratio_mem (c : ∀ k, GlobalTheory (Fin 2) k) (q : J2) :
     x q / x ⟨(), c ()⟩ ∈ chartRingZ (ι := GlobalTheory (Fin 2)) x c :=

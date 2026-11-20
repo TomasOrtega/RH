@@ -11,11 +11,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.CoefDuty.LargeRing
 
 /- English proof (translation)
-Introduce `D cf jE A M C tup P₁ P₂`. Establish `anti : ∀ (big big' : D.what₂.places.Pl → Finset ℂ) (L : LocAll (lay0 D)), (∀ w, big w ⊆ big' w) → Built A M C tup big' L → Built A M C tup big L`. Introduce `big big' L h hL`. Take `⟨Sp, hA, hs⟩` from `hL`. Conclude with `⟨{ Sp with iq_big := fun i z hz => Sp.iq_big i z (h _ hz) }, hA, hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨?_, ?_, ?_, anti⟩` and prove the remaining obligations. Introduce and unpack `⟨b, hb⟩ ⟨c, hc⟩`. Conclude with `⟨fun w => b w ∪ c w, fun L hL => ⟨hb L (anti _ _ L (fun _ => Finset.subset_union_left) hL), hc L (anti _ _ L (fun _ => Finset.subset_union_right) hL)⟩⟩`. Introduce and unpack `h ⟨b, hb⟩`. Conclude with `⟨b, fun L hL => h _ (hb L hL)⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `hE ⟨b, hb⟩ big₀`. Take `⟨L, hL⟩` from `hE fun w => big₀ w ∪ b w`. Conclude with `⟨fun w => big₀ w ∪ b w, L, fun _ => Finset.subset_union_left, hL, hb L (anti _ _ L (fun _ => Finset.subset_union_right) hL)⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem evO_laws : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (M : MtFam D) (C : NChoice D) (tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E) (P₁ P₂ : D7 → Prop), (EvO A M C tup P₁ → EvO A M C tup P₂ → EvO A M C tup fun D' => P₁ D' ∧ P₂ D') ∧ ((∀ D', P₁ D' → P₂ D') → EvO A M C tup P₁ → EvO A M C tup P₂) ∧ (BuiltEx A M C tup → EvO A M C tup P₁ → ∀ (big₀ : D.what₂.places.Pl → Finset ℂ), ∃ (big : D.what₂.places.Pl → Finset ℂ) (L : LocAll (lay0 D)), (∀ w, big₀ w ⊆ big w) ∧ Built A M C tup big L ∧ P₁ (withLoc L)) ∧ ∀ (big big' : D.what₂.places.Pl → Finset ℂ) (L : LocAll (lay0 D)), (∀ w, big w ⊆ big' w) → Built A M C tup big' L → Built A M C tup big L := by
   classical

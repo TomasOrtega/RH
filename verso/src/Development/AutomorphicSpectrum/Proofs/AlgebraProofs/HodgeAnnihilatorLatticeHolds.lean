@@ -8,14 +8,14 @@ namespace GlobalTheory.CompanionTheory.Ar.Num
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
 /- English proof (translation)
-Simplify using `[stdLat, AddSubgroup.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stdLat_iff_algebra (R : Subalgebra o Ω) {ι : Type} (v : ι → Ω) :
     v ∈ stdLat R ι ↔ ∀ i, v i ∈ R := by
   simp [stdLat, AddSubgroup.mem_pi]
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[mem_stdLat_iff_algebra]`. Introduce `x`. Simplify using `only [linMap, Fintype.linearCombination_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Subalgebra.sum_mem _ fun i _ => Subalgebra.mul_mem _ (hv i) (hχ _)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linMap_mem_stdLat {F : Type} [Zero F] [Fintype F] {n : ℕ} (R : Subalgebra o Ω) (χ : F → Ω)
     (hχ : ∀ a, χ a ∈ R) (v : Fin n → Ω) (hv : v ∈ stdLat R (Fin n)) :
@@ -26,13 +26,13 @@ theorem linMap_mem_stdLat {F : Type} [Zero F] [Fintype F] {n : ℕ} (R : Subalge
   exact Subalgebra.sum_mem _ fun i _ => Subalgebra.mul_mem _ (hv i) (hχ _)
 
 /- English proof (translation)
-Establish `H` using `GlobalTheory.T.lattice_good_base_change D R p w χ hC hB hG`. Take `⟨hp0, hwR, -, -, hχ⟩` from `hC`. Introduce `x hx`. Take `⟨u, hu, rfl⟩` from `AddSubgroup.mem_map.mp hx`. Establish `hu' : ∀ i, u i ∈ R` using `(mem_stdLat_iff_algebra R u).mp hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.T.locally_free_test_point_membership R p hp hp0 hN hF hI n (D.af R p (χ τ)) (H.1 τ).1 _ ⟨1, ?_⟩ ?_` and prove the remaining obligations. Establish `hy : linMap n (χ τ) (w • u) ∈ stdLat R (Fin n → F)` using `linMap_mem_stdLat R (χ τ) (hχ τ).2.2 _ ((mem_stdLat_iff_algebra R _).mpr fun i => by`. Simplify using `using R.mul_mem hwR (hu' i))`. Rewrite using `[LieLatticeData.af, AddSubgroup.mem_comap]`. Use `AddSubgroup.mem_sup_right (AddSubgroup.mem_map.mpr ⟨_, hy, ?_⟩)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[map_smul]`. Introduce `C _ _ _ _ RC hTP`. Establish `hRC : ∀ a ∈ R, algebraMap Ω C a ∈ RC` using `hTP.2.2.2`. Rewrite using `[← ((H.2 C RC hRC).2 τ).1]`. Establish `hFa` using `hT C RC hTP`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hFa.le_af τ (AddSubgroup.mem_map.mpr ⟨bcMap Ω C (Fin n) u, ?_, ?_⟩)` and prove the remaining obligations. Conclude with `(mem_stdLat_iff_algebra RC _).mpr fun i => by simpa [bcMap] using hRC _ (hu' i)`. Use extensionality with `i`. Simplify using `[bcMap]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hodge_annihilator_lattice {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Type} [Zero F] [One F]
     [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω)

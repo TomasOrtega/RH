@@ -6,19 +6,17 @@ namespace GlobalTheory.HatNF
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.R Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.Fr Formalism.REAL Formalism.QuantumDeterminants MeasureTheory Filter Topology
 
 /- English proof (translation)
-Take `⟨hs, ⟨δ, hδ, h0⟩, h1⟩` from `hχ`. Use `set h : ℝ → ℝ := fun t => χ (Real.exp t) with hh`. Establish `hc : ∀ k t : ℝ, iteratedDeriv p (fun _ : ℝ => k) t = if p = 0 then k else 0`. Introduce `k t`. Consider the cases of `p with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ n => simp [iteratedDeriv_succ']`. Establish `hsm : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) h` using `hs.comp Real.contDiff_exp`. Establish `hcont : Continuous (iteratedDeriv p h)` using `hsm.continuous_iteratedDeriv p (by exact_mod_cast le_top)`. Establish `hlow : ∀ t, t < Real.log δ → iteratedDeriv p h t = 0`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Establish `: h =ᶠ[𝓝 t] fun _ => (0:ℝ)` using `by filter_upwards [Iio_mem_nhds ht] with s hs`. Use `Real.exp_lt_exp.mpr hs` as an intermediate fact. Rewrite `this` using `[Real.exp_log hδ]`. Simplify using `only [hh, h0 _ this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this.iteratedDeriv_eq p, hc]`. Simplify using the standard rewrite rules. Establish `hhigh : ∀ t, 0 < t → iteratedDeriv p h t = if p = 0 then 1 else 0`. Introduce `t ht`. Establish `: h =ᶠ[𝓝 t] fun _ => (1:ℝ)` using `by filter_upwards [Ioi_mem_nhds ht] with s hs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 ≤ Real.exp s` using `Real.one_le_exp (le_of_lt hs)`. Simplify using `[hh, h1 _ this]`. Rewrite using `[this.iteratedDeriv_eq p, hc]`. Take `⟨C0, hC0⟩` from `(isCompact_Icc (a := Real.log δ) (b := 0)).exists_bound_of_continuousOn hcont.continuousOn`. Use `⟨max C0 1, le_trans zero_le_one (le_max_right _ _), fun t => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_ge t (Real.log δ) with h1 | h1` into its components or cases. Rewrite using `[hlow t h1]`. Simplify using the standard rewrite rules. Break down `lt_or_ge 0 t with h2 | h2` into its components or cases. Apply the tactic sequence `rw [hhigh t h2]; split_ifs <;> simp`.
-
-Conclude with `(hC0 t ⟨h1, h2⟩).trans (le_max_left _ _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cutoff_comp_exp_iteratedDeriv_bounded (χ : ℝ → ℝ) (hχ : C6.IsCut0 χ) (p : ℕ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ t, |iteratedDeriv p (fun t => χ (Real.exp t)) t| ≤ C := by
@@ -55,13 +53,13 @@ theorem cutoff_comp_exp_iteratedDeriv_bounded (χ : ℝ → ℝ) (hχ : C6.IsCut
     · exact (hC0 t ⟨h1, h2⟩).trans (le_max_left _ _)
 
 /- English proof (translation)
-Use `choose B hB0 hB using cutoff_comp_exp_iteratedDeriv_bounded χ hχ`. Use `⟨∑ i ∈ Finset.range (j + 1), (j.choose i : ℝ) * B i * (e : ℝ) ^ (j - i), Finset.sum_nonneg fun i _ => mul_nonneg (mul_nonneg (by positivity) (hB0 i)) (by positivity), ?_⟩` and prove the remaining obligations. Introduce `ε x hε hx`. Use `set h : ℝ → ℝ := fun t => χ (Real.exp t) with hh`. Establish `hsm : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) h` using `hχ.1.comp Real.contDiff_exp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `LE.ld`. Establish `e1 : (fun u : ℝ => χ (Real.exp u / ε) * Real.exp u ^ e) = fun u : ℝ => h (u - Real.log ε) * Real.exp ((e : ℝ) * u)`. Use function extensionality and compare the values at `u`. Simplify using `only [hh]`. Rewrite using `[Real.exp_sub, Real.exp_log hε, Real.exp_nat_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : ContDiff ℝ j (fun u : ℝ => h (u - Real.log ε))` using `(hsm.of_le (by exact_mod_cast le_top)).comp (contDiff_id.sub contDiff_const)`. Establish `c2 : ContDiff ℝ j (fun u : ℝ => Real.exp ((e : ℝ) * u))` using `Real.contDiff_exp.comp (contDiff_const.mul contDiff_id)`. Use `beta_reduce`. Rewrite using `[e1, iteratedDeriv_fun_mul c1.contDiffAt c2.contDiffAt, Finset.sum_mul]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[iteratedDeriv_comp_sub_const, iteratedDeriv_exp_const_mul]`. Use `beta_reduce`. Rewrite using `[Real.exp_nat_mul, Real.exp_log hx, abs_mul, abs_mul, abs_of_nonneg (by positivity : (0:ℝ) ≤ (j.choose i : ℝ)), abs_of_nonneg (by positivity : (0:ℝ) ≤ (e : ℝ) ^ (j - i) * x ^ e), ← mul_assoc]`. Use `hB i (Real.log x - Real.log ε)` as an intermediate fact. Use `gcongr`.
+A detailed English derivation is pending.
 -/
 theorem ld_cut_pow_bound (χ : ℝ → ℝ) (hχ : C6.IsCut0 χ) (e j : ℕ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ ε x : ℝ, 0 < ε → 0 < x → |LE.ld j (fun y => χ (y / ε) * y ^ e) x| ≤ C * x ^ e := by
@@ -92,7 +90,7 @@ theorem ld_cut_pow_bound (χ : ℝ → ℝ) (hχ : C6.IsCut0 χ) (e j : ℕ) :
   gcongr
 
 /- English proof (translation)
-The claim follows from `|LE.ld j (fun y => χ (y / ε) * y ^ e) x| ≤ C * x ^ e := by intro χ e J hχ constructor · intro ε hε obtain ⟨hs, ⟨δ, hδ, h0⟩, h1⟩ := hχ refine ⟨(hs.comp (contDiff_id.div_const ε)).mul (contDiff_id.pow e), ⟨δ * ε, by positivity, fun x hx => ?_⟩, 1, ε, fun x hx => ?_⟩ · have : x / ε …`.
+A detailed English derivation is pending.
 -/
 theorem ld_cut_pow : ∀ (χ : ℝ → ℝ) (e J : ℕ), C6.IsCut0 χ →
     (∀ ε : ℝ, 0 < ε → CutPow e fun y => χ (y / ε) * y ^ e) ∧

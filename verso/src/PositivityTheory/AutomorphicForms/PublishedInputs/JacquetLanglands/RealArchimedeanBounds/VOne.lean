@@ -10,11 +10,11 @@ open scoped Matrix NNReal
 namespace UpperTheory.Esk.ClassNumberLemmas
 
 /- English proof (translation)
-Establish `a1 : Valued.v (pLoc F w (e : Af F)) ≤ 1`. Establish `h` using `h1 w`. Rewrite `h` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `h`. Establish `a2 : Valued.v (pLoc F w ((e⁻¹ : (Af F)ˣ) : Af F)) ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `h2 w`. Rewrite `h` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `h`. Establish `hm : Valued.v (pLoc F w (e : Af F)) * Valued.v (pLoc F w ((e⁻¹ : (Af F)ˣ) : Af F)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `le_antisymm a1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem v_one {F : Type} [Field F] [NumberField F] (e : (Af F)ˣ) (h1 : (e : Af F) ∈ PIW.ClassFinD.Ohat F)
     (h2 : ((e⁻¹ : (Af F)ˣ) : Af F) ∈ PIW.ClassFinD.Ohat F) (w : Pl F) : Valued.v (pLoc F w (e : Af F)) = 1 := by
@@ -38,7 +38,7 @@ end UpperTheory.Esk.ClassNumberLemmas
 namespace UpperTheory.Esk
 
 /- English proof (translation)
-Introduce `F _ _`. Take `⟨C, hC⟩` from `PIW.ClassFinD.idele_class_finite F`. Use `⟨C, fun z => ?_⟩` and prove the remaining obligations. Take `⟨f, c, hc, e, he1, he2, hz⟩` from `hC z`. Conclude with `⟨f, e, c, hc, ClassNumberLemmas.v_one e he1 he2, hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem aCls : ACls := by
   intro F _ _

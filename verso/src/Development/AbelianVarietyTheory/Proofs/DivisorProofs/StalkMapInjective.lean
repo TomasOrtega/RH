@@ -20,15 +20,13 @@ namespace GlobalTheory.HSApp.ValCrit
 open IsLocalRing
 
 /- English proof (translation)
-Distinguish the cases in `hf : IsField R`. Use `⟨1, fun a => ?_, fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : a = 0`. Simplify using `[h]`. Rewrite using `[Valuation.one_apply_of_ne_zero h]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: a = 0`. Rewrite `ha` using `[isField_iff_maximalIdeal_eq.1 hf]`. Conclude with `ha`. Simplify using `[this]`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[Valuation.one_apply_of_ne_zero h]`. Conclude with `one_ne_zero ha`. Take `⟨V, hV, hd⟩` from `exists_discreteValuationSubring_dominating R (FractionRing R) (FractionRing R) hf`. Take `⟨h1, h2⟩` from `(localSubring_range_le_valuationSubring_iff_isLocalHom _ _).1 hd`. Set `ρ : R →+* V` to `(algebraMap R (FractionRing R)).codRestrict V h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hρ : Function.Injective ρ` using `fun a b hab => IsFractionRing.injective R (FractionRing R) (congrArg Subtype.val hab)`. Set `v : IsDedekindDomain.HeightOneSpectrum V` to `⟨maximalIdeal V, inferInstance, IsDiscreteValuationRing.not_a_field V⟩`. Use `⟨v.intValuation.comap ρ, fun a => v.intValuation_le_one _, fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Use `(v.intValuation_lt_one_iff_mem _).2 ?_` and prove the remaining obligations. Conclude with `(mem_maximalIdeal _).2 fun hu => (mem_maximalIdeal _).1 ha (isUnit_of_map_unit ρ a hu)`.
-
-Assume the negation of the conclusion as `h`. Conclude with `v.intValuation_ne_zero _ (fun e => h (hρ (e.trans (map_zero ρ).symm))) ha`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_valuation (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsLocalRing R] :
     ∃ μ : Valuation R (WithZero (Multiplicative ℤ)),
@@ -62,11 +60,9 @@ theorem exists_valuation (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing 
 variable {k : Type} [Field k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {U : Y.Opens} {D : ℕ}
 
 /- English proof (translation)
-Use `haveI : Smooth M.str := SmoothOfRelativeDimension.smooth D M.str`. Use `haveI : IsReduced M.X := isReduced_of_smooth M.str`. Take `⟨x, hx⟩` from `M.dense.nonempty`. Use `haveI : Nonempty (M.σ ⁻¹ᵁ U) := ⟨⟨x, hx⟩⟩`. Use `haveI : Nonempty U := ⟨⟨M.σ x, hx⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `haveI := M.iso`. Use `haveI : IsIntegral (M.σ ⁻¹ᵁ U : Scheme) := isIntegral_of_isOpenImmersion (M.σ ∣_ U)`. Establish `h1 : IsIrreducible ((M.σ ⁻¹ᵁ U : M.X.Opens) : Set M.X)`. Use `(IrreducibleSpace.isIrreducible_univ (M.σ ⁻¹ᵁ U : Scheme)).image (⇑(M.σ ⁻¹ᵁ U).ι) (M.σ ⁻¹ᵁ U).ι.continuous.continuousOn` as an intermediate fact. Rewrite `this` using `[Set.image_univ, Scheme.Opens.range_ι]`. Then use the resulting hypothesis.
-
-Establish `h2` using `h1.closure`. Rewrite `h2` using `[M.dense.closure_eq]`. Use `haveI : IrreducibleSpace M.X := (irreducibleSpace_def _).2 h2`. Conclude with `isIntegral_of_irreducibleSpace_of_isReduced M.X`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_X [IsIntegral Y] (M : Modif p U D) [Nonempty M.X] : IsIntegral M.X := by
   haveI : Smooth M.str := SmoothOfRelativeDimension.smooth D M.str

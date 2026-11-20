@@ -25,7 +25,7 @@ open scoped nonZeroDivisors
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, adjM, Matrix.of_apply, map_sum, map_mul, IsCMField.complexConj_apply_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_adj (h : Matrix (Fin n) (Fin n) E) (v w : Fin n → E) :
     ∑ j, IsCMField.complexConj E (v j) * h.mulVec w j =
@@ -36,13 +36,13 @@ theorem form_adj (h : Matrix (Fin n) (Fin n) E) (v w : Fin n → E) :
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Establish `h1 : adjM h * h = 1` using `hu`. Establish `h2 : h * adjM h = 1` using `mul_eq_one_comm.1 h1`. Introduce `v`. Establish `e : v ∈ (actLat h Λ).La ↔ (adjM h).mulVec v ∈ Λ.La`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨u, hu, rfl⟩`. Express the relevant statement in the definitionally equal form `(adjM h).mulVec (h.mulVec u) ∈ _`. Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce `hv`. Use `⟨_, hv, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `h.mulVec _ = _`. Rewrite using `[Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Rewrite using `[e, hΛ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `hv _ ⟨u, hu, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `(form_adj h v u).symm ▸ hv u hu`. Introduce `hv w hw`. Rewrite using `[← form_adj]`. Conclude with `hv _ ⟨w, hw, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unimod_act {h : Matrix (Fin n) (Fin n) E} (hu : IsUnitaryM h) {Λ : GenLat E n} (hΛ : Λ.Unimod) :
     (actLat h Λ).Unimod := by
@@ -69,11 +69,11 @@ theorem unimod_act {h : Matrix (Fin n) (Fin n) E} (hu : IsUnitaryM h) {Λ : GenL
 variable {H : Host E} (Dw : Datum H) {l : Geo.Tor.Level H} (c : Coeff l)
 
 /- English proof (translation)
-Establish `h` using `(isBe_principal Dw c g).2 c.F.val.toRingHom`. Apply `c.F.val.toRingHom.injective` to reduce the goal to its premises. Rewrite using `[map_natCast]`. Establish `e : c.F.val.toRingHom (reflexNorm Dw c ((g * co g : 𝓞 E) : E)) = c.F.val.toRingHom (reflexNorm Dw c (g : E)) * conj (c.F.val.toRingHom (reflexNorm Dw c (g : E)))`. Simplify using `only [reflexNorm, map_prod, map_pow, ← Finset.prod_mul_distrib, ← mul_pow]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Express the relevant statement in the definitionally equal form `σ ((g : E) * IsCMField.complexConj E (g : E)) = σ g * conj (σ g)`. Rewrite using `[map_mul, IsCMField.complexEmbedding_complexConj]`. Rewrite using `[e, Complex.mul_conj', ← Complex.ofReal_pow, h]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem reflexNorm_mul_conj (g : 𝓞 E) :
     reflexNorm Dw c ((g * co g : 𝓞 E) : E) = ((Ideal.absNorm (Ideal.span {g}) ^ (Dw.p + Dw.q) : ℕ) : c.F) := by
@@ -92,11 +92,11 @@ theorem reflexNorm_mul_conj (g : 𝓞 E) :
   rfl
 
 /- English proof (translation)
-Set `I₀ : (Ideal (𝓞 E))⁰` to `⟨J, mem_nonZeroDivisors_of_ne_zero hJ⟩`. Take `⟨k, hk, e⟩` from `(isOfFinOrder_of_finite (ClassGroup.mk0 I₀)).exists_pow_eq_one`. Rewrite `e` using `[← map_pow]`. Take `⟨g, hg⟩ : (J ^ k).IsPrincipal` from `(ClassGroup.mk0_eq_one_iff (I₀ ^ k).2).1 e`. Express the relevant statement in the definitionally equal form `J ^ k = Ideal.span {g} at hg`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `isBe_of_pow hk ?_` and prove the remaining obligations. Establish `e1 : (J * conjI J) ^ k = Ideal.span {g * co g}`. Rewrite using `[mul_pow, conjI_eq, ← Ideal.map_pow, hg, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_mul_span_singleton]`. Establish `e2 : ((Ideal.absNorm J ^ (Dw.p + Dw.q) : ℕ) : c.F) ^ k = reflexNorm Dw c ((g * co g : 𝓞 E) : E)`. Rewrite using `[reflexNorm_mul_conj, ← hg, map_pow, ← Nat.cast_pow, ← pow_mul, ← pow_mul, mul_comm k]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Conclude with `isBe_principal Dw c _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBe_mul_conj (J : Ideal (𝓞 E)) (hJ : J ≠ ⊥) :
     IsBe Dw c (J * conjI J) ((Ideal.absNorm J ^ (Dw.p + Dw.q) : ℕ) : c.F) := by
@@ -115,9 +115,9 @@ theorem isBe_mul_conj (J : Ideal (𝓞 E)) (hJ : J ≠ ⊥) :
   exact isBe_principal Dw c _
 
 /- English proof (translation)
-Establish `hu0 : IsUnit (detSpan Λ.La)` using `isUnit_detSpan (GenusLatCompare.latEquiv.symm ⟨Λ, GenusLatCompare.isLat_of_unimod Λ hΛ⟩)`. Establish `hu : IsUnit (∏ τ : E →+* ℂ, idealAt c Λ.La τ ^ Dw.mult τ)` using `IsUnit.prod_iff.2 fun τ _ => by rw [idealAt_eq]; exact (hu0.map _).pow _`. Take `⟨-, h1, h2⟩` from `hb`. Use `⟨?_, fun s => by rw [hN]; exact h2 s⟩` and prove the remaining obligations. Establish `e : ∀ τ, idealAt c Λ.Ln τ = coeI c.F (J.map (RingOfIntegers.mapRingHom (embF c τ))) * idealAt c Λ.La τ` using `fun τ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[idealAt_eq, idealAt_eq, hJ, smul_eq_coeI_mul, map_mul, extend_coeI]`. Rewrite using `[← span_eq_coeI_iff, coeI_reflexIdeal]`. Rewrite `h1` using `[BetaIs]`. Simplify using `only [e, mul_pow, Finset.prod_mul_distrib] at h1`. Conclude with `hu.mul_left_inj.1 h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isBe_of_isBeta {Λ : GenLat E n} (hΛ : Λ.Unimod) {b : c.F} (hb : IsBeta Dw c Λ b) {J : Ideal (𝓞 E)}
     (hN : Ideal.absNorm J = (Λ.Ln.toAddSubgroup.addSubgroupOf Λ.La.toAddSubgroup).index)
@@ -138,7 +138,7 @@ theorem isBe_of_isBeta {Λ : GenLat E n} (hΛ : Λ.Unimod) {b : c.F} (hb : IsBet
 
 omit [IsCMField E] in
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[Submodule.mem_span_singleton_mul]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_mulLeft_eq (x : E) (M : Submodule (𝓞 E) E) :
     Submodule.map (LinearMap.mulLeft (𝓞 E) x) M = Submodule.span (𝓞 E) {x} * M := by
@@ -148,29 +148,27 @@ theorem map_mulLeft_eq (x : E) (M : Submodule (𝓞 E) E) :
 
 omit [IsCMField E] in
 /- English proof (translation)
-The claim follows from `IsLocalization.coeSubmodule_span_singleton E u`.
+A detailed English derivation is pending.
 -/
 theorem coeI_span (u : 𝓞 E) : coeI E (Ideal.span {u}) = Submodule.span (𝓞 E) {(u : E)} :=
   IsLocalization.coeSubmodule_span_singleton E u
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l c n Λ h b b' hΛ hu hb hb'`. Establish `hΛ'` using `unimod_act hu hΛ`. Take `⟨J, hJ0, hN, hJ1, hJ2, hdet⟩` from `GlobalTheory.T.detIdeal_selfDual_lattice_and_inter_standard E n Λ hΛ`. Take `⟨J', hJ0', hN', hJ1', hJ2', -⟩` from `GlobalTheory.T.detIdeal_selfDual_lattice_and_inter_standard E n _ hΛ'`. Establish `hB` using `isBe_of_isBeta Dw c hΛ hb hN hJ1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB'` using `isBe_of_isBeta Dw c hΛ' hb' hN' hJ1'`. Take `⟨u, v, hv, huv⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) h.det`. Establish `hv0 : v ≠ 0` using `nonZeroDivisors.ne_zero hv`. Establish `hvE : (v : E) ≠ 0` using `by simpa using hv0`. Establish `huv' : (u : E) = h.det * (v : E)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← huv]`. Conclude with `(div_mul_cancel₀ _ hvE).symm`. Establish `k1 : coeI E (conjI J) = coeI E J * detSpan Λ.La`. Rewrite using `[← smul_eq_coeI_mul]`. Conclude with `hJ2.symm.trans hJ1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k2 : coeI E (conjI J') = coeI E J' * (Submodule.span (𝓞 E) {h.det} * detSpan Λ.La)`. Rewrite using `[← smul_eq_coeI_mul, ← map_mulLeft_eq]`. Conclude with `(hJ2'.symm.trans hJ1').trans (by rw [hdet]; rfl)`. Establish `key : conjI J' * J * Ideal.span {v} = conjI J * J' * Ideal.span {u}`. Apply `IsFractionRing.coeSubmodule_injective (𝓞 E) E` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `coeI E _ = coeI E _`. Simplify using `only [map_mul, k1, k2, coeI_span]`. Rewrite using `[huv', ← Set.singleton_mul_singleton, ← Submodule.span_mul_span]`. Expand and normalize the polynomial expressions, which then agree. Establish `a1` using `isBe_mul (isBe_mul (isBe_pow hB 2) (isBe_mul_conj Dw c J' hJ0')) (isBe_principal Dw c v)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `a2` using `isBe_mul (isBe_mul (isBe_pow hB' 2) (isBe_mul_conj Dw c J hJ0)) (isBe_principal Dw c u)`. Establish `e : J' ^ 2 * (J * conjI J) * Ideal.span {u} = J ^ 2 * (J' * conjI J') * Ideal.span {v}`. Combine the equalities or inequalities in the displayed calculation. Rewrite `a2` using `[e]`. Establish `hc : conjI J' ≠ ⊥` using `fun h0 => hJ0' (by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← conjI_conjI J', h0, conjI_eq, Ideal.map_bot])`. Establish `hs : Ideal.span {v} ≠ (⊥ : Ideal (𝓞 E))` using `by simpa using hv0`. Take `⟨z, hz, ez⟩` from `isBe_unique (mul_ne_zero (mul_ne_zero (pow_ne_zero 2 hJ0) (mul_ne_zero hJ0' hc)) hs) a2 a1`. Take `⟨m, hm, hzm⟩` from `hz.exists_pow_eq_one`. Establish `hψ : reflexNorm Dw c (v : E) ≠ 0` using `isBe_ne_zero hs (isBe_principal Dw c v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hψu : reflexNorm Dw c (u : E) = (∏ τ : E →+* ℂ, embF c τ h.det ^ Dw.mult τ) * reflexNorm Dw c (v : E)`. Simplify using `only [huv', reflexNorm, map_mul, mul_pow, Finset.prod_mul_distrib]`. Rewrite `ez` using `[hψu, ← _root_.mul_assoc, ← _root_.mul_assoc, hN, hN']`. Establish `ez'` using `mul_right_cancel₀ hψ ez`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[ez', _root_.mul_assoc z, mul_pow z, hzm, _root_.one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem beta_sq_compare : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (c : Coeff l), ∀ (n : ℕ) (Λ : GenLat E n) (h : Matrix (Fin n) (Fin n) E) (b b' : c.F), Λ.Unimod → IsUnitaryM h → IsBeta Dw c Λ b → IsBeta Dw c (actLat h Λ) b' → ∃ m : ℕ, 0 < m ∧ (b ^ 2 * ((((actLat h Λ).Ln.toAddSubgroup.addSubgroupOf (actLat h Λ).La.toAddSubgroup).index ^ (Dw.p + Dw.q) : ℕ) : c.F)) ^ m = (b' ^ 2 * ((((Λ).Ln.toAddSubgroup.addSubgroupOf (Λ).La.toAddSubgroup).index ^ (Dw.p + Dw.q) : ℕ) : c.F) * ∏ τ : E →+* ℂ, embF c τ h.det ^ Dw.mult τ) ^ m := by
   intro E _ _ _ H Dw l c n Λ h b b' hΛ hu hb hb'

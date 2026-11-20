@@ -19,7 +19,7 @@ def repr0 (v : VA X.B.I) : VA X.B.I :=
     (∑ l, hA X.B.I (X.bwd l) v • X.bw l) + (∑ l, hA X.B.I (X.bw l) v • X.bwd l)
 
 /- English proof (translation)
-Take `⟨t, ht, rfl⟩` from `hc`. Unfold `mL`. Use `Submodule.subset_span ⟨(⟨t, ht⟩ : IntAf X.B.I.F X.B.I.E) • u, Submodule.smul_mem _ _ hu, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Z_smul_mL {c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} {u : VA X.B.I} (hc : ZMod' X.B.I X.B.g c)
     (hu : u ∈ X.B.I.Lf) : c • u ∈ mL X.B.I X.B.g := by
@@ -30,7 +30,7 @@ theorem Z_smul_mL {c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} {u : VA X.B.I} (hc : ZMo
   rfl
 
 /- English proof (translation)
-Establish `hadd : ∀ x, hA X.B.I x (v + w) = hA X.B.I x v + hA X.B.I x w` using `fun x => by`. Simplify using `only [hA, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Simplify using `only [repr0, hadd, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem reference_repr_add (v w : VA X.B.I) : repr0 X (v + w) = repr0 X v + repr0 X w := by
   have hadd : ∀ x, hA X.B.I x (v + w) = hA X.B.I x v + hA X.B.I x w := fun x => by
@@ -39,7 +39,7 @@ theorem reference_repr_add (v w : VA X.B.I) : repr0 X (v + w) = repr0 X v + repr
   abel
 
 /- English proof (translation)
-Establish `hsm : ∀ x, hA X.B.I x (c • v) = c * hA X.B.I x v` using `fun x => by`. Simplify using `only [hA, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [repr0, hsm, mul_smul, smul_add, smul_sub, Finset.smul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem reference_repr_smul (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (v : VA X.B.I) : repr0 X (c • v) = c • repr0 X v := by
   have hsm : ∀ x, hA X.B.I x (c • v) = c * hA X.B.I x v := fun x => by
@@ -49,7 +49,7 @@ theorem reference_repr_smul (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (v : VA X.B.I)
   simp only [repr0, hsm, mul_smul, smul_add, smul_sub, Finset.smul_sum]
 
 /- English proof (translation)
-Conclude with `⟨fun a => (X.vectorsInLattice.1 a).1, fun a => (X.vectorsInLattice.1 a).2, X.vectorsInLattice.2.1, fun l => (X.vectorsInLattice.2.2 l).1, fun l => (X.vectorsInLattice.2.2 l).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem frame_Lf : (∀ a, X.e0 a ∈ X.B.I.Lf) ∧ (∀ a, X.f0 a ∈ X.B.I.Lf) ∧ X.z0 ∈ X.B.I.Lf ∧
     (∀ l, X.bw l ∈ X.B.I.Lf) ∧ (∀ l, X.bwd l ∈ X.B.I.Lf) := by
@@ -57,35 +57,29 @@ theorem frame_Lf : (∀ a, X.e0 a ∈ X.B.I.Lf) ∧ (∀ a, X.f0 a ∈ X.B.I.Lf)
     fun l => (X.vectorsInLattice.2.2 l).2⟩
 
 /- English proof (translation)
-Establish `hincl : ∀ e : X.B.I.E, sigA X.B.I (Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) e) = Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (star e) := by`. Introduce `e`. Use `first`. Consider the case `rfl`. Consider the case `simp [sigA, Formalism.UG.sigR, Formalism.UG.inclE, Formalism.BasicNotions.CMData.sig]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hInt : ∀ s ∈ IntAf X.B.I.F X.B.I.E, sigA X.B.I s ∈ IntAf X.B.I.F X.B.I.E`. Establish `hle : IntAf X.B.I.F X.B.I.E ≤ (IntAf X.B.I.F X.B.I.E).comap (sigA X.B.I)` using `by show Subring.closure _ ≤ _`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ (⟨⟨x, a, rfl⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩)`. Rewrite using `[SetLike.mem_coe, Subring.mem_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subring.subset_closure (Or.inl ⟨⟨_, RingOfIntegers.mapRingEquiv (starRingAut : RingAut X.B.I.E) a, rfl⟩, ?_⟩)` and prove the remaining obligations. Use `first`. Consider the case `rfl`. Consider the case `simp [sigA, Formalism.UG.sigR, Formalism.BasicNotions.CMData.sig]`. Rewrite using `[SetLike.mem_coe, Subring.mem_comap]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Subring.subset_closure (Or.inr ⟨⟨y, hy⟩, ?_⟩)` and prove the remaining obligations. Simplify using `[sigA, Formalism.UG.sigR]`. Conclude with `fun s hs => hle hs`. Establish `hzl : ∀ v : VA X.B.I, hA X.B.I 0 v = 0` using `fun v => by simp [hA, Formalism.UG.hform]`. Establish `hzr : ∀ x : VA X.B.I, hA X.B.I x 0 = 0` using `fun x => by simp [hA, Formalism.UG.hform]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hal : ∀ x x' v : VA X.B.I, hA X.B.I (x + x') v = hA X.B.I x v + hA X.B.I x' v` using `fun x x' v => by`. Simplify using `only [hA, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`. Establish `har : ∀ x v v' : VA X.B.I, hA X.B.I x (v + v') = hA X.B.I x v + hA X.B.I x v'` using `fun x v v' => by`. Simplify using `only [hA, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Establish `hsl : ∀ (s : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (x y : VA X.B.I), hA X.B.I (s • x) y = sigA X.B.I s * hA X.B.I x y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `s x y`. Simplify using `only [hA, sigA, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hsr : ∀ (s : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (x y : VA X.B.I), hA X.B.I x (s • y) = s * hA X.B.I x y`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `s x y`. Simplify using `only [hA, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hsl' : ∀ (r : IntAf X.B.I.F X.B.I.E) (x y : VA X.B.I), hA X.B.I (r • x) y = sigA X.B.I r * hA X.B.I x y` using `fun r x y => hsl r x y`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsr' : ∀ (r : IntAf X.B.I.F X.B.I.E) (x y : VA X.B.I), hA X.B.I x (r • y) = r * hA X.B.I x y` using `fun r x y => hsr r x y`. Establish `hgen : ∀ y ∈ X.B.I.L, ∀ y' ∈ X.B.I.L, hA X.B.I (fun i => Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) (y i)) (fun i => Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (y' i)) ∈ IntAf X.B.I.F X.B.I.E := by`. Introduce `y hy y' hy'`. Take `⟨b, hb⟩` from `(X.B.I.L_dual y').1 hy' y hy`. Establish `e : hA X.B.I (fun i => Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) (y i)) (fun i => Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (y' i)) = Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (Formalism.UG.hform (starRingEnd _) X.B.I.J y y') := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hA, Formalism.UG.hform, map_sum, map_mul, Matrix.map_apply, hincl, starRingEnd_apply]`. Rewrite using `[e, ← hb]`. Use `show _ ∈ Subring.closure _`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨_, b, rfl⟩, rfl⟩)`. Establish `hpair : ∀ x ∈ X.B.I.Lf, ∀ w ∈ X.B.I.Lf, hA X.B.I x w ∈ IntAf X.B.I.F X.B.I.E`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Introduce `x hx w hw`. Unfold `AutInst.Lf lamAf at hx hw`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨⟨y, hy⟩, rfl⟩` from `hz`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem z' hz'`. Take `⟨⟨y', hy'⟩, rfl⟩` from `hz'`. Conclude with `hgen y hy y' hy'`. Consider the case `zero => rw [hzr]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [har]`. Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha => rw [hsr']`. Conclude with `mul_mem r.2 ha`.
-
-Consider the case `zero => rw [hzl]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [hal]`. Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha => rw [hsl']`.
-
-Conclude with `mul_mem (hInt _ r.2) ha`. Take `⟨he, hf, hz, hb, hbd⟩` from `frame_Lf X`. Establish `hterm : ∀ x ∈ X.B.I.Lf, ∀ u ∈ X.B.I.Lf, hA X.B.I x v • u ∈ X.B.I.Lf` using `fun x hx u hu => Submodule.smul_mem _ (⟨_, hpair x hx v hv⟩ : IntAf X.B.I.F X.B.I.E) hu`. Unfold `repr0`. Use `add_mem (add_mem (sub_mem (add_mem ?_ ?_) (hterm _ hz _ hz)) ?_) ?_` and prove the remaining obligations.
-
-Conclude with `Submodule.sum_mem _ fun a _ => hterm _ (hf a) _ (he a)`. Conclude with `Submodule.sum_mem _ fun a _ => hterm _ (he a) _ (hf a)`. Conclude with `Submodule.sum_mem _ fun l _ => hterm _ (hbd l) _ (hb l)`. Conclude with `Submodule.sum_mem _ fun l _ => hterm _ (hb l) _ (hbd l)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem reference_repr_mem_lattice {v : VA X.B.I} (hv : v ∈ X.B.I.Lf) : repr0 X v ∈ X.B.I.Lf := by
   have hincl : ∀ e : X.B.I.E, sigA X.B.I (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) e) =
@@ -184,13 +178,11 @@ def ReprSub : Submodule (IntAf X.B.I.F X.B.I.E) (VA X.B.I) where
     exact Submodule.smul_mem _ c hv
 
 /- English proof (translation)
-Establish `hneg' : ∀ x y, ZMod' X.B.I X.B.g (x - y) → ZMod' X.B.I X.B.g (y - x)`. Introduce and unpack `x y ⟨t, ht, e⟩`. Conclude with `⟨-t, neg_mem ht, by rw [mul_neg, ← e, neg_sub]⟩`. Take `⟨he, hf, hz, hb, hbd⟩` from `frame_Lf X`. Use `show s - repr0 X s ∈ mL X.B.I X.B.g`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : s - repr0 X s = ((∑ a, tA a • X.e0 a) + (∑ a, tB a • X.f0 a) - tC • X.z0 + (∑ l, tP l • X.bw l) + (∑ l, tQ l • X.bwd l)) - repr0 X s` using `congrArg (· - repr0 X s) hs`. Rewrite using `[h0]`. Establish `hexp : ((∑ a, tA a • X.e0 a) + (∑ a, tB a • X.f0 a) - tC • X.z0 + (∑ l, tP l • X.bw l) + (∑ l, tQ l • X.bwd l)) - repr0 X s = (∑ a, (tA a - hA X.B.I (X.f0 a) s) • X.e0 a) + (∑ a, (tB a - hA X.B.I (X.e0 a) s) • X.f0 a) - (tC - hA X.B.I X.z0 s) • X.z0 + (∑ l, (tP l - hA X.B.I (X.bw …`. Unfold `repr0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hexp]`. Use `add_mem (add_mem (sub_mem (add_mem ?_ ?_) (Z_smul_mL X (hneg' _ _ h3) hz)) ?_) ?_` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun a _ => Z_smul_mL X (hneg' _ _ (h1 a)) (he a)`. Conclude with `Submodule.sum_mem _ fun a _ => Z_smul_mL X (hneg' _ _ (h2 a)) (hf a)`.
-
-Conclude with `Submodule.sum_mem _ fun l _ => Z_smul_mL X (hneg' _ _ (h4 l)) (hb l)`. Conclude with `Submodule.sum_mem _ fun l _ => Z_smul_mL X (hneg' _ _ (h5 l)) (hbd l)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem T_gen (s : VA X.B.I) (tA tB : Fin D.R.rS → X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)
     (tC : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (tP tQ : Fin D.R.k → X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)
@@ -226,23 +218,23 @@ theorem T_gen (s : VA X.B.I) (tA tB : Fin D.R.rS → X.B.I.E ⊗[X.B.I.F] Af X.B
   · exact Submodule.sum_mem _ fun l _ => Z_smul_mL X (hneg' _ _ (h5 l)) (hbd l)
 
 /- English proof (translation)
-Establish `hinv : ∀ t, sigA X.B.I (sigA X.B.I t) = t`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => first`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [sigA, Formalism.UG.sigR, Formalism.BasicNotions.CMData.sig]`. Consider the case `(show TensorProduct.tmul X.B.I.F (X.B.I.cm.sig (X.B.I.cm.sig a)) b = TensorProduct.tmul X.B.I.F a b`. Rewrite using `[show X.B.I.cm.sig (X.B.I.cm.sig a) = a from star_star a])`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `hincl : ∀ e : X.B.I.E, sigA X.B.I (Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) e) = Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (star e) := by`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Introduce `e`. Use `first`. Consider the case `rfl`. Consider the case `simp [sigA, Formalism.UG.sigR, Formalism.UG.inclE, Formalism.BasicNotions.CMData.sig]`. Establish `hsym : hA X.B.I u w = sigA X.B.I (hA X.B.I w u)`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hA, Formalism.UG.hform, map_sum, map_mul, hinv, Matrix.map_apply, hincl]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hJ : star (X.B.I.J i j) = X.B.I.J j i`. Establish `e` using `congrFun (congrFun X.B.I.J_herm j) i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply] at e`. Conclude with `e`. Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hInt : ∀ s ∈ IntAf X.B.I.F X.B.I.E, sigA X.B.I s ∈ IntAf X.B.I.F X.B.I.E`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : IntAf X.B.I.F X.B.I.E ≤ (IntAf X.B.I.F X.B.I.E).comap (sigA X.B.I)` using `by show Subring.closure _ ≤ _`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ (⟨⟨x, a, rfl⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩)`. Rewrite using `[SetLike.mem_coe, Subring.mem_comap]`. Use `Subring.subset_closure (Or.inl ⟨⟨_, RingOfIntegers.mapRingEquiv (starRingAut : RingAut X.B.I.E) a, rfl⟩, ?_⟩)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `rfl`. Consider the case `simp [sigA, Formalism.UG.sigR, Formalism.BasicNotions.CMData.sig]`. Rewrite using `[SetLike.mem_coe, Subring.mem_comap]`. Use `Subring.subset_closure (Or.inr ⟨⟨y, hy⟩, ?_⟩)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Simplify using `[sigA, Formalism.UG.sigR]`. Conclude with `fun s hs => hle hs`. Take `⟨t, ht, e⟩` from `h`. Use `⟨sigA X.B.I t, hInt t ht, ?_⟩` and prove the remaining obligations. Establish `e' : hA X.B.I w u = sigA X.B.I c + (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsym, e', map_add, hinv, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Z_of_sym {u w : VA X.B.I} {c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F}
     (h : ZMod' X.B.I X.B.g (hA X.B.I w u - sigA X.B.I c)) : ZMod' X.B.I X.B.g (hA X.B.I u w - c) := by
@@ -295,18 +287,18 @@ theorem Z_of_sym {u w : VA X.B.I} {c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F}
   ring
 
 /- English proof (translation)
-Rewrite using `[sub_zero]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Z0 {x : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (h : ZMod' X.B.I X.B.g x) : ZMod' X.B.I X.B.g (x - 0) := by
   rw [sub_zero]
   exact h
 
 /- English proof (translation)
-Establish `hsl : ∀ (s : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (x y : VA X.B.I), hA X.B.I (s • x) y = sigA X.B.I s * hA X.B.I x y`. Introduce `s x y`. Simplify using `only [hA, sigA, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hsr : ∀ (s : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (x y : VA X.B.I), hA X.B.I x (s • y) = s * hA X.B.I x y`. Introduce `s x y`. Simplify using `only [hA, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[X.bw_w l, X.bw_w m, hsl, hsr, ← mul_assoc, mul_comm (sigA X.B.I X.ew) X.ew, X.ew_orth, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_bw_bw (l m : Fin D.R.k) : hA X.B.I (X.bw l) (X.bw m) = 0 := by
   have hsl : ∀ (s : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (x y : VA X.B.I),
@@ -324,13 +316,13 @@ theorem hA_bw_bw (l m : Fin D.R.k) : hA X.B.I (X.bw l) (X.bw m) = 0 := by
   rw [X.bw_w l, X.bw_w m, hsl, hsr, ← mul_assoc, mul_comm (sigA X.B.I X.ew) X.ew, X.ew_orth, zero_mul]
 
 /- English proof (translation)
-Establish `hsl : ∀ (s : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (x y : VA X.B.I), hA X.B.I (s • x) y = sigA X.B.I s * hA X.B.I x y`. Introduce `s x y`. Simplify using `only [hA, sigA, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hsr : ∀ (s : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (x y : VA X.B.I), hA X.B.I x (s • y) = s * hA X.B.I x y`. Introduce `s x y`. Simplify using `only [hA, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hinv : ∀ t, sigA X.B.I (sigA X.B.I t) = t`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => first`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [sigA, Formalism.UG.sigR, Formalism.BasicNotions.CMData.sig]`. Consider the case `(show TensorProduct.tmul X.B.I.F (X.B.I.cm.sig (X.B.I.cm.sig a)) b = TensorProduct.tmul X.B.I.F a b`. Rewrite using `[show X.B.I.cm.sig (X.B.I.cm.sig a) = a from star_star a])`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Rewrite using `[X.bwd_w l, X.bwd_w m, hsl, hsr, hinv, ← mul_assoc, X.ew_orth, zero_mul]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_bwd_bwd (l m : Fin D.R.k) : hA X.B.I (X.bwd l) (X.bwd m) = 0 := by
   have hsl : ∀ (s : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (x y : VA X.B.I),
@@ -358,39 +350,35 @@ theorem hA_bwd_bwd (l m : Fin D.R.k) : hA X.B.I (X.bwd l) (X.bwd m) = 0 := by
   rw [X.bwd_w l, X.bwd_w m, hsl, hsr, hinv, ← mul_assoc, X.ew_orth, zero_mul]
 
 /- English proof (translation)
-Establish `hinv : ∀ t, sigA X.B.I (sigA X.B.I t) = t`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => first`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [sigA, Formalism.UG.sigR, Formalism.BasicNotions.CMData.sig]`. Consider the case `(show TensorProduct.tmul X.B.I.F (X.B.I.cm.sig (X.B.I.cm.sig a)) b = TensorProduct.tmul X.B.I.F a b`. Rewrite using `[show X.B.I.cm.sig (X.B.I.cm.sig a) = a from star_star a])`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `zsym : ∀ u w : VA X.B.I, ZMod' X.B.I X.B.g (hA X.B.I w u) → ZMod' X.B.I X.B.g (hA X.B.I u w - 0)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Introduce `u w h`. Apply `Z_of_sym X` to reduce the goal to its premises. Rewrite using `[map_zero, sub_zero]`. Conclude with `h`. Establish `zz : ZMod' X.B.I X.B.g ((0 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) - 0)` using `⟨0, zero_mem _, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmL : mL X.B.I X.B.g ≤ ReprSub X`. Unfold `mL`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `show _ - repr0 X _ ∈ mL X.B.I X.B.g`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[reference_repr_smul, ← smul_sub]`. Unfold `mL`. Conclude with `Submodule.subset_span ⟨x - repr0 X x, sub_mem hx (reference_repr_mem_lattice X hx), rfl⟩`. Establish `hS : Set.range X.e0 ∪ Set.range X.f0 ∪ {X.z0} ∪ Set.range X.bw ∪ Set.range X.bwd ⊆ ReprSub X`. Introduce and unpack `_ ((((⟨a, rfl⟩ | ⟨a, rfl⟩) | rfl) | ⟨l, rfl⟩) | ⟨l, rfl⟩)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `T_gen X (X.e0 a) (fun a' => if a' = a then 1 else 0) 0 0 0 0 ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[ite_smul]`. Introduce `a'`. Apply `Z_of_sym X` to reduce the goal to its premises. Establish `e : sigA X.B.I (if a' = a then 1 else 0) = if a = a' then 1 else 0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : a = a'`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `(X.gramIntegral a a').2.2`. Conclude with `fun a' => Z0 X (X.gramIntegral a' a).1`. Conclude with `zsym _ _ ((X.formsAtZero.2 a).1)`. Conclude with `fun l => zsym _ _ (((X.weightVectorsIntegral l).2.2 a).2.2.1)`. Conclude with `fun l => zsym _ _ (((X.weightVectorsIntegral l).2.2 a).1)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `T_gen X (X.f0 a) 0 (fun a' => if a' = a then 1 else 0) 0 0 0 ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[ite_smul]`. Conclude with `fun a' => Z0 X (X.gramIntegral a' a).2.1`. Conclude with `fun a' => (X.gramIntegral a' a).2.2`. Conclude with `zsym _ _ ((X.formsAtZero.2 a).2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun l => zsym _ _ (((X.weightVectorsIntegral l).2.2 a).2.2.2)`. Conclude with `fun l => zsym _ _ (((X.weightVectorsIntegral l).2.2 a).2.1)`. Use `T_gen X X.z0 0 0 (-1) 0 0 ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `fun a' => Z0 X ((X.formsAtZero.2 a').2)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `fun a' => Z0 X ((X.formsAtZero.2 a').1)`. Rewrite using `[sub_neg_eq_add]`. Conclude with `X.formsAtZero.1`. Conclude with `fun l => zsym _ _ ((X.weightVectorsIntegral l).2.1)`. Conclude with `fun l => zsym _ _ ((X.weightVectorsIntegral l).1)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `T_gen X (X.bw l) 0 0 0 (fun l' => if l' = l then X.ew else 0) 0 ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Establish `hw` using `X.bw_w l`. Simplify `hw` using `[ite_smul]`. Conclude with `fun a' => Z0 X (((X.weightVectorsIntegral l).2.2 a').2.1)`. Conclude with `fun a' => Z0 X (((X.weightVectorsIntegral l).2.2 a').1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `Z0 X ((X.weightVectorsIntegral l).1)`. Conclude with `fun l' => X.bw_dual l' l`. Introduce `l'`. Rewrite using `[hA_bw_bw]`. Conclude with `zz`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `T_gen X (X.bwd l) 0 0 0 0 (fun l' => if l' = l then sigA X.B.I X.ew else 0) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Establish `hw` using `X.bwd_w l`. Simplify `hw` using `[ite_smul]`. Conclude with `fun a' => Z0 X (((X.weightVectorsIntegral l).2.2 a').2.2.2)`. Conclude with `fun a' => Z0 X (((X.weightVectorsIntegral l).2.2 a').2.2.1)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Z0 X ((X.weightVectorsIntegral l).2.1)`. Introduce `l'`. Rewrite using `[hA_bwd_bwd]`. Conclude with `zz`. Introduce `l'`.
-
-Apply `Z_of_sym X` to reduce the goal to its premises. Establish `e : sigA X.B.I (if l' = l then sigA X.B.I X.ew else 0) = if l = l' then X.ew else 0`. Distinguish the cases in `h : l = l'`. Substitute `h` using the available equality. Simplify using `[hinv]`.
-
-Simplify using `[h, Ne.symm h]`. Rewrite using `[e]`. Conclude with `X.bw_dual l l'`. Establish `hle : Submodule.span (IntAf X.B.I.F X.B.I.E) (Set.range X.e0 ∪ Set.range X.f0 ∪ {X.z0} ∪ Set.range X.bw ∪ Set.range X.bwd) ⊔ mL X.B.I X.B.g ≤ ReprSub X` using `sup_le (Submodule.span_le.2 hS) hmL`. Conclude with `hle (X.latticeSpan v hv)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dual_coords {v : VA X.B.I} (hv : v ∈ X.B.I.Lf) : v - repr0 X v ∈ mL X.B.I X.B.g := by
   have hinv : ∀ t, sigA X.B.I (sigA X.B.I t) = t := by

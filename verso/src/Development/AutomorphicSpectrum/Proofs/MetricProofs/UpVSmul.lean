@@ -30,9 +30,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {Kk : Type} [Fintype Kk] {ιk : Kk → Type} [∀ k, Fintype (ιk k)]
 
 /- English proof (translation)
-Unfold `upV`. Distinguish the cases in `h : ∃ q', v q' = q`. Rewrite using `[dif_pos h, dif_pos h]`. Establish `e : κ h.choose.1 = q.1`. Rewrite using `[← hb.2.2.1, h.choose_spec]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show c (κ h.choose.1) * z h.choose = _`. Rewrite using `[e]`. Rewrite using `[dif_neg h, dif_neg h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upV_smul {κ : Kk → K} {v : (Σ k, ιk k) → (Σ k, ι k)} (hb : IsBlockMap κ v) (c : K → ℂ)
     (z : (Σ k, ιk k) → ℂ) (q : Σ k, ι k) :
@@ -49,27 +49,25 @@ theorem upV_smul {κ : Kk → K} {v : (Σ k, ιk k) → (Σ k, ι k)} (hb : IsBl
 end Scale
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n Rb keep Kk _ ιk _ κ v hbm hrange z hz`. Take `⟨bs, -⟩` from `GlobalTheory.T.blockMap_frame_restriction K ι Φ y Ψ N j M keep Kk ιk κ v hbm hrange`. Take `⟨-, fr, -⟩` from `CPts.main K ι Φ y Ψ N j M`. Establish `hzb : pBase M v z ∈ mcPts (mCoordIdeal M.x)` using `bs z hz`. Take `⟨F, hF, hG⟩` from `fr _ hzb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hnon : Nonempty Rb.X`. Take `⟨x, -⟩` from `Rb.surj _ hzb fun h => by`. Use `h.2 1 Submodule.mem_top` as an intermediate fact. Simplify using `at this`. Conclude with `⟨x⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Take `⟨r, hr1, hr2⟩` from `GlobalTheory.T.exists_continuous_orbit_section _ _ _ n Rb hnon`. Establish `hx0` using `hr1 _ hzb`. Take `⟨kb, V, bl, hsrc, hV, hBC⟩` from `GlobalTheory.T.exists_base_chart_at_good_point K ι Φ y Ψ N j M n Rb F (r (pBase M v z)) (by rw [CovMap.mCoordIdeal_eq_of_sameOrbit hx0]; exact hG)`. Take `⟨hblm, hblnorm, hblgood, hblorb⟩` from `hBC.2.2.2.2 _ hV`. Rewrite `hblorb` using `[(Rb.A.chart kb).left_inv hsrc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Generalize the expression as in `hzc : bl (Rb.A.chart kb (r (pBase M v z))) = zc at hblm hblnorm hblgood hblorb`. Establish `horb : SameOrbit zc (pBase M v z)` using `orbit_trans (orbit_symm hblorb) hx0`. Establish `hval : ∀ s, (∃ u, IsValueAt M.x s zc u) → valAt M.x s (pBase M v z) = valAt M.x s zc` using `fun s hs => valAt_eq_of_orbit hblm hzb (orbit_symm horb) hs`. Take `⟨c₀, hc₀, he⟩` from `horb`. Set `c : K → ℂ` to `fun k => if h : ∀ p, M.blk p ≠ some k then c₀ ⟨k, h⟩ else 1`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hc : ∀ k, c k ≠ 0` using `fun k => by`. Distinguish the cases in `h : ∀ p, M.blk p ≠ some k`. Simplify using `only [c, dif_pos h]`. Conclude with `hc₀ _`. Simplify using `only [c, dif_neg h]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `one_ne_zero`. Set `z' : (Σ k, ιk k) → ℂ` to `fun p => c (κ p.1) * z p`. Establish `hz' : z' ∈ mcPts (mCoordIdeal (y ∘ v))` using `mcPts_smul (CoordinateConeArithVar.isMultiHomogIdeal _) (fun k => c (κ k)) (fun k => hc _) hz`. Establish `hbp : pBase M v z' = zc`. Rewrite using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `q`. Take `⟨⟨k, hk⟩, m⟩` from `q`. Use `show upV v z' ⟨k, m⟩ = c₀ ⟨k, hk⟩ * upV v z ⟨k, m⟩`. Rewrite using `[upV_smul hbm c z ⟨k, m⟩]`. Simplify using `only [c, dif_pos hk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨h, hh, H⟩` from `GlobalTheory.T.blockMap_frame_restriction_regular K ι Φ y Ψ N j M keep Kk ιk κ v hbm hrange F z' hF hz' (hbp ▸ hblgood) (hbp ▸ hblnorm)`. Use `⟨F, kb, V, bl, r, h, ⟨hbm, hrange, hF, hBC, hr1, hr2, hh⟩, hz, hsrc, ?_, ?_⟩` and prove the remaining obligations. Rewrite `*` using `[hzc]`. Conclude with `hV`. Introduce `p k hkeep hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨A, hA0, hA'⟩` from `H p k hkeep hp`. Establish `hk : c k = 1` using `dif_neg fun e => e p hp`. Establish `hw : ∀ m : ι k, upV v z ⟨k, m⟩ = A * ∑ I, valAt M.x (F.u ⟨k, m⟩ I) (pBase M v z) * minorIJ (h p.1) I (stepCols N j p.2)` using `fun m => by`. Establish `e : upV v z' ⟨k, m⟩ = upV v z ⟨k, m⟩`. Rewrite using `[upV_smul hbm c z ⟨k, m⟩]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show c k * _ = _`. Rewrite using `[hk, one_mul]`. Rewrite using `[← e, hA' m, hbp]`. Use `congrArg (fun s => A * s) (Finset.sum_congr rfl fun I _ => ?_)` and prove the remaining obligations. Rewrite using `[hval _ (exists_isValueAt hblm (hblgood.2.1 _ I).1)]`.
-
-Rewrite using `[twMinor_of_flag M hF hzb hG hp (hh p.1).1 hw, Matrix.nonsing_inv_mul _ (hh p.1).2.isUnit, CPts.minorIJ_one, mul_one]`. Conclude with `hA0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (keep : Ψ × Fin N → Prop) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)), IsBlockMap κ v → (∀ k, k ∈ Set.range κ ↔ ((∀ p, M.blk p ≠ some k) ∨ ∃ p, keep p ∧ M.blk p = some k)) → ∀ z ∈ mcPts (mCoordIdeal (y ∘ v)), ∃ (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ), IsPCtx M Rb keep κ v F kb V bl r h ∧ z ∈ pO M Rb keep v F kb V r h := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n Rb keep Kk _ ιk _ κ v hbm hrange z hz

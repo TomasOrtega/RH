@@ -8,9 +8,9 @@ def SerS {K : Type*} [CommRing K] (S : Subring K) (σ : Type*) : Subring (MvPowe
   (MvPowerSeries.map S.subtype).range
 
 /- English proof (translation)
-Rewrite using `[SerS, RingHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩ e`. Rewrite using `[MvPowerSeries.coeff_map]`. Conclude with `(MvPowerSeries.coeff e g).2`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨(fun e => ⟨MvPowerSeries.coeff e f, h e⟩ : MvPowerSeries σ S), ?_⟩` and prove the remaining obligations. Use extensionality with `e`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_SerS {K : Type*} [CommRing K] (S : Subring K) {σ : Type*} (f : MvPowerSeries σ K) :
     f ∈ SerS S σ ↔ ∀ e, MvPowerSeries.coeff e f ∈ S := by
@@ -25,14 +25,14 @@ theorem mem_SerS {K : Type*} [CommRing K] (S : Subring K) {σ : Type*} (f : MvPo
     rfl
 
 /- English proof (translation)
-The claim follows from `RingHom.mem_range.mp hf`.
+A detailed English derivation is pending.
 -/
 theorem SerS_eq_map {K : Type*} [CommRing K] (S : Subring K) {σ : Type*} {f : MvPowerSeries σ K}
     (hf : f ∈ SerS S σ) : ∃ g : MvPowerSeries σ S, MvPowerSeries.map S.subtype g = f :=
   RingHom.mem_range.mp hf
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← h]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_lift {K : Type*} [CommRing K] (S : Subring K) {σ : Type*}
     (g : MvPowerSeries σ S) {c : S} (h : MvPowerSeries.constantCoeff (MvPowerSeries.map S.subtype g) = (c : K)) :
@@ -42,9 +42,9 @@ theorem constantCoeff_lift {K : Type*} [CommRing K] (S : Subring K) {σ : Type*}
   simp
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `SerS_eq_map S hf`. Establish `hg : MvPowerSeries.constantCoeff g = 1` using `constantCoeff_lift S g (c := 1) (by rw [h0]; rfl)`. Establish `h1 : g * MvPowerSeries.invOfUnit g 1 = 1` using `MvPowerSeries.mul_invOfUnit g 1 (by rw [hg]; rfl)`. Rewrite using `[SerS, RingHom.mem_range]`. Use `⟨MvPowerSeries.invOfUnit g 1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `symm`. Rewrite using `[MvPowerSeries.inv_eq_iff_mul_eq_one (by rw [h0]; exact one_ne_zero), ← map_mul, mul_comm, h1, map_one]`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mem_SerS {K : Type*} [Field K] (S : Subring K) {σ : Type*} {f : MvPowerSeries σ K}
     (h0 : MvPowerSeries.constantCoeff f = 1) (hf : f ∈ SerS S σ) : f⁻¹ ∈ SerS S σ := by
@@ -60,11 +60,9 @@ theorem inv_mem_SerS {K : Type*} [Field K] (S : Subring K) {σ : Type*} {f : MvP
     map_one]
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[mem_SerS]`. Introduce `e`. Rewrite using `[MvPowerSeries.coeff_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero ha0)]`. Establish `hterm : ∀ d : σ →₀ ℕ, MvPowerSeries.coeff d f • MvPowerSeries.coeff e (d.prod fun s n => a s ^ n) ∈ S`. Introduce `d`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_eq_mul]`. Use `S.mul_mem (hf d) ?_` and prove the remaining obligations. Establish `hp : (d.prod fun s n => a s ^ n) ∈ SerS S τ` using `Subring.prod_mem _ fun s _ => Subring.pow_mem _ (ha s) _`. Conclude with `(mem_SerS S _).1 hp e`. Rewrite using `[finsum_def]`.
-
-Use `split_ifs`. Conclude with `Subring.sum_mem _ fun i _ => hterm _`. Conclude with `S.zero_mem`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvsubst_mem_SerS {K : Type*} [CommRing K] (S : Subring K) {σ τ : Type*} [Finite σ]
     {a : σ → MvPowerSeries τ K} {f : MvPowerSeries σ K} (ha0 : ∀ i, MvPowerSeries.constantCoeff (a i) = 0)
@@ -87,7 +85,7 @@ theorem mvsubst_mem_SerS {K : Type*} [CommRing K] (S : Subring K) {σ τ : Type*
   · exact S.zero_mem
 
 /- English proof (translation)
-The claim follows from `mvsubst_mem_SerS S (a := fun _ : Unit => a) (fun _ => ha0) (fun _ => ha) hf`.
+A detailed English derivation is pending.
 -/
 theorem subst_mem_SerS {K : Type*} [CommRing K] (S : Subring K) {τ : Type*} {a : MvPowerSeries τ K}
     {f : PowerSeries K} (ha0 : MvPowerSeries.constantCoeff a = 0) (ha : a ∈ SerS S τ)

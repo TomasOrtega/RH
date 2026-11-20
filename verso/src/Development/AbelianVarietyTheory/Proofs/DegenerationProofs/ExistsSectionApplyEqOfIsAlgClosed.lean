@@ -11,41 +11,37 @@ namespace GlobalTheory
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry in
 open scoped CategoryTheory.Obj in
 /- English proof (translation)
-Use `letI : Algebra V B := φ.toAlgebra`. Use `haveI : Module.Flat V B := hflat`. Use `haveI : Algebra.QuasiFinite V B := hqf.toAlgebra`. Use `haveI : q.LiesOver (IsLocalRing.maximalIdeal V) := ⟨hq.symm⟩`. Take `⟨P, hPq, hP, hPl⟩` from `Ideal.exists_ideal_le_liesOver_of_le (p := (⊥ : Ideal V)) (q := IsLocalRing.maximalIdeal V) q bot_le`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPV : P.comap φ = ⊥` using `hPl.over.symm`. Use `set κ := P.ResidueField`. Establish `hinj : Function.Injective (algebraMap V κ)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Equip the data with the indicated structure.
 
-Rewrite `hv` using `[IsScalarTower.algebraMap_apply V B κ, Ideal.algebraMap_residueField_eq_zero]`. Establish `: v ∈ P.comap φ` using `hv`. Rewrite `this` using `[hPV, Ideal.mem_bot]`. Then use the resulting hypothesis. Use `letI : Algebra K κ := (IsFractionRing.lift (K := K) hinj).toAlgebra`. Use `haveI : IsScalarTower V K κ := IsScalarTower.of_algebraMap_eq (fun v => (IsFractionRing.lift_algebraMap (K := K) hinj v).symm)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI : Algebra.QuasiFinite K κ := Algebra.QuasiFinite.of_restrictScalars V K κ`. Use `haveI : Module.Finite K κ := Module.Finite.of_quasiFinite`. Set `e : K ≃+* κ` to `RingEquiv.ofBijective (algebraMap K κ) ⟨(algebraMap K κ).injective, IsSepClosed.algebraMap_surjective K κ⟩`. Set `χ : B →+* K` to `e.symm.toRingHom.comp (algebraMap B κ)`. Establish `hχφ : ∀ v, χ (φ v) = algebraMap V K v`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Apply `e.injective` to reduce the goal to its premises. Simplify using `only [χ, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `algebraMap B κ (algebraMap V B v) = algebraMap K κ (algebraMap V K v)`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hχ0 : ∀ b, χ b = 0 → b ∈ q`. Introduce `b hb`. Apply `hPq` to reduce the goal to its premises. Rewrite using `[← Ideal.algebraMap_residueField_eq_zero]`. Establish `: e (χ b) = algebraMap B κ b` using `by simp [χ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← this, hb, map_zero]`. Establish `hφq : ∀ v ∈ IsLocalRing.maximalIdeal V, φ v ∈ q`. Introduce `v hv`. Rewrite `hv` using `[← hq]`. Conclude with `hv`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ∀ b, χ b ∈ (algebraMap V K).range`. Introduce `b`. Break down `ValuationRing.isInteger_or_isInteger V (χ b) with ⟨v, hv⟩ | ⟨v, hv⟩` into its components or cases. Conclude with `⟨v, hv⟩`. Distinguish the cases in `hb0 : χ b = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨0, by rw [hb0, map_zero]⟩`. Distinguish the cases in `hvu : IsUnit v`. Take `⟨u, rfl⟩` from `hvu`. Use `⟨↑u⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_inv (χ b), ← hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `map_units_inv (algebraMap V K : V →* K) u`. It suffices to derive a contradiction. Establish `hvm : v ∈ IsLocalRing.maximalIdeal V` using `hvu`. Establish `h1 : χ (b * φ v - 1) = 0`. Rewrite using `[map_sub, map_mul, map_one, hχφ, hv, mul_inv_cancel₀ hb0, sub_self]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2` using `hχ0 _ h1`. Establish `h3 : b * φ v ∈ q` using `q.mul_mem_left b (hφq v hvm)`. Establish `h4` using `q.sub_mem h3 h2`. Rewrite `h4` using `[sub_sub_cancel]`. Conclude with `‹q.IsPrime›.ne_top ((Ideal.eq_top_iff_one q).mpr h4)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Set `j` to `algebraMap V K`. Establish `hj : Function.Injective j` using `IsFractionRing.injective V K`. Set `e₂ : V ≃+* j.range` to `RingEquiv.ofBijective j.rangeRestrict ⟨fun a b h => hj (congrArg Subtype.val h), j.rangeRestrict_surjective⟩`. Set `ψ : B →+* V` to `e₂.symm.toRingHom.comp (χ.codRestrict j.range hmem)`. Establish `hψ : ∀ b, j (ψ b) = χ b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `b`. Establish `: e₂ (ψ b) = χ.codRestrict j.range hmem b` using `by simp [ψ]`. Conclude with `congrArg Subtype.val this`. Use `⟨ψ, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `hj` to reduce the goal to its premises. Simplify using `only [RingHom.comp_apply, RingHom.id_apply]`. Rewrite using `[hψ, hχφ]`. Use extensionality with `b`. Rewrite using `[Ideal.mem_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hb`. Establish `h1 : χ (b - φ (ψ b)) = 0` using `by rw [map_sub, hχφ, hψ, sub_self]`. Establish `h2` using `hχ0 _ h1`. Establish `h3` using `hφq _ hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using q.add_mem h2 h3`. Introduce `hb`. Assume the negation of the conclusion as `hn`. Establish `hu : IsUnit (ψ b)`. Assume the negation of the conclusion as `h`.
-
-Conclude with `hn h`. Take `⟨u, hu⟩` from `hu`. Establish `h1 : χ (b * φ ↑u⁻¹ - 1) = 0`. Rewrite using `[map_sub, map_mul, map_one, hχφ, ← hψ, ← hu, ← map_mul, Units.mul_inv, map_one, sub_self]`. Establish `h2` using `hχ0 _ h1`.
-
-Establish `h3 : b * φ ↑u⁻¹ ∈ q` using `q.mul_mem_right _ hb`. Establish `h4` using `q.sub_mem h3 h2`. Rewrite `h4` using `[sub_sub_cancel]`. Conclude with `‹q.IsPrime›.ne_top ((Ideal.eq_top_iff_one q).mpr h4)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_retraction_of_flat_quasiFinite (V K : Type) [CommRing V] [IsDomain V]
     [ValuationRing V] [Field K] [IsAlgClosed K] [Algebra V K] [IsFractionRing V K] {B : Type}
@@ -150,15 +146,13 @@ private lemma exists_retraction_of_flat_quasiFinite (V K : Type) [CommRing V] [I
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry in
 open scoped CategoryTheory.Obj in
 /- English proof (translation)
-Take `⟨_, ⟨U, hU₀, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU₀`. Establish `hg : Spec.map (Spec.preimage (hU.fromSpec ≫ f)) = hU.fromSpec ≫ f` using `Spec.map_preimage _`. Use `set φ := Spec.preimage (hU.fromSpec ≫ f)`. Use `haveI : Flat hU.fromSpec := inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : LocallyQuasiFinite hU.fromSpec := inferInstance`. Use `haveI : Flat (hU.fromSpec ≫ f) := MorphismProperty.comp_mem _ _ _ ‹_› ‹_›`. Use `haveI : LocallyQuasiFinite (hU.fromSpec ≫ f) := MorphismProperty.comp_mem _ _ _ ‹_› ‹_›`. Establish `hflat : φ.hom.Flat` using `(HasRingHomProperty.Spec_iff (P := @Flat)).mp (hg ▸ inferInstance)`. Establish `hqf : φ.hom.QuasiFinite` using `(HasRingHomProperty.Spec_iff (P := @LocallyQuasiFinite)).mp (hg ▸ inferInstance)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hqx : hU.fromSpec (hU.primeIdealOf ⟨x, hxU⟩) = x` using `hU.fromSpec_primeIdealOf _`. Use `set q := hU.primeIdealOf ⟨x, hxU⟩`. Establish `hq : q.asIdeal.comap φ.hom = IsLocalRing.maximalIdeal V`. Establish `h1 : (Spec.map φ) q = IsLocalRing.closedPoint V`. Rewrite using `[hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrArg f hqx).trans hx`. Conclude with `congrArg PrimeSpectrum.asIdeal h1`. Take `⟨ψ, hψ, hψq⟩` from `exists_retraction_of_flat_quasiFinite V K φ.hom hflat hqf q.asIdeal hq`. Use `⟨Spec.map (CommRingCat.ofHom ψ) ≫ hU.fromSpec, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hg, ← Spec.map_comp]`.
-
-Establish `: φ ≫ CommRingCat.ofHom ψ = 𝟙 _` using `by ext1; exact hψ`. Rewrite using `[this, Spec.map_id]`. Establish `: (Spec.map (CommRingCat.ofHom ψ)) (IsLocalRing.closedPoint V) = q` using `PrimeSpectrum.ext hψq`. Conclude with `(congrArg hU.fromSpec this).trans hqx`.
+A detailed English derivation is pending.
 -/
 private lemma exists_section_through_closed_fiber_point (V K : Type) [CommRing V] [IsDomain V]
     [ValuationRing V] [Field K] [IsAlgClosed K] [Algebra V K] [IsFractionRing V K]
@@ -197,7 +191,7 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj in
 
 /- English proof (translation)
-Introduce `V K _ _ _ _ _ _ _ X f _ _ _ _ _ x hx`. Conclude with `exists_section_through_closed_fiber_point V K X f x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_section_of_quasiFinite_flat :
     ∀ (V K : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field K] [IsAlgClosed K]

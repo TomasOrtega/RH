@@ -15,11 +15,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {d : SD σ}
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4⟩` from `(PositivityTheory.ThKCT.ideleTop F E).1`. Use `haveI : BorelSpace (AE F E) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx F E d.m d.n) := inferInstanceAs (BorelSpace (Fin d.m → Fin d.n → AE F E))`. Use `haveI : IsTopologicalAddGroup (Mx F E d.m d.n) := inferInstanceAs (IsTopologicalAddGroup (Fin d.m → Fin d.n → AE F E))`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`.
-
-Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI : BorelSpace (Yf d) := Pi.borelSpace`. Use `haveI : MeasurableAdd (Yf d) := inferInstance`. Use `haveI : SigmaFinite νf := inferInstance`. Use `haveI : ((volume : Measure (Vw d)).prod νf).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`.
-
-Conclude with `ContinuousAddEquiv.isAddHaarMeasure_map ((volume : Measure (Vw d)).prod νf) (jnpE R)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem map_isHaar (R : RD d) (νf : Measure (Yf d)) [νf.IsAddHaarMeasure] :
     (Measure.map (fun p : Vw d × Yf d => jn R p.1 p.2) ((volume : Measure (Vw d)).prod νf)).IsAddHaarMeasure := by
@@ -37,7 +33,7 @@ theorem map_isHaar (R : RD d) (νf : Measure (Yf d)) [νf.IsAddHaarMeasure] :
   exact ContinuousAddEquiv.isAddHaarMeasure_map ((volume : Measure (Vw d)).prod νf) (jnpE R)
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Conclude with `⟨Measure.addHaar, inferInstance, map_isHaar R _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nuf' (R : RD d) : ∃ νf : Measure (Yf d), νf.IsAddHaarMeasure ∧
     (Measure.map (fun p : Vw d × Yf d => jn R p.1 p.2) ((volume : Measure (Vw d)).prod νf)).IsAddHaarMeasure := by
@@ -46,17 +42,13 @@ theorem exists_nuf' (R : RD d) : ∃ νf : Measure (Yf d), νf.IsAddHaarMeasure 
   exact ⟨Measure.addHaar, inferInstance, map_isHaar R _⟩
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4⟩` from `(PositivityTheory.ThKCT.ideleTop F E).1`. Use `haveI : BorelSpace (AE F E) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx F E d.m d.n) := inferInstanceAs (BorelSpace (Fin d.m → Fin d.n → AE F E))`. Use `haveI : IsTopologicalAddGroup (Mx F E d.m d.n) := inferInstanceAs (IsTopologicalAddGroup (Fin d.m → Fin d.n → AE F E))`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI : BorelSpace (Yf d) := Pi.borelSpace`. Use `haveI : SigmaFinite νf := inferInstance`. Use `set μ := (volume : Measure (Vw d)).prod νf with hμ`. Set `e : Vw d × Yf d ≃ᵐ Mx F E d.m d.n` to `(jnpE R).toHomeomorph.toMeasurableEquiv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hmap : Measure.map (fun p : Vw d × Yf d => jn R p.1 p.2) μ = Measure.map e μ` using `rfl`. Establish `hH : (Measure.map e μ).IsAddHaarMeasure` using `map_isHaar R νf`. Establish `hfi : Integrable (fun p : Vw d × Yf d => f (jn R p.1 p.2)) μ` using `(integrable_map_equiv e f).1 (KFock.int_schM d _ hH hf)`. Take `⟨C, hC⟩` from `hg'.1.continuous.bounded_above_of_compact_support hg'.2`. Establish `hint : Integrable (fun p : Vw d × Yf d => f (jn R p.1 p.2) * star (b p.1 * g p.2)) μ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hfi.mul_bdd (c := C) ?_ (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Conclude with `(continuous_star.comp ((hb.comp continuous_fst).mul (hg'.1.continuous.comp continuous_snd))).aestronglyMeasurable`. Rewrite using `[norm_star, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmap, integral_map_equiv]`.
-
-Establish `he : ∀ p, e p = jn R p.1 p.2` using `fun p => rfl`. Simplify using `only [he, arc_jn, fin_jn]`. Rewrite using `[integral_prod _ hint]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [hg, star_mul]`.
-
-Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_jnp' (R : RD d) {νf : Measure (Yf d)} (hνf : νf.IsAddHaarMeasure) {f : Mx F E d.m d.n → ℂ}
     (hf : f ∈ d.schM) {g : Yf d → ℂ} (hg' : g ∈ SB (Yf d)) {b : Vw d → ℂ} (hb : Continuous b) (hb1 : ∀ u, ‖b u‖ ≤ 1) :

@@ -8,7 +8,7 @@ open Formalism.HermitianLatticeCounting
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_product', ← Finset.sum_fiberwise_of_maps_to (g := fun p => (c₁ p, c₂ p)) (t := S.image c₁ ×ˢ S.image c₂) (fun p hp => Finset.mem_product.2 ⟨Finset.mem_image_of_mem _ hp, Finset.mem_image_of_mem _ hp⟩)]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use `Finset.filter_congr fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Prod.ext_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rows_fibres {Pr κ : Type} (S : Finset Pr) (c₁ c₂ : Pr → κ) (F : Pr → ℝ) :
     ∑ p ∈ S, F p = ∑ x ∈ S.image c₁, ∑ y ∈ S.image c₂, ∑ p ∈ S.filter (fun p => c₁ p = x ∧ c₂ p = y), F p := by
@@ -23,15 +23,11 @@ theorem rows_fibres {Pr κ : Type} (S : Finset Pr) (c₁ c₂ : Pr → κ) (F : 
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[rows_fibres S c₁ c₂]`. Establish `hΦ0 : 0 ≤ Φ` using `le_trans (Finset.sum_nonneg fun x _ => hφ0 x) hΦ₁`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun x hx => Finset.sum_le_sum fun y hy => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations. Take `⟨hpS, h1, h2⟩` from `Finset.mem_filter.1 hp`. Use `mul_le_mul_of_nonneg_left ?_ (hw p hpS)` and prove the remaining obligations. Conclude with `mul_le_mul (h1 ▸ hα₁ p hpS) (h2 ▸ hα₂ p hpS) (ha₂ p hpS) (hα0 x)`. Use `_ = (∑ p ∈ S.filter (fun p => c₁ p = x ∧ c₂ p = y), w p) * (α x * α y) := by rw [Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ ≤ (M * N x y) * (α x * α y) := mul_le_mul_of_nonneg_right (hcount x hx y hy) (mul_nonneg (hα0 x) (hα0 y))`. Use `_ = M * (N x y * (α x * α y)) := by ring`. Use `_ ≤ M * (R * (φ x * φ y)) := mul_le_mul_of_nonneg_left (hN x hx y hy) hM`. Use `_ = M * (R * ((∑ x ∈ S.image c₁, φ x) * ∑ y ∈ S.image c₂, φ y)) := by`. Rewrite using `[Finset.sum_mul_sum, Finset.mul_sum, Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `_ ≤ M * (R * Φ ^ 2) := by`. Use `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left ?_ hR) hM` and prove the remaining obligations. Rewrite using `[sq]`.
-
-Conclude with `mul_le_mul hΦ₁ hΦ₂ (Finset.sum_nonneg fun x _ => hφ0 x) hΦ0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weighted_sum_le {Pr κ : Type} (S : Finset Pr) (w a₁ a₂ : Pr → ℝ) (c₁ c₂ : Pr → κ) (M R Φ : ℝ) (N : κ → κ → ℝ)
     (α φ : κ → ℝ) (hM : 0 ≤ M) (hR : 0 ≤ R) (hw : ∀ p ∈ S, 0 ≤ w p) (ha₁ : ∀ p ∈ S, 0 ≤ a₁ p) (ha₂ : ∀ p ∈ S, 0 ≤ a₂ p)
@@ -67,9 +63,7 @@ theorem weighted_sum_le {Pr κ : Type} (S : Finset Pr) (w a₁ a₂ : Pr → ℝ
         exact mul_le_mul hΦ₁ hΦ₂ (Finset.sum_nonneg fun x _ => hφ0 x) hΦ0
 
 /- English proof (translation)
-Use `weighted_sum_le S w a₁ a₂ c₁ c₂ M R Φ N α φ hM hR hw ha₁ ha₂ hα₁ hα₂ ?_ ?_ hα0 hφ0 ?_ ?_` and prove the remaining obligations. Introduce `x hx y hy`. Conclude with `hcount x y (Finset.mem_image.1 hx) (Finset.mem_image.1 hy) _ (Finset.filter_subset _ _) fun p hp => (Finset.mem_filter.1 hp).2`. Introduce `x hx y hy`. Conclude with `hN x y (Finset.mem_image.1 hx) (Finset.mem_image.1 hy)`.
-
-Conclude with `hΦ₁ _ fun x hx => Finset.mem_image.1 hx`. Conclude with `hΦ₂ _ fun x hx => Finset.mem_image.1 hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weighted_sum_le' {Pr κ : Type} (S : Finset Pr) (w a₁ a₂ : Pr → ℝ) (c₁ c₂ : Pr → κ) (M R Φ : ℝ) (N : κ → κ → ℝ)
     (α φ : κ → ℝ) (hM : 0 ≤ M) (hR : 0 ≤ R) (hw : ∀ p ∈ S, 0 ≤ w p) (ha₁ : ∀ p ∈ S, 0 ≤ a₁ p) (ha₂ : ∀ p ∈ S, 0 ≤ a₂ p)

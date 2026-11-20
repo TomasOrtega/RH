@@ -6,7 +6,7 @@ section aux
 open PowerSeries
 
 /- English proof (translation)
-Establish `h1` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup (ψ.domRestrict S).ker`. Rewrite `h1` using `[Nat.card_congr (QuotientAddGroup.quotientKerEquivRange (ψ.domRestrict S)).toEquiv, AddMonoidHom.domRestrict_range, AddMonoidHom.ker_domRestrict]`. Rewrite using `[h1]`. Use `congr 1`. Use `Nat.card_congr ⟨fun x => ⟨x.1.1, x.1.2, x.2⟩, fun x => ⟨⟨x.1, x.2.1⟩, x.2.2⟩, fun _ => rfl, fun _ => rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 -/
 private theorem fc_img {G H : Type} [AddCommGroup G] [AddCommGroup H] (ψ : G →+ H) (S : AddSubgroup G) :
     Nat.card S = Nat.card (S.map ψ) * Nat.card (S ⊓ ψ.ker : AddSubgroup G) := by
@@ -18,9 +18,9 @@ private theorem fc_img {G H : Type} [AddCommGroup G] [AddCommGroup H] (ψ : G �
   refine Nat.card_congr ⟨fun x => ⟨x.1.1, x.1.2, x.2⟩, fun x => ⟨⟨x.1, x.2.1⟩, x.2.2⟩, fun _ => rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Establish `: Finite (S ⊓ ψ.ker : AddSubgroup G)` using `Finite.of_injective _ (AddSubgroup.inclusion_injective (inf_le_left : S ⊓ ψ.ker ≤ S))`. Establish `h1 : Nat.card (B ⊓ ψ.ker : AddSubgroup G) ≤ Nat.card (S ⊓ ψ.ker : AddSubgroup G)` using `AddSubgroup.card_le_of_le (inf_le_inf_right _ h)`. Rewrite `hN` using `[fc_img ψ S, fc_img ψ B]`. Use `Nat.le_of_mul_le_mul_right (hN.trans ?_) (Nat.card_pos (α := (S ⊓ ψ.ker : AddSubgroup G)))` and prove the remaining obligations. Rewrite using `[mul_right_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_le_mul_left _ h1`.
+A detailed English derivation is pending.
 -/
 private theorem fc_idx {G H : Type} [AddCommGroup G] [AddCommGroup H] (ψ : G →+ H) (S B : AddSubgroup G)
     [Finite S] (h : B ≤ S) (N : ℕ) (hN : Nat.card S ≤ Nat.card B * N) :
@@ -35,9 +35,9 @@ private theorem fc_idx {G H : Type} [AddCommGroup G] [AddCommGroup H] (ψ : G �
   exact Nat.mul_le_mul_left _ h1
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hi : Function.Injective ((LinearMap.ker r).liftQ r le_rfl)`. Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ le_rfl`. Use `Submodule.equivMapOfInjective _ hi (S.map (LinearMap.ker r).mkQ)` as an intermediate fact.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← Submodule.map_comp, Submodule.liftQ_mkQ]`. Conclude with `⟨this.toEquiv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem fc_eqv {A C Y : Type} [CommRing A] [AddCommGroup C] [Module A C] [AddCommGroup Y] [Module A Y]
     (r : C →ₗ[A] Y) (T S : Submodule A C) (h : LinearMap.ker r = T) :
@@ -50,7 +50,7 @@ private theorem fc_eqv {A C Y : Type} [CommRing A] [AddCommGroup C] [Module A C]
   exact ⟨this.toEquiv⟩
 
 /- English proof (translation)
-Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem fc_mem {A C : Type} [CommRing A] [AddCommGroup C] [Module A C] (a : A) (x : C) :
     x ∈ (Ideal.span {a} • ⊤ : Submodule A C) ↔ ∃ c, a • c = x := by
@@ -60,7 +60,7 @@ private theorem fc_mem {A C : Type} [CommRing A] [AddCommGroup C] [Module A C] (
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton, X_pow_dvd_iff]`. Simplify using `[sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem fc_mk (m : ℕ) (a b : K⟦X⟧) :
     Ideal.Quotient.mk (Ideal.span {(X : K⟦X⟧) ^ m}) a = Ideal.Quotient.mk _ b ↔
@@ -69,9 +69,9 @@ private theorem fc_mk (m : ℕ) (a b : K⟦X⟧) :
   simp [sub_eq_zero]
 
 /- English proof (translation)
-Simplify using `only [IsLocallyConstant.iff_eventually_eq, fc_mk]`. Prove the components needed by the constructor for the conclusion. Introduce `h k hk x`. Conclude with `(h x).mono fun y hy => hy k hk`. Introduce `h x`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(Finset.range m).eventually_all.2 fun k hk => h k (Finset.mem_range.1 hk) x` as an intermediate fact. Conclude with `this.mono fun y hy k hk => hy k (Finset.mem_range.2 hk)`.
+A detailed English derivation is pending.
 -/
 private theorem fc_lc {Γ : Type} [TopologicalSpace Γ] (m : ℕ) (f : Γ → K⟦X⟧) :
     (IsLocallyConstant fun g => Ideal.Quotient.mk (Ideal.span {(X : K⟦X⟧) ^ m}) (f g)) ↔
@@ -85,7 +85,7 @@ private theorem fc_lc {Γ : Type} [TopologicalSpace Γ] (m : ℕ) (f : Γ → K�
     exact this.mono fun y hy k hk => hy k (Finset.mem_range.2 hk)
 
 /- English proof (translation)
-Establish `e : ∀ (N : ℕ) (I : Ideal K⟦X⟧), I = Ideal.span {(X : K⟦X⟧) ^ N} → ((IsLocallyConstant fun g => Ideal.Quotient.mk I (f g)) ↔ ∀ k < N, IsLocallyConstant fun g => coeff k (f g))`. Introduce and unpack `N _ rfl`. Conclude with `fc_lc N f`. Conclude with `⟨fun h k => (e _ _ (Ideal.span_singleton_pow _ _)).1 (h (k + 1)) k (Nat.lt_succ_self k), fun h N => (e _ _ (Ideal.span_singleton_pow _ _)).2 fun k _ => h k⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem fc_ac {Γ : Type} [TopologicalSpace Γ] (f : Γ → K⟦X⟧) :
     AdicCont (Ideal.span {(X : K⟦X⟧)}) f ↔ ∀ k, IsLocallyConstant fun g => coeff k (f g) := by
@@ -117,11 +117,11 @@ private def fcC : Submodule K⟦X⟧ (Y → Matrix (Fin n) (Fin n) K⟦X⟧) whe
     exact Finset.sum_congr rfl fun p hp => by rw [hy p hp]
 
 /- English proof (translation)
-Rewrite using `[fc_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩ y i j`. Conclude with `X_pow_dvd_iff.1 ⟨c.1 y i j, rfl⟩`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨fun y i j => mk fun k => coeff (k + m) (x.1 y i j), fun i j k => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `using x.2 i j (k + m)`. Use extensionality with `y i j k`. Express the relevant statement in the definitionally equal form `coeff k (X ^ m * mk fun k => coeff (k + m) (x.1 y i j)) = _`. Rewrite using `[coeff_X_pow_mul']`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hk`. Simplify using `[Nat.sub_add_cancel hk]`. Conclude with `(h y i j k (not_le.1 hk)).symm`.
+A detailed English derivation is pending.
 -/
 private theorem fc_memC (m : ℕ) (x : fcC K n φ) :
     x ∈ (Ideal.span {(X : K⟦X⟧) ^ m} • ⊤ : Submodule K⟦X⟧ (fcC K n φ)) ↔
@@ -141,13 +141,13 @@ private theorem fc_memC (m : ℕ) (x : fcC K n φ) :
       · exact (h y i j k (not_le.1 hk)).symm
 
 /- English proof (translation)
-Use extensionality with `y i j k`. Use `hx (k + 1)` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, Ideal.span_singleton_pow, sub_zero, fc_memC]`. Simplify using `using this y i j k (Nat.lt_succ_self k)`. Use the proof step `prec' f hf := by`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨fun y i j => mk fun k => coeff k ((f (k + 1)).1 y i j), fun i j k => ?_⟩, fun m => ?_⟩` and prove the remaining obligations. Simplify using `using (f (k + 1)).2 i j k`. Rewrite using `[SModEq.sub_mem, Ideal.span_singleton_pow, fc_memC]`. Introduce `y i j k hk`. Use `hf (show k + 1 ≤ m from hk)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[SModEq.sub_mem, Ideal.span_singleton_pow, fc_memC]`. Use `this y i j k (Nat.lt_succ_self k)` as an intermediate fact. Express the relevant statement in the definitionally equal form `coeff k ((f (k + 1)).1 y i j - (f m).1 y i j) = 0 at this`. Express the relevant statement in the definitionally equal form `coeff k ((f m).1 y i j - mk fun k => coeff k ((f (k + 1)).1 y i j)) = 0`. Rewrite `this`, the goal using `[map_sub, sub_eq_zero]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_mk, this]`.
+A detailed English derivation is pending.
 -/
 private theorem fc_complete : IsAdicComplete (Ideal.span {(X : K⟦X⟧)}) (fcC K n φ) where
   haus' x hx := by
@@ -169,9 +169,9 @@ private theorem fc_complete : IsAdicComplete (Ideal.span {(X : K⟦X⟧)}) (fcC 
       rw [coeff_mk, this]
 
 /- English proof (translation)
-Rewrite using `[fc_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩ j`. Conclude with `Ideal.mem_span_singleton.2 ⟨c j, rfl⟩`. Introduce `h choose c hc using fun j => Ideal.mem_span_singleton.1 (h j)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨c, funext fun j => (hc j).symm⟩`.
+A detailed English derivation is pending.
 -/
 private theorem fc_memJ {J : Type} (a : K⟦X⟧) (x : J → K⟦X⟧) :
     x ∈ (Ideal.span {a} • ⊤ : Submodule K⟦X⟧ (J → K⟦X⟧)) ↔ ∀ j, x j ∈ Ideal.span {a} := by
@@ -184,7 +184,7 @@ private theorem fc_memJ {J : Type} (a : K⟦X⟧) (x : J → K⟦X⟧) :
     exact ⟨c, funext fun j => (hc j).symm⟩
 
 /- English proof (translation)
-Use extensionality with `j k`. Use `hx (k + 1)` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, Ideal.span_singleton_pow, sub_zero, fc_memJ]`. Simplify using `using X_pow_dvd_iff.1 (Ideal.mem_span_singleton.1 (this j)) k (Nat.lt_succ_self k)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem fc_haus {J : Type} : IsHausdorff (Ideal.span {(X : K⟦X⟧)}) (J → K⟦X⟧) where
   haus' x hx := by
@@ -201,9 +201,9 @@ private noncomputable def fcR (m : ℕ) : (Y → Matrix (Fin n) (Fin n) K⟦X⟧
   map_smul' c f := by ext y i j; rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[fc_memC, LinearMap.mem_ker]`. Simplify using `only [funext_iff, ← Matrix.ext_iff]`. Use `forall₃_congr fun y i j => ?_` and prove the remaining obligations. Use `fc_mk m (x.1 y i j) 0` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [map_zero] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fc_ker (m : ℕ) : LinearMap.ker ((fcR K n Y m).comp (fcC K n φ).subtype) =
     (Ideal.span {(X : K⟦X⟧) ^ m} • ⊤ : Submodule K⟦X⟧ (fcC K n φ)) := by
@@ -216,15 +216,13 @@ private theorem fc_ker (m : ℕ) : LinearMap.ker ((fcR K n Y m).comp (fcC K n φ
   exact this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨fun i j => (fc_lc m fun g => f.1 (φ g) i j).2 fun k _ => f.2 i j k, f.1, fun y => rfl, (fc_memJ _ _).1 hf⟩`. Introduce and unpack `⟨h1, f, h2, h3⟩`. Take `rfl : fcR K n Y m f = fb` from `funext h2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Set `f' : Y → Matrix (Fin n) (Fin n) K⟦X⟧` to `fun y i j => mk fun k => if k < m then coeff k (f y i j) else 0`. Establish `e : ∀ y i j, ∀ k < m, coeff k (f' y i j) = coeff k (f y i j)` using `fun y i j k hk => by`. Simplify using `[f', hk]`. Use `⟨⟨f', fun i j k => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : k < m`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [e _ _ _ k hk]`. Conclude with `(fc_lc m fun g => f (φ g) i j).1 (h1 i j) k hk`. Simplify using `only [f', coeff_mk, if_neg hk]`. Conclude with `IsLocallyConstant.const _`. Establish `: ∀ y i j, ∃ c, f' y i j - f y i j = X ^ m * c` using `fun y i j => X_pow_dvd_iff.2 fun k hk => by rw [map_sub, e y i j k hk, sub_self] choose c hc using this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e2 : f' = f + (X : K⟦X⟧) ^ m • (fun y => Matrix.of (c y))`. Use function extensionality and compare the values at `y i j`. Conclude with `sub_eq_iff_eq_add'.1 (hc y i j)`. Express the relevant statement in the definitionally equal form `Φ f' ∈ (Ideal.span {(X : K⟦X⟧) ^ m} • ⊤ : Submodule K⟦X⟧ (J → K⟦X⟧))`. Rewrite using `[e2, map_add, map_smul]`.
-
-Conclude with `add_mem ((fc_memJ _ _).2 h3) ((fc_mem _ _).2 ⟨_, rfl⟩)`. Use extensionality with `y i j`. Conclude with `(fc_mk m _ _).2 (e y i j)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem fc_sol {J : Type} (Φ : (Y → Matrix (Fin n) (Fin n) K⟦X⟧) →ₗ[K⟦X⟧] (J → K⟦X⟧)) (m : ℕ)
     (fb : Y → Matrix (Fin n) (Fin n) (K⟦X⟧ ⧸ Ideal.span {(X : K⟦X⟧) ^ m})) :
@@ -263,23 +261,21 @@ private theorem fc_sol {J : Type} (Φ : (Y → Matrix (Fin n) (Fin n) K⟦X⟧) 
 end aux
 
 /- English proof (translation)
-Introduce `K _ _ n Γ Y J _ φ Φ B Sol hS h1 hB hBs`. Establish `eK : IsLocalRing.ResidueField (PowerSeries K) ≃+* K` using `PowerSeries.residueFieldOfPowerSeries`. Establish `: Finite (IsLocalRing.ResidueField (PowerSeries K))` using `Finite.of_equiv _ eK.toEquiv.symm`. Establish `hS' : ∀ m, Sol m = ((Ideal.span {(PowerSeries.X : PowerSeries K) ^ m} • ⊤ : Submodule (PowerSeries K) (J → PowerSeries K)).comap (Φ.comp (fcC K n φ).subtype)).map ((fcR K n Y m).comp (fcC K n φ).subtype)` using `fun m => by`. Use extensionality with `fb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hS, SetLike.mem_coe, fc_sol]`. Establish `hBC : B ≤ fcC K n φ` using `fun f hf i j => (fc_ac _).1 ((hB f hf).1 i j)`. Establish `hker : B.comap (fcC K n φ).subtype ≤ LinearMap.ker (Φ.comp (fcC K n φ).subtype)` using `fun f hf => (hB f.1 hf).2`. Take `⟨-, e, he⟩` from `UpperTheory.V.Pa.solCnt (PowerSeries K) (fcC K n φ) (J → PowerSeries K) PowerSeries.X (Φ.comp (fcC K n φ).subtype) (B.comap (fcC K n φ).subtype) PowerSeries.X_irreducible (fun y hy => by`. Use `Subtype.ext (funext fun a => funext fun i => funext fun j => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mul_eq_zero.1 (congrFun (congrFun (congrFun (congrArg Subtype.val hy) a) i) j)).resolve_left PowerSeries.X_ne_zero)`. Use the proof step `(fun y hy => funext fun j => (mul_eq_zero.1 (congrFun hy j)).resolve_left PowerSeries.X_ne_zero)`. Use `inferInstance (fc_complete φ) fc_haus`. Use the proof step `(by`. Rewrite `h1` using `[hS']`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨q⟩` from `fc_eqv _ _ ((Ideal.span {(PowerSeries.X : PowerSeries K) ^ 1} • ⊤ : Submodule (PowerSeries K) (J → PowerSeries K)).comap (Φ.comp (fcC K n φ).subtype)) (fc_ker φ 1)`. Use `h1.to_subtype` as an intermediate fact. Use `Finite.of_equiv _ q.symm` as an intermediate fact. Rewrite using `[pow_one] at this)` and apply the resulting hypothesis. Use `hker (fun z hz => hBs z.1 (fun i j => (fc_ac _).2 (z.2 i j)) hz)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨e, fun m => ?_⟩` and prove the remaining obligations. Take `⟨hf, hc⟩` from `he m`. Take `⟨q⟩` from `fc_eqv _ _ ((Ideal.span {(PowerSeries.X : PowerSeries K) ^ m} • ⊤ : Submodule (PowerSeries K) (J → PowerSeries K)).comap (Φ.comp (fcC K n φ).subtype)) (fc_ker φ m)`. Take `⟨q'⟩` from `fc_eqv _ _ (B.comap (fcC K n φ).subtype) (fc_ker φ m)`. Rewrite `hc` using `[Nat.card_congr q, Nat.card_congr q', Nat.card_congr eK.toEquiv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hf'` using `Finite.of_equiv _ q`. Rewrite using `[hS']`. Use `⟨Set.toFinite _, ?_⟩` and prove the remaining obligations. Establish `key` using `fc_idx (LinearMap.funLeft (PowerSeries K) _ φ).toAddMonoidHom (Submodule.toAddSubgroup _) (Submodule.toAddSubgroup _) (Submodule.toAddSubgroup_mono (Submodule.map_mono (hker.trans fun f hf => by`. Rewrite using `[Submodule.mem_comap, LinearMap.mem_ker.1 hf]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `zero_mem _))) _ hc`. Rewrite `key` using `[Submodule.map_comp _ _ (B.comap _), Submodule.map_comap_subtype, inf_eq_right.2 hBC]`. Use `le_of_le_of_eq key ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← Nat.card_coe_set_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `congr 2`. Use function extensionality and compare the values at `x`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨f, hf, rfl⟩, rfl⟩`.
-
-Conclude with `⟨f, hf, rfl⟩`. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨_, ⟨f, hf, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.finite_truncated_locallyConstant_matrix_solutions :
     ∀ (K : Type) [Field K] [Finite K] (n : ℕ) (Γ X J : Type) [TopologicalSpace Γ] (φ : Γ → X) (Φ : (X → Matrix (Fin n) (Fin n) (PowerSeries K)) →ₗ[PowerSeries K] (J → PowerSeries K)) (B : Submodule (PowerSeries K) (X → Matrix (Fin n) (Fin n) (PowerSeries K))) (Sol : ∀ m : ℕ, Set (X → Matrix (Fin n) (Fin n) (PowerSeries K ⧸ Ideal.span {(PowerSeries.X : PowerSeries K) ^ m}))), (∀ m fb, fb ∈ Sol m ↔ (∀ i j, IsLocallyConstant fun g => fb (φ g) i j) ∧ ∃ f : X → Matrix (Fin n) (Fin n) (PowerSeries K), (∀ y, (f y).map (Ideal.Quotient.mk (Ideal.span {(PowerSeries.X : PowerSeries K) ^ m})) = fb y) ∧ ∀ j, Φ f j ∈ Ideal.span {(PowerSeries.X : PowerSeries K) ^ m}) → (Sol 1).Finite → (∀ f ∈ B, (∀ i j, AdicCont (Ideal.span {(PowerSeries.X : PowerSeries K)}) fun g => f (φ g) i j) ∧ Φ f = 0) → (∀ f : X → Matrix (Fin n) (Fin n) (PowerSeries K), (∀ i j, AdicCont (Ideal.span {(PowerSeries.X : PowerSeries K)}) fun g => f (φ g) i j) → Φ f = 0 → ∃ s : ℕ, (PowerSeries.X : PowerSeries K) ^ s • f ∈ B) → ∃ e : ℕ, ∀ m : ℕ, (Sol m).Finite ∧ ((fun fb => fb ∘ φ) '' Sol m).ncard ≤ ((fun (f : X → Matrix (Fin n) (Fin n) (PowerSeries K)) (g : Γ) => (f (φ g)).map (Ideal.Quotient.mk (Ideal.span {(PowerSeries.X : PowerSeries K) ^ m}))) '' (B : Set _)).ncard * Nat.card K ^ e := by

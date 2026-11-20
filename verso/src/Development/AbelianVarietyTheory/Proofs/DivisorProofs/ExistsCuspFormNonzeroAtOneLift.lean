@@ -15,16 +15,16 @@ open NumberField Module ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheor
 namespace GlobalTheory.LiftInterp
 
 /- English proof (translation)
-Take `⟨⟨hz, -, -⟩, -⟩` from `siegelSpaceAlgebra_holds r X la la 0`. Conclude with `hz`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem zero_mem_SS {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) : (0 : Frame X.Ψ r → ℂ) ∈ X.SS la := by
   obtain ⟨⟨hz, -, -⟩, -⟩ := siegelSpaceAlgebra_holds r X la la 0
   exact hz
 
 /- English proof (translation)
-Unfold `bchar`. Use `Finset.prod_ne_zero_iff.2 fun τ _ => Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ ?_` and prove the remaining obligations. Introduce `h0`. Apply `(hb τ).1` to reduce the goal to its premises. Establish `hU : (mat b τ).IsUpperTriangular` using `fun a c hca => (hb τ).2 a c hca`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_of_upperTriangular hU]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simpa [mat] using h0)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bchar_ne_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Ψ : Finset (E →+* ℂ)}
     (la : Wt Ψ r) {b : Frame Ψ r} (hb : b ∈ Bor Ψ r) : bchar la b ≠ 0 := by
@@ -38,13 +38,11 @@ theorem bchar_ne_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {r : �
   exact Finset.prod_eq_zero (Finset.mem_univ i) (by simpa [mat] using h0)
 
 /- English proof (translation)
-Distinguish the cases in `hdef : X.p0 = 0 ∨ X.p0 = r`. Establish `h1` using `GlobalTheory.T.upperLevel_trivial_definite_noContraction E r X G g hg hgr hL' hU hdef x hx hNC`. Take `⟨P, hP, hP0⟩` from `GlobalTheory.T.exists_detPowerSection_ne_zero_definite E r X.toData (fun γ hγ => h1 γ (hΓG hγ)) hdef s x hx`. Use `⟨P, hP, hP0, fun γ hγ hγ' => absurd ?_ hγ'⟩` and prove the remaining obligations. Rewrite using `[h1 γ hγ]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `X.Γ.one_mem`. Use `push_neg at hdef`. Establish `hp0 : 0 < X.p0` using `Nat.pos_of_ne_zero hdef.1`. Establish `hp1 : X.p0 < r` using `lt_of_le_of_ne X.p0_le hdef.2`. Take `⟨x0, h0, ⟨b, hb, rfl⟩, hFB⟩` from `GlobalTheory.T.freeBall_noContraction_unitaryUpperLevel E r X G g hg hgr hΓG hL' hΛ hU x hx hNC`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨P, hP, hP0, hPγ⟩` from `GlobalTheory.T.orbitInterpolation_detWeight_freeBall_indefinite E r X.toData hχ G x0 h0 hFB hp0 hp1 s hs hsb`. Establish `hx0 : x0 ∈ X.dom` using `IW.orth_mem_dom X.toData x0 h0`. Use `⟨P, hP, ?_, fun γ hγ hγ' => ?_⟩` and prove the remaining obligations. Rewrite using `[hP.1.1.2.1 x0 hx0 b hb]`. Conclude with `mul_ne_zero (bchar_ne_zero _ hb) hP0`.
-
-Establish `hy : lact γ x0 ∈ X.dom` using `GlobalTheory.MajInv.lact_mem_dom X.toData (hΛ γ hγ) hx0`. Rewrite using `[FundSetPf.lact_rmul, hP.1.1.2.1 _ hy b hb, hPγ γ hγ hγ', mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_interp {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : DataX E r)
     (hχ : ∀ la, ∀ γ ∈ X.Γ, X.χ la γ = 1) (G : Subgroup (GL (Fin r) E)) (g : ℕ)
@@ -73,21 +71,21 @@ theorem comp_interp {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
       rw [FundSetPf.lact_rmul, hP.1.1.2.1 _ hy b hb, hPγ γ hγ hγ', mul_zero]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castFrame_symm_cast {E : Type} [Field E] {r : ℕ} {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ')
     (y : Frame Ψ r) : castFrame h.symm (castFrame h y) = y := by
   subst h; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castFrame_lact {E : Type} [Field E] {r : ℕ} {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ')
     (γ : GL (Fin r) E) (y : Frame Ψ r) : castFrame h (lact γ y) = lact γ (castFrame h y) := by
   subst h; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hy`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem castFrame_mem_GG {E : Type} [Field E] {r : ℕ} {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ')
     (G : Matrix (Fin r) (Fin r) E) (p : ℕ) (y : Frame Ψ' r) (hy : y ∈ GG Ψ' G p) :
@@ -95,30 +93,28 @@ theorem castFrame_mem_GG {E : Type} [Field E] {r : ℕ} {Ψ Ψ' : Finset (E →+
   subst h; exact hy
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castWt_deMul {E : Type} [Field E] {r : ℕ} {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ') (p s : ℕ) :
     castWt h (deMul Ψ' r p s) = deMul Ψ r p s := by
   subst h; rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ r U C _ _ _ _ M hLH s hs hsb c x hNC hx`. Take `⟨g, hg, hgr, hUn⟩` from `GlobalTheory.T.exists_totallySplitPrime_upperLevel_unipotent E r U C M hLH`. Take `⟨G, hG, hΓG⟩` from `GlobalTheory.T.exists_upperLevel_subgroup_component E r U C M c`. Establish `hΨ : (M.comp c).Ψ = M.Ψ` using `M.comp_Ψ c`. Establish `hx' : castFrame hΨ.symm x ∈ (M.comp c).dom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `castFrame_mem_GG hΨ M.Gm M.p0 x hx` as an intermediate fact. Use `show castFrame hΨ.symm x ∈ GG (M.comp c).Ψ (M.comp c).Gm (M.comp c).p0`. Rewrite using `[M.comp_Gm c, M.comp_basePoint c]`. Conclude with `this`. Establish `hsb' : 2 * r + 50 * r ^ 2 * ((M.comp c).Ψ.card * ((M.comp c).p0 * (r - (M.comp c).p0))) + 1 ≤ s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hΨ, M.comp_basePoint c]`. Conclude with `hsb`. Take `⟨P, hP, hP0, hPγ⟩` from `comp_interp (M.comp c) (M.χ_one c) G g hg hgr hΓG (fun β hβ => (GlobalTheory.T.upperLevel_isUnitaryStabiliser_both_lattices E r U C M c β ((hG β).1 hβ)).1) (fun β hβ => (GlobalTheory.T.upperLevel_isUnitaryStabiliser_both_lattices E r U C M c β ((hG β).1 hβ)).2) (fun β hβ => hUn c …`. Set `u : C → Frame M.Ψ r → ℂ` to `fun c' y => if c' = c then P (castFrame hΨ.symm y) else 0`. Use `⟨u, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `c'`. Distinguish the cases in `hc : c' = c`. Substitute `hc` using the available equality. Establish `e : (fun y => u c' (castFrame (M.comp_Ψ c') y)) = P`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [u, if_pos rfl]`. Conclude with `congrArg P (castFrame_symm_cast _ y)`. Rewrite using `[e, castWt_deMul]`. Rewrite `hP` using `[M.comp_basePoint c']`. Conclude with `hP`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e : (fun y => u c' (castFrame (M.comp_Ψ c') y)) = 0`. Use function extensionality and compare the values at `y`. Simplify using `[u, hc]`. Rewrite using `[e]`. Conclude with `zero_mem_SS _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify `hP0` using `[u]`. Introduce `h hh`. Unfold `TwoLevels.pull`. Distinguish the cases in `hc : h • c = c`. Simplify using `only [u, hc, if_pos rfl]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[castFrame_lact]`. Use `hPγ _ ((hG _).2 ⟨h, hc, 1, (M.comp c).Γ.one_mem, by simp⟩) fun hm => hh ?_` and prove the remaining obligations. Conclude with `M.tr_faithful h c hc hm`. Simplify using `[u, hc]`. Introduce `c' hc' y`.
-
-Establish `hne : c' ≠ c` using `fun e => hc' 1 (by simp [e])`. Simplify using `[u, hne]`.
+A detailed English derivation is pending.
 -/
 theorem exists_form_one_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [Finite U] [Finite C] [MulAction U C] (M : TwoLevels E r U C), LevelHyp M → ∀ s : ℕ, Even s → 2 * r + 50 * r ^ 2 * M.dimX + 1 ≤ s → ∀ (c : C) (x : Frame M.Ψ r), GlobalTheory.IndefiniteRowSideFullHecke.SmallUnipotentElements.NoContraction (M.comp c) (castFrame (M.comp_Ψ c).symm x) → x ∈ M.dom → ∃ u ∈ M.SS (deMul M.Ψ r M.p0 s), u c x ≠ 0 ∧ (∀ h : U, h ≠ 1 → M.pull h u c x = 0) ∧ ∀ c', (∀ h : U, h • c ≠ c') → ∀ y, u c' y = 0 := by
   intro E _ _ _ r U C _ _ _ _ M hLH s hs hsb c x hNC hx

@@ -20,7 +20,7 @@ namespace GlobalTheory.SqLevel
 variable {X Y : Scheme.{0}} {K : Type} [Fintype K]
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => mem_sq.1 (Set.mem_iInter.1 hy k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sqGen_le (L₀ : LB X) (φ : K → (Y ⟶ X)) (j : K → Fin 1 → L₀.ι) :
     LB.wchart (sqLB L₀) φ j ≤ LB.wchart L₀ φ (fun k => j k 0) :=
@@ -31,7 +31,7 @@ def sqGen {L₀ : LB X} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.
   ⟨fun j => res (sqGen_le L₀ φ j) (t.s (fun k => j k 0)) ^ 2⟩
 
 /- English proof (translation)
-The claim follows from `(map_pow _ _ _).trans (congrArg (· ^ 2) (gm_res r z _ hj _))`.
+A detailed English derivation is pending.
 -/
 theorem gm_sqGen {Z : Scheme.{0}} {L₀ : LB X} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb L₀ φ ε))
     (r : Z ⟶ Y) (z : Z) (j : K → Fin 1 → L₀.ι) (hj : r z ∈ LB.wchart (sqLB L₀) φ j) :
@@ -39,13 +39,13 @@ theorem gm_sqGen {Z : Scheme.{0}} {L₀ : LB X} {φ : K → (Y ⟶ X)} {ε : K �
   (map_pow _ _ _).trans (congrArg (· ^ 2) (gm_res r z _ hj _))
 
 /- English proof (translation)
-Introduce `j j'`. Apply `unit_ext` to reduce the goal to its premises. Introduce `x hx`. Establish `hj` using `sqGen_le L₀ φ j hx.1`. Establish `hj'` using `sqGen_le L₀ φ j' hx.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (𝟙 Y) x ∈ (LB.LinComb L₀ φ ε).U (fun k => j k 0) ⊓ (LB.LinComb L₀ φ ε).U (fun k => j' k 0)` using `⟨hj, hj'⟩`. Establish `e` using `congrArg (gm (𝟙 Y) x _) (ht (fun k => j k 0) (fun k => j' k 0))`. Rewrite `e` using `[gm_res (𝟙 Y) x _ hm, map_mul, gm_res (𝟙 Y) x _ hm]`. Use `erw [gm_linComb L₀ φ ε (𝟙 Y) x _ _ hj hj'] at e`. Rewrite using `[gm_res _ x _ hx, map_mul, gm_res _ x _ hx, gm_sqGen t (𝟙 Y) x j hx.1, gm_sqGen t (𝟙 Y) x j' hx.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `erw [gm_linComb (sqLB L₀) φ ε (𝟙 Y) x j j' hx.1 hx.2]`. Rewrite using `[e, mul_pow]`. Use `congr 1`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₁ : (𝟙 Y ≫ φ k) x ∈ L₀.U (j k 0)` using `Set.mem_iInter.1 hj k`. Establish `a₂ : (𝟙 Y ≫ φ k) x ∈ L₀.U (j' k 0)` using `Set.mem_iInter.1 hj' k`. Rewrite using `[gm_sq_g L₀ (𝟙 Y ≫ φ k) x (j k) (j' k) a₁ a₂, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqGen_isGen {L₀ : LB X} {φ : K → (Y ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.LinComb L₀ φ ε)} (ht : t.IsGen) :
     (sqGen t).IsGen := by
@@ -70,7 +70,7 @@ theorem sqGen_isGen {L₀ : LB X} {φ : K → (Y ⟶ X)} {ε : K → ℤ} {t : L
     mul_comm]
 
 /- English proof (translation)
-The claim follows from `gm_sqGen t r z _ (hJ.mem φ r)`.
+A detailed English derivation is pending.
 -/
 theorem val_sqGen {Z : Scheme.{0}} {L₀ : LB X} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb L₀ φ ε))
     {z : Z} {J : (Z ⟶ X) → Fin 1 → L₀.ι} (hJ : Good (sqLB L₀) z J) (r : Z ⟶ Y) :
@@ -78,7 +78,7 @@ theorem val_sqGen {Z : Scheme.{0}} {L₀ : LB X} {φ : K → (Y ⟶ X)} {ε : K 
   gm_sqGen t r z _ (hJ.mem φ r)
 
 /- English proof (translation)
-Introduce `ψ` and use `mem_sq.1 (hJ ψ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_sq {Z : Scheme.{0}} {L₀ : LB X} {z : Z} {J : (Z ⟶ X) → Fin 1 → L₀.ι} (hJ : Good (sqLB L₀) z J) :
     Good L₀ z (fun ψ => J ψ 0) :=
@@ -91,19 +91,19 @@ namespace GlobalTheory
 open RigidIsoCube SqLevel in
 
 /- English proof (translation)
-Introduce `hG R _ _ _ I _ D D' A A' G _ _ _ U U' wL hw Z r z N N' hN hN'`. Use `U.smooth` as an intermediate fact. Establish `: IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))).le.trans bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (jK R)` as an intermediate fact. Establish `hg : IsPullback (U.gen.inv.left ≫ pullback.fst G.hom (jK R)) A.A.hom G.hom (jK R)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso U.gen.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map U.gen.inv))`. Establish `s : IsPullback U.gen.inv.left A.A.hom (pullback.snd G.hom (jK R)) (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨(Over.w U.gen.inv).trans (Category.comp_id _).symm⟩`. Simplify using `using s.paste_horiz (IsPullback.of_hasPullback G.hom (jK R))`. Establish `s₁ : Function.Surjective G.hom.appTop.hom` using `surjective_appTop_of_baseChange hg (eSec G) (Over.w η[G]) (hG _ _ A.isAb).2`. Establish `: Flat (G ⊗ G).hom` using `by rw [Over.tensorObj_hom]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sj : Function.Surjective ((snd G (G ⊗ G)).left ≫ (snd G G).left ≫ G.hom).appTop.hom` using `surj_comp (surjective_snd_of_generic hG (jK R) G A.isAb hg _) (surj_comp (surjective_snd_of_generic hG (jK R) G A.isAb hg _) s₁)`. Establish `hL` using `DVR.linComb_isLB U.LG.L U.LG.isLB (fun _ : Fin 1 => 𝟙 G.left) (fun _ => 2)`. Establish `hL'` using `DVR.linComb_isLB U'.LG.L U'.LG.isLB (fun _ : Fin 1 => 𝟙 G.left) (fun _ => 2)`. Establish `pg : PGen (isoPullId wL (rfl : 𝟙 G.left = 𝟙 G.left))` using `isoPullId_pgen hw rfl`. Set `e : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ G3 G` to `lift 1 (lift 1 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `he : e.left ≫ (snd G (G ⊗ G)).left ≫ (snd G G).left ≫ G.hom = 𝟙 _`. Rewrite using `[Over.w, Over.w]`. Conclude with `Over.w e`. Establish `PM` using `pmaps_of_section pg hL hL' (φ' := thφ G (x3 G)) (φ := thφ G (x3 G)) (ε := thε) (sqGen U'.cubG.t) (sqGen_isGen U'.cubG.isGen) (sqGen U.cubG.t) (sqGen_isGen U.cubG.isGen) (fun _ => Category.comp_id _) _ e.left he sj fun y J J' hJ hJ' => by`. Use `(val_sqGen _ hJ _).trans (Eq.trans ?_ (congrArg₂ (· * ·) rfl (val_sqGen _ hJ' _)).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `c₁ : val U.cubG.t e.left y (fun ψ => J ψ 0) = 1` using `(isCub_cubV U.cubG (good_sq hJ)).face 1 1`. Establish `c₂ : val U'.cubG.t e.left y (fun ψ => J' ψ 0) = 1` using `(isCub_cubV U'.cubG (good_sq hJ')).face 1 1`. Establish `p` using `prod_cub (1 : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ G) 1 1 (fun q => gw (isoPullId wL (rfl : 𝟙 G.left = 𝟙 G.left)) q y (J (q ≫ 𝟙 _)) (J' q))`. Rewrite `p` using `[_root_.mul_one, _root_.mul_one]`. Use `(congrArg (· ^ 2) c₁).trans (Eq.trans ?_ (congrArg₂ (· * ·) p (congrArg (· ^ 2) c₂)).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hp : ∀ k, (r ≫ thφ G (x3 G) k) z ∈ (sqLB U.LG.L).U (fun _ => N (r ≫ thφ G (x3 G) k))` using `fun k => mem_sq.2 (hN _)`. Establish `hq : ∀ k, (r ≫ thφ G (x3 G) k) z ∈ (sqLB U'.LG.L).U (fun _ => N' (r ≫ thφ G (x3 G) k))` using `fun k => mem_sq.2 (hN' _)`. Establish `v` using `PM Z r z (fun k _ => N (r ≫ thφ G (x3 G) k)) (fun k _ => N' (r ≫ thφ G (x3 G) k)) hp hq`. Rewrite `v` using `[Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gm_sqGen U.cubG.t r z (fun k _ => N (r ≫ thφ G (x3 G) k)) (Set.mem_iInter.2 hp)).symm.trans (v.trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => ?_) (gm_sqGen U'.cubG.t r z (fun k _ => N' (r ≫ thφ G (x3 G) k)) (Set.mem_iInter.2 hq))))` and prove the remaining obligations. Conclude with `congrArg (· ^ thε k) (gw_isoPullId wL rfl _ z _ _ (hp k) (hq k))`.
+A detailed English derivation is pending.
 -/
 theorem sq_iso_carries_sq_cube : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), AdmBase R I →
     ∀ (D D' : DegData R I) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R)))

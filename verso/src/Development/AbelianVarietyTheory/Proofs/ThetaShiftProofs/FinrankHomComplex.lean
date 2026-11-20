@@ -21,7 +21,7 @@ Both sides reduce to the same expression.
 theorem sesq_apply {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) : sesq Hm z w = hermForm Hm z w := rfl
 
 /- English proof (translation)
-Establish `h : ∀ i k, starRingEnd ℂ (Hm i k) = Hm k i` using `fun i k => hH.apply k i`. Simplify using `only [sesq_apply, hermForm, dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, h, Pi.star_apply, RCLike.star_def, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sesq_conj {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (z w : Fin g → ℂ) :
     starRingEnd ℂ (sesq Hm z w) = sesq Hm w z := by
@@ -32,7 +32,7 @@ theorem sesq_conj {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermiti
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Use `conv_rhs => rw [pi_eq_sum_univ' z, pi_eq_sum_univ' w]`. Simplify using `only [hermForm, dotProduct, Matrix.mulVec, map_sum, map_smul, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum, Matrix.of_apply, Pi.star_apply, RCLike.star_def]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sesq_of {n : ℕ} (S : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ) →ₗ⋆[ℂ] ℂ) (z w : Fin n → ℂ) :
     hermForm (Matrix.of fun i j => S (Pi.single i 1) (Pi.single j 1)) z w = S z w := by
@@ -65,7 +65,7 @@ Both sides reduce to the same expression.
 @[simp] theorem reForm_apply (S : W →ₗ[ℂ] W →ₗ⋆[ℂ] ℂ) (x y : W) : reForm S x y = (S x y).re := rfl
 
 /- English proof (translation)
-Establish `h1 : imForm S = imForm S'` using `LinearMap.ext_on_range hv fun i => LinearMap.ext_on_range hv fun k => h i k`. Establish `h2 : ∀ x y, (S x y).im = (S' x y).im` using `fun x y => congr($h1 x y)`. Conclude with `Complex.ext (by simpa using h2 (I • x) y) (h2 x y)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sesq_ext {ι : Type} {v : ι → W} (hv : Submodule.span ℝ (Set.range v) = ⊤) {S S' : W →ₗ[ℂ] W →ₗ⋆[ℂ] ℂ}
     (h : ∀ i k, (S (v i) (v k)).im = (S' (v i) (v k)).im) (x y : W) : S x y = S' x y := by
@@ -76,11 +76,9 @@ theorem sesq_ext {ι : Type} {v : ι → W} (hv : Submodule.span ℝ (Set.range 
 variable {S : W →ₗ[ℂ] W →ₗ⋆[ℂ] ℂ} {R : Submodule ℝ W}
 
 /- English proof (translation)
-Establish `hnd : ((reForm S).restrict R).Nondegenerate`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Assume the negation of the conclusion as `h`. Conclude with `(hpos x fun h0 => h (Subtype.ext h0)).ne' (hx x)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Assume the negation of the conclusion as `h`. Conclude with `(hpos x fun h0 => h (Subtype.ext h0)).ne' (hx x)`. Use `⟨R.subtype ∘ₗ (LinearMap.BilinForm.toDual _ hnd).symm.toLinearMap ∘ₗ (imForm S).domRestrict₂ R, fun w => Subtype.property _, fun w r hr => Complex.ext ?_ ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.BilinForm.apply_toDual_symm_apply (hB := hnd) ((imForm S).domRestrict₂ R w) ⟨r, hr⟩`.
-
-Conclude with `hR _ (Subtype.property _) r hr`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_imPart [FiniteDimensional ℝ W] (hpos : ∀ z, z ≠ 0 → 0 < (S z z).re)
     (hR : ∀ r ∈ R, ∀ r' ∈ R, (S r r').im = 0) :
@@ -108,7 +106,7 @@ omit [IsScalarTower ℝ ℂ W] in
 include hpos hb hb' in
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h1` using `hpos _ (sub_ne_zero.2 hne)`. Establish `h2` using `R.sub_mem (hb w) hc`. Rewrite `h1` using `[map_sub S, LinearMap.sub_apply, hb' w _ h2, Complex.sub_re, h _ h2]`. Simplify using `at h1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem imPart_eq {w c : W} (hc : c ∈ R) (h : ∀ r ∈ R, (S c r).re = (S w r).im) : b w = c := by
   by_contra hne
@@ -121,7 +119,7 @@ omit [IsScalarTower ℝ ℂ W] in
 include hconj hb' in
 
 /- English proof (translation)
-Rewrite using `[← hconj, hb' w r hr, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_imPart (w : W) {r : W} (hr : r ∈ R) : S r (b w) = (S w r).im := by
   rw [← hconj, hb' w r hr, Complex.conj_ofReal]
@@ -133,7 +131,7 @@ omit [IsScalarTower ℝ ℂ W] in
 include hpos hb hb' hρ hρR in
 
 /- English proof (translation)
-The claim follows from `imPart_eq hpos hb hb' (hρR _ _ (hb w)) fun r hr => by rw [hρ, hρ, hb' _ _ (hρR _ _ hr), Complex.ofReal_re]`.
+A detailed English derivation is pending.
 -/
 theorem imPart_act (a : O) (w : W) : b (ρ a w) = ρ a (b w) :=
   imPart_eq hpos hb hb' (hρR _ _ (hb w)) fun r hr => by
@@ -142,19 +140,19 @@ theorem imPart_act (a : O) (w : W) : b (ρ a w) = ρ a (b w) :=
 include hpos hb hb' hρ hρR in
 
 /- English proof (translation)
-Set `U : Submodule ℂ W` to `{ carrier := {u | ∀ r ∈ R, S u r = 0} zero_mem' := fun r _ => by simp add_mem' := fun {u u'} hu hu' r hr => by simp [hu r hr, hu' r hr] smul_mem' := fun c u hu r hr => by simp [hu r hr] }`. Establish `hII : ∀ w : W, I • I • w = -w` using `fun w => by rw [smul_smul, I_mul_I, neg_smul, one_smul]`. Establish `hsm : ∀ (c : ℂ) (w : W), c • w = c.re • w + c.im • I • w` using `fun c w => by`. Rewrite using `[← algebraMap_smul ℂ c.re, ← algebraMap_smul ℂ c.im, smul_smul, ← add_smul]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(re_add_im c).symm`. Set `p₀ : W →ₗ[ℝ] W` to `LinearMap.id - b ∘ₗ (I • LinearMap.id : W →ₗ[ℂ] W).restrictScalars ℝ - (I • LinearMap.id : W →ₗ[ℂ] W).restrictScalars ℝ ∘ₗ b`. Establish `hp₀ : ∀ w, p₀ w = w - b (I • w) - I • b w` using `fun _ => rfl`. Establish `hpI : ∀ w, p₀ (I • w) = I • p₀ w` using `fun w => by`. Simplify using `only [hp₀, hII, smul_sub, map_neg]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `hpU : ∀ w, p₀ w ∈ U` using `fun w r hr => by`. Simplify using `only [hp₀, map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, hb' _ r hr, smul_eq_mul]`. Apply the tactic sequence `apply Complex.ext <;> simp`. Set `p : W →ₗ[ℂ] U` to `{ toFun := fun w => ⟨p₀ w, hpU w⟩ map_add' := fun w w' => Subtype.ext (map_add p₀ w w') map_smul' := fun c w => Subtype.ext (by show p₀ (c • w) = c • p₀ w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsm c w, hsm c (p₀ w), map_add, map_smul, map_smul, hpI]) }`. Establish `hb0 : ∀ u ∈ U, b u = 0` using `fun u hu => imPart_eq hpos hb hb' R.zero_mem fun r hr => by simp [hu r hr]`. Establish `hpu : ∀ u : U, p u = u` using `fun u => Subtype.ext (by show p₀ u = u`. Rewrite using `[hp₀, hb0 _ u.2, hb0 _ (U.smul_mem _ u.2), smul_zero, sub_zero, sub_zero])`. Establish `hρU : ∀ a, ∀ u ∈ U, ρ a u ∈ U` using `fun a u hu r hr => by rw [hρ]; exact hu _ (hρR _ _ hr)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `σ : O →+* Module.End ℂ U` to `{ toFun := fun a => (ρ a).restrict (hρU a) map_one' := by ext; simp map_mul' := fun _ _ => by ext; simp map_zero' := by ext; simp map_add' := fun _ _ => by ext; simp }`. Take `⟨n, k, F, hF, hk⟩` from `hQ U σ`. Use `⟨n, k.toLinearMap ∘ₗ p, U.subtype ∘ₗ k.symm.toLinearMap, F, hF, fun z => ?_, fun z => (k.symm z).2, fun w => ?_, fun w hw => ?_, fun a z => ?_⟩` and prove the remaining obligations. Simplify using `[hpu]`. Establish `: (U.subtype ∘ₗ k.symm.toLinearMap) ((k.toLinearMap ∘ₗ p) w) = p₀ w` using `by simp [p]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hp₀]`. Normalize the expressions using the abelian group laws. Use `hpu ⟨w, hw⟩` as an intermediate fact. Simplify using `only at this`. Simplify using `[this]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `k.surjective z`. Rewrite using `[← hk]`. Simplify using `[σ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_compl [FiniteDimensional ℂ W] (Q : ∀ n : ℕ, (O →+* Module.End ℂ (Fin n → ℂ)) → Prop)
     (hQ : ∀ (U : Type) [AddCommGroup U] [Module ℂ U] [FiniteDimensional ℂ U] (σ : O →+* Module.End ℂ U),
@@ -214,11 +212,11 @@ omit [IsScalarTower ℝ ℂ W] in
 include hconj hR hb in
 
 /- English proof (translation)
-Establish `hv : ∀ r ∈ R, S r u' = 0` using `fun r hr => by rw [← hconj, hu' r hr, map_zero]`. Establish `hre : ∀ z z', (S z z').re = (S z' z).re` using `fun z z' => by rw [← hconj z z', conj_re]`. Establish `him : ∀ z z', (S z z').im = -(S z' z).im` using `fun z z' => by rw [← hconj z z', conj_im, neg_neg]`. Generalize the expression as in `b (I • w) = a, hb (I • w) = ha at h`. Generalize the expression as in `b (I • w') = a', hb (I • w') = ha' at h'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `b w = c, hb w = hc at h ⊢`. Generalize the expression as in `b w' = c', hb w' = hc' at h' ⊢`. Substitute `h h'` using the available equality. Simplify using `only [map_add, LinearMap.map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hu _ ha', hu _ hc', hu' _ hc, hv _ ha, hv _ hc, AnArc.div_two_I]`. Apply the tactic sequence `apply Complex.ext <;>`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[hR _ ha _ ha', hR _ ha _ hc', hR _ hc _ ha', hR _ hc _ hc', hR _ ha' _ hc, hR _ hc' _ hc, hre a' c, hre c' c, hre u' u, him u' u]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sub_swap {w w' u u' : W} (hu : ∀ r ∈ R, S u r = 0) (hu' : ∀ r ∈ R, S u' r = 0)
     (h : w = b (I • w) + I • b w + u) (h' : w' = b (I • w') + I • b w' + u') :
@@ -243,15 +241,15 @@ end
 open NumberField in
 
 /- English proof (translation)
-Set `T₀ : Set U` to `{v | ∃ φ : E →+* ℂ, ∀ a : 𝓞 E, σ a v = φ (a : E) • v}`. Establish `hS : Submodule.span ℂ T₀ = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Rewrite using `[← EigenSplit.sum_proj (EigenSplit.isSplitting_complex E) σ v]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun φ _ => Submodule.subset_span ⟨φ, ?_⟩` and prove the remaining obligations. Conclude with `EigenSplit.mem_eigenSub.1 (EigenSplit.proj_mem (EigenSplit.isSplitting_complex E) σ φ v)`. Take `⟨T, hT, hspan, hli⟩` from `exists_linearIndependent ℂ T₀`. Set `b : Module.Basis T ℂ U` to `Module.Basis.mk hli (by rw [Subtype.range_coe, hspan, hS])`. Establish `: Finite T` using `Module.Finite.finite_basis b`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Fintype T` using `Fintype.ofFinite T`. Use `choose s hs using fun v : T => hT v.2`. Establish `hb : ∀ a v, σ a (b v) = s v (a : E) • b v` using `fun a v => by`. Simplify using `only [b, Module.Basis.mk_apply]`. Conclude with `hs v a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Set `e` to `Fintype.equivFin T`. Take `⟨k, hk⟩` from `PeriodNonempty.exists_diag σ (fun i => s (e.symm i)) fun a => by`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ b, e.symm.sum_comp fun v => s v (a : E)]`. Simplify using `[Matrix.trace, LinearMap.toMatrix_apply, hb]`. Use `⟨_, k, k.conjRingEquiv.toRingHom.comp σ, ⟨fun i => s (e.symm i), fun a z i => ?_⟩, fun a u => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Take `⟨u, rfl⟩` from `k.surjective z`. Simplify using `using hk a u i`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_diag {E : Type} [Field E] [NumberField E] (U : Type) [AddCommGroup U] [Module ℂ U]
     [FiniteDimensional ℂ U] (σ : 𝓞 E →+* Module.End ℂ U) :
@@ -286,22 +284,22 @@ section Hom
 variable {Y : Type} [AddCommGroup Y] [Module.Free ℤ Y] [Module.Finite ℤ Y]
 
 /- English proof (translation)
-Rewrite using `[(addMonoidHomLequivInt ℂ (A := Y) (B := ℂ)).finrank_eq, Module.finrank_linearMap, Module.finrank_self, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_hom_complex : Module.finrank ℂ (Y →+ ℂ) = Module.finrank ℤ Y := by
   rw [(addMonoidHomLequivInt ℂ (A := Y) (B := ℂ)).finrank_eq, Module.finrank_linearMap, Module.finrank_self, mul_one]
 
 /- English proof (translation)
-Rewrite using `[(addMonoidHomLequivInt ℤ (A := Y) (B := ℤ)).finrank_eq]`. Simplify using `[Module.finrank_linearMap]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finrank_hom_int : Module.finrank ℤ (Y →+ ℤ) = Module.finrank ℤ Y := by
   rw [(addMonoidHomLequivInt ℤ (A := Y) (B := ℤ)).finrank_eq]
   simp [Module.finrank_linearMap]
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun l _ => ?_` and prove the remaining obligations. Set `b` to `Module.Free.chooseBasis ℤ Y`. Establish `: l = ∑ i, l (b i) • (Int.castAddHom ℂ).comp (b.coord i).toAddMonoidHom`. Use extensionality with `x`. Use `conv_lhs => rw [← b.sum_repr x, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_zsmul]`. Simplify using `[AddMonoidHom.finsetSum_apply, mul_comm]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_intHom :
     Submodule.span ℂ (Set.range fun n : Y →+ ℤ => (Int.castAddHom ℂ).comp n) = ⊤ := by
@@ -318,15 +316,15 @@ theorem span_intHom :
 end Hom
 
 /- English proof (translation)
-Use `choose n hn using h`. Set `φ : A.abelian₂ →+ ℤ` to `AddMonoidHom.mk' (fun l => -n l) fun l l' => by`. Establish `: ((n (l + l') : ℤ) : ℝ) = n l + n l'`. Rewrite using `[← hn, ← hn, ← hn, Submodule.coe_add, A.H_add_left, add_im, mul_add]`. Establish `: n (l + l') = n l + n l'` using `by exact_mod_cast this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [this]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨l₀, hl₀⟩` from `A.Ef_bij.2 φ.toIntLinearMap`. Establish `h1 : ∀ l : A.abelian₂, imForm (sesq A.Hm) (l₀ - k • z) l = 0` using `fun l => by`. Establish `h2 : (A.Ef l₀ l : ℝ) = -n l` using `by rw [hl₀]; simp [φ]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_zsmul, LinearMap.sub_apply, LinearMap.smul_apply]`. Express the relevant statement in the definitionally equal form `(A.H l₀ l).im - k • (A.H z l).im = 0`. Rewrite using `[← A.Ef_eq_im, h2, ← hn, A.H_im_symm z l]`. Simplify using the standard rewrite rules. Establish `h3 : imForm (sesq A.Hm) (l₀ - k • z) = 0` using `LinearMap.ext_on A.full fun l hl => h1 ⟨l, hl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (l₀ : Fin A.gB → ℂ) - k • z = 0`. Assume the negation of the conclusion as `hne`. Establish `h5` using `A.H_pos hne`. Establish `h6 : (A.H (l₀ - k • z) (I • (l₀ - k • z))).im = 0` using `congr($h3 (I • (l₀ - k • z)))`. Rewrite `h6` using `[A.H_smul_right]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `A.H (l₀ - k • z) (l₀ - k • z) = c at h5 h6`. Simplify using `at h6`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← sub_eq_zero.1 h4]`. Conclude with `l₀.2`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zsmul_mem_Lam {O : Type} [CommRing O] [StarRing O] (A : AnArc O) (k : ℤ) (z : Fin A.gB → ℂ)
     (h : ∀ l : A.abelian₂, ∃ n : ℤ, k * (A.H l z).im = n) : k • z ∈ A.abelian₂ := by

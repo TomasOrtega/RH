@@ -12,14 +12,14 @@ variable {n : ℕ}
 def sg (ε : Fin n → Bool) (a : Fin n) : ℝ := if ε a then 1 else -1
 
 /- English proof (translation)
-Unfold `sg`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sg_cases (ε : Fin n → Bool) (a : Fin n) : sg ε a = 1 ∨ sg ε a = -1 := by
   unfold sg
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Formalism.REAL.Jm, Matrix.diagonal_apply, sg]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Jm_eq (ε : Fin n → Bool) : Formalism.REAL.Jm ε = Matrix.diagonal fun a => ((sg ε a : ℝ) : ℂ) := by
   ext i j
@@ -27,9 +27,9 @@ lemma Jm_eq (ε : Fin n → Bool) : Formalism.REAL.Jm ε = Matrix.diagonal fun a
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Formalism.REAL.inG`. Rewrite using `[Jm_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `congrFun (congrFun h i) j` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]`. Introduce `h`. Use extensionality with `i j`. Simplify `h i j` using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma inG_iff_star_signed_entries_eq_zero (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) :
     inG ε X ↔ ∀ i j, star (X j i) * ((sg ε j : ℝ) : ℂ) + ((sg ε i : ℝ) : ℂ) * X i j = 0 := by
@@ -44,9 +44,9 @@ private lemma inG_iff_star_signed_entries_eq_zero (ε : Fin n → Bool) (X : Mat
     simpa [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply] using h i j
 
 /- English proof (translation)
-Rewrite using `[inG_iff_star_signed_entries_eq_zero]`. Establish `key : ∀ a b, (star (X b a) * ((sg ε b : ℝ) : ℂ) + ((sg ε a : ℝ) : ℂ) * X a b = 0 ↔ ((X b a).re = -(sg ε a * sg ε b) * (X a b).re ∧ (X b a).im = (sg ε a * sg ε b) * (X a b).im))`. Introduce `a b`. Rewrite using `[Complex.ext_iff]`. Simplify using `only [Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.star_def, Complex.conj_re, Complex.conj_im, Complex.zero_re, Complex.zero_im, mul_zero, zero_mul, sub_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases sg_cases ε a with ha | ha <;> rcases sg_cases ε b with hb | hb <;>`. Apply the tactic sequence `simp only [ha, hb] <;> constructor <;> rintro ⟨h1, h2⟩ <;> constructor <;> linarith`. Conclude with `⟨fun h a b => (key a b).1 (h a b), fun h a b => (key a b).2 (h a b)⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 -/
 lemma inG_iff (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) :
     inG ε X ↔ ∀ a b, (X b a).re = -(sg ε a * sg ε b) * (X a b).re ∧
@@ -69,7 +69,7 @@ noncomputable def bas (ε : Fin n → Bool) (a b : Fin n) : Matrix (Fin n) (Fin 
     Matrix.single b a (-((sg ε a * sg ε b : ℝ) : ℂ) * ((1 - Complex.I) / 2))
 
 /- English proof (translation)
-Simplify using `only [bas, Matrix.add_apply, Matrix.single_apply, Complex.add_re]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`. Apply the tactic sequence `split_ifs <;> simp [Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma bas_re (ε : Fin n → Bool) (a b p q : Fin n) :
     (bas ε a b p q).re = (if a = p ∧ b = q then 1 / 2 else 0) +
@@ -81,7 +81,7 @@ lemma bas_re (ε : Fin n → Bool) (a b p q : Fin n) :
     ring
 
 /- English proof (translation)
-Simplify using `only [bas, Matrix.add_apply, Matrix.single_apply, Complex.add_im]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`. Apply the tactic sequence `split_ifs <;> simp [Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma bas_im (ε : Fin n → Bool) (a b p q : Fin n) :
     (bas ε a b p q).im = (if a = p ∧ b = q then 1 / 2 else 0) +
@@ -93,15 +93,15 @@ lemma bas_im (ε : Fin n → Bool) (a b p q : Fin n) :
     ring
 
 /- English proof (translation)
-Rewrite using `[inG_iff]`. Introduce `p q`. Simplify using `only [bas_re, bas_im]`. Distinguish the cases in `hX : a = p ∧ b = q`. Rewrite using `[← hX.1, ← hX.2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hab : a = b`. Rewrite using `[← hab]`. Apply the tactic sequence `rcases sg_cases ε a with ha | ha <;> simp [ha] <;> norm_num`. Establish `n1 : ¬(a = b ∧ b = a)` using `fun h => hab h.1`. Establish `n2 : ¬(b = a ∧ a = b)` using `fun h => hab h.2`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases sg_cases ε a with ha | ha <;> rcases sg_cases ε b with hb | hb <;>`. Apply the tactic sequence `simp [n1, n2, ha, hb] <;> norm_num`. Distinguish the cases in `hY : b = p ∧ a = q`. Rewrite using `[← hY.1, ← hY.2]`. Rewrite `hX` using `[← hY.1, ← hY.2]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `n1 : ¬(b = a ∧ a = b)` using `fun h => hX ⟨h.2, h.1⟩`. Apply the tactic sequence `rcases sg_cases ε a with ha | ha <;> rcases sg_cases ε b with hb | hb <;>`. Apply the tactic sequence `simp [hX, n1, ha, hb] <;> norm_num`. Establish `n1 : ¬(a = q ∧ b = p)` using `fun h => hY ⟨h.2, h.1⟩`. Establish `n2 : ¬(b = q ∧ a = p)` using `fun h => hX ⟨h.2, h.1⟩`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hX, hY, n1, n2]`.
+Simplify using the standard rewrite rules.
 -/
 lemma bas_inG (ε : Fin n → Bool) (a b : Fin n) : inG ε (bas ε a b) := by
   rw [inG_iff]
@@ -127,35 +127,31 @@ lemma bas_inG (ε : Fin n → Bool) (a b : Fin n) : inG ε (bas ε a b) := by
       simp [hX, hY, n1, n2]
 
 /- English proof (translation)
-Establish `hG` using `bas_inG ε a b`. Unfold `Formalism.REAL.inK Formalism.REAL.inP`. Rewrite using `[Jm_eq]`. Apply the tactic sequence `rcases sg_cases ε a with ha | ha <;> rcases sg_cases ε b with hb | hb`. Use `left`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hG, ?_⟩` and prove the remaining obligations. Use `clear hG`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, bas, Matrix.add_apply, Matrix.single_apply]`. Distinguish the cases in `hX : a = i ∧ b = j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← hX.1, ← hX.2]`. Distinguish the cases in `hab : a = b`. Rewrite using `[← hab]`. Expand and normalize the polynomial expressions, which then agree. Establish `n2 : ¬(b = a ∧ a = b)` using `fun h => hab h.2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[n2, ha, hb]`. Distinguish the cases in `hY : b = i ∧ a = j`. Rewrite using `[← hY.1, ← hY.2]`. Rewrite `hX` using `[← hY.1, ← hY.2]`. Simplify using `[hX, ha, hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hX, hY]`. Use `right`. Use `⟨hG, ?_⟩` and prove the remaining obligations. Use `clear hG`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.neg_apply, bas, Matrix.add_apply, Matrix.single_apply]`. Distinguish the cases in `hX : a = i ∧ b = j`. Rewrite using `[← hX.1, ← hX.2]`. Distinguish the cases in `hab : a = b`. Rewrite `hb` using `[← hab, ha]`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Evaluate the numerical expressions using `at hb`. Establish `n2 : ¬(b = a ∧ a = b)` using `fun h => hab h.2`. Simplify using `[n2, ha, hb]`. Distinguish the cases in `hY : b = i ∧ a = j`. Rewrite using `[← hY.1, ← hY.2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hX` using `[← hY.1, ← hY.2]`. Simplify using `[hX, ha, hb]`. Simplify using `[hX, hY]`. Use `right`. Use `⟨hG, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `clear hG`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.neg_apply, bas, Matrix.add_apply, Matrix.single_apply]`. Distinguish the cases in `hX : a = i ∧ b = j`. Rewrite using `[← hX.1, ← hX.2]`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hab : a = b`. Rewrite `hb` using `[← hab, ha]`. Evaluate the numerical expressions using `at hb`. Establish `n2 : ¬(b = a ∧ a = b)` using `fun h => hab h.2`. Simplify using `[n2, ha, hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hY : b = i ∧ a = j`. Rewrite using `[← hY.1, ← hY.2]`. Rewrite `hX` using `[← hY.1, ← hY.2]`. Simplify using `[hX, ha, hb]`. Simplify using `[hX, hY]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `left`. Use `⟨hG, ?_⟩` and prove the remaining obligations. Use `clear hG`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, bas, Matrix.add_apply, Matrix.single_apply]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hX : a = i ∧ b = j`. Rewrite using `[← hX.1, ← hX.2]`. Distinguish the cases in `hab : a = b`. Rewrite using `[← hab]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `n2 : ¬(b = a ∧ a = b)` using `fun h => hab h.2`. Simplify using `[n2, ha, hb]`. Distinguish the cases in `hY : b = i ∧ a = j`. Rewrite using `[← hY.1, ← hY.2]`. Rewrite `hX` using `[← hY.1, ← hY.2]`.
-
-Simplify using `[hX, ha, hb]`. Simplify using `[hX, hY]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma bas_type (ε : Fin n → Bool) (a b : Fin n) : inK ε (bas ε a b) ∨ inP ε (bas ε a b) := by
   have hG := bas_inG ε a b
@@ -236,14 +232,14 @@ lemma bas_type (ε : Fin n → Bool) (a b : Fin n) : inK ε (bas ε a b) ∨ inP
       · simp [hX, hY]
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_single, Matrix.trace_mul_single, op_smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma trace_mul_single_conj (X : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) (c : ℂ) :
     (X * (Matrix.single a b c)ᴴ).trace = X a b * star c := by
   rw [Matrix.conjTranspose_single, Matrix.trace_mul_single, op_smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[bas, Matrix.conjTranspose_add, Matrix.mul_add, Matrix.trace_add, trace_mul_single_conj, trace_mul_single_conj]`. Simplify using `[Complex.mul_re, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma re_trace_mul_bas_conjTranspose_eq (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) (p q : Fin n) :
     ((Y * (bas ε p q)ᴴ).trace).re = ((Y p q).re + (Y p q).im) / 2 -
@@ -254,7 +250,7 @@ private lemma re_trace_mul_bas_conjTranspose_eq (ε : Fin n → Bool) (Y : Matri
   ring
 
 /- English proof (translation)
-Rewrite using `[re_trace_mul_bas_conjTranspose_eq]`. Take `⟨h1, h2⟩` from `(inG_iff ε X).1 hX a b`. Rewrite using `[h1, h2]`. Apply the tactic sequence `rcases sg_cases ε a with ha | ha <;> rcases sg_cases ε b with hb | hb <;> rw [ha, hb] <;> ring`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma coeff (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (a b : Fin n) :
     ((X * (bas ε a b)ᴴ).trace).re = (X a b).re + (X a b).im := by
@@ -264,13 +260,13 @@ lemma coeff (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε 
   rcases sg_cases ε a with ha | ha <;> rcases sg_cases ε b with hb | hb <;> rw [ha, hb] <;> ring
 
 /- English proof (translation)
-Rewrite using `[re_trace_mul_bas_conjTranspose_eq]`. Simplify using `only [bas_re, bas_im, Prod.mk.injEq]`. Distinguish the cases in `hX : a = p ∧ b = q`. Rewrite using `[← hX.1, ← hX.2]`. Distinguish the cases in `hab : a = b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← hab]`. Apply the tactic sequence `rcases sg_cases ε a with ha | ha <;> simp [ha] <;> norm_num`. Establish `n1 : ¬(a = b ∧ b = a)` using `fun h => hab h.1`. Establish `n2 : ¬(b = a ∧ a = b)` using `fun h => hab h.2`. Apply the tactic sequence `rcases sg_cases ε a with ha | ha <;> rcases sg_cases ε b with hb | hb <;>`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [n1, n2, ha, hb] <;> norm_num`. Distinguish the cases in `hY : b = p ∧ a = q`. Rewrite using `[← hY.1, ← hY.2]`. Rewrite `hX` using `[← hY.1, ← hY.2]`. Establish `n1 : ¬(b = a ∧ a = b)` using `fun h => hX ⟨h.2, h.1⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases sg_cases ε a with ha | ha <;> rcases sg_cases ε b with hb | hb <;>`. Apply the tactic sequence `simp [hX, n1, ha, hb] <;> norm_num`. Establish `n1 : ¬(a = q ∧ b = p)` using `fun h => hY ⟨h.2, h.1⟩`. Establish `n2 : ¬(b = q ∧ a = p)` using `fun h => hX ⟨h.2, h.1⟩`. Simplify using `[hX, hY, n1, n2]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma ortho (ε : Fin n → Bool) (a b p q : Fin n) :
     ((bas ε a b * (bas ε p q)ᴴ).trace).re = if (a, b) = (p, q) then 1 else 0 := by
@@ -296,7 +292,7 @@ lemma ortho (ε : Fin n → Bool) (a b p q : Fin n) :
       simp [hX, hY, n1, n2]
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_eq_single (i, j)]`. Simplify using the standard rewrite rules. Introduce `z hz`. Rewrite using `[if_neg]`. Conclude with `fun h => hz (Prod.ext h.1 h.2)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private lemma smul_add_smul_mul_mul_smul_add_smul_of_mul_eq_zero (f : Fin n × Fin n → ℂ) (i j : Fin n) :
     (∑ z : Fin n × Fin n, if z.1 = i ∧ z.2 = j then f z else 0) = f (i, j) := by
@@ -307,7 +303,7 @@ private lemma smul_add_smul_mul_mul_smul_add_smul_of_mul_eq_zero (f : Fin n × F
     exact fun h => hz (Prod.ext h.1 h.2)
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_eq_single (j, i)]`. Simplify using the standard rewrite rules. Introduce `z hz`. Rewrite using `[if_neg]`. Conclude with `fun h => hz (Prod.ext h.2 h.1)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private lemma mulVec_fvec_eq_sum_uMap_smul_of_mem_Nset (f : Fin n × Fin n → ℂ) (i j : Fin n) :
     (∑ z : Fin n × Fin n, if z.2 = i ∧ z.1 = j then f z else 0) = f (j, i) := by
@@ -318,11 +314,11 @@ private lemma mulVec_fvec_eq_sum_uMap_smul_of_mem_Nset (f : Fin n × Fin n → �
     exact fun h => hz (Prod.ext h.2 h.1)
 
 /- English proof (translation)
-Repeatedly rewrite using `[coeff ε hX]`. Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, bas, Matrix.add_apply, Matrix.single_apply, smul_add, Finset.sum_add_distrib, smul_ite, smul_zero]`. Rewrite using `[smul_add_smul_mul_mul_smul_add_smul_of_mul_eq_zero, mulVec_fvec_eq_sum_uMap_smul_of_mem_Nset]`.
+Rewrite the conclusion repeatedly using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `(inG_iff ε X).1 hX i j`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [smul_eq_mul, Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.add_im, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.ofReal_mul, Complex.div_ofNat_re, Complex.div_ofNat_im, Complex.sub_re, Complex.sub_im, Complex.one_re, Complex.one_im, …`. Apply the tactic sequence `rcases sg_cases ε i with hi | hi <;> rcases sg_cases ε j with hj | hj <;> simp only [hi, hj] <;> ring`. Simplify using `only [smul_eq_mul, Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.add_im, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.ofReal_mul, Complex.div_ofNat_re, Complex.div_ofNat_im, Complex.sub_re, Complex.sub_im, Complex.one_re, Complex.one_im, …`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases sg_cases ε i with hi | hi <;> rcases sg_cases ε j with hj | hj <;> simp only [hi, hj] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma expand (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) :
     X = ∑ z : Fin n × Fin n, ((((X * (bas ε z.1 z.2)ᴴ).trace).re : ℝ) : ℂ) • bas ε z.1 z.2 := by
@@ -346,9 +342,9 @@ lemma expand (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε
     rcases sg_cases ε i with hi | hi <;> rcases sg_cases ε j with hj | hj <;> simp only [hi, hj] <;> ring
 
 /- English proof (translation)
-Introduce `n ε`. Take `⟨e⟩ : Nonempty (Fin (n ^ 2) ≃ Fin n × Fin n)` from `⟨(finCongr (pow_two n)).trans finProdFinEquiv.symm⟩`. Use `⟨fun i => bas ε (e i).1 (e i).2, fun i => ⟨bas_inG ε _ _, bas_type ε _ _⟩, fun i j => ?_, fun X hX => ?_⟩` and prove the remaining obligations. Use `show ((bas ε (e i).1 (e i).2 * (bas ε (e j).1 (e j).2)ᴴ).trace).re = if i = j then 1 else 0`. Rewrite using `[ortho]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.mk.eta, EmbeddingLike.apply_eq_iff_eq]`. Conclude with `(expand ε hX).trans (Equiv.sum_comp e (fun z : Fin n × Fin n => ((((X * (bas ε z.1 z.2)ᴴ).trace).re : ℝ) : ℂ) • bas ε z.1 z.2)).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_orthonormal_basis : ∀ (n : ℕ) (ε : Fin n → Bool), ∃ E : Fin (n ^ 2) → Matrix (Fin n) (Fin n) ℂ, (∀ i, inG ε (E i) ∧ (inK ε (E i) ∨ inP ε (E i))) ∧ (∀ i j, ((E i * (E j)ᴴ).trace).re = if i = j then 1 else 0) ∧ ∀ X, inG ε X → X = ∑ i, ((((X * (E i)ᴴ).trace).re : ℝ) : ℂ) • E i := by
   intro n ε

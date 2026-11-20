@@ -15,7 +15,7 @@ namespace PtsPosDens
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[logNorm, HermLine.ofWeight, Real.exp_neg, Real.log_exp]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem logNorm_ofWeight_one {g : ((Σ k, ι k) → ℂ) → ℝ} (hg : IsDegZeroSmooth g) :
     logNorm (HermLine.ofWeight g hg.2) 1 = g := by
@@ -23,14 +23,14 @@ theorem logNorm_ofWeight_one {g : ((Σ k, ι k) → ℂ) → ℝ} (hg : IsDegZer
   simp [logNorm, HermLine.ofWeight, Real.exp_neg, Real.log_exp]
 
 /- English proof (translation)
-The claim follows from `show ContDiffOn ℝ _ (fun z => Real.exp (-g z)) _ from Real.contDiff_exp.comp_contDiffOn hg.1.neg`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_ofWeight {g : ((Σ k, ι k) → ℂ) → ℝ} (hg : IsDegZeroSmooth g) :
     IsSmoothHerm (HermLine.ofWeight g hg.2) :=
   show ContDiffOn ℝ _ (fun z => Real.exp (-g z)) _ from Real.contDiff_exp.comp_contDiffOn hg.1.neg
 
 /- English proof (translation)
-Use `⟨0, fun k => by simp [HermLine.ofWeight], fun m hm k => ?_, fun h => hP.2.1.1.ne_top ((Ideal.eq_top_iff_one P).2 h)⟩` and prove the remaining obligations. Rewrite `hm` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem isSectionOn_ofWeight_one {P : Ideal (MRing ι)} {d : ℕ} (hP : IsArithVar P d)
     {g : ((Σ k, ι k) → ℂ) → ℝ} (hg : IsDegZeroSmooth g) :
@@ -42,19 +42,17 @@ theorem isSectionOn_ofWeight_one {P : Ideal (MRing ι)} {d : ℕ} (hP : IsArithV
   simp
 
 /- English proof (translation)
-Use `set T : Set ((Σ k, ι k) → ℂ) := {z | ∀ k, ‖fun i : ι k => z ⟨k, i⟩‖ = 1} with hTdef`. Establish `hTc : IsClosed T`. Rewrite using `[hTdef, Set.ofPred_forall]`. Conclude with `isClosed_iInter fun k => isClosed_eq (continuous_norm.comp (continuous_pi fun i => continuous_apply _)) continuous_const`. Establish `hTb : T ⊆ Metric.closedBall 0 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Rewrite using `[mem_closedBall_zero_iff]`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun p => ?_` and prove the remaining obligations. Establish `h1` using `norm_le_pi_norm (fun i : ι p.1 => z ⟨p.1, i⟩) p.2`. Rewrite `h1` using `[hz p.1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `hTK : IsCompact T` using `Metric.isCompact_of_isClosed_isBounded hTc (Metric.isBounded_closedBall.subset hTb)`. Establish `hTU : T ⊆ {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}`. Introduce `z hz k`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push Not at h`. Establish `h0 : (fun i : ι k => z ⟨k, i⟩) = 0` using `funext h`. Use `hz k` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, hM⟩` from `hTK.exists_bound_of_continuousOn (hg.1.continuousOn.mono hTU)`. Use `⟨M, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hb : ∀ k, (fun i : ι k => z ⟨k, i⟩) ≠ 0` using `fun k h0 => by`. Take `⟨i, hi⟩` from `hz k`. Conclude with `hi (congrFun h0 i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set c : K → ℂ := fun k => ((‖fun i : ι k => z ⟨k, i⟩‖ : ℝ) : ℂ)⁻¹ with hcdef`. Establish `hc : ∀ k, c k ≠ 0` using `fun k => inv_ne_zero (Complex.ofReal_ne_zero.2 (norm_ne_zero_iff.2 (hb k)))`. Establish `hmem : (fun p : Σ k, ι k => c p.1 * z p) ∈ T`. Introduce `k`. Establish `: (fun i : ι k => c k * z ⟨k, i⟩) = c k • fun i : ι k => z ⟨k, i⟩` using `rfl`.
-
-Rewrite using `[this, norm_smul, hcdef]`. Simplify using `only [norm_inv, Complex.norm_real, norm_norm]`. Conclude with `inv_mul_cancel₀ (norm_ne_zero_iff.2 (hb k))`. Rewrite using `[← hg.2 c z hc]`. Conclude with `hM _ hmem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound {g : ((Σ k, ι k) → ℂ) → ℝ} (hg : IsDegZeroSmooth g) :
     ∃ M : ℝ, ∀ z : (Σ k, ι k) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → |g z| ≤ M := by
@@ -97,15 +95,13 @@ theorem exists_bound {g : ((Σ k, ι k) → ℂ) → ℝ} (hg : IsDegZeroSmooth 
   exact hM _ hmem
 
 /- English proof (translation)
-Introduce `z hz v`. Establish `hU : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `isOpen_blockNonzero`. Establish `hline : Continuous fun t : ℂ => z + t • v` using `by fun_prop`. Establish `hev : ∀ᶠ t in 𝓝 (0 : ℂ), z + t • v ∈ {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}`. Use `hline.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hU.mem_nhds hz`. Establish `hsm : ∀ C : HermLine ι, IsSmoothHerm C → ContDiffAt ℝ 2 (fun t : ℂ => Real.log (C.h (z + t • v))) 0`. Introduce `C hC`. Establish `h1 : ContDiffAt ℝ 2 C.h (z + (0 : ℂ) • v)`. Rewrite using `[zero_smul, add_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hC.contDiffAt (hU.mem_nhds hz)).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `h2 : ContDiffAt ℝ 2 (fun t : ℂ => z + t • v) 0` using `by fun_prop`. Establish `h3` using `h1.comp (0 : ℂ) h2`. Use `h3.log ?_` and prove the remaining obligations. Simplify using `only [Function.comp, zero_smul, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(C.pos z hz).ne'`. Establish `heq : (fun t : ℂ => Real.log ((A.tensor B).h (z + t • v))) =ᶠ[𝓝 0] (fun t : ℂ => Real.log (A.h (z + t • v))) + fun t : ℂ => Real.log (B.h (z + t • v))` using `by filter_upwards [hev] with t ht`. Simplify using `only [Pi.add_apply, HermLine.tensor]`. Conclude with `Real.log_mul (A.pos _ ht).ne' (B.pos _ ht).ne'`. Rewrite using `[(laplacian_congr_nhds heq).eq_of_nhds, (hsm A hA).laplacian_add (hsm B hB)]`.
-
-Conclude with `add_nonneg (hAp z hz v) (hBp z hz v)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSemiPosHerm_tensor {A B : HermLine ι} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B)
     (hAp : Inter.IsSemiPosHerm A) (hBp : Inter.IsSemiPosHerm B) : Inter.IsSemiPosHerm (A.tensor B) := by
@@ -135,45 +131,39 @@ theorem isSemiPosHerm_tensor {A B : HermLine ι} (hA : IsSmoothHerm A) (hB : IsS
   exact add_nonneg (hAp z hz v) (hBp z hz v)
 
 /- English proof (translation)
-Establish `hfin` using `fibreFinite K ι P e Ψ hP hΨ`. Take `⟨B, γ, hBo, hlift, hcov⟩` from `PtsSumMeasurable.exists_lift_family (P := P) (Ψ := Ψ) hfin`. Establish `hind` using `sheetIndep K ι P e Ψ L _ 1 hP hΨ hL (isSmoothHerm_ofWeight hg) (isSectionOn_ofWeight_one hP hg)`. Rewrite `hind` using `[logNorm_ofWeight_one hg]`. Establish `hsheet : ∀ m, ∀ y ∈ B m, IsSheet P Ψ y (segre (γ m y)) (γ m)` using `fun m y hy => ⟨rfl, Filter.eventually_of_mem ((hBo m).mem_nhds hy) fun y' hy' => hlift m y' hy'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hγc : ∀ m, ContinuousOn (γ m) (B m)` using `fun m y hy => (hlift m y hy).1.continuousAt.continuousWithinAt`. Establish `hO : ∀ m, Set.MapsTo (γ m) (B m) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `fun m y hy => (hlift m y hy).2.1.1`. Establish `hseg : Continuous (segre : ((Σ k, ι k) → ℂ) → ((k : K) → ι k) → ℂ)` using `continuous_pi fun i => continuous_finsetProd _ fun k _ => continuous_apply _`. Use `set σ : ℕ → (Fin e → ℂ) → ((k : K) → ι k) → ℂ := fun m => (B m).piecewise (fun y => segre (γ m y)) 0 with hσdef`. Establish `hσB : ∀ m, ∀ y ∈ B m, σ m y = segre (γ m y)` using `fun m y hy => Set.piecewise_eq_of_mem _ _ _ hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσm : ∀ m, Measurable (σ m)` using `fun m => (hseg.comp_continuousOn (hγc m)).measurable_piecewise continuousOn_const (hBo m).measurableSet`. Use `set a : ℕ → (Fin e → ℂ) → ℝ := fun m => (B m).piecewise (fun y => g (γ m y)) 0 with hadef`. Establish `ham : ∀ m, Measurable (a m)` using `fun m => (hg.1.continuousOn.comp (hγc m) (hO m)).measurable_piecewise continuousOn_const (hBo m).measurableSet`. Use `set dens : ℕ → (Fin e → ℂ) → ℝ := fun m y => max (a m y * maDensity (fun j y' => pot L j (γ m y')) y) 0 with hddef`. Establish `hdm : ∀ m, Measurable (dens m)` using `fun m => ((ham m).mul (PtsSumMeasurable.measurable_maDensity _)).max measurable_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hdens : ∀ m, ∀ y ∈ B m, dens m y = max (g (γ m y) * maDensity (fun j y' => pot L j (γ m y')) y) 0`. Introduce `m y hy`. Simplify using `only [hddef, hadef, Set.piecewise_eq_of_mem _ _ _ hy]`. Use `set S : ℕ → Set (Fin e → ℂ) := fun m => {y | y ∈ B m ∧ ∀ m' < m, ¬ (y ∈ B m' ∧ σ m' y = σ m y)} with hSdef`. Establish `hSm : ∀ m, MeasurableSet (S m)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `m`. Establish `: S m = B m ∩ ⋂ m' ∈ Finset.range m, (B m' ∩ {y | σ m' y = σ m y})ᶜ`. Use extensionality with `y`. Simplify using `[hSdef]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hBo m).measurableSet.inter (Finset.measurableSet_biInter _ fun m' _ => ((hBo m').measurableSet.inter (measurableSet_eq_fun (hσm m') (hσm m))).compl)`. Use `set f : ℕ → (Fin e → ℂ) → ℝ := fun m => (S m).indicator (dens m) with hfdef`. Establish `hfm : ∀ m, Measurable (f m)` using `fun m => (hdm m).indicator (hSm m)`. Establish `hpp : ptsPosDens P Ψ (pot L) g = fun y => ∑ᶠ w ∈ fibre P Ψ y, max (sheetDensity P Ψ (pot L) g y w) 0` using `rfl`. Rewrite using `[hpp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `aestronglyMeasurable_of_tendsto_ae atTop (f := fun N y => ∑ m ∈ Finset.range N, f m y) (fun N => (Finset.measurable_sum _ fun m _ => hfm m).aestronglyMeasurable) ?_` and prove the remaining obligations. Use `filter_upwards [hind] with y hy`. Establish `hterm : ∀ m, y ∈ S m → f m y = max (sheetDensity P Ψ (pot L) g y (σ m y)) 0`. Introduce `m hm`. Establish `hsh` using `hsheet m y hm.1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hsh` using `[← hσB m y hm.1]`. Establish `hex : ∃ γ', IsSheet P Ψ y (σ m y) γ'` using `⟨_, hsh⟩`. Rewrite using `[hfdef]`. Simplify using `only`. Rewrite using `[Set.indicator_of_mem hm, hdens m y hm.1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Unfold `sheetDensity`. Rewrite using `[dif_pos hex]`. Rewrite using `[hy _ _ _ hex.choose_spec hsh]`. Establish `hmemF : ∀ m, y ∈ S m → σ m y ∈ (hfin y).toFinset`. Introduce `m hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.Finite.mem_toFinset, hσB m y hm.1]`. Conclude with `⟨γ m y, (hlift m y hm.1).2.1, rfl, (hlift m y hm.1).2.2⟩`. Establish `hfy : ∀ m, (∑ w ∈ (hfin y).toFinset, if σ m y = w then f m y else 0) = f m y`. Introduce `m`. Rewrite using `[Finset.sum_ite_eq]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hm : y ∈ S m`. Rewrite using `[if_pos (hmemF m hm)]`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[hfdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only`. Rewrite using `[Set.indicator_of_notMem hm]`. Establish `hev : ∀ w ∈ (hfin y).toFinset, ∀ᶠ N in atTop, max (sheetDensity P Ψ (pot L) g y w) 0 = ∑ m ∈ Finset.range N, if σ m y = w then f m y else 0`. Introduce `w _`. Distinguish the cases in `hex : ∃ γ', IsSheet P Ψ y w γ'`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨γ', hγ'⟩` from `hex`. Establish `hP' : ∃ m, y ∈ B m ∧ σ m y = w`. Take `⟨m, hm, hmw⟩` from `hcov y w γ' hγ'`. Conclude with `⟨m, hm, (hσB m y hm).trans hmw⟩`. Take `⟨hm1B, hm1w⟩` from `Nat.find_spec hP'`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hm1S : y ∈ S (Nat.find hP')` using `⟨hm1B, fun m' hm' h => Nat.find_min hP' hm' ⟨h.1, h.2.trans hm1w⟩⟩`. Use `filter_upwards [eventually_gt_atTop (Nat.find hP')] with N hN`. Rewrite using `[Finset.sum_eq_single_of_mem (Nat.find hP') (Finset.mem_range.2 hN), if_pos hm1w, hterm _ hm1S, hm1w]`. Introduce `m _ hne`. Use `split_ifs with hmw`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hmS : y ∈ S m`. It suffices to derive a contradiction. Establish `hle : Nat.find hP' ≤ m` using `Nat.find_min' hP' ⟨hmS.1, hmw⟩`. Conclude with `hmS.2 _ (lt_of_le_of_ne hle (Ne.symm hne)) ⟨hm1B, hm1w.trans hmw.symm⟩`. Rewrite using `[hfdef]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[Set.indicator_of_notMem hmS]`. Both sides reduce to the same expression. Establish `h0 : sheetDensity P Ψ (pot L) g y w = 0`. Unfold `sheetDensity`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[dif_neg hex]`. Use `Eventually.of_forall fun N => ?_` and prove the remaining obligations. Rewrite using `[h0, max_self]`. Use `(Finset.sum_eq_zero fun m _ => ?_).symm` and prove the remaining obligations. Use `split_ifs with hmw`.
-
-Distinguish the cases in `hmS : y ∈ S m`. Establish `hsh` using `hsheet m y hmS.1`. Rewrite `hsh` using `[← hσB m y hmS.1, hmw]`. Conclude with `absurd ⟨_, hsh⟩ hex`. Rewrite using `[hfdef]`.
-
-Simplify using `only`. Rewrite using `[Set.indicator_of_notMem hmS]`. Both sides reduce to the same expression. Establish `hsum : ∑ᶠ w ∈ fibre P Ψ y, max (sheetDensity P Ψ (pot L) g y w) 0 = ∑ w ∈ (hfin y).toFinset, max (sheetDensity P Ψ (pot L) g y w) 0` using `finsum_mem_eq_finite_toFinset_sum _ (hfin y)`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations.
-
-Use `filter_upwards [(eventually_all_finset _).2 hev] with N hN`. Rewrite using `[hsum, Finset.sum_congr rfl hN, Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun m _ => hfy m`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable {P : Ideal (MRing ι)} {e : ℕ}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {L : Fin e → HermLine ι}

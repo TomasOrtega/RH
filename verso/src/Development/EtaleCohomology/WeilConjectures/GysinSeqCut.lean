@@ -18,14 +18,14 @@ def dA (U : Scheme.{0}) (n m : ℤ) : SecI q i U n →+ SecI q i U m :=
   ((((res _ (tw q i)).d n m).hom.app (Opposite.op U)).hom).toAddMonoidHom
 
 /- English proof (translation)
-The claim follows from `(ConcreteCategory.congr_hom (((res _ (tw q i)).d n m).hom.naturality g.op) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem resA_dA {V U : Scheme.{0}} (g : V ⟶ U) (n m : ℤ) (x : SecI q i U n) :
     resA q i g m (dA q i U n m x) = dA q i V n m (resA q i g n x) :=
   (ConcreteCategory.congr_hom (((res _ (tw q i)).d n m).hom.naturality g.op) x).symm
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.congr_hom (((res _ (tw q i)).X n).obj.map_comp g.op f.op) x`.
+A detailed English derivation is pending.
 -/
 theorem resA_comp {W V U : Scheme.{0}} (f : W ⟶ V) (g : V ⟶ U) (n : ℤ) (x : SecI q i U n) :
     resA q i (f ≫ g) n x = resA q i f n (resA q i g n x) :=
@@ -198,7 +198,7 @@ def LimExact : Prop := ∀ (l : ℕ) [Fact l.Prime] {E E' E'' : Spc} {n i n' i' 
   Function.Exact u.hq v.hq
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `tmul a y => simp only [LinearMap.baseChange_tmul, h, TensorProduct.tmul_smul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem bc_comm {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {M N P P' : Type 1} [AddCommGroup M] [AddCommGroup N]
     [AddCommGroup P] [AddCommGroup P'] [Module R M] [Module R N] [Module R P] [Module R P'] (f : M →ₗ[R] P) (g : P →ₗ[R] N)
@@ -211,9 +211,9 @@ theorem bc_comm {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {M N P P' :
   | add x y hx hy => simp only [map_add, hx, hy, smul_add]
 
 /- English proof (translation)
-Introduce `hB l _ k _ _ hl e r X Z _ p ι U hι hp hZ hU`. Take `⟨a1, a2⟩` from `h1 hB l k hl e r p ι U hι hp hZ hU`. Use `⟨a1, a2, fun fX fZ Ω _ _ _ σ hσ => ?_⟩` and prove the remaining obligations. Establish `fU` using `(a1 fZ).1 fX`. Take `⟨g, δ, e1, e2, e3, c1, c2⟩` from `h2 hB l k hl e r p ι U hι hp hZ hU Ω σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨fun a b h => (g a b h).hq, fun b a h => (δ b a h).hq, fun a b h => h3 l (g a b h) (Tower.pull l _ b 0) (fun c => fZ Ω c a 0) (e1 a b h), fun b a h => h3 l (Tower.pull l _ b 0) (δ b a h) (fun c => fX Ω c b 0) (e2 b a h), fun b a h => h3 l (δ b a h) (g a (b + 1) h) (fun c => fU Ω …` and prove the remaining obligations. Conclude with `bc_comm (g a b h).hl (galHl l Ω p b 0 σ⁻¹) (galHl l Ω (ι ≫ p) a 0 σ⁻¹) (g a b h).hl _ _ (fun y => Subtype.ext (funext fun c => c1 a b h c (y.1 c))) x`. Conclude with `bc_comm (galHl l Ω (U.ι ≫ p) b 0 σ⁻¹) (δ b a h).hl (δ b a h).hl (galHl l Ω (ι ≫ p) a 0 σ⁻¹) _ _ (fun y => Subtype.ext (funext fun c => c2 b a h c (y.1 c))) x`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem goal_of (h1 : FinPart) (h2 : GysinTw) (h3 : LimExact) : GysinSeq := by
   intro hB l _ k _ _ hl e r X Z _ p ι U hι hp hZ hU

@@ -20,7 +20,7 @@ open PositivityTheory.Rg.BcB.F.FX PositivityTheory.Rg.BcB.F.FX.Bo
 open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.RS PositivityTheory.Rg.BcB.CG
 
 /- English proof (translation)
-Use `choose kA kB PA PB hcls using fun i : F₀.C.ι => cls_fin hFS hCP F₀ d i (hO i).1 (hO i).2`. Establish `h1` using `part1 hII hSPr F₀ d kA kB PA PB hcls T'`. Conclude with `⟨h1.1, part2 hSPr hSJ hII hAd F₀ d kA kB PA PB hcls, h1.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem all_parts (hFS : FinStrict) (hSPr : StrictProd) (hSJ : StrictJoin) (hCP : CandParts) (hII : IsoInv) (hAd : AdmProd)
     {hR : Rd.ReadLimit} {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {π : Submodule ℂ (UA E n → ℂ)}
@@ -37,7 +37,7 @@ theorem all_parts (hFS : FinStrict) (hSPr : StrictProd) (hSJ : StrictJoin) (hCP 
   exact ⟨h1.1, part2 hSPr hSJ hII hAd F₀ d kA kB PA PB hcls, h1.2⟩
 
 /- English proof (translation)
-Introduce `hR E _ _ _ hU n hn π hπ S F₀ T' c e b hT'`. Establish `hO` using `fun i : F₀.C.ι => hLO hR E n π S F₀ T' c e b (F₀.C.a i) (F₀.C.le i)`. Conclude with `all_parts hFS hSPr hSJ hCP hII hAd F₀ (F₀.loc T' c e b) T' hO`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem candFin_of (hFS : FinStrict) (hSPr : StrictProd) (hSJ : StrictJoin) (hCP : CandParts)
     (hLO : LevOpen) (hII : IsoInv) (hAd : AdmProd) : CandFin := by

@@ -24,7 +24,7 @@ namespace GlobalTheory.JetsOne
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-Use `choose g hg using h`. Use `⟨fun n => Nat.rec a (fun n b => if hn : n < N then g n hn b else 0) n, rfl, fun n hn => ?_⟩` and prove the remaining obligations. Use `hg n hn (Nat.rec a (fun n b => if hn : n < N then g n hn b else 0) n)` as an intermediate fact. Simplify `this` using `only [dif_pos hn]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_rec {α : ℕ → Type} [∀ n, Zero (α n)] {N : ℕ} {R : ∀ n, n < N → α n → α (n + 1) → Prop}
     (h : ∀ n hn a, ∃ b, R n hn a b) (a : α 0) : ∃ f : ∀ n, α n, f 0 = a ∧ ∀ n hn, R n hn (f n) (f (n + 1)) := by
@@ -34,16 +34,16 @@ theorem exists_rec {α : ℕ → Type} [∀ n, Zero (α n)] {N : ℕ} {R : ∀ n
   simpa only [dif_pos hn] using this
 
 /- English proof (translation)
-Establish `hn` using `DefPair.nodes hp`. Apply the tactic sequence `cases p <;> simp only [DefPair, DefNode] at hp hn <;> simp only [Pair.InRange, Node.InRange] <;> omega`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inRange_of_def {p : Pair T} (hp : DefPair D.R.m p) : p.InRange D.R.m := by
   have hn := DefPair.nodes hp
   cases p <;> simp only [DefPair, DefNode] at hp hn <;> simp only [Pair.InRange, Node.InRange] <;> omega
 
 /- English proof (translation)
-Establish `hω` using `W.om_is _ (inRange_of_def hp)`. Take `⟨f, hf⟩` from `hd`. Establish `hf0 : IsThetaFunO W.ψ _ _ f` using `GlobalTheory.VecTheta.isThetaFunO_of_thetaAt W.ψ_std W.θ_is hf ((S.Z.vac_is p hp).2.theta)`. Establish `hv : IsThetaFunO W.ψ _ _ (S.Z.vec d)`. Rewrite using `[Normal.vec, FinDatum.vec_eq W hf]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hω.om_pres _ _ hf0`. Establish `hm : IsThetaFunO W.ψ _ _ (movedVec t S d)` using `hω.om_pres _ _ hv`. Conclude with `GlobalTheory.Chain.InnerSteps.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ hm Q`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem theta_fock (S : GridChoice W U) {t : T} {p : Pair T} (hp : DefPair D.R.m p) (d : FinDatum G t p) (hd : S.Z.HasVec d)
     (Q : PolF D (G.pT p).rank (G.pS p).rank) : IsThetaFunO W.ψ (G.pS p) (G.pT p) (W.fock p (movedVec t S d) Q) := by
@@ -57,15 +57,13 @@ theorem theta_fock (S : GridChoice W U) {t : T} {p : Pair T} (hp : DefPair D.R.m
   exact GlobalTheory.Chain.InnerSteps.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ hm Q
 
 /- English proof (translation)
-Establish `hω` using `W.om_is _ hp`. Take `⟨A, A', hA, hA', e⟩` from `GlobalTheory.Mem.ThetaLevel.exists_level D W.ψ hω.std _ _ (W.om p) (GlobalTheory.Ker.isWeak_of_datum hω) hω.om_cont f hf`. Establish `hc : Continuous fun q : GA D (G.V p.small) × GA D (G.V p.big) => G.toPair p q.1 q.2`. Consider the cases of `p`. Conclude with `((continuous_negGA _).comp continuous_snd).prodMk continuous_fst`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `continuous_id`. Conclude with `((continuous_negGA _).comp continuous_snd).prodMk continuous_fst`. Conclude with `continuous_id`. Apply the tactic sequence `have h1 : G.toPair p 1 1 = 1 := by cases p <;> simp [GridData.toPair, Prod.ext_iff]`. Establish `hf : ∀ k ∈ GfC (G.V p.small), ∀ k' ∈ GfC (G.V p.big), (G.toPair p k k').1 ∈ GfC _ ∧ (G.toPair p k k').2 ∈ GfC _` using `fun k hk k' hk' => by`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Consider the cases of `p`. Conclude with `⟨GlobalTheory.FockReal.negGA_mem_GfC _ hk', hk⟩`. Conclude with `⟨hk, hk'⟩`. Conclude with `⟨GlobalTheory.FockReal.negGA_mem_GfC _ hk', hk⟩`. Conclude with `⟨hk, hk'⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ k ∈ GfC (G.V p.small), ∀ k' ∈ GfC (G.V p.big), G.toPair p k k' ∈ (A : Set _) ×ˢ (A' : Set _) → ∀ g h, W.ker p f (g * k) (h * k') = W.ker p f g h` using `fun k hk k' hk' hm g h => by`. Rewrite using `[GlobalTheory.FockReal.ker_mul]`. Conclude with `congrArg (fun F => W.ker p F g h) (e _ hm.1 (hf k hk k' hk').1 _ hm.2 (hf k hk k' hk').2)`. Establish `hO : IsOpen ((A : Set (GA D (G.pS p))) ×ˢ (A' : Set (GA D (G.pT p))))` using `hA.prod hA'`. Establish `m1 : G.toPair p 1 1 ∈ (A : Set _) ×ˢ (A' : Set _)` using `by rw [h1]; exact ⟨one_mem _, one_mem _⟩`.
-
-Prove the components needed by the constructor for the conclusion. Use `filter_upwards [(hO.preimage (hc.comp (continuous_id.prodMk (continuous_const (y := 1))))).mem_nhds (x := 1) m1] with k hk hk' g h`. Simplify using `using key k hk' 1 (one_mem _) hk g h`. Use `filter_upwards [(hO.preimage (hc.comp ((continuous_const (y := 1)).prodMk continuous_id))).mem_nhds (x := 1) m1] with k hk hk' g h`. Simplify using `using key 1 (one_mem _) k hk' hk g h`.
+Prove the components needed by the constructor for the conclusion. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ker_near (W : G.Weil) {p : Pair T} (hp : p.InRange D.R.m) {f : WO (G.pS p) (G.pT p) → ℂ}
     (hf : IsThetaFunO W.ψ (G.pS p) (G.pT p) f) :
@@ -100,7 +98,7 @@ theorem ker_near (W : G.Weil) {p : Pair T} (hp : p.InRange D.R.m) {f : WO (G.pS 
     simpa using key 1 (one_mem _) k hk' hk g h
 
 /- English proof (translation)
-Establish `hδ : S.Z.δ ≠ 0` using `Formalism.MainNotions.Ext.delta_ne_holds D _ D.host.ccK_ne_bot _ S.Z.crv.2`. Use `mul_ne_zero (Units.ne_zero _) (Finset.prod_ne_zero_iff.2 fun τ _ => pow_ne_zero _ ((map_ne_zero _).2 ?_))` and prove the remaining obligations. Conclude with `div_ne_zero one_ne_zero (period_ne_zero hδ τ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem scal_ne (S : GridChoice W U) (p : Pair T) : S.Z.scal 1 p ≠ 0 := by
   have hδ : S.Z.δ ≠ 0 := Formalism.MainNotions.Ext.delta_ne_holds D _ D.host.ccK_ne_bot _ S.Z.crv.2
@@ -108,7 +106,7 @@ theorem scal_ne (S : GridChoice W U) (p : Pair T) : S.Z.scal 1 p ≠ 0 := by
   exact div_ne_zero one_ne_zero (period_ne_zero hδ τ)
 
 /- English proof (translation)
-Unfold `Normal.scal`. Rewrite using `[(S.Z.free t t' j).2.2]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem scal_free (S : GridChoice W U) (t t' : T) (j : ℕ) : S.Z.scal 1 (.top t j) = S.Z.scal 1 (.top t' j) := by
   unfold Normal.scal
@@ -131,7 +129,7 @@ def rowKer (S : GridChoice W U) (P : PolCol G × PolRow G) {t : T} (d : PureDat 
   if hi : i < D.R.m then W.ker (.chi i D.R.m) (W.fock (.chi i D.R.m) (movedVec t S (d.2 ⟨i, hi⟩)) (P.2 ⟨i, hi⟩)) g h else 0
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => rfl | n + 1, f, hf => by funext h show liftA W M (.col t n) (f (Fin.last n)) (liftP W M (colPath t n) (colFam t n fun j => f j.castSucc) φ) h = _ rw [pathLift_column_eq_kernelLift M t ker φ n _ fun j => hf j.castSucc, liftA_apply] exact congrArg _ (funext fun g => co …`.
+A detailed English derivation is pending.
 -/
 theorem pathLift_column_eq_kernelLift (M : Vol G) (t : T) (ker : ∀ j, GA D (G.V (.top j)) → GA D (G.V (.top (j + 1))) → ℂ) (φ : Fn G (.top 0)) :
     ∀ (n : ℕ) (f : ∀ j : Fin n, Sch G (.col t j)), (∀ j : Fin n, ∀ g h, ker j g h = W.ker (.top t j) (f j) g h) →
@@ -145,7 +143,7 @@ theorem pathLift_column_eq_kernelLift (M : Vol G) (t : T) (ker : ∀ j, GA D (G.
     exact congrArg _ (funext fun g => congrArg (· * _) (hf (Fin.last n) g h).symm)
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => rfl | n + 1, f, hf => by funext h show liftA W M (.right n D.R.m) (f (Fin.last n)) (liftP W M (rowPath T D.R.m n) (rowFam D.R.m n fun j => f j.castSucc) φ) h = _ rw [pathLift_row_eq_kernelLift M ker φ n _ fun j => hf j.castSucc, liftA_apply] exact congrArg _ (funext …`.
+A detailed English derivation is pending.
 -/
 theorem pathLift_row_eq_kernelLift (M : Vol G) (ker : ∀ i, GA D (G.V (.grid i D.R.m)) → GA D (G.V (.grid (i + 1) D.R.m)) → ℂ)
     (φ : Fn G (.grid 0 D.R.m)) :
@@ -160,7 +158,7 @@ theorem pathLift_row_eq_kernelLift (M : Vol G) (ker : ∀ i, GA D (G.V (.grid i 
     exact congrArg _ (funext fun g => congrArg (· * _) (hf (Fin.last n) g h).symm)
 
 /- English proof (translation)
-Rewrite using `[defPer, pathLift_column_eq_kernelLift M t (colKer S P d) φ _ _ fun j g h => dif_pos j.2, pathLift_row_eq_kernelLift M (rowKer S P d) F _ _ fun j g h => dif_pos j.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem defPer_eq (S : GridChoice W U) (P : PolCol G × PolRow G) {t : T} (d : PureDat G t) (M : Vol G) (φ : Fn G (.top 0))
     (F : Fn G (.grid 0 D.R.m)) : defPer t S M P d φ F = ∫ h in M.fd (.grid D.R.m D.R.m),
@@ -171,7 +169,7 @@ theorem defPer_eq (S : GridChoice W U) (P : PolCol G × PolRow G) {t : T} (d : P
   rw [defPer, pathLift_column_eq_kernelLift M t (colKer S P d) φ _ _ fun j g h => dif_pos j.2, pathLift_row_eq_kernelLift M (rowKer S P d) F _ _ fun j g h => dif_pos j.2]
 
 /- English proof (translation)
-Use `⟨hF, fun n hn => ?_⟩` and prove the remaining obligations. Establish `hp : DefPair D.R.m (.top t n)` using `hn`. Simplify using `only [colKer, dif_pos hn]`. Conclude with `ker_near W (inRange_of_def hp) (theta_fock S hp _ (hd ⟨n, hn⟩) _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem col_near (S : GridChoice W U) (P : PolCol G × PolRow G) {t : T} (d : PureDat G t) (hd : ∀ j, S.Z.HasVec (d.1 j))
     {F : Fn G (.top 0)} (hF : ∀ᶠ k in 𝓝 (1 : GA D (G.V (.top 0))), k ∈ GfC _ → ∀ g, F (g * k) = F g) :
@@ -182,7 +180,7 @@ theorem col_near (S : GridChoice W U) (P : PolCol G × PolRow G) {t : T} (d : Pu
   exact ker_near W (inRange_of_def hp) (theta_fock S hp _ (hd ⟨n, hn⟩) _)
 
 /- English proof (translation)
-Use `⟨hF, fun n hn => ?_⟩` and prove the remaining obligations. Establish `hp : DefPair D.R.m (.chi n D.R.m : Pair T)` using `⟨hn, rfl⟩`. Simplify using `only [rowKer, dif_pos hn]`. Conclude with `ker_near W (inRange_of_def hp) (theta_fock S hp _ (hd ⟨n, hn⟩) _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem row_near (S : GridChoice W U) (P : PolCol G × PolRow G) {t : T} (d : PureDat G t) (hd : ∀ j, S.Z.HasVec (d.2 j))
     {F : Fn G (.grid 0 D.R.m)} (hF : ∀ᶠ k in 𝓝 (1 : GA D (G.V (.grid 0 D.R.m))), k ∈ GfC _ → ∀ g, F (g * k) = F g) :
@@ -193,11 +191,11 @@ theorem row_near (S : GridChoice W U) (P : PolCol G × PolRow G) {t : T} (d : Pu
   exact ker_near W (inRange_of_def hp) (theta_fock S hp _ (hd ⟨n, hn⟩) _)
 
 /- English proof (translation)
-Take `⟨Λ, h0, h⟩` from `exists_rec (α := fun j => Module.Dual ℂ (VV ℂ (wt G (.top j)))) (N := D.R.m) (R := fun j hj Λ Λ' => ∀ t ∈ U, ∀ d : FinDatum G t (.top t j), S.Z.HasVec d → ∀ κ : Measure (GinfC (G.V (.top j))), κ.IsHaarMeasure → IsProbabilityMeasure κ → ∀ (x : FinPt G (.top j)) (h : GA D (G.V (.to …`. Take `⟨Λ', h⟩` from `GlobalTheory.T.exists_dual_integral_arrowKernel_fock_eq_fockComp_top S hL j hj (P.1 ⟨j, hj⟩) Λ`. Use `⟨(S.Z.scal 1 (.top μ0 j))⁻¹ • Λ', fun t ht d hd κ h1 h2 x g v => (h t ht d hd κ h1 h2 x g v).trans ?_⟩` and prove the remaining obligations. Rewrite using `[Normal.kkMap, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, map_smul, scal_free S t μ0, smul_smul, inv_mul_cancel₀ (scal_ne S _), one_smul]) Λ0`. Use `⟨Λ, h0, fun t ht d hd n hn => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp : DefPair D.R.m (.top t n)` using `hn`. Establish `hθ` using `theta_fock S hp _ (hd ⟨n, hn⟩) (P.1 ⟨n, hn⟩)`. Establish `hl` using `GlobalTheory.RowReal.ker_rat_left W _ (inRange_of_def hp) _ hθ`. Use `⟨TermVolDef.isDefiniteSpace_of_isV (node_isV G hL (X := .top n) hn.le), posDef_top G hn.le, fun g hg => realAct_fin _ _ _ hg, fun u => GlobalTheory.T.realActionOnVertexWeight_continuous W.θ W.θ_is S.N.fr _ _ u, ?_⟩` and prove the remaining obligations. Simplify using `only [colKer, colComp, dif_pos hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun γ hγ g h => by simpa using hl γ hγ 1 (one_mem _) g h, fun γ hγ g h => by simpa using hl 1 (one_mem _) γ hγ g h, (kerA_col_aut_cont S hL n hn _ t ht _ (hd ⟨n, hn⟩)).2, h n hn t ht _ (hd ⟨n, hn⟩)⟩`.
+Supply the required witnesses or components.
 -/
 theorem col_chain (S : GridChoice W U) {μ0 : T} (hL : L.Is μ0) (P : PolCol G × PolRow G) (Λ0 : Module.Dual ℂ (VV ℂ (wt G (.top 0)))) :
     ∃ Λ : ∀ j, Module.Dual ℂ (VV ℂ (wt G (.top j))), Λ 0 = Λ0 ∧ ∀ t ∈ U, ∀ d : PureDat G t, (∀ j, S.Z.HasVec (d.1 j)) →
@@ -225,11 +223,11 @@ theorem col_chain (S : GridChoice W U) {μ0 : T} (hL : L.Is μ0) (P : PolCol G �
     (kerA_col_aut_cont S hL n hn _ t ht _ (hd ⟨n, hn⟩)).2, h n hn t ht _ (hd ⟨n, hn⟩)⟩
 
 /- English proof (translation)
-Take `⟨Λ, h0, h⟩` from `exists_rec (α := fun j => Module.Dual ℂ (VV ℂ (wt G (.grid j D.R.m)))) (N := D.R.m) (R := fun j hj Λ Λ' => ∀ t ∈ U, ∀ d : FinDatum G t (.chi j D.R.m), S.Z.HasVec d → ∀ κ : Measure (GinfC (G.V (.grid j D.R.m))), κ.IsHaarMeasure → IsProbabilityMeasure κ → ∀ (x : FinPt G (.grid j D. …`. Take `⟨Λ', h⟩` from `GlobalTheory.T.lastColumnArrow_realAverage_functional S hL j hj (P.2 ⟨j, hj⟩) Λ`. Use `⟨(S.Z.scal 1 (.chi j D.R.m))⁻¹ • Λ', fun t ht d hd κ h1 h2 x g v => (h t ht d hd κ h1 h2 x g v).trans ?_⟩` and prove the remaining obligations. Rewrite using `[Normal.kkMap, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, map_smul, smul_smul, inv_mul_cancel₀ (scal_ne S _), one_smul]) Λ0`. Use `⟨Λ, h0, fun t ht d hd n hn => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp : DefPair D.R.m (.chi n D.R.m : Pair T)` using `⟨hn, rfl⟩`. Establish `hθ` using `theta_fock S hp _ (hd ⟨n, hn⟩) (P.2 ⟨n, hn⟩)`. Establish `hl` using `GlobalTheory.RowReal.ker_rat_left W _ (inRange_of_def hp) _ hθ`. Establish `hV` using `node_isV G hL (X := .grid n D.R.m) ⟨hn.le, le_rfl⟩`. Establish `e : Node.neg D.R.m (.grid n D.R.m) = 0` using `by simp [Node.neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hV` using `[e]`. Use `⟨TermVolDef.isDefiniteSpace_of_isV hV, posDef_grid hL hn.le, fun g hg => realAct_fin _ _ _ hg, fun u => GlobalTheory.T.realActionOnVertexWeight_continuous W.θ W.θ_is S.N.fr _ _ u, ?_⟩` and prove the remaining obligations. Simplify using `only [rowKer, rowComp, dif_pos hn]`. Conclude with `⟨fun γ hγ g h => by simpa using hl γ hγ 1 (one_mem _) g h, fun γ hγ g h => by simpa using hl 1 (one_mem _) γ hγ g h, fun z h => ((W.om_is _ (inRange_of_def hp)).om_cont _ hθ 0).comp (continuous_const.prodMk (continuous_const.mul continuous_subtype_val)), h n hn t ht _ (hd ⟨n, hn⟩ …`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem row_chain (S : GridChoice W U) {μ0 : T} (hL : L.Is μ0) (P : PolCol G × PolRow G)
     (Λ0 : Module.Dual ℂ (VV ℂ (wt G (.grid 0 D.R.m)))) :

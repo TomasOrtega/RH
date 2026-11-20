@@ -27,7 +27,7 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hx : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Establish `h1 : (1 : Ω) ∈ idealMod (x` using `x) pp I := Submodule.subset_span ⟨X i, X i, 1, hX, X_mem_monos hi, isHomogeneous_X S i, isHomogeneous_X S i, by`. Rewrite using `[aeval_X, div_self hx]⟩`. Conclude with `Submodule.subset_span ⟨1, h1, z, hz, (one_smul Ω z).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_le_twist_idealSys_of_mem (F : SubSystem S x Ω) {pp : Ideal (Poly S N)} (I : Chart x)
     {i : Fin (N + 1)} (hi : i ∈ I.1) (hX : (X i : Poly S N) ∈ pp) :
@@ -40,9 +40,9 @@ theorem sub_le_twist_idealSys_of_mem (F : SubSystem S x Ω) {pp : Ideal (Poly S 
   exact Submodule.subset_span ⟨1, h1, z, hz, (one_smul Ω z).symm⟩
 
 /- English proof (translation)
-Introduce `f hf`. Rewrite using `[← sum_homogeneousComponent f]`. Use `Ideal.sum_mem _ fun d _ => Ideal.subset_span ⟨d, homogeneousComponent_isHomogeneous d f, ?_⟩` and prove the remaining obligations. Introduce `I δ _`. Use `⟨0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(mem_primeOf_of_isHomogeneous x (homogeneousComponent_isHomogeneous d f)).mp (homogeneousComponent_mem_primeOf x hf d), zero_mul, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem primeOf_le_zeroIdeal (D : SubSystem S x Ω) (s : Ω) : primeOf (S := S) x ≤ zeroIdeal D s := by
   intro f hf
@@ -56,11 +56,11 @@ theorem primeOf_le_zeroIdeal (D : SubSystem S x Ω) (s : Ω) : primeOf (S := S) 
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
 /- English proof (translation)
-Establish `hJ : (zeroIdeal D s).IsHomogeneous (homogeneousSubmodule (Fin (N + 1)) S)` using `Ideal.homogeneous_span _ _ fun f ⟨c, hf, _⟩ => ⟨c, (mem_homogeneousSubmodule c f).mpr hf⟩`. Establish `hcore : (pp.homogeneousCore (homogeneousSubmodule (Fin (N + 1)) S)).toIdeal.IsPrime` using `hpp.1.1.homogeneousCore`. Establish `hle : zeroIdeal D s ≤ (pp.homogeneousCore (homogeneousSubmodule (Fin (N + 1)) S)).toIdeal` using `hJ.toIdeal_homogeneousCore_eq_self.symm.trans_le (Ideal.homogeneousCore_mono _ hpp.1.2)`. Establish `heq : (pp.homogeneousCore (homogeneousSubmodule (Fin (N + 1)) S)).toIdeal = pp` using `le_antisymm (Ideal.toIdeal_homogeneousCore_le _ _) (hpp.2 ⟨hcore, hle⟩ (Ideal.toIdeal_homogeneousCore_le _ _))`. Establish `hW : pp.IsHomogeneous (homogeneousSubmodule (Fin (N + 1)) S)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.IsHomogeneous.iff_eq]`. Conclude with `heq`. Introduce `p hp d`. Establish `h` using `hW d hp`. Establish `hc : (DirectSum.decompose (homogeneousSubmodule (Fin (N + 1)) S) p d : Poly S N) = homogeneousComponent d p` using `decomposition.decompose'_apply p d`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[hc]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem homog_of_mem_minimalPrimes (D : SubSystem S x Ω) (s : Ω) {pp : Ideal (Poly S N)}
     (hpp : pp ∈ (zeroIdeal D s).minimalPrimes) :
@@ -86,7 +86,7 @@ theorem homog_of_mem_minimalPrimes (D : SubSystem S x Ω) (s : Ω) {pp : Ideal (
 variable {K' : Type w} [Field K'] [Algebra S K'] {y : Fin (N + 1) → K'}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact RestrictTwist.proof.1 S Ω N x K' y hxy hle 0`. Consider the case `succ n ih`. Take `⟨r', hr'⟩` from `ih`. Conclude with `RestrictTwist.proof.2 S Ω N x K' y hxy _ M _ M' r' r hr' h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_restrict_powBundle (hxy : ∀ i, y i ≠ 0 → x i ≠ 0)
     (hle : primeOf (S := S) x ≤ primeOf (S := S) y) (M : LineBundle S x) (M' : LineBundle S y)
@@ -102,7 +102,7 @@ def twistMulBundle (M : LineBundle S x) (p : ℕ) (m : ℤ) : LineBundle S x :=
   (M.powBundle p).tensorProd (twistBundle S x m)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(M.powBundle p).toSubSystem.twist (twistSys S x m) = _`. Rewrite using `[LineBundle.powBundle_toSubSystem]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem twistMulBundle_toSubSystem (M : LineBundle S x) (p : ℕ) (m : ℤ) :
     (twistMulBundle M p m).toSubSystem = twistMul M.toSubSystem p m := by
@@ -111,7 +111,7 @@ theorem twistMulBundle_toSubSystem (M : LineBundle S x) (p : ℕ) (m : ℤ) :
   rfl
 
 /- English proof (translation)
-Take `⟨rP, hrP⟩` from `exists_restrict_powBundle hxy hle M M' r h p`. Take `⟨rc, hrc⟩` from `RestrictTwist.proof.1 S Ω N x K' y hxy hle m`. Conclude with `RestrictTwist.proof.2 S Ω N x K' y hxy _ (twistBundle S x m) _ (twistBundle S y m) rP rc hrP hrc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_restrict_twistMulBundle (hxy : ∀ i, y i ≠ 0 → x i ≠ 0)
     (hle : primeOf (S := S) x ≤ primeOf (S := S) y) (M : LineBundle S x) (M' : LineBundle S y)
@@ -129,37 +129,35 @@ end StepThree.OnW.Gen
 open StepThree.OnW.Gen in
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x T hK pp hpp`. Establish `hpr : pp.IsPrime` using `hpp.1.1`. Establish `hhom` using `homog_of_mem_minimalPrimes T.D T.si hpp`. Establish `hle : primeOf (S` using `k) x ≤ pp := (primeOf_le_zeroIdeal T.D T.si).trans hpp.1.2`. Distinguish the cases in `hrel : ∃ j, (X j : Poly k N) ∉ pp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `swap`. Use `push Not at hrel`. Use `⟨0, fun b c _ _ I => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `I.2.1`. Conclude with `le_sup_of_le_right (sub_le_twist_idealSys_of_mem _ I hi (hrel i))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hjp⟩` from `hrel`. Establish `hj : x j ≠ 0` using `fun h0 => hjp (hle ((mem_primeOf_of_isHomogeneous x (isHomogeneous_X k j)).mpr (by rw [aeval_X]; exact h0)))`. Take `⟨hcp, hpt⟩` from `PrimeFiltration.Point.proof k Ω N x pp hpr hhom hle j hj hjp`. Use `hcp` as an intermediate fact. Set `A` to `chartRing k x (singleChart hj)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Ip : Ideal A` to `chartPrime pp hj`. Set `ψ : A →ₐ[k] Ip.ResidueField` to `IsScalarTower.toAlgHom k A Ip.ResidueField`. Establish `hker : RingHom.ker ψ = Ip` using `Ideal.ker_algebraMap_residueField Ip`. Establish `hxy : ∀ i, ψ (ratio hj i) ≠ 0 → x i ≠ 0`. Introduce `i h hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `h` to reduce the goal to its premises. Establish `h0 : ratio (S` using `k) hj i = 0 := Subtype.ext (by change x i / x j = 0; rw [hx, zero_div])`. Rewrite using `[h0, map_zero]`. Establish `hpy : primeOf (S` using `k) (fun i => ψ (ratio hj i)) = pp := hpt _ ψ hker`. Establish `hxy' : primeOf (S` using `k) x ≤ primeOf (S := k) (fun i => ψ (ratio hj i)) := hpy ▸ hle`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f, e₀, hfJ, hfh, hfq⟩` from `StepData.JProper.proof k Ω N x T`. Take `⟨e, he, hsub⟩` from `SubvarDrop.proof k Ω N x T.d pp T.dim hpr hhom hle ⟨j, hjp⟩ ⟨f, hpp.1.2 hfJ, hfq⟩`. Establish `hsubW : IsSubvar (fun i => ψ (ratio hj i)) (primeOf (S` using `k) (fun i => ψ (ratio hj i))) e := by`. Rewrite using `[hpy]`. Conclude with `⟨hsub.isPrime, hsub.homog, le_of_eq hpy, hsub.relevant, hsub.dim⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨M', rM, hM'⟩` from `PrimeFiltration.Restrict.proof k Ω N x pp hpr hhom hle j hj hjp _ ψ hker hxy T.M`. Establish `hRM : RestrictData T.M.toSubSystem hxy M'.toSubSystem rM` using `⟨fun I => (hM' I).1, fun I => (hM' I).2.1, fun I => (hM' I).2.2.1, fun I => (hM' I).2.2.2⟩`. Establish `hnef : Nef M'.toSubSystem` using `NefRestrict.proof RestrictTwist.proof hRL k Ω N x _ _ hxy hxy' T.M M' rM hRM T.nef`. Establish `hts : 0 < T.t - T.s'`. Establish `hd : (1 : ℚ) ≤ (T.d : ℚ) + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `(Nat.cast_nonneg T.d : (0 : ℚ) ≤ T.d)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht : 0 < T.t`. Assume the negation of the conclusion as `hneg'`. Establish `hneg : T.t ≤ 0` using `not_lt.mp hneg'`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: T.t / ((T.d : ℚ) + 1) ≤ 0` using `div_nonpos_of_nonpos_of_nonneg hneg (by positivity)`. Combine the linear relations using `[T.s'_pos, T.s'_lt]`. Establish `: T.t / ((T.d : ℚ) + 1) ≤ T.t` using `div_le_self ht.le hd`. Combine the linear relations using `[T.s'_lt]`. Take `⟨q, m', hq, hm', hva⟩` from `hK e he _ N _ M' hsubW hnef (T.t - T.s') hts`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨rr, h, hvb⟩` from `hva`. Establish `hqm : (q : ℤ) * T.m = T.p * m'`. Establish `: (((q : ℤ) * T.m : ℤ) : ℚ) = ((T.p * m' : ℤ) : ℚ)` using `by push_cast; rw [T.m_eq, hm']; ring`. Conclude with `this` after adjusting the coercions. Establish `hBgen : (twistMul M'.toSubSystem q m').Generated` using `fun I => le_antisymm (Submodule.span_le.mpr fun z hz => KThm.mem_sub_of_mem_secs hz I) (by rw [← hvb.generates I]; exact Submodule.span_mono (Set.range_subset_iff.mpr hvb.mem_secs))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv : ∀ b₂ : ℕ, ∃ c₀ : ℤ, ∀ c : ℤ, c₀ ≤ c → (((twistMul M'.toSubSystem T.p T.m).pow b₂).twist (twistSys k (fun i => ψ (ratio hj i)) c)).Generated`. Introduce `b₂`. Take `⟨c₀, hc₀⟩` from `Generated.proof Extension.proof k _ N _ ((twistMulBundle M' T.p T.m).powBundle b₂)`. Use `⟨c₀, fun c hc => ?_⟩` and prove the remaining obligations. Establish `hs` using `hc₀ c hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hs` using `[LineBundle.powBundle_toSubSystem, twistMulBundle_toSubSystem]`. Then use the resulting hypothesis. Use `choose cv hcv using hv`. Use `⟨∑ b₂ ∈ Finset.range q, |cv b₂|, fun b c _ hc I => ?_⟩` and prove the remaining obligations. Take `⟨rL, hrL⟩` from `exists_restrict_twistMulBundle hxy hxy' T.M M' rM hRM T.p T.m`. Take `⟨rb, hrb⟩` from `exists_restrict_powBundle hxy hxy' _ _ rL hrL b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨rc, hrc⟩` from `RestrictTwist.proof.1 k Ω N x _ _ hxy hxy' c`. Take `⟨r'', hr''⟩` from `RestrictTwist.proof.2 k Ω N x _ _ hxy _ (twistBundle k x c) _ (twistBundle k (fun i => ψ (ratio hj i)) c) rb rc hrb hrc`. Establish `hQ : ((twistMulBundle T.M T.p T.m).powBundle b).toSubSystem.twist (twistSys k x c) = (T.L.pow b).twist (twistSys k x c)`. Rewrite using `[LineBundle.powBundle_toSubSystem, twistMulBundle_toSubSystem]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt : b % q < q` using `Nat.mod_lt b (by omega)`. Establish `hcb : cv (b % q) ≤ c` using `le_trans (le_abs_self _) (le_trans (Finset.single_le_sum (f := fun b₂ => |cv b₂|) (fun _ _ => abs_nonneg _) (Finset.mem_range.mpr hlt)) hc)`. Establish `hW : (twistMul M'.toSubSystem T.p T.m).pow b = ((twistMul M'.toSubSystem T.p T.m).pow (b % q)).twist ((twistMul M'.toSubSystem q m').pow (T.p * (b / q)))`. Rewrite using `[← TwistAlg.proof k _ N _ M'.toSubSystem T.p q T.m m' (b / q) (b % q) hqm, Nat.div_add_mod b q]`. Establish `hgen : (((twistMulBundle M' T.p T.m).powBundle b).tensorProd (twistBundle k (fun i => ψ (ratio hj i)) c)).toSubSystem.Generated`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(((twistMulBundle M' T.p T.m).powBundle b).toSubSystem.twist (twistSys k (fun i => ψ (ratio hj i)) c)).Generated`. Rewrite using `[LineBundle.powBundle_toSubSystem, twistMulBundle_toSubSystem, hW, SubSystem.twist_assoc, SubSystem.twist_comm ((twistMul M'.toSubSystem q m').pow (T.p * (b / q))), ← SubSystem.twist_assoc]`. Conclude with `KThm.generated_twist (hcv _ c hcb) (KThm.generated_pow hBgen _)`. Establish `key` using `hRG k Ω N x _ _ hxy pp hle hpy (((twistMulBundle T.M T.p T.m).powBundle b).tensorProd (twistBundle k x c)) (((twistMulBundle M' T.p T.m).powBundle b).tensorProd (twistBundle k (fun i => ψ (ratio hj i)) c)) r'' hr'' hgen I`. Establish `hQ' : (((twistMulBundle T.M T.p T.m).powBundle b).tensorProd (twistBundle k x c)).toSubSystem = (T.L.pow b).twist (twistSys k x c)` using `hQ`.
-
-Rewrite `key` using `[hQ']`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem StepThree.OnW.Gen.proof (hRL : RestrLenRestrict.Statement.{u, w})
     (hRG : RestrictGenerated.Statement.{u, w}) : StepThree.OnW.Gen.Statement.{u, w} := by

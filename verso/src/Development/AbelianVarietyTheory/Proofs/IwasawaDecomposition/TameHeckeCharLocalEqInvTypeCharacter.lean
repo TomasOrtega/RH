@@ -17,9 +17,9 @@ section Local
 variable {E K : Type} [Field E] [NumberField E] [Field K]
 
 /- English proof (translation)
-Establish `hq` using `GlobalTheory.Proof.NormalFormAtPrime.qOf_ne_zero P`. Establish `e : (qOf P : E) = algebraMap (𝓞 E) E (qOf P : 𝓞 E)` using `by rw [map_natCast]`. Establish `h1 : redP P (qOf P : E) = 0`. Rewrite using `[e, reduction_coe, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.absNorm_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : a = (qOf P : E) * (a / (qOf P : E))` using `by field_simp`. Rewrite using `[h2, reduction_mul (e ▸ IntAt.coe P _) h, h1, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduction_eq_zero_of_integral_div_absNorm {P : HeightOneSpectrum (𝓞 E)} {a : E} (h : IntAt P (a / (qOf P : E))) : redP P a = 0 := by
   have hq := GlobalTheory.Proof.NormalFormAtPrime.qOf_ne_zero P
@@ -31,9 +31,9 @@ theorem reduction_eq_zero_of_integral_div_absNorm {P : HeightOneSpectrum (𝓞 E
   rw [h2, reduction_mul (e ▸ IntAt.coe P _) h, h1, zero_mul]
 
 /- English proof (translation)
-Establish `hq` using `GlobalTheory.Proof.NormalFormAtPrime.qOf_ne_zero P`. Take `⟨k, u, hu, e⟩` from `GlobalTheory.Proof.IntegralPowerExpansion.exists_int_add_q_pow_mul hP D (hxi.mul ha)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Use `hu using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Clear the denominators using the available nonvanishing facts.
 
-Take the linear combination `e`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_int_sub_div {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram P) (D : ℕ) {xi a : E} (hxi : IntAt P xi)
     (ha : IntAt P ((qOf P : E) ^ D * a)) : ∃ b : ℤ, IntAt P (xi * a - (b : E) / (qOf P : E) ^ D) := by
@@ -45,7 +45,7 @@ theorem exists_int_sub_div {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram P)
   linear_combination e
 
 /- English proof (translation)
-Use `haveI : NeZero n := ⟨hn⟩`. Take `⟨i, -, hi⟩` from `(hζ.map_of_injective σ.injective).eq_pow_of_pow_eq_one (Complex.isPrimitiveRoot_exp n hn).pow_eq_one`. Conclude with `⟨ζ ^ i, by rw [map_pow, hi]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_root_exp (σ : K →+* ℂ) {n : ℕ} (hn : n ≠ 0) {ζ : K} (hζ : IsPrimitiveRoot ζ n) :
     ∃ ω : K, σ ω = Complex.exp (2 * Real.pi * Complex.I / n) := by
@@ -54,25 +54,25 @@ theorem exists_root_exp (σ : K →+* ℂ) {n : ℕ} (hn : n ≠ 0) {ζ : K} (h�
   exact ⟨ζ ^ i, by rw [map_pow, hi]⟩
 
 /- English proof (translation)
-Establish `hq` using `GlobalTheory.Proof.NormalFormAtPrime.qOf_ne_zero P`. Establish `hn : qOf P ^ D ≠ 0` using `pow_ne_zero _ hP.1.ne_zero`. Establish `hprim : IsPrimitiveRoot ω (qOf P ^ D)` using `IsPrimitiveRoot.of_map_of_injective (f := σ) (hω ▸ Complex.isPrimitiveRoot_exp _ hn) σ.injective`. Establish `hω0 : ω ≠ 0` using `hprim.ne_zero hn`. Set `ψ : E → K` to `fun a => if h : ∃ b : ℤ, IntAt P (xi * a - (b : E) / (qOf P : E) ^ D) then ω ^ h.choose else 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `key : ∀ (a : E) (b : ℤ), IntAt P (xi * a - (b : E) / (qOf P : E) ^ D) → ψ a = ω ^ b`. Introduce `a b hb`. Establish `hex : ∃ b : ℤ, IntAt P (xi * a - (b : E) / (qOf P : E) ^ D)` using `⟨b, hb⟩`. Establish `h1` using `hex.choose_spec`. Simplify using `only [ψ, dif_pos hex]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `hex.choose = c at h1`. Establish `h2 : IntAt P (((qOf P : E) ^ D)⁻¹ * ((c - b : ℤ) : E))`. Use `hb.add (GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_neg h1) using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `GlobalTheory.Proof.rationalFractions_represent_primeNormQuotient.q_pow_dvd_of_intAt hP D h2`. Establish `h4 : ω ^ (c - b) = 1` using `(hprim.zpow_eq_one_iff_dvd _).2 (by exact_mod_cast h3)`. Rewrite `h4` using `[zpow_sub₀ hω0, div_eq_one_iff_eq (zpow_ne_zero _ hω0)]`. Conclude with `h4`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ψ, fun x y hx hy => ?_, fun x hx => ?_, fun h => ?_, fun a b hb => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `exists_int_sub_div hP D hxi hx`. Take `⟨c, hc⟩` from `exists_int_sub_div hP D hxi hy`. Rewrite using `[key x b hb, key y c hc, key (x + y) (b + c) (by`. Use `hb.add hc using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use the proof step `ring), zpow_add₀ hω0]`. Rewrite using `[key x 0 (by simpa using hxi.mul hx), zpow_zero]`. Take `⟨D', rfl⟩ : ∃ D', D = D' + 1` from `⟨D - 1, by omega⟩`. Establish `h1 : IntAt P ((qOf P : E) ^ (D' + 1) * (qOf P : E)⁻¹)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
-Use `GlobalTheory.Proof.rationalFractions_represent_primeNormQuotient.intAt_int P ((qOf P : ℤ) ^ D') using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨b, hb⟩` from `exists_int_sub_div hP _ hxi h1`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[key _ b hb, hprim.zpow_eq_one_iff_dvd]`. Take `⟨c, rfl⟩` from `h`. Apply `hxi'` to reduce the goal to its premises. Apply `reduction_eq_zero_of_integral_div_absNorm` to reduce the goal to its premises. Use `hb.add (GlobalTheory.Proof.rationalFractions_represent_primeNormQuotient.intAt_int P c) using 1` and compare the differences between its conclusion and the goal.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key a b hb, map_zpow₀, hω, ← Complex.exp_int_mul]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_psi (σ : K →+* ℂ) {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram P) {D : ℕ} (hD : 1 ≤ D) {xi : E}
     (hxi : IntAt P xi) (hxi' : redP P xi ≠ 0) {ω : K}
@@ -139,9 +139,9 @@ section Global
 variable {X : Fields} {Pr : Primes X} {R : Ranks}
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, P ∈ Pr.vG i := by`. Unfold `Primes.vGs at hP`. Break down `Finset.mem_union.1 hP with h | h` into its components or cases. Use `exacts [⟨0, h⟩, ⟨1, h⟩]`. Establish `h1 : qOf P = Pr.g i` using `hPr.vG_norm i P hi`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `DegOneUnram`. Rewrite using `[h1]`. Conclude with `⟨hPr.g_prime i, (GlobalTheory.TypePrimeUnif.typePrime_mem_and_notMem_sq hX hPr i P hi).2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem degOneUnram_of_mem_vGs (hX : X.Ok) (hPr : Pr.Ok) {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∈ Pr.vGs) : DegOneUnram P := by
   classical
@@ -155,9 +155,9 @@ theorem degOneUnram_of_mem_vGs (hX : X.Ok) (hPr : Pr.Ok) {P : HeightOneSpectrum 
   exact ⟨hPr.g_prime i, (GlobalTheory.TypePrimeUnif.typePrime_mem_and_notMem_sq hX hPr i P hi).2⟩
 
 /- English proof (translation)
-Unfold `QE at hP`. Use `split_ifs at hP with h`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hP`. Rewrite `hv` using `[Set.Finite.mem_toFinset]`. Establish `hg : GoodPl X.E S v` using `by_contra fun hg => hv (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 mu.2).2 v) hg)`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `GlobalTheory.Proof.NormalFormAtPrime.degOne_of_split hX.rankE hg.1 hg.2.1 (hsel v)`. Simplify using `at hP`.
+A detailed English derivation is pending.
 -/
 theorem degOneUnram_of_mem_QE (hX : X.Ok) {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} (hsel : IsSel X sel)
     {S : Set ℕ} (mu : Tup X.F X.E X.K S) {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∈ QE sel (mu : Chr X.F X.E X.K)) :
@@ -173,7 +173,7 @@ theorem degOneUnram_of_mem_QE (hX : X.Ok) {sel : HeightOneSpectrum (𝓞 X.F) �
   · simp at hP
 
 /- English proof (translation)
-Break down `Finset.mem_union.1 P.2 with h | h` into its components or cases. Use `exacts [degOneUnram_of_mem_vGs hX hPr h, degOneUnram_of_mem_QE hX hsel mu h]`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem degOneUnram_rowSG (hX : X.Ok) (hPr : Pr.Ok) {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)}
     (hsel : IsSel X sel) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (P : rowSG Pr sel mu) : DegOneUnram P.1 := by
@@ -182,15 +182,13 @@ theorem degOneUnram_rowSG (hX : X.Ok) (hPr : Pr.Ok) {sel : HeightOneSpectrum (�
   exacts [degOneUnram_of_mem_vGs hX hPr h, degOneUnram_of_mem_QE hX hsel mu h]
 
 /- English proof (translation)
-Establish `hm` using `hT.mu0 j`. Establish `hg : ((Pr.g 0 : ℕ) : 𝓞 X.E) * ((Pr.g 1 : ℕ) : 𝓞 X.E) ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.2 (hPr.g_prime 0).ne_zero) (Nat.cast_ne_zero.2 (hPr.g_prime 1).ne_zero)`. Establish `hoff : ∀ v : HeightOneSpectrum (𝓞 X.E), v ∉ divs (((Pr.g 0 : ℕ) : 𝓞 X.E) * ((Pr.g 1 : ℕ) : 𝓞 X.E)) → ∀ i, ((Pr.g i : ℕ) : 𝓞 X.E) ∉ v.asIdeal`. Introduce `v hv i hi`. Apply `hv` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Formalism.L2.Col.mem_divs hg]`. Use `fin_cases i`. Conclude with `v.asIdeal.mul_mem_right _ hi`. Conclude with `v.asIdeal.mul_mem_left _ hi`. Use `GlobalTheory.TameVal.locK_mem (m0 j) (GlobalTheory.TameVal.unitsIn σ₀.fieldRange) _ hm.tame (fun v hv => hm.unr v (hoff v hv)) (fun v hv => ⟨_, hT.muVal j v (hoff v hv)⟩) (fun k => ?_) P x` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn, hinf⟩` from `hm.inf`. Express the relevant statement in the definitionally equal form `(((m0 j).inf k : ℂˣ) : ℂ) ∈ σ₀.fieldRange`. Rewrite using `[hinf k]`. Use `prod_mem fun τ _ => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `he j τ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hn2 : n τ = 2 * (-z)`. Use `hn τ` as an intermediate fact. Simplify using `only [hz] at this`. Conclude with `this` after adjusting the coercions. Rewrite using `[hn2, zpow_mul, GlobalTheory.TameVal.sq_div_norm ((map_ne_zero _).2 k.ne_zero), ← hX.conjE]`.
-
-Conclude with `zpow_mem (σ₀.fieldRange.div_mem ⟨_, rfl⟩ ⟨_, rfl⟩) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locK_mem_of_tied (hX : X.Ok) (hPr : Pr.Ok) {m : ℕ} {Ch : Chars X Pr m} {σ₀ : X.K →+* ℂ} {e : Fin m → X.Tau → ℚ}
     {m0 : Fin m → Formalism.L2.Host.HChar X.E} {eta : Formalism.L2.Host.HChar X.E} (hT : Ch.Tied σ₀ e m0 eta)
@@ -222,7 +220,7 @@ theorem locK_mem_of_tied (hX : X.Ok) (hPr : Pr.Ok) {m : ℕ} {Ch : Chars X Pr m}
   exact zpow_mem (σ₀.fieldRange.div_mem ⟨_, rfl⟩ ⟨_, rfl⟩) _
 
 /- English proof (translation)
-Use `w.1.isMaximal` as an intermediate fact. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (redP w.1 xi0)`. Take `⟨c, hc⟩` from `Ideal.Quotient.exists_inv (hy ▸ hxi : Ideal.Quotient.mk w.1.asIdeal y ≠ 0)`. Use `⟨Ch.psi0 w c, ?_⟩` and prove the remaining obligations. Rewrite using `[hW w c 1 (by rw [← hy, hc, Int.cast_one])]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -239,23 +237,19 @@ theorem exists_root_vGs {m : ℕ} {Ch : Chars X Pr m} {σ₀ : X.K →+* ℂ} {x
 open Classical in
 
 /- English proof (translation)
-Set `D : rowSG Pr sel mu → ℕ` to `fun P => if P.1 ∈ Pr.vGs then 1 else Dq`. Establish `hD1 : ∀ P, 1 ≤ D P` using `fun P => by`. Simplify using `only [D]`. Use `split_ifs`. Use `exacts [le_rfl, hD]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hω : ∀ P : rowSG Pr sel mu, ∃ ω : X.K, G.σ₀ ω = Complex.exp (2 * Real.pi * Complex.I / ((qOf P.1 ^ D P : ℕ) : ℂ))` using `fun P => by`. Simplify using `only [D]`. Use `split_ifs with h`. Conclude with `exists_root_vGs hW ⟨P.1, h⟩ (hxi P).2`. Take `⟨ζ, hζ⟩` from `hroot P h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `exists_root_exp G.σ₀ (pow_ne_zero _ (hdeg P).1.ne_zero) hζ`. Use `choose ω hω using hω`. Use `choose ψ hadd hint hne htie using fun P : rowSG Pr sel mu => exists_psi G.σ₀ (hdeg P) (hD1 P) (hxi P).1 (hxi P).2 (hω P)`. Use `choose sq hsq using hsq`. Establish `hq : ∀ P : HeightOneSpectrum (𝓞 X.E), (qOf P : X.E) ≠ 0` using `GlobalTheory.Proof.NormalFormAtPrime.qOf_ne_zero`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `choose k hk using fun (j : Fin R.m) (P : HeightOneSpectrum (𝓞 X.E)) (h : P ∈ Pr.vGs) => hval j P h (Units.mk0 _ (hq P)) rfl`. Use `⟨⟨ψ, D, sq, fun j P => if h : j - 1 < R.m then (if hP : P.1 ∈ Pr.vGs then (k ⟨j - 1, h⟩ P.1 hP)⁻¹ * (((qValC (mu : Chr X.F X.E X.K) P.1)⁻¹ : X.Kˣ) : X.K) else (((Ch.muVal ⟨j - 1, h⟩ P.1)⁻¹ * (qValC (mu : Chr X.F X.E X.K) P.1)⁻¹ : X.Kˣ) : X.K)) else 1, A, B, M, sharp⟩, ⟨hadd, hint …` and prove the remaining obligations. Establish `hi' : i + 1 - 1 < R.m` using `hi`. Simplify using `only [dif_pos hi', dif_neg hP]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `rfl : qu = Units.mk0 _ (hq P.1)` from `Units.ext hqu`. Establish `hi' : i + 1 - 1 < R.m` using `hi`. Simplify using `only [dif_pos hi', dif_pos hP]`. Rewrite using `[map_mul, map_inv₀, hk]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hDP : D P = 1` using `if_pos hP`. Establish `h1 : IntAt P.1 ((qOf P.1 : X.E) ^ D P * (a / (qOf P.1 : X.E)))`. Rewrite using `[hDP, pow_one, mul_div_cancel₀ _ (hq P.1)]`. Conclude with `ha`. Take `⟨b, hb⟩` from `exists_int_sub_div (hdeg P) _ (hxi P).1 h1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `htie P _ b hb`. Rewrite `hb`, `h2` using `[hDP, pow_one]`. Establish `h3 : redP P.1 (G.xi0 * a + ((-b : ℤ) : X.E)) = 0`. Apply `reduction_eq_zero_of_integral_div_absNorm` to reduce the goal to its premises. Use `hb using 1` and compare the differences between its conclusion and the goal.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : redP P.1 ((-b : ℤ) : X.E) = ((-b : ℤ) : 𝓞 X.E ⧸ P.1.asIdeal)`. Use `reduction_coe P.1 ((-b : ℤ) : 𝓞 X.E)` as an intermediate fact. Rewrite `this` using `[map_intCast, map_intCast]`. Then use the resulting hypothesis.
-
-Rewrite `h3` using `[reduction_add ((hxi P).1.mul ha) (GlobalTheory.Proof.rationalFractions_represent_primeNormQuotient.intAt_int _ _), reduction_mul (hxi P).1 ha, h4, Int.cast_neg, add_neg_eq_zero]`. Apply `G.σ₀.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `G.σ₀ (ψ P _) = _`. Rewrite using `[h2, psi0P, dif_pos hP]`. Conclude with `(hW ⟨P.1, hP⟩ _ b h3).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_locCst_of_values (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
     (mu : Tup X.F X.E X.K S) (G : ChGlob X R.m) (hdeg : ∀ P : rowSG Pr sel mu, DegOneUnram P.1)
@@ -331,7 +325,7 @@ theorem exists_locCst_of_values (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (
     exact (hW ⟨P.1, hP⟩ _ b h3).symm
 
 /- English proof (translation)
-Take `⟨cst, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩` from `exists_locCst_of_values Ch sel mu G (degOneUnram_rowSG hX hPr hsel mu) hW hxi (fun j P _ qu _ => locK_mem_of_tied hX hPr hT he j P qu) M A B Dq hM hA hB (by omega) true hsq hroot`. Conclude with `⟨cst, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, fun P hP => by rw [h4, h11 P hP]; exact hD, fun P hP => by rw [h11 P hP]; exact hD', h11⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_locCst (hX : X.Ok) (hPr : Pr.Ok) (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (hsel : IsSel X sel) {S : Set ℕ}
@@ -361,7 +355,7 @@ theorem exists_locCst (hX : X.Ok) (hPr : Pr.Ok) (Ch : Chars X Pr R.m)
     fun P hP => by rw [h11 P hP]; exact hD', h11⟩
 
 /- English proof (translation)
-The claim follows from `(hT.mu0 j).atg w x y c hx hc`.
+A detailed English derivation is pending.
 -/
 theorem tameHeckeCharLocal_eq_inv_typeCharacter {Ch : Chars X Pr R.m} {G : ChGlob X R.m} {e : Fin R.m → X.Tau → ℚ} {eta : Formalism.L2.Host.HChar X.E}
     (hT : Ch.Tied G.σ₀ e G.mu0 eta) (j : Fin R.m) (w : {w // w ∈ Pr.vGs}) (x : X.Eˣ) (y : 𝓞 X.E) (c : (𝓞 X.E ⧸ w.1.asIdeal)ˣ)

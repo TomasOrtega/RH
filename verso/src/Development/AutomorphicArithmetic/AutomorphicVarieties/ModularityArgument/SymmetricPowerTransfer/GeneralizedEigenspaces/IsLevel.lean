@@ -97,7 +97,7 @@ variable (L) in
 abbrev Unr : Prop := ∀ w : Plc L, Algebra.IsUnramifiedAt (𝓞 (Lp L)) w.asIdeal
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, fun _ _ _ => by simp, fun _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (R : Representation ℂ (InfinitePlace L → GL (Fin n) ℂ) V) (U : Subgroup (UA L n)) : IsAF R U 0 :=
   ⟨fun _ _ _ => rfl, fun _ _ _ => by simp, fun _ _ _ => rfl⟩

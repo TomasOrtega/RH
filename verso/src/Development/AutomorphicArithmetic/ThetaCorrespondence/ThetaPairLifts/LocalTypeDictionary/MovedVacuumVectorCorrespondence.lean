@@ -22,9 +22,9 @@ open scoped TensorProduct
 open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 namespace GlobalTheory.MovedDict
 /- English proof (translation)
-Introduce `hPr hInp`. Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch hIs _ => ?_⟩⟩` and prove the remaining obligations. Introduce `p hp x y`. Take `⟨hSs, hSt⟩` from `_root_.GlobalTheory.T.twisted_moved_series_decomposition hPr hInp ch hIs p hp x y`. Take `⟨κ, hκ, hu, hj⟩` from `_root_.GlobalTheory.T.twisted_moved_vacuum_kappa hPr hInp ch hIs p hp x y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨_, _, κ, hSs, hSt, hκ, _root_.GlobalTheory.T.twisted_moved_operator_entire hPr hInp ch hIs p hp x y, ?_, _root_.GlobalTheory.T.twisted_moved_vacuum_integral hPr hInp ch hIs p hp x y, (_root_.GlobalTheory.T.twisted_moved_lattice_action hPr hInp ch hIs p hp x y).1, hj⟩` and prove the remaining obligations. Introduce `q _ hx hy`. Use `⟨?_, ?_, hu q hx hy⟩` and prove the remaining obligations. Apply the tactic sequence `rcases p with ⟨i, j⟩ | ⟨t, i, j⟩ | i | ⟨t, j⟩ <;> first | exact hy | exact hx`. Apply the tactic sequence `rcases p with ⟨i, j⟩ | ⟨t, i, j⟩ | i | ⟨t, j⟩ <;> first | exact hx | exact hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem moved_vacuum_vector_correspondence : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ (p : Pair _), DefPair D.R.m p →
     ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big), ∃ (Ls : Submodule (𝓞 D.host.E) (Fin (ch.G.pS p).rank → D.host.E))
@@ -70,7 +70,7 @@ open scoped TensorProduct
 open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.MovedDict.moved_vacuum_vector_correspondence | exact _root_.GlobalTheory.MovedDict.moved_vacuum_vector_correspondence | (intros; apply _root_.GlobalTheory.MovedDict.moved_vacuum_vector_correspondence <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twist_moved_vacuum_correspondence : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ (p : Pair _), DefPair D.R.m p →
     ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big), ∃ (Ls : Submodule (𝓞 D.host.E) (Fin (ch.G.pS p).rank → D.host.E))

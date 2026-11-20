@@ -14,7 +14,7 @@ namespace GlobalTheory.TameFixedLift
 open Pointwise
 
 /- English proof (translation)
-Use `⟨AlgEquiv.ofRingEquiv (f := (σ : Ω ≃+* Ω)) hfix, ⟨?_, hσ.2⟩, rfl⟩` and prove the remaining obligations. Establish `h : σ • A = A` using `hσ.1`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem transfer {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [Algebra ℚ Ω]
     (A : ValuationSubring Ω) (l : ℕ) [Fact l.Prime] (σ : G ℚ Ω) (hσ : σ ∈ Ine (F := ℚ) A)
@@ -25,11 +25,11 @@ theorem transfer {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E �
   exact h
 
 /- English proof (translation)
-Establish `: CharZero Ω` using `algebraRat.charZero Ω`. Establish `: ∀ i : ℕ, NeZero ((l ^ i : ℕ) : Ω)` using `fun i => ⟨by exact_mod_cast pow_ne_zero i (Fact.out : l.Prime).ne_zero⟩`. Establish `h1` using `cyclotomicCharacter.spec l (n := n) (σ : Ω ≃+* Ω) t ht`. Establish `h2 : ((cyclotomicCharacter Ω l (σ : Ω ≃+* Ω) : ℤ_[l]ˣ) : ℤ_[l]) = 1 + (l : ℤ_[l]) ^ n * u` using `h`. Establish `h3 : PadicInt.toZModPow n ((l : ℤ_[l]) ^ n) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZModPow]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite `h1` using `[h2, map_add, map_mul, h3, zero_mul, add_zero, map_one]`. Establish `h4 : t ^ (1 : ZMod (l ^ n)).val = t`. Rewrite using `[ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 ht, pow_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h4]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem root_fix {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (l : ℕ) [Fact l.Prime] (n : ℕ)
     (σ : G ℚ Ω) (u : ℤ_[l])
@@ -49,11 +49,11 @@ theorem root_fix {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (l : �
   exact h1
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `hnu : Ideal.span {(l : 𝓞 E)} ≠ ⊤`. Introduce `h`. Establish `h1` using `congrArg Ideal.absNorm h`. Rewrite `h1` using `[Ideal.absNorm_span_natCast, Ideal.absNorm_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Nat.pow_eq_one.mp h1 with h2 | h2` into its components or cases. Conclude with `hl.one_lt.ne' h2`. Conclude with `Module.finrank_pos.ne' h2`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hnu`. Establish `hmem : (l : 𝓞 E) ∈ M` using `hle (Ideal.mem_span_singleton_self _)`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨M, hM.isPrime, ?_⟩, hmem⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hmem` using `[Ideal.mem_bot]`. Conclude with `hl.ne_zero (by exact_mod_cast hmem)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_place (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime] :
     ∃ w, w ∈ placesOver E l := by
@@ -73,19 +73,17 @@ theorem exists_place (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prim
   exact hl.ne_zero (by exact_mod_cast hmem)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hint : ∀ n : ℤ, A.valuation (n : Ω) ≤ 1` using `fun n => (A.valuation_le_one_iff _).mpr (intCast_mem A n)`. Establish `hz1 : A.valuation z ≤ 1`. Use `Valuation.map_add_le A.valuation h1.le (le_of_eq (map_one A.valuation))` as an intermediate fact. Simplify using `using this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hp : ∀ i : ℕ, A.valuation (z ^ i - 1) < 1`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[show z ^ (i + 1) - 1 = (z ^ i - 1) * z + (z - 1) by ring]`. Use `Valuation.map_add_lt _ ?_ h1` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hz1) ih`. Establish `hs : ∑ i ∈ Finset.range m, z ^ i = 0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_geom_sum z m` as an intermediate fact. Rewrite `this` using `[hz, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`. Establish `hm : A.valuation (m : Ω) < 1`. Establish `h2 : A.valuation (∑ i ∈ Finset.range m, (z ^ i - 1)) < 1` using `Valuation.map_sum_lt _ one_ne_zero fun i _ => hp i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h2` using `[Finset.sum_sub_distrib, hs]`. Simplify using `using h2`. Establish `hb : (1 : Ω) = (m : Ω) * ((Nat.gcdA m l : ℤ) : Ω) + (l : Ω) * ((Nat.gcdB m l : ℤ) : Ω)`. Establish `h3` using `Nat.gcd_eq_gcd_ab m l`. Rewrite `h3` using `[hc.gcd_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `congrArg (Int.cast : ℤ → Ω) h3` after adjusting the coercions. Establish `h4 : A.valuation ((m : Ω) * ((Nat.gcdA m l : ℤ) : Ω) + (l : Ω) * ((Nat.gcdB m l : ℤ) : Ω)) < 1`. Apply the tactic sequence `refine Valuation.map_add_lt _ ?_ ?_ <;> rw [map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (hint _)) hm`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (hint _)) hA`.
-
-Rewrite `h4` using `[← hb, map_one]`. Conclude with `lt_irrefl _ h4`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_one_of_cong {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {l m : ℕ}
     (hA : A.valuation (l : Ω) < 1) (hc : Nat.Coprime m l) {z : Ω} (hz : z ^ m = 1)
@@ -126,9 +124,9 @@ private theorem eq_one_of_cong {Ω : Type} [Field Ω] (A : ValuationSubring Ω) 
   exact lt_irrefl _ h4
 
 /- English proof (translation)
-Establish `hv : A.valuation z = 1`. Use `congrArg A.valuation hz` as an intermediate fact. Rewrite `this` using `[map_pow, map_one]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le hm).mp this`. Establish `hz0 : z ≠ 0` using `by rintro rfl; simp at hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : A.valuation (σ z - z) < 1` using `hσ.2 z hv.le`. Establish `h4 : σ z / z = 1` using `eq_one_of_cong A hA hc (by rw [div_pow, ← map_pow, hz, map_one, div_one]) (by`. Rewrite using `[show σ z / z - 1 = (σ z - z) / z by field_simp, map_div₀, hv, div_one]`. Conclude with `h3)`. Conclude with `(div_eq_one_iff_eq hz0).mp h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tame_fix {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationSubring Ω) {l m : ℕ}
     (hA : A.valuation (l : Ω) < 1) (hm : m ≠ 0) (hc : Nat.Coprime m l) (σ : G ℚ Ω) (hσ : σ ∈ Ine (F := ℚ) A)
@@ -146,11 +144,11 @@ private theorem tame_fix {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationS
   exact (div_eq_one_iff_eq hz0).mp h4
 
 /- English proof (translation)
-Establish `hN : H.condN ≠ 0` using `H.condN_ne_zero`. Use `H.image_mem_of_roots (algebraMap H.E Ω) (RingHom.eqLocusField (σ : Ω →+* Ω) (RingHom.id Ω)) (fun y hy => ?_) x` and prove the remaining obligations. Use `show σ y = y`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp [hN] at hy`. Establish `hmul` using `Nat.ordProj_mul_ordCompl_eq_self H.condN l`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hco : Nat.Coprime l (ordCompl[l] H.condN)` using `Nat.coprime_ordCompl hl hN`. Establish `h1` using `hroot (y ^ ordCompl[l] H.condN) (by rw [← pow_mul, mul_comm, hmul, hy])`. Establish `h2` using `tame_fix A hA (Nat.ordCompl_pos l hN).ne' hco.symm σ hσ (y ^ ordProj[l] H.condN) (by rw [← pow_mul, hmul, hy])`. Rewrite `h1`, `h2` using `[map_pow]`. Establish `h3 : (σ y / y) ^ Nat.gcd (ordProj[l] H.condN) (ordCompl[l] H.condN) = 1` using `pow_gcd_eq_one.2 ⟨by rw [div_pow, h2, div_self (pow_ne_zero _ hy0)], by rw [div_pow, h1, div_self (pow_ne_zero _ hy0)]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[(Nat.Coprime.pow_left _ hco).gcd_eq_one, pow_one]`. Conclude with `(div_eq_one_iff_eq hy0).mp h3`.
+A detailed English derivation is pending.
 -/
 private theorem loc_fix {R : Ranks} (H : Host R) {Ω : Type} [Field Ω] [Algebra H.E Ω] [Algebra ℚ Ω]
     [IsAlgClosed Ω] (A : ValuationSubring Ω) {l : ℕ} (hl : l.Prime) (hA : A.valuation (l : Ω) < 1)
@@ -175,15 +173,15 @@ private theorem loc_fix {R : Ranks} (H : Host R) {Ω : Type} [Field Ω] [Algebra
   exact (div_eq_one_iff_eq hy0).mp h3
 
 /- English proof (translation)
-Introduce `R H what₂ N i`. Take `⟨w, hw⟩` from `exists_place H.E (N.l i)`. Use `⟨w, hw, fun u => ?_⟩` and prove the remaining obligations. Establish `: CharZero N.Om` using `charZero_of_injective_algebraMap (algebraMap H.E N.Om).injective`. Establish `: IsAlgClosed N.Om` using `IsAlgClosure.isAlgClosed H.E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsScalarTower ℚ H.E N.Om` using `IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`. Establish `: IsAlgClosure ℚ N.Om` using `IsAlgClosure.ofAlgebraic ℚ H.E N.Om`. Establish `hA : (N.plOm.1 w).valuation (N.l i : N.Om) < 1`. Use `(N.plOm.2 w (N.l i : 𝓞 H.E)).2 hw` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hs : 1 ≤ N.s0 i` using `UpperTheory.KStar.S0.one_le_localLevel N i`. Establish `hunit : IsUnit (1 + (N.l i : ℤ_[N.l i]) ^ N.s0 i * u)`. Establish `hm : -((N.l i : ℤ_[N.l i]) ^ N.s0 i * u) ∈ IsLocalRing.maximalIdeal ℤ_[N.l i]`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p, neg_mem_iff, Ideal.mem_span_singleton]`. Conclude with `Dvd.dvd.mul_right (dvd_pow_self _ (by omega)) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ hm` as an intermediate fact. Simplify using `using this`. Take `⟨σ, hσ, hv⟩` from `GlobalTheory.T.cyclotomicChar_inertia_surjective N.Om (N.l i) (N.plOm.1 w) hA hunit.unit`. Establish `hv' : ((cycZ (F` using `ℚ) (Ω := N.Om) (N.l i) σ : ℤ_[N.l i]ˣ) : ℤ_[N.l i]) = 1 + (N.l i : ℤ_[N.l i]) ^ N.s0 i * u := by rw [hv]; rfl`. Take `⟨k, hk⟩` from `pow_dvd_pow (N.l i) (UpperTheory.KStar.S0.factorization_conductor_le_localLevel N i)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hc⟩` from `transfer (E := H.E) (N.plOm.1 w) (N.l i) σ hσ (loc_fix H _ (N.lPrime i).out hA σ hσ fun t ht => root_fix (N.l i) (N.s0 i) σ u hv' t (by rw [hk, pow_mul, ht, one_pow]))`. Conclude with `⟨g, hg, by rw [hc, hv']⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (i : N.Loc) , ∃ w ∈ placesOver H.E (N.l i), ∀ u : ℤ_[N.l i], ∃ g ∈ Ine (F := H.E) (N.plOm.1 w), ((cycZ (F := H.E) (Ω := N.Om) (N.l i) g : ℤ_[N.l i]ˣ) : ℤ_[N.l i]) = 1 + (N.l i : ℤ_[N.l i]) ^ N.s0 i * u := by
   intro R H what₂ N i

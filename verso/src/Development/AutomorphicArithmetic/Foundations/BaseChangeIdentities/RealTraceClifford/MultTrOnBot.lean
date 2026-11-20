@@ -17,18 +17,18 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 /- English proof (translation)
-Conclude with `trOn_bot L`.
+A detailed English derivation is pending.
 -/
 private theorem mult_trOn_bot {V : Type} [AddCommGroup V] [Module ℂ V] (L : V →ₗ[ℂ] V) :
     trOn (⊥ : Submodule ℂ V) L = 0 := by
   exact trOn_bot L
 
 /- English proof (translation)
-Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hdom` using `hwDom n V F hF S₁ hS₁ hSt₁ ν₁ x hx.2 hx0 hx.1`. Establish `hanti` using `((rearr n).2.2.2.2.1 ν₁ hdom).1`. Establish `hsa : StrictAnti (ν₁ + rhoV n)` using `hanti.add_strictAnti (rearr n).2.2.1`. Establish `hw1` using `wcfIso n V F hF S₁ hS₁ hSt₁ B c₁ ν₁ hB₁ hc₁ hoth`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone` using `((cfBasic n).2.2.2.2.2.2.2.2.2.2.2.1 (ν₁ + rhoV n) hsa)`. Rewrite using `[hw1, ((cfBasic n).2.2.2.1 (alt (ν₁ + rhoV n)) (alt (ν₁ + rhoV n)) (trOn (hw F ν₁ ⊓ S₁) B) (ν + rhoV n)).2]`. Distinguish the cases in `hνν : ν = ν₁`. Substitute `hνν` using the available equality. Rewrite using `[hone.1, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `hne' : ν + rhoV n ≠ ν₁ + rhoV n` using `fun h => hνν (add_right_cancel h)`. Rewrite using `[hone.2 _ hν hne', mul_zero, hoth ν hνν, mult_trOn_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mult_iso {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     {F : Fin n → Fin n → Module.End ℂ V} (hF : UF F) {S₁ : Submodule ℂ V}
@@ -51,29 +51,25 @@ private theorem mult_iso {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProdu
     rw [hone.2 _ hν hne', mul_zero, hoth ν hνν, mult_trOn_bot]
 
 /- English proof (translation)
-Introduce `n V _ _ F hF`. Establish `cfB` using `cfBasic n`. Establish `hwspB : ∀ (B : Module.End ℂ V), (∀ a b, B * F a b = F a b * B) → ∀ μ : Wt n, ∀ x ∈ wsp F μ, B x ∈ wsp F μ`. Introduce `B hB μ x hx`. Establish `hx' : IsWeight F μ x` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show IsWeight F μ (B x)`. Introduce `a`. Establish `h1 : B (F a a x) = F a a (B x)` using `LinearMap.congr_fun (hB a a) x`. Rewrite using `[← h1, hx' a, map_smul]`. Establish `hwB : ∀ (B : Module.End ℂ V), (∀ a b, B * F a b = F a b * B) → ∀ μ : Wt n, ∀ x ∈ hw F μ, B x ∈ hw F μ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `B hB μ x hx`. Establish `hx' : KHighest (fun _ => true) F μ x` using `hx`. Use `show KHighest (fun _ => true) F μ (B x)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : B (F a a x) = F a a (B x)` using `LinearMap.congr_fun (hB a a) x`. Rewrite using `[← h1, hx'.1 a, map_smul]`. Introduce `a b hab _`. Establish `h1 : B (F a b x) = F a b (B x)` using `LinearMap.congr_fun (hB a b) x`. Rewrite using `[← h1, hx'.2 a b hab rfl, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses.
 
-It suffices to establish `H : ∀ k (S : Submodule ℂ V), Module.finrank ℂ S = k → FiniteDimensional ℂ S → Stb F S → ∀ B c, Cm F S B → IsCh F S B c → ∀ ν : Wt n, StrictAnti (ν + rhoV n) → cf (alt (rhoV n) * c) (ν + rhoV n) = trOn (hw F ν ⊓ S) B by`. Introduce `S hfin`. Conclude with `H _ S rfl hfin`. Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Consider the case `_ k ih`. Introduce `S hk hfin hstb B c hcm hch ν hν`. Distinguish the cases in `hS0 : S = ⊥`. Substitute `hS0` using the available equality. Rewrite using `[inf_bot_eq, mult_trOn_bot]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Take `⟨y, _, hy⟩` from `cfB.2.2.2.2.2.1 _ _ _ hne`. Conclude with `hy (by rw [hch, inf_bot_eq, mult_trOn_bot])`. Take `⟨ν₁, S₁, S₂, hS1, hne1, hsup, hdisj, hst1, hst2, hcm12, hoth, hsplit⟩` from `isoSplit n V F hF S hfin hstb hS0 haveI := hfin`. Establish `hf1 : FiniteDimensional ℂ S₁` using `Submodule.finiteDimensional_of_le (hsup ▸ le_sup_left)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hf2 : FiniteDimensional ℂ S₂` using `Submodule.finiteDimensional_of_le (hsup ▸ le_sup_right)`. Take `⟨hcm1, hcm2⟩` from `hcm12 B hcm`. Take `⟨c₁, hc1⟩` from `chEx n V F hF S₁ hf1 hst1 B`. Take `⟨c₂, hc2⟩` from `chEx n V F hF S₂ hf2 hst2 B`. Establish `hadd2 : ∀ (T : Submodule ℂ V), (∀ x ∈ T, B x ∈ T) → trOn (T ⊓ S₁ ⊔ T ⊓ S₂) B = trOn (T ⊓ S₁) B + trOn (T ⊓ S₂) B`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T hT`. Use `haveI := hf1`. Use `haveI := hf2`. Conclude with `(trAdd V B).1 _ _ inferInstance inferInstance (hdisj.mono inf_le_right inf_le_right) (fun x hx => Submodule.mem_inf.2 ⟨hT x (Submodule.mem_inf.1 hx).1, hcm1.2 x (Submodule.mem_inf.1 hx).2⟩) (fun x hx => Submodule.mem_inf.2 ⟨hT x (Submodule.mem_inf.1 hx).1, hcm2.2 x (Submodule.mem …`. Establish `hc : c = c₁ + c₂`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `cfB.2.2.1` to reduce the goal to its premises. Introduce `μ`. Rewrite using `[(cfB.2.2.2.1 c₁ c₂ 0 μ).1, hch μ, hc1 μ, hc2 μ, (hsplit μ).1, hadd2 _ (hwspB B hcm.1 μ)]`. Establish `hlt : Module.finrank ℂ S₂ < k`. Establish `h` using `Submodule.finrank_sup_add_finrank_inf_eq S₁ S₂`.
-
-Rewrite `h` using `[hsup, disjoint_iff.1 hdisj, finrank_bot, add_zero]`. Establish `h1 : Module.finrank ℂ S₁ ≠ 0` using `fun h0 => hS1 (Submodule.finrank_eq_zero.1 h0)`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `ih _ hlt S₂ rfl hf2 hst2 B c₂ hcm2 hc2 ν hν`. Establish `h1` using `mult_iso hF hf1 hst1 hcm1 hc1 hne1 hoth hν`.
-
-Rewrite using `[hc, mul_add, (cfB.2.2.2.1 _ _ 0 _).1, h1, h2, (hsplit ν).2, hadd2 _ (hwB B hcm.1 ν)]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.mult :
     ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (F : Fin n → Fin n → Module.End ℂ V), UF F → ∀ S : Submodule ℂ V, FiniteDimensional ℂ S → Stb F S → ∀ B c, Cm F S B → IsCh F S B c → ∀ ν : Wt n, StrictAnti (ν + rhoV n) →

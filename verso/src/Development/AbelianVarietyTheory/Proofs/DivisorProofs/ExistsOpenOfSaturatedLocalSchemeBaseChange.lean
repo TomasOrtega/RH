@@ -9,17 +9,17 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Introduce `S S₁ P p x ξ' ξ hξ hfl hsu hqc O hO hsat`. Substitute `hξ` using the available equality. Take `⟨π, hπ, hπ2⟩ : ∃ π : pullback p (ξ' ≫ S.fromSpecStalk x) ⟶ pullback p (S.fromSpecStalk x), π ≫ pullback.fst p (S.fromSpecStalk x) = pullback.fst p (ξ' ≫ S.fromSpecStalk x) ∧ π ≫ pullback.snd p (S.fromSpecStalk x) = pullback.snd p (ξ' ≫ S.fromSpecStalk x) ≫ ξ'` from `⟨pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ ξ') (by rw [Category.assoc]; exact pullback.condition), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Establish `hsq : IsPullback π (pullback.snd p (ξ' ≫ S.fromSpecStalk x)) (pullback.snd p (S.fromSpecStalk x)) ξ'`. Use `IsPullback.of_right ?_ hπ2 (IsPullback.of_hasPullback p (S.fromSpecStalk x))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hπ]`. Conclude with `IsPullback.of_hasPullback p (ξ' ≫ S.fromSpecStalk x)`. Establish `: Flat π` using `MorphismProperty.of_isPullback (P := @Flat) hsq.flip hfl`. Establish `: Surjective π` using `MorphismProperty.of_isPullback (P := @Surjective) hsq.flip hsu`. Establish `: QuasiCompact π` using `MorphismProperty.of_isPullback (P := @QuasiCompact) hsq.flip hqc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `Flat.isQuotientMap_of_surjective π`. Establish `hc : ∀ w, pullback.fst p (S.fromSpecStalk x) (π w) = pullback.fst p (ξ' ≫ S.fromSpecStalk x) w`. Introduce `w`. Rewrite using `[← Scheme.Hom.comp_apply, hπ]`. Establish `hpre : π ⁻¹' (π '' O) = O`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w', hw', he⟩`. Conclude with `hsat w' w (by rw [← hc, ← hc, he]) hw'`. Introduce `hw`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨w, hw, rfl⟩`. Establish `hopen : IsOpen (π '' O)`. Rewrite using `[← hq.isOpen_preimage, hpre]`. Conclude with `hO`. Establish `hemb` using `IsPreimmersion.isEmbedding (pullback.fst p (S.fromSpecStalk x))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨t, ht, hte⟩` from `hemb.isInducing.isOpen_iff.1 hopen`. Use `⟨⟨t, ht⟩, fun w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ∈ t ↔ _`. Rewrite using `[← hc, ← Set.mem_preimage, hte, ← Set.mem_preimage, hpre]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_open_of_saturated_stalkBaseChange : ∀ (S S₁ P : Scheme.{0}) (p : P ⟶ S) (x : S) (ξ' : S₁ ⟶ Spec (S.presheaf.stalk x)) (ξ : S₁ ⟶ S), ξ' ≫ S.fromSpecStalk x = ξ → Flat ξ' → Surjective ξ' → QuasiCompact ξ' → ∀ O : Set ↥(Limits.pullback p ξ), IsOpen O → (∀ w w' : ↥(Limits.pullback p ξ), Limits.pullback.fst p ξ w = Limits.pullback.fst p ξ w' → w ∈ O → w' ∈ O) → ∃ V : P.Opens, ∀ w : ↥(Limits.pullback p ξ), Limits.pullback.fst p ξ w ∈ V ↔ w ∈ O := by
   intro S S₁ P p x ξ' ξ hξ hfl hsu hqc O hO hsat

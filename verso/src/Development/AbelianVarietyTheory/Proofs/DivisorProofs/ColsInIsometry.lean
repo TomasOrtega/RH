@@ -33,7 +33,7 @@ theorem clEquiv_cls (eG : S'.G ≃* S.G) (eD : S'.D ≃ S.D) (hs : ∀ g d, eD (
     clEquiv eG eD hs (S'.cls d) = S.cls (eD d) := rfl
 
 /- English proof (translation)
-Use `Nat.card_congr (eG.toEquiv.subtypeEquiv fun g => ?_)` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, MulAction.mem_stabilizer_iff]`. Use `show _ ↔ eG g • eD d = eD d`. Rewrite using `[← hs, eD.injective.eq_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_stab (eG : S'.G ≃* S.G) (eD : S'.D ≃ S.D) (hs : ∀ g d, eD (g • d) = eG g • eD d) (d : S'.D) :
     Nat.card (MulAction.stabilizer S'.G d) = Nat.card (MulAction.stabilizer S.G (eD d)) := by
@@ -43,11 +43,11 @@ theorem card_stab (eG : S'.G ≃* S.G) (eD : S'.D ≃ S.D) (hs : ∀ g d, eD (g 
   rw [← hs, eD.injective.eq_iff]
 
 /- English proof (translation)
-Set `e` to `clEquiv eG eD hs`. Set `s : S.Sec` to `{ rep := fun c => eD (S'.outSec.rep (e.symm c)) spec := fun c => by`. Rewrite using `[← clEquiv_cls eG eD hs, S'.outSec.spec]`. Conclude with `e.apply_symm_apply c }`. Rewrite using `[R.ipAt_indep h s v φ φ]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `_` to `h.fintypeCl`. Set `_` to `h'.fintypeCl`. Unfold `GSD.ipAt`. Use `Fintype.sum_equiv e _ _ fun c => ?_` and prove the remaining obligations. Establish `h1 : s.rep (e c) = eD (S'.outSec.rep c)` using `by show eD (S'.outSec.rep (e.symm (e c))) = _`.
+Introduce a local definition for the expression. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e.symm_apply_apply]`. Rewrite using `[h1, S'.wt_eq h' S'.outSec c, card_stab eG eD hs, hp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipAt_transport (R : S.Rat) (h : S.Ok) (h' : S'.Ok) (eG : S'.G ≃* S.G) (eD : S'.D ≃ S.D)
     (hs : ∀ g d, eD (g • d) = eG g • eD d) (v : InfinitePlace K) (φ : S.EqFun) (φ' : S'.D → S'.V)
@@ -89,7 +89,7 @@ def grpEquiv (hQ : Q = ∅) (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-Substitute `hΛ` using the available equality. Conclude with `ipAt_transport R h h' (grpEquiv hQ Λ' Θ) (decoEquiv hQ) (fun _ _ => rfl) v φ _ fun _ => rfl`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ipAt_frm (hQ : Q = ∅) (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ Λ' : LevFam X.E X.K n SG) (hΛ : Λ' = Λ)
     (Θ : LevQFam X.E X.K n Q) (R : (formGSD C Λ).Rat) (h : (formGSD C Λ).Ok)
@@ -102,9 +102,9 @@ theorem ipAt_frm (hQ : Q = ∅) (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ Λ' :
 end Frames
 
 /- English proof (translation)
-Establish `h : Qprime ((1 : Tup X.F X.E X.K Sg) : Chr X.F X.E X.K) = ∅`. Express the relevant statement in the definitionally equal form `Qprime (1 : Chr X.F X.E X.K) = ∅`. Use extensionality with `v`. Simplify using `[Qprime, MonoidHom.ker_one]`. Unfold `QE`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `split_ifs with hf`. Rewrite using `[(Set.Finite.toFinset_eq_empty (h := hf)).2 h]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem qe_one {X : Fields} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {Sg : Set ℕ} :
     QE sel ((1 : Tup X.F X.E X.K Sg) : Chr X.F X.E X.K) = ∅ := by
@@ -119,13 +119,13 @@ theorem qe_one {X : Fields} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpe
   · rfl
 
 /- English proof (translation)
-Introduce `X hX Pr R W Ch sel Sg mu cst I G m2 hL u h hmu`. Use `⟨(colPosH W Ch hX u 0).frameOK_sub (MramV W Ch u) (MramL W Ch u), fun v x => ?_⟩` and prove the remaining obligations. Establish `hQ : QE sel (mu : Chr X.F X.E X.K) = ∅`. Substitute `hmu` using the available equality. Conclude with `qe_one sel`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hL.zero_uniq`. Establish `h1 : famIpAt (chF W sel mu I u 0) h v (colsIn W Ch hX sel mu cst I hL u x) (colsIn W Ch hX sel mu cst I hL u x) = (colGSD W Ch u 0).ipAt (colOk W Ch hX u 0) v (colOfCoord W Ch hX u x) (colOfCoord W Ch hX u x)`. Unfold `famIpAt`. Rewrite using `[Fintype.sum_eq_single b fun b' hb' => absurd (hb b') hb']`. Conclude with `ipAt_frm hQ (colVal W u 0 (Pr.vT u) Pr.vGs) (colLev Ch 0) (I.levG 0 b) (hL.zero_G b) (I.levQ 0 b) (colRat W Ch hX u 0) (colOk W Ch hX u 0) (h b) v (colOfCoord W Ch hX u x)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, ← (colRat W Ch hX u 0).maj_eq]`. Establish `h2` using `(colPosH W Ch hX u 0).sub_maj (MramV W Ch u) v ((ramBas W Ch hX u).equivFun.symm x) ((ramBas W Ch hX u).equivFun.symm x)`. Rewrite `h2` using `[thl_majAt_coord, LinearEquiv.apply_symm_apply]`. Use `Eq.trans ?_ h2` and prove the remaining obligations. Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.cnorm`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.sq_sqrt (Finset.sum_nonneg (fun i _ => by positivity)), Complex.ofReal_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem colsIn_isometry : ∀ (X : Fields) (hX : X.Ok) (Pr : Primes X) (R : Ranks) (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (cst : LocCst X (rowSG Pr sel mu)) (I : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m) (m2 : ℕ) (hL : I.Ok Ch sel mu cst G m2) (u : Pr.Word) (h : (chF W sel mu I u 0).Ok), mu = 1 → (∀ v, IsUnit ((MramH W Ch hX u).X v).det) ∧ ∀ (v : InfinitePlace X.K) (x : Fin (ramDim W Ch hX u) → X.K), ((Formalism.HermitianLatticesTheory.normAt (Pi.basisFun X.K (Fin (ramDim W Ch hX u))) (MramH W Ch hX u).X v x ^ 2 : ℝ) : ℂ) = famIpAt (chF W sel mu I u 0) h v (colsIn W Ch hX sel mu cst I hL u x) (colsIn W Ch hX sel mu cst I hL u x) := by
   intro X hX Pr R W Ch sel Sg mu cst I G m2 hL u h hmu

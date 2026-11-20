@@ -26,7 +26,7 @@ open GlobalTheory.InertDbl GlobalTheory.InertBigCell
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `hc _ fun u hu => by simpa using congrFun (congrFun (hX u hu) i) j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_smul_eq {n : Type} {v : Pl F} {c : AE F E} (hc : ∀ z : AE F E, At (evFin F v) z → c * c * z = z)
     {X : Matrix n n (AE F E)} (hX : At (evFin F v) X) : (c * c) • X = X := by
@@ -35,15 +35,15 @@ theorem sq_smul_eq {n : Type} {v : Pl F} {c : AE F E} (hc : ∀ z : AE F E, At (
   exact hc _ fun u hu => by simpa using congrFun (congrFun (hX u hu) i) j
 
 /- English proof (translation)
-Take `⟨c, hcσ, hcat, hcsq, hclat⟩` from `GlobalTheory.T.exists_antiInvariant_sign_adele_splitPlace F E σ B hB v hv`. Take `⟨p, hp, hpm⟩` from `GlobalTheory.T.exists_parD_matD_eq_diagonalFixingDoublingMatrix F E σ d W v h2 c hcσ hcat (hclat d W)`. Take `⟨n, hn, hnm⟩` from `GlobalTheory.T.nablaUnipotent_mem_integralDoubledUnipotent F E σ d W v h2 c hcσ (hclat d W) k hk`. Establish `e1 : mat k * mat k⁻¹ = 1` using `by show mat (k * k⁻¹) = 1`. Rewrite using `[mul_inv_cancel]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2 : mat k⁻¹ * mat k = 1` using `by show mat (k⁻¹ * k) = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Establish `hsq : (c * c) • (mat k - 1) = mat k - 1` using `sq_smul_eq hcsq hk.1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hid` using `GlobalTheory.T.diagonalFixingDoublingMatrix_mul_fromBlocks_mul_diagCols F E d c (mat k) (mat k⁻¹) e1 e2 hsq`. Establish `ht` using `GlobalTheory.T.splitDoublingTMatrix_mul_inverse_eq_one F E d c (mat k) (mat k⁻¹) e1 hsq`. Set `t : GL (Fin d) (AE F E)` to `⟨GlobalTheory.SplitDblGen.tMat c (mat k), GlobalTheory.SplitDblGen.tMat c (mat k⁻¹), ht, mul_eq_one_comm.1 ht⟩`. Establish `hq : n⁻¹ * (p * inlD σ W k) ∈ ParD σ W v`. Use `⟨KAtD_mul (KAtD_inv hn.1) (KAtD_mul hp.1 (inlD_mem hk)), t, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `en : matD n⁻¹ * matD n = 1` using `(n.1).inv_val`. Use `show matD n⁻¹ * (matD p * matD (inlD σ W k)) * diagCols (Fin d) = diagCols (Fin d) * GlobalTheory.SplitDblGen.tMat c (mat k)`. Rewrite using `[matD_inlD, hpm]`. Rewrite `hid` using `[← hnm]`. Use `erw [Matrix.mul_assoc, hid, ← Matrix.mul_assoc, ← Matrix.mul_assoc, en, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e : inlD σ W k = p⁻¹ * (n * (n⁻¹ * (p * inlD σ W k)))` using `by group`. Rewrite using `[e]`. Conclude with `Subgroup.mul_mem _ (Subgroup.inv_mem _ (Subgroup.subset_closure (Or.inl hp))) (Subgroup.mul_mem _ (Subgroup.subset_closure (Or.inr hn)) (Subgroup.subset_closure (Or.inl hq)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inlD_mem_closure_of_split {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {d : ℕ} (W : Spc F E d) (v : Pl F)
     (hv : Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v) (h2 : (2 : 𝓞 F) ∉ v.asIdeal) (k : UA σ W.J) (hk : k ∈ GlobalTheory.InertSph.KAt σ W v) :
@@ -75,7 +75,7 @@ theorem inlD_mem_closure_of_split {σ : E →ₐ[F] E} {B : Base F E} (hB : B.Is
     (Subgroup.mul_mem _ (Subgroup.subset_closure (Or.inr hn)) (Subgroup.subset_closure (Or.inl hq)))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hv _ h2 k hk`. Conclude with `inlD_mem_closure_of_split hT.base G.V' v hv h2 k hk`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inlD_mem_closure_left : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

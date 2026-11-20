@@ -6,7 +6,7 @@ open MeasureTheory Filter Topology Set Metric
 open scoped Convolution ContDiff ENNReal Pointwise
 
 /- English proof (translation)
-Establish `hint : Integrable K.toFun μ` using `Integrable.of_integral_ne_zero (by rw [K.integral_eq_one]; exact one_ne_zero)`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hint (Eventually.of_forall K.nonneg), K.integral_eq_one, ENNReal.ofReal_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Kernel.lintegral_ofReal (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] (K : Kernel E μ) :
@@ -17,21 +17,21 @@ theorem Kernel.lintegral_ofReal (E : Type*) [NormedAddCommGroup E] [NormedSpace 
     K.integral_eq_one, ENNReal.ofReal_one]
 
 /- English proof (translation)
-Establish `hK0` using `K.nonneg`. Establish `hKm : Measurable K.toFun` using `K.smooth.continuous.measurable`. Establish `h1 : ‖moll K u x‖ₑ ≤ ∫⁻ t, ENNReal.ofReal (K.toFun t) * ‖u (x - t)‖ₑ ∂μ`. Establish `hmoll : moll K u x = ∫ t, K.toFun t • u (x - t) ∂μ` using `rfl`. Rewrite using `[hmoll]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(enorm_integral_le_lintegral_enorm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Rewrite using `[enorm_smul, Real.enorm_of_nonneg (hK0 t)]`. Establish `hum : AEMeasurable (fun t => ‖u (x - t)‖ₑ) μ` using `(hu.comp_quasiMeasurePreserving (quasiMeasurePreserving_sub_left μ x)).enorm`. Use `set f : E → ℝ≥0∞ := fun t => ENNReal.ofReal (Real.sqrt (K.toFun t)) with hfdef`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g : E → ℝ≥0∞ := fun t => ENNReal.ofReal (Real.sqrt (K.toFun t)) * ‖u (x - t)‖ₑ with hgdef`. Establish `hf : AEMeasurable f μ` using `hKm.sqrt.ennreal_ofReal.aemeasurable`. Establish `hg : AEMeasurable g μ` using `hf.mul hum`. Establish `r2 : ∀ z : ℝ≥0∞, z ^ (2 : ℝ) = z ^ 2` using `fun z => by`. Rewrite using `[← ENNReal.rpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Evaluate the numerical expressions. Establish `hsq : ∀ t, ENNReal.ofReal (Real.sqrt (K.toFun t)) ^ 2 = ENNReal.ofReal (K.toFun t)`. Introduce `t`. Rewrite using `[← ENNReal.ofReal_pow (Real.sqrt_nonneg _), Real.sq_sqrt (hK0 t)]`. Establish `hH` using `ENNReal.lintegral_mul_le_Lp_mul_Lq μ Real.HolderConjugate.two_two hf hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : ∫⁻ t, (f * g) t ∂μ = ∫⁻ t, ENNReal.ofReal (K.toFun t) * ‖u (x - t)‖ₑ ∂μ`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, hfdef, hgdef]`. Rewrite using `[← mul_assoc, ← pow_two, hsq]`. Establish `e2 : ∫⁻ t, f t ^ (2 : ℝ) ∂μ = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Kernel.lintegral_ofReal E μ K]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Simplify using `only [hfdef]`. Rewrite using `[r2, hsq]`. Establish `e3 : ∫⁻ t, g t ^ (2 : ℝ) ∂μ = ∫⁻ t, ENNReal.ofReal (K.toFun t) * ‖u (x - t)‖ₑ ^ 2 ∂μ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Simplify using `only [hgdef]`. Rewrite using `[r2, mul_pow, hsq]`. Rewrite `hH` using `[e1, e2, e3, ENNReal.one_rpow, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 theorem moll_enorm_sq_le (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] (K : Kernel E μ) {u : E → ℂ} (hu : AEStronglyMeasurable u μ)
@@ -78,19 +78,17 @@ theorem moll_enorm_sq_le (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] 
         rw [← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]; norm_num
 
 /- English proof (translation)
-Use `set T := thickening K.r s with hTdef`. Establish `hT : MeasurableSet T` using `isOpen_thickening.measurableSet`. Establish `hKm : Measurable K.toFun` using `K.smooth.continuous.measurable`. Use `set F : E → E → ℝ≥0∞ := fun x t => ENNReal.ofReal (K.toFun t) * ‖u (x - t)‖ₑ ^ 2 with hFdef`. Establish `hF : AEMeasurable (Function.uncurry F) ((μ.restrict s).prod μ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `hu.comp_quasiMeasurePreserving (quasiMeasurePreserving_sub μ μ)`. Establish `hF0 : AEMeasurable (Function.uncurry F) (μ.prod μ)` using `(hKm.comp measurable_snd).ennreal_ofReal.aemeasurable.mul (hq.enorm.pow_const 2)`. Conclude with `hF0.mono_ac (Measure.restrict_le_self.absolutelyContinuous.prod (Measure.AbsolutelyContinuous.refl μ))`. Establish `htrans : ∀ t, ∫⁻ x in (fun x => x - t) ⁻¹' T, ‖u (x - t)‖ₑ ^ 2 ∂μ = ∫⁻ y in T, ‖u y‖ₑ ^ 2 ∂μ`. Introduce `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Rewrite using `[← lintegral_indicator (hT.preimage (measurable_sub_const t)), ← lintegral_indicator hT, ← lintegral_sub_right_eq_self (T.indicator fun y => ‖u y‖ₑ ^ 2) t]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Use `first`. Consider the case `rfl`. Consider the case `(by_cases hx : x - t ∈ T <;> simp [Set.indicator_apply, hx])`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ t, ∫⁻ x in s, F x t ∂μ ≤ ENNReal.ofReal (K.toFun t) * ∫⁻ y in T, ‖u y‖ₑ ^ 2 ∂μ`. Introduce `t`. Simplify using `only [hFdef]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Distinguish the cases in `h0 : K.toFun t = 0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h0]`. Establish `ht : t ∈ ball (0 : E) K.r` using `K.support_subset h0`. Use `mul_le_mul' le_rfl ?_` and prove the remaining obligations. Rewrite using `[← htrans t]`. Use `lintegral_mono_set fun x hx => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Set.mem_preimage, hTdef]`. Use `mem_thickening_iff.mpr ⟨x, hx, ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[mem_ball_zero_iff]`. Simplify `ht` using `[dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[lintegral_mul_const _ hKm.ennreal_ofReal, Kernel.lintegral_ofReal E μ K, one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moll_young_sq (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] (K : Kernel E μ) (u : E → ℂ) (s : Set E) (hs : MeasurableSet s)
@@ -138,9 +136,9 @@ theorem moll_young_sq (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [Fi
         rw [lintegral_mul_const _ hKm.ennreal_ofReal, Kernel.lintegral_ofReal E μ K, one_mul]
 
 /- English proof (translation)
-Introduce `K u s hs hu`. Establish `h` using `moll_young_sq E μ K u s hs hu`. Establish `e : ∀ z : ℝ≥0∞, z ^ (ENNReal.toReal 2) = z ^ 2` using `fun z => by`. Rewrite using `[ENNReal.toReal_ofNat, ← ENNReal.rpow_natCast]`. Evaluate the numerical expressions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num), eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num)]`. Repeatedly rewrite using `[e]`. Conclude with `ENNReal.rpow_le_rpow h (by norm_num)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moll_young (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] : YoungSt E μ := by
@@ -154,9 +152,9 @@ theorem moll_young (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [Finit
   exact ENNReal.rpow_le_rpow h (by norm_num)
 
 /- English proof (translation)
-Introduce `K u hu`. Establish `hT : thickening K.r (univ : Set E) = univ` using `eq_univ_of_forall fun x => mem_thickening_iff.mpr ⟨x, mem_univ _, by simpa using K.r_pos⟩`. Establish `hY` using `moll_young E μ K u univ MeasurableSet.univ hu.1`. Rewrite `hY` using `[hT, Measure.restrict_univ]`. Establish `hcs : HasCompactSupport K.toFun` using `HasCompactSupport.intro (isCompact_closedBall (0 : E) K.r) fun x hx => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hx (ball_subset_closedBall (K.support_subset h))`. Establish `hc : Continuous (moll K u)` using `hcs.continuous_convolution_left (ContinuousLinearMap.lsmul ℝ ℝ) K.smooth.continuous (hu.locallyIntegrable (by norm_num))`. Conclude with `⟨⟨hc.aestronglyMeasurable, hY.trans_lt hu.2⟩, hY⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mollifier_memL2 (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] : MollifierMemL2 E μ := by

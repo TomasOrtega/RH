@@ -9,11 +9,9 @@ open scoped WithZero
 namespace GlobalTheory.CdvrPlaceVal
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩`. Conclude with `HeightOneSpectrum.valuation_le_one _ v`. Introduce `hx`. Take `⟨n, d, hnd⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer (IsDiscreteValuationRing.maximalIdeal T.V) x hx`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : IsUnit (d : T.V)`. Assume the negation of the conclusion as `hu`. Conclude with `d.2 ((IsLocalRing.mem_maximalIdeal _).2 hu)`. Take `⟨u, hu⟩` from `hu`. Use `⟨n * ↑u⁻¹, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul, ← hnd, ← hu, mul_assoc, ← map_mul, Units.mul_inv, map_one, mul_one]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_iff_valV_le_one (T : CDVR) (x : T.Fr) :
     x ∈ Set.range (algebraMap T.V T.Fr) ↔ valV T.V x ≤ 1 := by
@@ -31,29 +29,29 @@ theorem mem_range_iff_valV_le_one (T : CDVR) (x : T.Fr) :
     rw [map_mul, ← hnd, ← hu, mul_assoc, ← map_mul, Units.mul_inv, map_one, mul_one]
 
 /- English proof (translation)
-Set `v1 : Valuation K ℤᵐ⁰` to `(valV T.V).comap iK`. Establish `hv1 : ∀ z, v1 z = valV T.V (iK z)` using `fun z => rfl`. Establish `hle : ∀ z : K, v1 z ≤ 1 ↔ 𝔓.valuation K z ≤ 1` using `fun z => by`. Rewrite using `[← h z, mem_range_iff_valV_le_one, hv1]`. Establish `hunit : ∀ w : K, 𝔓.valuation K w = 1 → v1 w = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `hw0 : w ≠ 0` using `by rintro rfl; simp at hw`. Establish `h0 : v1 w ≠ 0` using `(Valuation.ne_zero_iff _).2 hw0`. Establish `h1 : v1 w ≤ 1` using `(hle w).2 hw.le`. Establish `h2 : v1 w⁻¹ ≤ 1` using `(hle w⁻¹).2 (by rw [map_inv₀, hw, inv_one])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_inv₀]`. Establish `h1'` using `(WithZero.log_le_log h0 one_ne_zero).2 h1`. Establish `h2'` using `(WithZero.log_le_log (inv_ne_zero h0) one_ne_zero).2 h2`. Rewrite `h2'` using `[WithZero.log_inv, WithZero.log_one]`. Rewrite `h1'` using `[WithZero.log_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← WithZero.exp_log h0, show WithZero.log (v1 w) = 0 by omega]`. Both sides reduce to the same expression. Take `⟨ϖ, hϖ⟩` from `𝔓.valuation_exists_uniformizer K`. Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hϖ` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hϖ.symm`. Establish `hv1ϖ0 : v1 ϖ ≠ 0` using `(Valuation.ne_zero_iff _).2 hϖ0`. Establish `hlt : v1 ϖ < 1`. Establish `hle1 : v1 ϖ ≤ 1` using `(hle ϖ).2 (by rw [hϖ, ← WithZero.exp_zero, WithZero.exp_le_exp]; norm_num)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_ne hle1 fun heq => ?_` and prove the remaining obligations. Establish `h3 : v1 ϖ⁻¹ ≤ 1` using `by rw [map_inv₀, heq, inv_one]`. Establish `h4` using `(hle ϖ⁻¹).1 h3`. Rewrite `h4` using `[map_inv₀, hϖ, ← WithZero.exp_neg, neg_neg]`. Rewrite `h4` using `[← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions using `at h4`. Establish `ha : 0 < vV T.V (iK ϖ)`. Establish `h5 : WithZero.log (v1 ϖ) < WithZero.log 1` using `(WithZero.log_lt_log hv1ϖ0 one_ne_zero).2 hlt`. Rewrite `h5` using `[WithZero.log_one, hv1]`. Simplify using `only [vV]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨(vV T.V (iK ϖ)).toNat, by omega, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg ha.le]`. Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[vV, vAdd]`. Establish `hz2 : 𝔓.valuation K z = WithZero.exp (-vAdd 𝔓 z)`. Simplify using `only [vAdd, neg_neg]`. Conclude with `(WithZero.exp_log ((Valuation.ne_zero_iff _).2 hz)).symm`. Establish `hw : 𝔓.valuation K (z * ϖ ^ (-vAdd 𝔓 z)) = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, map_zpow₀, hϖ, hz2, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using the standard rewrite rules. Establish `hu` using `hunit _ hw`. Establish `hz' : z = (z * ϖ ^ (-vAdd 𝔓 z)) * ϖ ^ (vAdd 𝔓 z)`. Rewrite using `[mul_assoc, ← zpow_add₀ hϖ0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hv : v1 z = v1 ϖ ^ (vAdd 𝔓 z)` using `by conv_lhs => rw [hz']`. Rewrite using `[map_mul, hu, one_mul, map_zpow₀]`. Establish `e1 : vV T.V (iK z) = -WithZero.log (v1 z)` using `rfl`. Establish `e2 : vV T.V (iK ϖ) = -WithZero.log (v1 ϖ)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1, e2, hv, WithZero.log_zpow, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem vV_eq_mul_vAdd (K : Type) [Field K] [NumberField K] (𝔓 : HeightOneSpectrum (𝓞 K)) (T : CDVR)
     (iK : K →+* T.Fr)

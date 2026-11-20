@@ -9,35 +9,31 @@ open Matrix Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayA
 noncomputable section
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ Bs x hx`. Take `⟨hc, hg, hG⟩` from `hx`. Take `⟨μ, -, hμ⟩` from `(TwoByOneBlock.UWb_iff x.2).1 (NFRadRedA.glev_uwb hg)`. Establish `hGV : wCell k r (Fin.last r) x.1 * x.2 ∈ B.GV k r`. Establish `h1 : wCell k r (Fin.last r) x.1 ∈ Glev k r 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `wCell`. Conclude with `Qx3.wlist_glev hc _`. Conclude with `(Qx5.Glev_mul h1 (Qx4.glev0 hg.1)).1`. Establish `hM : wCell k r (Fin.last r) x.1 * x.2 = bigCell k r x.1 μ`. Rewrite using `[P5.Rad.wCell_last_eq, hμ, ← (bruhat_big_cell_factorization k r x.1 μ).1]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hGV`, the goal using `[hM]`. Use `set ζ := zetaL k r Bs.z Bs.z' (Fin.last r) x.2 with hζdef`. Establish `hz : ζ = herm (Hb k) (μ *ᵥ wbPart k r Bs.z') (wbPart k r Bs.z)`. Rewrite using `[hζdef, P5.Rad.zetaL_last, hμ]`. Establish `e1 : B2.embWb k r μ *ᵥ Bs.z' = TwoByOneBlock.jV k r (μ *ᵥ wbPart k r Bs.z')` using `by conv_lhs => rw [← TwoByOneBlock.jV_wbPart Bs.z'_mem]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `TwoByOneBlock.emb_mulVec_jV _ _`. Rewrite using `[e1]`. Use `conv_lhs => rw [← TwoByOneBlock.jV_wbPart Bs.z_mem]`. Rewrite using `[TwoByOneBlock.herm_jV]`. Set `d : Fin (r + 1) → ℂ` to `fun a => if h : (a : ℕ) < r then x.1 ⟨a, h⟩ else ζ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `hZ : Zhat k r Bs.z Bs.z' (bigCell k r x.1 μ) = diagonal d`. Rewrite using `[bigCellZhat k r Bs.z Bs.z' x.1 μ Bs.z_mem Bs.z'_mem]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Distinguish the cases in `h : (a : ℕ) < r`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[d, h]`. Simplify using `only [d, h, dite_false]`. Rewrite using `[BigCellHermitian.herm_bigCell x.1 μ Bs.z_mem Bs.z'_mem, hz]`. Establish `hD` using `BruhatBigCell.dmin_diag Bs.z Bs.z' _ d hZ`. Establish `hTT : 0 < Tz k r Bs.z * Tz k r Bs.z'` using `mul_pos Bs.T_pos Bs.T'_pos`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hζ : ζ ≠ 0`. Introduce `h0`. Establish `: GGl k r Bs.z Bs.z' x.2 = Complex.normSq ζ - Tz k r Bs.z * Tz k r Bs.z'` using `rfl`. Rewrite `hG` using `[this, h0, map_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hd0 : ∀ a, d a ≠ 0`. Introduce `a`. Distinguish the cases in `h : (a : ℕ) < r`. Simplify using `only [d, h, dite_true]`. Conclude with `hc _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [d, h, dite_false]`. Conclude with `hζ`. Establish `hP : ∏ a : Fin r, x.1 a ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun a _ => hc a`. Establish `hDr : Dmin k r Bs.z Bs.z' (bigCell k r x.1 μ) ⟨r, by omega⟩ = ∏ a : Fin r, x.1 a`. Rewrite using `[hD]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl ?_` and prove the remaining obligations. Introduce `i _`. Establish `hi : ((Fin.castLE (by omega) i : Fin (r + 1)) : ℕ) < r` using `i.isLt`. Simplify using `only [d, hi, dite_true]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hDl : Dmin k r Bs.z Bs.z' (bigCell k r x.1 μ) (Fin.last (r + 1)) = (∏ a : Fin r, x.1 a) * ζ`. Rewrite using `[hD]`. Use `show ∏ i : Fin (r + 1), d (Fin.castLE (by omega) i) = _`. Rewrite using `[Fin.prod_univ_castSucc]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl ?_` and prove the remaining obligations. Introduce `i _`. Establish `hi : ((Fin.castLE (by omega) i.castSucc : Fin (r + 1)) : ℕ) < r` using `i.isLt`. Simplify using `only [d, hi, dite_true]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi : ¬ ((Fin.castLE (by omega) (Fin.last r) : Fin (r + 1)) : ℕ) < r` using `by simp`. Simplify using `only [d, hi, dite_false]`. Establish `hGf : Gf k r Bs.z Bs.z' (bigCell k r x.1 μ) = Complex.normSq (∏ a : Fin r, x.1 a) * GGl k r Bs.z Bs.z' x.2`. Unfold `Gf`. Rewrite using `[hDl, hDr]`.
-
-Use `show _ = _ * (Complex.normSq ζ - Tz k r Bs.z * Tz k r Bs.z')`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨hGV, ?_, ?_⟩, hDr, hDl, hGf⟩` and prove the remaining obligations. Rewrite using `[hGf]`.
-
-Conclude with `mul_pos (Complex.normSq_pos.mpr hP) hG`. Introduce `l _`. Rewrite using `[hD]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => hd0 _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem big_cell_values : TL.CellVals := by
   intro k r Wp Wq _ _ _ _ _ Bs x hx

@@ -20,7 +20,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Ranks.rS`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem h0_eq (D : D7) : 0 + 2 * D.R.rS + 2 = D.R.m := by
   obtain ⟨q, hq⟩ := D.R.m_even
@@ -31,23 +31,21 @@ theorem h0_eq (D : D7) : 0 + 2 * D.R.rS + 2 = D.R.m := by
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hemb : ∀ b, embA B.d B.o b = (embA (f.c.bes 0 D.R.rS h0).d (f.c.bes 0 D.R.rS h0).o b : GA D (D.sp.Y 0))` using `fun b => by`. Establish `h1` using `congr_arg_heq (fun L : BesLev D D.R.rS => (embA L.d L.o : GA D L.A →* GA D L.V)) hBl`. Establish `h2 : embA B.d B.o = (embA (f.c.bes 0 D.R.rS h0).d (f.c.bes 0 D.R.rS h0).o : GA D (D.sp.X 0) →* GA D (D.sp.Y 0))` using `eq_of_heq h1`. Conclude with `DFunLike.congr_fun h2 b`. Establish `hfl : flagN B.d = (flagN (f.c.bes 0 D.R.rS h0).d : Subgroup (GA D (D.sp.Y 0)))` using `eq_of_heq (congr_arg_heq (fun L : BesLev D D.R.rS => flagN L.d) hBl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.indexZeroLevel_generated_by_local_unipotents (GlobalTheory.BaseChain.com W) (GlobalTheory.LevZero.stZero W) (f.g.b 0) G h0 hBot (fun k : GA D (D.sp.Y 0) => (iotaX W.S.X W.Q.instEq (s * k * s⁻¹)).2 ∈ W.S.X.K2) ?_ ?_ ?_ hone` and prove the remaining obligations. Introduce `(k : GA D (D.sp.Y 0)) _ (k' : GA D (D.sp.Y 0)) _ q q' show (iotaX W.S.X W.Q.instEq (s * (k * k') * s⁻¹)).2 ∈ W.S.X.K2`. Establish `e : s * (k * k') * s⁻¹ = (s * k * s⁻¹) * (s * k' * s⁻¹)` using `by group`. Rewrite using `[e, map_mul, Prod.snd_mul]`. Conclude with `W.S.Y.hK.2.1 _ q _ q'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `PP (n : GA D (D.sp.Y 0)) q hn _ _ hk`. Establish `hn' : n ∈ flagN B.d` using `by rw [hfl]; exact hn`. Establish `e : s * (t⁻¹ * n * t) * s⁻¹ = ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u))⁻¹ * (embA B.d B.o (a₀ * a) * n * (embA B.d B.o (a₀ * a))⁻¹) * (iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u)`. Rewrite using `[hs]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk' : t⁻¹ * n * t ∈ levS (D.sp.Y 0) ((pk W).βY 0) (GlobalTheory.LevZero.datZero W)` using `by rw [ht]; exact hk`. Establish `hKs` using `((hSt (s * (t⁻¹ * n * t) * s⁻¹)).1 ⟨GlobalTheory.MemMatch.conj_mem_GfC W.S.X W.Q.instEq s _ hk'.1, by`. Rewrite using `[map_mul, map_mul, map_inv, GlobalTheory.FrameConj.conj_mem_St_iff]`. Conclude with `parLev_St hk'.2.1⟩).2`. Establish `hN` using `((B.tieN _).1 (GlobalTheory.CharLaws.embA_conj_mem B.d B.o (a₀ * a) hn')).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `goal : (iotaX W.S.X W.Q.instEq (s * (t⁻¹ * n * t) * s⁻¹)).2 ∈ W.S.X.K2`. Rewrite `hKs`, the goal using `[e]`. Generalize the expression as in `embA B.d B.o (a₀ * a) * n * (embA B.d B.o (a₀ * a))⁻¹ = n' at hN hKs ⊢`. Rewrite `hKs`, the goal using `[map_mul, map_mul, map_inv, ContinuousMulEquiv.apply_symm_apply]`. Generalize the expression as in `iotaX W.S.X W.Q.instEq n' = y at hN hKs ⊢`.
+Replace the chosen expression with an arbitrary variable. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Express the relevant statement in the definitionally equal form `(W.S.X.xu u)⁻¹ * y.2 * W.S.X.xu u ∈ _ at hKs ⊢`. Use `Formalism.L2.SG.Pf.unipotent_conj_mem_level hN ?_` and prove the remaining obligations. Use `Formalism.L2.SG.Pf.unitaryCongruence.K_mul _ (Formalism.L2.SG.Pf.unitaryCongruence.K_mul _ (W.S.X.xu_K u) hKs) (Formalism.L2.SG.Pf.unitaryCongruence.K_inv _ (W.S.X.xu_K u))` as an intermediate fact. Rewrite `this` using `[show W.S.X.xu u * ((W.S.X.xu u)⁻¹ * y.2 * W.S.X.xu u) * (W.S.X.xu u)⁻¹ = y.2 by group]`. Then use the resulting hypothesis. Substitute `ht` using the available equality.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `goal`. Introduce `b hb hk`. Rewrite `hk` using `[← hemb b]`. Establish `h1` using `(GlobalTheory.T.level_trace_adapted_translate W hPk u f B hTr hAd a₀ hH0 b hb).1.1 hk`. Establish `hab : a * b * a⁻¹ = b` using `by rw [← Subgroup.mem_center_iff.1 hac b]; group`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : s * (t⁻¹ * embA B.d B.o b * t) * s⁻¹ = ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u))⁻¹ * embA B.d B.o (a₀ * b * a₀⁻¹) * (iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u)`. Establish `: a₀ * b * a₀⁻¹ = (a₀ * a) * b * (a₀ * a)⁻¹` using `by conv_lhs => rw [← hab] group`. Rewrite using `[this, map_mul _ _ (a₀ * a)⁻¹, map_mul _ (a₀ * a) b, map_inv, hs]`. Use `group`. Rewrite `h1` using `[← e]`.
-
-Rewrite using `[← hemb b]`. Substitute `ht` using the available equality. Conclude with `h1.2`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem conj_mem_K_two (W : RealPack ex) (hPk : PkHyp W) {u : D.what₂.Word} (f : FamCh W u)
     (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)) {v : VCom f.c} (G : (GlobalTheory.BaseChain.com W).Pg → GLoc v)
@@ -117,25 +115,23 @@ theorem conj_mem_K_two (W : RealPack ex) (hPk : PkHyp W) {u : D.what₂.Word} (f
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨hr, ξ, hL⟩` from `hBot.mem.lev`. Take `⟨N, hN, -⟩` from `hBot.mem.base`. Establish `hrk : (D.sp.Y 0).rank = D.R.rankY 0` using `hBot.mem.rank`. Establish `hn : (D.sp.Y 0).rank ≤ D.R.r` using `by rw [hrk]; simp [Formalism.BasicNotions.Ranks.rankY]`. Establish `hr' : D.R.r ≤ (D.sp.Y 0).rank` using `hr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLb : GlobalTheory.LevZero.datZero W = (datY (D.sp.Y 0).rank D.R.r D.R.t 0 hr' (GlobalTheory.BaseChain.com W).Pg ∅ (GlobalTheory.BaseChain.com W).P (GlobalTheory.BaseChain.com W).chi ξ Frm.B)` using `hL`. Establish `hlift : Lev.LiftsExist (D.sp.Y 0) (show GL (Fin (D.sp.Y 0).rank) (Lev.EAf D) from (pk W).βY 0) (GlobalTheory.LevZero.datZero W)` using `GlobalTheory.ChainOnto.FlagAct.liftsExist_stage hBot.com hBot.mem`. Take `⟨m, hm⟩` from `GlobalTheory.MemMatch.exists_read W.S.X W.Q.instEq (GlobalTheory.BaseChain.com W).Pg hBot.typ hBot.com.split (fun PP => ⟨_, (hBot.loc PP).idem⟩) (show GL (Fin (D.sp.Y 0).rank) (Lev.EAf D) from (pk W).βY 0) ((pk W).ΛY 0) N hN s hSt`. Establish `hin` using `conj_mem_K_two W hPk f B G hBot h0 hBl hAd hTr a₀ hH0 a hac t s ht hs hSt (fun k hk h1 => (hm k hk.1 (parLev_St hk.2.1)).2 fun PP => by rw [h1 PP.1 PP.2, mul_one, mul_inv_cancel]; exact one_mem _)`. Establish `hpat : ∀ g : ∀ PP : (GlobalTheory.BaseChain.com W).Pg, GL (Fin D.R.r) (kP PP.1), g ∈ (GlobalTheory.BaseChain.com W).P.H ↔ ∀ PP, GlobalTheory.SymRes.IsPat D.R.rS D.R.k (g PP)` using `fun g => (hBot.grp g).trans (forall_congr' fun PP => GlobalTheory.LevZero.exists_red_iff_isPat (G PP) PP.1 (hBot.loc PP).idem (g PP))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hlift`, `hin`, the goal using `[hLb]`. Establish `hlev : ∀ k ∈ GfC (D.sp.Y 0), finE (D.sp.Y 0) k ∈ St (F` using `D.host.F) (E := D.host.E) (show GL (Fin (D.sp.Y 0).rank) (Lev.EAf D) from (pk W).βY 0) → (fun PP : (GlobalTheory.BaseChain.com W).Pg => upperLeftBlock hr' (redFn (show GL (Fin (D.sp.Y 0).rank) (Lev.EAf D) from (pk W).βY 0) PP.1 (finE (D.sp.Y 0) k))) ∈ (GlobalTheory.BaseChain.com …`. Introduce `k hk hS hP`. Use `⟨hk, ?_⟩` and prove the remaining obligations. Use `show finE (D.sp.Y 0) k ∈ lev _ _ _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_lev, mem_parLev]`. Conclude with `⟨⟨GlobalTheory.LevSplit.finE_mem_UA _ _, hS, fun PP _ => GlobalTheory.SeeConjRead.blockTri_blkOf_top _ hn _, fun PP hPP => absurd hPP (Finset.notMem_empty _)⟩, hP⟩`. Take `⟨k₀, rfl⟩ : ∃ k₀, κ = s * k₀ * s⁻¹` from `⟨s⁻¹ * κ * s, by group⟩`. Establish `hk₀ : k₀ ∈ GfC (D.sp.Y 0)`. Use `GlobalTheory.MemMatch.conj_mem_GfC W.S.X W.Q.instEq s⁻¹ _ hκ` as an intermediate fact.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[show s⁻¹ * (s * k₀ * s⁻¹) * s⁻¹⁻¹ = k₀ by group]`. Then use the resulting hypothesis. Establish `hfe : finE (D.sp.Y 0) (s * k₀ * s⁻¹) = finE (D.sp.Y 0) s * finE (D.sp.Y 0) k₀ * (finE (D.sp.Y 0) s)⁻¹` using `by rw [map_mul, map_mul, map_inv]`. Rewrite `hκS` using `[hfe, GlobalTheory.FrameConj.conj_mem_St_iff]`. Rewrite using `[hfe, GlobalTheory.FrameConj.rTup_conj]`. Use `⟨fun hK => ?_, fun hP => hin k₀ (hlev k₀ hk₀ hκS hP)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hpat _).2 fun PP => (GlobalTheory.MemMatch.isIdentityOffFreePositions_rightBlock_iff _ _ hr' hn _).2 ?_` and prove the remaining obligations. Use `haveI : Finite (kP PP.1) := Ideal.finiteQuotientOfFreeOfNeBot PP.1.asIdeal PP.1.ne_bot`. Establish `hrr : (D.sp.Y 0).rank = D.R.k + (2 * D.R.rS + 1)`. Use `le_antisymm hn hr'` as an intermediate fact. Establish `h0'` using `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Unfold `Ranks.r at this`. Use linear arithmetic over natural numbers and integers. Use `GlobalTheory.SymResCount.conj_pat_onto (kP PP.1) _ D.R.rS D.R.k hrr (m PP) (fun g hg => ?_) _ ((hm k₀ hk₀ hκS).1 hK PP)` and prove the remaining obligations. Set `g0 : ∀ Q : (GlobalTheory.BaseChain.com W).Pg, GL (Fin D.R.r) (kP Q.1)` to `Function.update (fun _ => 1) PP (upperLeftBlock hr' g)`. Establish `hg0 : g0 ∈ (GlobalTheory.BaseChain.com W).P.H` using `(hpat _).2 fun Q => by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hQ : Q = PP`. Substitute `hQ` using the available equality. Simplify using `only [g0, Function.update_self]`. Conclude with `(GlobalTheory.MemMatch.isIdentityOffFreePositions_rightBlock_iff _ _ hr' hn _).2 hg`. Simplify using `only [g0, Function.update_of_ne hQ]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.SymRes.isPat_one _ _`. Take `⟨k, hk, hkp, hkr⟩` from `hlift g0`. Establish `hkr' : (fun PP : (GlobalTheory.BaseChain.com W).Pg => upperLeftBlock hr' (redFn (show GL (Fin (D.sp.Y 0).rank) (Lev.EAf D) from (pk W).βY 0) PP.1 (finE (D.sp.Y 0) k))) = g0` using `hkr`. Establish `h1` using `(hm k hk (parLev_St hkp)).1 (hin k (hlev k hk (parLev_St hkp) (hkr' ▸ hg0))) PP`. Establish `h2 : redFn (show GL (Fin (D.sp.Y 0).rank) (Lev.EAf D) from (pk W).βY 0) PP.1 (finE (D.sp.Y 0) k) = g` using `GlobalTheory.MemMatch.reductionBlock_injective_of_eq hr' hn _ _ ((congrFun hkr' PP).trans (Function.update_self _ _ _))`.
-
-Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_K_two_iff (W : RealPack ex) (hPk : PkHyp W) {u : D.what₂.Word} (f : FamCh W u)
     (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)) {v : VCom f.c} (G : (GlobalTheory.BaseChain.com W).Pg → GLoc v)
@@ -214,9 +210,9 @@ theorem mem_K_two_iff (W : RealPack ex) (hPk : PkHyp W) {u : D.what₂.Word} (f 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hPk u f B hPl a₀ hH0 a _ hac hStab κ hκ hκS`. Take `⟨k, _, _, _, _, ι, v, o, n, G, pl, hc, hv, hvt, hsh, hpin, hread, hbt⟩` from `hPl`. Establish `hBot` using `GlobalTheory.T.bessel_local_type_data W hPk u f B k ι v o n G pl ⟨hc, hv, hvt, hsh, hpin, hread, hbt⟩`. Establish `h0` using `h0_eq D`. Establish `hκ1 : (iotaX W.S.X W.Q.instEq κ).1 = 1` using `(GlobalTheory.SeeConjRead.iotaX_fst_eq_one_iff W.S.X W.Q.instEq κ).2 hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (iotaX W.S.X W.Q.instEq κ).1 = 1 ∧ (iotaX W.S.X W.Q.instEq κ).2 ∈ W.S.X.K2 ↔ _`. Conclude with `(and_iff_right hκ1).trans (mem_K_two_iff W hPk f B _ hBot h0 (hbt.lev h0) hbt.adapted hbt.trace a₀ hH0 a hac _ _ rfl rfl hStab κ hκ hκS)`.
+A detailed English derivation is pending.
 -/
 theorem mem_rowJ_iff_rTup : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → ∀ (u : D.what₂.Word) (f : FamCh W u) (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)), Placed f B → ∀ a₀ : GA D (D.sp.X 0), IsTransportAdelicCorrection (W.S.tr u) a₀ → ∀ a ∈ GfC (D.sp.X 0), a ∈ Subgroup.center (GA D (D.sp.X 0)) → GlobalTheory.LevZero.StabAt f B a₀ a → ∀ κ : GA D (D.sp.Y 0), κ ∈ GfC (D.sp.Y 0) → finE (D.sp.Y 0) κ ∈ Formalism.L2.DIV.St (F := D.host.F) (E := D.host.E) (GlobalTheory.LevZero.frAt f B a₀ a) → (κ ∈ rowJ W.S.X W.Q.instEq ↔ Formalism.L2.DIV.rTup (F := D.host.F) (E := D.host.E) (GlobalTheory.LevZero.frAt f B a₀ a) (GlobalTheory.LevZero.datZero W) (finE (D.sp.Y 0) κ) ∈ (GlobalTheory.LevZero.datZero W).P.H) := by
   intro D L hT Gi Gl Kc Yd cX ex W hPk u f B hPl a₀ hH0 a _ hac hStab κ hκ hκS

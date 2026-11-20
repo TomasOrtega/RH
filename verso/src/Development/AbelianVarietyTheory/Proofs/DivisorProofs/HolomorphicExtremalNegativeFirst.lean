@@ -13,29 +13,29 @@ namespace GlobalTheory.HolRead
 open GlobalTheory.HolDict.ModelRep in
 
 /- English proof (translation)
-Introduce `D θ V S M h p q hθ hpq hr hS v hv`. Establish `hn : p + q = V.rank` using `hpq.trans hr.symm`. Establish `hp : p ≤ V.rank` using `by omega`. Establish `he : ∀ ρ, IsEnum (Formalism.L2.NTheta.holPar p q (Formalism.L2.NTheta.kapW (h ρ) p q)) (M.lam ρ) (M.ε ρ)` using `fun ρ => hS ρ ▸ M.enum ρ`. Establish `hok` using `fun ρ => Formalism.L2.NTheta.holOK_kapW (h ρ) p q hpq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hε : ∀ ρ a, M.ε ρ a = decide ((a : ℕ) < p)` using `fun ρ a => by`. Take `⟨hn', hx⟩` from `GlobalTheory.HolDS.enum_holPar (hok ρ) (he ρ)`. Distinguish the cases in `ha : (a : ℕ) < p`. Use `(hx (Sum.inl ⟨a, ha⟩)).2` as an intermediate fact. Rewrite `this` using `[show Fin.cast hn' (finSumFinEquiv (Sum.inl ⟨a, ha⟩ : Fin p ⊕ Fin q)) = a from Fin.ext (by simp)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[this, ha]`. Use `(hx (Sum.inr ⟨a - p, by have := a.2; omega⟩)).2` as an intermediate fact. Rewrite `this` using `[show Fin.cast hn' (finSumFinEquiv (Sum.inr ⟨a - p, by have := a.2; omega⟩ : Fin p ⊕ Fin q)) = a from Fin.ext (by simp; omega)]`. Simplify using `[this, ha]`. Establish `hq : ∀ ρ, nNeg (M.ε ρ) = q` using `fun ρ => by rw [nNeg_shape hp (hε ρ)]; omega`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw : ∀ ρ c, extWt M ρ (arr (nNeg (M.ε ρ)) c) = (wtCol (h ρ) p q c : ℝ)` using `fun ρ c => by`. Take `⟨hn', hx⟩` from `GlobalTheory.HolDS.lowK_holPar (hok ρ) (he ρ)`. Establish `hc` using `c.2`. Distinguish the cases in `hcq : (c : ℕ) < q`. Rewrite using `[extWt_arr M ρ hp (hε ρ) c (Fin.cast hn' (finSumFinEquiv (Sum.inr ⟨c, hcq⟩ : Fin p ⊕ Fin q))) (by rw [if_pos (by omega)]; simp), hx]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [wtCol, if_pos hcq, Formalism.L2.NTheta.kapW, Formalism.L2.NTheta.kapQ, Sum.elim_inr]`. Rewrite using `[extWt_arr M ρ hp (hε ρ) c (Fin.cast hn' (finSumFinEquiv (Sum.inl ⟨c - q, by omega⟩ : Fin p ⊕ Fin q))) (by rw [if_neg (by omega)]; simp; omega), hx]`. Simplify using `only [wtCol, if_neg hcq, Formalism.L2.NTheta.kapW, Formalism.L2.NTheta.kapQ, Sum.elim_inl]`. Establish `hneg : NegFirst V q (x0Mat M)` using `fun ρ => by`. Use `orth_sub (M.fr_unit ρ) (M.fr_gram ρ) (arr (nNeg (M.ε ρ)))` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this.trans ?_` and prove the remaining obligations. Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.submatrix_diagonal _ _ (arr_injective (nNeg_le (M.ε ρ)))]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `a.2` as an intermediate fact. Simplify using `only [Function.comp, hε, hq, arr, decide_eq_true_eq]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; simp only at *; omega)`. Use `⟨x0Mat M, hneg, fun J χ T hT => ⟨(hT.aut v).smooth, fun ρ c d hcd => ?_, fun ρ t g => ?_⟩⟩` and prove the remaining obligations. Apply the tactic sequence `have hk := (GlobalTheory.T.extremal_vector_annihilated D θ V S M J χ T hθ hT v hv ρ p true (fun a => by rw [hε]; by_cases ha : (a : ℕ) < p <;> simp [ha])).1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e` using `conj_single (M.fr_unit ρ) (arrEquiv (nNeg_le (M.ε ρ))) c d`. Express the relevant statement in the definitionally equal form `x0Mat M ρ * _ * (x0Mat M ρ)⁻¹ = _ * Matrix.single (arr (nNeg (M.ε ρ)) c) (arr (nNeg (M.ε ρ)) d) 1 * _ at e`. Rewrite using `[e]`. Apply `hk` to reduce the goal to its premises. Establish `h1 : (c : ℕ) < d` using `hcd`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2` using `d.2`. Simplify using `only [KillPair, hε, hq, arr, Fin.lt_def, decide_eq_true_eq, decide_eq_false_iff_not, ne_eq, decide_eq_decide]`. Apply the tactic sequence `split_ifs <;> simp only <;> omega`. Apply the tactic sequence `have hk := (GlobalTheory.T.extremal_vector_annihilated D θ V S M J χ T hθ hT v hv ρ p true (fun a => by rw [hε]; by_cases ha : (a : ℕ) < p <;> simp [ha])).2 set e := arrEquiv (nNeg_le (M.ε ρ)) with hedef`. Establish `hx : IsUnit (x0Mat M ρ).det`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h1` using `congrArg Matrix.det (hneg ρ)`. Rewrite `h1` using `[det_mul, det_diagonal]`. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Rewrite `h1` using `[h0, mul_zero]`. Apply the tactic sequence `exact Finset.prod_ne_zero_iff.2 (fun a _ => by split_ifs <;> simp) h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h1` using `torus_x0Mat M ρ fun a => Complex.exp ((t (e.symm a) : ℂ) * Complex.I)`. Establish `h2 : ∀ c, e.symm (arr (nNeg (M.ε ρ)) c) = c` using `fun c => e.symm_apply_apply c`. Simplify using `only [h2] at h1`. Rewrite using `[← h1, Matrix.mul_nonsing_inv_cancel_right _ _ hx, hk (fun a => t (e.symm a)) g, ← e.sum_comp]`. Simplify using `only [Equiv.symm_apply_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 5`. Use function extensionality and compare the values at `c`. Rewrite using `[← hw ρ c]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isHolFor_extVec_holPar : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (h : D.what₂.Tau → HCParam D.R) (p q : ℕ), IsInfFam θ → p + q = D.R.r → V.rank = D.R.r → (∀ ρ, S ρ = Formalism.L2.NTheta.holPar p q (Formalism.L2.NTheta.kapW (h ρ) p q)) → ∀ v : M.Vec, IsExtVec M v → ∃ x : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ, NegFirst V q x ∧ ∀ (J : Set (GA D V)) (χ : GA D V → ℂ) (T : MMap M), IsMultMap θ M J χ T → IsHolFor θ V x (fun ρ c => wtCol (h ρ) p q c) (T v) := by
   intro D θ V S M h p q hθ hpq hr hS v hv

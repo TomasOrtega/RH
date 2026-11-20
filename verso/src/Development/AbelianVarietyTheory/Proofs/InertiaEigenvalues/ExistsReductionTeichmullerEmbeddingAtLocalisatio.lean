@@ -9,15 +9,13 @@ namespace GlobalTheory.TypeLeaf
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.ArithmeticCylinders Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 
 /- English proof (translation)
-Take `⟨Q, hQ, hQm⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := A) (IsLocalRing.maximalIdeal O) (by rw [(RingHom.injective_iff_ker_eq_bot _).1 hinj]; exact bot_le)`. Use `letI : Field (A ⧸ Q) := Ideal.Quotient.field Q`. Set `j : IsLocalRing.ResidueField O →+* A ⧸ Q` to `Ideal.quotientMap Q (algebraMap O A) hQm.ge`. Establish `hj : j.comp (IsLocalRing.residue O) = (Ideal.Quotient.mk Q).comp (algebraMap O A)`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Use `letI : Algebra (IsLocalRing.ResidueField O) (A ⧸ Q) := j.toAlgebra`. Use `letI : Algebra (IsLocalRing.ResidueField O) F := κ.toAlgebra`. Use `haveI : Algebra.IsIntegral (IsLocalRing.ResidueField O) (A ⧸ Q) := ⟨fun x => by`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Both sides reduce to the same expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, hpa⟩` from `Algebra.IsIntegral.isIntegral (R := O) a`. Use `⟨p.map (IsLocalRing.residue O), hp.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_map]`. Express the relevant statement in the definitionally equal form `eval₂ (j.comp (IsLocalRing.residue O)) _ _ = 0`. Rewrite using `[hj, ← hom_eval₂, hpa, map_zero]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `L : (A ⧸ Q) →ₐ[IsLocalRing.ResidueField O] F` to `IsAlgClosed.lift`. Use `⟨L.toRingHom.comp (Ideal.Quotient.mk Q), ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, ← hj, ← RingHom.comp_assoc]`. Use `congr 1`. Use extensionality with `x`.
-
-Conclude with `L.commutes x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_extend_residue {O A F : Type} [CommRing O] [IsLocalRing O] [CommRing A] [Algebra O A]
     [Algebra.IsIntegral O A] (hinj : Function.Injective (algebraMap O A)) [Field F] [IsAlgClosed F]
@@ -46,19 +44,17 @@ theorem exists_extend_residue {O A F : Type} [CommRing O] [IsLocalRing O] [CommR
   exact L.commutes x
 
 /- English proof (translation)
-Introduce `D i k _`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Establish `hφ : Function.Injective (iotaO D.nd D.naut i)` using `(((D.naut.iotaQC i).toRingHom.comp (D.naut.iotaQ i)).injective).comp (IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i)))`. Use `letI : Algebra (D.nd.O i) ℂ := (iotaO D.nd D.naut i).toAlgebra`. Set `A` to `integralClosure (D.nd.O i) ℂ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hA : Function.Injective (algebraMap (D.nd.O i) A)` using `fun x y h => hφ (congrArg Subtype.val h)`. Take `⟨g, hg⟩` from `exists_extend_residue hA (D.naut.kFbar i)`. Establish `hmem : ∀ x, D.ntypes.teichC k x ∈ A`. Introduce `x`. Distinguish the cases in `hx : x = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, GlobalTheory.TameLabels.teich_zero _ (D.ntypes.teichC_inj k)]`. Conclude with `A.zero_mem`. Take `⟨n, hn, h1⟩` from `isOfFinOrder_iff_pow_eq_one.1 ((D.ntypes.teichC k).isOfFinOrder (GlobalTheory.TameLabels.isOfFinOrder_of_ne_zero hx))`. Conclude with `IsIntegral.of_pow hn (by rw [h1]; exact isIntegral_one)`. Set `t : Fb (D.host.g k) (D.host.g_prime k) →* A` to `(D.ntypes.teichC k).codRestrict A.toSubmonoid hmem`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht : ∀ x, (t x : ℂ) = D.ntypes.teichC k x` using `fun _ => rfl`. Use `⟨g.toMonoidHom.comp t, fun x y hx hy hcx hcy h => ?_, fun p s hp => ?_⟩` and prove the remaining obligations. Use `D.ntypes.teichC_inj k x y hx hy ?_` and prove the remaining obligations. Rewrite using `[← ht, ← ht]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.TameRed.eq_of_map_eq g (M := orderOf x * orderOf y) ?_ ?_ ?_ h` and prove the remaining obligations. Rewrite using `[Ne, CharP.cast_eq_zero_iff _ (D.nd.l i)]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd (D.nd.lPrime i).out).1 (Nat.Coprime.mul_left hcx hcy).symm`. Rewrite using `[← map_pow, pow_mul, pow_orderOf_eq_one, one_pow, map_one]`. Rewrite using `[← map_pow, mul_comm, pow_mul, pow_orderOf_eq_one, one_pow, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : p.map (algebraMap (D.nd.O i) A) = (s.map fun x => X - C (t x)).prod`. Apply `Polynomial.map_injective A.val.toRingHom Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[Polynomial.map_map, Polynomial.map_multiset_prod, Multiset.map_map]`. Use `hp.trans (congrArg _ (Multiset.map_congr rfl fun x _ => ?_))` and prove the remaining obligations. Simplify using `[ht]`.
-
-Rewrite using `[← hg, ← Polynomial.map_map, h1, Polynomial.map_multiset_prod, Multiset.map_map]`. Use `congrArg _ (Multiset.map_congr rfl fun x _ => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_redVia : ∀ (D : D7) (i : D.nd.Loc) (k : Fin 2), D.nd.l i ≠ D.host.g k →
     ∃ ι : Fb (D.host.g k) (D.host.g_prime k) →* Formalism.CyclotomicNorms.Fbar (D.nd.l i),

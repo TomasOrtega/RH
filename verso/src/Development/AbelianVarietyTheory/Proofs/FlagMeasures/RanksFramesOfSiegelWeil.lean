@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.MainNotions
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hSW` and use `GlobalTheory.T.ranks_frames_closed (GlobalTheory.T.unitary_hyperplane_volumeRatio_siegelWeil hSW)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bothRowsFromSiegelWeil :
     HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → ∀ (𝒞 : FamClass), Formalism.L2.TSel 𝒞 →

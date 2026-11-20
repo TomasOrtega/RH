@@ -24,7 +24,7 @@ section CoefV
 variable {D : D7} {V : HSp D} (c : CoefA V)
 
 /- English proof (translation)
-Establish `e : c.ext (Bridge.g0Act ch q F) h = c.ρ h⁻¹ ((((ch q)⁻¹ : ℂˣ) : ℂ) • F ((finHom V).rangeRestrict h * q))` using `rfl`. Establish `e2 : c.ρ h⁻¹ ((((ch q)⁻¹ : ℂˣ) : ℂ) • F ((finHom V).rangeRestrict h * q)) = (((ch q)⁻¹ : ℂˣ) : ℂ) • c.ρ h⁻¹ (F ((finHom V).rangeRestrict h * q))` using `LinearMap.map_smul _ _ _`. Establish `e6 : c.ext F (h * κ) = c.ρ h⁻¹ (F ((finHom V).rangeRestrict h * q))` using `hκq ▸ coefExt_mul c hc F h κ hκ`. Conclude with `e.trans (e2.trans (congrArg _ e6.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ext_g0Act (hc : c.Is) {Q : Subgroup (Bridge.Gf V)} (ch : Q →* ℂˣ) (q : Q) (κ : GA D V) (hκ : κ ∈ GfC V)
     (hκq : (finHom V).rangeRestrict κ = q) (F : Bridge.Gf V → c.W) (h : GA D V) :
@@ -42,7 +42,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
 /- English proof (translation)
-Use `show Formalism.UG.bc (swapAE D) (finHom (Vc D i) κ0) ∈ lev D.sp.cm (Vc D i).gram (R.βV i) (flagL (R.datVt i t))`. Rewrite using `[← finE_eq]`. Conclude with `⟨hκ0.2.1, Subgroup.mem_top _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_Q_of_liftV (i : Fin D.R.m) (t : T) (g : G) {κ0 : GA D (Vc D i)}
     (hκ0 : IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) (R.eG g) κ0) :
@@ -52,7 +52,7 @@ theorem mem_Q_of_liftV (i : Fin D.R.m) (t : T) (g : G) {κ0 : GA D (Vc D i)}
   exact ⟨hκ0.2.1, Subgroup.mem_top _⟩
 
 /- English proof (translation)
-Apply `R.eG.injective` to reduce the goal to its premises. Rewrite using `[hred i t ⟨_, mem_Q_of_liftV R i t g hκ0⟩]`. Conclude with `hκ0.2.2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_of_liftV (hred : R.grp_red_L) (i : Fin D.R.m) (t : T) (g : G) {κ0 : GA D (Vc D i)}
     (hκ0 : IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) (R.eG g) κ0) :
@@ -62,7 +62,7 @@ theorem red_of_liftV (hred : R.grp_red_L) (i : Fin D.R.m) (t : T) (g : G) {κ0 :
   exact hκ0.2.2
 
 /- English proof (translation)
-Establish `hext` using `(R.B.L i t).act_tie.act_eq g q0 hred0 x`. Conclude with `(hM.jV i t _).trans (hext.trans (congrArg (Bridge.g0Act (levEnv (Vc D i) (R.βV i) (R.datVt i t)).ch q0) (hM.jV i t x).symm))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jV_act (hM : R.IsModels) (i : Fin D.R.m) (t : T) (g : G) (x : A.fam.amb.FL i t)
     (q0 : (levEnv (Vc D i) (R.βV i) (R.datVt i t)).Q) (hred0 : (R.B.L i t).act_tie.red q0 = g) :

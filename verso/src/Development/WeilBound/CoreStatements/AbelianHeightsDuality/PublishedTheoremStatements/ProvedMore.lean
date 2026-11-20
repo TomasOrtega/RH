@@ -41,85 +41,85 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ImportsBis
 namespace PositivityTheory.Prw
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.SAH.semiAbelianHomExtension`.
+A detailed English derivation is pending.
 -/
 theorem semiAbelianHomExtension_holds : GlobalTheory.Published.SemiAbelianHomExtension :=
   GlobalTheory.CompanionTheory.SAH.semiAbelianHomExtension
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Mirab.cuspidalMirabolic`.
+A detailed English derivation is pending.
 -/
 theorem cuspidalMirabolic_holds : GlobalTheory.Published.CuspidalMirabolic :=
   PositivityTheory.Mirab.cuspidalMirabolic
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.CM.idealInvariantsOneOrbit`.
+A detailed English derivation is pending.
 -/
 theorem idealInvariantsOneOrbitSt_holds : GlobalTheory.Published.IdealInvariantsOneOrbitSt :=
   GlobalTheory.CompanionTheory.CM.idealInvariantsOneOrbit
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.An.logDerOne_holds`.
+A detailed English derivation is pending.
 -/
 theorem logDerOne_holds : GlobalTheory.Mem.An.LogDerOne :=
   GlobalTheory.CompanionTheory.An.logDerOne_holds
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Front.discreteSeriesHermitianUnique`.
+A detailed English derivation is pending.
 -/
 theorem discreteSeriesHermitianUnique_holds : GlobalTheory.Published.DiscreteSeriesHermitianUnique :=
   GlobalTheory.CompanionTheory.Front.discreteSeriesHermitianUnique
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Glob.discreteSeriesLowestKType`.
+A detailed English derivation is pending.
 -/
 theorem discreteSeriesLowestKType_holds : GlobalTheory.Published.DiscreteSeriesLowestKType :=
   GlobalTheory.CompanionTheory.Glob.discreteSeriesLowestKType
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness`.
+A detailed English derivation is pending.
 -/
 theorem bernsteinZelevinskyFiniteness_holds : GlobalTheory.Published.BernsteinZelevinskyFiniteness :=
   GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Hypotheses₂.unramifiedOrthogonality`.
+A detailed English derivation is pending.
 -/
 theorem unramifiedOrthogonality_holds : ReciprocityTheory.Gal.UnramifiedOrthogonality :=
   GlobalTheory.CompanionTheory.Hypotheses₂.unramifiedOrthogonality
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Hypotheses₂.partialZetaFunctionalEquation`.
+A detailed English derivation is pending.
 -/
 theorem partialZetaFunctionalEquation_holds : GlobalTheory.Published.PartialZetaFunctionalEquation :=
   GlobalTheory.CompanionTheory.Hypotheses₂.partialZetaFunctionalEquation
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.MoyPrasadTop.moyPrasadJacquetIso`.
+A detailed English derivation is pending.
 -/
 theorem moyPrasadJacquetIso_holds : GlobalTheory.Published.MoyPrasadJacquetIso :=
   GlobalTheory.CompanionTheory.MoyPrasadTop.moyPrasadJacquetIso
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.WeberRay.weberRayField`.
+A detailed English derivation is pending.
 -/
 theorem weberRayFieldSt_holds : GlobalTheory.Published.WeberRayFieldSt :=
   GlobalTheory.CompanionTheory.WeberRay.weberRayField
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Hypotheses₂.ellipticMainTheoremCM`.
+A detailed English derivation is pending.
 -/
 theorem ellipticMainTheoremCM_holds : GlobalTheory.Published.EllipticMainTheoremCM :=
   GlobalTheory.CompanionTheory.Hypotheses₂.ellipticMainTheoremCM
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.DM.dixmierMalliavinFactorisation_holds`.
+A detailed English derivation is pending.
 -/
 theorem dixmierMalliavinFactorisation_holds : GlobalTheory.Published.DixmierMalliavinFactorisation :=
   PositivityTheory.DM.dixmierMalliavinFactorisation_holds
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Hypotheses₂.siegelKlingen`.
+A detailed English derivation is pending.
 -/
 theorem siegelKlingen_holds : GlobalTheory.Published.SiegelKlingen :=
   GlobalTheory.CompanionTheory.Hypotheses₂.siegelKlingen

@@ -13,15 +13,15 @@ section Generic
 variable {F : Type*} [Field F] [DecidableEq F] {V : WeierstrassCurve F}
 
 /- English proof (translation)
-Break down `P with _ | ⟨x₁, y₁, h₁⟩` into its components or cases. Express the relevant statement in the definitionally equal form `Φ (0 + Q) = Φ 0 + Φ Q`. Rewrite using `[zero_add, h0, zero_add]`. Break down `Q with _ | ⟨x₂, y₂, h₂⟩` into its components or cases. Express the relevant statement in the definitionally equal form `Φ (_ + 0) = _ + Φ 0`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[add_zero, h0, add_zero]`. Use `set S := Point.some _ _ h₁ + Point.some _ _ h₂ with hS`. Break down `hSc : S with _ | ⟨x₃, y₃, h₃⟩` into its components or cases. Establish `hQ : Point.some _ _ h₂ = -Point.some _ _ h₁`. Establish `: S = 0` using `hSc`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hS]`. Conclude with `eq_neg_of_add_eq_zero_right this`. Express the relevant statement in the definitionally equal form `Φ 0 = _`. Rewrite using `[h0, hQ, hneg, add_neg_cancel]`. Establish `hn` using `(nonsingular_neg (W' := V.toAffine) x₃ y₃).2 h₃`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `htri h₁ h₂ hn (by`. Establish `e : (Point.some _ _ hn : V.toAffine.Point) = -Point.some _ _ h₃`. Rewrite using `[Point.neg_some]`. Rewrite using `[e, ← hSc, hS]`. Use the proof step `abel)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (Point.some _ _ hn : V.toAffine.Point) = -Point.some _ _ h₃`. Rewrite using `[Point.neg_some]`. Rewrite `ht` using `[e, hneg, add_neg_eq_zero]`. Conclude with `ht.symm`.
+A detailed English derivation is pending.
 -/
 theorem map_add_of_triple {G : Type*} [AddCommGroup G] (Φ : V.toAffine.Point → G) (h0 : Φ 0 = 0)
     (hneg : ∀ P, Φ (-P) = -Φ P)
@@ -61,7 +61,7 @@ variable {F : Type*} [Field F] [DecidableEq F] (V : WeierstrassCurve F) (h3 : V.
 include h3 h4 h6
 
 /- English proof (translation)
-Rewrite `h` using `[equation_iff, h3, h4, h6]`. Take the linear combination `h`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem origin_eq {x y : F} (h : V.toAffine.Equation x y) :
     y ^ 2 + V.a₁ * x * y - V.a₂ * x ^ 2 = x ^ 3 := by
@@ -69,9 +69,9 @@ theorem origin_eq {x y : F} (h : V.toAffine.Equation x y) :
   linear_combination h
 
 /- English proof (translation)
-Introduce `hx`. Substitute `hx` using the available equality. Establish `he` using `origin_eq V h3 h4 h6 h.1`. Establish `hy : y = 0` using `pow_eq_zero_iff (n := 2) (by norm_num) |>.1 (by linear_combination he)`. Substitute `hy` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Use `(nonsingular_zero (W := V.toAffine)).1 h` as an intermediate fact. Break down `this.2 with h' | h'` into its components or cases. Conclude with `h' h3`. Conclude with `h' h4`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem origin_x_ne_zero {x y : F} (h : V.toAffine.Nonsingular x y) : x ≠ 0 := by
   intro hx
@@ -85,11 +85,11 @@ theorem origin_x_ne_zero {x y : F} (h : V.toAffine.Nonsingular x y) : x ≠ 0 :=
   · exact h' h4
 
 /- English proof (translation)
-Rewrite using `[nonsingular_iff']`. Use `⟨h, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Take `⟨hA, hB⟩` from `hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he` using `origin_eq V h3 h4 h6 h`. Rewrite `hA` using `[h4]`. Rewrite `hB` using `[h3]`. Apply `hx` to reduce the goal to its premises. Apply `pow_eq_zero_iff (n := 3) (by norm_num) |>.1` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-x) * hA + (-y) * hB + 2 * he`.
+A detailed English derivation is pending.
 -/
 theorem origin_nonsingular {x y : F} (h : V.toAffine.Equation x y) (hx : x ≠ 0) :
     V.toAffine.Nonsingular x y := by
@@ -119,7 +119,7 @@ def cuspMap : V.toAffine.Point → F
 include h3 h4 h6 h1 h2
 
 /- English proof (translation)
-Use `origin_eq V h3 h4 h6 h` as an intermediate fact. Rewrite `this` using `[h1, h2]`. Take the linear combination `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cusp_eq {x y : F} (h : V.toAffine.Equation x y) : (y - α * x) ^ 2 = x ^ 3 := by
   have := origin_eq V h3 h4 h6 h
@@ -127,7 +127,7 @@ theorem cusp_eq {x y : F} (h : V.toAffine.Equation x y) : (y - α * x) ^ 2 = x ^
   linear_combination this
 
 /- English proof (translation)
-Introduce `h0`. Apply `origin_x_ne_zero V h3 h4 h6 h` to reduce the goal to its premises. Use `cusp_eq V h3 h4 h6 α h1 h2 h.1` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `pow_eq_zero_iff (n := 3) (by norm_num) |>.1 (by linear_combination -this)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cusp_den_ne_zero {x y : F} (h : V.toAffine.Nonsingular x y) : y - α * x ≠ 0 := by
   intro h0
@@ -137,9 +137,9 @@ theorem cusp_den_ne_zero {x y : F} (h : V.toAffine.Nonsingular x y) : y - α * x
   exact pow_eq_zero_iff (n := 3) (by norm_num) |>.1 (by linear_combination -this)
 
 /- English proof (translation)
-Break down `P with _ | ⟨x, y, h⟩` into its components or cases. Simplify using `[cuspMap]`. Both sides reduce to the same expression. Rewrite using `[Point.neg_some]`. Simplify using `only [cuspMap, negY, h1, h3]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show -y - -2 * α * x - 0 - α * x = -(y - α * x) by ring, div_neg]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem cuspMap_neg (P : V.toAffine.Point) : cuspMap V α (-P) = -cuspMap V α P := by
   rcases P with _ | ⟨x, y, h⟩
@@ -149,11 +149,11 @@ theorem cuspMap_neg (P : V.toAffine.Point) : cuspMap V α (-P) = -cuspMap V α P
     rw [show -y - -2 * α * x - 0 - α * x = -(y - α * x) by ring, div_neg]
 
 /- English proof (translation)
-Take `⟨ℓ, ν, l1, l2, l3, v1, v2, v3⟩` from `exists_line_of_add_eq_zero g₁ g₂ g₃ hs`. Establish `d1` using `cusp_den_ne_zero V h3 h4 h6 α h1 h2 g₁`. Establish `d2` using `cusp_den_ne_zero V h3 h4 h6 α h1 h2 g₂`. Establish `d3` using `cusp_den_ne_zero V h3 h4 h6 α h1 h2 g₃`. Simplify using `only [cuspMap]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[div_add_div _ _ d1 d2, div_add_div _ _ (mul_ne_zero d1 d2) d3, div_eq_zero_iff]`. Use `left`. Rewrite `v1` using `[h1, h2]`. Rewrite `v2` using `[h1, h3, h4]`. Rewrite `v3` using `[h3, h6]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[l1, l2, l3]`. Take the linear combination `3 * (ℓ - α) ^ 2 * v3 + 2 * (ℓ - α) * ν * v2 + ν ^ 2 * v1`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cuspMap_triple {x₁ y₁ x₂ y₂ x₃ y₃ : F} (g₁ : V.toAffine.Nonsingular x₁ y₁)
     (g₂ : V.toAffine.Nonsingular x₂ y₂) (g₃ : V.toAffine.Nonsingular x₃ y₃)
@@ -177,15 +177,13 @@ def cuspHom : V.toAffine.Point →+ F :=
     (cuspMap_neg V h3 h4 h6 α h1 h2) (cuspMap_triple V h3 h4 h6 α h1 h2))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `(_ | ⟨x, y, h⟩) hP`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `x / (y - α * x) = 0 at hP`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hP` using `[div_eq_zero_iff]`. Break down `hP with hP | hP` into its components or cases. Conclude with `absurd hP (origin_x_ne_zero V h3 h4 h6 h)`. Conclude with `absurd hP (cusp_den_ne_zero V h3 h4 h6 α h1 h2 h)`. Introduce `s`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Distinguish the cases in `hs : s = 0`. Conclude with `⟨0, by rw [hs]; rfl⟩`. Establish `he : V.toAffine.Equation (s⁻¹ ^ 2) ((α + s⁻¹) * s⁻¹ ^ 2)`. Rewrite using `[equation_iff, h3, h4, h6, h1, h2]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hn` using `origin_nonsingular V h3 h4 h6 he (pow_ne_zero 2 (inv_ne_zero hs))`. Use `⟨.some _ _ hn, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `s⁻¹ ^ 2 / ((α + s⁻¹) * s⁻¹ ^ 2 - α * s⁻¹ ^ 2) = s`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cuspHom_bijective : Function.Bijective (cuspHom V h3 h4 h6 α h1 h2) := by
   constructor
@@ -226,7 +224,7 @@ local notation "ι" => algebraMap F L
 include h3 h4 h6 hs hp
 
 /- English proof (translation)
-Use `congrArg ι (origin_eq V h3 h4 h6 h)` as an intermediate fact. Simplify using `only [map_sub, map_add, map_mul, map_pow] at this`. Rewrite `this` using `[hs, hp]`. Take the linear combination `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem node_eq {x y : F} (h : V.toAffine.Equation x y) :
     (ι y - α * ι x) * (ι y - β * ι x) = ι x ^ 3 := by
@@ -236,7 +234,7 @@ theorem node_eq {x y : F} (h : V.toAffine.Equation x y) :
   linear_combination this
 
 /- English proof (translation)
-Introduce `h0`. Use `node_eq V h3 h4 h6 α β hs hp h.1` as an intermediate fact. Rewrite `this` using `[h0, zero_mul, eq_comm]`. Conclude with `origin_x_ne_zero V h3 h4 h6 h ((map_eq_zero _).1 (pow_eq_zero_iff (n := 3) (by norm_num) |>.1 this))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem node_num_ne_zero {x y : F} (h : V.toAffine.Nonsingular x y) : ι y - α * ι x ≠ 0 := by
   intro h0
@@ -245,7 +243,7 @@ theorem node_num_ne_zero {x y : F} (h : V.toAffine.Nonsingular x y) : ι y - α 
   exact origin_x_ne_zero V h3 h4 h6 h ((map_eq_zero _).1 (pow_eq_zero_iff (n := 3) (by norm_num) |>.1 this))
 
 /- English proof (translation)
-Introduce `h0`. Use `node_eq V h3 h4 h6 α β hs hp h.1` as an intermediate fact. Rewrite `this` using `[h0, mul_zero, eq_comm]`. Conclude with `origin_x_ne_zero V h3 h4 h6 h ((map_eq_zero _).1 (pow_eq_zero_iff (n := 3) (by norm_num) |>.1 this))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem node_den_ne_zero {x y : F} (h : V.toAffine.Nonsingular x y) : ι y - β * ι x ≠ 0 := by
   intro h0
@@ -259,9 +257,9 @@ def nodeVal : V.toAffine.Point → Lˣ
       (div_ne_zero (node_num_ne_zero V h3 h4 h6 α β hs hp h) (node_den_ne_zero V h3 h4 h6 α β hs hp h))
 
 /- English proof (translation)
-Break down `P with _ | ⟨x, y, h⟩` into its components or cases. Both sides reduce to the same expression. Rewrite using `[← ofMul_inv]`. Use `congr 1`. Rewrite using `[Point.neg_some]`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Establish `hn` using `node_num_ne_zero V h3 h4 h6 α β hs hp h`. Simplify using `only [nodeVal, Units.val_mk0, Units.val_inv_eq_inv_val, negY, h3, map_sub, map_neg, map_mul, sub_zero, hs]`. Rewrite using `[inv_div, div_eq_div_iff (by intro h0; apply hn; linear_combination -h0) hn]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nodeVal_neg (P : V.toAffine.Point) :
     Additive.ofMul (nodeVal V h3 h4 h6 α β hs hp (-P)) =
@@ -279,15 +277,15 @@ theorem nodeVal_neg (P : V.toAffine.Point) :
     ring
 
 /- English proof (translation)
-Rewrite using `[← ofMul_mul, ← ofMul_mul, ← ofMul_one]`. Use `congr 1`. Take `⟨ℓ, ν, l1, l2, l3, v1, v2, v3⟩` from `exists_line_of_add_eq_zero g₁ g₂ g₃ hsum`. Rewrite `v2` using `[h3, h4]`. Rewrite `v3` using `[h3, h6]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `w1` using `congrArg ι v1`. Establish `w2` using `congrArg ι v2`. Establish `w3` using `congrArg ι v3`. Simplify using `only [map_add, map_sub, map_mul, map_pow, map_zero, map_ofNat, hs, hp] at w1 w2 w3`. Establish `k1` using `congrArg ι l1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `k2` using `congrArg ι l2`. Establish `k3` using `congrArg ι l3`. Simplify using `only [map_add, map_mul] at k1 k2 k3`. Establish `hN : (ι y₁ - α * ι x₁) * (ι y₂ - α * ι x₂) * (ι y₃ - α * ι x₃) = ι ν ^ 3`. Rewrite using `[k1, k2, k3]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(ι ℓ - α) ^ 3 * w3 + (ι ℓ - α) ^ 2 * ι ν * w2 + (ι ℓ - α) * ι ν ^ 2 * w1`. Establish `hD : (ι y₁ - β * ι x₁) * (ι y₂ - β * ι x₂) * (ι y₃ - β * ι x₃) = ι ν ^ 3`. Rewrite using `[k1, k2, k3]`. Take the linear combination `(ι ℓ - β) ^ 3 * w3 + (ι ℓ - β) ^ 2 * ι ν * w2 + (ι ℓ - β) * ι ν ^ 2 * w1`. Establish `hD0 : (ι y₁ - β * ι x₁) * (ι y₂ - β * ι x₂) * (ι y₃ - β * ι x₃) ≠ 0` using `mul_ne_zero (mul_ne_zero (node_den_ne_zero V h3 h4 h6 α β hs hp g₁) (node_den_ne_zero V h3 h4 h6 α β hs hp g₂)) (node_den_ne_zero V h3 h4 h6 α β hs hp g₃)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `ext`. Simplify using `only [nodeVal, Units.val_mul, Units.val_mk0, Units.val_one]`. Rewrite using `[div_mul_div_comm, div_mul_div_comm, div_eq_one_iff_eq hD0, hN, hD]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem nodeVal_triple {x₁ y₁ x₂ y₂ x₃ y₃ : F} (g₁ : V.toAffine.Nonsingular x₁ y₁)
     (g₂ : V.toAffine.Nonsingular x₂ y₂) (g₃ : V.toAffine.Nonsingular x₃ y₃)
@@ -327,11 +325,11 @@ def nodeHom : V.toAffine.Point →+ Additive Lˣ :=
       (nodeVal_neg V h3 h4 h6 α β hs hp) (nodeVal_triple V h3 h4 h6 α β hs hp))
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `(_ | ⟨x, y, h⟩) hP`. Both sides reduce to the same expression. It suffices to derive a contradiction. Express the relevant statement in the definitionally equal form `Additive.ofMul (nodeVal V h3 h4 h6 α β hs hp (.some _ _ h)) = Additive.ofMul 1 at hP`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. It suffices to derive a contradiction. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hv` using `congrArg Units.val (Additive.ofMul.injective hP)`. Simplify using `only [nodeVal, Units.val_mk0, Units.val_one] at hv`. Rewrite `hv` using `[div_eq_one_iff_eq (node_den_ne_zero V h3 h4 h6 α β hs hp h)]`. Establish `hx : (α - β) * ι x = 0` using `by linear_combination -hv`. Break down `mul_eq_zero.1 hx with h0 | h0` into its components or cases.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hαβ (sub_eq_zero.1 h0)`. Conclude with `origin_x_ne_zero V h3 h4 h6 h ((map_eq_zero _).1 h0)`.
+A detailed English derivation is pending.
 -/
 theorem nodeHom_injective (hαβ : α ≠ β) : Function.Injective (nodeHom V h3 h4 h6 α β hs hp) := by
   rw [injective_iff_map_eq_zero]
@@ -357,13 +355,11 @@ variable {F : Type*} [Field F] [DecidableEq F] (V : WeierstrassCurve F) (h3 : V.
 include h3 h4 h6 hs hp
 
 /- English proof (translation)
-Establish `hs' : V.a₁ = -(α + β)` using `hs`. Establish `hp' : V.a₂ = -(α * β)` using `hp`. Establish `h1u : (1 : F) - u ≠ 0` using `sub_ne_zero.2 (Ne.symm hu1)`. Establish `hab : α - β ≠ 0` using `sub_ne_zero.2 hαβ`. Use `set t := (α - u * β) / (1 - u)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hta : t - α = u * (α - β) / (1 - u)` using `by simp only [t]; field_simp; ring`. Establish `htb : t - β = (α - β) / (1 - u)` using `by simp only [t]; field_simp; ring`. Establish `hx : (t - α) * (t - β) ≠ 0`. Rewrite using `[hta, htb]`. Conclude with `mul_ne_zero (div_ne_zero (mul_ne_zero hu0 hab) h1u) (div_ne_zero hab h1u)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : V.toAffine.Equation ((t - α) * (t - β)) (t * ((t - α) * (t - β)))`. Rewrite using `[equation_iff, h3, h4, h6, hs', hp']`. Expand and normalize the polynomial expressions, which then agree. Use `⟨_, _, origin_nonsingular V h3 h4 h6 he hx, ?_⟩` and prove the remaining obligations. Rewrite using `[show t * ((t - α) * (t - β)) - α * ((t - α) * (t - β)) = (t - α) * ((t - α) * (t - β)) by ring, show t * ((t - α) * (t - β)) - β * ((t - α) * (t - β)) = (t - β) * ((t - α) * (t - β)) by ring, mul_div_mul_right _ _ hx, hta, htb]`.
-
-Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem node_point_of_value {u : F} (hαβ : α ≠ β) (hu0 : u ≠ 0) (hu1 : u ≠ 1) :
     ∃ x y : F, V.toAffine.Nonsingular x y ∧ (y - α * x) / (y - β * x) = u := by
@@ -427,9 +423,9 @@ local notation "ι" => algebraMap F L
 include h3 h4 h6 hs hp
 
 /- English proof (translation)
-Establish `hσβ : σ β = α`. Establish `h1 : σ (α + β) = α + β`. Rewrite using `[← neg_neg (α + β), ← hs, map_neg, AlgEquiv.commutes]`. Rewrite `h1` using `[map_add, hσ]`. Take the linear combination `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Break down `P with _ | ⟨x, y, h⟩` into its components or cases. Simplify using `[nodeVal, normOne]`. Simplify using `only [normOne, Subgroup.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk, Set.mem_ofPred_eq, nodeVal, Units.val_mk0, map_div₀, map_sub, map_mul, AlgEquiv.commutes, hσ, hσβ]`. Rewrite using `[div_mul_div_comm, mul_comm (ι y - β * ι x), div_self (mul_ne_zero (node_num_ne_zero V h3 h4 h6 α β hs hp h) (node_den_ne_zero V h3 h4 h6 α β hs hp h))]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem nodeVal_mem (hσ : σ α = β) (P : V.toAffine.Point) :
     nodeVal V h3 h4 h6 α β hs hp P ∈ normOne σ := by

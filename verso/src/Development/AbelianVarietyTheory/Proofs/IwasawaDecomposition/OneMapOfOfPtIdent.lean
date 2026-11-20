@@ -30,15 +30,15 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 section Algebra
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K C`. Establish `key : ∀ {m : ℕ} (as : Fin m → ℂ) (fs : Fin m → C), (∀ j, as j ∈ K') → ∃ s : Fin (Module.finrank K C) → ℂ, (∀ l, s l ∈ K') ∧ ∑ j, as j • Φ (fs j) = ∑ l, s l • Φ (b l)`. Introduce `m as fs ha`. Use `⟨fun l => ∑ j, as j * σ (b.repr (fs j) l), fun l => sum_mem fun j _ => mul_mem (ha j) (hσ _), ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_repr (fs j), map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, e⟩` from `key as fs ha`. Take `⟨s', hs', e'⟩` from `key as' fs' ha'`. Rewrite `h0` using `[e]`. Rewrite `h` using `[e, e']`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, s l ≠ 0 := by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Conclude with `h0 (by simp [hn])`. Establish `h1 : ∑ l, (s l - ρ * s' l) • Φ (b l) = 0`. Simplify using `only [sub_smul, mul_smul, Finset.sum_sub_distrib, ← Finset.smul_sum, h, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 (hind _ b b.linearIndependent) _ h1 l)`. Establish `h3 : s' l ≠ 0` using `fun h => hl (by rw [h2, h, mul_zero])`. Establish `h4 : ρ = s l / s' l` using `by rw [h2, mul_div_cancel_right₀ _ h3]`. Rewrite using `[h4]`. Conclude with `div_mem (hs l) (hs' l)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_mem {K C Y : Type} [Field K] [AddCommGroup C] [Module K C] [FiniteDimensional K C] [AddCommGroup Y] [Module ℂ Y]
     {σ : K →+* ℂ} (Φ : C →ₛₗ[σ] Y)
@@ -75,9 +75,9 @@ theorem ratio_mem {K C Y : Type} [Field K] [AddCommGroup C] [Module K C] [Finite
   exact div_mem (hs l) (hs' l)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Set `q : AutQ W` to `Quotient.mk _ (g * k⁻¹)`. Establish `hr : g * k⁻¹ * q.out⁻¹ ∈ GQ W` using `QuotientGroup.rightRel_apply.1 (Quotient.exact (Quotient.out_eq q))`. Use `hΦ _ hr (q.out * k)` as an intermediate fact. Rewrite `this` using `[h q, show g * k⁻¹ * q.out⁻¹ * (q.out * k) = g by group]`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_out {W : HSp D} (Φ : GA D W → ℂ) (hΦ : ∀ γ ∈ GQ W, ∀ g, Φ (γ * g) = Φ g) (k : GA D W)
     (h : ∀ q : AutQ W, Φ (q.out * k) = 0) : Φ = 0 := by
@@ -89,11 +89,11 @@ theorem eq_zero_of_out {W : HSp D} (Φ : GA D W → ℂ) (hΦ : ∀ γ ∈ GQ W,
   exact this
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `LinearMap.exists_leftInverse_of_injective (VV K lam).subtype (Submodule.ker_subtype _)`. Use `letI : Module K' W := Module.compHom W σ'`. Set `g : Pol K' I n →ₗ[K'] W` to `(MvPolynomial.basisMonomials _ K').constr K' fun m => c₀ (π (MvPolynomial.monomial m 1))`. Establish `hg : ∀ P : Pol K I n, g (MvPolynomial.map ι P) = c₀ (π P)` using `fun P => by`. Proceed by induction on `P using MvPolynomial.induction_on' with`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `monomial m a`. Establish `e1 : MvPolynomial.map ι (MvPolynomial.monomial m a) = ι a • MvPolynomial.basisMonomials _ K' m`. Simplify using `[MvPolynomial.smul_monomial]`. Establish `e2 : MvPolynomial.monomial m a = a • MvPolynomial.monomial m (1 : K)` using `by simp [MvPolynomial.smul_monomial]`. Rewrite using `[e1, map_smul, Module.Basis.constr_basis, e2, map_smul, map_smulₛₗ, ← RingHom.congr_fun hσ a]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add, map_add]`. Use `⟨{ toFun := fun v => g v, map_add' := fun x y => g.map_add _ _, map_smul' := fun a x => g.map_smul a _ }, fun v => ⟨⟨_, GlobalTheory.Proof.TensorMapDescent.map_mem_VV ι lam _ v.2⟩, rfl, (hg v).trans (congrArg c₀ (LinearMap.congr_fun hπ v))⟩⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_coef_ext {K K' : Type} [Field K] [Field K'] {σ : K →+* ℂ} {σ' : K' →+* ℂ} (ι : K →+* K') (hσ : σ'.comp ι = σ)
     {I : Type} [Fintype I] {n : ℕ} (lam : I → DomWeight n) {W : Type} [AddCommGroup W] [Module ℂ W] (c₀ : VV K lam →ₛₗ[σ] W) :
@@ -126,7 +126,7 @@ def psi : T.R j →ₛₗ[T.σ₀] (GA D W → ℂ) :=
     (muPin W (castDict hV (T.dict j T.σ₀)) (castDict hV (T.mu j T.σ₀)) (T.cE j T.σ₀))).comp (rdU (T.U j T.σ₀))
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Introduce `γ hγ g`. Establish `h` using `(GlobalTheory.AdelicCusp.phiJ_automorphic D T hT j hj _ T.good_σ₀ a n hD f hf).1 γ hγ g`. Establish `hl : ((lieFac (T.Q.Dw j) (xiR D) a : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (lieFac_pos _ _ _).ne'`. Conclude with `mul_left_cancel₀ hl h`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psi_inv (hT : LawsJ T) (hj : InR D j) {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hD : Dom a n) {f : T.R j}
     (hf : f ∈ T.cuspA j a n) : ∀ γ ∈ GQ W, ∀ g, psi T j hV f (γ * g) = psi T j hV f g := by
@@ -137,9 +137,9 @@ theorem psi_inv (hT : LawsJ T) (hj : InR D j) {a : (D.host.E →+* ℂ) × ℕ �
   exact mul_left_cancel₀ hl h
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Establish `h` using `(GlobalTheory.VolPairExists.adelic_linearIndependent D T hT j hj _ T.good_σ₀ a n hD).1 m b hb`. Establish `e : ∀ f, T.phiJ j T.σ₀ a f = (lieFac (T.Q.Dw j) (xiR D) a : ℂ) • psi T j rfl f` using `fun _ => rfl`. Rewrite `h`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h g ?_` and prove the remaining obligations. Simplify using `only [e, smul_comm (g _), ← Finset.smul_sum, hg, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem psi_indep (hT : LawsJ T) (hj : InR D j) {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hD : Dom a n) (m : ℕ)
     (b : Fin m → T.cuspA j a n) (hb : LinearIndependent T.Q.c.F b) :
@@ -158,7 +158,7 @@ def InForms (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (K' : Intermedia
 variable {T j hV}
 
 /- English proof (translation)
-Take `⟨m, as, fs, -, rfl⟩` from `h`. Introduce `γ hγ g`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, psi_inv T j hV hT hj hD (fs _).2 γ hγ g]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem InForms.inv (hT : LawsJ T) (hj : InR D j) {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hD : Dom a n)
     {K' : IntermediateField ℚ ℂ} {Φ : GA D W → ℂ} (h : InForms T j hV a n K' Φ) : ∀ γ ∈ GQ W, ∀ g, Φ (γ * g) = Φ g := by
@@ -167,7 +167,7 @@ theorem InForms.inv (hT : LawsJ T) (hj : InR D j) {a : (D.host.E →+* ℂ) × �
   simp only [Finset.sum_apply, Pi.smul_apply, psi_inv T j hV hT hj hD (fs _).2 γ hγ g]
 
 /- English proof (translation)
-Take `⟨m, as, fs, ha, rfl⟩` from `h`. Take `⟨m', as', fs', ha', rfl⟩` from `h'`. Use `haveI : FiniteDimensional T.Q.c.F (T.cuspA j a n) := hT.cuspFD j hj a n hD`. Conclude with `ratio_mem ((psi T j hV).comp (T.cuspA j a n).subtype) (psi_indep T j hV hT hj hD) K' (fun x => hc x.2) as fs as' fs' (fun l => h0 (ha l)) ha' ρ e hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem InForms.ratio (hT : LawsJ T) (hj : InR D j) {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hD : Dom a n)
     {K₀ K' : IntermediateField ℚ ℂ} (h0 : K₀ ≤ K') (hc : T.Q.c.F ≤ K') {Φ Φ' : GA D W → ℂ} (h : InForms T j hV a n K₀ Φ)
@@ -189,11 +189,11 @@ abbrev chiG (R : RealDat D A T.Q.c.F) (i : Fin D.R.m) (g : G) : ℂ :=
   ∏ PP : R.Pg, ((R.chi ((i : ℕ) + 1) PP.1 (Matrix.GeneralLinearGroup.det (R.eG g PP)) : ℂˣ) : ℂ)
 
 /- English proof (translation)
-Rewrite `hf` using `[← hn]`. Take `⟨m, as, fs, hfs, hBC⟩` from `(GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ O.hle).2 _ (T.U ((i : ℕ) + 1)) _ _ f hf`. Establish `hA` using `(GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ O.hle _ _ hact).2`. Use `⟨_, ⟨m, fun l => (as l : ℂ), fun l => ⟨fs l, hfs l⟩, fun l => (as l).2, rfl⟩, fun z q => ?_⟩` and prove the remaining obligations. Establish `h1` using `rdU_unfBC O.hle (T.U ((i : ℕ) + 1)) (inC O.c') (hA _ _ z m as fs f ((mem_cusp _ _ _ _ _ _).1 hf).1 (fun l => ((mem_cusp _ _ _ _ _ _).1 (hfs l)).1) hBC)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ∀ l, O.phi (T.cE ((i : ℕ) + 1) O.s0) (actLev T.Q.c O.lev2 z (fs l)) q.out = chiG R i z * psi T ((i : ℕ) + 1) hV (fs l) (q.out * k z)` using `fun l => (hE z (k z) (hk z) (fs l) (hfs l)).2 q.out`. Establish `h3 : rdQ O z f q = O.mu q.out * rdU (unfBC O.hle (T.U ((i : ℕ) + 1)) (inC O.c')) (actLev O.c' O.lev2 z f) (O.dict q.out).1 (O.dict q.out).2` using `rfl`. Rewrite using `[h3, h1]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_left_comm (chiG R i z), ← h2 l]`. Use `show _ = (as l : ℂ) * (T.cE ((i : ℕ) + 1) O.s0 (O.dict q.out).1 * O.mu q.out * rdU (T.U ((i : ℕ) + 1) O.s0) (actLev T.Q.c O.lev2 z (fs l)) (O.dict q.out).1 (O.dict q.out).2)`. Use `show _ * (_ * ((as l : ℂ) * _)) = _`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_read (hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i) (hn : κ.n = (Vc D i).rank)
     (hE : O.EquivAt κ (T.cE ((i : ℕ) + 1) O.s0)) (hact : ActLev (Xo := T.Q.Xo ((i : ℕ) + 1)) T.Q.c O.lev2)
@@ -231,9 +231,9 @@ variable {C : Formalism.L2.Pj.Core D} [Algebra C.Q.c.F D.what₂.LL] {R : RealDa
   {x₀ : (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ}
 
 /- English proof (translation)
-Take `⟨l1, l2, l3, l4, l5, l6, l7, l8, l9⟩` from `h`. Establish `key : ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra d.c₂.F k] (y : FrPt d.Xo₂ d.c₂ k), evR d.Xo₂ d.c₂ (u • d.cδ) y ≠ 0` using `fun k _ _ _ y h0 => by`. Establish `e` using `evR_sum_smul y (fun _ : Fin 1 => u) (fun _ => d.cδ)`. Rewrite `e` using `[Fin.sum_univ_one, Fin.sum_univ_one, h0]`. Conclude with `mul_ne_zero ((map_ne_zero _).2 hu) (l9 k y) e.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨l1, l2, l3, l4, l5, l6, l7, Submodule.smul_mem _ _ l8, key⟩`.
+A detailed English derivation is pending.
 -/
 theorem isLev_scale {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n) (u : d.c₂.F) (hu : u ≠ 0) (h : d.IsLev) :
@@ -252,9 +252,9 @@ def scaleXi (u : O.c'.F) : OMDat C R i Tp tup :=
     φ := O.φ, w := O.w, U₂ := O.U₂, dict₂ := O.dict₂ }
 
 /- English proof (translation)
-Introduce `t`. Take `⟨h1, h2, g, e, F, ik, φ, th, h3, h4, h5⟩` from `h t`. Use `⟨h1, h2, g, e, F, ik, φ, th, h3, h4, fun h γ hm => ?_⟩` and prove the remaining obligations. Establish `h6` using `h5 h γ hm`. Use `show rdU (O.U₂ t) ((O.dδ t).eF u • (O.dδ t).cδ) (O.dict₂ t h).1 (O.dict₂ t h).2 = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smulₛₗ, Pi.smul_apply, Pi.smul_apply, h6, smul_eq_mul, mul_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem xiConst_scaleXi (u : O.c'.F) {c0 : ℂ} (h : XiConst O ι x₀ c0) : XiConst (scaleXi O u) ι x₀ ((u : ℂ) * c0) := by
   intro t
@@ -266,7 +266,7 @@ theorem xiConst_scaleXi (u : O.c'.F) {c0 : ℂ} (h : XiConst O ι x₀ c0) : XiC
   rfl
 
 /- English proof (translation)
-Use `⟨hP.lift, hP.tuple, hP.act, hP.bad, hP.reps, hP.ep, hP.io, hP.w, fun t => ?_, ⟨_, hr, xiConst_scaleXi O u h⟩, hP.model₂⟩` and prove the remaining obligations. Conclude with `⟨isLev_scale _ _ ((map_ne_zero _).2 hu) (hP.cov t).1, (hP.cov t).2⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem pins_scaleXi (u : O.c'.F) (hu : u ≠ 0) {c0 : ℂ} (h : XiConst O ι x₀ c0) (hr : ∃ m : ℕ, 0 < m ∧ ((u : ℂ) * c0) ^ m = 1)
     (hP : O.Pins κ v₀ ι x₀) : (scaleXi O u).Pins κ v₀ ι x₀ := by
@@ -277,11 +277,11 @@ theorem pins_scaleXi (u : O.c'.F) (hu : u ≠ 0) {c0 : ℂ} (h : XiConst O ι x�
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨c1, hc1⟩` from `exists_coef_ext (W := (R.cV i).W) O.jL hP.lift.field (lamV D i) (c0L i)`. Use `choose h J' h1 h2 h3 h4 using fun t => (hP.tuple t).reps`. Establish `hL : ThPinsR R i O.jL (inC O.c') v₀ c1 ι C.Q.l.M (Mfr C.Q.l) lev` using `⟨hP.lift.field, hP.lift.std, hP.lift.v0, ⟨_, _, _, hT, hc1⟩, hlev⟩`. Establish `h0 : ∀ t y, (∀ k, (R.HV i (tup t)).e y (fin _ (h t k)) = 0) → onQ (Wc D i) (R.thF i (tup t) y v₀) = 0` using `fun t y hy => by`. Establish `e1` using `h3 t y 0 fun k => (hy k).trans (map_zero _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `h3 t 0 0 fun k => by rw [map_zero]; exact (map_zero _).symm`. Rewrite using `[← e1, e2, map_zero]`. Both sides reduce to the same expression. Use `⟨{ O with c0' := c1, lev := lev thAd := fun t x => if hx : ∃ y, Place R i (tup t) (h t) c1 y x then onQ (Wc D i) (R.thF i (tup t) hx.choose v₀) else 0 Plc := fun t x => ∃ x₀, Place R i (tup t) (h t) c1 (jVx R i (tup t) x₀) x }, rfl, ⟨hL, fun t => ⟨⟨h t, J' t, h1 t, GlobalTheory.R …` and prove the remaining obligations. Establish `hx : ∃ y, Place R i (tup t) (h t) c1 y x` using `⟨y, hy⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(dif_pos hx).trans ?_` and prove the remaining obligations. Establish `h5` using `h0 t (hx.choose - y) fun k => by`. Rewrite using `[map_sub, Pi.sub_apply, hx.choose_spec k, hy k, sub_self]`. Rewrite `h5` using `[map_sub]`. Conclude with `sub_eq_zero.1 h5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_retie {F : Face D A} (hR : R.Char F) (hP : O.Pins κ v₀ ι x₀)
     (lev : G → (C.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (C.Q.Dw ((i : ℕ) + 1)).La)
@@ -320,9 +320,9 @@ end Change
 section Compare
 
 /- English proof (translation)
-Use `sub_eq_zero.1 (eq_zero_of_out _ (fun γ hγ g => ?_) k fun q => ?_)` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.smul_apply, hΦ γ hγ g, hΦ' γ hγ g]`. Establish `h1 : (lam q * c) * (b * s * Φ (q.out * k) - a * s' * Φ' (q.out * k)) = 0`. Take the linear combination `a * h' q - b * h q`. Establish `h2` using `(mul_eq_zero.1 h1).resolve_left (mul_ne_zero (hlam q) hc)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h2`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eq_smul_of_out {W : HSp D} {θ e lam : AutQ W → ℂ} (hlam : ∀ q, lam q ≠ 0) {Φ Φ' : GA D W → ℂ}
     (hΦ : ∀ γ ∈ GQ W, ∀ g, Φ (γ * g) = Φ g) (hΦ' : ∀ γ ∈ GQ W, ∀ g, Φ' (γ * g) = Φ' g) (k : GA D W) {a b s s' c : ℂ}
@@ -338,7 +338,7 @@ theorem eq_smul_of_out {W : HSp D} {θ e lam : AutQ W → ℂ} (hlam : ∀ q, la
     linear_combination h2
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `h`. Introduce and unpack `rfl`. Rewrite `h` using `[zero_pow hm.ne']`. Conclude with `zero_ne_one h`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_root {u : ℂ} (h : ∃ m : ℕ, 0 < m ∧ u ^ m = 1) : u ≠ 0 := by
   obtain ⟨m, hm, h⟩ := h
@@ -347,9 +347,9 @@ theorem ne_zero_of_root {u : ℂ} (h : ∃ m : ℕ, 0 < m ∧ u ^ m = 1) : u ≠
   exact zero_ne_one h
 
 /- English proof (translation)
-Take `⟨a, ha, h1⟩` from `hu`. Take `⟨b, hb, h2⟩` from `hv`. Take `⟨c, hc, h3⟩` from `hw`. Use `⟨a * b * c, by positivity, ?_⟩` and prove the remaining obligations. Establish `e1 : u ^ (a * b * c) = 1` using `by rw [mul_assoc, pow_mul, h1, one_pow]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : v ^ (a * b * c) = 1` using `by rw [mul_comm a, mul_assoc, pow_mul, h2, one_pow]`. Establish `e3 : w ^ (a * b * c) = 1` using `by rw [mul_comm, pow_mul, h3, one_pow]`. Rewrite using `[mul_pow, div_pow, e1, e2, e3, div_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem root_mul_div {u v w : ℂ} (hu : ∃ m : ℕ, 0 < m ∧ u ^ m = 1) (hv : ∃ m : ℕ, 0 < m ∧ v ^ m = 1)
     (hw : ∃ m : ℕ, 0 < m ∧ w ^ m = 1) : ∃ m : ℕ, 0 < m ∧ (u * (v / w)) ^ m = 1 := by
@@ -368,7 +368,7 @@ variable {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} 
   {x₀ : (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ}
 
 /- English proof (translation)
-Take `⟨h, J', -, -, h3, h4⟩` from `(hP.tuple t).reps`. Take `⟨y, hy⟩` from `(h4 x).1 hx`. Conclude with `⟨y, h3 _ x hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lift_of_plc {Tp : Type} {tup : Tp → T0} {O : OMDat T.toCore R i Tp tup} (hP : O.Pins κ v₀ ι x₀) {t : Tp}
     {x : O.Cl' t → VsV D i O.c'.F} (hx : O.Plc t x) : ∃ y, O.thAd t x = liftQ R i v₀ (tup t) y := by
@@ -377,7 +377,7 @@ theorem lift_of_plc {Tp : Type} {tup : Tp → T0} {O : OMDat T.toCore R i Tp tup
   exact ⟨y, h3 _ x hy⟩
 
 /- English proof (translation)
-Take `⟨h, J', -, h2, h3, h4⟩` from `(hP.tuple t).reps`. Take `⟨x, hx⟩` from `h2 y`. Conclude with `⟨x, (h4 x).2 ⟨y, hx⟩, h3 _ x hx⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem plc_of_lift {Tp : Type} {tup : Tp → T0} {O : OMDat T.toCore R i Tp tup} (hP : O.Pins κ v₀ ι x₀) (t : Tp)
     (y : A.fam.amb.FL i (tup t)) : ∃ x, O.Plc t x ∧ O.thAd t x = liftQ R i v₀ (tup t) y := by
@@ -386,7 +386,7 @@ theorem plc_of_lift {Tp : Type} {tup : Tp → T0} {O : OMDat T.toCore R i Tp tup
   exact ⟨x, (h4 x).2 ⟨y, hx⟩, h3 _ x hx⟩
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun _ _ => Units.ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem chiG_ne (g : G) : chiG R i g ≠ 0 := Finset.prod_ne_zero_iff.2 fun _ _ => Units.ne_zero _
 
@@ -396,11 +396,11 @@ abbrev cQ (T : CoreJ D) (i : Fin D.R.m) (hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨hE, ⟨-, -, -, -, -, z₁, hz₁, h1⟩, -⟩` from `hrow`. Take `⟨s₁, a1, a2, h1⟩` from `h1 ()`. Take `⟨s₀, b1, b2, h0⟩` from `hid ()`. Use `⟨z₁, hz₁, s₁, s₀, a1, a2, b1, b2, fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, e⟩` from `plc_of_lift hP () y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨f, hf, hf'⟩, h2⟩` from `h1 x hx`. Establish `hs` using `((mem_cusp _ _ _ _ _ _).1 hf).1`. Take `⟨Φ, hΦ, h3⟩` from `exists_read O κ hV hn hE hP.act.1 k hk hf`. Use `⟨Φ, hΦ, fun q => ?_, fun q => ?_⟩` and prove the remaining obligations. Establish `h4 : ph * O.thAd () x q = s₁ * T.cE ((i : ℕ) + 1) O.s0 (O.dict q.out).1 * (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * rdQ O z₁ f q` using `h2 f hs hf' q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← h3 z₁ q, ← e, h4]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4` using `h0 x hx f hs hf' q`. Establish `h5 : cQ T i hV q = T.cE ((i : ℕ) + 1) O.s0 (O.dict q.out).1` using `rfl`. Rewrite using `[← h3 z₀ q, ← e, h5, mul_left_comm, h4]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -436,9 +436,9 @@ theorem exists_base (hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i) (hn : κ.n = (Vc
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨s, b1, b2, h0⟩` from `hid t`. Use `⟨s, b1, b2, fun x hx f hf hf' => ?_⟩` and prove the remaining obligations. Take `⟨Φ', hΦ, h3⟩` from `exists_read O κ hV hn hE hP.act.1 k hk hf`. Use `⟨Φ', hΦ, h3, fun Φ a s₀ hs hinv h => eq_smul_of_out hlam hinv (hΦ.inv hT ⟨Nat.le_add_left _ _, i.2⟩ (dom_wtA κ)) (k z₀) (chiG_ne z₀) hs hc0 h fun q => ?_⟩` and prove the remaining obligations. Establish `h4` using `h0 x hx f ((mem_cusp _ _ _ _ _ _).1 hf).1 hf' q`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h5 : cQ T i hV q = T.cE ((i : ℕ) + 1) O.s0 (O.dict q.out).1` using `rfl`. Rewrite using `[← h3 z₀ q, h5, mul_left_comm, h4]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_transfer (hT : LawsJ T) (hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i) (hn : κ.n = (Vc D i).rank)
     {Tp : Type} {tup : Tp → T0} {O : OMDat T.toCore R i Tp tup} (hP : O.Pins κ v₀ ι x₀)
@@ -463,13 +463,13 @@ theorem exists_transfer (hT : LawsJ T) (hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D 
   ring
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => obtain ⟨y, rfl⟩ := hw`. Conclude with `h y`. Consider the case `zero => exact ⟨0, fun _ _ _ => rfl, fun q => by simp, fun q => by simp⟩`. Consider the case `add u v _ _ hu hv`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, h1, h2, h3⟩` from `hu`. Take `⟨Ψ, g1, g2, g3⟩` from `hv`. Use `⟨Φ + Ψ, fun γ hγ g => by simp only [Pi.add_apply, h1 γ hγ g, g1 γ hγ g], fun q => ?_, fun q => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, mul_add, h2 q, g2 q]`. Simplify using `only [Pi.add_apply, mul_add, h3 q, g3 q]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `smul r u _ hu`. Take `⟨Φ, h1, h2, h3⟩` from `hu`. Use `⟨r • Φ, fun γ hγ g => by simp only [Pi.smul_apply, h1 γ hγ g], fun q => ?_, fun q => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Take the linear combination `r * h2 q`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Take the linear combination `r * h3 q`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem span_read {W : HSp D} {I : Type} (θ : I → AutQ W → ℂ) (a b c d : AutQ W → ℂ) (k k' : GA D W)
     (h : ∀ y, ∃ Φ : GA D W → ℂ, (∀ γ ∈ GQ W, ∀ g, Φ (γ * g) = Φ g) ∧ (∀ q, a q * θ y q = b q * Φ (q.out * k)) ∧
@@ -494,21 +494,19 @@ theorem span_read {W : HSp D} {I : Type} (θ : I → AutQ W → ℂ) (a b c d : 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Establish `hE : O'.EquivAt κ (T.cE ((i : ℕ) + 1) O'.s0)`. Establish `h2 : O'.lev2 = O.lev2` using `by funext g; simp only [OMDat.lev2, hlev]`. Establish `h1` using `hrow.1`. Unfold `OMDat.EquivAt at h1 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h2]`. Conclude with `h1`. Use `choose k hk _ using hP.lift.lev`. Take `⟨z₁, hz₁, s₁, s₀, a1, a2, b1, b2, hb⟩` from `exists_base hV hn hP hrow k hk hid`. Use `⟨hE, ⟨hle, (GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ O'.hle).2 _ _, (GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ O'.hle _ _ hP'.act.1).2, hrow.2.1.2.2.2.1, hrow.2.1.2.2.2.2.1, z₁, hz₁, fun t => ?_⟩, hrow.2.2⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, c1, c2, ht⟩` from `exists_transfer hT hV hn hP' hE k hk hlam hc0' hid' t`. Use `⟨s₁ * (s / s₀), mul_mem a1 (div_mem c1 b1), root_mul_div a2 c2 b2, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hf', hu⟩` from `hex t x hx`. Use `⟨⟨f, hf, hf'⟩, fun f' h1 h2 q => ?_⟩` and prove the remaining obligations. Take `rfl` from `hu f' h1 h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ', -, r1, r2⟩` from `ht x hx f' hf hf'`. Take `⟨y, hy⟩` from `lift_of_plc hP' hx`. Take `⟨Φ, hinv, e1, e0⟩` from `span_read (liftQ R i v₀ A.μ0) (fun _ => ph) (fun _ => s₁ * (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * chiG R i z₁) (fun q => c0 * cQ T i hV q) (fun q => s₀ * lam q * chiG R i z₀) (k z₁) (k z₀) (fun y => (hb y).imp fun Φ h => ⟨h.1.inv hT hj (dom_wtA κ), fun q => (h.2.1 …`. Establish `hs₀` using `ne_zero_of_root b2`. Establish `e2` using `r2 Φ c0 s₀ hs₀ hinv fun q => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy, ← mul_assoc]`. Conclude with `(e0 q).trans (by ring)`. Establish `e3 : ph * O'.thAd t x q = s₁ * (s / s₀) * cQ T i hV q * (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * rdQ O' z₁ f' q * (c0 / c0')`. Establish `e4` using `e1 q`. Rewrite `e4` using `[e2, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e5` using `r1 z₁ q`. Rewrite using `[hy]`. Use `e4.trans ?_` and prove the remaining obligations. Take the linear combination `(-(s₁ * (s / s₀) * (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * (c0 / c0'))) * e5`. Use `show ph * O'.thAd t x q = s₁ * (s / s₀) * cQ T i hV q * (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * rdQ O' z₁ f' q`.
+Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hc with hc | hc` into its components or cases. Rewrite using `[e3, hc, div_self hc0, mul_one]`. Establish `h0 : O'.thAd t x = 0`. Establish `h3` using `hsp t y`. Rewrite `h3` using `[show Submodule.span ℂ (Set.range (liftQ R i v₀ A.μ0)) = ⊥ from Submodule.span_eq_bot.2 (by rintro _ ⟨y, rfl⟩; exact hc y)]`.
-
-Conclude with `hy.trans h3`. Rewrite `e3`, the goal using `[h0, Pi.zero_apply, mul_zero]`. Conclude with `((mul_eq_zero.1 e3.symm).resolve_right (div_ne_zero hc0 hc0')).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneMapOf_of_ptIdent (hT : LawsJ T) (hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i) (hn : κ.n = (Vc D i).rank)
     {O : OMDat T.toCore R i Unit fun _ => A.μ0} (hP : O.Pins κ v₀ ι x₀) {ph : ℂ}
@@ -568,17 +566,15 @@ theorem oneMapOf_of_ptIdent (hT : LawsJ T) (hV : T.V ((i : ℕ) + 1) T.σ₀ = W
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Establish `hE : O'.EquivAt κ (T.cE ((i : ℕ) + 1) O'.s0)`. Establish `h2 : O'.lev2 = O.lev2` using `by funext g; simp only [OMDat.lev2, hlev]`. Establish `h1` using `hrow.1`. Unfold `OMDat.EquivAt at h1 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h2]`. Conclude with `h1`. Use `choose k hk _ using hP.lift.lev`. Take `⟨z₁, -, s₁, s₀, -, -, b1, b2, hb⟩` from `exists_base hV hn hP hrow k hk hid`. Take `⟨s, c1, c2, ht⟩` from `exists_transfer hT hV hn hP' hE k hk hlam hc0' hid' A.μ0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, e⟩` from `plc_of_lift hP' A.μ0 y`. Take `⟨f, hf, hf', -⟩` from `hex _ x hx`. Take `⟨Φ', hΦ', -, r2⟩` from `ht x hx f hf hf'`. Take `⟨Φ, hΦ, e1, e0⟩` from `hb y`. Establish `hs₀` using `ne_zero_of_root b2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `ne_zero_of_root c2`. Establish `e2` using `r2 Φ c0 s₀ hs₀ (hΦ.inv hT hj (dom_wtA κ)) fun q => by rw [e]; exact e0 q`. Establish `hph : ph ≠ 0` using `fun h => by`. Use `hrow.2.1.2.2.2.2.1` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_ne_one this`. Establish `hne : Φ ≠ 0` using `fun h => hy (funext fun q => by`. Use `e1 q` as an intermediate fact. Rewrite `this` using `[h, Pi.zero_apply, mul_zero, mul_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_left hph)`.
-
-Establish `h1` using `hΦ.ratio hT hj (dom_wtA κ) (hF.le.trans hle) O'.hle hΦ' e2 hne`. Establish `h2 : c0 / c0' = c0 * s / (c0' * s₀) * (s₀ / s)` using `by field_simp`. Rewrite using `[h2]`. Conclude with `mul_mem h1 (div_mem (hle b1) (hle c1))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_ratio_mem (hT : LawsJ T) (hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i) (hn : κ.n = (Vc D i).rank)
     {O : OMDat T.toCore R i Unit fun _ => A.μ0} (hF : O.c'.F = D.what₂.embLL.toRatAlgHom.fieldRange)

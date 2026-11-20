@@ -14,7 +14,7 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.KStable
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Establish `h : Xᴴ * Jm ε + Jm ε * X = 0` using `hX`. Establish `h1 : Xᴴ * Jm ε = -(X * Jm ε)`. Rewrite using `[hc]`. Conclude with `eq_neg_of_add_eq_zero_left h`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem skew_of_commute {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) (hc : X * Jm ε = Jm ε * X) :
     Xᴴ = -X := by
@@ -27,11 +27,11 @@ theorem skew_of_commute {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) 
     _ = -X := by rw [Formalism.REAL.Jm_mul_self, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hs` using `skew_of_commute hX hc`. Establish `hJ : (Jm ε)⁻¹ = Jm ε` using `Matrix.inv_eq_right_inv (Formalism.REAL.Jm_mul_self ε)`. Establish `hu : IsUnit (Jm ε)` using `IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hneg : star t • -X = -(t • X)` using `by simp`. Establish `hcm : Commute (t • X) (-(t • X))` using `(Commute.refl _).neg_right`. Rewrite using `[hneg, ← Matrix.exp_add_of_commute _ _ hcm]`. Simplify using the standard rewrite rules. Establish `h1 : Jm ε * (t • X) * (Jm ε)⁻¹ = t • X`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hJ, Matrix.mul_smul, Matrix.smul_mul, ← hc, Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.mul_one]`. Establish `h2` using `Matrix.exp_conj (Jm ε) (t • X) hu`. Rewrite `h2` using `[h1, hJ]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem exp_mem_Kset {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) (hc : X * Jm ε = Jm ε * X) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ Kset ε := by

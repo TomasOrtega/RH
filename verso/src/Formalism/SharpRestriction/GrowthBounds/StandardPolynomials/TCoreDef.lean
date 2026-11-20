@@ -68,9 +68,7 @@ def LvDat.word (L : LvDat C0 CE1 CE2 mu X β) (j : Fin (numSeg X.TT))
       ∏ c, MvPolynomial.X (xiVar (2 * segS X.TT j + 1) X.m (BDk C0 CE1 CE2 mu X β j).T.t c) ^ L.γ j c
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `digitMon (KK O) C0 CE1 CE2 X j (β j) * sTopMon (KK O) X.p C0 CE1 CE2 X j (β j) * ioA (KK O) X.p C0 CE1 CE2 X j (L.word O j G) = _`. Simplify using `only [LvDat.word, LvDat.head, LvDat.stdPoly, ioD]`. Use `conv_rhs => rw [mul_comm, mul_assoc]`. Use `erw [← map_mul]`. Use `congrArg (fun w => digitMon (KK O) C0 CE1 CE2 X j (β j) * sTopMon (KK O) X.p C0 CE1 CE2 X j (β j) * ioA (KK O) X.p C0 CE1 CE2 X j w) ?_` and prove the remaining obligations.
-
-Establish `hcomm : ∀ (e ep z zp r xi : MvPolynomial (BVar (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t) (KK O)), e * ep * z * zp * r * xi = z * zp * xi * (e * ep * r)` using `fun e ep z zp r xi => by ring`. Conclude with `hcomm _ _ _ _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LvDat.ioBlock_word (L : LvDat C0 CE1 CE2 mu X β) (j : Fin (numSeg X.TT))
     (G : MvPolynomial (Fin (2 * segS X.TT j + 1) × Fin X.m) (KK O)) :

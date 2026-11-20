@@ -13,7 +13,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Introduce `_ hz` and use `Set.mem_iInter.2 fun _ => hz.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem levelAction_overlap_le_source_chart {S : Type} [CommRing S] (φ : Xo.univ.t.G.left ⟶ Xo.univ.t.G.left) (x : Sp S ⟶ Xo.X)
     (i j : Xo.univ.t.PP.L.ι) :
@@ -22,7 +22,7 @@ theorem levelAction_overlap_le_source_chart {S : Type} [CommRing S] (φ : Xo.uni
   fun _ hz => Set.mem_iInter.2 fun _ => hz.2
 
 /- English proof (translation)
-Introduce `z hz`. Establish `h1 : ((snd (Over.mk x) Xo.univ.t.G).left ≫ φ).base z ∈ (Xo.univ.t.PP.L.U i : Set _)` using `Set.mem_iInter.1 hz.1 PUnit.unit`. Rewrite `h1` using `[← hp]`. Conclude with `Set.mem_iInter.2 fun _ => h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem overlap_le_tgt {S : Type} [CommRing S] (φ : Xo.univ.t.G.left ⟶ Xo.univ.t.G.left) {x x' : Sp S ⟶ Xo.X}
     (pm : Gx x ⟶ Gx x')

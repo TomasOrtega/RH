@@ -9,33 +9,29 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `F p κ`. Establish `hna : ∀ a b : ℂ_[p], ‖a + b‖ ≤ max ‖a‖ ‖b‖` using `fun a b => IsUltrametricDist.norm_add_le_max a b`. Establish `hone : ‖κ 1‖ = 1` using `by simp`. Set `A : Subring ℂ` to `{ carrier := {a | ∃ x : F, (x : ℂ) = a ∧ ‖κ x‖ ≤ 1} mul_mem' := by`. Introduce and unpack `_ _ ⟨x, rfl, hx⟩ ⟨y, rfl, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Use `⟨x * y, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul]`. Conclude with `mul_le_one₀ hx (norm_nonneg _) hy`. Use the proof step `one_mem' := ⟨1, by simp, by simp⟩`. Use the proof step `add_mem' := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ _ ⟨x, rfl, hx⟩ ⟨y, rfl, hy⟩`. Use `⟨x + y, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `(hna _ _).trans (max_le hx hy)`. Use the proof step `zero_mem' := ⟨0, by simp, by simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `neg_mem' := by`. Introduce and unpack `_ ⟨x, rfl, hx⟩`. Conclude with `⟨-x, by simp, by simpa using hx⟩ }`. Set `I : Ideal A` to `{ carrier := {a | ∃ x : F, (x : ℂ) = (a : ℂ) ∧ ‖κ x‖ < 1} add_mem' := by`. Introduce and unpack `a b ⟨x, hxa, hx⟩ ⟨y, hyb, hy⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `⟨x + y, by simp [hxa, hyb], ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `(hna _ _).trans_lt (max_lt hx hy)`. Use the proof step `zero_mem' := ⟨0, by simp, by simp⟩`. Use the proof step `smul_mem' := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨c, z, hzc, hz⟩ a ⟨x, hxa, hx⟩`. Use `⟨z * x, by simp [hzc, hxa], ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hI : I ≠ ⊤`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `htop`. Establish `h1 : (1 : A) ∈ I` using `by rw [htop]; trivial`. Take `⟨x, hx1, hx⟩` from `h1`. Establish `hx1' : x = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hx1`. Rewrite `hx` using `[hx1', hone]`. Conclude with `lt_irrefl _ hx`. Take `⟨W, hAW, hIW⟩` from `Ideal.image_subset_nonunits_valuationSubring I hI`. Establish `key : ∀ x : F, ‖κ x‖ < 1 → (x : ℂ) ∈ W.nonunits`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hxA : (x : ℂ) ∈ A` using `⟨x, rfl, hx.le⟩`. Conclude with `hIW ⟨⟨(x : ℂ), hxA⟩, ⟨x, rfl, hx⟩, rfl⟩`. Use `⟨W, ?_, fun x => ⟨fun hx => hAW ⟨x, rfl, hx⟩, fun hxW => ?_⟩⟩` and prove the remaining obligations. Establish `hnorm : ‖((p : ℕ) : ℂ_[p])‖ < 1`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PadicComplex.coe_natCast, PadicComplex.norm_extends, ← map_natCast (algebraMap ℚ_[p] (PadicAlgCl p)), PadicAlgCl.norm_extends, Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast p.2.one_lt)`. Use `key ((p : ℕ) : F) (by simpa using hnorm)` as an intermediate fact. Simplify using `using this`. Assume the negation of the conclusion as `hlt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt' : 1 < ‖κ x‖` using `not_le.mp hlt`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hlt'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : ‖κ x⁻¹‖ < 1`. Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_lt_one_of_one_lt₀ hlt'`. Establish `hnu` using `key x⁻¹ hinv`. Rewrite `hnu` using `[ValuationSubring.mem_nonunits_iff]`.
-
-Establish `hle : W.valuation (x : ℂ) ≤ 1` using `(W.valuation_le_one_iff _).2 hxW`. Establish `hprod : W.valuation (x : ℂ) * W.valuation ((x⁻¹ : F) : ℂ) = 1`. Rewrite using `[← map_mul]`. Establish `: (x : ℂ) * ((x⁻¹ : F) : ℂ) = 1`. Establish `h0 : (x : ℂ) ≠ 0` using `by simpa using hx0`.
-
-Simplify using `[h0]`. Rewrite using `[this, map_one]`. Establish `: W.valuation (x : ℂ) * W.valuation ((x⁻¹ : F) : ℂ) < 1` using `lt_of_le_of_lt (mul_le_of_le_one_left' hle) hnu`. Conclude with `absurd hprod this.ne`.
+A detailed English derivation is pending.
 -/
 theorem exists_valuationSubring_of_padicEmbedding :
     ∀ (F : IntermediateField ℚ ℂ) (p : Nat.Primes) (κ : F →+* ℂ_[p]),

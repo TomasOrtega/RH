@@ -13,19 +13,19 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R R₁ _ _ ρ G _ V hV a`. Set `f` to `spMap ρ`. Set `G₁` to `(Over.pullback f).obj G`. Set `a₁ : Over.mk (𝟙 (Sp R₁)) ⟶ G₁` to `Over.homMk (pullback.lift (f := G.hom) (g := f) a.left (𝟙 (Sp R₁)) ((Over.w a).trans (Category.id_comp _).symm)) (by show pullback.lift _ _ _ ≫ pullback.snd G.hom f = 𝟙 _; exact pullback.lift_snd _ _ _)`. Set `e : G₁ ⟶ Over.mk (𝟙 (Sp R₁))` to `Over.homMk G₁.hom (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c : G₁ ⟶ G₁` to `e ≫ a₁`. Establish `hc : ∀ g : G₁ ⟶ G₁, g ≫ c = c` using `fun g => by rw [← Category.assoc]; congr 1; ext; simp [e]`. Set `T : G₁ ⟶ G₁` to `𝟙 G₁ * c`. Set `T' : G₁ ⟶ G₁` to `𝟙 G₁ * c⁻¹`. Establish `h₁ : T ≫ T' = 𝟙 G₁`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [T', MonObj.comp_mul, Category.comp_id, GrpObj.comp_inv, hc, T, mul_inv_cancel_right]`. Establish `h₂ : T' ≫ T = 𝟙 G₁`. Simplify using `only [T, MonObj.comp_mul, Category.comp_id, T', hc, inv_mul_cancel_right]`. Use `haveI : IsIso T := ⟨⟨T', h₁, h₂⟩⟩`. Use `haveI : IsIso T.left := Functor.map_isIso (Over.forget _) T`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsAffineHom (pullback.fst G.hom f) := isAffineHom_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback G.hom f).flip (inferInstanceAs (IsAffineHom (spMap ρ)))`. Use `⟨(T.left ≫ pullback.fst G.hom f) ⁻¹ᵁ V, hV.preimage _, ?_⟩` and prove the remaining obligations. Introduce `Ω _ z t x a' hx ha hxa w`. Establish `ht : t = (z ≫ pullback.snd G.hom f) ≫ f`. Establish `h0 : x.left ≫ G.hom = t` using `Over.w x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Introduce a local definition for the expression.
 
-Rewrite using `[← h0, hx, Category.assoc, pullback.condition, Category.assoc]`. Substitute `ht` using the available equality. Set `Z : Over (Sp R₁)` to `Over.mk (z ≫ pullback.snd G.hom f)`. Set `z' : Z ⟶ G₁` to `Over.homMk z (by simp [G₁, Z])`. Establish `key` using `(isGrpPullback_pullback G f).2 Z z' (z' ≫ c) x a' (by simpa [z'] using hx) (by rw [ha]; simp [z', c, e, a₁, G₁, pullback.lift_fst]; rfl)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hT : z' * (z' ≫ c) = z' ≫ T` using `by simp only [T, MonObj.comp_mul, Category.comp_id]`. Rewrite `key` using `[hT]`. Establish `: (z ≫ T.left ≫ pullback.fst G.hom f) w ∈ V`. Establish `e2 : z ≫ T.left ≫ pullback.fst G.hom f = (x * a').left`. Rewrite using `[key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[z']`. Rewrite using `[e2]`. Conclude with `hxa w`. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem translate_baseChange_affineOpen : ∀ (R R₁ : Type) [CommRing R] [CommRing R₁] (ρ : R →+* R₁) (G : Over (Sp R)) [GrpObj G] (V : G.left.Opens), IsAffineOpen V → ∀ (a : Over.mk (spMap ρ) ⟶ G), ∃ W : (pullback G.hom (spMap ρ)).Opens, IsAffineOpen W ∧ ∀ (Ω : Type) [Field Ω] (z : Sp Ω ⟶ pullback G.hom (spMap ρ)) (t : Sp Ω ⟶ Sp R) (x a' : Over.mk t ⟶ G), x.left = z ≫ pullback.fst _ _ → a'.left = z ≫ pullback.snd _ _ ≫ a.left → (∀ w, (x * a').left w ∈ V) → ∀ w, z w ∈ W := by
   intro R R₁ _ _ ρ G _ V hV a

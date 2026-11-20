@@ -6,7 +6,7 @@ namespace GlobalTheory
 open WeierstrassCurve Polynomial
 
 /- English proof (translation)
-Rewrite using `[WeierstrassCurve.j, ← coe_Δ', mul_right_comm, Units.inv_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem j_mul_Δ {R : Type*} [CommRing R] (W : WeierstrassCurve R) [W.IsElliptic] :
     W.j * W.Δ = W.c₄ ^ 3 := by
@@ -34,16 +34,16 @@ def powSaturation (S : Subring K) (p : ℕ) : Subring K where
     exact ⟨m, by convert S.neg_mem hm using 1; ring⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨n, h ▸ hy⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_powSaturation {S : Subring K} {p : ℕ} {x y : K} (n : ℕ) (hy : y ∈ S)
     (h : (p : K) ^ n * x = y) : x ∈ powSaturation S p :=
   ⟨n, h ▸ hy⟩
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `hp`. Take `⟨n, hn⟩` from `hq`. Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.mpr (hpq.pow m n)`. Establish `h : (u : K) * p ^ m + v * q ^ n = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → K) huv`. Use `S.add_mem (S.mul_mem (intCast_mem S u) hm) (S.mul_mem (intCast_mem S v) hn) using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Take the linear combination `-x * h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mem_of_mem_powSaturation {S : Subring K} {p q : ℕ} (hpq : p.Coprime q) {x : K}
     (hp : x ∈ powSaturation S p) (hq : x ∈ powSaturation S q) : x ∈ S := by
@@ -55,7 +55,7 @@ theorem mem_of_mem_powSaturation {S : Subring K} {p q : ℕ} (hpq : p.Coprime q)
   linear_combination -x * h
 
 /- English proof (translation)
-Substitute `e` using the available equality. Simplify using `only [variableChange_def, inv_one, Units.val_one, one_pow, one_mul]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> aesop`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_mem_variableChange (S : Subring K) {W : WeierstrassCurve K} {r s t : K}
     (h₁ : W.a₁ ∈ S) (h₂ : W.a₂ ∈ S) (h₃ : W.a₃ ∈ S) (h₄ : W.a₄ ∈ S) (h₆ : W.a₆ ∈ S)
@@ -74,9 +74,9 @@ variable (A : Type*) [CommRing A] {K : Type*} [Field K] [Algebra A K] [IsIntegra
 
 variable {A} in
 /- English proof (translation)
-Take `⟨c₀, rfl⟩` from `h₀`. Take `⟨c₁, rfl⟩` from `h₁`. Take `⟨c₂, rfl⟩` from `h₂`. Take `⟨c₃, rfl⟩` from `h₃`. Apply `IsIntegrallyClosedIn.algebraMap_eq_of_integral` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨X ^ 4 + C c₃ * X ^ 3 + C c₂ * X ^ 2 + C c₁ * X + C c₀, by monicity!, ?_⟩` and prove the remaining obligations. Simplify `h` using `[eval₂_add, eval₂_mul, eval₂_pow]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_range_of_quartic {x c₀ c₁ c₂ c₃ : K} (h₀ : c₀ ∈ (algebraMap A K).range)
     (h₁ : c₁ ∈ (algebraMap A K).range) (h₂ : c₂ ∈ (algebraMap A K).range)
@@ -94,27 +94,25 @@ variable [CharZero K] {L : Type*} [Field L] [Algebra K L] [IsAlgClosed L]
   {W : WeierstrassCurve K} [W.IsElliptic]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap A K)` using `IsIntegralClosure.algebraMap_injective A A K`. Use `set S := (algebraMap A K).range with hS`. Establish `hjΔ` using `j_mul_Δ W`. Establish `hrel` using `W.c_relation`. Rewrite `hjΔ`, `hrel` using `[hΔ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc₄ : W.c₄ ∈ S` using `mem_range_of_quartic (zero_mem _) (neg_mem hj) (zero_mem _) (zero_mem _) (by linear_combination -W.c₄ * hjΔ)`. Establish `hc₆ : W.c₆ ∈ S` using `mem_range_of_quartic (zero_mem _) (zero_mem _) (sub_mem (ofNat_mem _ 1728) (pow_mem hc₄ 3)) (zero_mem _) (by linear_combination W.c₆ ^ 2 * hrel)`. Establish `p₄` using `variableChange_c₄ W C₂`. Establish `pΔ` using `variableChange_Δ W C₂`. Establish `q₄` using `variableChange_c₄ W C₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q₆` using `variableChange_c₆ W C₃`. Establish `qΔ` using `variableChange_Δ W C₃`. Rewrite `p₄`, `pΔ` using `[e₂, hu₂]`. Rewrite `q₄`, `q₆`, `qΔ` using `[e₃, hu₃]`. Simplify using `only [inv_one, Units.val_one, one_pow, one_mul, hΔ, splitCurve_Δ, splitCurve_c₄, deuringCurve_Δ, deuringCurve_c₄] at p₄ pΔ q₄ q₆ qΔ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `replace q₆ : -a ^ 6 + 36 * a ^ 3 * b - 216 * b ^ 2 = W.c₆ := by`. Rewrite using `[← q₆]`. Simplify using `only [deuringCurve, c₆, b₂, b₄, b₆]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN : 16 * (P * Q) ∈ S` using `mem_range_of_quartic (zero_mem _) (ofNat_mem _ 256) (zero_mem _) (neg_mem hc₄) (by rw [← p₄]; linear_combination -256 * 16 * (P * Q) * pΔ)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : 4 * (P + Q) ∈ S` using `mem_range_of_quartic (zero_mem _) (zero_mem _) (neg_mem (add_mem hc₄ (mul_mem (ofNat_mem _ 3) hN))) (zero_mem _) (by rw [← p₄]; ring)`. Establish `ha₂ : a ^ 2 ∈ S` using `mem_range_of_quartic (mul_mem (neg_mem (ofNat_mem _ 3)) (pow_mem hc₄ 2)) (mul_mem (neg_mem (ofNat_mem _ 8)) hc₆) (mul_mem (neg_mem (ofNat_mem _ 6)) hc₄) (zero_mem _) (by rw [← q₄, ← q₆]; ring)`. Establish `ha : a ∈ S` using `mem_range_of_quartic (zero_mem _) (zero_mem _) (neg_mem ha₂) (zero_mem _) (by ring)`. Establish `hb : 27 * b ∈ S` using `mem_range_of_quartic (ofNat_mem _ 19683) (zero_mem _) (zero_mem _) (neg_mem (pow_mem ha 3)) (by linear_combination -19683 * qΔ)`. Take `⟨r, s, t, hD⟩ : ∃ r s t : K, C₃ * C₂⁻¹ = ⟨1, r, s, t⟩` from `⟨_, _, _, VariableChange.ext (by simp [VariableChange.mul_def, VariableChange.inv_def, hu₂, hu₃])`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `rfl rfl rfl⟩`. Establish `eD : (⟨1, r, s, t⟩ : VariableChange K) • splitCurve P Q = deuringCurve a b`. Rewrite using `[← hD, ← e₂, ← e₃, mul_smul, inv_smul_smul]`. Establish `d₁` using `congrArg WeierstrassCurve.a₁ eD`. Establish `d₂` using `congrArg WeierstrassCurve.a₂ eD`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `d₃` using `congrArg WeierstrassCurve.a₃ eD`. Simplify using `only [variableChange_def, splitCurve, deuringCurve, inv_one, Units.val_one] at d₁ d₂ d₃`. Establish `hr : 12 * r ∈ S`. Use `add_mem ha₂ hM using 1` and compare the differences between its conclusion and the goal. Take the linear combination `4 * d₂ + (2 * s + a) * d₁`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `ht : 54 * (t - 4 * r * s) ∈ S`. Use `sub_mem hb (mul_mem (ofNat_mem _ 9) (mul_mem hr ha)) using 1` and compare the differences between its conclusion and the goal. Take the linear combination `27 * d₃ - 108 * r * d₁`. Use `set W' := (⟨1, -4 * r, 0, -28 * (t - 4 * r * s)⟩ : VariableChange K) • deuringCurve a b with hW'`. Establish `e' : (⟨1, -3 * r, s, -27 * (t - 4 * r * s)⟩ : VariableChange K) • splitCurve P Q = W'`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[hW', ← eD, ← mul_smul]`. Use `congr 1`. Simplify using `only [VariableChange.mul_def, Units.val_one, mul_one]`. Apply the tactic sequence `ext <;> dsimp only <;> ring`. Establish `m₃` using `coeff_mem_variableChange (powSaturation S 3) (W := deuringCurve a b) (mem_powSaturation 0 ha (by simp [deuringCurve])) (zero_mem _) (mem_powSaturation 3 hb (by simp only [deuringCurve]; norm_num)) (zero_mem _) (zero_mem _) (mem_powSaturation 1 (neg_mem hr) (by push_cast; ring)) ( …`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `m₂` using `coeff_mem_variableChange (powSaturation S 2) (W := splitCurve P Q) (zero_mem _) (mem_powSaturation 2 (neg_mem hM) (by simp only [splitCurve]; push_cast; ring)) (zero_mem _) (mem_powSaturation 4 hN (by simp only [splitCurve]; push_cast; ring)) (zero_mem _) (mem_powSaturation 2 (ne …`. Establish `hc : Nat.Coprime 2 3` using `by norm_num`. Take `⟨W₀, hW₀⟩` from `(isIntegral_of_exists_lift A (mem_of_mem_powSaturation hc m₂.1 m₃.1) (mem_of_mem_powSaturation hc m₂.2.1 m₃.2.1) (mem_of_mem_powSaturation hc m₂.2.2.1 m₃.2.2.1) (mem_of_mem_powSaturation hc m₂.2.2.2.1 m₃.2.2.2.1) (mem_of_mem_powSaturation hc m₂.2.2.2.2 m₃.2.2.2.2)).integral`. Use `⟨⟨1, -4 * r, 0, -28 * (t - 4 * r * s)⟩ * C₃, W₀, by rw [mul_smul, e₃, ← hW₀], hinj ?_⟩` and prove the remaining obligations. Rewrite using `[← map_Δ, ← WeierstrassCurve.baseChange, ← hW₀, hW', variableChange_Δ, deuringCurve_Δ, qΔ]`.
-
-Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_integral_model_of_forms (hj : W.j ∈ (algebraMap A K).range) (hΔ : W.Δ = 1)
     {C₂ C₃ : VariableChange K} (hu₂ : C₂.u = 1) (hu₃ : C₃.u = 1) {P Q a b : K}
@@ -197,9 +195,9 @@ theorem exists_integral_model_of_forms (hj : W.j ∈ (algebraMap A K).range) (h�
   simp
 
 /- English proof (translation)
-Take `⟨δ, hδ⟩` from `h.exists_pow_twelve_eq_Δ`. Establish `hΔ` using `W.isUnit_Δ.ne_zero`. Establish `hδ0 : δ ≠ 0` using `by rintro rfl; simp [← hδ] at hΔ`. Use `set C₁ : VariableChange K := ⟨Units.mk0 δ hδ0, 0, 0, 0⟩ with hC₁`. Establish `h'` using `h.variableChange C₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C₂, P, Q, hu₂, e₂⟩` from `(h'.of_dvd (by norm_num : 2 ∣ 12)).exists_splitCurve`. Take `⟨C₃, a, b, -, hu₃, e₃, -⟩` from `(h'.of_dvd (by norm_num : 3 ∣ 12)).exists_deuringCurve`. Take `⟨C, W₀, e, h₀⟩` from `exists_integral_model_of_forms A (W := C₁ • W) (by rwa [variableChange_j]) (by rw [variableChange_Δ, ← hδ]; simp [hC₁, hδ0]) hu₂ hu₃ e₂ e₃`. Conclude with `⟨C * C₁, W₀, by rw [mul_smul, e], h₀⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_integral_model (hj : W.j ∈ (algebraMap A K).range)
     (h : HasRationalTorsion W L 12) :

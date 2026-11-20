@@ -11,9 +11,9 @@ section
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hs : (KStar.TotallyRealRoots.princ l n : Set ℤ_[l]ˣ) = Units.val ⁻¹' {x : ℤ_[l] | ‖x - 1‖ ≤ (l : ℝ) ^ (-(n : ℤ))}`. Use extensionality with `u`. Simplify using `only [SetLike.mem_coe, KStar.TotallyRealRoots.mem_princ, Set.mem_preimage, Set.mem_setOf_eq]`. Rewrite using `[PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton]`. Establish `hc : IsClosed (KStar.TotallyRealRoots.princ l n : Set ℤ_[l]ˣ)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Conclude with `(isClosed_le (continuous_norm.comp (continuous_id.sub continuous_const)) continuous_const).preimage Units.continuous_val`. Use `show IsClosed ((U : Set (G F Ω)) ∩ (cycZ F Ω l) ⁻¹' (KStar.TotallyRealRoots.princ l n : Set ℤ_[l]ˣ))`. Conclude with `hU.inter (hc.preimage (continuous_cycZ F Ω l))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Kum.xe_closed {U : Subgroup (G F Ω)} (hU : IsClosed (U : Set (G F Ω))) (n : ℕ) :
     IsClosed (levU l U n : Set (G F Ω)) := by
@@ -31,17 +31,17 @@ private theorem UpperTheory.V.Kum.xe_closed {U : Subgroup (G F Ω)} (hU : IsClos
 
 omit [IsAlgClosure F Ω] in
 /- English proof (translation)
-The claim follows from `inf_le_inf_left _ (Subgroup.comap_mono (KStar.TotallyRealRoots.princ_anti h))`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Kum.xe_anti (U : Subgroup (G F Ω)) {a b : ℕ} (h : a ≤ b) : levU l U b ≤ levU l U a := inf_le_inf_left _ (Subgroup.comap_mono (KStar.TotallyRealRoots.princ_anti h))
 
 omit [IsAlgClosure F Ω] in
 /- English proof (translation)
-Use `⟨(h 0).1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g ∈ (cycZ F Ω l).ker`. Rewrite using `[MonoidHom.mem_ker]`. Establish `hd : ∀ m : ℕ, (l : ℤ_[l]) ^ m ∣ ((cycZ F Ω l g : ℤ_[l]) - 1)` using `fun m => KStar.TotallyRealRoots.mem_princ.mp (h m).2`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hx : ((cycZ F Ω l g : ℤ_[l]) - 1) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Use `ext`. Rewrite `h0` using `[sub_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h0`. Establish `hv` using `(PadicInt.mem_span_pow_iff_le_valuation _ hx (PadicInt.valuation ((cycZ F Ω l g : ℤ_[l]) - 1) + 1)).mp (Ideal.mem_span_singleton.mpr (hd _))`. Use linear arithmetic over natural numbers and integers.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem UpperTheory.V.Kum.xe_inter (U : Subgroup (G F Ω)) (g : G F Ω) (h : ∀ m, g ∈ levU l U m) : g ∈ cycU l U := by
   refine ⟨(h 0).1, ?_⟩
@@ -60,15 +60,13 @@ private theorem UpperTheory.V.Kum.xe_inter (U : Subgroup (G F Ω)) (g : G F Ω) 
   omega
 
 /- English proof (translation)
-Establish `hZ : IsClosed ({u : levU l U n | ψ u = 0}ᶜ)` using `(hψ.isOpen_fiber 0).isClosed_compl`. Establish `hB : IsClosed (Subtype.val '' ({u : levU l U n | ψ u = 0}ᶜ) : Set (G F Ω))` using `(xe_closed l hU n).isClosedMap_subtype_val _ hZ`. Establish `hBc : IsCompact (C ∩ Subtype.val '' ({u : levU l U n | ψ u = 0}ᶜ))` using `hC.inter_right hB`. Take `⟨i, hi⟩` from `hBc.elim_directed_family_closed (fun m => (levU l U (n + m) : Set (G F Ω))) (fun m => xe_closed l hU (n + m)) (by`. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hgC, u, hu, rfl⟩, hall⟩`. Rewrite `hall` using `[Set.mem_iInter]`. It suffices to derive a contradiction. Apply `hu` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h u hgC` to reduce the goal to its premises. Apply `xe_inter l U` to reduce the goal to its premises. Introduce `m`. Conclude with `xe_anti l U (Nat.le_add_left m n) (hall m)`. Introduce `hg`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hg.elim)`. Use the proof step `(fun a b => ⟨max a b, xe_anti l U (Nat.add_le_add_left (le_max_left a b) n), xe_anti l U (Nat.add_le_add_left (le_max_right a b) n)⟩)`. Use `⟨n + i, Nat.le_add_right n i, ?_⟩` and prove the remaining obligations. Introduce `u huC hum`. Assume the negation of the conclusion as `hne`.
-
-Establish `hmem : u.1 ∈ C ∩ Subtype.val '' ({u : levU l U n | ψ u = 0}ᶜ) ∩ (levU l U (n + i) : Set (G F Ω))` using `⟨⟨huC, u, hne, rfl⟩, hum⟩`. Rewrite `hmem` using `[hi]`. Conclude with `hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Kum.xe_spread {U : Subgroup (G F Ω)} (hU : IsClosed (U : Set (G F Ω))) (n : ℕ) {M : Type} [Zero M]
     (ψ : levU l U n → M) (hψ : IsLocallyConstant ψ) {C : Set (G F Ω)} (hC : IsCompact C)
@@ -106,19 +104,15 @@ private theorem UpperTheory.V.Kum.xe_spread {U : Subgroup (G F Ω)} (hU : IsClos
 end
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ N U R M _ _ _ hN hU φ hφ`. Take `⟨hφc, hφa, hφI, hφD⟩` from `hφ`. Take `⟨n, ψ, hψc, hψa, hψφ⟩` from `homExt F Ω l U M φ hU hφc hφa`. Establish `hl0 : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Establish `hext : ∀ (g : G F Ω) (hg : g ∈ cycU l U) (hg' : g ∈ levU l U n), ψ ⟨g, hg'⟩ = φ ⟨g, hg⟩` using `fun g hg _ => hψφ ⟨g, hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : IsCompact ({g | ∃ A : ValuationSubring Ω, A.valuation (N : Ω) < 1 ∧ g ∈ Dec A} ∪ {g | ∃ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 ∧ g ∈ Ine (F` using `F) A}) := (decCompact F Ω N hN).1.union (decCompact F Ω l hl0).2`. Take `⟨m, hnm, hm⟩` from `xe_spread l hU n ψ hψc hC (by`. Introduce `u huC hucyc`. Rewrite using `[hext u.1 hucyc u.2]`. Break down `huC with ⟨A, hA, hD⟩ | ⟨A, hA, hI⟩` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hφD A hA _ hD`. Conclude with `hφI A _ hI)`. Use `⟨m, restr R M (xe_anti l U hnm) ψ, ⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `hψc.comp_continuous (continuous_subtype_val.subtype_mk _)`. Introduce `a b`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [restr, LinearMap.funLeft_apply, map_mul]`. Conclude with `hψa _ _`. Introduce `A u hu`. Simplify using `only [restr, LinearMap.funLeft_apply]`. Distinguish the cases in `hA : A.valuation (l : Ω) < 1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hm _ (Or.inr ⟨A, hA, hu⟩) u.2`. Establish `hker` using `(places F Ω l A).2.2.2 hA hu`. Establish `hcu : (u : G F Ω) ∈ cycU l U` using `⟨(inf_le_left : levU l U m ≤ U) u.2, hker⟩`. Rewrite using `[show Subgroup.inclusion (xe_anti l U hnm) u = ⟨u.1, (xe_anti l U hnm) u.2⟩ from rfl, hext _ hcu]`. Conclude with `hφI A _ hu`.
-
-Introduce `A hA u hu`. Simplify using `only [restr, LinearMap.funLeft_apply]`. Conclude with `hm _ (Or.inl ⟨A, hA, hu⟩) u.2`. Use function extensionality and compare the values at `u`. Simplify using `only [restr, LinearMap.funLeft_apply]`.
-
-Conclude with `hψφ u`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.xdualExt :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (N : ℕ) (U : Subgroup (G F Ω)) (R M : Type) [CommRing R] [AddCommGroup M] [Module R M], N ≠ 0 → IsClosed (U : Set (G F Ω)) → ∀ φ ∈ XDual N (cycU l U) R M, ∃ n, ∃ ψ ∈ XDual N (levU l U n) R M, restr R M (cycU_le_levU l U n) ψ = φ := by

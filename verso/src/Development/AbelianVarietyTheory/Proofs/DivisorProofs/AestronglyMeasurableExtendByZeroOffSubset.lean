@@ -12,7 +12,7 @@ namespace GlobalTheory.HCA.SolSub
 variable {d : ℕ}
 
 /- English proof (translation)
-The claim follows from `| [] => hf | j :: w => by have h := contDiff_dw hf w show ContDiff ℝ ∞ (fun x => fderiv ℝ (dw w f) x (ev j)) exact (h.fderiv_right (m := ∞) (by simp)).clm_apply contDiff_const`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_dw {f : E d → ℂ} (hf : ContDiff ℝ ∞ f) : ∀ w : List (Fin d), ContDiff ℝ ∞ (dw w f)
   | [] => hf
@@ -22,7 +22,7 @@ theorem contDiff_dw {f : E d → ℂ} (hf : ContDiff ℝ ∞ f) : ∀ w : List (
       exact (h.fderiv_right (m := ∞) (by simp)).clm_apply contDiff_const
 
 /- English proof (translation)
-The claim follows from `| [] => hf | j :: w => by have h := hasCompactSupport_dw hf w show HasCompactSupport (fun x => fderiv ℝ (dw w f) x (ev j)) exact h.fderiv_apply (𝕜 := ℝ) (ev j)`.
+A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_dw {f : E d → ℂ} (hf : HasCompactSupport f) :
     ∀ w : List (Fin d), HasCompactSupport (dw w f)
@@ -33,9 +33,9 @@ theorem hasCompactSupport_dw {f : E d → ℂ} (hf : HasCompactSupport f) :
       exact h.fderiv_apply (𝕜 := ℝ) (ev j)
 
 /- English proof (translation)
-Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`. Distinguish the cases in `hx : x ∈ U`. Conclude with `(hb.contDiffAt (hU.mem_nhds hx)).mul hφ.contDiffAt`. Establish `hx' : x ∉ tsupport φ` using `fun h => hx (hs h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : φ =ᶠ[nhds x] fun _ => 0` using `notMem_tsupport_iff_eventuallyEq.mp hx'`. Establish `: (fun y => b y * φ y) =ᶠ[nhds x] fun _ => (0 : ℂ)` using `by filter_upwards [h0] with y hy`. Simplify using `[hy]`. Conclude with `contDiffAt_const.congr_of_eventuallyEq this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_mul_of_on {U : Set (E d)} (hU : IsOpen U) {b φ : E d → ℂ}
     (hb : ContDiffOn ℝ ∞ b U) (hφ : ContDiff ℝ ∞ φ) (hs : tsupport φ ⊆ U) :
@@ -52,9 +52,9 @@ theorem contDiff_mul_of_on {U : Set (E d)} (hU : IsOpen U) {b φ : E d → ℂ}
     exact contDiffAt_const.congr_of_eventuallyEq this
 
 /- English proof (translation)
-Unfold `Sys.tr trOp`. Use `integrable_finset_sum _ (fun n _ => integrable_finset_sum _ (fun w _ => ?_))` and prove the remaining obligations. Use `Integrable.const_mul ?_ _` and prove the remaining obligations. Use `Continuous.integrable_of_hasCompactSupport ?_ ?_` and prove the remaining obligations. Conclude with `(contDiff_dw (contDiff_mul_of_on hU (ha i n w) hφ hs) _).continuous`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `hasCompactSupport_dw ?_ _` and prove the remaining obligations. Conclude with `hc.mul_left`.
+A detailed English derivation is pending.
 -/
 theorem integrable_tr {ι : Type} (P : Sys d ι) {U : Set (E d)} (hU : IsOpen U)
     (ha : ∀ i n w, ContDiffOn ℝ ∞ (P.a i n w) U) (i : ι) {φ : E d → ℂ}
@@ -69,7 +69,7 @@ theorem integrable_tr {ι : Type} (P : Sys d ι) {U : Set (E d)} (hU : IsOpen U)
     exact hc.mul_left
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ U`. Simplify using `only [ext0, hx, dif_pos]`. Conclude with `u.norm_coe_le_norm _`. Simplify using `[ext0, hx]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_extendByZeroOffSubset_le {U : Set (E d)} (u : U →ᵇ ℂ) (x : E d) : ‖ext0 U u x‖ ≤ ‖u‖ := by
   by_cases hx : x ∈ U
@@ -77,9 +77,9 @@ theorem norm_extendByZeroOffSubset_le {U : Set (E d)} (u : U →ᵇ ℂ) (x : E 
   · simp [ext0, hx]
 
 /- English proof (translation)
-Establish `heq : U.indicator (ext0 U u) = ext0 U u`. Apply the tactic sequence `funext x; by_cases hx : x ∈ U <;> simp [ext0, hx]`. Establish `hc : ContinuousOn (ext0 U u) U`. Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `: U.domRestrict (ext0 U u) = u` using `by funext x; exact dif_pos x.2`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `u.continuous`. Establish `: AEStronglyMeasurable (U.indicator (ext0 U u)) volume` using `(aestronglyMeasurable_indicator_iff hU.measurableSet).mpr (hc.aestronglyMeasurable hU.measurableSet)`. Rewrite `this` using `[heq]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_extendByZeroOffSubset {U : Set (E d)} (hU : IsOpen U) (u : U →ᵇ ℂ) :
     AEStronglyMeasurable (ext0 U u) volume := by
@@ -94,21 +94,21 @@ theorem aestronglyMeasurable_extendByZeroOffSubset {U : Set (E d)} (hU : IsOpen 
   rwa [heq] at this
 
 /- English proof (translation)
-The claim follows from `hψ.bdd_mul (aestronglyMeasurable_extendByZeroOffSubset hU u) (Filter.Eventually.of_forall fun x => norm_extendByZeroOffSubset_le u x)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_extendByZeroOffSubset_mul {U : Set (E d)} (hU : IsOpen U) (u : U →ᵇ ℂ) {ψ : E d → ℂ}
     (hψ : Integrable ψ) : Integrable (fun x => ext0 U u x * ψ x) :=
   hψ.bdd_mul (aestronglyMeasurable_extendByZeroOffSubset hU u) (Filter.Eventually.of_forall fun x => norm_extendByZeroOffSubset_le u x)
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [ext0, hx]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem matrixExtendByZero_add {U : Set (E d)} (u v : U →ᵇ ℂ) (x : E d) :
     ext0 U (⇑(u + v)) x = ext0 U u x + ext0 U v x := by
   by_cases hx : x ∈ U <;> simp [ext0, hx]
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [ext0, hx]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem extendByZeroOffSubset_smul_apply {U : Set (E d)} (c : ℂ) (u : U →ᵇ ℂ) (x : E d) :
     ext0 U (⇑(c • u)) x = c * ext0 U u x := by
@@ -137,15 +137,15 @@ end GlobalTheory.HCA.SolSub
 open GlobalTheory.HCA.SolSub in
 
 /- English proof (translation)
-Introduce `d ι P U hU ha`. Establish `hint : ∀ (i : ι) (φ : E d → ℂ) (h : ContDiff ℝ ∞ φ ∧ HasCompactSupport φ ∧ tsupport φ ⊆ U), Integrable (P.tr i φ)` using `fun i φ h => integrable_tr P hU ha i h.1 h.2.1 h.2.2`. Establish `key : ∀ u : U →ᵇ ℂ, u ∈ solSet P U ↔ ∀ (i : ι) (φ : E d → ℂ) (h : ContDiff ℝ ∞ φ ∧ HasCompactSupport φ ∧ tsupport φ ⊆ U), pair hU (P.tr i φ) (hint i φ h) u = 0`. Introduce `u`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hu i φ h`. Conclude with `hu i φ h.1 h.2.1 h.2.2`. Introduce `hu i φ h1 h2 h3`. Conclude with `hu i φ ⟨h1, h2, h3⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: solSet P U = ⋂ (i : ι) (φ : E d → ℂ) (h : ContDiff ℝ ∞ φ ∧ HasCompactSupport φ ∧ tsupport φ ⊆ U), {u | pair hU (P.tr i φ) (hint i φ h) u = 0}`. Use extensionality with `u`. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq]`. Conclude with `key u`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `isClosed_iInter fun i => isClosed_iInter fun φ => isClosed_iInter fun h => isClosed_eq (pair hU (P.tr i φ) (hint i φ h)).continuous continuous_const`. Use `⟨{ carrier := solSet P U, add_mem' := ?_, zero_mem' := zero_mem_solSet P U, smul_mem' := ?_ }, rfl⟩` and prove the remaining obligations. Introduce `u v hu hv`. Rewrite `hu`, `hv`, the goal using `[key]`. Introduce `i φ h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_add, hu i φ h, hv i φ h, add_zero]`. Introduce `c u hu`. Rewrite `hu`, the goal using `[key]`. Introduce `i φ h`. Rewrite using `[map_smul, hu i φ h, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HCA.solSet_closed_submodule :
     ∀ (d : ℕ) (ι : Type) (P : Sys d ι) (U : Set (E d)), IsOpen U → (∀ i n w, ContDiffOn ℝ ∞ (P.a i n w) U) →

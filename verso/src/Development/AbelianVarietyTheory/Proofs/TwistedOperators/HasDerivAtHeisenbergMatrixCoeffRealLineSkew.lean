@@ -14,11 +14,11 @@ open GlobalTheory.OrientedHeis GlobalTheory.FockCompare
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {V W : HSp D}
 
 /- English proof (translation)
-Take `⟨-, -, hsc, -, hdisc, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D W V`. Use `hsc` as an intermediate fact. Use `hdisc` as an intermediate fact. Establish `: BorelSpace (WO V W)` using `⟨rfl⟩`. Establish `: MeasurableConstVAdd (ratL W V) (WO V W)` using `⟨fun γ => (continuous_const_add (γ : WO V W)).measurable⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Countable (ratL W V)` using `(TopologicalSpace.separableSpace_iff_countable (α := ratL W V)).1 inferInstance`. Establish `hsub : 𝓕 ⊆ ⋃ γ : ratL W V, ((γ +ᵥ ·) '' K ∩ 𝓕)`. Introduce `x hx`. Take `⟨γ, hγ, hγK⟩` from `hcov x`. Use `Set.mem_iUnion.2 ⟨⟨-γ, neg_mem hγ⟩, ⟨γ + x, hγK, ?_⟩, hx⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show -γ + (γ + x) = x`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation.
+Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem measure_fundamentalDomain_ratL_lt_top {μ : Measure (WO V W)} {𝓕 : Set (WO V W)} (hμ : μ.IsAddHaarMeasure)
     (h𝓕 : IsAddFundamentalDomain (ratL W V) 𝓕 μ) : μ 𝓕 < ⊤ := by
@@ -42,13 +42,13 @@ private theorem measure_fundamentalDomain_ratL_lt_top {μ : Measure (WO V W)} {�
     _ < ⊤ := hK.measure_lt_top
 
 /- English proof (translation)
-Use `hμ` as an intermediate fact. Establish `: BorelSpace (WO V W)` using `⟨rfl⟩`. Establish `: IsFiniteMeasure (μ.restrict 𝓕)` using `isFiniteMeasure_restrict.2 (measure_fundamentalDomain_ratL_lt_top hμ h𝓕).ne`. Establish `hd : IsThetaFunO ψ V W (dLine ψ V W L f)` using `theta_dLine hθ hψ hL h`. Take `⟨C, hC⟩` from `(GlobalTheory.ThetaSquare.squareIntegrable (V := V) (W := W) hψ _ hd).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C₀, hC₀⟩` from `(GlobalTheory.ThetaSquare.squareIntegrable (V := V) (W := W) hψ _ h).2.1`. Establish `hgi : Integrable g (μ.restrict 𝓕)` using `((GlobalTheory.ThetaSquare.squareIntegrable (V := V) (W := W) hψ _ h').2.2 μ 𝓕 hμ h𝓕).integrable one_le_two`. Establish `hcg : Continuous fun x => (starRingEnd ℂ) (g x)` using `Complex.continuous_conj.comp h'.cont`. Establish `hc : ∀ k : WO V W → ℂ, IsThetaFunO ψ V W k → ∀ t : ℝ, Continuous fun x => heisO ψ V W (L t) k x * (starRingEnd ℂ) (g x)` using `fun k hk t => (theta_heisO_real hθ hψ (hL.2 t) hk).cont.mul hcg`. Establish `hb : ∀ (k : WO V W → ℂ) (B : ℝ), (∀ y, ‖k y‖ ≤ B) → ∀ (t : ℝ) (x : WO V W), ‖heisO ψ V W (L t) k x * (starRingEnd ℂ) (g x)‖ ≤ B * ‖g x‖`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k B hk t x`. Rewrite using `[norm_mul, GlobalTheory.ThetaSquare.norm_heisO hψ, RCLike.norm_conj]`. Conclude with `mul_le_mul_of_nonneg_right (hk _) (norm_nonneg _)`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ.restrict 𝓕) (x₀ := (0 : ℝ)) (F := fun t x => heisO ψ V W (L t) f x * (starRingEnd ℂ) (g x)) (F' := fun t x => heisO ψ V W (L t) (dLine ψ V W L f) x * (starRingEnd ℂ) (g x)) (bound := fun x => C * ‖g x‖) (s := Set.univ) Filt …`. Establish `h0 : ∀ (k : WO V W → ℂ) (x : WO V W), heisO ψ V W (L 0) k x = k x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k x`. Simplify using `only [map_zero, heisO, GlobalTheory.ThetaSquare.symplOH_zero_right, AddChar.map_zero_eq_one, one_mul, add_zero]`. Simplify `key.2` using `only [h0]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_integral_line (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {L : ℝ →+ WO V W}
     (hL : IsRealDir W V L) {μ : Measure (WO V W)} {𝓕 : Set (WO V W)} (hμ : μ.IsAddHaarMeasure)
@@ -88,7 +88,7 @@ theorem hasDerivAt_integral_line (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
   simpa only [h0] using key.2
 
 /- English proof (translation)
-Introduce `D ψ θ S T μ 𝓕 hψ hθ hcov f g hf hg τ z`. Take `⟨hμ, h𝓕, -⟩` from `hcov`. Use `⟨?_, ((GlobalTheory.ThetaSquare.derSkew hψ hθ) τ z).2.2 μ 𝓕 hμ h𝓕 f g hf hg⟩` and prove the remaining obligations. Rewrite using `[dRho_eq_dLine]`. Conclude with `hasDerivAt_integral_line hψ hθ (isRealDir_lineAt hθ τ z) hμ h𝓕 hf hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_ipO_and_skew : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsStdChar D ψ (-1) → IsInfFam θ → IsCovolOne (ratL T S) μ 𝓕 → ∀ f g : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → ∀ (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ), HasDerivAt (fun t : ℝ => ipO μ 𝓕 (heisO ψ S T (lineAt θ τ z t) f) g) (ipO μ 𝓕 (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z f) g) 0 ∧ ipO μ 𝓕 (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z f) g = -ipO μ 𝓕 f (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z g) := by
   intro D ψ θ S T μ 𝓕 hψ hθ hcov f g hf hg τ z

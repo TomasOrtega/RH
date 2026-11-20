@@ -18,9 +18,9 @@ section Alg
 variable {k K : Type} [CommRing k] [Field K]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Use extensionality with `s t`. Rewrite using `[Matrix.submatrix_apply, Matrix.mul_apply, Fin.sum_univ_add, Matrix.mul_apply]`. Establish `h0 : ∑ i : Fin r, A (brI rfl s) (Fin.castAdd d i) * B (Fin.castAdd d i) (brI rfl t) = 0` using `Finset.sum_eq_zero fun i _ => by`. Rewrite using `[hA _ _ (show r ≤ (brI (rfl : r + d = r + d) s).1 from Nat.le_add_right _ _) (show (Fin.castAdd d i).1 < r from i.2), zero_mul]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, zero_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem br_mul_of_LLz {n r d : ℕ} (hn : n = r + d) (A B : Matrix (Fin n) (Fin n) k) (hA : LLz r A) :
     (A * B).submatrix (brI hn) (brI hn) = A.submatrix (brI hn) (brI hn) * B.submatrix (brI hn) (brI hn) := by
@@ -34,14 +34,14 @@ theorem br_mul_of_LLz {n r d : ℕ} (hn : n = r + d) (A B : Matrix (Fin n) (Fin 
   rfl
 
 /- English proof (translation)
-Establish `h` using `xiZ_unit ξ 1`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem xiZ_one_val (ξ : kˣ →* Kˣ) : xiZ ξ (1 : k) = 1 := by
   have h := xiZ_unit ξ 1
   simpa using h
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (brI (r` using `r) hn) := fun a b hab => Fin.ext (by`. Use `congrArg Fin.val hab` as an intermediate fact. Simplify using `only [brI] at this`. Use the proof step `omega)`. Rewrite using `[← xiZ_mul, ← Matrix.det_mul, ← br_mul_of_LLz hn A B hA, h, Matrix.submatrix_one _ hinj, Matrix.det_one, xiZ_one_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiZ_br_inv (ξ : kˣ →* Kˣ) {n r d : ℕ} (hn : n = r + d) (A B : Matrix (Fin n) (Fin n) k) (hA : LLz r A) (h : A * B = 1) :
     xiZ ξ (A.submatrix (brI hn) (brI hn)).det * xiZ ξ (B.submatrix (brI hn) (brI hn)).det = 1 := by
@@ -52,9 +52,9 @@ theorem xiZ_br_inv (ξ : kˣ →* Kˣ) {n r d : ℕ} (hn : n = r + d) (A B : Mat
   rw [← xiZ_mul, ← Matrix.det_mul, ← br_mul_of_LLz hn A B hA, h, Matrix.submatrix_one _ hinj, Matrix.det_one, xiZ_one_val]
 
 /- English proof (translation)
-Establish `ha : a ≠ 0` using `right_ne_zero_of_mul_eq_one k1`. Establish `hx : x⁻¹ = a` using `inv_eq_of_mul_eq_one_right k1`. Establish `hy : y = bb⁻¹` using `eq_inv_of_mul_eq_one_left k2`. Rewrite `hS` using `[hx, hy]`. Establish `key : s1 * s2 * (XA * XB) * a⁻¹ = bb⁻¹` using `by rw [hS, mul_comm a, mul_assoc, mul_inv_cancel₀ ha, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `(c * d) * key`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem fin_alg {K : Type} [Field K] (a bb x y s1 s2 XA XB c d : K) (hS : s1 * s2 * (XA * XB) = x⁻¹ * y) (k1 : x * a = 1)
     (k2 : y * bb = 1) : a⁻¹ * (XA * XB * c * d) * s1 * s2 = bb⁻¹ * (c * d) := by
@@ -72,21 +72,19 @@ section Det
 variable {E : Type} [Field E]
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, N = n + 1` from `⟨N - 1, by omega⟩`. Establish `hpr : ∀ (v : Sp E (n + 1)) (i : Fin n), J (prXpG E (n + 1) v) i = G v (Fin.castSucc i)`. Introduce `v i`. Use `congrArg (fun f => f i) (LinearMap.congr_fun h1 v)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `hat : ∀ v : Sp E (n + 1), G v (Fin.last n) = v (Fin.last n)`. Introduce `v`. Use `LinearMap.congr_fun h2 v` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, atNL, show n + 1 - 1 < n + 1 by omega, dif_pos] at this`. Conclude with `this`. Establish `hsingle : ∀ k : Fin n, prXpG E (n + 1) (Pi.single (Fin.castSucc k) 1) = (Pi.single k 1 : Sp E n)`. Introduce `k`. Use function extensionality and compare the values at `l`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use `show (Pi.single (Fin.castSucc k) (1 : E) : Sp E (n + 1)) (Fin.castSucc l) = (Pi.single k (1 : E) : Sp E n) l`. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne (fun h => hl (Fin.castSucc_injective _ h)), Pi.single_eq_of_ne hl]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hlast : prXpG E (n + 1) (Pi.single (Fin.last n) 1) = 0`. Use function extensionality and compare the values at `l`. Use `show (Pi.single (Fin.last n) (1 : E) : Sp E (n + 1)) (Fin.castSucc l) = 0`. Conclude with `Pi.single_eq_of_ne (Fin.castSucc_ne_last l) _`. Use `set M := LinearMap.toMatrix' G.toLinearMap with hM`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hMe : ∀ i k, M i k = G (Pi.single k 1) i` using `fun i k => by`. Simplify using `[hM, LinearMap.toMatrix'_apply]`. Establish `hB : LastRowColIdentity M`. Use `⟨fun k => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hMe, hat]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Pi.single_eq_of_ne (Fin.castSucc_ne_last k).symm _`. Rewrite using `[hMe, ← hpr, hlast, map_zero]`. Both sides reduce to the same expression. Rewrite using `[hMe, hat]`. Simplify using the standard rewrite rules.
-
-Establish `hsub : M.submatrix Fin.castSucc Fin.castSucc = LinearMap.toMatrix' J.toLinearMap`. Use extensionality with `i k`. Rewrite using `[Matrix.submatrix_apply, hMe, ← hpr, hsingle]`. Simplify using `[LinearMap.toMatrix'_apply]`. Rewrite using `[LinearEquiv.coe_det, LinearEquiv.coe_det, ← LinearMap.det_toMatrix', ← LinearMap.det_toMatrix' J.toLinearMap, ← hM, blk_det M hB, hsub]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_eq_of_blk {N : ℕ} (hN : 1 ≤ N) (G : Sp E N ≃ₗ[E] Sp E N) (J : Sp E ((N - 1) + 0) ≃ₗ[E] Sp E ((N - 1) + 0))
     (h1 : prXpG E N ∘ₗ G.toLinearMap = J.toLinearMap ∘ₗ prXpG E N)
@@ -139,49 +137,47 @@ end Det
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S mu cst L G m2 hOk hU b P hP g z hmid g' z' htop y y₁ y₂ hδ hq`. Establish `hm` using `hOk.hm`. Establish `hcst` using `hOk.cst_ok`. Establish `hD` using `hOk.depthQ P hP`. Establish `hwQ : P.1 ∈ QE sel (mu : Chr X.F X.E X.K)` using `(Finset.mem_union.mp P.2).resolve_left hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqm : ((qOf P.1 : ℕ) : 𝓞 X.E) ∈ P.1.asIdeal` using `qOf_memB P.1`. Establish `hu` using `hU P.1 hwQ`. Establish `hq0` using `ciQ_ne_zero hu`. Establish `hNpos` using `R.N_pos (m2 + 1 + 1)`. Establish `hNm : R.N (m2 + 1 + 1) = R.N R.m` using `by rw [hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn' : R.N (m2 + 1) = R.r + (m2 + 1) * R.t` using `rank_midQ (R := R) hm`. Establish `hr' : R.r ≤ R.N (m2 + 1)` using `by rw [hn']; exact Nat.le_add_right _ _`. Establish `hnA : R.N (m2 + 1 + 1) - 1 + 0 = R.r + R.m * R.t` using `by rw [hNm, Nat.add_zero]; exact rank_X'_eq R`. Establish `hrA : R.r ≤ R.N (m2 + 1 + 1) - 1 + 0` using `by rw [hnA]; exact Nat.le_add_right _ _`. Establish `hc0 : cOf R (m2 + 1) = 0` using `cOf_topB hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkj` using `kj_midQ (R := R) hm`. Use `set ξ := resChar (mu : Chr X.F X.E X.K) P.1 with hξ`. Establish `hgC : g ∈ prCat (Pr` using `Pr) cst.sharp (m2 + 1) P.1 (L.h (m2 + 1) b P) := (exists_midLev_iff Ch sel mu cst (m2 + 1) P (L.h (m2 + 1) b P) g).1 ⟨z, hmid⟩`. Establish `hgI : g ∈ GLint X.E (R.N (m2 + 1)) P.1` using `hOk.int (m2 + 1) b P hgC`. Establish `hgiI : g⁻¹ ∈ GLint X.E (R.N (m2 + 1)) P.1` using `(GLint X.E (R.N (m2 + 1)) P.1).inv_mem hgI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : ∀ rr : AutY X R (m2 + 1), rr ∈ Loc.Cbe (Jat (Pr` using `Pr) cst.sharp (m2 + 1) P.1) (L.h (m2 + 1) b P) → rr ∈ LocE.JQ P.1 (qOf P.1) (R.k + (m2 + 1)) (R.N (m2 + 1)) (cOf R (m2 + 1)) := by`. Introduce `rr hrr`. Establish `h2` using `hrr.2`. Rewrite `h2` using `[hOk.last_h]`. Establish `h3 : rr ∈ Jat (Pr` using `Pr) (R := R) cst.sharp (m2 + 1) P.1 := by simpa [MulAut.conj_apply] using h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Jat at h3`. Rewrite `h3` using `[if_neg hP]`. Then use the resulting hypothesis. Take `⟨rc, hrc, hxc, rfl⟩` from `hmid`. Establish `hgiC : g⁻¹ ∈ prCat (Pr` using `Pr) cst.sharp (m2 + 1) P.1 (L.h (m2 + 1) b P) := Subgroup.inv_mem _ hgC`. Unfold `prCat at hgiC`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨ri, hri, hxi⟩` from `hgiC`. Establish `lB : LLz R.r (redMQ P.1 g.toLinearMap)`. Use `jq_LLz hqm hq0 (hJ rc hrc) hxc` as an intermediate fact. Rewrite `this` using `[hkj]`. Then use the resulting hypothesis. Establish `lC : LLz R.r (redMQ P.1 (g⁻¹ : Sp X.E (R.N (m2 + 1)) ≃ₗ[X.E] Sp X.E (R.N (m2 + 1))).toLinearMap)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `jq_LLz hqm hq0 (hJ ri hri) hxi` as an intermediate fact. Rewrite `this` using `[hkj]`. Then use the resulting hypothesis. Take `⟨j, hj, hpr, hat, rfl⟩` from `htop`. Unfold `rowLevTop at hj`. Rewrite `hj` using `[if_neg hP]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hjI : j ∈ GLint X.E (R.N (m2 + 1 + 1) - 1 + 0) P.1` using `hj.1`. Establish `hjiI : j⁻¹ ∈ GLint X.E (R.N (m2 + 1 + 1) - 1 + 0) P.1` using `(GLint X.E _ P.1).inv_mem hjI`. Establish `hji : j⁻¹ ∈ LocE.JQ P.1 (qOf P.1) R.r (R.N (m2 + 1 + 1) - 1) 0` using `Subgroup.inv_mem _ hj`. Establish `lAi : LLz R.r (redMQ P.1 j.toLinearMap)` using `jq_LLz (n := R.N (m2 + 1 + 1) - 1) (c := 0) (g := j) (rr := j) hqm hq0 hj (fun x => by rw [tlq_inX_zero, tlq_inX_zero])`. Establish `lA : LLz R.r (redMQ P.1 (j⁻¹ : Sp X.E (R.N (m2 + 1 + 1) - 1 + 0) ≃ₗ[X.E] Sp X.E (R.N (m2 + 1 + 1) - 1 + 0)).toLinearMap)` using `jq_LLz (n := R.N (m2 + 1 + 1) - 1) (c := 0) (g := j⁻¹) (rr := j⁻¹) hqm hq0 hji (fun x => by rw [tlq_inX_zero, tlq_inX_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpr' : ∀ v, prXpG X.E (R.N (m2 + 1 + 1)) (g'.symm v) = j⁻¹ (prXpG X.E (R.N (m2 + 1 + 1)) v)`. Introduce `v`. Use `LinearMap.congr_fun hpr (g'.symm v)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at this`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = j.symm (j _)`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Establish `hat' : ∀ v, atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) (g'.symm v) = atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) v`. Introduce `v`. Use `LinearMap.congr_fun hat (g'.symm v)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at this`. Conclude with `this.symm`. Establish `eX : prXpG X.E (R.N (m2 + 1 + 1)) ∘ₗ (g'.symm.toLinearMap ∘ₗ y ∘ₗ g.toLinearMap) ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1))) = (j⁻¹ : Sp X.E (R.N (m2 + 1 + 1) - 1 + 0) ≃ₗ[X.E] Sp X.E (R.N (m2 + 1 + 1) - 1 + 0)).toLinearMap ∘ₗ (prXpG X.E (R.N (m2 + 1 + 1)) ∘ₗ y) ∘ₗ …`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hpr' _`. Establish `eT : atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) ∘ₗ (g'.symm.toLinearMap ∘ₗ y ∘ₗ g.toLinearMap) = (atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) ∘ₗ y) ∘ₗ ((⟨g, hgI⟩ : ↥(GLint X.E (R.N (m2 + 1)) P.1)) : Sp X.E (R.N (m2 + 1)) ≃ₗ[X.E] Sp X.E (R.N (m2 + 1))).toLinearMap`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Conclude with `hat' _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ' : ((qOf P.1 : X.E) ^ cst.M)⁻¹ • ((⟨g, hgI⟩ : ↥(GLint X.E (R.N (m2 + 1)) P.1)).1 (g.symm y₁) - y₂) ∈ stdAt X.E (R.N (m2 + 1)) P.1` using `by show ((qOf P.1 : X.E) ^ cst.M)⁻¹ • (g (g.symm y₁) - y₂) ∈ _`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `hδ`. Establish `hft` using `ftY_moveQ sel mu cst hcst P hP hD ⟨g, hgI⟩ (atNL X.E (R.N (m2 + 1 + 1)) (R.N (m2 + 1 + 1) - 1) ∘ₗ y) y₂ (g.symm y₁) hδ' hq`. Establish `h1 : redMQ P.1 j.toLinearMap * redMQ P.1 (j⁻¹ : Sp X.E (R.N (m2 + 1 + 1) - 1 + 0) ≃ₗ[X.E] Sp X.E (R.N (m2 + 1 + 1) - 1 + 0)).toLinearMap = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `redMQ_mul_inv P.1 hjiI` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `h2 : redMQ P.1 g.toLinearMap * redMQ P.1 (g⁻¹ : Sp X.E (R.N (m2 + 1)) ≃ₗ[X.E] Sp X.E (R.N (m2 + 1))).toLinearMap = 1`. Use `redMQ_mul_inv P.1 hgiI` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hphi : PhiTopG Ch mu cst.sharp (m2 + 1) (m2 + 1 + 1) (R.N (m2 + 1 + 1)) P.1 ((j⁻¹ : Sp X.E (R.N (m2 + 1 + 1) - 1 + 0) ≃ₗ[X.E] Sp X.E (R.N (m2 + 1 + 1) - 1 + 0)).toLinearMap ∘ₗ (prXpG X.E (R.N (m2 + 1 + 1)) ∘ₗ y) ∘ₗ g.toLinearMap ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m …`. Unfold `PhiTopG`. Rewrite using `[if_neg hP]`. Conclude with `phiQ_law hqm hu ξ R.k R.r (cOf R (m2 + 1)) (R.N (m2 + 1)) (R.N (m2 + 1 + 1) - 1) hc0 hr' hrA hgI hjiI _ _ _ (fun v hv => redV_map P.1 _ (glint_int P.1 hjiI) hv) lA lAi lB lC h1 h2 (prXpG X.E (R.N (m2 + 1 + 1)) ∘ₗ y)`. Establish `hs1 : rhoS Ch sel mu (m2 + 1) P ((LinearEquiv.det g : X.Eˣ) : X.E) = xiZ ξ⁻¹ (redMQ P.1 g.toLinearMap).det`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `rhoS`. Rewrite using `[if_neg hP, unitV_eq, redP_detEquiv P.1 hgI]`. Establish `hdet : ((LinearEquiv.det g' : X.Eˣ) : X.E) = ((LinearEquiv.det j : X.Eˣ) : X.E)` using `det_eq_of_blk (by omega) g' j hpr hat`. Establish `hs2 : rhoT Ch sel mu (m2 + 1) P ((LinearEquiv.det g' : X.Eˣ) : X.E) = xiZ ξ (redMQ P.1 j.toLinearMap).det`. Unfold `rhoT`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hP, unitV_eq, hdet, redP_detEquiv P.1 hjI]`. Establish `hz' : rowChrTop Ch mu cst.sharp (m2 + 1 + 1) (R.N (m2 + 1 + 1)) P.1 j.toLinearMap = (xiZ ξ ((redMQ P.1 j.toLinearMap).submatrix (brI hnA) (brI hnA)).det)⁻¹`. Unfold `rowChrTop`. Rewrite using `[if_neg hP]`. Conclude with `lamQB_eq ξ (kj := R.r) (r := R.r) (n := R.N (m2 + 1 + 1) - 1 + 0) (c := 0) (d := R.m * R.t) rfl hnA hjI (rr := j) (fun x => by rw [tlq_inX_zero, tlq_inX_zero])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hz : chiInv Ch sel mu cst (m2 + 1) P (L.h (m2 + 1) b P) rc = (xiZ ξ ((redMQ P.1 g.toLinearMap).submatrix (brI hn') (brI hn')).det)⁻¹`. Unfold `chiInv`. Rewrite using `[hOk.last_h]`. Establish `hrange : Finset.range (cOf R (m2 + 1) - 1) = ∅`. Rewrite using `[cOf_topB hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hn1 : Loc.n1Arg rc = 0`. Unfold `Loc.n1Arg`. Rewrite using `[hrange, Finset.sum_empty]`. Establish `hone : ((1 : AutY X R (m2 + 1))⁻¹ * rc * 1 : AutY X R (m2 + 1)) = rc` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn1, hcst.psi_int _ 0 ciIntAt_zero, inv_one, one_mul, hone]`. Unfold `lamRow`. Rewrite using `[if_neg hP, lamQB_eq _ hkj hn' hgI hxc]`. Establish `hS` using `scal_law ξ hnA hn' hrA hr' (redMQ P.1 (j⁻¹ : Sp X.E (R.N (m2 + 1 + 1) - 1 + 0) ≃ₗ[X.E] Sp X.E (R.N (m2 + 1 + 1) - 1 + 0)).toLinearMap) (redMQ P.1 j.toLinearMap) (redMQ P.1 g.toLinearMap) (redMQ P.1 (g⁻¹ : Sp X.E (R.N (m2 + 1)) ≃ₗ[X.E] Sp X.E (R.N (m2 + 1))).toLinearMap) lA lC h1 …`. Establish `k1` using `xiZ_br_inv ξ hnA _ _ lA (redMQ_mul_inv P.1 hjI)`.
-
-Establish `k2` using `xiZ_br_inv ξ hn' _ _ lC (redMQ_mul_inv P.1 hgI)`. Unfold `topDat`. Rewrite using `[eX, hphi, hz', hz, hs1, hs2, eT, hft]`. Conclude with `fin_alg _ _ _ _ _ _ _ _ _ _ hS k1 k2`.
+A detailed English derivation is pending.
 -/
 theorem topLawQ_midTop : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)

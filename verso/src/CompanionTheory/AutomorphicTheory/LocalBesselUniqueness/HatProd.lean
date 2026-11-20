@@ -70,11 +70,11 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : Gauge.OmB Bs = {g | 0 < Gf k r Bs.z Bs.z' g} ∩ ⋂ a : Fin r, {g | Dmin k r Bs.z Bs.z' g ⟨(a : ℕ) + 1, by omega⟩ ≠ 0}`. Use extensionality with `g`. Simplify using `[Gauge.OmB]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isOpen_lt continuous_const (BetaSesquilinearity.Gf_cont _ _)).inter (isOpen_iInter_of_finite fun a => isOpen_ne_fun (BetaSesquilinearity.Dmin_cont _ _ _) continuous_const)`. Introduce and unpack `g ⟨-, hg⟩ s ⟨h, hh, m, hm, rfl⟩ s' ⟨h', hh', m', hm', rfl⟩`. Establish `hs : h * m ∈ Sset k r Bs.z` using `⟨h, hh, m, hm.1, rfl⟩`. Establish `hs' : h' * m' ∈ Sset k r Bs.z'` using `⟨h', hh', m', hm'.1, rfl⟩`. Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gInv k r Bs.z Bs.z' Bs.z_mem Bs.z'_mem _ hs _ hs' g]`. Conclude with `hg.1`. Rewrite using `[dInv k r Bs.z Bs.z' Bs.z_mem Bs.z'_mem _ hs _ hs' g]`. Conclude with `hg.2 a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDom_omB {k r : ℕ} (Bs : B.RealPlaceData k r Wp Wq) : Q.IsDom k r Bs.z Bs.z' 0 (Gauge.OmB Bs) := by
   refine ⟨?_, ?_⟩
@@ -94,13 +94,13 @@ theorem isDom_omB {k r : ℕ} (Bs : B.RealPlaceData k r Wp Wq) : Q.IsDom k r Bs.
 variable {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq}
 
 /- English proof (translation)
-Rewrite using `[hpl.2.2.2.1, hpl.2.2.2.2.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tt_eq (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') : P.TT = Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' := by
   rw [hpl.2.2.2.1, hpl.2.2.2.2.1]; rfl
 
 /- English proof (translation)
-Establish `h` using `BigCellHermitian.gqDom Bs (q := q.1) ⟨q.2.1, by rw [← tt_eq hpl]; exact q.2.2⟩`. Conclude with `⟨h.1, h.2.2, fun a => h.2.1 _ (by simp)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem gq_mem (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (q : MA.Qp P.r P.TT) :
     B.gq Bs q.1 ∈ B.GV P.k P.r ∩ Gauge.OmB Bs := by
@@ -108,9 +108,9 @@ theorem gq_mem (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (q : MA.Qp P.r P.TT) 
   exact ⟨h.1, h.2.2, fun a => h.2.1 _ (by simp)⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ρ`. Unfold `Gauge.trJB`. Use `congr 1`. Use function extensionality and compare the values at `q`. Unfold `Gauge.rawJ`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Rewrite using `[h _ (gq_mem hpl q)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trJB_congr (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp))
     {J J' : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} (h : ∀ g ∈ B.GV P.k P.r ∩ Gauge.OmB Bs, J g = J' g) :
@@ -123,14 +123,14 @@ theorem trJB_congr (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (e : M.Ty P → �
   rw [h _ (gq_mem hpl q)]
 
 /- English proof (translation)
-The claim follows from `ffl_opApply Bs (UU := B.GPos Bs) (isDom_omB Bs) (fun _ hg hG => ⟨hG, hg.1⟩) (polyOp_ck h.1 _) h.2 hJ`.
+A detailed English derivation is pending.
 -/
 theorem ffb_op {o κ : ℕ} {Θ : B.DiffOp P.k P.r Wp Wq} (h : PInv P Bs o κ Θ) {J : B.Mat P.k P.r → (Wq →L[ℂ] Wp)}
     (hJ : J ∈ FFB P Bs) : B.opApply Θ J ∈ FFB P Bs :=
   ffl_opApply Bs (UU := B.GPos Bs) (isDom_omB Bs) (fun _ hg hG => ⟨hG, hg.1⟩) (polyOp_ck h.1 _) h.2 hJ
 
 /- English proof (translation)
-Take `⟨Θ, hP, hl, hc⟩` from `polyOp_comp h₁.1 h₂.1`. Use `⟨Θ, ⟨hP, hc Bs {g | 0 < Gf P.k P.r Bs.z Bs.z' g} (isOpen_lt continuous_const (BetaSesquilinearity.Gf_cont _ _)) h₁.2 h₂.2⟩, fun J hJ g hg => hl _ J (BetaSesquilinearity.sCkOn_mono le_top (ck_of_smoothLev hJ.1)) g hg hg.1⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem pInv_comp {o₁ κ₁ o₂ κ₂ : ℕ} {Θ₁ Θ₂ : B.DiffOp P.k P.r Wp Wq} (h₁ : PInv P Bs o₁ κ₁ Θ₁)
     (h₂ : PInv P Bs o₂ κ₂ Θ₂) : ∃ Θ : B.DiffOp P.k P.r Wp Wq, PInv P Bs (o₁ + o₂) (κ₁ + κ₂) Θ ∧
@@ -142,7 +142,7 @@ theorem pInv_comp {o₁ κ₁ o₂ κ₂ : ℕ} {Θ₁ Θ₂ : B.DiffOp P.k P.r 
 variable {e : M.Ty P → ℂ → (Wq →L[ℂ] Wp)} {L : R.LevelData (MA.A P (MA.DQ P)) P.r} {o κ : ℕ}
 
 /- English proof (translation)
-Take `⟨ts, h1, h2⟩` from `hΦ`. Conclude with `⟨ts, h1, fun J hJ => (h J hJ).trans (h2 J hJ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem realF_congr {Φ Ψ : (B.Mat P.k P.r → (Wq →L[ℂ] Wp)) → M.Ty P → MA.SmQ P.r P.TT}
     (h : ∀ J ∈ FFB P Bs, Ψ J = Φ J) (hΦ : RealF P Bs e L o κ Φ) : RealF P Bs e L o κ Ψ := by
@@ -150,15 +150,15 @@ theorem realF_congr {Φ Ψ : (B.Mat P.k P.r → (Wq →L[ℂ] Wp)) → M.Ty P �
   exact ⟨ts, h1, fun J hJ => (h J hJ).trans (h2 J hJ)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨[], fun _ ht => absurd ht List.not_mem_nil, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem realF_zero : RealF P Bs e L o κ (fun _ => 0) :=
   ⟨[], fun _ ht => absurd ht List.not_mem_nil, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨ts, hts, hJ⟩` from `hΦ`. Take `⟨ts', hts', hJ'⟩` from `hΨ`. Use `⟨ts ++ ts', fun t ht => ?_, fun J hJJ => ?_⟩` and prove the remaining obligations. Break down `List.mem_append.1 ht with h | h` into its components or cases. Conclude with `hts t h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hts' t h`. Rewrite using `[List.map_append, List.sum_append, ← hJ J hJJ, ← hJ' J hJJ]`.
+A detailed English derivation is pending.
 -/
 theorem realF_add {Φ Ψ : (B.Mat P.k P.r → (Wq →L[ℂ] Wp)) → M.Ty P → MA.SmQ P.r P.TT}
     (hΦ : RealF P Bs e L o κ Φ) (hΨ : RealF P Bs e L o κ Ψ) : RealF P Bs e L o κ (fun J => Φ J + Ψ J) := by
@@ -171,11 +171,11 @@ theorem realF_add {Φ Ψ : (B.Mat P.k P.r → (Wq →L[ℂ] Wp)) → M.Ty P → 
   · rw [List.map_append, List.sum_append, ← hJ J hJJ, ← hJ' J hJJ]
 
 /- English proof (translation)
-Take `⟨ts, hts, hJ⟩` from `hΦ`. Use `⟨ts.map fun t => (b * t.1, t.2), fun t ht => ?_, fun J hJJ => ?_⟩` and prove the remaining obligations. Take `⟨t', ht', rfl⟩` from `List.mem_map.1 ht`. Conclude with `⟨Submonoid.mul_mem _ hb (hts t' ht').1, (hts t' ht').2⟩`. Use `show MA.actA P b (Φ J) = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ J hJJ, jdh_actA_listsum, List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `t _`. Simplify using `only [Function.comp_apply]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Gauge.actA_mul]`.
+A detailed English derivation is pending.
 -/
 theorem realF_act {b : MA.A P (MA.DQ P)} (hb : b ∈ Submonoid.closure (MA.bddSet P L))
     {Φ : (B.Mat P.k P.r → (Wq →L[ℂ] Wp)) → M.Ty P → MA.SmQ P.r P.TT} (hΦ : RealF P Bs e L o κ Φ) :
@@ -193,7 +193,7 @@ theorem realF_act {b : MA.A P (MA.DQ P)} (hb : b ∈ Submonoid.closure (MA.bddSe
     rw [Gauge.actA_mul]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact realF_zero`. Consider the case `cons i l ih`. Simplify using `only [List.map_cons, List.sum_cons]`. Conclude with `realF_add (h i (by simp)) (ih fun j hj => h j (by simp [hj]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem realF_listsum {ι : Type} (l : List ι)
     (Φ : ι → (B.Mat P.k P.r → (Wq →L[ℂ] Wp)) → M.Ty P → MA.SmQ P.r P.TT)
@@ -205,9 +205,9 @@ theorem realF_listsum {ι : Type} (l : List ι)
     exact realF_add (h i (by simp)) (ih fun j hj => h j (by simp [hj]))
 
 /- English proof (translation)
-Take `⟨ts, hts, hJ⟩` from `hΦ`. Use `realF_congr (fun J hJJ => hJ _ (ffb_op hΘ hJJ)) (realF_listsum ts (fun t J => MA.actA P t.1 (Gauge.trJB P Bs e (B.opApply t.2 (B.opApply Θ J)))) fun t ht => ?_)` and prove the remaining obligations. Take `⟨Θ', h1, h2⟩` from `pInv_comp (hts t ht).2 hΘ`. Use `⟨[(t.1, Θ')], fun t' ht' => ?_, fun J hJJ => ?_⟩` and prove the remaining obligations. Rewrite `ht'` using `[List.mem_singleton]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `ht'` using the available equality. Conclude with `⟨(hts t ht).1, h1⟩`. Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]`. Rewrite using `[trJB_congr hpl e (h2 J hJJ)]`.
+Substitute using the available equality. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem realF_comp (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') {o' κ' : ℕ} {Θ : B.DiffOp P.k P.r Wp Wq}
     (hΘ : PInv P Bs o' κ' Θ) {Φ : (B.Mat P.k P.r → (Wq →L[ℂ] Wp)) → M.Ty P → MA.SmQ P.r P.TT}
@@ -228,34 +228,34 @@ variable (P Bs e L o κ) in
 def RealX (X : MA.A P (MA.DQ P)) : Prop := RealF P Bs e L o κ (fun J => MA.actA P X (Gauge.trJB P Bs e J))
 
 /- English proof (translation)
-The claim follows from `realF_congr (fun _ _ => Gauge.actA_zero _ _) realF_zero`.
+A detailed English derivation is pending.
 -/
 theorem realX_zero : RealX P Bs e L o κ 0 :=
   realF_congr (fun _ _ => Gauge.actA_zero _ _) realF_zero
 
 /- English proof (translation)
-The claim follows from `realF_congr (fun _ _ => Gauge.actA_add _ _ _ _) (realF_add hX hY)`.
+A detailed English derivation is pending.
 -/
 theorem realX_add {X Y : MA.A P (MA.DQ P)} (hX : RealX P Bs e L o κ X) (hY : RealX P Bs e L o κ Y) :
     RealX P Bs e L o κ (X + Y) :=
   realF_congr (fun _ _ => Gauge.actA_add _ _ _ _) (realF_add hX hY)
 
 /- English proof (translation)
-The claim follows from `realF_congr (fun _ _ => Gauge.actA_mul _ _ _ _) (realF_act hb hX)`.
+A detailed English derivation is pending.
 -/
 theorem realX_mul {b X : MA.A P (MA.DQ P)} (hb : b ∈ Submonoid.closure (MA.bddSet P L))
     (hX : RealX P Bs e L o κ X) : RealX P Bs e L o κ (b * X) :=
   realF_congr (fun _ _ => Gauge.actA_mul _ _ _ _) (realF_act hb hX)
 
 /- English proof (translation)
-Rewrite using `[jdh_smul_eq]`. Conclude with `realX_mul (jdh_kap_mem _ L _) hX`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realX_smul (c : ℂ) {X : MA.A P (MA.DQ P)} (hX : RealX P Bs e L o κ X) : RealX P Bs e L o κ (c • X) := by
   rw [jdh_smul_eq]
   exact realX_mul (jdh_kap_mem _ L _) hX
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ Y]`. Conclude with `realX_add hX (realX_smul _ hY)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realX_sub {X Y : MA.A P (MA.DQ P)} (hX : RealX P Bs e L o κ X) (hY : RealX P Bs e L o κ Y) :
     RealX P Bs e L o κ (X - Y) := by
@@ -263,9 +263,7 @@ theorem realX_sub {X Y : MA.A P (MA.DQ P)} (hX : RealX P Bs e L o κ X) (hY : Re
   exact realX_add hX (realX_smul _ hY)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `realX_zero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
-
-Conclude with `realX_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realX_sum {ι : Type} (s : Finset ι) (X : ι → MA.A P (MA.DQ P)) (h : ∀ i ∈ s, RealX P Bs e L o κ (X i)) :
     RealX P Bs e L o κ (∑ i ∈ s, X i) := by
@@ -277,9 +275,9 @@ theorem realX_sum {ι : Type} (s : Finset ι) (X : ι → MA.A P (MA.DQ P)) (h :
     exact realX_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Take `⟨Θ, h1, h2⟩` from `h`. Use `⟨[(1, Θ)], fun t ht => ?_, fun J hJ => ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[List.mem_singleton]`. Substitute `ht` using the available equality. Conclude with `⟨Submonoid.one_mem _, h1⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components.
 
-Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]`. Rewrite using `[jdh_actA_one, h2 J hJ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem realX_of_isTr {X : MA.A P (MA.DQ P)} (h : IsTr P Bs e X) :
     RealX P Bs e L (2 * P.r + P.k + 1) ((P.r + 1) * (2 * P.r + P.k + 1)) X := by
@@ -292,9 +290,9 @@ theorem realX_of_isTr {X : MA.A P (MA.DQ P)} (h : IsTr P Bs e X) :
     rw [jdh_actA_one, h2 J hJ]
 
 /- English proof (translation)
-Take `⟨Θ, h1, h2, h3⟩` from `polyOp_one (k := P.k) (r := P.r) (Wp := Wp) (Wq := Wq)`. Use `⟨[(1, Θ)], fun t ht => ?_, fun J _ => ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[List.mem_singleton]`. Substitute `ht` using the available equality. Conclude with `⟨Submonoid.one_mem _, h1, h3 _ _⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components.
 
-Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]`. Rewrite using `[h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem realX_one : RealX P Bs e L 0 0 1 := by
   obtain ⟨Θ, h1, h2, h3⟩ := polyOp_one (k := P.k) (r := P.r) (Wp := Wp) (Wq := Wq)
@@ -306,13 +304,11 @@ theorem realX_one : RealX P Bs e L 0 0 1 := by
     rw [h2]
 
 /- English proof (translation)
-Introduce `X hX`. Take `⟨ν, hinj, hreg⟩` from `h4 P`. Break down `hX with (((⟨y, rfl⟩ | ⟨y, rfl⟩) | ⟨y, rfl⟩) | ⟨y, rfl⟩)` into its components or cases. Conclude with `realX_of_isTr (hA y).1`. Rewrite using `[(h3 P L ν hinj y).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `realX_sum _ _ fun j _ => realX_smul _ ?_` and prove the remaining obligations. Rewrite using `[h1 P L hL (ν j) (hreg j)]`. Use `realX_sub (realX_mul (jdh_kap_mem _ L _) (realX_of_isTr (hR (ν j)).1)) (realX_sum _ _ fun l hl => ?_)` and prove the remaining obligations. Use `realX_mul ?_ (realX_of_isTr (hA _).1)` and prove the remaining obligations. Conclude with `Submonoid.mul_mem _ (Submonoid.mul_mem _ (jdh_kap_mem _ L _) (jdh_SSn_mem _ L l hl)) (jdh_kap_mem _ L _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `realX_of_isTr (hA y).2`. Rewrite using `[(h3 P L ν hinj y).2]`. Use `realX_sum _ _ fun j _ => realX_smul _ ?_` and prove the remaining obligations. Rewrite using `[h2 P L hL (ν j) (hreg j)]`. Use `realX_sub (realX_mul (jdh_kap_mem _ L _) (realX_of_isTr (hR (ν j)).2)) (realX_sum _ _ fun l hl => ?_)` and prove the remaining obligations.
-
-Use `realX_mul ?_ (realX_of_isTr (hA _).2)` and prove the remaining obligations. Conclude with `Submonoid.mul_mem _ (Submonoid.mul_mem _ (jdh_kap_mem _ L _) (jdh_kap_mem _ L _)) (jdh_SSns_mem _ L l hl)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem realX_hat (h1 : ResidueSplittingModelAlgebra) (h2 : MirrorResidueSplittingModelAlgebra) (h3 : JDHatLagrange) (h4 : JDHatNodes)
     (hL : MA.IsModelLevel P (MA.DQ P) L) (hA : ∀ y : ℂ, IsTr P Bs e (L.Ahat y) ∧ IsTr P Bs e (L.Ahatv y))
@@ -337,17 +333,17 @@ theorem realX_hat (h1 : ResidueSplittingModelAlgebra) (h2 : MirrorResidueSplitti
     exact Submonoid.mul_mem _ (Submonoid.mul_mem _ (jdh_kap_mem _ L _) (jdh_kap_mem _ L _)) (jdh_SSns_mem _ L l hl)
 
 /- English proof (translation)
-Establish `hspan : ∀ c ∈ Submodule.span ℂ (bddHat P L), RealX P Bs e L o κ c`. Introduce `c hc`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, X, hX, rfl⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `realX_mul hb (hHat X hX)`. Consider the case `zero => exact realX_zero`. Consider the case `add x y _ _ h1 h2 => exact realX_add h1 h2`. Consider the case `smul c x _ h1 => exact realX_smul c h1`. Introduce `w`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `w with`. Consider the case `nil => intro _`. Simplify using `using realX_one`. Consider the case `cons a w ih`. Introduce `hw`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨ts, hts, hJ⟩` from `ih fun x hx => hw x (List.mem_cons_of_mem _ hx)`. Establish `ha` using `hw a (List.mem_cons_self ..)`. Establish `e1 : (a :: w).length * o = o + w.length * o` using `by rw [List.length_cons]; ring`. Establish `e2 : (a :: w).length * κ = κ + w.length * κ` using `by rw [List.length_cons]; ring`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `realF_congr (fun J hJJ => ?_) (realF_listsum ts (fun t J => MA.actA P (a * t.1) (Gauge.trJB P Bs e (B.opApply t.2 J))) fun t ht => realF_comp hpl (hts t ht).2 (hspan _ (hBdd a ha _ (hts t ht).1)))` and prove the remaining obligations. Establish `hJ' : MA.actA P w.prod (Gauge.trJB P Bs e J) = _` using `hJ J hJJ`. Use `show MA.actA P (a :: w).prod (Gauge.trJB P Bs e J) = _`. Rewrite using `[List.prod_cons, Gauge.actA_mul, hJ', jdh_actA_listsum]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `t _`. Rewrite using `[Gauge.actA_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realX_prod (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π')
     (hBdd : ∀ X ∈ MA.hatSet P L, ∀ b ∈ Submonoid.closure (MA.bddSet P L), X * b ∈ Submodule.span ℂ (bddHat P L))
@@ -387,7 +383,7 @@ theorem realX_prod (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π')
 end place
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs hpl hk e he hQ L hL w hw`. Establish `hTT : 0 ≤ P.TT` using `by rw [tt_eq hpl]; exact (mul_pos Bs.T_pos Bs.T'_pos).le`. Conclude with `realX_prod hpl (h0 P L hTT hL) (realX_hat h1 h2 h3 h4 hL (hA Wp Wq P Bs hpl hk e he L hL) (hR Wp Wq P Bs hpl hk e he hQ L hL)) w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hatProdB_of (hA : CapAB) (hR : CapRB) (h0 : JDHatBdd) (h1 : ResidueSplittingModelAlgebra) (h2 : MirrorResidueSplittingModelAlgebra)
     (h3 : JDHatLagrange) (h4 : JDHatNodes) : HatProdB := by

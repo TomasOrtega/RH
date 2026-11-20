@@ -14,21 +14,21 @@ open ReciprocityTheory.ChartRestriction.G
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `IsCMField.complexConj_apply_apply E t`.
+A detailed English derivation is pending.
 -/
 theorem cc_cc (t : E) : FD.cc (FD.cc t) = t := IsCMField.complexConj_apply_apply E t
 
 /- English proof (translation)
-The claim follows from `IsCMField.complexEmbedding_complexConj E τ t`.
+A detailed English derivation is pending.
 -/
 theorem emb_cc (τ : E →+* ℂ) (t : E) : τ (FD.cc t) = conj (τ t) := IsCMField.complexEmbedding_complexConj E τ t
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `IsCMField.complexConj_ne_one E` to reduce the goal to its premises. Use extensionality with `t`. Assume the negation of the conclusion as `ht`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1 : t - FD.cc t ≠ 0` using `sub_ne_zero.mpr (Ne.symm ht)`. Apply `hne _ h1` to reduce the goal to its premises. Use `show IsCMField.complexConj E (t - FD.cc t) = -(t - FD.cc t)`. Rewrite using `[map_sub]`. Express the relevant statement in the definitionally equal form `FD.cc t - FD.cc (FD.cc t) = _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[cc_cc]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_skew : ∃ θ : E, θ ≠ 0 ∧ FD.cc θ = -θ := by
   by_contra hne
@@ -45,9 +45,9 @@ theorem exists_skew : ∃ θ : E, θ ≠ 0 ∧ FD.cc θ = -θ := by
   ring
 
 /- English proof (translation)
-Establish `h` using `emb_cc τ t`. Rewrite `h` using `[ht]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use `congrArg Complex.im h` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Complex.conj_im] at this`. Simplify using `only [Complex.ofReal_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem emb_real (τ : E →+* ℂ) {t : E} (ht : FD.cc t = t) : τ t = ((τ t).re : ℂ) := by
   have h := emb_cc τ t
@@ -60,17 +60,17 @@ theorem emb_real (τ : E →+* ℂ) {t : E} (ht : FD.cc t = t) : τ t = ((τ t).
     linarith
 
 /- English proof (translation)
-Take `⟨θ, hθ0, hθ⟩` from `exists_skew (E := E)`. Establish `hF : ∀ t : E, IsCMField.complexConj E t = t ↔ ∃ s : maximalRealSubfield E, algebraMap (maximalRealSubfield E) E s = t` using `fun t => (IsCMField.complexConj_eq_self_iff E t).trans ⟨fun h => ⟨⟨t, h⟩, rfl⟩, by rintro ⟨s, rfl⟩; exact s.2⟩`. Establish `hne : ∀ (τ : E →+* ℂ) (i : Fin (r + 1)), (τ (g i)).re ≠ 0`. Introduce `τ i h`. Establish `h1` using `emb_real τ (hg i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[h, Complex.ofReal_zero]`. Conclude with `hg0 i ((map_eq_zero τ).1 h1)`. Take `⟨z, hz⟩` from `GlobalTheory.HermGlobal.exists_represent (σ := IsCMField.complexConj E) (IsCMField.complexConj_apply_apply E) hF hθ0 hθ hr (g := fun i => g i.succ) (fun i => hg _) (fun i => hg0 _) (b := -g 0) (by show IsCMField.complexConj E (-g 0) = -g 0; rw [map_neg]; exact congrArg Neg.neg (h …`. Introduce `τ _`. Take `⟨⟨i, hi⟩, ⟨j, hj⟩⟩` from `hs τ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : (τ (-g 0)).re = -(τ (g 0)).re` using `by simp`. Break down `lt_or_gt_of_ne (hne τ 0) with h0 | h0` into its components or cases. Establish `hi0 : i ≠ 0` using `by rintro rfl; linarith`. Take `⟨i', rfl⟩` from `Fin.exists_succ_eq.mpr hi0`. Apply the tactic sequence `exact ⟨i', by simp only [hb]; constructor <;> intro _ <;> linarith⟩`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hj0 : j ≠ 0` using `by rintro rfl; linarith`. Take `⟨j', rfl⟩` from `Fin.exists_succ_eq.mpr hj0`. Apply the tactic sequence `exact ⟨j', by simp only [hb]; constructor <;> intro h <;> linarith⟩)`. Use `⟨Fin.cons 1 z, fun h => one_ne_zero (congrFun h 0), ?_⟩` and prove the remaining obligations. Establish `key : (Fin.cons 1 z : Fin (r + 1) → E) ⬝ᵥ diagonal g *ᵥ (FD.cc ∘ Fin.cons 1 z) = g 0 + z ⬝ᵥ diagonal (fun i => g i.succ) *ᵥ (FD.cc ∘ z)`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [dotProduct, mulVec_diagonal, Fin.sum_univ_succ, Function.comp_apply, Fin.cons_zero, Fin.cons_succ]`. Establish `: FD.cc (1 : E) = 1` using `map_one (IsCMField.complexConj E)`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz' : z ⬝ᵥ diagonal (fun i => g i.succ) *ᵥ (FD.cc ∘ z) = -g 0` using `hz`. Rewrite using `[hz']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem iso_diag {r : ℕ} (g : Fin (r + 1) → E) (hr : 2 ≤ r) (hg : ∀ i, FD.cc (g i) = g i) (hg0 : ∀ i, g i ≠ 0)
     (hs : ∀ τ : E →+* ℂ, (∃ i, 0 < (τ (g i)).re) ∧ (∃ j, (τ (g j)).re < 0)) :

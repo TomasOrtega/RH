@@ -37,9 +37,9 @@ theorem mt_scalU (V : HSp D) (a : AE D) (h : a * cA D a = 1) :
     Formalism.L2.Theta.mt V (scalU V a h) = Matrix.diagonal (fun _ => a) := rfl
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_center_iff]`. Introduce `g`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show (matHom V g).1 * Matrix.diagonal (fun _ => a) = Matrix.diagonal (fun _ => a) * (matHom V g).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `k l`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalU_mem_center (V : HSp D) (a : AE D) (h : a * cA D a = 1) :
     scalU V a h ∈ Subgroup.center (GA D V) := by
@@ -53,7 +53,7 @@ theorem scalU_mem_center (V : HSp D) (a : AE D) (h : a * cA D a = 1) :
   rw [Matrix.mul_diagonal, Matrix.diagonal_mul, mul_comm]
 
 /- English proof (translation)
-Use `show infHom V (scalU V a h) = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `show (Matrix.diagonal (fun _ => a)).map (infPart D) = 1`. Rewrite using `[Matrix.diagonal_map (map_zero _), h1, Matrix.diagonal_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalU_mem_GfC (V : HSp D) (a : AE D) (h : a * cA D a = 1) (h1 : infPart D a = 1) :
     scalU V a h ∈ GfC V := by
@@ -63,7 +63,7 @@ theorem scalU_mem_GfC (V : HSp D) (a : AE D) (h : a * cA D a = 1) (h1 : infPart 
   rw [Matrix.diagonal_map (map_zero _), h1, Matrix.diagonal_one]
 
 /- English proof (translation)
-Establish `hf2 : c e * c e = c e` using `by rw [← map_mul, he2]`. Establish `hyX : c w * c x = 1` using `by rw [← map_mul, mul_comm, hxw, map_one]`. Simplify using `only [map_add, map_mul, map_sub, map_one, hc]`. Take the linear combination `(x * c x + c w * w - x - c w - c x - w + 2) * hef + (x * w - x - w + 1) * he2 + (c w * c x - c w - c x + 1) * hf2 + e * hxw + c e * hyX`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem scal_norm_one {R : Type} [CommRing R] (c : R →+* R) (hc : ∀ t, c (c t) = t) (e x w : R) (he2 : e * e = e)
     (hef : e * c e = 0) (hxw : x * w = 1) :
@@ -75,7 +75,7 @@ theorem scal_norm_one {R : Type} [CommRing R] (c : R →+* R) (hc : ∀ t, c (c 
     (x * w - x - w + 1) * he2 + (c w * c x - c w - c x + 1) * hf2 + e * hxw + c e * hyX
 
 /- English proof (translation)
-Rewrite using `[map_add, map_add, map_mul, map_mul, map_sub, map_sub, map_one, h0, h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hom_scal {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (e f x y : R) (h0 : φ e = 0) (h1 : φ f = 0) :
     φ (e * x + f * y + (1 - e - f)) = 1 := by
@@ -83,20 +83,20 @@ theorem hom_scal {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (e f x 
   simp
 
 /- English proof (translation)
-Take the linear combination `(x - 1) * he2 + (y - 1) * hf2 + (y + x - 2) * hef`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem scal_supp {R : Type} [CommRing R] (e f x y : R) (he2 : e * e = e) (hf2 : f * f = f) (hef : e * f = 0) :
     (e + f) * (e * x + f * y + (1 - e - f) - 1) = e * x + f * y + (1 - e - f) - 1 := by
   linear_combination (x - 1) * he2 + (y - 1) * hf2 + (y + x - 2) * hef
 
 /- English proof (translation)
-Introduce `D i Q eQ hQ ϖ hϖ`. Establish `he2 : eQ * eQ = eQ` using `GlobalTheory.PlaceVec.idemSum_mul_self hQ`. Establish `hf2 : cA D eQ * cA D eQ = cA D eQ` using `by rw [← map_mul, he2]`. Establish `hef : eQ * cA D eQ = 0` using `hQ.2`. Establish `hxw : incA D ϖ⁻¹ * incA D ϖ = 1` using `by rw [← map_mul, inv_mul_cancel₀ hϖ, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunit` using `scal_norm_one (cA D) cA_cA eQ (incA D ϖ⁻¹) (incA D ϖ) he2 hef hxw`. Establish `hinf : infPart D (eQ * incA D ϖ⁻¹ + cA D eQ * cA D (incA D ϖ) + (1 - eQ - cA D eQ)) = 1`. Establish `h0 : infPart D eQ = 0` using `GlobalTheory.PlaceVec.idemSum_infPart hQ`. Establish `h0' : infPart D (cA D eQ) = 0` using `GlobalTheory.PlaceVec.infPart_cA h0`. Conclude with `hom_scal (infPart D) _ _ _ _ h0 h0'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨scalU (Vc D i) _ hunit, ⟨scalU_mem_center _ _ hunit, scalU_mem_GfC _ _ hunit hinf, eQ, hQ, ?_⟩, mt_scalU _ _ hunit⟩` and prove the remaining obligations. Introduce `k l`. Rewrite using `[mt_scalU]`. Distinguish the cases in `hkl : k = l`. Substitute `hkl` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_apply, Matrix.diagonal_apply_eq, Matrix.one_apply_eq]`. Conclude with `scal_supp _ _ _ _ he2 hf2 hef`. Rewrite using `[Matrix.sub_apply, Matrix.diagonal_apply_ne _ hkl, Matrix.one_apply_ne hkl, sub_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCentAt_scalar : ∀ (D : D7) (i : Fin D.R.m) (Q : Finset (Pl D.host.E)) (eQ : AE D), IsIdemSum eQ Q → ∀ ϖ : D.host.E, ϖ ≠ 0 → ∃ z : GA D (Vc D i), IsCentAt i Q z ∧ mt (Vc D i) z = Matrix.diagonal (fun _ => eQ * incA D ϖ⁻¹ + cA D eQ * cA D (incA D ϖ) + (1 - eQ - cA D eQ)) := by
   intro D i Q eQ hQ ϖ hϖ

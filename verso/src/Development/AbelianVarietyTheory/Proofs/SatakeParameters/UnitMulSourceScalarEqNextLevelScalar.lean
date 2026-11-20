@@ -12,13 +12,13 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions.G
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hpos ι hι`. Use `letI := wittFractionAlgebraCp (D.what₂.places.resChar w)`. Use `letI := algKfC S.E.toCEmb`. Establish `hps` using `GlobalTheory.TwV.DelA.posTie_at S hpos ι hι`. Introduce `d j hj La La'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hr` using `GlobalTheory.TwV.DelB.sysS_ranks S`. Establish `hfr` using `GlobalTheory.T.changedFrame_rational_unitary S d j (Nat.le_of_succ_le hj) (hr.2.2.1 j) La`. Establish `hsc` using `GlobalTheory.T.sourceScalar_latticeTuple_constant S d j hj ⟨La'.1⟩ La`. Establish `hun` using `(GlobalTheory.T.stepDeterminantConstant_unit_independent S hpos ι hι j hj La.1 La'.1).2.1`. Establish `hcA` using `GlobalTheory.TwV.DelA.scal_inv_frame (sysS H X std) D (hT.gat_pos u w hg) ℂ_[D.what₂.places.resChar w] ι (J.rho std) hps.1 d.fd2 j La (hr.2.2.1 j) (mM d j (Nat.le_of_succ_le hj) La) hfr.1 hfr.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : cA (sysS H X std) ℂ_[D.what₂.places.resChar w] j (BOf d.fd2 j La) * sO d ι j La * ι (d.uS S j La) = ι (kS J j (Nat.le_of_succ_le hj) La.1 * cOp (sysS H X std) D (hT.gat_pos u w hg) j (t.O u μ).dgen)`. Rewrite using `[hcA, sO, dif_pos (Nat.le_of_succ_le hj), ← map_mul, ← map_mul, ← hsc]`. Use `congr 1`. Unfold `dPow`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mul_assoc (cKs S ι j hj La.1 La'.1), key]`. Unfold `cKs scT`. Rewrite using `[dif_pos hj, map_mul ι (kT J j hj La'.1), map_inv₀, map_mul ι (d.uT S j La')]`. Establish `hy : ι (kS J j (Nat.le_of_succ_le hj) La.1 * cOp (sysS H X std) D (hT.gat_pos u w hg) j (t.O u μ).dgen) ≠ 0` using `hun`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem GlobalTheory.TwV.DelA.unit_mul_scal_eq_scT : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => S.Pos → ∀ ι : ℂ →+* ℂ_[D.what₂.places.resChar w], (∀ z : TaylorLogMetric.Qbar, ι z = S.lam z) → letI := wittFractionAlgebraCp (D.what₂.places.resChar w); letI := algKfC S.E.toCEmb; ∀ (d : Dec J std) j (hj : j + 1 ≤ D.R.m) (La : (sysS H X std).Lt j) (La' : (sysS H X std).Lt (j + 1)), cKs S ι j hj La.1 La'.1 * (Formalism.L2.G.Pend.cA (sysS H X std) ℂ_[D.what₂.places.resChar w] j (BOf d.fd2 j La) * sO d ι j La) * ι (d.uS S j La) * ι (d.uT S j La') = scT d S ι j La'.1 La'.2) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hpos ι hι

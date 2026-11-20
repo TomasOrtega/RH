@@ -11,7 +11,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.V.Z.Sym.Al
 
 /- English proof (translation)
-Introduce `H L _ _ _ unr n hn π hπ w hw`. Take `⟨P, hb⟩` from `UpperTheory.BaseChangeIdentities.splitComp (GlobalTheory.BcSpeh.bcSpeh_of_baseChange (GlobalTheory.BaseChangeBridge.main H.aut.bc H.loc.bern) (GlobalTheory.SpehInfChar.discreteSpectrumGL_of_residual H.aut.mw)) L unr n hn π hπ`. Conclude with `⟨P w hw, hb w hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Sym.Al.compEx :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (L : Type) [Field L] [NumberField L] [IsCMField L], Unr L → ∀ n : ℕ, 1 ≤ n → ∀ π : Submodule ℂ (UA L n → ℂ), IsAutRepU π → ∀ w, IsSplitAt w → ∃ τ, Comp π w τ := by

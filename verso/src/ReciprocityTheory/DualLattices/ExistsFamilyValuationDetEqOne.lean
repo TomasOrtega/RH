@@ -10,7 +10,7 @@ variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C] {v : Valuati
 variable {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Simplify using `only [h3co, Finset.sum_apply, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cosetCoordinates_sum (K : AddSubgroup N) [DecidablePred (· ∈ K)] (β : Matrix K K C) {ι : Type}
     [Fintype ι] (g : ι → N → C) (x : N) :
@@ -20,9 +20,9 @@ theorem cosetCoordinates_sum (K : AddSubgroup N) [DecidablePred (· ∈ K)] (β 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `using AA.one_mem`. Introduce `a s ha ih h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert ha]`. Conclude with `AA.mul_mem _ _ (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+A detailed English derivation is pending.
 -/
 private theorem hopfOrder_prod_mem_carrier (AA : HopfOrder (C := C) R N) {ι : Type} (s : Finset ι)
     (g : ι → N → C) (h : ∀ i ∈ s, g i ∈ AA.carrier) : ∏ i ∈ s, g i ∈ AA.carrier := by
@@ -37,7 +37,7 @@ private theorem hopfOrder_prod_mem_carrier (AA : HopfOrder (C := C) R N) {ι : T
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Establish `e : (fun _ : N => algebraMap R C r) = r • (1 : N → C)`. Use function extensionality and compare the values at `y`. Simplify using `[Algebra.smul_def]`. Rewrite using `[e]`. Conclude with `AA.carrier.smul_mem r AA.one_mem`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hopfOrder_const_mem (AA : HopfOrder (C := C) R N) (r : R) :
     (fun _ : N => algebraMap R C r) ∈ AA.carrier := by
@@ -48,9 +48,9 @@ private theorem hopfOrder_const_mem (AA : HopfOrder (C := C) R N) (r : R) :
   exact AA.carrier.smul_mem r AA.one_mem
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `hopfOrder_exists_algebraMap_eq_of_mem AA hn z`. Establish `e : (fun y => n z - n y) = (fun _ : N => algebraMap R C r) - n`. Use function extensionality and compare the values at `y`. Simplify using `[hr]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AA.carrier.sub_mem (hopfOrder_const_mem AA r) hn`.
+A detailed English derivation is pending.
 -/
 private theorem hopfOrder_const_sub_mem (AA : HopfOrder (C := C) R N) {n : N → C} (hn : n ∈ AA.carrier)
     (z : N) : (fun y => n z - n y) ∈ AA.carrier := by
@@ -62,7 +62,7 @@ private theorem hopfOrder_const_sub_mem (AA : HopfOrder (C := C) R N) {n : N →
   exact AA.carrier.sub_mem (hopfOrder_const_mem AA r) hn
 
 /- English proof (translation)
-Simplify using `only [h3co]`. Establish `e : (fun k : K => (a * F + b * F') (y + k)) = a y • (fun k : K => F (y + k)) + b y • (fun k : K => F' (y + k))`. Use function extensionality and compare the values at `k`. Simplify using `[ha, hb]`. Rewrite using `[e, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem h3co_mul_add_of_coset_invariant (K : AddSubgroup N) [DecidablePred (· ∈ K)]
     (β : Matrix K K C) (a b : N → C) (ha : ∀ y (k : K), a (y + k) = a y)
@@ -77,7 +77,7 @@ private theorem h3co_mul_add_of_coset_invariant (K : AddSubgroup N) [DecidablePr
   rw [e, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Use extensionality with `j l`. Simplify using `only [h3mm, Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, h3co_mul_add_of_coset_invariant K β a b ha hb, Pi.add_apply, Pi.smul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem h3mm_mul_add_of_coset_invariant (K : AddSubgroup N) [DecidablePred (· ∈ K)]
     (β : Matrix K K C) (a b : N → C) (ha : ∀ y (k : K), a (y + k) = a y)
@@ -89,7 +89,7 @@ private theorem h3mm_mul_add_of_coset_invariant (K : AddSubgroup N) [DecidablePr
     h3co_mul_add_of_coset_invariant K β a b ha hb, Pi.add_apply, Pi.smul_apply]
 
 /- English proof (translation)
-Establish `h` using `(det_mem_and_adjugate_mem AA (Matrix.of fun i j => fun y => h3co K β (G i) y j) (fun i j => cosetCoordinates_mem AA K β hβ hAK (hG i) j)).1`. Establish `e : ∀ y, (Matrix.of fun i j => fun y => h3co K β (G i) y j).map (fun g => g y) = h3mm K β G y` using `fun y => by`. Use extensionality with `i j`. Both sides reduce to the same expression. Simplify `h` using `only [e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem hopfOrder_det_fun_mem (AA : HopfOrder (C := C) R N) (K : AddSubgroup N)
     [DecidablePred (· ∈ K)] (β : Matrix K K C) (hβ : IsUnit β.det)
@@ -107,7 +107,7 @@ private theorem hopfOrder_det_fun_mem (AA : HopfOrder (C := C) R N) (K : AddSubg
   simpa only [e] using h
 
 /- English proof (translation)
-Establish `e : (fun y => ∏ k : K, (h3mm K β G (y + k)).det) = ∏ k : K, (fun y => (h3mm K β G (y + k)).det)`. Use function extensionality and compare the values at `y`. Simplify using `only [Finset.prod_apply]`. Rewrite using `[e]`. Conclude with `hopfOrder_prod_mem_carrier AA _ _ fun k _ => hopfOrder_translate_mem AA (hopfOrder_det_fun_mem AA K β hβ hAK G hG) (k : N)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hopfOrder_norm_fun_mem (AA : HopfOrder (C := C) R N) (K : AddSubgroup N)
     [DecidablePred (· ∈ K)] (β : Matrix K K C) (hβ : IsUnit β.det)
@@ -124,7 +124,7 @@ private theorem hopfOrder_norm_fun_mem (AA : HopfOrder (C := C) R N) (K : AddSub
     hopfOrder_translate_mem AA (hopfOrder_det_fun_mem AA K β hβ hAK G hG) (k : N)
 
 /- English proof (translation)
-Establish `h : v (-b) < v a`. Rewrite using `[Valuation.map_neg, ha]`. Conclude with `hb`. Rewrite using `[sub_eq_add_neg, v.map_add_eq_of_lt_left h, ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valuation_sub_eq_one_of_eq_one_of_lt_one {a b : C} (ha : v a = 1) (hb : v b < 1) :
     v (a - b) = 1 := by
@@ -134,7 +134,7 @@ private theorem valuation_sub_eq_one_of_eq_one_of_lt_one {a b : C} (ha : v a = 1
   rw [sub_eq_add_neg, v.map_add_eq_of_lt_left h, ha]
 
 /- English proof (translation)
-Establish `h0 : (0 : NNReal) ≤ a` using `by positivity`. Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hm`. Rewrite using `[pow_succ]`. Use `lt_of_le_of_lt (mul_le_of_le_one_left h0 ?_) hlt` and prove the remaining obligations. Conclude with `pow_le_one₀ h0 hlt.le`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem nnreal_pow_lt_one_of_lt_one_of_ne_zero {a : NNReal} (hlt : a < 1) {m : ℕ} (hm : m ≠ 0) :
     a ^ m < 1 := by
@@ -145,45 +145,39 @@ private theorem nnreal_pow_lt_one_of_lt_one_of_ne_zero {a : NNReal} (hlt : a < 1
   exact pow_le_one₀ h0 hlt.le
 
 /- English proof (translation)
-Establish `hlift : ∀ j : K, ∃ f ∈ AA.carrier, ∀ k : K, f k = β k j`. Introduce `j`. Establish `hmem : (fun k : K => β k j) ∈ AA.carrier.map (resK (R` using `R) K) := by`. Rewrite using `[hAK]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hfe⟩` from `Submodule.mem_map.mp hmem`. Conclude with `⟨f, hf, fun k => congrFun hfe k⟩`. Use `choose f0 hf0 hf0e using hlift`. Establish `hgood : ∀ x : N, v (h3mm K β (fun j y => f0 j (y + -x)) x).det = 1`. Introduce `x`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : h3mm K β (fun j y => f0 j (y + -x)) x = (β⁻¹ * β)ᵀ`. Use extensionality with `j l`. Establish `h1 : (fun k : K => f0 j (x + (k : N) + -x)) = fun k => β k j`. Use function extensionality and compare the values at `k`. Rewrite using `[show x + (k : N) + -x = k by abel]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hf0e j k`. Use `show (β⁻¹ *ᵥ fun k : K => f0 j (x + (k : N) + -x)) l = (β⁻¹ * β) l j`. Rewrite using `[h1]`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.nonsing_inv_mul β hβ, Matrix.transpose_one, Matrix.det_one, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ S : Finset N, ∃ G : K → N → C, (∀ j, G j ∈ AA.carrier) ∧ ∀ z ∈ S, v (h3mm K β G z).det = 1`. Introduce `S`. Use `Finset.induction_on S ⟨fun _ => 0, fun _ => AA.carrier.zero_mem, by simp⟩ ?_` and prove the remaining obligations. Introduce `x S hx ih`. Take `⟨G, hG, hS⟩` from `ih`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hGx : v (h3mm K β G x).det = 1`. Use `⟨G, hG, fun z hz => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hz with hzx | hz` into its components or cases. Rewrite using `[hzx]`. Conclude with `hGx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hS z hz`. Take `⟨n, hn_def⟩ : ∃ n : N → C, n = fun y => ∏ k : K, (h3mm K β G (y + k)).det` from `⟨_, rfl⟩`. Establish `hnmem : n ∈ AA.carrier`. Rewrite using `[hn_def]`. Conclude with `hopfOrder_norm_fun_mem AA K β hβ hAK G hG`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hninv : ∀ y (k0 : K), n (y + k0) = n y`. Introduce `y k0`. Simplify using `only [hn_def]`. Conclude with `Fintype.prod_equiv (Equiv.addLeft k0) _ _ (fun k => by simp [add_assoc])`. Establish `hvn : ∀ y, v (n y) = v (h3mm K β G y).det ^ Fintype.card K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Simplify using `only [hn_def]`. Rewrite using `[map_prod, Finset.prod_congr rfl (fun k _ => valuation_det_cosetCoordinateMatrix_add hv AA K β hβ hAK G y k), Finset.prod_const, Finset.card_univ]`. Establish `hDle : ∀ y, v (h3mm K β G y).det ≤ 1` using `fun y => valuation_det_le_one_of_entries_integral hv _ (fun i j => hopfOrder_exists_algebraMap_eq_of_mem AA (cosetCoordinates_mem AA K β hβ hAK (hG i) j) y)`. Establish `: Nonempty K` using `⟨0⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcard : Fintype.card K ≠ 0` using `Fintype.card_ne_zero`. Establish `hnS : ∀ z ∈ S, v (n z) = 1` using `fun z hz => by`. Rewrite using `[hvn, hS z hz, one_pow]`. Establish `hnx : v (n x) < 1`. Rewrite using `[hvn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `nnreal_pow_lt_one_of_lt_one_of_ne_zero (lt_of_le_of_ne (hDle x) hGx) hcard`. Take `⟨a, ha_def⟩ : ∃ a : N → C, a = fun y => n x - n y` from `⟨_, rfl⟩`. Take `⟨b, hb_def⟩ : ∃ b : N → C, b = fun y => ∏ w ∈ S, (n w - n y)` from `⟨_, rfl⟩`. Take `⟨g, hg_def⟩ : ∃ g : K → N → C, g = fun j y => f0 j (y + -x)` from `⟨_, rfl⟩`. Establish `hamem : a ∈ AA.carrier`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha_def]`. Conclude with `hopfOrder_const_sub_mem AA hnmem x`. Establish `hbmem : b ∈ AA.carrier`. Establish `e : (fun y => ∏ w ∈ S, (n w - n y)) = ∏ w ∈ S, (fun y => n w - n y)`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.prod_apply]`. Rewrite using `[hb_def, e]`. Conclude with `hopfOrder_prod_mem_carrier AA S _ (fun w _ => hopfOrder_const_sub_mem AA hnmem w)`. Establish `hgmem : ∀ j, g j ∈ AA.carrier`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg_def]`. Conclude with `hopfOrder_translate_mem AA (hf0 j) (-x)`. Establish `hgx : v (h3mm K β g x).det = 1`. Rewrite using `[hg_def]`. Conclude with `hgood x`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hainv : ∀ y (k : K), a (y + k) = a y`. Introduce `y k`. Simplify using `only [ha_def, hninv]`. Establish `hbinv : ∀ y (k : K), b (y + k) = b y`. Introduce `y k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hb_def, hninv]`. Use `⟨fun j => a * G j + b * g j, fun j => AA.carrier.add_mem (AA.mul_mem _ _ hamem (hG j)) (AA.mul_mem _ _ hbmem (hgmem j)), fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[h3mm_mul_add_of_coset_invariant K β a b hainv hbinv G g z]`. Break down `Finset.mem_insert.mp hz with hzx | hz` into its components or cases. Rewrite using `[hzx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `ha0 : a x = 0` using `by simp only [ha_def, sub_self]`. Establish `hb1 : v (b x) = 1`. Simplify using `only [hb_def]`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_one (fun w hw => valuation_sub_eq_one_of_eq_one_of_lt_one (hnS w hw) hnx)`.
-
-Rewrite using `[ha0, zero_smul, zero_add, Matrix.det_smul, map_mul, map_pow, hgx, hb1, one_pow, mul_one]`. Establish `hb0 : b z = 0`. Simplify using `only [hb_def]`. Conclude with `Finset.prod_eq_zero hz (sub_self _)`. Establish `ha1 : v (a z) = 1`.
-
-Simplify using `only [ha_def]`. Rewrite using `[Valuation.map_sub_swap]`. Conclude with `valuation_sub_eq_one_of_eq_one_of_lt_one (hnS z hz) hnx`. Rewrite using `[hb0, zero_smul, add_zero, Matrix.det_smul, map_mul, map_pow, hS z hz, ha1, one_pow, mul_one]`. Take `⟨G, hG, hGall⟩` from `key Finset.univ`.
-
-Conclude with `⟨G, hG, fun x => hGall x (Finset.mem_univ x)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_family_valuation_det_eq_one (hv : v.Integers R) (AA : HopfOrder (C := C) R N) (K : AddSubgroup N)
     [DecidablePred (· ∈ K)] (β : Matrix K K C) (hβ : IsUnit β.det)

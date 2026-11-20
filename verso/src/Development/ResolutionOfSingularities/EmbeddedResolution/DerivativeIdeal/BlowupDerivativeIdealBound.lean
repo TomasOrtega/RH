@@ -28,7 +28,7 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Establish `h : f = g` using `Quiver.Hom.unop_inj (Subsingleton.elim f.unop g.unop)`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem presheaf_map_eq {X : Scheme.{u}} {A B : (X.Opens)ᵒᵖ} (f g : A ⟶ B) :
     X.presheaf.map f = X.presheaf.map g := by
@@ -36,7 +36,7 @@ private theorem presheaf_map_eq {X : Scheme.{u}} {A B : (X.Opens)ᵒᵖ} (f g : 
   rw [h]
 
 /- English proof (translation)
-Use `Scheme.IdealSheafData.le_def.mpr fun U => ?_` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.ideal_mul, Scheme.IdealSheafData.ideal_mul]`. Conclude with `Ideal.mul_mono (Scheme.IdealSheafData.le_def.mp h1 U) (Scheme.IdealSheafData.le_def.mp h2 U)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem idealSheafData_mul_le_mul {Y : Scheme.{u}} {A B C D : Y.IdealSheafData}
     (h1 : A ≤ B) (h2 : C ≤ D) : A * C ≤ B * D := by
@@ -46,7 +46,7 @@ private theorem idealSheafData_mul_le_mul {Y : Scheme.{u}} {A B C D : Y.IdealShe
     (Scheme.IdealSheafData.le_def.mp h2 U)
 
 /- English proof (translation)
-Use `Scheme.IdealSheafData.le_def.mpr fun U => ?_` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.ideal_mul]`. Conclude with `Ideal.mul_le.mpr fun r hr s _ => Ideal.mul_mem_right _ _ hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem idealSheafData_mul_le_left {Y : Scheme.{u}} (A B : Y.IdealSheafData) :
     A * B ≤ A := by
@@ -55,7 +55,7 @@ private theorem idealSheafData_mul_le_left {Y : Scheme.{u}} (A B : Y.IdealSheafD
   exact Ideal.mul_le.mpr fun r hr s _ => Ideal.mul_mem_right _ _ hr
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 -/
 private theorem idealSheafData_pow_le_pow_of_le {Y : Scheme.{u}} (A : Y.IdealSheafData) {i j : ℕ}
     (h : j ≤ i) : A ^ i ≤ A ^ j := by
@@ -64,7 +64,7 @@ private theorem idealSheafData_pow_le_pow_of_le {Y : Scheme.{u}} (A : Y.IdealShe
     _ ≤ A ^ j := idealSheafData_mul_le_left _ _
 
 /- English proof (translation)
-Establish `h : V.ι.appLE V ⊤ e = V.topIso.inv`. Simplify using the standard rewrite rules. Conclude with `presheaf_map_eq _ _`. Rewrite using `[h]`. Conclude with `ConcreteCategory.bijective_of_isIso _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem appLE_ι_bijective {Y : Scheme.{u}} (V : Y.Opens)
     (e : (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ V) :
@@ -76,9 +76,9 @@ private theorem appLE_ι_bijective {Y : Scheme.{u}} (V : Y.Opens)
   exact ConcreteCategory.bijective_of_isIso _
 
 /- English proof (translation)
-Establish `: IsAffine (V : Y.Opens).toScheme` using `V.2`. Establish `e : (⊤ : (V : Y.Opens).toScheme.Opens) ≤ (V : Y.Opens).ι ⁻¹ᵁ (V : Y.Opens)` using `by simp`. Establish `h1` using `A.comap_ideal_eq_map_appLE (V : Y.Opens).ι V ⟨⊤, isAffineOpen_top _⟩ e`. Establish `h2` using `B.comap_ideal_eq_map_appLE (V : Y.Opens).ι V ⟨⊤, isAffineOpen_top _⟩ e`. Rewrite `h1` using `[h, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hbij` using `appLE_ι_bijective (V : Y.Opens) e`. Establish `hbot : Ideal.comap ((V : Y.Opens).ι.appLE (V : Y.Opens) ⊤ e).hom (⊥ : Ideal Γ((V : Y.Opens).toScheme, ⊤)) = ⊥` using `(RingHom.injective_iff_ker_eq_bot _).mp hbij.1`. Establish `h3` using `congrArg (Ideal.comap ((V : Y.Opens).ι.appLE (V : Y.Opens) ⊤ e).hom) h1`. Rewrite `h3` using `[Ideal.comap_map_of_surjective _ hbij.2, Ideal.comap_map_of_surjective _ hbij.2, hbot, sup_bot_eq, sup_bot_eq]`. Conclude with `h3.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ideal_eq_of_comap_ι_eq {Y : Scheme.{u}} {A B : Y.IdealSheafData}
     (V : Y.affineOpens) (h : A.comap (V : Y.Opens).ι = B.comap (V : Y.Opens).ι) :
@@ -98,7 +98,7 @@ private theorem ideal_eq_of_comap_ι_eq {Y : Scheme.{u}} {A B : Y.IdealSheafData
   exact h3.symm
 
 /- English proof (translation)
-Take `⟨U, hU, hxU, hUW⟩` from `AlgebraicGeometry.exists_isAffineOpen_mem_and_subset hx`. Conclude with `⟨⟨U, hU⟩, hxU, hUW⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_affineOpen_le {X : Scheme.{u}} (x : ↥X) (W : X.Opens)
     (hx : x ∈ W) : ∃ V : X.affineOpens, x ∈ V.1 ∧ V.1 ≤ W := by
@@ -106,11 +106,11 @@ private theorem exists_affineOpen_le {X : Scheme.{u}} (x : ↥X) (W : X.Opens)
   exact ⟨⟨U, hU⟩, hxU, hUW⟩
 
 /- English proof (translation)
-Use `U.2.isLocalization_basicOpen f` as an intermediate fact. Establish `halg : (algebraMap Γ(Y, U.1) Γ(Y, Y.basicOpen f)) = (Y.presheaf.map (homOfLE (Y.basicOpen_le f)).op).hom` using `rfl`. Rewrite `hx` using `[← halg]`. Take `⟨⟨⟨y, hy⟩, ⟨m, hm⟩⟩, hxy⟩` from `(IsLocalization.mem_map_algebraMap_iff (Submonoid.powers f) Γ(Y, Y.basicOpen f)).mp hx`. Simplify using `only at hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite `hxy` using `[← map_mul]`. Take `⟨⟨c, hc⟩, hcc⟩` from `(IsLocalization.eq_iff_exists (Submonoid.powers f) Γ(Y, Y.basicOpen f)).mp hxy`. Take `⟨a, rfl⟩` from `hm`. Take `⟨b, rfl⟩` from `hc`. Use `⟨b + a, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only at hcc`. Establish `h2 : f ^ (b + a) * x = f ^ b * y` using `by rw [← hcc]; ring`. Rewrite using `[h2]`. Conclude with `J.mul_mem_left _ hy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_pow_mul_mem_of_map_mem_basicOpen {Y : Scheme.{u}} (U : Y.affineOpens)
     (f : Γ(Y, U.1)) (J : Ideal Γ(Y, U.1)) (x : Γ(Y, U.1))
@@ -136,13 +136,13 @@ private theorem exists_pow_mul_mem_of_map_mem_basicOpen {Y : Scheme.{u}} (U : Y.
   exact J.mul_mem_left _ hy
 
 /- English proof (translation)
-Use `Scheme.IdealSheafData.le_def.mpr fun U => ?_` and prove the remaining obligations. Use `of_affine_open_cover (P := fun W : Y.affineOpens => A.ideal W ≤ B.ideal W) (fun y : ↥Y => (h y).choose) ?_ U ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `y _`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨y, (h y).choose_spec.1⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W f hW`. Rewrite using `[← A.map_ideal_basicOpen W f, ← B.map_ideal_basicOpen W f]`. Conclude with `Ideal.map_mono hW`. Introduce `W s hspan hs x hxA`. Use `Submodule.mem_of_span_eq_top_of_smul_pow_mem (B.ideal W) (s : Set Γ(Y, W.1)) hspan x ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨f, hf⟩`. Establish `hmem : (Y.presheaf.map (homOfLE (Y.basicOpen_le f)).op).hom x ∈ (B.ideal W).map (Y.presheaf.map (homOfLE (Y.basicOpen_le f)).op).hom`. Rewrite using `[B.map_ideal_basicOpen W f]`. Use `hs ⟨f, Finset.mem_coe.mp hf⟩ ?_` and prove the remaining obligations. Rewrite using `[← A.map_ideal_basicOpen W f]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Ideal.mem_map_of_mem _ hxA`. Take `⟨n, hn⟩` from `exists_pow_mul_mem_of_map_mem_basicOpen W f (B.ideal W) x hmem`. Conclude with `⟨n, by simpa [smul_eq_mul] using hn⟩`. Introduce `y`. Conclude with `(h y).choose_spec.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem le_of_forall_exists_affineOpen {Y : Scheme.{u}} {A B : Y.IdealSheafData}
     (h : ∀ y : ↥Y, ∃ U : Y.affineOpens, y ∈ U.1 ∧ A.ideal U ≤ B.ideal U) :
@@ -171,7 +171,7 @@ theorem le_of_forall_exists_affineOpen {Y : Scheme.{u}} {A B : Y.IdealSheafData}
     exact (h y).choose_spec.2
 
 /- English proof (translation)
-Use `le_trans (derivIdealSheaf_mul_le k q (F ^ (n + 1)) J) (sup_le ?_ ?_)` and prove the remaining obligations. Conclude with `idealSheafData_mul_le_mul (idealSheafData_pow_le_pow_of_le F (Nat.le_succ n)) le_rfl`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem derivIdealSheaf_pow_succ_mul_le (k : Type u) [Field k] [CharZero k] {Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth q]
@@ -189,11 +189,11 @@ theorem derivIdealSheaf_pow_succ_mul_le (k : Type u) [Field k] [CharZero k] {Y :
               (le_derivIdealSheaf k q J))
 
 /- English proof (translation)
-Use `revert hj`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_`. Rewrite using `[derivIdealSheafIterate_zero, derivIdealSheafIterate_zero, Nat.sub_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ j ih`. Introduce `hj`. Establish `hj' : j ≤ m` using `Nat.le_of_succ_le hj`. Establish `h1 : m - j = (m - (j + 1)) + 1` using `by omega`. Rewrite using `[derivIdealSheafIterate_succ, derivIdealSheafIterate_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (derivIdealSheaf_mono k q (ih hj')) ?_` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `derivIdealSheaf_pow_succ_mul_le k q F (derivIdealSheafIterate k q j J) (m - (j + 1))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivIdealSheafIterate_pow_mul_le (k : Type u) [Field k] [CharZero k] {Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth q]
@@ -214,7 +214,7 @@ theorem derivIdealSheafIterate_pow_mul_le (k : Type u) [Field k] [CharZero k] {Y
     exact derivIdealSheaf_pow_succ_mul_le k q F (derivIdealSheafIterate k q j J) (m - (j + 1))
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem derivIdealSheafIterate_congr_hom (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (q q' : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType q]
@@ -224,13 +224,13 @@ private theorem derivIdealSheafIterate_congr_hom (k : Type u) [CommRing k] [IsNo
   rfl
 
 /- English proof (translation)
-Take `⟨V, hxV, hVW⟩` from `exists_affineOpen_le x (π ⁻¹ᵁ W) hx`. Use `⟨V, hxV, hVW, ?_⟩` and prove the remaining obligations. Establish `hfac : (V : X₁.Opens).ι ≫ π = X₁.homOfLE hVW ≫ (AlgebraicGeometry.morphismRestrict π W ≫ W.ι)`. Rewrite using `[morphismRestrict_ι, ← Category.assoc, Scheme.homOfLE_ι]`. Establish `: IsOpenImmersion ((V : X₁.Opens).ι ≫ π)` using `by rw [hfac]; infer_instance`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: AlgebraicGeometry.Smooth ((V : X₁.Opens).ι ≫ π)` using `inferInstance`. Establish `hcomp : ∀ A : X.IdealSheafData, A.comap ((V : X₁.Opens).ι ≫ π) = (A.comap π).comap (V : X₁.Opens).ι`. Introduce `A`. Simplify using `[Scheme.IdealSheafData.comap_comp]`. Establish `hassoc : ((V : X₁.Opens).ι ≫ π) ≫ p = (V : X₁.Opens).ι ≫ (π ≫ p)` using `Category.assoc _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `derivIdealSheafIterate_comap k p ((V : X₁.Opens).ι ≫ π) j I`. Establish `h2` using `derivIdealSheafIterate_comap k (π ≫ p) (V : X₁.Opens).ι j (I.comap π)`. Rewrite `h1` using `[hcomp I]`. Rewrite `h1` using `[derivIdealSheafIterate_congr_hom k (((V : X₁.Opens).ι ≫ π) ≫ p) ((V : X₁.Opens).ι ≫ (π ≫ p)) hassoc j ((I.comap π).comap (V : X₁.Opens).ι)]`. Establish `key : ((derivIdealSheafIterate k p j I).comap π).comap (V : X₁.Opens).ι = (derivIdealSheafIterate k (π ≫ p) j (I.comap π)).comap (V : X₁.Opens).ι`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hcomp (derivIdealSheafIterate k p j I), ← h1]`. Conclude with `h2`. Conclude with `ideal_eq_of_comap_ι_eq V key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_affineOpen_comap_derivIdealSheafIterate_eq (k : Type u) [Field k] [CharZero k]
     {X X₁ : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -264,7 +264,7 @@ theorem exists_affineOpen_comap_derivIdealSheafIterate_eq (k : Type u) [Field k]
   exact ideal_eq_of_comap_ι_eq V key
 
 /- English proof (translation)
-The claim follows from `smooth_comp_of_isBlowupAlongIdealSheaf hZ hπ (derivIdealSheafIterate k p j I).comap π ≤ Blowup.exceptionalIdeal π Z ^ (m - j) * derivIdealSheafIterate k (π ≫ p) j (controlledTransform π Z I m hπ hI) := by have : AlgebraicGeometry.Smooth (π ≫ p) := smooth_comp_of_isBlowupAlongIdea …`.
+A detailed English derivation is pending.
 -/
 theorem comap_derivIdealSheafIterate_le_exceptionalIdeal_pow_mul (k : Type u) [Field k] [CharZero k]
     {X X₁ : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -406,7 +406,7 @@ theorem comap_derivIdealSheafIterate_le_exceptionalIdeal_pow_mul (k : Type u) [F
     exact Scheme.IdealSheafData.le_def.mp h2 V
 
 /- English proof (translation)
-The claim follows from `le_pow_of_hasStrictNormalCrossingsWith p Z (derivIdealSheafIterate k p j I) E hZ (m - j) (Set.Subset.trans (support_subset_orderAtLeastLocus_of_le_pow Z I m hI) (orderAtLeastLocus_subset_orderAtLeastLocus_derivIdealSheafIterate k p I j m))`.
+A detailed English derivation is pending.
 -/
 theorem derivIdealSheafIterate_le_pow_of_hasStrictNormalCrossingsWith (k : Type u) [Field k] [CharZero k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

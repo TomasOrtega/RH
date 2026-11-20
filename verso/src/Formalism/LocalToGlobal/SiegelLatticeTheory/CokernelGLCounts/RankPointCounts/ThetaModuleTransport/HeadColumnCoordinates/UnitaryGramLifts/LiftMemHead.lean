@@ -23,29 +23,27 @@ theorem lstar_apply (σ : R →+* R) (X : Matrix (Fin (r + 1)) (Fin (r + 1)) R) 
     lstar σ X i j = σ (X j i) := rfl
 
 /- English proof (translation)
-Unfold `lstar`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lstar_mul (σ : R →+* R) (X Y : Matrix (Fin (r + 1)) (Fin (r + 1)) R) :
     lstar σ (X * Y) = lstar σ Y * lstar σ X := by
   unfold lstar; rw [Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[lstar_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lstar_add (σ : R →+* R) (X Y : Matrix (Fin (r + 1)) (Fin (r + 1)) R) :
     lstar σ (X + Y) = lstar σ X + lstar σ Y := by
   ext i j; simp [lstar_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; rw [lstar_apply, Matrix.one_apply, Matrix.one_apply]; split_ifs with h1 h2 h2 <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lstar_one (σ : R →+* R) : lstar σ (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) R) = 1 := by
   ext i j; rw [lstar_apply, Matrix.one_apply, Matrix.one_apply]; split_ifs with h1 h2 h2 <;> simp_all
 
 /- English proof (translation)
-Establish `: Z.mulVec v = ∑ b : Fin r, v b.castSucc • fun i => Z i b.castSucc`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, hv, mul_zero, add_zero, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Rewrite using `[this]`.
-
-Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_mem_head (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (v : Fin (r + 1) → R)
     (hv : v (Fin.last r) = 0) : Z.mulVec v ∈ headCols Z := by
@@ -58,16 +56,16 @@ theorem lift_mem_head (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (v : Fin (r + 1
   exact Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lift_col_mul (A X : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (a : Fin (r + 1)) :
     (fun i => (A * X) i a) = A.mulVec fun i => X i a := by
   funext i; simp only [Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.last r)]`. Simplify using `only [lstar_apply, liftE, Matrix.of_apply, hQ]`. Apply the tactic sequence `by_cases hi : i = Fin.last r <;> by_cases hj : j = Fin.last r <;> simp [hi, hj]`. Introduce `k _ hk`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[liftE, hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lift_QE (σ : R →+* R) (Q : Matrix (Fin (r + 1)) (Fin (r + 1)) R)
     (hQ : ∀ j, Q (Fin.last r) j = if j = Fin.last r then 1 else 0) : lstar σ Q * liftE r = liftE r := by
@@ -79,9 +77,9 @@ theorem lift_QE (σ : R →+* R) (Q : Matrix (Fin (r + 1)) (Fin (r + 1)) R)
   · simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.last r)]`. Simplify using `only [lstar_apply, liftE, Matrix.of_apply, hP]`. Apply the tactic sequence `by_cases hi : i = Fin.last r <;> by_cases hj : j = Fin.last r <;> simp [hi, hj]`. Introduce `k _ hk`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[liftE, hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lift_EP (σ : R →+* R) (P : Matrix (Fin (r + 1)) (Fin (r + 1)) R)
     (hP : ∀ i, P i (Fin.last r) = if i = Fin.last r then 1 else 0) : liftE r * lstar σ P = liftE r := by
@@ -93,7 +91,7 @@ theorem lift_EP (σ : R →+* R) (P : Matrix (Fin (r + 1)) (Fin (r + 1)) R)
   · simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.last r)]`. Simplify using `[lstar_apply, liftE, hK]`. Introduce `k _ hk`. Simplify using `[liftE, hk]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -130,29 +128,27 @@ def liftEquiv (Z Z' A B : Matrix (Fin (r + 1)) (Fin (r + 1)) R)
       exact (Submodule.Quotient.eq _).2 (hBA w)))
 
 /- English proof (translation)
-Establish `hQQ : Q₂ * Q = 1 + K * Z₁`. Apply `hc₁` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hQQ' : Q * Q₂ = 1 + K' * Z₂`. Apply `hc₂` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hst₁ : lstar σ Z₁ = ε • liftE r - Zσ₁` using `by rw [hs₁]; abel`. Establish `hst₂ : lstar σ Z₂ = ε • liftE r - Zσ₂` using `by rw [hs₂]; abel`. Establish `hA : lstar σ Q₂ * Zσ₁ = Zσ₂ * lstar σ P₂`. Establish `e1 : lstar σ Q₂ * lstar σ Z₁ = lstar σ Z₂ * lstar σ P₂` using `by rw [← lstar_mul, ← lstar_mul, h2]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hs₁, hs₂, Matrix.mul_add, Matrix.add_mul, Matrix.mul_neg, Matrix.neg_mul, e1, Matrix.mul_smul, Matrix.smul_mul, lift_QE σ Q₂ hQ₂l, lift_EP σ P₂ hP₂l]`. Establish `hB : lstar σ Q * Zσ₂ = Zσ₁ * lstar σ P`. Establish `e1 : lstar σ Q * lstar σ Z₂ = lstar σ Z₁ * lstar σ P` using `by rw [← lstar_mul, ← lstar_mul, h1]`. Rewrite using `[hs₁, hs₂, Matrix.mul_add, Matrix.add_mul, Matrix.mul_neg, Matrix.neg_mul, e1, Matrix.mul_smul, Matrix.smul_mul, lift_QE σ Q hQl, lift_EP σ P hPl]`. Establish `hBA : lstar σ Q * lstar σ Q₂ = 1 - Zσ₁ * lstar σ K`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← lstar_mul, hQQ, lstar_add, lstar_one, lstar_mul, hst₁, Matrix.sub_mul, Matrix.smul_mul, lift_EK σ K hKc, smul_zero, zero_sub, sub_eq_add_neg]`. Establish `hAB : lstar σ Q₂ * lstar σ Q = 1 - Zσ₂ * lstar σ K'`. Rewrite using `[← lstar_mul, hQQ', lstar_add, lstar_one, lstar_mul, hst₂, Matrix.sub_mul, Matrix.smul_mul, lift_EK σ K' hK'c, smul_zero, zero_sub, sub_eq_add_neg]`. Establish `hlastK : ∀ (K₀ : Matrix (Fin (r + 1)) (Fin (r + 1)) R), (∀ i, K₀ i (Fin.last r) = 0) → ∀ w, ((lstar σ K₀).mulVec w) (Fin.last r) = 0`. Introduce `K₀ h w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.mulVec, dotProduct, lstar_apply, h]`. Establish `hmapA : ∀ a : Fin r, (lstar σ Q₂).mulVec (fun i => Zσ₁ i a.castSucc) ∈ headCols Zσ₂`. Introduce `a`. Rewrite using `[← lift_col_mul, hA, lift_col_mul]`. Apply `lift_mem_head` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[lstar_apply, hP₂l]`. Simplify using `[Fin.castSucc_ne_last]`. Establish `hmapB : ∀ a : Fin r, (lstar σ Q).mulVec (fun i => Zσ₂ i a.castSucc) ∈ headCols Zσ₁`. Introduce `a`. Rewrite using `[← lift_col_mul, hB, lift_col_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `lift_mem_head` to reduce the goal to its premises. Rewrite using `[lstar_apply, hPl]`. Simplify using `[Fin.castSucc_ne_last]`. Establish `hcompBA : ∀ w, (lstar σ Q).mulVec ((lstar σ Q₂).mulVec w) - w ∈ headCols Zσ₁`. Introduce `w`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mulVec_mulVec, hBA, Matrix.sub_mulVec, Matrix.one_mulVec, sub_sub_cancel_left, ← Matrix.mulVec_mulVec]`. Conclude with `Submodule.neg_mem _ (lift_mem_head _ _ (hlastK K hKc w))`. Establish `hcompAB : ∀ w, (lstar σ Q₂).mulVec ((lstar σ Q).mulVec w) - w ∈ headCols Zσ₂`. Introduce `w`. Rewrite using `[Matrix.mulVec_mulVec, hAB, Matrix.sub_mulVec, Matrix.one_mulVec, sub_sub_cancel_left, ← Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Submodule.neg_mem _ (lift_mem_head _ _ (hlastK K' hK'c w))`. Set `φ` to `liftEquiv Zσ₁ Zσ₂ (lstar σ Q₂) (lstar σ Q) hmapA hmapB hcompBA hcompAB`. Establish `hb : φ (bCls Zσ₁) = bCls Zσ₂` using `by show Submodule.Quotient.mk ((lstar σ Q₂).mulVec fun i => Zσ₁ i (Fin.last r)) = Submodule.Quotient.mk _`. Rewrite using `[Submodule.Quotient.eq, ← lift_col_mul, hA, lift_col_mul]`. Establish `: (fun i => Zσ₂ i (Fin.last r)) = Zσ₂.mulVec (Pi.single (Fin.last r) 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[this, ← Matrix.mulVec_sub]`. Apply `lift_mem_head` to reduce the goal to its premises. Simplify using `[lstar_apply, hP₂l]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Establish `he : φ (eCl Zσ₁) = eCl Zσ₂` using `by show Submodule.Quotient.mk ((lstar σ Q₂).mulVec (Pi.single (Fin.last r) 1)) = Submodule.Quotient.mk _`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, lstar_apply, hQ₂l]`. Use `⟨⟨φ, hb, he⟩, fun w => rfl, fun w => ⟨-(lstar σ K).mulVec w, by simp [hlastK K hKc w], ?_⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[Matrix.mulVec_mulVec, hBA, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_neg, ← Matrix.mulVec_mulVec, sub_eq_add_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_partner (σ : R →+* R) (Z₁ Z₂ Zσ₁ Zσ₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) R)
     (ε : R) (hs₁ : Zσ₁ = -lstar σ Z₁ + ε • liftE r) (hs₂ : Zσ₂ = -lstar σ Z₂ + ε • liftE r)

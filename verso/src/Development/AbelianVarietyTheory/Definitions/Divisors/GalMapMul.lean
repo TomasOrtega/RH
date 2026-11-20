@@ -155,7 +155,7 @@ def pull {E E' : Spc} (f : E ⟶ E') (F : Shv R) (n : ℤ) : H R E' F n →+ H R
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 variable (R : Type) [CommRing R] in
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Simplify using `only [_root_.GlobalTheory.EtC.pull, _root_.GlobalTheory.EtC.HK.pull, _root_.GlobalTheory.EtC.HK.pre, _root_.GlobalTheory.EtC.cpre_mk, Functor.map_id]`. Use `congr 1`. Use extensionality with `: 1`. Simplify using `[_root_.GlobalTheory.EtC.zcomp]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.EtC.pull_id (E : _root_.GlobalTheory.EtC.Spc)
     (F : _root_.GlobalTheory.EtC.Shv R) (n : ℤ) (x : _root_.GlobalTheory.EtC.H R E F n) :
@@ -171,7 +171,7 @@ theorem _root_.GlobalTheory.EtC.pull_id (E : _root_.GlobalTheory.EtC.Spc)
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 variable (R : Type) [CommRing R] in
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Simplify using `only [_root_.GlobalTheory.EtC.pull, _root_.GlobalTheory.EtC.HK.pull, _root_.GlobalTheory.EtC.HK.pre, _root_.GlobalTheory.EtC.cpre_mk, Functor.map_comp]`. Use `congr 1`. Use extensionality with `: 1`. Simplify using `[_root_.GlobalTheory.EtC.zcomp, Cochain.ofHom_comp]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.EtC.pull_comp {E E' E'' : _root_.GlobalTheory.EtC.Spc} (f : E ⟶ E')
     (g : E' ⟶ E'') (F : _root_.GlobalTheory.EtC.Shv R) (n : ℤ) (x : _root_.GlobalTheory.EtC.H R E'' F n) :
@@ -283,7 +283,7 @@ variable (R : Type) [CommRing R] in
 variable {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}}
   (p : X ⟶ Spec (CommRingCat.of k)) in
 /- English proof (translation)
-Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using `[_root_.GlobalTheory.Et.galMap_fst]`. Rewrite using `[_root_.GlobalTheory.Et.galMap_snd, Category.id_comp]`. Use `Category.comp_id _` and compare the differences between its conclusion and the goal. Use `Spec.map_id _` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Both sides reduce to the same expression.
 -/
@@ -301,7 +301,7 @@ variable (R : Type) [CommRing R] in
 variable {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}}
   (p : X ⟶ Spec (CommRingCat.of k)) in
 /- English proof (translation)
-Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc, _root_.GlobalTheory.Et.galMap_fst]`. Simplify using `only [Category.assoc, _root_.GlobalTheory.Et.galMap_snd, _root_.GlobalTheory.Et.galMap_snd_assoc]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.EtC.galMap_mul (σ τ : Ω ≃ₐ[k] Ω) :
     _root_.GlobalTheory.Et.galMap Ω p (σ * τ) =

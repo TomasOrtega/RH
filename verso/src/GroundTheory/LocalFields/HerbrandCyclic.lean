@@ -10,7 +10,7 @@ open GroundTheory.GroupCoh GroundTheory.Global
 variable {G M : Type*} [Group G] [Fintype G] [CommGroup M] [MulDistribMulAction G M]
 
 /- English proof (translation)
-Rewrite using `[cycNorm_apply, toMul_sum, tateNorm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toMul_cycNorm (x : Additive M) :
     (cycNorm (Representation.ofMulDistribMulAction G M) x).toMul = tateNorm G M x.toMul := by
@@ -20,7 +20,7 @@ theorem toMul_cycNorm (x : Additive M) :
 omit [Fintype G] in
 
 /- English proof (translation)
-Rewrite using `[cycSubOne_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toMul_cycSubOne (σ : G) (x : Additive M) :
     (cycSubOne (Representation.ofMulDistribMulAction G M) σ x).toMul = σ • x.toMul / x.toMul := by
@@ -28,7 +28,7 @@ theorem toMul_cycSubOne (σ : G) (x : Additive M) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_ker, Additive.mem_toAddSubgroup, MonoidHom.mem_ker, ← toMul_cycNorm]`. Conclude with `⟨fun h => by rw [h]; rfl, fun h => by rw [← toMul_zero] at h; exact Additive.toMul.injective h⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ker_cycNorm_ofMulDistribMulAction :
     (cycNorm (Representation.ofMulDistribMulAction G M)).ker = (tateNorm G M).ker.toAddSubgroup := by
@@ -37,9 +37,9 @@ theorem ker_cycNorm_ofMulDistribMulAction :
   exact ⟨fun h => by rw [h]; rfl, fun h => by rw [← toMul_zero] at h; exact Additive.toMul.injective h⟩
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[AddMonoidHom.mem_range, Additive.mem_toAddSubgroup, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x.toMul, (toMul_cycNorm x).symm⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, hx⟩`. Use `⟨Additive.ofMul x, Additive.toMul.injective ?_⟩` and prove the remaining obligations. Rewrite using `[toMul_cycNorm]`. Conclude with `hx`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_cycNorm_ofMulDistribMulAction :
     (cycNorm (Representation.ofMulDistribMulAction G M)).range =
@@ -59,7 +59,7 @@ variable {σ : G}
 omit [Fintype G] in
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_ker_cycSubOne_iff _ hσ, Additive.mem_toAddSubgroup, mem_invariants]`. Simplify using `only [Representation.ofMulDistribMulAction_apply_apply]`. Conclude with `⟨fun h g => congrArg Additive.toMul (h g), fun h g => by rw [h g]; rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem ker_cycSubOne_ofMulDistribMulAction (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     (cycSubOne (Representation.ofMulDistribMulAction G M) σ).ker =
@@ -72,7 +72,7 @@ theorem ker_cycSubOne_ofMulDistribMulAction (hσ : ∀ g, g ∈ Subgroup.zpowers
 omit [Fintype G] in
 
 /- English proof (translation)
-Rewrite using `[range_cycSubOne_eq_closure _ hσ, augmentation, Subgroup.toAddSubgroup_closure]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem range_cycSubOne_ofMulDistribMulAction (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     (cycSubOne (Representation.ofMulDistribMulAction G M) σ).range =
@@ -81,7 +81,7 @@ theorem range_cycSubOne_ofMulDistribMulAction (hσ : ∀ g, g ∈ Subgroup.zpowe
   congr 1
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(tateNorm G M).range.relIndex (invariants G M) = (cycNorm (Representation.ofMulDistribMulAction G M)).range.relIndex (cycSubOne (Representation.ofMulDistribMulAction G M) σ).ker`. Rewrite using `[ker_cycSubOne_ofMulDistribMulAction hσ, range_cycNorm_ofMulDistribMulAction, Subgroup.relIndex_toAddSubgroup]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_tateZero_eq (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     Nat.card (TateZero G M) =
@@ -93,7 +93,7 @@ theorem natCard_tateZero_eq (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     Subgroup.relIndex_toAddSubgroup]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(augmentation G M).relIndex (tateNorm G M).ker = (cycSubOne (Representation.ofMulDistribMulAction G M) σ).range.relIndex (cycNorm (Representation.ofMulDistribMulAction G M)).ker`. Rewrite using `[range_cycSubOne_ofMulDistribMulAction hσ, ker_cycNorm_ofMulDistribMulAction, Subgroup.relIndex_toAddSubgroup]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_tateNegOne_eq (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     Nat.card (TateNegOne G M) =
@@ -105,7 +105,7 @@ theorem natCard_tateNegOne_eq (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     Subgroup.relIndex_toAddSubgroup]
 
 /- English proof (translation)
-Rewrite using `[cycHerbrand_eq, natCard_tateZero_eq hσ, natCard_tateNegOne_eq hσ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cycHerbrand_ofMulDistribMulAction (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     cycHerbrand (Representation.ofMulDistribMulAction G M) σ =
@@ -113,7 +113,7 @@ theorem cycHerbrand_ofMulDistribMulAction (hσ : ∀ g, g ∈ Subgroup.zpowers �
   rw [cycHerbrand_eq, natCard_tateZero_eq hσ, natCard_tateNegOne_eq hσ]
 
 /- English proof (translation)
-Rewrite using `[Nat.card_ne_zero]`. Conclude with `⟨fun h => ⟨inferInstance, h⟩, fun h => h.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem finite_iff_natCard_ne_zero {X : Type*} [Nonempty X] :
     Finite X ↔ Nat.card X ≠ 0 := by
@@ -121,7 +121,7 @@ private theorem finite_iff_natCard_ne_zero {X : Type*} [Nonempty X] :
   exact ⟨fun h => ⟨inferInstance, h⟩, fun h => h.2⟩
 
 /- English proof (translation)
-Rewrite using `[HasHerbrandQuotient, finite_iff_natCard_ne_zero, finite_iff_natCard_ne_zero, finite_iff_natCard_ne_zero (X := TateZero G M), finite_iff_natCard_ne_zero (X := TateNegOne G M), natCard_tateZero_eq hσ, natCard_tateNegOne_eq hσ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hasHerbrandQuotient_iff (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     HasHerbrandQuotient (cycSubOne (Representation.ofMulDistribMulAction G M) σ)
@@ -132,7 +132,7 @@ theorem hasHerbrandQuotient_iff (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     natCard_tateZero_eq hσ, natCard_tateNegOne_eq hσ]
 
 /- English proof (translation)
-Use `⟨(hasHerbrandQuotient_iff hσ).mpr ⟨inferInstance, inferInstance⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[cycHerbrand_ofMulDistribMulAction hσ, Nat.card_unique, Nat.card_unique]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem cycHerbrand_eq_one_of_subsingleton (hσ : ∀ g, g ∈ Subgroup.zpowers σ)
     [Subsingleton (TateZero G M)] [Subsingleton (TateNegOne G M)] :
@@ -150,7 +150,7 @@ variable {N : Type*} [CommGroup N] [MulDistribMulAction G N]
 omit [Fintype G] in
 
 /- English proof (translation)
-Apply `Additive.toMul.injective` to reduce the goal to its premises. Rewrite using `[toMul_cycSubOne]`. Express the relevant statement in the definitionally equal form `i (cycSubOne (Representation.ofMulDistribMulAction G M) τ x).toMul = _`. Rewrite using `[toMul_cycSubOne, map_div, hi]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toAdditive_cycSubOne (i : M →* N) (hi : ∀ (g : G) (x : M), i (g • x) = g • i x) (τ : G)
     (x : Additive M) :
@@ -163,7 +163,7 @@ theorem toAdditive_cycSubOne (i : M →* N) (hi : ∀ (g : G) (x : M), i (g • 
   rfl
 
 /- English proof (translation)
-Apply `Additive.toMul.injective` to reduce the goal to its premises. Rewrite using `[toMul_cycNorm]`. Express the relevant statement in the definitionally equal form `i (cycNorm (Representation.ofMulDistribMulAction G M) x).toMul = _`. Rewrite using `[toMul_cycNorm, tateNorm_apply, tateNorm_apply, map_prod]`. Repeatedly rewrite using `[hi]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -179,7 +179,7 @@ theorem toAdditive_cycNorm (i : M →* N) (hi : ∀ (g : G) (x : M), i (g • x)
   rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[AddMonoidHom.mem_range, Additive.mem_toAddSubgroup, MonoidHom.mem_range]`. Conclude with `⟨fun ⟨x, hx⟩ => ⟨x.toMul, by rw [← hx]; rfl⟩, fun ⟨x, hx⟩ => ⟨Additive.ofMul x, Additive.toMul.injective hx⟩⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem range_toAdditive (i : M →* N) :
     (MonoidHom.toAdditive i).range = i.range.toAddSubgroup := by
@@ -189,9 +189,9 @@ private theorem range_toAdditive (i : M →* N) :
     fun ⟨x, hx⟩ => ⟨Additive.ofMul x, Additive.toMul.injective hx⟩⟩
 
 /- English proof (translation)
-Establish `hfi : (MonoidHom.toAdditive i).range.FiniteIndex`. Prove the components needed by the constructor for the conclusion. Rewrite using `[range_toAdditive, Subgroup.index_toAddSubgroup]`. Conclude with `Subgroup.FiniteIndex.index_ne_zero`. Establish `: Finite (Additive N ⧸ (MonoidHom.toAdditive i).range)` using `AddSubgroup.finite_quotient_of_finiteIndex`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj' : Function.Injective (MonoidHom.toAdditive i)` using `hinj`. Conclude with `⟨hasHerbrandQuotient_iff_of_injective_of_finite hinj' (toAdditive_cycSubOne i hi τ) (toAdditive_cycNorm i hi) (cycSubOne_cycNorm _ τ) (cycNorm_cycSubOne _ τ), herbrandQuotient_eq_of_injective_of_finite hinj' (toAdditive_cycSubOne i hi τ) (toAdditive_cycNorm i hi) (cycSubOne_cycNo …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cycHerbrand_eq_of_injective (i : M →* N) (hinj : Function.Injective i)
     (hi : ∀ (g : G) (x : M), i (g • x) = g • i x) [i.range.FiniteIndex] (τ : G) :

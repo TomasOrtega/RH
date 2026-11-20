@@ -28,7 +28,7 @@ theorem transp_ρ (e : ι ≃ κ) (τ : FDRep ℂ (GL ι K)) (g : GL κ K) :
     (transp e τ).ρ g = τ.ρ ((glEquiv K e).symm g) := rfl
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[FDRep.simple_iff_char_is_norm_one]`. Establish `hc : ∀ g, (transp e τ).character g = τ.character ((glEquiv K e).symm g)` using `fun g => rfl`. Simplify using `only [hc, map_inv]`. Rewrite using `[Nat.card_congr (glEquiv K e).toEquiv.symm, ← h]`. Conclude with `Fintype.sum_equiv (glEquiv K e).symm.toEquiv _ _ (fun g => rfl)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transp_simple (e : ι ≃ κ) (τ : FDRep ℂ (GL ι K)) (h : Simple τ) : Simple (transp e τ) := by
   rw [FDRep.simple_iff_char_is_norm_one] at h ⊢
@@ -38,7 +38,7 @@ theorem transp_simple (e : ι ≃ κ) (τ : FDRep ℂ (GL ι K)) (h : Simple τ)
   exact Fintype.sum_equiv (glEquiv K e).symm.toEquiv _ _ (fun g => rfl)
 
 /- English proof (translation)
-Introduce `i j hij`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply]`. Conclude with `h _ _ (by simpa using hij)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockUT_reindex {s : ℕ} (e : ι ≃ κ) (b : κ → Fin s) (M : Matrix ι ι K)
     (h : IsBlockUT K (b ∘ e) M) : IsBlockUT K b (Matrix.reindex e e M) := by
@@ -47,11 +47,9 @@ theorem blockUT_reindex {s : ℕ} (e : ι ≃ κ) (b : κ → Fin s) (M : Matrix
   exact h _ _ (by simpa using hij)
 
 /- English proof (translation)
-Take `⟨⟨h1, h2⟩, h3⟩` from `hu`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[glEquiv_val]`. Conclude with `blockUT_reindex e b _ h1`. Rewrite using `[← map_inv, glEquiv_val]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `blockUT_reindex e b _ h2`. Introduce `i j hij`. Rewrite using `[glEquiv_val]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply]`. Rewrite using `[h3 _ _ (by simpa using hij)]`.
-
-Simplify using `[e.symm.injective.eq_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glEquiv_mem_unip {s : ℕ} (e : ι ≃ κ) (b : κ → Fin s) (u : GL ι K)
     (hu : u ∈ unip K (b ∘ e)) : glEquiv K e u ∈ unip K b := by
@@ -66,7 +64,7 @@ theorem glEquiv_mem_unip {s : ℕ} (e : ι ≃ κ) (b : κ → Fin s) (u : GL ι
     simp [e.symm.injective.eq_iff]
 
 /- English proof (translation)
-Introduce `s b hb hs v hv`. Use `h s (b ∘ e) (hb.comp e.surjective) hs v (fun u hu => ?_)` and prove the remaining obligations. Use `hv _ (glEquiv_mem_unip e b u hu)` as an intermediate fact. Rewrite `this` using `[transp_ρ, MulEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem transp_cusp (e : ι ≃ κ) (τ : FDRep ℂ (GL ι K)) (h : IsCuspidal K τ) :
     IsCuspidal K (transp e τ) := by

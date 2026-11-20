@@ -6,7 +6,7 @@ import Formalism.HermitianCurvature.LetterProductDoubleDegreeCount
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Finset
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.capelli_eigenSum_linearCombination` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FCapelliEigenSumLinearCombination.lean&line=11#L11)
 -/

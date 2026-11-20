@@ -21,9 +21,9 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 /- English proof (translation)
-Rewrite using `[RingHom.mem_ker]`. Use `hsep (f b) fun x hx => hb (x.comp f) (fun y hy => ?_) (hG _ ?_)` and prove the remaining obligations. Rewrite `hy`, the goal using `[RingHom.mem_ker]`. Rewrite using `[AlgHom.comp_apply, hy, map_zero]`. Establish `e : ((x.comp f).comp lam).toRingHom = x.toRingHom.comp (algebraMap A T)` using `RingHom.ext fun y => congrArg x (hf y)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Hi.dense_arithmetic_points {O A B T E : Type} [CommRing O] [CommRing A] [CommRing B] [CommRing T] [CommRing E]
     [Algebra O A] [Algebra O B] [Algebra O T] [Algebra O E] [Algebra A T] (lam : A →ₐ[O] B) (f : B →ₐ[O] T)
@@ -40,9 +40,9 @@ private theorem UpperTheory.V.Hi.dense_arithmetic_points {O A B T E : Type} [Com
     rw [e]
     exact hx
 /- English proof (translation)
-Introduce `hP l _ L Ω _ _ _ _ _ _ s n hn V Q c r ι B Λ R K _ J hJ h hh b hb`. Break down `hJ with ⟨_, rfl⟩ | ⟨hc, hco, f, _, hmap, hsurj, hlam, rfl⟩` into its components or cases. Conclude with `Submodule.mem_top`. Establish `hN : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis` using `hP.litN`. Take `⟨⟨lam, hl⟩, hbr⟩` from `_root_.UpperTheory.V.Hi.arith_good_iff_hset_of_theta_incr_weight hN l L Ω s n hn V Q c R.m R.τ₀ r B Λ R.θ R.theta h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd` using `(_root_.UpperTheory.V.Hi.isDomain_and_denseWt_of_isTheta hN l L Ω s n hn V Q c R.m R.τ₀ r Λ R.θ R.theta).2 lam`. Establish `hout` using `_root_.UpperTheory.V.Z.Ord.core_hecke_of_automorphic_hecke_dense_weight hN L Ω l n c (hset Q R.τ₀) (_root_.UpperTheory.V.Hi.axU_s hN l L Ω s n hn V Q c R.m R.τ₀) Λ.Λ R.θ R.isWt ι (_root_.UpperTheory.V.Hi.CaseU.UnitaryPointProperties r ι) (_root_.UpperTheory.V.Hi.automorphicHeckeS …`. Conclude with `dense_arithmetic_points (Λ.toPair B.u) f hlam (fun x => (hset Q R.τ₀).Good R.θ x lam) (fun x : B.Pt => x.Good h) (fun x hx => (hbr lam hl x).2.2 hx) (hout.sep lam (Set.mem_univ _) hd) b hb`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.dense_of_is_j_unitary_hecke_data :
     _root_.UpperTheory.V.Af.HypothesesH' → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

@@ -8,7 +8,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Cris GlobalTheory.DeRham
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.AV.AbVar.charpoly_eq_lattice_model) | (exact GlobalTheory.AV.AbVar.charpoly_eq_lattice_model) | (intros; apply GlobalTheory.AV.AbVar.charpoly_eq_lattice_model <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.l_power_torsion_endomorphism_evaluation : ∀ (k : Type) [Field k] [IsAlgClosed k] (B : GlobalTheory.AV.AbVar k) (f : B ⟶ B)
     (L : Type) [AddCommGroup L] [Module.Free ℤ L] [Module.Finite ℤ L]

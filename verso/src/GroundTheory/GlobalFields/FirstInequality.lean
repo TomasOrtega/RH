@@ -36,7 +36,7 @@ section Galois
 variable [IsGalois K L]
 
 /- English proof (translation)
-Rewrite using `[cycNorm_apply, ideleClassMap_ideleClassNorm]`. Simplify using `only [Representation.ofMulDistribMulAction_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cycNorm_ideleClassGroup (c : Additive (IdeleClassGroup L)) :
     cycNorm (Representation.ofMulDistribMulAction Gal(L/K) (IdeleClassGroup L)) c =
@@ -46,9 +46,9 @@ theorem cycNorm_ideleClassGroup (c : Additive (IdeleClassGroup L)) :
   rfl
 
 /- English proof (translation)
-Introduce `x`. Proceed by induction on `x using QuotientAddGroup.induction_on with`. Consider the case `H y`. Take `⟨y, hy⟩` from `y`. Establish `hfix` using `(mem_ker_cycSubOne_iff _ hσ y).1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `(forall_smul_eq_iff_mem_range_ideleClassMap (K := K) y.toMul).1 fun g ↦ congrArg Additive.toMul (hfix g)`. Use `⟨Additive.ofMul c, ?_⟩` and prove the remaining obligations. Rewrite using `[ideleClassToCycTateZero_apply]`. Use `congr 1`. Conclude with `Subtype.ext (by simp [hc])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ideleClassToCycTateZero_surjective (σ : Gal(L/K))
     (hσ : ∀ g, g ∈ Subgroup.zpowers σ) : Function.Surjective (ideleClassToCycTateZero K L σ) := by
@@ -65,11 +65,11 @@ theorem ideleClassToCycTateZero_surjective (σ : Gal(L/K))
   exact Subtype.ext (by simp [hc])
 
 /- English proof (translation)
-Use extensionality with `c`. Rewrite using `[AddMonoidHom.mem_ker, ideleClassToCycTateZero_apply, KerModRange.mk_eq_zero_iff]`. Express the relevant statement in the definitionally equal form `_ ↔ c.toMul ∈ (ideleClassNorm K L).range`. Rewrite using `[AddMonoidHom.mem_range, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨d, hd⟩`. Rewrite `hd` using `[cycNorm_ideleClassGroup]`. Conclude with `⟨d.toMul, ideleClassMap_injective (congrArg Additive.toMul hd)⟩`. Introduce and unpack `⟨d, hd⟩`. Use `⟨Additive.ofMul d, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cycNorm_ideleClassGroup]`. Simplify using `[hd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ker_ideleClassToCycTateZero (σ : Gal(L/K)) :
     (ideleClassToCycTateZero K L σ).ker = Subgroup.toAddSubgroup (ideleClassNorm K L).range := by
@@ -87,7 +87,7 @@ theorem ker_ideleClassToCycTateZero (σ : Gal(L/K)) :
     simp [hd]
 
 /- English proof (translation)
-Rewrite using `[← Subgroup.index_toAddSubgroup, ← ker_ideleClassToCycTateZero σ, AddSubgroup.index]`. Conclude with `(Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective _ (ideleClassToCycTateZero_surjective σ hσ)).toEquiv).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_cycTateZero_ideleClassGroup (σ : Gal(L/K)) (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     Nat.card (CycTateZero (Representation.ofMulDistribMulAction Gal(L/K) (IdeleClassGroup L)) σ) =
@@ -97,9 +97,9 @@ theorem natCard_cycTateZero_ideleClassGroup (σ : Gal(L/K)) (hσ : ∀ g, g ∈ 
     (ideleClassToCycTateZero_surjective σ hσ)).toEquiv).symm
 
 /- English proof (translation)
-Take `⟨hH, hval⟩` from `IdeleGroup.cycHerbrand_ideleClassGroup (K := K) (L := L) σ hσ`. Use `hH.2` as an intermediate fact. Establish `hpos : Nat.card (CycTateNegOne (Representation.ofMulDistribMulAction Gal(L/K) (IdeleClassGroup L)) σ) ≠ 0` using `Nat.card_pos.ne'`. Use `⟨?_, hpos⟩` and prove the remaining obligations. Rewrite `hval` using `[cycHerbrand_eq, natCard_cycTateZero_ideleClassGroup σ hσ, div_eq_iff (Nat.cast_ne_zero.2 hpos)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hval` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem index_range_ideleClassNorm (σ : Gal(L/K)) (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     (ideleClassNorm K L).range.index = finrank K L *
@@ -116,7 +116,7 @@ theorem index_range_ideleClassNorm (σ : Gal(L/K)) (hσ : ∀ g, g ∈ Subgroup.
   exact_mod_cast hval
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `IsCyclic.exists_generator (α := Gal(L/K))`. Take `⟨h, hpos⟩` from `index_range_ideleClassNorm σ hσ`. Rewrite using `[h]`. Conclude with `⟨Nat.le_mul_of_pos_right _ (Nat.pos_of_ne_zero hpos), mul_ne_zero Module.finrank_pos.ne' hpos⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem finrank_le_index_range_ideleClassNorm [IsCyclic Gal(L/K)] :
     finrank K L ≤ (ideleClassNorm K L).range.index ∧ (ideleClassNorm K L).range.index ≠ 0 := by
@@ -129,9 +129,9 @@ theorem finrank_le_index_range_ideleClassNorm [IsCyclic Gal(L/K)] :
 end Galois
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ _`. Take `⟨hle, hne⟩` from `finrank_le_index_range_ideleClassNorm (K := K) (L := L)`. Establish `: (ideleClassNorm K L).range.FiniteIndex` using `⟨hne⟩`. Establish `: Finite (IdeleClassGroup K ⧸ (ideleClassNorm K L).range)` using `Subgroup.finite_quotient_of_finiteIndex`. Set `` to `Fintype.ofFinite (IdeleClassGroup K ⧸ (ideleClassNorm K L).range)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[ENat.card_eq_coe_fintype_card, Fintype.card_eq_nat_card]`. Conclude with `hle` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem firstInequality.{u} : FirstInequality.{u} := by
   intro K L _ _ _ _ _ _ _

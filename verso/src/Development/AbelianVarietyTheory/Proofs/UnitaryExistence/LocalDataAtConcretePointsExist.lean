@@ -26,7 +26,7 @@ def FactorsFin {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reciproci
     (∀ a ∈ maximalIdeal T.V, ‖((g a : intO ↥C.S) : ↥C.S)‖ < 1) ∧ spMap g ≫ ιT = P.yt
 
 /- English proof (translation)
-Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem half_degree (D : D7) : Module.finrank ℚ D.host.E / 2 = D.R.f := by
   rw [D.host.finrank_cmField]
@@ -34,7 +34,7 @@ theorem half_degree (D : D7) : Module.finrank ℚ D.host.E / 2 = D.R.f := by
   omega
 
 /- English proof (translation)
-Apply `IsFractionRing.injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Conclude with `(H.bar_eq x).trans ((barE_eq_conj D x).trans h.symm)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem bar_eq_of_conj (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (x x' : 𝓞 D.host.E)
     (h : (x' : D.host.E) = D.host.conj (x : D.host.E)) : H.bar x = x' := by
@@ -42,11 +42,11 @@ theorem bar_eq_of_conj (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.To
   exact (H.bar_eq x).trans ((barE_eq_conj D x).trans h.symm)
 
 /- English proof (translation)
-Take `⟨T, g, ιT, h1, h2, h3, h4⟩` from `hf`. Take `⟨ha, hb, hc, ρ, hr1, hr2, hr3⟩` from `GlobalTheory.T.periodForm_additive_balanced_posDef_boundedRank D.host.E Q.H (Q.Dw j) Q.l (Q.Xo j) Q.c O β Y p C P hp T g ιT h1 h2 h3 h4 A`. Take `⟨hp1, hq1, -⟩` from `hQ.2.2.2 j ⟨hj, hm.le⟩`. Rewrite `hr2` using `[hp1]`. Rewrite `hr3` using `[hq1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr1` using `[half_degree D]`. Use `⟨A.beta_symm, ha, fun x x' hx a b => ?_, hc, ρ, hr1, hr2, ?_⟩` and prove the remaining obligations. Rewrite using `[← bar_eq_of_conj D Q.H x x' hx]`. Conclude with `hb x a b`. Simplify using `only [Ranks.sigW, Ranks.r] at hr3 ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem laws_of_factorsFin (D : D7) (Q : Par D) (hQ : Q.Pins) {j : ℕ} (hj : 1 ≤ j) (hm : j < D.R.m) {p : ℕ}
     (hp : p.Prime) {O : Type} [CommRing O] {β : O →+* Q.c.F} {Y : Model (Q.Xo j) Q.c β} {C : SCF p}
@@ -72,7 +72,7 @@ theorem laws_of_factorsFin (D : D7) (Q : Par D) (hQ : Q.Pins) {j : ℕ} (hj : 1 
     omega
 
 /- English proof (translation)
-Take `⟨T, g, ιT, h1, h2, h3, h4⟩` from `hf`. Conclude with `(GlobalTheory.T.degenerationData_coords_ne_zero_lattices_isomorphic E H Dw l Xo c O β Y p C P hp T g ιT h1 h2 h3 h4 A A').2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem uniq_of_factorsFin {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
@@ -82,15 +82,13 @@ theorem uniq_of_factorsFin {E : Type} [Field E] [NumberField E] [IsCMField E] {H
   exact (GlobalTheory.T.degenerationData_coords_ne_zero_lattices_isomorphic E H Dw l Xo c O β Y p C P hp T g ιT h1 h2 h3 h4 A A').2
 
 /- English proof (translation)
-Introduce `D Q hQ hpq`. Establish `hgood` using `(GlobalTheory.T.level_good_and_half_eq_prime_product D Q.H Q.l hQ.1.2.1 hQ.2.1.1).1`. Use `choose Tw hTw using fun j p => Towers.exists_tower D.host.E Q.H (Q.Dw j) Q.l (Q.Xo j) Q.c (hpq j) hgood p`. Establish `hdat : ∀ j p (z : PointsOfFlagModel.Pt (Tw j p) .yy), p.Prime → FactorsFin ((Tw j p).Y z.1) z.2.2.1 → Nonempty (DatAt ((Tw j p).Y z.1) z.2.2.1)`. Introduce and unpack `j p z hp ⟨T, g, ιT, h1, h2, h3, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨A, -⟩` from `GlobalTheory.T.exists_degeneration_data_algebraic_point_model D.host.E Q.H (Q.Dw j) Q.l (Q.Xo j) Q.c _ _ _ p _ z.2.2.1 hp T g ιT h1 h2 h3 h4`. Conclude with `⟨A⟩`. Set `Pt : ℕ → ℕ → Type` to `fun j p => {z : PointsOfFlagModel.Pt (Tw j p) .yy // (1 ≤ j ∧ j < D.R.m) ∧ p.Prime ∧ FactorsFin ((Tw j p).Y z.1) z.2.2.1}`. Establish `A0 : ∀ j p (y : Pt j p), DatAt ((Tw j p).Y y.1.1) y.1.2.2.1` using `fun j p y => Classical.choice (hdat j p y.1 y.2.2.1 y.2.2.2)`. Take `⟨P, dat, hP⟩` from `GlobalTheory.T.exists_localData_prescribed_points_flag D Pt (fun j p y => PointsOfFlagModel.fld y.1) (fun j p y => (A0 j p y).toLatB) (fun j p y => laws_of_factorsFin D Q hQ y.2.1.1 y.2.1.2 y.2.2.1 y.2.2.2 (A0 j p y))`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `G : In66 Q` to `{ P := P dat := dat Tw := Tw rel := fun j p η z => (P.loc (dat j) p).fld η = PointsOfFlagModel.fld z ∧ ∀ A : DatAt ((Tw j p).Y z.1) z.2.2.1, ∃ e : (P.loc (dat j) p).Ylat η ≃ₗ[𝓞 D.host.E] A.Ylat, ∀ a b, A.beta (e a) (e b) = (P.loc (dat j) p).be η a b }`. Establish `hfac : ∀ j la z, G.IsAlgPt j la z → FactorsFin ((Tw j (WeightAlgebra.resCh la)).Y z.1) z.2.2.1`. Introduce and unpack `j la z ⟨T, io, e, y, ho, hy, hz⟩`. Take `⟨g, ιT, h2, h3, h4⟩` from `(GlobalTheory.T.exists_flag_model_baseChange_integral_framed_point D.host.E Q.H (Q.Dw j) Q.l (Q.Xo j) Q.c la (Tw j _) (hTw j _ (resCh_prime la)) T io e ho y hy).2 z hz`. Conclude with `⟨T, g, ιT, hy, h2, h3, h4⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨G, fun j hj hm => (hP j hj hm).1, fun j _ _ p hp => hTw j p hp, fun j _ _ la z hz => hdat j _ z (resCh_prime la) (hfac j la z hz), fun j hj hm la z hz => ⟨?_, fun η h => h.1⟩, fun j _ _ la z _ η h => h.2, fun j _ _ la T io e ho y hy => ?_⟩` and prove the remaining obligations. Set `y : Pt j (WeightAlgebra.resCh la)` to `⟨z, ⟨hj, hm⟩, resCh_prime la, hfac j la z hz⟩`. Take `⟨η, h1, e, he⟩` from `(hP j hj hm).2 _ y`. Use `⟨η, h1, fun A => ?_⟩` and prove the remaining obligations. Conclude with `(uniq_of_factorsFin (resCh_prime la) y.2.2.2 (A0 j _ y) A).elim fun e' he' => ⟨e.trans e', fun a b => (he' (e a) (e b)).trans (he a b)⟩`.
-
-Conclude with `(GlobalTheory.T.exists_flag_model_baseChange_integral_framed_point D.host.E Q.H (Q.Dw j) Q.l (Q.Xo j) Q.c la (Tw j _) (hTw j _ (resCh_prime la)) T io e ho y hy).1`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem localData_exists :
     ∀ (D : D7) (Q : Par D), Q.Pins → (∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q) → Packet66Rest Q := by

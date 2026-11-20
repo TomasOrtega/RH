@@ -16,15 +16,15 @@ section Generic
 variable {R S ι : Type} [CommRing R] [CommRing S] [Algebra R S] [Fintype ι] [DecidableEq ι] (c : S →ₐ[R] S)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem map_mul_c (A B : Matrix ι ι S) : (A * B).map c = A.map c * B.map c :=
   Matrix.map_mul
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Establish `h1 : (M⁻¹).1ᵀ * M.1ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`. Establish `h2 : M.1.map c * (M⁻¹).1.map c = 1`. Rewrite using `[← PositivityTheory.SiegelWeilFormula.Ldexb.map_mul_c c, Units.mul_inv]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.map_one _ (map_zero c) (map_one c)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gram_inv {H J : Matrix ι ι S} (M : GL ι S) (hM : M.1ᵀ * H * M.1.map c = J) :
     (M⁻¹).1ᵀ * J * (M⁻¹).1.map c = H := by
@@ -39,9 +39,9 @@ theorem gram_inv {H J : Matrix ι ι S} (M : GL ι S) (hM : M.1ᵀ * H * M.1.map
     _ = H := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hy' : (y : Matrix ι ι S)ᵀ * H₀ * (y : Matrix ι ι S).map c = H₀` using `hy`. Establish `hmid : (y : Matrix ι ι S)ᵀ * (M.1ᵀ * H * M.1.map c) * (y : Matrix ι ι S).map c = M.1ᵀ * H * M.1.map c`. Rewrite using `[hM, Matrix.mul_smul, Matrix.smul_mul, hy']`. Establish `key : (M⁻¹).1ᵀ * ((y : Matrix ι ι S)ᵀ * (M.1ᵀ * H * M.1.map c) * (y : Matrix ι ι S).map c) * (M⁻¹).1.map c = H`. Rewrite using `[hmid]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PositivityTheory.SiegelWeilFormula.Ldexb.gram_inv c M rfl`. Use `show ((M * y * M⁻¹ : GL ι S) : Matrix ι ι S)ᵀ * H * ((M * y * M⁻¹ : GL ι S) : Matrix ι ι S).map c = H`. Simplify using `only [Units.val_mul, Matrix.transpose_mul, PositivityTheory.SiegelWeilFormula.Ldexb.map_mul_c]`. Simplify `key` using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem conj_mem {H H₀ : Matrix ι ι S} (M : GL ι S) (s : S) (hM : M.1ᵀ * H * M.1.map c = s • H₀) {y : GL ι S}
     (hy : y ∈ UG c H₀) : M * y * M⁻¹ ∈ UG c H := by
@@ -58,7 +58,7 @@ theorem conj_mem {H H₀ : Matrix ι ι S} (M : GL ι S) (s : S) (hM : M.1ᵀ * 
   simpa only [Matrix.mul_assoc] using key
 
 /- English proof (translation)
-Establish `h` using `PositivityTheory.SiegelWeilFormula.Ldexb.gram_inv c M hM`. Rewrite `h` using `[Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[← h, smul_smul, Units.inv_mul, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_inv_smul {H H₀ : Matrix ι ι S} (M : GL ι S) (s : Sˣ) (hM : M.1ᵀ * H * M.1.map c = (s : S) • H₀) :
     (M⁻¹).1ᵀ * H₀ * (M⁻¹).1.map c = ((s⁻¹ : Sˣ) : S) • H := by
@@ -76,7 +76,7 @@ theorem cj_val {H H₀ : Matrix ι ι S} (M : GL ι S) (s : S) (hM : M.1ᵀ * H 
     (cj c M s hM z).1 = M * z.1 * M⁻¹ := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show M * ((z : GL ι S) * (z' : GL ι S)) * M⁻¹ = (M * (z : GL ι S) * M⁻¹) * (M * (z' : GL ι S) * M⁻¹)`. Use `group`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem cj_mul {H H₀ : Matrix ι ι S} (M : GL ι S) (s : S) (hM : M.1ᵀ * H * M.1.map c = s • H₀) (z z' : UG c H₀) :
     cj c M s hM (z * z') = cj c M s hM z * cj c M s hM z' := by
@@ -85,7 +85,7 @@ theorem cj_mul {H H₀ : Matrix ι ι S} (M : GL ι S) (s : S) (hM : M.1ᵀ * H 
   group
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show M * (z : GL ι S)⁻¹ * M⁻¹ = (M * (z : GL ι S) * M⁻¹)⁻¹`. Use `group`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem cj_inv {H H₀ : Matrix ι ι S} (M : GL ι S) (s : S) (hM : M.1ᵀ * H * M.1.map c = s • H₀) (z : UG c H₀) :
     cj c M s hM z⁻¹ = (cj c M s hM z)⁻¹ := by
@@ -100,13 +100,13 @@ section Unitary
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `h1 : Matrix.diagonal (star d) * Matrix.diagonal d = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `hd i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h2 : Matrix.diagonal d * Matrix.diagonal (star d) = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hd i`. Establish `e : (Matrix.diagonal d * X * Matrix.diagonal (star d))ᴴ = Matrix.diagonal d * (Xᴴ * Matrix.diagonal (star d))`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.diagonal_conjTranspose, star_star, Matrix.mul_assoc]`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Matrix.diagonal d * Matrix.diagonal (star d) := by`. Rewrite using `[h1, Matrix.mul_one, Matrix.mul_assoc (Matrix.diagonal d) X, hX, Matrix.mul_one]`. Use `_ = 1 := h2`.
+A detailed English derivation is pending.
 -/
 theorem diag_unitary (d : ι → ℂ) (hd : ∀ i, star (d i) * d i = 1) (X : Matrix ι ι ℂ) (hX : X * Xᴴ = 1) :
     (Matrix.diagonal d * X * Matrix.diagonal (star d)) * (Matrix.diagonal d * X * Matrix.diagonal (star d))ᴴ = 1 := by

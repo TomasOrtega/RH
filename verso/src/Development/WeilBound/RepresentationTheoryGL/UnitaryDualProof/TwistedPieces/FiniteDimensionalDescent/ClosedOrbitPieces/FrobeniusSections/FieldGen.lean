@@ -8,19 +8,17 @@ namespace PositivityTheory.RgUd.TP.Desc.Piece.PSect
 open Module Polynomial
 
 /- English proof (translation)
-Use `set f := algebraMap k E with hf`. Use `set Fr := iterateFrobenius E p c with hFr`. Use `set K : Subfield E := f.fieldRange with hK`. Use `set Kq : Subfield E := (Fr.comp f).fieldRange with hKq`. Establish `hmapK : K.map Fr = Kq` using `RingHom.map_fieldRange _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmapT : (⊤ : Subfield E).map Fr = Pj E p c` using `map_top_Pj p c`. Establish `h3 : Kq.relfinrank (Pj E p c) = K.relfinrank ⊤`. Rewrite using `[← hmapK, ← hmapT, Subfield.relfinrank_map_map]`. Establish `h4 : Kq ≤ K`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `RingHom.mem_fieldRange.1 hy`. Conclude with `RingHom.mem_fieldRange.2 ⟨a ^ p ^ c, by rw [RingHom.comp_apply, hFr, iterateFrobenius_def, map_pow]⟩`. Establish `h5 : K ≤ Pj E p c`. Introduce `y hy`. Take `⟨a, rfl⟩` from `RingHom.mem_fieldRange.1 hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `hroot a`. Conclude with `(mem_Pj p).2 ⟨w, hw⟩`. Establish `hA` using `Subfield.relfinrank_mul_relfinrank h4 (le_top : K ≤ ⊤)`. Establish `hB` using `Subfield.relfinrank_mul_relfinrank (h4.trans h5) (le_top : Pj E p c ≤ ⊤)`. Establish `hKtop : K.relfinrank ⊤ = finrank k E`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `IntermediateField.relfinrank_bot_left (⊤ : IntermediateField k E)` as an intermediate fact. Rewrite `this` using `[IntermediateField.finrank_top']`. Rewrite using `[← this, IntermediateField.relfinrank, IntermediateField.bot_toSubfield, IntermediateField.top_toSubfield]`. Establish `hpos : 0 < K.relfinrank ⊤` using `hKtop ▸ Module.finrank_pos`. Establish `h9 : Kq.relfinrank K = finrank k (Tw k p c)`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Subfield.relfinrank_eq_finrank_of_le h4]`. Use `symm`. Use `Algebra.finrank_eq_of_equiv_equiv (Fr.comp f).rangeRestrictFieldEquiv (f.rangeRestrictFieldEquiv.trans (RingEquiv.subfieldCongr (Subfield.extendScalars_toSubfield h4).symm)) ?_` and prove the remaining obligations. Use extensionality with `a`. Use `show (((Fr.comp f).rangeRestrictFieldEquiv a : Kq) : E) = f (iterateFrobenius k p c a)`.
-
-Rewrite using `[RingHom.rangeRestrictFieldEquiv_apply_coe, RingHom.comp_apply, hFr, iterateFrobenius_def, iterateFrobenius_def, map_pow]`. Rewrite `hB` using `[h3]`. Rewrite using `[← h9]`. Apply `Nat.eq_of_mul_eq_mul_left hpos` to reduce the goal to its premises. Rewrite using `[hB, ← hA, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fl_deg {k E : Type*} [Field k] [Field E] [Algebra k E] [FiniteDimensional k E]
     (p c : ℕ) [Fact p.Prime] [CharP k p] [CharP E p]
@@ -67,15 +65,15 @@ theorem fl_deg {k E : Type*} [Field k] [Field E] [Algebra k E] [FiniteDimensiona
   rw [hB, ← hA, mul_comm]
 
 /- English proof (translation)
-Establish `: CharP E p` using `charP_of_injective_algebraMap (algebraMap k E).injective p`. Establish `hdeg` using `fl_deg p c hroot`. It suffices to establish `H : ∃ n, finrank k (Tw k p c) = (p ^ c) ^ n ∧ ∃ α : Fin n → E, Subfield.closure ((Pj E p c : Set E) ∪ Set.range α) = ⊤ by`. Take `⟨n, hn, α, hα⟩` from `H`. Use `⟨n, hn, α, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hadj : IntermediateField.adjoin k (Set.range (fun b : E => b ^ (p ^ c)) ∪ Set.range α) = ⊤`. Apply `IntermediateField.toSubfield_injective` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_toSubfield, IntermediateField.top_toSubfield, eq_top_iff, ← hα]`. Apply `Subfield.closure_mono` to reduce the goal to its premises. Apply `Set.union_subset` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y hy`. Conclude with `Or.inr (Or.inl ((mem_Pj p).1 hy))`. Introduce `y hy`. Conclude with `Or.inr (Or.inr hy)`. Rewrite using `[← IntermediateField.adjoin_toSubalgebra, hadj, IntermediateField.top_toSubalgebra]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Prove the second alternative. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos c with rfl | hc` into its components or cases. Use `⟨0, ?_, Fin.elim0, ?_⟩` and prove the remaining obligations. Rewrite using `[← hdeg, pow_zero, Subfield.relfinrank_eq_one_iff, Pj_zero]`. Rewrite using `[Pj_zero]`. Conclude with `eq_top_iff.2 fun y _ => Subfield.subset_closure (Or.inl (Subfield.mem_top y))`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : (Pj E p c).relfinrank ⊤ ≠ 0`. Rewrite using `[hdeg]`. Conclude with `Module.finrank_pos.ne'`. Take `⟨n, hn, α, hα⟩` from `fl_frob p c hc hfin`. Conclude with `⟨n, hdeg ▸ hn, α, hα⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fieldGen {k E : Type*} [Field k] [Field E] [Algebra k E] [FiniteDimensional k E]
     (p c : ℕ) [Fact p.Prime] [CharP k p] [FiniteDimensional k (Tw k p c)]

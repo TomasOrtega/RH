@@ -12,9 +12,9 @@ namespace GlobalTheory.HodgeSub
 open MonoidalCategory MonObj
 
 /- English proof (translation)
-Establish `h1 : pullback.fst (𝟙_ (Over S)).hom f ≫ (𝟙_ (Over S)).hom = pullback.snd (𝟙_ (Over S)).hom f ≫ f` using `pullback.condition`. Establish `h2` using `Over.w (Functor.LaxMonoidal.ε (Over.pullback f))`. Establish `h3 : (𝟙_ (Over S)).hom = 𝟙 S` using `rfl`. Establish `h4 : (𝟙_ (Over S')).hom = 𝟙 S'` using `rfl`. Rewrite `h1` using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `erw [Category.comp_id] at h1`. Use `erw [h1, ← Category.assoc]`. Express the relevant statement in the definitionally equal form `(Functor.LaxMonoidal.ε (Over.pullback f)).left ≫ ((Over.pullback f).obj (𝟙_ (Over S))).hom ≫ f = f`. Rewrite using `[← Category.assoc, h2, h4]`. Use `erw [Category.id_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_base_change_fst {S S' : Scheme.{0}} (f : S' ⟶ S) :
     (Functor.LaxMonoidal.ε (Over.pullback f)).left ≫ pullback.fst (𝟙_ (Over S)).hom f = f := by
@@ -32,7 +32,7 @@ theorem unit_base_change_fst {S S' : Scheme.{0}} (f : S' ⟶ S) :
   erw [Category.id_comp]
 
 /- English proof (translation)
-Use `set f := hV.fromSpec`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.zeroSec, Functor.obj.η_def, Over.comp_left, Category.assoc]`. Rewrite using `[show ((Over.pullback f).map η[A]).left ≫ pullback.fst A.hom f = pullback.fst (𝟙_ (Over T)).hom f ≫ η[A].left from pullback.lift_fst _ _ _]`. Rewrite using `[← Category.assoc, unit_base_change_fst]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_section_affine_fst {T : Scheme.{0}} (A : Over T) [GrpObj A] {V : T.Opens} (hV : IsAffineOpen V) :
     η[onAff A hV].left ≫ pullback.fst A.hom hV.fromSpec =
@@ -44,13 +44,13 @@ theorem unit_section_affine_fst {T : Scheme.{0}} (A : Over T) [GrpObj A] {V : T.
   rw [← Category.assoc, unit_base_change_fst]
 
 /- English proof (translation)
-Introduce `P T A _ g hA hg V hV s c c' hc hc'`. Establish `hA' : IsAbelianScheme (onAff A hV)` using `GlobalTheory.isAbelianScheme_pullback_obj _ A hA`. Establish `hg' : SmoothOfRelativeDimension g (onAff A hV).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback _ _) hg`. Take `⟨hL, -⟩` from `P.p5.2.1 Γ(T, V) (onAff A hV) g hA' hg'`. Take `⟨-, hproj, -⟩` from `GlobalTheory.Published.AbelianDeRham.Free.prim P.p5.1 hA' hg'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ h : HdR (onAff A hV), h c = h c'`. Introduce `h`. Take `⟨v, hv, -⟩` from `hL.1 h`. Establish `w : (v.left ≫ pullback.fst A.hom hV.fromSpec) ≫ A.hom = (Pdiv.specO Γ(T, V) (DualNumber Γ(T, V))).hom ≫ hV.fromSpec`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· ≫ hV.fromSpec) (Over.w v)`. Establish `we : sec (epsZero Γ(T, V)) ≫ v.left ≫ pullback.fst A.hom hV.fromSpec = hV.fromSpec ≫ GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.zeroSec A`. Rewrite using `[← Category.assoc]`. Establish `ht` using `hv.1`. Unfold `IsTangent at ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `erw [ht]`. Conclude with `unit_section_affine_fst A hV`. Rewrite using `[hc v h hv w we, hc' v h hv w we]`. Establish `h0` using `(Module.forall_dual_apply_eq_zero_iff Γ(T, V) (c - c')).1 (fun h => by rw [map_sub, key, sub_self])`. Conclude with `sub_eq_zero.1 h0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem corr_unique : GlobalTheory.CovTop.Hypotheses2 → ∀ (T : Scheme.{0}) (A : Over T) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom →

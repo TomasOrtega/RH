@@ -8,21 +8,21 @@ open Polynomial
 namespace UpperTheory.Gal.LocalSmoothExtension
 
 /- English proof (translation)
-Introduce `F _ _ P hP`. Establish `hP0 : P ≠ 0` using `fun h => hP (by simp [h])`. Establish `hc : (P.coeff 0)⁻¹ ≠ 0` using `inv_ne_zero hP`. Establish `hrr : ∀ Q : F[X], Q.coeff 0 ≠ 0 → Q.reverse.reverse = Q`. Introduce `Q hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQd : Q.reverse.natDegree = Q.natDegree`. Rewrite using `[reverse_natDegree, natTrailingDegree_eq_zero.mpr (Or.inr hQ), Nat.sub_zero]`. Use extensionality with `n`. Rewrite using `[coeff_reverse, hQd, coeff_reverse, revAt_invol]`. Establish `hdeg : P.reverse.natDegree = P.natDegree`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[reverse_natDegree, natTrailingDegree_eq_zero.mpr (Or.inr hP), Nat.sub_zero]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `invPol`. Rewrite using `[natDegree_C_mul hc, hdeg]`. Unfold `invPol`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_coeff_zero, coeff_C_zero, coeff_zero_reverse]`. Conclude with `mul_ne_zero hc (leadingCoeff_ne_zero.mpr hP0)`. Introduce `hs`. Unfold `invPol`. Establish `hrs : P.reverse.Separable`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PerfectField.separable_iff_squarefree]`. Introduce `x hx`. Take `⟨y, hy⟩` from `hx`. Establish `hx0 : x.coeff 0 ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : P.reverse.coeff 0 = 0`. Rewrite using `[hy, mul_coeff_zero, mul_coeff_zero, h0, zero_mul, zero_mul]`. Rewrite `h1` using `[coeff_zero_reverse]`. Conclude with `leadingCoeff_ne_zero.mpr hP0 h1`. Establish `hPx : x.reverse * x.reverse ∣ P`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨y.reverse, ?_⟩` and prove the remaining obligations. Rewrite using `[← hrr P hP, hy, reverse_mul_of_domain, reverse_mul_of_domain]`. Establish `hu : IsUnit x.reverse` using `hs.squarefree _ hPx`. Establish `hxd : x.natDegree = 0`. Establish `h1 : x.reverse.natDegree = 0` using `natDegree_eq_zero_of_isUnit hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[reverse_natDegree, natTrailingDegree_eq_zero.mpr (Or.inr hx0), Nat.sub_zero]`. Then use the resulting hypothesis. Rewrite using `[eq_C_of_natDegree_eq_zero hxd]`. Conclude with `isUnit_C.mpr (IsUnit.mk0 _ hx0)`. Rewrite using `[mul_comm]`. Conclude with `hrs.mul_unit (isUnit_C.mpr (IsUnit.mk0 _ hc))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invPolProps_of (hR : InvRoots) : InvPolProps := by
   intro F _ _ P hP

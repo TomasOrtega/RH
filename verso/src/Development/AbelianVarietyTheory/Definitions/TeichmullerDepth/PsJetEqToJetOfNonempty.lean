@@ -94,9 +94,9 @@ def MapSer {G B : Over (Sp k)} (q : G ⟶ B) (x : ∀ m : ℕ, algOver k (JetR k
     (∀ j, a (zR m ((0 : Fin 1), j)) = GlobalTheory.JetSer.toJet m (ψ j)) ∧ x m ≫ q = algOverHom a ≫ y m
 
 /- English proof (translation)
-Use `symm`. Use `(GlobalTheory.JetSer.toJet_eq_mk_iff m f _).2 fun e he => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_trunc, if_pos]`. Establish `hle : ∀ i, e i ≤ m` using `fun i => by have := Finsupp.le_degree i e; omega`. Use `lt_of_le_of_ne (fun i => ?_) fun h => ?_` and prove the remaining obligations.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using (hle i).trans (Nat.le_succ m)`. Use `hle (Classical.arbitrary _)` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psJet_eq_toJet_of_nonempty {n : ℕ} [Nonempty (Fin n × Fin d)] (m : ℕ) (f : PS k n d) :
     psJet m f = GlobalTheory.JetSer.toJet m f := by
@@ -111,7 +111,7 @@ theorem psJet_eq_toJet_of_nonempty {n : ℕ} [Nonempty (Fin n × Fin d)] (m : �
     simp at this
 
 /- English proof (translation)
-The claim follows from `haveI : Nonempty (Fin (n + 1) × Fin d) := ⟨(0, ⟨0, hd⟩)⟩ psJet_eq_toJet_of_nonempty m f`.
+A detailed English derivation is pending.
 -/
 theorem psJet_eq_toJet_of_pos (hd : 0 < d) {n : ℕ} (m : ℕ) (f : PS k (n + 1) d) :
     psJet m f = GlobalTheory.JetSer.toJet m f :=
@@ -119,7 +119,7 @@ theorem psJet_eq_toJet_of_pos (hd : 0 < d) {n : ℕ} (m : ℕ) (f : PS k (n + 1)
   psJet_eq_toJet_of_nonempty m f
 
 /- English proof (translation)
-Use `forall_congr' fun m => ?_` and prove the remaining obligations. Rewrite using `[psJet_eq_toJet_of_pos hd m Φ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cubeSer_iff_psJet (hd : 0 < d) {G : Over (Sp k)} [GrpObj G] [IsCommMonObj G] {L : RigLB G} (c : CubicalStr G L)
     (x : ∀ m : ℕ, algOver k (JetR k (Fin 1 × Fin d) m) ⟶ G) (i : L.L.ι) (Φ : PS k 3 d) :
@@ -131,7 +131,7 @@ theorem cubeSer_iff_psJet (hd : 0 < d) {G : Over (Sp k)} [GrpObj G] [IsCommMonOb
   rw [psJet_eq_toJet_of_pos hd m Φ]
 
 /- English proof (translation)
-Use `GlobalTheory.JetSer.eq_of_toJet_eq fun m => ?_` and prove the remaining obligations. Take `⟨_, h1⟩` from `h m`. Take `⟨_, h2⟩` from `h' m`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of (JetR k (Fin 3 × Fin d) m))).symm.commRingCatIsoToRingEquiv.injective (h1.symm.trans h2)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem CubeSer.unique {G : Over (Sp k)} [GrpObj G] [IsCommMonObj G] {L : RigLB G} {c : CubicalStr G L}
     {x : ∀ m : ℕ, algOver k (JetR k (Fin 1 × Fin d) m) ⟶ G} {i : L.L.ι} {Φ Φ' : PS k 3 d}
@@ -143,9 +143,9 @@ theorem CubeSer.unique {G : Over (Sp k)} [GrpObj G] [IsCommMonObj G] {L : RigLB 
     (h1.symm.trans h2)
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `h 0`. Establish `hu` using `(Semi.res h0 (pullU (jet3 x 0).left _ (c.t.s fun _ => i))).isUnit`. Rewrite `hu` using `[h1]`. Establish `hu2` using `hu.map (Scheme.ΓSpecIso (CommRingCat.of (JetR k (Fin 3 × Fin d) 0))).hom.hom`. Rewrite `hu2` using `[Iso.inv_hom_id_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu3` using `hu2.map (Chart.jetAug k (Fin 3 × Fin d) 0)`. Rewrite `hu3` using `[GlobalTheory.JetSer.jetAug_toJet]`. Conclude with `MvPowerSeries.isUnit_iff_constantCoeff.2 hu3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CubeSer.isUnit {G : Over (Sp k)} [GrpObj G] [IsCommMonObj G] {L : RigLB G} {c : CubicalStr G L}
     {x : ∀ m : ℕ, algOver k (JetR k (Fin 1 × Fin d) m) ⟶ G} {i : L.L.ι} {Φ : PS k 3 d}
@@ -160,7 +160,7 @@ theorem CubeSer.isUnit {G : Over (Sp k)} [GrpObj G] [IsCommMonObj G] {L : RigLB 
   exact MvPowerSeries.isUnit_iff_constantCoeff.2 hu3
 
 /- English proof (translation)
-Introduce `m`. Use `⟨h m, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, map_one, map_one, GlobalTheory.JetSer.toJet_one, map_one]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cubeSer_one {G : Over (Sp k)} [GrpObj G] [IsCommMonObj G] {L : RigLB G} (c : CubicalStr G L)
     (x : ∀ m : ℕ, algOver k (JetR k (Fin 1 × Fin d) m) ⟶ G) (i : L.L.ι) (hc : c.t.s (fun _ => i) = 1)
@@ -172,9 +172,9 @@ theorem cubeSer_one {G : Over (Sp k)} [GrpObj G] [IsCommMonObj G] {L : RigLB G} 
   rfl
 
 /- English proof (translation)
-Take `⟨a, ha, -⟩` from `h 0`. Establish `h0 : (zR 0 ((0 : Fin 1), j) : JetR k (Fin 1 × Fin g) 0) = 0`. Use `Ideal.Quotient.eq_zero_iff_mem.2 ?_` and prove the remaining obligations. Rewrite using `[zero_add, pow_one]`. Conclude with `Ideal.subset_span ⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `ha j`. Rewrite `h1` using `[h0, map_zero]`. Rewrite using `[← GlobalTheory.JetSer.jetAug_toJet 0 (ψ j), ← h1, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MapSer.constantCoeff_eq_zero {G B : Over (Sp k)} {q : G ⟶ B}
     {x : ∀ m : ℕ, algOver k (JetR k (Fin 1 × Fin d) m) ⟶ G} {y : ∀ m : ℕ, algOver k (JetR k (Fin 1 × Fin g) m) ⟶ B}
@@ -189,9 +189,9 @@ theorem MapSer.constantCoeff_eq_zero {G B : Over (Sp k)} {q : G ⟶ B}
   rw [← GlobalTheory.JetSer.jetAug_toJet 0 (ψ j), ← h1, map_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨h.constantCoeff_eq_zero, fun m => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hq⟩` from `h m`. Conclude with `⟨a, fun j => (ha j).trans (GlobalTheory.ChartJLaw.psJet_eq_toJet m _ (h.constantCoeff_eq_zero j)).symm, hq⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h0, h⟩ m`. Take `⟨a, ha, hq⟩` from `h m`. Conclude with `⟨a, fun j => (ha j).trans (GlobalTheory.ChartJLaw.psJet_eq_toJet m _ (h0 j)), hq⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mapSer_iff_psJet {G B : Over (Sp k)} (q : G ⟶ B) (x : ∀ m : ℕ, algOver k (JetR k (Fin 1 × Fin d) m) ⟶ G)
     (y : ∀ m : ℕ, algOver k (JetR k (Fin 1 × Fin g) m) ⟶ B) (ψ : Fin g → PS k 1 d) :
@@ -208,9 +208,9 @@ theorem mapSer_iff_psJet {G B : Over (Sp k)} (q : G ⟶ B) (x : ∀ m : ℕ, alg
     exact ⟨a, fun j => (ha j).trans (GlobalTheory.ChartJLaw.psJet_eq_toJet m _ (h0 j)), hq⟩
 
 /- English proof (translation)
-Introduce `m`. Use `⟨AlgHom.id k _, fun j => (GlobalTheory.JetSer.toJet_X m _).symm, ?_⟩` and prove the remaining obligations. Establish `: algOverHom (AlgHom.id k (JetR k (Fin 1 × Fin d) m)) = 𝟙 _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `Spec.map_id _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Category.id_comp, Category.comp_id]`.
+A detailed English derivation is pending.
 -/
 theorem mapSer_id {G : Over (Sp k)} (x : ∀ m : ℕ, algOver k (JetR k (Fin 1 × Fin d) m) ⟶ G) :
     MapSer (𝟙 G) x x (pt k d 0) := by
@@ -222,12 +222,12 @@ theorem mapSer_id {G : Over (Sp k)} (x : ∀ m : ℕ, algOver k (JetR k (Fin 1 �
   rw [this, Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.JetSer.toJet_one m`.
+A detailed English derivation is pending.
 -/
 example (m : ℕ) : GlobalTheory.JetSer.toJet m (1 : PS k 3 0) = 1 := GlobalTheory.JetSer.toJet_one m
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use extensionality with `e`. Rewrite using `[Subsingleton.elim e 0, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h.constantCoeff_eq_zero j]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example {G B : Over (Sp k)} {q : G ⟶ B} {x : ∀ m : ℕ, algOver k (JetR k (Fin 1 × Fin 0) m) ⟶ G}
     {y : ∀ m : ℕ, algOver k (JetR k (Fin 1 × Fin g) m) ⟶ B} {ψ : Fin g → PS k 1 0} (h : MapSer q x y ψ) : ψ = 0 := by

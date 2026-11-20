@@ -36,15 +36,13 @@ Both sides reduce to the same expression.
 theorem krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim (X : Scheme.{u}) : krullDimSucc X = withBotSuccToNat (topologicalKrullDim ↥X) := rfl
 
 /- English proof (translation)
-Break down `eq_or_ne (topologicalKrullDim ↥X) ⊥ with hX | hX` into its components or cases. Simplify using `[krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim, hX, withBotSuccToNat_bot]`. Take `⟨a, ha⟩` from `WithBot.ne_bot_iff_exists.mp hX`. Establish `hYne : topologicalKrullDim ↥Y ≠ ⊥`. Introduce `hb0`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[hb0, le_bot_iff]`. Conclude with `hX h`. Take `⟨b, hb⟩` from `WithBot.ne_bot_iff_exists.mp hYne`. Establish `hab : a ≤ b`. Rewrite `h` using `[← ha, ← hb]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h` after adjusting the coercions. Establish `hbtop : b ≠ ⊤`. Introduce `hbt`. Rewrite `hY` using `[← hb, hbt]`. Conclude with `lt_irrefl _ hY`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hatop : a ≠ ⊤`. Introduce `hat`. Rewrite `hab` using `[hat, top_le_iff]`. Conclude with `hbtop hab`. Establish `hle : a.toNat ≤ b.toNat` using `by lift a to ℕ using hatop lift b to ℕ using hbtop`.
-
-Simplify using `using hab`. Rewrite using `[krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim X, krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim Y, ← ha, ← hb, withBotSuccToNat_coe, withBotSuccToNat_coe]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem krullDimSucc_le_krullDimSucc_of_topologicalKrullDim_le (X Y : Scheme.{u})
     (h : topologicalKrullDim ↥X ≤ topologicalKrullDim ↥Y)
@@ -88,7 +86,7 @@ structure MarkedIdealWithBoundary : Type (u + 1) where
 attribute [instance] MarkedIdealWithBoundary.instField
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Substitute `hI` using the available equality. Substitute `hE` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem MarkedIdealWithBoundary.mk_eq_mk {k : Type u} [instk : Field k] (X : Scheme.{u}) (m : ℕ)
     {p p' : X ⟶ Spec (CommRingCat.of k)} {I I' : X.IdealSheafData}
@@ -186,7 +184,7 @@ def IsResolution (s : MarkedSequenceOfBlowups p I m E) : Prop :=
   orderAtLeastLocus s.lastIdeal m = ∅
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isResolution_iff (s : MarkedSequenceOfBlowups p I m E) :
     s.IsResolution ↔ orderAtLeastLocus s.lastIdeal m = ∅ := Iff.rfl
@@ -233,7 +231,7 @@ abbrev MarkedIdealWithBoundary.SequenceOfBlowups (T : MarkedIdealWithBoundary.{u
 def PrincipalizationAssignment : Type (u + 1) := ∀ T : MarkedIdealWithBoundary.{u}, T.SequenceOfBlowups
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem PrincipalizationAssignment.toSequenceOfBlowups_heq_of_eq (L : PrincipalizationAssignment.{u})
     {T T' : MarkedIdealWithBoundary.{u}} (h : T = T') :
@@ -264,21 +262,21 @@ def HasReducedCenters (s : MarkedSequenceOfBlowups p I m E) : Prop :=
       J ≤ s.toSequenceOfBlowups.center i
 
 /- English proof (translation)
-Rewrite using `[s.ideal_zero, s.toSequenceOfBlowups.projectionToBase_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem markedSequenceOfBlowups_ideal_zero (s : MarkedSequenceOfBlowups p I m E) :
     s.ideal 0 = I.comap (s.toSequenceOfBlowups.projectionToBase 0) := by
   rw [s.ideal_zero, s.toSequenceOfBlowups.projectionToBase_zero]
 
 /- English proof (translation)
-Rewrite using `[s.boundary_zero, s.toSequenceOfBlowups.projectionToBase_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem markedSequenceOfBlowups_boundary_zero (s : MarkedSequenceOfBlowups p I m E) :
     s.boundary 0 = E.map (fun D => D.comap (s.toSequenceOfBlowups.projectionToBase 0)) := by
   rw [s.boundary_zero, s.toSequenceOfBlowups.projectionToBase_zero]
 
 /- English proof (translation)
-Establish `hs` using `s.ideal_succ i h`. Rewrite `hs` using `[pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem markedSequenceOfBlowups_exceptionalIdeal_mul_ideal_succ (s : MarkedSequenceOfBlowups p I 1 E) (i : ℕ)
     (h : i < s.toSequenceOfBlowups.length) :
@@ -288,9 +286,9 @@ theorem markedSequenceOfBlowups_exceptionalIdeal_mul_ideal_succ (s : MarkedSeque
   rwa [pow_one] at hs
 
 /- English proof (translation)
-Rewrite using `[vanishesAlong_iff_le]`. Use `hmax i h (s.ideal i) ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hx'` using `s.center_order i h hx`. Rewrite `hx'` using `[mem_orderAtLeastLocus_one_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx'`.
+A detailed English derivation is pending.
 -/
 theorem markedSequenceOfBlowups_ideal_vanishesAlong_center (s : MarkedSequenceOfBlowups p I 1 E)
     (hmax : HasReducedCenters s) (i : ℕ) (h : i < s.toSequenceOfBlowups.length) :
@@ -317,7 +315,7 @@ def MarkedSequenceOfBlowups.toIdealBlowupSequence (s : MarkedSequenceOfBlowups p
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem MarkedSequenceOfBlowups.toMarkedSequence_toSequenceOfBlowups (s : MarkedSequenceOfBlowups p I 1 E)
     (hmax : HasReducedCenters s) :

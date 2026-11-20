@@ -22,13 +22,11 @@ namespace GlobalTheory.Fam.LevelFrames
 open _root_.Formalism.L2.Col in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hy'` using `GlobalTheory.TopStep.mem_stdAt.1 hy`. Establish `e : f y i - y i = ∑ j, (f (Pi.single j 1) i - if i.val = j.val then 1 else 0) * y j`. Simplify using `only [_root_.sub_mul, Finset.sum_sub_distrib, ← Fin.ext_iff, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `conv_lhs => rw [pi_eq_sum_univ' y, map_sum, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`. Establish `h : P.valuation E (f y i - y i) < 1`. Rewrite using `[e]`. Use `Valuation.map_sum_lt _ one_ne_zero fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' ((GlobalTheory.AtTypeExists.intAt_iff _ _).1 (hy' j))) (hf i j)`. Take `⟨h1, h2⟩` from `twRed0_of_val P h`. Establish `h3` using `reduction_add h1 (hy' i)`. Rewrite `h3` using `[sub_add_cancel, h2, zero_add]`.
-
-Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redV_eq_of_near {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {P : HeightOneSpectrum (𝓞 E)}
     {f : Sp E n ≃ₗ[E] Sp E n} (hf : ∀ i j : Fin n, P.valuation E (f (Pi.single j 1) i - if i.val = j.val then 1 else 0) < 1)
@@ -53,11 +51,11 @@ theorem redV_eq_of_near {E : Type} [Field E] [NumberField E] [StarRing E] {n : �
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a _ _ n t J hJ j hj β P hP`. Use `letI := GlobalTheory.Mem.Col2.starE B`. Establish `hPv : P.1 ∈ (B.primes X).vGs` using `hP ▸ (hW.lev.2.1 _).1 (a.pl n).2`. Use `⟨?_, fun x hx => redV_eq_of_near (fun r s => ?_) hx⟩` and prove the remaining obligations. Establish `e : Formalism.L2.Col.frsF I.sel (I.tup (W.P.I.tup t)) (J.A.p0 j β).1.1 P = (J.A.p0 j β).1.1.deco.1.liftFr ⟨P.1, hPv⟩` using `dif_pos hPv`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `(GlobalTheory.TopStep.liftFr_spec (J.A.p0 j β).1.1.deco.2 ⟨P.1, hPv⟩).1`. Establish `hN` using `(hJ.is.base j (by omega) β).2`. Rewrite using `[e]`. Introduce `x`. Use `Iff.trans ?_ (h x)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Iff.of_eq (congrArg (fun N => _ ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal N) hN.symm)`. Break down `hj.eq_or_lt with h | h` into its components or cases. Conclude with `TopFrames.pen_near hW hJ P hPv h β r s`. Establish `key` using `MidLoc.frame_cong hW.tr.ok (J.A.p0 j β).1.1 (hJ.std j h β ▸ (hJ.is.base j (by omega) β).1) P hPv r s`. Rewrite `key` using `[if_congr Fin.ext_iff rfl rfl]`. Then use the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem frsF_mem_glint_redV_eq : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ (n : Fin a.n) (t : W.P.T) (J : QJ a t), J.Reads → ∀ (j : ℕ), j + 1 ≤ B.R.m → ∀ (β : J.Ch₀ j) (P : GlobalTheory.QTw.BadPr I (W.P.I.tup t)), P.1 = (a.pl n).1 →
     Formalism.L2.Col.frsF I.sel (I.tup (W.P.I.tup t)) (J.A.p0 j β).1.1 P ∈ Formalism.L2.Col.GLint B.fields.E (B.R.N j) P.1 ∧

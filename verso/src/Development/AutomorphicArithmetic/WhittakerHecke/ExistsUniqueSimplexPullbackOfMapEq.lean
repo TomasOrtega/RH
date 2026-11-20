@@ -3,9 +3,9 @@ set_option backward.isDefEq.respectTransparency false
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto Simplicial UpperTheory.Gal.KunnethLefschetz UpperTheory.Gal.KunnethLefschetz.G
 
 /- English proof (translation)
-Introduce `X Y Z f g n U s t h`. Set `G : Spc ⥤ Type` to `(evaluation SimplexCategoryᵒᵖ PSh).obj (op (SimplexCategory.mk n)) ⋙ (evaluation Scheme.{0}ᵒᵖ Type).obj (op U)`. Establish `sq : IsPullback (G.map (pullback.fst f g)) (G.map (pullback.snd f g)) (G.map f) (G.map g)` using `(IsPullback.of_hasPullback f g).map G`. Take `⟨z, h1, h2⟩` from `Types.exists_of_isPullback sq s t h`. Use `⟨z, ⟨h1, h2⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `z' ⟨h1', h2'⟩`. Conclude with `Types.ext_of_isPullback sq (h1'.trans h1.symm) (h2'.trans h2.symm)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.existsUnique_simplex_pullback_of_map_eq :
     ∀ {X Y Z : Spc} (f : X ⟶ Z) (g : Y ⟶ Z) (n : ℕ) (U : Scheme.{0}) (s : Sx X n U) (t : Sx Y n U),

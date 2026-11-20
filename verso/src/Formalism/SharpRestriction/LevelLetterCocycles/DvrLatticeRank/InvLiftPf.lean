@@ -12,27 +12,25 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D HW F Cm CA CB CK hA l _ hl K LL hG π' E hπ T h' hh' hT hJ c`. Use `haveI := ((HW l).W K 1 LL hG).ddTowO T`. Establish `hNL : NinLam ((HW l).W K 1 LL hG) T (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') h'` using `ninlam_pf D HW F Cm CA CB CK hA l hl K LL hG π' E hπ T h' hT hJ`. Break down `le_or_gt (MK l K h') 1 with hM | hM` into its components or cases. Use `⟨fun w hw => ⟨((((D.loc l).PD K).p : ℕ) : ↥(OL LL)) ^ sigA l (sK l K) h' • w, ?_, ?_⟩, fun wb _ hwb => gradNPf_PiNS_anti _ T π' hM hwb⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hwL, hwγ⟩` from `(mem_InvS _ T π' _ h' 1 c w).1 hw`. Use `(mem_InvS _ T π' _ h' _ c _).2 ⟨Submodule.smul_mem _ _ hwL, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← smul_sub]`. Conclude with `Submodule.smul_mem _ _ (gradNPf_PiNS_anti _ T π' hM hwγ)`. Rewrite using `[sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `Submodule.zero_mem _`. Establish `hs : 1 ≤ sK l K`. Assume the negation of the conclusion as `h0`. Establish `h0' : sK l K = 0` using `by omega`. Establish `: MK l K h' = 0` using `by simp [MK, h0']`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨f, t, x, u, hu, hxu, hf, ht, hEE, hπΔ, hγN, hK, hprod⟩` from `gradNPf_hyps D HW F Cm hA.1 l hl K LL hG π' E hπ T hT hs`. Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Take `⟨a, ha⟩` from `hprod (MK l K h' - 1)`. Establish `hM1 : MK l K h' - 1 + 1 = MK l K h'` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ha` using `[hM1]`. Establish `hσ : sigA l (sK l K) h' = MK l K h' - 1 + padicValNat l (MK l K h' - 1).factorial` using `rfl`. Establish `hl0 : ((l : ℕ) : ↥LL.1) ≠ 0`. Introduce `h0`. Establish `hv` using `(D.loc l).v_l LL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv` using `[h0, AddValuation.map_zero]`. Conclude with `absurd hv (by simp)`. Establish `hℓ : ∀ c : ↥(OL LL), (l : ↥(OL LL)) * c = 0 → c = 0`. Introduce `c hc`. Establish `h1` using `congrArg (algebraMap ↥(OL LL) ↥LL.1) hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul, map_natCast, map_zero]`. Establish `h2` using `(mul_eq_zero.1 h1).resolve_left hl0`. Conclude with `(injective_iff_map_eq_zero (algebraMap ↥(OL LL) ↥LL.1)).1 Subtype.val_injective c h2`. Establish `hs1 : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Establish `hp : ((D.loc l).PD K).p ≠ 2` using `by rw [hpl]; exact hl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, -, -, -, -, -, -, h9W, -⟩` from `hA.1 l K 1 LL hG`. Take `⟨-, ⟨π'₀, E₀, -, hm₀⟩, -⟩` from `h9W T hT hs1 hp`. Take `⟨⟨r, b, hbΔ, huniq, -⟩, -⟩` from `hm₀`. Take `⟨w, hw⟩` from `hπ.2.2.1`. Establish `hnz : ∀ y : ℕ, 1 ≤ y → y < MK l K h' → ∀ r₀ ∈ ((HW l).W K 1 LL hG).N T, ∀ d ∈ ((HW l).W K 1 LL hG).N T, ((x ^ sK l K) ^ y - 1) • r₀ = π' • d → ∃ e ∈ ((HW l).W K 1 LL hG).N T, r₀ = π' • e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy1 hyM r₀ hr₀ d hd hrd`. Take `⟨q, hq⟩` from `Finset.dvd_prod_of_mem (fun y => (x ^ sK l K) ^ y - 1) (Finset.mem_Ico.2 ⟨hy1, hyM⟩)`. Rewrite `ha` using `[hq]`. Use `invLiftPf_nzd _ T π' w (sK l K) w.isUnit hw (l : ↥(OL LL)) hℓ r b (fun j => (hbΔ j).1) huniq (MK l K h' - 1 + padicValNat l (MK l K h' - 1).factorial) r₀ ((a * q) • d) hr₀ ?_ ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K)))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_mem _ _ hd`. Rewrite using `[ha, mul_comm ((x ^ sK l K) ^ y - 1) q, ← mul_assoc, mul_smul, hrd, ← algebraMap_smul (LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K))) (a * q) (π' • d), ← algebraMap_smul (LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K))) (a * q) d, smul_smul, smul_smul, mul_comm]`. Establish `hpσ : (((((D.loc l).PD K).p : ℕ) : ↥(OL LL)) ^ sigA l (sK l K) h') = a * ∏ y ∈ Finset.Ico 1 (MK l K h'), ((x ^ sK l K) ^ y - 1)`. Rewrite using `[hpl, hσ]`. Conclude with `ha`.
-
-Establish `hGr : GradN ((HW l).W K 1 LL hG) T π' (sigA l (sK l K) h') (MK l K h')` using `gradNPf_local _ T π' f t (x ^ sK l K) hf ht hEE hπΔ hγN hK _ _ (by omega) a hpσ`. Use `⟨invLiftPf_lift _ T π' _ h' _ _ c hGr hNL, fun wb hwb hwb1 => ?_⟩` and prove the remaining obligations. Conclude with `invLiftPf_inj _ T π' f t (x ^ sK l K) hf ht hEE hπΔ hγN hK _ hnz wb hwb1 ((mem_InvS _ T π' _ h' _ c wb).1 hwb).2`.
+A detailed English derivation is pending.
 -/
 theorem invLiftCondition : InvLiftStep := by
   intro D HW F Cm CA CB CK hA l _ hl K LL hG π' E hπ T h' hh' hT hJ c

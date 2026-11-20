@@ -31,7 +31,7 @@ def StAdaptB (u : D.what₂.Word) (p : TypX X) : Prop :=
             ((Q⁻¹ : GL (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (FpX X p)) : Matrix (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (FpX X p)) * Matrix.reindex e e (cmp1 X.B.I.cm.sig X.B.I.J θ (x : HAp X p)) * (Q : Matrix (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (FpX X p))
 
 /- English proof (translation)
-Establish `h` using `(unit_JR X p).map (th1 X p θ)`. Rewrite `h` using `[RingHom.map_det]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_split_form (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p) :
     IsUnit (jm1 X.B.I.J θ).det := by
@@ -40,9 +40,9 @@ theorem isUnit_det_split_form (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p] FpX X p
   exact h
 
 /- English proof (translation)
-Take `⟨θ, hθ, e, Q, l, hl, hy1, hy2, K, hK, ψ, hψ, hker, hred⟩` from `h`. Use `⟨K, hK, ψ, hψ, hker, 1, fun x => ?_⟩` and prove the remaining obligations. Set `g1 : GL (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (FpX X p)` to `Q * glRed (algebraMap (Op X p) (FpX X p)) (ψ x) * Q⁻¹`. Establish `hg1 : (g1 : Matrix (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (FpX X p)) = Matrix.reindex e e (cmp1 X.B.I.cm.sig X.B.I.J θ (x : HAp X p))`. Simplify using `only [g1, Units.val_mul, hred x, ← mul_assoc, Units.mul_inv, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_assoc, Units.mul_inv, mul_one]`. Establish `hinj : Function.Injective (algebraMap (Op X p) (FpX X p))` using `Subtype.val_injective`. Rewrite using `[MassDataIdxStIm.mem_Ssub_iff_sG X.B.I.cm.sig X.B.I.J θ hθ e (isUnit_det_split_form X p θ) (frameOf X u) Q l hl hy1 hy2 (x : HAp X p) g1 hg1, inv_one, one_mul, mul_one, MassDataIdxStIm.mem_sG_iff_map _ hinj (ψ x)]`. Simplify using `only [g1, mul_assoc, inv_mul_cancel_left, inv_mul_cancel, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stFrameB_of (u : D.what₂.Word) (p : TypX X) (h : StAdaptB X u p) : StFrameB X u p := by
   obtain ⟨θ, hθ, e, Q, l, hl, hy1, hy2, K, hK, ψ, hψ, hker, hred⟩ := h
@@ -60,7 +60,7 @@ theorem stFrameB_of (u : D.what₂.Word) (p : TypX X) (h : StAdaptB X u p) : StF
   simp only [g1, mul_assoc, inv_mul_cancel_left, inv_mul_cancel, mul_one]
 
 /- English proof (translation)
-The claim follows from `parabolic_image_of_frame X u p (stFrameB_of X u p h)`.
+A detailed English derivation is pending.
 -/
 theorem parabolic_image_of_adapted (u : D.what₂.Word) (p : TypX X) (h : StAdaptB X u p) : ParabolicReductionImage X u p := parabolic_image_of_frame X u p (stFrameB_of X u p h)
 

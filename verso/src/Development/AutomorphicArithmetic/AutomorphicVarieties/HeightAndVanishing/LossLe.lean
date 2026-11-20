@@ -3,23 +3,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Introduce `l N n e hl hl2 hN hn he`. Establish `hfac : ∀ (p m : ℕ), m.factorization p ≤ m`. Introduce `p m`. Break down `Nat.eq_zero_or_pos m with h0 | h0` into its components or cases. Simplify using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `(Nat.factorization_lt p h0.ne').le`. Establish `hnu : LDataCardLeFinrank.nuBound l N e ≤ 2 * N * e`. Unfold `LDataCardLeFinrank.nuBound`. Establish `a1` using `hfac l N`. Establish `a2` using `hfac l e`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs`. Establish `: max (N.factorization l) 1 ≤ N.factorization l + 1` using `max_le (by omega) (by omega)`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `Nat.zero_le _`. Establish `hk : N.primeFactors.card ≤ N`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `p hp`. Establish `hp'` using `Nat.mem_primeFactors.mp hp`. Simplify using `only [Finset.mem_Icc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨hp'.1.one_lt.le, Nat.le_of_dvd (by omega) hp'.2.1⟩`. Use `_ = N := by simp`. Establish `hv : n.factorization l ≤ N` using `(hfac l n).trans hn`. Use `⟨?_, hnu⟩` and prove the remaining obligations. Use `set M := N * e with hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hNM : N ≤ M` using `Nat.le_mul_of_pos_right N he`. Establish `hM2 : 2 ≤ M` using `hN.trans hNM`. Establish `hnuM : LDataCardLeFinrank.nuBound l N e ≤ 2 * M` using `by rw [hM, ← mul_assoc]; exact hnu`. Unfold `lossAll Chr.loss`. Establish `b1 : (n + n ^ 2) * LDataCardLeFinrank.nuBound l N e ≤ (M + M ^ 2) * (2 * M)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Apply `Nat.mul_le_mul _ hnuM` to reduce the goal to its premises. Establish `: n ≤ M` using `hn.trans hNM`. Establish `: n ^ 2 ≤ M ^ 2` using `Nat.pow_le_pow_left this 2`. Use linear arithmetic over natural numbers and integers. Establish `b2 : N.primeFactors.card * (n * n.factorization l) ≤ M * (M * M)` using `Nat.mul_le_mul (hk.trans hNM) (Nat.mul_le_mul (hn.trans hNM) (hv.trans hNM))`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b3 : N.primeFactors.card * n.factorization l ≤ M * M` using `Nat.mul_le_mul (hk.trans hNM) (hv.trans hNM)`. Establish `hM3 : 8 ≤ M ^ 3`. Combine the equalities or inequalities in the displayed calculation. Establish `b4 : (M + M ^ 2) * (2 * M) + M * (M * M) + M * M ≤ M ^ 6`. Establish `e6 : M ^ 6 = M ^ 3 * M ^ 3` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `: M ^ 2 ≤ M ^ 3` using `Nat.pow_le_pow_right (by omega) (by norm_num)`. Establish `h1 : (M + M ^ 2) * (2 * M) + M * (M * M) + M * M = 2 * M ^ 2 + 3 * M ^ 3 + M ^ 2` using `by ring`. Rewrite using `[h1, e6]`. Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.lossLe :
     ∀ l N n e : ℕ, l.Prime → l ≠ 2 → 2 ≤ N → n ≤ N → 1 ≤ e → lossAll l N n e ≤ (N * e) ^ 6 ∧ LDataCardLeFinrank.nuBound l N e ≤ 2 * N * e := by

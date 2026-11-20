@@ -9,7 +9,7 @@ namespace HomLocPf
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.exact_of_f_is_kernel _ (K.cyclesIsKernel n _ rfl)).map _`.
+A detailed English derivation is pending.
 -/
 lemma exact_cyc (K : PCx R) (n : ℕ) (T : Scheme.{0}ᵒᵖ) :
     ((ShortComplex.mk (K.iCycles n) (K.d n ((ComplexShape.down ℕ).next n)) (K.iCycles_d _ _)).map
@@ -17,7 +17,7 @@ lemma exact_cyc (K : PCx R) (n : ℕ) (T : Scheme.{0}ᵒᵖ) :
   (ShortComplex.exact_of_f_is_kernel _ (K.cyclesIsKernel n _ rfl)).map _
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.exact_of_g_is_cokernel _ (K.homologyIsCokernel _ n (ChainComplex.prev ℕ n))).map _`.
+A detailed English derivation is pending.
 -/
 lemma exact_bdy (K : PCx R) (n : ℕ) (T : Scheme.{0}ᵒᵖ) :
     ((ShortComplex.mk (K.toCycles (n + 1) n) (K.homologyπ n)
@@ -25,28 +25,28 @@ lemma exact_bdy (K : PCx R) (n : ℕ) (T : Scheme.{0}ᵒᵖ) :
   (ShortComplex.exact_of_g_is_cokernel _ (K.homologyIsCokernel _ n (ChainComplex.prev ℕ n))).map _
 
 /- English proof (translation)
-Rewrite using `[← ModuleCat.mono_iff_injective]`. Conclude with `(inferInstance : Mono (((evaluation _ _).obj T).map (K.iCycles n)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma iCyc_inj (K : PCx R) (n : ℕ) (T : Scheme.{0}ᵒᵖ) : Function.Injective ((K.iCycles n).app T).hom := by
   rw [← ModuleCat.mono_iff_injective]
   exact (inferInstance : Mono (((evaluation _ _).obj T).map (K.iCycles n)))
 
 /- English proof (translation)
-Rewrite using `[← ModuleCat.epi_iff_surjective]`. Conclude with `(inferInstance : Epi (((evaluation _ _).obj T).map (K.homologyπ n)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma π_surj (K : PCx R) (n : ℕ) (T : Scheme.{0}ᵒᵖ) : Function.Surjective ((K.homologyπ n).app T).hom := by
   rw [← ModuleCat.epi_iff_surjective]
   exact (inferInstance : Epi (((evaluation _ _).obj T).map (K.homologyπ n)))
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.moduleCat_exact_iff _).1 (exact_cyc K n T) x (hx _)`.
+A detailed English derivation is pending.
 -/
 lemma lift_cyc (K : PCx R) (n : ℕ) (T : Scheme.{0}ᵒᵖ) (x : (K.X n).obj T) (hx : Cyc K n T x) :
     ∃ y, ((K.iCycles n).app T).hom y = x :=
   (ShortComplex.moduleCat_exact_iff _).1 (exact_cyc K n T) x (hx _)
 
 /- English proof (translation)
-Introduce `m`. Express the relevant statement in the definitionally equal form `((K.iCycles n ≫ K.d n m).app T).hom y = 0`. Rewrite using `[K.iCycles_d]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma cyc_i (K : PCx R) (n : ℕ) (T : Scheme.{0}ᵒᵖ) (y) : Cyc K n T (((K.iCycles n).app T).hom y) := by
   intro m
@@ -54,11 +54,11 @@ lemma cyc_i (K : PCx R) (n : ℕ) (T : Scheme.{0}ᵒᵖ) (y) : Cyc K n T (((K.iC
   rw [K.iCycles_d]; rfl
 
 /- English proof (translation)
-Establish `ti : ∀ z, ((K.iCycles n).app T).hom (((K.toCycles (n + 1) n).app T).hom z) = ((K.d (n + 1) n).app T).hom z`. Introduce `z`. Express the relevant statement in the definitionally equal form `((K.toCycles (n + 1) n ≫ K.iCycles n).app T).hom z = _`. Rewrite using `[K.toCycles_i]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Take `⟨z, hz⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (exact_bdy K n T) y h`. Conclude with `⟨z, (ti z).symm.trans (congrArg _ hz)⟩`. Introduce and unpack `⟨z, hz⟩`. Rewrite `hz` using `[← ti]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← iCyc_inj K n T hz]`. Express the relevant statement in the definitionally equal form `((K.toCycles (n + 1) n ≫ K.homologyπ n).app T).hom z = 0`. Rewrite using `[K.toCycles_comp_homologyπ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma π_zero_iff (K : PCx R) (n : ℕ) (T : Scheme.{0}ᵒᵖ) (y) :
     ((K.homologyπ n).app T).hom y = 0 ↔ Bdy K n T (((K.iCycles n).app T).hom y) := by
@@ -77,7 +77,7 @@ lemma π_zero_iff (K : PCx R) (n : ℕ) (T : Scheme.{0}ᵒᵖ) (y) :
     rw [K.toCycles_comp_homologyπ]; rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(((K.iCycles n).app T ≫ (K.X n).map g)).hom y = (((K.cycles n).map g ≫ (K.iCycles n).app U)).hom y`. Rewrite using `[(K.iCycles n).naturality]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma nat_i (K : PCx R) (n : ℕ) {T U : Scheme.{0}ᵒᵖ} (g : T ⟶ U) (y) :
     ((K.X n).map g).hom (((K.iCycles n).app T).hom y) = ((K.iCycles n).app U).hom (((K.cycles n).map g).hom y) := by
@@ -85,7 +85,7 @@ lemma nat_i (K : PCx R) (n : ℕ) {T U : Scheme.{0}ᵒᵖ} (g : T ⟶ U) (y) :
   rw [(K.iCycles n).naturality]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(((K.homologyπ n).app T ≫ (K.homology n).map g)).hom y = (((K.cycles n).map g ≫ (K.homologyπ n).app U)).hom y`. Rewrite using `[(K.homologyπ n).naturality]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma nat_π (K : PCx R) (n : ℕ) {T U : Scheme.{0}ᵒᵖ} (g : T ⟶ U) (y) :
     ((K.homology n).map g).hom (((K.homologyπ n).app T).hom y) = ((K.homologyπ n).app U).hom (((K.cycles n).map g).hom y) := by
@@ -93,7 +93,7 @@ lemma nat_π (K : PCx R) (n : ℕ) {T U : Scheme.{0}ᵒᵖ} (g : T ⟶ U) (y) :
   rw [(K.homologyπ n).naturality]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((HomologicalComplex.cyclesMap φ n ≫ L.iCycles n).app T).hom y = ((K.iCycles n ≫ φ.f n).app T).hom y`. Rewrite using `[HomologicalComplex.cyclesMap_i]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma cm_i {K L : PCx R} (φ : K ⟶ L) (n : ℕ) (T : Scheme.{0}ᵒᵖ) (y) :
     ((L.iCycles n).app T).hom (((HomologicalComplex.cyclesMap φ n).app T).hom y) =
@@ -102,7 +102,7 @@ lemma cm_i {K L : PCx R} (φ : K ⟶ L) (n : ℕ) (T : Scheme.{0}ᵒᵖ) (y) :
   rw [HomologicalComplex.cyclesMap_i]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((K.homologyπ n ≫ HomologicalComplex.homologyMap φ n).app T).hom y = ((HomologicalComplex.cyclesMap φ n ≫ L.homologyπ n).app T).hom y`. Rewrite using `[HomologicalComplex.homologyπ_naturality]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma hm_π {K L : PCx R} (φ : K ⟶ L) (n : ℕ) (T : Scheme.{0}ᵒᵖ) (y) :
     ((HomologicalComplex.homologyMap φ n).app T).hom (((K.homologyπ n).app T).hom y) =
@@ -115,15 +115,15 @@ end HomLocPf
 
 open HomLocPf in
 /- English proof (translation)
-Introduce `R _ K L φ n hinj hsurj`. Use `⟨⟨fun {X} a b h => ?_⟩, ⟨fun {U} s => ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((HomologicalComplex.homologyMap φ n).app X).hom a = ((HomologicalComplex.homologyMap φ n).app X).hom b at h`. Take `⟨y, hy⟩` from `π_surj K n X (a - b)`. Establish `hb : Bdy L n X (((φ.f n).app X).hom (((K.iCycles n).app X).hom y))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← cm_i, ← π_zero_iff, ← hm_π, hy, map_sub, h, sub_self]`. Take `⟨S, hS, hSx⟩` from `hinj X _ (cyc_i K n X y) hb`. Use `Scheme.etaleTopology.superset_covering ?_ hS` and prove the remaining obligations. Introduce `V f hf`. Rewrite using `[Presheaf.equalizerSieve_apply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((K.homology n).map f.op).hom a = ((K.homology n).map f.op).hom b`. Rewrite using `[← sub_eq_zero, ← map_sub, ← hy, nat_π, π_zero_iff, ← nat_i]`. Conclude with `hSx f hf`. Take `⟨y, rfl⟩` from `π_surj L n _ s`. Take `⟨S, hS, hSx⟩` from `hsurj (op U) _ (cyc_i L n _ y)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Scheme.etaleTopology.superset_covering ?_ hS` and prove the remaining obligations. Introduce `V f hf`. Take `⟨x', hx', hb⟩` from `hSx f hf`. Take `⟨y', rfl⟩` from `lift_cyc K n _ x' hx'`. Use `⟨((K.homologyπ n).app (op V)).hom y', ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((HomologicalComplex.homologyMap φ n).app (op V)).hom (((K.homologyπ n).app (op V)).hom y') = ((L.homology n).map f.op).hom (((L.homologyπ n).app (op U)).hom y)`. Rewrite using `[hm_π, nat_π, ← sub_eq_zero, ← map_sub, π_zero_iff, map_sub, cm_i, ← nat_i]`. Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafHomLoc_of : LeafHomLoc := by
   intro R _ K L φ n hinj hsurj

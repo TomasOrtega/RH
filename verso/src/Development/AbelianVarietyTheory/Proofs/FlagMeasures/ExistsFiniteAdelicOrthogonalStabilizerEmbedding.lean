@@ -8,23 +8,21 @@ open scoped TensorProduct
 namespace GlobalTheory.StabUnfold
 
 /- English proof (translation)
-Take `⟨u, A', h1, h2, h3, h4, h5, h6⟩` from `exists_dual_of_anisotropic_orthogonal E n m J J' x A hn hJ hd hx hxA hA`. Establish `hsx : (fun i => σ (φ (x i))) = φ ∘ star x`. Use function extensionality and compare the values at `i`. Simplify using `[hσ]`. Establish `hcT : Formalism.UG.cT σ (A.map φ) = (Aᴴ).map φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hσ]`. Establish `mv : ∀ {a b : ℕ} (M : Matrix (Fin a) (Fin b) E) (v : Fin b → E), M.map φ *ᵥ (φ ∘ v) = φ ∘ (M *ᵥ v)`. Introduce `a b M v`. Use function extensionality and compare the values at `i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(RingHom.map_mulVec φ M v i).symm`. Establish `vm : ∀ {a b : ℕ} (M : Matrix (Fin a) (Fin b) E) (v : Fin a → E), (φ ∘ v) ᵥ* M.map φ = φ ∘ (v ᵥ* M)`. Introduce `a b M v`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_vecMul φ M v i).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `z : ∀ {a : ℕ}, φ ∘ (0 : Fin a → E) = 0`. Introduce `a`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `k1 : A'.map φ * A.map φ = 1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, h1, Matrix.map_one φ (map_zero φ) (map_one φ)]`. Establish `k2 : A'.map φ *ᵥ (φ ∘ x) = 0` using `by rw [mv, h2, z]`. Establish `k3 : (φ ∘ u) ᵥ* A.map φ = 0` using `by rw [vm, h3, z]`. Establish `k4 : (φ ∘ u) ⬝ᵥ (φ ∘ x) = 1` using `by rw [← RingHom.map_dotProduct, h4, map_one]`. Establish `k5 : vecMulVec (φ ∘ x) (φ ∘ u) + A.map φ * A'.map φ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← Matrix.map_one φ (map_zero φ) (map_one φ), ← h5, ← Matrix.map_mul]`. Use extensionality with `i j`. Simplify using `[vecMulVec_apply, Matrix.mul_apply]`. Take `⟨j, hj, hr⟩` from `GlobalTheory.T.exists_unitary_orthogonal_embedding_stabilizer R σ n m (J.map φ) (J'.map φ) (φ ∘ x) (φ ∘ u) (A.map φ) (A'.map φ) (by`. Express the relevant statement in the definitionally equal form `IsUnit ((fun i => σ (φ (x i))) ⬝ᵥ _)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hsx, mv, ← RingHom.map_dotProduct]`. Conclude with `(IsUnit.mk0 _ hx).map φ)`. Use the proof step `(by`. Express the relevant statement in the definitionally equal form `(fun i => σ (φ (x i))) ᵥ* _ = 0`. Rewrite using `[hsx, ← Matrix.map_mul, vm, hxA, z])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `(by rw [hcT, mv, mv, h6, z])`. Use the proof step `(by rw [hcT, ← Matrix.map_mul, ← Matrix.map_mul, hA])`. Use `k1 k2 k3 k4 k5`. Use `⟨j, fun g => ⟨?_, ?_⟩, hr⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ *ᵥ (φ ∘ x) = φ ∘ x`.
-
-Rewrite using `[hj, Matrix.add_mulVec, ← Matrix.mulVec_mulVec, k2, Matrix.mulVec_zero, add_zero, Matrix.vecMulVec_mulVec, k4]`. Simplify using the standard rewrite rules. Rewrite using `[hj, Matrix.add_mul, Matrix.mul_assoc, k1, Matrix.mul_one, Matrix.vecMulVec_mul, k3]`. Use extensionality with `a b`. Simplify using `[vecMulVec_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_stab_emb_baseChange {E R : Type} [Field E] [StarRing E] [CommRing R] (φ : E →+* R)
     (σ : R →+* R) (hσ : ∀ a, σ (φ a) = φ (star a)) {n m : ℕ} (J : Matrix (Fin n) (Fin n) E)
@@ -79,9 +77,9 @@ theorem exists_stab_emb_baseChange {E R : Type} [Field E] [StarRing E] [CommRing
     ext a b; simp [vecMulVec_apply]
 
 /- English proof (translation)
-Introduce `I D s x A xf h`. Take `⟨hn, hx, hxA, hA, -, -⟩` from `h`. Establish `hσ : ∀ a : I.E, Formalism.UG.sigR I.cm.sig (Af I.F) (Formalism.UG.inclE (F` using `I.F) (Af I.F) a) = Formalism.UG.inclE (F := I.F) (Af I.F) (star a) := by`. Introduce `a`. Establish `: I.cm.sig a = star a` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Formalism.UG.sigR, Formalism.UG.inclE, this]`. Establish `hx' : star x ⬝ᵥ (I.J *ᵥ x) ≠ 0`. Apply the tactic sequence `rw [hx]; cases s <;> simp [sgn]`. Conclude with `exists_stab_emb_baseChange (Formalism.UG.inclE (F := I.F) (Af I.F)) (Formalism.UG.sigR I.cm.sig (Af I.F)) hσ I.J D.J x A hn I.J_herm D.J_det hx' hxA hA`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_finEmb : ∀ (I : AutInst) (D : Sib I) (s : Bool) (x : Fin I.n → I.E) (A : Matrix (Fin I.n) (Fin D.n) I.E) (xf : I.Gf), IsPerp D s x A xf → ∃ jf : D.inst.Gf →* I.Gf, IsFinEmb D x A jf ∧ ∀ h : I.Gf, I.fmat h *ᵥ afVec I x = afVec I x → h ∈ jf.range := by
   intro I D s x A xf h

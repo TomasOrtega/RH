@@ -6,13 +6,13 @@ namespace Formalism.L2.G.RelativeIndexFlags
 open Formalism.L2.G.Cmp
 
 /- English proof (translation)
-The claim follows from `oddDualWeyl O m lam`.
+A detailed English derivation is pending.
 -/
 theorem oddFact_pf {K : Type} [Field K] (O : Type) [CommRing O] [Algebra O K] (m : ℕ) (lam : Fin (m + 1) → ℤ) :
     OddFact (K := K) O m lam := oddDualWeyl O m lam
 
 /- English proof (translation)
-The claim follows from `weylLatticeDescent_of_integral_models fun m lam _ => oddFact_pf ℤ m lam`.
+A detailed English derivation is pending.
 -/
 theorem weylLatticeDescent_holds : WeylLatticeDescent := weylLatticeDescent_of_integral_models fun m lam _ => oddFact_pf ℤ m lam
 

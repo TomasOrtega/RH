@@ -9,7 +9,7 @@ namespace GlobalTheory.LevelHecke.AboveSum
 variable {R V k : Type} [CommRing R] [AddCommGroup V] [Module R V] [Field k]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Rewrite `he` using `[h.off e hn]`. Conclude with `zero_ne_one he`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_one {res : R →+* k} {q : Pr R V k} (h : q.Ok res) {e : V} (he : q.f e = 1) : e ∈ q.L := by
   by_contra hn
@@ -17,14 +17,14 @@ theorem mem_of_one {res : R →+* k} {q : Pr R V k} (h : q.Ok res) {e : V} (he :
   exact zero_ne_one he
 
 /- English proof (translation)
-The claim follows from `(hk _).2 ⟨q.L.smul_mem _ (mem_of_one h he), by rw [h.smul _ _ (mem_of_one h he), ht, zero_mul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_ker {res : R →+* k} {q : Pr R V k} {Λ : Submodule R V} (h : q.Ok res) (hk : q.IsKer Λ) {t : R}
     (ht : res t = 0) {e : V} (he : q.f e = 1) : t • e ∈ Λ :=
   (hk _).2 ⟨q.L.smul_mem _ (mem_of_one h he), by rw [h.smul _ _ (mem_of_one h he), ht, zero_mul]⟩
 
 /- English proof (translation)
-Establish `he'` using `mem_of_one h he`. Use `(hk _).2 ⟨q.L.add_mem hy (q.L.smul_mem _ he'), ?_⟩` and prove the remaining obligations. Rewrite using `[h.add _ hy _ (q.L.smul_mem _ he'), h.smul _ _ he', he, map_neg, ha]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sub_mem_ker {res : R →+* k} {q : Pr R V k} {Λ : Submodule R V} (h : q.Ok res) (hk : q.IsKer Λ)
     {e : V} (he : q.f e = 1) {y : V} (hy : y ∈ q.L) {a : R} (ha : res a = q.f y) : y + (-a) • e ∈ Λ := by
@@ -34,11 +34,11 @@ theorem sub_mem_ker {res : R →+* k} {q : Pr R V k} {Λ : Submodule R V} (h : q
   ring
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hres (q.f y)`. Establish `h1` using `sub_mem_ker h hk he hy ha`. Establish `h2` using `(hk' _).1 (Λ.add_mem h1 (Λ.smul_mem a hd))`. Establish `h3` using `mem_of_one h' he'`. Establish `e0 : y = (y + (-a) • e + a • (e - e')) + a • e'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_sub, neg_smul]`. Normalize the expressions using the abelian group laws. Establish `h4` using `q'.L.smul_mem a h3`. Prove the components needed by the constructor for the conclusion. Rewrite using `[e0]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `q'.L.add_mem h2.1 h4`. Establish `h5` using `h'.add _ h2.1 _ h4`. Rewrite `h5` using `[← e0, h2.2, h'.smul _ _ h3, he', ha]`. Rewrite using `[h5]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem le_of_ker {res : R →+* k} (hres : Function.Surjective res) {q q' : Pr R V k} {Λ : Submodule R V}
     (h : q.Ok res) (hk : q.IsKer Λ) (h' : q'.Ok res) (hk' : q'.IsKer Λ) {e e' : V} (he : q.f e = 1)
@@ -57,9 +57,9 @@ theorem le_of_ker {res : R →+* k} (hres : Function.Surjective res) {q q' : Pr 
     rw [h5]; ring
 
 /- English proof (translation)
-Establish `hd' : e' - e ∈ Λ` using `by rw [← neg_sub]; exact Λ.neg_mem hd`. Use extensionality with `y`. Conclude with `⟨fun hy => (le_of_ker hres h hk h' hk' he he' hd hy).1, fun hy => (le_of_ker hres h' hk' h hk he' he hd' hy).1⟩`. Distinguish the cases in `hy : y ∈ q.L`. Conclude with `(le_of_ker hres h hk h' hk' he he' hd hy).2.symm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.off y hy, h'.off y (fun hy' => hy (le_of_ker hres h' hk' h hk he' he hd' hy').1)]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_ker {res : R →+* k} (hres : Function.Surjective res) {q q' : Pr R V k} {Λ : Submodule R V}
     (h : q.Ok res) (hk : q.IsKer Λ) (h' : q'.Ok res) (hk' : q'.IsKer Λ) {e e' : V} (he : q.f e = 1)
@@ -73,19 +73,19 @@ theorem eq_of_ker {res : R →+* k} (hres : Function.Surjective res) {q q' : Pr 
     · rw [h.off y hy, h'.off y (fun hy' => hy (le_of_ker hres h' hk' h hk he' he hd' hy').1)]
 
 /- English proof (translation)
-Introduce `R V k W M _ _ _ _ _ _ _ res t p π φ q Φ hres ht htf hsat hred hf hq`. Use `symm`. Use `finsum_mem_eq_of_bijOn q ⟨?_, ?_, ?_⟩ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `w hw`. Take `⟨h1, h2, e, h3, h4⟩` from `hq w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨h1, h2, e, h3, ?_⟩` and prove the remaining obligations. Rewrite using `[hf _ (smul_mem_ker h1 h2 ht h3), h4]`. Conclude with `hw`. Introduce `w hw w' hw' hww`. Take `⟨h1, h2, e, h3, h4⟩` from `hq w hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, e', h3', h4'⟩` from `hq w' hw'`. Rewrite `h3'` using `[← hww]`. Establish `hd : e + (-1 : R) • e' ∈ p.L` using `sub_mem_ker h1 h2 h3' (mem_of_one h1 h3) (by rw [map_one, h3])`. Establish `e0 : t • e = t • e' + t • (e + (-1 : R) • e')`. Rewrite using `[neg_smul, one_smul, smul_add, smul_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[← h4, ← h4', e0, hred.add _ (smul_mem_ker h1 h2 ht h3') _ (p.L.smul_mem _ hd), hred.smul _ _ hd, ht, zero_smul, add_zero]`. Introduce and unpack `q' ⟨h1', h2', e', h3', h4'⟩`. Establish `hm'` using `smul_mem_ker h1' h2' ht h3'`. Establish `hw : φ (π (t • e')) = 1` using `by rw [← hf _ hm', h4']`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨π (t • e'), hw, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, e, h3, h4⟩` from `hq _ hw`. Establish `hm` using `smul_mem_ker h1 h2 ht h3`. Establish `h0 : π (t • e + (-1 : R) • t • e') = 0`. Rewrite using `[hred.add _ hm _ (p.L.smul_mem _ hm'), hred.smul _ _ hm', h4, map_neg, map_one, neg_smul, one_smul, add_neg_cancel]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, s, hs, hsy⟩` from `(hred.ker _ (p.L.add_mem hm (p.L.smul_mem _ hm'))).1 h0`. Establish `h5 : s • (e - e') - y = 0`. Apply `htf` to reduce the goal to its premises. Rewrite using `[smul_sub, ← hsy, smul_comm t s, neg_smul, one_smul, smul_sub t, sub_eq_add_neg (t • e), sub_self]`. Use `eq_of_ker hres h1 h2 h1' h2' h3 h3' (hsat s _ hs ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_zero.1 h5]`. Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem finsum_above : ∀ (R V k W M : Type) [CommRing R] [AddCommGroup V] [Module R V] [Field k] [AddCommGroup W] [Module k W] [AddCommMonoid M] (res : R →+* k) (t : R) (p : Pr R V k) (π : V → W) (φ : Module.Dual k W) (q : W → Pr R V k) (Φ : Pr R V k → M), Function.Surjective res → res t = 0 → (∀ x : V, t • x = 0 → x = 0) → (∀ s x, res s ≠ 0 → s • x ∈ p.L → x ∈ p.L) → Red res t p.L π → (∀ x ∈ p.L, p.f x = φ (π x)) → (∀ w, φ w = 1 → (q w).Ok res ∧ (q w).IsKer p.L ∧ ∃ e, (q w).f e = 1 ∧ π (t • e) = w) → ∑ᶠ q' ∈ {q' | Pr.Inc res t p q'}, Φ q' = ∑ᶠ w ∈ {w | φ w = 1}, Φ (q w) := by
   intro R V k W M _ _ _ _ _ _ _ res t p π φ q Φ hres ht htf hsat hred hf hq

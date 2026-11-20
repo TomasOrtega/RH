@@ -21,7 +21,7 @@ def latHat (Λ : Set (Fin n → E)) : Set (Fin n → Af F ⊗[F] E) :=
   {x | ∀ v, pv v x ∈ latLoc (E := E) v Λ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[pv, Matrix.mulVec, dotProduct, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pv_mulVec (v : HeightOneSpectrum (𝓞 F)) (m : Matrix (Fin n) (Fin n) (Af F ⊗[F] E))
     (x : Fin n → Af F ⊗[F] E) :
@@ -31,9 +31,9 @@ theorem pv_mulVec (v : HeightOneSpectrum (𝓞 F)) (m : Matrix (Fin n) (Fin n) (
 
 open Classical in
 /- English proof (translation)
-Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `j`. Use `show (singleV F v (c • y)) j = evalV F j (c • singleV F v y)`. Rewrite using `[map_smul]`. Use `show _ = c • (singleV F v y) j`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : j = v`. Substitute `h` using the available equality. Rewrite using `[PI.VolStabSW.VolAAW.singleV_self, PI.VolStabSW.VolAAW.singleV_self]`. Rewrite using `[PI.VolStabSW.VolAAW.singleV_ne _ _ h, PI.VolStabSW.VolAAW.singleV_ne _ _ h, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem singleV_smul (v : HeightOneSpectrum (𝓞 F)) (c : F) (y : Fv F v) :
     singleV F v (c • y) = c • singleV F v y := by
@@ -56,9 +56,9 @@ def liftV (v : HeightOneSpectrum (𝓞 F)) (y : Fin n → Fv F v ⊗[F] E) : Fin
   fun i => LinearMap.rTensor E (sV v) (y i)
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Simplify using `only [LinearMap.rTensor_tmul]`. Use `show (evalV F v (singleV F v a)) ⊗ₜ[F] e = a ⊗ₜ e`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show (singleV F v a v) ⊗ₜ[F] e = a ⊗ₜ e`. Rewrite using `[PI.VolStabSW.VolAAW.singleV_self]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tens_lift_self (v : HeightOneSpectrum (𝓞 F)) (z : Fv F v ⊗[F] E) :
     tensMap (E := E) (evalV F v) (LinearMap.rTensor E (sV v) z) = z := by
@@ -72,9 +72,9 @@ theorem tens_lift_self (v : HeightOneSpectrum (𝓞 F)) (z : Fv F v ⊗[F] E) :
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Simplify using `only [LinearMap.rTensor_tmul]`. Use `show (evalV F w (singleV F v a)) ⊗ₜ[F] e = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show (singleV F v a w) ⊗ₜ[F] e = 0`. Rewrite using `[PI.VolStabSW.VolAAW.singleV_ne _ _ h, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tens_lift_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (z : Fv F v ⊗[F] E) :
     tensMap (E := E) (evalV F w) (LinearMap.rTensor E (sV v) z) = 0 := by
@@ -88,14 +88,14 @@ theorem tens_lift_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (z : Fv F 
   | add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `tens_lift_self v (y i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pv_liftV_self (v : HeightOneSpectrum (𝓞 F)) (y : Fin n → Fv F v ⊗[F] E) : pv v (liftV v y) = y := by
   funext i
   exact tens_lift_self v (y i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `tens_lift_ne h (y i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pv_liftV_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (y : Fin n → Fv F v ⊗[F] E) :
     pv w (liftV v y) = 0 := by
@@ -103,9 +103,9 @@ theorem pv_liftV_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (y : Fin n 
   exact tens_lift_ne h (y i)
 
 /- English proof (translation)
-Introduce `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[pv_liftV_self]`. Conclude with `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pv_liftV_ne h]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem liftV_mem (Λ : Set (Fin n → E)) (v : HeightOneSpectrum (𝓞 F)) {y : Fin n → Fv F v ⊗[F] E}
     (hy : y ∈ latLoc (E := E) v Λ) : liftV v y ∈ latHat (F := F) Λ := by
@@ -118,7 +118,7 @@ theorem liftV_mem (Λ : Set (Fin n → E)) (v : HeightOneSpectrum (𝓞 F)) {y :
     exact zero_mem _
 
 /- English proof (translation)
-Establish `h` using `hm _ (liftV_mem Λ v hy) v`. Rewrite `h` using `[pv_mulVec, pv_liftV_self]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem loc_of_matStab (Λ : Set (Fin n → E)) {m : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)}
     (hm : m ∈ matStab (latHat (F := F) Λ)) (v : HeightOneSpectrum (𝓞 F)) {y : Fin n → Fv F v ⊗[F] E}

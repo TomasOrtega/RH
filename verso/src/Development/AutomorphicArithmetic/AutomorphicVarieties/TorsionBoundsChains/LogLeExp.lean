@@ -12,15 +12,15 @@ open CategoryTheory
 namespace UpperTheory.V.KH
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `X _ d M e he h0 _ ho _ hl`. Use `base G (X 0) (X 1) M e (d 0).hom.toLinearMap A b he h0 (ho 0 le_rfl) hb hl` as an intermediate fact. Simplify `this` using `[bound]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ m ih`. Introduce `X _ d M e he h0 hx ho hst hl`. Take `⟨K, p, i, hp, hi, hpi, hie⟩` from `imageRep G _ _ _ (d 0) e h0`. Establish `h1 : Function.Exact (d 1).hom p.hom`. Introduce `y`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hx 0 (Nat.succ_pos m) y, ← hpi y]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, map_zero]`. Introduce `h; exact hi (by rw [h, map_zero])`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hK` using `ih (fun q => X (q + 1)) (fun q => d (q + 1)) K p hp h1 (fun q hq => hx (q + 1) (by omega)) (fun q hq => ho (q + 1) (by omega)) (fun q hq => hst (q + 1) (by omega)) hl`. Establish `hC` using `permCard G s m A (X 0) (ho 0 (by omega)) (hst 0 (by omega)) hs`. Take `⟨u, v, huv⟩` from `(les G _ _ _ i e hi hie he m).2`. Use `transport.2.2.1 _ _ _ ?_ (torsStep _ _ _ u v _ _ huv hC hK)` and prove the remaining obligations. Unfold `bound`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_left_comm, ← pow_add]`. Use `Nat.mul_le_mul_left _ (Nat.pow_le_pow_right hs ?_)` and prove the remaining obligations. Establish `: s ^ m ≤ s ^ (m + 1)` using `Nat.pow_le_pow_right hs (by omega)`. Establish `h2` using `Nat.mul_le_mul_left (m * A) this`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem shift (G : Type) [Group G] (A s b : ℕ) (hs : 1 ≤ s) (hb : 1 ≤ b) (m : ℕ) :
     ∀ (X : ℕ → Type) [∀ p, MulAction G (X p)]
@@ -58,7 +58,7 @@ theorem shift (G : Type) [Group G] (A s b : ℕ) (hs : 1 ≤ s) (hb : 1 ≤ b) (
     nlinarith
 
 /- English proof (translation)
-The claim follows from `shift G A s b hs hb m X (fun p => Rep.ofHom ⟨C.d p, fun g => LinearMap.ext fun f => C.d_equiv p g f⟩) (Rep.trivial ℤ G ℤ) (Rep.ofHom ⟨C.ε, fun g => LinearMap.ext fun f => C.ε_equiv g f⟩) hx.1 hx.2.1 hx.2.2 ho hst hl`.
+A detailed English derivation is pending.
 -/
 theorem main (G : Type) [Group G] (X : ℕ → Type) [∀ p, MulAction G (X p)] (C : PermCx G X)
     (m A s b : ℕ) (hs : 1 ≤ s) (hb : 1 ≤ b) (hx : C.ExactTo m)
@@ -71,7 +71,7 @@ theorem main (G : Type) [Group G] (X : ℕ → Type) [∀ p, MulAction G (X p)] 
     hx.1 hx.2.1 hx.2.2 ho hst hl
 
 /- English proof (translation)
-The claim follows from `main G X (faceCx G X face h) m A s (m + 2) hs (by omega) hx ho hst (fun y => l1_mapDomain_le_and_l1_faceD_single_le.2 _ _ _ (face m) y)`.
+A detailed English derivation is pending.
 -/
 theorem mainFace (G : Type) [Group G] (X : ℕ → Type) [∀ p, MulAction G (X p)]
     (face : ∀ p, Fin (p + 2) → X (p + 1) → X p)
@@ -83,9 +83,9 @@ theorem mainFace (G : Type) [Group G] (X : ℕ → Type) [∀ p, MulAction G (X 
     (fun y => l1_mapDomain_le_and_l1_faceD_single_le.2 _ _ _ (face m) y)
 
 /- English proof (translation)
-Establish `h1 : (0 : ℝ) < s` using `by exact_mod_cast hs`. Establish `h2 : (0 : ℝ) < b` using `by exact_mod_cast hb`. Unfold `bound`. Use `push_cast`. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_bound (m A s b : ℕ) (hs : 1 ≤ s) (hb : 1 ≤ b) :
     Real.log (bound m A s b) = A * Real.log b + m * A * (s : ℝ) ^ m * Real.log s := by
@@ -98,7 +98,7 @@ theorem log_bound (m A s b : ℕ) (hs : 1 ≤ s) (hb : 1 ≤ b) :
   ring
 
 /- English proof (translation)
-Rewrite using `[← log_bound m A s b hs hb]`. Use `haveI := h.1`. Establish `: 0 < Nat.card (AddCommGroup.torsion M)` using `Nat.card_pos`. Conclude with `Real.log_le_log (by exact_mod_cast this) (by exact_mod_cast h.2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem TorsLe.log_le {M : Type} [AddCommGroup M] {m A s b : ℕ} (hs : 1 ≤ s) (hb : 1 ≤ b)
     (h : TorsLe M (bound m A s b)) :
@@ -114,15 +114,13 @@ end UpperTheory.V.KH
 namespace UpperTheory.V.KH
 
 /- English proof (translation)
-Use `(h.log_le hs (by omega)).trans ?_` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ s` using `by exact_mod_cast hs`. Establish `hm : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Establish `hA0 : (0 : ℝ) ≤ A` using `Nat.cast_nonneg A`. Establish `h2 : Real.log ((m + 2 : ℕ) : ℝ) ≤ m + 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.log_le_sub_one_of_pos (x := ((m + 2 : ℕ) : ℝ)) (by positivity)` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : Real.log s ≤ s` using `(Real.log_le_sub_one_of_pos (by positivity)).trans (by linarith)`. Establish `h4 : (1 : ℝ) ≤ (s : ℝ) ^ (m + 1)` using `one_le_pow₀ h1`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (s : ℝ) ^ (m + 1) ≤ Real.exp ((m + 1) * σ)`. Use `pow_le_pow_left₀ (by positivity) hσ (m + 1)` as an intermediate fact. Rewrite `this` using `[← Real.exp_nat_mul]`. Conclude with `this` after adjusting the coercions. Establish `h6 : (2 * m + 1 : ℝ) ≤ Real.exp (2 * m)` using `Real.add_one_le_exp _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : (s : ℝ) ^ m * Real.log s ≤ (s : ℝ) ^ (m + 1)`. Rewrite using `[pow_succ]; exact mul_le_mul_of_nonneg_left h3 (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Use `add_le_add (mul_le_mul_of_nonneg_left (h2.trans ?_) hA0) ?_` and prove the remaining obligations. Conclude with `le_mul_of_one_le_right (by positivity) h4`.
-
-Rewrite using `[mul_assoc (m * A : ℝ)]`. Conclude with `mul_le_mul_of_nonneg_left h7 (by positivity)`. Use `_ = A * (s : ℝ) ^ (m + 1) * (2 * m + 1) := by ring`. Use `_ ≤ Real.exp a * Real.exp ((m + 1) * σ) * Real.exp (2 * m) := by gcongr`. Use `_ = _ := by rw [← Real.exp_add, ← Real.exp_add]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TorsLe.log_le_exp {M : Type} [AddCommGroup M] {m A s : ℕ} {a σ : ℝ} (hs : 1 ≤ s)
     (hA : (A : ℝ) ≤ Real.exp a) (hσ : (s : ℝ) ≤ Real.exp σ)

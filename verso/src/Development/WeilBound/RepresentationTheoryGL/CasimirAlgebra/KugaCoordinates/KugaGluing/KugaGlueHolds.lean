@@ -13,29 +13,27 @@ namespace PositivityTheory.Rg.Cz
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `hK hF hC _ hT hH E _ _ _ a π Ξ hU hS q₀ ω₀ hω₀ h0`. Use `hH E a _ (tensorK π Ξ) (tensorLie π Ξ) (fun q ω hω => ?_) q₀ ω₀ hω₀ h0` and prove the remaining obligations. Take `⟨Hf, σ, hHs, hHp, hHl⟩` from `hU`. Take `⟨B, hB1, hB2, hB3, hB4⟩` from `hT π.V Ξ.d Hf hHs hHp`. Take `⟨hspan, c, hc, hbr, hbr2⟩` from `hF E a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose cc tt hcas htr htrX hle using hS.2`. Establish `hZ : ∀ k, star (iM (fr (E` using `E) (a := a) k).1) = -iM (fr k).1 := fun k => kg_star_iM (fr k).2`. Establish `hreal : ∀ X : Lie E a, starRingEnd ℂ (kgT X) = kgT X` using `fun X => kgT_star X`. Establish `hskew : ∀ (X : Herm E a) (x y : π.V ⊗[ℂ] (Fin Ξ.d → ℂ)), B ((kgA π Ξ σ).comp kgH X x) y = -B x ((kgA π Ξ σ).comp kgH X y)`. Introduce `X x y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `kg_form_rTensor Hf B hB3 (lieOp π (toL X.1)) (σ * kgT (toL X.1)) (fun φ ψ => hHl _ φ ψ) x y`. Establish `hs` using `hreal (toL X.1)`. Rewrite using `[LinearMap.comp_apply, show kgH X = toL X.1 from rfl, kgA_apply]`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, map_add, map_smul, LinearMap.map_smulₛₗ, smul_eq_mul, map_mul, map_neg, Complex.conj_ofReal, map_div₀, map_ofNat, hs]`. Take the linear combination `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hherm : ∀ (X : Herm E a) (x y : π.V ⊗[ℂ] (Fin Ξ.d → ℂ)), B ((kgR π Ξ σ).comp kgH X x) y = B x ((kgR π Ξ σ).comp kgH X y)`. Introduce `X x y`. Establish `hD : (Ξ.dmat (toL X.1))ᴴ = Ξ.dmat (toL X.1)`. Rewrite using `[← hS.1, show star X.1 = X.1 from X.2]`. Establish `h2` using `kg_form_lTensor Hf B hB3 _ hD x y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `hreal (toL X.1)`. Rewrite using `[LinearMap.comp_apply, show kgH X = toL X.1 from rfl, kgR_apply]`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, map_add, map_smul, LinearMap.map_smulₛₗ, smul_eq_mul, map_mul, map_neg, Complex.conj_ofReal, map_div₀, map_ofNat, hs]`. Take the linear combination `h2`. Establish `hbrA : ∀ i j, (kgA π Ξ σ).comp kgH (fr i) * (kgA π Ξ σ).comp kgH (fr j) - (kgA π Ξ σ).comp kgH (fr j) * (kgA π Ξ σ).comp kgH (fr i) = ∑ k, (c i j k : ℂ) • kgA π Ξ σ (toL (iM (fr k).1))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Use `show kgA π Ξ σ (toL (fr i).1) * kgA π Ξ σ (toL (fr j).1) - kgA π Ξ σ (toL (fr j).1) * kgA π Ξ σ (toL (fr i).1) = _`. Rewrite using `[kgA_comm, hbr i j, show toL (∑ k, c i j k • iM (fr k).1) = kgL (∑ k, c i j k • iM (fr k).1) from rfl, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, ← algebraMap_smul ℂ (c i j k)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hbrR : ∀ i j, (kgR π Ξ σ).comp kgH (fr i) * (kgR π Ξ σ).comp kgH (fr j) - (kgR π Ξ σ).comp kgH (fr j) * (kgR π Ξ σ).comp kgH (fr i) = ∑ k, (c i j k : ℂ) • kgR π Ξ σ (toL (iM (fr k).1))`. Introduce `i j`. Use `show kgR π Ξ σ (toL (fr i).1) * kgR π Ξ σ (toL (fr j).1) - kgR π Ξ σ (toL (fr j).1) * kgR π Ξ σ (toL (fr i).1) = _`. Rewrite using `[kgR_comm, hbr i j, show toL (∑ k, c i j k • iM (fr k).1) = kgL (∑ k, c i j k • iM (fr k).1) from rfl, map_sum, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, ← algebraMap_smul ℂ (c i j k)]`. Both sides reduce to the same expression. Establish `hDk : ∀ k j, kgD _ (hZ k) (fr j) = ∑ i, c i j k • fr i` using `fun k j => Subtype.ext (by`. Rewrite using `[kgD_val, Submodule.coe_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Submodule.coe_smul]`. Conclude with `hbr2 k j)`. Establish `hinv : ∀ k (Y : Fin q → Herm E a), (kgA π Ξ σ (toL (iM (fr k).1)) + kgR π Ξ σ (toL (iM (fr k).1))) (ω Y) = ∑ s, ω (Function.update Y s (kgD _ (hZ k) (Y s)))`. Introduce `k Y`. Take `⟨S, hS1, hS2⟩` from `GlobalTheory.WigSep.exists_separating_functionals E a π Ξ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨cv, hc0, hcd⟩` from `GlobalTheory.WigCurve.exists_kinf_curve_tangent E a _ (hZ k)`. Rewrite using `[kgA_add_kgR]`. Conclude with `GlobalTheory.CochainInv.lie_apply_eq_sum E a _ (tensorK π Ξ) (tensorLie π Ξ) S cv _ (hZ k) hc0 hcd hS1 (hS2 cv _ hc0 hcd) q ω hω Y _ (fun s => rfl)`. Establish `hcasI : ∀ x : π.V ⊗[ℂ] (Fin Ξ.d → ℂ), (B (((∑ i, (kgR π Ξ σ).comp kgH (fr i) * (kgR π Ξ σ).comp kgH (fr i) - ∑ k, kgR π Ξ σ (toL (iM (fr k).1)) * kgR π Ξ σ (toL (iM (fr k).1))) - (∑ i, (kgA π Ξ σ).comp kgH (fr i) * (kgA π Ξ σ).comp kgH (fr i) - ∑ k, kgA π Ξ σ (toL (iM (fr k).1)) …`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `kg_casDiff π Ξ σ hC cc tt hcas htr htrX`. Establish `h` using `kg_re_le B _ cc (fun τ y => hB4 _ (cc τ) (kg_cas_herm Ξ hS.1 τ) (hle τ) y) x`. Rewrite `h` using `[← e]`. Conclude with `h`. Establish `key` using `hK (Herm E a) (π.V ⊗[ℂ] (Fin Ξ.d → ℂ)) _ _ fr B ((kgA π Ξ σ).comp kgH) ((kgR π Ξ σ).comp kgH) (fun k => kgA π Ξ σ (toL (iM (fr k).1))) (fun k => kgR π Ξ σ (toL (iM (fr k).1))) (fun k => kgD _ (hZ k)) c hspan hB1 hB2 hskew hherm (fun X Y => kgA_kgR_comm π Ξ σ _ _) (fun k => kgA_kg …`.
-
-Use `AlternatingMap.ext fun X => ?_` and prove the remaining obligations. Rewrite using `[dCo_apply, AlternatingMap.zero_apply, ← key X]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, kgA_add_kgR]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kugaGlue_holds : KugaGlue := by
   intro hK hF hC _ hT hH E _ _ _ a π Ξ hU hS q₀ ω₀ hω₀ h0

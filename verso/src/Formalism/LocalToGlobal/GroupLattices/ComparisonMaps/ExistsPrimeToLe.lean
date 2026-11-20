@@ -13,17 +13,15 @@ section CRT
 variable {R : Type*} [CommRing R] [IsDedekindDomain R]
 
 /- English proof (translation)
-Establish `hI : (Ideal.span {d} : Ideal R) ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hd`. Set `S : Finset (HeightOneSpectrum R)` to `(Ideal.finite_factors hI).toFinset ∪ {P}`. Set `n : HeightOneSpectrum R → ℕ` to `fun v => (Associates.mk v.asIdeal).count (Associates.mk (Ideal.span {d} : Ideal R)).factors`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := S) (fun v => v.asIdeal) (fun v => if v = P then 1 else n v) (fun v _ => v.prime) (fun v _ v' _ h h' => h (HeightOneSpectrum.ext h')) (fun v => if v.1 = P then 1 else 0)`. Use `⟨y, ?_, fun v hv => ?_⟩` and prove the remaining obligations. Introduce `hyP`. Establish `h1` using `hy P (Finset.mem_union_right _ (Finset.mem_singleton_self P))`. Simplify using `only [↓reduceIte, pow_one] at h1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (1 : R) ∈ P.asIdeal`. Use `P.asIdeal.sub_mem hyP h1` as an intermediate fact. Simplify using `using this`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h2)`. Distinguish the cases in `hvd : v.asIdeal ∣ Ideal.span {d}`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvS : v ∈ S` using `Finset.mem_union_left _ ((Set.Finite.mem_toFinset _).2 hvd)`. Establish `h1` using `hy v hvS`. Simplify using `only [if_neg hv, sub_zero] at h1`. Rewrite using `[v.intValuation_if_neg hd]`. Conclude with `(v.intValuation_le_pow_iff_mem y (n v)).2 h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h3 : v.intValuation d = 1`. Apply `le_antisymm (v.intValuation_le_one d)` to reduce the goal to its premises. Assume the negation of the conclusion as `hlt`. Conclude with `hvd ((v.intValuation_lt_one_iff_dvd d).1 (lt_of_not_ge hlt))`. Rewrite using `[h3]`.
-
-Conclude with `v.intValuation_le_one y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_to_le (P : HeightOneSpectrum R) (d : R) (hd : d ≠ 0) :
     ∃ s : R, s ∉ P.asIdeal ∧ ∀ v : HeightOneSpectrum R, v ≠ P → v.intValuation s ≤ v.intValuation d := by
@@ -62,30 +60,30 @@ end CRT
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ExistsDenominatorThird.exists_den u x`.
+A detailed English derivation is pending.
 -/
 theorem exists_den (u : D.what₂.Word) (x : ((D.fm u).lat 0).V) :
     ∃ d : 𝓞 D.what₂.LL, d ≠ 0 ∧ d • x ∈ ((D.fm u).lat 0).L :=
   _root_.UpperTheory.Reformulated.B.ExistsDenominatorThird.exists_den u x
 
 /- English proof (translation)
-Introduce `u w x hx`. Establish `key : ∀ (r : 𝓞 D.what₂.LL) (v : ((D.fm u).lat 0).V), r • v = (algebraMap (𝓞 D.what₂.LL) D.what₂.LL r) • v` using `fun r v => (algebraMap_smul D.what₂.LL r v).symm`. Take `⟨d, hd0, hdL⟩` from `exists_den u x`. Take `⟨s, hsP, hsv⟩` from `exists_prime_to_le (D.plEq w) d hd0`. Establish `hs0 : s ≠ 0` using `fun h => hsP (h ▸ Submodule.zero_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsL : s • x ∈ ((D.fm u).lat 0).L`. Use `(((T u).val0).lat (s • x)).2 ?_` and prove the remaining obligations. Introduce `w' c B hB`. Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hsint : algebraMap (𝓞 D.what₂.LL) D.what₂.LL s ∈ intW D.what₂.places w'` using `by show (0 : WithTop ℤ) ≤ D.what₂.places.val w' _`. Rewrite using `[val_nonneg_iff, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(D.plEq w').intValuation_le_one s`. Take `⟨P, hP, hPx⟩` from `hx c B hB`. Use `⟨D.what₂.embLL (algebraMap (𝓞 D.what₂.LL) D.what₂.LL s) • P, intSpan_smul w' _ _ hsint hP, fun t => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, LinearMap.map_smulₛₗ, LinearMap.map_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hPx t]`. Establish `hne : D.plEq w' ≠ D.plEq w` using `fun h => hw (D.plEq.injective h)`. Establish `hdne : algebraMap (𝓞 D.what₂.LL) D.what₂.LL d ≠ 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hd0`. Use `set q : D.what₂.LL := algebraMap (𝓞 D.what₂.LL) D.what₂.LL s / algebraMap (𝓞 D.what₂.LL) D.what₂.LL d with hq`. Establish `hqint : q ∈ intW D.what₂.places w'` using `by show (0 : WithTop ℤ) ≤ D.what₂.places.val w' _`. Rewrite using `[val_nonneg_iff, hq, map_div₀, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Establish `hdv : (D.plEq w').intValuation d ≠ 0` using `(D.plEq w').intValuation_ne_zero d hd0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[div_le_one₀ (zero_lt_iff.2 hdv)]`. Conclude with `hsv _ hne`. Establish `hsx : s • x = q • (d • x)`. Rewrite using `[key, key, smul_smul, hq, div_mul_cancel₀ _ hdne]`. Take `⟨P, hP, hPx⟩` from `(((T u).val0).lat (d • x)).1 hdL w' c B hB`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨D.what₂.embLL q • P, intSpan_smul w' _ q hqint hP, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hsx, LinearMap.map_smulₛₗ, LinearMap.map_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hPx t]`. Establish `hsu : (D.plEq w).intValuation s = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Apply `le_antisymm ((D.plEq w).intValuation_le_one s)` to reduce the goal to its premises. Assume the negation of the conclusion as `hlt`. Conclude with `hsP (((D.plEq w).intValuation_lt_one_iff_mem s).1 (lt_of_not_ge hlt))`. Establish `hsne : algebraMap (𝓞 D.what₂.LL) D.what₂.LL s ≠ 0` using `by simpa using hs0`. Establish `htint : (algebraMap (𝓞 D.what₂.LL) D.what₂.LL s)⁻¹ ∈ intW D.what₂.places w` using `by show (0 : WithTop ℤ) ≤ D.what₂.places.val w _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_nonneg_iff, map_inv₀, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap, hsu, inv_one]`. Establish `hx' : x = (⟨_, htint⟩ : intW D.what₂.places w) • (s • x)`. Rewrite using `[Subring.smul_def, key, smul_smul, inv_mul_cancel₀ hsne, one_smul]`. Rewrite using `[hx']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hsL)`.
+A detailed English derivation is pending.
 -/
 theorem locWBack_proved (T : ∀ u : D.what₂.Word, Forms0 D u) : LocWBack T := by
   intro u w x hx
@@ -141,7 +139,7 @@ theorem locWBack_proved (T : ∀ u : D.what₂.Word, Forms0 D u) : LocWBack T :=
   exact Submodule.smul_mem _ _ (Submodule.subset_span hsL)
 
 /- English proof (translation)
-The claim follows from `locWCrit_of T (locWBack_proved T)`.
+A detailed English derivation is pending.
 -/
 theorem locWCrit_proved (T : ∀ u : D.what₂.Word, Forms0 D u) : LocWCrit T :=
   locWCrit_of T (locWBack_proved T)

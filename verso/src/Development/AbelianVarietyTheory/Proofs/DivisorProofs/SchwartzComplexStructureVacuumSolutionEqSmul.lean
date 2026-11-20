@@ -7,17 +7,17 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 namespace GlobalTheory.VacCore
 
 /- English proof (translation)
-Use `set c := ℓ w`. Set `E : ℝ → ℂ` to `fun s => Complex.exp (((-(s ^ 2) / 2 : ℝ) : ℂ) * c)`. Establish `hE : ∀ s : ℝ, HasDerivAt E (Complex.exp (((-(s ^ 2) / 2 : ℝ) : ℂ) * c) * (((-(2 * s) / 2 : ℝ) : ℂ) * c)) s`. Introduce `s`. Establish `h1 : HasDerivAt (fun s : ℝ => (-(s ^ 2) / 2 : ℝ)) (-(2 * s) / 2) s`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((hasDerivAt_pow 2 s).neg).div_const 2` as an intermediate fact. Simplify using `using this`. Conclude with `((h1.ofReal_comp).mul_const c).cexp`. Establish `hK : ∀ s : ℝ, HasDerivAt (fun s : ℝ => k (s • w)) (fderiv ℝ k (s • w) w) s`. Introduce `s`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hk (s • w)).hasFDerivAt.comp_hasDerivAt s ((hasDerivAt_id s).smul_const w)` as an intermediate fact. Rewrite `this` using `[one_smul]`. Conclude with `this`. Establish `hφ : ∀ s : ℝ, HasDerivAt (fun s : ℝ => k (s • w) * E s) 0 s`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hK s).mul (hE s)` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[h, map_smul]`. Simplify using `only [Complex.real_smul, E]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hc` using `is_const_of_deriv_eq_zero (f := fun s : ℝ => k (s • w) * E s) (fun s => (hφ s).differentiableAt) (fun s => (hφ s).deriv) 1 0`. Simplify using `only [E, one_smul, zero_smul] at hc`. Establish `: Complex.exp (((-((1:ℝ) ^ 2) / 2 : ℝ) : ℂ) * c) * Complex.exp (c / 2) = 1`. Rewrite using `[← Complex.exp_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ray_formula {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (k : V → ℂ) (hk : Differentiable ℝ k) (w : V) (ℓ : V →ₗ[ℝ] ℂ)
@@ -52,23 +52,23 @@ theorem ray_formula {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     _ = _ := by rw [← mul_assoc, hc]; simp
 
 /- English proof (translation)
-Introduce `z`. Set `φ : ℝ → ℂ` to `fun t => f (z + t • y₀) * (starRingEnd ℂ) (g (z + t • y₀))`. Establish `hL : ∀ t : ℝ, HasDerivAt (fun t : ℝ => z + t • y₀) y₀ t`. Introduce `t`. Use `((hasDerivAt_id t).smul_const y₀).const_add z` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hφ : ∀ t, HasDerivAt φ 0 t`. Introduce `t`. Establish `hf` using `(f.differentiableAt (x := z + t • y₀)).hasFDerivAt.comp_hasDerivAt t (hL t)`. Establish `hg` using `(g.differentiableAt (x := z + t • y₀)).hasFDerivAt.comp_hasDerivAt t (hL t)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg'` using `hg.star`. Use `hf.mul hg'` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations. Use `h (z + t • y₀)` as an intermediate fact. Simplify `this` using `[Complex.star_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc : ∀ t, φ t = φ 0` using `fun t => is_const_of_deriv_eq_zero (fun s => (hφ s).differentiableAt) (fun s => (hφ s).deriv) t 0`. Establish `hlin : Filter.Tendsto (fun t : ℝ => z + t • y₀) (Filter.cocompact ℝ) (Filter.cocompact V)`. Apply `Filter.tendsto_cocompact_cocompact_of_norm` to reduce the goal to its premises. Introduce `ε`. Establish `hy' : 0 < ‖y₀‖` using `norm_pos_iff.mpr hy`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨(ε + ‖z‖) / ‖y₀‖, fun t ht => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖t • y₀‖ ≤ ‖z + t • y₀‖ + ‖z‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[norm_smul]`. Rewrite `ht` using `[div_lt_iff₀ hy']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf0 : Filter.Tendsto (fun t : ℝ => f (z + t • y₀)) (Filter.cocompact ℝ) (nhds 0)` using `(f.tendsto_cocompact).comp hlin`. Take `⟨C, hC⟩ : ∃ C, ∀ x, ‖g x‖ ≤ C` from `⟨_, fun x => (g.toBoundedContinuousFunction).norm_coe_le_norm x⟩`. Establish `hφ0 : Filter.Tendsto φ (Filter.cocompact ℝ) (nhds 0)`. Rewrite `hf0`, the goal using `[tendsto_zero_iff_norm_tendsto_zero]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hC0 : 0 ≤ C` using `le_trans (norm_nonneg _) (hC 0)`. Use `hf0.mul_const C` as an intermediate fact. Rewrite `this` using `[zero_mul]`. Use `squeeze_zero (fun t => norm_nonneg _) (fun t => ?_) this` and prove the remaining obligations. Simplify using `only [φ, norm_mul, Complex.norm_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `mul_le_mul_of_nonneg_left (hC _) (norm_nonneg _)`. Establish `hconst : Filter.Tendsto φ (Filter.cocompact ℝ) (nhds (φ 0))`. Establish `: φ = fun _ => φ 0` using `funext hc`. Rewrite using `[this]`. Conclude with `tendsto_const_nhds`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `tendsto_nhds_unique hconst hφ0` as an intermediate fact. Simplify `this` using `[φ]`.
+A detailed English derivation is pending.
 -/
 theorem conj_mul_eq_zero_of_line {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (f g : SchwartzMap V ℂ) (y₀ : V) (hy : y₀ ≠ 0)
@@ -136,53 +136,49 @@ theorem lin_apply {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     lin B a b z = 2 * Real.pi * Complex.I * (B z a : ℂ) + 2 * Real.pi * (B z b : ℂ) := rfl
 
 /- English proof (translation)
-Introduce `V _ _ _ B hB J e e' hJ he hJe he1 he2 f g hg0 hg hf`. Establish `hinj : ∀ y, (J y).1 = 0 → y.1 = 0 → y = 0`. Introduce `y hJy hy1`. Establish `key : ∀ x, g x ≠ 0 → B x y.2 = 0`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hg y x`. Simplify using `only [hJy, hy1, map_zero] at h`. Establish `h2 : g x * (2 * Real.pi * (B x y.2 : ℂ) + 2 * Real.pi * Complex.I * (B x (J y).2 : ℂ)) = 0`. Take the linear combination `(-1 : ℂ) * h + (2 * Real.pi * (B x y.2 : ℂ) * g x) * Complex.I_sq`. Establish `h3` using `(mul_eq_zero.mp h2).resolve_left hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h4` using `congrArg Complex.re h3`. Simplify `h4` using `[Real.pi_ne_zero]`. Establish `hy2 : y.2 = 0`. Apply `hB` to reduce the goal to its premises. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hne`. Take `⟨x₀, hx₀⟩` from `hne`. Apply `hg0` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [SchwartzMap.zero_apply]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set t₀ : ℝ := -(B x y.2) / B x₀ y.2`. Establish `hS : IsClosed {t : ℝ | g (x + t • x₀) = 0}` using `isClosed_eq (g.continuous.comp (continuous_const.add (continuous_id.smul continuous_const))) continuous_const`. Establish `hsub : ({t₀}ᶜ : Set ℝ) ⊆ {t : ℝ | g (x + t • x₀) = 0}`. Introduce `t ht`. Simplify using `only [Set.mem_compl_iff, Set.mem_singleton_iff] at ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [Set.mem_setOf_eq]`. Assume the negation of the conclusion as `hgt`. Use `key _ hgt` as an intermediate fact. Rewrite `this` using `[map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul]`. Apply `ht` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [t₀]`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcl` using `hS.closure_subset_iff.mpr hsub`. Rewrite `hcl` using `[(dense_compl_singleton t₀).closure_eq]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hcl (Set.mem_univ 0)` as an intermediate fact. Simplify using `using this`. Conclude with `Prod.ext hy1 hy2`. Set `T : (V × V) →ₗ[ℝ] (V × V)` to `(LinearMap.fst ℝ V V ∘ₗ J).prod (LinearMap.fst ℝ V V)`. Establish `hTi : Function.Injective T`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Conclude with `hinj y (congrArg Prod.fst hy) (congrArg Prod.snd hy)`. Establish `hTs : Function.Surjective T` using `LinearMap.injective_iff_surjective.mp hTi`. Use `choose yx hyx using fun x : V => hTs (x, 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hyx1 : ∀ x, (J (yx x)).1 = x` using `fun x => by simpa [T] using congrArg Prod.fst (hyx x)`. Establish `hyx2 : ∀ x, (yx x).1 = 0` using `fun x => by simpa [T] using congrArg Prod.snd (hyx x)`. Establish `hray : ∀ k : SchwartzMap V ℂ, (∀ (y : V × V) (z : V), fderiv ℝ k z (J y).1 - 2 * Real.pi * Complex.I * (B z (J y).2 : ℝ) * k z = Complex.I * (fderiv ℝ k z y.1 - 2 * Real.pi * Complex.I * (B z y.2 : ℝ) * k z)) → ∀ x, k x = k 0 * Complex.exp (lin B (J (yx x)).2 (yx x).2 x / 2)`. Introduce `k hk x`. Apply `ray_formula k k.differentiable x (lin B (J (yx x)).2 (yx x).2)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `z`. Establish `h` using `hk (yx x) z`. Rewrite `h` using `[hyx1, hyx2, map_zero]`. Rewrite using `[lin_apply]`. Take the linear combination `h - (2 * Real.pi * (B z (yx x).2 : ℂ) * k z) * Complex.I_sq`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `hg_ray` using `hray g hg`. Establish `hg00 : g 0 ≠ 0`. Introduce `h0`. Apply `hg0` to reduce the goal to its premises. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg_ray x, h0]`. Simplify using the standard rewrite rules. Establish `hgne : ∀ x, g x ≠ 0` using `fun x => by`. Rewrite using `[hg_ray x]`. Conclude with `mul_ne_zero hg00 (Complex.exp_ne_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Establish `he'2 : ∀ v, e' (e' v) = e' v`. Introduce `v`. Use `congrArg Prod.fst (he (v, 0))` as an intermediate fact. Simplify using `only [he1] at this`. Simplify using `using this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Distinguish the cases in `hz : ∀ v, e' v = 0`. Establish `he0 : ∀ y, e y = 0`. Introduce `y`. Apply `Prod.ext` to reduce the goal to its premises. Rewrite using `[he1, hz]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Apply `hB` to reduce the goal to its premises. Introduce `x`. Rewrite using `[he2, hz, map_zero, LinearMap.zero_apply]`. Establish `hf' : ∀ (y : V × V) (z : V), fderiv ℝ f z (J y).1 - 2 * Real.pi * Complex.I * (B z (J y).2 : ℝ) * f z = Complex.I * (fderiv ℝ f z y.1 - 2 * Real.pi * Complex.I * (B z y.2 : ℝ) * f z)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Introduce `y z`. Use `hf y z` as an intermediate fact. Rewrite `this` using `[he0, smul_zero, sub_zero]`. Then use the resulting hypothesis. Establish `hf_ray` using `hray f hf'`. Use `⟨f 0 / g 0, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use extensionality with `x`. Rewrite using `[SchwartzMap.smul_apply, smul_eq_mul, hf_ray x, hg_ray x]`. Clear the denominators using the available nonvanishing facts. Use `push_neg at hz`. Take `⟨v, hv⟩` from `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y₀ := e' v with hy₀def`. Establish `hy₀ : e' y₀ = y₀` using `he'2 v`. Take `⟨u, hu⟩` from `hTs (y₀, 0)`. Establish `hu1 : (J u).1 = y₀` using `by simpa [T] using congrArg Prod.fst hu`. Establish `hu2 : u.1 = 0` using `by simpa [T] using congrArg Prod.snd hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `heu : e u = u`. Establish `: e u - u = 0` using `hinj _ (by rw [map_sub, Prod.fst_sub, hJe, he1, hu1, hy₀, sub_self]) (by rw [Prod.fst_sub, he1, hu2, map_zero, sub_self])`. Conclude with `sub_eq_zero.mp this`. Establish `hfu : ∀ z, fderiv ℝ f z y₀ = (2 * Real.pi * Complex.I * (B z (J u).2 : ℂ) - 2 * Real.pi * (B z u.2 : ℂ)) * f z`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h` using `hf u z`. Rewrite `h` using `[heu, two_smul, sub_add_cancel_left, map_neg, Prod.fst_neg, Prod.snd_neg, map_neg, map_neg, hu1, hu2, map_zero, Complex.ofReal_neg]`. Take the linear combination `(-1 : ℂ) * h + (2 * Real.pi * (B z u.2 : ℂ) * f z) * Complex.I_sq`. Establish `hgu : ∀ z, fderiv ℝ g z y₀ = (2 * Real.pi * Complex.I * (B z (J u).2 : ℂ) + 2 * Real.pi * (B z u.2 : ℂ)) * g z`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hg u z`. Rewrite `h` using `[hu1, hu2, map_zero]`. Take the linear combination `h - (2 * Real.pi * (B z u.2 : ℂ) * g z) * Complex.I_sq`. Establish `hk` using `conj_mul_eq_zero_of_line f g y₀ hv (fun z => by`. Rewrite using `[hfu z, hgu z]`.
-
-Simplify using `only [map_add, map_mul, map_ofNat, Complex.conj_ofReal, Complex.conj_I]`. Use the proof step `ring)`. Use `⟨0, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Rewrite using `[zero_smul, SchwartzMap.zero_apply]`.
-
-Conclude with `(mul_eq_zero.mp (hk z)).resolve_right ((map_ne_zero _).mpr (hgne z))`.
+A detailed English derivation is pending.
 -/
 theorem schwartz_vacuum_eq_smul : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (B : V →ₗ[ℝ] V →ₗ[ℝ] ℝ), (∀ y, (∀ x, B x y = 0) → y = 0) →

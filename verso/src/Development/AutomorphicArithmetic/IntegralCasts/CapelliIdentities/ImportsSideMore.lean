@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `r hr k`. Establish `hr2 : (0 : ℝ) ≤ r ^ (2 : ℕ)` using `by positivity`. Establish `hcast : ((↑k : ℂ) / (2 : ℂ)) = (((k : ℝ) / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[hcast, ← Complex.ofReal_cpow hr2]`. Establish `hreal : (r ^ (2 : ℕ)) ^ ((k : ℝ) / 2) = r ^ k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_natCast r 2, ← Real.rpow_mul hr.le]`. Establish `: ((2 : ℕ) : ℝ) * ((k : ℝ) / 2) = (k : ℝ)` using `by push_cast; ring`. Rewrite using `[this, Real.rpow_natCast]`. Rewrite using `[hreal]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/

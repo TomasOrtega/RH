@@ -21,7 +21,7 @@ open Formalism.MainNotions.SchurIrreducible (IsSplit)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.InertHomIdx.idx_latF_map_rhoF_eq_qV_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FRelIndexHomLatticeInertMoveSource.lean&line=233#L233)
 -/

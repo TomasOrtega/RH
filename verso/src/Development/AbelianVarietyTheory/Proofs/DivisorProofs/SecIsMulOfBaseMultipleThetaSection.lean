@@ -17,7 +17,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.PsiRing
 
 /- English proof (translation)
-Introduce `R _ _ D th g b h`. Use `GlobalTheory.IndivisibleSection.secIsMul_of_sval D.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Establish `e` using `h _ (𝟙 _) y J hJ`. Rewrite `e` using `[Category.id_comp]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem secIsMul_of_mult : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (th g : GlobalTheory.UU.SecBT D (𝟙_ _) 1 0) (b : R), GlobalTheory.PsiRing.Mult D th g b → ReciprocityTheory.ChartRestriction.G.DVR.SecIsMul (𝟙_ _ ⊗ D.P.A).hom b g th := by
   intro R _ _ D th g b h

@@ -13,31 +13,27 @@ noncomputable section
 open GlobalTheory.FrameGlue.PowGlue GlobalTheory.FrameGlue.ModPTest GlobalTheory.TrueGeo.SmallSec in
 
 /- English proof (translation)
-Introduce `F _ _ Y C V M lg r hr hN p m hp A A' c c' hD hA hA' hlg x hx`. Take `⟨hη, W, U, hW, hU, hu, hn⟩` from `hA`. Take `⟨hη', W', U', hW', hU', hu', hn'⟩` from `hA'`. Rewrite `hu'`, `hn'` using `[hD]`. Take `⟨-, hru, hrn⟩` from `hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI := RootLine.isPreimmersion_j V`. Take `⟨i, hi⟩ : ∃ i, x ∈ M.B.U i` from `TopologicalSpace.Opens.mem_iSup.1 (by rw [M.isLB.cover]; trivial)`. Establish `hE : (M.div hr).IsEqn x (r i)` using `(presents_divOfRatSec M.isLB hr).isEqn i x hi`. Use `hE.iff_unitAt.2 ?_` and prove the remaining obligations. Use `set t : V.X.functionField := (c x : V.X.functionField) / c' x with ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-Establish `ht0 : t ≠ 0` using `div_ne_zero (c x).ne_zero (c' x).ne_zero`. Use `set f : V.X.functionField := t ^ m / r i with hf`. It suffices to establish `h : UnitAt x f by simpa [hf, ht] using h`. Use `set O : V.X.Opens := U x ⊓ U' x ⊓ M.B.U i with hO`. Establish `hrat : ∀ g : V.G.functionField, g * jm V hη (c' x) ≠ 0 → fnMap V.j hη t = g * jm V hη (c x) / (g * jm V hη (c' x))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Rewrite using `[mul_div_mul_left _ _ (left_ne_zero_of_mul hg), ht, map_div₀]`. Establish `htu : ∀ z : V.G, V.j z ∈ O → UnitAt (V.j z) t`. Introduce `z hz`. Establish `h1` using `hu x z hz.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hu' x z hz.1.2`. Establish `h3 : UnitAt z (fnMap V.j hη t)`. Rewrite using `[hrat _ h2.ne_zero, div_eq_mul_inv]`. Conclude with `h1.mul h2.inv`. Conclude with `(unitAt_iff ht0).2 ⟨(regAt_fnMap_iff V.j hη).1 h3.regAt, (regAt_fnMap_iff V.j hη).1 (by rw [map_inv₀]; exact h3.inv.regAt)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfu : ∀ z : V.G, V.j z ∈ O → UnitAt (V.j z) f`. Introduce `z hz`. Rewrite using `[hf, div_eq_mul_inv]`. Conclude with `(unitAt_pow (htu z hz) m).mul (hru i z hz.2).inv`. Establish `hval : ∀ (v : HeightOneSpectrum (𝓞 F)), resP v = p → ∀ (e : TrueGeo.Ext v) (y : AlgPt Y), below y.1 ∈ W ⊓ W' → ∀ (z : Sp (AlgebraicClosure F) ⟶ V.G) (yt : Sp e.O ⟶ V.X), z ≫ V.π = y.1 → spMap e.O.subtype ≫ yt = z ≫ V.j → ⊤ ≤ yt ⁻¹ᵁ O → V.j (below z) ∈ O ∧ e.w (valAt (z ≫ V.j) f) …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v hv e y hy z yt e1 e2 hyt`. Establish `hz : V.j (below z) ∈ O`. Establish `h1 : (z ≫ V.j) (IsLocalRing.closedPoint _) ∈ O`. Rewrite using `[← e2]`. Conclude with `hyt (Set.mem_univ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1`. Use `⟨hz, ?_⟩` and prove the remaining obligations. Establish `hb : V.π (below z) = below y.1` using `by rw [← e1]; rfl`. Establish `h1` using `hu x _ hz.1.1`. Establish `h2` using `hu' x _ hz.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[hb]`. Establish `l1` using `hn v hv e y hy.1 z yt e1 e2 x fun q hq => (hyt hq).1.1`. Establish `l2` using `hn' v hv e y hy.2 z yt e1 e2 x fun q hq => (hyt hq).1.2`. Establish `l3` using `hrn v e y z yt i e1 e2 fun q hq => (hyt hq).2`. Establish `u3 : UnitAt (below (z ≫ V.j)) (r i : V.X.functionField)` using `hru i _ hz.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `u4 : UnitAt (below (z ≫ V.j)) t` using `htu _ hz`. Establish `w1` using `e.w.pos (valAt_ne_zero h1)`. Establish `w2` using `e.w.pos (valAt_ne_zero h2)`. Establish `w3` using `e.w.pos (valAt_ne_zero u3)`. Establish `w4` using `e.w.pos (valAt_ne_zero u4)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlt : Real.log (e.w (valAt (z ≫ V.j) t)) = A.lg v e y - A'.lg v e y`. Rewrite using `[← valAt_fnMap V.j hη z (htu _ hz).regAt, hrat _ h2.ne_zero, valAt_div h1.regAt h2, map_div₀, Real.log_div w1.ne' w2.ne', l1, l2]`. Establish `hlog : Real.log (e.w (valAt (z ≫ V.j) t) ^ m) = Real.log (e.w (valAt (z ≫ V.j) (r i : V.X.functionField)))`. Rewrite using `[Real.log_pow, hlt, ← l3, hlg v hv]`. Establish `heq` using `Real.log_injOn_pos (pow_pos w4 m) w3 hlog`.
-
-Rewrite using `[hf, valAt_div (regAt_pow u4.regAt m) u3, valAt_pow u4.regAt, map_div₀, map_pow, heq, div_self w3.ne']`. Establish `hWW : genericPoint Y.X ∈ W ⊓ W'` using `⟨hW, hW'⟩`. Establish `hxO : x ∈ O` using `⟨⟨hU x hx, hU' x hx⟩, hi⟩`. Use `(unitAt_iff (div_ne_zero (pow_ne_zero _ ht0) (r i).ne_zero)).2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.good_reduction_extends_regular F Y V p hp _ hWW O f (fun z hz => (hfu z hz).regAt) (fun v hv e y hy z yt e1 e2 hyt => (hval v hv e y hy z yt e1 e2 hyt).2.le) x hxO hx`.
-
-Use `GlobalTheory.T.good_reduction_extends_regular F Y V p hp _ hWW O f⁻¹ (fun z hz => (hfu z hz).inv.regAt) (fun v hv e y hy z yt e1 e2 hyt => ?_) x hxO hx` and prove the remaining obligations. Take `⟨hz, h⟩` from `hval v hv e y hy z yt e1 e2 hyt`. Establish `u : UnitAt (below (z ≫ V.j)) f` using `hfu _ hz`. Rewrite using `[← one_div, valAt_div (unitAt_one _).regAt u, valAt_one', map_div₀, h, map_one, div_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LatChain.isEqn_pow_div_of_reads : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (C : CxSt F) (V : Cover Y) (M : HermLB V.p) (lg : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → AlgPt Y → ℝ) (r : M.B.ι → V.X.functionFieldˣ) (hr : IsRatSec M.B r), NormsX V M lg r hr → ∀ (p m : ℕ), p.Prime → ∀ (A A' : Adl C Y) (c c' : V.X → V.X.functionFieldˣ), A'.D = A.D → Reads V p A c → Reads V p A' c' → (∀ v, resP v = p → ∀ e y, lg v e y = (m : ℝ) * (A.lg v e y - A'.lg v e y)) → ∀ x, Ov p x → (M.div hr).IsEqn x ((c x / c' x) ^ m) := by
   intro F _ _ Y C V M lg r hr hN p m hp A A' c c' hD hA hA' hlg x hx

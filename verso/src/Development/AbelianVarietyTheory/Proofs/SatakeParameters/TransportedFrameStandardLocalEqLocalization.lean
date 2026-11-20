@@ -25,7 +25,7 @@ theorem seamVec_apply {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (x : Sp X.E
     seamVec s n x l = s.iE (x l) := rfl
 
 /- English proof (translation)
-Introduce `x y hxy`. Use function extensionality and compare the values at `l`. Conclude with `s.iE.injective (congrFun hxy l)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem seamVec_injective {D : D7} {X : Fields} (s : Seam D X) (n : ℕ) : Function.Injective (seamVec s n) := by
   intro x y hxy
@@ -33,7 +33,7 @@ theorem seamVec_injective {D : D7} {X : Fields} (s : Seam D X) (n : ℕ) : Funct
   exact s.iE.injective (congrFun hxy l)
 
 /- English proof (translation)
-Unfold `Seam.lat`. Rewrite using `[show ((fun (x : Sp X.E n) (i : Fin n) => s.iE (x i)) '' (M : Set (Sp X.E n))) = seamVec s n '' M from rfl, ← Submodule.map_coe]`. Conclude with `Submodule.span_eq _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seam_lat_eq_map {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (M : Submodule (𝓞 X.E) (Sp X.E n)) :
     s.lat M = M.map (seamVec s n) := by
@@ -43,15 +43,15 @@ theorem seam_lat_eq_map {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (M : Subm
   exact Submodule.span_eq _
 
 /- English proof (translation)
-Use `set ψ : 𝓞 X.E ≃+* 𝓞 D.host.E := RingOfIntegers.mapRingEquiv s.iE with hψ`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, z, hz, hzx⟩`. Establish `hfy : seamVec s n (fun l => s.iE.symm (x l)) = x`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `l`. Simplify using `[seamVec_apply]`. Use `⟨fun l => s.iE.symm (x l), ⟨ψ.symm r, ?_, ?_⟩, hfy⟩` and prove the remaining obligations. Introduce `hm`. Apply `hr` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `(mem_seamP s P (ψ.symm r)).2 hm` as an intermediate fact. Simplify `this` using `[ψ]`. Establish `: ψ.symm r • (fun l => s.iE.symm (x l)) = z`. Apply `seamVec_injective s n` to reduce the goal to its premises. Rewrite using `[(seamVec s n).map_smulₛₗ, hfy, hzx]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ψ (ψ.symm r) • x = r • x`. Rewrite using `[RingEquiv.apply_symm_apply]`. Rewrite using `[this]`. Conclude with `hz`. Introduce and unpack `⟨y, ⟨r, hr, hy⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ψ r, ?_, r • y, hy, ?_⟩` and prove the remaining obligations. Introduce `hm`. Conclude with `hr ((mem_seamP s P r).1 hm)`. Rewrite using `[(seamVec s n).map_smulₛₗ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem localization_map_seamVec {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (P : HeightOneSpectrum (𝓞 X.E))
     (M : Submodule (𝓞 X.E) (Sp X.E n)) :
@@ -83,13 +83,13 @@ theorem localization_map_seamVec {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} 
       rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[Submodule.mem_map]`. Unfold `Formalism.L2.Col.stdLat`. Simplify using `only [Submodule.mem_pi, Set.mem_univ, true_implies]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, rfl⟩ l`. Take `⟨r, hr⟩` from `(Submodule.mem_one).1 (hx l)`. Use `(Submodule.mem_one).2 ⟨RingOfIntegers.mapRingEquiv s.iE r, ?_⟩` and prove the remaining obligations. Rewrite using `[seamVec_apply, ← hr]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `hy`. Use `⟨fun l => s.iE.symm (y l), fun l => ?_, ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `(Submodule.mem_one).1 (hy l)`. Use `(Submodule.mem_one).2 ⟨(RingOfIntegers.mapRingEquiv s.iE).symm r, ?_⟩` and prove the remaining obligations. Use `show _ = s.iE.symm (y l)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hr]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `l`. Simplify using `[seamVec_apply]`.
+Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stdLat_map_seamVec {D : D7} {X : Fields} (s : Seam D X) (n : ℕ) :
     (stdLat X.E n).map (seamVec s n) = stdLat D.host.E n := by
@@ -114,11 +114,11 @@ theorem stdLat_map_seamVec {D : D7} {X : Fields} (s : Seam D X) (n : ℕ) :
       simp [seamVec_apply]
 
 /- English proof (translation)
-Unfold `mvL`. Use extensionality with `y`. Simplify using `only [Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨g x, ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show seamVec s n (g x) = toLE (seamGL s g) (seamVec s n x)`. Rewrite using `[toLE_apply]`. Conclude with `(seamGL_mulVec s g x).symm`. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨seamVec s n x, ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show toLE (seamGL s g) (seamVec s n x) = seamVec s n (g x)`. Rewrite using `[toLE_apply]`. Conclude with `seamGL_mulVec s g x`.
+A detailed English derivation is pending.
 -/
 theorem mvL_seamGL_map {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (g : Sp X.E n ≃ₗ[X.E] Sp X.E n)
     (M : Submodule (𝓞 X.E) (Sp X.E n)) :
@@ -139,11 +139,9 @@ theorem mvL_seamGL_map {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (g : Sp X.
     exact seamGL_mulVec s g x
 
 /- English proof (translation)
-Introduce `D X s n P g N hg`. Establish `hstd : (stdAt X.E n P).map (g.toLinearMap.restrictScalars (𝓞 X.E)) = Formalism.HermitianLatticesTheory.localization₂ P.asIdeal N`. Use extensionality with `y`. Simplify using `only [Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(hg x).2 hx`. Introduce `hy`. Use `⟨g.symm y, (hg _).1 (by simpa using hy), by simp⟩` and prove the remaining obligations. Use `show mvL (seamGL s g) (Formalism.HermitianLatticesTheory.localization₂ (seamP s P).asIdeal (stdLat D.host.E n)) = _`.
-
-Rewrite using `[← stdLat_map_seamVec s n, localization_map_seamVec, mvL_seamGL_map, ← stdAt, hstd, seam_lat_eq_map, localization_map_seamVec]`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seamGL_stdAt : ∀ {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (P : HeightOneSpectrum (𝓞 X.E)) (g : Sp X.E n ≃ₗ[X.E] Sp X.E n)
     (N : Submodule (𝓞 X.E) (Sp X.E n)), (∀ x, g x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal N ↔ x ∈ stdAt X.E n P) →

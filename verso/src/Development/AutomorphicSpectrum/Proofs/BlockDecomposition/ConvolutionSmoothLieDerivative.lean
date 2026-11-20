@@ -21,7 +21,7 @@ def wt (U : Subgroup (GL (Fin a) (Af E))) (F : GA E a → ℂ) (g : GA E a) : GA
 open Classical in
 
 /- English proof (translation)
-Simplify using `only [wt, Set.indicator_apply, Set.mem_setOf_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wt_apply (U : Subgroup (GL (Fin a) (Af E))) (F : GA E a → ℂ) (g v : GA E a) :
     wt U F g v = if GeneralLinearGroup.map (pFin E) v⁻¹ ∈ U then F (g * v) else 0 := by
@@ -30,15 +30,15 @@ theorem wt_apply (U : Subgroup (GL (Fin a) (Af E))) (F : GA E a → ℂ) (g v : 
 def hb (β : Lie E a → ℂ) (q : Lie E a × Lie E a) : ℂ := β (toL (Matrix.of q.2 * Matrix.of q.1))
 
 /- English proof (translation)
-The claim follows from `((Units.continuous_val (M := Matrix (Fin a) (Fin a) (Cinf E))).comp ((ContAut.continuous_map_pInf E a).comp continuous_inv))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_psi : Continuous (psi (E := E) (a := a)) :=
   ((Units.continuous_val (M := Matrix (Fin a) (Fin a) (Cinf E))).comp ((ContAut.continuous_map_pInf E a).comp continuous_inv))
 
 /- English proof (translation)
-Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Establish `e : (fun q : Lie E a × Lie E a => toL (Matrix.of q.2 * Matrix.of q.1) i j) = fun q => ∑ k, q.2 i k * q.1 k j`. Use function extensionality and compare the values at `q`. Simplify using `[toL, Matrix.mul_apply]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ContDiff.sum fun k _ => ((contDiff_apply ℝ _ k).comp ((contDiff_apply ℝ _ i).comp contDiff_snd)).mul ((contDiff_apply ℝ _ j).comp ((contDiff_apply ℝ _ k).comp contDiff_fst))`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_mul_lie : ContDiff ℝ ∞ fun q : Lie E a × Lie E a => toL (Matrix.of q.2 * Matrix.of q.1) := by
   refine contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_
@@ -51,7 +51,7 @@ theorem contDiff_mul_lie : ContDiff ℝ ∞ fun q : Lie E a × Lie E a => toL (M
       ((contDiff_apply ℝ _ j).comp ((contDiff_apply ℝ _ k).comp contDiff_fst))
 
 /- English proof (translation)
-The claim follows from `hβ.comp contDiff_mul_lie`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_hb {β : Lie E a → ℂ} (hβ : ContDiff ℝ ∞ β) : ContDiff ℝ ∞ (hb (E := E) (a := a) β) :=
   hβ.comp contDiff_mul_lie
@@ -63,17 +63,15 @@ namespace GlobalTheory.CompanionTheory.SmoothRep.TstConv
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Introduce `E _ _ _ a β hβ x₀ hx₀`. Take `⟨δ, hδ, hball⟩` from `Metric.isOpen_iff.1 (isOpen_invSet (E := E) (a := a)) x₀ hx₀`. Use `set N := Metric.closedBall x₀ (δ / 2)`. Establish `hNs : N ⊆ invSet E a` using `(Metric.closedBall_subset_ball (half_lt_self hδ)).trans hball`. Establish `hNc : IsCompact N` using `isCompact_closedBall x₀ (δ / 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN'` using `isCompact_setOf_toL_mem (E := E) (a := a) hNc hNs`. Establish `hB'` using `isCompact_setOf_toL_mem (E := E) (a := a) hβ.compact hβ.support`. Establish `hcont : Continuous fun p : GL (Fin a) (Cinf E) × GL (Fin a) (Cinf E) => toL (p.1 * p.2⁻¹).val` using `(Units.continuous_val (M := Matrix (Fin a) (Fin a) (Cinf E))).comp (continuous_fst.mul continuous_snd.inv)`. Use `⟨_, (hB'.prod hN').image hcont, ?_, N, Metric.closedBall_mem_nhds x₀ (half_pos hδ), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, -, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `val_mem_invSet _`. Introduce `y x hx hm`. Take `⟨u, hu⟩` from `hNs hx`. Take `⟨b, hb⟩` from `hβ.support hm`. Use `⟨(b, u), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `toL b.val ∈ tsupport β`. Rewrite using `[hb]`. Conclude with `hm`. Express the relevant statement in the definitionally equal form `toL u.val ∈ N`. Rewrite using `[hu]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Express the relevant statement in the definitionally equal form `toL (b * u⁻¹).val = y`. Establish `e : (b * u⁻¹).val = Matrix.of y`. Rewrite using `[Units.val_mul, hb]`. Express the relevant statement in the definitionally equal form `Matrix.of y * Matrix.of x * u⁻¹.val = Matrix.of y`.
-
-Rewrite using `[← hu, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_compact_of_mul_mem_tsupport : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (β : Lie E a → ℂ), IsTest β →
     ∀ x₀ ∈ invSet E a, ∃ Kc : Set (Lie E a), IsCompact Kc ∧ Kc ⊆ invSet E a ∧ ∃ N ∈ 𝓝 x₀,
@@ -109,11 +107,11 @@ theorem exists_compact_of_mul_mem_tsupport : ∀ (E : Type) [Field E] [NumberFie
       rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ _ U hU hUc Fl hFl Kc hKc hKs g`. Establish `hS : IsOpen {v : GA E a | GeneralLinearGroup.map (pFin E) v⁻¹ ∈ U}` using `hU.preimage ((ContAut.continuous_map_pFin E a).comp continuous_inv)`. Establish `hm : MeasurableSet {v : GA E a | GeneralLinearGroup.map (pFin E) v⁻¹ ∈ U ∧ psi v ∈ Kc}` using `hS.measurableSet.inter (hKc.isClosed.preimage continuous_psi).measurableSet`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Establish `hK'` using `isCompact_setOf_toL_mem (E := E) (a := a) hKc hKs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun p : GL (Fin a) (Cinf E) × GL (Fin a) (Af E) => (infGL E a p.1 * finGL E a p.2)⁻¹` using `((GlobalTheory.CuspQuot.continuous_infGL.comp continuous_fst).mul ((GlobalTheory.BlockLevel.continuous_finGL a).comp continuous_snd)).inv`. Establish `hD` using `(hK'.prod hUc).image hcont`. Establish `hCD : {v : GA E a | GeneralLinearGroup.map (pFin E) v⁻¹ ∈ U ∧ psi v ∈ Kc} ⊆ (fun p : GL (Fin a) (Cinf E) × GL (Fin a) (Af E) => (infGL E a p.1 * finGL E a p.2)⁻¹) '' ({y : GL (Fin a) (Cinf E) | toL y.val ∈ Kc} ×ˢ (U : Set (GL (Fin a) (Af E))))`. Introduce and unpack `v ⟨hvU, hvK⟩`. Conclude with `⟨(GeneralLinearGroup.map (pInf E) v⁻¹, GeneralLinearGroup.map (pFin E) v⁻¹), ⟨hvK, hvU⟩, by simp only [infGL_mul_finGL, inv_inv]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hDg` using `hD.image (continuous_const_mul g)`. Establish `hi : IntegrableOn (fun v => Fl (g * v)) ((fun p : GL (Fin a) (Cinf E) × GL (Fin a) (Af E) => (infGL E a p.1 * finGL E a p.2)⁻¹) '' ({y : GL (Fin a) (Cinf E) | toL y.val ∈ Kc} ×ˢ (U : Set (GL (Fin a) (Af E))))) μ`. Use `((measurePreserving_mul_left μ g).integrableOn_comp_preimage (MeasurableEquiv.mulLeft g).measurableEmbedding).2 (hFl.integrableOn_isCompact hDg)` as an intermediate fact. Rewrite `this` using `[Set.preimage_image_eq _ (mul_right_injective g)]`. Then use the resulting hypothesis. Conclude with `(hi.mono_set hCD).indicator hS.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem measurableSet_integrableOn_wt : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a))
     [μ.IsHaarMeasure] (U : Subgroup (GL (Fin a) (Af E))), IsOpen (U : Set (GL (Fin a) (Af E))) →
@@ -148,13 +146,13 @@ theorem measurableSet_integrableOn_wt : ∀ (E : Type) [Field E] [NumberField E]
   exact (hi.mono_set hCD).indicator hS.measurableSet
 
 /- English proof (translation)
-Rewrite using `[← integral_mul_left_eq_self (fun v => hb β (toL y.val, psi v) * wt U Fl g v) (infGL E a y)]`. Unfold `convR`. Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Establish `hf : GeneralLinearGroup.map (pFin E) (infGL E a y * v)⁻¹ = GeneralLinearGroup.map (pFin E) v⁻¹`. Simplify using `[_root_.mul_inv_rev, map_mul, map_inv]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hi : GeneralLinearGroup.map (pInf E) (infGL E a y * v)⁻¹ = GeneralLinearGroup.map (pInf E) v⁻¹ * y⁻¹`. Simplify using `[_root_.mul_inv_rev, map_mul, map_inv]`. Use `show _ = hb β (toL y.val, psi (infGL E a y * v)) * wt U Fl g (infGL E a y * v)`. Rewrite using `[wt_apply]`. Distinguish the cases in `h : GeneralLinearGroup.map (pFin E) v⁻¹ ∈ U`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h' : GeneralLinearGroup.map (pFin E) (infGL E a y * v)⁻¹ ∈ U` using `hf ▸ h`. Simplify using `only [tst, ker, if_pos h, if_pos h', hb, psi, hi]`. Simplify using `[toL, mul_assoc]`. Establish `h' : GeneralLinearGroup.map (pFin E) (infGL E a y * v)⁻¹ ∉ U` using `hf ▸ h`. Simplify using `only [tst, ker, if_neg h, if_neg h']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem convR_tst_mul_infGL (μ : Measure (GA E a)) [μ.IsMulLeftInvariant] (U : Subgroup (GL (Fin a) (Af E)))
     (β : Lie E a → ℂ) (Fl : GA E a → ℂ) (g : GA E a) (y : GL (Fin a) (Cinf E)) :
@@ -182,7 +180,7 @@ namespace GlobalTheory.CompanionTheory.SmoothRep.TstConv
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Establish `e : (fun q => hb β (q, y)) = β ∘ lmul y` using `rfl`. Establish `e1 : lmul y (oneL E a) = y` using `mul_one (Matrix.of y)`. Rewrite using `[e, fderiv_comp _ (by rw [e1]; exact (hβ.differentiable (by simp)).differentiableAt) (lmul y).differentiableAt, e1, ContinuousLinearMap.fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fderiv_hb_one {β : Lie E a → ℂ} (hβ : ContDiff ℝ ∞ β) (y X : Lie E a) :
     fderiv ℝ (fun q => hb β (q, y)) (oneL E a) X = dTest X β y := by
@@ -193,7 +191,7 @@ theorem fderiv_hb_one {β : Lie E a → ℂ} (hβ : ContDiff ℝ ∞ β) (y X : 
   rfl
 
 /- English proof (translation)
-Take `⟨Kc, hKc, hKs, N, hN, hNK⟩` from `exists_compact_of_mul_mem_tsupport E a β hβ x₀ hx₀`. Take `⟨hCm, hCi⟩` from `measurableSet_integrableOn_wt E a μ U hU hUc Fl hFl Kc hKc hKs g`. Conclude with `⟨_, Kc, N, hN, hCm, hKc, fun v hv => hv.2, hCi, fun v hv hvU x hx hm => hv ⟨hvU, hNK _ _ hx hm⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_local {μ : Measure (GA E a)} [μ.IsHaarMeasure] {U : Subgroup (GL (Fin a) (Af E))}
     (hU : IsOpen (U : Set (GL (Fin a) (Af E)))) (hUc : IsCompact (U : Set (GL (Fin a) (Af E))))
@@ -207,7 +205,7 @@ theorem exists_local {μ : Measure (GA E a)} [μ.IsHaarMeasure] {U : Subgroup (G
   exact ⟨_, Kc, N, hN, hCm, hKc, fun v hv => hv.2, hCi, fun v hv hvU x hx hm => hv ⟨hvU, hNK _ _ hx hm⟩⟩
 
 /- English proof (translation)
-Rewrite using `[wt_apply]`. Distinguish the cases in `h : GeneralLinearGroup.map (pFin E) v⁻¹ ∈ U`. Rewrite using `[hb, image_eq_zero_of_notMem_tsupport (hC v hv h x hx), zero_mul]`. Rewrite using `[if_neg h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem integrand_eq_zero {U : Subgroup (GL (Fin a) (Af E))} {β : Lie E a → ℂ} {Fl : GA E a → ℂ} {g : GA E a}
     {C : Set (GA E a)} {N : Set (Lie E a)}
@@ -223,21 +221,21 @@ end GlobalTheory.CompanionTheory.SmoothRep.TstConv
 open GlobalTheory.CompanionTheory.SmoothRep.TstConv in
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ _ _ U hU hUc β hβ Fl hFl`. Establish `hchart : ∀ g, ∀ x ∈ invSet E a, chart (convR μ (tst U β) Fl) g x = ∫ v, hb β (x, psi v) * wt U Fl g v ∂μ`. Introduce `g x hx`. Take `⟨u, hu⟩` from `id hx`. Establish `e : x = toL u.val` using `hu.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Rewrite using `[chart_val, convR_tst_mul_infGL]`. Establish `hev : ∀ g, ∀ x ∈ invSet E a, chart (convR μ (tst U β) Fl) g =ᶠ[𝓝 x] fun x => ∫ v, hb β (x, psi v) * wt U Fl g v ∂μ` using `fun g x hx => Filter.eventually_of_mem (isOpen_invSet.mem_nhds hx) (hchart g)`. Establish `hloc : ∀ g, ∀ x₀ ∈ invSet E a, ∃ C : Set (GA E a), ∃ N ∈ 𝓝 x₀, (∀ x ∈ N, (∫ v, hb β (x, psi v) * wt U Fl g v ∂μ) = ∫ v in C, hb β (x, psi v) * wt U Fl g v ∂μ) ∧ ContDiff ℝ ∞ (fun x => ∫ v in C, hb β (x, psi v) * wt U Fl g v ∂μ) ∧ (∀ p X, fderiv ℝ (fun x => ∫ v in C, hb β (x, psi …`. Introduce `g x₀ hx₀`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨C, K, N, hN, hCm, hK, hCK, hCi, hvan⟩` from `exists_local hU hUc hβ hFl g hx₀`. Establish `P` using `GlobalTheory.CompanionTheory.SmoothParam.contDiff_integral_density (GA E a) (Lie E a) (Lie E a) (μ.restrict C) (wt U Fl g) psi K hCi continuous_psi.aestronglyMeasurable hK ((ae_restrict_iff' hCm).2 (Filter.Eventually.of_forall hCK)) (hb β) (contDiff_hb hβ.contDiff)`. Conclude with `⟨C, N, hN, fun x hx => (setIntegral_eq_integral_of_forall_compl_eq_zero (integrand_eq_zero hvan hx)).symm, P.1, P.2, hvan⟩`. Use `⟨fun g x hx => ?_, fun X g => ?_⟩` and prove the remaining obligations. Take `⟨C, N, hN, heq, hcd, -, -⟩` from `hloc g x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(hcd.contDiffAt.congr_of_eventuallyEq ((hev g x hx).trans (Filter.eventually_of_mem hN heq))).contDiffWithinAt`. Establish `h1 : oneL E a ∈ invSet E a` using `isUnit_one`. Take `⟨C, N, hN, heq, hcd, hder, hvan⟩` from `hloc g _ h1`. Rewrite using `[lieD, ((hev g _ h1).trans (Filter.eventually_of_mem hN heq)).fderiv_eq, hder]`. Repeatedly rewrite using `[fderiv_hb_one hβ.contDiff]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[setIntegral_eq_integral_of_forall_compl_eq_zero ?_]`. Unfold `convR`. Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Use `show dTest X β (psi v) * wt U Fl g v = tst U (dTest X β) v * Fl (g * v)`. Rewrite using `[wt_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : GeneralLinearGroup.map (pFin E) v⁻¹ ∈ U`. Simplify using `only [tst, ker, if_pos h, psi]`. Simplify using `only [tst, ker, if_neg h, mul_zero, zero_mul]`. Introduce `v hv`. Rewrite using `[wt_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `h : GeneralLinearGroup.map (pFin E) v⁻¹ ∈ U`. Establish `hn : psi v ∉ tsupport β`. Use `hvan v hv h (oneL E a) (mem_of_mem_nhds hN)` as an intermediate fact. Simplify `this` using `[toL]`. Establish `h0 : fderiv ℝ β (psi v) = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hn (support_fderiv_subset ℝ h0)`. Rewrite using `[dTest, h0, ContinuousLinearMap.zero_apply, zero_mul]`. Rewrite using `[if_neg h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SmoothRep.convR_tst_mem_Sm : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (U : Subgroup (GL (Fin a) (Af E))), IsOpen (U : Set (GL (Fin a) (Af E))) → IsCompact (U : Set (GL (Fin a) (Af E))) → ∀ β : Lie E a → ℂ, IsTest β → ∀ Fl : GA E a → ℂ, LocallyIntegrable Fl μ → convR μ (tst U β) Fl ∈ Sm E a ∧ ∀ (X : Lie E a) (g : GA E a), lieD X (convR μ (tst U β) Fl) g = convR μ (tst U (dTest X β)) Fl g := by
   intro E _ _ _ a μ _ _ U hU hUc β hβ Fl hFl

@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {hL : GlobalTheory.Published.LocalLanglandsGL}
 
 /- English proof (translation)
-The claim follows from `EvG.imp h fun _ _ _ _ _ hK => large₂.imp hK fun B f T _ H kp w Z Wt p0 t nch n xd c a b d => hpq _ B f T w Z Wt p0 t nch n c (H kp w Z Wt p0 t nch n xd c a b d)`.
+A detailed English derivation is pending.
 -/
 theorem AtMem.imp {p q : LayP hL} (h : AtMem hL p)
     (hpq : ∀ K B f T w Z Wt p0 t nch n c, p K B f T w Z Wt p0 t nch n c → q K B f T w Z Wt p0 t nch n c) : AtMem hL q :=
@@ -21,7 +21,7 @@ theorem AtMem.imp {p q : LayP hL} (h : AtMem hL p)
     hpq _ B f T w Z Wt p0 t nch n c (H kp w Z Wt p0 t nch n xd c a b d)
 
 /- English proof (translation)
-The claim follows from `EvG.imp (EvG.inter h h') fun _ _ _ _ _ hK => large₂.imp (large₂.inter hK.1 hK.2) fun _ _ _ _ H kp w Z Wt p0 t nch n xd c a b d => ⟨H.1 kp w Z Wt p0 t nch n xd c a b d, H.2 kp w Z Wt p0 t nch n xd c a b d⟩`.
+A detailed English derivation is pending.
 -/
 theorem AtMem.and {p q : LayP hL} (h : AtMem hL p) (h' : AtMem hL q) :
     AtMem hL fun K B f T w Z Wt p0 t nch n c => p K B f T w Z Wt p0 t nch n c ∧ q K B f T w Z Wt p0 t nch n c :=
@@ -29,34 +29,32 @@ theorem AtMem.and {p q : LayP hL} (h : AtMem hL p) (h' : AtMem hL q) :
     ⟨H.1 kp w Z Wt p0 t nch n xd c a b d, H.2 kp w Z Wt p0 t nch n xd c a b d⟩
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `h`. Conclude with `⟨ζ, hζ.pow_eq_one, hζ.eq_orderOf.symm, hζ.eq_orderOf ▸ D.what₂.restRowsFiniteGroupCard_pos⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rootsLL_pow {D : D7} (h : RootsLL D) : ∃ ζ : D.what₂.LL, ζ ^ D.what₂.restRowsFiniteGroupCard = 1 ∧ orderOf ζ = D.what₂.restRowsFiniteGroupCard ∧ 0 < orderOf ζ := by
   obtain ⟨ζ, hζ⟩ := h
   exact ⟨ζ, hζ.pow_eq_one, hζ.eq_orderOf.symm, hζ.eq_orderOf ▸ D.what₂.restRowsFiniteGroupCard_pos⟩
 
 /- English proof (translation)
-The claim follows from `h _ (Or.inl rfl) j h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem sumUsed_ref {D : D7} {M : MtFam D} (h : SumUsed D M) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     GlobalTheory.CoefDuty.ClassSum (M D.what₂.mu0 j h1 h2) := h _ (Or.inl rfl) j h1 h2
 
 /- English proof (translation)
-The claim follows from `Or.inr ⟨D.nd.w i, (D.nd.mu_w i).trans ((D.what₂.muAt_or _).resolve_left (D.nd.w_tw i)).symm⟩`.
+Prove the second alternative.
 -/
 theorem used_loc {D : D7} (i : D.nd.Loc) : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i) :=
   Or.inr ⟨D.nd.w i, (D.nd.mu_w i).trans ((D.what₂.muAt_or _).resolve_left (D.nd.w_tw i)).symm⟩
 
 /- English proof (translation)
-The claim follows from `h _ (used_loc i) _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem sumUsed_loc {D : D7} {M : MtFam D} (h : SumUsed D M) (i : D.nd.Loc) : GlobalTheory.CoefDuty.ClassSum (M.loc i) :=
   h _ (used_loc i) _ _ _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨xd, h⟩ i j b h1 h2 a u`. Conclude with `xd.thetaBase_invariant_action i j b a (by rw [h i j b h1 h2]; trivial) u`. Introduce `h`. Use `⟨⟨fun i j b => {_a | 1 ≤ j ∧ j ≤ D.R.m}, fun i j b a ha u => h i j b ha.1 ha.2 a u⟩, fun i j b h1 h2 => ?_⟩` and prove the remaining obligations.
-
-Conclude with `Set.eq_univ_of_forall fun _ => ⟨h1, h2⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_xdAll_iff (D : D7) : (∃ xd : ThData D, XdAll xd) ↔
     ∀ i j b, 1 ≤ j → j ≤ D.R.m → ∀ (a : D.nexp.Dat i j b) (u : D.nexp.U), D.nexp.actG i j b u (D.nexp.th i j b a) =
@@ -69,7 +67,7 @@ theorem exists_xdAll_iff (D : D7) : (∃ xd : ThData D, XdAll xd) ↔
     exact Set.eq_univ_of_forall fun _ => ⟨h1, h2⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isot_withLoc {D : D7} (L : LocAll (lay0 D)) : Rows.IsotInternal (withLoc L).what₂ ↔ Rows.IsotInternal D.what₂ := Iff.rfl
 

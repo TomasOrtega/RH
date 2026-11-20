@@ -12,7 +12,7 @@ section
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).eq_one_iff_eq_one`.
+A detailed English derivation is pending.
 -/
 theorem valuation_eq_one_iff {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (x : w.adicCompletion E) :
@@ -25,7 +25,7 @@ theorem valuation_eq_one_iff {E : Type} [Field E] [NumberField E] (w : HeightOne
 end
 
 /- English proof (translation)
-Introduce `x hx`. Conclude with `h x ((valuation_eq_one_iff w (x : w.adicCompletion E)).1 hx)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnramAt_of_unrAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {χ : (AF F ⊗[F] E)ˣ →* Circle} {w : HeightOneSpectrum (𝓞 E)} (h : GlobalTheory.LFun.UnrAt χ w) :
@@ -34,7 +34,7 @@ theorem isUnramAt_of_unrAt {F E : Type} [Field F] [NumberField F] [Field E] [Num
   exact h x ((valuation_eq_one_iff w (x : w.adicCompletion E)).1 hx)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT w hw`. Establish `hn : w ∉ GlobalTheory.LFun.above E (X.T : Set (Pl F))` using `fun h => hw.1 (Finset.mem_coe.1 h)`. Conclude with `⟨isUnramAt_of_unrAt (hT.chars.unrα w hn), isUnramAt_of_unrAt (hT.chars.unrβ w hn)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem unram_of_good : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

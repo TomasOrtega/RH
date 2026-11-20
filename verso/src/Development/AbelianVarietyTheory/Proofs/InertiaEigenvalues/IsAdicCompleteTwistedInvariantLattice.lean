@@ -12,11 +12,11 @@ section Lim
 variable {K : Type} [NormedField K]
 
 /- English proof (translation)
-Establish `hc : CauchySeq c`. Use `cauchySeq_of_le_tendsto_0 (fun N => r ^ N) (fun n m N hn hm => ?_) (tendsto_pow_atTop_nhds_zero_of_lt_one hr0 hr)` and prove the remaining obligations. Rewrite using `[dist_eq_norm]`. Break down `le_total n m with hnm | hnm` into its components or cases. Rewrite using `[norm_sub_rev]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h n m hnm).trans (pow_le_pow_of_le_one hr0 hr.le hn)`. Conclude with `(h m n hnm).trans (pow_le_pow_of_le_one hr0 hr.le hm)`. Take `⟨x, hx⟩` from `cauchySeq_tendsto_of_complete hc`. Use `⟨x, fun n => ?_⟩` and prove the remaining obligations. Establish `ht : Tendsto (fun m => ‖c n - c m‖) atTop (𝓝 ‖c n - x‖)` using `(tendsto_const_nhds.sub hx).norm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_of_tendsto ht ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop n] with m hm`. Rewrite using `[norm_sub_rev]`. Conclude with `h n m hm`.
+A detailed English derivation is pending.
 -/
 theorem exists_lim_of_norm_sub_le_pow [CompleteSpace K] {r : ℝ} (hr0 : 0 ≤ r) (hr : r < 1)
     {c : ℕ → K} (h : ∀ m n, m ≤ n → ‖c n - c m‖ ≤ r ^ m) : ∃ x, ∀ n, ‖c n - x‖ ≤ r ^ n := by
@@ -38,7 +38,7 @@ theorem exists_lim_of_norm_sub_le_pow [CompleteSpace K] {r : ℝ} (hr0 : 0 ≤ r
   exact h n m hm
 
 /- English proof (translation)
-The claim follows from `norm_le_zero_iff.1 (ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one hr0 hr) h)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_norm_le_pow_of_lt_one {r : ℝ} (hr0 : 0 ≤ r) (hr : r < 1) {x : K}
     (h : ∀ n, ‖x‖ ≤ r ^ n) : x = 0 :=
@@ -54,13 +54,13 @@ omit [IsUltrametricDist K] [IsUnitBall O K] [Fintype ι] [DecidableEq ι] [Fact 
   [NormedAlgebra ℚ_[l] K] in
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_pow, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_l_smul_vec_eq (n : ℕ) (v : Vec K a ι) : ((l : O) ^ n) • v = ((l : K) ^ n) • v := by
   rw [← Nat.cast_pow, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Simplify using `only [Pi.smul_apply, coeff_smul, smul_eq_mul, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (by positivity) (mem_A.1 (mem_vecs.1 (mem_tot.1 ht τ) i) k)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_coeff_pow_l_smul_le {P : PhiMod O K l e a ι} {t : Vec K a ι} (ht : t ∈ P.M) (n : ℕ)
     (τ : ZMod a) (i : ι) (k : ℕ) : ‖coeff k ((((l : K) ^ n) • t) τ i)‖ ≤ ‖(l : K)‖ ^ n := by
@@ -68,7 +68,7 @@ theorem norm_coeff_pow_l_smul_le {P : PhiMod O K l e a ι} {t : Vec K a ι} (ht 
   exact mul_le_of_le_one_right (by positivity) (mem_A.1 (mem_vecs.1 (mem_tot.1 ht τ) i) k)
 
 /- English proof (translation)
-The claim follows from `mem_tot.2 fun τ => mem_vecs.2 fun i => mem_A.2 fun k => by simp only [Pi.smul_apply, coeff_smul, smul_eq_mul, norm_mul, norm_inv, norm_pow] have hl : 0 < ‖(l : K)‖ ^ n := pow_pos (norm_pos_iff.2 (l_ne_zero l)) n rw [inv_mul_le_iff₀ hl, mul_one] exact h τ i k`.
+A detailed English derivation is pending.
 -/
 theorem pow_l_inv_smul_mem_M {P : PhiMod O K l e a ι} {v : Vec K a ι} {n : ℕ}
     (h : ∀ τ i k, ‖coeff k (v τ i)‖ ≤ ‖(l : K)‖ ^ n) : ((l : K) ^ n)⁻¹ • v ∈ P.M :=
@@ -85,15 +85,13 @@ namespace BKDat
 variable (D : BKDat O K l e a ι η H)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Take `⟨y, hy, rfl⟩` from `(Descent.mem_Y' _).1 hv`. Establish `h2` using `(Descent.mem_invOf _).1 (Descent.Y'_le_Y _ η hv)`. Use `⟨mem_divE.1 h2.1, h2.2, fun τ i k hk => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show coeff k ((X : K⟦X⟧) ^ e * y τ i) = 0`. Rewrite using `[coeff_X_pow_mul', if_neg (by omega)]`. Introduce and unpack `⟨h1, h2, h3⟩`. Establish `hd : ∀ τ i, (X : K⟦X⟧) ^ e ∣ v τ i` using `fun τ i => X_pow_dvd_iff.2 fun k hk => h3 τ i k hk`. Use `choose y hy using hd`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : v = (X : K⟦X⟧) ^ e • (y : Vec K a ι)` using `funext fun τ => funext fun i => hy τ i`. Establish `hXinj : ∀ w w' : Vec K a ι, (X : K⟦X⟧) ^ e • w = (X : K⟦X⟧) ^ e • w' → w = w'` using `fun w w' h => funext fun τ => funext fun i => mul_left_cancel₀ (pow_ne_zero _ X_ne_zero) (congrFun (congrFun h τ) i)`. Use `(Descent.mem_Y' _).2 ⟨y, (Descent.mem_invOf _).2 ⟨mem_divE.2 ?_, fun g => hXinj _ _ ?_⟩, hv.symm⟩` and prove the remaining obligations. Use `mem_tot.2 fun τ => mem_vecs.2 fun i => mem_A.2 fun k => ?_` and prove the remaining obligations. Use `mem_A.1 (mem_vecs.1 (mem_tot.1 h1 τ) i) (k + e)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (E K l e ^ η • v) τ i = (X : K⟦X⟧) ^ e * (E K l e ^ η • y) τ i`. Rewrite using `[hv]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[h4, coeff_X_pow_mul]`. Then use the resulting hypothesis.
-
-Rewrite using `[← D.desc.act_X_pow_smul, ← hv, h2 g]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Y'_iff_coeff {v : Vec K a ι} : v ∈ D.Y' ↔ E K l e ^ η • v ∈ D.M ∧
     (∀ g, D.desc.act g v = v) ∧ ∀ τ i k, k < e → coeff k (v τ i) = 0 := by
@@ -122,9 +120,9 @@ theorem mem_Y'_iff_coeff {v : Vec K a ι} : v ∈ D.Y' ↔ E K l e ^ η • v �
     · rw [← D.desc.act_X_pow_smul, ← hv, h2 g]
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, -, hb⟩`. Use `⟨b, b.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_l_smul_vec_eq (O := O)]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg Subtype.val hb).symm`. Introduce and unpack `⟨z, hz, h⟩`. Use `⟨⟨z, hz⟩, Submodule.mem_top, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show ((l : O) ^ n) • z = (x : Vec K a ι) - y`. Rewrite using `[pow_l_smul_vec_eq, h]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smodEq_Y'_iff (x y : D.Y') (n : ℕ) :
     x ≡ y [SMOD (Ideal.span {(l : O)} ^ n • ⊤ : Submodule O D.Y')] ↔
@@ -142,7 +140,7 @@ theorem smodEq_Y'_iff (x y : D.Y') (n : ℕ) :
     rw [pow_l_smul_vec_eq, h]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x hx => by have hE : ∀ n τ i k, ‖coeff k ((E K l e ^ η • (x : Vec K a ι)) τ i)‖ ≤ ‖(l : K)‖ ^ n := by intro n obtain ⟨z, hz, h⟩ := (D.smodEq_Y'_iff x 0 n).1 (hx n) rw [ZeroMemClass.coe_zero, sub_zero] at h rw [h, smul_comm] exact norm_coeff_pow_l_smul_le ((D.mem_Y'_iff_coeff …`.
+Supply the required witnesses or components.
 -/
 theorem isHausdorff_Y' : IsHausdorff (Ideal.span {(l : O)}) D.Y' := ⟨fun x hx => by
   have hE : ∀ n τ i k, ‖coeff k ((E K l e ^ η • (x : Vec K a ι)) τ i)‖ ≤ ‖(l : K)‖ ^ n := by
@@ -156,7 +154,7 @@ theorem isHausdorff_Y' : IsHausdorff (Ideal.span {(l : O)}) D.Y' := ⟨fun x hx 
   exact Subtype.ext (((isUnit_E (K := K) l e).pow η).smul_left_cancel.1 (h0.trans (smul_zero _).symm))⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun f hf => by have hl0 : ∀ n, ((l : K) ^ n) ≠ 0 := fun n => pow_ne_zero _ (l_ne_zero l) have hr0 : (0 : ℝ) ≤ ‖(l : K)‖ := norm_nonneg _ have hr1 : ‖(l : K)‖ < 1 := norm_l_lt_one l have hfY : ∀ n, _ := fun n => (D.mem_Y'_iff_coeff).1 (f n).2 set s : ℕ → Vec K a ι := fun n => E K …`.
+Supply the required witnesses or components.
 -/
 theorem isPrecomplete_Y' : IsPrecomplete (Ideal.span {(l : O)}) D.Y' := ⟨fun f hf => by
   have hl0 : ∀ n, ((l : K) ^ n) ≠ 0 := fun n => pow_ne_zero _ (l_ne_zero l)
@@ -240,7 +238,7 @@ theorem isPrecomplete_Y' : IsPrecomplete (Ideal.span {(l : O)}) D.Y' := ⟨fun f
 end BKDat
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D`. Conclude with `{ toIsHausdorff := D.isHausdorff_Y', toIsPrecomplete := D.isPrecomplete_Y' }`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem BKDat.isAdicComplete_Y' : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K]
     [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι]

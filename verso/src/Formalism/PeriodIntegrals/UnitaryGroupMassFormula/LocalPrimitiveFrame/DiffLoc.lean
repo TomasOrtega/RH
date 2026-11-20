@@ -18,7 +18,7 @@ def DiffLoc_P : Submodule (v.adicCompletionIntegers F) (Fv F v ⊗[F] E) :=
   DiffLoc_psi (E := E) v (Set.range ((↑) : 𝓞 E → E))
 
 /- English proof (translation)
-Establish `h : (fun x : 𝓞 E => inclR (F` using `F) (Fv F v) (x : E)) '' Set.univ = inclR (F := F) (Fv F v) '' Set.range ((↑) : 𝓞 E → E) := by`. Use extensionality with `y`. Simplify using the standard rewrite rules. Unfold `OEv DiffLoc_P DiffLoc_psi`. Rewrite using `[h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -31,11 +31,9 @@ theorem DiffLoc_OEv (p : Fv F v ⊗[F] E) : p ∈ OEv (E := E) v ↔ p ∈ DiffL
   rfl
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨s, hs, rfl⟩` from `hx`. Rewrite using `[← map_mul]`. Conclude with `Submodule.subset_span ⟨_, hS o s hs, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul t x _ hx => rw [mul_smul_comm]`.
-
-Conclude with `Submodule.smul_mem _ t hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem DiffLoc_psi_mul_mem (S : Set E) (hS : ∀ (o : 𝓞 E) (s : E), s ∈ S → (o : E) * s ∈ S)
     {y : Fv F v ⊗[F] E} (hy : y ∈ DiffLoc_psi v S) (o : 𝓞 E) :
@@ -50,9 +48,9 @@ theorem DiffLoc_psi_mul_mem (S : Set E) (hS : ∀ (o : 𝓞 E) (s : E), s ∈ S 
   | smul t x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ t hx
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hT x hx`. Consider the case `zero => rw [SetLike.mem_coe, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [SetLike.mem_coe, map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul o x _ hx => rw [SetLike.mem_coe, Algebra.smul_def, map_mul]`. Conclude with `hQ o _ hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem DiffLoc_span_le (Q : Submodule (v.adicCompletionIntegers F) (Fv F v ⊗[F] E))
     (hQ : ∀ (o : 𝓞 E) (y : Fv F v ⊗[F] E), y ∈ Q → inclR (F := F) (Fv F v) (o : E) * y ∈ Q)
@@ -67,7 +65,7 @@ theorem DiffLoc_span_le (Q : Submodule (v.adicCompletionIntegers F) (Fv F v ⊗[
   | smul o x _ hx => rw [SetLike.mem_coe, Algebra.smul_def, map_mul]; exact hQ o _ hx
 
 /- English proof (translation)
-Introduce `o s hs`. Use `(I : Submodule (𝓞 E) E).smul_mem o hs` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem DiffLoc_frac_closed (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) :
     ∀ (o : 𝓞 E) (s : E), s ∈ (I : Set E) → (o : E) * s ∈ (I : Set E) := by
@@ -76,7 +74,7 @@ theorem DiffLoc_frac_closed (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) :
   rwa [Algebra.smul_def] at this
 
 /- English proof (translation)
-Introduce and unpack `o _ ⟨t, rfl⟩`. Conclude with `⟨o * t, by push_cast; rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem DiffLoc_range_closed :
     ∀ (o : 𝓞 E) (s : E), s ∈ Set.range ((↑) : 𝓞 E → E) → (o : E) * s ∈ Set.range ((↑) : 𝓞 E → E) := by
@@ -84,15 +82,13 @@ theorem DiffLoc_range_closed :
   exact ⟨o * t, by push_cast; rfl⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Establish `h : ((I * J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E) = (Submodule.span (𝓞 E) ((I : Set E) * (J : Set E)) : Set E)` using `by show (((I * J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E) : Set E) = _`. Rewrite using `[FractionalIdeal.coe_mul, Submodule.mul_eq_span_mul_set]`. Both sides reduce to the same expression. Rewrite using `[h]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Apply `DiffLoc_span_le` to reduce the goal to its premises. Introduce `o y hy`. Use `Submodule.mul_induction_on (C := fun y => inclR (F := F) (Fv F v) (o : E) * y ∈ DiffLoc_psi v (I : Set E) * DiffLoc_psi v (J : Set E)) hy (fun m hm n hn => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Conclude with `Submodule.mul_mem_mul (DiffLoc_psi_mul_mem v _ (DiffLoc_frac_closed I) hm o) hn`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add]`. Conclude with `add_mem hx hy`. Introduce and unpack `_ ⟨i, hi, j, hj, rfl⟩`. Rewrite using `[map_mul]`. Conclude with `Submodule.mul_mem_mul (Submodule.subset_span ⟨i, hi, rfl⟩) (Submodule.subset_span ⟨j, hj, rfl⟩)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[DiffLoc_psi, DiffLoc_psi, Submodule.span_mul_span]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨i, hi, rfl⟩, _, ⟨j, hj, rfl⟩, rfl⟩`. Use `show inclR (F := F) (Fv F v) i * inclR (F := F) (Fv F v) j ∈ _`. Rewrite using `[← map_mul]`.
-
-Conclude with `Submodule.subset_span ⟨i * j, FractionalIdeal.mul_mem_mul hi hj, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DiffLoc_psi_mul (I J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) :
     DiffLoc_psi v ((I * J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E) =
@@ -123,7 +119,7 @@ theorem DiffLoc_psi_mul (I J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) :
     exact Submodule.subset_span ⟨i * j, FractionalIdeal.mul_mem_mul hi hj, rfl⟩
 
 /- English proof (translation)
-Unfold `DiffLoc_P`. Use `congr 1`. Use extensionality with `x`. Conclude with `(FractionalIdeal.mem_one_iff _).trans Iff.rfl`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem DiffLoc_psi_one :
     DiffLoc_psi v ((1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E) = DiffLoc_P (E := E) v := by
@@ -133,29 +129,27 @@ theorem DiffLoc_psi_one :
   exact (FractionalIdeal.mem_one_iff _).trans Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[← DiffLoc_psi_one, ← DiffLoc_psi_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem DiffLoc_PP : DiffLoc_P (E := E) v * DiffLoc_P (E := E) v = DiffLoc_P (E := E) v := by
   rw [← DiffLoc_psi_one, ← DiffLoc_psi_mul, mul_one]
 
 /- English proof (translation)
-Establish `hD : differentIdeal ℤ (𝓞 F) ≠ ⊥` using `differentIdeal_ne_bot`. Take `⟨s, hs⟩` from `(IsNoetherian.noetherian (differentIdeal ℤ (𝓞 F)) : (differentIdeal ℤ (𝓞 F)).FG)`. Set `val : 𝓞 F → _` to `fun x => Valued.v (algebraMap F (Fv F v) (x : F))`. Establish `hsne : s.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Apply `hD` to reduce the goal to its premises. Rewrite using `[← hs]`. Simplify using the standard rewrite rules. Take `⟨g, hg, hmax⟩` from `Finset.exists_max_image s val hsne`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hle : ∀ x ∈ differentIdeal ℤ (𝓞 F), val x ≤ val g`. Introduce `x hx`. Rewrite `hx` using `[← hs]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hmax x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp [val]`. Consider the case `add x y _ _ hx hy`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[val]`. Use `_ ≤ max (val x) (val y) := Valuation.map_add _ _ _`.
+Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `_ ≤ val g := max_le hx hy`. Consider the case `smul o x _ hx`. Establish `ho : val o ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) F v).1 (HeightOneSpectrum.coe_algebraMap_mem (𝓞 F) F v o)`. Combine the equalities or inequalities in the displayed calculation. Establish `hg0 : val g ≠ 0`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hD` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `h1 : val x = 0` using `le_antisymm (h0 ▸ hle x hx) zero_le`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (x : F) = 0` using `(algebraMap F (Fv F v)).injective (by`. Rewrite using `[map_zero]`. Conclude with `(Valuation.zero_iff _).1 h1)`. Rewrite using `[Submodule.mem_bot]`. Conclude with `h2` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `⟨algebraMap F (Fv F v) (g : F), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hg0` to reduce the goal to its premises. Simplify using `[val, h]`. Introduce `x hx`.
-
-Conclude with `hle x hx`. Conclude with `⟨g, hs ▸ Submodule.subset_span hg, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem DiffLoc_exists : ∃ d, IsDiffVal v d := by
   classical
@@ -204,7 +198,7 @@ theorem DiffLoc_exists : ∃ d, IsDiffVal v d := by
   · exact ⟨g, hs ▸ Submodule.subset_span hg, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `DiffLoc_exists v`. Unfold `dV`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DiffLoc_isDiffVal : IsDiffVal v (dV v) := by
   have h := DiffLoc_exists v
@@ -218,13 +212,13 @@ Both sides reduce to the same expression.
 theorem DiffLoc_sc_eq (x : Fv F v) : sc (E := E) v x = algebraMap (Fv F v) (Fv F v ⊗[F] E) x := rfl
 
 /- English proof (translation)
-The claim follows from `map_mul (algebraMap (Fv F v) (Fv F v ⊗[F] E)) a b`.
+A detailed English derivation is pending.
 -/
 theorem DiffLoc_sc_mul (a b : Fv F v) : sc (E := E) v (a * b) = sc (E := E) v a * sc (E := E) v b :=
   map_mul (algebraMap (Fv F v) (Fv F v ⊗[F] E)) a b
 
 /- English proof (translation)
-Use `show (1 : Fv F v) ⊗ₜ[F] (algebraMap F E x) = (algebraMap F (Fv F v) x) ⊗ₜ[F] (1 : E)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one]`. Conclude with `(TensorProduct.smul_tmul x (1 : Fv F v) (1 : E)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DiffLoc_inclR_alg (x : F) :
     inclR (F := F) (Fv F v) (algebraMap F E x) = sc (E := E) v (algebraMap F (Fv F v) x) := by
@@ -233,7 +227,7 @@ theorem DiffLoc_inclR_alg (x : F) :
   exact (TensorProduct.smul_tmul x (1 : Fv F v) (1 : E)).symm
 
 /- English proof (translation)
-Use `show (((ddE (E := E) F : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E) : Set E) = _`. Unfold `ddE`. Rewrite using `[FractionalIdeal.coe_coeIdeal, IsLocalization.coeSubmodule, Ideal.map, Ideal.span, Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem DiffLoc_ddE_eq : ((ddE (E := E) F : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E) =
     (Submodule.span (𝓞 E) ((fun d : 𝓞 F => algebraMap F E (d : F)) ''
@@ -245,27 +239,23 @@ theorem DiffLoc_ddE_eq : ((ddE (E := E) F : FractionalIdeal (nonZeroDivisors (�
   rfl
 
 /- English proof (translation)
-Take `⟨hδ, hle, d0, hd0mem, heq⟩` from `DiffLoc_isDiffVal v`. Establish `hvδ : Valued.v (dV v) ≠ 0` using `(Valuation.ne_zero_iff _).2 hδ`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[DiffLoc_ddE_eq]`. Apply `DiffLoc_span_le` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `o y hy`. Take `⟨p, hp, rfl⟩` from `Submodule.mem_span_singleton_mul.1 hy`. Rewrite using `[mul_left_comm]`. Conclude with `Submodule.mem_span_singleton_mul.2 ⟨_, DiffLoc_psi_mul_mem v _ DiffLoc_range_closed hp o, rfl⟩`. Introduce and unpack `_ ⟨d, hd, rfl⟩ show inclR (F := F) (Fv F v) (algebraMap F E (d : F)) ∈ _ set t := algebraMap F (Fv F v) (d : F) * (dV v)⁻¹ with ht_def`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `ht : t ∈ v.adicCompletionIntegers F` using `by show Valued.v t ≤ 1`. Rewrite using `[ht_def, map_mul, map_inv₀]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsplit : algebraMap F (Fv F v) (d : F) = dV v * t`. Rewrite using `[ht_def, mul_comm (algebraMap F (Fv F v) (d : F)), ← mul_assoc, mul_inv_cancel₀ hδ, one_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : inclR (F` using `F) (Fv F v) ((1 : 𝓞 E) : E) = 1 := by simp`. Establish `htP : sc (E` using `E) v t ∈ DiffLoc_P (E := E) v := by`. Establish `: sc (E` using `E) v t = (⟨t, ht⟩ : v.adicCompletionIntegers F) • inclR (F := F) (Fv F v) ((1 : 𝓞 E) : E) := by`. Rewrite using `[h1]`. Conclude with `Algebra.algebraMap_eq_smul_one t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ⟨1, rfl⟩, rfl⟩)`. Rewrite using `[DiffLoc_inclR_alg, hsplit, DiffLoc_sc_mul]`. Conclude with `Submodule.mem_span_singleton_mul.2 ⟨_, htP, rfl⟩`. Use `Submodule.mul_le.2 (fun m hm p hp => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hm`. Rewrite using `[smul_mul_assoc]`. Use `Submodule.smul_mem _ a ?_` and prove the remaining obligations. Establish `hd0v : Valued.v (algebraMap F (Fv F v) (d0 : F)) ≠ 0` using `heq ▸ hvδ`. Establish `hd0 : algebraMap F (Fv F v) (d0 : F) ≠ 0` using `(Valuation.ne_zero_iff _).1 hd0v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set u := dV v * (algebraMap F (Fv F v) (d0 : F))⁻¹ with hu_def`. Establish `hu : u ∈ v.adicCompletionIntegers F` using `by show Valued.v u ≤ 1`. Rewrite using `[hu_def, map_mul, map_inv₀, ← heq, mul_inv_cancel₀ hd0v]`. Establish `hmemδ : sc (E` using `E) v (dV v) ∈ DiffLoc_psi v ((ddE (E := E) F : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E) := by`. Establish `h1 : sc (E` using `E) v (dV v) = (⟨u, hu⟩ : v.adicCompletionIntegers F) • inclR (F := F) (Fv F v) (algebraMap F E (d0 : F)) := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DiffLoc_inclR_alg]`. Use `show sc (E := E) v (dV v) = u • sc (E := E) v (algebraMap F (Fv F v) (d0 : F))`. Rewrite using `[Algebra.smul_def, ← DiffLoc_sc_eq, ← DiffLoc_sc_mul, hu_def, mul_assoc, inv_mul_cancel₀ hd0, mul_one]`. Rewrite using `[h1]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ?_, rfl⟩)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DiffLoc_ddE_eq]`. Conclude with `Submodule.subset_span ⟨d0, hd0mem, rfl⟩`. Unfold `DiffLoc_P DiffLoc_psi at hp`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx`.
-
-Take `⟨_, ⟨o, rfl⟩, rfl⟩` from `hx`. Rewrite using `[mul_comm]`. Conclude with `DiffLoc_psi_mul_mem v _ (DiffLoc_frac_closed (ddE F)) hmemδ o`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`.
-
-Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul t x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ t hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem DiffLoc_psi_ddE :
     DiffLoc_psi v ((ddE (E := E) F : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E) =
@@ -332,7 +322,7 @@ theorem DiffLoc_psi_ddE :
     | smul t x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ t hx
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero, Submodule.one_eq_span]`. Consider the case `succ k ih => rw [pow_succ, ih, Submodule.span_mul_span, Set.singleton_mul_singleton, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem DiffLoc_span_pow (c : Fv F v ⊗[F] E) (k : ℕ) :
     (Submodule.span (v.adicCompletionIntegers F) {c}) ^ k =
@@ -342,7 +332,7 @@ theorem DiffLoc_span_pow (c : Fv F v ⊗[F] E) (k : ℕ) :
   | succ k ih => rw [pow_succ, ih, Submodule.span_mul_span, Set.singleton_mul_singleton, pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, DiffLoc_psi_one, pow_zero, one_mul]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, DiffLoc_psi_mul, ih, DiffLoc_psi_ddE, pow_succ]`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem DiffLoc_pow_nat (k : ℕ) :
     DiffLoc_psi v (((ddE (E := E) F) ^ k : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E) =
@@ -357,7 +347,7 @@ theorem DiffLoc_pow_nat (k : ℕ) :
       _ = _ := by rw [DiffLoc_PP]
 
 /- English proof (translation)
-Unfold `ddE`. Rewrite using `[ne_eq, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `Ideal.map_ne_bot_of_ne_bot differentIdeal_ne_bot`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DiffLoc_ddE_ne : (ddE (E := E) F : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0 := by
   unfold ddE
@@ -365,9 +355,9 @@ theorem DiffLoc_ddE_ne : (ddE (E := E) F : FractionalIdeal (nonZeroDivisors (�
   exact Ideal.map_ne_bot_of_ne_bot differentIdeal_ne_bot
 
 /- English proof (translation)
-Establish `h1 : DiffLoc_psi v (((ddE (E` using `E) F) ^ (-(k : ℤ)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E) * (Submodule.span (v.adicCompletionIntegers F) {sc (E := E) v (dV v)} ^ k * DiffLoc_P (E := E) v) = DiffLoc_P (E := E) v := by`. Rewrite using `[← DiffLoc_pow_nat, ← DiffLoc_psi_mul, zpow_neg, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ DiffLoc_ddE_ne), DiffLoc_psi_one]`. Establish `h2 : DiffLoc_psi v (((ddE (E` using `E) F) ^ (-(k : ℤ)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E) * DiffLoc_P (E := E) v = DiffLoc_psi v (((ddE (E := E) F) ^ (-(k : ℤ)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E) := by`. Rewrite using `[← DiffLoc_psi_one, ← DiffLoc_psi_mul, mul_one]`. Establish `h3 : Submodule.span (v.adicCompletionIntegers F) {sc (E` using `E) v (dV v)⁻¹} ^ k * Submodule.span (v.adicCompletionIntegers F) {sc (E := E) v (dV v)} ^ k = 1 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_pow, Submodule.span_mul_span, Set.singleton_mul_singleton, ← DiffLoc_sc_mul, inv_mul_cancel₀ (DiffLoc_isDiffVal v).1, DiffLoc_sc_eq, map_one, ← Submodule.one_eq_span, one_pow]`. Generalize the expression as in `DiffLoc_psi v (((ddE (E := E) F) ^ (-(k : ℤ)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E) = Q at h1 h2 ⊢`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation.
 -/
 theorem DiffLoc_neg (k : ℕ) :
     DiffLoc_psi v (((ddE (E := E) F) ^ (-(k : ℤ)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E) =
@@ -396,9 +386,9 @@ theorem DiffLoc_neg (k : ℕ) :
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v k y`. Express the relevant statement in the definitionally equal form `y ∈ DiffLoc_psi v (((ddE (E := E) F) ^ (-(k : ℤ)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E) ↔ _`. Rewrite using `[DiffLoc_neg, DiffLoc_span_pow, Submodule.mem_span_singleton_mul]`. Establish `hsc : sc (E` using `E) v ((dV v)⁻¹ ^ k) = sc (E := E) v (dV v)⁻¹ ^ k := by`. Rewrite using `[DiffLoc_sc_eq, DiffLoc_sc_eq, map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩`. Conclude with `⟨p, (DiffLoc_OEv v p).2 hp, by rw [hsc]⟩`. Introduce and unpack `⟨p, hp, rfl⟩`. Conclude with `⟨p, (DiffLoc_OEv v p).1 hp, by rw [hsc]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem localDifferentPowerSpan : DiffLoc := by
   intro F E _ _ _ _ _ v k y

@@ -4,29 +4,29 @@ open CategoryTheory Limits TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R B M _ _ _ _ _ n m π hπ r hr hP`. Set `e` to `TensorProduct.piScalarRight R B B (Fin n)`. Set `πB : (Fin n → B) →ₗ[B] B ⊗[R] M` to `(π.baseChange B) ∘ₗ e.symm.toLinearMap`. Establish `hπB : Function.Surjective πB` using `(LinearMap.lTensor_surjective B hπ).comp e.symm.surjective`. Take `⟨i, hi⟩` from `Module.projective_lifting_property πB LinearMap.id hπB`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `v : Fin n → Fin n → B` to `fun a => i ((1 : B) ⊗ₜ[R] π (Pi.single a 1))`. Set `f : (Fin m → R) →ₗ[R] (Fin n → R)` to `Fintype.linearCombination R r`. Establish `hex : Function.Exact f π`. Rewrite using `[LinearMap.exact_iff, Fintype.range_linearCombination, hr]`. Establish `hexB` using `lTensor_exact B hex hπ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `N : Submodule B (Fin n → B)` to `Submodule.span B (Set.range fun b l => algebraMap R B (r b l))`. Establish `hker : ∀ y, πB y = 0 → y ∈ N`. Introduce `y hy`. Establish `h0 : (π.lTensor B) (e.symm y) = 0`. Use `hy` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [πB, LinearMap.comp_apply, LinearEquiv.coe_coe] at this`. Rewrite `this` using `[LinearMap.baseChange_eq_ltensor]`. Then use the resulting hypothesis. Take `⟨z, hz⟩` from `(hexB _).1 h0`. Establish `hy' : y = e (f.lTensor B z)` using `by rw [hz, LinearEquiv.apply_symm_apply]`. Rewrite using `[hy']`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `clear hz hy' h0 hy`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x c`. Establish `: e ((f.lTensor B) (x ⊗ₜ c)) = ∑ b, (x * algebraMap R B (c b)) • (fun l => algebraMap R B (r b l))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `l`. Simplify using `[e, f, Fintype.linearCombination_apply, Finset.sum_apply, Algebra.smul_def, Finset.mul_sum, Finset.sum_mul, mul_comm, mul_left_comm]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`. Consider the case `add a b ha hb => rw [map_add, map_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `N.add_mem ha hb`. Establish `hπv : ∀ a, πB (v a - Pi.single a 1) = 0`. Introduce `a`. Establish `h1 : πB (v a) = (1 : B) ⊗ₜ[R] π (Pi.single a 1)` using `LinearMap.congr_fun hi _`. Establish `h2 : e.symm (Pi.single a 1) = (1 : B) ⊗ₜ[R] (Pi.single a 1 : Fin n → R)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Use extensionality with `l`. Simplify using `[e, Pi.single_apply]`. Rewrite using `[map_sub, h1]`. Simplify using `[πB, h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose w hw using fun a => (Submodule.mem_span_range_iff_exists_fun B).1 (hker _ (hπv a))`. Use `⟨v, w, fun b l => ?_, fun a l => ?_⟩` and prove the remaining obligations. Establish `hrb : π (r b) = 0`. Establish `: r b ∈ LinearMap.ker π` using `hr ▸ Submodule.subset_span ⟨b, rfl⟩`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hsum : (1 : B) ⊗ₜ[R] π (r b) = ∑ a, algebraMap R B (r b a) • ((1 : B) ⊗ₜ[R] π (Pi.single a 1))` using `by conv_lhs => rw [← Finset.univ_sum_single (r b)]`. Simplify using `only [map_sum, TensorProduct.tmul_sum, algebraMap_smul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← TensorProduct.tmul_smul, ← map_smul]`. Use `congr 2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `j`. Simplify using `[Pi.single_apply]`. Establish `h1 : ∑ a, algebraMap R B (r b a) • v a = 0`. Simplify using `only [v, ← map_smul, ← map_sum, ← hsum, hrb, TensorProduct.tmul_zero, map_zero]`. Use `congrFun h1 l` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[Finset.sum_apply, Algebra.smul_def]`. Use `congrFun (hw a) l` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.sub_apply, Pi.single_apply] at this`. Rewrite using `[this]`. Simplify using `[eq_comm]`.
+A detailed English derivation is pending.
 -/
 theorem projective_baseChange_presentation_matrix : ∀ (R B M : Type) [CommRing R] [CommRing B] [Algebra R B] [AddCommGroup M]
     [Module R M] (n m : ℕ) (π : (Fin n → R) →ₗ[R] M), Function.Surjective π →

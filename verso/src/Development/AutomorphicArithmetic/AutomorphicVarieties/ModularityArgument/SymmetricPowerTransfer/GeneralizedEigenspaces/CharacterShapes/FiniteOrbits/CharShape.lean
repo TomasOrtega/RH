@@ -50,25 +50,25 @@ variable (L : D S G)
 def od (v : I) (x : G v) : ℤ := (L.o v x).toAdd
 
 /- English proof (translation)
-Simplify using `[od]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] private theorem od_mul (v : I) (x y : G v) : L.od v (x * y) = L.od v x + L.od v y := by
   simp [od]
 
 /- English proof (translation)
-Simplify using `[od]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] private theorem od_one (v : I) : L.od v 1 = 0 := by
   simp [od]
 
 /- English proof (translation)
-Simplify using `[od]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] private theorem od_inv (v : I) (x : G v) : L.od v x⁻¹ = - L.od v x := by
   simp [od]
 
 /- English proof (translation)
-Simplify using `[od]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] private theorem od_pow (v : I) (x : G v) (n : ℕ) : L.od v (x ^ n) = n * L.od v x := by
   simp [od]
@@ -84,7 +84,7 @@ def Cn (t : ∀ v, G v) : Prop := ∀ v ∈ S, 2 < L.od v (t v)
 variable {L}
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨h1, h2⟩` from `h v hv`. Take `⟨h1', h2'⟩` from `h' v hv`. Simplify using `only [Pi.mul_apply, od_mul]`. Apply the tactic sequence `constructor <;> linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Dm.mul {d d' : ∀ v, Fin 3 → G v} (h : L.Dm d) (h' : L.Dm d') : L.Dm (d * d') := by
   intro v hv
@@ -94,7 +94,7 @@ private theorem Dm.mul {d d' : ∀ v, Fin 3 → G v} (h : L.Dm d) (h' : L.Dm d')
   constructor <;> linarith
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨h1, h2⟩` from `h v hv`. Take `⟨h1', h2'⟩` from `h' v hv`. Simplify using `only [Pi.mul_apply, od_mul]`. Apply the tactic sequence `constructor <;> linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Sd.mul {d d' : ∀ v, Fin 3 → G v} (h : L.Sd d) (h' : L.Dm d') : L.Sd (d * d') := by
   intro v hv
@@ -104,7 +104,7 @@ private theorem Sd.mul {d d' : ∀ v, Fin 3 → G v} (h : L.Sd d) (h' : L.Dm d')
   constructor <;> linarith
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨h1, h2⟩` from `h v hv`. Simplify using `only [CS.sg, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, od_inv]`. Apply the tactic sequence `constructor <;> linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Dm.sg {d : ∀ v, Fin 3 → G v} (h : L.Dm d) : L.Dm (sg d) := by
   intro v hv
@@ -114,14 +114,14 @@ private theorem Dm.sg {d : ∀ v, Fin 3 → G v} (h : L.Dm d) : L.Dm (sg d) := b
   constructor <;> linarith
 
 /- English proof (translation)
-Introduce `v hv`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem dm_one : L.Dm 1 := by
   intro v hv
   simp
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simpa using dm_one`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem Dm.pow {d : ∀ v, Fin 3 → G v} (h : L.Dm d) (N : ℕ) : L.Dm (d ^ N) := by
   induction N with
@@ -138,9 +138,9 @@ structure Ch (χ : (∀ v, Fin 3 → G v) → ℂ) : Prop where
 variable {χ : (∀ v, Fin 3 → G v) → ℂ}
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Simplify using `only [pow_zero]`. Conclude with `hχ.lev 1 (fun v _ i => by simp [Subgroup.one_mem])`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, pow_succ, hχ.mul _ _ (hd.pow n) hd, ih]`.
+A detailed English derivation is pending.
 -/
 private theorem Ch.pow (hχ : L.Ch χ) {d : ∀ v, Fin 3 → G v} (hd : L.Dm d) (N : ℕ) :
     χ (d ^ N) = χ d ^ N := by
@@ -186,9 +186,9 @@ end Ord
 end UpperTheory.V.Z.Sym.So.CS
 
 /- English proof (translation)
-Unfold `Dom`. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Apply the tactic sequence `all_goals first`. Consider the case `exact le_rfl`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact h01`. Consider the case `exact h12`. Consider the case `exact h01.trans h12`. Consider the case `exact absurd hij (by decide)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem dom_of_valuation_monotone_fin_three {k : Type} [Field k] [ValuativeRel k] {x : Fin 3 → kˣ}
     (h01 : valuation k (x 0 : k) ≤ valuation k (x 1 : k))
@@ -204,7 +204,7 @@ private theorem dom_of_valuation_monotone_fin_three {k : Type} [Field k] [Valuat
     | exact absurd hij (by decide)
 
 /- English proof (translation)
-Unfold `Dom at *`. Introduce `i j hij`. Simplify using `only [Pi.mul_apply, Units.val_mul, map_mul]`. Conclude with `mul_le_mul' (hx i j hij) (hy i j hij)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dom_mul' {k : Type} [Field k] [ValuativeRel k] {n : ℕ} {x y : Fin n → kˣ}
     (hx : Dom x) (hy : Dom y) : Dom (x * y) := by
@@ -214,7 +214,7 @@ private theorem dom_mul' {k : Type} [Field k] [ValuativeRel k] {n : ℕ} {x y : 
   exact mul_le_mul' (hx i j hij) (hy i j hij)
 
 /- English proof (translation)
-Unfold `Dom at hx`. Conclude with `⟨hx 0 1 (by decide), hx 1 2 (by decide)⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 private theorem valuation_monotone_of_dom_fin_three {k : Type} [Field k] [ValuativeRel k] {x : Fin 3 → kˣ} (hx : Dom x) :
     valuation k (x 0 : k) ≤ valuation k (x 1 : k) ∧ valuation k (x 1 : k) ≤ valuation k (x 2 : k) := by
@@ -222,9 +222,9 @@ private theorem valuation_monotone_of_dom_fin_three {k : Type} [Field k] [Valuat
   exact ⟨hx 0 1 (by decide), hx 1 2 (by decide)⟩
 
 /- English proof (translation)
-Unfold `unif`. Apply `Classical.epsilon_spec (p := fun x : kˣ => valuation k (x : k) = ValuativeRel.uniformizer k)` to reduce the goal to its premises. Take `⟨y, hy⟩` from `ValuativeRel.valuation_surjective (ValuativeRel.uniformizer k)`. Establish `hy0 : y ≠ 0`. Introduce `h`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hy` using `[h, map_zero]`. Conclude with `ValuativeRel.uniformizer_ne_zero hy.symm`. Conclude with `⟨Units.mk0 y hy0, by simpa using hy⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem valuation_unif_eq_uniformizer' (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] :
@@ -239,7 +239,7 @@ private theorem valuation_unif_eq_uniformizer' (k : Type) [Field k] [ValuativeRe
   exact ⟨Units.mk0 y hy0, by simpa using hy⟩
 
 /- English proof (translation)
-Rewrite using `[valuation_unif_eq_uniformizer']`. Conclude with `⟨ValuativeRel.uniformizer_pos, ValuativeRel.uniformizer_lt_one⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem valuation_unif_pos_and_lt_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] :
@@ -248,9 +248,9 @@ private theorem valuation_unif_pos_and_lt_one (k : Type) [Field k] [ValuativeRel
   exact ⟨ValuativeRel.uniformizer_pos, ValuativeRel.uniformizer_lt_one⟩
 
 /- English proof (translation)
-Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, map_mul, map_inv₀, map_pow]`. Rewrite `h`, the goal using `[valuation_unif_eq_uniformizer']`. Establish `hπ0 : 0 < ValuativeRel.uniformizer k` using `ValuativeRel.uniformizer_pos`. Establish `h1 : valuation k (t : k) / ValuativeRel.uniformizer k ^ 2 < 1` using `(div_lt_one₀ (pow_pos hπ0 2)).mpr h`. Establish `h2` using `ValuativeRel.le_uniformizer_iff.mpr h1`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(div_le_iff₀ (pow_pos hπ0 2)).mp h2`. Rewrite using `[← div_eq_mul_inv, div_le_one₀ (pow_pos hπ0 3), pow_succ']`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valuation_mul_unif_pow_inv_le_one_of_lt_sq (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {t : kˣ}
@@ -268,7 +268,7 @@ private theorem valuation_mul_unif_pow_inv_le_one_of_lt_sq (k : Type) [Field k] 
   exact h3
 
 /- English proof (translation)
-Rewrite using `[div_eq_mul_inv, div_eq_mul_inv, Units.val_mul, Units.val_mul, map_mul, map_mul]`. Conclude with `mul_le_mul' h le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valuation_div_le_valuation_div_of_le {k : Type} [Field k] [ValuativeRel k] {a b c : kˣ}
     (h : valuation k (a : k) ≤ valuation k (b : k)) :
@@ -277,7 +277,7 @@ private theorem valuation_div_le_valuation_div_of_le {k : Type} [Field k] [Valua
   exact mul_le_mul' h le_rfl
 
 /- English proof (translation)
-Establish `h1` using `valuation_div_le_valuation_div_of_le (c := b) h`. Rewrite `h1` using `[div_self', Units.val_one, map_one]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valuation_div_le_one_of_le {k : Type} [Field k] [ValuativeRel k] {a b : kˣ}
     (h : valuation k (a : k) ≤ valuation k (b : k)) :
@@ -287,7 +287,7 @@ private theorem valuation_div_le_one_of_le {k : Type} [Field k] [ValuativeRel k]
   exact h1
 
 /- English proof (translation)
-Establish `h1` using `valuation_div_le_valuation_div_of_le (a := a) (b := 1) (c := a) (by rw [Units.val_one, map_one]; exact h)`. Rewrite `h1` using `[div_self', one_div, Units.val_one, map_one]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_le_valuation_inv_of_le_one {k : Type} [Field k] [ValuativeRel k] {a : kˣ}
     (h : valuation k (a : k) ≤ 1) : 1 ≤ valuation k ((a⁻¹ : kˣ) : k) := by
@@ -297,117 +297,109 @@ private theorem one_le_valuation_inv_of_le_one {k : Type} [Field k] [ValuativeRe
 
 open UpperTheory.V.Z.Sym.So.CS in
 /- English proof (translation)
-Introduce `F _ _ Δ A hA χ hmul hlev hsg`. Take `⟨e1, he1⟩ : ∃ e1 : Dat.Par F → ParN F 3, ∀ t v, e1 t v = ![t v, 1, 1]` from `⟨fun t v => ![t v, 1, 1], fun _ _ => rfl⟩`. Take `⟨sc, hsc⟩ : ∃ sc : Dat.Par F → ParN F 3, ∀ z v, sc z v = ![z v, z v, z v]` from `⟨fun z v => ![z v, z v, z v], fun _ _ => rfl⟩`. Take `⟨pp, hpp⟩ : ∃ pp : Dat.Par F, ∀ v, pp v = unif (Kv v)` from `⟨fun v => unif (Kv v), fun _ => rfl⟩`. Take `⟨hat, hhat⟩ : ∃ hat : ((v : A.Sg) → (Kv v.1)ˣ) → Dat.Par F, ∀ y v, hat y v = if h : v ∈ A.Sg then y ⟨v, h⟩ else (1 : (Kv v)ˣ)` from `⟨fun y v => if h : v ∈ A.Sg then y ⟨v, h⟩ else (1 : (Kv v)ˣ), fun _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩ : ∃ M : ((v : A.Sg) → (Kv v.1)ˣ) → ParN F 3, ∀ y v, M y v = ![pp v, hat y v, (pp v)⁻¹]` from `⟨fun y v => ![pp v, hat y v, (pp v)⁻¹], fun _ _ => rfl⟩`. Establish `hdm : ∀ {d d' : ParN F 3}, A.DomS d → A.DomS d' → A.DomS (d * d')` using `fun hd hd' v hv => dom_mul' (hd v hv) (hd' v hv)`. Establish `hχ1 : χ 1 = 1` using `hlev 1 (fun v _ i => by simp [Subgroup.one_mem])`. Establish `hπ : ∀ v, 0 < valuation (Kv v) ((pp v : (Kv v)ˣ) : Kv v) ∧ valuation (Kv v) ((pp v : (Kv v)ˣ) : Kv v) < 1` using `fun v => by`. Rewrite using `[hpp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `valuation_unif_pos_and_lt_one _`. Establish `e1mul : ∀ t t', e1 (t * t') = e1 t * e1 t'`. Introduce `t t'`. Use function extensionality and compare the values at `v i`. Apply the tactic sequence `fin_cases i <;> simp [he1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `scmul : ∀ z z', sc (z * z') = sc z * sc z'`. Introduce `z z'`. Use function extensionality and compare the values at `v i`. Apply the tactic sequence `fin_cases i <;> simp [hsc]`. Establish `de1 : ∀ t : Dat.Par F, (∀ v ∈ A.Sg, valuation (Kv v) ((t v : (Kv v)ˣ) : Kv v) ≤ 1) → A.DomS (e1 t)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht v hv`. Rewrite using `[he1]`. Apply the tactic sequence `apply dom_of_valuation_monotone_fin_three <;> simp [ht v hv]`. Establish `dsc : ∀ z, A.DomS (sc z)`. Introduce `z v _`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsc]`. Apply the tactic sequence `apply dom_of_valuation_monotone_fin_three <;> simp`. Establish `σmul : ∀ z z', χ (sc (z * z')) = χ (sc z) * χ (sc z')`. Introduce `z z'`. Rewrite using `[scmul]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmul _ _ (dsc _) (dsc _)`. Establish `hχsc : ∀ z, χ (sc z) * χ (sc z) = 1`. Introduce `z`. Establish `hs : SD.sg (sc z) = sc z⁻¹`. Use function extensionality and compare the values at `v i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `fin_cases i <;> simp [SD.sg, hsc]`. Establish `h1 : sc (z * z⁻¹) = 1`. Rewrite using `[mul_inv_cancel]`. Use function extensionality and compare the values at `v i`. Apply the tactic sequence `fin_cases i <;> simp [hsc]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `cone_le : ∀ t, A.Cone t → ∀ v ∈ A.Sg, valuation (Kv v) ((t v : (Kv v)ˣ) : Kv v) ≤ 1`. Introduce `t ht v hv`. Establish `h1` using `ht v hv`. Establish `h2` using `hπ v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[hpp]`. Conclude with `(h1.trans_le (pow_le_one₀ zero_le' h2.2.le)).le`. Establish `dGeq : ∀ t y, A.dG t y = e1 (t * (pp ^ 3)⁻¹) * e1 pp * M y`. Introduce `t y`. Use function extensionality and compare the values at `v i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `fin_cases i <;> simp [SD.dG, he1, hM, hhat, hpp] <;> group`. Establish `e1eq : ∀ t, e1 t = e1 (t * (pp ^ 3)⁻¹) * e1 pp * e1 pp * e1 pp`. Introduce `t`. Use function extensionality and compare the values at `v i`. Apply the tactic sequence `fin_cases i <;> simp [he1] <;> group`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `dpp : A.DomS (e1 pp)` using `de1 pp (fun v _ => (hπ v).2.le)`. Establish `dr : ∀ t, A.Cone t → A.DomS (e1 (t * (pp ^ 3)⁻¹))`. Introduce `t ht`. Apply `de1` to reduce the goal to its premises. Introduce `v hv`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (t * (pp ^ 3)⁻¹) v = t v * (unif (Kv v) ^ 3)⁻¹` using `by simp [hpp]`. Rewrite using `[e]`. Conclude with `valuation_mul_unif_pow_inv_le_one_of_lt_sq (Kv v) (ht v hv)`. Establish `dMy : ∀ y ∈ A.Ys, A.DomS (M y)`. Introduce `y hy v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hyv : y ⟨v, hv⟩ ∈ A.Ry v` using `Fintype.mem_piFinset.mp hy ⟨v, hv⟩`. Establish `hsq` using `hA.ry v hv`. Unfold `Lev.IsSqReps at hsq`. Take `⟨h1, h2⟩` from `hsq.1 _ hyv`. Rewrite using `[hM]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `dom_of_valuation_monotone_fin_three` to reduce the goal to its premises. Simplify `h1` using `[hhat, hv, hpp]`. Establish `h3` using `(one_le_inv₀ (hπ v).1).mpr (hπ v).2.le`. Simplify using `[hhat, hv]`. Conclude with `h2.trans h3`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨(χ (e1 pp) ^ 2)⁻¹ * ∑ y ∈ A.Ys, χ (M y), fun t => χ (e1 t), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t t' ht ht' show χ (e1 (t * t')) = χ (e1 t) * χ (e1 t')`. Rewrite using `[e1mul]`. Conclude with `hmul _ _ (de1 t (cone_le t ht)) (de1 t' (cone_le t' ht'))`. Introduce `t ht show ∑ y ∈ A.Ys, χ (A.dG t y) = (χ (e1 pp) ^ 2)⁻¹ * (∑ y ∈ A.Ys, χ (M y)) * χ (e1 t)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr` using `dr t ht`. Establish `hsum : ∀ y ∈ A.Ys, χ (A.dG t y) = χ (e1 (t * (pp ^ 3)⁻¹)) * χ (e1 pp) * χ (M y)`. Introduce `y hy`. Rewrite using `[dGeq, hmul _ _ (hdm hr dpp) (dMy y hy), hmul _ _ hr dpp]`. Establish `hbeta : χ (e1 t) = χ (e1 (t * (pp ^ 3)⁻¹)) * χ (e1 pp) ^ 3`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e1eq t, hmul _ _ (hdm (hdm hr dpp) dpp) dpp, hmul _ _ (hdm hr dpp) dpp, hmul _ _ hr dpp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hsum, ← Finset.mul_sum, hbeta]`. Break down `eq_or_ne (χ (e1 pp)) 0 with hc | hc` into its components or cases. Simplify using `[hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Introduce `hb a ha d hd`. Establish `hc : χ (e1 pp) ≠ 0`. Introduce and unpack `h`. Apply `hb` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[h]`. Establish `hS : ∑ y ∈ A.Ys, χ (M y) ≠ 0`. Introduce and unpack `h`. Apply `hb` to reduce the goal to its premises. Simplify using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Aa, hAa⟩ : ∃ Aa : Dat.Par F → ℂ, ∀ u, Aa u = ∏ v ∈ A.Sg, ((a v (u v) : ℂ) * (absPow (Kv v) (-1) (u v) : ℂ))` from `⟨_, fun _ => rfl⟩`. Establish `hAmul : ∀ u u', Aa (u * u') = Aa u * Aa u'`. Introduce `u u'`. Simplify using `only [hAa, ← Finset.prod_mul_distrib]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v _`. Simplify using `only [Pi.mul_apply, map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hAne : ∀ u, Aa u ≠ 0`. Introduce `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[hAa]`. Conclude with `Finset.prod_ne_zero_iff.mpr (fun v _ => mul_ne_zero (Units.ne_zero _) (Units.ne_zero _))`. Establish `hexS : ∀ t, A.exS a t = Aa t`. Introduce `t`. Rewrite using `[hAa]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `SD.exS SD.dS`. Conclude with `Finset.prod_congr rfl (fun v _ => (expoEq (Kv v) (a v)).2.1 (t v))`. Establish `hexG : ∀ d : ParN F 3, A.exG a d = Aa (fun v => d v 0 / d v 2)`. Introduce `d`. Rewrite using `[hAa]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `SD.exG`. Conclude with `Finset.prod_congr rfl (fun v _ => (expoEq (Kv v) (a v)).1 (d v))`. Establish `step1 : ∀ t : Dat.Par F, (∀ v ∈ A.Sg, valuation (Kv v) ((t v : (Kv v)ˣ) : Kv v) ≤ 1) → χ (e1 t) = Aa t`. Introduce `t ht`. Establish `hq : A.Cone (pp ^ 3)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Introduce `v hv`. Establish `h` using `hπ v`. Rewrite `h` using `[hpp]`. Simplify using `only [Pi.pow_apply, hpp, Units.val_pow_eq_pow_val, map_pow]`. Conclude with `pow_lt_pow_right_of_lt_one₀ h.1 h.2 (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `htq : A.Cone (t * pp ^ 3)`. Introduce `v hv`. Establish `h` using `hq v hv`. Simplify using `only [Pi.mul_apply, Units.val_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : χ (e1 (t * pp ^ 3)) = A.exS a (t * pp ^ 3)` using `ha _ htq`. Establish `h2 : χ (e1 (pp ^ 3)) = A.exS a (pp ^ 3)` using `ha _ hq`. Rewrite `h1`, `h2` using `[hexS]`. Rewrite `h1` using `[e1mul, hmul _ _ (de1 t ht) (de1 _ (cone_le _ hq)), h2, hAmul]`. Conclude with `mul_right_cancel₀ (hAne _) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `step3 : ∀ d : ParN F 3, A.DomS d → χ d = Aa (fun v => d v 0 / d v 2) * χ (sc (fun v => d v 1))`. Introduce `d hd`. Take `⟨x, hx⟩ : ∃ x : Dat.Par F, x = fun v => d v 0 / d v 2` from `⟨_, rfl⟩`. Take `⟨w, hw⟩ : ∃ w : Dat.Par F, w = fun v => d v 1 / d v 2` from `⟨_, rfl⟩`. Rewrite using `[← hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hvx : ∀ v ∈ A.Sg, valuation (Kv v) ((x v : (Kv v)ˣ) : Kv v) ≤ valuation (Kv v) ((w v : (Kv v)ˣ) : Kv v) ∧ valuation (Kv v) ((w v : (Kv v)ˣ) : Kv v) ≤ 1`. Introduce `v hv`. Take `⟨h01, h12⟩` from `valuation_monotone_of_dom_fin_three (hd v hv)`. Substitute `hx hw` using the available equality. Use `⟨valuation_div_le_valuation_div_of_le h01, ?_⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `valuation_div_le_one_of_le h12`. Take `⟨X, hX⟩ : ∃ X : ParN F 3, ∀ v, X v = ![x v, w v, 1]` from `⟨_, fun _ => rfl⟩`. Take `⟨T, hT⟩ : ∃ T : ParN F 3, ∀ v, T v = ![w v, w v, 1]` from `⟨_, fun _ => rfl⟩`. Take `⟨N, hN⟩ : ∃ N : ParN F 3, ∀ v, N v = ![1, 1, (w v)⁻¹]` from `⟨_, fun _ => rfl⟩`. Establish `dX : A.DomS X`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Introduce `v hv`. Rewrite using `[hX]`. Apply the tactic sequence `apply dom_of_valuation_monotone_fin_three <;> simp [(hvx v hv).1, (hvx v hv).2]`. Establish `dT : A.DomS T`. Introduce `v hv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hT]`. Apply the tactic sequence `apply dom_of_valuation_monotone_fin_three <;> simp [(hvx v hv).2]`. Establish `dN : A.DomS N`. Introduce `v hv`. Rewrite using `[hN]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply `dom_of_valuation_monotone_fin_three` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `only [Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]`. Conclude with `one_le_valuation_inv_of_le_one (hvx v hv).2`. Establish `dxw : ∀ v ∈ A.Sg, valuation (Kv v) (((x / w) v : (Kv v)ˣ) : Kv v) ≤ 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `v hv`. Rewrite using `[Pi.div_apply]`. Conclude with `valuation_div_le_one_of_le (hvx v hv).1`. Establish `eq1 : d = X * sc (fun v => d v 2)`. Use function extensionality and compare the values at `v i`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `fin_cases i <;> simp [hsc, hX, hx, hw]`. Establish `eq2 : X = e1 (x / w) * T`. Use function extensionality and compare the values at `v i`. Apply the tactic sequence `fin_cases i <;> simp [he1, hX, hT]`. Establish `eq3 : T = sc w * N`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `v i`. Apply the tactic sequence `fin_cases i <;> simp [hsc, hT, hN]`. Establish `eq4 : SD.sg N = e1 w`. Use function extensionality and compare the values at `v i`. Apply the tactic sequence `fin_cases i <;> simp [SD.sg, he1, hN]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `eq5 : x / w * w = x` using `by simp`. Establish `eq6 : w * (fun v => d v 2) = fun v => d v 1`. Use function extensionality and compare the values at `v`. Simplify using `[hw]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[eq2, hmul _ _ (de1 _ dxw) dT, step1 _ dxw, eq3, hmul _ _ (dsc _) dN, ← hsg _ dN, eq4, step1 w (fun v hv => (hvx v hv).2)]`. Use `_ = Aa (x / w * w) * χ (sc (w * fun v => d v 2)) := by`. Rewrite using `[hAmul, σmul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = Aa x * χ (sc (fun v => d v 1)) := by rw [eq5, eq6]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `step4 : ∀ y ∈ A.Ys, χ (M y) = Aa (fun v => pp v / (pp v)⁻¹) * χ (sc (hat y))`. Introduce `y hy`. Rewrite using `[step3 _ (dMy y hy)]`. Establish `e1' : (fun v => M y v 0 / M y v 2) = fun v => pp v / (pp v)⁻¹`. Use function extensionality and compare the values at `v`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hM]`. Establish `e2' : (fun v => M y v 1) = hat y`. Use function extensionality and compare the values at `v`. Simplify using `[hM]`. Rewrite using `[e1', e2']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation.
 
-Establish `hsum : ∑ y ∈ A.Ys, χ (sc (hat y)) ≠ 0`. Introduce `h`. Apply `hS` to reduce the goal to its premises. Rewrite using `[Finset.sum_congr rfl step4, ← Finset.mul_sum, h, mul_zero]`. Establish `step5 : ∀ z, χ (sc z) = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Move the embeddings inside the algebraic operations.
 
-Introduce `z0`. Assume the negation of the conclusion as `hne`. Establish `hneg : χ (sc z0) = -1` using `(mul_self_eq_one_iff.mp (hχsc z0)).resolve_left hne`. Apply `hsum` to reduce the goal to its premises. Establish `hsq : ∀ (w : A.Sg) (u : (Kv w.1)ˣ), ∃! y, y ∈ A.Ry w.1 ∧ ∃ s : (Kv w.1)ˣ, u / (y * s ^ 2) ∈ (A.V w.1).H`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w u`. Establish `h` using `hA.ry w.1 w.2`. Unfold `Lev.IsSqReps at h`. Conclude with `h.2 u`. Use `choose rep hrepR sq hsqH using fun w u => (hsq w u).exists`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ∀ (w : A.Sg) (g y : (Kv w.1)ˣ), y ∈ A.Ry w.1 → rep w (g⁻¹ * rep w (g * y)) = y`. Introduce `w g y hy`. Use `symm`. Use `(hsq w _).unique ⟨hy, (sq w (g * y))⁻¹, ?_⟩ ⟨hrepR w _, sq w _, hsqH w _⟩` and prove the remaining obligations. Establish `h` using `(A.V w.1).H.inv_mem (hsqH w (g * y))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : g⁻¹ * rep w (g * y) / (y * (sq w (g * y))⁻¹ ^ 2) = (g * y / (rep w (g * y) * sq w (g * y) ^ 2))⁻¹`. Use `ext`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Take `⟨φ, hφ⟩ : ∃ φ : ((v : A.Sg) → (Kv v.1)ˣ) → ((v : A.Sg) → (Kv v.1)ˣ), ∀ y w, φ y w = rep w (z0 w.1 * y w)` from `⟨_, fun _ _ => rfl⟩`. Take `⟨ψ, hψ⟩ : ∃ ψ : ((v : A.Sg) → (Kv v.1)ˣ) → ((v : A.Sg) → (Kv v.1)ˣ), ∀ y w, ψ y w = rep w ((z0 w.1)⁻¹ * y w)` from `⟨_, fun _ _ => rfl⟩`. Establish `memφ : ∀ y, φ y ∈ A.Ys` using `fun y => Fintype.mem_piFinset.mpr (fun w => by rw [hφ]; exact hrepR w _)`. Establish `memψ : ∀ y, ψ y ∈ A.Ys` using `fun y => Fintype.mem_piFinset.mpr (fun w => by rw [hψ]; exact hrepR w _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `φψ : ∀ y ∈ A.Ys, φ (ψ y) = y`. Introduce `y hy`. Use function extensionality and compare the values at `w`. Rewrite using `[hφ, hψ]`. Use `hinv w (z0 w.1)⁻¹ (y w) (Fintype.mem_piFinset.mp hy w)` as an intermediate fact.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[inv_inv]`. Conclude with `this`. Establish `ψφ : ∀ y ∈ A.Ys, ψ (φ y) = y`. Introduce `y hy`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hψ, hφ]`. Conclude with `hinv w (z0 w.1) (y w) (Fintype.mem_piFinset.mp hy w)`. Establish `hflip : ∀ y ∈ A.Ys, χ (sc (hat (φ y))) = -χ (sc (hat y))`. Introduce `y hy`. Take `⟨Sq, hSq⟩ : ∃ Sq : Dat.Par F, ∀ v, Sq v = if h : v ∈ A.Sg then sq ⟨v, h⟩ (z0 v * y ⟨v, h⟩) else (1 : (Kv v)ˣ)` from `⟨_, fun _ => rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨L, hL⟩ : ∃ L : Dat.Par F, L = (hat (φ y) * Sq * Sq)⁻¹ * (z0 * hat y)` from `⟨_, rfl⟩`. Establish `hLv : ∀ v ∈ A.Sg, L v ∈ (A.V v).H`. Introduce `v hv`. Establish `h` using `hsqH ⟨v, hv⟩ (z0 v * y ⟨v, hv⟩)`. Establish `e : L v = z0 v * y ⟨v, hv⟩ / (rep ⟨v, hv⟩ (z0 v * y ⟨v, hv⟩) * sq ⟨v, hv⟩ (z0 v * y ⟨v, hv⟩) ^ 2)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hL]`. Simplify using `only [Pi.mul_apply, Pi.inv_apply, hhat, hSq, dif_pos hv, hφ]`. Use `ext`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[e]`. Conclude with `h`. Establish `hLlev : χ (sc L) = 1`. Apply `hlev` to reduce the goal to its premises. Introduce `v hv i`.
-
-Rewrite using `[hsc]`. Apply the tactic sequence `fin_cases i <;> simpa using hLv v hv`. Establish `hdec : z0 * hat y = hat (φ y) * Sq * Sq * L`. Rewrite using `[hL, mul_inv_cancel_left]`. Establish `key : χ (sc z0) * χ (sc (hat y)) = χ (sc (hat (φ y)))`.
-
-Rewrite using `[← σmul, hdec, σmul, σmul, σmul, hLlev, mul_one, mul_assoc, hχsc, mul_one]`. Rewrite `key` using `[hneg]`. Take the linear combination `-key`. Establish `hperm : ∑ y ∈ A.Ys, χ (sc (hat y)) = ∑ y ∈ A.Ys, χ (sc (hat (φ y)))` using `Finset.sum_nbij' ψ φ (fun y _ => memψ y) (fun y _ => memφ y) φψ ψφ (fun y hy => by rw [φψ y hy])`. Establish `h1 : ∑ y ∈ A.Ys, χ (sc (hat y)) = -∑ y ∈ A.Ys, χ (sc (hat y))` using `by conv_lhs => rw [hperm]`.
-
-Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl hflip`. Take the linear combination `h1 / 2`. Rewrite using `[hexG, step3 d hd, step5, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.charShape :
     UpperTheory.V.Z.Sym.So.CharShape := by

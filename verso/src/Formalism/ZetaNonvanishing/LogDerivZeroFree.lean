@@ -7,17 +7,15 @@ noncomputable section
 namespace Formalism
 
 /- English proof (translation)
-Introduce `P q U hU hP ⟨z, hz⟩ hq hPq s hs hPs`. Establish `hPa : ∀ w, AnalyticAt ℂ P w` using `fun w => hP.analyticAt w`. Establish `hqa : AnalyticAt ℂ q s` using `hq.analyticAt (hU.mem_nhds hs)`. Establish `hne : analyticOrderAt P s ≠ ⊤`. Rewrite using `[Ne, AnalyticOnNhd.analyticOrderAt_eq_top_iff_eq_zero s hPa]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hz (by simp [h])`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp hne`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: analyticOrderAt P s = 0` using `by rw [← hn]; rfl`. Break down `analyticOrderAt_eq_zero.mp this with h | h` into its components or cases. Conclude with `h (hPa s)`. Conclude with `h hPs`. Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn0`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hord : analyticOrderAt P s = (m : ℕ∞) + 1` using `by rw [← hn]; push_cast; rfl`. Establish `hd : analyticOrderAt (deriv P) s = m` using `analyticOrderAt_deriv_of_pos (hPa s) hord`. Establish `hev : deriv P =ᶠ[𝓝 s] q * P` using `Filter.eventually_of_mem (hU.mem_nhds hs) (fun w hw => by simpa using hPq w hw)`. Establish `hmul : analyticOrderAt (deriv P) s = analyticOrderAt q s + ((m : ℕ∞) + 1)`. Rewrite using `[analyticOrderAt_congr hev, analyticOrderAt_mul hqa (hPa s), hord]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hmul` using `[hd]`. Establish `hle : (m : ℕ∞) + 1 ≤ (m : ℕ∞)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd hle (by`. Rewrite using `[not_le]`.
-
-Conclude with `ENat.lt_add_one_iff (ENat.natCast_ne_top m) |>.mpr le_rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logDerivZeroFree : LogDerivZeroFree := by
   intro P q U hU hP ⟨z, hz⟩ hq hPq s hs hPs

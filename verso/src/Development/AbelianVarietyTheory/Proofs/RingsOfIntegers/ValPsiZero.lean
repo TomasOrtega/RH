@@ -18,7 +18,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.PsiZero
 
 /- English proof (translation)
-Use `cPoint_add D T 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cPoint_zero' {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (T : Over (Spec (CommRingCat.of R))) :
     cP D T 0 = 1 := by
@@ -27,13 +27,13 @@ theorem cPoint_zero' {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (T : Ov
   exact mul_eq_left.1 this.symm
 
 /- English proof (translation)
-Establish `C : IsCub (th D (T` using `TK R) z J) := isCub_cubV D.cub hJ`. Establish `vτ : ∀ a b : D.X, val (D.tau a b) (𝟙 _) z J = val (D.psi (a + b)) (𝟙 _) z J * (val (D.psi a) (𝟙 _) z J)⁻¹ * (val (D.psi b) (𝟙 _) z J)⁻¹ * (val D.rigK (𝟙 _) z J)⁻¹` using `fun a b => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))`. Establish `vρ : val D.rigK (𝟙 _) z J = val D.rig (jK R) z J`. Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `vc : val (LB.pullGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t (D.pt3 0 0 0)) (𝟙 _) z J = 1`. Use `(val_cub D.cub (𝟙 (TK R)) hJ (cP D _ 0) (cP D _ 0) (cP D _ 0)).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, cPoint_zero']`. Conclude with `C.face _ _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ (hB 0 0 0) (𝟙 _)).trans (val_mul hJ _ _ _))`. Establish `hp : ∀ a : D.X, a = 0 → val (D.psi a) (𝟙 _) z J = val (D.psi 0) (𝟙 _) z J`. Introduce and unpack `a rfl`. Both sides reduce to the same expression. Rewrite `e` using `[vc, vτ, vτ, vρ, hp (0 + 0 + 0) (by simp), hp (0 + 0) (by simp), _root_.mul_one, mul_inv_cancel, _root_.one_mul]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e'` using `mul_eq_left.1 e.symm`. Rewrite `e'` using `[← mul_inv, inv_eq_one]`. Conclude with `eq_inv_of_mul_eq_one_left e'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_psi_zero {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} (hB : D.TauBimult) {z : (TK R).left}
     {J : ((TK R).left ⟶ D.P.A.left) → D.P.L.ι} (hJ : Good D.P.L z J) :
@@ -62,13 +62,13 @@ theorem val_psi_zero {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} (hB : D
   exact eq_inv_of_mul_eq_one_left e'
 
 /- English proof (translation)
-Introduce `R _ _ D`. Use `⟨fun hB j V hV hle h => ?_, fun χ J J' hJ H j V hV hle h => ?_⟩` and prove the remaining obligations. Establish `c0 : (D.c 0).left = eSec D.P.A`. Use `cPoint_zero' D (𝟙_ _)` as an intermediate fact. Rewrite `this` using `[cP, toUnit_unit, Category.id_comp, Hom.one_def, toUnit_unit, Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hx : D.xK 0 = jK R ≫ eSec D.P.A` using `by rw [← c0]; rfl`. Establish `hle' : V ≤ LB.wchart D.P.L (K` using `PUnit) (fun _ => eSec D.P.A) j := fun y hy => Set.mem_iInter.2 fun _ => by rw [← c0]; exact hle hy`. Use `⟨((Spec (CommRingCat.of R)).presheaf.map (homOfLE hle').op).hom (D.rig.s j)⁻¹.val, by rw [Ideal.map_top]; trivial, fn_ext fun y hy => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy' : jK R y ∈ V` using `hy`. Take `⟨J, hJ, eJ⟩` from `exists_good D.P.L D.P.isLB y (K := PUnit) (fun _ => D.xK 0) j (fun _ _ _ => rfl) (fun k => Set.mem_iInter.1 (h hy) k)`. Establish `e` using `val_psi_zero hB hJ`. Rewrite `e` using `[val_of (D.psi 0) _ y J j (fun k => (congrArg J (Category.id_comp (D.xK 0))).trans (eJ k)), val_of D.rig _ y J j (fun k => (congrArg J hx.symm).trans (eJ k))]`. Use `(gs_pull (𝟙 _) (jK R) y V hy' _).trans (Eq.trans ?_ ((gs_res (𝟙 _) y h hy _).trans (gs_unit _ _ _ (h hy) _)).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.id_comp]`. Use `(gs_res (jK R) y hle' hy' _).trans ((gs_unit _ _ _ (hle' hy') _).trans ?_)` and prove the remaining obligations. Conclude with `congrArg Units.val ((map_inv _ _).trans e.symm)`. Take `⟨r, hr, e⟩` from `H j V hV hle h`. Conclude with `⟨r, Ideal.map_mono hJ hr, e⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R), (D.TauBimult → D.PsiIn 0 ⊤) ∧ ∀ (χ : D.X) (J J' : Ideal R), J ≤ J' → D.PsiIn χ J → D.PsiIn χ J' := by
   intro R _ _ D

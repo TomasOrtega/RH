@@ -8,9 +8,9 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.Metric
 
 /- English proof (translation)
-Introduce `j y hy`. Take `⟨hyt, hys, hyO⟩` from `hy`. Establish `han : AnalyticAt ℂ (ψ ∘ (A.chart j).symm) y` using `(hψ j).1 y ⟨hyt, hys⟩`. Establish `hτ : ContDiffAt ℝ ∞ (ψ ∘ (A.chart j).symm) y` using `(han.restrictScalars (𝕜 := ℝ)).contDiffAt.of_le le_top`. Establish `hGat : ContDiffAt ℝ ∞ G ((ψ ∘ (A.chart j).symm) y)` using `hG.contDiffAt (hO.mem_nhds hyO)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hGat.comp y hτ).contDiffWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem smoothOn_comp_compatChart (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X)
     (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (O : Set (Fin e → ℂ)) (G : (Fin e → ℂ) → ℝ)
@@ -26,7 +26,7 @@ theorem smoothOn_comp_compatChart (e : ℕ) (X : Type) [TopologicalSpace X] (A :
   exact (hGat.comp y hτ).contDiffWithinAt
 
 /- English proof (translation)
-Introduce `e X _ A ψ O G h1 h2 h3 h4` and use `smoothOn_comp_compatChart e X A ψ O G h1 h2 h3 h4`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smoothOn_comp_compatChart' : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X) (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (O : Set (Fin e → ℂ)) (G : (Fin e → ℂ) → ℝ), IsCompatChart A ψ → IsOpen O → O ⊆ ψ.target → ContDiffOn ℝ ∞ G O → A.SmoothOn (ψ.source ∩ ψ ⁻¹' O) (G ∘ ψ) :=
   fun e X _ A ψ O G h1 h2 h3 h4 => smoothOn_comp_compatChart e X A ψ O G h1 h2 h3 h4

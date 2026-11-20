@@ -21,20 +21,20 @@ namespace GlobalTheory.AutQuot
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `NG.AutRep.iso_equivalence.symm h`.
+A detailed English derivation is pending.
 -/
 theorem autIso_symm {π π' : NG.AutRep L n} (h : π.Iso π') : π'.Iso π := NG.AutRep.iso_equivalence.symm h
 
 /- English proof (translation)
-The claim follows from `NG.AutRep.iso_equivalence.trans h h'`.
+A detailed English derivation is pending.
 -/
 theorem autIso_trans {π π' π'' : NG.AutRep L n} (h : π.Iso π') (h' : π'.Iso π'') : π.Iso π'' :=
   NG.AutRep.iso_equivalence.trans h h'
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨m, hm⟩` from `GlobalTheory.T.automorphic_rep_cm_quotient_model L n π'`. Establish `h2 : m ∈ (clsA π).1` using `by rw [h]; exact hm`. Conclude with `autIso_trans h2 (autIso_symm hm)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `m`. Conclude with `⟨fun h' => autIso_trans (autIso_symm h) h', fun h' => autIso_trans h h'⟩`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem clsA_eq_iff (π π' : NG.AutRep L n) : clsA π = clsA π' ↔ π.Iso π' := by
   constructor
@@ -48,9 +48,9 @@ theorem clsA_eq_iff (π π' : NG.AutRep L n) : clsA π = clsA π' ↔ π.Iso π'
     exact ⟨fun h' => autIso_trans (autIso_symm h) h', fun h' => autIso_trans h h'⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨m, hm⟩` from `GlobalTheory.T.exists_coordinate_model_of_algWeight L n b`. Establish `h2 : m ∈ (clsW a).1` using `by rw [h]; exact hm`. Conclude with `h2.trans hm.symm`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `m`. Conclude with `⟨fun h' => h.symm.trans h', fun h' => h.trans h'⟩`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem clsW_eq_iff (a b : NG.AlgWt L n) : clsW a = clsW b ↔ a.Iso b := by
   constructor
@@ -64,21 +64,21 @@ theorem clsW_eq_iff (a b : NG.AlgWt L n) : clsW a = clsW b ↔ a.Iso b := by
     exact ⟨fun h' => h.symm.trans h', fun h' => h.trans h'⟩
 
 /- English proof (translation)
-The claim follows from `(clsA_eq_iff _ _).1 (AUq.cls_rep (clsA π))`.
+A detailed English derivation is pending.
 -/
 theorem rep_iso (π : NG.AutRep L n) : (clsA π).rep.Iso π :=
   (clsA_eq_iff _ _).1 (AUq.cls_rep (clsA π))
 
 /- English proof (translation)
-The claim follows from `(clsW_eq_iff _ _).1 (WtQ.cls_rep (clsW a))`.
+A detailed English derivation is pending.
 -/
 theorem repW_iso (a : NG.AlgWt L n) : (clsW a).rep.Iso a :=
   (clsW_eq_iff _ _).1 (WtQ.cls_rep (clsW a))
 
 /- English proof (translation)
-Take `⟨-, T, hT⟩` from `h`. Take `⟨f, hf, hf0, hfix⟩` from `hs`. Use `⟨(T ⟨f, hf⟩ : _), (T ⟨f, hf⟩).2, ?_, fun κ hκ ht => ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hf0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: T ⟨f, hf⟩ = 0` using `Subtype.ext h0`. Use `congrArg Subtype.val (T.injective (this.trans T.map_zero.symm))` as an intermediate fact. Conclude with `this`. Use `hT κ ⟨f, hf⟩ ⟨f, hf⟩ (hfix κ hκ ht).symm` as an intermediate fact. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sphAt_iso {π π' : NG.AutRep L n} (h : π.Iso π') {v} (hs : π.SphAt v) : π'.SphAt v := by
   obtain ⟨-, T, hT⟩ := h
@@ -93,7 +93,7 @@ theorem sphAt_iso {π π' : NG.AutRep L n} (h : π.Iso π') {v} (hs : π.SphAt v
     exact this.symm
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext (h.symm.trans h')`.
+A detailed English derivation is pending.
 -/
 theorem overPl_unique {w : HeightOneSpectrum (𝓞 L)} {v v' : HeightOneSpectrum (𝓞 (maximalRealSubfield L))}
     (h : NG.OverPl w v) (h' : NG.OverPl w v') : v = v' :=
@@ -103,18 +103,18 @@ section
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Take `⟨σ, hσ, -⟩` from `GlobalTheory.T.splitPlaceLocalComponent_exists_unique_class L n π s`. Conclude with `⟨_, s, σ, rfl, hσ, HEq.rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem locAt_of_split (π : NG.AutRep L n) (s : SplitPlace L) : ∃ x, LocAt π s.w x := by
   obtain ⟨σ, hσ, -⟩ := GlobalTheory.T.splitPlaceLocalComponent_exists_unique_class L n π s
   exact ⟨_, s, σ, rfl, hσ, HEq.rfl⟩
 
 /- English proof (translation)
-Take `⟨s, σ, hs, hσ, e⟩` from `hx`. Take `⟨s', σ', hs', hσ', e'⟩` from `hx'`. Take `⟨σ₀, -, hu⟩` from `GlobalTheory.T.splitPlaceLocalComponent_exists_unique_class L n π s`. Establish `h1` using `hu π s rfl σ (NG.AutRep.iso_equivalence.refl π) hσ`. Establish `h2` using `hu π' s' (hs'.trans hs.symm) σ' hi hσ'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (u u' : HeightOneSpectrum (𝓞 L)) (_ : u = u') (a : GlobalTheory.SmGL.IrrCl (GL (Fin n) (u.adicCompletion L))) (b : GlobalTheory.SmGL.IrrCl (GL (Fin n) (u'.adicCompletion L))), HEq a b → HEq (⟨n, a⟩ : GlobalTheory.LocGL.IrrGL (u.adicCompletion L)) (⟨n, b⟩ : GlobalTheory.Lo …`. Introduce `u u' hu a b hab`. Substitute `hu` using the available equality. Consider the cases of `eq_of_heq hab`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 
-Establish `h3 : HEq (GlobalTheory.LocLanglands.cls σ) (GlobalTheory.LocLanglands.cls σ')` using `key _ _ (hs.trans hs'.symm) _ _ (h1.trans h2.symm)`. Conclude with `eq_of_heq (e.symm.trans (h3.trans e'))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locAt_unique {π π' : NG.AutRep L n} (hi : π.Iso π') {w : HeightOneSpectrum (𝓞 L)} {x x'}
     (hx : LocAt π w x) (hx' : LocAt π' w x') : x = x' := by
@@ -146,9 +146,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut)
 
 /- English proof (translation)
-Establish `hex : ∃ x, LocAt (clsA π).rep w x`. Take `⟨s, σ, hs, -, -⟩` from `hx`. Substitute `hs` using the available equality. Conclude with `locAt_of_split _ s`. Unfold `locOf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hex, locAt_unique (rep_iso π) hex.choose_spec hx]`.
+A detailed English derivation is pending.
 -/
 theorem locOf_eq {π : NG.AutRep D.host.E D.R.nV} {w : PlE D.host} {x} (hx : LocAt π w x) :
     locOf hL D T (clsA π).rep w = (T.e w).symm (GlobalTheory.CuspRep.ParLaws.locRec hL (D.nd.plOm.2 w) x) := by
@@ -171,9 +171,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v', hv', hs⟩`. Rewrite using `[overPl_unique hv hv']`. Conclude with `sphAt_iso (rep_iso π) hs`. Introduce `hs`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨v, hv, sphAt_iso (autIso_symm (rep_iso π)) hs⟩`.
+A detailed English derivation is pending.
 -/
 theorem f_sph (π : NG.AutRep D.host.E D.R.nV) (w : PlE D.host) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)))
     (hv : NG.OverPl w v) : (∃ v', NG.OverPl w v' ∧ (clsA π).rep.SphAt v') ↔ π.SphAt v := by
@@ -185,11 +185,11 @@ theorem f_sph (π : NG.AutRep D.host.E D.R.nV) (w : PlE D.host) (v : HeightOneSp
     exact ⟨v, hv, sphAt_iso (autIso_symm (rep_iso π)) hs⟩
 
 /- English proof (translation)
-Take `⟨α, hα⟩` from `hα`. Establish `hex : ∃ (v' : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))) (Dv' : InertDatum D.host.E D.R.nV v' w) (α' : Fin (D.R.nV / 2) → ℂ), NG.OverPl w v' ∧ NG.SatAt (clsA π).rep Dv' α'` using `⟨v, Dv, α, hv, GlobalTheory.T.satakeParameters_inertPlace_independent_of_model _ _ π _ (autIso_symm (rep_iso π)) v w hv Dv Dv α hα⟩`. Unfold `satOf`. Rewrite using `[dif_pos hex]`. Establish `key : ∀ (v' : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))) (Dv' : InertDatum D.host.E D.R.nV v' w) (α' : Fin (D.R.nV / 2) → ℂ), NG.OverPl w v' → NG.SatAt (clsA π).rep Dv' α' → NG.SatAt π Dv α'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v' Dv' α' hv' hs'`. Establish `e` using `overPl_unique hv hv'`. Substitute `e` using the available equality. Conclude with `GlobalTheory.T.satakeParameters_inertPlace_independent_of_model _ _ _ π (rep_iso π) v w hv _ Dv _ hs'`. Take `⟨hv', hs'⟩` from `hex.choose_spec.choose_spec.choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, key _ _ _ hv' hs', rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem f_sat (π : NG.AutRep D.host.E D.R.nV) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))) (w : PlE D.host)
     (hv : NG.OverPl w v) (Dv : InertDatum D.host.E D.R.nV v w) (hα : ∃ α, NG.SatAt π Dv α) :
@@ -210,11 +210,11 @@ theorem f_sat (π : NG.AutRep D.host.E D.R.nV) (v : HeightOneSpectrum (𝓞 (max
   exact ⟨_, key _ _ _ hv' hs', rfl⟩
 
 /- English proof (translation)
-Establish `hπ : (clsA π).rep.toAlgWt.Iso π.toAlgWt` using `(rep_iso π).1`. Take `⟨b, hb, hbu, hba⟩` from `GlobalTheory.T.algWeight_contragredient_exists_unique _ _ π.toAlgWt`. Establish `hrb : (clsA π).rep.toAlgWt.IsDual b` using `(hba _ hπ.symm).1`. Establish `hex : ∃ b, (clsA π).rep.toAlgWt.IsDual b` using `⟨b, hrb⟩`. Unfold `wtOf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hex]`. Take `⟨b', -, hbu', -⟩` from `GlobalTheory.T.algWeight_contragredient_exists_unique _ _ (clsA π).rep.toAlgWt`. Establish `h1 : b'.Iso hex.choose` using `(hbu' _).1 hex.choose_spec`. Establish `h2 : b'.Iso b` using `(hbu' _).1 hrb`. Establish `h3 : b.Iso a` using `(hbu a).1 hd`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(clsW_eq_iff _ _).2 ((h1.symm.trans h2).trans h3)`.
+A detailed English derivation is pending.
 -/
 theorem f_wt (π : NG.AutRep D.host.E D.R.nV) (a : NG.AlgWt D.host.E D.R.nV) (hd : π.toAlgWt.IsDual a) :
     wtOf D (clsA π).rep = clsW a := by
@@ -231,9 +231,9 @@ theorem f_wt (π : NG.AutRep D.host.E D.R.nV) (a : NG.AlgWt D.host.E D.R.nV) (hd
   exact (clsW_eq_iff _ _).2 ((h1.symm.trans h2).trans h3)
 
 /- English proof (translation)
-Establish `hi : a.Iso (clsW a).rep` using `(repW_iso a).symm`. Take `⟨b0, hb0, hb0', hhw⟩` from `GlobalTheory.T.algWeight_contragredient_exists_unique _ _ a`. Establish `hr : (clsW a).rep.HWAt τ lam` using `((hhw _ hi).2 τ lam hl)`. Take `⟨huniq, hanti⟩` from `GlobalTheory.T.algWeight_highestWeight_exists_unique_antitone _ _ (clsW a).rep τ`. Establish `hex : ∃ lam, (clsW a).rep.HWAt τ lam ∧ Antitone lam` using `⟨lam, hr, hanti lam hr⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `hwOf`. Rewrite using `[dif_pos hex, huniq.unique hex.choose_spec.1 hr]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem f_infW (a : NG.AlgWt D.host.E D.R.nV) (τ : D.host.E →+* ℂ) (lam : Fin D.R.nV → ℤ) (hl : a.HWAt τ lam) :
     NG.infOf (hwOf (clsW a).rep τ) = NG.infOf lam := by
@@ -246,7 +246,7 @@ theorem f_infW (a : NG.AlgWt D.host.E D.R.nV) (τ : D.host.E →+* ℂ) (lam : F
   rw [dif_pos hex, huniq.unique hex.choose_spec.1 hr]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `locAt_of_split π s`. Rewrite using `[locOf_eq hL D T hx, T.unr, Equiv.apply_symm_apply]`. Conclude with `GlobalTheory.T.local_reciprocity_unramified_spherical hL D π s x hx hs`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem f_locUnr (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E) (hs : π.SphAt s.v) :
     D.naut.unr (locOf hL D T (clsA π).rep s.w) := by
@@ -255,9 +255,9 @@ theorem f_locUnr (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E) (hs 
   exact GlobalTheory.T.local_reciprocity_unramified_spherical hL D π s x hx hs
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `GlobalTheory.T.exists_localComponent_conj_splitPlace D π s w hc`. Take `⟨hun, hpol⟩` from `GlobalTheory.T.spherical_vector_fixed_local hL D π s w ϖ hc hu J hJ f hf hf0 hfix c hc' x hx`. Rewrite using `[locOf_eq hL D T hx]`. Establish `hu2 : D.naut.unr (D.naut.lpTw ((T.e w).symm (GlobalTheory.CuspRep.ParLaws.locRec hL (D.nd.plOm.2 w) x)) ((1 - (D.R.nV : ℝ)) / 2))`. Rewrite using `[T.unr, T.tw, Equiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hun`. Unfold `galPol`. Rewrite using `[T.frobEig _ _ hu2, T.tw, Equiv.apply_symm_apply]`. Conclude with `hpol`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem f_locPol (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E) (w : PlE D.host)
     (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)) (hc : IsConjPl D.host w s.w) (hu : IsUnif D.host.E s.v ϖ)
@@ -279,7 +279,7 @@ theorem f_locPol (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E) (w :
   exact hpol
 
 /- English proof (translation)
-Rewrite using `[locOf_eq hL D T ⟨s, σ, rfl, hσ, HEq.rfl⟩, Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem f_true (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E)
     (σ : GlobalTheory.SmGL.IrrRep (GL (Fin D.R.nV) (s.w.adicCompletion D.host.E))) (hσ : IsLocS π.S s σ) :
@@ -290,7 +290,7 @@ theorem f_true (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨nbcOf hL D T hE, { cls := fun _ _ _ π => clsA π surj := fun _ _ _ X => ⟨X.rep, AUq.cls_rep X⟩ iso := fun _ _ _ π π' => clsA_eq_iff π π' mult := fun _ _ _ π => GlobalTheory.T.automorphic_multiplicity_eq_of_iso _ _ _ _ (rep_iso π) sph := fun _ _ _ π w v _ hv => f_sph D π w v hv sa …`.
+Supply the required witnesses or components.
 -/
 theorem exists_auSide (hE : IsEmpty D.nd.Loc) :
     ∃ (C : NBC D.naut) (A : AUSide (setBC D C)), AUTrue hL (setBC D C) T A :=
@@ -317,7 +317,7 @@ end GlobalTheory.AutQuot
 open Formalism.BasicNotions GlobalTheory.HeightCounting in
 
 /- English proof (translation)
-Introduce `hL D hE T` and use `GlobalTheory.AutQuot.exists_auSide hL D T hE`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AutQuot.exists_nbc_auSide : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7), IsEmpty D.nd.Loc →
     ∀ T : GlobalTheory.RowTie.WDTie D.nd D.naut, ∃ (C : NBC D.naut) (A : AUSide (setBC D C)), AUTrue hL (setBC D C) T A :=

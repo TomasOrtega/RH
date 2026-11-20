@@ -19,13 +19,13 @@ def gfun {l : ℕ} (χ : DirichletCharacter ℂ l) (c : NZIdeal E) (s : ℝ) (a 
     ((Ideal.absNorm a.1 : ℕ) : ℂ) ^ (-(s : ℂ))
 
 /- English proof (translation)
-Take `⟨hle, reps, hmem, hcover, huniq, hper, hmean⟩` from `exists_reps_meanZero χ b c hcop`. Take `⟨R₀, C, hRC⟩` from `gs_diff_bound (E := E) χ (∑ β ∈ reps, ‖β‖)`. Establish `hr : -(Module.finrank ℚ E : ℝ) - 1 < -(Module.finrank ℤ (latOf b.1) : ℝ)`. Rewrite using `[finrank_latOf b.2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hd : ∀ s ∈ Icc (1 : ℝ) 2, ∀ β ∈ reps, ∀ x ∈ latOf (mbc l b.1 c.1), R₀ ≤ ‖x‖ → ‖Gs χ s (x + β) - Gs χ s x‖ ≤ C * ‖x‖ ^ (-(Module.finrank ℚ E : ℝ) - 1)`. Introduce `s hs β hβ x _ hR`. Conclude with `hRC s hs x β (Finset.single_le_sum (f := fun β => ‖β‖) (fun _ _ => norm_nonneg _) hβ) hR`. Establish `hbd : ∀ s ∈ Icc (1 : ℝ) 2, ∀ x ∈ latOf b.1, ‖Gs χ s x‖ ≤ 1`. Introduce `s hs x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨α, -, rfl⟩` from `mem_latOf.mp hx`. Conclude with `norm_gs_embZ_le χ hs.1 α`. Establish `hsm : ∀ s ∈ Ioc (1 : ℝ) 2, Summable fun α : latOf b.1 => Gs χ s (α : mixedSpace E)` using `fun s hs => summable_gs χ (latOf b.1) (finrank_latOf b.2) hs.1`. Establish `hct : ∀ x ∈ latOf b.1, ContinuousOn (fun s => Gs χ s x) (Icc 1 2)` using `fun x _ => (continuous_gs χ x).continuousOn`. Take `⟨F, hF, hFeq⟩` from `exists_continuousOn_latticeSum (latOf b.1) (latOf (mbc l b.1 c.1)) hle reps hmem hcover huniq (cfun χ b.1 c.1) hper hmean (fun s => Gs χ s) _ hr ⟨R₀, C, hd⟩ 1 hbd hsm hct`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨F, hF, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[hFeq s hs]`. Conclude with `tsum_latOf b.1 (fun x => cfun χ b.1 c.1 x * Gs χ s x)`.
+A detailed English derivation is pending.
 -/
 theorem exists_F {l : ℕ} [Fact l.Prime] (χ : DirichletCharacter ℂ l) (b c : NZIdeal E)
     (hcop : Nat.Coprime (Ideal.absNorm c.1) (l * Ideal.absNorm b.1)) :
@@ -58,7 +58,7 @@ def Hfun {l : ℕ} (χ : DirichletCharacter ℂ l) (b c : NZIdeal E) (s : ℝ) (
     (1 - (Ideal.absNorm c.1 : ℂ) * (if b.1 * c.1 ∣ I then 1 else 0)) * ((Ideal.absNorm I : ℕ) : ℂ) ^ (-(s : ℂ)))
 
 /- English proof (translation)
-Rewrite using `[Complex.cpow_neg, mul_inv_cancel₀]`. Rewrite using `[Ne, Complex.cpow_eq_zero_iff]`. Conclude with `fun h => hn (by exact_mod_cast h.1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem natCast_cpow_mul_cpow_neg {n : ℕ} (hn : n ≠ 0) (s : ℂ) : (n : ℂ) ^ s * (n : ℂ) ^ (-s) = 1 := by
   rw [Complex.cpow_neg, mul_inv_cancel₀]
@@ -66,9 +66,9 @@ theorem natCast_cpow_mul_cpow_neg {n : ℕ} (hn : n ≠ 0) (s : ℂ) : (n : ℂ)
   exact fun h => hn (by exact_mod_cast h.1)
 
 /- English proof (translation)
-Establish `hb : Ideal.absNorm b.1 ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `b.2`. Establish `hdvd : (b.1 * c.1 ∣ a.1 * b.1) ↔ c.1 ∣ a.1`. Rewrite using `[mul_comm a.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `mul_dvd_mul_iff_left b.2`. Simplify using `only [Hfun, gfun, map_mul, Nat.mul_div_cancel _ (Nat.pos_of_ne_zero hb), hdvd, Nat.cast_mul, Complex.natCast_mul_natCast_cpow]`. Use `natCast_cpow_mul_cpow_neg hb (s : ℂ)` as an intermediate fact. Take the linear combination `(χ ((Ideal.absNorm a.1 : ℕ) : ZMod l) * (1 - (Ideal.absNorm c.1 : ℂ) * (if c.1 ∣ a.1 then 1 else 0)) * ((Ideal.absNorm a.1 : ℕ) : ℂ) ^ (-(s : ℂ))) * this`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Hfun_mul {l : ℕ} (χ : DirichletCharacter ℂ l) (b c : NZIdeal E) (s : ℝ) (a : NZIdeal E) :
     Hfun χ b c s (a.1 * b.1) = gfun χ c s a := by
@@ -83,11 +83,11 @@ theorem Hfun_mul {l : ℕ} (χ : DirichletCharacter ℂ l) (b c : NZIdeal E) (s 
     (1 - (Ideal.absNorm c.1 : ℂ) * (if c.1 ∣ a.1 then 1 else 0)) * ((Ideal.absNorm a.1 : ℕ) : ℂ) ^ (-(s : ℂ))) * this
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `absNorm_dvd_algebraNorm α.2`. Establish `hbc : (b.1 * c.1 ∣ Ideal.span {(α : 𝓞 E)}) ↔ (α : 𝓞 E) ∈ b.1 * c.1`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Establish `hb : Ideal.absNorm b.1 ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `b.2`. Establish `hsg` using `rsgn_mul_norm (α : 𝓞 E)`. Establish `hchi : χ ((((Ideal.absNorm (Ideal.span {(α : 𝓞 E)})) / Ideal.absNorm b.1 : ℕ)) : ZMod l) = χ ((Algebra.norm ℤ (α : 𝓞 E) / (Ideal.absNorm b.1 : ℤ) : ℤ) : ZMod l) * χ (rsgn (embZ (α : 𝓞 E)) : ZMod l)`. Rewrite using `[← map_mul, ← Int.cast_mul, ← Int.cast_natCast, Ideal.absNorm_span_singleton, Int.natCast_div, Int.natCast_natAbs, ← hsg, Int.mul_ediv_assoc _ (absNorm_dvd_algebraNorm α.2), mul_comm]`. Establish `hn : ((mixedEmbedding.norm (embZ (α : 𝓞 E)) : ℝ) : ℂ) = ((Ideal.absNorm (Ideal.span {(α : 𝓞 E)}) : ℕ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_embZ, Ideal.absNorm_span_singleton, Nat.cast_natAbs]`. Rewrite using `[← Int.cast_abs, Complex.ofReal_intCast]`. Simplify using `only [Hfun, cfun, Gs, preZ_embZ, hbc, hchi, hn]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem uphi_Hfun_span {l : ℕ} (χ : DirichletCharacter ℂ l) (b c : NZIdeal E) (s : ℝ) (α : b.1) :
     ((uphi (embZ (α : 𝓞 E)) : ℝ) : ℂ) * Hfun χ b c s (Ideal.span {(α : 𝓞 E)}) =
@@ -111,7 +111,7 @@ theorem uphi_Hfun_span {l : ℕ} (χ : DirichletCharacter ℂ l) (b c : NZIdeal 
   ring
 
 /- English proof (translation)
-Establish `h` using `tsum_class_eq_latSum b (Hfun χ b c s) (by simpa only [Hfun_mul] using hg)`. Simplify using `only [Hfun_mul] at h`. Rewrite using `[h]`. Repeatedly rewrite using `[uphi_Hfun_span]`. Rewrite using `[tsum_mul_left, mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem class_sum_eq {l : ℕ} (χ : DirichletCharacter ℂ l) (b c : NZIdeal E) (s : ℝ)
     (hg : Summable (gfun χ c s)) :
@@ -125,7 +125,7 @@ theorem class_sum_eq {l : ℕ} (χ : DirichletCharacter ℂ l) (b c : NZIdeal E)
   rw [tsum_mul_left, mul_assoc]
 
 /- English proof (translation)
-Take `⟨F, hF, hFeq⟩` from `exists_F χ b c hcop`. Conclude with `⟨F, hF, fun s hs hg => by rw [class_sum_eq χ b c s hg, hFeq s hs]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_class_cont {l : ℕ} [Fact l.Prime] (χ : DirichletCharacter ℂ l) (b c : NZIdeal E)
     (hcop : Nat.Coprime (Ideal.absNorm c.1) (l * Ideal.absNorm b.1)) :

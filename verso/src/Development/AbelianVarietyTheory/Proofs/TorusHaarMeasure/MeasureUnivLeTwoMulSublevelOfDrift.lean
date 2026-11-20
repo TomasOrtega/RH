@@ -6,47 +6,43 @@ open scoped ComplexOrder ENNReal Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Y σ _ _ _ μ R t f c b ht hR hinv hf hf0 hfR hc0 hc1 hb hdrift`. Establish `h1c : 0 < 1 - c` using `by linarith`. Take `⟨K, hK, hK0⟩ : ∃ K : ℝ, b = K * (1 - c) ∧ 0 ≤ K` from `⟨b / (1 - c), by field_simp, div_nonneg hb h1c.le⟩`. Take `⟨M, hM⟩ : ∃ M : ℝ, M = 2 * K + 1` from `⟨_, rfl⟩`. Establish `hM0 : 0 < M` using `by rw [hM]; linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨M, ?_⟩` and prove the remaining obligations. Establish `hN : (0 : ℝ) < Fintype.card σ` using `by exact_mod_cast Fintype.card_pos`. Establish `hA : MeasurableSet {y | f y ≤ M}` using `measurableSet_le hf measurable_const`. Set `g : ℕ → Y → ℝ` to `fun n => Nat.rec (fun y => if f y ≤ M then 1 else 0) (fun _ h y => (Fintype.card σ : ℝ)⁻¹ * ∑ s, h (t s y)) n`. Establish `g0 : ∀ y, g 0 y = if f y ≤ M then 1 else 0` using `fun y => rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `gs : ∀ n y, g (n + 1) y = (Fintype.card σ : ℝ)⁻¹ * ∑ s, g n (t s y)` using `fun n y => rfl`. Use `clear_value g`. Establish `gmeas : ∀ n, Measurable (g n)`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Rewrite using `[show g 0 = _ from funext g0]`. Conclude with `Measurable.ite hA measurable_const measurable_const`. Consider the case `succ n ih`. Rewrite using `[show g (n + 1) = _ from funext (gs n)]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `measurable_const.mul (Finset.measurable_sum _ fun s _ => ih.comp (ht s))`. Establish `gnn : ∀ n y, 0 ≤ g n y`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y; rw [g0]; split_ifs <;> norm_num`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih`. Introduce `y`. Rewrite using `[gs]`. Conclude with `mul_nonneg (inv_nonneg.2 hN.le) (Finset.sum_nonneg fun s _ => ih _)`. Establish `gR : ∀ n y y', R y y' → g n y = g n y'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y y' h`. Rewrite using `[g0, g0, hfR y y' h]`. Consider the case `succ n ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `y y' h`. Rewrite using `[gs, gs]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun s _ => ih _ _ (hR s _ _ h)`. Establish `gint : ∀ n, ∫⁻ y, ENNReal.ofReal (g n y) ∂μ = μ {y | f y ≤ M}`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[← lintegral_indicator_one hA]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[g0]`. Apply the tactic sequence `by_cases h : f y ≤ M <;> simp [h, Set.indicator]`. Consider the case `succ n ih`. Establish `hm : Measurable fun y => ENNReal.ofReal (g n y)` using `(gmeas n).ennreal_ofReal`. Establish `e : ∀ y, ENNReal.ofReal (g (n + 1) y) = (Fintype.card σ : ℝ≥0∞)⁻¹ * ∑ s, ENNReal.ofReal (g n (t s y))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[gs, ENNReal.ofReal_mul (inv_nonneg.2 hN.le), ENNReal.ofReal_inv_of_pos hN, ENNReal.ofReal_natCast, ENNReal.ofReal_sum_of_nonneg fun s _ => gnn n _]`. Repeatedly rewrite using `[e]`. Establish `hN0 : (Fintype.card σ : ℝ≥0∞) ≠ 0` using `by exact_mod_cast Fintype.card_pos.ne'`. Establish `hms : ∀ s, Measurable fun y => ENNReal.ofReal (g n (t s y))` using `fun s => hm.comp (ht s)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_const_mul _ (Finset.measurable_sum _ fun s _ => hms s), lintegral_finset_sum _ fun s _ => hms s]`. Establish `: ∀ s, ∫⁻ y, ENNReal.ofReal (g n (t s y)) ∂μ = μ {y | f y ≤ M}` using `fun s => by`. Rewrite using `[← ih]`. Conclude with `hinv (fun y => ENNReal.ofReal (g n y)) hm (fun y y' h => by simp only [gR n y y' h]) s`. Simplify using `only [this, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← mul_assoc, ENNReal.inv_mul_cancel hN0 (ENNReal.natCast_ne_top _), one_mul]`. Establish `glow : ∀ n y, M - (c ^ n * f y + K * (1 - c ^ n)) ≤ M * g n y`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `y`. Rewrite using `[g0]`. Use `hf0 y` as an intermediate fact. Use `split_ifs with h`. Simplify using `[this]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [pow_zero, one_mul, sub_self, mul_zero, add_zero]`. Combine the linear relations using `[not_le.1 h]`. Consider the case `succ n ih`. Introduce `y`. Establish `hcn : 0 ≤ c ^ n` using `pow_nonneg hc0 n`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ∑ s, (M - (c ^ n * f (t s y) + K * (1 - c ^ n))) ≤ ∑ s, M * g n (t s y)` using `Finset.sum_le_sum fun s _ => ih _`. Rewrite `h1` using `[Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum]`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at h1`. Establish `h2` using `mul_le_mul_of_nonneg_left (hdrift y) hcn`. Rewrite using `[gs, mul_left_comm, le_inv_mul_iff₀ hN, pow_succ]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[hK]`. Rewrite `h1` using `[← Finset.mul_sum]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlim : ∀ y, (2⁻¹ : ℝ≥0∞) ≤ Filter.liminf (fun n => ENNReal.ofReal (g n y)) Filter.atTop`. Introduce `y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Filter.le_liminf_of_le (by isBoundedDefault) ?_` and prove the remaining obligations. Establish `h0 : Filter.Tendsto (fun n : ℕ => c ^ n * f y) Filter.atTop (𝓝 (0 * f y))` using `(tendsto_pow_atTop_nhds_zero_of_lt_one hc0 hc1).mul_const _`. Rewrite `h0` using `[zero_mul]`. Use `filter_upwards [h0.eventually (gt_mem_nhds (show (0 : ℝ) < 1 / 2 by norm_num))] with n hn`. Establish `h1` using `glow n y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : 0 ≤ K * c ^ n` using `mul_nonneg hK0 (pow_nonneg hc0 n)`. Establish `h3 : M * 2⁻¹ ≤ M * g n y` using `by nlinarith`. Establish `h4 : (2⁻¹ : ℝ) ≤ g n y` using `le_of_mul_le_mul_left h3 hM0`. Use `ENNReal.ofReal_le_ofReal h4` as an intermediate fact. Rewrite `this` using `[ENNReal.ofReal_inv_of_pos (by norm_num), ENNReal.ofReal_ofNat]`. Then use the resulting hypothesis.
-
-Establish `hF : 2⁻¹ * μ Set.univ ≤ μ {y | f y ≤ M}`. Rewrite using `[← lintegral_const]`. Use `(lintegral_mono hlim).trans ?_` and prove the remaining obligations. Use `(lintegral_liminf_le fun n => (gmeas n).ennreal_ofReal).trans ?_` and prove the remaining obligations. Simplify using `only [gint, Filter.liminf_const, le_refl]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ENNReal.mul_inv_cancel (by norm_num) (by norm_num), one_mul]`. Use `_ ≤ _ := by gcongr`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_univ_le_two_mul_sublevel_of_drift :
     (∀ (Y σ : Type) [MeasurableSpace Y] [Fintype σ] [Nonempty σ] (μ : Measure Y)

@@ -168,7 +168,7 @@ Evaluate the decidable proposition.
 example : e₁ 5 2 = 16 ∧ dimN 5 2 = 6 ∧ expS 5 2 = 11 ∧ expSup 5 2 = 13 := by decide
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ h => h, fun _ _ h => h⟩`.
+Supply the required witnesses or components.
 -/
 example {g : ℕ} [Fact g.Prime] {a : ℕ} (Λ : Lat g a) :
     Into Λ Λ LinearMap.id ∧ InjMod Λ Λ LinearMap.id := ⟨fun _ h => h, fun _ _ h => h⟩

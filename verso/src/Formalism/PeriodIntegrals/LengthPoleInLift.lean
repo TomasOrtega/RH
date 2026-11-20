@@ -15,7 +15,7 @@ def LengthPoleInLift : Prop :=
       ((Nat.choose (T - 1) (WeightFamilies.dimY D j) * ∑ᶠ ζ, Q.mm S T e ζ * fdeg ζ : ℕ) : ℕ∞)
 
 /- English proof (translation)
-Introduce `G la Q S CRm T e c hOk hw _` and use `h G la Q S CRm T e c hOk hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (h : ∀ {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j},
     LenPole (X := X) (ka := ka) (wL := wL) (wF := wF)) : LengthPoleInLift :=

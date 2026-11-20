@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `set A := e.submatrix τ σ with hAdef`. Set `B : Matrix (Fin r) (Fin 1) K` to `Matrix.of fun k _ => e (τ k) j`. Set `C : Matrix (Fin 1) (Fin r) K` to `Matrix.of fun _ l => e i (σ l)`. Set `D : Matrix (Fin 1) (Fin 1) K` to `Matrix.of fun _ _ => e i j`.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hM : Matrix.fromBlocks A B C D = e.submatrix (Sum.elim τ fun _ => i) (Sum.elim σ fun _ => j)`. Apply the tactic sequence `ext (a | a) (b | b) <;> rfl`. Establish `h0 : (Matrix.fromBlocks A B C D).det = 0`. Rewrite using `[hM, ← Matrix.det_reindex_self finSumFinEquiv, Matrix.reindex_apply, Matrix.submatrix_submatrix]`. Conclude with `hmax _ _`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: Invertible A` using `A.invertibleOfIsUnitDet (isUnit_iff_ne_zero.mpr hA)`. Rewrite `h0` using `[Matrix.det_fromBlocks₁₁, Matrix.det_fin_one, Matrix.invOf_eq_nonsing_inv]`. Establish `h1` using `(mul_eq_zero.mp h0).resolve_left hA`. Rewrite `h1` using `[Matrix.sub_apply, sub_eq_zero]`. Establish `h2 : (C * A⁻¹ * B) 0 0 = (e.submatrix id σ * A⁻¹ * e.submatrix τ id) i j` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← h2, ← h1]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem cur_decomposition_of_maximal_minor {K : Type} [Field K] {d r : ℕ} (e : Matrix (Fin d) (Fin d) K)
     (τ σ : Fin r → Fin d) (hA : (e.submatrix τ σ).det ≠ 0)
@@ -36,9 +36,9 @@ private theorem cur_decomposition_of_maximal_minor {K : Type} [Field K] {d r : �
   rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(Matrix.mulVec (e.submatrix τ σ).adjugate fun l => e (τ l) j) k = _`. Rewrite using `[← Matrix.cramer_eq_adjugate_mulVec, Matrix.cramer_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a c`. Distinguish the cases in `h : c = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem inv_mul_submatrix_apply_eq_det_ratio {K : Type} [Field K] {d r : ℕ}
     (e : Matrix (Fin d) (Fin d) K) (τ σ : Fin r → Fin d) (k : Fin r) (j : Fin d) :
@@ -55,23 +55,21 @@ private theorem inv_mul_submatrix_apply_eq_det_ratio {K : Type} [Field K] {d r :
   · simp [h]
 
 /- English proof (translation)
-Set `P : ℕ → Prop` to `fun k => ∃ τ σ : Fin k → Fin d, (e.submatrix τ σ).det ≠ 0`. Use `set r := Nat.findGreatest P d with hr`. Establish `hPr : P r` using `Nat.findGreatest_spec (m := 0) (Nat.zero_le _) ⟨Fin.elim0, Fin.elim0, by simp⟩`. Establish `hnot : ∀ τ σ : Fin (r + 1) → Fin d, (e.submatrix τ σ).det = 0`. Introduce `τ σ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Distinguish the cases in `hle : r + 1 ≤ d`. Conclude with `Nat.findGreatest_is_greatest (Nat.lt_succ_self r) hle ⟨τ, σ, hne⟩`. Take `⟨a, b, hab, hτ⟩` from `Fintype.exists_ne_map_eq_of_card_lt τ (by simp; omega)`. Conclude with `hne (Matrix.det_zero_of_row_eq hab (by funext c; simp [hτ]))`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `v` to `O.valuation`. Take `⟨τ0, σ0, h0⟩` from `hPr`. Take `⟨p, -, hp⟩` from `Finset.exists_max_image Finset.univ (fun p : (Fin r → Fin d) × (Fin r → Fin d) => v (e.submatrix p.1 p.2).det) ⟨(τ0, σ0), Finset.mem_univ _⟩`. Take `⟨τ, σ⟩` from `p`. Establish `hA : (e.submatrix τ σ).det ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `hz`. Establish `hle` using `hp (τ0, σ0) (Finset.mem_univ _)`. Simplify using `only [hz, map_zero] at hle`. Conclude with `h0 ((Valuation.zero_iff _).mp (le_antisymm hle zero_le))`. Establish `hv : v (e.submatrix τ σ).det ≠ 0` using `(Valuation.ne_zero_iff _).mpr hA`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Set `S : Matrix (Fin d) (Fin r) K` to `Matrix.of fun i k => if i = σ k then 1 else 0`. Establish `hS : ∀ {m : Type} [Fintype m] (M : Matrix m (Fin d) K), M * S = M.submatrix id σ`. Introduce `m _ M`. Use extensionality with `a k`. Simplify using `[S, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨r, (e.submatrix τ σ)⁻¹ * e.submatrix τ id, S, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k j`. Rewrite using `[inv_mul_submatrix_apply_eq_det_ratio, ← O.valuation_le_one_iff, map_mul, map_inv₀]`. Establish `hle` using `hp (τ, Function.update σ k j) (Finset.mem_univ _)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `i k`. Simplify using `only [S, Matrix.of_apply]`. Use `split_ifs`. Conclude with `O.one_mem`. Conclude with `O.zero_mem`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, hS]`. Conclude with `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hA)`. Rewrite using `[Matrix.mul_assoc]`. Use `congr 1`. Use extensionality with `a c`.
-
-Express the relevant statement in the definitionally equal form `(e * e) (τ a) c = e (τ a) c`. Rewrite using `[he]`. Rewrite using `[hS, ← Matrix.mul_assoc]`. Conclude with `cur_decomposition_of_maximal_minor e τ σ hA hnot`.
+A detailed English derivation is pending.
 -/
 theorem exists_integral_factor_of_idempotent {K : Type} [Field K] (O : ValuationSubring K) (d : ℕ)
     (e : Matrix (Fin d) (Fin d) K) (he : e * e = e) :
@@ -128,17 +126,13 @@ theorem exists_integral_factor_of_idempotent {K : Type} [Field K] (O : Valuation
     exact cur_decomposition_of_maximal_minor e τ σ hA hnot
 
 /- English proof (translation)
-Take `⟨e', rfl⟩ : ∃ e' : Matrix (Fin d) (Fin d) F, e'.map F.subtype = e` from `⟨Matrix.of fun i j => ⟨e i j, hF i j⟩, by ext; rfl⟩`. Set `O : ValuationSubring F` to `{ carrier := {x | ‖(x : C)‖ ≤ 1} mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_ofPred_eq, Subfield.coe_mul, norm_mul] at *`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `one_mem' := by simp`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use the proof step `add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_ofPred_eq, Subfield.coe_add] at *`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)`. Use the proof step `zero_mem' := by simp`. Use the proof step `neg_mem' := fun {a} ha => by simpa using ha`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `mem_or_inv_mem' := fun x => by`. Break down `le_or_gt ‖(x : C)‖ 1 with h | h` into its components or cases. Conclude with `Or.inl h`. Use `right`. Express the relevant statement in the definitionally equal form `‖((x⁻¹ : F) : C)‖ ≤ 1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subfield.coe_inv, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ h.le }`. Establish `hinj : Function.Injective (F.subtype : F → C)` using `Subtype.val_injective`. Establish `he' : e' * e' = e'` using `Matrix.map_injective hinj (by`. Express the relevant statement in the definitionally equal form `(e' * e').map F.subtype = e'.map F.subtype`.
-
-Rewrite using `[Matrix.map_mul, he])`. Take `⟨r, R, S, hR, hS, hRS, hRe, heSR⟩` from `exists_integral_factor_of_idempotent O d e' he'`. Use `⟨r, R.map F.subtype, S.map F.subtype, fun i j => ⟨(R i j).2, hR i j⟩, fun i j => ⟨(S i j).2, hS i j⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, hRS, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[← Matrix.map_mul, hRe]`.
-
-Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, heSR]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_factor_of_idempotent_subfield (C : Type) [NormedField C]
     [IsUltrametricDist C] (F : Subfield C) (d : ℕ) (e : Matrix (Fin d) (Fin d) C)

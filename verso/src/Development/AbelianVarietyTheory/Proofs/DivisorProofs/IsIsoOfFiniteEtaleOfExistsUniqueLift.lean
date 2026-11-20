@@ -11,11 +11,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Take `⟨z⟩ : Nonempty (Sp Ω)` from `inferInstance`. Take `⟨x₀, hx₀, hu⟩` from `hs`. Establish `hsub : Subsingleton {x : Sp Ω ⟶ W // x ≫ w = s}` using `⟨fun a b => Subtype.ext ((hu a.1 a.2).trans (hu b.1 b.2).symm)⟩`. Establish `hne : Nonempty {x : Sp Ω ⟶ W // x ≫ w = s}` using `⟨⟨x₀, hx₀⟩⟩`. Take `⟨_, hcard⟩` from `GlobalTheory.FinEt.card_points_eq_finrank w s z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : w.finrank (s z) = 1`. Rewrite using `[← hcard, Nat.card_eq_one_iff_unique]`. Conclude with `⟨hsub, hne⟩`. Rewrite using `[Scheme.Hom.isIso_iff_finrank_eq]`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Pi.one_apply, ← h1]`. Conclude with `(Scheme.Hom.isLocallyConstant_finrank w).apply_eq_of_preconnectedSpace y (s z)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_of_finite_etale_of_existsUnique_lift (W S : Scheme.{0}) (w : W ⟶ S) (hf : IsFinite w)
     (he : Etale w) (hc : PreconnectedSpace S) (Ω : Type) [Field Ω] [IsAlgClosed Ω] (s : Sp Ω ⟶ S)

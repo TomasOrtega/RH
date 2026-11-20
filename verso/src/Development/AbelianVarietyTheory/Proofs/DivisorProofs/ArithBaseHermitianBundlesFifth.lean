@@ -19,25 +19,21 @@ noncomputable section
 namespace GlobalTheory.BcReadCx
 
 /- English proof (translation)
-Introduce `P1 P2 P3 D O hO P R hR c Bs _ q arq nBs E h H Bg jB πB u hG hF hI Y₀ _ π₀ fl₀ hfb ar₀ n₀ G _ j πG pb _ _ φ φs jG r hc a i σ z y y' ch hy hy' hz`. Take `⟨Gm, hmet, hLM⟩` from `hI`. Take `⟨⟨t, g⟩, -, hadp⟩` from `(O.Φ.C c).exists_adapted y`. Rewrite using `[GlobalTheory.T.adapted_frame_partition_formula D O c R Gm hmet _ (GlobalTheory.Mean4O.parOf_rootSym _ _ _ _) σ y t g hadp, expo_rootSym O.S.Dw (ArIn.ind P) (some R) (DV.tauEmb D a.1) (cond a.2 0 O.j + i)]`. Establish `hB : UnitAt (under z) ((((r a i ch)⁻¹ : G.functionFieldˣ) : G.functionField) * φ ((prodPow t (rootEx O.S.Dw (DV.tauEmb D a.1) (cond a.2 0 O.j + i)) : (O.var c).Fnˣ) : (O.var c).Fn)) ∧ Real.exp (-((VMetric.grLB (fl₀ a) i ((H a).pull π₀ rfl)).φ (σ.comp (algebraMap (𝓞 D.what₂.LL) D. …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `Bool.eq_false_or_eq_true a.2 with ha | ha` into its components or cases. Conclude with `GlobalTheory.T.lie_generic_eigen_metric_setup D O c Bs q E h H Bg jB πB u hG Gm hLM Y₀ π₀ fl₀ hfb G j πG pb φ φs jG r hc a ha i σ z y y' ch t g hadp hy hy' hz`. Conclude with `GlobalTheory.T.lie_generic_eigen_metric_bound D O c Bs q E h H Bg jB πB u hG Gm hLM Y₀ π₀ fl₀ hfb G j πG pb φ φs jG r hc a ha i σ z y y' ch t g hadp hy hy' hz`. Take `⟨hU, hW⟩` from `hB`. Use `erw [hW]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Pf : (O.var c).Fn := ((prodPow t (rootEx O.S.Dw (DV.tauEmb D a.1) (cond a.2 0 O.j + i)) : (O.var c).Fnˣ) : (O.var c).Fn) with hPf`. Use `set s : (O.var c).Fn := genAt (adlOf (O.Φ.C c) (O.met.hm c) (rootSym O.S.Dw (ArIn.ind P) (some R) (DV.tauEmb D a.1) (cond a.2 0 O.j + i))).D (under y) with hs`. Use `set X0 : G.functionField := (((r a i ch)⁻¹ : G.functionFieldˣ) : G.functionField) * φ Pf with hX0`. Establish `hsP : UnitAt (under y) (s * Pf)`. Establish `h1` using `FlagCpt.prodPow_mem (rootEx O.S.Dw (DV.tauEmb D a.1) (cond a.2 0 O.j + i)) hadp.mem_eqnSet`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eD : (adlOf (O.Φ.C c) (O.met.hm c) (rootSym O.S.Dw (ArIn.ind P) (some R) (DV.tauEmb D a.1) (cond a.2 0 O.j + i))).D = divOf (O.Φ.C c) (rootEx O.S.Dw (DV.tauEmb D a.1) (cond a.2 0 O.j + i))` using `congrArg (divOf (O.Φ.C c)) (expo_rootSym _ _ _ _ _)`. Establish `h2 : CartierDiv.IsEqn (divOf (O.Φ.C c) (rootEx O.S.Dw (DV.tauEmb D a.1) (cond a.2 0 O.j + i))) (Var.base y) (eqn (adlOf (O.Φ.C c) (O.met.hm c) (rootSym O.S.Dw (ArIn.ind P) (some R) (DV.tauEmb D a.1) (cond a.2 0 O.j + i))).D (under y))`. Rewrite using `[← eD]`. Conclude with `GlobalTheory.TrueGeo.Base.isEqn_eqn _ _`. Establish `h3` using `(CartierDiv.IsEqn.iff_unitAt h2).1 h1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e : s * Pf = Pf / ((eqn (adlOf (O.Φ.C c) (O.met.hm c) (rootSym O.S.Dw (ArIn.ind P) (some R) (DV.tauEmb D a.1) (cond a.2 0 O.j + i))).D (under y) : (O.var c).Fnˣ) : (O.var c).Fn)`. Rewrite using `[hs, genAt, Units.val_inv_eq_inv_val, div_eq_mul_inv, mul_comm]`. Rewrite using `[e]`. Conclude with `h3`. Take `⟨hv, hu⟩` from `GlobalTheory.T.rational_function_value_compatible (O.var c).str πG φ ‹_› σ z y hy (s * Pf)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUz` using `hu hsP`. Establish `hreg : RegAt (under z) (φ s * (r a i ch : G.functionField))`. Take `⟨b, hb, hbX⟩` from `hU`. Take `⟨b', -, hb'X⟩` from `hUz`. Use `⟨b' * ↑hb.unit⁻¹, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hP0 : φ Pf ≠ 0` using `(map_ne_zero φ).2 (Units.ne_zero _)`. Establish `hr0 : (r a i ch : G.functionField) ≠ 0` using `Units.ne_zero _`. Establish `hb0 : algebraMap _ G.functionField b ≠ 0`. Rewrite using `[hbX, hX0]`. Conclude with `mul_ne_zero (Units.ne_zero _) hP0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hb'X]`. Establish `: algebraMap _ G.functionField (↑hb.unit⁻¹ : G.presheaf.stalk (under z)) = (algebraMap _ G.functionField b)⁻¹`. Conclude with `eq_inv_of_mul_eq_one_left (by rw [← map_mul, IsUnit.val_inv_mul, map_one])`. Rewrite using `[this, hbX, hX0, map_mul, Units.val_inv_eq_inv_val, mul_inv, inv_inv]`. Clear the denominators using the available nonvanishing facts.
-
-Establish `hfac : φ (s * Pf) = (φ s * (r a i ch : G.functionField)) * X0`. Rewrite using `[hX0, map_mul, mul_assoc, Units.mul_inv_cancel_left]`. Establish `hrv` using `(hv hsP.regAt).2`. Rewrite `hrv` using `[hfac, ratVal_mul hreg (hU.regAt)]`. Rewrite using `[← hrv, pow_one]`.
-
-Simplify using `only [norm_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem frameSec_norm_cx : Hypotheses2 → HypothesesH → RegularAlteration →
   ∀ (D : D7) (O : Setup D) (hO : O.Core) (P : Finset ℕ) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)

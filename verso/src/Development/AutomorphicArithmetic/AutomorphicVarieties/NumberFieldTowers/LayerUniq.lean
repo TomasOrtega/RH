@@ -9,9 +9,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Tower
 
 /- English proof (translation)
-Use `haveI : IsAlgClosure L₁ Ω := ⟨IsAlgClosure.isAlgClosed L, Algebra.IsAlgebraic.tower_top (K := L) L₁⟩`. Establish `h1 : galOf L L₁ Ω = Un L Ω l n`. Rewrite using `[galOfCyc L Ω l n L L₁, galOf_self]`. Establish `h2 : Un L Ω l n = layU l L Ω (n - cZero l L)`. Break down `le_total n (cZero l L) with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[((muQ L Ω l).2.1 n).2 h, layU, ((muQ L Ω l).2.1 _).2 (by omega)]`. Rewrite using `[layU, Nat.add_sub_cancel' h]`. Use `⟨h1.trans h2, ?_⟩` and prove the remaining obligations. Rewrite using `[← (galEmbTop L L₁ Ω).2.2, h1, h2, (layerGen L Ω l hmu).1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lu_key (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ)
     [Fact l.Prime] (hmu : HasMuQ l L) (n : ℕ) (L₁ : Type) [Field L₁] [NumberField L₁] [Algebra L L₁] [Algebra L₁ Ω]
@@ -28,11 +28,11 @@ private theorem lu_key (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algeb
   rw [← (galEmbTop L L₁ Ω).2.2, h1, h2, (layerGen L Ω l hmu).1]
 
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ l hl hmu`. Use `⟨fun m => ?_, fun m L₁ _ _ _ _ _ h => ?_, fun n L₁ _ _ _ h => ?_⟩` and prove the remaining obligations. Use `haveI h := (fnCyc L Ω l (cZero l L + m)).1`. Use `⟨⟨_, h⟩, ?_⟩` and prove the remaining obligations. Use `(lu_key L Ω l hmu (cZero l L + m) (layF l L Ω m)).2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Nat.add_sub_cancel_left]`. Then use the resulting hypothesis. Take `⟨⟨k, hk⟩, hf⟩` from `h`. Take `⟨h1, h2⟩` from `lu_key L Ω l hmu k L₁`. Rewrite using `[h1, Nat.pow_right_injective hl.out.two_le (h2.symm.trans hf)]`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed L haveI : FiniteDimensional L L₁ := Module.Finite.of_restrictScalars_finite ℚ L L₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Set `f : L₁ →ₐ[L] Ω` to `IsAlgClosed.lift`. Use `letI : Algebra L₁ Ω := f.toRingHom.toAlgebra`. Use `haveI : IsScalarTower L L₁ Ω := IsScalarTower.of_algebraMap_eq fun x => (f.commutes x).symm`. Conclude with `⟨⟨n, h⟩, (lu_key L Ω l hmu n L₁).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Tower.layerUniq :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime], HasMuQ l L → (∀ m, IsLayer l m L (layF l L Ω m)) ∧

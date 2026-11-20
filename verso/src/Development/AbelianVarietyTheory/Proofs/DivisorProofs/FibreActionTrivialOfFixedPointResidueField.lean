@@ -36,7 +36,7 @@ def fibEnd (G' : Over X') {σ : X' ⟶ X'} (mu : G'.left ⟶ G'.left) (hmu : mu 
     rw [Category.assoc, hmu, ← Category.assoc, pullback.condition, Category.assoc, ht])) (pullback.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fibEnd_fst (G' : Over X') {σ : X' ⟶ X'} (mu : G'.left ⟶ G'.left) (hmu : mu ≫ G'.hom = G'.hom ≫ σ)
     (t : S ⟶ X') (ht : t ≫ σ = t) :
@@ -44,7 +44,7 @@ theorem fibEnd_fst (G' : Over X') {σ : X' ⟶ X'} (mu : G'.left ⟶ G'.left) (h
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pullAct_fst (G' : Over X') [GrpObj G'] [IsCommMonObj G'] {O : Type} [CommRing O] (a : OAct O G')
     (t : S ⟶ X') (b : O) :
@@ -58,7 +58,7 @@ theorem pushHom_pull_left {T : Over S} {G' : Over X'} [GrpObj G'] (t : S ⟶ X')
     (pushHom (isGrpPullback_pullback G' t) T z).left = z.left ≫ pullback.fst G'.hom t := rfl
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext h` to reduce the goal to its premises. Conclude with `(Over.w a).trans (Over.w b).symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem pull_ext {G' : Over X'} {t : S ⟶ X'} {T : Over S} (a b : T ⟶ (Over.pullback t).obj G')
     (h : a.left ≫ pullback.fst G'.hom t = b.left ≫ pullback.fst G'.hom t) : a = b := by
@@ -67,11 +67,11 @@ theorem pull_ext {G' : Over X'} {t : S ⟶ X'} {T : Over S} (a b : T ⟶ (Over.p
   exact (Over.w a).trans (Over.w b).symm
 
 /- English proof (translation)
-Establish `h1 : IsGrpPullback ((Over.pullback t).obj G') G' t (pullback.fst G'.hom t ≫ mu)`. Use `IsGrpPullback.comp (isGrpPullback_pullback G' t) hG` as an intermediate fact. Rewrite `this` using `[ht]`. Then use the resulting hypothesis. Establish `h2` using `isGrpPullback_pullback G' t`. Use `isMonHom_of_mul _ fun T x y => pull_ext _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : (pushPt h1.1.w x).left = (x ≫ fibEnd G' mu hG.1.w t ht).left ≫ pullback.fst G'.hom t`. Rewrite using `[Over.comp_left, Category.assoc, fibEnd_fst]`. Both sides reduce to the same expression. Establish `hy : (pushPt h1.1.w y).left = (y ≫ fibEnd G' mu hG.1.w t ht).left ≫ pullback.fst G'.hom t`. Rewrite using `[Over.comp_left, Category.assoc, fibEnd_fst]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2` using `h2.2 T _ _ (pushPt h1.1.w x) (pushPt h1.1.w y) hx hy`. Establish `e1` using `h1.2 T x y (pushPt h1.1.w x) (pushPt h1.1.w y) rfl rfl`. Rewrite using `[← e2, e1, Over.comp_left, Category.assoc, fibEnd_fst]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMonHom_fibEnd (G' : Over X') [GrpObj G'] {σ : X' ⟶ X'} (mu : G'.left ⟶ G'.left)
     (hG : IsGrpPullback G' G' σ mu) (t : S ⟶ X') (ht : t ≫ σ = t) :
@@ -90,7 +90,7 @@ theorem isMonHom_fibEnd (G' : Over X') [GrpObj G'] {σ : X' ⟶ X'} (mu : G'.lef
   rw [← e2, e1, Over.comp_left, Category.assoc, fibEnd_fst]
 
 /- English proof (translation)
-Establish `A : ((OAct.pullback t G' a).act b).left ≫ pullback.fst G'.hom t = pullback.fst G'.hom t ≫ (a.act b).left` using `pullback.lift_fst _ _ _`. Apply `pull_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, fibEnd_fst, A, ← Category.assoc, A, Category.assoc, hc, ← Category.assoc, ← fibEnd_fst G' mu hmu t ht, Category.assoc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem fibEnd_act (G' : Over X') [GrpObj G'] [IsCommMonObj G'] {O : Type} [CommRing O] (a : OAct O G')
     {σ : X' ⟶ X'} (mu : G'.left ⟶ G'.left) (hmu : mu ≫ G'.hom = G'.hom ≫ σ)
@@ -111,9 +111,9 @@ namespace GlobalTheory.EqvFib
 section Desc
 
 /- English proof (translation)
-Establish `f₁ : Flat (Spec.map (CommRingCat.ofHom (algebraMap (X'.residueField x) K)))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.Flat.of_isField (Field.toIsField _) _`. Establish `f₂ : Surjective (Spec.map (CommRingCat.ofHom (algebraMap (X'.residueField x) K)))` using `⟨fun y => ⟨(default : PrimeSpectrum K), Subsingleton.elim (α := PrimeSpectrum (X'.residueField x)) _ _⟩⟩`. Establish `: Epi (pullback.fst v (Spec.map (CommRingCat.ofHom (algebraMap (X'.residueField x) K))))` using `Flat.epi_of_flat_of_surjective _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi (pullback.fst v (Spec.map (CommRingCat.ofHom (algebraMap (X'.residueField x) K))))]`. Establish `e` using `H _ (pullback.fst v (Spec.map (CommRingCat.ofHom (algebraMap (X'.residueField x) K))) ≫ w) (pullback.snd v (Spec.map (CommRingCat.ofHom (algebraMap (X'.residueField x) K)))) (by rw [Category.assoc, hw, ← Category.assoc, pullback.condition, Category.assoc]; rfl)`. Rewrite `e` using `[Category.assoc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem descend {X' G : Scheme.{0}} (h : G ⟶ X') (x : X') (K : Type) [Field K] [Algebra (X'.residueField x) K]
     (u : G ⟶ G)
@@ -141,7 +141,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H}
 
 /- English proof (translation)
-Establish `h` using `(hE.1 1).1`. Establish `hw : m 1 ≫ G'.hom = G'.hom` using `by rw [h.w, map_one]; exact Category.comp_id _`. Apply `h.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.id_comp, ← hE.2.2 1 1, _root_.mul_one]`. Rewrite using `[hw, Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem m_one {X' : Scheme.{0}} {Γ : Type} [Group Γ] (ρ' : Γ →* Aut X') (G' : Over X') [GrpObj G']
     (act' : OAct (𝓞 E) G') (m : Γ → (G'.left ⟶ G'.left)) (hE : EqvAct.IsEqvAct ρ' G' act' m) : m 1 = 𝟙 _ := by
@@ -152,7 +152,7 @@ theorem m_one {X' : Scheme.{0}} {Γ : Type} [Group Γ] (ρ' : Γ →* Aut X') (G
   · rw [hw, Category.id_comp]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [Function.iterate_zero_apply, Over.id_left, Category.id_comp, pow_zero, m_one ρ' G' act' m hE, Category.comp_id]`. Consider the case `succ k ih => rw [Function.iterate_succ_apply', Over.comp_left, Category.assoc, fibEnd_fst, ← Category.assoc, ih, Category.assoc, pow_succ', hE.2.2]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iter_fibEnd {X' S : Scheme.{0}} {Γ : Type} [Group Γ] (ρ' : Γ →* Aut X') (G' : Over X') [GrpObj G']
     (act' : OAct (𝓞 E) G') (m : Γ → (G'.left ⟶ G'.left)) (hE : EqvAct.IsEqvAct ρ' G' act' m) (g0 : Γ)
@@ -177,7 +177,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H}
 
 /- English proof (translation)
-Introduce `h`. Establish `e` using `l.prod`. Rewrite `e` using `[h, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot]`. Establish `h3` using `l.three_le`. Establish `: l.M = 0` using `by exact_mod_cast e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -190,47 +190,41 @@ theorem mb_ne_bot (l : Level H) : l.Mb ≠ ⊥ := by
   omega
 
 /- English proof (translation)
-Use `haveI := hS.comm`. Use `haveI := Dw.fin`. Use `haveI := Dw.proj`. Establish `hcardI : Nat.card (𝓞 E ⧸ I) = g`. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, hNP.2.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hIfin : Finite (𝓞 E ⧸ I)` using `Nat.finite_of_card_ne_zero (by rw [hcardI]; exact hNP.1.ne_zero)`. Establish `hIne : I ≠ ⊥`. Introduce and unpack `rfl`. Establish `e` using `hNP.2.1`. Rewrite `e` using `[Ideal.absNorm_bot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hNP.1.ne_zero e.symm`. Establish `hImax : I.IsMaximal` using `(Ideal.isPrime_of_irreducible_absNorm (by rw [hNP.2.1]; exact hNP.1)).isMaximal hIne`. Set `K` to `AlgebraicClosure (X'.residueField x)`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap (X'.residueField x) K).injective`. Set `t : Sp K ⟶ X'` to `Spec.map (CommRingCat.ofHom (algebraMap (X'.residueField x) K)) ≫ X'.fromSpecResidueField x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ht : t ≫ (ρ' g0).hom = t` using `by simp only [t, Category.assoc, hx]`. Set `α` to `fibEnd G' (m g0) (hE.1 g0).1.w t ht`. It suffices to establish `hα : α = 𝟙 _ by`. Use `descend G'.hom x K (m g0) (fun T w v hw => ?_) T w v hw` and prove the remaining obligations. Establish `e` using `congrArg (fun f => pullback.lift w v hw ≫ f.left ≫ pullback.fst G'.hom t) hα`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e' : pullback.lift w v hw ≫ pullback.fst G'.hom t = w` using `pullback.lift_fst _ _ _`. Simplify using `only [α, fibEnd_fst, Over.id_left, Category.id_comp] at e`. Rewrite `e` using `[← Category.assoc, e']`. Conclude with `e.trans e'`. Set `actT` to `OAct.pullback t G' act'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI hmon : IsMonHom α := isMonHom_fibEnd G' (m g0) (hE.1 g0) t ht`. Establish `hact : ∀ a, actT.act a ≫ α = α ≫ actT.act a` using `fibEnd_act G' act' (m g0) _ (hE.2.1 g0) t ht`. Establish `hiter : (fun f => f ≫ α)^[Nat.card Γ] (𝟙 _) = 𝟙 _`. Apply `pull_ext` to reduce the goal to its premises. Rewrite using `[iter_fibEnd ρ' G' act' m hE g0 t ht, pow_card_eq_one', m_one ρ' G' act' m hE, Over.id_left, Category.id_comp, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : 0 < Nat.card Γ` using `Nat.card_pos`. Set `β` to `pushHom (isGrpPullback_pullback G' t) (𝟙_ (Over (Sp K)))`. Establish `hβinj : Function.Injective β` using `fun a b hab => pull_ext a b (by`. Rewrite using `[← pushHom_pull_left, ← pushHom_pull_left, hab])`. Establish `hβact : ∀ z a, β (z ≫ actT.act a) = β z ≫ act'.act a` using `fun z a => Over.OverMorphism.ext (by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pushHom_pull_left, Over.comp_left, Over.comp_left, pushHom_pull_left, Category.assoc, pullAct_fst, Category.assoc])`. Establish `hβα : ∀ z, (β (z ≫ α)).left = (β z).left ≫ m g0` using `fun z => by`. Rewrite using `[pushHom_pull_left, pushHom_pull_left, Over.comp_left, Category.assoc, fibEnd_fst, Category.assoc]`. Set `tor : (𝟙_ (Over (Sp K)) ⟶ (Over.pullback t).obj G') → Prop` to `fun z => ∀ a ∈ I, z ≫ actT.act a = 1`. Establish `tor_one : tor 1` using `fun a _ => by haveI := actT.hom a`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `map_one (IsMonHom.monoidHom (actT.act a) _)`. Establish `tor_mul : ∀ {z z'}, tor z → tor z' → tor (z * z')` using `fun {z z'} hz hz' a ha => by haveI := actT.hom a`. Rewrite using `[MonObj.mul_comp, hz a ha, hz' a ha, _root_.mul_one]`. Establish `tor_inv : ∀ {z}, tor z → tor z⁻¹` using `fun {z} hz a ha => by haveI := actT.hom a`. Establish `e` using `map_inv (IsMonHom.monoidHom (actT.act a) (𝟙_ (Over (Sp K)))) z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `e.trans ?_` and prove the remaining obligations. Use `show (z ≫ actT.act a)⁻¹ = 1`. Rewrite using `[hz a ha, inv_one]`. Establish `tor_α : ∀ {z}, tor z → tor (z ≫ α)` using `fun {z} hz a ha => by`. Rewrite using `[Category.assoc, ← hact, ← Category.assoc, hz a ha]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `map_one (IsMonHom.monoidHom α _)`. Establish `torβ : ∀ {z}, tor z → EqvAct.IsTorsI I act' (β z)` using `fun {z} hz a ha => by`. Rewrite using `[← hβact, hz a ha, map_one]`. Take `⟨e, headd, helin, heinj, hemv⟩` from `hT K ((𝟙_ (Over (Sp K))).hom ≫ t)`. Establish `hfix : ((𝟙_ (Over (Sp K))).hom ≫ t) ≫ (ρ' g0).hom = (𝟙_ (Over (Sp K))).hom ≫ t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Category.assoc, ht]`. Establish `hE1 : e (β 1) = 0`. Establish `e1` using `headd (β 1) (β 1) (torβ tor_one) (torβ tor_one)`. Rewrite `e1` using `[← map_mul, _root_.mul_one]`. Simplify using `using e1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEmul : ∀ {z z'}, tor z → tor z' → e (β (z * z')) = e (β z) + e (β z')` using `fun {z z'} hz hz' => by`. Rewrite using `[map_mul]`. Conclude with `headd _ _ (torβ hz) (torβ hz')`. Establish `hEinv : ∀ {z}, tor z → e (β z⁻¹) = -e (β z)` using `fun {z} hz => by`. Establish `e1` using `hEmul hz (tor_inv hz)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e1` using `[_root_.mul_inv_cancel, hE1]`. Conclude with `(neg_eq_of_add_eq_zero_right e1.symm).symm`. Establish `hEα : ∀ {z}, tor z → e (β (z ≫ α)) = iota g0 (e (β z))` using `fun {z} hz => hemv g0 hfix (β z) (β (z ≫ α)) (torβ hz) (hβα z)`. Establish `hEtors : ∀ {z}, tor z → ∀ a ∈ I, a • e (β z) = 0` using `fun {z} hz a ha => by`. Rewrite using `[← helin _ a (torβ hz), ← hβact, hz a ha, hE1]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinj : ∀ {z z'}, tor z → tor z' → e (β z) = e (β z') → z = z'` using `fun {z z'} hz hz' h => hβinj (heinj _ _ (torβ hz) (torβ hz') h)`. Establish `hcount : ∃ T : Finset (𝟙_ (Over (Sp K)) ⟶ (Over.pullback t).obj G'), T.card ≤ g ^ (Dw.p + Dw.q) ∧ ∀ z : 𝟙_ (Over (Sp K)) ⟶ (Over.pullback t).obj G', (∀ a ∈ I, z ≫ actT.act a = 1) → z ∈ T`. Take `⟨hfin, hcard⟩` from `GlobalTheory.T.finite_card_torsion_quot_smul_top_le_pow_finrank (𝓞 E) Dw.La I l.Mb hImax hIfin (mb_ne_bot l)`. Set `f : setOf tor → {y : GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms.LevelMod Dw l // ∀ a ∈ I, a • y = 0}` to `fun z => ⟨e (β z.1), hEtors z.2⟩`. Establish `hf : Function.Injective f` using `fun z z' h => Subtype.ext (hinj z.2 z'.2 (congrArg Subtype.val h))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `haveI : Finite (setOf tor) := Finite.of_injective f hf`. Establish `hP : (setOf tor).Finite` using `Set.toFinite _`. Use `⟨hP.toFinset, ?_, fun z hz => hP.mem_toFinset.2 hz⟩` and prove the remaining obligations. Rewrite using `[← Nat.card_eq_card_finite_toFinset hP]`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m₀, hm₀⟩` from `hU g0`. Take `⟨j, hj⟩` from `GlobalTheory.T.exists_pow_apply_mem_smul_univ_of_torsion (𝓞 E) Dw.La I l.Mb (liftLa (iota g0) - 1) m₀ hImax (mb_ne_bot l) hm₀`. Establish `hunip : ∀ z : 𝟙_ (Over (Sp K)) ⟶ (Over.pullback t).obj G', (∀ a ∈ I, z ≫ actT.act a = 1) → (fun z : 𝟙_ (Over (Sp K)) ⟶ (Over.pullback t).obj G' => (z ≫ α) * z⁻¹)^[j] z = 1`. Introduce `z hz`. Take `⟨Y, hY⟩` from `Submodule.Quotient.mk_surjective _ (e (β z))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ k, tor ((fun z : 𝟙_ (Over (Sp K)) ⟶ (Over.pullback t).obj G' => (z ≫ α) * z⁻¹)^[k] z) ∧ e (β ((fun z : 𝟙_ (Over (Sp K)) ⟶ (Over.pullback t).obj G' => (z ≫ α) * z⁻¹)^[k] z)) = Submodule.Quotient.mk (((liftLa (iota g0) - 1) ^ k) Y)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨hz, by rw [Function.iterate_zero_apply, pow_zero, Module.End.one_apply, hY]⟩`. Consider the case `succ k ih`.
-
-Take `⟨h1, h2⟩` from `ih`. Rewrite using `[Function.iterate_succ_apply']`. Use `⟨tor_mul (tor_α h1) (tor_inv h1), ?_⟩` and prove the remaining obligations. Rewrite using `[hEmul (tor_α h1) (tor_inv h1), hEα h1, hEinv h1, h2, pow_succ', Module.End.mul_apply, LinearMap.sub_apply, Module.End.one_apply, Submodule.Quotient.mk_sub, ← sub_eq_add_neg]`. Use `congr 1`.
-
-Conclude with `(liftLa_spec (iota g0) _).symm`. Establish `hYt : ∀ a ∈ I, a • Y ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)` using `fun a ha => by`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul, hY]`. Conclude with `hEtors hz a ha`. Take `⟨h1, h2⟩` from `key j`.
-
-Apply `hinj h1 tor_one` to reduce the goal to its premises. Rewrite using `[h2, hE1, Submodule.Quotient.mk_eq_zero]`. Conclude with `hj Y hYt`. Conclude with `GlobalTheory.T.exists_small_torsion_set_for_endomorphism E K ((Over.pullback t).obj G') actT α (Nat.card Γ) j g (Dw.p + Dw.q) I (IsSemiAbelian.pullback t G' hS) hmon hact hn hiter hNP.1 hNP.2.1 hNP.2.2.1 hNP.2.2.2 hcount hunip`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fib_gen (I : Ideal (𝓞 E)) (g : ℕ) (hNP : NeatPrime I g (Dw.p + Dw.q)) (hMb : l.Mb ≤ I)
     {Γ : Type} [Group Γ] [Finite Γ] (iota : Γ →* LevelAut Dw l) (hU : ∀ g0, UnipAt I (iota g0))
@@ -371,7 +365,7 @@ end GlobalTheory.EqvFib
 end Helpers
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF Z _ _ I g hNP hMb Γ _ _ iota hU X' _ φ ρ' _ _ m hE hT g0 x hx T w v hw`. Use `haveI : CharZero (X'.residueField x) := by`. Set `q : Spec (X'.residueField x) ⟶ Sp c.F` to `X'.fromSpecResidueField x ≫ φ ≫ s₀ TF.Y Z`. Conclude with `charZero_of_injective_ringHom (Spec.preimage q).hom.injective`. Conclude with `GlobalTheory.EqvFib.fib_gen I g hNP hMb iota hU ρ' _ (IsSemiAbelian.pullback _ TF.Y.t.G TF.Y.t.semi) _ m hE hT g0 x hx T w v hw`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EqvFib.fibre_trivial_of_fixed : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), 1 ≤ Dw.p + Dw.q → l.A = 1 → ∀ (I : Ideal (𝓞 E)) (g : ℕ), NeatPrime I g (Dw.p + Dw.q) → l.Mb ≤ I → ∀ (Γ : Type) [Group Γ] [Finite Γ] (ι : Γ →* LevelAut Dw l), (∀ γ, UnipAt I (ι γ)) → ∀ (X' : Scheme.{0}) [IsIntegral X'] (φ : X' ⟶ X₀ TF.Y Z) (ρ' : Γ →* Aut X'), GlobalTheory.IsNormalScheme X' → IsProjOver (φ ≫ s₀ TF.Y Z) → ∀ m : Γ → ((GlobalTheory.EqvAct.pullG TF Z φ).left ⟶ (GlobalTheory.EqvAct.pullG TF Z φ).left), GlobalTheory.EqvAct.IsEqvAct ρ' (GlobalTheory.EqvAct.pullG TF Z φ) (GlobalTheory.EqvAct.pullAct TF Z φ) m → GlobalTheory.EqvAct.TorsLevel I ι ρ' (GlobalTheory.EqvAct.pullG TF Z φ) (GlobalTheory.EqvAct.pullAct TF Z φ) m → ∀ γ (x : X'), X'.fromSpecResidueField x ≫ (ρ' γ).hom = X'.fromSpecResidueField x → ∀ (T : Scheme.{0}) (w : T ⟶ (GlobalTheory.EqvAct.pullG TF Z φ).left) (v : T ⟶ Spec (X'.residueField x)), w ≫ (GlobalTheory.EqvAct.pullG TF Z φ).hom = v ≫ X'.fromSpecResidueField x → w ≫ m γ = w := by
   intro E _ _ _ H Dw l Xo c TF Z _ _ I g hNP hMb Γ _ _ iota hU X' _ φ ρ' _ _ m hE hT g0 x hx T w v hw

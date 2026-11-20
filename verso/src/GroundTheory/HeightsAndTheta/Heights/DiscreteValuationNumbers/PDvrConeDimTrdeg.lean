@@ -16,27 +16,27 @@ namespace DvrConeDimTrdeg
 attribute [local instance] MvPolynomial.algebraMvPolynomial
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ _ ι _ P hP hPC`. Set `F` to `FractionRing O`. Establish `hPp : P.IsPrime` using `hP.isPrime`. Establish `hG : (genFib P).IsPrime` using `(GenericFibProps.full.{0} O K ι P hP hPC).1`. Establish `hdim : ringKrullDim (MRing ι O ⧸ P) = ringKrullDim (MRing ι F ⧸ genFib P) + 1` using `le_antisymm (GenericDimGe.proof.{0} O K ι P hPp hPC) (GenericDimBound.full.{0} O K ι P hP hPC)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ringKrullDim (MRing ι F ⧸ genFib P) = (Algebra.trdeg F (MRing ι F ⧸ genFib P)).toENat` using `GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg F`. Set `M : Submonoid (MRing ι O)` to `(nonZeroDivisors O).map (C : O →+* MRing ι O)`. Establish `: IsLocalization M (MRing ι F)` using `MvPolynomial.isLocalization (nonZeroDivisors O) F`. Establish `hdisj : Disjoint (M : Set (MRing ι O)) (P : Set (MRing ι O))`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨a, ha, rfl⟩ hmem`. Establish `: a ∈ P.comap (C : O →+* MRing ι O)` using `hmem`. Rewrite `this` using `[hPC]`. Conclude with `nonZeroDivisors.ne_zero ha ((Submodule.mem_bot _).1 this)`. Establish `hcomap : (genFib P).comap (algebraMap (MRing ι O) (MRing ι F)) = P` using `IsLocalization.under_map_of_isPrime_disjoint M (MRing ι F) hPp hdisj`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ : (MRing ι O ⧸ P) →+* (MRing ι F ⧸ genFib P)` to `Ideal.quotientMap (genFib P) (algebraMap (MRing ι O) (MRing ι F)) hcomap.ge`. Establish `hφ : Function.Injective φ` using `Ideal.quotientMap_injective' hcomap.le`. Set `_ : Algebra (MRing ι O ⧸ P) (MRing ι F ⧸ genFib P)` to `φ.toAlgebra`. Establish `: IsScalarTower O (MRing ι O ⧸ P) (MRing ι F ⧸ genFib P)` using `IsScalarTower.of_algebraMap_eq fun a => by`. Express the relevant statement in the definitionally equal form `_ = φ (Ideal.Quotient.mk P (C a))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `[φ, Ideal.quotientMap_mk]`. Both sides reduce to the same expression. Establish `: FaithfulSMul (MRing ι O ⧸ P) (MRing ι F ⧸ genFib P)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hφ`. Establish `: FaithfulSMul O (MRing ι O ⧸ P)`. Use `(faithfulSMul_iff_algebraMap_injective _ _).2 ((injective_iff_map_eq_zero (algebraMap O (MRing ι O ⧸ P))).2 fun a ha => ?_)` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : (C a : MRing ι O) ∈ P` using `Ideal.Quotient.eq_zero_iff_mem.1 (show Ideal.Quotient.mk P (C a) = 0 from ha)`. Establish `: a ∈ P.comap (C : O →+* MRing ι O)` using `h`. Rewrite `this` using `[hPC]`. Conclude with `(Submodule.mem_bot _).1 this`. Establish `: FaithfulSMul O F` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (IsFractionRing.injective O F)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FaithfulSMul F (MRing ι F ⧸ genFib P)` using `(faithfulSMul_iff_algebraMap_injective F (MRing ι F ⧸ genFib P)).2 (algebraMap F _).injective`. Establish `: Algebra.IsAlgebraic O F` using `IsLocalization.isAlgebraic F (nonZeroDivisors O)`. Establish `: Algebra.IsAlgebraic (MRing ι O ⧸ P) (MRing ι F ⧸ genFib P)`. Use `⟨fun b => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨s, m⟩, rfl⟩` from `IsLocalization.mk'_surjective M g`. Establish `hspec` using `IsLocalization.mk'_spec (MRing ι F) s m`. Set `y` to `algebraMap (MRing ι O ⧸ P) (MRing ι F ⧸ genFib P) (Ideal.Quotient.mk P (m : MRing ι O))`. Establish `hy0 : y ≠ 0`. Use `(map_ne_zero_iff _ hφ).2 fun h => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Set.disjoint_left.1 hdisj m.2 (Ideal.Quotient.eq_zero_iff_mem.1 h)`. Use `IsAlgebraic.of_mul (mem_nonZeroDivisors_of_ne_zero hy0) (isAlgebraic_algebraMap _) ?_` and prove the remaining obligations. Establish `: y * Ideal.Quotient.mk (genFib P) (IsLocalization.mk' (MRing ι F) s m) = algebraMap (MRing ι O ⧸ P) (MRing ι F ⧸ genFib P) (Ideal.Quotient.mk P s)`. Express the relevant statement in the definitionally equal form `φ _ * _ = φ _`. Simplify using `only [φ, Ideal.quotientMap_mk, ← map_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_comm, hspec]`. Rewrite using `[this]`. Conclude with `isAlgebraic_algebraMap _`. Establish `h1` using `trdeg_add_eq O F (A := MRing ι F ⧸ genFib P)`. Establish `h2` using `trdeg_add_eq O (MRing ι O ⧸ P) (A := MRing ι F ⧸ genFib P)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[trdeg_eq_zero (R := O) (A := F), zero_add]`. Rewrite `h2` using `[trdeg_eq_zero (R := MRing ι O ⧸ P) (A := MRing ι F ⧸ genFib P), add_zero]`. Rewrite using `[hdim, hB, h1, ← h2]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem proof : Statement := by
   intro O _ _ _ K _ _ ι _ P hP hPC

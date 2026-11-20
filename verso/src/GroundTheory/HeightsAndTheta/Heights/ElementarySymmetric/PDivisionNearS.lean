@@ -14,45 +14,37 @@ noncomputable section
 open DivisionNearS in
 
 /- English proof (translation)
-Introduce `D T X Z φA hD hDT F hFv hfil t ht`. Take `⟨hF, hFn⟩` from `hFv`. Use `set d : Fin X.A.n → X.U → ℝ≥0∞ := fun a x => ENNReal.ofReal (2 ^ D * ‖F a x‖ ^ 2 * (∑ i, ‖Z.s i a x‖ ^ 2) ^ (-(t + 1)) * Real.exp (-(φA.φ a x + ((T : ℝ) - 1 - t) * fsWeight X.e a x))) with hd`. Use `set n : Fin X.A.n → X.U → ℝ≥0∞ := fun a x => ENNReal.ofReal (2 ^ D * ‖F a x‖ ^ 2 * Real.exp (-(φA.φ a x + (T : ℝ) * fsWeight X.e a x))) with hn`. Establish `hnT : chartIntegral X.A n < ⊤` using `hFn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show chartIntegral X.A d < ⊤`. Establish `hcmp : ∀ a x (M : ℝ), 0 ≤ M → (x ∈ (X.A.chart a).source → (∑ i, ‖Z.s i a x‖ ^ 2) ^ (-(t + 1)) * (∑ k, ‖X.e k a x‖ ^ 2) ^ (t + 1) ≤ M) → d a x ≤ ENNReal.ofReal M * n a x`. Introduce `a x M hM hR`. Distinguish the cases in `hx : x ∈ (X.A.chart a).source`. Simplify using `only [hd, hn]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_mul hM]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[dens_eq X φA T t a x hx]`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : F a x = 0` using `hF.2.2 a x hx`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `[hd, h0]`. Break down `le_or_gt (t + 1) 0 with ht1 | ht1` into its components or cases. Establish `hr : 0 ≤ rSq Z.c` using `by unfold rSq; positivity`. Establish `hM : 0 ≤ rSq Z.c ^ (-(t + 1))` using `Real.rpow_nonneg hr _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSfin : (zeroSet X.A Z.s).Finite` using `Z.finite`. Use `choose ε hε K hsub hbd using fun x₀ : zeroSet X.A Z.s => local_bound X Z φA T hDT F hF hfil t ht1 x₀ x₀.2 (chartIdx X.A x₀) rfl`. Use `set W : zeroSet X.A Z.s → Set X.U := fun x₀ => (X.A.chart (chartIdx X.A x₀)).source ∩ X.A.chart (chartIdx X.A x₀) ⁻¹' Metric.ball (X.A.chart (chartIdx X.A x₀) x₀) (ε x₀) with hW`. Establish `hWo : ∀ x₀, IsOpen (W x₀)` using `fun x₀ => (X.A.chart _).continuousOn.isOpen_inter_preimage (X.A.chart _).open_source Metric.isOpen_ball`. Establish `hWc : ∀ x₀ : zeroSet X.A Z.s, W x₀ ⊆ (X.A.chart (chartIdx X.A x₀)).source` using `fun _ _ h => h.1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hWimg : ∀ x₀ : zeroSet X.A Z.s, X.A.chart (chartIdx X.A x₀) '' W x₀ ⊆ Metric.ball (X.A.chart (chartIdx X.A x₀) x₀) (ε x₀)`. Introduce and unpack `x₀ _ ⟨y, hy, rfl⟩`. Conclude with `hy.2`. Use `set V : Set X.U := ⋃ x₀, W x₀ with hV`. Establish `hVo : IsOpen V` using `isOpen_iUnion hWo`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSV : zeroSet X.A Z.s ⊆ V` using `fun x hx => mem_iUnion.mpr ⟨⟨x, hx⟩, mem_source_chartIdx X.A x, by`. Simplify `hε ⟨x, hx⟩⟩` using `[Metric.mem_ball]`. Take `⟨C, hC⟩` from `Z.fl V hVo hSV`. Establish `hoff : ∀ a x, x ∈ (X.A.chart a).source → x ∉ V → (∑ i, ‖Z.s i a x‖ ^ 2) ^ (-(t + 1)) * (∑ k, ‖X.e k a x‖ ^ 2) ^ (t + 1) ≤ |C| ^ (t + 1)`. Introduce `a x hx hxV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hc'` using `mem_source_chartIdx X.A x`. Establish `h1 : ∑ k, ‖X.e k (chartIdx X.A x) x‖ ^ 2 ≤ C * ∑ i, ‖Z.s i (chartIdx X.A x) x‖ ^ 2` using `hC x hxV`. Establish `hnz : x ∉ zeroSet X.A Z.s` using `fun h => hxV (hSV h)`. Establish `hG : 0 < ‖X.L.g a (chartIdx X.A x) x‖ ^ 2`. Use `X.L.ne_zero a (chartIdx X.A x) x ⟨hx, hc'⟩` as an intermediate fact.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hSpos : 0 < ∑ i, ‖Z.s i a x‖ ^ 2`. Simplify using `only [zeroSet, mem_ofPred_eq, not_forall] at hnz`. Take `⟨i, hi⟩` from `hnz`. Establish `hne : Z.s i a x ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[s_transform X Z i a (chartIdx X.A x) x ⟨hx, hc'⟩]`. Conclude with `mul_ne_zero (X.L.ne_zero a _ x ⟨hx, hc'⟩) hi`. Conclude with `lt_of_lt_of_le (by positivity) (Finset.single_le_sum (f := fun i => ‖Z.s i a x‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i))`. Establish `hSE : ∑ k, ‖X.e k a x‖ ^ 2 ≤ |C| * ∑ i, ‖Z.s i a x‖ ^ 2`. Rewrite using `[esum_transform X a (chartIdx X.A x) x ⟨hx, hc'⟩, ssum_transform X Z a (chartIdx X.A x) x ⟨hx, hc'⟩]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : C * ∑ i, ‖Z.s i (chartIdx X.A x) x‖ ^ 2 ≤ |C| * ∑ i, ‖Z.s i (chartIdx X.A x) x‖ ^ 2` using `mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `ratio_le_of_nonneg t _ _ _ ht1.le (esum_pos X a x hx) hSpos hSE`. Establish `htr : ∀ x₀ : zeroSet X.A Z.s, ∀ a, ∀ p ∈ (X.A.chart a).source ∩ W x₀, d a p = ENNReal.ofReal (‖jac X.A a (chartIdx X.A x₀) p‖ ^ 2) * d (chartIdx X.A x₀) p`. Introduce `x₀ a p hp`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hd]`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Conclude with `dens_transform X Z φA T t F hF a (chartIdx X.A x₀) p ⟨hp.1, hp.2.1⟩`. Establish `hexp : ∀ x₀ : zeroSet X.A Z.s, ∫⁻ w in Metric.ball (X.A.chart (chartIdx X.A x₀) x₀) (ε x₀), ENNReal.ofReal (K x₀ * ‖w - X.A.chart (chartIdx X.A x₀) x₀‖ ^ (2 * ((T : ℝ) - D) - 2 * (t + 1))) < ⊤`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x₀`. Establish `ha : -(2 * D : ℝ) < 2 * ((T : ℝ) - D) - 2 * (t + 1)` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun w => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (abs_nonneg _)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right (le_abs_self _) (Real.rpow_nonneg (norm_nonneg _) _))`. Use `_ = ENNReal.ofReal |K x₀| * ∫⁻ w in Metric.ball (X.A.chart (chartIdx X.A x₀) x₀) (ε x₀), ENNReal.ofReal (‖w - X.A.chart (chartIdx X.A x₀) x₀‖ ^ (2 * ((T : ℝ) - D) - 2 * (t + 1))) := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top (lintegral_ball_rpow_lt_top hD _ _ _ ha)`. Establish `: Finite (zeroSet X.A Z.s)` using `hSfin.to_subtype`. Establish `: Fintype (zeroSet X.A Z.s)` using `Fintype.ofFinite _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `chartIntegral`. Use `ENNReal.sum_lt_top.mpr fun j _ => ?_` and prove the remaining obligations. Use `set O := (X.A.chart j).target ∩ (X.A.chart j).symm ⁻¹' V with hOdef`. Establish `hO : IsOpen O` using `(X.A.chart j).continuousOn_symm.isOpen_inter_preimage (X.A.chart j).open_target hVo`. Rewrite using `[← inter_union_sdiff (piece X.A j) O]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(lintegral_union_le _ _ _).trans_lt (ENNReal.add_lt_top.mpr ⟨?_, ?_⟩)` and prove the remaining obligations. Establish `hcov : piece X.A j ∩ O ⊆ ⋃ x₀, piece X.A j ∩ ((X.A.chart j).target ∩ (X.A.chart j).symm ⁻¹' W x₀)`. Introduce and unpack `y ⟨hp, hyt, hyV⟩`. Take `⟨x₀, hx₀⟩` from `mem_iUnion.mp hyV`. Conclude with `mem_iUnion.mpr ⟨x₀, hp, hyt, hx₀⟩`.
-
-Use `(lintegral_mono_set hcov).trans_lt ((lintegral_iUnion_le _ _).trans_lt ?_)` and prove the remaining obligations. Rewrite using `[tsum_fintype]`. Use `ENNReal.sum_lt_top.mpr fun x₀ _ => ?_` and prove the remaining obligations. Use `(setLIntegral_piece_le_chart X.A d (chartIdx X.A x₀) (W x₀) (hWo x₀) (hWc x₀) (htr x₀) j).trans_lt ?_` and prove the remaining obligations. Use `(lintegral_mono_set (hWimg x₀)).trans_lt ?_` and prove the remaining obligations.
-
-Conclude with `(setLIntegral_mono' measurableSet_ball fun w hw => hbd x₀ w hw).trans_lt (hexp x₀)`. Establish `hmeas : MeasurableSet (piece X.A j \ O)` using `(ExtensionProof.measurableSet_piece X.A j).diff hO.measurableSet`. Establish `hM : (0 : ℝ) ≤ |C| ^ (t + 1)` using `Real.rpow_nonneg (abs_nonneg _) _`. Use `(setLIntegral_mono' hmeas (g := fun y => ENNReal.ofReal (|C| ^ (t + 1)) * n j ((X.A.chart j).symm y)) fun y hy => ?_).trans_lt ?_` and prove the remaining obligations. Establish `hyt : y ∈ (X.A.chart j).target` using `hy.1.1`.
-
-Establish `hyV : (X.A.chart j).symm y ∉ V` using `fun h => hy.2 ⟨hyt, h⟩`. Conclude with `hcmp j _ _ hM fun hx => hoff j _ hx hyV`. Use `(lintegral_mono_set sdiff_subset).trans_lt ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (lt_of_le_of_lt ?_ hnT)` and prove the remaining obligations.
-
-Conclude with `Finset.single_le_sum (f := fun k => ∫⁻ y in piece X.A k, n k ((X.A.chart k).symm y)) (fun _ _ => by simp) (Finset.mem_univ j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem DivisionNearS.proof : DivisionNearS.Statement := by
   intro D T X Z φA hD hDT F hFv hfil t ht

@@ -10,7 +10,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.TwU.UnderQp
 
 /- English proof (translation)
-Substitute `hX` using the available equality. Substitute `hS` using the available equality. Consider the cases of `hsel`. Consider the cases of `htup`. Conclude with `⟨P, hP, hq⟩`.
+Substitute using the available equality. Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem mem_QE_of_heq {B : Base} {X : PreX B.toPre} (I : TC B X) {Xf : Fields} (hX : Xf = B.fields) {S : Set ℕ} (hS : S = I.S)
     {sel : HeightOneSpectrum (𝓞 Xf.F) → HeightOneSpectrum (𝓞 Xf.E)} (hsel : HEq sel I.sel)
@@ -24,11 +24,9 @@ theorem mem_QE_of_heq {B : Base} {X : PreX B.toPre} (I : TC B X) {Xf : Fields} (
   exact ⟨P, hP, hq⟩
 
 /- English proof (translation)
-Introduce `B X I _ _ l Z L hT Gi Gl K Y cX ex t hSK a v hv`. Take `⟨P, hP, hPv⟩` from `hv`. Establish `hN1 : Ideal.absNorm P.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `P.isPrime.ne_top`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set q := (Ideal.absNorm P.asIdeal).minFac with hqdef`. Establish `hqp : q.Prime` using `Nat.minFac_prime hN1`. Establish `hqP : (q : 𝓞 B.fields.E) ∈ P.asIdeal` using `GlobalTheory.KerTie.natCast_mem_of_prime_dvd_absNorm P hqp (Nat.minFac_dvd _)`. Use `⟨q, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(t.Q_rec a q).2 ⟨hqp, mem_QE_of_heq I hSK.X_eq hSK.S hSK.sel hSK.tup a P hP q hqP⟩`.
-
-Rewrite using `[← hPv] show (q : 𝓞 B.host.F) ∈ P.asIdeal.comap (algebraMap (𝓞 B.host.F) (𝓞 B.host.E))`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hqP`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem underQ_qp : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (t : KerEntTied ex), I.StdKer l Z t → ∀ (a : I.ι) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), I.UnderQ a v → ∃ q ∈ Y.Qp a, ((q : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal := by
   intro B X I _ _ l Z L hT Gi Gl K Y cX ex t hSK a v hv

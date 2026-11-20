@@ -18,21 +18,21 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 /- English proof (translation)
-Introduce `n V _ _ F hF S hfin hstb B c ν hcm hch hother`. Establish `cfB` using `cfBasic n`. Distinguish the cases in `hS : hw F ν ⊓ S = ⊥`. Establish `hbot : S = ⊥`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨x, hxS, hx0, μ, hμ⟩` from `Formalism.REAL.kHiExist V n (fun _ => true) F S hfin (Formalism.REAL.glRel_kRel _ _ hF.gl) (fun a b _ => hF.unit a b) (fun a b _ => hstb a b) hne`. Establish `hmem : x ∈ hw F μ ⊓ S` using `⟨hμ, hxS⟩`. Distinguish the cases in `hμν : μ = ν`. Substitute `hμν` using the available equality. Rewrite `hmem` using `[hS]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx0 ((Submodule.mem_bot ℂ).1 hmem)`. Rewrite `hmem` using `[hother μ hμν]`. Conclude with `hx0 ((Submodule.mem_bot ℂ).1 hmem)`. Establish `hc0 : ∀ μ, cf c μ = 0`. Introduce `μ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hch μ, hbot, inf_bot_eq, trOn_bot]`. Establish `hz : ∀ x : Wt n, cf (0 : FR n) x = 0`. Introduce `x`. Establish `h` using `(cfB.2.2.2.1 0 0 0 x).2`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hS, trOn_bot, zero_smul]`. Apply `cfB.2.2.1` to reduce the goal to its premises. Introduce `x`. Rewrite using `[hz]`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, _, hy⟩` from `cfB.2.2.2.2.2.1 _ _ x hne`. Conclude with `hy (hc0 _)`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hS`. Establish `hdom` using `hwDom n V F hF S hfin hstb ν x hx.2 hx0 hx.1`. Establish `hanti` using `((rearr n).2.2.2.2.1 ν hdom).1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hcas, hmaj, hweq⟩` from `isoFacts n V F hF S hfin hstb ν hother`. Take `⟨t, ht1, ht2⟩` from `chLap n V F hF S hfin hstb B c _ hcm hch hcas`. Establish `key` using `wcfForm n c ν hanti (chSym n V F hF S hfin hstb B c hcm hch) (fun μ hμ => hmaj μ (fun h => hμ (by rw [hch μ, h, trOn_bot]))) (fun y hy => by`. Establish `h` using `lapForm n c t _ ht1 ht2 y hy`. Establish `h' : ((nsq y : ℝ) : ℂ) = ((nsq (ν + rhoV n) : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h')` after adjusting the coercions. Rewrite using `[key, hch ν, hweq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.wcfIso :
     ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (F : Fin n → Fin n → Module.End ℂ V), UF F → ∀ S : Submodule ℂ V, FiniteDimensional ℂ S → Stb F S → ∀ B c (ν : Wt n), Cm F S B → IsCh F S B c → (∀ μ, μ ≠ ν → hw F μ ⊓ S = ⊥) →

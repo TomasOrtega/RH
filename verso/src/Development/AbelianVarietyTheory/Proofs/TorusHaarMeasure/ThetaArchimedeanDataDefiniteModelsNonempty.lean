@@ -41,11 +41,11 @@ open ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Take `⟨C, hCc, hCd, hcov⟩` from `GlobalTheory.DefiniteFrames.exists_compact_of_definite E r X (Or.inl hp)`. Break down `C.eq_empty_or_nonempty with hCe | hCne` into its components or cases. Use `⟨1, one_pos, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨γ, -, b, -, hmem⟩` from `hcov x hx`. Rewrite `hmem` using `[hCe]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hmem.elim`. Take `⟨y, hyC, hmin⟩` from `hCc.exists_isMinOn hCne ((ReciprocityTheory.ChartRestriction.G.AR.Inst.firstMinimum_continuousOn X).mono hCd)`. Use `⟨X.la1 y, ReciprocityTheory.ChartRestriction.G.AR.Inst.la1_pos_of_mem_dom X hr (hCd hyC), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, b, hb, hmem⟩` from `hcov x hx`. Establish `hle : X.la1 y ≤ X.la1 (lact γ (rmul x b))` using `isMinOn_iff.mp hmin _ hmem`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hle` using `[ReciprocityTheory.ChartRestriction.G.AR.Inst.firstMinimum_biinvariant X hγ hx hb]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_pos_le_firstMinimum_definiteForm (X : Data E r) (hr : 0 < r) (hp : X.p0 = 0) :
     ∃ ε : ℝ, 0 < ε ∧ ∀ x ∈ X.dom, ε ≤ X.la1 x := by
@@ -63,9 +63,9 @@ theorem exists_pos_le_firstMinimum_definiteForm (X : Data E r) (hr : 0 < r) (hp 
     rwa [ReciprocityTheory.ChartRestriction.G.AR.Inst.firstMinimum_biinvariant X hγ hx hb] at hle
 
 /- English proof (translation)
-Establish `hd : ∀ (τ : X.Ψ) (i : Fin (r + 1)), dmin X.Gm x τ i ≠ 0`. Introduce `τ i h0`. Use `(hx τ).2 i` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `Data.pnorm`. Use `mul_pos (norm_pos_iff.mpr h) (Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => ?_)` and prove the remaining obligations. Conclude with `Real.rpow_pos_of_pos (norm_pos_iff.mpr (div_ne_zero (hd τ _) (hd τ _))) _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem pnorm_pos_of_ne_zero' (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) {x : Frame X.Ψ r}
     (hx : x ∈ X.dom) (h : P x ≠ 0) : 0 < X.pnorm la P x := by
@@ -79,15 +79,15 @@ private theorem pnorm_pos_of_ne_zero' (X : Data E r) (la : Wt X.Ψ r) (P : Frame
   exact Real.rpow_pos_of_pos (norm_pos_iff.mpr (div_ne_zero (hd τ _) (hd τ _))) _
 
 /- English proof (translation)
-Take `⟨C, hCc, hCd, hcov⟩` from `GlobalTheory.DefiniteFrames.exists_compact_of_definite E r X (Or.inl hp)`. Establish `hinv : ∀ x ∈ X.dom, ∀ γ ∈ X.Γ, ∀ b ∈ Bor X.Ψ r, ∑ i, X.pnorm la (P i) (lact γ (rmul x b)) ^ 2 = ∑ i, X.pnorm la (P i) x ^ 2`. Introduce `x hx γ hγ b hb`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.ChartRestriction.G.AR.Inst.pointwiseNorm_invariance_holds r X la (P i) (hP i) γ hγ x hx b hb]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : ∀ x ∈ X.dom, 0 < ∑ i, X.pnorm la (P i) x ^ 2`. Introduce `x hx`. Take `⟨i, hi⟩` from `hz x hx`. Establish `h0 : 0 < X.pnorm la (P i) x` using `pnorm_pos_of_ne_zero' X la (P i) hx hi`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Break down `C.eq_empty_or_nonempty with hCe | hCne` into its components or cases. Use `⟨1, one_pos, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨γ, -, b, -, hmem⟩` from `hcov x hx`. Rewrite `hmem` using `[hCe]`. Conclude with `hmem.elim`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcont : ContinuousOn (fun x => ∑ i, X.pnorm la (P i) x ^ 2) C` using `(continuousOn_finsetSum _ fun i _ => (ReciprocityTheory.ChartRestriction.G.AR.Up.BigB.pnorm_contOn X la (hP i)).pow 2).mono hCd`. Take `⟨y, hyC, hmin⟩` from `hCc.exists_isMinOn hCne hcont`. Use `⟨_, hpos y (hCd hyC), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, b, hb, hmem⟩` from `hcov x hx`. Establish `hle` using `isMinOn_iff.mp hmin _ hmem`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hle` using `[hinv x hx γ hγ b hb]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_le_sum_sq (X : Data E r) (hp : X.p0 = 0) (la : Wt X.Ψ r) {N : ℕ}
     (P : Fin N → Frame X.Ψ r → ℂ) (hP : ∀ i, X.IsSec la (P i)) (hz : ∀ x ∈ X.dom, ∃ i, P i x ≠ 0) :
@@ -121,9 +121,9 @@ theorem exists_le_sum_sq (X : Data E r) (hp : X.p0 = 0) (la : Wt X.Ψ r) {N : �
     rwa [hinv x hx γ hγ b hb] at hle
 
 /- English proof (translation)
-Introduce and unpack `⟨a, ha⟩ ⟨b, hb⟩ hab`. Simplify using `only [Fin.mk_le_mk] at hab`. Use `revert hb`. Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base => intro _`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `le_rfl`. Consider the case `succ n hn ih`. Introduce `hb`. Conclude with `(hf ⟨n, by omega⟩ ⟨n + 1, hb⟩ rfl).trans (ih (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem antitone_of_succ_le_torus_haar_measure {r : ℕ} (f : Fin r → ℤ) (hf : ∀ a b : Fin r, (b : ℕ) = a + 1 → f b ≤ f a) :
     ∀ a b : Fin r, a ≤ b → f b ≤ f a := by
@@ -137,9 +137,9 @@ private theorem antitone_of_succ_le_torus_haar_measure {r : ℕ} (f : Fin r → 
     exact (hf ⟨n, by omega⟩ ⟨n + 1, hb⟩ rfl).trans (ih (by omega))
 
 /- English proof (translation)
-Take `⟨x1, D, -, hD, -, hdiag, -⟩` from `GlobalTheory.FrameThetaCompare.transfer X x0 z hz`. Use `⟨D, hD, fun la ξ => ?_⟩` and prove the remaining obligations. Establish `h` using `hdiag la ξ`. Express the relevant statement in the definitionally equal form `GlobalTheory.IndefiniteRowSideFullHecke.CurvatureFamilyNorm.curv X x0 la z ξ = _`. Rewrite using `[h, GlobalTheory.FrameThetaCompare.diagForm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Simplify using `[sgn, hp]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem exists_injective_leviM_eq_sum_weight_sq (X : Data E r) (hp : X.p0 = 0) (x0 : Frame X.Ψ r) (z : ReciprocityTheory.L2DbarEstimates.V (nd X))
     (hz : cpt X x0 z ∈ X.dom) :
@@ -155,15 +155,13 @@ private theorem exists_injective_leviM_eq_sum_weight_sq (X : Data E r) (hp : X.p
   simp [sgn, hp]
 
 /- English proof (translation)
-Take `⟨D, hD, hl⟩` from `exists_injective_leviM_eq_sum_weight_sq X hp x0 z hz`. Rewrite using `[hl]`. Establish `hDξ : D ξ ≠ 0` using `fun h => hξ (hD (h.trans (map_zero D).symm))`. Take `⟨m, hm⟩` from `Function.ne_iff.mp hDξ`. Establish `hm' : D ξ m ≠ 0` using `by simpa using hm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set m2 : Fin (Fintype.card (Ent X)) := m with hm2`. Establish `hterm : ∀ e : Ent X, 0 ≤ ((la e.1 e.2.1.2 : ℝ) - (la e.1 e.2.1.1 : ℝ)) * ‖D ξ (Fintype.equivFin (Ent X) e)‖ ^ 2`. Introduce `e`. Establish `hlt` using `(hla e.1).2.1 e.2.1.2 e.2.1.1 (by omega) e.2.2`. Establish `: (la e.1 e.2.1.1 : ℝ) < la e.1 e.2.1.2` using `by exact_mod_cast hlt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Use `set e0 := (Fintype.equivFin (Ent X)).symm m2 with he0`. Use `Finset.sum_pos' (fun e _ => hterm e) ⟨e0, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `hlt` using `(hla e0.1).2.1 e0.2.1.2 e0.2.1.1 (by omega) e0.2.2`. Establish `h1 : (0 : ℝ) < (la e0.1 e0.2.1.2 : ℝ) - (la e0.1 e0.2.1.1 : ℝ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: (la e0.1 e0.2.1.1 : ℝ) < la e0.1 e0.2.1.2` using `by exact_mod_cast hlt`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (0 : ℝ) < ‖D ξ (Fintype.equivFin (Ent X) e0)‖ ^ 2`. Rewrite using `[he0, Equiv.apply_symm_apply]`. Conclude with `pow_pos (norm_pos_iff.mpr hm') 2`.
-
-Conclude with `mul_pos h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem leviM_pos_of_isStrictDom (X : Data E r) (hp : X.p0 = 0) (la : Wt X.Ψ r) (hla : IsStrictDom X la)
     (x0 : Frame X.Ψ r) (hx0 : x0 ∈ X.dom) (z : ReciprocityTheory.L2DbarEstimates.V (nd X)) (hz : cpt X x0 z ∈ X.dom) (ξ : Fin (nd X) → ℂ)
@@ -192,51 +190,33 @@ private theorem leviM_pos_of_isStrictDom (X : Data E r) (hp : X.p0 = 0) (la : Wt
   exact mul_pos h1 h2
 
 /- English proof (translation)
-Establish `hniso : ∀ ξ, ¬ X.IsIso ξ` using `GlobalTheory.PoincareSeriesCompare.not_isIso_of_definite X (Or.inl hp)`. Establish `hsec : ∀ k, X.IsSec L (w k)` using `fun k => (hw k).1.1.1`. Establish `hA2 : ∀ τ (a b : Fin r), a ≤ b → (F - kapW X - nd X • L) τ b - 2 * L τ b ≤ (F - kapW X - nd X • L) τ a - 2 * L τ a` using `fun τ => antitone_of_succ_le_torus_haar_measure (fun i => (F - kapW X - nd X • L) τ i - 2 * L τ i) fun a b hab => by`. Use `hgap τ a b hab` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hLa : ∀ τ (a b : Fin r), a ≤ b → L τ b ≤ L τ a`. Introduce `τ a b hab`. Break down `hab.lt_or_eq with h | h` into its components or cases. Conclude with `((hL τ).2.1 a b (by omega) h).le`. Rewrite using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA : ∀ τ (a b : Fin r), a ≤ b → (F - kapW X - nd X • L) τ b ≤ (F - kapW X - nd X • L) τ a`. Introduce `τ a b hab`. Establish `h1` using `hA2 τ a b hab`. Establish `h2` using `hLa τ a b hab`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨x1, hx1, hth2⟩` from `h20`. Take `⟨k0, hk0⟩` from `hw0 x1 hx1`. Take `⟨ε, hε, hle⟩` from `exists_pos_le_firstMinimum_definiteForm X hr hp`. Take `⟨cw, hcw, hcwle⟩` from `exists_le_sum_sq X hp L w hsec hw0`. Establish `hTpos : (0 : ℝ) < T`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 44 ≤ T` using `by nlinarith`. Conclude with `(show 0 < T by omega)` after adjusting the coercions. Establish `hsq : (fun x => w k0 x ^ 2) ∈ X.SSgt (2 • L - 0) 0`. Establish `hs : X.IsSec (2 • L - 0) (fun x => w k0 x ^ 2)`. Use `ReciprocityTheory.ChartRestriction.G.FD.PeriodLatticeMembership.sec_mul X (hsec k0) (hsec k0)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (2 • L - 0 : Wt X.Ψ r) = L + L` using `by rw [sub_zero, two_nsmul]`. Establish `e2 : (fun x => w k0 x ^ 2) = w k0 * w k0` using `by funext x; simp [sq]`. Rewrite using `[e1, e2]`. Conclude with `this`. Take `⟨C0, hC0⟩` from `(hw k0).1.1.2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpn : ∀ x ∈ X.dom, X.pnorm (2 • L - 0) (fun x => w k0 x ^ 2) x = X.pnorm L (w k0) x ^ 2`. Introduce `x hx`. Establish `h1` using `ReciprocityTheory.ChartRestriction.G.AR.Up.UpDivD.pnorm_sq X hx (2 • L - 0) (fun x => w k0 x ^ 2)`. Establish `h2` using `ReciprocityTheory.ChartRestriction.G.AR.Up.UpDivD.pnorm_sq X hx L (w k0)`. Establish `h3 : phla X (2 • L - 0) x = 2 * phla X L x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[sub_zero, ReciprocityTheory.ChartRestriction.G.AR.Up.UpDivD.phla_nsmul X hx 2 L]`. Evaluate the numerical expressions. Rewrite using `[← pow_left_inj₀ (GlobalTheory.FrameThetaCompare.pnorm_nonneg X _ _ x) (pow_nonneg (GlobalTheory.FrameThetaCompare.pnorm_nonneg X _ _ x) 2) two_ne_zero, h1, ← pow_mul, show 2 * 2 = 2 * 2 from rfl, pow_mul, h2, h3, norm_pow]`. Rewrite using `[show -(2 * phla X L x) = -phla X L x + -phla X L x by ring, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hbdd : X.IsBddSec (2 • L - 0) (fun x => w k0 x ^ 2)`. Use `⟨hs, C0 ^ 2, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hpn x hx]`. Conclude with `pow_le_pow_left₀ (GlobalTheory.FrameThetaCompare.pnorm_nonneg X _ _ x) (hC0 x hx) 2`. Conclude with `⟨⟨hbdd, fun ξ hξ => absurd hξ (hniso ξ)⟩, fun ξ hξ => absurd hξ (hniso ξ)⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hSD2 : IsStrictDom X (2 • L - 0)`. Introduce `τ`. Use `⟨fun i j hij hj => ?_, fun i j hi hij => ?_, fun i j hi hj => ?_⟩` and prove the remaining obligations. Conclude with `absurd hj (by omega)`. Use `(hL τ).2.1 i j hi hij` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ k, (2 • L - 0 : Wt X.Ψ r) τ k = 2 * L τ k` using `fun k => by simp [two_mul]`. Rewrite using `[e, e]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd hi (by omega)`. Set `Xa : ArchInM X` to `{ L := L, de := 0, Fp := F, T := T, i := 1, g0 := 2, N := N, c := 1 / (2 * T), c1 := 1, a1 := 1, rr := 0 n_ge := hn T_ge := hT i_pos := le_rfl genus_pos := by norm_num c_pos := by positivity frame_theta_const_pos := one_pos frame_theta_weight_pos := one_pos rr_nonneg := le_rfl Tc …`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[le_iff_eq_or_lt]`. Use `left`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try norm_num`. Use `rr_le := by simp`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `w := w`. Use `w_van := hw`. Use `w_nz := hw0`. Use `ph := fun _ => 0`. Use `ph_inv := fun _ _ _ _ _ _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `ph_nonneg := fun _ _ => le_rfl`. Use `p1 := ⟨1, ε, one_pos, hε, fun x hx hlt => absurd (hle x hx) (not_le.mpr hlt)⟩`. Use `p2 := fun x _ => by simp; positivity`. Use `p3 := ⟨1 / cw, fun x hx => by`. Establish `h1 : (1 : ℝ) ≤ 1 / cw * ∑ k, X.pnorm L (w k) x ^ 2`.
-
-Rewrite using `[one_div, inv_mul_eq_div, le_div_iff₀ hcw, one_mul]`. Conclude with `hcwle x hx`. Simplify using `using h1⟩`. Use `et := fun _ => 1`. Use `genus_even := even_two`.
-
-Use `et_sec := by simpa using GlobalTheory.BigTrdeg.isSec_one X`. Use `et_ne := ⟨x1, hx1, one_ne_zero⟩`. Use `p4 := ⟨1, fun x _ => by simp [Data.pnorm]⟩`. Use `th1 := fun x => w k0 x ^ 2`. Use `firstTheta_vanishes := hsq`.
-
-Use `firstTheta_ne_zero := ⟨x1, hx1, pow_ne_zero 2 hk0⟩`. Use `th2 := th2`. Use `secondTheta_vanishes := h2`. Use `secondTheta_ne_zero := ⟨x1, hx1, hth2⟩`. Use `thp := thp`.
-
-Use `thp_van := h3`. Use `thp_ne := h30`. Use `ps0 := fun _ => 0`. Use `potential_invariant := fun _ _ _ _ _ _ => rfl`. Use `potential_smooth := fun _ _ => contDiffOn_const`.
-
-Use `base_psi_levi_lower_bound := fun x0 _ z _ ξ => by`. Establish `h0` using `ReciprocityTheory.ChartRestriction.G.AR.Up.RgC.leviV_const (n := nd X) (0 : ℝ) z ξ`. Rewrite `h0` using `[Complex.ofReal_zero]`. Simplify using `[leviM, h0]`. Use `base_psi_weighted_cf := ⟨⟨0, 0, fun x _ => by simp⟩, fun η _ _ => ⟨0, 0, fun x _ ξ hξ _ => absurd hξ (hniso ξ)⟩⟩`.
-
-Use `posL := fun x0 hx0 z hz ξ hξ => leviM_pos_of_isStrictDom X hp L hL x0 hx0 z hz ξ hξ`. Use `posLde := fun x0 hx0 z hz ξ hξ => leviM_pos_of_isStrictDom X hp _ hSD2 x0 hx0 z hz ξ hξ`. Use `posF := ⟨1, one_pos, fun t _ _ x0 _ z hz ξ => by`. Take `⟨D, -, hl⟩` from `exists_injective_leviM_eq_sum_weight_sq X hp x0 z hz`. Simplify using `only [mul_zero, zero_div, zero_mul, sub_zero, mul_one]`.
-
-Rewrite using `[hl, hl, Finset.mul_sum]`. Use `Finset.sum_le_sum fun e _ => ?_` and prove the remaining obligations. Establish `h` using `hA2 e.1 e.2.1.2 e.2.1.1 e.2.2.le`. Establish `h' : (2 : ℝ) * ((L e.1 e.2.1.2 : ℝ) - (L e.1 e.2.1.1 : ℝ)) ≤ ((F - kapW X - nd X • L) e.1 e.2.1.2 : ℝ) - ((F - kapW X - nd X • L) e.1 e.2.1.1 : ℝ)`. Establish `: ((2 * (L e.1 e.2.1.2 - L e.1 e.2.1.1) : ℤ) : ℝ) ≤ (((F - kapW X - nd X • L) e.1 e.2.1.2 - (F - kapW X - nd X • L) e.1 e.2.1.1 : ℤ) : ℝ)`.
-
-Conclude with `(by linarith)` after adjusting the coercions. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right h' (by positivity)⟩ }`.
-
-Use `⟨Xa, rfl, k0, rfl, rfl, rfl, rfl, fun a => rfl, by norm_num [Xa], fun x => one_mul _, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.curvature_margins_definite_case E r X Xa hp hΨ (fun _ => rfl) hL hA`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_archInM (X : Data E r) (hr : 0 < r) (hp : X.p0 = 0) (hΨ : Nonempty X.Ψ) (L F : Wt X.Ψ r) (T N : ℕ)
     (hn : 2 ≤ nd X) (hT : 11 * nd X ^ 2 ≤ T) (hL : IsStrictDom X L)
@@ -383,25 +363,23 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D T h EX p hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 S nus hPar hPg hC N w hNZ`. Establish `hG : GenFrEx (T.Q.Xo D.R.m) T.Q.c` using `(GlobalTheory.Reg.genFrEx_and_genFromTest _ _ _ _ (T.Q.Xo D.R.m) T.Q.c).1`. Take `⟨⟨g0, hg0, -⟩, hnz⟩` from `GlobalTheory.T.exists_cuspForm_nonzero_everyComponent D T h D.R.m hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hG hPg`. Take `⟨-, -, -, -, -, w2, hG2, th, -, hth, -⟩` from `((Formalism.MainNotions.Gaps.FamilyHypotheses.hypC_iff large₂ _ H C2 A2 7 CT S ka wL wF Tn nP nW h0 nus).mp hC).2.2.2.2`. Establish `hσ : GoodEmb T.Q.c T.σ₀` using `Formalism.L2.Pj.Core.good_σ₀ T.toCore`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hT11 : 11 * WeightFamilies.dimY D D.R.m ^ 2 ≤ Tn`. Take `⟨-, hSet, -⟩` from `hPg.hyp`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, h11, -, -⟩` from `hSet`. Conclude with `h11`. Establish `hdim2 : 2 ≤ WeightFamilies.dimY D D.R.m`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.ArchInputs.two_mul_dimY (D := D) D.R.m hj`. Establish `h2 : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast GlobalTheory.ArchInputs.f_pos D`. Establish `h3 : (8 : ℝ) ≤ D.R.r` using `by exact_mod_cast hPg.r8`. Establish `h4 : (56 : ℝ) ≤ (D.R.r : ℝ) * ((D.R.r : ℝ) - 1)` using `by nlinarith`. Establish `h5` using `mul_le_mul h2 h4 (by norm_num) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (2 : ℝ) ≤ WeightFamilies.dimY D D.R.m` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `hr : 0 < D.R.r` using `by have := hPg.r8; omega`. Establish `key : ∀ k : (T.U D.R.m T.σ₀).Comp, ∃ (Xa : ArchInM ((T.U D.R.m T.σ₀).X k)) (hN : Xa.N = N) (k0 : Fin N), Xa.L = laR T D.R.m wL k ∧ Xa.Fp = laR T D.R.m wF k ∧ Xa.T = Tn ∧ Xa.c1 = 1 ∧ (∀ a, Xa.w a = rdR h D.R.m (w (Fin.cast hN a)) k) ∧ Xa.i * (Xa.g0 / 2) = 1 ∧ (∀ x, Xa.et x * Xa.th …`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hadd, hsm, -, -, hnd, -⟩` from `GlobalTheory.Shares.WtDic.weights_dictionary D T h D.R.m hj k`. Take `⟨hp0, hSD, hgap⟩` from `GlobalTheory.T.runWeight_dominant_and_gaps_definiteCase D T h D.R.m hj large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 hPg.hyp rfl hPg.r8 k`. Establish `hw2 : laR T D.R.m w2 k = (nd ((T.U D.R.m T.σ₀).X k) + 4) • laR T D.R.m wL k - laR T D.R.m wF k`. Establish `heq : wadd w2 wF = wsmul (WeightFamilies.dimY D D.R.m + 4) wL` using `GlobalTheory.ArchInputs.wt_ext (j := D.R.m) (funext fun τ => funext fun i => hG2.2.1 τ i) (funext fun τ => funext fun i => hG2.2.2 τ i) hG2.1`. Establish `e` using `hadd w2 wF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[heq, hsm]`. Rewrite using `[hnd]`. Conclude with `eq_sub_of_add_eq e.symm`. Establish `hgap' : ∀ (τ : ((T.U D.R.m T.σ₀).X k).Ψ) (a b : Fin D.R.r), (b : ℕ) = a + 1 → (laR T D.R.m wF k - kapW ((T.U D.R.m T.σ₀).X k) - nd ((T.U D.R.m T.σ₀).X k) • laR T D.R.m wL k : ReciprocityTheory.ChartRestriction.G.FD.Wt ((T.U D.R.m T.σ₀).X k).Ψ D.R.r) τ b + 2 * (laR T D.R.m wL k τ …`. Rewrite using `[hnd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hgap`. Take `⟨x2, hx2, h2ne⟩` from `(hnz w2 th hth).2 T.σ₀ hσ k`. Take `⟨x3, hx3, h3ne⟩` from `(hnz wF g0 hg0).2 T.σ₀ hσ k`. Conclude with `exists_archInM _ hr hp0 (GlobalTheory.PoincareSeriesCompare.nonempty_type _) _ _ Tn N (by rw [hnd]; exact hdim2) (by rw [hnd]; exact hT11) hSD hgap' (fun i => rdR h D.R.m (w i) k) (fun i => GlobalTheory.Shares.spanMem_rdR h D.R.m hj wL (w i) k) (GlobalTheory.BigTrdeg.exists_rdU_n …`. Use `choose Xa hN k0 hL hF hTn hc hw hi het hmar using key`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨Xa, fun k => (GlobalTheory.Shares.WtDic.weights_dictionary D T h D.R.m hj k).2.2.2.2.1, hN, hL, hF, hTn, hc, hw, fun k => ?_, hmar⟩⟩` and prove the remaining obligations. Establish `hnd` using `(GlobalTheory.Shares.WtDic.weights_dictionary D T h D.R.m hj k).2.2.2.2.1`. Use `⟨fun jj => ?_, fun jj => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ArchInputs.homRel_of_cusp h D.R.m hj wL (by rw [hnd]) (fun a => (w (Fin.cast (hN k) (jj a))).1) (fun a => (Formalism.L2.Pj.esec_mem_C h hj).mp (w (Fin.cast (hN k) (jj a))).2) k _ (fun a x => by rw [hw k]; rfl)`. Rewrite using `[hi k]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.ArchInputs.homRel_of_cusp h D.R.m hj (wsmul 2 wL) (by rw [hnd]) (Fin.cons ((w (k0 k)).1 ^ 2) fun a => (w (Fin.cast (hN k) (jj a))).1 ^ 2) (fun a => Fin.cases (GlobalTheory.ArchInputs.pow_mem_cusp h D.R.m hj wL ((Formalism.L2.Pj.esec_mem_C h hj).mp (w (k0 k)).2) (by n …` and prove the remaining obligations. Introduce `a x`. Use `Fin.cases ?_ (fun b => ?_) a` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Rewrite using `[pow_one, het k, map_pow]`.
-
-Both sides reduce to the same expression. Simplify using `only [Fin.cons_succ]`. Rewrite using `[hw k, map_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem archAt_nonempty_of_definite : ∀ (D : D7) (T : Top D) (h : LawsP T) (EX : ErrX D) (p : ℕ) (hj : InR D D.R.m) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D D.R.m) (Tn nP nW : ℕ) (h0 : ℝ) (S : Scal (recB h.toLawsCore)) (nus : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO) → ℝ), ParOK T EX p D.R.m → PageOK large₂ (recPJ h D.R.m hj) H C2 A2 CT ka wL wF Tn nP nW h0 → HypC large₂ (recPJ h D.R.m hj) H C2 A2 7 0 CT S ka wL wF Tn nP nW h0 nus → ∀ (N : ℕ) (w : Fin N → (recB h.toLawsCore).Cusp D.R.m wL), NoCommonZero (T.Q.Xo D.R.m) T.Q.c (fun i => (w i).1) → Nonempty (GlobalTheory.Shares.ArchAt h D.R.m w wF Tn 1) := by
   intro D T h EX p hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 S nus hPar hPg hC N w hNZ

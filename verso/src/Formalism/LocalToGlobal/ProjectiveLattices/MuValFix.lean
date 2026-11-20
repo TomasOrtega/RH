@@ -10,9 +10,9 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `h.1 1`. Establish `hxy : IsDetRoot V 1 (x * y)`. Unfold `IsDetRoot at hx ⊢`. Rewrite using `[Units.val_mul, map_mul, hy, ← mul_assoc, ← hx]`. Establish `e2` using `h.2 1 (x * y) hxy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e2` using `[h.2 1 x hx, map_mul]`. Establish `e3 : χ x * 1 = χ x * χ y`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `e2` using `[Circle.coe_mul]`. Conclude with `(mul_left_cancel e3).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem MuVal.eq_one_of_fixed {D : D7} {V : HSp D} {χ : (AE D)ˣ →* Circle} {mu : GA D V → ℂ}
     (h : MuVal V χ mu) (y : (AE D)ˣ)

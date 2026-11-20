@@ -13,9 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdIsom.Unglue
 
 /- English proof (translation)
-Establish `h0 : (I : FractionalIdeal (𝓞 E)⁰ E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 hI`. Establish `h1 : (I : FractionalIdeal (𝓞 E)⁰ E)⁻¹ ≤ 1`. Introduce `a ha`. Establish `ha'` using `(FractionalIdeal.mem_inv_iff h0).1 ha`. Use `(FractionalIdeal.mem_one_iff _).2 (h a fun i hi => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(FractionalIdeal.mem_one_iff _).1 (ha' _ (FractionalIdeal.mem_coeIdeal_of_mem _ hi))`. Establish `h2 : (1 : FractionalIdeal (𝓞 E)⁰ E) ≤ I`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h2` using `[← FractionalIdeal.coeIdeal_top, FractionalIdeal.coeIdeal_le_coeIdeal]`. Conclude with `top_le_iff.1 h2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_eq_top {E : Type} [Field E] [NumberField E] (I : Ideal (𝓞 E)) (hI : I ≠ ⊥)
     (h : ∀ a : E, (∀ i ∈ I, a * (i : E) ∈ (algebraMap (𝓞 E) E).range) → a ∈ (algebraMap (𝓞 E) E).range) :
@@ -34,7 +34,7 @@ theorem ideal_eq_top {E : Type} [Field E] [NumberField E] (I : Ideal (𝓞 E)) (
   exact top_le_iff.1 h2
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `h`. Conclude with `⟨RingOfIntegers.mapRingEquiv starRingAut b, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem star_mem {E : Type} [Field E] [NumberField E] [StarRing E] {a : E}
     (h : a ∈ (algebraMap (𝓞 E) E).range) : star a ∈ (algebraMap (𝓞 E) E).range := by
@@ -42,9 +42,9 @@ theorem star_mem {E : Type} [Field E] [NumberField E] [StarRing E] {a : E}
   exact ⟨RingOfIntegers.mapRingEquiv starRingAut b, rfl⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.TargetStatementSixOneSixtyEight.target`. Consider the case `exact _root_.GlobalTheory.TargetStatementSixOneSixtyEight.target`. Consider the case `(apply _root_.GlobalTheory.TargetStatementSixOneSixtyEight.target <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.TargetStatementSixOneSixtyEight.target <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.TargetStatementSixOneSixtyEight.target <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.TargetStatementSixOneSixtyEight.target ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V] [Module E V]
     [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V] (L : Submodule (𝓞 E) V) {y : V}
@@ -58,39 +58,37 @@ theorem exists_smul_mem {E : Type} [Field E] [NumberField E] {V : Type} [AddComm
   | (intros; exact _root_.GlobalTheory.TargetStatementSixOneSixtyEight.target ..)
 
 /- English proof (translation)
-Take `⟨hi, ho, hz⟩` from `hl`. Take `⟨hfg, hsp, hsd⟩` from `hL`. Establish `hT` using `Tu_ne_zero u`. Establish `hinj : Function.Injective ι`. Rewrite using `[injective_iff_map_eq_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Use `X.nondeg.1 x fun y => ?_` and prove the remaining obligations. Rewrite using `[← hi, hx, map_zero, LinearMap.zero_apply]`. Establish `hzU : ∀ a : D.host.E, a • z ∈ flatSp Y X ι z` using `fun a => Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self z))`. Establish `hzL : z ∈ L` using `by simpa using (hp 1).2 (one_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLU : ∀ y ∈ L, y ∈ flatSp Y X ι z` using `fun y hy => hsp ▸ Submodule.subset_span hy`. Establish `hint : ∀ y ∈ L, Y.hD y z ∈ (algebraMap (𝓞 D.host.E) D.host.E).range` using `fun y hy => (hsd z (hLU z hzL)).1 hzL y hy`. Establish `hdec : ∀ y ∈ L, ∃ x : X.V, y = ι x + (-(Y.hD y z) * (Tu D u)⁻¹) • z`. Introduce `y hy`. Take `⟨_, ⟨x, rfl⟩, b, hb, rfl⟩` from `Submodule.mem_sup.1 (hLU y hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s, rfl⟩` from `Submodule.mem_span_singleton.1 hb`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `: Y.hD (ι x + s • z) z = -(s * Tu D u)`. Establish `h1` using `ho x`. Simplify using `only [HSpace.hD] at h1 hz ⊢`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_add, map_smul, h1, hz, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨GlobalTheory.StdFrames.isLattice_crdLat X ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `Submodule.fg_of_fg_map_injective (ι.restrictScalars (𝓞 D.host.E)) hinj (hfg.of_le ?_)` and prove the remaining obligations. Conclude with `Submodule.map_comap_le _ _`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hx⟩` from `exists_smul_mem L (y := ι x) (hsp ▸ Submodule.mem_sup_left ⟨x, rfl⟩)`. Establish `hc1 : algebraMap (𝓞 D.host.E) D.host.E c ≠ 0` using `by simpa using hc`. Establish `: x = (algebraMap (𝓞 D.host.E) D.host.E c)⁻¹ • (c • x)`. Rewrite using `[← algebraMap_smul D.host.E c, smul_smul, inv_mul_cancel₀ hc1, one_smul]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(ι.restrictScalars (𝓞 D.host.E)) (c • x) ∈ L`. Rewrite using `[map_smul]`. Conclude with `hx`. Set `I : Ideal (𝓞 D.host.E)` to `(L.map ((Y.hT z).restrictScalars (𝓞 D.host.E))).comap (Algebra.linearMap (𝓞 D.host.E) D.host.E)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : ∀ i : 𝓞 D.host.E, i ∈ I ↔ ∃ y ∈ L, Y.hD y z = (i : D.host.E)` using `fun i => Iff.rfl`. Establish `hI0 : I ≠ ⊥`. Take `⟨i, hi'⟩` from `hint z hzL`. Introduce `h`. Establish `: i ∈ I` using `(hI i).2 ⟨z, hzL, hi'.symm⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h, Ideal.mem_bot]`. Rewrite `hi'` using `[this, map_zero, hz]`. Conclude with `hT (neg_eq_zero.1 hi'.symm)`. Establish `hItop : I = ⊤`. Use `ideal_eq_top I hI0 fun a ha => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: star a • z ∈ L`. Use `(hsd _ (hzU _)).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨i, hi'⟩` from `hint x hx`. Use `ha i ((hI i).2 ⟨x, hx, hi'.symm⟩)` as an intermediate fact. Establish `e : Y.hD x (star a • z) = a * Y.hD x z`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [HSpace.hD]`. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul]`. Use `congr 1`. Conclude with `star_star a`. Rewrite using `[e, ← hi']`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this`. Simplify using `using star_mem ((hp _).1 this)`. Take `⟨l, hlL, hl1⟩` from `(hI (-1)).1 (hItop ▸ Submodule.mem_top)`. Take `⟨x₀, hx₀⟩` from `hdec l hlL`. Establish `hl2 : l = (Tu D u)⁻¹ • z + ι x₀`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx₀, hl1, add_comm]`. Simplify using the standard rewrite rules. Establish `hc : (capX Y X ι L).comap ((Formalism.L2.Herm.crd X).toLinearMap.restrictScalars (𝓞 D.host.E)) = L.comap (ι.restrictScalars (𝓞 D.host.E))` using `Submodule.comap_map_eq_of_injective (f := (Formalism.L2.Herm.crd X).toLinearMap.restrictScalars (𝓞 D.host.E)) (Formalism.L2.Herm.crd X).injective _`. Use `⟨x₀, ?_⟩` and prove the remaining obligations. Rewrite using `[glueLat, hc, ← hl2]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_antisymm (fun y hy => ?_) (sup_le (Submodule.map_comap_le _ _) ((Submodule.span_singleton_le_iff_mem _ _).2 hlL))` and prove the remaining obligations. Take `⟨x, hx⟩` from `hdec y hy`. Take `⟨b, hb⟩` from `hint y hy`. Establish `e : y + b • l = ι (x + b • x₀)`. Rewrite using `[← algebraMap_smul D.host.E b, ← algebraMap_smul D.host.E b x₀, hb, map_add, map_smul, hl2]`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `Y.hD y z = t at hx ⊢`. Rewrite using `[hx]`. Use `module`. Establish `hm : y + b • l ∈ L` using `L.add_mem hy (L.smul_mem _ hlL)`. Establish `e2 : y = ι (x + b • x₀) - b • l` using `by rw [← e, add_sub_cancel_right]`.
-
-Rewrite using `[e2]`. Use `Submodule.sub_mem _ (Submodule.mem_sup_left ⟨x + b • x₀, ?_, rfl⟩) (Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self l)))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι (x + b • x₀) ∈ L`. Rewrite using `[← e]`. Conclude with `hm`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_capX_and_exists_glue (D : D7) (u : D.what₂.Word) (Y X : HSp D) (ι : X.V →ₗ[D.host.E] Y.V) (z : Y.V)
     (hl : IsLine Y X ι z u) (L : Submodule (𝓞 D.host.E) Y.V) (hL : IsSDIn Y (flatSp Y X ι z) L) (hp : IsPrim Y z L) :

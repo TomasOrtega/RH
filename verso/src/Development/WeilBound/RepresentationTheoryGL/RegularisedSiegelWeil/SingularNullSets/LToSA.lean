@@ -29,7 +29,7 @@ scoped instance scMx (m n : ℕ) : SecondCountableTopology (Mx D m n) := (Global
 scoped instance t2Mx (m n : ℕ) : T2Space (Mx D m n) := (GlobalTheory.MixModel.lattice_Mx D m n).2.2.2.1
 
 /- English proof (translation)
-Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Conclude with `GlobalTheory.AutFunCompare.continuous_tensNU (E := D.host.E) (evInf D.host.F w).toLinearMap (map_mul (evInf D.host.F w)) ((continuous_apply w).comp continuous_fst)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_ci (w : InfinitePlace D.host.F) : Continuous (compInf D.host.F D.host.E w) := by
   have : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _
@@ -37,12 +37,12 @@ theorem continuous_ci (w : InfinitePlace D.host.F) : Continuous (compInf D.host.
     ((continuous_apply w).comp continuous_fst)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThK.LemF.QuotInv.continuous_compFinV v`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cv (v : Pl D) : Continuous (cv D v) := GlobalTheory.ThK.LemF.QuotInv.continuous_compFinV v
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cv_cA (v : Pl D) (z : AE D) : cv D v (cA D z) = sigR _ D.sp.cm.sig (cv D v z) := by
   induction z using TensorProduct.induction_on with
@@ -51,11 +51,9 @@ theorem cv_cA (v : Pl D) (z : AE D) : cv D v (cA D z) = sigR _ D.sp.cm.sig (cv D
   | tmul a x => rfl
 
 /- English proof (translation)
-Take `⟨K', hK', hmem⟩` from `GlobalTheory.IdeleCyl.exists_isCompact_box D.host.F D.host.E (fun w => compInf D.host.F D.host.E w '' K) (fun v => if v ∈ S then cv D v '' K else (intLoc D.host.F D.host.E v : Set _)) (fun w => hK.image (continuous_ci w)) (fun v => by split_ifs`. Conclude with `hK.image (continuous_cv v)`. Conclude with `(GlobalTheory.ThK.isCompact_isOpen_intLoc v).1)`. Use the proof step `(Filter.eventually_cofinite.2 (S.finite_toSet.subset fun v hv => Finset.mem_coe.2 (by`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `hv (by simp [h]))))`. Use `⟨K', hK', fun x hx hex => hmem x (fun w => ⟨e * x, hex, ?_⟩) (fun v => ?_)⟩` and prove the remaining obligations. Rewrite using `[map_mul, he.1 w, one_mul]`. Distinguish the cases in `hv : v ∈ S`. Simplify using `only [if_pos hv]`.
-
-Conclude with `⟨e * x, hex, by rw [map_mul, he.2 v, if_pos hv, one_mul]⟩`. Simplify using `only [if_neg hv]`. Conclude with `hx v hv`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem box₁ {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) {K : Set (AE D)} (hK : IsCompact K) :
     ∃ K' : Set (AE D), IsCompact K' ∧
@@ -81,7 +79,7 @@ theorem box₁ {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) {K : Set (AE D)}
       exact hx v hv
 
 /- English proof (translation)
-Use `choose C hC hCm using fun i j => box₁ he (hK.image (continuous_id.matrix_elem i j))`. Use `⟨{x | ∀ i j, x i j ∈ C i j}, ?_, fun x hx hex i j => hCm i j (x i j) (fun v hv => hx v hv i j) ⟨e • x, hex, rfl⟩⟩` and prove the remaining obligations. Conclude with `isCompact_pi_infinite fun i => isCompact_pi_infinite fun j => hC i j`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem boxM {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) {K : Set (Mx D a b)} (hK : IsCompact K) :
     ∃ K' : Set (Mx D a b), IsCompact K' ∧ ∀ x, IntOff S x → e • x ∈ K → x ∈ K' := by
@@ -90,7 +88,7 @@ theorem boxM {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) {K : Set (Mx D a b
   exact isCompact_pi_infinite fun i => isCompact_pi_infinite fun j => hC i j
 
 /- English proof (translation)
-Take `⟨K1, h1, m1⟩` from `boxM he (hK.image continuous_fst)`. Take `⟨K2, h2, m2⟩` from `boxM he (hK.image continuous_snd)`. Conclude with `⟨K1 ×ˢ K2, h1.prod h2, fun z hz1 hz2 hz => ⟨m1 _ hz1 ⟨_, hz, rfl⟩, m2 _ hz2 ⟨_, hz, rfl⟩⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem boxP {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) {K : Set (Mx D a b × Mx D a c)} (hK : IsCompact K) :
     ∃ K' : Set (Mx D a b × Mx D a c), IsCompact K' ∧
@@ -100,16 +98,16 @@ theorem boxP {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) {K : Set (Mx D a b
   exact ⟨K1 ×ˢ K2, h1.prod h2, fun z hz1 hz2 hz => ⟨m1 _ hz1 ⟨_, hz, rfl⟩, m2 _ hz2 ⟨_, hz, rfl⟩⟩⟩
 
 /- English proof (translation)
-Rewrite using `[← hN, Matrix.smul_apply, smul_eq_mul, map_mul, he.2 v, if_neg hv, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cv_eq_zero {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) {N : Mx D a b} (hN : e • N = N) {v : Pl D}
     (hv : v ∉ S) (i : Fin a) (j : Fin b) : cv D v (N i j) = 0 := by
   rw [← hN, Matrix.smul_apply, smul_eq_mul, map_mul, he.2 v, if_neg hv, zero_mul]
 
 /- English proof (translation)
-Establish `key : ∀ v ∉ S, ∀ i j, cv D v (x' i j) = cv D v (x i j)` using `fun v hv i j => by`. Use `cv_eq_zero he h hv i j` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Use `⟨fun hx v hv i j => ?_, fun hx v hv i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← key v hv i j]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx v hv i j`. Rewrite using `[key v hv i j]`. Conclude with `hx v hv i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intOff_iff {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) {x x' : Mx D a b} (h : e • (x' - x) = x' - x) :
     IntOff S x' ↔ IntOff S x := by
@@ -121,7 +119,7 @@ theorem intOff_iff {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) {x x' : Mx D
   · rw [key v hv i j]; exact hx v hv i j
 
 /- English proof (translation)
-Establish `hc : ∀ v : Pl D, IsClosed (intLoc D.host.F D.host.E v : Set (Fv D.host.F v ⊗[D.host.F] D.host.E))` using `fun v => by`. Use `AddSubgroup.isClosed_of_isOpen (intLoc D.host.F D.host.E v).toAddSubgroup (GlobalTheory.ThK.isCompact_isOpen_intLoc v).2` as an intermediate fact. Conclude with `this`. Simplify using `only [IntOff, Set.ofPred_forall]`. Conclude with `isClosed_iInter fun v => isClosed_iInter fun _ => isClosed_iInter fun i => isClosed_iInter fun j => (hc v).preimage ((continuous_cv v).comp (continuous_id.matrix_elem i j))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosed_intOff (S : Finset (Pl D)) : IsClosed {x : Mx D a b | IntOff S x} := by
   have hc : ∀ v : Pl D, IsClosed (intLoc D.host.F D.host.E v : Set (Fv D.host.F v ⊗[D.host.F] D.host.E)) := fun v => by
@@ -132,7 +130,7 @@ theorem isClosed_intOff (S : Finset (Pl D)) : IsClosed {x : Mx D a b | IntOff S 
     (hc v).preimage ((continuous_cv v).comp (continuous_id.matrix_elem i j))
 
 /- English proof (translation)
-Introduce `v hv i j` and use `by show cv D v ((x * y) i j) ∈ _ rw [Matrix.mul_apply, map_sum] exact Subring.sum_mem _ fun k _ => by rw [map_mul]; exact Subring.mul_mem _ (hx v hv i k) (hy v hv k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intOff_mul {S : Finset (Pl D)} {x : Mx D a b} {y : Mx D b c} (hx : IntOff S x) (hy : IntOff S y) :
     IntOff S (mm x y) := fun v hv i j => by
@@ -141,7 +139,7 @@ theorem intOff_mul {S : Finset (Pl D)} {x : Mx D a b} {y : Mx D b c} (hx : IntOf
   exact Subring.sum_mem _ fun k _ => by rw [map_mul]; exact Subring.mul_mem _ (hx v hv i k) (hy v hv k j)
 
 /- English proof (translation)
-Introduce `v hv i j` and use `by show cv D v (cA D (x j i)) ∈ _ rw [cv_cA] exact GlobalTheory.AdelicU.sigR_mem_intLoc _ (hx v hv j i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intOff_adj {S : Finset (Pl D)} {x : Mx D a b} (hx : IntOff S x) : IntOff S (adj x) := fun v hv i j => by
   show cv D v (cA D (x j i)) ∈ _
@@ -149,7 +147,7 @@ theorem intOff_adj {S : Finset (Pl D)} {x : Mx D a b} (hx : IntOff S x) : IntOff
   exact GlobalTheory.AdelicU.sigR_mem_intLoc _ (hx v hv j i)
 
 /- English proof (translation)
-Establish `h : ∀ᶠ v in Filter.cofinite, ∀ i j, cv D v (M i j) ∈ intLoc D.host.F D.host.E v` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => GlobalTheory.ThK.ConeEuler.eventually_compFin_mem_intLoc_adele (M i j)`. Use `⟨(Filter.eventually_cofinite.1 h).toFinset, fun S hS v hv i j => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `hv (hS ((Filter.eventually_cofinite.1 h).mem_toFinset.2 fun h' => hn (h' i j)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_intOff (M : Mx D a b) : ∃ S₀ : Finset (Pl D), ∀ S, S₀ ⊆ S → IntOff S M := by
   have h : ∀ᶠ v in Filter.cofinite, ∀ i j, cv D v (M i j) ∈ intLoc D.host.F D.host.E v :=

@@ -8,7 +8,7 @@ variable {K : Type*} [CommRing K] {σ : K →+* K} (hσ : ∀ x, σ (σ x) = x)
 include hσ hfix
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hfx : σ (z * σ z) = z * σ z` using `by rw [map_mul, hσ, mul_comm]`. Conclude with `hz (isUnit_of_mul_isUnit_left (hfix _ hfx h))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_zero_of_not_unit {z : K} (hz : ¬ IsUnit z) : z * σ z = 0 := by
   by_contra h
@@ -16,15 +16,15 @@ theorem norm_zero_of_not_unit {z : K} (hz : ¬ IsUnit z) : z * σ z = 0 := by
   exact hz (isUnit_of_mul_isUnit_left (hfix _ hfx h))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨h1, h2', h3⟩` from `hcon`. Establish `e1` using `norm_zero_of_not_unit hσ hfix h1`. Establish `e2` using `norm_zero_of_not_unit hσ hfix h2'`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `norm_zero_of_not_unit hσ hfix h3`. Simplify using `only [map_add, map_mul, hσδ, map_neg, map_one] at e2 e3`. Take `⟨a, b, hab⟩` from `hxy`. Establish `hab' : σ a * σ x + σ b * σ y = 1`. Use `congrArg σ hab` as an intermediate fact.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [map_add, map_mul, map_one]`. Establish `hyy0 : (2 * δ ^ 2) * (y * σ y) = 0` using `by linear_combination 2 * e1 - e2 - e3`. Establish `hyy : y * σ y = 0` using `((h2.mul (hδ.pow 2)).mul_right_eq_zero).mp hyy0`. Establish `hxy0 : (2 * δ) * (y * σ x - x * σ y) = 0` using `by linear_combination e2 - e3`. Establish `hxy' : y * σ x - x * σ y = 0` using `((h2.mul hδ).mul_right_eq_zero).mp hxy0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (a * σ b + b * σ a) * (x * σ y) = 1`. Take the linear combination `(σ a * σ x + σ b * σ y) * hab + hab' - σ a * b * hxy' - a * σ a * e1 - b * σ b * hyy`. Establish `hu : IsUnit (x * σ y)` using `isUnit_iff_exists_inv.mpr ⟨_, by rw [mul_comm]; exact key⟩`. Establish `hsq : (x * σ y) * (x * σ y) = 0`. Take the linear combination `(y * σ y) * e1 - (x * σ y) * hxy'`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h0 : IsUnit (0 : K)`. Use `hu.mul hu` as an intermediate fact. Rewrite `this` using `[hsq]`. Then use the resulting hypothesis. Use `haveI := subsingleton_of_zero_eq_one (isUnit_zero_iff.mp h0)`. Conclude with `h1 (isUnit_of_subsingleton x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gp [IsReduced K] (h2 : IsUnit (2 : K)) {δ : K} (hδ : IsUnit δ) (hσδ : σ δ = -δ) {x y : K}
     (hxy : IsCoprime x y) :
@@ -59,9 +59,9 @@ theorem gp [IsReduced K] (h2 : IsUnit (2 : K)) {δ : K} (hδ : IsUnit δ) (hσδ
 end
 
 /- English proof (translation)
-Establish `hI : Ideal.span {a, b} ≠ ⊤`. Introduce `hI`. Establish `h1 : (1 : K) ∈ Ideal.span {a, b}`. Rewrite using `[hI]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, d, hcd⟩` from `Ideal.mem_span_pair.mp h1`. Conclude with `h ⟨c, d, hcd⟩`. Take `⟨m, hm, hIm⟩` from `Ideal.exists_le_maximal _ hI`. Conclude with `⟨m, hm, hIm (Ideal.subset_span (by simp)), hIm (Ideal.subset_span (by simp))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_max_of_not_coprime {K : Type*} [CommRing K] {a b : K} (h : ¬ IsCoprime a b) :
     ∃ m : Ideal K, m.IsMaximal ∧ a ∈ m ∧ b ∈ m := by
@@ -76,21 +76,19 @@ theorem exists_max_of_not_coprime {K : Type*} [CommRing K] {a b : K} (h : ¬ IsC
   exact ⟨m, hm, hIm (Ideal.subset_span (by simp)), hIm (Ideal.subset_span (by simp))⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨h1, h1'⟩` from `hcon`. Take `⟨m0, hm0, ha0, hb0⟩` from `exists_max_of_not_coprime hnc`. Take `⟨m1, hm1, ha1, hb1⟩` from `exists_max_of_not_coprime h1`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m2, hm2, ha2, hb2⟩` from `exists_max_of_not_coprime h1'`. Establish `key : ∀ m : Ideal K, m.IsMaximal → α ∈ m → β ∈ m → ω ∈ m → False`. Introduce `m hm ha hb hw`. Establish `hν' : ν ∈ m`. Rewrite using `[hdef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `m.add_mem (m.add_mem (m.mul_mem_right _ ha) (m.mul_mem_left _ hb)) hw`. Conclude with `hm.ne_top (Ideal.eq_top_of_isUnit_mem _ hν' hν)`. Establish `hA1 : α - ω ∈ m1`. Use `m1.sub_mem ha1 (m1.mul_mem_left c hb1)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hA2 : α + ω ∈ m2`. Use `m2.sub_mem ha2 (m2.mul_mem_left c hb2)` as an intermediate fact. Simplify using `using this`. Break down `hmax m0 m1 m2 hm0 hm1 hm2 with h | h | h` into its components or cases. Substitute `h` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use `m0.sub_mem ha0 hA1` as an intermediate fact. Conclude with `key m0 hm0 ha0 hb0 (by simpa using this)`. Substitute `h` using the available equality. Use `m0.sub_mem hA2 ha0` as an intermediate fact. Conclude with `key m0 hm0 ha0 hb0 (by simpa using this)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Substitute `h` using the available equality. Establish `h2a : 2 * α ∈ m1`. Use `m1.add_mem hA1 hA2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `h2`. Establish `hα : α ∈ m1`. Use `m1.mul_mem_left (↑u⁻¹ : K) h2a` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← hu, Units.inv_mul, one_mul]`. Then use the resulting hypothesis. Use `m1.sub_mem hA2 hα` as an intermediate fact.
-
-Conclude with `key m1 hm1 hα hb1 (by simpa using this)`.
+A detailed English derivation is pending.
 -/
 theorem stepA {K : Type*} [CommRing K] {σ : K →+* K}
     (hmax : ∀ m₀ m₁ m₂ : Ideal K, m₀.IsMaximal → m₁.IsMaximal → m₂.IsMaximal →

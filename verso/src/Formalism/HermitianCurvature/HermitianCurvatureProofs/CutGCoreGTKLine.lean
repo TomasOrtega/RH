@@ -9,17 +9,17 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGenTransfer
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
 /- English proof (translation)
-The claim follows from `lie_existence_of_iso_group KLIso.lie_algebra_isomorphism_holds lie_group_realization`.
+A detailed English derivation is pending.
 -/
 theorem lie_group_existence_holds : KLExists := lie_existence_of_iso_group KLIso.lie_algebra_isomorphism_holds lie_group_realization
 
 /- English proof (translation)
-The claim follows from `gTKLine_of_cut lie_eigenvalue_holds lie_weight_at_most_holds lie_group_existence_holds`.
+A detailed English derivation is pending.
 -/
 theorem gauge_kappa_line_holds : GTKLine := gTKLine_of_cut lie_eigenvalue_holds lie_weight_at_most_holds lie_group_existence_holds
 
 /- English proof (translation)
-The claim follows from `GTK.gauge_kappa_of_point_line gauge_kappa_pointwise_holds gauge_kappa_line_holds`.
+A detailed English derivation is pending.
 -/
 theorem gauge_kappa_holds : GTKap := GTK.gauge_kappa_of_point_line gauge_kappa_pointwise_holds gauge_kappa_line_holds
 

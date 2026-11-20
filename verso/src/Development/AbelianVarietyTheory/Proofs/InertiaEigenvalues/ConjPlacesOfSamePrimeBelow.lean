@@ -6,17 +6,13 @@ open scoped Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ K _ A B h`. Use `haveI : FiniteDimensional ℚ K := Module.Finite.trans E K`. Use `haveI : NumberField K := ⟨⟩`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed E, Algebra.IsAlgebraic.tower_top (K := E) K⟩`. Use `letI : TopologicalSpace (IntCl K Ω) := ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : DiscreteTopology (IntCl K Ω) := ⟨rfl⟩`. Use `haveI := continuousSMul_intCl K Ω`. Use `haveI := isInvariant_intCl K Ω`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq_of_profinite (A := 𝓞 K) (G := Ω ≃ₐ[K] Ω) (primeBelow (F := K) A) (primeBelow (F := K) B) (by`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.under, Ideal.under, Ideal.mem_comap, Ideal.mem_comap, mem_primeBelow, mem_primeBelow]`. Establish `hK : ((algebraMap (𝓞 K) (IntCl K Ω) x : IntCl K Ω) : Ω) = ((x : K) : Ω)` using `rfl`. Rewrite using `[hK]`. Use `h _ (x : K).2 ?_` and prove the remaining obligations. Conclude with `(x.2.map (IsScalarTower.toAlgHom ℤ K Ω)))`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hgA : g • A = B`. Use `eq_of_valuation_lt_one_iff K fun b hb => ?_` and prove the remaining obligations. Set `b' : IntCl K Ω` to `⟨b, hb.tower_top⟩`. Express the relevant statement in the definitionally equal form `b' ∈ primeBelow (F := K) (g • A) ↔ b' ∈ primeBelow (F := K) B`. Rewrite using `[primeBelow_smul, hg]`.
-
-Use `⟨g.restrictScalars E, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Use `show g x = x`. Conclude with `g.commutes ⟨x, hx⟩`. Rewrite using `[← hgA]`. Use extensionality with `y`.
-
-Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conj_places_of_same_prime_below : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (K : IntermediateField E Ω) [FiniteDimensional E K] (A B : ValuationSubring Ω), (∀ x ∈ K, IsIntegral ℤ x → (A.valuation x < 1 ↔ B.valuation x < 1)) → ∃ ρ : G E Ω, (∀ x ∈ K, ρ x = x) ∧ ρ • A = B := by
   intro E Ω _ _ _ _ _ K _ A B h

@@ -14,17 +14,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hDict hPos ι hι`. Use `letI := wittFractionAlgebraCp (D.what₂.places.resChar w)`. Use `letI := algKfC S.E.toCEmb`. Introduce `d j hj h La hLa x`. Establish `hr` using `(GlobalTheory.TwV.DelA.posTie_at S hPos ι hι).2`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨c, κ, _, hκ, hy, hiff⟩` from `GlobalTheory.T.realAt_succ_iff_decomposition_values S d j hj h La hLa`. Take `⟨g, hgb, hpt⟩` from `GlobalTheory.T.latticeTupleSuccLevel_point_isComponentPointInChart S hDict j hj La hLa`. Establish `hH` using `((H.core j hj) ((I.at' j hj).st.eC.symm La.1).1).toHyp Formalism.L2.G.RelativeIndexFlags.blockRationality_holds`. Establish `hv` using `valC_spec hH.ex ((I.at' j hj).eps.symm x) ((I.at' j hj).st.eC.symm La.1).2 La.2 hLa`. Use `⟨MvPolynomial.map D.what₂.embLL (valC ((I.at' j hj).st.K ((I.at' j hj).st.eC.symm La.1).1).lev (embT D) D.what₂.embLL ((I.at' j hj).st.charts.gat ((I.at' j hj).st.eC.symm La.1).1) ((I.at' j hj).st.loc ((I.at' j hj).st.eC.symm La.1).1) (I.at' j hj).st.pos ((I.at' j hj).st.embN ((I …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[kaAt_cmp X H hT j hj x] show MvPolynomial.map _ (cmpC _ _ _ _ _ _ _ _ _ _ _ _) = _`. Simplify using `only [cmpC, hLa, if_true]`. Rewrite using `[MvPolynomial.map_map, MvPolynomial.map_map]`. Use `congrArg (fun f => MvPolynomial.map f _) ?_` and prove the remaining obligations. Conclude with `RingHom.ext fun r => (hr r).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hiff]`. Introduce `z z' hz`. Establish `h2 : trC (X.onCh j hj) (j + 1) ((ex.tw.fm u μ).emb (j + 1) x) = (I.at' j hj).M.emb (j + 1) ((I.at' j hj).eps.symm x)`. Apply `trC_heq` to reduce the goal to its premises. Use `(I.at' j hj).eps_emb ((I.at' j hj).eps.symm x)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `hp1` using `hpt`. Rewrite `hp1` using `[d.eq (j + 1) hj La hLa, hy]`. Establish `hk` using `congrArg (fun k => ((I.at' j hj).st.loc ((I.at' j hj).st.eC.symm La.1).1).IsPt ((I.at' j hj).st.eC.symm La.1).2 g (GlobalTheory.TwU.ratA D.host.F (d.gam (j + 1) hj La) * (((I.at' j hj).st.K ((I.at' j hj).st.eC.symm La.1).1).y c).1 * k)) hκ`. Establish `hp2` using `hk.mpr hp1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv2` using `hv.2 g hgb c (d.gam (j + 1) hj La) (d.mem (j + 1) hj La) κ hp2 z z' hz`. Rewrite using `[h2, ← embN_eq_nrmR]`. Conclude with `hv2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwV.DelA.cmp_valsAt : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => J.Dict std → S.Pos → ∀ ι : ℂ →+* ℂ_[D.what₂.places.resChar w], (∀ z : TaylorLogMetric.Qbar, ι z = S.lam z) → letI := wittFractionAlgebraCp (D.what₂.places.resChar w); letI := algKfC S.E.toCEmb; ∀ (d : Dec J std) j (hj : j + 1 ≤ D.R.m) (h : ((sysS H X std).Pj (j + 1)).m + 1 = D.R.N (j + 1)) (La : (sysS H X std).Lt (j + 1)), ((sysS H X std).Pj (j + 1)).IsLatTup La.2 → ∀ x : ((ex.tw.fm u μ).lat (j + 1)).V, ∃ V : XR ((sysS H X std).Pj (j + 1)) ℂ, MvPolynomial.map (algebraMap (sysS H X std).G.Kf ℂ_[D.what₂.places.resChar w]) ((kaAt X H hT).cmp (j + 1) x La.1 La.2) = MvPolynomial.map ι V ∧ RealAt d (j + 1) hj h La ((ex.tw.fm u μ).emb (j + 1) x) V) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hDict hPos ι hι

@@ -13,9 +13,9 @@ open GlobalTheory.CompanionTheory.Ar.RootHt GroundTheory.Heights₂.Heights
 namespace GlobalTheory.CompanionTheory.Ar.RootHt.FinLocal
 
 /- English proof (translation)
-Establish `h1 : IsUnit s` using `hφ.map_nonunit s hu`. Take `⟨u, rfl⟩` from `h1`. Use `⟨(u⁻¹ : Sˣ).1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_aux {S R F : Type} [CommRing S] [CommRing R] [Field F] (ψ : S →+* F) (φ : S →+* R) (hφ : IsLocalHom φ)
     (s : S) (hu : IsUnit (φ s)) : ∃ s', φ s * φ s' = 1 ∧ ψ s' = (ψ s)⁻¹ := by
@@ -30,7 +30,7 @@ section Val
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {R : Type} [CommRing R] [IsLocalRing R] {z : Sp R ⟶ X}
 
 /- English proof (translation)
-Take `⟨h1, s, rfl, rfl⟩` from `h`. Take `⟨_, s', rfl, rfl⟩` from `h'`. Conclude with `⟨h1, s * s', map_mul _ _ _, map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem val_mul {a a' : Ω} {r r' : R} (h : ValAt ξ z a r) (h' : ValAt ξ z a' r') : ValAt ξ z (a * a') (r * r') := by
   obtain ⟨h1, s, rfl, rfl⟩ := h
@@ -38,20 +38,20 @@ theorem val_mul {a a' : Ω} {r r' : R} (h : ValAt ξ z a r) (h' : ValAt ξ z a' 
   exact ⟨h1, s * s', map_mul _ _ _, map_mul _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, n, map_natCast _ _, map_natCast _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem val_natCast (h : genPt ξ ⤳ centre z) (n : ℕ) : ValAt ξ z (n : Ω) (n : R) :=
   ⟨h, n, map_natCast _ _, map_natCast _ _⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `ha`. Conclude with `⟨_, h, s, hs, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem val_of_mem (h : genPt ξ ⤳ centre z) {a : Ω} (ha : a ∈ regAt ξ ⟨centre z, h⟩) : ∃ r, ValAt ξ z a r := by
   obtain ⟨s, hs⟩ := ha
   exact ⟨_, h, s, hs, rfl⟩
 
 /- English proof (translation)
-Take `⟨h, s, rfl, rfl⟩` from `hs`. Take `⟨s', h1, h2⟩` from `unit_aux (genMap ξ ⟨centre z, h⟩) (Scheme.stalkClosedPointTo z).hom (Scheme.isLocalHom_stalkClosedPointTo' z) s hu`. Conclude with `⟨_, h1, h, s', h2, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem val_inv {a : Ω} {r : R} (hs : ValAt ξ z a r) (hu : IsUnit r) : ∃ r', r * r' = 1 ∧ ValAt ξ z a⁻¹ r' := by
   obtain ⟨h, s, rfl, rfl⟩ := hs
@@ -60,7 +60,7 @@ theorem val_inv {a : Ω} {r : R} (hs : ValAt ξ z a r) (hu : IsUnit r) : ∃ r',
   exact ⟨_, h1, h, s', h2, rfl⟩
 
 /- English proof (translation)
-Take `⟨r', h1, h2⟩` from `val_inv hs (isUnit_iff_ne_zero.2 hr)`. Rewrite using `[← eq_inv_of_mul_eq_one_right h1]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem val_inv₀ {F : Type} [Field F] {z : Sp F ⟶ X} {a : Ω} {r : F} (hs : ValAt ξ z a r) (hr : r ≠ 0) :
     ValAt ξ z a⁻¹ r⁻¹ := by
@@ -77,17 +77,15 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {K : Type} [
   [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω} {L : Type} [Field L]
 
 /- English proof (translation)
-Establish `h1 : ∀ k, y ⟨k, c₀ k⟩ ≠ 0` using `fun k => (hw.2 k (c₀ k) (isUnit_iff_ne_zero.2 (hc₀ k))).1`. Establish `h2 : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (hw.2 k (c k) (isUnit_iff_ne_zero.2 (hc k))).1`. Establish `h3 : ∀ k, ValAt ξ z (y ⟨k, c k⟩ / y ⟨k, c₀ k⟩) (w ⟨k, c k⟩ / w ⟨k, c₀ k⟩)` using `fun k => by`. Take `⟨r, hr, e⟩` from `(hw.2 k (c₀ k) (isUnit_iff_ne_zero.2 (hc₀ k))).2 (c k)`. Rewrite using `[e, mul_div_cancel_right₀ _ (hc₀ k)]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `h4 : ∀ (k) (n : ℤ), ValAt ξ z ((y ⟨k, c k⟩ / y ⟨k, c₀ k⟩) ^ n) ((w ⟨k, c k⟩ / w ⟨k, c₀ k⟩) ^ n)` using `fun k n => by`. Establish `hr : w ⟨k, c k⟩ / w ⟨k, c₀ k⟩ ≠ 0` using `div_ne_zero (hc k) (hc₀ k)`. Establish `pw : ∀ (a : Ω) (r : L), ValAt ξ z a r → ∀ n : ℕ, ValAt ξ z (a ^ n) (r ^ n)` using `fun a r h n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using val_natCast hz 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `val_mul ih h`. Break down `n with n | n` into its components or cases. Simplify using `using pw _ _ (h3 k) n`. Rewrite using `[zpow_negSucc, zpow_negSucc]`.
+Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `val_inv₀ (pw _ _ (h3 k) _) (pow_ne_zero _ hr)`. Establish `h5 : gen y a e₀ c / gen y a e₀ c₀ = ∏ k, (y ⟨k, c k⟩ / y ⟨k, c₀ k⟩) ^ a k`. Unfold `gen`. Rewrite using `[mul_div_mul_right _ _ he₀, ← Finset.prod_div_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => (div_zpow _ _ _).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Rewrite using `[h5]`. Establish `pr : ∀ s : Finset K, ValAt ξ z (∏ k ∈ s, (y ⟨k, c k⟩ / y ⟨k, c₀ k⟩) ^ a k) (∏ k ∈ s, (w ⟨k, c k⟩ / w ⟨k, c₀ k⟩) ^ a k)` using `fun s => by classical`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using val_natCast hz 1`. Consider the case `insert k s hk ih => rw [Finset.prod_insert hk, Finset.prod_insert hk]`.
-
-Conclude with `val_mul (h4 k _) ih`. Conclude with `pr _`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem val_gen_ratio {z : Sp L ⟶ X} {w : (Σ k, J k) → L} (hw : CoordsAt ξ y z w) (hz : genPt ξ ⤳ centre z)
     (a : K → ℤ) {e₀ : Ω} (he₀ : e₀ ≠ 0) (c c₀ : (k : K) → J k) (hc : ∀ k, w ⟨k, c k⟩ ≠ 0)
@@ -127,53 +125,47 @@ end GlobalTheory.CompanionTheory.Ar.RootHt.FinLocal
 namespace GlobalTheory.CompanionTheory.Ar.RootHt.FinLocal
 
 /- English proof (translation)
-Establish `hξ` using `hcoord.gen`. Establish `hm0 : (m : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Establish `hmL : (m : L) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Establish `he₀ : e₀ ≠ 0` using `hdeg.1`. Use `set zA : Sp A ⟶ X := spMap (algebraMap (𝓞 L) A) ≫ z with hzA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzL : spMap (algebraMap (𝓞 L) L) ≫ z = spMap (algebraMap A L) ≫ zA`. Rewrite using `[hzA, ← Category.assoc, IsScalarTower.algebraMap_eq (𝓞 L) A L]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Take `⟨c, h, hcne, hmax, hin⟩` from `GlobalTheory.T.coord_valuation_bound_local X Ω ξ K J y L w v A zA hgen hcoord hA₁ hA₂ (hzL ▸ hw)`. Take `⟨b, π, κ, hfl, -, hmb, hdual, hreg, hκ0, hκ, hκi, hcls⟩` from `GlobalTheory.T.exists_graded_sandwich_coordinates X Ω ξ K J y G Li M V r b₀ m i a e₀ hb₀ hS hdeg ⟨centre zA, h⟩ c hin`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set f : Module.Dual Ω Li := (m : Ω) • π i with hfdef`. Establish `hfe : ∀ e, f e = (m : Ω) * π i e` using `fun e => rfl`. Establish `hf : ∀ e ∈ M.lat ⟨_, h⟩, f e ∈ regAt ξ ⟨_, h⟩` using `fun e he => hreg i e he`. Establish `hLz : centre (spMap (algebraMap (𝓞 L) L) ≫ z) ⤳ centre zA`. Rewrite using `[hzL]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `LieTangent.centre_specializes (algebraMap A L) zA`. Establish `hfL : ∀ h' : genPt ξ ⤳ centre (spMap (algebraMap (𝓞 L) L) ≫ z), ∀ e ∈ M.lat ⟨_, h'⟩, f e ∈ regAt ξ ⟨_, h'⟩` using `fun h' => GlobalTheory.T.regular_functional_specializes X G Ω ξ Li M f ⟨_, h⟩ ⟨_, h'⟩ hξ hLz hf`. Take `⟨g, hg1, hg2⟩` from `GlobalTheory.T.lie_model_localization_at_prime X G Ω ξ Li M L 𝔭 A z B MB f h hξ hf hfL`. Take `⟨kA, hkA⟩` from `val_of_mem h hκ`. Take `⟨kA', hkA'⟩` from `val_of_mem h hκi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hkk : kA * kA' = 1`. Establish `h1` using `val_mul hkA hkA'`. Rewrite `h1` using `[mul_inv_cancel₀ hκ0]`. Establish `h2` using `val_natCast (ξ := ξ) (z := zA) h 1`. Rewrite `h2` using `[Nat.cast_one, Nat.cast_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LieTangent.valAt_unique hξ h1 h2`. Establish `hvk : v (algebraMap A L kA) = 1`. Establish `h1 : v (algebraMap A L kA) * v (algebraMap A L kA') = 1`. Rewrite using `[← map_mul, ← map_mul, hkk, map_one, map_one]`. Establish `h2` using `hA₁ kA`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `hA₁ kA'`. Use polynomial arithmetic with `[apply_nonneg v (algebraMap A L kA), apply_nonneg v (algebraMap A L kA')]`. Establish `hkL : ValAt ξ (spMap (algebraMap (𝓞 L) L) ≫ z) κ (algebraMap A L kA)`. Rewrite using `[hzL]`. Conclude with `LieTangent.valAt_base hξ (algebraMap A L) hkA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hτ` using `val_gen_ratio hw (hgen _) a he₀ c c₀ hcne hc₀`. Use `set τ : L := ∏ k, (w ⟨k, c k⟩ / w ⟨k, c₀ k⟩) ^ a k with hτdef`. Establish `gne : ∀ c' : (k : K) → J k, (∀ k, w ⟨k, c' k⟩ ≠ 0) → gen y a e₀ c' ≠ 0` using `fun c' hc' => mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hw.2 k (c' k) (isUnit_iff_ne_zero.2 (hc' k))).1) he₀`. Use `set C : L := (m : L)⁻¹ * algebraMap A L kA * τ with hC`. Establish `hvalm : ValAt ξ (spMap (algebraMap (𝓞 L) L) ≫ z) (m : Ω)⁻¹ (m : L)⁻¹` using `val_inv₀ (val_natCast (hgen _) m) hmL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ (x' : B.carrier) (hx' : x' ∈ F₁) (e : Li) (vv : epsAt (spMap (algebraMap (𝓞 L) L) ≫ z) ⟶ G), e ∈ flagStep Ω b₀ (i + 1) → M.ValAt _ e vv → MB.Lifts (algebraMap (𝓞 L) L) (𝟙 G.left) x' vv → φ ⟨x', hx'⟩ = C * algebraMap A L (g x')`. Introduce `x' hx' e vv hU hv' hl`. Take `⟨h', he⟩` from `(LieModel.exists_valAt_iff M _ e).1 ⟨vv, hv'⟩`. Take `⟨u₀, hu₀⟩` from `val_of_mem h' (hfL h' e he)`. Establish `hg` using `hg1 x' e vv u₀ hv' hl hu₀`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, IsCls b₀ i e t := by`. Establish `hU'` using `hU`. Rewrite `hU'` using `[Flag.step_succ]`. Take `⟨y', hy', z', hz', rfl⟩` from `Submodule.mem_sup.1 hU'`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hz'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `⟨t, by simpa [IsCls] using hy'⟩`. Establish `e1` using `hcls e t hU ht`. Establish `e2 : t / gen y a e₀ c₀ = (m : Ω)⁻¹ * f e * κ * (gen y a e₀ c / gen y a e₀ c₀)`. Rewrite using `[hfe, ← _root_.mul_assoc, inv_mul_cancel₀ hm0, _root_.one_mul, ← e1, div_mul_div_cancel₀ (gne c hcne)]`. Establish `e3` using `hφ ⟨x', hx'⟩ e vv t _ hU hv' hl ht (e2 ▸ val_mul (val_mul (val_mul hvalm hu₀) hkL) hτ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e3, hg, hC]`. Expand and normalize the polynomial expressions, which then agree. Set `gL : B.carrier →ₗ[𝓞 L] L` to `(IsScalarTower.toAlgHom (𝓞 L) A L).toLinearMap ∘ₗ g`. Establish `hgL : ∀ x, gL x = algebraMap A L (g x)` using `fun x => rfl`. Set `D : F₁ →ₗ[𝓞 L] L` to `φ - C • (gL ∘ₗ F₁.subtype)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hD : ∀ x : F₁, D x = φ x - C * algebraMap A L (g x)` using `fun x => rfl`. Establish `hall : ∀ x : F₁, φ x = C * algebraMap A L (g x)`. Introduce and unpack `⟨x, hx⟩`. Take `⟨a₁, ha₁, hsp⟩` from `(hF₁ x).1 hx`. Establish `hind : ∀ y' ∈ Submodule.span (𝓞 L) {x' | ∃ e ∈ flagStep Ω b₀ (i + 1), ∃ v : epsAt (spMap (algebraMap (𝓞 L) L) ≫ z) ⟶ G, M.ValAt (spMap (algebraMap (𝓞 L) L) ≫ z) e v ∧ MB.Lifts (algebraMap (𝓞 L) L) (𝟙 G.left) x' v}, ∃ hy : y' ∈ F₁, D ⟨y', hy⟩ = 0`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `y' hy'`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem x' hx'`. Take `⟨e, hU, vv, hv', hl⟩` from `hx'`. Establish `hm' : x' ∈ F₁` using `(hF₁ x').2 ⟨1, one_ne_zero, by`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[one_smul]`. Conclude with `Submodule.subset_span ⟨e, hU, vv, hv', hl⟩⟩`. Conclude with `⟨hm', by rw [hD, key x' hm' e vv hU hv' hl, sub_self]⟩`. Consider the case `zero => exact ⟨zero_mem _, map_zero D⟩`. Consider the case `add y₁ y₂ _ _ i₁ i₂`.
+Establish an intermediate fact. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨h₁, e₁⟩` from `i₁`. Take `⟨h₂, e₂⟩` from `i₂`. Use `⟨add_mem h₁ h₂, ?_⟩` and prove the remaining obligations. Establish `: D (⟨y₁, h₁⟩ + ⟨y₂, h₂⟩) = 0` using `by rw [map_add, e₁, e₂, add_zero]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `smul s y _ i₁`. Take `⟨h₁, e₁⟩` from `i₁`. Use `⟨F₁.smul_mem s h₁, ?_⟩` and prove the remaining obligations. Establish `: D (s • ⟨y, h₁⟩) = 0` using `by rw [map_smul, e₁, smul_zero]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hy, e⟩` from `hind _ hsp`. Establish `e' : D (a₁ • ⟨x, hx⟩) = 0` using `e`. Rewrite `e'` using `[map_smul]`. Establish `e''` using `(smul_eq_zero.1 e').resolve_left ha₁`. Rewrite `e''` using `[hD]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.1 e''`. Establish `hsup : ∀ k, (⨆ i, v (w ⟨k, i⟩)) = v (w ⟨k, c k⟩)` using `fun k => by haveI : Nonempty (J k) := ⟨c k⟩`. Conclude with `le_antisymm (ciSup_le (hmax k)) (le_ciSup (f := fun i => v (w ⟨k, i⟩)) (Set.finite_range _).bddAbove (c k))`. Establish `hvC : v C = (v (m : L))⁻¹ * locRatio a w c₀ v`. Establish `: v τ = locRatio a w c₀ v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hτdef, locRatio, map_prod]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [map_zpow₀, map_div₀, hsup]`. Rewrite using `[hC, map_mul, map_mul, map_inv₀, hvk, this, _root_.mul_one]`. Establish `hvm : v (m : L) ≠ 0` using `(FinitePlace.pos_iff.2 hmL).ne'`. Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hall, map_mul, hvC]`. Conclude with `mul_le_of_le_one_right (hvC ▸ apply_nonneg v C) (hA₁ _)`. Establish `hU : (m : Ω) • b i ∈ flagStep Ω b₀ (i + 1)`. Rewrite using `[← hfl]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, by simp, rfl⟩)`.
-
-Establish `hfm : f ((m : Ω) • b i) = (m : Ω) * (m : Ω)`. Rewrite using `[hfe, map_smul, hdual i i]`. Simplify using the standard rewrite rules. Establish `hval : ValAt ξ zA (f ((m : Ω) • b i)) ((m : A) * (m : A))`. Rewrite using `[hfm]`.
-
-Conclude with `val_mul (val_natCast h m) (val_natCast h m)`. Take `⟨d, n, x, x', vv, hd, hn, hgx, hvv, hl, hnx⟩` from `hg2 _ _ (hmb i) hval`. Establish `hxF : x ∈ F₁` using `(hF₁ x).2 ⟨(n : 𝓞 L), Nat.cast_ne_zero.2 hn, by`. Rewrite using `[hnx]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, Submodule.smul_mem _ _ hU, vv, hvv, hl⟩)⟩`.
-
-Use `⟨⟨x, hxF⟩, le_of_eq ?_⟩` and prove the remaining obligations. Establish `e4 : algebraMap A L (algebraMap (𝓞 L) A d * ((m : A) * (m : A))) = algebraMap (𝓞 L) L d * ((m : L) * (m : L))`. Simplify using `[IsScalarTower.algebraMap_apply (𝓞 L) A L]`. Rewrite using `[hall, map_mul, hvC, hgx, e4, map_mul, map_mul, hv d hd]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem core (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type)
     [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom]
@@ -326,7 +318,7 @@ end GlobalTheory.CompanionTheory.Ar.RootHt.FinLocal
 namespace GlobalTheory.CompanionTheory.Ar.RootHt.FinLocal
 
 /- English proof (translation)
-Rewrite using `[← FinitePlace.norm_embedding_eq]`. Conclude with `(FinitePlace.norm_eq_one_iff_notMem L _ d).2 hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem place_one (L : Type) [Field L] [NumberField L] (v : FinitePlace L) (d : 𝓞 L)
     (hd : d ∉ (FinitePlace.maximalIdeal v).asIdeal) : v (algebraMap (𝓞 L) L d) = 1 := by
@@ -334,7 +326,7 @@ theorem place_one (L : Type) [Field L] [NumberField L] (v : FinitePlace L) (d : 
   exact (FinitePlace.norm_eq_one_iff_notMem L _ d).2 hd
 
 /- English proof (translation)
-Rewrite using `[← FinitePlace.norm_embedding_eq]`. Conclude with `FinitePlace.norm_le_one L _ d`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem place_le (L : Type) [Field L] [NumberField L] (v : FinitePlace L) (d : 𝓞 L) :
     v (algebraMap (𝓞 L) L d) ≤ 1 := by
@@ -342,13 +334,13 @@ theorem place_le (L : Type) [Field L] [NumberField L] (v : FinitePlace L) (d : �
   exact FinitePlace.norm_le_one L _ d
 
 /- English proof (translation)
-Establish `hs : ∀ r : A, ∃ (a s : 𝓞 L), s ∉ (FinitePlace.maximalIdeal v).asIdeal ∧ r * algebraMap (𝓞 L) A s = algebraMap (𝓞 L) A a` using `fun r => by`. Take `⟨⟨a, s⟩, e⟩` from `IsLocalization.surj (FinitePlace.maximalIdeal v).asIdeal.primeCompl r`. Conclude with `⟨a, s, s.2, e⟩`. Establish `hv : ∀ (r : A) (a s : 𝓞 L), s ∉ (FinitePlace.maximalIdeal v).asIdeal → r * algebraMap (𝓞 L) A s = algebraMap (𝓞 L) A a → v (algebraMap A L r) = v (algebraMap (𝓞 L) L a)` using `fun r a s hs' e => by`. Establish `e1` using `congrArg (fun t => v (algebraMap A L t)) e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul, ← IsScalarTower.algebraMap_apply, place_one L v s hs', _root_.mul_one] at e1`. Conclude with `e1`. Use `⟨fun r => ?_, fun r hr => ?_⟩` and prove the remaining obligations. Take `⟨a, s, h1, h2⟩` from `hs r`. Rewrite using `[hv r a s h1 h2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `place_le L v a`. Take `⟨a, s, h1, h2⟩` from `hs r`. Rewrite `hr` using `[hv r a s h1 h2]`. Establish `ha : a ∉ (FinitePlace.maximalIdeal v).asIdeal` using `fun h => by`. Use `(FinitePlace.norm_lt_one_iff_mem L (FinitePlace.maximalIdeal v) a).2 h` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[FinitePlace.norm_embedding_eq, hr]`. Conclude with `lt_irrefl _ this`. Establish `hu : IsUnit (algebraMap (𝓞 L) A a)` using `IsLocalization.map_units A (⟨a, ha⟩ : (FinitePlace.maximalIdeal v).asIdeal.primeCompl)`. Rewrite `hu` using `[← h2]`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem place_local (L : Type) [Field L] [NumberField L] (v : FinitePlace L) (A : Type) [CommRing A]
     [Algebra (𝓞 L) A] [IsLocalization.AtPrime A (FinitePlace.maximalIdeal v).asIdeal] [Algebra A L]
@@ -380,9 +372,7 @@ theorem place_local (L : Type) [Field L] [NumberField L] (v : FinitePlace L) (A 
     exact isUnit_of_mul_isUnit_left hu
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y G _ _ _ Li _ _ M V r b₀ m i a e₀ hchar hgen hcoord hm hb₀ hS hdeg L _ _ w z hw B MB F₀ F₁ hF₀ hF₁ c₀ hc₀ φ hφ v`. Establish `hle : (FinitePlace.maximalIdeal v).asIdeal.primeCompl ≤ nonZeroDivisors (𝓞 L)` using `Ideal.primeCompl_le_nonZeroDivisors _`. Set `A` to `Localization.subalgebra.ofField L _ hle`. Use `haveI : IsLocalization.AtPrime A (FinitePlace.maximalIdeal v).asIdeal := inferInstanceAs (IsLocalization (FinitePlace.maximalIdeal v).asIdeal.primeCompl A)`. Use `haveI : IsLocalRing A := IsLocalization.AtPrime.isLocalRing A (FinitePlace.maximalIdeal v).asIdeal`.
-
-Take `⟨h1, h2⟩` from `place_local L v A`. Conclude with `core X Ω ξ K J y G Li M V r b₀ m i a e₀ hchar hgen hcoord hm hb₀ hS hdeg L w z hw B MB F₁ hF₁ c₀ hc₀ φ hφ v (FinitePlace.maximalIdeal v).asIdeal A (place_one L v) h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coord_size : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type)
     [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom]

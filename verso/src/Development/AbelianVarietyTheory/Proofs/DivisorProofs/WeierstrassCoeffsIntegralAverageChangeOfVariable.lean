@@ -11,7 +11,7 @@ open scoped BigOperators
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Rewrite using `[div_eq_mul_inv]`. Use `V.mul_mem _ _ (sum_mem (S := V) fun i _ => hf i) ?_` and prove the remaining obligations. Rewrite using `[← V.valuation_le_one_iff, map_inv₀, hc, inv_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem avg_mem_of_card_unit (V : ValuationSubring ℂ) {ι : Type} [Fintype ι] (f : ι → ℂ)
     (hc : V.valuation (Fintype.card ι : ℂ) = 1) (hf : ∀ i, f i ∈ V) :
@@ -21,15 +21,13 @@ theorem avg_mem_of_card_unit (V : ValuationSubring ℂ) {ι : Type} [Fintype ι]
   rw [← V.valuation_le_one_iff, map_inv₀, hc, inv_one]
 
 /- English proof (translation)
-Establish `hn : (Fintype.card ι : ℂ) ≠ 0`. Introduce `h0`. Rewrite `hc` using `[h0, map_zero]`. Conclude with `zero_ne_one hc`. Establish `hu : (u : ℂ) ≠ 0` using `u.ne_zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `avg_mem_of_card_unit V _ hc hX`. Establish `ht` using `avg_mem_of_card_unit V _ hc hY`. Establish `hs` using `avg_mem_of_card_unit V _ hc fun i => GlobalTheory.T.tangent_slope_mem_of_intV V a₄ a₆ r s t (X i) (Y i) u h (hX i) (hY i) (h2 i)`. Simplify using `only [← Finset.sum_div, Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at hr hs ht`. Use `set A := ∑ i, X i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set B := ∑ i, (3 * X i ^ 2 + a₄) / (2 * Y i)`. Use `set D := ∑ i, Y i`. Use `set n : ℂ := ((Fintype.card ι : ℕ) : ℂ)`. Establish `key : (⟨u, A / n, B / n, D / n⟩ : VariableChange ℂ) = (⟨1, (A - n * r) / (u : ℂ) ^ 2 / n, (B - n * s) / (u : ℂ) / n, (D - n * t - s * (A - n * r)) / (u : ℂ) ^ 3 / n⟩ : VariableChange ℂ) * ⟨u, r, s, t⟩`. Rewrite using `[VariableChange.mul_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use `ext`. Simplify using the standard rewrite rules. Use `all_goals`. Simplify using `only []`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, mul_smul]`. Conclude with `GlobalTheory.coeff_mem_variableChange V.toSubring h.1 h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2 hr hs ht rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intV_average (V : ValuationSubring ℂ) (a₄ a₆ r s t : ℂ) (u : ℂˣ) (ι : Type) [Fintype ι]
     (X Y : ι → ℂ)

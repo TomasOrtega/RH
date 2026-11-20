@@ -27,7 +27,7 @@ structure Const (T : HermLB p) (s : (k →+* ℂ) → ℝ) : Prop where
 variable {N L T T' : HermLB p} {π : N.B.ι → L.B.ι} {s s' : (k →+* ℂ) → ℝ}
 
 /- English proof (translation)
-The claim follows from `mem_iInter.2 fun a => h.le _ (mem_iInter.1 hy a) g Z r z c c' hc hc' := (gm_pull_g _ f r z c c' hc hc').trans ((h.g Z (r ≫ f) z _ _ (mem_iInter.1 hc PUnit.unit) (mem_iInter.1 hc' PUnit.unit)).trans (gm_pull_g _ f r z (fun a => π (c a)) (fun a => π (c' a)) (mem_iInter.2 fun a => h …`.
+A detailed English derivation is pending.
 -/
 theorem Refines.pull (h : Refines N L π s) {q : Y ⟶ Sp k} (f : Y ⟶ X) (hf : f ≫ p = q) :
     Refines (N.pull f hf) (L.pull f hf) (fun c a => π (c a)) s where
@@ -42,7 +42,7 @@ theorem Refines.pull (h : Refines N L π s) {q : Y ⟶ Sp k} (f : Y ⟶ X) (hf :
       (congrArg (· + _) ((L.φ σ).pull_φ f hf (fun a => π (c a)) y).symm))
 
 /- English proof (translation)
-The claim follows from `(gm_linComb L.B (K := PUnit) (fun _ => 𝟙 X) (fun _ => (m : ℤ)) r z c c' hc hc').trans (by rw [Fintype.prod_unique, zpow_natCast, Category.comp_id])`.
+A detailed English derivation is pending.
 -/
 theorem gm_pow (L : HermLB p) (m : ℕ) {Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (c c' : (L.pow m).B.ι)
     (hc : r z ∈ (L.pow m).B.U c) (hc' : r z ∈ (L.pow m).B.U c') :
@@ -52,7 +52,7 @@ theorem gm_pow (L : HermLB p) (m : ℕ) {Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (
     rw [Fintype.prod_unique, zpow_natCast, Category.comp_id])
 
 /- English proof (translation)
-The claim follows from `mem_iInter.2 fun a => h.le _ (mem_iInter.1 hy a) g Z r z c c' hc hc' := (gm_pow N m r z c c' hc hc').trans ((congrArg (· ^ m) (h.g Z r z _ _ (mem_iInter.1 hc PUnit.unit) (mem_iInter.1 hc' PUnit.unit))).trans (gm_pow L m r z (fun a => π (c a)) (fun a => π (c' a)) (mem_iInter.2 fun …`.
+A detailed English derivation is pending.
 -/
 theorem Refines.pow (h : Refines N L π 0) (m : ℕ) :
     Refines (N.pow m) (L.pow m) (fun c a => π (c a)) 0 where
@@ -66,22 +66,22 @@ theorem Refines.pow (h : Refines N L π 0) (m : ℕ) :
       (((L.φ σ).zpow_φ m (fun a => π (c a)) y).symm.trans (add_zero _).symm))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.le, h.g, fun σ c y hy => (h.φ σ c y hy).trans (add_zero _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem Refines.shift (h : Refines N L π fun σ => 2 * s σ) (hs : ∀ σ, s ((starRingEnd ℂ).comp σ) = s σ) :
     Refines N (L.shift s hs) π 0 :=
   ⟨h.le, h.g, fun σ c y hy => (h.φ σ c y hy).trans (add_zero _).symm⟩
 
 /- English proof (translation)
-The claim follows from `iso_of_chart L.isLB ⟨π, h.le, h.g X (𝟙 X)⟩`.
+A detailed English derivation is pending.
 -/
 theorem Refines.lbIso (h : Refines N L π s) : LBIso N.B L.B :=
   iso_of_chart L.isLB ⟨π, h.le, h.g X (𝟙 X)⟩
 
 /- English proof (translation)
-Use `iSup_congr fun c => congrArg (Measure.map _) (withDensity_congr_ae ?_)` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem c.e.open_target.measurableSet] with v hv`. Establish `hy` using `c.e.map_target hv`. Establish `hi` using `mem_pick N.isLB (c.e.symm v)`. Simplify using `only [Function.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[c.chernDens_eq (N.cInf σ) hy hi, c.chernDens_eq (L.cInf σ) hy (ptsIn_mono (h.le _) hi), AlgChart.hess, AlgChart.hess, ← ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_add_const (fun w => ((L.φ σ).φ (π (pick N.isLB (c.e.symm v))) (c.e.symm w) : ℂ)) (s σ)]`. Use `congr 5`. Use `ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_over c.e (isOpen_ptsIn _)).mem_nhds (mem_over c.e hy hi)] with w hw`. Rewrite using `[h.φ σ _ _ hw.2, Complex.ofReal_add]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Refines.chernPart (h : Refines N L π s) (σ : k →+* ℂ) (D : ℕ) (ε : ℤˣ) :
     (N.φ σ).chernPart D ε = (L.φ σ).chernPart D ε := by
@@ -99,7 +99,7 @@ theorem Refines.chernPart (h : Refines N L π s) (σ : k →+* ℂ) (D : ℕ) (�
   rw [h.φ σ _ _ hw.2, Complex.ofReal_add]
 
 /- English proof (translation)
-Simplify using `only [Weight.chernInt, h.chernPart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Refines.chernInt (h : Refines N L π s) (σ : k →+* ℂ) (D : ℕ) (S : Set (CxPts p σ)) (f : CxPts p σ → ℝ) :
     (N.φ σ).chernInt D S f = (L.φ σ).chernInt D S f := by
@@ -110,7 +110,7 @@ section Rat
 variable [IsIntegral X] {r : L.B.ι → X.functionFieldˣ}
 
 /- English proof (translation)
-Introduce `c c' hc` and use `by have h' : genericPoint X ∈ L.B.U (π c) ⊓ L.B.U (π c') := ⟨h.le _ hc.1, h.le _ hc.2⟩ have e := congrArg Units.val (h.g X (𝟙 X) _ c c' hc.1 hc.2) rw [gm_val _ _ _ hc, gm_val _ _ _ h'] at e exact (hr _ _ h').trans (congrArg (· * _) e.symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Refines.isRatSec (h : Refines N L π s) (hr : IsRatSec L.B r) : IsRatSec N.B fun c => r (π c) :=
   fun c c' hc => by
@@ -120,7 +120,7 @@ theorem Refines.isRatSec (h : Refines N L π s) (hr : IsRatSec L.B r) : IsRatSec
   exact (hr _ _ h').trans (congrArg (· * _) e.symm)
 
 /- English proof (translation)
-The claim follows from `CartierDiv.ext_of_isEqn fun z => have ⟨i, hi⟩ := exists_chart N.isLB z ⟨r (π i), (presents_divOfRatSec _ (h.isRatSec hr)).isEqn i z hi, (presents_divOfRatSec _ hr).isEqn _ z (h.le _ hi)⟩`.
+A detailed English derivation is pending.
 -/
 theorem Refines.div (h : Refines N L π s) (hr : IsRatSec L.B r) : N.div (h.isRatSec hr) = L.div hr :=
   CartierDiv.ext_of_isEqn fun z =>
@@ -129,7 +129,7 @@ theorem Refines.div (h : Refines N L π s) (hr : IsRatSec L.B r) : N.div (h.isRa
       (presents_divOfRatSec _ hr).isEqn _ z (h.le _ hi)⟩
 
 /- English proof (translation)
-Establish `hi` using `mem_pick N.isLB y`. Rewrite using `[logNorm_eq (L.φ σ) hr hy (ptsIn_mono (h.le _) hi), Cartier.logNorm, h.φ σ _ y hi, Pi.zero_apply, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Refines.logNorm (h : Refines N L π 0) (hr : IsRatSec L.B r) {σ : k →+* ℂ} {y : CxPts p σ}
     (hy : y ∈ offSupp p σ (L.div hr)) : logNorm (N.φ σ) (fun c => r (π c)) y = logNorm (L.φ σ) r y := by
@@ -137,11 +137,9 @@ theorem Refines.logNorm (h : Refines N L π 0) (hr : IsRatSec L.B r) {σ : k →
   rw [logNorm_eq (L.φ σ) hr hy (ptsIn_mono (h.le _) hi), Cartier.logNorm, h.φ σ _ y hi, Pi.zero_apply, add_zero]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hd : Order.krullDim (IrreducibleCloseds X) ≤ 1` using `hX.dim_eq.le`. Establish `hcl : IsClosed {under y}`. Break down `Order.krullDim_le_one_iff.1 hd ⟨closure {under y}, isIrreducible_singleton.closure, isClosed_closure⟩ with h | h` into its components or cases. Rewrite using `[← closure_subset_iff_isClosed]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Use `@h ⟨closure {w}, isIrreducible_singleton.closure, isClosed_closure⟩ (closure_minimal (singleton_subset_iff.2 hw) isClosed_closure)` as an intermediate fact. Conclude with `((specializes_iff_mem_closure.2 (this (subset_closure rfl))).antisymm (specializes_iff_mem_closure.2 hw)).eq`. Conclude with `absurd (IsGenericPoint.eq (eq_univ_of_univ_subset (@h ⟨univ, IrreducibleSpace.isIrreducible_univ X, isClosed_univ⟩ (subset_univ _))) (genericPoint_spec X)) hne`. Use `hX.finite_residueField hcl` as an intermediate fact.
-
-Use `(Scheme.descResidueField (Scheme.stalkClosedPointTo y.1)).hom.charZero` as an intermediate fact. Conclude with `not_finite (X.residueField (under y))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem under_eq_genericPoint (hX : IsArithVar p 0) {σ : k →+* ℂ} (y : CxPts p σ) : under y = genericPoint X := by
   by_contra hne
@@ -164,7 +162,7 @@ theorem under_eq_genericPoint (hX : IsArithVar p 0) {σ : k →+* ℂ} (y : CxPt
 end Rat
 
 /- English proof (translation)
-The claim follows from `(H.vertical Z i κ d hd).trans (congrArg (fun n : ℤ => (n : ℝ) * _) (topSelf_congr κ (N.restr i).isLB (L.restr i).isLB (h.pull i rfl).lbIso d)) point Z i _ _ _ hc hd r hr := by have h' := h.pull i rfl rw [H.point Z i hc hd _ (h'.isRatSec hr), HermLB.curveDeg, HermLB.curveDeg, h'.d …`.
+A detailed English derivation is pending.
 -/
 theorem Refines.isArithHeight {D : ℕ} (hX : IsArithVar p D) (h : Refines N L π 0) {f : X → ℝ}
     (H : N.IsArithHeight f) : L.IsArithHeight f where
@@ -190,23 +188,23 @@ theorem Refines.isArithHeight {D : ℕ} (hX : IsArithVar p D) (h : Refines N L �
     exact Weight.chernInt_congr (isOpen_offSupp _).measurableSet fun y hy => h''.logNorm hr hy
 
 /- English proof (translation)
-The claim follows from `funext e ▸ h`.
+A detailed English derivation is pending.
 -/
 theorem Refines.congr (h : Refines N L π s) (e : ∀ σ, s σ = s' σ) : Refines N L π s' := funext e ▸ h
 
 /- English proof (translation)
-The claim follows from `funext e ▸ h`.
+A detailed English derivation is pending.
 -/
 theorem Const.congr (h : Const T s) (e : ∀ σ, s σ = s' σ) : Const T s' := funext e ▸ h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ _ => map_one _, fun _ _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem const_triv : Const (HermLB.triv p) 0 :=
   ⟨fun _ _ _ _ _ _ _ => map_one _, fun _ _ _ _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `(gm_pow T m r z c c' hc hc').trans (by rw [h.g Z r z _ _ (mem_iInter.1 hc PUnit.unit) (mem_iInter.1 hc' PUnit.unit), one_pow]) φ σ c y hy := ((T.φ σ).zpow_φ m c y).trans (by rw [h.φ σ _ _ (mem_pow_iff.1 hy), Int.cast_natCast])`.
+A detailed English derivation is pending.
 -/
 theorem Const.pow (h : Const T s) (m : ℕ) : Const (T.pow m) fun σ => m * s σ where
   g Z r z c c' hc hc' := (gm_pow T m r z c c' hc hc').trans (by
@@ -214,14 +212,14 @@ theorem Const.pow (h : Const T s) (m : ℕ) : Const (T.pow m) fun σ => m * s σ
   φ σ c y hy := ((T.φ σ).zpow_φ m c y).trans (by rw [h.φ σ _ _ (mem_pow_iff.1 hy), Int.cast_natCast])
 
 /- English proof (translation)
-The claim follows from `(gm_pow L 0 r z c c' hc hc').trans (pow_zero _) φ σ c y _ := ((L.φ σ).zpow_φ (0 : ℕ) c y).trans (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem const_pow_zero (L : HermLB p) : Const (L.pow 0) 0 where
   g Z r z c c' hc hc' := (gm_pow L 0 r z c c' hc hc').trans (pow_zero _)
   φ σ c y _ := ((L.φ σ).zpow_φ (0 : ℕ) c y).trans (by simp)
 
 /- English proof (translation)
-The claim follows from `mem_iInter.1 hy PUnit.unit g Z r z c c' hc hc' := (gm_pow L 1 r z c c' hc hc').trans (pow_one _) φ σ c y _ := ((L.φ σ).zpow_φ (1 : ℕ) c y).trans (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem refines_pow_one (L : HermLB p) : Refines (L.pow 1) L (fun c => c PUnit.unit) 0 where
   le _ _ hy := mem_iInter.1 hy PUnit.unit
@@ -229,14 +227,14 @@ theorem refines_pow_one (L : HermLB p) : Refines (L.pow 1) L (fun c => c PUnit.u
   φ σ c y _ := ((L.φ σ).zpow_φ (1 : ℕ) c y).trans (by simp)
 
 /- English proof (translation)
-The claim follows from `(map_inv _ _).trans (inv_eq_one.2 (h.g Z r z c c' hc hc')) φ σ c y hy := congrArg (- ·) (h.φ σ c y hy)`.
+A detailed English derivation is pending.
 -/
 theorem Const.dual (h : Const T s) : Const T.dual (-s) where
   g Z r z c c' hc hc' := (map_inv _ _).trans (inv_eq_one.2 (h.g Z r z c c' hc hc'))
   φ σ c y hy := congrArg (- ·) (h.φ σ c y hy)
 
 /- English proof (translation)
-The claim follows from `(gm_tens _ _ r z c c' hc hc').trans (by rw [h.g Z r z _ _ hc.1 hc'.1, h'.g Z r z _ _ hc.2 hc'.2, one_mul]) φ σ c y hy := congrArg₂ (· + ·) (h.φ σ _ y (mem_ptsIn_inf.1 hy).1) (h'.φ σ _ y (mem_ptsIn_inf.1 hy).2)`.
+A detailed English derivation is pending.
 -/
 theorem Const.tens (h : Const T s) (h' : Const T' s') : Const (T.tens T') (s + s') where
   g Z r z c c' hc hc' := (gm_tens _ _ r z c c' hc hc').trans (by
@@ -244,7 +242,7 @@ theorem Const.tens (h : Const T s) (h' : Const T' s') : Const (T.tens T') (s + s
   φ σ c y hy := congrArg₂ (· + ·) (h.φ σ _ y (mem_ptsIn_inf.1 hy).1) (h'.φ σ _ y (mem_ptsIn_inf.1 hy).2)
 
 /- English proof (translation)
-The claim follows from `inf_le_left.trans (h.le _) g Z r z c c' hc hc' := (gm_tens _ _ r z c c' hc hc').trans (by rw [h.g Z r z _ _ hc.1 hc'.1, h'.g Z r z _ _ hc.2 hc'.2, mul_one]) φ σ c y hy := (congrArg₂ (· + ·) (h.φ σ _ y (mem_ptsIn_inf.1 hy).1) (h'.φ σ _ y (mem_ptsIn_inf.1 hy).2)).trans (add_assoc _ …`.
+A detailed English derivation is pending.
 -/
 theorem Refines.tens_const (h : Refines N L π s) (h' : Const T s') :
     Refines (N.tens T) L (fun c => π c.1) (s + s') where
@@ -255,7 +253,7 @@ theorem Refines.tens_const (h : Refines N L π s) (h' : Const T s') :
     (h'.φ σ _ y (mem_ptsIn_inf.1 hy).2)).trans (add_assoc _ _ _)
 
 /- English proof (translation)
-The claim follows from `inf_le_right.trans (h.le _) g Z r z c c' hc hc' := (gm_tens _ _ r z c c' hc hc').trans (by rw [h.g Z r z _ _ hc.2 hc'.2, h'.g Z r z _ _ hc.1 hc'.1, one_mul]) φ σ c y hy := (congrArg₂ (· + ·) (h'.φ σ _ y (mem_ptsIn_inf.1 hy).1) (h.φ σ _ y (mem_ptsIn_inf.1 hy).2)).trans (add_left_c …`.
+A detailed English derivation is pending.
 -/
 theorem Const.tens_refines (h' : Const T s') (h : Refines N L π s) :
     Refines (T.tens N) L (fun c => π c.2) (s' + s) where
@@ -266,7 +264,7 @@ theorem Const.tens_refines (h' : Const T s') (h : Refines N L π s) :
     (h.φ σ _ y (mem_ptsIn_inf.1 hy).2)).trans (add_left_comm _ _ _)
 
 /- English proof (translation)
-Use `((h.pow n.toNat).tens (h.pow (-n).toNat).dual).congr fun σ => ?_` and prove the remaining obligations. Establish `e : ((n.toNat : ℤ) : ℝ) - (((-n).toNat : ℤ) : ℝ) = n` using `by exact_mod_cast n.toNat_sub_toNat_neg`. Simplify using `only [Int.cast_natCast] at e`. Simplify using `only [Pi.add_apply, Pi.neg_apply]`. Take the linear combination `(s σ) * e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Const.zp (h : Const T s) (n : ℤ) : Const (zp T n) fun σ => n * s σ := by
   refine ((h.pow n.toNat).tens (h.pow (-n).toNat).dual).congr fun σ => ?_
@@ -276,7 +274,7 @@ theorem Const.zp (h : Const T s) (n : ℤ) : Const (zp T n) fun σ => n * s σ :
   linear_combination (s σ) * e
 
 /- English proof (translation)
-Establish `h` using `(refines_pow_one L).tens_const (const_pow_zero L).dual`. Rewrite `h` using `[neg_zero, add_zero]`. Conclude with `⟨_, h⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_refines_zp_one (L : HermLB p) : ∃ π, Refines (zp L 1) L π 0 := by
   have h := (refines_pow_one L).tens_const (const_pow_zero L).dual
@@ -284,11 +282,11 @@ theorem exists_refines_zp_one (L : HermLB p) : ∃ π, Refines (zp L 1) L π 0 :
   exact ⟨_, h⟩
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨fun _ => const_triv, fun h => absurd h List.not_mem_nil⟩`. Consider the case `cons i l ih`. Take `⟨hi, hl⟩` from `List.nodup_cons.1 hl`. Take `⟨h₁, h₂⟩` from `ih hl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun hm => (h i fun e => hm (e ▸ List.mem_cons_self)).tens (h₁ fun e => hm (List.mem_cons_of_mem _ e)), fun hm => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : i = i₀`. Substitute `e` using the available equality. Take `⟨π, hπ⟩` from `h₀`. Conclude with `⟨_, hπ.tens_const (h₁ hi)⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨π, hπ⟩` from `h₂ ((List.mem_cons.1 hm).resolve_left (Ne.symm e))`. Conclude with `⟨_, (h i e).tens_refines hπ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem refines_foldr {κ : Type} (M : κ → HermLB p) (c : κ → (k →+* ℂ) → ℝ) (i₀ : κ)
     (h₀ : ∃ π, Refines (M i₀) L π (c i₀)) (h : ∀ i, i ≠ i₀ → Const (M i) (c i)) (l : List κ) (hl : l.Nodup) :
@@ -309,7 +307,7 @@ theorem refines_foldr {κ : Type} (M : κ → HermLB p) (c : κ → (k →+* ℂ
       exact ⟨_, (h i e).tens_refines hπ⟩
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `(refines_foldr (L := L) (fun i => zp (M i) (n i)) (fun i σ => if i = i₀ then 0 else n i * s σ) i₀ (by rw [h₀, hn]; exact (exists_refines_zp_one L).imp fun _ h => h.congr fun σ => (if_pos rfl).symm) (fun i hi => by simpa only [if_neg hi] using (h i hi).zp (n i)) _ (Finset.nodup_to …`. Use `⟨π, hπ.congr fun σ => Eq.symm ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_map_toList, Finset.sum_apply, ← Finset.add_sum_erase _ _ (Finset.mem_univ i₀), ← Finset.add_sum_erase _ _ (Finset.mem_univ i₀), if_pos rfl, hn, zero_add, add_sub_cancel_left, Int.cast_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i hi => (if_neg (Finset.ne_of_mem_erase hi)).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem refines_comb {κ : Type} [Fintype κ] (M : κ → HermLB p) (n : κ → ℤ) (i₀ : κ) (h₀ : M i₀ = L) (hn : n i₀ = 1)
     (h : ∀ i, i ≠ i₀ → Const (M i) s) : ∃ π, Refines (comb M n) L π fun σ => (∑ i, n i - 1 : ℤ) * s σ := by
@@ -327,15 +325,15 @@ theorem refines_comb {κ : Type} [Fintype κ] (M : κ → HermLB p) (n : κ → 
 open Polynomial in
 
 /- English proof (translation)
-Set `P (b : ℤ) : ℝ[X]` to `∑ j ∈ Finset.range (D + 1 + 1), monomial j (((D + 1).choose j : ℝ) * Φ (x ^ j * ((b : ℝ) • y + z) ^ (D + 1 - j)))`. Establish `hinf : (Set.range (Int.cast : ℤ → ℝ)).Infinite` using `Set.infinite_range_of_injective Int.cast_injective`. Establish `h₁ (a b : ℤ) : (P b).eval (a : ℝ) = G (a + b)`. Rewrite using `[← hG, add_pow, map_sum, eval_finset_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eval_monomial, _root_.smul_pow, mul_comm _ ((D + 1).choose j : R), ← nsmul_eq_mul (α := R), map_nsmul, smul_mul_assoc, map_smul, nsmul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h₂ (b : ℤ) : (P b).coeff 1 = (D + 1) * c`. Rewrite using `[finset_sum_coeff, Finset.sum_eq_single 1 (fun j _ hj => by rw [coeff_monomial, if_neg hj]) (by simp), coeff_monomial_same, pow_one, Nat.add_sub_cancel, hc, Nat.choose_one_right, Nat.cast_succ]`. Establish `h₃ (b : ℤ) : P b = taylor (b : ℝ) (P 0)` using `eq_of_infinite_eval_eq _ _ (hinf.mono (by`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[Set.mem_setOf_eq, taylor_eval, h₁, ← Int.cast_add, h₁, add_zero]))`. Establish `h₄ : derivative (P 0 - C ((D + 1) * c) * X) = 0` using `eq_of_infinite_eval_eq _ _ (hinf.mono (by`. Introduce and unpack `_ ⟨b, rfl⟩`. Use `h₂ b` as an intermediate fact.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `this` using `[h₃, taylor_coeff_one]`. Simplify using `[this]))`. Establish `h₅` using `eq_C_of_derivative_eq_zero h₄`. Establish `e₀` using `congrArg (eval ((0 : ℤ) : ℝ)) h₅`. Establish `e₁` using `congrArg (eval ((1 : ℤ) : ℝ)) h₅`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e₀`, `e₁` using `[eval_sub, h₁, eval_C, eval_mul, eval_C, eval_X]`. Simplify using `only [add_zero, Int.cast_zero, Int.cast_one] at e₀ e₁`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem step_of_linear {R : Type*} [CommRing R] [Algebra ℝ R] (Φ : R →ₗ[ℝ] ℝ) (x y z : R) (D : ℕ) (G : ℤ → ℝ) (c : ℝ)
     (hG : ∀ a b : ℤ, Φ (((a : ℝ) • x + ((b : ℝ) • y + z)) ^ (D + 1)) = G (a + b))
@@ -368,17 +366,17 @@ theorem step_of_linear {R : Type*} [CommRing R] [Algebra ℝ R] (Φ : R →ₗ[�
   linarith
 
 /- English proof (translation)
-Introduce `hE hC k _ X _ p D hX L a t ht ha`. Establish `hu (σ : k →+* ℂ) (y : CxPts p σ) : CInfAt (fun _ => 2 * t σ) y` using `cInfAt_const _ y`. Establish `hc (σ σ' : k →+* ℂ) : (Weight.ofFun (p` using `p) (σ := σ) fun _ => 2 * t σ).IsConj (Weight.ofFun (σ := σ') fun _ => 2 * t σ') := fun _ y y' h _ => congrArg (2 * ·) ((congrArg t (eq_conj_of_conj h)).trans (ht σ))`. Set `T` to `fnB (fun σ _ => 2 * t σ) hu hc`. Establish `hT : Const T fun σ => 2 * t σ` using `⟨fun _ _ _ _ _ _ _ => map_one _, fun _ _ _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `M : Option Unit → HermLB p` to `fun o => o.elim T fun _ => L`. Take `⟨Φ, hΦ⟩` from `((hE k X p D hX).2 _ fun o : Option (Option Unit) => o.elim T M).1`. Establish `hs (n : ℤ) (σ) : n * t ((starRingEnd ℂ).comp σ) = n * t σ` using `congrArg _ (ht σ)`. Use `choose f hf using fun n : ℤ => (hE k X p D hX).1 (L.shift (fun σ => n * t σ) (hs n))`. Establish `key` using `step_of_linear Φ (MvPolynomial.X none) (MvPolynomial.X (some none)) (MvPolynomial.X (some (some ()))) D (fun n => f n (genericPoint X)) (∑ᶠ σ, t σ * (L.φ σ).chernInt D Set.univ (fun _ => 1)) (fun a b => by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `n : Option (Option Unit) → ℤ` to `fun o => o.elim a fun o => o.elim b fun _ => 1`. Take `⟨π, hπ⟩` from `refines_comb (fun o : Option (Option Unit) => o.elim T M) n (some (some ())) rfl rfl (s := fun σ => 2 * t σ) (by rintro (_ | _ | _) h; exacts [hT, hT, absurd rfl h])`. Take `⟨g, hg, e⟩` from `hΦ.1 n`. Establish `hπ' : Refines _ L π fun σ => 2 * (((a + b : ℤ) : ℝ) * t σ)`. Use `hπ.congr fun σ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[n, Fintype.sum_option]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← ((hπ'.shift (hs _)).isArithHeight hX hg).unique hX (hf _), e]`. Simplify using `[lin, n, Fintype.sum_option, MvPolynomial.smul_eq_C_mul]) (fun b => by`. Set `n : Option Unit → ℤ` to `fun o => o.elim b fun _ => 1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨π, hπ⟩` from `refines_comb (L := L) M n (some ()) rfl rfl (s := fun σ => 2 * t σ) (by rintro (_ | _) h; exacts [hT, absurd rfl h])`. Establish `e` using `hC k X p D hX _ M _ hu hc Φ hΦ n`. Rewrite `e` using `[chInt, mul_finsum]`. Use `Eq.trans ?_ (e.trans (finsum_congr fun σ => ?_))` and prove the remaining obligations. Simplify using `[lin, n, Fintype.sum_option, MvPolynomial.smul_eq_C_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hπ.chernInt, ← mul_one (2 * t σ), Weight.chernInt_const_mul] ring)`. Establish `hid (s : (k →+* ℂ) → ℝ) (hs) : Refines (L.shift s hs) L id fun σ => 2 * s σ` using `⟨fun _ => le_rfl, fun _ _ _ _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩`. Establish `h₀ : L.IsArithHeight (f 0)` using `((hid (fun σ => (0 : ℤ) * t σ) (hs 0)).congr fun σ => by simp).isArithHeight hX (hf 0)`. Establish `h₁ : (L.shift t ht).IsArithHeight (f 1)` using `(((hid (fun σ => (1 : ℤ) * t σ) (hs 1)).congr fun σ => by simp).shift ht).isArithHeight hX (hf 1)`. Conclude with `⟨_, h₁, key.trans (congrArg (· + _) (HermLB.IsSelfInter.unique hX ⟨_, h₀, rfl⟩ ha))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isSelfInter_shift : GlobalTheory.Published.ArExists → GlobalTheory.Published.ArChange → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (L : HermLB p) (a : ℝ) (t : (k →+* ℂ) → ℝ) (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ), L.IsSelfInter a → (L.shift t ht).IsSelfInter (a + ((D : ℝ) + 1) * ∑ᶠ σ, t σ * (L.φ σ).chernInt D Set.univ (fun _ => 1)) := by
   intro hE hC k _ X _ p D hX L a t ht ha

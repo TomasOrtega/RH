@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Member.TameDivOrd.tame_fixed_dvd_ord | exact GlobalTheory.Member.TameDivOrd.tame_fixed_dvd_ord | (intros; apply GlobalTheory.Member.TameDivOrd.tame_fixed_dvd_ord <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.tameInertia_fixed_dvd_valuation_order : ∀ (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W]
     (F : Type) [Field F] [Algebra (FractionRing W) F] (ϖ : W), Irreducible ϖ →

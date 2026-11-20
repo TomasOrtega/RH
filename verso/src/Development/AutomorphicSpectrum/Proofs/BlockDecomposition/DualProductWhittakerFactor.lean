@@ -17,7 +17,7 @@ open GlobalTheory.CompanionTheory.GL2Factorization
 namespace GlobalTheory.CompanionTheory.GL2Factorization.Dual
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h` using `congrArg (fun x : GL (Fin n) (Qv v) => x.val j i) (Reduction.finAt_inv v g)`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finAt_ti {n : ℕ} (v : Pl) (g : GL (Fin n) 𝔸[ℚ]) :
     finAt v (ti g) = GL2LocalData.tinv (finAt v g) := by
@@ -26,33 +26,33 @@ theorem finAt_ti {n : ℕ} (v : Pl) (g : GL (Fin n) 𝔸[ℚ]) :
   exact h
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | rfl | simp [w3, GL2LocalData.w3, Reduction.finAt_apply] <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem finite_component_weyl_GL3 (v : Pl) : finAt v (w3 : G3) = GL2LocalData.w3 := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   fin_cases i <;> fin_cases j <;> first | rfl | simp [w3, GL2LocalData.w3, Reduction.finAt_apply] <;> rfl
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | rfl | simp [w2, GL2LocalData.w2, Reduction.finAt_apply] <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem finite_component_weyl_GL2 (v : Pl) : finAt v (w2 : G2) = GL2LocalData.w2 := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   fin_cases i <;> fin_cases j <;> first | rfl | simp [w2, GL2LocalData.w2, Reduction.finAt_apply] <;> rfl
 
 /- English proof (translation)
-Simplify using `[GP.gR, Reduction.infAt_mul, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gR_mul (g h : G3) : GP.gR (g * h) = GP.gR g * GP.gR h := by
   simp [GP.gR, Reduction.infAt_mul, map_mul]
 
 /- English proof (translation)
-Simplify using `[GP.gR, Reduction.infAt_inv, map_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gR_inv (g : G3) : GP.gR g⁻¹ = (GP.gR g)⁻¹ := by
   simp [GP.gR, Reduction.infAt_inv, map_inv]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(GP.gR (ti g)).val i j = ((GP.gR g)⁻¹ : GL (Fin 3) ℝ).val j i`. Rewrite using `[← gR_inv]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gR_ti (g : G3) : GP.gR (ti g) = GL2LocalData.tinvR (GP.gR g) := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -61,14 +61,14 @@ theorem gR_ti (g : G3) : GP.gR (ti g) = GL2LocalData.tinvR (GP.gR g) := by
   rfl
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [GP.gR, w3, GL2LocalData.w3R, Reduction.infAt_apply] <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem real_component_weyl_GL3 : GP.gR (w3 : G3) = GL2LocalData.w3R := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   fin_cases i <;> fin_cases j <;> simp [GP.gR, w3, GL2LocalData.w3R, Reduction.infAt_apply] <;> rfl
 
 /- English proof (translation)
-Rewrite using `[gR_mul, real_component_weyl_GL3, gR_ti]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gR_dual (g : G3) : GP.gR (w3 * ti g) = GL2LocalData.w3R * GL2LocalData.tinvR (GP.gR g) := by
   rw [gR_mul, real_component_weyl_GL3, gR_ti]
@@ -76,19 +76,19 @@ theorem gR_dual (g : G3) : GP.gR (w3 * ti g) = GL2LocalData.w3R * GL2LocalData.t
 local notation "rP" => GroundTheory.Automorphic.GL2Classical.realPart
 
 /- English proof (translation)
-Simplify using `[GroundTheory.Automorphic.GL2Classical.realPart, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rP_mul (g h : G2) : rP (g * h) = rP g * rP h := by
   simp [GroundTheory.Automorphic.GL2Classical.realPart, map_mul]
 
 /- English proof (translation)
-Simplify using `[GroundTheory.Automorphic.GL2Classical.realPart, map_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rP_inv (g : G2) : rP g⁻¹ = (rP g)⁻¹ := by
   simp [GroundTheory.Automorphic.GL2Classical.realPart, map_inv]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(rP (ti g)).val i j = ((rP g)⁻¹ : GL (Fin 2) ℝ).val j i`. Rewrite using `[← rP_inv]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rP_ti (g : G2) : rP (ti g) = GL2LocalData.tinvR (rP g) := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -97,7 +97,7 @@ theorem rP_ti (g : G2) : rP (ti g) = GL2LocalData.tinvR (rP g) := by
   rfl
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [GroundTheory.Automorphic.GL2Classical.realPart, w2, GL2LocalData.w2R, AdelicGLn.prodEquiv_apply_fst] <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem real_component_weyl_GL2 : rP (w2 : G2) = GL2LocalData.w2R := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -105,9 +105,9 @@ theorem real_component_weyl_GL2 : rP (w2 : G2) = GL2LocalData.w2R := by
     simp [GroundTheory.Automorphic.GL2Classical.realPart, w2, GL2LocalData.w2R, AdelicGLn.prodEquiv_apply_fst] <;> rfl
 
 /- English proof (translation)
-Use `⟨funext fun g => ?_, funext fun h => ?_⟩` and prove the remaining obligations. Establish `hv : ∀ v : Pl, finAt v ((w3 : G3) * ti g) = GL2LocalData.w3 * GL2LocalData.tinv (finAt v g)` using `fun v => by`. Rewrite using `[Reduction.finAt_mul, finite_component_weyl_GL3, finAt_ti]`. Simplify using `only [dualWhittakerAdelicGL3, GP.pw, GL2LocalData.dW3R, GL2LocalData.dW3, gR_dual, hv]`. Establish `hv : ∀ v : Pl, finAt v ((w2 : G2) * ti h) = GL2LocalData.w2 * GL2LocalData.tinv (finAt v h)` using `fun v => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Reduction.finAt_mul, finite_component_weyl_GL2, finAt_ti]`. Simplify using `only [dualWhittakerAdelic, pw2, GL2LocalData.dW2R, GL2LocalData.dW2, rP_mul, real_component_weyl_GL2, rP_ti, hv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dual_pure (Wi : GL (Fin 3) ℝ → ℂ) (Wt : GL (Fin 2) ℝ → ℂ) (Wf : ∀ v : Pl, GL (Fin 3) (Qv v) → ℂ)
     (Wtf : ∀ v : Pl, GL (Fin 2) (Qv v) → ℂ) :

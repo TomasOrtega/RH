@@ -32,7 +32,7 @@ def PtCond (I : TateIso D k Q act pr) (M : ℕ) (w : kˣ) (e f : 𝓞 E) {J : Ty
   y ^ M = 1 ∧ act e y = I.ev M (e • a) ∧ ∀ j, pr M y (I.ev M (f • rep j)) (w ^ D.EF b (f • rep j))
 
 /- English proof (translation)
-Rewrite using `[← hw.zpow_eq_one_iff_dvd, zpow_sub, mul_inv_eq_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zpow_congr {M : ℕ} {w : kˣ} (hw : IsPrimitiveRoot w M) {m n : ℤ} :
     w ^ m = w ^ n ↔ (M : ℤ) ∣ m - n := by
@@ -44,13 +44,13 @@ variable (I : TateIso D k Q act pr) {M : ℕ} (hM : 0 < M) {w : kˣ} (hw : IsPri
 
 include hM hw ht hf in
 /- English proof (translation)
-Take `⟨v, -, hv⟩` from `exists_coprime_zpow hM (I.ζ_prim M hM) hw`. Establish `hs : ∀ x : D.La, (e * (1 - e)) • x = M • (t • x)` using `fun x => by`. Rewrite using `[ht, mul_smul, Nat.cast_smul_eq_nsmul]`. Use `⟨I.ev M (e • a + (1 - e) • v • b), (I.onto M hM _).2 ⟨_, rfl⟩, ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← I.lin, tateIso_ev_eq_iff I hM]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨t • (v • b - a), ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Use `module`. Establish `h` using `I.isom M hM (e • a + (1 - e) • v • b) (f • rep j)`. Rewrite using `[hv, ← zpow_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(zpow_congr (I.ζ_prim M hM)).2 ?_ ▸ h` and prove the remaining obligations. Establish `e1 : (1 - e) • (e • a + (1 - e) • v • b) = v • (1 - e) • b + M • (t • (a - v • b))`. Rewrite using `[← hs]`. Use `module`. Rewrite using `[hf, hf, e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨D.EF (t • (a - v • b)) (rep j), ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_nsmul, map_zsmul, LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_ptCond (a b : D.La) : ∃ y, PtCond I M w e f rep a b y := by
   obtain ⟨v, -, hv⟩ := exists_coprime_zpow hM (I.ζ_prim M hM) hw
@@ -74,13 +74,13 @@ theorem exists_ptCond (a b : D.La) : ∃ y, PtCond I M w e f rep a b y := by
 
 include hM hw hf hrep in
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `(I.onto M hM y).1 h.1`. Take `⟨x', rfl⟩` from `(I.onto M hM y').1 h'.1`. Take `⟨c, hc⟩` from `(tateIso_ev_eq_iff I hM _ _).1 ((I.lin M e x).trans (h.2.1.trans (h'.2.1.symm.trans (I.lin M e x').symm)))`. Establish `h1 : ∀ z, (M : ℤ) ∣ D.EF ((1 - e) • (x - x')) z` using `fun z => by`. Take `⟨j, d, rfl⟩` from `hrep z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `(zpow_congr (I.ζ_prim M hM)).1 ((hu _ _ _ _ (I.isom M hM x _) (h.2.2 j)).trans (hu _ _ _ _ (h'.2.2 j) (I.isom M hM x' _)))`. Rewrite `h2` using `[hf, hf, ← LinearMap.sub_apply, ← map_sub, ← smul_sub]`. Rewrite using `[map_add, map_nsmul, nsmul_eq_mul]`. Conclude with `dvd_add h2 (dvd_mul_right _ _)`. Use `choose g hg using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hM' : (M : ℤ) ≠ 0` using `Nat.cast_ne_zero.2 hM.ne'`. Set `φ : D.La →ₗ[ℤ] ℤ` to `AddMonoidHom.toIntLinearMap (AddMonoidHom.mk' g fun z z' => mul_left_cancel₀ hM' (by rw [mul_add, ← hg, ← hg, ← hg, map_add]))`. Take `⟨c', hc'⟩` from `D.unimod.2 φ`. Establish `h3 : (1 - e) • (x - x') = M • c'` using `D.unimod.1 (LinearMap.ext fun z => by`. Rewrite using `[hg, map_nsmul, hc', LinearMap.smul_apply, nsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `rfl)`. Rewrite using `[tateIso_ev_eq_iff I hM]`. Use `⟨c + c', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← hc, ← h3]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptCond_unique (hu : ∀ x y c c', pr M x y c → pr M x y c' → c = c') {a b : D.La} {y y' : Q}
     (h : PtCond I M w e f rep a b y) (h' : PtCond I M w e f rep a b y') : y = y' := by
@@ -110,13 +110,13 @@ theorem ptCond_unique (hu : ∀ x y c c', pr M x y c → pr M x y c' → c = c')
 
 include hM hw hrep in
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `(I.onto M hM y).1 hy`. Take `⟨v, -, hv⟩` from `exists_coprime_zpow hM hw (I.ζ_prim M hM)`. Take `⟨i, d, hi⟩` from `hrep x`. Take `⟨j, d', hj⟩` from `hrep (v • x)`. Use `⟨i, j, hy, ?_, fun c => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← I.lin, tateIso_ev_eq_iff I hM]`. Use `⟨e • d, ?_⟩` and prove the remaining obligations. Rewrite using `[hi]`. Use `module`. Establish `h` using `I.isom M hM x (f • rep c)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hv, ← zpow_mul]`. Use `(zpow_congr hw).2 ?_ ▸ h` and prove the remaining obligations. Use `⟨D.EF d' (f • rep c), ?_⟩` and prove the remaining obligations. Use `congrArg (fun z => D.EF z (f • rep c)) hj` as an intermediate fact. Simplify using `only [map_add, map_nsmul, map_zsmul, LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul, smul_eq_mul] at this`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem exists_index {y : Q} (hy : y ^ M = 1) : ∃ i j, PtCond I M w e f rep (rep i) (rep j) y := by
   obtain ⟨x, rfl⟩ := (I.onto M hM y).1 hy
@@ -144,11 +144,11 @@ section Clopen
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨U, hU, HU⟩` from `hP`. Take `⟨V, i, h1, h2, h3, Hi⟩` from `exists_sub U hU`. Establish `: IsFinite (𝟙_ (Over S)).hom` using `inferInstanceAs (IsFinite (𝟙 S))`. Establish `: Etale (𝟙_ (Over S)).hom` using `inferInstanceAs (Etale (𝟙 S))`. Establish `: IsIso (toUnit V)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(FinEt.isIso_iff_bijective_over_algClosed _).2 fun k _ _ x => ?_` and prove the remaining obligations. Take `⟨z, hz, hu⟩` from `h k x`. Take `⟨v, -⟩` from `(Hi _ z).1 ((HU _ z).1 hz)`. Use `⟨fun v₁ v₂ _ => (cancel_mono i).1 ?_, fun y => ⟨v, toUnit_unique _ _⟩⟩` and prove the remaining obligations. Conclude with `(hu _ ((HU _ _).2 ((Hi _ _).2 ⟨v₁, rfl⟩))).trans (hu _ ((HU _ _).2 ((Hi _ _).2 ⟨v₂, rfl⟩))).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨inv (toUnit V) ≫ i, fun T z => ?_⟩` and prove the remaining obligations. Rewrite using `[HU, Hi]`. Use `⟨?_, fun e => ⟨toUnit T ≫ inv (toUnit V), by rw [e, Category.assoc]⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨v, rfl⟩`. Rewrite using `[toUnit_unique (toUnit T) (v ≫ toUnit V), Category.assoc, IsIso.hom_inv_id_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section {Z : Over S} [IsFinite Z.hom] [Etale Z.hom] {P : ∀ T : Over S, (T ⟶ Z) → Prop}
     (hP : ClopenCond Z P)
@@ -171,7 +171,7 @@ theorem exists_section {Z : Over S} [IsFinite Z.hom] [Etale Z.hom] {P : ∀ T : 
   rw [toUnit_unique (toUnit T) (v ≫ toUnit V), Category.assoc, IsIso.hom_inv_id_assoc]
 
 /- English proof (translation)
-The claim follows from `(LatticeTorsion.existsUnique_torsion G n (u' ≫ torsion.ι G n) (by rw [← MonObj.comp_pow, LatticeTorsion.torsionι_pow_eq_one, MonObj.comp_one])).unique h rfl`.
+A detailed English derivation is pending.
 -/
 theorem torsion_ext (G : Over S) [GrpObj G] (n : ℕ) {T : Over S} {u u' : T ⟶ torsion G n}
     (h : u ≫ torsion.ι G n = u' ≫ torsion.ι G n) : u = u' :=
@@ -179,7 +179,7 @@ theorem torsion_ext (G : Over S) [GrpObj G] (n : ℕ) {T : Over S} {u u' : T ⟶
     (by rw [← MonObj.comp_pow, LatticeTorsion.torsionι_pow_eq_one, MonObj.comp_one])).unique h rfl
 
 /- English proof (translation)
-Take `⟨u, rfl, -⟩` from `LatticeTorsion.existsUnique_torsion G n x hx`. Take `⟨u', rfl, -⟩` from `LatticeTorsion.existsUnique_torsion G n y hy`. Use `(clopenCond_eq u u').congr fun T' h => ⟨fun H => torsion_ext G n ?_, fun H => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, H]`. Rewrite using `[← Category.assoc, H, Category.assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem clopenCond_torsion_eq {G : Over S} [GrpObj G] {n : ℕ} [IsFinite (torsion G n).hom] [Etale (torsion G n).hom]
     {T : Over S} {x y : T ⟶ G} (hx : x ^ n = 1) (hy : y ^ n = 1) : ClopenCond T fun _ h => h ≫ x = h ≫ y := by
@@ -190,7 +190,7 @@ theorem clopenCond_torsion_eq {G : Over S} [GrpObj G] {n : ℕ} [IsFinite (torsi
   · rw [← Category.assoc, H, Category.assoc]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `(congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of L)).inv.hom c)) (Scheme.Hom.comp_appTop h g)).symm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem map_fnOn_comp {L : Type} [CommRing L] {T T' : Scheme.{0}} (g : T ⟶ Sp L) (h : T' ⟶ T) (c : Lˣ) :
     Units.map h.appTop.hom.toMonoidHom (Units.map (fnOn g).toMonoidHom c) =
@@ -200,7 +200,7 @@ theorem map_fnOn_comp {L : Type} [CommRing L] {T T' : Scheme.{0}} (g : T ⟶ Sp 
     (Scheme.Hom.comp_appTop h g)).symm
 
 /- English proof (translation)
-Rewrite using `[← map_fnOn (𝟙 _) (spMap β) β (Category.comp_id _), map_fnOn_comp, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_fnOn_spMap {L k : Type} [CommRing L] [CommRing k] (β : L →+* k) (c : Lˣ) :
     Units.map (fnOn (spMap β)).toMonoidHom c = unitOn (Units.map β.toMonoidHom c) := by
@@ -220,15 +220,15 @@ def SecCond (o : Obj D l b s) (sF : S ⟶ Sp F) (z : Fˣ) (e f : 𝓞 E) {J : Ty
       (Units.map (fnOn (T.hom ≫ sF)).toMonoidHom (z ^ D.EF a' (f • rep j)))
 
 /- English proof (translation)
-Rewrite using `[← add_map_nsmul o.eta_add, o.eta_ker _ (nsmul_M_mem l a)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_pow (o : Obj D l b s) (a : D.La) : o.eta a ^ l.M = 1 := by
   rw [← add_map_nsmul o.eta_add, o.eta_ker _ (nsmul_M_mem l a)]
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `exists_spMap (x ≫ s)`. Take `⟨δ, hδ⟩` from `exists_spMap (x ≫ sF)`. Take `⟨-, I, -, -, hI⟩` from `o.geom k x β hβ`. Use `⟨I, Units.map δ.toMonoidHom z, hz.map_of_injective (Units.map_injective δ.injective), fun e he f hf J rep a a' y => ?_⟩` and prove the remaining obligations. Use `and_congr Iff.rfl (and_congr ?_ (forall_congr' fun j => ?_))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hI _ (Submodule.smul_mem_smul he Submodule.mem_top)]`. Rewrite using `[hI _ (Submodule.smul_mem_smul hf Submodule.mem_top)]`. Use `iff_of_eq (congrArg (Out.WeilIs o.t.G o.t.PP.L l.M y _) ?_)` and prove the remaining obligations. Use `show Units.map (fnOn (x ≫ sF)).toMonoidHom _ = _`. Rewrite using `[hδ, map_fnOn_spMap, map_zpow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_secCond_iff (o : Obj D l b s) (sF : S ⟶ Sp F) {z : Fˣ} (hz : IsPrimitiveRoot z l.M)
     {k : Type} [Field k] [IsAlgClosed k] (x : Sp k ⟶ S) :
@@ -247,21 +247,19 @@ theorem exists_secCond_iff (o : Obj D l b s) (sF : S ⟶ Sp F) {z : Fˣ} (hz : I
     rw [hδ, map_fnOn_spMap, map_zpow]
 
 /- English proof (translation)
-Establish `hu : ∀ {T : Scheme.{0}} (g : T ⟶ S), IsUnit (l.M : Γ(T, ⊤))` using `fun g => by`. Use `(b.unit l.M (M_pos l)).map (fnOn (g ≫ s))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hab` using `ObjDim.isAbelianScheme o`. Take `⟨-, hfin, het⟩` from `GrpTangent.finiteEtale_mulN_torsion o.t.G (hu (𝟙 S))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hι` using `LatticeTorsion.torsionι_pow_eq_one o.t.G l.M`. Establish `hη : ∀ (T : Over S) c, (toUnit T ≫ o.eta c) ^ l.M = 1` using `fun T c => by`. Rewrite using `[← MonObj.comp_pow, eta_pow, MonObj.comp_one]`. Establish `hact` using `o.t.act.hom e`. Establish `c1` using `clopenCond_torsion_eq (n := l.M) (x := torsion.ι o.t.G l.M ≫ o.t.act.act e) (by rw [← MonObj.pow_comp, hι, MonObj.one_comp]) (hη _ (e • a))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2` using `ClopenCond.forall_finite (T := torsion o.t.G l.M) (J := J) fun j => PairingLocus.exists_clopen_of_isLocallyNoetherian hL S (Obj.toPolAV o) l.M (torsion o.t.G l.M) (torsion.ι o.t.G l.M) (toUnit _ ≫ o.eta (H.bar (1 - e) • rep j)) (Units.map (fnOn ((torsion o.t.G l.M).hom ≫ sF)).toM …`. Rewrite using `[← map_pow, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hz.pow_eq_one, one_zpow, map_one])`. Establish `c3 : ClopenCond (torsion o.t.G l.M) fun T h => SecCond o sF z e (H.bar (1 - e)) rep a a' T (h ≫ torsion.ι o.t.G l.M)`. Use `(c1.and c2).congr fun T h => ?_` and prove the remaining obligations. Establish `h1 : ∀ c, h ≫ toUnit _ ≫ o.eta c = toUnit T ≫ o.eta c` using `fun c => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, toUnit_unique (h ≫ toUnit _) (toUnit T)]`. Use `(and_iff_right (by rw [← MonObj.comp_pow, hι, MonObj.comp_one])).trans (and_congr (by rw [h1, Category.assoc]) (forall_congr' fun j => ?_))` and prove the remaining obligations. Rewrite using `[map_fnOn_comp, ← Category.assoc h.left, Over.w h]`. Conclude with `iff_of_eq (congrArg (fun y => Out.WeilIs o.t.G o.t.PP.L l.M _ y _) (h1 _).symm)`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, e * (1 - e) = l.M * t := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (1 - e) * e ∈ Ideal.span {(l.M : 𝓞 E)}` using `l.prod ▸ Ideal.mul_mem_mul he' he`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton.1 this`. Conclude with `⟨t, by rw [mul_comm e, ht]⟩`. Establish `hf : ∀ x c, D.EF x (H.bar (1 - e) • c) = D.EF ((1 - e) • x) c` using `fun x c => (D.adj _ _ _).symm`. Take `⟨σ, hσ⟩` from `exists_section c3 fun k _ _ x => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨I, w, hw, HI⟩` from `exists_secCond_iff o sF hz x`. Use `replace HI := HI e he _ (Ideal.mem_map_of_mem _ he') J rep a a'`. Take `⟨y, hy⟩` from `exists_ptCond I (M_pos l) hw ht hf (rep := rep) a a'`. Take `⟨u, rfl, -⟩` from `LatticeTorsion.existsUnique_torsion o.t.G l.M y hy.1`. Conclude with `⟨u, (HI _).2 hy, fun u' hu' => torsion_ext _ _ (ptCond_unique I (M_pos l) hw hf hrep (fun y y' c c' => weilIs_unique_fieldPoint S o.t.G o.t.PP.L o.t.PP.isLB k x l.M y y' c c') ((HI _).1 hu') hy)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨σ ≫ torsion.ι o.t.G l.M, fun T y => ⟨fun hy => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨u, rfl, -⟩` from `LatticeTorsion.existsUnique_torsion o.t.G l.M y hy.1`. Rewrite using `[(hσ T u).1 hy, Category.assoc]`. Introduce and unpack `rfl`. Rewrite using `[← Category.assoc]`.
-
-Conclude with `(hσ T _).2 rfl`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section_secCond (hL : Out.Laws) [IsLocallyNoetherian S] (o : Obj D l b s) (sF : S ⟶ Sp F) {z : Fˣ}
     (hz : IsPrimitiveRoot z l.M) {e : 𝓞 E} (he : e ∈ Mc l) (he' : 1 - e ∈ l.Mb) {J : Type} [Finite J]
@@ -314,9 +312,9 @@ theorem exists_section_secCond (hL : Out.Laws) [IsLocallyNoetherian S] (o : Obj 
     exact (hσ T _).2 rfl
 
 /- English proof (translation)
-Establish `h1 : ∀ c, (toUnit (Over.mk (T.hom ≫ r)) ≫ o.eta c).left = (toUnit T ≫ o.eta c).left ≫ ν.φ` using `fun c => by`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hν, ObjPull.toUnit_left', ObjPull.toUnit_left']`. Conclude with `Category.assoc _ _ _`. Use `⟨by rw [← map_pow, h.1, map_one], ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← pushEquiv_act, h.2.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Over.OverMorphism.ext (h1 _).symm`. Establish `h2` using `(weilIs_grpPullback_of_comm _ _ o.t.G o.t.G r ν.cm.F o.t.PP.L o.t.PP.L o.t.PP.isLB o.t.PP.isLB ν.cart (sabMap_lbIso ν) T l.M _ _ (ObjPull.pushEquiv ν.cart T y) _ _ rfl (h1 _)).1 (h.2.2 j)`. Establish `h3 : (Over.mk (T.hom ≫ r)).hom ≫ sF = T.hom ≫ sF` using `(Category.assoc _ _ _).trans (congrArg _ hr)`. Rewrite using `[h3]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SecCond.push {o : Obj D l b s} {sF : S ⟶ Sp F} {z : Fˣ} {e f : 𝓞 E} {J : Type} {rep : J → D.La}
     {a a' : D.La} {T : Over S} {y : T ⟶ o.t.G} (h : SecCond o sF z e f rep a a' T y) {r : S ⟶ S}
@@ -343,13 +341,13 @@ namespace GlobalTheory
 open LevCover TorsionSections
 
 /- English proof (translation)
-Introduce `hL _ _ E _ _ _ H D l B F _ _ b S s sF o z _ _ hz`. Take `⟨u, rfl⟩` from `hz.isUnit (M_pos l).ne'`. Establish `hu : IsPrimitiveRoot u l.M` using `IsPrimitiveRoot.coe_units_iff.1 hz`. Take `⟨e, he, he'⟩` from `exists_idem l`. Take `⟨_, _⟩` from `datum_free D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, _, q, hq⟩` from `exists_finite_mod D.La (M_pos l)`. Set `rep : Set.range q → D.La` to `fun c => c.2.choose`. Establish `hrep : ∀ a, ∃ j d, a = rep j + l.M • d` using `fun a => ⟨⟨q a, a, rfl⟩, hq _ _ (⟨a, rfl⟩ : q a ∈ Set.range q).choose_spec⟩`. Use `choose σ hσ using exists_section_secCond hL o sF hu he he' hrep`. Establish `h0 : ∀ a a', SecCond o sF u e (H.bar (1 - e)) rep a a' _ (σ a a')` using `fun a a' => (hσ a a' _ _).2 (by rw [toUnit_unique (toUnit _) (𝟙 _), Category.id_comp])`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Set.range q × Set.range q, inferInstance, fun i => σ (rep i.1) (rep i.2), fun i => (h0 _ _).1, fun k _ _ x y hy => ?_, fun r ν hr hν i => ?_⟩` and prove the remaining obligations. Take `⟨I, w, hw, HI⟩` from `exists_secCond_iff o sF hu x`. Take `⟨i, j, h⟩` from `exists_index I (M_pos l) hw (e := e) (f := H.bar (1 - e)) hrep hy`. Use `⟨(i, j), ?_⟩` and prove the remaining obligations. Rewrite using `[(hσ _ _ _ _).1 ((HI e he _ (Ideal.mem_map_of_mem _ he') _ rep _ _ y).2 h), Over.comp_left, ObjPull.toUnit_left']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h` using `congrArg Over.Hom.left ((hσ _ _ _ _).1 ((h0 (rep i.1) (rep i.2)).push ν hr hν))`. Rewrite `h` using `[Over.comp_left, ObjPull.toUnit_left']`. Conclude with `h.trans (congrArg (· ≫ _) (Category.id_comp r))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_torsion_sections_of_root : Out.Laws → Out.Laws2 → Out.Laws3 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B F : Type) [CommRing B] [Field F] (b : Base l B) (S : Scheme.{0}) (s : S ⟶ Sp B) (sF : S ⟶ Sp F) (o : Obj D l b s) (z : F), IsReduced S → IsLocallyNoetherian S → IsPrimitiveRoot z l.M → ∃ (I : Type) (_ : Finite I) (σ : I → (𝟙_ (Over S) ⟶ o.t.G)), (∀ i, σ i ^ l.M = 1) ∧ (∀ (k : Type) [Field k] [IsAlgClosed k] (u : Sp k ⟶ S) (y : Over.mk u ⟶ o.t.G), y ^ l.M = 1 → ∃ i, y.left = u ≫ (σ i).left) ∧ ∀ (r : S ⟶ S) (ν : SABMap o.t o.t r), r ≫ sF = sF → (∀ x, (o.eta x).left ≫ ν.φ = r ≫ (o.eta x).left) → ∀ i, (σ i).left ≫ ν.φ = r ≫ (σ i).left := by
   intro hL _ _ E _ _ _ H D l B F _ _ b S s sF o z _ _ hz

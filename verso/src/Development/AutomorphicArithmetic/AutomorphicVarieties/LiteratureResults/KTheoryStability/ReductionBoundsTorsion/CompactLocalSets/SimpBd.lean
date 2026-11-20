@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 namespace PositivityTheory.KB.LocalOverlapAverage
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ μ _ q A B hB`. Conclude with `SimpM.main μ q A B hB`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem simpBd_holds : SimpBd := by
   intro V _ _ _ _ _ μ _ q A B hB

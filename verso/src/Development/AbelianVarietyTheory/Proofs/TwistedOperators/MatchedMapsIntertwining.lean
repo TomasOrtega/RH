@@ -23,13 +23,13 @@ noncomputable section
 namespace GlobalTheory.HoweGlobal
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, by simp⟩`. Consider the case `tmul x y`. Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c φ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Use `⟨1, fun _ => c • x, fun _ => φ, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Consider the case `add y₁ y₂ h₁ h₂`. Take `⟨m₁, f₁, φ₁, e₁⟩` from `h₁`. Take `⟨m₂, f₂, φ₂, e₂⟩` from `h₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m₁ + m₂, Fin.append f₁ f₂, Fin.append φ₁ φ₂, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_add, e₁, e₂, Fin.sum_univ_add]`. Simplify using the standard rewrite rules. Consider the case `add t₁ t₂ h₁ h₂`. Take `⟨m₁, f₁, φ₁, e₁⟩` from `h₁`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m₂, f₂, φ₂, e₂⟩` from `h₂`. Use `⟨m₁ + m₂, Fin.append f₁ f₂, Fin.append φ₁ φ₂, ?_⟩` and prove the remaining obligations. Rewrite using `[e₁, e₂, Fin.sum_univ_add]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem decomp {M₀ : Type} [AddCommGroup M₀] [Module ℂ M₀] {ι : Type} [Fintype ι] {M : ι → Type}
     [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)] (t : M₀ ⊗[ℂ] (⨂[ℂ] i, M i)) :
@@ -55,19 +55,17 @@ theorem decomp {M₀ : Type} [AddCommGroup M₀] [Module ℂ M₀] {ι : Type} [
     simp
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM hfin hreal N hN T hT`. Take `⟨L, hL, hrange⟩` from `GlobalTheory.T.exists_linear_tensor_polyVacuum_pureTensors G.M Bs.ψ Bs.emb hM.triple.geo.hM.std T`. Establish `hloc` using `GlobalTheory.T.matched_maps_fourier_identity hP F E σ Bs a a' G Xc om om' R Rf hM hreal`. Establish `hfl` using `GlobalTheory.T.matched_maps_gaussian_transform F E σ Bs a a' G Xc om om' R Rf hM hfin`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.matched_maps_fourier_transform hP F E σ Bs a a' G Xc om om' R Rf hM N hN T L hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key` using `GlobalTheory.T.tensor_eq_top_or_le_ker_finiteLength_modules (ι := T) (M₀ := ↥(G.M.Pol Bs.ψ Bs.emb)) (M := fun v : T => ↥(SB (Fin a × Fin (a + a') → Fv F v.1))) (GlobalTheory.HoweGlobal.opInf Bs G om) (fun v => GlobalTheory.HoweGlobal.opFin G om v.1) (GlobalTheory.HoweGlobal.relIn …`. Break down `key with htop | hker` into its components or cases. Use `left`. Introduce `Φ hΦ`. Take `⟨t, rfl⟩` from `hrange hΦ`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht : t ∈ N.comap L` using `by rw [htop]; exact Submodule.mem_top`. Conclude with `ht`. Use `right`. Introduce `Φ hΦN hΦT`. Take `⟨t, rfl⟩` from `hrange hΦT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht0` using `hker (show t ∈ N.comap L from hΦN)`. Take `⟨m, f, φ, rfl⟩` from `decomp t`. Use `⟨T, hT, m, 0, fun j => ((f j : ↥(G.M.Pol Bs.ψ Bs.emb)) : SInf F (Fin a × Fin (a + a'))), fun j v => if h : v ∈ T then ((φ j ⟨v, h⟩ : ↥(SB _)) : (Fin a × Fin (a + a') → Fv F v) → ℂ) else G.M.vac v, Fin.elim0, Fin.elim0, fun j => ⟨(f j).2, fun v => ?_, fun v hv => by simp only [dif …` and prove the remaining obligations. Distinguish the cases in `h : v ∈ T`. Simplify using `only [dif_pos h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(φ j ⟨v, h⟩).2`. Simplify using `only [dif_neg h]`. Conclude with `(hM.triple.geo.hM.vac v).1`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => hL _ _ _ (fun v h => by simp only [dif_pos h]) (fun v h => by simp only [dif_neg h])`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `ht0` using `[LinearMap.mem_ker, map_sum]`. Rewrite using `[Fin.sum_univ_zero, ← ht0]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.map_tmul, PiTensorProduct.map_tprod]`.
-
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem stage : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
@@ -127,9 +125,9 @@ theorem stage : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] 
       simp
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM hfin hreal N hN hne ΦD hΦ`. Assume the negation of the conclusion as `hc`. Take `⟨T, hT, hΦT⟩` from `GlobalTheory.HoweGlobal.exists_algAt G.M Bs.ψ Bs.emb (hN.1.1 hΦ) Xc.T`. Apply `hne` to reduce the goal to its premises. Use `le_antisymm hN.1.1 fun Ψ hΨ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T', hT', hΨT'⟩` from `GlobalTheory.HoweGlobal.exists_algAt G.M Bs.ψ Bs.emb hΨ T`. Break down `stage hP F E σ Bs a a' G Xc om om' R Rf hM hfin hreal N hN T' (hT.trans hT') with h | h` into its components or cases. Conclude with `h hΨT'`. Conclude with `absurd (h ΦD hΦ (GlobalTheory.HoweGlobal.algAt_mono G.M Bs.ψ Bs.emb hT' hΦT)) hc`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem allInKer : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

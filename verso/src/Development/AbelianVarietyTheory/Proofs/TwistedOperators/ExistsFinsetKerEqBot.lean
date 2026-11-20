@@ -15,17 +15,17 @@ lemma restr_apply {X : Type} (V : Submodule ℂ (X → ℂ)) (W : Submodule ℂ 
     (w : W) (x : P) : restr V W P w x = ((w : V) : X → ℂ) x := rfl
 
 /- English proof (translation)
-Establish `hex : ∃ n, ∃ P : Finset X, Module.finrank ℂ (LinearMap.ker (restr V W P)) = n` using `⟨_, ∅, rfl⟩`. Take `⟨P, hP⟩` from `Nat.find_spec hex`. Use `⟨P, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨w, hwK, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hf : ((w : V) : X → ℂ) ≠ 0`. Introduce `h`. Apply `hw0` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using h`. Take `⟨x, hx⟩` from `Function.ne_iff.mp hf`. Establish `hle : LinearMap.ker (restr V W (insert x P)) < LinearMap.ker (restr V W P)`. Use `lt_of_le_of_ne ?_ ?_` and prove the remaining obligations. Introduce `v hv`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `y`. Use `congrFun hv ⟨y.1, Finset.mem_insert_of_mem y.2⟩` as an intermediate fact. Simplify `this` using `[restr_apply]`. Introduce `heq`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: w ∈ LinearMap.ker (restr V W (insert x P))` using `heq ▸ hwK`. Rewrite `this` using `[LinearMap.mem_ker]`. Use `congrFun this ⟨x, Finset.mem_insert_self x P⟩` as an intermediate fact. Conclude with `hx (by simpa [restr_apply] using this)`. Establish `hlt` using `Submodule.finrank_lt_finrank_of_lt hle`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmin` using `Nat.find_min hex (hP ▸ hlt)`. Conclude with `hmin ⟨insert x P, rfl⟩`.
+A detailed English derivation is pending.
 -/
 lemma exists_finset_ker_eq_bot {X : Type} (V : Submodule ℂ (X → ℂ)) (W : Submodule ℂ V)
     [FiniteDimensional ℂ W] : ∃ P : Finset X, LinearMap.ker (restr V W P) = ⊥ := by
@@ -60,15 +60,13 @@ lemma exists_finset_ker_eq_bot {X : Type} (V : Submodule ℂ (X → ℂ)) (W : S
   exact hmin ⟨insert x P, rfl⟩
 
 /- English proof (translation)
-Introduce `X V W _`. Take `⟨P, hP⟩` from `exists_finset_ker_eq_bot V W`. Take `⟨L, hL⟩` from `LinearMap.exists_leftInverse_of_injective (restr V W P) hP`. Use `⟨P, fun x => if h : x ∈ P then ((L (Pi.single ⟨x, h⟩ 1) : W) : V) else 0, ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (⟨w, hw⟩ : W) = L (restr V W P ⟨w, hw⟩)`. Use `congrArg (fun g => g ⟨w, hw⟩) hL` as an intermediate fact. Simplify using `using this.symm`. Establish `h2 : restr V W P ⟨w, hw⟩ = ∑ x : P, ((w : X → ℂ) x.1) • (Pi.single x (1 : ℂ))`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[restr_apply, Finset.sum_apply, Pi.single_apply]`. Establish `h3 : w = ∑ x : P, ((w : X → ℂ) x.1) • ((L (Pi.single x 1) : W) : V)`. Use `congrArg (fun u : W => (u : V)) h1` as an intermediate fact. Simplify using `only at this`. Use `conv_lhs => rw [this, h2, map_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[map_smul]`. Use `conv_lhs => rw [h3]`. Rewrite using `[← Finset.sum_attach P]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `x _`.
-
-Simplify using `[x.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ {X : Type} (V : Submodule ℂ (X → ℂ)) (W : Submodule ℂ ↥V) [FiniteDimensional ℂ ↥W],
     ∃ (P : Finset X) (e : X → ↥V), ∀ w ∈ W, w = ∑ x ∈ P, (↑w : X → ℂ) x • e x := by

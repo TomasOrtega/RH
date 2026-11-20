@@ -11,51 +11,47 @@ noncomputable section
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `F _ Ω _ _ K _ ι y M i G c a H _hc hH hGH Φ _ _ s`. Set `κΦ : Φ →+* FractionRing (MvPolynomial (Option K) Φ)` to `(algebraMap (MvPolynomial (Option K) Φ) (FractionRing (MvPolynomial (Option K) Φ))).comp C`. Set `κ : Ω →+* FractionRing (MvPolynomial (Option K) Φ)` to `κΦ.comp (algebraMap Ω Φ)`. Set `_ : Algebra F (FractionRing (MvPolynomial (Option K) Φ))` to `(κ.comp (algebraMap F Ω)).toAlgebra`. Establish `hinj : Function.Injective (algebraMap (MvPolynomial (Option K) Φ) (FractionRing (MvPolynomial (Option K) Φ)))` using `IsFractionRing.injective _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Xo : Option K → FractionRing (MvPolynomial (Option K) Φ)` to `fun o => algebraMap (MvPolynomial (Option K) Φ) (FractionRing (MvPolynomial (Option K) Φ)) (X o)`. Set `gy : (Σ k, ι k) → FractionRing (MvPolynomial (Option K) Φ)` to `fun p => κ (y p) * Xo (some p.1)`. Establish `hAy : Algebra.trdeg F (Algebra.adjoin F (Set.range gy)) ≤ Algebra.trdeg F (MRing ι F ⧸ pointIdeal F y)`. Establish `hθ : ∀ f, (aeval gy : MRing ι F →ₐ[F] FractionRing (MvPolynomial (Option K) Φ)) f = algebraMap (MvPolynomial (Option K) Φ) (FractionRing (MvPolynomial (Option K) Φ)) (rename some (map (algebraMap Ω Φ) (pointConeMap F y f)))`. Introduce `f`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `MvPolynomial.ringHom_ext (f := ((aeval gy : MRing ι F →ₐ[F] FractionRing (MvPolynomial (Option K) Φ)) : MRing ι F →+* FractionRing (MvPolynomial (Option K) Φ))) (g := ((algebraMap (MvPolynomial (Option K) Φ) (FractionRing (MvPolynomial (Option K) Φ))).comp (((rename some : MvPoly …`. Simplify using `[pointConeMap, MvPolynomial.algebraMap_eq, RingHom.algebraMap_toAlgebra, κ, κΦ])`. Use the proof step `(fun p => by simp [pointConeMap, gy, κ, κΦ, Xo])`. Conclude with `congrArg (fun φ => φ f) e`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `trdeg_le_of_surjective (Ideal.Quotient.liftₐ (pointIdeal F y) (aeval gy).rangeRestrict ?_) ?_` and prove the remaining obligations. Introduce `f hf`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(aeval gy) f = 0`. Rewrite using `[hθ, show pointConeMap F y f = 0 from hf]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `x`. Take `⟨f, rfl⟩` from `AlgHom.rangeRestrict_surjective _ x`. Conclude with `⟨Ideal.Quotient.mk _ f, rfl⟩`. Establish `hSyL : Algebra.trdeg F (Algebra.adjoin F (Set.range gy)) = Algebra.trdeg F (IntermediateField.adjoin F (Set.range gy))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FaithfulSMul F (Algebra.adjoin F (Set.range gy))` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.injective _)`. Establish `: FaithfulSMul F (IntermediateField.adjoin F (Set.range gy))` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.injective _)`. Establish `e` using `trdeg_add_eq F (Algebra.adjoin F (Set.range gy)) (A := IntermediateField.adjoin F (Set.range gy))`. Rewrite `e` using `[trdeg_eq_zero (R := Algebra.adjoin F (Set.range gy)), add_zero]`. Then use the resulting hypothesis. Establish `hchart : ∀ u ∈ chartRing F (segreVec y) c, κ u ∈ IntermediateField.adjoin F (Set.range gy)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `u hu`. Proceed by induction on `hu using Algebra.adjoin_induction with`. Consider the case `mem u hu`. Take `⟨c', rfl⟩` from `hu`. Establish `hQ : ∏ k, Xo (some k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => (map_ne_zero_iff _ hinj).2 (X_ne_zero _)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : κ (segreVec y c' / segreVec y c) = (∏ k, gy ⟨k, c' k⟩) / ∏ k, gy ⟨k, c k⟩`. Simplify using `only [gy, Finset.prod_mul_distrib, segreVec, map_div₀, map_prod]`. Rewrite using `[mul_div_mul_right _ _ hQ]`. Rewrite using `[e]`. Conclude with `div_mem (prod_mem fun k _ => IntermediateField.subset_adjoin _ _ ⟨_, rfl⟩) (prod_mem fun k _ => IntermediateField.subset_adjoin _ _ ⟨_, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `algebraMap r => exact IntermediateField.algebraMap_mem _ r`. Consider the case `add u v _ _ hu hv => rw [map_add]`. Conclude with `add_mem hu hv`. Consider the case `mul u v _ _ hu hv => rw [map_mul]`. Conclude with `mul_mem hu hv`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose g hg hGm using hGH`. Use `set p0 : Ω := ∏ k, y ⟨k, c k⟩ ^ a k with hp0`. Establish `hgL : ∀ l m, κ (g l m) ∈ IntermediateField.adjoin F (Set.range gy)` using `fun l m => hchart _ (hg l m)`. Set `w : Fin i → FractionRing (MvPolynomial (Option K) Φ)` to `fun m => κ p0 * κΦ (∑ m', algebraMap Ω Φ (H⁻¹ m m') * s m') * Xo none`. Set `T` to `(aeval w : MvPolynomial (Fin i) (IntermediateField.adjoin F (Set.range gy)) →ₐ[_] FractionRing (MvPolynomial (Option K) Φ)).range`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hTi : Algebra.trdeg (IntermediateField.adjoin F (Set.range gy)) T ≤ i`. Use `trdeg_le_of_surjective _ (AlgHom.rangeRestrict_surjective (aeval w : MvPolynomial (Fin i) (IntermediateField.adjoin F (Set.range gy)) →ₐ[_] FractionRing (MvPolynomial (Option K) Φ)))` as an intermediate fact. Simplify using `using this`. Establish `: FaithfulSMul F (IntermediateField.adjoin F (Set.range gy))` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.injective _)`. Establish `: FaithfulSMul (IntermediateField.adjoin F (Set.range gy)) T` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.injective _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : Algebra.trdeg F (IntermediateField.adjoin F (Set.range gy)) + Algebra.trdeg (IntermediateField.adjoin F (Set.range gy)) T = Algebra.trdeg F T` using `trdeg_add_eq F (IntermediateField.adjoin F (Set.range gy)) (A := T)`. Set `gz : (Σ o, bundleIdx ι M o) → FractionRing (MvPolynomial (Option K) Φ)` to `fun p => algebraMap (MvPolynomial (Option K) Φ) (FractionRing (MvPolynomial (Option K) Φ)) (C (projCoord y (Pi.basisFun Ω (Fin i)) (fun l => LinearMap.proj l ∘ₗ (Matrix.of G).mulVecLin) s p) * X p.1)`. Establish `hφ : ∀ l m', ((LinearMap.proj l ∘ₗ (Matrix.of G).mulVecLin) (Pi.basisFun Ω (Fin i) m') : Ω) = G l m'`. Introduce `l m'`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hΦ : ∀ l, (∑ m', s m' * algebraMap Ω Φ (G l m')) = ∑ m, algebraMap Ω Φ (g l m) * algebraMap Ω Φ p0 * ∑ m', algebraMap Ω Φ (H⁻¹ m m') * s m'`. Introduce `l`. Establish `hG : ∀ m', G l m' = ∑ m, (g l m * p0) * H⁻¹ m m'`. Introduce `m'`. Establish `h` using `congrFun (congrFun (Matrix.mul_nonsing_inv_cancel_right H (Matrix.of G) hH) l) m'`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[hG, map_sum, map_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun m' _ => by ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hnone : ∀ l : Fin M, gz ⟨none, l⟩ = ∑ m, κ (g l m) * w m`. Introduce `l`. Establish `e1 : projCoord y (Pi.basisFun Ω (Fin i)) (fun l => LinearMap.proj l ∘ₗ (Matrix.of G).mulVecLin) s (⟨none, l⟩ : Σ o, bundleIdx ι M o) = ∑ m', s m' * algebraMap Ω Φ (G l m')`. Simplify using `only [projCoord, hφ]`. Establish `e2 : gz ⟨none, l⟩ = κΦ (∑ m', s m' * algebraMap Ω Φ (G l m')) * Xo none`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [gz, e1, map_mul]`. Both sides reduce to the same expression. Rewrite using `[e2, hΦ l, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [w, κ, RingHom.comp_apply, map_mul]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsome : ∀ k (j : ι k), gz ⟨some k, j⟩ = gy ⟨k, j⟩`. Introduce `k j`. Simplify using `only [gz, gy, projCoord, map_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hgzT : ∀ p, gz p ∈ T`. Introduce and unpack `⟨_ | k, j⟩`. Rewrite using `[hnone j]`. Use `⟨∑ m, C ⟨κ (g j m), hgL j m⟩ * X m, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsome k j]`. Conclude with `⟨C ⟨gy ⟨k, j⟩, IntermediateField.subset_adjoin _ _ ⟨_, rfl⟩⟩, by simp⟩`. Establish `hz : ∀ f, (aeval gz : MRing (bundleIdx ι M) F →ₐ[F] FractionRing (MvPolynomial (Option K) Φ)) f = algebraMap (MvPolynomial (Option K) Φ) (FractionRing (MvPolynomial (Option K) Φ)) (eval₂Hom (C.comp ((algebraMap Ω Φ).comp (algebraMap F Ω))) (fun p => C (projCoord y (Pi.basisFun Ω …`. Introduce `f`. Establish `e` using `MvPolynomial.ringHom_ext (f := ((aeval gz : MRing (bundleIdx ι M) F →ₐ[F] FractionRing (MvPolynomial (Option K) Φ)) : MRing (bundleIdx ι M) F →+* FractionRing (MvPolynomial (Option K) Φ))) (g := (algebraMap (MvPolynomial (Option K) Φ) (FractionRing (MvPolynomial (Option K) Φ))).c …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (fun φ => φ f) e`. Set `φT : MRing (bundleIdx ι M) F →ₐ[F] T` to `aeval fun p => ⟨gz p, hgzT p⟩`. Establish `hφT : ∀ f, (φT f : FractionRing (MvPolynomial (Option K) Φ)) = aeval gz f`. Introduce `f`. Establish `e` using `MvPolynomial.ringHom_ext (f := (T.val : T →+* FractionRing (MvPolynomial (Option K) Φ)).comp (φT : MRing (bundleIdx ι M) F →+* T)) (g := ((aeval gz : MRing (bundleIdx ι M) F →ₐ[F] FractionRing (MvPolynomial (Option K) Φ)) : MRing (bundleIdx ι M) F →+* FractionRing (MvPolynomial ( …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Conclude with `congrArg (fun φ => φ f) e`. Establish `hmem : ∀ f, φT f = 0 ↔ f ∈ projIdeal F y (Pi.basisFun Ω (Fin i)) (fun l => LinearMap.proj l ∘ₗ (Matrix.of G).mulVecLin) s`. Introduce `f`. Rewrite using `[projIdeal, RingHom.mem_ker, ← Subtype.val_inj, hφT, hz, ZeroMemClass.coe_zero, map_eq_zero_iff _ hinj]`. Establish `hAz : Algebra.trdeg F (MRing (bundleIdx ι M) F ⧸ projIdeal F y (Pi.basisFun Ω (Fin i)) (fun l => LinearMap.proj l ∘ₗ (Matrix.of G).mulVecLin) s) ≤ Algebra.trdeg F T`.
-
-Use `trdeg_le_of_injective (Ideal.Quotient.liftₐ _ φT fun f hf => (hmem f).2 hf) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 ((hmem f).1 hx)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem SpanBundleTrdegLe.proof : SpanBundleTrdegLe.Statement := by
   intro F _ Ω _ _ K _ ι y M i G c a H _hc hH hGH Φ _ _ s

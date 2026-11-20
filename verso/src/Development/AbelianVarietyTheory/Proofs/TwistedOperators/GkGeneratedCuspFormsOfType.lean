@@ -33,13 +33,11 @@ open Formalism.IndefR.Mult
 variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D}
 
 /- English proof (translation)
-Establish `h : ∀ ρ : D.host.E →+* ℂ, ∃ pq : ℕ × ℕ, Formalism.UG.HasSignature (V.gram.map ρ) pq.1 pq.2` using `fun ρ => by`. Establish `hd : IsUnit (V.gram.map ρ).det`. Establish `: (V.gram.map ρ).det = ρ V.gram.det` using `(RingHom.map_det _ _).symm`. Rewrite using `[this, isUnit_iff_ne_zero]`. Conclude with `(map_ne_zero _).2 (GlobalTheory.SmoothAutCheck.gram_det_ne V)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hh : Formalism.UG.IsHerm (starRingEnd ℂ) (V.gram.map ρ)`. Use extensionality with `i j`. Establish `hcm` using `D.host.isCMField_hostE`. Establish `h1 : star (V.hT (V.frame j) (V.frame i)) = V.hT (V.frame i) (V.frame j)` using `V.herm.eq _ _`. Simplify using `only [Formalism.UG.cT, transpose_apply, map_apply, HSpace.gram]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Conclude with `(NumberField.IsCMField.complexEmbedding_complexConj _ ρ _).symm`. Take `⟨p, q, h⟩` from `Formalism.UG.P.signature_exists _ _ hh hd`. Conclude with `⟨(p, q), h⟩`. Use `choose s hs using h`.
-
-Conclude with `⟨s, hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sigOK (V : HSp D) : ∃ s, (GlobalTheory.SmoothAutCheck.reSig V s).SigOK := by
   have h : ∀ ρ : D.host.E →+* ℂ, ∃ pq : ℕ × ℕ, Formalism.UG.HasSignature (V.gram.map ρ) pq.1 pq.2 := fun ρ => by
@@ -60,7 +58,7 @@ theorem exists_sigOK (V : HSp D) : ∃ s, (GlobalTheory.SmoothAutCheck.reSig V s
   exact ⟨s, hs⟩
 
 /- English proof (translation)
-Take `⟨H, _, _, σ, lam, ε, P, hE, hD, hP, hJ, -⟩` from `h`. Take `⟨e1, e2⟩` from `GlobalTheory.TypeAtCompare.card_eq_of_congr hP hJ (hV (tauE D τ))`. Conclude with `⟨lam, ε, hE, GlobalTheory.Published.HermitianUnique.isHCParam_of_isDS hE.1 hD, e1, e2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem goodPar_of_isTypeAt (hV : V.SigOK) {τ : D.what₂.Tau} {S : SPar} {φ : GA D V → ℂ} (h : IsTypeAt θ V τ S φ) :
     GoodPar V.rank (V.sig (tauE D τ)).1 (V.sig (tauE D τ)).2 S := by
@@ -69,19 +67,19 @@ theorem goodPar_of_isTypeAt (hV : V.SigOK) {τ : D.what₂.Tau} {S : SPar} {φ :
   exact ⟨lam, ε, hE, GlobalTheory.Published.HermitianUnique.isHCParam_of_isDS hE.1 hD, e1, e2⟩
 
 /- English proof (translation)
-Take `⟨H, _, _, σ, lam, ε, P, hE, hD, hP, hJ, h⟩` from `h`. Use `⟨H, _, _, σ, lam, ε, P, hE, hD, hP, hJ, fun x => ?_⟩` and prove the remaining obligations. Establish `hσ` using `hD.2.2.1`. Establish `hG : IsUnit (gramAt D V τ)` using `(isUnit_iff_isUnit_det _).2 (GlobalTheory.SmoothAutCheck.gramAt_unit V τ)`. Establish `hk' : kᴴ * gramAt D V τ * k = gramAt D V τ` using `hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hku : IsUnit k`. Use `congrArg Matrix.det hk'` as an intermediate fact. Rewrite `this` using `[det_mul]`. Rewrite using `[isUnit_iff_isUnit_det]`. Conclude with `isUnit_of_mul_isUnit_right (this ▸ GlobalTheory.SmoothAutCheck.gramAt_unit V τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a1 : k * k⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((isUnit_iff_isUnit_det _).1 hku)`. Establish `a2 : k⁻¹ * k = 1` using `Matrix.nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 hku)`. Establish `b2 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 hP)`. Establish `hki : k⁻¹ ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `by show (k⁻¹)ᴴ * gramAt D V τ * k⁻¹ = gramAt D V τ`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hm` using `GlobalTheory.TypeAtCompare.conj_mem hP hJ hk`. Establish `t0 : HasTypeAll (lieOf (gramAt D V τ)) (Formalism.QuantumDeterminants.UH (gramAt D V τ)) (fun g => σ (P * g * P⁻¹)) fun g => φ (x * atTau θ V τ k * atTau θ V τ g)` using `hasTypeAll_iff.2 (h (x * atTau θ V τ k))`. Establish `t1` using `hasTypeAll_transport _ H H (fun g => σ (P * g * P⁻¹)) (fun g => σ (P * g * P⁻¹)) _ _ k hG hku hk' (opEquiv hσ hm) (fun g hg v => by`. Establish `m1` using `GlobalTheory.TypeAtCompare.conj_mem hP hJ hg`. Establish `m2` using `GlobalTheory.TypeAtCompare.conj_mem hP hJ (mul_mem_UH (mul_mem_UH hk hg) hki)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show σ (P * k * P⁻¹) (σ (P * g * P⁻¹) v) = σ (P * (k * g * k⁻¹) * P⁻¹) (σ (P * k * P⁻¹) v)`. Rewrite using `[← sigma_mul hσ hm m1, ← sigma_mul hσ m2 hm]`. Use `congr 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[a2, Matrix.mul_one]`.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = P * k * g * k⁻¹ * (P⁻¹ * P) * k * P⁻¹ := by rw [b2]; simp only [Matrix.mul_assoc, Matrix.mul_one, Matrix.one_mul]`. Use `_ = _ := by simp only [Matrix.mul_assoc]) _ t0`. Take `⟨v, h1, ℓ, h2, h3, h4⟩` from `hasTypeAll_iff.1 t1`. Use `⟨v, h1, ℓ, h2, h3, fun g hg => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : x * atTau θ V τ k * atTau θ V τ (k⁻¹ * g * k) = x * atTau θ V τ g * atTau θ V τ k`. Rewrite using `[mul_assoc x, mul_assoc x, ← atTau_mul hθ V τ hk (mul_mem_UH (mul_mem_UH hki hg) hk), ← atTau_mul hθ V τ hg hk, ← Matrix.mul_assoc, ← Matrix.mul_assoc, a1, Matrix.one_mul]`. Use `h4 g hg` as an intermediate fact. Simplify using `only [e] at this`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem isTypeAt_rTr_same (hθ : IsInfFam θ) {τ : D.what₂.Tau} {S : SPar} {φ : GA D V → ℂ} (h : IsTypeAt θ V τ S φ)
     {k : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hk : k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) :
@@ -128,9 +126,9 @@ theorem isTypeAt_rTr_same (hθ : IsInfFam θ) {τ : D.what₂.Tau} {S : SPar} {�
   exact this
 
 /- English proof (translation)
-Distinguish the cases in `c : τ = τ'`. Substitute `c` using the available equality. Conclude with `isTypeAt_rTr_same hθ h hk`. Take `⟨H, _, _, σ, lam, ε, P, hE, hD, hP, hJ, h⟩` from `h`. Use `⟨H, _, _, σ, lam, ε, P, hE, hD, hP, hJ, fun x => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨v, h1, ℓ, h2, h3, h4⟩` from `h (x * atTau θ V τ k)`. Use `⟨v, h1, ℓ, h2, h3, fun g hg => ?_⟩` and prove the remaining obligations. Use `h4 g hg` as an intermediate fact. Rewrite `this` using `[mul_assoc x, GlobalTheory.PointAtPlaceComm.atTau_comm D θ hθ V τ τ' c k hk g hg, ← mul_assoc x]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTypeAt_rTr (hθ : IsInfFam θ) {τ τ' : D.what₂.Tau} {S : SPar} {φ : GA D V → ℂ} (h : IsTypeAt θ V τ' S φ)
     {k : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hk : k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) :
@@ -147,17 +145,15 @@ theorem isTypeAt_rTr (hθ : IsInfFam θ) {τ τ' : D.what₂.Tau} {S : SPar} {φ
   exact this
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `hc` using `(GlobalTheory.CuspLie.isAutFunSm_Rder hθ hX hφ).cont`. Establish `hu` using `GlobalTheory.Mem.Lift.continuous_oneP hθ hX`. Establish `h0` using `GlobalTheory.Mem.Lift.oneP_zero (V := V) (τ := τ) (X := X) hθ`. Establish `hd` using `GlobalTheory.Mem.Lift.hasDerivAt_oneP hθ hX (GlobalTheory.Mem.Lift.hasDerivAt_Rder hφ.smooth hX)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ψ := Rder θ V τ X φ`. Establish `ev : ∀ᶠ t in 𝓝 (0 : ℝ), ∀ x ∈ C, ‖ψ (x * oneP θ V τ X t) - ψ x‖ < δ / 2`. Use `hC.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Establish `cF : Continuous fun z : ℝ × GA D V => ‖ψ (z.2 * oneP θ V τ X z.1) - ψ z.2‖` using `((hc.comp (continuous_snd.mul (hu.comp continuous_fst))).sub (hc.comp continuous_snd)).norm`. Use `cF.continuousAt.eventually_lt continuousAt_const ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [h0, mul_one, sub_self, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨η, hη, hb⟩` from `Metric.eventually_nhds_iff.1 ev`. Use `⟨η / 2, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hp : 0 < η / 2` using `by linarith`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `norm_image_sub_le_of_norm_deriv_le_segment' (f := fun s : ℝ => φ (x * oneP θ V τ X s) - (s : ℂ) * ψ x) (f' := fun s => ψ (x * oneP θ V τ X s) - ψ x) (a := 0) (b := η / 2) (C := δ / 2) (fun s _ => by`. Use `(hd x s).fun_sub ((Complex.ofRealCLM.hasDerivAt (x := s)).mul_const (ψ x))` as an intermediate fact. Simplify using `using this.hasDerivWithinAt)`. Use the proof step `(fun s hs => (hb (by rw [Real.dist_eq, sub_zero, abs_of_nonneg hs.1]; linarith [hs.2]) x hx).le)`. Use the proof step `(η / 2) ⟨hp.le, le_rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Use `set t := η / 2`. Establish `ht : (t : ℂ) ≠ 0` using `by exact_mod_cast hp.ne'`. Establish `e : ψ x - (((t : ℂ)⁻¹) • (rTr V (oneP θ V τ X t) φ + (-1 : ℂ) • φ)) x = -(t : ℂ)⁻¹ * ((φ (x * oneP θ V τ X t) - (t : ℂ) * ψ x) - (φ (x * oneP θ V τ X 0) - ((0 : ℝ) : ℂ) * ψ x))`. Simplify using `only [h0, mul_one, Pi.smul_apply, Pi.add_apply, rTr, smul_eq_mul, Complex.ofReal_zero]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, norm_neg, norm_inv, Complex.norm_real, Real.norm_of_nonneg hp.le, inv_mul_lt_iff₀ hp]`. Use `key.trans_lt ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_quotient_near (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) {φ : GA D V → ℂ} (hφ : IsAutFunSm θ V φ) {C : Set (GA D V)} (hC : IsCompact C) {δ : ℝ}
@@ -203,7 +199,7 @@ variable (hPr : GlobalTheory.FunPr.Hypotheses₂) (hθ : IsInfFam θ) {τ τ' : 
 include hPr hθ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SeriesToClosure.hasTypeAt_of_isTypeAt θ V τ S φ hPr.discreteSeriesUpqExists (GlobalTheory.Published.discreteSeriesHermitianUnique_iff.1 hPr.discreteSeriesHermitianUnique) hPr.harishChandraModules hPr.casselmanWallach hθ hV (goodPar_of_isTypeAt hV h) hφ h`.
+A detailed English derivation is pending.
 -/
 theorem hasTypeAt_of (hV : V.SigOK) (hφ : IsAutFunSm θ V φ) (h : IsTypeAt θ V τ S φ) : φ ∈ typeSub θ V τ S :=
   GlobalTheory.SeriesToClosure.hasTypeAt_of_isTypeAt θ V τ S φ hPr.discreteSeriesUpqExists
@@ -211,7 +207,7 @@ theorem hasTypeAt_of (hV : V.SigOK) (hφ : IsAutFunSm θ V φ) (h : IsTypeAt θ 
     hPr.casselmanWallach hθ hV (goodPar_of_isTypeAt hV h) hφ h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.automorphicForm_uniformLimit_discreteSeries_series θ V τ S ψ hPr.discreteSeriesUpqExists (GlobalTheory.Published.discreteSeriesHermitianUnique_iff.1 hPr.discreteSeriesHermitianUnique) hPr.harishChandraModules hPr.casselmanWallach hθ hV (goodPar_of_isTypeAt hV h) hψ …`.
+A detailed English derivation is pending.
 -/
 theorem isTypeAt_of (hV : V.SigOK) (h : IsTypeAt θ V τ S φ) (hψ : IsAutFunSm θ V ψ) (h' : ψ ∈ typeSub θ V τ S) :
     IsTypeAt θ V τ S ψ :=
@@ -220,7 +216,7 @@ theorem isTypeAt_of (hV : V.SigOK) (h : IsTypeAt θ V τ S φ) (hψ : IsAutFunSm
     hPr.casselmanWallach hθ hV (goodPar_of_isTypeAt hV h) hψ h'
 
 /- English proof (translation)
-The claim follows from `isTypeAt_of hPr hθ hV h (GlobalTheory.Mem.AutSpace.isAutFunSm_add hφ hψ) (add_mem (hasTypeAt_of hPr hθ hV hφ h) (hasTypeAt_of hPr hθ hV hψ h'))`.
+A detailed English derivation is pending.
 -/
 theorem isTypeAt_add_sig (hV : V.SigOK) (hφ : IsAutFunSm θ V φ) (hψ : IsAutFunSm θ V ψ) (h : IsTypeAt θ V τ S φ)
     (h' : IsTypeAt θ V τ S ψ) : IsTypeAt θ V τ S (φ + ψ) :=
@@ -228,9 +224,9 @@ theorem isTypeAt_add_sig (hV : V.SigOK) (hφ : IsAutFunSm θ V φ) (hψ : IsAutF
     (add_mem (hasTypeAt_of hPr hθ hV hφ h) (hasTypeAt_of hPr hθ hV hψ h'))
 
 /- English proof (translation)
-Use `isTypeAt_of hPr hθ hV h (GlobalTheory.CuspLie.isAutFunSm_Rder hθ hX hφ) fun C hC δ hδ => ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `exists_quotient_near hθ hX hφ hC (half_pos hδ)`. Establish `hk` using `GlobalTheory.Mem.Lift.exp_mem hX t`. Establish `m1 : rTr V (oneP θ V τ X t) φ ∈ typeSub θ V τ' S` using `hasTypeAt_of hPr hθ hV (isAutFunSm_rTr_atTau D θ hθ V φ hφ τ _ hk) (isTypeAt_rTr hθ h hk)`. Establish `m2 : ((t : ℂ)⁻¹) • (rTr V (oneP θ V τ X t) φ + (-1 : ℂ) • φ) ∈ typeSub θ V τ' S` using `Submodule.smul_mem _ _ (add_mem m1 (Submodule.smul_mem _ _ (hasTypeAt_of hPr hθ hV hφ h)))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨χ, hχ, h2⟩` from `m2 C hC (δ / 2) (half_pos hδ)`. Use `⟨χ, hχ, fun x hx => ?_⟩` and prove the remaining obligations. Use `norm_sub_le_norm_sub_add_norm_sub (Rder θ V τ X φ x) ((((t : ℂ)⁻¹) • (rTr V (oneP θ V τ X t) φ + (-1 : ℂ) • φ)) x) (χ x)` as an intermediate fact. Combine the linear relations using `[ht x hx, h2 x hx]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem isTypeAt_Rder_sig (hV : V.SigOK) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ)
     (hφ : IsAutFunSm θ V φ) (h : IsTypeAt θ V τ' S φ) : IsTypeAt θ V τ' S (Rder θ V τ X φ) := by
@@ -248,7 +244,7 @@ theorem isTypeAt_Rder_sig (hV : V.SigOK) {X : Matrix (Fin V.rank) (Fin V.rank) �
   linarith [ht x hx, h2 x hx]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_sigOK V`. Conclude with `isTypeAt_add_sig (V := GlobalTheory.SmoothAutCheck.reSig V s) hPr hθ hs ((GlobalTheory.SmoothAutCheck.isAutFunSm_reSig θ V s φ).2 hφ) ((GlobalTheory.SmoothAutCheck.isAutFunSm_reSig θ V s ψ).2 hψ) h h'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isTypeAt_add (hφ : IsAutFunSm θ V φ) (hψ : IsAutFunSm θ V ψ) (h : IsTypeAt θ V τ S φ)
     (h' : IsTypeAt θ V τ S ψ) : IsTypeAt θ V τ S (φ + ψ) := by
@@ -257,7 +253,7 @@ theorem isTypeAt_add (hφ : IsAutFunSm θ V φ) (hψ : IsAutFunSm θ V ψ) (h : 
     ((GlobalTheory.SmoothAutCheck.isAutFunSm_reSig θ V s φ).2 hφ) ((GlobalTheory.SmoothAutCheck.isAutFunSm_reSig θ V s ψ).2 hψ) h h'
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_sigOK V`. Conclude with `isTypeAt_Rder_sig (V := GlobalTheory.SmoothAutCheck.reSig V s) hPr hθ hs hX ((GlobalTheory.SmoothAutCheck.isAutFunSm_reSig θ V s φ).2 hφ) h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isTypeAt_Rder {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ)
     (hφ : IsAutFunSm θ V φ) (h : IsTypeAt θ V τ' S φ) : IsTypeAt θ V τ' S (Rder θ V τ X φ) := by
@@ -291,13 +287,11 @@ def formSub (hPr : GlobalTheory.FunPr.Hypotheses₂) (hθ : IsInfFam θ) (M : DS
       fun τ => GlobalTheory.Mem.Th.isTypeAt_smul c (a3 τ), W, hW, W.smul_mem c a4, a5⟩
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, W, hW, a4, a5⟩` from `hf`. Conclude with `⟨isAutFunSm_rTr_atTau D θ hθ V f a1 τ g hg.1, GlobalTheory.Cusp.isCuspFun_rTr a2 _, fun τ' => isTypeAt_rTr hθ (a3 τ') hg.1, W, hW, a5 τ g hg.1 hg.2 f a4, a5⟩`. Use `lie τ X hX f hf := by`. Take `⟨a1, a2, a3, W, hW, a4, a5⟩` from `hf`. Use `⟨GlobalTheory.CuspLie.isAutFunSm_Rder hθ hX a1, GlobalTheory.CuspLie.isCuspFun_Rder hθ hX a1 a2, fun τ' => isTypeAt_Rder hPr hθ hX a1 (a3 τ'), (Submodule.map₂ (derEnd hθ τ) ⊤ (W.comap (SmFun θ V).subtype)).map (SmFun θ V).subtype, Module.Finite.iff_fg.2 ((Submodule.FG.map₂ _ Modu …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hr` using `isRealPt_atTau hθ τ' hg`. Establish `hi : IsRealPt θ (atTau θ V τ' g)⁻¹` using `⟨inv_mem hr.1, GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V _⟩`. Use `set k := atTau θ V τ' g`. Establish `hle : Submodule.map₂ (derEnd hθ τ) ⊤ (W.comap (SmFun θ V).subtype) ≤ (((Submodule.map₂ (derEnd hθ τ) ⊤ (W.comap (SmFun θ V).subtype)).map (SmFun θ V).subtype).comap (rTrLin k)).comap (SmFun θ V).subtype`. Use `Submodule.map₂_le.2 fun Z _ u hu => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨_, Submodule.apply_mem_map₂ _ (Submodule.mem_top (x := adAt θ k⁻¹ τ Z)) (n := ⟨rTr V k u.1, rTr_mem hθ hr u.2⟩) (a5 τ' g hg hk _ hu), ?_⟩` and prove the remaining obligations. Use `show RderC θ V τ (adAt θ k⁻¹ τ Z) (rTr V k u.1) = rTr V k (RderC θ V τ Z u.1)`. Use function extensionality and compare the values at `y`. Use `congrFun (RderC_rTr hθ hi τ Z (rTr V k u.1)) (y * k)` as an intermediate fact. Rewrite `this` using `[show rTr V k⁻¹ (rTr V k u.1) = u.1 from funext fun y => by simp [rTr]]`.
-
-Rewrite using `[rTr, this, rTr, mul_inv_cancel_right]`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `hle hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isGKSub_formSub (hPr : GlobalTheory.FunPr.Hypotheses₂) (hθ : IsInfFam θ) (M : DSModel V S) :
     IsGKSub θ M (formSub hPr hθ M) where
@@ -333,7 +327,7 @@ theorem isGKSub_formSub (hPr : GlobalTheory.FunPr.Hypotheses₂) (hθ : IsInfFam
     exact hle hu
 
 /- English proof (translation)
-Introduce `hPr _ θ _ _ M hθ _ hψ _ hf` and use `gkGen_le θ M (A := formSub hPr hθ M) hψ (isGKSub_formSub hPr hθ M) hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isKFinCuspOfType_of_mem_gkGen : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →

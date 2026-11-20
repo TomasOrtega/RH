@@ -14,25 +14,21 @@ variable {D : Formalism.BasicNotions.D7} (u u' : D.what₂.Word) (F0 : FlagG (VS
   (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))
 
 /- English proof (translation)
-Take `⟨ha₁, hb₁, -, -, hν₁, hm₁, hν₁f, hm₁f, -, -, hF₁⟩` from `hd₁`. Take `⟨ha₂, hb₂, -, -, hν₂, hm₂, hν₂f, hm₂f, -, -, hF₂⟩` from `hd₂`. Take `⟨n, ⟨hnN, hne, hnz⟩, hn1e, hn1z⟩` from `hrel`. Establish `hLd : IsUnit L.det` using `by rw [Formalism.L2.SG.Pf.StabilizerIndexVolumes.lo_det hL]; exact isUnit_one`. Establish `ha₁d : IsUnit (a₁ : MatR D).det` using `by rw [Formalism.L2.SG.Pf.StabilizerIndexVolumes.lo_det ha₁]; exact isUnit_one`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU₁` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_conjT ha₁`. Establish `hU₂` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_conjT ha₂`. Establish `hV₁ : IsUpUni (sbs b₁)` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_sgn hb₁`. Establish `hV₂ : IsUpUni (sbs b₂)` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_sgn hb₂`. Establish `hnf : ∀ b, n (frame (lf D F0) b) = ∑ c, (1 : MatR D) c b • frame (lf D F0) c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b`. Rewrite using `[← act_one (frame (lf D F0)) b]`. Use `Fin.lastCases ?_ (fun a => ?_) b` and prove the remaining obligations. Use `show n (F0.fvec (Fin.last _)) = F0.fvec (Fin.last _)`. Simplify using `only [FlagG.fvec, Fin.snoc_last]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hnz`. Use `show n (F0.fvec (Fin.castSucc a)) = F0.fvec (Fin.castSucc a)`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`. Conclude with `hne a`. Establish `hnF : ∀ c, n (frame F₁ c) = frame F₂ c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `c`. Use `Fin.lastCases ?_ (fun a => ?_) c` and prove the remaining obligations. Use `show n (F₁.fl.fvec (Fin.last _)) = F₂.fl.fvec (Fin.last _)`. Simplify using `only [FlagG.fvec, Fin.snoc_last]`. Conclude with `hn1z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show n (F₁.fl.fvec (Fin.castSucc a)) = F₂.fl.fvec (Fin.castSucc a)`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`. Conclude with `hn1e a`. Use `set t : (VS D).V ≃ₗ[D.host.E] (VS D).V := ν₂ * n * ν₁⁻¹ with ht`. Establish `htN : t ∈ NLam γ.lam (lf D F0)` using `Formalism.L2.SG.Pf.nlamPf_mul (Formalism.L2.SG.Pf.nlamPf_mul hν₂ hnN) (Formalism.L2.SG.Pf.nlamPf_inv hν₁)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Uq : MatR D := (a₂ : MatR D).conjTranspose * 1 * ((a₁ : MatR D).conjTranspose)⁻¹ with hUq`. Establish `htf : ∀ b, t (frame (lf D F0) b) = ∑ c, Uq c b • frame (lf D F0) c` using `act_mul _ _ _ _ _ (act_mul _ _ _ _ _ hν₂f hnf) (act_inv' _ ν₁ _ hU₁ hν₁f)`. Establish `htm : ∀ b, t (m₁ (frame F' b)) = m₂ (frame F' b)`. Introduce `b`. Use `show ν₂ (n (ν₁⁻¹ (m₁ (frame F' b)))) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hF₁ b, hnF b, hF₂ b]`. Use `show (ν₂ * ν₂⁻¹) (m₂ (frame F' b)) = _`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Establish `htf'` using `act_quot (frame F') t m₁ m₂ (sbs b₁) (sbs b₂) hV₁ hm₁f hm₂f htm`.
-
-Establish `hiso : ∀ x y, (VS D).hT (t x) (t y) = (VS D).hT x y` using `((Formalism.L2.SG.Pf.isAutLam_iff _ t).1 htN.1).1`. Establish `hsX : ∀ x, (∀ i, (VS D).hT (F0.e i) x = 0) → t x - x ∈ Submodule.span D.host.E (Set.range F0.e)` using `fun x hx => htN.2.2 x (mem_orth_of F0 x hx)`. Establish `hUp : IsUpUni Uq` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_mul (Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_mul hU₂ Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_one) (Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_inv hU₁)`. Establish `hVp : IsUpUni (sbs b₂ * (sbs b₁)⁻¹)` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_mul hV₂ (Formalism.L2.SG.Pf.StabilizerIndexVolumes.up_inv hV₁)`. Take `⟨hflag, horth⟩` from `Formalism.L2.SG.Pf.ZsVolKey.nlam_of_frames F0 F'.fl hGr hZu t hiso _ _ hUp hVp htf htf' hsX`.
-
-Establish `htN' : t ∈ NLam γ.lam F'` using `⟨htN.1, fun j x hx => hflag j x hx, fun x hx => horth x (orth_e F'.fl x hx)⟩`. Use `Subgroup.subset_closure ⟨t, ⟨htN, htN'⟩, Uq, htf, ?_⟩` and prove the remaining obligations. Rewrite using `[hUq, Matrix.mul_one]`. Conclude with `img_quot L _ _ hLd ha₁d x₁ x₂ hx₁ hx₂`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fib_mp (γ : Term D u u' F0 what₂) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (L : MatR D)
     (hL : IsLoUni L) (hGr : IsUnit (Formalism.L2.SG.Pf.StabilizerIndexVolumes.gramOf (Formalism.L2.SG.Pf.StabilizerIndexVolumes.gg F0 F'.fl)).det)

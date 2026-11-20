@@ -13,9 +13,9 @@ def idealEquiv (K : Type) [Field K] [NumberField K] :
   Equiv.subtypeEquivRight fun I => by rw [mem_nonZeroDivisors_iff_ne_zero, Ideal.zero_eq_bot]
 
 /- English proof (translation)
-Introduce `K _ _ s hs`. Establish `h1 : ∑ C : ClassGroup (𝓞 K), classZeta K C s = ∑' I : (Ideal (𝓞 K))⁰, ENNReal.ofReal ((Ideal.absNorm (I : Ideal (𝓞 K)) : ℝ) ^ (-s))`. Rewrite using `[← (Equiv.sigmaFiberEquiv (fun I : (Ideal (𝓞 K))⁰ => ClassGroup.mk0 I)).tsum_eq, ENNReal.tsum_sigma', tsum_fintype]`. Both sides reduce to the same expression. Rewrite using `[h1, idealZeta, ENNReal.ofReal_tsum_of_nonneg (fun I => by positivity) hs, ← (idealEquiv K).tsum_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_of_eq rfl`.
+A detailed English derivation is pending.
 -/
 theorem classSum : ClassSum := by
   intro K _ _ s hs

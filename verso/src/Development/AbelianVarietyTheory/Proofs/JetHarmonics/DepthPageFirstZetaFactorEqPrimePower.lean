@@ -23,14 +23,14 @@ Both sides reduce to the same expression.
 theorem ceil_toNat (x : ℝ) : ⌈x⌉.toNat = ⌈x⌉₊ := rfl
 
 /- English proof (translation)
-Apply `IsFractionRing.injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Conclude with `barE_eq_conj D (EX.piG i)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem barE_eq_piBarO {D : D7} (EX : ErrX D) (i : Fin 2) : barE D (EX.piG i) = piBarO EX i := by
   apply IsFractionRing.injective (𝓞 D.host.E) D.host.E
   exact barE_eq_conj D (EX.piG i)
 
 /- English proof (translation)
-Unfold `DepPage.cP`. Rewrite using `[if_pos (show (depPageOf D Tn (GlobalTheory.RunDepth.vdOf D)).IsRam p from Or.inl hp)]`. Use `show ⌈GlobalTheory.RunDepth.vdOf D p * _⌉.toNat = _`. Rewrite using `[GlobalTheory.RunDepth.vdOf, if_pos hp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cP_of_mem_small (D : D7) (Tn : ℕ+) (N p : ℕ) (hp : p ∈ D.host.small) :
     (depPageOf D Tn (GlobalTheory.RunDepth.vdOf D)).cP N p = ⌈(padicValNat p D.host.QS : ℝ) * (N : ℝ)⌉.toNat := by
@@ -40,9 +40,9 @@ theorem cP_of_mem_small (D : D7) (Tn : ℕ+) (N p : ℕ) (hp : p ∈ D.host.smal
   rw [GlobalTheory.RunDepth.vdOf, if_pos hp]
 
 /- English proof (translation)
-Unfold `DepPage.cP`. Rewrite using `[if_pos hr, ceil_toNat]`. Use `show ⌈GlobalTheory.RunDepth.vdOf D p * _⌉₊ = _`. Rewrite using `[GlobalTheory.RunDepth.vdOf, if_neg hp, Formalism.MainNotions.DIV.Cons.cHalf]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem cP_of_isRam_of_notMem_small (D : D7) (Tn : ℕ+) {j : ℕ} (w : WeightFamilies.Wt D j) (p : ℕ) (hp : p ∉ D.host.small)
     (hr : (depPageOf D Tn (GlobalTheory.RunDepth.vdOf D)).IsRam p) :
@@ -54,11 +54,11 @@ theorem cP_of_isRam_of_notMem_small (D : D7) (Tn : ℕ+) {j : ℕ} (w : WeightFa
   congr 1; ring
 
 /- English proof (translation)
-Establish `hq` using `fun w => cP_of_isRam_of_notMem_small D Tn (j := j) w D.host.q D.host.q_notMem_small (Or.inr (Or.inl rfl))`. Establish `hd` using `fun w => cP_of_isRam_of_notMem_small D Tn (j := j) w D.host.d D.host.d_notMem_small (Or.inr (Or.inr rfl))`. Establish `hS` using `UpperTheory.prod_primeFactors_pow_ceil_padicValNat_mul_eq_pow D.host.QS Tn (WeightAlgebra.DF wL) (WeightAlgebra.DF wF) D.host.QS_pos.ne'`. Unfold `pPow c2`. Rewrite using `[← hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => enter [1, 2]`. Rewrite using `[← hq wL, ← hq wF]`. Use `conv_rhs => enter [2]`. Rewrite using `[← hd wL, ← hd wF]`. Unfold `DepPage.Z1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Use `Finset.prod_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p ∈ D.host.small` using `(Finset.mem_filter.1 hp).1`. Rewrite using `[cP_of_mem_small D Tn _ p hp', cP_of_mem_small D Tn _ p hp']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem depth_page_first_zeta_factor_eq_prime_power (D : D7) (Tn : ℕ+) {j : ℕ} (wL wF : WeightFamilies.Wt D j) :
     (depPageOf D Tn (GlobalTheory.RunDepth.vdOf D)).Z1 (WeightAlgebra.DF wL) (WeightAlgebra.DF wF) =
@@ -79,13 +79,13 @@ theorem depth_page_first_zeta_factor_eq_prime_power (D : D7) (Tn : ℕ+) {j : �
   rfl
 
 /- English proof (translation)
-Introduce `D L Pm Tp hK T h hinj EX j hj hE K _ _ _ φ hφ`. Establish `hM : LawsM T.toCore` using `h.toLawsCore.toLawsM`. Set `ψ : 𝓞 T.Q.c.F →+* K` to `φ.comp (algebraMap (𝓞 T.Q.c.F) T.Q.c.F)`. Establish `hψ : ∀ x, algebraMap (𝓞 D.host.E) K x = ψ (iE D hinj (recB h.toLawsCore) x)` using `hφ`. Set `Tn : ℕ+` to `⟨Tp.TO, GlobalTheory.RunDepth.TO_pos Tp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hnn : nnKAt (H` using `T.Q.H) (LL := K) (GlobalTheory.RunDepth.depOf T.toCore EX Tp hK) j = ψ (nnW (recB h.toLawsCore) hinj EX (kaR Tp hK j)) := by`. Use `letI : StarRing (𝓞 D.host.E) := starRingOfComm`. Use `(nnKAt_depDataOf T.toCore EX _ _ _ _ _ _ _ hM hE j).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (map_prod ψ _ _).symm` and prove the remaining obligations. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[barE_eq_piBarO, hψ, hψ]`. Conclude with `((map_mul ψ _ _).trans (congrArg₂ (· * ·) (map_pow ψ _ _) (map_pow ψ _ _))).symm`. Establish `hL` using `GlobalTheory.WeightExponents.DF_wtA hM.pins hj (lR Tp hK j)`. Establish `hF` using `GlobalTheory.WeightExponents.DF_wtA hM.pins hj (fR Tp hK j)`. Establish `hn : (fR Tp hK j).n = 8 * D.R.f * D.R.r + 4` using `Tp.nP_eq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show nnKAt (H := T.Q.H) (LL := K) (GlobalTheory.RunDepth.depOf T.toCore EX Tp hK) j * (((D.host.g 0 * D.host.g 1 : ℕ) : K) ^ (D.R.f * D.R.r * (8 * D.R.f * D.R.r + 4)) * (((depPageOf D Tn (GlobalTheory.RunDepth.vdOf D)).Z1 (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA (lR Tp hK j))) (Formal …`. Rewrite using `[hnn, hL, hF, depth_page_first_zeta_factor_eq_prime_power, ← hn, ← Nat.cast_pow, ← Nat.cast_mul, ← map_natCast ψ, ← map_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sigAt_eq_sigRec : ∀ (D : D7) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (T : Top D) (h : LawsP T) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (j : ℕ), InR D j → HalfEX T.toCore EX → ∀ (K : Type) [Field K] [NumberField K] [Algebra (𝓞 D.host.E) K] (φ : T.Q.c.F →+* K), (∀ x : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) K x = φ ((iE D hinj (recB h.toLawsCore) x : 𝓞 T.Q.c.F) : T.Q.c.F)) → sigAt (Dw := T.Q.Dw j) (H := T.Q.H) (LL := K) (GlobalTheory.RunDepth.depOf T.toCore EX Tp hK) j = φ ((sigRec (recB h.toLawsCore) hinj EX (kaR Tp hK j) (lR Tp hK j) (fR Tp hK j) Tp.TO : 𝓞 T.Q.c.F) : T.Q.c.F) := by
   intro D L Pm Tp hK T h hinj EX j hj hE K _ _ _ φ hφ

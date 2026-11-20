@@ -11,13 +11,13 @@ section Abstract
 variable {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Establish `hopen : IsOpen {g : G | GlobalTheory.PRep.ind H σ g f.1 = f.1}` using `f.2`. Establish `htrans : ∀ g x : G, GlobalTheory.PRep.ind H σ g f.1 = f.1 → f.1.1 (x * g) = f.1.1 x`. Introduce `g x hg`. Conclude with `congrArg (fun φ : GlobalTheory.PRep.indSpace H σ => (φ : G → W) x) hg`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Establish `hc0 : f.1.1 c = 0` using `by simpa using hc`. Establish `h1 : c⁻¹ * c ∈ {g : G | GlobalTheory.PRep.ind H σ g f.1 = f.1}` using `by show GlobalTheory.PRep.ind H σ (c⁻¹ * c) f.1 = f.1`. Rewrite using `[inv_mul_cancel, map_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.mem_of_superset ((continuous_mul_left c⁻¹).continuousAt.preimage_mem_nhds (hopen.mem_nhds h1)) ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hx' : GlobalTheory.PRep.ind H σ (c⁻¹ * x) f.1 = f.1` using `hx`. Establish `hfx : f.1.1 x = 0`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hfx`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_support (H : Subgroup G) (σ : Representation ℂ H W) (f : smoothPart (ind H σ)) :
     IsClosed {c : G | f.1.1 c ≠ 0} := by
@@ -43,13 +43,11 @@ theorem isClosed_support (H : Subgroup G) (σ : Representation ℂ H W) (f : smo
   simpa using hfx
 
 /- English proof (translation)
-Establish `key : ∀ F : GlobalTheory.PRep.smoothPart (GlobalTheory.PRep.ind H σ), (∃ C : Set G, IsCompact C ∧ ∀ g, F.1.1 g ≠ 0 → ∃ h ∈ H, ∃ c ∈ C, g = h * c) → (∀ x ∈ T, F.1.1 x = 0) → ∃ C : Set G, IsCompact C ∧ (∀ c ∈ C, c ∉ T) ∧ ∀ g, F.1.1 g ≠ 0 → ∃ h ∈ H, ∃ c ∈ C, g = h * c`. Introduce and unpack `F ⟨C, hC, hsupp⟩ hF`. Establish `hequiv : ∀ (h : H) (g : G), F.1.1 (h * g) = σ h (F.1.1 g)` using `F.1.2`. Use `⟨C ∩ {c | F.1.1 c ≠ 0}, hC.inter_right (GlobalTheory.CompanionTheory.BZPhiPG.SuppOff.isClosed_support H σ F), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `c ⟨-, hc⟩ hcT`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hc (hF c hcT)`. Introduce `g hg`. Take `⟨h, hH, c, hcC, rfl⟩` from `hsupp g hg`. Use `⟨h, hH, c, ⟨hcC, ?_⟩, rfl⟩` and prove the remaining obligations. Introduce `hc0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hg` to reduce the goal to its premises. Establish `e : F.1.1 (h * c) = σ ⟨h, hH⟩ (F.1.1 c)` using `hequiv ⟨h, hH⟩ c`. Rewrite using `[e]`. Establish `hc0' : F.1.1 c = 0` using `by simpa using hc0`. Rewrite using `[hc0', map_zero]`.
-
-Conclude with `key _ f.2 hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compact_off (H : Subgroup G) (σ : Representation ℂ H W) (f : cIndSpace H σ) (T : Set G)
     (hf : ∀ x ∈ T, (f : smoothPart (ind H σ)).1.1 x = 0) :
@@ -79,7 +77,7 @@ theorem exists_compact_off (H : Subgroup G) (σ : Representation ℂ H W) (f : c
 end Abstract
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.BZPhiPG.SuppOff.exists_compact_off (GlobalTheory.BZMir.Leib.HPG k (i + 1) (t + 1)) (GlobalTheory.CompanionTheory.BZPhiPG.sigX τ σ) f _ hf`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_off_Cl (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (i t : ℕ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (f : XS τ σ)

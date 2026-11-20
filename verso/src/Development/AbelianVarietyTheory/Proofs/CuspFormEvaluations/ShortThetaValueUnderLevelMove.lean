@@ -29,11 +29,11 @@ variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {A : Over S'} [GrpObj A] {�
   {w : LB.Iso L₁ (L₀.pull φ)} {Ψ : (T ⊗ A).left ⟶ (T₀ ⊗ G).left}
 
 /- English proof (translation)
-Use `(secRel_iff hL₀ hL₁ h₂ 1 Nat.cast_one.symm s₀ s).2 fun i j W k₀ k₁ k₂ => fn_ext fun x hx => ?_` and prove the remaining obligations. Establish `m₁ : (snd T A).left ⁻¹ᵁ ((LB.div (L₀.pull φ) L₁).U ((fun _ => i), j)) ≤ Ψ ⁻¹ᵁ (LPow G L₀ 1 T₀).U (fun _ => i)` using `fun p hp => Set.mem_iInter.2 fun _ => by`. Establish `h : ((snd T A).left ≫ φ) p ∈ L₀.U i` using `mem_pull.1 hp.1`. Rewrite `h` using `[← h₂]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `m₂ : (snd T A).left ⁻¹ᵁ ((LB.div (L₀.pull φ) L₁).U ((fun _ => i), j)) ≤ (LPow A L₁ 1 T).U (fun _ => j)` using `fun p hp => Set.mem_iInter.2 fun _ => hp.2`. Establish `e` using `congrArg (gs (𝟙 _) x _) (H i j _ rfl le_rfl m₁ m₂)`. Establish `hx' : (𝟙 (T ⊗ A).left : _ ⟶ _) x ∈ W` using `hx`. Establish `hx₀` using `k₀ hx'`. Rewrite `e` using `[gs_mul _ _ _ hx₀, TranslMove.gs_appLE _ _ _ _ _ _ hx₀, TranslMove.gs_appLE _ _ _ _ _ _ hx₀, gs_res _ _ _ hx₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_one, gs_mul _ _ _ hx', TranslMove.gs_appLE _ _ _ _ _ _ hx', TranslMove.gs_appLE _ _ _ _ _ _ hx', gs_res _ _ _ hx']`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem secRel_of_charts (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (h₂ : Ψ ≫ (snd T₀ G).left = (snd T A).left ≫ φ)
     (s₀ : LB.Sec (LPow G L₀ 1 T₀)) (s : LB.Sec (LPow A L₁ 1 T))
@@ -68,7 +68,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `hm` using `hJ.mem (fun _ : Fin 1 => (snd (Over.mk x') Xo.univ.t.G).left) r`. Use `(sval_of s (r ≫ pm) z J (fun _ => J (r ≫ (snd (Over.mk x') Xo.univ.t.G).left)) (fun _ => by rw [Category.assoc, hs])).trans ?_` and prove the remaining obligations. Use `(TranslMove.gs_appLE r pm z _ _ (FramedBaseChange.chart_le pm hs _) hm _).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg (gs r z _) (ha _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sv_pull {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (pm : Gx x' ⟶ Gx x)
@@ -85,7 +85,7 @@ theorem sv_pull {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x' :
   exact congrArg (gs r z _) (ha _ _)
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Use `⟨MulEquiv.ofBijective (pushHom ν.cart (ptO Xo x)) ⟨fun p q h => ?_, fun q => ?_⟩, fun p => rfl⟩` and prove the remaining obligations. Conclude with `Over.OverMorphism.ext (ν.cart.1.hom_ext (congrArg (fun t => t.left) h) ((Over.w p).trans (Over.w q).symm))`. Conclude with `⟨Over.homMk (ν.cart.1.lift q.left x (Over.w q)) (ν.cart.1.lift_snd _ _ _), Over.OverMorphism.ext (ν.cart.1.lift_fst _ _ _)⟩`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ptEquiv {S : Type} [CommRing S] {ρ : Xo.X ⟶ Xo.X} (ν : SABMap Xo.univ.t Xo.univ.t ρ)
     {x x' : Sp S ⟶ Xo.X} (hx : x' = x ≫ ρ) :
@@ -98,13 +98,13 @@ theorem exists_ptEquiv {S : Type} [CommRing S] {ρ : Xo.X ⟶ Xo.X} (ν : SABMap
       Over.OverMorphism.ext (ν.cart.1.lift_fst _ _ _)⟩
 
 /- English proof (translation)
-Take `⟨hx, hu, pm, w, hf, hs, hw, hc⟩` from `hm`. Take `⟨gx, gu, p, ps, pf, pa⟩` from `h`. Take `⟨gx', gu', p', ps', pf', pa'⟩` from `h'`. Establish `hL` using `Xo.univ.t.PP.isLB`. Establish `ex : z'.x = z.x ≫ ρ` using `by rw [gx', gx, hx, Category.assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sq : (fst (Over.mk z.x) Xo.univ.t.G).left ≫ z'.x = ((snd (Over.mk z.x) Xo.univ.t.G).left ≫ ν.φ) ≫ Xo.univ.t.G.hom`. Rewrite using `[Category.assoc, ν.cart.1.w, ex, ← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (· ≫ ρ) ((Over.w (fst (Over.mk z.x) Xo.univ.t.G)).trans (Over.w (snd (Over.mk z.x) Xo.univ.t.G)).symm)`. Set `q : Gx z.x ⟶ Gx z'.x` to `pullback.lift (f := z'.x) (g := Xo.univ.t.G.hom) _ _ sq`. Establish `qf : q ≫ (fst (Over.mk z'.x) Xo.univ.t.G).left = (fst (Over.mk z.x) Xo.univ.t.G).left` using `pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `qs : q ≫ (snd (Over.mk z'.x) Xo.univ.t.G).left = (snd (Over.mk z.x) Xo.univ.t.G).left ≫ ν.φ` using `pullback.lift_snd _ _ _`. Establish `comm : q ≫ p' = p ≫ pm` using `FramedBaseChange.pulledGroup_hom_ext _ _ (by rw [Category.assoc, ps', qs, Category.assoc, hs, ← Category.assoc, ps]) (by rw [Category.assoc, pf', ← Category.assoc, qf, Category.assoc, hf, pf])`. Establish `R` using `secRel_of_charts (T := Over.mk y.x) (T₀ := Over.mk y'.x) hL hL hs y'.s y.s hc`. Use `⟨ex, fun τ i => by rw [gu', gu, hu, Category.assoc], q, w, qf, qs, hw, fun Z r t J₀ J hJ₀ hJ => ?_⟩` and prove the remaining obligations. Establish `a₁` using `sv_pull p' ps' pa' (r ≫ q) t hJ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₂` using `sv_pull p ps pa r t hJ`. Establish `a₃` using `R Z (r ≫ p) t J₀ J hJ₀ hJ`. Rewrite `a₁` using `[Category.assoc, comm, ← Category.assoc]`. Rewrite `a₃` using `[Category.assoc r p (snd (Over.mk y.x) Xo.univ.t.G).left, ps]`. Conclude with `a₁.symm.trans (a₃.trans (congrArg _ a₂))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_move_baseChange {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     {ρ : Xo.X ⟶ Xo.X} {ν : SABMap Xo.univ.t Xo.univ.t ρ} {y y' : FrPt Xo c S} (hm : FrMove ρ ν y y')
@@ -142,7 +142,7 @@ theorem exists_move_baseChange {S T : Type} [CommRing S] [Algebra c.F S] [CommRi
   exact a₁.symm.trans (a₃.trans (congrArg _ a₂))
 
 /- English proof (translation)
-Establish `h2` using `Xo.univ.eta_add (a - b) b`. Rewrite `h2` using `[sub_add_cancel, Xo.univ.eta_ker _ ((Submodule.Quotient.eq _).1 h), _root_.one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eta_congr {a b : Dw.La}
     (h : (Submodule.Quotient.mk a : LevQ Dw l) = Submodule.Quotient.mk b) : Xo.univ.eta a = Xo.univ.eta b := by
@@ -150,27 +150,25 @@ theorem eta_congr {a b : Dw.La}
   rwa [sub_add_cancel, Xo.univ.eta_ker _ ((Submodule.Quotient.eq _).1 h), _root_.one_mul] at h2
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (Submodule.Quotient.mk_surjective _ q)`.
+A detailed English derivation is pending.
 -/
 theorem mk_levRep (q : LevQ Dw l) : (Submodule.Quotient.mk (levRep q) : LevQ Dw l) = q :=
   Classical.choose_spec (Submodule.Quotient.mk_surjective _ q)
 
 /- English proof (translation)
-Introduce `hLaw hCI E _ _ _ H Dw l Xo c _ nab hnab S _ _ ρ ν gM gA y y' hlev hmv σq hσ n a P hP w Λ β N v hv`. Take `⟨S', _, _, φ, y₁', z', tp', F', hff, hfr, hZ, hG, htp, hUU, hval⟩` from `hv`. Take `⟨y₁, hy₁⟩` from `GlobalTheory.FramedBaseChange.exists_frMap hLaw E H Dw l Xo c S S' φ y`. Take `⟨hx, hu, pm, ω, hf, hs, hω, hR⟩` from `exists_move_baseChange hmv hy₁ hfr`. Establish `hL` using `Xo.univ.t.PP.isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `exists_ptEquiv ν hx`. Establish `he' : ∀ p, p.left = (e.symm p).left ≫ ν.φ` using `fun p => by rw [← he, e.apply_symm_apply]`. Establish `hact : ∀ p b, e (p ≫ Xo.univ.t.act.act b) = e p ≫ Xo.univ.t.act.act b` using `fun p b => Over.OverMorphism.ext (by`. Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc, Category.assoc, ν.act])`. Establish `hact' : ∀ p b, e.symm p ≫ Xo.univ.t.act.act b = e.symm (p ≫ Xo.univ.t.act.act b)` using `fun p b => e.injective (by rw [hact, e.apply_symm_apply, e.apply_symm_apply])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlv : ∀ q : LevQ Dw l, e (levPt Xo y₁.x (levRep q)) = levPt Xo y₁'.x (levRep (σq.symm q))` using `fun q => by`. Establish `h1 : Xo.univ.eta (levRep q) = Xo.univ.eta (gM (levRep (σq.symm q)))` using `eta_congr (by rw [← hσ, mk_levRep, mk_levRep, σq.apply_symm_apply])`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[he, levPt, levPt, h1, Over.comp_left, Over.comp_left, Category.assoc, hlev.2.1, Over.toUnit_left, Over.toUnit_left]`. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) hx.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose F hF hFF using fun (q : Fin n → LevQ Dw l) i b => isUUOver_move hLaw E H Dw l Xo c S' ρ ν y₁ y₁' pm ω hx hf hs hω ((secRel_iff hL hL hs 1 Nat.cast_one.symm y₁'.s y₁.s).1 hR) N (e.symm (z' i b)) (e.symm (tp' (fun b => σq.symm (q b)) b)) (z' i b) (tp' (fun b => σq.symm (q b) …`. Use `⟨S', inferInstance, inferInstance, φ, y₁, fun i b => e.symm (z' i b), fun q b => e.symm (tp' (fun b => σq.symm (q b)) b), F, hff, hy₁, fun i => ⟨fun b => ?_, ?_⟩, ?_, fun q b => ⟨?_, ?_⟩, hF, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, (hZ i).1 b, map_one]`. Introduce `mu hmu cm hcm k`. Establish `h` using `congrArg e.symm ((hZ i).2 mu hmu cm hcm k)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[map_list_prod, List.map_ofFn, map_one]`. Simplify using `only [hact']`. Conclude with `h`. Introduce `k _ ψ g hg i j hij`. Use `hG k ψ (Over.homMk (spMap ψ) rfl) rfl (funext fun b => Over.OverMorphism.ext ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrArg (fun t => t.left ≫ ν.φ) (congrFun hij b)`. Simplify using `only [Over.comp_left, hg, Category.assoc, ← he'] at h`. Conclude with `h`. Rewrite using `[← map_pow, (htp _ b).1, ← hlv, e.symm_apply_apply]`. Take `⟨j, hj⟩` from `(htp (fun b => σq.symm (q b)) b).2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨j, fun t ht => by rw [hact', hj t ht, map_one]⟩`. Rewrite using `[hval]`. Use `congr 1`. Use `(finsum_comp_equiv (Equiv.piCongrRight fun _ : Fin n => σq.symm)).symm.trans (finsum_congr fun q => ?_)` and prove the remaining obligations. Use `congrArg₂ (· * ·) rfl (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations.
-
-Conclude with `GlobalTheory.T.harmonic_values_invariant_universal_endomorphism hLaw hCI E H Dw l Xo c nab hnab S' ρ ν y₁ y₁' pm ω hx hf hs hω hu n a P hP N (F q i) (F' (fun b => σq.symm (q b)) i) (hFF q i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem shortValAt_move : Laws → ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (S : Type) [CommRing S] [Algebra c.F S] (ρ : Xo.X ⟶ Xo.X) (ν : SABMap Xo.univ.t Xo.univ.t ρ) (gM gA : Dw.La →ₗ[𝓞 E] Dw.La) (y y' : FrPt Xo c S), IsLevMove ρ ν gM gA → FrMove ρ ν y y' → ∀ σq : LevQ Dw l ≃ LevQ Dw l, (∀ a, σq (Submodule.Quotient.mk a) = Submodule.Quotient.mk (gM a)) → ∀ (n : ℕ) (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) → ∀ (w : (Fin n → LevQ Dw l) → c.F) (Λ : GenLat E n) (β : c.F) (N : ℕ) (v : S), ShortValAt Xo c nab w Λ β N P y' v → ShortValAt Xo c nab (fun q => w (fun b => σq.symm (q b))) Λ β N P y v := by
   intro hLaw hCI E _ _ _ H Dw l Xo c _ nab hnab S _ _ ρ ν gM gA y y' hlev hmv σq hσ n a P hP w Λ β N v hv

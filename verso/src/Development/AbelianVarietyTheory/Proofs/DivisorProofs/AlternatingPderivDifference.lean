@@ -12,11 +12,11 @@ noncomputable section
 namespace GlobalTheory.AltPrim
 
 /- English proof (translation)
-Establish `h1 : MvPolynomial.rename (Equiv.swap i j) (monomial α c) = monomial α c`. Establish `hα : Finsupp.mapDomain (Equiv.swap i j) α = α`. Use extensionality with `k`. Rewrite using `[Finsupp.mapDomain_equiv_apply, Equiv.symm_swap]`. Break down `eq_or_ne k i with rfl | hki` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Equiv.swap_apply_left, he]`. Break down `eq_or_ne k j with rfl | hkj` into its components or cases. Rewrite using `[Equiv.swap_apply_right, he]`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne hki hkj]`. Rewrite using `[rename_monomial, hα]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hψ (Equiv.swap i j) (monomial α c)`. Rewrite `h2` using `[h1, Equiv.Perm.sign_swap hij]`. Move the coercions through the operations in `at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem alt_monomial_eq_zero' {n : ℕ} (ψ : MvPolynomial (Fin n) ℝ →ₗ[ℝ] ℝ)
     (hψ : ∀ (σ : Equiv.Perm (Fin n)) (P : MvPolynomial (Fin n) ℝ),
@@ -39,13 +39,13 @@ theorem alt_monomial_eq_zero' {n : ℕ} (ψ : MvPolynomial (Fin n) ℝ →ₗ[�
   linarith
 
 /- English proof (translation)
-Introduce `n τ`. Establish `hexp : (∑ j : Fin (n + 1), Finsupp.single (τ j) (n - (j : ℕ))) = Finsupp.equivFunOnFinite.symm (fun k : Fin (n + 1) => n - ((τ.symm k : Fin (n + 1)) : ℕ))`. Use extensionality with `k`. Rewrite using `[Finsupp.finset_sum_apply, Finsupp.coe_equivFunOnFinite_symm]`. Simplify using `only [Finsupp.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single (τ.symm k)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hb` to reduce the goal to its premises. Rewrite using `[← h, Equiv.symm_apply_apply]`. Simplify using the standard rewrite rules. Establish `hj : ∀ j : Fin (n + 1), (-X (τ j) : MvPolynomial (Fin (n + 1)) ℝ) ^ (n - (j : ℕ)) = C ((-1 : ℝ) ^ (n - (j : ℕ))) * monomial (Finsupp.single (τ j) (n - (j : ℕ))) 1`. Introduce `j`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[neg_pow, X_pow_eq_monomial, C_pow, C_neg, C_1]`. Rewrite using `[Finset.prod_congr rfl (fun j _ => hj j), Finset.prod_mul_distrib, ← map_prod, Finset.prod_pow_eq_pow_sum, ← monomial_sum_one, hexp, C_mul_monomial, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_neg_X_pow_eq_monomial : ∀ (n : ℕ) (τ : Equiv.Perm (Fin (n + 1))), (∏ j : Fin (n + 1), (-X (τ j) : MvPolynomial (Fin (n + 1)) ℝ) ^ (n - (j : ℕ))) = monomial (Finsupp.equivFunOnFinite.symm (fun k : Fin (n + 1) => n - ((τ.symm k : Fin (n + 1)) : ℕ))) ((-1 : ℝ) ^ (∑ j : Fin (n + 1), (n - (j : ℕ)))) := by
   intro n τ
@@ -74,13 +74,13 @@ theorem expo_apply (n : ℕ) (τ : Equiv.Perm (Fin (n + 1))) (k : Fin (n + 1)) :
     (Finsupp.equivFunOnFinite.symm (fun k : Fin (n + 1) => n - ((τ.symm k : Fin (n + 1)) : ℕ))) k = n - (τ.symm k : ℕ) := rfl
 
 /- English proof (translation)
-Rewrite using `[prod_neg_X_pow_eq_monomial, X, monomial_mul, one_mul]`. Establish `hpos : (τ.symm k : ℕ) ≠ 0`. Introduce `h`. Apply `hk` to reduce the goal to its premises. Establish `: τ.symm k = 0` using `Fin.ext (by simpa using h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← this, Equiv.apply_symm_apply]`. Establish `hlt : (τ.symm k : ℕ) - 1 < n + 1` using `by omega`. Use `set l : Fin (n + 1) := τ ⟨(τ.symm k : ℕ) - 1, hlt⟩ with hl`. Establish `hlk : k ≠ l`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun x => (τ.symm x : ℕ)) h` as an intermediate fact. Simplify using `[hl] at this`. Use linear arithmetic over natural numbers and integers. Use `alt_monomial_eq_zero' ψ hψ _ _ hlk ?_` and prove the remaining obligations. Establish `e1 : (τ.symm l : ℕ) = τ.symm k - 1` using `by simp [hl]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (Finsupp.single k 1 : Fin (n + 1) →₀ ℕ) l = 0`. Rewrite using `[Finsupp.single_apply, if_neg hlk]`. Rewrite using `[Finsupp.add_apply, Finsupp.add_apply, Finsupp.single_eq_same, e2, expo_apply, expo_apply, e1]`. Use `(τ.symm k).isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem alt_X_mul_eq_zero (n : ℕ) (ψ : MvPolynomial (Fin (n + 1)) ℝ →ₗ[ℝ] ℝ)
     (hψ : ∀ (σ : Equiv.Perm (Fin (n + 1))) (P : MvPolynomial (Fin (n + 1)) ℝ),
@@ -108,17 +108,17 @@ theorem alt_X_mul_eq_zero (n : ℕ) (ψ : MvPolynomial (Fin (n + 1)) ℝ →ₗ[
   omega
 
 /- English proof (translation)
-Take `⟨J₁, R, hD, hJ, hR⟩` from `GlobalTheory.T.monomial_pderiv_difference_primitive_exists n i i' hne (Finsupp.equivFunOnFinite.symm (fun k : Fin (n + 1) => n - ((τ.symm k : Fin (n + 1)) : ℕ))) ((-1 : ℝ) ^ (∑ j : Fin (n + 1), (n - (j : ℕ))))`. Use `⟨J₁, by rw [hD, prod_neg_X_pow_eq_monomial], ?_⟩` and prove the remaining obligations. Establish `hR0 : ψ R = 0`. Rewrite using `[R.as_sum, map_sum]`. Use `Finset.sum_eq_zero fun β hβ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `hR β hβ`. Rewrite `h1` using `[expo_apply]`. Establish `hi'le` using `(τ.symm i').isLt`. Use `set e := β i' with he`. Establish `hle : n - e < n + 1` using `by omega`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set j : Fin (n + 1) := τ ⟨n - e, hle⟩ with hj`. Establish `hje : (τ.symm j : ℕ) = n - e` using `by simp [hj]`. Establish `hji' : j ≠ i'`. Introduce `h`. Rewrite `hje` using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hji : j ≠ i`. Introduce `h`. Rewrite `hje` using `[h]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `alt_monomial_eq_zero' ψ hψ β _ hji' ?_` and prove the remaining obligations. Rewrite using `[h2 j hji hji', expo_apply, hje]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hJ, map_add, hR0, add_zero, map_smul, prod_neg_X_pow_eq_monomial, expo_apply, smul_eq_mul]`. Use `(τ.symm i).isLt` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 3`. Move the coercions through the operations in `[Nat.cast_sub (by omega : (τ.symm i : ℕ) ≤ n)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_antideriv (n : ℕ) (ψ : MvPolynomial (Fin (n + 1)) ℝ →ₗ[ℝ] ℝ)
     (hψ : ∀ (σ : Equiv.Perm (Fin (n + 1))) (P : MvPolynomial (Fin (n + 1)) ℝ),
@@ -155,7 +155,7 @@ theorem exists_antideriv (n : ℕ) (ψ : MvPolynomial (Fin (n + 1)) ℝ →ₗ[�
   ring
 
 /- English proof (translation)
-Establish `h2` using `hψ (Equiv.swap i i') K`. Rewrite `h2` using `[GlobalTheory.T.rename_swap_of_equal_partials n i i' K hK, Equiv.Perm.sign_swap hne]`. Move the coercions through the operations in `at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem alt_eq_zero_of_pderiv_eq {n : ℕ} (ψ : MvPolynomial (Fin (n + 1)) ℝ →ₗ[ℝ] ℝ)
     (hψ : ∀ (σ : Equiv.Perm (Fin (n + 1))) (P : MvPolynomial (Fin (n + 1)) ℝ),
@@ -168,7 +168,7 @@ theorem alt_eq_zero_of_pderiv_eq {n : ℕ} (ψ : MvPolynomial (Fin (n + 1)) ℝ 
   linarith
 
 /- English proof (translation)
-Simplify using `[map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rename_swap_prod (n : ℕ) (i i' : Fin (n + 1)) (τ : Equiv.Perm (Fin (n + 1))) :
     rename (Equiv.swap i i') (∏ j : Fin (n + 1), (-X (τ j) : MvPolynomial (Fin (n + 1)) ℝ) ^ (n - (j : ℕ))) =
@@ -176,9 +176,9 @@ theorem rename_swap_prod (n : ℕ) (i i' : Fin (n + 1)) (τ : Equiv.Perm (Fin (n
   simp [map_prod]
 
 /- English proof (translation)
-Establish `h1 : rename τ ((∑ j : Fin (n + 1), X j) * ∏ j : Fin (n + 1), (-X j : MvPolynomial (Fin (n + 1)) ℝ) ^ (n - (j : ℕ))) = (∑ j : Fin (n + 1), X j) * ∏ j : Fin (n + 1), (-X (τ j)) ^ (n - (j : ℕ))`. Simplify using `only [map_mul, map_sum, map_prod, map_pow, map_neg, rename_X]`. Use `congr 1`. Conclude with `Equiv.sum_comp τ (fun j => (X j : MvPolynomial (Fin (n + 1)) ℝ))`. Rewrite using `[← hψ, h1, Finset.sum_mul, map_sum, Finset.sum_eq_single (τ 0)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ hk`. Conclude with `alt_X_mul_eq_zero n ψ hψ τ k hk`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem alt_sum_mul (n : ℕ) (ψ : MvPolynomial (Fin (n + 1)) ℝ →ₗ[ℝ] ℝ)
     (hψ : ∀ (σ : Equiv.Perm (Fin (n + 1))) (P : MvPolynomial (Fin (n + 1)) ℝ),
@@ -201,15 +201,15 @@ end GlobalTheory.AltPrim
 namespace GlobalTheory.AltPrim
 
 /- English proof (translation)
-Take `⟨J₁, hD, hv⟩` from `exists_antideriv n ψ hψ i i' hne τ hτ`. Establish `hs` using `rename_swap_prod n i i' τ`. Establish `hinj : Function.Injective (Equiv.swap i i')` using `(Equiv.swap i i').injective`. Establish `a1 : pderiv i' (rename (Equiv.swap i i') J₁) = rename (Equiv.swap i i') (pderiv i J₁)`. Use `pderiv_rename hinj i J₁` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Equiv.swap_apply_left]`. Then use the resulting hypothesis. Establish `a2 : pderiv i (rename (Equiv.swap i i') J₁) = rename (Equiv.swap i i') (pderiv i' J₁)`. Use `pderiv_rename hinj i' J₁` as an intermediate fact. Rewrite `this` using `[Equiv.swap_apply_right]`. Then use the resulting hypothesis. Establish `hD' : pderiv i' (rename (Equiv.swap i i') J₁) - pderiv i (rename (Equiv.swap i i') J₁) = - rename (Equiv.swap i i') (∏ j : Fin (n + 1), (-X (τ j)) ^ (n - (j : ℕ)))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[a1, a2, ← hD, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Establish `hK` using `alt_eq_zero_of_pderiv_eq ψ hψ hne (J - (J₁ - rename (Equiv.swap i i') J₁)) (by`. Rewrite using `[← sub_eq_zero]`. Simplify using `only [map_sub]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `hJ - hD + hD' - hs)`. Establish `hs1` using `hψ (Equiv.swap i i') J₁`. Rewrite `hs1` using `[Equiv.Perm.sign_swap hne]`. Move the coercions through the operations in `at hs1`. Rewrite `hK` using `[map_sub, map_sub]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: ψ J = 2 * ψ J₁` using `by linarith`. Rewrite using `[this, hv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem alt_eq_of_pderiv_sub (n : ℕ) (ψ : MvPolynomial (Fin (n + 1)) ℝ →ₗ[ℝ] ℝ)
     (hψ : ∀ (σ : Equiv.Perm (Fin (n + 1))) (P : MvPolynomial (Fin (n + 1)) ℝ),
@@ -243,31 +243,29 @@ theorem alt_eq_of_pderiv_sub (n : ℕ) (ψ : MvPolynomial (Fin (n + 1)) ℝ →�
   rw [this, hv]; ring
 
 /- English proof (translation)
-Introduce `n ψ hψ σ i i' hi J _hJ hD`. Establish `hne : i ≠ i'`. Introduce `h`. Rewrite `hi` using `[h]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hii : ((i' : ℕ) : ℝ) = (i : ℕ) + 1` using `by rw [hi]; push_cast; ring`. Establish `hD2 : pderiv i' J - pderiv i J = (∏ j : Fin (n + 1), (-X ((Equiv.swap i i' * σ) j)) ^ (n - (j : ℕ))) + ∏ j : Fin (n + 1), (-X (Equiv.swap i i' ((Equiv.swap i i' * σ) j))) ^ (n - (j : ℕ))`. Simplify using `only [Equiv.Perm.mul_apply, Equiv.swap_apply_self]`. Rewrite using `[hD]`. Conclude with `add_comm _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsy1 : (Equiv.swap i i' * σ).symm i = σ.symm i'`. Rewrite using `[Equiv.symm_apply_eq]`. Simplify using `[Equiv.Perm.mul_apply]`. Establish `hsy2 : (Equiv.swap i i' * σ).symm i' = σ.symm i`. Rewrite using `[Equiv.symm_apply_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Equiv.Perm.mul_apply]`. Establish `hsign : ((Equiv.Perm.sign (Equiv.swap i i' * σ) : ℤ) : ℝ) = -((Equiv.Perm.sign σ : ℤ) : ℝ)`. Rewrite using `[Equiv.Perm.sign_mul, Equiv.Perm.sign_swap hne]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : σ 0 = i`. Establish `e1 : σ.symm i = 0` using `by rw [← h0]; simp`. Establish `e2 : (σ.symm i' : ℕ) ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: σ.symm i' = 0` using `Fin.ext (by simpa using h)`. Rewrite using `[← h0, ← this, Equiv.apply_symm_apply]`. Establish `hτ : (σ.symm i : ℕ) < σ.symm i'` using `by rw [e1, Fin.val_zero]; exact Nat.pos_of_ne_zero e2`. Establish `key` using `alt_eq_of_pderiv_sub n ψ hψ i i' hne σ hτ J hD`. Establish `hsum` using `alt_sum_mul n ψ hψ σ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsum` using `[h0]`. Rewrite using `[key, hsum, h0, Equiv.swap_apply_left, e1, hii]`. Simplify using `only [Fin.val_zero, Nat.cast_zero]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h0' : σ 0 = i'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e1 : (Equiv.swap i i' * σ).symm i = 0` using `by rw [hsy1, ← h0']; simp`. Establish `e2 : ((Equiv.swap i i' * σ).symm i' : ℕ) ≠ 0`. Rewrite using `[hsy2]`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: σ.symm i = 0` using `Fin.ext (by simpa using h)`. Rewrite using `[← h0', ← this, Equiv.apply_symm_apply]`. Establish `hτ : ((Equiv.swap i i' * σ).symm i : ℕ) < (Equiv.swap i i' * σ).symm i'` using `by rw [e1, Fin.val_zero]; exact Nat.pos_of_ne_zero e2`. Establish `key` using `alt_eq_of_pderiv_sub n ψ hψ i i' hne _ hτ J hD2`. Establish `hsum` using `alt_sum_mul n ψ hψ (Equiv.swap i i' * σ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : (Equiv.swap i i' * σ) 0 = i` using `by simp [Equiv.Perm.mul_apply, h0']`. Rewrite `hsum` using `[ht0, hsign]`. Rewrite using `[key, hsum, h0', Equiv.swap_apply_right, e1, hii]`. Simplify using `only [Fin.val_zero, Nat.cast_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hfix : Equiv.swap i i' (σ 0) = σ 0` using `Equiv.swap_apply_of_ne_of_ne h0 h0'`. Rewrite using `[hfix, sub_self, mul_zero, zero_mul]`. Establish `hdist : (σ.symm i : ℕ) ≠ σ.symm i'`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `σ.symm.injective (Fin.ext h)`. Break down `lt_or_gt_of_ne hdist with hlt | hgt` into its components or cases. Rewrite using `[alt_eq_of_pderiv_sub n ψ hψ i i' hne σ hlt J hD, alt_X_mul_eq_zero n ψ hψ σ i (Ne.symm h0), mul_zero]`. Establish `hτ : ((Equiv.swap i i' * σ).symm i : ℕ) < (Equiv.swap i i' * σ).symm i'` using `by rw [hsy1, hsy2]; exact hgt`. Establish `ht0 : (Equiv.swap i i' * σ) 0 ≠ i` using `by simp [Equiv.Perm.mul_apply, hfix, h0]`.
-
-Rewrite using `[alt_eq_of_pderiv_sub n ψ hψ i i' hne _ hτ J hD2, alt_X_mul_eq_zero n ψ hψ _ i (Ne.symm ht0), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alt_value : ∀ (n : ℕ) (ψ : MvPolynomial (Fin (n + 1)) ℝ →ₗ[ℝ] ℝ), (∀ (σ : Equiv.Perm (Fin (n + 1))) (P : MvPolynomial (Fin (n + 1)) ℝ), ψ (MvPolynomial.rename σ P) = ((Equiv.Perm.sign σ : ℤ) : ℝ) * ψ P) → ∀ (σ : Equiv.Perm (Fin (n + 1))) (i i' : Fin (n + 1)), (i' : ℕ) = i + 1 → ∀ J : MvPolynomial (Fin (n + 1)) ℝ, J.IsHomogeneous (∑ j : Fin (n + 1), (j : ℕ) + 1) → MvPolynomial.pderiv i' J - MvPolynomial.pderiv i J = (∏ j : Fin (n + 1), (-MvPolynomial.X (σ j)) ^ (n - (j : ℕ))) + (∏ j : Fin (n + 1), (-MvPolynomial.X (Equiv.swap i i' (σ j))) ^ (n - (j : ℕ))) → ψ J = ((Equiv.Perm.sign σ : ℤ) : ℝ) * (2 / ((n : ℝ) + 1)) * (((σ 0 : ℕ) : ℝ) - ((Equiv.swap i i' (σ 0) : ℕ) : ℝ)) * ψ ((∑ j : Fin (n + 1), MvPolynomial.X j) * ∏ j : Fin (n + 1), (-MvPolynomial.X j) ^ (n - (j : ℕ))) := by
   intro n ψ hψ σ i i' hi J _hJ hD

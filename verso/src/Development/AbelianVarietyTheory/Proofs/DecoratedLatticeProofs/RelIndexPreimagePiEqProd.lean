@@ -4,17 +4,17 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsMemProj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ r H _ φ U U' K J _ hUK hsurj hU'`. Set `f : U →* (∀ i, K i)` to `{ toFun := fun g i => ⟨φ g i, hUK g g.2 i⟩ map_one' := by`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use the proof step `map_mul' := by`. Introduce `a b`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `}`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hf : Function.Surjective f`. Introduce `x`. Take `⟨g, hg, hx⟩` from `hsurj (fun i => (x i : H i)) (fun i => (x i).2)`. Use `⟨⟨g, hg⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ g i = _`. Rewrite using `[hx]`. Establish `hc : U'.subgroupOf U = (Subgroup.pi Set.univ fun i => (J i).subgroupOf (K i)).comap f`. Use extensionality with `g`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_comap, Subgroup.mem_pi, hU']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ i -`. Conclude with `Subgroup.mem_subgroupOf.2 (h i)`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨g.2, fun i => Subgroup.mem_subgroupOf.1 (h i (Set.mem_univ _))⟩`. Rewrite using `[Subgroup.relIndex, hc, Subgroup.index_comap_of_surjective _ hf, index_pi_univ_dep]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem relIndex_preimage_pi_eq_prod :
     ∀ {G : Type} [Group G] {r : ℕ} {H : Fin r → Type} [∀ i, Group (H i)]

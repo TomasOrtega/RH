@@ -9,11 +9,9 @@ noncomputable section
 namespace GlobalTheory.HSAmp.HomInj
 
 /- English proof (translation)
-Use `conv_lhs => rw [P.as_sum]`. Use `conv_rhs => rw [P.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hd` using `hP (mem_support_iff.mp hm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [aeval_monomial, mul_pow]`. Rewrite using `[Finsupp.prod_mul, ← hd]`. Establish `: (m.prod fun _ k => c ^ k) = c ^ (Finsupp.weight 1 m)`. Simplify using `[Finsupp.prod, Finset.prod_pow_eq_pow_sum, Finsupp.weight_apply, Finsupp.sum]`. Rewrite using `[this]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem aeval_mul_hom {σ R A : Type} [CommRing R] [CommRing A] [Algebra R A] {P : MvPolynomial σ R} {q : ℕ} (hP : P.IsHomogeneous q)
     (c : A) (z : σ → A) : aeval (fun i => c * z i) P = c ^ q * aeval z P := by
@@ -32,7 +30,7 @@ def dehom (D : ℕ) : MvPolynomial (Fin (D + 1)) ℤ →ₐ[ℤ] MvPolynomial (F
   aeval (Fin.cons 1 X)
 
 /- English proof (translation)
-Rewrite using `[dehom, ← AlgHom.comp_apply, comp_aeval]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem aeval_dehom {A : Type} [CommRing A] [Algebra ℤ A] {D : ℕ} (w : Fin D → A) (P : MvPolynomial (Fin (D + 1)) ℤ) :
     aeval w (dehom D P) = aeval (Fin.cons 1 w : Fin (D + 1) → A) P := by
@@ -42,17 +40,15 @@ theorem aeval_dehom {A : Type} [CommRing A] [Algebra ℤ A] {D : ℕ} (w : Fin D
   refine Fin.cases ?_ (fun j => ?_) i <;> simp
 
 /- English proof (translation)
-Set `R` to `MvPolynomial (Fin (D + 1)) ℤ`. Set `F` to `FractionRing R`. Establish `hinj : Function.Injective (algebraMap R F)` using `IsFractionRing.injective R F`. Use `set c : F := algebraMap R F (X 0) with hc`. Establish `hc0 : c ≠ 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, Ne, ← map_zero (algebraMap R F)]`. Conclude with `fun e => X_ne_zero (R := ℤ) (0 : Fin (D + 1)) (hinj e)`. Set `z : Fin (D + 1) → F` to `fun i => algebraMap R F (X i) / c`. Establish `hz : (fun i => algebraMap R F (X i)) = fun i => c * z i`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `(mul_div_cancel₀ _ hc0).symm`. Establish `hz0 : z = Fin.cons 1 (fun j => z j.succ)`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Use `show algebraMap R F (X 0) / c = 1`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `div_self hc0`. Simplify using the standard rewrite rules. Establish `key : algebraMap R F P = c ^ q * aeval z P`. Establish `e1 : algebraMap R F P = aeval (fun i => algebraMap R F (X i)) P`. Rewrite using `[← Function.comp_def (algebraMap R F) X, aeval_algebraMap_apply, aeval_X_left_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e1, hz]`. Conclude with `aeval_mul_hom hP c z`. Establish `hzP : aeval z P = 0`. Establish `e2` using `aeval_dehom (fun j => z j.succ) P`. Rewrite `e2` using `[h, map_zero]`.
-
-Rewrite using `[hz0]`. Conclude with `e2.symm`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[key, hzP, mul_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dehom_eq_zero {D q : ℕ} {P : MvPolynomial (Fin (D + 1)) ℤ} (hP : P.IsHomogeneous q)
     (h : dehom D P = 0) : P = 0 := by
@@ -91,23 +87,21 @@ namespace GlobalTheory.HSAmp
 open GlobalTheory.HSAmp.HomInj in
 
 /- English proof (translation)
-Introduce `K _ _ D x hx hind _ ι _ g hg q T hT hsum`. Set `y : Fin (D + 1) → K` to `fun j => x j / x 0`. Establish `hy : ∀ j, y j ∈ ratF x`. Introduce `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [y, div_self (hx 0)]`. Conclude with `(ratF x).one_mem`. Conclude with `Subfield.subset_closure ⟨j, rfl⟩`. Set `y' : Fin (D + 1) → ratF x` to `fun j => ⟨y j, hy j⟩`. Establish `hxy : x = fun j => x 0 * y j`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Conclude with `(mul_div_cancel₀ _ (hx 0)).symm`. Establish `hval : ∀ i, aeval y (T i) = ((aeval y' (T i) : ratF x) : K)`. Introduce `i`. Use `show _ = algebraMap (ratF x) K _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← aeval_algebraMap_apply]`. Both sides reduce to the same expression. Establish `h1 : ∀ i, aeval x (T i) = x 0 ^ q * aeval y (T i)`. Introduce `i`. Rewrite using `[← aeval_mul_hom (hT i) (x 0) y]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun v => aeval v (T i)) hxy`. Establish `hsum' : ∑ i, aeval y' (T i) • g i = 0`. Establish `hq : x 0 ^ q ≠ 0` using `pow_ne_zero _ (hx 0)`. Establish `: x 0 ^ q * ∑ i, aeval y' (T i) • g i = 0`. Rewrite using `[Finset.mul_sum, ← hsum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h1, hval, Subfield.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_eq_zero.mp this).resolve_left hq`. Establish `h0 : ∀ i, aeval y (T i) = 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Rewrite using `[hval, Fintype.linearIndependent_iff.1 hg _ hsum' i]`. Both sides reduce to the same expression. Establish `hy0 : y = Fin.cons 1 (fun j : Fin D => x j.succ / x 0)`. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `[y, div_self (hx 0)]`. Simplify using `[y]`. Use function extensionality and compare the values at `i`. Apply `dehom_eq_zero (hT i)` to reduce the goal to its premises.
-
-Apply `(algebraicIndependent_iff_injective_aeval.1 hind)` to reduce the goal to its premises. Rewrite using `[aeval_dehom, ← hy0, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homogComb_eq_zero : ∀ (K : Type) [Field K] [CharZero K] (D : ℕ) (x : Fin (D + 1) → K), (∀ j, x j ≠ 0) →
     AlgebraicIndependent ℤ (fun j : Fin D => x j.succ / x 0) → FiniteDimensional (ratF x) K →

@@ -12,20 +12,20 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData
 
 /- English proof (translation)
-Unfold `AG`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem ag_nonneg (k r : ℕ) : 0 ≤ AG k r := by unfold AG; positivity
 
 /- English proof (translation)
-The claim follows from `hG.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem gap4 {k r : ℕ} {h : ℝ} (hG : GapOK k r h) :
     9 * ((r : ℝ) + 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 + 3 * AG k r + 3 ≤ aOf r h := hG.2.2.2
 
 /- English proof (translation)
-Establish `h4'` using `gap4 hG`. Establish `h4 : 9 * ((r : ℝ) + 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 < aOf r h`. Combine the linear relations using `[ag_nonneg k r]`. Unfold `JF.TransportedAlt`. Establish `hpos : (0 : ℝ) < 9 * ((r : ℝ) + 1)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_zero, mul_zero, sub_zero, lt_div_iff₀ hpos]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem thr_of_gapOK {k r : ℕ} {h : ℝ} (hG : GapOK k r h) : JF.TransportedAlt k r (aOf r h) 0 := by
   have h4' := gap4 hG
@@ -39,7 +39,7 @@ theorem thr_of_gapOK {k r : ℕ} {h : ℝ} (hG : GapOK k r h) : JF.TransportedAl
     _ < aOf r h := h4
 
 /- English proof (translation)
-Establish `h4` using `gap4 hG`. Establish `h5` using `ag_nonneg k r`. Establish `: (0 : ℝ) ≤ 9 * ((r : ℝ) + 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem aOf_pos_of_gapOK {k r : ℕ} {h : ℝ} (hG : GapOK k r h) : 0 < aOf r h := by
   have h4 := gap4 hG
@@ -48,7 +48,7 @@ theorem aOf_pos_of_gapOK {k r : ℕ} {h : ℝ} (hG : GapOK k r h) : 0 < aOf r h 
   linarith
 
 /- English proof (translation)
-Use `ext`. Simplify using `[B.rho, triv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rho_triv {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (p : B.SS k r)
@@ -57,9 +57,7 @@ theorem rho_triv {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProduc
   simp [B.rho, triv]
 
 /- English proof (translation)
-Break down `ht.lt_or_eq with h | h` into its components or cases. Rewrite using `[mul_left_comm, ← Real.rpow_add h, add_neg_cancel, Real.rpow_zero, mul_one]`. Conclude with `le_abs_self C`. Substitute `h` using the available equality. Rewrite using `[Real.zero_rpow ha, zero_mul]`.
-
-Conclude with `abs_nonneg C`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rpow_bound (t C a : ℝ) (ht : 0 ≤ t) (ha : a ≠ 0) : t ^ a * (C * t ^ (-a)) ≤ |C| := by
   rcases ht.lt_or_eq with h | h
@@ -70,25 +68,23 @@ theorem rpow_bound (t C a : ℝ) (ht : 0 ≤ t) (ha : a ≠ 0) : t ^ a * (C * t 
     exact abs_nonneg C
 
 /- English proof (translation)
-Introduce `hIn k r Wp Wq _ _ _ _ _ _ _ _ D ε lam h H _ _ _ σ w0 u u' νq νq' hS hS' x hx y hy`. Take `⟨C, hC⟩` from `hD hIn k r ε lam h H σ w0 Wp D.z Formalism.QuantumDeterminants.cStd u D.π D.μW D.μN D.μG νq hS y hy x hx`. Establish `hG : GapOK k r h` using `hS.2.2.2.1`. Establish `hσ : PI.UpqRep.IsDSHpk k r ε lam σ` using `hS.2.1`. Establish `hThr : JF.TransportedAlt k r (aOf r h) 0` using `thr_of_gapOK hG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : aOf r h ≠ 0` using `(aOf_pos_of_gapOK hG).ne'`. Set `f : Mx k r → ℂ` to `fun g => ⟪x, σ g y⟫_ℂ`. Establish `hfc : ContinuousOn f (B.GV k r)` using `ContinuousOn.inner continuousOn_const (sigma_contOn hσ y)`. Set `F : B.Mat k r → (ℂ →L[ℂ] ℂ)` to `fun g => f g • (1 : ℂ →L[ℂ] ℂ)`. Establish `hCC : B.InCC (aOf r h) 0 F`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨|C|, ckOn_zero_of_contOn f hfc, ?_⟩` and prove the remaining obligations. Introduce `uu vv _ _ hlen g hg`. Establish `hu : uu = []` using `List.eq_nil_of_length_eq_zero (by omega)`. Establish `hv : vv = []` using `List.eq_nil_of_length_eq_zero (by omega)`. Substitute `hu` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hv` using the available equality. Use `show B.gN g ^ aOf r h * ‖F g‖ ≤ |C|`. Establish `hF : ‖F g‖ = ‖f g‖` using `by simp [F]`. Rewrite using `[hF]`. Establish `hgN : 0 ≤ B.gN g` using `Real.sqrt_nonneg _`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hJC` using `Formalism.FourierDecayAlt.P.bessel_integral_converges k r ℂ ℂ (triv D) (aOf r h) F hThr hCC`. Establish `hJD` using `Formalism.FourierDecayAlt.P.bessel_integral_domain k r ℂ ℂ (triv D) (aOf r h) 0 F hThr hCC`. Establish `hnorm : ∀ p γ, ‖⟪x, σ (B.sgs p γ) y⟫_ℂ‖ = ‖B.rho (triv D) p F γ‖`. Introduce `p γ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rho_triv]`. Simplify using `[F, f]`. Establish `happ : ∀ p γ, ⟪x, σ (B.sgs p γ) y⟫_ℂ = (ContinuousLinearMap.apply ℂ ℂ (1 : ℂ)) (B.rho (triv D) p F γ)`. Introduce `p γ`. Rewrite using `[rho_triv]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[F, f]`. Use `⟨fun γ hγ => ?_, fun K hK hKO => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, hbd⟩` from `hJC.2 {γ} isCompact_singleton (Set.singleton_subset_iff.mpr hγ)`. Establish `hmeas : AEStronglyMeasurable (fun p => B.rho (triv D) p F γ) D.μSS` using `hJD.1 [] [] (by simp) (by simp) (by simp) γ hγ`. Establish `hmeas' : AEStronglyMeasurable (fun p => ⟪x, σ (B.sgs p γ) y⟫_ℂ) D.μSS`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(ContinuousLinearMap.apply ℂ ℂ (1 : ℂ)).continuous.comp_aestronglyMeasurable hmeas` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Conclude with `(happ p γ).symm`. Use `Integrable.mono' hb hmeas' ?_` and prove the remaining obligations. Use `filter_upwards [hbd γ rfl] with p hp`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hnorm]`. Conclude with `hp`. Take `⟨b, hb, hbd⟩` from `hJC.2 K hK hKO`. Use `⟨b, hb, fun γ hγ => ?_⟩` and prove the remaining obligations. Use `filter_upwards [hbd γ hγ] with p hp`.
-
-Rewrite using `[hnorm]`. Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbConvDD_of_decDD (hD : DecDD) : OrbConvDD := by
   intro hIn k r Wp Wq _ _ _ _ _ _ _ _ D ε lam h H _ _ _ σ w0 u u' νq νq' hS hS' x hx y hy

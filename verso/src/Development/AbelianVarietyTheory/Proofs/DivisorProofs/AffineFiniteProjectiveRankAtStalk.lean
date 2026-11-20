@@ -15,13 +15,11 @@ noncomputable section
 namespace GlobalTheory.AbelianMulFin
 
 /- English proof (translation)
-Use `letI := (f.app V).hom.toAlgebra`. Establish `hU : IsAffineOpen (f ⁻¹ᵁ V)` using `hV.preimage f`. Establish `h1 : Module.Finite Γ(Y, V) Γ(X, f ⁻¹ᵁ V)` using `f.finite_app V hV`. Establish `h2 : Module.Flat Γ(Y, V) Γ(X, f ⁻¹ᵁ V)`. Use `f.flat_appLE hV hU le_rfl` as an intermediate fact.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `this`. Establish `h3 : Algebra.FinitePresentation Γ(Y, V) Γ(X, f ⁻¹ᵁ V)`. Use `f.finitePresentation_appLE hV hU le_rfl` as an intermediate fact. Rewrite `this` using `[← Scheme.Hom.app_eq_appLE]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h4` using `Module.FinitePresentation.of_finite_of_finitePresentation Γ(Y, V) Γ(X, f ⁻¹ᵁ V)`. Use `⟨h1, h2, Module.Flat.projective_of_finitePresentation, fun p => ?_⟩` and prove the remaining obligations. Establish `e` using `Scheme.Hom.finrank_of_isPullback _ _ _ _ (GlobalTheory.isPullback_fromSpec_app f hV hU) p`. Rewrite `e` using `[hr]`.
-
-Conclude with `(Scheme.Hom.finrank_SpecMap_algebraMap Γ(Y, V) Γ(X, f ⁻¹ᵁ V) p).symm.trans e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem affine_finite_projective_rankAtStalk {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] [Flat f]
     [LocallyOfFinitePresentation f] (r : ℕ) (hr : ∀ y, f.finrank y = r) (V : Y.Opens)
@@ -48,7 +46,7 @@ theorem affine_finite_projective_rankAtStalk {X Y : Scheme.{0}} (f : X ⟶ Y) [I
   exact (Scheme.Hom.finrank_SpecMap_algebraMap Γ(Y, V) Γ(X, f ⁻¹ᵁ V) p).symm.trans e
 
 /- English proof (translation)
-Use `(Ne.isUnit hn).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_natCast_Sp {K : Type} [Field K] {n : ℕ} (hn : (n : K) ≠ 0) :
     IsUnit (n : Γ(Spec (CommRingCat.of K), ⊤)) := by
@@ -60,13 +58,11 @@ end GlobalTheory.AbelianMulFin
 namespace GlobalTheory.AbelianMulFin
 
 /- English proof (translation)
-Introduce `hr0`. Break down `CharP.char_is_prime_or_zero K (ringChar K) with hp | hp` into its components or cases. Use `haveI := Fact.mk hp`. Establish `hdvd : ringChar K ∣ r` using `(CharP.cast_eq_zero_iff K (ringChar K) r).1 hr0`. Set `H : Subgroup G` to `(powMonoidHom n : G →* G).ker`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hHc : Nat.card {y : G // y ^ n = 1} = Nat.card H` using `Nat.card_congr (Equiv.subtypeEquivRight fun y => by simp [H, MonoidHom.mem_ker])`. Rewrite `hdvd` using `[hr, hHc]`. Establish `hpos : Nat.card H ≠ 0` using `by rw [← hHc, ← hr]; omega`. Use `haveI : Finite H := Nat.finite_of_card_ne_zero hpos`. Take `⟨x, hx⟩` from `exists_prime_orderOf_dvd_card' (ringChar K) hdvd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2 : (x : G) ^ n = 1` using `x.2`. Establish `hxn : x ^ n = 1` using `Subtype.ext (by rw [SubgroupClass.coe_pow, hx2]; rfl)`. Establish `hd : ringChar K ∣ n` using `hx ▸ orderOf_dvd_of_pow_eq_one hxn`. Conclude with `hn ((CharP.cast_eq_zero_iff K (ringChar K) n).2 hd)`. Establish `: CharP K 0` using `hp ▸ ringChar.charP K haveI := CharP.charP_to_charZero K`.
-
-Conclude with `(Nat.cast_ne_zero.2 (by omega)) hr0`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natCast_card_torsion_ne_zero {K : Type} [Field K] {G : Type} [CommGroup G] {n r : ℕ}
     (hn : (n : K) ≠ 0) (hr1 : 1 ≤ r) (hr : r = Nat.card {y : G // y ^ n = 1}) : (r : K) ≠ 0 := by
@@ -90,17 +86,13 @@ theorem natCast_card_torsion_ne_zero {K : Type} [Field K] {G : Type} [CommGroup 
     exact (Nat.cast_ne_zero.2 (by omega)) hr0
 
 /- English proof (translation)
-Use `haveI := hA.comm`. Use `haveI := hA.smooth`. Use `haveI := hA.geomConnected`. Take `⟨⟨hfin, het⟩, -⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion A (isUnit_natCast_Sp hn)`. Rewrite using `[← GlobalTheory.MulLawsCompare.mulN_eq_mulA]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI := hfin`. Use `haveI := het`. Use `haveI : ConnectedSpace A.left := GeometricallyConnected.connectedSpace A.hom A.hom.isOpenMap`. Set `z₀ : Spec (CommRingCat.of K)` to `(⊥ : PrimeSpectrum K)`. Set `o : A.left` to `η[A].left z₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hη : η[A] ≫ mulN A n = η[A]`. Rewrite using `[GlobalTheory.MulLawsCompare.mulN_eq_mulA]`. Use `haveI := GlobalTheory.AbLaw.MulN.isMonHom_mulA A n`. Conclude with `IsMonHom.one_hom (mulA A n)`. Establish `hfo : (mulN A n).left o = o`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(η[A].left ≫ (mulN A n).left) z₀ = _`. Rewrite using `[← Over.comp_left, hη]`. Use `set r := (mulN A n).left.finrank o with hr_def`. Establish `hall : ∀ a, (mulN A n).left.finrank a = r` using `fun a => (Scheme.Hom.isLocallyConstant_finrank (mulN A n).left).apply_eq_of_preconnectedSpace a o`. Establish `hr1 : 1 ≤ r`.
-
-Use `Scheme.Hom.one_le_finrank_map (mulN A n).left o` as an intermediate fact. Rewrite `this` using `[hfo]`. Then use the resulting hypothesis. Use `haveI hsurj : Surjective (mulN A n).left := (Scheme.Hom.one_le_finrank_iff_surjective (mulN A n).left).1 fun a => by show 1 ≤ (mulN A n).left.finrank a`. Rewrite using `[hall a]`. Conclude with `hr1`.
-
-Establish `hcard` using `GlobalTheory.MulLawsCompare.finrank_mulN_eq_card A n (η[A].left) z₀`. Use `⟨hfin, inferInstance, het, r, natCast_card_torsion_ne_zero hn hr1 hcard, hr1, hall, fun V hV => affine_finite_projective_rankAtStalk _ r hall V hV⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mulA_finite_locallyFree (K : Type) [Field K] [IsAlgClosed K]
     (A : Over (Spec (CommRingCat.of K))) [GrpObj A] [hA : IsAbelianScheme A] (n : ℕ)

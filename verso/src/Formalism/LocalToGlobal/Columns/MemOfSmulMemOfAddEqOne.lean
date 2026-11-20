@@ -9,15 +9,13 @@ open NumberField IsDedekindDomain Formalism.HermitianLatticesTheory Module
 section Gen
 
 /- English proof (translation)
-Set `g : B →ₗ[R] A ⧸ (C ⊓ A).comap A.subtype` to `((C ⊓ A).comap A.subtype).mkQ ∘ₗ Submodule.inclusion hBA`. Establish `hg : Function.Surjective g`. Introduce `z`. Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `_ a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨b, hb, c, hc, hbc⟩` from `Submodule.mem_sup.1 (hA a.2)`. Use `⟨⟨b, hb⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (Submodule.inclusion hBA ⟨b, hb⟩) = Submodule.Quotient.mk a`. Rewrite using `[Submodule.Quotient.eq]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `b - (a : V) ∈ C`. Establish `: b - (a : V) = -c` using `by rw [← hbc]; abel`. Rewrite using `[this]`. Conclude with `C.neg_mem hc`. Express the relevant statement in the definitionally equal form `b - (a : V) ∈ A`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `A.sub_mem (hBA hb) a.2`. Establish `hk : LinearMap.ker g = (C ⊓ B).comap B.subtype`. Use extensionality with `x`. Simplify using `only [g, LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_inclusion, Submodule.mem_inf]`. Conclude with `⟨fun h => ⟨h.1, x.2⟩, fun h => ⟨h.1, hBA x.2⟩⟩`.
-
-Conclude with `⟨(Submodule.quotEquivOfEq _ _ hk.symm).trans (LinearMap.quotKerEquivOfSurjective g hg)⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem second_iso_quotient_equiv {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] (A B C : Submodule R V) (hBA : B ≤ A)
     (hA : A ≤ B ⊔ C) : Nonempty ((B ⧸ (C ⊓ B).comap B.subtype) ≃ₗ[R] (A ⧸ (C ⊓ A).comap A.subtype)) := by
@@ -45,7 +43,7 @@ theorem second_iso_quotient_equiv {R V : Type} [CommRing R] [AddCommGroup V] [Mo
   exact ⟨(Submodule.quotEquivOfEq _ _ hk.symm).trans (LinearMap.quotKerEquivOfSurjective g hg)⟩
 
 /- English proof (translation)
-Establish `: x = a • x + b • x` using `by rw [← add_smul, hab, one_smul]`. Rewrite using `[this]`. Conclude with `A.add_mem ha hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_smul_mem_of_add_eq_one {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] {A : Submodule R V} {x : V} {a b : R}
     (hab : a + b = 1) (ha : a • x ∈ A) (hb : b • x ∈ A) : x ∈ A := by
@@ -60,23 +58,23 @@ section Lat
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Introduce `e` and use `h (by rw [← conjugatePrime_conjugatePrime Q, e, conjugatePrime_conjugatePrime])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjPrime_ne_conjPrime {P Q : HeightOneSpectrum (𝓞 E)} (h : Q ≠ P) : conjPrime₂ Q ≠ conjPrime₂ P := fun e =>
   h (by rw [← conjugatePrime_conjugatePrime Q, e, conjugatePrime_conjugatePrime])
 
 /- English proof (translation)
-Introduce `e` and use `h (by rw [e, conjugatePrime_conjugatePrime])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ne_conjPrime_symm {P Q : HeightOneSpectrum (𝓞 E)} (h : Q ≠ conjPrime₂ P) : P ≠ conjPrime₂ Q := fun e =>
   h (by rw [e, conjugatePrime_conjugatePrime])
 
 /- English proof (translation)
-Take `⟨-, hPbN, -⟩` from `(isHeckeNbr_iff P i N e).1 h1`. Take `⟨hQM, hQbe, -⟩` from `(isHeckeNbr_iff Q j e M).1 h2`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `y ⟨hye, hyN⟩`. Take `⟨a, ha, b, hb, hab⟩` from `exists_coprime hQbP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `mem_of_smul_mem_of_add_eq_one hab ?_ ?_` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left ⟨hQbe (Submodule.smul_mem_smul ha hye), N.smul_mem a hyN⟩`. Conclude with `Submodule.mem_sup_right (Submodule.smul_mem_smul hb hyN)`. Use `sup_le ?_ (le_inf hPbN Submodule.smul_le_right)` and prove the remaining obligations. Introduce and unpack `x ⟨hxM, hxN⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha, b, hb, hab⟩` from `exists_coprime hQP'`. Conclude with `⟨mem_of_smul_mem_of_add_eq_one hab (hQM (Submodule.smul_mem_smul ha hxM)) (hPbN (Submodule.smul_mem_smul hb hxN)), hxN⟩`.
+A detailed English derivation is pending.
 -/
 theorem neighbour_inf_eq_sup {P Q : HeightOneSpectrum (𝓞 E)} (hQP' : Q ≠ conjPrime₂ P) (hQbP : conjPrime₂ Q ≠ conjPrime₂ P) {i j : ℕ}
     {N e M : Submodule (𝓞 E) (Sp E n)} (h1 : IsHeckeNbr P.asIdeal i N e) (h2 : IsHeckeNbr Q.asIdeal j e M) :
@@ -101,7 +99,7 @@ section Transfer
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hq (fun s hs x hx => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[show r • s • x = s • r • x from smul_comm r s x]`. Conclude with `Submodule.smul_mem_smul hs (Submodule.smul_mem_smul hr hx)`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_ideal_smul_comm {I J : Ideal (𝓞 E)} {X : Submodule (𝓞 E) (Sp E n)} {r : 𝓞 E} (hr : r ∈ J) {q : Sp E n}
     (hq : q ∈ I • X) : r • q ∈ I • (J • X) := by
@@ -112,45 +110,39 @@ theorem smul_mem_ideal_smul_comm {I J : Ideal (𝓞 E)} {X : Submodule (𝓞 E) 
     exact Submodule.add_mem _ hx hy
 
 /- English proof (translation)
-Establish `hQbP` using `conjPrime_ne_conjPrime hQP`. Establish `hPQb` using `ne_conjPrime_symm hQP'`. Establish `hB : e ⊓ N = (M ⊓ N) ⊔ (conjPrime₂ P).asIdeal • N` using `neighbour_inf_eq_sup hQP' hQbP h1 h2`. Take `⟨hPe, hPbN, ⟨ψ1⟩⟩` from `(isHeckeNbr_iff P i N e).1 h1`. Take `⟨hQM, hQbe, ⟨ψ2⟩⟩` from `(isHeckeNbr_iff Q j e M).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set B := e ⊓ N with hBdef`. Establish `hMNe : M ⊓ N ≤ e` using `fun x hx => by`. Establish `: x ∈ B` using `by rw [hB]; exact Submodule.mem_sup_left hx`. Conclude with `this.1`. Use `set B' := (M ⊓ N) ⊔ (conjPrime₂ Q).asIdeal • N with hB'def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB'N : B' ≤ N` using `sup_le inf_le_right Submodule.smul_le_right`. Establish `hF1 : N ≤ B ⊔ B'`. Introduce `y hy`. Take `⟨a, ha, b, hb, hab⟩` from `exists_coprime (Ne.symm hQbP)`. Use `mem_of_smul_mem_of_add_eq_one hab (Submodule.mem_sup_left ?_) (Submodule.mem_sup_right ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hB]`. Conclude with `Submodule.mem_sup_right (Submodule.smul_mem_smul ha hy)`. Conclude with `Submodule.mem_sup_right (Submodule.smul_mem_smul hb hy)`. Establish `hF2 : e ≤ B ⊔ M`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, b, hb, hab⟩` from `exists_coprime hPQb`. Conclude with `mem_of_smul_mem_of_add_eq_one hab (Submodule.mem_sup_left ⟨e.smul_mem a hy, hPe (Submodule.smul_mem_smul ha hy)⟩) (Submodule.mem_sup_right (hQbe (Submodule.smul_mem_smul hb hy)))`. Establish `hF3' : (conjPrime₂ Q).asIdeal • N ⊓ e ≤ M`. Introduce and unpack `y ⟨hyQ, hye⟩`. Take `⟨a, ha, b, hb, hab⟩` from `exists_coprime hQbP`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `mem_of_smul_mem_of_add_eq_one hab (hQbe (Submodule.smul_mem_smul ha hye)) ?_` and prove the remaining obligations. Conclude with `hQbe (Submodule.smul_mono le_rfl hPbN (smul_mem_ideal_smul_comm hb hyQ))`. Establish `hF3 : B' ⊓ B = M ⊓ B`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `y ⟨hyB', hyB⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `⟨?_, hyB⟩` and prove the remaining obligations. Take `⟨m, hm, q, hq, rfl⟩` from `Submodule.mem_sup.1 hyB'`. Establish `hqe : q ∈ e`. Use `e.sub_mem hyB.1 (hMNe hm)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `M.add_mem hm.1 (hF3' ⟨hq, hqe⟩)`. Introduce and unpack `y ⟨hyM, hyB⟩`. Conclude with `⟨Submodule.mem_sup_left ⟨hyM, hyB.2⟩, hyB⟩`. Establish `hF4 : M ⊓ B' = M ⊓ B`. Apply `le_antisymm` to reduce the goal to its premises.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce and unpack `y ⟨hyM, hyB'⟩`. Conclude with `⟨hyM, hMNe ⟨hyM, hB'N hyB'⟩, hB'N hyB'⟩`. Introduce and unpack `y ⟨hyM, hyB⟩`. Conclude with `⟨hyM, Submodule.mem_sup_left ⟨hyM, hyB.2⟩⟩`. Take `⟨χ1⟩` from `second_iso_quotient_equiv N B B' inf_le_right hF1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨χ2⟩` from `second_iso_quotient_equiv e B M inf_le_left hF2`. Establish `hc : (B' ⊓ B).comap B.subtype = (M ⊓ B).comap B.subtype` using `by rw [hF3]`. Set `ψ : (N ⧸ (B' ⊓ N).comap N.subtype) ≃ₗ[𝓞 E] (Fin j → 𝓞 E ⧸ (conjPrime₂ Q).asIdeal)` to `χ1.symm.trans ((Submodule.quotEquivOfEq _ _ hc).trans (χ2.trans ψ2))`. Set `φ : N →ₗ[𝓞 E] (Fin j → 𝓞 E ⧸ (conjPrime₂ Q).asIdeal)` to `ψ.toLinearMap ∘ₗ ((B' ⊓ N).comap N.subtype).mkQ`. Establish `hφ : Function.Surjective φ` using `ψ.surjective.comp (Submodule.mkQ_surjective _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : LinearMap.ker φ = (B' ⊓ N).comap N.subtype`. Rewrite using `[LinearMap.ker_comp, LinearEquiv.ker, Submodule.comap_bot, Submodule.ker_mkQ]`. Take `⟨e', hl', hu', hnb', hsame', hinf'⟩` from `exists_heckeNbr_ker hN huN Q hneQ φ hφ`. Establish `hinf : e' ⊓ N = B'`. Rewrite using `[hinf', hker, Submodule.map_comap_subtype]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_antisymm (fun x hx => hx.2.1) (fun x hx => ⟨hB'N hx, hx, hB'N hx⟩)`. Take `⟨hQe', -, -⟩` from `(isHeckeNbr_iff Q j N e').1 hnb'`. Establish `hG1a : (conjPrime₂ P).asIdeal • B' ≤ M`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm, q, hq, rfl⟩` from `Submodule.mem_sup.1 hy`. Rewrite using `[smul_add]`. Conclude with `M.add_mem (M.smul_mem r hm.1) (hQbe (Submodule.smul_mono le_rfl hPbN (smul_mem_ideal_smul_comm hr hq)))`. Establish `hPQM : (P.asIdeal * Q.asIdeal) • M ≤ B'`. Rewrite using `[Submodule.mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Conclude with `Submodule.mem_sup_left ⟨(Submodule.smul_le_right.trans Submodule.smul_le_right) hx, hPe (Submodule.smul_mono le_rfl hQM hx)⟩`. Establish `hG1 : (conjPrime₂ P).asIdeal • e' ≤ M`. Establish `hg` using `IsHeckeNbr.eq_glue hN huN hu' Q hneQ hnb'`. Rewrite `hg` using `[hinf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg, Submodule.smul_sup]`. Use `sup_le hG1a ?_` and prove the remaining obligations. Rewrite using `[Submodule.smul_le]`. Introduce `r hr v hv`. Use `Submodule.smul_induction_on hv (fun s hs u hu => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_smul]`. Conclude with `conj_smul_dual_mem huM hPQM (by rw [map_mul]; exact Ideal.mul_mem_mul ((mem_conjP P r).1 hr) ((mem_conjP Q s).1 hs)) hu`. Rewrite using `[smul_add]`. Conclude with `M.add_mem hx hy`. Establish `hG2 : P.asIdeal • M ≤ e'`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.smul_le]`. Introduce `p hp u hu`. Use `conj_smul_dual_mem hu' hG1 (by rw [mem_conjP, cO_cO]; exact hp) ?_` and prove the remaining obligations. Rewrite using `[show dual (hStd E n) M = M from huM]`. Conclude with `hu`.
-
-Establish `hG3 : e' ≤ B' ⊔ M`. Introduce `y hy`. Take `⟨a, ha, b, hb, hab⟩` from `exists_coprime hQP'`. Use `mem_of_smul_mem_of_add_eq_one hab (Submodule.mem_sup_left ?_) (Submodule.mem_sup_right (hG1 (Submodule.smul_mem_smul hb hy)))` and prove the remaining obligations. Rewrite using `[← hinf]`.
-
-Conclude with `⟨e'.smul_mem a hy, hQe' (Submodule.smul_mem_smul ha hy)⟩`. Establish `hB'e' : B' ≤ e'`. Rewrite using `[← hinf]`. Conclude with `inf_le_left`. Take `⟨χ3⟩` from `second_iso_quotient_equiv e' B' M hB'e' hG3`.
-
-Take `⟨χ4⟩` from `second_iso_quotient_equiv N B' B hB'N (by rw [sup_comm]; exact hF1)`. Establish `hc2 : (M ⊓ B').comap B'.subtype = (B ⊓ B').comap B'.subtype` using `by rw [hF4, inf_comm B B', hF3]`. Establish `hc3 : (B ⊓ N).comap N.subtype = B.comap N.subtype` using `by rw [inf_eq_left.2 inf_le_right]`. Use `⟨e', hl', hu', hnb', hsame', (isHeckeNbr_iff P i e' M).2 ⟨hG2, hG1, ⟨?_⟩⟩⟩` and prove the remaining obligations. Conclude with `χ3.symm.trans ((Submodule.quotEquivOfEq _ _ hc2).trans (χ4.trans ((Submodule.quotEquivOfEq _ _ hc3).trans ψ1)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem neighbour_path_transfer {P Q : HeightOneSpectrum (𝓞 E)} (hneQ : conjPrime₂ Q ≠ Q) (hQP : Q ≠ P) (hQP' : Q ≠ conjPrime₂ P)
     {i j : ℕ} {N e M : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice E N) (huN : IsUnimodular (hStd E n) N)
@@ -270,18 +262,18 @@ section Deco
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-The claim follows from `DecoSet.mem_heckeNb P.ne_bot (conjIdeal_ne_bot P.ne_bot) i d e`.
+A detailed English derivation is pending.
 -/
 theorem mem_heckeNeighbour_iff {P : HeightOneSpectrum (𝓞 E)} {i : ℕ} {d e : DecoSet E n ST SG} :
     e ∈ d.heckeNb P.asIdeal i ↔ IsHeckeNbr P.asIdeal i d.1.N e.1.N ∧ e.1.f = d.1.f ∧ e.1.be = d.1.be :=
   DecoSet.mem_heckeNb P.ne_bot (conjIdeal_ne_bot P.ne_bot) i d e
 
 /- English proof (translation)
-Unfold `decorationPathCount`. Rewrite using `[Finset.card_le_one]`. Introduce `e₁ h₁ e₂ h₂`. Rewrite `h₁`, `h₂` using `[Finset.mem_filter, mem_heckeNeighbour_iff, mem_heckeNeighbour_iff]`. Take `⟨⟨a1, b1, c1⟩, a1', -, -⟩` from `h₁`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨a2, b2, c2⟩, a2', -, -⟩` from `h₂`. Establish `g1` using `IsHeckeNbr.eq_glue d.2.lat d.2.uni e₁.2.uni P hne a1`. Establish `g2` using `IsHeckeNbr.eq_glue d.2.lat d.2.uni e₂.2.uni P hne a2`. Rewrite `g1` using `[neighbour_inf_eq_sup hQP' hQbP a1 a1']`. Rewrite `g2` using `[neighbour_inf_eq_sup hQP' hQbP a2 a2']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subtype.ext (Deco.ext (g1.trans g2.symm) (b1.trans b2.symm) (c1.trans c2.symm))`.
+A detailed English derivation is pending.
 -/
 theorem pathCount_le_one {P Q : HeightOneSpectrum (𝓞 E)} (hne : conjPrime₂ P ≠ P) (hQP' : Q ≠ conjPrime₂ P)
     (hQbP : conjPrime₂ Q ≠ conjPrime₂ P) (i j : ℕ) (d f : DecoSet E n ST SG) : decorationPathCount P.asIdeal Q.asIdeal i j d f ≤ 1 := by
@@ -299,9 +291,9 @@ theorem pathCount_le_one {P Q : HeightOneSpectrum (𝓞 E)} (hne : conjPrime₂ 
   exact Subtype.ext (Deco.ext (g1.trans g2.symm) (b1.trans b2.symm) (c1.trans c2.symm))
 
 /- English proof (translation)
-Unfold `decorationPathCount at h ⊢`. Take `⟨e, he⟩` from `Finset.card_pos.1 h`. Rewrite `he` using `[Finset.mem_filter, mem_heckeNeighbour_iff, mem_heckeNeighbour_iff]`. Take `⟨⟨a1, b1, c1⟩, a2, b2, c2⟩` from `he`. Take `⟨N', hl, hu, hnb, hsame, hnb2⟩` from `neighbour_path_transfer hneQ hQP hQP' d.2.lat d.2.uni f.2.uni a1 a2`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `e' : DecoSet E n ST SG` to `⟨{ N := N', f := d.1.f, be := d.1.be }, d.2.replN hl hu (fun R => hsame R.1 (hSTQ R).1 (hSTQ R).2) (fun w => hsame w.1 (hSGQ w).1 (hSGQ w).2)⟩`. Use `Finset.card_pos.2 ⟨e', ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_filter, mem_heckeNeighbour_iff, mem_heckeNeighbour_iff]`. Conclude with `⟨⟨hnb, rfl, rfl⟩, hnb2, b2.trans b1, c2.trans c1⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pathCount_pos_symm {P Q : HeightOneSpectrum (𝓞 E)} (hneQ : conjPrime₂ Q ≠ Q) (hQP : Q ≠ P) (hQP' : Q ≠ conjPrime₂ P)
     (hSTQ : ∀ R : ST, R.1 ≠ Q ∧ R.1 ≠ conjPrime₂ Q) (hSGQ : ∀ w : SG, w.1 ≠ Q ∧ w.1 ≠ conjPrime₂ Q) (i j : ℕ)
@@ -320,9 +312,9 @@ theorem pathCount_pos_symm {P Q : HeightOneSpectrum (𝓞 E)} (hneQ : conjPrime�
   exact ⟨⟨hnb, rfl, rfl⟩, hnb2, b2.trans b1, c2.trans c1⟩
 
 /- English proof (translation)
-Establish `hPQ : P ≠ Q` using `Ne.symm hQP`. Establish `hPQ' : P ≠ conjPrime₂ Q` using `ne_conjPrime_symm hQP'`. Establish `h1` using `pathCount_le_one hne hQP' (conjPrime_ne_conjPrime hQP) i j d f`. Establish `h2` using `pathCount_le_one hneQ hPQ' (conjPrime_ne_conjPrime hPQ) j i d f`. Establish `i1` using `pathCount_pos_symm hneQ hQP hQP' hSTQ hSGQ i j d f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i2` using `pathCount_pos_symm (P := Q) (Q := P) hne hPQ hPQ' hST hSG j i d f`. Distinguish the cases in `hx : 0 < decorationPathCount P.asIdeal Q.asIdeal i j d f`. Establish `hy` using `i1 hx`. Use linear arithmetic over natural numbers and integers. Establish `hy : ¬ 0 < decorationPathCount Q.asIdeal P.asIdeal j i d f` using `fun h => hx (i2 h)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/

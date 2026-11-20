@@ -15,17 +15,15 @@ namespace GlobalTheory.TorusExt
 open GlobalTheory.BXOf ReciprocityTheory.ChartRestriction.G.DVR
 
 /- English proof (translation)
-Introduce `R _ _ D F _ _ σ hσ g hb J hJ hfix`. Establish `hb' : extMap σ hσ ≫ g.b = g.b` using `Over.OverMorphism.ext hb`. Establish `hφ0 : ∀ χ k, Spec.map (CommRingCat.ofHom σ) ≫ DegPre.gtφ D F g.b χ k = DegPre.gtφ D F g.b χ k`. Introduce `χ k`. Use `show (extMap σ hσ).left ≫ DegPre.gtφ D F g.b χ k = DegPre.gtφ D F g.b χ k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `fin_cases k`. Use `show (extMap σ hσ ≫ (cP D _ χ * g.b)).left = (cP D _ χ * g.b).left`. Rewrite using `[MonObj.comp_mul, comp_cP, hb']`. Use `show (extMap σ hσ ≫ cP D _ χ).left = (cP D _ χ).left`. Rewrite using `[comp_cP]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `show (extMap σ hσ ≫ g.b).left = g.b.left`. Rewrite using `[hb']`. Use `show (extMap σ hσ ≫ (1 : TF (R := R) F ⟶ D.P.A)).left = (1 : TF (R := R) F ⟶ D.P.A).left`. Rewrite using `[MonObj.comp_one]`. Use `gt_ext_val ((gtExt_b σ hσ g).trans hb') fun χ y J' hJ' => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `rfl : y = closedPoint F` from `Subsingleton.elim (α := PrimeSpectrum F) _ _`. Establish `hdel : ∀ ψ : Spec (CommRingCat.of F) ⟶ D.P.A.left, Spec.map (CommRingCat.ofHom σ) ≫ ψ = ψ → del D.P.L σ J J' ψ = del D.P.L (RingHom.id F) J J' ψ`. Introduce `ψ h`. Unfold `del`. Rewrite using `[h, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `val_nat (g.isGen χ) σ hJ hJ' (𝟙 _)`. Establish `e₂` using `val_nat (g.isGen χ) (RingHom.id F) hJ hJ' (𝟙 _)`. Rewrite `e₂` using `[CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`. Establish `hu : Units.map σ.toMonoidHom (sig F (charVal g χ (closedPoint F) J)) = sig F (charVal g χ (closedPoint F) J)` using `Units.ext (hfix χ)`. Establish `hu' : Units.map (RingHom.id F).toMonoidHom (sig F (charVal g χ (closedPoint F) J)) = sig F (charVal g χ (closedPoint F) J)` using `Units.ext rfl`.
-
-Establish `key : sig F (charVal (gtExt D σ hσ g) χ (closedPoint F) J') = sig F (charVal g χ (closedPoint F) J')`. Rewrite using `[gtExt_val σ hσ g χ hJ', extMap_left, ← Category.comp_id (spMap σ)]`. Use `e₁.trans (Eq.trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => congrArg (· ^ DegPre.gtε k) (hdel _ ((congrArg _ (Category.id_comp _)).trans ((hφ0 χ k).trans (Category.id_comp _).symm)))) (hu.trans hu'.symm)) e₂.symm)` and prove the remaining obligations. Conclude with `Units.map_injective (f := (stalkClosedPointIso (CommRingCat.of F)).hom.hom.toMonoidHom) (stalkClosedPointIso (CommRingCat.of F)).commRingCatIsoToRingEquiv.injective key`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gtExt_eq_self_of_charVal_fixed : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (σ : F →+* F) (hσ : σ.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F) (g : GtPtF D F), spMap σ ≫ g.b.left = g.b.left → ∀ (J : ((TF (R := R) F).left ⟶ D.P.A.left) → D.P.L.ι), Good D.P.L (Z := (TF (R := R) F).left) (closedPoint F) J → (∀ χ, σ (GlobalTheory.BXOf.sig F (GlobalTheory.TorusExt.charVal g χ (closedPoint F) J) : F) = (GlobalTheory.BXOf.sig F (GlobalTheory.TorusExt.charVal g χ (closedPoint F) J) : F)) → GlobalTheory.TorusExt.gtExt D σ hσ g = g := by
   intro R _ _ D F _ _ σ hσ g hb J hJ hfix

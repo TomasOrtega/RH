@@ -20,9 +20,9 @@ def finTrace (T : V →ₗ[ℂ] V) : ℂ :=
   LinearMap.trace ℂ (LinearMap.range T) (T.restrict fun x _ => LinearMap.mem_range_self T x)
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℂ (LinearMap.range T)` using `Submodule.finiteDimensional_of_le hE`. Set `A : E →ₗ[ℂ] LinearMap.range T` to `(T ∘ₗ E.subtype).codRestrict _ fun x => LinearMap.mem_range_self T x`. Set `B : LinearMap.range T →ₗ[ℂ] E` to `Submodule.inclusion hE`. Establish `h1 : (T.restrict fun x _ => hE (LinearMap.mem_range_self T x) : E →ₗ[ℂ] E) = B ∘ₗ A` using `LinearMap.ext fun x => Subtype.ext rfl`. Establish `h2 : (T.restrict fun x _ => LinearMap.mem_range_self T x : LinearMap.range T →ₗ[ℂ] LinearMap.range T) = A ∘ₗ B` using `LinearMap.ext fun x => Subtype.ext rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[finTrace, h1, h2, LinearMap.trace_comp_comm']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finTrace_eq_trace (T : V →ₗ[ℂ] V) (E : Submodule ℂ V) [FiniteDimensional ℂ E]
     (hE : LinearMap.range T ≤ E) :
@@ -40,9 +40,9 @@ theorem finTrace_eq_trace (T : V →ₗ[ℂ] V) (E : Submodule ℂ V) [FiniteDim
   rw [finTrace, h1, h2, LinearMap.trace_comp_comm']
 
 /- English proof (translation)
-Use `set E := LinearMap.range S ⊔ LinearMap.range T`. Establish `hS : LinearMap.range S ≤ E` using `le_sup_left`. Establish `hT : LinearMap.range T ≤ E` using `le_sup_right`. Establish `hST : LinearMap.range (S + T) ≤ E`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `E.add_mem (hS ⟨x, rfl⟩) (hT ⟨x, rfl⟩)`. Rewrite using `[← finTrace_eq_trace S E hS, ← finTrace_eq_trace T E hT, ← finTrace_eq_trace (S + T) E hST, ← map_add]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem finTrace_add (S T : V →ₗ[ℂ] V) [FiniteDimensional ℂ (LinearMap.range S)]
     [FiniteDimensional ℂ (LinearMap.range T)] :
@@ -58,7 +58,7 @@ theorem finTrace_add (S T : V →ₗ[ℂ] V) [FiniteDimensional ℂ (LinearMap.r
   congr 1
 
 /- English proof (translation)
-Establish `h : LinearMap.range (c • T) ≤ LinearMap.range T`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨c • x, by simp⟩`. Rewrite using `[← finTrace_eq_trace (c • T) (LinearMap.range T) h, finTrace, ← smul_eq_mul, ← map_smul]`. Use `congr 1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem finTrace_smul (c : ℂ) (T : V →ₗ[ℂ] V) [FiniteDimensional ℂ (LinearMap.range T)] :
     finTrace (c • T) = c * finTrace T := by
@@ -69,9 +69,9 @@ theorem finTrace_smul (c : ℂ) (T : V →ₗ[ℂ] V) [FiniteDimensional ℂ (Li
   congr 1
 
 /- English proof (translation)
-Use `set R := LinearMap.range T`. Establish `hE : LinearMap.range (e.conj T) ≤ R.map (e : V →ₗ[ℂ] V)`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨T (e.symm x), LinearMap.mem_range_self T _, by simp [LinearEquiv.conj_apply]⟩`. Rewrite using `[← finTrace_eq_trace _ _ hE, finTrace, ← LinearMap.trace_conj' _ (e.submoduleMap R)]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`.
+A detailed English derivation is pending.
 -/
 theorem finTrace_conj (e : V ≃ₗ[ℂ] V) (T : V →ₗ[ℂ] V) [FiniteDimensional ℂ (LinearMap.range T)] :
     finTrace (e.conj T) = finTrace T := by
@@ -94,7 +94,7 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
 omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `heckeAct_mem_fixedVectors f.2 hK (hρ v)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem range_heckeLin_le (hρ : IsSmooth ρ) (f : locallyConstantCompactSupport G ℂ ℂ)
     {K : Subgroup G} (hK : ∀ k ∈ K, ∀ x, (f : G → ℂ) (k * x) = (f : G → ℂ) x) :
@@ -103,7 +103,7 @@ theorem range_heckeLin_le (hρ : IsSmooth ρ) (f : locallyConstantCompactSupport
   exact heckeAct_mem_fixedVectors f.2 hK (hρ v)
 
 /- English proof (translation)
-Take `⟨K, hKc, hK⟩` from `exists_forall_mul_left f.2`. Use `hρ.2 K hKc K.isOpen` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le (range_heckeLin_le μ hρ.1 f (K := K) hK)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_range_heckeLin (hρ : IsAdmissible ρ)
     (f : locallyConstantCompactSupport G ℂ ℂ) :
@@ -115,7 +115,7 @@ theorem finiteDimensional_range_heckeLin (hρ : IsAdmissible ρ)
 omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun v => heckeAct_add_left f.2 g.2 (hρ v)`.
+A detailed English derivation is pending.
 -/
 theorem heckeLin_add (hρ : IsSmooth ρ) (f g : locallyConstantCompactSupport G ℂ ℂ) :
     heckeLin μ hρ (f + g) = heckeLin μ hρ f + heckeLin μ hρ g :=
@@ -124,7 +124,7 @@ theorem heckeLin_add (hρ : IsSmooth ρ) (f g : locallyConstantCompactSupport G 
 omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun v => heckeAct_smul_left c f.2 (hρ v)`.
+A detailed English derivation is pending.
 -/
 theorem heckeLin_smul (hρ : IsSmooth ρ) (c : ℂ) (f : locallyConstantCompactSupport G ℂ ℂ) :
     heckeLin μ hρ (c • f) = c • heckeLin μ hρ f :=
@@ -151,7 +151,7 @@ theorem distChar_apply (hρ : IsAdmissible ρ) (f : locallyConstantCompactSuppor
     distChar μ ρ hρ f = finTrace (heckeLin μ hρ.1 f) := rfl
 
 /- English proof (translation)
-Use `hρ.2 K hKc hKo` as an intermediate fact. Rewrite using `[distChar_apply, finTrace_eq_trace _ _ (range_heckeLin_le μ hρ.1 f hK)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem distChar_eq_trace (hρ : IsAdmissible ρ) (f : locallyConstantCompactSupport G ℂ ℂ)
     {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G))
@@ -176,9 +176,9 @@ def repEquiv (g : G) : V ≃ₗ[ℂ] V where
 omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Establish `hf' : (fun x => (f : G → ℂ) (x * g⁻¹⁻¹)) ∈ locallyConstantCompactSupport G ℂ ℂ`. Simplify using `using (rtransL g f).2`. Rewrite using `[heckeAct_apply_act μ f.2 (hρ v) g⁻¹, heckeAct_ltrans g hf' (hρ v)]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[ltrans_apply, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckeAct_biTranslL [μ.IsMulRightInvariant] (hρ : IsSmooth ρ) (g : G)
     (f : locallyConstantCompactSupport G ℂ ℂ) (v : V) :
@@ -192,7 +192,7 @@ theorem heckeAct_biTranslL [μ.IsMulRightInvariant] (hρ : IsSmooth ρ) (g : G)
   simp [ltrans_apply, mul_assoc]
 
 /- English proof (translation)
-Use `finiteDimensional_range_heckeLin μ hρ f` as an intermediate fact. Establish `e : heckeLin μ hρ.1 (biTranslL g g f) = (repEquiv ρ g).conj (heckeLin μ hρ.1 f)` using `LinearMap.ext fun v => by`. Rewrite using `[LinearEquiv.conj_apply, heckeLin_apply, heckeAct_biTranslL μ hρ.1 g f v]`. Both sides reduce to the same expression. Rewrite using `[distChar_apply, distChar_apply, e, finTrace_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem distChar_biTranslL [μ.IsMulRightInvariant] (hρ : IsAdmissible ρ) (g : G)
     (f : locallyConstantCompactSupport G ℂ ℂ) :
@@ -216,9 +216,9 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
 omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Establish `h1` using `dual_heckeAct μ f.2 (isSmooth_contragredient ρ ξ) (evalSmooth ρ v)`. Establish `key` using `integral_inv_eq_self (fun g => ((compHomeoL (Homeomorph.inv G) f : locallyConstantCompactSupport G ℂ ℂ) : G → ℂ) g * (ξ : Module.Dual ℂ V) (ρ g v)) μ`. Use `beta_reduce at key`. Rewrite `h1` using `[evalSmooth_apply]`. Rewrite using `[h1, dual_heckeAct μ (compHomeoL (Homeomorph.inv G) f).2 (hρ v), ← key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `[evalSmooth_apply, contragredient_apply_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heckeAct_contragredient_apply [μ.IsInvInvariant] (hρ : IsSmooth ρ)
     (f : locallyConstantCompactSupport G ℂ ℂ) (ξ : smoothVectors (Representation.dual ρ)) (v : V) :
@@ -238,13 +238,13 @@ theorem heckeAct_contragredient_apply [μ.IsInvInvariant] (hρ : IsSmooth ρ)
   simp [evalSmooth_apply, contragredient_apply_apply]
 
 /- English proof (translation)
-Take `⟨K, hKc, hK⟩` from `exists_forall_mul_left_mul_right f.2`. Establish `hKl : ∀ k ∈ (K : Subgroup G), ∀ x, (f : G → ℂ) (k * x) = (f : G → ℂ) x` using `fun k hk x => by simpa using hK k hk x 1 (one_mem _)`. Establish `hKl' : ∀ k ∈ (K : Subgroup G), ∀ x, ((compHomeoL (Homeomorph.inv G) f : locallyConstantCompactSupport G ℂ ℂ) : G → ℂ) (k * x) = ((compHomeoL (Homeomorph.inv G) f : locallyConstantCompactSupport G ℂ ℂ) : G → ℂ) x`. Introduce `k hk x`. Use `hK 1 (one_mem _) x⁻¹ k⁻¹ (inv_mem hk)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[mul_inv_rev]`. Rewrite using `[distChar_eq_trace μ (isAdmissible_contragredient hρ) f hKc K.isOpen hKl, distChar_eq_trace μ hρ _ hKc K.isOpen hKl']`. Use `hρ.2 K hKc K.isOpen` as an intermediate fact. Use `(isAdmissible_contragredient hρ).2 K hKc K.isOpen` as an intermediate fact. Use `set e := fixedContragredientEquiv hρ.1 hKc K.isOpen`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(LinearMap.trace_conj' (R := ℂ) (M := fixedVectors (contragredient ρ) K) (N := Module.Dual ℂ (fixedVectors ρ K)) _ e).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.trace_transpose' (R := ℂ) (M := fixedVectors ρ K)]`. Use `congr 1`. Use `LinearMap.ext fun l => LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `hw : heckeAct μ ρ ((compHomeoL (Homeomorph.inv G) f : locallyConstantCompactSupport G ℂ ℂ) : G → ℂ) (v : V) ∈ fixedVectors ρ K` using `range_heckeLin_le μ hρ.1 _ hKl' (LinearMap.mem_range_self _ (v : V))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `congrArg (fun L : Module.Dual ℂ (fixedVectors ρ K) => L ⟨_, hw⟩) (e.apply_symm_apply l)`. Rewrite using `[LinearEquiv.conj_apply_apply]`. Express the relevant statement in the definitionally equal form `((heckeAct μ (contragredient ρ) (f : G → ℂ) ((e.symm l : fixedVectors (contragredient ρ) K) : smoothVectors (Representation.dual ρ)) : smoothVectors (Representation.dual ρ)) : Module.Dual ℂ V) (v : V) = l ⟨_, hw⟩`. Rewrite using `[heckeAct_contragredient_apply μ hρ.1]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem distChar_contragredient [μ.IsInvInvariant] (hρ : IsAdmissible ρ)
     (f : locallyConstantCompactSupport G ℂ ℂ) :
@@ -309,11 +309,11 @@ omit [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [TotallyDisconne
   [MeasurableSpace G] [BorelSpace G] in
 
 /- English proof (translation)
-Use `⟨fun v => (hρ.1 v).preimage hα, fun K hKc hKo => ?_⟩` and prove the remaining obligations. Establish `e : fixedVectors (ρ.comp α.toMonoidHom) K = fixedVectors ρ (K.map α.toMonoidHom)`. Use extensionality with `v`. Simplify using `only [mem_fixedVectors, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `h _ ⟨k, hk, rfl⟩`. Conclude with `h k hk`. Introduce `h k hk`. Conclude with `h _ ⟨k, hk, rfl⟩`. Rewrite using `[e]`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hρ.2 _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_map]`. Conclude with `hKc.image hα`. Rewrite using `[Subgroup.coe_map]`. Conclude with `(mulEquivHomeo α hα hα').isOpenMap _ hKo`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdmissible_comp (α : G ≃* G) (hα : Continuous α) (hα' : Continuous α.symm)
     (hρ : IsAdmissible ρ) : IsAdmissible (ρ.comp α.toMonoidHom) := by
@@ -336,9 +336,9 @@ theorem isAdmissible_comp (α : G ≃* G) (hα : Continuous α) (hα' : Continuo
 omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Use `eq_of_forall_dual fun φ => ?_` and prove the remaining obligations. Rewrite using `[dual_heckeAct μ f.2 hv', dual_heckeAct μ (compHomeoL _ f).2 hv]`. Establish `hmp : MeasurePreserving (mulEquivHomeo α hα hα').toMeasurableEquiv μ μ` using `⟨hα.measurable, hμ⟩`. Establish `key` using `hmp.integral_comp' (fun g => ((compHomeoL (mulEquivHomeo α hα hα').symm f : locallyConstantCompactSupport G ℂ ℂ) : G → ℂ) g * φ (ρ g v))`. Use `beta_reduce at key`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heckeAct_comp (α : G ≃* G) (hα : Continuous α) (hα' : Continuous α.symm)
     (hμ : μ.map α = μ) (f : locallyConstantCompactSupport G ℂ ℂ) {v : V}
@@ -360,7 +360,7 @@ theorem heckeAct_comp (α : G ≃* G) (hα : Continuous α) (hα' : Continuous �
   simp
 
 /- English proof (translation)
-Rewrite using `[distChar_apply, distChar_apply]`. Use `congr 1`. Conclude with `LinearMap.ext fun v => heckeAct_comp μ α hα hα' hμ f (hρ.1 v) ((isAdmissible_comp α hα hα' hρ).1 v)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem distChar_comp (α : G ≃* G) (hα : Continuous α) (hα' : Continuous α.symm)
     (hμ : μ.map α = μ) (hρ : IsAdmissible ρ) (f : locallyConstantCompactSupport G ℂ ℂ) :
@@ -378,7 +378,7 @@ section Independence
 open HeckeAlgebra
 
 /- English proof (translation)
-Establish `h1 : IsSemisimpleModule R (LinearMap.range (LinearMap.inl R M N))` using `IsSemisimpleModule.range _`. Establish `h2 : IsSemisimpleModule R (LinearMap.range (LinearMap.inr R M N))` using `IsSemisimpleModule.range _`. Establish `h` using `IsSemisimpleModule.sup h1 h2`. Rewrite `h` using `[LinearMap.sup_range_inl_inr]`. Conclude with `IsSemisimpleModule.congr (Submodule.topEquiv (R := R) (M := M × N)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSemisimpleModule_prod {R M N : Type*} [Ring R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] [IsSemisimpleModule R M] [IsSemisimpleModule R N] :
@@ -413,14 +413,14 @@ theorem levelLin_apply {ρ : Representation ℂ G V} (h : HeckeAlgebraLevel μ K
     (v : fixedVectors ρ K) : levelLin hKc hKo ρ h v = h • v := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun v => one_smul _ v`.
+A detailed English derivation is pending.
 -/
 theorem levelLin_one (ρ : Representation ℂ G V) :
     levelLin hKc hKo ρ (1 : HeckeAlgebraLevel μ K hKc hKo) = LinearMap.id :=
   LinearMap.ext fun v => one_smul _ v
 
 /- English proof (translation)
-Rewrite using `[distChar_eq_trace μ hρ (h : HeckeAlgebra μ) hKc hKo (fun k hk x => HeckeAlgebraLevel.apply_mul_left hKc hKo h hk x)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem distChar_level {ρ : Representation ℂ G V} (hρ : IsAdmissible ρ)
     (h : HeckeAlgebraLevel μ K hKc hKo) :
@@ -430,27 +430,23 @@ theorem distChar_level {ρ : Representation ℂ G V} (hρ : IsAdmissible ρ)
   rfl
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_ne_zero_of_isIrreducible (ρ := ρ)`. Take `⟨K, hKc, hKo, hvK⟩` from `(isSmooth_iff_forall_exists ρ).1 hρ.1 v`. Establish `hVK : fixedVectors ρ K ≠ ⊥` using `fun hb => hv (by`. Establish `: v ∈ (⊥ : Submodule ℂ V)` using `hb ▸ hvK`. Simplify using `using this)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hρ.2 K hKc hKo` as an intermediate fact. Use `hσ.2 K hKc hKo` as an intermediate fact. Use `set H := HeckeAlgebraLevel μ K hKc hKo`. Establish `htr : ∀ r : H, LinearMap.trace ℂ (fixedVectors ρ K) (levelLin hKc hKo ρ r) = LinearMap.trace ℂ (fixedVectors σ K) (levelLin hKc hKo σ r)` using `fun r => by`. Rewrite using `[← distChar_level hKc hKo hρ r, ← distChar_level hKc hKo hσ r, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdim : Module.finrank ℂ (fixedVectors ρ K) = Module.finrank ℂ (fixedVectors σ K)`. Use `htr 1` as an intermediate fact. Rewrite `this` using `[levelLin_one, levelLin_one, LinearMap.trace_id, LinearMap.trace_id]`. Conclude with `this` after adjusting the coercions. Establish `hpos : 0 < Module.finrank ℂ (fixedVectors ρ K)` using `Module.finrank_pos_iff.2 (Submodule.nontrivial_iff_ne_bot.2 hVK)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hWK : fixedVectors σ K ≠ ⊥`. Rewrite using `[← Submodule.nontrivial_iff_ne_bot, ← Module.finrank_pos_iff (R := ℂ), ← hdim]`. Conclude with `hpos`. Use `isSimpleModule_fixedVectors (μ := μ) hKc hKo hρ.1 hVK` as an intermediate fact. Use `isSimpleModule_fixedVectors (μ := μ) hKc hKo hσ.1 hWK` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hiso : ¬ Nonempty (fixedVectors ρ K ≃ₗ[H] fixedVectors σ K)` using `fun ⟨e⟩ => hne (nonempty_equiv_of_fixedVectors_equiv hKc hKo hρ.1 hσ.1 hVK e)`. Establish `h12 : ∀ φ : fixedVectors ρ K →ₗ[H] fixedVectors σ K, φ = 0` using `fun φ => (LinearMap.bijective_or_eq_zero φ).resolve_left fun hb => hiso ⟨LinearEquiv.ofBijective φ hb⟩`. Establish `h21 : ∀ φ : fixedVectors σ K →ₗ[H] fixedVectors ρ K, φ = 0` using `fun φ => (LinearMap.bijective_or_eq_zero φ).resolve_left fun hb => hiso ⟨(LinearEquiv.ofBijective φ hb).symm⟩`. Establish `: IsSemisimpleModule H (fixedVectors ρ K × fixedVectors σ K)` using `isSemisimpleModule_prod`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `fE : Module.End (Module.End H (fixedVectors ρ K × fixedVectors σ K)) (fixedVectors ρ K × fixedVectors σ K)` to `{ toFun := fun m => (m.1, 0) map_add' := fun m m' => by simp map_smul' := fun φ m => by`. Rewrite using `[Module.End.smul_def, RingHom.id_apply, Module.End.smul_def]`. Establish `hC : (φ (m.1, 0)).2 = 0`. Use `h12 (LinearMap.snd H _ _ ∘ₗ φ ∘ₗ LinearMap.inl H _ _)` as an intermediate fact. Conclude with `LinearMap.congr_fun this m.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB : (φ (0, m.2)).1 = 0`. Use `h21 (LinearMap.fst H _ _ ∘ₗ φ ∘ₗ LinearMap.inr H _ _)` as an intermediate fact. Conclude with `LinearMap.congr_fun this m.2`. Establish `hm : m = (m.1, 0) + (0, m.2)` using `by simp`. Use `Prod.ext ?_ hC.symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `conv_lhs => rw [hm]`. Rewrite using `[map_add, Prod.fst_add, hB, add_zero] }`. Set `b` to `Module.finBasis ℂ (fixedVectors ρ K × fixedVectors σ K)`. Take `⟨r, hr⟩` from `jacobson_density fE (Finset.univ.image b)`. Set `Lr : (fixedVectors ρ K × fixedVectors σ K) →ₗ[ℂ] (fixedVectors ρ K × fixedVectors σ K)` to `(levelLin hKc hKo ρ r).prodMap (levelLin hKc hKo σ r)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : Lr = (LinearMap.inl ℂ _ _) ∘ₗ (LinearMap.fst ℂ _ _)`. Use `b.ext fun i => ?_` and prove the remaining obligations. Use `hr (b i) (Finset.mem_image_of_mem _ (Finset.mem_univ i))` as an intermediate fact. Conclude with `this.symm`. Establish `h1 : levelLin hKc hKo ρ r = LinearMap.id` using `LinearMap.ext fun x => by`.
-
-Use `LinearMap.congr_fun hL (x, 0)` as an intermediate fact. Conclude with `congrArg Prod.fst this`. Establish `h2 : levelLin hKc hKo σ r = 0` using `LinearMap.ext fun y => by`. Use `LinearMap.congr_fun hL (0, y)` as an intermediate fact. Conclude with `congrArg Prod.snd this`.
-
-Use `htr r` as an intermediate fact. Rewrite `this` using `[h1, h2, LinearMap.trace_id, map_zero, Nat.cast_eq_zero]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_of_distChar_eq {W : Type*} [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (hρ : IsAdmissible ρ)

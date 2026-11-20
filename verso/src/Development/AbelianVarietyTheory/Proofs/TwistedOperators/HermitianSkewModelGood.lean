@@ -34,9 +34,9 @@ def pureL {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (φ : �
   map_smul' a f := by funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]
 
 /- English proof (translation)
-Take `⟨m, a, g, hg⟩` from `Submodule.mem_span_set'.1 hΨ`. Use `choose f φ hf hSB hev he using fun i => (g i).2`. Use `⟨m, fun i => a i • f i, φ, fun i => (M.Pol ψ emb).smul_mem _ (hf i), fun i => ⟨hSB i, hev i⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hg]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he i]`. Conclude with `((pureL (φ i)).map_smul (a i) (f i)).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_sum_pure {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W)
@@ -63,7 +63,7 @@ theorem piEnd_apply {V : Type} [AddCommGroup V] [Module ℂ V] (m : ℕ) (L : Mo
     (i : Fin m) : piEnd m L y i = L (y i) := rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [pow_succ', Module.End.mul_apply, piEnd_apply, ih, pow_succ', Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem piEnd_pow_apply {V : Type} [AddCommGroup V] [Module ℂ V] (m : ℕ) (L : Module.End ℂ V) (k : ℕ)
     (y : Fin m → V) (i : Fin m) : (piEnd m L ^ k) y i = (L ^ k) (y i) := by
@@ -72,11 +72,9 @@ theorem piEnd_pow_apply {V : Type} [AddCommGroup V] [Module ℂ V] (m : ℕ) (L 
   | succ k ih => rw [pow_succ', Module.End.mul_apply, piEnd_apply, ih, pow_succ', Module.End.mul_apply]
 
 /- English proof (translation)
-Introduce `y l`. Establish `hl : ∀ z : Fin m → V, l z = ∑ i, (l ∘ₗ LinearMap.single ℂ (fun _ : Fin m => V) i) (z i)`. Introduce `z`. Use `conv_lhs => rw [← Finset.univ_sum_single z]`. Simplify using `[map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : (fun k : ℕ => ((k.factorial : ℂ))⁻¹ * l ((piEnd m L ^ k) y)) = fun k => ∑ i, ((k.factorial : ℂ))⁻¹ * (l ∘ₗ LinearMap.single ℂ (fun _ : Fin m => V) i) ((L ^ k) (y i))`. Use function extensionality and compare the values at `k`. Rewrite using `[hl, Finset.mul_sum]`. Simplify using `only [piEnd_pow_apply]`. Rewrite using `[key, hl]`.
-
-Conclude with `hasSum_sum fun i _ => h (y i) _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isExp_piEnd {V : Type} [AddCommGroup V] [Module ℂ V] {L U : Module.End ℂ V} (h : IsExp L U) (m : ℕ) :
     IsExp (piEnd m L) (piEnd m U) := by
@@ -94,9 +92,7 @@ theorem isExp_piEnd {V : Type} [AddCommGroup V] [Module ℂ V] {L U : Module.End
   exact hasSum_sum fun i _ => h (y i) _
 
 /- English proof (translation)
-Set `f : Matrix ι ι ℂ →+* Matrix β β ℂ` to `{ toFun := fun X => C * X * A' map_one' := by simp [hCA] map_mul' := fun X Z => by`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `map_zero' := by simp`. Use the proof step `map_add' := fun X Z => by simp [Matrix.mul_add, Matrix.add_mul] }`. Establish `hf : Continuous f` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
-
-Use `open scoped Norms.Operator in`. Conclude with `(NormedSpace.map_exp f hf Y).symm`.
+Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exp_conj_rect {β ι : Type} [Fintype β] [DecidableEq β] [Fintype ι] [DecidableEq ι]
     (C : Matrix β ι ℂ) (A' : Matrix ι β ℂ) (hCA : C * A' = 1) (hAC : A' * C = 1) (Y : Matrix ι ι ℂ) :
@@ -114,7 +110,7 @@ theorem exp_conj_rect {β ι : Type} [Fintype β] [DecidableEq β] [Fintype ι] 
   exact (NormedSpace.map_exp f hf Y).symm
 
 /- English proof (translation)
-Unfold `atPl`. Conclude with `(PiTensorProduct.mapMultilinear ℂ V V).map_update_zero (fun i => (LinearMap.id : V i →ₗ[ℂ] V i)) w`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem atPl_zero {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [∀ i, AddCommGroup (V i)]
     [∀ i, Module ℂ (V i)] (w : ι) : atPl (V := V) w 0 = 0 := by
@@ -122,9 +118,9 @@ theorem atPl_zero {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [�
   exact (PiTensorProduct.mapMultilinear ℂ V V).map_update_zero (fun i => (LinearMap.id : V i →ₗ[ℂ] V i)) w
 
 /- English proof (translation)
-Unfold `sumPl`. Rewrite using `[Finset.sum_eq_single w]`. Simplify using the standard rewrite rules. Introduce `w' _ hw'`. Simplify using `only [Pi.single_eq_of_ne hw', map_zero, Matrix.trace_zero, mul_zero, zero_smul, add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `atPl_zero w'`. Introduce `h`. Conclude with `absurd (Finset.mem_univ w) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sumPl_single {ι : Type} [Fintype ι] [DecidableEq ι] {V : Type} [AddCommGroup V] [Module ℂ V] {κ : Type}
     [Fintype κ] (act : Matrix κ κ ℂ →ₗ[ℂ] Module.End ℂ V) (c : ι → ℂ) (w : ι) (Y : Matrix κ κ ℂ) :
@@ -140,19 +136,19 @@ theorem sumPl_single {ι : Type} [Fintype ι] [DecidableEq ι] {V : Type} [AddCo
   · intro h; exact absurd (Finset.mem_univ w) h
 
 /- English proof (translation)
-Use `open GlobalTheory.RealLift.KLineProof in`. Establish `hu : (k.1 : Matrix β β (AE F E))ᵀ * J * (k.1 : Matrix β β (AE F E)).map (cA σ) = J` using `k.2`. Establish `hloc : ∀ w, ∃ Y : Matrix (Ix R S) (Ix R S) ℂ, Y ∈ upq R S ∧ IsKC Y ∧ C w * NormedSpace.exp Y = (k.1 : Matrix β β (AE F E)).map (piInf (τ w)) * C w`. Introduce `w`. Take `⟨A', hCA, hAC⟩` from `GlobalTheory.RealLift.KLineProof.frame_inv (hfr w)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.RealLift.KLineProof.exists_gen_at (C w) A' hCA hAC (J.map (piInf (τ w))) b (hfr w).1 _ (θ w) ?_ (hθ w) (hkθ w)` and prove the remaining obligations. Use `congrArg (fun X => X.map (piInf (τ w))) hu` as an intermediate fact. Simplify using `only [Matrix.map_mul, GlobalTheory.RealLift.KLineProof.map_cA_map hCM, Matrix.transpose_map] at this`. Conclude with `this`. Use `choose Y hY using hloc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨γ, hγ, hgen⟩` from `GlobalTheory.T.unitaryLieElements_generate_oneParamLines F E σ β R S τ J b C hCM hfr Y (fun w => (hY w).1)`. Use `⟨γ, hγ, Y, hgen, fun w => (hY w).1, fun w => (hY w).2.1, ?_⟩` and prove the remaining obligations. Establish `hw : ∀ w, ((γ (Multiplicative.ofAdd 1)).1 : Matrix β β (AE F E)).map (piInf (τ w)) = (k.1 : Matrix β β (AE F E)).map (piInf (τ w))`. Introduce `w`. Take `⟨A', hCA, -⟩` from `GlobalTheory.RealLift.KLineProof.frame_inv (hfr w)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h1` using `hgen 1 w`. Rewrite `h1` using `[one_smul, (hY w).2.2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, hCA, Matrix.mul_one]`. Use `_ = _ := by rw [h1, Matrix.mul_assoc, hCA, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hA1` using `hγ.2 (Multiplicative.ofAdd 1)`. Establish `hmat : ((γ (Multiplicative.ofAdd 1)).1 : Matrix β β (AE F E)) = k.1`. Use extensionality with `i j`. Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.RealLift.KLineProof.eq_zero_of_piInf hCM τ _ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `u hu0`. Establish `e1` using `congrFun (congrFun (hA1 u hu0) i) j`. Establish `e2` using `congrFun (congrFun (hk u hu0) i) j`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.zero_apply, smul_sub] at e1 e2 ⊢`. Rewrite using `[← sub_sub_sub_cancel_right _ _ (u • (1 : Matrix β β (AE F E)) i j), e1, e2, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Use `congrFun (congrFun (hw w) i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`. Rewrite using `[map_sub, this, sub_self]`. Conclude with `Subtype.ext (Units.ext hmat)`.
+A detailed English derivation is pending.
 -/
 theorem exists_line_upq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {β : Type} [Fintype β] [DecidableEq β] (R S : ℕ) (τ : ∀ w : InfinitePlace F, EmbOver E w)
@@ -204,43 +200,39 @@ theorem exists_line_upq {F E : Type} [Field F] [NumberField F] [Field E] [Number
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hb hX hW hM hw Pv _ _ Q N hlie k hk Ψ hΨ`. Establish `hAL : ActsLaws` using `GlobalTheory.RealLift.actsLaws`. Establish `hfr : FrameEx` using `GlobalTheory.T.cartanEigen_orthonormalFrame_exists`. Establish `hder : DerEx` using `GlobalTheory.T.archHeisenbergDerivatives_exist`. Establish `hvl : VacLine` using `GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives hder`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfe : FockEx` using `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives hder`. Establish `hls : LieScalar` using `GlobalTheory.T.lieScalar_of_prints_derEx_vacLine hP hder hvl`. Establish `hpr : PolRange` using `GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws hAL hder hvl`. Use `choose A hA hAθ using fun w => hfr _ _ _ _ _ (hX.sig w) (hX.cartan w)`. Use `choose C hC hCθ using fun w => hfr _ _ _ _ _ (hW.sig w) (hW.cartan w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F X.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[GlobalTheory.PolCompact.incM_map_piInf', one_smul]`. Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[GlobalTheory.PolCompact.incM_map_piInf']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hC w`. Establish `fr : Framed B.emb (incM F X.J) (incM F W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`. Take `⟨Φ, hΦ⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C hb.cm hb.std fr`. Establish `hr` using `hpr F E σ _ _ _ _ _ _ X W M B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F X.J) (incM F W.J) M.co χX χW om` using `hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hact⟩` from `hls F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C Φ _ hb.cm hb.std fr hΦ hwp.1.1`. Establish `hadm` using `fun g => (hwp.isUSplitting).adm g`. Take `⟨γ, hγ, Yg, hgen, hYu, hKC, hγ1⟩` from `exists_line_upq σ r' s' B.emb (incM F W.J) Complex.I C W.θ hb.cm hC1 hCθ k hk.1 hk.2`. Establish `hloc` using `GlobalTheory.RealLift.locFin_sumPl _ _ _ (fun w => GlobalTheory.PolCompact.locFin_second r s r' s' (Yg w) (hKC w) (c w * (Yg w).trace))`. Take `⟨U, hU, hSA⟩` from `GlobalTheory.T.weakExponential_action_on_fockVectors F (Fin n × Fin d) _ Φ _ ((om.comp (MonoidHom.inr _ _)).comp γ) hloc (fun t l hl => hadm _ l hl) (fun T => hact γ hγ Yg hgen T)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨m, f, φ, hf, hφ, rfl⟩` from `exists_sum_pure M B.ψ B.emb hΨ`. Establish `hf' : ∀ i, ∃ y, Φ y = f i` using `fun i => LinearMap.mem_range.1 (by rw [hr]; exact hf i)`. Use `choose T hT using hf'`. Take `rfl : f = fun i => Φ (T i)` from `funext fun i => (hT i).symm`. Set `G : (Fin m → Tens F r s r' s') →ₗ[ℂ] ((Fin n × Fin d → AF F) → ℂ)` to `∑ i, (pureL (φ i)) ∘ₗ Φ ∘ₗ LinearMap.proj i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hG : ∀ y, G y = ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Φ (y i)) (φ i)` using `fun y => by`. Simplify using `only [G, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Both sides reduce to the same expression. Establish `hplace : ∀ (w : InfinitePlace F) (y : Fin m → Tens F r s r' s'), Q (G y) ∈ N → Q (G (piEnd m (atPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol r s r' s') w (fockAct2 r s r' s' (Yg w) + (c w * (Yg w).trace) • 1)) y)) ∈ N := by`. Introduce `w y hy`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite `hy`, the goal using `[hG]`. Take `⟨A', hCA, hAC⟩` from `GlobalTheory.RealLift.KLineProof.frame_inv (hC1 w)`. Establish `hsu : ∀ w', (Pi.single w (Yg w) : InfinitePlace F → Matrix (Ix r' s') (Ix r' s') ℂ) w' ∈ upq r' s'`. Introduce `w'`. Distinguish the cases in `h : w' = w`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Substitute `h` using the available equality. Simplify using `using hYu w'`. Rewrite using `[Pi.single_eq_of_ne h] show (0 : Matrix (Ix r' s') (Ix r' s') ℂ)ᴴ * Jm r' s' + Jm r' s' * 0 = 0`. Simplify using the standard rewrite rules. Take `⟨γw, hγw, hgw⟩` from `GlobalTheory.T.unitaryLieElements_generate_oneParamLines F E σ (Fin d) r' s' B.emb (incM F W.J) Complex.I C hb.cm hC1 _ hsu`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `hlie w (C w * Yg w * A') γw hγw ?_ ?_ m (fun i => Φ (y i)) _ φ hφ (fun i => ⟨by rw [← hr]; exact LinearMap.mem_range_self Φ _, by rw [← hr]; exact LinearMap.mem_range_self Φ _⟩) ?_ hy` and prove the remaining obligations. Introduce `t`. Establish `h1` using `hgw t w`. Simplify using `only [Pi.single_eq_same] at h1`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, hCA, Matrix.mul_one]`. Both sides reduce to the same expression. Use `_ = C w * NormedSpace.exp (t • Yg w) * A' := by rw [h1]`. Use `_ = NormedSpace.exp (t • (C w * Yg w * A')) := by`. Rewrite using `[show t • (C w * Yg w * A') = C w * (t • Yg w) * A' by rw [Matrix.mul_smul, Matrix.smul_mul], exp_conj_rect _ _ hCA hAC]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `t w' hw'`. Establish `h1` using `hgw t w'`. Rewrite `h1` using `[Pi.single_eq_of_ne hw', smul_zero, NormedSpace.exp_zero, Matrix.mul_one]`. Take `⟨A'', hCA', -⟩` from `GlobalTheory.RealLift.KLineProof.frame_inv (hC1 w')`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, hCA', Matrix.mul_one]`. Both sides reduce to the same expression. Use `_ = 1 := by rw [h1, hCA']`. Introduce `i`. Establish `hsd` using `hact γw hγw _ hgw (y i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hsd` using `[sumPl_single]`. Conclude with `(hAL F (Fin n × Fin d) _ _ (Φ (y i))).1 _ (fun t => map_zero _) hsd`. Set `N' : Submodule ℂ (Fin m → Tens F r s r' s')` to `N.comap (Q ∘ₗ G)`. Establish `hstab : ∀ y ∈ N', piEnd m (sumPl fun w => fockAct2 r s r' s' (Yg w) + (c w * (Yg w).trace) • 1) y ∈ N'`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : piEnd m (sumPl fun w => fockAct2 r s r' s' (Yg w) + (c w * (Yg w).trace) • 1) y = ∑ w, piEnd m (atPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol r s r' s') w (fockAct2 r s r' s' (Yg w) + (c w * (Yg w).trace) • 1)) y := by`. Use function extensionality and compare the values at `i`. Simplify using `only [piEnd_apply, sumPl, LinearMap.sum_apply, Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `N'.sum_mem fun w _ => hplace w y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk1 : ∀ i, om (1, k) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Φ (T i)) (φ i)) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Φ (U (T i))) (φ i)`. Introduce `i`. Establish `h1` using `hSA (T i)`. Rewrite `h1` using `[MonoidHom.comp_apply, hγ1]`. Establish `hg` using `GlobalTheory.AdelicCoordSB.finprod_mem_SB F (Fin n × Fin d) (φ i) (hφ i).1 (((hφ i).2.and hM.std).mono fun v hv => hv.1.trans hv.2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 _ hg`. Establish `hsum : om (1, k) (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Φ (T i)) (φ i)) = ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Φ (U (T i))) (φ i)`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hk1 i`. Use `⟨?_, fun hQ => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨Φ (U (T i)), φ i, by rw [← hr]; exact LinearMap.mem_range_self Φ _, (hφ i).1, (hφ i).2, rfl⟩`. Establish `h0 : T ∈ N'` using `by show Q (G T) ∈ N`. Rewrite using `[hG]`. Conclude with `hQ`.
-
-Establish `h2` using `GlobalTheory.KStableLie.mem_of_isExp (isExp_piEnd hU m) N' hstab h0`. Establish `e` using `hG (piEnd m U T)`. Simplify using `only [piEnd_apply] at e`. Rewrite using `[hsum, ← e]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem kStable_sums : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) {n d : ℕ} {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d}

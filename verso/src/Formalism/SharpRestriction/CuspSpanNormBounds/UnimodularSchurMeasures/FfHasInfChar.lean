@@ -50,17 +50,17 @@ def QClass (χ : ∀ n : ℕ, (Fin n → ℝ) → ℕ → ℂ) : Prop :=
 def ff_L {n : ℕ} (lam : Fin n → ℝ) (i : ℕ) : ℝ := oneBasedParam lam i + ((n : ℝ) + 1) / 2 - (i : ℝ)
 
 /- English proof (translation)
-Establish `hJ2 : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1` using `Formalism.REAL.Jm_mul_self ε`. Establish `hJu : IsUnit (Formalism.REAL.Jm ε)` using `⟨⟨Formalism.REAL.Jm ε, Formalism.REAL.Jm ε, hJ2, hJ2⟩, rfl⟩`. Establish `hJinv : (Formalism.REAL.Jm ε)⁻¹ = Formalism.REAL.Jm ε` using `Matrix.inv_eq_left_inv hJ2`. Establish `hc : Formalism.REAL.Jm ε * X * Formalism.REAL.Jm ε = -X` using `(Formalism.REAL.parabolic_character_holds n ε X).2 hX`. Establish `h1 : NormedSpace.exp (-X) = Formalism.REAL.Jm ε * NormedSpace.exp X * Formalism.REAL.Jm ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Matrix.exp_conj (Formalism.REAL.Jm ε) X hJu` as an intermediate fact. Rewrite `this` using `[hJinv, hc]`. Conclude with `this`. Establish `h2 : (NormedSpace.exp (-X)).det = (NormedSpace.exp X).det`. Rewrite using `[h1, Matrix.det_mul, Matrix.det_mul, mul_comm, ← mul_assoc, ← Matrix.det_mul, hJ2, Matrix.det_one, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : NormedSpace.exp (-X) * NormedSpace.exp X = 1`. Rewrite using `[← Matrix.exp_add_of_commute (-X) X ((Commute.refl X).neg_left)]`. Simplify using the standard rewrite rules. Establish `h4 : (NormedSpace.exp X).det * (NormedSpace.exp X).det = 1`. Use `congrArg Matrix.det h3` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Matrix.det_mul, h2, Matrix.det_one]`. Then use the resulting hypothesis. Establish `hpos` using `Formalism.REAL.leading_minors_positive n X (hermitian_of_mem_p ε X hX).1 (Fin.last n)`. Establish `h5 : Formalism.REAL.lminor (NormedSpace.exp X) (Fin.last n) = (NormedSpace.exp X).det`. Unfold `Formalism.REAL.lminor`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpos` using `[h5]`. Take `⟨him, hre⟩` from `hpos`. Use `set d := (NormedSpace.exp X).det with hd`. Establish `hdr : d = ((d.re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [him])`. Establish `h6 : d.re * d.re = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg Complex.re h4` as an intermediate fact. Simplify `this` using `[Complex.mul_re, him]`. Establish `h7 : d.re = 1` using `by nlinarith`. Rewrite using `[hdr, h7]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ff_det_exp {n : ℕ} (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : Formalism.REAL.inP ε X) :
     (NormedSpace.exp X).det = 1 := by

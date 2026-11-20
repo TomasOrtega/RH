@@ -13,17 +13,15 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan.FanResolution
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar w0 hO q φ lab hDom`. It suffices to establish `key : ∀ (n : ℕ) (φ lab : InvFun O), maxMult bar q φ = n → IsPolyFan bar q φ → IsTwG w0 φ → IsTwG w0 lab → SimpLab bar q φ lab → ∃ φ' : InvFun O, IsPolFan bar q φ' ∧ NoSelfInt bar q φ' ∧ IsTwG w0 φ' ∧ Subordinate bar q φ' φ by`. Introduce `hP hT hL hS`. Establish `hfin` using `GlobalTheory.T.max_multiplicity_lt_top O bar hO q φ hP`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp hfin.ne`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `key n φ lab hn.symm hP hT hL hS`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `φ lab hn hP hT hL hS`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : 2 ≤ maxMult bar q φ`. Establish `hfin : maxMult bar q φ < ⊤`. Rewrite using `[hn]`. Conclude with `ENat.natCast_lt_top n`. Take `⟨φ', lab', hP', hT', hL', hS', hSub, hlt⟩` from `GlobalTheory.T.exists_fan_lower_max_multiplicity O bar w0 hO q φ lab hDom hP hT hL hS hfin h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfin'` using `GlobalTheory.T.max_multiplicity_lt_top O bar hO q φ' hP'`. Take `⟨n', hn'⟩` from `ENat.ne_top_iff_exists.mp hfin'.ne`. Establish `hlt' : n' < n`. Rewrite `hlt` using `[hn, ← hn']`. Conclude with `hlt` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨φ'', g1, g2, g3, g4⟩` from `ih n' hlt' φ' lab' hn'.symm hP' hT' hL' hS'`. Conclude with `⟨φ'', g1, g2, g3, fun χ hχ => g4 χ (hSub χ hχ)⟩`. Establish `hle : maxMult bar q φ ≤ 1`. Rewrite `h2`, the goal using `[hn]`. Establish `h3 : ¬ (2 ≤ n)` using `by exact_mod_cast h2`.
-
-Conclude with `(show n ≤ 1 by omega)` after adjusting the coercions. Take `⟨g1, g2⟩` from `GlobalTheory.T.smooth_of_max_multiplicity_le_one O bar hO q φ lab hDom hP hS hle`. Conclude with `⟨φ, g1, g2, hT, fun χ hχ => hχ⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem resolution : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (w0 : O), CMOrd O bar → ∀ (q : ℕ) (φ lab : InvFun O), (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) → IsPolyFan bar q φ → IsTwG w0 φ → IsTwG w0 lab → SimpLab bar q φ lab → ∃ φ' : InvFun O, IsPolFan bar q φ' ∧ NoSelfInt bar q φ' ∧ IsTwG w0 φ' ∧ Subordinate bar q φ' φ := by
   intro O _ _ _ _ bar w0 hO q φ lab hDom

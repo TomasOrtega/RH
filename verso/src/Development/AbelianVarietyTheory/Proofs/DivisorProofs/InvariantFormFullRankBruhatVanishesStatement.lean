@@ -9,7 +9,7 @@ open GlobalTheory.WeilM GlobalTheory.FullRankCoinv
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RankStrata.pairing_eq_zero_of_kills_lowRank` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FInvariantFormFullRankBruhatVanishes.lean&line=15#L15)
 -/

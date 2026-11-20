@@ -6,11 +6,11 @@ open MeasureTheory GlobalTheory.AutomorphicL2Unitary
 namespace GlobalTheory.AutomorphicL2Cocompact
 
 /- English proof (translation)
-Introduce `U hU`. Establish `h : mk Γ ⁻¹' (mk Γ '' U) = ⋃ γ : Γ, (fun x => ((γ : G))⁻¹ * x) ⁻¹' U`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_image, Set.mem_iUnion]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, e⟩`. Take `⟨γ, rfl⟩` from `mk_eq_iff.1 e`. Conclude with `⟨γ, by simpa using hy⟩`. Introduce and unpack `⟨γ, hγ⟩`. Conclude with `⟨_, hγ, mk_eq_iff.2 ⟨γ, by simp⟩⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `isOpen_coinduced.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsOpen (mk Γ ⁻¹' (mk Γ '' U))`. Rewrite using `[h]`. Conclude with `isOpen_iUnion fun γ => hU.preimage (by fun_prop)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpenMap_mk {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (Γ : Subgroup G) :
     IsOpenMap (mk Γ) := by
@@ -30,9 +30,9 @@ theorem isOpenMap_mk {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGr
   exact isOpen_iUnion fun γ => hU.preimage (by fun_prop)
 
 /- English proof (translation)
-Use `choose K hK hK' using fun x : G => exists_compact_mem_nhds x`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x : G => mk Γ '' interior (K x)) (fun x => isOpenMap_mk Γ _ isOpen_interior) (fun q _ => by`. Take `⟨x, rfl⟩` from `Quotient.exists_rep q`. Conclude with `Set.mem_iUnion.2 ⟨x, x, mem_interior_iff_mem_nhds.2 (hK' x), rfl⟩)`. Use `⟨⋃ x ∈ t, K x, t.isCompact_biUnion fun x _ => hK x, Set.eq_univ_of_forall fun q => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, hx, y, hy, e⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ q))`. Conclude with `⟨y, Set.mem_iUnion₂.2 ⟨x, hx, interior_subset hy⟩, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_image_eq_univ {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] (Γ : Subgroup G) [CompactSpace (Quot Γ)] :
@@ -48,11 +48,9 @@ theorem exists_compact_image_eq_univ {G : Type*} [Group G] [TopologicalSpace G] 
   exact ⟨y, Set.mem_iUnion₂.2 ⟨x, hx, interior_subset hy⟩, e⟩
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ Γ _ μ _ _ hc`. Take `⟨C, hC, hCe⟩` from `exists_compact_image_eq_univ Γ`. Establish `hfin : IsFiniteMeasure (quotMeasure Γ μ)` using `⟨(quotMeasure_le MeasurableSet.univ hCe.ge).trans_lt hC.measure_lt_top⟩`. Use `⟨hfin, ⟨C, hC, hCe⟩, fun φ hφ hcont => ⟨hφ, ?_⟩⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `hC.exists_bound_of_continuousOn hcont.continuousOn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `MemLp.of_bound ?_ B (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Rewrite using `[aestronglyMeasurable_quotMeasure_iff_lift, hφ.lift_descend]`. Conclude with `hcont.aestronglyMeasurable`. Take `⟨x, hx, rfl⟩` from `hCe.ge (Set.mem_univ q)`. Rewrite using `[hφ.descend_mk]`.
-
-Conclude with `hB x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocompact : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [LocallyCompactSpace G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G) [DiscreteTopology Γ] (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant], CompactSpace (Quot Γ) → IsFiniteMeasure (quotMeasure Γ μ) ∧ (∃ C : Set G, IsCompact C ∧ mk Γ '' C = Set.univ) ∧ ∀ φ : G → ℂ, LeftInv Γ φ → Continuous φ → MemL2Quotient Γ μ φ := by
   intro G _ _ _ _ _ _ _ _ Γ _ μ _ _ hc

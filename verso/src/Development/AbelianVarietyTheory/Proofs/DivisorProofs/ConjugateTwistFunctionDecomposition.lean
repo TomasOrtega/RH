@@ -26,7 +26,7 @@ namespace GlobalTheory.CMTorsion.Conj
 open PeriodPair
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `GlobalTheory.WeierstrassCurve.ptHom_eq_ptHom_iff W hP hQ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ptHom_eq_iff_of_eq {W : WeierstrassCurve ℂ} {ρ ρ' : ℂ →+* ℂ} (e : ρ = ρ') {P Q : Fin 3 → ℂ}
     (hP : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) P)
@@ -37,21 +37,21 @@ theorem ptHom_eq_iff_of_eq {W : WeierstrassCurve ℂ} {ρ ρ' : ℂ →+* ℂ} (
   exact GlobalTheory.WeierstrassCurve.ptHom_eq_ptHom_iff W hP hQ
 
 /- English proof (translation)
-Establish `H₀` using `GlobalTheory.isHomothetic_scalePeriods Λ₀ Ω₀ hΩ₀`. Establish `H₁` using `GlobalTheory.isHomothetic_scalePeriods Λ₁ Ω₁ hΩ₁`. Unfold `pt`. Rewrite using `[GlobalTheory.WeierstrassCurve.ptHom_mapHom, spMap, GlobalTheory.WeierstrassCurve.SpecMap_ptHom, ptHom_eq_iff_of_eq ((RingHom.id_comp _).trans (RingHom.comp_id _).symm)]`. Unfold `GlobalTheory.ConjPoint.IsConj`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[H₀ z, H₁ z', H₀.weierstrassP_mul, H₁.weierstrassP_mul, H₀.derivWeierstrassP_mul, H₁.derivWeierstrassP_mul]`. Apply the tactic sequence `by_cases hz : z ∈ Λ₀.lattice <;> by_cases hz' : z' ∈ Λ₁.lattice`. Simplify using `only [coords, hz, hz', if_true]`. Use `iff_of_true ⟨1, ?_⟩ (Or.inl ⟨trivial, trivial⟩)` and prove the remaining obligations. Apply the tactic sequence `ext i; fin_cases i <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [coords, hz, hz', if_true, if_false]`. Use `iff_of_false ?_ (by tauto)` and prove the remaining obligations. Introduce and unpack `⟨v, hv⟩`. Use `congrFun hv 2` as an intermediate fact. Simplify using `at this`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `v.ne_zero this.symm`. Simplify using `only [coords, hz, hz', if_true, if_false]`. Use `iff_of_false ?_ (by tauto)` and prove the remaining obligations. Introduce and unpack `⟨v, hv⟩`. Use `congrFun hv 2` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Simplify using `only [coords, hz, hz', if_false, not_false_iff, true_and, false_and, false_or]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`. Establish `h2` using `congrFun hv 2`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `congrFun hv 0`. Establish `h1` using `congrFun hv 1`. Establish `g2 : g 2 = 2` using `map_ofNat g 2`. Simplify using `[g2] at h0 h1 h2`. Rewrite `h0`, `h1` using `[← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_inv₀, map_pow]`. Prove the components needed by the constructor for the conclusion. Take the linear combination `-h0`. Take the linear combination `-2 * h1`. Introduce and unpack `⟨e1, e2⟩`.
+Prove the components needed by the constructor for the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_inv₀, map_pow] at e1 e2`. Use `⟨1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `g2 : g 2 = 2` using `map_ofNat g 2`. Apply the tactic sequence `fin_cases i <;> simp [g2] <;> first | linear_combination -e1 | linear_combination (-1/2 : ℂ) * e2`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem rel_iff (Λ₀ Λ₁ : PeriodPair) (Ω₀ Ω₁ : ℂ) (g : ℂ ≃+* ℂ) (hΩ₀ : Ω₀ ≠ 0) (hΩ₁ : Ω₁ ≠ 0)
     (h : (curve Λ₀ Ω₀).map (g : ℂ →+* ℂ) = curve Λ₁ Ω₁) (z z' : ℂ) :
@@ -102,15 +102,15 @@ theorem rel_iff (Λ₀ Λ₁ : PeriodPair) (Ω₀ Ω₁ : ℂ) (g : ℂ ≃+* �
       fin_cases i <;> simp [g2] <;> first | linear_combination -e1 | linear_combination (-1/2 : ℂ) * e2
 
 /- English proof (translation)
-Introduce `Λ₀ Λ₁ Ω₀ Ω₁ g hΩ₀ hΩ₁ h`. Establish `H₀` using `GlobalTheory.isHomothetic_scalePeriods Λ₀ Ω₀ hΩ₀`. Establish `H₁` using `GlobalTheory.isHomothetic_scalePeriods Λ₁ Ω₁ hΩ₁`. Establish `g4 : g 4 = 4` using `map_ofNat g 4`. Establish `e₄` using `congrArg WeierstrassCurve.a₄ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₆` using `congrArg WeierstrassCurve.a₆ h`. Simplify using `[curve, g4] at e₄ e₆`. Establish `h₂ : (GlobalTheory.scalePeriods Λ₁ Ω₁ hΩ₁).g₂ = g (GlobalTheory.scalePeriods Λ₀ Ω₀ hΩ₀).g₂`. Rewrite using `[H₁.g₂_eq, H₀.g₂_eq, map_mul, map_inv₀, map_pow]`. Take the linear combination `-e₄`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h₃ : (GlobalTheory.scalePeriods Λ₁ Ω₁ hΩ₁).g₃ = g (GlobalTheory.scalePeriods Λ₀ Ω₀ hΩ₀).g₃`. Rewrite using `[H₁.g₃_eq, H₀.g₃_eq, map_mul, map_inv₀, map_pow]`. Take the linear combination `-e₆`. Take `⟨s, -, hs⟩` from `GlobalTheory.ConjPoint.exists_conjEquiv h₂ h₃`. Establish `R` using `rel_iff Λ₀ Λ₁ Ω₀ Ω₁ g hΩ₀ hΩ₁ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun z' => ?_, fun z w z' w' hz hw => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `GlobalTheory.latticePoint_surjective _ (s.symm (GlobalTheory.latticePoint _ (Ω₁ * z')))`. Use `⟨Ω₀⁻¹ * t, (R _ _).2 ((hs _ _).2 ?_)⟩` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc, mul_inv_cancel₀ hΩ₀, _root_.one_mul, ht, AddEquiv.apply_symm_apply]`. Rewrite `hz`, `hw`, the goal using `[R, hs]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[_root_.mul_add, _root_.mul_add, GlobalTheory.latticePoint_add, GlobalTheory.latticePoint_add, map_add, hz, hw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_conj_onto_add : ∀ (Λ₀ Λ₁ : PeriodPair) (Ω₀ Ω₁ : ℂ) (g : ℂ ≃+* ℂ), Ω₀ ≠ 0 → Ω₁ ≠ 0 → ∀ h : (curve Λ₀ Ω₀).map (g : ℂ →+* ℂ) = curve Λ₁ Ω₁, (∀ z', ∃ z, pt Λ₁ Ω₁ z' ≫ mapHom (curve Λ₀ Ω₀) (g : ℂ →+* ℂ) h = spMap (g : ℂ →+* ℂ) ≫ pt Λ₀ Ω₀ z) ∧ ∀ z w z' w', pt Λ₁ Ω₁ z' ≫ mapHom (curve Λ₀ Ω₀) (g : ℂ →+* ℂ) h = spMap (g : ℂ →+* ℂ) ≫ pt Λ₀ Ω₀ z → pt Λ₁ Ω₁ w' ≫ mapHom (curve Λ₀ Ω₀) (g : ℂ →+* ℂ) h = spMap (g : ℂ →+* ℂ) ≫ pt Λ₀ Ω₀ w → pt Λ₁ Ω₁ (z' + w') ≫ mapHom (curve Λ₀ Ω₀) (g : ℂ →+* ℂ) h = spMap (g : ℂ →+* ℂ) ≫ pt Λ₀ Ω₀ (z + w) := by
   intro Λ₀ Λ₁ Ω₀ Ω₁ g hΩ₀ hΩ₁ h

@@ -24,7 +24,7 @@ variable {X : Type} [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpa
 def ip (μ : Measure X) (f g : X → ℂ) : ℂ := ∫ y, f y * (starRingEnd ℂ) (g y) ∂μ
 
 /- English proof (translation)
-Establish `hcf : Continuous f` using `hf.1.continuous`. Establish `hcg : Continuous g` using `hg.1.continuous`. Establish `hs : HasCompactSupport (fun y => f y * (starRingEnd ℂ) (g y))` using `hf.2.mul_right`. Conclude with `(hcf.mul (Complex.continuous_conj.comp hcg)).integrable_of_hasCompactSupport hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_mul_conj (μ : Measure X) [IsFiniteMeasureOnCompacts μ] {f g : X → ℂ} (hf : f ∈ SB X)
     (hg : g ∈ SB X) : Integrable (fun y => f y * (starRingEnd ℂ) (g y)) μ := by
@@ -34,7 +34,7 @@ theorem integrable_mul_conj (μ : Measure X) [IsFiniteMeasureOnCompacts μ] {f g
   exact (hcf.mul (Complex.continuous_conj.comp hcg)).integrable_of_hasCompactSupport hs
 
 /- English proof (translation)
-Unfold `ip`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -48,11 +48,11 @@ theorem ip_smul_smul (μ : Measure X) (a b : ℂ) (f g : X → ℂ) :
   ring
 
 /- English proof (translation)
-Unfold `ip`. Establish `e : (fun z => (∑ y ∈ F, a y • xs y) z * (starRingEnd ℂ) ((∑ y ∈ F, a y • xs y) z)) = fun z => ∑ y ∈ F, ∑ y' ∈ F, a y * (starRingEnd ℂ) (a y') * (xs y z * (starRingEnd ℂ) (xs y' z))`. Use function extensionality and compare the values at `z`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum]`. Rewrite using `[Finset.sum_mul_sum]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_finset_sum _ (fun y _ => integrable_finset_sum _ fun y' _ => (integrable_mul_conj μ (hxs y) (hxs y')).const_mul _)]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integral_finset_sum _ (fun y' _ => (integrable_mul_conj μ (hxs y) (hxs y')).const_mul _)]`. Use `Finset.sum_congr rfl fun y' _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ip_sum_sum (μ : Measure X) [IsFiniteMeasureOnCompacts μ] {V : Type} (F : Finset V) (a : V → ℂ)
     (xs : V → X → ℂ) (hxs : ∀ y, xs y ∈ SB X) :
@@ -75,11 +75,11 @@ theorem ip_sum_sum (μ : Measure X) [IsFiniteMeasureOnCompacts μ] {V : Type} (F
   rw [integral_const_mul]
 
 /- English proof (translation)
-Establish `hcf : Continuous f` using `hf.1.continuous`. Establish `hs : HasCompactSupport ((fun z : ℂ => ‖z‖ ^ 2) ∘ f)` using `hf.2.comp_left (by norm_num : ‖(0 : ℂ)‖ ^ 2 = 0)`. Establish `hint : Integrable (fun y => ‖f y‖ ^ 2) μ` using `(hcf.norm.pow 2).integrable_of_hasCompactSupport hs`. Establish `hE : ∀ y, ENNReal.ofReal (‖f y‖ ^ 2) = ‖f y‖ₑ ^ 2` using `fun y => by`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin` using `hint.lintegral_lt_top`. Simplify using `only [hE] at hfin`. Use `⟨?_, hfin.ne⟩` and prove the remaining obligations. Unfold `ip`. Establish `e : (fun y => f y * (starRingEnd ℂ) (f y)) = fun y => (((‖f y‖ ^ 2 : ℝ)) : ℂ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[e, integral_complex_ofReal, integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun y => by positivity) hint.aestronglyMeasurable]`. Simplify using `only [hE]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ip_self (μ : Measure X) [IsFiniteMeasureOnCompacts μ] {f : X → ℂ} (hf : f ∈ SB X) :
     ip μ f f = (((∫⁻ y, ‖f y‖ₑ ^ 2 ∂μ).toReal : ℝ) : ℂ) ∧ ∫⁻ y, ‖f y‖ₑ ^ 2 ∂μ ≠ ⊤ := by
@@ -101,9 +101,9 @@ theorem ip_self (μ : Measure X) [IsFiniteMeasureOnCompacts μ] {f : X → ℂ} 
   simp only [hE]
 
 /- English proof (translation)
-Establish `hc : Continuous f` using `hf.1.continuous`. Establish `hcont : Continuous fun Y => ‖f Y‖ₑ ^ 2` using `(ENNReal.continuous_pow 2).comp hc.enorm`. Introduce `h`. Rewrite `h` using `[lintegral_eq_zero_iff hcont.measurable]`. Establish `h'` using `(Continuous.ae_eq_iff_eq μ hcont continuous_zero).1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `h0` to reduce the goal to its premises. Use function extensionality and compare the values at `Y`. Use `congrFun h' Y` as an intermediate fact. Simplify using `using this`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lintegral_ne_zero (μ : Measure X) [μ.IsOpenPosMeasure] {f : X → ℂ} (hf : f ∈ SB X) (h0 : f ≠ 0) :
     ∫⁻ y, ‖f y‖ₑ ^ 2 ∂μ ≠ 0 := by
@@ -132,11 +132,11 @@ variable {T : Type} [TopologicalSpace T] [MeasurableSpace T] [OpensMeasurableSpa
 open Classical in
 
 /- English proof (translation)
-Establish `hxe : x = ∑ y ∈ F, f y • xs y`. Use `hinj hx (Submodule.sum_mem _ fun y _ => Submodule.smul_mem _ _ (hxs y)) ?_` and prove the remaining obligations. Rewrite using `[hf, map_sum]`. Simplify using `only [map_smul, hιxs]`. Conclude with `hF`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxe, ip_sum_sum μ F f xs hxs, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun y' _ => ?_` and prove the remaining obligations. Rewrite using `[hP]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> ring`.
+A detailed English derivation is pending.
 -/
 theorem expand (μ : Measure T) [IsFiniteMeasureOnCompacts μ] {V : Type} [AddGroup V]
     (ι : (T → ℂ) →ₗ[ℂ] (V → ℂ)) (hinj : Set.InjOn ι (SB T)) (L : AddSubgroup V) (xs : V → T → ℂ)
@@ -158,9 +158,7 @@ theorem expand (μ : Measure T) [IsFiniteMeasureOnCompacts μ] {V : Type} [AddGr
 
 open Classical in
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Unfold `cind`. Establish `iff : Y - y ∈ L ↔ Y - y' ∈ L`. Rewrite using `[← sub_add_sub_cancel Y y y']`. Conclude with `(L.add_mem_cancel_right h).symm`.
-
-Conclude with `if_congr iff rfl rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cind_eq_of_sub_mem {V : Type} [AddGroup V] (L : AddSubgroup V) {y y' : V} (h : y - y' ∈ L) :
     cind L y = cind L y' := by
@@ -172,7 +170,7 @@ theorem cind_eq_of_sub_mem {V : Type} [AddGroup V] (L : AddSubgroup V) {y y' : V
   exact if_congr iff rfl rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Unfold `cind`. Rewrite using `[sub_zero, ← sub_eq_add_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cind_translate {V : Type} [AddGroup V] (L : AddSubgroup V) (y : V) :
     (fun Y => cind L 0 (Y + -y)) = cind L y := by
@@ -191,11 +189,11 @@ open GlobalTheory.LinSchur
 open Classical in
 
 /- English proof (translation)
-Use `split_ifs with h`. Rewrite using `[cind_eq_of_sub_mem L h, ← cind_translate L y']`. Unfold `ip`. Conclude with `integral_add_right_eq_self (fun Y => cind L 0 Y * (starRingEnd ℂ) (cind L 0 Y)) (-y')`. Unfold `ip`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun Y => cind L y Y * (starRingEnd ℂ) (cind L y' Y)) = fun _ => 0`. Use function extensionality and compare the values at `Y`. Unfold `cind`. Distinguish the cases in `h1 : Y - y ∈ L`. Distinguish the cases in `h2 : Y - y' ∈ L`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `absurd (by simpa [sub_sub_sub_cancel_left] using L.sub_mem h2 h1) h`. Simplify using `[h2]`. Simplify using `[h1]`. Rewrite using `[e, integral_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ip_cind {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] [MeasurableSpace V]
     [BorelSpace V] (ν : Measure V) [ν.IsAddRightInvariant] (L : AddSubgroup V) (y y' : V) :
@@ -218,17 +216,15 @@ theorem ip_cind {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalA
 open Classical in
 
 /- English proof (translation)
-Establish `hx : ∀ z, Tr (-z) x0 ∈ SB T ∧ ι (Tr (-z) x0) = cind (latt ψ0 n d s) z` using `fun z => ⟨(hTr _ _ hx0).1, by rw [(hTr _ _ hx0).2, hιx0]; exact cind_translate _ z⟩`. Use `split_ifs with h`. Establish `e : Tr (-y) x0 = Tr (-y') x0` using `hinj (hx y).1 (hx y').1 (by rw [(hx y).2, (hx y').2]; exact cind_eq_of_sub_mem _ h)`. Rewrite using `[e, hTrI]`. Take `⟨l, hl1, hl2⟩` from `dual h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm : ∀ z, Mu l (Tr (-z) x0) = ψ0 (l z) • Tr (-z) x0` using `fun z => by`. Use `hinj (hMu l _ (hx z).1).1 (Submodule.smul_mem _ _ (hx z).1) ?_` and prove the remaining obligations. Rewrite using `[(hMu l _ (hx z).1).2, map_smul, (hx z).2]`. Use function extensionality and compare the values at `Y`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `cind`. Use `split_ifs with hY`. Rewrite using `[mul_one, mul_one, show l Y = l (Y - z) + l z by rw [← map_add, sub_add_cancel], AddChar.map_add_eq_mul, hl1 _ hY, one_mul]`. Simplify using the standard rewrite rules. Establish `e` using `hMuI l (Tr (-y) x0) (Tr (-y') x0)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[hm y, hm y', ip_smul_smul]`. Establish `hconj : ∀ w, (starRingEnd ℂ) (ψ0 w) = ψ0 (-w)` using `fun w => by`. Establish `h1 : ψ0 w * (starRingEnd ℂ) (ψ0 w) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, GlobalTheory.norm_addChar_nonarch ψ0 hψ w]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ψ0 w * ψ0 (-w) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Conclude with `mul_left_cancel₀ (addChar_ne_zero ψ0 w) (h1.trans h2.symm)`. Rewrite `e` using `[hconj, ← AddChar.map_add_eq_mul, ← map_neg, ← map_add, ← sub_eq_add_neg]`. Establish `e2 : (ψ0 (l (y - y')) - 1) * ip μ (Tr (-y) x0) (Tr (-y') x0) = 0` using `by linear_combination e`.
-
-Break down `mul_eq_zero.mp e2 with h3 | h3` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h3) hl2`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem ip_cosets {T : Type} [TopologicalSpace T] [MeasurableSpace T] [OpensMeasurableSpace T]
     {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ}
@@ -282,25 +278,23 @@ open GlobalTheory.LinSchur
 open scoped GlobalTheory.VacAny GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hTr v hv t ι hι φ hφ φ₁ hφ₁ hnorm ν hν`. Use `letI : MeasurableSpace (Fin a × Fin (a + a') → Fv F v) := borel _`. Use `haveI : BorelSpace (Fin a × Fin (a + a') → Fv F v) := ⟨rfl⟩`. Use `letI : MeasurableSpace (Matrix (Fin a) (Fin (a + a')) (Fv F v)) := borel _`. Use `haveI : BorelSpace (Matrix (Fin a) (Fin (a + a')) (Fv F v)) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : LocallyCompactSpace (Matrix (Fin a) (Fin (a + a')) (Fv F v)) := inferInstanceAs (LocallyCompactSpace (Fin a → Fin (a + a') → Fv F v))`. Use `haveI := hν`. Set `μ : Measure (Fin a × Fin (a + a') → Fv F v)` to `Measure.addHaar`. Establish `hμ : μ.IsAddHaarMeasure` using `inferInstance`. Take `⟨hψc, hψ1, wT, wM, hA⟩` from `GlobalTheory.UnitWShape.heisW B G X om om' hTr v t 1 id (fun f hf => hf) (fun γ _ f _ => by simp [actAB, mat])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hT0, hM0, -, -⟩` from `hA ι hι`. Establish `hbij` using `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model.IsLin.bij hι`. Establish `hmaps` using `hbij.mapsTo`. Establish `hsb : ∀ w, ∀ f ∈ SB (Fin a × Fin (a + a') → Fv F v), schr (GlobalTheory.LatVac.psiAt B.ψ v) w f ∈ SB _` using `fun w f hf => GlobalTheory.SchrSB.schr_mem_SB B.ψ hTr.base.std.1 v w f hf`. Establish `hU : ∀ w f f', ip μ (schr (GlobalTheory.LatVac.psiAt B.ψ v) w f) (schr (GlobalTheory.LatVac.psiAt B.ψ v) w f') = ip μ f f'` using `fun w f f' => GlobalTheory.schr_unitary (GlobalTheory.LatVac.psiAt B.ψ v) hψc μ hμ w f f'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨hLoc, hBasis⟩` from `GlobalTheory.T.characterTrivialMatrixLattice_open_compact_basis a (a + a') (GlobalTheory.LatVac.psiAt B.ψ v) hψc hψ1`. Establish `hB' : ∀ W ∈ 𝓝 (0 : Matrix (Fin a) (Fin (a + a')) (Fv F v)), ∃ i : {s : Fv F v // s ≠ 0}, (latt (GlobalTheory.LatVac.psiAt B.ψ v) a (a + a') i.1 : Set _) ⊆ W` using `fun W hW => by`. Take `⟨s, hs, h⟩` from `hBasis W hW`. Conclude with `⟨⟨s, hs⟩, h⟩`. Take `⟨⟨s1, hs1⟩, hper1⟩` from `GlobalTheory.T.exists_openSubgroup_periodic (fun s : {s : Fv F v // s ≠ 0} => latt (GlobalTheory.LatVac.psiAt B.ψ v) a (a + a') s.1) (fun s => (hLoc s.1 s.2).1) hB' (ι φ) (hmaps hφ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨s2, hs2⟩, hper2⟩` from `GlobalTheory.T.exists_openSubgroup_periodic (fun s : {s : Fv F v // s ≠ 0} => latt (GlobalTheory.LatVac.psiAt B.ψ v) a (a + a') s.1) (fun s => (hLoc s.1 s.2).1) hB' (ι φ₁) (hmaps hφ₁)`. Take `⟨s, hs, hsub⟩` from `hBasis ((latt (GlobalTheory.LatVac.psiAt B.ψ v) a (a + a') s1 : Set _) ∩ latt (GlobalTheory.LatVac.psiAt B.ψ v) a (a + a') s2) (Filter.inter_mem ((hLoc s1 hs1).1.mem_nhds (zero_mem _)) ((hLoc s2 hs2).1.mem_nhds (zero_mem _)))`. Use `set L := latt (GlobalTheory.LatVac.psiAt B.ψ v) a (a + a') s with hLdef`. Take `⟨Fa, hFa⟩` from `GlobalTheory.T.exists_finset_eq_sum_addCosetIndicator L (hLoc s hs).1 (ι φ) (hmaps hφ) (fun Y C hC => hper1 Y C (hsub hC).1)`. Take `⟨Fb, hFb⟩` from `GlobalTheory.T.exists_finset_eq_sum_addCosetIndicator L (hLoc s hs).1 (ι φ₁) (hmaps hφ₁) (fun Y C hC => hper2 Y C (hsub hC).2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcm : ∀ y, cind L y ∈ SB (Matrix (Fin a) (Fin (a + a')) (Fv F v))` using `fun y => cind_mem (hLoc s hs).1 (hLoc s hs).2 y`. Take `⟨x0, hx0, hιx0⟩` from `hbij.surjOn (hcm 0)`. Establish `hPD` using `ip_cosets μ (GlobalTheory.LatVac.psiAt B.ψ v) hψc ι hbij.injOn (fun C => schr (GlobalTheory.LatVac.psiAt B.ψ v) (wT C)) (fun l => schr (GlobalTheory.LatVac.psiAt B.ψ v) (wM l)) (fun C f hf => ⟨hsb _ f hf, hT0 C f hf⟩) (fun l f hf => ⟨hsb _ f hf, hM0 l f hf⟩) (fun C => hU _) (fun …`. Establish `hιxs : ∀ y, ι (schr (GlobalTheory.LatVac.psiAt B.ψ v) (wT (-y)) x0) = cind L y` using `fun y => by`. Rewrite using `[hT0 _ x0 hx0, hιx0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `cind_translate L y`. Establish `eA` using `expand μ ι hbij.injOn L (fun y => schr (GlobalTheory.LatVac.psiAt B.ψ v) (wT (-y)) x0) (fun y => hsb _ x0 hx0) hιxs (ip μ x0 x0) hPD φ hφ (ι φ) rfl Fa hFa`. Establish `eB` using `expand μ ι hbij.injOn L (fun y => schr (GlobalTheory.LatVac.psiAt B.ψ v) (wT (-y)) x0) (fun y => hsb _ x0 hx0) hιxs (ip μ x0 x0) hPD φ₁ hφ₁ (ι φ₁) rfl Fb hFb`. Establish `eA'` using `expand ν LinearMap.id (fun _ _ _ _ h => h) L (cind L) hcm (fun y => rfl) (ip ν (cind L 0) (cind L 0)) (ip_cind ν L) (ι φ) (hmaps hφ) (ι φ) rfl Fa hFa`. Establish `eB'` using `expand ν LinearMap.id (fun _ _ _ _ h => h) L (cind L) hcm (fun y => rfl) (ip ν (cind L 0) (cind L 0)) (ip_cind ν L) (ι φ₁) (hmaps hφ₁) (ι φ₁) rfl Fb hFb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hipD : ip μ φ₁ φ₁ = ip μ φ φ`. Rewrite using `[(ip_self μ hφ₁).1, (ip_self μ hφ).1, hnorm μ hμ]`. Establish `hne : x0 ≠ 0` using `fun h => by`. Establish `e` using `congrFun hιx0 0`. Rewrite `e` using `[h, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[cind] at e`. Establish `hc0 : ip μ x0 x0 ≠ 0`. Rewrite using `[(ip_self μ hx0).1]`. Conclude with `(ENNReal.toReal_pos (lintegral_ne_zero μ hx0 hne) (ip_self μ hx0).2).ne'` after adjusting the coercions. Rewrite `hipD` using `[eA, eB]`.
-
-Establish `hK` using `mul_right_cancel₀ hc0 hipD`. Establish `hQ : ip ν (ι φ₁) (ι φ₁) = ip ν (ι φ) (ι φ)` using `by rw [eA', eB', hK]`. Rewrite `hQ` using `[(ip_self ν (hmaps hφ₁)).1, (ip_self ν (hmaps hφ)).1]`. Establish `hR` using `Complex.ofReal_injective hQ`. Conclude with `(ENNReal.toReal_eq_toReal_iff' (ip_self ν (hmaps hφ₁)).2 (ip_self ν (hmaps hφ)).2).mp hR`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linIso_lintegral_eq : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

@@ -11,13 +11,13 @@ section
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Introduce `n` and use `⟨0, by rw [map_zero, mul_zero]; exact (Wp p).zero_mem⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem coefWf_zero {σ : Type} : CoefWf (0 : MvPowerSeries σ ℂ_[p]) := fun n => ⟨0, by
   rw [map_zero, mul_zero]; exact (Wp p).zero_mem⟩
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction f CoefWf (fun _ _ => coefWf_add) coefWf_zero h`.
+A detailed English derivation is pending.
 -/
 theorem coefWf_sum {σ ι : Type} (s : Finset ι) (f : ι → MvPowerSeries σ ℂ_[p]) (h : ∀ i ∈ s, CoefWf (f i)) :
     CoefWf (∑ i ∈ s, f i) :=
@@ -26,11 +26,9 @@ theorem coefWf_sum {σ ι : Type} (s : Finset ι) (f : ι → MvPowerSeries σ �
 end
 
 /- English proof (translation)
-Introduce `hph _ ha he hd p _ cc δ g hA h5 hI hW κ ι _ _ b b' hb hb' hdu`. Establish `hOk` using `hA.2.2.2.2`. Establish `hP : CoefWf g.ph` using `hph p cc δ g hA h5 hI hW`. Establish `hF` using `(ha p cc δ g hA).2 hW`. Establish `hmem : ∀ (e : ι ⊕ ι) (k : κ), Sum.elim b b' e k ∈ OKp D g.lam`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `(e | e) k`. Conclude with `hb e k`. Conclude with `hb' e k`. Establish `h1 : CoefWf (g.PhOn (Sum.elim b b'))` using `coefWf_sum _ _ fun k _ => coefWf_phAt g hP (HL p g hOk hF _ _ (fun e => he p cc δ g hA h5 hI hW _ (hmem e k)) _ _ fun e => ptW_X e)`. Establish `h2 : CoefWf (g.beSum ι)` using `coefWf_sum _ _ fun e _ => coefWf_be HA g hOk hF hP (ptW_X _) (ptW_X _)`.
-
-Conclude with `⟨h1, simeqW_of h1 h2 (hd p cc δ g hA (by omega) κ ι b b' hb hb' hdu)⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem phDualW_of (HA : AddPtW) (HL : LinPtW) (D : D7) : StatementPhaseDualWitt D := by
   intro hph _ ha he hd p _ cc δ g hA h5 hI hW κ ι _ _ b b' hb hb' hdu
@@ -49,13 +47,11 @@ theorem phDualW_of (HA : AddPtW) (HL : LinPtW) (D : D7) : StatementPhaseDualWitt
   exact ⟨h1, simeqW_of h1 h2 (hd p cc δ g hA (by omega) κ ι b b' hb hb' hdu)⟩
 
 /- English proof (translation)
-Introduce `hph _ hadd he hd p _ cc δ g hA h5 hI hW κ ι ι' _ _ _ a a' ha hb`. Establish `hOk` using `hA.2.2.2.2`. Establish `hP : CoefWf g.ph` using `hph p cc δ g hA h5 hI hW`. Establish `hF` using `(hadd p cc δ g hA).2 hW`. Establish `hE` using `he p cc δ g hA h5 hI hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ (e : ι ⊕ ι') (k : κ), Sum.elim a a' e k ∈ OKp D g.lam`. Introduce and unpack `(e | e) k`. Conclude with `hb' a ha e k`. Conclude with `hb' a' hb e k`. Establish `hV : ∀ {ι₀ : Type} [Fintype ι₀] (c : ι₀ → κ → ℂ_[p] × ℂ_[p]), (∀ e k, c e k ∈ OKp D g.lam) → ∀ w : ι₀ → MvPowerSeries (ι ⊕ ι') ℂ_[p], (∀ e, PtW (w e)) → CoefWf (PhV g c w)` using `fun c hc w hw => coefWf_sum _ _ fun k _ => coefWf_phAt g hP (HL p g hOk hF _ _ (fun e => hE _ (hc e k)) _ _ hw)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : CoefWf (sdL g a a')` using `coefWf_sub (coefWf_sub (hV _ hmem _ fun e => ptW_X e) (hV a ha _ fun e => ptW_X _)) (hV a' hb _ fun e => ptW_X _)`. Establish `h2 : CoefWf (sdR g a a')` using `coefWf_sum _ _ fun f _ => coefWf_sum _ _ fun f' _ => coefWf_be HA g hOk hF hP (HM p g hOk _ (hE _ (okp_hP D g.lam _ _ (ha f) (hb f'))) _ _ (ptW_X _)) (ptW_X _)`. Establish `h3 : CoefWf (sdR' g a a')` using `coefWf_sum _ _ fun f _ => coefWf_sum _ _ fun f' _ => coefWf_be HA g hOk hF hP (ptW_X _) (HM p g hOk _ (hE _ (okp_swap D g.lam _ (okp_hP D g.lam _ _ (ha f) (hb f')))) _ _ (ptW_X _))`. Take `⟨d1, d2⟩` from `hd p cc δ g hA (by omega) κ ι ι' a a' ha hb`. Conclude with `⟨h1, simeqW_of h1 h2 d1, simeqW_of h1 h3 d2⟩`.
-
-Use `where hb' {p : ℕ} [Fact p.Prime] {lam : Qbar →+* ℂ_[p]} {ι₀ κ : Type} (c : ι₀ → κ → ℂ_[p] × ℂ_[p]) (h : ∀ e, InOKp D lam (c e)) (e : ι₀) (k : κ) : c e k ∈ OKp D lam := h e k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sDiffW_of (HA : AddPtW) (HM : MulPtW) (HL : LinPtW) (D : D7) : StatementSymmetricDifferenceWitt D := by
   intro hph _ hadd he hd p _ cc δ g hA h5 hI hW κ ι ι' _ _ _ a a' ha hb

@@ -12,19 +12,17 @@ noncomputable section
 namespace GlobalTheory.VarFlag.LQF
 
 /- English proof (translation)
-Set `k` to `Y.residueField y`. Set `K` to `AlgebraicClosure k`. Set `pt : Spec (CommRingCat.of K)` to `(⊥ : PrimeSpectrum K)`. Establish `hcl : closedPoints (f.fiber y) ⊆ f.fiberι y ⁻¹' ((fun z : Spec (CommRingCat.of K) ⟶ X => z pt) '' {z | z ≫ f = Spec.map (CommRingCat.ofHom (algebraMap k K)) ≫ Y.fromSpecResidueField y})`. Introduce `w hw`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw' : IsClosed ({w} : Set (f.fiber y))` using `hw`. Establish `h1 : LocallyOfFiniteType ((f.fiber y).fromSpecResidueField w)` using `isClosed_singleton_iff_locallyOfFiniteType.1 hw'`. Establish `h0 : LocallyOfFiniteType (f.fiberToSpecResidueField y)` using `MorphismProperty.of_isPullback (IsPullback.of_hasPullback f (Y.fromSpecResidueField y)) ‹LocallyOfFiniteType f›`. Establish `h2 : LocallyOfFiniteType ((f.fiber y).fromSpecResidueField w ≫ f.fiberToSpecResidueField y)` using `inferInstance`. Establish `h3 : IsFinite ((f.fiber y).fromSpecResidueField w ≫ f.fiberToSpecResidueField y)` using `isFinite_iff_locallyOfFiniteType_of_jacobsonSpace.2 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ, hφ⟩` from `Spec.map_surjective ((f.fiber y).fromSpecResidueField w ≫ f.fiberToSpecResidueField y)`. Establish `h4 : φ.hom.Finite`. Rewrite using `[← IsFinite.SpecMap_iff, hφ]`. Conclude with `h3`. Use `letI : Algebra k ((f.fiber y).residueField w) := φ.hom.toAlgebra`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : Module.Finite k ((f.fiber y).residueField w) := h4`. Use `haveI : Algebra.IsAlgebraic k ((f.fiber y).residueField w) := Algebra.IsIntegral.isAlgebraic`. Set `ι : (f.fiber y).residueField w →ₐ[k] K` to `IsAlgClosed.lift`. Use `⟨Spec.map (CommRingCat.ofHom ι.toRingHom) ≫ (f.fiber y).fromSpecResidueField w ≫ f.fiberι y, ?_, ?_⟩` and prove the remaining obligations. Use `show _ = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, Scheme.Hom.fiber_fac, ← Category.assoc ((f.fiber y).fromSpecResidueField w), ← hφ, ← Category.assoc, ← Spec.map_comp]`. Use `congr 2`. Use extensionality with `a`. Conclude with `ι.commutes a`. Use `show (Spec.map _ ≫ _ ≫ _) pt = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]`. Establish `hfin : (closedPoints (f.fiber y)).Finite` using `((H.image _).preimage (f.fiberι y).isEmbedding.injective.injOn).subset hcl`. Establish `huniv : (Set.univ : Set (f.fiber y)) = closedPoints (f.fiber y)`. Establish `hc : IsClosed (closedPoints (f.fiber y))`. Rewrite using `[← Set.biUnion_of_singleton (closedPoints (f.fiber y))]`.
-
-Conclude with `hfin.isClosed_biUnion fun x hx => hx`. Rewrite using `[← JacobsonSpace.closure_inter_closedPoints isClosed_univ, Set.univ_inter, hc.closure_eq]`. Use `haveI : Finite (f.fiber y) := Set.finite_univ_iff.1 (huniv ▸ hfin)`. Rewrite using `[← Scheme.Hom.range_fiberι]`. Conclude with `Set.finite_range _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_preimage_of_finite_points {X Y : Scheme.{0}} (f : X ⟶ Y) [LocallyOfFiniteType f] (y : Y)
     (H : {z : Spec (CommRingCat.of (AlgebraicClosure (Y.residueField y))) ⟶ X | z ≫ f =
@@ -86,7 +84,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `(GlobalTheory.LieMet.isComb_iff u cf w).1 h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem eq_sum_of_isCombAtG {Y : Model Xo c (RingHom.id c.F)} {K : Type} [Field K] {x x' : Sp K ⟶ Y.X} (e : x' = x)
     {m : ℕ} (u : Fin m → TanM x Y.t.G) (cf : Fin m → K) (w : TanM x Y.t.G)
@@ -95,7 +93,7 @@ theorem eq_sum_of_isCombAtG {Y : Model Xo c (RingHom.id c.F)} {K : Type} [Field 
   exact (GlobalTheory.LieMet.isComb_iff u cf w).1 h
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem vecAt_left {Y : Model Xo c (RingHom.id c.F)} {Z : Scheme.{0}} {π : Z ⟶ Y.X} (F : Frames Y π) {K : Type}
     [Field K] (k : F.J) (z : Sp K ⟶ Z) (hz : ⊤ ≤ z ⁻¹ᵁ F.U k) {x : Sp K ⟶ Y.X} (hx : z ≫ π = x) (σ : E →+* ℂ)
@@ -103,11 +101,11 @@ theorem vecAt_left {Y : Model Xo c (RingHom.id c.F)} {Z : Scheme.{0}} {π : Z �
   subst hx; rfl
 
 /- English proof (translation)
-Establish `h1 : spMap (dualMap (RingHom.id K)) = 𝟙 _`. Rewrite using `[← Spec.map_id]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap]`. Establish `ex : ∀ j : Fin (Dw.mult σ), ∃ cf : Fin (Dw.mult σ) → K, (∀ k, j < k → cf k = 0) ∧ F.vecAt k' z' hz' hx' σ j = ∑ a, cf a • F.vecAt k z hz hx σ a` using `fun j => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Take `⟨cf, -, hcf, hc⟩` from `ht.2.2 σ j`. Use `⟨cf, hcf, eq_sum_of_isCombAtG hx' _ cf _ ?_⟩` and prove the remaining obligations. Establish `e1 : (fun a => spMap (dualMap (RingHom.id K)) ≫ g.v σ a) = fun a => (tv (F.vecAt k z hz hx σ a)).left` using `funext fun a => by`. Rewrite using `[h1, Category.id_comp, hg σ a, vecAt_left F k z hz hx σ a]`. Rewrite `hc` using `[e1, hg' σ j, ← vecAt_left F k' z' hz' hx' σ j]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc`. Use `choose cf hcf e using ex`. Conclude with `initSpan_le_of_tri (B := Matrix.of fun a j => cf j a) (fun j a h => hcf a j h) e i`.
+A detailed English derivation is pending.
 -/
 theorem initSpan_le_of_frameTri {Y : Model Xo c (RingHom.id c.F)} {Z : Scheme.{0}} {π : Z ⟶ Y.X} (F : Frames Y π)
     {K : Type} [Field K] {φ φ' : c.F →+* K} (z z' : Sp K ⟶ Z) {x : Sp K ⟶ Y.X} (hx : z ≫ π = x) (hx' : z' ≫ π = x)
@@ -143,7 +141,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨y, ψ, φ₁, f, t, t', hp, -, htri⟩` from `h`. Rewrite using `[htri.1, hp, Category.assoc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem carries_base {Y : Model Xo c (RingHom.id c.F)} (C : FlagCpt Y (RingEquiv.refl c.F)) {K : Type} [Field K]
     {φ : c.F →+* K} {x : Sp K ⟶ Y.X} {p : Sp K ⟶ C.Y.X} {g : EigFrame Y φ x} (h : C.Carries p g) :
@@ -152,7 +150,7 @@ theorem carries_base {Y : Model Xo c (RingHom.id c.F)} (C : FlagCpt Y (RingEquiv
   rw [htri.1, hp, Category.assoc]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hC K φ φ' x p g g' h h'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem tri_of_carries {Y : Model Xo c (RingHom.id c.F)} (C : FlagCpt Y (RingEquiv.refl c.F)) (hC : CarriesTri C)
     {K : Type} [Field K] {φ φ' : c.F →+* K} {x x' : Sp K ⟶ Y.X} (e : x = x') {p : Sp K ⟶ C.Y.X}
@@ -162,13 +160,13 @@ theorem tri_of_carries {Y : Model Xo c (RingHom.id c.F)} (C : FlagCpt Y (RingEqu
   exact hC K φ φ' x p g g' h h'
 
 /- English proof (translation)
-Break down `Set.eq_empty_or_nonempty {z : Sp K ⟶ Y₀ X.toFlagCover Z | z ≫ h = p} with h0 | ⟨z₁, hz₁⟩` into its components or cases. Rewrite using `[h0]`. Conclude with `Set.finite_empty`. Establish `hfin` using `X.fin K (z₁ ≫ inc₀ X.toFlagCover Z)`. Use `(hfin.preimage (f := fun z => z ≫ inc₀ X.toFlagCover Z) (fun a _ b _ e => (cancel_mono (inc₀ X.toFlagCover Z)).1 e)).subset ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Establish `key : ∀ w : Sp K ⟶ Y₀ X.toFlagCover Z, w ≫ h = p → ∃ (φ : c.F →+* K) (k : X.F.J) (hk : ⊤ ≤ (w ≫ inc₀ X.toFlagCover Z) ⁻¹ᵁ X.F.U k) (g : EigFrame Y φ ((w ≫ inc₀ X.toFlagCover Z) ≫ X.π)), IsFrameAt X.F _ k hk g ∧ C.Carries p g`. Introduce `w hw`. Take `⟨φ, k, hk, g, -, hg, hc⟩` from `hR K w`. Conclude with `⟨φ, k, hk, g, hg, hw ▸ hc⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, k, hk, g, hg, hc⟩` from `key z hz`. Take `⟨φ₁, k₁, hk₁, g₁, hg₁, hc₁⟩` from `key z₁ hz₁`. Establish `hx : (z ≫ inc₀ X.toFlagCover Z) ≫ X.π = (z₁ ≫ inc₀ X.toFlagCover Z) ≫ X.π` using `(carries_base C hc).trans (carries_base C hc₁).symm`. Use `⟨hx, fun σ i => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `tri_of_carries C hC hx g g₁ hc hc₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht'⟩` from `tri_of_carries C hC hx.symm g₁ g hc₁ hc`. Rewrite using `[X.F.step_eq k _ hk hx, X.F.step_eq k₁ _ hk₁ rfl]`. Conclude with `le_antisymm (initSpan_le_of_frameTri X.F _ _ rfl hx k₁ k hk₁ hk g₁ g hg₁ hg t' ht' σ i) (initSpan_le_of_frameTri X.F _ _ hx rfl k k₁ hk hk₁ g g₁ hg hg₁ t ht σ i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_points {Y : Model Xo c (RingHom.id c.F)} (X : FlagModel Y) (C : FlagCpt Y (RingEquiv.refl c.F))
     (hC : CarriesTri C) (Z : Formalism.L2.Pj.Comp Xo c) (h : Y₀ X.toFlagCover Z ⟶ C.Y.X)
@@ -200,7 +198,7 @@ theorem finite_points {Y : Model Xo c (RingHom.id c.F)} (X : FlagModel Y) (C : F
 end GlobalTheory.VarFlag.LQF
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y X C hC Z h _ hR`. Use `LocallyQuasiFinite.of_finite_preimage_singleton h fun p => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.VarFlag.LQF.finite_preimage_of_finite_points h p (GlobalTheory.VarFlag.LQF.finite_points X C hC Z h hR _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.VarFlag.locallyQuasiFinite_flag : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)}, ∀ (X : GlobalTheory.FlagMod.FlagModel Y) (C : GlobalTheory.ShFam.FlagCpt Y (RingEquiv.refl c.F)), GlobalTheory.VarFlag.CarriesTri C → ∀ (Z : Formalism.L2.Pj.Comp Xo c) (h : GlobalTheory.CompHS.Y₀ X.toFlagCover Z ⟶ C.Y.X) [IsProper h], (∀ (K : Type) [Field K] (z : Sp K ⟶ GlobalTheory.CompHS.Y₀ X.toFlagCover Z), GlobalTheory.VarFlag.Rel X.F C (z ≫ GlobalTheory.CompHS.inc₀ X.toFlagCover Z) (z ≫ h)) → LocallyQuasiFinite h := by
   intro E _ _ _ H Dw l Xo c Y X C hC Z h _ hR

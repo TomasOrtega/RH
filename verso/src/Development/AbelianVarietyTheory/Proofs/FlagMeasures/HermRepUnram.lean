@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BinaryHermitianFormR
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.binaryHermitianForm_represents_totallyPositive`.
+A detailed English derivation is pending.
 -/
 theorem hermRepUnram : Formalism.HermitianLattices.Ext.L3.HermRepUnram := GlobalTheory.T.binaryHermitianForm_represents_totallyPositive
 

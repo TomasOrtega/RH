@@ -16,13 +16,11 @@ namespace GlobalTheory.HcIrr
 open Formalism.IrreducibleCountingLemmas.TYPES Formalism.L2.DIV Polynomial CategoryTheory
 
 /- English proof (translation)
-Take `⟨hn, hW⟩` from `hirr`. Use `⟨Ψ.toEquiv.nontrivial, fun W hinv => ?_⟩` and prove the remaining obligations. Establish `hinv' : ∀ g, ∀ v ∈ W.map (Ψ : V →ₗ[ℂ] V'), ρ' g v ∈ W.map (Ψ : V →ₗ[ℂ] V')`. Introduce and unpack `g _ ⟨w, hw, rfl⟩`. Conclude with `⟨ρ (A g) w, hinv _ _ hw, h g w⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Break down `hW _ hinv' with h0 | h1` into its components or cases. Use `left`. Use `eq_bot_iff.2 fun v hv => ?_` and prove the remaining obligations. Establish `hv' : Ψ v ∈ W.map (Ψ : V →ₗ[ℂ] V')` using `⟨v, hv, rfl⟩`. Rewrite `hv'` using `[h0, Submodule.mem_bot]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hv'`. Use `right`. Use `eq_top_iff.2 fun v _ => ?_` and prove the remaining obligations. Establish `: Ψ v ∈ W.map (Ψ : V →ₗ[ℂ] V')` using `h1 ▸ Submodule.mem_top`. Take `⟨w, hw, hwv⟩` from `this`.
-
-Rewrite using `[← Ψ.injective hwv]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isIrrRep_of_equiv {G V V' : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
     (ρ : Representation ℂ G V) (ρ' : Representation ℂ G V') (A : G → G) (hA : Function.Surjective A)
@@ -45,9 +43,9 @@ theorem isIrrRep_of_equiv {G V V' : Type} [Group G] [AddCommGroup V] [Module ℂ
     rwa [← Ψ.injective hwv]
 
 /- English proof (translation)
-Use `haveI := h`. Use `⟨?_, fun W hW => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Establish `: (⊥ : Subrepresentation ρ) = ⊤` using `Subrepresentation.ext (Subsingleton.elim (α := Submodule ℂ V) _ _)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `bot_ne_top this`. Break down `eq_bot_or_eq_top (⟨W, fun g v hv => hW g v hv⟩ : Subrepresentation ρ) with h0 | h1` into its components or cases. Conclude with `Or.inl (congrArg Subrepresentation.toSubmodule h0)`. Conclude with `Or.inr (congrArg Subrepresentation.toSubmodule h1)`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem isIrrRep_of_isIrreducible {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (h : ρ.IsIrreducible) : IsIrrRep ρ := by
@@ -64,7 +62,7 @@ theorem isIrrRep_of_isIrreducible {G V : Type} [Group G] [AddCommGroup V] [Modul
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K] {r s : ℕ}
 
 /- English proof (translation)
-Set `L : hcSpace K b lam ≃ₗ[ℂ] Representation.coindV (blockTri (κ` to `K) (natBlocks b)).subtype (leviTensor b lam) := { toFun := fun f => ⟨f.1, fun p x => f.2 (Subgroup.inclusion (blockTri_le_parab b) p) x⟩ invFun := fun f => ⟨f.1, fun p x => f.2 (Subgroup.inclusion (parab_le_blockTri b) p) x⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl …`. Conclude with `isIrrRep_of_equiv (hcRep K b lam) _ id Function.surjective_id L (fun _ _ => rfl) (isIrrRep_of_isIrreducible _ h)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isIrrRep_hcRep_of_parInd (b : Fin r → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K))
     (h : (GlobalTheory.FinGL.parInd (natBlocks b) (leviTensor b lam)).IsIrreducible) : IsIrrRep (hcRep K b lam) := by
@@ -79,29 +77,23 @@ theorem isIrrRep_hcRep_of_parInd (b : Fin r → Fin s) (lam : ∀ c : Fin s, FDR
     (isIrrRep_of_isIrreducible _ h)
 
 /- English proof (translation)
-Set `e : Fin r ≃ Fin r` to `(Tuple.sort b).symm`. Set `b' : Fin r → Fin s` to `b ∘ e.symm`. Set `ec : ∀ c, {i // b i = c} ≃ {k // b' k = c}` to `fun c => e.subtypeEquiv (fun i => by simp [b'])`. Set `lam' : ∀ c : Fin s, FDRep ℂ (GL {k // b' k = c} K)` to `fun c => transp (ec c) (lam c)`. Set `A : GL (Fin r) K ≃* GL (Fin r) K` to `(glEquiv K e).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hpar : ∀ p : parab K b', A p.1 ∈ parab K b`. Introduce `p`. Take `⟨h1, h2⟩` from `p.2`. Use `⟨fun i j hij => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Use `show Matrix.reindex e.symm e.symm (p.1 : Matrix (Fin r) (Fin r) K) i j = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm]`. Conclude with `h1 _ _ (by simpa [b'] using hij)`. Rewrite using `[← map_inv] show Matrix.reindex e.symm e.symm ((p.1⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) i j = 0`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm]`. Conclude with `h2 _ _ (by simpa [b'] using hij)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hpar' : ∀ q : parab K b, A.symm q.1 ∈ parab K b'`. Introduce `q`. Take `⟨h1, h2⟩` from `q.2`. Use `⟨fun i j hij => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Use `show Matrix.reindex e e (q.1 : Matrix (Fin r) (Fin r) K) i j = 0`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply]`. Conclude with `h1 _ _ hij`. Rewrite using `[← map_inv] show Matrix.reindex e e ((q.1⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) i j = 0`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply]`. Conclude with `h2 _ _ hij`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hlevi : ∀ (p : parab K b') (c : Fin s), levi K b c ⟨A p.1, hpar p⟩ = (glEquiv K (ec c)).symm (levi K b' c p)`. Introduce `p c`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinfl : ∀ p : parab K b', infl K b lam ⟨A p.1, hpar p⟩ = infl K b' lam' p`. Introduce `p`. Unfold `infl`. Use `congr 1`. Establish `hinfl' : ∀ q : parab K b, infl K b lam q = infl K b' lam' ⟨A.symm q.1, hpar' q⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `q`. Rewrite using `[← hinfl]`. Use `congr 2`. Conclude with `Subtype.ext (A.apply_symm_apply q.1).symm`. Set `Ψ : hcSpace K b lam ≃ₗ[ℂ] hcSpace K b' lam'` to `{ toFun := fun F => ⟨fun x => F.1 (A x), fun p x => by show F.1 (A (p.1 * x)) = infl K b' lam' p (F.1 (A x))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ← hinfl]`. Conclude with `F.2 ⟨A p.1, hpar p⟩ (A x)⟩`. Use `invFun := fun F => ⟨fun x => F.1 (A.symm x), fun q x => by show F.1 (A.symm (q.1 * x)) = infl K b lam q (F.1 (A.symm x))`. Rewrite using `[map_mul, hinfl']`. Conclude with `F.2 ⟨A.symm q.1, hpar' q⟩ (A.symm x)⟩`.
-
-Use the proof step `map_add' := fun F G => rfl`. Use the proof step `map_smul' := fun a F => rfl`. Use `left_inv := fun F => Subtype.ext (_root_.funext fun x => congrArg F.1 (A.apply_symm_apply x))`. Use `right_inv := fun F => Subtype.ext (_root_.funext fun x => congrArg F.1 (A.symm_apply_apply x)) }`. Use `⟨b', lam', hb.comp e.symm.surjective, ?_, fun c => ⟨Formalism.L2.PT.simple_transp _ (hl c).1, Formalism.L2.PT.isCuspidal_transp _ (hl c).2⟩, fun c => GlobalTheory.SerOSys.TranspLabel.labO_transp O (ec c) (lam c), ?_⟩` and prove the remaining obligations.
-
-Conclude with `Tuple.monotone_sort b`. Use `isIrrRep_of_equiv _ _ A A.surjective Ψ fun g F => ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show F.1 (A x * A g) = F.1 (A (x * g))`.
-
-Rewrite using `[map_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_sorted {C : LabelConv K} (O : LabelMap K C) (b : Fin r → Fin s)
     (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K)) (hb : Function.Surjective b)
@@ -174,7 +166,7 @@ theorem exists_sorted {C : LabelConv K} (O : LabelMap K C) (b : Fin r → Fin s)
     rw [map_mul]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.SerOSys.TranspLabel.labO_transp O e σ, ← GlobalTheory.SerOSys.TranspLabel.labO_transp O e' σ']`. Unfold `labO`. Apply `O.lab_iso` to reduce the goal to its premises. Conclude with `⟨GlobalTheory.SerOSys.TranspLabel.repIsoOf _ _ M fun γ v => hM _ v⟩`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 -/
 theorem labO_eq_of_readings {C : LabelConv K} (O : LabelMap K C) {α β : Type} [Fintype α] [DecidableEq α]
     [Fintype β] [DecidableEq β] (d : ℕ) (e : α ≃ Fin d) (e' : β ≃ Fin d) (σ : FDRep ℂ (GL α K))
@@ -187,9 +179,9 @@ theorem labO_eq_of_readings {C : LabelConv K} (O : LabelMap K C) {α β : Type} 
   exact ⟨GlobalTheory.SerOSys.TranspLabel.repIsoOf _ _ M fun γ v => hM _ v⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨j, rfl⟩ hne ⟨d, h, h', W, _, _, ρ, hf, hf'⟩`. Take `⟨e, L, hL⟩` from `GlobalTheory.T.hasCuspidalFactorAtBlock_leviPiTensor K r s b lam hs (b i) d h W ρ hf`. Take `⟨e', L', hL'⟩` from `GlobalTheory.T.hasCuspidalFactorAtBlock_leviPiTensor K r s b lam hs (b j) d h' W ρ hf'`. Establish `hlab : labO O (lam (b i)) = labO O (lam (b j))`. Use `labO_eq_of_readings O d e e' _ _ (L.symm.trans L') fun g v => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, rfl⟩` from `L.surjective v`. Rewrite using `[← hL]`. Simplify using `[hL']`. Conclude with `hne (congrArg (fun c : Fin s => (c : ℕ)) (hinj hlab))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem distinctFactors {C : LabelConv K} (O : LabelMap K C) (b : Fin r → Fin s)
     (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K)) (hs : ∀ c, Simple (lam c))
@@ -206,13 +198,11 @@ theorem distinctFactors {C : LabelConv K} (O : LabelMap K C) (b : Fin r → Fin 
   exact hne (congrArg (fun c : Fin s => (c : ℕ)) (hinj hlab))
 
 /- English proof (translation)
-Establish `hd : GlobalTheory.FinGL.IsCuspDatum (natBlocks b) (leviTensor b lam)` using `{ mono := fun i j hij => hm hij irr := GlobalTheory.T.leviPiTensorRepresentation_isIrreducible K r s b lam fun c => (hl c).1 infl := fun p hp => by`. Rewrite using `[leviTensor_apply]`. Establish `: ∀ c, (lam c).ρ (levi K b c (Subgroup.inclusion (blockTri_le_parab b) p)) = LinearMap.id`. Introduce `c`. Establish `h1 : levi K b c (Subgroup.inclusion (blockTri_le_parab b) p) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `x y`. Use `hp x.1 y.1 (by simp [natBlocks, x.2, y.2])` as an intermediate fact. Use `show ((p : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) x.1 y.1 = (1 : Matrix _ _ K) x y`. Rewrite using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply, Subtype.ext_iff]`. Rewrite using `[h1, map_one]`. Both sides reduce to the same expression. Simplify using `only [this]`. Conclude with `PiTensorProduct.map_id`.
-
-Use `cusp := fun S hS y hy => GlobalTheory.T.cuspidal_piTensor_no_blockUnipotent_fixed K r s b lam (fun c => (hl c).2) S hS y hy }`. Conclude with `isIrrRep_hcRep_of_parInd b lam ((GlobalTheory.CuspFactor.irrPar_iff_cuspidalProduct.1 GlobalTheory.FinGL.IrrProduct.irrPar).1 K r _ _ _ hd (distinctFactors O b lam (fun c => (hl c).1) hinj))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isIrrRep_of_monotone {C : LabelConv K} (O : LabelMap K C) (b : Fin r → Fin s)
     (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K))
@@ -242,7 +232,7 @@ theorem isIrrRep_of_monotone {C : LabelConv K} (O : LabelMap K C) (b : Fin r →
       (distinctFactors O b lam (fun c => (hl c).1) hinj))
 
 /- English proof (translation)
-Introduce `K _ _ _ r s b lam hb hl C O hinj`. Take `⟨b', lam', hb', hm, hl', hlab, hback⟩` from `exists_sorted O b lam hb hl`. Conclude with `hback (isIrrRep_of_monotone O b' lam' hl' (fun c c' h => hinj (by simpa [hlab] using h)) hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIrrRep_hcRep : ∀ (K : Type) [Field K] [Fintype K] [DecidableEq K] (r s : ℕ) (b : Fin r → Fin s)
     (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K)), Function.Surjective b →

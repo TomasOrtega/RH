@@ -145,7 +145,7 @@ def NumOK : Prop :=
 end Laws
 
 /- English proof (translation)
-Introduce `hz`. Apply `hf` to reduce the goal to its premises. Use `congrArg (fun x : AC Z => x.coeff (wtZ a n)) hz` as an intermediate fact. Simplify `this` using `[valC, AddMonoidAlgebra.coeff_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem valC_ne_zero {h : GenFrEx Xo c} {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} {Z : Comp Xo c}
     (hf : evC h Z f ≠ 0) : valC h a n f Z ≠ 0 := by

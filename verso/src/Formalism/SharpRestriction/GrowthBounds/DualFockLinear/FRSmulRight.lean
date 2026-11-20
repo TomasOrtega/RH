@@ -15,42 +15,42 @@ section F
 variable {τ K : Type} [CommRing K]
 
 /- English proof (translation)
-The claim follows from `(Formalism.L2.G.Model.TS.Top.fockRBilin τ K f 0 g 0).2.2`.
+A detailed English derivation is pending.
 -/
 theorem fR_symm (f g : MvPolynomial τ K) : fockR f g = fockR g f := (Formalism.L2.G.Model.TS.Top.fockRBilin τ K f 0 g 0).2.2
 /- English proof (translation)
-The claim follows from `(Formalism.L2.G.Model.TS.Top.fockRBilin τ K f f' g 0).1`.
+A detailed English derivation is pending.
 -/
 theorem fR_add_left (f f' g : MvPolynomial τ K) : fockR (f + f') g = fockR f g + fockR f' g :=
   (Formalism.L2.G.Model.TS.Top.fockRBilin τ K f f' g 0).1
 /- English proof (translation)
-The claim follows from `(Formalism.L2.G.Model.TS.Top.fockRBilin τ K f 0 g a).2.1`.
+A detailed English derivation is pending.
 -/
 theorem fR_smul_left (a : K) (f g : MvPolynomial τ K) : fockR (a • f) g = a * fockR f g :=
   (Formalism.L2.G.Model.TS.Top.fockRBilin τ K f 0 g a).2.1
 /- English proof (translation)
-Rewrite using `[fR_symm, fR_add_left, fR_symm g, fR_symm g']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fR_add_right (f g g' : MvPolynomial τ K) : fockR f (g + g') = fockR f g + fockR f g' := by
   rw [fR_symm, fR_add_left, fR_symm g, fR_symm g']
 /- English proof (translation)
-Rewrite using `[fR_symm, fR_smul_left, fR_symm g]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fR_smul_right (a : K) (f g : MvPolynomial τ K) : fockR f (a • g) = a * fockR f g := by
   rw [fR_symm, fR_smul_left, fR_symm g]
 /- English proof (translation)
-Use `fR_smul_left (-1 : K) f g` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fR_neg_left (f g : MvPolynomial τ K) : fockR (-f) g = -fockR f g := by
   have := fR_smul_left (-1 : K) f g
   simpa using this
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, fR_add_left, fR_neg_left, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fR_sub_left (f f' g : MvPolynomial τ K) : fockR (f - f') g = fockR f g - fockR f' g := by
   rw [sub_eq_add_neg, fR_add_left, fR_neg_left, ← sub_eq_add_neg]
 /- English proof (translation)
-Rewrite using `[fR_symm, fR_sub_left, fR_symm g, fR_symm g']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fR_sub_right (f g g' : MvPolynomial τ K) : fockR f (g - g') = fockR f g - fockR f g' := by
   rw [fR_symm, fR_sub_left, fR_symm g, fR_symm g']
@@ -81,7 +81,7 @@ theorem cForm_apply (K : Type) [Field K] (m : ℕ) (vec : Bool) (d : ℕ) (β s 
     (P Q : VV K m d) : cForm K m vec d β s P Q = fockR (thV K m vec d P * s) (thV K m vec d Q * β) := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hR K m hm vec d P.1 ((mem_Hd_iff _).2 P.2) fun Q hQ => h ⟨Q, (mem_Hd_iff _).1 hQ⟩`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem uniqV (hR : RestRep) {K : Type} [Field K] [CharZero K] {m : ℕ} (hm : 1 ≤ m) (vec : Bool) (d : ℕ) (P : VV K m d)
     (h : ∀ Q, fockR (thV K m vec d P) (thV K m vec d Q) = 0) : P = 0 := by
@@ -89,13 +89,13 @@ theorem uniqV (hR : RestRep) {K : Type} [Field K] [CharZero K] {m : ℕ} (hm : 1
   exact hR K m hm vec d P.1 ((mem_Hd_iff _).2 P.2) fun Q hQ => h ⟨Q, (mem_Hd_iff _).1 hQ⟩
 
 /- English proof (translation)
-Establish `hb : Function.Bijective (cForm K m vec d 1 1)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `P hP`. Apply `uniqV hR hm vec d P` to reduce the goal to its premises.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `Q`. Use `congrArg (fun f => f Q) hP` as an intermediate fact. Simplify `this` using `[cForm]`. Introduce `f`. Take `⟨P, hP⟩` from `hR2 K m hm vec d f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨P, LinearMap.ext fun Q => ?_⟩` and prove the remaining obligations. Simplify `hP Q` using `[cForm]`. Set `e` to `LinearEquiv.ofBijective (cForm K m vec d 1 1) hb`. Use `⟨fun β s => e.symm.toLinearMap ∘ₗ cForm K m vec d β s, fun β s P Q => ?_⟩` and prove the remaining obligations. Establish `h1 : cForm K m vec d 1 1 (e.symm (cForm K m vec d β s P)) = cForm K m vec d β s P` using `e.apply_symm_apply _`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : cForm K m vec d 1 1 (e.symm (cForm K m vec d β s P)) Q = cForm K m vec d β s P Q` using `by rw [h1]`. Rewrite `h2` using `[cForm_apply, cForm_apply, mul_one, mul_one]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_A (hR : RestRep) (hR2 : RestRep2) {K : Type} [Field K] [CharZero K] {m : ℕ} (hm : 1 ≤ m) (vec : Bool) (d : ℕ) :
     ∃ A : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K → MvPolynomial (Fin (m + 1) × Fin (m + 1)) K → Module.End K (VV K m d),

@@ -9,7 +9,7 @@ namespace GlobalTheory.SecLift
 variable {R R₀ : Type} [CommRing R] [CommRing R₀]
 
 /- English proof (translation)
-The claim follows from `Localization.awayMap_surjective_iff.2 fun a => (hπ a).elim fun b hb => ⟨b, 0, by simp [hb]⟩`.
+A detailed English derivation is pending.
 -/
 theorem awayMap_surjective_of_surjective (π : R →+* R₀) (hπ : Function.Surjective π) (f : R) :
     Function.Surjective (Localization.awayMap π f) :=
@@ -17,13 +17,13 @@ theorem awayMap_surjective_of_surjective (π : R →+* R₀) (hπ : Function.Sur
     (hπ a).elim fun b hb => ⟨b, 0, by simp [hb]⟩
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `hnil`. Take `⟨⟨a, s⟩, hs⟩` from `IsLocalization.surj (Submonoid.powers f) x`. Establish `hc : (Localization.awayMap π f).comp (algebraMap R (Localization.Away f)) = (algebraMap R₀ (Localization.Away (π f))).comp π` using `IsLocalization.map_comp _`. Establish `h1 : algebraMap R₀ (Localization.Away (π f)) (π a) = 0`. Use `congrArg (Localization.awayMap π f) hs` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, hx, zero_mul]`. Rewrite using `[← RingHom.comp_apply, ← hc, RingHom.comp_apply, ← this]`. Take `⟨⟨_, k, rfl⟩, hk⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (π f)) _ _).1 h1`. Establish `hmem : f ^ k * a ∈ RingHom.ker π`. Rewrite using `[RingHom.mem_ker, map_mul, map_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk`. Establish `h0 : (f ^ k * a) ^ N = 0`. Use `Ideal.pow_mem_pow hmem N` as an intermediate fact. Rewrite `this` using `[hN]`. Conclude with `Ideal.mem_bot.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsUnit (algebraMap R (Localization.Away f) (s * f ^ k))`. Rewrite using `[map_mul, map_pow]`. Conclude with `(IsLocalization.map_units _ s).mul ((IsLocalization.Away.algebraMap_isUnit f).pow k)`. Use `⟨N, (hu.pow N).mul_left_eq_zero.1 ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_pow, map_mul, ← mul_assoc, hs, ← map_mul, mul_comm a, ← map_pow, h0, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNilpotent_of_awayMap_eq_zero (π : R →+* R₀) (hnil : IsNilpotent (RingHom.ker π)) (f : R)
     (x : Localization.Away f) (hx : Localization.awayMap π f x = 0) : IsNilpotent x := by
@@ -49,23 +49,19 @@ theorem isNilpotent_of_awayMap_eq_zero (π : R →+* R₀) (hnil : IsNilpotent (
   rw [← mul_pow, map_mul, ← mul_assoc, hs, ← map_mul, mul_comm a, ← map_pow, h0, map_zero]
 
 /- English proof (translation)
-Introduce `R R₀ _ _ π hπ hnil X hX g₀ hg p`. Use `haveI := hX`. Establish `hker : RingHom.ker π ≤ p.asIdeal` using `fun a ha => by`. Take `⟨N, hN⟩` from `hnil`. Use `Ideal.pow_mem_pow ha N` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hN]`. Conclude with `p.isPrime.mem_of_pow_mem N ((Ideal.mem_bot.1 this) ▸ p.asIdeal.zero_mem)`. Choose the witnesses or unpack the hypotheses as in `⟨p₀, hp₀⟩ : p ∈ Set.range (PrimeSpectrum.comap π) := by`. Rewrite using `[_root_.range_comap_of_surjective (R := R) R₀ π hπ]`. Conclude with `hker`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨V, hV, rfl⟩, hxV, -⟩` from `X.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (g₀ p₀)) isOpen_univ`. Take `⟨_, ⟨r, rfl⟩, hp₀r, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := p₀) (u := {q : PrimeSpectrum R₀ | g₀ q ∈ V}) hxV (g₀ ⁻¹ᵁ V).isOpen`. Take `⟨f, rfl⟩` from `hπ r`. Use `⟨f, ?_, V, hV, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp₀]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hp₀r`. Establish `hsurj` using `awayMap_surjective_of_surjective π hπ f`. Establish `hnilL` using `isNilpotent_of_awayMap_eq_zero π hnil f`. Establish `hc : (Localization.awayMap π f).comp (algebraMap R (Localization.Away f)) = (algebraMap R₀ (Localization.Away (π f))).comp π` using `IsLocalization.map_comp _`. Establish `hx0 : Set.range (spMap (algebraMap R₀ (Localization.Away (π f))) ≫ g₀) ⊆ V`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨q, rfl⟩`. Apply `hsub` to reduce the goal to its premises. Conclude with `(PrimeSpectrum.localization_away_comap_range (Localization.Away (π f)) (π f)).subset ⟨q, rfl⟩`. Take `⟨x, h₁, h₂⟩` from `GlobalTheory.exists_lift_of_smooth_of_isAffineOpen X.hom (isAffineOpen_top (Sp R)) hV (fun _ _ => trivial) (CommRingCat.ofHom (Localization.awayMap π f)) (spMap (algebraMap R (Localization.Away f))) (spMap (algebraMap R₀ (Localization.Away (π f))) ≫ g₀) (by`. Rewrite using `[Category.assoc, hg, ← Spec.map_comp, ← Spec.map_comp]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Use extensionality with `a`. Conclude with `(congrArg (fun φ : R →+* Localization.Away (π f) => φ a) hc).symm)`. Use the proof step `(fun _ _ => trivial) hx0 (by`. Introduce `R' A _ _ _ _ _ _ π' hπ' φ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ReciprocityTheory.ChartRestriction.G.Pdiv.FiniteLocalHoms.exists_lift_nil π' (fun c => (hsurj c).imp fun b hb => (hπ' b).trans hb) (fun a ha => hnilL a (by rw [RingHom.mem_ker] at ha; rw [← ha]; exact (hπ' a).symm)) φ)`. Use `⟨x, h₂, h₁, top_unique fun q _ => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨q', hq'⟩ : q ∈ Set.range (PrimeSpectrum.comap (Localization.awayMap π f)) := by`. Rewrite using `[_root_.range_comap_of_surjective (R := Localization.Away f) _ _ hsurj]`. Introduce `a ha`.
-
-Take `⟨n, hn⟩` from `hnilL a ha`. Conclude with `(q : PrimeSpectrum (Localization.Away f)).isPrime.mem_of_pow_mem n (hn ▸ q.asIdeal.zero_mem)`. Use `show x q ∈ V`. Establish `: x q = (spMap (algebraMap R₀ (Localization.Away (π f))) ≫ g₀) q'`. Rewrite using `[← h₁]`.
-
-Conclude with `congrArg x hq'.symm`. Rewrite using `[this]`. Conclude with `hx0 ⟨q', rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_liftIn_unfolded : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → IsNilpotent (RingHom.ker π) →
     ∀ (X : Over (Sp R)), Smooth X.hom → ∀ g₀ : Sp R₀ ⟶ X.left, g₀ ≫ X.hom = spMap π →
@@ -127,7 +123,7 @@ theorem exists_liftIn_unfolded : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀
   exact hx0 ⟨q', rfl⟩
 
 /- English proof (translation)
-The claim follows from `exists_liftIn_unfolded`.
+A detailed English derivation is pending.
 -/
 theorem exists_liftIn : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → IsNilpotent (RingHom.ker π) →
     ∀ (X : Over (Sp R)), Smooth X.hom → ∀ g₀ : Sp R₀ ⟶ X.left, g₀ ≫ X.hom = spMap π →

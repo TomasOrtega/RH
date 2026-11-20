@@ -22,19 +22,19 @@ noncomputable section
 namespace GlobalTheory.SiegelThetaBound
 
 /- English proof (translation)
-Introduce `D ψ θ hθ ε M X χ χ' ω hω Φ hΦ r Xf Yf hW Ω C₀ K c hΩ hC₀ hK hc hsub`. Establish `hC₁ : IsCompact (C₀ * (K : Set (GA D M)))` using `hC₀.mul hK`. Take `⟨K₀, hK₀n, hK₀c, m, e, hlev⟩` from `GlobalTheory.T.weilTheta_level_polynomial_in_height ψ θ hθ ε M X χ χ' ω hω Φ hΦ _ hC₁`. Take `⟨μ, 𝓕, hμ⟩` from `GlobalTheory.Size.exists_isCovolOne (sgn ε M) X`. Take `⟨k, A, C, hC, hT⟩` from `GlobalTheory.T.thetaValue_siegelTorusElement_le_sobolevSeminorm ψ θ hθ ε M X χ χ' ω hω r Xf Yf hW c hc K₀ hK₀n hK₀c μ 𝓕 hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N₂, C₂, hC₂, hU⟩` from `GlobalTheory.T.sobolevSeminorm_weilTheta_polynomial_in_height ψ θ hθ ε M X χ χ' ω hω Φ hΦ _ hC₁ μ 𝓕 hμ k`. Use `⟨e * A + N₂, C * |m| ^ A * C₂, fun h p hp t ht a ha k' hk' => ?_⟩` and prove the remaining obligations. Establish `hy : a⁻¹ * p * a * k' ∈ C₀ * (K : Set (GA D M))` using `Set.mul_mem_mul (hsub p hp t ht a ha) hk'`. Establish `hΨ : IsThetaFunO ψ (sgn ε M) X (ω (a⁻¹ * p * a * k', h) Φ)`. Use `hω.om_pres ((GlobalTheory.Grid.ofSgn ε M).symm (a⁻¹ * p * a * k'), h) Φ hΦ` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[GlobalTheory.Grid.WRep.toSgn]`. Take `⟨n, hn, hnle, hnlev⟩` from `hlev _ hy h`. Establish `key` using `hT n hn _ hΨ hnlev t ht a ha`. Establish `hs` using `hU _ hy h`. Establish `hsplit : thetaKO ω (p * a * k') h Φ = ω (a, 1) (ω (a⁻¹ * p * a * k', h) Φ) 0`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ((p * a * k', h) : GA D M × GA D X) = (a, 1) * (a⁻¹ * p * a * k', h)`. Apply the tactic sequence `ext <;> simp [mul_assoc]`. Unfold `thetaKO`. Rewrite using `[e1, map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hsplit]`. Use `key.trans ?_` and prove the remaining obligations. Establish `hH : (1 : ℝ) ≤ (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ X h : ℝ)`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.one_le_height θ X h` after adjusting the coercions. Establish `hP : 0 ≤ ∏ i, t i ^ (Module.finrank ℚ D.host.F * X.rank)` using `Finset.prod_nonneg fun i _ => pow_nonneg (ht.1 i).le _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : 0 ≤ (GlobalTheory.Size.sobO (V` using `sgn ε M) (W := X) ψ θ μ 𝓕 k (ω (a⁻¹ * p * a * k', h) Φ)).toReal := ENNReal.toReal_nonneg`. Use `set H : ℝ := (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ X h : ℝ) with hHdef`. Establish `hnA : (n : ℝ) ^ A ≤ |m| ^ A * H ^ (e * A)`. Rewrite using `[pow_mul, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (Nat.cast_nonneg n) (hnle.trans (mul_le_mul_of_nonneg_right (le_abs_self m) (pow_nonneg (zero_le_one.trans hH) e))) A`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem theta_le_torus_height : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (ε : Bool) (M X : HSp D) (χ χ' : (AE D)ˣ →* Circle) (ω : WRep M X), IsWeil ψ ε M X χ χ' ω → ∀ (Φ : WO M X → ℂ), IsThetaFunO ψ (sgn ε M) X Φ → ∀ (r : ℕ) (Xf Yf : Matrix (Fin M.rank) (Fin r) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig M.gram Xf Yf → ∀ (Ω C₀ : Set (GA D M)) (K : Subgroup (GA D M)) (c : ℝ), IsCompact Ω → IsCompact C₀ → IsCompact (K : Set (GA D M)) → 0 < c → (∀ p ∈ Ω, ∀ t ∈ GlobalTheory.SiegelSet.cone r c, ∀ a, GlobalTheory.SiegelSet.IsTorusElt D.sp.cm.sig M.gram Xf Yf t a → a⁻¹ * p * a ∈ C₀) → ∃ (N : ℕ) (C : ℝ), ∀ (h : GA D X), ∀ p ∈ Ω, ∀ t ∈ GlobalTheory.SiegelSet.cone r c, ∀ a, GlobalTheory.SiegelSet.IsTorusElt D.sp.cm.sig M.gram Xf Yf t a → ∀ k ∈ K, ‖thetaKO ω (p * a * k) h Φ‖ ≤ C * (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ X h : ℝ) ^ N * ∏ i, t i ^ (Module.finrank ℚ D.host.F * X.rank) := by
   intro D ψ θ hθ ε M X χ χ' ω hω Φ hΦ r Xf Yf hW Ω C₀ K c hΩ hC₀ hK hc hsub

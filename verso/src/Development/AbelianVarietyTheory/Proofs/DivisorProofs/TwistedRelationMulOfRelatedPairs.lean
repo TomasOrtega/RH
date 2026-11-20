@@ -19,11 +19,9 @@ variable {R : Type} [CommRing R] [IsDomain R]
 open ReciprocityTheory.ChartRestriction.G.DVR in
 
 /- English proof (translation)
-Use `fin_cases k`. Use `show r.left ≫ 𝟙 _ = r.left`. Simplify using the standard rewrite rules. Use `show r.left ≫ (padd D.P.A (𝟙 D.P.A) (toUnit D.P.A ≫ D.c β)).left = (r * cP D T β).left`. Rewrite using `[← Over.comp_left, padd, ← Hom.mul_def, MonObj.comp_mul, Category.comp_id]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `comp_cP D r β`. Use `show r.left ≫ (toUnit D.P.A ≫ D.c β).left = (cP D T β).left`. Rewrite using `[← Over.comp_left]`. Conclude with `congrArg _ (comp_cP D r β)`.
-
-Use `show r.left ≫ (toUnit D.P.A ≫ η[D.P.A]).left = (1 : T ⟶ D.P.A).left`. Rewrite using `[← Over.comp_left, Hom.one_def, ← Category.assoc, toUnit_unique (r ≫ toUnit _) (toUnit T)]`. Use `show r.left ≫ a.left = (r ≫ a).left`. Rewrite using `[Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_tφ (D : DegPre R) (a : D.P.A ⟶ D.P.A) (β : D.X) {T : Over (Spec (CommRingCat.of R))} (r : T ⟶ D.P.A) (k : Fin 5) :
     r.left ≫ tφ D a β k = ((![r, r * cP D T β, cP D T β, 1, r ≫ a] : Fin 5 → (T ⟶ D.P.A)) k).left := by
@@ -42,15 +40,15 @@ theorem comp_tφ (D : DegPre R) (a : D.P.A ⟶ D.P.A) (β : D.X) {T : Over (Spec
 open ReciprocityTheory.ChartRestriction.G.DVR in
 
 /- English proof (translation)
-Introduce `U _ h`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[prod_cub, prod_cub]`. Simplify using `only [dφ, dε, Sum.elim_inl, Sum.elim_inr]`. Simplify using `only [← Category.assoc, ← Over.comp_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [comp_tφ]`. Simplify using `only [Fin.prod_univ_five, tε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four, Matrix.head_cons, Matrix.tail_cons, zpow_one, neg_neg]`. Establish `htr : DegPre.trF D (FractionRing R) mu ≫ DegPre.prB D (FractionRing R) = DegPre.prB D (FractionRing R) * cP D (DegPre.BF D (FractionRing R)) mu`. Simplify using `only [DegPre.trF, DegPre.prB, lift_snd, padd, ← Hom.mul_def]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[htr, cPoint_add, cPoint_add]`. Generalize the expression as in `DegPre.prB D (FractionRing R) = Y`. Generalize the expression as in `cP D (DegPre.BF D (FractionRing R)) mu = Cm`. Generalize the expression as in `cP D (DegPre.BF D (FractionRing R)) β = Cb`. Generalize the expression as in `cP D (DegPre.BF D (FractionRing R)) β' = Cb'`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `cP D (DegPre.BF D (FractionRing R)) β₁ = Cc`. Generalize the expression as in `cP D (DegPre.BF D (FractionRing R)) β₁' = Cc'`. Rewrite using `[mul_comm Cc Y, mul_comm Cc' Y, mul_comm Cb (Y * Cm), mul_comm Cb' (Y * Cm), mul_comm (Cc * Cc') Y, mul_comm (Cb * Cb') (Y * Cm)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_inv]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem formEq (D : DegPre R) (a : D.P.A ⟶ D.P.A) (mu β β' β₁ β₁' : D.X) (n j n' j' : ℤ) :
     FormEq (Sum.elim (Sum.elim (Sum.elim (dφ D a mu β β₁) (dφ D a mu β' β₁'))
@@ -86,14 +84,14 @@ theorem formEq (D : DegPre R) (a : D.P.A ⟶ D.P.A) (mu β β' β₁ β₁' : D.
 open ReciprocityTheory.ChartRestriction.G.DVR in
 
 /- English proof (translation)
-Simplify using `only [DegPre.trF, DegPre.prB, lift_snd, padd, ← Hom.mul_def]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem trF_prB (D : DegPre R) (mu : D.X) : DegPre.trF D (FractionRing R) mu ≫ DegPre.prB D (FractionRing R) =
     DegPre.prB D (FractionRing R) * cP D (DegPre.BF D (FractionRing R)) mu := by
   simp only [DegPre.trF, DegPre.prB, lift_snd, padd, ← Hom.mul_def]; rfl
 
 /- English proof (translation)
-Simplify using `only [DegPre.zF, DegPre.prB, lift_snd, Hom.one_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zF_prB (D : DegPre R) : DegPre.zF D (FractionRing R) ≫ DegPre.prB D (FractionRing R) = 1 := by
   simp only [DegPre.zF, DegPre.prB, lift_snd, Hom.one_def]
@@ -101,13 +99,13 @@ theorem zF_prB (D : DegPre R) : DegPre.zF D (FractionRing R) ≫ DegPre.prB D (F
 open ReciprocityTheory.ChartRestriction.G.DVR in
 
 /- English proof (translation)
-Set `c1` to `LB.pullGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t (lift (cP D (DegPre.BF D (FractionRing R)) β₁) (lift (cP D (DegPre.BF D (FractionRing R)) β₁') (DegPre.prB D (FractionRing R)))).left`. Set `c2` to `LB.pullGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t (lift (cP D (DegPre.BF D (FractionRing R)) β) (lift (cP D (DegPre.BF D (FractionRing R)) β') (DegPre.trF D (FractionRing R) mu ≫ DegPre.prB D (FractionRing R)))).left`. Set `w0` to `LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ uf ug) c1) (LB.invGen D.P.L _ _ c2)`. Establish `hw0 : w0.IsGen` using `mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ hf.1 hg.1) (pullGen_isGen _ _ _ _ D.cub.isGen _)) (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ D.cub.isGen _))`. Take `⟨w, hw, hv⟩` from `exists_gen D.P.isLB (formEq D a mu β β' β₁ β₁' n j n' j') w0 hw0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ev : ∀ (Z : Scheme.{0}) (x : Z ⟶ (DegPre.BF D (FractionRing R)).left) (z : Z) (J), Good D.P.L z J → val w x z J = val uf x z J * val ug x z J * val c1 x z J * (val c2 x z J)⁻¹` using `fun Z x z J hJ => by`. Conclude with `(hv _ _ z J hJ).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_mul hJ _ _ _) rfl)) (val_inv _ _)))`. Use `⟨w, ⟨hw, fun z J hJ => ?_⟩, fun Z x z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[ev _ _ z J hJ, hf.2 z J hJ, hg.2 z J hJ, val_cub D.cub (DegPre.zF D (FractionRing R)) hJ, val_cub D.cub (DegPre.zF D (FractionRing R)) hJ, comp_cP, comp_cP, comp_cP, comp_cP, zF_prB, trF_prB, MonObj.comp_mul, zF_prB, comp_cP, _root_.one_mul, (isCub_cubV D.cub hJ).face₃]`. Establish `t` using `tau_mul (𝟙 (TF (R := R) (FractionRing R))) hJ hB β β' mu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `t` using `[tau_symm (𝟙 (TF (R := R) (FractionRing R))) hJ (β + β'), tau_symm (𝟙 (TF (R := R) (FractionRing R))) hJ β, tau_symm (𝟙 (TF (R := R) (FractionRing R))) hJ β']`. Simplify using `only [Over.id_left, Category.id_comp] at t`. Establish `t'` using `congrArg Additive.ofMul t`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_inv, ofMul_one] at t' ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(norm := module) -t'`. Conclude with `(ev _ _ z J hJ).trans (congrArg₂ (· * ·) (congrArg₂ (· * ·) rfl (val_pull hJ _ _ _)) (congrArg (·⁻¹) (val_pull hJ _ _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem exists_prodFac (D : DegPre R) (hB : D.TauBimult) (a : D.P.A ⟶ D.P.A) (h : D.X →+ D.X) (n j n' j' : ℤ)
     (mu β β' β₁ β₁' : D.X) (uf : LB.Gen (LB.LinComb D.P.L (dφ D a mu β β₁) (dε n j)))
@@ -154,7 +152,7 @@ theorem exists_prodFac (D : DegPre R) (hB : D.TauBimult) (a : D.P.A ⟶ D.P.A) (
 open ReciprocityTheory.ChartRestriction.G.DVR in
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, comp_lift, comp_lift, Category.comp_id, ← comp_cP D r β, ← comp_cP D r β']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comp_cub (D : DegPre R) (β β' : D.X) {T : Over (Spec (CommRingCat.of R))} (r : T ⟶ D.P.A) :
     r.left ≫ (lift (toUnit _ ≫ D.c β) (lift (toUnit _ ≫ D.c β') (𝟙 D.P.A)) : D.P.A ⟶ G3 D.P.A).left =
@@ -163,15 +161,15 @@ theorem comp_cub (D : DegPre R) (β β' : D.X) {T : Over (Spec (CommRingCat.of R
   rfl
 
 /- English proof (translation)
-Introduce `R _ _ _ hA D a a' h h' hE n j n' j' n'' j'' hn hj mu β β' β₁ β₁' f g p f₁ g₁ p₁ e e' hp hp₁ hf hg`. Substitute `hn hj` using the available equality. Take `⟨v, hv⟩` from `GlobalTheory.T.twistedFunctionalEquation_bundle_trivial_abelianPart R hA D a a' h h' hE n j mu β β₁ e`. Take `⟨v', hv'⟩` from `GlobalTheory.T.twistedFunctionalEquation_bundle_trivial_abelianPart R hA D a a' h h' hE n' j' mu β' β₁' e'`. Take `⟨v'', hv''⟩` from `GlobalTheory.T.twistedFunctionalEquation_bundle_trivial_abelianPart R hA D a a' h h' hE (n + n') (j + j') mu (β + β') (β₁ + β₁') (by`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, e']`. Simplify using `only [shift, add_smul]`. Use the proof step `abel)`. Take `⟨uf, huf⟩` from `(GlobalTheory.T.twistedFactor_exists_unique_const_mul_integralGenerator R hA D a h hE.1 hE.2.2.2.1 n j mu β β₁ v hv).1`. Take `⟨ug, hug⟩` from `(GlobalTheory.T.twistedFactor_exists_unique_const_mul_integralGenerator R hA D a h hE.1 hE.2.2.2.1 n' j' mu β' β₁' v' hv').1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, ew⟩` from `exists_prodFac D.toPre D.tau_bimult a h n j n' j' mu β β' β₁ β₁' uf ug huf hug`. Introduce `u hu Z x z J hJ`. Establish `e₁` using `hp₁ Z (x ≫ (DegPre.prB D.toPre (FractionRing R)).left) z J hJ`. Establish `e₂` using `hp Z (x ≫ (DegPre.trF D.toPre (FractionRing R) mu).left ≫ (DegPre.prB D.toPre (FractionRing R)).left) z J hJ`. Rewrite `e₁` using `[Category.assoc, comp_cub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e₂` using `[Category.assoc, show ((DegPre.trF D.toPre (FractionRing R) mu).left ≫ (DegPre.prB D.toPre (FractionRing R)).left) ≫ _ = _ from comp_cub D.toPre β β' (DegPre.trF D.toPre (FractionRing R) mu ≫ DegPre.prB D.toPre (FractionRing R))]`. Rewrite using `[e₁, e₂, hf uf huf Z x z J hJ, hg ug hug Z x z J hJ, (GlobalTheory.T.twistedFactor_exists_unique_const_mul_integralGenerator R hA D a h hE.1 hE.2.2.2.1 _ _ mu _ _ v'' hv'').2.1 u w hu hw Z x z J hJ, ew Z x z J hJ]`. Establish `key : ∀ {S : Type} [CommRing S] (s t : S) (c₁ c₂ b₁ b₂ : Sˣ), s * b₁.val * (t * b₂.val) * c₁.val = s * t * c₂.val * (b₁ * b₂ * c₁ * c₂⁻¹).val`. Introduce `S _ s t c₁ c₂ b₁ b₂`. Simplify using `only [Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(s * t * b₁.val * b₂.val * c₁.val)) * c₂.mul_inv`. Conclude with `key _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem trel_prod : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)), ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ (n j n' j' n'' j'' : ℤ), n'' = n + n' → j'' = j + j' → ∀ (mu β β' β₁ β₁' : D.toPre.X) (f : SecT D.toPre a n j β) (g : SecT D.toPre a n' j' β') (p : SecT D.toPre a n'' j'' (β + β')) (f₁ : SecT D.toPre a n j β₁) (g₁ : SecT D.toPre a n' j' β₁') (p₁ : SecT D.toPre a n'' j'' (β₁ + β₁')), β₁ = β + shift h h' n j mu → β₁' = β' + shift h h' n' j' mu → IsProdT f g p → IsProdT f₁ g₁ p₁ → TRel h mu f f₁ → TRel h mu g g₁ → TRel h mu p p₁ := by
   intro R _ _ _ hA D a a' h h' hE n j n' j' n'' j'' hn hj mu β β' β₁ β₁' f g p f₁ g₁ p₁ e e' hp hp₁ hf hg

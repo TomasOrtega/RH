@@ -39,9 +39,9 @@ open GlobalTheory.CellDec GroundTheory.Automorphic.FourierWhittaker
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Establish `hm : ∀ {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (g : GL (Fin j) R), Matrix.GeneralLinearGroup.map p (blockGL hj g) = blockGL hj (Matrix.GeneralLinearGroup.map p g)`. Introduce `R S _ _ p g`. Use extensionality with `a b`. Simplify using `[blockMat_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[hm, pInf_finGL, pInf_finGL, map_one]`. Rewrite using `[hm, pFin_finGL, pFin_finGL]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockGL_finGL {j n : ℕ} (hj : j ≤ n) (k : GL (Fin j) (Af E)) :
     blockGL hj (finGL E j k) = finGL E n (blockGL hj k) := by
@@ -59,11 +59,9 @@ theorem blockGL_finGL {j n : ℕ} (hj : j ≤ n) (k : GL (Fin j) (Af E)) :
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Rewrite `hk`, the goal using `[GroundTheory.Automorphic.AdelicGLn.mem_integralFiniteGL_iff]`. Establish `hI : ∀ (g : GL (Fin j) (Af E)), (∀ a b, (g : Matrix (Fin j) (Fin j) (Af E)) a b ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 E) E) → ∀ a b, ((blockGL hj g : GL (Fin n) (Af E)) : Matrix (Fin n) (Fin n) (Af E)) a b ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 E) E`. Introduce `g hg a b`. Rewrite using `[coe_blockGL, blockMat_apply]`. Use `split_ifs`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hg _ _`. Conclude with `zero_mem _`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Use `⟨hI k hk.1, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← map_inv]`. Conclude with `hI k⁻¹ hk.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockGL_mem_integral {j n : ℕ} (hj : j ≤ n) {k : GL (Fin j) (Af E)}
     (hk : k ∈ GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E j) :
@@ -93,7 +91,7 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[blockMat_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_blockGL {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) {j n : ℕ} (hj : j ≤ n)
     (g : GL (Fin j) R) :
@@ -105,7 +103,7 @@ theorem map_blockGL {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) {j n 
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Use `⟨GlobalTheory.RSLocalPart.mem_integralFiniteGL_iff_KGL.1 (blockGL_mem_integral hj (GlobalTheory.RSLocalPart.mem_integralFiniteGL_iff_KGL.2 hk1)), fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[map_blockGL, hkS v hv, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockGL_level {j n : ℕ} (hj : j ≤ n) (S : Finset (HeightOneSpectrum (𝓞 E))) {k : GL (Fin j) (Af E)}
     (hk1 : ∀ v, Matrix.GeneralLinearGroup.map (pLoc E v) k ∈ KGL v j)
@@ -117,15 +115,15 @@ theorem blockGL_level {j n : ℕ} (hj : j ≤ n) (S : Finset (HeightOneSpectrum 
   rw [map_blockGL, hkS v hv, map_one]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GlobalTheory.SmGL.mem_unipB _).1 hu`. Establish `hu' : u ∈ GlobalTheory.JSW.NA E (m + 1)` using `⟨h1, h2⟩`. Establish `hlev` using `blockGL_level (by omega : m + 1 ≤ m + r + 1 + 1) S hk1 hkS`. Establish `hW : GlobalTheory.JSW.whit φ (blockGL (by omega : m + 1 ≤ m + r + 1 + 1) g) = GlobalTheory.JSW.psiN u * ((κ h : ℂ) * GlobalTheory.JSW.whit φ' h)`. Rewrite using `[hg, map_mul, blockGL_finGL, hK _ hlev.1 hlev.2, map_mul, hN _ (GlobalTheory.RSnmUnfProps.blockGL_mem_NA _ hu'), GlobalTheory.RSnmUnfProps.psiN_blockGL, hM h hh]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hW' : GlobalTheory.JSW.whit φ' g = GlobalTheory.JSW.psiN u * GlobalTheory.JSW.whit φ' h`. Rewrite using `[hg, hK' k hk1 hkS, hN' u hu']`. Use `⟨hW, hW', ?_⟩` and prove the remaining obligations. Establish `hp : GlobalTheory.JSW.psiN u * conj (GlobalTheory.JSW.psiN u) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, GlobalTheory.RSnmUnfProps.norm_psiN]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hd : ((GlobalTheory.RSnm.detAbs g : ℝ) : ℂ) ^ (((0 : ℝ) : ℂ) - (((m + r + 1 + 1 : ℕ) : ℂ) - ((m + 1 : ℕ) : ℂ)) / 2) = ((GlobalTheory.RSnm.detAbs g ^ (-((r : ℝ) + 1) / 2) : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_cpow (GlobalTheory.RSnm.detAbs_pos g).le]`. Use `congr 1`. Use `push_cast`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set y := GroundTheory.Automorphic.GJMatrix.adelicFourierPi E F (GlobalTheory.ZEul.lastRow g)`. Establish `hy : y = (y.re : ℂ)` using `Complex.ext rfl (by simp [(hF _).2, y])`. Establish `hw : GlobalTheory.JSW.whit φ' h * conj (GlobalTheory.JSW.whit φ' h) = (Complex.normSq (GlobalTheory.JSW.whit φ' h) : ℂ)` using `Complex.mul_conj _`. Unfold `GlobalTheory.RSnmUnf.uIntNM`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hW, hW', hd, map_mul]`. Express the relevant statement in the definitionally equal form `_ * _ * y * _ = _`. Rewrite using `[hy]`. Use `push_cast`. Take the linear combination `((κ h : ℂ) * (y.re : ℂ) * ((GlobalTheory.RSnm.detAbs g ^ (-((r : ℝ) + 1) / 2) : ℝ) : ℂ)) * (GlobalTheory.JSW.whit φ' h * conj (GlobalTheory.JSW.whit φ' h) * hp + hw)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem uIntNM_decomp {m r : ℕ} {S : Finset (HeightOneSpectrum (𝓞 E))}
     {φ : GA E (m + r + 1 + 1) → ℂ} {φ' : GA E (m + 1) → ℂ} {κ : GA E (m + 1) → ℝ} {F : (Fin (m + 1) → Ad E) → ℂ}
@@ -181,9 +179,9 @@ open GroundTheory.Automorphic.FourierWhittaker
 open scoped Pointwise
 
 /- English proof (translation)
-Take `⟨D, hD, hDu⟩` from `GlobalTheory.RSLocalPart.exists_isCompact_unip E n`. Use `haveI := GlobalTheory.ThetaUnfold.countable_range_ratGL (E := E) (a := n)`. Use `haveI : Countable (GlobalTheory.CellDec.NE E n) := (Subgroup.inclusion_injective (Subgroup.map_le_range (ratGL E n) _)).countable`. Take `⟨i1, -, i3⟩` from `GlobalTheory.RSLocalPart.integral_family_pos μ (GlobalTheory.CellDec.NE E n) h𝓕 (GlobalTheory.CellDec.isOpen_adelicUnipotentTimesIntegralOutsideSet E n S) (hD.mul hK) (fun γ hγ g hg => GlobalTheory.CellDec.adelicUnitriangular_mul_mem_unipotentTimesIntegral (GlobalTheory.RSLocalPa …`. Take `⟨u, hu, hk⟩` from `hs g hg h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨γ, hγ, hd⟩` from `hDu _ (inv_mem hu)`. Conclude with `⟨γ, hγ, _, hd, _, hk, by group⟩)`. Use `fun _ => h1`. Conclude with `⟨i1 0, i3 0⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem integrableOn_cell_pos {E : Type} [Field E] [NumberField E] {n : ℕ} (μ : Measure (GA E n)) [μ.IsHaarMeasure]
     (S : Finset (HeightOneSpectrum (𝓞 E))) {𝓕 : Set (GA E n)} (h𝓕 : IsFundamentalDomain (GlobalTheory.CellDec.NE E n) 𝓕 μ)
@@ -207,33 +205,29 @@ theorem integrableOn_cell_pos {E : Type} [Field E] [NumberField E] {n : ℕ} (μ
   exact ⟨i1 0, i3 0⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ m r S φ φ' κ F hWc hWc' hN hN' hK hK' hM _ hκ0 ⟨C, hC, hκC⟩ ⟨h₀, hh₀, hκ₀, hW₀, hF₀⟩ hFc hFr μ _ 𝓕₀ h𝓕`. Take `⟨hWb, hFl, -, hinv, -⟩` from `GlobalTheory.RSnmUnfProps.uIntNM_props E m r S φ φ' F hWc hWc' hN hN' hFc`. Establish `hmn : m + 1 ≤ m + r + 1 + 1` using `by omega`. Establish `hO` using `GlobalTheory.CellDec.isOpen_adelicUnipotentTimesIntegralOutsideSet E (m + 1) S`. Establish `hdc : ∀ s : ℝ, Continuous fun g : GA E (m + 1) => GlobalTheory.RSnm.detAbs g ^ s` using `fun s => GlobalTheory.RSnm.continuous_detAbs.rpow_const fun g => Or.inl (GlobalTheory.RSnm.detAbs_pos g).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdp : ∀ (s : ℝ) (g : GA E (m + 1)), 0 < GlobalTheory.RSnm.detAbs g ^ s` using `fun s g => Real.rpow_pos_of_pos (GlobalTheory.RSnm.detAbs_pos g) s`. Use `set U : GA E (m + 1) → ℂ := GlobalTheory.RSnmUnf.uIntNM hmn F φ φ' 0 with hU`. Establish `hUc : Continuous U` using `((hWb.mul (Complex.continuous_conj.comp hWc')).mul hFl).mul ((Complex.continuous_ofReal.comp GlobalTheory.RSnm.continuous_detAbs).cpow continuous_const fun g => Complex.ofReal_mem_slitPlane.2 (GlobalTheory.RSnm.detAbs_pos g))`. Establish `hUW : ∀ g, U g ≠ 0 → GlobalTheory.JSW.whit φ (blockGL hmn g) ≠ 0` using `fun g h0 h => h0 (by`. Simplify using `only [hU, GlobalTheory.RSnmUnf.uIntNM, h, zero_mul])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set K : Set (GA E (m + 1)) := C * (finGL E (m + 1) '' (GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E (m + 1) : Set _)) with hKdef`. Establish `hKc : IsCompact K` using `hC.mul ((GroundTheory.Automorphic.AdelicGLn.isCompact_integralFiniteGL E (m + 1)).image GlobalTheory.RSLocalPart.continuous_finGL)`. Establish `hKs : ∀ g ∈ GlobalTheory.CellDec.C0 E (m + 1) S, GlobalTheory.JSW.whit φ (blockGL hmn g) ≠ 0 → ∃ u ∈ GlobalTheory.CellDec.NA E (m + 1), u * g ∈ K`. Introduce `g hg h0`. Take `⟨u, hu, h, hh, k, hk1, hkS, e⟩` from `GlobalTheory.CellDec.exists_mul_supS_finGL E (m + 1) S g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hκ : κ h ≠ 0` using `fun hz => h0 (by`. Rewrite using `[(uIntNM_decomp hN hN' hK hK' hM hFr hu hh hk1 hkS e).1, hz]`. Use the proof step `simp)`. Take `⟨u', hu', hc'⟩` from `hκC h hh hκ`. Establish `hu'N : u' ∈ GlobalTheory.CellDec.NA E (m + 1)` using `(GlobalTheory.SmGL.mem_unipB _).2 hu'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨(u * u')⁻¹, inv_mem (mul_mem hu hu'N), _, hc', _, ⟨k, GlobalTheory.RSLocalPart.mem_integralFiniteGL_iff_KGL.2 hk1, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `group`. Establish `hUr : ∀ g ∈ GlobalTheory.CellDec.C0 E (m + 1) S, U g = (‖U g‖ : ℂ)`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu, h, hh, k, hk1, hkS, e⟩` from `GlobalTheory.CellDec.exists_mul_supS_finGL E (m + 1) S g hg`. Rewrite using `[hU, (uIntNM_decomp hN hN' hK hK' hM hFr hu hh hk1 hkS e).2.2, Complex.norm_real, Real.norm_of_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (hκ0 h) (Complex.normSq_nonneg _)) (hFr _).1) (hdp _ g).le)]`. Establish `h₀C : h₀ ∈ GlobalTheory.CellDec.C0 E (m + 1) S`. Use `⟨1, one_mem _, h₀, ?_, (one_mul _).symm⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.CellDec.US, Subgroup.mem_iInf, Subgroup.mem_comap]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Rewrite using `[show GlobalTheory.CellDec.compV E (m + 1) v h₀ = 1 from hh₀ v hv]`. Conclude with `one_mem _`. Establish `hU₀ : U h₀ ≠ 0`. Rewrite using `[hU, (uIntNM_decomp hN hN' hK hK' hM hFr (k := 1) (g := h₀) (one_mem _) hh₀ (fun v => by rw [map_one]; exact one_mem _) (fun v _ => map_one _) (by rw [map_one, one_mul, mul_one])).2.2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `Complex.ofReal_ne_zero.2 (mul_pos (mul_pos (mul_pos hκ₀ (Complex.normSq_pos.2 hW₀)) hF₀) (hdp _ _)).ne'`. Take `⟨hIB, hpos⟩` from `integrableOn_cell_pos μ S h𝓕 hUc.norm (fun g => norm_nonneg _) (fun u hu g => by rw [hU, (hinv u hu g).2.2.2.2 0]) hKc (fun g hg h0 => hKs g hg (hUW g (norm_ne_zero_iff.1 h0))) ⟨h₀, h₀C, norm_ne_zero_iff.2 hU₀⟩`. Establish `htc : Continuous fun g : GA E (m + 1) => Real.log (GlobalTheory.RSnm.detAbs g)` using `GlobalTheory.RSnm.continuous_detAbs.log fun g => (GlobalTheory.RSnm.detAbs_pos g).ne'`. Take `⟨R, hR⟩` from `hKc.exists_bound_of_continuousOn htc.continuousOn`. Use `⟨(GlobalTheory.CellDec.C0 E (m + 1) S).indicator fun g => ‖U g‖, fun g => Real.log (GlobalTheory.RSnm.detAbs g), hUc.norm.measurable.indicator hO.measurableSet, htc.measurable, fun g => Set.indicator_nonneg (fun g _ => norm_nonneg _) g, ?_, ?_, ⟨R, fun g hg => ?_⟩, fun g hg => Se …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Unfold `IntegrableOn`. Rewrite using `[integrable_indicator_iff hO.measurableSet]`. Unfold `IntegrableOn`. Rewrite using `[Measure.restrict_restrict hO.measurableSet, Set.inter_comm]`. Conclude with `hIB`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[integral_indicator hO.measurableSet, Measure.restrict_restrict hO.measurableSet, Set.inter_comm]` and apply the resulting hypothesis. Establish `hgC : g ∈ GlobalTheory.CellDec.C0 E (m + 1) S`. Assume the negation of the conclusion as `h`. Conclude with `hg (Set.indicator_of_notMem h _)`. Rewrite `hg` using `[Set.indicator_of_mem hgC]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u, hu, hk⟩` from `hKs g hgC (hUW g (norm_ne_zero_iff.1 hg))`. Use `hR _ hk` as an intermediate fact. Rewrite `this` using `[(hinv u hu g).2.2.2.1, Real.norm_eq_abs]`. Then use the resulting hypothesis. Rewrite using `[Set.indicator_of_mem hg]`. Conclude with `hUr g hg`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Real.rpow_def_of_pos (GlobalTheory.RSnm.detAbs_pos g), Complex.ofReal_exp]`. Use `push_cast`. Rewrite using `[mul_comm]`. Establish `hF0 : GroundTheory.Automorphic.GJMatrix.adelicFourierPi E F (GlobalTheory.ZEul.lastRow h₀) ≠ 0` using `fun h => by`. Rewrite `hF₀` using `[h]`.
-
-Simplify using `at hF₀`. Take `⟨hI, -⟩` from `integrableOn_cell_pos μ S h𝓕 (B := fun g => ‖GlobalTheory.JSW.whit φ (blockGL hmn g)‖ ^ 2 * ‖GroundTheory.Automorphic.GJMatrix.adelicFourierPi E F (GlobalTheory.ZEul.lastRow g)‖ * GlobalTheory.RSnm.detAbs g ^ (x - ((r : ℝ) + 1))) (((hWb.norm.pow 2).mul hFl.norm).mul (hdc _)) (fun …`. Take `⟨h1, -, h3, h4, -⟩` from `hinv u hu g`. Simplify using `only [h1, h3, h4]) hKc`. Use the proof step `(fun g hg h0 => hKs g hg fun h => h0 (by simp [h]))`.
-
-Use the proof step `⟨h₀, h₀C, (mul_pos (mul_pos (pow_pos (norm_pos_iff.2 (hUW _ hU₀)) 2) (norm_pos_iff.2 hF0)) (hdp _ _)).ne'⟩`. Use `ne_of_eq_of_ne (lintegral_congr fun g => ?_) (Integrable.lintegral_lt_top hI).ne` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm, ofReal_norm_eq_enorm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_f_t_core : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (φ : GA E (m + r + 1 + 1) → ℂ) (φ' : GA E (m + 1) → ℂ) (κ : GA E (m + 1) → ℝ) (F : (Fin (m + 1) → Ad E) → ℂ),
@@ -361,23 +355,21 @@ open GlobalTheory.RSUnfoldW GlobalTheory.CuspGeneric GlobalTheory.MirTower
 open scoped NNReal
 
 /- English proof (translation)
-Introduce `E _ _ _ m π hπ F hF G hG μ _ 𝓕₀ h𝓕₀`. Take `⟨φ, hφ, hφF⟩` from `GlobalTheory.JSW.mspanR_le GlobalTheory.CuspOrth.cuspFormsBounded hπ hF`. Establish `hB : IsBCC F`. Establish `h` using `(GlobalTheory.JSW.mem_dSub.1 hφ []).2`. Rewrite `h` using `[GlobalTheory.JSW.word_nil]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hφF]`. Conclude with `h`. Use `haveI : DiscreteTopology (ratMirU E (m + 1) m) := GlobalTheory.MirTower.discrete_of_le_range (Subgroup.map_le_range _ _)`. Use `haveI : DiscreteTopology (ratGL E (m + 1)).range := GlobalTheory.MirTower.discrete_of_le_range le_rfl`. Take `⟨𝓕P, h𝓕P⟩` from `GlobalTheory.FundDomDiscrete.exists_isFundamentalDomain (ratMirU E (m + 1) m) μ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨𝓕, h𝓕⟩` from `GlobalTheory.FundDomDiscrete.exists_isFundamentalDomain (ratGL E (m + 1)).range μ`. Use `⟨𝓕, h𝓕, fun x => ?_⟩` and prove the remaining obligations. Establish `hℓ : ((Fin.last m : Fin (m + 1)) : ℕ) + 1 = m + 1` using `rfl`. Establish `hdet : ∀ (γ : GL (Fin (m + 1)) E) (g : GA E (m + 1)), GlobalTheory.RSnm.detAbs (ratGL E (m + 1) γ * g) = GlobalTheory.RSnm.detAbs g`. Introduce `γ g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `GlobalTheory.RSnm.detAbs`. Rewrite using `[map_mul, map_mul, GlobalTheory.ShortVecDecay.ideleModule_det_rat, one_mul]`. Establish `hmd : Measurable fun g : GA E (m + 1) => GlobalTheory.RSnm.detAbs g ^ x` using `GlobalTheory.RSnm.continuous_detAbs.measurable.pow_const x`. Establish `hmeas : ∀ v : Fin (m + 1) → E, Measurable fun g : GA E (m + 1) => ‖F g‖ₑ ^ 2 * ‖G (Matrix.vecMul (fun i => algebraMap E (Ad E) (v i)) g.val)‖ₑ * ENNReal.ofReal (GlobalTheory.RSnm.detAbs g ^ x)`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hv : Continuous fun g : GA E (m + 1) => Matrix.vecMul (fun i => algebraMap E (Ad E) (v i)) g.val` using `continuous_const.matrix_vecMul Units.continuous_val`. Conclude with `((hB.cont.enorm.measurable.pow_const 2).mul (hG.comp hv).enorm.measurable).mul (ENNReal.measurable_ofReal.comp hmd)`. Establish `e1` using `GlobalTheory.T.lintegral_theta_series_unfold_mirabolic E (m + 1) (Nat.succ_pos m) μ 𝓕 𝓕P h𝓕 h𝓕P (fun g y => ‖F g‖ₑ ^ 2 * ‖G y‖ₑ * ENNReal.ofReal (GlobalTheory.RSnm.detAbs g ^ x)) hmeas (fun γ g y => by simp only [hB.left, hdet])`. Repeatedly rewrite using `[← ENNReal.tsum_mul_left, ← ENNReal.tsum_mul_right]`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ψC : AddChar (Ad E) ℂ := Circle.coeHom.compAddChar (GroundTheory.Global.adelicChar E) with hψC`. Establish `h𝓕₀' : IsFundamentalDomain (ratMirU E (m + 1) 0) 𝓕₀ μ` using `by rw [ratMirU_zero]; exact h𝓕₀`. Use `set w : GA E (m + 1) → ℝ≥0 := fun g => ‖G (g.val (Fin.last m))‖₊ * Real.toNNReal (GlobalTheory.RSnm.detAbs g ^ x) with hw`. Establish `hrow : Continuous fun g : GA E (m + 1) => g.val (Fin.last m)` using `continuous_pi fun i => Units.continuous_val.matrix_elem (Fin.last m) i`. Establish `hwm : Measurable w` using `(hG.comp hrow).nnnorm.measurable.mul (measurable_real_toNNReal.comp hmd)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwl : ∀ γ ∈ mirU E (m + 1) (m + 1 - 1), ∀ g, w (ratGL E (m + 1) γ * g) = w g`. Introduce `γ hγ g`. Simplify using `only [hw]`. Rewrite using `[row_mul (ratGL_row hℓ hγ), hdet]`. Establish `hwu : ∀ (k : ℕ) (y : UnipotentBlockColumnIndex (m + 1) k k → Ad E) (g : GA E (m + 1)), w (blkU y * g) = w g`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k y g`. Simplify using `only [hw, GlobalTheory.RSnm.detAbs]`. Rewrite using `[row_mul (blkU_row hℓ y), map_mul, det_blkU, one_mul]`. Establish `hgood : Good ψC (m + 1 - 1) F` using `GlobalTheory.CuspGeneric.good_top E m ψC F hB.cont hB.left fun r hr hra g => GlobalTheory.T.cuspidal_blockAverage_lastColumn_eq_zero E (m + 1) F hB.cont hB.left hB.cusp r hr hra g`. Establish `e2` using `(GlobalTheory.T.unfold_mirabolic_alt E (m + 1) μ ψC (GlobalTheory.T.isStandardAdelicAddChar_global_adelicChar E) 𝓕P 𝓕₀ h𝓕P h𝓕₀' w hwm hwl hwu).1 F hgood`.
-
-Rewrite `e2` using `[GlobalTheory.T.iteratedColumnTransform_eq_globalWhittaker E (m + 1) F (Nat.succ_pos m) hB.cont hB.left]`. Repeatedly rewrite using `[mul_assoc]`. Conclude with `e2.symm`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_whit_sq_eq : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (π' : CuspSub E (m + 1)), π'.IsUnitary →
     ∀ φ' ∈ GlobalTheory.JSW.mspanR π', ∀ G : (Fin (m + 1) → Ad E) → ℂ, Continuous G →
@@ -443,9 +435,9 @@ end GlobalTheory.RSnmFT
 namespace GlobalTheory.RSnmFT
 
 /- English proof (translation)
-Take `⟨𝓕, h1, h2⟩` from `lintegral_whit_sq_eq E m π' hπ φ' hφ G hGc μ 𝓕₀ h𝓕`. Establish `hup` using `GlobalTheory.T.lintegral_theta_above_det_one E m π' hπ φ' hφ G hG μ 𝓕 h1 x`. Establish `hlow` using `GlobalTheory.T.lintegral_theta_below_det_one E m π' hπ φ' hφ G hG μ 𝓕 h1 x hx`. Establish `hsub : 𝓕 ⊆ (𝓕 ∩ {g | 1 ≤ GlobalTheory.RSnm.detAbs g}) ∪ (𝓕 ∩ {g | GlobalTheory.RSnm.detAbs g ≤ 1})` using `fun g hg => (le_total 1 (GlobalTheory.RSnm.detAbs g)).imp (fun h => ⟨hg, h⟩) fun h => ⟨hg, h⟩`. Rewrite using `[h2 x]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ne_of_lt ((lintegral_mono_set hsub).trans_lt ((lintegral_union_le _ _ _).trans_lt (ENNReal.add_lt_top.2 ⟨hup.lt_top, hlow.lt_top⟩)))`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_whit_sq_ne_top {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {m : ℕ}
     {π' : CuspSub E (m + 1)} (hπ : π'.IsUnitary) {φ' : GA E (m + 1) → ℂ} (hφ : φ' ∈ GlobalTheory.JSW.mspanR π')
@@ -463,7 +455,7 @@ theorem lintegral_whit_sq_ne_top {E : Type} [Field E] [NumberField E] [IsTotally
     (ENNReal.add_lt_top.2 ⟨hup.lt_top, hlow.lt_top⟩)))
 
 /- English proof (translation)
-Introduce `E _ _ _ m r S φ φ' κ F h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 hFc h13 μ _ 𝓕₀ h𝓕`. Take `⟨f, t, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10⟩` from `exists_f_t_core E m r S φ φ' κ F h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 hFc h13 μ 𝓕₀ h𝓕`. Use `⟨f, t, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, fun π' hπ hφ hF x hx => ?_⟩` and prove the remaining obligations. Conclude with `ne_top_of_le_ne_top (lintegral_whit_sq_ne_top hπ hφ (GroundTheory.Automorphic.GJMatrix.adelicFourierPi_mem_schwartzBruhatPi hF) hFc μ h𝓕 hx) (lintegral_mono_set Set.inter_subset_left)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_cellPart_unfoldedIntegral_positive_alt : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (φ : GA E (m + r + 1 + 1) → ℂ) (φ' : GA E (m + 1) → ℂ) (κ : GA E (m + 1) → ℝ) (F : (Fin (m + 1) → Ad E) → ℂ),

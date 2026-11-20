@@ -13,7 +13,7 @@ namespace BData
 variable {X : BData}
 
 /- English proof (translation)
-Rewrite using `[hμ, integral_smul_measure, (cayleyEmbedding_measurable hP).integral_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_tr {P : Mat X.k X.r} {ε : Fin (2 * X.r + X.k + 1) → Bool} (hP : IsCayleyU X.k X.r ε P) {c : ℝ≥0∞}
     (hμ : X.μG = c • (Formalism.REAL.muG ε).map (cayleyEmbedding P)) {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]

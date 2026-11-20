@@ -16,9 +16,9 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Distinguish the cases in `h2 : ((2 : ℕ) : 𝓞 F) ∈ v.asIdeal`. Use `⟨3, Nat.prime_three, fun h3 => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)⟩` and prove the remaining obligations. Use `v.asIdeal.sub_mem h3 h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨2, Nat.prime_two, h2⟩`.
+Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 -/
 private theorem exists_prime_notMem {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     ∃ l : ℕ, l.Prime ∧ ((l : ℕ) : 𝓞 F) ∉ v.asIdeal := by
@@ -31,17 +31,13 @@ private theorem exists_prime_notMem {F : Type} [Field F] [NumberField F] (v : He
   · exact ⟨2, Nat.prime_two, h2⟩
 
 /- English proof (translation)
-Introduce `N exC exR F K _ _ _ _ _ _ _ hK n _ hn π χ Q hreg hpol hQ v w i hi hloc σ σ' hσ hσ'`. Take `⟨l, hl, hlv⟩` from `exists_prime_notMem v`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Take `⟨ι⟩ : Nonempty (Qbar l ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex l`. Establish `hL : GlobalTheory.Published.LocalLanglandsGL` using `GlobalTheory.LocLanglandsBridge.localLanglandsGL_of_depthZero_zelevinsky_bernstein N.loc.llc N.loc.conv N.loc.dzc N.loc.dzi N.loc.brauer N.loc.chev N.aut.art N.loc.exh N.loc.multi N.loc.cos N.loc.zel N.loc.geo N.loc.bz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Ω` to `AlgebraicClosure K`. Use `haveI : IsAlgClosure F Ω := ⟨IsAlgClosure.isAlgClosed K, by haveI : Algebra.IsAlgebraic K Ω := IsAlgClosure.isAlgebraic`. Conclude with `Algebra.IsAlgebraic.trans F K Ω⟩`. Take `⟨r, wt, HT, hG, hatt, -⟩` from `exR F Ω l ι n hn π χ hreg hpol`. Establish `hnorm : (Bc.res F Ω K).range.Normal`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, -, -, hδ, -⟩` from `UpperTheory.exists_quadratic_sign_character F K Ω l hK`. Rewrite using `[show (Bc.res F Ω K).range = δ.ker from Subgroup.ext fun s => (hδ.1 s).symm]`. Use `infer_instance`. Take `⟨hQr, hQa⟩` from `UpperTheory.V.Br.bcAtt0 F K Ω l ι n r π Q hQ`. Use `replace hQr := hQr hreg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `replace hQa := hQa hatt (UpperTheory.semisimple_restriction_to_normal_subgroup _ _ _ n r _ hnorm hatt.1)`. Take `⟨χ', hsg, hd⟩` from `UpperTheory.V.Br.bcDual0 N.aut.js.1 N.aut.gk F K hK n hn π χ Q hpol hQ`. Take `⟨χ'', r', wt', HT', -, -, -, hG'⟩` from `exC K Ω l ι n hn Q χ' hQr hsg hd`. Use `replace hG' := hG' _ (hG.cont.comp (continuous_restrictScalarsHom F K Ω)) hQa`. Take `⟨hw, A, h, h', hiso⟩` from `UpperTheory.V.Br.placeOf F K Ω v w i hi hloc`.
-
-Establish `hlw : ((l : ℕ) : 𝓞 K) ∉ w.asIdeal` using `fun hm => hlv <| by`. Rewrite using `[← hw]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (𝓞 K) _ ∈ w.asIdeal`. Rewrite using `[map_natCast]` and apply the resulting hypothesis. Take `⟨rc, hrc, -⟩` from `hL.1 F Ω A v h`.
-
-Take `⟨rc', hrc', -⟩` from `hL.1 K Ω A w h'`. Conclude with `UpperTheory.V.Br.recInv hL F K Ω A v w h h' _ i hiso n σ σ' rc rc' hrc hrc' (UpperTheory.V.Br.wdAway F K Ω l ι A v w h h' i hiso hlv hlw n r _ _ (hG.away v hlv A h rc hrc σ hσ) (hG'.away w hlw A h' rc' hrc' σ' hσ'))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.splitOf :
     UpperTheory.V.Br.SplitOf := by

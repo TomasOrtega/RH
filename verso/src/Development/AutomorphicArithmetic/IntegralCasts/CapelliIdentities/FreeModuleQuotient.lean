@@ -1,35 +1,31 @@
 import Mathlib
 
 /- English proof (translation)
-Set `φ : M →+ (Fin c → S ⧸ K)` to `{ toFun := fun x i => Ideal.Quotient.factor hIK (e x i) map_zero' := by funext i; simp map_add' := by intro x y; funext i; simp }`. Establish `hφ : ∀ x i, φ x i = Ideal.Quotient.factor hIK (e x i)` using `fun _ _ => rfl`. Establish `hsm : ∀ (a : S) (x : M), φ (s a • x) = a • φ x`. Introduce `a x`. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Pi.smul_apply, hφ, hφ, he, Pi.smul_apply]`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (e x i)`. Rewrite using `[← hy]`. Both sides reduce to the same expression. Establish `hsurj : Function.Surjective φ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `y`. Use `choose t ht using fun i => Ideal.Quotient.mk_surjective (y i)`. Use `⟨e.symm (fun i => Ideal.Quotient.mk I (t i)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[hφ, e.apply_symm_apply, Ideal.Quotient.factor_mk, ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∀ r ∈ Ideal.map s K, ∀ x : M, φ (r • x) = 0`. Introduce `r hr`. Use `Submodule.span_induction (p := fun r _ => ∀ x : M, φ (r • x) = 0) ?_ ?_ ?_ ?_ hr` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩ x`. Rewrite using `[hsm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (φ x i)`. Rewrite using `[Pi.smul_apply, ← hy]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (K.mul_mem_right y hk)`. Introduce `x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `a b _ _ ha hb x`. Rewrite using `[add_smul, map_add, ha, hb, add_zero]`. Introduce `a b _ hb x`. Rewrite using `[smul_eq_mul, mul_comm, mul_smul, hb]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : ∀ x : M, x ∈ (Ideal.map s K • ⊤ : Submodule R M) ↔ φ x = 0`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `Submodule.smul_induction_on (p := fun x => φ x = 0) hx ?_ ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr n _`. Conclude with `h1 r hr n`. Introduce `a b ha hb`. Rewrite using `[map_add, ha, hb, add_zero]`. Introduce `hx choose t ht using fun i => Ideal.Quotient.mk_surjective (e x i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `htK : ∀ i, t i ∈ K`. Introduce `i`. Use `congrFun hx i` as an intermediate fact. Rewrite `this` using `[hφ, ← ht, Ideal.Quotient.factor_mk]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hxe : x = ∑ i, s (t i) • e.symm (Pi.single i 1)`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_sum]`. Simplify using `only [he, e.apply_symm_apply]`. Rewrite using `[← Finset.univ_sum_single (e x)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Pi.single_smul, ← ht, ← Algebra.algebraMap_eq_smul_one]`. Both sides reduce to the same expression. Rewrite using `[hxe]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (Ideal.mem_map_of_mem s (htK i)) Submodule.mem_top`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Set `ψ : (M ⧸ (Ideal.map s K • ⊤ : Submodule R M)) →+ (Fin c → S ⧸ K)` to `QuotientAddGroup.lift (Ideal.map s K • ⊤ : Submodule R M).toAddSubgroup φ (fun x hx => (hker x).1 hx)`. Establish `hψ : ∀ x : M, ψ (Submodule.Quotient.mk x) = φ x` using `fun _ => rfl`. Establish `hbij : Function.Bijective ψ`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[hψ]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ((hker y).2 hx)`. Introduce `y`.
-
-Take `⟨x, rfl⟩` from `hsurj y`. Conclude with `⟨Submodule.Quotient.mk x, hψ x⟩`. Use `⟨AddEquiv.ofBijective ψ hbij, fun a x => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[← Submodule.Quotient.mk_smul]`.
-
-Conclude with `hsm a y`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.FreeModuleQuotient.aux {R S M : Type} [CommRing R] [CommRing S] [AddCommGroup M]
     [Module R M] (s : S →+* R) (I K : Ideal S) (hIK : I ≤ K) (c : ℕ)
@@ -114,7 +110,7 @@ private theorem UpperTheory.Reformulated.B.FreeModuleQuotient.aux {R S M : Type}
   exact hsm a y
 
 /- English proof (translation)
-Introduce `R S M _ _ _ _ s I K hIK c e he`. Conclude with `UpperTheory.Reformulated.B.FreeModuleQuotient.aux s I K hIK c e he`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.FreeModuleQuotient.freeN_quot :
     ∀ {R S M : Type} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : AddCommGroup M]

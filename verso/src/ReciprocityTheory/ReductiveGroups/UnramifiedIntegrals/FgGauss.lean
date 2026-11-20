@@ -14,13 +14,13 @@ def LeadAt (f : PowerSeries K) (r : ℝ) (i : ℕ) : Prop :=
   0 < r ∧ (∀ n, ‖coeff n f‖ ≤ r) ∧ (∀ n, n < i → ‖coeff n f‖ < r) ∧ ‖coeff i f‖ = r
 
 /- English proof (translation)
-Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne', max_eq_left h.le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gauss_norm_add_of_lt {a b : K} (h : ‖b‖ < ‖a‖) : ‖a + b‖ = ‖a‖ := by
   rw [IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne', max_eq_left h.le]
 
 /- English proof (translation)
-Break down `s.eq_empty_or_nonempty with rfl | hs` into its components or cases. Simplify using `using hr`. Take `⟨i, hi, hle⟩` from `IsUltrametricDist.exists_norm_finsetSum_le_of_nonempty hs f`. Conclude with `hle.trans_lt (h i hi)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gauss_norm_sum_lt {α : Type} (s : Finset α) (f : α → K) {r : ℝ} (hr : 0 < r)
     (h : ∀ a ∈ s, ‖f a‖ < r) : ‖∑ a ∈ s, f a‖ < r := by
@@ -30,17 +30,17 @@ theorem gauss_norm_sum_lt {α : Type} (s : Finset α) (f : α → K) {r : ℝ} (
     exact hle.trans_lt (h i hi)
 
 /- English proof (translation)
-Take `⟨hr, hf1, hf2, hf3⟩` from `hf`. Take `⟨hs, hg1, hg2, hg3⟩` from `hg`. Establish `small : ∀ p q : ℕ, (p < i ∨ q < j) → ‖coeff p f * coeff q g‖ < r * s`. Introduce `p q hpq`. Rewrite using `[norm_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Break down `hpq with hp | hq` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `⟨mul_pos hr hs, fun n => ?_, fun n hn => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_pos hr hs).le fun x _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hf1 _) (hg1 _) (norm_nonneg _) hr.le`. Rewrite using `[coeff_mul]`. Use `gauss_norm_sum_lt _ _ (mul_pos hr hs) fun x hx => small _ _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Use linear arithmetic over natural numbers and integers. Establish `hmem : (i, j) ∈ Finset.HasAntidiagonal.antidiagonal (i + j)` using `Finset.HasAntidiagonal.mem_antidiagonal.mpr rfl`. Rewrite using `[coeff_mul, ← Finset.add_sum_erase _ _ hmem]`. Establish `hlt : ‖∑ x ∈ (Finset.HasAntidiagonal.antidiagonal (i + j)).erase (i, j), coeff x.1 f * coeff x.2 g‖ < r * s`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `gauss_norm_sum_lt _ _ (mul_pos hr hs) fun x hx => small _ _ ?_` and prove the remaining obligations. Take `⟨hne, hx⟩` from `Finset.mem_erase.mp hx`. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hne (Prod.ext (by simp only; omega) (by simp only; omega))`. Establish `hij : ‖coeff i f * coeff j g‖ = r * s` using `by rw [norm_mul, hf3, hg3]`. Rewrite using `[gauss_norm_add_of_lt (by rwa [hij]), hij]`.
+A detailed English derivation is pending.
 -/
 theorem LeadAt.mul {f g : PowerSeries K} {r s : ℝ} {i j : ℕ} (hf : LeadAt f r i) (hg : LeadAt g s j) :
     LeadAt (f * g) (r * s) (i + j) := by
@@ -78,7 +78,7 @@ theorem LeadAt.mul {f g : PowerSeries K} {r s : ℝ} {i j : ℕ} (hf : LeadAt f 
     rw [gauss_norm_add_of_lt (by rwa [hij]), hij]
 
 /- English proof (translation)
-Use `⟨one_pos, fun n => ?_, fun n hn => absurd hn (Nat.not_lt_zero _), by simp⟩` and prove the remaining obligations. Rewrite using `[coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem leadAt_one : LeadAt (1 : PowerSeries K) 1 0 := by
   refine ⟨one_pos, fun n => ?_, fun n hn => absurd hn (Nat.not_lt_zero _), by simp⟩
@@ -86,7 +86,7 @@ theorem leadAt_one : LeadAt (1 : PowerSeries K) 1 0 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `⟨norm_pos_iff.mpr hc, fun n => ?_, fun n hn => absurd hn (Nat.not_lt_zero _), by simp⟩` and prove the remaining obligations. Rewrite using `[coeff_C]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem leadAt_C {c : K} (hc : c ≠ 0) : LeadAt (C c : PowerSeries K) ‖c‖ 0 := by
   refine ⟨norm_pos_iff.mpr hc, fun n => ?_, fun n hn => absurd hn (Nat.not_lt_zero _), by simp⟩
@@ -94,17 +94,15 @@ theorem leadAt_C {c : K} (hc : c ≠ 0) : LeadAt (C c : PowerSeries K) ‖c‖ 0
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hc : ∀ n, coeff n (A - C x * X ^ 2) = coeff n A - if n = 2 then x else 0`. Introduce `n`. Rewrite using `[map_sub, coeff_C_mul_X_pow]`. Distinguish the cases in `hx : ‖x‖ ≤ 1`. Use `⟨0, by norm_num, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[max_eq_left hx]`. Use `⟨one_pos, fun n => ?_, fun n hn => absurd hn (Nat.not_lt_zero _), ?_⟩` and prove the remaining obligations. Rewrite using `[hc] split_ifs`. Rewrite using `[sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hA n) (by rw [norm_neg]; exact hx))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_zero]`. Conclude with `hA n`. Rewrite using `[hc, if_neg (by norm_num), sub_zero, coeff_zero_eq_constantCoeff_apply, hA0, norm_one]`. Use `push Not at hx`. Use `⟨2, le_rfl, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[max_eq_right hx.le]`. Establish `h2 : ‖coeff 2 A - x‖ = ‖x‖`. Rewrite using `[sub_eq_neg_add, gauss_norm_add_of_lt (by rw [norm_neg]; exact (hA 2).trans_lt hx), norm_neg]`. Use `⟨one_pos.trans hx, fun n => ?_, fun n hn => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc] split_ifs with h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Conclude with `h2.le`. Rewrite using `[sub_zero]`. Conclude with `(hA n).trans hx.le`. Rewrite using `[hc, if_neg (by omega), sub_zero]`.
-
-Conclude with `(hA n).trans_lt hx`. Rewrite using `[hc, if_pos rfl, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leadAt_factor {A : PowerSeries K} (hA : IntegralPS A) (hA0 : constantCoeff A = 1) (x : K) :
     ∃ i, i ≤ 2 ∧ LeadAt (A - C x * X ^ 2) (max 1 ‖x‖) i := by
@@ -136,9 +134,9 @@ theorem leadAt_factor {A : PowerSeries K} (hA : IntegralPS A) (hA0 : constantCoe
     · rw [hc, if_pos rfl, h2]
 
 /- English proof (translation)
-Use `Finset.induction_on S ⟨0, le_rfl, by simpa using leadAt_one⟩ ?_` and prove the remaining obligations. Introduce `a T ha ih`. Take `⟨i, hi, h⟩` from `ih`. Take `⟨j, hj, h'⟩` from `leadAt_factor hA hA0 (x a)`. Use `⟨j + i, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.card_insert_of_notMem ha]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `h'.mul h`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leadAt_prod {α : Type} (S : Finset α) (x : α → K) {A : PowerSeries K} (hA : IntegralPS A)
     (hA0 : constantCoeff A = 1) :
@@ -154,9 +152,9 @@ theorem leadAt_prod {α : Type} (S : Finset α) (x : α → K) {A : PowerSeries 
     exact h'.mul h
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`. Take `⟨i, -, h⟩` from `leadAt_prod S x hA hA0`. Establish `hl` using `(leadAt_C hc).mul h`. Rewrite using `[← hl.2.2.2]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hG _`.
+A detailed English derivation is pending.
 -/
 theorem gauss_bound {α : Type} (S : Finset α) (x : α → K) (A : PowerSeries K) (hA : IntegralPS A)
     (hA0 : constantCoeff A = 1) (c : K)
@@ -170,9 +168,9 @@ theorem gauss_bound {α : Type} (S : Finset α) (x : α → K) (A : PowerSeries 
   exact hG _
 
 /- English proof (translation)
-Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hc`. Take `⟨i, hi, h⟩` from `leadAt_prod S x hA hA0`. Establish `hl` using `(leadAt_C hc0).mul h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨0 + i, by omega, hl.2.2.2.trans hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem gauss_unit {α : Type} (S : Finset α) (x : α → K) (A : PowerSeries K) (hA : IntegralPS A)
     (hA0 : constantCoeff A = 1) (c : K) (hc : ‖c‖ * ∏ P ∈ S, max 1 ‖x P‖ = 1) :
@@ -185,7 +183,7 @@ theorem gauss_unit {α : Type} (S : Finset α) (x : α → K) (A : PowerSeries K
   exact ⟨0 + i, by omega, hl.2.2.2.trans hc⟩
 
 /- English proof (translation)
-Use `⟨Nat.find h, fun i hi => Nat.find_min' h hi, one_pos, hg, fun n hn => lt_of_le_of_ne (hg n) (Nat.find_min h hn), Nat.find_spec h⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem leadAt_first_unit {g : PowerSeries K} (hg : IntegralPS g) (h : ∃ i, ‖coeff i g‖ = 1) :
     ∃ i₀, (∀ i, ‖coeff i g‖ = 1 → i₀ ≤ i) ∧ LeadAt g 1 i₀ := by
@@ -194,9 +192,9 @@ theorem leadAt_first_unit {g : PowerSeries K} (hg : IntegralPS g) (h : ∃ i, �
     fun n hn => lt_of_le_of_ne (hg n) (Nat.find_min h hn), Nat.find_spec h⟩
 
 /- English proof (translation)
-Take `⟨i, hiN, hi⟩` from `h`. Take `⟨i₀, hmin, hl⟩` from `leadAt_first_unit hg ⟨i, hi⟩`. Establish `hf' : LeadAt f 1 0` using `⟨one_pos, hf, fun n hn => absurd hn (Nat.not_lt_zero _), by rw [coeff_zero_eq_constantCoeff_apply, hf0]⟩`. Establish `hm` using `hf'.mul hl`. Use `⟨0 + i₀, by have := hmin i hi; omega, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hm.2.2.2, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_coeff_mul {f g : PowerSeries K} (hf : IntegralPS f) (hg : IntegralPS g)
     (hf0 : ‖constantCoeff f‖ = 1) (N : ℕ) (h : ∃ i, i ≤ N ∧ ‖coeff i g‖ = 1) :
@@ -210,13 +208,11 @@ theorem unit_coeff_mul {f g : PowerSeries K} (hf : IntegralPS f) (hg : IntegralP
   rw [hm.2.2.2, one_mul]
 
 /- English proof (translation)
-Take `⟨i, hiN, hi⟩` from `h`. Establish `hex : ∃ j, ‖coeff j e‖ = 1`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Establish `hlt : ∀ n, ‖coeff n e‖ < 1` using `fun n => lt_of_le_of_ne (he n) (hno n)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ‖coeff i (e ^ 2)‖ < 1`. Rewrite using `[sq, coeff_mul]`. Use `gauss_norm_sum_lt _ _ one_pos fun x _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Conclude with `this.ne hi`. Take `⟨j, -, hl⟩` from `leadAt_first_unit he hex`. Establish `hm` using `hl.mul hl`. Rewrite `hm` using `[one_mul, ← sq]`. Use `⟨j, ?_, hl.2.2.2⟩` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `(hm.2.2.1 i (by omega)).ne hi`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem unit_coeff_of_sq {e : PowerSeries K} (he : IntegralPS e) (N : ℕ)
     (h : ∃ i, i ≤ 2 * N ∧ ‖coeff i (e ^ 2)‖ = 1) : ∃ i, i ≤ N ∧ ‖coeff i e‖ = 1 := by
@@ -242,11 +238,11 @@ theorem unit_coeff_of_sq {e : PowerSeries K} (he : IntegralPS e) (N : ℕ)
   exact (hm.2.2.1 i (by omega)).ne hi
 
 /- English proof (translation)
-Take `⟨e', rfl⟩` from `(PowerSeries.X_dvd_iff).mpr he0`. Establish `he' : IntegralPS e'` using `fun n => by`. Use `he (n + 1)` as an intermediate fact. Rewrite `this` using `[coeff_succ_X_mul]`. Then use the resulting hypothesis. Establish `h2 : e' ^ 2 = U * G`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hX : (X : PowerSeries K) ^ 2 ≠ 0` using `pow_ne_zero _ X_ne_zero`. Apply `mul_left_cancel₀ hX` to reduce the goal to its premises. Rewrite using `[← mul_assoc, ← h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hUi : IntegralPS U⁻¹` using `integralPS_inv hU (by rw [hU0, norm_one])`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hG : G = U⁻¹ * e' ^ 2`. Rewrite using `[h2, ← mul_assoc, PowerSeries.inv_mul_cancel _ (by rw [hU0]; exact one_ne_zero), one_mul]`. Rewrite using `[hG]`. Conclude with `integralPS_mul hUi (integralPS_pow he' 2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_of_sq_eq {e U G : PowerSeries K} (he : IntegralPS e) (he0 : constantCoeff e = 0)
     (hU : IntegralPS U) (hU0 : constantCoeff U = 1) (h : e ^ 2 = X ^ 2 * U * G) : IntegralPS G := by

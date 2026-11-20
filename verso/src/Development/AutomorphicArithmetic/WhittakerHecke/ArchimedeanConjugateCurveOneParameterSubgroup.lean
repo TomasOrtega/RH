@@ -7,7 +7,7 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 nE)
 open scoped Classical
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nC]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem nC_zero' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] : nC (0 : Cinf E) = 1 := by
   apply Units.ext
@@ -15,7 +15,7 @@ private theorem nC_zero' {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
   fin_cases i <;> fin_cases j <;> simp [nC]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j : 2`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nC, Matrix.mul_apply, Fin.sum_univ_two, add_comm]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem nC_add' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (a b : Cinf E) :
     nC (a + b) = nC a * nC b := by
@@ -24,7 +24,7 @@ private theorem nC_add' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E
   fin_cases i <;> fin_cases j <;> simp [nC, Matrix.mul_apply, Fin.sum_univ_two, add_comm]
 
 /- English proof (translation)
-Use extensionality with `i j : 2`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nC]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem nC_val' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (t : ℝ) (z : Cinf E) :
     (nC (t • z)).val = 1 + t • (!![0, z; 0, 0] : Matrix (Fin 2) (Fin 2) (Cinf E)) := by
@@ -32,7 +32,7 @@ private theorem nC_val' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E
   fin_cases i <;> fin_cases j <;> simp [nC]
 
 /- English proof (translation)
-Establish `h : ((kInf k)⁻¹).val * (kInf k).val = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Simplify using `only [cv, XB, Units.val_mul, nC_val', mul_add, add_mul, mul_one, h, Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem cv_val' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E)
     (k : GL (Fin 2) (A E)) (t : ℝ) : (cv D k t).val = 1 + t • XB D k := by
@@ -41,13 +41,11 @@ private theorem cv_val' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E
   simp only [cv, XB, Units.val_mul, nC_val', mul_add, add_mul, mul_one, h, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ D k`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[cv, nC_zero']`. Introduce `s t`. Simplify using `only [cv, add_smul, nC_add']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `group`. Establish `h : (fun t : ℝ => toL (cv D k t).val) = fun t : ℝ => toL (1 : Matrix (Fin 2) (Fin 2) (Cinf E)) + t • toL (XB D k)`. Use function extensionality and compare the values at `t`. Rewrite using `[cv_val']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const (toL (XB D k))).const_add (toL (1 : Matrix (Fin 2) (Fin 2) (Cinf E)))`. Establish `hK : Continuous fun k : GL (Fin 2) (A E) => kInf k` using `ContAut.continuous_map_pInf E 2`. Establish `h1 : Continuous fun k : GL (Fin 2) (A E) => (kInf k).val` using `Units.continuous_val.comp hK`. Establish `h2 : Continuous fun k : GL (Fin 2) (A E) => ((kInf k)⁻¹).val` using `Units.continuous_val.comp hK.inv`.
-
-Conclude with `(h2.matrix_mul continuous_const).matrix_mul h1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.archimedeanConjugateCurve_oneParameterSubgroup :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (k : GL (Fin 2) (A E)),

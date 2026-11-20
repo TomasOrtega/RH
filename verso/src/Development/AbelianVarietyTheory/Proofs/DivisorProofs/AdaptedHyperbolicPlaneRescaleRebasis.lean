@@ -26,45 +26,35 @@ noncomputable section
 open scoped Matrix nonZeroDivisors
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm B₀ B hemb n n₁ Y Y₁ H₀ i₀ i₁ h01 h1n hL hL₁ hH`. Establish `hss : ∀ a : E, σ (σ a) = a` using `fun a => by`. Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hcm.2.2.2 τ, hcm.2.2.2 τ, star_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `fsl : ∀ (J : Matrix (Fin n) (Fin n) E) (s : E) (a b : Fin n → E), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J (s • a) b = s * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J a b` using `fun J s a b => by`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, smul_dotProduct]`. Establish `fsr : ∀ (J : Matrix (Fin n) (Fin n) E) (s : E) (a b : Fin n → E), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J b (s • a) = σ s * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J b a` using `fun J s a b => by`. Establish `: (fun i => σ ((s • a) i)) = σ s • fun i => σ (a i)` using `funext fun i => by simp`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, this, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hx0 : H₀.x ≠ 0`. Introduce `h`. Use `hH.xy` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hy0 : H₀.y ≠ 0`. Introduce `h`. Establish `h1` using `hH.xy`. Establish `h2` using `fsr Y.J 0 H₀.y H₀.x`. Rewrite `h2` using `[zero_smul, map_zero, zero_mul, ← h, h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero h2`. Take `⟨c, hc0, hc⟩` from `GlobalTheory.PlaneSkewScale.exists_rescale_primAt F E σ hcm n Y.L hL H₀.x H₀.y hx0 hy0 B.P B.τ`. Establish `hσc : σ c ≠ 0` using `fun h => hc0 (by rw [← hss c, h, map_zero])`. Use `set x : Fin n → E := c • H₀.x with hxdef`. Use `set y : Fin n → E := (σ c)⁻¹ • H₀.y with hydef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ex : ∀ s : E, (s * c⁻¹) • x = s • H₀.x` using `fun s => by`. Rewrite using `[hxdef, smul_smul, mul_assoc, inv_mul_cancel₀ hc0, mul_one]`. Establish `ey : ∀ t : E, (t * σ c) • y = t • H₀.y` using `fun t => by`. Rewrite using `[hydef, smul_smul, mul_assoc, mul_inv_cancel₀ hσc, mul_one]`. Set `𝔟 : FractionalIdeal (𝓞 E)⁰ E` to `FractionalIdeal.spanSingleton _ c⁻¹ * H₀.𝔟`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h𝔟 : ∀ s : E, s ∈ 𝔟 ↔ s • x ∈ Y.L`. Introduce `s`. Rewrite using `[FractionalIdeal.mem_singleton_mul, hxdef, smul_smul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm c⁻¹ t, mul_assoc, inv_mul_cancel₀ hc0, mul_one]`. Conclude with `(hH.ideal t).1 ht`. Introduce `h`. Use `⟨s * c, (hH.ideal _).2 h, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm s c, ← mul_assoc, inv_mul_cancel₀ hc0, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hsplit : ∀ z ∈ Y.L, ∃ (s t : E) (u : Fin n₁ → E), s • x ∈ Y.L ∧ t • y ∈ Y.L ∧ u ∈ Y₁.L ∧ z = s • x + H₀.ι *ᵥ u + t • y`. Introduce `z hz`. Take `⟨s, t, u, hs, ht, hu, rfl⟩` from `hH.split z hz`. Conclude with `⟨s * c⁻¹, t * σ c, u, by rw [ex]; exact hs, by rw [ey]; exact ht, hu, by rw [ex, ey]⟩`. Use `haveI : Y₁.L.IsLattice E := hL₁`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomap : Y.L.comap ((Matrix.mulVecLin H₀.ι).restrictScalars (𝓞 E)) = Y₁.L` using `Submodule.ext fun u => (hH.low u).symm`. Establish `hb₁ : ∀ v : B.P, ∃ β, GlobalTheory.AdelicU.IsSplitBasis (B.τ v) Y₁.L β` using `fun v => GlobalTheory.AdelicU.exists_isSplitBasis (B.τ v) Y₁.L hcm`. Use `choose β₁ hβ₁ using hb₁`. Set `bas₁ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, GL (Fin n₁) (Fv F v)` to `fun v => if h : v ∈ B.P then β₁ ⟨v, h⟩ else Y₁.bas v`. Establish `hbas₁ : ∀ v : B.P, bas₁ v = β₁ v` using `fun v => by simp only [bas₁, dif_pos v.2]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hb : ∀ v : B.P, ∃ β : GL (Fin n) (Fv F v), (∀ i : Fin n, (i.1 = i₀ → ∀ r, β.1 r i = B.τ v (x r)) ∧ (i.1 = i₁ → ∀ r, β.1 r i = B.τ v (y r)) ∧ ∀ j : Fin n₁, i.1 = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.skip i₀ i₁ j → ∀ r, β.1 r i = (H₀.ι.map (B.τ v) * (β₁ v).1) r …` using `fun v => GlobalTheory.PlaneBasis.exists_isSplitBasis_plane F E σ hcm v (B.τ v) n n₁ Y.L x y H₀.ι (β₁ v) i₀ i₁ hH.rank h01 h1n hL (fun z hz => by`. Take `⟨s, t, u, hs, ht, hu, hz'⟩` from `hsplit z hz`. Conclude with `⟨s, t, u, hs, ht, (hH.low u).1 hu, hz'⟩)`. Use the proof step `(by simp only [GlobalTheory.AdelicU.valued_apply_eq_valuation]; exact (hc v).1)`. Use the proof step `(by simp only [GlobalTheory.AdelicU.valued_apply_eq_valuation]; exact (hc v).2)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by rw [hcomap]; exact hβ₁ v)`. Use `choose β hβ using hb`. Set `bas : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, GL (Fin n) (Fv F v)` to `fun v => if h : v ∈ B.P then β ⟨v, h⟩ else Y.bas v`. Establish `hbas : ∀ v : B.P, bas v = β v` using `fun v => by simp only [bas, dif_pos v.2]`. Set `Y' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n` to `⟨Y.J, Y.L, Y.θ, bas⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Set `Y₁' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n₁` to `⟨Y₁.J, Y₁.L, Y₁.θ, bas₁⟩`. Use `⟨Y', Y₁', ⟨x, y, H₀.ι, 𝔟⟩, rfl, rfl, fun v => ?_, fun v => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show Y'.bas v = β v from hbas v]`. Conclude with `(hβ v).2`. Rewrite using `[show Y₁'.bas v = β₁ v from hbas₁ v]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hβ₁ v`. Conclude with `{ rank := hH.rank xx := by show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ Y.J x x = 0`. Rewrite using `[hxdef, fsl, fsr, hH.xx, mul_zero, mul_zero]`. Use `yy := by show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ Y.J y y = 0`. Rewrite using `[hydef, fsl, fsr, hH.yy, mul_zero, mul_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `xy := by show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ Y.J x y = 1`. Rewrite using `[hxdef, hydef, fsl, fsr, hH.xy, map_inv₀, hss, mul_one, mul_inv_cancel₀ hc0]`. Use `orth := fun u => by show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ Y.J (H₀.ι *ᵥ u) x = 0 ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ Y.J (H₀.ι *ᵥ u) y = 0`. Rewrite using `[hxdef, hydef, fsr, fsr, (hH.orth u).1, (hH.orth u).2, mul_zero, mul_zero]`. Conclude with `⟨rfl, rfl⟩`.
-
-Use `gram := hH.gram`. Use `low := hH.low`. Use `split := hsplit`. Use `ideal := h𝔟`. Use `cartan := fun w => by`.
-
-Take `⟨hθι, c₀, hc₀, he⟩` from `hH.cartan w`. Rewrite using `[hemb]`. Use `⟨hθι, (B₀.emb w).1 (σ c)⁻¹ * c₀ * ((B₀.emb w).1 c)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (B₀.emb w).1 (σ c)⁻¹ ≠ 0` using `(map_ne_zero _).2 (inv_ne_zero hσc)`. Establish `h2 : (B₀.emb w).1 c ≠ 0` using `(map_ne_zero _).2 hc0`.
-
-Conclude with `mul_ne_zero (mul_ne_zero h1 hc₀) (inv_ne_zero h2)`. Establish `h2 : (B₀.emb w).1 c ≠ 0` using `(map_ne_zero _).2 hc0`. Establish `hx' : (fun i => (B₀.emb w).1 (x i)) = (B₀.emb w).1 c • fun i => (B₀.emb w).1 (H₀.x i)`. Use function extensionality and compare the values at `fun i => by simp [hxdef]`. Establish `hy' : (fun i => (B₀.emb w).1 (y i)) = (B₀.emb w).1 (σ c)⁻¹ • fun i => (B₀.emb w).1 (H₀.y i)`.
-
-Use function extensionality and compare the values at `fun i => by simp [hydef]`. Use `show (fun i => (B₀.emb w).1 (y i)) = _ • Y.θ w *ᵥ fun i => (B₀.emb w).1 (x i)`. Rewrite using `[hx', hy', he, Matrix.mulVec_smul, smul_smul, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
-
-Use `bas := fun v i => by`. Rewrite using `[show (GlobalTheory.ThK.reS Y Y').bas v = β v from hbas v, show (GlobalTheory.ThK.reS Y₁ Y₁').bas v = β₁ v from hbas₁ v]`. Conclude with `(hβ v).1 i }`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.adaptedHyperbolicPlane_rescale_rebasis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (B₀ B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E), B.emb = B₀.emb → ∀ (n n₁ : ℕ) (Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (Y₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n₁)

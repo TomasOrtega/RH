@@ -19,7 +19,7 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CardTorsionAbelianVa
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.existsUnique_hom_extension_semiAbelian_dvr (GlobalTheory.AbelianSubgroupFinite.finite_of_no_torsion GlobalTheory.card_torsion_abelianVariety)`.
+A detailed English derivation is pending.
 -/
 theorem homExtension_semiAbelian_dvr : GlobalTheory.LN.HomExtSt :=
   GlobalTheory.existsUnique_hom_extension_semiAbelian_dvr

@@ -5,25 +5,23 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ ν _ U hU α hα hαc hαU K hK x hx v`. Establish `hUU : IsOpen (U ×ˢ U)` using `hU.prod hU`. Establish `hα0 : ∀ y, y ∉ U → α y = 0` using `fun y hy => image_eq_zero_of_notMem_tsupport (fun h => hy (hαU h))`. Establish `hKd : ∀ p ∈ U ×ˢ U, HasFDerivAt K (fderiv ℝ K p) p` using `fun p hp => ((hK.differentiableOn (by simp)) p hp).differentiableAt (hUU.mem_nhds hp) |>.hasFDerivAt`. Establish `hKp : ∀ x' ∈ U, ∀ y ∈ U, HasFDerivAt (fun x'' => K (x'', y)) ((fderiv ℝ K (x', y)).comp (ContinuousLinearMap.inl ℝ V V)) x'` using `fun x' hx' y hy => (hKd (x', y) ⟨hx', hy⟩).comp x' (hasFDerivAt_prodMk_left x' y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcf : ContinuousOn (fderiv ℝ K) (U ×ˢ U)` using `hK.continuousOn_fderiv_of_isOpen hUU (by exact_mod_cast le_top)`. Take `⟨ε, εpos, hε⟩` from `Metric.isOpen_iff.mp hU x hx`. Use `set r := ε / 2 with hr`. Establish `rpos : 0 < r` using `half_pos εpos`. Establish `hcb : closedBall x r ⊆ U` using `(closedBall_subset_ball (half_lt_self εpos)).trans hε`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : IsCompact (closedBall x r ×ˢ tsupport α)` using `(isCompact_closedBall x r).prod hαc`. Take `⟨C, hC⟩` from `hcomp.exists_bound_of_continuousOn (hcf.mono (Set.prod_mono hcb hαU))`. Use `set F' : V → V → V →L[ℝ] ℂ := fun x' y => α y • (fderiv ℝ K (x', y)).comp (ContinuousLinearMap.inl ℝ V V) with hF'`. Establish `hcontF : ∀ x' ∈ U, Continuous (fun y => α y * K (x', y))`. Introduce `x' hx'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContinuousOn.continuous_of_tsupport_subset ?_ hU ((tsupport_mul_subset_left).trans hαU)` and prove the remaining obligations. Use `hα.continuousOn.mul ?_` and prove the remaining obligations. Conclude with `hK.continuousOn.comp (Continuous.continuousOn (by fun_prop)) (fun y hy => ⟨hx', hy⟩)`. Establish `hcontF' : Continuous (F' x)`. Use `ContinuousOn.continuous_of_tsupport_subset ?_ hU ((tsupport_smul_subset_left _ _).trans hαU)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hα.continuousOn.smul ?_` and prove the remaining obligations. Establish `h1 : ContinuousOn (fun y => fderiv ℝ K (x, y)) U` using `hcf.comp (Continuous.continuousOn (by fun_prop)) (fun y hy => ⟨hx, hy⟩)`. Conclude with `h1.clm_comp continuousOn_const`. Establish `hbound : ∀ y, ∀ x' ∈ ball x r, ‖F' x' y‖ ≤ ‖α y‖ * C`. Introduce `y x' hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Distinguish the cases in `hy : y ∈ tsupport α`. Rewrite using `[hF', norm_smul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `: α y = 0` using `image_eq_zero_of_notMem_tsupport hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hF', this]`. Establish `hαi : Integrable α ν` using `hα.integrable_of_hasCompactSupport hαc`. Establish `hF'i : Integrable (F' x) ν` using `Integrable.mono' (hαi.norm.mul_const C) hcontF'.aestronglyMeasurable (Eventually.of_forall fun y => hbound y x (mem_ball_self rpos))`. Establish `hmain : HasFDerivAt (fun x' => ∫ y, α y * K (x', y) ∂ν) (∫ y, F' x y ∂ν) x`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (s := ball x r) (bound := fun y => ‖α y‖ * C) (ball_mem_nhds x rpos) ?_ ?_ hcontF'.aestronglyMeasurable (Eventually.of_forall fun y => hbound y) (hαi.norm.mul_const C) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [hU.mem_nhds hx] with x' hx'`. Conclude with `(hcontF x' hx').aestronglyMeasurable`. Conclude with `(hcontF x hx).integrable_of_hasCompactSupport (hαc.mul_right)`. Use `Eventually.of_forall fun y x' hx' => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ U`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(hKp x' (hcb (ball_subset_closedBall hx')) y hy).const_mul (α y)`. Establish `: α y = 0` using `hα0 y hy`. Simplify using `only [hF', this, zero_mul, zero_smul]`. Conclude with `hasFDerivAt_const _ _`. Rewrite using `[hmain.fderiv, ContinuousLinearMap.integral_apply hF'i]`.
-
-Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ U`. Simplify using `only [hF', ContinuousLinearMap.smul_apply, smul_eq_mul, (hKp x hx y hy).fderiv]`. Simplify using `[hF', hα0 y hy]`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_integral_mul_kernel_apply :
     ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V]

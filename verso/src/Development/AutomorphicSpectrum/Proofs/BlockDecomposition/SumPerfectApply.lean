@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.Pairing
 
 /- English proof (translation)
-Simplify using `[LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_perfect_apply {R : Type} [CommRing R] {ι : Type} [Fintype ι] {X Y : ι → Type}
     [∀ i, AddCommGroup (X i)] [∀ i, Module R (X i)] [∀ i, AddCommGroup (Y i)]
@@ -14,15 +14,13 @@ theorem sum_perfect_apply {R : Type} [CommRing R] {ι : Type} [Fintype ι] {X Y 
   simp [LinearMap.sum_apply]
 
 /- English proof (translation)
-Introduce `R _ ι _ X Y _ _ _ _ B hB hBf`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.coe_sum, ← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hj : B j (y j) = 0`. Use extensionality with `x₀`. Establish `h` using `LinearMap.congr_fun hy (Pi.single j x₀)`. Rewrite `h` using `[sum_perfect_apply, Fintype.sum_eq_single j (fun i hi => by rw [Pi.single_eq_of_ne hi, map_zero]), Pi.single_eq_same]`. Simplify using `using h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hB j (hj.trans (map_zero _).symm)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Use function extensionality and compare the values at `j`. Establish `hj : (B j).flip (x j) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y₀`. Establish `h` using `LinearMap.congr_fun hx (Pi.single j y₀)`. Rewrite using `[LinearMap.flip_apply, sum_perfect_apply, Fintype.sum_eq_single j (fun i hi => by`. Rewrite `h` using `[Pi.single_eq_of_ne hi, map_zero, LinearMap.zero_apply]), Pi.single_eq_same]`. Simplify using `using h`.
-
-Conclude with `hBf j (hj.trans (map_zero _).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_perfect : ∀ (R : Type) [CommRing R] (ι : Type) [Fintype ι] (X Y : ι → Type) [∀ i, AddCommGroup (X i)] [∀ i, Module R (X i)] [∀ i, AddCommGroup (Y i)] [∀ i, Module R (Y i)] (B : ∀ i, Y i →ₗ[R] X i →ₗ[R] R), (∀ i, Function.Injective (B i)) → (∀ i, Function.Injective (B i).flip) → Function.Injective (∑ i, (B i).compl₁₂ (LinearMap.proj i) (LinearMap.proj i)) ∧ Function.Injective (∑ i, (B i).compl₁₂ (LinearMap.proj i) (LinearMap.proj i)).flip := by
   intro R _ ι _ X Y _ _ _ _ B hB hBf

@@ -17,9 +17,9 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨a, rfl⟩` from `hz`. Conclude with `h a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x x' _ _ hx hx' => simp [hx, hx']`. Consider the case `smul c x _ hx => simp [hx]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem orth_span (v : Fin r → S.V) {y : S.V} (h : ∀ a, S.hT (v a) y = 0) :
     ∀ x ∈ Submodule.span E (Set.range v), S.hT x y = 0 := by
@@ -33,7 +33,7 @@ theorem orth_span (v : Fin r → S.V) {y : S.V} (h : ∀ a, S.hT (v a) y = 0) :
   | smul c x _ hx => simp [hx]
 
 /- English proof (translation)
-Unfold `latSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨a, x, -, rfl⟩`. Conclude with `Submodule.smul_mem _ x (Submodule.subset_span ⟨a, rfl⟩)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem latSpan_le_span (aa : Fin r → FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (v : Fin r → S.V) :
     latSpan aa v ≤ (Submodule.span E (Set.range v)).restrictScalars (𝓞 E) := by
@@ -43,7 +43,7 @@ theorem latSpan_le_span (aa : Fin r → FractionalIdeal (nonZeroDivisors (𝓞 E
   exact Submodule.smul_mem _ x (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).mp hx`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[map_sum]`. Simplify using `[hfe]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coef_of_span (e f : Fin r → S.V) (hfe : ∀ a b, S.hT (f a) (e b) = if a = b then 1 else 0) {x : S.V}
     (hx : x ∈ Submodule.span E (Set.range e)) : x = ∑ a, S.hT (f a) x • e a := by
@@ -57,29 +57,27 @@ variable (Λ : Submodule (𝓞 E) S.V) (aa : Fin r → FractionalIdeal (nonZeroD
   (L : Submodule (𝓞 E) S.V)
 
 /- English proof (translation)
-Establish `horth2 : ∀ (u : S.V) (w : Fin r → S.V), (∀ b, S.hT u (w b) = 0) → ∀ y ∈ Submodule.span E (Set.range w), S.hT u y = 0`. Introduce `u w hw y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨b, rfl⟩` from `hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `hw b`. Consider the case `zero => simp`. Consider the case `add x x' _ _ hx hx' => simp [hx, hx']`. Consider the case `smul c x _ hx => simp [hx]`. Establish `hfe : ∀ a b, S.hT (f a) (e b) = if a = b then 1 else 0`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Rewrite using `[← S.herm.eq (e b) (f a), hef b a]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`. Establish `hxd : x ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ`. Unfold `Formalism.HermitianLatticesTheory.dual Formalism.E.hdual`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`. Introduce `y hy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[hΛ]`. Take `⟨y12, hy12, y2, hy2, rfl⟩` from `Submodule.mem_sup.mp hy`. Take `⟨y1, hy1, yL, hyL, rfl⟩` from `Submodule.mem_sup.mp hy12`. Establish `h1 : S.hT y1 x = 0` using `orth_span e hxe y1 (latSpan_le_span aa e hy1)`. Establish `h2 : S.hT y2 x = 0` using `orth_span f hxf y2 (latSpan_le_span _ f hy2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨o, ho⟩` from `hxL yL hyL`. Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, h1, h2, ← ho]`. Simplify using the standard rewrite rules. Establish `hxΛ : x ∈ Λ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.HermitianLatticesTheory.IsUnimodular at hU`. Rewrite `hxd` using `[hU]`. Conclude with `hxd`. Rewrite `hxΛ` using `[hΛ]`. Take `⟨x12, hx12, x2, hx2, hxeq⟩` from `Submodule.mem_sup.mp hxΛ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x1, hx1, xL, hxL', rfl⟩` from `Submodule.mem_sup.mp hx12`. Establish `hx1' : x1 ∈ Submodule.span E (Set.range e)` using `latSpan_le_span aa e hx1`. Establish `hx2' : x2 ∈ Submodule.span E (Set.range f)` using `latSpan_le_span _ f hx2`. Establish `hf1 : ∀ a, S.hT (f a) x1 = 0`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hxf a`. Rewrite `h` using `[← hxeq, map_add, map_add, (hL xL hxL' a).2, horth2 (f a) f (hff a) x2 hx2']`. Simplify using `using h`. Establish `he2 : ∀ a, S.hT (e a) x2 = 0`. Introduce `a`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hxe a`. Rewrite `h` using `[← hxeq, map_add, map_add, (hL xL hxL' a).1, horth2 (e a) e (hee a) x1 hx1']`. Simplify using `using h`. Establish `h10 : x1 = 0`. Rewrite using `[coef_of_span e f hfe hx1']`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hf1]`. Establish `h20 : x2 = 0`. Rewrite using `[coef_of_span f e hef hx2']`. Simplify using `[he2]`. Rewrite using `[← hxeq, h10, h20, zero_add, add_zero]`.
-
-Conclude with `hxL'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_L_of_dual (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ)
     (hΛ : Λ = latSpan aa e ⊔ L ⊔ latSpan (fun a => (aa a)⁻¹) f)
@@ -146,23 +144,21 @@ theorem mem_L_of_dual (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT 
   exact hxL'
 
 /- English proof (translation)
-Establish `hstar : ∀ o : 𝓞 E, ∃ o' : 𝓞 E, (o' : E) = star (o : E)`. Introduce `o`. Conclude with `⟨⟨star (o : E), (o.2).map (starRingEnd E).toIntAlgHom⟩, rfl⟩`. Establish `hsmul : ∀ (c : 𝓞 E) (y : S.V), c • y = (c : E) • y` using `fun c y => (algebraMap_smul E c y).symm`. Set `J : Ideal (𝓞 E)` to `{ carrier := {o | ∃ σ ∈ L, (o : E) = S.hT σ z} add_mem' := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce and unpack `a b ⟨σ, hσ, ha⟩ ⟨τ, hτ, hb⟩`. Conclude with `⟨σ + τ, L.add_mem hσ hτ, by simp [ha, hb]⟩`. Use the proof step `zero_mem' := ⟨0, L.zero_mem, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨σ, hσ, ha⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c', hc'⟩` from `hstar c`. Use `⟨c' • σ, L.smul_mem c' hσ, ?_⟩` and prove the remaining obligations. Rewrite using `[hsmul, LinearMap.map_smulₛₗ, LinearMap.smul_apply, ← ha, hc']`. Simplify using `[starRingEnd_apply] }`. Take `⟨o0, ho0⟩` from `hint z hzL z hzL`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJ : J ≠ ⊥`. Introduce `h`. Establish `hmem : o0 ∈ J` using `⟨z, hzL, ho0⟩`. Rewrite `hmem` using `[h, Ideal.mem_bot]`. Rewrite `ho0` using `[hmem]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hzz (by simpa using ho0.symm)`. Establish `hI : (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr hJ`. Establish `hinv : (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)⁻¹ ≤ 1`. Introduce `x hx`. Rewrite `hx` using `[FractionalIdeal.mem_inv_iff hI]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxz : x • z ∈ L`. Apply `hdual` to reduce the goal to its premises. Introduce `y hy`. Take `⟨o, ho⟩` from `hint y hy z hzL`. Establish `hoJ : (o : E) ∈ (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)` using `(FractionalIdeal.mem_coeIdeal _).mpr ⟨o, ⟨y, hy, ho⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨o', ho'⟩` from `(FractionalIdeal.mem_one_iff _).mp (hx _ hoJ)`. Conclude with `⟨o', by rw [map_smul, smul_eq_mul, ← ho, ← ho']⟩`. Take `⟨o, ho⟩` from `hprim x hxz`. Conclude with `(FractionalIdeal.mem_one_iff _).mpr ⟨o, ho⟩`. Establish `h1 : (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≤ J`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1J : (1 : E) ∈ (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)` using `h1 (FractionalIdeal.one_mem_one _)`. Take `⟨j, ⟨σ, hσ, hj⟩, hj1⟩` from `(FractionalIdeal.mem_coeIdeal _).mp h1J`. Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hj]`.
-
-Conclude with `hj1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_partner (z : S.V) (hzL : z ∈ L) (hzz : S.hT z z ≠ 0)
     (hint : ∀ x ∈ L, ∀ y ∈ L, ∃ o : 𝓞 E, (o : E) = S.hT x y)

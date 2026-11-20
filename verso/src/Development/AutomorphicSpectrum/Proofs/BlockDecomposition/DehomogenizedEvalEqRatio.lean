@@ -16,15 +16,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.MixZ
 
 /- English proof (translation)
-Introduce `m n c f a hf w z H hw`. Establish `hmem : ∀ k, w ∈ ptsIn (mpStr ℤ m n) σ₀ (blockChart n k (c k))` using `fun k => GlobalTheory.CxPts.ptsIn_mono (mchart_le c k) hw`. Establish `hX : ∀ q, GlobalTheory.CxPts.evHom hw (dehomog c (X q)) = z q / z ⟨q.1, c q.1⟩`. Introduce and unpack `⟨k, i⟩`. Rewrite using `[← GlobalTheory.CxPts.ev_eq hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dehomog, coe_eval₂Hom, eval₂_X]`. Rewrite using `[GlobalTheory.CxPts.ev_res _ hw]`. Conclude with `(H k (c k)).2 i (hmem k)`. Establish `hφ : (GlobalTheory.CxPts.evHom hw).comp (dehomog c) = eval₂Hom (Int.castRingHom ℂ) (fun q => z q / z ⟨q.1, c q.1⟩)`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun q => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `using hX q`. Establish `hv : GlobalTheory.CxPts.evHom hw (dehomog c f) = eval₂ (Int.castRingHom ℂ) (fun q => z q / z ⟨q.1, c q.1⟩) f`. Simplify using `using congrArg (fun φ => φ f) hφ`. Rewrite using `[GlobalTheory.CxPts.ev_eq hw, hv, MvPolynomial.eval_map, eval₂_eq', eval₂_eq', Finset.sum_div]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations. Establish `hden : ∏ q : Σ k, Bk n k, z ⟨q.1, c q.1⟩ ^ e q = ∏ k, z ⟨k, c k⟩ ^ a k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `(Finset.prod_pow_eq_pow_sum Finset.univ (fun i : Bk n k => e ⟨k, i⟩) (z ⟨k, c k⟩)).trans (by rw [hf e he k])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [div_pow, Finset.prod_div_distrib, hden]`. Rewrite using `[mul_div_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem ev_dehomog_of_isUnder : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (c : ∀ k, Bk n k) (f : Pol n) (a : Fin (m + 1) → ℕ), IsMultiHomog f a →
     ∀ (w : GlobalTheory.CxPts (mpStr ℤ m n) σ₀) (z : (Σ k, Bk n k) → ℂ), IsUnder w z → w ∈ ptsIn (mpStr ℤ m n) σ₀ (mchart c) →

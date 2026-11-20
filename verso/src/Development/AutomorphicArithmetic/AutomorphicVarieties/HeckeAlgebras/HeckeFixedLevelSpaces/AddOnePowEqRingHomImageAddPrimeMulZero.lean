@@ -12,7 +12,7 @@ variable {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAl
   {c : Coef l} (H : HSet L Ω l n c)
 
 /- English proof (translation)
-Use `⟨⟨fun q => a.1 q ⊓ b.1 q, fun q => ⟨(a.2 q).1.inter (b.2 q).1, (a.2 q).2.inter_right ((b.1 q).isClosed_of_isOpen (b.2 q).1)⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `sup_le_sup_left (iSup_mono fun q => Subgroup.map_mono inf_le_left) _`. Conclude with `sup_le_sup_left (iSup_mono fun q => Subgroup.map_mono inf_le_right) _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lev_dir (a b : H.Lev) : ∃ k, H.lev k ≤ H.lev a ∧ H.lev k ≤ H.lev b := by
   refine ⟨⟨fun q => a.1 q ⊓ b.1 q, fun q => ⟨(a.2 q).1.inter (b.2 q).1,
@@ -21,11 +21,9 @@ theorem lev_dir (a b : H.Lev) : ∃ k, H.lev k ≤ H.lev a ∧ H.lev k ≤ H.lev
   · exact sup_le_sup_left (iSup_mono fun q => Subgroup.map_mono inf_le_right) _
 
 /- English proof (translation)
-Use `⟨fun h => ⟨fun u hu => h u (Subgroup.mem_sup_left hu), fun q g hg => h _ (Subgroup.mem_sup_right (Subgroup.mem_iSup_of_mem q ⟨g, hg, rfl⟩))⟩, fun h u hu => ?_⟩` and prove the remaining obligations. Set `S : Subgroup H.X.Ub` to `{ carrier := {u | ρ u v = v} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Express the relevant statement in the definitionally equal form `ρ (a * b) v = v`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `inv_mem' := fun {a} ha => by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ρ a⁻¹ v = v`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `: H.lev K ≤ S` using `sup_le h.1 (iSup_le fun q => by`. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
-
-Conclude with `h.2 q g hg)`. Conclude with `this hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_fixd_lev {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (ρ : Representation A H.X.Ub M) (K : H.Lev) (v : M) :
     v ∈ fixd ρ (H.lev K) ↔ (∀ u ∈ H.UQ, ρ u v = v) ∧ ∀ q, ∀ g ∈ K.1 q, ρ (H.sec (H.wq q) g) v = v := by
@@ -47,24 +45,22 @@ theorem mem_fixd_lev {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (ρ
   exact this hu
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, h.eq, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem comm_app {A M G : Type} [CommRing A] [AddCommGroup M] [Module A M] [Group G] (ρ : Representation A G M) {a b : G}
     (h : Commute a b) (v : M) : ρ a (ρ b v) = ρ b (ρ a v) := by
   rw [← Module.End.mul_apply, ← map_mul, h.eq, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Set `e : GLw n (H.wq q) ≃ₜ GLw n (H.wq q)` to `(Homeomorph.mulRight g).trans (Homeomorph.mulLeft g⁻¹)`. Use `⟨⟨Function.update K.1 q ((K.1 q).comap (MulAut.conj g⁻¹).toMonoidHom), fun q' => ?_⟩, fun A M _ _ _ ρ v hv => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : q' = q`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `: (((K.1 q').comap (MulAut.conj g⁻¹).toMonoidHom : Subgroup _) : Set (GLw n (H.wq q'))) = e ⁻¹' (K.1 q')`. Use extensionality with `x`. Simplify using `[e, mul_assoc]`. Rewrite using `[this]`. Conclude with `⟨(K.2 q').1.preimage e.continuous, e.isCompact_preimage.2 (K.2 q').2⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Function.update_of_ne h]`. Conclude with `K.2 q'`. Rewrite `hv`, the goal using `[mem_fixd_lev]`. Use `⟨fun u hu => ?_, fun q' k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[comm_app ρ (hH.Q_UQ q u hu g), hv.1 u hu]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : q' = q`. Substitute `h` using the available equality. Simplify using `only [Function.update_self] at hk`. Use `hv.2 q' _ hk` as an intermediate fact. Establish `e1` using `LinearMap.congr_fun (map_mul (ρ.comp (H.sec (H.wq q'))) k g) v`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `LinearMap.congr_fun (map_mul (ρ.comp (H.sec (H.wq q'))) g ((MulAut.conj g⁻¹).toMonoidHom k)) v`. Establish `e3 : g * (MulAut.conj g⁻¹).toMonoidHom k = k * g` using `by simp [mul_assoc]`. Rewrite `e2` using `[e3]`. Conclude with `e1.symm.trans (e2.trans (congrArg (ρ (H.sec (H.wq q') g)) this))`. Simplify using `only [Function.update_of_ne h] at hk`.
-
-Rewrite using `[comm_app ρ (hH.Q_Q q' q h k g), hv.2 q' k hk]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_act (hH : H.Ax) (K : H.Lev) (q : H.Q) (g : GLw n (H.wq q)) : ∃ K' : H.Lev,
     ∀ (A M : Type) [CommRing A] [AddCommGroup M] [Module A M] (ρ : Representation A H.X.Ub M),
@@ -98,13 +94,13 @@ theorem lev_act (hH : H.Ax) (K : H.Lev) (q : H.Q) (g : GLw n (H.wq q)) : ∃ K' 
         rw [comm_app ρ (hH.Q_Q q' q h k g), hv.2 q' k hk]
 
 /- English proof (translation)
-Establish `hfin` using `(sphComm (w.adicCompletion L) n ℤ ℤ 1).1 (al _ n j)`. Use `letI := hfin.fintype`. Use `⟨MulAction.orbit (KO (w.adicCompletion L) (Fin n)) ((al _ n j : GLw n w) : GLw n w ⧸ KO (w.adicCompletion L) (Fin n)), inferInstance, fun q => H.sec w q.1.out, fun A M _ _ _ ρ => ?_⟩` and prove the remaining obligations. Establish `h1 : sphOp (ρ.comp (H.sec w)) j = ∑ q : MulAction.orbit (KO (w.adicCompletion L) (Fin n)) ((al _ n j : GLw n w) : GLw n w ⧸ KO (w.adicCompletion L) (Fin n)), ρ (H.sec w q.1.out)`. Rewrite using `[sphOp, dc, finsum_eq_sum_of_fintype]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨h1, fun hH hw K v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[mem_fixd_lev]`. Establish `h2` using `(dcSum A _ M (ρ.comp (H.sec w)) _ _ _ hfin).2.1 v fun k hk => hv.1 _ (hH.W_le w hw ⟨k, hk, rfl⟩)`. Establish `h3 : ∀ u : H.X.Ub, (∀ g, Commute u (H.sec w g)) → ρ u v = v → ρ u (sphOp (ρ.comp (H.sec w)) j v) = sphOp (ρ.comp (H.sec w)) j v`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu hv`. Rewrite using `[h1, LinearMap.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun q _ => by rw [comm_app ρ (hu _), hv]`. Rewrite using `[← h1]`. Use `⟨fun u hu => ?_, fun q g hg => h3 _ (hH.sectionsCommuteAtSplit q w hw g) (hv.2 q g hg)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, u', hu', rfl, hc⟩` from `hH.W_dec w hw u hu`. Conclude with `(LinearMap.congr_fun (map_mul ρ (H.sec w k) u') _).trans ((congrArg (ρ (H.sec w k)) (h3 u' hc (hv.1 u' hu'))).trans (h2 k hk))`.
+A detailed English derivation is pending.
 -/
 theorem lev_sph (w : W.Plc L) (j : ℕ) : ∃ (κ : Type) (_ : Fintype κ) (u : κ → H.X.Ub),
     ∀ (A M : Type) [CommRing A] [AddCommGroup M] [Module A M] (ρ : Representation A H.X.Ub M),
@@ -137,11 +133,11 @@ section Gl
 variable {V : Type} [Fintype V] (S : V → W.Plc L)
 
 /- English proof (translation)
-Establish `: (t : GV n S) ∈ M.map (iwS n S).T.subtype`. Rewrite using `[← Finset.noncommProd_mulSingle (t : GV n S)]`. Use `Submonoid.noncommProd_mem _ _ _ _ fun v _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MonoidHom.mulSingle (fun v : V => GLw n (S v)) v ((t : GV n S) v) ∈ _`. Rewrite using `[hy, map_list_prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `list_prod_mem fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[List.map_ofFn, List.mem_ofFn]`. Take `⟨i, rfl⟩` from `hx`. Use `⟨_, h v i, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(eV n S v i (y v i)).1 = Pi.mulSingle v _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Unfold `eV`. Reduce the equality to equality of the corresponding arguments. Take `⟨s, hs, e⟩` from `this`. Rewrite using `[← Subtype.ext e]` and apply the resulting hypothesis.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem add_one_pow_eq_ringHom_image_add_prime_mul_zero (M : Submonoid (iwS n S).T) (t : (iwS n S).T) (y : ∀ v, Fin n → Uo ((S v).adicCompletion L))
     (hy : ∀ v, (t : GV n S) v = (List.ofFn fun i => (eT _ n i (y v i) : GLw n (S v))).prod)
@@ -163,14 +159,14 @@ private theorem add_one_pow_eq_ringHom_image_add_prime_mul_zero (M : Submonoid (
   rwa [← Subtype.ext e]
 
 /- English proof (translation)
-Use `choose y hy _ using fun v => (glBridge ((S v).adicCompletion L) n ℂ 1).2.2.2.2.2.2.2.2.2 ⟨t.1 v, t.2 v trivial⟩`. Conclude with `add_one_pow_eq_ringHom_image_add_prime_mul_zero S M t y hy fun v i => h v i _`.
+A detailed English derivation is pending.
 -/
 theorem torus_mem_submonoid_of_elementaryTorus (M : Submonoid (iwS n S).T) (h : ∀ v i y, eV n S v i y ∈ M) (t : (iwS n S).T) : t ∈ M := by
   choose y hy _ using fun v => (glBridge ((S v).adicCompletion L) n ℂ 1).2.2.2.2.2.2.2.2.2 ⟨t.1 v, t.2 v trivial⟩
   exact add_one_pow_eq_ringHom_image_add_prime_mul_zero S M t y hy fun v i => h v i _
 
 /- English proof (translation)
-Use `choose y hy hy' using fun v => (glBridge ((S v).adicCompletion L) n ℂ 1).2.2.2.2.2.2.2.2.2 ⟨t.1 v, t.2 v trivial⟩`. Conclude with `add_one_pow_eq_ringHom_image_add_prime_mul_zero S M t y hy fun v i => h v i _ (hy' v e (ht v trivial) i)`.
+A detailed English derivation is pending.
 -/
 theorem gen_Tc (M : Submonoid (iwS n S).T) (e : ℕ)
     (h : ∀ v i (y : Uo ((S v).adicCompletion L)), (y : ((S v).adicCompletion L)ˣ) ∈ Uc _ (e + 1) → eV n S v i y ∈ M)
@@ -179,7 +175,7 @@ theorem gen_Tc (M : Submonoid (iwS n S).T) (e : ℕ)
   exact add_one_pow_eq_ringHom_image_add_prime_mul_zero S M t y hy fun v i => h v i _ (hy' v e (ht v trivial) i)
 
 /- English proof (translation)
-Use `Subgroup.map_mono fun y hy => ?_` and prove the remaining obligations. Rewrite `hy`, the goal using `[MonoidHom.mem_ker, Units.ext_iff]`. Conclude with `Ideal.Quotient.eq.2 (Ideal.pow_le_pow_right h (Ideal.Quotient.eq.1 (hy.trans (map_one _).symm)) : (y : 𝒪[k]) - 1 ∈ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Uc_anti (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {a b : ℕ}
     (h : a ≤ b) : Uc k b ≤ Uc k a := by
@@ -188,9 +184,9 @@ theorem Uc_anti (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNo
   exact Ideal.Quotient.eq.2 (Ideal.pow_le_pow_right h (Ideal.Quotient.eq.1 (hy.trans (map_one _).symm)) : (y : 𝒪[k]) - 1 ∈ _)
 
 /- English proof (translation)
-Introduce `v' _`. Unfold `alV`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `al_mem _ n j`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `Submonoid.one_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alV_mem (v : V) (j : ℕ) : alV n S v j ∈ (iwS n S).P := by
   classical
@@ -204,7 +200,7 @@ theorem alV_mem (v : V) (j : ℕ) : alV n S v j ∈ (iwS n S).P := by
     exact Submonoid.one_mem _
 
 /- English proof (translation)
-Simplify using `[algPow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem algPow_one (w : W.Plc L) (h : (L →+* Qbar l) → ℤ) : algPow w h 1 = 1 := by
   simp [algPow]
@@ -215,11 +211,11 @@ variable (ι : Qbar l ≃+* ℂ) (lam : Wt L l n) (χ : (iwS n S).Tf →* ℂˣ)
 include hχ
 
 /- English proof (translation)
-Rewrite using `[hχ t (Pi.mulSingle v y), Finset.prod_eq_single v]`. Simplify using the standard rewrite rules. Introduce `v' _ h`. Simplify using `[Pi.mulSingle_eq_of_ne h, algPow_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `v'`. Rewrite using `[ht]`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.mulSingle_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chi_single [DecidableEq V] (t : (iwS n S).Tf) (v : V) (y : Fin n → ((S v).adicCompletion L)ˣ)
     (ht : (t : GV n S) = Pi.mulSingle v (diagT _ (Fin n) y)) :
@@ -237,7 +233,7 @@ theorem chi_single [DecidableEq V] (t : (iwS n S).Tf) (v : V) (y : Fin n → ((S
     · simp [Pi.mulSingle_eq_of_ne h]
 
 /- English proof (translation)
-Rewrite using `[chi_single S ι lam χ hχ _ v (Pi.mulSingle i y.1) (by unfold eV; congr), Finset.prod_eq_single i]`. Simplify using the standard rewrite rules. Introduce `v' _ h`. Simplify using `[Pi.mulSingle_eq_of_ne h, algPow_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem chi_eV (v : V) (i : Fin n) (y : Uo ((S v).adicCompletion L)) :
     (χ ⟨eV n S v i y, (iwS n S).T_le (eV n S v i y).2⟩ : ℂ) =
@@ -250,7 +246,7 @@ theorem chi_eV (v : V) (i : Fin n) (y : Uo ((S v).adicCompletion L)) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[chi_single S ι lam χ hχ _ v (fun i => unif _ ^ (if (i : ℕ) < j then (1 : ℤ) else 0)) (by unfold alV; congr), Finset.prod_filter]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [algPow_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chi_alV (v : V) (j : ℕ) :
     (χ ⟨alV n S v j, (iwS n S).P_le _ (alV_mem S v j)⟩ : ℂ) =
@@ -265,19 +261,19 @@ theorem chi_alV (v : V) (j : ℕ) :
 
 omit hχ in
 /- English proof (translation)
-Set `D : (∀ v, Fin n → ((S v).adicCompletion L)ˣ) →* (iwS n S).Tf` to `{ toFun := fun y => ⟨fun v => diagT _ (Fin n) (y v), fun v _ => ⟨_, rfl⟩⟩ map_one' := Subtype.ext (funext fun v => map_one _) map_mul' := fun _ _ => Subtype.ext (funext fun v => map_mul _ _ _) }`. Establish `h1 : ∀ v j, (⟨alV n S v j, (iwS n S).P_le _ (alV_mem S v j)⟩ : (iwS n S).Tf) = D (Pi.mulSingle v fun i => unif _ ^ (if (i : ℕ) < j then (1 : ℤ) else 0))`. Introduce `v j`. Use `Subtype.ext (funext fun v' => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `alV n S v j v' = diagT _ (Fin n) _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Unfold `alV`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, Pi.mulSingle_eq_same]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `[Pi.mulSingle_eq_of_ne h]`. Establish `h2 : (⟨(iwS n S).z, (iwS n S).P_le _ (iwS n S).z_mem⟩ : (iwS n S).Tf) = D fun v i => unif _ ^ ((n : ℤ) - 1 - (i : ℕ))` using `rfl`. Simplify using `only [h1, h2]`. Express the relevant statement in the definitionally equal form `(χ.comp D) _ = ∏ v, ∏ j ∈ Finset.range n, (χ.comp D) _`. Simplify using `only [← map_prod]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `v i`. Rewrite using `[Finset.prod_apply, Finset.prod_apply, Finset.prod_eq_single v]`. Rewrite using `[Finset.prod_apply, Finset.prod_apply]`. Simplify using `only [Pi.mulSingle_eq_same]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: ∀ N : ℕ, (∏ j ∈ Finset.range N, unif ((S v).adicCompletion L) ^ (if (i : ℕ) < j then (1 : ℤ) else 0)) = unif _ ^ ((N - 1 - i : ℕ) : ℤ)`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.prod_range_succ, ih, ← zpow_add]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[this]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `v' _ h`. Rewrite using `[Finset.prod_apply, Finset.prod_apply]`. Simplify using `[Pi.mulSingle_eq_of_ne h.symm]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/

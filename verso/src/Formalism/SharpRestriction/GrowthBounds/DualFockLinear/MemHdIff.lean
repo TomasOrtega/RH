@@ -38,7 +38,7 @@ def RestRep : Prop :=
     (∀ P ∈ Hd K (m + 1) d, (∀ Q ∈ Hd K (m + 1) d, fockR (theta K m vec P) (theta K m vec Q) = 0) → P = 0)
 
 /- English proof (translation)
-Unfold `RE`. Simplify using `only [MvPolynomial.pderiv_mul, mul_add, Finset.sum_add_distrib, Finset.sum_mul, Finset.mul_sum]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun t _ => ?_ <;> ring`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem RE_mul (K : Type) [CommRing K] (k : ℕ) (a b : Fin k) (f g : MvPolynomial (Fin k × Fin k) K) :
     RE K k a b (f * g) = RE K k a b f * g + f * RE K k a b g := by
@@ -47,7 +47,7 @@ theorem RE_mul (K : Type) [CommRing K] (k : ℕ) (a b : Fin k) (f g : MvPolynomi
   congr 1 <;> refine Finset.sum_congr rfl fun t _ => ?_ <;> ring
 
 /- English proof (translation)
-Unfold `RE`. Simplify using `only [map_add, mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem RE_add (K : Type) [CommRing K] (k : ℕ) (a b : Fin k) (f g : MvPolynomial (Fin k × Fin k) K) :
     RE K k a b (f + g) = RE K k a b f + RE K k a b g := by
@@ -55,9 +55,9 @@ theorem RE_add (K : Type) [CommRing K] (k : ℕ) (a b : Fin k) (f g : MvPolynomi
   simp only [map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.G.Model.mem_Hd, mem_homogeneousSubmodule]`. Prove the components needed by the constructor for the conclusion. Introduce `h μ hμ`. Use `h μ (mem_support_iff.2 hμ)` as an intermediate fact. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype]`. Introduce `h μ hμ`. Use `h (mem_support_iff.1 hμ)` as an intermediate fact. Rewrite using `[← this]`. Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_Hd_iff {K : Type} [CommRing K] {k d : ℕ} (P : MvPolynomial (Fin k) K) :
     P ∈ Hd K k d ↔ P ∈ homogeneousSubmodule (Fin k) K d := by
@@ -73,9 +73,9 @@ theorem mem_Hd_iff {K : Type} [CommRing K] {k d : ℕ} (P : MvPolynomial (Fin k)
     simp [Finsupp.weight_apply, Finsupp.sum_fintype]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [EdWord, word1]`. Consider the case `cons y l ih`. Establish `: EdWord K k d (y :: l) = Ed K k d y.1 y.2 * EdWord K k d l` using `by simp [EdWord]`. Rewrite using `[this, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show X y.1 * pderiv y.2 ((EdWord K k d l P : ↥(homogeneousSubmodule (Fin k) K d)) : MvPolynomial (Fin k) K) = _`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem EdWord_coe (K : Type) [Field K] (k d : ℕ) (l : List (Fin k × Fin k)) (P : ↥(homogeneousSubmodule (Fin k) K d)) :
     ((EdWord K k d l P : ↥(homogeneousSubmodule (Fin k) K d)) : MvPolynomial (Fin k) K) =

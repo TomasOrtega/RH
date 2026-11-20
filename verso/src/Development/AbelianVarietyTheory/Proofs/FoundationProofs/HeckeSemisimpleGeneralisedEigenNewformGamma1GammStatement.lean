@@ -6,7 +6,7 @@ open GlobalTheory.HeckeFamilyMatrices Polynomial
 open scoped MatrixGroups
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HeckeFamilyMatrices.hecke_semisimple_at_newform` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FHeckeSemisimpleGeneralisedEigenNewformGamma1Gamm.lean&line=321#L321)
 -/

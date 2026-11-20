@@ -28,14 +28,14 @@ def minorF {D : D7} {a d a₁ d₁ : ℕ} {n : D.what₂.Tau → ℕ} (ha : a = 
     (GlobalTheory.NormSum.minorPol D T)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hg`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem IsFinPt.cast {D : D7} {WW : HSp D} {g : Formalism.L2.Theta.GA D WW} {n n' : ℕ} (e : n' = n) {h : Formalism.MainNotions.StandardLatticesGL3.GA D n}
     (hg : IsFinPt WW g h) : IsFinPt WW g (e ▸ h : Formalism.MainNotions.StandardLatticesGL3.GA D n') := by
   subst e; exact hg
 
 /- English proof (translation)
-Unfold `lamC`. Rewrite using `[dif_pos (Qbar.mul_mem hx hy), dif_pos hx, dif_pos hy, ← map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamC_mul {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) {x y : ℂ} (hx : x ∈ Qbar) (hy : y ∈ Qbar) :
     lamC lam (x * y) = lamC lam x * lamC lam y := by

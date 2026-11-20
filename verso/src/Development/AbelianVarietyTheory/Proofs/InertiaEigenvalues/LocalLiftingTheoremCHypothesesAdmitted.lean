@@ -20,7 +20,7 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 namespace GlobalTheory.TheoremCAdm
 
 /- English proof (translation)
-Introduce `hBK hTD hEC D HW F Cm`. Establish `hU` using `(GlobalTheory.T.wachModuleLocalConclusions_usedForms D HW F Cm).1`. Establish `h54` using `GlobalTheory.T.localConstants_from_admitted_local_Galois_statements hBK hTD hEC D HW F Cm`. Establish `h6a` using `GlobalTheory.HerrFull.herr_part_a_every_record D HW F`. Conclude with `⟨hU.1, hU.2.1, hU.2.2.1, hU.2.2.2, RamifiedCoefficientChains.sizes_bound_of_log_estimates D HW F h54, RamifiedCoefficientChains.restriction_dimension_of_division D HW F h54, RamifiedCoefficientChains.level_tools_of_admitted D HW F h54, RamifiedCoefficientChains.lemma_M_prime_hypo …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem admissible_ranks_of_CMDatum : GlobalTheory.Published.BlochKatoLocal → Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK →
     ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F),

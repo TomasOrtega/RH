@@ -30,9 +30,9 @@ end GlobalTheory.GoodFix
 open GlobalTheory.GoodFix in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hP t F v`. Establish `hC` using `hP.bot.hyp.2.2.2.1`. Establish `hL` using `hP.lev`. Unfold `_root_.GlobalTheory.MiS.LevelHypothesis at hL`. Take `⟨⟨s, hs⟩, -⟩` from `hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hgf` using `good_fix (W.P.A3.A.fam.R t) (W.P.A3.A.fam.lvl W.Q.F.P1 W.Q.F.ψ1) hs.ok2.irr F`. Conclude with `goodProjector_fixes_compositeThetaLift_of_fixed GlobalTheory.T.cusp_forms_rapid_decay (_root_.GlobalTheory.Fam.pk_z W) hC.lev hC.models hC.chain hC.grp.red_R t _ hgf v`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GoodFix.e_zero_theta_descent_eval_alt_bis : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ t (F : Fin ((W.Q.F.fc (_root_.GlobalTheory.MiS.packageCoefficientSpace W).zs).Df1.nV t) → D.what₂.LL) (v : ((_root_.GlobalTheory.Fam.pk_z W).MY 0).Vec), (_root_.GlobalTheory.Fam.pk_z W).e0 ((_root_.GlobalTheory.Fam.pk_z W).thDn t ((_root_.GlobalTheory.Fam.pk_z W).jX t (W.Q.F.eV (_root_.GlobalTheory.MiS.packageCoefficientSpace W).zs t F)) (PiTensorProduct.tprod ℂ v)) = (_root_.GlobalTheory.Fam.pk_z W).thDn t ((_root_.GlobalTheory.Fam.pk_z W).jX t (W.Q.F.eV (_root_.GlobalTheory.MiS.packageCoefficientSpace W).zs t F)) (PiTensorProduct.tprod ℂ v) := by
   intro D L hT Gi Gl Kc Yd cX ex W hP t F v

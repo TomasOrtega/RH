@@ -12,7 +12,7 @@ noncomputable section
 namespace ClassMean
 
 /- English proof (translation)
-Rewrite using `[MeasureTheory.measureReal_congr (ZSpan.fundamentalDomain_ae_parallelepiped Complex.basisOneI MeasureTheory.volume), MeasureTheory.measureReal_def]`. Establish `h : parallelepiped (⇑Complex.basisOneI) = parallelepiped (⇑Complex.orthonormalBasisOneI)`. Rewrite using `[Complex.coe_orthonormalBasisOneI, Complex.coe_basisOneI]`. Rewrite using `[h, Complex.orthonormalBasisOneI.volume_parallelepiped]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem volume_real_fundamentalDomain_basisOneI :
     MeasureTheory.volume.real (ZSpan.fundamentalDomain Complex.basisOneI) = 1 := by
@@ -25,7 +25,7 @@ theorem volume_real_fundamentalDomain_basisOneI :
   simp
 
 /- English proof (translation)
-Rewrite using `[latticeArea, ZLattice.covolume_eq_det_mul_measureReal L.lattice MeasureTheory.volume L.latticeBasis Complex.basisOneI, volume_real_fundamentalDomain_basisOneI, mul_one, Module.Basis.det_apply, Matrix.det_fin_two]`. Simplify using `[Module.Basis.toMatrix_apply, Complex.coe_basisOneI_repr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem latticeArea_periodPair (L : PeriodPair) :
     latticeArea L.lattice = |L.ω₁.re * L.ω₂.im - L.ω₂.re * L.ω₁.im| := by
@@ -35,7 +35,7 @@ theorem latticeArea_periodPair (L : PeriodPair) :
   simp [Module.Basis.toMatrix_apply, Complex.coe_basisOneI_repr]
 
 /- English proof (translation)
-Rewrite using `[scaleLattice, PeriodPair.lattice, Submodule.map_span, Set.image_pair]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem scaleLattice_latticeOfTau (c : ℂ) (τ : ℍ) :
     scaleLattice c (latticeOfTau τ).lattice = Submodule.span ℤ {c * τ, c} := by
@@ -54,14 +54,14 @@ def scaledPair (c : ℂ) (hc : c ≠ 0) (τ : ℍ) : PeriodPair where
     simpa [Complex.real_smul] using h''
 
 /- English proof (translation)
-Rewrite using `[scaleLattice_latticeOfTau]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem scaledPair_lattice (c : ℂ) (hc : c ≠ 0) (τ : ℍ) :
     (scaledPair c hc τ).lattice = scaleLattice c (latticeOfTau τ).lattice := by
   rw [scaleLattice_latticeOfTau]; rfl
 
 /- English proof (translation)
-Rewrite using `[← scaledPair_lattice c hc τ, latticeArea_periodPair]`. Establish `: (scaledPair c hc τ).ω₁.re * (scaledPair c hc τ).ω₂.im - (scaledPair c hc τ).ω₂.re * (scaledPair c hc τ).ω₁.im = -(‖c‖ ^ 2 * τ.im)`. Simplify using `only [scaledPair, Complex.mul_re, Complex.mul_im, ← Complex.normSq_eq_norm_sq, Complex.normSq_apply, UpperHalfPlane.coe_im, UpperHalfPlane.coe_re]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, abs_neg, abs_of_nonneg (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem latticeArea_scaleLattice (c : ℂ) (hc : c ≠ 0) (τ : ℍ) :
     latticeArea (scaleLattice c (latticeOfTau τ).lattice) = ‖c‖ ^ 2 * τ.im := by
@@ -74,13 +74,13 @@ theorem latticeArea_scaleLattice (c : ℂ) (hc : c ≠ 0) (τ : ℍ) :
   rw [this, abs_neg, abs_of_nonneg (by positivity)]
 
 /- English proof (translation)
-Establish `harea` using `latticeArea_scaleLattice c hc τ`. Rewrite `harea`, the goal using `[← scaledPair_lattice c hc τ]`. Unfold `epsteinSum kroneckerSum`. Rewrite using `[harea, ← (scaledPair c hc τ).latticeEquivProd.symm.toEquiv.tsum_eq]`. Use `tsum_congr fun p ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearEquiv.coe_toEquiv, PeriodPair.latticeEquiv_symm_apply]`. Establish `key : (p.1 : ℂ) * (scaledPair c hc τ).ω₁ + p.2 * (scaledPair c hc τ).ω₂ = c * (p.1 * τ + p.2)`. Simplify using `only [scaledPair]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `h2s : 2 * s ≠ 0` using `by positivity`. Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hp]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h0`. Rewrite using `[(mul_eq_zero.1 h0).resolve_left hc, norm_zero, Real.zero_rpow h2s, div_zero]`. Establish `hc' : 0 < ‖c‖` using `norm_pos_iff.2 hc`. Establish `hpow : (‖c‖ ^ 2) ^ s = ‖c‖ ^ (2 * s)` using `by rw [Real.rpow_mul hc'.le, Real.rpow_two]`. Rewrite using `[norm_mul, Real.mul_rpow (norm_nonneg _) (norm_nonneg _), Real.mul_rpow (by positivity) τ.im_pos.le, hpow, mul_div_mul_left _ _ (Real.rpow_pos_of_pos hc' _).ne']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsteinSum_scaleLattice (c : ℂ) (hc : c ≠ 0) (τ : ℍ) {s : ℝ} (hs : 0 < s) :
     epsteinSum (scaleLattice c (latticeOfTau τ).lattice) s = kroneckerSum τ s := by
@@ -107,20 +107,18 @@ theorem epsteinSum_scaleLattice (c : ℂ) (hc : c ≠ 0) (τ : ℍ) {s : ℝ} (h
     mul_div_mul_left _ _ (Real.rpow_pos_of_pos hc' _).ne']
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_insert, Submodule.span_insert, ← Set.neg_singleton, Submodule.span_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem span_neg_pair (a b : ℂ) :
     Submodule.span ℤ {-a, b} = Submodule.span ℤ ({a, b} : Set ℂ) := by
   rw [Submodule.span_insert, Submodule.span_insert, ← Set.neg_singleton, Submodule.span_neg]
 
 /- English proof (translation)
-Establish `h2 : L.ω₂ ≠ 0` using `by simpa using L.indep.ne_zero 1`. Use `set t := L.ω₁ / L.ω₂ with ht_def`. Establish `h1 : L.ω₁ = t * L.ω₂` using `(div_mul_cancel₀ _ h2).symm`. Establish `ht : t.im ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : L.ω₁ = (t.re : ℂ) * L.ω₂`. Rewrite using `[h1]; congr 1; exact Complex.ext (by simp) (by simp [h])`. Use `LinearIndependent.pair_iff.1 L.indep 1 (-t.re) (by rw [Complex.real_smul, Complex.real_smul, e]; push_cast; ring)` as an intermediate fact. Conclude with `one_ne_zero this.1`. Break down `lt_or_gt_of_ne ht with hneg | hpos` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨-t, by simpa using neg_pos.2 hneg⟩, L.ω₂, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[scaleLattice_latticeOfTau, PeriodPair.lattice, h1]`. Rewrite using `[show L.ω₂ * -t = -(t * L.ω₂) by ring, span_neg_pair]`. Use `⟨⟨t, hpos⟩, L.ω₂, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[scaleLattice_latticeOfTau, PeriodPair.lattice, h1]`.
-
-Rewrite using `[mul_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_scaleLattice (L : PeriodPair) :
     ∃ (τ : ℍ) (c : ℂ), c ≠ 0 ∧ L.lattice = scaleLattice c (latticeOfTau τ).lattice := by
@@ -145,21 +143,21 @@ theorem exists_eq_scaleLattice (L : PeriodPair) :
 variable {K : Type} [Field K] [NumberField K] [Algebra.IsQuadraticExtension ℚ K]
 
 /- English proof (translation)
-Rewrite using `[S.discr_eq]`. Simplify using `using S.prime.pos`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem discr_neg (S : PrimeDiscriminant K) : discr K < 0 := by
   rw [S.discr_eq]; simpa using S.prime.pos
 
 /- English proof (translation)
-The claim follows from `nrRealPlaces_eq_zero_iff.1 (Quadratic.places_of_discr_neg K (discr_neg S)).1`.
+A detailed English derivation is pending.
 -/
 theorem isTotallyComplex (S : PrimeDiscriminant K) : IsTotallyComplex K :=
   nrRealPlaces_eq_zero_iff.1 (Quadratic.places_of_discr_neg K (discr_neg S)).1
 
 /- English proof (translation)
-Use `isTotallyComplex S` as an intermediate fact. Establish `hK : Module.finrank ℚ K = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two ℚ K`. Establish `e : classLattice σ C = (idealPeriodPair σ hK (FractionalIdeal.mk0 K (classRep C))).lattice`. Rewrite using `[lattice_idealPeriodPair]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `exists_eq_scaleLattice _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_classLattice_eq (S : PrimeDiscriminant K) (σ : K →+* ℂ) (C : ClassGroup (𝓞 K)) :
     ∃ (τ : ℍ) (c : ℂ), c ≠ 0 ∧ classLattice σ C = scaleLattice c (latticeOfTau τ).lattice := by
@@ -171,11 +169,11 @@ theorem exists_classLattice_eq (S : PrimeDiscriminant K) (σ : K →+* ℂ) (C :
   rw [e]; exact exists_eq_scaleLattice _
 
 /- English proof (translation)
-Establish `hcn` using `Quadratic.classNumber_eq_of_discr_neg K (discr_neg S)`. Establish `habs : |((discr K : ℤ) : ℝ)| = S.d`. Rewrite using `[S.discr_eq]`. Use `push_cast`. Rewrite using `[abs_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `abs_of_nonneg (Nat.cast_nonneg _)`. Rewrite `hcn` using `[habs]`. Establish `hd : (0 : ℝ) < S.d` using `by exact_mod_cast S.prime.pos`. Establish `hw : (Units.torsionOrder K : ℂ) ≠ 0` using `by exact_mod_cast Units.torsionOrder_ne_zero K`. Establish `hs : ((Real.sqrt S.d : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Real.sqrt_pos.2 hd).ne'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ : (π : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Use `push_cast`. Rewrite using `[hcn]`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem LFunction_one_eq (S : PrimeDiscriminant K) :
     DirichletCharacter.LFunction (Quadratic.kronecker K) 1 =
@@ -197,47 +195,45 @@ end ClassMean
 open ClassMean in
 
 /- English proof (translation)
-Introduce `σ`. Establish `hd : (0 : ℝ) < S.d` using `by exact_mod_cast S.prime.pos`. Establish `hsq : 0 < Real.sqrt S.d` using `Real.sqrt_pos.2 hd`. Establish `ha : 0 < 2 / Real.sqrt S.d` using `by positivity`. Establish `hw : (0 : ℝ) < Units.torsionOrder K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.pos_of_ne_zero (Units.torsionOrder_ne_zero K)` after adjusting the coercions. Establish `hh : (0 : ℝ) < classNumber K` using `by exact_mod_cast Fintype.card_pos`. Use `choose τ c hc hΛ using fun C ↦ exists_classLattice_eq S σ C`. Establish `hph : ∀ C, classLogPeriod σ C = Real.log (4 * π) + 2 * Real.log (Real.sqrt (τ C).im * ‖η (τ C : ℂ)‖ ^ 2)`. Introduce `C`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη : 0 < ‖η (τ C : ℂ)‖` using `norm_pos_iff.2 (ModularForm.eta_ne_zero (τ C).im_pos)`. Establish `hy` using `(τ C).im_pos`. Rewrite using `[classLogPeriod, hΛ C, hPS _ _ (hc C), hPT]`. Establish `e : 4 * π * (τ C).im * ‖η (τ C : ℂ)‖ ^ 4 = 4 * π * (Real.sqrt (τ C).im * ‖η (τ C : ℂ)‖ ^ 2) ^ 2`. Rewrite using `[mul_pow, Real.sq_sqrt hy.le]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpos : 0 < Real.sqrt (τ C).im * ‖η (τ C : ℂ)‖ ^ 2` using `mul_pos (Real.sqrt_pos.2 hy) (pow_pos hη 2)`. Rewrite using `[e, Real.log_mul (by positivity) (pow_pos hpos 2).ne', Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzeta : ∀ s : ℝ, 1 < s → riemannZeta s * DirichletCharacter.LFunction (Quadratic.kronecker K) s = (((Units.torsionOrder K : ℝ)⁻¹ * (2 / Real.sqrt S.d) ^ s * ∑ C, kroneckerSum (τ C) s : ℝ) : ℂ)`. Introduce `s hs`. Take `⟨h1, h2⟩` from `hZF s hs`. Rewrite using `[← h1, ← h2, Finset.mul_sum, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun C _ ↦ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hCE σ C (FractionalIdeal.mk0 K (classRep C)) (by rw [ClassGroup.mk_mk0, mk0_classGroupRep]) s hs]`. Express the relevant statement in the definitionally equal form `((_ * _ * epsteinSum (classLattice σ C) s : ℝ) : ℂ) = _`. Rewrite using `[hΛ C, epsteinSum_scaleLattice _ (hc C) _ (by linarith)]`. Establish `hF : Tendsto (fun s : ℝ ↦ ∑ C, kroneckerSum (τ C) s - classNumber K * π / (s - 1)) (𝓝[>] 1) (𝓝 (2 * π * ∑ C, (Real.eulerMascheroniConstant - Real.log 2 - Real.log (Real.sqrt (τ C).im * ‖η (τ C : ℂ)‖ ^ 2))))`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(tendsto_finsetSum Finset.univ fun C _ ↦ hKL (τ C)).congr fun s ↦ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_div_assoc]`. Both sides reduce to the same expression. Use `set Lf := DirichletCharacter.LFunction (Quadratic.kronecker K) with hLf`. Use `set a : ℝ := 2 / Real.sqrt S.d with ha_def`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set w : ℝ := (Units.torsionOrder K : ℝ) with hw_def`. Use `set h : ℝ := (classNumber K : ℝ) with hh_def`. Use `set F : ℝ → ℝ := fun s ↦ ∑ C, kroneckerSum (τ C) s with hF_def`. Use `set B : ℝ := ∑ C, (Real.eulerMascheroniConstant - Real.log 2 - Real.log (Real.sqrt (τ C).im * ‖η (τ C : ℂ)‖ ^ 2)) with hB_def`. Establish `hL1 : Lf 1 = ((w⁻¹ * a * h * π : ℝ) : ℂ)` using `LFunction_one_eq S`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hcplx : Tendsto (fun s : ℝ ↦ (s : ℂ)) (𝓝[>] 1) (𝓝[≠] (1 : ℂ))`. Use `tendsto_nhdsWithin_iff.2 ⟨?_, eventually_nhdsWithin_of_forall fun s hs ↦ ?_⟩` and prove the remaining obligations. Simplify using `using (Complex.continuous_ofReal.tendsto (1 : ℝ)).mono_left nhdsWithin_le_nhds`. Simplify `(ne_of_gt hs)` using `[Complex.ofReal_eq_one]`. Establish `hdiff` using `DirichletCharacter.differentiable_LFunction (Quadratic.kronecker_ne_one K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hD : Tendsto (fun s : ℝ ↦ (Lf s - Lf 1) / ((s : ℂ) - 1)) (𝓝[>] 1) (𝓝 (deriv Lf 1))`. Use `((hasDerivAt_iff_tendsto_slope.1 (hdiff 1).hasDerivAt).comp hcplx).congr fun s ↦ ?_` and prove the remaining obligations. Simplify using `[slope_def_field, hLf]`. Establish `hLc : Tendsto (fun s : ℝ ↦ Lf s) (𝓝[>] 1) (𝓝 (Lf 1))` using `(hdiff.continuous.tendsto 1).comp (hcplx.mono_right nhdsWithin_le_nhds)`. Establish `hA : Tendsto (fun s : ℝ ↦ (a ^ s - a) / (s - 1)) (𝓝[>] 1) (𝓝 (a * Real.log a))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hder` using `(Real.hasStrictDerivAt_const_rpow ha 1).hasDerivAt`. Establish `hsl` using `(hasDerivAt_iff_tendsto_slope.1 hder).mono_left (nhdsWithin_mono _ fun x (hx : 1 < x) ↦ ne_of_gt hx)`. Rewrite `hsl` using `[Real.rpow_one]`. Use `hsl.congr fun s ↦ ?_` and prove the remaining obligations. Simplify using `[slope_def_field, Real.rpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : Tendsto (fun s : ℝ ↦ a ^ s) (𝓝[>] 1) (𝓝 a)`. Simplify using `using ((Real.continuousAt_const_rpow ha.ne' (b := 1)).tendsto).mono_left nhdsWithin_le_nhds`. Establish `hlim1 : Tendsto (fun s : ℝ ↦ (Lf s - Lf 1) / ((s : ℂ) - 1) + (riemannZeta s - 1 / ((s : ℂ) - 1)) * Lf s) (𝓝[>] 1) (𝓝 (deriv Lf 1 + Real.eulerMascheroniConstant * Lf 1))` using `hD.add (ZetaAsymptotics.tendsto_riemannZeta_sub_one_div_nhds_right.mul hLc)`. Establish `hlim2 : Tendsto (fun s : ℝ ↦ ((w⁻¹ * ((a ^ s - a) / (s - 1) * h * π + a ^ s * (F s - h * π / (s - 1))) : ℝ) : ℂ)) (𝓝[>] 1) (𝓝 ((w⁻¹ * (a * Real.log a * h * π + a * (2 * π * B)) : ℝ) : ℂ))` using `(Complex.continuous_ofReal.tendsto _).comp (Tendsto.const_mul w⁻¹ (((hA.mul_const h).mul_const π).add (hP.mul hF)))`. Establish `heq : ∀ s : ℝ, 1 < s → (Lf s - Lf 1) / ((s : ℂ) - 1) + (riemannZeta s - 1 / ((s : ℂ) - 1)) * Lf s = ((w⁻¹ * ((a ^ s - a) / (s - 1) * h * π + a ^ s * (F s - h * π / (s - 1))) : ℝ) : ℂ)`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Introduce `s hs`. Establish `hz : riemannZeta s * Lf s = ((w⁻¹ * a ^ s * F s : ℝ) : ℂ)` using `hzeta s hs`. Establish `hx : (s : ℂ) - 1 ≠ 0` using `sub_ne_zero.2 (by exact_mod_cast (ne_of_gt hs))`. Establish `hxr : s - 1 ≠ 0` using `sub_ne_zero.2 (ne_of_gt hs)`. Generalize the expression as in `a ^ s = P at hz ⊢`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Generalize the expression as in `F s = Fs at hz ⊢`. Generalize the expression as in `riemannZeta s = Z at hz ⊢`. Generalize the expression as in `Lf s = Ls at hz ⊢`. Rewrite using `[hL1]`. Move the coercions through the operations in `at hz ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `((s : ℂ) - 1) * hz`. Establish `hlim1' : Tendsto (fun s : ℝ ↦ ((w⁻¹ * ((a ^ s - a) / (s - 1) * h * π + a ^ s * (F s - h * π / (s - 1))) : ℝ) : ℂ)) (𝓝[>] 1) (𝓝 (deriv Lf 1 + Real.eulerMascheroniConstant * Lf 1))` using `hlim1.congr' (eventually_nhdsWithin_of_forall fun s hs ↦ heq s hs)`. Establish `key : deriv Lf 1 + Real.eulerMascheroniConstant * Lf 1 = ((w⁻¹ * (a * Real.log a * h * π + a * (2 * π * B)) : ℝ) : ℂ)` using `tendsto_nhds_unique hlim1' hlim2`. Use `set T : ℝ := ∑ C, Real.log (Real.sqrt (τ C).im * ‖η (τ C : ℂ)‖ ^ 2) with hT_def`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcm : classMean σ = h⁻¹ * (h * Real.log (4 * π) + 2 * T)`. Rewrite using `[classMean]`. Simplify using `only [hph, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Finset.mul_sum]`. Both sides reduce to the same expression. Establish `hB : B = h * Real.eulerMascheroniConstant - h * Real.log 2 - T`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hB_def, Finset.sum_sub_distrib, Finset.sum_sub_distrib, Finset.sum_const, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, nsmul_eq_mul]`. Both sides reduce to the same expression. Establish `hL' : deriv Lf 1 = ((w⁻¹ * (a * Real.log a * h * π + a * (2 * π * B)) - Real.eulerMascheroniConstant * (w⁻¹ * a * h * π) : ℝ) : ℂ)`. Rewrite `key` using `[hL1]`. Move the coercions through the operations in `at key ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Take the linear combination `key`. Establish `hw0 : w ≠ 0` using `hw.ne'`. Establish `hh0 : h ≠ 0` using `hh.ne'`. Establish `ha0 : a ≠ 0` using `ha.ne'`. Establish `hπ0 : π ≠ 0` using `Real.pi_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl4 : Real.log (4 * π) = 2 * Real.log 2 + Real.log π`. Rewrite using `[Real.log_mul (by norm_num) hπ0, show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hl2 : Real.log (2 * π / Real.sqrt S.d) = Real.log 2 + Real.log π - Real.log (Real.sqrt S.d)`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Real.log_div (by positivity) hsq.ne', Real.log_mul two_ne_zero hπ0]`. Establish `hla : Real.log a = Real.log 2 - Real.log (Real.sqrt S.d)` using `Real.log_div two_ne_zero hsq.ne'`. Establish `hreal : classMean σ = Real.eulerMascheroniConstant + Real.log (2 * π / Real.sqrt S.d) - (w⁻¹ * (a * Real.log a * h * π + a * (2 * π * B)) - Real.eulerMascheroniConstant * (w⁻¹ * a * h * π)) / (w⁻¹ * a * h * π)`. Rewrite using `[hcm, hB, hl4, hl2, hla]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL', hL1, hreal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem ClassMean.proof {K : Type} [Field K] [NumberField K] [Algebra.IsQuadraticExtension ℚ K]
     (S : PrimeDiscriminant K) (hKL : KroneckerLimit.Statement) (hCE : ClassEpstein.Statement S)

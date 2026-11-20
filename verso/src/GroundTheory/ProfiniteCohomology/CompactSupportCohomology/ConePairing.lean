@@ -32,11 +32,11 @@ theorem shiftLeft_succ {r s n : ℕ} (h : r + 1 + s = n + 1) (y : L.X r) (w : N'
   rfl
 
 /- English proof (translation)
-Consider the cases of `r with`. Consider the case `zero`. Establish `e1 : μL.shiftLeft 0 s n h y w = 0` using `rfl`. Establish `e2 : (shiftNegOneD L 0).hom y = 0` using `rfl`. Establish `e3 : μL.shiftLeft 0 (s + 1) (n + 1) (by omega) y ((N'.d s (s + 1)).hom w) = 0` using `rfl`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, e3, map_zero, map_zero, LinearMap.zero_apply, smul_zero, add_zero]`. Consider the case `succ r`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨r + s, by omega⟩`. Use `revert y`. Introduce `(y : L.X r)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `-(L'.d m (m + 1)).hom (μL.μ (show r + s = m by omega) y w) = μL.μ (show r + 1 + s = m + 1 by omega) (-(L.d r (r + 1)).hom y) w + (-1 : k) ^ (r + 1) • μL.μ (show r + (s + 1) = m + 1 by omega) y ((N'.d s (s + 1)).hom w)`. Rewrite using `[μL.leibniz, map_neg, LinearMap.neg_apply, pow_succ, mul_neg_one, neg_smul, neg_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shiftLeft_leibniz {r s n : ℕ} (h : r + s = n) (y : shiftNegOneX L r) (w : N'.X s) :
     (shiftNegOneD L' n).hom (μL.shiftLeft r s n h y w) =
@@ -111,9 +111,9 @@ variable (hc : ∀ {r s n : ℕ} (h : r + s = n) (x : K.X r) (z : N.X s),
 end Left
 
 /- English proof (translation)
-Set `w` to `((shiftNegOne L).liftCycles (L.iCycles r ≫ shiftNegOneSuccHom L r) (r + 1 + 1) (CochainComplex.next ℕ (r + 1)) (iCycles_shiftNegOneSuccHom_d L r)).hom c`. Use `⟨(HomologicalComplex.cyclesMap (mappingCoconeNat.inr f) (r + 1)).hom w, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(HomologicalComplex.homologyMap (mappingCoconeNat.inr f) (r + 1)).hom ((shiftNegOneHomologyHom L r).hom ((L.homologyπ r).hom c)) = _`. Rewrite using `[hom_apply_hom_apply_of_comp_eq (homologyπ_shiftNegOneHomologyHom L r) c]`. Conclude with `homologyMap_homologyπ_apply _ _ _`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iCycles_cyclesMap_apply,hom_apply_hom_apply_of_comp_eq ((shiftNegOne L).liftCycles_i _ _ _ _) c]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem _root_.GroundTheory.ProfCoh.mappingCoconeNat.exists_homologyδ_homologyπ
     {K L : CochainComplex (ModuleCat.{u} k) ℕ} (f : K ⟶ L) (r : ℕ) (c : L.cycles r) :
@@ -141,9 +141,9 @@ variable {K L K' L' N N' : CochainComplex (ModuleCat.{u} k) ℕ} {f : K ⟶ L} {
     (f'.f n).hom (μK.μ h x z) = μL.μ h ((f.f r).hom x) ((ρ.f s).hom z))
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `homologyπ_hom_surjective _ r ξ`. Take `⟨w, rfl⟩` from `homologyπ_hom_surjective _ s z`. Take `⟨c', hc'1, hc'2⟩` from `mappingCoconeNat.exists_homologyδ_homologyπ f r c`. Rewrite using `[homologyMap_homologyπ_apply, homology_homologyπ]`. Take `⟨c'', hc''1, hc''2⟩` from `mappingCoconeNat.exists_homologyδ_homologyπ f' n (μL.cycles h c ((HomologicalComplex.cyclesMap ρ s).hom w))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hc'1, hc''1, homology_homologyπ]`. Use `congr 1`. Apply `iCycles_hom_injective` to reduce the goal to its premises. Rewrite using `[iCycles_cycles, hc'2, hc''2, iCycles_cycles, iCycles_cyclesMap_apply]`. Conclude with `Prod.ext (LinearMap.map_zero₂ _ _) rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coconeLeft_homology_homologyδ {r s n : ℕ} (h : r + s = n) (h' : r + 1 + s = n + 1)
     (ξ : L.homology r) (z : N.homology s) :
@@ -183,11 +183,11 @@ theorem shiftRight_succ {r s n : ℕ} (h : r + (s + 1) = n + 1) (u : M'.X r) (c 
   rfl
 
 /- English proof (translation)
-Consider the cases of `s with`. Consider the case `zero`. Establish `e1 : μR.shiftRight r 0 n h u c = 0` using `rfl`. Establish `e2 : (shiftNegOneD L 0).hom c = 0` using `rfl`. Establish `e3 : μR.shiftRight (r + 1) 0 (n + 1) (by omega) ((M'.d r (r + 1)).hom u) c = 0` using `rfl`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, e3, map_zero, map_zero, neg_zero, smul_zero, add_zero]`. Consider the case `succ s`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨r + s, by omega⟩`. Use `revert c`. Introduce `(c : L.X s)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `-(L'.d m (m + 1)).hom (μR.μ (show r + s = m by omega) u c) = -μR.μ (show r + 1 + s = m + 1 by omega) ((M'.d r (r + 1)).hom u) c + (-1 : k) ^ r • μR.μ (show r + (s + 1) = m + 1 by omega) u (-(L.d s (s + 1)).hom c)`. Rewrite using `[μR.leibniz, map_neg, smul_neg, neg_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shiftRight_leibniz {r s n : ℕ} (h : r + s = n) (u : M'.X r) (c : shiftNegOneX L s) :
     (shiftNegOneD L' n).hom (μR.shiftRight r s n h u c) =

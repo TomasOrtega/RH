@@ -5,49 +5,45 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `hπ`. Establish `hN0 : 0 < N` using `by omega`. Establish `hN1 : 1 < N` using `by omega`. Establish `hmul0 : ∀ u w : A, Δ 0 (u * w) = Δ 0 u * Δ 0 w`. Introduce `u w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hL 0 hN0]`. Simplify using the standard rewrite rules. Establish `halg : ∀ c : k, Δ 0 (algebraMap k A c) = c`. Introduce `c`. Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, h01, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `φ : A →+* k` to `{ toFun := Δ 0, map_one' := h01, map_mul' := hmul0, map_zero' := map_zero _, map_add' := map_add _ }`. Establish `hsurj : Function.Surjective φ` using `fun c => ⟨algebraMap k A c, halg c⟩`. Establish `hQmax : (RingHom.ker φ).IsMaximal` using `RingHom.ker_isMaximal_of_surjective φ hsurj`. Establish `hmemQ : ∀ u, u ∈ RingHom.ker φ ↔ Δ 0 u = 0` using `fun u => RingHom.mem_ker`. Use `set Q := RingHom.ker φ with hQ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h11 : Δ 1 (1 : A) = 0`. Use `hL 1 hN1 1 1` as an intermediate fact. Simplify using `[Finset.sum_range_succ, h01] at this`. Take the linear combination `this`. Establish `ha : ∀ m, ∀ u ∈ Q ^ m, ∀ l < m, l < N → Δ l u = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro u _ l hl`. Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu l hlm hlN`. Rewrite `hu` using `[pow_succ]`. Use `Submodule.mul_induction_on (C := fun u => Δ l u = 0) hu ?_ ?_` and prove the remaining obligations. Introduce `x hx y hy show Δ l (x * y) = 0`. Rewrite using `[hL l hlN]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p ≤ l` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hp)`. Distinguish the cases in `hpm : p < m`. Rewrite using `[ih x hx p hpm (by omega)]; simp`. Establish `: l - p = 0` using `by omega`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, (hmemQ y).mp hy]`. Simplify using the standard rewrite rules. Introduce `x y hx hy show Δ l (x + y) = 0`. Rewrite using `[map_add, hx, hy, add_zero]`. Use `set π' : A := π - algebraMap k A (Δ 0 π) with hπ'`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hπ'Q : π' ∈ Q`. Rewrite using `[hmemQ, hπ', map_sub, halg, sub_self]`. Establish `hπ'1 : Δ 1 π' = 1`. Rewrite using `[hπ', map_sub, Algebra.algebraMap_eq_smul_one, map_smul, h11, smul_zero, sub_zero, hπ]`. Establish `hb : ∀ m < N, Δ m (π' ^ m) = (m.factorial : k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _`. Simplify using `[h01]`. Consider the case `succ m ih`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hm`. Rewrite using `[pow_succ', hL (m+1) hm]`. Rewrite using `[Finset.sum_eq_single 1]`. Simplify using `[hπ'1, ih (by omega), Nat.factorial_succ]`. Introduce `p hp hp1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hp'` using `Finset.mem_range.mp hp`. Break down `Nat.lt_or_gt_of_ne hp1 with h | h` into its components or cases. Establish `: p = 0` using `by omega`. Substitute `this` using the available equality. Rewrite using `[(hmemQ π').mp hπ'Q]`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[ha m (π' ^ m) (Ideal.pow_mem_pow hπ'Q m) (m + 1 - p) (by omega) (by omega)]; simp`. Introduce `h`. Simplify using `at h`. Establish `hQ0 : Q ≠ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `: π' = 0` using `by rw [← Ideal.mem_bot, ← h]; exact hπ'Q`. Rewrite `hπ'1` using `[this, map_zero]`. Conclude with `zero_ne_one hπ'1`. Establish `hnot : ∀ m < N, π' ^ m ∉ Q ^ (m + 1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `m hm hmem`. Use `ha (m + 1) _ hmem m (by omega) hm` as an intermediate fact. Rewrite `this` using `[hb m hm]`. Conclude with `(Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero m)) this`. Establish `hc : ∀ f : A, (∀ l < N, Δ l f = 0) → ∀ m ≤ N, f ∈ Q ^ m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Introduce `f hf m`. Proceed by induction on `m with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hm`. Establish `hfm` using `ih (by omega)`. Establish `hI : Ideal.span {π' ^ m} ⊔ Q ^ (m + 1) = Q ^ m`. Apply `Ideal.eq_prime_pow_of_succ_lt_of_le hQ0` to reduce the goal to its premises. Use `lt_of_le_of_ne le_sup_right ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `h; apply hnot m (by omega); rw [h]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`. Conclude with `sup_le ((Ideal.span_singleton_le_iff_mem _).mpr (Ideal.pow_mem_pow hπ'Q m)) (Ideal.pow_le_pow_right (Nat.le_succ m))`. Rewrite `hfm` using `[← hI]`. Take `⟨y, hy, g, hg, hyg⟩` from `Submodule.mem_sup.mp hfm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨d, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Establish `hdc : d - algebraMap k A (Δ 0 d) ∈ Q`. Rewrite using `[hmemQ, map_sub, halg, sub_self]`. Establish `hrest : (d - algebraMap k A (Δ 0 d)) * π' ^ m ∈ Q ^ (m + 1)`. Rewrite using `[pow_succ']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_mul hdc (Ideal.pow_mem_pow hπ'Q m)`. Establish `hrg : (d - algebraMap k A (Δ 0 d)) * π' ^ m + g ∈ Q ^ (m + 1)` using `Ideal.add_mem _ hrest hg`. Establish `e : f = (Δ 0 d) • π' ^ m + ((d - algebraMap k A (Δ 0 d)) * π' ^ m + g)`. Rewrite using `[← hyg, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hΔ : Δ m f = Δ 0 d * m.factorial`. Rewrite using `[e, map_add, map_smul, hb m (by omega), ha (m + 1) _ hrg m (by omega) (by omega), smul_eq_mul, add_zero]`. Establish `hc0 : Δ 0 d = 0`. Use `hf m (by omega); rw [hΔ] at this` as an intermediate fact. Conclude with `(mul_eq_zero.mp this).resolve_right (Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero m))`.
-
-Rewrite using `[e]; exact Ideal.add_mem _ (by rw [hc0, zero_smul]; exact Ideal.zero_mem _) hrg`. Conclude with `⟨Q, hQmax, hmemQ, fun f hf => hc f hf N le_rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_pow_of_jets_vanish (k A : Type) [Field k] [IsAlgClosed k] [CharZero k] [CommRing A]
     [IsDedekindDomain A] [Algebra k A] [Algebra.FiniteType k A] (N : ℕ) (Δ : ℕ → A →ₗ[k] k)

@@ -1,23 +1,21 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `O V A M _ _ _ _ _ _ _ j q B T₁ T₂ _ hq hB h1 h2`. Establish `hj : ∀ a, j a ∈ T₁` using `fun a => (h1 _).2 ⟨a, 0, B.zero_mem, by simp⟩`. Set `p : A →ₗ[O] (↥T₁ ⧸ T₂.comap T₁.subtype)` to `(T₂.comap T₁.subtype).mkQ ∘ₗ j.codRestrict T₁ hj`. Establish `key : ∀ (a : A) (y : ↥T₁), p a = Submodule.Quotient.mk y ↔ ∃ a', q a' = q a ∧ ∃ b ∈ B, (y : V) = j a' + b`. Introduce `a y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : p a = Submodule.Quotient.mk y ↔ (y : V) - j a ∈ T₂`. Rewrite using `[eq_comm]`. Conclude with `Submodule.Quotient.eq (T₂.comap T₁.subtype)`. Rewrite using `[h, h2]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a', ha', b, hb, hy⟩`. Use `⟨a' + a, by simp [ha'], b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, add_right_comm, ← hy, sub_add_cancel]`. Introduce and unpack `⟨a', ha', b, hb, hy⟩`. Use `⟨a' - a, by simp [ha'], b, hb, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, hy]`. Normalize the expressions using the abelian group laws. Establish `hp : Function.Surjective p`. Introduce `z`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hb, hy⟩` from `(h1 _).1 y.2`. Conclude with `⟨a, (key a y).2 ⟨a, rfl, b, hb, hy⟩⟩`. Establish `hker : LinearMap.ker q = LinearMap.ker p`. Use extensionality with `a`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_ker, ← Submodule.Quotient.mk_zero, key]`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `ha`. Conclude with `⟨0, by simp [ha], 0, B.zero_mem, by simp⟩`. Introduce and unpack `⟨a', ha', b, hb, hy⟩`. Rewrite using `[← ha']`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hB` to reduce the goal to its premises. Establish `: j a' = -b` using `eq_neg_of_add_eq_zero_left hy.symm`. Rewrite using `[this]`. Conclude with `B.neg_mem hb`. Use `⟨(q.quotKerEquivOfSurjective hq).symm.trans ((Submodule.quotEquivOfEq _ _ hker).trans (p.quotKerEquivOfSurjective hp)), fun a y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← key]`. Establish `h3 : (q.quotKerEquivOfSurjective hq).symm (q a) = Submodule.Quotient.mk a`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Rewrite using `[LinearEquiv.trans_apply, h3]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.exists_linearEquiv_quotient_of_lattice_sum :
     ∀ {O V A M : Type} [CommRing O] [AddCommGroup V] [Module O V] [AddCommGroup A] [Module O A] [AddCommGroup M] [Module O M]

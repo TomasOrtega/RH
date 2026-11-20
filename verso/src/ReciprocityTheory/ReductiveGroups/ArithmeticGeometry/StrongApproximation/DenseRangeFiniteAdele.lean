@@ -9,9 +9,9 @@ variable {R : Type*} [CommRing R] [IsDedekindDomain R] {K : Type*} [Field K] [Al
   [IsFractionRing R K]
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `Valued.mem_nhds_zero.1 hs`. Establish `hg` using `MonoidWithZeroHom.ValueGroup₀.embedding_unit_ne_zero γ`. Use `⟨(log (MonoidWithZeroHom.ValueGroup₀.embedding γ.1)).natAbs + 1, fun x hx => hγ ?_⟩` and prove the remaining obligations. Use `show Valued.v.restrict x < γ.1`. Rewrite using `[Valuation.restrict_lt_iff_lt_embedding]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_lt hx ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem small_mem_nhds (v : HeightOneSpectrum R) {s : Set (v.adicCompletion K)}
     (hs : s ∈ 𝓝 (0 : v.adicCompletion K)) :
@@ -27,19 +27,17 @@ theorem small_mem_nhds (v : HeightOneSpectrum R) {s : Set (v.adicCompletion K)}
     _ = _ := exp_log hg
 
 /- English proof (translation)
-Establish `hBopen : ∀ v : HeightOneSpectrum R, IsOpen ((v.adicCompletionIntegers K : ValuationSubring _) : Set (v.adicCompletion K))` using `fun v => Valued.isOpen_valuationSubring _`. Set `mk : (∀ v : HeightOneSpectrum R, v.adicCompletionIntegers K) → FiniteAdeleRing R K` to `fun y => ⟨fun v => (y v : v.adicCompletion K), Eventually.of_forall fun v => (y v).2⟩`. Establish `hmk : Continuous mk`. Conclude with `(RestrictedProduct.isEmbedding_structureMap (R := fun v : HeightOneSpectrum R => v.adicCompletion K) (A := fun v => ((v.adicCompletionIntegers K : ValuationSubring _) : Set (v.adicCompletion K))) (𝓕 := cofinite)).continuous`. Establish `hmk0 : mk 0 = 0` using `rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre : mk ⁻¹' N ∈ 𝓝 (0 : ∀ v : HeightOneSpectrum R, v.adicCompletionIntegers K)` using `hmk.continuousAt.preimage_mem_nhds (by rw [hmk0]; exact hN)`. Rewrite `hpre` using `[nhds_pi, mem_pi]`. Take `⟨T, hT, t, ht, hsub⟩` from `hpre`. Establish `hloc : ∀ v, ∃ n : ℕ, ∀ x : v.adicCompletionIntegers K, Valued.v (x : v.adicCompletion K) ≤ exp (-(n : ℤ)) → x ∈ t v`. Introduce `v`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hut⟩` from `(mem_nhds_subtype _ _ _).1 (ht v)`. Establish `hu0 : u ∈ 𝓝 (0 : v.adicCompletion K)` using `by simpa using hu`. Take `⟨n, hn⟩` from `small_mem_nhds v hu0`. Conclude with `⟨n, fun x hx => hut (hn _ hx)⟩`. Use `choose n hn using hloc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `I : Ideal R` to `∏ v ∈ hT.toFinset, v.asIdeal ^ (n v)`. Establish `hI : I ≠ ⊥`. Rewrite using `[← Ideal.zero_eq_bot]`. Conclude with `Finset.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ (by rw [Ideal.zero_eq_bot]; exact v.ne_bot)`. Take `⟨r, hrI, hr0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨r, hr0, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hyint : ∀ v, y v ∈ v.adicCompletionIntegers K` using `fun v => by`. Rewrite using `[mem_adicCompletionIntegers]`. Conclude with `(hy v).trans (v.intValuation_le_one r)`. Establish `hy' : y = mk (fun v => ⟨y v, hyint v⟩)` using `by ext v; rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hy']`. Apply `hsub` to reduce the goal to its premises. Introduce `v hv`. Apply `hn v` to reduce the goal to its premises. Use `(hy v).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[intValuation_le_pow_iff_mem]`. Conclude with `Ideal.le_of_dvd (Finset.dvd_prod_of_mem _ (hT.mem_toFinset.2 hv)) hrI`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nhds_zero_int {N : Set (FiniteAdeleRing R K)} (hN : N ∈ 𝓝 (0 : FiniteAdeleRing R K)) :
     ∃ r : R, r ≠ 0 ∧ ∀ y : FiniteAdeleRing R K,
@@ -85,15 +83,15 @@ theorem nhds_zero_int {N : Set (FiniteAdeleRing R K)} (hN : N ∈ 𝓝 (0 : Fini
   exact Ideal.le_of_dvd (Finset.dvd_prod_of_mem _ (hT.mem_toFinset.2 hv)) hrI
 
 /- English proof (translation)
-Introduce `b`. Rewrite using `[mem_closure_iff_nhds]`. Introduce `N hN`. Establish `h0 : (fun y => b + y) ⁻¹' N ∈ 𝓝 (0 : FiniteAdeleRing R K)`. Establish `ht` using `(continuous_add_left b).tendsto (0 : FiniteAdeleRing R K)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ht` using `[add_zero]`. Conclude with `ht hN`. Take `⟨r, hr, hrN⟩` from `nhds_zero_int h0`. Take `⟨u, hu⟩` from `ReciprocityTheory.ChartRestriction.G.Lib.AdeleIntA.exists_approx_adele b`. Take `⟨a, ha⟩` from `ReciprocityTheory.ChartRestriction.G.Lib.AdeleIntA.exists_approx (b - algebraMap K _ u) hu r hr`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨algebraMap K (FiniteAdeleRing R K) (u + algebraMap R K a), ?_, ⟨_, rfl⟩⟩` and prove the remaining obligations. Establish `hx : algebraMap K (FiniteAdeleRing R K) (u + algebraMap R K a) - b = -((b - algebraMap K (FiniteAdeleRing R K) u) - algebraMap K (FiniteAdeleRing R K) (algebraMap R K a))`. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem` using `hrN (algebraMap K (FiniteAdeleRing R K) (u + algebraMap R K a) - b) (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Introduce `v`. Establish `hv : (-((b - algebraMap K (FiniteAdeleRing R K) u) - algebraMap K (FiniteAdeleRing R K) (algebraMap R K a))) v = -((b - algebraMap K (FiniteAdeleRing R K) u) v - algebraMap K _ (algebraMap R K a))` using `by first`. Consider the case `rfl`. Consider the case `simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, Valuation.map_neg]`. Conclude with `ha v)`. Simplify using `using hmem`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem denseRange_finiteAdele : DenseRange (algebraMap K (FiniteAdeleRing R K)) := by
   intro b

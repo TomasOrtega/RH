@@ -11,7 +11,7 @@ namespace ShearCoefficients
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Simplify using `only [H, Submodule.mem_inf, mem_weightedHomogeneousSubmodule, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, IsScalarTower.toAlgHom_apply, sub_eq_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma mem_H_iff {N n : ℕ} (ν : Fin N → ℕ) (F : MvPolynomial (Fin N × Fin n) R) :
     F ∈ H R ν ↔ F.IsWeightedHomogeneous (blockWt N n) ν ∧
@@ -22,7 +22,7 @@ lemma mem_H_iff {N n : ℕ} (ν : Fin N → ℕ) (F : MvPolynomial (Fin N × Fin
   rfl
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_apply]`. Apply the tactic sequence `rw [Finsupp.sum_mapDomain_index] <;> simp [add_smul]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma weight_mapDomain {σ τ M : Type*} [AddCommMonoid M] (w : τ → M) (f : σ → τ)
     (d : σ →₀ ℕ) :
@@ -32,9 +32,9 @@ lemma weight_mapDomain {σ τ M : Type*} [AddCommMonoid M] (w : τ → M) (f : �
   rw [Finsupp.sum_mapDomain_index] <;> simp [add_smul]
 
 /- English proof (translation)
-Use `IsWeightedHomogeneous.induction_on (motive := fun p _ => (rename f p).IsWeightedHomogeneous w m) ?_ ?_ ?_ hF` and prove the remaining obligations. Simplify using `using isWeightedHomogeneous_zero R w m`. Introduce `p q _ _ hp hq`. Rewrite using `[map_add]`. Conclude with `hp.add hq`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d r hr`. Rewrite using `[rename_monomial]`. Conclude with `isWeightedHomogeneous_monomial _ _ _ (by rw [weight_mapDomain, hr])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isWeightedHomogeneous_rename {σ τ M : Type*} [AddCommMonoid M] {w : τ → M} {f : σ → τ}
     {m : M} {F : MvPolynomial σ R} (hF : F.IsWeightedHomogeneous (w ∘ f) m) :
@@ -49,9 +49,9 @@ lemma isWeightedHomogeneous_rename {σ τ M : Type*} [AddCommMonoid M] {w : τ �
     exact isWeightedHomogeneous_monomial _ _ _ (by rw [weight_mapDomain, hr])
 
 /- English proof (translation)
-Establish `key : (shear R i j).comp (rename (fun p : Fin N × Fin n => (p.1, σ p.2))) = (Polynomial.mapAlgHom (rename (fun p : Fin N × Fin n => (p.1, σ p.2)))).comp (shear R i j)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Apply the tactic sequence `by_cases h : p.1 = j <;> simp [shear, h]`. Establish `h` using `congrArg (fun φ => φ F) key`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify `h` using `[Polynomial.coe_mapAlgHom]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma shear_rename_perm {N n : ℕ} (i j : Fin N) (σ : Equiv.Perm (Fin n))
     (F : MvPolynomial (Fin N × Fin n) R) :
@@ -68,7 +68,7 @@ lemma shear_rename_perm {N n : ℕ} (i j : Fin N) (σ : Equiv.Perm (Fin n))
   simpa [Polynomial.coe_mapAlgHom] using h
 
 /- English proof (translation)
-Introduce `R _ N n ν σ F hF`. Rewrite `hF`, the goal using `[mem_H_iff]`. Use `⟨isWeightedHomogeneous_rename hF.1, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[shear_rename_perm, hF.2 i j hij, Polynomial.map_C]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem perm : NormUnitaryPermutationInvariance := by
   intro R _ N n ν σ F hF
@@ -86,20 +86,20 @@ section CoeffHom
 variable {σ M : Type*} [AddCommMonoid M] {wt : σ → M}
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[Polynomial.coeff_add]`. Conclude with `(hP k).add (hQ k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma CoeffHom.add {m : M} {P Q : Polynomial (MvPolynomial σ R)} (hP : CoeffHom wt m P)
     (hQ : CoeffHom wt m Q) : CoeffHom wt m (P + Q) := by
   intro k; rw [Polynomial.coeff_add]; exact (hP k).add (hQ k)
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[Polynomial.coeff_zero]`. Conclude with `isWeightedHomogeneous_zero R wt m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma CoeffHom.zero (m : M) : CoeffHom (R := R) wt m 0 := by
   intro k; rw [Polynomial.coeff_zero]; exact isWeightedHomogeneous_zero R wt m
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[Polynomial.coeff_mul]`. Conclude with `IsWeightedHomogeneous.sum _ _ _ (fun x _ => (hP x.1).mul (hQ x.2))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma CoeffHom.mul {a b : M} {P Q : Polynomial (MvPolynomial σ R)} (hP : CoeffHom wt a P)
     (hQ : CoeffHom wt b Q) : CoeffHom wt (a + b) (P * Q) := by
@@ -108,7 +108,7 @@ lemma CoeffHom.mul {a b : M} {P Q : Polynomial (MvPolynomial σ R)} (hP : CoeffH
   exact IsWeightedHomogeneous.sum _ _ _ (fun x _ => (hP x.1).mul (hQ x.2))
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[Polynomial.coeff_C]`. Use `split_ifs`. Conclude with `h`. Conclude with `isWeightedHomogeneous_zero R wt m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma CoeffHom.C {m : M} {r : MvPolynomial σ R} (h : r.IsWeightedHomogeneous wt m) :
     CoeffHom wt m (Polynomial.C r) := by
@@ -119,7 +119,7 @@ lemma CoeffHom.C {m : M} {r : MvPolynomial σ R} (h : r.IsWeightedHomogeneous wt
   · exact isWeightedHomogeneous_zero R wt m
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[Polynomial.coeff_X]`. Use `split_ifs`. Conclude with `isWeightedHomogeneous_one R wt`. Conclude with `isWeightedHomogeneous_zero R wt 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma CoeffHom.X : CoeffHom (R := R) wt 0 Polynomial.X := by
   intro k
@@ -129,13 +129,13 @@ lemma CoeffHom.X : CoeffHom (R := R) wt 0 Polynomial.X := by
   · exact isWeightedHomogeneous_zero R wt 0
 
 /- English proof (translation)
-Simplify using `using CoeffHom.C (R := R) (isWeightedHomogeneous_one R wt)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma CoeffHom.one : CoeffHom (R := R) wt 0 1 := by
   simpa using CoeffHom.C (R := R) (isWeightedHomogeneous_one R wt)
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simpa using CoeffHom.one (R := R) (wt := wt)`. Consider the case `succ e ih => rw [pow_succ, succ_nsmul]`. Conclude with `ih.mul h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma CoeffHom.pow {a : M} {P : Polynomial (MvPolynomial σ R)} (h : CoeffHom wt a P) (e : ℕ) :
     CoeffHom wt (e • a) (P ^ e) := by
@@ -144,7 +144,7 @@ lemma CoeffHom.pow {a : M} {P : Polynomial (MvPolynomial σ R)} (h : CoeffHom wt
   | succ e ih => rw [pow_succ, succ_nsmul]; exact ih.mul h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CoeffHom.one (R := R) (wt := wt)`. Consider the case `insert x s hx ih`. Rewrite using `[Finset.prod_insert hx, Finset.sum_insert hx]`. Conclude with `(h x (Finset.mem_insert_self _ _)).mul (ih fun y hy => h y (Finset.mem_insert_of_mem hy))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma CoeffHom.prod {ι : Type*} (s : Finset ι) (P : ι → Polynomial (MvPolynomial σ R))
     (a : ι → M) (h : ∀ x ∈ s, CoeffHom wt (a x) (P x)) :
@@ -160,9 +160,7 @@ lemma CoeffHom.prod {ι : Type*} (s : Finset ι) (P : ι → Polynomial (MvPolyn
 end CoeffHom
 
 /- English proof (translation)
-Use `CoeffHom.add (CoeffHom.C (isWeightedHomogeneous_X R _ p)) ?_` and prove the remaining obligations. Use `split_ifs`. Establish `h` using `(CoeffHom.X (R := R) (wt := coordWt N n)).mul (CoeffHom.C (isWeightedHomogeneous_X R (coordWt N n) (i, p.2)))`. Rewrite `h` using `[zero_add]`. Conclude with `h`.
-
-Conclude with `CoeffHom.zero _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma coeffHom_shear_X {N n : ℕ} (i j : Fin N) (p : Fin N × Fin n) :
     CoeffHom (R := R) (coordWt N n) (coordWt N n p)
@@ -177,7 +175,7 @@ lemma coeffHom_shear_X {N n : ℕ} (i j : Fin N) (p : Fin N × Fin n) :
   · exact CoeffHom.zero _
 
 /- English proof (translation)
-Rewrite using `[shear, aeval_monomial, Finsupp.weight_apply, Finsupp.prod, Finsupp.sum, ← zero_add (∑ a ∈ d.support, d a • coordWt N n a)]`. Use `CoeffHom.mul ?_ (CoeffHom.prod _ _ _ fun p _ => (coeffHom_shear_X i j p).pow _)` and prove the remaining obligations. Rewrite using `[Polynomial.algebraMap_apply]`. Conclude with `CoeffHom.C (isWeightedHomogeneous_C _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma coeffHom_shear_monomial {N n : ℕ} (i j : Fin N) (d : (Fin N × Fin n) →₀ ℕ) (r : R) :
     CoeffHom (coordWt N n) (Finsupp.weight (coordWt N n) d) (shear R i j (monomial d r)) := by
@@ -188,9 +186,9 @@ lemma coeffHom_shear_monomial {N n : ℕ} (i j : Fin N) (d : (Fin N × Fin n) �
   exact CoeffHom.C (isWeightedHomogeneous_C _ _)
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial d r`. Rewrite using `[weightedHomogeneousComponent_of_mem (coeffHom_shear_monomial i j d r k), weightedHomogeneousComponent_of_mem (isWeightedHomogeneous_monomial (coordWt N n) d r rfl)]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Rewrite using `[map_add, map_add, Polynomial.coeff_add, map_add, hp, hq, map_add, Polynomial.coeff_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma comp_coeff_shear {N n : ℕ} (i j : Fin N) (w : Fin n → ℕ)
     (F : MvPolynomial (Fin N × Fin n) R) (k : ℕ) :
@@ -207,11 +205,9 @@ lemma comp_coeff_shear {N n : ℕ} (i j : Fin N) (w : Fin n → ℕ)
     rw [map_add, map_add, Polynomial.coeff_add, map_add, hp, hq, map_add, Polynomial.coeff_add]
 
 /- English proof (translation)
-Introduce `R _ N n ν F hF w`. Rewrite `hF`, the goal using `[mem_H_iff]`. Use `⟨?_, fun i j hij => ?_⟩` and prove the remaining obligations. Introduce `d hd`. Rewrite `hd` using `[coeff_weightedHomogeneousComponent]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs at hd`. Conclude with `hF.1 hd`. Conclude with `absurd rfl hd`. Use `Polynomial.ext fun k => ?_` and prove the remaining obligations. Rewrite using `[← comp_coeff_shear, hF.2 i j hij, Polynomial.coeff_C, Polynomial.coeff_C]`.
-
-Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem weight : NormUnitaryWeight := by
   classical

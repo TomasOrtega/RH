@@ -32,7 +32,7 @@ def levelZeroCharacter (hstd : Formalism.L2.Theta.IsStdChar (I.rec7 l Z) (_root_
   io := fun _ => 0
   ioT := fun _ _ => 0
 /- English proof (translation)
-The claim follows from `((ha.tie (fun t => _root_.GlobalTheory.Fam.TopLoc.LocalIdempotentDensity.levelZeroCharacter W.Q.stdChar a.g t) (fun t => _root_.GlobalTheory.Fam.trivialColumnChoice t)).2.idem n).1`.
+A detailed English derivation is pending.
 -/
 theorem isIdemAt_G_pl (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) (a : _root_.GlobalTheory.Fam.GeometricFamily W u) (ha : a.Is) (n : Fin a.n) :
     Formalism.L2.NTheta.IsIdemAt (a.G n).q.e (a.pl n).1 :=

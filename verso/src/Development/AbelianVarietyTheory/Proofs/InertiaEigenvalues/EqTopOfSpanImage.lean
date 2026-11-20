@@ -11,23 +11,21 @@ noncomputable section
 namespace GlobalTheory.EtaleExact
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨N', hN', hle⟩` from `(eq_top_or_exists_le_coatom N).resolve_left hne`. Take `⟨m, hmax, ⟨ψ⟩⟩` from `isSimpleModule_iff_quot_maximal.1 (isSimpleModule_iff_isCoatom.2 hN')`. Establish `hm'` using `hm m hmax`. Use `haveI : Nontrivial E := by`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hmax.ne_top (Subsingleton.elim _ _)`. Use `haveI : Nontrivial R := by`. Assume the negation of the conclusion as `h`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hm' (Subsingleton.elim _ _)`. Set `b` to `Module.Free.chooseBasis E D`. Establish `hsp : ⊤ ≤ Submodule.span R (Set.range fun i => j (b i))`. Rewrite using `[← hspan, Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← b.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hj]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c` to `basisOfTopLeSpanOfCardEqFinrank (fun i => j (b i)) hsp (by rw [← hrank inferInstance, Module.finrank_eq_card_chooseBasisIndex])`. Establish `hc : ∀ i, c i = j (b i)` using `fun i => by simp [c]`. Set `f : D →ₗ[E] E ⧸ m` to `ψ.toLinearMap ∘ₗ N'.mkQ`. Set `q : E ⧸ m →+* R ⧸ m.map io` to `Ideal.quotientMap _ io Ideal.le_comap_map`. Set `F : M →ₗ[R] R ⧸ m.map io` to `c.constr R fun i => q (f (b i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF : ∀ x, F (j x) = q (f x)`. Introduce `x`. Rewrite using `[← b.sum_repr x]`. Simplify using `only [map_sum, hj, map_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hc, Module.Basis.constr_basis, Algebra.smul_def, Algebra.smul_def, map_mul]`. Both sides reduce to the same expression. Establish `hF0 : F = 0`. Rewrite using `[← LinearMap.ker_eq_top, eq_top_iff, ← hN, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `: N'.mkQ x = 0` using `(Submodule.Quotient.mk_eq_zero _).2 (hle hx)`. Express the relevant statement in the definitionally equal form `F (j x) = 0`. Rewrite using `[hF]`. Simplify using `[f, this]`. Take `⟨x, hx⟩ : ∃ x, f x = 1` from `(ψ.surjective.comp N'.mkQ_surjective) 1`.
-
-Establish `h1` using `hF x`. Rewrite `h1` using `[hF0, hx, map_one]`. Conclude with `hm' (Ideal.Quotient.zero_eq_one_iff.1 h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_top_of_span_image {E R D M : Type} [CommRing E] [CommRing R] [AddCommGroup D]
     [Module E D] [AddCommGroup M] [Module R M] [Module.Free E D] [Module.Finite E D]
@@ -83,9 +81,9 @@ theorem eq_top_of_span_image {E R D M : Type} [CommRing E] [CommRing R] [AddComm
   exact hm' (Ideal.Quotient.zero_eq_one_iff.1 h1)
 
 /- English proof (translation)
-Take `⟨d, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hJ`. Establish `h : ∀ k, ∃ c : Fin d → O, ∑ i, c i • g i = PowerSeries.coeff k f` using `fun k => (Submodule.mem_span_range_iff_exists_fun O).1 (hg ▸ hf k)`. Use `choose c hc using h`. Establish `: f = ∑ i, PowerSeries.mk (fun k => c k i) * PowerSeries.C (g i)`. Use extensionality with `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[← hc k]`. Rewrite using `[this]`. Use `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ ?_)` and prove the remaining obligations. Rewrite using `[← hg]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_map_C {O : Type} [CommRing O] (J : Ideal O) (hJ : J.FG) (f : PowerSeries O)
     (hf : ∀ k, PowerSeries.coeff k f ∈ J) : f ∈ J.map (PowerSeries.C : O →+* PowerSeries O) := by
@@ -102,19 +100,15 @@ theorem mem_map_C {O : Type} [CommRing O] (J : Ideal O) (hJ : J.FG) (f : PowerSe
   exact Submodule.subset_span ⟨i, rfl⟩
 
 /- English proof (translation)
-Set `J : Ideal O` to `(Ideal.span {(p : O)}).radical`. Establish `key : ∀ g : PowerSeries O, (∀ k, PowerSeries.coeff k g ∈ J) → ψ g ∈ (Ideal.span {(p : E)}).radical`. Introduce `g hg`. Establish `h1` using `mem_map_C J (IsNoetherian.noetherian J) g hg`. Establish `h2 : J.map (PowerSeries.C : O →+* PowerSeries O) ≤ ((Ideal.span {(p : E)}).radical).comap ψ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce and unpack `c ⟨k, hk⟩`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton.1 hk`. Use `⟨k, Ideal.mem_span_singleton.2 ⟨ψ (PowerSeries.C d), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_pow, hd, map_mul, map_mul, map_natCast, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 h1`. Distinguish the cases in `h : ∀ k, PowerSeries.coeff k f ∈ J`. Conclude with `key f h`. It suffices to derive a contradiction. Use `push_neg at h`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `k` to `Nat.find h`. Establish `hk : IsUnit (PowerSeries.coeff k f)` using `(hO _).resolve_right fun ⟨r, hr⟩ => Nat.find_spec h ⟨r, Ideal.mem_span_singleton.2 hr⟩`. Establish `ht : ψ (PowerSeries.trunc k f : Polynomial O) ∈ m`. Use `hp (key _ fun i => ?_)` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_coe, PowerSeries.coeff_trunc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `split_ifs with hi`. Conclude with `not_not.1 (Nat.find_min h hi)`. Conclude with `J.zero_mem`. Establish `hu : IsUnit (PowerSeries.mk fun i => PowerSeries.coeff (i + k) f)`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff]`.
-
-Simplify using `using hk`. Establish `he` using `PowerSeries.eq_shift_mul_X_pow_add_trunc k f`. Rewrite `hf` using `[he, map_add]`. Establish `h3` using `m.sub_mem hf ht`. Rewrite `h3` using `[add_sub_cancel_right, map_mul, map_pow]`.
-
-Conclude with `hm (Ideal.eq_top_of_isUnit_mem _ h3 ((hu.map ψ).mul (hX.pow k)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_radical_of_mem {O E : Type} [CommRing O] [IsNoetherianRing O] [CommRing E] (p : ℕ)
     (hO : ∀ c : O, IsUnit c ∨ ∃ k : ℕ, (p : O) ∣ c ^ k)
@@ -158,35 +152,33 @@ theorem mem_radical_of_mem {O E : Type} [CommRing O] [IsNoetherianRing O] [CommR
   exact hm (Ideal.eq_top_of_isUnit_mem _ h3 ((hu.map ψ).mul (hX.pow k)))
 
 /- English proof (translation)
-Introduce `htop`. Establish `hpm : Ideal.span {(p : E)} ≤ m` using `(IsAdicComplete.le_jacobson_bot (Ideal.span {(p : E)})).trans (sInf_le ⟨bot_le, hm⟩)`. Establish `hrad : (Ideal.span {(p : E)}).radical ≤ m` using `hm.isPrime.radical_le_iff.2 hpm`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, a (letE i) ∉ m := by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Establish `h1 : ∑ i, (letE i : LetA O n) = 1`. Use function extensionality and compare the values at `k`. Simplify using `[letE, Finset.sum_apply, Pi.single_apply]`. Use `m.sum_mem (t := Finset.univ) fun i _ => h i` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← map_sum, h1, map_one]`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one _).2 this)`. Set `ψ : PowerSeries O →+* E` to `a.comp (Pi.constRingHom (ZMod n) (PowerSeries O))`. Establish `hψ : ∀ f : LetA O n, a (letE i) * a f = a (letE i) * ψ (f i)`. Introduce `f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = a (letE i) * a (Function.const _ (f i))`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hk` using the available equality. Simplify using `[letE]`. Simplify using `[letE, hk]`. Establish `hidem : a (letE i) * a (letE i) = a (letE i)`. Rewrite using `[hψ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[letE]`. Establish `hx : ∀ x ∈ m, a (letE i) * x ∈ (Ideal.span {(p : E)}).radical`. Introduce `x hx`. Take `⟨f, r, hf⟩` from `hd x`. Establish `h1 : a f ∈ m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `m.sub_mem (m.mul_mem_right (a (letπ ^ r)) hx) (hpm hf)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `h2 : ψ (f i) ∈ m`. Use `m.mul_mem_left (a (letE i)) h1` as an intermediate fact. Rewrite `this` using `[hψ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hm.isPrime.mem_or_mem this).resolve_left hi`. Establish `h3` using `mem_radical_of_mem p hO ψ hπ m hm.ne_top hrad _ h2`. Establish `h4 : a (letE i) * x * a (letπ ^ r) ∈ (Ideal.span {(p : E)}).radical`. Establish `h5` using `Ideal.add_mem _ (Ideal.mul_mem_left _ (a (letE i)) (Ideal.le_radical hf)) (Ideal.mul_mem_left _ (a (letE i)) h3)`. Rewrite `h5` using `[← hψ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h5 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite `h4` using `[map_pow]`. Conclude with `(Ideal.mul_unit_mem_iff_mem _ (hπ.pow r)).1 h4`. Set `I : Ideal R` to `Submodule.comap (LinearMap.mulLeft R (io (a (letE i)))) ((Ideal.span {(p : R)}).radical)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hI : m.map io ≤ I`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hxm`. Take `⟨k, hk⟩` from `hx x hxm`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton.1 hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨k, Ideal.mem_span_singleton.2 ⟨io d, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(io (a (letE i)) * io x) ^ k = _`. Rewrite using `[← map_mul, ← map_pow, hd, map_mul, map_natCast]`. Establish `h1 : (1 : R) ∈ I` using `hI (htop ▸ Submodule.mem_top)`. Take `⟨k, hk⟩` from `h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `Ideal.mem_span_singleton.1 hk`. Express the relevant statement in the definitionally equal form `(io (a (letE i)) * 1) ^ k = _ at hd`. Rewrite `hd` using `[mul_one]`. Establish `hid : IsIdempotentElem (io (a (letE i)))`. Rewrite using `[IsIdempotentElem, ← map_mul, hidem]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (p : R) ∣ io (a (letE i))`. Use `⟨d * io (a (letE i)), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← hd, ← pow_succ, hid.pow_succ_eq]`. Establish `h3 : io (a (letE i)) = 0`. Use `hsep _ fun r => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `pow_dvd_pow_of_dvd h2 (r + 1)` as an intermediate fact. Rewrite `this` using `[hid.pow_succ_eq]`. Conclude with `(pow_dvd_pow _ (Nat.le_succ r)).trans this`. Apply `hi` to reduce the goal to its premises. Rewrite using `[hio (h3.trans (map_zero io).symm)]`.
-
-Conclude with `m.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem map_maximal_ne_top {O E R : Type} [CommRing O] [IsNoetherianRing O] [CommRing E]
     [CommRing R] (n : ℕ) [NeZero n] (p : ℕ) (hO : ∀ c : O, IsUnit c ∨ ∃ k : ℕ, (p : O) ∣ c ^ k)
@@ -287,16 +279,14 @@ def latMap {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) : ↥T.L.T →ₗ[O] 
   (f.f.restrictScalars O).restrict f.T_le
 
 /- English proof (translation)
-The claim follows from `E.jD_map f x`.
+A detailed English derivation is pending.
 -/
 theorem jD_map' {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (x : W.DD T) :
     E.jD T' (W.map f x) = (latMap f).baseChange RW (E.jD T x) := E.jD_map f x
 
 include E in
 /- English proof (translation)
-Use `haveI : Nontrivial O := (algebraMap O LL).domain_nontrivial`. Use `haveI := T.L.free`. Use `haveI : Module.Finite O ↥T.L.T := Module.Finite.iff_fg.2 T.L.fg`. Use `haveI := (W.DD_free T).1`. Break down `Nat.eq_zero_or_pos (Module.finrank O ↥T.L.T) with h | h` into its components or cases.
-
-Use `haveI : Subsingleton ↥T.L.T := Module.finrank_eq_zero_iff_of_free O _ |>.1 h haveI : Subsingleton (W.DD T) := (E.jD_inj T).subsingleton infer_instance`. Break down `subsingleton_or_nontrivial W.EE with hE | hE` into its components or cases. Use `haveI := Module.subsingleton W.EE (W.DD T) infer_instance`. Rewrite `h` using `[← (W.DD_free T).2]`. Conclude with `Module.finite_of_finrank_pos h`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_DD (T : LocLat G Qp LL O) : Module.Finite W.EE (W.DD T) := by
   haveI : Nontrivial O := (algebraMap O LL).domain_nontrivial
@@ -314,15 +304,11 @@ theorem finite_DD (T : LocLat G Qp LL O) : Module.Finite W.EE (W.DD T) := by
     exact Module.finite_of_finrank_pos h
 
 /- English proof (translation)
-Use `haveI : Nontrivial O := (algebraMap O LL).domain_nontrivial`. Use `haveI := W.one.L.free`. Use `haveI : Module.Finite O ↥W.one.L.T := Module.Finite.iff_fg.2 W.one.L.fg`. Use `haveI := (W.DD_free W.one).1`. Break down `subsingleton_or_nontrivial W.EE with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Function.injective_of_subsingleton _`. Take `⟨e, he, hT⟩` from `W.one_line`. Use `haveI : Nontrivial ↥W.one.L.T := ⟨⟨⟨e, hT ▸ Submodule.mem_span_singleton_self e⟩, 0, fun h => he (congrArg Subtype.val h)⟩⟩`. Use `haveI : Nontrivial (W.DD W.one) := by`. Assume the negation of the conclusion as `hn`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Establish `h1` using `(W.DD_free W.one).2`. Rewrite `h1` using `[Module.finrank_zero_of_subsingleton]`. Conclude with `not_subsingleton _ ((Module.finrank_eq_zero_iff_of_free O _).1 h1.symm)`. Set `b` to `Module.Free.chooseBasis W.EE (W.DD W.one)`.
-
-Take `⟨i⟩` from `b.index_nonempty`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `h1 : x • b i = 0`. Apply `E.jD_inj` to reduce the goal to its premises.
-
-Rewrite using `[E.jD_smul, hx, zero_smul, map_zero]`. Simplify using `using congrArg (fun y => b.repr y i) h1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ioE_injective : Function.Injective E.ioE := by
   haveI : Nontrivial O := (algebraMap O LL).domain_nontrivial
@@ -350,9 +336,7 @@ theorem ioE_injective : Function.Injective E.ioE := by
   simpa using congrArg (fun y => b.repr y i) h1
 
 /- English proof (translation)
-Use `haveI : Nontrivial O := (algebraMap O LL).domain_nontrivial`. Use `haveI := T.L.free`. Use `haveI := (W.DD_free T).1`. Use `haveI := finite_DD E T`. Use `eq_top_of_span_image E.ioE.toRingHom (E.jD T).toAddMonoidHom (E.jD_smul T) hm (fun _ => ?_) (E.jD_span T) N hN` and prove the remaining obligations.
-
-Rewrite using `[(W.DD_free T).2, Module.finrank_baseChange]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_top_DD (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRingHom ≠ ⊤)
     (T : LocLat G Qp LL O) (N : Submodule W.EE (W.DD T))
@@ -366,7 +350,7 @@ theorem eq_top_DD (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRingHo
   rw [(W.DD_free T).2, Module.finrank_baseChange]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.range_eq_map ((latMap f).baseChange RW), ← E.jD_span T, Submodule.map_span]`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [Set.mem_image, SetLike.mem_coe, LinearMap.mem_range, Set.mem_range, exists_exists_eq_and, jD_map']`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem span_range_map {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) :
     Submodule.span RW (E.jD T' '' (LinearMap.range (W.map f) : Set (W.DD T'))) =
@@ -378,27 +362,25 @@ theorem span_range_map {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) :
     exists_exists_eq_and, jD_map']
 
 /- English proof (translation)
-Take `⟨h1, -, h3, h4, h5⟩` from `h`. Establish `hι : Function.Injective (latMap ι)` using `fun x y hxy => Subtype.ext (h1 (congrArg Subtype.val hxy))`. Establish `hπ : Function.Surjective (latMap π)` using `fun y => by`. Take `⟨x, hx, hxy⟩` from `h3 y y.2`. Conclude with `⟨⟨x, hx⟩, Subtype.ext hxy⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hex : Function.Exact (latMap ι) (latMap π)` using `fun x => by`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, hy⟩` from `(h4 x).1 (congrArg Subtype.val hx)`. Conclude with `⟨⟨y, h5 y (hy ▸ x.2)⟩, Subtype.ext hy⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `Subtype.ext ((h4 _).2 ⟨y, rfl⟩)`. Use `haveI := Z.L.free`. Establish `hπR : Function.Surjective ((latMap π).baseChange RW)` using `LinearMap.lTensor_surjective RW hπ`. Establish `hexR : Function.Exact ((latMap ι).baseChange RW) ((latMap π).baseChange RW)` using `lTensor_exact RW hex hπ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hιR : Function.Injective ((latMap ι).baseChange RW)`. Take `⟨s, hs⟩` from `(latMap π).exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hπ)`. Take `⟨r, hr⟩ : ∃ r, r ∘ₗ latMap ι = LinearMap.id` from `((hex.split_tfae hι hπ).out 0 1).1 (show ∃ s, latMap π ∘ₗ s = LinearMap.id from ⟨s, hs⟩)`. Use `Function.LeftInverse.injective (g := r.baseChange RW) fun x => ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp, hr, LinearMap.baseChange_id]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hsurj : Function.Surjective (W.map π)`. Rewrite using `[← LinearMap.range_eq_top]`. Use `eq_top_DD E hm Z _ ?_` and prove the remaining obligations. Rewrite using `[span_range_map, LinearMap.range_eq_top.2 hπR]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcomp : ∀ x, W.map π (W.map ι x) = 0` using `fun x => by`. Apply `E.jD_inj` to reduce the goal to its premises. Rewrite using `[jD_map', jD_map', map_zero]`. Conclude with `hexR.apply_apply_eq_zero _`. Use `⟨fun x y hxy => E.jD_inj T (hιR ?_), fun y => ⟨fun hy => ?_, ?_⟩, hsurj⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← jD_map', ← jD_map', hxy]`. Use `haveI := (W.DD_free Z).1`. Take `⟨s, hs⟩` from `(W.map π).exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hsurj)`. Establish `hs' : ∀ z, W.map π (s z) = z` using `fun z => LinearMap.congr_fun hs z`. Establish `htop : LinearMap.range (W.map ι) ⊔ LinearMap.range s = ⊤`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `eq_top_DD E hm Yt _ ?_` and prove the remaining obligations. Use `set U := Submodule.span RW (E.jD Yt '' ((LinearMap.range (W.map ι) ⊔ LinearMap.range s : Submodule W.EE (W.DD Yt)) : Set (W.DD Yt))) with hU`. Establish `hk : LinearMap.ker ((latMap π).baseChange RW) ≤ U`. Rewrite using `[LinearMap.exact_iff.1 hexR, ← span_range_map E]`. Conclude with `Submodule.span_mono (Set.image_mono (SetLike.coe_subset_coe.2 le_sup_left))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmap : U.map ((latMap π).baseChange RW) = ⊤`. Rewrite using `[eq_top_iff, ← E.jD_span Z, Submodule.span_le]`. Introduce and unpack `_ ⟨z, rfl⟩`. Use `⟨E.jD Yt (s z), Submodule.subset_span ⟨s z, Submodule.mem_sup_right ⟨z, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← jD_map', hs']`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `Submodule.comap_map_eq ((latMap π).baseChange RW) U` as an intermediate fact. Rewrite `this` using `[hmap, Submodule.comap_top, sup_eq_left.2 hk]`. Conclude with `this.symm`. Take `⟨_, ⟨t, rfl⟩, _, ⟨z, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 (htop ▸ Submodule.mem_top (x := y))`. Rewrite `hy` using `[map_add, hcomp, hs', zero_add]`.
-
-Conclude with `⟨t, by rw [hy, map_zero, add_zero]⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `hcomp x`.
+A detailed English derivation is pending.
 -/
 theorem exact_of_tie (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRingHom ≠ ⊤)
     (T Yt Z : LocLat G Qp LL O) (ι : LatHom T.L Yt.L) (π : LatHom Yt.L Z.L)
@@ -466,7 +448,7 @@ theorem exact_of_tie (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRin
     exact hcomp x
 
 /- English proof (translation)
-Use `haveI := PD.finK₀`. Use `haveI : NeZero n := ⟨by rw [W.n_eq]; exact Module.finrank_pos.ne'⟩`. Use `haveI := W.EE_complete`. Use `map_maximal_ne_top n PD.p hO (algebraMap (LetA O n) W.EE) W.EE_π (fun x => ?_) _ (ioE_injective E) hsep m hm` and prove the remaining obligations. Simplify using `using W.EE_dense x 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem map_ne_top_of_tie [IsNoetherianRing O]
     (hO : ∀ c : O, IsUnit c ∨ ∃ k : ℕ, (PD.p : O) ∣ c ^ k)
@@ -486,15 +468,15 @@ section Concrete
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Distinguish the cases in `hc0 : c = 0`. Conclude with `Or.inr ⟨1, by simp [hc0]⟩`. Establish `hc0' : (c : ↥LL.1) ≠ 0` using `fun h => hc0 (Subtype.ext h)`. Establish `hl0 : ((l : ℕ) : ↥LL.1) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hne : P.v LL c ≠ ⊤` using `by simpa using hc0'`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q, hq⟩` from `WithTop.ne_top_iff_exists.1 hne`. Establish `hq0 : (0 : WithTop ℚ) ≤ q` using `hq ▸ (P.v_O LL c).2 c.2`. Establish `hq0' : 0 ≤ q` using `by exact_mod_cast hq0`. Break down `hq0'.eq_or_lt with h | h` into its components or cases. Use `left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hinv : (c : ↥LL.1)⁻¹ ∈ OL LL`. Rewrite using `[← P.v_O, AddValuation.map_inv, ← hq, ← h]`. Simplify using the standard rewrite rules. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨_, hinv⟩, Subtype.ext (mul_inv_cancel₀ hc0')⟩`. Use `right`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩` from `Archimedean.arch (1 : ℚ) h`. Establish `hmem : (c : ↥LL.1) ^ k / (l : ↥LL.1) ∈ OL LL`. Rewrite using `[← P.v_O, AddValuation.map_div, AddValuation.map_pow, P.v_l, ← hq]`. Establish `: (k • (q : WithTop ℚ) - 1 : WithTop ℚ) = ((k • q - 1 : ℚ) : WithTop ℚ)`. Use `norm_cast`.
+Establish an intermediate fact. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `sub_nonneg.2 hk` after adjusting the coercions. Use `⟨k, ⟨_, hmem⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [SubmonoidClass.coe_pow, MulMemClass.coe_mul, SubringClass.coe_natCast]`. Rewrite using `[mul_div_cancel₀ _ hl0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_or_dvd_pow (P : LocPrime l) (LL : FinExt l) (c : ↥(OL LL)) :
     IsUnit c ∨ ∃ k : ℕ, ((l : ℕ) : ↥(OL LL)) ∣ c ^ k := by
@@ -525,14 +507,14 @@ theorem isUnit_or_dvd_pow (P : LocPrime l) (LL : FinExt l) (c : ↥(OL LL)) :
     rw [mul_div_cancel₀ _ hl0]
 
 /- English proof (translation)
-The claim follows from `haveI := LL.2 IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)`.
+A detailed English derivation is pending.
 -/
 theorem finite_OL (LL : FinExt l) : Module.Finite ℤ_[l] ↥(OL LL) :=
   haveI := LL.2
   IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)
 
 /- English proof (translation)
-The claim follows from `haveI := LL.2 haveI : Module.IsTorsionFree ℤ_[l] ↥LL.1 := Module.IsTorsionFree.trans_faithfulSMul ℤ_[l] ℚ_[l] ↥LL.1 IsIntegralClosure.module_free ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)`.
+A detailed English derivation is pending.
 -/
 theorem free_OL (LL : FinExt l) : Module.Free ℤ_[l] ↥(OL LL) :=
   haveI := LL.2
@@ -541,7 +523,7 @@ theorem free_OL (LL : FinExt l) : Module.Free ℤ_[l] ↥(OL LL) :=
   IsIntegralClosure.module_free ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)
 
 /- English proof (translation)
-Use extensionality with `i`. Take `⟨y, hy⟩` from `hx (i + 1)`. Rewrite using `[hy, mul_comm, WittVector.mul_pow_charP_coeff_zero y (Nat.lt_succ_self i)]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sep_WCb (x : WCb l) (hx : ∀ k : ℕ, (l : WCb l) ^ k ∣ x) : x = 0 := by
   ext i
@@ -550,9 +532,9 @@ theorem sep_WCb (x : WCb l) (hx : ∀ k : ℕ, (l : WCb l) ^ k ∣ x) : x = 0 :=
   simp
 
 /- English proof (translation)
-Use `haveI := free_OL LL`. Set `e` to `TensorProduct.equivFinsuppOfBasisLeft (N := WCb l) (Module.Free.chooseBasis ℤ_[l] ↥(OL LL))`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use extensionality with `i : 1`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `sep_WCb _ fun k => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `hx k`. Use `⟨e y i, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, ← Nat.cast_pow, ← nsmul_eq_mul, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul, Nat.cast_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sep_RW (LL : FinExt l) (x : RW LL) (hx : ∀ k : ℕ, (l : RW LL) ^ k ∣ x) : x = 0 := by
   classical
@@ -570,9 +552,9 @@ theorem sep_RW (LL : FinExt l) (x : RW LL) (hx : ∀ k : ℕ, (l : RW LL) ^ k �
 end Concrete
 
 /- English proof (translation)
-Introduce `D HW F _ l _ K s LL h S E T Yt Z ι π hses`. Use `haveI := finite_OL LL`. Use `haveI : IsNoetherianRing ↥(OL LL) := IsNoetherianRing.of_finite ℤ_[l] ↥(OL LL)`. Use `haveI : IsNoetherianRing S.O := this`. Establish `hp : S.PD.p = l` using `(D.loc l).PD_p K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `exact_of_tie E (map_ne_top_of_tie E ?_ ?_) T Yt Z ι π hses` and prove the remaining obligations. Rewrite using `[hp]`. Conclude with `isUnit_or_dvd_pow (D.loc l) LL`. Rewrite using `[hp]`. Conclude with `sep_RW LL`.
+A detailed English derivation is pending.
 -/
 theorem DD_exact : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), adm9 D HW F → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let S := sit D.loc HW l (D.locA l) K s LL h; let E : S.Comparison₂ := ((F l).E K s LL h).tie; ∀ (T Yt Z : LocLat S.G S.Qp S.LL S.O) (ι : LatHom T.L Yt.L) (π : LatHom Yt.L Z.L), IsSESLat (Qp := S.Qp) ι π → Function.Injective (S.W.map ι) ∧ Function.Exact (S.W.map ι) (S.W.map π) ∧ Function.Surjective (S.W.map π) := by
   intro D HW F _ l _ K s LL h S E T Yt Z ι π hses

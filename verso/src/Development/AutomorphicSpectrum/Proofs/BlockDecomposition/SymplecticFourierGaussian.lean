@@ -18,11 +18,11 @@ open scoped NumberField.AdeleRing ValuativeRel ENNReal ComplexConjugate Schwartz
 namespace GlobalTheory.CompanionTheory.RSFT.Assemble
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ awayBox S`. Establish `hi : ∀ i, x i ∈ (awayIntegral S : Set Af)` using `hx`. Rewrite using `[restrictedTensor2, Set.indicator_of_mem hx, Adele2.finiteTensor2]`. Simplify using `only [oneDim, Set.indicator_of_mem (hi _), localTensor]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_comm`. Establish `: ∃ i, x i ∉ (awayIntegral S : Set Af)`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hx h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi⟩` from `this`. Rewrite using `[restrictedTensor2, Set.indicator_of_notMem hx, Adele2.finiteTensor2]`. Use `(Finset.prod_eq_zero (Finset.mem_univ i) ?_).symm` and prove the remaining obligations. Rewrite using `[oneDim, Set.indicator_of_notMem hi]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictedTensor2_tensor (S : Finset Pl) (g : Fin 2 → ∀ v : S, Qv v.1 → ℂ) :
     restrictedTensor2 S (fun v => localTensor fun i => g i v) =
@@ -43,9 +43,9 @@ theorem restrictedTensor2_tensor (S : Finset Pl) (g : Fin 2 → ∀ v : S, Qv v.
     rw [oneDim, Set.indicator_of_notMem hi]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`. Distinguish the cases in `hx : x ∈ awayBox S`. Simplify using `only [restrictedTensor2, Set.indicator_of_mem hx, Pi.smul_apply, smul_eq_mul, Finset.sum_apply]`. Rewrite using `[Finset.prod_univ_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun p _ => Finset.prod_mul_distrib`. Simplify using `[restrictedTensor2, Set.indicator_of_notMem hx]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem restrictedTensor2_sum (S : Finset Pl) {κ : S → Type} (s : ∀ v, Finset (κ v)) (c : ∀ v, κ v → ℂ)
     (E : ∀ v : S, κ v → (Fin 2 → Qv v.1) → ℂ) :
@@ -60,7 +60,7 @@ theorem restrictedTensor2_sum (S : Finset Pl) {κ : S → Type} (s : ∀ v, Fins
   · simp [restrictedTensor2, Set.indicator_of_notMem hx]
 
 /- English proof (translation)
-Use `count_finprod_primeIdealUnit_zpow _ ?_ w` and prove the remaining obligations. Rewrite using `[Filter.eventually_cofinite]`. Use `S.finite_toSet.subset fun u hu => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `huS`. Conclude with `hu (dif_neg fun h => huS (Finset.mem_coe.2 h))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem count_idl (S : Finset Pl) (N : S → ℤ) (w : Pl) :
     FractionalIdeal.count ℚ w (idl S N : FractionalIdeal (𝓞 ℚ)⁰ ℚ) = if h : w ∈ S then N ⟨w, h⟩ else 0 := by
@@ -71,9 +71,9 @@ theorem count_idl (S : Finset Pl) (N : S → ℤ) (w : Pl) :
   exact hu (dif_neg fun h => huS (Finset.mem_coe.2 h))
 
 /- English proof (translation)
-Establish `: (sup S a) v.1 = ∑ u : S, (finiteAdeleSingleAdd u.1 (a u)) v.1`. Rewrite using `[sup]`. Conclude with `map_sum (adeleAt v.1) _ _`. Rewrite using `[this, Finset.sum_eq_single v, finiteAdeleSingleAdd_apply_self]`. Introduce `u _ hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `finiteAdeleSingleAdd_apply_of_ne (fun h => hu (Subtype.ext h.symm)) _`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem sup_apply (S : Finset Pl) (a : ∀ v : S, Qv v.1) (v : S) : (sup S a) v.1 = a v := by
   have : (sup S a) v.1 = ∑ u : S, (finiteAdeleSingleAdd u.1 (a u)) v.1 := by
@@ -85,7 +85,7 @@ theorem sup_apply (S : Finset Pl) (a : ∀ v : S, Qv v.1) (v : S) : (sup S a) v.
   · simp
 
 /- English proof (translation)
-Establish `: (sup S a) w = ∑ u : S, (finiteAdeleSingleAdd u.1 (a u)) w`. Rewrite using `[sup]`. Conclude with `map_sum (adeleAt w) _ _`. Rewrite using `[this]`. Use `Finset.sum_eq_zero fun u _ => finiteAdeleSingleAdd_apply_of_ne (fun h => hw (by rw [h]; exact u.2)) _` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sup_apply_notMem (S : Finset Pl) (a : ∀ v : S, Qv v.1) {w : Pl} (hw : w ∉ S) : (sup S a) w = 0 := by
   have : (sup S a) w = ∑ u : S, (finiteAdeleSingleAdd u.1 (a u)) w := by
@@ -95,7 +95,7 @@ theorem sup_apply_notMem (S : Finset Pl) (a : ∀ v : S, Qv v.1) {w : Pl} (hw : 
   refine Finset.sum_eq_zero fun u _ => finiteAdeleSingleAdd_apply_of_ne (fun h => hw (by rw [h]; exact u.2)) _
 
 /- English proof (translation)
-Rewrite using `[sup, Finset.sum_mul, addChar_map_finsetSum]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[finiteAdeleSingleAdd_mul, finiteAdelicChar_finiteAdeleSingleAdd]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem char_sup (S : Finset Pl) (a : ∀ v : S, Qv v.1) (y : Af) :
     finiteAdelicChar ℚ (sup S a * y) = ∏ v : S, localAdelicChar ℚ v.1 (a v * y v.1) := by
@@ -108,13 +108,13 @@ end GlobalTheory.CompanionTheory.RSFT.Assemble
 namespace GlobalTheory.CompanionTheory.RSFT.Assemble
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.mem_adicCompletionIntegers _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem mem_int {w : Pl} {z : Qv w} : z ∈ w.adicCompletionIntegers ℚ ↔ Valued.v z ≤ 1 :=
   HeightOneSpectrum.mem_adicCompletionIntegers _ _ _
 
 /- English proof (translation)
-Establish `h1 : Ideal.absNorm (differentIdeal ℤ (𝓞 ℚ)) = 1`. Rewrite using `[absNorm_differentIdeal ℚ (𝓞 ℚ), Rat.numberField_discr]`. Both sides reduce to the same expression. Rewrite using `[Ideal.absNorm_eq_one_iff.1 h1, FractionalIdeal.coeIdeal_top, FractionalIdeal.count_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem count_different (w : Pl) :
     FractionalIdeal.count ℚ w ((differentIdeal ℤ (𝓞 ℚ) : Ideal (𝓞 ℚ)) : FractionalIdeal (𝓞 ℚ)⁰ ℚ) = 0 := by
@@ -124,19 +124,19 @@ theorem count_different (w : Pl) :
   rw [Ideal.absNorm_eq_one_iff.1 h1, FractionalIdeal.coeIdeal_top, FractionalIdeal.count_one]
 
 /- English proof (translation)
-Rewrite using `[mem_idealFiniteAdeles]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun w hw => ?_, fun v => ?_⟩` and prove the remaining obligations. Use `h w` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[count_idl, dif_neg hw]`. Establish `e : (x - sup S a) w = x w`. Establish `: (x - sup S a) w = x w - (sup S a) w` using `rfl`. Rewrite using `[this, sup_apply_notMem S a hw, sub_zero]`. Rewrite `this` using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mem_int.2 (by simpa using this)`. Use `h v.1` as an intermediate fact. Rewrite `this` using `[count_idl, dif_pos v.2]`. Establish `e : (x - sup S a) v.1 = x v.1 - a v`. Establish `: (x - sup S a) v.1 = x v.1 - (sup S a) v.1` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, sup_apply]`. Rewrite `this` using `[e]`. Conclude with `mem_valBall_iff_valued.2 this`. Introduce and unpack `⟨h1, h2⟩ w`. Rewrite using `[count_idl]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w ∈ S`. Rewrite using `[dif_pos hw]`. Establish `e : (x - sup S a) w = x w - a ⟨w, hw⟩`. Establish `: (x - sup S a) w = x w - (sup S a) w` using `rfl`. Rewrite using `[this, sup_apply S a ⟨w, hw⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `mem_valBall_iff_valued.1 (h2 ⟨w, hw⟩)`. Rewrite using `[dif_neg hw]`. Establish `e : (x - sup S a) w = x w`. Establish `: (x - sup S a) w = x w - (sup S a) w` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[this, sup_apply_notMem S a hw, sub_zero]`. Rewrite using `[e]`. Simplify using `using mem_int.1 (h1 w hw)`.
+A detailed English derivation is pending.
 -/
 theorem mem_coset_iff (S : Finset Pl) (N : S → ℤ) (a : ∀ v : S, Qv v.1) (x : Af) :
     x - sup S a ∈ idealFiniteAdeles (idl S N) ↔
@@ -176,13 +176,13 @@ theorem mem_coset_iff (S : Finset Pl) (N : S → ℤ) (a : ∀ v : S, Qv v.1) (x
       simpa using mem_int.1 (h1 w hw)
 
 /- English proof (translation)
-Rewrite using `[mem_idealFiniteAdeles]`. Simplify using `only [count_traceDualIdeal, count_different, count_idl, add_zero, neg_neg]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun w hw => ?_, fun v => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `h w` as an intermediate fact. Rewrite `this` using `[dif_neg hw]`. Conclude with `mem_int.2 (by simpa using this)`. Use `h v.1` as an intermediate fact. Rewrite `this` using `[dif_pos v.2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `mem_valBall_iff_valued.2 (by simpa using this)`. Introduce and unpack `⟨h1, h2⟩ w`. Distinguish the cases in `hw : w ∈ S`. Rewrite using `[dif_pos hw]`. Simplify using `using mem_valBall_iff_valued.1 (h2 ⟨w, hw⟩)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[dif_neg hw]`. Simplify using `using mem_int.1 (h1 w hw)`.
+A detailed English derivation is pending.
 -/
 theorem mem_dual_iff (S : Finset Pl) (N : S → ℤ) (y : Af) :
     y ∈ idealFiniteAdeles (traceDualIdeal ℚ (idl S N)) ↔
@@ -206,9 +206,9 @@ theorem mem_dual_iff (S : Finset Pl) (N : S → ℤ) (y : Af) :
       simpa using mem_int.1 (h1 w hw)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[cosetIndicator_apply]`. Simplify using `only [mem_coset_iff]`. Distinguish the cases in `hx : x ∈ (awayIntegral S : Set Af)`. Rewrite using `[oneDim, Set.indicator_of_mem hx]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GroundTheory.Automorphic.GJMatrix.cosetInd_apply, hx, true_and]`. Rewrite using `[Finset.prod_ite_zero]`. Simplify using the standard rewrite rules. Rewrite using `[oneDim, Set.indicator_of_notMem hx]`. Simplify using `[hx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem oneDim_coset (S : Finset Pl) (N : S → ℤ) (a : ∀ v : S, Qv v.1) :
     (oneDim S fun v => cosetInd (valBall (Qv v.1) (N v)) (a v)) = cosetIndicator (idl S N) (sup S a) := by
@@ -224,15 +224,15 @@ theorem oneDim_coset (S : Finset Pl) (N : S → ℤ) (a : ∀ v : S, Qv v.1) :
     simp [hx]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `hl : ∀ v : S, localFourier (selfDualMeasure (localAdelicChar ℚ v.1)) (localAdelicChar ℚ v.1) (cosetInd (valBall (Qv v.1) (N v)) (a v)) (y v.1) = (localAdelicChar ℚ v.1 (a v * y v.1) : ℂ) * (((pOf v.1 : ℝ) ^ (-N v) : ℝ) : ℂ) * (valBall (Qv v.1) (-N v) : Set (Qv v.1)).indicator (fu …`. Introduce `v`. Use `GlobalTheory.CompanionTheory.RSFT.localFourier_cosetInd_valBall (Qv v.1) (localAdelicChar ℚ v.1) (hB.1 v.1).1 (N v) (a v) (y v.1)` as an intermediate fact. Rewrite `this` using `[(hB.1 v.1).2.1]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[oneDim_coset, finiteFourier_cosetIndicator, GlobalTheory.CompanionTheory.RSFT.finiteAdeleMeasure_idl_toReal, char_sup]`. Distinguish the cases in `hy : y ∈ idealFiniteAdeles (traceDualIdeal ℚ (idl S N))`. Take `⟨h1, h2⟩` from `(mem_dual_iff S N y).1 hy`. Rewrite using `[Set.indicator_of_mem (SetLike.mem_coe.2 hy), oneDim, Set.indicator_of_mem h1]`. Establish `hcp : ((∏ v : S, localAdelicChar ℚ v.1 (a v * y v.1) : Circle) : ℂ) = ∏ v : S, (localAdelicChar ℚ v.1 (a v * y v.1) : ℂ)` using `map_prod Circle.coeHom _ _`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hl, Set.indicator_of_mem (SetLike.mem_coe.2 (h2 _)), mul_one, Pi.one_apply, Finset.prod_mul_distrib, hcp]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem (by simpa using hy), mul_zero, mul_zero]`. Distinguish the cases in `h1 : y ∈ (awayIntegral S : Set Af)`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `: ∃ v : S, y v.1 ∉ valBall (Qv v.1) (-N v)`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hy ((mem_dual_iff S N y).2 ⟨h1, h⟩)`. Take `⟨v, hv⟩` from `this`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[oneDim, Set.indicator_of_mem h1]`. Use `(Finset.prod_eq_zero (Finset.mem_univ v) ?_).symm` and prove the remaining obligations. Rewrite using `[hl, Set.indicator_of_notMem (by simpa using hv), mul_zero]`. Rewrite using `[oneDim, Set.indicator_of_notMem h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneDim_fourier (hB : B0) (S : Finset Pl) (N : S → ℤ) (a : ∀ v : S, Qv v.1) :
     finiteFourier ℚ (oneDim S fun v => cosetInd (valBall (Qv v.1) (N v)) (a v)) =
@@ -273,14 +273,14 @@ end GlobalTheory.CompanionTheory.RSFT.Assemble
 namespace GlobalTheory.CompanionTheory.RSFT.Assemble
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.RSFT.GaussPlane.mixedFourier2_gauss_rot γ hγ r`.
+A detailed English derivation is pending.
 -/
 theorem gauss_step (γ : 𝓢(Fin 2 → mixedEmbedding.mixedSpace ℚ, ℂ)) (hγ : IsGauss γ) (r : Fin 2 → 𝔸[ℚ]) :
     Adele2.mixedFourier2 ℚ γ (Adele2.infPart ![r 1, -r 0]) = γ (Adele2.infPart r) :=
   GlobalTheory.CompanionTheory.RSFT.GaussPlane.mixedFourier2_gauss_rot γ hγ r
 
 /- English proof (translation)
-Establish `h1` using `restrictedTensor2_tensor S (fun i v => cosetInd (valBall (Qv v.1) (N v)) (p v i))`. Establish `h2` using `restrictedTensor2_tensor S (fun i v => localFourier (selfDualMeasure (localAdelicChar ℚ v.1)) (localAdelicChar ℚ v.1) (cosetInd (valBall (Qv v.1) (N v)) (p v i)))`. Simplify using `only [cE, GroundTheory.Automorphic.GJMatrix.localFourierPi_localTensor]`. Rewrite using `[h1, h2, Adele2.finiteFourier2_finiteTensor2]`. Simplify using `only [oneDim_fourier hB]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem base_step (hB : B0) (S : Finset Pl) (N : S → ℤ) (p : ∀ v : S, Fin 2 → Qv v.1) :
     Adele2.finiteFourier2 ℚ (restrictedTensor2 S fun v => cE (N v) (p v)) =
@@ -293,9 +293,9 @@ theorem base_step (hB : B0) (S : Finset Pl) (N : S → ℤ) (p : ∀ v : S, Fin 
   simp only [oneDim_fourier hB]
 
 /- English proof (translation)
-Establish `hopen : ∀ H ∈ Set.range (valBall (Qv v)), IsOpen (H : Set (Qv v))`. Introduce and unpack `_ ⟨N, rfl⟩`. Conclude with `isOpen_valBall N`. Establish `hbasis : ∀ W ∈ 𝓝 (0 : Qv v), ∃ H ∈ Set.range (valBall (Qv v)), (H : Set (Qv v)) ⊆ W`. Introduce `W hW`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨N, -, hN⟩` from `hasBasis_nhds_zero_valBall.mem_iff.mp hW`. Conclude with `⟨_, ⟨N, rfl⟩, hN⟩`. Take `⟨_, ⟨N, rfl⟩, s, hs⟩` from `GroundTheory.Automorphic.GJMatrix.exists_eq_sum_prod_cosetInd hopen hbasis hΦ.1 hΦ.2`. Conclude with `⟨N, s, hs⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_decomp {v : Pl} {Φ : (Fin 2 → Qv v) → ℂ} (hΦ : SB Φ) :
     ∃ (N : ℤ) (s : Finset (Fin 2 → Qv v)), Φ = ∑ a ∈ s, Φ a • cE N a := by
@@ -310,7 +310,7 @@ theorem exists_decomp {v : Pl} {Φ : (Fin 2 → Qv v) → ℂ} (hΦ : SB Φ) :
   exact ⟨N, s, hs⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `hi : ∀ a, Integrable (fun x => cE N a x * ((localAdelicChar ℚ v) (∑ i, x i * y i) : ℂ)) (localMeasurePi (localAdelicChar ℚ v))` using `fun a => GroundTheory.Automorphic.GJMatrix.integrable_mul_char_sum hc (GroundTheory.Automorphic.GJMatrix.integrable_of_mem_localSchwartzBruhatPi (GroundTheory.Automorphic.GJMatrix.localTensor_mem fun i => GroundTheory.Automorphic.GJMatrix.cosetInd_valBall_mem N (a i))) y`. Simplify using `only [localFourierPi, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, mul_assoc]`. Rewrite using `[integral_finset_sum _ fun a _ => (hi a).const_mul (c a)]`. Conclude with `Finset.sum_congr rfl fun a _ => integral_const_mul _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localFourierPi_sum {v : Pl} (hc : Continuous (localAdelicChar ℚ v)) (N : ℤ) (s : Finset (Fin 2 → Qv v)) (c : (Fin 2 → Qv v) → ℂ) :
     localFourierPi (localAdelicChar ℚ v) (∑ a ∈ s, c a • cE N a) =
@@ -327,7 +327,7 @@ theorem localFourierPi_sum {v : Pl} (hc : Continuous (localAdelicChar ℚ v)) (N
   exact Finset.sum_congr rfl fun a _ => integral_const_mul _ _
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Adele2.finiteFourier2_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Adele2.finiteFourier2_add (Adele2.integrable_of_mem_finiteSchwartzBruhat2 (Submodule.smul_mem _ _ (hf a))) (Adele2.integrable_of_mem_finiteSchwartzBruhat2 (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hf i))), Adele2.finiteFo …`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem finiteFourier2_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → (Fin 2 → Af) → ℂ)
     (hf : ∀ i, f i ∈ Adele2.finiteSchwartzBruhat2 ℚ) :
@@ -341,7 +341,7 @@ theorem finiteFourier2_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι 
       Adele2.finiteFourier2_smul, ih]
 
 /- English proof (translation)
-Use `GroundTheory.Automorphic.GJMatrix.localTensor_mem (ι := Fin 2) (g := fun i => cosetInd (valBall (Qv v) N) (a i)) fun i => GroundTheory.Automorphic.GJMatrix.cosetInd_valBall_mem N (a i)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cE_mem {v : Pl} (N : ℤ) (a : Fin 2 → Qv v) : SB (cE N a) := by
   have := GroundTheory.Automorphic.GJMatrix.localTensor_mem (ι := Fin 2) (g := fun i => cosetInd (valBall (Qv v) N) (a i))
@@ -349,11 +349,11 @@ theorem cE_mem {v : Pl} (N : ℤ) (a : Fin 2 → Qv v) : SB (cE N a) := by
   exact this
 
 /- English proof (translation)
-Use `choose N s hs using fun v => exists_decomp (hΨ v)`. Establish `hc : ∀ v : Pl, Continuous (localAdelicChar ℚ v)` using `fun v => continuous_localAdelicChar v`. Establish `e1` using `restrictedTensor2_sum S s (fun v a => Ψ v a) (fun v a => cE (N v) a)`. Establish `e2` using `restrictedTensor2_sum S s (fun v a => Ψ v a) (fun v a => localFourierPi (localAdelicChar ℚ v.1) (cE (N v) a))`. Establish `h1 : (fun v => ∑ a ∈ s v, Ψ v a • cE (N v) a) = Ψ` using `funext fun v => (hs v).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (fun v => ∑ a ∈ s v, Ψ v a • localFourierPi (localAdelicChar ℚ v.1) (cE (N v) a)) = fun v => localFourierPi (localAdelicChar ℚ v.1) (Ψ v)`. Use function extensionality and compare the values at `v`. Rewrite using `[← localFourierPi_sum (hc v.1), ← hs v]`. Rewrite `e1` using `[h1]`. Rewrite `e2` using `[h2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, e1, finiteFourier2_sum _ _ _ fun p => GodementSection.restrictedTensor2_mem S fun v => cE_mem _ _]`. Conclude with `Finset.sum_congr rfl fun p _ => by rw [base_step hB]`.
+A detailed English derivation is pending.
 -/
 theorem finite_step (hB : B0) (S : Finset Pl) (Ψ : ∀ v : S, (Fin 2 → Qv v.1) → ℂ) (hΨ : ∀ v, SB (Ψ v)) :
     Adele2.finiteFourier2 ℚ (restrictedTensor2 S Ψ) =
@@ -374,7 +374,7 @@ theorem finite_step (hB : B0) (S : Finset Pl) (Ψ : ∀ v : S, (Fin 2 → Qv v.1
   exact Finset.sum_congr rfl fun p _ => by rw [base_step hB]
 
 /- English proof (translation)
-Simplify using `only [sF, localFourierPi, dt, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, m2, localMeasurePi]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [mul_neg, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sF_eq {v : Pl} (Φ : (Fin 2 → Qv v) → ℂ) (r : Fin 2 → Qv v) :
     sF (localAdelicChar ℚ v) Φ r = localFourierPi (localAdelicChar ℚ v) Φ ![r 1, -r 0] := by
@@ -383,11 +383,9 @@ theorem sF_eq {v : Pl} (Φ : (Fin 2 → Qv v) → ℂ) (r : Fin 2 → Qv v) :
   simp only [mul_neg, sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `hbox : ![x 1, -x 0] ∈ awayBox S ↔ x ∈ awayBox S`. Simplify using `only [awayBox, Set.mem_setOf_eq, Fin.forall_fin_two, Matrix.cons_val_zero, Matrix.cons_val_one, neg_mem_iff]`. Conclude with `and_comm`. Establish `hv : ∀ v : S, vecAt v.1 ![x 1, -x 0] = ![vecAt v.1 x 1, -vecAt v.1 x 0]`. Introduce `v`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Distinguish the cases in `hx : x ∈ awayBox S`. Rewrite using `[restrictedTensor2, restrictedTensor2, Set.indicator_of_mem (hbox.2 hx), Set.indicator_of_mem hx]`. Conclude with `Finset.prod_congr rfl fun v _ => by rw [hv, h]`.
-
-Rewrite using `[restrictedTensor2, restrictedTensor2, Set.indicator_of_notMem (mt hbox.1 hx), Set.indicator_of_notMem hx]`.
+Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swap_step (S : Finset Pl) (L Ψ : ∀ v : S, (Fin 2 → Qv v.1) → ℂ)
     (h : ∀ v r, Ψ v r = L v ![r 1, -r 0]) (x : Fin 2 → Af) :
@@ -405,9 +403,9 @@ theorem swap_step (S : Finset Pl) (L Ψ : ∀ v : S, (Fin 2 → Qv v.1) → ℂ)
   · rw [restrictedTensor2, restrictedTensor2, Set.indicator_of_notMem (mt hbox.1 hx), Set.indicator_of_notMem hx]
 
 /- English proof (translation)
-Establish `hp : Adele2.finPart ![r 1, -r 0] = ![Adele2.finPart r 1, -Adele2.finPart r 0]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Establish `hs` using `swap_step S (fun v => localFourierPi (localAdelicChar ℚ v.1) (Ψ v)) (fun v => sF (localAdelicChar ℚ v.1) (Ψ v)) (fun v r => sF_eq _ _) (Adele2.finPart r)`. Establish `h1 : sFA (tst γ S Ψ) r = Adele2.mixedFourier2 ℚ γ (Adele2.infPart ![r 1, -r 0]) * Adele2.finiteFourier2 ℚ (restrictedTensor2 S Ψ) (Adele2.finPart ![r 1, -r 0])`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sFA, tst, Adele2.adelicFourier2_schwartzBruhatTensor2, Adele2.schwartzBruhatTensor2, Adele2.mixedFourier2Schwartz_apply]`. Rewrite using `[h1, gauss_step γ hγ r, finite_step hB S Ψ hΨ, hp, hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fourier_eq (hB : B0) (γ : 𝓢(Fin 2 → mixedEmbedding.mixedSpace ℚ, ℂ)) (hγ : IsGauss γ) (S : Finset Pl)
     (Ψ : ∀ v : S, (Fin 2 → Qv v.1) → ℂ) (hΨ : ∀ v, SB (Ψ v)) (r : Fin 2 → 𝔸[ℚ]) :
@@ -425,7 +423,7 @@ theorem fourier_eq (hB : B0) (γ : 𝓢(Fin 2 → mixedEmbedding.mixedSpace ℚ,
   rfl
 
 /- English proof (translation)
-Introduce `hB γ hγ S Ψ hΨ`. Establish `hm : restrictedTensor2 S Ψ ∈ Adele2.finiteSchwartzBruhat2 ℚ` using `GodementSection.restrictedTensor2_mem S hΨ`. Conclude with `⟨Adele2.schwartzBruhatTensor2_mem γ hm, funext (fourier_eq hB γ hγ S Ψ hΨ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem fourier_gaussian_of_basic_facts : B0 → FT := by
   intro hB γ hγ S Ψ hΨ

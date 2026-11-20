@@ -23,7 +23,7 @@ variable {R L}
 variable {nb : nA σ d.Y d.b → d.G} {uM : (Fin L.n → AE F E) → d.G} {nb' : nA σ L.Y L.b → G2 σ L.Y} {w₁ : d.G}
   {cM : (Fin L.n → AE F E) × AF F → d.G} {δ : E}
 /- English proof (translation)
-Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.coordsC_ck_k h hc hU hc' hT h𝓐 hP hPc Ψ hΨ x`.
+A detailed English derivation is pending.
 -/
 theorem coordsC_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb uM nb' w₁ cM δ) {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)}
@@ -39,7 +39,7 @@ theorem coordsC_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L 
         ∂((lam'.restrict 𝓖').prod ((ν.restrict 𝓤).prod ((ν.restrict 𝓤).prod ((lamA F).restrict 𝓐)))) := by
   exact _root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.coordsC_ck_k h hc hU hc' hT h𝓐 hP hPc Ψ hΨ x
 /- English proof (translation)
-Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.coordsE_ck_k h hc hU hc' hT h𝓐 hP hPc Ψ hΨm hΨ x`.
+A detailed English derivation is pending.
 -/
 theorem coordsE_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb uM nb' w₁ cM δ) {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)}

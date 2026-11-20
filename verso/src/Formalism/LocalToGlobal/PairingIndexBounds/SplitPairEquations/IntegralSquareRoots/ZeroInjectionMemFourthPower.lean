@@ -23,14 +23,14 @@ def sl0 (n : Type) : (Fin 4 × n → ℂ) →ₗ[ℂ] (n → ℂ) where
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases h : a = 0 <;> simp [slice, inj0, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem slice_zero_injection (x : n → ℂ) (a : Fin 4) : slice a (inj0 n x) = if a = 0 then x else 0 := by
   funext i
   by_cases h : a = 0 <;> simp [slice, inj0, h]
 
 /- English proof (translation)
-Introduce `a`. Rewrite using `[slice_zero_injection]`. Use `split_ifs`. Conclude with `hx`. Conclude with `ΛM.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_injection_mem_fourth_power (ΛM : AddSubgroup (n → ℂ)) {x : n → ℂ} (hx : x ∈ ΛM) : inj0 n x ∈ pow4 ΛM := by
   intro a
@@ -40,15 +40,15 @@ theorem zero_injection_mem_fourth_power (ΛM : AddSubgroup (n → ℂ)) {x : n �
   · exact ΛM.zero_mem
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `haveI := h.1`. Set `f : ΛM → imgLat (g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 ΛM)` to `fun x => ⟨g (inj0 n x.1), ⟨inj0 n x.1, zero_injection_mem_fourth_power ΛM x.2, rfl⟩⟩`. Establish `hf : Continuous f` using `Continuous.subtype_mk ((((g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)).comp (inj0 n)).continuous_of_finiteDimensional).comp continuous_subtype_val) _`. Establish `hinj : Function.Injective f`.
+Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy`. Establish `h1 : g (inj0 n x.1) = g (inj0 n y.1)` using `congrArg Subtype.val hxy`. Establish `h3` using `congrArg (slice 0) (g.injective h1)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `h3` using `[slice_zero_injection]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `DiscreteTopology.of_continuous_injective hf hinj`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Set `p : (Fin 4 × n → ℂ) →ₗ[ℝ] (n → ℂ)` to `((sl0 n).comp (g.symm : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ))).restrictScalars ℝ`. Establish `h2 : (Submodule.span ℝ ((imgLat (g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 ΛM) : AddSubgroup (Fin 4 × n → ℂ)) : Set (Fin 4 × n → ℂ))).map p ≤ Submodule.span ℝ (ΛM : Set (n → ℂ))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨y, ⟨x, hx, rfl⟩, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `show slice 0 (g.symm (g x)) ∈ ΛM`. Rewrite using `[g.symm_apply_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hx 0`. Use `h2 ⟨g (inj0 n v), by rw [h.2]; trivial, ?_⟩` and prove the remaining obligations. Use `show slice 0 (g.symm (g (inj0 n v))) = v`. Rewrite using `[g.symm_apply_apply, slice_zero_injection]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem is_lattice_of_fourth_power (ΛM : AddSubgroup (n → ℂ)) (g : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ))
     (h : IsLat (imgLat (g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 ΛM))) : IsLat ΛM := by
@@ -90,9 +90,9 @@ def putL (n : Type) (N N' : ℕ) (k : Fin N' × Fin N) : (n → ℂ) →ₗ[ℂ]
   map_smul' c x := by funext τ i j; by_cases h : (i, j) = k <;> simp [h]
 
 /- English proof (translation)
-Introduce `i j`. Distinguish the cases in `h : (i, j) = k`. Establish `: (fun τ => putL n N N' k x τ i j) = x` using `by funext τ; simp [putL, h]`. Rewrite using `[this]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (fun τ => putL n N N' k x τ i j) = 0` using `by funext τ; simp [putL, h]`. Rewrite using `[this]`. Conclude with `ΛM.zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem putL_mem (ΛM : AddSubgroup (n → ℂ)) (N N' : ℕ) (k : Fin N' × Fin N) {x : n → ℂ} (hx : x ∈ ΛM) :
     putL n N N' k x ∈ Ker.powLat ΛM N N' := by
@@ -104,9 +104,9 @@ theorem putL_mem (ΛM : AddSubgroup (n → ℂ)) (N N' : ℕ) (k : Fin N' × Fin
     rw [this]; exact ΛM.zero_mem
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Simplify using `only [Finset.sum_apply]`. Rewrite using `[Finset.sum_eq_single (i, j)]`. Simplify using `[putL]`. Introduce `k _ hk`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[putL, Ne.symm hk]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_putL (N N' : ℕ) (z : n → Fin N' → Fin N → ℂ) :
     z = ∑ k : Fin N' × Fin N, putL n N N' k (fun τ => z τ k.1 k.2) := by
@@ -120,15 +120,13 @@ theorem sum_putL (N N' : ℕ) (z : n → Fin N' → Fin N → ℂ) :
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `haveI := h.1`. Set `f : Ker.powLat ΛM N N' → (∀ _ : Fin N' × Fin N, ΛM)` to `fun x k => ⟨fun τ => x.1 τ k.1 k.2, x.2 k.1 k.2⟩`. Establish `hf : Continuous f`. Use `continuous_pi fun k => Continuous.subtype_mk (continuous_pi fun τ => ?_) _` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Continuous fun z : n → Fin N' → Fin N → ℂ => z τ k.1 k.2` using `by fun_prop`. Conclude with `h1.comp continuous_subtype_val`. Establish `hinj : Function.Injective f`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `τ i j`. Conclude with `congrFun (congrArg Subtype.val (congrFun hxy (i, j))) τ`. Conclude with `DiscreteTopology.of_continuous_injective hf hinj`. Rewrite using `[eq_top_iff]`. Introduce `z _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_putL N N' z]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Establish `h2 : (Submodule.span ℝ (ΛM : Set (n → ℂ))).map ((putL n N N' k).restrictScalars ℝ) ≤ Submodule.span ℝ ((Ker.powLat ΛM N N' : AddSubgroup (n → Fin N' → Fin N → ℂ)) : Set (n → Fin N' → Fin N → ℂ))`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
-
-Conclude with `Submodule.subset_span (putL_mem ΛM N N' k hy)`. Conclude with `h2 ⟨_, by rw [h.2]; trivial, rfl⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isLat_powLat (ΛM : AddSubgroup (n → ℂ)) (h : IsLat ΛM) (N N' : ℕ) : IsLat (Ker.powLat ΛM N N') := by
   constructor
@@ -160,15 +158,13 @@ end Gen
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {B : Ker.Base D cc δ}
 
 /- English proof (translation)
-The claim follows from `is_lattice_of_fourth_power B.lamM B.gC (KR.isLat_of_comm (KR.isLat_stdLat B.L _) hS.idx₂ hS.idx₁)`.
+A detailed English derivation is pending.
 -/
 theorem isLat_lamM (hS : B.StdOK) : IsLat B.lamM :=
   is_lattice_of_fourth_power B.lamM B.gC (KR.isLat_of_comm (KR.isLat_stdLat B.L _) hS.idx₂ hS.idx₁)
 
 /- English proof (translation)
-Establish `h` using `B.lat0OK N N'`. Unfold `Ker.Base.Lat0OK at h`. Unfold `Lat0IsLat`. Use `show IsLat (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N'))`. Rewrite using `[h]`.
-
-Conclude with `isLat_powLat B.lamM (isLat_lamM hS) N N'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat0IsLat (hS : B.StdOK) (N N' : ℕ) : Lat0IsLat B N N' := by
   have h := B.lat0OK N N'

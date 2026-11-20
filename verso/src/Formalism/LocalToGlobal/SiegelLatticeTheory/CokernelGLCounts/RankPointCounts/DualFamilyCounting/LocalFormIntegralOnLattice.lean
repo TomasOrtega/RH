@@ -16,36 +16,36 @@ section S1
 variable {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (L : LocSp D M) (p : PlF D)
 
 /- English proof (translation)
-Rewrite using `[(L.H p).h_herm (y + y') x, (L.H p).h_add_left, map_add, ← (L.H p).h_herm y x, ← (L.H p).h_herm y' x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem local_form_add_right (x y y' : L.V p) : (L.H p).h x (y + y') = (L.H p).h x y + (L.H p).h x y' := by
   rw [(L.H p).h_herm (y + y') x, (L.H p).h_add_left, map_add, ← (L.H p).h_herm y x,
     ← (L.H p).h_herm y' x]
 
 /- English proof (translation)
-Rewrite using `[(L.H p).h_herm (a • y) x, (L.H p).h_smul_left, map_mul, ← (L.H p).h_herm y x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem local_form_smul_right (x y : L.V p) (a : (D.s.atP p).Ep) :
     (L.H p).h x (a • y) = (M p).L.cj a * (L.H p).h x y := by
   rw [(L.H p).h_herm (a • y) x, (L.H p).h_smul_left, map_mul, ← (L.H p).h_herm y x]
 
 /- English proof (translation)
-Establish `h` using `(L.H p).h_smul_left 0 0 y`. Rewrite `h` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem local_form_zero_left (y : L.V p) : (L.H p).h 0 y = 0 := by
   have h := (L.H p).h_smul_left 0 0 y
   rwa [zero_smul, zero_mul] at h
 
 /- English proof (translation)
-Rewrite using `[(L.H p).h_herm 0 x, local_form_zero_left, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem local_form_zero_right (x : L.V p) : (L.H p).h x 0 = 0 := by
   rw [(L.H p).h_herm 0 x, local_form_zero_left, map_zero]
 
 /- English proof (translation)
-Use `⟨(D.s.atP p).ιE (o : D.host.E), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hA.2.2.2.1]`. Conclude with `PI.CntNotIntW.iE_mem_O D p o`. Rewrite using `[← L.bc_smul p (o : D.host.E) x]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Use `first`. Consider the case `exact (algebraMap_smul D.host.E o x).symm`. Consider the case `rfl`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem base_change_smul_integral {δ : ∀ p : PlF D, (D.s.atP p).Fp} (hA : Agree δ M p) (o : 𝓞 D.host.E) (x : (VS D).V) :
     ∃ c ∈ (M p).L.O, L.bc p (o • x) = c • L.bc p x := by
@@ -59,15 +59,13 @@ theorem base_change_smul_integral {δ : ∀ p : PlF D, (D.s.atP p).Fp} (hA : Agr
     | rfl
 
 /- English proof (translation)
-Unfold `lattice₂ at hx hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx0`. Take `⟨a, ha, rfl⟩` from `hx0`. Proceed by induction on `hy using Submodule.span_induction with`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `mem y hy0`. Take `⟨b, hb, rfl⟩` from `hy0`. Conclude with `hint a ha b hb`. Consider the case `zero => rw [local_form_zero_right]`. Conclude with `(M p).L.O.zero_mem`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y y' _ _ h1 h2 => rw [local_form_add_right]`. Conclude with `add_mem h1 h2`. Consider the case `smul c y _ h1`. Rewrite using `[show c • y = (c : (D.s.atP p).Ep) • y from rfl, local_form_smul_right]`. Conclude with `mul_mem (hcjO _ c.2) h1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => rw [local_form_zero_left]`. Conclude with `(M p).L.O.zero_mem`. Consider the case `add x x' _ _ h1 h2 => rw [(L.H p).h_add_left]`. Conclude with `add_mem h1 h2`. Consider the case `smul c x _ h1`.
-
-Rewrite using `[show c • x = (c : (D.s.atP p).Ep) • x from rfl, (L.H p).h_smul_left]`. Conclude with `mul_mem c.2 h1`.
+A detailed English derivation is pending.
 -/
 theorem local_form_integral_on_lattice (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hcjO : ∀ a ∈ (M p).L.O, (M p).L.cj a ∈ (M p).L.O)
@@ -96,45 +94,39 @@ end S1
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D δ M hA L p`. Establish `hAp` using `hA p`. Take `⟨-, -, hcj, hO, -⟩` from `hAp`. Establish `hLat` using `(VS D).standardTuple_isLattice`. Establish `hU` using `(VS D).baseLattice_isUnimodular`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hform : ∀ a b : (VS D).V, (L.H p).h (L.bc p a) (L.bc p b) = (D.s.atP p).ιE ((VS D).hT b a)`. Introduce `a b`. Rewrite using `[L.bc_form p]`. Both sides reduce to the same expression. Establish `hcjO : ∀ a ∈ (M p).L.O, (M p).L.cj a ∈ (M p).L.O`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `a ha`. Rewrite `*` using `[hcj, hO]`. Conclude with `LocFacts.lf_cj_mem p a ha`. Establish `hint : ∀ a ∈ (VS D).L0, ∀ b ∈ (VS D).L0, (L.H p).h (L.bc p a) (L.bc p b) ∈ (M p).L.O`. Introduce `a ha b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hform]`. Establish `ha' : a ∈ Formalism.E.hdual (VS D).hT (VS D).L0`. Establish `: Formalism.HermitianLatticesTheory.dual (VS D).hT (VS D).L0 = (VS D).L0` using `hU`. Rewrite `ha` using `[← this]`. Conclude with `ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨o, ho⟩` from `Submodule.mem_one.1 ((LocFacts.lf_mem_hdual).1 ha' b hb)`. Rewrite using `[← ho, hO]`. Conclude with `PI.CntNotIntW.iE_mem_O D p o`. Use `⟨?_, ?_, fun x => ⟨fun hx y hy => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hLat.fg`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `: lattice₂ L p (VS D).L0 = Submodule.span (M p).L.O (L.bc p '' (s : Set (VS D).V))`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[lattice₂, Submodule.span_le, ← hs]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Proceed by induction on `hx using Submodule.span_induction with`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul o y _ hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc, he⟩` from `base_change_smul_integral L p (hA p) o y`. Rewrite using `[he]`. Conclude with `Submodule.smul_mem _ (⟨c, hc⟩ : (M p).L.O) hy`. Rewrite using `[← hs]`. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `Submodule.fg_span (s.finite_toSet.image _)`. Rewrite using `[eq_top_iff, ← L.bc_span p, Submodule.span_le]`. Introduce and unpack `_ ⟨v, rfl⟩`. Establish `hv : v ∈ Submodule.span D.host.E ((VS D).L0 : Set (VS D).V)` using `by rw [hLat.span_eq_top]; trivial`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span (Submodule.subset_span ⟨y, hy, rfl⟩)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `add_mem hy hz`. Consider the case `smul a y _ hy => rw [L.bc_smul p]`. Conclude with `Submodule.smul_mem _ _ hy`. Conclude with `local_form_integral_on_lattice L p _ hcjO hint hx hy`. Take `⟨n, g, f, hgf⟩` from `Formalism.HermitianLatticesTheory.finitely_generated_projective_coords (K := D.host.E) (VS D).L0 hLat.fg (IsFractionRing.injective (𝓞 D.host.E) D.host.E)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose μ hμL0 hμ using fun i => LocFacts.lf_riesz_lat hLat hU (f i)`. Establish `hV : ∀ v : (VS D).V, v = ∑ i, (VS D).hT (μ i) v • ((g i : (VS D).L0) : (VS D).V)`. Set `L2 : (VS D).V →ₗ[D.host.E] (VS D).V` to `∑ i, ((VS D).hT (μ i)).smulRight ((g i : (VS D).L0) : (VS D).V)`. Establish `hL2 : ∀ v, L2 v = ∑ i, (VS D).hT (μ i) v • ((g i : (VS D).L0) : (VS D).V)`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[L2]`. Establish `heq : LinearMap.id = L2`. Apply `LinearMap.ext_on hLat.span_eq_top` to reduce the goal to its premises. Introduce `y hy`. Establish `e1` using `congrArg (fun z : (VS D).L0 => (z : (VS D).V)) (hgf ⟨y, hy⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Rewrite using `[LinearMap.id_apply, hL2]`. Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, ← algebraMap_smul D.host.E, hμ i ⟨y, hy⟩]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `v`. Rewrite using `[← hL2, ← heq, LinearMap.id_apply]`. Establish `hVp : ∀ w : L.V p, w = ∑ i, (L.H p).h w (L.bc p (μ i)) • L.bc p ((g i : (VS D).L0) : (VS D).V)`. Introduce `w`. Establish `hw : w ∈ Submodule.span (D.s.atP p).Ep (Set.range (L.bc p))` using `by rw [L.bc_span p]; trivial`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨v, rfl⟩` from `hw`. Establish `e : ∀ i, (L.H p).h (L.bc p v) (L.bc p (μ i)) = (D.s.atP p).ιE ((VS D).hT (μ i) v)` using `fun i => hform _ _`. Simplify using `only [e, ← L.bc_smul p]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_sum, ← hV v]`. Consider the case `zero => simp [local_form_zero_left]`. Consider the case `add w w' _ _ h1 h2`. Simplify using `only [(L.H p).h_add_left, add_smul, Finset.sum_add_distrib]`. Rewrite using `[← h1, ← h2]`.
-
-Consider the case `smul a w _ h1`. Simplify using `only [(L.H p).h_smul_left, mul_smul]`. Rewrite using `[← Finset.smul_sum, ← h1]`. Establish `hmem : (∑ i, (L.H p).h x (L.bc p (μ i)) • L.bc p ((g i : (VS D).L0) : (VS D).V)) ∈ lattice₂ L p (VS D).L0`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
-
-Establish `hc : (L.H p).h x (L.bc p (μ i)) ∈ (M p).L.O` using `h _ (Submodule.subset_span ⟨μ i, hμL0 i, rfl⟩)`. Establish `hg : L.bc p ((g i : (VS D).L0) : (VS D).V) ∈ lattice₂ L p (VS D).L0` using `Submodule.subset_span ⟨_, (g i).2, rfl⟩`. Conclude with `Submodule.smul_mem _ (⟨_, hc⟩ : (M p).L.O) hg`. Establish `hxe` using `hVp x`. Rewrite `hmem` using `[← hxe]`.
-
-Conclude with `hmem`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_self_dual_holds : LocSelfDual := by
   intro D δ M hA L p

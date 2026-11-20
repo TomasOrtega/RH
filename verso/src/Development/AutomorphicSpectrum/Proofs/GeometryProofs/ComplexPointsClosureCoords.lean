@@ -14,7 +14,7 @@ namespace GlobalTheory.CompanionTheory.Ar.RootHt.ArchC
 open GlobalTheory.CompanionTheory.Ar.RootHt.ArchB
 
 /- English proof (translation)
-Rewrite using `[Scheme.germ_stalkClosedPointTo]`. Simplify using `[Iso.trans_hom, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem germ_closedPoint {Y : Scheme.{0}} {R : CommRingCat.{0}} [IsLocalRing R] (f : Spec R ⟶ Y) (U : Y.Opens)
     (hU : f (IsLocalRing.closedPoint R) ∈ U) :
@@ -24,11 +24,11 @@ theorem germ_closedPoint {Y : Scheme.{0}} {R : CommRingCat.{0}} [IsLocalRing R] 
   simp [Iso.trans_hom, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map_assoc]
 
 /- English proof (translation)
-Establish `h0 : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U` using `hU.fromSpec_preimage_self.ge`. Establish `hc : centre (Spec.map (CommRingCat.ofHom g) ≫ hU.fromSpec : Sp F ⟶ X) ∈ U` using `h0 (Set.mem_univ (Spec.map (CommRingCat.ofHom g) (IsLocalRing.closedPoint F)))`. Use `⟨hc, fun t => ?_⟩` and prove the remaining obligations. Establish `h' : ⊤ ≤ (Spec.map (CommRingCat.ofHom g) ≫ hU.fromSpec : Sp F ⟶ X) ⁻¹ᵁ U` using `fun z _ => h0 (Set.mem_univ (Spec.map (CommRingCat.ofHom g) z))`. Establish `h1 : hU.fromSpec.appLE U ⊤ h0 = (Scheme.ΓSpecIso _).inv`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Conclude with `Category.comp_id _`. Establish `h2 : (Spec.map (CommRingCat.ofHom g) ≫ hU.fromSpec : Sp F ⟶ X).appLE U ⊤ h' = hU.fromSpec.appLE U ⊤ h0 ≫ (Spec.map (CommRingCat.ofHom g)).appTop` using `(Scheme.Hom.appLE_comp_appLE (Spec.map (CommRingCat.ofHom g)) hU.fromSpec U ⊤ ⊤ h0 le_rfl).symm`. Establish `h3 : X.presheaf.germ U _ hc ≫ Scheme.stalkClosedPointTo (Spec.map (CommRingCat.ofHom g) ≫ hU.fromSpec : Sp F ⟶ X) = (Spec.map (CommRingCat.ofHom g) ≫ hU.fromSpec : Sp F ⟶ X).appLE U ⊤ h' ≫ (Scheme.ΓSpecIso (.of F)).hom` using `germ_closedPoint (R := .of F) _ U hc`. Establish `h4 : X.presheaf.germ U _ hc ≫ Scheme.stalkClosedPointTo (Spec.map (CommRingCat.ofHom g) ≫ hU.fromSpec : Sp F ⟶ X) = CommRingCat.ofHom g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, h2, h1, Category.assoc, Scheme.ΓSpecIso_naturality]`. Conclude with `Iso.inv_hom_id_assoc (Scheme.ΓSpecIso Γ(X, U)) _`. Conclude with `congrArg (fun q => q.hom t) h4`.
+A detailed English derivation is pending.
 -/
 theorem point_of_ringHom {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {F : Type} [Field F]
     (g : Γ(X, U) →+* F) :
@@ -57,7 +57,7 @@ theorem point_of_ringHom {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {F
   exact congrArg (fun q => q.hom t) h4
 
 /- English proof (translation)
-Use `letI := TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨p, hp⟩ : U)`. Use `haveI := hU.isLocalization_stalk (⟨p, hp⟩ : U)`. Take `⟨⟨t₁, t₂⟩, h⟩` from `IsLocalization.surj (hU.primeIdealOf (⟨p, hp⟩ : U)).asIdeal.primeCompl s`. Conclude with `⟨t₁, t₂, IsLocalization.map_units _ t₂, h⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem germ_fraction {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {p : X} (hp : p ∈ U)
     (s : X.presheaf.stalk p) : ∃ t₁ t₂ : Γ(X, U), IsUnit (X.presheaf.germ U p hp t₂) ∧
@@ -72,7 +72,7 @@ section Values
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X}
 
 /- English proof (translation)
-Establish `e` using `TopCat.Presheaf.germ_stalkSpecializes X.presheaf (U := U) (y := p) (x := genPt ξ) hp h`. Establish `e2 : (X.presheaf.stalkSpecializes h).hom (X.presheaf.germ U p hp t) = X.presheaf.germ U (genPt ξ) (h.mem_open U.2 hp) t` using `ConcreteCategory.congr_hom e t`. Conclude with `congrArg (fun u => (Scheme.stalkClosedPointTo ξ).hom u) e2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genMap_germ (U : X.Opens) {p : X} (h : genPt ξ ⤳ p) (hp : p ∈ U) (t : Γ(X, U)) :
     genMap ξ ⟨p, h⟩ (X.presheaf.germ U p hp t) =
@@ -85,13 +85,11 @@ theorem genMap_germ (U : X.Opens) {p : X} (h : genPt ξ ⤳ p) (hp : p ∈ U) (t
 variable {F : Type} [Field F] {z : Sp F ⟶ X}
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `ha`. Take `⟨t₁, t₂, hu, hst⟩` from `germ_fraction hU hz s`. Use `⟨hgen, s, hs, ?_⟩` and prove the remaining obligations. Establish `e2` using `congrArg (genMap ξ ⟨centre z, hgen⟩) hst`. Rewrite `e2` using `[map_mul, hs]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ St : X.presheaf.stalk (centre z) →+* F, (∀ t, St (X.presheaf.germ U _ hz t) = g t) → St s = b`. Introduce `St hSt`. Establish `e1 : St s * g t₂ = g t₁`. Use `congrArg St hst` as an intermediate fact. Rewrite `this` using `[map_mul, hSt, hSt]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hne : g t₂ ≠ 0`. Use `hu.map St` as an intermediate fact. Rewrite `this` using `[hSt]`. Conclude with `this.ne_zero`. Conclude with `mul_right_cancel₀ hne (e1.trans (hb t₁ t₂ e2).symm)`.
-
-Conclude with `key _ hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_of_fractions {U : X.Opens} (hU : IsAffineOpen U) (hz : centre z ∈ U) (hgen : genPt ξ ⤳ centre z)
     (g : Γ(X, U) →+* F) (hg : ∀ t, (Scheme.stalkClosedPointTo z).hom (X.presheaf.germ U _ hz t) = g t)
@@ -116,13 +114,13 @@ theorem val_of_fractions {U : X.Opens} (hU : IsAffineOpen U) (hz : centre z ∈ 
   exact key _ hg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hz, (n : X.presheaf.stalk (centre z)), map_intCast _ n, map_intCast _ n⟩`.
+Supply the required witnesses or components.
 -/
 theorem val_int (hz : genPt ξ ⤳ centre z) (n : ℤ) : ValAt ξ z (n : Ω) (n : F) :=
   ⟨hz, (n : X.presheaf.stalk (centre z)), map_intCast _ n, map_intCast _ n⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using val_one hz`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi]`. Conclude with `val_mul (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_prod (hz : genPt ξ ⤳ centre z) {τ : Type} (s : Finset τ) (a : τ → Ω) (r : τ → F)
     (h : ∀ i ∈ s, ValAt ξ z (a i) (r i)) : ValAt ξ z (∏ i ∈ s, a i) (∏ i ∈ s, r i) := by
@@ -135,7 +133,7 @@ theorem val_prod (hz : genPt ξ ⤳ centre z) {τ : Type} (s : Finset τ) (a : �
       (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C n => simpa using val_int hz n`. Consider the case `add p q hp hq => simpa [map_add] using val_add hp hq`. Consider the case `mul_X p i hp => simpa using val_mul hp (h i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem val_aeval (hz : genPt ξ ⤳ centre z) {κ : Type} (a : κ → Ω) (r : κ → F)
     (h : ∀ i, ValAt ξ z (a i) (r i)) (P : MvPolynomial κ ℤ) :
@@ -148,13 +146,13 @@ theorem val_aeval (hz : genPt ξ ⤳ centre z) {κ : Type} (a : κ → Ω) (r : 
 end Values
 
 /- English proof (translation)
-Establish `hm : ∀ P : MvPolynomial κ ℤ, MvPolynomial.aeval r P ∈ Algebra.adjoin ℤ (Set.range r)`. Introduce `P`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨P, rfl⟩`. Set `f : MvPolynomial κ ℤ →+* Algebra.adjoin ℤ (Set.range r)` to `(MvPolynomial.aeval r : MvPolynomial κ ℤ →ₐ[ℤ] Ω).toRingHom.codRestrict _ hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hf : Function.Surjective f`. Introduce and unpack `⟨a, ha⟩`. Rewrite `ha` using `[Algebra.adjoin_range_eq_range_aeval]`. Take `⟨P, rfl⟩` from `ha`. Conclude with `⟨P, Subtype.ext rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `g : MvPolynomial κ ℤ →+* ℂ` to `(MvPolynomial.aeval ρ : MvPolynomial κ ℤ →ₐ[ℤ] ℂ).toRingHom`. Establish `hk : RingHom.ker f ≤ RingHom.ker g`. Introduce `P hP`. Use `h P ?_` and prove the remaining obligations. Conclude with `congrArg Subtype.val (show f P = 0 from hP)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨f.liftOfRightInverse _ (Function.rightInverse_surjInv hf) ⟨g, hk⟩, fun j hj => ?_⟩` and prove the remaining obligations. Establish `e : f (MvPolynomial.X j) = ⟨r j, hj⟩` using `Subtype.ext (MvPolynomial.aeval_X r j)`. Rewrite using `[← e, RingHom.liftOfRightInverse_comp_apply]`. Conclude with `MvPolynomial.aeval_X ρ j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringHom_of_relations {Ω : Type} [Field Ω] {κ : Type} (r : κ → Ω) (ρ : κ → ℂ)
     (h : ∀ P : MvPolynomial κ ℤ, MvPolynomial.aeval r P = 0 → MvPolynomial.aeval ρ P = 0) :
@@ -189,9 +187,9 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {K : Type} [
 def segreRatio (c c' : (k : K) → J k) (v : (Σ k, J k) → ℂ) : ℂ := ∏ k, v ⟨k, c' k⟩ / v ⟨k, c k⟩
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_div_distrib]`. Use `val_prod hz _ _ _ fun k _ => ?_` and prove the remaining obligations. Take `⟨-, h2⟩` from `hv.2 k (c k) (isUnit_iff_ne_zero.2 (hc k))`. Take `⟨r, hr, hr'⟩` from `h2 (c' k)`. Establish `: v ⟨k, c' k⟩ / v ⟨k, c k⟩ = r`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hr', mul_div_cancel_right₀ _ (hc k)]`. Rewrite using `[this]`. Conclude with `hr`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_segre {z : Sp ℂ ⟶ X} {v : (Σ k, J k) → ℂ} (hz : genPt ξ ⤳ centre z) (hv : CoordsAt ξ y z v)
     (c : (k : K) → J k) (hc : ∀ k, v ⟨k, c k⟩ ≠ 0) (c' : (k : K) → J k) :
@@ -206,11 +204,11 @@ theorem val_segre {z : Sp ℂ ⟶ X} {v : (Σ k, J k) → ℂ} (hz : genPt ξ �
   exact hr
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hρ : ∀ c', ContinuousAt (fun v : (Σ k, J k) → ℂ => segreRatio c c' v) w` using `fun c' => tendsto_finset_prod _ fun k _ => ContinuousAt.div (continuous_apply _).continuousAt (continuous_apply _).continuousAt (hc k)`. Establish `hcont : ContinuousAt (fun v : (Σ k, J k) → ℂ => MvPolynomial.aeval (fun c' => segreRatio c c' v) P) w`. Establish `e : (fun v : (Σ k, J k) → ℂ => MvPolynomial.aeval (fun c' => segreRatio c c' v) P) = fun v => MvPolynomial.eval (fun c' => segreRatio c c' v) (MvPolynomial.map (algebraMap ℤ ℂ) P)`. Use function extensionality and compare the values at `v`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[MvPolynomial.eval_map, MvPolynomial.aeval_def]`. Rewrite using `[e]`. Conclude with `ContinuousAt.comp (f := fun v : (Σ k, J k) → ℂ => fun c' => segreRatio c c' v) (g := fun u => MvPolynomial.eval u (MvPolynomial.map (algebraMap ℤ ℂ) P)) (MvPolynomial.continuous_eval _).continuousAt (continuousAt_pi.2 hρ)`. Establish `h1` using `hcont.eventually_ne hne`. Establish `h2 : ∀ᶠ v : (Σ k, J k) → ℂ in 𝓝 w, ∀ k, v ⟨k, c k⟩ ≠ 0` using `eventually_all.2 fun k => (continuous_apply _).continuousAt.eventually_ne (hc k)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, ⟨hv1, hv2⟩, z, hz⟩` from `mem_closure_iff_nhds.1 hw _ (inter_mem h1 h2)`. Establish `hv` using `val_aeval (hall (centre z)) _ _ (val_segre (hall (centre z)) hz c hv2) P`. Rewrite `hv` using `[hP]`. Conclude with `hv1 (val_unique hξ hv (val_zero (hall (centre z))))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relation_limit (hall : ∀ q : X, genPt ξ ⤳ q) (hξ : IsCptGen ξ) (c : (k : K) → J k)
     {w : (Σ k, J k) → ℂ} (hw : w ∈ closure {w' : (Σ k, J k) → ℂ | ∃ z : Sp ℂ ⟶ X, CoordsAt ξ y z w'})
@@ -239,17 +237,17 @@ theorem relation_limit (hall : ∀ q : X, genPt ξ ⤳ q) (hξ : IsCptGen ξ) (c
   exact hv1 (val_unique hξ hv (val_zero (hall (centre z))))
 
 /- English proof (translation)
-Establish `V : ∀ k i, ValAt ξ z (y ⟨k, i⟩ / y ⟨k, c k⟩) (w ⟨k, i⟩ / w ⟨k, c k⟩)`. Introduce `k i`. Establish `h` using `hv (Function.update c k i)`. Rewrite `h` using `[← Finset.prod_div_distrib]`. Unfold `segreRatio at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `e1 : ∏ k', y ⟨k', Function.update c k i k'⟩ / y ⟨k', c k'⟩ = y ⟨k, i⟩ / y ⟨k, c k⟩`. Rewrite using `[Finset.prod_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Function.update_of_ne hb, div_self (hy b)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `e2 : ∏ k', w ⟨k', Function.update c k i k'⟩ / w ⟨k', c k'⟩ = w ⟨k, i⟩ / w ⟨k, c k⟩`. Rewrite using `[Finset.prod_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.update_of_ne hb, div_self (hc b)]`. Simplify using the standard rewrite rules. Rewrite `h` using `[e1, e2]`. Then use the resulting hypothesis. Use `⟨fun k => ⟨c k, isUnit_iff_ne_zero.2 (hc k)⟩, fun k c₁ hu => ?_⟩` and prove the remaining obligations. Establish `h1 : w ⟨k, c₁⟩ ≠ 0` using `hu.ne_zero`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hq : w ⟨k, c₁⟩ / w ⟨k, c k⟩ ≠ 0` using `div_ne_zero h1 (hc k)`. Establish `hy1 : y ⟨k, c₁⟩ ≠ 0`. Establish `h` using `val_ne_zero hξ (r := Units.mk0 _ hq) (V k c₁)`. Conclude with `(div_ne_zero_iff.1 h).1`. Establish `hk` using `hy k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hck` using `hc k`. Use `⟨hy1, fun i => ⟨w ⟨k, i⟩ / w ⟨k, c₁⟩, ?_, by field_simp⟩⟩` and prove the remaining obligations. Establish `h` using `val_mul (V k i) (val_inv₀ hq (V k c₁))`. Apply the tactic sequence `convert h using 1 <;> field_simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem coords_of_values (hξ : IsCptGen ξ) {z : Sp ℂ ⟶ X} {w : (Σ k, J k) → ℂ} (c : (k : K) → J k)
     (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) (hy : ∀ k, y ⟨k, c k⟩ ≠ 0)
@@ -289,19 +287,17 @@ theorem coords_of_values (hξ : IsCptGen ξ) {z : Sp ℂ ⟶ X} {w : (Σ k, J k)
 end Coords
 
 /- English proof (translation)
-Use `choose c hc using hne`. Establish `hξ` using `tie.gen`. Establish `h2 : ∀ᶠ v : (Σ k, J k) → ℂ in 𝓝 w, ∀ k, v ⟨k, c k⟩ ≠ 0` using `eventually_all.2 fun k => (continuous_apply _).continuousAt.eventually_ne (hc k)`. Take `⟨v, hv, z₀, hz₀⟩` from `mem_closure_iff_nhds.1 hw _ h2`. Establish `hch₀` using `in_chart (hall (centre z₀)) hz₀ hv`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : (∏ k, y ⟨k, c k⟩) ≠ 0` using `hch₀.1`. Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (Finset.prod_ne_zero_iff.1 hx) k (Finset.mem_univ k)`. Take `⟨U, hU, hmem⟩` from `tie.affine c hx`. Establish `hp₀ : centre z₀ ∈ U` using `(hmem _).2 ⟨hall _, hch₀⟩`. Use `set r : ((k : K) → J k) → Ω := fun c' => (∏ k, y ⟨k, c' k⟩) / ∏ k, y ⟨k, c k⟩ with hr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨φ, hφ⟩` from `ringHom_of_relations r (fun c' => segreRatio c c' w) (fun P hP => relation_limit hall hξ c hw hc P hP)`. Set `e : Γ(X, U) →+* Ω` to `(genMap ξ ⟨centre z₀, hall _⟩).comp (X.presheaf.germ U _ hp₀).hom`. Establish `he : ∀ {p : X} (hp : p ∈ U) (t : Γ(X, U)), genMap ξ ⟨p, hall p⟩ (X.presheaf.germ U p hp t) = e t`. Introduce `p hp t`. Use `show _ = genMap ξ ⟨centre z₀, hall _⟩ (X.presheaf.germ U _ hp₀ t)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[genMap_germ U (hall p) hp t, genMap_germ U (hall _) hp₀ t]`. Establish `hA : ∀ t, e t ∈ Algebra.adjoin ℤ (Set.range r)` using `fun t => (tie.ring c hx (e t)).2 fun p hp => ⟨X.presheaf.germ U p.1 ((hmem p.1).2 ⟨p.2, hp⟩) t, he _ t⟩`. Set `e' : Γ(X, U) →+* Algebra.adjoin ℤ (Set.range r)` to `e.codRestrict _ hA`. Set `g : Γ(X, U) →+* ℂ` to `φ.comp e'`. Take `⟨hcz, hgerm⟩` from `point_of_ringHom hU g`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set z : Sp ℂ ⟶ X := Spec.map (CommRingCat.ofHom g) ≫ hU.fromSpec with hz`. Take `⟨hgz, hchz⟩` from `(hmem _).1 hcz`. Establish `hval : ∀ a (ha : a ∈ Algebra.adjoin ℤ (Set.range r)), ValAt ξ z a (φ ⟨a, ha⟩)`. Introduce `a ha`. Use `val_of_fractions hU hcz hgz g hgerm ((tie.ring c hx a).1 ha _ hchz) fun t₁ t₂ h => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[he hcz, he hcz]`. Establish `: (⟨a, ha⟩ : Algebra.adjoin ℤ (Set.range r)) * e' t₂ = e' t₁` using `Subtype.ext h`. Use `congrArg φ this` as an intermediate fact. Rewrite `this` using `[map_mul]`. Then use the resulting hypothesis. Use `⟨z, coords_of_values hξ c hc hy fun c' => ?_⟩` and prove the remaining obligations.
-
-Establish `hj : r c' ∈ Algebra.adjoin ℤ (Set.range r)` using `Algebra.subset_adjoin ⟨c', rfl⟩`. Use `hval _ hj` as an intermediate fact. Rewrite `this` using `[hφ c' hj]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem closed_coords (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type)
     [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω)
@@ -351,7 +347,7 @@ theorem closed_coords (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X)
   rwa [hφ c' hj] at this
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y hall tie w hw hne` and use `closed_coords X Ω ξ K J y hall tie w hw hne`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem closed_coords' : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type)
     [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω),

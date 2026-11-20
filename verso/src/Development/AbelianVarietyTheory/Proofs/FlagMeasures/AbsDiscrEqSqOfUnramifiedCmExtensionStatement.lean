@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.MainNotions.Glo
 open scoped TensorProduct ENNReal nonZeroDivisors Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SnMass.VolN.abs_discr_eq_abs_discr_sq_of_unramified` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FAbsDiscrEqSqOfUnramifiedCmExtension.lean&line=9#L9)
 -/

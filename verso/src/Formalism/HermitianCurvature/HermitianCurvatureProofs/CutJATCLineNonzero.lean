@@ -17,23 +17,21 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC
 noncomputable section
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs hpl hk Pr hPr π ζ hζ`. Establish `hζT : P.TT < Complex.normSq ζ` using `hζ`. Take `⟨hOK, hz, hz', hTz, hTz', -, -⟩` from `id hpl`. Establish `hζ' : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ`. Rewrite using `[hTz, hTz']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hζT`. Establish `hT` using `Bs.T_pos`. Take `⟨hνfix, hνν, -, -⟩` from `DU.base hz hz' Bs.T_pos Bs.T'_pos Bs.sec hζ'`. Use `set ν := SSn.nu0 P.k P.r Bs.z Bs.z' Bs.μsec ζ with hνdef`. Use `set μ := NF.muZ P.k P.r Bs.μsec ζ with hμ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `NFRadRedA.muZ_uwb Bs.sec hζ'`. Establish `hG` using `NFRadRedA.uwb_glev hm`. Establish `hy : inWb P.k P.r (μ *ᵥ Bs.z')` using `Qx8.inWb_mulVec hG hz'`. Establish `hνW : inWb P.k P.r ν` using `by show inWb P.k P.r (SSn.unitH P.k P.r (SSn.prWv P.k P.r Bs.z (μ *ᵥ Bs.z')))`. Unfold `SSn.unitH`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Qx8.inWb_smul (DU.prWv_inWb hz hy) _`. Establish `hνz : herm (Hpk P.k P.r) ν Bs.z = 0`. Rewrite using `[← hνfix]`. Conclude with `DU.prWv_perp hT hνW`. Take `⟨Fr, hFr⟩` from `Topx1.typ_frame_exists P.k P.r (by omega) Bs.z ν hz hT hνW hνz hνν`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hFr', hpass⟩` from `PRho.GL.gauge_left_line_holds Wp Wq P Bs hpl hk ζ hζT Fr hFr`. Establish `hq : ((fun _ => (1 : ℂ)), ζ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨fun _ => one_ne_zero, hζ'⟩`. Take `⟨-, hg, hGG⟩` from `Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hz hz' Bs.sec hq`. Establish `hEx` using `Gauge.GC.lie_existence_of_iso_group Gauge.GC.KLIso.lie_algebra_isomorphism_holds Gauge.GC.lie_group_realization`. Take `⟨E, hEfib, hEeig, hE0⟩` from `hEx Wp Wq P Bs.z Bs.z' Bs.π Bs.π' hpl hk _ hg hGG.ne' _ hFr' π`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hEF : E ∈ NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ` using `fun p hp => hEfib p.1 hp.1 p.2 hp.2.1 hp.2.2`. Establish `hgl'` using `(Formalism.FourierDecayAlt.P.frame_general_linear Wq P.k P.r (P.k - 1) Bs.z' Bs.π' (fun a => μ⁻¹ *ᵥ Fr a) ⟨Bs.π'_rep, Bs.π'_cont⟩ (Formalism.FourierDecayAlt.P.Qx8.frame_sub hFr' (by simp))).2`. Establish `hπrep : Qr.IsRepW P.k P.r Bs.z Bs.π` using `⟨Bs.π_rep, Bs.π_cont⟩`. Use `⟨E, hEF, ?_, hE0⟩` and prove the remaining obligations. Establish `hpos : 0 < PRho.nrmW P.k P.r Bs.z ν`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Unfold `PRho.nrmW`. Rewrite using `[hνfix, hνν]`. Simplify using the standard rewrite rules. Establish `hrange` using `((hPr.2.2 ν hpos).2.2.2 π)`. Use extensionality with `v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.comp_apply]`. Use `(hrange (E v)).2 ?_` and prove the remaining obligations. Introduce `Fr2 hFr2 w`. Rewrite `hFr2` using `[hνfix]`. Rewrite using `[Topx1.typ_frame_change P.k P.r (by omega) Bs.z ν Bs.π Fr2 Fr hz hT hνW hνz hνν hπrep hFr2 hFr w (E v), hpass E hEF w v, hgl']`.
-
-Establish `hw : w = (w - ((P.k : ℂ) - 2) / 2) + ((P.k : ℂ) - 2) / 2` using `by ring`. Use `conv_lhs => rw [hw]`. Conclude with `hEeig _ v`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem line_nonvanishing_holds : LineNonzero := by
   intro Wp Wq _ _ _ _ _ _ P Bs hpl hk Pr hPr π ζ hζ

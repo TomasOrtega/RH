@@ -10,9 +10,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Use `⟨h, ?_⟩` and prove the remaining obligations. Establish `e : (fun g => (((r g)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) = (fun g => (r g : Matrix (Fin n) (Fin n) k)) ∘ fun g => g⁻¹`. Use function extensionality and compare the values at `g`. Simplify using `[map_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `h.comp continuous_inv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cont_of_val {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Field k]
     [TopologicalSpace k] [IsTopologicalRing k] {n : ℕ} (r : Γ →* GL (Fin n) k)
@@ -27,13 +27,13 @@ private theorem cont_of_val {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [IsTo
   exact h.comp continuous_inv
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val`.
+A detailed English derivation is pending.
 -/
 private theorem val_cont {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalRing k] {n : ℕ} :
     Continuous fun x : GL (Fin n) k => (x : Matrix (Fin n) (Fin n) k) := Units.continuous_val
 
 /- English proof (translation)
-Establish `hi : finSumFinEquiv.symm (Fin.castAdd b i) = Sum.inl i` using `finSumFinEquiv_symm_apply_castAdd i`. Establish `hj : finSumFinEquiv.symm (Fin.castAdd b j) = Sum.inl j` using `finSumFinEquiv_symm_apply_castAdd j`. Simplify using `[sumRep, Formalism.MainNotions.SumRepresentations.At.blkHom, Matrix.reindexAlgEquiv, Matrix.reindex_apply, Matrix.submatrix_apply, hi, hj]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem sumRep_entry {Γ k : Type} [Group Γ] [Field k] {a b : ℕ} (r : Γ →* GL (Fin a) k)
     (s : Γ →* GL (Fin b) k) (g : Γ) (i j : Fin a) :
@@ -45,17 +45,15 @@ private theorem sumRep_entry {Γ k : Type} [Group Γ] [Field k] {a b : ℕ} (r :
   rfl
 
 /- English proof (translation)
-Introduce `Γ k _ _ _ _ _ _ a b`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r s hc`. Apply `cont_of_val r` to reduce the goal to its premises. Establish `hm : Continuous fun g => (sumRep r s g : Matrix (Fin (a + b)) (Fin (a + b)) k)` using `val_cont.comp hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `he : Continuous fun g => (sumRep r s g : Matrix (Fin (a + b)) (Fin (a + b)) k) (Fin.castAdd b i) (Fin.castAdd b j)` using `(continuous_apply _).comp ((continuous_apply _).comp hm)`. Use `he.congr fun g => ?_` and prove the remaining obligations. Apply the tactic sequence `exact sumRep_entry r s g i j`. Introduce and unpack `r r' ⟨u, hu⟩ hr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hf : (⇑r') = fun x => u * r x * u⁻¹` using `funext hu`. Rewrite using `[hf]`. Conclude with `(continuous_const.mul hr).mul continuous_const`. Introduce `r c hr hc`. Apply `cont_of_val` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hv : (fun g => ((tw r c g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k)) = fun g => ((c g : kˣ) : k) • (r g : Matrix (Fin a) (Fin a) k)`. Use function extensionality and compare the values at `g`. Conclude with `UpperTheory.V.Af.tw_val r c g`. Rewrite using `[hv]`. Conclude with `(Units.continuous_val.comp hc).smul (val_cont.comp hr)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `c hc`. Apply `cont_of_val` to reduce the goal to its premises. Establish `hv : (fun g => ((rk1 c g : GL (Fin 1) k) : Matrix (Fin 1) (Fin 1) k)) = fun g => Matrix.diagonal fun _ => ((c g : kˣ) : k)`. Use function extensionality and compare the values at `g`. Simplify using `[rk1, Matrix.scalar_apply]`.
-
-Rewrite using `[hv]`. Conclude with `Continuous.matrix_diagonal (continuous_pi fun _ => Units.continuous_val.comp hc)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Sub.contLeft_holds :
     ContLeft := by

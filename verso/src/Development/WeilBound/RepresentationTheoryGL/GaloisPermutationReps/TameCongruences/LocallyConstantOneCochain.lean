@@ -12,15 +12,13 @@ open NumberField IsDedekindDomain Polynomial Formalism.ConjugateSelfDual Recipro
 namespace PositivityTheory.Rg.DzCong.CongruenceClosure
 
 /- English proof (translation)
-Use `v.isPrime` as an intermediate fact. Establish `h2 : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `he' : v.asIdeal.ramificationIdx (𝓞 (maximalRealSubfield E)) = 1`. Use `Ideal.ramificationIdx_tower (R := ℤ) (v.asIdeal.under (𝓞 (maximalRealSubfield E))) v.asIdeal` as an intermediate fact. Rewrite `this` using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Nat.eq_one_of_mul_eq_one_left this.symm`. Establish `hc` using `Formalism.IrreducibleCountingLemmas.Z.degree_one_split (maximalRealSubfield E) E h2 v.asIdeal v.ne_bot hf he'`. Take `⟨P, Q, hne, hs⟩` from `Set.ncard_eq_two.mp hc`. Establish `hX : ∃ X ∈ (v.asIdeal.under (𝓞 (maximalRealSubfield E))).primesOver (𝓞 E), X ≠ v.asIdeal`. Distinguish the cases in `h : P = v.asIdeal`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨Q, hs ▸ Set.mem_insert_of_mem _ rfl, fun hQ => hne (h.trans hQ.symm)⟩`. Conclude with `⟨P, hs ▸ Set.mem_insert _ _, h⟩`. Take `⟨X, hX, hXv⟩` from `hX`. Establish `hXb : X ≠ ⊥`. Introduce and unpack `rfl`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h0 : v.asIdeal.under (𝓞 (maximalRealSubfield E)) = ⊥` using `hX.2.over.trans (Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ (𝓞 E)))`. Conclude with `v.ne_bot (Ideal.eq_bot_of_comap_eq_bot h0)`. Use `hX.1` as an intermediate fact. Use `⟨⟨X, hX.1, hXb⟩, fun h => hXv (congrArg HeightOneSpectrum.asIdeal h), ?_⟩` and prove the remaining obligations. Use `ext1`.
-
-Conclude with `hX.2.over.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSplitAt_of_deg_one {E : Type} [Field E] [NumberField E] [IsCMField E] (v : HeightOneSpectrum (𝓞 E))
     (hf : v.asIdeal.inertiaDeg ℤ = 1) (he : v.asIdeal.ramificationIdx ℤ = 1) : IsSplitAt v := by
@@ -49,7 +47,7 @@ theorem isSplitAt_of_deg_one {E : Type} [Field E] [NumberField E] [IsCMField E] 
   exact hX.2.over.symm
 
 /- English proof (translation)
-Establish `h : (fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i) = fun M => MvPolynomial.eval (fun ij : Fin n × Fin n => M ij.1 ij.2) ((Matrix.charpoly.univ K (Fin n)).coeff i)`. Use function extensionality and compare the values at `M`. Conclude with `(Matrix.charpoly.univ_coeff_eval₂Hom (Fin n) (RingHom.id K) (fun ij : Fin n × Fin n => M ij.1 ij.2) i).symm`. Rewrite using `[h]`. Conclude with `(MvPolynomial.continuous_eval _).comp (continuous_pi fun ij => (continuous_apply ij.2).comp (continuous_apply ij.1))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_coeff_charpoly {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] (n i : ℕ) :
     Continuous fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i := by

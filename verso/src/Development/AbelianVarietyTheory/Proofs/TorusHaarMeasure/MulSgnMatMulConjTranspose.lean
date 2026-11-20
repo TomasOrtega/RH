@@ -14,7 +14,7 @@ noncomputable abbrev sgnMat (r p : ℕ) : Matrix (Fin r) (Fin r) ℂ :=
   Matrix.diagonal fun a : Fin r => ((sgn p (a : ℕ) : ℝ) : ℂ)
 
 /- English proof (translation)
-Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgnMat_mul_self (r p : ℕ) : sgnMat r p * sgnMat r p = 1 := by
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -24,18 +24,18 @@ theorem sgnMat_mul_self (r p : ℕ) : sgnMat r p * sgnMat r p = 1 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [Matrix.diagonal_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgnMat_map_conj (r p : ℕ) : (sgnMat r p).map (starRingEnd ℂ) = sgnMat r p := by
   ext a b
   by_cases h : a = b <;> simp [Matrix.diagonal_apply, h]
 
 /- English proof (translation)
-Establish `h1 : gᴴ * sgnMat r p * g = sgnMat r p`. Use `congrArg (fun M : Matrix (Fin r) (Fin r) ℂ => M.map (starRingEnd ℂ)) h` as an intermediate fact. Simplify using `only [Matrix.map_mul, sgnMat_map_conj] at this`. Establish `e : (g.map (starRingEnd ℂ)).map (starRingEnd ℂ) = g` using `by ext a b; simp`. Rewrite `this` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `h2 : (sgnMat r p * gᴴ * sgnMat r p) * g = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h1, sgnMat_mul_self]`. Establish `h3 : g * (sgnMat r p * gᴴ * sgnMat r p) = 1` using `mul_eq_one_comm.1 h2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc, sgnMat_mul_self, Matrix.mul_one]`. Use `_ = sgnMat r p := by rw [h3, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem mul_sgnMat_mul_conjTranspose {r p : ℕ} {g : Matrix (Fin r) (Fin r) ℂ}
     (h : gᵀ * sgnMat r p * g.map (starRingEnd ℂ) = sgnMat r p) :
@@ -54,13 +54,13 @@ theorem mul_sgnMat_mul_conjTranspose {r p : ℕ} {g : Matrix (Fin r) (Fin r) ℂ
     _ = sgnMat r p := by rw [h3, Matrix.one_mul]
 
 /- English proof (translation)
-Use `set R : Matrix (Fin p) (Fin r) ℂ := g.submatrix (Fin.castLE hp) id with hR`. Establish `hRR : R * sgnMat r p * Rᴴ = 1`. Establish `: R * sgnMat r p * Rᴴ = (g * sgnMat r p * gᴴ).submatrix (Fin.castLE hp) (Fin.castLE hp)`. Use extensionality with `i j`. Simplify using `[hR, Matrix.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, h, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `[sgn]`. Establish `key : ((v ᵥ* R) ᵥ* sgnMat r p) ⬝ᵥ star (v ᵥ* R) = v ⬝ᵥ star v`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.star_vecMul, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hRR, Matrix.vecMul_one]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`. Simplify using `only [dotProduct, Matrix.vecMul_diagonal, Pi.star_apply, Complex.star_def] at key`. Use `key using 2 with a _ i _` and compare the differences between its conclusion and the goal.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm ((v ᵥ* R) a), mul_assoc, Complex.mul_conj']`. Rewrite using `[Complex.mul_conj']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem signed_sum_rows {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) ℂ}
     (h : g * sgnMat r p * gᴴ = sgnMat r p) (v : Fin p → ℂ) :
@@ -86,9 +86,9 @@ theorem signed_sum_rows {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) �
   · rw [Complex.mul_conj']
 
 /- English proof (translation)
-Rewrite using `[← signed_sum_rows hp h v, ← Finset.sum_filter_add_sum_filter_not Finset.univ (fun a : Fin r => (a : ℕ) < p), add_assoc, ← Finset.sum_add_distrib]`. Establish `e0 : ∑ a ∈ Finset.univ.filter (fun a : Fin r => ¬ (a : ℕ) < p), (sgn p a * ‖(v ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2 + ‖(v ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2) = 0`. Use `Finset.sum_eq_zero fun a ha => ?_` and prove the remaining obligations. Use `(Finset.mem_filter.1 ha).2` as an intermediate fact. Simplify using `[sgn, this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e0, add_zero]`. Use `symm`. Use `Finset.sum_bij (fun i _ => Fin.castLE hp i) (fun i _ => by simp) (fun i _ j _ hij => Fin.castLE_injective _ hij) (fun a ha => ?_) (fun i _ => ?_)` and prove the remaining obligations. Conclude with `⟨⟨a, (Finset.mem_filter.1 ha).2⟩, Finset.mem_univ _, rfl⟩`. Simplify using `[sgn, Matrix.vecMul, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem neg_sum_rows {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) ℂ}
     (h : g * sgnMat r p * gᴴ = sgnMat r p) (v : Fin p → ℂ) :
@@ -112,11 +112,11 @@ theorem neg_sum_rows {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) ℂ}
   · simp [sgn, Matrix.vecMul, dotProduct]
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨v, hv, hv0⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Use `neg_sum_rows hp h v` as an intermediate fact. Rewrite `this` using `[hv0]`. Simplify using `only [Pi.zero_apply, norm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Finset.sum_const_zero] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : 0 ≤ ∑ a ∈ Finset.univ.filter (fun a : Fin r => ¬ (a : ℕ) < p), ‖(v ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`. Establish `h2 : 0 ≤ ∑ i, ‖v i‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`. Establish `h3 : ∑ i, ‖v i‖ ^ 2 = 0` using `by linarith`. Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(Finset.sum_eq_zero_iff_of_nonneg fun _ _ => by positivity).1 h3 i (Finset.mem_univ _)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_block_ne_zero {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) ℂ}
     (h : g * sgnMat r p * gᴴ = sgnMat r p) :
@@ -137,15 +137,15 @@ theorem det_block_ne_zero {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r)
   simpa using this
 
 /- English proof (translation)
-Use `set A := g.submatrix (Fin.castLE hp) (Fin.castLE hp) with hA`. Establish `hu : IsUnit A.det` using `(det_block_ne_zero hp h).isUnit`. Establish `hinv : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul _ hu`. Distinguish the cases in `ha : (a : ℕ) < p`. Establish `: (A⁻¹ * g.submatrix (Fin.castLE hp) id) i a = (A⁻¹ * A) i ⟨a, ha⟩` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hinv, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hs` using `neg_sum_rows hp h (A⁻¹ i)`. Establish `e1 : ∀ j, (A⁻¹ i ᵥ* A) j = (1 : Matrix (Fin p) (Fin p) ℂ) i j` using `fun j => by`. Rewrite using `[← hinv]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `hs` using `[← hA]`. Establish `e2 : ∑ j : Fin p, ‖(A⁻¹ i ᵥ* A) j‖ ^ 2 = 1`. Simplify using `only [e1]`. Rewrite using `[Finset.sum_eq_single i]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Matrix.one_apply_ne hj.symm]`. Simplify using the standard rewrite rules. Establish `h2 : 0 ≤ ∑ j, ‖A⁻¹ i j‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ‖(A⁻¹ i ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2 ≤ ∑ a ∈ Finset.univ.filter (fun a : Fin r => ¬ (a : ℕ) < p), ‖(A⁻¹ i ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2` using `Finset.single_le_sum (f := fun a => ‖(A⁻¹ i ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2) (fun _ _ => by positivity) (by simpa using ha)`. Establish `h4 : ‖(A⁻¹ i ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2 ≤ 1` using `by linarith`. Conclude with `(sq_le_one_iff₀ (norm_nonneg _)).1 h4`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_entry_le_one {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) ℂ}
     (h : g * sgnMat r p * gᴴ = sgnMat r p) (i : Fin p) (a : Fin r) :
@@ -176,11 +176,11 @@ theorem norm_entry_le_one {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r)
     exact (sq_le_one_iff₀ (norm_nonneg _)).1 h4
 
 /- English proof (translation)
-Establish `hc : Continuous fun N : Fin p → Fin p → ℂ => ‖(Matrix.of N).det‖` using `(Continuous.matrix_det (A := fun N : Fin p → Fin p → ℂ => Matrix.of N) continuous_id).norm`. Take `⟨δ, hδ, H⟩` from `Metric.continuousAt_iff.1 (hc.continuousAt (x := fun i j => (1 : Matrix (Fin p) (Fin p) ℂ) i j)) (1 / 2) (by norm_num)`. Use `⟨δ, hδ, fun N hN => ?_⟩` and prove the remaining obligations. Use `@H (fun i j => N i j) (by` as an intermediate fact. Rewrite using `[dist_pi_lt_iff hδ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[dist_pi_lt_iff hδ]`. Introduce `j`. Rewrite using `[dist_eq_norm]`. Conclude with `hN i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (Matrix.of fun i j => (1 : Matrix (Fin p) (Fin p) ℂ) i j).det = 1` using `Matrix.det_one`. Rewrite `this` using `[e, norm_one, Real.dist_eq, abs_lt]`. Establish `e' : (Matrix.of fun i j => N i j) = N` using `rfl`. Rewrite `this` using `[e']`. Combine the linear relations using `[this.1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_det_near_one (p : ℕ) : ∃ δ : ℝ, 0 < δ ∧ ∀ N : Matrix (Fin p) (Fin p) ℂ,
     (∀ i j, ‖(N - 1) i j‖ < δ) → 1 / 2 ≤ ‖N.det‖ := by
@@ -200,15 +200,15 @@ theorem exists_det_near_one (p : ℕ) : ∃ δ : ℝ, 0 < δ ∧ ∀ N : Matrix 
   linarith [this.1]
 
 /- English proof (translation)
-Take `⟨δ, hδ, H⟩` from `exists_det_near_one p`. Use `⟨δ / (r + 1), by positivity, fun g n h hn => ?_⟩` and prove the remaining obligations. Use `set A := g.submatrix (Fin.castLE hp) (Fin.castLE hp) with hA`. Use `set R := g.submatrix (Fin.castLE hp) (id : Fin r → Fin r) with hR`. Establish `hu : IsUnit A.det` using `(det_block_ne_zero hp h).isUnit`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (g * n).submatrix (Fin.castLE hp) (Fin.castLE hp) = A * (A⁻¹ * R * n.submatrix id (Fin.castLE hp))`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`. Both sides reduce to the same expression. Establish `e2 : R * (1 : Matrix (Fin r) (Fin r) ℂ).submatrix id (Fin.castLE hp) = A`. Establish `: R * (1 : Matrix (Fin r) (Fin r) ℂ).submatrix id (Fin.castLE hp) = (g * 1).submatrix (Fin.castLE hp) (Fin.castLE hp)` using `rfl`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Matrix.mul_one]`. Establish `e3 : A⁻¹ * R * n.submatrix id (Fin.castLE hp) - 1 = A⁻¹ * R * (n - 1).submatrix id (Fin.castLE hp)`. Establish `: (n - 1).submatrix id (Fin.castLE hp) = n.submatrix id (Fin.castLE hp) - (1 : Matrix (Fin r) (Fin r) ℂ).submatrix id (Fin.castLE hp)` using `rfl`. Rewrite using `[this, Matrix.mul_sub, Matrix.mul_assoc A⁻¹ R (Matrix.submatrix 1 _ _), e2, Matrix.nonsing_inv_mul _ hu]`. Establish `h1` using `H (A⁻¹ * R * n.submatrix id (Fin.castLE hp)) fun i j => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e3, Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `_ < δ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, ← mul_div_assoc, div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[e1, Matrix.det_mul, norm_mul]`. Use polynomial arithmetic with `[norm_nonneg A.det]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_block_det_ge {r p : ℕ} (hp : p ≤ r) : ∃ δ : ℝ, 0 < δ ∧
     ∀ g n : Matrix (Fin r) (Fin r) ℂ, g * sgnMat r p * gᴴ = sgnMat r p →
@@ -253,9 +253,9 @@ theorem exists_block_det_ge {r p : ℕ} (hp : p ≤ r) : ∃ δ : ℝ, 0 < δ �
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[Matrix.sub_apply, Matrix.one_apply]`. Simplify using `only [mat, nmat, Matrix.of_apply]`. Distinguish the cases in `h : b < a`. Rewrite using `[dif_pos h, if_neg h.ne', sub_zero]`. Conclude with `PiLp.norm_apply_le z _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h, sub_self, norm_zero]`. Conclude with `norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem norm_nmat_sub_one_le {r : ℕ} (X : Data E r) (z : V (nd X)) (τ : X.Ψ) (a b : Fin r) :
     ‖(mat (nmat X z) τ - 1) a b‖ ≤ ‖z‖ := by
@@ -268,7 +268,7 @@ theorem norm_nmat_sub_one_le {r : ℕ} (X : Data E r) (z : V (nd X)) (τ : X.Ψ)
     exact norm_nonneg _
 
 /- English proof (translation)
-Apply `mul_sgnMat_mul_conjTranspose` to reduce the goal to its premises. Establish `hu : IsUnit (mat x0 τ).det` using `(ExF.det_ne_of_orth X h0 τ).isUnit`. Use `FrameDegreeData.gram_mul τ.1 X.Gm (mat x0 τ) ((mat x0 τ)⁻¹ * mat x τ)` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul, hx τ, h0 τ]`. Conclude with `this.symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isometry_of_orth {r : ℕ} (X : Data E r) {x0 x : Frame X.Ψ r} (h0 : IsOrth X x0)
     (hx : IsOrth X x) (τ : X.Ψ) :
@@ -280,7 +280,7 @@ theorem isometry_of_orth {r : ℕ} (X : Data E r) {x0 x : Frame X.Ψ r} (h0 : Is
   exact this.symm
 
 /- English proof (translation)
-Unfold `dmin`. Rewrite using `[ExF.mat_cpt, ExF.mat_cpt, FrameDegreeData.gram_mul, FrameDegreeData.gram_mul, hx τ, h0 τ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dmin_cpt_eq {r : ℕ} (X : Data E r) {x0 x : Frame X.Ψ r} (h0 : IsOrth X x0)
     (hx : IsOrth X x) (z : V (nd X)) (τ : X.Ψ) (i : Fin (r + 1)) :
@@ -289,13 +289,13 @@ theorem dmin_cpt_eq {r : ℕ} (X : Data E r) {x0 x : Frame X.Ψ r} (h0 : IsOrth 
   rw [ExF.mat_cpt, ExF.mat_cpt, FrameDegreeData.gram_mul, FrameDegreeData.gram_mul, hx τ, h0 τ]
 
 /- English proof (translation)
-Introduce `r X x0 h0`. Use `set i0 : Fin (r + 1) := ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ with hi0`. Take `⟨δ, hδ, H⟩` from `exists_block_det_ge X.p0_le`. Establish `hc : Continuous fun z : V (nd X) => fun τ : X.Ψ => dmin X.Gm (cpt X x0 z) τ i0` using `continuous_pi fun τ => (ExtFPf.cont_dmin X τ i0).comp (FundSetPf.cont_cpt (X := X) (x0 := x0))`. Take `⟨B, hB⟩` from `(isCompact_closedBall (0 : V (nd X)) δ).exists_bound_of_continuousOn hc.continuousOn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨δ, ∏ _τ : X.Ψ, (4 * B), hδ, fun x hx z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun τ _ => by positivity) fun τ _ => ?_` and prove the remaining obligations. Establish `hiso` using `isometry_of_orth X h0 hx τ`. Establish `h1 : ‖dmin X.Gm (cpt X x z) τ i0‖ ≤ B`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dmin_cpt_eq X h0 hx]`. Conclude with `(norm_le_pi_norm (fun τ : X.Ψ => dmin X.Gm (cpt X x0 z) τ i0) τ).trans (hB z (by simpa using hz.le))`. Establish `h2 : ‖lminor ((mat x0 τ)⁻¹ * mat x τ) i0‖ / 2 ≤ ‖lminor ((mat x0 τ)⁻¹ * mat (cpt X x z) τ) i0‖`. Rewrite using `[ExF.mat_cpt, ← Matrix.mul_assoc]`. Conclude with `H _ _ hiso fun a b => (norm_nmat_sub_one_le X z τ a b).trans hz.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : 0 < ‖lminor ((mat x0 τ)⁻¹ * mat x τ) i0‖` using `norm_pos_iff.2 (det_block_ne_zero X.p0_le hiso)`. Rewrite using `[IC.norm_dmin_orth X hx]`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans h1`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem minorRatio_near :
     (∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → ∃ ρ C : ℝ, 0 < ρ ∧ ∀ x, IsOrth X x → ∀ z : V (nd X), ‖z‖ < ρ → (∏ τ : X.Ψ, ‖dmin X.Gm (cpt X x z) τ (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ / ‖lminor ((mat x0 τ)⁻¹ * mat (cpt X x z) τ) (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ ^ 2) ≤ C * (∏ τ : X.Ψ, ‖dmin X.Gm (x) τ (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ / ‖lminor ((mat x0 τ)⁻¹ * mat (x) τ) (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ ^ 2)) := by

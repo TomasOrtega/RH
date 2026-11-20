@@ -9,9 +9,9 @@ open MeasureTheory Metric Filter Topology
 open scoped ENNReal ContDiff
 
 /- English proof (translation)
-Take `⟨e, he, hx⟩` from `exists_chart n z hz x`. Rewrite using `[db_eq_wdb n z e he j f x hx, db_eq_wdb n z e he j g x hx]`. Apply `wdb_congr` to reduce the goal to its premises. Establish `hzx : z x = e x` using `he hx`. Rewrite using `[hzx]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.comp_tendsto (e.tendsto_symm hx)`.
+A detailed English derivation is pending.
 -/
 theorem ap_db_congr {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (j : Fin n) (f g : M → ℂ) (x : M) (h : f =ᶠ[𝓝 x] g) :
@@ -24,7 +24,7 @@ theorem ap_db_congr {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   exact h.comp_tendsto (e.tendsto_symm hx)
 
 /- English proof (translation)
-Introduce `e he y hy`. Take `⟨G, hG, hfG⟩` from `h (e.symm y)`. Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises. Establish `hGa : ContDiffAt ℝ ∞ (G ∘ e.symm) y` using `(hG e he).contDiffAt (e.open_target.mem_nhds hy)`. Conclude with `hGa.congr_of_eventuallyEq (hfG.comp_tendsto (e.continuousAt_symm hy))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ap_smooth_of_local {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ)
     (h : ∀ x, ∃ G : M → ℂ, Smooth n z G ∧ f =ᶠ[𝓝 x] G) : Smooth n z f := by
@@ -35,11 +35,11 @@ theorem ap_smooth_of_local {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M →
   exact hGa.congr_of_eventuallyEq (hfG.comp_tendsto (e.continuousAt_symm hy))
 
 /- English proof (translation)
-Introduce `e he`. Establish `hh : DifferentiableOn ℂ (f ∘ e.symm) e.target` using `hf e he`. Establish `hcd : ContDiffOn ℂ ∞ (f ∘ e.symm) e.target` using `contDiffOn_of_differentiableOn n _ _ e.open_target hh`. Establish `hfd : DifferentiableOn ℂ (fun y => fderiv ℂ (f ∘ e.symm) y (bas n k)) e.target`. Establish `h1` using `(hcd.fderiv_of_isOpen e.open_target (m := ∞) (by exact_mod_cast le_top)).differentiableOn (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.clm_apply (differentiableOn_const _)`. Use `hfd.congr (fun y hy => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[d_comp_symm n z e he k f y hy]`. Establish `hd` using `(hh.differentiableAt (e.open_target.mem_nhds hy)).hasFDerivAt`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wd, (hd.restrictScalars ℝ).fderiv]`. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.map_smul, smul_eq_mul]`. Rewrite using `[← mul_assoc, Complex.I_mul_I]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ap_holo_d {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ)
     (hf : Holo n z f) (k : Fin n) : Holo n z (d n z k f) := by
@@ -61,11 +61,11 @@ theorem ap_holo_d {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f 
   ring
 
 /- English proof (translation)
-Introduce `e he`. Establish `hA : ∀ i k, DifferentiableOn ℂ ((d n z k (g i)) ∘ e.symm) e.target` using `fun i k => ap_holo_d n z (g i) (hg i) k e he`. Establish `h1 : (jac n z g ∘ e.symm) = fun y => ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, d n z i (g (σ i)) (e.symm y)`. Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply, jac, Matrix.det_apply, Matrix.of_apply, Units.smul_def, zsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Apply `DifferentiableOn.fun_sum` to reduce the goal to its premises. Introduce `σ _`. Apply `DifferentiableOn.const_mul` to reduce the goal to its premises. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(HasFDerivWithinAt.finsetProd (fun i _ => ((hA (σ i) i) y hy).hasFDerivWithinAt)).differentiableWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem ap_holo_jac {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (g : Fin n → M → ℂ)
     (hg : ∀ i, Holo n z (g i)) : Holo n z (jac n z g) := by
@@ -85,7 +85,7 @@ theorem ap_holo_jac {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (
   exact (HasFDerivWithinAt.finsetProd (fun i _ => ((hA (σ i) i) y hy).hasFDerivWithinAt)).differentiableWithinAt
 
 /- English proof (translation)
-Establish `h` using `Complex.continuous_re.comp (Smooth.continuous n z hz _ hf)`. Conclude with `h.congr (fun x => by simp)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ap_cont_of_smoothR {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (f : M → ℝ) (hf : SmoothR n z f) : Continuous f := by
@@ -93,9 +93,9 @@ theorem ap_cont_of_smoothR {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M →
   exact h.congr (fun x => by simp)
 
 /- English proof (translation)
-Establish `h1 : SmoothR n z (fun x => ∑ i ∈ Finset.univ, ‖g i x‖ ^ 2)` using `smoothR_sum n z _ _ (fun i _ => Smooth.normSq n z _ (Holo.smooth n z _ (hg i)))`. Establish `h2 : SmoothR n z (fun x => Real.exp (-ph x))` using `SmoothR.comp n z (fun t => Real.exp (-t)) (Real.contDiff_exp.comp contDiff_neg) ph hph`. Establish `h3` using `SmoothR.mul n z _ _ (SmoothR.mul n z _ _ h1 h2) (smoothR_const n z (1 / r ^ 2))`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[ev, div_eq_mul_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ap_smoothR_ev {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (g : Fin n → M → ℂ) (hg : ∀ i, Holo n z (g i)) (ph : M → ℝ) (hph : SmoothR n z ph) (r : ℝ) :

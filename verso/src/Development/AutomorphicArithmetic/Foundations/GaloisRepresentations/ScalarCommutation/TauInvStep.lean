@@ -17,9 +17,9 @@ private def LI {G : Type} [Group G] (K : Subgroup G) (g : G) : Prop :=
   ∃ φ ∈ Hecke ℂ K, conv K φ (dosetInd ℂ K g) = dosetInd ℂ K 1
 
 /- English proof (translation)
-Establish `e : dosetInd ℂ K g' = dosetInd ℂ K g`. Unfold `dosetInd`. Rewrite using `[DoubleCoset.doubleCoset_eq_of_mem h]`. Unfold `LI`. Rewrite using `[e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg`.
+A detailed English derivation is pending.
 -/
 private theorem LI.congr {G : Type} [Group G] {K : Subgroup G} {g g' : G}
     (h : g' ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)) (hg : LI K g) : LI K g' := by
@@ -31,7 +31,7 @@ private theorem LI.congr {G : Type} [Group G] {K : Subgroup G} {g g' : G}
   exact hg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, Final.DosetIndMem G K ℂ 1, (Final.HeckeUnit G K ℂ _ (Final.DosetIndMem G K ℂ 1)).1⟩`.
+Supply the required witnesses or components.
 -/
 private theorem LI.one {G : Type} [Group G] (K : Subgroup G) : LI K (1 : G) :=
   ⟨_, Final.DosetIndMem G K ℂ 1, (Final.HeckeUnit G K ℂ _ (Final.DosetIndMem G K ℂ 1)).1⟩
@@ -39,12 +39,12 @@ private theorem LI.one {G : Type} [Group G] (K : Subgroup G) : LI K (1 : G) :=
 private def Qr {G : Type} [Group G] (K : Subgroup G) (g : G) : Prop := ∀ h, LI K h → LI K (h * g)
 
 /- English proof (translation)
-Introduce `h hh` and use `by simpa using hh`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Qr.one {G : Type} [Group G] (K : Subgroup G) : Qr K (1 : G) := fun h hh => by simpa using hh
 
 /- English proof (translation)
-Introduce `h hh` and use `by simpa [mul_assoc] using b _ (a h hh)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Qr.mul {G : Type} [Group G] {K : Subgroup G} {g g' : G} (a : Qr K g) (b : Qr K g') : Qr K (g * g') :=
   fun h hh => by simpa [mul_assoc] using b _ (a h hh)

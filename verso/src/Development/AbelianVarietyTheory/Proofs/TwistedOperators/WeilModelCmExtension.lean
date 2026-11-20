@@ -24,7 +24,7 @@ open scoped Classical
 namespace GlobalTheory.Twist.SmoothLine
 
 /- English proof (translation)
-Use `finprod_congr fun v => ?_` and prove the remaining obligations. Establish `hv : (fun i => evFin F v ((x + z) i)) = fun i => evFin F v (x i)`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, map_add, GlobalTheory.ThK.EvUniqInf.evFin_eq_zero_of_at z hz v i, add_zero]`. Rewrite using `[hv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem finprod_add_of_at {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ) (x z : κ → AF F) (hz : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evI F) z) :
@@ -36,17 +36,13 @@ theorem finprod_add_of_at {F : Type} [Field F] [NumberField F] {κ : Type} [Fint
   rw [hv]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hne`. Use extensionality with `a`. Set `z : κ → AF F` to `fun i => (LinearMap.inl F (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (a i - evI F (y i))) : AF F)`. Establish `hz : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evI F) z`. Introduce `u hu`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu1 : u.1 = 0`. Establish `hu' : InfiniteAdeleRing.ringEquiv_mixedSpace F u.1 = 0` using `hu`. Conclude with `(map_eq_zero_iff _ (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective).mp hu'`. Use function extensionality and compare the values at `i`. Use `show u * z i = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Prod.ext` to reduce the goal to its premises. Use `show u.1 * (z i).1 = 0`. Rewrite using `[hu1, zero_mul]`. Use `show u.2 * 0 = 0`. Conclude with `mul_zero _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hev : (fun i => evI F ((y + z) i)) = a`. Use function extensionality and compare the values at `i`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((y i).1 + (z i).1) = a i`. Rewrite using `[map_add]`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (y i).1 + InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (a i - evI F (y i))) = a i`.
-
-Rewrite using `[RingEquiv.apply_symm_apply]`. Use `show evI F (y i) + (a i - evI F (y i)) = a i`. Normalize the expressions using the abelian group laws. Establish `h1 : g (fun i => evI F ((y + z) i)) * (∏ᶠ v, φ v fun i => evFin F v ((y + z) i)) = g' (fun i => evI F ((y + z) i)) * (∏ᶠ v, φ v fun i => evFin F v ((y + z) i))` using `congrFun h (y + z)`. Rewrite `h1` using `[finprod_add_of_at φ y z hz, hev]`.
-
-Conclude with `mul_right_cancel₀ hy h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_pure_eq_twisted_operators {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ)
@@ -84,13 +80,11 @@ private theorem eq_of_pure_eq_twisted_operators {F : Type} [Field F] [NumberFiel
   exact mul_right_cancel₀ hy h1
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ n d Y Wd M ψ χX χW om hCM hψ hG hW γ hγ f φ hSB hfin hne c hc`. Take `⟨c', g, hc0, hlim, hact⟩` from `GlobalTheory.WeilArchSmooth.exists_orbit hP M ψ χX χW om hCM hψ hW γ hγ f`. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x : Fin n × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `by filter_upwards [hfin, hG.std] with v h1 h2`. Rewrite using `[h1, h2]`. Establish `hR` using `GlobalTheory.ThK.EvUniqInf.rest_pure f φ hSB hstd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsame : ∀ t, c t = c' t`. Introduce `t`. Establish `hpure : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c t) φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c' t) φ`. Rewrite using `[← hc t]`. Conclude with `hact t _ hR`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `eq_of_pure_eq_twisted_operators φ hne _ _ hpure`. Use `⟨g, ?_⟩` and prove the remaining obligations. Establish `hfun : (fun t : ℝ => t⁻¹ • (c t - c 0)) = fun t : ℝ => t⁻¹ • (c' t - f)`. Use function extensionality and compare the values at `t`. Rewrite using `[hsame t, hsame 0, hc0]`.
-
-Rewrite using `[hfun]`. Conclude with `hlim`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_line_pure : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)

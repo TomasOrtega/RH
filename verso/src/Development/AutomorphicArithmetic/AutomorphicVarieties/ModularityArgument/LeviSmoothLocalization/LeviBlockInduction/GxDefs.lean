@@ -15,12 +15,12 @@ def GxShape (q : ℂ) (γ : RatFunc ℂ) (P : ℂ[X]) : Prop :=
     γ = RatFunc.C c * RatFunc.X ^ j * algebraMap ℂ[X] (RatFunc ℂ) P / algebraMap ℂ[X] (RatFunc ℂ) (P.comp (C q * X))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, 0, one_ne_zero, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem gxShape_one (q : ℂ) : GxShape q 1 1 := ⟨1, 0, one_ne_zero, by simp⟩
 
 /- English proof (translation)
-Take `⟨c₁, j₁, hc₁, rfl⟩` from `h₁`. Take `⟨c₂, j₂, hc₂, rfl⟩` from `h₂`. Use `⟨c₁ * c₂, j₁ + j₂, mul_ne_zero hc₁ hc₂, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.mul_comp, map_mul, map_mul, map_mul, zpow_add₀ RatFunc.X_ne_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gxShape_mul {q : ℂ} {γ₁ γ₂ : RatFunc ℂ} {P₁ P₂ : ℂ[X]} (h₁ : GxShape q γ₁ P₁) (h₂ : GxShape q γ₂ P₂) :
     GxShape q (γ₁ * γ₂) (P₁ * P₂) := by

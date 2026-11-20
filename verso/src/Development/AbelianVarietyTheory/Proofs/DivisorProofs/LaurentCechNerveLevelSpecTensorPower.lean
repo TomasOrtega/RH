@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.EtC.GmStep.LevelIso
 
 /- English proof (translation)
-Establish `h` using `laurentMap_T (RingHom.id B) m`. Rewrite `h` using `[laurentMap, LaurentPolynomial.eval₂_T]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_eq_unit_zpow (B : Type) [CommRing B] (m : ℤ) :
     (LaurentPolynomial.T m : LaurentPolynomial B) =
@@ -20,11 +20,11 @@ theorem T_eq_unit_zpow (B : Type) [CommRing B] (m : ℤ) :
   exact h.symm
 
 /- English proof (translation)
-Establish `hu : Units.map φ.toMonoidHom (laurentVarUnit B) = Units.map ψ.toMonoidHom (laurentVarUnit B)` using `Units.ext hT`. Establish `e : ∀ (χ : LaurentPolynomial B →+* R) (m : ℤ), χ ((laurentVarUnit B ^ m : (LaurentPolynomial B)ˣ) : LaurentPolynomial B) = ((Units.map χ.toMonoidHom (laurentVarUnit B) ^ m : Rˣ) : R)`. Introduce `χ m`. Rewrite using `[← map_zpow]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hTm : ∀ m : ℤ, φ (LaurentPolynomial.T m) = ψ (LaurentPolynomial.T m)` using `fun m => by`. Rewrite using `[T_eq_unit_zpow, e φ, e ψ, hu]`. Use `RingHom.ext fun p => ?_` and prove the remaining obligations. Proceed by induction on `p using LaurentPolynomial.induction_on' with`. Consider the case `add p r hp hr => rw [map_add, map_add, hp, hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `C_mul_T n b => rw [map_mul, map_mul, hTm n, ← RingHom.comp_apply, hC, RingHom.comp_apply]`.
+Treat this case separately.
 -/
 theorem laurent_ringHom_ext {B R : Type} [CommRing B] [CommRing R] {φ ψ : LaurentPolynomial B →+* R}
     (hC : φ.comp LaurentPolynomial.C = ψ.comp LaurentPolynomial.C)
@@ -45,7 +45,7 @@ theorem laurent_ringHom_ext {B R : Type} [CommRing B] [CommRing R] {φ ψ : Laur
   | C_mul_T n b => rw [map_mul, map_mul, hTm n, ← RingHom.comp_apply, hC, RingHom.comp_apply]
 
 /- English proof (translation)
-The claim follows from `laurent_ringHom_ext (RingHom.ext fun a => by simp [laurentMap_C]) (by rw [RingHom.comp_apply, laurentMap_T, laurentMap_T, laurentMap_T])`.
+A detailed English derivation is pending.
 -/
 theorem laurentMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     (laurentMap g).comp (laurentMap f) = laurentMap (g.comp f) :=
@@ -53,13 +53,11 @@ theorem laurentMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f
     (by rw [RingHom.comp_apply, laurentMap_T, laurentMap_T, laurentMap_T])
 
 /- English proof (translation)
-Use `letI : Algebra A R := ((g 0).comp (algebraMap A B)).toAlgebra`. Set `g' : Fin (k + 1) → (B →ₐ[A] R)` to `fun j => ⟨g j, fun r => RingHom.congr_fun (hg j) r⟩`. Use `⟨(GlobalTheory.piTensorLift g').toRingHom, fun j => ?_, fun ψ hψ => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `GlobalTheory.piTensorLift_single g' j x`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hc : ∀ r : A, ψ (algebraMap A (PiTensorProduct A fun _ : Fin (k + 1) => B) r) = algebraMap A R r`. Introduce `r`. Establish `h1 : algebraMap A (PiTensorProduct A fun _ : Fin (k + 1) => B) r = PiTensorProduct.singleAlgHom (R` using `A) (A := fun _ : Fin (k + 1) => B) 0 (algebraMap A B r) := ((PiTensorProduct.singleAlgHom (R := A) (A := fun _ : Fin (k + 1) => B) 0).commutes r).symm`. Rewrite using `[h1]`. Conclude with `RingHom.congr_fun (hψ 0) (algebraMap A B r)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ' : PiTensorProduct A (fun _ : Fin (k + 1) => B) →ₐ[A] R` to `⟨ψ, hc⟩`. Establish `: ψ' = GlobalTheory.piTensorLift g'` using `PiTensorProduct.algHom_ext fun j => by`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `ψ _ = _`. Rewrite using `[AlgHom.comp_apply, GlobalTheory.piTensorLift_single]`.
-
-Conclude with `RingHom.congr_fun (hψ j) x`. Conclude with `congrArg AlgHom.toRingHom this`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensorPow_univ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (k : ℕ) (R : Type) [CommRing R]
     (g : Fin (k + 1) → (B →+* R)) (hg : ∀ j, (g j).comp (algebraMap A B) = (g 0).comp (algebraMap A B)) :
@@ -87,17 +85,17 @@ theorem tensorPow_univ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (k :
     exact congrArg AlgHom.toRingHom this
 
 /- English proof (translation)
-Establish `hT : ∀ j, g j (LaurentPolynomial.T 1) = g 0 (LaurentPolynomial.T 1)` using `fun j => by`. Use `RingHom.congr_fun (hg j) (LaurentPolynomial.T 1)` as an intermediate fact. Rewrite `this` using `[RingHom.comp_apply, RingHom.comp_apply, laurentMap_T]`. Then use the resulting hypothesis. Take `⟨ψ, hψ, hψu⟩` from `hu R (fun j => (g j).comp LaurentPolynomial.C) (fun j => by`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.congr_fun (hg j) (LaurentPolynomial.C x)` as an intermediate fact. Simplify `this)` using `[laurentMap_C]`. Set `u : Rˣ` to `Units.map (g 0).toMonoidHom (laurentVarUnit B)`. Use `⟨LaurentPolynomial.eval₂ ψ u, fun j => ?_, fun φ hφ => ?_⟩` and prove the remaining obligations. Apply `laurent_ringHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `RingHom.ext fun b => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, laurentMap_C, LaurentPolynomial.eval₂_C]`. Conclude with `RingHom.congr_fun (hψ j) b`. Rewrite using `[RingHom.comp_apply, laurentMap_T, LaurentPolynomial.eval₂_T, zpow_one, hT j]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hC : φ.comp LaurentPolynomial.C = ψ` using `hψu _ (fun j => by`. Use `RingHom.ext fun b => ?_` and prove the remaining obligations. Use `RingHom.congr_fun (hφ j) (LaurentPolynomial.C b)` as an intermediate fact. Simplify `this)` using `[laurentMap_C]`. Apply `laurent_ringHom_ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.ext fun t => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, LaurentPolynomial.eval₂_C, ← hC]`. Both sides reduce to the same expression. Rewrite using `[LaurentPolynomial.eval₂_T, zpow_one]`. Use `RingHom.congr_fun (hφ 0) (LaurentPolynomial.T 1)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[RingHom.comp_apply, laurentMap_T]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem laurent_univ (A B T : Type) [CommRing A] [CommRing B] [CommRing T] (a : A →+* B) (k : ℕ)
     (ι : Fin (k + 1) → (B →+* T))
@@ -140,17 +138,17 @@ end GlobalTheory.EtC.GmStep.LevelIso
 namespace GlobalTheory.EtC.GmStep.LevelIso
 
 /- English proof (translation)
-Introduce `A A' _ _ _ k`. Set `ι : Fin (k + 1) → (A' →+* PiTensorProduct A (fun _ : Fin (k + 1) => A'))` to `fun j => (PiTensorProduct.singleAlgHom (R := A) (A := fun _ : Fin (k + 1) => A') j).toRingHom`. Establish `hιA : ∀ j, (ι j).comp (algebraMap A A') = algebraMap A (PiTensorProduct A (fun _ : Fin (k + 1) => A'))` using `fun j => RingHom.ext fun x => (PiTensorProduct.singleAlgHom (R := A) (A := fun _ : Fin (k + 1) => A') j).commutes x`. Establish `hι : ∀ j, (ι j).comp (algebraMap A A') = (ι 0).comp (algebraMap A A')` using `fun j => by rw [hιA, hιA]`. Establish `hu` using `tensorPow_univ A A' k`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e0, he0⟩` from `GlobalTheory.SpecWidePullback.yoneda_spec_isoWidePullback A A' _ (algebraMap A A') k ι hι hu`. Establish `hι' : ∀ j, (laurentMap (ι j)).comp (laurentMap (algebraMap A A')) = (laurentMap (ι 0)).comp (laurentMap (algebraMap A A'))`. Introduce `j`. Rewrite using `[laurentMap_comp, laurentMap_comp, hι j]`. Take `⟨e, he⟩` from `GlobalTheory.SpecWidePullback.yoneda_spec_isoWidePullback (LaurentPolynomial A) (LaurentPolynomial A') (LaurentPolynomial (PiTensorProduct A (fun _ : Fin (k + 1) => A'))) (laurentMap (algebraMap A A')) k (fun j => laurentMap (ι j)) hι' (laurent_univ A A' _ (algebraMap A A') k ι ( …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨e0, e, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.hom ≫ WidePullback.lift _ _ _ = _`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Simplify using `only [Category.assoc, WidePullback.lift_π, Arrow.mk_hom, laurentHom, baseHom]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) (he j)).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (_ ≫ ·) (he0 j)).symm` and prove the remaining obligations. Simplify using `only [constSq, Arrow.homMk_left, ← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, laurentMap_comp_C]`. Simplify using `only [Category.assoc, WidePullback.lift_base, Arrow.mk_hom, laurentHom, baseHom]`. Rewrite using `[← WidePullback.π_arrow _ 0]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) (he 0)).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ ((congrArg (_ ≫ ·) (((congrArg (· ≫ yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A A')))) (he0 0)).symm.trans (Category.assoc _ _ _)).trans (congrArg (e0.hom ≫ ·) (WidePullback.π_arrow _ 0)))).trans (Category.assoc _ _ _).symm)` and prove the remaining obligations. Simplify using `only [constSq, Arrow.homMk_right, ← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, laurentMap_comp_C]`. Use `congr 3`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `RingHom.ext fun x => by simp [laurentMap_C]`. Express the relevant statement in the definitionally equal form `e.hom ≫ WidePullback.base _ = _`. Rewrite using `[← WidePullback.π_arrow _ 0, ← Category.assoc, he 0]`. Simplify using `only [laurentHom, ← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, laurentMap_comp, hιA 0]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem level_iso : ∀ (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A'] (k : ℕ),
   ∃ (e0 : yoneda.obj (Spec (CommRingCat.of (PiTensorProduct A (fun _ : Fin (k + 1) => A')))) ≅ (cech (baseHom A A')).obj (op ⦋k⦌))

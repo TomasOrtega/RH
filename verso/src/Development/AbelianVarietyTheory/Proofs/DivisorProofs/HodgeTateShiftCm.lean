@@ -25,9 +25,9 @@ namespace GlobalTheory.HTShiftPf
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 
 /- English proof (translation)
-Establish `: Finite (𝓞 K ⧸ la.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot la.asIdeal la.ne_bot`. Establish `: la.asIdeal.IsMaximal` using `la.isMaximal`. Set `_ : Field (𝓞 K ⧸ la.asIdeal)` to `Ideal.Quotient.field _`. Use `⟨ringChar (𝓞 K ⧸ la.asIdeal), CharP.char_is_prime (𝓞 K ⧸ la.asIdeal) _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ringChar.Nat.cast_ringChar`.
+A detailed English derivation is pending.
 -/
 theorem prime_mem {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) :
     ∃ p : ℕ, p.Prime ∧ ((p : ℕ) : 𝓞 K) ∈ la.asIdeal := by
@@ -39,7 +39,7 @@ theorem prime_mem {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (
   exact ringChar.Nat.cast_ringChar
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨a, b, hab⟩ : IsCoprime (p : 𝓞 K) (q : 𝓞 K)` from `Nat.Coprime.cast ((Nat.coprime_primes hp hq).2 hne)`. Conclude with `la.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prime_unique {K : Type} [Field K] [NumberField K] {la : HeightOneSpectrum (𝓞 K)} {p q : ℕ}
     (hp : p.Prime) (hq : q.Prime) (h1 : (p : 𝓞 K) ∈ la.asIdeal) (h2 : (q : 𝓞 K) ∈ la.asIdeal) : p = q := by
@@ -49,7 +49,7 @@ theorem prime_unique {K : Type} [Field K] [NumberField K] {la : HeightOneSpectru
     (hab ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))
 
 /- English proof (translation)
-Rewrite using `[PadicComplex.norm_eq_norm, Valuation.norm_def, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_eq_v (p : ℕ) [Fact p.Prime] (x : ℂ_[p]) : ‖x‖ = ((Valued.v x : ℝ≥0) : ℝ) := by
   rw [PadicComplex.norm_eq_norm, Valuation.norm_def, PadicComplex.RankOne.hom_eq_embedding,
@@ -58,27 +58,25 @@ theorem norm_eq_v (p : ℕ) [Fact p.Prime] (x : ℂ_[p]) : ‖x‖ = ((Valued.v 
 open Classical in
 
 /- English proof (translation)
-Introduce `hP2 hPS E _ _ _ H hH Dw l Xo c τ la`. Take `⟨ℓ, hℓ, hℓla⟩` from `prime_mem la`. Use `haveI : Fact ℓ.Prime := ⟨hℓ⟩`. Take `⟨w, hw⟩` from `GlobalTheory.placeBelow_exists c τ.1 la`. Take `⟨κ₁, κ₂, hκ⟩` from `hPS E H hH ℓ w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(vLa la (ℓ : c.F) : ℝ) * (-((Dw.mult τ.1 : ℝ) * κ₁ + (Dw.mult (conjEmb τ.1) : ℝ) * κ₂) / Real.log ((Valued.v (ℓ : ℂ_[ℓ]) : ℝ≥0) : ℝ)), ?_⟩` and prove the remaining obligations. Introduce `T io e y₀ ho hAlg wv hwv f hf`. Take `⟨p, hp, _, k, y, hy, rfl⟩` from `hwv`. Take `rfl : p = ℓ` from `prime_unique hp.out hℓ (hy.mem ho) hℓla`. Use `letI := H.starRing`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := io.toAlgebra`. Establish `hy' : IsHTFrame p (Valued.v : Valuation ℂ_[p] ℝ≥0) 𝓞_ℂ_[p] y₀ k y` using `hy`. Establish `hm` using `hy'.val_vw_map ho`. Take `⟨-, kO, P, ψ, z, hPO, hz, g, a, x, hfc, hg, ha, hx, hb⟩` from `hy'`. Establish `hdet : ∀ σ, IsUnit (g σ).det` using `fun σ => (Matrix.isUnit_iff_isUnit_det _).1 (Matrix.linearIndependent_rows_iff_isUnit.1 (LinearIndependent.of_comp (Fintype.linearCombination ℂ_[p] fun j => P.bLie (x σ j)) (hb σ).1))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at ha`. Establish `hA` using `GlobalTheory.FlatFrameLaw.evR_flat_frChg τ hf g a z y hfc hg hdet ha0`. Establish `hB : evR Xo c f z = k (evI y₀ f)` using `GlobalTheory.FlagTan.evR_frMap hf.1 hz`. Establish `hs : ∀ a : 𝓞 E, star a = H.bar a` using `fun _ => rfl`. Establish `hplace : ∀ a : 𝓞 E, a ∈ w.asIdeal ↔ ‖embAt c ℂ_[p] τ.1 (a : E)‖ < 1` using `fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, embAt, RingHom.comp_apply]`. Conclude with `(GlobalTheory.CompHt.norm_algebraMap_lt_one_iff_valuation_lt_one c.F la p hℓla T io e ho k.toRingHom (fun b => k.commutes b) hm _).symm`. Establish `hsig : ∀ φ : E →+* ℂ_[p], Module.finrank ℂ_[p] (P.eigW (embO P.integers φ)) = if φ (H.rt : E) = embAt c ℂ_[p] τ.1 (H.rt : E) then Dw.mult τ.1 else Dw.mult (conjEmb τ.1)` using `fun φ => by`. Take `⟨σ, rfl⟩` from `GlobalTheory.EmbOnto.embAt_surj c ℂ_[p] φ`. Establish `e1` using `GlobalTheory.T.pdiv_point_valuation_property hP2 E H Dw l Xo c p ℂ_[p] Valued.v 𝓞_ℂ_[p] T io y₀ hAlg k kO P ψ z hPO hz σ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `e1.trans ?_` and prove the remaining obligations. Establish `hinj : σ (H.rt : E) = τ.1 (H.rt : E) ↔ embAt c ℂ_[p] σ (H.rt : E) = embAt c ℂ_[p] τ.1 (H.rt : E)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `only [embAt, RingHom.comp_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Conclude with `Subtype.ext h`. Introduce `h`. Simplify using `only [embAt, RingHom.comp_apply] at h`. Conclude with `congrArg Subtype.val ((algebraMap c.F ℂ_[p]).injective h)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Datum.mult, Datum.mult, Datum.mult, if_pos τ.2, if_neg (conj_not_mem τ), ← hinj, τ.2]`. Establish `hs1` using `GlobalTheory.CompHt.RecSpan.span_bLie_eq_wRec E H Dw l Xo c p ℂ_[p] Valued.v 𝓞_ℂ_[p] T io y₀ k kO P ψ z hPO hz τ.1 (x τ.1) (hx τ.1)`. Establish `hs2` using `GlobalTheory.CompHt.RecSpan.span_bLie_eq_wRec E H Dw l Xo c p ℂ_[p] Valued.v 𝓞_ℂ_[p] T io y₀ k kO P ψ z hPO hz (conjEmb τ.1) (x (conjEmb τ.1)) (hx (conjEmb τ.1))`. Rewrite `hs2` using `[embInt_conj hs]`. Establish `hb1` using `hb τ.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hb1` using `[htLat_psi P τ]`. Establish `hb2` using `hb (conjEmb τ.1)`. Rewrite `hb2` using `[htLat_conj P τ, embInt_conj hs]`. Establish `hlog` using `hκ (embAt c ℂ_[p] τ.1) hplace P (Dw.mult τ.1) (Dw.mult (conjEmb τ.1)) hsig (x τ.1) (x (conjEmb τ.1)) (g τ.1) (g (conjEmb τ.1)) hs1 hs2 hb1 hb2`. Rewrite `hlog` using `[norm_eq_v, norm_eq_v]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hd1 : (g τ.1).det ≠ 0` using `(hdet τ.1).ne_zero`. Establish `hd2 : (g (conjEmb τ.1)).det ≠ 0` using `(hdet (conjEmb τ.1)).ne_zero`. Use `show val_vw la p Valued.v (evR Xo c f y) = _`. Rewrite using `[hA, hB, val_vw_mul, val_vw_mul, hm, val_vw_of_ne la p _ (inv_ne_zero hd1), val_vw_of_ne la p _ hd2, ← EReal.coe_add, add_comm]`. Use `congr 2`.
-
-Rewrite using `[map_inv₀, NNReal.coe_inv, Real.log_inv, ← hlog]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem htShift : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.FlatCM.PlaceShiftSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E), GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H →

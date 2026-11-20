@@ -14,7 +14,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {d : SD σ}
 
 /- English proof (translation)
-Apply `L.injective` to reduce the goal to its premises. Rewrite using `[ContinuousLinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `w`. Rewrite using `[hL, KFock.cmb_crd]`. Conclude with `(arc_eq_iff R X (arc R X)).1 rfl w`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_inf_eq (R : RD d)
     (L : (Fin d.m × Fin d.n × Fin 2 → mixedEmbedding.mixedSpace F) ≃L[ℝ] (InfinitePlace F → Fin d.m → Fin d.n → ℂ))
@@ -29,9 +29,7 @@ theorem crd_inf_eq (R : RD d)
   exact (arc_eq_iff R X (arc R X)).1 rfl w
 
 /- English proof (translation)
-Use `⟨(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_, HasCompactSupport.intro' hk hc fun x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ N`. Use `filter_upwards [ho.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]`. Use `filter_upwards [hc.isOpen_compl.mem_nhds hx] with y hy`.
-
-Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`. Conclude with `Set.indicator_of_notMem hx _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indicator_mem_SB {X : Type} [TopologicalSpace X] {N : Set X} (ho : IsOpen N) (hc : IsClosed N)
     (hk : IsCompact N) : N.indicator (fun _ => (1 : ℂ)) ∈ SB X := by
@@ -44,49 +42,41 @@ theorem indicator_mem_SB {X : Type} [TopologicalSpace X] {N : Set X} (ho : IsOpe
   · exact Set.indicator_of_notMem hx _
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `KFock.archEquiv d R`. Use `set Zc : Vw d ≃L[ℝ] (InfinitePlace F → Fin d.m → Fin d.n → ℂ) := (EuclideanSpace.equiv (Iw d) ℝ).trans (zLE d).toContinuousLinearEquiv with hZc`. Establish `hΦ : f ∘ d.cmb ∈ Submodule.span ℂ {Φ | ∃ (φ : SchwartzMap (Fin d.m × Fin d.n × Fin 2 → mixedEmbedding.mixedSpace F) ℂ) (g : (Fin d.m × Fin d.n × Fin 2 → FiniteAdeleRing (𝓞 F) F) → ℂ), g ∈ SB (Fin d.m × Fin d.n × Fin 2 → FiniteAdeleRing (𝓞 F) F) ∧ Φ = pureA F φ g}` using `hf`. Take `⟨N, a, x, hx⟩` from `Submodule.mem_span_set'.1 hΦ`. Use `choose φ gg hgg hxeq using fun i => (x i).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfX : ∀ X, f X = ∑ i, a i * (φ i (L.symm (Zc (arc R X))) * gg i (fin d X))`. Introduce `X`. Establish `e1 : f X = (f ∘ d.cmb) (d.crd X)` using `by simp [KFock.cmb_crd]`. Rewrite using `[e1, ← hx, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Pi.smul_apply, hxeq i, smul_eq_mul]`. Use `congr 1`. Simplify using `only [pureA]`. Rewrite using `[crd_inf_eq R L hL X]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfjn : ∀ u y, f (jn R u y) = ∑ i, a i * (φ i (L.symm (Zc u)) * gg i y)`. Introduce `u y`. Rewrite using `[hfX, arc_jn, fin_jn]`. Set `Φv : Yf d → (Fin N → ℂ)` to `fun y i => gg i y`. Establish `hloc : IsLocallyConstant Φv`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(IsLocallyConstant.iff_eventually_eq _).2 fun y => ?_` and prove the remaining obligations. Establish `h` using `Filter.eventually_all.2 fun i => (IsLocallyConstant.iff_eventually_eq _).1 (hgg i).1 y`. Use `filter_upwards [h] with z hz`. Use function extensionality and compare the values at `i`. Conclude with `hz i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set K : Set (Yf d) := ⋃ i, tsupport (gg i) with hK`. Establish `hKc : IsCompact K` using `isCompact_iUnion fun i => (hgg i).2`. Take `⟨t, ht⟩` from `hKc.elim_finite_subcover (fun c : Fin N → ℂ => {y | Φv y = c}) (fun c => hloc.isOpen_fiber c) (fun y _ => Set.mem_iUnion.2 ⟨Φv y, rfl⟩)`. Use `set Vals := t.filter (fun c => c ≠ 0) with hVals`. Establish `hfib_sub : ∀ c : Fin N → ℂ, c ≠ 0 → {y | Φv y = c} ⊆ K`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Introduce `c hc y hy`. Assume the negation of the conclusion as `hyK`. Apply `hc` to reduce the goal to its premises. Rewrite using `[← show Φv y = c from hy]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show gg i y = 0`. Conclude with `image_eq_zero_of_notMem_tsupport (f := gg i) fun h => hyK (Set.mem_iUnion.2 ⟨i, h⟩)`. Use `haveI := hνf`. Use `haveI : BorelSpace (Af F) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (Af F) := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : BorelSpace (Yf d) := Pi.borelSpace`. Set `ψ : (Fin N → ℂ) → Vw d → ℂ` to `fun c u => ∑ i, a i * (φ i (L.symm (Zc u)) * c i)`. Establish `hterm : ∀ c ∈ Vals, (fun X => ψ c (arc R X) * {y | Φv y = c}.indicator (fun _ => (1 : ℂ)) (fin d X)) ∈ R.fock`. Introduce `c hc`. Establish `hc0 : c ≠ 0` using `(Finset.mem_filter.1 hc).2`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set Nc : Set (Yf d) := {y | Φv y = c} with hNc`. Establish `hNo : IsOpen Nc` using `hloc.isOpen_fiber c`. Establish `hNcl : IsClosed Nc` using `hloc.isClosed_fiber c`. Establish `hNk : IsCompact Nc` using `hKc.of_isClosed_subset hNcl (hfib_sub c hc0)`. Break down `Nc.eq_empty_or_nonempty with he | hne` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: (fun X => ψ c (arc R X) * Nc.indicator (fun _ => (1 : ℂ)) (fin d X)) = 0`. Use function extensionality and compare the values at `X`. Rewrite using `[he, Set.indicator_empty, mul_zero]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Establish `hSB` using `indicator_mem_SB hNo hNcl hNk`. Take `⟨P, hP⟩` from `H _ hSB`. Establish `hm0 : 0 < νf.real Nc`. Rewrite using `[measureReal_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ENNReal.toReal_pos (hNo.measure_pos νf hne).ne' hNk.measure_lt_top.ne`. Establish `hval : ∀ u, hg R νf f (Nc.indicator fun _ => (1 : ℂ)) u = ψ c u * (νf.real Nc : ℂ)`. Introduce `u`. Establish `e : (fun y => f (jn R u y) * star (Nc.indicator (fun _ => (1 : ℂ)) y)) = Nc.indicator (fun _ => ψ c u)`. Use function extensionality and compare the values at `y`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Distinguish the cases in `hy : y ∈ Nc`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hy, star_one, mul_one, hfjn]`. Establish `hy' : ∀ i, gg i y = c i` using `fun i => congrFun hy i`. Simplify using `only [ψ, hy']`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hy, star_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `show ∫ y, f (jn R u y) * star (Nc.indicator (fun _ => (1 : ℂ)) y) ∂νf = _`. Rewrite using `[e, integral_indicator_const _ hNo.measurableSet, Complex.real_smul, mul_comm]`. Establish `hψ : ∀ u, ψ c u = ((νf.real Nc)⁻¹ : ℂ) * (MvPolynomial.eval (fun i => ((u i : ℝ) : ℂ)) P * Real.exp (-(2 * Real.pi * ‖u‖ ^ 2)))`. Introduce `u`. Rewrite using `[← hP u, hval u]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (νf.real Nc : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hm0.ne'`. Clear the denominators using the available nonvanishing facts. Establish `e2 : (fun X => ψ c (arc R X) * Nc.indicator (fun _ => (1 : ℂ)) (fin d X)) = ((νf.real Nc)⁻¹ : ℂ) • (fun X => MvPolynomial.eval (fun i => ((arc R X i : ℝ) : ℂ)) P * (Real.exp (-(2 * Real.pi * ‖arc R X‖ ^ 2)) : ℂ) * Nc.indicator (fun _ => (1 : ℂ)) (fin d X))`. Use function extensionality and compare the values at `X`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hψ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `Submodule.smul_mem _ _ (poly_mem R P hSB)`. Establish `hsum : f = ∑ c ∈ Vals, (fun X => ψ c (arc R X) * {y | Φv y = c}.indicator (fun _ => (1 : ℂ)) (fin d X))`. Use function extensionality and compare the values at `X`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply, hfX]`. Distinguish the cases in `h0 : Φv (fin d X) = 0`. Establish `hz : ∀ i, gg i (fin d X) = 0` using `fun i => congrFun h0 i`. Simplify using `only [hz, mul_zero, Finset.sum_const_zero]`. Use `(Finset.sum_eq_zero fun c hc => ?_).symm` and prove the remaining obligations.
-
-Establish `hc0 : c ≠ 0` using `(Finset.mem_filter.1 hc).2`. Establish `: fin d X ∉ {y | Φv y = c}` using `fun h => hc0 (h.symm.trans h0)`. Rewrite using `[Set.indicator_of_notMem this, mul_zero]`. Establish `hmemK : fin d X ∈ K` using `hfib_sub _ h0 rfl`. Establish `hmemt : Φv (fin d X) ∈ t`.
-
-Use `ht hmemK` as an intermediate fact. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq] at this`. Take `⟨c, hct, hc⟩` from `this`. Rewrite using `[hc]`. Conclude with `hct`.
-
-Establish `hmemV : Φv (fin d X) ∈ Vals` using `Finset.mem_filter.2 ⟨hmemt, h0⟩`. Rewrite using `[Finset.sum_eq_single_of_mem _ hmemV]`. Rewrite using `[Set.indicator_of_mem (show fin d X ∈ {y | Φv y = Φv (fin d X)} from rfl), mul_one]`. Introduce `c _ hne`. Establish `: fin d X ∉ {y | Φv y = c}` using `fun h => hne h.symm`.
-
-Rewrite using `[Set.indicator_of_notMem this, mul_zero]`. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ hterm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_fock_of (R : RD d) {νf : Measure (Yf d)} (hνf : νf.IsAddHaarMeasure) {f : Mx F E d.m d.n → ℂ}
     (hf : f ∈ d.schM) (H : ∀ g ∈ SB (Yf d), ∃ P : MvPolynomial (Iw d) ℂ,

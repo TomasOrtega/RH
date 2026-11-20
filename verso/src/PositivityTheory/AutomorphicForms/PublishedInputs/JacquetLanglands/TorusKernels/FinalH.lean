@@ -26,80 +26,80 @@ import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusK
 namespace UpperTheory.Esk
 
 /- English proof (translation)
-The claim follows from `pf_GCh`.
+A detailed English derivation is pending.
 -/
 theorem s_GCh : GCh := pf_GCh
 /- English proof (translation)
-The claim follows from `pf_GUnit`.
+A detailed English derivation is pending.
 -/
 theorem s_GUnit : GUnit := pf_GUnit
 /- English proof (translation)
-The claim follows from `pf_GMod`.
+A detailed English derivation is pending.
 -/
 theorem s_GMod : GMod := pf_GMod
 /- English proof (translation)
-The claim follows from `hyperbolic_orbit_integral_proof`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolic_orbit_integral_holds : H0b := hyperbolic_orbit_integral_proof
 /- English proof (translation)
-The claim follows from `pf_HRel automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds`.
+A detailed English derivation is pending.
 -/
 theorem s_HRel : HRel := pf_HRel automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds
 /- English proof (translation)
-The claim follows from `hyperbolic_relation_proof automorphy_factor_kernel_algebra_holds hyperbolic_orbit_integral_holds`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolic_relation_holds : H2a := hyperbolic_relation_proof automorphy_factor_kernel_algebra_holds hyperbolic_orbit_integral_holds
 /- English proof (translation)
-The claim follows from `hyperbolic_orbit_bound_proof s_Osg automorphy_factor_kernel_algebra_holds`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolic_orbit_bound_holds : H2b := hyperbolic_orbit_bound_proof s_Osg automorphy_factor_kernel_algebra_holds
 /- English proof (translation)
-The claim follows from `hyperbolic_orbit_summable_proof s_Osg automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolic_orbit_summable_holds : H2c := hyperbolic_orbit_summable_proof s_Osg automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds
 /- English proof (translation)
-The claim follows from `hyperbolic_tail_estimate_proof automorphy_factor_kernel_algebra_holds hyperbolic_relation_holds hyperbolic_orbit_bound_holds hyperbolic_orbit_summable_holds`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolic_tail_estimate_holds : H2d := hyperbolic_tail_estimate_proof automorphy_factor_kernel_algebra_holds hyperbolic_relation_holds hyperbolic_orbit_bound_holds hyperbolic_orbit_summable_holds
 /- English proof (translation)
-The claim follows from `pf_H2e`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolic_finite_sum_identity_holds : H2e := pf_H2e
 /- English proof (translation)
-The claim follows from `pf_HCap`.
+A detailed English derivation is pending.
 -/
 theorem s_HCap : HCap := pf_HCap
 /- English proof (translation)
-The claim follows from `pf_HFinC s_HCap`.
+A detailed English derivation is pending.
 -/
 theorem s_HFinC : HFinC := pf_HFinC s_HCap
 /- English proof (translation)
-The claim follows from `pf_HFin s_HRel hyperbolic_relation_holds hyperbolic_tail_estimate_holds hyperbolic_finite_sum_identity_holds s_HFinC`.
+A detailed English derivation is pending.
 -/
 theorem s_HFin : HFin := pf_HFin s_HRel hyperbolic_relation_holds hyperbolic_tail_estimate_holds hyperbolic_finite_sum_identity_holds s_HFinC
 /- English proof (translation)
-The claim follows from `hyperbolic_terms_setup_proof`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolic_terms_setup_holds : H0 := hyperbolic_terms_setup_proof
 /- English proof (translation)
-The claim follows from `hyperbolic_kernel_algebra_proof automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolic_kernel_algebra_holds : H1a := hyperbolic_kernel_algebra_proof automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds
 /- English proof (translation)
-The claim follows from `hyperbolic_kernel_measurable_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolic_kernel_measurable_holds : H1b := hyperbolic_kernel_measurable_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds
 /- English proof (translation)
-The claim follows from `hyperbolic_kernel_continuity`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolic_kernel_continuity_holds : H1c := hyperbolic_kernel_continuity
 /- English proof (translation)
-The claim follows from `hyperbolic_terms_integrable_proof automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds hyperbolic_terms_setup_holds hyperbolic_kernel_algebra_holds hyperbolic_kernel_measurable_holds hyperbolic_kernel_continuity_holds`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolic_terms_integrable_holds : H1 := hyperbolic_terms_integrable_proof automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds hyperbolic_terms_setup_holds hyperbolic_kernel_algebra_holds hyperbolic_kernel_measurable_holds hyperbolic_kernel_continuity_holds
 
 /- English proof (translation)
-The claim follows from `pf_HolWC finite_system_holds forms_stable_under_operators_holds dAx dReps dGood (pf_TrCong s_TF dAx dTwo dGood g hyperbolic_orbit_integral_holds s_HFin) hyperbolic_terms_setup_holds hyperbolic_orbit_integral_holds s_HRel hyperbolic_terms_integrable_holds s_HFin hyperbolic_relatio …`.
+A detailed English derivation is pending.
 -/
 theorem holWC_of (dAx : DAx) (dTwo : DTwo) (dGood : DGood) (dReps : DReps) (g : GTerm) : HolWC :=
   pf_HolWC finite_system_holds forms_stable_under_operators_holds dAx dReps dGood (pf_TrCong s_TF dAx dTwo dGood g hyperbolic_orbit_integral_holds s_HFin) hyperbolic_terms_setup_holds hyperbolic_orbit_integral_holds s_HRel hyperbolic_terms_integrable_holds s_HFin hyperbolic_relation_holds hyperbolic_tail_estimate_holds hyperbolic_finite_sum_identity_holds

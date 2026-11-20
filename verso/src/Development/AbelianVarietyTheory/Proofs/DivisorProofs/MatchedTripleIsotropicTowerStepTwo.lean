@@ -15,7 +15,7 @@ open Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, sigma_invol hcm, hJ, Finset.sum_mul, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_skew {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (ι : Matrix (Fin n) (Fin n₁) E) (hJ : ∀ i j, σ (J j i) = -J i j) (i j : Fin n₁) :

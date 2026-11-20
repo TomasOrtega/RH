@@ -10,19 +10,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.MuInfType
 
 /- English proof (translation)
-Establish `hmem : ∀ z, (χ (Circle.toUnits z) : ℂ) ∈ Submonoid.unitSphere ℂ` using `fun z => by`. Simplify `hu _` using `[Submonoid.unitSphere, mem_sphere_zero_iff_norm]`. Set `f : Circle →* Circle` to `{ toFun := fun z => (⟨(χ (Circle.toUnits z) : ℂ), hmem z⟩ : Circle) map_one' := Circle.ext (by simp) map_mul' := fun a b => Circle.ext (by`. Express the relevant statement in the definitionally equal form `((χ (Circle.toUnits (a * b))) : ℂ) = (χ (Circle.toUnits a) : ℂ) * (χ (Circle.toUnits b) : ℂ)`. Rewrite using `[map_mul, map_mul, Units.val_mul]) }`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hcu : Continuous (Circle.toUnits : Circle → ℂˣ)`. Rewrite using `[Units.continuous_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_subtype_val`. Establish `: (fun x : Circle => ((Circle.toUnits x)⁻¹ : ℂˣ).val) = fun x : Circle => (x : ℂ)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(continuous_subtype_val).inv₀ fun x => Circle.coe_ne_zero x`. Establish `hf : Continuous f`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `Units.continuous_val.comp (hc.comp hcu)`. Take `⟨n, hn⟩` from `GlobalTheory.circle_hom_eq_zpow f hf`. Use `⟨n, fun z => ?_⟩` and prove the remaining obligations. Establish `hz0 : (z : ℂ) ≠ 0` using `z.ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hn0 : (‖(z : ℂ)‖ : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.2 hz0`. Establish `hw : (z : ℂ) / (‖(z : ℂ)‖ : ℂ) ∈ Submonoid.unitSphere ℂ`. Simplify using `[Submonoid.unitSphere, mem_sphere_zero_iff_norm, norm_div, hz0]`. Set `w : Circle` to `(⟨_, hw⟩ : Circle)`. Set `r : ℂˣ` to `Units.mk0 (‖(z : ℂ)‖ : ℂ) hn0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hzr : z = Circle.toUnits w * r` using `Units.ext (by`. Express the relevant statement in the definitionally equal form `(z : ℂ) = (z : ℂ) / (‖(z : ℂ)‖ : ℂ) * (‖(z : ℂ)‖ : ℂ)`. Use the proof step `field_simp)`. Establish `hr : χ r = 1` using `hp r (by simp [r])`. Establish `h1` using `congrArg (fun c : Circle => (c : ℂ)) (hn w)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hχ : χ z = χ (Circle.toUnits w)` using `by rw [hzr, map_mul, hr, mul_one]`. Rewrite using `[hχ]`. Express the relevant statement in the definitionally equal form `((f w : Circle) : ℂ) = _`. Rewrite using `[h1, Circle.coe_zpow]`.
+A detailed English derivation is pending.
 -/
 theorem char_eq_zpow (χ : ℂˣ →* ℂˣ) (hc : Continuous χ) (hu : ∀ z, ‖(χ z : ℂ)‖ = 1)
     (hp : ∀ z : ℂˣ, (((‖(z : ℂ)‖ : ℝ) : ℂ)) = z → χ z = 1) :
@@ -77,7 +77,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 def single (v : InfinitePlace E) : ℂˣ →* (Cinf E)ˣ := Units.map (MonoidHom.mulSingle (fun _ : InfinitePlace E => ℂ) v)
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (by show Continuous (fun z : ℂ => (Pi.mulSingle v z : InfinitePlace E → ℂ)) exact continuous_mulSingle (A := fun _ : InfinitePlace E => ℂ) v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_single (v : InfinitePlace E) : Continuous (single v) :=
   Continuous.units_map _ (by
@@ -93,13 +93,13 @@ def iota (v : InfinitePlace E) : (below E v).Completion →+* ℂ :=
     (LiesOver.completionMap (v := below E v) (w := v))
 
 /- English proof (translation)
-Use `Units.ext (ad_ext ?_ ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Establish `h1 : ∀ u : (Cinf E)ˣ, pInf E (infId E u).val = u.val` using `fun u => by`. Express the relevant statement in the definitionally equal form `(infEq E).symm (1 - infEq E 1 + infEq E u.val) = _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Use `show (InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)) (NumberField.LiesOver.completionMap (v := w.comap (algebraMap (maximalRealSubfield E) E)) (w := w) (Pi.mulSingle (below E v) ((x : (below E v).Completion)) (w.comap (algebraMap (maximalReal …`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[single, iota]`. Establish `h' : w.comap (algebraMap (maximalRealSubfield E) E) ≠ below E v` using `fun e => h ((IsCMField.equivInfinitePlace E).injective e)`. Rewrite using `[Pi.mulSingle_eq_of_ne h']`. Simplify using `[single, Pi.mulSingle_eq_of_ne h]`. Express the relevant statement in the definitionally equal form `pFin E (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap (maximalRealSubfield E) E (infIdele _ (below E v) x) : Ad E) = pFin E (infId E _).val`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `(map_one (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteAdeleMap (maximalRealSubfield E) E)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : Af E) = 1 - 0 + 0`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ideleMap_infIdele (v : InfinitePlace E) (x : ((below E v).Completion)ˣ) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap (maximalRealSubfield E) E (infIdele _ (below E v) x) =
@@ -129,7 +129,7 @@ theorem ideleMap_infIdele (v : InfinitePlace E) (x : ((below E v).Completion)ˣ)
     simp
 
 /- English proof (translation)
-Set `ψ : ℝ →+* ℂ` to `(iota v).comp (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal (below E v))).symm.toRingHom`. Establish `hψ : Continuous ψ` using `((InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex v)).continuous.comp (LiesOver.continuous_completionMap (v := below E v) (w := v))).comp (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal (below E v))).symm.continuous`. Use `map_real_smul ψ hψ s 1` as an intermediate fact. Simplify `this` using `[ψ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem iota_real (v : InfinitePlace E) (s : ℝ) :
     iota v ((InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal (below E v))).symm s) = s := by
@@ -153,25 +153,21 @@ open ReciprocityTheory.Neutral.Bridge.HCFR
 namespace GlobalTheory.MuInfType
 
 /- English proof (translation)
-Introduce `E _ _ _ μ hU hη`. Set `χv : InfinitePlace E → ℂˣ →* ℂˣ` to `fun v => (chiInf μ).comp (single v)`. Establish `hcont : ∀ v, Continuous (χv v)` using `fun v => (continuous_chiInf μ).comp (continuous_single v)`. Establish `hunit : ∀ v z, ‖(χv v z : ℂ)‖ = 1` using `fun v z => hU _`. Establish `hval : ∀ v (x : ((below E v).Completion)ˣ), χv v (Units.map (iota v).toMonoidHom x) = (GlobalTheory.GalOfCusp.quadChar E).1 (infIdele _ (below E v) x)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v x`. Express the relevant statement in the definitionally equal form `μ.1 (infId E (single v _)) = _`. Rewrite using `[← ideleMap_infIdele, hη]`. Establish `hneg : ∀ v, χv v (-1) = -1`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : Units.map (iota v).toMonoidHom (-1) = -1` using `Units.ext (by simp)`. Establish `h` using `hval v (-1)`. Rewrite `h` using `[e]`. Rewrite using `[h]`. Conclude with `GlobalTheory.GalOfCusp.quadChar_locInf E (below E v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : ∀ v (z : ℂˣ), (((‖(z : ℂ)‖ : ℝ) : ℂ)) = z → χv v z = 1`. Introduce `v z hz`. Use `set s : ℝ := Real.sqrt ‖(z : ℂ)‖ with hs`. Establish `hs0 : s ≠ 0`. Rewrite using `[hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `(Real.sqrt_pos.2 (norm_pos_iff.2 z.ne_zero)).ne'`. Establish `hx0 : (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal (below E v))).symm s ≠ 0`. Simplify using `using hs0`. Set `x : ((below E v).Completion)ˣ` to `Units.mk0 _ hx0`. Establish `hx : Units.map (iota v).toMonoidHom x ^ 2 = z` using `Units.ext (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_pow_eq_pow_val, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, x, Units.val_mk0, iota_real]`. Rewrite using `[← Complex.ofReal_pow, hs, Real.sq_sqrt (norm_nonneg _), hz])`. Rewrite using `[← hx, map_pow, hval]`. Express the relevant statement in the definitionally equal form `(Units.map (Int.castRingHom ℂ).toMonoidHom (GlobalTheory.IdeleNormChar.normSign E _)) ^ 2 = 1`. Rewrite using `[← map_pow, Int.units_sq, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose e he using fun v => GlobalTheory.MuInfType.char_eq_zpow (χv v) (hcont v) (hunit v) (hpos v)`. Use `⟨e, fun v => ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `h` using `he v (-1)`. Rewrite `h` using `[hneg]`. Simplify using `only [Units.val_neg, Units.val_one, norm_neg, norm_one, Complex.ofReal_one, div_one] at h`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Introduce a local definition for the expression.
 
-Break down `Int.even_or_odd (e v) with h' | h'` into its components or cases. Rewrite `h` using `[h'.neg_one_zpow]`. Evaluate the numerical expressions using `at h`. Conclude with `h'`. Set `zv : InfinitePlace E → ℂˣ` to `fun v => Units.map (Pi.evalMonoidHom (fun _ : InfinitePlace E => ℂ) v) z`.
-
-Establish `hz : z = ∏ v, single v (zv v)` using `Units.ext (by`. Rewrite using `[Units.coe_prod]`. Simplify using `only [single, zv, Units.coe_map, MonoidHom.coe_coe, MonoidHom.mulSingle_apply, Pi.evalMonoidHom_apply]`. Conclude with `(Finset.univ_prod_mulSingle z.val).symm)`. Use `conv_lhs => rw [hz]`.
-
-Rewrite using `[map_prod, Units.coe_prod]`. Conclude with `Finset.prod_congr rfl fun v _ => he v (zv v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infType : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (μ : HChar E), μ.IsUnitary →
     (∀ x, μ.1 (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap (maximalRealSubfield E) E x) = (GlobalTheory.GalOfCusp.quadChar E).1 x) →

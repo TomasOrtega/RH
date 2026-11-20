@@ -9,31 +9,29 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Mod
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hP l _ G _ _ _ φ hφ B' _ _ _ _ _ _ _ _ _ B _ _ _ _ q e he κ hκ hI x y z ρ hz hρ hx hy σ hσ hqx hqy`. Take `⟨E', _, _, _, _, _, π', hπ'⟩` from `GlobalTheory.exists_coefficientField_of_finite_local_padic (l := l) B'`. Take `⟨E, _, _, _, _, _, π, hπ⟩` from `GlobalTheory.exists_coefficientField_of_finite_local_padic (l := l) B`. Use `letI : Algebra ℤ_[l] E' := ((algebraMap ℚ_[l] E').comp (algebraMap ℤ_[l] ℚ_[l])).toAlgebra`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] E' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra ℤ_[l] E := ((algebraMap ℚ_[l] E).comp (algebraMap ℤ_[l] ℚ_[l])).toAlgebra`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] E := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `letI : Algebra ℤ_[l] B := ((algebraMap ℚ_[l] B).comp (algebraMap ℤ_[l] ℚ_[l])).toAlgebra`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] B := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `letI : TopologicalSpace B := moduleTopology ℚ_[l] B`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : IsModuleTopology ℚ_[l] B := ⟨rfl⟩`. Use `haveI : IsTopologicalRing B := IsModuleTopology.isTopologicalRing ℚ_[l] B`. Establish `hqc : Continuous (q : B' → B)` using `IsModuleTopology.continuous_of_linearMap (q.toLinearMap)`. Set `qm : B' →* B` to `(q : B' →+* B)`. Set `κB : Fin 3 → G →* Bˣ` to `fun i => (Units.map qm).comp (κ i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hqcyc : ∀ h : GQ l, Units.map qm (cycA l l B' h) = cycA l l B h`. Introduce `h`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `q (algebraMap ℤ_[l] B' _) = algebraMap ℚ_[l] B (algebraMap ℤ_[l] ℚ_[l] _)`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] B', q.commutes]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw01 : ∀ g, φ g ∈ Iq l → (κ 0 / κ 1) g = cycA l l B' (φ g) ^ (e : ℤ)`. Introduce `g hg`. Rewrite using `[MonoidHom.div_apply, hI g hg 0, hI g hg 1]`. Simplify using `[wt1]`. Establish `hw12 : ∀ g, φ g ∈ Iq l → (κ 1 / κ 2) g = cycA l l B' (φ g) ^ (e : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Rewrite using `[MonoidHom.div_apply, hI g hg 1, hI g hg 2]`. Simplify using `[wt1]`. Establish `hcdiv : ∀ i j, Continuous fun g => (((κ i / κ j) g : B'ˣ) : B')`. Introduce `i j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (fun g => (((κ i / κ j) g : B'ˣ) : B')) = fun g => (κ i g : B') * (κ j g⁻¹ : B')`. Use function extensionality and compare the values at `g`. Rewrite using `[MonoidHom.div_apply, div_eq_mul_inv, Units.val_mul, ← map_inv]`. Rewrite using `[this]`. Conclude with `(hκ i).mul ((hκ j).comp continuous_inv)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : (1 : ℤ) ≤ (e : ℤ)` using `by exact_mod_cast he`. Take `⟨cx, hcx, hxf, -⟩` from `GlobalTheory.CrysAnn.cocycle_crys_add_ann hP φ hφ π' hπ' (κ 0 / κ 1) (hcdiv 0 1) e he hw01 σ hσ x hx`. Take `⟨cy, hcy, hyf, -⟩` from `GlobalTheory.CrysAnn.cocycle_crys_add_ann hP φ hφ π' hπ' (κ 1 / κ 2) (hcdiv 1 2) e he hw12 σ hσ y hy`. Establish `push : ∀ (i j : Fin 3) (c : G → B'), c ∈ finiteCocycles φ (chRep (κ i / κ j)) → (fun g => q (c g)) ∈ finiteCocycles φ (chRep (κB i / κB j))`. Introduce `i j c hc`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `(z1fMap φ (chRep (κ i / κ j)) (chRep (κB i / κB j))).2 q.toLinearMap (fun g v => ?_) c hc` and prove the remaining obligations. Use `show q ((((κ i / κ j) g : B'ˣ) : B') * v) = (((κB i / κB j) g : Bˣ) : B) * q v`. Rewrite using `[map_mul]`. Use `congr 1`. Simplify using `only [κB, MonoidHom.div_apply, MonoidHom.comp_apply, ← _root_.map_div, Units.coe_map]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hxB : (fun g => q (x g)) ∈ finiteCocycles φ (chRep (κB 0 / κB 1))`. Establish `h` using `push 0 1 _ hxf`. Use `h using 2 with g` and compare the differences between its conclusion and the goal. Simplify using `[hqx _ (hcx g)]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hyB : (fun g => q (y g)) ∈ finiteCocycles φ (chRep (κB 1 / κB 2))`. Establish `h` using `push 1 2 _ hyf`. Use `h using 2 with g` and compare the differences between its conclusion and the goal. Simplify using `[hqy _ (hcy g)]`. Use `GlobalTheory.tri_crys hP φ hφ π hπ e (by exact_mod_cast he) κB (fun i => hqc.comp (hκ i)) ?_ (fun g => q (x g)) (fun g => q (y g)) (fun g => q (z g)) ((Matrix.GeneralLinearGroup.map (q : B' →+* B)).comp ρ) (hqc.comp hz) ?_ hxB hyB` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `g hg i`. Simplify using `only [κB, MonoidHom.comp_apply, hI g hg i, map_zpow, hqcyc]`. Introduce `g`. Rewrite using `[MonoidHom.comp_apply]`. Use `show (ρ g : Matrix (Fin 3) (Fin 3) B').map q = _`.
-
-Rewrite using `[hρ g]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [triM, κB, qm]`.
+A detailed English derivation is pending.
 -/
 theorem tri_crys_push : LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {B' : Type} [CommRing B'] [IsLocalRing B'] [Algebra ℚ_[l] B'] [Module.Finite ℚ_[l] B'] [TopologicalSpace B'] [IsModuleTopology ℚ_[l] B'] [IsTopologicalRing B'] [Algebra ℤ_[l] B'] [IsScalarTower ℤ_[l] ℚ_[l] B'] {B : Type} [CommRing B] [IsLocalRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] (q : B' →ₐ[ℚ_[l]] B) (e : ℕ), 1 ≤ e → ∀ (κ : Fin 3 → G →* B'ˣ), (∀ i, Continuous fun g => (κ i g : B')) → (∀ g, φ g ∈ Iq l → ∀ i, κ i g = cycA l l B' (φ g) ^ ((e : ℤ) * wt1 i)) → ∀ (x y z : G → B') (ρ : G →* GL (Fin 3) B'), Continuous z → (∀ g, (ρ g : Matrix (Fin 3) (Fin 3) B') = triM (fun i => κ i g) (x g) (y g) (z g)) → x ∈ Z1 (chRep (κ 0 / κ 1)) → y ∈ Z1 (chRep (κ 1 / κ 2)) → ∀ σ : G, ((Iq l).comap φ ⊔ Subgroup.zpowers σ).topologicalClosure = ⊤ → (∀ b, (((κ 0 / κ 1) σ : B'ˣ) - (cycA l l B' (φ σ) : B')) * b = 0 → q b = 0) → (∀ b, (((κ 1 / κ 2) σ : B'ˣ) - (cycA l l B' (φ σ) : B')) * b = 0 → q b = 0) → IsCr φ (colRep ((Matrix.GeneralLinearGroup.map (q : B' →+* B)).comp ρ)) := by
   intro hP l _ G _ _ _ φ hφ B' _ _ _ _ _ _ _ _ _ B _ _ _ _ q e he κ hκ hI x y z ρ hz hρ hx hy σ hσ hqx hqy

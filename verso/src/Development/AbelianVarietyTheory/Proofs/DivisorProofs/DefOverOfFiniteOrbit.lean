@@ -12,13 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc.Sep
 
 /- English proof (translation)
-Use `haveI := hk`. Assume the negation of the conclusion as `ha`. Establish `htr : Transcendental k₀ a`. Introduce `halg`. Establish `hdeg` using `IsAlgClosed.degree_eq_one_of_irreducible k₀ (minpoly.irreducible halg.isIntegral)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `minpoly.mem_range_of_degree_eq_one k₀ a hdeg`. Conclude with `ha (hc ▸ c.2)`. Establish `hc : ∀ c : k₀, ∃ σ : K ≃ₐ[k₀] K, σ a = a + algebraMap k₀ K c`. Introduce `c`. Establish `htr' : Transcendental k₀ (a + algebraMap k₀ K c)` using `fun h' => htr (by simpa using (h'.isIntegral.sub (isIntegral_algebraMap (x := c))).isAlgebraic)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GroundTheory.Global.exists_algEquiv_apply_eq_of_transcendental htr htr'`. Use `Set.infinite_of_injective_forall_mem (f := fun c : k₀ => a + algebraMap k₀ K c) ?_ ?_ h` and prove the remaining obligations. Introduce `c d hcd`. Simplify using `using hcd`. Introduce `c`.
-
-Take `⟨σ, hσ⟩` from `hc c`. Conclude with `⟨σ.toRingEquiv, fun b hb => σ.commutes ⟨b, hb⟩, hσ.symm⟩`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_of_finite_conj {K : Type} [Field K] [IsAlgClosed K] (k₀ : Subfield K) (hk : IsAlgClosed k₀)
     (a : K) (h : Set.Finite {b : K | ∃ σ : K ≃+* K, (∀ c ∈ k₀, σ c = c) ∧ b = σ a}) : a ∈ k₀ := by
@@ -42,19 +40,17 @@ theorem mem_of_finite_conj {K : Type} [Field K] [IsAlgClosed K] (k₀ : Subfield
     exact ⟨σ.toRingEquiv, fun b hb => σ.commutes ⟨b, hb⟩, hσ.symm⟩
 
 /- English proof (translation)
-Introduce `K _ _ k₀ hk Y P hfin`. Set `e` to `SpecToEquivOfLocalRing Y (CommRingCat.of K)`. Set `x` to `(e P).1`. Set `f` to `(e P).2.1`. Establish `hP : P = Spec.map f ≫ Y.fromSpecStalk x` using `(e.left_inv P).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Φ : {g : Y.presheaf.stalk x ⟶ CommRingCat.of K // IsLocalHom g.hom} → (Sp K ⟶ Y)` to `fun g => e.symm ⟨x, g⟩`. Establish `hΦ : Function.Injective Φ`. Introduce `g₁ g₂ h`. Use `e.symm.injective h` as an intermediate fact. Conclude with `eq_of_heq (Sigma.mk.inj this).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc : ∀ σ : K ≃+* K, IsLocalHom (f ≫ CommRingCat.ofHom σ.toRingHom).hom`. Introduce `σ`. Establish `: IsLocalHom f.hom` using `(e P).2.2`. Use `show IsLocalHom (σ.toRingHom.comp f.hom)`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `T : Set {g : Y.presheaf.stalk x ⟶ CommRingCat.of K // IsLocalHom g.hom}` to `{g | ∃ σ : K ≃+* K, (∀ a ∈ k₀, σ a = a) ∧ g.1 = f ≫ CommRingCat.ofHom σ.toRingHom}`. Establish `hT : T.Finite`. Use `Set.Finite.of_finite_image (hfin.subset ?_) hΦ.injOn` and prove the remaining obligations. Introduce and unpack `_ ⟨g, ⟨σ, hσ, hg⟩, rfl⟩`. Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show Spec.map g.1 ≫ Y.fromSpecStalk x = _`. Rewrite using `[hg, Spec.map_comp, Category.assoc, ← hP]`. Establish `hmem : ∀ s, f.hom s ∈ k₀`. Introduce `s`. Use `mem_of_finite_conj k₀ hk _ ((hT.image fun g => g.1.hom s).subset ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨σ, hσ, rfl⟩`. Conclude with `⟨⟨f ≫ CommRingCat.ofHom σ.toRingHom, hloc σ⟩, ⟨σ, hσ, rfl⟩, rfl⟩`. Use `⟨Spec.map (CommRingCat.ofHom (f.hom.codRestrict k₀ hmem)) ≫ Y.fromSpecStalk x, ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ hP.symm` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Spec.map_comp]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem defOver_of_finite_orbit : ∀ (K : Type) [Field K] [IsAlgClosed K] (k₀ : Subfield K), IsAlgClosed k₀ →
     ∀ (Y : Scheme.{0}) (P : Sp K ⟶ Y),

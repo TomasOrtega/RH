@@ -21,7 +21,7 @@ namespace GlobalTheory.FinPl.Comm
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Take `⟨-, -, -, _, _, -, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Use `haveI := v.haar`. Use `(GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D V v.μ v.haar).1` as an intermediate fact. Conclude with `GlobalTheory.Mem.IntByParts.setIntegral_mul_right (GQ V) v.μ v.fund hF a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_right {V : HSp D} (v : Vol V) {F : GA D V → ℂ} (hF : ∀ γ ∈ GQ V, ∀ g, F (γ * g) = F g) (a : GA D V) :
     ∫ g in v.𝓕, F (g * a) ∂v.μ = ∫ g in v.𝓕, F g ∂v.μ := by
@@ -31,7 +31,7 @@ theorem integral_right {V : HSp D} (v : Vol V) {F : GA D V → ℂ} (hF : ∀ γ
   exact GlobalTheory.Mem.IntByParts.setIntegral_mul_right (GQ V) v.μ v.fund hF a
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D V hV v Unit (fun g _ => F g) (hF.2.comp continuous_fst) (fun γ hγ g _ => hF.1 γ hγ g)).1 ()`.
+A detailed English derivation is pending.
 -/
 theorem IsContAut.integrableOn {V : HSp D} (hV : CoCpt V) (v : Vol V) {F : GA D V → ℂ} (hF : IsContAut V F) :
     IntegrableOn F v.𝓕 v.μ :=
@@ -43,9 +43,9 @@ variable {ρ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ} (s : StepBF ψ B J) {L' 
   (l : Link B L' ζ')
 
 /- English proof (translation)
-Use `⟨fun γ hγ a => ?_, hφ.2.mul ((s.weil₀.om_cont Ξ hΞ _).comp ((B.o.continuous_emb.comp (continuous_id.prodMk continuous_const)).prodMk continuous_const))⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.T.weilRepresentation_rational_translate_substitution D ψ _ _ _ _ _ s.weil₀ Ξ hΞ _ (B.o.emb_mem_GQ hγ (one_mem _)) 1 (one_mem _) (B.o.emb (a, 1)) h ((B.o.resS J.W₀).symm (0, u))`. Rewrite `e` using `[← map_mul, Prod.mk_mul_mk, one_mul, one_mul, inv_one, mt_one, Matrix.one_mul]`. Use `beta_reduce`. Rewrite using `[hφ.1 γ hγ, e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Rewrite using `[OrthDec.resS_symm_apply, Matrix.zero_mul, zero_add, Matrix.mul_assoc, OrthDec.pB_emb, mt_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contAut_kerBF {φ : GA D B.A → ℂ} {Ξ : WO B.V₀ J.W₀ → ℂ} (hφ : IsContAut B.A φ)
     (hΞ : IsThetaFunO ψ B.V₀ J.W₀ Ξ) (h : GA D J.W₀) (u : WO B.L J.W₀) :
@@ -61,7 +61,7 @@ theorem contAut_kerBF {φ : GA D B.A → ℂ} {Ξ : WO B.V₀ J.W₀ → ℂ} (h
   rw [OrthDec.resS_symm_apply, Matrix.zero_mul, zero_add, Matrix.mul_assoc, OrthDec.pB_emb, mt_one, Matrix.one_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h w`. Simplify using `only [handBF, Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_mul, mul_assoc]`. Rewrite using `[integral_add ((IsContAut.integrableOn B.cpt B.vA (contAut_kerBF s hφ hΞ h _)).const_mul c) (IsContAut.integrableOn B.cpt B.vA (contAut_kerBF s hφ' hΞ h _)), integral_const_mul, star_add, star_mul']`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem handBF_left {φ φ' : GA D B.A → ℂ} {Ξ : WO B.V₀ J.W₀ → ℂ} (hφ : IsContAut B.A φ) (hφ' : IsContAut B.A φ')
     (hΞ : IsThetaFunO ψ B.V₀ J.W₀ Ξ) (c : ℂ) :
@@ -72,7 +72,7 @@ theorem handBF_left {φ φ' : GA D B.A → ℂ} {Ξ : WO B.V₀ J.W₀ → ℂ} 
     (IsContAut.integrableOn B.cpt B.vA (contAut_kerBF s hφ' hΞ h _)), integral_const_mul, star_add, star_mul']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h w`. Simplify using `only [handBF, map_add, map_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul, mul_add, mul_left_comm _ c]`. Rewrite using `[integral_add ((IsContAut.integrableOn B.cpt B.vA (contAut_kerBF s hφ hΞ h _)).const_mul c) (IsContAut.integrableOn B.cpt B.vA (contAut_kerBF s hφ hΞ' h _)), integral_const_mul, star_add, star_mul']`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem handBF_right {φ : GA D B.A → ℂ} {Ξ Ξ' : WO B.V₀ J.W₀ → ℂ} (hφ : IsContAut B.A φ)
     (hΞ : IsThetaFunO ψ B.V₀ J.W₀ Ξ) (hΞ' : IsThetaFunO ψ B.V₀ J.W₀ Ξ') (c : ℂ) :
@@ -83,9 +83,9 @@ theorem handBF_right {φ : GA D B.A → ℂ} {Ξ Ξ' : WO B.V₀ J.W₀ → ℂ}
     (IsContAut.integrableOn B.cpt B.vA (contAut_kerBF s hφ hΞ' h _)), integral_const_mul, star_add, star_mul']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h w`. Simplify using `only [handBF]`. Use `congrArg star (Eq.trans ?_ (integral_right B.vA (contAut_kerBF s hφ hΞ (h * g) (l.κ J.W₀ w)).1 a))` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, ← map_mul, Prod.mk_mul_mk, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem handBF_equiv {φ : GA D B.A → ℂ} {Ξ : WO B.V₀ J.W₀ → ℂ} (hφ : IsContAut B.A φ)
     (hΞ : IsThetaFunO ψ B.V₀ J.W₀ Ξ) (a : GA D B.A) (g : GA D J.W₀) :
@@ -105,11 +105,11 @@ variable {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} (s : StepFB ψ J B
 
 include s in
 /- English proof (translation)
-Use `covolOne_integrableOn vL.covol _ ?_ ?_` and prove the remaining obligations. Conclude with `(hF.cont.comp ((B.o.continuous_resT_symm _).comp (continuous_const.prodMk continuous_id))).mul (hY.cont.comp (continuous_const.prodMk continuous_id)).star`. Introduce and unpack `_ ⟨γ, rfl⟩ v`. Take `⟨δ, hδ⟩ : (B.o.resT J.W₀).symm (0, ratW B.L J.W₀ γ) ∈ ratL B.V₀ J.W₀` from `(B.o.mem_ratL_resT _ _).2 (by rw [AddEquiv.apply_symm_apply]; exact ⟨zero_mem _, γ, rfl⟩)`. Use `replace hδ : ratW B.V₀ J.W₀ δ = (B.o.resT J.W₀).symm (0, ratW B.L J.W₀ γ) := hδ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `hF.quasi δ ((B.o.resT J.W₀).symm (0, v))`. Rewrite `e1` using `[hδ, ← map_add, Prod.mk_add_mk, add_zero, B.o.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_left, zero_add]`. Establish `e2` using `hY.quasi h γ v`. Express the relevant statement in the definitionally equal form `F ((B.o.resT J.W₀).symm (0, ratW B.L J.W₀ γ + v)) * star (Y h (ratW B.L J.W₀ γ + v)) = _`. Establish `e3 : ∀ x, ψ x * star (ψ x) = 1` using `fun x => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, s.weil₀.std.1.2.1 x]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, star_mul', mul_mul_mul_comm, e3, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_pair {Y : GA D J.W₀ → WO J.W₀ B.L → ℂ} {F : WO J.W₀ B.V₀ → ℂ} (hY : IsQuasiFam ψ J.W₀ B.L Y)
     (hF : IsThetaFunO ψ J.W₀ B.V₀ F) (h : GA D J.W₀) :
@@ -132,7 +132,7 @@ theorem integrableOn_pair {Y : GA D J.W₀ → WO J.W₀ B.L → ℂ} {F : WO J.
     rw [e1, e2, star_mul', mul_mul_mul_comm, e3, one_mul]
 
 /- English proof (translation)
-The claim follows from `have H := GlobalTheory.T.pairedThetaKernel_continuous_and_rationally_invariant D ψ σ J B s vL Y Ξ hY hΞ ⟨fun γ hγ h₀ => H.2.1 γ hγ h₀ h₁, H.1.comp (continuous_id.prodMk continuous_const)⟩`.
+A detailed English derivation is pending.
 -/
 theorem contAut_pairKer {Y : GA D J.W₀ → WO J.W₀ B.L → ℂ} {Ξ : WO J.W₀ B.V₀ → ℂ} (hY : IsQuasiFam ψ J.W₀ B.L Y)
     (hΞ : IsThetaFunO ψ J.W₀ B.V₀ Ξ) (h₁ : GA D B.A) : IsContAut J.W₀ fun h₀ => pairKer s vL Y Ξ h₀ h₁ :=
@@ -140,9 +140,9 @@ theorem contAut_pairKer {Y : GA D J.W₀ → WO J.W₀ B.L → ℂ} {Ξ : WO J.W
   ⟨fun γ hγ h₀ => H.2.1 γ hγ h₀ h₁, H.1.comp (continuous_id.prodMk continuous_const)⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h₁`. Establish `e : ∀ h₀, pairKer s vL (star c • Y + Y') Ξ h₀ h₁ = c * pairKer s vL Y Ξ h₀ h₁ + pairKer s vL Y' Ξ h₀ h₁`. Introduce `h₀`. Simplify using `only [pairKer, contractT, thPair, Pi.add_apply, Pi.smul_apply, smul_eq_mul, star_add, star_mul', star_star, mul_add, mul_left_comm _ c]`. Rewrite using `[integral_add ((integrableOn_pair s vL hY (s.weil₀.om_pres _ _ hΞ) h₀).const_mul c) (integrableOn_pair s vL hY' (s.weil₀.om_pres _ _ hΞ) h₀), integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [handFB, e, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_add ((IsContAut.integrableOn J.cpt J.v0 (contAut_pairKer s vL hY hΞ h₁)).const_mul c) (IsContAut.integrableOn J.cpt J.v0 (contAut_pairKer s vL hY' hΞ h₁)), integral_const_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem handFB_left {Y Y' : GA D J.W₀ → WO J.W₀ B.L → ℂ} {Ξ : WO J.W₀ B.V₀ → ℂ} (hY : IsQuasiFam ψ J.W₀ B.L Y)
     (hY' : IsQuasiFam ψ J.W₀ B.L Y') (hΞ : IsThetaFunO ψ J.W₀ B.V₀ Ξ) (c : ℂ) :
@@ -159,9 +159,9 @@ theorem handFB_left {Y Y' : GA D J.W₀ → WO J.W₀ B.L → ℂ} {Ξ : WO J.W�
     (IsContAut.integrableOn J.cpt J.v0 (contAut_pairKer s vL hY' hΞ h₁)), integral_const_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h₁`. Establish `e : ∀ h₀, pairKer s vL Y (c • Ξ + Ξ') h₀ h₁ = c * pairKer s vL Y Ξ h₀ h₁ + pairKer s vL Y Ξ' h₀ h₁`. Introduce `h₀`. Simplify using `only [pairKer, contractT, thPair, map_add, map_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_mul, mul_assoc]`. Rewrite using `[integral_add ((integrableOn_pair s vL hY (s.weil₀.om_pres _ _ hΞ) h₀).const_mul c) (integrableOn_pair s vL hY (s.weil₀.om_pres _ _ hΞ') h₀), integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [handFB, e, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_add ((IsContAut.integrableOn J.cpt J.v0 (contAut_pairKer s vL hY hΞ h₁)).const_mul c) (IsContAut.integrableOn J.cpt J.v0 (contAut_pairKer s vL hY hΞ' h₁)), integral_const_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem handFB_right {Y : GA D J.W₀ → WO J.W₀ B.L → ℂ} {Ξ Ξ' : WO J.W₀ B.V₀ → ℂ} (hY : IsQuasiFam ψ J.W₀ B.L Y)
     (hΞ : IsThetaFunO ψ J.W₀ B.V₀ Ξ) (hΞ' : IsThetaFunO ψ J.W₀ B.V₀ Ξ') (c : ℂ) :
@@ -178,9 +178,9 @@ theorem handFB_right {Y : GA D J.W₀ → WO J.W₀ B.L → ℂ} {Ξ Ξ' : WO J.
     (IsContAut.integrableOn J.cpt J.v0 (contAut_pairKer s vL hY hΞ' h₁)), integral_const_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h₁`. Simplify using `only [handFB]`. Use `Eq.trans ?_ (integral_right J.v0 (contAut_pairKer s vL hY hΞ (h₁ * h)).1 g)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [pairKer]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, ← map_mul, Prod.mk_mul_mk, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem handFB_equiv {Y : GA D J.W₀ → WO J.W₀ B.L → ℂ} {Ξ : WO J.W₀ B.V₀ → ℂ} (hY : IsQuasiFam ψ J.W₀ B.L Y)
     (hΞ : IsThetaFunO ψ J.W₀ B.V₀ Ξ) (g : GA D J.W₀) (h : GA D B.A) :
@@ -202,21 +202,21 @@ variable {σ : ℕ} {B : BesLev D (σ + 1)} {J : JacLev D (σ + 1)} {B' : BesLev
   {Ξ₂ Ξ₂' : WO J.W₀ B'.V₀ → ℂ}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.besselToFourierJacobi_handedFamily_continuous_automorphic D ψ _ B J s₁ B'.L B'.ζ B'.line l φ Ξ₁ hφ h₁`.
+A detailed English derivation is pending.
 -/
 theorem quasi_handBF (hφ : IsContAut B.A φ) (h₁ : IsThetaFunO ψ B.V₀ J.W₀ Ξ₁) :
     IsQuasiFam ψ J.W₀ B'.L (handBF s₁ l φ Ξ₁) :=
   GlobalTheory.T.besselToFourierJacobi_handedFamily_continuous_automorphic D ψ _ B J s₁ B'.L B'.ζ B'.line l φ Ξ₁ hφ h₁
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.fourierJacobiHandOff_automorphic D ψ σ J B' s₂ vL _ Ξ₂ (quasi_handBF s₁ l hφ h₁) h₂`.
+A detailed English derivation is pending.
 -/
 theorem contAut_hand0 (hφ : IsContAut B.A φ) (h₁ : IsThetaFunO ψ B.V₀ J.W₀ Ξ₁) (h₂ : IsThetaFunO ψ J.W₀ B'.V₀ Ξ₂) :
     IsContAut B'.A (hand0 s₁ s₂ l vL φ Ξ₁ Ξ₂) :=
   GlobalTheory.T.fourierJacobiHandOff_automorphic D ψ σ J B' s₂ vL _ Ξ₂ (quasi_handBF s₁ l hφ h₁) h₂
 
 /- English proof (translation)
-Rewrite using `[hand0, handBF_left s₁ l hφ hφ' h₁, handFB_left s₂ vL (quasi_handBF s₁ l hφ h₁) (quasi_handBF s₁ l hφ' h₁) h₂]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem doubleThetaUnfolding_linear_function (hφ : IsContAut B.A φ) (hφ' : IsContAut B.A φ') (h₁ : IsThetaFunO ψ B.V₀ J.W₀ Ξ₁)
     (h₂ : IsThetaFunO ψ J.W₀ B'.V₀ Ξ₂) (c : ℂ) :
@@ -225,7 +225,7 @@ theorem doubleThetaUnfolding_linear_function (hφ : IsContAut B.A φ) (hφ' : Is
   rfl
 
 /- English proof (translation)
-Rewrite using `[hand0, handBF_right s₁ l hφ h₁ h₁', handFB_left s₂ vL (quasi_handBF s₁ l hφ h₁) (quasi_handBF s₁ l hφ h₁') h₂]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem doubleThetaUnfolding_linear_first_datum (hφ : IsContAut B.A φ) (h₁ : IsThetaFunO ψ B.V₀ J.W₀ Ξ₁) (h₁' : IsThetaFunO ψ B.V₀ J.W₀ Ξ₁')
     (h₂ : IsThetaFunO ψ J.W₀ B'.V₀ Ξ₂) (c : ℂ) :
@@ -234,7 +234,7 @@ theorem doubleThetaUnfolding_linear_first_datum (hφ : IsContAut B.A φ) (h₁ :
   rfl
 
 /- English proof (translation)
-The claim follows from `handFB_right s₂ vL (quasi_handBF s₁ l hφ h₁) h₂ h₂' c`.
+A detailed English derivation is pending.
 -/
 theorem doubleThetaUnfolding_linear_second_datum (hφ : IsContAut B.A φ) (h₁ : IsThetaFunO ψ B.V₀ J.W₀ Ξ₁) (h₂ : IsThetaFunO ψ J.W₀ B'.V₀ Ξ₂)
     (h₂' : IsThetaFunO ψ J.W₀ B'.V₀ Ξ₂') (c : ℂ) :
@@ -242,7 +242,7 @@ theorem doubleThetaUnfolding_linear_second_datum (hφ : IsContAut B.A φ) (h₁ 
   handFB_right s₂ vL (quasi_handBF s₁ l hφ h₁) h₂ h₂' c
 
 /- English proof (translation)
-Rewrite using `[hand0, handBF_equiv s₁ l hφ h₁, handFB_equiv s₂ vL (quasi_handBF s₁ l hφ h₁) h₂]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem doubleThetaUnfolding_equivariant_unitaryGroups (hφ : IsContAut B.A φ) (h₁ : IsThetaFunO ψ B.V₀ J.W₀ Ξ₁) (h₂ : IsThetaFunO ψ J.W₀ B'.V₀ Ξ₂)
     (a : GA D B.A) (g : GA D J.W₀) (h : GA D B'.A) :
@@ -258,15 +258,15 @@ section Frames
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {p : SplitPt D k}
 
 /- English proof (translation)
-Establish `key : ∀ {m n : ℕ} (x y : Mx D m n), x.map p.pr = y.map p.pr → p.e • x = p.e • y` using `fun x y hxy => by`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `p.e * x i j = p.e * y i j`. Rewrite using `[← p.sec_pr, ← p.sec_pr]`. Conclude with `congrArg p.sec (congrFun (congrFun hxy i) j)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : (mt S g⁻¹).map p.pr = (mt S g'⁻¹).map p.pr`. Establish `a1 : (mt S g⁻¹).map p.pr * (mt S g).map p.pr = 1`. Rewrite using `[← Matrix.map_mul, mt_inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `a2 : (mt S g').map p.pr * (mt S g'⁻¹).map p.pr = 1`. Rewrite using `[← Matrix.map_mul, mt_mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_one ((mt S g⁻¹).map p.pr), ← a2, ← h, ← Matrix.mul_assoc, a1, Matrix.one_mul]`. Establish `h1` using `key _ _ h`. Establish `h2` using `key _ _ hinv`. Establish `h3 : ∀ x : GA D S, cA D p.e • mt S x = giA S * (adj (p.e • mt S x⁻¹) * gA S)` using `fun x => by`. Rewrite using `[adj_smul, Matrix.smul_mul, Matrix.mul_smul, ← mt_inv, inv_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : cA D p.e • mt S g = cA D p.e • mt S g'` using `by rw [h3, h3, h2]`. Apply `mt_injective S` to reduce the goal to its premises. Use extensionality with `i j`. Establish `b1` using `hg i j`. Establish `b2` using `hg' i j`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b3 : p.e * mt S g i j = p.e * mt S g' i j` using `congrFun (congrFun h1 i) j`. Establish `b4 : cA D p.e * mt S g i j = cA D p.e * mt S g' i j` using `congrFun (congrFun h4 i) j`. Rewrite `b1`, `b2` using `[Matrix.sub_apply]`. Take the linear combination `b2 - b1 + b3 + b4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_of_map_pr {S : HSp D} {g g' : GA D S} (hg : SuppAt p.e S g) (hg' : SuppAt p.e S g')
     (h : (mt S g).map p.pr = (mt S g').map p.pr) : g = g' := by
@@ -296,9 +296,9 @@ theorem eq_of_map_pr {S : HSp D} {g g' : GA D S} (hg : SuppAt p.e S g) (hg' : Su
   linear_combination b2 - b1 + b3 + b4
 
 /- English proof (translation)
-Establish `e1 : mt S₀ (o.emb (a, 1)) - 1 = o.jA ⬝ (mt A a - 1) ⬝ o.pA`. Rewrite using `[o.mt_emb, mt_one, Matrix.mul_one, ← o.sum_eq_one, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Establish `e2 : (e + cA D e) • (mt A a - 1) = mt A a - 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `ha i j`. Introduce `i j`. Establish `: (e + cA D e) • (mt S₀ (o.emb (a, 1)) - 1) = mt S₀ (o.emb (a, 1)) - 1`. Rewrite using `[e1, ← Matrix.smul_mul, ← Matrix.mul_smul, e2]`. Conclude with `congrFun (congrFun this i) j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppAt_emb {S₀ A L : HSp D} (o : OrthDec S₀ A L) {e : AE D} {a : GA D A} (ha : SuppAt e A a) :
     SuppAt e S₀ (o.emb (a, 1)) := by
@@ -313,7 +313,7 @@ theorem suppAt_emb {S₀ A L : HSp D} (o : OrthDec S₀ A L) {e : AE D} {a : GA 
   exact congrFun (congrFun this i) j
 
 /- English proof (translation)
-Establish `: (ratV (vecB o ζ) : Fin S₀.rank → AE D) = o.jB *ᵥ ratV ζ`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (incA D) o.iB ζ i`. Rewrite using `[this, mulVec_mulVec, o.emb_jB, mt_one, Matrix.mul_one]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_vecB {S₀ A L : HSp D} (o : OrthDec S₀ A L) (ζ : Fin L.rank → D.host.E) (a : GA D A) :
     mt S₀ (o.emb (a, 1)) *ᵥ ratV (vecB o ζ) = ratV (vecB o ζ) := by
@@ -323,9 +323,9 @@ theorem emb_vecB {S₀ A L : HSp D} (o : OrthDec S₀ A L) (ζ : Fin L.rank → 
   rw [this, mulVec_mulVec, o.emb_jB, mt_one, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[mul_fromCols, fromCols_mul_fromBlocks, Matrix.mul_zero, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_one]`. Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.map_mul, h1, Matrix.map_mul, h3]`. Simplify using `only [Matrix.mul_assoc, h4, Matrix.mul_one]`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use `RingHom.map_mulVec f M z i` as an intermediate fact. Rewrite `this` using `[h2]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem block_calc {R K m r n : Type} [CommRing R] [CommRing K] [Fintype m] [Fintype r] [Fintype n] [DecidableEq n]
     (f : R →+* K) (M : Matrix m m R) (N : Matrix r r R) (j : Matrix m r R) (z : m → R) (b : Matrix r n K)
@@ -344,7 +344,7 @@ theorem block_calc {R K m r n : Type} [CommRing R] [CommRing K] [Fintype m] [Fin
     exact this.symm
 
 /- English proof (translation)
-Use `eq_of_map_pr (p := p) (suppAt_emb o (β.gl_supp g)) (β₀.gl_supp _) ?_` and prove the remaining obligations. Establish `e` using `block_calc p.pr _ _ _ _ _ _ _ (o.emb_jA (β.gl g) 1) (emb_vecB o ζ (β.gl g)) (β.gl_mat g) β.b'b`. Rewrite `e` using `[← h]`. Rewrite using `[β₀.gl_mat, show (RootEx.embX 1 g).val = fromBlocks g.val 0 0 1 from rfl, ← e, Matrix.mul_assoc, β₀.bb', Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_gl {S₀ A L : HSp D} {o : OrthDec S₀ A L} {ζ : Fin L.rank → D.host.E} {n : Type} [Fintype n] [DecidableEq n]
     {β : Frame p A n} {β₀ : Frame p S₀ (n ⊕ Fin 1)} (h : IsSumFrame o ζ β β₀) (g : GL n k) :

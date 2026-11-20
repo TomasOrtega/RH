@@ -46,9 +46,9 @@ def LimU : Prop :=
       (∀ w, ((l : ℕ) : 𝓞 E) ∈ w.asIdeal → Apart w w₀ → Apart w v' → ∀ B, SatU U w B → PhiAt ι r w B)
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha d hd T hT U hU w₀ v' h1 h2 h3 h4 h5`. Take `⟨r, hc, hs, f1, f2, f3⟩` from `h E Ω l ι a ha d hd T hT U hU w₀ v' h1 h2 h3 h4 h5`. Use `⟨r, hc, hs, f1, f2, fun w hw a1 a2 B hB P AI ht A hA O _ _ _ Bw hBw σ n => ?_⟩` and prove the remaining obligations. Take `⟨C, J, hCJ, hJ⟩` from `f3 w hw a1 a2 B hB P AI ht A hA O Bw hBw σ`. Use `hC E Ω l ι a ha.pos P AI ht w A hA O Bw hBw J r hc hs C hCJ σ _ hJ n` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem limU_of_limOdd (hC : GlobalTheory.CongPhi.ClosedPhi) (h : LimOdd) : LimU := by
   intro E Ω _ _ _ _ _ _ l _ ι a ha d hd T hT U hU w₀ v' h1 h2 h3 h4 h5

@@ -15,7 +15,7 @@ def P6 : Seminorm ℝ Sp :=
   (Finset.Iic ((6, 0) : ℕ × ℕ)).sup (schwartzSeminormFamily ℝ (Fin 2 → ℂ) ℂ)
 
 /- English proof (translation)
-Unfold `pS`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem seminorm_le_pS {N i j : ℕ} (hi : i ≤ N) (hj : j ≤ N) (f : Sp) :
     SchwartzMap.seminorm ℝ i j f ≤ pS N f := by
@@ -31,13 +31,13 @@ theorem seminorm_le_pS {N i j : ℕ} (hi : i ≤ N) (hj : j ≤ N) (f : Sp) :
           (Finset.mem_range.2 (by omega))
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => apply_nonneg _ _`.
+A detailed English derivation is pending.
 -/
 theorem pS_nonneg (N : ℕ) (f : Sp) : 0 ≤ pS N f :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => apply_nonneg _ _
 
 /- English proof (translation)
-Unfold `pS`. Use `(Finset.sum_le_sum fun i _ => Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_mono (by omega)) (fun _ _ _ => apply_nonneg _ _)).trans (Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_mono (by omega)) (fun _ _ _ => Finset.sum_nonneg fun _ _ => apply_nonneg _ _))` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem pS_mono {N M : ℕ} (h : N ≤ M) (f : Sp) : pS N f ≤ pS M f := by
   unfold pS
@@ -47,7 +47,7 @@ theorem pS_mono {N M : ℕ} (h : N ≤ M) (f : Sp) : pS N f ≤ pS M f := by
       (fun _ _ _ => Finset.sum_nonneg fun _ _ => apply_nonneg _ _))
 
 /- English proof (translation)
-The claim follows from `Seminorm.finset_sup_apply_le (pS_nonneg N f) fun i hi => seminorm_le_pS (h i hi).1 (h i hi).2 f`.
+A detailed English derivation is pending.
 -/
 theorem sup_le_pS (s : Finset (ℕ × ℕ)) {N : ℕ} (h : ∀ i ∈ s, i.1 ≤ N ∧ i.2 ≤ N) (f : Sp) :
     (s.sup (schwartzSeminormFamily ℝ (Fin 2 → ℂ) ℂ)) f ≤ pS N f :=
@@ -55,7 +55,7 @@ theorem sup_le_pS (s : Finset (ℕ × ℕ)) {N : ℕ} (h : ∀ i ∈ s, i.1 ≤ 
     seminorm_le_pS (h i hi).1 (h i hi).2 f
 
 /- English proof (translation)
-Use `sup_le_pS _ (fun i hi => ?_) f` and prove the remaining obligations. Establish `h` using `Finset.mem_Iic.1 hi`. Establish `h1 : i.1 ≤ 6` using `h.1`. Establish `h2 : i.2 ≤ 0` using `h.2`. Conclude with `⟨h1, by omega⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem P6_le_pS_six (f : Sp) : P6 f ≤ pS 6 f := by
   refine sup_le_pS _ (fun i hi => ?_) f
@@ -65,16 +65,16 @@ theorem P6_le_pS_six (f : Sp) : P6 f ≤ pS 6 f := by
   exact ⟨h1, by omega⟩
 
 /- English proof (translation)
-The claim follows from `Seminorm.continuous_finsetSup fun i _ => (schwartz_withSeminorms ℝ (Fin 2 → ℂ) ℂ).continuous_seminorm i`.
+A detailed English derivation is pending.
 -/
 theorem continuous_P6 : Continuous P6 :=
   Seminorm.continuous_finsetSup fun i _ =>
     (schwartz_withSeminorms ℝ (Fin 2 → ℂ) ℂ).continuous_seminorm i
 
 /- English proof (translation)
-Set `q : Seminorm ℝ Sp` to `P6.comp T.toLinearMap`. Establish `hq : Continuous q` using `continuous_P6.comp T.continuous`. Take `⟨u, C, -, hle⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℝ (Fin 2 → ℂ) ℂ) q hq`. Use `⟨u.sup fun i => max i.1 i.2, C, C.2, fun f => ?_⟩` and prove the remaining obligations. Establish `h1 : q f ≤ (C : ℝ) * (u.sup (schwartzSeminormFamily ℝ (Fin 2 → ℂ) ℂ)) f` using `hle f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h1.trans (mul_le_mul_of_nonneg_left (sup_le_pS u (fun i hi => ?_) f) C.2)` and prove the remaining obligations. Use `Finset.le_sup (f := fun i : ℕ × ℕ => max i.1 i.2) hi` as an intermediate fact. Conclude with `⟨(le_max_left _ _).trans this, (le_max_right _ _).trans this⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_P6_comp_le_mul_seminorm (T : Sp →L[ℝ] Sp) :
     ∃ (N : ℕ) (D : ℝ), 0 ≤ D ∧ ∀ f : Sp, P6 (T f) ≤ D * pS N f := by
@@ -89,15 +89,13 @@ theorem exists_P6_comp_le_mul_seminorm (T : Sp →L[ℝ] Sp) :
   exact ⟨(le_max_left _ _).trans this, (le_max_right _ _).trans this⟩
 
 /- English proof (translation)
-Use `set K : ℝ := 2 ^ 6 * P6 f with hK`. Use `set v : Fin 2 → ℂ := ![x, u] with hv`. Establish `h : (1 + ‖v‖) ^ 6 * ‖f v‖ ≤ K`. Use `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (6, 0)) (k := 6) (n := 0) le_rfl le_rfl f v` as an intermediate fact. Rewrite `this` using `[norm_iteratedFDeriv_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hx : ‖x‖ ≤ ‖v‖` using `by simpa [hv] using norm_le_pi_norm v 0`. Establish `hu : ‖u‖ ≤ ‖v‖` using `by simpa [hv] using norm_le_pi_norm v 1`. Establish `hr : 0 ≤ ‖v‖` using `norm_nonneg _`. Establish `hA : 1 + ‖x‖ ^ 2 ≤ (1 + ‖v‖) ^ 2` using `by nlinarith [norm_nonneg x]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : 1 + ‖u‖ ^ 2 ≤ (1 + ‖v‖) ^ 2` using `by nlinarith [norm_nonneg u]`. Establish `hAB : (1 + ‖x‖ ^ 2) * (1 + ‖u‖ ^ 2) ^ 2 ≤ (1 + ‖v‖) ^ 6`. Establish `h2 : (1 + ‖u‖ ^ 2) ^ 2 ≤ ((1 + ‖v‖) ^ 2) ^ 2` using `pow_le_pow_left₀ (by positivity) hB 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : (1 + ‖x‖ ^ 2) * (1 + ‖u‖ ^ 2) ^ 2 * ‖f v‖ ≤ K` using `le_trans (mul_le_mul_of_nonneg_right hAB (norm_nonneg _)) h`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hpos : 0 < (1 + ‖x‖ ^ 2) * (1 + ‖u‖ ^ 2) ^ 2` using `by positivity`. Establish `e : K * (dd x * dd u ^ 2) = K / ((1 + ‖x‖ ^ 2) * (1 + ‖u‖ ^ 2) ^ 2)`. Simplify using `only [dd]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, le_div_iff₀ hpos, mul_comm]`.
-
-Conclude with `h3`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schw_unif (f : Sp) (x u : ℂ) : ‖f ![x, u]‖ ≤ 2 ^ 6 * P6 f * (dd x * dd u ^ 2) := by
   set K : ℝ := 2 ^ 6 * P6 f with hK
@@ -129,7 +127,7 @@ theorem schw_unif (f : Sp) (x u : ℂ) : ‖f ![x, u]‖ ≤ 2 ^ 6 * P6 f * (dd 
 def c0 : ℝ := 2 ^ 6 * ∫ u : ℂ, dd u ^ 2
 
 /- English proof (translation)
-Establish `hJ : 0 ≤ ∫ u : ℂ, dd u ^ 2` using `integral_nonneg fun u => by positivity`. Unfold `c0`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem weightConst_nonneg : 0 ≤ c0 := by
   have hJ : 0 ≤ ∫ u : ℂ, dd u ^ 2 := integral_nonneg fun u => by positivity
@@ -137,9 +135,9 @@ theorem weightConst_nonneg : 0 ≤ c0 := by
   positivity
 
 /- English proof (translation)
-Establish `h1 : ‖sF f x ξ‖ ≤ ∫ u : ℂ, 2 ^ 6 * P6 f * dd x * dd u ^ 2`. Use `norm_integral_le_of_norm_le (dd_sq_int.const_mul _) (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_psiC, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[integral_const_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sF_bound_unif (f : Sp) (x ξ : ℂ) : ‖sF f x ξ‖ ≤ c0 * P6 f * dd x := by
   have h1 : ‖sF f x ξ‖ ≤ ∫ u : ℂ, 2 ^ 6 * P6 f * dd x * dd u ^ 2 := by
@@ -153,23 +151,23 @@ theorem sF_bound_unif (f : Sp) (x ξ : ℂ) : ‖sF f x ξ‖ ≤ c0 * P6 f * dd
     _ = _ := by unfold c0; ring
 
 /- English proof (translation)
-Establish `e1 : sF (LineDeriv.lineDerivOp (![0, 1] : Fin 2 → ℂ) (LineDeriv.lineDerivOp (![0, 1] : Fin 2 → ℂ) f)) x ξ = (-(4 * Real.pi * Complex.I * ξ.re)) ^ 2 * sF f x ξ`. Rewrite using `[sF_deriv, sF_deriv]`. Simplify using `only [one_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : sF (LineDeriv.lineDerivOp (![0, Complex.I] : Fin 2 → ℂ) (LineDeriv.lineDerivOp (![0, Complex.I] : Fin 2 → ℂ) f)) x ξ = (-(4 * Real.pi * Complex.I * ξ.im)) ^ 2 * sF f x ξ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[sF_deriv, sF_deriv]`. Simplify using `only [Complex.mul_re, Complex.I_re, Complex.I_im, zero_mul, one_mul, zero_sub]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `n1 : (4 * Real.pi) ^ 2 * ξ.re ^ 2 * ‖sF f x ξ‖ ≤ C1 * dd x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `b1` as an intermediate fact. Rewrite `this` using `[e1, norm_mul, norm_pow, norm_neg]`. Establish `e : ‖4 * (Real.pi : ℂ) * Complex.I * (ξ.re : ℂ)‖ = 4 * Real.pi * |ξ.re|`. Simplify using `[abs_of_pos Real.pi_pos]`. Rewrite `this` using `[e, mul_pow, sq_abs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `n2 : (4 * Real.pi) ^ 2 * ξ.im ^ 2 * ‖sF f x ξ‖ ≤ C2 * dd x`. Use `b2` as an intermediate fact. Rewrite `this` using `[e2, norm_mul, norm_pow, norm_neg]`. Establish `e : ‖4 * (Real.pi : ℂ) * Complex.I * (ξ.im : ℂ)‖ = 4 * Real.pi * |ξ.im|`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[abs_of_pos Real.pi_pos]`. Rewrite `this` using `[e, mul_pow, sq_abs]`. Conclude with `this`. Establish `hpi : (1 : ℝ) ≤ (4 * Real.pi) ^ 2` using `by nlinarith [Real.pi_gt_three]`. Establish `hsq : ‖ξ‖ ^ 2 = ξ.re ^ 2 + ξ.im ^ 2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hS : 0 ≤ ‖sF f x ξ‖` using `norm_nonneg _`. Establish `hmain : (1 + ‖ξ‖ ^ 2) * ‖sF f x ξ‖ ≤ (C0 + C1 + C2) * dd x`. Rewrite using `[hsq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : ξ.re ^ 2 * ‖sF f x ξ‖ ≤ (4 * Real.pi) ^ 2 * ξ.re ^ 2 * ‖sF f x ξ‖`. Establish `: 0 ≤ ξ.re ^ 2 * ‖sF f x ξ‖` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `a2 : ξ.im ^ 2 * ‖sF f x ξ‖ ≤ (4 * Real.pi) ^ 2 * ξ.im ^ 2 * ‖sF f x ξ‖`. Establish `: 0 ≤ ξ.im ^ 2 * ‖sF f x ξ‖` using `by positivity`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `hpos : 0 < 1 + ‖ξ‖ ^ 2` using `by positivity`. Establish `e : (C0 + C1 + C2) * (dd x * dd ξ) = (C0 + C1 + C2) * dd x / (1 + ‖ξ‖ ^ 2)`. Simplify using `only [dd]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e, le_div_iff₀ hpos, mul_comm]`. Conclude with `hmain`.
+A detailed English derivation is pending.
 -/
 theorem decay_of_bounds (f : Sp) (C0 C1 C2 : ℝ) (x ξ : ℂ)
     (b0 : ‖sF f x ξ‖ ≤ C0 * dd x)
@@ -231,7 +229,7 @@ def T2 (e : ℂ) : Sp →L[ℝ] Sp :=
     (LineDeriv.lineDerivOpCLM ℝ Sp (![0, e] : Fin 2 → ℂ))
 
 /- English proof (translation)
-Simplify using `[T2, LineDeriv.lineDerivOpCLM_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem secondLineDeriv_apply (e : ℂ) (f : Sp) :
     T2 e f = LineDeriv.lineDerivOp (![0, e] : Fin 2 → ℂ)
@@ -239,11 +237,11 @@ theorem secondLineDeriv_apply (e : ℂ) (f : Sp) :
   simp [T2, LineDeriv.lineDerivOpCLM_apply]
 
 /- English proof (translation)
-Take `⟨N1, D1, hD1, b1⟩` from `exists_P6_comp_le_mul_seminorm (T2 1)`. Take `⟨N2, D2, hD2, b2⟩` from `exists_P6_comp_le_mul_seminorm (T2 Complex.I)`. Establish `hc` using `weightConst_nonneg`. Use `⟨c0 * (1 + D1 + D2), max 6 (max N1 N2), by positivity, fun f x ξ => ?_⟩` and prove the remaining obligations. Use `set N := max 6 (max N1 N2) with hN`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set A := pS N f with hA`. Establish `h0 : P6 f ≤ A` using `(P6_le_pS_six f).trans (pS_mono (le_max_left _ _) f)`. Establish `h1 : P6 (T2 1 f) ≤ D1 * A` using `(b1 f).trans (mul_le_mul_of_nonneg_left (pS_mono ((le_max_left _ _).trans (le_max_right _ _)) f) hD1)`. Establish `h2 : P6 (T2 Complex.I f) ≤ D2 * A` using `(b2 f).trans (mul_le_mul_of_nonneg_left (pS_mono ((le_max_right _ _).trans (le_max_right _ _)) f) hD2)`. Establish `hdx` using `(dd_pos x).le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (g : Sp) (B : ℝ), P6 g ≤ B → ‖sF g x ξ‖ ≤ c0 * B * dd x` using `fun g B hB => (sF_bound_unif g x ξ).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hB hc) hdx)`. Use `decay_of_bounds f (c0 * A) (c0 * (D1 * A)) (c0 * (D2 * A)) x ξ (key f A h0) (by rw [← secondLineDeriv_apply]; exact key _ _ h1) (by rw [← secondLineDeriv_apply]; exact key _ _ h2)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sF_decay_unif : ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧ ∀ (f : SchwartzMap (Fin 2 → ℂ) ℂ) (x ξ : ℂ),
     ‖sF f x ξ‖ ≤ C * pS N f * (dd x * dd ξ) := by

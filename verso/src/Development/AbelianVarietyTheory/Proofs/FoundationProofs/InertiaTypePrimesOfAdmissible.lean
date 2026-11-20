@@ -13,7 +13,7 @@ section General
 variable {Γ R : Type} [Group Γ] [CommRing R] {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.mem_ker, Units.ext_iff]`. Express the relevant statement in the definitionally equal form `(Ideal.Quotient.mk J).mapMatrix ((ρ g : GL (Fin r) R) : Matrix (Fin r) (Fin r) R) = 1 ↔ _`. Rewrite using `[← sub_eq_zero, ← map_one (Ideal.Quotient.mk J).mapMatrix, ← map_sub, ← Matrix.ext_iff]`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.zero_apply, Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_ker_mapRep_iff (J : Ideal R) (ρ : Γ →* GL (Fin r) R) (g : Γ) :
     g ∈ (mapRep (Ideal.Quotient.mk J) ρ).ker ↔
@@ -25,9 +25,9 @@ theorem mem_ker_mapRep_iff (J : Ideal R) (ρ : Γ →* GL (Fin r) R) (g : Γ) :
     Ideal.Quotient.eq_zero_iff_mem]
 
 /- English proof (translation)
-Establish `: ((mapRep (Ideal.Quotient.mk J) ρ).ker : Set Γ) = ⋂ a, ⋂ b, (fun g => (((ρ g : GL (Fin r) R) : Matrix (Fin r) (Fin r) R) - 1) a b) ⁻¹' (J : Set R)`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_ker_mapRep_iff, Set.mem_iInter, Set.mem_preimage]`. Rewrite using `[this]`. Use `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => hJ.preimage ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hρ.sub continuous_const).matrix_elem a b`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_ker_mapRep [TopologicalSpace Γ] [TopologicalSpace R] [IsTopologicalRing R]
     (J : Ideal R) (hJ : IsOpen (J : Set R)) (ρ : Γ →* GL (Fin r) R)
@@ -42,11 +42,11 @@ theorem isOpen_ker_mapRep [TopologicalSpace Γ] [TopologicalSpace R] [IsTopologi
   exact (hρ.sub continuous_const).matrix_elem a b
 
 /- English proof (translation)
-Establish `h1 : (Ideal.Quotient.mk I).mapMatrix Y = 1`. Rewrite using `[← sub_eq_zero, ← map_one (Ideal.Quotient.mk I).mapMatrix, ← map_sub]`. Use extensionality with `a b`. Simplify `Ideal.pow_le_self (Nat.succ_ne_zero m) (hY a b)` using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.zero_apply, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h2 : (Ideal.Quotient.mk I).mapMatrix (∑ i ∈ Finset.range l, Y ^ i) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h0 : ((l : ℕ) : R ⧸ I) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk I), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hl`. Simplify using `only [map_sum, map_pow, h1, one_pow, Finset.sum_const, Finset.card_range]`. Rewrite using `[← Nat.cast_smul_eq_nsmul (R ⧸ I), h0, zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ∀ a b, (∑ i ∈ Finset.range l, Y ^ i) a b ∈ I` using `fun a b => by`. Use `congrFun (congrFun h2 a) b` as an intermediate fact. Simplify `this` using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.zero_apply, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[← mul_geom_sum, Matrix.mul_apply, pow_succ I (m + 1)]`. Conclude with `Ideal.sum_mem _ fun c _ => Ideal.mul_mem_mul (hY a c) (h3 c b)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_sub_one_mem (I : Ideal R) (l m : ℕ) (hl : (l : R) ∈ I) (Y : Matrix (Fin r) (Fin r) R)
     (hY : ∀ a b, (Y - 1) a b ∈ I ^ (m + 1)) (a b : Fin r) : (Y ^ l - 1) a b ∈ I ^ (m + 2) := by
@@ -87,13 +87,11 @@ def eigenStab (ρ : Γ →* GL (Fin r) R) (χ : Γ →* Rˣ) (x : Fin r → R) :
 end General
 
 /- English proof (translation)
-Establish `h1 : ∀ x : Ω, x ≠ 0 → A.valuation (σ x - x) < A.valuation x` using `fun x hx => by`. Establish `e : σ x - x = (σ x / x - 1) * x` using `by field_simp`. Establish `h0 : 0 < A.valuation x` using `zero_lt_iff.mpr (by simpa using hx)`. Rewrite using `[e, map_mul]`. Conclude with `mul_lt_of_lt_one_left h0 (h x hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ x : Ω, A.valuation (σ x) = A.valuation x` using `fun x => by`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Conclude with `Valuation.map_eq_of_sub_lt _ (h1 x hx)`. Use `⟨⟨?_, fun x hx => ?_⟩, h1⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `σ • A = A`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← A.valuation_le_one_iff, ← A.valuation_le_one_iff, ← h2, AlgEquiv.smul_def, mul_inv_apply]`. Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases. Simplify using the standard rewrite rules.
-
-Conclude with `(h1 x hx0).trans_le hx`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isWild_of_isWildAt {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     (A : ValuationSubring Ω) (σ : G E Ω) (h : IsWildAt A σ) : IsWild A σ := by

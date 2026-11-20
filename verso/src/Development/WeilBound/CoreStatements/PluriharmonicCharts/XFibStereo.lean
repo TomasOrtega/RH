@@ -14,15 +14,13 @@ open MeasureTheory Set
 open scoped ENNReal NNReal
 
 /- English proof (translation)
-Use `set gE : GroundTheory.Heights₂.Heights.FlagBundles.E3 → ℝ := fun x => f (fun i => x i) with hgE`. Establish `hgm : Measurable gE` using `hf.comp (PiLp.continuous_ofLp (p := 2) (β := fun _ : Fin 3 => ℝ)).measurable`. Use `set w : ℂ → ℝ≥0 := fun a => Real.toNNReal (wt a) with hw`. Establish `hwm : Measurable w` using `Measurable.real_toNNReal (by unfold wt; fun_prop)`. Establish `hmap : (volume.withDensity fun a : ℂ => (w a : ℝ≥0∞)).map nE = GroundTheory.Heights₂.Heights.FlagBundles.sphereMeasure.map (fun m : GroundTheory.Heights₂.Heights.FlagBundles.Sphere2 => (m : GroundTheory.Heights₂.Heights.FlagBundles.E3))` using `map_stereo`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hpt : (fun a : ℂ => f (nF a) * (Real.pi⁻¹ / (1 + ‖a‖ ^ 2) ^ 2)) = fun a => w a • gE (nE a)`. Use function extensionality and compare the values at `a`. Establish `hnn : 0 ≤ wt a` using `by unfold wt; positivity`. Rewrite using `[NNReal.smul_def, smul_eq_mul, hw, Real.coe_toNNReal _ hnn]`. Use `show f (nF a) * _ = wt a * f (nF a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Unfold `wt`. Expand and normalize the polynomial expressions, which then agree. Establish `hnE` using `measurable_nE.aemeasurable (μ := volume.withDensity fun a : ℂ => (w a : ℝ≥0∞))`. Establish `hco : AEMeasurable (fun m : GroundTheory.Heights₂.Heights.FlagBundles.Sphere2 => (m : GroundTheory.Heights₂.Heights.FlagBundles.E3)) GroundTheory.Heights₂.Heights.FlagBundles.sphereMeasure` using `measurable_subtype_coe.aemeasurable`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpt, ← integrable_withDensity_iff_integrable_smul₀ hwm.aemeasurable]`. Use `(integrable_map_measure (g := gE) hgm.aestronglyMeasurable hnE).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hmap]`. Conclude with `integrable_map_measure hgm.aestronglyMeasurable hco`. Rewrite using `[hpt, ← integral_withDensity_eq_integral_smul hwm]`.
-
-Use `(integral_map hnE hgm.aestronglyMeasurable).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hmap]`. Conclude with `integral_map hco hgm.aestronglyMeasurable`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_part (f : (Fin 3 → ℝ) → ℝ) (hf : Measurable f) :
     (Integrable (fun a : ℂ => f (nF a) * (Real.pi⁻¹ / (1 + ‖a‖ ^ 2) ^ 2)) ↔
@@ -63,15 +61,15 @@ theorem measure_part (f : (Fin 3 → ℝ) → ℝ) (hf : Measurable f) :
     exact integral_map hco hgm.aestronglyMeasurable
 
 /- English proof (translation)
-Establish `hN : ∀ u : ℂ, ‖u‖ ^ 2 = u.re ^ 2 + u.im ^ 2` using `fun u => by`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ∀ u v : ℂ, herm2 1 ![1, u] ![1, v] = 1 + (starRingEnd ℂ) u * v`. Introduce `u v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[herm2, dotProduct, Fin.sum_univ_two]`. Establish `e2 : ∀ u : ℂ, (herm2 1 ![1, u] ![1, u]).re = 1 + (u.re ^ 2 + u.im ^ 2)`. Introduce `u`. Rewrite using `[e1]`. Simplify using `[Complex.mul_re]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e3 : ‖herm2 1 ![1, a₀] ![1, a₁]‖ ^ 2 = (1 + (a₀.re * a₁.re + a₀.im * a₁.im)) ^ 2 + (a₀.re * a₁.im - a₀.im * a₁.re) ^ 2`. Rewrite using `[e1, hN]`. Simplify using `[Complex.mul_re, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hs : ∑ i, nF a₀ i * nF a₁ i = (2 * a₀.re / (1 + ‖a₀‖ ^ 2)) * (2 * a₁.re / (1 + ‖a₁‖ ^ 2)) + (2 * a₀.im / (1 + ‖a₀‖ ^ 2)) * (2 * a₁.im / (1 + ‖a₁‖ ^ 2)) + ((1 - ‖a₀‖ ^ 2) / (1 + ‖a₀‖ ^ 2)) * ((1 - ‖a₁‖ ^ 2) / (1 + ‖a₁‖ ^ 2))`. Rewrite using `[Fin.sum_univ_three]`. Both sides reduce to the same expression. Unfold `logSin`. Rewrite using `[e2, e2, e3, hs, hN, hN]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Establish `p0 : (0 : ℝ) < 1 + (a₀.re ^ 2 + a₀.im ^ 2)` using `by positivity`. Establish `p1 : (0 : ℝ) < 1 + (a₁.re ^ 2 + a₁.im ^ 2)` using `by positivity`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem logSin_part (a₀ a₁ : ℂ) :
     logSin 1 a₀ a₁ = (1 / 2) * Real.log ((1 - ∑ i, nF a₀ i * nF a₁ i) / 2) := by

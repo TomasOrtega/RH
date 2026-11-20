@@ -29,11 +29,11 @@ def LemmaMS (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVol
       (Formalism.L2.SG.LocVol.locOf X u u' ψ).volZZ
 
 /- English proof (translation)
-Establish `hb : ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ) ≠ 0`. Unfold `Formalism.MainNotions.S.Lat.gS`. Conclude with `Nat.cast_ne_zero.mpr (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero)`. Establish `key : ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ) ^ (D.R.f * ((D.R.rS + 1) * (2 * D.R.rS + 3))) = ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ) ^ (2 * D.R.f * D.R.rS * (D.R.rS + 1)) * ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ) ^ (3 * (D.R.rS + 1) * D.R.f)`. Rewrite using `[← pow_add]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Simplify using `only [Anum, rdExp, Formalism.L2.SG.MassDataConc.kapN]`. Rewrite using `[mul_pow, ← pow_mul, ← pow_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem anum_pow : Anum D ^ D.R.f =
     Formalism.L2.SG.MassDataConc.kapN D * (D.host.rdE ^ (D.R.f * e1 D) *
@@ -54,7 +54,7 @@ theorem anum_pow : Anum D ^ D.R.f =
   ring
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Host.rdE`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Establish `h` using `NumberField.discr_ne_zero (K := D.host.E)`. Conclude with `abs_pos.mpr (by exact_mod_cast h)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rdE_pos' : 0 < D.host.rdE := by
   unfold Formalism.BasicNotions.Host.rdE
@@ -63,9 +63,9 @@ theorem rdE_pos' : 0 < D.host.rdE := by
   exact abs_pos.mpr (by exact_mod_cast h)
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.Pf.Carrier.Parts.Gam0 Formalism.FourierDecayAlt.D.GamLev`. Apply `Finset.prod_nonneg` to reduce the goal to its premises. Introduce `l _`. Apply `div_nonneg` to reduce the goal to its premises. Apply `zpow_nonneg` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `Formalism.FourierDecayAlt.D.kapG Formalism.FourierDecayAlt.S6.rd`. Check the signs of the components of the expression. Unfold `Formalism.FourierDecayAlt.D.deG Formalism.FourierDecayAlt.S6.rd`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem energy_constant_nonneg (P : Parts X u u') : 0 ≤ P.Gam0 := by
   unfold Formalism.L2.SG.Pf.Carrier.Parts.Gam0 Formalism.FourierDecayAlt.D.GamLev
@@ -79,15 +79,13 @@ theorem energy_constant_nonneg (P : Parts X u u') : 0 ≤ P.Gam0 := by
     positivity
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, hZZ, hPP, -⟩` from `hC`. Establish `hb : ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ) ≠ 0`. Unfold `Formalism.MainNotions.S.Lat.gS`. Conclude with `Nat.cast_ne_zero.mpr (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero)`. Establish `hrd : 0 < D.host.rdE` using `rdE_pos'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : 0 ≤ Anum D`. Unfold `Anum`. Conclude with `mul_nonneg (pow_nonneg hrd.le _) (pow_nonneg (Nat.cast_nonneg _) _)`. Establish `hK0 : 0 ≤ Kexp P` using `div_nonneg hA (energy_constant_nonneg P)`. Use `⟨fun _ => hK0, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfS : P.S.f = D.R.f`. Rewrite using `[← hf, ← Fintype.card_fin P.S.f]`. Conclude with `Fintype.card_congr P.τ`. Establish `hprod : ∏ _v : InfinitePlace X.B.I.F, Kexp P = Anum D ^ D.R.f / P.Gam0 ^ D.R.f`. Rewrite using `[Finset.prod_const, Finset.card_univ, hf, Kexp, div_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvZZ : 0 < (Formalism.L2.SG.LocVol.locOf X u u' ψ).volZZ` using `hZZ`. Establish `hvPP : 0 < (Formalism.L2.SG.LocVol.locOf X u u' ψ).volPP` using `by show 0 < ∏ l : Fin (D.R.rS + 1), ∏' v : Formalism.L2.SG.LocVol.PlX X, Formalism.L2.SG.LocVol.PPX X u u' ψ l v`. Conclude with `Finset.prod_pos (fun l _ => (hPP l).2)`. Establish `hkap : Formalism.L2.SG.MassDataConc.kapN D ≠ 0`. Unfold `Formalism.L2.SG.MassDataConc.kapN`.
-
-Conclude with `mul_ne_zero (pow_ne_zero _ hrd.ne') (inv_ne_zero (pow_ne_zero _ hb))`. Establish `hM : D.host.rdE ^ (D.R.f * e1 D) * ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ) ^ (D.R.f * ((D.R.rS + 1) * (2 * D.R.rS + 3))) ≠ 0` using `mul_ne_zero (pow_ne_zero _ hrd.ne') (pow_ne_zero _ hb)`. Rewrite using `[hprod, anum_pow, hMS, hfS]`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem constPin_of (P : Parts X u u') (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ)
     (hC : Formalism.L2.SG.LocVol.ProdConv X u u' ψ) (hMS : LemmaMS X u u' ψ)

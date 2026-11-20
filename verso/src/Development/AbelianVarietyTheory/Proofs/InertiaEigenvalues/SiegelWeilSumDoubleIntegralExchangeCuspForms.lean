@@ -15,19 +15,17 @@ open GlobalTheory.RawLift
 namespace GlobalTheory.RallisExch
 
 /- English proof (translation)
-Establish `hρ : (ν.prod ν).restrict (𝓖 ×ˢ 𝓖) = (ν.restrict 𝓖).prod (ν.restrict 𝓖)` using `(Measure.prod_restrict 𝓖 𝓖).symm`. Use `set ρ := (ν.prod ν).restrict (𝓖 ×ˢ 𝓖) with hρdef`. Use `set F : ι → X × X → ℂ := fun Y p => star (a p.1) * b p.2 * T Y p with hFdef`. Establish `ha' : AEStronglyMeasurable (fun p : X × X => star (a p.1)) ρ`. Rewrite using `[hρ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha.star.comp_fst`. Establish `hb' : AEStronglyMeasurable (fun p : X × X => b p.2) ρ`. Rewrite using `[hρ]`. Conclude with `hb.comp_snd`. Establish `hF : ∀ Y, AEStronglyMeasurable (F Y) ρ` using `fun Y => (ha'.mul hb').mul (hT Y)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hnorm : ∀ Y p, ‖F Y p‖ₑ = ‖T Y p‖ₑ * ‖a p.1‖ₑ * ‖b p.2‖ₑ`. Introduce `Y p`. Establish `hs : ‖star (a p.1)‖ₑ = ‖a p.1‖ₑ` using `by rw [← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, norm_star]`. Simplify using `only [F, enorm_mul, hs]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑' Y, ∫⁻ p, ‖F Y p‖ₑ ∂ρ ≠ ⊤`. Rewrite using `[← lintegral_tsum (fun Y => (hF Y).enorm)]`. Repeatedly rewrite using `[hnorm]`. Rewrite using `[hρ, lintegral_prod _ ?_]`. Conclude with `hfin`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hρ]`. Conclude with `AEMeasurable.ennreal_tsum fun Y => by`. Simplify `(hF Y).enorm` using `[hnorm]`. Establish `hint : ∀ Y, Integrable (F Y) ρ` using `fun Y => ⟨hF Y, lt_of_le_of_lt (ENNReal.le_tsum Y) (lt_top_iff_ne_top.2 hsum)⟩`. Use `⟨hint, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `Summable.of_norm_bounded (ENNReal.summable_toReal hsum) fun Y => ?_` and prove the remaining obligations. Establish `h1` using `enorm_integral_le_lintegral_enorm (μ := ρ) (F Y)`. Rewrite `h1` using `[← ofReal_norm_eq_enorm]`. Conclude with `(ENNReal.ofReal_le_iff_le_toReal (ne_top_of_le_ne_top hsum (ENNReal.le_tsum Y))).1 h1`. Establish `: (fun p : X × X => star (a p.1) * b p.2 * ∑' Y, T Y p) = fun p => ∑' Y, F Y p`.
-
-Use function extensionality and compare the values at `p`. Conclude with `tsum_mul_left.symm`. Rewrite using `[this]`. Conclude with `integral_tsum hF hsum`.
+A detailed English derivation is pending.
 -/
 theorem exch_general {X ι : Type*} [MeasurableSpace X] [Countable ι] (ν : Measure X) [SFinite ν] (𝓖 : Set X)
     (T : ι → X × X → ℂ) (a b : X → ℂ)
@@ -78,7 +76,7 @@ namespace GlobalTheory.RallisExch
 open scoped GlobalTheory.GaugeEx
 
 /- English proof (translation)
-Introduce `D hE ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS θ hθ f₁ f₂ φ₁ φ₂ h1 h2 hA1 hC1 hA2 hC2`. Use `haveI : Countable (Lag W) := GlobalTheory.T.countable_doubled_hermitian_lagrangians D W`. Use `haveI : SigmaFinite νW := by haveI := hS.haarW; infer_instance`. Establish `hT : ∀ Y : Lag W, AEStronglyMeasurable (fun p : GA D W × GA D W => lagTerm μ 𝓕 (fr Y) (om (1, p.1) f₁) (om (1, p.2) f₂)) ((νW.prod νW).restrict (𝓖 ×ˢ 𝓖))` using `fun Y => (GlobalTheory.T.siegelWeil_lagrangian_term_stronglyMeasurable D ψ V W χV χW om μ 𝓕 hS.weil hS.covol f₁ f₂ h1 h2 (fr Y)).aestronglyMeasurable`. Conclude with `exch_general νW 𝓖 (fun Y p => lagTerm μ 𝓕 (fr Y) (om (1, p.1) f₁) (om (1, p.2) f₂)) φ₁ φ₂ hT hA1.cont.aestronglyMeasurable hA2.cont.aestronglyMeasurable (hE ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS θ hθ f₁ f₂ h1 h2 φ₁ φ₂ hA1 hC1 hA2 hC2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eisAbs_exchange : ∀ D : D7, EisAbs D → ∀ (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (νV : Measure (GA D V)) (𝓗 : Set (GA D V)) (νW : Measure (GA D W)) (𝓖 : Set (GA D W)) (μ : Measure (WO V W)) (𝓕 : Set (WO V W)) (fr : Lag W → Matrix (Fin W.rank) (Fin W.rank) D.host.E × Matrix (Fin W.rank) (Fin W.rank) D.host.E), SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr → ∀ (θ : InfFam D), IsInfFam θ → ∀ (f₁ f₂ : WO V W → ℂ) (φ₁ φ₂ : GA D W → ℂ), IsThetaFunO ψ V W f₁ → IsThetaFunO ψ V W f₂ → IsAutFunSm θ W φ₁ → IsCuspFun W φ₁ → IsAutFunSm θ W φ₂ → IsCuspFun W φ₂ → (∀ Y : Lag W, IntegrableOn (fun p : GA D W × GA D W => star (φ₁ p.1) * φ₂ p.2 * lagTerm μ 𝓕 (fr Y) (om (1, p.1) f₁) (om (1, p.2) f₂)) (𝓖 ×ˢ 𝓖) (νW.prod νW)) ∧ Summable (fun Y : Lag W => ∫ p in 𝓖 ×ˢ 𝓖, star (φ₁ p.1) * φ₂ p.2 * lagTerm μ 𝓕 (fr Y) (om (1, p.1) f₁) (om (1, p.2) f₂) ∂(νW.prod νW)) ∧ ∫ p in 𝓖 ×ˢ 𝓖, star (φ₁ p.1) * φ₂ p.2 * ∑' Y : Lag W, lagTerm μ 𝓕 (fr Y) (om (1, p.1) f₁) (om (1, p.2) f₂) ∂(νW.prod νW) = ∑' Y : Lag W, ∫ p in 𝓖 ×ˢ 𝓖, star (φ₁ p.1) * φ₂ p.2 * lagTerm μ 𝓕 (fr Y) (om (1, p.1) f₁) (om (1, p.2) f₂) ∂(νW.prod νW) := by
   intro D hE ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS θ hθ f₁ f₂ φ₁ φ₂ h1 h2 hA1 hC1 hA2 hC2

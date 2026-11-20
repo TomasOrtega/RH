@@ -8,7 +8,7 @@ open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisens
 namespace GlobalTheory.GeoFix
 
 /- English proof (translation)
-Establish `hmem : algebraMap (O0 p) Ω c ∈ ψ.range`. Rewrite using `[h.rng]`. Conclude with `Subalgebra.algebraMap_mem _ c`. Conclude with `hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inR_algebraMap {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
     {T : Tower p Ω} {n : ℕ} {ψ : O0 p →+* Ω} (h : IsReb T n ψ) (c : O0 p) :
@@ -19,7 +19,7 @@ theorem inR_algebraMap {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra 
   exact hmem
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using inR_psi ψ 1`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `inR_mul ih hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inR_pow {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
     {ψ : O0 p →+* Ω} {x : Ω} (hx : InR ψ x) (k : ℕ) : InR ψ (x ^ k) := by
@@ -28,19 +28,19 @@ theorem inR_pow {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) 
   | succ k ih => rw [pow_succ]; exact inR_mul ih hx
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ hc T n ψ h N hN hN0`. Take `⟨f, hfm, hf⟩ : IsIntegral (O0 p) N` from `hN.isInt h`. Establish `key : ∀ k : ℕ, ∀ f : Polynomial (O0 p), f.natDegree = k → f.Monic → Polynomial.eval₂ (algebraMap (O0 p) Ω) N f = 0 → ∃ (N' : Ω) (D : O0 p), InR ψ N' ∧ D ≠ 0 ∧ N * N' = ψ D`. Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `_ k ih`. Introduce `f hk hfm hf`. Distinguish the cases in `h0 : f.coeff 0 = 0`. Take `⟨g, rfl⟩` from `Polynomial.X_dvd_iff.2 h0`. Establish `hgm : g.Monic` using `Polynomial.Monic.of_mul_monic_left Polynomial.monic_X hfm`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgdeg : g.natDegree < k`. Rewrite using `[← hk, Polynomial.natDegree_X_mul hgm.ne_zero]`. Use linear arithmetic over natural numbers and integers. Use `ih _ hgdeg g rfl hgm ?_` and prove the remaining obligations. Rewrite `hf` using `[Polynomial.eval₂_mul, Polynomial.eval₂_X]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 hf).resolve_left hN0`. Take `⟨g, hg⟩` from `Polynomial.X_dvd_iff.2 (show (f - Polynomial.C (f.coeff 0)).coeff 0 = 0 by simp)`. Take `⟨D, hD⟩` from `inR_algebraMap h (-f.coeff 0)`. Use `⟨Polynomial.eval₂ (algebraMap (O0 p) Ω) N g, D, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_eq_sum_range]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `inR_sum _ _ fun i _ => ?_` and prove the remaining obligations. Take `⟨c', hc'⟩` from `inR_algebraMap h (g.coeff i)`. Rewrite using `[← hc']`. Conclude with `inR_mul (inR_psi ψ c') (inR_pow hN i)`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hD` using `[map_zero, map_neg]`. Conclude with `h0 (hc.inj (by rw [map_zero]; exact neg_eq_zero.1 hD.symm))`. Establish `hf' : f = Polynomial.X * g + Polynomial.C (f.coeff 0)`. Rewrite using `[← hg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `hf` using `[hf', Polynomial.eval₂_add, Polynomial.eval₂_mul, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Rewrite using `[hD, map_neg]`. Take the linear combination `hf`. Conclude with `key _ f rfl hfm hf`.
+A detailed English derivation is pending.
 -/
 theorem exists_inR_mul_eq_psi : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
     ∀ (T : Tower p Ω) (n : ℕ) (ψ : O0 p →+* Ω), IsReb T n ψ → ∀ N : Ω, GlobalTheory.GeoFix.InR ψ N → N ≠ 0 →

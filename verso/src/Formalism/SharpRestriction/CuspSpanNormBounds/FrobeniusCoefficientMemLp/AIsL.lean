@@ -7,11 +7,11 @@ namespace Formalism.MainNotions.S.Pv.AIsL
 open Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Take `⟨x, hx, hlx⟩` from `hnz`. Take `⟨α, β, hαβ, hrel⟩` from `hJ k r ε lam H σ z c u Wp π hlam hσ hz hT hc hπ B l hB hl`. Establish `hα : α ≠ 0`. Introduce `h0`. Break down `hαβ with h1 | h1` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h1 h0`. Establish `e` using `hrel x hx`. Rewrite `e` using `[h0, zero_smul, zero_add]`. Conclude with `hlx ((smul_eq_zero.1 e).resolve_left h1)`. Use `⟨-(β / α), fun v hv => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `hrel v hv`. Establish `e2 : α • B v = -(β • l v)` using `eq_neg_of_add_eq_zero_left e`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem aIsL (hJ : PI.BesselMapUniq.BesselMapUniq) {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
     {lam : Fin (2 * r + k + 1) → ℝ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]

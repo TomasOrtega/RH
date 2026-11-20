@@ -25,11 +25,11 @@ def substP {m : ℕ} (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ) (p :
     else 0) p
 
 /- English proof (translation)
-Unfold `evX substP evalPoly`. Rewrite using `[eval_aeval_subst]`. Use `congrArg (fun x => MvPolynomial.eval x p) (funext fun v => ?_)` and prove the remaining obligations. Take `⟨τ', a, j, b⟩` from `v`. Distinguish the cases in `hτ : τ' = τ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `hτ` using the available equality. Rewrite using `[if_pos rfl, dirAt_self]`. Consider the cases of `b`. Simplify using `only [Bool.false_eq_true, ↓reduceIte, map_sum, map_mul, eval_C, eval_X, Matrix.mul_apply]`. Simplify using `only [↓reduceIte, map_sum, map_mul, eval_C, eval_X, Matrix.mul_apply, map_sum, Complex.star_def]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hτ, dirAt_ne hτ]`. Apply the tactic sequence `cases b <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem evX_substP {m : ℕ} (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ)
     (p : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) (u : Matrix (Fin m) (Fin n) ℂ) :
@@ -49,15 +49,15 @@ theorem evX_substP {m : ℕ} (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) �
     cases b <;> simp
 
 /- English proof (translation)
-Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨p, g, -, rfl⟩` from `hF`. Use `⟨C (g 0) * substP τ fr p, fun u => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show evalPoly p (fun τ' => compAt θ τ' (xL θ τ (fr * u))) * gauss V l s (fun τ' => compAt θ τ' (xL θ τ (fr * u))) * g (fun i j => finPart D ((xL θ τ (fr * u)) i j)) = _`. Rewrite using `[compAt_xL hθ, finPart_xL hθ, gauss_dirAt hfr, ← evX_substP]`. Simplify using `only [evX, map_mul, eval_C]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact ⟨0, fun u => by simp [evX]⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately.
 
-Consider the case `add F G _ _ hF hG`. Take `⟨Q₁, h₁⟩` from `hF`. Take `⟨Q₂, h₂⟩` from `hG`. Use `⟨Q₁ + Q₂, fun u => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, h₁, h₂, evX, map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `smul a F _ hF`. Take `⟨Q, h⟩` from `hF`. Use `⟨C a * Q, fun u => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, h, evX, map_mul, eval_C]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem slice {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau}
     {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} {ε : Fin V.rank → Bool} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ}
@@ -88,13 +88,11 @@ theorem slice {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Ta
     ring
 
 /- English proof (translation)
-Take `⟨Q, hQ⟩` from `slice hθ hfr l _ hf`. Use `⟨Q, funext fun (u : Matrix (Fin V.rank) (Fin n) ℂ) => ?_⟩` and prove the remaining obligations. Establish `h` using `hQ u`. Establish `hinv : fr⁻¹ * (fr * u) = u`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hfr.1, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : compAt θ τ (xL θ τ (fr * u)) = fr * u`. Use `congrFun (compAt_xL hθ τ (fr * u)) τ` as an intermediate fact. Simplify `this` using `[dirAt_self]`. Establish `hp : psi0 θ V n l s τ (xL θ τ (fr * u)) = 1`. Unfold `psi0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[compAt_xL hθ, gAway_dirAt, finPart_xL hθ]`. Simplify using `only [one_mul]`. Conclude with `gaussian_at_zero_eq_one D V.rank n`. Simplify using `only [tens] at h`. Rewrite `h` using `[hc, hinv, hp, mul_one]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_slice {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau}
     {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} {ε : Fin V.rank → Bool} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ}

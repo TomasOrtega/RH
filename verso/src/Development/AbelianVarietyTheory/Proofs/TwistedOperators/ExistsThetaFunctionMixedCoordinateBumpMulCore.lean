@@ -21,7 +21,7 @@ open GlobalTheory.AscFin
 namespace GlobalTheory.BumpMix
 
 /- English proof (translation)
-Introduce `D ψ hψ H Z T ρ dH hZ v β hβ`. Conclude with `⟨poinX ψ dH T β, ⟨GlobalTheory.T.poincareSumOverRationalHom_thetaLaw_zeroCore D ψ hψ H Z T ρ dH hZ β, GlobalTheory.T.poincareSumHalfWitt_heisenberg_level_of_zero_core D ψ hψ H Z T ρ dH hZ β hβ, GlobalTheory.T.continuous_poincareSumOverRationalHom_bump D ψ hψ H Z T ρ dH β hβ, Glob …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem coreA : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (H Z T : HSp D) (ρ : ℕ) (dH : HypDec H Z ρ), Z.rank = 0 → ∀ (v : VolM D T.rank ρ) (β : Mx D T.rank ρ → ℂ), IsBump β → ∃ f, IsThetaFunO ψ H T f ∧ ∀ x, dH.mixS T ψ v.μ v.𝓕 f x 0 = β x := by
   intro D ψ hψ H Z T ρ dH hZ v β hβ
@@ -29,19 +29,17 @@ theorem coreA : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-
     GlobalTheory.T.continuous_poincareSumOverRationalHom_bump D ψ hψ H Z T ρ dH β hβ, GlobalTheory.T.contDiff_poincareSumOverRationalHom_realDirections D ψ hψ H Z T ρ dH β hβ⟩, GlobalTheory.T.mixedCoordinate_poincareSum_halfWitt_eq_bump D ψ hψ H Z T ρ dH v β hβ⟩
 
 /- English proof (translation)
-Introduce `D ψ hψ S S₀ T ρ d v β g hβ hg`. Set `P : HSp D` to `Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral ρ`. Set `dH : HypDec (GlobalTheory.Doubling.dblSp P) (GlobalTheory.Core.Rk.SWLaw.zeroSp D) ρ` to `GlobalTheory.Core.Rk.SWLaw.dblDec P`. Establish `hZ : (GlobalTheory.Core.Rk.SWLaw.zeroSp D).rank = 0` using `rfl`. Take `⟨fH, hfH, hmix⟩` from `coreA D ψ hψ _ _ T ρ dH hZ v β hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨_, isThetaFunO_prod 1 d.i₀ 1 (GlobalTheory.TowerSurj.embMat d dH) (GlobalTheory.TowerSurj.symplOH_split d dH T hZ) hg hfH, fun x => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w₀`. Establish `hz : ∀ z : WO (GlobalTheory.Core.Rk.SWLaw.zeroSp D) T, z = 0` using `fun z => Matrix.ext fun _ j => by haveI : IsEmpty (Fin (GlobalTheory.Core.Rk.SWLaw.zeroSp D).rank) := by rw [hZ]; infer_instance`. Conclude with `isEmptyElim j`. Establish `e2 : ∀ a : Mx D T.rank ρ, sandwich (rat 1) (rat (GlobalTheory.TowerSurj.embMat d dH)) (d.extY T a + d.extX T x + d.ext0 T w₀) = dH.extY T a + dH.extX T x + dH.ext0 T 0`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Establish `hX : sandwich (rat 1) (rat (GlobalTheory.TowerSurj.embMat d dH)) (d.extY T a + d.extX T x + d.ext0 T w₀) ⬝ dH.jX = x`. Rewrite using `[sandwich_apply, rat_one, Matrix.one_mul, GlobalTheory.TowerSurj.mul_embMat_jX, coord_jX]`. Establish `hY : sandwich (rat 1) (rat (GlobalTheory.TowerSurj.embMat d dH)) (d.extY T a + d.extX T x + d.ext0 T w₀) ⬝ dH.jY = a`. Rewrite using `[sandwich_apply, rat_one, Matrix.one_mul, GlobalTheory.TowerSurj.mul_embMat_jY, coord_jY]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `hz (sandwich (rat 1) (rat (GlobalTheory.TowerSurj.embMat d dH)) (d.extY T a + d.extX T x + d.ext0 T w₀) ⬝ dH.j0)`. Rewrite using `[eq_coords dH (sandwich (rat 1) (rat (GlobalTheory.TowerSurj.embMat d dH)) (d.extY T a + d.extX T x + d.ext0 T w₀)), hX, hY, h0]`. Normalize the expressions using the abelian group laws. Establish `e1 : ∀ a : Mx D T.rank ρ, sandwich (rat 1) (rat d.i₀) (d.extY T a + d.extX T x + d.ext0 T w₀) = w₀`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sandwich_apply, rat_one, Matrix.one_mul]`. Conclude with `witt_extension_sum_mul_middle_coordinate d x a w₀`. Establish `key : ∀ a : Mx D T.rank ρ, heisO ψ S T (d.extY T a) (heisO ψ S T (d.extX T x) (heisO ψ S T (d.ext0 T w₀) (fun w => g (sandwich (rat 1) (rat d.i₀) w) * fH (sandwich (rat 1) (rat (GlobalTheory.TowerSurj.embMat d dH)) w)))) 0 = g w₀ * heisO ψ _ T (dH.extY T a) (heisO ψ _ T (dH.extX …`. Introduce `a`. Rewrite using `[d.integrandS_eq, dH.integrandS_eq, symplOH_Y_X, symplOH_Y_X]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show _ * (g _ * fH _) = _`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∫ a in v.𝓕, heisO ψ _ T (dH.extY T a) (heisO ψ _ T (dH.extX T x) (heisO ψ _ T (dH.ext0 T 0) fH)) 0 ∂v.μ = β x` using `hmix x`. Use `show ∫ a in v.𝓕, _ ∂v.μ = β x * g w₀`.
-
-Rewrite using `[show (fun a => heisO ψ S T (d.extY T a) (heisO ψ S T (d.extX T x) (heisO ψ S T (d.ext0 T w₀) (fun w => g (sandwich (rat 1) (rat d.i₀) w) * fH (sandwich (rat 1) (rat (GlobalTheory.TowerSurj.embMat d dH)) w)))) 0) = fun a => g w₀ * heisO ψ _ T (dH.extY T a) (heisO ψ _ T (dH.extX T …`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bump_mul_theta_mixS : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ) (β : Mx D T.rank ρ → ℂ) (g : WO S₀ T → ℂ), IsBump β → IsThetaFunO ψ S₀ T g → ∃ Φ, IsThetaFunO ψ S T Φ ∧ ∀ x, d.mixS T ψ v.μ v.𝓕 Φ x = β x • g := by
   intro D ψ hψ S S₀ T ρ d v β g hβ hg

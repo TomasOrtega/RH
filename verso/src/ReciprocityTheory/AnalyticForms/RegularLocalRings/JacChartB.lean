@@ -12,7 +12,7 @@ section
 variable {n : ℕ} (p : Fin n → ℂ) (K : Ideal (MvPolynomial (Fin n) ℂ)) [IsLocalRing (locR K p)]
 
 /- English proof (translation)
-The claim follows from `(psi_mem_max_iff (K := K) (p := p) (le_ptIdeal_of_nontrivial (K := K) (p := p)) _).mpr (by rw [ptI, RingHom.mem_ker]; simp)`.
+A detailed English derivation is pending.
 -/
 theorem lin_mem_max (i : Fin n) : psi p K (X i - C (p i)) ∈ maximalIdeal (locR K p) :=
   (psi_mem_max_iff (K := K) (p := p) (le_ptIdeal_of_nontrivial (K := K) (p := p)) _).mpr
@@ -30,13 +30,13 @@ theorem algebraMap_eq_psi (c : ℂ) : algebraMap ℂ (locR K p) c = psi p K (C c
   rfl
 
 /- English proof (translation)
-Establish `hK : K ≤ ptI p` using `le_ptIdeal_of_nontrivial (K := K) (p := p)`. Establish `ha0 : eval p a = 0` using `by rw [ptI, RingHom.mem_ker] at ha; exact ha`. Establish `ht` using `taylor p a`. Rewrite `ht` using `[ha0, C_0, sub_zero]`. Establish `hsq` using `psi_mem_sq (K := K) (p := p) hK ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : ∀ i, psi p K (C (gradP p a i)) * psi p K (X i - C (p i)) ∈ maximalIdeal (locR K p)` using `fun i => (maximalIdeal (locR K p)).mul_mem_left _ (lin_mem_max p K i)`. Establish `e : Phi p K (gradP p a) = (maximalIdeal (locR K p)).toCotangent ⟨∑ i, psi p K (C (gradP p a i)) * psi p K (X i - C (p i)), (maximalIdeal (locR K p)).sum_mem fun i _ => hmem i⟩`. Establish `e2 : (⟨∑ i, psi p K (C (gradP p a i)) * psi p K (X i - C (p i)), (maximalIdeal (locR K p)).sum_mem fun i _ => hmem i⟩ : maximalIdeal (locR K p)) = ∑ i, psi p K (C (gradP p a i)) • (⟨psi p K (X i - C (p i)), lin_mem_max p K i⟩ : maximalIdeal (locR K p))`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, map_sum]`. Simplify using `only [Phi, LinearMap.coe_mk, AddHom.coe_mk]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← algebraMap_eq_psi, algebraMap_smul]`. Rewrite using `[e, Ideal.toCotangent_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify `hsq` using `[map_sub, map_sum, map_mul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toCot_psi {a : MvPolynomial (Fin n) ℂ} (ha : a ∈ ptI p)
     (hm : psi p K a ∈ maximalIdeal (locR K p)) :
@@ -65,21 +65,19 @@ theorem toCot_psi {a : MvPolynomial (Fin n) ℂ} (ha : a ∈ ptI p)
   simpa [map_sub, map_sum, map_mul] using hsq
 
 /- English proof (translation)
-Establish `hK : K ≤ ptI p` using `le_ptIdeal_of_nontrivial (K := K) (p := p)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `c hc`. Rewrite `hc` using `[LinearMap.mem_ker]`. Use `set l : MvPolynomial (Fin n) ℂ := ∑ i, C (c i) * (X i - C (p i)) with hl`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hl0 : eval p l = 0` using `by simp [hl]`. Establish `hlI : l ∈ ptI p` using `by rw [ptI, RingHom.mem_ker]; exact hl0`. Establish `hgl : gradP p l = c`. Rewrite using `[hl, grad_sum]`. Use extensionality with `j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[grad_mul, grad_C, grad_lin, Pi.single_apply, Finset.sum_apply]`. Establish `hpl : psi p K l ∈ maximalIdeal (locR K p)` using `(psi_mem_max_iff (K := K) (p := p) hK l).mpr hlI`. Establish `h0 : (maximalIdeal (locR K p)).toCotangent ⟨psi p K l, hpl⟩ = 0`. Rewrite using `[toCot_psi p K hlI hpl, hgl, hc]`. Rewrite `h0` using `[Ideal.toCotangent_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsl⟩` from `exists_of_psi_mem_sq (K := K) (p := p) hK h0`. Take `⟨q, hq, k, hk, hqk⟩` from `Submodule.mem_sup.mp hsl`. Establish `hg : gradP p (s * l) = eval p s • c`. Rewrite using `[grad_mul, hgl, hl0, zero_smul, add_zero]`. Establish `hg2 : gradP p (s * l) = gradP p k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hqk, grad_add, grad_eq_zero_of_mem_sq p hq, zero_add]`. Establish `hs0 : eval p s ≠ 0` using `fun h => hs (by rw [ptI, RingHom.mem_ker]; exact h)`. Establish `hmemk : gradP p k ∈ jacS K p` using `Submodule.subset_span ⟨k, hk, rfl⟩`. Establish `hc' : c = (eval p s)⁻¹ • gradP p k`. Rewrite using `[← hg2, hg, smul_smul, inv_mul_cancel₀ hs0, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc']`. Conclude with `Submodule.smul_mem _ _ hmemk`. Rewrite using `[jacS, Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfI` using `hK hf`. Establish `hpf : psi p K f ∈ maximalIdeal (locR K p)` using `(psi_mem_max_iff (K := K) (p := p) hK f).mpr hfI`. Rewrite using `[← toCot_psi p K hfI hpf, Ideal.toCotangent_eq_zero]`. Establish `h0 : psi p K f = 0`. Simplify using `only [psi, RingHom.comp_apply]`.
-
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_map_of_mem _ hf)`. Use `show psi p K f ∈ maximalIdeal (locR K p) ^ 2`. Rewrite using `[h0]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_Phi : LinearMap.ker (Phi p K) = jacS K p := by
   have hK : K ≤ ptI p := le_ptIdeal_of_nontrivial (K := K) (p := p)
@@ -124,13 +122,13 @@ theorem ker_Phi : LinearMap.ker (Phi p K) = jacS K p := by
     exact zero_mem _
 
 /- English proof (translation)
-Establish `hK : K ≤ ptI p` using `le_ptIdeal_of_nontrivial (K := K) (p := p)`. Introduce `v`. Take `⟨⟨x, hx⟩, rfl⟩` from `(maximalIdeal (locR K p)).toCotangent_surjective v`. Take `⟨a, s, ha, hs, hxs⟩` from `exists_of_mem_max (K := K) (p := p) hK hx`. Establish `hsu : IsUnit (psi p K s)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hs ((psi_mem_max_iff (K := K) (p := p) hK s).mp ((IsLocalRing.mem_maximalIdeal _).mpr h))`. Take `⟨u, hu⟩` from `hsu`. Establish `hpa : psi p K a ∈ maximalIdeal (locR K p)` using `(psi_mem_max_iff (K := K) (p := p) hK a).mpr ha`. Establish `hxe : x = (↑u⁻¹ : locR K p) * psi p K a`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hxs, ← hu, mul_comm x, ← mul_assoc, Units.inv_mul, one_mul]`. Establish `hr : (↑u⁻¹ : locR K p) - algebraMap ℂ (locR K p) (evRing K hK (↑u⁻¹ : locR K p)) ∈ maximalIdeal (locR K p)`. Rewrite using `[← ker_evRing (K := K) (p := p) hK, RingHom.mem_ker, map_sub, algebraMap_eq_psi, evRing_psi, eval_C, sub_self]`. Use `⟨(evRing K hK (↑u⁻¹ : locR K p)) • gradP p a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← toCot_psi p K ha hpa, ← algebraMap_smul (locR K p), ← map_smul, Ideal.toCotangent_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [SetLike.val_smul, smul_eq_mul]`. Rewrite using `[hxe, ← sub_mul, pow_two]`. Conclude with `Ideal.mul_mem_mul (by rw [← neg_sub]; exact neg_mem hr) hpa`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Phi_surjective : Function.Surjective (Phi p K) := by
   have hK : K ≤ ptI p := le_ptIdeal_of_nontrivial (K := K) (p := p)
@@ -155,7 +153,7 @@ theorem Phi_surjective : Function.Surjective (Phi p K) := by
   exact Ideal.mul_mem_mul (by rw [← neg_sub]; exact neg_mem hr) hpa
 
 /- English proof (translation)
-Establish `h` using `LinearMap.finrank_range_add_finrank_ker (Phi p K)`. Rewrite `h` using `[LinearMap.range_eq_top.mpr (Phi_surjective p K), finrank_top, ker_Phi, Module.finrank_fin_fun]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_cot_complex :
     Module.finrank ℂ (CotangentSpace (locR K p)) + Module.finrank ℂ (jacS K p) = n := by
@@ -169,9 +167,9 @@ instance : IsScalarTower ℂ (ResidueField (locR K p)) (CotangentSpace (locR K p
     algebraMap_smul, algebraMap_smul]
 
 /- English proof (translation)
-Establish `hK : K ≤ ptI p` using `le_ptIdeal_of_nontrivial (K := K) (p := p)`. Rewrite using `[finrank_eq_one_iff_of_nonzero' (1 : ResidueField (locR K p)) one_ne_zero]`. Introduce `w`. Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective w`. Use `⟨evRing K hK x, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.smul_def, mul_one, IsScalarTower.algebraMap_apply ℂ (locR K p) (ResidueField (locR K p)), IsLocalRing.ResidueField.algebraMap_eq, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, ← ker_evRing (K := K) (p := p) hK, RingHom.mem_ker, map_sub, algebraMap_eq_psi, ev …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_residueField : Module.finrank ℂ (ResidueField (locR K p)) = 1 := by
   have hK : K ≤ ptI p := le_ptIdeal_of_nontrivial (K := K) (p := p)
@@ -185,7 +183,7 @@ theorem finrank_residueField : Module.finrank ℂ (ResidueField (locR K p)) = 1 
     sub_self]
 
 /- English proof (translation)
-Establish `h` using `finrank_cot_complex p K`. Use `haveI : Module.Free ℂ (ResidueField (locR K p)) := Module.Free.of_divisionRing ℂ _`. Use `haveI : Module.Free (ResidueField (locR K p)) (CotangentSpace (locR K p)) := Module.Free.of_divisionRing (ResidueField (locR K p)) _`. Rewrite `h` using `[← Module.finrank_mul_finrank ℂ (ResidueField (locR K p)) (CotangentSpace (locR K p)), finrank_residueField, one_mul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_cot_eq :
     Module.finrank (ResidueField (locR K p)) (CotangentSpace (locR K p))
@@ -203,15 +201,15 @@ end
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `IsLocalization.isNoetherianRing (ptI p).primeCompl _ inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isNoetherianRing_locPt (p : Fin n → ℂ) : IsNoetherianRing (localization₂ p) :=
   IsLocalization.isNoetherianRing (ptI p).primeCompl _ inferInstance
 
 /- English proof (translation)
-Use `haveI := isNoetherianRing_locPt p`. Establish `hK : K ≤ ptI p` using `fun h hh => by rw [ptI, RingHom.mem_ker]; exact hp h hh`. Establish `hle : Ideal.map (algebraMap (MvPolynomial (Fin n) ℂ) (localization₂ p)) K ≤ IsLocalRing.maximalIdeal (localization₂ p)`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Conclude with `Ideal.map_mono hK`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hne : Ideal.map (algebraMap (MvPolynomial (Fin n) ℂ) (localization₂ p)) K ≠ ⊤` using `fun h => (IsLocalRing.maximalIdeal.isMaximal (localization₂ p)).ne_top (top_le_iff.mp (h ▸ hle))`. Use `haveI : Nontrivial (locR K p) := Ideal.Quotient.nontrivial_iff.mpr hne`. Conclude with `⟨IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective, inferInstance⟩`.
+A detailed English derivation is pending.
 -/
 theorem locRing_isLocalRing_isNoetherian' (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ)
     (hp : ∀ h ∈ K, eval p h = 0) : IsLocalRing (locR K p) ∧ IsNoetherianRing (locR K p) := by
@@ -226,41 +224,37 @@ theorem locRing_isLocalRing_isNoetherian' (K : Ideal (MvPolynomial (Fin n) ℂ))
   exact ⟨IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective, inferInstance⟩
 
 /- English proof (translation)
-Establish `hK` using `le_ptIdeal_of_nontrivial (p := p) K`. Establish `hcot : Module.finrank (ResidueField (locR K p)) (CotangentSpace (locR K p)) = e`. Use `(IsRegularLocalRing.iff_finrank_cotangentSpace (locR K p)).mp inferInstance` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `finrank_cot_eq p K`. Rewrite `h2` using `[hcot]`. Use `⟨by omega, ?_⟩` and prove the remaining obligations. Take `⟨κ, a, -, hspan, hli⟩` from `exists_linearIndependent' ℂ (fun k : K => gradP p (k : MvPolynomial (Fin n) ℂ))`. Establish `: Finite κ` using `hli.finite`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Fintype κ` using `Fintype.ofFinite κ`. Establish `hj : Submodule.span ℂ (Set.range fun k : K => gradP p (k : MvPolynomial (Fin n) ℂ)) = jacS K p`. Rewrite using `[jacS]`. Use `congr 1`. Use extensionality with `v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hcard : Fintype.card κ = n - e`. Use `finrank_span_eq_card hli` as an intermediate fact. Rewrite `this` using `[hspan, hj]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Set `σ : Fin (n - e) ≃ κ` to `(Fintype.equivFinOfCardEq hcard).symm`. Set `F : Fin (n - e) → MvPolynomial (Fin n) ℂ` to `fun i => (a (σ i) : MvPolynomial (Fin n) ℂ)`. Establish `hFK : ∀ i, F i ∈ K` using `fun i => (a (σ i)).2`. Establish `hFli : LinearIndependent ℂ (fun i => gradP p (F i))` using `hli.comp σ σ.injective`. Use `⟨F, hFK, hFli, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set J : Ideal (MvPolynomial (Fin n) ℂ) := Ideal.span (Set.range F) with hJ`. Establish `hJK : J ≤ K` using `Ideal.span_le.mpr (Set.range_subset_iff.mpr hFK)`. Take `⟨hJloc, hJnoeth⟩` from `locRing_isLocalRing_isNoetherian' J p (fun h hh => mem_ptIdeal.mp (hK (hJK hh)))`. Establish `hJcot` using `finrank_cot_eq p J`. Establish `hJrank : n - e ≤ Module.finrank ℂ (jacS J p)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `v : Fin (n - e) → jacS J p` to `fun i => ⟨gradP p (F i), Submodule.subset_span ⟨F i, Ideal.subset_span ⟨i, rfl⟩, rfl⟩⟩`. Establish `hv : LinearIndependent ℂ v` using `LinearIndependent.of_comp (jacS J p).subtype hFli`. Simplify using `using hv.fintype_card_le_finrank`. Establish `hmapJK : Ideal.map (algebraMap _ (localization₂ p)) J ≤ Ideal.map (algebraMap _ (localization₂ p)) K` using `Ideal.map_mono hJK`. Establish `hdimKJ : ringKrullDim (locR K p) ≤ ringKrullDim (locR J p)` using `ringKrullDim_le_of_surjective _ (Ideal.Quotient.factor_surjective hmapJK)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdimJ : ringKrullDim (locR J p) ≤ Module.finrank (ResidueField (locR J p)) (CotangentSpace (locR J p))`. Rewrite using `[← spanFinrank_maximalIdeal_eq_finrank_cotangentSpace]`. Conclude with `ringKrullDim_le_spanFinrank_maximalIdeal _`. Establish `hcotJ : Module.finrank (ResidueField (locR J p)) (CotangentSpace (locR J p)) ≤ e`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hDJ : ringKrullDim (locR J p) = e`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `hdimJ.trans (by exact_mod_cast hcotJ)`. Rewrite using `[← he]`. Conclude with `hdimKJ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hreg : IsRegularLocalRing (locR J p)`. Apply `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le` to reduce the goal to its premises. Rewrite using `[spanFinrank_maximalIdeal_eq_finrank_cotangentSpace, hDJ]`. Conclude with `hcotJ` after adjusting the coercions. Establish `hdom : IsDomain (locR J p)` using `ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.isDomain _`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hmapEq : Ideal.map (algebraMap _ (localization₂ p)) K = Ideal.map (algebraMap _ (localization₂ p)) J`. Assume the negation of the conclusion as `hne`. Use `set 𝔞 : Ideal (locR J p) := (Ideal.map (algebraMap _ (localization₂ p)) K).map (Ideal.Quotient.mk _) with h𝔞`. Establish `h𝔞ne : 𝔞 ≠ ⊥`. Introduce `hbot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hbot` using `[h𝔞, Ideal.map_eq_bot_iff_le_ker, Ideal.mk_ker]`. Conclude with `hne (le_antisymm hbot hmapJK)`. Take `⟨x, hx𝔞, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h𝔞ne`. Establish `hxnz : x ∈ nonZeroDivisors (locR J p)` using `mem_nonZeroDivisors_of_ne_zero hx0`. Establish `hd1` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor hxnz`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle𝔞 : Ideal.span {x} ≤ 𝔞` using `(Ideal.span_singleton_le_iff_mem _).mpr hx𝔞`. Establish `hd2 : ringKrullDim (locR J p ⧸ 𝔞) ≤ ringKrullDim (locR J p ⧸ Ideal.span {x})` using `ringKrullDim_le_of_surjective _ (Ideal.Quotient.factor_surjective hle𝔞)`. Establish `hd3 : ringKrullDim (locR J p ⧸ 𝔞) = ringKrullDim (locR K p)` using `ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hmapJK)`. Rewrite `hd2` using `[hd3, he]`. Rewrite `hd1` using `[hDJ]`.
+Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: ((e : WithBot ℕ∞) + 1 ≤ e)` using `(add_le_add hd2 le_rfl).trans hd1`. Establish `h' : (((e + 1 : ℕ) : WithBot ℕ∞) ≤ ((e : ℕ) : WithBot ℕ∞))` using `by exact_mod_cast this`. Use `WithBot.coe_le_coe.mp h'` as an intermediate fact. Normalize the coercions in `at this`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Establish `hloc : ∀ g ∈ K, ∃ s, s ∉ ptI p ∧ s * g ∈ J` using `fun g hg => exists_mul_mem_of_algebraMap_mem p (hmapEq ▸ Ideal.mem_map_of_mem _ hg)`. Take `⟨G, hG⟩` from `(IsNoetherian.noetherian K : K.FG)`. Establish `hG' : ∀ g ∈ G, ∃ s, s ∉ ptI p ∧ s * g ∈ J` using `fun g hg => hloc g (hG ▸ Ideal.subset_span hg)`. Use `choose! t ht using hG'`. Use `⟨∏ g ∈ G, t g, ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun g hg h0 => (ht g hg).1 (mem_ptIdeal.mpr h0)`. Introduce `g hg`. Rewrite `hg` using `[← hG]`. Proceed by induction on `hg using Submodule.span_induction with`.
-
-Consider the case `mem x hx`. Rewrite using `[← Finset.mul_prod_erase G t hx, mul_comm (t x), mul_assoc]`. Conclude with `J.mul_mem_left _ (ht x hx).2`. Consider the case `zero => rw [mul_zero]`. Conclude with `J.zero_mem`.
-
-Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `J.add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_eq_mul, mul_left_comm]`. Conclude with `J.mul_mem_left _ hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_jacobian_cut' (K : Ideal (MvPolynomial (Fin n) ℂ)) (p : Fin n → ℂ) (e : ℕ)
     [IsRegularLocalRing (locR K p)] (he : ringKrullDim (locR K p) = e) :

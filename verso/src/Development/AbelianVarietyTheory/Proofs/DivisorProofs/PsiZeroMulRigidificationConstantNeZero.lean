@@ -12,15 +12,15 @@ noncomputable section
 namespace GlobalTheory.Poinc.IntTerm
 
 /- English proof (translation)
-Introduce `V _ _ D`. Take `⟨z⟩` from `GlobalTheory.UT.CoefBasic.exists_pt (R := V) (F := FractionRing V)`. Take `⟨J', hJ'⟩` from `GlobalTheory.UT.CoefBasic.exists_good' D.P.isLB z`. Take `⟨c, hc⟩` from `GlobalTheory.UT.CoefBasic.cstH_surj z ((@id ((TF (R := V) (FractionRing V)).left.presheaf.stalk z)ˣ (Geo.Tor.val (D.psi 0) (jFK (R := V) (FractionRing V)) z J')).val * (rigV D (TF (R := V) (FractionRing V)).hom z J').val)`. Use `⟨c, fun h => ?_, fun z' J hJ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hc` using `[h, map_zero]`. Rewrite `hc` using `[← Units.val_mul]`. Conclude with `Units.ne_zero _ hc.symm`. Take `rfl` from `GlobalTheory.UT.CoefBasic.pt_eq z z'`. Establish `a₁` using `GlobalTheory.UT.CoefBasic.val_tr (D.psi_gen 0) (jFK (R := V) (FractionRing V)) hJ hJ'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₂ : rigV D (TF (R` using `V) (FractionRing V)).hom z J = GlobalTheory.UT.CoefBasic.trU D.P.L z J J' ((TF (R := V) (FractionRing V)).hom ≫ eSec D.P.A) * rigV D (TF (R := V) (FractionRing V)).hom z J' := by`. Use `(GlobalTheory.UT.CoefBasic.val_tr (L := D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig_gen (TF (R := V) (FractionRing V)).hom hJ hJ').trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique, zpow_one]`. Both sides reduce to the same expression. Establish `e : jFK (R` using `V) (FractionRing V) ≫ ptK (D.c 0) = (TF (R := V) (FractionRing V)).hom ≫ eSec D.P.A := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.Poinc.ThetaOne.c_zero]`. Both sides reduce to the same expression. Simplify using `only [e] at a₁`. Rewrite using `[GlobalTheory.UT.CoefBasic.cst_eq, hc]`. Use `show (Geo.Tor.val (D.psi 0) (jFK (R := V) (FractionRing V)) z J).val * _ = _`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[a₁, a₂, ← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Simplify using `only [Fintype.prod_unique, Finset.prod_const, Finset.card_univ, Fintype.card_unique, pow_one, zpow_neg, zpow_one, id]`. Rewrite using `[_root_.mul_mul_mul_comm, inv_mul_cancel, _root_.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_zero_rig_const : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V), ∃ c₀ : FractionRing V, c₀ ≠ 0 ∧ ∀ (z : (TF (R := V) (FractionRing V)).left) (J : ((TF (R := V) (FractionRing V)).left ⟶ D.P.A.left) → D.P.L.ι), Good D.P.L z J → (@id ((TF (R := V) (FractionRing V)).left.presheaf.stalk z)ˣ (Geo.Tor.val (D.psi 0) (jFK (R := V) (FractionRing V)) z J)).val * (rigV D (TF (R := V) (FractionRing V)).hom z J).val = GlobalTheory.UT.cst (FractionRing V) z c₀ := by
   intro V _ _ D

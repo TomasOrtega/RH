@@ -12,7 +12,7 @@ namespace GlobalTheory.Proof.RealFockActionTwistedOperators
 open GlobalTheory.IndefiniteRowSideFullHecke.RealActionRational
 
 /- English proof (translation)
-Unfold `thetaKO`. Establish `hp : ((γ * h, g) : GA D S × GA D T) = (γ, 1) * (h, g)` using `by simp`. Rewrite using `[hp, map_mul, Module.End.mul_apply]`. Conclude with `hom.om_aut γ hγ 1 (one_mem _) _ (hom.om_pres _ _ hf)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaKO_rat_mul {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ}
@@ -24,7 +24,7 @@ theorem thetaKO_rat_mul {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} 
   exact hom.om_aut γ hγ 1 (one_mem _) _ (hom.om_pres _ _ hf)
 
 /- English proof (translation)
-Unfold `thetaKO`. Establish `hp : ((h * u, g) : GA D S × GA D T) = (h, g) * (u, 1)` using `by simp`. Rewrite using `[hp, map_mul, Module.End.mul_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaKO_mul_right {D : D7} {S T : HSp D} (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ))
     (f : WO S T → ℂ) (h u : GA D S) (g : GA D T) :
@@ -34,7 +34,7 @@ theorem thetaKO_mul_right {D : D7} {S T : HSp D} (om : GA D S × GA D T →* Mod
   rw [hp, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Establish `h1 : f (ι γ * h * ((1 : J) : G)) = (χ 1 : ℂ) • ρ γ (f h)` using `hf γ h 1`. Simplify using `using h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem adForms_rat {G Γ W : Type} [Group G] [Group Γ] (ι : Γ →* G) [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     {ρ : Γ →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ} {f : G → W} (hf : f ∈ Bridge.AdForms ι ρ J χ)
@@ -43,9 +43,9 @@ theorem adForms_rat {G Γ W : Type} [Group G] [Group Γ] (ι : Γ →* G) [Norme
   simpa using h1
 
 /- English proof (translation)
-Use `show c.ρ (γ * h)⁻¹ (f ((finHom V).rangeRestrict (γ * h))) = _`. Use `congr 1`. Establish `hr : (finHom V).rangeRestrict (γ * h) = Bridge.ratF V ⟨γ, hγ⟩ * (finHom V).rangeRestrict h`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Bridge.ratF]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, adForms_rat (Bridge.ratF V) hf ⟨γ, hγ⟩]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem form_rat {D : D7} {V : HSp D} (c : CoefA V) {J : Subgroup (Bridge.Gf V)} {χ : J →* ℂˣ}
     {f : Bridge.Gf V → c.W} (hf : f ∈ Bridge.AdForms (Bridge.ratF V) c.coef.ρ J χ) {γ : GA D V} (hγ : γ ∈ GQ V)
@@ -59,9 +59,9 @@ theorem form_rat {D : D7} {V : HSp D} (c : CoefA V) {J : Subgroup (Bridge.Gf V)}
   rfl
 
 /- English proof (translation)
-Establish `hu' : finHom V u = 1` using `hu`. Establish `hr : (finHom V).rangeRestrict (h * u) = (finHom V).rangeRestrict h`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hu']`. Use `show c.ρ (h * u)⁻¹ (f ((finHom V).rangeRestrict (h * u))) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`.
+A detailed English derivation is pending.
 -/
 theorem ext_mul_real {D : D7} {V : HSp D} (c : CoefA V) (f : Bridge.Gf V → c.W) {u : GA D V} (hu : u ∈ GinfC V)
     (h : GA D V) : c.ext f (h * u) = c.ρ (h * u)⁻¹ (f ((finHom V).rangeRestrict h)) := by

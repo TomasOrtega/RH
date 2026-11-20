@@ -49,7 +49,7 @@ structure ValLL (D : D7) (C : CharFrame D) : Prop where
   del' : C.del'.ValuesIn 0 D.what₂.embLL
 
 /- English proof (translation)
-Introduce `v hv` and use `by obtain ⟨y, hy⟩ := h v hv exact ⟨(y : D.what₂.LL), hy⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HChar.ValuesIn.ofLL0 {D : D7} {χ : HChar D.host.E} {s : ℝ} (h : χ.ValuesIn s (embLL0 D)) :
     χ.ValuesIn s D.what₂.embLL := fun v hv => by
@@ -57,7 +57,7 @@ theorem HChar.ValuesIn.ofLL0 {D : D7} {χ : HChar D.host.E} {s : ℝ} (h : χ.Va
   exact ⟨(y : D.what₂.LL), hy⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun j => (h.mu0 j).ofLL0, h.eta.ofLL0, h.chiPsi.ofLL0, h.del.ofLL0, h.del'.ofLL0⟩`.
+Supply the required witnesses or components.
 -/
 theorem ValLL0.toLL {D : D7} {C : CharFrame D} (h : ValLL0 D C) : ValLL D C :=
   ⟨fun j => (h.mu0 j).ofLL0, h.eta.ofLL0, h.chiPsi.ofLL0, h.del.ofLL0, h.del'.ofLL0⟩
@@ -86,7 +86,7 @@ structure TupTied (D : D7) (C : CharFrame D) (nch : NChoice D) where
   psi_un : ∀ w, D.what₂.muAt w = D.what₂.mu0 → psi w = 1
 
 /- English proof (translation)
-Distinguish the cases in `h : D.what₂.muAt w = D.what₂.mu0`. Conclude with `⟨∅, by rw [Tp.psi_un w h]; exact isPsi_one _⟩`. Conclude with `⟨_, Tp.psi_is w h⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem TupTied.psi_gen {D : D7} {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C nch) (w : D.what₂.places.Pl) :
     ∃ Q, IsPsi (D.what₂.places.resChar w) Q (Tp.psi w) := by
@@ -154,7 +154,7 @@ structure ThetaChrTied (D : D7) (C : CharFrame D) (nch : NChoice D) (Tp : TupTie
   etaT : eChr X.etaT = C.eta
 
 /- English proof (translation)
-Unfold `ThetaX.carY`. Use `split_ifs`. Rewrite using `[map_mul, map_inv, T.chrOf, T.etaT]`. Conclude with `T.chrOf μ j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ThetaChrTied.carY {D : D7} {C : CharFrame D} {nch : NChoice D} {Tp : TupTied D C nch} {X : ThetaX D}
     (T : ThetaChrTied D C nch Tp X) (μ : D.what₂.Tup) (j : Fin D.R.m) (i : ℕ) :

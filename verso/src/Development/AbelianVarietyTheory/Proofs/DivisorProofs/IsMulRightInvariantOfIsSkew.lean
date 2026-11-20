@@ -17,7 +17,7 @@ namespace GlobalTheory.SkewUnimod
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (NumberField.InfinitePlace F)` from `inferInstance`. Introduce `hz`. Apply `GlobalTheory.UnitaryVol.det_ne_zero_of_isCartan (h.cartan w)` to reduce the goal to its premises. Rewrite using `[Matrix.det_smul, show W.J.map (B.emb w).1 = ((B.emb w).1).mapMatrix W.J from rfl, ← RingHom.map_det, hz, map_zero, mul_zero]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_ne_zero_of_isSkew {σ : E →ₐ[F] E} {B : Base F E} {n : ℕ} {W : Spc F E n} {r s : ℕ}
     (h : W.IsSkew σ B r s) : W.J.det ≠ 0 := by
@@ -28,9 +28,9 @@ theorem det_ne_zero_of_isSkew {σ : E →ₐ[F] E} {B : Base F E} {n : ℕ} {W :
     mul_zero]
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, hσ, hσδ]`. Rewrite using `[h.skew j i]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.det_smul, show W.J.map σ = (σ : E →+* E).mapMatrix W.J from rfl, ← RingHom.map_det]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ hδ) ((map_ne_zero _).2 (det_ne_zero_of_isSkew h))`.
+A detailed English derivation is pending.
 -/
 theorem isHermND_smul_map {σ : E →ₐ[F] E} {B : Base F E} {n : ℕ} {W : Spc F E n} {r s : ℕ}
     (hσ : ∀ x, σ (σ x) = x) (h : W.IsSkew σ B r s) {δ : E} (hδ : δ ≠ 0) (hσδ : σ δ = -δ) :
@@ -43,19 +43,15 @@ theorem isHermND_smul_map {σ : E →ₐ[F] E} {B : Base F E} {n : ℕ} {W : Spc
     exact mul_ne_zero (pow_ne_zero _ hδ) ((map_ne_zero _).2 (det_ne_zero_of_isSkew h))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n W r s hB hW μ hμ`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hB.cm`. Take `⟨δ, hδ, hσδ⟩` from `GlobalTheory.HermUnimod.exists_anti hB.cm`. Establish `hJ : IsHermND σ (δ • W.J.map σ)` using `isHermND_smul_map hσ hW hδ hσδ`. Establish `heq : GlobalTheory.WeilM.UG (cA σ) (incM F W.J) = HR (AF F) σ (δ • W.J.map σ)` using `GlobalTheory.SiegelSet.ug_eq_hr (F := F) (J := W.J) hσ hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e : UA σ W.J ≃* HA (AF F) σ (δ • W.J.map σ)` to `MulEquiv.subgroupCongr heq`. Establish `he : Continuous e` using `continuous_subtype_val.subtype_mk _`. Establish `he' : Continuous e.symm` using `continuous_subtype_val.subtype_mk _`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (HA (AF F) σ (δ • W.J.map σ)) := ⟨rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsTopologicalGroup (HA (AF F) σ (δ • W.J.map σ)) := inferInstanceAs (IsTopologicalGroup (HR (AF F) σ (δ • W.J.map σ)))`. Use `haveI : ContinuousMul (UA σ W.J) := ⟨by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : (fun p : UA σ W.J × UA σ W.J => p.1 * p.2) = fun p => e.symm (e p.1 * e p.2)`. Use function extensionality and compare the values at `fun p => by rw [← map_mul, MulEquiv.symm_apply_apply]`. Rewrite using `[h3]`. Conclude with `he'.comp ((he.comp continuous_fst).mul (he.comp continuous_snd))⟩`. Use `haveI : (μ.map e).IsHaarMeasure := MulEquiv.isHaarMeasure_map μ e he he'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : (μ.map e).IsMulRightInvariant` using `GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_adelic σ hσ hδ hσδ hJ (μ.map e)`. Establish `hem : Measurable e` using `he.measurable`. Establish `hem' : Measurable e.symm` using `he'.measurable`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `hmg : Measurable fun y : HA (AF F) σ (δ • W.J.map σ) => y * e g` using `(continuous_mul_right (e g)).measurable`.
-
-Establish `h1 : (μ.map e).map e.symm = μ`. Rewrite using `[Measure.map_map hem' hem]`. Establish `: (e.symm ∘ e : UA σ W.J → UA σ W.J) = id` using `funext fun x => e.symm_apply_apply x`. Rewrite using `[this, Measure.map_id]`. Establish `h2 : ((μ.map e).map (fun y => y * e g)).map e.symm = μ.map (· * g)`.
-
-Rewrite using `[Measure.map_map hmg hem, Measure.map_map hem' (hmg.comp hem)]`. Use `congr 1`. Rewrite using `[← h2, hR.map_mul_right_eq_self (e g), h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_of_isSkew : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (W : Spc F E n) (r s : ℕ), B.IsGood σ → W.IsSkew σ B r s →

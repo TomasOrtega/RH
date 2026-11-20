@@ -15,7 +15,7 @@ open Matrix Formalism.NG Formalism.RepresentationBoundsCohomology.BR Formalism.R
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `ℓ _ D u w s m e d U hIn`. Apply `hIn` to reduce the goal to its premises. Introduce `R r L En M0 h0 W A Y' F hX hA hY1 hY2 hHT X infm infX K T φ ψ hd hin hLES hT5 hCR hK hTI hT4 hT3 htf Gs _ _ _ M _ _ _ _ _ _ MB _ _ _ _ _ aM aB Fj Hs γs lg ε iGe iB Os _ _ cupL embB hlg hadd hH hgen hγ hsq hcup hpin hLa hRV _ _ _ _ exQ Hfs δ hexQ hcompat hspan hdim hLu hcorF hcr h …`. Substitute `hu hw hs hm` using the available equality. Conclude with `tbWFull ℓ R r L En M0 h0 W U A Y' F hX hA hY1 hY2 hHT e d D X infm infX K T φ ψ hd hin hLES hT5 hCR hK hTI hT4 hT3 htf Gs M MB aM aB Fj Hs γs lg ε iGe iB Os cupL embB hlg hadd hH hgen hγ hsq hcup hpin hLa hRV exQ Hfs δ hexQ hcompat hspan hdim hLu hcorF hcr hC hL hdR hH2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem tbWIn : StatTBWIn := by
   intro ℓ _ D u w s m e d U hIn
@@ -31,7 +31,7 @@ theorem tbWIn : StatTBWIn := by
     hC hL hdR hH2
 
 /- English proof (translation)
-Introduce `ℓ _ D w m Uτ hIn`. Apply `hIn` to reduce the goal to its premises. Introduce `R r L En M0 h0 W A Y' F FH hA hY1 hY2 ρ Sτ Pp Sp Cm Bm hX hP hS hB hHT h0U hne infm infX X hInf hT4 hUn hFl hLES hD hw hm`. Substitute `hD hw hm` using the available equality. Conclude with `h_zero_from_w_full ℓ R r L En M0 h0 W A Y' F FH hA hY1 hY2 ρ Sτ Pp Sp Cm Bm Uτ hX hP hS hB hHT h0U hne infm infX X hInf hT4 hUn hFl hLES`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem h_zero_from_w_inputs : HZeroFromWInputsStatement := by
   intro ℓ _ D w m Uτ hIn
@@ -43,7 +43,7 @@ theorem h_zero_from_w_inputs : HZeroFromWInputsStatement := by
     hInf hT4 hUn hFl hLES
 
 /- English proof (translation)
-Introduce `ℓ _ D w m J h`. Take `⟨a1, a2, a3⟩` from `h`. Take `⟨b1, b2, b3, -, -, b6, b7, b8, b9, b10⟩` from `h_zero_from_w_inputs ℓ D w m (jumpsDualTwist J) a3`. Conclude with `⟨a1, a2, b1, b2, b3, b6, b7, b8, b9, b10⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem h0WJ : HZeroFromWJumpsStatement := by
   intro ℓ _ D w m J h

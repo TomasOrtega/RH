@@ -7,7 +7,7 @@ open Finset Matrix
 namespace ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-The claim follows from `dsExistsG (fun _ => S7.psiExists)`.
+A detailed English derivation is pending.
 -/
 theorem dsExistsG_closed :
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), Formalism.QuantumDeterminants.IsHCParam lam →

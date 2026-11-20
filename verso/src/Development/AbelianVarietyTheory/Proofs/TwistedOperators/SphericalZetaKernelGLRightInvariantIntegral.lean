@@ -13,11 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ZetaGL
 
 /- English proof (translation)
-Introduce `E _ _ w r N z φ hφ g k hk`. Take `⟨ϖ, hϖ⟩` from `exists_isUnifV w`. Establish `hm` using `mem_Ov_of_isUnifV hϖ`. Take `⟨a, -, k₁, hk₁, k₂, hk₂, e⟩` from `Formalism.UG.Final.CartanDecomp E w r ϖ hm hϖ g`. Take `⟨t, ht⟩ : ∃ t : GL (Fin r) (w.adicCompletion E), t = k₁⁻¹ * g * k₂⁻¹` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hg : g = k₁ * t * k₂` using `by rw [ht]; group`. Establish `htv : t.1 = Matrix.diagonal fun i => ϖ ^ a i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ht, Units.val_mul, Units.val_mul, e]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by rw [Units.inv_mul, Units.mul_inv, Matrix.one_mul, Matrix.mul_one]; rfl`. Rewrite using `[hg, mul_assoc (k₁ * t) k₂ k, hφ ϖ hϖ a t htv k₁ hk₁ (k₂ * k) (mul_mem hk₂ hk), hφ ϖ hϖ a t htv k₁ hk₁ k₂ hk₂]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerGL_mul_right_KGL : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (r N : ℕ) (z : ℂˣ) (φ : GL (Fin r) (w.adicCompletion E) → ℂ), KerGL w N z φ → ∀ g k : GL (Fin r) (w.adicCompletion E), k ∈ KGL w r → φ (g * k) = φ g := by
   intro E _ _ w r N z φ hφ g k hk

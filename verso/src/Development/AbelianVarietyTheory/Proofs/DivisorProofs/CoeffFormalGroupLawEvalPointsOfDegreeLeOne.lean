@@ -12,13 +12,13 @@ namespace GlobalTheory.QLog.OpLin
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `hsum` using `h`. Rewrite `hsum` using `[Finsupp.degree_eq_sum]`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, D s ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `[hc] at hsum`. Use `⟨s, ?_⟩` and prove the remaining obligations. Establish `hle : ∀ t, t ≠ s → D s + D t ≤ 1` using `fun t ht => by`. Rewrite using `[← hsum, ← Finset.sum_pair (Ne.symm ht)]`. Conclude with `Finset.sum_le_sum_of_subset (Finset.subset_univ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `t`. Distinguish the cases in `ht : t = s`. Substitute `ht` using the available equality. Establish `: D t ≤ 1` using `h ▸ Finsupp.le_degree t D`. Simplify using `only [Finsupp.single_eq_same]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `hle t ht` as an intermediate fact. Simplify using `only [Finsupp.single_apply, if_neg (Ne.symm ht)]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem degree_eq_one {σ : Type} [Fintype σ] {D : σ →₀ ℕ} (h : D.degree = 1) :
     ∃ s, D = Finsupp.single s 1 := by
@@ -44,7 +44,7 @@ theorem degree_eq_one {σ : Type} [Fintype σ] {D : σ →₀ ℕ} (h : D.degree
     omega
 
 /- English proof (translation)
-Use `le_trans ?_ (le_order_prod _ _)` and prove the remaining obligations. Rewrite using `[Finsupp.degree_apply, Nat.cast_sum]`. Conclude with `Finset.sum_le_sum fun s _ => le_order_pow_of_constantCoeff_eq_zero _ (ha s)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_order_prod_pow {σ τ : Type} {a : σ → MvPowerSeries τ R}
     (ha : ∀ s, constantCoeff (a s) = 0) (D : σ →₀ ℕ) :
@@ -54,15 +54,15 @@ theorem le_order_prod_pow {σ τ : Type} {a : σ → MvPowerSeries τ R}
   exact Finset.sum_le_sum fun s _ => le_order_pow_of_constantCoeff_eq_zero _ (ha s)
 
 /- English proof (translation)
-Establish `hs : HasSubst a` using `hasSubst_of_constantCoeff_zero ha`. Rewrite using `[coeff_subst hs]`. Establish `hsupp : (Function.support fun D : σ →₀ ℕ => coeff D f • coeff β (D.prod fun s e => a s ^ e)) ⊆ ((Finset.univ.image fun s : σ => Finsupp.single s 1 : Finset (σ →₀ ℕ)) : Set (σ →₀ ℕ))`. Introduce `D hD`. Rewrite `hD` using `[Function.mem_support]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : D ≠ 0`. Introduce and unpack `rfl`. Apply `hD` to reduce the goal to its premises. Rewrite using `[coeff_zero_eq_constantCoeff_apply, hf, zero_smul]`. Establish `h1 : D.degree ≤ 1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Apply `hD` to reduce the goal to its premises. Rewrite using `[coeff_of_lt_order (lt_of_lt_of_le ?_ (le_order_prod_pow ha D)), smul_zero]`. Conclude with `lt_of_le_of_lt hβ hlt` after adjusting the coercions.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : D.degree = 1`. Establish `: D.degree ≠ 0` using `fun h => h0 ((Finsupp.degree_eq_zero_iff D).1 h)`. Use linear arithmetic over natural numbers and integers. Take `⟨s, rfl⟩` from `degree_eq_one h2`. Simplify using the standard rewrite rules.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, Finset.sum_image (fun s _ t _ h => Finsupp.single_left_injective one_ne_zero h)]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.prod_single_index (by simp), pow_one, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_subst_of_degree_le_one {σ τ : Type} [Fintype σ] {a : σ → MvPowerSeries τ R}
     (ha : ∀ s, constantCoeff (a s) = 0) {f : MvPowerSeries σ R} (hf : constantCoeff f = 0)
@@ -103,7 +103,7 @@ namespace GlobalTheory.QLog.OpLin
 variable {B O : Type} [CommRing B] [CommRing O] {d : ℕ}
 
 /- English proof (translation)
-Establish `h` using `congrArg (coeff (Finsupp.single j 1)) (congrFun hμ.unit i)`. Simplify using `only [op, at2] at h`. Apply the tactic sequence `rw [coeff_subst_of_degree_le_one (by rintro (s | s) <;> simp) (hμ.const i) (by simp), Fintype.sum_sum_type] at h`. Simplify `h` using `[coeff_X, Finsupp.single_left_inj one_ne_zero, eq_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeff_inl {θ : B →+* O} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B} (hμ : IsLift θ μ)
     (i j : Fin d) : coeff (Finsupp.single (Sum.inl j) 1) (μ i) = if j = i then 1 else 0 := by
@@ -115,7 +115,7 @@ theorem coeff_inl {θ : B →+* O} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin 
   simpa [coeff_X, Finsupp.single_left_inj one_ne_zero, eq_comm] using h
 
 /- English proof (translation)
-Establish `h` using `congrArg (coeff (Finsupp.single (Sum.inr j) 1)) (hμ.comm i)`. Simplify using `only [swap, at2] at h`. Apply the tactic sequence `rw [coeff_subst_of_degree_le_one (by rintro (s | s) <;> simp) (hμ.const i) (by simp), Fintype.sum_sum_type] at h`. Rewrite using `[← h, ← coeff_inl hμ i j]`. Simplify using `[coeff_X, Finsupp.single_left_inj one_ne_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_inr {θ : B →+* O} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B} (hμ : IsLift θ μ)
     (i j : Fin d) : coeff (Finsupp.single (Sum.inr j) 1) (μ i) = if j = i then 1 else 0 := by
@@ -128,7 +128,7 @@ theorem coeff_inr {θ : B →+* O} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin 
   simp [coeff_X, Finsupp.single_left_inj one_ne_zero]
 
 /- English proof (translation)
-Introduce `B O _ _ θ d μ hμ τ u v hu hv i β hβ`. Simplify using `only [op, at2]`. Rewrite using `[coeff_subst_of_degree_le_one (by rintro (s | s); exacts [hu s, hv s]) (hμ.const i) hβ, Fintype.sum_sum_type, map_add]`. Simplify using `[coeff_inl hμ, coeff_inr hμ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_op_of_degree_le_one : ∀ {B O : Type} [CommRing B] [CommRing O] (θ : B →+* O) {d : ℕ}
     {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B}, IsLift θ μ → ∀ {τ : Type}

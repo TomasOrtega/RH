@@ -22,7 +22,7 @@ open TopologicalSpace Opposite
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Establish `hm : r y ∈ N.U i ⊓ N.U j` using `⟨hi, hj⟩`. Conclude with `(gs_res r y _ hm _).symm.trans ((congrArg (gs r y _) (s.compat i j)).trans ((gs_mul r y _ hm _ _).trans (congrArg₂ (· * ·) (gs_unit r y _ hm _) (gs_res r y _ hm _))))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sec_gs {N : LB X} (s : LB.Sec N) (r : Y ⟶ X) (y : Y) {i j : N.ι} (hi : r y ∈ N.U i) (hj : r y ∈ N.U j) :
     gs r y (N.U i) (s.f i) = (gm r y (N.U i ⊓ N.U j) (N.g i j)).val * gs r y (N.U j) (s.f j) := by
@@ -31,13 +31,11 @@ theorem sec_gs {N : LB X} (s : LB.Sec N) (r : Y ⟶ X) (y : Y) {i j : N.ι} (hi 
     (congrArg₂ (· * ·) (gs_unit r y _ hm _) (gs_res r y _ hm _))))
 
 /- English proof (translation)
-Establish `gl : ∀ j : N.ι, ∃ b : Γ(X, N.U j), ∀ i x, x ∈ N.U j → x ∈ W i → gs (𝟙 X) x (N.U j) b = (gm (𝟙 X) x (N.U j ⊓ N.U (c i)) (N.g j (c i))).val * gs (𝟙 X) x (W i) (a i)`. Introduce `j`. Take `⟨u, hu⟩ : ∃ u : ∀ i, Γ(X, N.U j ⊓ W i), ∀ i x, x ∈ N.U j ⊓ W i → gs (𝟙 X) x _ (u i) = (gm (𝟙 X) x (N.U j ⊓ N.U (c i)) (N.g j (c i))).val * gs (𝟙 X) x (W i) (a i)` from `⟨fun i => (X.presheaf.map (homOfLE (inf_le_inf_left _ (hc i) : N.U j ⊓ W i ≤ N.U j ⊓ N.U (c i))).op).hom (N.g j (c i)).val * (X.presheaf.map (homOfLE (inf_le_right : N.U j ⊓ W i ≤ W i)).op).hom (a i), fun i x hx => (gs_mul _ x _ hx _ _).trans (congrArg₂ (· * ·) ((gs_res _ x _ hx …`. Take `⟨b, hb, -⟩` from `X.sheaf.existsUnique_gluing' (fun i => N.U j ⊓ W i) (N.U j) (fun i => homOfLE inf_le_left) (fun x hx => by`. Take `⟨i, hi⟩` from `hW x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Opens.mem_iSup.2 ⟨i, hx, hi⟩) u`. Use the proof step `(fun i i' => fn_ext (V := (N.U j ⊓ W i) ⊓ (N.U j ⊓ W i')) fun x hx => by`. Use `(gs_res (𝟙 X) x inf_le_left hx _).trans (Eq.trans ?_ (gs_res (𝟙 X) x inf_le_right hx _).symm)` and prove the remaining obligations. Rewrite using `[hu i x hx.1, hu i' x hx.2, h i i' x hx.1.2 hx.2.2, ← _root_.mul_assoc, ← Units.val_mul, gm_cocycle hN (𝟙 X) x hx.1.1 (hc i hx.1.2) (hc i' hx.2.2)])`. Use `⟨b, fun i x h₁ h₂ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : x ∈ N.U j ⊓ W i` using `⟨h₁, h₂⟩`. Conclude with `(gs_res (𝟙 X) x inf_le_left hx b).symm.trans ((congrArg (gs (𝟙 X) x (N.U j ⊓ W i)) (hb i)).trans (hu i x hx))`. Use `choose b hb using gl`. Use `⟨⟨b, fun j j' => fn_ext fun x hx => ?_⟩, fun i x hx => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hW x`.
-
-Use `(gs_res (𝟙 X) x _ hx _).trans (Eq.trans ?_ ((gs_mul (𝟙 X) x _ hx _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 X) x _ hx _) (gs_res (𝟙 X) x _ hx _))).symm)` and prove the remaining obligations. Rewrite using `[hb j i x hx.1 hi, hb j' i x hx.2 hi, ← _root_.mul_assoc, ← Units.val_mul, gm_cocycle hN (𝟙 X) x hx.1 hx.2 (hc i hi)]`. Use `show gs (𝟙 X) x _ (b (c i)) = _`. Rewrite using `[hb (c i) i x (hc i hx) hx, gm_self hN (𝟙 X) x (hc i hx), Units.val_one, _root_.one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue {N : LB X} (hN : N.IsLB) {I : Type} (W : I → X.Opens) (c : I → N.ι) (hc : ∀ i, W i ≤ N.U (c i))
     (hW : ∀ x : X, ∃ i, x ∈ W i) (a : ∀ i, Γ(X, W i))
@@ -76,9 +74,9 @@ theorem glue {N : LB X} (hN : N.IsLB) {I : Type} (W : I → X.Opens) (c : I → 
     rw [hb (c i) i x (hc i hx) hx, gm_self hN (𝟙 X) x (hc i hx), Units.val_one, _root_.one_mul]
 
 /- English proof (translation)
-Rewrite using `[gs_eq r y U hy]`. Establish `h₁ : Function.Injective (r.app U).hom` using `(ConcreteCategory.bijective_of_isIso (r.app U)).1`. Introduce `h`. Apply `ha` to reduce the goal to its premises. Apply `h₁` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `germ_injective_of_isIntegral Y y (show y ∈ r ⁻¹ᵁ U from hy)` to reduce the goal to its premises. Rewrite using `[map_zero, map_zero]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_ne [IsIntegral Y] (r : Y ⟶ X) [IsIso r] (y : Y) {U : X.Opens} (hy : r y ∈ U) {a : Γ(X, U)} (ha : a ≠ 0) :
     gs r y U a ≠ 0 := by
@@ -92,9 +90,9 @@ theorem gs_ne [IsIntegral Y] (r : Y ⟶ X) [IsIso r] (y : Y) {U : X.Opens} (hy :
   exact h
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hs`. Establish `hne : (N.U j : Set X).Nonempty`. Assume the negation of the conclusion as `hn`. Conclude with `hj (fn_ext fun y hy => (hn ⟨y, hy⟩).elim)`. Take `⟨y, hy, hyi, hyj⟩` from `(IrreducibleSpace.isIrreducible_univ X).isPreirreducible _ _ (N.U i).isOpen (N.U j).isOpen ⟨x, trivial, hx⟩ (by simpa using hne)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `e` using `sec_gs s (𝟙 X) y (i := j) (j := i) hyj hyi`. Rewrite `e` using `[h0, gs_eq (𝟙 X) y (N.U i) hyi, map_zero, map_zero, mul_zero]`. Conclude with `gs_ne (𝟙 X) y hyj hj e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_ne [IsIntegral X] {N : LB X} (s : LB.Sec N) (hs : ∃ j, s.f j ≠ 0) {i : N.ι} {x : X} (hx : x ∈ N.U i) :
     s.f i ≠ 0 := by
@@ -110,9 +108,9 @@ theorem sec_ne [IsIntegral X] {N : LB X} (s : LB.Sec N) (hs : ∃ j, s.f j ≠ 0
   exact gs_ne (𝟙 X) y hyj hj e
 
 /- English proof (translation)
-Substitute `e₁ e₂ e₃ e₄` using the available equality. Establish `: (A ^ k * C⁻¹) * (B ^ k * D⁻¹) * (C * D * E * ((B * A⁻¹ * F) ^ k)⁻¹) = A ^ (2 * k) * (E * (F ^ k)⁻¹)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow]`. Use `module`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg Units.val this` as an intermediate fact. Simplify using `only [Units.val_mul] at this ⊢`. Take the linear combination `(P * Q) * this`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem alg {R : Type} [CommRing R] (k : ℕ) {A B C D E F E' F' : Rˣ} {P Q P' Q' : R}
     (e₁ : P' = (A ^ k * C⁻¹).val * P) (e₂ : Q' = (B ^ k * D⁻¹).val * Q) (e₃ : E' = C * D * E)
@@ -128,23 +126,21 @@ theorem alg {R : Type} [CommRing R] (k : ℕ) {A B C D E F E' F' : Rˣ} {P Q P' 
   linear_combination (P * Q) * this
 
 /- English proof (translation)
-Set `W : (L.ι × L.ι) × (O.ι × O.ι) → X.Opens` to `fun i => (L.U i.1.1 ⊓ O.U i.2.1) ⊓ σ ⁻¹ᵁ (L.U i.1.2 ⊓ O.U i.2.2)`. Establish `l₁ : ∀ i, W i ≤ LB.wchart L ![σ, 𝟙 X] ![i.1.2, i.1.1]` using `fun i x hx => Set.mem_iInter.2 fun k => by fin_cases k exacts [hx.2.1, hx.1.1]`. Establish `l₂ : ∀ i, W i ≤ LB.wchart O ![𝟙 X, σ, z] ![i.2.1, i.2.2, p₀]` using `fun i x hx => Set.mem_iInter.2 fun k => by fin_cases k exacts [hx.1.2, hx.2.2, hz x]`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : ∀ i, Γ(X, W i), ∀ i x, x ∈ W i → gs (𝟙 X) x (W i) (a i) = gs (𝟙 X) x (L.U i.1.1 ⊓ O.U i.2.1) (s.f (i.1.1, i.2.1)) * gs σ x (L.U i.1.2 ⊓ O.U i.2.2) (s.f (i.1.2, i.2.2)) * (gm (𝟙 X) x (LB.wchart O ![𝟙 X, σ, z] ![i.2.1, i.2.2, p₀]) (t.s ![i.2.1, i.2.2, p₀]) * ((gm (𝟙 …`. Use `⟨fun i => rs X (inf_le_left : W i ≤ L.U i.1.1 ⊓ O.U i.2.1) (s.f (i.1.1, i.2.1)) * rs X (inf_le_right : W i ≤ σ ⁻¹ᵁ (L.U i.1.2 ⊓ O.U i.2.2)) ((σ.app (L.U i.1.2 ⊓ O.U i.2.2)).hom (s.f (i.1.2, i.2.2))) * (res (l₂ i) (t.s ![i.2.1, i.2.2, p₀]) * ((res (l₁ i) (sy.s ![i.1.2, i.1.1])) ^ …` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gs_mul _ x _ hx _ _).trans (congrArg₂ (· * ·) ((gs_mul _ x _ hx _ _).trans (congrArg₂ (· * ·) (gs_res _ x _ hx _) ((gs_res _ x _ hx _).trans ((gs_pull (𝟙 X) σ x _ hx.2 _).trans (by rw [Category.id_comp]))))) ((gs_unit _ x _ hx _).trans (congrArg Units.val ?_)))` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, map_pow]`. Conclude with `congrArg₂ (· * ·) (gm_res _ x _ hx _) (congrArg (fun q => (q ^ k)⁻¹) (gm_res _ x _ hx _))`. Establish `cov : ∀ x : X, ∃ i, x ∈ W i` using `fun x => by`. Take `⟨j, hj⟩` from `exists_chart hL x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j', hj'⟩` from `exists_chart hL (σ x)`. Take `⟨p, hp⟩` from `exists_chart hO x`. Take `⟨q, hq⟩` from `exists_chart hO (σ x)`. Conclude with `⟨((j, j'), (p, q)), ⟨hj, hp⟩, ⟨hj', hq⟩⟩`. Take `⟨s', hs'⟩` from `glue (isLB_pw hL (2 * k : ℕ)) W (fun i => i.1.1) (fun i x hx => hx.1.1) cov a (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i i' x hx hx'`. Establish `tr : ∀ (r : X ⟶ X) (p q : L.ι × O.ι), r x ∈ L.U p.1 ⊓ O.U p.2 → r x ∈ L.U q.1 ⊓ O.U q.2 → gs r x (L.U p.1 ⊓ O.U p.2) (s.f p) = (gm r x (L.U p.1 ⊓ L.U q.1) (L.g p.1 q.1) ^ k * (gm r x (O.U p.2 ⊓ O.U q.2) (O.g p.2 q.2))⁻¹).val * gs r x (L.U q.1 ⊓ O.U q.2) (s.f q)`. Introduce `r p q hp hq`. Use `(sec_gs s r x (i := p) (j := q) hp hq).trans (congrArg₂ (· * ·) (congrArg Units.val ?_) rfl)` and prove the remaining obligations. Use `(gm_div O (pw L k) r x p q ⟨hp, hq⟩).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(map_zpow _ _ _).trans (zpow_natCast _ _)`. Establish `e₁` using `tr (𝟙 X) (i.1.1, i.2.1) (i'.1.1, i'.2.1) hx.1 hx'.1`. Establish `e₂` using `tr σ (i.1.2, i.2.2) (i'.1.2, i'.2.2) hx.2 hx'.2`. Establish `e₃` using `gen_trans ht (𝟙 X) x (l₂ i hx) (l₂ i' hx')`. Establish `e₄` using `gen_trans hsy (𝟙 X) x (l₁ i hx) (l₁ i' hx')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `f₃ : trF (L` using `O) ![𝟙 X, σ, z] ![1, 1, -2] (𝟙 X) x ![i.2.1, i.2.2, p₀] ![i'.2.1, i'.2.2, p₀] = gm (𝟙 X) x (O.U i.2.1 ⊓ O.U i'.2.1) (O.g _ _) * gm σ x (O.U i.2.2 ⊓ O.U i'.2.2) (O.g _ _) := by`. Rewrite using `[trF, Fin.prod_univ_three]`. Use `show gm (𝟙 X ≫ 𝟙 X) x (O.U i.2.1 ⊓ O.U i'.2.1) (O.g _ _) ^ (1 : ℤ) * gm (𝟙 X ≫ σ) x (O.U i.2.2 ⊓ O.U i'.2.2) (O.g _ _) ^ (1 : ℤ) * gm (𝟙 X ≫ z) x (O.U p₀ ⊓ O.U p₀) (O.g _ _) ^ (-2 : ℤ) = _`. Rewrite using `[gm_self hO (𝟙 X ≫ z) x (hz x), one_zpow, _root_.mul_one, zpow_one, zpow_one, Category.id_comp, Category.id_comp]`. Establish `f₄ : trF (L` using `L) ![σ, 𝟙 X] ![1, -1] (𝟙 X) x ![i.1.2, i.1.1] ![i'.1.2, i'.1.1] = gm σ x (L.U i.1.2 ⊓ L.U i'.1.2) (L.g _ _) * (gm (𝟙 X) x (L.U i.1.1 ⊓ L.U i'.1.1) (L.g _ _))⁻¹ := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[trF, Fin.prod_univ_two]`. Use `show gm (𝟙 X ≫ σ) x (L.U i.1.2 ⊓ L.U i'.1.2) (L.g _ _) ^ (1 : ℤ) * gm (𝟙 X ≫ 𝟙 X) x (L.U i.1.1 ⊓ L.U i'.1.1) (L.g _ _) ^ (-1 : ℤ) = _`. Rewrite using `[zpow_one, zpow_neg_one, Category.id_comp, Category.id_comp]`. Establish `f₅ : gm (𝟙 X) x ((pw L (2 * k : ℕ)).U i.1.1 ⊓ (pw L (2 * k : ℕ)).U i'.1.1) ((pw L (2 * k : ℕ)).g i.1.1 i'.1.1) = gm (𝟙 X) x (L.U i.1.1 ⊓ L.U i'.1.1) (L.g _ _) ^ (2 * k)` using `(map_zpow _ _ _).trans (zpow_natCast _ _)`. Rewrite using `[ha i x hx, ha i' x hx', f₅]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `alg k e₁ e₂ (e₃.trans (congrArg₂ (· * ·) f₃ rfl)) (e₄.trans (congrArg₂ (· * ·) f₄ rfl)))`. Take `⟨x⟩ : Nonempty X` from `inferInstance`. Take `⟨i, hi⟩` from `cov x`. Use `⟨s', i.1.1, fun h0 => ?_⟩` and prove the remaining obligations. Establish `e` using `(hs' i x hi).trans (ha i x hi)`.
-
-Rewrite `e` using `[h0, gs_eq (𝟙 X) x ((pw L (2 * k : ℕ)).U i.1.1) hi.1.1, map_zero, map_zero]`. Use `mul_ne_zero (mul_ne_zero ?_ ?_) (Units.ne_zero _) e.symm` and prove the remaining obligations. Conclude with `gs_ne (𝟙 X) x hi.1 (sec_ne s hs (i := (i.1.1, i.2.1)) hi.1)`. Conclude with `gs_ne σ x hi.2 (sec_ne s hs (i := (i.1.2, i.2.2)) hi.2)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem core [IsIntegral X] {L O : LB X} (hL : L.IsLB) (hO : O.IsLB) (σ z : X ⟶ X) [IsIso σ] (p₀ : O.ι)
     (hz : ∀ x, z x ∈ O.U p₀) (sy : LB.Gen (LB.LinComb L (K := Fin 2) ![σ, 𝟙 X] ![1, -1])) (hsy : sy.IsGen)
@@ -219,13 +215,11 @@ theorem core [IsIntegral X] {L O : LB X} (hL : L.IsLB) (hO : O.IsLB) (σ z : X �
   · exact gs_ne σ x hi.2 (sec_ne s hs (i := (i.1.2, i.2.2)) hi.2)
 
 /- English proof (translation)
-Introduce `A _ _ B _ _ _ M k O hO ⟨u, hu⟩ ⟨s, hs⟩`. Choose the witnesses or unpack the hypotheses as in `⟨p₀, hp₀⟩ : ∃ p₀, ∀ y : Spec (CommRingCat.of A), eSec B y ∈ O.U p₀ := by`. Take `⟨i, hi⟩` from `exists_chart hO (eSec B (IsLocalRing.closedPoint A))`. Conclude with `⟨i, fun y => ((IsLocalRing.specializes_closedPoint y).map (eSec B).continuous).mem_open (O.U i).isOpen hi⟩`. Establish `hι : (𝟙 B : B ⟶ B)⁻¹ = ι[B]` using `by rw [Hom.inv_def, Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Apply the tactic sequence `have e : ∀ I : ULift.{0} (Finset (Fin 2)), (lift (𝟙 B) ι[B]).left ≫ (psum B (x2 B) I.down).left = (psum B ![𝟙 B, ι[B]] I.down).left := fun I => congrArg (fun q => q.left) ((psum_hom (preHom (lift (𝟙 B) ι[B])) (x2 B) I.down).trans (congrArg (fun q => psum B q I.down) (funext fun i …`. Take `⟨t, ht, -⟩` from `exists_gen hO (φ' := ![𝟙 B.left, (ι[B]).left, (1 : B ⟶ B).left]) (ε' := ![1, 1, -2]) (fun V _ h => by`. Establish `p` using `GlobalTheory.JetSer.prod_lam (𝟙 B) ι[B] h`. Rewrite `p` using `[← hι, mul_inv_cancel, hι]`. Simplify using `only [e, zpow_neg, Finset.prod_inv_distrib, p, Fin.prod_univ_three]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show _ = h (𝟙 B.left) ^ (1 : ℤ) * h (ι[B]).left ^ (1 : ℤ) * h (1 : B ⟶ B).left ^ (-2 : ℤ)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, Over.id_left]`. Use the proof step `module)`. Use the proof step `(LB.invGen O _ _ (LB.pullGen O (K := ULift.{0} (Finset (Fin 2))) (fun I => (psum B (x2 B) I.down).left) (fun I => (-1) ^ (2 - I.down.card)) u (lift (𝟙 B) ι[B]).left))`.
-
-Use the proof step `(DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hu _))`. Use `haveI : IsIso (ι[B]).left := inferInstanceAs (IsIso ((Over.forget _).map ι[B]))`. Conclude with `core M.L.isLB hO (ι[B]).left (1 : B ⟶ B).left p₀ (fun x => hp₀ (B.hom x)) M.sym M.sym_gen t ht k s hs`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sec_sq : ∀ (A : Type) [CommRing A] [IsLocalRing A] (B : Over (Spec (CommRingCat.of A))) [GrpObj B] [IsCommMonObj B] [IsIntegral B.left] (M : CP B) (k : ℕ) (O : LB B.left), O.IsLB → (∃ u : LB.Gen (abelian₂ B O), u.IsGen) → (∃ s : LB.Sec (LB.div (pw M.L.L k) O), (∃ j, s.f j ≠ 0)) → ∃ s : LB.Sec (pw M.L.L (2 * k : ℕ)), (∃ j, s.f j ≠ 0) := by
   intro A _ _ B _ _ _ M k O hO ⟨u, hu⟩ ⟨s, hs⟩

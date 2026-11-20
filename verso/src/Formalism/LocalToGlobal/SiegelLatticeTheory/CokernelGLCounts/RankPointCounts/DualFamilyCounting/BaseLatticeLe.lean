@@ -16,20 +16,20 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Rewrite using `[X.Lam_split]`. Conclude with `le_sup_of_le_left le_sup_right`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_lattice_le : X.Lb ≤ (VS D).L0 := by
   rw [X.Lam_split]
   exact le_sup_of_le_left le_sup_right
 
 /- English proof (translation)
-Introduce `l hl` and use `Submodule.subset_span ⟨1, one_mem_aaD b, l, hl, by rw [one_smul]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Lb_le_aaLbS (b : Fin D.R.rS) : X.Lb ≤ aaLbS X b := fun l hl =>
   Submodule.subset_span ⟨1, one_mem_aaD b, l, hl, by rw [one_smul]⟩
 
 /- English proof (translation)
-Unfold `aaLbS`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, -, l, hl, rfl⟩`. Conclude with `Submodule.smul_mem _ c (Submodule.subset_span hl)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem aaLbS_le_span (b : Fin D.R.rS) :
     aaLbS X b ≤ (Submodule.span D.host.E (X.Lb : Set (VS D).V)).restrictScalars (𝓞 D.host.E) := by
@@ -39,33 +39,31 @@ theorem aaLbS_le_span (b : Fin D.R.rS) :
   exact Submodule.smul_mem _ c (Submodule.subset_span hl)
 
 /- English proof (translation)
-The claim follows from `le_antisymm (Submodule.span_le.2 (aaLbS_le_span X b)) (Submodule.span_mono (Lb_le_aaLbS X b))`.
+A detailed English derivation is pending.
 -/
 theorem span_aaLbS (b : Fin D.R.rS) :
     Submodule.span D.host.E (aaLbS X b : Set (VS D).V) = Submodule.span D.host.E (X.Lb : Set (VS D).V) :=
   le_antisymm (Submodule.span_le.2 (aaLbS_le_span X b)) (Submodule.span_mono (Lb_le_aaLbS X b))
 
 /- English proof (translation)
-Unfold `aaD`. Conclude with `zpow_ne_zero _ ddS_ne_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem aaD_ne_zero' (b : Fin D.R.rS) : aaD D b ≠ 0 := by
   unfold aaD
   exact zpow_ne_zero _ ddS_ne_zero
 
 /- English proof (translation)
-Use `set N : ℕ := Ideal.absNorm (differentIdeal ℤ (𝓞 D.host.F)) ^ (D.R.rS - (b : ℕ)) with hNdef`. Establish `hN : ((N : ℕ) : D.host.E) ∈ (aaD D b)⁻¹` using `mem_aaD_inv b`. Establish `hN0 : N ≠ 0`. Rewrite using `[hNdef]`. Use `pow_ne_zero _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `differentIdeal_ne_bot`. Set `f : (VS D).V →ₗ[𝓞 D.host.E] (VS D).V` to `(N : 𝓞 D.host.E) • LinearMap.id`. Establish `hf : Function.Injective f`. Introduce `x y hxy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((N : 𝓞 D.host.E) : D.host.E) • x = ((N : 𝓞 D.host.E) : D.host.E) • y`. Rewrite using `[algebraMap_smul, algebraMap_smul]`. Conclude with `hxy`. Establish `h2 : ((N : 𝓞 D.host.E) : D.host.E) ≠ 0`. Use `push_cast`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hN0` after adjusting the coercions. Conclude with `smul_right_injective _ h2 h1`. Establish `hle : (aaLbS X b).map f ≤ (VS D).L0`. Unfold `aaLbS`. Rewrite using `[Submodule.map_span, Submodule.span_le]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨_, ⟨c, hc, l, hl, rfl⟩, rfl⟩`. Establish `hmul : ((N : ℕ) : D.host.E) * c ∈ ((1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Set D.host.E)`. Use `FractionalIdeal.mul_mem_mul hN hc` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel₀ (aaD_ne_zero' b)]`. Then use the resulting hypothesis. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 hmul`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e : f (c • l) = o • l` using `by show (N : 𝓞 D.host.E) • (c • l) = o • l`. Rewrite using `[← algebraMap_smul D.host.E (N : 𝓞 D.host.E), smul_smul, ← algebraMap_smul D.host.E o l, ho]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e]`.
-
-Conclude with `base_lattice_le X (X.Lb.smul_mem o hl)`. Use `haveI : IsNoetherian (𝓞 D.host.E) (VS D).L0 := isNoetherian_of_fg_of_noetherian _ (VS D).standardTuple_isLattice.fg`. Establish `hfg : ((aaLbS X b).map f).FG` using `(isNoetherian_submodule.1 inferInstance) _ hle`. Conclude with `Submodule.fg_of_fg_map_injective f hf hfg`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fg_aaLbS (b : Fin D.R.rS) : (aaLbS X b).FG := by
   set N : ℕ := Ideal.absNorm (differentIdeal ℤ (𝓞 D.host.F)) ^ (D.R.rS - (b : ℕ)) with hNdef

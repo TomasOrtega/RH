@@ -8,15 +8,13 @@ open scoped ComplexOrder
 namespace GlobalTheory.CompanionTheory.Ar.Fl
 
 /- English proof (translation)
-Introduce `k E _ _ _ _ τ N ρ a r p q d n n' x t t' hρ ha hd hr hn hn' hinf ht ht2 hfin hloc`. Set `N' : LogNorms k` to `⟨fun s => N.inf s + (q : ℝ) / 2 * (Real.log (n' s) - Real.log (n s)), N.fin⟩`. Establish `h` using `GlobalTheory.T.hermitian_log_norm_local_sum k E τ N' ρ a r p q d n x t t' hρ ha hd hr hn (fun s => by`. Express the relevant statement in the definitionally equal form `N.inf s + (q : ℝ) / 2 * (Real.log (n' s) - Real.log (n s)) = _`. Rewrite using `[hinf s]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `ring)`. Use `ht ht2 hfin (fun ℓ j => hloc ℓ j)`. Establish `hf : (Module.finrank ℚ k : ℝ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Establish `hs : ∑ s, Real.log (n' s) = ∑ s, Real.log (n s)`. Establish `e` using `hn'.trans hn.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `e` using `[div_left_inj' hf]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ∑ s, N'.inf s = ∑ s, N.inf s`. Express the relevant statement in the definitionally equal form `∑ s, (N.inf s + (q : ℝ) / 2 * (Real.log (n' s) - Real.log (n s))) = _`. Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_sub_distrib, hs]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hdeg : N'.deg = N.deg`. Unfold `LogNorms.deg`. Rewrite using `[hsum]`. Both sides reduce to the same expression.
-
-Conclude with `⟨h.1, hdeg ▸ h.2⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem deg_eq_of_local_two_curves : ∀ (k E : Type) [Field k] [NumberField k] [Field E] [NumberField E] (τ : E →+* k) (N : LogNorms k) (ρ : k) (a r : E) (p q d : ℕ) (n n' : (k →+* ℂ) → ℝ) (x : ℝ) (t t' : Nat.Primes → E), ρ ≠ 0 → a ≠ 0 → 0 < d → r ^ 2 = -(d : E) → -(∑ s, Real.log (n s)) / Module.finrank ℚ k = x → -(∑ s, Real.log (n' s)) / Module.finrank ℚ k = x → (∀ s, N.inf s = Real.log ‖s ρ‖ + ((p : ℝ) / 2 * (Real.log (n s) + Real.log d / 2) - (q : ℝ) / 2 * (Real.log (n' s) + Real.log d / 2)) + Real.log ‖s (τ a)‖ / 2) → (∀ ℓ : Nat.Primes, ∑ j : E →+* ℂ_[ℓ], Real.log ‖j (t' ℓ)‖ = ∑ j : E →+* ℂ_[ℓ], Real.log ‖j (t ℓ)‖) → (∀ (ℓ : Nat.Primes) (j : E →+* ℂ_[ℓ]), Real.log ‖j (t ℓ)‖ + Real.log ‖j (t' ℓ)‖ + Real.log ‖j a‖ = -((p : ℝ) + q) * logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E))) → {ℓ : Nat.Primes | ∃ j : E →+* ℂ_[ℓ], Real.log ‖j (t ℓ)‖ ≠ 0}.Finite → (∀ (ℓ : Nat.Primes) (j : k →+* ℂ_[ℓ]), N.fin ℓ j + q * (logIdeal ((j.comp τ).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) - Real.log ‖((d : ℕ) : ℂ_[ℓ])‖) = Real.log ‖j ρ‖ - Real.log ‖j (τ (t ℓ))‖ - q * logIdeal ((j.comp τ).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) + ((q : ℝ) - p) * (logIdeal ((j.comp τ).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) - Real.log ‖j (τ r)‖)) → N.IsAdelic ∧ N.deg = ((p : ℝ) - q) / 2 * (x - Real.log (rootDiscr E) + Real.log (Real.sqrt d)) + q * (2 * Real.log (Real.sqrt d) - Real.log (rootDiscr E)) := by
   intro k E _ _ _ _ τ N ρ a r p q d n n' x t t' hρ ha hd hr hn hn' hinf ht ht2 hfin hloc

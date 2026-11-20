@@ -11,28 +11,26 @@ namespace GlobalTheory.CompanionTheory.AdmGL
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {a n : ℕ}
 
 /- English proof (translation)
-The claim follows from `isClosed_eq ((continuous_blk e).comp (continuous_unblk e)) continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_range_blk (e : Fin a × ι ≃ Fin n) : IsClosed {g | blk e (unblk e g) = g} :=
   isClosed_eq ((continuous_blk e).comp (continuous_unblk e)) continuous_id
 
 /- English proof (translation)
-The claim follows from `(closure_minimal (fun _ h => ((mem_blkG_iff e).1 h).2) (isClosed_range_blk e)) hg`.
+A detailed English derivation is pending.
 -/
 theorem blk_unblk_of_mem_closure (e : Fin a × ι ≃ Fin n) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ closure (blkG e)) : blk e (unblk e g) = g :=
   (closure_minimal (fun _ h => ((mem_blkG_iff e).1 h).2) (isClosed_range_blk e)) hg
 
 /- English proof (translation)
-Set `P : Polynomial ℂ` to `Matrix.det ((1 - Polynomial.X : Polynomial ℂ) • A.map Polynomial.C + (Polynomial.X : Polynomial ℂ) • B.map Polynomial.C)`. Establish `hev : ∀ z : ℂ, P.eval z = ((1 - z) • A + z • B).det`. Introduce `z`. Use `RingHom.map_det (Polynomial.evalRingHom z) ((1 - Polynomial.X : Polynomial ℂ) • A.map Polynomial.C + (Polynomial.X : Polynomial ℂ) • B.map Polynomial.C)` as an intermediate fact. Simplify using `only [Polynomial.coe_evalRingHom] at this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Conclude with `mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hP : P ≠ 0`. Introduce `h`. Use `hev 0` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `only [Polynomial.eval_zero, sub_zero, one_smul, zero_smul, add_zero] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((Matrix.isUnit_iff_isUnit_det A).1 hA).ne_zero this.symm`. Use `(P.rootSet_finite ℂ).subset ?_` and prove the remaining obligations. Introduce `z hz`. Rewrite using `[Polynomial.mem_rootSet]`. Use `⟨hP, ?_⟩` and prove the remaining obligations.
-
-Simplify `hz` using `[hev]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finite_setOf_det_line_eq_zero {A B : Matrix (Fin n) (Fin n) ℂ} (hA : IsUnit A) :
     {z : ℂ | ((1 - z) • A + z • B).det = 0}.Finite := by
@@ -61,13 +59,13 @@ theorem finite_setOf_det_line_eq_zero {A B : Matrix (Fin n) (Fin n) ℂ} (hA : I
   simpa [hev] using hz
 
 /- English proof (translation)
-Use `isPreconnected_of_forall_pair ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨M, hM, rfl⟩ _ ⟨N, hN, rfl⟩`. Establish `hA : IsUnit (blk e M)` using `(isUnit_blk_iff e M).2 hM`. Establish `hB : IsUnit (blk e N)` using `(isUnit_blk_iff e N).2 hN`. Use `set A := blk e M`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set B := blk e N`. Set `Z : Set ℂ` to `{z | ((1 - z) • A + z • B).det = 0}`. Establish `hZ : Z.Finite` using `finite_setOf_det_line_eq_zero hA`. Establish `hconn : IsPathConnected Zᶜ` using `hZ.countable.isPathConnected_compl_of_one_lt_rank (by`. Rewrite using `[Complex.rank_real_complex]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use the proof step `norm_num)`. Set `γ : ℂ → Matrix (Fin n) (Fin n) ℂ` to `fun z => (1 - z) • A + z • B`. Establish `hγ : Continuous γ` using `by fun_prop`. Use `⟨γ '' Zᶜ, ?_, ⟨0, ?_, by simp [γ]⟩, ⟨1, ?_, by simp [γ]⟩, hconn.isConnected.isPreconnected.image _ hγ.continuousOn⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(mem_blkG_iff e).2 ⟨(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hz), ?_⟩` and prove the remaining obligations. Establish `: γ z = blk e ((1 - z) • M + z • N)` using `by simp [γ, A, B]`. Rewrite using `[this, unblk_blk]`. Simplify `((Matrix.isUnit_iff_isUnit_det A).1 hA).ne_zero` using `[Z]`. Simplify `((Matrix.isUnit_iff_isUnit_det B).1 hB).ne_zero` using `[Z]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPreconnected_blkG (e : Fin a × ι ≃ Fin n) : IsPreconnected (blkG e) := by
   refine isPreconnected_of_forall_pair ?_
@@ -91,7 +89,7 @@ theorem isPreconnected_blkG (e : Fin a × ι ≃ Fin n) : IsPreconnected (blkG e
   · simpa [Z] using ((Matrix.isUnit_iff_isUnit_det B).1 hB).ne_zero
 
 /- English proof (translation)
-Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[← blk_mul, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hM), blk_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_inv (e : Fin a × ι ≃ Fin n) {M : Matrix (Fin a) (Fin a) (ι → ℂ)} (hM : IsUnit M) :
     (blk e M)⁻¹ = blk e M⁻¹ := by
@@ -99,7 +97,7 @@ theorem blk_inv (e : Fin a × ι ≃ Fin n) {M : Matrix (Fin a) (Fin a) (ι → 
   rw [← blk_mul, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hM), blk_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, isUnit_one, blk_one e⟩ mul_mem := by rintro _ ⟨M, hM, rfl⟩ _ ⟨N, hN, rfl⟩ exact ⟨M * N, IsUnit.mul hM hN, blk_mul e M N⟩ isUnit := fun g hg => ((mem_blkG_iff e).1 hg).1 inv_mem := by rintro _ ⟨M, hM, rfl⟩ refine ⟨M⁻¹, ?_, (blk_inv e hM).symm⟩ exact (Matrix.isUnit_nonsing_inv_ …`.
+Supply the required witnesses or components.
 -/
 theorem isLinRed_blkG (e : Fin a × ι ≃ Fin n) : GlobalTheory.LinRed.IsLinRed (blkG e) where
   one_mem := ⟨1, isUnit_one, blk_one e⟩

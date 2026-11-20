@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Discret
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `inf_le_right`.
+A detailed English derivation is pending.
 -/
 theorem unramified_subfield_le_maxUnramified (K : FinExt l) : K0 K ≤ MaximalUnramifiedExtension l := inf_le_right
 
@@ -36,12 +36,12 @@ Both sides reduce to the same expression.
 theorem σ_apply (K : FinExt l) (x : ↥(K0 K)) : σ K x = σE K x := rfl
 
 /- English proof (translation)
-The claim follows from `(σE K).bijective`.
+A detailed English derivation is pending.
 -/
 theorem σ_bij (K : FinExt l) : Function.Bijective (σ K) := (σE K).bijective
 
 /- English proof (translation)
-Establish `h : σE K ^ i = (FrobQ l ^ i).restrictNormal ↥(K0 K)` using `(map_pow (AlgEquiv.restrictNormalHom (K₁ := Om l) ↥(K0 K)) (FrobQ l) i).symm`. Rewrite using `[h]`. Conclude with `AlgEquiv.restrictNormal_commutes (FrobQ l ^ i) ↥(K0 K) x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem σE_pow_coe (K : FinExt l) (i : ℕ) (x : ↥(K0 K)) :
     (((σE K ^ i) x : ↥(K0 K)) : Om l) = (FrobQ l ^ i) (x : Om l) := by
@@ -51,14 +51,14 @@ theorem σE_pow_coe (K : FinExt l) (i : ℕ) (x : ↥(K0 K)) :
   exact AlgEquiv.restrictNormal_commutes (FrobQ l ^ i) ↥(K0 K) x
 
 /- English proof (translation)
-Use `σE_pow_coe K 1 x` as an intermediate fact. Rewrite `this` using `[pow_one, pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem σ_coe (K : FinExt l) (x : ↥(K0 K)) : ((σ K x : ↥(K0 K)) : Om l) = FrobQ l (x : Om l) := by
   have := σE_pow_coe K 1 x
   rwa [pow_one, pow_one] at this
 
 /- English proof (translation)
-Rewrite using `[σ_coe]`. Conclude with `FrobQ_spec _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PD_σ (K : FinExt l) (x : ↥(K0 K)) (hx : ‖((x : ↥(K0 K)) : Om l)‖ ≤ 1) :
     ‖(((σ K x : ↥(K0 K))) : Om l) - ((x : ↥(K0 K)) : Om l) ^ l‖ < 1 := by
@@ -66,9 +66,9 @@ theorem PD_σ (K : FinExt l) (x : ↥(K0 K)) (hx : ‖((x : ↥(K0 K)) : Om l)�
   exact FrobQ_spec _ hx
 
 /- English proof (translation)
-Rewrite using `[← pow_fixes_iff (finiteDimensional_unramified_subfield K) (unramified_subfield_le_maxUnramified K) i]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Use `σE_pow_coe K i ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[h]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Introduce `h`. Use extensionality with `x`. Rewrite using `[σE_pow_coe]`. Conclude with `h x x.2`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem σE_pow_eq_one_iff (K : FinExt l) (i : ℕ) :
     σE K ^ i = 1 ↔ Module.finrank ℚ_[l] ↥(K0 K) ∣ i := by
@@ -84,7 +84,7 @@ theorem σE_pow_eq_one_iff (K : FinExt l) (i : ℕ) :
     exact h x x.2
 
 /- English proof (translation)
-Apply `Nat.dvd_antisymm` to reduce the goal to its premises. Conclude with `orderOf_dvd_of_pow_eq_one ((σE_pow_eq_one_iff K _).2 dvd_rfl)`. Conclude with `(σE_pow_eq_one_iff K _).1 (pow_orderOf_eq_one _)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem orderOf_σE (K : FinExt l) : orderOf (σE K) = Module.finrank ℚ_[l] ↥(K0 K) := by
   apply Nat.dvd_antisymm
@@ -92,7 +92,7 @@ theorem orderOf_σE (K : FinExt l) : orderOf (σE K) = Module.finrank ℚ_[l] �
   · exact (σE_pow_eq_one_iff K _).1 (pow_orderOf_eq_one _)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_GQ_of_algHom τ`. Take `⟨i, hi, h⟩` from `exists_pow_of_GQ (finiteDimensional_unramified_subfield K) (unramified_subfield_le_maxUnramified K) g`. Conclude with `⟨i, hi, fun x => by rw [← hg, σE_pow_coe, h x x.2]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pow_σE (K : FinExt l) (τ : ↥(K0 K) →ₐ[ℚ_[l]] Om l) :
     ∃ i < Module.finrank ℚ_[l] ↥(K0 K), ∀ x, τ x = (((σE K ^ i) x : ↥(K0 K)) : Om l) := by
@@ -101,7 +101,7 @@ theorem exists_pow_σE (K : FinExt l) (τ : ↥(K0 K) →ₐ[ℚ_[l]] Om l) :
   exact ⟨i, hi, fun x => by rw [← hg, σE_pow_coe, h x x.2]⟩
 
 /- English proof (translation)
-Establish `h1 : FrobQ l (x : Om l) = x` using `by rw [← σ_coe, h]`. Take `⟨a, ha⟩` from `IntermediateField.mem_bot.1 (mem_bot_of_FrobQ_fixed (unramified_subfield_le_maxUnramified K x.2) h1)`. Conclude with `⟨a, Subtype.ext ha⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem σ_fixed (K : FinExt l) (x : ↥(K0 K)) (h : σ K x = x) :
     ∃ a : ℚ_[l], algebraMap ℚ_[l] ↥(K0 K) a = x := by
@@ -110,9 +110,9 @@ theorem σ_fixed (K : FinExt l) (x : ↥(K0 K)) (h : σ K x = x) :
   exact ⟨a, Subtype.ext ha⟩
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_GQ_of_algHom ((K0 K).val.comp τ)`. Establish `h1 : ∀ y ∈ K0 K, ‖y‖ ≤ 1 → ‖g y - y ^ l‖ < 1`. Introduce `y hy hy1`. Use `hτ ⟨y, hy⟩ hy1` as an intermediate fact. Establish `h2 : g y = ((τ ⟨y, hy⟩ : ↥(K0 K)) : Om l)` using `hg ⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `this`. Use extensionality with `x`. Rewrite using `[σ_coe, ← eq_FrobQ_of_congr (finiteDimensional_unramified_subfield K) (unramified_subfield_le_maxUnramified K) g h1 x.2]`. Conclude with `(hg x).symm`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_σ_of_congr (K : FinExt l) (τ : ↥(K0 K) →ₐ[ℚ_[l]] ↥(K0 K))
     (hτ : ∀ x : ↥(K0 K), ‖((x : ↥(K0 K)) : Om l)‖ ≤ 1 →
@@ -140,7 +140,7 @@ theorem emb_coe {K LL : FinExt l} (hle : K0 K ≤ LL.1) (i : ZMod (Module.finran
     (x : ↥(K0 K)) : ((emb hle i x : ↥LL.1) : Om l) = (((σE K ^ (-i).val) x : ↥(K0 K)) : Om l) := rfl
 
 /- English proof (translation)
-Rewrite using `[pow_eq_pow_iff_modEq, orderOf_σE]`. Conclude with `(ZMod.natCast_eq_natCast_iff a b _).1 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem σE_pow_val_eq {K : FinExt l} {a b : ℕ}
     (h : (a : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) = (b : ZMod _)) : σE K ^ a = σE K ^ b := by
@@ -148,9 +148,9 @@ theorem σE_pow_val_eq {K : FinExt l} {a b : ℕ}
   exact (ZMod.natCast_eq_natCast_iff a b _).1 h
 
 /- English proof (translation)
-Substitute `hτ` using the available equality. Establish `h : σE K ^ (-(i + 1)).val * σE K = σE K ^ (-i).val`. Rewrite using `[← pow_succ]`. Apply `σE_pow_val_eq` to reduce the goal to its premises. Use `push_cast`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [ZMod.natCast_val, ZMod.cast_id', id]`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `x`. Rewrite using `[AlgHom.comp_apply, emb_coe, emb_coe, ← h]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem emb_σ {K LL : FinExt l} (hle : K0 K ≤ LL.1) (τ : ↥(K0 K) →ₐ[ℚ_[l]] ↥(K0 K)) (hτ : τ = σ K)
     (i : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) : (emb hle (i + 1)).comp τ = emb hle i := by

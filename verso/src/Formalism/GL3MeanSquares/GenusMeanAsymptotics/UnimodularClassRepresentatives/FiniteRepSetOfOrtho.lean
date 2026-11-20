@@ -8,23 +8,21 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.L3
 
 /- English proof (translation)
-Establish `hGpos : (0 : ℝ) < Nat.card G` using `by exact_mod_cast Nat.card_pos`. Establish `hos : ∀ t : X, (Nat.card (MulAction.orbit G t) : ℝ) = Nat.card G / Nat.card (MulAction.stabilizer G t)`. Introduce `t`. Establish `h1` using `(MulAction.stabilizer G t).card_mul_index`. Rewrite `h1` using `[MulAction.index_stabilizer, ← Nat.card_coe_set_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : (0 : ℝ) < Nat.card (MulAction.stabilizer G t)` using `by exact_mod_cast Nat.card_pos`. Rewrite using `[eq_div_iff hs.ne', ← Nat.cast_mul, mul_comm, h1]`. Take `⟨A', hA'⟩ : ∃ A' : Finset X, ∀ x, x ∈ A' ↔ x ∈ A` from `⟨(Set.toFinite A).toFinset, fun x => Set.Finite.mem_toFinset _⟩`. Establish `hAeq : A = ↑A'` using `Set.ext fun x => (hA' x).symm`. Establish `hcover : A' = T.biUnion (fun t => A'.filter (fun x => ∃ g : G, g • t = x))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_biUnion, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨t, ⟨htT, g, hg⟩, -⟩` from `hT x ((hA' x).mp hx)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, htT, hx, g, hg⟩`. Introduce and unpack `⟨t, -, hx, -⟩`. Conclude with `hx`. Establish `hdisj : ∀ t₁ ∈ T, ∀ t₂ ∈ T, t₁ ≠ t₂ → Disjoint (A'.filter (fun x => ∃ g : G, g • t₁ = x)) (A'.filter (fun x => ∃ g : G, g • t₂ = x))`. Introduce `t₁ h₁ t₂ h₂ hne`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.disjoint_left.mpr ?_` and prove the remaining obligations. Introduce `x hx1 hx2`. Simplify using `only [Finset.mem_filter] at hx1 hx2`. Take `⟨t, -, huniq⟩` from `hT x ((hA' x).mp hx1.1)`. Conclude with `hne ((huniq t₁ ⟨h₁, hx1.2⟩).trans (huniq t₂ ⟨h₂, hx2.2⟩).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcard : ∀ t ∈ T, ((A'.filter (fun x => ∃ g : G, g • t = x)).card : ℝ) = Nat.card (MulAction.orbit G t)`. Introduce `t ht`. Establish `hset : MulAction.orbit G t = ↑(A'.filter (fun x => ∃ g : G, g • t = x))`. Use extensionality with `x`. Simplify using `only [MulAction.mem_orbit_iff, Finset.coe_filter, Set.mem_setOf_eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨(hA' _).mpr (hA g t (hTA t ht)), g, rfl⟩`. Introduce and unpack `⟨-, g, rfl⟩`. Conclude with `⟨g, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hset, Nat.card_coe_set_eq, Set.ncard_coe_finset]`. Establish `hsum : (A'.card : ℝ) = ∑ t ∈ T, (Nat.card (MulAction.orbit G t) : ℝ)`. Rewrite using `[hcover, Finset.card_biUnion hdisj, Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl hcard`. Rewrite using `[hAeq, Nat.card_coe_set_eq, Set.ncard_coe_finset, hsum, Finset.sum_div]`.
-
-Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[hos t, div_div, mul_comm, ← div_div, div_self hGpos.ne', one_div]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_inv_card_stab {G X : Type*} [Group G] [Finite G] [MulAction G X] (A : Set X)
     [Finite A] (hA : ∀ g : G, ∀ x ∈ A, g • x ∈ A) (T : Finset X) (hTA : ∀ t ∈ T, t ∈ A)
@@ -83,7 +81,7 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.gmap`. Use extensionality with `x`. Simplify using `[Submodule.mem_map]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem autSub_gmap_one (L : Submodule (𝓞 K) V) : Formalism.HermitianLatticesTheory.gmap (1 : V ≃ₗ[K] V) L = L := by
   unfold Formalism.HermitianLatticesTheory.gmap
@@ -91,7 +89,7 @@ theorem autSub_gmap_one (L : Submodule (𝓞 K) V) : Formalism.HermitianLattices
   simp [Submodule.mem_map]
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.gmap`. Use extensionality with `x`. Simplify using `[Submodule.mem_map]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem autSub_gmap_mul (a b : V ≃ₗ[K] V) (L : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.gmap (a * b) L = Formalism.HermitianLatticesTheory.gmap a (Formalism.HermitianLatticesTheory.gmap b L) := by
@@ -112,7 +110,7 @@ def autSub (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) : Subgr
     rw [← autSub_gmap_mul, inv_mul_cancel, autSub_gmap_one]
 
 /- English proof (translation)
-Use `finiteDimensional_of_ortho hI` as an intermediate fact. Conclude with `Formalism.HermitianLatticesTheory.autFinite K V h hs (trace_pos_of_ortho hK hs hI) L hL`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_autL_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) {I : Submodule (𝓞 K) V} {n : ℕ} (hI : Formalism.HermitianLatticesTheory.IsOrthoLattice h I n)
@@ -121,7 +119,7 @@ theorem finite_autL_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K
   exact Formalism.HermitianLatticesTheory.autFinite K V h hs (trace_pos_of_ortho hK hs hI) L hL
 
 /- English proof (translation)
-Use `hL` as an intermediate fact. Use `(Formalism.HermitianLatticesTheory.autFinite_short h (trace_pos_of_ortho hK hs hI) L (Algebra.trace ℚ K t)).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx, rfl⟩`. Conclude with `⟨hx, le_rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finite_repSet_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) {I : Submodule (𝓞 K) V} {n : ℕ} (hI : Formalism.HermitianLatticesTheory.IsOrthoLattice h I n)

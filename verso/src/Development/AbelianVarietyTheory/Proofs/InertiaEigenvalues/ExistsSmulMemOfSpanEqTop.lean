@@ -6,15 +6,15 @@ namespace GlobalTheory.DenominatorOfSpan
 open GlobalTheory.UnitLemma
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span E (L : Set A)` using `by rw [hL]; exact Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact L.zero_mem⟩`. Consider the case `add y z _ _ hy hz`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨a, ha, hay⟩` from `hy`. Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `L.add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.smul_mem b hay`. Rewrite using `[mul_smul]`. Conclude with `L.smul_mem a hbz`. Consider the case `smul e y _ hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hay⟩` from `hy`. Take `⟨⟨n, s⟩, hs⟩` from `IsLocalization.surj (nonZeroDivisors O) e`. Establish `hs' : e * algebraMap O E (s : O) = algebraMap O E n` using `hs`. Use `⟨a * (s : O), mul_ne_zero ha (nonZeroDivisors.ne_zero s.2), ?_⟩` and prove the remaining obligations. Establish `h1 : (s : O) • e • y = n • y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul E (s : O), ← mul_smul, mul_comm, hs', algebraMap_smul]`. Rewrite using `[mul_smul, h1, smul_comm]`. Conclude with `L.smul_mem n hay`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_of_span_eq_top {O E A : Type} [CommRing O] [IsDomain O] [Field E] [Algebra O E]
     [IsFractionRing O E] [AddCommGroup A] [Module E A] [Module O A] [IsScalarTower O E A]
@@ -43,7 +43,7 @@ theorem exists_smul_mem_of_span_eq_top {O E A : Type} [CommRing O] [IsDomain O] 
     exact L.smul_mem n hay
 
 /- English proof (translation)
-The claim follows from `exists_smul_mem_of_span_eq_top L hL x`.
+A detailed English derivation is pending.
 -/
 theorem exists_denominator {K : UQ} (B : InvAlg K) (L : Submodule K.O B.A)
     (hL : Submodule.span K.E (L : Set B.A) = ⊤) (x : B.A) :

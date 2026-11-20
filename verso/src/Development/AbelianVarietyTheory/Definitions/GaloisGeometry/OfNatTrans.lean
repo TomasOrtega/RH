@@ -73,7 +73,7 @@ def pullC (n : ℕ) : Cn F n →ₛₗ[σ] Cn F' n where
   map_smul' r f := funext fun s => LinearMap.map_smulₛₗ (m.τ _) _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (F'.map (toLast i s)).hom (m.τ _ (f (face i s ⋙ m.G))) = m.τ _ (∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (F.map (m.G.map (toLast i s))).hom (f (face i s ⋙ m.G)))`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_zsmul, m.nat]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_pullC (n : ℕ) (f : Cn F n) : d F' n (m.pullC n f) = m.pullC (n + 1) (d F n f) := by
   funext s
@@ -114,7 +114,7 @@ Both sides reduce to the same expression.
 example : Bn F 0 = ⊥ := rfl
 
 /- English proof (translation)
-Simplify using `[d, Fin.sum_univ_two, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 example (f : Cn F 0) (s : ComposableArrows C 1) :
     d F 0 f s = (F.map (toLast 0 s)).hom (f (face 0 s)) - (F.map (toLast 1 s)).hom (f (face 1 s)) := by

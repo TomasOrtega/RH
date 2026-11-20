@@ -4,11 +4,11 @@ import Formalism.PeriodIntegrals.QmColExp
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ExponentialFirstColumn.FirstColumnSplitBijective
 
 /- English proof (translation)
-Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨l, τ⟩ ⟨l', τ'⟩ h`. Simplify using `only at h`. Establish `h0` using `congrArg (fun σ : Equiv.Perm (Fin (t + 1)) => σ 0) h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Equiv.Perm.mul_apply, Equiv.Perm.decomposeFin_symm_apply_zero, Fin.cycleRange_symm_zero] at h0`. Substitute `h0` using the available equality. Establish `h1` using `mul_left_cancel h`. Establish `h2` using `Equiv.Perm.decomposeFin.symm.injective h1`. Simplify using `only [Prod.mk.injEq, true_and] at h2`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2]`. Simplify using `[Fintype.card_perm, Nat.factorial_succ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem bijective_cycleRange_symm_mul_decomposeFin_symm (t : ℕ) :
     Function.Bijective (fun p : Fin (t + 1) × Equiv.Perm (Fin t) =>
@@ -28,7 +28,7 @@ private theorem bijective_cycleRange_symm_mul_decomposeFin_symm (t : ℕ) :
   · simp [Fintype.card_perm, Nat.factorial_succ]
 
 /- English proof (translation)
-Rewrite using `[← Fintype.sum_prod_type']`. Conclude with `(Fintype.sum_bijective _ (bijective_cycleRange_symm_mul_decomposeFin_symm t) _ _ (fun _ => rfl)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_perm_succ_eq_sum_cycleRange_decomposeFin {M : Type*} [AddCommMonoid M] (t : ℕ) (g : Equiv.Perm (Fin (t + 1)) → M) :
     ∑ σ, g σ = ∑ l : Fin (t + 1), ∑ τ : Equiv.Perm (Fin t),
@@ -37,7 +37,7 @@ private theorem sum_perm_succ_eq_sum_cycleRange_decomposeFin {M : Type*} [AddCom
   exact (Fintype.sum_bijective _ (bijective_cycleRange_symm_mul_decomposeFin_symm t) _ _ (fun _ => rfl)).symm
 
 /- English proof (translation)
-Rewrite using `[Equiv.Perm.sign_mul, Equiv.Perm.sign_symm, Fin.sign_cycleRange, Equiv.Perm.decomposeFin.symm_sign]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sign_cycleRange_symm_mul_decomposeFin_symm (t : ℕ) (l : Fin (t + 1)) (τ : Equiv.Perm (Fin t)) :
     ((Equiv.Perm.sign ((Fin.cycleRange l).symm *
@@ -48,7 +48,7 @@ private theorem sign_cycleRange_symm_mul_decomposeFin_symm (t : ℕ) (l : Fin (t
   simp
 
 /- English proof (translation)
-Rewrite using `[Equiv.Perm.sign_mul, Units.val_mul, sign_cycleRange_symm_mul_decomposeFin_symm, sign_finRotate]`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one, add_tsub_cancel_right, add_tsub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sign_cycleRange_symm_mul_decomposeFin_mul_finRotate (t : ℕ) (l : Fin (t + 1)) (τ : Equiv.Perm (Fin t)) :
     ((Equiv.Perm.sign ((Fin.cycleRange l).symm *
@@ -60,11 +60,11 @@ private theorem sign_cycleRange_symm_mul_decomposeFin_mul_finRotate (t : ℕ) (l
   ring
 
 /- English proof (translation)
-Unfold `Formalism.REAL.qminor`. Rewrite using `[sum_perm_succ_eq_sum_cycleRange_decomposeFin]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sign_cycleRange_symm_mul_decomposeFin_symm, List.ofFn_succ, List.prod_cons]`. Establish `hs : ∀ k : Fin t, u - ((k : ℂ) + 1) = u - 1 - (k : ℂ)` using `fun k => by ring`. Simplify using `only [Equiv.Perm.mul_apply, Equiv.Perm.decomposeFin_symm_apply_zero, Fin.cycleRange_symm_zero, Equiv.Perm.decomposeFin_symm_apply_succ, Equiv.swap_self, Equiv.refl_apply, Fin.cycleRange_symm_succ, Function.comp_apply, Fin.val_zero, Nat.cast_zero, sub_zero, Fin.val_succ, Nat.cast_ …`. Rewrite using `[Int.cast_mul, mul_assoc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← mul_assoc, (Int.cast_commute ((Equiv.Perm.sign τ : ℤˣ) : ℤ) (Formalism.REAL.Tm E u (a l) (b 0))).eq, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem qminor_eq_sum_expand_first_column {A : Type} [Ring A] [Algebra ℂ A] (n t : ℕ) (E : Fin n → Fin n → A)
     (a b : Fin (t + 1) → Fin n) (u : ℂ) :
@@ -88,9 +88,9 @@ private theorem qminor_eq_sum_expand_first_column {A : Type} [Ring A] [Algebra �
     (Formalism.REAL.Tm E u (a l) (b 0))).eq, mul_assoc]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.qminor`. Rewrite using `[← Equiv.sum_comp (Equiv.mulRight (finRotate (t + 1))), sum_perm_succ_eq_sum_cycleRange_decomposeFin]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.coe_mulRight]`. Rewrite using `[sign_cycleRange_symm_mul_decomposeFin_mul_finRotate, List.ofFn_succ', List.prod_concat]`. Simplify using `only [Equiv.Perm.mul_apply, finRotate_succ_apply, Fin.coeSucc_eq_succ, Fin.last_add_one, Equiv.Perm.decomposeFin_symm_apply_zero, Fin.cycleRange_symm_zero, Equiv.Perm.decomposeFin_symm_apply_succ, Equiv.swap_self, Equiv.refl_apply, Fin.cycleRange_symm_succ, Function.comp_apply, F …`. Rewrite using `[Int.cast_mul]`. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem qminor_eq_sum_expand_last_column {A : Type} [Ring A] [Algebra ℂ A] (n t : ℕ) (E : Fin n → Fin n → A)
     (a b : Fin (t + 1) → Fin n) (u : ℂ) :
@@ -112,7 +112,7 @@ private theorem qminor_eq_sum_expand_last_column {A : Type} [Ring A] [Algebra �
   simp only [mul_assoc]
 
 /- English proof (translation)
-Use `delta PI.QmColExp PI.ExpFirstCol PI.ExpLastCol`. Conclude with `⟨fun A _ _ n t E a b u => qminor_eq_sum_expand_first_column n t E a b u, fun A _ _ n t E a b u => qminor_eq_sum_expand_last_column n t E a b u⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem quantum_minor_column_expansion : PI.QmColExp := by
   delta PI.QmColExp PI.ExpFirstCol PI.ExpLastCol

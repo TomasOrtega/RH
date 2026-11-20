@@ -44,14 +44,14 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
   (r : GG →* A) (χ : GG →* T'ˣ) (E : A)
 
 /- English proof (translation)
-The claim follows from `Function.Injective.noZeroSMulDivisors (fun y : ↥(Ymod r χ E) => (y : A)) Subtype.val_injective rfl (fun _ _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem nzsdY [NoZeroSMulDivisors O A] : NoZeroSMulDivisors O ↥(Ymod r χ E) :=
   Function.Injective.noZeroSMulDivisors (fun y : ↥(Ymod r χ E) => (y : A)) Subtype.val_injective rfl
     (fun _ _ => rfl)
 
 /- English proof (translation)
-Use `haveI : IsNoetherian O A := isNoetherian_of_isNoetherianRing_of_finite O A`. Set `f : ↥(Ymod r χ E) →ₗ[O] A` to `{ toFun := fun y => (y : A), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Conclude with `Module.Finite.of_injective f Subtype.val_injective`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem finY [Module.Finite O A] : Module.Finite O ↥(Ymod r χ E) := by
   haveI : IsNoetherian O A := isNoetherian_of_isNoetherianRing_of_finite O A
@@ -60,7 +60,7 @@ theorem finY [Module.Finite O A] : Module.Finite O ↥(Ymod r χ E) := by
   exact Module.Finite.of_injective f Subtype.val_injective
 
 /- English proof (translation)
-Use `haveI := finY (O := O) r χ E`. Use `haveI := nzsdY (O := O) r χ E`. Use `haveI := nzsd_prod (O := O) (N := ↥(Ymod r χ E))`. Conclude with `Module.free_of_finite_type_torsion_free'`.
+A detailed English derivation is pending.
 -/
 theorem freeY [Module.Finite O A] [NoZeroSMulDivisors O A] : Module.Free O (↥(Ymod r χ E) × O) := by
   haveI := finY (O := O) r χ E
@@ -69,7 +69,7 @@ theorem freeY [Module.Finite O A] [NoZeroSMulDivisors O A] : Module.Free O (↥(
   exact Module.free_of_finite_type_torsion_free'
 
 /- English proof (translation)
-The claim follows from `Prod.ext (by show uElt r χ g • y + (0 : O) • yY r χ E g = _ rw [zero_smul, add_zero]) rfl`.
+A detailed English derivation is pending.
 -/
 theorem ytRep_zero (g : GG) (y : ↥(Ymod r χ E)) : ytRep O r χ E g (y, 0) = (uElt r χ g • y, 0) :=
   Prod.ext (by
@@ -77,7 +77,7 @@ theorem ytRep_zero (g : GG) (y : ↥(Ymod r χ E)) : ytRep O r χ E g (y, 0) = (
     rw [zero_smul, add_zero]) rfl
 
 /- English proof (translation)
-The claim follows from `Prod.ext (by show uElt r χ g • (0 : ↥(Ymod r χ E)) + (1 : O) • yY r χ E g = _ rw [smul_zero, one_smul, zero_add]) rfl`.
+A detailed English derivation is pending.
 -/
 theorem ytRep_e (g : GG) : ytRep O r χ E g (0, 1) = (yY r χ E g, 1) :=
   Prod.ext (by
@@ -123,17 +123,13 @@ theorem ytG_ρ [Module.Finite O A] [NoZeroSMulDivisors O A] (hfd : FiniteDimensi
     (ytG Qp heO r χ E Dw eG hfd hcont).ρ = ytVG (e := e) r χ E Dw eG := rfl
 
 /- English proof (translation)
-Introduce `ψ hψe`. Use `haveI := nzsdY (O := O) r χ E`. Take `⟨φ, hφ⟩` from `ext_of_baer (e := e) (eO := eO) heO (N := ↥(Ymod r χ E)) (Q := Cd.Ce.V ⧸ Cd.Ce.L.T) (div_quot heO Cd.Ce.L.T) (Cd.u.toAddMonoidHom.comp ψ.toAddMonoidHom) (fun a n => by show Cd.u (ψ (a • n)) = _`. Rewrite using `[ψ.map_smul, Cd.u_smul]`. Use the proof step `rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨φ, ?_, ?_⟩` and prove the remaining obligations. Introduce `g y hy hp`. Take `⟨⟨n, c0⟩, rfl⟩` from `hy`. Establish `hc0 : c0 = 0` using `pY_zero (m := (n, c0)) hp`. Substitute `hc0` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show φ (trY e (locRep (resRep (ytRep O r χ E) Dw) (eG.symm g) (mkK (n, (0 : O))))) = actD Cd.Ce.L g (φ (trY e (mkK (n, (0 : O)))))`. Rewrite using `[locRep_mkK]`. Use `show φ (trY e (mkK (ytRep O r χ E ((eG.symm g : ↥Dw) : GG) (n, (0 : O))))) = _`. Rewrite using `[ytRep_zero, hφ, hφ]`. Use `show Cd.u (ψ _) = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψe _ (eG.symm g).2 n, Cd.u_act (eG.symm g) (ψ n), MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Introduce `γ show φ (trY e (locRep (resRep (ytRep O r χ E) Dw) (eG.symm (eG γ)) (mkK ((0 : ↥(Ymod r χ E)), (1 : O)))) - trY e (mkK ((0 : ↥(Ymod r χ E)), (1 : O)))) = _`. Rewrite using `[MulEquiv.symm_apply_apply, locRep_mkK]`. Use `show φ (trY e (mkK (ytRep O r χ E (γ : GG) ((0 : ↥(Ymod r χ E)), (1 : O)))) - trY e (mkK ((0 : ↥(Ymod r χ E)), (1 : O)))) = _`.
-
-Rewrite using `[ytRep_e]`. Establish `h3 : (mkK (O` using `O) (yY r χ E (γ : GG), (1 : O)) - mkK (O := O) ((0 : ↥(Ymod r χ E)), (1 : O)) : MK (O := O) (↥(Ymod r χ E) × O)) = mkK (O := O) (yY r χ E (γ : GG), (0 : O)) := by`. Rewrite using `[← map_sub]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
-
-Conclude with `(congrArg φ h3).trans (hφ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ytG_psi [Module.Finite O A] [NoZeroSMulDivisors O A] (hfd : FiniteDimensional LL (TrV e (MK (O := O) (↥(Ymod r χ E) × O))))
     (hcont : ∀ x, Continuous fun g => ytVG (e := e) r χ E Dw eG g x)
@@ -176,7 +172,7 @@ theorem ytG_psi [Module.Finite O A] [NoZeroSMulDivisors O A] (hfd : FiniteDimens
     exact (congrArg φ h3).trans (hφ _)
 
 /- English proof (translation)
-Set `Ag : GRep G Qp LL Ow` to `{ V := TrV e (MK (O := O) (↥(Ymod r χ E) × O)), ρ := ytVG (e := e) r χ E Dw eG, cont := hcont }`. Conclude with `crys_of_inj PD Ms hF hMc hMs Ag xs φ hφ heq`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem ytG_crys [Module.Finite O A] [NoZeroSMulDivisors O A] (hfd : FiniteDimensional LL (TrV e (MK (O := O) (↥(Ymod r χ E) × O))))
     (hcont : ∀ x, Continuous fun g => ytVG (e := e) r χ E Dw eG g x)

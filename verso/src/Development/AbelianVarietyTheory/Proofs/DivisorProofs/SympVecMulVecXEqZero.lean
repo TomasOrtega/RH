@@ -10,11 +10,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.LagIsotropic
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `: ∑ j, ∑ l, Matrix.vecMulVec a x i j * JA i k * JB j l * c (Matrix.vecMulVec b x k l) = (a i * JA i k * c (b k)) * ∑ j, ∑ l, x j * JB j l * c (x l)`. Rewrite using `[Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.vecMulVec_apply, Matrix.vecMulVec_apply, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, hx, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hTens_vecMulVec_eq_zero {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A)
     {α β : Type} [Fintype α] [Fintype β] (JA : Matrix α α A) (JB : Matrix β β A) (a b : α → A) (x : β → A)
@@ -34,11 +34,11 @@ theorem hTens_vecMulVec_eq_zero {R A : Type} [CommRing R] [CommRing A] [Algebra 
   rw [this, hx, mul_zero]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d d₁ W W₁ H' i₀ i₁ JX h a c`. Establish `hxx` using `h.xx`. Establish `hc : ∀ e : E, cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by`. Introduce `e`. Simplify using `[cA, inclR]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hx : ∑ j, ∑ l, incV F H'.x j * incM F W.J j l * cA σ (incV F H'.x l) = 0`. Establish `h2` using `congrArg (inclR (F := F) (AF F)) hxx`. Rewrite `h2` using `[map_zero]`. Rewrite using `[← h2]`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, incV, incM, Matrix.map_apply, hc, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `symp hTens`. Rewrite using `[hTens_vecMulVec_eq_zero (cA σ) _ _ a c _ hx, mul_zero, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symp_vecMulVec_x_eq_zero : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E)
     {n d d₁ : ℕ} (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ) (JX : Matrix (Fin n) (Fin n) E),

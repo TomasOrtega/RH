@@ -15,15 +15,15 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.LabMove
 
 /- English proof (translation)
-Establish `s₁ : ∀ {B : Scheme.{0}} {T Y : Over B} (x : T ⟶ Y), (ptSecT Y x).left ≫ (fst T Y).left = 𝟙 _` using `fun x => by`. Rewrite using `[← Over.comp_left, ptSecT, lift_fst]`. Both sides reduce to the same expression. Establish `s₂ : ∀ {B : Scheme.{0}} {T Y : Over B} (x : T ⟶ Y), (ptSecT Y x).left ≫ (snd T Y).left = x.left` using `fun x => by`. Rewrite using `[← Over.comp_left, ptSecT, lift_snd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `w : (snd (Over.mk t) A).left ≫ A.hom = (fst (Over.mk t) A).left ≫ t` using `(Over.w (snd (Over.mk t) A)).trans (Over.w (fst (Over.mk t) A)).symm`. Establish `w' : (snd (Over.mk t') A').left ≫ A'.hom = (fst (Over.mk t') A').left ≫ t'` using `(Over.w (snd (Over.mk t') A')).trans (Over.w (fst (Over.mk t') A')).symm`. Establish `hu : t' ≫ g' = t ≫ g`. Establish `e` using `congrArg (fun q => (ptSecT A' (1 : Over.mk t' ⟶ A')).left ≫ q ≫ G.hom) hf₂`. Simplify using `only [Category.assoc] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[h.1.w, h'.1.w, reassoc_of% w, reassoc_of% w', reassoc_of% hf₁, reassoc_of% (s₁ (1 : Over.mk t' ⟶ A')), reassoc_of% (s₁ (1 : Over.mk t' ⟶ A'))]`. Conclude with `e.symm`. Take `⟨e, he⟩` from `GlobalTheory.GroupBplus.Aff.exists_mulEquiv_points_of_isGrpPullback h t (t ≫ g) rfl`. Take `⟨e', he'⟩` from `GlobalTheory.GroupBplus.Aff.exists_mulEquiv_points_of_isGrpPullback h' t' (t ≫ g) hu`. Establish `key : ∀ x', ((e'.trans e.symm) x').left ≫ α = x'.left ≫ α'` using `fun x' => by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he, ← he', MulEquiv.trans_apply, MulEquiv.apply_symm_apply]`. Use `⟨e'.trans e.symm, fun x' => ⟨key x', ?_⟩⟩` and prove the remaining obligations. Establish `a₁ : ((ptSecT A' x').left ≫ f) ≫ (fst (Over.mk t) A).left = (ptSecT A ((e'.trans e.symm) x')).left ≫ (fst (Over.mk t) A).left`. Rewrite using `[Category.assoc, hf₁, s₁, s₁]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `a₂ : ((ptSecT A' x').left ≫ f) ≫ (snd (Over.mk t) A).left = (ptSecT A ((e'.trans e.symm) x')).left ≫ (snd (Over.mk t) A).left`. Use `h.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[s₂, key, Category.assoc, Category.assoc, hf₂, reassoc_of% (s₂ x')]`. Rewrite using `[Category.assoc, w, Category.assoc _ _ A.hom, w, ← Category.assoc, a₁, Category.assoc]`. Conclude with `pullback.hom_ext a₁ a₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mulEquiv_points {S K K' X : Scheme.{0}} {G : Over S} [GrpObj G] {A : Over K} [GrpObj A] {A' : Over K'}
     [GrpObj A'] {g : K ⟶ S} {g' : K' ⟶ S} {α : A.left ⟶ G.left} {α' : A'.left ⟶ G.left}
@@ -67,15 +67,15 @@ end GlobalTheory.Mum.LabMove
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D C j W _ _ _ T F _ _ _ _ em hF f _ hf₁ hf₂ lab' hext honto`. Use `T.U.gen_hom` as an intermediate fact. Establish `: IsMonHom T.U.gen.symm.hom` using `by show IsMonHom T.U.gen.inv; infer_instance`. Establish `gT : IsGrpPullback T.A.A C.G (jK W ≫ T.ξ) (T.U.gen.inv.left ≫ pullback.fst T.G.hom (jK W) ≫ T.β)` using `((isGrpPullback_of_iso T.U.gen.symm).comp ((isGrpPullback_pullback T.G (jK W)).comp T.cart)).congr (Category.id_comp _) rfl`. Take `⟨e, he⟩` from `LabMove.exists_mulEquiv_points C.α_cart gT (jFK (R := R) F) (jFK (R := W) F) f hf₁ hf₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `P : QkPt D.toPre F (C.n ^ j) → QkPt T.D'.toPre F (C.n ^ j)` to `GlobalTheory.ArcPull.pullQk T.hD GlobalTheory.globalFns_holds hF D.tau_bimult T.D'.tau_bimult`. Establish `hP : ∀ p p', p' = P p ↔ p'.y = T.hD.xe.symm p.y ∧ IsPullGtF T.φ T.hD F p.g p'.g` using `GlobalTheory.ArcPull.eq_pullQk_iff T.hD GlobalTheory.globalFns_holds hF D.tau_bimult T.D'.tau_bimult`. Establish `hs : Function.Surjective P` using `GlobalTheory.ArcPull.pullQk_surjective T.hD GlobalTheory.globalFns_holds hF D.tau_bimult T.D'.tau_bimult`. Use `⟨fun p => e (lab' (P p)), fun p p₁ hp => ?_, fun x => ?_, fun p p' hy hg => ?_⟩` and prove the remaining obligations. Use `C.α_cart.1.hom_ext ?_ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc]`. Conclude with `(he _).1.trans (hext p p₁ (P p₁) hp ((hP _ _).1 rfl).1 ((hP _ _).1 rfl).2)`. Rewrite using `[Category.assoc, Over.w, Over.w]`. Simplify using `only [TFK, Over.mk_hom, jFK]`. Rewrite using `[← Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules. Take `⟨x', rfl⟩` from `e.surjective x`. Rewrite using `[← map_pow, MulEquiv.map_eq_one_iff, honto, hs.exists]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `exists_congr fun p => e.injective.eq_iff.symm`. Take `rfl` from `(hP p p').2 ⟨hy, hg⟩`. Conclude with `(he _).2`.
+A detailed English derivation is pending.
 -/
 theorem Trait.exists_lab_push : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (j : ℕ) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] [Algebra (FractionRing W) F] (em : Kb R →ₐ[FractionRing R] F), (∀ r, algebraMap (FractionRing R) F (algebraMap R _ r) = algebraMap (FractionRing W) F (algebraMap W _ (T.φ r))) → ∀ f : (TFK (R := W) F ⊗ T.A.A).left ⟶ (TFK (R := R) F ⊗ C.A.A).left, IsIso f → f ≫ (fst (TFK (R := R) F) C.A.A).left = (fst (TFK (R := W) F) T.A.A).left → f ≫ (snd (TFK (R := R) F) C.A.A).left ≫ C.α = (snd (TFK (R := W) F) T.A.A).left ≫ T.U.gen.inv.left ≫ pullback.fst T.G.hom (jK W) ≫ T.β → ∀ lab' : QkPt T.D'.toPre F (C.n ^ j) → (TFK (R := W) F ⟶ T.A.A), (∀ (p : QkPt D.toPre (Kb R) (C.n ^ j)) (p₁ : QkPt D.toPre F (C.n ^ j)) (p' : QkPt T.D'.toPre F (C.n ^ j)), QkExt em.toRingHom p p₁ → p'.y = T.hD.xe.symm p₁.y → IsPullGtF T.φ T.hD F p₁.g p'.g → (lab' p').left ≫ T.U.gen.inv.left ≫ pullback.fst T.G.hom (jK W) ≫ T.β = spMap em.toRingHom ≫ (C.lab j p).left ≫ C.α) → (∀ x : TFK (R := W) F ⟶ T.A.A, x ^ (C.n ^ j) = 1 ↔ ∃ p', lab' p' = x) → ∃ lab : QkPt D.toPre F (C.n ^ j) → (TFK (R := R) F ⟶ C.A.A), LabExt em (C.lab j) lab ∧ (∀ x : TFK (R := R) F ⟶ C.A.A, x ^ (C.n ^ j) = 1 ↔ ∃ p, lab p = x) ∧ ∀ (p : QkPt D.toPre F (C.n ^ j)) (p' : QkPt T.D'.toPre F (C.n ^ j)), p'.y = T.hD.xe.symm p.y → IsPullGtF T.φ T.hD F p.g p'.g → (ptSecT T.A.A (lab' p')).left ≫ f = (ptSecT C.A.A (lab p)).left := by
   intro R _ _ _ _ D C j W _ _ _ T F _ _ _ _ em hF f _ hf₁ hf₂ lab' hext honto

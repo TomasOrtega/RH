@@ -18,41 +18,39 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 namespace GlobalTheory.PairStep
 
 /- English proof (translation)
-Introduce `hPr X _ _ _ p n hP hn hn1`. Use `letI := algebraΓOfHom p`. Introduce `Δ r N₀ x c hΔ hklt hr hN₀ hnef hbig hx hc hZ`. Take `⟨m, G, hm, hG⟩` from `GlobalTheory.T.exists_logCanonicalMultiple_of_globally_klt X p n hP hn Δ hΔ hklt`. Establish `hcpos : ∀ e, 1 ≤ e → e ≤ n → 0 < c e` using `fun e h1 h2 => hc e (Finset.mem_Icc.2 ⟨h1, h2⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgen : closure ({genericPoint X} : Set X) = Set.univ` using `(genericPoint_spec X).def`. Establish `hdimX : topologicalKrullDim (closure ({genericPoint X} : Set X)) = n`. Rewrite using `[hgen, ← hn]`. Conclude with `((Homeomorph.Set.univ X).isHomeomorph).topologicalKrullDim_eq`. Establish `hcn` using `hZ (Closeds.closure ({genericPoint X} : Set X)) n isIrreducible_singleton.closure (by simpa using specializes_iff_mem_closure.1 (genericPoint_specializes x)) hn1 hdimX`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨c', hc'v, hc'gt⟩ : ∃ c' : ℝ, c' ^ n < (interNumRed ℂ (Closeds.closure ({genericPoint X} : Set X)) (fun _ : Fin n => N₀) : ℝ) / (r : ℝ) ^ n ∧ c n < c' := by`. Establish `hev` using `((continuous_pow n).tendsto (c n)).eventually_lt_const hcn`. Conclude with `((hev.filter_mono nhdsWithin_le_nhds).and (self_mem_nhdsWithin : Set.Ioi (c n) ∈ nhdsWithin (c n) (Set.Ioi (c n)))).exists`. Establish `hcn0` using `hcpos n hn1 le_rfl`. Establish `hc'0 : 0 < c'` using `hcn0.trans hc'gt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnpos : (0 : ℝ) < n` using `by exact_mod_cast hn1`. Establish `hlt : (n : ℝ) / c' < n / c n` using `div_lt_div_of_pos_left hnpos hcn0 hc'gt`. Take `⟨β, hβ0, hβ⟩` from `exists_rat_btwn (sub_pos.2 hlt)`. Establish `hβ0' : (0 : ℚ) < β` using `by exact_mod_cast hβ0`. Take `⟨A, F, a, hA, ha, hF, lam₀, μ₀, m₀, D₀, hm₀, hD₀, hμ₀, hlam₀, hnum₀, hklt₀⟩` from `GlobalTheory.T.exists_ample_effective_klt_inductionStart hPr X p n hP hn Δ r N₀ hN₀ β hΔ hklt hr hnef hbig hβ0'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨A, hA, ?_⟩` and prove the remaining obligations. Establish `key : ∀ a : WithBot ℕ∞, ∀ j : ℕ, (j : WithBot ℕ∞) < a → a ≤ ((j + 1 : ℕ) : WithBot ℕ∞) → a = ((j + 1 : ℕ) : WithBot ℕ∞)`. Introduce `a j h1 h2`. Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => simp at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `coe a`. Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top`. It suffices to derive a contradiction. Establish `h3 : ((⊤ : ℕ∞) : WithBot ℕ∞) ≤ (((j + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)` using `h2`.
+Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `absurd (WithBot.coe_le_coe.1 h3) (by simp)`. Consider the case `coe k`. Establish `h1' : j < k` using `by exact_mod_cast h1`. Establish `h2' : k ≤ j + 1` using `by exact_mod_cast h2`. Establish `: k = j + 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Both sides reduce to the same expression. Establish `hsplit : ∀ j, j + 1 ≤ n → ∑ e ∈ Finset.Icc (j + 1) n, (e : ℝ) / c e = (j + 1 : ℕ) / c (j + 1) + ∑ e ∈ Finset.Icc (j + 2) n, (e : ℝ) / c e`. Introduce `j hj`. Rewrite using `[← Finset.insert_Icc_add_one_left_eq_Icc hj, Finset.sum_insert (by simp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `first | rfl | (push_cast; ring_nf) | simp [add_assoc]`. Set `S : ℕ → Prop` to `fun j => ∃ (j' : ℕ) (lam μ : ℚ) (m' : ℕ) (D₀ : CartierDiv X), j' ≤ j ∧ 0 < m' ∧ D₀.Eff ∧ 0 < μ ∧ (lam : ℝ) < ∑ e ∈ Finset.Icc (j' + 1) n, (e : ℝ) / c e ∧ (∀ C : Closeds X, IsCompleteCurve ℂ C → (interNumRed ℂ C ![toLB D₀] : ℚ) / m' = lam * interNumRed ℂ C ![N₀] / r - μ * interNum …`. Establish `first : S (n - 1)`. Take `⟨lam₁, μ₁, m₁, D₁, hm₁, hD₁, hμ₁, hlam₁, hnum₁, hcut₁⟩` from `GlobalTheory.T.angehrnSiu_cut_lower_centre_dimension hPr X p n hP hn Δ m G r N₀ hN₀ A F a x (genericPoint X) n c' lam₀ μ₀ m₀ D₀ hΔ hklt hm hG hr hnef hA ha hF hx (genericPoint_specializes x) hn1 hdimX (Or.inl rfl) hc'0 hc'v hm₀ hD₀ hμ₀ hnum₀ (hklt₀ x).lcAt`. Use `⟨n - 1, lam₁, μ₁, m₁, D₁, le_rfl, hm₁, hD₁, hμ₁, ?_, hnum₁, hcut₁⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Nat.sub_add_cancel hn1, Finset.Icc_self, Finset.sum_singleton]`. Establish `: (lam₀ : ℝ) < β` using `by exact_mod_cast hlam₀`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `step : ∀ j, j + 1 < n → S (j + 1) → S j`. Introduce `j hj ⟨j', lam, μ, m', D₁, hj', hm', hD₁, hμ, hlam, hnum, hcut⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hle : j' ≤ j`. Conclude with `⟨j', lam, μ, m', D₁, hle, hm', hD₁, hμ, hlam, hnum, hcut⟩`. Take `rfl : j' = j + 1` from `by omega`. Establish `hsj` using `hsplit j (by omega)`. Establish `hcj` using `hcpos (j + 1) (by omega) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpos : (0 : ℝ) < ((j + 1 : ℕ) : ℝ) / c (j + 1)` using `div_pos (by positivity) hcj`. Take `⟨hlc, hnk, hdim⟩` from `hcut`. Distinguish the cases in `hall : ∀ z, z ⤳ x → ¬ KltAt p n (Δ + qWeil D₁ m') z → topologicalKrullDim (closure ({z} : Set X)) ≤ j`. Use `⟨j, lam, μ, m', D₁, le_rfl, hm', hD₁, hμ, ?_, hnum, hlc, hnk, hall⟩` and prove the remaining obligations. Rewrite using `[hsj]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at hall`. Take `⟨z, hzx, hzk, hzd⟩` from `hall`. Establish `hq : IsQCart (qWeil D₁ m')` using `⟨m', D₁, hm', hD₁, rfl⟩`. Take `⟨w, hwz, hw⟩` from `GlobalTheory.T.exists_nonKltCentre_of_not_klt_after_adding X p n hP hn Δ (qWeil D₁ m') z hq (hklt z) hzk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwx : w ⤳ x` using `hwz.trans hzx`. Establish `hwk : ¬ KltAt p n (Δ + qWeil D₁ m') w` using `GlobalTheory.PairStep.not_kltAt_of_isNkltCentre X p n hP hn _ w w hw specializes_rfl`. Establish `hsub : closure ({z} : Set X) ⊆ closure ({w} : Set X)` using `specializes_iff_closure_subset.1 hwz`. Establish `hmono : topologicalKrullDim (closure ({z} : Set X)) ≤ topologicalKrullDim (closure ({w} : Set X))` using `(Topology.IsEmbedding.inclusion hsub).isInducing.topologicalKrullDim_le`. Establish `hwd : topologicalKrullDim (closure ({w} : Set X)) = ((j + 1 : ℕ) : WithBot ℕ∞)` using `key _ j (hzd.trans_le hmono) (hdim w hwx hwk)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hZw` using `hZ (Closeds.closure ({w} : Set X)) (j + 1) isIrreducible_singleton.closure (by simpa using specializes_iff_mem_closure.1 hwx) (by omega) hwd`. Take `⟨lam', μ', m'', D₂, hm'', hD₂, hμ', hlam', hnum', hcut'⟩` from `GlobalTheory.T.angehrnSiu_cut_lower_centre_dimension hPr X p n hP hn Δ m G r N₀ hN₀ A F a x w (j + 1) (c (j + 1)) lam μ m' D₁ hΔ hklt hm hG hr hnef hA ha hF hx hwx (by omega) hwd (Or.inr hw) hcj hZw hm' hD₁ hμ hnum hlc`. Use `⟨j, lam', μ', m'', D₂, le_rfl, hm'', hD₂, hμ', ?_, hnum', by simpa using hcut'⟩` and prove the remaining obligations. Rewrite using `[hsj]`. Move the coercions through the operations in `at hlam' ⊢`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hall : ∀ i, i < n → S (n - 1 - i)`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro _`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using first`. Consider the case `succ i ih`. Introduce `hi`. Establish `h` using `ih (by omega)`. Rewrite `h` using `[show n - 1 - i = (n - 1 - (i + 1)) + 1 by omega]`.
-
-Conclude with `step _ (by omega) h`. Introduce `j hj`. Establish `h` using `hall (n - 1 - j) (by omega)`. Rewrite `h` using `[show n - 1 - (n - 1 - j) = j by omega]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_lcCut_induction : GlobalTheory.Published.Principalisation → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → 1 ≤ n →

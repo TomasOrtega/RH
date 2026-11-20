@@ -20,9 +20,9 @@ theorem incAf_finHA {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (hb : Fo
           (Formalism.L2.SG.AdBridge.toHA X.B.I hb (1, x))) := rfl
 
 /- English proof (translation)
-Introduce `D X hb x`. Establish `hbr' : X.B.I.fmat x = _` using `(hb.choose_spec (1, x)).2`. Establish `hK : x ∈ X.B.I.Kset ↔ Formalism.L2.SG.AdBridge.toHA X.B.I hb (1, x) ∈ Formalism.L2.SG.AdBridge.KfHA X.B.I`. Use `Iff.trans ?_ (adelic_compact_finite_places X.B.I (Formalism.L2.SG.AdBridge.toHA X.B.I hb (1, x)))` and prove the remaining obligations. Use `show (∀ y, y ∈ X.B.I.Lf ↔ X.B.I.fmat x *ᵥ y ∈ X.B.I.Lf) ↔ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbr']`. Both sides reduce to the same expression. Use `hK.trans ?_` and prove the remaining obligations. Simplify using `only [KX, Formalism.L2.SG.Sub.Kf, Subgroup.mem_iInf, Subgroup.mem_comap, MonoidHom.comp_apply, incAf_finHA]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bridgeK_holds : BridgeK := by
   intro D X hb x

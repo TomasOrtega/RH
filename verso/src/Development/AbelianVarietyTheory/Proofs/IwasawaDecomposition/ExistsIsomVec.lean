@@ -10,17 +10,15 @@ namespace GlobalTheory.Mem.GsdIso
 open Formalism.L2.Col Formalism.IndefR.Bridge
 
 /- English proof (translation)
-Introduce `K _ _ _ S ok G Γ W _ _ _ _ ι σ ρ J χ P c d H hne`. Take `⟨φ, hφ⟩` from `hne`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, φ.1 (S.outSec.rep k) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hφ ((S.res ok).map_eq_zero_iff.1 (Subtype.ext (funext h)))`. Use `set x := φ.1 (S.outSec.rep k) with hx`. Establish `vi` using `(S.res ok φ).2 k`. Set `f : (S.toCSD ok).Forms` to `⟨Pi.single k x, fun c' γ => by`. Distinguish the cases in `h : c' = k`.
+Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `vi γ`. Rewrite using `[Pi.single_eq_of_ne h, map_zero]⟩`. Establish `H1` using `H ((S.res ok).symm f) (P.y k)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `H1` using `[ClassPres.extL_apply, LinearEquiv.apply_symm_apply, GlobalTheory.PresBasic.ext_y]`. Establish `e2 : ((S.res ok).symm f).1 (d (P.y k)) = S.ρ (S.outSec.mv (d (P.y k))) ((Pi.single k x : S.Cl → S.V) (S.cls (d (P.y k))))` using `rfl`. Rewrite `H1` using `[e2]`. Establish `hfk : ((f : S.Cl → S.V)) k = x` using `by simp [f]`. Rewrite `H1` using `[hfk]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc0 : P.coef x ≠ 0` using `fun h => hk (GlobalTheory.PresBasic.coef_injective P (h.trans (map_zero _).symm))`. Establish `hc : S.cls (d (P.y k)) = k`. Assume the negation of the conclusion as `h`. Rewrite `H1` using `[Pi.single_eq_of_ne h, map_zero, map_zero]`. Conclude with `hc0 H1`.
-
-Rewrite `H1` using `[hc, Pi.single_eq_same]`. Use `⟨S.ρ (S.outSec.mv (d (P.y k))) x, H1 ▸ hc0, ?_⟩` and prove the remaining obligations. Rewrite using `[← H1, P.coef_pair, ok.inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isom_vec : ∀ {K : Type} [Field K] [NumberField K] [StarRing K] (S : Formalism.L2.Col.GSD K) (ok : S.Ok) {G Γ W : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] (ι : Γ →* G) (σ : K →+* ℂ) (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ) (P : Bridge.ClassPres ι (S.toCSD ok) σ ρ J χ) (c : S.V →ₛₗ[σ] W) (d : G → S.D),
   (∀ (φ : S.EqFun) (h : G), P.extL (S.res ok φ) h = c (φ.1 (d h))) → (∃ φ : S.EqFun, φ ≠ 0) → ∃ v : S.V, c v ≠ 0 ∧ inner ℂ (c v) (c v) = σ (S.pair v v) := by

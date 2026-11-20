@@ -16,9 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SmoothForms
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.AdicNatCastNorm.norm_natCast_adicCompletion_le_one`. Consider the case `exact _root_.GlobalTheory.AdicNatCastNorm.norm_natCast_adicCompletion_le_one`. Consider the case `(apply _root_.GlobalTheory.AdicNatCastNorm.norm_natCast_adicCompletion_le_one <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AdicNatCastNorm.norm_natCast_adicCompletion_le_one <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.AdicNatCastNorm.norm_natCast_adicCompletion_le_one <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AdicNatCastNorm.norm_natCast_adicCompletion_le_one ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem denom_norm_natCast_le_one {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) :
     ‖(n : v.adicCompletion F)‖ ≤ 1 := by
@@ -31,9 +31,9 @@ theorem denom_norm_natCast_le_one {F : Type} [Field F] [NumberField F] (v : Heig
   | (intros; exact _root_.GlobalTheory.AdicNatCastNorm.norm_natCast_adicCompletion_le_one ..)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.AdicNormZpowEstimates.exists_denominator`. Consider the case `exact _root_.GlobalTheory.AdicNormZpowEstimates.exists_denominator`. Consider the case `(apply _root_.GlobalTheory.AdicNormZpowEstimates.exists_denominator <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AdicNormZpowEstimates.exists_denominator <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.AdicNormZpowEstimates.exists_denominator <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AdicNormZpowEstimates.exists_denominator ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem denom_global {F : Type} [Field F] [NumberField F] (H : HeightOneSpectrum (𝓞 F) → NNReal)
     (hH : ∀ v, 1 ≤ H v) (hf : (Function.mulSupport H).Finite) :
@@ -48,9 +48,9 @@ theorem denom_global {F : Type} [Field F] [NumberField F] (H : HeightOneSpectrum
   | (intros; exact _root_.GlobalTheory.AdicNormZpowEstimates.exists_denominator ..)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NatMulMemRingOfIntegers.exists_nat_mul_mem_ringOfIntegers`. Consider the case `exact _root_.GlobalTheory.NatMulMemRingOfIntegers.exists_nat_mul_mem_ringOfIntegers`. Consider the case `(apply _root_.GlobalTheory.NatMulMemRingOfIntegers.exists_nat_mul_mem_ringOfIntegers <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NatMulMemRingOfIntegers.exists_nat_mul_mem_ringOfIntegers <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NatMulMemRingOfIntegers.exists_nat_mul_mem_ringOfIntegers <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NatMulMemRingOfIntegers.exists_nat_mul_mem_ringOfIntegers ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem denom_exists_int {E : Type} [Field E] [NumberField E] (e : E) :
     ∃ k : ℕ, 0 < k ∧ ∃ r : 𝓞 E, (r : E) = k * e := by
@@ -65,9 +65,9 @@ theorem denom_exists_int {E : Type} [Field E] [NumberField E] (e : E) :
 open GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies Formalism.L2.Pj in
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.AdeleDenominators.denomBound`. Consider the case `exact _root_.GlobalTheory.AdeleDenominators.denomBound`. Consider the case `(apply _root_.GlobalTheory.AdeleDenominators.denomBound <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AdeleDenominators.denomBound <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.AdeleDenominators.denomBound <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AdeleDenominators.denomBound ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem denomBound : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D),
     DenomBound θ V := by

@@ -15,9 +15,9 @@ open Classical
 namespace GlobalTheory.KeyZh
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ M`. Use `M.lft` as an intermediate fact. Establish `hft : Algebra.FiniteType ℤ o` using `(inferInstance : ZH.ArithBase o Ω).ft`. Establish `: LocallyOfFiniteType (spMap (algebraMap ℤ o))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.finiteType_algebraMap.2 hft`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem lft_of_arithBase : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ZH.ArithBase o Ω] (M : ZH.RatModel o Ω), LocallyOfFiniteType (M.s ≫ spMap (algebraMap ℤ o)) := by
   intro o Ω _ _ _ _ M
@@ -29,7 +29,7 @@ theorem lft_of_arithBase : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o 
   infer_instance
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ M`. Establish `hne : ((⊤ : M.Z.Opens) : Set M.Z).Nonempty` using `⟨genericPoint M.Z, trivial⟩`. Use `(inferInstance : ZH.ArithBase o Ω).char` as an intermediate fact. Conclude with `(M.res ⊤ hne).charZero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem charZero_of_arithBase : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ZH.ArithBase o Ω] (M : ZH.RatModel o Ω), CharZero Γ(M.Z, ⊤) := by
   intro o Ω _ _ _ _ M
@@ -38,7 +38,7 @@ theorem charZero_of_arithBase : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algeb
   exact (M.res ⊤ hne).charZero
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S ρ M U₀ EE Zh V _ _ _ _ hc _ ξ hne _`. Take `⟨D, A, U, hU, -⟩` from `Zh.unif V inferInstance inferInstance hc ξ hne`. Conclude with `⟨D, A, U, hU⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unifAlong_of_zhOut : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ZH.ArithBase o Ω] (S : ZH.ThetaSys o Ω) (ρ : S.Real) (M : ZH.RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Zh : ZH.ZHOut ρ M U₀ EE), UnifAlong Zh.G Zh.L.L := by
   intro o Ω _ _ _ _ S ρ M U₀ EE Zh V _ _ _ _ hc _ ξ hne _
@@ -46,7 +46,7 @@ theorem unifAlong_of_zhOut : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra 
   exact ⟨D, A, U, hU⟩
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S ρ M U₀ EE Zh hg hO hab δ t hδ hcov hsc`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_glued_thetaSection_nonzero_every_fibre o Ω S ρ M U₀ EE Zh hO δ t hδ hcov hsc (fun a z hz => GlobalTheory.T.coordinate_divides_on_nonzeroLocus_section o Ω M δ t S.th hδ hsc a z hz)`. Conclude with `GlobalTheory.T.keyFormula_evenDegeneration_global M.Z (M.s ≫ spMap (algebraMap ℤ o)) Zh.G S.g Zh.L δ σ hg inferInstance hO.normal (lft_of_arithBase o Ω M) (charZero_of_arithBase o Ω M) Zh.semi Zh.dim (GlobalTheory.T.semiAbelianExtension_abelianLocus_nonempty o Ω S ρ M U₀ EE Zh hO …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem key_zh : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ZH.ArithBase o Ω] (S : ZH.ThetaSys o Ω) (ρ : S.Real) (M : ZH.RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Zh : ZH.ZHOut ρ M U₀ EE), 1 ≤ S.g → S.Over₀ M U₀ → IsOpen (abLocus Zh.G) → ∀ (δ : LB M.Z) (t : S.Gam → δ.Sec), δ.IsLB → (⨆ a, nonzeroLocus (t a)) = ⊤ → ZM.SecCoord δ t M.pt S.th → LBIso (lbPow δ 8) (lbPow (GlobalTheory.SiegelTor.hodge Zh.G S.g) 4) := by
   intro o Ω _ _ _ _ S ρ M U₀ EE Zh hg hO hab δ t hδ hcov hsc

@@ -10,17 +10,15 @@ def IntRootProp : Prop :=
     ∀ x : L, (p.map (algebraMap E L)).IsRoot x → IsIntegral ℤ x
 
 /- English proof (translation)
-Introduce `E _ _ p hp hc hnorm φ₀ μ hμ`. Establish `h1 : eval₂ φ₀ μ p = 0` using `by rw [← eval_map]; exact hμ`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq0, hirr, hqp, hqμ⟩ : ∃ q : E[X], q ≠ 0 ∧ Irreducible q ∧ q ∣ p ∧ eval₂ φ₀ μ q = 0 := by`. Use `letI : Algebra E ℂ := φ₀.toAlgebra`. Establish `hμa : aeval μ p = 0` using `by rw [aeval_def]; exact h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hint_r : IsIntegral E μ` using `⟨p, hp, h1⟩`. Use `⟨minpoly E μ, minpoly.ne_zero hint_r, minpoly.irreducible hint_r, minpoly.dvd E μ hμa, ?_⟩` and prove the remaining obligations. Establish `h3` using `minpoly.aeval E μ`. Rewrite `h3` using `[aeval_def]`. Conclude with `h3`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Fact (Irreducible q) := ⟨hirr⟩`. Use `haveI : Module.Finite E (AdjoinRoot q) := Module.Finite.of_basis (AdjoinRoot.powerBasis hq0).basis`. Use `haveI : NumberField (AdjoinRoot q) := NumberField.of_module_finite E (AdjoinRoot q)`. Establish `hx : (p.map (algebraMap E (AdjoinRoot q))).IsRoot (AdjoinRoot.root q)` using `by show eval (AdjoinRoot.root q) (p.map (algebraMap E (AdjoinRoot q))) = 0`. Rewrite using `[eval_map, AdjoinRoot.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `hqp`. Rewrite using `[hr, eval₂_mul, AdjoinRoot.eval₂_root, zero_mul]`. Establish `hxint : IsIntegral ℤ (AdjoinRoot.root q)` using `hI E (AdjoinRoot q) p hp hc _ hx`. Establish `hxn : ∀ ψ : AdjoinRoot q →+* ℂ, ‖ψ (AdjoinRoot.root q)‖ = 1`. Introduce `ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hnorm (ψ.comp (algebraMap E (AdjoinRoot q))) (ψ (AdjoinRoot.root q))` to reduce the goal to its premises. Establish `h2 : eval₂ (algebraMap E (AdjoinRoot q)) (AdjoinRoot.root q) p = 0`. Rewrite using `[← eval_map]`. Conclude with `hx`. Use `show eval (ψ (AdjoinRoot.root q)) (p.map (ψ.comp (algebraMap E (AdjoinRoot q)))) = 0`.
-
-Rewrite using `[eval_map, ← hom_eval₂, h2, map_zero]`. Take `⟨n, hn, hxpow⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one (K := AdjoinRoot q) (A := ℂ) hxint hxn`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem stepB_of (hI : IntRootProp) : StepB := by
   intro E _ _ p hp hc hnorm φ₀ μ hμ
@@ -62,11 +60,11 @@ namespace PI.UnitKronW
 open Polynomial
 
 /- English proof (translation)
-Introduce `E L _ _ _ p hp hc x hx`. Establish `hcoef : ∀ n, (p.map (algebraMap E L)).coeff n ∈ Set.range (algebraMap (integralClosure ℤ L) L)`. Introduce `n`. Rewrite using `[coeff_map]`. Establish `hmem : algebraMap E L (p.coeff n) ∈ integralClosure ℤ L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mem_integralClosure_iff]`. Conclude with `(hc n).map (algebraMap E L).toIntAlgHom`. Conclude with `⟨⟨algebraMap E L (p.coeff n), hmem⟩, rfl⟩`. Take `⟨r, hr, -, hrm⟩` from `lifts_and_degree_eq_and_monic ((lifts_iff_coeff_lifts _).mpr hcoef) (hp.map (algebraMap E L))`. Establish `hxS : IsIntegral (integralClosure ℤ L) x`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, hrm, ?_⟩` and prove the remaining obligations. Rewrite using `[← eval_map, hr]`. Conclude with `hx`. Conclude with `isIntegral_trans x hxS`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intRootProp : IntRootProp := by
   intro E L _ _ _ p hp hc x hx
@@ -87,7 +85,7 @@ theorem intRootProp : IntRootProp := by
   exact isIntegral_trans x hxS
 
 /- English proof (translation)
-The claim follows from `stepB_of intRootProp`.
+A detailed English derivation is pending.
 -/
 theorem stepB : StepB :=
   stepB_of intRootProp

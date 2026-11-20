@@ -16,13 +16,13 @@ def bumpE (ε : ℝ) (hε : 0 < ε) : ContDiffBump (0 : V n) := ⟨ε, 2 * ε, h
 def cut (ε : ℝ) (hε : 0 < ε) (y : V n) : ℂ := ((bumpE ε hε : V n → ℝ) y : ℂ)
 
 /- English proof (translation)
-The claim follows from `Complex.ofRealCLM.contDiff.comp (bumpE ε hε).contDiff`.
+A detailed English derivation is pending.
 -/
 theorem cut_contDiff (ε : ℝ) (hε : 0 < ε) : ContDiff ℝ ∞ (cut (n := n) ε hε) :=
   Complex.ofRealCLM.contDiff.comp (bumpE ε hε).contDiff
 
 /- English proof (translation)
-Unfold `cut`. Rewrite using `[(bumpE ε hε).one_of_mem_closedBall (mem_closedBall_zero_iff.mpr hy)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cut_one (ε : ℝ) (hε : 0 < ε) {y : V n} (hy : ‖y‖ ≤ ε) : cut ε hε y = 1 := by
   unfold cut
@@ -30,7 +30,7 @@ theorem cut_one (ε : ℝ) (hε : 0 < ε) {y : V n} (hy : ‖y‖ ≤ ε) : cut 
   simp
 
 /- English proof (translation)
-Unfold `cut`. Rewrite using `[(bumpE ε hε).zero_of_le_dist (by rw [dist_zero_right]; exact hy)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cut_zero (ε : ℝ) (hε : 0 < ε) {y : V n} (hy : 2 * ε ≤ ‖y‖) : cut ε hε y = 0 := by
   unfold cut
@@ -38,16 +38,16 @@ theorem cut_zero (ε : ℝ) (hε : 0 < ε) {y : V n} (hy : 2 * ε ≤ ‖y‖) :
   simp
 
 /- English proof (translation)
-Unfold `wdb`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem wdb_const_eq_zero (j : Fin n) (c : ℂ) (y : V n) : wdb n j (fun _ => c) y = 0 := by
   unfold wdb
   simp
 
 /- English proof (translation)
-Establish `key : ∀ c : ℂ, (cut ε hε =ᶠ[𝓝 y] fun _ => c) → wdb n j (cut ε hε) y = 0`. Introduce `c hc`. Unfold `wdb`. Rewrite using `[hc.fderiv_eq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `hy with hy | hy` into its components or cases. Apply `key 1 filter_upwards [(isOpen_lt continuous_norm continuous_const).mem_nhds hy] with z hz` to reduce the goal to its premises. Conclude with `cut_one ε hε (le_of_lt hz)`. Apply `key 0 filter_upwards [(isOpen_lt continuous_const continuous_norm).mem_nhds hy] with z hz` to reduce the goal to its premises. Conclude with `cut_zero ε hε (le_of_lt hz)`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem wdb_cut_zero (ε : ℝ) (hε : 0 < ε) (j : Fin n) {y : V n}
     (hy : ‖y‖ < ε ∨ 2 * ε < ‖y‖) : wdb n j (cut ε hε) y = 0 := by
@@ -65,7 +65,7 @@ theorem wdb_cut_zero (ε : ℝ) (hε : 0 < ε) (j : Fin n) {y : V n}
     exact cut_zero ε hε (le_of_lt hz)
 
 /- English proof (translation)
-Establish `hc : Continuous (fderiv ℝ (cut (n` using `n) ε hε)) := (cut_contDiff ε hε).continuous_fderiv (by simp)`. Unfold `wdb`. Conclude with `((hc.clm_apply continuous_const).add (continuous_const.mul (hc.clm_apply continuous_const))).div_const 2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wdb_cut_continuous (ε : ℝ) (hε : 0 < ε) (j : Fin n) :
     Continuous (wdb n j (cut ε hε)) := by
@@ -76,9 +76,9 @@ theorem wdb_cut_continuous (ε : ℝ) (hε : 0 < ε) (j : Fin n) :
     (continuous_const.mul (hc.clm_apply continuous_const))).div_const 2
 
 /- English proof (translation)
-Establish `hcont : Continuous (fun y : V n => ∑ j, ‖wdb n j (cut ε hε) y‖ ^ 2)` using `continuous_finset_sum _ fun j _ => ((wdb_cut_continuous ε hε j).norm).pow 2`. Take `⟨C, hC⟩` from `(isCompact_closedBall (0 : V n) (2 * ε)).exists_bound_of_continuousOn hcont.continuousOn`. Use `⟨max C 0, le_max_right _ _, fun y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : ‖y‖ ≤ 2 * ε`. Establish `h1` using `hC y (mem_closedBall_zero_iff.mpr hy)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `h1` using `[Real.norm_of_nonneg (Finset.sum_nonneg fun j _ => by positivity)]`. Conclude with `h1.trans (le_max_left _ _)`. Use `push_neg at hy`. Establish `h0 : ∀ j, wdb n j (cut ε hε) y = 0` using `fun j => wdb_cut_zero ε hε j (Or.inr hy)`. Simplify using `[h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wdb_cut_bdd (ε : ℝ) (hε : 0 < ε) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ y : V n, ∑ j, ‖wdb n j (cut ε hε) y‖ ^ 2 ≤ M := by
@@ -96,7 +96,7 @@ theorem wdb_cut_bdd (ε : ℝ) (hε : 0 < ε) :
     simp [h0]
 
 /- English proof (translation)
-Establish `h1 : ‖∑ j, a j * conj (ξ j)‖ ≤ ∑ j, ‖a j‖ * ‖ξ j‖`. Use `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun j _ => ?_))` and prove the remaining obligations. Simplify using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_pair_sq_le (a ξ : Fin n → ℂ) :
     ‖∑ j, a j * conj (ξ j)‖ ^ 2 ≤ (∑ j, ‖a j‖ ^ 2) * ∑ j, ‖ξ j‖ ^ 2 := by

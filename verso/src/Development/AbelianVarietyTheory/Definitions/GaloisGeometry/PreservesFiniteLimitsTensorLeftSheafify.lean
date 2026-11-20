@@ -23,9 +23,9 @@ instance : (J.W (A := ModuleCat.{1} S)).IsMonoidal := GrothendieckTopology.W.mon
 instance : MonoidalClosed (Cᵒᵖ ⥤ ModuleCat.{1} S) := MonoidalClosed.FunctorCategory.monoidalClosed
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `K _ _`. Apply `preservesLimitsOfShape_of_evaluation` to reduce the goal to its premises. Introduce `U`. Establish `: Module.Flat S (P.obj U)` using `hP U`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (evaluation Cᵒᵖ (ModuleCat.{1} S)).obj U ⋙ tensorLeft (P.obj U) ≅ tensorLeft P ⋙ (evaluation Cᵒᵖ (ModuleCat.{1} S)).obj U` using `NatIso.ofComponents (fun F => Iso.refl _) (by`. Introduce `F G g`. Use the proof step `simp)`. Conclude with `preservesLimitsOfShape_of_natIso e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem preservesFiniteLimits_tensorLeft_presheaf (P : Cᵒᵖ ⥤ ModuleCat.{1} S) (hP : ∀ U, Module.Flat S (P.obj U)) :
     PreservesFiniteLimits (tensorLeft P) := by
@@ -60,7 +60,7 @@ def tensorLeftSheafifyIso (P : Cᵒᵖ ⥤ ModuleCat.{1} S) :
       ((sheafToPresheaf J _).map g)))
 
 /- English proof (translation)
-Use `preservesFiniteLimits_tensorLeft_presheaf S P hP` as an intermediate fact. Conclude with `preservesFiniteLimits_of_natIso (tensorLeftSheafifyIso J S P).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem preservesFiniteLimits_tensorLeft_sheafify (P : Cᵒᵖ ⥤ ModuleCat.{1} S) (hP : ∀ U, Module.Flat S (P.obj U)) :
     PreservesFiniteLimits (tensorLeft ((presheafToSheaf J _).obj P)) := by
@@ -100,7 +100,7 @@ instance presheafToSheaf_linear : (presheafToSheaf J (ModuleCat.{1} S)).Linear S
 attribute [local instance] Sheaf.monoidalCategory Sheaf.symmetricCategory
 
 /- English proof (translation)
-Establish `e : tensorLeft F ≅ sheafToPresheaf J _ ⋙ tensorLeft F.obj ⋙ presheafToSheaf J _` using `(tensoringLeft _).mapIso (asIso ((sheafificationAdjunction J _).counit.app F)).symm ≪≫ tensorLeftSheafifyIso J S F.obj`. Conclude with `Functor.additive_of_iso e.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tensorLeft_sheaf_additive (F : Sheaf J (ModuleCat.{1} S)) : (tensorLeft F).Additive := by
   have e : tensorLeft F ≅ sheafToPresheaf J _ ⋙ tensorLeft F.obj ⋙ presheafToSheaf J _ :=
@@ -109,7 +109,7 @@ theorem tensorLeft_sheaf_additive (F : Sheaf J (ModuleCat.{1} S)) : (tensorLeft 
   exact Functor.additive_of_iso e.symm
 
 /- English proof (translation)
-Use `letI := tensorLeft_sheaf_additive J S F`. Establish `e : tensorLeft F ≅ sheafToPresheaf J _ ⋙ tensorLeft F.obj ⋙ presheafToSheaf J _` using `(tensoringLeft _).mapIso (asIso ((sheafificationAdjunction J _).counit.app F)).symm ≪≫ tensorLeftSheafifyIso J S F.obj`. Conclude with `Functor.linear_of_iso S e.symm`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tensorLeft_sheaf_linear (F : Sheaf J (ModuleCat.{1} S)) :
     letI := tensorLeft_sheaf_additive J S F
@@ -161,9 +161,9 @@ class FlatCoef : Prop where
 attribute [instance] FlatCoef.preservesFiniteLimits_tensorRight
 
 /- English proof (translation)
-Establish `: PreservesFiniteLimits (tensorLeft (coef R))` using `preservesFiniteLimits_tensorLeft_sheafify _ _ (coefPre R) (fun U => by`. Use `h U.unop` as an intermediate fact. Express the relevant statement in the definitionally equal form `Module.Flat (ULift.{1} R) (ULift.{1} C(U.unop, R))`. Rewrite using `[Module.Flat.ulift_left_iff]`. Use the proof step `infer_instance)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨preservesFiniteLimits_of_natIso (BraidedCategory.tensorLeftIsoTensorRight (coef R))⟩`.
+A detailed English derivation is pending.
 -/
 theorem FlatCoef.of_flat (h : ∀ U : Scheme.{0}, Module.Flat R C(U, R)) : FlatCoef R := by
   have : PreservesFiniteLimits (tensorLeft (coef R)) :=
@@ -185,15 +185,15 @@ instance [IsDomain R] [IsBezout R] : FlatCoef R := by
   exact (mul_eq_zero.1 hu).resolve_left (nonZeroDivisors.ne_zero a.2)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : FlatCoef ℚ := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] : FlatCoef ℤ_[p] := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] : FlatCoef ℚ_[p] := inferInstance
 
@@ -263,28 +263,28 @@ def cupExt (X : Scheme.{0}) {i j n : ℕ} (h : i + j = n) (a : HS R (coef R) i X
     (show j + i = n by omega)) (zero_add n)
 
 /- English proof (translation)
-Simplify using `only [cupExt, Abelian.Ext.mapExactFunctor_add, Abelian.Ext.add_comp, Abelian.Ext.comp_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cupExt_add_left (X : Scheme.{0}) {i j n : ℕ} (h : i + j = n) (a a' : HS R (coef R) i X)
     (b : HS R (coef R) j X) : cupExt R X h (a + a') b = cupExt R X h a b + cupExt R X h a' b := by
   simp only [cupExt, Abelian.Ext.mapExactFunctor_add, Abelian.Ext.add_comp, Abelian.Ext.comp_add]
 
 /- English proof (translation)
-Simplify using `only [cupExt, Abelian.Ext.mapExactFunctor_add, Abelian.Ext.add_comp, Abelian.Ext.comp_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cupExt_add_right (X : Scheme.{0}) {i j n : ℕ} (h : i + j = n) (a : HS R (coef R) i X)
     (b b' : HS R (coef R) j X) : cupExt R X h a (b + b') = cupExt R X h a b + cupExt R X h a b' := by
   simp only [cupExt, Abelian.Ext.mapExactFunctor_add, Abelian.Ext.add_comp, Abelian.Ext.comp_add]
 
 /- English proof (translation)
-Simplify using `only [cupExt, Functor.mapExactFunctor_smul, Abelian.Ext.smul_comp, Abelian.Ext.comp_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cupExt_smul_left (X : Scheme.{0}) {i j n : ℕ} (h : i + j = n) (r : ULift.{1} R) (a : HS R (coef R) i X)
     (b : HS R (coef R) j X) : cupExt R X h (r • a) b = r • cupExt R X h a b := by
   simp only [cupExt, Functor.mapExactFunctor_smul, Abelian.Ext.smul_comp, Abelian.Ext.comp_smul]
 
 /- English proof (translation)
-Simplify using `only [cupExt, Functor.mapExactFunctor_smul, Abelian.Ext.smul_comp, Abelian.Ext.comp_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cupExt_smul_right (X : Scheme.{0}) {i j n : ℕ} (h : i + j = n) (r : ULift.{1} R) (a : HS R (coef R) i X)
     (b : HS R (coef R) j X) : cupExt R X h a (r • b) = r • cupExt R X h a b := by
@@ -317,9 +317,9 @@ section Natural
 variable [FlatCoef R]
 
 /- English proof (translation)
-Use extensionality with `U : 2`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Use `Finsupp.lhom_ext (fun g c => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Finsupp.linearCombination _ _ (Finsupp.mapDomain _ (Finsupp.single g c)) = ((Functor.whiskerRight (uliftYoneda.{1}.map f) (ModuleCat.free (ULift.{1} R)) ⊗ₘ Functor.whiskerRight (uliftYoneda.{1}.map f) (ModuleCat.free (ULift.{1} R))).app U).hom (Finsupp.linearCombination _ _ (Fins …`. Rewrite using `[Finsupp.mapDomain_single]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `erw [Finsupp.linearCombination_single, Finsupp.linearCombination_single, map_smul]`. Use `congr 1`. Conclude with `(congrArg₂ (fun (a b : (freePre R Y).obj U) => a ⊗ₜ[ULift.{1} R] b) Finsupp.mapDomain_single Finsupp.mapDomain_single).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem freeDiagPre_naturality {X Y : Scheme.{0}} (f : X ⟶ Y) :
     ((Functor.whiskeringRight _ _ _).obj (ModuleCat.free (ULift.{1} R))).map (uliftYoneda.{1}.map f) ≫ freeDiagPre R Y =
@@ -339,7 +339,7 @@ theorem freeDiagPre_naturality {X Y : Scheme.{0}} (f : X ⟶ Y) :
     Finsupp.mapDomain_single).symm
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(presheafToSheaf _ _).map _ ≫ (presheafToSheaf _ _).map (freeDiagPre R Y) ≫ _ = ((presheafToSheaf _ _).map (freeDiagPre R X) ≫ _) ≫ ((presheafToSheaf _ _).map _ ⊗ₘ (presheafToSheaf _ _).map _)`. Rewrite using `[Category.assoc, Functor.OplaxMonoidal.δ_natural, ← Functor.map_comp_assoc, freeDiagPre_naturality, Functor.map_comp_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem freeDiag_naturality {X Y : Scheme.{0}} (f : X ⟶ Y) :
     (freeOn R).map f ≫ freeDiag R Y = freeDiag R X ≫ ((freeOn R).map f ⊗ₘ (freeOn R).map f) := by
@@ -349,9 +349,9 @@ theorem freeDiag_naturality {X Y : Scheme.{0}} (f : X ⟶ Y) :
     Functor.map_comp_assoc]
 
 /- English proof (translation)
-Simplify using `only [cupExt]`. Rewrite using `[Abelian.Ext.mapExactFunctor_comp, Abelian.Ext.mapExactFunctor_comp, Abelian.Ext.mapExactFunctor_mk₀, Abelian.Ext.mapExactFunctor_mk₀, Abelian.Ext.mk₀_comp_mk₀_assoc, freeDiag_naturality, ← Abelian.Ext.mk₀_comp_mk₀_assoc]`. Use `congr 1`. Rewrite using `[Abelian.Ext.comp_assoc _ _ _ (zero_add j) (show j + i = n by omega) (by omega), Abelian.Ext.comp_assoc_of_third_deg_zero, ← Abelian.Ext.comp_assoc_of_second_deg_zero]`. Establish `hτ` using `GlobalTheory.ChangeRing.mapExactFunctor_natTrans.{1, 1} (tensorLeft ((freeOn R).obj X)) (tensorLeft ((freeOn R).obj Y)) ((tensoringLeft (Shv R)).map ((freeOn R).map f)) j b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `erw [hτ]`. Rewrite using `[Abelian.Ext.comp_assoc _ _ _ (zero_add j) (show j + i = n by omega) (by omega), Abelian.Ext.mk₀_comp_mk₀_assoc]`. Use `congr 2`. Conclude with `MonoidalCategory.tensorHom_def' (C := Shv R) ((freeOn R).map f) ((freeOn R).map f)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem mk₀_comp_cupExt {X Y : Scheme.{0}} (f : X ⟶ Y) {i j n : ℕ} (h : i + j = n) (a : HS R (coef R) i Y)
     (b : HS R (coef R) j Y) :
@@ -373,14 +373,14 @@ theorem mk₀_comp_cupExt {X Y : Scheme.{0}} (f : X ⟶ Y) {i j n : ℕ} (h : i 
   exact MonoidalCategory.tensorHom_def' (C := Shv R) ((freeOn R).map f) ((freeOn R).map f)
 
 /- English proof (translation)
-The claim follows from `mk₀_comp_cupExt R f h a b`.
+A detailed English derivation is pending.
 -/
 theorem pull_cupN {X Y : Scheme.{0}} (f : X ⟶ Y) (i j n : ℕ) (h : i + j = n) (a : H R i Y) (b : H R j Y) :
     pull R n f (cupN R Y i j n h a b) = cupN R X i j n h (pull R i f a) (pull R j f b) :=
   mk₀_comp_cupExt R f h a b
 
 /- English proof (translation)
-The claim follows from `pull_cupN R f i j (i + j) rfl a b`.
+A detailed English derivation is pending.
 -/
 theorem pull_cup {X Y : Scheme.{0}} (f : X ⟶ Y) (i j : ℕ) (a : H R i Y) (b : H R j Y) :
     pull R (i + j) f (cup R Y i j a b) = cup R X i j (pull R i f a) (pull R j f b) :=
@@ -395,7 +395,7 @@ variable [FlatCoef R]
 def ofPre {X : Scheme.{0}} (γ : freePre R X ⟶ coefPre R) : H R 0 X := Abelian.Ext.mk₀ ((presheafToSheaf _ _).map γ)
 
 /- English proof (translation)
-Simplify using `only [cupExt, Abelian.Ext.mapExactFunctor_mk₀, Abelian.Ext.mk₀_comp_mk₀]`. Use `congr 1`. Rewrite using `[MonoidalCategory.tensorHom_def' (C := Shv R) g g', Category.assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cupExt_mk₀ (X : Scheme.{0}) (g g' : (freeOn R).obj X ⟶ coef R) :
     cupExt R X (rfl : 0 + 0 = 0) (Abelian.Ext.mk₀ g) (Abelian.Ext.mk₀ g') =
@@ -406,7 +406,7 @@ theorem cupExt_mk₀ (X : Scheme.{0}) (g g' : (freeOn R).obj X ⟶ coef R) :
   rfl
 
 /- English proof (translation)
-Use `(cupExt_mk₀ R X _ _).trans (congrArg Abelian.Ext.mk₀ ?_)` and prove the remaining obligations. Simplify using `only [freeDiag, coefMul, Functor.map_comp]`. Use `erw [Category.assoc, Functor.OplaxMonoidal.δ_natural_assoc, Functor.Monoidal.δ_μ_assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cupN_ofPre (X : Scheme.{0}) (γ γ' : freePre R X ⟶ coefPre R) :
     cupN R X 0 0 0 rfl (ofPre R γ) (ofPre R γ') = ofPre R (freeDiagPre R X ≫ (γ ⊗ₘ γ') ≫ coefMulPre R) := by
@@ -416,9 +416,9 @@ theorem cupN_ofPre (X : Scheme.{0}) (γ γ' : freePre R X ⟶ coefPre R) :
   rfl
 
 /- English proof (translation)
-Establish `h1 : (sheafificationAdjunction Scheme.proetaleTopology.{0} (ModuleCat.{1} (ULift.{1} R))).homEquiv _ _ ((presheafToSheaf _ _).map γ) = γ ≫ toSheafify _ (coefPre R)`. Rewrite using `[Adjunction.homEquiv_unit]`. Conclude with `((sheafificationAdjunction _ _).unit.naturality γ).symm`. Establish `h0 : Abelian.Ext.addEquiv₀ (X` using `(freeOn R).obj X) (Y := coef R) (ofPre R γ) = (presheafToSheaf _ _).map γ := Abelian.Ext.addEquiv₀.apply_symm_apply _`. Establish `key : H0.e R X (ofPre R γ) = AddEquiv.ulift ((((isoSheafify _ (H0.sh R)).app (op X)).symm.toLinearEquiv) (H0.yonedaAdd R X (coef R).obj ((sheafificationAdjunction _ _).homEquiv _ _ (Abelian.Ext.addEquiv₀ (X` using `(freeOn R).obj X) (Y := coef R) (ofPre R γ))))) := rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, h0]`. Use `erw [h1]`. Establish `h3` using `ConcreteCategory.congr_hom ((isoSheafify _ (H0.sh R)).hom_inv_id_app (op X)) (γ.app (op X) (Finsupp.single (ULift.up (𝟙 X)) 1))`. Rewrite `h3` using `[isoSheafify_hom]`. Conclude with `congrArg ULift.down h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e_ofPre (X : Scheme.{0}) (γ : freePre R X ⟶ coefPre R) :
     H0.e R X (ofPre R γ) = (γ.app (op X) (Finsupp.single (ULift.up (𝟙 X)) 1)).down := by
@@ -439,7 +439,7 @@ theorem e_ofPre (X : Scheme.{0}) (γ : freePre R X ⟶ coefPre R) :
   exact congrArg ULift.down h3
 
 /- English proof (translation)
-Rewrite using `[Adjunction.homEquiv_unit]`. Conclude with `((sheafificationAdjunction _ _).unit.naturality γ).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homEquiv_map_ofPre {X : Scheme.{0}} (γ : freePre R X ⟶ coefPre R) :
     (sheafificationAdjunction Scheme.proetaleTopology.{0} (ModuleCat.{1} (ULift.{1} R))).homEquiv _ _
@@ -448,9 +448,9 @@ theorem homEquiv_map_ofPre {X : Scheme.{0}} (γ : freePre R X ⟶ coefPre R) :
   exact ((sheafificationAdjunction _ _).unit.naturality γ).symm
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `(Abelian.Ext.mk₀_bijective ((freeOn R).obj X) (coef R)).surjective x`. Set `adj` to `sheafificationAdjunction Scheme.proetaleTopology.{0} (ModuleCat.{1} (ULift.{1} R))`. Use `⟨adj.homEquiv _ _ g ≫ (isoSheafify _ (H0.sh R)).inv, ?_⟩` and prove the remaining obligations. Use `congrArg Abelian.Ext.mk₀ ((adj.homEquiv _ _).injective ?_)` and prove the remaining obligations. Use `erw [homEquiv_map_ofPre]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hi : (isoSheafify _ (H0.sh R)).inv ≫ toSheafify Scheme.proetaleTopology.{0} (coefPre R) = 𝟙 _`. Rewrite using `[← isoSheafify_hom _ (H0.sh R)]`. Conclude with `Iso.inv_hom_id _`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (adj.homEquiv _ _ g ≫ ·) hi).trans (Category.comp_id _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ofPre {X : Scheme.{0}} (x : H R 0 X) : ∃ γ : freePre R X ⟶ coefPre R, ofPre R γ = x := by
   obtain ⟨g, rfl⟩ := (Abelian.Ext.mk₀_bijective ((freeOn R).obj X) (coef R)).surjective x
@@ -464,9 +464,9 @@ theorem exists_ofPre {X : Scheme.{0}} (x : H R 0 X) : ∃ γ : freePre R X ⟶ c
   exact (Category.assoc _ _ _).trans ((congrArg (adj.homEquiv _ _ g ≫ ·) hi).trans (Category.comp_id _))
 
 /- English proof (translation)
-Take `⟨γ, rfl⟩` from `exists_ofPre R x`. Take `⟨γ', rfl⟩` from `exists_ofPre R y`. Rewrite using `[cupN_ofPre, e_ofPre, e_ofPre, e_ofPre]`. Express the relevant statement in the definitionally equal form `((coefMulPre R).app (op X) (((γ ⊗ₘ γ').app (op X)) ((freeDiagPre R X).app (op X) (Finsupp.single (ULift.up (𝟙 X)) 1)))).down = _`. Use `erw [Finsupp.linearCombination_single, one_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem e_cupN (X : Scheme.{0}) (x y : H R 0 X) :
     H0.e R X (cupN R X 0 0 0 rfl x y) = H0.e R X x * H0.e R X y := by
@@ -479,7 +479,7 @@ theorem e_cupN (X : Scheme.{0}) (x y : H R 0 X) :
   rfl
 
 /- English proof (translation)
-The claim follows from `e_cupN R X x y`.
+A detailed English derivation is pending.
 -/
 theorem e_cup (X : Scheme.{0}) (x y : H R 0 X) : H0.e R X (cup R X 0 0 x y) = H0.e R X x * H0.e R X y :=
   e_cupN R X x y
@@ -493,7 +493,7 @@ variable [FlatCoef R]
 def one (X : Scheme.{0}) : H R 0 X := Abelian.Ext.mk₀ (freeAug R X ≫ coefOne R)
 
 /- English proof (translation)
-Use `congrArg Abelian.Ext.mk₀ ?_` and prove the remaining obligations. Simplify using `only [freeAug, coefOne, Functor.map_comp]`. Use `erw [Category.assoc, Functor.Monoidal.η_ε_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_eq_ofPre (X : Scheme.{0}) : one R X = ofPre R (freeAugPre R X ≫ coefOnePre R) := by
   refine congrArg Abelian.Ext.mk₀ ?_
@@ -501,9 +501,9 @@ theorem one_eq_ofPre (X : Scheme.{0}) : one R X = ofPre R (freeAugPre R X ≫ co
   erw [Category.assoc, Functor.Monoidal.η_ε_assoc]
 
 /- English proof (translation)
-Rewrite using `[one_eq_ofPre, e_ofPre]`. Express the relevant statement in the definitionally equal form `((coefOnePre R).app (op X) ((freeAugPre R X).app (op X) (Finsupp.single (ULift.up (𝟙 X)) 1))).down = 1`. Use `erw [Finsupp.linearCombination_single]`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `((((1 : ULift.{1} R) • (1 : ULift.{1} R)) • (⟨1⟩ : ULift.{1} C(X, R))).down) x = (1 : C(X, R)) x`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem e_one (X : Scheme.{0}) : H0.e R X (one R X) = 1 := by
   rw [one_eq_ofPre, e_ofPre]
@@ -514,7 +514,7 @@ theorem e_one (X : Scheme.{0}) : H0.e R X (one R X) = 1 := by
   simp
 
 /- English proof (translation)
-The claim follows from `pull_cup R _ i j a b`.
+A detailed English derivation is pending.
 -/
 theorem gal_cup {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}}
     (p : X ⟶ Spec (CommRingCat.of k)) (i j : ℕ) (σ : Ω ≃ₐ[k] Ω) (a : H R i (geom Ω p)) (b : H R j (geom Ω p)) :
@@ -528,14 +528,14 @@ section Examples
 variable (X : Scheme.{0})
 
 /- English proof (translation)
-Apply `(H0.e ℚ_[p] X).injective` to reduce the goal to its premises. Rewrite using `[e_cup, e_one, LinearEquiv.apply_symm_apply, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 example (p : ℕ) [Fact p.Prime] : cup ℚ_[p] X 0 0 (one ℚ_[p] X) (one ℚ_[p] X) = (H0.e ℚ_[p] X).symm 1 := by
   apply (H0.e ℚ_[p] X).injective
   rw [e_cup, e_one, LinearEquiv.apply_symm_apply, one_mul]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `e_one ℤ_[p] X`. Rewrite `h1` using `[h, map_zero]`. Conclude with `zero_ne_one (DFunLike.congr_fun h1 (Classical.arbitrary X))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] [Nonempty X] : one ℤ_[p] X ≠ 0 := by
   intro h
@@ -544,7 +544,7 @@ example (p : ℕ) [Fact p.Prime] [Nonempty X] : one ℤ_[p] X ≠ 0 := by
   exact zero_ne_one (DFunLike.congr_fun h1 (Classical.arbitrary X))
 
 /- English proof (translation)
-Rewrite using `[e_cup, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (p : ℕ) [Fact p.Prime] (f g : C(X, ℤ_[p])) :
     H0.e ℤ_[p] X (cup ℤ_[p] X 0 0 ((H0.e ℤ_[p] X).symm f) ((H0.e ℤ_[p] X).symm g)) = f * g := by

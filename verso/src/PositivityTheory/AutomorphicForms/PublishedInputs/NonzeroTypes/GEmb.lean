@@ -10,19 +10,17 @@ open scoped TensorProduct
 namespace UpperTheory.TNZ
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n G V _ _ π hπ`. Take `⟨X, instA, instM, σ, -, -, hdet, ⟨e⟩⟩` from `hπ`. Set `_` to `instA`. Set `_` to `instM`. Take `⟨v, hv0, hv⟩` from `e1 k G.s G.d X σ G.μ hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `choose F hF using fun φ : ↥G.V0sp => e5 e2 e3 k n G X σ v hv φ.1 φ.2`. Establish `hadd : ∀ φ ψ, F (φ + ψ) = F φ + F ψ` using `fun φ ψ => e4 k G.s n G.d G.hd _ (piTensor σ) _ _ fun κ hκ => by`. Establish `h1` using `hF (φ + ψ) ⟨κ, hκ⟩`. Establish `h2` using `hF φ ⟨κ, hκ⟩`. Establish `h3` using `hF ψ ⟨κ, hκ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = (F φ).1.1 κ + (F ψ).1.1 κ`. Rewrite using `[h1, h2, h3, ← add_smul]`. Both sides reduce to the same expression. Establish `hsmul : ∀ (c : ℂ) φ, F (c • φ) = c • F φ` using `fun c φ => e4 k G.s n G.d G.hd _ (piTensor σ) _ _ fun κ hκ => by`. Establish `h1` using `hF (c • φ) ⟨κ, hκ⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hF φ ⟨κ, hκ⟩`. Express the relevant statement in the definitionally equal form `_ = c • (F φ).1.1 κ`. Rewrite using `[h1, h2, smul_smul]`. Both sides reduce to the same expression. Set `f0 : ↥G.V0sp →ₗ[ℂ] IndSp G.e (piTensor σ)` to `{ toFun := F, map_add' := hadd, map_smul' := hsmul }`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e.symm.toLinearEquiv.toLinearMap ∘ₗ f0, fun φ ψ h => ?_, fun κ φ φ' hφ' => ?_⟩` and prove the remaining obligations. Establish `h' : F φ = F ψ` using `e.symm.toLinearEquiv.injective h`. Use `Subtype.ext (funext fun κ => ?_)` and prove the remaining obligations. Establish `h2` using `congrArg (fun F : IndSp G.e (piTensor σ) => F.1.1 (κ : GL (Fin n) k)) h'`. Simplify using `only [hF] at h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `smul_left_injective ℂ hv0 h2`. Establish `key : F φ' = parInd G.e (piTensor σ) (κ : GL (Fin n) k) (F φ)` using `e4 k G.s n G.d G.hd _ (piTensor σ) _ _ fun x hx => by`. Rewrite using `[hF φ' ⟨x, hx⟩, parInd_apply, hF φ ⟨x * κ, mul_mem hx κ.2⟩, hφ']`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `e.symm.toLinearEquiv (F φ') = π κ (e.symm.toLinearEquiv (F φ))`.
-
-Rewrite using `[key, Representation.Equiv.toLinearEquiv_apply, Representation.Equiv.toLinearEquiv_apply]`. Conclude with `Representation.IntertwiningMap.isIntertwining _ _ e.symm.toIntertwiningMap (κ : GL (Fin n) k) (F φ)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gEmb (e1 : TensorProductVectors) (e2 : LeviSubgroupRestriction) (e3 : ParabolicInductionKernel) (e4 : InducedDeterminantTwist)
     (e5 : InductionExtension) : GEmb := by

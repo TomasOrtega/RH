@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.BadPt
 
 /- English proof (translation)
-Conclude with `PDivGroup.hom_ext fun n => BialgHom.ext fun x => (CartierDual.baseChange_map K (g'.app n) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem dualBaseChange_hom_natural (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (K : Type) [Field K] [Algebra R K]
     (Γ' : PDivGroup p R) (g' : Γ' ⟶ Γ') :
@@ -21,9 +21,9 @@ theorem dualBaseChange_hom_natural (p : ℕ) [Fact p.Prime] (R : Type) [CommRing
   exact PDivGroup.hom_ext fun n => BialgHom.ext fun x => (CartierDual.baseChange_map K (g'.app n) x).symm
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, rfl⟩`. Use `⟨rigExtMap h y, ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun (rigExtMap_comp f π) ((Δ.toBase K).rig y)`. Establish `h2` using `LinearMap.congr_fun (rigExtMap_comp π (PDivGroup.baseChangeMap K h)) ((Δ.toBase K).rig y)`. Establish `h3` using `(Δ.toBase K).rig_naturality (Δ.toBase K) h (PDivGroup.baseChangeMap K h) (fun _ _ => rfl) y`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[LinearMap.comp_apply]`. Rewrite using `[← h1, e, h2, h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem latExt_stable {p : ℕ} [Fact p.Prime] {R K : Type} [CommRing R] [CommRing K] [Algebra R K]
     {Δ : PDivGroup p R} {𝒜 : PDivGroup p K} [Module R 𝒜.RigExt] [IsScalarTower R K 𝒜.RigExt]
@@ -38,11 +38,11 @@ theorem latExt_stable {p : ℕ} [Fact p.Prime] {R K : Type} [CommRing R] [CommRi
   rw [← h1, e, h2, h3]
 
 /- English proof (translation)
-Introduce `p _ R _ _ _ K _ _ _ hR hK Γ' 𝒜 κ w _ _ f f' g g' hg hg' hw x hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add]`. Use `add_mem (Submodule.mem_sup_left ?_) (Submodule.mem_sup_right ?_)` and prove the remaining obligations. Take `⟨e, e₀, rfl, h⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨PDivGroup.omegaMap _ _ f e, PDivGroup.omegaMap _ _ g e₀, rigExtMap_rigOfOmega f e, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply (PDivGroup.omegaMap _ _ κ), ← PDivGroup.omegaMap_comp, ← hg, PDivGroup.omegaMap_comp, LinearMap.comp_apply, h]`. Conclude with `((Γ'.toBase K).omega_naturality (Γ'.toBase K) g (PDivGroup.baseChangeMap K g) (fun _ _ => rfl) e₀).symm`. Establish `key : f ≫ weilProj κ w = weilProj κ w ≫ PDivGroup.baseChangeMap K (dualHom _ _ g')`. Unfold `weilProj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[reassoc_of% hw, ← Category.assoc (dualHom _ _ f'), ← dualHom_comp, ← hg', dualHom_comp, Category.assoc, dualBaseChange_hom_natural]`. Simplify using `only [Category.assoc]`. Conclude with `latExt_stable (weilProj κ w) f _ key _ hz`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lattice_stable : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] (hR : (p : R) = 0) (hK : (p : K) = 0) (Γ' : PDivGroup p R) (𝒜 : PDivGroup p K) (κ : Γ'.baseChange K ⟶ 𝒜) (w : 𝒜 ⟶ 𝒜.dual) [Module R 𝒜.RigExt] [IsScalarTower R K 𝒜.RigExt] (f f' : 𝒜 ⟶ 𝒜) (g g' : Γ' ⟶ Γ'), PDivGroup.baseChangeMap K g ≫ κ = κ ≫ f → PDivGroup.baseChangeMap K g' ≫ κ = κ ≫ f' → f ≫ w = w ≫ dualHom _ _ f' → ∀ x ∈ lattice κ w, rigExtMap f x ∈ lattice κ w := by
   intro p _ R _ _ _ K _ _ _ hR hK Γ' 𝒜 κ w _ _ f f' g g' hg hg' hw x hx

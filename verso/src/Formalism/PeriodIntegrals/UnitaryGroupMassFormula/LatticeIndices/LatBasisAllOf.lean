@@ -14,15 +14,15 @@ section Gen
 variable {K : Type} [Field K] (O : ValuationSubring K) {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Establish `key : ∀ c : n → K, z ⬝ᵥ (J *ᵥ ((P : Matrix n n K) *ᵥ c)) = ((Matrix.transpose (P : Matrix n n K) * Matrix.transpose J) *ᵥ z) ⬝ᵥ c`. Introduce `c`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, Matrix.transpose_mul]`. Establish `hPP : ∀ c : n → K, ((P⁻¹ : GL n K) : Matrix n n K) *ᵥ ((P : Matrix n n K) *ᵥ c) = c`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `hPP' : ∀ y : n → K, (P : Matrix n n K) *ᵥ (((P⁻¹ : GL n K) : Matrix n n K) *ᵥ y) = y`. Introduce `y`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h i`. Establish `h1` using `h ((P : Matrix n n K) *ᵥ Pi.single i 1) (by`. Introduce `j`. Rewrite using `[hPP]`. Distinguish the cases in `hij : j = i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij])`. Rewrite `h1` using `[key, dotProduct_single_one]`. Conclude with `h1`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h y hy`. Rewrite using `[← hPP' y, key]`. Conclude with `sum_mem fun i _ => mul_mem (h i) (hy i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_basis_iff (P : GL n K) (J : Matrix n n K) (z : n → K) :
     (∀ y : n → K, (∀ i, (((P⁻¹ : GL n K) : Matrix n n K) *ᵥ y) i ∈ O) → z ⬝ᵥ (J *ᵥ y) ∈ O) ↔
@@ -83,9 +83,9 @@ def LatDualP : Prop :=
   ∀ z, z ∈ Mlat2 X p θ ↔ ∀ y ∈ Mlat1 X p θ, z ⬝ᵥ (J1 X p θ *ᵥ y) ∈ OpX X p
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `hF`. Use `⟨P, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hS x, hD, hP]`. Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Rewrite using `[← dual_basis_iff (OpX X p) P (J1 X p θ)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h y hy => h y ((hP y).2 hy), fun h y hy => h y ((hP y).1 hy)⟩`.
+Supply the required witnesses or components.
 -/
 theorem latBasis_of (hS : LatSplitP X p θ) (hF : LatFreeP X p θ) (hD : LatDualP X p θ) :
     ∃ P, LatBasis X p θ P := by
@@ -97,7 +97,7 @@ theorem latBasis_of (hS : LatSplitP X p θ) (hF : LatFreeP X p θ) (hD : LatDual
   exact ⟨fun h y hy => h y ((hP y).2 hy), fun h y hy => h y ((hP y).1 hy)⟩
 
 /- English proof (translation)
-Introduce `θ hθ` and use `latBasis_of X p θ (hS θ hθ) (hF θ hθ) (hD θ hθ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem latBasisAll_of
     (hS : ∀ θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p, IsSplitEquiv X p θ → LatSplitP X p θ)

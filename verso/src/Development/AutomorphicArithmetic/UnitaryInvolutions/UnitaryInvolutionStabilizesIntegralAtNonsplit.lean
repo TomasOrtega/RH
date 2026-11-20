@@ -9,7 +9,7 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open scoped Classical TensorProduct
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `UpperTheory.ConvolutionTheory.D.ct c ((a * b)⁻¹ : GL (Fin n) R).val = UpperTheory.ConvolutionTheory.D.ct c (a⁻¹ : GL (Fin n) R).val * UpperTheory.ConvolutionTheory.D.ct c (b⁻¹ : GL (Fin n) R).val`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, UpperTheory.ConvolutionTheory.D.ct, UpperTheory.ConvolutionTheory.D.ct, UpperTheory.ConvolutionTheory.D.ct, Matrix.map_mul, Matrix.transpose_mul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.G3.InertCase.th_mul {k R : Type} [CommRing k] [CommRing R] [Algebra k R] {n : ℕ}
     (c : R ≃ₐ[k] R) (a b : GL (Fin n) R) :
@@ -21,31 +21,29 @@ private theorem UpperTheory.G3.InertCase.th_mul {k R : Type} [CommRing k] [CommR
     Matrix.transpose_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n u δ hT hu w hw hL huK hδK hQ y hyK hy`. Take `⟨k, _, _, _, c, ϖ, ω, hG, hc, hcϖ, hϖ, hcomp, hsep, hfin, hω⟩` from `UpperTheory.exists_local_quadratic_galois_data_at_nonsplit_place E hU w hw`. Establish `core` using `UpperTheory.twistedConj_of_charpoly_mul_galConj_eq_of_separable k (Ov E w) c hG (UpperTheory.normIn_of_free_algebra_of_complete_quadratic k (Ov E w) c ϖ ω hG hcϖ hϖ hcomp hsep hfin hω) n`. Establish `hconj` using `((GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.2.2.1 hw).1`. Take `⟨ι, hιdef⟩ : ∃ ι : GL (Fin n) (Ov E w) →* GLw n w, ι = Formalism.UG.bc (Ov E w).subtype` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hιv : ∀ a, (ι a).val = a.val.map (Ov E w).subtype` using `fun a => by rw [hιdef]; rfl`. Establish `hinj : Function.Injective ι` using `fun a b e => Units.ext (Matrix.map_injective (Ov E w).subtype_injective (by show a.val.map (Ov E w).subtype = b.val.map (Ov E w).subtype`. Rewrite using `[← hιv, ← hιv, e]))`. Establish `hK : ∀ x ∈ GlobalTheory.LFun.KGL w n, ∃ a, ι a = x`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hιdef]`. Conclude with `hx`. Take `⟨u₀, hu₀⟩` from `hK _ huK`. Take `⟨δ₀, hδ₀⟩` from `hK _ hδK`. Take `⟨y₀, rfl⟩` from `hK _ hyK`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcompat : ∀ a : GL (Fin n) (Ov E w), (ι (UpperTheory.ConvolutionTheory.D.th c a)).val = (((ι a)⁻¹ : GLw n w).val.map (cj w))ᵀ`. Introduce `a`. Rewrite using `[← map_inv, hιv, hιv]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `hc _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hthL : ∀ a : GL (Fin n) (Ov E w), thL n w (ι a) = ι u₀ * ι (UpperTheory.ConvolutionTheory.D.th c a) * (ι u₀)⁻¹`. Introduce `a`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hL, Units.val_mul, Units.val_mul, hcompat, hu₀, ← map_inv]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmapth : ι (UpperTheory.ConvolutionTheory.D.th c u₀) = GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) (UpperTheory.ConvolutionTheory.D.th (IsCMField.complexConj E) u)`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hcompat, hu₀, ← map_inv]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `hconj _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hu1 : UpperTheory.ConvolutionTheory.D.th c u₀ = u₀⁻¹`. Use `eq_inv_of_mul_eq_one_right (hinj ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_one, hmapth, hu₀, ← map_mul, hu, map_one]`. Establish `hnrm : ∀ a : GL (Fin n) (Ov E w), nrmL n w (ι a) = ι (a * u₀ * UpperTheory.ConvolutionTheory.D.th c (a * u₀))`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e : nrmL n w (ι a) = ι a * thL n w (ι a)`. Unfold `nrmL thL`. Rewrite using `[if_neg hw, if_neg hw]`. Rewrite using `[e, hthL, UpperTheory.G3.InertCase.th_mul, hu1]`. Simplify using `only [map_mul, map_inv, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hloc : locEl n w δ = ι δ₀`. Rewrite using `[hδ₀]`. Unfold `locEl`. Rewrite using `[if_neg hw]`. Establish `hcpmap : ∀ a : GL (Fin n) (Ov E w), (UpperTheory.ConvolutionTheory.D.cp (a * u₀ * UpperTheory.ConvolutionTheory.D.th c (a * u₀))).map (Ov E w).subtype = (nrmL n w (ι a)).val.charpoly`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[hnrm, hιv]`. Conclude with `(Matrix.charpoly_map _ _).symm`. Establish `hδpol : (UpperTheory.ConvolutionTheory.D.cp (δ₀ * u₀ * UpperTheory.ConvolutionTheory.D.th c (δ₀ * u₀))).map (Ov E w).subtype = atPl w (UpperTheory.ConvolutionTheory.G3.gpol δ)`. Rewrite using `[hcpmap, ← hloc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.BCT.ThBasic.charpoly_nrmL hU n w δ`. Establish `hypol : (UpperTheory.ConvolutionTheory.D.cp (y₀ * u₀ * UpperTheory.ConvolutionTheory.D.th c (y₀ * u₀))).map (Ov E w).subtype = atPl w (UpperTheory.ConvolutionTheory.G3.gpol δ)` using `(hcpmap y₀).trans hy`. Take `⟨t, ht⟩` from `core (δ₀ * u₀) (y₀ * u₀) (hQ _ hδpol) (Polynomial.map_injective _ (Ov E w).subtype_injective (hypol.trans hδpol.symm))`. Use `⟨ι t, ⟨t, by rw [hιdef]⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg ι ht`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[UpperTheory.ConvolutionTheory.D.thConj]`. Simplify using `only [map_mul, map_inv] at h1`. Rewrite using `[hloc, hthL]`. Establish `h2 : ι y₀ = (ι y₀ * ι u₀) * (ι u₀)⁻¹` using `by group`. Rewrite using `[h2, h1]`.
-
-Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.unitary_involution_stabilizes_integral_at_nonsplit :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (u δ : GL (Fin n) E),

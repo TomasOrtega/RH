@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.SeeSaw.ReadLaws
 
 /- English proof (translation)
-Introduce `τ`. Establish `h` using `congrArg Matrix.det (Matrix.mem_unitaryGroup_iff.mp (hu τ))`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `isUnit_iff_exists_inv.mpr ⟨_, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInv_of_isUni {ι : Type} {n : ℕ} {u : ι → Matrix (Fin n) (Fin n) ℂ} (hu : IsUni u) : IsInv u := by
   intro τ
@@ -26,9 +26,9 @@ def trFr {ι : Type} {n : ℕ} {G : ι → Matrix (Fin n) (Fin n) ℂ} (g : ι �
   ⟨fun τ => g τ * y.1 τ, fun τ => by rw [Matrix.det_mul]; exact (hg τ).mul (y.2 τ)⟩
 
 /- English proof (translation)
-Take `⟨P, -, rfl⟩` from `hΦ`. Establish `e : (fun x => fnOf G (shiftOf lam) 1 P (⟨f x, hi x⟩ : Frames G)) = fun x => (∏ τ, (f x τ).det ^ shiftOf lam τ) * GlobalTheory.KJInf.evalAt (f x) P`. Use function extensionality and compare the values at `fun x => GlobalTheory.KJInf.ValPol.fnOf_one_apply _ P _`. Rewrite using `[e]`. Simplify using `only [GlobalTheory.KJInf.ValPol.evalAt_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Continuous.mul (continuous_finset_prod _ fun τ _ => ?_) ?_` and prove the remaining obligations. Conclude with `(((continuous_apply τ).comp hf).matrix_det).zpow₀ _ fun x => Or.inl (hi x τ).ne_zero`. Conclude with `(MvPolynomial.continuous_eval P).comp (continuous_pi fun v => ((continuous_apply v.1).comp hf).matrix_elem v.2.1 v.2.2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_valC {ι : Type} [Fintype ι] {n : ℕ} {G : ι → Matrix (Fin n) (Fin n) ℂ} {lam : ι → DomWeight n}
     {Φ : Frames G → ℂ} (hΦ : Φ ∈ ValC G lam) {X : Type} [TopologicalSpace X] {f : X → ι → Matrix (Fin n) (Fin n) ℂ}
@@ -49,33 +49,31 @@ end GlobalTheory.SeeSaw.ReadLaws
 open GlobalTheory.SeeSaw.ReadLaws in
 
 /- English proof (translation)
-Introduce `D c t ρ A _hc hρ hA j hj ψ hψ β`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (c.X j)`. Establish `hr` using `hρ.uni j hj`. Establish `hinv : ∀ k : GinfC (c.X j), IsInv (ρ.r j hj k.1)` using `fun k => isInv_of_isUni (hr.uni k)`. Establish `hR` using `hA.reps j hj β`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrd : ∀ y γ, γ ∈ GQ (c.X j) → ∀ a k (hk : k ∈ GinfC (c.X j)) (κ : A.U j β), t.rd j β ψ y (γ * (A.h j β a * k) * κ.1) = (A.chi j β κ : ℂ) * A.val j β ψ a (trFr (ρ.r j hj k) (hinv ⟨k, hk⟩) (ρ.fr j y))` using `fun y γ hγ a k hk κ => hA.rd j hj ψ hψ β y γ hγ a k hk κ _ (fun τ => rfl)`. Establish `hcomm : ∀ k ∈ GinfC (c.X j), ∀ κ ∈ GfC (c.X j), k * κ = κ * k` using `fun k hk κ hκ => (GlobalTheory.AutMult.commute_inf_fin (V := c.X j) ⟨k, hk⟩ ⟨κ, hκ⟩).eq`. Use `⟨fun y => ⟨?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ' hγ' g`. Take `⟨γ, hγ, a, k, hk, κ, hκ, rfl⟩` from `hR.dec g`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e : γ' * (γ * (A.h j β a * k) * κ) = (γ' * γ) * (A.h j β a * k) * (⟨κ, hκ⟩ : A.U j β).1`. Simplify using `only [mul_assoc]`. Rewrite using `[e, hrd y _ (mul_mem hγ' hγ) a k hk, hrd y γ hγ a k hk ⟨κ, hκ⟩]`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨γ, hγ, a, k0, hk0, κ0, hκ0, rfl⟩` from `hR.dec g0`. Use `set q : GA D (c.X j) → GA D (c.X j) := fun g => (γ * A.h j β a)⁻¹ * g with hqdef`. Establish `hq : Continuous q` using `continuous_const.mul continuous_id`. Use `set W : Set (GA D (c.X j)) := {g | ((GlobalTheory.AutMult.toFin (c.X j) (q g) : GfC (c.X j)) : GA D (c.X j)) ∈ A.U j β} with hWdef`. Establish `hW : IsOpen W` using `hR.opn.preimage ((GlobalTheory.AutMult.continuous_toFin (c.X j)).comp hq)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : GlobalTheory.AutMult.toFin (c.X j) (q (γ * (A.h j β a * k0) * κ0)) = ⟨κ0, hR.le hκ0⟩`. Establish `e : q (γ * (A.h j β a * k0) * κ0) = ((⟨k0, hk0⟩ : GinfC (c.X j)) : GA D (c.X j)) * ((⟨κ0, hR.le hκ0⟩ : GfC (c.X j)) : GA D (c.X j))` using `by show (γ * A.h j β a)⁻¹ * (γ * (A.h j β a * k0) * κ0) = k0 * κ0 group`. Rewrite using `[e, map_mul, GlobalTheory.AutMult.toFin_coe_inf, GlobalTheory.AutMult.toFin_coe, one_mul]`. Establish `hg0 : γ * (A.h j β a * k0) * κ0 ∈ W` using `by show ((GlobalTheory.AutMult.toFin (c.X j) (q _) : GfC (c.X j)) : GA D (c.X j)) ∈ A.U j β`. Rewrite using `[h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hκ0`. Use `ContinuousOn.continuousAt ?_ (hW.mem_nhds hg0)` and prove the remaining obligations. Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `hU : ∀ g : W, ((GlobalTheory.AutMult.toFin (c.X j) (q g.1) : GfC (c.X j)) : GA D (c.X j)) ∈ A.U j β` using `fun g => g.2`. Use `show Continuous fun g : W => t.rd j β ψ y g.1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (fun g : W => t.rd j β ψ y g.1) = fun g : W => (A.chi j β ⟨_, hU g⟩ : ℂ) * A.val j β ψ a (trFr (ρ.r j hj (GlobalTheory.AutMult.toInf (c.X j) (q g.1)).1) (hinv _) (ρ.fr j y))`. Use function extensionality and compare the values at `g`. Establish `e : g.1 = γ * (A.h j β a * (GlobalTheory.AutMult.toInf (c.X j) (q g.1)).1) * (⟨_, hU g⟩ : A.U j β).1`. Establish `h1` using `GlobalTheory.AutMult.toInf_mul_toFin (q g.1)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [mul_assoc]`. Conclude with `(congrArg (t.rd j β ψ y) e).trans (hrd y γ hγ a _ (GlobalTheory.AutMult.toInf (c.X j) (q g.1)).2 _)`. Rewrite using `[key]`. Use `Continuous.mul ?_ ?_` and prove the remaining obligations. Establish `hc : Continuous fun g : W => (⟨_, hU g⟩ : A.U j β)` using `Continuous.subtype_mk (continuous_subtype_val.comp ((GlobalTheory.AutMult.continuous_toFin (c.X j)).comp (hq.comp continuous_subtype_val))) _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(hA.chi j hj β).comp hc`. Establish `hk : Continuous fun g : W => ρ.r j hj (GlobalTheory.AutMult.toInf (c.X j) (q g.1)).1` using `hr.cont.comp ((GlobalTheory.AutMult.continuous_toInf (c.X j)).comp (hq.comp continuous_subtype_val))`. Conclude with `continuous_valC (f := fun g : W => fun τ => ρ.r j hj (GlobalTheory.AutMult.toInf (c.X j) (q g.1)).1 τ * (ρ.fr j y).1 τ) (hA.valC j hj ψ hψ β a) (continuous_pi fun τ => ((continuous_apply τ).comp hk).matrix_mul continuous_const) _`. Introduce `y g κ'`. Take `⟨γ, hγ, a, k, hk, κ, hκ, rfl⟩` from `hR.dec g`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : γ * (A.h j β a * k) * κ * κ'.1 = γ * (A.h j β a * k) * ((⟨κ, hκ⟩ : A.U j β) * κ').1`. Simplify using `only [Subgroup.coe_mul, mul_assoc]`. Rewrite using `[e, hrd y γ hγ a k hk, hrd y γ hγ a k hk ⟨κ, hκ⟩, map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `y y' g k' hk' htr`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨γ, hγ, a, k, hk, κ, hκ, rfl⟩` from `hR.dec g`. Establish `e : γ * (A.h j β a * k) * κ * k' = γ * (A.h j β a * (k * k')) * (⟨κ, hκ⟩ : A.U j β).1`. Rewrite using `[mul_assoc _ κ k', ← hcomm k' hk' κ (hR.le hκ)]`. Simplify using `only [mul_assoc]`. Rewrite using `[e, hrd y γ hγ a _ (mul_mem hk hk'), hrd y' γ hγ a k hk ⟨κ, hκ⟩]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hY : trFr (ρ.r j hj (k * k')) (hinv ⟨k * k', mul_mem hk hk'⟩) (ρ.fr j y) = trFr (ρ.r j hj k) (hinv ⟨k, hk⟩) (ρ.fr j y')`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Establish `hm : ρ.r j hj (k * k') τ = ρ.r j hj k τ * ρ.r j hj k' τ` using `hr.mul ⟨k, hk⟩ ⟨k', hk'⟩ τ`. Use `show ρ.r j hj (k * k') τ * (ρ.fr j y).1 τ = ρ.r j hj k τ * (ρ.fr j y').1 τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htr τ, hm, Matrix.mul_assoc]`. Rewrite using `[hY]`. Introduce `g`. Take `⟨γ, hγ, a, k, hk, κ, hκ, rfl⟩` from `hR.dec g`. Establish `hv` using `hA.valC j hj ψ hψ β a`.
-
-Use `(GlobalTheory.KJInf.valC_poly _ _ _ _).2.2.1 ((A.chi j β ⟨κ, hκ⟩ : ℂ) • A.val j β ψ a) (Submodule.smul_mem _ _ hv) (ρ.r j hj k) _ ?_ (hinv ⟨k, hk⟩)` and prove the remaining obligations. Introduce `z z' hz`. Rewrite using `[hA.rd j hj ψ hψ β _ γ hγ a k hk ⟨κ, hκ⟩ z' (by rwa [Equiv.apply_symm_apply])]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SeeSaw.scalarForm_laws : ∀ (D : D7) (c : Comm D) (t : Tup c) (ρ : RealD c) (A : ClsK ρ t), c.Is → ρ.Is → A.Forms → ∀ j hj, ∀ ψ ∈ t.Ram j, ∀ β, (∀ y, IsContAut (c.X j) (t.rd j β ψ y)) ∧ (∀ y g (κ : A.U j β), t.rd j β ψ y (g * κ.1) = (A.chi j β κ : ℂ) * t.rd j β ψ y g) ∧ (∀ y y' g, ∀ k ∈ GinfC (c.X j), IsTr (ρ.r j hj k) (ρ.fr j y) (ρ.fr j y') → t.rd j β ψ y (g * k) = t.rd j β ψ y' g) ∧ ∀ g, (fun z => t.rd j β ψ ((ρ.fr j).symm z) g) ∈ ValC _ (ρ.lam j) := by
   intro D c t ρ A _hc hρ hA j hj ψ hψ β

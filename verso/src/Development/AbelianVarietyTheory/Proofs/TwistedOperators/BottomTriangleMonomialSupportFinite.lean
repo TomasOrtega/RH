@@ -52,11 +52,11 @@ variable {D : D7}
 open Classical in
 
 /- English proof (translation)
-Establish `hz : ∀ τ, ζ τ ≠ 0` using `fun τ h => by simpa [h] using hζ τ`. Set `μ : D.what₂.Tau → ℂ` to `fun τ => if (sS τ = 1 ↔ sT τ = 1) then (ζ τ)⁻¹ else ζ τ`. Establish `key : ∀ (i : FVar D T.rank S.rank) g, IsThetaFunO ψ S T g → aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) (fun τ => ζ τ • BS τ) BT i g = μ i.1 • aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT i g`. Introduce and unpack `⟨ρ, a, j⟩ g hg`. Simplify using `only [aPlusAll, μ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.FockScal.unitMap_smul _ _ (hz ρ), GlobalTheory.FockSubst.aPlus_dir_smul hψ hθ ρ _ _ hg _ _ (GlobalTheory.FockScal.cplxO_pm (hs ρ) (ht ρ) a j _)]`. Use `congr 1`. Rewrite using `[map_inv₀, ← Complex.inv_eq_conj (hζ ρ), inv_inv]`. Simplify using `only [decide_eq_true_eq]`. Establish `hA : ∀ i f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT i f)` using `fun _ _ h => GlobalTheory.FockSubst.aPlus_th hψ hθ _ _ _ h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `Asm : ∀ i (a : ℂ) f, IsThetaFunO ψ S T f → aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT i (a • f) = a • aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT i f` using `fun _ a _ h => GlobalTheory.FockSubst.aPlus_smul hψ hθ _ _ _ a h`. Unfold `pureTensorO`. Conclude with `GlobalTheory.FockScal.pure_scal (P := IsThetaFunO ψ S T) (fun v : FVar D T.rank S.rank => v.1) μ (fun a _ => GlobalTheory.OrientedHeis.theta_smul a) hA Asm key hf α`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pureTensorO_scal_pm {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {S T : HSp D} (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
@@ -93,33 +93,29 @@ theorem pureTensorO_scal_pm {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (h�
 open Classical in
 
 /- English proof (translation)
-Establish `hI` using `hX.is`. Establish `hθ : IsInfFam W.θ` using `hI.isVac.2.inf`. Establish `hψ : IsStdChar D W.ψ (-1)` using `hI.isVac.1`. Use `set om' := (X.ω t).toSgn true with hom'`. Establish `hom` using `hI.weil t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsA : ∀ τ, X.rA.s τ = 1` using `fun τ => (hX.std.2.2 τ).1`. Establish `hsW : ∀ τ, X.rW.s τ = 1` using `fun τ => (hX.stdW.2.2 τ).1`. Establish `he : ‖Complex.exp Complex.I‖ = 1` using `by simpa using Complex.norm_exp_ofReal_mul_I 1`. Take `⟨z', hz', -, h1, h2⟩` from `GlobalTheory.CentralUnit.exists_central_of_norm_one D W.θ hθ (neg A) τ₀ (Complex.exp Complex.I) he`. Use `set ζ : D.what₂.Tau → ℂ := fun τ => if τ = τ₀ then Complex.exp Complex.I else 1 with hζdef`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hζ : ∀ τ, compAt W.θ τ (Formalism.L2.Theta.mt (neg A) z') = ζ τ • (1 : Matrix (Fin (neg A).rank) (Fin (neg A).rank) ℂ)`. Introduce `τ`. Distinguish the cases in `hτ : τ = τ₀`. Substitute `hτ` using the available equality. Simplify using `only [hζdef, if_pos rfl, h1]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hζdef, if_neg hτ, h2 τ hτ, one_smul]`. Establish `hζn : ∀ τ, ‖ζ τ‖ = 1` using `fun τ => by`. Distinguish the cases in `hτ : τ = τ₀`. Simplify using `only [hζdef, if_pos hτ, he]`. Simplify using `only [hζdef, if_neg hτ, norm_one]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : IsThetaFunO W.ψ (neg A) WW (X.f t)` using `(GlobalTheory.ConstRatio.theta_f hI t).1`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (hI.idem t)`. Establish `hfock : ∀ τ, IsFockVacAt (heisO W.ψ (neg A) WW) W.θ τ (cplxO (-X.rA.s τ) (X.rW.s τ)) (X.f t)` using `fun τ => GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hψ.1.1 hθ ho.infPart_eq ho.conj.infPart_eq (hI.fst t) hI.isVac.2.theta hf (hI.isVac.2.fock τ)`. Establish `cS : ∀ τ, IsCartanInv (gramAt D (neg A) τ) (-X.rA.s τ)` using `fun τ => GlobalTheory.Grid.isCartanInv_sgn true A τ (hI.rigA.2.2 τ).1`. Establish `cT : ∀ τ, IsCartanInv (gramAt D WW τ) (X.rW.s τ)` using `fun τ => (hI.rigW.2.2 τ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : ∀ τ, (gramAt D (neg A) τ).det ≠ 0` using `fun τ h0 => by`. Use `(cS τ).2.2.det_pos.ne'` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul]`. Conclude with `this rfl`. Take `⟨r, hr, -⟩` from `GlobalTheory.VacuumCharacter.exists_root hθ (neg A) hdet z' hz'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hy1 : IsDetRoot WW 1 1` using `by show _ = _`. Rewrite using `[Units.val_one, RingHom.map_one, mul_one]`. Conclude with `(Matrix.det_one).symm`. Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Establish `one : ∀ τ, compAt W.θ τ (Formalism.L2.Theta.mt WW 1) = 1` using `fun τ => GlobalTheory.PointAtPlaceHom.infMat_one WW _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨C, hC⟩ : ∃ C : ℂ, om' (z', 1) (X.f t) = C • X.f t` from `⟨_, GlobalTheory.WeilVacChar.vacuum_character D W.ψ hψ (neg A) WW W.θ hθ _ _ om' η hη hom (fun τ => -X.rA.s τ) X.rW.s cS cT z' hz' 1 (one_mem _) (fun τ => by rw [hζ τ, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [one, one_mul, mul_one]) r 1 …`. Establish `hop : ∀ k : FVar D WW.rank A.rank →₀ ℕ, _` using `fun k => GlobalTheory.OrientedHeis.om_pureTensorO D W.ψ W.θ (neg A) WW _ _ om' hom hθ (fun τ => -X.rA.s τ) (fun τ => -X.rA.s τ) X.rA.B (fun τ => ζ τ • X.rA.B τ) X.rW.s X.rW.s X.rW.B X.rW.B z' 1 (fun τ => by rw [hζ τ, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mu …`. Use `set w : ℂ := if (-X.rA.s τ₀ = 1 ↔ X.rW.s τ₀ = 1) then (Complex.exp Complex.I)⁻¹ else Complex.exp Complex.I with hw`. Establish `hscal : ∀ k : FVar D WW.rank A.rank →₀ ℕ, om' (z', 1) (pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) (MvPolynomial.monomial k 1)) = (C * w ^ (∑ v ∈ k.support with v.1 = τ₀, k v)) • pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA. …`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(hop k).2, hC, GlobalTheory.FiniteFock.pureTensorO_smul, pureTensorO_scal_pm (S := neg A) (T := WW) hψ hθ (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (fun τ => Or.inr (by rw [hsA])) (fun τ => Or.inl (hsW τ)) (X.f t) hf ζ hζn k, smul_smul]`. Use `congr 2`. Rewrite using `[Finset.prod_eq_single τ₀]`. Simplify using `only [hζdef, if_pos rfl, hw]`. Introduce `ρ _ hρ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hζdef, if_neg hρ, inv_one, ite_self, one_pow]`. Simplify using the standard rewrite rules. Use `⟨C, w, by rw [hw]; split_ifs; exacts [Or.inr rfl, Or.inl rfl], fun k h => ?_⟩` and prove the remaining obligations. Use `set φ := pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) (MvPolynomial.monomial k 1) with hφ`. Establish `hK` using `GlobalTheory.thetaKO_rat_left_and_eigen_right W.ψ (neg A) WW _ _ om' hom φ (hop k).1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : ∀ g : GA D A, X.ker W.ψ W.θ t (MvPolynomial.monomial k 1) h g = thetaKO om' ((ofSgn true A).symm g) h φ` using `fun g => by show thetaKO (X.ω t) g h φ = (X.ω t) ((ofSgn true A) ((ofSgn true A).symm g), h) φ 0`. Rewrite using `[MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hleft : ∀ γ ∈ GQ A, ∀ g, X.ker W.ψ W.θ t (MvPolynomial.monomial k 1) h (γ * g) = X.ker W.ψ W.θ t (MvPolynomial.monomial k 1) h g`. Introduce `γ hγ g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hker, hker, map_mul]`. Use `hK.1 _ ((GlobalTheory.SgnIdent.mem_GQ_sgn true A _).2 (by rwa [MulEquiv.apply_symm_apply])) 1 (one_mem _) ((ofSgn true A).symm g) h` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Establish `hright : ∀ g, X.ker W.ψ W.θ t (MvPolynomial.monomial k 1) h (g * ofSgn true A z') = (C * w ^ (∑ v ∈ k.support with v.1 = τ₀, k v)) * X.ker W.ψ W.θ t (MvPolynomial.monomial k 1) h g`. Introduce `g`.
-
-Rewrite using `[hker, hker, map_mul, MulEquiv.symm_apply_apply]`. Use `hK.2 z' 1 _ (hscal k) ((ofSgn true A).symm g) h` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Use `show ∫ g in X.fd, X.ker W.ψ W.θ t (MvPolynomial.monomial k 1) h g ∂X.m = _ * ∫ g in X.fd, X.ker W.ψ W.θ t (MvPolynomial.monomial k 1) h g ∂X.m`. Combine the equalities or inequalities in the displayed calculation.
-
-Repeatedly rewrite using `[hright]`. Conclude with `integral_const_mul _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalar_exists {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW} (hX : IsBottomTri W i j X) (t : T) (τ₀ : D.what₂.Tau) :
@@ -225,15 +221,13 @@ theorem scalar_exists {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L s
         exact integral_const_mul _ _
 
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX`. Set `Good : T → Set (FVar D WW.rank A.rank →₀ ℕ)` to `fun t => {k | ∃ h ∈ GfC WW, X.I W.ψ W.θ t (MvPolynomial.monomial k 1) h ≠ 0}`. Establish `one_of : ∀ {c I : ℂ}, I = c * I → I ≠ 0 → c = 1` using `fun {c I} e hI => by`. Establish `h0 : (c - 1) * I = 0` using `by rw [sub_mul, one_mul, ← e, sub_self]`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h0).resolve_right hI)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : ∀ t, (Good t).Finite`. Introduce `t`. Distinguish the cases in `hne : (Good t).Nonempty`. Take `⟨k₀, h₀, -, hk₀⟩` from `hne`. Use `(GlobalTheory.finite_monomials_of_placeDegree D WW.rank A.rank (fun τ => ∑ v ∈ k₀.support with v.1 = τ, k₀ v)).subset fun k hk τ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h, -, hk⟩` from `hk`. Take `⟨C, w, hw, hI⟩` from `scalar_exists hX t τ`. Establish `e1` using `one_of (hI k h) hk`. Establish `e0` using `one_of (hI k₀ h₀) hk₀`. Establish `hC : C ≠ 0` using `fun h0 => by rw [h0, zero_mul] at e1; exact zero_ne_one e1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.ExpPow.pow_exp_I_or_inv_injective _ _ w hw (mul_left_cancel₀ hC (e1.trans e0.symm))`. Rewrite using `[Set.not_nonempty_iff_eq_empty.1 hne]`. Conclude with `Set.finite_empty`. Establish `hU : (⋃ t, Good t).Finite` using `Set.finite_iUnion hfin`. Use `⟨hU.toFinset, fun t h hh k hk => ?_⟩` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `hne`. Conclude with `hk (hU.mem_toFinset.2 (Set.mem_iUnion.2 ⟨t, h, hh, hne⟩))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem classSum_vanish_off_finite : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

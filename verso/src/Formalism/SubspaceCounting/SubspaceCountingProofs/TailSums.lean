@@ -5,21 +5,19 @@ namespace Formalism.G0
 namespace TailSumsP
 
 /- English proof (translation)
-Simplify using `[tailK]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tailK_zero {K : ℕ} (α : Fin K → ℕ) : tailK α 0 = ∑ l, α l := by
   simp [tailK]
 
 /- English proof (translation)
-Simplify using `[tailK]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tailK_zero_fun {K : ℕ} (u : ℕ) : tailK (0 : Fin K → ℕ) u = 0 := by
   simp [tailK]
 
 /- English proof (translation)
-Unfold `tailK`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `l _`. Use `split_ifs`. Conclude with `h l`.
-
-Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tailK_shrink {K : ℕ} {α α' : Fin K → ℕ} (h : ShrinkStep α α') (u : ℕ) :
     tailK α' u ≤ tailK α u := by
@@ -31,13 +29,13 @@ theorem tailK_shrink {K : ℕ} {α α' : Fin K → ℕ} (h : ShrinkStep α α') 
   · exact le_rfl
 
 /- English proof (translation)
-Take `⟨-, h2, -⟩` from `h`. Consider the cases of `K with`. Consider the case `zero => simp [tailK]`. Consider the case `succ k`. Unfold `tailK`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions.
 
-Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_castSucc (f := fun l : Fin (k + 1) => if u ≤ l.val then α l else 0)]`. Simplify using `only [Fin.val_zero, Fin.val_succ, Fin.val_castSucc, Nat.add_le_add_iff_right, Nat.le_zero, Nat.add_one_ne_zero, if_false, zero_add]`. Use `le_trans ?_ (Nat.le_add_right _ _)` and prove the remaining obligations. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hu : u ≤ i.val`. Rewrite using `[if_pos (by omega), if_pos hu]`. Establish `hh : i.castSucc.val + 1 < k + 1` using `by simp`. Establish `e : (⟨i.castSucc.val + 1, hh⟩ : Fin (k + 1)) = i.succ` using `Fin.ext (by simp)`. Use `h2 i.castSucc hh` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Conclude with `this`. Rewrite using `[if_neg (by omega), if_neg hu]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tailK_vec_succ {K : ℕ} {α α' : Fin K → ℕ} {B : ℕ} (h : VecStep α α' B) (u : ℕ) :
     tailK α' (u + 1) ≤ tailK α u := by
@@ -63,14 +61,14 @@ theorem tailK_vec_succ {K : ℕ} {α α' : Fin K → ℕ} {B : ℕ} (h : VecStep
     · rw [if_neg (by omega), if_neg hu]
 
 /- English proof (translation)
-Rewrite using `[tailK_zero, tailK_zero]`. Conclude with `h.2.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tailK_vec_zero {K : ℕ} {α α' : Fin K → ℕ} {B : ℕ} (h : VecStep α α' B) :
     tailK α' 0 ≤ tailK α 0 + B := by
   rw [tailK_zero, tailK_zero]; exact h.2.2
 
 /- English proof (translation)
-Unfold `latestDegrees`. Rewrite using `[List.take_add_one, List.getElem?_eq_getElem hi, h]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem latestDegrees_succ_some (steps : List (Option ℕ)) (i : ℕ) (hi : i < steps.length)
     {B : ℕ} (h : steps[i] = some B) :
@@ -80,7 +78,7 @@ theorem latestDegrees_succ_some (steps : List (Option ℕ)) (i : ℕ) (hi : i < 
   simp
 
 /- English proof (translation)
-Unfold `latestDegrees`. Rewrite using `[List.take_add_one, List.getElem?_eq_getElem hi, h]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem latestDegrees_succ_none (steps : List (Option ℕ)) (i : ℕ) (hi : i < steps.length)
     (h : steps[i] = none) :
@@ -93,13 +91,13 @@ def cnt (steps : List (Option ℕ)) (i j : ℕ) : ℕ :=
   (((steps.drop i).take (j - i)).filterMap id).length
 
 /- English proof (translation)
-Simplify using `[cnt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cnt_self (steps : List (Option ℕ)) (i : ℕ) : cnt steps i i = 0 := by
   simp [cnt]
 
 /- English proof (translation)
-Unfold `cnt`. Rewrite using `[show j + 1 - i = (j - i) + 1 by omega, List.take_add_one, List.getElem?_drop, show i + (j - i) = j by omega, List.getElem?_eq_getElem hj, h]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cnt_succ_some (steps : List (Option ℕ)) (i j : ℕ) (hij : i ≤ j) (hj : j < steps.length)
     {B : ℕ} (h : steps[j] = some B) : cnt steps i (j + 1) = cnt steps i j + 1 := by
@@ -109,7 +107,7 @@ theorem cnt_succ_some (steps : List (Option ℕ)) (i j : ℕ) (hij : i ≤ j) (h
   simp
 
 /- English proof (translation)
-Unfold `cnt`. Rewrite using `[show j + 1 - i = (j - i) + 1 by omega, List.take_add_one, List.getElem?_drop, show i + (j - i) = j by omega, List.getElem?_eq_getElem hj, h]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cnt_succ_none (steps : List (Option ℕ)) (i j : ℕ) (hij : i ≤ j) (hj : j < steps.length)
     (h : steps[j] = none) : cnt steps i (j + 1) = cnt steps i j := by
@@ -119,17 +117,15 @@ theorem cnt_succ_none (steps : List (Option ℕ)) (i j : ℕ) (hij : i ≤ j) (h
   simp
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro _ u`. Rewrite using `[hp.1, tailK_zero_fun]`. Conclude with `Nat.zero_le _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ i ih`. Introduce `hi u`. Establish `hi' : i < steps.length` using `by omega`. Establish `hstep` using `hp.2 i hi'`. Consider the cases of `hs : steps[i] with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `none`. Simplify using `only [hs] at hstep`. Rewrite using `[latestDegrees_succ_none steps i hi' hs]`. Conclude with `le_trans (tailK_shrink hstep u) (ih (by omega) u)`. Consider the case `some B`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hs] at hstep`. Rewrite using `[latestDegrees_succ_some steps i hi' hs]`. Consider the cases of `u with`. Consider the case `zero`. Simplify using `only [List.drop_zero, List.sum_cons]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `ih (by omega) 0`. Simplify using `only [List.drop_zero] at h1`. Establish `h2` using `tailK_vec_zero hstep`. Use linear arithmetic over natural numbers and integers. Consider the case `succ u`.
-
-Simplify using `only [List.drop_succ_cons]`. Conclude with `le_trans (tailK_vec_succ hstep u) (ih (by omega) u)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem clause1 {K : ℕ} (steps : List (Option ℕ)) (what₂ : ℕ → Fin K → ℕ)
     (hp : IsPath steps what₂) :
@@ -161,15 +157,15 @@ theorem clause1 {K : ℕ} (steps : List (Option ℕ)) (what₂ : ℕ → Fin K �
         exact le_trans (tailK_vec_succ hstep u) (ih (by omega) u)
 
 /- English proof (translation)
-Introduce `j hij`. Proceed by induction on `j, hij using Nat.le_induction with`. Consider the case `base => intro _`. Rewrite using `[cnt_self, Nat.add_zero]`. Conclude with `hX`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ j hij ih`. Introduce `hj`. Establish `hj' : j < steps.length` using `by omega`. Establish `hstep` using `hp.2 j hj'`. Consider the cases of `hs : steps[j] with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `none`. Simplify using `only [hs] at hstep`. Rewrite using `[latestDegrees_succ_none steps j hj' hs, cnt_succ_none steps i j hij hj' hs]`. Use `tailK_shrink hstep (u + cnt steps i j)` as an intermediate fact. Use `ih (by omega)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `some B`. Simplify using `only [hs] at hstep`. Rewrite using `[latestDegrees_succ_some steps j hj' hs, cnt_succ_some steps i j hij hj' hs, ← Nat.add_assoc, List.drop_succ_cons]`. Use `tailK_vec_succ hstep (u + cnt steps i j)` as an intermediate fact.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ih (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem clause2 {K : ℕ} (steps : List (Option ℕ)) (what₂ : ℕ → Fin K → ℕ)
     (hp : IsPath steps what₂) (i u X : ℕ)
@@ -202,7 +198,7 @@ theorem clause2 {K : ℕ} (steps : List (Option ℕ)) (what₂ : ℕ → Fin K �
 end TailSumsP
 
 /- English proof (translation)
-Introduce `K steps what₂ hp`. Use `⟨TailSumsP.clause1 steps what₂ hp, ?_⟩` and prove the remaining obligations. Introduce `i j u X hij hj hX`. Conclude with `TailSumsP.clause2 steps what₂ hp i u X hX j hij hj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tail_sums : TailSums := by
   intro K steps what₂ hp

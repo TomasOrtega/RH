@@ -8,9 +8,9 @@ namespace GlobalTheory.GLintLattice
 variable {K : Type} [Field K] (A : ValuationSubring K) {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩ i`. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun i => ⟨y i, h i⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mem_span_basisFun_iff (y : Fin r → K) :
     y ∈ Submodule.span A (Set.range (Pi.basisFun K (Fin r))) ↔ ∀ i, y i ∈ A := by
@@ -24,11 +24,11 @@ theorem mem_span_basisFun_iff (y : Fin r → K) :
     simp [Finset.sum_apply, Pi.single_apply, Algebra.smul_def]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `h (Pi.single j 1) (fun k => by` as an intermediate fact. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]) i`. Simplify `this` using `[Matrix.mulVec_single_one]`. Introduce `h y hy i`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `sum_mem (fun j _ => mul_mem (h i j) (hy j))`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_maps_iff (M : Matrix (Fin r) (Fin r) K) :
     (∀ y : Fin r → K, (∀ i, y i ∈ A) → ∀ i, (M *ᵥ y) i ∈ A) ↔ ∀ i j, M i j ∈ A := by
@@ -44,15 +44,13 @@ theorem mulVec_maps_iff (M : Matrix (Fin r) (Fin r) K) :
     exact sum_mem (fun j _ => mul_mem (h i j) (hy j))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Use `show ((u : Matrix (Fin r) (Fin r) A.toSubring) i j : K) ∈ A`. Conclude with `(u : Matrix (Fin r) (Fin r) A.toSubring) i j |>.2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← map_inv] show (((u⁻¹ : GL (Fin r) A.toSubring) : Matrix (Fin r) (Fin r) A.toSubring) i j : K) ∈ A`. Conclude with `((u⁻¹ : GL (Fin r) A.toSubring) : Matrix (Fin r) (Fin r) A.toSubring) i j |>.2`. Introduce and unpack `⟨h1, h2⟩`. Set `M : Matrix (Fin r) (Fin r) A.toSubring` to `Matrix.of fun i j => ⟨_, h1 i j⟩`. Set `M' : Matrix (Fin r) (Fin r) A.toSubring` to `Matrix.of fun i j => ⟨_, h2 i j⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : M.map A.toSubring.subtype = (x : Matrix (Fin r) (Fin r) K)` using `by ext; rfl`. Establish `hM' : M'.map A.toSubring.subtype = ((x⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K)` using `by ext; rfl`. Establish `inj : Function.Injective fun N : Matrix (Fin r) (Fin r) A.toSubring => N.map A.toSubring.subtype` using `Matrix.map_injective Subtype.val_injective`. Establish `e1 : M * M' = 1` using `inj (by`. Simplify using `only`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.map_mul, hM, hM', Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `x.mul_inv)`. Establish `e2 : M' * M = 1` using `inj (by`. Simplify using `only`. Rewrite using `[Matrix.map_mul, hM, hM', Matrix.map_one _ (map_zero _) (map_one _)]`.
-
-Conclude with `x.inv_mul)`. Use `⟨⟨M, M', e1, e2⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_GLint_iff (x : GL (Fin r) K) :
     x ∈ Formalism.UG.GLint (Fin r) A.toSubring ↔
@@ -87,17 +85,17 @@ theorem mem_GLint_iff (x : GL (Fin r) K) :
     rfl
 
 /- English proof (translation)
-Introduce `K _ A r x`. Establish `hf : ∀ z, ((x : Matrix (Fin r) (Fin r) K).mulVecLin.restrictScalars A) z = (x : Matrix (Fin r) (Fin r) K) *ᵥ z` using `fun z => rfl`. Establish `inv_x : ∀ z : Fin r → K, ((x⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) *ᵥ ((x : Matrix (Fin r) (Fin r) K) *ᵥ z) = z`. Introduce `z`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `x_inv : ∀ z : Fin r → K, (x : Matrix (Fin r) (Fin r) K) *ᵥ (((x⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) *ᵥ z) = z`. Introduce `z`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[mem_GLint_iff, ← mulVec_maps_iff, ← mulVec_maps_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `⟨fun y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hm : (x : Matrix (Fin r) (Fin r) K) *ᵥ y ∈ (Submodule.span A (Set.range (Pi.basisFun K (Fin r)))).map ((x : Matrix (Fin r) (Fin r) K).mulVecLin.restrictScalars A)` using `⟨y, (mem_span_basisFun_iff A y).2 hy, hf y⟩`. Rewrite `hm` using `[h]`. Conclude with `(mem_span_basisFun_iff A _).1 hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : y ∈ (Submodule.span A (Set.range (Pi.basisFun K (Fin r)))).map ((x : Matrix (Fin r) (Fin r) K).mulVecLin.restrictScalars A)`. Rewrite using `[h]`. Conclude with `(mem_span_basisFun_iff A y).2 hy`. Take `⟨z, hz, hzy⟩` from `hm`. Rewrite `hzy` using `[hf]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hzy, inv_x]`. Conclude with `(mem_span_basisFun_iff A z).1 hz`. Introduce and unpack `⟨h1, h2⟩`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hf, mem_span_basisFun_iff]`. Conclude with `h1 z ((mem_span_basisFun_iff A z).1 hz)`. Introduce `y hy`. Use `⟨((x⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) *ᵥ y, (mem_span_basisFun_iff A _).2 (h2 y ((mem_span_basisFun_iff A y).1 hy)), ?_⟩` and prove the remaining obligations. Rewrite using `[hf, x_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdLattice_map_eq_iff_mem_GLint : ∀ (K : Type) [Field K] (A : ValuationSubring K) (r : ℕ)
     (x : GL (Fin r) K),

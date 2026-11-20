@@ -15,30 +15,28 @@ open Formalism.BasicNotions
 def TopsF {eps : ℝ} (Fm : FamP eps) : Prop := ChosenTT Fm ∧ ∃ Cb : ℝ, 0 < Cb ∧ ChosenBad Fm Cb
 
 /- English proof (translation)
-Take `⟨C5, c6, Cb, -, -, hCb, -, hTT, hBad, -⟩` from `h`. Conclude with `⟨hTT, Cb, hCb, hBad⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem topsF_of_chosenE {eps : ℝ} (Fm : FamP eps) {C0 CH : ℝ} (h : ChosenE Fm C0 CH) : TopsF Fm := by
   obtain ⟨C5, c6, Cb, -, -, hCb, -, hTT, hBad, -⟩ := h
   exact ⟨hTT, Cb, hCb, hBad⟩
 
 /- English proof (translation)
-Establish `hterm : ∀ p ∈ s, Real.log p / p ≤ T * (2 / ((p : ℝ) + 1))`. Introduce `p hp`. Take `⟨h1, h2⟩` from `hs p hp`. Establish `hp1 : (1 : ℝ) ≤ p` using `by exact_mod_cast h1`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpe : (p : ℝ) < Real.exp T` using `Nat.lt_ceil.1 h2`. Establish `hlog : Real.log p ≤ T`. Establish `h` using `Real.log_le_log hp0 hpe.le`. Rewrite `h` using `[Real.log_exp]`. Then use the resulting hypothesis. Establish `e1 : Real.log p / p ≤ T / p` using `by gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h3 : 1 / (p : ℝ) ≤ 2 / ((p : ℝ) + 1)` using `by first`. Consider the case `(rw [div_le_div_iff₀ hp0 (by linarith)]; linarith)`. Consider the case `(rw [div_le_div_iff hp0 (by linarith)]; linarith)`. Establish `e2 : T / p ≤ T * (2 / ((p : ℝ) + 1))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub : s ⊆ Finset.range ⌈Real.exp T⌉₊` using `fun p hp => Finset.mem_range.2 (hs p hp).2`. Establish `hh : ∑ p ∈ Finset.range ⌈Real.exp T⌉₊, ((p : ℝ) + 1)⁻¹ = (harmonic ⌈Real.exp T⌉₊ : ℝ)` using `by first`. Consider the case `simp [harmonic]`. Consider the case `(rw [harmonic]; push_cast; rfl)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `hlN : Real.log (⌈Real.exp T⌉₊ : ℝ) ≤ T + 1`. Break down `Nat.eq_zero_or_pos ⌈Real.exp T⌉₊ with h0 | h0` into its components or cases. Rewrite using `[h0]`. Simplify using `only [Nat.cast_zero, Real.log_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hN0 : (0 : ℝ) < (⌈Real.exp T⌉₊ : ℝ)` using `by exact_mod_cast h0`. Establish `hE : (1 : ℝ) ≤ Real.exp T` using `Real.one_le_exp hT`. Establish `hc` using `Nat.ceil_lt_add_one (Real.exp_pos T).le`. Establish `hNle : (⌈Real.exp T⌉₊ : ℝ) ≤ 2 * Real.exp T` using `by linarith`. Establish `h2` using `Real.log_le_log hN0 hNle`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Real.log_mul (by norm_num) (Real.exp_pos T).ne', Real.log_exp]`. Establish `hl2 : Real.log 2 ≤ 1`. Establish `h` using `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun p _ => by ring)`. Use `_ ≤ 2 * T * (1 + Real.log (⌈Real.exp T⌉₊ : ℝ)) := by`. Rewrite using `[hh]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (harmonic_le_one_add_log _) (by positivity)`. Use `_ ≤ 2 * T * (T + 2) := mul_le_mul_of_nonneg_left (by linarith) (by positivity)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_log_div_le_two_mul_mul_add_two (s : Finset ℕ) (T : ℝ) (hT : 0 ≤ T)
     (hs : ∀ p ∈ s, 1 ≤ p ∧ p < ⌈Real.exp T⌉₊) :
@@ -93,31 +91,31 @@ private lemma sum_log_div_le_two_mul_mul_add_two (s : Finset ℕ) (T : ℝ) (hT 
     _ ≤ 2 * T * (T + 2) := mul_le_mul_of_nonneg_left (by linarith) (by positivity)
 
 /- English proof (translation)
-Take `⟨⟨xa, hTT⟩, Cb, hCb, xb, hBad⟩` from `h`. Unfold `G.Adm2F G.Ev`. Use `⟨max (max xa xb) (max (Fm.x1 + 1) ((16 * Cb + 2) ^ (3 / eps))), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `hxa : xa ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `hxb : xb ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1' : Fm.x1 + 1 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `hx1 : Fm.x1 < x` using `by linarith`. Establish `hxc : (16 * Cb + 2) ^ (3 / eps) ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`. Take `⟨hT1, hT2⟩` from `hTT x hxa i`. Establish `hB` using `hBad x hxb i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `ChBad_at at hB`. Establish `hLx : (Fm.L x i).sc.x = x` using `Fm.L_x x i hx1`. Establish `hLe : (Fm.L x i).sc.eps = eps` using `Fm.L_eps x i`. Establish `he' : 0 < (Fm.L x i).sc.eps` using `(Fm.L x i).sc.eps_pos`. Establish `he : 0 < eps` using `by rw [← hLe]; exact he'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy1 : 1 < (Fm.L x i).sc.x` using `(Fm.L x i).sc.one_lt_alt`. Establish `hy0 : 0 < (Fm.L x i).sc.x` using `by linarith`. Establish `hT0 : 0 ≤ (Fm.L x i).sc.x ^ ((Fm.L x i).sc.eps / 3)` using `by positivity`. Establish `hTbig : 16 * Cb + 2 ≤ (Fm.L x i).sc.x ^ ((Fm.L x i).sc.eps / 3)`. Rewrite using `[hLx, hLe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (0 : ℝ) ≤ 16 * Cb + 2` using `by linarith`. Establish `hne : eps ≠ 0` using `he.ne'`. Establish `hm : 3 / eps * (eps / 3) = 1` using `by first`. Consider the case `(field_simp; ring)`. Consider the case `field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_mul hc, hm, Real.rpow_one]`. Use `_ ≤ x ^ (eps / 3) := Real.rpow_le_rpow (by positivity) hxc (by positivity)`. Establish `hS` using `sum_log_div_le_two_mul_mul_add_two (largeOrderResiduePrimes (Fm.L x i)) ((Fm.L x i).sc.x ^ ((Fm.L x i).sc.eps / 3)) hT0 (fun p hp => by`. Simplify using `only [largeOrderResiduePrimes, Finset.mem_filter, Finset.mem_range] at hp`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨hp.2.1.one_lt.le, hp.1⟩)`. Establish `hBTT : AuxBlock8.BTT (Fm.D x i) (Fm.L x i) (Fm.Gx x i) ≤ ∑ p ∈ largeOrderResiduePrimes (Fm.L x i), Real.log p / p * ((badTops (Fm.Gx x i) p).card : ℝ)`. Unfold `AuxBlock8.BTT`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `p hp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [AuxBlock8.primesResidueBelow, largeOrderResiduePrimes, Finset.mem_filter, Finset.mem_range] at hp ⊢`. Conclude with `⟨hp.1.1, hp.1.2.1, hp.1.2.2.2, hp.2⟩`. Introduce `p _ _`. Establish `hl : 0 ≤ Real.log (p : ℝ)`. Break down `Nat.eq_zero_or_pos p with h0 | h0` into its components or cases.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`. Conclude with `Real.log_nonneg (by exact_mod_cast h0)`. Conclude with `mul_nonneg (div_nonneg hl (Nat.cast_nonneg p)) (Nat.cast_nonneg _)`. Establish `hdn : 0 ≤ (Fm.L x i).sc.delta1 * (Fm.D x i).R.n`. Establish `hc0 : (0 : ℝ) ≤ ((Fm.D x i).host.TT.card : ℝ)` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : 0 < (Fm.L x i).sc.x ^ (-2 : ℝ)` using `by positivity`. Establish `hpow : (Fm.L x i).sc.x ^ (-2 + (Fm.L x i).sc.eps) = (Fm.L x i).sc.x ^ (-2 : ℝ) * ((Fm.L x i).sc.x ^ ((Fm.L x i).sc.eps / 3)) ^ 3`. Establish `h3 : (Fm.L x i).sc.eps = (Fm.L x i).sc.eps / 3 * ((3 : ℕ) : ℝ)` using `by push_cast; ring`. Rewrite using `[Real.rpow_add hy0, ← Real.rpow_natCast, ← Real.rpow_mul hy0.le, ← h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `AuxBlock8.adm2`. Use `⟨⟨by linarith, by linarith⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hpow]`. Take `⟨T, hTe⟩ : ∃ T, T = (Fm.L x i).sc.x ^ ((Fm.L x i).sc.eps / 3)` from `⟨_, rfl⟩`. Take `⟨A, hAe⟩ : ∃ A, A = (Fm.L x i).sc.x ^ (-2 : ℝ)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hS`, `hTbig`, `hT0`, the goal using `[← hTe]`. Rewrite `hA`, `hB`, the goal using `[← hAe]`. Establish `k1 : 16 * Cb * (T + 2) ≤ T ^ 2`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hTbig hT0]`. Establish `k2` using `mul_le_mul_of_nonneg_left k1 (div_nonneg (mul_nonneg (mul_nonneg hdn hA.le) hT0) (by norm_num : (0 : ℝ) ≤ 2))`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `k3` using `mul_le_mul_of_nonneg_left hS (mul_nonneg (by positivity : (0 : ℝ) ≤ 4 * (Cb * A)) hdn)`. Establish `k4` using `mul_le_mul_of_nonneg_right hT1 (by positivity : (0 : ℝ) ≤ A * T ^ 3)`. Combine the linear relations using `[hBTT, hB, k2, k3, k4]`.
+A detailed English derivation is pending.
 -/
 theorem admissible_tops_mertens {eps : ℝ} (Fm : FamP eps) (h : TopsF Fm) : G.Adm2F Fm := by
   obtain ⟨⟨xa, hTT⟩, Cb, hCb, xb, hBad⟩ := h

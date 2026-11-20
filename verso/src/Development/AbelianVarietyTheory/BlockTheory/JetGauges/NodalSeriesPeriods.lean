@@ -26,7 +26,7 @@ def shortCurve {K : Type} [Field K] (a b : K) : WeierstrassCurve K :=
   ⟨0, 0, 0, -(a / 4), -(b / 4)⟩
 
 /- English proof (translation)
-Simplify using `only [shortCurve, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem shortCurve_Δ {K : Type} [Field K] [CharZero K] (a b : K) :
     (shortCurve a b).Δ = a ^ 3 - 27 * b ^ 2 := by
@@ -39,7 +39,7 @@ def curveAt {p : ℕ} [Fact p.Prime] (Λ : AddSubgroup ℂ) (h₂ : g₂ Λ ∈ 
   shortCurve (lam ⟨g₂ Λ, h₂⟩) (lam ⟨g₃ Λ, h₃⟩)
 
 /- English proof (translation)
-Establish `: (⟨g₂ Λ, h₂⟩ : Qbar) ^ 3 - 27 * (⟨g₃ Λ, h₃⟩ : Qbar) ^ 2 = 1` using `Subtype.ext h`. Rewrite using `[curveAt, shortCurve_Δ, ← map_one lam, ← this]`. Rewrite using `[map_sub, map_mul, map_pow, map_pow, map_ofNat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem curveAt_Δ {p : ℕ} [Fact p.Prime] (Λ : AddSubgroup ℂ) (h₂ : g₂ Λ ∈ algebraicClosure ℚ ℂ)
     (h₃ : g₃ Λ ∈ algebraicClosure ℚ ℂ) (lam : Place p) (h : disc Λ = 1) :
@@ -75,7 +75,7 @@ def wSer : A⟦X⟧ := X ^ 3 * vSer W
 open PowerSeries in
 variable {A : Type} [CommRing A] (W : WeierstrassCurve A) in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.step`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma nodal_map_sub_eq_X_mul_sub_mul (u v : A⟦X⟧) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.step W u - _root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.step W v =
@@ -87,7 +87,7 @@ private lemma nodal_map_sub_eq_X_mul_sub_mul (u v : A⟦X⟧) :
 open PowerSeries in
 variable {A : Type} [CommRing A] (W : WeierstrassCurve A) in
 /- English proof (translation)
-Rewrite using `[nodal_map_sub_eq_X_mul_sub_mul, pow_succ']`. Conclude with `Dvd.dvd.mul_right (mul_dvd_mul_left X h) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma X_pow_succ_dvd_sub_of_X_pow_dvd {k : ℕ} {u v : A⟦X⟧} (h : X ^ k ∣ u - v) :
     X ^ (k + 1) ∣
@@ -98,9 +98,9 @@ private lemma X_pow_succ_dvd_sub_of_X_pow_dvd {k : ℕ} {u v : A⟦X⟧} (h : X 
 open PowerSeries in
 variable {A : Type} [CommRing A] (W : WeierstrassCurve A) in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `one_dvd _`. Consider the case `succ n ih`. Establish `e1 : (_root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.step W)^[n + 1 + m] 0 = _root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.step W ((_root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.step W)^[n + m] 0)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show n + 1 + m = n + m + 1 by omega]`. Conclude with `Function.iterate_succ_apply' _ _ _`. Establish `e2 : (_root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.step W)^[n + 1] 0 = _root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.step W ((_root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.step W)^[n] 0)` using `Function.iterate_succ_apply' _ _ _`. Rewrite using `[e1, e2]`. Conclude with `X_pow_succ_dvd_sub_of_X_pow_dvd W ih`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma X_pow_dvd_iterate_sub_iterate (n m : ℕ) :
     X ^ n ∣ (_root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.step W)^[n + m] 0
@@ -123,13 +123,13 @@ private lemma X_pow_dvd_iterate_sub_iterate (n m : ℕ) :
 open PowerSeries in
 variable {A : Type} [CommRing A] (W : WeierstrassCurve A) in
 /- English proof (translation)
-Use extensionality with `k`. Establish `h : X ^ k ∣ _root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.vSer W - (_root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.step W)^[k] 0`. Rewrite using `[X_pow_dvd_iff]`. Introduce `m hm`. Establish `h2` using `X_pow_dvd_iterate_sub_iterate W (m + 1) (k - (m + 1))`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h2` using `[show m + 1 + (k - (m + 1)) = k by omega, X_pow_dvd_iff]`. Establish `h3` using `h2 m (Nat.lt_succ_self m)`. Rewrite `h3` using `[map_sub, sub_eq_zero]`. Rewrite using `[map_sub, sub_eq_zero, _root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.vSer, coeff_mk]`. Conclude with `h3.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `X_pow_succ_dvd_sub_of_X_pow_dvd W h`. Establish `e : (_root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.step W)^[k + 1] 0 = _root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.step W ((_root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.step W)^[k] 0)` using `Function.iterate_succ_apply' _ _ _`. Rewrite `h2` using `[← e, X_pow_dvd_iff]`. Establish `h3` using `h2 k (Nat.lt_succ_self k)`. Rewrite `h3` using `[map_sub, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, _root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.vSer, coeff_mk]`.
+A detailed English derivation is pending.
 -/
 private lemma vSer_isFixedPt :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.vSer W =
@@ -158,7 +158,7 @@ private lemma vSer_isFixedPt :
 open PowerSeries in
 variable {A : Type} [CommRing A] (W : WeierstrassCurve A) in
 /- English proof (translation)
-Establish `hv` using `vSer_isFixedPt W`. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.wSer]`. Use `conv_lhs => rw [hv, _root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.step]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.wSer_eq :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.wSer W = X ^ 3 + C W.a₁ * X * _root_.GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods.wSer W
@@ -210,9 +210,9 @@ def IsPeriod {p : ℕ} [Fact p.Prime] (Λ : AddSubgroup ℂ) (lam : Place p) (Ω
       IsModel (curveAt Λ h₂ h₃ lam) W C ∧ IsSeriesPeriod W (diffFactor C) Ω
 
 /- English proof (translation)
-Set `i : {ω : ℂ // ω ∈ L.lattice.toAddSubgroup ∧ ω ≠ 0} → L.lattice` to `fun ω => ⟨ω.1, ω.2.1⟩`. Establish `hi : Function.Injective i` using `fun a b h => Subtype.ext (congrArg (fun x : L.lattice => (x : ℂ)) h)`. Use `hi.tsum_eq (f := fun l : L.lattice => ((l : ℂ) ^ k)⁻¹) ?_` and prove the remaining obligations. Introduce `l hl`. Use `⟨⟨l, l.2, fun h0 => hl ?_⟩, rfl⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[h0, hk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eisSum_eq_G (L : PeriodPair) {k : ℕ} (hk : k ≠ 0) :
     eisSum L.lattice.toAddSubgroup k = L.G k := by
@@ -224,19 +224,19 @@ theorem eisSum_eq_G (L : PeriodPair) {k : ℕ} (hk : k ≠ 0) :
   simp [h0, hk]
 
 /- English proof (translation)
-Rewrite using `[g₂, eisSum_eq_G L (by norm_num), PeriodPair.g₂]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem g₂_eq (L : PeriodPair) : g₂ L.lattice.toAddSubgroup = L.g₂ := by
   rw [g₂, eisSum_eq_G L (by norm_num), PeriodPair.g₂]
 
 /- English proof (translation)
-Rewrite using `[g₃, eisSum_eq_G L (by norm_num), PeriodPair.g₃]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem g₃_eq (L : PeriodPair) : g₃ L.lattice.toAddSubgroup = L.g₃ := by
   rw [g₃, eisSum_eq_G L (by norm_num), PeriodPair.g₃]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_smul _ _, h⟩`.
+Supply the required witnesses or components.
 -/
 example {p : ℕ} [Fact p.Prime] (W : WeierstrassCurve 𝓞_ℂ_[p]) (h : IsUnit W.Δ) :
     IsModel (W.map (incl p)) W 1 := ⟨one_smul _ _, h⟩

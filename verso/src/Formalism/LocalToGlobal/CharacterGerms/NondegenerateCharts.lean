@@ -50,7 +50,7 @@ def NondegenerateCharts : Prop :=
     ∀ (k : ℕ) (Y : FBChart C V (𝓞 E) (chD C3.ch)), IsBC C3 ι k Y → NDG Y
 
 /- English proof (translation)
-Introduce `hstar T io y C3 C _ _ V ι hι k Y hY _ d _ lab ha hg hr o Hc` and use `h1 C V (𝓞 E) _ Y d _ (pairOfLab ha hg o) (h2 hstar T io y C3 C V ι hι k Y hY) (rankHyp_ofLab ha hg hr o) Hc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rank_maximal_charts_of_nondegenerate (h1 : RankMaximalOfNondegenerate) (h2 : NondegenerateCharts Xo c) : RankMaximalCharts Xo c :=
   fun hstar T io y C3 C _ _ V ι hι k Y hY _ d _ lab ha hg hr o Hc =>

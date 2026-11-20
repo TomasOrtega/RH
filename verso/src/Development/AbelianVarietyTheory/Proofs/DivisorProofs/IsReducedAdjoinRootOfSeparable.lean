@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.ReducedAdjoinRootSeparable
 
 /- English proof (translation)
-Establish `h1 : IsRadical f` using `isRadical_iff_squarefree_or_zero.2 (Or.inl hf.squarefree)`. Establish `h2 : (Ideal.span {f}).IsRadical` using `isRadical_iff_span_singleton.1 h1`. Conclude with `(Ideal.isRadical_iff_quotient_reduced _).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_adjoinRoot_of_separable {k : Type} [Field k] {f : Polynomial k}
     (hf : f.Separable) : IsReduced (AdjoinRoot f) := by

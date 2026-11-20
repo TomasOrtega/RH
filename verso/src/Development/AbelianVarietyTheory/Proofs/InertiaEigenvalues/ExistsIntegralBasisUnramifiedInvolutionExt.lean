@@ -14,23 +14,23 @@ abbrev adicVal (K : UQ) : Valuation K.E (WithZero (Multiplicative ℤ)) :=
 variable {K K' : UQ} {d : ℕ} {φ : K.E →+* K'.E}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsDiscreteValuationRing.exists_lift_of_le_one, by rintro ⟨a, rfl⟩; exact IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ a⟩`.
+Supply the required witnesses or components.
 -/
 theorem adicVal_le_one_iff (K : UQ) (x : K.E) : adicVal K x ≤ 1 ↔ ∃ a : K.O, algebraMap K.O K.E a = x :=
   ⟨IsDiscreteValuationRing.exists_lift_of_le_one, by
     rintro ⟨a, rfl⟩; exact IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ a⟩
 
 /- English proof (translation)
-Rewrite using `[IsDedekindDomain.HeightOneSpectrum.valuation_eq_one_iff_notMem]`. Simplify using `[IsDiscreteValuationRing.maximalIdeal, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adicVal_eq_one_iff (K : UQ) (a : K.O) : adicVal K (algebraMap K.O K.E a) = 1 ↔ IsUnit a := by
   rw [IsDedekindDomain.HeightOneSpectrum.valuation_eq_one_iff_notMem]
   simp [IsDiscreteValuationRing.maximalIdeal, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Establish `hφ : φ x ≠ 0` using `(map_ne_zero φ).2 hx`. Establish `h1` using `h.2.2.1 x`. Unfold `val at h1`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h2` using `neg_inj.1 h1`. Establish `a1 : adicVal K' (φ x) ≠ 0` using `(Valuation.ne_zero_iff _).2 hφ`. Establish `a2 : adicVal K x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Rewrite using `[← WithZero.exp_log a1, ← WithZero.exp_log a2]`. Conclude with `congrArg WithZero.exp h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adicVal_map (h : IsUnrExt K K' d φ) (x : K.E) : adicVal K' (φ x) = adicVal K x := by
   rcases eq_or_ne x 0 with rfl | hx
@@ -45,9 +45,9 @@ theorem adicVal_map (h : IsUnrExt K K' d φ) (x : K.E) : adicVal K' (φ x) = adi
   exact congrArg WithZero.exp h2
 
 /- English proof (translation)
-Set `S` to `(algebraMap K'.O K'.E).range`. Establish `hS : ∀ a : K.O, (φ.comp (algebraMap K.O K.E)) a ∈ S` using `fun a => by`. Take `⟨b, hb⟩` from `(adicVal_le_one_iff K' (φ (algebraMap K.O K.E a))).1 (by`. Rewrite using `[adicVal_map h]`. Conclude with `(adicVal_le_one_iff K _).2 ⟨a, rfl⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨b, hb⟩`. Set `e : K'.O ≃+* S` to `RingEquiv.ofBijective (algebraMap K'.O K'.E).rangeRestrict ⟨fun a b hab => IsFractionRing.injective K'.O K'.E (congrArg Subtype.val hab), RingHom.rangeRestrict_surjective _⟩`. Use `⟨e.symm.toRingHom.comp ((φ.comp (algebraMap K.O K.E)).codRestrict S hS), fun a => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (e.apply_symm_apply ((φ.comp (algebraMap K.O K.E)).codRestrict S hS a))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_lift (h : IsUnrExt K K' d φ) :
     ∃ ι : K.O →+* K'.O, ∀ a, algebraMap K'.O K'.E (ι a) = φ (algebraMap K.O K.E a) := by
@@ -63,25 +63,21 @@ theorem exists_lift (h : IsUnrExt K K' d φ) :
   exact congrArg Subtype.val (e.apply_symm_apply ((φ.comp (algebraMap K.O K.E)).codRestrict S hS a))
 
 /- English proof (translation)
-Take `⟨ι, hι⟩` from `exists_lift h`. Use `haveI : IsLocalHom ι := ⟨fun a ha => by`. Rewrite `ha`, the goal using `[← adicVal_eq_one_iff]`. Rewrite using `[hι, adicVal_map h] at ha⟩` and apply the resulting hypothesis. Use `letI : Algebra (ResidueField K.O) (ResidueField K'.O) := (ResidueField.map ι).toAlgebra`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Fintype (ResidueField K.O) := Fintype.ofFinite _`. Use `letI : Fintype (ResidueField K'.O) := Fintype.ofFinite _`. Establish `hf : Module.finrank (ResidueField K.O) (ResidueField K'.O) = d`. Establish `hc` using `Module.card_eq_pow_finrank (K := ResidueField K.O) (V := ResidueField K'.O)`. Rewrite `hc` using `[← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card, K'.card_res, K.card_res, h.1, ← pow_mul, mul_comm, pow_mul]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : 2 ≤ K.q ^ 2`. Rewrite using `[← K.card_res]`. Conclude with `Finite.one_lt_card`. Conclude with `(Nat.pow_right_injective h2 hc).symm`. Use `haveI : Module.Finite (ResidueField K.O) (ResidueField K'.O) := Module.Finite.of_finite`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Set `bk` to `Module.finBasisOfFinrankEq _ _ hf`. Use `choose w' hw' using fun i => residue_surjective (bk i)`. Use `⟨fun i => algebraMap K'.O K'.E (w' i), fun a m hm => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ham : a m = 0`. Establish `h0 : ∀ k, a k = 0` using `fun k => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hm k` as an intermediate fact. Rewrite `this` using `[ham, map_zero]`. Conclude with `(Valuation.zero_iff _).1 (le_antisymm this zero_le')`. Simplify using `[h0]`. Establish `hb : ∀ k, ∃ b : K.O, algebraMap K.O K.E b = a k / a m` using `fun k => (adicVal_le_one_iff K _).1 (by rw [map_div₀]; exact div_le_one_of_le₀ (hm k) zero_le')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose b hb using hb`. Establish `hbm : b m = 1` using `IsFractionRing.injective K.O K.E (by rw [hb, div_self ham, map_one])`. Use `set s : K'.O := ∑ k, ι (b k) * w' k with hs`. Establish `hsum : ∑ k, φ (a k) * algebraMap K'.O K'.E (w' k) = φ (a m) * algebraMap K'.O K'.E s`. Rewrite using `[hs, map_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hι, hb, map_div₀, ← mul_assoc, mul_div_cancel₀ _ ((map_ne_zero φ).2 ham)]`. Establish `hres : residue K'.O s ≠ 0`. Establish `e1 : residue K'.O s = ∑ k, residue K.O (b k) • bk k`. Rewrite using `[hs, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hw', Algebra.smul_def, RingHom.algebraMap_toAlgebra, ResidueField.map_residue]`. Rewrite using `[e1]`. Introduce `h0`. Use `Fintype.linearIndependent_iff.1 bk.linearIndependent _ h0 m` as an intermediate fact.
-
-Rewrite `this` using `[hbm, map_one]`. Conclude with `one_ne_zero this`. Establish `hsu : IsUnit s`. Assume the negation of the conclusion as `hn`. Conclude with `hres ((residue_eq_zero_iff s).2 ((mem_maximalIdeal s).2 hn))`.
-
-Rewrite using `[hsum, Valuation.map_mul, (adicVal_eq_one_iff K' s).2 hsu, mul_one, adicVal_map h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_key (h : IsUnrExt K K' d φ) :
     ∃ w : Fin d → K'.E, ∀ (a : Fin d → K.E) (m : Fin d), (∀ k, adicVal K (a k) ≤ adicVal K (a m)) →
@@ -131,19 +127,17 @@ theorem exists_key (h : IsUnrExt K K' d φ) :
   rw [hsum, Valuation.map_mul, (adicVal_eq_one_iff K' s).2 hsu, mul_one, adicVal_map h]
 
 /- English proof (translation)
-Introduce `K K' d φ h hd`. Use `letI : Algebra K.E K'.E := φ.toAlgebra`. Take `⟨w, key⟩` from `exists_key h`. Use `haveI : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩`. Establish `hmax : ∀ a : Fin d → K.E, ∃ m, ∀ k, adicVal K (a k) ≤ adicVal K (a m)` using `fun a => Finite.exists_max (fun k => adicVal K (a k))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent K.E w`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Take `⟨m, hm⟩` from `hmax g`. Establish `hk` using `key g m hm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Algebra.smul_def, RingHom.algebraMap_toAlgebra] at hg`. Rewrite `hk` using `[hg, map_zero]`. Establish `hgm : g m = 0` using `(Valuation.zero_iff _).1 hk.symm`. Introduce `k`. Use `hm k` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hgm, map_zero]`. Conclude with `(Valuation.zero_iff _).1 (le_antisymm this zero_le')`. Set `B` to `basisOfLinearIndependentOfCardEqFinrank hli (by rw [Fintype.card_fin]; exact h.2.2.2.2.symm)`. Use `⟨B, fun z => ?_⟩` and prove the remaining obligations. Establish `hz : ∑ k, φ (B.repr z k) * w k = z` using `by conv_rhs => rw [← B.sum_repr z]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[coe_basisOfLinearIndependentOfCardEqFinrank, Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Take `⟨m, hm⟩` from `hmax (B.repr z)`. Establish `hv` using `key _ m hm`. Rewrite `hv` using `[hz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← adicVal_le_one_iff K' z]`. Prove the components needed by the constructor for the conclusion. Introduce `hzO k`. Rewrite using `[← adicVal_le_one_iff]`. Conclude with `(hm k).trans (hv ▸ hzO)`.
-
-Introduce `hall`. Rewrite using `[hv]`. Conclude with `(adicVal_le_one_iff K _).2 (hall m)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intBasis : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K K' d φ → 0 < d →
     letI : Algebra K.E K'.E := φ.toAlgebra;

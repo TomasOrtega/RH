@@ -8,9 +8,9 @@ namespace Formalism.MainNotions.DIV.Bridge.OneLetterJetKernel
 open Formalism.MainNotions Formalism.DworkPowerSeriesWeights Formalism.MainNotions.DIV.Bridge.DworkPowerSeriesWeights Formalism.MainNotions.DIV.Bridge.LetterLogIntegrality
 
 /- English proof (translation)
-Introduce `l _ d _ h5 h2 he be h1 hb2 h3 h4`. Take `⟨K0, hK0, hU⟩` from `wfrac_unram (l := l) (by omega)`. Take `⟨ζ, hζ⟩` from `exists_prim l (l ^ d - 1) (by`. Establish `: 1 < l ^ d` using `Nat.one_lt_pow (by omega) (by omega)`. Use the proof step `omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨K0, ζ, hU, hζ, ?_⟩` and prove the remaining obligations. Unfold `BHyp`. Conclude with `⟨fun n => hK0 _ (h1 n), torus_invariant_of_teichmuller l d be ζ hζ hb2, no_low_bidegree_of_vanishing l d be h3, hB4 l d be h3 h4⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tieB_of (hB4 : ∀ (l : ℕ) [Fact l.Prime] (d : ℕ) [NeZero d] (be : MvPowerSeries (ZMod d) ℂ_[l]),
       product_zeroth_first_parts.B3 l d be → product_zeroth_first_parts.B4 l d be →
@@ -29,7 +29,7 @@ theorem tieB_of (hB4 : ∀ (l : ℕ) [Fact l.Prime] (d : ℕ) [NeZero d] (be : M
   exact ⟨fun n => hK0 _ (h1 n), torus_invariant_of_teichmuller l d be ζ hζ hb2, no_low_bidegree_of_vanishing l d be h3, hB4 l d be h3 h4⟩
 
 /- English proof (translation)
-The claim follows from `tieB_of integrality_of_letter_log`.
+A detailed English derivation is pending.
 -/
 theorem tieB : TieB := tieB_of integrality_of_letter_log
 

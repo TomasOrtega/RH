@@ -15,9 +15,9 @@ Both sides reduce to the same expression.
 theorem cspC_alg (s : S) : algebraMap S (S ⊗[P] FractionRing P) s = s ⊗ₜ (1 : FractionRing P) := rfl
 
 /- English proof (translation)
-Establish `hf : Function.Injective (Algebra.linearMap P (FractionRing P))` using `IsFractionRing.injective P (FractionRing P)`. Establish `h2` using `Module.Flat.lTensor_preserves_injective_linearMap (M := S) (Algebra.linearMap P (FractionRing P)) hf`. Establish `key : ∀ s : S, algebraMap S (S ⊗[P] FractionRing P) s = (LinearMap.lTensor S (Algebra.linearMap P (FractionRing P))) ((TensorProduct.rid P S).symm s)`. Introduce `s`. Rewrite using `[cspC_alg, TensorProduct.rid_symm_apply, LinearMap.lTensor_tmul, Algebra.linearMap_apply, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b h`. Rewrite `h` using `[key, key]`. Conclude with `(TensorProduct.rid P S).symm.injective (h2 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cspC_inj : Function.Injective (algebraMap S (S ⊗[P] FractionRing P)) := by
   have hf : Function.Injective (Algebra.linearMap P (FractionRing P)) :=
@@ -33,7 +33,7 @@ theorem cspC_inj : Function.Injective (algebraMap S (S ⊗[P] FractionRing P)) :
   exact (TensorProduct.rid P S).symm.injective (h2 h)
 
 /- English proof (translation)
-Use `haveI : Algebra.Etale (FractionRing P) (FractionRing P ⊗[P] S) := inferInstance`. Use `haveI : Module.Finite (FractionRing P) (FractionRing P ⊗[P] S) := Algebra.FormallyUnramified.finite_of_free (FractionRing P) _`. Use `haveI : IsArtinianRing (FractionRing P ⊗[P] S) := IsArtinianRing.of_finite (FractionRing P) _`. Conclude with `Function.Surjective.isArtinianRing (f := (Algebra.TensorProduct.comm P (FractionRing P) S)) (Algebra.TensorProduct.comm P (FractionRing P) S).surjective`.
+A detailed English derivation is pending.
 -/
 theorem cspC_artinian : IsArtinianRing (S ⊗[P] FractionRing P) := by
   haveI : Algebra.Etale (FractionRing P) (FractionRing P ⊗[P] S) := inferInstance
@@ -44,9 +44,9 @@ theorem cspC_artinian : IsArtinianRing (S ⊗[P] FractionRing P) := by
     (Algebra.TensorProduct.comm P (FractionRing P) S).surjective
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul s z`. Take `⟨p, hp⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := P) (K := FractionRing P)).mp z.2`. Use `⟨p • s, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Subalgebra.coe_val, cspC_alg, ← hp, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Consider the case `add a b ha hb`. Take `⟨s, hs⟩` from `ha`. Take `⟨s', hs'⟩` from `hb`. Conclude with `⟨s + s', by rw [map_add, map_add, hs, hs']⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cspC_range (y : S ⊗[P] integralClosure P (FractionRing P)) :
     ∃ s : S, algebraMap S (S ⊗[P] FractionRing P) s =
@@ -64,9 +64,9 @@ theorem cspC_range (y : S ⊗[P] integralClosure P (FractionRing P)) :
     exact ⟨s + s', by rw [map_add, map_add, hs, hs']⟩
 
 /- English proof (translation)
-Establish `hint : IsIntegral S r`. Use `⟨Polynomial.X * (Polynomial.X - Polynomial.C 1), Polynomial.monic_X.mul (Polynomial.monic_X_sub_C 1), ?_⟩` and prove the remaining obligations. Simplify using `[mul_sub, hr.eq]`. Take `⟨y, hy⟩` from `(TensorProduct.toIntegralClosure_bijective_of_smooth (R := P) (S := S) (B := FractionRing P)).2 ⟨r, hint⟩`. Take `⟨s, hs⟩` from `cspC_range y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s, hs.trans ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val hy`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cspC_idem_of {r : S ⊗[P] FractionRing P} (hr : IsIdempotentElem r) :
     ∃ s : S, algebraMap S (S ⊗[P] FractionRing P) s = r := by
@@ -82,21 +82,19 @@ theorem cspC_idem_of {r : S ⊗[P] FractionRing P} (hr : IsIdempotentElem r) :
 variable (P) in
 include P in
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Set `M` to `Algebra.algebraMapSubmonoid S (nonZeroDivisors P)`. Establish `hP1 : P1.IsPrime` using `Ideal.minimalPrimes_isPrime h1`. Establish `hP2 : P2.IsPrime` using `Ideal.minimalPrimes_isPrime h2`. Establish `hM : ∀ I ∈ minimalPrimes S, Disjoint (M : Set S) I`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `I hI`. Use `Set.disjoint_left.2 fun m hm hmI => ?_` and prove the remaining obligations. Establish `hnzd : m ∈ nonZeroDivisors S`. Use `mem_nonZeroDivisors_iff_right.2 fun x hx => cspC_inj (P := P) ?_` and prove the remaining obligations. Establish `hu` using `IsLocalization.map_units (S ⊗[P] FractionRing P) (⟨m, hm⟩ : M)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : algebraMap S (S ⊗[P] FractionRing P) x * algebraMap S (S ⊗[P] FractionRing P) m = 0`. Rewrite using `[← map_mul, hx, map_zero]`. Rewrite using `[map_zero]`. Conclude with `(hu.mul_left_eq_zero).1 h0`. Conclude with `Set.disjoint_left.1 (Ideal.disjoint_nonZeroDivisors_of_mem_minimalPrimes hI) hmI hnzd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Q1` to `Ideal.map (algebraMap S (S ⊗[P] FractionRing P)) P1`. Set `Q2` to `Ideal.map (algebraMap S (S ⊗[P] FractionRing P)) P2`. Establish `hQ1 : Q1.IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint M _ P1 hP1 (hM P1 h1)`. Establish `hQ2 : Q2.IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint M _ P2 hP2 (hM P2 h2)`. Establish `hc1 : Q1.comap (algebraMap S (S ⊗[P] FractionRing P)) = P1` using `IsLocalization.under_map_of_isPrime_disjoint M _ hP1 (hM P1 h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc2 : Q2.comap (algebraMap S (S ⊗[P] FractionRing P)) = P2` using `IsLocalization.under_map_of_isPrime_disjoint M _ hP2 (hM P2 h2)`. Establish `hQne : Q1 ≠ Q2` using `fun e => hne (by rw [← hc1, ← hc2, e])`. Use `cspC_artinian (P := P) (S := S)` as an intermediate fact. Take `⟨r, hr2, hrid, hrall⟩` from `IsArtinianRing.exists_not_mem_forall_mem_of_ne Q2`. Establish `hr1 : r ∈ Q1` using `hrall Q1 hQ1 hQne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `cspC_idem_of (P := P) hrid`. Establish `hs1 : s ∈ P1` using `by rw [← hc1, Ideal.mem_comap, hs]; exact hr1`. Establish `hs2 : s ∉ P2` using `by rw [← hc2, Ideal.mem_comap, hs]; exact hr2`. Establish `hsid : s * s = s` using `cspC_inj (P := P) (by rw [map_mul, hs, hrid.eq])`. Establish `h0 : (1 - s) * s ∈ P2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_mul, one_mul, hsid, sub_self]`. Conclude with `P2.zero_mem`. Establish `h1s : 1 - s ∈ P2` using `(hP2.mem_or_mem h0).resolve_right hs2`. Establish `: (1 : S) ∈ q`. Use `q.add_mem (hq2 h1s) (hq1 hs1)` as an intermediate fact.
-
-Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `hq.ne_top ((Ideal.eq_top_iff_one _).2 this)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cspC_minimal_unique {q P1 P2 : Ideal S} [hq : q.IsPrime] (h1 : P1 ∈ minimalPrimes S)
     (h2 : P2 ∈ minimalPrimes S) (hq1 : P1 ≤ q) (hq2 : P2 ≤ q) : P1 = P2 := by

@@ -19,17 +19,17 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE
 
 /- English proof (translation)
-Introduce `A _ _ I _ X _ _ _ _ J _ Z _ hZ ψ hψ hover W hW hiso E hE S hS hK hP`. Establish `hln : IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian (X ↘ Spec (.of A))`. Establish `hcs : CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace (X ↘ Spec (.of A))`. Establish `hφ : IsProper (ψ ≫ J.subschemeι)` using `by haveI := hψ infer_instance`. Establish `hcl` using `GlobalTheory.T.closed_system_pullback I (ψ ≫ J.subschemeι) hover hE hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hps` using `GlobalTheory.T.proper_support_pullback_system I (ψ ≫ J.subschemeι) hφ hover hE hS hP`. Establish `hEZ` using `isCoherent_pullback (ψ ≫ J.subschemeι) hE`. Take `⟨B, hBq, hBP, hB⟩` from `hZ _ hEZ _ hcl (fun e U a ha x => by`. Establish `ha0 : a = 0` using `by simpa using ha`. Substitute `ha0` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `⟨0, by rw [map_zero, zero_smul]⟩) hps`. Use `hEZ.1` as an intermediate fact. Establish `hG : IsCoherent (cokernel B.arrow)` using `isCoherent_cokernel B.arrow hEZ`. Establish `hP'` using `GlobalTheory.T.proper_pushforward_coherent (ψ ≫ J.subschemeι) hφ hG`. Use `hP'.1` as an intermediate fact.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE1` using `hE.1`. Establish `hDq : ((adjKer (ψ ≫ J.subschemeι) B : Subobject E) : X.Modules).IsQuasicoherent` using `(SheafOfModules.isQuasicoherent X.ringCatSheaf).prop_of_iso (kernelSubobjectIso (adjMap (ψ ≫ J.subschemeι) B)).symm (isCoherent_kernel (adjMap (ψ ≫ J.subschemeι) B) hE).1`. Take `⟨c, hc⟩` from `GlobalTheory.T.proper_pullback_system_quasicoherent I (ψ ≫ J.subschemeι) hφ hover hE hS B hBq hB`. Take `⟨J₀, hJ₀, hJ₀J⟩` from `GlobalTheory.T.nonempty_open_ideal_not_nilpotent J W hW`. Take `⟨m, hm⟩` from `GlobalTheory.T.ideal_power_kills_system hE (adjKer (ψ ≫ J.subschemeι) B) hDq S hS.qcoh J₀ (fun V f hf x hx => GlobalTheory.T.proper_birational_closed_system I J ψ hψ hover W hiso hE hS hK B hB V f (hJ₀ V f hf) x hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨adjKer (ψ ≫ J.subschemeι) B, c, J ⊔ powIdeal J₀ m, hDq, GlobalTheory.T.pushforward_closed_system_auxiliary (ψ ≫ J.subschemeι) hφ hover B hBP, hc, ?_, ?_⟩` and prove the remaining obligations. Conclude with `lt_of_le_of_ne le_sup_left (fun h => hJ₀J m (h ▸ le_sup_right))`. Introduce `n U a ha x hx`. Take `⟨a₁, h₁, a₂, h₂, rfl⟩` from `Submodule.mem_sup.1 ha`. Rewrite using `[add_smul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `hx`. Conclude with `(secsSub (S n) U).add_mem (hK n U a₁ h₁ _) (hm n U a₂ h₂ _ ⟨y, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem core_integral_step : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A), IsAdicComplete I A → ∀ {X : Scheme.{0}} [X.Over (Spec (.of A))] [IsSeparated (X ↘ Spec (.of A))] [LocallyOfFiniteType (X ↘ Spec (.of A))] [QuasiCompact (X ↘ Spec (.of A))] (J : X.IdealSheafData) [IsIntegral J.subscheme] {Z : Scheme.{0}} [Z.Over (Spec (.of A))], Statement I (⊥ : Z.IdealSheafData) → ∀ (ψ : Z ⟶ J.subscheme), IsProper ψ → (ψ ≫ J.subschemeι) ≫ (X ↘ Spec (.of A)) = (Z ↘ Spec (.of A)) → ∀ (W : J.subscheme.Opens), (W : Set J.subscheme).Nonempty → IsIso (ψ ∣_ W) → ∀ {E : X.Modules}, IsCoherent E → ∀ {S : ℕ → Subobject E}, ClosedSys I E S → (∀ e, Killed J (S e)) → PropSupp A (S 0) → ∃ (D : Subobject E) (c : ℕ) (J' : X.IdealSheafData), (D : X.Modules).IsQuasicoherent ∧ PropSupp A D ∧ (∀ e, S (e + c) ≤ D ⊔ powSub I E (e + 1)) ∧ J < J' ∧ ∀ (n : ℕ) (U : X.affineOpens) (a : Γ(X, U)), a ∈ J'.ideal U → ∀ x ∈ secs D U, a • x ∈ secs (S n) U := by
   intro A _ _ I _ X _ _ _ _ J _ Z _ hZ ψ hψ hover W hW hiso E hE S hS hK hP

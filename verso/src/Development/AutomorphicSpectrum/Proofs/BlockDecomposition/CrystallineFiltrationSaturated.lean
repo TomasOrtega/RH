@@ -12,21 +12,21 @@ open CategoryTheory GroundTheory.PAdicHodge CrystallineSemistableComparison Crys
 namespace GlobalTheory.CompanionTheory.PerfFil
 
 /- English proof (translation)
-The claim follows from `Ideal.span_mono fun _ ⟨k, hk, e⟩ => ⟨k, by omega, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem Fil0_succ_le {l : ℕ} [Fact l.Prime] (A : PAlg l) (r : ℕ) : A.Fil0 (r + 1) ≤ A.Fil0 r :=
   Ideal.span_mono fun _ ⟨k, hk, e⟩ => ⟨k, by omega, e⟩
 
 /- English proof (translation)
-Introduce `l _ A r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `z _`. Rewrite using `[(GlobalTheory.T.crystalline_filtration_multiplicative A).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_top`. Consider the case `succ r ih`. Introduce `z hz`. Establish `hzr : z ∈ A.Fil0 r` using `ih z (Fil0_succ_le A r hz)`. Take `⟨h1, h2, -⟩` from `GlobalTheory.T.crystalline_graded_pieces_description A r`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `h1 z hzr`. Establish `hlw : algebraMap A.W A.Acr0 ((l : A.W) * w) * A.dxi0 r ∈ A.Fil0 (r + 1)`. Establish `e : algebraMap A.W A.Acr0 ((l : A.W) * w) * A.dxi0 r = (l : A.Acr0) * z - (l : A.Acr0) * (z - algebraMap A.W A.Acr0 w * A.dxi0 r)`. Rewrite using `[map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `sub_mem hz (Ideal.mul_mem_left _ _ hw)`. Establish `hmem : (l : A.W) * w ∈ Ideal.span {A.xi}` using `(h2 _).1 hlw`. Establish `hth : (l : A.U) * A.th w = 0`. Rewrite using `[← map_natCast A.th, ← map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hmem`. Establish `hth0 : A.th w = 0` using `(mem_nonZeroDivisors_iff_left.1 (GlobalTheory.T.perfectoid_xi_nonZeroDivisor A).1) _ hth`. Establish `hwx : w ∈ Ideal.span {A.xi}` using `Ideal.Quotient.eq_zero_iff_mem.1 hth0`. Use `add_mem hw ((h2 w).2 hwx)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem crystalline_filtration_l_saturated : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (r : ℕ) (z : A.Acr0),
     (l : A.Acr0) * z ∈ A.Fil0 r → z ∈ A.Fil0 r := by

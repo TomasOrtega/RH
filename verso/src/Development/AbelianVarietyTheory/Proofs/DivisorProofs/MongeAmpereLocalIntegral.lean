@@ -8,23 +8,21 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hs : IsOpen (Metric.ball (0 : Fin e → ℂ) r ∩ ψ.symm ⁻¹' O)` using `(ψ.continuousOn_symm.mono hball).isOpen_inter_preimage Metric.isOpen_ball hO`. Establish `himg : (A.chart j).target ∩ (A.chart j).symm ⁻¹' (ψ.symm '' Metric.ball (0 : Fin e → ℂ) r ∩ O) = (A.chart j ∘ ψ.symm) '' (Metric.ball (0 : Fin e → ℂ) r ∩ ψ.symm ⁻¹' O)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, ⟨z, hz, hzy⟩, hyO⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨z, ⟨hz, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show ψ.symm z ∈ O`. Rewrite using `[hzy]`. Conclude with `hyO`. Simplify using `only [Function.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hzy, (A.chart j).right_inv hy]`. Introduce and unpack `⟨z, ⟨hz, hzO⟩, rfl⟩`. Establish `h1 : (A.chart j).symm (A.chart j (ψ.symm z)) = ψ.symm z` using `(A.chart j).left_inv (hsrc z hz)`. Use `⟨(A.chart j).map_source (hsrc z hz), ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Set.mem_preimage]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[h1]`. Conclude with `⟨⟨z, hz, rfl⟩, hzO⟩`. Establish `han : AnalyticOnNhd ℂ (A.chart j ∘ ψ.symm) (Metric.ball (0 : Fin e → ℂ) r ∩ ψ.symm ⁻¹' O)` using `fun z hz => (hψ j).2 z ⟨hball hz.1, hsrc z hz.1⟩`. Establish `hinj : Set.InjOn (A.chart j ∘ ψ.symm) (Metric.ball (0 : Fin e → ℂ) r ∩ ψ.symm ⁻¹' O)`. Introduce `z hz z' hz' h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ψ.symm z = ψ.symm z'` using `(A.chart j).injOn (hsrc z hz.1) (hsrc z' hz'.1) h`. Conclude with `ψ.symm.injOn (hball hz.1) (hball hz'.1) h1`. Rewrite using `[himg, ReciprocityTheory.AnForm.A.lintegral_image_eq_lintegral_normSq_det_mul _ _ hs han hinj]`. Use `le_of_eq (setLIntegral_congr_fun hs.measurableSet fun z hz => ?_)` and prove the remaining obligations. Establish `h1 : (A.chart j).symm (A.chart j (ψ.symm z)) = ψ.symm z` using `(A.chart j).left_inv (hsrc z hz.1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTz : (A.chart j ∘ ψ.symm) z ∈ (A.chart j).target` using `(A.chart j).map_source (hsrc z hz.1)`. Establish `hc : ContDiffAt ℝ 2 (P.φ (ψ.symm z) ∘ (A.chart j).symm) ((A.chart j ∘ ψ.symm) z)`. Establish `hmem : (A.chart j).target ∩ (A.chart j).symm ⁻¹' (P.U (ψ.symm z) ∩ O) ∈ nhds ((A.chart j ∘ ψ.symm) z)`. Use `((A.chart j).isOpen_inter_preimage_symm ((P.isOpen_U _).inter hO)).mem_nhds ⟨hTz, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Set.mem_preimage]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `⟨P.mem_U _, hz.2⟩`. Conclude with `((hP.1 (ψ.symm z) j).contDiffAt hmem).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hev : (P.φ (ψ.symm z) ∘ ψ.symm) =ᶠ[nhds z] (P.φ (ψ.symm z) ∘ (A.chart j).symm) ∘ (A.chart j ∘ ψ.symm)` using `by filter_upwards [Metric.isOpen_ball.mem_nhds hz.1] with w hw`. Simplify using `only [Function.comp_apply, (A.chart j).left_inv (hsrc w hw)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h2 : maDens (fun _ => P.φ (ψ.symm z) ∘ ψ.symm) z = maDens (fun _ => P.φ (ψ.symm z) ∘ (A.chart j).symm) ((A.chart j ∘ ψ.symm) z) * Complex.normSq (ReciprocityTheory.AnForm.A.jacC (A.chart j ∘ ψ.symm) z).det` using `(maDens_congr_eventuallyEq (fun _ => hev)).trans (ReciprocityTheory.AnForm.A.maDens_comp (fun _ => P.φ (ψ.symm z) ∘ (A.chart j).symm) (A.chart j ∘ ψ.symm) z (han z hz) (fun _ => hc))`. Establish `h3 : locDens A (fun _ => P) j ((A.chart j ∘ ψ.symm) z) = maDens (fun _ => P.φ (ψ.symm z) ∘ (A.chart j).symm) ((A.chart j ∘ ψ.symm) z)`. Unfold `locDens`. Establish `h4 : (A.chart j).symm ((A.chart j ∘ ψ.symm) z) = ψ.symm z` using `h1`. Rewrite using `[h4]`.
-
-Both sides reduce to the same expression. Use `show _ = ENNReal.ofReal (maDens (fun _ => P.φ (ψ.symm z) ∘ ψ.symm) z)`. Rewrite using `[h2, h3, ← ENNReal.ofReal_mul (Complex.normSq_nonneg _), mul_comm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_locDens_le_compatChart {e : ℕ} {X : Type} [TopologicalSpace X]
     [MeasurableSpace X] [BorelSpace X] (A : FinHolAtlas e X) (P : LocPot X) (O : Set X)

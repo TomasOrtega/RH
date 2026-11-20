@@ -16,15 +16,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {Y : Spc F E n} {A : Spc F E m}
 
 /- English proof (translation)
-Establish `hc : (Uᶜ).Countable` using `by haveI : DiscreteTopology (Uᶜ : Set ℂ) := discreteTopology_subtype_iff.2 fun x _ => by`. Rewrite using `[Filter.inf_principal_eq_bot, compl_compl]`. Conclude with `hd x`. Conclude with `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Set `ψ : ℂ → ℂ` to `fun w => (Real.exp w.re : ℂ) + w.im * Complex.I`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `re : ∀ w, (ψ w).re = Real.exp w.re` using `fun w => by simp [ψ, Complex.exp_ofReal_re]`. Establish `im : ∀ w, (ψ w).im = w.im` using `fun w => by simp [ψ, Complex.exp_ofReal_im]`. Establish `inj : Function.Injective ψ` using `fun w w' e => Complex.ext (Real.exp_injective (by rw [← re, ← re, e])) (by rw [← im, ← im w', e])`. Establish `e : U ∩ {z | 0 < z.re} = ψ '' (ψ ⁻¹' Uᶜ)ᶜ`. Use extensionality with `z`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `: ψ ⟨Real.log z.re, z.im⟩ = z` using `Complex.ext (by rw [re]; exact Real.exp_log h2) (by rw [im])`. Conclude with `⟨_, fun h => h (this.symm ▸ h1), this⟩`. Introduce and unpack `⟨w, hw, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨not_not.1 hw, by show 0 < (ψ w).re; rw [re]; exact Real.exp_pos _⟩`. Establish `hcon : IsPreconnected (U ∩ {z | 0 < z.re})`. Rewrite using `[e]`. Conclude with `((hc.preimage_of_injOn inj.injOn).isConnected_compl_of_one_lt_rank (by simp)).isPreconnected.image _ (Continuous.continuousOn (by fun_prop))`. Establish `ho : IsOpen (U ∩ {z : ℂ | 0 < z.re})` using `hU.inter (isOpen_lt continuous_const Complex.continuous_re)`.
-
-Establish `h1 : t < ((max t 0 + 1 : ℝ) : ℂ).re` using `by rw [Complex.ofReal_re]; linarith [le_max_left t 0]`. Use `(hf.analyticOnNhd ho).eqOn_zero_of_preconnected_of_eventuallyEq_zero hcon (z₀ := ((max t 0 + 1 : ℝ) : ℂ)) ⟨(ht _ h1).1, by show 0 < Complex.re _; rw [Complex.ofReal_re]; linarith [le_max_right t 0]⟩ ?_ ⟨hs, hs'⟩` and prove the remaining obligations. Use `filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds h1] with z hz using (ht z hz).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_right {U : Set ℂ} (hU : IsOpen U) (hd : ∀ z : ℂ, ∀ᶠ z' in 𝓝[≠] z, z' ∈ U) {f : ℂ → ℂ}
     (hf : DifferentiableOn ℂ f (U ∩ {z | 0 < z.re})) {t : ℝ} (ht : ∀ z : ℂ, t < z.re → z ∈ U ∧ f z = 0) {s : ℂ} (hs : s ∈ U)
@@ -57,9 +55,9 @@ theorem eq_zero_of_right {U : Set ℂ} (hU : IsOpen U) (hd : ∀ z : ℂ, ∀ᶠ
   filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds h1] with z hz using (ht z hz).2
 
 /- English proof (translation)
-Establish `h1` using `hasProd_Lv (S := (∅ : Set (Pl F))) (converges_charFam _ χ hz)`. Establish `h2 : HasProd (fun v : Pl F => Lv (charFam χ) v z) (charL χ (∅ : Set (Pl F)) z)` using `(Equiv.subtypeUnivEquiv (p := fun v => v ∉ (∅ : Set (Pl F))) (fun _ => Set.notMem_empty _)).hasProd_iff.1 h1`. Use `(hasProd_subtype_iff_of_mulSupport_subset (s := {v | v ∉ T}) fun v hv hT => hv ?_).2 h2` and prove the remaining obligations. Use `Finset.prod_eq_one fun w hw => ?_` and prove the remaining obligations. Establish `: ¬ UnrAt χ w` using `h w (by rwa [mem_aboveF.1 hw])`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[locL, charFam, this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hasProd_off {χ : Chr F E} {T : Finset (Pl F)} (h : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∈ T → ¬ UnrAt χ w)
     {z : ℂ} (hz : 1 < z.re) : HasProd (fun v : {v : Pl F // v ∉ T} => Lv (charFam χ) v.1 z) (charL χ (∅ : Set (Pl F)) z) := by
@@ -72,23 +70,21 @@ theorem hasProd_off {χ : Chr F E} {T : Finset (Pl F)} (h : ∀ w : HeightOneSpe
   simp [locL, charFam, this]
 
 /- English proof (translation)
-Take `⟨⟨K, a, hK, ha, -⟩, e, -, he'⟩` from `hH F E σ B n X r s h.base (Or.inl h.herm)`. Take `⟨f₀, p0, n0, i0⟩` from `hI F E σ B _ _ _ _ _ _ _ _ _ _ _ _ h h0 P p hp`. Use `letI : MeasurableSpace (Fin n × Fin d → AF F) := borel _`. Use `haveI : BorelSpace (Fin n × Fin d → AF F) := ⟨rfl⟩`. Set `ν : Measure (Fin n × Fin d → AF F)` to `Measure.addHaar`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hν : ν.IsAddHaarMeasure` using `inferInstance`. Take `⟨Φ, pΦ, b1, b2, b3⟩` from `hB F E σ B _ _ _ _ _ _ _ _ _ _ _ _ h h0 h0' hd.le he T hT uX uW f₀ p0 n0 i0 K a e hK ha he' ν hν`. Take `⟨U, Z, t₀, u1, u2, u3, u4, u5, u6⟩` from `hN F E σ B _ _ _ _ _ _ _ _ _ _ _ _ h h0 h0' hn (by omega) K a e hK ha he' ν hν Φ pΦ`. Take `⟨dT, d1, d2⟩` from `hD F E n T`. Use `choose μl hμl using hM F E σ B n X r s h.base h.herm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Φ, pΦ, fun hz => ?_⟩` and prove the remaining obligations. Use `set H : ℂ → ℂ := fun z => ∫ g in {g | ∀ v ∉ T, IntAt v g}, zint om ν a e Φ z g ∂M.μ with hHdef`. Establish `res0 : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χW 0` using `fun x => by`. Rewrite using `[h.resW x, he.neg_one_pow, pow_zero]`. Establish `key : ∀ z : ℂ, max t₀ (n / 2) < z.re → z ∈ U ∧ Z z * dT z - (∏ i ∈ Finset.range n, Λ (z + n / 2 - i)) * H z = 0` using `fun z hz => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z1` using `(le_max_left _ _).trans_lt hz`. Establish `z2` using `(le_max_right _ _).trans_lt hz`. Establish `n1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Take `⟨m1, m2, m3⟩` from `u5 z z1`. Use `⟨m1, sub_eq_zero.2 ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose! f f1 f2 using b1 z`. Establish `lu` using `fun v (hv : v ∉ T) => hU F E σ B n X r s h.base h.herm χW h.hW res0 K e hK he' v (fun w hw => uW w (by show ¬ w.under (𝓞 F) ∈ (T : Set (Pl F)); rw [hw]; exact hv)) (μl v) (hμl v).1 (hμl v).2 z (f v) z2 (f1 v hv)`. Establish `t1` using `hE F E σ B n X r s h.base h.herm T M.μ h.good.haar μl hμl _ (fun v u => f v (e (u, 1))) m2 fun v hv => ⟨fun u hu => (f2 v hv u hu).2, fun u hu => (f2 v hv u hu).1, (lu v hv).1⟩`. Establish `t2` using `t1.mul (d2 z (by linarith)).2`. Establish `t3 : HasProd (fun v : {v : Pl F // v ∉ T} => ∏ i ∈ Finset.range n, Lv (charFam χW) v.1 (z + n / 2 - i)) (∏ i ∈ Finset.range n, Λ (z + n / 2 - i))` using `hasProd_prod fun i hi => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hi' : (i : ℝ) + 1 ≤ n` using `by exact_mod_cast Finset.mem_range.1 hi`. Establish `: 1 < (z + n / 2 - i).re`. Simplify using `only [Complex.sub_re, Complex.add_re, Complex.natCast_re, Complex.div_ofNat_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[l2 _ this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hasProd_off ram this`. Rewrite using `[m3]`. Use `tendsto_nhds_unique t2 ((Filter.Tendsto.mul_const (H z) t3).congr fun S => ?_)` and prove the remaining obligations. Rewrite using `[mul_right_comm, ← Finset.prod_mul_distrib]`. Conclude with `congrArg (· * H z) (Finset.prod_congr rfl fun v _ => (lu v.1 v.2).2.symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `s0 : 0 < (((d : ℂ) - n) / 2).re`. Establish `: (n : ℝ) < d` using `by exact_mod_cast hd`. Simplify using `only [Complex.sub_re, Complex.natCast_re, Complex.div_ofNat_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `fin` using `eq_zero_of_right u1 u2 (f := fun z => Z z * dT z - (∏ i ∈ Finset.range n, Λ (z + n / 2 - i)) * H z) (((u4.mono Set.inter_subset_left).mul (d1.mono Set.inter_subset_right)).sub ((Differentiable.fun_finsetProd fun i _ => l1.comp ((differentiable_id.add_const _).sub_const _)).mul b2 …`.
-
-Simplify using `only [u6 hz, zero_mul, zero_sub, neg_eq_zero] at fin`. Use `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun i hi => ?_) b3 fin` and prove the remaining obligations. Take `⟨k, hk⟩` from `he`. Use `l3 ((k : ℤ) - i) (by have := Finset.mem_range.1 hi; omega)` as an intermediate fact. Rewrite `this` using `[show (((k : ℤ) - i : ℤ) : ℂ) = ((d : ℂ) - n) / 2 + n / 2 - i by rw [hk]; push_cast; ring]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pair_ne_zero (hH : HgtEx) (hN : NormZeta) (hE : EulerProd) (hM : LocMeas) (hU : LocUnr) (hB : BadFactor) (hI : RealInv)
     (hD : DProd) {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
@@ -150,15 +146,13 @@ theorem pair_ne_zero (hH : HgtEx) (hN : NormZeta) (hE : EulerProd) (hM : LocMeas
   rwa [show (((k : ℤ) - i : ℤ) : ℂ) = ((d : ℂ) - n) / 2 + n / 2 - i by rw [hk]; push_cast; ring] at this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' h hp hq`. Take `⟨R, hr⟩` from `hR F E σ B a a' G X om om' h`. Take `⟨Λ, l1, l2, l3⟩` from `hL F E σ B a a' G X om om' h X.ν (Or.inl rfl)`. Take `⟨Λ', l1', l2', l3'⟩` from `hL F E σ B a a' G X om om' h X.ν⁻¹ (Or.inr rfl)`. Establish `g1` using `h.geo.lt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `g2` using `h.geo.aBig`. Establish `c` using `h.chars`. Establish `hν` using `isHecke_nu h`. Establish `e : X.β / X.α = X.ν⁻¹` using `by rw [Chars.ν, inv_div]`. Establish `uν : UnrOff X.ν (X.T : Set (Pl F))` using `fun w hw => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Chars.ν, div_eq_mul_inv]`. Conclude with `(c.unrα w hw).mul (c.unrβ w hw).inv`. Establish `rν : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range X.ν (a + a')` using `fun x => by show ((X.α _ / X.β _ : Circle) : ℂ) = _`. Rewrite using `[Circle.coe_div, c.resα x, c.resβ x, h.geo.even.neg_one_pow]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `div_one _`. Rewrite using `[div_eq_one_iff_eq (pow_ne_zero _ (by norm_num)), neg_one_pow_congr (Nat.even_add.1 h.geo.even).symm]`. Establish `rν' : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range X.ν⁻¹ (a + a')` using `fun x => by show (((X.ν _)⁻¹ : Circle) : ℂ) = _`. Rewrite using `[Circle.coe_inv, rν x, h.geo.even.neg_one_pow, ite_self, inv_one]`. Establish `hν' : IsHecke F E X.ν⁻¹` using `⟨hν.1.inv, fun x => by rw [MonoidHom.inv_apply, hν.2 x, inv_one]⟩`.
-
-Use `haveI := hr.nontriv`. Conclude with `⟨pair_ne_zero hH hN hE hM hU hB hI hD (χW := X.ν⁻¹) ⟨h.base, h.geo.hV, h.geo.hW, h.geo.hM, c.heckeβ, hν', c.resβ, rν', e ▸ h.weil⟩ (by omega) (by omega) (by omega) (by omega) h.geo.even c.sub c.unrβ (fun w hw => (uν w hw).inv) (fun w hw hu => c.ram w hw (by simpa using hu.inv)) h …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonZeroBottom_of_doubling_integral (hR : KReal) (hL : LInt2) (hH : HgtEx) (hN : NormZeta) (hE : EulerProd) (hM : LocMeas) (hU : LocUnr)
     (hB : BadFactor) (hI : RealInv) (hD : DProd) : NonZeroBot := by

@@ -22,9 +22,9 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.ThetaDer
 
 /- English proof (translation)
-Establish `hh : ⅟(2 : R) + ⅟(2 : R) = 1` using `by rw [← two_mul, mul_invOf_self]`. Simplify using `only [GlobalTheory.WeilM.schr, Prod.fst_add, Prod.snd_add, add_assoc]`. Simplify using `only [← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Simplify using `only [dotProduct_add, add_dotProduct]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(w.1 ⬝ᵥ w'.2)) * hh`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem schr_comp_apply {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w w' : (κ → R) × (κ → R)) (Φ : (κ → R) → ℂ) (x : κ → R) :
@@ -38,7 +38,7 @@ theorem schr_comp_apply {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddCh
   linear_combination (-(w.1 ⬝ᵥ w'.2)) * hh
 
 /- English proof (translation)
-Use `⟨{ toFun := fun u => uᵀ.submatrix e.symm id * G invFun := fun x => ((x * H)ᵀ).submatrix id e left_inv := fun u => ?_ right_inv := fun x => ?_ map_add' := fun u v => ?_ }, fun u => rfl, fun x => rfl⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[Matrix.mul_assoc, hGH]`. Simplify using `[Matrix.transpose_submatrix, Matrix.submatrix_submatrix, Matrix.mul_assoc, hHG]`. Simplify using `[Matrix.transpose_add, Matrix.submatrix_add, Matrix.add_mul]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_equiv {A : Type} [CommRing A] {m k d : ℕ} {G H : Matrix (Fin m) (Fin m) A} (hHG : H * G = 1)
     (hGH : G * H = 1) (e : Fin k ≃ Fin d) :
@@ -55,7 +55,7 @@ theorem exists_equiv {A : Type} [CommRing A] {m k d : ℕ} {G H : Matrix (Fin m)
   · simp [Matrix.transpose_add, Matrix.submatrix_add, Matrix.add_mul]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.WeilM.Darboux.rho]`. Rewrite using `[schr_comp_apply, ← co.form, map_add, ← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rho_add_twisted_operators {R : Type} [CommRing R] [Invertible (2 : R)] {W : Type} [AddCommGroup W] [Module R W]
     {B : W → W → R} {κ : Type} [Fintype κ] (co : GlobalTheory.WeilM.Darboux B κ) (ψ : AddChar R ℂ) (p q : W)
@@ -67,7 +67,7 @@ private theorem rho_add_twisted_operators {R : Type} [CommRing R] [Invertible (2
 
 set_option maxHeartbeats 6400000 in
 /- English proof (translation)
-Establish `c0 : Continuous (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F)` using `GlobalTheory.ThetaLineDeriv.continuous_realAd`. Establish `c1 : Continuous fun t : ℝ => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u₀` using `c0.smul continuous_const`. Conclude with `(c1.matrix_transpose.matrix_submatrix _ _).matrix_mul continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem tendsto_add_smul_punctured_of_differentiableAt {D : D7} {n d m : ℕ} (u₀ : Matrix (Fin n) (Fin d) (AE D)) (e' : Fin d ≃ Fin m)
     (G : Matrix (Fin n) (Fin n) (AE D)) :
@@ -77,7 +77,7 @@ private theorem tendsto_add_smul_punctured_of_differentiableAt {D : D7} {n d m :
   exact (c1.matrix_transpose.matrix_submatrix _ _).matrix_mul continuous_const
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul]`. Establish `h0 : finPart D (algebraMap (AF D.host.F) (AE D) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t)) = 0` using `by show finPart D ((GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t) ⊗ₜ[D.host.F] (1 : D.host.E)) = 0`. Establish `hs : sndA D.host.F (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t) = 0` using `rfl`. Simplify using `only [Formalism.L2.Theta.finPart, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, hs, TensorProduct.zero_tmul]`. Rewrite using `[h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fin_realAd_smul_eq_zero {D : D7} (t : ℝ) (a : AE D) :
     finPart D (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • a) = 0 := by
@@ -92,33 +92,31 @@ private theorem fin_realAd_smul_eq_zero {D : D7} (t : ℝ) (a : AE D) :
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `hTR : NumberField.IsTotallyReal D.host.F` using `hBs.cm.1`. Establish `hCh : IsCharAF D.host.F Bs.ψ` using `GlobalTheory.StdCharFromIsStd.isCharAF hBs.std`. Establish `hdet : IsUnit S.gram.det` using `isUnit_iff_ne_zero.mpr (gram_det_ne S)`. Establish `hinc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F S.gram * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F S.gram⁻¹ = 1`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hdet]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hinc' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F S.gram⁻¹ * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F S.gram = 1`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hdet]`. Simplify using the standard rewrite rules. Take `⟨T, hT, hTs⟩` from `exists_equiv (A := AE D) hinc' hinc e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hpt : ∀ x, GlobalTheory.TripleRead.ptO S.gram e x = T.symm x` using `fun x => (hTs x).symm`. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers D.host.F v} 1` using `(hvac.and hM.std).mono fun v h => h.1.trans h.2`. Establish `hΦ` using `GlobalTheory.TensUniq.pure_mem_schA g φ hφ hstd`. Establish `hΦ'` using `GlobalTheory.TensUniq.pure_mem_schA g₁ φ hφ hstd`. Establish `hd : ∀ z, HasDerivAt (fun t : ℝ => M.co.rho Bs.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u₀) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ) z) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g₁ φ z) 0` using `fun z => hact _ (GlobalTheory.ThK.EvUniqInf.rest_pure g φ hφ hstd) z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F S.gram).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) = (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F S.gram)ᵀ`. Use extensionality with `i j`. Establish `h1` using `hV j i`. Rewrite `h1` using `[hVJ]`. Simplify using `only [Matrix.neg_apply, map_neg, neg_inj] at h1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA, inclR, h1]`. Establish `h2 : (⅟(2 : AF D.host.F)) = algebraMap D.host.F (AF D.host.F) (1 / 2)`. Apply `invOf_eq_right_inv` to reduce the goal to its premises. Rewrite using `[show (2 : AF D.host.F) = algebraMap D.host.F (AF D.host.F) 2 from (map_ofNat _ 2).symm, ← map_mul]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hphase : ∀ (x : WO S X) (q : Matrix (Fin S.rank) (Fin d) (AE D)), symplOH S X x (T q) = ⅟(2 : AF D.host.F) * GlobalTheory.WeilM.symp (R` using `AF D.host.F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (-1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Vs.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Ws.J) (T.symm x) q := by`. Introduce `x q`. Use `conv_lhs => rw [← T.apply_symm_apply x]`. Establish `hh` using `GlobalTheory.SquareAgree.hTens_transpose_mul (R := AF D.host.F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) e.symm (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F X.gram) (inclR (F := D.host.F) (AF D.host.F) D.host.xi0) hinc' …`. Rewrite `hh` using `[← hT, ← hT]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs` using `GlobalTheory.WeilSchrodinger.symp_eq_symplO D S X (X.gramᵀ) (D.host.xi0 • S.gram⁻¹) 1 rfl (by rw [one_smul]) (T (T.symm x)) (T q)`. Simplify using `only [symplOH, ← hs, h2, GlobalTheory.WeilM.symp, one_mul, neg_one_mul, map_neg]`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Vs.J = -GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F S.gram`. Use extensionality with `i j`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, hVJ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Ws.J = inclR (F` using `D.host.F) (AF D.host.F) D.host.xi0 • Matrix.reindex e.symm e.symm (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F X.gram)ᵀ := by`. Use extensionality with `i j`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, hJW, Matrix.reindex_apply, map_mul]`. Establish `e3 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (D.host.xi0 • S.gram⁻¹) = inclR (F` using `D.host.F) (AF D.host.F) D.host.xi0 • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F S.gram⁻¹ := by`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, map_mul]`. Establish `e4 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F X.gramᵀ = (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F X.gram)ᵀ`. Use extensionality with `i j`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]`. Rewrite using `[e4, e3, hh, e1, e2, map_neg]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ln : ℝ →+ Matrix (Fin S.rank) (Fin d) (AE D)` to `AddMonoidHom.mk' (fun t => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u₀) (fun s t => by simp only [GlobalTheory.ThetaLineDeriv.realAd_add, add_smul])`. Use `⟨T.toAddMonoidHom.comp ln, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hfun : (fun t => (T.toAddMonoidHom.comp ln) t) = fun t => (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u₀)ᵀ.submatrix e.symm id * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F S.gram`. Use function extensionality and compare the values at `fun t => hT _`. Use `show Continuous fun t => (T.toAddMonoidHom.comp ln) t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hfun]`. Conclude with `tendsto_add_smul_punctured_of_differentiableAt u₀ e _`. Introduce `t show (T (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u₀)).map (finPart D) = 0`. Rewrite using `[hT, Matrix.map_mul]`. Establish `hz : ((GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u₀)ᵀ.submatrix e.symm id).map (finPart D) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.submatrix_apply, Matrix.transpose_apply, Matrix.smul_apply, fin_realAd_smul_eq_zero, Matrix.zero_apply]`. Rewrite using `[hz, Matrix.zero_mul]`. Use function extensionality and compare the values at `x`. Establish `hfun : (fun t : ℝ => heisO Bs.ψ S X ((T.toAddMonoidHom.comp ln) t) (GlobalTheory.TripleRead.thO M Bs.ψ S.gram e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ)) x) = fun t => GlobalTheory.WeilM.thetaSum D.host.F (M.co.rho Bs.ψ (T.symm x) (M.co.rho Bs.ψ (Global …`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `t`. Use `show heisO Bs.ψ S X (T (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u₀)) _ x = _`. Simplify using `only [heisO, GlobalTheory.TripleRead.thO, hpt, map_add, T.symm_apply_apply]`. Rewrite using `[show M.co.rho Bs.ψ (T.symm x + GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u₀) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ) = fun z => Bs.ψ (-(⅟(2 : AF D.host.F) * GlobalTheory.WeilM.symp (R := AF D.host.F) (GlobalTheory.In …`. Simplify using `only [GlobalTheory.WeilM.thetaSum]`.
-
-Rewrite using `[tsum_mul_left, ← mul_assoc, ← AddChar.map_add_eq_mul, hphase, add_neg_cancel, AddChar.map_zero_eq_one, one_mul]`. Rewrite using `[hfun, (GlobalTheory.ThetaLineDeriv.hasDerivAt_thetaSum_rho M.co Bs.ψ hTR hCh u₀ _ hΦ _ hΦ' hd (T.symm x)).deriv]`. Simplify using `only [GlobalTheory.TripleRead.thO, hpt]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thO_pure_deriv {D : D7} (S X : HSp D) {d : ℕ} (e : Fin d ≃ Fin X.rank)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (hBs : Bs.IsGood D.sp.cm.sig)
@@ -230,9 +228,9 @@ theorem thO_pure_deriv {D : D7} (S X : HSp D) {d : ℕ} (e : Fin d ≃ Fin X.ran
     simp only [GlobalTheory.TripleRead.thO, hpt]
 
 /- English proof (translation)
-Introduce `_ _ D ψ θ _ _ W W₁ X A A₁ B α β _ ωA ωB _ _ e Bs Γ Xc om om' h _ _ R Rf hm f φ u f₁ _ _ hact hφ hvac`. Establish `hVJ : Γ.V.J = -(sgn true W).gram`. Rewrite using `[h.JW, one_smul]`. Use extensionality with `i j`. Simplify using `[sgn, Formalism.BasicNotions.HSpace.gram]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h.ψ]`. Conclude with `thO_pure_deriv (sgn true W) X e Bs hm.triple.base Γ.V Γ.W hVJ h.JX hm.triple.geo.hV.herm Γ.M hm.triple.geo.hM f φ u f₁ hact hφ hvac`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thO_pure_deriv_first : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

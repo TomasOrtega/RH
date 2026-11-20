@@ -31,15 +31,15 @@ def btOf (s : ℕ) (dl : ℝ) (Vec : C.LPt → H) (h : C.LPt) (z : ℂ) : H :=
   if z = 0 then 0 else ((((s : ℝ) * ‖z‖ ^ (s - 1))⁻¹ * (√dl)⁻¹ : ℝ) : ℂ) • Vec (h ++ [(s, z)])
 
 /- English proof (translation)
-Introduce `c0 hc0`. Establish `hq : ∀ c, ‖Vec (f c) - Vec (f c0)‖ ^ 2 = (k (f c) (f c) - k (f c) (f c0) - k (f c0) (f c) + k (f c0) (f c0)).re`. Introduce `c`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), inner_sub_left, inner_sub_right, inner_sub_right, hV, hV, hV, hV]`. Rewrite using `[RCLike.re_to_complex]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Complex.sub_re, Complex.add_re]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpair : ∀ g1 g2 : X → X, ContinuousWithinAt g1 U c0 → ContinuousWithinAt g2 U c0 → (∀ c ∈ U, g1 c ∈ U) → (∀ c ∈ U, g2 c ∈ U) → ContinuousWithinAt (fun c => k (f (g1 c)) (f (g2 c))) U c0`. Introduce `g1 g2 h1 h2 hu1 hu2`. Establish `hkk : ContinuousWithinAt (fun cc : X × X => k (f cc.1) (f cc.2)) (U ×ˢ U) (g1 c0, g2 c0)` using `hk _ ⟨hu1 c0 hc0, hu2 c0 hc0⟩`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `ContinuousWithinAt.comp (f := fun c => (g1 c, g2 c)) hkk (h1.prodMk h2) (fun c hc => ⟨hu1 c hc, hu2 c hc⟩)`. Establish `hc1` using `hpair id id continuousWithinAt_id continuousWithinAt_id (fun c h => h) (fun c h => h)`. Establish `hc2` using `hpair id (fun _ => c0) continuousWithinAt_id continuousWithinAt_const (fun c h => h) (fun _ _ => hc0)`. Establish `hc3` using `hpair (fun _ => c0) id continuousWithinAt_const continuousWithinAt_id (fun _ _ => hc0) (fun c h => h)`. Establish `hQ : ContinuousWithinAt (fun c => (k (f c) (f c) - k (f c) (f c0) - k (f c0) (f c) + k (f c0) (f c0)).re) U c0` using `Complex.continuous_re.continuousAt.comp_continuousWithinAt (((hc1.sub hc2).sub hc3).add continuousWithinAt_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `(Real.continuous_sqrt.tendsto _).comp hQ.tendsto`. Establish `h0 : (k (f c0) (f c0) - k (f c0) (f c0) - k (f c0) (f c0) + k (f c0) (f c0)).re = 0` using `by simp`. Rewrite `hs` using `[Function.comp_def, h0, Real.sqrt_zero]`. Rewrite using `[ContinuousWithinAt, tendsto_iff_norm_sub_tendsto_zero]`. Use `hs.congr (fun c => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hq c, Real.sqrt_sq (norm_nonneg _)]`.
+A detailed English derivation is pending.
 -/
 theorem vec_continuousOn {X : Type} [TopologicalSpace X] (k : C.LPt → C.LPt → ℂ) (Vec : C.LPt → H)
     (hV : ∀ P Q, k P Q = ⟪Vec P, Vec Q⟫_ℂ) (f : X → C.LPt) (U : Set X)
@@ -80,7 +80,7 @@ section vec2
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Rewrite using `[inner_smul_left, inner_smul_right, Complex.conj_ofReal, ← mul_assoc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_real_smul_smul (r : ℝ) (u w : H) :
     ⟪(r : ℂ) • u, (r : ℂ) • w⟫_ℂ = ((r * r : ℝ) : ℂ) * ⟪u, w⟫_ℂ := by
@@ -88,13 +88,13 @@ theorem inner_real_smul_smul (r : ℝ) (u w : H) :
   push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt hd.le, mul_inv_cancel₀ hd.ne', Complex.ofReal_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_sqrt_mul (d : ℝ) (hd : 0 < d) : (d : ℂ) * (((√d)⁻¹ * (√d)⁻¹ : ℝ) : ℂ) = 1 := by
   rw [← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt hd.le, mul_inv_cancel₀ hd.ne', Complex.ofReal_one]
 
 /- English proof (translation)
-Unfold `bz btOf`. Rewrite using `[if_neg hz, smul_smul, ← Complex.ofReal_mul, ← mul_assoc, mul_inv_cancel₀, one_mul]`. Establish `: (0 : ℝ) < ‖z‖ ^ (s - 1)` using `pow_pos (norm_pos_iff.mpr hz) _`. Establish `hs' : (0 : ℝ) < s` using `by exact_mod_cast Nat.pos_of_ne_zero hs`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem bz_btOf (s : ℕ) (hs : s ≠ 0) (dl : ℝ) (Vec : C.LPt → H) (h : C.LPt) (z : ℂ) (hz : z ≠ 0) :
     bz s (btOf s dl Vec h) z = (((√dl)⁻¹ : ℝ) : ℂ) • Vec (h ++ [(s, z)]) := by
@@ -127,48 +127,44 @@ def GermRate (S : C.HidaSetting E Wp Wq) (v : Fin S.f) : Prop :=
           mainD s (betaL S) ε' (fun z => φ z • btOf s (KB.dlB S b s) Vec h z) x D‖ ≤ C * ‖x‖⁻¹
 
 /- English proof (translation)
-The claim follows from `(measurableSet_singleton 0).compl`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_ne_zero : MeasurableSet ({0}ᶜ : Set ℂ) := (measurableSet_singleton 0).compl
 
 /- English proof (translation)
-Establish `hg : 0 < S.g` using `by unfold C.HidaSetting.g; exact Nat.mul_pos hg1 hg2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `swap`. Introduce `ε hε b s hb hs hbs a ha h h' hh hh'`. Use `hK ε hε (b + s - 1) (by omega) a ha s (by omega) h h' (by rw [hh]; omega) (by rw [hh']; omega)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ContinuousOn (fun z : ℂ => KB.gN S v ε (b + s - 1) a (h ++ [(s, z)]) (h' ++ [(s, z)])) {0}ᶜ`. Conclude with `ContinuousOn.comp (g := fun cc : ℂ × ℂ => KB.gN S v ε (b + s - 1) a (h ++ [(s, cc.1)]) (h' ++ [(s, cc.2)])) (f := fun z : ℂ => (z, z)) this (continuousOn_id.prodMk continuousOn_id) (fun z hz => ⟨hz, hz⟩)`. Introduce `ε hε b s hb hs hbs a ha Y hY`. Take `⟨w, hw⟩` from `ha`. Establish `hpsd : ∀ Y' : Finset C.LPt, TB.PSDOn Y' (KB.gN S v ε (b + s - 1) a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Introduce `Y'; rw [← hw]; exact PBB.gN_psd S hpos v ε hε (b + s - 1) (by omega) w Y'`. Take `⟨H, i1, i2, i3, Vec, hVec⟩` from `hKol C.LPt (KB.gN S v ε (b + s - 1) a) hpsd`. Set `_` to `i1`. Set `_` to `i2`. Establish `_` using `i3`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : D.AdmAt S v a` using `⟨w, hw⟩`. Use `set dl1 := KB.dlB S (b + s - 1) 1 with hdl1`. Use `set dl2 := KB.dlB S b s with hdl2`. Establish `hd1 : 0 < dl1` using `PBC.dlB_pos S hg _ _`. Establish `hd2 : 0 < dl2` using `PBC.dlB_pos S hg _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hs0 : s ≠ 0` using `by omega`. Establish `hcont : ∀ m, 1 ≤ m → ∀ P : C.LPt, D.ptSize P + m = b + s - 1 → ContinuousOn (fun c : ℂ => Vec (P ++ [(m, c)])) {0}ᶜ` using `fun m hm P hP => vec_continuousOn _ Vec hVec (fun c => P ++ [(m, c)]) {0}ᶜ (hK ε hε (b + s - 1) (by omega) a ha m hm P P hP hP)`. Establish `hsz : ∀ h ∈ Y, ∀ x : ℂ, D.ptSize (ptX s h x) + 1 = b + s - 1`. Introduce `h hh x`. Rewrite using `[ptSize_ptX, hY h hh]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Establish `hszs : ∀ h ∈ Y, D.ptSize h + s = b + s - 1` using `by intro h hh; rw [hY h hh]; omega`. Set `g : C.LPt → ℂ → H` to `fun h z => ((((s : ℝ) * ‖z‖ ^ (s - 1))⁻¹ * (√dl2)⁻¹ : ℝ) : ℂ) • Vec (h ++ [(s, z)])`. Establish `hgc : ∀ h ∈ Y, ContinuousOn (g h) {0}ᶜ`. Introduce `h hh`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ContinuousOn.smul ?_ (hcont s (by omega) h (hszs h hh))` and prove the remaining obligations. Use `Complex.continuous_ofReal.comp_continuousOn (ContinuousOn.mul ?_ continuousOn_const)` and prove the remaining obligations. Use `ContinuousOn.inv₀ (Continuous.continuousOn (by fun_prop)) fun z hz => ?_` and prove the remaining obligations. Establish `: (0 : ℝ) < ‖z‖ ^ (s - 1)` using `pow_pos (norm_pos_iff.mpr hz) _`. Establish `hs' : (0 : ℝ) < s` using `by exact_mod_cast Nat.pos_of_ne_zero hs0`.
+Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Check the signs of the components of the expression. Establish `hbt : ∀ h, btOf s dl2 Vec h = ({0}ᶜ : Set ℂ).piecewise (g h) (fun _ => 0)`. Introduce `h`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z = 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[btOf, hz]`. Simplify using `[btOf, hz, Set.piecewise, g]`. Take `⟨ε', φ, hε'1, hφ1, hφc, hRr⟩` from `hR ε hε b s hb hs hbs a ha H Vec hVec`. Establish `hbzφ : ∀ h z, z ≠ 0 → bz s (fun z => φ z • btOf s dl2 Vec h z) z = φ z • ((((√dl2)⁻¹ : ℝ) : ℂ) • Vec (h ++ [(s, z)]))`. Introduce `h z hz`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← bz_btOf s hs0 dl2 Vec h z hz]`. Unfold `bz`. Rewrite using `[smul_comm]`. Use `⟨{ H := H V := vOf dl1 Vec bt := fun h z => φ z • btOf s dl2 Vec h z β := betaL S ε' := ε' hβ := betaL_ne_zero S hg1 hg2 hε' := hε'1 hpsi := fun σ z => psi_betaL S σ z measV := ?_ fibre := ?_ meas := ?_ loc := ?_ germ := ?_ dens := ?_ }⟩` and prove the remaining obligations. Introduce `h hh x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `h1 : ContinuousOn (vOf dl1 Vec (ptX s h x)) {0}ᶜ` using `continuousOn_const.smul (hcont 1 le_rfl (ptX s h x) (hsz h hh x))`. Establish `h2` using `h1.aestronglyMeasurable (μ := volume) measurableSet_ne_zero`. Rewrite `h2` using `[Measure.restrict_eq_self_of_ae_mem (by filter_upwards [GermRealisation.ae_ne_zero] with z hz using hz)]`. Then use the resulting hypothesis. Introduce `h hh h' hh' x x' hx hx' c hc`. Unfold `vOf`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[inner_real_smul_smul, ← hVec, ← mul_assoc, inv_sqrt_mul dl1 hd1, one_mul]`. Introduce `h hh`. Use `letI : MeasurableSpace H := borel H`. Use `haveI : BorelSpace H := ⟨rfl⟩`. Establish `hbt' : (fun z => φ z • btOf s dl2 Vec h z) = ({0}ᶜ : Set ℂ).piecewise (fun z => φ z • g h z) (fun _ => 0)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[hbt h]`. Distinguish the cases in `hz : z ∈ ({0}ᶜ : Set ℂ)`. Simplify using `only [Set.piecewise_eq_of_mem _ _ _ hz]`. Simplify using `only [Set.piecewise_eq_of_notMem _ _ _ hz, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hgc' : ContinuousOn (fun z => φ z • g h z) {0}ᶜ` using `hφc.smul (hgc h hh)`. Rewrite using `[stronglyMeasurable_iff_measurable_separable, hbt']`. Use `⟨ContinuousOn.measurable_piecewise hgc' continuousOn_const measurableSet_ne_zero, ?_⟩` and prove the remaining obligations. Use `TopologicalSpace.IsSeparable.mono (s := (fun z => φ z • g h z) '' {0}ᶜ ∪ {0}) ?_ (Set.range_subset_iff.2 fun z => ?_)` and prove the remaining obligations. Conclude with `(hgc'.isSeparable_image (TopologicalSpace.IsSeparable.of_separableSpace _)).union (Set.finite_singleton (0 : H)).isSeparable`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `hz : z ∈ ({0}ᶜ : Set ℂ)`. Use `left`. Rewrite using `[Set.piecewise_eq_of_mem _ _ _ hz]`. Conclude with `⟨z, hz, rfl⟩`. Use `right`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Set.piecewise_eq_of_notMem _ _ _ hz]`. Both sides reduce to the same expression. Introduce `h hh K hKc hK0`. Establish `hsub : K ⊆ {0}ᶜ` using `fun z hz hz0 => hK0 (by rw [Set.mem_singleton_iff.1 hz0] at hz; exact hz)`. Establish `hc : ContinuousOn (fun z => ‖(((√dl2)⁻¹ : ℝ) : ℂ) • Vec (h ++ [(s, z)])‖ ^ 2) K` using `((continuousOn_const.smul (hcont s (by omega) h (hszs h hh))).norm.pow 2).mono hsub`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hc.congr fun z hz => ?_).integrableOn_compact hKc` and prove the remaining obligations. Rewrite using `[hbzφ h z (fun h0 => hK0 (h0 ▸ hz)), norm_smul, hφ1, one_mul]`. Introduce `h hh K hKc hK0`. Take `⟨C, hC⟩` from `hRr h (hY h hh) K hKc hK0`. Conclude with `⟨C, fun x hx => Eventually.of_forall fun D hD => hC x hx D hD⟩`.
-
-Introduce `h hh h' hh' z hz`. Unfold `gDens`. Establish `hφφ : (starRingEnd ℂ) (φ z) * φ z = 1`. Rewrite using `[← Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_norm_sq, hφ1]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hbzφ h z hz, hbzφ h' z hz, inner_smul_left, inner_smul_right, ← mul_assoc ((starRingEnd ℂ) (φ z)), hφφ, one_mul, inner_real_smul_smul, ← hVec, ← mul_assoc, inv_sqrt_mul dl2 hd2, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibres_of (hKol : GramRealiseAll) (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (hg1 : 0 < S.G.g1)
     (hg2 : 0 < S.G.g2) (hpos : C.ThmPPos S) (hK : KerCont S v) (hR : GermRate S v) :
@@ -290,9 +286,9 @@ end loc
 section hermitianSpaces
 
 /- English proof (translation)
-Take `⟨c1, h1⟩` from `limit_of_module_forms Cb`. Use `⟨c1, fun Cc le1 E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB n v ε hε => ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, hcut, -, -, -, -, -, -, -, -, -, -, hA, hv⟩` from `hB`. Take `⟨hl0, hInD, -, hCk, hCC⟩` from `hv v`. Use `(h1 (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (p v) (f v) χ ε A₀ S.Ntop PBASM.cutN (by rw [hl0]; exact hInD) hcut hε hCk hCC (le_trans ?_ hA) (fun n g => rfl)).1 n` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right le1 (by positivity)) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem cutSeq_cpt (Cb : ℝ) : ∃ c1 : ℝ, ∀ (Cc : ℝ), c1 ≤ Cc → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (Wp Wq : InfinitePlace E → Type)
@@ -332,11 +328,11 @@ def GermRateB : Prop :=
 end hermitianSpaces
 
 /- English proof (translation)
-Introduce `hA Cb`. Establish `hKol : GramRealiseAll` using `fun α K hK => kolmogorov K hK`. Take `⟨c1, h1⟩` from `cutSeq_cpt Cb`. Take `⟨c5, h5⟩` from `positivity_bound hA Cb`. Take `⟨c2, h2⟩` from `hK Cb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c3, h3⟩` from `hR hA Cb`. Use `⟨max (max c1 c5) (max c2 c3), ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB n v`. Establish `le1 : c1 ≤ max (max c1 c5) (max c2 c3)` using `le_max_of_le_left (le_max_left _ _)`. Establish `le5 : c5 ≤ max (max c1 c5) (max c2 c3)` using `le_max_of_le_left (le_max_right _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `le2 : c2 ≤ max (max c1 c5) (max c2 c3)` using `le_max_of_le_right (le_max_left _ _)`. Establish `le3 : c3 ≤ max (max c1 c5) (max c2 c3)` using `le_max_of_le_right (le_max_right _ _)`. Establish `hcpt` using `h1 _ le1 E Wp Wq S p f χ A₀ hB n`. Establish `hpos` using `h5 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place le5 hB) _ (fun v ε hε => hcpt v ε hε)`. Conclude with `fibres_of hKol _ v hB.1 hB.2.1 hpos (h2 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place le2 hB) n v) (h3 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place le3 hB) n v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem germPartsC_of (hK : KerContB) (hR : GermRateB) : P5.ThmPActualCpt → PBASM.GermPartsC := by
   intro hA Cb
@@ -361,7 +357,7 @@ end
 end Formalism.FourierDecayAlt.P.GermFibreKernels
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.GermFibreKernels.germPartsC_of`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.germ_parts_compact_support :
     Formalism.FourierDecayAlt.P.GermFibreKernels.KerContB → Formalism.FourierDecayAlt.P.GermFibreKernels.GermRateB → Formalism.FourierDecayAlt.P5.ThmPActualCpt → Formalism.FourierDecayAlt.P.PBASM.GermPartsC :=

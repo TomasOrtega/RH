@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.WeightTraceProducts.WeightDeterminantTwists.HqKappa
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.Z.Sym.Wt.wtMain_of UpperTheory.V.Z.Sym.Wt.finMH UpperTheory.V.Z.Sym.Wt.thFacts UpperTheory.V.Z.Sym.Wt.twineC UpperTheory.V.Z.Sym.Wt.trDC UpperTheory.V.Z.Sym.Wt.scalars UpperTheory.V.Z.Sym.Wt.hqKappa`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Wt.wtMain : UpperTheory.V.Z.Sym.Wt.WtMain :=
   UpperTheory.V.Z.Sym.Wt.wtMain_of UpperTheory.V.Z.Sym.Wt.finMH UpperTheory.V.Z.Sym.Wt.thFacts UpperTheory.V.Z.Sym.Wt.twineC UpperTheory.V.Z.Sym.Wt.trDC

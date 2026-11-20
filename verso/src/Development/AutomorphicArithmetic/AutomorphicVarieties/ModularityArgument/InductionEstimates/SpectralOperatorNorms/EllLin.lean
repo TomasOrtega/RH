@@ -10,11 +10,9 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg.Tf.IntegralApplyAeEq UpperTheory.V.Z.IntegralApplyAeEq UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Establish `hinv : ∀ γ ∈ Gam K n, ∀ y, φ (γ * y) = φ y` using `fun γ hγ => by`. Establish `h1 : (fun y => φ (γ * y)) =ᵐ[μ] φ` using `by filter_upwards [hr, (measurePreserving_mul_left μ γ).quasiMeasurePreserving.ae hr] with y a b`. Rewrite using `[← a, ← b]`. Use `congr 1`. Conclude with `Quotient.sound ⟨⟨γ, hγ⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `congrFun (((hc.comp (continuous_const_mul γ)).ae_eq_iff_eq μ hc).1 h1)`. Establish `h2` using `IsContRep.ae_eq_quotFun (μ := μ) (φ := v) (F := φ) ⟨hc, hinv, hr⟩`. Establish `h3 : (fun m : RightCosetSpace (Gam K n) => φ (Quotient.out m)) = quotFun φ hinv`. Use function extensionality and compare the values at `m`. Use `conv_rhs => rw [← Quotient.out_eq m]`.
-
-Both sides reduce to the same expression. Rewrite using `[h3]`. Conclude with `(Lp.memLp v).ae_eq h2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem memLp_out {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Measure (G1 K n)} [μ.IsHaarMeasure]
     {v : L2 μ} {φ : G1 K n → ℂ} (hc : Continuous φ) (hr : Reps μ v φ) :
@@ -35,7 +33,7 @@ private theorem memLp_out {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : M
   exact (Lp.memLp v).ae_eq h2
 
 /- English proof (translation)
-Take `⟨w, -, hw⟩` from `hb.mem`. Establish `hf : Continuous b.f.1` using `((BW.umgOps E 2).2 b.f (BW.cuspUmg E 2 b.f b.cusp).1).1`. Conclude with `(memLp_out hc hr).integrable_mul (memLp_out (hf.comp continuous_subtype_val) hw).star`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem int_pair {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {S : Set (Pl E)} (b : BW.Blo S 2)
     {τ : Submodule ℂ (L2 (BW.mu1 E 2))} {m B} (hb : BloIn b τ m B) {v : L2 (BW.mu1 E 2)} {φ : G1 E 2 → ℂ} (hc : Continuous φ)
@@ -47,24 +45,22 @@ private theorem int_pair {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
   exact (memLp_out hc hr).integrable_mul (memLp_out (hf.comp continuous_subtype_val) hw).star
 
 /- English proof (translation)
-Establish `: (⟨Real.exp 0, Real.exp_pos 0⟩ : {r : ℝ // 0 < r}) = 1` using `Subtype.ext Real.exp_zero`. Rewrite using `[UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.zt, this, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem zt_zero (K : Type) [Field K] [NumberField K] : UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.zt K 0 = 1 := by
   have : (⟨Real.exp 0, Real.exp_pos 0⟩ : {r : ℝ // 0 < r}) = 1 := Subtype.ext Real.exp_zero
   rw [UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.zt, this, map_one]
 
 /- English proof (translation)
-Use `set Q := quotientMeasure (Gam E 2) (BW.mu1 E 2)`. Set `F : Eu 𝔵.d' → RightCosetSpace (Gam E 2) → RightCosetSpace (Gam E 2) → ℂ` to `fun v m₁ m₂ => 𝔵.A'.sec v (lv (Quotient.out m₁) (Quotient.out m₂) 0 * k) * starRingEnd ℂ (b.f.1 ((Quotient.out m₁ : G1 E 2) : GlobalTheory.CuspRep.GA E 2)) * starRingEnd ℂ (b'.f.1 ((Quotient.out m₂ : G1 E 2) : GlobalTheory.CuspRep.GA E 2))`. Establish `key : ∀ v, (∀ m₁, Integrable (F v m₁) Q) ∧ Integrable (fun m₁ => ∫ m₂, F v m₁ m₂ ∂Q) Q` using `fun v => by`. Take `⟨d, φ, ψ, hφ, hψ, h⟩` from `(((𝔵.A'.onto _).1 ⟨v, rfl⟩).1).levi k`. Establish `e : ∀ m₁ m₂, F v m₁ m₂ = ∑ i, (φ i (Quotient.out m₁) * starRingEnd ℂ (b.f.1 ((Quotient.out m₁ : G1 E 2) : GlobalTheory.CuspRep.GA E 2))) * (ψ i (Quotient.out m₂) * starRingEnd ℂ (b'.f.1 ((Quotient.out m₂ : G1 E 2) : GlobalTheory.CuspRep.GA E 2)))` using `fun m₁ m₂ => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [F]`. Rewrite using `[h (Quotient.out m₁) (Quotient.out m₂) _ (by`. Rewrite using `[Subgroup.coe_mul, blkLaws.1, neg_zero, zt_zero, mul_one, mul_one]), Finset.sum_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `i₁` using `fun i => int_pair b hb (hφ i).1 (hφ i).2.choose_spec.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `i₂` using `fun i => int_pair b' hb' (hψ i).1 (hψ i).2.choose_spec.2`. Use `⟨fun m₁ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[funext (e m₁)]`. Conclude with `integrable_finset_sum _ fun i _ => (i₂ i).const_mul _`. Simplify using `only [e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `: ∀ m₁ : RightCosetSpace (Gam E 2), _` using `fun m₁ => integral_finset_sum (μ := Q) Finset.univ fun i _ => (i₂ i).const_mul (φ i (Quotient.out m₁) * starRingEnd ℂ (b.f.1 ((Quotient.out m₁ : G1 E 2) : GlobalTheory.CuspRep.GA E 2)))`. Simplify using `only [this, integral_const_mul]`. Conclude with `integrable_finset_sum _ fun i _ => (i₁ i).mul_const _`. Set `l : Eu 𝔵.d' →ₗ[ℂ] ℂ` to `{ toFun := fun v => ∫ m₁, ∫ m₂, F v m₁ m₂ ∂Q ∂Q map_add' := fun v w => by`. Rewrite using `[← integral_add (key v).2 (key w).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Eventually.of_forall fun m₁ => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← integral_add ((key v).1 m₁) ((key w).1 m₁)]`. Use `integral_congr_ae (Eventually.of_forall fun m₂ => ?_)` and prove the remaining obligations. Simplify using `only [F, map_add, Pi.add_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun c v => by`. Simplify using `only [F, map_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, mul_assoc, integral_const_mul c] }`. Conclude with `⟨LinearMap.toContinuousLinearMap l, fun v => rfl⟩`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.ellLin {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {μ : Measure (normOneGL E (2 + 2))}
     [μ.IsHaarMeasure] {θ : Twist μ} {𝔢 : Side θ 2} (𝔵 : Fam 𝔢) (b b' : BW.Blo 𝔢.S 2) (hb : BloIn b 𝔵.τ₂ 𝔵.m₂ 𝔵.B₂)

@@ -28,19 +28,17 @@ open GlobalTheory.UU
 namespace GlobalTheory.UU.FESection
 
 /- English proof (translation)
-Introduce `hL hL2 V _ _ _ hV D A G _ _ U hB k hk hF1 hFk ⟨β₁, hβ₁⟩ ⟨β₀, hβ₀⟩ α`. Establish `hG` using `hL.globalFns`. Take `⟨σ, f, sf, hσ, hpf, hfef, -, hf0⟩` from `IntWit.integral_witness V hV D A G U (Kbar V) k β₀ hFk hβ₀`. Take `⟨ϑ, g, sg, hϑ, hpg, hfeg, ⟨j₁, hs1⟩, -⟩` from `IntWit.integral_witness V hV D A G U (Kbar V) 1 β₁ hF1 hβ₁`. Establish `hg0 : ∃ j, (g (α - β₀)).f j ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Establish `h1 : ∀ j, (sg (α - β₀)).f j = 0` using `fun j => sec_ext_val (s' := DVR.SecOps.secZero) D.P.isLB (fun y J hJ => by`. Rewrite using `[hpg _ y J hJ, DVR.UUA.sval_zero_of hn _ y J (hJ.mem _ _), DVR.UUA.sval_zero_of (s := DVR.SecOps.secZero) (fun _ => rfl) _ y J (hJ.mem _ _)]) j`. Conclude with `hs1 (FamFree.zero_of_eq_add_nsmul hG (⟨sg, hfeg⟩ : Fam D (Kbar V) 1) ⟨β₁ - (α - β₀), by rw [one_smul, add_sub_cancel]⟩ h1 j₁)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W, _, _, _, φ, a, hW, hφ, hnv⟩` from `GlobalTheory.UU.exists_twist_conv_ne_zero V hV D k f g α β₀ (GlobalTheory.NullExp.main V _ D A G U _ k σ f hσ) hf0 hg0`. Take `⟨σ', f', hσ', hff, hpf'⟩` from `expT_pull V _ D A G U _ (TA V W) (toUnit _) k σ f hσ`. Take `⟨ϑ', g', hϑ', hgg, hpg'⟩` from `expT_pull V _ D A G U _ (TA V W) (toUnit _) 1 ϑ g hϑ`. Establish `hu : φ ≫ toUnit _ = toUnit _` using `toUnit_unique _ _`. Take `⟨x, hx⟩` from `TorPtEx.main V hV D A G U W hW a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ'', hprod⟩` from `GlobalTheory.UU.prodExp_opposite_translates hG V hV D A G U W hW a x hx k σ' ϑ' f' g' hσ' hϑ'`. Take `⟨h, hh, hext⟩` from `GlobalTheory.UU.ExpExt.main hL hL2 V hV D A G U W hW (k + 1) (by omega) σ''`. Establish `hconv` using `GlobalTheory.ConvOfProd.main V _ D A G U _ k 1 _ _ h σ'' hprod hh`. Take `⟨ht, hs⟩` from `PullSec.pullEx V hV D A G U (Kbar V) (TA V W) φ (k + 1)`. Take `⟨t, ht, -⟩` from `ht σ''`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, -⟩` from `hs h`. Use `⟨t, s, hext _ φ t s ht hs, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.ConvFE.conv_famFE hG V hV D hB W hW (Kbar V) φ hφ k 1 f' g' h sf sg s a (a ^ k)⁻¹ (fun mu => ?_) ((hpf' _ φ sf).2 (hu ▸ hpf)) ((hpg' _ φ sg).2 (hu ▸ hpg)) hs hfef hfeg hconv` and prove the remaining obligations. Rewrite using `[one_smul, ofAdd_nsmul, map_pow, MonoidHom.inv_apply, MonoidHom.pow_apply, mul_inv_cancel]`. Take `⟨j, hj⟩` from `hnv f' g' h hff hgg hconv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Use `haveI := D.P.isAb.smooth`. Use `haveI : Flat D.P.A.hom := inferInstance`. Use `haveI : IsAffine (TA V W).left := inferInstanceAs (IsAffine (Spec _))`.
-
-Use `haveI : IsAffine (TF (R := V) (Kbar V)).left := inferInstanceAs (IsAffine (Spec _))`. Use `hj (sec_eq_zero_of_sval_whiskerRight_eq_zero _ D.P.A _ _ φ hφ _ D.P.L D.P.isLB _ _ _ (h α) (fun z J hJ => ?_) j)` and prove the remaining obligations. Conclude with `(hs α z J hJ).symm.trans (DVR.UUA.sval_zero_of hn _ z J (hJ.mem _ _))`.
+A detailed English derivation is pending.
 -/
 theorem main : Laws → Laws2 → AllPre fun {V} _ _ _ {D} {_} {_} _ _ U => D.TauBimult → ∀ k : ℕ, 1 ≤ k → U.FE (Kbar V) 1 → U.FE (Kbar V) k → (∃ β, U.Supp (Kbar V) 1 β) → (∃ β, U.Supp (Kbar V) k β) → ∀ α, ∃ t s, U.ExpF (Kbar V) (k + 1) t s ∧ DegPre.FamFE D (Kbar V) (k + 1) s ∧ ∃ j, (s α).f j ≠ 0 := by
   intro hL hL2 V _ _ _ hV D A G _ _ U hB k hk hF1 hFk ⟨β₁, hβ₁⟩ ⟨β₀, hβ₀⟩ α

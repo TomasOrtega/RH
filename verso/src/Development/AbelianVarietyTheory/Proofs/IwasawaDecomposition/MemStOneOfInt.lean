@@ -19,7 +19,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 end
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[castGL]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem castGL_rfl {R : Type} [CommRing R] {m : ℕ} (x : GL (Fin m) R) : castGL (rfl : m = m) x = x := by
   ext i j
@@ -31,11 +31,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 end
 
 /- English proof (translation)
-Establish `hX` using `(GlobalTheory.Mem.Col2.base_fields_primes_ok X.B px).1`. Establish `hPr` using `(GlobalTheory.Mem.Col2.base_fields_primes_ok X.B px).2.1`. Introduce `P1 h1 P2 h2 h12`. Use `GlobalTheory.LevMuDet.conjP_notMem_rowSG t.1 hX hPr hI.sel_ok hI.g_mem h1` as an intermediate fact. Apply `this` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e : Formalism.L2.Col.conjPrime₂ P1 = P2`. Apply `IsDedekindDomain.HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `r`. Rewrite using `[Formalism.L2.Col.mem_conjP]`. Use `h12 _ r ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (r : X.toD7.host.E) = star (star (r : X.toD7.host.E))`. Rewrite using `[star_star]`. Substitute `e` using the available equality. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isSplitSet_sgL (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (U : Set I.ι) (hI : I.Ok) (t : TupU I U) :
     Formalism.L2.DIV.IsSplitSet (sgL X I U t) := by

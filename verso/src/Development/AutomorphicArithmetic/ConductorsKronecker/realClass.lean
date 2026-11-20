@@ -5,11 +5,11 @@ import Development.AutomorphicArithmetic.MeanSquareBounds.realCond
 open UpperTheory.Comparison₂ Deduction.CH Formalism Formalism.HC Formalism.D5 Formalism.LFunctionChainParameters.characterSumData Formalism.LFunctionChainParameters.ThickSetMeanBounds Formalism.LFunctionChainParameters.LHost NumberField Ideal
 
 /- English proof (translation)
-Apply `MulChar.ext` to reduce the goal to its premises. Introduce `u`. Rewrite using `[MulChar.pow_apply' χ two_ne_zero, MulChar.one_apply u.isUnit]`. Establish `hn : ‖χ (u : ZMod N)‖ = 1` using `DirichletCharacter.unit_norm_eq_one χ u`. Establish `him : (χ (u : ZMod N)).im = 0` using `hreal _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set z := χ (u : ZMod N) with hz`. Apply the tactic sequence `have h1 : z = (z.re : ℂ) := by apply Complex.ext <;> simp [him]`. Establish `h2 : z.re ^ 2 = 1`. Use `Complex.sq_norm z` as an intermediate fact. Rewrite `this` using `[hn, Complex.normSq_apply, him]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[h1]`. Conclude with `h2` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem realClass_sq {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     (hreal : ∀ a : ZMod N, (χ a).im = 0) : χ ^ 2 = 1 := by
@@ -27,7 +27,7 @@ private theorem realClass_sq {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
   rw [h1]; exact_mod_cast h2
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `h`. Establish `e` using `(H.isPrimOf_iff θ ⟨N, χ, hθ.1⟩).1 hθ`. Establish `e2 : N = (H.dir θ).conductor` using `congrArg Formalism.HC.PChar.N e`. Rewrite using `[e2]`. Conclude with `DirichletCharacter.conductor_dvd_level _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem realClass_level_dvd {φ : Frame} (H : HostRaw φ) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     (h : H.IsCharE χ) : N ∣ H.condN := by
@@ -38,17 +38,15 @@ private theorem realClass_level_dvd {φ : Frame} (H : HostRaw φ) {N : ℕ} [NeZ
   exact DirichletCharacter.conductor_dvd_level _
 
 /- English proof (translation)
-Introduce `φ H N _ χ hχ`. Establish `hdvd` using `realClass_level_dvd H χ hχ`. Use `⟨hdvd, fun hreal => ?_⟩` and prove the remaining obligations. Establish `hp : χ.IsPrimitive`. Take `⟨θ, hθ⟩` from `hχ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hθ.1`. Establish `h2` using `realClass_sq χ hreal`. Distinguish the cases in `hqd : H.q ∣ N ∨ H.d ∣ N`. Conclude with `Or.inr hqd`. Use `left`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : H.q.Prime` using `H.hyp.1`. Establish `hd : H.d.Prime` using `H.hyp.2.1`. Rewrite `hqd` using `[not_or]`. Establish `hN : N ∣ 8 * ordCompl[2] H.QS * H.q * H.d`. Use `QH.real_cond _ H.q H.d N χ hp h2 (dvd_mul_right _ _) hq hd fun p hpp hpN => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h3 : p ∣ H.QS * H.q * H.d` using `hpN.trans hdvd`. Break down `hpp.dvd_mul.1 h3 with h4 | h4` into its components or cases. Break down `hpp.dvd_mul.1 h4 with h5 | h5` into its components or cases. Use `left`. Rewrite `h5` using `[← Nat.ordProj_mul_ordCompl_eq_self H.QS 2]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the second alternative.
 
-Break down `hpp.dvd_mul.1 h5 with h6 | h6` into its components or cases. Conclude with `((hpp.dvd_of_dvd_pow h6).trans (by norm_num)).mul_right _`. Conclude with `h6.mul_left _`. Conclude with `Or.inr (Or.inl ((Nat.prime_dvd_prime_iff_eq hpp hq).1 h5))`. Conclude with `Or.inr (Or.inr ((Nat.prime_dvd_prime_iff_eq hpp hd).1 h4))`.
-
-Establish `cq : N.Coprime H.q` using `((Nat.Prime.coprime_iff_not_dvd hq).2 hqd.1).symm`. Establish `cd : N.Coprime H.d` using `((Nat.Prime.coprime_iff_not_dvd hd).2 hqd.2).symm`. Conclude with `cq.dvd_of_dvd_mul_right (cd.dvd_of_dvd_mul_right hN)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.GL.realClass :
     ∀ {φ : Frame} (H : HostRaw φ) (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), H.IsCharE χ →

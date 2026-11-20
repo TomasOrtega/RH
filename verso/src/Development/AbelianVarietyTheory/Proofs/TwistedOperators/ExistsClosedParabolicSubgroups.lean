@@ -23,11 +23,11 @@ open GlobalTheory.FibreAtTau
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hm : Measurable ι` using `hι.continuous.measurable`. Establish `hc : IsClosed ((N.map ι : Subgroup G) : Set G)` using `hι.isClosedMap _ hN`. Take `⟨h0, hK, hc0, hinv⟩` from `hν`. Use `⟨?_, ⟨fun K hK' => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Measure.map_eq_zero_iff hm.aemeasurable]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Measure.map_apply hm hK'.isClosed.measurableSet]`. Conclude with `(hι.isCompact_preimage hK').measure_lt_top`. Rewrite using `[Measure.map_apply hm hc.measurableSet.compl]`. Use `measure_mono_null (fun z hz hzN => hz ⟨z, hzN, rfl⟩) hc0` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hmN, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_map (measurable_const_mul _) hm]`. Establish `: ((fun x => ι m * x) ∘ ι) = ι ∘ (fun x => m * x)`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[this, ← Measure.map_map hm (measurable_const_mul _), hinv m hmN]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHaarSub_map_closedEmb {H G : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [MeasurableSpace H] [BorelSpace H] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
@@ -50,14 +50,14 @@ theorem isHaarSub_map_closedEmb {H G : Type} [Group H] [TopologicalSpace H] [IsT
     rw [this, ← Measure.map_map hm (measurable_const_mul _), hinv m hmN]
 
 /- English proof (translation)
-Use `⟨NeZero.ne ν, inferInstance, by simp, fun m _ => MeasureTheory.map_mul_left_eq_self ν m⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isHaarSub_top {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [MeasurableSpace H]
     [BorelSpace H] (ν : Measure H) [ν.IsHaarMeasure] : GlobalTheory.Dec.IsHaarSub ((⊤ : Subgroup H) : Set H) ν := by
   refine ⟨NeZero.ne ν, inferInstance, by simp, fun m _ => MeasureTheory.map_mul_left_eq_self ν m⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isClosed_unipotentRadical_atRealPlace_trivialAtPlace D θ hθ V r C τ`.
+A detailed English derivation is pending.
 -/
 theorem L_closed (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E)
     (τ : D.what₂.Tau) :
@@ -65,7 +65,7 @@ theorem L_closed (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) {r : ℕ} (C : 
   GlobalTheory.T.isClosed_unipotentRadical_atRealPlace_trivialAtPlace D θ hθ V r C τ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.unipotentRadical_atRealPlace_commute_inf_trivial D θ hθ V r C τ`.
+A detailed English derivation is pending.
 -/
 theorem L_comm (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E)
     (τ : D.what₂.Tau) :
@@ -73,14 +73,14 @@ theorem L_comm (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) {r : ℕ} (C : Ma
   GlobalTheory.T.unipotentRadical_atRealPlace_commute_inf_trivial D θ hθ V r C τ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.unipotentRadical_eq_atRealPlace_mul_trivialAtPlace D θ hθ V r C hC τ h`.
+A detailed English derivation is pending.
 -/
 theorem L_decomp (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E)
     (hC : IsIsoFrame V C) (τ : D.what₂.Tau) (h : NI V C) : ∃ p ∈ atP θ V C τ, ∃ q ∈ offP θ V C τ, h = p * q :=
   GlobalTheory.T.unipotentRadical_eq_atRealPlace_mul_trivialAtPlace D θ hθ V r C hC τ h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.levelIndicatorTestFunction_factor_atRealPlace D θ hθ V S M K v a τ r C q hq x y`.
+A detailed English derivation is pending.
 -/
 theorem L_factor (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S)
     (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (v a : ∀ τ, M.H τ) (τ : D.what₂.Tau) {r : ℕ}
@@ -90,7 +90,7 @@ theorem L_factor (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (S : D.what₂.
   GlobalTheory.T.levelIndicatorTestFunction_factor_atRealPlace D θ hθ V S M K v a τ r C q hq x y
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_realComponent_frame_hom_unitaryDiag D θ hθ V S M τ`.
+A detailed English derivation is pending.
 -/
 theorem L_hom (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S)
     (τ : D.what₂.Tau) : ∃ E : GA D V →* Formalism.REAL.UJ (M.ε τ),
@@ -98,7 +98,7 @@ theorem L_hom (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (S : D.what₂.Tau
   GlobalTheory.T.exists_realComponent_frame_hom_unitaryDiag D θ hθ V S M τ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isClosedEmbedding_realComponent_unipotentRadical D θ hθ V S M τ r C hC E hE`.
+A detailed English derivation is pending.
 -/
 theorem L_emb (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S)
     (τ : D.what₂.Tau) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E) (hC : IsIsoFrame V C)
@@ -109,19 +109,17 @@ theorem L_emb (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (S : D.what₂.Tau
   GlobalTheory.T.isClosedEmbedding_realComponent_unipotentRadical D θ hθ V S M τ r C hC E hE
 
 /- English proof (translation)
-Introduce `hP D θ hθ V S M K v a hv ha τ r C hC`. Use `⟨atP θ V C τ, offP θ V C τ, (L_closed θ hθ V C τ).1, (L_closed θ hθ V C τ).2, (L_comm θ hθ V C τ).1, L_decomp θ hθ V C hC τ, (L_comm θ hθ V C τ).2, ?_⟩` and prove the remaining obligations. Introduce `ν hν q hq x y`. Use `haveI : BorelSpace (GA D V) := ⟨rfl⟩`. Use `haveI : BorelSpace (Formalism.REAL.UJ (M.ε τ)) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨E, hE⟩` from `L_hom θ hθ V S M τ`. Take `⟨W, hW, hemb, hrange⟩` from `L_emb θ hθ V S M τ C hC E hE`. Take `⟨R, hR⟩` from `L_factor θ hθ V S M K v a τ C q hq x y`. Set `ι : atP θ V C τ →* Formalism.REAL.UJ (M.ε τ)` to `E.comp ((NI V C).subtype.comp (atP θ V C τ).subtype)`. Establish `hι : Topology.IsClosedEmbedding ι` using `hemb`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap` using `isHaarSub_map_closedEmb ι hι ⊤ isClosed_univ ν (isHaarSub_top ν)`. Establish `hr : (((⊤ : Subgroup (atP θ V C τ)).map ι : Subgroup _) : Set _) = GlobalTheory.Dec.NW (M.ε τ) W`. Rewrite using `[← MonoidHom.range_eq_map, MonoidHom.coe_range]`. Conclude with `hrange`. Rewrite `hmap` using `[hr]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hsq : GlobalTheory.Dec.IsSqIntIrr (M.ε τ) (M.σ τ)`. Establish `hDS` using `M.ds τ`. Conclude with `⟨hDS.1, hDS.2.1, hDS.2.2.1, hDS.2.2.2.1, hDS.2.2.2.2.1⟩`. Establish `h0` using `((GlobalTheory.Published.discreteSeriesCoefficientsCuspidal_iff.1 hP) V.rank (M.ε τ) (M.H τ) (M.σ τ) hsq (a τ) (v τ) (ha τ) (hv τ) W hW (ν.map ι) hmap (E x) (E y)).2`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ p : atP θ V C τ, coef θ M K v a (x * (((p : NI V C) * q : NI V C) : GA D V) * y) = ⟪v τ, M.σ τ (Formalism.MainNotions.S.umat (E x * ι p * E y)) (a τ)⟫_ℂ * R`. Introduce `p`. Rewrite using `[hR p p.2]`. Use `congr 2`. Use `show M.σ τ (M.fr τ * _ * (M.fr τ)⁻¹) (a τ) = M.σ τ _ (a τ)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Express the relevant statement in the definitionally equal form `M.fr τ * _ * (M.fr τ)⁻¹ = Formalism.MainNotions.S.umat (E x) * Formalism.MainNotions.S.umat (E ((p : NI V C) : GA D V)) * Formalism.MainNotions.S.umat (E y)`. Rewrite using `[hE, hE, hE]`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hd]`. Repeatedly rewrite using `[key]`.
-
-Establish `hint` using `hι.measurableEmbedding.integral_map (μ := ν) (fun m => ⟪v τ, M.σ τ (Formalism.MainNotions.S.umat (E x * m * E y)) (a τ)⟫_ℂ)`. Rewrite using `[integral_mul_const, ← hint, h0, zero_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_integral_eq_zero : GlobalTheory.Published.DiscreteSeriesCoefficientsCuspidal → ∀ (D : D7) (θ : InfFam D), IsInfFam θ →
     ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D)))

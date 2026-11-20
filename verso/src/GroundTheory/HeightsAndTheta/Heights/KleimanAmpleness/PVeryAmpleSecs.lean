@@ -16,15 +16,13 @@ namespace VeryAmpleSecs
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hs j hj`. Establish `hsj` using `(Submodule.mem_iInf _).mp hs (singleChart hj)`. Take `⟨b, hb⟩` from `Submodule.mem_span_singleton.mp (pow_twistSys_one_le n (singleChart hj) (Finset.mem_singleton_self j) hsj)`. Rewrite `hb` using `[chartRing_smul_def]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hb, mul_div_cancel_right₀ _ (pow_ne_zero n hj)]`. Conclude with `mem_ampleBase_of_mem_chartRing hj b.2`. Introduce `H`. Rewrite using `[SubSystem.secs, Submodule.mem_iInf]`. Introduce `I`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `I.2.1`. Establish `hhi : h i ≠ 0` using `(mem_support h).mp (I.2.2 hi)`. Establish `hbase : ampleBase (S` using `k) h i ≤ chartRing k h (singleChart hhi) := by`. Rewrite using `[ampleBase, Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨l, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(ratio (S := k) hhi l).2`. Establish `hmem : s / h i ^ n ∈ chartRing k h I` using `chartRing_mono (Finset.singleton_subset_iff.mpr hi) (hbase (H i hhi))`. Rewrite using `[Submodule.restrictScalars_mem, SubSystem.pow_sub]`. Establish `hs : s = (⟨s / h i ^ n, hmem⟩ : chartRing k h I) • h i ^ n`. Rewrite using `[chartRing_smul_def, div_mul_cancel₀ _ (pow_ne_zero n hhi)]`.
-
-Rewrite using `[hs]`. Conclude with `Submodule.smul_mem _ _ (Submodule.pow_mem_pow _ (mem_twistMod_one I i) n)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_secs_pow_twistSys_one_iff {r : ℕ} (h : Fin (r + 1) → Ω) (n : ℕ) (s : Ω) :
     s ∈ ((twistSys k h 1).pow n).secs ↔ ∀ j, h j ≠ 0 → s / h j ^ n ∈ ampleBase (S := k) h j := by
@@ -54,15 +52,15 @@ theorem mem_secs_pow_twistSys_one_iff {r : ℕ} (h : Fin (r + 1) → Ω) (n : �
     exact Submodule.smul_mem _ _ (Submodule.pow_mem_pow _ (mem_twistMod_one I i) n)
 
 /- English proof (translation)
-Use `set C : Ideal A := (L ^ n).colon {s}`. Establish `key : ∀ j, ∀ q ∈ Q, ∀ a : A, algebraMap A Ω a = h j * q → a ∈ C.radical`. Introduce `j q hq a ha`. Take `⟨e, he⟩` from `hs j`. Use `⟨e, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_colon_singleton, Algebra.smul_def, map_pow, ha]`. Establish `hm` using `Submodule.mul_mem_mul (Submodule.pow_mem_pow Q hq e) he`. Establish `hQL : Q ^ e * L ^ (n + e) = L ^ n`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hm` using `[hQL]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hm using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (1 : Submodule A Ω) ≤ Submodule.map (Algebra.linearMap A Ω) (C.radical : Submodule A A)`. Rewrite using `[← hLQ, ← hL, ← Submodule.span_eq Q, Submodule.span_mul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, q, hq, rfl⟩`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hjq : h j * q ∈ L * Q` using `Submodule.mul_mem_mul (hL ▸ Submodule.subset_span ⟨j, rfl⟩) hq`. Rewrite `hjq` using `[hLQ, Submodule.mem_one]`. Take `⟨a, ha⟩` from `hjq`. Conclude with `⟨a, key j q hq a ha, ha⟩`. Take `⟨a, ⟨m, hm⟩, ha1⟩` from `h1 (Submodule.mem_one.mpr ⟨1, map_one _⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha1' : algebraMap A Ω a = 1` using `ha1`. Rewrite `hm` using `[Submodule.mem_colon_singleton, Algebra.smul_def, map_pow, ha1', one_pow, one_mul]`. Conclude with `hm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_pow_of_pow_mul_mem {A : Type*} [CommRing A] [Algebra A Ω] {L Q : Submodule A Ω}
     (hLQ : L * Q = 1) {r : ℕ} {h : Fin (r + 1) → Ω} (hL : Submodule.span A (Set.range h) = L)
@@ -93,15 +91,15 @@ theorem mem_pow_of_pow_mul_mem {A : Type*} [CommRing A] [Algebra A Ω] {L Q : Su
   exact hm
 
 /- English proof (translation)
-Proceed by induction on `ht using Algebra.adjoin_induction with`. Consider the case `mem t ht`. Take `⟨l, rfl⟩` from `ht`. Conclude with `⟨1, by rw [pow_one, pow_one, mul_div_cancel₀ _ hj]; exact hL l⟩`. Consider the case `algebraMap c`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, pow_zero, one_mul, Submodule.mem_one]`. Conclude with `⟨⟨_, Subalgebra.algebraMap_mem A c⟩, rfl⟩`. Consider the case `add t₁ t₂ _ _ h₁ h₂`. Take `⟨e₁, he₁⟩` from `h₁`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨e₂, he₂⟩` from `h₂`. Use `⟨e₁ + e₂, ?_⟩` and prove the remaining obligations. Establish `hs : h j ^ (e₁ + e₂) * (t₁ + t₂) = h j ^ e₂ * (h j ^ e₁ * t₁) + h j ^ e₁ * (h j ^ e₂ * t₂)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, pow_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ (by rw [mul_comm (L ^ e₁)]; exact Submodule.mul_mem_mul (Submodule.pow_mem_pow _ (hL j) _) he₁) (Submodule.mul_mem_mul (Submodule.pow_mem_pow _ (hL j) _) he₂)`. Consider the case `mul t₁ t₂ _ _ h₁ h₂`. Take `⟨e₁, he₁⟩` from `h₁`. Take `⟨e₂, he₂⟩` from `h₂`. Use `⟨e₁ + e₂, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs : h j ^ (e₁ + e₂) * (t₁ * t₂) = (h j ^ e₁ * t₁) * (h j ^ e₂ * t₂)` using `by ring`. Rewrite using `[hs, pow_add]`. Conclude with `Submodule.mul_mem_mul he₁ he₂`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem_pow {A : Subalgebra k Ω} {L : Submodule A Ω} {r : ℕ}
     {h : Fin (r + 1) → Ω} (hL : ∀ l, h l ∈ L) {j : Fin (r + 1)} (hj : h j ≠ 0) {t : Ω}
@@ -137,15 +135,15 @@ end VeryAmpleSecs
 open VeryAmpleSecs in
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x Nb r h hv n`. Use extensionality with `s`. Rewrite using `[mem_secs_pow_twistSys_one_iff]`. Establish `hL : ∀ I l, h l ∈ Nb.sub I` using `fun I l => (Submodule.mem_iInf _).mp (hv.mem_secs l) I`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hs j hj`. Use `hv.closed j hj (Set.mem_iInter.mpr fun I => ⟨n, ?_⟩)` and prove the remaining obligations. Rewrite using `[div_mul_cancel₀ _ (pow_ne_zero n hj), one_mul]`. Conclude with `(Submodule.mem_iInf _).mp hs I`. Introduce `H`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SubSystem.secs, Submodule.mem_iInf]`. Introduce `I`. Rewrite using `[Submodule.restrictScalars_mem, SubSystem.pow_sub]`. Take `⟨Q, hQ⟩` from `Nb.invertible I`. Use `mem_pow_of_pow_mul_mem hQ (hv.generates I) fun j => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : h j = 0`. Conclude with `⟨1, by rw [hj, pow_one, zero_mul]; exact Submodule.zero_mem _⟩`. Take `⟨e, he⟩` from `exists_pow_mul_mem_pow (hL I) hj (H j hj)`. Use `⟨e, ?_⟩` and prove the remaining obligations. Establish `hs : h j ^ e * s = h j ^ n * (h j ^ e * (s / h j ^ n))`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hs, pow_add]`. Conclude with `Submodule.mul_mem_mul (Submodule.pow_mem_pow _ (hL I j) n) he`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VeryAmpleSecs.proof : VeryAmpleSecs.Statement.{u, w} := by
   intro k _ Ω _ _ N x Nb r h hv n

@@ -25,21 +25,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LefschetzAmple
 
 /- English proof (translation)
-Introduce `g A _ hA M u Hm χ hM hAH`. Establish `hint : ∀ l ∈ u.Λ, ∀ l' ∈ u.Λ, ∃ n : ℤ, (hermForm Hm l l').im = n`. Introduce `l hl l' hl'`. Establish `h1` using `GlobalTheory.LatticeHom.semicharacter_add u hM hAH ⟨l, hl⟩ ⟨l', hl'⟩`. Establish `h2` using `GlobalTheory.LatticeHom.semicharacter_add u hM hAH ⟨l', hl'⟩ ⟨l, hl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[add_comm]`. Establish `hsw` using `GlobalTheory.LatticeHom.hermForm_swap_of_isHermitian hAH.1 l l'`. Establish `him : (hermForm Hm l' l).im = -(hermForm Hm l l').im`. Rewrite using `[hsw, Complex.conj_im]`. Establish `hne : χ ⟨l, hl⟩ * χ ⟨l', hl'⟩ ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `refine mul_ne_zero ?_ ?_ <;> refine norm_ne_zero_iff.1 ?_ <;> rw [hAH.2.2.1] <;> norm_num`. Establish `h3 : Complex.exp (Real.pi * Complex.I * (hermForm Hm l l').im) = Complex.exp (Real.pi * Complex.I * (hermForm Hm l' l).im)`. Use `mul_left_cancel₀ hne ?_` and prove the remaining obligations. Rewrite using `[← h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h3` using `[him]`. Establish `h4 : Complex.exp (2 * Real.pi * Complex.I * (hermForm Hm l l').im) = 1`. Establish `e : (2 * Real.pi * Complex.I * (hermForm Hm l l').im : ℂ) = Real.pi * Complex.I * (hermForm Hm l l').im - Real.pi * Complex.I * ((-(hermForm Hm l l').im : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[e, Complex.exp_sub, h3, div_self (Complex.exp_ne_zero _)]`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hπ : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Use `mul_right_cancel₀ hπ (by rw [← hn]; ring : ((hermForm Hm l l').im : ℂ) * (2 * Real.pi * Complex.I) = n * (2 * Real.pi * Complex.I))` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Λ₁, Ef, N, hle, hd1, hf1, hEf, hbij, hN, hNΛ⟩` from `GlobalTheory.T.exists_unimodular_overlattice_riemannForm g u.Λ Hm u.discrete u.full hAH.1 hAH.2.1 hint`. Take `⟨P, uB, χB, hg, hΛB, hAHB, -, -⟩` from `GlobalTheory.principalTorus_algebraic g Λ₁ Hm Ef hd1 hf1 hAH.1 hAH.2.1 hEf hbij`. Establish `hle' : u.Λ ≤ uB.Λ` using `hΛB ▸ hle`. Establish `hNΛ' : ∀ x ∈ uB.Λ, N • x ∈ u.Λ` using `hΛB ▸ hNΛ`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_shift_semicharacters_nested_lattices g u.Λ uB.Λ Hm χ χB hle' u.discrete u.full hAH.1 hAH.2.1 hAH.2.2.1 hAHB.2.2.1 (GlobalTheory.LatticeHom.semicharacter_add u hM hAH) (GlobalTheory.LatticeHom.semicharacter_add uB P.isLB hAHB)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψ, hψex, hcov⟩` from `GlobalTheory.T.theta_fourth_power_under_isogeny g A hA M u Hm χ hM hAH (fun θ => GlobalTheory.T.exists_section_of_appellHumbert_thetaFunction g A hA M u Hm χ hM hAH 4 θ) P uB χB hle' a hg hAHB ha`. Establish `hψa : IsAffineHom ψ` using `GlobalTheory.T.isAffineHom_of_lift_translation_finiteIndex_lattices g A hA P.A P.isAb M P.L u uB a N hN hle' hNΛ' ψ hψ hψex`. Establish `: IsProper A.hom` using `hA.proper`. Conclude with `(GlobalTheory.FrameCompare.relAmple_iff A.hom hM).2 inferInstance fun x => by`. Take `⟨s, V, hx, hV, hs⟩` from `hcov x`.
-
-Conclude with `⟨4, s, by norm_num, hx, hs ▸ hV.preimage ψ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem relAmple_of_isAH : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A →
     ∀ (M : LB A.left) (u : HolUnif A M g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ),

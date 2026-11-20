@@ -40,7 +40,7 @@ private theorem comp_appTop_apply {A B C : Scheme.{u}} (φ : A ⟶ B) (ψ : B �
     ((φ ≫ ψ).appTop).hom t = (φ.appTop).hom ((ψ.appTop).hom t) := rfl
 
 /- English proof (translation)
-Rewrite using `[Quiver.Hom.unop_inj (Subsingleton.elim α.unop β.unop)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem presheaf_map_eq {T : Type u} [TopologicalSpace T]
     (F : (TopologicalSpace.Opens T)ᵒᵖ ⥤ CommRingCat.{u})
@@ -48,7 +48,7 @@ private theorem presheaf_map_eq {T : Type u} [TopologicalSpace T]
   rw [Quiver.Hom.unop_inj (Subsingleton.elim α.unop β.unop)]
 
 /- English proof (translation)
-Rewrite using `[← F.map_comp]`. Conclude with `presheaf_map_eq F _ c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem presheaf_map_comp_eq {T : Type u} [TopologicalSpace T]
     (F : (TopologicalSpace.Opens T)ᵒᵖ ⥤ CommRingCat.{u})
@@ -58,7 +58,7 @@ private theorem presheaf_map_comp_eq {T : Type u} [TopologicalSpace T]
   exact presheaf_map_eq F _ c
 
 /- English proof (translation)
-Introduce `x _`. Conclude with `x.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem top_le_ι_preimage {Y : Scheme.{u}} (W : Y.Opens) :
     (⊤ : W.toScheme.Opens) ≤ W.ι ⁻¹ᵁ W := by
@@ -73,7 +73,7 @@ private theorem top_le_preimage_top {Y Y₁ : Scheme.{u}} (g : Y₁ ⟶ Y) :
   simp
 
 /- English proof (translation)
-Simplify using `[Scheme.Hom.appLE]`. Conclude with `(presheaf_map_comp_eq Y.presheaf _ _ _).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem topIso_inv_eq_ι_appLE {Y : Scheme.{u}} (W : Y.Opens) :
     W.topIso.inv = W.ι.appLE W ⊤ (top_le_ι_preimage W) := by
@@ -81,7 +81,7 @@ private theorem topIso_inv_eq_ι_appLE {Y : Scheme.{u}} (W : Y.Opens) :
   exact (presheaf_map_comp_eq Y.presheaf _ _ _).symm
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem appLE_congr {Y Y₁ : Scheme.{u}} (g₁ g₂ : Y₁ ⟶ Y) (h : g₁ = g₂)
     (W : Y.Opens) (V : Y₁.Opens) (e₁ : V ≤ g₁ ⁻¹ᵁ W) (e₂ : V ≤ g₂ ⁻¹ᵁ W) :
@@ -90,7 +90,7 @@ private theorem appLE_congr {Y Y₁ : Scheme.{u}} (g₁ g₂ : Y₁ ⟶ Y) (h : 
   rfl
 
 /- English proof (translation)
-Establish `happ : (f.resLE W V hV).appTop = (f.resLE W V hV).appLE ⊤ ⊤ (top_le_preimage_top (f.resLE W V hV))` using `(Scheme.Hom.appLE_eq_app (f.resLE W V hV)).symm`. Rewrite using `[topIso_inv_eq_ι_appLE, topIso_inv_eq_ι_appLE, happ, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `appLE_congr (V.ι ≫ f) (f.resLE W V hV ≫ W.ι) (by simp) W ⊤ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem appLE_topIso_inv_comp {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y)
     (W : Y.Opens) (V : Y₁.Opens) (hV : V ≤ f ⁻¹ᵁ W) :
@@ -103,9 +103,7 @@ private theorem appLE_topIso_inv_comp {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y)
   exact appLE_congr (V.ι ≫ f) (f.resLE W V hV ≫ W.ι) (by simp) W ⊤ _ _
 
 /- English proof (translation)
-Establish `h` using `appLE_topIso_inv_comp f W V hV`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Use `_ = W.topIso.hom ≫ (W.topIso.inv ≫ (f.resLE W V hV).appTop) ≫ V.topIso.hom := by rw [h]`. Use `_ = (f.resLE W V hV).appTop ≫ V.topIso.hom := by`.
-
-Simplify using `only [Category.assoc, Iso.hom_inv_id_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem topIso_hom_comp_appLE {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y)
     (W : Y.Opens) (V : Y₁.Opens) (hV : V ≤ f ⁻¹ᵁ W) :
@@ -119,7 +117,7 @@ private theorem topIso_hom_comp_appLE {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y)
         simp only [Category.assoc, Iso.hom_inv_id_assoc]
 
 /- English proof (translation)
-Establish `h2 : (W.topIso.hom ≫ f.appLE W V hV).hom y = ((f.resLE W V hV).appTop ≫ V.topIso.hom).hom y`. Rewrite using `[topIso_hom_comp_appLE f W V hV]`. Rewrite `h2` using `[comp_hom_apply, comp_hom_apply]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem appLE_topIso_hom_apply {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y)
     (W : Y.Opens) (V : Y₁.Opens) (hV : V ≤ f ⁻¹ᵁ W) (y : Γ(W.toScheme, ⊤)) :
@@ -132,7 +130,7 @@ private theorem appLE_topIso_hom_apply {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y)
   exact h2
 
 /- English proof (translation)
-Establish `h` using `appLE_topIso_inv_comp f W V hV`. Establish `h2` using `congrArg (fun φ : Γ(Y, W) ⟶ Γ(V.toScheme, ⊤) => CommRingCat.Hom.hom φ a) h`. Rewrite `h2` using `[comp_hom_apply, comp_hom_apply]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem topIso_inv_appLE_apply {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y) (W : Y.Opens)
     (V : Y₁.Opens) (hV : V ≤ f ⁻¹ᵁ W) (a : Γ(Y, W)) :
@@ -144,7 +142,7 @@ private theorem topIso_inv_appLE_apply {Y Y₁ : Scheme.{u}} (f : Y₁ ⟶ Y) (W
   exact h2
 
 /- English proof (translation)
-Rewrite using `[restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, AlgebraicGeometry.Scheme.Hom.resLE_comp_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictIdeal_comap (B : BlowupChart π c S s) (D : X.IdealSheafData) :
     restrictIdeal (D.comap π) B.domain =
@@ -155,7 +153,7 @@ theorem restrictIdeal_comap (B : BlowupChart π c S s) (D : X.IdealSheafData) :
     AlgebraicGeometry.Scheme.Hom.resLE_comp_ι]
 
 /- English proof (translation)
-Establish `h1` using `restrictIdeal_comap B Z`. Rewrite using `[Blowup.exceptionalIdeal_eq_comap, h1, hZ]`. Conclude with `comap_coordIdeal_center c B.chart (π.resLE U B.domain B.domain_le) B.comm hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictIdeal_exceptionalIdeal (B : BlowupChart π c S s)
     (Z : X.IdealSheafData) (hs : s ∈ S) (hZ : restrictIdeal Z U = c.coordIdeal S) :
@@ -165,7 +163,7 @@ theorem restrictIdeal_exceptionalIdeal (B : BlowupChart π c S s)
   exact comap_coordIdeal_center c B.chart (π.resLE U B.domain B.domain_le) B.comm hs
 
 /- English proof (translation)
-Rewrite using `[restrictIdeal_comap B D, hD]`. Conclude with `comap_coordIdeal_singleton_of_mem c B.chart (π.resLE U B.domain B.domain_le) B.comm j hj hjs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictIdeal_comap_coordIdeal_of_mem (B : BlowupChart π c S s)
     (D : X.IdealSheafData) (j : Fin m) (hj : j ∈ S) (hjs : j ≠ s)
@@ -177,7 +175,7 @@ theorem restrictIdeal_comap_coordIdeal_of_mem (B : BlowupChart π c S s)
     (π.resLE U B.domain B.domain_le) B.comm j hj hjs
 
 /- English proof (translation)
-Rewrite using `[restrictIdeal_comap B D, hD]`. Conclude with `comap_coordIdeal_singleton_self c B.chart (π.resLE U B.domain B.domain_le) B.comm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictIdeal_comap_coordIdeal_self (B : BlowupChart π c S s)
     (D : X.IdealSheafData) (hD : restrictIdeal D U = c.coordIdeal {s}) :
@@ -187,7 +185,7 @@ theorem restrictIdeal_comap_coordIdeal_self (B : BlowupChart π c S s)
     (π.resLE U B.domain B.domain_le) B.comm
 
 /- English proof (translation)
-Rewrite using `[restrictIdeal_comap B D, hD]`. Conclude with `comap_coordIdeal_singleton_of_notMem c B.chart (π.resLE U B.domain B.domain_le) B.comm j hj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictIdeal_comap_coordIdeal_of_not_mem (B : BlowupChart π c S s)
     (D : X.IdealSheafData) (j : Fin m) (hj : j ∉ S)
@@ -198,7 +196,7 @@ theorem restrictIdeal_comap_coordIdeal_of_not_mem (B : BlowupChart π c S s)
     (π.resLE U B.domain B.domain_le) B.comm j hj
 
 /- English proof (translation)
-Rewrite using `[restrictIdeal_comap B D, hD, Scheme.IdealSheafData.comap_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictIdeal_comap_top (B : BlowupChart π c S s)
     (D : X.IdealSheafData) (hD : restrictIdeal D U = ⊤) :
@@ -206,7 +204,7 @@ theorem restrictIdeal_comap_top (B : BlowupChart π c S s)
   rw [restrictIdeal_comap B D, hD, Scheme.IdealSheafData.comap_top]
 
 /- English proof (translation)
-Establish `h0 : ((B.chart.map ≫ coordBlowupSubstMap k m S s).appTop).hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i : ULift.{u} (Fin m))) = ((π.resLE U B.domain B.domain_le ≫ c.map).appTop).hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i : ULift.{u} (Fin m)))` using `congrArg (fun φ : B.domain.toScheme ⟶ affineSpaceFin k m => (φ.appTop).hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i : ULift.{u} (Fin m)))) B.comm`. Rewrite `h0` using `[comp_appTop_apply, comp_appTop_apply, coordBlowupSubstMap_appTop_coord_of_mem k m S s i hi his, map_mul]`. Establish `hkey` using `h0.symm`. Rewrite using `[EtaleChart.coord_def c i, EtaleChart.coord_def B.chart i, EtaleChart.coord_def B.chart s, appLE_topIso_hom_apply π U B.domain B.domain_le, hkey, map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_coord_of_mem (B : BlowupChart π c S s) (i : Fin m)
     (hi : i ∈ S) (his : i ≠ s) :
@@ -226,9 +224,9 @@ theorem appLE_coord_of_mem (B : BlowupChart π c S s) (i : Fin m)
     appLE_topIso_hom_apply π U B.domain B.domain_le, hkey, map_mul]
 
 /- English proof (translation)
-Establish `h1 : (coordBlowupSubstMap k m S s).appTop ≫ B.chart.map.appTop = c.map.appTop ≫ (π.resLE U B.domain B.domain_le).appTop`. Use `CommRingCat.hom_ext (RingHom.ext fun z => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun φ : B.domain.toScheme ⟶ affineSpaceFin k m => (φ.appTop).hom z) B.comm`. Establish `h2 : B.chart.map.appTop.hom ((coordBlowupSubstMap k m S s).appTop.hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up s : ULift.{u} (Fin m)))) = (π.resLE U B.domain B.domain_le).appTop.hom (c.map.appTop.hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up s : ULift.{ …`. Establish `h3 : ((coordBlowupSubstMap k m S s).appTop ≫ B.chart.map.appTop).hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up s : ULift.{u} (Fin m))) = (c.map.appTop ≫ (π.resLE U B.domain B.domain_le).appTop).hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up s : ULift.{u} …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `h3`. Rewrite `h2` using `[coordBlowupSubstMap_appTop_coord_self]`. Rewrite using `[EtaleChart.coord_def c s, EtaleChart.coord_def B.chart s, h2]`. Conclude with `appLE_topIso_hom_apply π U B.domain B.domain_le _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_coord_self (B : BlowupChart π c S s) :
     (π.appLE U B.domain B.domain_le).hom (c.coord s) = B.chart.coord s := by
@@ -253,11 +251,9 @@ theorem appLE_coord_self (B : BlowupChart π c S s) :
   exact appLE_topIso_hom_apply π U B.domain B.domain_le _
 
 /- English proof (translation)
-Establish `hcomm : (coordBlowupSubstMap k m S s).appTop ≫ (B.chart.map).appTop = (c.map).appTop ≫ (π.resLE U B.domain B.domain_le).appTop`. Use `CommRingCat.hom_ext (RingHom.ext fun z => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun φ : B.domain.toScheme ⟶ affineSpaceFin k m => (φ.appTop).hom z) B.comm`. Establish `hx : (B.chart.map).appTop.hom ((coordBlowupSubstMap k m S s).appTop.hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i : ULift.{u} (Fin m)))) = (π.resLE U B.domain B.domain_le).appTop.hom ((c.map).appTop.hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i : ULi …`. Establish `h2 : ((coordBlowupSubstMap k m S s).appTop ≫ (B.chart.map).appTop).hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i : ULift.{u} (Fin m))) = ((c.map).appTop ≫ (π.resLE U B.domain B.domain_le).appTop).hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i : ULift. …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomm]`. Rewrite `h2` using `[comp_hom_apply, comp_hom_apply]`. Conclude with `h2`. Rewrite `hx` using `[coordBlowupSubstMap_appTop_coord_of_notMem k m S s i hi]`. Simplify using `only [EtaleChart.coord_def]`.
-
-Rewrite using `[hx]`. Conclude with `appLE_topIso_hom_apply π U B.domain B.domain_le _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_coord_of_not_mem (B : BlowupChart π c S s) (i : Fin m) (hi : i ∉ S) :
     (π.appLE U B.domain B.domain_le).hom (c.coord i) = B.chart.coord i := by
@@ -284,11 +280,9 @@ theorem appLE_coord_of_not_mem (B : BlowupChart π c S s) (i : Fin m) (hi : i �
   exact appLE_topIso_hom_apply π U B.domain B.domain_le _
 
 /- English proof (translation)
-Distinguish the cases in `h : i ∈ S ∧ i ≠ s`. Rewrite using `[if_pos h]`. Conclude with `B.appLE_coord_of_mem i h.1 h.2`. Rewrite using `[if_neg h]`. Distinguish the cases in `hi : i ∈ S`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hieq : i = s`. Assume the negation of the conclusion as `hne`. Conclude with `h ⟨hi, hne⟩`. Rewrite using `[hieq]`. Conclude with `B.appLE_coord_self`.
-
-Conclude with `B.appLE_coord_of_not_mem i hi`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_coord (B : BlowupChart π c S s) (i : Fin m) :
     (π.appLE U B.domain B.domain_le).hom (c.coord i) =
@@ -318,14 +312,14 @@ theorem coordEvalHom_def (B : BlowupChart π c S s) :
       (fun i : ULift.{u} (Fin m) => B.chart.coord i.down) := rfl
 
 /- English proof (translation)
-Simplify using `[coordEvalHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordEvalHom_C (B : BlowupChart π c S s) (a : Γ(X, U)) :
     B.coordEvalHom (MvPolynomial.C a) = (π.appLE U B.domain B.domain_le).hom a := by
   simp [coordEvalHom]
 
 /- English proof (translation)
-Simplify using `[coordEvalHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordEvalHom_X (B : BlowupChart π c S s) (i : Fin m) :
     B.coordEvalHom (MvPolynomial.X (ULift.up i : ULift.{u} (Fin m))) = B.chart.coord i := by
@@ -350,7 +344,7 @@ theorem coordRelation_def (B : BlowupChart π c S s) (i : Fin m) :
         MvPolynomial.C (c.coord i) := rfl
 
 /- English proof (translation)
-Rewrite using `[coordRelation_def]`. Distinguish the cases in `h : i ∈ S ∧ i ≠ s`. Rewrite using `[if_pos h, map_sub, map_mul, coordEvalHom_X, coordEvalHom_X, coordEvalHom_C, B.appLE_coord i, if_pos h, sub_self]`. Rewrite using `[if_neg h, map_sub, coordEvalHom_X, coordEvalHom_C, B.appLE_coord i, if_neg h, sub_self]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordEvalHom_coordRelation (B : BlowupChart π c S s) (i : Fin m) :
     B.coordEvalHom (B.coordRelation i) = 0 := by
@@ -361,7 +355,7 @@ theorem coordEvalHom_coordRelation (B : BlowupChart π c S s) (i : Fin m) :
   · rw [if_neg h, map_sub, coordEvalHom_X, coordEvalHom_C, B.appLE_coord i, if_neg h, sub_self]
 
 /- English proof (translation)
-Establish `h : Ideal.span (Set.range B.coordRelation) ≤ RingHom.ker B.coordEvalHom`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `x ⟨i, rfl⟩`. Conclude with `RingHom.mem_ker.mpr (B.coordEvalHom_coordRelation i)`. Conclude with `RingHom.mem_ker.mp (h ha)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem coordEvalHom_eq_zero_of_mem_span (B : BlowupChart π c S s)
     (a : MvPolynomial (ULift.{u} (Fin m)) Γ(X, U))
@@ -386,7 +380,7 @@ theorem coordEvalQuotientHom_mk (B : BlowupChart π c S s)
     B.coordEvalQuotientHom (Ideal.Quotient.mk (Ideal.span (Set.range B.coordRelation)) a) = B.coordEvalHom a := rfl
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun φ : R ⟶ R => CommRingCat.Hom.hom φ x) e.hom_inv_id`. Simplify `h` using `only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply, CommRingCat.hom_id, RingHom.id_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem iso_inv_hom_apply {R T : CommRingCat.{u}} (e : R ≅ T) (x : R) :
     e.inv.hom (e.hom.hom x) = x := by
@@ -395,7 +389,7 @@ private theorem iso_inv_hom_apply {R T : CommRingCat.{u}} (e : R ≅ T) (x : R) 
     RingHom.id_apply] using h
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun φ : T ⟶ T => CommRingCat.Hom.hom φ x) e.inv_hom_id`. Simplify `h` using `only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply, CommRingCat.hom_id, RingHom.id_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem iso_hom_inv_apply {R T : CommRingCat.{u}} (e : R ≅ T) (x : T) :
     e.hom.hom (e.inv.hom x) = x := by
@@ -416,9 +410,9 @@ private theorem mvPolynomialIsoGlobalSectionsAffineSpace_hom_apply (k : Type u) 
     (mvPolynomialIsoGlobalSectionsAffineSpace k m).hom.hom x = affineSpaceGlobalSectionsHom k m x := rfl
 
 /- English proof (translation)
-Establish `hcancel : ∀ x : Γ(affineSpaceFin k m, ⊤), ((AffineSpace.SpecIso (ULift.{u} (Fin m)) (CommRingCat.of k)).hom.appTop).hom (((AffineSpace.SpecIso (ULift.{u} (Fin m)) (CommRingCat.of k)).inv.appTop).hom x) = x`. Introduce `x`. Conclude with `iso_hom_inv_apply (Scheme.Γ.mapIso (AffineSpace.SpecIso (ULift.{u} (Fin m)) (CommRingCat.of k)).op) x`. Establish `h` using `AffineSpace.SpecIso_inv_appTop_coord (CommRingCat.of k) i`. Establish `h2 : (mvPolynomialIsoGlobalSectionsAffineSpace k m).hom.hom (MvPolynomial.X i) = ((AffineSpace.SpecIso (ULift.{u} (Fin m)) (CommRingCat.of k)).hom.appTop).hom (((Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (ULift.{u} (Fin m)) k))).inv).hom (MvPolynomial.X i))` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, ← h, hcancel]`.
+A detailed English derivation is pending.
 -/
 private theorem mvPolynomialIsoGlobalSectionsAffineSpace_hom_X (k : Type u) [Field k] (m : ℕ)
     (i : ULift.{u} (Fin m)) :
@@ -438,7 +432,7 @@ private theorem mvPolynomialIsoGlobalSectionsAffineSpace_hom_X (k : Type u) [Fie
   rw [h2, ← h, hcancel]
 
 /- English proof (translation)
-Establish `h : (AffineSpace.SpecIso (ULift.{u} (Fin m)) (CommRingCat.of k)).inv ≫ affineSpaceFinToSpec k m = Spec.map (CommRingCat.ofHom (MvPolynomial.C : k →+* MvPolynomial (ULift.{u} (Fin m)) k))`. Simplify using the standard rewrite rules. Rewrite using `[← h, Iso.hom_inv_id_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem specIso_hom_comp_map_C (k : Type u) [Field k] (m : ℕ) :
     (AffineSpace.SpecIso (ULift.{u} (Fin m)) (CommRingCat.of k)).hom ≫
@@ -453,9 +447,9 @@ private theorem specIso_hom_comp_map_C (k : Type u) [Field k] (m : ℕ) :
   rw [← h, Iso.hom_inv_id_assoc]
 
 /- English proof (translation)
-Establish `h0 : (Spec.map (CommRingCat.ofHom (MvPolynomial.C : k →+* MvPolynomial (ULift.{u} (Fin m)) k))).appTop ≫ (AffineSpace.SpecIso (ULift.{u} (Fin m)) (CommRingCat.of k)).hom.appTop = (affineSpaceFinToSpec k m).appTop`. Use `CommRingCat.hom_ext (RingHom.ext fun z => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun φ : affineSpaceFin k m ⟶ Spec (CommRingCat.of k) => (φ.appTop).hom z) (specIso_hom_comp_map_C k m)`. Establish `key : (CommRingCat.ofHom (MvPolynomial.C : k →+* MvPolynomial (ULift.{u} (Fin m)) k)) ≫ (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (ULift.{u} (Fin m)) k))).inv ≫ (AffineSpace.SpecIso (ULift.{u} (Fin m)) (CommRingCat.of k)).hom.appTop = (Scheme.ΓSpecIso (CommRingCat.of k)).inv …`. Rewrite using `[← Category.assoc, Scheme.ΓSpecIso_inv_naturality, Category.assoc, h0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (mvPolynomialIsoGlobalSectionsAffineSpace k m).hom.hom (MvPolynomial.C a) = ((CommRingCat.ofHom (MvPolynomial.C : k →+* MvPolynomial (ULift.{u} (Fin m)) k)) ≫ (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (ULift.{u} (Fin m)) k))).inv ≫ (AffineSpace.SpecIso (ULift.{u} (Fin m …` using `rfl`. Rewrite using `[e1, key]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem mvPolynomialIsoGlobalSectionsAffineSpace_hom_C (k : Type u) [Field k] (m : ℕ) (a : k) :
     (mvPolynomialIsoGlobalSectionsAffineSpace k m).hom.hom (MvPolynomial.C a)
@@ -481,11 +475,11 @@ private theorem mvPolynomialIsoGlobalSectionsAffineSpace_hom_C (k : Type u) [Fie
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ w : MvPolynomial (ULift.{u} (Fin m)) k, u.hom ((mvPolynomialIsoGlobalSectionsAffineSpace k m).hom.hom w) = v.hom ((mvPolynomialIsoGlobalSectionsAffineSpace k m).hom.hom w)`. Introduce `w`. Use `MvPolynomial.induction_on (motive := fun z : MvPolynomial (ULift.{u} (Fin m)) k => u.hom ((mvPolynomialIsoGlobalSectionsAffineSpace k m).hom.hom z) = v.hom ((mvPolynomialIsoGlobalSectionsAffineSpace k m).hom.hom z)) w (fun a => ?_) (fun q r hq hr => ?_) (fun q i hq => ?_)` and prove the remaining obligations. Rewrite using `[mvPolynomialIsoGlobalSectionsAffineSpace_hom_C]`. Conclude with `hτ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add]`. Rewrite using `[hq, hr]`. Take `⟨j⟩` from `i`. Simplify using `only [map_mul]`. Rewrite using `[hq, mvPolynomialIsoGlobalSectionsAffineSpace_hom_X, hc j]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `CommRingCat.hom_ext (RingHom.ext fun z => ?_)` and prove the remaining obligations. Establish `h` using `key ((mvPolynomialIsoGlobalSectionsAffineSpace k m).inv.hom z)`. Rewrite `h` using `[iso_hom_inv_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem affineSpaceFin_globalSections_hom_ext (k : Type u) [Field k] (m : ℕ) {T : CommRingCat.{u}}
     (u v : Γ(affineSpaceFin k m, ⊤) ⟶ T)
@@ -515,7 +509,7 @@ private theorem affineSpaceFin_globalSections_hom_ext (k : Type u) [Field k] (m 
   rwa [iso_hom_inv_apply] at h
 
 /- English proof (translation)
-Establish `h : ((coordBlowupSubstMap k m S s ≫ affineSpaceFinToSpec k m).appTop).hom t = ((affineSpaceFinToSpec k m).appTop).hom t` using `congrArg (fun φ : affineSpaceFin k m ⟶ Spec (CommRingCat.of k) => (φ.appTop).hom t) (coordBlowupSubstMap_comp_affineSpaceFinToSpec k m S s)`. Rewrite `h` using `[comp_appTop_apply]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coordBlowupSubstMap_appTop_affineSpaceFinToSpec (t : Γ(Spec (CommRingCat.of k), ⊤)) :
     ((coordBlowupSubstMap k m S s).appTop).hom (((affineSpaceFinToSpec k m).appTop).hom t)
@@ -528,7 +522,7 @@ private theorem coordBlowupSubstMap_appTop_affineSpaceFinToSpec (t : Γ(Spec (Co
   exact h
 
 /- English proof (translation)
-Establish `h : ((B.chart.map ≫ coordBlowupSubstMap k m S s).appTop).hom z = ((π.resLE U B.domain B.domain_le ≫ c.map).appTop).hom z` using `congrArg (fun φ : B.domain.toScheme ⟶ affineSpaceFin k m => (φ.appTop).hom z) B.comm`. Rewrite `h` using `[comp_appTop_apply, comp_appTop_apply]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chart_appTop_coordBlowupSubstMap_apply (B : BlowupChart π c S s) (z : Γ(affineSpaceFin k m, ⊤)) :
     (B.chart.map.appTop).hom (((coordBlowupSubstMap k m S s).appTop).hom z)
@@ -540,7 +534,7 @@ private theorem chart_appTop_coordBlowupSubstMap_apply (B : BlowupChart π c S s
   exact h
 
 /- English proof (translation)
-Establish `ha : affineSpaceGlobalSectionsHom k m (MvPolynomial.C (((Scheme.ΓSpecIso (CommRingCat.of k)).hom).hom t)) = ((affineSpaceFinToSpec k m).appTop).hom t`. Rewrite using `[← mvPolynomialIsoGlobalSectionsAffineSpace_hom_apply k m, mvPolynomialIsoGlobalSectionsAffineSpace_hom_C, iso_inv_hom_apply]`. Rewrite using `[← ha]`. Conclude with `EtaleChart.coordRingHom_C d _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem etaleChart_appTop_affineSpaceFinToSpec_apply {Y : Scheme.{u}} {q : Y ⟶ Spec (CommRingCat.of k)}
     {W : Y.Opens} (d : EtaleChart q W m) (t : Γ(Spec (CommRingCat.of k), ⊤)) :
@@ -565,7 +559,7 @@ private theorem constToCoordRelationQuotient_apply (B : BlowupChart π c S s) (y
     constToCoordRelationQuotient B y = Ideal.Quotient.mk (Ideal.span (Set.range B.coordRelation)) (MvPolynomial.C y) := rfl
 
 /- English proof (translation)
-Rewrite using `[constToCoordRelationQuotient_apply, coordEvalQuotientHom_mk, coordEvalHom_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem coordEvalQuotientHom_constToCoordRelationQuotient (B : BlowupChart π c S s) (y : Γ(X, U)) :
     B.coordEvalQuotientHom (constToCoordRelationQuotient B y) = (π.appLE U B.domain B.domain_le).hom y := by
@@ -596,7 +590,7 @@ private theorem openSectionsToCoordRelationQuotient_apply (B : BlowupChart π c 
         (MvPolynomial.C (U.topIso.hom.hom y)) := rfl
 
 /- English proof (translation)
-Establish `h : (mvPolynomialIsoGlobalSectionsAffineSpace k m).inv.hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up j : ULift.{u} (Fin m))) = MvPolynomial.X (ULift.up j : ULift.{u} (Fin m))`. Rewrite using `[← mvPolynomialIsoGlobalSectionsAffineSpace_hom_X k m (ULift.up j : ULift.{u} (Fin m)), iso_inv_hom_apply]`. Establish `h2 : (affineSectionsToCoordRelationQuotient B).hom (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up j : ULift.{u} (Fin m))) = (MvPolynomial.eval₂Hom ((constToCoordRelationQuotient B).comp (sectionsAlgebraMap k p U)) (fun i : ULift.{u} (Fin m) => Ideal.Quotient.mk (Ideal.spa …` using `rfl`. Rewrite using `[h2, h, MvPolynomial.eval₂Hom_X']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem affineSectionsToCoordRelationQuotient_coord (B : BlowupChart π c S s) (j : Fin m) :
     (affineSectionsToCoordRelationQuotient B).hom
@@ -617,9 +611,9 @@ private theorem affineSectionsToCoordRelationQuotient_coord (B : BlowupChart π 
   rw [h2, h, MvPolynomial.eval₂Hom_X']
 
 /- English proof (translation)
-Establish `ha : (mvPolynomialIsoGlobalSectionsAffineSpace k m).hom.hom (MvPolynomial.C (((Scheme.ΓSpecIso (CommRingCat.of k)).hom).hom t)) = ((affineSpaceFinToSpec k m).appTop).hom t`. Rewrite using `[mvPolynomialIsoGlobalSectionsAffineSpace_hom_C, iso_inv_hom_apply]`. Establish `h : (mvPolynomialIsoGlobalSectionsAffineSpace k m).inv.hom (((affineSpaceFinToSpec k m).appTop).hom t) = MvPolynomial.C (((Scheme.ΓSpecIso (CommRingCat.of k)).hom).hom t)`. Rewrite using `[← ha, iso_inv_hom_apply]`. Establish `h2 : (affineSectionsToCoordRelationQuotient B).hom (((affineSpaceFinToSpec k m).appTop).hom t) = (MvPolynomial.eval₂Hom ((constToCoordRelationQuotient B).comp (sectionsAlgebraMap k p U)) (fun i : ULift.{u} (Fin m) => Ideal.Quotient.mk (Ideal.span (Set.range B.coordRelation)) (MvP …` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2, h, MvPolynomial.eval₂Hom_C]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem affineSectionsToCoordRelationQuotient_affineSpaceFinToSpec (B : BlowupChart π c S s)
     (t : Γ(Spec (CommRingCat.of k), ⊤)) :
@@ -642,7 +636,7 @@ private theorem affineSectionsToCoordRelationQuotient_affineSpaceFinToSpec (B : 
   rfl
 
 /- English proof (translation)
-Rewrite using `[openSectionsToCoordRelationQuotient_apply, ← EtaleChart.coord_def c j]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem openSectionsToCoordRelationQuotient_coord (B : BlowupChart π c S s) (j : Fin m) :
     (openSectionsToCoordRelationQuotient B).hom
@@ -653,7 +647,7 @@ private theorem openSectionsToCoordRelationQuotient_coord (B : BlowupChart π c 
   rw [openSectionsToCoordRelationQuotient_apply, ← EtaleChart.coord_def c j]
 
 /- English proof (translation)
-Establish `h : Ideal.Quotient.mk (Ideal.span (Set.range B.coordRelation)) (B.coordRelation j) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.subset_span ⟨j, rfl⟩)`. Rewrite `h` using `[coordRelation_def, map_sub, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mk_eq_mk_C_coord (B : BlowupChart π c S s) (j : Fin m) :
     Ideal.Quotient.mk (Ideal.span (Set.range B.coordRelation))
@@ -670,13 +664,13 @@ private theorem mk_eq_mk_C_coord (B : BlowupChart π c S s) (j : Fin m) :
   exact h
 
 /- English proof (translation)
-Use `affineSpaceFin_globalSections_hom_ext k m _ _ (fun t => ?_) (fun j => ?_)` and prove the remaining obligations. Rewrite using `[comp_hom_apply, comp_hom_apply, coordBlowupSubstMap_appTop_affineSpaceFinToSpec, affineSectionsToCoordRelationQuotient_affineSpaceFinToSpec, openSectionsToCoordRelationQuotient_apply, etaleChart_appTop_affineSpaceFinToSpec_apply c t]`. Both sides reduce to the same expression. Rewrite using `[comp_hom_apply, comp_hom_apply, openSectionsToCoordRelationQuotient_coord]`. Distinguish the cases in `hjS : j ∈ S`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hjs : j = s`. Substitute `hjs` using the available equality. Rewrite using `[coordBlowupSubstMap_appTop_coord_self, affineSectionsToCoordRelationQuotient_coord]`. Establish `hrel` using `mk_eq_mk_C_coord B j`. Rewrite `hrel` using `[if_neg (by simp)]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hrel`. Rewrite using `[coordBlowupSubstMap_appTop_coord_of_mem k m S s j hjS hjs, map_mul, affineSectionsToCoordRelationQuotient_coord, affineSectionsToCoordRelationQuotient_coord, ← map_mul]`. Establish `hrel` using `mk_eq_mk_C_coord B j`. Rewrite `hrel` using `[if_pos ⟨hjS, hjs⟩]`. Conclude with `hrel`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[coordBlowupSubstMap_appTop_coord_of_notMem k m S s j hjS, affineSectionsToCoordRelationQuotient_coord]`. Establish `hrel` using `mk_eq_mk_C_coord B j`. Rewrite `hrel` using `[if_neg (by tauto)]`. Conclude with `hrel`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem appTop_comp_affineSectionsToCoordRelationQuotient (B : BlowupChart π c S s) :
     (coordBlowupSubstMap k m S s).appTop ≫ affineSectionsToCoordRelationQuotient B = c.map.appTop ≫ openSectionsToCoordRelationQuotient B := by
@@ -703,23 +697,23 @@ private theorem appTop_comp_affineSectionsToCoordRelationQuotient (B : BlowupCha
       exact hrel
 
 /- English proof (translation)
-Establish `hUaff : IsAffine U.toScheme` using `hU`. Establish `hPaff : IsAffine (CategoryTheory.Limits.pullback (coordBlowupSubstMap k m S s) c.map)` using `inferInstance`. Establish `hDaff : IsAffine B.domain.toScheme` using `IsAffine.of_isIso hB.isoPullback.hom`. Establish `HP : IsPushout (coordBlowupSubstMap k m S s).appTop c.map.appTop B.chart.map.appTop (π.resLE U B.domain B.domain_le).appTop` using `AlgebraicGeometry.isPushout_appTop_of_isPullback hB`. Take `⟨Δ, hinl, hinr⟩ : ∃ Δ : Γ(B.domain.toScheme, ⊤) ⟶ CommRingCat.of (MvPolynomial (ULift.{u} (Fin m)) Γ(X, U) ⧸ Ideal.span (Set.range B.coordRelation)), B.chart.map.appTop ≫ Δ = affineSectionsToCoordRelationQuotient B ∧ (π.resLE U B.domain B.domain_le).appTop ≫ Δ = openSectionsToCoo …` from `⟨HP.desc (affineSectionsToCoordRelationQuotient B) (openSectionsToCoordRelationQuotient B) (appTop_comp_affineSectionsToCoordRelationQuotient B), HP.inl_desc _ _ _, HP.inr_desc _ _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hinl' : ∀ z, Δ.hom ((B.chart.map.appTop).hom z) = (affineSectionsToCoordRelationQuotient B).hom z`. Introduce `z`. Establish `h` using `congrArg (fun φ => CommRingCat.Hom.hom φ z) hinl`. Rewrite `h` using `[comp_hom_apply]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinr' : ∀ y, Δ.hom (((π.resLE U B.domain B.domain_le).appTop).hom y) = (openSectionsToCoordRelationQuotient B).hom y`. Introduce `y`. Establish `h` using `congrArg (fun φ => CommRingCat.Hom.hom φ y) hinr`. Rewrite `h` using `[comp_hom_apply]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbeta : Δ ≫ CommRingCat.ofHom B.coordEvalQuotientHom = B.domain.topIso.hom`. Use `HP.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hinl]`. Use `affineSpaceFin_globalSections_hom_ext k m _ _ (fun t => ?_) (fun j => ?_)` and prove the remaining obligations. Rewrite using `[comp_hom_apply, comp_hom_apply, affineSectionsToCoordRelationQuotient_affineSpaceFinToSpec, ← etaleChart_appTop_affineSpaceFinToSpec_apply c t, CommRingCat.hom_ofHom, coordEvalQuotientHom_constToCoordRelationQuotient, appLE_topIso_hom_apply π U B.domain B.domain_le, ← chart_appT …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comp_hom_apply, comp_hom_apply, affineSectionsToCoordRelationQuotient_coord, CommRingCat.hom_ofHom, coordEvalQuotientHom_mk, coordEvalHom_X, EtaleChart.coord_def B.chart j]`. Rewrite using `[← Category.assoc, hinr]`. Use `CommRingCat.hom_ext (RingHom.ext fun y => ?_)` and prove the remaining obligations. Rewrite using `[comp_hom_apply, comp_hom_apply, CommRingCat.hom_ofHom, openSectionsToCoordRelationQuotient_apply, coordEvalQuotientHom_mk, coordEvalHom_C, appLE_topIso_hom_apply π U B.domain B.domain_le]`. Establish `hbeta' : ∀ z, B.coordEvalQuotientHom (Δ.hom z) = B.domain.topIso.hom.hom z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z`. Establish `h` using `congrArg (fun φ => CommRingCat.Hom.hom φ z) hbeta`. Rewrite `h` using `[comp_hom_apply]`. Conclude with `h`. Establish `hring : (Δ.hom).comp ((B.domain.topIso.inv.hom).comp B.coordEvalQuotientHom) = RingHom.id _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Ideal.Quotient.ringHom_ext ?_` and prove the remaining obligations. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun i => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingHom.id_apply]`. Rewrite using `[coordEvalQuotientHom_mk, coordEvalHom_C, topIso_inv_appLE_apply, hinr', openSectionsToCoordRelationQuotient_apply, iso_hom_inv_apply]`. Take `⟨j⟩` from `i`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [RingHom.comp_apply, RingHom.id_apply]`. Rewrite using `[coordEvalQuotientHom_mk, coordEvalHom_X, EtaleChart.coord_def B.chart j, iso_inv_hom_apply, hinl', affineSectionsToCoordRelationQuotient_coord]`. Establish `halpha : ∀ q, Δ.hom (B.domain.topIso.inv.hom (B.coordEvalQuotientHom q)) = q`. Introduce `q`. Establish `h` using `RingHom.congr_fun hring q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify `h` using `only [RingHom.comp_apply, RingHom.id_apply]`. Use `⟨fun x y hxy => ?_, fun y => ⟨Δ.hom (B.domain.topIso.inv.hom y), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← halpha x, ← halpha y, hxy]`. Rewrite using `[hbeta', iso_hom_inv_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bijective_coordEvalQuotientHom_of_isPullback (B : BlowupChart π c S s)
     (hU : IsAffineOpen U)
@@ -792,7 +786,7 @@ private theorem bijective_coordEvalQuotientHom_of_isPullback (B : BlowupChart π
   · rw [hbeta', iso_hom_inv_apply]
 
 /- English proof (translation)
-Introduce `y`. Take `⟨q, hq⟩` from `(bijective_coordEvalQuotientHom_of_isPullback B hU hB).2 y`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Conclude with `⟨a, hq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surjective_coordEvalHom (B : BlowupChart π c S s) (hU : IsAffineOpen U)
     (hB : IsPullback B.chart.map (π.resLE U B.domain B.domain_le) (coordBlowupSubstMap k m S s) c.map) :
@@ -803,7 +797,7 @@ theorem surjective_coordEvalHom (B : BlowupChart π c S s) (hU : IsAffineOpen U)
   exact ⟨a, hq⟩
 
 /- English proof (translation)
-The claim follows from `bijective_coordEvalQuotientHom_of_isPullback B hU hB`.
+A detailed English derivation is pending.
 -/
 theorem bijective_coordEvalQuotientHom (B : BlowupChart π c S s) (hU : IsAffineOpen U)
     (hB : IsPullback B.chart.map (π.resLE U B.domain B.domain_le) (coordBlowupSubstMap k m S s) c.map) :

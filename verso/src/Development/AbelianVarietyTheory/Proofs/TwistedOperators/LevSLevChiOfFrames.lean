@@ -16,11 +16,9 @@ open Formalism.L2.DIV Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Establish `key` using `(hβ (β'.1 *ᵥ Pi.single j 1)).1 ((hβ' _).2 (by`. Introduce `k`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Pi.single_eq_same]`. Conclude with `Subring.one_mem _`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `Subring.zero_mem _)) i`. Rewrite `key` using `[Matrix.mulVec_mulVec, ← Units.val_mul, Matrix.mulVec_single_one]`.
-
-Conclude with `key`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_mem {β β' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)}
     (hβ : IsFrame β Λ) (hβ' : IsFrame β' Λ) (i j : Fin n) :
@@ -35,11 +33,11 @@ theorem entry_mem {β β' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : 
   exact key
 
 /- English proof (translation)
-Use `set φ := (Formalism.L2.Herm.intAf F E).subtype`. Establish `hinj : Function.Injective (RingHom.mapMatrix (m` using `Fin n) φ) := fun a b h => by`. Use extensionality with `i j`. Conclude with `congrArg Subtype.val (Subtype.ext (congrFun (congrFun h i) j))`. Set `M : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)` to `fun i j => ⟨_, entry_mem hβ hβ' i j⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `M' : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)` to `fun i j => ⟨_, entry_mem hβ' hβ i j⟩`. Establish `hM : RingHom.mapMatrix φ M = ((β⁻¹ * β' : GL (Fin n) _) : Matrix (Fin n) (Fin n) _)` using `rfl`. Establish `hM' : RingHom.mapMatrix φ M' = ((β'⁻¹ * β : GL (Fin n) _) : Matrix (Fin n) (Fin n) _)` using `rfl`. Establish `e1 : M * M' = 1` using `hinj (by`. Rewrite using `[map_mul, map_one, hM, hM', ← Units.val_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Establish `e2 : M' * M = 1` using `hinj (by`. Rewrite using `[map_mul, map_one, hM, hM', ← Units.val_mul]`. Use the proof step `simp)`. Conclude with `⟨⟨M, M', e1, e2⟩, Units.ext hM⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_int {β β' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)}
     (hβ : IsFrame β Λ) (hβ' : IsFrame β' Λ) : ∃ y : GL (Fin n) (Formalism.L2.Herm.intAf F E), intGL F E n y = β⁻¹ * β' := by
@@ -59,7 +57,7 @@ theorem exists_int {β β' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ :
   exact ⟨⟨M, M', e1, e2⟩, Units.ext hM⟩
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `exists_int hβ hβ'`. Introduce and unpack `x ⟨z, rfl⟩`. Use `⟨y * z * y⁻¹, ?_⟩` and prove the remaining obligations. Simplify using `only [frGL, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, map_inv, hy]`. Use `group`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem st_le {β β' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)}
     (hβ : IsFrame β Λ) (hβ' : IsFrame β' Λ) : St β' ≤ St β := by
@@ -70,7 +68,7 @@ theorem st_le {β β' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Subm
   group
 
 /- English proof (translation)
-The claim follows from `le_antisymm (st_le hβ' hβ) (st_le hβ hβ')`.
+A detailed English derivation is pending.
 -/
 theorem st_eq {β β' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)}
     (hβ : IsFrame β Λ) (hβ' : IsFrame β' Λ) : St β = St β' :=
@@ -81,9 +79,9 @@ section Lev
 variable [StarRing E] {LL : Type} [CommRing LL]
 
 /- English proof (translation)
-Simplify using `only [parLev, Subgroup.mem_inf, Subgroup.mem_iInf, mem_parah, hSt]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨h1, h2⟩, h3⟩, h4⟩`. Use `⟨⟨⟨h1, h2⟩, fun PP hP => ⟨(h3 PP hP).1, hg PP hP x ▸ (h3 PP hP).2⟩⟩, fun PP hP => ⟨(h4 PP hP).1, hq PP hP x ▸ (h4 PP hP).2⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨⟨h1, h2⟩, h3⟩, h4⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨⟨h1, h2⟩, fun PP hP => ⟨(h3 PP hP).1, (hg PP hP x).symm ▸ (h3 PP hP).2⟩⟩, fun PP hP => ⟨(h4 PP hP).1, (hq PP hP x).symm ▸ (h4 PP hP).2⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem mem_parLev_iff {hc : CMData F E} {J : Matrix (Fin n) (Fin n) E} {β β' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
     {D : LevDat E LL n} (hSt : St β = St β')
@@ -97,7 +95,7 @@ theorem mem_parLev_iff {hc : CMData F E} {J : Matrix (Fin n) (Fin n) E} {β β' 
     refine ⟨⟨⟨h1, h2⟩, fun PP hP => ⟨(h3 PP hP).1, (hg PP hP x).symm ▸ (h3 PP hP).2⟩⟩, fun PP hP => ⟨(h4 PP hP).1, (hq PP hP x).symm ▸ (h4 PP hP).2⟩⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `PP`. Simplify using `only [rTup, hg PP.1 PP.2 x]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rTup_eq {β β' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {D : LevDat E LL n}
     (hg : ∀ PP ∈ D.Pg, ∀ x, redFn β PP x = redFn β' PP x) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
@@ -106,7 +104,7 @@ theorem rTup_eq {β β' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {D : Lev
   simp only [rTup, hg PP.1 PP.2 x]
 
 /- English proof (translation)
-Use `show (x ∈ parLev hc J β D ∧ rTup β D x ∈ D.P.H) ↔ (x ∈ parLev hc J β' D ∧ rTup β' D x ∈ D.P.H)`. Rewrite using `[mem_parLev_iff hSt hg hq, rTup_eq hg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_lev_iff {hc : CMData F E} {J : Matrix (Fin n) (Fin n) E} {β β' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
     {D : LevDat E LL n} (hSt : St β = St β')
@@ -116,9 +114,7 @@ theorem mem_lev_iff {hc : CMData F E} {J : Matrix (Fin n) (Fin n) E} {β β' : G
   rw [mem_parLev_iff hSt hg hq, rTup_eq hg]
 
 /- English proof (translation)
-Unfold `levFn`. Rewrite using `[rTup_eq hg]`. Use `congr 1`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun PP hP => by rw [hg PP hP x]`.
-
-Conclude with `Finset.prod_congr rfl fun PP hP => by rw [hq PP hP x]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem levFn_eq {β β' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {D : LevDat E LL n}
     (hg : ∀ PP ∈ D.Pg, ∀ x, redFn β PP x = redFn β' PP x) (hq : ∀ PP ∈ D.Q, ∀ x, redFn β PP x = redFn β' PP x)
@@ -135,9 +131,9 @@ end Lev
 end GlobalTheory.FrameTransfer
 
 /- English proof (translation)
-Introduce `D V β β' Λ L hβ hβ' hg hq κ`. Establish `hSt` using `GlobalTheory.FrameTransfer.st_eq hβ hβ'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show κ ∈ levG V β L ↔ κ ∈ levG V β' L`. Simplify using `only [levG, levA, Subgroup.mem_inf, Subgroup.mem_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.FrameTransfer.mem_lev_iff hSt hg hq]`. Unfold `levChi`. Rewrite using `[GlobalTheory.FrameTransfer.levFn_eq hg hq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.levS_levChi_of_frames : ∀ {D : D7} (V : HSp D) (β β' : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (L : LevDat D.host.E ℂ V.rank), IsFrame β Λ → IsFrame β' Λ → (∀ PP ∈ L.Pg, ∀ x, redFn β PP x = redFn β' PP x) → (∀ PP ∈ L.Q, ∀ x, redFn β PP x = redFn β' PP x) → ∀ κ : GA D V, (κ ∈ levS V β L ↔ κ ∈ levS V β' L) ∧ levChi V β L κ = levChi V β' L κ := by
   intro D V β β' Λ L hβ hβ' hg hq κ

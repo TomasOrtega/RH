@@ -15,7 +15,7 @@ open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.
 open private det_comap tw_flag unramified_at_base_place irr_of_mat pt_flag w_ne from Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.LinkedUnramifiedChains.ScalarIrreducibility.NiceAt
 namespace UpperTheory.Gal.projectedFormsSystemPart
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl : w = w'` from `IsDedekindDomain.HeightOneSpectrum.ext (Ideal.ext fun x => (h x).symm.trans (h' x))`. Take `rfl : ψ = ψ'` from `funext fun j => MonoidHom.ext fun g => hψ j g g rfl`. Conclude with `⟨wt, hm, hl⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem la_move {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
     {A A' : ValuationSubring Ω} {w w' : W.Plc F} (h : IsPlaceOver A w) (h' : IsPlaceOver A' w') (e : A = A')
@@ -37,13 +37,13 @@ def EndPtAlt (R : CReal k c₁ f 3 ka) (ι : Qbar l ≃+* ℂ) (φ : R.B₀.B �
   ∀ (h : R.s.Wt 3) (ξ : R.S.A →ₐ[c₁.O] Qbar l), VPt R.S ξ → R.S.u.TI (RingHom.ker ξ) →
     ∀ x : R.B₀.Pt, x = (ξ.comp R.S.inc).comp φ → x.Arith h → _root_.UpperTheory.V.Z.Win.IsAutCsdA ι ((R.K.tw (ptRep R.S ξ)).toHomUnits.comp R.V.pr)
 /- English proof (translation)
-The claim follows from `funext fun i => (TwLink.IsPhi.maps R.K hφ ξ).2 v i`.
+A detailed English derivation is pending.
 -/
 private theorem psi_eq (R : CReal k c₁ f 3 ka) {φ : R.B₀.B →ₐ[c₁.O] R.S.B} (hφ : R.T.IsPhi φ) (ξ : R.S.A →ₐ[c₁.O] Qbar l) (v) :
     W.UniversalOrdinaryDeterminantRing.Pt.psi (B := R.B₀) ((ξ.comp R.S.inc).comp φ) v = R.K.twψ (ptRep R.S ξ) v :=
   funext fun i => (TwLink.IsPhi.maps R.K hφ ξ).2 v i
 /- English proof (translation)
-Establish `hD : W.UniversalOrdinaryDeterminantRing.Pt.D (B` using `R.B₀) ((ξ.comp R.S.inc).comp φ) = W.GDet.ofRep (R.K.tw (ptRep R.S ξ)) := (TwLink.IsPhi.maps R.K hφ ξ).1`. Establish `hrep : W.UniversalOrdinaryDeterminantRing.Pt.IsRep (B` using `R.B₀) ((ξ.comp R.S.inc).comp φ) ((R.K.tw (ptRep R.S ξ)).toHomUnits.comp R.V.pr) := by`. Use `(congrArg (fun D : W.GDet 3 (Qbar l) R.V.frame.G₀ => D.comap R.V.pr) hD).trans (det_comap (R.K.tw (ptRep R.S ξ)) R.V.pr (W.mat ((R.K.tw (ptRep R.S ξ)).toHomUnits.comp R.V.pr)) fun g => rfl)` and prove the remaining obligations. Conclude with `_root_.UpperTheory.Gal.projectedFormsSystemPart.end2oN R.v0 hE ((ξ.comp R.S.inc).comp φ) h _ (fun b hb => hg _ (RingHom.ker_isPrime _) hTI (Ideal.mem_map_of_mem φ hb)) ha hrep (irr_of_mat _ R.V.pr (Pr.pr_surj R.V) (R.K.tw_irr _ (irrTI l c₁ _ R.C₀ 3 R.ok (Or.inr rfl) R.S ξ hV.1 hT …`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem off_self (R : CReal k c₁ f 3 ka) {ι : Qbar l ≃+* ℂ} {φ : R.B₀.B →ₐ[c₁.O] R.S.B} (hφ : R.T.IsPhi φ)
     {J : Ideal R.B₀.B} (hg : AllGood R.S (J.map φ)) (hE : R.B₀.arithmeticPointClassicalityDense ι J) (h : R.s.Wt 3) (ξ : R.S.A →ₐ[c₁.O] Qbar l)
@@ -58,22 +58,22 @@ private theorem off_self (R : CReal k c₁ f 3 ka) {ι : Qbar l ≃+* ℂ} {φ :
     (fun b hb => hg _ (RingHom.ker_isPrime _) hTI (Ideal.mem_map_of_mem φ hb)) ha hrep
     (irr_of_mat _ R.V.pr (Pr.pr_surj R.V) (R.K.tw_irr _ (irrTI l c₁ _ R.C₀ 3 R.ok (Or.inr rfl) R.S ξ hV.1 hTI)))
 /- English proof (translation)
-The claim follows from `Units.ext (R.κ_pr g)`.
+A detailed English derivation is pending.
 -/
 private theorem kap (R : CReal k c₁ f 3 ka) (g : G L Ω) : R.K.κA (Qbar l) (R.V.pr g) = ka g := Units.ext (R.κ_pr g)
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[k.j_inj u (Subtype.ext h)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private theorem psi_j (ρ : Fr.NRep (Φ.ext f) 3 (Qbar l)) {u u' : Φ.V} (e : u = u') (j : Fin 3) (a : Φ.Gv u) (a' : Φ.Gv u')
     (h : (k.j u a).1 = (k.j u' a').1) : ρ.ψ u j a = ρ.ψ u' j a' := by
   subst e
   rw [k.j_inj u (Subtype.ext h)]
 /- English proof (translation)
-Introduce and unpack `h ξ hV hTI _ rfl ha`. Establish `key : ∀ v' : W.Vl l L, ∃ wt' : Fin 3 → W.Emb l (R₀.s.w v') → ℤ, (∀ τ, StrictMono fun j => wt' j τ) ∧ ∀ j, W.IsLocAlg (R₀.s.hw v') (W.UniversalOrdinaryDeterminantRing.Pt.psi (B` using `R₀.B₀) ((ξ.comp R.S.inc).comp φ') v' j) (wt' j) := fun v' => by`. Take `⟨v, hv⟩ : ∃ v : W.Vl l L, R.K.e v = R₀.K.e v'` from `R.K.e.surjective (R₀.K.e v')`. Use `la_move (R.s.hw v) (R₀.s.hw v') ((R.A_pl v).trans ((congrArg k.pl hv).trans (R₀.A_pl v').symm)) _ _ (fun j g g' e => ?_) (h v) (ha.1 v) (ha.2 v)` and prove the remaining obligations. Rewrite using `[psi_eq R hφ ξ v, psi_eq (setS R₀ R.S) hφ' ξ v']`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(ptRep R.S ξ).ψ (R.K.e v) j (R.K.lam v g) * R.K.κA (Qbar l) (R.V.pr g) = (ptRep R.S ξ).ψ (R₀.K.e v') j (R₀.K.lam v' g') * R₀.K.κA (Qbar l) (R₀.V.pr g')`. Rewrite using `[kap, kap, e]`. Conclude with `congrArg (· * ka g') (psi_j (k := k) (ptRep R.S ξ) hv j (R.K.lam v g) (R₀.K.lam v' g') ((R.lam_j v g).trans ((congrArg (galEmb ℚ L Ω) e).trans (R₀.lam_j v' g').symm)))`. Use `choose wt' h1 h2 using key`. Establish `a` using `off_self R hφ hg hE h ξ hV hTI ha`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `off_self (setS R₀ R.S) hφ' hg' hE' wt' ξ hV hTI ⟨h1, h2⟩`. Establish `e : ((setS R₀ R.S).K.tw (ptRep R.S ξ)).toHomUnits.comp (setS R₀ R.S).V.pr = (R.K.tw (ptRep R.S ξ)).toHomUnits.comp R.V.pr` using `MonoidHom.ext fun g => Units.ext (by`. Express the relevant statement in the definitionally equal form `((R₀.K.κA (Qbar l) (R₀.V.pr g) : (Qbar l)ˣ) : Qbar l) • (ptRep R.S ξ).r (R₀.K.π (R₀.V.pr g)) = ((R.K.κA (Qbar l) (R.V.pr g) : (Qbar l)ˣ) : Qbar l) • (ptRep R.S ξ).r (R.K.π (R.V.pr g))`. Rewrite using `[kap, kap, R.π_pr, R₀.π_pr])`. Conclude with `_root_.UpperTheory.Gal.projectedFormsSystemPart.glueN (by norm_num) (v0_ne hp) a (e ▸ b)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem endPt_of_allGood_of_arithmeticPointClassicality (R R₀ : CReal k c₁ f 3 ka) (hp : ¬ R₀.s.p ∣ R.s.p) {ι : Qbar l ≃+* ℂ} {φ : R.B₀.B →ₐ[c₁.O] R.S.B}
     (hφ : R.T.IsPhi φ) {J : Ideal R.B₀.B} (hg : AllGood R.S (J.map φ)) (hE : R.B₀.arithmeticPointClassicalityDense ι J)
@@ -102,27 +102,25 @@ theorem endPt_of_allGood_of_arithmeticPointClassicality (R R₀ : CReal k c₁ f
   exact _root_.UpperTheory.Gal.projectedFormsSystemPart.glueN (by norm_num) (v0_ne hp) a (e ▸ b)
 end
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M H L _ _ _ _ _ Φ k c₁ _ f ka R _ _ φ hφ hJ h ξ hV hTI x hx hGood hFree`. Establish `hn : (3 : ℕ) = 2 ∨ (3 : ℕ) = 3` using `Or.inr rfl`. Set `ρQ : Fr.NRep (Φ.ext f) 3 (Qbar l)` to `ptRep R.S ξ`. Set `ρ0 : R.V.frame.G₀ →* GL (Fin 3) (Qbar l)` to `(R.K.tw ρQ).toHomUnits`. Establish `hm : R.B₀.u.Maps ((ξ.comp (R.S.inc.comp φ) : R.B₀.B →ₐ[c₁.O] Qbar l) : R.B₀.B →+* Qbar l) (W.GDet.ofRep (R.K.tw ρQ)) (R.K.twψ ρQ)` using `TwLink.IsPhi.maps R.K hφ ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hxe : x = ξ.comp (R.S.inc.comp φ)` using `hx`. Establish `hψ : ∀ v, x.psi v = R.K.twψ ρQ v` using `fun v => funext fun i => by`. Rewrite using `[hxe]`. Conclude with `hm.2 v i`. Establish `hD : W.UniversalOrdinaryDeterminantRing.Pt.D x = W.GDet.ofRep (R.K.tw ρQ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxe]`. Conclude with `hm.1`. Establish `hcont : Continuous ρ0`. Establish `h1 : Continuous (R.K.tw ρQ)`. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `continuous_subtype_val.comp (((X.So.adicCont l c₁).2 _ _).1 R.K.κ_cont)`. Establish `h3` using `((derRep l c₁ _ R.C₀ 3 R.ok hn R.S ξ hV.1 0 (Submodule.zero_mem _)).1 a b).comp R.K.π_cont`. Conclude with `h2.mul h3`. Conclude with `Units.continuous_iff.2 ⟨h1, h1.comp continuous_inv⟩`. Establish `hirr : MatIrr ⊤ (W.mat ρ0)` using `R.K.tw_irr ρQ (irrTI l c₁ _ R.C₀ 3 R.ok hn R.S ξ hV.1 hTI)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hrep : W.UniversalOrdinaryDeterminantRing.Pt.IsRep x (ρ0.comp R.V.pr)`. Use `(congrArg (fun D => D.comap R.V.pr) hD).trans (det_comap (R.K.tw ρQ) R.V.pr (W.mat (ρ0.comp R.V.pr)) fun g => rfl)` and prove the remaining obligations. Establish `harith : W.UniversalOrdinaryDeterminantRing.Pt.Arith x h` using `⟨hGood.1, fun v j => by`. Take `⟨ph, hph, -⟩` from `hGood.2 v`. Conclude with `⟨ph j, hph j⟩⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hA : _root_.UpperTheory.V.Th.AutomorphicPointGalois ι x ρ0`. Use `⟨hcont, hrep, ⟨h, harith⟩, hJ h ξ hV hTI x hx harith, ?_, fun v => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Establish `h1 : R.K.π (R.V.pr g) = 1`. Rewrite using `[R.π_pr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `unramified_at_base_place e ψ H.dvd k _ R.v0M g hg`. Establish `h2 : R.K.κ (R.V.pr g) = 1` using `R.K.ramκ _ ⟨g, hg, rfl⟩`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((R.K.κA (Qbar l) (R.V.pr g) : (Qbar l)ˣ) : Qbar l) • ρQ.r (R.K.π (R.V.pr g)) = 1`. Establish `h3 : ((R.K.κA (Qbar l) (R.V.pr g) : (Qbar l)ˣ) : Qbar l) = 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `algebraMap c₁.O (Qbar l) ((R.K.κ (R.V.pr g) : (↥c₁.O)ˣ) : c₁.O) = 1`. Rewrite using `[h2, Units.val_one, map_one]`. Rewrite using `[h1, map_one, h3, one_smul]`. Rewrite using `[hψ v]`. Take `⟨g₀, hg⟩` from `R.ok.f3 (R.K.e v)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `tw_flag R.K ρQ v (pt_flag R.S ξ hV hn _ g₀ hg)`. Establish `hVne : Nonempty Φ.V`. Assume the negation of the conclusion as `hV'`. Rewrite `hV'` using `[not_nonempty_iff]`. Establish `h' : _ < Φ.d` using `R.big.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `[Fr.Frame.d] at h'`. Take `⟨v'⟩` from `hVne`. Use `⟨_root_.UpperTheory.V.Th.nice_zero_of_rank_two_or_three_irreducible_free ι x ρ0 hn hA hirr hFree ?_, hψ⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `R.K.e.surjective v'`. Take `⟨s, hs⟩` from `R.ok.f3 (R.K.e v)`.
-
-Take `⟨g, rfl⟩` from `(R.K.lam v).surjective s`. Use `⟨v, 0, 1, g, fun h' => w_ne hn _ hs 0 1 (by decide) ?_⟩` and prove the remaining obligations. Rewrite `h'` using `[R.K.psib, R.K.psib, R.K.chib, R.K.chib, ← R.K.lam_loc]`. Conclude with `mul_right_cancel h'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem niceAt2_alt :
   ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (c : Coef l)
@@ -203,9 +201,9 @@ def Red2Alt : Prop :=
       _root_.UpperTheory.Gal.projectedFormsSystemPart.EndPtAlt R ι φ → ∀ ξ : R.S.A →ₐ[c₁.O] Qbar l, IntPt R.S ξ → R.S.u.TI (RingHom.ker ξ) →
       ∀ a ∈ J, ∃ s : R.S.A, ξ s ≠ 0 ∧ s * R.S.inc (φ a) = 0
 /- English proof (translation)
-Introduce `hG hC Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M hL L _ _ _ _ _ Φ k c₁ _ f ka R hW hK φ hPhi hSurj J hAll hDim hDense hEnd ξ hξ hTI a ha`. Take `⟨h, hInc, hFree⟩` from `wtEx hG Ω l ι c N e ψ η σ g₁ B M hL L Φ k c₁ f ka R hW hK`. Establish `hNice` using `_root_.UpperTheory.Gal.projectedFormsSystemPart.niceAt2_alt Ω l ι c N e ψ η σ g₁ B M hL L Φ k c₁ f ka R hW hK φ hPhi hEnd h`. Establish `hFix` using `_root_.UpperTheory.V.J.fixOf_alt hC Ω l ι c N e ψ η σ g₁ B M hL L Φ k c₁ f ka R hW hK`. Establish `hN : IsNoetherianRing R.B₀.B` using `IsCO.toIsNoetherian (O := c₁.O)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : DenseB R.S (J.map φ) (fun y => W.UniversalOrdinaryDeterminantRing.Pt.Good (y.comp φ) h)` using `@denseOf l _ c₁ R.B₀.B R.S.B _ hN _ _ _ φ J (1 + 3 * (Φ.ext f).d) (fun x => W.UniversalOrdinaryDeterminantRing.Pt.Good x h) hSurj hDim (hDense h hInc)`. Use `redAbs l c₁ (Φ.ext f) R.C₀ 3 R.ok (Or.inr rfl) R.S (J.map φ) (fun y => W.UniversalOrdinaryDeterminantRing.Pt.Good (y.comp φ) h) hAll hD ?_ ξ hξ hTI (φ a) (Ideal.mem_map_of_mem _ ha)` and prove the remaining obligations. Introduce `ζ hV hT _ hGd`. Take `⟨h1, h2⟩` from `hNice ζ hV hT _ rfl hGd (hFree _ hGd)`. Conclude with `fixLe l c₁ (Φ.ext f) R.C₀ 3 R.ok (Or.inr rfl) R.S ζ hV.1 hT (hFix ζ _ hV.1 h1 h2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem red2_alt :
     GlobalTheory.Published.GlobalArtinReciprocity → _root_.UpperTheory.V.Th.DenseThresholdMainCase → _root_.UpperTheory.Gal.projectedFormsSystemPart.Red2Alt := by

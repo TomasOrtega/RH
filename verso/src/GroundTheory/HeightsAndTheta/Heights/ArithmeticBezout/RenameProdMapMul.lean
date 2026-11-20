@@ -13,7 +13,7 @@ section Swap
 variable {F : Type*} [Field F] {n k : ℕ}
 
 /- English proof (translation)
-Take `⟨x, hx, hI, hlin⟩` from `hu`. Conclude with `⟨x, hx, hI, fun i => by simpa using hlin (τ i)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem comp_mem_incidence {I : Ideal (MvPolynomial (Fin n) F)} {u : Fin k × Fin n → AlgebraicClosure F}
     (hu : u ∈ incidence I k) (τ : Equiv.Perm (Fin k)) : u ∘ Prod.map τ id ∈ incidence I k := by
@@ -21,7 +21,7 @@ theorem comp_mem_incidence {I : Ideal (MvPolynomial (Fin n) F)} {u : Fin k × Fi
   exact ⟨x, hx, hI, fun i => by simpa using hlin (τ i)⟩
 
 /- English proof (translation)
-Use `(hf.2 _).mp fun u hu => ?_` and prove the remaining obligations. Rewrite using `[aeval_rename]`. Conclude with `(hf.2 f).mpr dvd_rfl _ (comp_mem_incidence hu τ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsChowForm.dvd_rename {I : Ideal (MvPolynomial (Fin n) F)} {f : MvPolynomial (Fin k × Fin n) F}
     (hf : IsChowForm I k f) (τ : Equiv.Perm (Fin k)) : f ∣ rename (Prod.map τ id) f := by
@@ -30,7 +30,7 @@ theorem IsChowForm.dvd_rename {I : Ideal (MvPolynomial (Fin n) F)} {f : MvPolyno
   exact (hf.2 f).mpr dvd_rfl _ (comp_mem_incidence hu τ)
 
 /- English proof (translation)
-Rewrite using `[rename_rename]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rename_prodMap_mul (σ τ : Equiv.Perm (Fin k)) (p : MvPolynomial (Fin k × Fin n) F) :
     rename (Prod.map (σ * τ) id) p = rename (Prod.map σ id) (rename (Prod.map τ id) p) := by
@@ -38,7 +38,7 @@ theorem rename_prodMap_mul (σ τ : Equiv.Perm (Fin k)) (p : MvPolynomial (Fin k
   rfl
 
 /- English proof (translation)
-Establish `: Prod.map ⇑(1 : Equiv.Perm (Fin k)) (id : Fin n → Fin n) = id`. Use function extensionality and compare the values at `ij`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `rename_id_apply p`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_prodMap_one (p : MvPolynomial (Fin k × Fin n) F) :
     rename (Prod.map ⇑(1 : Equiv.Perm (Fin k)) id) p = p := by
@@ -49,11 +49,11 @@ theorem rename_prodMap_one (p : MvPolynomial (Fin k × Fin n) F) :
   exact rename_id_apply p
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hf.dvd_rename τ`. Take `⟨b, hb⟩` from `hf.dvd_rename (τ⁻¹ : Equiv.Perm (Fin k))`. Establish `hback : rename (Prod.map τ id) (rename (Prod.map ⇑(τ⁻¹ : Equiv.Perm (Fin k)) id) f) = f`. Rewrite using `[← rename_prodMap_mul, mul_inv_cancel, rename_prodMap_one]`. Establish `hab : a * rename (Prod.map τ id) b = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : f * (a * rename (Prod.map τ id) b) = f * 1`. Rewrite using `[mul_one, ← mul_assoc, ← ha]`. Use `conv_rhs => rw [← hback, hb]`. Rewrite using `[map_mul]`. Conclude with `mul_left_cancel₀ hf.1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, -, rfl⟩` from `(isUnit_iff_eq_C_of_isReduced (P := a)).mp (IsUnit.of_mul_eq_one _ hab)`. Conclude with `⟨c, by rw [ha, mul_comm]⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsChowForm.rename_eq_C_mul {I : Ideal (MvPolynomial (Fin n) F)}
     {f : MvPolynomial (Fin k × Fin n) F} (hf : IsChowForm I k f) (τ : Equiv.Perm (Fin k)) :
@@ -72,9 +72,9 @@ theorem IsChowForm.rename_eq_C_mul {I : Ideal (MvPolynomial (Fin n) F)}
   exact ⟨c, by rw [ha, mul_comm]⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hf.rename_eq_C_mul (Equiv.swap x y)`. Use `⟨c, ?_, hc⟩` and prove the remaining obligations. Establish `h2 : rename (Prod.map (Equiv.swap x y * Equiv.swap x y) id) f = C (c ^ 2) * f`. Rewrite using `[rename_prodMap_mul, hc, map_mul, rename_C, hc, ← mul_assoc, ← C_mul, sq]`. Rewrite `h2` using `[Equiv.swap_mul_self, rename_prodMap_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (C (c ^ 2) - 1) * f = 0`. Rewrite using `[sub_mul, ← h2, one_mul, sub_self]`. Establish `h4 : C (c ^ 2) - 1 = (0 : MvPolynomial (Fin k × Fin n) F)` using `(mul_eq_zero.mp h3).resolve_right hf.1`. Rewrite `h4` using `[sub_eq_zero, ← C_1]`. Conclude with `C_injective _ _ h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsChowForm.rename_swap {I : Ideal (MvPolynomial (Fin n) F)}
     {f : MvPolynomial (Fin k × Fin n) F} (hf : IsChowForm I k f) (x y : Fin k) :
@@ -92,9 +92,9 @@ theorem IsChowForm.rename_swap {I : Ideal (MvPolynomial (Fin n) F)}
   exact C_injective _ _ h4
 
 /- English proof (translation)
-Introduce `F _ n k I f hf τ`. Proceed by induction on `τ using Equiv.Perm.swap_induction_on with`. Consider the case `one => exact ⟨1, one_pow 2, by rw [C_1, one_mul, rename_prodMap_one]⟩`. Consider the case `swap_mul σ x y _ ih`. Take `⟨c, hc2, hc⟩` from `ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd2, hd⟩` from `hf.rename_swap x y`. Use `⟨d * c, by rw [mul_pow, hc2, hd2, one_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[rename_prodMap_mul, hc, map_mul, rename_C, hd, C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chowFormSwap : ChowFormSwap.Statement := by
   intro F _ n k I f hf τ

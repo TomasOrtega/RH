@@ -31,9 +31,9 @@ noncomputable section
 namespace GlobalTheory.Mem.FormSym
 
 /- English proof (translation)
-Take `rfl : z = fun j => if j.1 + 1 = N then p else 0` from `funext hz`. Substitute `hJ` using the available equality. Unfold `hform`. Simplify using `only [Matrix.one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_eq_single ⟨N - 1, by omega⟩]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[show N - 1 + 1 = N by omega]`. Introduce `b _ hb`. Establish `: ¬ (b.1 + 1 = N)` using `fun h => hb (Fin.ext (by simp; omega))`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hform_last {E : Type} [CommRing E] (σ : E →+* E) {N : ℕ} (hN : 0 < N) {J : Matrix (Fin N) (Fin N) E} (hJ : J = 1) {p : E}
     {z : Fin N → E} (hz : ∀ j, z j = if j.1 + 1 = N then p else 0) (x : Fin N → E) :
@@ -50,7 +50,7 @@ theorem hform_last {E : Type} [CommRing E] (σ : E →+* E) {N : ℕ} (hN : 0 < 
   · simp
 
 /- English proof (translation)
-Apply the tactic sequence `first | rfl | exact Formalism.BasicNotions.Examples₂.star_eq_conj _ _`.
+A detailed English derivation is pending.
 -/
 theorem sigD_conj (D : D7) (x : D.host.E) : (sigD D : D.host.E →+* D.host.E) x = D.host.conj x := by
   first | rfl | exact Formalism.BasicNotions.Examples₂.star_eq_conj _ _
@@ -58,37 +58,31 @@ theorem sigD_conj (D : D7) (x : D.host.E) : (sigD D : D.host.E →+* D.host.E) x
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B X I hOk hPins l Z`. Take `⟨G, hG, hChi⟩` from `GlobalTheory.Mem.TypePrimes.exists_gLoc_idG_chiTied I hOk hPins l Z`. Take `⟨-, -, -, hN⟩` from `GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hOk hPins l Z`. Establish `hch : ∀ (u : B.Word) (i : ℕ), ∃ (Ch : Type) (_ : Finite Ch) (chOf : (I.stp u I.mu0 i).Cl → Ch) (K : ∀ (hi : i ≤ B.R.m) (β : Ch), LevelChart (I.rec7 l Z) (B.T u) (badG (I.rec7 l Z)) i hi (fun c : {c // chOf c = β} => (I.chain l u I.mu0).stab i c.1) (fun c => latCrd (I.rec7 l Z) i …`. Introduce `u i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hi : i ≤ B.R.m`. Take `⟨Ch, hF, chOf, K, h1, h2, h3⟩` from `GlobalTheory.Mem.Col2.MemChart.exists_charts I hOk hPins l Z u i hi`. Take `⟨K', h4, h5⟩` from `GlobalTheory.Mem.Col2.TC.charts_funKilled I hOk hPins l Z u I.mu0 i hi _ Ch chOf K h1`. Use `⟨Ch, hF, chOf, fun _ => K', fun _ => h4, fun _ c => ?_, h3, fun _ β => (h5 β).1⟩` and prove the remaining obligations. Rewrite using `[(h5 (chOf c)).2.2.2.2.2.1]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 c`. Use `⟨Unit, inferInstance, fun _ => (), fun h => absurd h hi, fun h => absurd h hi, fun h => absurd h hi, fun h => ?_, fun h => absurd h hi⟩` and prove the remaining obligations. It suffices to derive a contradiction. Apply the tactic sequence `rcases h with h | h <;> omega`. Use `choose Ch hChF chOf K hRK hYs hU hFK using hch`.
+Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hYs' : ∀ u i hi β c (e : chOf u i c = β), ((K u i hi β).y ⟨c, e⟩).1 = I.yStd u i c`. Introduce `u i hi β c e`. Substitute `e` using the available equality. Conclude with `hYs u i hi c`. Set `A : ∀ u, AtTTied (D` to `I.rec7 l Z) u := fun u => GlobalTheory.Mem.AtLevel.atTTied I l Z u`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hIdV : ∀ u, I.IdV l u I.mu0 (A u).eV` using `fun _ _ => rfl`. Use `choose eY hIdY hde using fun u i (hi : i ≤ B.R.m) => ((hN i hi).2.2 u I.mu0).2`. Use `choose Lv hLv using fun u i (hi : i ≤ B.R.m) => GlobalTheory.Mem.Col2.TC.exists_level_projections I hOk hPins l Z u I.mu0 i hi`. Establish `hde1 : ∀ u i (hi : i ≤ B.R.m), ∃ C : GL (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E, cT (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) C.1 * C.1 = gramN (I.rec7 l Z) i hi ∧ (∀ x : Fin ((I.rec7 l Z).R.N i) → (I.rec7 l Z).host.E, x ∈ selfDualLatticeCoords (I.r …`. Introduce `u i hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨1, ?_, fun x => ?_, fun τ z => ?_⟩` and prove the remaining obligations. Rewrite using `[(hN i hi).1]`. Simplify using `[cT]`. Rewrite using `[Units.val_one]`. Simplify using `only [Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hN i hi).2.1 x`. Use `(hde u i hi τ z).trans ?_` and prove the remaining obligations. Rewrite using `[Units.val_one, Matrix.det_one, map_one, one_mul]`. Establish `hVG` using `fun u i (hi : i ≤ B.R.m) => GlobalTheory.Mem.Col2.TC.val_tied I hOk hPins l Z u I.mu0 i hi _ (Ch u i) (chOf u i) (K u i hi) (eY u i hi) (hRK u i hi) (hIdY u i hi)`. Establish `hIN` using `fun u i (hi : i ≤ B.R.m) => GlobalTheory.Mem.Col2.MetricTie.ipV_norm_tie I hOk hPins l Z u I.mu0 i hi (eY u i hi) (hIdY u i hi)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNm : ∀ u i hi, NormTieG (D` using `I.rec7 l Z) ((I.rec7 l Z).fm u) (eY u i hi) := fun u i hi => (hIN u i hi).2`. Establish `hDil` using `fun u i (hi : i ≤ B.R.m) => GlobalTheory.Mem.Col2.DiaChart.dilTied I hOk hPins l Z u I.mu0 i hi _ (Ch u i) (chOf u i) (K u i hi) (eY u i hi) (A u).eV (hRK u i hi) (hFK u i hi) (hIdY u i hi) (hIdV u)`. Use `choose fMe hFv hFvT using fun u i (hi : i ≤ B.R.m) => GlobalTheory.Mem.Col2.LevFun.fvTieG I hOk hPins l Z u I.mu0 i hi _ (Ch u i) (chOf u i) (K u i hi) (A u).eV (Lv u i hi) (hRK u i hi) (hIdV u) (hLv u i hi) (hFK u i hi)`. Establish `hUp` using `fun u i (hi : i ≤ B.R.m) => GlobalTheory.Mem.Col2.UpChart.upNatTie I hOk hPins l Z u I.mu0 i hi _ (Ch u i) (chOf u i) (K u i hi) (eY u i hi) (A u).eV (Lv u i hi) (hRK u i hi) (hIdY u i hi) (hIdV u) (hLv u i hi)`. Establish `hDn` using `fun u i (hi : i ≤ B.R.m) => GlobalTheory.DnMove.dnNatTieG_cols I hOk hPins l Z u I.mu0 i hi _ (Ch u i) (chOf u i) (K u i hi) (eY u i hi) (A u).eV (Lv u i hi) (hRK u i hi) (hIdY u i hi) (hIdV u) (hLv u i hi)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `hBw` using `fun u i (hi : i ≤ B.R.m) => GlobalTheory.Mem.Col2.TC.bw_tie I hOk hPins l Z u I.mu0 i hi (eY u i hi) (hIdY u i hi)`. Establish `hHex : ∀ u i (β : Ch u i), ∃ (H : ∀ (j : Fin 2) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal → Subgroup (GL (Fin (B.R.N i)) (kv (I.rec7 l Z).host.F v))) (lam : ∀ j v h, H j v h →* ℂˣ), ∀ hi : i ≤ B.R.m, Nonempty (GLe …`. Introduce `u i β`. Distinguish the cases in `hi : i ≤ B.R.m`. Take `⟨H, lam, h⟩` from `GlobalTheory.Mem.Col2.ChartLevel.chart_gLevH I hOk hPins l Z u G i hi (Ch u i) (chOf u i) (K u i hi) hG (hRK u i hi) β`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `⟨H, lam, fun _ => h⟩`. Conclude with `⟨fun _ _ _ => ⊤, fun _ _ _ => 1, fun h => absurd h hi⟩`. Use `choose Hc lamC hGH using hHex`. Use `choose J lamJ VJ Yb hYbF hYbA yb hJ using fun u => GlobalTheory.Mem.Col2.OneLevel.stepBefore_oneLevel I hOk hPins l Z u G (Ch u (B.R.m - 1)) (chOf u (B.R.m - 1)) (K u (B.R.m - 1) (Nat.sub_le _ _)) hG (hRK u _ _)`. Use `choose KP WP hKP using fun u => GlobalTheory.Mem.Col2.TC.clsP_tie I hOk hPins l Z u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `choose jM hjM using fun u => GlobalTheory.Mem.Col2.PerConj.period_conj I hOk hPins l Z u I.mu0`. Set `β0 : ∀ u i, (i = 0 ∨ i = B.R.m) → Ch u i` to `fun u i h => (hU u i h).some.default`. Establish `hβ0 : ∀ u i h c, chOf u i c = β0 u i h` using `fun u i h c => (hU u i h).some.uniq _`. Establish `hSub : ∀ u i, (i = 0 ∨ i = B.R.m) → Subsingleton (Ch u i)` using `fun u i h => @Unique.instSubsingleton _ (hU u i h).some`. Set `clsF : ∀ u i hi (h : i = 0 ∨ i = B.R.m), ClsTied (D` to `I.rec7 l Z) u i hi := fun u i hi h => clsOfChart (β0 u i h) (hβ0 u i h) (K u i hi (β0 u i h))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `valF : ∀ u i hi (h : i = 0 ∨ i = B.R.m), ValTied (D` to `I.rec7 l Z) u (A u).eV i hi (clsF u i hi h) := fun u i hi h => @valOfG _ u i hi (Ch u i) (chOf u i) (hSub u i h) (A u).eV (K u i hi) (β0 u i h) (hβ0 u i h) (eY u i hi) (hde1 u i hi) (hVG u i hi) (hIN u i hi).1 (hDil u i hi)`. Establish `hR : ∀ u i hi (h : i = 0 ∨ i = B.R.m), ∃ k, I.Reads u I.mu0 i (fun _ => ()) (fun _ => (clsF u i hi h).lev.Lb) (fun _ => (clsF u i hi h).lev.U) (fun _ => (clsF u i hi h).lev.chi) (fun c => ((clsF u i hi h).y c).1) (fun c s => ((clsF u i hi h).stabI c s).1) k` using `fun u i hi h => readsK_one I l Z (hRK u i hi) (β0 u i h) (hβ0 u i h)`. Use `choose V0 hV0 using fun u => GlobalTheory.Mem.Col2.TC.GLev0.glev_zero I hOk hPins l Z u G (clsF u 0 (Nat.zero_le _) (Or.inl rfl)) hG (hR u 0 _ (Or.inl rfl))`. Use `choose lamM lamP VM VP hVM using fun u => GlobalTheory.Mem.Col2.TC.levels_top_row_sym I hOk hPins l Z u G (clsF u B.R.m le_rfl (Or.inr rfl)) (KP u) hG (hR u _ le_rfl (Or.inr rfl)) (hKP u).1`. Use `choose Tl Ta hTl using fun u => GlobalTheory.Mem.Col2.TC.til_ties I hOk hPins l Z u (A u) (clsF u B.R.m le_rfl (Or.inr rfl)) (KP u) (lvOfG (A u) (Lv u B.R.m le_rfl)) (valF u B.R.m le_rfl (Or.inr rfl)) rfl (hR u _ le_rfl (Or.inr rfl)) (hKP u).1 (fun v c z h => (hLv u B.R.m le_rfl) …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Use `choose eW heW hEvz using fun u => (hTl u).2.2`. Establish `hNpos : 0 < B.R.N B.R.m`. Use `k_le_N B.R B.R.m` as an intermediate fact. Use `B.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Establish `hTilFv : ∀ u, TilBaseFv (Tl u) (clsF u B.R.m le_rfl (Or.inr rfl)) (fun v => fMe u B.R.m le_rfl (β0 u B.R.m (Or.inr rfl)) v)`. Introduce `u v t x r ht hr`. Use `hFvT u B.R.m le_rfl (β0 u B.R.m (Or.inr rfl)) v x ⟨B.R.N B.R.m - 1, by omega⟩ r t (by show B.R.N B.R.m - 1 + 1 = _; omega) ht ?_` and prove the remaining obligations. Use `hr.trans ((hform_last _ hNpos (hN B.R.m le_rfl).1 (hTl u).1 x).trans ?_)` and prove the remaining obligations. Conclude with `congrArg (fun s : B.host.E => s * (show B.host.E from x ⟨B.R.N B.R.m - 1, Nat.sub_lt hNpos Nat.one_pos⟩)) (sigD_conj (I.rec7 l Z) _)`.
-
-Establish `hFrExt : ∀ u, FrExtFr (D` using `I.rec7 l Z) (Tl u).z0 G (VM u).fr (VP u).fr := by`. Introduce `u`. Rewrite using `[funext (hTl u).1]`. Conclude with `(hVM u).2.2.2`. Set `F : ∀ u, FormsTiedSym (I.rec7 l Z) u (Ch u) (chOf u)` to `fun u => { atT := A u gl := G gl_K := fun i => by rw [hG.piG]; exact X.piG_K i cls := clsF u val := valF u glev0 := V0 u lamM := lamM u lamM_eq := (hVM u).1 glevM := VM u lv := fun i hi => lvOfG (A u) (Lv u i hi) fMe := fun i hi h v => fMe u i hi (β0 u i h) v fv := fun i hi h => …`.
-
-Use `⟨Ch, chOf, F, fun u => ⟨?_, ?_⟩, hChF, fun u => hU u B.R.m (Or.inr rfl), fun _ _ => rfl, hChi⟩` and prove the remaining obligations. Conclude with `{ eV := fun _ => rfl piU := rfl res := rfl gl := hG ends := fun i hi h => hR u i hi h yE := fun i hi h c => hYs' u i hi _ c (hβ0 u i h c) mid := fun i _ h2 => hRK u i (le_of_succ_m h2) eY := fun i hi _ => hIdY u i hi eYC := fun i _ h2 => hIdY u i (le_of_succ_m h2) pr := fun i hi …`. Conclude with `⟨fun i _ h2 => hLv u i (le_of_succ_m h2), (hJ u).1⟩`.
+A detailed English derivation is pending.
 -/
 theorem formsTiedSym_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∃ (Ch : B.Word → ℕ → Type) (chOf : ∀ u i, ((I.rec7 l Z).mem u).C.cls i → Ch u i) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (Ch u) (chOf u)), (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) ∧ (∀ u i, Finite (Ch u i)) ∧ (∀ u, Nonempty (Unique (Ch u B.R.m))) ∧ (∀ u u', (F u).gl = (F u').gl) ∧ CharacterCompatible (F B.u₀).gl B.R.m := by
   intro B X I hOk hPins l Z

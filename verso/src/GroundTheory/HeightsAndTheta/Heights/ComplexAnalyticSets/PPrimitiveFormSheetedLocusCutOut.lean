@@ -7,11 +7,9 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Topology
 
 /- English proof (translation)
-Introduce `σ _ X w d A hX hiso ℓ N a δ q ha hδ hq hδ0 hP hsep hQ`. Take `⟨W, B, C, E, hW, hwW, hB, hwB, han, hCE, hroot⟩` from `hfac σ X w d A hX hiso ℓ N a δ q ha hδ hq hδ0 hP hsep hQ`. Establish `hBn : ∀ᶠ z in 𝓝 w, A z ∈ B` using `A.continuous.continuousAt.preimage_mem_nhds (hB.mem_nhds hwB)`. Establish `hc : ∀ F : (Fin d → ℂ) → ℂ → ℂ, AnalyticAt ℂ (fun u : (Fin d → ℂ) × ℂ => F u.1 u.2) (A w, ℓ w) → AnalyticAt ℂ (fun z => F (A z) (ℓ z)) w` using `fun F hF => (show AnalyticAt ℂ (fun u : (Fin d → ℂ) × ℂ => F u.1 u.2) ((A.prod ℓ) w) from hF).comp ((A.prod ℓ).analyticAt w)`. Use `⟨fun z => C (A z) (ℓ z), fun z => E (A z) (ℓ z), hc C (han _ hwB _).1, hc E (han _ hwB _).2, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hBn, hP] with z hz hPz hzX`. Rewrite using `[hCE _ hz]`. Conclude with `hPz hzX`. Use `filter_upwards [hBn, hP, hiff σ X w d A ℓ N a δ q ha hδ hq hP hsep hQ, hW.mem_nhds hwW] with z hz hPz hsh hzW hzX hzδ`. Establish `hr` using `hroot _ hz hzδ (ℓ z) (hPz hzX)`.
-
-Establish `hs` using `hsh hzX hzδ W hW hzW`. Conclude with `⟨hs.trans hr.1.symm, fun h h0 => hr.2.mp h0 (hs.mp h)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PrimitiveFormSheetedLocusCutOut.proof (hfac : PrimitiveFormFullRootFactor.Statement)
     (hiff : PrimitiveFormSheetedIffRootFull.Statement) : PrimitiveFormSheetedLocusCutOut.Statement := by

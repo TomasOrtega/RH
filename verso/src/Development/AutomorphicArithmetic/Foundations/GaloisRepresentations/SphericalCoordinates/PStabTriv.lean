@@ -8,31 +8,27 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `hOcc hLat hFix hRig p _ D G L hDa hDm v hsig t₀ htau ρ hSig PD RD N hN3 hNp B a y hSees`. Take `⟨D', t, P, j, hCls, hPer, hPl, hCA, hLoc, Q, hQ, hQj, hrel⟩` from `hOcc p D G L hDa hDm v hsig t₀ htau ρ hSig PD RD N (by omega) hNp B a`. Take `⟨hFixL, hS1, hS2⟩` from `hSees`. Take `⟨w, hwm, hwj⟩` from `(hLat p D G L B (PD B) N (by omega) hNp D' t D' t j j a.1 a.1 N N t t hCls hCls hPl hPl hCA hCA hLoc hLoc y).mp ⟨hS1, hS2⟩`. Take `⟨hiff, hinv⟩` from `hFix p D G L v t₀ ρ B.β (RD B) Q a.2 hQ hrel y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨H, hH⟩` from `hiff.mp hFixL`. Take `⟨H', hH'⟩` from `((hFix p D G L v t₀ ρ B.β (RD B) Q a.2 hQ hrel y⁻¹).1).mp (hinv hFixL)`. Establish `hback : ∀ x : VQ D, (actY L y⁻¹) ((actY L y) x) = x`. Introduce `x`. Simplify using `only [actY]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Establish `key : ∀ z, (H' * H) *ᵥ z = z`. Set `f : (Fin D.g → ℂ) →ₗ[ℝ] (Fin D.g → ℂ)` to `(Matrix.toLin' (H' * H)).restrictScalars ℝ - LinearMap.id`. Establish `hle : Set.range Q ⊆ LinearMap.ker f`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker]`. Use `show Matrix.toLin' (H' * H) (Q x) - Q x = 0`. Rewrite using `[Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ← hH x, ← hH', hback, sub_self]`. Introduce `z`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz : z ∈ LinearMap.ker f`. Establish `hs` using `Submodule.span_le.mpr hle`. Rewrite `hs` using `[hQ.2.1]`. Conclude with `hs Submodule.mem_top`. Rewrite `hz` using `[LinearMap.mem_ker]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hz' : Matrix.toLin' (H' * H) z - z = 0` using `hz`. Rewrite `hz'` using `[Matrix.toLin'_apply, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hHH : H' * H = 1`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Conclude with `LinearMap.ext fun z => by rw [Matrix.toLin'_apply, key]; rfl`. Use `letI : Invertible H := invertibleOfLeftInverse H H' hHH`. Establish `hfix : ∀ u, w u = u` using `hRig D.O D.inv D.g ρ D.La N D' t P w (Matrix.toLinearEquiv' H this) hN3 (GlobalTheory.UPel.HT.Datum.Cls.fullMark D N (by omega) hNp D' t hCls) hPer hwm (fun u => by`. Rewrite using `[← hQj (w u), hwj, hH, hQj]`. Use `show H *ᵥ P u = Matrix.toLin' H (P u)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.toLin'_apply])`. Establish `hrep : L.rep ↑(↑y : G.Cˣ × ℚˣ).1 = 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨m, u, hm, hmu⟩` from `hPl.2.2.1 x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : m • (actY L y) x = m • x`. Rewrite using `[← map_nsmul, hmu, ← hwj, hfix]`. Rewrite `h1` using `[← Nat.cast_smul_eq_nsmul ℚ, ← Nat.cast_smul_eq_nsmul ℚ]`. Conclude with `smul_right_injective _ (Nat.cast_ne_zero.mpr hm) h1`. Establish `hy1 : (↑y : G.Cˣ × ℚˣ).1 = 1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `L.rep_inj` to reduce the goal to its premises. Rewrite using `[hrep, Units.val_one, map_one]`. Establish `hprop` using `y.2`. Take `⟨hy, -⟩` from `hprop`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hy` using `[hy1]`. Establish `hsh : sh G (1 : G.C) = 1` using `by simp [sh]`. Rewrite `hy` using `[Units.val_one, _root_.one_mul, hsh, _root_.mul_one]`. Establish `hq : (algebraMap ℚ G.C) ((↑y : G.Cˣ × ℚˣ).2 : ℚ) = 1`. Establish `: (algebraMap ℚ G.C) ((↑y : G.Cˣ × ℚˣ).2 : ℚ) * ↑B.β = 1 * ↑B.β` using `by rw [_root_.one_mul, ← hy]`.
-
-Conclude with `(Units.mul_left_inj B.β).mp this`. Establish `hq' : ((↑y : G.Cˣ × ℚˣ).2 : ℚ) = 1`. Rewrite `hq` using `[← map_one (algebraMap ℚ G.C)]`. Conclude with `(algebraMap ℚ G.C).injective hq`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Conclude with `Prod.ext hy1 (Units.ext hq')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.stabTriv_of :
     UpperTheory.Gal.W2.CoordOcc → UpperTheory.Gal.W2.LatIso → UpperTheory.Gal.W2.FixLine → UpperTheory.Gal.W2.Rigid → UpperTheory.Gal.W2.StabTriv := by

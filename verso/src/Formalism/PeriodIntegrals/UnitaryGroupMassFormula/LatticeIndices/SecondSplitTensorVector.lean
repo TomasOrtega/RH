@@ -15,14 +15,14 @@ def IntV (v : n → K) : Prop := ∀ i, v i ∈ O
 def IntM (M : Matrix n n K) : Prop := ∀ i j, M i j ∈ O
 
 /- English proof (translation)
-Introduce `i` and use `by simp only [Matrix.mulVec, dotProduct] exact sum_mem fun j _ => mul_mem (hM i j) (hv j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intV_mulVec {M : Matrix n n K} {v : n → K} (hM : IntM O M) (hv : IntV O v) : IntV O (M *ᵥ v) := fun i => by
   simp only [Matrix.mulVec, dotProduct]
   exact sum_mem fun j _ => mul_mem (hM i j) (hv j)
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `O.one_mem`. Conclude with `O.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intM_one : IntM O (1 : Matrix n n K) := by
   intro i j
@@ -38,7 +38,7 @@ def Lat : Set (n → T) :=
     IntV O (((P : Matrix n n K)ᵀ * (J.map (t1 θ))ᵀ) *ᵥ fun j => t2 θ (x j))}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem firstSplit_mulVec (M : Matrix n n T) (x : n → T) :
     (fun i => t1 θ ((M *ᵥ x) i)) = M.map (t1 θ) *ᵥ fun j => t1 θ (x j) := by
@@ -46,7 +46,7 @@ theorem firstSplit_mulVec (M : Matrix n n T) (x : n → T) :
   simp [Matrix.mulVec, dotProduct, map_sum, map_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem secondSplit_mulVec (M : Matrix n n T) (x : n → T) :
     (fun i => t2 θ ((M *ᵥ x) i)) = M.map (t2 θ) *ᵥ fun j => t2 θ (x j) := by
@@ -56,30 +56,30 @@ theorem secondSplit_mulVec (M : Matrix n n T) (x : n → T) :
 def tv (j : n) : n → T := fun i => θ.symm ((P : Matrix n n K) i j, 0)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[tv, t1]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem firstSplit_tensor_vector (j : n) : (fun i => t1 θ (tv θ P j i)) = fun i => (P : Matrix n n K) i j := by
   funext i
   simp [tv, t1]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[tv, t2]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem secondSplit_tensor_vector (j : n) : (fun i => t2 θ (tv θ P j i)) = 0 := by
   funext i
   simp [tv, t2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_col (M N : Matrix n n K) (j : n) : (M *ᵥ fun i => N i j) = fun i => (M * N) i j := by
   funext i
   simp [Matrix.mulVec, dotProduct, Matrix.mul_apply]
 
 /- English proof (translation)
-Simplify using `only [Lat, Set.mem_setOf_eq]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[firstSplit_tensor_vector, mulVec_col]`. Establish `hP : ((P⁻¹ : GL n K) : Matrix n n K) * (P : Matrix n n K) = 1` using `by simp`. Rewrite using `[hP]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun i => intM_one O i j`. Rewrite using `[secondSplit_tensor_vector, Matrix.mulVec_zero]`. Conclude with `fun _ => O.zero_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tv_mem (j : n) : tv θ P j ∈ Lat O θ J P := by
   simp only [Lat, Set.mem_setOf_eq]
@@ -95,9 +95,9 @@ def conjPrime₂ (g : GL n T) : Matrix n n K :=
   ((P⁻¹ : GL n K) : Matrix n n K) * (g : Matrix n n T).map (t1 θ) * (P : Matrix n n K)
 
 /- English proof (translation)
-Introduce `i j`. Establish `h` using `hg _ (tv_mem O θ J P j)`. Simplify using `only [Lat, Set.mem_setOf_eq] at h`. Establish `h1` using `h.1`. Rewrite `h1` using `[firstSplit_mulVec, firstSplit_tensor_vector, mulVec_col, mulVec_col]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : conjPrime₂ θ P g i j = (((P⁻¹ : GL n K) : Matrix n n K) * ((g : Matrix n n T).map (t1 θ) * (P : Matrix n n K))) i j`. Rewrite using `[conjPrime₂, Matrix.mul_assoc]`. Rewrite using `[e]`. Conclude with `h1 i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjP_int (g : GL n T) (hg : ∀ x, x ∈ Lat O θ J P → (g : Matrix n n T) *ᵥ x ∈ Lat O θ J P) :
     IntM O (conjPrime₂ θ P g) := by
@@ -113,7 +113,7 @@ theorem conjP_int (g : GL n T) (hg : ∀ x, x ∈ Lat O θ J P → (g : Matrix n
   exact h1 i
 
 /- English proof (translation)
-Establish `hP : (P : Matrix n n K) * ((P⁻¹ : GL n K) : Matrix n n K) = 1` using `by simp`. Simplify using `only [conjPrime₂, Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (P : Matrix n n K) ((P⁻¹ : GL n K) : Matrix n n K), hP, Matrix.one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjP_mul (g h : GL n T) : conjPrime₂ θ P (g * h) = conjPrime₂ θ P g * conjPrime₂ θ P h := by
   have hP : (P : Matrix n n K) * ((P⁻¹ : GL n K) : Matrix n n K) = 1 := by simp
@@ -121,7 +121,7 @@ theorem conjP_mul (g h : GL n T) : conjPrime₂ θ P (g * h) = conjPrime₂ θ P
   rw [← Matrix.mul_assoc (P : Matrix n n K) ((P⁻¹ : GL n K) : Matrix n n K), hP, Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `[conjPrime₂]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjP_one : conjPrime₂ θ P 1 = 1 := by
   simp [conjPrime₂]

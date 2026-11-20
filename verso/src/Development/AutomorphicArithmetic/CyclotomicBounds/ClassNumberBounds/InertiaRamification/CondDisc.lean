@@ -12,7 +12,7 @@ open scoped Pointwise
 variable {N : ℕ} [NeZero N] {K : Type*} [Field K] [NumberField K] [IsCyclotomicExtension {N} ℚ K]
 
 /- English proof (translation)
-Establish `h1 : addOrderOf a = orderOf (z ^ a.val)`. Establish `hfin : IsOfFinOrder z` using `isOfFinOrder_iff_pow_eq_one.2 ⟨N, NeZero.pos N, hz.pow_eq_one⟩`. Rewrite using `[hfin.orderOf_pow, ← hz.eq_orderOf, ← ZMod.addOrderOf_coe _ (NeZero.ne N), ZMod.natCast_zmod_val]`. Rewrite using `[h1]`. Conclude with `IsPrimitiveRoot.orderOf _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isPrimitiveRoot_pow_val {R : Type*} [CommRing R] {z : R}
     (hz : IsPrimitiveRoot z N) (a : ZMod N) : IsPrimitiveRoot (z ^ a.val) (addOrderOf a) := by
@@ -24,9 +24,9 @@ private theorem isPrimitiveRoot_pow_val {R : Type*} [CommRing R] {z : R}
   exact IsPrimitiveRoot.orderOf _
 
 /- English proof (translation)
-Rewrite using `[galEquivZMod_smul_of_pow_eq N K σ hz.pow_eq_one]`. Establish `h : z ^ (galEquivZMod N K σ).val.val = z ^ (1 + ((galEquivZMod N K σ : ZMod N) - 1).val)`. Use `pow_eq_pow_of_modEq ?_ hz.pow_eq_one` and prove the remaining obligations. Rewrite using `[← ZMod.natCast_eq_natCast_iff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, pow_add, pow_one, ← mul_one_sub]`. Conclude with `Ideal.span_singleton_mul_left_unit (hz.isUnit (NeZero.ne N)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem span_sub_smul {z : 𝓞 K} (hz : IsPrimitiveRoot z N) (σ : Gal(K/ℚ)) :
     Ideal.span {z - σ • z} =
@@ -41,7 +41,7 @@ private theorem span_sub_smul {z : 𝓞 K} (hz : IsPrimitiveRoot z N) (σ : Gal(
   exact Ideal.span_singleton_mul_left_unit (hz.isUnit (NeZero.ne N)) _
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Simplify using `only [← Nat.factorization_def _ hl]`. Rewrite using `[Nat.factorization_prod hf, Finsupp.finsetSum_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem padicValNat_prod {ι : Type*} (l : ℕ) [Fact l.Prime] (s : Finset ι) (f : ι → ℕ)
     (hf : ∀ i ∈ s, f i ≠ 0) : padicValNat l (∏ i ∈ s, f i) = ∑ i ∈ s, padicValNat l (f i) := by
@@ -50,21 +50,19 @@ private theorem padicValNat_prod {ι : Type*} (l : ℕ) [Fact l.Prime] (s : Fins
   rw [Nat.factorization_prod hf, Finsupp.finsetSum_apply]
 
 /- English proof (translation)
-Establish `hζ` using `IsCyclotomicExtension.zeta_spec N ℚ K`. Establish `hz` using `hζ.toInteger_isPrimitiveRoot`. Establish `h` using `congrArg Ideal.absNorm (map_differentIdeal_eq_span_prod E hζ)`. Rewrite `h` using `[Ideal.absNorm_algebraMap, absNorm_differentIdeal E, ← IsFractionRing.finrank_eq (𝓞 E) E (𝓞 K) K, ← Ideal.prod_span_singleton, map_prod]`. Establish `hne : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (discr_ne_zero E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne'` using `h ▸ pow_ne_zero (Module.finrank E K) hne`. Establish `h2` using `congrArg (padicValNat l) h`. Rewrite `h2` using `[padicValNat.pow, padicValNat_prod l _ _ (Finset.prod_ne_zero_iff.1 hne')]`. Establish `h3` using `congrArg (Nat.cast : ℕ → ℚ) h2`. Move the coercions through the operations in `at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h4 : ∀ σ ∈ Finset.univ.filter (fun σ : Gal(K/ℚ) => σ ∉ E.fixingSubgroup), (padicValNat l (Ideal.absNorm (Ideal.span {hζ.toInteger - σ • hζ.toInteger})) : ℚ) = Module.finrank ℚ K * rootWeight l (addOrderOf ((galEquivZMod N K σ : ZMod N) - 1))`. Introduce `σ hσ`. Rewrite using `[span_sub_smul hz σ]`. Use `padicValNat_absNorm_one_sub l ?_ (isPrimitiveRoot_pow_val hz _)` and prove the remaining obligations. Establish `hσ1 : σ ≠ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `(Finset.mem_filter.1 hσ).2 (one_mem _)`. Establish `hpos` using `addOrderOf_pos ((galEquivZMod N K σ : ZMod N) - 1)`. Establish `hne1 : addOrderOf ((galEquivZMod N K σ : ZMod N) - 1) ≠ 1`. Rewrite using `[Ne, AddMonoid.addOrderOf_eq_one_iff, sub_eq_zero, Units.val_eq_one, map_eq_one_iff _ (galEquivZMod N K).injective]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `hσ1`. Use linear arithmetic over natural numbers and integers. Rewrite `h3` using `[Finset.sum_congr rfl h4, ← Finset.mul_sum]`. Establish `h5 : ∑ σ ∈ Finset.univ.filter (fun σ : Gal(K/ℚ) => σ ∉ E.fixingSubgroup), rootWeight l (addOrderOf ((galEquivZMod N K σ : ZMod N) - 1)) = avgCondExp l (fieldChars N E)`. Rewrite using `[fieldChars, ← sum_rootWeight_eq_avgCondExp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_equiv (galEquivZMod N K).toEquiv ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `σ`. Rewrite using `[Finset.mem_filter_univ, Finset.mem_filter_univ, fieldUnits]`. Conclude with `not_congr (Subgroup.mem_map_iff_mem (f := (galEquivZMod N K).toMonoidHom) (galEquivZMod N K).injective).symm`. Rewrite `h3` using `[h5, ← Module.finrank_mul_finrank ℚ E K]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `p1 : (Module.finrank ℚ E : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `p2 : (Module.finrank E K : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Rewrite using `[vdField, padicValInt, div_eq_iff p1]`. Move the coercions through the operations in `at h3`. Apply `mul_left_cancel₀ p2` to reduce the goal to its premises.
-
-Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem vdField_eq_avg (E : IntermediateField ℚ K) (l : ℕ) [Fact l.Prime] :
     vdField E l = avgCondExp l (fieldChars N E) := by
@@ -114,17 +112,17 @@ private theorem vdField_eq_avg (E : IntermediateField ℚ K) (l : ℕ) [Fact l.P
   rw [h3]; ring
 
 /- English proof (translation)
-Use `Fintype.ofFinite (fieldChars N E)` as an intermediate fact. Establish `hne : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (discr_ne_zero E)`. Establish `hc : ∀ ψ : DirichletCharacter ℂ N, ψ.conductor ≠ 0` using `fun ψ => conductor_ne_zero ψ`. Establish `p1 : (Module.finrank ℚ E : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `hcard` using `(card_fieldChars (N := N) E).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (discr E).natAbs = ∏ ψ : fieldChars N E, (ψ : DirichletCharacter ℂ N).conductor`. Use `Nat.eq_of_factorization_eq hne (Finset.prod_ne_zero_iff.2 fun ψ _ => hc _) fun l => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l.Prime`. Establish `: Fact l.Prime` using `⟨hl⟩`. Establish `h` using `vdField_eq_avg (N := N) E l`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[vdField, avgCondExp, hcard, div_left_inj' p1, finsum_eq_sum_of_fintype, padicValInt]`. Rewrite using `[Nat.factorization_prod fun ψ _ => hc _, Finsupp.finsetSum_apply, Nat.factorization_def _ hl]`. Conclude with `h` after adjusting the coercions. Simplify using `[Nat.factorization_eq_zero_of_not_prime _ hl]`. Use `⟨by rw [finprod_eq_prod_of_fintype, h1], ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `habs : ((|discr E| : ℤ) : ℝ) = ((discr E).natAbs : ℝ)`. Rewrite using `[← Int.natCast_natAbs, Int.cast_natCast]`. Rewrite using `[rootDiscr_def, logRootDiscChar, hcard, finsum_eq_sum_of_fintype, habs, Real.log_rpow (by exact_mod_cast Nat.pos_of_ne_zero hne), h1, Nat.cast_prod, Real.log_prod (fun ψ _ => by exact_mod_cast hc _), div_eq_inv_mul]`. Establish `hf : fieldCond (fieldChars N E) ≠ 0`. Rewrite using `[fieldCond, Ne, Finset.lcm_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨ψ, -, h⟩`. Conclude with `hc ψ h`. Use extensionality with `l`. Rewrite using `[Nat.mem_primeFactors_of_ne_zero hne, Nat.mem_primeFactors_of_ne_zero hf]`. Use `and_congr_right fun hl => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Fact l.Prime` using `⟨hl⟩`. Take `⟨a, b, -⟩` from `ramIdx_eq_one_iff l (fieldChars N E)`. Rewrite using `[h1, hl.prime.dvd_finsetProd_iff, ← not_iff_not, ← b, a]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem natAbs_discr_eq_finprod_conductor (E : IntermediateField ℚ K) :
     (discr E).natAbs = ∏ᶠ ψ : fieldChars N E, (ψ : DirichletCharacter ℂ N).conductor ∧

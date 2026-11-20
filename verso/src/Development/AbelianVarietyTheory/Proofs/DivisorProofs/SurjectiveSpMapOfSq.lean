@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-The claim follows from `fun x ↦ by have hx : x ∈ PrimeSpectrum.zeroLocus (RingHom.ker π : Set A) := fun a ha ↦ (x.isPrime.mem_or_mem ((hsq a ha).symm ▸ x.asIdeal.zero_mem)).elim id id rw [← range_comap_of_surjective B π hπ] at hx exact hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem surjective_spMap_of_sq {A B : Type} [CommRing A] [CommRing B] (π : A →+* B) (hπ : Function.Surjective π)
     (hsq : ∀ a ∈ RingHom.ker π, a * a = 0) : Function.Surjective (spMap π) := fun x ↦ by
@@ -22,9 +22,9 @@ theorem surjective_spMap_of_sq {A B : Type} [CommRing A] [CommRing B] (π : A �
   exact hx
 
 /- English proof (translation)
-Introduce `R _ H D _ _ Z U h x _`. Establish `hs : Function.Surjective (spMap ((TrivSqZeroExt.fstHom R D D : DualNumber D →ₐ[R] D) : DualNumber D →+* D))` using `surjective_spMap_of_sq _ (fun d ↦ ⟨TrivSqZeroExt.inl d, rfl⟩) fun a ha ↦ by`. Establish `h0 : a.fst = 0` using `ha`. Apply the tactic sequence `ext <;> simp [h0]`. Take `⟨y, rfl⟩` from `hs x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Establish `hy` using `h (show y ∈ (⊤ : (Sp D).Opens) from trivial)`. Simplify `hy` using `[Over.comp_left, PDiv.spOver_left]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pt_dual_le_of_fst : ∀ (R : Type) [CommRing R] (H : Over (Sp R)) (D : Type) [CommRing D] [Algebra R D]
       (Z : Pt H (DualNumber D)) (U : H.left.Opens),

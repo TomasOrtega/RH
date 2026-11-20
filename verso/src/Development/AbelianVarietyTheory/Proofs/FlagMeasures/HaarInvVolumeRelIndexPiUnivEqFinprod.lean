@@ -10,15 +10,13 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL
 
 /- English proof (translation)
-Introduce `ι G _ K U hfin hne`. Use `set S := hfin.toFinset with hSdef`. Establish `hoff : ∀ i, i ∉ S → K i = U i`. Introduce `i hi`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hi (hfin.mem_toFinset.2 h)`. Establish `key : ∀ A B : ∀ i, Subgroup (G i), (∀ i, i ∉ S → A i ≤ B i) → (Subgroup.pi Set.univ B).relIndex (Subgroup.pi Set.univ A) = ∏ i ∈ S, (B i).relIndex (A i)`. Introduce `A B hAB`. Conclude with `GlobalTheory.relIndex_eq_prod_local (∀ i, G i) ι G (fun i => Pi.evalMonoidHom G i) ⊤ (Subgroup.pi Set.univ A) (Subgroup.pi Set.univ B) A B S (fun v h _ => ⟨Pi.mulSingle v h, Subgroup.mem_top _, by simp, fun w hw => by simp [Pi.mulSingle_eq_of_ne hw]⟩) (fun g => by simp [Subgroup. …`. Establish `h1` using `key K U (fun i hi => (hoff i hi).le)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h2` using `key U K (fun i hi => (hoff i hi).ge)`. Establish `hfp : ∀ f : ι → ℝ, (∀ i, i ∉ S → f i = 1) → ∏ᶠ i, f i = ∏ i ∈ S, f i` using `fun f hf => finprod_eq_prod_of_mulSupport_subset f (fun i hi => by`. Assume the negation of the conclusion as `h`. Conclude with `hi (hf i h))`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2]`. Conclude with `Finset.prod_ne_zero_iff.2 (fun i _ => (hne i).1)`. Rewrite using `[h1]`. Conclude with `Finset.prod_ne_zero_iff.2 (fun i _ => (hne i).2)`. Rewrite using `[hfp _ (fun i hi => by simp [invVol, hoff i hi, Subgroup.relIndex_self])]`.
-
-Simplify using `only [invVol, h1, h2, Nat.cast_prod]`. Rewrite using `[Finset.prod_div_distrib]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invVol_pi_univ : ∀ {ι : Type} {G : ι → Type} [∀ i, Group (G i)] (K U : ∀ i, Subgroup (G i)),
     {i | K i ≠ U i}.Finite → (∀ i, (K i).relIndex (U i) ≠ 0 ∧ (U i).relIndex (K i) ≠ 0) →

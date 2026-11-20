@@ -10,19 +10,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open UpperTheory.V.FW
 
 /- English proof (translation)
-Introduce `l _ f c hf hc1 hc hcop`. Take `⟨R, hRne, hRW, hRind, hRneg, hRcov, -, -⟩` from `reps l`. Establish `hl` using `(Fact.out : l.Prime)`. Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hl.one_lt.ne' (Nat.coprime_zero_left l |>.mp hf)`. Establish `hN0 : c * (f * l) ≠ 0` using `Nat.mul_ne_zero (by omega) (Nat.mul_ne_zero hf0 hl.ne_zero)`. Use `haveI : Nonempty R := hRne.to_subtype`. Take `⟨n₁, hn₁⟩` from `sinnott l R (fun r => (r : ℤ_[l]ˣ)) (c * (f * l)) hN0 (fun i j hij a b hab => hRind i i.2 j j.2 (fun e => hij (Subtype.ext e)) a b hab)`. Use `⟨max n₁ 2, le_max_right _ _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n _ h hn k _ _ χ hχ htw`. Establish `hcf` using `Nat.coprime_mul_iff_right.mp hcop`. Establish `hcM : c.Coprime (f * l ^ n)` using `Nat.coprime_mul_iff_right.mpr ⟨hcf.1, Nat.Coprime.pow_right n hcf.2⟩`. Establish `hn1 : 1 ≤ n` using `le_trans (by omega) (le_trans (le_max_right n₁ 2) hn)`. Establish `hn2 : 2 ≤ n` using `le_trans (le_max_right n₁ 2) hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Fact (1 < f * l ^ n) := ⟨by`. Establish `h1 : 1 < l ^ n` using `Nat.one_lt_pow (by omega) hl.one_lt`. Establish `h2 : 1 ≤ f` using `Nat.one_le_iff_ne_zero.mpr hf0`. Combine the equalities or inequalities in the displayed calculation. Establish `hodd : ∀ s : (ZMod (f * l ^ n))ˣ, gc (f * l ^ n) c (-(s : ZMod (f * l ^ n))) = -gc (f * l ^ n) c s` using `fun s => gcNeg _ c _ hcM hc1 s.ne_zero`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum` using `twCoef l (f * l ^ n) (max n₁ 2) h k χ (gc (f * l ^ n) c) R (le_max_right _ _) hχ hodd hRW hRneg hRcov htw`. Use `set Ψ : ZMod (f * l ^ n) → k := ⇑(MulChar.ofUnitHom χ) with hΨ`. Establish `hper : ∀ x : ZMod (f * l ^ n), Ψ (x + ↑(f * l)) = Ψ x` using `fun x => charPer l f n k χ x hf hn1`. Establish `hshift` using `fun s => gcShift (f * l ^ n) c (f * l) k Ψ s hcM hper`. Establish `hpush` using `pushDiff k (f * l ^ n) (l ^ max n₁ 2) h (c * (f * l)) (fun j => Ψ ↑j * (1 - if c ∣ j then (c : k) else 0)) (fun s => ((gc (f * l ^ n) c s : ℤ) : k) * Ψ s) hshift`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP` using `hn₁ (max n₁ 2) (le_max_left _ _) k (fun j => Ψ ↑j * (1 - if c ∣ j then (c : k) else 0)) (push h fun s => ((gc (f * l ^ n) c s : ℤ) : k) * Ψ s) hpush hsum 1 (by`. Establish `: 1 ≤ f * l` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero hf0 hl.ne_zero)`. Use the proof step `nlinarith)`. Establish `hndvd : ¬ c ∣ 1`. Introduce `hd`.
-
-Use `Nat.le_of_dvd one_pos hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [hndvd, if_false, sub_zero, mul_one, Nat.cast_one, hΨ, map_one] at hP`. Conclude with `one_ne_zero hP`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.nonvan :
     ∀ (l : ℕ) [Fact l.Prime] (f c : ℕ), f.Coprime l → Odd c → 1 < c → c.Coprime (f * l) → ∃ n₀ : ℕ, 2 ≤ n₀ ∧ ∀ (n : ℕ) [NeZero (f * l ^ n)] (h : l ^ n₀ ∣ f * l ^ n), n₀ ≤ n → ∀ (k : Type) [Field k] [CharP k l] (χ : (ZMod (f * l ^ n))ˣ →* kˣ), χ (-1) = -1 → tw χ (piQ l n₀ h) (toK k _ (thetaH (f * l ^ n) c)) ≠ 0 := by

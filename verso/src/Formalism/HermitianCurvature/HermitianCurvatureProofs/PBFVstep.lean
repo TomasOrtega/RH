@@ -18,7 +18,7 @@ namespace Formalism.FourierDecayAlt.P.PBFV
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.YangianSpanCharacter.T Formalism.FourierDecayAlt.P5 Formalism.FourierDecayAlt.P5.TwistedTransfer
 
 /- English proof (translation)
-Unfold `fsv`. Rewrite using `[← Complex.exp_conj, ← Complex.exp_add]`. Use `Complex.exp_zero using 2` and compare the differences between its conclusion and the goal. Simplify using `only [map_sub, map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fsv_mul_conj (s t : ℂ) : fsv s t * conj (fsv s t) = 1 := by
   unfold fsv
@@ -28,7 +28,7 @@ theorem fsv_mul_conj (s t : ℂ) : fsv s t * conj (fsv s t) = 1 := by
   ring
 
 /- English proof (translation)
-Simplify using `[fsv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fsv_zero (t : ℂ) : fsv 0 t = 1 := by
   simp [fsv]
@@ -40,9 +40,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)} {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Establish `e : Formalism.FourierDecayAlt.B.hsVec (a • V) = a • Formalism.FourierDecayAlt.B.hsVec V`. Unfold `Formalism.FourierDecayAlt.B.hsVec`. Rewrite using `[← WithLp.toLp_smul]`. Both sides reduce to the same expression. Unfold `Formalism.FourierDecayAlt.B.hsInner`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[e, inner_smul_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hsInner_smul_right (a : ℂ) (U V : Wq →L[ℂ] Wp) : B.hsInner U (a • V) = conj a * B.hsInner U V := by
   have e : Formalism.FourierDecayAlt.B.hsVec (a • V) = a • Formalism.FourierDecayAlt.B.hsVec V := by
@@ -53,7 +53,7 @@ theorem hsInner_smul_right (a : ℂ) (U V : Wq →L[ℂ] Wp) : B.hsInner U (a �
   rw [e, inner_smul_left]
 
 /- English proof (translation)
-Unfold `pairAt`. Simplify using `only [hW Ψ c, hsInner_smul_right]`. Conclude with `integral_const_mul _ _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairAt_mulOp_right (μ : Measure (Mt k r)) (l : Fin r) (s : ℂ) (Wv : Module.End ℂ (RadSp k r z z' π π'))
     (hW : multiplicationOperator Wv (fun c _ => fsv s (c l))) (Φ Ψ : RadSp k r z z' π π') (c : Fin r → ℂ) :
@@ -63,9 +63,9 @@ theorem pairAt_mulOp_right (μ : Measure (Mt k r)) (l : Fin r) (s : ℂ) (Wv : M
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Unfold `form`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `c'`. Simplify using `only [act_io]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `_ * ∑ a, pairAt μ (u a) (Wv (y a)) _ = _`. Simplify using `only [pairAt_mulOp_right μ l s Wv hW, glue_succ_update, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_mulOp_right (μ : Measure (Mt k r)) (l : Fin r) (s : ℂ) (Wv Wv' : Module.End ℂ (RadSp k r z z' π π'))
     (hW : multiplicationOperator Wv (fun c _ => fsv s (c l))) (u y : Ix S → RadSp k r z z' π π') (c : Fin r → ℂ) (t : ℂ) :
@@ -81,13 +81,13 @@ theorem form_mulOp_right (μ : Measure (Mt k r)) (l : Fin r) (s : ℂ) (Wv Wv' :
   ring
 
 /- English proof (translation)
-Establish `hU : ∀ w : List (Letter ℂ S), (UUiw (0 : ℂ) w : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))) = 1`. Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons l w ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[UUiw, ih, mul_one]`. Establish `h0 : (Uinv (A` using `Pr (RadSp k r z z' π π')) (if l.plus then (0 : ℂ) else star 0)) = 1 := by`. Rewrite using `[star_zero, ite_self]`. Unfold `Uinv`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.one_fin_two.symm`. Rewrite using `[h0, Formalism.FourierDecayAlt.P.Wd11.liftMatrix_one, Formalism.FourierDecayAlt.P.Wd1.ins_one]`. Establish `h1 : (mkP (1 : Module.End ℂ (RadSp k r z z' π π')) 1) = 1` using `rfl`. Use function extensionality and compare the values at `a`. Rewrite using `[Vw, hU, mul_one, h1, act_io]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem act_Vw_zero (w : List (Letter ℂ S)) (x : Ix S → RadSp k r z z' π π') :
     act (Vw (mkP (1 : Module.End ℂ (RadSp k r z z' π π')) 1) 0 w) x = x := by
@@ -109,7 +109,7 @@ theorem act_Vw_zero (w : List (Letter ℂ S)) (x : Ix S → RadSp k r z z' π π
   rfl
 
 /- English proof (translation)
-Introduce `Φ c g`. Simplify using `[fsv_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isMulOp_one_c (l : Fin r) :
     multiplicationOperator (1 : Module.End ℂ (RadSp k r z z' π π')) (fun c _ => fsv 0 (c l)) := by
@@ -117,7 +117,7 @@ theorem isMulOp_one_c (l : Fin r) :
   simp [fsv_zero]
 
 /- English proof (translation)
-Introduce `Φ c g`. Simplify using `[fsv_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isMulOp_one_c' (l : Fin r) :
     multiplicationOperator (1 : Module.End ℂ (RadSp k r z z' π π')) (fun c _ => fsv (-0) (c l)) := by
@@ -125,7 +125,7 @@ theorem isMulOp_one_c' (l : Fin r) :
   simp [fsv_zero]
 
 /- English proof (translation)
-Introduce `Φ c g`. Simplify using `[fsv_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isMulOp_one_zeta :
     multiplicationOperator (1 : Module.End ℂ (RadSp k r z z' π π')) (fun _ g => fsv 0 (P5.zeta k r z z' g)) := by
@@ -133,7 +133,7 @@ theorem isMulOp_one_zeta :
   simp [fsv_zero]
 
 /- English proof (translation)
-Introduce `Φ c g`. Simplify using `[fsv_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isMulOp_one_zeta_conj :
     multiplicationOperator (1 : Module.End ℂ (RadSp k r z z' π π')) (fun _ g => fsv (-0) (P5.zeta k r z z' g)) := by
@@ -152,7 +152,7 @@ variable (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r �
   (K : Fin (P.r + 1) → Submodule ℂ (RadSp P.k P.r z z' π π')) (l0 : ℕ)
 
 /- English proof (translation)
-Take `⟨hwave, hc1, hc2, hp⟩` from `waveSiteAll Wp Wq P z z' π π' X L hD.2.2.1 l s Wv Wv' hW hW'`. Establish `hbT : bTl L l w * Vw (mkP Wv Wv') s w = io (mkP Wv Wv') * bTl L l w` using `Formalism.FourierDecayAlt.P.plane_wave_vector_identity ℂ _ S (site L l) (mkP Wv Wv') (mkP Wv' Wv) s w hwave hc1 hc2 hp hnd`. Simplify using `only [P5.ph, RRform]`. Rewrite using `[← act_mul (bTl L l w) (Vw (mkP Wv Wv') s w) y, hbT, act_mul (io (mkP Wv Wv')) (bTl L l w) y, form_mulOp_right μ l s Wv Wv' hW]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ph_wave_right (hD : IsData P z z' π π' X μ L st l0) (w : List (Letter ℂ S))
     (hnd : (w.map Letter.intersection_update_fsHerm_neg_one).Nodup) (l : Fin P.r) (s : ℂ) (Wv Wv' : Module.End ℂ (RadSp P.k P.r z z' π π'))
@@ -168,13 +168,13 @@ theorem ph_wave_right (hD : IsData P z z' π π' X μ L st l0) (w : List (Letter
   ring
 
 /- English proof (translation)
-Establish `hl : (⟨0, hr⟩ : Fin P.r).castSucc = 0` using `Fin.ext rfl`. Establish `hstep` using `(hOn w hw).2.1 ⟨0, hr⟩`. Unfold `StepP at hstep`. Rewrite `hstep` using `[hl]`. Take `⟨φ, -, hφ, -, hφs⟩` from `hstep x (act (Vw (mkP Wv Wv') s w) y) hx hVy c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, -, hψ, -, hψs⟩` from `hstep x y hx hy c hc`. Establish `h1` using `hφs s Wv Wv' hW hW'`. Establish `h0` using `hψs 0 1 1 (isMulOp_one_c _) (isMulOp_one_c' _)`. Rewrite `h0` using `[act_Vw_zero]`. Rewrite using `[← h1, ← h0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hae : ∀ᵐ t : ℂ ∂volume, t ≠ 0`. Rewrite using `[ae_iff]`. Simplify using `using (measure_singleton (0 : ℂ) : volume ({0} : Set ℂ) = 0)`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with t ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ t ht, hψ t ht, ph_wave_right P z z' π π' X μ L st l0 hD w hw.1.1 ⟨0, hr⟩ s Wv Wv' hW hW', fsv_zero, ← mul_assoc, fsv_mul_conj, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem rr_wave_A (hD : IsData P z z' π π' X μ L st l0) (hOn : ThmPOn (S := S) P z z' π π' μ L st K l0)
     (w : List (Letter ℂ S)) (hw : WordOK P z z' π π' st l0 w) (hr : 0 < P.r) (s : ℂ)
@@ -202,37 +202,31 @@ theorem rr_wave_A (hD : IsData P z z' π π' X μ L st l0) (hOn : ThmPOn (S := S
     fsv_zero, ← mul_assoc, fsv_mul_conj, one_mul]
 
 /- English proof (translation)
-Take `⟨hP, -, hAL, hQQ, -, -, hSL, hLS⟩` from `hD`. Establish `hW1 : ∀ (Φ : RadSp P.k P.r z z' π π') c g, (Wv Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g = fsv s (P5.zeta P.k P.r z z' g) • (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g` using `hW`. Establish `hW2 : ∀ (Φ : RadSp P.k P.r z z' π π') c g, (Wv' Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g = fsv (-s) (P5.zeta P.k P.r z z' g) • (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g` using `hW'`. Establish `hWW' : Wv * Wv' = 1`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c g`. Simplify using `only [Module.End.mul_apply, Module.End.one_apply, hW1, hW2, smul_smul, fsv_mul_fsv_neg, one_smul]`. Establish `hW'W : Wv' * Wv = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c g`. Simplify using `only [Module.End.mul_apply, Module.End.one_apply, hW1, hW2, smul_smul, fsv_neg_mul_fsv, one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `f_fi : mkP Wv Wv' * mkP Wv' Wv = 1` using `pr_ext (by simpa using hWW') (by simpa using hWW')`. Establish `fi_f : mkP Wv' Wv * mkP Wv Wv' = 1` using `pr_ext (by simpa using hW'W) (by simpa using hW'W)`. Establish `hfn : ∀ g ∈ Fr.zfns L, Commute (mkP Wv Wv') g`. Take `⟨-, -, -, -, -, -, hz, hzi, hzb, hzbi, hG, hGi, -⟩` from `hAL`. Establish `key : ∀ j j' : Fin 6, Commute (mkP Wv Wv') (mkP (X.fn j) (X.fn j'))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `j j'`. Use `show _ * _ = _ * _`. Conclude with `pr_ext (by simpa using mulOp_comm_fn X Wv _ hW j) (by simpa using (mulOp_comm_fn X Wv' _ hW' j').symm)`. Introduce `g hg`. Simplify using `only [Fr.zfns, Set.mem_insert_iff, Set.mem_singleton_iff] at hg`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `hg with rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases. Rewrite using `[hz]`. Conclude with `key _ _`. Rewrite using `[hzi]`. Conclude with `key _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzb]`. Conclude with `key _ _`. Rewrite using `[hzbi]`. Conclude with `key _ _`. Rewrite using `[hG]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key _ _`. Rewrite using `[hGi]`. Conclude with `key _ _`. Establish `hGG : Commute (mkP Wv Wv') L.GG` using `hfn _ (mem_zfns L).2.2.2.2.1`. Establish `hfiGG : Commute (mkP Wv' Wv) L.GG` using `(commute_inv hGG.symm f_fi fi_f).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨e11, e10⟩` from `zeta_entries Formalism.FourierDecayAlt.P.actual_zeta_smooth_alt hP X st l0 hQQ s Wv Wv' hW hW'`. Establish `hx : ∀ Y, Commute (mkP Wv Wv') (st.x Y)`. Introduce `Y`. Establish `h` using `e11 Y`. Rewrite `h` using `[hLS.tau Y]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h1 : L.GG * (mkP Wv' Wv * st.x Y * mkP Wv Wv') = L.GG * st.x Y` using `by conv_rhs => rw [← h]`. Rewrite using `[← mul_assoc (mkP Wv' Wv) L.GG, hfiGG.eq]`. Simplify using `only [mul_assoc]`. Establish `h2 : mkP Wv' Wv * st.x Y * mkP Wv Wv' = st.x Y`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, L.GGi_GG, one_mul]`. Use `_ = L.GGi * (L.GG * st.x Y) := by rw [h1]`. Use `_ = st.x Y := by rw [← mul_assoc, L.GGi_GG, one_mul]`. Use `show mkP Wv Wv' * st.x Y = st.x Y * mkP Wv Wv'`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hl : ∀ Y ∈ st.inv, mkP Wv' Wv * (L.l0 Y + L.ζb * L.ζi * L.GGi * st.ee Y) * mkP Wv Wv' = L.l0 Y + L.ζb * L.ζi * L.GGi * st.ee Y - algebraMap ℂ _ s`. Introduce `Y hY`. Establish `h` using `e10 Y`. Rewrite `h` using `[hLS.low Y hY, hLS.tau Y]`. Establish `hfix : Commute (mkP Wv' Wv) (st.x Y)` using `(commute_inv (hx Y).symm f_fi fi_f).symm`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `cancel : ∀ T, st.xi Y * L.GGi * (L.GG * st.x Y * T) = T`. Introduce `T`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = T := by rw [L.GGi_GG, mul_one, (hLS.x_xi Y hY).2, one_mul]`.
-
-Establish `h3 : mkP Wv' Wv * (L.GG * st.x Y * (L.l0 Y + L.ζb * L.ζi * L.GGi * st.ee Y)) * mkP Wv Wv' = L.GG * st.x Y * (mkP Wv' Wv * (L.l0 Y + L.ζb * L.ζi * L.GGi * st.ee Y) * mkP Wv Wv')`. Rewrite using `[← mul_assoc (mkP Wv' Wv) (L.GG * st.x Y), ← mul_assoc (mkP Wv' Wv) L.GG, hfiGG.eq, mul_assoc L.GG (mkP Wv' Wv), hfix.eq]`. Simplify using `only [mul_assoc]`. Rewrite `h` using `[h3, ← mul_sub]`. Rewrite using `[← cancel (mkP Wv' Wv * _ * mkP Wv Wv'), h, cancel]`.
-
-Establish `hWH : WaveHyp L st (mkP Wv Wv') (mkP Wv' Wv) s` using `⟨f_fi, fi_f, rfl, hfn, hx, hl⟩`. Take `⟨hFV, -⟩` from `frame_twist_F hSL hLS hWH w hw`. Unfold `topDens`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← act_mul, hFV, act_mul (io (mkP Wv Wv')) (Fr.ofWord L st w).F y, act_io, mkPair_fst', hW1, hsInner_smul_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topDens_wave_right (hD : IsData P z z' π π' X μ L st l0) (w : List (Letter ℂ S))
     (hw : Fr.admitted st w) (s : ℂ) (Wv Wv' : Module.End ℂ (RadSp P.k P.r z z' π π'))
@@ -314,11 +308,11 @@ theorem topDens_wave_right (hD : IsData P z z' π π' X μ L st l0) (w : List (L
   rw [← act_mul, hFV, act_mul (io (mkP Wv Wv')) (Fr.ofWord L st w).F y, act_io, mkPair_fst', hW1, hsInner_smul_right]
 
 /- English proof (translation)
-Establish `hl : (0 : Fin (P.r + 1)) = Fin.last P.r` using `Fin.ext (by simp [hr])`. Take `⟨hTop, -, -⟩` from `hOn w hw`. Rewrite `hx`, `hy`, `hVy`, the goal using `[hl]`. Take `⟨-, hφs, -⟩` from `hTop x (act (Vw (mkP Wv Wv') s w) y) hx hVy c hc`. Take `⟨-, hψs, -⟩` from `hTop x y hx hy c hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h0` using `hψs 0 1 1 isMulOp_one_zeta isMulOp_one_zeta_conj`. Rewrite `h0` using `[act_Vw_zero]`. Rewrite using `[← hφs s Wv Wv' hW hW', ← h0]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[topDens_wave_right P z z' π π' X μ L st l0 hD w hw.1 s Wv Wv' hW hW', fsv_zero, ← mul_assoc, fsv_mul_conj, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rr_wave_B (hD : IsData P z z' π π' X μ L st l0) (hOn : ThmPOn (S := S) P z z' π π' μ L st K l0)
     (w : List (Letter ℂ S)) (hw : WordOK P z z' π π' st l0 w) (hr : P.r = 0) (s : ℂ)

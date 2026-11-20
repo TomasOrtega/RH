@@ -5,9 +5,9 @@ open GlobalTheory GlobalTheory.ZH GlobalTheory.CechPic GlobalTheory.Cartier Glob
 open Classical
 
 /- English proof (translation)
-Introduce `F k L _ _ _ _ _ α j d hα hj hd`. Set `jF : L →ₐ[F] RatFunc k` to `{ j with commutes' := fun x => by show j (algebraMap F L x) = algebraMap k (RatFunc k) (algebraMap F k x)`. Rewrite using `[← hα, ← hj]`. Use `rfl }`. Establish `h1 : Algebra.trdeg F L ≤ Algebra.trdeg F (RatFunc k)` using `trdeg_le_of_injective jF j.injective`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hR : Algebra.trdeg k (RatFunc k) = 1`. Establish `: Algebra.IsAlgebraic (Polynomial k) (RatFunc k)` using `IsLocalization.isAlgebraic (RatFunc k) (nonZeroDivisors (Polynomial k))`. Rewrite using `[← trdeg_add_eq k (Polynomial k), trdeg_eq_zero (R := Polynomial k) (A := RatFunc k), add_zero, Polynomial.trdeg_of_isDomain]`. Establish `h2` using `trdeg_add_eq F k (A := RatFunc k)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem GlobalTheory.FlagPush.trdeg_le_succ_of_ratFunc :
     ∀ (F k L : Type) [Field F] [Field k] [Field L] [Algebra F k] [Algebra F L] (α : k →+* L)

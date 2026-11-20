@@ -10,15 +10,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace PositivityTheory.UnitarySelfGeneration
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Establish `hw : ∀ x : Over.mk a ⟶ G', (x.left ≫ φ) ≫ G.hom = a ≫ f`. Introduce `x`. Establish `hx : x.left ≫ G'.hom = a` using `Over.w x`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, hx]`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `F : (Over.mk a ⟶ G') → (Over.mk (a ≫ f) ⟶ G)` to `fun x => Over.homMk (x.left ≫ φ) (hw x)`. Establish `hF : ∀ x, (F x).left = x.left ≫ φ` using `fun x => rfl`. Establish `hmul : ∀ x y, F (x * y) = F x * F y`. Introduce `x y`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hF]`. Conclude with `(h.2 (Over.mk a) x y (F x) (F y) (hF x) (hF y)).symm`. Use `⟨MonoidHom.mk' F hmul, ⟨?_, ?_⟩, hF⟩` and prove the remaining obligations. Introduce `x y hxy`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e1 : (F x).left = (F y).left` using `congrArg (fun g => Over.Hom.left g) hxy`. Rewrite `e1` using `[hF, hF]`. Apply `h.1.hom_ext e1` to reduce the goal to its premises. Rewrite using `[Over.w x, Over.w y]`. Introduce `g`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hg : g.left ≫ G.hom = a ≫ f` using `Over.w g`. Use `⟨Over.homMk (h.1.lift g.left a hg) (h.1.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (h.1.lift g.left a hg) ≫ φ = g.left`. Conclude with `h.1.lift_fst _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem tors_push {S S' U : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (a : U ⟶ S') (b : U ⟶ S) (hb : a ≫ f = b) :
@@ -50,33 +50,31 @@ theorem tors_push {S S' U : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [
     exact h.1.lift_fst _ _ _
 
 /- English proof (translation)
-Establish `cancel : ∀ {W : Scheme.{0}} (u v : W ⟶ G₀.left), u ≫ ψ = v ≫ ψ → u ≫ G₀.hom = v ≫ G₀.hom → u = v` using `fun u v e1 e2 => h.1.hom_ext e1 e2`. Establish `base : ∀ (Y : Over (Sp R)) (y : Y ⟶ Γ.G), (y.left ≫ i₀) ≫ G₀.hom = Y.hom`. Introduce `Y y`. Rewrite using `[Category.assoc, hi]`. Conclude with `Over.w y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `pushY : ∀ (Y : Over (Sp R)), ∃ π : (Over.mk (Y.hom ≫ 𝟙 _) ⟶ G₀) →* (Over.mk (Y.hom ≫ x) ⟶ G), Function.Bijective π ∧ ∀ g, (π g).left = g.left ≫ ψ`. Introduce `Y`. Conclude with `tors_push h (Y.hom ≫ 𝟙 _) (Y.hom ≫ x) (by simp)`. Establish `w1 : ∀ (Y : Over (Sp R)) (g : Over.mk (Y.hom ≫ 𝟙 _) ⟶ G₀), g.left ≫ G₀.hom = Y.hom`. Introduce `Y g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Over.w g` as an intermediate fact. Simplify using `using this`. Prove the components needed by the constructor for the conclusion. Introduce `t`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, hi]`. Introduce `Y y z y₀ z₀ hy hz`. Take `⟨π, -, hπ⟩` from `pushY Y`. Set `y₁ : Over.mk (Y.hom ≫ 𝟙 _) ⟶ G₀` to `Over.homMk (y.left ≫ i₀) (by simpa using base Y y)`. Set `z₁ : Over.mk (Y.hom ≫ 𝟙 _) ⟶ G₀` to `Over.homMk (z.left ≫ i₀) (by simpa using base Y z)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `ey : π y₁ = y₀`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hπ, hy]`. Use `show (y.left ≫ i₀) ≫ ψ = _`. Rewrite using `[Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `ez : π z₁ = z₀`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hπ, hz]`. Use `show (z.left ≫ i₀) ≫ ψ = _`. Rewrite using `[Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← ey, ← ez, ← map_mul, hπ, t.mul Y y z y₁ z₁ rfl rfl, Category.assoc]`. Introduce `Y y z e`. Apply `t.inj Y y z` to reduce the goal to its premises. Apply `cancel` to reduce the goal to its premises. Simplify `e` using `only [Category.assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[base Y y, base Y z]`. Introduce `Y g`. Take `⟨π, ⟨hinj, hsurj⟩, hπ⟩` from `pushY Y`. Take `⟨g₁, rfl⟩` from `hsurj g`. Rewrite using `[← map_pow, ← map_one π, hinj.eq_iff, t.kernel Y g₁, hπ]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, by rw [← hy, Category.assoc]⟩`. Introduce and unpack `⟨y, hy⟩`. Use `⟨y, cancel _ _ (by rw [Category.assoc, hy]) ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[base Y y, w1 Y g₁]`. Introduce `t`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hi, Category.comp_id]`. Introduce `Y y z y₀ z₀ hy hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨π, -, hπ⟩` from `pushY Y`. Establish `m` using `t.mul Y y z (π y₀) (π z₀) (by rw [hπ, hy, Category.assoc]) (by rw [hπ, hz, Category.assoc])`. Rewrite `m` using `[← map_mul, hπ]`. Apply `cancel` to reduce the goal to its premises. Rewrite using `[m, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[w1 Y, base Y]`. Introduce `Y y z e`. Apply `t.inj Y y z` to reduce the goal to its premises. Simplify using `only [← Category.assoc, e]`. Introduce `Y g₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨π, ⟨hinj, -⟩, hπ⟩` from `pushY Y`. Rewrite using `[← hinj.eq_iff, map_pow, map_one, t.kernel Y (π g₁), hπ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Use `⟨y, cancel _ _ (by rw [Category.assoc, hy]) ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[base Y y, w1 Y g₁]`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, by rw [← hy, Category.assoc]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tors_iff {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] (Γ : BT.QFGroup R T) {X : Scheme.{0}}
     {x : Sp R ⟶ X} {G : Over X} [GrpObj G] {G₀ : Over (Sp R)} [GrpObj G₀] {ψ : G₀.left ⟶ G.left} (N : ℕ)
@@ -154,11 +152,11 @@ theorem tors_iff {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] (
         exact ⟨y, by rw [← hy, Category.assoc]⟩
 
 /- English proof (translation)
-Introduce `R _ _ T _ Γ X x G _ G₀ _ ψ N h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `i t`. Establish `w : i ≫ G.hom = Γ.G.hom ≫ x` using `t.isOver`. Use `⟨h.1.lift i Γ.G.hom w, h.1.lift_fst _ _ _, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `(tors_iff Γ N h (h.1.lift i Γ.G.hom w) (h.1.lift_snd _ _ _)).2`. Rewrite `e` using `[h.1.lift_fst]`. Conclude with `e t`. Introduce `i₀ t`. Establish `hi : i₀ ≫ G₀.hom = Γ.G.hom`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `t.isOver` as an intermediate fact. Simplify using `using this`. Conclude with `(tors_iff Γ N h i₀ hi).1 t`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isTorsionAlong_iff_of_isGrpPullback : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] (Γ : BT.QFGroup R T) (X : Scheme.{0}) (x : Sp R ⟶ X) (G : Over X) [GrpObj G] (G₀ : Over (Sp R)) [GrpObj G₀] (ψ : G₀.left ⟶ G.left) (N : ℕ), IsGrpPullback G₀ G x ψ → (∀ i : Γ.G.left ⟶ G.left, Γ.IsTorsionAlong G x N i → ∃ i₀ : Γ.G.left ⟶ G₀.left, i₀ ≫ ψ = i ∧ Γ.IsTorsionAlong G₀ (𝟙 _) N i₀) ∧ ∀ i₀ : Γ.G.left ⟶ G₀.left, Γ.IsTorsionAlong G₀ (𝟙 _) N i₀ → Γ.IsTorsionAlong G x N (i₀ ≫ ψ) := by
   intro R _ _ T _ Γ X x G _ G₀ _ ψ N h

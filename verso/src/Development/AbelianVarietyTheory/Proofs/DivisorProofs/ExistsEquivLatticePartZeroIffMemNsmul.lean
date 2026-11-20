@@ -17,9 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LowFilt
 
 /- English proof (translation)
-Introduce `R _ _ D₀ hB F _ _ n _ p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, hy⟩`. Take `⟨z, hz, -⟩` from `(GlobalTheory.TorusExt.equiv_iff hB p q).1 hq`. Use `⟨-z, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_neg, eq_neg_iff_add_eq_zero, ← hz, hy]`. Introduce and unpack `⟨e, he⟩`. Use `⟨GlobalTheory.TorusExt.qkShift hB p (-e), GlobalTheory.TorusExt.equiv_qkShift hB p (-e), ?_⟩` and prove the remaining obligations. Use `show p.y + n • (-e) = 0`. Rewrite using `[he, smul_neg, add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equiv_y_eq_zero_iff : ∀ (R : Type) [CommRing R] [IsDomain R] (D₀ : DegPre R), D₀.TauBimult →
     ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (n : ℕ), 0 < n → ∀ p : QkPt D₀ F n,

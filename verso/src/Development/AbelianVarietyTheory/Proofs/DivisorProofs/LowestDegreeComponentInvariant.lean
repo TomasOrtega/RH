@@ -10,11 +10,11 @@ open Formalism.BasicNotions.TH MvPolynomial
 namespace GlobalTheory.KFixIrr.LowStable
 
 /- English proof (translation)
-Use `conv_lhs => rw [P.as_sum, map_sum, Finset.mul_sum]`. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[pderiv_monomial]`. Distinguish the cases in `h : s b = 0`. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ (le_totalDegree hs)` and prove the remaining obligations. Rewrite using `[X, monomial_mul]`. Use `(totalDegree_monomial_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Establish `h1 : s = Finsupp.single b 1 + (s - Finsupp.single b 1)`. Rewrite using `[add_tsub_cancel_of_le]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 h)`. Use `conv_rhs => rw [h1]`. Rewrite using `[Finsupp.sum_add_index' (by simp) (by simp), Finsupp.sum_add_index' (by simp) (by simp)]`. Simplify using `[Function.id_def]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deg_X_pderiv {σ : Type} (a b : σ) (P : MvPolynomial σ ℂ) :
     (X a * pderiv b P).totalDegree ≤ P.totalDegree := by
@@ -35,7 +35,7 @@ theorem deg_X_pderiv {σ : Type} (a b : σ) (P : MvPolynomial σ ℂ) :
     simp [Function.id_def]
 
 /- English proof (translation)
-Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Use `(totalDegree_add _ _).trans (max_le (deg_X_pderiv _ _ _) ?_)` and prove the remaining obligations. Rewrite using `[pderiv_X, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem deg_pderiv_X {σ : Type} (a b : σ) (P : MvPolynomial σ ℂ) :
     (pderiv b (X a * P)).totalDegree ≤ P.totalDegree := by
@@ -52,13 +52,13 @@ def nonRaising (σ : Type) : Submodule ℂ (Module.End ℂ (MvPolynomial σ ℂ)
   smul_mem' c L h P := (totalDegree_smul_le _ _).trans (h P)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_nonRaising {σ : Type} {L : Module.End ℂ (MvPolynomial σ ℂ)} :
     L ∈ nonRaising σ ↔ ∀ P, (L P).totalDegree ≤ P.totalDegree := Iff.rfl
 
 /- English proof (translation)
-Use `mem_nonRaising.2 fun g => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, raiB, lowB, if_pos hl, if_pos hl', LinearMap.mulLeft_apply, Derivation.coeFn_coe]`. Conclude with `deg_X_pderiv _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rl_pos {P Q R S : ℕ} (l l' : Ln P Q R S) (hl : linePos l = true) (hl' : linePos l' = true) :
     raiB l * lowB l' ∈ nonRaising (Ln P Q R S) := by
@@ -67,7 +67,7 @@ theorem rl_pos {P Q R S : ℕ} (l l' : Ln P Q R S) (hl : linePos l = true) (hl' 
   exact deg_X_pderiv _ _ _
 
 /- English proof (translation)
-Use `mem_nonRaising.2 fun g => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, raiB, lowB, if_neg (by simp [hl]), if_neg (by simp [hl']), LinearMap.mulLeft_apply, LinearMap.neg_apply, Derivation.coeFn_coe, totalDegree_neg]`. Conclude with `deg_pderiv_X _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rl_neg {P Q R S : ℕ} (l l' : Ln P Q R S) (hl : linePos l = false) (hl' : linePos l' = false) :
     raiB l * lowB l' ∈ nonRaising (Ln P Q R S) := by
@@ -77,9 +77,7 @@ theorem rl_neg {P Q R S : ℕ} (l l' : Ln P Q R S) (hl : linePos l = false) (hl'
   exact deg_pderiv_X _ _ _
 
 /- English proof (translation)
-Rewrite using `[omE]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Consider the cases of `hl : linePos l`. Conclude with `rl_neg l l' hl (h ▸ hl)`. Conclude with `rl_pos l l' hl (h ▸ hl)`.
-
-Use `split_ifs`. Conclude with `Submodule.smul_mem _ _ (mem_nonRaising.2 fun g => le_rfl)`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem omE_mem {P Q R S : ℕ} (l l' : Ln P Q R S) (h : linePos l = linePos l') :
     omE l l' ∈ nonRaising (Ln P Q R S) := by
@@ -93,18 +91,18 @@ theorem omE_mem {P Q R S : ℕ} (l l' : Ln P Q R S) (h : linePos l = linePos l')
     · exact Submodule.zero_mem _
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rcases c with c | c <;> rcases d with d | d <;> simp_all [sameBlock, linePos]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem linePos_same {P Q R S : ℕ} (a : Ix P Q) (c d : Ix R S) (h : sameBlock c d) :
     linePos ((a, c) : Ln P Q R S) = linePos (a, d) := by
   rcases a with a | a <;> rcases c with c | c <;> rcases d with d | d <;> simp_all [sameBlock, linePos]
 
 /- English proof (translation)
-Rewrite using `[show fockAct2 P Q R S Z = omAct P Q R S ((1 : Mat P Q) ⊗ₖ Z) from rfl, omAct_apply]`. Use `Submodule.sum_mem _ fun l _ => Submodule.sum_mem _ fun l' _ => ?_` and prove the remaining obligations. Break down `l with ⟨a, c⟩` into its components or cases. Break down `l' with ⟨a', d⟩` into its components or cases. Rewrite using `[Matrix.kroneckerMap_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ha : a = a'`. Substitute `ha` using the available equality. Distinguish the cases in `hcd : sameBlock c d`. Conclude with `Submodule.smul_mem _ _ (omE_mem _ _ (linePos_same a c d hcd))`. Rewrite using `[hZ c d hcd, mul_zero, zero_smul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Rewrite using `[Matrix.one_apply_ne ha, zero_mul, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem fockAct2_mem {P Q R S : ℕ} (Z : Mat R S) (hZ : IsKC Z) :
     fockAct2 P Q R S Z ∈ nonRaising (Ln P Q R S) := by
@@ -122,9 +120,9 @@ theorem fockAct2_mem {P Q R S : ℕ} (Z : Mat R S) (hZ : IsKC Z) :
   · rw [Matrix.one_apply_ne ha, zero_mul, zero_smul]; exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `P Q R S x d Z hZ f hf`. Rewrite `hf`, the goal using `[mem_lowOne]`. Use `⟨?_, (mem_nonRaising.1 (fockAct2_mem Z hZ) f).trans hf.2⟩` and prove the remaining obligations. Rewrite `hf`, the goal using `[mem_chiOne]`. Introduce `X hX`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `LinearMap.congr_fun ((GlobalTheory.FockPair.pair_lie_commute P Q R S).2.2 X Z) f`. Simplify using `only [Module.End.mul_apply] at h`. Rewrite using `[h, hf.1 X hX, map_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fockAct2_lowOne : ∀ (P Q R S : ℕ) (x : ℚ) (d : ℕ) (Z : Formalism.BasicNotions.TH.Mat R S), Formalism.BasicNotions.TH.IsKC Z →
     ∀ f ∈ GlobalTheory.KFixIrr.lowOne P Q R S x d, Formalism.BasicNotions.TH.fockAct2 P Q R S Z f ∈ GlobalTheory.KFixIrr.lowOne P Q R S x d := by

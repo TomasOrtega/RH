@@ -20,7 +20,7 @@ open GlobalTheory.FinPl.LatMem
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, rat, Matrix.map_apply, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `show (c ⊗ₜ[D.host.F] x i l) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] π l j) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmul_mul_rat {m n k : ℕ} (c : AF D.host.F) (x : Matrix (Fin m) (Fin n) D.host.E) (π : Matrix (Fin n) (Fin k) D.host.E) :
     (Matrix.of fun i j => c ⊗ₜ[D.host.F] x i j : Mx D m n) * rat π = Matrix.of fun i j => c ⊗ₜ[D.host.F] (x * π) i j := by
@@ -31,7 +31,7 @@ theorem tmul_mul_rat {m n k : ℕ} (c : AF D.host.F) (x : Matrix (Fin m) (Fin n)
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, rat, Matrix.map_apply, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show ((1 : AF D.host.F) ⊗ₜ[D.host.F] M k j) * (c ⊗ₜ[D.host.F] z j) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_mulVec_tmul {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (c : AF D.host.F) (z : Fin n → D.host.E) :
     rat M *ᵥ (fun i => c ⊗ₜ[D.host.F] z i) = fun k => c ⊗ₜ[D.host.F] (M *ᵥ z) k := by
@@ -42,9 +42,9 @@ theorem rat_mulVec_tmul {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (c : A
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
 /- English proof (translation)
-Set `g : Mx D m n →+ Mx D m n` to `{ toFun := fun w => w ⬝ rat π, map_zero' := Matrix.zero_mul _, map_add' := fun a b => Matrix.add_mul a b _ }`. Establish `hle : hatMx M ≤ (hatMx M).comap g`. Use `(AddSubgroup.closure_le _).2 fun w hw => ?_` and prove the remaining obligations. Take `⟨α, hα, x, hx, rfl⟩` from `hw`. Use `show (_ : Mx D m n) ⬝ rat π ∈ hatMx M`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tmul_mul_rat]`. Conclude with `AddSubgroup.subset_closure ⟨α, hα, x * π, hM x hx, rfl⟩`. Conclude with `hle hw`.
+A detailed English derivation is pending.
 -/
 theorem mul_rat_mem_hatMx {m n : ℕ} (M : Submodule (𝓞 D.host.E) (Matrix (Fin m) (Fin n) D.host.E))
     (π : Matrix (Fin n) (Fin n) D.host.E) (hM : ∀ x ∈ M, x * π ∈ M) {w : Mx D m n} (hw : w ∈ hatMx M) :
@@ -60,9 +60,9 @@ theorem mul_rat_mem_hatMx {m n : ℕ} (M : Submodule (𝓞 D.host.E) (Matrix (Fi
   exact hle hw
 
 /- English proof (translation)
-Set `f : Matrix (Fin m) (Fin n) D.host.E →ₗ[𝓞 D.host.E] Matrix (Fin m) (Fin n) D.host.E` to `{ toFun := (· * π), map_add' := fun a b => Matrix.add_mul a b π, map_smul' := fun r a => Matrix.smul_mul r a π }`. Establish `hH : (homLat LS LT).map f ≤ homLat LS LT`. Introduce and unpack `_ ⟨x, hx, rfl⟩ y hy`. Use `show (x * π) *ᵥ y ∈ LT`. Rewrite using `[← Matrix.mulVec_mulVec]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx _ (hπ y hy)`. Introduce `x hx`. Establish `h1 : f x ∈ (I • homLat LS LT).map f` using `⟨x, hx, rfl⟩`. Rewrite `h1` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl hH h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_smul_homLat {m n : ℕ} (I : Ideal (𝓞 D.host.E)) (LS : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     (LT : Submodule (𝓞 D.host.E) (Fin m → D.host.E)) (π : Matrix (Fin n) (Fin n) D.host.E)
@@ -80,13 +80,13 @@ theorem mul_mem_smul_homLat {m n : ℕ} (I : Ideal (𝓞 D.host.E)) (LS : Submod
   exact Submodule.smul_mono le_rfl hH h1
 
 /- English proof (translation)
-Set `g : Mx D T.rank S.rank →+ Mx D T.rank S.rank` to `{ toFun := fun w => w ⬝ rat π, map_zero' := Matrix.zero_mul _, map_add' := fun a b => Matrix.add_mul a b _ }`. Establish `hle : latO S T LS LT P ≤ (latO S T LS LT P).comap g`. Use `(AddSubgroup.closure_le _).2 fun w hw => ?_` and prove the remaining obligations. Take `⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Use `show (_ : Mx D T.rank S.rank) ⬝ rat π ∈ latO S T LS LT P`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `AddSubgroup.subset_closure ⟨α, hα, hP, a, ha, π' *ᵥ s, hπ' s hs, t, ht, ?_⟩` and prove the remaining obligations. Establish `e` using `tmul_mul_rat (pairA D.host.F 0 α) (Matrix.of fun i j => a * t i * ∑ k, star (s k) * S.gram k j) π`. Simplify using `only [Matrix.of_apply] at e`. Rewrite using `[e]`. Use extensionality with `i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.of_apply]`. Use `congr 1`. Establish `e1 : ∀ v : Fin S.rank → D.host.E, ∀ l, ∑ k, star (v k) * S.gram k l = (star v ᵥ* S.gram) l` using `fun v l => rfl`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply, e1]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.star_mulVec, Matrix.vecMul_vecMul, ← hadj, ← Matrix.vecMul_vecMul]`. Simplify using `only [Matrix.vecMul, dotProduct, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `hle hu`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_rat_mem_latO (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E))
     (P : GlobalTheory.FinPl.Pl D → Prop) (π π' : Matrix (Fin S.rank) (Fin S.rank) D.host.E) (hadj : S.gram * π = π'ᴴ * S.gram)
@@ -121,13 +121,11 @@ open GlobalTheory.FinPl.LatMem
 variable {D : D7}
 
 /- English proof (translation)
-Establish `key : ∀ v, (fun i => pairA D.host.F 0 (indP D.host.F (· = v)) ⊗ₜ[D.host.F] s i) ∈ latV S L (· = v)` using `fun v => AddSubgroup.subset_closure ⟨indP D.host.F (· = v), indicatorAdele_mem_integralAdeles' _ _, indicatorAdele_supported _ _, 1, rfl, s, hs, by funext k; rw [one_mul]⟩`. Establish `split : ∀ (c : AF D.host.F) {k : ℕ} (e : Matrix (Fin S.rank) (Fin k) D.host.E) (q : Matrix (Fin k) (Fin S.rank) D.host.E), (fun i => c ⊗ₜ[D.host.F] ((e * q) *ᵥ s) i) = ∑ i, GlobalTheory.FinPl.colMul (rat e) i ((rat q *ᵥ (fun i => c ⊗ₜ[D.host.F] s i)) i)`. Introduce `c k e q`. Rewrite using `[← rat_mulVec_tmul, rat_mul, ← Matrix.mulVec_mulVec]`. Generalize the expression as in `rat q *ᵥ (fun i => c ⊗ₜ[D.host.F] s i) = w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Use function extensionality and compare the values at `l`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, GlobalTheory.FinPl.colMul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Prove the components needed by the constructor for the conclusion.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `hL _ fun v => ?_` and prove the remaining obligations. Rewrite using `[split]`. Conclude with `sum_mem fun i _ => ((hmono v _).1 (key v)).1 i`. Use `hL _ fun v => ?_` and prove the remaining obligations. Rewrite using `[split]`.
-
-Conclude with `sum_mem fun i _ => ((hmono v _).1 (key v)).2.1 i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_mem {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} {L₀ : Lat S₀}
     (hL : ∀ z : Fin S.rank → D.host.E, (∀ v : GlobalTheory.FinPl.Pl D,
@@ -157,11 +155,11 @@ theorem proj_mem {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} 
     exact sum_mem fun i _ => ((hmono v _).1 (key v)).2.1 i
 
 /- English proof (translation)
-Establish `eX : d.jX ⬝ d.pX = rat (d.e * d.qX)` using `by rw [rat_mul]; rfl`. Establish `eY : d.jY ⬝ d.pY = rat (d.e' * d.qY)` using `by rw [rat_mul]; rfl`. Establish `e0 : d.j0 ⬝ d.p0 = 1 - d.jX ⬝ d.pX - d.jY ⬝ d.pY`. Rewrite using `[← d.sum_eq_one]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Take `⟨hX, hY⟩` from `hA u hu`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, eX]`. Conclude with `hX`. Rewrite using `[Matrix.mul_assoc, eY]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hY`. Rewrite using `[Matrix.mul_assoc, e0, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, eX, eY]`. Conclude with `sub_mem (sub_mem hu hX) hY`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_proj {m : ℕ} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (A : AddSubgroup (Mx D m S.rank))
     (hA : ∀ w ∈ A, w ⬝ rat (d.e * d.qX) ∈ A ∧ w ⬝ rat (d.e' * d.qY) ∈ A) (u : Mx D m S.rank) (hu : u ∈ A) :
@@ -178,7 +176,7 @@ theorem mem_of_proj {m : ℕ} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
     exact sub_mem (sub_mem hu hX) hY
 
 /- English proof (translation)
-Establish `hG : S.gramᴴ = S.gram` using `Matrix.ext fun i j => S.herm.eq _ _`. Use `show -S.gram * (d.e * (d.e'ᴴ * S.gram)) = (d.e' * (d.eᴴ * S.gram))ᴴ * -S.gram`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hG]`. Simplify using `only [Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adj_X {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) :
     (negSp S).gram * (d.e * d.qX) = (d.e' * d.qY)ᴴ * (negSp S).gram := by
@@ -188,7 +186,7 @@ theorem adj_X {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) :
   simp only [Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hG : S.gramᴴ = S.gram` using `Matrix.ext fun i j => S.herm.eq _ _`. Use `show -S.gram * (d.e' * (d.eᴴ * S.gram)) = (d.e * (d.e'ᴴ * S.gram))ᴴ * -S.gram`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hG]`. Simplify using `only [Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adj_Y {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) :
     (negSp S).gram * (d.e' * d.qY) = (d.e * d.qX)ᴴ * (negSp S).gram := by
@@ -202,11 +200,11 @@ end GlobalTheory.AscFin.SrcSplit
 open GlobalTheory.AscFin.SrcSplit in
 
 /- English proof (translation)
-Introduce `D hD T L μ0 hLμ sc G W M hM F hF ρ h u hu`. Take `⟨-, H2, -⟩` from `GlobalTheory.T.grid_lattices_compact_selfDual_splitting D hD T L μ0 hLμ sc G W M hM F hF`. Establish `hmono : ∀ v, MonoAt (F.dB ρ h) (G.Λ (.grid (2 * ρ + 2) 0)) (lat0 F ρ h) v` using `fun v => ((H2 ρ h).2.1 v).1`. Establish `hin : Node.InRange D.R.m (.grid (2 * ρ + 2) 0)` using `⟨h, Nat.zero_le _⟩`. Establish `hsd : IsSelfDualC (G.V (.grid (2 * ρ + 2) 0)) (G.Λ (.grid (2 * ρ + 2) 0))` using `(G.isV hin (fun j hj => by injection hj with h1; omega)).sd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `proj_mem (F.dB ρ h) (GlobalTheory.T.mem_selfDualLattice_of_mem_all_latticeCompletions hsd) hmono`. Establish `memR : ∀ w : Mx D (G.V (.grid (2 * ρ + 1) 0)).rank (G.V (.grid (2 * ρ + 2) 0)).rank, w ∈ latRow G (2 * ρ + 1) → ∀ π π' : Matrix (Fin (G.V (.grid (2 * ρ + 2) 0)).rank) (Fin (G.V (.grid (2 * ρ + 2) 0)).rank) D.host.E, (negSp (G.V (.grid (2 * ρ + 2) 0))).gram * π = π'ᴴ * (negSp (G.V …`. Introduce `w hw π π' hadj hπ' hπ`. Take `⟨hw1, hw2⟩` from `hw`. Use `⟨mul_rat_mem_latO (negSp (G.V (.grid (2 * ρ + 2) 0))) _ _ _ _ π π' hadj hπ' hw1, fun e he => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.smul_mul]`. Conclude with `mul_rat_mem_hatMx _ π (mul_mem_smul_homLat _ _ _ π hπ) (hw2 e he)`. Conclude with `mem_of_proj (F.dB ρ h) (latRow G (2 * ρ + 1)) (fun w hw => ⟨memR w hw _ _ (adj_X (F.dB ρ h)) (fun s hs => (hP s hs).2) (fun s hs => (hP s hs).1), memR w hw _ _ (adj_Y (F.dB ρ h)) (fun s hs => (hP s hs).1) (fun s hs => (hP s hs).2)⟩) u hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AscFin.srcSplit_pcBF : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ u ∈ latRow G (2 * ρ + 1), (F.dB ρ h).extX (G.V (.grid (2 * ρ + 1) 0)) (u ⬝ (F.dB ρ h).jX) ∈ latRow G (2 * ρ + 1) ∧ (F.dB ρ h).extY (G.V (.grid (2 * ρ + 1) 0)) (u ⬝ (F.dB ρ h).jY) ∈ latRow G (2 * ρ + 1) ∧ (F.dB ρ h).ext0 (G.V (.grid (2 * ρ + 1) 0)) (u ⬝ (F.dB ρ h).j0) ∈ latRow G (2 * ρ + 1) := by
   intro D hD T L μ0 hLμ sc G W M hM F hF ρ h u hu

@@ -7,7 +7,7 @@ namespace Formalism.WindowSums
 open Polynomial
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_sdiff hAB, map_mul, Module.End.mul_apply, hA, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma aeval_prod_X_sub_C_eq_zero_of_subset {R : Type} [CommRing R] {V : Type} [AddCommGroup V] [Module R V]
     (T : Module.End R V) {ι : Type} [DecidableEq ι] (A B : Finset ι) (γ : ι → R) (x : V)
@@ -16,27 +16,27 @@ private lemma aeval_prod_X_sub_C_eq_zero_of_subset {R : Type} [CommRing R] {V : 
   rw [← Finset.prod_sdiff hAB, map_mul, Module.End.mul_apply, hA, map_zero]
 
 /- English proof (translation)
-Introduce `R _ _ V _ _ T ι _ I S γ d x hSI hinj hS hIS hdiv`. Break down `I.eq_empty_or_nonempty with hI | hI` into its components or cases. Substitute `hI` using the available equality. Establish `hS0 : S = ∅` using `Finset.subset_empty.mp hSI`. Substitute `hS0` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using `at hS`. Simplify using `[hS]`. Use `choose! c hc using hdiv`. Establish `key : ∑ k ∈ I, C (c k) * ∏ m ∈ I.erase k, (X - C (γ m)) = C d`. Rewrite using `[← sub_eq_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `eq_zero_of_natDegree_lt_card_of_eval_eq_zero' _ (I.image γ)` to reduce the goal to its premises. Introduce `z hz`. Take `⟨j, hj, rfl⟩` from `Finset.mem_image.mp hz`. Rewrite using `[eval_sub, eval_finsetSum, eval_C, sub_eq_zero]`. Rewrite using `[Finset.sum_eq_single j]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval_mul, eval_C, eval_prod]`. Simplify using `only [eval_sub, eval_X, eval_C]`. Rewrite using `[hc j hj, mul_comm]`. Introduce `k hk hkj`. Rewrite using `[eval_mul, eval_prod]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_eq_zero_of_right` to reduce the goal to its premises. Apply `Finset.prod_eq_zero (i := j) (Finset.mem_erase.mpr ⟨fun h => hkj h.symm, hj⟩)` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `hj'`. Conclude with `absurd hj hj'`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.card_image_of_injOn hinj]`. Establish `hpos : 0 < I.card` using `Finset.card_pos.mpr hI`. Establish `hdeg : ∀ k ∈ I, (C (c k) * ∏ m ∈ I.erase k, (X - C (γ m))).natDegree ≤ I.card - 1`. Introduce `k hk`. Use `(natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(natDegree_prod_le _ _).trans ?_` and prove the remaining obligations. Simplify using `only [natDegree_X_sub_C, Finset.sum_const, smul_eq_mul, mul_one]`. Rewrite using `[Finset.card_erase_of_mem hk]`. Use `lt_of_le_of_lt (natDegree_sub_le _ _) ?_` and prove the remaining obligations. Rewrite using `[natDegree_C, max_lt_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨lt_of_le_of_lt (natDegree_sum_le_of_forall_le _ _ hdeg) (by omega), hpos⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun p => aeval T p x) key`. Simplify using `only [map_sum, aeval_C] at h`. Rewrite `h` using `[LinearMap.sum_apply]`. Rewrite `h` using `[Module.algebraMap_end_apply]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← h]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k hk`. Rewrite using `[map_mul, Module.End.mul_apply, aeval_C, Module.algebraMap_end_apply]`. Distinguish the cases in `hkS : k ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: I \ S ⊆ I.erase k`. Introduce `m hm`. Rewrite `hm` using `[Finset.mem_sdiff]`. Conclude with `Finset.mem_erase.mpr ⟨fun h => hm.2 (h ▸ hkS), hm.1⟩`. Rewrite using `[aeval_prod_X_sub_C_eq_zero_of_subset T _ _ γ x this hIS, smul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `: S ⊆ I.erase k`. Introduce `m hm`. Conclude with `Finset.mem_erase.mpr ⟨fun h => hkS (h ▸ hm), hSI hm⟩`. Rewrite using `[aeval_prod_X_sub_C_eq_zero_of_subset T _ _ γ x this hS, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem lagrange_annihilation : Lagrange := by
   intro R _ _ V _ _ T ι _ I S γ d x hSI hinj hS hIS hdiv

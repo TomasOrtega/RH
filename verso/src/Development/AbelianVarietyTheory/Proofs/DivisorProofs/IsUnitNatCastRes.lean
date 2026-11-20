@@ -35,7 +35,7 @@ def cu (x : X) : (Localization.Away (p : cR h x))ˣ :=
   Classical.choose (Classical.choose_spec (Classical.choose_spec (Classical.choose_spec (h x))))
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (Classical.choose_spec (Classical.choose_spec (Classical.choose_spec (h x))))`.
+A detailed English derivation is pending.
 -/
 theorem c_spec (x : X) : IsOpenImmersion (cξ h x) ∧ x ∈ Set.range (cξ h x) ∧
     ∀ φ : cR h x →+* 𝓞_ℂ_[p], IsTest p Xw (spMap φ ≫ cξ h x) →
@@ -51,7 +51,7 @@ def secMap (x : X) : cR h x →+* Γ(X, Uc h x) :=
   ((cξ h x).appIso ⊤).inv.hom.comp (Scheme.ΓSpecIso (CommRingCat.of (cR h x))).inv.hom
 
 /- English proof (translation)
-Rewrite using `[map_natCast]`. Establish `h1` using `(X.toRingedSpace.isUnit_res_basicOpen (p : Γ(X, ⊤))).map (X.presheaf.map (homOfLE (inf_le_right : Uc h x ⊓ Xp X p ≤ Xp X p)).op).hom`. Simplify using `only [map_natCast] at h1`. Use `erw [map_natCast] at h1`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_natCast_res (x : X) :
     IsUnit ((X.presheaf.map (homOfLE (inf_le_left : Uc h x ⊓ Xp X p ≤ Uc h x)).op).hom.comp (secMap h x) (p : cR h x)) := by

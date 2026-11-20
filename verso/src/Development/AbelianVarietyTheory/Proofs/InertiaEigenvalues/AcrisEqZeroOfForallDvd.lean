@@ -28,12 +28,12 @@ def IsLogJ (w : Per.Ainf l) (y : Per.Acris l) : Prop :=
     ∃ z : Per.Acris l, y - algebraMap (Per.Acris0 l) (Per.Acris l) s = ((l : ℕ) : Per.Acris l) ^ r * z
 
 /- English proof (translation)
-Introduce `_` and use `⟨0, fun _ _ => ⟨0, by simp, 0, by simp⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isLogJ_zero : IsLogJ (0 : Per.Ainf l) 0 := fun _ => ⟨0, fun _ _ => ⟨0, by simp, 0, by simp⟩⟩
 
 /- English proof (translation)
-Use `IsHausdorff.haus (I := Ideal.span {((l : ℕ) : Per.Acris l)}) (GlobalTheory.MemLoc.acris_basic l).1.toIsHausdorff x fun r => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `h r`. Rewrite using `[SModEq.zero, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, Ideal.mem_span_singleton]`. Conclude with `⟨z, hz⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem acris_eq_zero_of_forall_dvd (x : Per.Acris l)
     (h : ∀ r : ℕ, ∃ z : Per.Acris l, x = ((l : ℕ) : Per.Acris l) ^ r * z) : x = 0 := by
@@ -44,9 +44,9 @@ private theorem acris_eq_zero_of_forall_dvd (x : Per.Acris l)
   exact ⟨z, hz⟩
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `acris_eq_zero_of_forall_dvd (y - y') fun r => ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `h r`. Take `⟨N', hN'⟩` from `h' r`. Take `⟨s, hs, z, hz⟩` from `hN (max N N') (le_max_left _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s', hs', z', hz'⟩` from `hN' (max N N') (le_max_right _ _)`. Establish `: s = s'` using `Subtype.ext ((GlobalTheory.RingBasics.isUnit_nat l _ (Nat.factorial_ne_zero _)).mul_left_cancel (hs.trans hs'.symm))`. Substitute `this` using the available equality. Establish `key : y - y' = ((l : ℕ) : Per.Acris l) ^ r * (z - z')` using `by linear_combination hz - hz'`. Conclude with `⟨z - z', key⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isLogJ_unique {w : Per.Ainf l} {y y' : Per.Acris l} (h : IsLogJ w y) (h' : IsLogJ w y') :
     y = y' := by
@@ -63,9 +63,9 @@ theorem isLogJ_unique {w : Per.Ainf l} {y y' : Per.Acris l} (h : IsLogJ w y) (h'
   exact ⟨z - z', key⟩
 
 /- English proof (translation)
-Introduce `r`. Take `⟨N, hN⟩` from `hy r`. Use `⟨N, fun n hn => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, z, hz⟩` from `hN n hn`. Use `⟨⟨Per.extP f s, hf.mem _ s.2⟩, ?_, F z, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (Per.extP f) hs` as an intermediate fact. Simplify `this` using `only [map_mul, map_natCast, map_sum, map_pow, map_neg, map_one, GlobalTheory.RingBasics.awayMap_algebraMap₂]`. Use `congrArg F hz` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_pow, map_natCast, hf.env]`. Conclude with `this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLogJ_extends {f : Per.Ainf l →+* Per.Ainf l} {F : Per.Acris l →+* Per.Acris l}
     (hf : GlobalTheory.CrisMaps.Extends f F) {w : Per.Ainf l} {y : Per.Acris l}
@@ -82,15 +82,15 @@ theorem isLogJ_extends {f : Per.Ainf l →+* Per.Ainf l} {F : Per.Acris l →+* 
     exact this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by rw [Model.theta_mu, he, sub_self, mul_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem inJ_mu {e : Per.Fl l} (he : e.untilt = 1) : InJ (mu e) :=
   ⟨0, by rw [Model.theta_mu, he, sub_self, mul_zero]⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Establish `hθ : Per.θ l (Per.tm e) - 1 = (l : Per.OC l) * c` using `by rw [← hc, map_sub, map_one]`. Take `⟨d, hd⟩` from `sub_dvd_pow_sub_pow (Per.θ l (Per.tm e)) 1 m`. Use `⟨c * d, ?_⟩` and prove the remaining obligations. Establish `e1 : Per.tm (e ^ m) = Per.tm e ^ m` using `map_pow (WittVector.teichmuller l) e m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e1, map_sub, map_one, map_pow, ← one_pow m, hd, hθ, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inJ_pow {e : Per.Fl l} (h : InJ (Per.tm e - 1)) (m : ℕ) : InJ (Per.tm (e ^ m) - 1) := by
   obtain ⟨c, hc⟩ := h

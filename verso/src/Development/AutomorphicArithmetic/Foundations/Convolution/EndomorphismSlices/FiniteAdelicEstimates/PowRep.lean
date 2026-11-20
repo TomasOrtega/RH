@@ -23,23 +23,21 @@ namespace UpperTheory.Zero.ConvolutionTheory.EB
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Introduce `E _ _ _ a b l₁ l₂ D A S Z L hS hZ u₁ u₂ φ T e₁ e₂ U R hφ hR hU`. Take `⟨-, -, hpt, hval, -⟩` from `ptOk E a b l₁ l₂ D A`. Take `⟨-, -, -, -, -, hfx, -, -⟩` from `hkMul E a b l₁ l₂ D A S Z L hS hZ`. Take `⟨hidm, -⟩` from `hkMul E a b l₁ l₂ D A S Z L hS hZ`. Take `⟨-, hrep, hmono, hmul⟩` from `repAlg E A.blk (chi l₁) (chi l₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hrt₁, hrt₂, -⟩` from `PositivityTheory.Rg.BcB.F.BlockFiniteConvolution.rtAlg' E A.blk u₁ u₂`. Establish `hc : 0 ≤ A.blk.c` using `A.c_nonneg`. Establish `ok₁ : (A.ptB (A.fx S L T φ (fun _ => .one) fun _ => .one)).Ok` using `hpt _ _ _ (hfx T φ _ _ hφ).1`. Establish `ok₂ : (A.ptB (rt u₁ u₂ (A.idm S L))).Ok`. Take `⟨r, hr⟩` from `hrt₂ (A.ptB (A.idm S L)) (hpt _ _ _ hidm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hpt _ _ _ hr.ψ`. Use `⟨ok₁, ok₂, ?_⟩` and prove the remaining obligations. Use `set t₁ := A.ptB (A.fx S L T φ (fun _ => .one) fun _ => .one) with ht₁`. Use `set t₂ := A.ptB (rt u₁ u₂ (A.idm S L)) with ht₂`. Establish `r₁0 : 0 ≤ max t₁.T t₁.r` using `le_max_of_le_left ok₁.T`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r₂0 : 0 ≤ max t₂.T t₂.r` using `le_max_of_le_left ok₂.T`. Establish `base₁ : Rep A.blk (chi l₁) (chi l₂) t₁.ψ 1 (max t₁.T t₁.r) t₁.op`. Use `hrep t₁ ok₁` as an intermediate fact. Rewrite `this` using `[hval]`. Then use the resulting hypothesis. Establish `base₂ : Rep A.blk (chi l₁) (chi l₂) t₂.ψ 1 (max t₂.T t₂.r) t₂.op`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `hrep t₂ ok₂` as an intermediate fact. Rewrite `this` using `[hval]`. Then use the resulting hypothesis. Establish `step : ∀ k : ℕ, Rep A.blk (chi l₁) (chi l₂) (A.fx S L T φ (fun w => (e₁ w).pow k) fun w => (e₂ w).pow k) 1 (max t₁.T t₁.r + k * (R + A.blk.c)) (t₁.op * U ^ k)`. Introduce `k`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero`. Simplify using `only [Nat.cast_zero, zero_mul, add_zero, pow_zero, mul_one]`. Conclude with `base₁`. Consider the case `succ k ih`. Establish `h` using `hmul _ _ _ _ _ _ _ _ ih hU`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[(hfx T φ _ _ hφ).2.2 e₁ e₂, one_mul]`. Establish `e : max t₁.T t₁.r + (k : ℝ) * (R + A.blk.c) + R + A.blk.c = max t₁.T t₁.r + ((k + 1 : ℕ) : ℝ) * (R + A.blk.c)` using `by push_cast; ring`. Rewrite `h` using `[e, mul_assoc, ← pow_succ]`. Conclude with `h`. Use `⟨max t₁.T t₁.r + max t₂.T t₂.r + A.blk.c, R + A.blk.c, by positivity, by positivity, fun k => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hmul _ _ _ _ _ _ _ _ (step k) base₂`. Rewrite `h` using `[one_mul]`. Establish `hψ : mulF A.blk.ν (A.fx S L T φ (fun w => (e₁ w).pow k) fun w => (e₂ w).pow k) t₂.ψ = rt u₁ u₂ (A.fx S L T φ (fun w => (e₁ w).pow k) fun w => (e₂ w).pow k)` using `by show mulF A.blk.ν _ (rt u₁ u₂ (A.idm S L)) = _`. Rewrite using `[hrt₁, (hfx T φ _ _ hφ).2.1]`. Rewrite `h` using `[hψ]`.
-
-Use `hmono _ _ _ _ _ (le_of_eq ?_) h` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem powRep : PowRep := by
   intro E _ _ _ a b l₁ l₂ D A S Z L hS hZ u₁ u₂ φ T e₁ e₂ U R hφ hR hU

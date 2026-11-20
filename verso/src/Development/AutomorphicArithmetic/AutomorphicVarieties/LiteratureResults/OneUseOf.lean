@@ -12,7 +12,7 @@ def OneUse : Prop :=
       IsHol k (fun _ => 0) 1 φ ∧ HasExp φ.1 k c₀ c ∧ (∀ y, ‖ι.symm (c₀ y) - 1‖ < 1) ∧ ∀ 𝔪, 𝔪 ≠ ⊥ → ‖ι.symm (c 𝔪)‖ < 1
 
 /- English proof (translation)
-Introduce `F _ _ _ p hp hl ι B`. Take `⟨N, hN⟩` from `h F p hl ι`. Establish `hpos : 0 < (p - 1) * p ^ N` using `Nat.mul_pos (Nat.sub_pos_of_lt hp.out.one_lt) (pow_pos hp.out.pos N)`. Conclude with `⟨(p - 1) * p ^ N * (B + 1), (Nat.le_succ B).trans (Nat.le_mul_of_pos_left _ hpos), Nat.mul_pos hpos B.succ_pos, (dvd_mul_right _ _).mul_right _, hN _ (Nat.mul_pos hpos B.succ_pos) (dvd_mul_right _ _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem oneUse_of (h : Published.HilbertOne) : OneUse := by
   intro F _ _ _ p hp hl ι B

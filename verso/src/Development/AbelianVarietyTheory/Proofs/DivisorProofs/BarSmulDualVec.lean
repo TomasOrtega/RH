@@ -20,7 +20,7 @@ variable {p h o : ℕ} {A : Type} [CommRing A] {π : A} {γ : ℕ → A} {Lie Om
   [AddCommGroup Om] [Module A Om]
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hu`. Use `eq_top_iff.2 fun x _ => (Submodule.mem_smul_pointwise_iff_exists _ _ _).2 ⟨(u⁻¹ : Aˣ) • x, trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.smul_def, smul_inv_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_top_of_isUnit {X : Type} [AddCommGroup X] [Module A X] {u : A} (hu : IsUnit u) :
     u • (⊤ : Submodule A X) = ⊤ := by
@@ -29,7 +29,7 @@ theorem smul_top_of_isUnit {X : Type} [AddCommGroup X] [Module A X] {u : A} (hu 
   rw [← Units.smul_def, smul_inv_smul]
 
 /- English proof (translation)
-Establish `hb : baseOf π h = ⊤` using `smul_top_of_isUnit (isUnit_of_dvd_unit hπ hp)`. Establish `hq : ∀ n, Subsingleton (Qt (C.L n) (baseOf π h))` using `fun n => Submodule.Quotient.subsingleton_iff.2 (by rw [hb, Submodule.comap_top])`. Use `haveI : Subsingleton (Lie ⧸ (p : A) • (⊤ : Submodule A Lie)) := Submodule.Quotient.subsingleton_iff.2 (smul_top_of_isUnit hp)`. Use `haveI : Subsingleton (Qt (C.L 0) (baseOf π h) ⧸ LinearMap.range C.j) := (Submodule.Quotient.mk_surjective _).subsingleton`. Conclude with `⟨fun n x _ => C.base_le n (hb ▸ trivial), fun _ _ _ _ _ => Subsingleton.elim _ _, fun _ _ _ _ _ => Subsingleton.elim _ _, fun _ _ _ _ _ _ _ _ _ => Subsingleton.elim _ _, fun _ _ _ _ _ _ _ => Subsingleton.elim _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_of_isUnit (C : RChain p A h o π γ Lie Om) (hp : IsUnit (p : A)) (hπ : π ∣ (p : A))
     (M : Matrix (Fin h) (Fin h) ℤ) (l : Lie → Lie) (m : Om → Om) : C.Map C (RingHom.id A) M l m := by
@@ -51,7 +51,7 @@ section Groups
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] {G H : PDivGroup p O}
 
 /- English proof (translation)
-The claim follows from `TateOver.ext (funext fun n => AlgHom.ext fun φ => by rw [← apply_charElem, ← apply_charElem, h])`.
+A detailed English derivation is pending.
 -/
 theorem char_ext {χ ψ : G.dual.Tate} (h : ∀ n, charElem χ n = charElem ψ n) : χ = ψ :=
   TateOver.ext (funext fun n => AlgHom.ext fun φ => by rw [← apply_charElem, ← apply_charElem, h])
@@ -73,7 +73,7 @@ def bcTateHom (G : PDivGroup p O) : G.Tate →+ (G.baseChange O').Tate :=
       rw [k, k, k, TateOver.add_conv, map_mul])
 
 /- English proof (translation)
-The claim follows from `char_ext fun n => by rw [charElem_tateMap, charElem_bcChar, charElem_bcChar, charElem_tateMap] rfl`.
+A detailed English derivation is pending.
 -/
 theorem tateMap_bcChar (f : G ⟶ H) (χ : H.dual.Tate) :
     tateMap _ _ O' (dualHom _ _ (PDivGroup.baseChangeMap O' f)) (bcChar O' χ) = bcChar O' (tateMap _ _ O (dualHom G H f) χ) :=
@@ -84,7 +84,7 @@ theorem tateMap_bcChar (f : G ⟶ H) (χ : H.dual.Tate) :
 def toSelf (G : PDivGroup p O) : G.baseChange O ⟶ G := SemiHom.toHom (G.toBase O)
 
 /- English proof (translation)
-The claim follows from `char_ext fun n => by rw [charElem_tateMap, charElem_bcChar] rfl`.
+A detailed English derivation is pending.
 -/
 theorem tateMap_toSelf (χ : G.dual.Tate) : tateMap _ _ O (dualHom _ _ (toSelf G)) χ = bcChar O χ :=
   char_ext fun n => by
@@ -92,14 +92,14 @@ theorem tateMap_toSelf (χ : G.dual.Tate) : tateMap _ _ O (dualHom _ _ (toSelf G
     rfl
 
 /- English proof (translation)
-The claim follows from `SemiHom.omega_naturality _ _ f _ (fun _ _ => rfl) w`.
+A detailed English derivation is pending.
 -/
 theorem toBase_omegaMap (f : G ⟶ H) (w : H.omega) :
     (G.toBase O').omega (omegaMap G H f w) = omegaMap _ _ (PDivGroup.baseChangeMap O' f) ((H.toBase O').omega w) :=
   SemiHom.omega_naturality _ _ f _ (fun _ _ => rfl) w
 
 /- English proof (translation)
-Establish `h1 : (dualBaseChange O' G).hom ≫ PDivGroup.baseChangeMap O' (dualHom G G f) = dualHom _ _ (PDivGroup.baseChangeMap O' f) ≫ (dualBaseChange O' G).hom` using `PDivGroup.hom_ext fun n => BialgHom.ext fun x => CartierDual.baseChange_map O' (f.app n) x`. Establish `h2 : PDivGroup.baseChangeMap O' g ≫ PDivGroup.baseChangeMap O' pol.hom = PDivGroup.baseChangeMap O' pol.hom ≫ PDivGroup.baseChangeMap O' (dualHom G G f)` using `((baseChangeFunctor p O O').map_comp _ _).symm.trans ((congrArg (PDivGroup.baseChangeMap O') h).trans ((baseChangeFunctor p O O').map_comp _ _))`. Rewrite using `[polBC, ← Category.assoc, h2, Category.assoc, Category.assoc]`. Use `congr 1`. Rewrite using `[Iso.comp_inv_eq, Category.assoc, ← h1, Iso.inv_hom_id_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem polBC_adj (pol : G ≅ G.dual) (f g : G ⟶ G) (h : g ≫ pol.hom = pol.hom ≫ dualHom G G f) :
     PDivGroup.baseChangeMap O' g ≫ polBC pol O' = polBC pol O' ≫ dualHom _ _ (PDivGroup.baseChangeMap O' f) := by
@@ -114,9 +114,9 @@ theorem polBC_adj (pol : G ≅ G.dual) (f g : G ⟶ G) (h : g ≫ pol.hom = pol.
   rw [Iso.comp_inv_eq, Category.assoc, ← h1, Iso.inv_hom_id_assoc]
 
 /- English proof (translation)
-Set `e : G.baseChange O' ≅ (G.baseChange O').dual` to `(baseChangeFunctor p O O').mapIso pol ≪≫ (dualBaseChange O' G).symm`. Establish `he : polBC pol O' = e.hom` using `rfl`. Rewrite using `[he]`. Use `Function.bijective_iff_has_inverse.2 ⟨omegaMap _ _ e.inv, fun w => ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, ← omegaMap_comp, e.inv_hom_id, omegaMap_id, LinearMap.id_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.comp_apply, ← omegaMap_comp, e.hom_inv_id, omegaMap_id, LinearMap.id_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem omegaMap_polBC_bijective (pol : G ≅ G.dual) : Function.Bijective (omegaMap _ _ (polBC pol O')) := by
   let e : G.baseChange O' ≅ (G.baseChange O').dual := (baseChangeFunctor p O O').mapIso pol ≪≫ (dualBaseChange O' G).symm
@@ -133,23 +133,23 @@ section Lattice
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (show ((H.bar (H.bar a) : 𝓞 E) : E) = (a : E) by rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply])`.
+A detailed English derivation is pending.
 -/
 theorem bar_bar (a : 𝓞 E) : H.bar (H.bar a) = a :=
   Subtype.ext (show ((H.bar (H.bar a) : 𝓞 E) : E) = (a : E) by
     rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply])
 
 /- English proof (translation)
-Simplify using `only [actMat_apply, Module.Basis.sum_repr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smul_basis {n : ℕ} (b : Module.Basis (Fin n) ℤ Dw.La) (a : 𝓞 E) (i : Fin n) :
     a • b i = ∑ k, actMat b a k i • b k := by
   simp only [actMat_apply, Module.Basis.sum_repr]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hf : ∀ y z : Dw.La, (∀ i, Dw.EF (b i) y = Dw.EF (b i) z) → y = z` using `fun y z h => Dw.unimod.1 (b.ext fun i => neg_injective (by`. Rewrite using `[LinearMap.IsAlt.neg Dw.alt, LinearMap.IsAlt.neg Dw.alt, h]))`. Use `hf _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[← Dw.adj, EF_dualVec, map_sum]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[EF_dualVec, actMat_apply, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bar_smul_dualVec {n m : ℕ} (e : m = n) (b : Module.Basis (Fin n) ℤ Dw.La) (a : 𝓞 E) (j : Fin n) :
     H.bar a • dualVec (b.reindex (finCongr e.symm)) (Fin.cast e.symm j) =
@@ -165,27 +165,25 @@ theorem bar_smul_dualVec {n m : ℕ} (e : m = n) (b : Module.Basis (Fin n) ℤ D
 end Lattice
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw p _ D A _ t GG act pol θ ε τ hP n o e b π γ Lie Om _ _ _ _ cω pr C a l m m' hC hm hm' hl hπ`. Distinguish the cases in `hp : IsUnit (p : A)`. Conclude with `map_of_isUnit C hp hπ _ _ _`. Take `⟨S, _, -, -, hε, eL, eO, hL, hO, hOf⟩` from `hC hp`. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `ht' : ∀ j : Fin GG.height, tateMap _ _ S.R (dualHom _ _ (PDivGroup.baseChangeMap S.R (act a : GG ⟶ GG))) (((ct hP rfl b).baseChange S.R hε).t' j) = ∑ i, actMat b a j i • ((ct hP rfl b).baseChange S.R hε).t' i` using `fun j => by`. Establish `h1` using `hP.adj (H.bar a)`. Rewrite `h1` using `[bar_bar]`. Establish `h2 : tateMap _ _ A (dualHom GG GG (act a)) ((ct hP rfl b).t' j) = ∑ i, actMat b a j i • (ct hP rfl b).t' i`. Express the relevant statement in the definitionally equal form `tateMap _ _ A (dualHom GG GG (act a)) (tateMap GG GG.dual A pol.hom (τ _)) = ∑ i, actMat b a j i • tateMap GG GG.dual A pol.hom (τ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← tateMap_comp, ← h1, tateMap_comp, ← hP.lin]`. Use `erw [bar_smul_dualVec rfl b a j]`. Simplify using `only [map_sum, map_zsmul]`. Both sides reduce to the same expression. Use `(tateMap_bcChar S.R _ _).trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `(map_sum (bcCharHom S.R GG) _ _).trans (Finset.sum_congr rfl fun i _ => map_zsmul (bcCharHom S.R GG) _ _)`. Establish `ht : ∀ i : Fin GG.height, tateMap _ _ S.R (PDivGroup.baseChangeMap S.R (act a : GG ⟶ GG)) (((ct hP rfl b).baseChange S.R hε).t i) = ∑ k, actMat b a k i • ((ct hP rfl b).baseChange S.R hε).t k` using `fun i => by`. Establish `h0 : ∀ k, (ct hP rfl b).t k = τ (b k)` using `fun k => congrArg τ (by simp)`. Express the relevant statement in the definitionally equal form `tateMap _ _ S.R _ (bcTate S.R _) = ∑ k, actMat b a k i • bcTateHom S.R GG ((ct hP rfl b).t k)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[tateMap_bcTate, h0, ← hP.lin, smul_basis]`. Express the relevant statement in the definitionally equal form `bcTateHom S.R GG _ = _`. Simplify using `only [map_sum, map_zsmul, h0]`. Establish `hbij` using `omegaMap_polBC_bijective S.R pol`. Use `(hM p D S S _ _ _ _ A A (RingHom.id A) _ o rfl rfl π π γ γ Lie Om Lie Om _ _ _ _ C C (toSelf _ ≫ PDivGroup.baseChangeMap S.R (act a : GG ⟶ GG)) (actMat b a) l m hOf hOf (fun _ => rfl) (fun _ => rfl) (fun j => ?_) (fun y j => ?_) fun w x hx => ?_).1` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[dualHom_comp, tateMap_comp] erw [ht' j]`. Simplify using `only [map_sum, map_zsmul, tateMap_toSelf]`. Both sides reduce to the same expression. Establish `h1 : ∀ v, eL (1 ⊗ₜ l y) v = eL (1 ⊗ₜ y) (omegaMap _ _ (PDivGroup.baseChangeMap S.R (act a : GG ⟶ GG)) v)` using `fun v => by`. Take `⟨v, rfl⟩` from `hbij.2 v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨v, rfl⟩` from `eO.surjective v`. Proceed by induction on `v with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Consider the case `tmul r w`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_one r, ← smul_eq_mul, ← TensorProduct.smul_tmul']`. Simplify using `only [map_smul]`. Rewrite using `[hO, hL, hl, ← hL, hm', toBase_omegaMap]`. Rewrite using `[ConstTate.alDual_apply, h1, ← dlog_tateMap]`. Use `erw [ht' j]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[mv, Matrix.mulVec, dotProduct, map_sum, map_zsmul]`. Establish `h1 : eO (1 ⊗ₜ m w) = omegaDualMap _ _ (PDivGroup.baseChangeMap S.R (act a : GG ⟶ GG)) (eO (1 ⊗ₜ w))`. Establish `h2` using `hP.adj (H.bar a)`. Rewrite `h2` using `[bar_bar]`. Apply `hbij.1` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hO, hm, toBase_omegaMap, ← hO, omegaDualMap_apply, ← LinearMap.comp_apply, ← LinearMap.comp_apply, ← omegaMap_comp, ← omegaMap_comp, polBC_adj S.R pol _ _ h2]`. Rewrite using `[h1, ← map_smul, hx]`. Simplify using `only [ConstTate.al_apply, map_sum, map_smul, ← hodgeTate_tateMap, ht, map_zsmul, Finset.smul_sum, mv, Matrix.mulVec, dotProduct, Finset.sum_smul, Matrix.map_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[mul_comm, mul_smul, Int.cast_smul_eq_zsmul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ringAct (hM : MapSt) : RingActSt := by
   intro E _ _ _ H Dw p _ D A _ t GG act pol θ ε τ hP n o e b π γ Lie Om _ _ _ _ cω pr C a l m m' hC hm hm' hl hπ

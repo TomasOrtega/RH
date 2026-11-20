@@ -13,7 +13,7 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PfSWUS.height_mul_K | exact GlobalTheory.CompanionTheory.PfSWUS.height_mul_K | (intros; apply GlobalTheory.CompanionTheory.PfSWUS.height_mul_K <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.height_K_invariance : PositivityTheory.PfSWUS.HeightKInv := by
   first | exact @GlobalTheory.CompanionTheory.PfSWUS.height_mul_K | exact GlobalTheory.CompanionTheory.PfSWUS.height_mul_K | (intros; apply GlobalTheory.CompanionTheory.PfSWUS.height_mul_K <;> assumption)

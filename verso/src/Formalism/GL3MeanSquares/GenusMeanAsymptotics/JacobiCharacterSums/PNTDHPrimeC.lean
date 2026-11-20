@@ -15,11 +15,11 @@ def dhprF {M : ℕ} (χ₁ : DirichletCharacter ℂ M) (k : ℕ) (σ : ℝ) (n :
   (Real.log n) ^ k * (Λ n / (n : ℝ) ^ σ) * dhprC χ₁ n
 
 /- English proof (translation)
-Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `key : Real.exp ((σ - 1) * v) * n ≤ (n : ℝ) ^ σ`. Establish `e1 : (n : ℝ) ^ σ = (n : ℝ) ^ (σ - 1) * n`. Rewrite using `[← Real.rpow_add_one hn0.ne']`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Rewrite using `[e1]`. Apply `mul_le_mul_of_nonneg_right _ hn0.le` to reduce the goal to its premises. Rewrite using `[Real.rpow_def_of_pos hn0]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.mpr hv.le) (sub_nonneg.mpr hσ)]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `e2 : Real.exp (-((σ - 1) * v)) / n = 1 / (Real.exp ((σ - 1) * v) * n)`. Rewrite using `[Real.exp_neg]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e2]`. Conclude with `one_div_le_one_div_of_le (by positivity) key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dhpr_rpow_le {σ : ℝ} (hσ : 1 ≤ σ) {n v : ℕ} (hn : 1 ≤ n) (hv : (v : ℝ) < Real.log n) :
     1 / (n : ℝ) ^ σ ≤ Real.exp (-((σ - 1) * v)) / n := by
@@ -40,17 +40,17 @@ lemma dhpr_rpow_le {σ : ℝ} (hσ : 1 ≤ σ) {n v : ℕ} (hn : 1 ≤ n) (hv : 
   exact one_div_le_one_div_of_le (by positivity) key
 
 /- English proof (translation)
-Establish `hterm : ∀ n ∈ Finset.Ioc ⌊Real.exp (v : ℝ)⌋₊ ⌊Real.exp ((v + 1 : ℕ) : ℝ)⌋₊, dhprF χ₁ k σ n ≤ 2 * (((v : ℝ) + 1) ^ (k + 1) * Real.exp (-((σ - 1) * v))) * ((∑ d ∈ n.divisors, χ₁ (d : ZMod M)).re / n)`. Introduce `n hn`. Rewrite `hn` using `[Finset.mem_Ioc]`. Establish `hgt : Real.exp (v : ℝ) < n` using `(Nat.floor_lt (Real.exp_pos _).le).mp hn.1`. Establish `hle : (n : ℝ) ≤ Real.exp ((v + 1 : ℕ) : ℝ)` using `(Nat.le_floor_iff (Real.exp_pos _).le).mp hn.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnpos : (0 : ℝ) < n` using `lt_trans (Real.exp_pos _) hgt`. Establish `hn1 : 1 ≤ n`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `interval_cases n`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `at hnpos`. Establish `hlogv : (v : ℝ) < Real.log n`. Rewrite using `[Real.lt_log_iff_exp_lt hnpos]`. Conclude with `hgt`. Establish `hlog1 : Real.log n ≤ (v : ℝ) + 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h5` using `Real.log_le_log hnpos hle`. Rewrite `h5` using `[Real.log_exp]`. Move the coercions through the operations in `at h5`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog0 : 0 ≤ Real.log n` using `le_of_lt (lt_of_le_of_lt (Nat.cast_nonneg v) hlogv)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz` using `dhpr_r_nonneg χ₁ h1 n`. Establish `hr` using `dhpr_rpow_le hσ hn1 hlogv`. Establish `hp1 : (Real.log n) ^ (k + 1) ≤ ((v : ℝ) + 1) ^ (k + 1)` using `pow_le_pow_left₀ hlog0 hlog1 _`. Establish `hq0 : 0 ≤ (Real.log n) ^ (k + 1)` using `pow_nonneg hlog0 _`. Rewrite using `[← dhpr_zetaMul_eq_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hp1 hz) (by norm_num)) hr (by positivity) (by positivity)` to reduce the goal to its premises. Use `_ = _ := by ring`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 lemma dhpr_block {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (h1 : χ₁ ^ 2 = 1) (k : ℕ)
     {σ : ℝ} (hσ : 1 ≤ σ) (v : ℕ) (B : ℝ)
@@ -101,13 +101,13 @@ lemma dhpr_block {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (h1 : �
     _ ≤ _ := by gcongr
 
 /- English proof (translation)
-Establish `hy : (2 : ℝ) ≤ Real.exp (v0 : ℝ)`. Establish `hv1 : (1 : ℝ) ≤ v0` using `by exact_mod_cast hv0`. Combine the equalities or inequalities in the displayed calculation. Establish `hM` using `hMert _ hy`. Rewrite `hM` using `[Real.log_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hIoc : Finset.Ioc 0 ⌊Real.exp (v0 : ℝ)⌋₊ = Finset.Icc 1 ⌊Real.exp (v0 : ℝ)⌋₊`. Use extensionality with `n`. Simplify using `only [Finset.mem_Ioc, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Establish `hterm : ∀ n ∈ Finset.Ioc 0 ⌊Real.exp (v0 : ℝ)⌋₊, dhprF χ₁ k σ n ≤ 2 * (v0 : ℝ) ^ k * (Λ n / n)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `n hn`. Rewrite `hn` using `[Finset.mem_Ioc]`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn.1`. Establish `hlog0 : 0 ≤ Real.log n` using `Real.log_nonneg hn1`. Establish `hlog : Real.log n ≤ v0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnle : (n : ℝ) ≤ Real.exp v0` using `(Nat.le_floor_iff (Real.exp_pos _).le).mp hn.2`. Combine the equalities or inequalities in the displayed calculation. Establish `hΛ : 0 ≤ (Λ n : ℝ) / (n : ℝ)` using `div_nonneg ArithmeticFunction.vonMangoldt_nonneg (Nat.cast_nonneg _)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 lemma dhpr_small {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (h1 : χ₁ ^ 2 = 1) (k : ℕ)
     {σ : ℝ} (hσ : 1 ≤ σ) (v0 : ℕ) (hv0 : 1 ≤ v0) {CT : ℝ} (hCT : 0 ≤ CT)
@@ -142,9 +142,9 @@ lemma dhpr_small {M : ℕ} [NeZero M] (χ₁ : DirichletCharacter ℂ M) (h1 : �
     _ = 2 * CT * (v0 : ℝ) ^ (k + 1) := by ring
 
 /- English proof (translation)
-Establish `h1 : Real.log (Real.exp ((v + 1 : ℕ) : ℝ) / Real.exp (v : ℝ)) = 1`. Rewrite using `[← Real.exp_sub, Real.log_exp]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : Real.sqrt (Real.exp (v : ℝ)) = Real.exp ((v : ℝ) / 2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[show Real.exp (v : ℝ) = Real.exp ((v : ℝ) / 2) * Real.exp ((v : ℝ) / 2) by`. Rewrite using `[← Real.exp_add]`. Use the proof step `ring_nf, Real.sqrt_mul_self (Real.exp_pos _).le]`. Rewrite using `[h1, Real.log_exp, h2, Real.exp_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma dhpr_hyper_simp (A CH x : ℝ) (v : ℕ) :
     A * Real.log (Real.exp ((v + 1 : ℕ) : ℝ) / Real.exp (v : ℝ))

@@ -10,17 +10,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ThetaSqInt
 
 /- English proof (translation)
-Introduce `D ψ hψ S T μ 𝓕 hC F hF`. Use `haveI hB : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI hO : OpensMeasurableSpace (WO S T) := BorelSpace.opensMeasurable`. Establish `hn : ∀ x, ‖ψ x‖ = 1` using `hψ.1.2.1`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `γ hγ w`. Take `⟨ξ, rfl⟩` from `hγ`. Establish `hq` using `hF.quasi ξ w`. Establish `e : ((incA D).toAddMonoidHom.mapMatrix ξ : WO S T) = ratW T S ξ` using `rfl`. Rewrite using `[e, hq, norm_mul, hn, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, hM⟩` from `GlobalTheory.OrientedHeis.theta_bounded hψ hF`. Establish `hle : ∫⁻ x in 𝓕, ‖F x‖ₑ ^ 2 ∂μ ≤ ∫⁻ _x in 𝓕, ENNReal.ofReal M ^ 2 ∂μ`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Use `gcongr`. Rewrite using `[← ofReal_norm_eq_enorm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.ofReal_le_ofReal (hM x)`. Rewrite `hle` using `[setLIntegral_const, hC.2.2, mul_one]`. Conclude with `ne_top_of_le_ne_top (ENNReal.pow_ne_top ENNReal.ofReal_ne_top) hle`. Establish `h1 : ∀ x, F x * starRingEnd ℂ (F x) = (((‖F x‖ ^ 2 : ℝ)) : ℂ)` using `fun x => by`. Rewrite using `[Complex.mul_conj']`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Both sides reduce to the same expression. Repeatedly rewrite using `[h1]`. Rewrite using `[integral_complex_ofReal]`. Use `congr 1`.
-
-Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun x => sq_nonneg ‖F x‖) ((hF.cont.norm.pow 2).measurable.aestronglyMeasurable)]`. Use `congr 1`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaO_norm_fin : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ F : WO S T → ℂ, IsThetaFunO ψ S T F → (∀ γ ∈ ratL T S, ∀ w, ‖F (γ + w)‖ = ‖F w‖) ∧ ∫⁻ x in 𝓕, ‖F x‖ₑ ^ 2 ∂μ ≠ ⊤ ∧ ∫ x in 𝓕, F x * starRingEnd ℂ (F x) ∂μ = (((∫⁻ x in 𝓕, ‖F x‖ₑ ^ 2 ∂μ).toReal : ℝ) : ℂ) := by
   intro D ψ hψ S T μ 𝓕 hC F hF

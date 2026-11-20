@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.ThK.LemF.LeviPoint
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [cA, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_cA {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) (y : AE F E) : cA σ (cA σ y) = y := by
@@ -28,7 +28,7 @@ theorem cA_cA {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Establish `h1 : mat m⁻¹ *ᵥ (mat m *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, ← GlobalTheory.StabHaar.mat_mul, inv_mul_cancel, GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec]`. Rewrite `h1` using `[h, Matrix.mulVec_smul]`. Use `conv_rhs => rw [← h1]`. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_inv_mulVec {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} (m : UA σ W.J) (t : (AE F E)ˣ) (x : Fin d → AE F E)
@@ -40,7 +40,7 @@ theorem mat_inv_mulVec {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   rw [smul_smul, Units.inv_mul, one_smul]
 
 /- English proof (translation)
-Rewrite using `[shiftB, shiftB, Matrix.smul_mul, GlobalTheory.ThK.EvLawA.vecMulVec_mul_transpose, hM, Matrix.vecMulVec_smul, smul_smul, Units.val_mul, map_mul, Units.coe_map, MonoidHom.coe_coe, cA_cA hσ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shiftB_mul_transpose {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n n₁ d d₁ : ℕ} (H : Plane E n n₁) (H' : Plane E d d₁) (l s : (AE F E)ˣ)
@@ -56,13 +56,13 @@ end
 open GlobalTheory.ThK.LemF.LeviPoint in
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B a b G G₁ H H' cfg e' hev ei' ev' hloc X om om' om₁ om₁' T T₁ v t h₁ m hL hmv hh₁v k hk l φ hφ`. Establish `hA : ActsEx` using `GlobalTheory.T.theta_action_exists hPr`. Establish `P'` using `GlobalTheory.ThK.Inhab.pairV' T`. Establish `P₁'` using `GlobalTheory.ThK.Inhab.pairV' T₁`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.ThK.Inhab.conj_conj T.base.cm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlaw : ∀ Φ ∈ schA F (Fin (b + 2) × Fin (a + (b + 2))), e' (om' (1, m) Φ) = fac X.α ((b : ℝ) / 2) t • om₁' (1, h₁) (e' Φ)`. Introduce `Φ hΦ`. Establish `h` using `GlobalTheory.T.config_b_levi_torus_evaluation hPr F E σ B a b G G₁ H H' cfg e' hev X om om' om₁ om₁' T T₁ t h₁ m hL 1 (one_mem _) Φ hΦ`. Rewrite `h` using `[one_mul]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hevB : ∀ ψ ∈ SB (Fin (b + 2) × Fin (a + (b + 2)) → Fv F v), ev' v (locOp v (om' (1, m)) ψ) = fac X.α ((b : ℝ) / 2) t • locOp v (om₁' (1, h₁)) (ev' v ψ)`. Introduce `ψ hψ`. Establish `hψ₁ : ev' v ψ ∈ SB (Fin b × Fin (a + b) → Fv F v)`. Rewrite using `[← (hloc.2.1 v).2]`. Conclude with `Submodule.mem_map_of_mem hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.ThK.LemF.LocPartLaw.locPart_law B G.M' G₁.M' T.geo.hM' T₁.geo.hM' e' ei' ev' hloc v (om' (1, m)) (om₁' (1, h₁)) _ hlaw ψ (locOp v (om' (1, m)) ψ) (locOp v (om₁' (1, h₁)) (ev' v ψ)) hψ (locOp_mem _ _ _) (locOp_mem _ _ _) (acts_locOp_om hA P' (UAtSub σ G.V' (evFin F v) …`. Rewrite using `[GlobalTheory.T.local_weil_action_compatible hPr F E σ B _ _ G.V' G.W G.M' _ _ om' _ _ _ _ P' v k m hk hmv φ hφ]`. Rewrite using `[GlobalTheory.T.local_weil_translation_action hPr F E σ B _ _ G.V' G.W G.M' _ _ om' _ _ _ _ P' v m hmv _ (at_partFin v _) _ (locOp_mem _ _ _)]`. Rewrite using `[partFin, Matrix.smul_mul, shiftB_mul_transpose hσ H H' l t⁻¹ _ (mat_inv_mulVec m t _ hL.1), ← partFin]`. Conclude with `hevB _ (locOp_mem _ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.LemF.leviPointB : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)

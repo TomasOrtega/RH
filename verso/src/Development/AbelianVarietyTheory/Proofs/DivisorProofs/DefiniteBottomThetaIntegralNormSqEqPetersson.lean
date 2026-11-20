@@ -26,19 +26,17 @@ open GlobalTheory.Core.Rk.IP (Pair Unram SphFun openOff integrand wcoef rcoef up
 namespace GlobalTheory.NormBigDict
 
 /- English proof (translation)
-Introduce `D T L sc G W i j A A' WW X hX t P ν 𝓕 hν h𝓕`. Establish `h` using `hX.is`. Take `⟨ν₁, hν₁, hfd, hint⟩` from `GlobalTheory.SgnIdent.meas_sgn true A X.m X.fd h.meas.1 h.meas.2`. Use `⟨ν₁, hν₁, ?_⟩` and prove the remaining obligations. Establish `hW` using `h.weil t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hΦ` using `GlobalTheory.Chain.InnerSteps.theta_pureTensorO (S := GlobalTheory.Grid.neg A) h.isVac.1 h.isVac.2.inf (fun τ => -X.rA.s τ) X.rA.B X.rW.s X.rW.B (GlobalTheory.ConstRatio.theta_f h t).1 P`. Use `set Φ := pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) P with hΦd`. Use `set om := (X.ω t).toSgn true with hom`. Establish `hg : ∀ y : GA D WW, AutomorphicL2Unitary.LeftInv (GQ (GlobalTheory.Grid.neg A)) (fun g => thetaKO om g y Φ * (fun _ => (1 : ℂ)) g)`. Introduce `y γ hγ g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show om (γ * g, y) Φ 0 * 1 = om (g, y) Φ 0 * 1`. Establish `e : ((γ * g, y) : GA D (GlobalTheory.Grid.neg A) × GA D WW) = (γ, 1) * (g, y)` using `by rw [Prod.mk_mul_mk, one_mul]`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Rewrite using `[hW.om_aut γ hγ 1 (GQ WW).one_mem _ (hW.om_pres _ _ hΦ)]`. Establish `hup : ∀ y, up om ν₁ Φ (fun _ => 1) y = X.I W.ψ W.θ t P y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Use `haveI := hν₁`. Simplify using `only [up, AutomorphicL2Unitary.autMeasure]`. Rewrite using `[integral_quotMeasure hfd]`. Simplify using `only [(hg y).descend_mk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_one]`. Conclude with `(hint fun g => thetaKO (X.ω t) g y Φ).2`. Establish `hinv : AutomorphicL2Unitary.LeftInv (GQ WW) (up om ν₁ Φ fun _ => 1)`. Introduce `γ hγ y`. Rewrite using `[hup, hup]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Tri.I, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Tri.ker]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Conclude with `GlobalTheory.ThetaMean.leftInv_theta hW hΦ ((GlobalTheory.Grid.ofSgn true A).symm g) γ hγ y`. Use `haveI := hν`.
-
-Simplify using `only [petersson, pet]`. Rewrite using `[integral_quotMeasure h𝓕]`. Simplify using `only [hinv.descend_mk, hup, Complex.mul_conj, ← Complex.sq_norm]`. Conclude with `(integral_ofReal).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normSq_eq_petersson : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} (W : G.Weil) (i j : Fin D.R.m)
     (A A' WW : HSp D) (X : Tri T A A' WW), IsBottomTri W i j X → ∀ (t : T) (P : PolF D WW.rank A.rank)

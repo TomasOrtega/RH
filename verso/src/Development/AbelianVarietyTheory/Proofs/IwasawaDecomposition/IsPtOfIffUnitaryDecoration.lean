@@ -12,21 +12,19 @@ noncomputable section
 namespace GlobalTheory.Mem.Col2.PtDeco
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc n _ ST SG Q g p hQ`. Substitute `hQ` using the available equality. Establish `hlast : ∀ i : Fin n, i.1 + 1 = n → lastIdx n = i` using `fun i hi => Fin.ext (by simp [lastIdx]; omega)`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : g ∈ UAd hc n` using `h.uni`. Establish `hN : p.deco.1.N = Formalism.UG.CS.globLat g (stdLat E n)`. Establish `h1` using `Formalism.UG.P.global_lattice_one_holds F E (Fin n) p.deco.1.N (Module.Finite.iff_fg.2 p.deco.2.lat.fg) p.deco.2.lat.span_eq_top`. Use extensionality with `v`. Use `conv_lhs => rw [← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e1 : ∀ (x : GL (Fin n) (AfE F E)) (Λ : Submodule (𝓞 E) (Fin n → E)) (v : Fin n → E), v ∈ Formalism.UG.CS.globLat x Λ ↔ ((x⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ (fun i => Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (v i)) ∈ Formalism.L2.Herm.hatL (F := F) Λ := fun _ _ _ => Iff.rfl`. Rewrite using `[e1, e1, inv_one, Units.val_one, Matrix.one_mulVec]`. Conclude with `h.lat _`. Use `⟨hg, Deco.Ok.ext_on p.deco.2 (decorated_lattice_exists hc n ST SG g hg) hN (fun P x hx => ?_) (fun w x hx => ?_)⟩` and prove the remaining obligations. Establish `hx' : x ∈ Formalism.UG.CS.globLat g (stdLat E n)` using `hN ▸ hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `HasRes.unique (h.f P x hx (lastIdx n) (by simp [lastIdx]; have := NeZero.pos n; omega)) ?_` and prove the remaining obligations. Simplify using `only [decoRaw]`. Rewrite using `[if_pos (le_locP _ _ hx')]`. Conclude with `PtExist.hasRes_redA _ ((mem_globLat g x).1 hx' _)`. Establish `hx' : x ∈ Formalism.UG.CS.globLat g (stdLat E n)` using `hN ▸ hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Use `HasRes.unique (h.be w x hx i) ?_` and prove the remaining obligations. Simplify using `only [decoRaw]`. Rewrite using `[if_pos (le_locP _ _ hx')]`. Conclude with `PtExist.hasRes_redA _ ((mem_globLat g x).1 hx' i)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨hg, hd⟩`. Establish `hN : p.deco.1.N = Formalism.UG.CS.globLat g (stdLat E n)` using `by rw [hd]; rfl`. Use `⟨hg, hN ▸ PtExist.carries_globLat g, fun P x hx i hi => ?_, fun w x hx i => ?_, fun P => absurd P.2 (Finset.notMem_empty _)⟩` and prove the remaining obligations. Rewrite `hx` using `[hN]`. Rewrite using `[hd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [decoRaw]`. Rewrite using `[if_pos (le_locP _ _ hx), hlast i hi]`. Conclude with `PtExist.hasRes_redA _ ((mem_globLat g x).1 hx i)`. Rewrite `hx` using `[hN]`. Rewrite using `[hd]`.
-
-Simplify using `only [decoRaw]`. Rewrite using `[if_pos (le_locP _ _ hx)]`. Conclude with `PtExist.hasRes_redA _ ((mem_globLat g x).1 hx i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPtOf_iff_decoRaw : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG Q : Finset (HeightOneSpectrum (𝓞 E))) (g : GL (Fin n) (AfE F E)) (p : DecoF E n ST SG Q), Q = ∅ → (IsPtOf hc g p ↔ g ∈ UAd hc n ∧ p.deco.1 = decoRaw ST SG g) := by
   intro F E _ _ _ _ _ _ hc n _ ST SG Q g p hQ

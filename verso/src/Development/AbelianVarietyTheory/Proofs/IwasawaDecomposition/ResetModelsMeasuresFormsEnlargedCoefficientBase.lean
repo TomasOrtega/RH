@@ -48,7 +48,7 @@ Both sides reduce to the same expression.
 theorem parAt_eq_parAtE {D : D7} (W : HSp D) (σ : D.what₂.LL →+* ℂ) : parAt W σ = parAtE W (σ.comp D.embE) := rfl
 
 /- English proof (translation)
-Substitute `hab h1` using the available equality. Take `rfl` from `eq_of_heq h2`. Take `rfl` from `eq_of_heq h3`. Conclude with `⟨f, HEq.rfl⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_heq_io {L : Type} (F : L → Type) [∀ a, AddCommGroup (F a)] [∀ a, Module ℂ (F a)] {P : Type} [AddCommGroup P]
     [Module ℂ P] {a b : L} (hab : a = b) {W W' : Type} [nW : NormedAddCommGroup W] [iW : InnerProductSpace ℂ W]
@@ -60,17 +60,15 @@ theorem exists_heq_io {L : Type} (F : L → Type) [∀ a, AddCommGroup (F a)] [�
   exact ⟨f, HEq.rfl⟩
 
 /- English proof (translation)
-Substitute `hι` using the available equality. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `h`. Establish `hc : ∀ (x : Fin n → L) (x' : Fin n → L'), CrdOver ι₂ x x' ↔ x' = fun k => ι₂ (x k)` using `fun x x' => ⟨fun hx => funext fun k => hx.2 k k rfl, fun hx => ⟨rfl, fun k k' e => by rw [hx, Fin.ext e]⟩⟩`. Use `⟨?_, ⟨?_, ?_⟩, ?_, ?_, heq_of_eq h5, ?_⟩` and prove the remaining obligations. Introduce `σ' x x' hx`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(hc _ _).1 hx, h1]`. Introduce `x x' hx`. Rewrite using `[(hc _ _).1 hx, h2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyx⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `rfl : x = y` from `funext fun k => ι₂.injective (congrFun hyx k)`. Conclude with `hy`. Introduce `h`. Conclude with `⟨x, h, rfl⟩`. Introduce `x' hx'`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, -, e⟩` from `(h2 x').1 hx'`. Conclude with `⟨x, (hc _ _).2 e⟩`. Introduce `g' g e`. Take `rfl` from `eq_of_heq e`. Conclude with `h3 g'`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g' g e x x' hx`. Take `rfl` from `eq_of_heq e`. Rewrite using `[hc, (hc _ _).1 hx, h4]`. Introduce `lp' lp e y' y ey φ' φ hx`. Take `rfl` from `eq_of_heq e`.
-
-Conclude with `h6 lp' y' y ey φ' φ ((hc _ _).1 hx)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem forms_crdOver {L L' Ks : Type} [Field L] [NumberField L] [Field L'] [NumberField L'] [Field Ks] [NumberField Ks] [Algebra Ks L]
     [Algebra Ks L'] {ι ι₂ : L →+* L'} (hι : ι₂ = ι) {n : ℕ} {W : (L →+* ℂ) → Type} [∀ σ, NormedAddCommGroup (W σ)]
@@ -121,39 +119,35 @@ theorem forms_crdOver {L L' Ks : Type} [Field L] [NumberField L] [Field L'] [Num
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hf hp core' alg' halg eH el ec Xg tr R cG hK hA`. Take `⟨hPre, -, -, hLL⟩` from `hE`. Establish `hι` using `enlEmb_spec hLL`. Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hPre`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition.
 
-Substitute `hPre` using the available equality. Take `rfl` from `eq_of_heq hf`. Take `⟨px', I', ok', C_eq', S_eq', xi_range', pins', l', l0', δ', exact', fld', val'⟩` from `w'`. Simplify using `only at hp`. Take `rfl` from `eq_of_heq hp`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨⟨H', l', c', Dw', Xo', eO'⟩, U', V'', dict', mu', Kf', pb'⟩, cE', chiW', x₀', iota'⟩` from `core'`. Simplify using `only at eH el ec`. Take `rfl` from `eq_of_heq eH`. Take `rfl` from `eq_of_heq el`. Take `rfl` from `eq_of_heq ec`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set D := (w.st Z).toD7 with hD`. Use `set D' := (ColW.st _ Z').toD7 with hD'`. Use `set ι := enlEmb hLL with hιdef`. Establish `hιc : D'.what₂.embLL.comp ι = D.what₂.embLL` using `RingHom.ext hι`. Establish `hE' : D'.embE = ι.comp D.embE`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use extensionality with `x`. Apply `D'.what₂.embLL.injective` to reduce the goal to its premises. Establish `h1` using `RingHom.congr_fun D'.embE_φ₀ x`. Establish `h2` using `RingHom.congr_fun D.embE_φ₀ x`. Simplify using `only [RingHom.comp_apply] at h1 h2 ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h1.trans h2.symm).trans (hι _).symm`. Establish `hpar : ∀ (i : Fin D.R.m) (σ' : D'.what₂.LL →+* ℂ), parAt (Wc D' i) σ' = parAt (Wc D i) (σ'.comp ι)`. Introduce `i σ'`. Rewrite using `[parAt_eq_parAtE, parAt_eq_parAtE, hE']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `MW' : ∀ (i : Fin D'.R.m) (σ' : D'.what₂.LL →+* ℂ), Mult.DSModel (Wc D' i) (parAt (Wc D' i) σ')` to `fun i σ' => { z.R.MW i (σ'.comp ι) with enum := fun τ => by rw [hpar i σ']; exact (z.R.MW i (σ'.comp ι)).enum τ }`. Set `HW' : ∀ (i : Fin D'.R.m) (σ' : D'.what₂.LL →+* ℂ), HMod (Mult.MMap (MW' i σ'))` to `fun i σ' => z.R.HW i (σ'.comp ι)`. Set `gW' : ∀ (i : Fin D'.R.m) (σ' : D'.what₂.LL →+* ℂ), Representation ℂ (Gc B w.px) (HW' i σ').H` to `fun i σ' => z.R.gW i (σ'.comp ι)`. Establish `hs0'` using `sgAt_mk _ R.hv0`. Establish `hs0` using `sgAt_mk _ z.R.hv0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs` using `(congrArg (fun s => RingHom.comp s ι) hs0').trans (hιc.trans hs0.symm)`. Establish `hA0` using `hA`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, hcV, hjL⟩` from `hA`. Establish `hio` using `fun i : Fin D.R.m => exists_heq_io (fun σ => LowT (z.R.MW i σ)) hs (eq_of_heq (hcV i i rfl).1) (hcV i i rfl).2.2.1 (hcV i i rfl).2.2.2 (z.R.ioP i)`. Use `choose ioP' hioP using hio`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `letI := z.alg`. Establish `halgι : ∀ y : z.core.Q.c.F, ι (algebraMap z.core.Q.c.F D.what₂.LL y) = algebraMap z.core.Q.c.F D'.what₂.LL y`. Introduce `y`. Apply `D'.what₂.embLL.injective` to reduce the goal to its premises. Conclude with `(hι _).trans ((z.alg_eq y).trans (halg y).symm)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfw` using `fun i : Fin D.R.m => GlobalTheory.formsL_exists_baseChange_coordinates (L := D.what₂.LL) (L' := D'.what₂.LL) ι halgι (z.R.nW i) (fun σ => (z.R.HW i σ).H) _ (z.R.FW i)`. Use `choose FW' hFW using hfw`. Set `R₁ : RealDat3 D' _ z.core.Q.c.F` to `{ R with MW := MW' HW := HW' gW := gW' νW := (fun i => z.R.νW i) fdW := (fun i => z.R.fdW i) vacP := (fun i => z.R.vacP i) BV := (fun i => z.R.BV i) ioP := ioP' nW := z.R.nW FW := FW' thF := (fun _ _ => 0) thG := (fun _ _ => 0) }`. Use `⟨R₁, cG, ?_, ?_⟩` and prove the remaining obligations. Take `⟨k1, k2, k3, k4, k5, k6, k7, k8, k9, k10, k11⟩` from `hK`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `f6` using `k6.fam`. Use `⟨k1, k2, k3, k4, k5, { k6 with fam := ⟨f6.tie, f6.Sb, f6.roots, f6.pl_onto, f6.degR, f6.degL, f6.muVal, f6.etaVal⟩, order := ?hord }, ⟨k7.tie, k7.onto, k7.hR, k7.hL, k7.SF⟩, ⟨k8.mu_off, k8.mu_used, k8.mu_ne, k8.mu_conj, k8.mu_on⟩, k9, { k10 with frameKs := ⟨?hfk1, ?hfk2⟩ }, k11⟩` and prove the remaining obligations. Use `case hord =>`. Introduce `i τ a`. Establish `e` using `z.pins.char.base.models.order i τ a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `(congrArg (fun s => (z.R.MW i s).ε τ a) hs).trans e`. Use `case hfk1 =>`. Introduce `i σ σ' h ρ`. Establish `h' : (σ.comp ι).comp (algebraMap z.core.Q.c.F D.what₂.LL) = (σ'.comp ι).comp (algebraMap z.core.Q.c.F D.what₂.LL)`. Use extensionality with `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `RingHom.congr_fun h y` as an intermediate fact. Use `show σ (ι (algebraMap _ D.what₂.LL y)) = σ' (ι (algebraMap _ D.what₂.LL y))`. Rewrite using `[halgι]`. Conclude with `this`. Conclude with `z.pins.keep.frameKs.1 i (σ.comp ι) (σ'.comp ι) h' ρ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify by unfolding definitions.
 
-Use `case hfk2 =>`. Introduce `i σ h τ a`. Establish `h'' : ∀ ρ, labE (σ.comp ι) (lab (σ.comp ι) ρ) = tauE D ρ`. Introduce `ρ`. Establish `e : labEE (D` using `D') (σ.comp D'.embE) (labX (D := D') (σ.comp D'.embE) ρ) = tauE D' ρ := h ρ`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[hE']`. Conclude with `e`. Conclude with `z.pins.keep.frameKs.2 i (σ.comp ι) h'' τ a`. Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, -, -⟩` from `hA0`. Establish `hinj : Function.Injective ι` using `ι.injective`.
-
-Use `⟨a1, a2, a3, a4, a5, HEq.rfl, a6, a7, a8, a9, a10, a11, ?blk, hjL⟩` and prove the remaining obligations. Introduce and unpack `i ⟨i', hi'⟩ e`. Simplify using `only at e`. Substitute `e` using the available equality. Use `⟨(hcV i i rfl).1, (hcV i i rfl).2.1, (hcV i i rfl).2.2.1, (hcV i i rfl).2.2.2, HEq.rfl, hioP i, HEq.rfl, congr_arg_heq (fun s => (z.R.MW i s).H) hιc, congr_arg_heq (fun s => (z.R.MW i s).nacg) hιc, congr_arg_heq (fun s => (z.R.MW i s).ips) hιc, congr_arg_heq (fun s => (z.R.MW i s …` and prove the remaining obligations.
-
-Introduce `ι₂ hι₂`. Establish `hιι : ι₂ = ι` using `RingHom.ext fun x => D'.what₂.embLL.injective ((hι₂ x).trans (hι x).symm)`. Establish `hσ : ∀ σ' : D'.what₂.LL →+* ℂ, σ'.comp ι = σ'.comp ι₂` using `fun σ' => congrArg σ'.comp hιι.symm`. Establish `hF` using `forms_crdOver (L := D.what₂.LL) (L' := D'.what₂.LL) (n := z.R.nW i) (W := fun σ => (z.R.HW i σ).H) (F := z.R.FW i) (F' := FW' i) hιι (hFW i)`. Use `⟨fun σ' => ⟨⟨congr_arg_heq (fun s => (z.R.MW i s).H) (hσ σ'), congr_arg_heq (fun s => (z.R.MW i s).nacg) (hσ σ'), congr_arg_heq (fun s => (z.R.MW i s).ips) (hσ σ'), congr_arg_heq (fun s => (z.R.MW i s).σ) (hσ σ'), congr_arg_heq (fun s => (z.R.MW i s).lam) (hσ σ'), congr_arg_heq ( …` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem resetW : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl} {Wt' : Set B'.places.Pl}

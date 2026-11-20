@@ -11,23 +11,21 @@ namespace GlobalTheory.FibLine.MoebiusLintegral
 open GlobalTheory.FibLine.UnitaryInv
 
 /- English proof (translation)
-Use `set s : Set ℂ := {x | 1 + β * x ≠ 0} with hs`. Establish `hso : IsOpen s` using `isOpen_ne_fun (by fun_prop) continuous_const`. Establish `hder : ∀ x ∈ s, HasFDerivWithinAt (fun x : ℂ => c * x / (1 + β * x)) ((c / (1 + β * x) ^ 2) • (1 : ℂ →L[ℝ] ℂ)) s x`. Introduce `x hx`. Establish `h1 : HasDerivAt (fun x : ℂ => c * x) c x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (hasDerivAt_id x).const_mul c`. Establish `h2 : HasDerivAt (fun x : ℂ => 1 + β * x) β x`. Simplify using `using ((hasDerivAt_id x).const_mul β).const_add 1`. Establish `h3` using `h1.div h2 hx`. Establish `h4 : HasDerivAt (fun x : ℂ => c * x / (1 + β * x)) (c / (1 + β * x) ^ 2) x`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : c / (1 + β * x) ^ 2 = (c * (1 + β * x) - (c * x) * β) / (1 + β * x) ^ 2` using `by ring`. Rewrite using `[e]`. Conclude with `h3`. Conclude with `h4.complexToReal_fderiv.hasFDerivWithinAt`. Establish `hinj : Set.InjOn (fun x : ℂ => c * x / (1 + β * x)) s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx y hy hxy`. Establish `hx' : 1 + β * x ≠ 0` using `hx`. Establish `hy' : 1 + β * y ≠ 0` using `hy`. Simplify using `only at hxy`. Rewrite `hxy` using `[div_eq_div_iff hx' hy']`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ hc` to reduce the goal to its premises. Take the linear combination `hxy`. Establish `key` using `lintegral_image_eq_lintegral_abs_det_fderiv_mul (volume : Measure ℂ) hso.measurableSet hder hinj H`. Establish `him : ∀ᵐ y : ℂ, y ∈ (fun x : ℂ => c * x / (1 + β * x)) '' s` using `by filter_upwards [ae_affine_ne c (-β) (Or.inl hc)] with y hy`. Establish `e1 : 1 + β * (y / (c + -β * y)) = c / (c + -β * y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[eq_div_iff hy, add_mul, mul_assoc, div_mul_cancel₀ _ hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : c * (y / (c + -β * y)) = y * (c / (c + -β * y))` using `by ring`. Establish `e3 : c / (c + -β * y) ≠ 0` using `div_ne_zero hc hy`. Use `⟨y / (c + -β * y), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show 1 + β * (y / (c + -β * y)) ≠ 0`. Rewrite using `[e1]`. Conclude with `e3`. Use `show (c * (y / (c + -β * y))) / (1 + β * (y / (c + -β * y))) = y`. Rewrite using `[e1, e2, mul_div_assoc, div_self e3, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hs' : ∀ᵐ x : ℂ, x ∈ s` using `ae_affine_ne 1 β (Or.inl one_ne_zero)`. Rewrite `key` using `[Measure.restrict_eq_self_of_ae_mem him, Measure.restrict_eq_self_of_ae_mem hs']`. Rewrite using `[key]`. Use `congr 1`. Use extensionality with `x`.
-
-Rewrite using `[det_smul_one, abs_of_nonneg (Complex.normSq_nonneg _), Complex.normSq_eq_norm_sq]`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_moebius (β c : ℂ) (hc : c ≠ 0) (H : ℂ → ℝ≥0∞) (_hH : Measurable H) :
     ∫⁻ x : ℂ, ENNReal.ofReal (‖c / (1 + β * x) ^ 2‖ ^ 2) * H (c * x / (1 + β * x)) = ∫⁻ y : ℂ, H y := by

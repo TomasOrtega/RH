@@ -10,13 +10,11 @@ open Formalism.InvariantFactorPaths.G7 (UnrOK)
 open Formalism.L2.Th1.CM (MaximalUnramifiedExtension omegaK)
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hCM l _ hl5 hld hinert ι g2 g3 ε hgood hε hθ`. Take `⟨c, hc, hg2, hg3, hs2K, hs2n⟩` from `h2 h4 dK L hsq hd4 hCM l hl5 hld hinert ι g2 g3 hgood`. Use `⟨⟨_, hs2K⟩, hs2n, ⟨c, hc, hg2, hg3, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `σ hσ α hα hσα`. Establish `hw` using `(hS dK hsq hd4 l hl5 hinert ι).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : ∀ m n : ℤ, ι ((m : ℂ) + (n : ℂ) * omegaK dK) ∈ MaximalUnramifiedExtension l`. Introduce `m n`. Rewrite using `[map_add, map_mul, map_intCast, map_intCast]`. Conclude with `add_mem (intCast_mem _ m) (mul_mem (intCast_mem _ n) hw)`. Set `S : Set (MaximalUnramifiedExtension l)` to `{a | ∃ m n : ℤ, ¬ (l : ℤ) ∣ normInt dK m n ∧ (a : ℂ_[l]) = ι ((m : ℂ) + (n : ℂ) * omegaK dK)}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `normUnits (MaximalUnramifiedExtension l) l σ hσ (phFF l g2 g3 ⟨_, hs2K⟩ ε) (FAux.cc_phFF (by omega) _ _ _ _) S ?_ α ?_` and prove the remaining obligations. Introduce and unpack `a ⟨m, n, hmn, ha⟩`. Conclude with `hN h4 dK L hsq hd4 hCM l hl5 hld hinert ι g2 g3 ε ⟨_, hs2K⟩ hgood hε hθ c hc hg2 hg3 rfl σ hσ m n hmn a ha`. Introduce `e he`. Take `⟨m, n, hmn, hclose⟩` from `hD dK hsq hd4 l hl5 hinert ι σ hσ α hα hσα e he`.
-
-Conclude with `⟨⟨_, hmem m n⟩, ⟨m, n, hmn, rfl⟩, by simpa using hclose⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem NRCM_of (hS : SqrtKur) (hD : DenseOK) (h2 : HomotheticLatticeIntegralS2) (hN : NRDense) (h4 : Formalism.L2.Th1.CM.CM4) :
     NRCM := by

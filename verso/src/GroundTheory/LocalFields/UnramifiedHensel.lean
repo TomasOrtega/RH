@@ -30,7 +30,7 @@ variable (K M : Type*) [Field K] [ValuativeRel K] [Field M] [ValuativeRel M]
   [Algebra K M] [ValuativeExtension K M]
 
 /- English proof (translation)
-Establish `hc : (algebraMap 𝓀[K] 𝓀[M]).comp (residue 𝒪[K]) = (residue 𝒪[M]).comp (algebraMap 𝒪[K] 𝒪[M])` using `RingHom.ext h`. Rewrite using `[aeval_def, aeval_def, eval₂_map, hc, hom_eval₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem residue_aeval [Algebra 𝓀[K] 𝓀[M]]
     (h : ∀ x : 𝒪[K], algebraMap 𝓀[K] 𝓀[M] (residue 𝒪[K] x) =
@@ -44,7 +44,7 @@ theorem residue_aeval [Algebra 𝓀[K] 𝓀[M]]
 end Residue
 
 /- English proof (translation)
-Use `IsScalarTower.of_algebraMap_eq fun x ↦ ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `residue_surjective x`. Rewrite using `[h₁, h₂, h₃, IsScalarTower.algebraMap_apply 𝒪[K] 𝒪[E] 𝒪[L]]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isScalarTower_residueField (K E L : Type*) [Field K] [ValuativeRel K] [Field E]
     [ValuativeRel E] [Field L] [ValuativeRel L] [Algebra K E] [Algebra E L] [Algebra K L]
@@ -68,15 +68,13 @@ variable (K L : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `Field.exists_primitive_element 𝓀[K] 𝓀[L]`. Establish `hbi : IsIntegral 𝓀[K] b` using `.of_finite _ _`. Take `⟨P, hPmap, hPdeg, hPmon⟩` from `lifts_and_natDegree_eq_and_monic (f := residue 𝒪[K]) (p := minpoly 𝓀[K] b) ((lifts_iff_coeff_lifts _).2 fun n ↦ residue_surjective _) (minpoly.monic hbi)`. Establish `hsep : (minpoly 𝓀[K] b).Separable` using `Algebra.IsSeparable.isSeparable 𝓀[K] b`. Take `⟨b0, rfl⟩` from `residue_surjective (R := 𝒪[L]) b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `Q` to `P.map (algebraMap 𝒪[K] 𝒪[L])`. Establish `hQ : Q.Monic` using `hPmon.map _`. Establish `h1 : Q.eval b0 ∈ 𝓂[L]`. Rewrite using `[← residue_eq_zero_iff, eval_map_algebraMap, residue_aeval K L (fun _ ↦ rfl), hPmap, minpoly.aeval]`. Establish `h2 : IsUnit (Q.derivative.eval b0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← residue_ne_zero_iff_isUnit, derivative_map, eval_map_algebraMap, residue_aeval K L (fun _ ↦ rfl), ← derivative_map, hPmap]`. Conclude with `hsep.aeval_derivative_ne_zero (minpoly.aeval _ _)`. Take `⟨β, hβ, hβb⟩` from `HenselianLocalRing.is_henselian Q hQ b0 h1 h2`. Establish `hres : residue 𝒪[L] β = residue 𝒪[L] b0`. Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hβb`. Use `⟨β, P, hPmon, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← eval_map_algebraMap]`. Conclude with `hβ`. Rewrite using `[hPdeg, residueDegree_eq_finrank, ← IntermediateField.adjoin.finrank hbi, hb, IntermediateField.finrank_top']`.
-
-Rewrite using `[hPmap]`. Conclude with `hsep`. Rewrite using `[hres]`. Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_primitive :
     ∃ (β : 𝒪[L]) (P : 𝒪[K][X]), P.Monic ∧ aeval β P = 0 ∧
@@ -112,9 +110,9 @@ theorem exists_lift_primitive :
     exact hb
 
 /- English proof (translation)
-Rewrite using `[residueDegree_eq_finrank, ← Subalgebra.bot_eq_top_iff_finrank_eq_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h y`. Establish `: y ∈ (⊥ : Subalgebra 𝓀[F] 𝓀[L])` using `h ▸ Algebra.mem_top`. Conclude with `Algebra.mem_bot.1 this`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `eq_top_iff.2 fun y _ ↦ Algebra.mem_bot.2 (h y)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem residueDegree_eq_one_iff_surjective (F : Type*) [Field F] [ValuativeRel F]
     [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Algebra F L] [ValuativeExtension F L]
@@ -129,19 +127,17 @@ theorem residueDegree_eq_one_iff_surjective (F : Type*) [Field F] [ValuativeRel 
     refine eq_top_iff.2 fun y _ ↦ Algebra.mem_bot.2 (h y)
 
 /- English proof (translation)
-Take `⟨β, P, hPm, hβ, hdeg, hsep, hgen⟩` from `exists_lift_primitive K L`. Use `set T := K⟮(β : L)⟯ with hT`. Establish `hβL : aeval (β : L) P = 0`. Use `aeval_algHom_apply (IsScalarTower.toAlgHom 𝒪[K] 𝒪[L] L) β P` as an intermediate fact. Rewrite `this` using `[hβ, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hle : Module.finrank K T ≤ residueDegree K L`. Establish `hi : IsIntegral K (β : L)` using `.of_finite K _`. Rewrite using `[hT, IntermediateField.adjoin.finrank hi, ← hdeg]`. Establish `hne : P.map (algebraMap 𝒪[K] K) ≠ 0` using `(hPm.map _).ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hd` using `minpoly.dvd K (β : L) (p := P.map (algebraMap 𝒪[K] K)) (by rw [aeval_map_algebraMap]; exact hβL)`. Combine the equalities or inequalities in the displayed calculation. Establish `hβT : (β : L) ∈ T` using `IntermediateField.mem_adjoin_simple_self K _`. Set `βT : 𝒪[T]` to `⟨⟨β, hβT⟩, (algebraMap_mem_integer_iff T L _).1 β.2⟩`. Establish `hsurj : Function.Surjective (algebraMap 𝓀[T] 𝓀[L])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isScalarTower_residueField K T L (fun _ ↦ rfl) (fun _ ↦ rfl) (fun _ ↦ rfl)` as an intermediate fact. Establish `hb : residue 𝒪[L] β ∈ (IsScalarTower.toAlgHom 𝓀[K] 𝓀[T] 𝓀[L]).range` using `⟨residue 𝒪[T] βT, rfl⟩`. Establish `htop : Algebra.adjoin 𝓀[K] {residue 𝒪[L] β} = ⊤`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (IsAlgebraic.of_finite _ _), hgen, IntermediateField.top_toSubalgebra]`. Establish `hr : (IsScalarTower.toAlgHom 𝓀[K] 𝓀[T] 𝓀[L]).range = ⊤` using `eq_top_iff.2 (htop ▸ Algebra.adjoin_le (Set.singleton_subset_iff.2 hb))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y`. Take `⟨z, hz⟩` from `(hr ▸ Algebra.mem_top : y ∈ (IsScalarTower.toAlgHom 𝓀[K] 𝓀[T] 𝓀[L]).range)`. Conclude with `⟨z, hz⟩`. Establish `h1 : residueDegree T L = 1` using `(residueDegree_eq_one_iff_surjective L T).2 hsurj`. Establish `htower` using `residueDegree_tower K T L`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `htower` using `[h1, mul_one]`. Establish `hfe : residueDegree K T ≤ Module.finrank K T`. Rewrite using `[← ramificationIndex_mul_residueDegree K T]`. Conclude with `Nat.le_mul_of_pos_left _ (ramificationIndex_pos K T)`. Establish `heq : Module.finrank K T = residueDegree K T` using `by omega`.
-
-Conclude with `⟨β, P, hPm, hβ, hsep, (isUnramified_iff_residueDegree_eq_finrank K T).2 heq.symm, heq.trans htower.symm, h1⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unramified_adjoin :
     ∃ (β : 𝒪[L]) (P : 𝒪[K][X]), P.Monic ∧ aeval β P = 0 ∧ (P.map (residue 𝒪[K])).Separable ∧
@@ -187,21 +183,19 @@ theorem exists_unramified_adjoin :
     heq.trans htower.symm, h1⟩
 
 /- English proof (translation)
-Establish `hsurj` using `(residueDegree_eq_one_iff_surjective L F).1 hF`. Establish `hinj : Function.Injective (algebraMap 𝓀[F] 𝓀[L])` using `(algebraMap 𝓀[F] 𝓀[L]).injective`. Take `⟨c₀', hc₀'⟩` from `hsurj (residue 𝒪[L] γ)`. Take `⟨c₀, rfl⟩` from `residue_surjective (R := 𝒪[F]) c₀'`. Establish `hc₀ : residue 𝒪[L] (algebraMap 𝒪[F] 𝒪[L] c₀) = residue 𝒪[L] γ` using `hc₀'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ Q : 𝒪[K][X], algebraMap 𝓀[F] 𝓀[L] (residue 𝒪[F] (aeval c₀ Q)) = residue 𝒪[L] (aeval γ Q)`. Introduce `Q`. Rewrite using `[show algebraMap 𝓀[F] 𝓀[L] (residue 𝒪[F] (aeval c₀ Q)) = residue 𝒪[L] (algebraMap 𝒪[F] 𝒪[L] (aeval c₀ Q)) from rfl, ← aeval_algebraMap_apply, residue_aeval K L (fun _ ↦ rfl), hc₀, ← residue_aeval K L (fun _ ↦ rfl)]`. Set `Q` to `P.map (algebraMap 𝒪[K] 𝒪[F])`. Establish `h1 : Q.eval c₀ ∈ 𝓂[F]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← residue_eq_zero_iff, eval_map_algebraMap]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[key, hγ, map_zero, map_zero]`. Establish `h2 : IsUnit (Q.derivative.eval c₀)`. Rewrite using `[← residue_ne_zero_iff_isUnit, derivative_map, eval_map_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Use `key (derivative P)` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `(residue_ne_zero_iff_isUnit _).2 hd this.symm`. Take `⟨c, hc, hcc₀⟩` from `HenselianLocalRing.is_henselian Q (hP.map _) c₀ h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcF : aeval c P = 0`. Rewrite using `[← eval_map_algebraMap]`. Conclude with `hc`. Use `set c' := algebraMap 𝒪[F] 𝒪[L] c`. Establish `hc' : aeval c' P = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_algebraMap_apply, hcF, map_zero]`. Establish `hres : residue 𝒪[L] c' = residue 𝒪[L] γ`. Rewrite using `[← hc₀]`. Establish `: residue 𝒪[F] c = residue 𝒪[F] c₀`. Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hcc₀`. Express the relevant statement in the definitionally equal form `algebraMap 𝓀[F] 𝓀[L] (residue 𝒪[F] c) = algebraMap 𝓀[F] 𝓀[L] (residue 𝒪[F] c₀)`. Rewrite using `[this]`. Establish `heq : γ = c'`. Use `IsLocalRing.eq_of_eval_eq_zero_of_not_isUnit_sub (f := P.map (algebraMap 𝒪[K] 𝒪[L])) (by rw [eval_map_algebraMap]; exact hγ) (by rw [eval_map_algebraMap]; exact hc') ?_ ?_` and prove the remaining obligations.
-
-Rewrite using `[← mem_nonunits_iff, ← mem_maximalIdeal, ← residue_eq_zero_iff, map_sub, hres, sub_self]`. Rewrite using `[derivative_map, eval_map_algebraMap]`. Conclude with `hd`. Rewrite using `[heq]`. Conclude with `(c : F).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_residueDegree_eq_one (F : IntermediateField K L) (hF : residueDegree F L = 1)
     (P : 𝒪[K][X]) (hP : P.Monic) (γ : 𝒪[L]) (hγ : aeval γ P = 0)

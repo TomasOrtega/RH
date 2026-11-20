@@ -14,7 +14,7 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Comple
   [TameDescentExponentData K l e a] {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
 
 /- English proof (translation)
-Rewrite using `[Hom.app_apply, Matrix.mulVec_mulVec, h, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_eq_of_retr {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : GlobalTheory.BK.Hom P Q) {n : ℕ}
     {τ : ZMod a} {Λ : Matrix ι κ K⟦X⟧} (h : Λ * F.mat τ = (l : K) ^ n • (1 : Matrix ι ι K⟦X⟧))
@@ -22,13 +22,11 @@ theorem smul_eq_of_retr {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F :
   rw [Hom.app_apply, Matrix.mulVec_mulVec, h, Matrix.smul_mulVec, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero F.onPol).2 fun w hw => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `P.Man.mkQ_surjective w`. Establish `hv : F.app v ∈ Q.Man` using `Q.cls_eq_zero_iff.1 hw`. Express the relevant statement in the definitionally equal form `P.cls v = 0`. Rewrite using `[PhiMod.cls_eq_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (l : K) ^ n • v ∈ P.Man`. Use `P.mem_Man.2 (mem_tot.2 fun τ i => ?_)` and prove the remaining obligations. Take `⟨Λ, hΛA, hΛF⟩` from `hΛ τ`. Establish `hFv` using `mem_tot.1 (Q.mem_Man.1 hv) τ`. Establish `h2 : ((l : K) ^ n • v) τ = Λ *ᵥ F.app v τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Pi.smul_apply]`. Conclude with `smul_eq_of_retr F hΛF v`. Rewrite using `[h2]`. Conclude with `Subalgebra.sum_mem _ fun k _ => Subalgebra.mul_mem _ (A_le_Rpi l e (hΛA i k)) (hFv k)`. Establish `h3` using `P.Man.smul_mem ((l : K) ^ n)⁻¹ h1`.
-
-Rewrite `h3` using `[smul_smul, inv_mul_cancel₀ (pow_ne_zero _ (l_ne_zero l)), one_smul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem onPol_injective {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : GlobalTheory.BK.Hom P Q) (n : ℕ)
     (hΛ : ∀ τ : ZMod a, ∃ Λ : Matrix ι κ K⟦X⟧, (∀ i k, Λ i k ∈ A O K) ∧
@@ -54,7 +52,7 @@ theorem onPol_injective {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F :
 omit [CompleteSpace K] in
 
 /- English proof (translation)
-Establish `h1 : Δ₁.actD g d = red (Δ₁.act g (cst d))` using `rfl`. Rewrite using `[h1, ← Hom.red_app, F.app_act, Δ₂.red_act, Hom.red_app, red_cst]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem onD_actD {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {Δ₁ : Descent P} {Δ₂ : Descent Q}
     (F : Descent.Hom Δ₁ Δ₂) (g : TameGal K l e a) (d : P.D) :
@@ -63,7 +61,7 @@ theorem onD_actD {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {Δ₁ : De
   rw [h1, ← Hom.red_app, F.app_act, Δ₂.red_act, Hom.red_app, red_cst]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.smul_apply, Matrix.smul_apply, ← coeff_zero_eq_constantCoeff_apply, coeff_smul]`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_constantCoeff_smul_one (c : K) :
     (c • (1 : Matrix ι ι K⟦X⟧)).map constantCoeff = c • (1 : Matrix ι ι K) := by
@@ -72,9 +70,9 @@ theorem map_constantCoeff_smul_one (c : K) :
   by_cases h : i = j <;> simp [h, Matrix.one_apply]
 
 /- English proof (translation)
-Introduce and unpack `c ⟨d, hd, hc⟩`. Use `⟨F.onD d, fun h0 => hd ?_, fun ζ => ?_⟩` and prove the remaining obligations. Take `⟨Λ, -, hΛF⟩` from `hΛ τ`. Establish `h1 : Λ.map constantCoeff *ᵥ F.onD d τ = (l : K) ^ n • d τ`. Rewrite using `[show F.onD d τ = (F.mat τ).map constantCoeff *ᵥ d τ from rfl, Matrix.mulVec_mulVec, ← Matrix.map_mul, hΛF, map_constantCoeff_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h1` using `[h0, Matrix.mulVec_zero]`. Conclude with `(smul_eq_zero.1 h1.symm).resolve_left (pow_ne_zero _ (l_ne_zero l))`. Rewrite using `[← onD_actD]`. Express the relevant statement in the definitionally equal form `(F.mat τ).map constantCoeff *ᵥ _ = _ • ((F.mat τ).map constantCoeff *ᵥ d τ)`. Rewrite using `[hc ζ, Matrix.mulVec_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chars_subset {η H : ℕ} {D₀ : BKDat O K l e a ι η H} {D₁ : BKDat O K l e a κ η H}
     (F : BKHom D₀ D₁) (n : ℕ)
@@ -95,15 +93,15 @@ theorem chars_subset {η H : ℕ} {D₀ : BKDat O K l e a ι η H} {D₁ : BKDat
     rw [hc ζ, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Take `⟨⟨y, hy, rfl⟩, hinv⟩` from `D₁.desc.mem_Z.1 hw`. Establish `hGy : G.app y ∈ D₂.M` using `D₂.mem_M_of_mem_Man (G.app_mem_EM hy) (D₂.cls_eq_zero_iff.1 hG)`. Take `⟨x, hx, hxy⟩` from `hn _ hGy`. Establish `hGz : G.app ((l : K) ^ n • y - x) = 0`. Rewrite using `[map_sub, LinearMap.map_smul_of_tower, hxy, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlM : ∀ {m : Vec K a κ}, m ∈ D₁.M → (l : K) ^ n • m ∈ D₁.M` using `fun hm => by`. Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hm _`. Establish `hEz : E K l e ^ η • ((l : K) ^ n • y - x) ∈ D₁.M`. Rewrite using `[smul_sub, smul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sub_mem (hlM hy) ?_` and prove the remaining obligations. Conclude with `D₁.M.smul_mem (⟨E K l e ^ η, pow_mem (E_mem l e _) η⟩ : A O K) hx`. Establish `hker : G.app (E K l e ^ η • ((l : K) ^ n • y - x)) = 0` using `by rw [map_smul, hGz, smul_zero]`. Take `⟨m₀, hm₀, hFm⟩` from `Submodule.mem_map.1 ((hex.exact _ hEz).1 hker)`. Establish `hFm' : F.app m₀ = E K l e ^ η • ((l : K) ^ n • y - x)` using `hFm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hFy : F.app (Ezpow K l e (-η) • m₀) = (l : K) ^ n • y - x`. Rewrite using `[map_smul, hFm', smul_smul, mul_comm, E_pow_mul_Ezpow_neg, one_smul]`. Establish `hy₀M : Ezpow K l e (-η) • m₀ ∈ D₀.EM η` using `by show E K l e ^ η • (Ezpow K l e (-η) • m₀) ∈ D₀.M`. Rewrite using `[smul_smul, E_pow_mul_Ezpow_neg, one_smul]`. Conclude with `hm₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF : F.onPol (D₀.cls (Ezpow K l e (-η) • m₀)) = (l : K) ^ n • D₁.cls y`. Rewrite using `[BK.Hom.onPol_cls, hFy, map_sub, map_smul, D₁.cls_eq_zero_iff.2 (D₁.M_le_Man hx), sub_zero]`. Use `⟨D₀.cls (Ezpow K l e (-η) • m₀), D₀.desc.mem_Z.2 ⟨⟨_, hy₀M, rfl⟩, fun g => hinj ?_⟩, hF⟩` and prove the remaining obligations. Rewrite using `[F.onPol_act, hF, map_smul, hinv g]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_Z_of_onPol_eq_zero {μ : Type} [Fintype μ] [DecidableEq μ] {η H : ℕ}
     {D₀ : BKDat O K l e a ι η H} {D₁ : BKDat O K l e a κ η H} {D₂ : BKDat O K l e a μ η H}
@@ -143,7 +141,7 @@ end GlobalTheory.ExactTripleBK
 open GlobalTheory.ExactTripleBK in
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ κ μ _ _ _ _ η H D₀ D₁ D₂ F G hex`. Take `⟨n, hn⟩` from `GlobalTheory.T.exists_prime_pow_smul_mem_range_of_finiteLength_coker O K l e a κ μ D₁.toPhiMod D₂.toPhiMod G.toHom hex.finiteLength`. Establish `hΛ` using `GlobalTheory.T.exists_integral_leftInverse_of_phiModule_exactTriple O K l e a ι κ μ D₀.toPhiMod D₁.toPhiMod D₂.toPhiMod F.toHom G.toHom hex n hn`. Establish `hinj` using `onPol_injective F.toHom n hΛ`. Conclude with `⟨GlobalTheory.T.breuilKisin_jumps_subset_of_split_mono O K l e a ι κ η H D₀ D₁ F.toHom n hΛ, fun τ => chars_subset F n hΛ τ, hinj, fun m hm w hw hG => exists_Z_of_onPol_eq_zero F G hex hinj m hm hw hG⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.exactTriple_jumps_chars_lift : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (κ μ : Type) [Fintype κ] [DecidableEq κ] [Fintype μ] [DecidableEq μ] (η H : ℕ) (D₀ : BKDat O K l e a ι η H) (D₁ : BKDat O K l e a κ η H) (D₂ : BKDat O K l e a μ η H) (F : BKHom D₀ D₁) (G : BKHom D₁ D₂), IsExactTriple F.toHom G.toHom → D₀.jumps ⊆ D₁.jumps ∧ (∀ τ, D₀.desc.chars τ ⊆ D₁.desc.chars τ) ∧ Function.Injective F.onPol ∧ (∀ n : ℕ, (∀ y ∈ D₂.M, ∃ x ∈ D₁.M, G.app x = (l : K) ^ n • y) → ∀ w ∈ D₁.Z, G.onPol w = 0 → ∃ w₀ ∈ D₀.Z, F.onPol w₀ = (l : K) ^ n • w) := by
   intro O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ κ μ _ _ _ _ η H D₀ D₁ D₂ F G hex

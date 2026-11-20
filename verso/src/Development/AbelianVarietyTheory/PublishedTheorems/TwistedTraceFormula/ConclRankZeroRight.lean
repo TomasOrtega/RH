@@ -14,9 +14,9 @@ open GlobalTheory.SplitWeil (SB IsSmoothRep nabs)
 open GlobalTheory.HermLocal.Model (conjSqrt conjSqrt_apply)
 
 /- English proof (translation)
-Use `IsUnit.mk0 _ fun h => ?_` and prove the remaining obligations. Simplify using `using congrArg QuadraticAlgebra.im h`. Use `anti := by`. Express the relevant statement in the definitionally equal form `star _ = _`. Apply the tactic sequence `ext <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `basis := ⟨QuadraticAlgebra.basis d 0, by`. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.basis, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one], by`. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.basis]⟩`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isQuad_sqrt {K : Type} [Field K] (d : K) [Fact (∀ r : K, r ^ 2 ≠ d + 0 * r)] :
     IsQuad (conjSqrt d : QuadraticAlgebra K d 0 →ₐ[K] QuadraticAlgebra K d 0) QuadraticAlgebra.omega where
@@ -31,11 +31,9 @@ theorem isQuad_sqrt {K : Type} [Field K] (d : K) [Fact (∀ r : K, r ^ 2 ≠ d +
     ext <;> simp [QuadraticAlgebra.basis]⟩
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `SplitWeil.exists_hasConductor_one K`. Use `letI : TopologicalSpace (QuadraticAlgebra K d 0) := moduleTopology K _`. Use `⟨this, ⟨rfl⟩, _, _, 1, Circle.coeHom.compAddChar ψ, 1, isQuad_sqrt d, ⟨fun i j => ?_, by simp⟩, continuous_subtype_val.comp hψ.continuous, fun t => Circle.norm_coe _, fun h => hψ.ne_one ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[one_apply_ne h, one_apply_ne (Ne.symm h)]`. Use extensionality with `x`. Conclude with `DFunLike.congr_fun h x`. Conclude with `continuous_const`.
-
-Simplify using `[pow_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isQuad_isHerm_continuous_resEtaPow (K : Type) [Field K] [CharZero K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     (d : K) [Fact (∀ r : K, r ^ 2 ≠ d + 0 * r)] (k : ℕ) :
@@ -58,7 +56,7 @@ theorem isQuad_isHerm_continuous_resEtaPow (K : Type) [Field K] [CharZero K] [Va
   · simp [pow_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.SplitWeil.Model.padic_localField 2, @isQuad_isHerm_continuous_resEtaPow ℚ_[2] _ _ _ _ (GlobalTheory.SplitWeil.Model.padic_localField 2) 2 _ 1⟩`.
+Supply the required witnesses or components.
 -/
 theorem hyps_dyadic : ∃ (_ : IsNonarchimedeanLocalField ℚ_[2]) (_ : TopologicalSpace (QuadraticAlgebra ℚ_[2] 2 0))
       (_ : IsModuleTopology ℚ_[2] (QuadraticAlgebra ℚ_[2] 2 0))
@@ -74,7 +72,7 @@ section Form
 variable {F : Type} [Field F] {E : Type} [Field E] [Algebra F E] (c : E →ₐ[F] E)
 
 /- English proof (translation)
-Simplify using `[form, hTens, stdJ, Fintype.sum_sum_type, fromCols]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_rank_one (q x y : E) :
     form (α := Unit) (ν := Unit) c (fun _ _ => q) (fromCols (fun _ _ => x) 0) (fromCols 0 (fun _ _ => y)) =
@@ -107,7 +105,7 @@ def Concl (hc : ∀ z, c (c z) = z) (ν : Type) [Fintype ν] [DecidableEq ν] (Q
             (φ : Matrix α ν E → ℂ) (x * (a : Matrix ν ν E))
 
 /- English proof (translation)
-The claim follows from `h F E c δ hE α ν Q hQ ψ hψ h1 h2 χ hχ hr`.
+A detailed English derivation is pending.
 -/
 theorem concl_of [CharZero F] (h : GlobalTheory.Published.KudlaSplittingSplitUnitary) {δ : E} (hE : IsQuad c δ) (Q : Matrix α α E)
     (hQ : IsHerm c Q) {ψ : AddChar F ℂ} (hψ : Continuous ψ) (h1 : ∀ t, ‖ψ t‖ = 1) (h2 : ψ ≠ 1) (χ : Eˣ →* Circle)
@@ -115,9 +113,9 @@ theorem concl_of [CharZero F] (h : GlobalTheory.Published.KudlaSplittingSplitUni
   h F E c δ hE α ν Q hQ ψ hψ h1 h2 χ hχ hr
 
 /- English proof (translation)
-Use `⟨1, fun v => by simp, fun μ _ g φ => rfl, fun g w => ?_, fun a φ x => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (w * _) w]`. Simplify using the standard rewrite rules. Establish `: Matrix.GeneralLinearGroup.det a = 1` using `Units.ext (by simp)`. Rewrite using `[this, Subsingleton.elim (x * _) x]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[nabs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem concl_rank_zero_right [IsEmpty ν] (hc : ∀ z, c (c z) = z) (Q : Matrix α α E) {ψ : AddChar F ℂ}
     (hψ : Continuous ψ) (χ : Eˣ →* Circle) : Concl c hc ν Q hψ χ := by
@@ -128,7 +126,7 @@ theorem concl_rank_zero_right [IsEmpty ν] (hc : ∀ z, c (c z) = z) (Q : Matrix
     simp [nabs]
 
 /- English proof (translation)
-Use `⟨1, fun v => by simp, fun μ _ g φ => rfl, fun g w => ?_, fun a φ x => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (w * _) w]`. Simplify using the standard rewrite rules. Rewrite using `[Subsingleton.elim (x * _) x]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem concl_rank_zero_left [IsEmpty α] (hc : ∀ z, c (c z) = z) (Q : Matrix α α E) {ψ : AddChar F ℂ}
     (hψ : Continuous ψ) : Concl c hc ν Q hψ 1 := by

@@ -25,9 +25,9 @@ abbrev Ip (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) (ϖ : 
   (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥L.T)
 
 /- English proof (translation)
-Rewrite using `[Ip, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, rfl⟩`. Conclude with `⟨y, rfl⟩`. Introduce and unpack `⟨y, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, trivial, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_Ip {L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ} {ϖ : O} {r : ℕ} {x : ↥L.T} :
     x ∈ Ip L ϖ r ↔ ∃ y : ↥L.T, x = ϖ ^ r • y := by
@@ -39,7 +39,7 @@ theorem mem_Ip {L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ} {
     exact ⟨y, trivial, rfl⟩
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, rfl⟩` from `mem_Ip.1 hx`. Use `mem_Ip.2 ⟨ϖ ^ (b - a) • y, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, ← pow_add, Nat.add_sub_cancel' h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Ip_anti {L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ} {ϖ : O} {a b : ℕ} (h : a ≤ b) :
     Ip L ϖ b ≤ Ip L ϖ a := by
@@ -49,7 +49,7 @@ theorem Ip_anti {L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ} 
   rw [smul_smul, ← pow_add, Nat.add_sub_cancel' h]
 
 /- English proof (translation)
-Introduce `g x hx`. Take `⟨y, rfl⟩` from `mem_Ip.1 hx`. Conclude with `mem_Ip.2 ⟨actT L g y, map_smul _ _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Ip_stable (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) (ϖ : O) (r : ℕ) : StableSub L (Ip L ϖ r) := by
   intro g x hx
@@ -60,7 +60,7 @@ def lq (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) (I : Subm
   (Submodule.Quotient.mk_surjective I c).choose
 
 /- English proof (translation)
-The claim follows from `(Submodule.Quotient.mk_surjective I c).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem lq_mk (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) (I : Submodule O ↥L.T) (c : ↥L.T ⧸ I) :
     (Submodule.Quotient.mk (lq L I c) : ↥L.T ⧸ I) = c :=
@@ -73,14 +73,14 @@ theorem liftQ_eq (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ)
     LocalSituation.liftQ L I c = (lq L I c : V) := rfl
 
 /- English proof (translation)
-The claim follows from `(Submodule.Quotient.mk_surjective L.T e).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem liftD_mk (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) (e : V ⧸ L.T) :
     (Submodule.Quotient.mk (liftD L e) : V ⧸ L.T) = e :=
   (Submodule.Quotient.mk_surjective L.T e).choose_spec
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul LL (ϖ ^ r) v, smul_smul, map_pow, ← mul_pow, inv_mul_cancel₀ hϖ, one_pow, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_cancel {ϖ : O} (hϖ : algebraMap O LL ϖ ≠ 0) (r : ℕ) (v : V) :
     ((algebraMap O LL ϖ)⁻¹ ^ r) • (ϖ ^ r • v) = v := by
@@ -88,7 +88,7 @@ theorem scale_cancel {ϖ : O} (hϖ : algebraMap O LL ϖ ≠ 0) (r : ℕ) (v : V)
     one_smul]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul LL (ϖ ^ r), smul_smul, map_pow, ← mul_pow, mul_inv_cancel₀ hϖ, one_pow, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_cancel' {ϖ : O} (hϖ : algebraMap O LL ϖ ≠ 0) (r : ℕ) (v : V) :
     ϖ ^ r • (((algebraMap O LL ϖ)⁻¹ ^ r) • v) = v := by
@@ -119,9 +119,9 @@ theorem jr_mk (L' : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ') 
       Submodule.Quotient.mk (((algebraMap O LL ϖ)⁻¹ ^ r) • (t : V')) := rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[jr_mk, Submodule.Quotient.mk_eq_zero]`. Use `(Submodule.Quotient.mk_eq_zero _).2 (mem_Ip.2 ⟨⟨_, hx⟩, ?_⟩)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul]`. Conclude with `(scale_cancel' hϖ r _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jr_inj (L' : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ') {ϖ : O} (hϖ : algebraMap O LL ϖ ≠ 0) (r : ℕ) :
     Function.Injective (jr L' hϖ r) := by
@@ -135,9 +135,9 @@ theorem jr_inj (L' : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ')
   exact (scale_cancel' hϖ r _).symm
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ e`. Rewrite `he` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `⟨Submodule.Quotient.mk ⟨_, he⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[jr_mk]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `scale_cancel hϖ r v`.
+A detailed English derivation is pending.
 -/
 theorem jr_surj (L' : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ') {ϖ : O} (hϖ : algebraMap O LL ϖ ≠ 0) (r : ℕ)
     (e : V' ⧸ L'.T) (he : ϖ ^ r • e = 0) : ∃ x, jr L' hϖ r x = e := by
@@ -149,7 +149,7 @@ theorem jr_surj (L' : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ'
   exact scale_cancel hϖ r v
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (((algebraMap O LL ϖ)⁻¹ ^ r) • ρ' g (t : V')) = Submodule.Quotient.mk (ρ' g (((algebraMap O LL ϖ)⁻¹ ^ r) • (t : V')))`. Rewrite using `[map_smul]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem jr_act (L' : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ') {ϖ : O} (hϖ : algebraMap O LL ϖ ≠ 0) (r : ℕ)
     (g : G) (x : ↥L'.T ⧸ Ip L' ϖ r) :
@@ -160,7 +160,7 @@ theorem jr_act (L' : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ')
   rw [map_smul]
 
 /- English proof (translation)
-Use `⟨IsLocallyConstant.desc b (jr L' hϖ r) hb.1 (jr_inj L' hϖ r), fun g h => ?_⟩` and prove the remaining obligations. Apply `jr_inj L' hϖ r` to reduce the goal to its premises. Rewrite using `[map_add, jr_act]`. Conclude with `hb.2 g h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Z1Q_of_jr (L' : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ') {ϖ : O} (hϖ : algebraMap O LL ϖ ≠ 0)
     (r : ℕ) (b : G → ↥L'.T ⧸ Ip L' ϖ r) (hb : (fun g => jr L' hϖ r (b g)) ∈ divisibleCocycles L') :
@@ -171,9 +171,9 @@ theorem mem_Z1Q_of_jr (L' : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := 
   exact hb.2 g h
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hd x.1`. Establish `hw : ϖ ^ r • liftD L' (e x.2) ∈ L'.T`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul, liftD_mk]`. Conclude with `he _`. Take `⟨a, ha⟩` from `hP t t.2 (ρ' x.1 (ϖ ^ r • liftD L' (e x.2))) (L'.stable _ _ hw)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Unfold `cupLD`. Rewrite using `[← LinearMap.sub_apply, ← map_sub, ht, ← ha, ← algebraMap_smul LL (ϖ ^ r) (t : V), ← algebraMap_smul LL (ϖ ^ r) (liftD L' (e x.2)), map_smul, map_smul, map_smul, LinearMap.smul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cup_congr1 {L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ} {L' : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ'}
     {P : V →ₗ[LL] V' →ₗ[LL] LL}
@@ -193,9 +193,9 @@ theorem cup_congr1 {L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) �
     LinearMap.smul_apply]
 
 /- English proof (translation)
-Use `set u : ↥L'.T := lq L' _ (c' x.2) with hu`. Use `set w : V' := liftD L' (jr L' hϖ r (c' x.2)) with hw`. Establish `hmem : ((algebraMap O LL ϖ)⁻¹ ^ r) • (u : V') - w ∈ L'.T`. Rewrite using `[← Submodule.Quotient.eq]`. Rewrite using `[hw, liftD_mk, ← jr_mk L' hϖ, hu, lq_mk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `hP _ (lq L _ (d x.1)).2 _ (L'.stable x.1 _ hmem)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Unfold `cupQ cupLD`. Rewrite using `[← ha, map_sub, map_sub, map_smul, map_smul, smul_eq_mul, liftQ_eq, liftQ_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cup_congr2 {L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ} {L' : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ'}
     {P : V →ₗ[LL] V' →ₗ[LL] LL}
@@ -224,17 +224,17 @@ def XX (Cob : (G × G → LL) → Prop) (L : Formalism.WeaklyAdmissibleFiltratio
     ¬ Cob (cupLD L' P (fun g => (lq L _ (d g) : V)) c)}
 
 /- English proof (translation)
-Set `J : (G → ↥L'.T ⧸ Ip L' ϖ r) →ₗ[O] (G → V' ⧸ L'.T)` to `(jr L' hϖ r).compLeft G`. Establish `hJ : ∀ b g, J b g = jr L' hϖ r (b g)` using `fun _ _ => rfl`. Establish `hB : BQ L' _ (Ip_stable L' ϖ r) ≤ S.comap J`. Introduce and unpack `b ⟨x, rfl⟩`. Use `hBS ⟨jr L' hϖ r x, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply, hJ, map_sub, jr_act]`. Establish `hZ : S.comap J ≤ quotientCocycles L' _ (Ip_stable L' ϖ r)` using `fun b hb => mem_Z1Q_of_jr L' hϖ r b (hSZ hb)`. Use `choose c' hc' using fun h => jr_surj L' hϖ r (c h) (hck h)`. Establish `hJc : J c' = c` using `funext hc'`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc'Z : c' ∈ quotientCocycles L' _ (Ip_stable L' ϖ r)` using `mem_Z1Q_of_jr L' hϖ r c' (by`. Establish `: (fun g => jr L' hϖ r (c' g)) = c` using `funext hc'`. Rewrite using `[this]`. Conclude with `hc)`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hcS` to reduce the goal to its premises. Rewrite using `[← hJc]`. Use `hdual (S.comap J) hB hZ c' hc'Z (fun d hd hs => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hnot`. Use `hne ⟨d, hd, fun s hsS hsk => ?_, fun hcob => hnot ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose s' hs' using fun h => jr_surj L' hϖ r (s h) (hsk h)`. Establish `hJs : J s' = s` using `funext hs'`. Establish `h1` using `hs s' (by rw [Submodule.mem_comap, hJs]; exact hsS)`. Establish `h2` using `(hCob _ _ (cup_congr2 hP hϖ d s')).1 h1`. Establish `h3 : (fun g => jr L' hϖ r (s' g)) = s` using `funext hs'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Use `(hCob _ _ (cup_congr2 hP hϖ d c')).2 ?_` and prove the remaining obligations. Establish `h3 : (fun g => jr L' hϖ r (c' g)) = c` using `funext hc'`. Rewrite using `[h3]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem XX_nonempty {Cob : (G × G → LL) → Prop}
     (hCob : ∀ z z' : G × G → LL, (∀ x, ∃ a : O, z x - z' x = algebraMap O LL a) → (Cob z ↔ Cob z'))
@@ -291,7 +291,7 @@ theorem stp_mk (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) (
     stp L ϖ r (Submodule.Quotient.mk t) = Submodule.Quotient.mk t := rfl
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[show actQ L _ (Ip_stable L ϖ (r + 1)) g (Submodule.Quotient.mk t) = Submodule.Quotient.mk (actT L g t) from Submodule.mapQ_apply _ _ _ _, stp_mk, stp_mk]`. Conclude with `(Submodule.mapQ_apply _ _ _ _).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stp_act (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) (ϖ : O) (r : ℕ) (g : G)
     (x : ↥L.T ⧸ Ip L ϖ (r + 1)) :
@@ -303,7 +303,7 @@ theorem stp_act (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) 
   exact (Submodule.mapQ_apply _ _ _ _).symm
 
 /- English proof (translation)
-Establish `h : lq L _ (stp L ϖ r y) - lq L _ y ∈ Ip L ϖ r`. Rewrite using `[← Submodule.Quotient.eq, lq_mk, ← stp_mk, lq_mk]`. Take `⟨t, ht⟩` from `mem_Ip.1 h`. Conclude with `⟨t, by simpa using congrArg (Subtype.val) ht⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lq_stp (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) (ϖ : O) (r : ℕ) (y : ↥L.T ⧸ Ip L ϖ (r + 1)) :
     ∃ t : ↥L.T, (lq L _ (stp L ϖ r y) : V) - (lq L _ y : V) = ϖ ^ r • (t : V) := by
@@ -313,9 +313,9 @@ theorem lq_stp (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) (
   exact ⟨t, by simpa using congrArg (Subtype.val) ht⟩
 
 /- English proof (translation)
-Establish `hlift : ∀ g, ∃ t : ↥L.T, (fun g => (lq L _ (stp L ϖ r (d g)) : V)) g - (fun g => (lq L _ (d g) : V)) g = ϖ ^ r • (t : V)` using `fun g => lq_stp L ϖ r (d g)`. Use `⟨⟨hd.1.1.comp _, fun g h => ?_⟩, fun s hs hk => ?_, fun hc => hd.2.2 ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `stp L ϖ r (d (g * h)) = _`. Rewrite using `[hd.1.2 g h, map_add, stp_act]`. Use `(hCob _ _ (cup_congr1 hP _ _ s hk hlift)).2 (hd.2.1 s hs fun h => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ', mul_smul, hk, smul_zero]`. Conclude with `(hCob _ _ (cup_congr1 hP _ _ c hck hlift)).1 hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem XX_step {Cob : (G × G → LL) → Prop}
     (hCob : ∀ z z' : G × G → LL, (∀ x, ∃ a : O, z x - z' x = algebraMap O LL a) → (Cob z ↔ Cob z'))
@@ -335,22 +335,22 @@ theorem XX_step {Cob : (G × G → LL) → Prop}
   · exact (hCob _ _ (cup_congr1 hP _ _ c hck hlift)).1 hc
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem span_pow_smul (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) (ϖ : O) (k : ℕ) :
     ((Ideal.span {ϖ}) ^ k • ⊤ : Submodule O ↥L.T) = Ip L ϖ k := by
   rw [Ideal.span_singleton_pow]
 
 /- English proof (translation)
-Set `u : ℕ → ↥L.T` to `fun n => lq L _ (x n)`. Establish `hu : ∀ n, (Submodule.Quotient.mk (u n) : ↥L.T ⧸ Ip L ϖ (r₀ + n)) = x n` using `fun n => lq_mk L _ (x n)`. Establish `h1 : ∀ n, u (n + 1) - u n ∈ Ip L ϖ (r₀ + n)`. Introduce `n`. Rewrite using `[← Submodule.Quotient.eq, hu, ← hx n, ← hu (n + 1)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : ∀ m n, m ≤ n → u n - u m ∈ Ip L ϖ (r₀ + m)`. Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n hmn ih`. Use `add_mem (Ip_anti (Nat.add_le_add_left hmn r₀) (h1 n)) ih` as an intermediate fact. Simplify using `using this`. Take `⟨t, ht⟩` from `hc.toIsPrecomplete.prec (f := u) (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, span_pow_smul, ← neg_sub, neg_mem_iff]`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ip_anti (Nat.le_add_left m r₀) (h2 m n hmn))`. Use `⟨t, fun n => ?_⟩` and prove the remaining obligations. Establish `a` using `ht (r₀ + n)`. Rewrite `a` using `[SModEq.sub_mem, span_pow_smul]`. Establish `b` using `h2 n (r₀ + n) (Nat.le_add_left n r₀)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu n, eq_comm, Submodule.Quotient.eq]`. Use `sub_mem a b` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_limit (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) {ϖ : O}
     (hc : IsAdicComplete (Ideal.span {ϖ}) ↥L.T) (r₀ : ℕ) (x : ∀ n, ↥L.T ⧸ Ip L ϖ (r₀ + n))
@@ -382,7 +382,7 @@ theorem exists_limit (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O)
   simpa using this
 
 /- English proof (translation)
-The claim follows from `hc.toIsHausdorff.haus w fun n => by rw [SModEq.zero, span_pow_smul] exact h n`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) {ϖ : O}
     (hc : IsAdicComplete (Ideal.span {ϖ}) ↥L.T) (w : ↥L.T) (h : ∀ n, w ∈ Ip L ϖ n) : w = 0 :=
@@ -391,27 +391,25 @@ theorem eq_zero_of_mem (L : Formalism.WeaklyAdmissibleFiltrations.Lattice (O := 
     exact h n
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcS`. Establish `tor1 : ∀ e : V' ⧸ L'.T, ∃ n : ℕ, ϖ ^ n • e = 0`. Introduce `e`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ e`. Take `⟨n, hn⟩` from `htor v`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, by rw [← Submodule.Quotient.mk_smul]; exact (Submodule.Quotient.mk_eq_zero _).2 hn⟩`. Establish `kill : ∀ s ∈ divisibleCocycles L', ∃ N : ℕ, ∀ h, ϖ ^ N • s h = 0`. Introduce `s hs`. Use `choose nn hnn using tor1`. Establish `hf` using `hs.1.range_finite`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hf.toFinset.sup nn, fun h => ?_⟩` and prove the remaining obligations. Establish `hle : nn (s h) ≤ hf.toFinset.sup nn` using `Finset.le_sup (by simp)`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_smul, hnn, smul_zero]`. Establish `mono : ∀ (e : V' ⧸ L'.T) (a b : ℕ), a ≤ b → ϖ ^ a • e = 0 → ϖ ^ b • e = 0`. Introduce `e a b hab he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.sub_add_cancel hab, pow_add, mul_smul, he, smul_zero]`. Take `⟨r₀, hr₀⟩` from `kill c hc`. Establish `hck : ∀ n h, ϖ ^ (r₀ + n) • c h = 0` using `fun n h => mono _ _ _ (Nat.le_add_right r₀ n) (hr₀ h)`. Take `⟨f, hfX, hf⟩` from `ReciprocityTheory.DiscreteGroups.PeuVal.exists_compatible_seq (Y := fun n => G → ↥L.T ⧸ Ip L ϖ (r₀ + n)) (fun n => XX Cob L L' P ϖ S c (r₀ + n)) (fun n d g => stp L ϖ (r₀ + n) (d g)) (fun n => XX_nonempty hCob hP hϖ (r₀ + n) (hdual (r₀ + n)) hBS hSZ hc hcS (hck n)) (fun n => by h …`. Conclude with `(Set.toFinite (quotientCocycles L _ (Ip_stable L ϖ (r₀ + n)) : Set _)).subset fun d hd => hd.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun n d hd => XX_step hCob hP (r₀ + n) (hck n) hd)`. Use `choose t ht using fun g => exists_limit L hadic r₀ (fun n => f n g) (fun n => congrFun (hf n) g)`. Establish `hzero : ∀ w : ↥L.T, (∀ n, w ∈ Ip L ϖ (r₀ + n)) → w = 0` using `fun w hw => eq_zero_of_mem L hadic w fun n => Ip_anti (Nat.le_add_left n r₀) (hw n)`. Establish `hcont : Continuous fun g => (t g : V)`. Rewrite using `[continuous_iff_continuousAt]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g₀`. Establish `hF : Filter.Tendsto (fun g => (t g : V) - (t g₀ : V)) (nhds g₀) (nhds 0)`. Rewrite using `[hbasis.tendsto_right_iff]`. Introduce `n _`. Use `filter_upwards [(hfX n).1.1.eventually_eq g₀] with g hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : t g - t g₀ ∈ Ip L ϖ n` using `Ip_anti (Nat.le_add_left n r₀) ((Submodule.Quotient.eq _).1 (by rw [ht g n, ht g₀ n, hg]))`. Take `⟨y, hy⟩` from `mem_Ip.1 h1`. Conclude with `⟨y, y.2, by simpa using (congrArg Subtype.val hy).symm⟩`. Establish `h2 : Filter.Tendsto (fun g => ((t g : V) - (t g₀ : V)) + (t g₀ : V)) (nhds g₀) (nhds (0 + (t g₀ : V)))` using `hF.add tendsto_const_nhds`. Simplify `h2` using `[ContinuousAt]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hcoc : ∀ g h, (t (g * h) : V) = (t g : V) + ρ g (t h : V)`. Introduce `g h`. Establish `h0 : t (g * h) - (t g + actT L g (t h)) = 0`. Use `hzero _ fun n => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_sub, Submodule.Quotient.mk_add, ht, ht, show (Submodule.Quotient.mk (actT L g (t h)) : ↥L.T ⧸ Ip L ϖ (r₀ + n)) = actQ L _ (Ip_stable L ϖ (r₀ + n)) g (Submodule.Quotient.mk (t h)) from (Submodule.mapQ_apply _ _ _ _).symm, ht, …`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : (t (g * h) : V) = (t g : V) + ((actT L g (t h) : ↥L.T) : V)`. Simplify using `using congrArg Subtype.val (sub_eq_zero.1 h0)`. Conclude with `h3`. Establish `hdZ : (fun g => (t g : V)) ∈ latticeCocycles L` using `⟨⟨hcont, hcoc⟩, fun g _ => (t g).2⟩`. Establish `hclose : ∀ n g, ∃ y : ↥L.T, (fun g => (t g : V)) g - (fun g => (lq L _ (f n g) : V)) g = ϖ ^ (r₀ + n) • (y : V)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n g`. Establish `h1 : t g - lq L _ (f n g) ∈ Ip L ϖ (r₀ + n)`. Rewrite using `[← Submodule.Quotient.eq, ht, lq_mk]`. Take `⟨y, hy⟩` from `mem_Ip.1 h1`. Conclude with `⟨y, by simpa using congrArg Subtype.val hy⟩`.
-
-Use `(hfX 0).2.2 ((hCob _ _ (cup_congr1 hP _ _ c (hck 0) (hclose 0))).1 (H _ hdZ fun s hs => ?_))` and prove the remaining obligations. Take `⟨N, hN⟩` from `kill s (hSZ hs)`. Establish `hkill : ∀ h, ϖ ^ (r₀ + N) • s h = 0` using `fun h => mono _ _ _ (Nat.le_add_left N r₀) (hN h)`. Conclude with `(hCob _ _ (cup_congr1 hP _ _ s hkill (hclose N))).2 ((hfX N).2.1 s hs hkill)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem core [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V] [CompactSpace G]
     {Cob : (G × G → LL) → Prop}
@@ -506,17 +504,15 @@ end Gen
 open GlobalTheory.CompanionTheory.LocDual in
 
 /- English proof (translation)
-Introduce `D l _ K hF hQ LL _ _ _ O _ _ hG L1 hL1 A A' LA LA' P hP S hBS hSZ c hc H`. Take `⟨⟨hdom, hdvr, hfrac⟩, -⟩` from `id hG`. Use `haveI := hdom`. Use `haveI := hdvr`. Use `haveI := hfrac`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hne : algebraMap O LL ϖ ≠ 0` using `fun h => hϖ.ne_zero ((IsFractionRing.injective O LL) (by rw [h, map_zero]))`. Take `⟨hO, -⟩` from `GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hG ϖ hϖ`. Take `⟨-, hb, -, -, -⟩` from `GlobalTheory.T.lattice_open_compact_nhds_basis D l K LL O hG A LA ϖ hϖ`. Take `⟨-, -, -, hbd', -⟩` from `GlobalTheory.T.lattice_open_compact_nhds_basis D l K LL O hG A' LA' ϖ hϖ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : CompactSpace ↥(GK K) := haveI := K.2 isCompact_iff_compactSpace.1 (InfiniteGalois.fixingSubgroup_isClosed K.1).isCompact`. Use `haveI : Module.Free O ↥LA.T := LA.free`. Use `haveI : Module.Finite O ↥LA.T := Module.Finite.iff_fg.2 LA.fg`. Use `core (Cob := CobO ((D.loc l).PD K) L1) ?_ (fun x hx y hy => (hP.2 y).1 hy x hx) hne (GlobalTheory.CNorm.isAdicComplete_of_free_finite _ hO) hb ?_ (fun r => hF LL O hG A LA ϖ hϖ r (Ip_stable LA ϖ r)) (fun r => (hQ LL O hG L1 hL1 A A' LA LA' P hP ϖ hϖ r (Ip_stable LA ϖ r) (Ip_stabl …` and prove the remaining obligations. Introduce `z z' h`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `: (fun x => (Submodule.Quotient.mk (z x) : LL ⧸ L1.T)) = fun x => (Submodule.Quotient.mk (z' x) : LL ⧸ L1.T)`. Use function extensionality and compare the values at `x`. Take `⟨a, ha⟩` from `h x`. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations. Rewrite using `[ha, hL1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, rfl⟩`. Unfold `CobO`. Rewrite using `[this]`. Introduce `v`. Take `⟨n, hn⟩` from `hbd' (fun _ => v) continuous_const`.
-
-Conclude with `⟨n, hn 1⟩`.
+A detailed English derivation is pending.
 -/
 theorem dualD_of_dualQ : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), FinZQ ((D.loc l).PD K) →
     DualQ ((D.loc l).PD K) → DualD ((D.loc l).PD K) := by

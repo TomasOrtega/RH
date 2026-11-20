@@ -7,7 +7,7 @@ namespace GlobalTheory
 open Finset GlobalTheory.KeyKa
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [prod_insert hj, sum_insert hj, ih, zpow_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem kaForm_prod_zpow {G : Type} [CommGroup G] (a : G) (s : Finset ℕ) (f : ℕ → ℤ) :
     ∏ j ∈ s, a ^ f j = a ^ ∑ j ∈ s, f j := by
@@ -16,15 +16,15 @@ private theorem kaForm_prod_zpow {G : Type} [CommGroup G] (a : G) (s : Finset �
   | insert j s hj ih => rw [prod_insert hj, sum_insert hj, ih, zpow_add]
 
 /- English proof (translation)
-Unfold `tComb`. Rewrite using `[mul_pow]`. Simplify using `only [mul_zpow, prod_mul_distrib]`. Establish `hB : (∏ j ∈ range (g + 1), be j ^ (2 * (-1 : ℤ) ^ j * (g.choose j : ℤ))) ^ (4 * Pr ^ (3 * g + 2)) * ∏ j ∈ range (g + 1), (be j ^ (-8 * ((l - j * n) ^ (3 * g + 2) : ℕ) : ℤ)) ^ ((-1 : ℤ) ^ j * (g.choose j : ℤ) * ((Pr / (l - j * n)) ^ (3 * g + 2) : ℕ)) = 1`. Rewrite using `[← prod_pow, ← prod_mul_distrib]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `prod_eq_one fun j hj => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, ← zpow_mul, ← zpow_add]`. Use `zpow_zero (be j) using 2` and compare the differences between its conclusion and the goal. Establish `key : Pr / (l - j * n) * (l - j * n) = Pr` using `Nat.div_mul_cancel (hd j hj)`. Generalize the expression as in `Pr / (l - j * n) = q at key ⊢`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `l - j * n = d at key ⊢`. Substitute `key` using the available equality. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : ∏ j ∈ range (g + 1), (a ^ (8 * (l - j * n) ^ (4 * g + 2))) ^ ((-1 : ℤ) ^ j * (g.choose j : ℤ) * ((Pr / (l - j * n)) ^ (3 * g + 2) : ℕ)) = a ^ (8 * ((Pr ^ (3 * g + 2) : ℕ) : ℤ) * ((g.factorial * n ^ g : ℕ) : ℤ))`.
+Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[prod_congr rfl fun j _ => by rw [← zpow_natCast, ← zpow_mul], kaForm_prod_zpow, ← alternating_sum_choose_mul_sub_pow g n l hl.le, mul_sum]`. Use `congr 1`. Use `sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `key : Pr / (l - j * n) * (l - j * n) = Pr` using `Nat.div_mul_cancel (hd j hj)`. Generalize the expression as in `Pr / (l - j * n) = q at key ⊢`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `l - j * n = d at key ⊢`. Substitute `key` using the available equality. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation.
 -/
 theorem tComb_rescale {R : Type} [CommRing R] (g n l Pr : ℕ) (t a : Rˣ) (lam be : ℕ → Rˣ)
     (hl : g * n < l) (hd : ∀ j ∈ range (g + 1), (l - j * n) ∣ Pr) :
@@ -72,7 +72,7 @@ theorem tComb_rescale {R : Type} [CommRing R] (g n l Pr : ℕ) (t a : Rˣ) (lam 
     _ = _ := by rw [hB, hA, mul_one]
 
 /- English proof (translation)
-Unfold `tComb`. Rewrite using `[mul_pow]`. Conclude with `mul_right_comm _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tComb_mul_left {R : Type} [CommRing R] (g n l Pr : ℕ) (t c : Rˣ) (lam : ℕ → Rˣ) :
     tComb g n l Pr (t * c) lam = tComb g n l Pr t lam * c ^ (4 * Pr ^ (3 * g + 2)) := by
@@ -81,9 +81,9 @@ theorem tComb_mul_left {R : Type} [CommRing R] (g n l Pr : ℕ) (t c : Rˣ) (lam
   exact mul_right_comm _ _ _
 
 /- English proof (translation)
-Establish `eU : u ^ (z1 * N * e1) * u ^ (z2 * N * e2) * u ^ (z3 * e3) = 1`. Rewrite using `[← zpow_add, ← zpow_add, hu, zpow_zero]`. Establish `eD : dl ^ (2 * N * e1) * dl ^ (2 * N * e2) * dl ^ (2 * e3) = 1`. Rewrite using `[← zpow_add, ← zpow_add, hdl, zpow_zero]`. Establish `eA : a ^ (α * e1) * a ^ (α * e2) * a ^ (k : ℤ) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← zpow_add, ← zpow_add, ha, zpow_zero]`. Simplify using `only [mul_zpow, ← zpow_natCast, ← zpow_mul, Nat.cast_ofNat]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 private theorem kaForm_monomial_eq_of_exponent_relations {G : Type} [CommGroup G] (X X' J u dl a : G) (N k : ℕ)
     (z1 z2 z3 α e1 e2 e3 : ℤ) (hu : z1 * N * e1 + z2 * N * e2 + z3 * e3 = 0)
@@ -103,9 +103,9 @@ private theorem kaForm_monomial_eq_of_exponent_relations {G : Type} [CommGroup G
     _ = _ := by rw [eU, eD, eA, mul_one, mul_one, mul_one]
 
 /- English proof (translation)
-Introduce `R _ g n l l' t t' J u a dl lam lam' be be' hl hl'`. Establish `hd : ∀ j ∈ range (g + 1), (l - j * n) ∣ degProd g n l l'` using `fun j hj => (dvd_mul_right _ _).trans (dvd_prod_of_mem (fun j => (l - j * n) * (l' - j * n)) hj)`. Establish `hd' : ∀ j ∈ range (g + 1), (l' - j * n) ∣ degProd g n l l'` using `fun j hj => (dvd_mul_left _ _).trans (dvd_prod_of_mem (fun j => (l - j * n) * (l' - j * n)) hj)`. Unfold `kaForm`. Rewrite using `[tComb_rescale g n l _ _ a lam be hl hd, tComb_rescale g n l' _ _ a lam' be' (hl.trans hl') hd', tComb_mul_left, tComb_mul_left, tComb_mul_left, tComb_mul_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `kaForm_monomial_eq_of_exponent_relations _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ?_ ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `all_goals try unfold kaExp`. Move the coercions through the operations in `[Nat.cast_sub hl'.le]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kaForm_homogeneous :
     ∀ (R : Type) [CommRing R] (g n l l' : ℕ) (t t' J u a dl : Rˣ) (lam lam' be be' : ℕ → Rˣ), g * n < l → l < l' → kaForm g n l l' (t * u ^ (-2 * (l : ℤ)) * dl ^ 2 * ∏ j ∈ Finset.range (g + 1), be j ^ (2 * (-1 : ℤ) ^ j * (g.choose j : ℤ))) (t' * u ^ (-2 * (l' : ℤ)) * dl ^ 2 * ∏ j ∈ Finset.range (g + 1), be' j ^ (2 * (-1 : ℤ) ^ j * (g.choose j : ℤ))) (fun j => lam j * be j ^ (-8 * ((l - j * n) ^ (3 * g + 2) : ℕ) : ℤ) * a ^ (8 * (l - j * n) ^ (4 * g + 2))) (fun j => lam' j * be' j ^ (-8 * ((l' - j * n) ^ (3 * g + 2) : ℕ) : ℤ) * a ^ (8 * (l' - j * n) ^ (4 * g + 2))) (J * u ^ (-((g * n : ℕ) : ℤ)) * dl ^ 2) * a ^ (8 * kaExp g n l l') = kaForm g n l l' t t' lam lam' J := by

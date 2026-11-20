@@ -27,7 +27,7 @@ variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 variable {T : GlobalTheory.K5.Tower p Ω} {L : ℕ} {ψ : O0 p →+* Ω}
 
 /- English proof (translation)
-Establish `h : algebraMap (O0 p) Ω a ∈ ψ.range`. Rewrite using `[hψ.rng, Subalgebra.mem_toSubring]`. Conclude with `Subalgebra.algebraMap_mem _ a`. Conclude with `RingHom.mem_range.1 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range (hψ : IsReb T L ψ) (a : O0 p) : ∃ b, ψ b = algebraMap (O0 p) Ω a := by
   have h : algebraMap (O0 p) Ω a ∈ ψ.range := by
@@ -38,7 +38,7 @@ theorem mem_range (hψ : IsReb T L ψ) (a : O0 p) : ∃ b, ψ b = algebraMap (O0
 def jf (hψ : IsReb T L ψ) (a : O0 p) : O0 p := (mem_range hψ a).choose
 
 /- English proof (translation)
-The claim follows from `(mem_range hψ a).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem jf_spec (hψ : IsReb T L ψ) (a : O0 p) : ψ (jf hψ a) = algebraMap (O0 p) Ω a :=
   (mem_range hψ a).choose_spec
@@ -51,21 +51,19 @@ def jj (hψ : IsReb T L ψ) : O0 p →+* O0 p where
   map_add' a b := hψ.inj (by rw [jf_spec, map_add, map_add, jf_spec, jf_spec])
 
 /- English proof (translation)
-The claim follows from `RingHom.ext (jf_spec hψ)`.
+A detailed English derivation is pending.
 -/
 theorem comp_jj (hψ : IsReb T L ψ) : ψ.comp (jj hψ) = algebraMap (O0 p) Ω :=
   RingHom.ext (jf_spec hψ)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, h⟩`. Set `A` to `Algebra.adjoin (O0 p) {T.qq L}`. Establish `hq : IsIntegral (O0 p) (T.qq L)`. Use `⟨X ^ (p ^ L) - C (qO p), monic_X_pow_sub_C _ (pow_ne_zero _ (Fact.out : p.Prime).ne_zero), ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← aeval_def]`. Simplify using `[GlobalTheory.K5.Basic.qq_pow]`. Use `haveI : Algebra.IsIntegral (O0 p) A := Algebra.IsIntegral.adjoin (by rintro _ rfl; exact hq)`. Set `g : O0 p →+* A` to `ψ.codRestrict A (fun b => by`. Use `ψ.mem_range_self b` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hψ.rng]`. Conclude with `this)`. Establish `hA : IsIntegral A x`. Use `⟨f.map g, hf.map g, ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (algebraMap A Ω).comp g = ψ` using `RingHom.ext fun _ => rfl`. Rewrite using `[e]`. Conclude with `h`. Conclude with `isIntegral_trans x hA`. Introduce and unpack `⟨f, hf, h⟩`.
-
-Use `⟨f.map (jj hψ), hf.map _, ?_⟩` and prove the remaining obligations. Use `show eval₂ ψ x (f.map (jj hψ)) = 0`. Rewrite using `[eval₂_map]`. Rewrite using `[comp_jj]`. Conclude with `h`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInt_iff (hψ : IsReb T L ψ) (x : Ω) : @IsInt p _ (RebT Ω ψ) _ _ x ↔ IsInt p x := by
   constructor
@@ -95,7 +93,7 @@ theorem isInt_iff (hψ : IsReb T L ψ) (x : Ω) : @IsInt p _ (RebT Ω ψ) _ _ x 
     exact h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, e⟩`. Conclude with `⟨z, (isInt_iff hψ z).1 hz, e⟩`. Introduce and unpack `⟨z, hz, e⟩`. Conclude with `⟨z, (isInt_iff hψ z).2 hz, e⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem cong_iff (hψ : IsReb T L ψ) (k : ℕ) (x y : Ω) :
     @Cong p _ (RebT Ω ψ) _ _ k x y ↔ Cong p k x y := by
@@ -106,7 +104,7 @@ theorem cong_iff (hψ : IsReb T L ψ) (k : ℕ) (x y : Ω) :
     exact ⟨z, (isInt_iff hψ z).2 hz, e⟩
 
 /- English proof (translation)
-The claim follows from `hψ.inj alg := by refine ⟨fun (x : Ω) => ?_⟩ obtain ⟨f, hf, h⟩ := hΩ.alg.isAlgebraic x have hinj : Function.Injective (jj hψ) := by intro a b hab apply hΩ.inj rw [← comp_jj hψ, RingHom.comp_apply, RingHom.comp_apply, hab] refine ⟨f.map (jj hψ), (Polynomial.map_ne_zero_iff hinj).2 …`.
+A detailed English derivation is pending.
 -/
 theorem isClo (hΩ : IsClo p Ω) (hψ : IsReb T L ψ) : IsClo p (RebT Ω ψ) where
   inj := hψ.inj
@@ -124,13 +122,13 @@ theorem isClo (hΩ : IsClo p Ω) (hψ : IsReb T L ψ) : IsClo p (RebT Ω ψ) whe
   clo := hΩ.clo
 
 /- English proof (translation)
-Establish `e : algebraMap ℤ_[p] (O0 p) z = algebraMap (Lau p) (O0 p) (HahnSeries.C z)`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[p] (Lau p) (O0 p)]`. Use `congr 1`. Use `show HahnSeries.ofPowerSeries ℤ ℤ_[p] (algebraMap ℤ_[p] (PowerSeries ℤ_[p]) z) = _`. Rewrite using `[← HahnSeries.ofPowerSeries_C]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Establish `hp0 : (p : ℤ) ^ L ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (Fact.out : p.Prime).ne_zero)`. Use `hψ.sub _ _ (fun i => ?_) (fun r hr => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : i = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hi` using the available equality. Simplify using `[HahnSeries.C_apply, HahnSeries.coeff_single]`. Establish `: (p : ℤ) ^ L * i ≠ 0` using `mul_ne_zero hp0 hi`. Simplify using `[HahnSeries.C_apply, HahnSeries.coeff_single, hi, this]`. Establish `: r ≠ 0` using `by rintro rfl; exact hr (dvd_zero _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[HahnSeries.C_apply, HahnSeries.coeff_single, this]`.
+A detailed English derivation is pending.
 -/
 theorem zp_eq (hψ : IsReb T L ψ) (z : ℤ_[p]) :
     ψ (algebraMap ℤ_[p] (O0 p) z) = algebraMap (O0 p) Ω (algebraMap ℤ_[p] (O0 p) z) := by
@@ -151,11 +149,9 @@ theorem zp_eq (hψ : IsReb T L ψ) (z : ℤ_[p]) :
     simp [HahnSeries.C_apply, HahnSeries.coeff_single, this]
 
 /- English proof (translation)
-Establish `hc : ψ.comp (algebraMap ℤ_[p] (O0 p)) = (algebraMap (O0 p) Ω).comp (algebraMap ℤ_[p] (O0 p))` using `RingHom.ext (zp_eq hψ)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, hP, h⟩`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Establish `h' : eval₂ ψ x (P.map (algebraMap ℤ_[p] (O0 p))) = 0` using `h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h'` using `[eval₂_map, hc, ← eval₂_map, ← aeval_def]`. Conclude with `h'`. Introduce and unpack `⟨P, hP, h⟩`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Use `show eval₂ ψ x (P.map (algebraMap ℤ_[p] (O0 p))) = 0`.
-
-Rewrite using `[eval₂_map, hc, ← eval₂_map, ← aeval_def]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgZp_iff (hψ : IsReb T L ψ) (x : Ω) : @IsAlgZp p _ (RebT Ω ψ) _ _ x ↔ IsAlgZp p x := by
   have hc : ψ.comp (algebraMap ℤ_[p] (O0 p)) = (algebraMap (O0 p) Ω).comp (algebraMap ℤ_[p] (O0 p)) :=
@@ -187,13 +183,13 @@ def down (hψ : IsReb T L ψ) (g : Gal p (RebT Ω ψ)) : Gal p Ω :=
     exact g.commutes b)
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem down_mul (hψ : IsReb T L ψ) (g h : Gal p (RebT Ω ψ)) : down hψ (g * h) = down hψ g * down hψ h :=
   AlgEquiv.ext fun _ => rfl
 
 /- English proof (translation)
-Establish `h1 : ψ a ∈ (Algebra.adjoin (O0 p) {T.qq L}).toSubring` using `hψ.rng ▸ ψ.mem_range_self a`. Establish `h2 : Algebra.adjoin (O0 p) {T.qq L} ≤ AlgHom.equalizer (g : Ω →ₐ[O0 p] Ω) (AlgHom.id (O0 p) Ω)` using `Algebra.adjoin_le (by rintro x rfl; exact hg)`. Conclude with `(AlgHom.mem_equalizer _ _ _).1 (h2 h1)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fix_range (hψ : IsReb T L ψ) (g : Gal p Ω) (hg : g (T.qq L) = T.qq L) (a : O0 p) : g (ψ a) = ψ a := by
   have h1 : ψ a ∈ (Algebra.adjoin (O0 p) {T.qq L}).toSubring := hψ.rng ▸ ψ.mem_range_self a
@@ -205,14 +201,14 @@ def up (hψ : IsReb T L ψ) (g : Gal p Ω) (hg : g (T.qq L) = T.qq L) : Gal p (R
   AlgEquiv.ofRingEquiv (f := (g.toRingEquiv : RebT Ω ψ ≃+* RebT Ω ψ)) (fun a => fix_range hψ g hg a)
 
 /- English proof (translation)
-Use `⟨X ^ (p ^ L) - C 1, (monic_X_pow_sub_C _ (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)).ne_zero, ?_⟩` and prove the remaining obligations. Simplify using `[(T.prim L).pow_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isAlgZp_zeta (T : GlobalTheory.K5.Tower p Ω) (L : ℕ) : IsAlgZp p (T.ζ L) := by
   refine ⟨X ^ (p ^ L) - C 1, (monic_X_pow_sub_C _ (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)).ne_zero, ?_⟩
   simp [(T.prim L).pow_eq_one]
 
 /- English proof (translation)
-Establish `hgeo : down hψ g ∈ Ggeo p Ω` using `fun x hx => hg x ((isAlgZp_iff hψ x).2 hx)`. Use `Subgroup.mem_inf.2 ⟨hgeo, (GlobalTheory.K5.Basic.mem_gn T L _).2 ⟨hgeo _ (isAlgZp_zeta T L), ?_⟩⟩` and prove the remaining obligations. Establish `h : g (ψ (qO p)) = ψ (qO p)` using `g.commutes (qO p)`. Rewrite `h` using `[hψ.par]`. Conclude with `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_H (hψ : IsReb T L ψ) {g : Gal p (RebT Ω ψ)} (hg : g ∈ Ggeo p (RebT Ω ψ)) :
     down hψ g ∈ Ggeo p Ω ⊓ Gn T L := by
@@ -223,7 +219,7 @@ theorem mem_H (hψ : IsReb T L ψ) {g : Gal p (RebT Ω ψ)} (hg : g ∈ Ggeo p (
   exact h
 
 /- English proof (translation)
-Establish `hg1` using `(Subgroup.mem_inf.1 hg).1`. Establish `hq` using `((GlobalTheory.K5.Basic.mem_gn T L g).1 (Subgroup.mem_inf.1 hg).2).2`. Conclude with `⟨up hψ g hq, fun x hx => hg1 x ((isAlgZp_iff hψ x).1 hx), AlgEquiv.ext fun _ => rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_up (hψ : IsReb T L ψ) {g : Gal p Ω} (hg : g ∈ Ggeo p Ω ⊓ Gn T L) :
     ∃ g' : Gal p (RebT Ω ψ), g' ∈ Ggeo p (RebT Ω ψ) ∧ down hψ g' = g := by
@@ -232,17 +228,17 @@ theorem exists_up (hψ : IsReb T L ψ) {g : Gal p Ω} (hg : g ∈ Ggeo p Ω ⊓ 
   exact ⟨up hψ g hq, fun x hx => hg1 x ((isAlgZp_iff hψ x).1 hx), AlgEquiv.ext fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `p _ hp2`. Take `⟨c, hc⟩` from `GlobalTheory.T.kummer_cocycle_twisted_coboundary p hp2`. Use `⟨c, fun Ω _ _ hΩ T L n _ lq hlq => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `GlobalTheory.T.exists_reparametrizationByTowerParameter p Ω hΩ T L`. Establish `hk : IsKum (tw hψ) n (Ggeo p (RebT Ω ψ)) ((tw hψ).qq n) (fun g => lq (down hψ g))` using `fun g hg => hlq (down hψ g) (mem_H hψ hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `hc (RebT Ω ψ) (isClo hΩ hψ) (tw hψ) n (fun _ => 0) _ hk`. Prove the components needed by the constructor for the conclusion. Introduce `a ha hcoc`. Establish `hlc : IntegralLocallyConstCochainModPow n (Ggeo p (RebT Ω ψ)) (fun g => a (down hψ g))`. Use `⟨fun g hg => (isInt_iff hψ _).2 (ha.1 _ (mem_H hψ hg)), fun g hg => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨S, hS⟩` from `ha.2 _ (mem_H hψ hg)`. Conclude with `⟨S, fun h hh hx => (cong_iff hψ n _ _).2 (hS _ (mem_H hψ hh) hx)⟩`. Establish `hco : IsTwistedOneCocycle 0 n (Ggeo p (RebT Ω ψ)) (fun _ => 0) (fun g => a (down hψ g))`. Introduce `g hg h hh`. Simplify using `only [pow_zero, one_mul]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[down_mul]`. Conclude with `(cong_iff hψ n _ _).2 (hcoc _ (mem_H hψ hg) _ (mem_H hψ hh))`. Take `⟨o, ho, hof, x, hx, hxc⟩` from `h1 _ hlc hco`. Use `⟨o, (isInt_iff hψ o).1 ho, fun g hg => ?_, x, (isInt_iff hψ x).1 hx, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨g', hg', rfl⟩` from `exists_up hψ hg`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hof g' hg'`. Take `⟨g', hg', rfl⟩` from `exists_up hψ hg`. Establish `e` using `hxc g' hg'`. Rewrite `e` using `[pow_zero, one_mul]`. Conclude with `(cong_iff hψ n _ _).1 e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `o ho hof hcob`. Take `⟨x, hx, hxc⟩` from `hcob`. Use `(cong_iff hψ n _ _).1 (h2 o ((isInt_iff hψ o).2 ho) (fun g hg => hof _ (mem_H hψ hg)) ⟨x, (isInt_iff hψ x).2 hx, fun g hg => ?_⟩)` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul]`. Conclude with `(cong_iff hψ n _ _).2 (hxc _ (mem_H hψ hg))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h1_geometric_level_coboundary : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∃ c : ℕ, ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω → ∀ (T : GlobalTheory.K5.Tower p Ω) (L n : ℕ), n ≤ L → ∀ lq : Gal p Ω → ZMod (p ^ n), IsKum T n (Ggeo p Ω ⊓ Gn T L) (T.qq (L + n)) lq →
   (∀ a : Gal p Ω → Ω, IntegralLocallyConstCochainModPow n (Ggeo p Ω ⊓ Gn T L) a → (∀ g ∈ (Ggeo p Ω ⊓ Gn T L), ∀ h ∈ (Ggeo p Ω ⊓ Gn T L), Cong p n (a (g * h)) (a g + g (a h))) →

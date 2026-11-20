@@ -12,9 +12,9 @@ namespace GlobalTheory
 open ReciprocityTheory.AnForm.M
 
 /- English proof (translation)
-Set `E` to `ContinuousLinearEquiv.funUnique (Fin 1) ℂ ℂ`. Establish `hg : DifferentiableOn ℂ (u ∘ E.symm) (E.symm ⁻¹' t)` using `hu.comp E.symm.differentiableOn (fun z hz => hz)`. Establish `hopen : IsOpen (E.symm ⁻¹' t)` using `ht.preimage E.symm.continuous`. Establish `hmem : E v ∈ E.symm ⁻¹' t` using `by simpa using hv`. Establish `ha : AnalyticAt ℂ (u ∘ E.symm) (E v)` using `hg.analyticAt (hopen.mem_nhds hmem)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : AnalyticAt ℂ (E : (Fin 1 → ℂ) → ℂ) v` using `(E : (Fin 1 → ℂ) →L[ℂ] ℂ).analyticAt v`. Use `ha.comp hE` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem analyticAt_of_differentiableOn_fin_one {u : (Fin 1 → ℂ) → ℂ} {t : Set (Fin 1 → ℂ)}
     (ht : IsOpen t) (hu : DifferentiableOn ℂ u t) {v : Fin 1 → ℂ} (hv : v ∈ t) :
@@ -38,11 +38,11 @@ namespace GlobalTheory
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `hxr : x ∈ Set.range P`. Take `⟨k0, hk0⟩` from `hxr`. Rewrite using `[Finset.prod_eq_single k0]`. Rewrite using `[if_pos hk0, hm k0 hk0]`. Introduce `k _ hk`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: P k ≠ x` using `fun h' => hk (hP (h'.trans hk0.symm))`. Simplify using `[this]`. Simplify using the standard rewrite rules. Rewrite using `[hn0 hxr]`. Establish `: ∀ k, P k ≠ x` using `fun k h' => hxr ⟨k, h'⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prod_ite_pow_of_injective {X : Type} {r : ℕ} {P : Fin r → X} (hP : Function.Injective P)
     (x : X) (a : ℂ) (m : Fin r → ℕ) (n : ℕ) (hm : ∀ j, P j = x → n = m j)
@@ -68,39 +68,33 @@ namespace GlobalTheory
 open ReciprocityTheory.AnForm.M
 
 /- English proof (translation)
-Introduce `X _ _ A L s r m P hP h x`. Take `⟨ψ, hψ, hx, n, u, hud, hu0, hform, hm, hn0⟩` from `h x`. Establish `hev : ∀ᶠ v in 𝓝 (ψ x), (DifferentiableAt ℂ u v ∧ u v ≠ 0 ∧ s x (ψ.symm v) = u v * (v 0 - ψ x 0) ^ n) ∧ v ∈ ψ.target`. Establish `hcont : ∀ᶠ v in 𝓝 (ψ x), u v ≠ 0` using `(hud.self_of_nhds.continuousAt).eventually_ne hu0`. Conclude with `((hud.and (hcont.and hform)).and (ψ.open_target.mem_nhds (ψ.map_source hx)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t0, ht0, ht0o, hxt0⟩` from `eventually_nhds_iff.1 hev`. Use `set t := t0 with ht_def`. Establish `htd : DifferentiableOn ℂ u t` using `fun v hv => (ht0 v hv).1.1.differentiableWithinAt`. Use `set F : Set X := Set.range P \ {x} with hF`. Establish `hFc : IsClosed F` using `((Set.finite_range P).diff).isClosed`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set V : Set X := (ψ.source ∩ ψ ⁻¹' t) ∩ L.U x ∩ Fᶜ with hV`. Establish `hVo : IsOpen V` using `((ψ.isOpen_inter_preimage ht0o).inter (L.isOpen_U x)).inter hFc.isOpen_compl`. Use `set ψ' : OpenPartialHomeomorph X (Fin 1 → ℂ) := (ψ.restrOpen V hVo).transHomeomorph (pa_aff 1 one_ne_zero (ψ x)) with hψ'`. Establish `hsrc : ψ'.source = ψ.source ∩ V`. Simplify using `[ψ', OpenPartialHomeomorph.restrOpen_source]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψ'app : ∀ y, ψ' y = ψ y - ψ x`. Introduce `y`. Simplify using `[ψ', pa_aff]`. Establish `hmemV : ∀ {y}, y ∈ ψ'.source → y ∈ ψ.source ∧ ψ y ∈ t ∧ y ∈ L.U x ∧ y ∉ F`. Introduce `y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hy` using `[hsrc]`. Conclude with `⟨hy.1, hy.2.1.1.2, hy.2.1.2, hy.2.2⟩`. Use `⟨ψ', pa_compat_aff A _ (pa_compat_restr A ψ hψ V hVo) 1 one_ne_zero (ψ x), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsrc]`. Use `⟨hx, ⟨⟨hx, hxt0⟩, L.mem_U x⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `[F]`. Introduce `y hy`. Conclude with `(hmemV hy).2.2.1`. Use `⟨fun k => if P k = x then some 0 else none, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k k' i hk hk'`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Distinguish the cases in `h1 : P k = x`. Distinguish the cases in `h2 : P k' = x`. Conclude with `hP (h1.trans h2.symm)`. Simplify using `[h2] at hk'`. Simplify using `[h1] at hk`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce `k`. Use extensionality with `y`. Simplify using `only [Set.mem_inter_iff, Set.mem_singleton_iff, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl, hy⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Assume the hypotheses and unpack their components.
 
-Use `⟨hy, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : P k = x`. Use `⟨0, by simp [h1], ?_⟩` and prove the remaining obligations. Rewrite using `[hψ'app, h1]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-It suffices to derive a contradiction. Conclude with `(hmemV hy).2.2.2 ⟨⟨k, rfl⟩, h1⟩`. Introduce and unpack `⟨hy, i, hi, hz⟩`. Distinguish the cases in `h1 : P k = x`. Use `⟨?_, hy⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Establish `hy0 : ψ y 0 = ψ x 0`. Rewrite `hz` using `[Fin.fin_one_eq_zero i, hψ'app]`. Simplify `hz` using `[sub_eq_zero]`. Establish `hyx : ψ y = ψ x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i'`. Rewrite using `[Fin.fin_one_eq_zero i']`. Conclude with `hy0`. Conclude with `ψ.injOn (hmemV hy).1 hx hyx`. Simplify using `[h1] at hi`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨fun y => u (ψ y), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j z hz`. Establish `hzs : (A.chart j).symm z ∈ ψ'.source` using `hz.2`. Establish `hz'` using `hmemV hzs`. Establish `h1 : AnalyticAt ℂ (ψ ∘ (A.chart j).symm) z` using `(hψ j).1 z ⟨hz.1, hz'.1⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : AnalyticAt ℂ u (ψ ((A.chart j).symm z))` using `analyticAt_of_differentiableOn_fin_one ht0o htd hz'.2.1`. Establish `h3 : AnalyticAt ℂ (u ∘ (ψ ∘ (A.chart j).symm)) z` using `AnalyticAt.comp (f := ψ ∘ (A.chart j).symm) h2 h1`. Conclude with `h3`. Introduce `y hy`. Conclude with `(ht0 _ (hmemV hy).2.1).1.2.1`.
-
-Introduce `y hy`. Take `⟨hys, hyt, -, -⟩` from `hmemV hy`. Establish `hf` using `(ht0 _ hyt).1.2.2`. Rewrite `hf` using `[ψ.left_inv hys]`. Rewrite using `[hf]`.
-
-Use `congr 1`. Rewrite using `[← prod_ite_pow_of_injective hP x (ψ y 0 - ψ x 0) m n hm hn0]`. Use `Finset.prod_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h1 : P k = x`. Simplify using `[h1, hψ'app]`.
-
-Simplify using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSNC_of_local_power : ∀ (X : Type) [TopologicalSpace X] [T2Space X]
     (A : ReciprocityTheory.AnForm.M.FinHolAtlas 1 X) (L : ReciprocityTheory.AnForm.M.LocPot X) (s : X → X → ℂ)

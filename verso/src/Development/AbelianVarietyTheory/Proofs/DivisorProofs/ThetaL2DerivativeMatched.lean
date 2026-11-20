@@ -20,13 +20,11 @@ variable {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Local
   [SecondCountableTopology H] [T2Space H] [MeasurableSpace H] [BorelSpace H]
 
 /- English proof (translation)
-Use `set N : ℝ → ENNReal := fun s => eLpNorm (fun x => f₁ (x * γ (Multiplicative.ofAdd s)) - f₁ x) 2 (μ.restrict 𝓕)`. Establish `hN : Tendsto N (𝓝 0) (𝓝 0)` using `GlobalTheory.T.fundamental_domain_flow_integral_identity μ Γ 𝓕 h𝓕 γ hγ f₁ hc hinv hsq`. Establish `hS : Tendsto (fun t : ℝ => ⨆ s ∈ Set.uIcc 0 t, N s) (𝓝[≠] 0) (𝓝 0)`. Rewrite using `[ENNReal.tendsto_nhds_zero]`. Introduce `ε hε`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `(ENNReal.tendsto_nhds_zero.1 hN) ε hε`. Take `⟨δ, hδ, hδs⟩` from `Metric.eventually_nhds_iff.1 h1`. Use `eventually_nhdsWithin_of_eventually_nhds (Metric.eventually_nhds_iff.2 ⟨δ, hδ, fun t ht => ?_⟩)` and prove the remaining obligations. Use `iSup₂_le fun s hs => hδs ?_` and prove the remaining obligations. Establish `hst : |s| ≤ |t|`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Set.mem_uIcc.1 hs with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Conclude with `abs_le_abs h2 (by linarith)`. Conclude with `(abs_le_abs (show s ≤ -t by linarith) (by linarith)).trans_eq (abs_neg t)`. Rewrite `ht`, the goal using `[Real.dist_eq, sub_zero]`. Conclude with `lt_of_le_of_lt hst ht`.
-
-Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds hS (Eventually.of_forall fun _ => zero_le') ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with t ht`. Conclude with `GlobalTheory.T.flow_derivative_integral_by_parts μ 𝓕 γ hγ f f₁ hder hc t ht`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tendsto_eLpNorm_difference_quotient_sub (μ : Measure H) [μ.IsHaarMeasure] (Γ : Subgroup H) [Countable Γ] (𝓕 : Set H)
     (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (γ : Multiplicative ℝ →* H) (hγ : Continuous γ)
@@ -55,11 +53,7 @@ theorem tendsto_eLpNorm_difference_quotient_sub (μ : Measure H) [μ.IsHaarMeasu
   exact GlobalTheory.T.flow_derivative_integral_by_parts μ 𝓕 γ hγ f f₁ hder hc t ht
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕 γ hγ Φ hΦ Φ₁ hΦ₁ hd`. Take `⟨i1, i2, i3, i4⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ (a + a') G.W.J`. Use `haveI := i1`. Use `haveI := i2`. Use `haveI := i3`.
-
-Use `haveI := i4`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Use `haveI := hμ`. Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ G.W.J`. Establish `hsq` using `(GlobalTheory.T.square_integrability hKP F E σ B a a' G X om om' hM.triple μ 𝓕 hμ h𝓕).2 Φ₁ hΦ₁`.
-
-Conclude with `tendsto_eLpNorm_difference_quotient_sub μ (ratU σ G.W.J) 𝓕 h𝓕 γ hγ.1 (G.M'.I om' Φ) (G.M'.I om' Φ₁) (GlobalTheory.T.matched_triple_global_statement hKP F E σ B a a' G X om om' R Rf hM γ hγ Φ hΦ Φ₁ hΦ₁ hd) (GlobalTheory.T.matched_triple_global_statement_second hKP F E σ B a a' G X …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem theta_l2_derivative : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ (μ : MeasureTheory.Measure (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J)) (𝓕 : Set (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J)), μ.IsHaarMeasure → MeasureTheory.IsFundamentalDomain (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ratU σ G.W.J) 𝓕 μ → ∀ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Lines σ G.W, ∀ Φ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∀ Φ₁ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), (∀ x, HasDerivAt (fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) Φ x) (Φ₁ x) 0) → Filter.Tendsto (fun t : ℝ => MeasureTheory.eLpNorm (fun x => (t : ℂ)⁻¹ * (G.M'.I om' Φ (x * γ (Multiplicative.ofAdd t)) - G.M'.I om' Φ x) - G.M'.I om' Φ₁ x) 2 (μ.restrict 𝓕)) (nhdsWithin 0 {0}ᶜ) (nhds 0) := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕 γ hγ Φ hΦ Φ₁ hΦ₁ hd

@@ -34,9 +34,9 @@ Both sides reduce to the same expression.
 theorem isoQ_apply (s : ℂ) : isoQ s = conj (Complex.I * s) := rfl
 
 /- English proof (translation)
-Unfold `P5.fsv`. Simplify using `[Circle.smul_def, isoQ_apply]`. Use `left`. Rewrite using `[Real.fourierChar_apply]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hπ : π ≠ 0` using `Real.pi_ne_zero`. Apply the tactic sequence `apply Complex.ext <;> simp <;> field_simp <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem fsv_smul (s u z : ℂ) : P5.fsv s u * z = 𝐞 (-⟪u, (π⁻¹ : ℝ) • isoQ s⟫) • z := by
   unfold P5.fsv
@@ -48,27 +48,23 @@ theorem fsv_smul (s u z : ℂ) : P5.fsv s u * z = 𝐞 (-⟪u, (π⁻¹ : ℝ) �
   apply Complex.ext <;> simp <;> field_simp <;> ring
 
 /- English proof (translation)
-Establish `hc : (π⁻¹ : ℝ) ≠ 0` using `inv_ne_zero Real.pi_ne_zero`. Establish `hL : ∀ s : ℂ, (∫ u : ℂ, P5.fsv s u * φ u) = 𝓕 φ ((π⁻¹ : ℝ) • isoQ s)`. Introduce `s`. Rewrite using `[fourier_eq]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun u => fsv_smul s u (φ u))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmp : MeasurePreserving isoQ` using `isoQ.measurePreserving`. Establish `hme : MeasurableEmbedding isoQ` using `isoQ.toHomeomorph.measurableEmbedding`. Establish `hint1 : Integrable (fun s : ℂ => 𝓕 φ ((π⁻¹ : ℝ) • s))`. Establish `h1 : Integrable ((fun s : ℂ => 𝓕 φ ((π⁻¹ : ℝ) • s)) ∘ isoQ)`. Establish `h2` using `hΞ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities.
 
-Rewrite `h2` using `[hL]`. Conclude with `h2`. Conclude with `(hmp.integrable_comp_emb hme).mp h1`. Establish `hint : Integrable (𝓕 φ)` using `by first`. Consider the case `exact (integrable_comp_smul_iff volume (𝓕 φ) hc).mp hint1`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact (MeasureTheory.integrable_comp_smul_iff (volume : Measure ℂ) (𝓕 φ) hc).mp hint1`. Consider the case `exact (Integrable.comp_smul_iff hc).mp hint1`. Establish `hinv : 𝓕⁻ (𝓕 φ) t = φ t` using `by first`. Consider the case `exact hi.fourier_inversion hint hφ.continuousAt`. Consider the case `exact hi.fourierInv_fourier_eq hint hφ.continuousAt`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hφ.fourierInv_fourier_eq hi hint t`. Consider the case `exact Continuous.fourierInv_fourier_eq hφ hi hint t`. Consider the case `exact hi.fourierInv_fourier hint hφ.continuousAt`. Consider the case `exact hφ.fourierInv_fourier hi hint t`. Consider the case `exact MeasureTheory.Integrable.fourier_inversion hi hint hφ.continuousAt`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hb : ‖φ t‖ ≤ ∫ w : ℂ, ‖𝓕 φ w‖`. Rewrite using `[← hinv]`. Use `first`. Consider the case `rw [fourierInv_eq]`. Consider the case `rw [Real.fourierInv_eq]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Consider the case `rw [fourierInv_eq']`. Consider the case `rw [fourierInv_eq_fourier_neg, fourier_eq]`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `w`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `first`. Consider the case `exact Circle.norm_smul _ _`. Consider the case `simp`. Establish `e1` using `hmp.integral_comp hme (fun s : ℂ => ‖𝓕 φ ((π⁻¹ : ℝ) • s)‖)`. Establish `e2` using `Measure.integral_comp_smul (volume : Measure ℂ) (fun w : ℂ => ‖𝓕 φ w‖) (π⁻¹ : ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `try dsimp only at e1`. Apply the tactic sequence `try dsimp only at e2`. Establish `heq : (∫ s : ℂ, ‖∫ u : ℂ, P5.fsv s u * φ u‖) = |((π⁻¹ : ℝ) ^ 2)⁻¹| • ∫ w : ℂ, ‖𝓕 φ w‖`. Repeatedly rewrite using `[hL]`. Rewrite using `[e1, e2, Complex.finrank_real_complex]`.
-
-Rewrite using `[heq, smul_eq_mul]`. Establish `h0 : 0 ≤ ∫ w : ℂ, ‖𝓕 φ w‖` using `integral_nonneg fun _ => norm_nonneg _`. Establish `hπ : 1 ≤ |((π⁻¹ : ℝ) ^ 2)⁻¹|`. Rewrite using `[inv_pow, inv_inv, abs_of_pos (by positivity)]`. Use polynomial arithmetic with `[Real.pi_gt_three]`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_le_integral_fsv (φ : ℂ → ℂ) (hφ : Continuous φ) (hi : MeasureTheory.Integrable φ)
     (hΞ : MeasureTheory.Integrable (fun s : ℂ => ∫ t : ℂ, P5.fsv s t * φ t)) (t : ℂ) :

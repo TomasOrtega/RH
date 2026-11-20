@@ -8,7 +8,7 @@ variable {R F : Type*} [CommRing R] [IsDomain R] [UniqueFactorizationMonoid R] [
   [Algebra R F] [IsFractionRing R F]
 
 /- English proof (translation)
-Establish `hpr` using `UniqueFactorizationMonoid.isPrincipal_of_height_eq_one hp`. Establish `hsp : Ideal.span {Submodule.IsPrincipal.generator p} = p` using `Submodule.IsPrincipal.span_singleton_generator p`. Establish `hne : Submodule.IsPrincipal.generator p ≠ 0` using `fun h0 => p.ne_bot_of_height_eq_one hp ((Submodule.IsPrincipal.eq_bot_iff_generator_eq_zero p).mpr h0)`. Use `⟨_, (Ideal.span_singleton_prime hne).mp (by rw [hsp]; infer_instance), hsp.symm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem heightOne_principal (p : Ideal R) [p.IsPrime] (hp : p.height = 1) :
     ∃ g : R, Prime g ∧ p = Ideal.span {g} := by
@@ -20,11 +20,11 @@ theorem heightOne_principal (p : Ideal R) [p.IsPrime] (hp : p.height = 1) :
   refine ⟨_, (Ideal.span_singleton_prime hne).mp (by rw [hsp]; infer_instance), hsp.symm⟩
 
 /- English proof (translation)
-Establish `_ : (Ideal.span {q}).IsPrime` using `(Ideal.span_singleton_prime hq.ne_zero).mpr hq`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← Nat.cast_one, Ideal.height_le_iff]`. Introduce `P hPp hlt`. Establish `hPb : P = ⊥`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Take `⟨q', hq'P, hq'⟩` from `hPp.exists_mem_prime_of_ne_bot hne`. Establish `hdvd : q ∣ q'` using `Ideal.mem_span_singleton.mp (hlt.le hq'P)`. Establish `hass` using `hq.associated_of_dvd hq' hdvd`. Establish `hle : Ideal.span {q} ≤ P` using `(Ideal.span_singleton_le_iff_mem P).mpr (P.mem_of_dvd hass.symm.dvd hq'P)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd hle (not_le_of_gt hlt)`. Rewrite using `[hPb, Ideal.height_bot]`. Conclude with `Nat.zero_lt_one` after adjusting the coercions. Rewrite using `[Order.one_le_iff_ne_zero, Ne, Ideal.height_eq_zero_iff_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hq.ne_zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_span_prime {q : R} (hq : Prime q) : (Ideal.span {q}).height = 1 := by
   have _ : (Ideal.span {q}).IsPrime := (Ideal.span_singleton_prime hq.ne_zero).mpr hq
@@ -45,15 +45,15 @@ theorem height_span_prime {q : R} (hq : Prime q) : (Ideal.span {q}).height = 1 :
     exact hq.ne_zero
 
 /- English proof (translation)
-Use `set O := Localization.AtPrime p`. Establish `hg0 : g ≠ 0`. Introduce and unpack `rfl`. Conclude with `p.ne_bot_of_height_eq_one hp (by rw [hg, Ideal.span_singleton_eq_bot])`. Establish `hgp : Prime g` using `(Ideal.span_singleton_prime hg0).mp (hg ▸ inferInstance)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (algebraMap R O)` using `IsLocalization.injective O (Ideal.primeCompl_le_nonZeroDivisors p)`. Establish `h1 : Ideal.map (algebraMap R O) p = Ideal.span {algebraMap R O g}`. Rewrite using `[congrArg (Ideal.map (algebraMap R O)) hg, Ideal.map_span, Set.image_singleton]`. Establish `hspan : Ideal.span {algebraMap R O g} = IsLocalRing.maximalIdeal O` using `h1.symm.trans (IsLocalization.AtPrime.map_eq_maximalIdeal p O)`. Establish `hϖ0 : algebraMap R O g ≠ 0` using `by rw [Ne, map_eq_zero_iff _ hinj]; exact hg0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hϖ : Prime (algebraMap R O g)` using `(Ideal.span_singleton_prime hϖ0).mp (by rw [hspan]; infer_instance)`. Establish `hdvr : IsDiscreteValuationRing O`. Use `IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨_, hϖ.irreducible, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨⟨a, s⟩, hxs⟩` from `IsLocalization.mk'_surjective p.primeCompl x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `only at hxs`. Substitute `hxs` using the available equality. Establish `ha : a ≠ 0` using `by rintro rfl; exact hx (by simp)`. Take `⟨n, a', hnd, rfl⟩` from `WfDvdMonoid.max_power_factor ha hgp.irreducible`. Establish `ha' : a' ∈ p.primeCompl` using `by show a' ∉ p`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg, Ideal.mem_span_singleton]`. Conclude with `hnd`. Use `⟨n, ((IsLocalization.AtPrime.isUnit_mk'_iff O p a' s).mpr ha').unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, ← map_pow, IsLocalization.mul_mk'_eq_mk'_of_mul]`. Conclude with `⟨hdvr, hϖ.irreducible⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem loc_dvr (p : Ideal R) [p.IsPrime] (hp : p.height = 1) (g : R) (hg : p = Ideal.span {g}) :
     IsDiscreteValuationRing (Localization.AtPrime p) ∧
@@ -89,7 +89,7 @@ theorem loc_dvr (p : Ideal R) [p.IsPrime] (hp : p.height = 1) (g : R) (hg : p = 
   exact ⟨hdvr, hϖ.irreducible⟩
 
 /- English proof (translation)
-Take `⟨r, hr, rfl⟩` from `MvPolynomial.isUnit_iff_eq_C_of_isReduced.mp h`. Conclude with `⟨r, hr.ne_zero, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isUnit_mvPolynomial {σ K : Type*} [Field K] (κ : MvPolynomial σ K) (h : IsUnit κ) :
     ∃ k : K, k ≠ 0 ∧ κ = MvPolynomial.C k := by
@@ -101,9 +101,9 @@ section Factor
 variable {gen : Ideal R → R}
 
 /- English proof (translation)
-Take `⟨hpp, hh⟩` from `hp`. Establish `hg` using `hgen p hpp hh`. Establish `hne : gen p ≠ 0`. Introduce `h0`. Apply `p.ne_bot_of_height_eq_one hh` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hg, h0, Ideal.span_singleton_eq_bot]`. Conclude with `(Ideal.span_singleton_prime hne).mp (hg ▸ hpp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_prime (hgen : ∀ p : Ideal R, p.IsPrime → p.height = 1 → p = Ideal.span {gen p})
     {p : Ideal R} (hp : p ∈ {p : Ideal R | p.IsPrime ∧ p.height = 1}) : Prime (gen p) := by
@@ -116,9 +116,9 @@ theorem gen_prime (hgen : ∀ p : Ideal R, p.IsPrime → p.height = 1 → p = Id
   exact (Ideal.span_singleton_prime hne).mp (hg ▸ hpp)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[hgen p hp.1 hp.2, Ideal.span_singleton_eq_span_singleton]`. Conclude with `(gen_prime hgen hp).associated_of_dvd hq h`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Substitute `h` using the available equality. Establish `h2` using `hgen _ hp.1 hp.2`. Rewrite `h2` using `[Ideal.span_singleton_eq_span_singleton]`. Conclude with `h2.symm.dvd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_dvd_iff (hgen : ∀ p : Ideal R, p.IsPrime → p.height = 1 → p = Ideal.span {gen p})
     {p : Ideal R} (hp : p ∈ {p : Ideal R | p.IsPrime ∧ p.height = 1}) {q : R} (hq : Prime q) :
@@ -134,7 +134,7 @@ theorem gen_dvd_iff (hgen : ∀ p : Ideal R, p.IsPrime → p.height = 1 → p = 
     exact h2.symm.dvd
 
 /- English proof (translation)
-Use `split_ifs with h`. Establish `hass : Associated (gen p) q` using `(gen_prime hgen hp).associated_of_dvd hq ((gen_dvd_iff hgen hp hq).mpr h)`. Rewrite using `[multiplicity_eq_of_associated_left hass.symm, multiplicity_self]`. Conclude with `multiplicity_eq_zero.mpr fun hd => h ((gen_dvd_iff hgen hp hq).mp hd)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mult_prime (hgen : ∀ p : Ideal R, p.IsPrime → p.height = 1 → p = Ideal.span {gen p})
     {p : Ideal R} (hp : p ∈ {p : Ideal R | p.IsPrime ∧ p.height = 1}) {q : R} (hq : Prime q) :
@@ -146,27 +146,23 @@ theorem mult_prime (hgen : ∀ p : Ideal R, p.IsPrime → p.height = 1 → p = I
   · exact multiplicity_eq_zero.mpr fun hd => h ((gen_dvd_iff hgen hp hq).mp hd)
 
 /- English proof (translation)
-Use `set H := {p : Ideal R | p.IsPrime ∧ p.height = 1} with hH`. Use `revert hr`. Use `UniqueFactorizationMonoid.induction_on_prime (P := fun r : R => r ≠ 0 → (H ∩ {p | multiplicity (gen p) r ≠ 0}).Finite ∧ ∃ κ : R, IsUnit κ ∧ algebraMap R F r = algebraMap R F κ * ∏ᶠ (p : Ideal R) (_ : p ∈ H), algebraMap R F (gen p) ^ (multiplicity (gen p) r : ℤ)) r ?_ ?_ ?_` and prove the remaining obligations. Introduce `h`. Conclude with `absurd rfl h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx _`. Establish `h0 : ∀ p ∈ H, multiplicity (gen p) x = 0` using `fun p hp => multiplicity_of_isUnit_right (gen_prime hgen hp).not_isUnit hx`. Use `⟨Set.finite_empty.subset fun p ⟨hp, hs⟩ => hs (h0 p hp), x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[finprod_mem_of_eqOn_one (fun p hp => by simp [h0 p hp]), mul_one]`. Introduce `a q ha hq ih _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hfin, κ, hκ, heq⟩` from `ih ha`. Use `set p₀ := Ideal.span {q} with hp₀def`. Establish `hp₀ : p₀ ∈ H` using `⟨(Ideal.span_singleton_prime hq.ne_zero).mpr hq, height_span_prime hq⟩`. Establish `hmul : ∀ p ∈ H, multiplicity (gen p) (q * a) = (if p = p₀ then 1 else 0) + multiplicity (gen p) a`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[multiplicity_mul (gen_prime hgen hp) (FiniteMultiplicity.of_prime_left (gen_prime hgen hp) (mul_ne_zero hq.ne_zero ha)), mult_prime hgen hp hq]`. Establish `hGne : ∀ p ∈ H, algebraMap R F (gen p) ≠ 0` using `fun p hp => by`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective R F)]`. Conclude with `(gen_prime hgen hp).ne_zero`. Establish `hsplit : ∀ p ∈ H, algebraMap R F (gen p) ^ (multiplicity (gen p) (q * a) : ℤ) = (if p = p₀ then algebraMap R F (gen p₀) else 1) * algebraMap R F (gen p) ^ (multiplicity (gen p) a : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p hp`. Rewrite using `[hmul p hp, Nat.cast_add, zpow_add₀ (hGne p hp)]`. Use `split_ifs with h`. Rewrite using `[h, Nat.cast_one, zpow_one]`. Rewrite using `[Nat.cast_zero, zpow_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin1 : (H ∩ Function.mulSupport (fun p => if p = p₀ then algebraMap R F (gen p₀) else 1)).Finite` using `(Set.finite_singleton p₀).subset fun p ⟨_, hs⟩ => by`. Assume the negation of the conclusion as `h`. Conclude with `hs (if_neg h)`. Establish `hfin2 : (H ∩ Function.mulSupport (fun p => algebraMap R F (gen p) ^ (multiplicity (gen p) a : ℤ))).Finite` using `hfin.subset fun p ⟨hp, hs⟩ => ⟨hp, fun h0 => hs (by simp only [h0]; simp)⟩`. Establish `hsingle : ∏ᶠ (p : Ideal R) (_ : p ∈ H), (if p = p₀ then algebraMap R F (gen p₀) else 1) = algebraMap R F (gen p₀)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Rewrite using `[finprod_eq_single _ p₀ (fun p hp => by simp [hp]), finprod_eq_if, if_pos hp₀, if_pos rfl]`. Establish `hprod : ∏ᶠ (p : Ideal R) (_ : p ∈ H), algebraMap R F (gen p) ^ (multiplicity (gen p) (q * a) : ℤ) = algebraMap R F (gen p₀) * ∏ᶠ (p : Ideal R) (_ : p ∈ H), algebraMap R F (gen p) ^ (multiplicity (gen p) a : ℤ)`. Rewrite using `[finprod_mem_congr rfl hsplit, finprod_mem_mul_distrib' hfin1 hfin2, hsingle]`. Use `⟨((Set.finite_singleton p₀).union hfin).subset ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hs⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `h : p = p₀`. Conclude with `Or.inl h`. Use `Or.inr ⟨hp, ?_⟩` and prove the remaining obligations. Use `hmul p hp` as an intermediate fact. Rewrite `this` using `[if_neg h, zero_add]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Set.mem_ofPred_eq, ← this]`. Conclude with `hs`. Establish `hass : Associated q (gen p₀)`. Rewrite using `[← Ideal.span_singleton_eq_span_singleton]`. Conclude with `hgen p₀ hp₀.1 hp₀.2`.
-
-Take `⟨u, hu⟩` from `hass`. Use `⟨↑u⁻¹ * κ, (Units.isUnit _).mul hκ, ?_⟩` and prove the remaining obligations. Rewrite using `[hprod, ← hu, map_mul, heq, map_mul, map_mul]`. Establish `hu1 : algebraMap R F ↑u⁻¹ * algebraMap R F ↑u = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
-
-Take the linear combination `(-(algebraMap R F q * algebraMap R F κ * ∏ᶠ (p : Ideal R) (_ : p ∈ H), algebraMap R F (gen p) ^ (multiplicity (gen p) a : ℤ))) * hu1`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem factor_int (hgen : ∀ p : Ideal R, p.IsPrime → p.height = 1 → p = Ideal.span {gen p})
     (r : R) (hr : r ≠ 0) :
@@ -242,37 +238,35 @@ theorem factor_int (hgen : ∀ p : Ideal R, p.IsPrime → p.height = 1 → p = I
         ∏ᶠ (p : Ideal R) (_ : p ∈ H), algebraMap R F (gen p) ^ (multiplicity (gen p) a : ℤ))) * hu1
 
 /- English proof (translation)
-Use `set H := {p : Ideal R | p.IsPrime ∧ p.height = 1} with hH`. Establish `hinj` using `IsFractionRing.injective R F`. Take `⟨x, y, hy, hxy⟩` from `IsFractionRing.div_surjective (A := R) z`. Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Establish `hyF : algebraMap R F y ≠ 0` using `by rw [Ne, map_eq_zero_iff _ hinj]; exact hy0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : x ≠ 0` using `by rintro rfl; rw [map_zero, zero_div] at hxy; exact hz hxy.symm`. Establish `hzx : z * algebraMap R F y = algebraMap R F x` using `by rw [← hxy, div_mul_cancel₀ _ hyF]`. Establish `hloc : ∀ p ∈ H, n p = (multiplicity (gen p) x : ℤ) - multiplicity (gen p) y`. Introduce `p hp`. Take `⟨a, s, ha, hs, he⟩` from `hn p hp.1 hp.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg` using `gen_prime hgen hp`. Establish `hgp` using `hgen p hp.1 hp.2`. Establish `hna : ¬ gen p ∣ a` using `fun h => ha (by rw [hgp]; exact Ideal.mem_span_singleton.mpr h)`. Establish `hns : ¬ gen p ∣ s` using `fun h => hs (by rw [hgp]; exact Ideal.mem_span_singleton.mpr h)`. Establish `ha0 : a ≠ 0` using `by rintro rfl; exact hna (dvd_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : s ≠ 0` using `by rintro rfl; exact hns (dvd_zero _)`. Establish `hGne : algebraMap R F (gen p) ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ hinj]`. Conclude with `hg.ne_zero`. Establish `h1 : algebraMap R F (gen p) ^ (n p).toNat = algebraMap R F (gen p) ^ n p * algebraMap R F (gen p) ^ (-n p).toNat`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ hGne]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hR : x * s * gen p ^ (-n p).toNat = y * a * gen p ^ (n p).toNat`. Apply `hinj` to reduce the goal to its premises.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, map_pow]`. Rewrite using `[h1, ← hzx]`. Take the linear combination `(algebraMap R F y * algebraMap R F (gen p) ^ (-n p).toNat) * he`. Establish `hm` using `congrArg (multiplicity (gen p)) hR`. Establish `hf : ∀ b : R, b ≠ 0 → FiniteMultiplicity (gen p) b` using `fun b hb => FiniteMultiplicity.of_prime_left hg hb`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpw : ∀ k : ℕ, gen p ^ k ≠ 0` using `fun k => pow_ne_zero k hg.ne_zero`. Rewrite `hm` using `[multiplicity_mul hg (hf _ (mul_ne_zero (mul_ne_zero hx0 hs0) (hpw _))), multiplicity_mul hg (hf _ (mul_ne_zero hx0 hs0)), multiplicity_mul hg (hf _ (mul_ne_zero (mul_ne_zero hy0 ha0) (hpw _))), multiplicity_mul hg (hf _ (mul_ne_zero hy0 ha0)), multiplicity_pow_self_of_prime hg, …`. Use linear arithmetic over natural numbers and integers. Take `⟨hfx, κx, hκx, hx⟩` from `factor_int (F := F) hgen x hx0`. Take `⟨hfy, κy, hκy, hyq⟩` from `factor_int (F := F) hgen y hy0`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfinn : {p : Ideal R | p.IsPrime ∧ p.height = 1 ∧ n p ≠ 0}.Finite`. Use `(hfx.union hfy).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨h1, h2, h3⟩`. Rewrite `h3` using `[hloc p ⟨h1, h2⟩]`. Distinguish the cases in `hx' : multiplicity (gen p) x = 0`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Or.inr ⟨⟨h1, h2⟩, fun h => h3 ?_⟩` and prove the remaining obligations. Rewrite using `[hx', h]`. Simplify using the standard rewrite rules. Conclude with `Or.inl ⟨⟨h1, h2⟩, hx'⟩`. Use `⟨hfinn, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set fn : Ideal R → F := fun p => algebraMap R F (gen p) ^ n p with hfn`. Use `set fy : Ideal R → F := fun p => algebraMap R F (gen p) ^ (multiplicity (gen p) y : ℤ) with hfy'`. Establish `hsp : ∀ p ∈ H, algebraMap R F (gen p) ^ (multiplicity (gen p) x : ℤ) = fn p * fy p`. Introduce `p hp`. Establish `hGne : algebraMap R F (gen p) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Ne, map_eq_zero_iff _ hinj]`. Conclude with `(gen_prime hgen hp).ne_zero`. Simplify using `only [hfn, hfy']`. Rewrite using `[← zpow_add₀ hGne, hloc p hp]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hfin1 : (H ∩ Function.mulSupport fn).Finite` using `hfinn.subset fun p ⟨hp, hs⟩ => ⟨hp.1, hp.2, fun h0 => hs (by simp [hfn, h0])⟩`. Establish `hfin2 : (H ∩ Function.mulSupport fy).Finite` using `hfy.subset fun p ⟨hp, hs⟩ => ⟨hp, fun h0 => hs (by simp [hfy', h0])⟩`. Establish `hPx : ∏ᶠ (p : Ideal R) (_ : p ∈ H), algebraMap R F (gen p) ^ (multiplicity (gen p) x : ℤ) = (∏ᶠ (p : Ideal R) (_ : p ∈ H), fn p) * ∏ᶠ (p : Ideal R) (_ : p ∈ H), fy p`. Rewrite using `[finprod_mem_congr rfl hsp, finprod_mem_mul_distrib' hfin1 hfin2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[hPx]`. Establish `hyq' : algebraMap R F y = algebraMap R F κy * ∏ᶠ (p : Ideal R) (_ : p ∈ H), fy p` using `hyq`. Establish `hPy : (∏ᶠ (p : Ideal R) (_ : p ∈ H), fy p) ≠ 0`. Introduce `h`. Rewrite `hyq'` using `[h, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hyF hyq'`. Establish `hκy0 : algebraMap R F κy ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ hinj]`. Conclude with `hκy.ne_zero`. Use `⟨κx * ↑hκy.unit⁻¹, hκx.mul (Units.isUnit _), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hu1 : algebraMap R F κy * algebraMap R F ↑hκy.unit⁻¹ = 1`. Establish `h2 : κy * ↑hκy.unit⁻¹ = 1` using `by simp`. Rewrite using `[← map_mul, h2, map_one]`. Apply `mul_right_cancel₀ (mul_ne_zero hκy0 hPy)` to reduce the goal to its premises. Establish `e1 : z * (algebraMap R F κy * ∏ᶠ (p : Ideal R) (_ : p ∈ H), fy p) = algebraMap R F x`.
-
-Rewrite using `[← hyq', hzx]`. Rewrite using `[e1, hx, map_mul]`. Take the linear combination `(-(algebraMap R F κx * (∏ᶠ (p : Ideal R) (_ : p ∈ H), fn p) * ∏ᶠ (p : Ideal R) (_ : p ∈ H), fy p)) * hu1`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem factor_of_local (gen : Ideal R → R)
     (hgen : ∀ p : Ideal R, p.IsPrime → p.height = 1 → p = Ideal.span {gen p})

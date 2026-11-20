@@ -21,7 +21,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[mem_cuspW, mem_cuspW, h]`. Conclude with `and_congr_right fun _ => forall₂_congr fun σ hσ => by rw [modelWt_congr (U σ) hσ (hU σ hσ) h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspW_congr {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) {G G' : WTZ E}
     (h : exZ Dw G = exZ Dw G') : cuspW Xo c U G = cuspW Xo c U G' := by
@@ -30,9 +30,9 @@ theorem cuspW_congr {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (hU : ∀ σ, Go
   exact and_congr_right fun _ => forall₂_congr fun σ hσ => by rw [modelWt_congr (U σ) hσ (hU σ hσ) h]
 
 /- English proof (translation)
-Unfold `Datum.mult at hi`. Distinguish the cases in `h : τ (H.rt : E) = H.rt0`. Rewrite `hi` using `[if_pos h]`. Simplify using `only [wtOf, dif_pos h, dif_pos hi, Pi.zero_apply, zero_sub]`. Rewrite `hi` using `[if_neg h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : conjEmb τ (H.rt : E) = H.rt0` using `conj_mem h`. Simplify using `only [wtOf, dif_neg h, dif_pos h', dif_pos hi, Pi.zero_apply, neg_zero, zero_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem wtOf_four_fst (τ : E →+* ℂ) (i : ℕ) (hi : i < Dw.mult τ) : (wtOf Dw 0 4).1 (τ, i) = -4 := by
   unfold Datum.mult at hi
@@ -44,9 +44,9 @@ theorem wtOf_four_fst (τ : E →+* ℂ) (i : ℕ) (hi : i < Dw.mult τ) : (wtOf
     simp only [wtOf, dif_neg h, dif_pos h', dif_pos hi, Pi.zero_apply, neg_zero, zero_sub]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Break down `i with _ | ⟨τ, i⟩` into its components or cases. Use `show ((n : ℤ) + 2 * 4) = ((n + 8 : ℕ) : ℤ) push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `show ((4 : ℕ) : ℤ) + (wtOf Dw 0 4).1 (τ, i) = ((0 : ℕ) : ℤ)`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[wtOf_four_fst τ i i.2]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exZ_four_add (n : ℕ) :
     exZ Dw (wtZ (fun _ => 4) n + wtOf Dw 0 4) = exZ Dw (wtZ 0 (n + 8)) := by
@@ -59,19 +59,19 @@ theorem exZ_four_add (n : ℕ) :
     simp
 
 /- English proof (translation)
-Take `⟨κ, k₁, k₂, k₃, k₄, k₅, k₆, -, -⟩` from `GlobalTheory.KeyFamClosing.keyFam_one`. Set `e : Fin (Fintype.card (Σ τ : E →+* ℂ, Fin (Dw.mult τ))) ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)` to `(Fintype.equivFin _).symm`. Take `⟨K, hKmem, hKval⟩` from `GlobalTheory.KeyFourth.exists_unit_secZ_keyRule κ k₁ k₂ k₆ E H Dw l Xo c _ e hL.pos`. Establish `hσ0 : GoodEmb c c.F.val.toRingHom` using `rfl`. Take `⟨ρ, -⟩` from `GlobalTheory.KeyRoot.exists_keySec_pow_four κ k₁ k₂ k₆ k₄ E H Dw l Xo c _ e _ r (U _) K hσ0 (hL.unf _ hσ0) hL.geo hL.pos hKmem hKval`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hadd : wtOf Dw 0 4 + wtOf Dw 0 (-4) = 0`. Rewrite using `[← wtOf_add, add_zero, add_neg_cancel, wtOf_zero]`. Establish `hex : exZ Dw (wtOf Dw 0 4) = -((4 : ℤ) • GlobalTheory.ShFam.keyEx Dw)`. Rewrite using `[← GlobalTheory.KeyArchNorm.exZ_wtOf, ← GlobalTheory.FlatTw.exZ_neg_eq, neg_eq_of_add_eq_zero_left hadd]`. Use `set s : Rul Xo c := idem Z * ((K⁻¹ : (Rul Xo c)ˣ) : Rul Xo c) with hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsm : s ∈ secZ Xo c (exZ Dw (wtOf Dw 0 4))`. Use `mul_mem_secZ (idem_mem_secZ Z) (inv_mem_secZ hKmem)` as an intermediate fact. Rewrite `this` using `[zero_add, ← hex]`. Then use the resulting hypothesis. Establish `hsupp : s ∈ suppOn Z` using `by rw [hs, mul_comm]; exact mul_mem_suppOn _ (idem_mem_suppOn Z)`. Establish `hsK : s * (K : Rul Xo c) = idem Z` using `by rw [hs, mul_assoc, Units.inv_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : ∀ σ, GoodEmb c σ → ∃ C : ℝ, 0 < C ∧ ∀ z ∈ framesOn (U σ) Z, homN (U σ) x (wtOf Dw 0 4) s z * C = 1`. Introduce `σ hσ`. Take `⟨C, hC0, -, hC⟩` from `GlobalTheory.KeyArchNorm.homN_key_const κ k₁ k₂ k₅ E H Dw l Xo c _ e σ r (U σ) x K hσ (hL.unf σ hσ) (hL.xi σ hσ) ⟨ρ⟩ hL.pos hKmem hKval`. Use `⟨C, hC0, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨hy, hlies⟩` from `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : homN (U σ) x (wtOf Dw 0 (-4)) (K : Rul Xo c) z = C` using `hC z.1 z.2 hy`. Establish `ht` using `tested_of_homN_ne (U σ) x hy (h1.trans_ne hC0.ne')`. Rewrite using `[← h1, ← homN_mul (U σ) x (even_wtOf _ _) (even_wtOf _ _) _ _ z hy, hadd, hsK]`. Conclude with `homN_idem (U σ) x hy hlies ht`. Use `⟨s, GlobalTheory.BddCusp.mul_mem_cuspOn_of_bdd E H Dw l Xo c r U x Z (wtOf Dw 0 4) s ⟨ρ⟩ hL.unf hL.pos (even_wtOf _ _) (fun τ i j hij hj => by rw [wtOf_four_fst τ j hj, wtOf_four_fst τ i (hij.trans_lt hj)]) hsm hsupp (fun σ hσ => ?_), fun σ hσ z hz h0 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨C, hC0, hC⟩` from `hnorm σ hσ`. Conclude with `⟨C⁻¹, fun z hz => (eq_inv_of_mul_eq_one_left (hC z hz)).le⟩`. Take `⟨C, -, hC⟩` from `hnorm σ hσ`. Establish `h3` using `hC z hz`. Establish `h4 : homN (U σ) x (wtOf Dw 0 4) s z = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[homN, ptN, Data.pnorm, h0]`. Rewrite `h3` using `[h4, zero_mul]`. Conclude with `zero_ne_one h3`.
+A detailed English derivation is pending.
 -/
 theorem exists_twist {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ} (hL : Laws U x) (Z : Comp Xo c) :
     ∃ s : Rul Xo c, (∀ G : WTZ E, Even G.2 → ∀ f ∈ cuspOn U Z G, f * s ∈ cuspOn U Z (G + wtOf Dw 0 4)) ∧
@@ -117,11 +117,11 @@ theorem exists_twist {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ} (hL :
     exact zero_ne_one h3
 
 /- English proof (translation)
-Take `⟨s, hs, hs0⟩` from `exists_twist hL Z`. Take `⟨g, hg, -⟩` from `GlobalTheory.CompRestr.exists_cuspOn_restrict E H Dw l Xo c r U hL.unf Z (wtZ (fun _ => 4) n) ⟨f, by rw [cuspW_wtZ]; exact hf⟩`. Establish `hev : Even (wtZ (E` using `E) (fun _ => 4) n).2 := by show Even ((n : ℕ) : ℤ)`. Conclude with `hn` after adjusting the coercions. Establish `h1` using `(hs _ hev g g.2).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[cuspW_congr hL.unf (exZ_four_add n), cuspW_wtZ]`. Use `⟨_, h1, ?_⟩` and prove the remaining obligations. Establish `h2` using `hs0 σ hσ z hz`. Take `⟨hy, hlies⟩` from `hz`. Establish `e : rdU (U σ) (g : Rul Xo c) z.1 z.2 = rdU (U σ) f z.1 z.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, dif_pos hy]`. Rewrite using `[hg _ _ hlies]`. Rewrite using `[AllWt.rdU_mul, Pi.mul_apply, Pi.mul_apply, e]`. Conclude with `mul_ne_zero hne h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_scalar_of_four {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ} (hL : Laws U x) {σ : c.F →+* ℂ}
     (hσ : GoodEmb c σ) (Z : Comp Xo c) {n : ℕ} (hn : Even n) {f : Rul Xo c} (hf : f ∈ cusp Xo c U (fun _ => 4) n)
@@ -145,19 +145,17 @@ theorem exists_scalar_of_four {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : �
   exact mul_ne_zero hne h2
 
 /- English proof (translation)
-Establish `hla : laU (U σ) (fun _ => 4) n = laU (U σ) 0 (n + 8)`. Use function extensionality and compare the values at `k' τ j`. Establish `e : (n + 8) / 2 = n / 2 + 4` using `by omega`. Simplify using `only [laU, Pi.zero_apply, e]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `P₀ : FDSec (U σ).X` to `Pi.single k (((U σ).X k).dom.indicator P)`. Establish `hQ : P₀ ∈ holSub0 (U σ).X (laU (U σ) (fun _ => 4) n)`. Rewrite using `[hla]`. Use `⟨holCusp_mem_holSub _ _ fun k' => ?_, fun k' y' hy' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : k' = k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `only [P₀, Pi.single_eq_same]`. Conclude with `(GlobalTheory.DomCongr.bddSec_cusp_congr E r _ _ P _ (fun x hx => (Set.indicator_of_mem hx _).symm)).2 hP`. Simplify using `only [P₀, Pi.single_eq_of_ne h]`. Conclude with `(siegelSpaceAlgebra_holds (E := E) r ((U σ).X k') (laU (U σ) 0 (n + 8) k') (laU (U σ) 0 (n + 8) k') 0).1.1`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality. Simplify using `only [P₀, Pi.single_eq_same]`. Conclude with `Set.indicator_of_notMem hy' _`. Simplify using `only [P₀, Pi.single_eq_of_ne h, Pi.zero_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hQy : P₀ k y ≠ 0`. Simplify using `only [P₀, Pi.single_eq_same]`. Rewrite using `[Set.indicator_of_mem hz.1]`. Conclude with `hne`. Establish `hspan` using `hL.onto _ hσ (fun _ => 4) n ⟨fun _ => antitone_const, hn⟩ (fun _ _ _ => by norm_num) hb hQ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨f, hf, hfy⟩ : ∃ f ∈ cusp Xo c U (fun _ => 4) n, rdU (U σ) f k y ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Set `ev : FDSec (U σ).X →ₗ[ℂ] ℂ` to `{ toFun := fun P => P k y, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hle : Submodule.span ℂ (rdU (U σ) '' (cusp Xo c U (fun _ => 4) n : Set (Rul Xo c))) ≤ LinearMap.ker ev`.
-
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `hcon f hf`. Conclude with `hQy (hle hspan)`. Conclude with `exists_scalar_of_four hL hσ Z hn hf hz hfy`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_scalar_of_model {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ} (hL : Laws U x) {σ : c.F →+* ℂ}
     (hσ : GoodEmb c σ) (Z : Comp Xo c) {n : ℕ} (hn : Even n) (hb : 4 * (finrank ℚ E * r) + 4 ≤ n)
@@ -203,13 +201,13 @@ theorem exists_scalar_of_model {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : 
   exact exists_scalar_of_four hL hσ Z hn hf hz hfy
 
 /- English proof (translation)
-Establish `hU` using `hL.unf σ hσ`. Establish `hr : r = Dw.p + Dw.q` using `hU.1`. Take `⟨k, hk⟩` from `GlobalTheory.FlatCore.framesOn_eq_model E H Dw l Xo c r U x hL Z σ hσ`. Establish `hp0 : ((U σ).X k).p0 = Dw.q` using `(hU.2.1 k).1`. Establish `hla : ∀ n : ℕ, laU (U σ) 0 n k = fun (τ : ((U σ).X k).Ψ) (j : Fin r) => if ((U σ).X k).p0 ≤ (j : ℕ) then ((n / 2 : ℕ) : ℤ) else -((n / 2 : ℕ) : ℤ)` using `fun n => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ j`. Simplify using `[laU]`. Take `⟨n, hn, hev, P, hPm, y, hy, hne⟩` from `hP ((U σ).X k) (by omega) (by omega) (fun n hn γ hγ => by rw [← hla]; exact hL.chi σ hσ 0 n ⟨fun _ => antitone_const, hn⟩ k γ hγ) (4 * (finrank ℚ E * r) + 12)`. Take `⟨m, rfl⟩ : ∃ m, n = m + 8` from `⟨n - 8, by omega⟩`. Establish `hm : Even m`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `hev`. Conclude with `⟨t - 4, by omega⟩`. Establish `hz : (⟨k, y⟩ : Σ k, Frame ((U σ).X k).Ψ r) ∈ framesOn (U σ) Z`. Rewrite using `[hk]`. Conclude with `⟨rfl, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hPm` using `[← hla]`. Take `⟨f, hf, hf0⟩` from `exists_scalar_of_model hL hσ Z hm (by omega) hz hPm hne`. Conclude with `⟨m + 8, by omega, hev, f, hf, ⟨k, y⟩, hz, hf0⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_scalar_of_models
     (hP : ∀ X : Data E r, 0 < X.p0 → X.p0 < r → (∀ n : ℕ, Even n → ∀ γ ∈ X.Γ, X.χ (fun (τ : X.Ψ) (j : Fin r) => if X.p0 ≤ (j : ℕ) then ((n / 2 : ℕ) : ℤ) else -((n / 2 : ℕ) : ℤ)) γ = 1) → ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ Even n ∧ ∃ P ∈ X.SS (fun (τ : X.Ψ) (j : Fin r) => if X.p0 ≤ (j : ℕ) then ((n / 2 : ℕ) : ℤ) else -((n / 2 : ℕ) : ℤ)), ∃ y ∈ X.dom, P y ≠ 0)

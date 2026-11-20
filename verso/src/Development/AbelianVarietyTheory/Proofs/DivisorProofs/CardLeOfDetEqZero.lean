@@ -18,9 +18,9 @@ section Generic
 open Polynomial in
 
 /- English proof (translation)
-Establish `hev : ∀ t : Ω, Polynomial.eval t (Matrix.det ((X : Polynomial Ω) • B.map C + A.map C)) = (A + t • B).det` using `fun t => by`. Rewrite using `[← coe_evalRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[add_comm, mul_comm t]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h0 : Matrix.det ((X : Polynomial Ω) • B.map C + A.map C) ≠ 0` using `fun h => ha (by rw [← hev, h, eval_zero])`. Rewrite using `[← Finset.card_image_of_injective T (Nat.cast_injective (R := Ω))]`. Use `(card_le_degree_of_subset_roots fun x hx => ?_).trans (natDegree_det_X_add_C_le B A)` and prove the remaining obligations. Take `⟨n, hn, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `(mem_roots h0).2 ((hev _).trans (hT n hn))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem card_le_of_det_eq_zero {Ω S : Type} [Field Ω] [CharZero Ω] [Fintype S] [DecidableEq S] (A B : Matrix S S Ω) {a : Ω}
     (ha : (A + a • B).det ≠ 0) (T : Finset ℕ) (hT : ∀ n ∈ T, (A + (n : Ω) • B).det = 0) : T.card ≤ Fintype.card S := by
@@ -37,13 +37,11 @@ theorem card_le_of_det_eq_zero {Ω S : Type} [Field Ω] [CharZero Ω] [Fintype S
   exact (mem_roots h0).2 ((hev _).trans (hT n hn))
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, ∃ b : ι → K, (∀ i ∈ s, ∃ n : ℕ, n ≤ N ∧ b i = n) ∧ P (∑ i, b i • w i)` using `fun s => by`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨a, by simp, ha⟩`. Consider the case `insert k s hk ih`. Take `⟨b, hb, hP⟩` from `ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite `hP` using `[← Finset.sum_erase_add _ _ (Finset.mem_univ k)]`. Take `⟨n, hn, hP'⟩` from `h _ _ _ hP`. Use `⟨Function.update b k n, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : i = k`. Conclude with `⟨n, hn, by rw [e, Function.update_self]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Rewrite using `[Function.update_of_ne e]`. Conclude with `hb i ((Finset.mem_insert.1 hi).resolve_left e)`. Rewrite using `[← Finset.sum_erase_add _ _ (Finset.mem_univ k), Function.update_self, Finset.sum_congr rfl fun i hi => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hi)]]`. Conclude with `hP'`. Take `⟨b, hb, hP⟩` from `key Finset.univ`.
-
-Use `choose n hn hn' using fun i => hb i (Finset.mem_univ i)`. Conclude with `⟨n, hn, by simpa only [hn', Nat.cast_smul_eq_nsmul] using hP⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nat_coeff {K V ι : Type} [Field K] [AddCommGroup V] [Module K V] [Fintype ι] (P : V → Prop) (w : ι → V) (N : ℕ)
     (h : ∀ v i (a : K), P (v + a • w i) → ∃ n : ℕ, n ≤ N ∧ P (v + (n : K) • w i)) (a : ι → K) (ha : P (∑ i, a i • w i)) :
@@ -74,7 +72,7 @@ def torusChar (K : Type) [Field K] {ι : Type} [Fintype ι] (e : ι → ℤ) : (
   map_mul' t t' := by simp [mul_zpow, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Introduce `e e' h` and use `funext fun i => by classical have hw : ∀ d : ι → ℤ, torusChar K d (Pi.mulSingle i (Units.mk0 2 two_ne_zero)) = ((2 ^ d i : ℚ) : K) := fun d => by show ((∏ j, _ ^ d j : Kˣ) : K) = _ rw [Finset.prod_eq_single i (fun j _ hj => by simp [Pi.mulSingle_eq_of_ne hj]) (by simp)] simp have …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem torusChar_injective (K : Type) [Field K] [CharZero K] {ι : Type} [Fintype ι] :
     Function.Injective (torusChar K (ι := ι)) := fun e e' h => funext fun i => by
@@ -87,7 +85,7 @@ theorem torusChar_injective (K : Type) [Field K] [CharZero K] {ι : Type} [Finty
   exact zpow_right_injective₀ (a := (2 : ℚ)) (by norm_num) (by norm_num) (Rat.cast_injective this)
 
 /- English proof (translation)
-Introduce `e he` and use `by refine (Module.forall_dual_apply_eq_zero_iff K _).1 fun φ => ?_ have hl := (linearIndependent_monoidHom (ι → Kˣ) K).comp _ (torusChar_injective K) refine linearIndependent_iff'.1 hl s (fun e => φ (v e)) (funext fun t => ?_) e he have := congrArg φ (h t) simpa [map_sum, mul_com …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_torusChar {K V ι : Type} [Field K] [CharZero K] [AddCommGroup V] [Module K V] [Fintype ι]
     (s : Finset (ι → ℤ)) (v : (ι → ℤ) → V) (h : ∀ t, ∑ e ∈ s, torusChar K e t • v e = 0) : ∀ e ∈ s, v e = 0 := fun e he => by
@@ -109,15 +107,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Use `Dw.fin` as an intermediate fact. Use `GlobalTheory.datum_free_int Dw` as an intermediate fact. Establish `: Module.Finite ℤ Dw.La` using `Module.Finite.trans (𝓞 E) Dw.La`. Establish `hM : Ideal.span {(l.M : 𝓞 E)} ≤ l.Mb` using `l.prod ▸ Ideal.mul_le_left`. Establish `hle : (nsmulAddMonoidHom (α` using `Dw.La) l.M).range ≤ (l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)).toAddSubgroup := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Express the relevant statement in the definitionally equal form `l.M • x ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul (hM (Ideal.mem_span_singleton_self _)) Submodule.mem_top`. Establish `h1` using `AddSubgroup.index_dvd_of_le hle`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[AddSubgroup.index_range_nsmul]`. Establish `h3` using `l.three_le`. Establish `h2 : Nat.card (LevelMod Dw l) ≤ l.M ^ Module.finrank ℤ Dw.La` using `Nat.le_of_dvd (by positivity) h1`. Set `b` to `Module.finBasis ℤ Dw.La`. Set `π` to `(l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)).mkQ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hi : Function.Injective fun (g : LevelAut Dw l) i => g (π (b i))` using `fun g g' h => by`. Establish `: ((g : LevelMod Dw l →ₗ[𝓞 E] LevelMod Dw l) ∘ₗ π).toAddMonoidHom.toIntLinearMap = ((g' : LevelMod Dw l →ₗ[𝓞 E] LevelMod Dw l) ∘ₗ π).toAddMonoidHom.toIntLinearMap` using `b.ext fun i => congrFun h i`. Use `LinearEquiv.ext fun x => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.mkQ_surjective _ x`. Conclude with `LinearMap.congr_fun this a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Nat.card_le_card_of_injective _ hi).trans ?_` and prove the remaining obligations. Rewrite using `[Nat.card_fun, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin, ← GlobalTheory.datum_finrank_int, sq, pow_mul]`. Conclude with `Nat.pow_le_pow_left h2 _`.
+A detailed English derivation is pending.
 -/
 theorem card_levelAut_le (Dw : Datum H) (l : Level H) :
     Nat.card (LevelAut Dw l) ≤ l.M ^ (2 * (Module.finrank ℚ E / 2 * (Dw.p + Dw.q))) ^ 2 := by
@@ -147,7 +145,7 @@ theorem card_levelAut_le (Dw : Datum H) (l : Level H) :
   exact Nat.pow_le_pow_left h2 _
 
 /- English proof (translation)
-Introduce `e he` and use `by funext p y refine eq_zero_of_torusChar (K := c.F) s (fun e => g e p y) (fun t => ?_) e he obtain ⟨y', hy'⟩ := GlobalTheory.SecSeparation.exists_frBor y fun i => Units.map (algebraMap c.F p.R).toMonoidHom (t i) have h1 := congrFun (congrFun h p) y' rw [Finset.sum_apply, Finset. …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sum_secZ (e₀ : Ix Dw → ℤ) (s : Finset (Ix Dw → ℤ)) (g : (Ix Dw → ℤ) → Rul Xo c)
     (hg : ∀ e, g e ∈ secZ Xo c (e₀ + e)) (h : ∑ e ∈ s, g e = 0) : ∀ e ∈ s, g e = 0 := fun e he => by
@@ -164,13 +162,13 @@ theorem eq_zero_of_sum_secZ (e₀ : Ix Dw → ℤ) (s : Finset (Ix Dw → ℤ)) 
   exact (smul_eq_zero.1 h1).resolve_left (Units.ne_zero _)
 
 /- English proof (translation)
-The claim follows from `evC_eq_zero (Reg.genFrEx_and_genFromTest E H Dw l Xo c).1 h (idem_mem_suppOn Z')`.
+A detailed English derivation is pending.
 -/
 theorem genVal_idem_of_ne {Z Z' : Comp Xo c} (h : Z ≠ Z') : genVal Z (idem Z') = 0 :=
   evC_eq_zero (Reg.genFrEx_and_genFromTest E H Dw l Xo c).1 h (idem_mem_suppOn Z')
 
 /- English proof (translation)
-Use `CompFin.finite_comp Xo c` as an intermediate fact. Use `Fintype.ofFinite (Comp Xo c)` as an intermediate fact. Establish `h` using `congrArg (genVal Z) (sum_idem Xo c)`. Rewrite `h` using `[map_sum, map_one, Finset.sum_eq_single Z (fun _ _ h => genVal_idem_of_ne h.symm) (by simp)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem genVal_idem (Z : Comp Xo c) : genVal Z (idem Z) = 1 := by
   have := CompFin.finite_comp Xo c
@@ -179,7 +177,7 @@ theorem genVal_idem (Z : Comp Xo c) : genVal Z (idem Z) = 1 := by
   rwa [map_sum, map_one, Finset.sum_eq_single Z (fun _ _ h => genVal_idem_of_ne h.symm) (by simp)] at h
 
 /- English proof (translation)
-The claim follows from `secZ_eq_zero_of_genVal (mul_mem_secZ hd (idem_mem_secZ Z)) fun Z' => by rw [map_mul] by_cases e : Z' = Z · rw [e, h, zero_mul] · rw [genVal_idem_of_ne e, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem mul_idem_eq_zero {e : Ix Dw → ℤ} {d : Rul Xo c} (hd : d ∈ secZ Xo c e) {Z : Comp Xo c} (h : genVal Z d = 0) :
     d * idem Z = 0 :=
@@ -190,9 +188,9 @@ theorem mul_idem_eq_zero {e : Ix Dw → ℤ} {d : Rul Xo c} (hd : d ∈ secZ Xo 
     · rw [genVal_idem_of_ne e, mul_zero]
 
 /- English proof (translation)
-Use `⟨fun h Z h0 => ?_, fun h f hf h0 => ?_⟩` and prove the remaining obligations. Use `genVal_idem Z` as an intermediate fact. Rewrite `this` using `[h _ (mem_secRing (idem_mem_secZ Z)) (mul_idem_eq_zero hd h0), map_zero]`. Conclude with `zero_ne_one this`. Take `⟨g, hg, rfl⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 hf`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[Finsupp.sum, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun e he => secZ_eq_zero_of_genVal (hg e) fun Z => ?_` and prove the remaining obligations. Use `congrArg (genVal Z) (eq_zero_of_sum_secZ e₀ _ _ (fun e => mul_mem_secZ hd (hg e)) h0 e he)` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_left (h Z)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonZeroDiv_iff {e₀ : Ix Dw → ℤ} {d : Rul Xo c} (hd : d ∈ secZ Xo c e₀) :
     (∀ f ∈ secRing Xo c, d * f = 0 → f = 0) ↔ ∀ Z : Comp Xo c, genVal Z d ≠ 0 := by
@@ -212,9 +210,9 @@ variable (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M)
 include hpq hA
 
 /- English proof (translation)
-Establish `key : ∀ Z : Comp Xo c, genVal Z (pull Xo c γ (idem W)) ≠ 0 → genVal W (pull Xo c γ⁻¹ (idem Z)) ≠ 0` using `fun Z h h0 => h (by`. Establish `h1` using `congrArg (fun f => genVal Z (pull Xo c γ f)) (mul_idem_eq_zero (pull_mem_secZ hpq hA γ⁻¹ (idem_mem_secZ Z)) h0)`. Simplify using `only [map_mul, map_zero] at h1`. Rewrite using `[← (isRightAct_pull hpq hA).2, inv_mul_cancel, (isRightAct_pull hpq hA).1, genVal_idem, one_mul] at h1)` and apply the resulting hypothesis. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the negation of the conclusion and derive a contradiction.
 
-Use `mul_ne_zero (key Z h) (key Z' h') ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul, idem_mul_idem_of_ne hne, map_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_unique (γ : LevelAut Dw l) {W Z Z' : Comp Xo c} (h : genVal Z (pull Xo c γ (idem W)) ≠ 0)
     (h' : genVal Z' (pull Xo c γ (idem W)) ≠ 0) : Z = Z' := by
@@ -229,19 +227,17 @@ theorem comp_unique (γ : LevelAut Dw l) {W Z Z' : Comp Xo c} (h : genVal Z (pul
   rw [← map_mul, ← map_mul, idem_mul_idem_of_ne hne, map_zero, map_zero]
 
 /- English proof (translation)
-Use `CompFin.finite_comp Xo c` as an intermediate fact. Use `Fintype.ofFinite (Comp Xo c)` as an intermediate fact. Establish `hev : ∀ (Z : Comp Xo c) (t : c.F), genVal Z (levDet Xo c S (v + t • w)) = ((levMat Xo c S v).map (genVal Z) + algebraMap c.F (Om Z) t • (levMat Xo c S w).map (genVal Z)).det` using `fun Z t => by`. Rewrite using `[levDet, AlgHom.map_det]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `g g'`. Simplify using `only [Matrix.map_apply, AlgHom.mapMatrix_apply, levMat_apply, map_add, map_smul, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[Algebra.smul_def]`. Set `B : Finset (Comp Xo c)` to `Finset.univ.biUnion fun γ : S => Finset.univ.filter fun Z => genVal Z (pull Xo c γ (idem W)) ≠ 0`. Establish `hB : B.card ≤ Nat.card S`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(Finset.card_biUnion_le_card_mul _ _ 1 fun γ _ => Finset.card_le_one.2 fun Z hZ Z' hZ' => ?_).trans (by simp)` and prove the remaining obligations. Conclude with `comp_unique hpq hA γ (Finset.mem_filter.1 hZ).2 (Finset.mem_filter.1 hZ').2`. Set `T : Comp Xo c → Finset ℕ` to `fun Z => (Finset.range (Nat.card S ^ 2 + 1)).filter fun n => genVal Z (levDet Xo c S (v + (n : c.F) • w)) = 0`. Establish `hT : ∀ Z, (T Z).card ≤ Nat.card S` using `fun Z => by haveI : CharZero (Om Z) := charZero_of_injective_algebraMap (algebraMap c.F (Om Z)).injective`. Rewrite using `[Nat.card_eq_fintype_card]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `card_le_of_det_eq_zero _ _ (hev Z a ▸ h Z) _ fun n hn => ?_` and prove the remaining obligations. Use `(Finset.mem_filter.1 hn).2` as an intermediate fact. Rewrite `this` using `[hev, map_natCast]`. Then use the resulting hypothesis. Establish `hc : (B.biUnion T).card < (Finset.range (Nat.card S ^ 2 + 1)).card`. Rewrite using `[Finset.card_range, Nat.lt_succ_iff, sq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Finset.card_biUnion_le_card_mul _ _ _ fun Z _ => hT Z).trans (Nat.mul_le_mul_right _ hB)`. Take `⟨n, hn, hn'⟩` from `Finset.exists_mem_notMem_of_card_lt_card hc`. Use `⟨n, Nat.lt_succ_iff.1 (Finset.mem_range.1 hn), fun Z h0 => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hZ : Z ∈ B`. Conclude with `hn' (Finset.mem_biUnion.2 ⟨Z, hZ, Finset.mem_filter.2 ⟨hn, h0⟩⟩)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hz : (levMat Xo c S w).map (genVal Z) = 0`. Use extensionality with `g g'`. Establish `: genVal Z (pull Xo c (g * g' : S) (idem W)) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hZ (Finset.mem_biUnion.2 ⟨g * g', Finset.mem_univ _, Finset.mem_filter.2 ⟨Finset.mem_univ _, hne⟩⟩)`.
-
-Use `show genVal Z (pull Xo c (g * g' : S) w) = 0`. Rewrite using `[← hw, map_mul, map_mul, this, zero_mul]`. Use `h Z ?_` and prove the remaining obligations. Rewrite `h0`, the goal using `[hev, hz, smul_zero]`. Conclude with `h0`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_step (S : Subgroup (LevelAut Dw l)) (v w : Rul Xo c) {W : Comp Xo c} (hw : idem W * w = w) (a : c.F)
     (h : ∀ Z : Comp Xo c, genVal Z (levDet Xo c S (v + a • w)) ≠ 0) :
@@ -304,7 +300,7 @@ section One
 variable {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (x : ℝ)
 
 /- English proof (translation)
-Simplify using `only [homN, ptN, Data.pnorm, map_sum, map_nsmul, Finset.sum_apply, Pi.smul_apply]`. Establish `h` using `(norm_sum_le s fun i => n i • rdU U (w i) z.1 z.2).trans (Finset.sum_le_sum fun i _ => norm_nsmul_le (n := n i) (a := rdU U (w i) z.1 z.2))`. Use `(mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right h (by positivity)) (lieFacZ_pos x G).le).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homN_sum_le {ι : Type} (s : Finset ι) (G : WTZ D.host.E) (n : ι → ℕ) (w : ι → Rul Xo c)
     (z : Σ k, Frame (U.X k).Ψ r) : homN U x G (∑ i ∈ s, n i • w i) z ≤ ∑ i ∈ s, n i * homN U x G (w i) z := by
@@ -316,14 +312,14 @@ theorem homN_sum_le {ι : Type} (s : Finset ι) (G : WTZ D.host.E) (n : ι → �
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Simplify using `only [homN, ptN, Data.pnorm, rdU_eq_zero U hf hz, norm_zero, zero_mul, mul_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem homN_eq_zero {Z : Comp Xo c} (G : WTZ D.host.E) {f : Rul Xo c} (hf : f ∈ suppOn Z) {z : Σ k, Frame (U.X k).Ψ r}
     (hz : z ∉ framesOn U Z) : homN U x G f z = 0 := by
   simp only [homN, ptN, Data.pnorm, rdU_eq_zero U hf hz, norm_zero, zero_mul, mul_zero]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `s₀ : Sp (CAt σ)` using `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)`. Conclude with `Set.disjoint_left.1 (CompSplitPfD.cspD_comp_disj Xo c Z Z' h) (hz.2 s₀) (hz'.2 s₀)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_mem_framesOn {Z Z' : Comp Xo c} {z : Σ k, Frame (U.X k).Ψ r} (hz : z ∈ framesOn U Z)
     (hz' : z ∈ framesOn U Z') : Z = Z' := by
@@ -332,9 +328,9 @@ theorem eq_of_mem_framesOn {Z Z' : Comp Xo c} {z : Σ k, Frame (U.X k).Ψ r} (hz
   exact Set.disjoint_left.1 (CompSplitPfD.cspD_comp_disj Xo c Z Z' h) (hz.2 s₀) (hz'.2 s₀)
 
 /- English proof (translation)
-Establish `hfin : eLpNorm (fun q : AutQ V => homN U x G f (dict q.out)) 2 (muQ1 V) ≠ ⊤`. Establish `: (fun q : AutQ V => homN U x G f (dict q.out)) = lieFacZ Dw x G • fun q : AutQ V => ptN (modelWt U G) (rdU U f) (dict q.out)` using `rfl`. Rewrite using `[this, eLpNorm_const_smul]`. Conclude with `ENNReal.mul_ne_top enorm_ne_top (petE_ne_top V dict _ (muPart_univ V dict ▸ muPart_univ_le V dict Set.univ) hd hf)`. Rewrite using `[petAt_eq, petAt_eq, ← ENNReal.toReal_ofReal hB, ← ENNReal.toReal_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hfin) (eLpNorm_le_mul_eLpNorm_of_ae_le_mul (Filter.Eventually.of_forall fun q => ?_) 2)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (homN_nonneg _ _ _ _ _), Real.norm_of_nonneg (homN_nonneg _ _ _ _ _), homN_mul U x hG hG₀ _ _ _ (hd _), mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hu _) (homN_nonneg _ _ _ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem petAt_mul_le (V : HSp D) (dict : GA D V → Σ k, Frame (U.X k).Ψ r) (hd : ∀ g, (dict g).2 ∈ (U.X (dict g).1).dom)
     {G G₀ : WTZ D.host.E} (hG : Even G.2) (hG₀ : Even G₀.2) {f u : Rul Xo c} (hf : rdU U f ∈ holSub U.X (modelWt U G))
@@ -359,21 +355,19 @@ variable {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ} {V : (c.F →+* �
   {dict : ∀ σ, GA D (V σ) → Σ k, Frame ((U σ).X k).Ψ r}
 
 /- English proof (translation)
-Use `CompFin.finite_comp Xo c` as an intermediate fact. Use `Fintype.ofFinite (Comp Xo c)` as an intermediate fact. Use `choose n w abelian₂ hw hLam hn using hgen`. Set `θ : (Σ Z, Fin (n Z)) → Rul Xo c` to `fun i => w i.1 i.2`. Establish `hmem : u₀ ∈ Submodule.span c.F (Set.range θ)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₀` using `[← GlobalTheory.CuspSplit.iSup_cuspOn hU]`. Use `(iSup_le fun Z f hf => ?_ : (⨆ Z, cuspOn U Z (wtOf Dw la 0)) ≤ _) h₀` and prove the remaining obligations. Establish `h1 : (⊤ : Submodule c.F (cuspOn U Z (wtOf Dw la 0))) ≤ (Submodule.span c.F (Set.range θ)).comap (cuspOn U Z _).subtype`. Rewrite using `[← hspan Z, Submodule.span_le]`. Introduce `g hg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : Submodule.span ℤ (Set.range (w Z)) ≤ ((Submodule.span c.F (Set.range θ)).comap (cuspOn U Z _).subtype).restrictScalars ℤ` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact Submodule.subset_span ⟨⟨Z, i⟩, rfl⟩)`. Conclude with `h2 (((hw Z).gen g).1 hg)`. Conclude with `h1 (Submodule.mem_top (x := ⟨f, hf⟩))`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun c.F).1 hmem`. Take `⟨m, hm, hP⟩` from `exists_nat_coeff (K := c.F) (fun v => ∀ Z : Comp Xo c, genVal Z (levDet Xo c S v) ≠ 0) θ (Nat.card S ^ 2) (fun v i a h => exists_nat_step hpq hA S v (θ i) (GlobalTheory.CuspSplit.idem_mul_of_mem_cuspOn (w i.1 i.2).2) a h) a ((nonZeroDiv_iff (levDet_mem_secZ hpq hA (cuspW_le_secZ …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `θ' : (Σ Z, Fin (n Z)) → cuspW Xo c U (wtOf Dw la 0)` to `fun i => ⟨θ i, cuspOn_le U _ _ (w i.1 i.2).2⟩`. Establish `hcoe : ((∑ i, m i • θ' i : cuspW Xo c U (wtOf Dw la 0)) : Rul Xo c) = ∑ i, m i • θ i`. Simplify using `[θ']`. Use `⟨∑ i, m i • θ' i, Submodule.sum_mem _ fun i _ => nsmul_mem ?_ _, ?_, fun σ z => ?_⟩` and prove the remaining obligations. Conclude with `(mem_latOn U).1 (((hw i.1).gen _).2 (Submodule.subset_span ⟨i.2, rfl⟩))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(nonZeroDiv_iff (levDet_mem_secZ hpq hA (cuspW_le_secZ _ (Subtype.prop _)))).2 (hcoe ▸ hP)`. Rewrite using `[hcoe]`. Use `(homN_sum_le _ x _ _ _ _ z).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_sigma]`. Establish `hoff : ∀ Z, z ∉ framesOn (U (goodOf c σ)) Z → ∑ i, (m ⟨Z, i⟩ : ℝ) * homN (U (goodOf c σ)) x (wtOf Dw la 0) (θ ⟨Z, i⟩) z = 0` using `fun Z hz => Finset.sum_eq_zero fun i _ => by rw [homN_eq_zero _ x _ (w Z i).2.2 hz, mul_zero]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hz : ∃ Z, z ∈ framesOn (U (goodOf c σ)) Z`. Take `⟨Z, hz⟩` from `hz`. Rewrite using `[Finset.sum_eq_single Z (fun Z' _ h => hoff Z' fun h' => h (eq_of_mem_framesOn _ h' hz)) (by simp)]`. Use `(Finset.sum_le_card_nsmul _ _ (Nat.card S ^ 2 * (β * Λ)) fun i _ => ?_).trans ?_` and prove the remaining obligations. Use `mul_le_mul (by exact_mod_cast hm _) ?_ (homN_nonneg _ _ _ _ _) (by positivity)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hsup Z σ z hz _ (w Z i).2`. Establish `h2 : petOn U x V dict Z (wtOf Dw la 0) σ (w Z i) ≤ Λ` using `((hw Z).le i σ).trans (hLam Z)`. Establish `h3 : 0 ≤ petOn U x V dict Z (wtOf Dw la 0) σ (w Z i)` using `petAt_nonneg _ _ _ _ _ _ _`. Use `(sq_le_sq₀ (homN_nonneg _ _ _ _ _) (by positivity)).1 (h1.trans ?_)` and prove the remaining obligations. Rewrite using `[mul_pow]`.
-
-Conclude with `mul_le_mul (by nlinarith) (pow_le_pow_left₀ h3 h2 2) (by positivity) (by positivity)`. Rewrite using `[Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hn Z) (by positivity)`. Rewrite using `[Finset.sum_eq_zero fun Z _ => hoff Z fun h => hz ⟨Z, h⟩]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem exists_short (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M) (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ))
     (S : Subgroup (LevelAut Dw l)) (la : AllWt.Weight Dw) {β Λ N : ℝ} (hβ : 1 ≤ β) (hΛ : 0 ≤ Λ) (hN : 0 ≤ N)
@@ -436,9 +430,9 @@ theorem exists_short (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M) (hU : ∀ 
       positivity
 
 /- English proof (translation)
-Take `⟨k₁, n₁⟩` from `hk G hG`. Take `⟨k₂, n₂⟩` from `hk (G + G₀) (hG.add hG₀)`. Rewrite using `[← n₁ γ⁻¹ f ⟨_, k₁ γ⁻¹ _ f.2⟩ rfl, ← n₂ γ⁻¹ g ⟨_, k₂ γ⁻¹ _ g.2⟩ rfl]`. Establish `e : pull Xo c γ⁻¹ g = pull Xo c γ⁻¹ f * u`. Rewrite using `[hg, map_mul, ← (isRightAct_pull hpq hA).2, mul_inv_cancel, (isRightAct_pull hpq hA).1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show petW U x V dict _ σ (pull Xo c γ⁻¹ g) ≤ B * petW U x V dict G σ (pull Xo c γ⁻¹ f)`. Rewrite using `[e]`. Conclude with `petAt_mul_le _ x _ _ (hd _ (goodEmb_goodOf c σ)) hG hG₀ ((mem_cuspW.1 (k₁ γ⁻¹ _ f.2)).2 _ (goodEmb_goodOf c σ)) hB (hu σ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normW_mul_pull_le (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M)
     (hd : ∀ σ, GoodEmb c σ → ∀ g, (dict σ g).2 ∈ ((U σ).X (dict σ g).1).dom)

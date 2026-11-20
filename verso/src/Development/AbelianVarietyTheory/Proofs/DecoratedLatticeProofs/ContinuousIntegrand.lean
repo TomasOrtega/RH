@@ -23,16 +23,16 @@ section General
 variable {B Z Z' Y : Type} [TopologicalSpace B] [TopologicalSpace Z] [TopologicalSpace Z'] [TopologicalSpace Y]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.comp (continuous_fst.prodMk (hu.comp continuous_snd)), fun b₀ => (h.2 b₀).imp fun _ hC => hC.mono fun _ hb z => hb (u z)⟩`.
+Supply the required witnesses or components.
 -/
 theorem Tame.comp {F : B → Z → ℂ} (h : Tame F) {u : Z' → Z} (hu : Continuous u) : Tame fun b z => F b (u z) :=
   ⟨h.1.comp (continuous_fst.prodMk (hu.comp continuous_snd)), fun b₀ =>
     (h.2 b₀).imp fun _ hC => hC.mono fun _ hb z => hb (u z)⟩
 
 /- English proof (translation)
-Use `⟨h.1.mul h'.1, fun b₀ => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `h.2 b₀`. Take `⟨C', hC'⟩` from `h'.2 b₀`. Use `⟨C * C', (hC.and hC').mono fun b hb z => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (hb.1 z) (hb.2 z) (norm_nonneg _) ((norm_nonneg _).trans (hb.1 z))`.
+A detailed English derivation is pending.
 -/
 theorem Tame.mul {F G : B → Z → ℂ} (h : Tame F) (h' : Tame G) : Tame fun b z => F b z * G b z := by
   refine ⟨h.1.mul h'.1, fun b₀ => ?_⟩
@@ -43,15 +43,15 @@ theorem Tame.mul {F G : B → Z → ℂ} (h : Tame F) (h' : Tame G) : Tame fun b
   exact mul_le_mul (hb.1 z) (hb.2 z) (norm_nonneg _) ((norm_nonneg _).trans (hb.1 z))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hc, fun _ => ⟨C, .of_forall hb⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem tame_of_bounded {F : B → Z → ℂ} (hc : Continuous fun p : B × Z => F p.1 p.2) {C : ℝ} (hb : ∀ b z, ‖F b z‖ ≤ C) :
     Tame F := ⟨hc, fun _ => ⟨C, .of_forall hb⟩⟩
 
 /- English proof (translation)
-Establish `: IsFiniteMeasure (μ.restrict s)` using `isFiniteMeasure_restrict.2 hs.ne`. Use `⟨continuous_iff_continuousAt.2 fun p₀ => ?_, fun b₀ => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `h.2 p₀.1`. Use `continuousAt_of_dominated (bound := fun _ => C) (.of_forall fun p => ?_) ?_ (integrable_const C) (.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `(h.1.comp (continuous_const.prodMk (continuous_const.prodMk continuous_id)) : Continuous fun y => F p.1 p.2 y).aestronglyMeasurable`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(continuous_fst.continuousAt.eventually hC).mono fun p hp => .of_forall fun y => hp (p.2, y)`. Conclude with `(h.1.comp (continuous_fst.prodMk (continuous_snd.prodMk continuous_const)) : Continuous fun p : B × Z => F p.1 p.2 y).continuousAt`. Take `⟨C, hC⟩` from `h.2 b₀`. Conclude with `⟨C * (μ.restrict s).real Set.univ, hC.mono fun b hb z => norm_integral_le_of_norm_le_const (.of_forall fun y => hb (z, y))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Tame.integral [FirstCountableTopology B] [FirstCountableTopology Z] [MeasurableSpace Y] [OpensMeasurableSpace Y]
     (μ : Measure Y) (s : Set Y) (hs : μ s < ⊤) {F : B → Z → Y → ℂ} (h : Tame fun b (q : Z × Y) => F b q.1 q.2) :
@@ -71,7 +71,7 @@ theorem Tame.integral [FirstCountableTopology B] [FirstCountableTopology Z] [Mea
       norm_integral_le_of_norm_le_const (.of_forall fun y => hb (z, y))⟩
 
 /- English proof (translation)
-The claim follows from `(Tame.integral μ s hs (F := fun b (_ : Unit) y => F b y) (h.comp continuous_snd)).1.comp (continuous_id.prodMk (continuous_const (y := ())))`.
+A detailed English derivation is pending.
 -/
 theorem Tame.continuous_integral [FirstCountableTopology B] [MeasurableSpace Y] [OpensMeasurableSpace Y]
     (μ : Measure Y) (s : Set Y) (hs : μ s < ⊤) {F : B → Y → ℂ} (h : Tame F) : Continuous fun b => ∫ y in s, F b y ∂μ :=
@@ -83,9 +83,9 @@ end General
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨K, hK, hc⟩` from `hV`. Use `v.haar` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableConstSMul_subgroup (GQ V)` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.smulInvariant_subgroup (GQ V) v.μ` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lt_of_le_of_lt (GlobalTheory.measure_le_of_isFundamentalDomain_of_ae_covers v.fund (.of_forall fun g => ?_)) hK.measure_lt_top` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hc g`. Conclude with `⟨⟨γ, hγ⟩, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem vol_lt_top {V : HSp D} (hV : CoCpt V) (v : Vol V) : v.μ v.𝓕 < ⊤ := by
   obtain ⟨i1, i2, i3, i4, i5, i6, i7⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V
@@ -99,9 +99,9 @@ theorem vol_lt_top {V : HSp D} (hV : CoCpt V) (v : Vol V) : v.μ v.𝓕 < ⊤ :=
   exact ⟨⟨γ, hγ⟩, h⟩
 
 /- English proof (translation)
-Take `⟨K, hK, hc⟩` from `hV`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hφ.2.continuousOn`. Use `⟨C, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hc g`. Rewrite using `[← hφ.1 γ hγ g]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hC _ h`.
+A detailed English derivation is pending.
 -/
 theorem bounded_of_contAut {V : HSp D} (hV : CoCpt V) {φ : GA D V → ℂ} (hφ : IsContAut V φ) : ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C := by
   obtain ⟨K, hK, hc⟩ := hV
@@ -112,13 +112,13 @@ theorem bounded_of_contAut {V : HSp D} (hV : CoCpt V) {φ : GA D V → ℂ} (hφ
   exact hC _ h
 
 /- English proof (translation)
-Simplify using `only [heisO, symplOH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heisO_apply_zero (S T : HSp D) (w : WO S T) (f : WO S T → ℂ) : heisO ψ S T w f 0 = f w := by
   simp only [heisO, symplOH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add]
 
 /- English proof (translation)
-Establish `e : actO S T γ γ' (actO S T γ⁻¹ γ'⁻¹ w) = w`. Rewrite using `[actO_eq, actO_eq, inv_inv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, mt_mul_inv, Matrix.one_mul, Matrix.mul_assoc, mt_mul_inv, Matrix.mul_one]`. Rewrite using `[← heisO_apply_zero (ψ := ψ) S T w (om (γ, γ') f), ← heisO_apply_zero (ψ := ψ) S T _ f, ← hom.om_aut γ hγ γ' hγ' _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hom.std hf _), hom.om_heis _ _ _ _ hf, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem om_rat {S T : HSp D} {χ χ' : (AE D)ˣ →* Circle} {om : Om S T} (hom : IsWeilDatumO ψ S T χ χ' om)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {γ : GA D S} (hγ : γ ∈ GQ S) {γ' : GA D T} (hγ' : γ' ∈ GQ T)
@@ -130,15 +130,15 @@ theorem om_rat {S T : HSp D} {χ χ' : (AE D)ˣ →* Circle} {om : Om S T} (hom 
     ← hom.om_aut γ hγ γ' hγ' _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hom.std hf _), hom.om_heis _ _ _ _ hf, e]
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D T`. Establish `hc : Continuous fun p : GA D T × (GA D A × GA D T₀) × WO S T => om (a p.2.1.1, b p.2.1.2 * p.1) f p.2.2` using `(GlobalTheory.ThetaJointCont.continuous_om_oriented hom hf).comp (((ha.comp continuous_snd.fst.fst).prodMk ((hb.comp continuous_snd.fst.snd).mul continuous_fst)).prodMk continuous_snd.snd)`. Use `⟨hc, fun h₀ => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hU'⟩` from `exists_compact_mem_nhds h₀`. Take `⟨KA, hKA, cA⟩` from `hA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨KT, hKT, cT⟩` from `hT`. Take `⟨-, -, -, -, -, K, hK, cK⟩` from `lattice_Mx D T.rank S.rank`. Take `⟨C, hC⟩` from `(hU.prod ((hKA.prod hKT).prod hK)).exists_bound_of_continuousOn hc.continuousOn`. Use `⟨C, Filter.mem_of_superset hU' fun h hh => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨g, g'⟩, w⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨γ, hγ, hg⟩` from `cA g`. Take `⟨γ', hγ', hg'⟩` from `cT g'`. Establish `e : ((a g, b g' * h) : GA D S × GA D T) = (a γ⁻¹, b γ'⁻¹) * (a (γ * g), b (γ' * g') * h)`. Rewrite using `[Prod.mk_mul_mk, ← mul_assoc, ← map_mul, ← map_mul, inv_mul_cancel_left, inv_mul_cancel_left]`. Establish `ht` using `hom.om_pres (a (γ * g), b (γ' * g') * h) f hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `‖om (a g, b g' * h) f w‖ ≤ C`. Rewrite using `[e, map_mul, Module.End.mul_apply, om_rat hom ht (ha' _ (inv_mem hγ)) (hb' _ (inv_mem hγ'))]`. Take `⟨_, ⟨δ, rfl⟩, hδ⟩` from `cK (actO S T (a γ⁻¹)⁻¹ (b γ'⁻¹)⁻¹ w)`. Establish `h1` using `hC (h, (γ * g, γ' * g'), _) ⟨hh, ⟨hg, hg'⟩, hδ⟩`. Establish `h2` using `congrArg norm (ht.quasi δ (actO S T (a γ⁻¹)⁻¹ (b γ'⁻¹)⁻¹ w))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[norm_mul, hom.std.1.2.1, one_mul]`. Rewrite using `[← h2]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tame_om {S T A T₀ : HSp D} {χ χ' : (AE D)ˣ →* Circle} {om : Om S T} (hom : IsWeilDatumO ψ S T χ χ' om)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hA : CoCpt A) (hT : CoCpt T₀) (a : GA D A →* GA D S)
@@ -177,11 +177,9 @@ section Mixed
 variable {B Z : Type} [TopologicalSpace B] [TopologicalSpace Z] [FirstCountableTopology B] [FirstCountableTopology Z]
 
 /- English proof (translation)
-Take `⟨i1, -, i3, -⟩` from `lattice_Mx D T.rank S₀.rank`. Establish `: FirstCountableTopology (WO S₀ T)` using `TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Take `⟨j1, -⟩` from `lattice_Mx D T.rank S.rank`. Establish `: BorelSpace (Mx D T.rank ρ)` using `⟨rfl⟩`. Simplify using `only [HypDec.mixS, HypDec.integrandS_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Tame.integral v.μ v.𝓕 (by rw [v.covol.2.2]; exact ENNReal.one_lt_top) ?_` and prove the remaining obligations. Establish `hY : Continuous (d.extY T)` using `continuous_id.matrix_mul continuous_const`. Establish `h0 : Continuous (d.ext0 T)` using `continuous_id.matrix_mul continuous_const`. Use `Tame.mul (tame_of_bounded (C := 1) ?_ fun _ _ => (hψ.1.2.1 _).le) (h.comp (u := fun q : (Z × WO S₀ T) × Mx D T.rank ρ => (q.1.1, d.extY T q.2 + d.extX T x + d.ext0 T q.1.2)) ?_)` and prove the remaining obligations. Conclude with `hψ.1.1.comp (GlobalTheory.OrientedHeis.continuous_symplOH (hY.comp continuous_snd.snd) continuous_const)`.
-
-Conclude with `continuous_fst.fst.prodMk (((hY.comp continuous_snd).add continuous_const).add (h0.comp continuous_fst.snd))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tame_mixS (hψ : IsStdChar D ψ (-1)) {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ)
     (x : Mx D T.rank ρ) {F : B → Z → WO S T → ℂ} (h : Tame fun b (q : Z × WO S T) => F b q.1 q.2) :
@@ -200,11 +198,9 @@ theorem tame_mixS (hψ : IsStdChar D ψ (-1)) {S S₀ T : HSp D} {ρ : ℕ} (d :
   · exact continuous_fst.fst.prodMk (((hY.comp continuous_snd).add continuous_const).add (h0.comp continuous_fst.snd))
 
 /- English proof (translation)
-Take `⟨i1, -, i3, -⟩` from `lattice_Mx D T₀.rank S.rank`. Establish `: FirstCountableTopology (WO S T₀)` using `TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Take `⟨j1, -⟩` from `lattice_Mx D T.rank S.rank`. Establish `: BorelSpace (Mx D ρ S.rank)` using `⟨rfl⟩`. Simplify using `only [HypDec.mixT, HypDec.integrandT_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Tame.integral v.μ v.𝓕 (by rw [v.covol.2.2]; exact ENNReal.one_lt_top) ?_` and prove the remaining obligations. Establish `hY : Continuous (d.incX S)` using `continuous_const.matrix_mul continuous_id`. Establish `h0 : Continuous (d.inc0 S)` using `continuous_const.matrix_mul continuous_id`. Use `Tame.mul (tame_of_bounded (C := 1) ?_ fun _ _ => (hψ.1.2.1 _).le) (h.comp (u := fun q : (Z × WO S T₀) × Mx D ρ S.rank => (q.1.1, d.incX S q.2 + d.incAdj S y + d.inc0 S q.1.2)) ?_)` and prove the remaining obligations. Conclude with `hψ.1.1.comp (GlobalTheory.OrientedHeis.continuous_symplOH (hY.comp continuous_snd.snd) continuous_const)`.
-
-Conclude with `continuous_fst.fst.prodMk (((hY.comp continuous_snd).add continuous_const).add (h0.comp continuous_fst.snd))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tame_mixT (hψ : IsStdChar D ψ (-1)) {S T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (v : VolM D ρ S.rank)
     (y : Mx D S.rank ρ) {F : B → Z → WO S T → ℂ} (h : Tame fun b (q : Z × WO S T) => F b q.1 q.2) :
@@ -229,18 +225,18 @@ section Step
 variable {ρ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ} (s : StepBF ψ B J)
 
 /- English proof (translation)
-The claim follows from `(hv ψ s.weil.std).2 _ _ _ _ J.d _ _ s.vT.covol _ ((hv ψ s.weil.std).1 _ _ _ _ B.d _ _ s.vS.covol _ hΨ _) _`.
+A detailed English derivation is pending.
 -/
 theorem isTheta_evalBF (hv : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedValues D) {Ψ : WO B.V J.W → ℂ} (hΨ : IsThetaFunO ψ B.V J.W Ψ) :
     IsThetaFunO ψ B.V₀ J.W₀ (evalBF s Ψ) :=
   (hv ψ s.weil.std).2 _ _ _ _ J.d _ _ s.vT.covol _ ((hv ψ s.weil.std).1 _ _ _ _ B.d _ _ s.vS.covol _ hΨ _) _
 
 /- English proof (translation)
-Take `⟨om₁, h₁⟩` from `(hd ψ _ _ _ _ _ s.weil).1 _ _ B.d`. Establish `hS` using `hm.1 ψ _ _ _ _ B.d _ _ _ _ s.weil h₁ _ _ s.vS.covol`. Establish `hT` using `hm.2 ψ _ _ _ _ J.d _ _ _ _ h₁ s.weil₀ _ _ s.vT.covol`. Establish `hf` using `(hv ψ s.weil.std).1 _ _ _ _ B.d _ _ s.vS.covol _ hΨ (xZero J.d)`. Establish `ex : mt J.W (J.d.emb0 h')⁻¹ ⬝ xZero J.d = xZero J.d`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_inv]`. Conclude with `J.d.wittDecomp_anisotropicEmbedding_inclX _`. Establish `ey : mt B.V₀ (B.o.emb (h₀, 1))⁻¹ ⬝ yZero B.V₀ ρ (vecB B.o B.ζ) = yZero B.V₀ ρ (vecB B.o B.ζ)`. Rewrite using `[← map_inv, Prod.inv_mk, inv_one, yZero_vecB, ← Matrix.mul_assoc, B.o.emb_jB, mt_one, Matrix.mul_one]`. Establish `e1 : ((embA B.d B.o h₀, J.d.emb0 h') : GA D B.V × GA D J.W) = (B.d.emb0 (B.o.emb (h₀, 1)), 1) * (1, J.d.emb0 h')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Prod.mk_mul_mk, mul_one, one_mul, embA_apply]`. Establish `e2 : ((B.o.emb (h₀, 1), h') : GA D B.V₀ × GA D J.W₀) = (B.o.emb (h₀, 1), 1) * (1, h')`. Rewrite using `[Prod.mk_mul_mk, mul_one, one_mul]`. Unfold `evalBF evalZero evalAt`. Rewrite using `[e1, e2, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, (hS _ (s.weil.om_pres _ _ hΨ)).core, (hS _ hΨ).target, ex, (hT _ (h₁.om_pres _ _ hf)).source, ey, (hT _ hf).core]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_evalBF (hd : Descent D) (hm : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedModelFormulas D) (hv : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedValues D)
     {Ψ : WO B.V J.W → ℂ} (hΨ : IsThetaFunO ψ B.V J.W Ψ) (h₀ : GA D B.A) (h' : GA D J.W₀) :
@@ -263,9 +259,9 @@ theorem om_evalBF (hd : Descent D) (hm : GlobalTheory.IndefiniteRowSideFullHecke
     (hS _ (s.weil.om_pres _ _ hΨ)).core, (hS _ hΨ).target, ex, (hT _ (h₁.om_pres _ _ hf)).source, ey, (hT _ hf).core]
 
 /- English proof (translation)
-Establish `hΨ` using `s.weil.om_pres (1, h) Φ hΦ`. Establish `hΞ` using `isTheta_evalBF s hv hΨ`. Establish `e1 : ((embA B.d B.o h₀, J.d.emb0 h' * h) : GA D B.V × GA D J.W) = (embA B.d B.o h₀, J.d.emb0 h') * (1, h)`. Rewrite using `[Prod.mk_mul_mk, mul_one]`. Establish `e2 : ((B.o.emb (h₀, 1), h') : GA D B.V₀ × GA D J.W₀) = (B.o.emb (h₀, 1), 1) * (1, h')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Prod.mk_mul_mk, mul_one, one_mul]`. Rewrite using `[e1, map_mul, Module.End.mul_apply, ← om_evalBF s hd hm hv hΨ, e2, map_mul, Module.End.mul_apply, fjKer, opA, jacT, map_smul, s.weil₀.om_heis _ _ _ _ (s.weil₀.om_pres _ _ hΞ), Pi.smul_apply, smul_eq_mul, heisO_apply_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fjKer_evalBF (hd : Descent D) (hm : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedModelFormulas D) (hv : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedValues D)
     {Φ : WO B.V J.W → ℂ} (hΦ : IsThetaFunO ψ B.V J.W Φ) (h : GA D J.W) (h₀ : GA D B.A) (n : GA D J.W)
@@ -285,20 +281,20 @@ theorem fjKer_evalBF (hd : Descent D) (hm : GlobalTheory.IndefiniteRowSideFullHe
     map_smul, s.weil₀.om_heis _ _ _ _ (s.weil₀.om_pres _ _ hΞ), Pi.smul_apply, smul_eq_mul, heisO_apply_zero]
 
 /- English proof (translation)
-The claim follows from `have := (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V).2.1 TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`.
+A detailed English derivation is pending.
 -/
 theorem firstCountable_GA (V : HSp D) : FirstCountableTopology (GA D V) :=
   have := (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V).2.1
   TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _
 
 /- English proof (translation)
-The claim follows from `B.o.continuous_emb.comp (continuous_id.prodMk continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_embL (B : BesLev D ρ) : Continuous fun h₀ : GA D B.A => B.o.emb (h₀, 1) :=
   B.o.continuous_emb.comp (continuous_id.prodMk continuous_const)
 
 /- English proof (translation)
-Use `firstCountable_GA B.A` as an intermediate fact. Use `firstCountable_GA J.W` as an intermediate fact. Use `firstCountable_GA J.W₀` as an intermediate fact. Establish `t0` using `tame_om s.weil hΦ B.cpt J.cpt (embA B.d B.o) J.d.emb0 (B.d.continuous_embed.comp (continuous_embL B)) J.d.continuous_embed (fun γ hγ => B.d.wittDecomp_anisotropicEmbedding_mem_rationalPoints (B.o.emb_mem_GQ hγ (one_mem _))) (fun γ hγ => J.d.wittDecomp_anisotropicEmbedding_mem_rat …`. Conclude with `tame_mixT s.weil.std J.d s.vT _ (F := fun h (q : GA D B.A × GA D J.W₀) => B.d.mixS J.W ψ s.vS.μ s.vS.𝓕 (s.om (embA B.d B.o q.1, J.d.emb0 q.2 * h) Φ) (xZero J.d)) (tame_mixS s.weil.std B.d s.vS _ (F := fun h (q : GA D B.A × GA D J.W₀) => s.om (embA B.d B.o q.1, J.d.emb0 q.2 * h) Φ …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tame_evalBF {Φ : WO B.V J.W → ℂ} (hΦ : IsThetaFunO ψ B.V J.W Φ) :
     Tame fun (h : GA D J.W) (q : (GA D B.A × GA D J.W₀) × WO B.V₀ J.W₀) =>
@@ -314,28 +310,26 @@ theorem tame_evalBF {Φ : WO B.V J.W → ℂ} (hΦ : IsThetaFunO ψ B.V J.W Φ) 
         s.om (embA B.d B.o q.1, J.d.emb0 q.2 * h) Φ) t0)
 
 /- English proof (translation)
-The claim follows from `have := (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V).2.2.2.2.1 (continuous_mt V).comp continuous_inv`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mt_inv (V : HSp D) : Continuous fun g : GA D V => mt V g⁻¹ :=
   have := (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V).2.2.2.2.1
   (continuous_mt V).comp continuous_inv
 
 /- English proof (translation)
-The claim follows from `continuous_const.matrix_mul ((continuous_mt_inv T).matrix_mul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ptT {T T₀ : HSp D} (d : HypDec T T₀ ρ) (S : HSp D) (y : Mx D S.rank ρ) : Continuous (ptT d S y) :=
   continuous_const.matrix_mul ((continuous_mt_inv T).matrix_mul continuous_const)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.OrientedHeis.continuous_symplOH continuous_const ((continuous_mt_inv T).matrix_mul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cenT {T T₀ : HSp D} (d : HypDec T T₀ ρ) (S : HSp D) (y : Mx D S.rank ρ) : Continuous (cenT d S y) :=
   GlobalTheory.OrientedHeis.continuous_symplOH continuous_const ((continuous_mt_inv T).matrix_mul continuous_const)
 
 /- English proof (translation)
-Establish `ht : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `hb : Continuous (blockX d)` using `continuous_const.matrix_mul ((continuous_mt T).matrix_mul continuous_const)`. Use `hψ.comp (ht.comp (continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_))` and prove the remaining obligations. Use `split_ifs`. Conclude with `hb.matrix_elem i j`.
-
-Conclude with `continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_psiFlag (hψ : Continuous ψ) {T T₀ : HSp D} (d : HypDec T T₀ ρ) : Continuous (psiFlag ψ d) := by
   have ht : Continuous (Algebra.trace (AF D.host.F) (AE D)) := IsModuleTopology.continuous_of_linearMap _
@@ -346,9 +340,7 @@ theorem continuous_psiFlag (hψ : Continuous ψ) {T T₀ : HSp D} (d : HypDec T 
   · exact continuous_const
 
 /- English proof (translation)
-Establish `hψ` using `s.weil.std`. Simplify using `only [fjKer_evalBF s hd hm hv hΦ]`. Use `Tame.mul (tame_of_bounded (C := 1) ?_ fun _ _ => (hψ.1.2.1 _).le) ((tame_evalBF s hΦ).comp (u := fun q : GA D B.A × GA D J.W × GA D J.W₀ => ((q.1, q.2.2), actO B.V₀ J.W₀ (B.o.emb (q.1, 1)) 1 (ptT J.d B.V₀ (yZero B.V₀ ρ (vecB B.o B.ζ)) q.2.1))) ?_)` and prove the remaining obligations. Conclude with `hψ.1.1.comp ((continuous_cenT _ _ _).comp continuous_snd.snd.fst)`. Use `(continuous_fst.prodMk continuous_snd.snd).prodMk ?_` and prove the remaining obligations.
-
-Conclude with `(continuous_const.matrix_mul ((continuous_ptT _ _ _).comp continuous_snd.fst)).matrix_mul ((continuous_mt_inv B.V₀).comp ((continuous_embL B).comp continuous_fst))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tame_fjKer (hd : Descent D) (hm : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedModelFormulas D) (hv : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedValues D)
     {Φ : WO B.V J.W → ℂ} (hΦ : IsThetaFunO ψ B.V J.W Φ) :
@@ -365,7 +357,7 @@ theorem tame_fjKer (hd : Descent D) (hm : GlobalTheory.IndefiniteRowSideFullHeck
       ((continuous_mt_inv B.V₀).comp ((continuous_embL B).comp continuous_fst))
 
 /- English proof (translation)
-Use `firstCountable_GA J.W` as an intermediate fact. Use `firstCountable_GA J.W₀` as an intermediate fact. Establish `: BorelSpace (GA D B.A)` using `⟨rfl⟩`. Take `⟨C, hC⟩` from `bounded_of_contAut B.cpt hφ`. Conclude with `Tame.integral B.vA.μ B.vA.𝓕 (vol_lt_top B.cpt B.vA) (Tame.mul (tame_of_bounded (hφ.2.comp continuous_snd.snd) fun _ _ => hC _) ((tame_fjKer s hd hm hv hΦ).comp (u := fun q : (GA D J.W × GA D J.W₀) × GA D B.A => (q.2, q.1)) continuous_swap))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tame_inner (hd : Descent D) (hm : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedModelFormulas D) (hv : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedValues D)
     {Φ : WO B.V J.W → ℂ} (hΦ : IsThetaFunO ψ B.V J.W Φ) {φ : GA D B.A → ℂ} (hφ : IsContAut B.A φ) :
@@ -380,9 +372,9 @@ theorem tame_inner (hd : Descent D) (hm : GlobalTheory.IndefiniteRowSideFullHeck
     ((tame_fjKer s hd hm hv hΦ).comp (u := fun q : (GA D J.W × GA D J.W₀) × GA D B.A => (q.2, q.1)) continuous_swap))
 
 /- English proof (translation)
-Use `(GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D J.W).2.2.2.2.1` as an intermediate fact. Establish `hψ` using `s.weil.std`. Take `⟨C, hC⟩` from `hG.bounded`. Establish `hv' : Continuous fun q : GA D J.W₀ × flagN J.d => q.2.1` using `continuous_subtype_val.comp continuous_snd`. Use `Tame.mul (Tame.mul (tame_of_bounded ?_ fun _ _ => hC _) (tame_of_bounded (C := 1) ?_ fun _ _ => ?_)) ((tame_inner s hd hm hv hΦ hφ).comp (u := fun q : GA D J.W₀ × flagN J.d => (q.2.1, q.1)) (hv'.prodMk continuous_fst))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hG.continuous.comp (((hv'.comp continuous_snd).mul (J.d.continuous_embed.comp continuous_snd.fst)).mul continuous_fst)`. Conclude with `((continuous_psiFlag hψ.1.1 J.d).comp (hv'.comp continuous_snd)).star`. Rewrite using `[norm_star]`. Conclude with `(hψ.1.2.1 _).le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tame_fjAllFun (hd : Descent D) (hm : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedModelFormulas D) (hv : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedValues D)
     {Φ : WO B.V J.W → ℂ} (hΦ : IsThetaFunO ψ B.V J.W Φ) {φ : GA D B.A → ℂ} (hφ : IsContAut B.A φ)
@@ -404,9 +396,9 @@ theorem tame_fjAllFun (hd : Descent D) (hm : GlobalTheory.IndefiniteRowSideFullH
 end Step
 
 /- English proof (translation)
-Introduce `D hd hm hv ψ ρ B J s φ G Φ hφ hG hΦ`. Use `firstCountable_GA J.W` as an intermediate fact. Use `firstCountable_GA J.W₀` as an intermediate fact. Establish `: BorelSpace (GA D J.W)` using `⟨rfl⟩`. Establish `: BorelSpace (GA D J.W₀)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: OpensMeasurableSpace (flagN J.d)` using `Subtype.opensMeasurableSpace (flagN J.d : Set (GA D J.W))`. Establish `t5` using `Tame.integral J.vN.ν J.vN.𝓝 (by rw [J.vN.unit.2.2]; exact ENNReal.one_lt_top) (F := fun (h : GA D J.W) (q : GA D J.W₀) (n : flagN J.d) => fjAllFun ψ J.d B.o B.ζ s.om₀ B.vA.μ B.vA.𝓕 φ (rTrans h G) (evalBF s (s.om (1, h) Φ)) q n) (tame_fjAllFun s hd hm hv hΦ hφ hG)`. Simplify using `only [JacLev.perAll, fjAll]`. Conclude with `t5.continuous_integral J.v0.μ J.v0.𝓕 (vol_lt_top J.cpt J.v0)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_integrand : ∀ D : D7, Descent D → GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedModelFormulas D →
     GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedValues D →

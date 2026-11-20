@@ -20,13 +20,11 @@ open GroundTheory.Heights₂.Heights (IsProjPrime IsChowForm IsMultiHomog relCom
 namespace ChowFormHeightComparison₂.CF.M
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `f g hfg`. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F)) hfg`. Introduce `τ`. Establish `hinj : Function.Injective τ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Establish `h` using `Ideal.comap_ne_bot_of_integral_mem hne (show x ∈ RingHom.ker τ from hx) (NumberField.RingOfIntegers.isIntegral x)`. Apply `h` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_bot_iff]`. Introduce `n hn`. Rewrite `hn` using `[Ideal.mem_comap, RingHom.mem_ker, eq_intCast, map_intCast, Int.cast_eq_zero]`. Simplify using `[hn]`. Use `⟨IsFractionRing.lift (K := F) hinj, RingHom.ext fun x => ?_⟩` and prove the remaining obligations.
-
-Conclude with `IsFractionRing.lift_algebraMap (K := F) hinj x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bijective_comp (F : Type) [Field F] [NumberField F] :
     Function.Bijective fun σ : F →+* ℂ => σ.comp (algebraMap (𝓞 F) F) := by
@@ -49,7 +47,7 @@ theorem bijective_comp (F : Type) [Field F] [NumberField F] :
     exact IsFractionRing.lift_algebraMap (K := F) hinj x
 
 /- English proof (translation)
-Rewrite using `[← finsum_eq_sum_of_fintype]`. Conclude with `(finsum_comp_equiv (f := G) (Equiv.ofBijective _ (bijective_comp K))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_emb {K : Type} [Field K] [NumberField K] (G : (𝓞 K →+* ℂ) → ℝ) :
     ∑ᶠ σ, G σ = ∑ σ : K →+* ℂ, G (σ.comp (algebraMap (𝓞 K) K)) := by
@@ -57,9 +55,9 @@ theorem finsum_emb {K : Type} [Field K] [NumberField K] (G : (𝓞 K →+* ℂ) 
   exact (finsum_comp_equiv (f := G) (Equiv.ofBijective _ (bijective_comp K))).symm
 
 /- English proof (translation)
-Unfold `HermNorm.dualNorm`. Apply `Real.sqrt_pos.mpr` to reduce the goal to its premises. Establish `hne : h.mat.transpose⁻¹.mulVec y ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg (h.mat.transpose.mulVec) h0` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (by rw [Matrix.det_transpose]; exact h.isUnit_det), Matrix.one_mulVec, Matrix.mulVec_zero]`. Then use the resulting hypothesis. Take `⟨i, hi⟩` from `Function.ne_iff.mp hne`. Establish `hpos : 0 < ‖h.mat.transpose⁻¹.mulVec y i‖ ^ 2` using `pow_pos (norm_pos_iff.mpr hi) 2`. Conclude with `lt_of_lt_of_le hpos (Finset.single_le_sum (f := fun j => ‖h.mat.transpose⁻¹.mulVec y j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ i))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dualNorm_pos {m : ℕ} (h : HermNorm m) {y : Fin m → ℂ} (hy : y ≠ 0) : 0 < h.dualNorm y := by
   unfold HermNorm.dualNorm
@@ -80,7 +78,7 @@ section
 variable {R : Type} [CommRing R] {Z : Scheme.{0}} {B : LB Z} {m : ℕ} {p : Z ⟶ Sp R} {s : Fin m → B.Sec} {σ : R →+* ℂ}
 
 /- English proof (translation)
-Introduce `i`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_apply, hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -93,11 +91,11 @@ theorem isComb_single (k : Fin m) : IsComb p s (Pi.single k 1) (s k) := by
   · simp
 
 /- English proof (translation)
-Establish `hy` using `GlobalTheory.CxPts.mem_pick hB y`. Rewrite using `[secVal_apply, hu (pick hB y)]`. Simplify using `only [coords]`. Establish `key : ∀ t : Finset (Fin m), ev p σ (B.U (pick hB y)) (∑ k ∈ t, algX p (B.U (pick hB y)) (u k) * (s k).f (pick hB y)) y = ∑ k ∈ t, σ (u k) * ev p σ (B.U (pick hB y)) ((s k).f (pick hB y)) y`. Introduce `t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Establish `h0` using `ev_add (p := p) (σ := σ) (U := B.U (pick hB y)) 0 0 y`. Simplify using `using h0`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ev_add, ev_mul, ev_algX hy, ih]`. Conclude with `key Finset.univ`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secVal_comb (hB : B.IsLB) {u : Fin m → R} {su : B.Sec} (hu : IsComb p s u su) (y : CxPts p σ) :
     secVal p σ su (pick hB y) y = ∑ k, σ (u k) * coords p σ hB s y k := by
@@ -118,7 +116,7 @@ theorem secVal_comb (hB : B.IsLB) {u : Fin m → R} {su : B.Sec} (hu : IsComb p 
   exact key Finset.univ
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[Set.mem_setOf_eq, ← secVal_comb hB hu y]`. Conclude with `(secVal_ne_zero_iff su (mem_pick hB y)).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptsIn_comb (hB : B.IsLB) {u : Fin m → R} {su : B.Sec} (hu : IsComb p s u su) :
     ptsIn p σ (nonzeroLocus su) = {y | ∑ k, σ (u k) * coords p σ hB s y k ≠ 0} := by
@@ -127,13 +125,13 @@ theorem ptsIn_comb (hB : B.IsLB) {u : Fin m → R} {su : B.Sec} (hu : IsComb p s
   exact (secVal_ne_zero_iff su (mem_pick hB y)).symm
 
 /- English proof (translation)
-Establish `hpk` using `mem_pick φ.isLB y`. Establish `hsum : (∑ k, σ (u k) * coords p σ φ.isLB s y k) ≠ 0`. Establish `h1` using `hy`. Rewrite `h1` using `[ptsIn_comb φ.isLB hu]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : coords p σ φ.isLB s y ≠ 0`. Introduce `h0`. Apply `hsum` to reduce the goal to its premises. Simplify using `[h0]`. Establish `hd` using `dualNorm_pos h hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : 0 < ‖∑ k, σ (u k) * coords p σ φ.isLB s y k‖` using `norm_pos_iff.mpr hsum`. Establish `hφy` using `hφ (pick φ.isLB y) y hpk`. Unfold `Weight.nsq`. Rewrite using `[secVal_comb φ.isLB hu y, hφy]`. Unfold `fsLog`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Real.log (‖∑ k, σ (u k) * coords p σ φ.isLB s y k‖ ^ 2 * Real.exp (-Real.log (h.dualNorm (coords p σ φ.isLB s y) ^ 2))) / 2 = _`. Rewrite using `[Real.log_div ha.ne' hd.ne', Real.exp_neg, Real.exp_log (pow_pos hd 2), ← div_eq_mul_inv, Real.log_div (pow_pos ha 2).ne' (pow_pos hd 2).ne', Real.log_pow, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem log_nsq (φ : Weight p σ B) {h : HermNorm m} (hφ : IsFS φ s h) {u : Fin m → R} {su : B.Sec}
     (hu : IsComb p s u su) {y : CxPts p σ} (hy : y ∈ ptsIn p σ (nonzeroLocus su)) :
@@ -161,9 +159,9 @@ theorem log_nsq (φ : Weight p σ B) {h : HermNorm m} (hφ : IsFS φ s h) {u : F
   ring
 
 /- English proof (translation)
-Introduce `J z hz`. Establish `hm : ∀ w : CxPts (i ≫ p) σ, (PtsOver.map i rfl (spMap σ) w).1 = w.1 ≫ i` using `fun w => rfl`. Establish `hz'` using `(GlobalTheory.Published.mem_ptsIn_pull hm).mp hz`. Use `(Weight.pull_φ φ i rfl J z).trans ?_` and prove the remaining obligations. Rewrite using `[hφ _ _ hz']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun v => Real.log (h.dualNorm v ^ 2)) (funext fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Unfold `GlobalTheory.secPull`. Rewrite using `[chartSec_f]`. Conclude with `(ev_appLE_of_comp hm _ _ hz).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFS_pull {φ : Weight p σ B} {h : HermNorm m} (hφ : IsFS φ s h) {Y : Scheme.{0}} (i : Y ⟶ Z) :
     IsFS (φ.pull i rfl) (fun k => GlobalTheory.secPull (s k) i) h := by
@@ -187,21 +185,19 @@ local notation "φ" => (MvPolynomial.map (algebraMap (𝓞 K) K) : MvPolynomial 
 local notation "CC" => (C : 𝓞 K →+* MvPolynomial (Fin m) (𝓞 K))
 
 /- English proof (translation)
-Establish `hcov : genericPoint Z ∈ (⨆ i, B.U i)`. Rewrite using `[hE.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i0, hi0⟩` from `TopologicalSpace.Opens.mem_iSup.mp hcov`. Establish `htop : genericPoint Z ∈ (⊤ : Z.Opens)` using `trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcomp : (Z.evaluation ⊤ (genericPoint Z) htop).hom = (Z.residue (genericPoint Z)).hom.comp (Z.presheaf.germ ⊤ (genericPoint Z) htop).hom` using `rfl`. Establish `hinj : Function.Injective (Z.evaluation ⊤ (genericPoint Z) htop).hom`. Rewrite using `[hcomp]`. Conclude with `(RingHom.injective (Z.residue (genericPoint Z)).hom).comp (germ_injective_of_isIntegral Z (genericPoint Z) htop)`. Rewrite using `[RingHom.charZero_iff hinj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : ∀ r : 𝓞 K, CC r ∈ ptIdeal q s (genericPoint Z) ↔ ∀ i (h : genericPoint Z ∈ B.U i), (Z.evaluation (B.U i) _ h).hom (algX q (B.U i) r) = 0`. Introduce `r`. Simplify using `only [ptIdeal, Submodule.mem_iInf, RingHom.mem_ker, coneHom, MvPolynomial.eval₂Hom_C, RingHom.comp_apply, Polynomial.C_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `hc haveI := hc`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_bot_iff]`. Introduce `r hr`. Rewrite `hr` using `[Ideal.mem_comap, hmem]`. Establish `hr0` using `hr i0 hi0`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hker : r ∈ RingHom.ker ((Z.evaluation (B.U i0) _ hi0).hom.comp (algX q (B.U i0)))` using `hr0`. Establish `h` using `Ideal.comap_ne_bot_of_integral_mem hne hker (NumberField.RingOfIntegers.isIntegral r)`. Apply `h` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `n hn`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[Ideal.mem_comap, RingHom.mem_ker, eq_intCast, map_intCast, Int.cast_eq_zero]`. Simplify using `[hn]`. Introduce `hb`. Use `charZero_of_inj_zero fun n hn => ?_` and prove the remaining obligations. Establish `h1 : CC (n : 𝓞 K) ∈ ptIdeal q s (genericPoint Z)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmem]`. Introduce `i h`. Rewrite using `[map_natCast, map_natCast]`. Conclude with `hn`. Establish `h2 : (n : 𝓞 K) ∈ (ptIdeal q s (genericPoint Z)).comap CC` using `h1`.
-
-Rewrite `h2` using `[hb, Ideal.mem_bot]`. Conclude with `h2` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charZero_iff {Z : Scheme.{0}} [IsIntegral Z] {q : Z ⟶ Sp (𝓞 K)} {B : LB Z} {s : Fin m → B.Sec} (hE : Emb q s) :
     CharZero Γ(Z, ⊤) ↔ (ptIdeal q s (genericPoint Z)).comap CC = ⊥ := by
@@ -249,13 +245,13 @@ theorem charZero_iff {Z : Scheme.{0}} [IsIntegral Z] {q : Z ⟶ Sp (𝓞 K)} {B 
     exact_mod_cast h2
 
 /- English proof (translation)
-Rewrite using `[← closure_subset_iff_isClosed]`. Introduce `w hw`. Establish `hzw : z ⤳ w` using `specializes_iff_mem_closure.mpr hw`. Establish `hle : w ≤ z` using `hzw`. Distinguish the cases in `hback : z ≤ w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hwz : w ⤳ z` using `hback`. Establish `he : z = w` using `(hzw.antisymm hwz).eq`. Substitute `he` using the available equality. Conclude with `Set.mem_singleton _`. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hlt : w < z` using `lt_of_le_not_ge hle hback`. Establish `h1 : Order.coheight z + 1 ≤ Order.coheight w` using `Order.coheight_add_one_le hlt`. Establish `h2 : (Order.coheight w : WithBot ℕ∞) ≤ Order.krullDim Z` using `Order.coheight_le_krullDim w`. Establish `h3 : Order.krullDim Z = 1`. Rewrite using `[← hd, topologicalKrullDim, Order.krullDim_eq_of_orderIso irreducibleSetEquivPoints]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hz]`. Rewrite `h2` using `[h3]`. Establish `h4 : Order.coheight w ≤ 1` using `by exact_mod_cast h2`. Establish `h5` using `h1.trans h4`. Evaluate the numerical expressions using `at h5`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem isClosed_of_coheight {Z : Scheme.{0}} (hd : topologicalKrullDim Z = 1) {z : Z} (hz : Order.coheight z = 1) :
     IsClosed ({z} : Set Z) := by
@@ -281,7 +277,7 @@ theorem isClosed_of_coheight {Z : Scheme.{0}} (hd : topologicalKrullDim Z = 1) {
     norm_num at h5
 
 /- English proof (translation)
-Establish `hx : x ∈ ptsIn p σ (B.U j ⊓ B.U j')` using `mem_ptsIn_inf.mpr ⟨hj, hj'⟩`. Establish `h1` using `congrArg (fun g => ev p σ (B.U j ⊓ B.U j') g x) (t.compat j j')`. Rewrite `h1` using `[ev_mul]`. Rewrite using `[← ev_res inf_le_left hx, ← ev_res inf_le_right hx]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ev_chart_eq_gv_mul {R : Type} [CommRing R] {Z : Scheme.{0}} {B : LB Z} {p : Z ⟶ Sp R}
     {σ : R →+* ℂ} (t : B.Sec) {j j' : B.ι} {x : CxPts p σ} (hj : x ∈ ptsIn p σ (B.U j))
@@ -294,7 +290,7 @@ private theorem ev_chart_eq_gv_mul {R : Type} [CommRing R] {Z : Scheme.{0}} {B :
   exact h1
 
 /- English proof (translation)
-Unfold `HermNorm.dualNorm`. Rewrite using `[Matrix.mulVec_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow]`. Rewrite using `[← Finset.mul_sum, Real.sqrt_mul (by positivity), Real.sqrt_sq (norm_nonneg c)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dualNorm_smul' {m : ℕ} (h : HermNorm m) (c : ℂ) (v : Fin m → ℂ) :
     h.dualNorm (c • v) = ‖c‖ * h.dualNorm v := by
@@ -304,9 +300,9 @@ private theorem dualNorm_smul' {m : ℕ} (h : HermNorm m) (c : ℂ) (v : Fin m �
   rw [← Finset.mul_sum, Real.sqrt_mul (by positivity), Real.sqrt_sq (norm_nonneg c)]
 
 /- English proof (translation)
-Unfold `fsLog`. Rewrite using `[dualNorm_smul']`. Use `congr 1`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[show (∑ j, w j * (c * v j)) = c * ∑ j, w j * v j by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring]`. Rewrite using `[norm_mul, mul_div_mul_left _ _ (norm_ne_zero_iff.mpr hc)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fsLog_smul_of_ne_zero {m : ℕ} (h : HermNorm m) (w : Fin m → ℂ) {c : ℂ} (hc : c ≠ 0)
     (v : Fin m → ℂ) : fsLog h w (c • v) = fsLog h w v := by
@@ -320,15 +316,13 @@ private theorem fsLog_smul_of_ne_zero {m : ℕ} (h : HermNorm m) (w : Fin m → 
   rw [norm_mul, mul_div_mul_left _ _ (norm_ne_zero_iff.mpr hc)]
 
 /- English proof (translation)
-Use `set x := PtsOver.map i rfl (spMap σ) y with hxdef`. Establish `hm : ∀ w : CxPts (i ≫ p) σ, (PtsOver.map i rfl (spMap σ) w).1 = w.1 ≫ i` using `fun w => rfl`. Establish `hB'` using `LB.isLB_pull L.isLB i`. Use `set J := pick hB' y with hJdef`. Establish `hyJ : y ∈ ptsIn (i ≫ p) σ ((L.B.pull i).U J)` using `mem_pick hB' y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxJ : x ∈ ptsIn p σ (L.B.U (J PUnit.unit))` using `(GlobalTheory.Published.mem_ptsIn_pull hm).mp hyJ`. Establish `hpullev : ∀ t : L.B.Sec, ev (i ≫ p) σ ((L.B.pull i).U J) ((GlobalTheory.secPull t i).f J) y = ev p σ (L.B.U (J PUnit.unit)) (t.f (J PUnit.unit)) x`. Introduce `t`. Unfold `GlobalTheory.secPull`. Rewrite using `[chartSec_f]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ev_appLE_of_comp hm _ _ hyJ`. Establish `hx : x ∈ ptsIn p σ (nonzeroLocus su)`. Rewrite using `[← secVal_ne_zero_iff su hxJ, secVal_apply, ← hpullev su, ← secVal_apply]`. Conclude with `(secVal_ne_zero_iff _ hyJ).mpr hy`. Rewrite using `[log_nsq (L.φ σ) hF hu hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `set j := pick (L.φ σ).isLB x with hjdef`. Establish `hxj : x ∈ ptsIn p σ (L.B.U j)` using `mem_pick _ x`. Establish `hcoord : coords p σ (L.φ σ).isLB s x = GlobalTheory.CxPts.gv p σ L.B j (J PUnit.unit) x • coords (i ≫ p) σ hB' (fun k => GlobalTheory.secPull (s k) i) y`. Use function extensionality and compare the values at `k`. Simplify using `only [coords, Pi.smul_apply, smul_eq_mul]`.
-
-Rewrite using `[hpullev (s k)]`. Conclude with `ev_chart_eq_gv_mul (s k) hxj hxJ`. Rewrite using `[hcoord, fsLog_smul_of_ne_zero]`. Conclude with `ev_ne_zero (mem_ptsIn_inf.mpr ⟨hxj, hxJ⟩) (Units.isUnit _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_pull (hE : Emb p s) {σ : 𝓞 K →+* ℂ} {h₀ : HermNorm m} (hF : IsFS (L.φ σ) s h₀)
     {Z : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmersion i] {u : Fin m → 𝓞 K} {su : L.B.Sec} (hu : IsComb p s u su)
@@ -363,23 +357,21 @@ theorem log_pull (hE : Emb p s) {σ : 𝓞 K →+* ℂ} {h₀ : HermNorm m} (hF 
   exact ev_ne_zero (mem_ptsIn_inf.mpr ⟨hxj, hxJ⟩) (Units.isUnit _)
 
 /- English proof (translation)
-Take `⟨hE', hpt, hcomb⟩` from `stPull (𝓞 K) X Z p L.B m s i hE`. Establish `hX' : IsArithVar (i ≫ p) e` using `hX.of_isClosedImmersion i hc hd`. Establish `hgen : genIdeal (i ≫ p) (fun k => GlobalTheory.secPull (s k) i) = I`. Rewrite using `[hg, genIdeal, hpt]`. Establish `hu'` using `hcomb u su hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF' : IsFS ((L.restr i).φ (σ.comp (algebraMap (𝓞 K) K))) (fun k => GlobalTheory.secPull (s k) i) (H.normAt σ)` using `isFS_pull (hF σ) i`. Establish `hf' : ∃ f, IsChowForm (genIdeal (i ≫ p) (fun k => GlobalTheory.secPull (s k) i)) (e + 1) f`. Rewrite using `[hgen]`. Conclude with `hf`. Establish `hI' : IsProjPrime (genIdeal (i ≫ p) (fun k => GlobalTheory.secPull (s k) i))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgen]`. Conclude with `hI`. Establish `hn' : GroundTheory.Heights₂.Heights.linForm (fun j => (u j : K)) ∉ genIdeal (i ≫ p) (fun k => GlobalTheory.secPull (s k) i)`. Rewrite using `[hgen]`. Conclude with `hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k1, k2⟩` from `hA K Z (i ≫ p) (L.restr i).B m (fun k => GlobalTheory.secPull (s k) i) e hE' hX' hf' hI' σ ((L.restr i).φ (σ.comp (algebraMap (𝓞 K) K))) (H.normAt σ) ((L.restr i).cInf _) hF' (fun j => (u j : K)) hn'`. Establish `hm : ∀ w : CxPts (i ≫ p) (σ.comp (algebraMap (𝓞 K) K)), (PtsOver.map i rfl (spMap (σ.comp (algebraMap (𝓞 K) K))) w).1 = w.1 ≫ i` using `fun w => rfl`. Establish `hset` using `ptsIn_comb (σ := σ.comp (algebraMap (𝓞 K) K)) (LB.isLB_pull L.isLB i) hu'`. Establish `hfun : (fun y : CxPts (i ≫ p) (σ.comp (algebraMap (𝓞 K) K)) => Real.log ((L.φ _).nsq (secVal p _ su) (PtsOver.map i rfl _ y)) / 2) = fun y => fsLog (H.normAt σ) (fun k => σ (u k)) (coords (i ≫ p) _ (LB.isLB_pull L.isLB i) (fun k => GlobalTheory.secPull (s k) i) y)`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hy : y ∈ ptsIn (i ≫ p) (σ.comp (algebraMap (𝓞 K) K)) (nonzeroLocus (GlobalTheory.secPull su i))`. Conclude with `log_pull hE (hF σ) i hu y hy`. Establish `hy1` using `hy`. Rewrite `hy1` using `[hset]`. Simplify using `only [Set.mem_setOf_eq, not_not] at hy1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hy2 : PtsOver.map i rfl (spMap (σ.comp (algebraMap (𝓞 K) K))) y ∉ ptsIn p (σ.comp (algebraMap (𝓞 K) K)) (nonzeroLocus su)`. Rewrite using `[← mem_ptsIn_preimage hm, ← GlobalTheory.Cartier.nonzeroLocus_secPull]`. Conclude with `hy`. Establish `h0 : secVal p (σ.comp (algebraMap (𝓞 K) K)) su (pick (L.φ (σ.comp (algebraMap (𝓞 K) K))).isLB (PtsOver.map i rfl (spMap (σ.comp (algebraMap (𝓞 K) K))) y)) (PtsOver.map i rfl (spMap (σ.comp (algebraMap (𝓞 K) K))) y) = 0`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy2 ((secVal_ne_zero_iff su (mem_pick _ _)).mp hne)`. Establish `hl : Real.log ((L.φ (σ.comp (algebraMap (𝓞 K) K))).nsq (secVal p _ su) (PtsOver.map i rfl (spMap (σ.comp (algebraMap (𝓞 K) K))) y)) = 0`. Unfold `Weight.nsq`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl, fsLog]`. Simplify using `only [zero_div]`. Rewrite using `[show (∑ k, σ (u k) * coords (i ≫ p) (σ.comp (algebraMap (𝓞 K) K)) (LB.isLB_pull L.isLB i) (fun k => GlobalTheory.secPull (s k) i) y k) = 0 from hy1]`. Simplify using the standard rewrite rules. Use `⟨?_, fun he _ => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hfun, hset, ← hgen]`. Conclude with `k1`. Rewrite using `[hfun, ← hgen]`. Conclude with `k2 he`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arch_pull (hA : StArch) (hX : IsArithVar p D) (hE : Emb p s)
     (hF : ∀ σ : K →+* ℂ, IsFS (L.φ (σ.comp (algebraMap (𝓞 K) K))) s (H.normAt σ))
@@ -449,17 +441,17 @@ theorem arch_pull (hA : StArch) (hX : IsArithVar p D) (hE : Emb p s)
     exact k2 he
 
 /- English proof (translation)
-Take `rfl | he` from `Nat.eq_zero_or_pos e`. Establish `hd1 : topologicalKrullDim Z = 1` using `by simpa using hd`. Establish `hXZ : IsArithVar (i ≫ p) 0` using `GlobalTheory.IsArithVar.of_isClosedImmersion hX i hc hd`. Establish `hall : ∀ (σ : 𝓞 K →+* ℂ) (y : CxPts (i ≫ p) σ), y ∈ ptsIn (i ≫ p) σ (nonzeroLocus (GlobalTheory.secPull su i))`. Introduce `σ y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy` using `GlobalTheory.TwistTop.under_eq_genericPoint hXZ y`. Rewrite using `[GlobalTheory.CxPts.mem_ptsIn]`. Simplify using `only [GlobalTheory.Cartier.under] at hy`. Rewrite using `[hy]`. Conclude with `hη`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hhZ` using `GlobalTheory.HermLB.IsArithHeight.restrict hX hh i rfl`. Rewrite using `[GlobalTheory.HermLB.IsArithHeight.point hh Z i hc hd1 _ (GlobalTheory.Cartier.isRatSec_ratOfSec _ hη), GlobalTheory.HermLB.curveDeg_sec i su hη hall, finsum_emb]`. Use `congr 1`. Use `finsum_congr fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hm : (divOfSec (L.restr i).isLB (GlobalTheory.secPull su i) hη).mult z = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Simplify using the standard rewrite rules. Establish `hz1` using `GlobalTheory.Cartier.CartierDiv.coheight_eq_one_of_mult_ne_zero hm`. Establish `hcl` using `isClosed_of_coheight hd1 hz1`. Establish `hfin` using `hXZ.finite_residueField hcl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt` using `hhZ.closedPoint hcl`. Simplify using `only at hpt`. Rewrite using `[hpt]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Conclude with `(arch_pull hA hX hE hF i hc hd hg hf hI hu hn σ).2 rfl (hall _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨_, hrec⟩` from `GlobalTheory.HermLB.IsArithHeight.recursion_sec i su hη hh hc he hd`. Rewrite using `[hrec, finsum_emb]`. Use `congr 1`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Conclude with `(arch_pull hA hX hE hF i hc hd hg hf hI hu hn σ).1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem step (hA : StArch) (hX : IsArithVar p D) (hE : Emb p s)
     (hF : ∀ σ : K →+* ℂ, IsFS (L.φ (σ.comp (algebraMap (𝓞 K) K))) s (H.normAt σ)) (hh : L.IsArithHeight h)
@@ -506,13 +498,13 @@ theorem step (hA : StArch) (hX : IsArithVar p D) (hE : Emb p s)
     exact (arch_pull hA hX hE hF i hc hd hg hf hI hu hn σ).1
 
 /- English proof (translation)
-Take `⟨hE', hpt, -⟩` from `stPull (𝓞 K) X Z p L.B m s i hE`. Establish `hproj : IsProjOver (i ≫ p)` using `GlobalTheory.ProjSpace.isProjOver_comp_of_isClosedImmersion i hX.isProjOver`. Establish `hv' : (ptIdeal (i ≫ p) (fun k => GlobalTheory.secPull (s k) i) (genericPoint Z)).comap CC = v.asIdeal`. Rewrite using `[hpt]`. Conclude with `hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `hV K Z (i ≫ p) (L.B.pull i) m (fun k => GlobalTheory.secPull (s k) i) v e hproj hE' hv' hd`. Rewrite `hx` using `[hpt]`. Use `letI := x`. Establish `hbij` using `Ideal.bijective_algebraMap_quotient_residueField v.asIdeal`. Establish `hcard : Nat.card v.asIdeal.ResidueField = Ideal.absNorm v.asIdeal`.
+Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr (Equiv.ofBijective _ hbij)).symm`. Use `haveI : Finite v.asIdeal.ResidueField := by`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[hcard]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Introduce `h0`. Conclude with `v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h0)`. Rewrite using `[hh.vertical Z i v.asIdeal.ResidueField e hd, hx, hcard]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem height_vertical (hV : StVert) (hX : IsArithVar p D) (hE : Emb p s) (hh : L.IsArithHeight h)
     {Z : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmersion i] [IsIntegral Z] {e : ℕ} (hd : topologicalKrullDim Z = e)
@@ -541,11 +533,11 @@ theorem height_vertical (hV : StVert) (hX : IsArithVar p D) (hE : Emb p s) (hh :
   rfl
 
 /- English proof (translation)
-Establish `hgrp` using `GroundTheory.Heights₂.Heights.isWeightedHomogeneous_inGroup_of_dvd hf hf0 hdvd`. Use `choose a ha using hgrp`. Establish `hw : ∀ (d : Fin k × Fin n →₀ ℕ) (i : Fin k), Finsupp.weight (GroundTheory.Heights₂.Heights.groupWeight k n) d i = Finsupp.weight (GroundTheory.Heights₂.Heights.inGroup i) d`. Introduce `d i`. Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, GroundTheory.Heights₂.Heights.groupWeight, GroundTheory.Heights₂.Heights.inGroup, Pi.single_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x.1 = i`. Simplify using `[hx]`. Simplify using `[hx, Ne.symm hx]`. Break down `Nat.eq_zero_or_pos k with hk | hk` into its components or cases.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Substitute `hk` using the available equality. Conclude with `⟨0, fun d _ => funext fun i => i.elim0⟩`. Use `⟨a ⟨0, hk⟩, fun d hd => funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hw d i, ha i hd]`. Conclude with `GroundTheory.Heights₂.Heights.IsChowForm.degrees_eq hg ha i ⟨0, hk⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_isMultiHomog_of_isChowForm_dvd {F : Type} [Field F] {k n δ : ℕ} {f g : MvPolynomial (Fin k × Fin n) F}
     {I : Ideal (MvPolynomial (Fin n) F)} (hg : IsChowForm I k g) (hf : IsMultiHomog δ f) (hf0 : f ≠ 0)
@@ -571,63 +563,55 @@ private theorem exists_isMultiHomog_of_isChowForm_dvd {F : Type} [Field F] {k n 
     exact GroundTheory.Heights₂.Heights.IsChowForm.degrees_eq hg ha i ⟨0, hk⟩
 
 /- English proof (translation)
-Take `⟨hE', hpt', hcomb'⟩` from `stPull (𝓞 K) X Z p L.B m s i hE`. Establish `hQpt : ptIdeal (i ≫ p) (fun k => GlobalTheory.secPull (s k) i) (genericPoint Z) = ptIdeal p s (i (genericPoint Z))` using `hpt' _`. Establish `hc : CharZero Γ(Z, ⊤)` using `(charZero_iff hE').mpr (by rw [hQpt]; exact hc0)`. Establish `hXZ : IsArithVar (i ≫ p) e` using `hX.of_isClosedImmersion i hc hd`. Use `haveI : IsLocallyNoetherian Z := hXZ.isLocallyNoetherian`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQproj : IsProjPrime (ptIdeal p s (i (genericPoint Z)))` using `ChowFormHeightComparison₂.CF.P.isProjPrime hE _`. Establish `hIproj : IsProjPrime ((ptIdeal p s (i (genericPoint Z))).map φ)` using `isProjPrime_map hQproj hc0`. Take `⟨j, hj⟩` from `ChowFormHeightComparison₂.CF.P.exists_mem hE (i (genericPoint Z))`. Establish `hu : IsComb p s (Pi.single j 1) (s j)` using `isComb_single j`. Establish `hnQ : GroundTheory.Heights₂.Heights.linForm (Pi.single j 1 : Fin m → 𝓞 K) ∉ ptIdeal p s (i (genericPoint Z))` using `(ChowFormHeightComparison₂.CF.P.mem_iff hE hu _).mp hj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : GroundTheory.Heights₂.Heights.linForm (fun k => ((Pi.single j 1 : Fin m → 𝓞 K) k : K)) ∉ (ptIdeal p s (i (genericPoint Z))).map φ`. Introduce `hmem`. Apply `hnQ` to reduce the goal to its premises. Rewrite `hmem` using `[← map_linForm]`. Establish `hmem'` using `Ideal.mem_comap.mpr hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hmem'` using `[comap_map hQproj.isPrime hc0]`. Then use the resulting hypothesis. Establish `hu'` using `hcomb' _ _ hu`. Establish `hη : genericPoint Z ∈ nonzeroLocus (GlobalTheory.secPull (s j) i)`. Rewrite using `[ChowFormHeightComparison₂.CF.P.mem_iff hE' hu' (genericPoint Z), hQpt]`. Conclude with `hnQ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstep` using `step hA hX hE hF hh i hc hd rfl ⟨f, hf⟩ hIproj hu hn hη`. Establish `hrec` using `hR K m e δ H _ f _ hIproj hf hδ hn`. Take `⟨hdiv1, hdiv2⟩` from `stDiv (𝓞 K) Z (i ≫ p) (L.B.pull i) m (fun k => GlobalTheory.secPull (s k) i) hE' (Pi.single j 1) (GlobalTheory.secPull (s j) i) hu' hη`. Establish `hmult : ∀ z : Z, (divOfSec (L.restr i).isLB (GlobalTheory.secPull (s j) i) hη).mult z ≠ 0 ↔ ptIdeal p s (i z) ∈ relComps (ptIdeal p s (i (genericPoint Z)) ⊔ Ideal.span {GroundTheory.Heights₂.Heights.linForm (Pi.single j 1 : Fin m → 𝓞 K)})`. Introduce `z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hdiv1 z`. Rewrite `h1` using `[hpt', hpt']`. Conclude with `h1`. Establish `hmu : ∀ z : Z, (divOfSec (L.restr i).isLB (GlobalTheory.secPull (s j) i) hη).mult z ≠ 0 → (divOfSec (L.restr i).isLB (GlobalTheory.secPull (s j) i) hη).mult z = (localMult (ptIdeal p s (i (genericPoint Z)) ⊔ Ideal.span {GroundTheory.Heights₂.Heights.linForm (Pi.single j 1 : Fin m …`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hdiv2 z hz`. Rewrite `h1` using `[hpt', hpt']`. Conclude with `h1`. Establish `hPtinj : Function.Injective (fun z : Z => ptIdeal p s (i z))`. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `ChowFormHeightComparison₂.CF.P.injective hE'` to reduce the goal to its premises. Simplify using `only [hpt']`. Conclude with `hab`. Establish `hrelfin : (relComps (ptIdeal p s (i (genericPoint Z)) ⊔ Ideal.span {GroundTheory.Heights₂.Heights.linForm (Pi.single j 1 : Fin m → 𝓞 K)})).Finite` using `(Ideal.finite_minimalPrimes_of_isNoetherianRing _ _).subset (fun W hW => hW.1)`. Establish `hSfin : {z : Z | (divOfSec (L.restr i).isLB (GlobalTheory.secPull (s j) i) hη).mult z ≠ 0}.Finite` using `(hrelfin.preimage hPtinj.injOn).subset (fun z hz => (hmult z).mp hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmemS : ∀ z, z ∈ hSfin.toFinset ↔ (divOfSec (L.restr i).isLB (GlobalTheory.secPull (s j) i) hη).mult z ≠ 0` using `fun z => by simp`. Establish `hrel : ∀ W, W ∈ relComps (ptIdeal p s (i (genericPoint Z)) ⊔ Ideal.span {GroundTheory.Heights₂.Heights.linForm (Pi.single j 1 : Fin m → 𝓞 K)}) ↔ ∃ z ∈ hSfin.toFinset, ptIdeal p s (i z) = W`. Introduce `W`. Prove the components needed by the constructor for the conclusion. Introduce `hW`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hWproj : IsProjPrime W` using `isProjPrime_of_relComps (GroundTheory.Heights₂.Heights.isHomogIdeal_sup_span_linForm hQproj.isHomog _) hW`. Establish `hle : ptIdeal (i ≫ p) (fun k => GlobalTheory.secPull (s k) i) (genericPoint Z) ≤ W`. Rewrite using `[hQpt]`. Conclude with `le_trans le_sup_left hW.1.1.2`. Take `⟨z, hz⟩` from `ChowFormHeightComparison₂.CF.P.exists_pt hE' W hWproj hle`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hz` using `[hpt']`. Conclude with `⟨z, (hmemS z).mpr ((hmult z).mpr (hz ▸ hW)), hz⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `(hmult z).mp ((hmemS z).mp hz)`. Establish `hμ : ∀ z ∈ hSfin.toFinset, (divOfSec (L.restr i).isLB (GlobalTheory.secPull (s j) i) hη).mult z = (localMult (ptIdeal p s (i (genericPoint Z)) ⊔ Ideal.span {GroundTheory.Heights₂.Heights.linForm (Pi.single j 1 : Fin m → 𝓞 K)}) (ptIdeal p s (i z)) : ℤ)` using `fun z hz => hmu z ((hmemS z).mp hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hμne : ∀ z ∈ hSfin.toFinset, (divOfSec (L.restr i).isLB (GlobalTheory.secPull (s j) i) hη).mult z ≠ 0` using `fun z hz => (hmemS z).mp hz`. Establish `hsub : ∀ z ∈ hSfin.toFinset, ∃ (Zz : Scheme.{0}) (jz : Zz ⟶ Z) (_ : IsClosedImmersion jz) (_ : IsIntegral Zz), jz (genericPoint Zz) = z ∧ topologicalKrullDim Zz = e`. Introduce `z hz`. Take `⟨Zz, jz, hjz, hZz, hgen⟩` from `GlobalTheory.exists_isClosedImmersion_genericPoint z`. Use `⟨Zz, jz, hjz, hZz, hgen, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `stDim (𝓞 K) Z (i ≫ p) e hXZ Zz jz (by rw [hgen]; exact GlobalTheory.Cartier.CartierDiv.coheight_eq_one_of_mult_ne_zero ((hmemS z).mp hz))`. Establish `hvg : ∀ z ∈ hSfin.toFinset, ∀ v : HeightOneSpectrum (𝓞 K), (ptIdeal p s (i z)).comap CC = v.asIdeal → h (i z) = chowDegree (reduceMod v (ptIdeal p s (i z))) (e + 1) * Real.log (Ideal.absNorm v.asIdeal)`. Introduce `z hz v hv`. Take `⟨Zz, jz, hjz, hZz, hgen, hdz⟩` from `hsub z hz`. Use `haveI := hjz`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hZz`. Establish `hv' : (ptIdeal p s ((jz ≫ i) (genericPoint Zz))).comap CC = v.asIdeal` using `by show (ptIdeal p s (i (jz (genericPoint Zz)))).comap CC = v.asIdeal`. Rewrite using `[hgen]`. Conclude with `hv`. Establish `hfin : h (i (jz (genericPoint Zz))) = chowDegree (reduceMod v (ptIdeal p s (i (jz (genericPoint Zz))))) (e + 1) * Real.log (Ideal.absNorm v.asIdeal)` using `height_vertical hV hX hE hh (jz ≫ i) hdz v hv'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hfin` using `[hgen]`. Conclude with `hfin`. Establish `hvert` using `vertTerm_eq (S := hSfin.toFinset) (Pt := fun z => ptIdeal p s (i z)) (μ := fun z => (divOfSec (L.restr i).isLB (GlobalTheory.secPull (s j) i) hη).mult z) hQproj.isPrime hc0 hPtinj hrel hμ (e + 1) (fun z => h (i z)) hvg`. Establish `hdc` using `divCycle_eq (S := hSfin.toFinset) (Pt := fun z => ptIdeal p s (i z)) (μ := fun z => (divOfSec (L.restr i).isLB (GlobalTheory.secPull (s j) i) hη).mult z) hPtinj hrel hμ hμne`. Take `⟨c, hcne, g, hg, hspec⟩` from `hS K m e ((ptIdeal p s (i (genericPoint Z))).map φ) f _ hIproj hf hn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hCc : (MvPolynomial.C c : MvPolynomial (Fin e × Fin m) K) ≠ 0` using `by simpa using hcne`. Establish `hspec0 : specFirst f (fun k => ((Pi.single j 1 : Fin m → 𝓞 K) k : K)) ≠ 0`. Rewrite using `[hspec]`. Conclude with `mul_ne_zero hCc (Finset.prod_ne_zero_iff.mpr fun W hW => pow_ne_zero _ (hg W hW).1)`. Establish `hfs : ∑ᶠ z, ((divOfSec (L.restr i).isLB (GlobalTheory.secPull (s j) i) hη).mult z : ℝ) * h (i z) = ∑ z ∈ hSfin.toFinset, ((divOfSec (L.restr i).isLB (GlobalTheory.secPull (s j) i) hη).mult z : ℝ) * h (i z)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `z hz`. Rewrite `hz` using `[Function.mem_support]`. Rewrite using `[Finset.mem_coe, hmemS]`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hz` to reduce the goal to its premises. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Rewrite `hfs` using `[← Finset.sum_filter_add_sum_filter_not hSfin.toFinset (fun z => (ptIdeal p s (i z)).comap CC = ⊥)]`. Establish `hd0 : (Module.finrank ℚ K : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Module.finrank_pos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hhor : ∑ z ∈ hSfin.toFinset with (ptIdeal p s (i z)).comap CC = ⊥, ((divOfSec (L.restr i).isLB (GlobalTheory.secPull (s j) i) hη).mult z : ℝ) * h (i z) = (Module.finrank ℚ K : ℝ) * chowHt H e δ (specFirst f (fun k => ((Pi.single j 1 : Fin m → 𝓞 K) k : K)))`. Distinguish the cases in `he : e = 0`. Substitute `he` using the available equality. Establish `hempty : hSfin.toFinset.filter (fun z => (ptIdeal p s (i z)).comap CC = ⊥) = ∅`. Rewrite using `[Finset.filter_eq_empty_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `z hz hzc`. Establish `hW` using `hdc.1 z hz hzc`. Conclude with `GroundTheory.Heights₂.Heights.not_isChowForm_zero hPt (isProjPrime_map (ChowFormHeightComparison₂.CF.P.isProjPrime hE _) hzc) _ (hg _ hW)`. Rewrite using `[hempty, Finset.sum_empty]`. Establish `hsupp : (divCycle ((ptIdeal p s (i (genericPoint Z))).map φ) (fun k => ((Pi.single j 1 : Fin m → 𝓞 K) k : K))).support = ∅`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hdc.2 (fun _ => 1)`. Rewrite `h1` using `[hempty, Finset.sum_empty]`. Simplify using `only [mul_one] at h1`. Rewrite using `[Finset.eq_empty_iff_forall_notMem]`. Introduce `W hW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos` using `(Finset.sum_eq_zero_iff_of_nonneg (fun W _ => Nat.cast_nonneg _)).mp h1 W hW`. Rewrite `hpos` using `[Nat.cast_eq_zero]`. Conclude with `(Finsupp.mem_support_iff.mp hW) hpos`. Rewrite using `[hspec, hsupp, Finset.prod_empty, mul_one, GroundTheory.Heights₂.Heights.chowHt_zero_groups_eq_zero H δ hCc, mul_zero]`. Take `⟨e', rfl⟩` from `Nat.exists_eq_succ_of_ne_zero he`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hdeg : ∀ W ∈ (divCycle ((ptIdeal p s (i (genericPoint Z))).map φ) (fun k => ((Pi.single j 1 : Fin m → 𝓞 K) k : K))).support, ∃ a, IsMultiHomog a (g W)`. Introduce `W hW`. Use `exists_isMultiHomog_of_isChowForm_dvd (hg W hW) (hδ.specFirst _) hspec0 ?_` and prove the remaining obligations. Rewrite using `[hspec]`. Conclude with `Dvd.dvd.mul_left ((dvd_pow_self (g W) (Finsupp.mem_support_iff.mp hW)).trans (Finset.dvd_prod_of_mem (fun W => g W ^ (divCycle ((ptIdeal p s (i (genericPoint Z))).map φ) (fun k => ((Pi.single j 1 : Fin m → 𝓞 K) k : K))) W) hW)) _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `choose! δW hδW using hdeg`. Establish `hIH : ∀ z ∈ hSfin.toFinset, (ptIdeal p s (i z)).comap CC = ⊥ → h (i z) = (Module.finrank ℚ K : ℝ) * chowHt H (e' + 1) (δW ((ptIdeal p s (i z)).map φ)) (g ((ptIdeal p s (i z)).map φ))`. Introduce `z hz hzc`. Take `⟨Zz, jz, hjz, hZz, hgen, hdz⟩` from `hsub z hz`. Use `haveI := hjz`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hZz`. Establish `hW` using `hdc.1 z hz hzc`. Establish `key : h (i (jz (genericPoint Zz))) = (Module.finrank ℚ K : ℝ) * chowHt H (e' + 1) (δW ((ptIdeal p s (i z)).map φ)) (g ((ptIdeal p s (i z)).map φ))` using `ih e' rfl Zz (jz ≫ i) (by show (ptIdeal p s (i (jz (genericPoint Zz)))).comap CC = ⊥; rw [hgen]; exact hzc) hdz (δW ((ptIdeal p s (i z)).map φ)) (g ((ptIdeal p s (i z)).map φ)) (by show IsChowForm ((ptIdeal p s (i (jz (genericPoint Zz)))).map φ) (e' + 1) _`. Rewrite using `[hgen]`. Conclude with `hg _ hW) (hδW _ hW)`.
-
-Rewrite `key` using `[hgen]`. Conclude with `key`. Establish `hprodH : IsMultiHomog (∑ W ∈ (divCycle ((ptIdeal p s (i (genericPoint Z))).map φ) (fun k => ((Pi.single j 1 : Fin m → 𝓞 K) k : K))).support, (divCycle ((ptIdeal p s (i (genericPoint Z))).map φ) (fun k => ((Pi.single j 1 : Fin m → 𝓞 K) k : K))) W * δW W) (MvPolynomial.C c * ∏ W ∈ …`. Establish `h1` using `(MvPolynomial.isWeightedHomogeneous_C (GroundTheory.Heights₂.Heights.groupWeight (e' + 1) m) c).mul (MvPolynomial.IsWeightedHomogeneous.prod _ _ _ (fun W hW => (hδW W hW).pow ((divCycle ((ptIdeal p s (i (genericPoint Z))).map φ) (fun k => ((Pi.single j 1 : Fin m → 𝓞 K) k : K))) W …`. Unfold `IsMultiHomog`.
-
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[Finset.sum_apply]`. Establish `hδeq` using `MvPolynomial.IsWeightedHomogeneous.inj_right hspec0 (hδ.specFirst _) (by rw [hspec]; exact hprodH)`. Rewrite using `[Finset.sum_congr rfl (fun z hz => by rw [hIH z (Finset.mem_filter.mp hz).1 (Finset.mem_filter.mp hz).2])]`.
-
-Rewrite using `[← hdc.2 (fun W => (Module.finrank ℚ K : ℝ) * chowHt H (e' + 1) (δW W) (g W))]`. Rewrite using `[congrFun hδeq 0, hspec, GroundTheory.Heights₂.Heights.chowHt_C_mul_prod hMul H _ _ δW g (fun W hW => (hg W hW).1) hcne, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hstep, hfs, hrec, hhor]`. Simplify using `only [ne_eq] at hvert`. Rewrite using `[← hvert]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem core_lemma (hV : StVert) (hA : StArch) (hR : GroundTheory.Heights₂.Heights.ChowHeightRecursion.Statement)
     (hS : GroundTheory.Heights₂.Heights.ChowFormSection.Statement) (hMul : GroundTheory.Heights₂.Heights.ChowHeightMul.Statement)
@@ -847,9 +831,9 @@ private theorem core_lemma (hV : StVert) (hA : StArch) (hR : GroundTheory.Height
 
 open Classical in
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero`. Introduce `Z i _ _ hc0 hd δ f hf hδ`. Conclude with `core_lemma hV hA hR hS hMul hPt hX hE hF hh 0 (fun e' he => absurd he (Nat.succ_ne_zero e').symm) Z i hc0 hd δ f hf hδ`. Consider the case `succ e ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Z i _ _ hc0 hd δ f hf hδ`. Use `core_lemma hV hA hR hS hMul hPt hX hE hF hh (e + 1) (fun e' he => ?_) Z i hc0 hd δ f hf hδ` and prove the remaining obligations. Take `rfl : e = e'` from `Nat.succ.inj he`. Introduce `Z' i' _ _ hc' hd' δ' f' hf' hδ'`. Conclude with `ih Z' i' hc' hd' δ' f' hf' hδ'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem core (hV : StVert) (hA : StArch) (hR : GroundTheory.Heights₂.Heights.ChowHeightRecursion.Statement)
     (hS : GroundTheory.Heights₂.Heights.ChowFormSection.Statement) (hMul : GroundTheory.Heights₂.Heights.ChowHeightMul.Statement)
@@ -877,7 +861,7 @@ end ChowFormHeightComparison₂.CF.M
 namespace ChowFormHeightComparison₂.CF
 
 /- English proof (translation)
-Introduce and unpack `K _ _ m H e Z _ p L s hX hE hF δ f hf hδ a ⟨h, hh, rfl⟩`. Conclude with `M.core hV hA hR hS hMul hPt hX hE hF hh e Z (𝟙 Z) ((M.charZero_iff hE).1 hX.charZero) hX.dim_eq δ f hf hδ`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem stMain_of (hV : StVert) (hA : StArch) (hR : GroundTheory.Heights₂.Heights.ChowHeightRecursion.Statement)
     (hS : GroundTheory.Heights₂.Heights.ChowFormSection.Statement) (hMul : GroundTheory.Heights₂.Heights.ChowHeightMul.Statement)

@@ -12,19 +12,19 @@ section Glue
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (ε : A)
 
 /- English proof (translation)
-Rewrite using `[mul_sub, mul_one, hε, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_mul_compl (hε : ε * ε = ε) : ε * (1 - ε) = 0 := by
   rw [mul_sub, mul_one, hε, sub_self]
 
 /- English proof (translation)
-Rewrite using `[sub_mul, one_mul, hε, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compl_mul_idem (hε : ε * ε = ε) : (1 - ε) * ε = 0 := by
   rw [sub_mul, one_mul, hε, sub_self]
 
 /- English proof (translation)
-Rewrite using `[sub_mul, one_mul, idem_mul_compl ε hε, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compl_idem (hε : ε * ε = ε) : (1 - ε) * (1 - ε) = 1 - ε := by
   rw [sub_mul, one_mul, idem_mul_compl ε hε, sub_zero]
@@ -49,7 +49,7 @@ theorem glue_val (hε : ε * ε = ε) (g h : GL n A) :
     (glue ε hε (g, h) : Matrix n n A) = (1 - ε) • (g : Matrix n n A) + ε • (h : Matrix n n A) := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[bc, glue_val, h0]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bc_glue_zero (hε : ε * ε = ε) {B : Type} [CommRing B] (φ : A →+* B) (h0 : φ ε = 0) (g h : GL n A) :
     bc φ (glue ε hε (g, h)) = bc φ g := by
@@ -58,7 +58,7 @@ theorem bc_glue_zero (hε : ε * ε = ε) {B : Type} [CommRing B] (φ : A →+* 
   simp [bc, glue_val, h0]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[bc, glue_val, h1]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bc_glue_one (hε : ε * ε = ε) {B : Type} [CommRing B] (φ : A →+* B) (h1 : φ ε = 1) (g h : GL n A) :
     bc φ (glue ε hε (g, h)) = bc φ h := by
@@ -67,11 +67,11 @@ theorem bc_glue_one (hε : ε * ε = ε) {B : Type} [CommRing B] (φ : A →+* B
   simp [bc, glue_val, h1]
 
 /- English proof (translation)
-Establish `hσ1 : σ (1 - ε) = 1 - ε` using `by rw [map_sub, map_one, hσ]`. Establish `hc : ∀ (c : A) (M : Matrix n n A), cT σ (c • M) = σ c • cT σ M`. Introduce `c M`. Use extensionality with `i j`. Simplify using `[cT]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hadd : ∀ M N : Matrix n n A, cT σ (M + N) = cT σ M + cT σ N`. Introduce `M N`. Use extensionality with `i j`. Simplify using `[cT]`. Establish `hg' : cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J` using `hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hh' : cT σ (h : Matrix n n A) * J * (h : Matrix n n A) = J` using `hh`. Use `show cT σ ((glue ε hε (g, h) : GL n A) : Matrix n n A) * J * ((glue ε hε (g, h) : GL n A) : Matrix n n A) = J`. Rewrite using `[glue_val, hadd, hc, hc, hσ1, hσ]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul, compl_idem ε hε, hε, idem_mul_compl ε hε, compl_mul_idem ε hε, zero_smul, add_zero, zero_add, hg', hh']`. Rewrite using `[← add_smul, sub_add_cancel, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_mem_UJ (hε : ε * ε = ε) (σ : A →+* A) (hσ : σ ε = ε) (J : Matrix n n A) {g h : GL n A} (hg : g ∈ UJ σ J) (hh : h ∈ UJ σ J) :
     glue ε hε (g, h) ∈ UJ σ J := by
@@ -104,7 +104,7 @@ def eP : FiniteAdeleRing (𝓞 F) F :=
     · simp only [h, if_false]; exact zero_mem _⟩
 
 /- English proof (translation)
-Use `show (eP F p) v = 1`. Use `first`. Consider the case `exact if_pos h`. Consider the case `simp [eP, h]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem idempotentOver_eval_eq_one (v : HeightOneSpectrum (𝓞 F)) (h : ((p : ℕ) : 𝓞 F) ∈ v.asIdeal) : evalV F v (eP F p) = 1 := by
   show (eP F p) v = 1
@@ -113,7 +113,7 @@ theorem idempotentOver_eval_eq_one (v : HeightOneSpectrum (𝓞 F)) (h : ((p : �
   | simp [eP, h]
 
 /- English proof (translation)
-Use `show (eP F p) v = 0`. Use `first`. Consider the case `exact if_neg h`. Consider the case `simp [eP, h]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem idempotentOver_eval_eq_zero (v : HeightOneSpectrum (𝓞 F)) (h : ((p : ℕ) : 𝓞 F) ∉ v.asIdeal) : evalV F v (eP F p) = 0 := by
   show (eP F p) v = 0
@@ -122,9 +122,9 @@ theorem idempotentOver_eval_eq_zero (v : HeightOneSpectrum (𝓞 F)) (h : ((p : 
   | simp [eP, h]
 
 /- English proof (translation)
-Establish `key : ∀ v, (eP F p * eP F p) v = (eP F p) v` using `fun v => by show (eP F p) v * (eP F p) v = (eP F p) v`. Distinguish the cases in `h : ((p : ℕ) : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[show (eP F p) v = 1 from idempotentOver_eval_eq_one F p v h, one_mul]`. Rewrite using `[show (eP F p) v = 0 from idempotentOver_eval_eq_zero F p v h, zero_mul]`. Use `first`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact RestrictedProduct.ext key`. Consider the case `exact Subtype.ext (funext key)`. Consider the case `(ext1 v; exact key v)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem projection_idem : eP F p * eP F p = eP F p := by
   have key : ∀ v, (eP F p * eP F p) v = (eP F p) v := fun v => by
@@ -142,19 +142,19 @@ variable (E : Type) [Field E] [Algebra F E]
 def epsP : E ⊗[F] FiniteAdeleRing (𝓞 F) F := (1 : E) ⊗ₜ[F] eP F p
 
 /- English proof (translation)
-Rewrite using `[epsP, Algebra.TensorProduct.tmul_mul_tmul, one_mul, projection_idem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isIdempotentElem_placeIdempotent : epsP F p E * epsP F p E = epsP F p E := by
   rw [epsP, Algebra.TensorProduct.tmul_mul_tmul, one_mul, projection_idem]
 
 /- English proof (translation)
-Simplify using `[sigR, epsP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem epsP_sig (σE : E →ₐ[F] E) : sigR σE (FiniteAdeleRing (𝓞 F) F) (epsP F p E) = epsP F p E := by
   simp [sigR, epsP]
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.one_def]`. Simplify using `[prV, epsP, idempotentOver_eval_eq_one F p v h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem epsP_over (v : HeightOneSpectrum (𝓞 F)) (h : ((p : ℕ) : 𝓞 F) ∈ v.asIdeal) :
     prV (E := E) v (epsP F p E) = 1 := by
@@ -162,7 +162,7 @@ theorem epsP_over (v : HeightOneSpectrum (𝓞 F)) (h : ((p : ℕ) : 𝓞 F) ∈
   simp [prV, epsP, idempotentOver_eval_eq_one F p v h]
 
 /- English proof (translation)
-Simplify using `[prV, epsP, idempotentOver_eval_eq_zero F p v h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem epsP_off (v : HeightOneSpectrum (𝓞 F)) (h : ((p : ℕ) : 𝓞 F) ∉ v.asIdeal) :
     prV (E := E) v (epsP F p E) = 0 := by
@@ -183,7 +183,7 @@ def trivP (sp : Spaces R F E) (p : ℕ) (y : UPts sp.cm.sig sp.gram0 (FiniteAdel
     glue_mem_UJ (epsP F p E) (isIdempotentElem_placeIdempotent F p E) _ (epsP_sig F p E sp.cm.sig) _ y.2 (Subgroup.one_mem _)⟩
 
 /- English proof (translation)
-Conclude with `(bc_glue_one (epsP F p E) (isIdempotentElem_placeIdempotent F p E) (prV (E := E) v) (epsP_over F p E v h) (y : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) 1).trans (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem trivializeAt_component_eq_one_of_mem (p : ℕ) (y : UPts sp.cm.sig sp.gram0 (FiniteAdeleRing (𝓞 F) F)) (v : HeightOneSpectrum (𝓞 F))
     (h : ((p : ℕ) : 𝓞 F) ∈ v.asIdeal) :
@@ -192,7 +192,7 @@ theorem trivializeAt_component_eq_one_of_mem (p : ℕ) (y : UPts sp.cm.sig sp.gr
     (y : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) 1).trans (map_one _)
 
 /- English proof (translation)
-Conclude with `bc_glue_zero (epsP F p E) (isIdempotentElem_placeIdempotent F p E) (prV (E := E) v) (epsP_off F p E v h) (y : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) 1`.
+A detailed English derivation is pending.
 -/
 theorem trivializeAt_component_of_notMem (p : ℕ) (y : UPts sp.cm.sig sp.gram0 (FiniteAdeleRing (𝓞 F) F)) (v : HeightOneSpectrum (𝓞 F))
     (h : ((p : ℕ) : 𝓞 F) ∉ v.asIdeal) :
@@ -202,7 +202,7 @@ theorem trivializeAt_component_of_notMem (p : ℕ) (y : UPts sp.cm.sig sp.gram0 
     (y : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) 1
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.awayFrom₂`. Use `Subgroup.mem_inf.mpr ⟨(y⁻¹ * trivP sp p y).2, ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_iInf.mpr fun v => Subgroup.mem_iInf.mpr fun hv => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, trivializeAt_component_of_notMem p y v hv, inv_mul_cancel]`. Conclude with `Subgroup.one_mem _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mul_trivializeAt_mem_away (L : ColLevel R F E sp gp C A clsLat) (p : ℕ)
     (y : UPts sp.cm.sig sp.gram0 (FiniteAdeleRing (𝓞 F) F)) :
@@ -216,7 +216,7 @@ theorem inv_mul_trivializeAt_mem_away (L : ColLevel R F E sp gp C A clsLat) (p :
   exact Subgroup.one_mem _
 
 /- English proof (translation)
-Use `((DoubleCoset.eq _ _ _ _).mpr ⟨1, Subgroup.one_mem _, y⁻¹ * trivP sp p y, ?_, ?_⟩).symm` and prove the remaining obligations. Conclude with `Subgroup.mem_subgroupOf.mpr (inv_mul_trivializeAt_mem_away L p y)`. Rewrite using `[one_mul, mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_trivP (L : ColLevel R F E sp gp C A clsLat) (p : ℕ)
     (y : UPts sp.cm.sig sp.gram0 (FiniteAdeleRing (𝓞 F) F)) :
@@ -230,14 +230,14 @@ def repP (L : ColLevel R F E sp gp C A clsLat) (p : ℕ) (i : compL L p) :
   trivP sp p (Quotient.out i)
 
 /- English proof (translation)
-Conclude with `(mk_trivP L p (Quotient.out i)).trans (Quotient.out_eq' i)`.
+A detailed English derivation is pending.
 -/
 theorem repP_mk (L : ColLevel R F E sp gp C A clsLat) (p : ℕ) (i : compL L p) :
     (Quotient.mk'' (repP L p i) : compL L p) = i := by
   exact (mk_trivP L p (Quotient.out i)).trans (Quotient.out_eq' i)
 
 /- English proof (translation)
-Conclude with `trivializeAt_component_eq_one_of_mem p (Quotient.out i) v h`.
+A detailed English derivation is pending.
 -/
 theorem repP_over (L : ColLevel R F E sp gp C A clsLat) (p : ℕ) (i : compL L p) (v : HeightOneSpectrum (𝓞 F))
     (h : ((p : ℕ) : 𝓞 F) ∈ v.asIdeal) :

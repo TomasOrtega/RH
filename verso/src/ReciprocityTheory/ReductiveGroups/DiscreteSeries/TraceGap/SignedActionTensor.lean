@@ -18,9 +18,9 @@ section Gen
 variable {W : Type*} [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Simplify using `only [khwSub, IsKHWVec, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun a b hab he => h2 a b ⟨hab, he⟩⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h1, fun a b h => h2 a b h.1 h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_highestWeightSub_iff (ε : Fin n → Bool) (F : Fin n → Fin n → Module.End ℂ W) (γ : Fin n → ℝ) (x : W) :
     x ∈ khwSub ε F γ ↔ IsKHWVec ε F γ x := by
@@ -33,11 +33,11 @@ theorem mem_highestWeightSub_iff (ε : Fin n → Bool) (F : Fin n → Fin n → 
     exact ⟨h1, fun a b h => h2 a b h.1 h.2⟩
 
 /- English proof (translation)
-Introduce `m hm`. Assume the negation of the conclusion as `hnot`. Take `⟨x, rfl⟩` from `finProdFinEquiv.surjective m`. Establish `hx : ¬ (ε x.1 = true ∧ ε x.2 = false)` using `fun h => hnot ((lf_mem_phys ε x.1 x.2).2 h)`. Establish `h0 : cmT (N` using `W) x.1 x.2 z = 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [physicalSubspace, Submodule.mem_iInf, LinearMap.mem_ker] at hz`. Conclude with `hz x.1 x.2 hx`. Establish `h1 : LinearMap.lTensor W (cpFock x.1 x.2 ∘ₗ cmFock x.1 x.2) z = 0`. Rewrite using `[LinearMap.lTensor_comp, LinearMap.comp_apply]`. Establish `: LinearMap.lTensor W (cmFock x.1 x.2) z = 0` using `h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_zero]`. Establish `h2` using `congrArg (tcoef ((fockBasis n).coord s)) h1`. Rewrite `h2` using `[tcoef_lTensor, gc_coord_num x s, if_pos hm, one_smul, map_zero]`. Conclude with `hs h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem support_subset_physicalModes {ε : Fin n → Bool} {z : TensorProduct ℂ W (Fock n)} (hz : z ∈ physicalSubspace ε)
     {s : Finset (Fin (n * n))} (hs : tcoef ((fockBasis n).coord s) z ≠ 0) : s ⊆ lfPhysModes ε := by
@@ -57,7 +57,7 @@ theorem support_subset_physicalModes {ε : Fin n → Bool} {z : TensorProduct �
   exact hs h2
 
 /- English proof (translation)
-Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `m f`. Unfold `sgE`. Apply the tactic sequence `split_ifs <;> simp [cpT, cmT, LinearMap.sum_apply, TensorProduct.tmul_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem signedAction_tensor (ε : Fin n → Bool) (a b : Fin n) :
     sgE ε (cpT (N := W) (n := n)) cmT a b = LinearMap.lTensor W (sgE ε cpFock cmFock a b) := by
@@ -71,7 +71,7 @@ end Gen
 variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M]
 
 /- English proof (translation)
-Take `⟨x, hxT, hxP, hx0, hxK⟩` from `lowFock_exists ε hE hlam hW`. Conclude with `⟨x, ⟨⟨(mem_highestWeightSub_iff _ _ _ x).2 hxK, hxT⟩, hxP⟩, hx0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem line_exists {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : StrictAnti lam) {E : Fin n → Fin n → Module.End ℂ M}
     (hE : IsGlRep E) {W : Submodule ℂ M} (hW : IsKIrrHW ε E (lowK ε lam) W) :
@@ -80,7 +80,7 @@ theorem line_exists {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : StrictAn
   exact ⟨x, ⟨⟨(mem_highestWeightSub_iff _ _ _ x).2 hxK, hxT⟩, hxP⟩, hx0⟩
 
 /- English proof (translation)
-Rewrite using `[diagE, LinearMap.add_apply, map_add, signedAction_tensor, eT, tcoef_map_left, tcoef_lTensor, coord_comp_sg, tcoef_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tensorCoeff_diagAction (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (a : Fin n)
     (s : Finset (Fin (n * n))) (z : TensorProduct ℂ M (Fock n)) :
@@ -89,23 +89,21 @@ theorem tensorCoeff_diagAction (ε : Fin n → Bool) (E : Fin n → Fin n → Mo
   rw [diagE, LinearMap.add_apply, map_add, signedAction_tensor, eT, tcoef_map_left, tcoef_lTensor, coord_comp_sg, tcoef_smul]
 
 /- English proof (translation)
-Take `⟨⟨hK, hT⟩, hP⟩` from `hz`. Use `replace hK := (mem_highestWeightSub_iff _ _ _ z).1 hK`. Establish `hdeg : ∀ s, tcoef ((fockBasis n).coord s) z ≠ 0 → s.card = sDeg ε`. Introduce `s hs`. Establish `hsub` using `support_subset_physicalModes hP hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : tcoef ((fockBasis n).coord s) z ∈ W` using `tcoef_mem hT _`. Establish `hEa : ∀ a, E a a (tcoef ((fockBasis n).coord s) z) = (((gaW ε lam a - fockWt ε s a : ℝ) : ℂ)) • tcoef ((fockBasis n).coord s) z`. Introduce `a`. Establish `h` using `congrArg (tcoef ((fockBasis n).coord s)) (hK.1 a)`. Rewrite `h` using `[tensorCoeff_diagAction, map_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.ofReal_sub, sub_smul, ← h]`. Normalize the expressions using the abelian group laws. Establish `hZ` using `zPlus_V hE hW _ hmem`. Establish `hZ' : zPlus ε E (tcoef ((fockBasis n).coord s) z) = (∑ c ∈ plusIdx ε, (((gaW ε lam c - fockWt ε s c : ℝ) : ℂ))) • tcoef ((fockBasis n).coord s) z`. Unfold `zPlus`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.sum_apply, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun c _ => hEa c`. Rewrite `hZ'` using `[hZ]`. Establish `hc : (∑ c ∈ plusIdx ε, ((lowK ε lam c : ℝ) : ℂ)) = ∑ c ∈ plusIdx ε, (((gaW ε lam c - fockWt ε s c : ℝ) : ℂ))` using `smul_left_injective ℂ hs hZ'`. Establish `hr : (∑ c ∈ plusIdx ε, lowK ε lam c) = ∑ c ∈ plusIdx ε, (gaW ε lam c - fockWt ε s c)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc` after adjusting the coercions. Rewrite `hr` using `[Finset.sum_sub_distrib, gc_plus_sum hsub]`. Establish `h2` using `sDeg_eq_sum ε`. Establish `h3 : (sDeg ε : ℝ) = (s.card : ℝ)`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `: ∀ c, (rhoHol ε - rhoN ε) c = gaW ε lam c - lowK ε lam c`. Introduce `c`. Simplify using `only [gaW, lowK, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun c _ => this c, Finset.sum_sub_distrib]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h3.symm` after adjusting the coercions. Rewrite using `[tcoef_expand z]`. Use `Submodule.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `hs : tcoef ((fockBasis n).coord s) z = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hs, TensorProduct.zero_tmul]`. Conclude with `Submodule.zero_mem _`. Establish `hb : fockBasis n s ∈ ⋀[ℂ]^(sDeg ε) (Fin n × Fin n → ℂ)`. Rewrite using `[← hdeg s hs]`. Conclude with `gs_basis_deg s`.
-
-Conclude with `⟨(⟨tcoef ((fockBasis n).coord s) z, tcoef_mem hT _⟩ : W) ⊗ₜ (⟨fockBasis n s, hb⟩ : ⋀[ℂ]^(sDeg ε) (Fin n × Fin n → ℂ)), by`. Simplify using `[TensorProduct.map_tmul]⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem line_deg {ε : Fin n → Bool} {lam : Fin n → ℝ} {E : Fin n → Fin n → Module.End ℂ M}
     (hE : IsGlRep E) (hU : IsInfUnitary ε E) {W : Submodule ℂ M} (hW : IsKIrrHW ε E (lowK ε lam) W)
@@ -158,17 +156,17 @@ theorem line_deg {ε : Fin n → Bool} {lam : Fin n → ℝ} {E : Fin n → Fin 
       simp [TensorProduct.map_tmul]⟩
 
 /- English proof (translation)
-Take `⟨⟨hK, hT⟩, hP⟩` from `hz`. Use `replace hK := (mem_highestWeightSub_iff _ _ _ z).1 hK`. Establish `hKv : IsKHWVec ε (diagE ε (eT E) cpT cmT) ((lam - rhoC ε) + rhoHol ε) z` using `hK`. Establish `hcas : casimir (eT (n` using `n) E) z = ((casVal lam : ℝ) : ℂ) • z := by`. Rewrite using `[ssh_casimir_eT]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `hT`. Establish `hcomp : casimir E ∘ₗ W.subtype = ((casVal lam : ℝ) : ℂ) • W.subtype`. Use extensionality with `v`. Simplify using `[hc v v.2]`. Rewrite using `[← LinearMap.comp_apply, ← TensorProduct.map_comp, LinearMap.id_comp, hcomp, TensorProduct.map_smul_left, LinearMap.smul_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `two_D_sq_khw (eT_isGlRep hE) cpT_cmT_isCAR (eT_commutesCAR E) hKv hcas`. Establish `hzero : (((nsq (lam - rhoC ε + rhoC ε) - nsq (rho n) : ℝ) : ℂ) - ((casVal lam : ℝ) : ℂ)) = 0`. Rewrite using `[sub_add_cancel, casVal, sub_self]`. Rewrite `h2` using `[hzero, zero_smul]`. Use `set D := dOp ε (eT E) cpT + dOp' ε (eT E) cmT with hD`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDD : D (D z) = 0`. Establish `h3 : (2 : ℂ) • (D * D) z = 0` using `h2`. Rewrite `h3` using `[smul_eq_zero]`. Break down `h3 with h3 | h3` into its components or cases. Evaluate the numerical expressions using `at h3`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3`. Establish `hf : tform (D z) (D z) = 0`. Rewrite using `[hD, tform_D hU, ← hD, hDD]`. Unfold `tform`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Use `tform_self_re_pos hne` as an intermediate fact. Rewrite `this` using `[hf]`. Simplify using `at this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem line_ker {ε : Fin n → Bool} {lam : Fin n → ℝ} {E : Fin n → Fin n → Module.End ℂ M}
     (hE : IsGlRep E) (hU : IsInfUnitary ε E) {W : Submodule ℂ M} (hW : IsKIrrHW ε E (lowK ε lam) W)

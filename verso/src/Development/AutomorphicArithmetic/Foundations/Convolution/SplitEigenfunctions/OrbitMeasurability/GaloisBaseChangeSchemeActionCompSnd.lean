@@ -23,7 +23,7 @@ private noncomputable def hoD {F : Type} [Field F] [NumberField F] (t : (A F)ˣ)
     M.continuous_cD t, M.continuous_cD t⁻¹⟩
 
 /- English proof (translation)
-The claim follows from `(hoD t).measurableEmbedding`.
+A detailed English derivation is pending.
 -/
 private theorem emb_cD {F : Type} [Field F] [NumberField F] (t : (A F)ˣ) : MeasurableEmbedding (cD t : G1 F → G1 F) :=
   (hoD t).measurableEmbedding
@@ -32,7 +32,7 @@ private noncomputable def tau {E : Type} [Field E] [NumberField E] [IsTotallyCom
   Units.map ((am E : A ℚ →+* A E) : A ℚ →* A E) (ideleNorm ℚ E z)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [em, dM, Matrix.GeneralLinearGroup.map]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem em_dM {E : Type} [Field E] [NumberField E] (t : (A ℚ)ˣ) :
     em E (dM t) = dM (Units.map ((am E : A ℚ →+* A E) : A ℚ →* A E) t) := by
@@ -41,9 +41,9 @@ private theorem em_dM {E : Type} [Field E] [NumberField E] (t : (A ℚ)ˣ) :
   fin_cases i <;> fin_cases j <;> simp [em, dM, Matrix.GeneralLinearGroup.map]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, hsc, -, -⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.szLaws E D`. Establish `e : em E (dM (ideleNorm ℚ E z)⁻¹) = (dM (tau z))⁻¹`. Rewrite using `[em_dM, map_inv, dM_inv]`. Both sides reduce to the same expression. Rewrite using `[hsc, e, gl_cD]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← UpperTheory.ConvolutionTheory.R2.scalar_comm z (gl u)]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gl_scalarCenter_commute {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (z : (A E)ˣ) (u : G1 E) :
     gl u * sZ D z = sZ D z * gl (cD (tau z) u) := by
@@ -55,7 +55,7 @@ private theorem gl_scalarCenter_commute {E : Type} [Field E] [NumberField E] [Is
   group
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, hc, -, -, -⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.szLaws E D`. Apply `gl_injective` to reduce the goal to its premises. Establish `h1` using `gl_scalarCenter_commute D z (j (cD (ideleNorm ℚ E z)⁻¹ g))`. Rewrite `h1` using `[hj, ← hc, ← hj]`. Conclude with `(mul_left_cancel h1).symm`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cD_j {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (z : (A E)ˣ)
     (j : G1 ℚ →* G1 E) (hj : ∀ g, gl (j g) = em E (gl g)) (g : G1 ℚ) :
@@ -67,9 +67,9 @@ private theorem cD_j {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (
   exact (mul_left_cancel h1).symm
 
 /- English proof (translation)
-Take `⟨-, -, -, -, ha, -, -, -, -, -, -⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.szLaws E D`. Establish `h0 : D.act (sZ D z)⁻¹ (rp X0) = rp X0` using `by conv_lhs => rw [← ha z]`. Conclude with `D.act_inv_act _ _`. Substitute `huh` using the available equality. Rewrite using `[← D.act_mul, gl_mul, mul_assoc, gl_scalarCenter_commute D z u]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (gl r * (sZ D z * gl (cD (tau z) u)))⁻¹ * gl r = (gl (cD (tau z) u))⁻¹ * (sZ D z)⁻¹` using `by group`. Rewrite using `[this, D.act_mul, h0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem galoisBaseChangeSchemeAction_comp_snd {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (z : (A E)ˣ) (h u r : G1 E)
     (huh : h = r * u) :
@@ -98,31 +98,27 @@ private theorem el_eq {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) (z : 
 end UpperTheory.ConvolutionTheory.RankTwoDescent.Cp
 
 /- English proof (translation)
-Introduce `E _ _ _ D W M N P φ hφ j hj c hc hcs Ψ hΨ z`. Take `⟨j', r, hj', hjc, hji, hr, hjΓ, hu⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.reps E D`. Establish `hjj : j' = j` using `MonoidHom.ext fun g => gl_injective ((hj' g).trans (hj g).symm)`. Substitute `hjj` using the available equality. Use `haveI := N.haar`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `haveI := N.right`. Use `haveI := M.haar`. Use `haveI := M.right`. Use `haveI : DiscreteMeasurableSpace (Orb D.δ) := ⟨fun _ => trivial⟩`. Use `haveI : Countable (Orb D.δ) := inferInstance`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hcont, hleft⟩` from `(UpperTheory.ConvolutionTheory.RankTwoDescent.decE E P φ hφ).1`. Simplify using `only [pY_eq, el_eq]`. Generalize the expression as in `((z : IdeleGroup E) : (A E)ˣ) = zz`. Establish `hmpE : MeasurePreserving (cD (tau zz)) N.μ N.μ` using `(UpperTheory.ConvolutionTheory.RankTwoDescent.invE E N).1 _`. Establish `hmpQ : MeasurePreserving (cD (ideleNorm ℚ E zz)⁻¹ : G1 ℚ → G1 ℚ) M.μ M.μ` using `UpperTheory.ConvolutionTheory.R2.M.cdMeas ℚ M _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : ∀ F : G1 ℚ → ℂ, ∫ g, F (cD (ideleNorm ℚ E zz)⁻¹ g) ∂M.μ = ∫ g, F g ∂M.μ` using `fun F => hmpQ.integral_comp (emb_cD _) F`. Take `⟨cs, hcsd⟩ : ∃ cs : G1 E → ℂ, ∀ y, cs y = c (cD (tau zz) y)` from `⟨_, fun _ => rfl⟩`. Take `⟨f, hfd⟩ : ∃ f : G1 E → ℂ, ∀ x, f x = φ.1 (gl x * sZ D zz)` from `⟨_, fun _ => rfl⟩`. Establish `hcsC : Continuous cs`. Rewrite using `[show cs = c ∘ cD (tau zz) from funext hcsd]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hc.comp (UpperTheory.ConvolutionTheory.R2.M.continuous_cD _)`. Establish `hfC : Continuous f`. Rewrite using `[show f = fun x => φ.1 (gl x * sZ D zz) from funext hfd]`. Conclude with `hcont.comp (continuous_gl.mul continuous_const)`. Establish `hcsS : HasCompactSupport cs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[show cs = c ∘ hoD (tau zz) from funext hcsd]`. Conclude with `hcs.comp_homeomorph _`. Establish `hΨ' : ∀ (h : G1 E) (ξ : Orb D.δ), Ψ (D.act (gl h * sZ D zz)⁻¹ (rp ξ.1)) = ∫ g, cs (j' g * ((r ξ)⁻¹ * h)) ∂M.μ`. Introduce `h ξ`. Establish `e1 : D.act (gl h * sZ D zz)⁻¹ (rp ξ.1) = D.act (gl (cD (tau zz) ((r ξ)⁻¹ * h)))⁻¹ (rp X0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[(hr ξ).2]`. Conclude with `galoisBaseChangeSchemeAction_comp_snd D zz h _ (r ξ) (by group)`. Rewrite using `[e1, hΨ, ← hq fun g => cs (j' g * ((r ξ)⁻¹ * h))]`. Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Simplify using `only [hcsd]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[UpperTheory.ConvolutionTheory.R2.cD_mul _ (j' _) _, cD_j D zz j' hj' g]`. Establish `hB : ∃ B : ℝ, ∀ x, ‖f x‖ ≤ B`. Take `⟨B, hB⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.bddE E P φ hφ {sZ D zz} isCompact_singleton`. Conclude with `⟨B, fun x => by rw [hfd]; exact hB x _ rfl⟩`. Establish `hinv : ∀ γ ∈ Gam E, ∀ x, f (γ * x) = f x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨γ, rfl⟩ x`. Rewrite using `[hfd, hfd, gl_mul, gl_ratS, mul_assoc, hleft]`. Take `⟨h1, h2⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.absUnf (G1 E) (G1 ℚ) (Orb D.δ) N.μ M.μ j' (Gam E) (Gam ℚ) N.D M.D r f cs hjc hji N.fund M.fund (UpperTheory.ConvolutionTheory.R2.M.volD ℚ M) (fun i => (hr i).1) hjΓ hu hfC.measurable hinv hB hcsC.measurable (hcsC.integrable_of_hasCo …`. Establish `hL : ∀ p : G1 E × Orb D.δ, Ψ (D.act (gl p.1 * sZ D zz)⁻¹ (rp p.2.1)) * φ.1 (gl p.1 * sZ D zz) = (∫ g, cs (j' g * ((r p.2)⁻¹ * p.1)) ∂M.μ) * f p.1`. Introduce and unpack `⟨h, ξ⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΨ', hfd]`. Use `⟨fun B hBB => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hL]`. Use `(h1 B (fun h => by rw [hfd]; exact hBB h)).trans_eq ?_` and prove the remaining obligations. Rewrite using `[show (∫⁻ y, ‖cs y‖ₑ ∂N.μ) = ∫⁻ y, ‖c y‖ₑ ∂N.μ by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hcsd]`. Conclude with `hmpE.lintegral_comp_emb (emb_cD _) fun y => ‖c y‖ₑ]`. Simplify using `only [hL]`. Rewrite using `[h2]`. Use `hmpE.integral_comp (emb_cD (tau zz)) fun y => c y * SLP M fun x => φ.1 (x * sZ D zz * gl y)` as an intermediate fact.
-
-Rewrite using `[← this]`. Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Simplify using `only [hcsd, SLP]`. Use `congr 1`. Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations.
-
-Simplify using `only [hfd]`. Rewrite using `[gl_mul, hj', mul_assoc, gl_scalarCenter_commute D zz y, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.zOne :
     UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.ZOne := by

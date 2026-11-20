@@ -49,7 +49,7 @@ def ofSix {eB : Per.Bcris l ≃+* Per6.Bcris l} {eD : Per.BdR l ≃+* Per6.BdR l
   · rw [RingEquiv.trans_apply, T.ιA a, ← h.aB a, RingEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Introduce and unpack `⟨T⟩`. Take `⟨eB, eD, eP, h⟩` from `hC`. Conclude with `⟨ofSix h T⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem local_comparison_of_comparison (hC : Cmp l) (P : LocPrime l) (AI : LocAinf l P) :
     Nonempty (LocTied6 l P AI) → Nonempty (LocTied l P AI) := by

@@ -16,9 +16,9 @@ open scoped Classical
 namespace GlobalTheory.RootEqn
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Establish `h : ∀ x, expo Dw (Finsupp.single (a, R, .inl (τ, (i : ℕ))) n) x = if x = ⟨τ, i⟩ then n else 0`. Introduce `x`. Rewrite using `[expo, Finsupp.sum_single_index (by simp)]`. Simplify using `only [letterOf, dif_pos i.2, Option.some.injEq, eq_comm]`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[divOf]`. Repeatedly rewrite using `[h, ite_smul, zero_smul]`. Rewrite using `[Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem divOf_single {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
@@ -36,17 +36,17 @@ theorem divOf_single {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Rec
   simp
 
 /- English proof (translation)
-Introduce `D O B R c G _ πG φ _ a i hr x ρ h`. Take `⟨τ, b⟩` from `a`. Establish `hp` using `O.S.p_eq`. Establish `hN` using `O.S.rank_eq`. Establish `hi` using `i.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the cases of `b`. Establish `hi' : (i : ℕ) < O.N - O.j` using `hi`. Establish `hD : (adlOf (O.Φ.C c) (O.met.hm c) (rootSym O.S.Dw (ArIn.ind (setB O.Y B)) (some R) (DV.tauEmb D τ) (O.j + i))).D = -(O.Φ.C c).gr (embB D (τ, false)) (Fin.cast hr i.rev)`. Express the relevant statement in the definitionally equal form `divOf _ (expo _ _) = _`. Rewrite using `[rootSym, if_neg (by omega)]`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `(divOf_single (O.Φ.C c) _ _ (conjEmb (DV.tauEmb D τ)) (Fin.cast hr i.rev) _ ?_ _).trans (neg_one_smul _ _)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = O.N - O.j - (i + 1)`. Use linear arithmetic over natural numbers and integers. Establish `he` using `(Base.isEqn_eqn (adlOf (O.Φ.C c) (O.met.hm c) (rootSym O.S.Dw (ArIn.ind (setB O.Y B)) (some R) (DV.tauEmb D τ) (O.j + i))).D (πG x)).neg`. Use `h _ (by` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg Neg.neg hD`. Rewrite `e` using `[neg_neg]`. Conclude with `e ▸ he)`. Simplify `this` using `only [cond_false, zpow_one, pow_one]`. Establish `hi' : (i : ℕ) < O.j` using `hi`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : (adlOf (O.Φ.C c) (O.met.hm c) (rootSym O.S.Dw (ArIn.ind (setB O.Y B)) (some R) (DV.tauEmb D τ) (0 + i))).D = (O.Φ.C c).gr (embB D (τ, true)) (Fin.cast hr i)`. Express the relevant statement in the definitionally equal form `divOf _ (expo _ _) = _`. Rewrite using `[rootSym, if_pos (by omega)]`. Conclude with `(divOf_single (O.Φ.C c) _ _ (DV.tauEmb D τ) (Fin.cast hr i) _ (Nat.zero_add _) _).trans (one_smul _ _)`. Establish `he` using `Base.isEqn_eqn (adlOf (O.Φ.C c) (O.met.hm c) (rootSym O.S.Dw (ArIn.ind (setB O.Y B)) (some R) (DV.tauEmb D τ) (0 + i))).D (πG x)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `h (eqn (adlOf (O.Φ.C c) (O.met.hm c) (rootSym O.S.Dw (ArIn.ind (setB O.Y B)) (some R) (DV.tauEmb D τ) (0 + i))).D (πG x)) (by` as an intermediate fact. Express the relevant statement in the definitionally equal form `CartierDiv.IsEqn ((O.Φ.C c).gr (embB D (τ, true)) (Fin.cast hr i)) _ _`. Rewrite using `[← hD]`. Conclude with `he)`. Simplify `this` using `only [cond_true, zpow_neg_one, pow_one, genAt, Units.val_inv_eq_inv_val, map_inv₀]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unitAt_genAt_root : ∀ (D : D7) (O : Setup D) (B R : ℝ) (c : O.s.Comp) (G : Scheme.{0}) [IsIntegral G] (πG : G ⟶ (O.var c).X)
     (φ : (O.var c).Fn →+* G.functionField)

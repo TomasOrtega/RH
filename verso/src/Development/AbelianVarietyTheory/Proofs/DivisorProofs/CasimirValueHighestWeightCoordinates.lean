@@ -13,19 +13,19 @@ namespace GlobalTheory.PsCo.PcEF
 open GlobalTheory.PsCo.PcEG
 
 /- English proof (translation)
-Introduce `n ε lam M _ _ E hE z hz hD s`. Establish `hE'` using `eT_isGlRep (n := n) hE`. Establish `h2` using `LinearMap.congr_fun (two_D_sq hE' cpT_cmT_isCAR (eT_commutesCAR E) ε) z`. Establish `hK` using `casimirK_khwVec_compact ε (diagE_compact hE' cpT_cmT_isCAR (eT_commutesCAR E) ε) hz`. Establish `hs : ∑ a, ((rhoHol ε a : ℝ) : ℂ) • diagE ε (eT E) cpT cmT a a z = ((dot (rhoHol ε) (gaW ε lam) : ℝ) : ℂ) • z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hz.1, smul_smul, ← sum_smul]`. Use `congr 1`. Unfold `dot`. Use `push_cast`. Use `sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 : ((2 : ℂ) • ((dOp ε (eT E) cpT + dOp' ε (eT E) cmT) * (dOp ε (eT E) cpT + dOp' ε (eT E) cmT))) z = 0`. Rewrite using `[LinearMap.smul_apply, Module.End.mul_apply]`. Establish `: (dOp ε (eT E) cpT + dOp' ε (eT E) cmT) z = 0` using `hD`. Rewrite using `[this, map_zero, smul_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[h0]`. Simplify using `only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.neg_apply, LinearMap.smul_apply, LinearMap.sum_apply, hK, hs] at h2`. Establish `hid` using `khw_real_identity ε (lam - rhoC ε)`. Establish `hg : lam - rhoC ε + rhoHol ε = gaW ε lam` using `rfl`. Establish `hl : lam - rhoC ε + rhoC ε = lam` using `sub_add_cancel _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hid` using `[hg, hl]`. Establish `hc : casimir (eT (n` using `n) E) z = ((casVal lam : ℝ) : ℂ) • z := by`. Establish `e : casimir (eT (n` using `n) E) z = ((nsq (gaW ε lam + rhoC ε) - nsq (rhoC ε) : ℝ) : ℂ) • z - (2 : ℂ) • (((dot (rhoHol ε) (gaW ε lam) : ℝ) : ℂ) • z) := by`. Take the linear combination `(norm := module) h2`. Rewrite using `[e, casVal, ← hid]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `module`. Use `congrArg (tco s) hc` as an intermediate fact. Rewrite `this` using `[TRGap.casimir_eT, tco_map_left]`. Rewrite using `[this]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [tco, map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem casimirValue_highestWeightCoordinates : CasCoord := by
   intro n ε lam M _ _ E hE z hz hD s

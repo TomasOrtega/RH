@@ -11,7 +11,7 @@ section LemSec
 variable (o : Type*) {Ω : Type*} [CommRing o] [CommRing Ω] [Algebra o Ω] {ι : Type*}
 
 /- English proof (translation)
-The claim follows from `RingHom.ker_isPrime _`.
+A detailed English derivation is pending.
 -/
 theorem coordIdeal_isPrime [IsDomain Ω] (x : ι → Ω) : (coordIdeal o x).IsPrime :=
   RingHom.ker_isPrime _

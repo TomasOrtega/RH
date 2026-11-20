@@ -7,9 +7,9 @@ open Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeter
 namespace GlobalTheory.LeadMinorExp
 
 /- English proof (translation)
-Use `symm`. Use `Finset.sum_of_injOn (fun S : Set.powersetCard (Fin n) l => S.1) (fun _ _ _ _ h => Subtype.ext h) (fun _ _ => Finset.mem_univ _) ?_ ?_` and prove the remaining obligations. Introduce `J _ hJ`. Rewrite using `[dif_neg]`. Introduce `h`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hJ ⟨⟨J, h⟩, by simp, rfl⟩`. Introduce `S _`. Establish `h : S.1.card = l` using `S.2`. Rewrite using `[dif_pos h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_dite_card {n l : ℕ} {M : Type*} [AddCommMonoid M] (f : Set.powersetCard (Fin n) l → M) :
     ∑ J : Finset (Fin n), (if h : J.card = l then f ⟨J, h⟩ else 0) = ∑ S, f S := by
@@ -25,13 +25,13 @@ theorem sum_dite_card {n l : ℕ} {M : Type*} [AddCommMonoid M] (f : Set.powerse
     rw [dif_pos h]
 
 /- English proof (translation)
-Use `set U : Matrix (Fin n) (Fin n) ℂ := (hY.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU`. Establish `h1 : U * Uᴴ = 1` using `(hY.eigenvectorUnitary).2.2`. Establish `h2 : Uᴴ * U = 1` using `(hY.eigenvectorUnitary).2.1`. Establish `hs : Y = U * diagonal (fun j => ((hY.eigenvalues j : ℝ) : ℂ)) * Uᴴ`. Use `hY.spectral_theorem` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Unitary.conjStarAlgAut_apply]`. Conclude with `this`. Establish `h3 : (t : ℂ) • Y = U * diagonal (fun j => ((t * hY.eigenvalues j : ℝ) : ℂ)) * Uᴴ` using `by conv_lhs => rw [hs]`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, ← diagonal_smul]`. Use `congr 3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite using `[h3]`. Use `(Matrix.exp_units_conj (⟨U, Uᴴ, h1, h2⟩ : (Matrix (Fin n) (Fin n) ℂ)ˣ) _).trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.exp_diagonal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `U * _ * Uᴴ = _`. Use `congr 3`. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.coe_exp, ← Complex.exp_eq_exp_ℂ, Complex.ofReal_exp]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_smul_eq {n : ℕ} {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Y.IsHermitian) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • Y) =
@@ -60,17 +60,15 @@ theorem exp_smul_eq {n : ℕ} {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Y.IsHermiti
   rw [Pi.coe_exp, ← Complex.exp_eq_exp_ℂ, Complex.ofReal_exp]
 
 /- English proof (translation)
-Use `set U : Matrix (Fin n) (Fin n) ℂ := (hY.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU`. Establish `h1 : U * Uᴴ = 1` using `(hY.eigenvectorUnitary).2.2`. Use `set A : Matrix (Fin l) (Fin n) ℂ := U.submatrix (Fin.castLE hl) id with hA`. Establish `hAA : A * Aᴴ = 1`. Rewrite using `[hA, conjTranspose_submatrix, ← submatrix_mul U Uᴴ _ id _ Function.bijective_id, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `submatrix_one _ (Fin.castLE_injective hl)`. Use `⟨fun J => if h : J.card = l then ‖(A.submatrix id (GlobalTheory.subsetEnum (⟨J, h⟩ : Set.powersetCard (Fin n) l))).det‖ ^ 2 else 0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro J dsimp only split_ifs <;> positivity`. Introduce `J hJ`. Assume the negation of the conclusion as `h`.
+Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hJ (dif_neg h)`. Rewrite using `[sum_dite_card (fun S => ‖(A.submatrix id (GlobalTheory.subsetEnum S)).det‖ ^ 2)]`. Conclude with `GlobalTheory.sum_norm_sq_minors_eq_one A hAA`. Introduce `t`. Establish `hsum : (∑ J : Finset (Fin n), (if h : J.card = l then ‖(A.submatrix id (GlobalTheory.subsetEnum (⟨J, h⟩ : Set.powersetCard (Fin n) l))).det‖ ^ 2 else 0) * Real.exp (t * ∑ j ∈ J, hY.eigenvalues j)) = ∑ S : Set.powersetCard (Fin n) l, ‖(A.submatrix id (GlobalTheory.subsetEnum S)).d …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← sum_dite_card]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hsum, exp_smul_eq hY t, leadMinor]`. Rewrite using `[submatrix_mul _ _ _ id _ Function.bijective_id, submatrix_mul _ _ _ id _ Function.bijective_id, submatrix_id_id, ← conjTranspose_submatrix]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.det_mul_diagonal_mul_eq_sum_minors A _ Aᴴ).trans ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[← conjTranspose_submatrix, det_conjTranspose, Complex.star_def, Complex.mul_conj', Finset.mul_sum, Real.exp_sum]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem leadMinor_exp_eq_sum (n : ℕ) (Y : Matrix (Fin n) (Fin n) ℂ) (hY : Y.IsHermitian) (l : ℕ)
     (hl : l ≤ n) :

@@ -6,9 +6,9 @@ namespace UpperTheory.MUQ
 variable {E K : Type} [Field E] [Field K] {ι : Type} [Fintype ι] {φ : ι → E →+* K} {e : ι → ℚ}
 
 /- English proof (translation)
-Take `⟨a, ha, hMU⟩` from `h`. Establish `: (fun i => (e i).num) = a`. Use function extensionality and compare the values at `i`. Rewrite using `[ha i, Rat.num_intCast]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hMU`.
+A detailed English derivation is pending.
 -/
 theorem num (h : MUQ φ e) : MU φ (fun i => (e i).num) := by
   obtain ⟨a, ha, hMU⟩ := h

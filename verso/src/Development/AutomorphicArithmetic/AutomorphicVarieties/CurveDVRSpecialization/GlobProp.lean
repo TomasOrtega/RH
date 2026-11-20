@@ -1,19 +1,17 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.FlipTwoThree
 
 /- English proof (translation)
-Introduce `X _ _ M hM`. Establish `hfin` using `TopologicalSpace.NoetherianSpace.finite_irreducibleComponents (α := X)`. Establish `key : ∀ Y, M.CompI Y → Y ⊆ M.Good`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨Yb, hYb, hYbn⟩` from `hne`. Use `set G : Set X := ⋃ Y ∈ {Y | M.CompI Y ∧ Y ⊆ M.Good}, Y with hG`. Use `set B : Set X := ⋃ Y ∈ {Y | M.CompI Y ∧ ¬ Y ⊆ M.Good}, Y with hB`. Establish `hGc : IsClosed G` using `(hfin.subset (fun Y hY => hY.1.1)).isClosed_biUnion (fun Y hY => isClosed_of_mem_irreducibleComponents Y hY.1.1)`. Establish `hBc : IsClosed B` using `(hfin.subset (fun Y hY => hY.1.1)).isClosed_biUnion (fun Y hY => isClosed_of_mem_irreducibleComponents Y hY.1.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcov : M.Core ⊆ G ∪ B`. Introduce `x hx`. Establish `h1 : x ∈ closure (M.Cl \ M.EE)` using `hM.dense hx`. Establish `h2 : M.Cl \ M.EE ⊆ G ∪ B`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Take `⟨Y, hY, hyY⟩` from `hM.off y hy`. Distinguish the cases in `hg : Y ⊆ M.Good`. Conclude with `Or.inl (Set.mem_biUnion (show Y ∈ {Y | M.CompI Y ∧ Y ⊆ M.Good} from ⟨hY, hg⟩) hyY)`. Conclude with `Or.inr (Set.mem_biUnion (show Y ∈ {Y | M.CompI Y ∧ ¬ Y ⊆ M.Good} from ⟨hY, hg⟩) hyY)`. Conclude with `(hGc.union hBc).closure_subset_iff.mpr h2 h1`.
+Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨Ys, hYs, hYsg⟩` from `hM.seed`. Establish `hG' : (M.Core ∩ G).Nonempty`. Take `⟨x, hxY, hxC⟩` from `hM.meets Ys hYs`. Conclude with `⟨x, hxC, Set.mem_biUnion (show Ys ∈ {Y | M.CompI Y ∧ Y ⊆ M.Good} from ⟨hYs, hYsg⟩) hxY⟩`. Establish `hB' : (M.Core ∩ B).Nonempty`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxY, hxC⟩` from `hM.meets Yb hYb`. Conclude with `⟨x, hxC, Set.mem_biUnion (show Yb ∈ {Y | M.CompI Y ∧ ¬ Y ⊆ M.Good} from ⟨hYb, hYbn⟩) hxY⟩`. Take `⟨x, hxC, hxG, hxB⟩` from `isPreconnected_closed_iff.mp hM.conn G B hGc hBc hcov hG' hB'`. Take `⟨z, hzGB, hzCl⟩` from `hM.jac (G ∩ B) (hGc.inter hBc) ⟨x, ⟨hxG, hxB⟩, hxC⟩`. Rewrite `hzGB` using `[hG, hB]`.
-
-Simplify using `only [Set.mem_inter_iff, Set.mem_iUnion, Set.mem_setOf_eq, exists_prop] at hzGB`. Take `⟨⟨Y, ⟨hY, hYg⟩, hzY⟩, ⟨Y', ⟨hY', hY'n⟩, hzY'⟩⟩` from `hzGB`. Conclude with `hY'n (hM.loc z hzCl Y Y' hY hY' hzY hzY' hYg)`. Introduce `x hx`. Conclude with `key (irreducibleComponent x) ⟨irreducibleComponent_mem_irreducibleComponents x, ⟨x, mem_irreducibleComponent, hx⟩⟩ mem_irreducibleComponent`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.globProp :
     UpperTheory.V.Pr.GlobProp := by

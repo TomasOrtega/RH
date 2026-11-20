@@ -7,7 +7,7 @@ noncomputable section
 namespace Deduction
 
 /- English proof (translation)
-Establish `h` using `integrableOn_rpow_mul_exp_neg_mul_rpow (s := (n : ℝ)) (p := 1) (b := b) (by have := n.cast_nonneg (α := ℝ); linarith) one_pos hb`. Use `h.congr_fun (fun u _ => ?_) measurableSet_Ioi` and prove the remaining obligations. Simplify using `only [Real.rpow_natCast, Real.rpow_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem iteratedDeriv_laplace_int (n : ℕ) (b : ℝ) (hb : 0 < b) :
     IntegrableOn (fun u : ℝ => u ^ n * Real.exp (-b * u)) (Ioi 0) := by
@@ -17,7 +17,7 @@ theorem iteratedDeriv_laplace_int (n : ℕ) (b : ℝ) (hb : 0 < b) :
   simp only [Real.rpow_natCast, Real.rpow_one]
 
 /- English proof (translation)
-Apply `Measurable.aestronglyMeasurable` to reduce the goal to its premises. Use `fun_prop`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_laplace_meas (g : ℝ → ℝ) (hg : Measurable g) (k : ℕ) (z : ℂ) :
     AEStronglyMeasurable (fun u : ℝ => (g u : ℂ) * ((-u : ℝ) : ℂ) ^ k * cexp (-z * u))
@@ -26,11 +26,11 @@ theorem iteratedDeriv_laplace_meas (g : ℝ → ℝ) (hg : Measurable g) (k : �
   fun_prop
 
 /- English proof (translation)
-Establish `h1 : ‖(g u : ℂ)‖ ≤ C * Real.exp (2 * u)`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs]`. Conclude with `hgC u hu.le`. Establish `h2 : ‖((-u : ℝ) : ℂ) ^ k‖ = u ^ k`. Rewrite using `[norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_neg, abs_of_pos hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ‖cexp (-z * u)‖ ≤ Real.exp (-(2 + b) * u)`. Rewrite using `[Complex.norm_exp]`. Simplify using `only [Complex.neg_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.neg_im, mul_zero, sub_zero]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hC : 0 ≤ C * Real.exp (2 * u)` using `le_trans (norm_nonneg _) h1`. Rewrite using `[norm_mul, norm_mul, h2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_laplace_bound (g : ℝ → ℝ) (C : ℝ)
     (hgC : ∀ u : ℝ, 0 ≤ u → |g u| ≤ C * Real.exp (2 * u)) (k : ℕ) (b : ℝ) (z : ℂ) (hz : 2 + b ≤ z.re)
@@ -59,15 +59,15 @@ theorem iteratedDeriv_laplace_bound (g : ℝ → ℝ) (C : ℝ)
         ring_nf
 
 /- English proof (translation)
-Use `set δ := (s.re - 2) / 2 with hδ`. Establish `hδpos : 0 < δ` using `by rw [hδ]; linarith`. Establish `hre : ∀ z ∈ Metric.ball s δ, 2 + δ ≤ z.re`. Introduce `z hz`. Rewrite `hz` using `[Metric.mem_ball, dist_eq_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `Complex.abs_re_le_norm (z - s)`. Rewrite `h1` using `[Complex.sub_re]`. Establish `h2` using `(abs_le.mp (h1.trans hz.le)).1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hint : Integrable (fun u : ℝ => (g u : ℂ) * ((-u : ℝ) : ℂ) ^ k * cexp (-s * u)) (volume.restrict (Ioi 0))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Integrable.mono' (Integrable.const_mul (iteratedDeriv_laplace_int k δ hδpos) C) (iteratedDeriv_laplace_meas g hg k s) ?_` and prove the remaining obligations. Use `(ae_restrict_iff' measurableSet_Ioi).mpr (Eventually.of_forall fun u hu => ?_)` and prove the remaining obligations. Conclude with `iteratedDeriv_laplace_bound g C hgC k δ s (hre s (Metric.mem_ball_self hδpos)) u hu`. Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (F := fun z u => (g u : ℂ) * ((-u : ℝ) : ℂ) ^ k * cexp (-z * u)) (F' := fun z u => (g u : ℂ) * ((-u : ℝ) : ℂ) ^ (k + 1) * cexp (-z * u)) (Metric.ball_mem_nhds s hδpos) (Eventually.of_forall fun z => iteratedDeriv_laplace_meas g hg …` and prove the remaining obligations. Use `(ae_restrict_iff' measurableSet_Ioi).mpr (Eventually.of_forall fun u hu z hz => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `iteratedDeriv_laplace_bound g C hgC (k + 1) δ z (hre z hz) u hu`. Use `Eventually.of_forall fun u z _ => ?_` and prove the remaining obligations. Establish `h1 : HasDerivAt (fun w : ℂ => -w * (u : ℂ)) (-(u : ℂ)) z`. Simplify using `using (hasDerivAt_id' z).neg.mul_const (u : ℂ)`. Establish `h2` using `h1.cexp.const_mul ((g u : ℂ) * ((-u : ℝ) : ℂ) ^ k)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `h2.congr_deriv ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_laplace_hasDerivAt (g : ℝ → ℝ) (hg : Measurable g) (C : ℝ)
     (hgC : ∀ u : ℝ, 0 ≤ u → |g u| ≤ C * Real.exp (2 * u)) (k : ℕ) (s : ℂ) (hs : 2 < s.re) :
@@ -106,11 +106,11 @@ theorem iteratedDeriv_laplace_hasDerivAt (g : ℝ → ℝ) (hg : Measurable g) (
     ring
 
 /- English proof (translation)
-Establish `hopen : IsOpen {z : ℂ | 2 < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `key : ∀ j : ℕ, ∀ z : ℂ, 2 < z.re → iteratedDeriv j (fun z : ℂ => ∫ u in Ioi (0 : ℝ), (g u : ℂ) * cexp (-z * u)) z = ∫ u in Ioi (0 : ℝ), (g u : ℂ) * ((-u : ℝ) : ℂ) ^ j * cexp (-z * u)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `z _`. Simplify using the standard rewrite rules. Consider the case `succ j ih`. Introduce `z hz`. Rewrite using `[iteratedDeriv_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : iteratedDeriv j (fun z : ℂ => ∫ u in Ioi (0 : ℝ), (g u : ℂ) * cexp (-z * u)) =ᶠ[𝓝 z] fun w : ℂ => ∫ u in Ioi (0 : ℝ), (g u : ℂ) * ((-u : ℝ) : ℂ) ^ j * cexp (-w * u)` using `Filter.eventually_of_mem (hopen.mem_nhds hz) fun w hw => ih w hw`. Rewrite using `[hev.deriv_eq]`. Conclude with `(iteratedDeriv_laplace_hasDerivAt g hg C hgC j z hz).deriv`. Conclude with `key k s hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_laplace (g : ℝ → ℝ) (hg : Measurable g) (C : ℝ) (hgC : ∀ u : ℝ, 0 ≤ u → |g u| ≤ C * Real.exp (2 * u))
     (k : ℕ) (s : ℂ) (hs : 2 < s.re) :

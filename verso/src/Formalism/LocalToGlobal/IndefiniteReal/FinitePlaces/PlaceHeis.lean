@@ -35,12 +35,12 @@ def halfSub (e : AE D) : AddSubgroup (WO S T) where
   neg_mem' {a} ha := fun i j => by rw [Matrix.neg_apply, mul_neg, ha i j]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_halfSub {e : AE D} {u : WO S T} : u ∈ halfSub S T e ↔ IsHalf e u := Iff.rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[symplOH_add_left S T x w w', symplOH_add_right S T x w w', AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, add_assoc x w w']`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisO_heisO (w w' : WO S T) (f : WO S T → ℂ) :
     heisO ψ S T w (heisO ψ S T w' f) = ψ (symplOH S T w w') • heisO ψ S T (w + w') f := by
@@ -51,7 +51,7 @@ theorem heisO_heisO (w w' : WO S T) (f : WO S T → ℂ) :
   ring
 
 /- English proof (translation)
-Introduce `h`. Use `ψ.map_add_eq_mul a (-a)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`. Conclude with `one_ne_zero this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_ne_zero (a : AF D.host.F) : ψ a ≠ 0 := by
   intro h
@@ -60,7 +60,7 @@ theorem psi_ne_zero (a : AF D.host.F) : ψ a ≠ 0 := by
   exact one_ne_zero this
 
 /- English proof (translation)
-Establish `hz : ∀ a b c d, incA D (S.gram⁻¹ a b) * cA D (y c b) * incA D (T.gram c d) * x d a = 0`. Introduce `a b c d`. Rewrite using `[← hy c b, ← hx d a, map_mul]`. Take the linear combination `(incA D (S.gram⁻¹ a b) * cA D (y c b) * incA D (T.gram c d) * x d a) * he`. Simplify using `[symplO, hO, hz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem symplO_half {e : AE D} (he : e * cA D e = 0) {x y : WO S T} (hx : IsHalf e x) (hy : IsHalf e y) :
     symplO S T x y = 0 := by
@@ -71,14 +71,14 @@ theorem symplO_half {e : AE D} (he : e * cA D e = 0) {x y : WO S T} (hx : IsHalf
   simp [symplO, hO, hz]
 
 /- English proof (translation)
-Rewrite using `[symplOH, symplO_half S T he hx hy, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_half {e : AE D} (he : e * cA D e = 0) {x y : WO S T} (hx : IsHalf e x) (hy : IsHalf e y) :
     symplOH S T x y = 0 := by
   rw [symplOH, symplO_half S T he hx hy, mul_zero]
 
 /- English proof (translation)
-Use `ext1 f`. Rewrite using `[Module.End.mul_apply, heisL_apply, heisL_apply, heisL_apply, heisO_heisO, symplOH_half S T he hx hy, AddChar.map_zero_eq_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heisL_add_half {e : AE D} (he : e * cA D e = 0) {x y : WO S T} (hx : IsHalf e x) (hy : IsHalf e y) :
     heisL ψ S T (x + y) = heisL ψ S T x * heisL ψ S T y := by
@@ -87,7 +87,7 @@ theorem heisL_add_half {e : AE D} (he : e * cA D e = 0) {x y : WO S T} (hx : IsH
     AddChar.map_zero_eq_one, one_smul]
 
 /- English proof (translation)
-Use `ext1 f`. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply, heisL_apply]`. Rewrite using `[heisO_heisO, heisO_heisO, smul_smul, add_comm y x, symplOH_swap S T x y, ← symplOH_two S T x y, ← AddChar.map_add_eq_mul, show symplOH S T x y + symplOH S T x y + -symplOH S T x y = symplOH S T x y by abel]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heisL_comm (x y : WO S T) :
     heisL ψ S T x * heisL ψ S T y = ψ (symplO S T x y) • (heisL ψ S T y * heisL ψ S T x) := by
@@ -97,7 +97,7 @@ theorem heisL_comm (x y : WO S T) :
     ← AddChar.map_add_eq_mul, show symplOH S T x y + symplOH S T x y + -symplOH S T x y = symplOH S T x y by abel]
 
 /- English proof (translation)
-Rewrite using `[cA_cA, mul_comm, he]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_half_orth {e : AE D} (he : e * cA D e = 0) : cA D e * cA D (cA D e) = 0 := by
   rw [cA_cA, mul_comm, he]

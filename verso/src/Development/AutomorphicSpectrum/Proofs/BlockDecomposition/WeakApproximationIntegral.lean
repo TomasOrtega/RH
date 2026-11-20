@@ -15,11 +15,11 @@ namespace GlobalTheory.CompanionTheory.PlaneSA.Additive
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `hc : convexBodyLTFactor F ≠ 0` using `convexBodyLTFactor_ne_zero F`. Establish `hm` using `(minkowskiBound_lt_top F 1).ne`. Take `⟨m, hm'⟩ : ∃ m : ℝ≥0, minkowskiBound F 1 = m` from `⟨_, (ENNReal.coe_toNNReal hm).symm⟩`. Use `⟨m / convexBodyLTFactor F + 1, fun f hf => ?_⟩` and prove the remaining obligations. Apply `exists_ne_zero_mem_ringOfIntegers_lt F` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[convexBodyLT_volume, hm', ← ENNReal.coe_mul, ENNReal.coe_lt_coe]`. Establish `hpos : 0 < convexBodyLTFactor F` using `pos_iff_ne_zero.2 hc`. Combine the equalities or inequalities in the displayed calculation. Generalize the expression as in `convexBodyLTFactor F = c at hc`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts.
 
-Use `_ ≤ _ := mul_le_mul_right hf _`.
+A detailed English derivation is pending.
 -/
 theorem exists_bound : ∃ B : ℝ≥0, ∀ f : InfinitePlace F → ℝ≥0, B ≤ ∏ w, f w ^ w.mult →
     ∃ a : 𝓞 F, a ≠ 0 ∧ ∀ w : InfinitePlace F, w (a : F) < f w := by
@@ -37,20 +37,20 @@ theorem exists_bound : ∃ B : ℝ≥0, ∀ f : InfinitePlace F → ℝ≥0, B �
     _ ≤ _ := mul_le_mul_right hf _
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qo8.exists_supported p`.
+A detailed English derivation is pending.
 -/
 theorem exists_supported (p : HeightOneSpectrum (𝓞 F)) :
     ∃ π : 𝓞 F, π ≠ 0 ∧ π ∈ p.asIdeal ∧ ∀ v : HeightOneSpectrum (𝓞 F), v ≠ p → π ∉ v.asIdeal :=
   _root_.UpperTheory.Reformulated.B.Qo8.exists_supported p
 
 /- English proof (translation)
-Rewrite using `[InfinitePlace.prod_eq_abs_norm]`. Establish `hne : Ideal.span {π} ≠ ⊤` using `fun h => p.isPrime.ne_top (top_le_iff.1 (h ▸ (Ideal.span_singleton_le_iff_mem _).2 hp))`. Establish `h1 : Ideal.absNorm (Ideal.span {π}) ≠ 1` using `fun h => hne (Ideal.absNorm_eq_one_iff.1 h)`. Establish `h2 : Ideal.absNorm (Ideal.span {π}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h0`. Rewrite `h1`, `h2` using `[Ideal.absNorm_span_singleton]`. Establish `h3 : 2 ≤ (Algebra.norm ℤ π).natAbs` using `by omega`. Establish `h4 : ((Algebra.norm ℚ (π : F)) : ℚ) = ((Algebra.norm ℤ π : ℤ) : ℚ)` using `(Algebra.coe_norm_int π).symm`. Rewrite using `[h4]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : (2 : ℤ) ≤ |Algebra.norm ℤ π|`. Rewrite using `[Int.abs_eq_natAbs]`. Conclude with `h3` after adjusting the coercions. Establish `h6 : (2 : ℝ) ≤ ((|Algebra.norm ℤ π| : ℤ) : ℝ)` using `by exact_mod_cast h5`. Move the coercions through the operations in `at h6 ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem one_lt_abs_norm {p : HeightOneSpectrum (𝓞 F)} {π : 𝓞 F} (h0 : π ≠ 0) (hp : π ∈ p.asIdeal) :
     (1 : ℝ) < ∏ w : InfinitePlace F, w (π : F) ^ w.mult := by
@@ -72,27 +72,23 @@ theorem one_lt_abs_norm {p : HeightOneSpectrum (𝓞 F)} {π : 𝓞 F} (h0 : π 
   linarith
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_bound (F := F)`. Establish `hdF : (d : F) ≠ 0` using `by simpa using hd`. Establish `hwd : ∀ w : InfinitePlace F, 0 < w (d : F)` using `fun w => w.pos_iff.2 hdF`. Consider the cases of `s with`. Consider the case `inl w₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Set `f : InfinitePlace F → ℝ≥0` to `fun w => ⟨ε / w (d : F), (div_pos hε (hwd w)).le⟩`. Establish `hf : ∀ w, w ≠ w₀ → f w ≠ 0` using `fun w _ h => (div_pos hε (hwd w)).ne' (congrArg NNReal.toReal h)`. Take `⟨g, hg, hgp⟩` from `adjust_f F B hf`. Take `⟨b, hb0, hb⟩` from `hB g hgp.ge`. Use `⟨(b : F), by simpa using hb0, fun w hw => ?_, fun v _ => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : w ≠ w₀` using `fun h => hw (by rw [h])`. Establish `h1` using `hb w`. Rewrite `h1` using `[hg w hne]`. Establish `h2 : w (b : F) < ε / w (d : F)` using `h1`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `v.intValuation_le_one b`. Consider the case `inr p`. Take `⟨π, hπ0, hπp, hπv⟩` from `exists_supported p`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hπF : (π : F) ≠ 0` using `by simpa using hπ0`. Establish `hwπ : ∀ w : InfinitePlace F, 0 < w (π : F)` using `fun w => w.pos_iff.2 hπF`. Use `set N : ℝ := ∏ w : InfinitePlace F, w (π : F) ^ w.mult with hN`. Establish `hN1 : 1 < N` using `one_lt_abs_norm hπ0 hπp`. Use `set P : ℝ := ∏ w : InfinitePlace F, (ε / w (d : F)) ^ w.mult with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hP0 : 0 < P` using `Finset.prod_pos fun w _ => pow_pos (div_pos hε (hwd w)) _`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt ((B : ℝ) / P) hN1`. Set `f : InfinitePlace F → ℝ≥0` to `fun w => ⟨ε / w (d : F) * w (π : F) ^ k, (mul_pos (div_pos hε (hwd w)) (pow_pos (hwπ w) k)).le⟩`. Establish `hprod : ((∏ w, f w ^ w.mult : ℝ≥0) : ℝ) = P * N ^ k`. Use `push_cast`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, hN, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `show (ε / w (d : F) * w (π : F) ^ k) ^ w.mult = _`. Rewrite using `[mul_pow, ← pow_mul, ← pow_mul, mul_comm k]`. Establish `hle : B ≤ ∏ w, f w ^ w.mult`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← NNReal.coe_le_coe, hprod]`. Use `(div_lt_iff₀' hP0).1 hk` as an intermediate fact. Conclude with `this.le`. Take `⟨b, hb0, hb⟩` from `hB f hle`. Establish `hbF : (b : F) ≠ 0` using `by simpa using hb0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `⟨(b : F) / (π : F) ^ k, div_ne_zero hbF (pow_ne_zero _ hπF), fun w _ => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h2 : w (b : F) < ε / w (d : F) * w (π : F) ^ k` using `hb w`. Establish `hpk` using `pow_pos (hwπ w) k`. Rewrite using `[map_mul, map_div₀, map_pow]`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `mul_lt_mul_of_pos_left (div_lt_div_of_pos_right h2 hpk) (hwd w)`. Use `_ = ε := by field_simp [(hwd w).ne', hpk.ne']`. Establish `hne : v ≠ p` using `fun h => hv (by rw [h])`. Establish `h1 : v.valuation F (π : F) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl]`.
-
-Conclude with `hπv v hne`. Rewrite using `[map_div₀, map_pow, h1, one_pow, div_one, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `v.intValuation_le_one b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_small (s : Pl F) {d : 𝓞 F} (hd : d ≠ 0) {ε : ℝ} (hε : 0 < ε) :
     ∃ y : F, y ≠ 0 ∧ (∀ w : InfinitePlace F, (Sum.inl w : Pl F) ≠ s → w ((d : F) * y) < ε) ∧
@@ -158,16 +154,16 @@ theorem exists_small (s : Pl F) {d : 𝓞 F} (hd : d ≠ 0) {ε : ℝ} (hε : 0 
       exact v.intValuation_le_one b
 
 /- English proof (translation)
-The claim follows from `InfinitePlace.Completion.norm_coe w _`.
+A detailed English derivation is pending.
 -/
 theorem norm_algebraMap_inf (w : InfinitePlace F) (a : F) :
     ‖algebraMap F w.Completion a‖ = w a :=
   InfinitePlace.Completion.norm_coe w _
 
 /- English proof (translation)
-Establish `h : ∀ w, ∃ r : ℝ, 0 < r ∧ ∀ z : w.Completion, ‖z‖ < r → c w - z ∈ U w`. Introduce `w`. Take `⟨r, hr, hb⟩` from `Metric.mem_nhds_iff.1 (hU w)`. Use `⟨r, hr, fun z hz => hb ?_⟩` and prove the remaining obligations. Simplify `hz` using `[dist_eq_norm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose r hr hb using h`. Use `⟨Finset.univ.inf' Finset.univ_nonempty r, (Finset.lt_inf'_iff _).2 fun w _ => hr w, fun w z hz => hb w z (hz.trans_le (Finset.inf'_le _ (Finset.mem_univ w)))⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_radius (c : ∀ w : InfinitePlace F, w.Completion) (U : ∀ w : InfinitePlace F, Set w.Completion)
     (hU : ∀ w, U w ∈ 𝓝 (c w)) :
@@ -182,9 +178,9 @@ theorem exists_radius (c : ∀ w : InfinitePlace F, w.Completion) (U : ∀ w : I
     fun w z hz => hb w z (hz.trans_le (Finset.inf'_le _ (Finset.mem_univ w)))⟩
 
 /- English proof (translation)
-Establish `h : ∀ w : InfinitePlace F, ∃ R : ℝ, ∀ c ∈ C, ‖c w‖ ≤ R`. Introduce `w`. Take `⟨R, hR⟩` from `(hC.image (continuous_apply w)).isBounded.exists_norm_le`. Conclude with `⟨R, fun c hc => hR _ ⟨c, hc, rfl⟩⟩`. Use `choose R hR using h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ w, |R w| + 1, by positivity, fun c hc w => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_norm_bound {C : Set (InfiniteAdeleRing F)} (hC : IsCompact C) :
     ∃ R : ℝ, 0 < R ∧ ∀ c ∈ C, ∀ w : InfinitePlace F, ‖c w‖ ≤ R := by
@@ -200,17 +196,15 @@ theorem exists_norm_bound {C : Set (InfiniteAdeleRing F)} (hC : IsCompact C) :
     _ ≤ _ := by linarith
 
 /- English proof (translation)
-Set `W : Set (FiniteAdeleRing (𝓞 F) F)` to `{a | ∀ v, v ∉ S → a v ∈ v.adicCompletionIntegers F} ∩ ⋂ v ∈ S, {a | a v ∈ U v}`. Establish `hWo : IsOpen W`. Use `IsOpen.inter ?_ (isOpen_biInter_finset fun v hv => ?_)` and prove the remaining obligations. Conclude with `RestrictedProduct.isOpen_forall_imp_mem fun v => Valued.isOpen_valuationSubring _`. Conclude with `(hU v hv).1.preimage (RestrictedProduct.continuous_eval v)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hW0 : (0 : FiniteAdeleRing (𝓞 F) F) ∈ W`. Use `⟨fun v _ => zero_mem _, Set.mem_iInter₂.2 fun v hv => (hU v hv).2⟩` and prove the remaining obligations. Take `⟨d, hd0, hd⟩` from `GroundTheory.Global.exists_forall_mul_mem_of_mem_nhds (hWo.mem_nhds hW0)`. Use `⟨d, hd0, fun v o ho => ?_⟩` and prove the remaining obligations. Establish `hmem : singleV F v o ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 F) F`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `v'`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Establish `: (singleV F v' o) v' = o` using `StrongApprox.evalV_single_same v' o`. Rewrite using `[this]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ho`. Establish `: (singleV F v o) v' = 0` using `StrongApprox.evalV_single_ne h o`. Rewrite using `[this]`. Conclude with `zero_mem _`. Establish `hval : (algebraMap F (FiniteAdeleRing (𝓞 F) F) (d : F) * singleV F v o) v = algebraMap F (v.adicCompletion F) (d : F) * o`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (singleV F v o) v = o` using `StrongApprox.evalV_single_same v o`. Establish `h1 : (algebraMap F (FiniteAdeleRing (𝓞 F) F) (d : F) * singleV F v o) v = algebraMap F (v.adicCompletion F) (d : F) * (singleV F v o) v` using `rfl`. Rewrite using `[h1, h2]`. Establish `hWd` using `hd _ hmem`. Rewrite using `[← hval]`.
-
-Conclude with `⟨fun hv => Set.mem_iInter₂.1 hWd.2 v hv, fun hv => hWd.1 v hv⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_scale (S : Finset (HeightOneSpectrum (𝓞 F)))
     (U : ∀ v : HeightOneSpectrum (𝓞 F), Set (v.adicCompletion F))
@@ -248,31 +242,27 @@ theorem exists_scale (S : Finset (HeightOneSpectrum (𝓞 F)))
   exact ⟨fun hv => Set.mem_iInter₂.1 hWd.2 v hv, fun hv => hWd.1 v hv⟩
 
 /- English proof (translation)
-Set `xF : Af F` to `∑ v ∈ T₂, singleV F v (cF v)`. Establish `hev : ∀ v, evalV F v xF = ∑ v' ∈ T₂, evalV F v (singleV F v' (cF v'))` using `fun v => by`. Simplify using `only [xF, map_sum]`. Establish `hxT : ∀ v ∈ T₂, evalV F v xF = cF v` using `fun v hv => by`. Rewrite using `[hev, Finset.sum_eq_single v (fun v' _ hne => StrongApprox.evalV_single_ne hne.symm _) (fun h => absurd hv h), StrongApprox.evalV_single_same]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxN : ∀ v, v ∉ T₂ → evalV F v xF = 0` using `fun v hv => by`. Rewrite using `[hev]`. Conclude with `Finset.sum_eq_zero fun v' hv' => StrongApprox.evalV_single_ne (fun e : v = v' => hv (by rw [e]; exact hv')) _`. Set `x : AF F` to `pairA F cI xF`. Take `⟨r, hr, hball⟩` from `exists_radius (F := F) cI (fun w => if w ∈ T₁ then OI w else Set.univ) (fun w => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : w ∈ T₁`. Simplify `hOI w h` using `only [if_pos h]`. Simplify using `only [if_neg h]`. Conclude with `Filter.univ_mem)`. Take `⟨d, hd0, hd⟩` from `exists_scale (F := F) T₂ (fun v => (fun z : v.adicCompletion F => cF v - z) ⁻¹' OF v) (fun v hv => by`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(hOF v hv).1.preimage (continuous_const.sub continuous_id), ?_⟩` and prove the remaining obligations. Use `show cF v - 0 ∈ OF v`. Rewrite using `[sub_zero]`. Conclude with `(hOF v hv).2)`. Take `⟨C, hC, hcov⟩` from `GroundTheory.Global.exists_isCompact_forall_exists_sub_mem F`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨R, hR, hbd⟩` from `exists_norm_bound hC`. Take `⟨y, hy0, hyw, hyv⟩` from `exists_small s hd0 (div_pos hr hR)`. Establish `hdF : (d : F) ≠ 0` using `by simpa using hd0`. Use `set y₀ : F := (d : F) * y with hy₀`. Establish `hy₀0 : y₀ ≠ 0` using `mul_ne_zero hdF hy0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩` from `hcov (algebraMap F (AF F) y₀⁻¹ * x)`. Use `set e : AF F := algebraMap F (AF F) y₀⁻¹ * x - algebraMap F (AF F) k with he`. Establish `hxe : x = algebraMap F (AF F) (y₀ * k) + algebraMap F (AF F) y₀ * e`. Establish `h1 : algebraMap F (AF F) y₀ * algebraMap F (AF F) y₀⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hy₀0, map_one]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[he, map_mul]`. Take the linear combination `(-x) * h1`. Establish `hcompI : ∀ w : InfinitePlace F, algebraMap F w.Completion (y₀ * k) = cI w - algebraMap F w.Completion y₀ * e.1 w` using `fun w => by`. Establish `h : cI w = algebraMap F w.Completion (y₀ * k) + algebraMap F w.Completion y₀ * e.1 w` using `congrArg (fun a : AF F => a.1 w) hxe`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcompF : ∀ v : HeightOneSpectrum (𝓞 F), algebraMap F (v.adicCompletion F) (y₀ * k) = evalV F v xF - algebraMap F (v.adicCompletion F) y₀ * e.2 v` using `fun v => by`. Establish `h : evalV F v xF = algebraMap F (v.adicCompletion F) (y₀ * k) + algebraMap F (v.adicCompletion F) y₀ * e.2 v` using `congrArg (fun a : AF F => evalV F v a.2) hxe`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hOv : ∀ v : HeightOneSpectrum (𝓞 F), (Sum.inr v : Pl F) ≠ s → ∃ o ∈ v.adicCompletionIntegers F, algebraMap F (v.adicCompletion F) y₀ * e.2 v = algebraMap F (v.adicCompletion F) (d : F) * o` using `fun v hv => by`. Establish `h1 : algebraMap F (v.adicCompletion F) y ∈ v.adicCompletionIntegers F` using `(GroundTheory.Global.coe_mem_adicCompletionIntegers_iff v y).2 (hyv v hv)`. Establish `h2 : e.2 v ∈ v.adicCompletionIntegers F` using `hk.2 v`. Use `⟨_, mul_mem h1 h2, ?_⟩` and prove the remaining obligations. Rewrite using `[hy₀, map_mul, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `⟨y₀ * k, fun w hw => ?_, fun v hv => ?_, fun v hvT hvs => ?_⟩` and prove the remaining obligations. Establish `hlt : ‖algebraMap F w.Completion y₀ * e.1 w‖ < r`. Rewrite using `[norm_mul, norm_algebraMap_inf]`. Establish `h1 : w y₀ < r / R` using `hyw w (h₁ w hw)`. Establish `h2 : ‖e.1 w‖ ≤ R` using `hbd _ hk.1 w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `hball w _ hlt` as an intermediate fact. Simplify using `only [if_pos hw] at this`. Rewrite using `[hcompI]`. Conclude with `this`.
-
-Take `⟨o, ho, heq⟩` from `hOv v (h₂ v hv)`. Rewrite using `[hcompF, hxT v hv, heq]`. Conclude with `(hd v o ho).1 hv`. Take `⟨o, ho, heq⟩` from `hOv v hvs`. Rewrite using `[hcompF, hxN v hvT, heq, zero_sub]`.
-
-Conclude with `neg_mem ((hd v o ho).2 hvT)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_approx_core (s : Pl F) (T₁ : Finset (InfinitePlace F))
     (T₂ : Finset (HeightOneSpectrum (𝓞 F))) (h₁ : ∀ w ∈ T₁, (Sum.inl w : Pl F) ≠ s)
@@ -364,11 +354,11 @@ theorem exists_approx_core (s : Pl F) (T₁ : Finset (InfinitePlace F))
     exact neg_mem ((hd v o ho).2 hvT)
 
 /- English proof (translation)
-Introduce `F _ _ s T hs O hO`. Establish `hc : ∀ u : Pl F, ∃ c : Kp u, u ∈ T → c ∈ O u` using `fun u => by`. Distinguish the cases in `h : u ∈ T`. Take `⟨c, hc⟩` from `(hO u h).2`. Conclude with `⟨c, fun _ => hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose c hc using hc`. Take `⟨t, ht₁, ht₂, ht₃⟩` from `exists_approx_core s T.toLeft T.toRight (fun w hw h => hs (h ▸ Finset.mem_toLeft.1 hw)) (fun v hv h => hs (h ▸ Finset.mem_toRight.1 hv)) (fun w => c (Sum.inl w)) (fun w => O (Sum.inl w)) (fun w hw => (hO _ (Finset.mem_toLeft.1 hw)).1.mem_nhds (hc _ (Finset.mem_toLeft.1 hw))) (fun …`. Use `⟨t, fun u hu => ?_, fun v hvT hvs => ht₃ v (fun h => hvT (Finset.mem_toRight.1 h)) hvs⟩` and prove the remaining obligations. Consider the cases of `u with`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inl w => exact ht₁ w (Finset.mem_toLeft.2 hu)`. Consider the case `inr v => exact ht₂ v (Finset.mem_toRight.2 hu)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_approx : ∀ {F : Type} [Field F] [NumberField F] (s : Pl F) (T : Finset (Pl F)), s ∉ T →
     ∀ O : (u : Pl F) → Set (Kp u), (∀ u ∈ T, IsOpen (O u) ∧ (O u).Nonempty) →
@@ -397,7 +387,7 @@ theorem exists_approx : ∀ {F : Type} [Field F] [NumberField F] (s : Pl F) (T :
 end GlobalTheory.CompanionTheory.PlaneSA.Additive
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.PlaneSA.Additive.exists_approx`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.PlaneSA.additive_strong_approx_away : ∀ {F : Type} [Field F] [NumberField F] (s : Pl F) (T : Finset (Pl F)), s ∉ T →
   ∀ O : (u : Pl F) → Set (Kp u), (∀ u ∈ T, IsOpen (O u) ∧ (O u).Nonempty) →

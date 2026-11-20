@@ -29,11 +29,11 @@ def zeroDatum (H : Host E) : Datum H where
     simp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e1 : (1 : Over.mk s ⟶ t'.G).left = s ≫ eSec t'.G`. Rewrite using `[Hom.one_def]`. Simplify using `[eSec]`. Establish `e2 : (1 : Over.mk (s ≫ f) ⟶ t.G).left = (s ≫ f) ≫ eSec t.G`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Hom.one_def]`. Simplify using `[eSec]`. Establish `e3` using `m.cm.e_comm`. Rewrite `e3` using `[m.base]`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Conclude with `congrArg (s ≫ ·) e3`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unit_comp {S S' T : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f) (s : T ⟶ S')
     (s₀ : T ⟶ S) (h : s ≫ f = s₀) :
@@ -50,9 +50,9 @@ theorem unit_comp {S S' T : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' �
   exact congrArg (s ≫ ·) e3
 
 /- English proof (translation)
-Establish `skew : ∀ (D : Datum H) (x y : D.La), D.EF x y = -D.EF y x` using `fun D x y => by`. Use `D.alt (x + y)` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, D.alt] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `(Z.D₁ j.isLeft).unimod.1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `b`. Rewrite using `[skew, ← Datum.adj, ← Z.form, ← Z.form, ← skew]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem hh_real {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {Pe : D.La →+ (Fin g → ℂ)} {hP : IsPeriod D ty Pe}
     {p q : ℕ} (Z : CMLat hP p q) (j : Fin p ⊕ Fin q) (a : (Z.D₁ j.isLeft).La) : H.bar (Z.hh j) • a = Z.hh j • a := by
@@ -65,15 +65,15 @@ theorem hh_real {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {Pe : D.L
   rw [skew, ← Datum.adj, ← Z.form, ← Z.form, ← skew]
 
 /- English proof (translation)
-Take `⟨K₁, hK, hk, ρ, X, y, t₀, m, m', gA, tyA, PA, e, F, -, -, hh, -, hy, -, hF, hx⟩` from `hS E H D l Xo g ty FU i Pe hP Z ⊥ inferInstance`. Use `⟨K₁, hK, ρ, X, hh, fun j hj h1 => hj ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ z, F j z ∈ Pe.range` using `fun z => by`. Rewrite using `[← FU.ex_ker i Pe hP]`. Establish `hc : spMap (algebraMap K₁ ℂ) ≫ spMap (algebraMap (𝓞 K₁) K₁) = spMap ((algebraMap K₁ ℂ).comp (algebraMap (𝓞 K₁) K₁))` using `by show Spec.map _ ≫ Spec.map _ = Spec.map _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Use `hx j z (1 : Over.mk (spMap (algebraMap K₁ ℂ)) ⟶ t₀.G).left (Over.w _) (by` as an intermediate fact. Rewrite using `[unit_comp m' _ _ hc, h1]`. Use the proof step `simp)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[unit_comp m _ _ hy]`. Conclude with `Over.OverMorphism.ext this.symm`. Establish `hz : ∀ z, F j z = 0` using `fun z => by haveI := hP.2.2.1`. Establish `hcont : Continuous fun c : ℂ => (⟨F j (c • z), hmem _⟩ : Pe.range)`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_smul]`. Use `fun_prop`. Use `PreconnectedSpace.constant inferInstance hcont (x := 1) (y := 0)` as an intermediate fact. Simplify using `using this`. Use extensionality with `a`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `hP.2.1` to reduce the goal to its premises. Rewrite using `[← hF, hz]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem phi_ne_one (hS : CMExistsSt) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n)
@@ -106,7 +106,7 @@ theorem phi_ne_one (hS : CMExistsSt) (D : Datum H) (l : Level H) (Xo : Moduli D 
   rw [← hF, hz]; simp
 
 /- English proof (translation)
-Rewrite using `[hh, D.alt]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kForm_diag {D : Datum H} {ε : ℤˣ} {h : D.La → D.La → OK H} (hh : IsKForm D ε h) (x : D.La) :
     ((h x x : OK H) : 𝓞 E) = (((ε : ℤ) * D.EF (H.w0 • x) x : ℤ) : 𝓞 E) := by

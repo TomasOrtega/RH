@@ -20,7 +20,7 @@ def DualH (p : ℕ) [Fact p.Prime] : Prop :=
 variable {p : ℕ} [hp : Fact p.Prime] {n' r0 r1 : ℕ} {K' : Type} [Field K'] [Algebra (K0 p) K']
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triple_sum_comm {α β γ M : Type} [AddCommMonoid M] [Fintype β] [Fintype γ] (s : Finset α) (f : α → β → γ → M) :
     ∑ x ∈ s, ∑ a, ∑ b, f x a b = ∑ a, ∑ b, ∑ x ∈ s, f x a b := by
@@ -28,9 +28,7 @@ theorem triple_sum_comm {α β γ M : Type} [AddCommMonoid M] [Fintype β] [Fint
   exact Finset.sum_congr rfl fun a _ => Finset.sum_comm
 
 /- English proof (translation)
-Introduce `n`. Use `show (∑ l ∈ range (n.degree + 1), if n = Finsupp.single (posSub t (2 * l), a, b) (p ^ (2 * l)) then ((-1 : K') ^ l) else 0) ∈ R`. Use `Subring.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `R.pow_mem (R.neg_mem R.one_mem) l`.
-
-Conclude with `R.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem th_sSer_int (R : Subring K') (t : Fin n') (a : Fin r0) (b : Fin r1) : IntR R (sSer p K' t a b) := by
   intro n
@@ -44,11 +42,11 @@ theorem th_sSer_int (R : Subring K') (t : Fin n') (a : Fin r0) (b : Fin r1) : In
 set_option maxHeartbeats 200000 in
 
 /- English proof (translation)
-Establish `key : ∀ t' ∈ Q, ∑ t ∈ P, ∑ r, MvPowerSeries.C (Aw K' (w1 r) t.val) * S t * (MvPowerSeries.C (Aw K' (w2 r) (t'.val + 1)) * S t' ^ p) = S t' ^ p * S (posAdd t' 1)`. Introduce `t' ht'`. Establish `e : ∀ t ∈ P, ∑ r, MvPowerSeries.C (Aw K' (w1 r) t.val) * S t * (MvPowerSeries.C (Aw K' (w2 r) (t'.val + 1)) * S t' ^ p) = if t = posAdd t' 1 then S t' ^ p * S t else 0`. Introduce `t ht`. Establish `h1 : ∀ r, MvPowerSeries.C (Aw K' (w1 r) t.val) * S t * (MvPowerSeries.C (Aw K' (w2 r) (t'.val + 1)) * S t' ^ p) = MvPowerSeries.C (Aw K' (w1 r) t.val * Aw K' (w2 r) (t'.val + 1)) * (S t' ^ p * S t)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `r`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun r _ => h1 r), ← Finset.sum_mul, ← map_sum, hD t ht t' ht']`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Finset.sum_congr rfl e, Finset.sum_ite_eq' P (posAdd t' 1), if_pos (hQ t' ht')]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_congr rfl fun t _ => Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl key`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem th_sumR {ν : ℕ} (w1 w2 : Fin ν → WW p) (P Q : Finset (Fin n'))
     (hQ : ∀ t' ∈ Q, posAdd t' 1 ∈ P)
@@ -83,7 +81,7 @@ abbrev Pev (n' : ℕ) : Finset (Fin n') := univ.filter fun s : Fin n' => ¬ IsOd
 abbrev Pod (n' : ℕ) : Finset (Fin n') := univ.filter fun s : Fin n' => IsOddPos s
 
 /- English proof (translation)
-Use `show (s.val + 2 * d) % n' % 2 = 1 ↔ s.val % 2 = 1`. Rewrite using `[Nat.mod_mod_of_dvd _ (even_iff_two_dvd.mp hev)]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem th_par_add (hev : Even n') (s : Fin n') (d : ℕ) : IsOddPos (posAdd s (2 * d)) ↔ IsOddPos s := by
   show (s.val + 2 * d) % n' % 2 = 1 ↔ s.val % 2 = 1
@@ -91,9 +89,9 @@ theorem th_par_add (hev : Even n') (s : Fin n') (d : ℕ) : IsOddPos (posAdd s (
   omega
 
 /- English proof (translation)
-Use `show (s.val + n' * (2 * d) - 2 * d) % n' % 2 = 1 ↔ s.val % 2 = 1`. Rewrite using `[Nat.mod_mod_of_dvd _ (even_iff_two_dvd.mp hev)]`. Establish `h2 : 2 * d ≤ n' * (2 * d)` using `Nat.le_mul_of_pos_left _ s.pos`. Establish `h3 : n' * (2 * d) % 2 = 0` using `Nat.mod_eq_zero_of_dvd (dvd_mul_of_dvd_right (dvd_mul_right 2 d) n')`. Generalize the expression as in `n' * (2 * d) = m at h2 h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem th_par_sub (hev : Even n') (s : Fin n') (d : ℕ) : IsOddPos (posSub s (2 * d)) ↔ IsOddPos s := by
   show (s.val + n' * (2 * d) - 2 * d) % n' % 2 = 1 ↔ s.val % 2 = 1
@@ -104,7 +102,7 @@ theorem th_par_sub (hev : Even n') (s : Fin n') (d : ℕ) : IsOddPos (posSub s (
   omega
 
 /- English proof (translation)
-Use `show (s.val + 1) % n' % 2 = 1 ↔ ¬ s.val % 2 = 1`. Rewrite using `[Nat.mod_mod_of_dvd _ (even_iff_two_dvd.mp hev)]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem th_par_one (hev : Even n') (s : Fin n') : IsOddPos (posAdd s 1) ↔ ¬ IsOddPos s := by
   show (s.val + 1) % n' % 2 = 1 ↔ ¬ s.val % 2 = 1
@@ -112,21 +110,21 @@ theorem th_par_one (hev : Even n') (s : Fin n') : IsOddPos (posAdd s 1) ↔ ¬ I
   omega
 
 /- English proof (translation)
-Simplify using `only [coordZ, linK, Aw, wK', one_mul, add_zero, pow_zero, pow_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem th_coordZ_inl (B : OmBasis p n') (r : Fin (n' / 2)) (a : Fin r0) (b : Fin r1) :
     coordZ B K' 1 (Sum.inl (r, a, b)) = linK K' (B.omS r) (Pev n') a b 0 := by
   simp only [coordZ, linK, Aw, wK', one_mul, add_zero, pow_zero, pow_one]
 
 /- English proof (translation)
-Simplify using `only [coordZ, linK, Aw, wK', one_mul, add_zero, pow_zero, pow_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem th_coordZ_inr (B : OmBasis p n') (r : Fin (n' / 2)) (a : Fin r0) (b : Fin r1) :
     coordZ B K' 1 (Sum.inr (r, a, b)) = linK K' (B.om r) (Pod n') a b 0 := by
   simp only [coordZ, linK, Aw, wK', one_mul, add_zero, pow_zero, pow_one]
 
 /- English proof (translation)
-Use `congrArg (wK' p K') (hT2 n' B hev a b hab)` as an intermediate fact. Simplify using `only [wK', map_sum, map_mul] at this`. Rewrite `this` using `[apply_ite (algebraMap (WW p) (K0 p)), apply_ite (algebraMap (K0 p) K')]`. Simplify `this` using `[Aw, wK']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem th_dual_K (hT2 : DualH p) (hev : Even n') (B : OmBasis p n') (a b : Fin n') (hab : a.val % 2 = b.val % 2) :
     ∑ r, Aw K' (B.omS r) a.val * Aw K' (B.om r) b.val = if a = b then 1 else 0 := by
@@ -136,7 +134,7 @@ theorem th_dual_K (hT2 : DualH p) (hev : Even n') (B : OmBasis p n') (a b : Fin 
   simpa [Aw, wK'] using this
 
 /- English proof (translation)
-Unfold `Aw`. Use `congr 1`. Conclude with `Function.IsPeriodicPt.iterate_mod_apply hper _`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem th_Aw_posAdd {w : WW p} (hper : (sigW p)^[n'] w = w) (s : Fin n') (d : ℕ) :
     Aw K' w (posAdd s d).val = Aw K' w (s.val + d) := by
@@ -145,7 +143,7 @@ theorem th_Aw_posAdd {w : WW p} (hper : (sigW p)^[n'] w = w) (s : Fin n') (d : �
   exact Function.IsPeriodicPt.iterate_mod_apply hper _
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[MvPowerSeries.coeff_C]`. Use `split_ifs`. Conclude with `hc`. Conclude with `R.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intR_C_of_mem {ι F : Type} [Field F] (R : Subring F) {c : F} (hc : c ∈ R) :
     IntR R (MvPowerSeries.C c : MvPowerSeries ι F) := by
@@ -157,7 +155,7 @@ private theorem intR_C_of_mem {ι F : Type} [Field F] (R : Subring F) {c : F} (h
   · exact R.zero_mem
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[map_add]`. Conclude with `R.add_mem (hf n) (hg n)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intR_add' {ι F : Type} [Field F] (R : Subring F) {f g : MvPowerSeries ι F}
     (hf : IntR R f) (hg : IntR R g) : IntR R (f + g) := by
@@ -166,7 +164,7 @@ private theorem intR_add' {ι F : Type} [Field F] (R : Subring F) {f g : MvPower
   exact R.add_mem (hf n) (hg n)
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[MvPowerSeries.coeff_mul]`. Conclude with `R.sum_mem fun x _ => R.mul_mem (hf _) (hg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intR_mul' {ι F : Type} [Field F] (R : Subring F) {f g : MvPowerSeries ι F}
     (hf : IntR R f) (hg : IntR R g) : IntR R (f * g) := by
@@ -176,9 +174,9 @@ private theorem intR_mul' {ι F : Type} [Field F] (R : Subring F) {f g : MvPower
   exact R.sum_mem fun x _ => R.mul_mem (hf _) (hg _)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => classical`. Introduce `n`. Rewrite using `[pow_zero, MvPowerSeries.coeff_one]`. Use `split_ifs`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `R.one_mem`. Conclude with `R.zero_mem`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Conclude with `intR_mul' R ih hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intR_pow {ι F : Type} [Field F] (R : Subring F) {f : MvPowerSeries ι F}
     (hf : IntR R f) (k : ℕ) : IntR R (f ^ k) := by
@@ -195,7 +193,7 @@ private theorem intR_pow {ι F : Type} [Field F] (R : Subring F) {f : MvPowerSer
     exact intR_mul' R ih hf
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[map_sum]`. Conclude with `R.sum_mem fun i hi => h i hi n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intR_sum' {ι F α : Type} [Field F] (R : Subring F) (s : Finset α)
     (f : α → MvPowerSeries ι F) (h : ∀ i ∈ s, IntR R (f i)) : IntR R (∑ i ∈ s, f i) := by
@@ -204,14 +202,14 @@ private theorem intR_sum' {ι F α : Type} [Field F] (R : Subring F) (s : Finset
   exact R.sum_mem fun i hi => h i hi n
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun n => by rw [map_zero]; exact R.zero_mem, by rw [h, mul_zero, add_zero]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem cg_of_eq' {ι F : Type} [Field F] (R : Subring F) (pp : F)
     {f g : MvPowerSeries ι F} (h : f = g) : Cg R pp f g :=
   ⟨0, fun n => by rw [map_zero]; exact R.zero_mem, by rw [h, mul_zero, add_zero]⟩
 
 /- English proof (translation)
-Take `⟨Y, hY, rfl⟩` from `h`. Take `⟨Y', hY', rfl⟩` from `h'`. Use `⟨Y - Y', fun n => ?_, by ring⟩` and prove the remaining obligations. Rewrite using `[map_sub]`. Conclude with `R.sub_mem (hY n) (hY' n)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cg_sub_multiset_valuation {ι F : Type} [Field F] (R : Subring F) (pp : F)
     {f g f' g' : MvPowerSeries ι F} (h : Cg R pp f g) (h' : Cg R pp f' g') :
@@ -223,7 +221,7 @@ private theorem cg_sub_multiset_valuation {ι F : Type} [Field F] (R : Subring F
   exact R.sub_mem (hY n) (hY' n)
 
 /- English proof (translation)
-Take `⟨Y, hY, rfl⟩` from `h`. Take `⟨Y', hY', rfl⟩` from `h'`. Conclude with `⟨Y' + Y, intR_add' R hY' hY, by ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cg_trans' {ι F : Type} [Field F] (R : Subring F) (pp : F)
     {f g k : MvPowerSeries ι F} (h : Cg R pp f g) (h' : Cg R pp g k) : Cg R pp f k := by
@@ -232,7 +230,7 @@ private theorem cg_trans' {ι F : Type} [Field F] (R : Subring F) (pp : F)
   exact ⟨Y' + Y, intR_add' R hY' hY, by ring⟩
 
 /- English proof (translation)
-Take `⟨Y, hY, rfl⟩` from `h`. Take `⟨Y', hY', rfl⟩` from `h'`. Conclude with `⟨g * Y' + Y * (g' + MvPowerSeries.C pp * Y'), intR_add' R (intR_mul' R hg hY') (intR_mul' R hY hf'), by ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cg_mul' {ι F : Type} [Field F] (R : Subring F) (pp : F) (hpp : pp ∈ R)
     {f g f' g' : MvPowerSeries ι F} (h : Cg R pp f g) (h' : Cg R pp f' g')
@@ -243,7 +241,7 @@ private theorem cg_mul' {ι F : Type} [Field F] (R : Subring F) (pp : F) (hpp : 
     intR_add' R (intR_mul' R hg hY') (intR_mul' R hY hf'), by ring⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact cg_of_eq' R pp (by rw [pow_zero, pow_zero])`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `cg_mul' R pp hpp ih h (intR_pow R hg k) hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cg_pow' {ι F : Type} [Field F] (R : Subring F) (pp : F) (hpp : pp ∈ R)
     {f g : MvPowerSeries ι F} (h : Cg R pp f g) (hf : IntR R f) (hg : IntR R g) (k : ℕ) :
@@ -255,7 +253,7 @@ private theorem cg_pow' {ι F : Type} [Field F] (R : Subring F) (pp : F) (hpp : 
     exact cg_mul' R pp hpp ih h (intR_pow R hg k) hf
 
 /- English proof (translation)
-Use `choose Y hY heq using h`. Conclude with `⟨∑ i ∈ s, Y i, intR_sum' R s Y (fun i _ => hY i), by`. Rewrite using `[Finset.sum_congr rfl (fun i _ => heq i), Finset.sum_add_distrib, Finset.mul_sum]⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cg_sum' {ι F α : Type} [Field F] (R : Subring F) (pp : F) (s : Finset α)
     {f g : α → MvPowerSeries ι F} (h : ∀ i, Cg R pp (f i) (g i)) :
@@ -265,7 +263,7 @@ private theorem cg_sum' {ι F α : Type} [Field F] (R : Subring F) (pp : F) (s :
     rw [Finset.sum_congr rfl (fun i _ => heq i), Finset.sum_add_distrib, Finset.mul_sum]⟩
 
 /- English proof (translation)
-Take `⟨Y, hY, rfl⟩` from `h`. Conclude with `⟨MvPowerSeries.C c * Y, intR_mul' R (intR_C_of_mem R hc) hY, by ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cg_C_mul' {ι F : Type} [Field F] (R : Subring F) (pp : F) {c : F} (hc : c ∈ R)
     {f g : MvPowerSeries ι F} (h : Cg R pp f g) :
@@ -274,7 +272,7 @@ private theorem cg_C_mul' {ι F : Type} [Field F] (R : Subring F) (pp : F) {c : 
   exact ⟨MvPowerSeries.C c * Y, intR_mul' R (intR_C_of_mem R hc) hY, by ring⟩
 
 /- English proof (translation)
-Take `⟨Y, hY, rfl⟩` from `h`. Conclude with `intR_add' R hg (intR_mul' R (intR_C_of_mem R hpp) hY)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem intR_of_cg_of_intR {ι F : Type} [Field F] (R : Subring F) (pp : F) (hpp : pp ∈ R)
     {f g : MvPowerSeries ι F} (h : Cg R pp f g) (hg : IntR R g) : IntR R f := by
@@ -282,55 +280,49 @@ private theorem intR_of_cg_of_intR {ι F : Type} [Field F] (R : Subring F) (pp :
   exact intR_add' R hg (intR_mul' R (intR_C_of_mem R hpp) hY)
 
 /- English proof (translation)
-Introduce `hp5 c hc n r0 r1 h2 hev B L _ _ vp hvp μ hμ0 hμ`. Establish `hpR : (p : L) ∈ Rp p L vp` using `natCast_mem (Rp p L vp) p`. Establish `hFS` using `hF n r0 r1 L (Rp p L vp)`. Establish `hM` using `hT1 L vp hvp μ hμ0 hμ`. Establish `hc0 : wK' p L c ∈ Rp p L vp` using `th_Aw_mem vp c 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : wK' p L (sigW p c) ∈ Rp p L vp` using `th_Aw_mem vp c 1`. Establish `hsI : ∀ (t : Fin n) (a : Fin r0) (b : Fin r1), IntR (Rp p L vp) (sSer p L t a b)` using `fun t a b => th_sSer_int _ t a b`. Establish `hLin0 : ∀ (w : WW p) (P : Finset (Fin n)) (e : Fin n → ℕ) (a : Fin r0) (b : Fin r1), IntR (Rp p L vp) (∑ t ∈ P, MvPowerSeries.C (Aw L w (e t)) * sSer p L t a b)` using `fun w P e a b => intR_sum' _ P _ fun t _ => intR_mul' _ (intR_C_of_mem _ (th_Aw_mem vp w _)) (hsI t a b)`. Establish `hEv1 : ∀ s ∈ Pev n, ∀ d, posAdd s (2 * d) ∈ Pev n`. Introduce `s hs d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hs ⊢`. Rewrite using `[th_par_add hev]` and apply the resulting hypothesis. Establish `hEv2 : ∀ s ∈ Pev n, ∀ d, posSub s (2 * d) ∈ Pev n`. Introduce `s hs d`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hs ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[th_par_sub hev]` and apply the resulting hypothesis. Establish `hOd1 : ∀ s ∈ Pod n, ∀ d, posAdd s (2 * d) ∈ Pod n`. Introduce `s hs d`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hs ⊢`. Rewrite using `[th_par_add hev]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hOd2 : ∀ s ∈ Pod n, ∀ d, posSub s (2 * d) ∈ Pod n`. Introduce `s hs d`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hs ⊢`. Rewrite using `[th_par_sub hev]` and apply the resulting hypothesis. Establish `hX : ∀ (r : Fin (n / 2)) (a : Fin r0) (b : Fin r1), Cg (Rp p L vp) (p : L) (sOf B L μ (Sum.inl (r, a, b))) (∑ t ∈ Pev n, MvPowerSeries.C (Aw L (B.omS r) t.val) * sSer p L t a b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `r a b`. Establish `h` using `th_claimM vp hFS hW μ hM (B.omS r) (B.fixS r) (Pev n) hEv1 hEv2 a b`. Rewrite `h` using `[← th_coordZ_inl]`. Conclude with `h`. Establish `hZ : ∀ (r : Fin (n / 2)) (a : Fin r0) (b : Fin r1), Cg (Rp p L vp) (p : L) (sOf B L μ (Sum.inr (r, a, b))) (∑ t ∈ Pod n, MvPowerSeries.C (Aw L (B.om r) t.val) * sSer p L t a b)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r a b`. Establish `h` using `th_claimM vp hFS hW μ hM (B.om r) (B.fix r) (Pod n) hOd1 hOd2 a b`. Rewrite `h` using `[← th_coordZ_inr]`. Conclude with `h`. Establish `hT1' : ∀ (r : Fin (n / 2)) (a : Fin r0) (b : Fin r1), Cg (Rp p L vp) (p : L) (MvPowerSeries.C (wK' p L c) * (sOf B L μ (Sum.inl (r, a, b)) * sOf B L μ (Sum.inr (r, a, b)) ^ p)) (MvPowerSeries.C (wK' p L c) * ((∑ t ∈ Pev n, MvPowerSeries.C (Aw L (B.omS r) t.val) * sSer p L t a b) …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `r a b`. Establish `hZi : IntR (Rp p L vp) (sOf B L μ (Sum.inr (r, a, b)))` using `intR_of_cg_of_intR _ _ hpR (hZ r a b) (hLin0 (B.om r) (Pod n) (fun t => t.val) a b)`. Establish `hZp` using `cg_pow' _ _ hpR (hZ r a b) hZi (hLin0 (B.om r) (Pod n) (fun t => t.val) a b) p`. Establish `hF1` using `th_frob_lin vp hFS hW (B.om r) (Pod n) (fun t => t.val) (fun t => sSer p L t a b) (fun t => hsI t a b)`. Establish `hZB` using `cg_trans' _ _ hZp hF1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXZ` using `cg_mul' _ _ hpR (hX r a b) hZB (hLin0 (B.omS r) (Pev n) (fun t => t.val) a b) (intR_pow _ hZi p)`. Conclude with `cg_C_mul' _ _ hc0 hXZ`. Establish `hT2' : ∀ (r : Fin (n / 2)) (a : Fin r0) (b : Fin r1), Cg (Rp p L vp) (p : L) (MvPowerSeries.C (wK' p L (sigW p c)) * (sOf B L μ (Sum.inr (r, a, b)) * sOf B L μ (Sum.inl (r, a, b)) ^ p)) (MvPowerSeries.C (wK' p L (sigW p c)) * ((∑ t ∈ Pod n, MvPowerSeries.C (Aw L (B.om r) t.val) * …`. Introduce `r a b`. Establish `hXi : IntR (Rp p L vp) (sOf B L μ (Sum.inl (r, a, b)))` using `intR_of_cg_of_intR _ _ hpR (hX r a b) (hLin0 (B.omS r) (Pev n) (fun t => t.val) a b)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXp` using `cg_pow' _ _ hpR (hX r a b) hXi (hLin0 (B.omS r) (Pev n) (fun t => t.val) a b) p`. Establish `hF2` using `th_frob_lin vp hFS hW (B.omS r) (Pev n) (fun t => t.val) (fun t => sSer p L t a b) (fun t => hsI t a b)`. Establish `hXA` using `cg_trans' _ _ hXp hF2`. Establish `hZX` using `cg_mul' _ _ hpR (hZ r a b) hXA (hLin0 (B.om r) (Pod n) (fun t => t.val) a b) (intR_pow _ hXi p)`. Conclude with `cg_C_mul' _ _ hc1 hZX`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAll` using `cg_sum' _ _ (Finset.univ : Finset (Eidx n r0 r1)) fun e : Eidx n r0 r1 => cg_sub_multiset_valuation _ _ (hT1' e.1 e.2.1 e.2.2) (hT2' e.1 e.2.1 e.2.2)`. Take `⟨Y, hY, heq⟩` from `hAll`. Take `⟨u, hu_def⟩ : ∃ u : Fin n → L, u = fun s => if IsOddPos s then wK' p L c else -wK' p L (sigW p c)` from `⟨_, rfl⟩`. Establish `hu : ∀ s, u s ∈ Rp p L vp`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hu_def]`. Simplify using `only`. Use `split_ifs`. Conclude with `hc0`. Conclude with `(Rp p L vp).neg_mem hc1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨u, hu, Y, hY, ?_⟩` and prove the remaining obligations. Use `heq.trans ?_` and prove the remaining obligations. Use `congr 1`. Establish `hR : (hhS p L u : MvPowerSeries (Zidx n r0 r1) L) = ∑ a : Fin r0, ∑ b : Fin r1, ∑ s : Fin n, MvPowerSeries.C (u s) * (sSer p L s a b ^ p * sSer p L (posAdd s 1) a b)`. Unfold `hhS`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mul_sum]`. Conclude with `triple_sum_comm _ _`. Establish `hQ1 : ∀ t' ∈ Pod n, posAdd t' 1 ∈ Pev n`. Introduce `t' ht'`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ht' ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[th_par_one hev]`. Conclude with `not_not.mpr ht'`. Establish `hQ2 : ∀ t' ∈ Pev n, posAdd t' 1 ∈ Pod n`. Introduce `t' ht'`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ht' ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[th_par_one hev]`. Conclude with `ht'`. Establish `hD1 : ∀ t ∈ Pev n, ∀ t' ∈ Pod n, ∑ r, Aw L (B.omS r) t.val * Aw L (B.om r) (t'.val + 1) = if t = posAdd t' 1 then 1 else 0`. Introduce `t ht t' ht'`. Establish `hpar : t.val % 2 = (posAdd t' 1).val % 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, IsOddPos] at ht ht'`. Rewrite using `[th_odd_posAdd hev]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← th_dual_K (K' := L) hT2 hev B t (posAdd t' 1) hpar]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[th_Aw_posAdd (K' := L) (B.fix r)]`. Establish `hD2 : ∀ t ∈ Pod n, ∀ t' ∈ Pev n, ∑ r, Aw L (B.om r) t.val * Aw L (B.omS r) (t'.val + 1) = if t = posAdd t' 1 then 1 else 0`. Introduce `t ht t' ht'`. Establish `hpar : (posAdd t' 1).val % 2 = t.val % 2`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, IsOddPos] at ht ht'`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[th_odd_posAdd hev]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `th_dual_K (K' := L) hT2 hev B (posAdd t' 1) t hpar`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[th_Aw_posAdd (K' := L) (B.fixS r), mul_comm]`. Use `_ = if posAdd t' 1 = t then 1 else 0 := h`. Use `_ = if t = posAdd t' 1 then 1 else 0 := by`. Distinguish the cases in `h1 : t = posAdd t' 1`. Rewrite using `[if_pos h1, if_pos h1.symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[if_neg h1, if_neg (Ne.symm h1)]`. Rewrite using `[hR]`. Simplify using `only [Fintype.sum_prod_type]`. Rewrite using `[triple_sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.mul_sum]`. Establish `e1` using `th_sumR (B.omS) (B.om) (Pev n) (Pod n) hQ1 hD1 (fun t => sSer p L t a b)`. Establish `e2` using `th_sumR (B.om) (B.omS) (Pod n) (Pev n) hQ2 hD2 (fun t => sSer p L t a b)`. Use `beta_reduce at e1 e2`. Rewrite using `[e1, e2]`.
-
-Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun s => IsOddPos s) (fun s => MvPowerSeries.C (u s) * (sSer p L s a b ^ p * sSer p L (posAdd s 1) a b))]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[hu_def]`.
-
-Simplify using `only`. Rewrite using `[if_pos (Finset.mem_filter.mp hs).2]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[hu_def]`. Simplify using `only`.
-
-Rewrite using `[if_neg (Finset.mem_filter.mp hs).2, map_neg, neg_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restTwoSums_of (hT1 : MuAltH p) (hT2 : DualH p)
     (hF : ∀ (n' r0 r1 : ℕ) (K' : Type) [Field K'] (R : Subring K'), FrobSumH p n' r0 r1 K' R) (hW : FrobWH p) :

@@ -6,21 +6,19 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.Split
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A A' D _ _ _ _ _ _ σ X hX`. Take `⟨R, hR, hXR⟩` from `GlobalTheory.PrimFrameMove.exists_rightInverse hX`. Set `X' : Matrix A D 𝒪[k]` to `Matrix.of fun i j => ⟨X i j, mem_matLat_stdLat.1 hX.2.1 i j⟩`. Set `R' : Matrix D A 𝒪[k]` to `Matrix.of fun i j => ⟨R i j, hR i j⟩`. Establish `h1 : X' * R' = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `Matrix.map_injective (f := algebraMap 𝒪[k] k) Subtype.val_injective` to reduce the goal to its premises. Use `show (X' * R').map (algebraMap 𝒪[k] k) = (1 : Matrix A A 𝒪[k]).map (algebraMap 𝒪[k] k)`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `hXR`. Set `ρ` to `IsLocalRing.residue 𝒪[k]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : X'.map ρ * R'.map ρ = 1`. Rewrite using `[← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h3 : (X'.map ρ).rank = Fintype.card A`. Use `le_antisymm (Matrix.rank_le_card_height _) ?_` and prove the remaining obligations. Use `Matrix.rank_mul_le_left (X'.map ρ) (R'.map ρ)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[h2, Matrix.rank_one]`. Then use the resulting hypothesis. Take `⟨h, hh⟩` from `(rank_eq_card_iff_exists_frameMatrixFirstColumnBlock σ _).1 h3`. Use `choose l hl using IsLocalRing.residue_surjective (R := 𝒪[k])`. Set `C : Matrix D D 𝒪[k]` to `Matrix.of fun r j => Sum.elim (fun i => X' i j) (fun i => l ((invT h).val (σ (Sum.inr i)) j)) (σ.symm r)`. Establish `h4 : ρ.mapMatrix C = (invT h).val`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `r j`. Take `⟨i | i, rfl⟩` from `σ.surjective r`. Use `congrFun (congrFun hh i) j` as an intermediate fact. Rewrite `this` using `[frameMatrixFirstColumnBlock_mul_apply]`. Simplify `this` using `[C]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[C, ρ, hl]`. Establish `hK : IsUnit C`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, ← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`. Rewrite using `[show (IsLocalRing.residue 𝒪[k]).mapMatrix C = _ from h4]`. Conclude with `(invT h).det_ne_zero`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Take `⟨w, hw⟩` from `hK`. Use `⟨invT (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) w), invT_mem_KO ⟨w, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[invT_invT]`. Use extensionality with `i j`. Rewrite using `[frameMatrixFirstColumnBlock_mul_apply]`.
-
-Use `show _ = ((w.val (σ (Sum.inl i)) j : 𝒪[k]) : k)`. Rewrite using `[hw]`. Simplify using `[C, X']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_mem_KO_eq_stdFrame_mul_of_isPrimFrame :
     ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {A A' D : Type} [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A'] [Fintype D] [DecidableEq D] (σ : A ⊕ A' ≃ D) (X : Matrix A D k), IsPrimFrame (stdLat k D) X → ∃ u ∈ KO k D, X = X0 k σ * (invT u).val := by

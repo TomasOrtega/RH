@@ -11,7 +11,7 @@ namespace UpperTheory.Gal.W2
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} {L : Link D G}
 
 /- English proof (translation)
-Apply the tactic sequence `unfold sgnV; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sgn_pm (L : Link D G) (v : InfinitePlace G.F) : sgnV L v = 1 ∨ sgnV L v = -1 := by
   unfold sgnV; split_ifs <;> simp
@@ -22,7 +22,7 @@ private noncomputable def diagL (M : InfinitePlace G.F → Matrix (Fin G.n) (Fin
   map_smul' c x := by funext v; simp [Matrix.mulVec_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using `[diagL]`. Simplify using `[diagL, Pi.single_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem diagL_single (M : InfinitePlace G.F → Matrix (Fin G.n) (Fin G.n) ℂ) (v : InfinitePlace G.F)
     (x : Fin G.n → ℂ) : diagL M (Pi.single v x : Arch G) = Pi.single v (M v *ᵥ x) := by
@@ -33,13 +33,13 @@ private theorem diagL_single (M : InfinitePlace G.F → Matrix (Fin G.n) (Fin G.
   · simp [diagL, Pi.single_apply, h]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext_on_range A.span h`.
+A detailed English derivation is pending.
 -/
 private theorem arch_ext (A : ArchFrame L) {W : Type} [AddCommGroup W] [Module ℝ W] (f g : Arch G →ₗ[ℝ] W)
     (h : ∀ w, f (A.th w) = g (A.th w)) : f = g := LinearMap.ext_on_range A.span h
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Complex.real_smul]`. Use `conv_lhs => rw [← Complex.re_add_im c]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem smul_decomp {k : ℕ} (c : ℂ) (x : Fin k → ℂ) :
     c • x = c.re • x + c.im • (Complex.I • x) := by
@@ -49,9 +49,9 @@ private theorem smul_decomp {k : ℕ} (c : ℂ) (x : Fin k → ℂ) :
   ring
 
 /- English proof (translation)
-Break down `hs with rfl | rfl` into its components or cases. Simplify using the standard rewrite rules. Establish `e : (Pi.single v ((-1 * Complex.I) • z) : Arch G) = -(Pi.single v (Complex.I • z) : Arch G)`. Rewrite using `[neg_one_mul, neg_smul, Pi.single_neg]`. Rewrite using `[e, map_neg, neg_one_mul, neg_smul]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_eq_iff_eq_neg.symm`.
+A detailed English derivation is pending.
 -/
 private theorem sI_iff {g : ℕ} (R : Arch G →ₗ[ℝ] (Fin g → ℂ)) (v : InfinitePlace G.F) (z : Fin G.n → ℂ) {s : ℂ}
     (hs : s = 1 ∨ s = -1) :
@@ -80,9 +80,9 @@ private abbrev relQ (A : ArchFrame L) (v : InfinitePlace G.F) (Q : VQ D →+ (Fi
     R (Pi.single v (Complex.I • z)) = (sgnV L v * Complex.I) • R (Pi.single v z)
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective R`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hQ.2.1, Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `LinearMap.mem_range.mpr ⟨A.th w, (hR w).symm⟩`. Establish `hdim : Module.finrank ℝ (Arch G) = Module.finrank ℝ (Fin D.g → ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[A.dimg, Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex]`. Expand and normalize the polynomial expressions, which then agree. Establish `hinj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mpr hsurj`. Conclude with `⟨LinearEquiv.ofBijective R ⟨hinj, hsurj⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_linearEquiv_coe_eq_of_isPerQ (A : ArchFrame L) {β : G.Cˣ} {ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ}
     {Q : VQ D →+ (Fin D.g → ℂ)} (hQ : IsPerQ L β ρ Q) (R : Arch G →ₗ[ℝ] (Fin D.g → ℂ))
@@ -99,7 +99,7 @@ private theorem exists_linearEquiv_coe_eq_of_isPerQ (A : ArchFrame L) {β : G.C�
   exact ⟨LinearEquiv.ofBijective R ⟨hinj, hsurj⟩, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `hJ (Pi.single v x)`. Establish `e : (fun w => J w *ᵥ (Pi.single v x : Arch G) w) = (Pi.single v (J v *ᵥ x) : Arch G)` using `diagL_single J v x`. Rewrite using `[← e]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem J_single {g : ℕ} (R : Arch G ≃ₗ[ℝ] (Fin g → ℂ)) (J : InfinitePlace G.F → Matrix (Fin G.n) (Fin G.n) ℂ)
     (hJ : ∀ x : Arch G, R (fun v => J v *ᵥ x v) = Complex.I • R x) (v : InfinitePlace G.F) (x : Fin G.n → ℂ) :
@@ -111,7 +111,7 @@ private theorem J_single {g : ℕ} (R : Arch G ≃ₗ[ℝ] (Fin g → ℂ)) (J :
   exact h
 
 /- English proof (translation)
-Establish `h1` using `J_single R J hJ v z`. Establish `h2` using `(sI_iff R.toLinearMap v z hs).1 h`. Establish `h3 : (Pi.single v (J v *ᵥ z) : Arch G) = Pi.single v ((s * Complex.I) • z)` using `R.injective (h1.trans h2.symm)`. Conclude with `Pi.single_injective v h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem J_of_rel {g : ℕ} (R : Arch G ≃ₗ[ℝ] (Fin g → ℂ)) (J : InfinitePlace G.F → Matrix (Fin G.n) (Fin G.n) ℂ)
     (hJ : ∀ x : Arch G, R (fun v => J v *ᵥ x v) = Complex.I • R x) (v : InfinitePlace G.F) (z : Fin G.n → ℂ) {s : ℂ}
@@ -124,7 +124,7 @@ private theorem J_of_rel {g : ℕ} (R : Arch G ≃ₗ[ℝ] (Fin g → ℂ)) (J :
   exact Pi.single_injective v h3
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `z.2`. Rewrite `h2` using `[h]`. Simplify using `at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem posv_ne {v : InfinitePlace G.F} {β : G.Cˣ} (z : GlobalTheory.LKCx.PosV G v β) : z.1 ≠ 0 := by
   intro h
@@ -133,11 +133,11 @@ private theorem posv_ne {v : InfinitePlace G.F} {β : G.Cˣ} (z : GlobalTheory.L
   simp at h2
 
 /- English proof (translation)
-Take `⟨R0, hR0⟩` from `hPE p D G L A B.β ρ Q hQ`. Take `⟨R, hRR⟩` from `exists_linearEquiv_coe_eq_of_isPerQ A hQ R0 hR0`. Establish `hR : ∀ w, Q w = R (A.th w)` using `fun w => by`. Rewrite using `[hRR]`. Conclude with `hR0 w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ, hJP⟩` from `hJS p D G L A B.β ρ Q hQ (fun v' => (hS p G B v').1) R hR`. Establish `hS'` using `hS p G B v`. Take `⟨z0, hz0⟩` from `(hS'.2.1 hsig).1`. Establish `hL` using `hJL G.n _ (J v) (sgnV L v) hS'.1 (sgn_pm L v) (hJP v)`. Take `⟨z, hz, hJz⟩` from `hL.2.2.1 ⟨z0, hz0⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨z, hL.1 z hz hJz⟩, R.toLinearMap, fun w => hR w, ?_⟩` and prove the remaining obligations. Establish `h1` using `J_single R J hJ v z`. Rewrite `h1` using `[hJz]`. Conclude with `(sI_iff R.toLinearMap v z (sgn_pm L v)).mpr h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_positive_period_line (hS : SigB) (hPE : PerExt) (hJS : JStruct) (hJL : JLine) (A : ArchFrame L)
     {v : InfinitePlace G.F} (hsig : sigPosH (G.gram_herm v) = 1) (B : GlobalTheory.LKCx.Form G)
@@ -159,13 +159,11 @@ private theorem exists_positive_period_line (hS : SigB) (hPE : PerExt) (hJS : JS
   exact (sI_iff R.toLinearMap v z (sgn_pm L v)).mpr h1
 
 /- English proof (translation)
-Take `⟨R, hR, hrel⟩` from `hr`. Establish `hP : (GlobalTheory.LKCx.toV G v β y : Matrix (Fin G.n) (Fin G.n) ℂ) = G.psi v (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)` using `rfl`. Establish `key : ∀ x : Fin G.n → ℂ, G.psi v ((((y : G.Cˣ × ℚˣ).1)⁻¹ : G.Cˣ) : G.C) *ᵥ (G.psi v (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) *ᵥ x) = x`. Introduce `x`. Rewrite using `[Matrix.mulVec_mulVec, ← map_mul, Units.inv_mul, map_one, Matrix.one_mulVec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨R ∘ₗ diagL (fun v' => G.psi v' ((((y : G.Cˣ × ℚˣ).1)⁻¹ : G.Cˣ) : G.C)), fun w => ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : diagL (fun v' => G.psi v' ((((y : G.Cˣ × ℚˣ).1)⁻¹ : G.Cˣ) : G.C)) (A.th w) = A.th (L.rep ((((y : G.Cˣ × ℚˣ).1)⁻¹ : G.Cˣ) : G.C) w)`. Use function extensionality and compare the values at `v'`. Conclude with `(A.act _ w v').symm`. Rewrite using `[LinearMap.comp_apply, e1, ← hR, ← h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `symm`. Use `show L.rep (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) (L.rep ((((y : G.Cˣ × ℚˣ).1)⁻¹ : G.Cˣ) : G.C) w) = w`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Units.mul_inv, map_one, Module.End.one_apply]`. Rewrite using `[hP, LinearMap.comp_apply, LinearMap.comp_apply, diagL_single, diagL_single, Matrix.mulVec_smul, key]`.
-
-Conclude with `hrel`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem period_relation_equivariant (A : ArchFrame L) (v : InfinitePlace G.F) {β : G.Cˣ} (y : GlobalTheory.LKCx.grp G β)
     (Q Q' : VQ D →+ (Fin D.g → ℂ)) (z : Fin G.n → ℂ) (h : ∀ w, Q' (actY L y w) = Q w) (hr : relQ A v Q z) :
@@ -191,9 +189,9 @@ private theorem period_relation_equivariant (A : ArchFrame L) (v : InfinitePlace
     exact hrel
 
 /- English proof (translation)
-Establish `key` using `arch_ext A ((Matrix.mulVecLin M).restrictScalars ℝ ∘ₗ R) (R ∘ₗ diagL (fun v' => G.psi v' c)) (fun w => by`. Simplify using `only [LinearMap.comp_apply, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply]`. Rewrite using `[← hR, h, hR]`. Use `congr 1`. Use function extensionality and compare the values at `v'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `A.act c w v')`. Conclude with `congrArg (fun F => F x) key`.
+A detailed English derivation is pending.
 -/
 private theorem intertw (A : ArchFrame L) {Q : VQ D →+ (Fin D.g → ℂ)} (R : Arch G →ₗ[ℝ] (Fin D.g → ℂ))
     (hR : ∀ w, Q w = R (A.th w)) (M : Matrix (Fin D.g) (Fin D.g) ℂ) (c : G.C)
@@ -209,7 +207,7 @@ private theorem intertw (A : ArchFrame L) {Q : VQ D →+ (Fin D.g → ℂ)} (R :
   exact congrArg (fun F => F x) key
 
 /- English proof (translation)
-Rewrite using `[smul_decomp m z, Pi.single_add, map_add, Pi.single_smul, Pi.single_smul, map_smul, map_smul, hrel]`. Break down `sgn_pm L v with hs | hs` into its components or cases. Rewrite using `[if_pos hs, hs, _root_.one_mul, smul_decomp m (R (Pi.single v z))]`. Rewrite using `[if_neg (by rw [hs]; norm_num), hs, smul_decomp ((starRingEnd ℂ) m) (R (Pi.single v z))]`. Simplify using `[neg_smul, smul_neg, Complex.conj_re, Complex.conj_im]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem period_smul_eq_conj_or_self_smul {g : ℕ} (R : Arch G →ₗ[ℝ] (Fin g → ℂ)) (v : InfinitePlace G.F) (z : Fin G.n → ℂ)
     (hrel : R (Pi.single v (Complex.I • z)) = (sgnV L v * Complex.I) • R (Pi.single v z)) (m : ℂ) :
@@ -221,22 +219,22 @@ private theorem period_smul_eq_conj_or_self_smul {g : ℕ} (R : Arch G →ₗ[�
     simp [neg_smul, smul_neg, Complex.conj_re, Complex.conj_im]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Matrix.scalar_apply, Matrix.mulVec_diagonal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem scalar_mulVec' (n : ℕ) (a : ℂ) (z : Fin n → ℂ) : Matrix.scalar (Fin n) a *ᵥ z = a • z := by
   ext i
   simp [Matrix.scalar_apply, Matrix.mulVec_diagonal]
 
 /- English proof (translation)
-Take `⟨R0, hR0, hrel⟩` from `hr`. Take `⟨R, hRR⟩` from `exists_linearEquiv_coe_eq_of_isPerQ A hQ R0 hR0`. Take `⟨-, -, -, hcase⟩` from `hPT p D G L ha v hsig t₀ ht`. Establish `hne : R0 (Pi.single v z.1) ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (Pi.single v z.1 : Arch G) = 0` using `R.injective (by rw [hRR, h0, map_zero])`. Conclude with `posv_ne z (Pi.single_eq_zero_iff.mp e)`. Use `⟨R0 (Pi.single v z.1), hne, fun c => ?_, ?_⟩` and prove the remaining obligations. Establish `hi` using `intertw A R0 hR0 (ρ (algebraMap (𝓞 D.F) D.O c)) (algebraMap G.F G.C (L.e (c : D.F))) (fun w => by`. Rewrite using `[L.rep_F]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hQ.1 _ w).symm) (Pi.single v z.1)`. Rewrite using `[hi, diagL_single, G.psi_F, scalar_mulVec', period_smul_eq_conj_or_self_smul R0 v z.1 hrel]`. Break down `hcase with ⟨hs, he⟩ | ⟨hs, -, he⟩` into its components or cases. Rewrite using `[if_pos hs, he]`. Rewrite using `[if_neg (by rw [hs]; norm_num), he]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi` using `intertw A R0 hR0 H (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) (fun w => (hH w).symm) (Pi.single v z.1)`. Rewrite using `[hi, diagL_single]`. Establish `hz' : G.psi v (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) *ᵥ z.1 = lam • z.1` using `hz`. Rewrite using `[hz', period_smul_eq_conj_or_self_smul R0 v z.1 hrel]`. Unfold `kap`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `hcase with ⟨hs, he⟩ | ⟨hs, hne', -⟩` into its components or cases. Rewrite using `[if_pos hs, if_pos he]`. Rewrite using `[if_neg (by rw [hs]; norm_num), if_neg hne']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem period_relation_eigenvector (hPE : PerExt) (hPT : PlaceT) (ha : D.a = 1) (A : ArchFrame L) {v : InfinitePlace G.F}
     (hsig : sigPosH (G.gram_herm v) = 1) {t₀ : D.F →+* ℂ} (ht : ∀ i, D.tau i = t₀) {β : G.Cˣ}
@@ -271,7 +269,7 @@ private theorem period_relation_eigenvector (hPE : PerExt) (hPT : PlaceT) (ha : 
     · rw [if_neg (by rw [hs]; norm_num), if_neg hne']
 
 /- English proof (translation)
-Establish `hS'` using `hS p G B v`. Conclude with `(hJL G.n _ J₀ (sgnV L v) hS'.1 (sgn_pm L v) hP).2.2.2 z.1 z.2 (fun x hx hxz => (hS'.2.1 hsig).2 z.1 x z.2 hx hxz) hz x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem J_line (hS : SigB) (hJL : JLine) (B : GlobalTheory.LKCx.Form G) {v : InfinitePlace G.F}
     (hsig : sigPosH (G.gram_herm v) = 1) (J₀ : Matrix (Fin G.n) (Fin G.n) ℂ)
@@ -284,9 +282,9 @@ private theorem J_line (hS : SigB) (hJL : JLine) (B : GlobalTheory.LKCx.Form G) 
     (fun x hx hxz => (hS'.2.1 hsig).2 z.1 x z.2 hx hxz) hz x
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v'`. Distinguish the cases in `hvv : v' = v`. Substitute `hvv` using the available equality. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, J_line hS hJL B hsig (K v') (hK v') z hKz x, J_line hS hJL B hsig (K' v') (hK' v') z hK'z x]`. Establish `hS'` using `hS p G B v'`. Establish `hsig' : sigPosH (G.gram_herm v') ≠ 1` using `fun h1 => hvv ((hPT p D G L ha v hsig t₀ ht).1 v' h1)`. Rewrite using `[(hJL G.n _ (K v') (sgnV L v') hS'.1 (sgn_pm L v') (hK v')).2.1 (hS'.2.2 hsig'), (hJL G.n _ (K' v') (sgnV L v') hS'.1 (sgn_pm L v') (hK' v')).2.1 (hS'.2.2 hsig')]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eq_of_isPosJ_of_eigen_sgnV_I (hS : SigB) (hJL : JLine) (hPT : PlaceT) (ha : D.a = 1) {v : InfinitePlace G.F}
     (hsig : sigPosH (G.gram_herm v) = 1) {t₀ : D.F →+* ℂ} (ht : ∀ i, D.tau i = t₀) (B : GlobalTheory.LKCx.Form G)
@@ -309,31 +307,29 @@ private theorem eq_of_isPosJ_of_eigen_sgnV_I (hS : SigB) (hJL : JLine) (hPT : Pl
       (hJL G.n _ (K' v') (sgnV L v') hS'.1 (sgn_pm L v') (hK' v')).2.1 (hS'.2.2 hsig')]
 
 /- English proof (translation)
-Take `⟨R0, hR0, hrel⟩` from `hr`. Take `⟨R0', hR0', hrel'⟩` from `hr'`. Take `⟨R, hRR⟩` from `exists_linearEquiv_coe_eq_of_isPerQ A hQ R0 hR0`. Take `⟨R', hRR'⟩` from `exists_linearEquiv_coe_eq_of_isPerQ A hQ' R0' hR0'`. Establish `hR : ∀ w, Q w = R (A.th w)` using `fun w => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hRR]`. Conclude with `hR0 w`. Establish `hR' : ∀ w, Q' w = R' (A.th w)` using `fun w => by`. Rewrite using `[hRR']`. Conclude with `hR0' w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrelR : R (Pi.single v (Complex.I • z.1)) = (sgnV L v * Complex.I) • R (Pi.single v z.1)`. Rewrite using `[hRR]`. Conclude with `hrel`. Establish `hrelR' : R' (Pi.single v (Complex.I • z'.1)) = (sgnV L v * Complex.I) • R' (Pi.single v z'.1)`. Rewrite using `[hRR']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hrel'`. Establish `hherm` using `fun v' => (hS p G B v').1`. Take `⟨J, hJ, hJP⟩` from `hJS p D G L A B.β ρ Q hQ hherm R hR`. Establish `hJz` using `J_of_rel R J hJ v z.1 (sgn_pm L v) hrelR`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h, hh⟩`. Establish `e : R'.toLinearMap = (h.toLinearMap.restrictScalars ℝ) ∘ₗ R.toLinearMap` using `arch_ext A _ _ (fun w => by`. Simplify using `only [LinearMap.comp_apply, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`. Rewrite using `[← hR', ← hR, hh])`. Establish `e2 : ∀ y, R' y = h (R y)` using `fun y => LinearMap.congr_fun e y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJ' : ∀ x : Arch G, R' (fun v => J v *ᵥ x v) = Complex.I • R' x`. Introduce `x`. Rewrite using `[e2, e2, hJ, map_smul]`. Establish `hJz'` using `J_of_rel R' J hJ' v z'.1 (sgn_pm L v) hrelR'`. Establish `hl` using `J_line hS hJL B hsig (J v) (hJP v) z hJz z'.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `hl` using `[hJz']`. Establish `hsI : sgnV L v * Complex.I ≠ 0`. Apply the tactic sequence `rcases sgn_pm L v with hs | hs <;> rw [hs] <;> simp`. Establish `hl2` using `smul_right_injective (Fin G.n → ℂ) hsI hl`. Use `⟨hv (GlobalTheory.LKCx.herm G v B.β) z'.1 z.1 / hv (GlobalTheory.LKCx.herm G v B.β) z.1 z.1, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `ha0`. Rewrite `hl2` using `[ha0, mul_zero, zero_smul, zero_sub]`. Apply `posv_ne z'` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `h3` using `congrFun hl2 i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.neg_apply] at h3`. Simplify using `only [Pi.zero_apply]`. Take the linear combination `h3 / 2`. Use function extensionality and compare the values at `i`. Establish `h3` using `congrFun hl2 i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at h3 ⊢`. Take the linear combination `h3 / 2`. Introduce and unpack `⟨c, hc, hcz⟩`. Take `⟨J', hJ', hJP'⟩` from `hJS p D G L A B.β ρ Q' hQ' hherm R' hR'`. Establish `hJz''` using `J_of_rel R' J' hJ' v z'.1 (sgn_pm L v) hrelR'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hJ'z : J' v *ᵥ z.1 = (sgnV L v * Complex.I) • z.1`. Rewrite `hJz''` using `[hcz, Matrix.mulVec_smul, smul_comm]`. Conclude with `smul_right_injective (Fin G.n → ℂ) hc hJz''`. Establish `hJJ : J = J'` using `eq_of_isPosJ_of_eigen_sgnV_I hS hJL hPT ha hsig ht B J J' hJP hJP' z hJz hJ'z`. Substitute `hJJ` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hf : ∀ x, (R.symm.trans R') (Complex.I • x) = Complex.I • (R.symm.trans R') x`. Introduce `x`. Take `⟨y, rfl⟩` from `R.surjective x`. Rewrite using `[← hJ]`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`.
-
-Conclude with `hJ' y`. Use `⟨cxEquiv (R.symm.trans R') hf, fun w => ?_⟩` and prove the remaining obligations. Use `show Q' w = (R.symm.trans R') (Q w)`. Rewrite using `[hR, hR']`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem lubinTateSeries_eq_of_coeff_one_eq (hS : SigB) (hPE : PerExt) (hJS : JStruct) (hJL : JLine) (hPT : PlaceT) (ha : D.a = 1)
     (A : ArchFrame L) {v : InfinitePlace G.F} (hsig : sigPosH (G.gram_herm v) = 1) {t₀ : D.F →+* ℂ}
@@ -411,9 +407,9 @@ private theorem lubinTateSeries_eq_of_coeff_one_eq (hS : SigB) (hPE : PerExt) (h
 end UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `hA hS hPE hJS hJL hRP hPT p _ D G L ha hm v hsig t₀ ht ρ hρ B`. Take `⟨A⟩` from `hA p D G L hm`. Conclude with `⟨{ rel := relQ A v line := fun Q hQ => exists_positive_period_line hS hPE hJS hJL A hsig B hQ per := fun z => by`. Take `⟨Q, R, hQ, hR, hI⟩` from `hRP p D G L ha v hsig t₀ ht ρ hρ A B z`. Conclude with `⟨Q, hQ, R, hR, hI⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `uniq := fun Q Q' z z' hQ hQ' hr hr' => lubinTateSeries_eq_of_coeff_one_eq hS hPE hJS hJL hPT ha A hsig ht B Q Q' z z' hQ hQ' hr hr'`. Use `equiv := fun y Q Q' z h hr => period_relation_equivariant A v y Q Q' z h hr`. Use `mark := fun y Q z H lam hQ hr hH hz => period_relation_eigenvector hPE hPT ha A hsig ht y Q z H lam hQ hr hH hz }⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.rDicEx_of :
     UpperTheory.Gal.W2.ArchEx → UpperTheory.Gal.W2.SigB → UpperTheory.Gal.W2.PerExt → UpperTheory.Gal.W2.JStruct → UpperTheory.Gal.W2.JLine → UpperTheory.Gal.W2.RPer → UpperTheory.Gal.W2.PlaceT → UpperTheory.Gal.W2.RDicEx := by

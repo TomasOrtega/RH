@@ -13,14 +13,14 @@ open Formalism.MainNotions.SumRepresentations.At GlobalTheory.TwistLG
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N) (i : N.Loc)
 
 /- English proof (translation)
-Use `⟨1, continuous_const, ss_zero _, fun w hw _ => eq_lpZero N A _ ?_ (A.wdOf_dim i _ w)⟩` and prove the remaining obligations. Conclude with `(A.wdOf_unr i _ w hw continuous_const).2 fun σ _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem awayRepN_zero_lpZero : UpperTheory.GalS.AwayRepN N A i 0 A.lpZero := by
   refine ⟨1, continuous_const, ss_zero _, fun w hw _ => eq_lpZero N A _ ?_ (A.wdOf_dim i _ w)⟩
   exact (A.wdOf_unr i _ w hw continuous_const).2 fun σ _ => rfl
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Take `⟨r, c, s, f⟩` from `h`. Conclude with `⟨r, c, s, fun w hw => hL w ▸ f w hw⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem awayRepN_congr {m m' : ℕ} {L L' : ∀ w, A.LP w} (h : UpperTheory.GalS.AwayRepN N A i m L) (hm : m = m')
     (hL : ∀ w, L w = L' w) : UpperTheory.GalS.AwayRepN N A i m' L' := by
@@ -29,9 +29,9 @@ theorem awayRepN_congr {m m' : ℕ} {L L' : ∀ w, A.LP w} (h : UpperTheory.GalS
   exact ⟨r, c, s, fun w hw => hL w ▸ f w hw⟩
 
 /- English proof (translation)
-Take `⟨r, c, s, f⟩` from `h`. Take `⟨r', c', s', f'⟩` from `h'`. Take `⟨-, -, hsum, -⟩` from `hGal.2.2.2 i`. Use `⟨sumRep r r', cont_sumRep r r' c c', ss_sumRep r r' s s', fun w hw hu => ?_⟩` and prove the remaining obligations. Rewrite using `[(hsum m m' r r' c c').2.1 w (Or.inl hw) (Or.inl hw)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[f w hw ((A.unr_sum _ _).1 hu).1, f' w hw ((A.unr_sum _ _).1 hu).2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem liftSetupOverExtendedData_classSum_eq (hGal : TieGal N A) {m m' : ℕ} {L L' : ∀ w, A.LP w} (h : UpperTheory.GalS.AwayRepN N A i m L)
     (h' : UpperTheory.GalS.AwayRepN N A i m' L') : UpperTheory.GalS.AwayRepN N A i (m + m') fun w => A.lpSum (L w) (L' w) := by
@@ -43,21 +43,21 @@ theorem liftSetupOverExtendedData_classSum_eq (hGal : TieGal N A) {m m' : ℕ} {
   rw [f w hw ((A.unr_sum _ _).1 hu).1, f' w hw ((A.unr_sum _ _).1 hu).2]
 
 /- English proof (translation)
-Take `⟨-, -, -, htw⟩` from `hGal.2.2.2 i`. Apply the tactic sequence `rcases Int.even_or_odd' m with ⟨k, hk | hk⟩ <;> subst hk`. Establish `hralg : A.ralg π` using `(A.ralg_def π).2 fun τ => ⟨(hinf τ).1, fun z hz => by`. Take `⟨n, hn⟩` from `(hinf τ).2 z hz`. Conclude with `⟨n - k, by push_cast at hn ⊢; linear_combination hn⟩⟩`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨ρ1, c1, ss1, away1, -⟩` from `(hG i).1 a ha π hc hralg`. Take `⟨χA, cA, awayA, -⟩` from `(hG i).2.2 A.etaT (1 / 2) fun τ z hz => by`. Take `⟨n, hn⟩` from `(eta_alg N A hAut 0 τ).1 z hz`. Conclude with `⟨n, by push_cast at hn ⊢; linear_combination hn⟩`. Take `⟨χB, cB, awayB, -⟩` from `(hG i).2.2 A.etaTinv ((k : ℝ) - 1 / 2) fun τ z hz => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `(eta_alg N A hAut (k - 1) τ).2 z hz`. Conclude with `⟨n, by push_cast at hn ⊢; linear_combination hn⟩`. Set `ρ2` to `twGL ρ1 (Matrix.GeneralLinearGroup.det.comp χA)`. Establish `c2 : ContQ N i ρ2` using `cont_twGL ρ1 χA c1 cA`. Use `⟨twGL ρ2 (Matrix.GeneralLinearGroup.det.comp χB), cont_twGL ρ2 χB c2 cB, isSSRep_twGL _ _ (isSSRep_twGL _ _ ss1), fun w hw => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(htw a ρ2 χB c2 cB).2.1 w (Or.inl hw) (Or.inl hw), (htw a ρ1 χA c1 cA).2.1 w (Or.inl hw) (Or.inl hw), awayA w hw, awayB w hw]`. Establish `k1` using `((away1 w hw).char hLP (A.lpTw (A.locG A.etaT w) (1 / 2)) (by rw [A.lpDim_tw, A.locG_dim]) ((A.unr_tw _ _).2 (A.etaT_unr w))).char hLP (A.lpTw (A.locG A.etaTinv w) ((k : ℝ) - 1 / 2)) (by rw [A.lpDim_tw, A.locG_dim]) ((A.unr_tw _ _).2 (A.etaTinv_def w).1)`. Rewrite `k1` using `[param_int N A hLP]`. Use `k1 using 2` and compare the differences between its conclusion and the goal. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcsd : A.csd (A.tw π A.etaT)` using `A.csd_tw π A.etaT hAut.1.1 hc`. Establish `hralg : A.ralg (A.tw π A.etaT)` using `(A.ralg_def _).2 fun τ => by`. Take `⟨e, he⟩` from `Multiset.card_eq_one.mp (A.infG_card A.etaT τ)`. Rewrite using `[A.infG_tw π A.etaT τ e he]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(hinf τ).1.map (add_left_injective e), fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.1 hy`. Take `⟨n, hn⟩` from `(hinf τ).2 z hz`. Take `⟨j, hj⟩` from `(eta_alg N A hAut 0 τ).1 e (by rw [he]; exact Multiset.mem_singleton_self e)`. Conclude with `⟨n + j - k - 1, by push_cast at hn hj ⊢; linear_combination hn + hj⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨ρ1, c1, ss1, away1, -⟩` from `(hG i).1 a ha _ hcsd hralg`. Take `⟨χ1, cχ, awayχ, -⟩` from `(hG i).2.2 A.etaTinv ((k : ℝ) + 1 / 2) (eta_alg N A hAut k · |>.2)`. Use `⟨twGL ρ1 (Matrix.GeneralLinearGroup.det.comp χ1), cont_twGL ρ1 χ1 c1 cχ, isSSRep_twGL _ _ ss1, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[(htw a ρ1 χ1 c1 cχ).2.1 w (Or.inl hw) (Or.inl hw), awayχ w hw]`. Establish `k1` using `(away1 w hw).char hLP (A.lpTw (A.locG A.etaTinv w) ((k : ℝ) + 1 / 2)) (by rw [A.lpDim_tw, A.locG_dim]) ((A.unr_tw _ _).2 (A.etaTinv_def w).1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `k1` using `[param_twist N A hLP]`. Use `k1 using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem galois_relation_away_from_l (hLP : TieLP N A) (hAut : TieAut N A) (hGal : TieGal N A) (hG : UpperTheory.GalS.AutomorphicGaloisAdmissible N A)
     {a : ℕ} (ha : 1 ≤ a) (π : A.CG a) (hc : A.csd π) (m : ℤ)
@@ -114,7 +114,7 @@ theorem galois_relation_away_from_l (hLP : TieLP N A) (hAut : TieAut N A) (hGal 
     ring
 
 /- English proof (translation)
-Take `⟨r, c, s, f⟩` from `galois_relation_away_from_l N A i hLP hAut hGal hG ha π hc m hinf`. Conclude with `⟨r, c, s, fun w hw => (f w hw).eq_of_unr⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem awayRep_piece_alt (hLP : TieLP N A) (hAut : TieAut N A) (hGal : TieGal N A) (hG : UpperTheory.GalS.AutomorphicGaloisAdmissible N A)
     {a : ℕ} (ha : 1 ≤ a) (π : A.CG a) (hc : A.csd π) (m : ℤ)

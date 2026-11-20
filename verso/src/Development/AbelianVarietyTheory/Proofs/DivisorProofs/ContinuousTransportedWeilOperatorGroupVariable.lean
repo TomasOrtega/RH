@@ -20,27 +20,25 @@ open scoped Classical
 namespace GlobalTheory.WeilCont
 
 /- English proof (translation)
-Introduce `D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ _ co hco ω hω om htr Φ hΦ z`. Establish `hth` using `GlobalTheory.T.thetaTransform_transportedWeil_continuous D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ω hω om htr Φ hΦ`. Use `continuous_iff_continuousAt.2 fun p0 => ?_` and prove the remaining obligations. Take `⟨N, hN, m, g, y, hg, hy, hf⟩` from `GlobalTheory.T.exists_local_finiteDim_finiteParts_weilOperators D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ω hω om htr Φ hΦ p0`. Set `f : _ → Fin m → SchwartzMap (κ → mixedEmbedding.mixedSpace D.host.F) ℂ` to `fun p => if h : p ∈ N then Classical.choose (hf p h) else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hfe : ∀ p ∈ N, om p Φ = ∑ i, GlobalTheory.WeilM.pureA D.host.F (f p i) (g i)` using `fun p hp => by`. Simplify using `only [f, dif_pos hp]`. Conclude with `Classical.choose_spec (hf p hp)`. Establish `hslice : ∀ p ∈ N, ∀ i v, f p i v = om p Φ (GlobalTheory.WeilCont.adeleJoin D.host.F v (y i))`. Introduce `p hp i v`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfe p hp, Finset.sum_apply, Finset.sum_eq_single i]`. Rewrite using `[GlobalTheory.WeilCont.pureA_adeleJoin, hy, if_pos rfl, mul_one]`. Introduce `j _ hji`. Rewrite using `[GlobalTheory.WeilCont.pureA_adeleJoin, hy, if_neg hji, mul_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `absurd (Finset.mem_univ i) h`. Establish `hbd : ∀ k : ℕ, ∃ C : ℝ, ∀ᶠ p in nhds p0, ∀ i v, ‖v‖ ^ k * ‖f p i v‖ ≤ C`. Introduce `k`. Use `choose C hC using fun i => GlobalTheory.T.weilOperator_archimedeanSlice_schwartzSeminorm_bounded D ψ hψ S T χS χT hS hT rS rT JA JB ξ hJA hJB κ co hco ω hω om htr Φ hΦ (y i) p0 k 0`. Use `⟨∑ i, |C i|, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [Filter.eventually_all.2 hC, hN] with p hp hpN i v`. Establish `h1` using `hp i v`. Rewrite `h1` using `[norm_iteratedFDeriv_zero]`. Rewrite using `[hslice p hpN i v]`. Conclude with `h1.trans ((le_abs_self _).trans (Finset.single_le_sum (f := fun i => |C i|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i)))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨M, hM, hMb⟩` from `GlobalTheory.T.exists_summableMajorant_adelicSchwartz_locallyUniform D.host.F κ (fun p => om p Φ) p0 m g f hg (Filter.eventually_of_mem hN fun p hp => hfe p hp) hbd z`. Set `e : (κ → D.host.F) → AddChar (κ → AF D.host.F) ℂ` to `fun a => ψ.compAddMonoidHom (AddMonoidHom.mk' (fun y => (fun i => algebraMap D.host.F (AF D.host.F) (a i)) ⬝ᵥ y) (fun y y' => dotProduct_add _ y y'))`. Establish `he : ∀ a y, e a y = ψ ((fun i => algebraMap D.host.F (AF D.host.F) (a i)) ⬝ᵥ y)` using `fun a y => rfl`. Establish `hform : ∀ p y', GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ (om p Φ) (co.e.symm (z, y')) = ψ (⅟(2 : AF D.host.F) * (z ⬝ᵥ y')) * ∑' a, e a y' * om p Φ (fun j => algebraMap D.host.F (AF D.host.F) (a j) + z j)`. Introduce `p y'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, LinearEquiv.apply_symm_apply, he]`. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun a => ?_` and prove the remaining obligations. Simplify using `only [AddChar.map_add_eq_mul, Pi.add_def]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : ∀ y, e 0 y = 1` using `fun y => by`. Rewrite using `[he]`. Simplify using the standard rewrite rules. Establish `hne : ∀ a : κ → D.host.F, a ≠ 0 → ∃ y, e a y ≠ 1`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `Function.ne_iff.1 ha`. Take `⟨x0, hx0⟩` from `hψ.1.2.2.2`. Use `⟨Pi.single i (algebraMap D.host.F (AF D.host.F) (a i)⁻¹ * x0), ?_⟩` and prove the remaining obligations. Rewrite using `[he, dotProduct_single, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hi, map_one, one_mul]`. Conclude with `hx0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψinv : ∀ t : AF D.host.F, ψ (-t) * ψ t = 1` using `fun t => by`. Simplify using `using (AddChar.map_add_eq_mul ψ (-t) t).symm`. Establish `hc : ∀ y', ContinuousAt (fun p => ∑' a, e a y' * om p Φ (fun j => algebraMap D.host.F (AF D.host.F) (a j) + z j)) p0`. Introduce `y'`. Establish `h2 : ∀ p, ψ (-(⅟(2 : AF D.host.F) * (z ⬝ᵥ y'))) * GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ (om p Φ) (co.e.symm (z, y')) = ∑' a, e a y' * om p Φ (fun j => algebraMap D.host.F (AF D.host.F) (a j) + z j)`.
-
-Introduce `p`. Simplify using `only [hform, ← mul_assoc, hψinv, one_mul]`. Conclude with `((continuous_const.mul (hth _)).continuousAt).congr (Filter.Eventually.of_forall h2)`. Establish `hL` using `GlobalTheory.T.continuousAt_coeff_zero_of_continuousAt_char_series e (fun a y => hψ.1.2.1 _) h0 hne _ p0 M hM hMb hc`. Simplify using `using hL`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_transport_apply : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →

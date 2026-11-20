@@ -21,7 +21,7 @@ def wtQ (j : ℕ) (hj : j ≤ R.m) (i : Fin (R.N j)) : ℚ :=
   else -wG R (P.e ⟨(i.1 - R.k) / (R.t + 1), R.blk_lt hj i h⟩) ((i.1 - R.k) / (R.t + 1) + 1)
 
 /- English proof (translation)
-Distinguish the cases in `h : i.1 < R.k`. Simplify using `only [wtQ, wtN, dif_pos h]`. Establish `hb : blkN R i.1 < R.m` using `R.blk_lt hj i h`. Rewrite using `[wtQ, wtN, dif_neg h, dif_neg h, dif_pos hb]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem wtQ_eq_wtN (j : ℕ) (hj : j ≤ R.m) (i : Fin (R.N j)) : wtQ P j hj i = wtN P i.1 := by
   by_cases h : i.1 < R.k
@@ -31,11 +31,11 @@ theorem wtQ_eq_wtN (j : ℕ) (hj : j ≤ R.m) (i : Fin (R.N j)) : wtQ P j hj i =
     rfl
 
 /- English proof (translation)
-Establish `hi' : i < R.k - 1` using `by omega`. Establish `h1 : P.v ⟨i, hi'⟩ < P.u ⟨i, by omega⟩` using `P.u_gt_v ⟨i, hi'⟩`. Establish `h2 : P.u ⟨i + 1, hi⟩ < P.v ⟨i, hi'⟩` using `P.v_gt_u ⟨i, hi'⟩`. Take `⟨a, ha⟩` from `P.u_half ⟨i + 1, hi⟩`. Take `⟨c, hc⟩` from `P.u_half ⟨i, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `P.v_int ⟨i, hi'⟩`. Rewrite `h1` using `[hb, hc]`. Rewrite `h2` using `[hb, ha]`. Rewrite using `[ha, hc]`. Establish `e1 : (a : ℚ) < b` using `by linarith`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (b : ℚ) < c + 1` using `by linarith`. Establish `f1 : a < b` using `by exact_mod_cast e1`. Establish `f2 : b < c + 1` using `by exact_mod_cast e2`. Establish `f3 : ((a : ℚ) + 1) ≤ c` using `by exact_mod_cast (show a + 1 ≤ c by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u_step (i : ℕ) (hi : i + 1 < R.k) : P.u ⟨i + 1, hi⟩ + 1 ≤ P.u ⟨i, by omega⟩ := by
   have hi' : i < R.k - 1 := by omega
@@ -55,7 +55,7 @@ theorem u_step (i : ℕ) (hi : i + 1 < R.k) : P.u ⟨i + 1, hi⟩ + 1 ≤ P.u �
   linarith
 
 /- English proof (translation)
-Unfold `wtN`. Rewrite using `[dif_neg hn, dif_pos hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem wtN_eq_neg_wG_blkN (n : ℕ) (hn : ¬ n < R.k) (hb : blkN R n < R.m) :
     wtN P n = -wG R (P.e ⟨blkN R n, hb⟩) (blkN R n + 1) := by
@@ -63,9 +63,9 @@ private theorem wtN_eq_neg_wG_blkN (n : ℕ) (hn : ¬ n < R.k) (hb : blkN R n < 
   rw [dif_neg hn, dif_pos hb]
 
 /- English proof (translation)
-Break down `h with rfl | rfl` into its components or cases. Conclude with `le_rfl`. Establish `h1 : ((R.t : ℚ) + 3) / 2 ≤ P.e ⟨c + 1, hc'⟩ - P.b ⟨c + 1, hc'⟩` using `P.gap_be ⟨c + 1, hc'⟩`. Establish `h2 : ((R.t : ℚ) + 3) / 2 ≤ P.b ⟨c + 1, hc'⟩ - P.e ⟨c, hc⟩` using `P.gap_eb ⟨c, hc⟩ hc'`. Simplify using `only [wG]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem neg_wG_le_of_adjacent_blocks (c c' : ℕ) (hc : c < R.m) (hc' : c' < R.m) (h : c' = c ∨ c' = c + 1) :
     -wG R (P.e ⟨c', hc'⟩) (c' + 1) ≤ -wG R (P.e ⟨c, hc⟩) (c + 1) := by
@@ -78,25 +78,23 @@ private theorem neg_wG_le_of_adjacent_blocks (c c' : ℕ) (hc : c < R.m) (hc' : 
     linarith
 
 /- English proof (translation)
-Distinguish the cases in `hn0 : n < R.k`. Distinguish the cases in `hA : n + 1 < R.k`. Establish `hs` using `u_step P n hA`. Unfold `wtN`. Rewrite using `[dif_pos hA, dif_pos hn0]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hcToWeightQ, rhoVec, Fin.val_mk]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk : n + 1 = R.k` using `by omega`. Establish `hm0 : 0 < R.m` using `by have := R.two_le_m; omega`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : blkN R (n + 1) < R.m`. Unfold `blkN`. Rewrite using `[show n + 1 - R.k = 0 by omega, Nat.zero_div]`. Conclude with `hm0`. Establish `hb0 : blkN R (n + 1) = 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `blkN`. Rewrite using `[show n + 1 - R.k = 0 by omega, Nat.zero_div]`. Rewrite using `[wtN_eq_neg_wG_blkN P (n + 1) hA hb]`. Establish `he : P.e ⟨blkN R (n + 1), hb⟩ = P.e ⟨0, hm0⟩`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fin.ext hb0`. Rewrite using `[he, hb0]`. Establish `hnk : (⟨R.k - 1, by omega⟩ : Fin R.k) = ⟨n, hn0⟩` using `Fin.ext (by show R.k - 1 = n; omega)`. Establish `h1` using `P.u_last_gt (by omega) hm0`. Rewrite `h1` using `[hnk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((R.t : ℚ) + 3) / 2 ≤ P.e ⟨0, hm0⟩ - P.b ⟨0, hm0⟩` using `P.gap_be ⟨0, hm0⟩`. Establish `hnq : (n : ℚ) + 1 = R.k` using `by exact_mod_cast hk`. Unfold `wtN`. Rewrite using `[dif_pos hn0]`. Simplify using `only [wG, hcToWeightQ, rhoVec, Fin.val_mk]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmn : n + 1 - R.k < R.m * (R.t + 1)`. Unfold `Ranks.N at hn`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hb1 : blkN R (n + 1) < R.m`. Unfold `blkN`. Conclude with `(Nat.div_lt_iff_lt_mul (Nat.succ_pos _)).mpr hmn`. Establish `hle : blkN R n ≤ blkN R (n + 1)` using `Nat.div_le_div_right (by omega)`. Establish `hb0 : blkN R n < R.m` using `lt_of_le_of_lt hle hb1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hor : blkN R (n + 1) = blkN R n ∨ blkN R (n + 1) = blkN R n + 1`. Unfold `blkN`. Rewrite using `[show n + 1 - R.k = (n - R.k) + 1 by omega, Nat.succ_div]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[wtN_eq_neg_wG_blkN P (n + 1) (by omega) hb1, wtN_eq_neg_wG_blkN P n hn0 hb0]`.
-
-Conclude with `neg_wG_le_of_adjacent_blocks P _ _ hb0 hb1 hor`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtN_step (n : ℕ) (hn : n + 1 < R.N R.m) : wtN P (n + 1) ≤ wtN P n := by
   by_cases hn0 : n < R.k
@@ -147,9 +145,7 @@ theorem wtN_step (n : ℕ) (hn : n + 1 < R.N R.m) : wtN P (n + 1) ≤ wtN P n :=
     exact neg_wG_le_of_adjacent_blocks P _ _ hb0 hb1 hor
 
 /- English proof (translation)
-Use `revert hn'`. Proceed by induction on `n', h using Nat.le_induction with`. Consider the case `base => intro _`. Conclude with `le_rfl`. Consider the case `succ q hq ih`.
-
-Introduce `hq'`. Conclude with `le_trans (wtN_step P q hq') (ih (by omega))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wtN_anti {n n' : ℕ} (h : n ≤ n') (hn' : n' < R.N R.m) : wtN P n' ≤ wtN P n := by
   revert hn'
@@ -160,14 +156,14 @@ theorem wtN_anti {n n' : ℕ} (h : n ≤ n') (hn' : n' < R.N R.m) : wtN P n' ≤
     exact le_trans (wtN_step P q hq') (ih (by omega))
 
 /- English proof (translation)
-Unfold `Ranks.N`. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ hj) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem N_mono {j : ℕ} (hj : j ≤ R.m) : R.N j ≤ R.N R.m := by
   unfold Ranks.N
   exact Nat.add_le_add_left (Nat.mul_le_mul_right _ hj) _
 
 /- English proof (translation)
-Introduce `a b hab`. Rewrite using `[wtQ_eq_wtN, wtQ_eq_wtN]`. Conclude with `wtN_anti P hab (lt_of_lt_of_le b.2 (N_mono hj))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtQ_anti (j : ℕ) (hj : j ≤ R.m) : Antitone (wtQ P j hj) := by
   intro a b hab
@@ -175,13 +171,13 @@ theorem wtQ_anti (j : ℕ) (hj : j ≤ R.m) : Antitone (wtQ P j hj) := by
   exact wtN_anti P hab (lt_of_lt_of_le b.2 (N_mono hj))
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `R.k_even`. Take `⟨c, hc⟩` from `R.t_odd`. Establish `hk : (R.k : ℚ) = a + a` using `by exact_mod_cast ha`. Establish `ht : (R.t : ℚ) = 2 * c + 1` using `by exact_mod_cast hc`. Distinguish the cases in `h : i.1 < R.k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨z, hz⟩` from `P.u_half ⟨i.1, h⟩`. Use `⟨z + 1 - a + i.1, ?_⟩` and prove the remaining obligations. Rewrite using `[wtQ, dif_pos h]`. Simplify using `only [hcToWeightQ, rhoVec, Fin.val_mk, hz]`. Rewrite using `[hk]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨z, hz⟩` from `P.e_int ⟨(i.1 - R.k) / (R.t + 1), R.blk_lt hj i h⟩`. Use `⟨-z + a + (2 * (((i.1 - R.k) / (R.t + 1) : ℕ) : ℤ) + 1) * (c + 1), ?_⟩` and prove the remaining obligations. Rewrite using `[wtQ, dif_neg h]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [wG, hz]`. Generalize the expression as in `(i.1 - R.k) / (R.t + 1) = B`. Rewrite using `[hk, ht]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wtQ_int (j : ℕ) (hj : j ≤ R.m) (i : Fin (R.N j)) : ∃ z : ℤ, wtQ P j hj i = z := by
   obtain ⟨a, ha⟩ := R.k_even
@@ -210,7 +206,7 @@ def lamOf (j : ℕ) : DomWeight (R.N j) :=
   else ⟨fun _ => 0, fun _ _ _ => le_rfl⟩
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `wtQ_int P j hj i`. Simplify using `only [lamOf, dif_pos hj, hz, Int.floor_intCast]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem lamOf_eq (j : ℕ) (hj : j ≤ R.m) (i : Fin (R.N j)) : ((lamOf P j).w i : ℚ) = wtQ P j hj i := by
   obtain ⟨z, hz⟩ := wtQ_int P j hj i
@@ -232,9 +228,7 @@ instance fmZeroHLat_empty (K : Type) [Field K] [NumberField K] [StarRing K] :
     IsEmpty (fmZeroHLat K).ι := inferInstanceAs (IsEmpty (Fin 0))
 
 /- English proof (translation)
-Unfold `HLat.Good`. Use `⟨fun v => ?_, ?_, Subsingleton.elim _ _⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_isEmpty]`. Conclude with `isUnit_one`. Rewrite using `[Subsingleton.elim (fmZeroHLat K).L ⊥]`.
-
-Conclude with `Submodule.fg_bot`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fmZeroHLat_good (K : Type) [Field K] [NumberField K] [StarRing K] : (fmZeroHLat K).Good := by
   unfold HLat.Good
@@ -245,7 +239,7 @@ theorem fmZeroHLat_good (K : Type) [Field K] [NumberField K] [StarRing K] : (fmZ
     exact Submodule.fg_bot
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.majAt`. Conclude with `Fintype.sum_empty _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fmZeroHLat_maj (K : Type) [Field K] [NumberField K] [StarRing K] (v : InfinitePlace K)
     (x y : (fmZeroHLat K).V) :
@@ -325,7 +319,7 @@ def gxExample (LL : Type) [Field LL] [NumberField LL] (Tau : Type) : GlobalExtra
   ⟨fun _ _ => 1, fun _ _ => one_pos, fun _ => 1, fun _ => one_pos⟩
 
 /- English proof (translation)
-Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dGam_le_example {R : Ranks} {Tau : Type} [Fintype Tau] {hc : Tau → HCParam R}
     (C : ColumnChain R Tau hc) (h : C.DGam = 1) :

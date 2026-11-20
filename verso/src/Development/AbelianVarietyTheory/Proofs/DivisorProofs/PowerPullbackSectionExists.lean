@@ -16,7 +16,7 @@ variable {X : Scheme.{0}}
 abbrev rs {U V : X.Opens} (h : V ≤ U) : Γ(X, U) →+* Γ(X, V) := (X.presheaf.map (homOfLE h).op).hom
 
 /- English proof (translation)
-Simplify using `only [rs]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rs_rs {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (s : Γ(X, U)) :
     rs h' (rs h s) = rs (h'.trans h) s := by
@@ -31,14 +31,14 @@ theorem coe_res {U V : X.Opens} (h : V ≤ U) (u : Γ(X, U)ˣ) :
     ((res h u : Γ(X, V)ˣ) : Γ(X, V)) = rs h (u : Γ(X, U)) := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rs_coe_inv {U V : X.Opens} (h : V ≤ U) (u : Γ(X, U)ˣ) :
     rs h ((u⁻¹ : Γ(X, U)ˣ) : Γ(X, U)) = (((res h u)⁻¹ : Γ(X, V)ˣ) : Γ(X, V)) := by
   rw [← map_inv]; rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_res, ← rs_rs (le_inf le_rfl le_rfl : L.U i ≤ L.U i ⊓ L.U i) (h.trans inf_le_left), ← coe_res, hL.g_self]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem res_g_self (L : LB X) (hL : L.IsLB) (i : L.ι) {V : X.Opens} (h : V ≤ L.U i ⊓ L.U i) :
     res h (L.g i i) = 1 := by
@@ -56,14 +56,14 @@ def GenRel (P Q : LB X) (a : ∀ p₁ q, Γ(X, P.U p₁ ⊓ Q.U q)ˣ) : Prop :=
       res (inf_le_right : (P.U p₁ ⊓ Q.U q) ⊓ (P.U p₁' ⊓ Q.U q') ≤ P.U p₁' ⊓ Q.U q') (a p₁' q')
 
 /- English proof (translation)
-Introduce `p₁ q p₁' q'` and use `hα (p₁, q) (p₁', q')`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem genRel_of_isGen (P Q : LB X) (α : LB.Gen (LB.div P Q)) (hα : α.IsGen) :
     GenRel P Q (fun p₁ q => α.s (p₁, q)) :=
   fun p₁ q p₁' q' => hα (p₁, q) (p₁', q')
 
 /- English proof (translation)
-Establish `e` using `ha p₁ q p₁' q`. Rewrite `e` using `[res_g_self Q hQ q, inv_one, _root_.mul_one]`. Establish `hσ` using `congrArg (rs (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left) : (P.U p₁ ⊓ Q.U q) ⊓ (P.U p₁' ⊓ Q.U q) ≤ P.U p₁ ⊓ P.U p₁')) (σ.compat p₁ p₁')`. Simplify using `only [map_mul, rs_rs] at hσ ⊢`. Rewrite using `[rs_coe_inv, rs_coe_inv, e, hσ, ← coe_res, mul_inv_rev, Units.val_mul, _root_.mul_assoc, Units.inv_mul_cancel_left]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem quot_compat (P Q : LB X) (hQ : Q.IsLB) (a : ∀ p₁ q, Γ(X, P.U p₁ ⊓ Q.U q)ˣ) (ha : GenRel P Q a)
     (σ : LB.Sec P) (q : Q.ι) (p₁ p₁' : P.ι) :
@@ -82,13 +82,13 @@ theorem quot_compat (P Q : LB X) (hQ : Q.IsLB) (a : ∀ p₁ q, Γ(X, P.U p₁ �
     Units.inv_mul_cancel_left]
 
 /- English proof (translation)
-Establish `hcov : ∀ (V : X.Opens), V ≤ ⨆ p₁, P.U p₁ ⊓ V` using `fun V x hx => by`. Establish `: x ∈ (⨆ p₁, P.U p₁ : X.Opens)` using `by rw [hP.cover]; trivial`. Take `⟨p₁, hp⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨p₁, hp, hx⟩`. Establish `hglue : ∀ q, ∃ t : Γ(X, Q.U q), ∀ p₁, rs (inf_le_right : P.U p₁ ⊓ Q.U q ≤ Q.U q) t = (((a p₁ q)⁻¹ : Γ(X, P.U p₁ ⊓ Q.U q)ˣ) : Γ(X, P.U p₁ ⊓ Q.U q)) * rs (inf_le_left : P.U p₁ ⊓ Q.U q ≤ P.U p₁) (σ.f p₁)` using `fun q => (X.sheaf.existsUnique_gluing' (fun p₁ => P.U p₁ ⊓ Q.U q) (Q.U q) (fun _ => homOfLE inf_le_right) (hcov (Q.U q)) _ (fun p₁ p₁' => quot_compat P Q hQ a ha σ q p₁ p₁')).exists`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose t ht using hglue`. Use `⟨⟨t, fun q q' => ?_⟩, fun p₁ q => ?_⟩` and prove the remaining obligations. Use `X.sheaf.eq_of_locally_eq' (fun p₁ => P.U p₁ ⊓ (Q.U q ⊓ Q.U q')) (Q.U q ⊓ Q.U q') (fun _ => homOfLE inf_le_right) (hcov _) _ _ (fun p₁ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rs _ (rs _ (t q)) = rs _ ((Q.g q q' : Γ(X, Q.U q ⊓ Q.U q')) * rs _ (t q'))`. Simplify using `only [map_mul, rs_rs]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ ← rs_rs (inf_le_right : P.U p₁ ⊓ Q.U q ≤ Q.U q) (le_inf inf_le_left (inf_le_right.trans inf_le_left) : P.U p₁ ⊓ (Q.U q ⊓ Q.U q') ≤ P.U p₁ ⊓ Q.U q), ← rs_rs (inf_le_right : P.U p₁ ⊓ Q.U q' ≤ Q.U q') (le_inf inf_le_left (inf_le_right.trans inf_le_right) : P.U p₁ ⊓ (Q.U q ⊓ Q.U q' …`. Establish `e` using `congrArg (fun u : Γ(X, (P.U p₁ ⊓ Q.U q) ⊓ (P.U p₁ ⊓ Q.U q'))ˣ => rs (le_inf (le_inf inf_le_left (inf_le_right.trans inf_le_left)) (le_inf inf_le_left (inf_le_right.trans inf_le_right)) : P.U p₁ ⊓ (Q.U q ⊓ Q.U q') ≤ (P.U p₁ ⊓ Q.U q) ⊓ (P.U p₁ ⊓ Q.U q')) (u⁻¹ : Γ(X, _)ˣ)) (ha p₁ q …`. Rewrite `e` using `[res_g_self P hP p₁, _root_.one_mul, mul_inv_rev, inv_inv]`. Simplify using `only [map_mul, rs_rs, rs_coe_inv, Units.val_mul, ← coe_res] at e ⊢`. Simplify using `only [map_inv, ReciprocityTheory.ChartRestriction.G.DVR.res_res'] at e ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ht, ← _root_.mul_assoc, Units.mul_inv, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_quot_sec (P Q : LB X) (hP : P.IsLB) (hQ : Q.IsLB) (a : ∀ p₁ q, Γ(X, P.U p₁ ⊓ Q.U q)ˣ)
     (ha : GenRel P Q a) (σ : LB.Sec P) :
@@ -131,7 +131,7 @@ end GlobalTheory.QuotSec
 namespace GlobalTheory.HomFixMat
 
 /- English proof (translation)
-Introduce `X Z₁ Z₂ L M f g a α hα hL hM σ`. Take `⟨s, hs⟩` from `GlobalTheory.QuotSec.exists_quot_sec (powPull M g a) (powPull L f a) (ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB M hM _ _) (ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB L hL _ _) (fun p₁ q => α.s (p₁, q)) (GlobalTheory.QuotSec.genRel_of_isGen _ _ α hα) σ`. Conclude with `⟨s, fun p => hs p.1 p.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem divSec_exists : ∀ {X Z₁ Z₂ : Scheme.{0}} (L : LB Z₁) (M : LB Z₂) (f : X ⟶ Z₁) (g : X ⟶ Z₂) (a : ℤ) (α : LB.Gen (LB.div (powPull M g a) (powPull L f a))), α.IsGen → L.IsLB → M.IsLB → ∀ σ : LB.Sec (powPull M g a), ∃ s : LB.Sec (powPull L f a), ∀ p : (Fin 1 → M.ι) × (Fin 1 → L.ι), (X.presheaf.map (homOfLE (inf_le_left : LB.wchart M (fun _ : Fin 1 => g) p.1 ⊓ LB.wchart L (fun _ : Fin 1 => f) p.2 ≤ LB.wchart M (fun _ : Fin 1 => g) p.1)).op).hom (σ.f p.1) = (show Γ(X, LB.wchart M (fun _ : Fin 1 => g) p.1 ⊓ LB.wchart L (fun _ : Fin 1 => f) p.2) from (α.s p).val) * (X.presheaf.map (homOfLE (inf_le_right : LB.wchart M (fun _ : Fin 1 => g) p.1 ⊓ LB.wchart L (fun _ : Fin 1 => f) p.2 ≤ LB.wchart L (fun _ : Fin 1 => f) p.2)).op).hom (s.f p.2) := by
   intro X Z₁ Z₂ L M f g a α hα hL hM σ

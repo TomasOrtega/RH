@@ -10,7 +10,7 @@ open NumberField
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `hpos : 0 < 1 - x` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_le_iff_one_le_mul₀ hpos]`. Use the polynomial consequences of the given equalities and inequalities. Use `_ ≤ Real.exp (2 * x) := by linarith [Real.add_one_le_exp (2 * x)]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem inv_one_sub_le_exp {x : ℝ} (h0 : 0 ≤ x) (h1 : x ≤ 1 / 2) : (1 - x)⁻¹ ≤ Real.exp (2 * x) := by
   have hpos : 0 < 1 - x := by linarith
@@ -19,11 +19,11 @@ theorem inv_one_sub_le_exp {x : ℝ} (h0 : 0 ≤ x) (h1 : x ≤ 1 / 2) : (1 - x)
     _ ≤ Real.exp (2 * x) := by linarith [Real.add_one_le_exp (2 * x)]
 
 /- English proof (translation)
-Establish `hQ : (P.under ℤ).IsMaximal` using `Ideal.IsMaximal.under ℤ P`. Establish `hQ0 : P.under ℤ ≠ ⊥`. Introduce `h`. Rewrite `hQ` using `[h]`. Conclude with `Int.not_isField (Ring.isField_iff_maximal_bot.2 hQ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, hpp⟩` from `Ideal.IsPrime.exists_mem_prime_of_ne_bot hQ.isPrime hQ0`. Use `⟨p.natAbs, Int.prime_iff_natAbs_prime.1 hpp, ?_⟩` and prove the remaining obligations. Establish `hmem : algebraMap ℤ (𝓞 K) p ∈ P` using `hp`. Break down `Int.natAbs_eq p with h | h` into its components or cases. Rewrite `hmem` using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hmem`. Rewrite `hmem` using `[h]`. Use `P.neg_mem hmem` as an intermediate fact. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_prime_mem (P : Ideal (𝓞 K)) [hP : P.IsMaximal] : ∃ l : ℕ, l.Prime ∧ (l : 𝓞 K) ∈ P := by
   have hQ : (P.under ℤ).IsMaximal := Ideal.IsMaximal.under ℤ P
@@ -41,7 +41,7 @@ theorem exists_prime_mem (P : Ideal (𝓞 K)) [hP : P.IsMaximal] : ∃ l : ℕ, 
     simpa using this
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_span_singleton]`. Establish `: ((l : 𝓞 K)) = algebraMap ℤ (𝓞 K) (l : ℤ)` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap, RingOfIntegers.rank]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem absNorm_nat (l : ℕ) : Ideal.absNorm (Ideal.span {(l : 𝓞 K)}) = l ^ Module.finrank ℚ K := by
   rw [Ideal.absNorm_span_singleton]
@@ -50,11 +50,11 @@ theorem absNorm_nat (l : ℕ) : Ideal.absNorm (Ideal.span {(l : 𝓞 K)}) = l ^ 
   simp
 
 /- English proof (translation)
-Establish `hle : Ideal.span {(l : 𝓞 K)} ≤ P` using `by rw [Ideal.span_le, Set.singleton_subset_iff]; exact hlP`. Establish `hd : Ideal.absNorm P ∣ l ^ Module.finrank ℚ K`. Rewrite using `[← absNorm_nat]`. Conclude with `Ideal.absNorm_dvd_absNorm_of_le hle`. Use `⟨hd, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow hl).1 hd`. Establish `h1 : Ideal.absNorm P ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `hP.ne_top`. Rewrite `h1`, the goal using `[hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `k with _ | k` into its components or cases. Simplify using `at h1`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem absNorm_ge (P : Ideal (𝓞 K)) [hP : P.IsMaximal] {l : ℕ} (hl : l.Prime) (hlP : (l : 𝓞 K) ∈ P) :
     Ideal.absNorm P ∣ l ^ Module.finrank ℚ K ∧ l ≤ Ideal.absNorm P := by
@@ -72,15 +72,13 @@ theorem absNorm_ge (P : Ideal (𝓞 K)) [hP : P.IsMaximal] {l : ℕ} (hl : l.Pri
       _ ≤ l ^ (k + 1) := Nat.pow_le_pow_right hl.pos (by omega)
 
 /- English proof (translation)
-Establish `hcop : (S : Set (Ideal (𝓞 K))).Pairwise (fun P Q => IsCoprime P Q)`. Introduce `P hPS Q hQS hPQ`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Establish `hPm` using `(hS P hPS).1`. Establish `hQm` using `(hS Q hQS).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Establish `h1 : P ⊔ Q = P` using `(hPm.eq_of_le h le_sup_left).symm`. Establish `h2 : Q ≤ P` using `h1 ▸ le_sup_right`. Conclude with `hPQ (hQm.eq_of_le hPm.ne_top h2).symm`. Establish `hdvd : ∏ P ∈ S, P ∣ Ideal.span {(l : 𝓞 K)}`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_dvd_of_coprime hcop fun P hP => ?_` and prove the remaining obligations. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `(hS P hP).2`. Establish `hN : ∏ P ∈ S, Ideal.absNorm P ∣ l ^ Module.finrank ℚ K`. Rewrite using `[← map_prod, ← absNorm_nat]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `map_dvd Ideal.absNorm hdvd`. Establish `hN' : ∏ P ∈ S, Ideal.absNorm P ≤ l ^ Module.finrank ℚ K` using `Nat.le_of_dvd (pow_pos hl.pos _) hN`. Establish `hge : l ^ S.card ≤ ∏ P ∈ S, Ideal.absNorm P`. Rewrite using `[← Finset.prod_const]`. Use `Finset.prod_le_prod' fun P hP => ?_` and prove the remaining obligations.
-
-Use `(hS P hP).1` as an intermediate fact. Conclude with `(absNorm_ge P hl (hS P hP).2).2`. Conclude with `(Nat.pow_le_pow_iff_right hl.two_le).1 (hge.trans hN')`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_over_le {l : ℕ} (hl : l.Prime) (S : Finset (Ideal (𝓞 K))) (hS : ∀ P ∈ S, P.IsMaximal ∧ (l : 𝓞 K) ∈ P) :
     S.card ≤ Module.finrank ℚ K := by
@@ -113,21 +111,19 @@ theorem card_over_le {l : ℕ} (hl : l.Prime) (S : Finset (Ideal (𝓞 K))) (hS 
 def zetaGL3GL2 : ℝ := ∑' m : ℕ, 1 / (m : ℝ) ^ ((3 : ℝ) / 2)
 
 /- English proof (translation)
-The claim follows from `Real.summable_one_div_nat_rpow.2 (by norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem summable_Z : Summable fun m : ℕ => 1 / (m : ℝ) ^ ((3 : ℝ) / 2) :=
   Real.summable_one_div_nat_rpow.2 (by norm_num)
 
 /- English proof (translation)
-Establish `hex : ∀ P ∈ S, ∃ l : ℕ, l.Prime ∧ (l : 𝓞 K) ∈ P` using `fun P hP => by haveI := hS P hP; exact exists_prime_mem P`. Use `choose! lp hlp hlpP using hex`. Establish `hterm : ∀ P ∈ S, 1 / ((Ideal.absNorm P : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ 1 / ((lp P : ℕ) : ℝ) ^ ((3 : ℝ) / 2)`. Introduce `P hP`. Use `haveI := hS P hP`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hge` using `(absNorm_ge P (hlp P hP) (hlpP P hP)).2`. Establish `hl0 : (0 : ℝ) < (lp P : ℝ)` using `by exact_mod_cast (hlp P hP).pos`. Apply `one_div_le_one_div_of_le (Real.rpow_pos_of_pos hl0 _)` to reduce the goal to its premises. Conclude with `Real.rpow_le_rpow hl0.le (by exact_mod_cast hge) (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (fun P hP => by rw [(Finset.mem_filter.1 hP).2]), Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ ∑ l ∈ S.image lp, (Module.finrank ℚ K : ℝ) * (1 / (l : ℝ) ^ ((3 : ℝ) / 2)) := by`. Use `Finset.sum_le_sum fun l hl => ?_` and prove the remaining obligations. Take `⟨P0, hP0, rfl⟩` from `Finset.mem_image.1 hl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Conclude with `card_over_le (hlp P0 hP0) _ fun P hP => ⟨hS P (Finset.mem_filter.1 hP).1, by` after adjusting the coercions. Use `hlpP P (Finset.mem_filter.1 hP).1` as an intermediate fact. Rewrite using `[(Finset.mem_filter.1 hP).2] at this⟩` and apply the resulting hypothesis. Use `_ = (Module.finrank ℚ K : ℝ) * ∑ l ∈ S.image lp, 1 / (l : ℝ) ^ ((3 : ℝ) / 2) := by rw [Finset.mul_sum]`.
-
-Use `_ ≤ (Module.finrank ℚ K : ℝ) * zetaGL3GL2 := by`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Conclude with `summable_Z.sum_le_tsum _ (fun m _ => by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem sum_norm_le (S : Finset (Ideal (𝓞 K))) (hS : ∀ P ∈ S, P.IsMaximal) :
     ∑ P ∈ S, 1 / ((Ideal.absNorm P : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ (Module.finrank ℚ K : ℝ) * zetaGL3GL2 := by
@@ -161,16 +157,16 @@ theorem sum_norm_le (S : Finset (Ideal (𝓞 K))) (hS : ∀ P ∈ S, P.IsMaximal
         exact summable_Z.sum_le_tsum _ (fun m _ => by positivity)
 
 /- English proof (translation)
-Take `⟨l, hl, hlP⟩` from `exists_prime_mem P`. Conclude with `hl.two_le.trans (absNorm_ge P hl hlP).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem two_le_absNorm (P : Ideal (𝓞 K)) [P.IsMaximal] : 2 ≤ Ideal.absNorm P := by
   obtain ⟨l, hl, hlP⟩ := exists_prime_mem P
   exact hl.two_le.trans (absNorm_ge P hl hlP).2
 
 /- English proof (translation)
-Establish `hN1 : 1 ≤ N` using `by linarith`. Establish `hN0 : 0 < N` using `by linarith`. Prove the components needed by the constructor for the conclusion. Rewrite using `[one_div, ← Real.rpow_neg hN0.le]`. Apply `Real.rpow_le_rpow_of_exponent_le hN1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (2 : ℝ) ≤ N ^ ((3 : ℝ) / 2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_div_iff₀ (by positivity) (by norm_num)]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -191,23 +187,21 @@ theorem rpow_bounds {N : ℝ} (hN : 2 ≤ N) {M : ℕ} (hM : 3 ≤ M) :
     linarith
 
 /- English proof (translation)
-Use `set N : ℝ := ((Ideal.absNorm P : ℕ) : ℝ) with hNdef`. Establish `hN2 : (2 : ℝ) ≤ N` using `by rw [hNdef]; exact_mod_cast hN`. Establish `hN0 : 0 < N` using `by linarith`. Take `⟨hb1, hb2⟩` from `rpow_bounds hN2 hM`. Use `set y : ℝ := 1 / N ^ ((3 : ℝ) / 2) with hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hy0 : 0 ≤ y` using `by positivity`. Unfold `Formalism.HermitianLatticesTheory.eulerFac`. Use `split_ifs with hc`. Establish `hx : Real.sqrt N ^ (-(M : ℤ)) = N ^ (-(M : ℝ) / 2)`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_intCast, ← Real.rpow_mul hN0.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hNdef, hx]`. Use `set x : ℝ := N ^ (-(M : ℝ) / 2) with hxdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx0 : 0 < x` using `Real.rpow_pos_of_pos hN0 _`. Break down `Nat.even_or_odd M with he | ho` into its components or cases. Rewrite using `[he.neg_one_pow, one_mul]`. Establish `h1 : x ≤ 1 / 2` using `hb1.trans hb2`. Use `⟨inv_pos.2 (by linarith), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ho.neg_one_pow, neg_one_mul, sub_neg_eq_add]`. Use `⟨inv_pos.2 (by linarith), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hNdef]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set z : ℝ := N ^ (-(M : ℤ)) with hz`. Establish `hz0 : 0 < z` using `zpow_pos hN0 _`. Establish `hzx : z ≤ N ^ (-(M : ℝ) / 2)`. Rewrite using `[hz, ← Real.rpow_intCast]`. Apply `Real.rpow_le_rpow_of_exponent_le (by linarith)` to reduce the goal to its premises.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Establish `: (0 : ℝ) ≤ M` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz1 : z ≤ 1 / 2` using `hzx.trans (hb1.trans hb2)`. Establish `hpos : 0 < 1 - z` using `by linarith`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨Real.rpow_pos_of_pos hpos _, ?_⟩` and prove the remaining obligations. Establish `e : (1 - z) ^ ((-1 : ℝ) / 2) = ((1 - z)⁻¹) ^ ((1 : ℝ) / 2)`. Rewrite using `[Real.inv_rpow hpos.le, ← Real.rpow_neg hpos.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Establish `hge1 : 1 ≤ (1 - z)⁻¹` using `one_le_inv₀ hpos |>.2 (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eulerFac_le [StarRing K] {M : ℕ} (hM : 3 ≤ M) (P : Ideal (𝓞 K)) (hN : 2 ≤ Ideal.absNorm P) :
     0 < Formalism.HermitianLatticesTheory.eulerFac K M P ∧
@@ -261,13 +255,13 @@ theorem eulerFac_le [StarRing K] {M : ℕ} (hM : 3 ≤ M) (P : Ideal (𝓞 K)) (
       _ ≤ Real.exp (2 * y) := Real.exp_le_exp.2 (by linarith [hzx.trans hb1])
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.lValEta`. Distinguish the cases in `hm : Multipliable (fun P : {P : Ideal (𝓞 K) // P.IsMaximal} => Formalism.HermitianLatticesTheory.eulerFac K M P.1)`. Use `hm.tprod_le_of_prod_le fun s => ?_` and prove the remaining obligations. Establish `hN : ∀ P : {P : Ideal (𝓞 K) // P.IsMaximal}, 2 ≤ Ideal.absNorm P.1` using `fun P => by haveI := P.2; exact two_le_absNorm P.1`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Real.exp_sum, Finset.mul_sum]`. Use `_ ≤ Real.exp (2 * ((Module.finrank ℚ K : ℝ) * zetaGL3GL2)) := by`. Use `Real.exp_le_exp.2 (mul_le_mul_of_nonneg_left ?_ (by norm_num))` and prove the remaining obligations. Establish `e : ∑ P ∈ s, 1 / ((Ideal.absNorm P.1 : ℕ) : ℝ) ^ ((3 : ℝ) / 2) = ∑ Q ∈ s.map (Function.Embedding.subtype _), 1 / ((Ideal.absNorm Q : ℕ) : ℝ) ^ ((3 : ℝ) / 2)`. Rewrite using `[Finset.sum_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Use `sum_norm_le _ fun Q hQ => ?_` and prove the remaining obligations. Take `⟨P, -, rfl⟩` from `Finset.mem_map.1 hQ`. Conclude with `P.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[tprod_eq_one_of_not_multipliable hm]`. Establish `hZ : 0 ≤ zetaGL3GL2` using `tsum_nonneg fun m => by positivity`. Conclude with `Real.one_le_exp (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem lValEta_le [StarRing K] {M : ℕ} (hM : 3 ≤ M) :
     Formalism.HermitianLatticesTheory.lValEta K M ≤ Real.exp (2 * ((Module.finrank ℚ K : ℝ) * zetaGL3GL2)) := by
@@ -296,9 +290,9 @@ theorem lValEta_le [StarRing K] {M : ℕ} (hM : 3 ≤ M) :
     exact Real.one_le_exp (by positivity)
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.vInv`. Establish `hd : (1 : ℝ) ≤ |(discr K : ℝ)|` using `by exact_mod_cast Int.one_le_abs (discr_ne_zero K)`. Establish `h` using `Real.one_le_rpow hd (by positivity : (0 : ℝ) ≤ 1 / (2 * (Formalism.HermitianLatticesTheory.fDeg K : ℝ)))`. Establish `e : 2 * (|(discr K : ℝ)| ^ ((1 : ℝ) / (2 * (Formalism.HermitianLatticesTheory.fDeg K : ℝ))) / 2) = |(discr K : ℝ)| ^ ((1 : ℝ) / (2 * (Formalism.HermitianLatticesTheory.fDeg K : ℝ)))` using `by ring`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem one_le_two_vInv : 1 ≤ 2 * Formalism.HermitianLatticesTheory.vInv K := by
   unfold Formalism.HermitianLatticesTheory.vInv
@@ -309,9 +303,9 @@ theorem one_le_two_vInv : 1 ≤ 2 * Formalism.HermitianLatticesTheory.vInv K := 
   rw [e]; exact h
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.massRatioRightSide`. Establish `hv : 0 ≤ Formalism.HermitianLatticesTheory.vInv K`. Use `one_le_two_vInv (K := K)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `set a : ℝ := ((((M - 1).factorial : ℕ) : ℝ) * (Formalism.HermitianLatticesTheory.vInv K / Real.pi) ^ M) ^ Formalism.HermitianLatticesTheory.fDeg K with ha`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `ha0 : 0 ≤ a` using `by positivity`. Use `set b : ℝ := Real.sqrt ((2 * Formalism.HermitianLatticesTheory.vInv K) ^ Formalism.HermitianLatticesTheory.fDeg K) with hb`. Establish `hb1 : 1 ≤ b` using `Real.one_le_sqrt.2 (one_le_pow₀ one_le_two_vInv)`. Establish `hB0 : 0 ≤ Real.exp (2 * ((Module.finrank ℚ K : ℝ) * zetaGL3GL2))` using `(Real.exp_pos _).le`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mass_ratio_rhs_le_factorial [StarRing K] {M : ℕ} (hM : 3 ≤ M) :
     Formalism.HermitianLatticesTheory.massRatioRightSide K M ≤

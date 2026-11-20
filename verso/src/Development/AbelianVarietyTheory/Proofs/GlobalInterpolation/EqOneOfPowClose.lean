@@ -5,15 +5,15 @@ namespace GlobalTheory.EqOneOfPowerClose
 open Finset
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, (n : ℝ) * ‖u - 1‖ ≤ 1`. Introduce `n`. Establish `h1 : ‖∑ k ∈ range n, (u ^ k - 1)‖ ≤ (n : ℝ) / 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (n : ℂ) = ∑ k ∈ range n, u ^ k - ∑ k ∈ range n, (u ^ k - 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[sum_sub_distrib]`. Simplify using the standard rewrite rules. Establish `h3 : (n : ℝ) ≤ ‖∑ k ∈ range n, u ^ k‖ + ‖∑ k ∈ range n, (u ^ k - 1)‖`. Use `norm_sub_le (∑ k ∈ range n, u ^ k) (∑ k ∈ range n, (u ^ k - 1))` as an intermediate fact. Rewrite `this` using `[← h2, Complex.norm_natCast]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `h4 : ‖∑ k ∈ range n, u ^ k‖ * ‖u - 1‖ < 1 / 2`. Rewrite using `[← norm_mul, geom_sum_mul]`. Conclude with `h n`. Establish `h5 : (n : ℝ) / 2 ≤ ‖∑ k ∈ range n, u ^ k‖` using `by linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h6` using `mul_le_mul_of_nonneg_right h5 (norm_nonneg (u - 1))`. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖u - 1‖` using `norm_pos_iff.mpr (sub_ne_zero.mpr hne)`. Take `⟨n, hn⟩` from `exists_nat_gt (1 / ‖u - 1‖)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hn` using `[div_lt_iff₀ hpos]`. Combine the linear relations using `[key n]`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow_close {u : ℂ} (h : ∀ n : ℕ, ‖u ^ n - (1 : ℂ)‖ < (1 / 2 : ℝ)) :
     u = (1 : ℂ) := by

@@ -12,9 +12,9 @@ section Haar
 variable {n : ℕ} [MeasurableSpace (Un n)] [BorelSpace (Un n)] (ν : Measure (Un n)) [ν.IsHaarMeasure]
 
 /- English proof (translation)
-Take `⟨c, e⟩ : ∃ c : NNReal, μ = c • ν` from `⟨_, Measure.isMulInvariant_eq_smul_of_compactSpace μ ν⟩`. Establish `h0 : ν Set.univ ≠ 0` using `(Measure.measure_univ_pos.2 (NeZero.ne ν)).ne'`. Establish `hT : ν Set.univ ≠ ⊤` using `measure_ne_top ν _`. Establish `h1 : ν Set.univ = (c : ENNReal) * ν Set.univ`. Rewrite using `[← h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [e]`. Rewrite using `[h, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Establish `hc : (c : ENNReal) = 1` using `(ENNReal.mul_left_inj h0 hT).1 (by simpa using h1.symm)`. Establish `hc' : c = 1` using `by exact_mod_cast hc`. Rewrite using `[e, hc', one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_univ (μ : Measure (Un n)) [IsFiniteMeasure μ] [μ.IsMulLeftInvariant]
     (h : μ Set.univ = ν Set.univ) : μ = ν := by
@@ -30,11 +30,11 @@ private theorem eq_of_univ (μ : Measure (Un n)) [IsFiniteMeasure μ] [μ.IsMulL
   rw [e, hc', one_smul]
 
 /- English proof (translation)
-Use `⟨fun g => ?_⟩` and prove the remaining obligations. Use `haveI : (Measure.map (· * g) ν).IsMulLeftInvariant := by`. Use `⟨fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_map (measurable_const_mul h) (measurable_mul_const g)]`. Establish `: ((h * ·) ∘ (· * g) : Un n → Un n) = (· * g) ∘ (h * ·)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `[mul_assoc]`. Rewrite using `[this, ← Measure.map_map (measurable_mul_const g) (measurable_const_mul h), map_mul_left_eq_self]`. Use `eq_of_univ ν _ ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply (measurable_mul_const g) MeasurableSet.univ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem rightInv : ν.IsMulRightInvariant := by
   refine ⟨fun g => ?_⟩
@@ -51,7 +51,7 @@ private theorem rightInv : ν.IsMulRightInvariant := by
   simp
 
 /- English proof (translation)
-Use `haveI := rightInv ν`. Use `⟨eq_of_univ ν _ ?_⟩` and prove the remaining obligations. Simplify using `[Measure.inv_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem invInv : ν.IsInvInvariant := by
   haveI := rightInv ν
@@ -68,7 +68,7 @@ private def IsWk [MeasurableSpace (Un n)] (ν : Measure (Un n)) (σ : Un n →* 
   ∀ w : V, ⟪w, p⟫_ℂ = ∫ κ, c κ * ⟪w, σ κ v⟫_ℂ ∂ν
 
 /- English proof (translation)
-Establish `h : σ g (σ g⁻¹ w) = w`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[← hσ.iso g (σ g⁻¹ w) x, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem moveσ {σ : Un n →* (V →ₗ[ℂ] V)} (hσ : IsK σ) (g : Un n) (w x : V) :
     ⟪w, σ g x⟫_ℂ = ⟪σ g⁻¹ w, x⟫_ℂ := by
@@ -80,20 +80,20 @@ variable [MeasurableSpace (Un n)] [BorelSpace (Un n)] (ν : Measure (Un n)) [IsF
   {σ : Un n →* (V →ₗ[ℂ] V)}
 
 /- English proof (translation)
-The claim follows from `(hc.mul (hσ.cont v w)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+A detailed English derivation is pending.
 -/
 private theorem intg (hσ : IsK σ) {c : Un n → ℂ} (hc : Continuous c) (v w : V) :
     Integrable (fun κ => c κ * ⟪w, σ κ v⟫_ℂ) ν :=
   (hc.mul (hσ.cont v w)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
 /- English proof (translation)
-Use `haveI : CompleteSpace S := FiniteDimensional.complete ℂ S`. Set `G : Un n → S` to `fun κ => ⟨σ κ v, hS κ v hv⟩`. Set `b` to `stdOrthonormalBasis ℂ S`. Establish `hG : Continuous G`. Establish `e : G = fun κ => ∑ i, ⟪((b i : S) : V), σ κ v⟫_ℂ • b i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `κ`. Use `b.sum_repr' (G κ)` as an intermediate fact. Simplify `this.symm` using `[G, Submodule.coe_inner]`. Rewrite using `[e]`. Conclude with `continuous_finset_sum _ fun i _ => (hσ.cont v _).smul continuous_const`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF : Integrable (fun κ => c κ • G κ) ν` using `(hc.smul hG).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Use `⟨((∫ κ, c κ • G κ ∂ν : S) : V), Subtype.coe_prop _, fun w => ?_⟩` and prove the remaining obligations. Set `L : S →L[ℂ] ℂ` to `(innerSL ℂ w).comp S.subtypeL`. Use `L.integral_comp_comm hF` as an intermediate fact. Establish `e : ∀ y : S, L y = ⟪w, (y : V)⟫_ℂ` using `fun y => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e, ← this]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun κ => ?_)` and prove the remaining obligations. Simplify using `[e, G, inner_smul_right]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_in (hσ : IsK σ) {c : Un n → ℂ} (hc : Continuous c) {v : V} (S : Submodule ℂ V)
     [FiniteDimensional ℂ S] (hv : v ∈ S) (hS : ∀ k, ∀ w ∈ S, σ k w ∈ S) :
@@ -119,17 +119,17 @@ private theorem exists_in (hσ : IsK σ) {c : Un n → ℂ} (hc : Continuous c) 
   simp [e, G, inner_smul_right]
 
 /- English proof (translation)
-The claim follows from `ext_inner_left ℂ fun w => by rw [hp w, hq w]`.
+A detailed English derivation is pending.
 -/
 private theorem wk_unique {c : Un n → ℂ} {v p q : V} (hp : IsWk ν σ c v p) (hq : IsWk ν σ c v q) : p = q :=
   ext_inner_left ℂ fun w => by rw [hp w, hq w]
 
 /- English proof (translation)
-Establish `h : ∀ v : V, ∃ p, IsWk ν σ c v p` using `fun v => by`. Take `⟨S, hfd, hv, hS⟩` from `hσ.fin v`. Take `⟨p, -, hp⟩` from `exists_in ν hσ hc S hv hS`. Conclude with `⟨p, hp⟩`. Use `choose p hp using h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ toFun := p, map_add' := fun x y => ?_, map_smul' := fun a x => ?_ }, hp⟩` and prove the remaining obligations. Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Rewrite using `[inner_add_right, hp, hp, hp, ← integral_add (intg ν hσ hc x w) (intg ν hσ hc y w)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun κ => ?_)` and prove the remaining obligations. Simplify using `only [map_add, inner_add_right, mul_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, inner_smul_right, hp, hp, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun κ => ?_)` and prove the remaining obligations. Simplify using `only [map_smul, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem exists_op (hσ : IsK σ) {c : Un n → ℂ} (hc : Continuous c) :
     ∃ P : Module.End ℂ V, ∀ v, IsWk ν σ c v (P v) := by
@@ -150,11 +150,11 @@ private theorem exists_op (hσ : IsK σ) {c : Un n → ℂ} (hc : Continuous c) 
     ring
 
 /- English proof (translation)
-Take `⟨B', hadj, hcomm⟩` from `hB`. Establish `key : ∀ x y : V, ⟪x, B y⟫_ℂ = ⟪B' x, y⟫_ℂ` using `fun x y => by`. Rewrite using `[← inner_conj_symm, hadj, inner_conj_symm]`. Use `LinearMap.ext fun v => ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hP (B v) w, key, hP v (B' w)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun κ => ?_)` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun (hcomm κ).1 v`. Simplify using `only [Module.End.mul_apply] at h`. Simplify using `only []`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h, key]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem comm_adj {c : Un n → ℂ} {P B : Module.End ℂ V} (hP : ∀ v, IsWk ν σ c v (P v))
     (hB : AdjComm σ B) : P * B = B * P := by
@@ -171,7 +171,7 @@ private theorem comm_adj {c : Un n → ℂ} {P B : Module.End ℂ V} (hP : ∀ v
   rw [← h, key]
 
 /- English proof (translation)
-Take `⟨S, hfd, hv, hS⟩` from `hσ.fin x`. Use `haveI : FiniteDimensional ℂ ↥(S ⊓ N) := Submodule.finiteDimensional_inf_left S N`. Take `⟨p, hp, hw⟩` from `exists_in ν hσ hc (S ⊓ N) ⟨hv, hx⟩ fun k w hw => ⟨hS k w hw.1, hN k w hw.2⟩`. Rewrite using `[wk_unique ν (hP x) hw]`. Conclude with `hp.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_stable (hσ : IsK σ) {c : Un n → ℂ} (hc : Continuous c) {P : Module.End ℂ V}
     (hP : ∀ v, IsWk ν σ c v (P v)) (N : Submodule ℂ V) (hN : ∀ k, ∀ x ∈ N, σ k x ∈ N) {x : V} (hx : x ∈ N) :
@@ -183,9 +183,9 @@ private theorem mem_stable (hσ : IsK σ) {c : Un n → ℂ} (hc : Continuous c)
   exact hp.2
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply]`. Rewrite using `[hP (σ g v) w, moveσ hσ, hP v (σ g⁻¹ w), ← integral_mul_left_eq_self (fun κ => c κ * ⟪w, σ κ (σ g v)⟫_ℂ) g, ← integral_mul_right_eq_self (fun κ => c (g * κ) * ⟪w, σ (g * κ) (σ g v)⟫_ℂ) g⁻¹]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun κ => ?_)` and prove the remaining obligations. Simplify using `only []`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h : σ (g * κ * g⁻¹) (σ g v) = σ g (σ κ v)`. Establish `e : g * κ * g⁻¹ * g = g * κ` using `by group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply]`. Rewrite using `[← mul_assoc, hcl, h, moveσ hσ g w]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comm_σ [ν.IsMulLeftInvariant] [ν.IsMulRightInvariant] (hσ : IsK σ) {c : Un n → ℂ}
     (hcl : ∀ g κ, c (g * κ * g⁻¹) = c κ) {P : Module.End ℂ V} (hP : ∀ v, IsWk ν σ c v (P v)) (g : Un n) :
@@ -203,7 +203,7 @@ private theorem comm_σ [ν.IsMulLeftInvariant] [ν.IsMulRightInvariant] (hσ : 
   rw [← mul_assoc, hcl, h, moveσ hσ g w]
 
 /- English proof (translation)
-Rewrite using `[← inner_conj_symm, hP x y, hP' y x, ← integral_conj, ← integral_inv_eq_self (fun κ => conj (c κ⁻¹) * ⟪x, σ κ y⟫_ℂ) ν]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun κ => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, inner_conj_symm, inv_inv]`. Rewrite using `[moveσ hσ κ⁻¹ x y, inv_inv]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem adj_avg [ν.IsInvInvariant] (hσ : IsK σ) {c : Un n → ℂ} {P P' : Module.End ℂ V}
     (hP : ∀ v, IsWk ν σ c v (P v)) (hP' : ∀ v, IsWk ν σ (fun κ => conj (c κ⁻¹)) v (P' v)) (x y : V) :
@@ -215,15 +215,15 @@ private theorem adj_avg [ν.IsInvInvariant] (hσ : IsK σ) {c : Un n → ℂ} {P
   rw [moveσ hσ κ⁻¹ x y, inv_inv]
 
 /- English proof (translation)
-Establish `hc : ∀ ξ : E.V →L[ℂ] ℂ, Continuous fun κ : Un n => ξ (E.ρ κ e)` using `fun ξ => ξ.continuous.comp ((ContinuousLinearMap.apply ℂ E.V e).continuous.comp E.cont)`. Establish `h : ∀ ξ : E.V →L[ℂ] ℂ, ∃ p, IsWk ν σ (fun κ => ξ (E.ρ κ e)) x p` using `fun ξ => by`. Take `⟨S, hfd, hv, hS⟩` from `hσ.fin x`. Take `⟨p, -, hp⟩` from `exists_in ν hσ (hc ξ) S hv hS`. Conclude with `⟨p, hp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose p hp using h`. Set `t : (E.V →L[ℂ] ℂ) →ₗ[ℂ] V` to `{ toFun := p map_add' := fun a b => by`. Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Rewrite using `[inner_add_right, hp, hp, hp, ← integral_add (intg ν hσ (hc a) x w) (intg ν hσ (hc b) x w)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun κ => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.add_apply, add_mul]`. Use the proof step `map_smul' := fun a b => by`. Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, inner_smul_right, hp, hp, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun κ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [ContinuousLinearMap.smul_apply, smul_eq_mul, mul_assoc] }`. Use `⟨t, fun k ξ => ext_inner_left ℂ fun w => ?_, hp⟩` and prove the remaining obligations. Use `show ⟪w, p _⟫_ℂ = ⟪w, σ k (p ξ)⟫_ℂ`. Rewrite using `[moveσ hσ, hp, hp, ← integral_mul_left_eq_self _ k]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun κ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : E.ρ k⁻¹ (E.ρ (k * κ) e) = E.ρ κ e`. Rewrite using `[map_mul, ContinuousLinearMap.mul_apply, ← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one, ContinuousLinearMap.one_apply]`. Establish `e2 : σ (k * κ) x = σ k (σ κ x)` using `by rw [map_mul, Module.End.mul_apply]`. Simplify using `only [ContinuousLinearMap.comp_apply, e1, e2]`. Rewrite using `[moveσ hσ k w]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_map [ν.IsMulLeftInvariant] (hσ : IsK σ) (E : KMod n) (e : E.V) (x : V) :
     ∃ t ∈ invA σ E, ∀ ξ : E.V →L[ℂ] ℂ, IsWk ν σ (fun κ => ξ (E.ρ κ e)) x (t ξ) := by
@@ -258,7 +258,7 @@ private theorem exists_map [ν.IsMulLeftInvariant] (hσ : IsK σ) (E : KMod n) (
   rw [moveσ hσ k w]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.trace_eq_sum_inner _ (stdOrthonormalBasis ℂ E.V)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem tr_eq (E : KMod n) (T : E.V →L[ℂ] E.V) (κ : Un n) :
     LinearMap.trace ℂ E.V ((E.ρ κ * T : E.V →L[ℂ] E.V) : E.V →ₗ[ℂ] E.V) =
@@ -267,11 +267,11 @@ private theorem tr_eq (E : KMod n) (T : E.V →L[ℂ] E.V) (κ : Un n) :
   rfl
 
 /- English proof (translation)
-Set `b` to `stdOrthonormalBasis ℂ E.V`. Use `choose t ht hw using fun i => exists_map ν hσ E (T (b i)) x`. Establish `hsum : P x = ∑ i, t i (innerSL ℂ (b i))`. Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Rewrite using `[hP x w, inner_sum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[fun i => hw i (innerSL ℂ (b i)) w]`. Rewrite using `[← integral_finset_sum]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun κ => ?_)` and prove the remaining obligations. Simplify using `only []`. Rewrite using `[tr_eq, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Conclude with `intg ν hσ ((innerSL ℂ (b i)).continuous.comp ((ContinuousLinearMap.apply ℂ E.V (T (b i))).continuous.comp E.cont)) x w`. Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(le_iSup (fun s : invA σ E => LinearMap.range s.1) ⟨t i, ht i⟩) ⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem mem_iso [ν.IsMulLeftInvariant] (hσ : IsK σ) (E : KMod n) (T : E.V →L[ℂ] E.V) {P : Module.End ℂ V}
     (hP : ∀ v, IsWk ν σ (fun κ => LinearMap.trace ℂ E.V ((E.ρ κ * T : E.V →L[ℂ] E.V) : E.V →ₗ[ℂ] E.V)) v (P v)) (x : V) :
@@ -294,9 +294,9 @@ private theorem mem_iso [ν.IsMulLeftInvariant] (hσ : IsK σ) (E : KMod n) (T :
   exact (le_iSup (fun s : invA σ E => LinearMap.range s.1) ⟨t i, ht i⟩) ⟨_, rfl⟩
 
 /- English proof (translation)
-Establish `e : (E.ρ (g * κ * g⁻¹) * T : E.V →L[ℂ] E.V) = E.ρ g * (E.ρ κ * T) * E.ρ g⁻¹`. Rewrite using `[map_mul, map_mul, mul_assoc _ _ T, ← hT g⁻¹]`. Simplify using `only [mul_assoc]`. Establish `e1 : ((E.ρ g⁻¹ : E.V →L[ℂ] E.V) : E.V →ₗ[ℂ] E.V) * ((E.ρ g : E.V →L[ℂ] E.V) : E.V →ₗ[ℂ] E.V) = 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (E.ρ g⁻¹ * E.ρ g) x = x`. Rewrite using `[← map_mul, inv_mul_cancel, map_one, ContinuousLinearMap.one_apply]`. Rewrite using `[e]`. Use `show LinearMap.trace ℂ E.V (((E.ρ g : E.V →L[ℂ] E.V) : E.V →ₗ[ℂ] E.V) * ((E.ρ κ * T : E.V →L[ℂ] E.V) : E.V →ₗ[ℂ] E.V) * ((E.ρ g⁻¹ : E.V →L[ℂ] E.V) : E.V →ₗ[ℂ] E.V)) = _`. Rewrite using `[LinearMap.trace_mul_comm, ← mul_assoc, e1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tr_class (E : KMod n) {T : E.V →L[ℂ] E.V} (hT : ∀ k, T * E.ρ k = E.ρ k * T) (g κ : Un n) :
     LinearMap.trace ℂ E.V ((E.ρ (g * κ * g⁻¹) * T : E.V →L[ℂ] E.V) : E.V →ₗ[ℂ] E.V) =
@@ -316,13 +316,11 @@ private theorem tr_class (E : KMod n) {T : E.V →L[ℂ] E.V} (hT : ∀ k, T * E
 end Abs
 
 /- English proof (translation)
-Introduce `n _ _ ν _ V _ _ σ hσ E T P hT hP`. Use `haveI := rightInv ν`. Use `haveI := invInv ν`. Use `set c : Un n → ℂ := fun κ => LinearMap.trace ℂ E.V ((E.ρ κ * T : E.V →L[ℂ] E.V) : E.V →ₗ[ℂ] E.V) with hcdef`. Establish `hc : Continuous c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `L : (E.V →L[ℂ] E.V) →ₗ[ℂ] ℂ` to `(LinearMap.trace ℂ E.V).comp (ContinuousLinearMap.coeLM ℂ)`. Conclude with `L.continuous_of_finiteDimensional.comp (E.cont.mul continuous_const)`. Establish `hcl : ∀ g κ, c (g * κ * g⁻¹) = c κ` using `tr_class E hT`. Establish `hw : ∀ v, IsWk ν σ c v (P v)` using `fun v w => hP v w`. Establish `hc' : Continuous fun κ : Un n => conj (c κ⁻¹)` using `Complex.continuous_conj.comp (hc.comp continuous_inv)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcl' : ∀ g κ, conj (c (g * κ * g⁻¹)⁻¹) = conj (c κ⁻¹)` using `fun g κ => by`. Establish `e : (g * κ * g⁻¹)⁻¹ = g * κ⁻¹ * g⁻¹` using `by group`. Rewrite using `[e, hcl]`. Take `⟨P', hw'⟩` from `exists_op ν hσ hc'`. Establish `hadj` using `adj_avg ν hσ hw hw'`.
-
-Use `⟨mem_iso ν hσ E T hw, ⟨P', hadj, fun k => ⟨comm_σ ν hσ hcl hw k, comm_σ ν hσ hcl' hw' k⟩⟩, fun B hB => comm_adj ν hw hB, fun N hN x hx => mem_stable ν hσ hc hw N hN hx, P', hadj, fun B hB => comm_adj ν hw' hB⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem avgFacts : AvgFacts := by
   intro n _ _ ν _ V _ _ σ hσ E T P hT hP

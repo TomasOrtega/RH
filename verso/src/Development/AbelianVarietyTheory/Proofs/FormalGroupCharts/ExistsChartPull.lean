@@ -41,7 +41,7 @@ open IsDedekindDomain
 namespace GlobalTheory.DepthExt
 
 /- English proof (translation)
-Establish `h : valV V (algebraMap V K u) = 1`. Unfold `valV`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal u).1 h hu`. Simplify using `[vV, h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules.
 -/
 theorem vV_unit {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K]
     [IsFractionRing V K] {u : V} (hu : IsUnit u) : vV V (algebraMap V K u) = 0 := by
@@ -54,7 +54,7 @@ theorem vV_unit {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun _ x y x₀ y₀ hx hy => (mul_left_congr (Category.comp_id _) x₀ y₀ x y (hx.trans (Category.comp_id _)) (hy.trans (Category.comp_id _))).trans (Category.comp_id _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem grp_id {S : Scheme.{0}} (G : Over S) [GrpObj G] : IsGrpPullback G G (𝟙 _) (𝟙 _) :=
   ⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun _ x y x₀ y₀ hx hy =>
@@ -65,7 +65,7 @@ section Tangent
 variable {V V' : Type} [CommRing V] [CommRing V']
 
 /- English proof (translation)
-Simplify using `only [Chart.comb_push (grp_id t.G), Category.comp_id]`. Conclude with `Iff.rfl`.
+Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem comb_iff (t : SAB H (Sp V)) {m : ℕ} (v : Fin m → (epsR V ⟶ t.G)) (cf : Fin m → V) (w : epsR V ⟶ t.G) :
     IsLieComb cf v w ↔ IsCombAtG t (𝟙 _) (fun i => (v i).left) cf w.left := by
@@ -73,7 +73,7 @@ theorem comb_iff (t : SAB H (Sp V)) {m : ℕ} (v : Fin m → (epsR V ⟶ t.G)) (
   exact Iff.rfl
 
 /- English proof (translation)
-Simplify using `only [Chart.tan_push (grp_id t.G), Category.comp_id]`. Conclude with `⟨fun h => ⟨(Over.w w).trans (Category.comp_id _).symm, h⟩, fun h => h.2⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem tan_iff (t : SAB H (Sp V)) (w : epsR V ⟶ t.G) : IsTangent w ↔ IsTanAtG t (𝟙 _) w.left := by
   simp only [Chart.tan_push (grp_id t.G), Category.comp_id]
@@ -82,7 +82,7 @@ theorem tan_iff (t : SAB H (Sp V)) (w : epsR V ⟶ t.G) : IsTangent w ↔ IsTanA
 variable (ψ : V →+* V') {t : SAB H (Sp V)} {t' : SAB H (Sp V')} (mp : SABMap t' t (spMap ψ))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mp.cart.1.lift (spMap g ≫ x) (spMap (algebraMap V' A')) (by rw [Category.assoc, hx, RawChartBC.spMap_spMap, RawChartBC.spMap_spMap, hg]), mp.cart.1.lift_fst _ _ _, mp.cart.1.lift_snd _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift {A A' : Type} [CommRing A] [CommRing A'] [Algebra V A] [Algebra V' A'] (g : A →+* A')
     (hg : g.comp (algebraMap V A) = (algebraMap V' A').comp ψ) (x : Sp A ⟶ t.G.left)
@@ -95,7 +95,7 @@ theorem exists_lift {A A' : Type} [CommRing A] [CommRing A'] [Algebra V A] [Alge
 end Tangent
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `[hg, MvPowerSeries.coeff_map, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_sq {V K V' K' σ : Type} [CommRing V] [CommRing K] [CommRing V'] [CommRing K'] {f : V →+* K}
     {f' : V' →+* K'} {φ : K →+* K'} {ψ : V →+* V'} (h : ∀ a, f' (ψ a) = φ (f a)) {g : MvPowerSeries σ V}

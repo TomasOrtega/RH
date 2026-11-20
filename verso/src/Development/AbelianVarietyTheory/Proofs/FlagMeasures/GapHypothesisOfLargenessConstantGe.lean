@@ -7,17 +7,17 @@ namespace GlobalTheory.TypeAsm
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Take `⟨⟨hS, -, -⟩, -⟩` from `h`. Take `⟨-, -, hmf, hfk, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hgap, -, -, hClm, -⟩` from `hS`. Establish `hL : 1 < large₂.sc.L` using `Formalism.MainNotions.S.one_lt_scL large₂`. Establish `hm2 : 2 ≤ D.R.m` using `D.R.two_le_m`. Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast hm2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf16 : 16 ≤ D.R.f` using `le_trans (by`. Combine the equalities or inequalities in the displayed calculation. Establish `hf : (16 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf16`. Establish `hmn : D.R.m ≤ D.R.r`. Establish `h1 : 1 ≤ D.R.k` using `by omega`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show D.R.m ≤ D.R.k + D.R.m - 1`. Use linear arithmetic over natural numbers and integers. Establish `hmR : (1801 : ℝ) ≤ D.R.m` using `le_trans hCl hClm`. Establish `hm1801 : 1801 ≤ D.R.m` using `by exact_mod_cast hmR`. Use `⟨le_trans hm1801 hmn, fun τ j hj => ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `g` using `hgap τ (j.1 + 1) (by omega) (by omega)`. Rewrite `g` using `[Formalism.MainNotions.S.bOne_succ τ (j.1 + 1) hj, Formalism.MainNotions.S.bOne_succ τ j.1 j.2]`. Establish `hn0 : (0 : ℝ) ≤ (D.R.r : ℝ) ^ 19` using `by positivity`. Establish `hf5 : (1 : ℝ) ≤ (D.R.f : ℝ) ^ 5` using `one_le_pow₀ (by linarith)`. Establish `h16 : 16 * (D.R.r : ℝ) ^ 19 ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : 16 * (D.R.r : ℝ) ^ 19 ≤ Cl * (D.R.r : ℝ) ^ 19` using `by nlinarith`. Establish `a2 : Cl * (D.R.r : ℝ) ^ 19 ≤ Cl * (D.R.r : ℝ) ^ 19 * ((D.R.f : ℝ) ^ 5 * large₂.sc.L)` using `le_mul_of_one_le_right (by positivity) (by nlinarith)`. Combine the linear relations using `[show Cl * (D.R.r : ℝ) ^ 19 * ((D.R.f : ℝ) ^ 5 * large₂.sc.L) = Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L by ring]`. Establish `hR : ((16 * (D.R.r : ℚ) ^ 19 : ℚ) : ℝ) ≤ (((D.hc τ).b ⟨j.1 + 1, hj⟩ - (D.hc τ).b j : ℚ) : ℝ)`. Use `push_cast`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `e : ((D.hc τ).b ⟨j.1, j.2⟩ : ℝ) = ((D.hc τ).b j : ℝ)` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hR` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gap_hypothesis_of_kernel_bound_large_constant {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cw cT CT C0 : ℝ} (hCl : 1801 ≤ Cl)
     (h : Formalism.MainNotions.NonGenericAndKTwoTheorems.KTwoHypotheses D large₂ C' Cl Cg cb Cw cT CT C0) : Formalism.L2.SG.ConcreteSettingExists.GapHyp D := by
@@ -54,7 +54,7 @@ theorem gap_hypothesis_of_kernel_bound_large_constant {D : D7} {large₂ : SizeD
   exact_mod_cast hR
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1801, fun _ _ _ _ _ _ _ _ _ _ hCl h => gap_hypothesis_of_kernel_bound_large_constant hCl h⟩`.
+Supply the required witnesses or components.
 -/
 theorem gapC : GapC :=
   ⟨1801, fun _ _ _ _ _ _ _ _ _ _ hCl h => gap_hypothesis_of_kernel_bound_large_constant hCl h⟩

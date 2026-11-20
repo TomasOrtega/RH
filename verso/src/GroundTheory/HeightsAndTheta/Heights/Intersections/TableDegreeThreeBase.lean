@@ -19,9 +19,9 @@ variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Take `⟨i', hi'⟩` from `hz (κ k)`. Take `⟨p, hp⟩` from `hv.2.2.2 ⟨κ k, i'⟩ ⟨k, rfl⟩`. Establish `h2 : p.1 = k` using `hv.1 (by rw [← hv.2.2.1 p, hp])`. Take `⟨pk, pi⟩` from `p`. Simplify using `only at h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Substitute `h2` using the available equality. Conclude with `⟨pi, by rw [hp]; exact hi'⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem blocks_ne_zero_restrict {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {z : (Σ k', ι' k') → ℂ} (hz : ∀ k', ∃ i', z ⟨k', i'⟩ ≠ 0) (k : K) : ∃ i, z (v ⟨k, i⟩) ≠ 0 := by
@@ -34,7 +34,7 @@ theorem blocks_ne_zero_restrict {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι
   exact ⟨pi, by rw [hp]; exact hi'⟩
 
 /- English proof (translation)
-Establish `e : A'.h = A.h ∘ fun (z : (Σ k', ι' k') → ℂ) (p : Σ k, ι k) => z (v p)` using `funext h.2`. Establish `hR : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun (z : (Σ k', ι' k') → ℂ) (p : Σ k, ι k) => z (v p))` using `contDiff_pi.2 fun p => contDiff_apply ℝ ℂ (v p)`. Unfold `IsSmoothHerm`. Rewrite using `[e]`. Conclude with `hA.comp hR.contDiffOn fun z hz => blocks_ne_zero_restrict hv hz`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsPullHerm.isSmoothHerm {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {A : HermLine ι} {A' : HermLine ι'} (h : IsPullHerm κ v A A') (hA : IsSmoothHerm A) :
@@ -47,7 +47,7 @@ theorem IsPullHerm.isSmoothHerm {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι
   exact hA.comp hR.contDiffOn fun z hz => blocks_ne_zero_restrict hv hz
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ A hv` and use `⟨IndefiniteRowSideFullHecke.Inter.pullHerm hv A, IndefiniteRowSideFullHecke.Inter.isPullHerm_pullHerm hv A, IsPullHerm.isSmoothHerm hv (IndefiniteRowSideFullHecke.Inter.isPullHerm_pullHerm hv A)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem pullExists : PullExistsStatement := fun _ _ _ _ _ _ _ _ _ _ A hv =>
   ⟨IndefiniteRowSideFullHecke.Inter.pullHerm hv A, IndefiniteRowSideFullHecke.Inter.isPullHerm_pullHerm hv A,
@@ -55,7 +55,7 @@ theorem pullExists : PullExistsStatement := fun _ _ _ _ _ _ _ _ _ _ A hv =>
 
 omit [Fintype K] [Fintype K'] in
 /- English proof (translation)
-Use function extensionality and compare the values at `k'`. Simplify using `only [pullDeg, Function.extend, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pullDeg_add (κ : K → K') (a b : K → ℤ) : pullDeg κ (a + b) = pullDeg κ a + pullDeg κ b := by
   classical
@@ -66,7 +66,7 @@ theorem pullDeg_add (κ : K → K') (a b : K → ℤ) : pullDeg κ (a + b) = pul
 omit [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations. Use `show A'.a + B'.a = pullDeg κ (A.a + B.a)`. Rewrite using `[hA.1, hB.1, pullDeg_add]`. Use `show A'.h z * B'.h z = A.h _ * B.h _`. Rewrite using `[hA.2, hB.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsPullHerm.tensor {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} {A B : HermLine ι}
     {A' B' : HermLine ι'} (hA : IsPullHerm κ v A A') (hB : IsPullHerm κ v B B') :
@@ -86,13 +86,13 @@ variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 omit [Fintype K] in
 
 /- English proof (translation)
-Establish `hm : (∏ j, X (q j) ^ e j : MRing ι) = monomial (∑ j, Finsupp.single (q j) (e j)) 1`. Rewrite using `[monomial_sum_one]`. Simplify using `[X_pow_eq_monomial]`. Introduce `m hm' k`. Rewrite `hm'` using `[hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.mem_singleton.1 (support_monomial_subset hm')` as an intermediate fact. Substitute `this` using the available equality. Use `beta_reduce`. Rewrite using `[Finset.sum_filter]`. Simplify using `only [Finsupp.coe_finsetSum, Finset.sum_apply]`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Take `⟨k0, i0⟩` from `q j`. Distinguish the cases in `h : k0 = k`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.single_apply]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_prod_X_pow [DecidableEq K] {J : Type*} [Fintype J] (q : J → Σ k, ι k) (e : J → ℕ) :
     IsMultiHomog (∏ j, X (q j) ^ e j : MRing ι)
@@ -117,9 +117,9 @@ theorem isMultiHomog_prod_X_pow [DecidableEq K] {J : Type*} [Fintype J] (q : J �
   · simp [h]
 
 /- English proof (translation)
-Establish `hr : Ideal.Quotient.mk Q x ∈ nonZeroDivisors (R ⧸ Q)` using `mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])`. Use `le_trans ?_ (ringKrullDim_quotient_succ_le_of_nonZeroDivisor hr)` and prove the remaining obligations. Use `gcongr`. Use `ringKrullDim_le_of_surjective (Ideal.Quotient.lift _ (Ideal.Quotient.factor hle) ?_) (Ideal.Quotient.lift_surjective_of_surjective _ _ (Ideal.Quotient.factor_surjective hle))` and prove the remaining obligations. Introduce `y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Rewrite using `[map_mul]`. Take `⟨c', rfl⟩` from `Ideal.Quotient.mk_surjective c`. Simplify using `only [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem.2 hx, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem krullDim_quot_add_one_le {R : Type*} [CommRing R] {Q Q₂ : Ideal R} [Q.IsPrime] (hle : Q ≤ Q₂)
     {x : R} (hx : x ∈ Q₂) (hxQ : x ∉ Q) : ringKrullDim (R ⧸ Q₂) + 1 ≤ ringKrullDim (R ⧸ Q) := by
@@ -140,39 +140,37 @@ end Algebra
 section Proof
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro _ d _ _ _ _ h`. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Introduce `P' d L L' hP' hQ hdn hL hLL`. Establish `hL' : ∀ j, IsSmoothHerm (L' j)` using `fun j => IsPullHerm.isSmoothHerm hv (hLL j) (hL j)`. Establish `hL0 : ∀ j, IsSmoothHerm (Fin.init L j)` using `fun j => hL _`. Establish `hL0' : ∀ j, IsSmoothHerm (Fin.init L' j)` using `fun j => hL' _`. Establish `hLL0 : ∀ j, IsPullHerm κ v (Fin.init L j) (Fin.init L' j)` using `fun j => hLL _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQp : (imageZ v P').IsPrime` using `hQ.2.1.1`. Establish `key : ∀ (B : HermLine ι) (B' : HermLine ι'), IsSmoothHerm B' → IsPullHerm κ v B B' → (∀ k, 0 ≤ B.a k) → I K' ι' P' (n + 1) (Fin.snoc (Fin.init L') B') = 0`. Introduce `B B' hB' hBB hBa`. Use `choose i hi using hQ.2.1.2.2`. Set `b : K → ℕ` to `fun k => (B.a k).toNat`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `t : MRing ι` to `∏ k, X ⟨k, i k⟩ ^ b k`. Establish `ht : t ∉ imageZ v P'`. Introduce `h`. Take `⟨k, -, hk⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hQp)).1 h`. Conclude with `hi k (hQp.mem_of_pow_mem _ hk)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `htm : IsMultiHomog t b`. Use `isMultiHomog_prod_X_pow (fun k => (⟨k, i k⟩ : Σ k, ι k)) b using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_filter]`. Set `s : MRing ι'` to `rename v t`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hs : s ∉ P'` using `ht`. Set `b' : K' → ℕ` to `fun k' => ∑ k ∈ Finset.univ.filter (fun k => κ k = k'), b k`. Establish `hsm : IsMultiHomog s b'`. Establish `e : s = ∏ k, X (v ⟨k, i k⟩) ^ b k` using `by simp [s, t, map_prod]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `isMultiHomog_prod_X_pow (fun k => v ⟨k, i k⟩) b using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k'`. Simplify using `only [hv.2.2.1, b']`. Establish `hBa' : ∀ k', B'.a k' = b' k'`. Introduce `k'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hBB.1]`. Distinguish the cases in `hk : ∃ k, κ k = k'`. Take `⟨k0, rfl⟩` from `hk`. Establish `hf : Finset.univ.filter (fun k => κ k = κ k0) = {k0}`. Use extensionality with `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hv.1.eq_iff]`. Simplify using `only [b', hf, Finset.sum_singleton, pullDeg, hv.1.extend_apply, b]`. Conclude with `(Int.toNat_of_nonneg (hBa k0)).symm`. Establish `hf : Finset.univ.filter (fun k => κ k = k') = ∅`. Use extensionality with `k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]`. Conclude with `fun h => hk ⟨k, h⟩`. Simplify using `only [b', hf, Finset.sum_empty, pullDeg, Function.extend_apply' _ _ _ hk]`. Both sides reduce to the same expression. Establish `hsec : IsSectionOn P' B' s` using `⟨b', hBa', hsm, hs⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(hI K' ι').2.2 P' n (Fin.init L') B' s b' hP' hL0' hB' hBa' hsm hs, recR_eq]`. Establish `h1 : arInt P' s B' (Fin.init L') = 0` using `hF K ι K' ι' κ v P' d n (Fin.init L) (Fin.init L') (logNorm B' s) hv hP' hQ hdn hL0 hLL0`. Establish `h2 : cycR (I K' ι') P' (Fin.init L') s = vertR P' (Fin.init L') s`. Unfold `cycR vertR`. Use `finsum_mem_congr rfl fun W hW => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `split_ifs with hH`. Establish `hWn : IsArithVar W n` using `(divSuppArith K' ι' P' n B' s W hP' hsec hW).1 hH`. Take `⟨dW, -, hQW⟩` from `hIm K ι K' ι' κ v W n hQ.1 hv hWn`. Establish `hPW : P' ≤ W` using `le_sup_left.trans hW.1.1.2`. Establish `hsW : s ∈ W` using `hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdim` using `krullDim_quot_add_one_le (Q := imageZ v P') (Q₂ := imageZ v W) (Ideal.comap_mono hPW) (show t ∈ imageZ v W from hsW) ht`. Rewrite `hdim` using `[hQW.2.2.2, hQ.2.2.2]`. Establish `hlt : dW + Fintype.card K + 1 ≤ d + Fintype.card K` using `by exact_mod_cast hdim`. Rewrite using `[ih W dW (Fin.init L) (Fin.init L') hWn hQW (by omega) hL0 hLL0]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[h1, h2, hV K ι K' ι' κ v P' d n (Fin.init L) (Fin.init L') t b hv hP' hQ hdn hLL0 htm ht, sub_zero]`. Set `A` to `L (Fin.last n)`. Set `A'` to `L' (Fin.last n)`. Set `M : HermLine ι` to `HermLine.sqMetric fun k => (-(A.a k)).toNat`. Set `M'` to `IndefiniteRowSideFullHecke.Inter.pullHerm hv M`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : IsSmoothHerm M` using `isSmoothHerm_sqMetric _`. Establish `hMM : IsPullHerm κ v M M'` using `IndefiniteRowSideFullHecke.Inter.isPullHerm_pullHerm hv M`. Establish `hM' : IsSmoothHerm M'` using `IsPullHerm.isSmoothHerm hv hMM hM`. Establish `hA' : IsSmoothHerm A'` using `hL' _`. Establish `hadd` using `(hI K' ι').2.1 P' n (Fin.init L') A' M' hP' hL0' hA' hM'`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h3` using `key (A.tensor M) (A'.tensor M') (isSmoothHerm_tensor hA' hM') (IsPullHerm.tensor (hLL _) hMM) fun k => by show 0 ≤ A.a k + ((-(A.a k)).toNat : ℤ)`. Use linear arithmetic over natural numbers and integers. Establish `h4` using `key M M' hM' hMM fun k => by show (0 : ℤ) ≤ ((-(A.a k)).toNat : ℤ)`. Use linear arithmetic over natural numbers and integers. Establish `e : L' = Fin.snoc (Fin.init L') A'` using `(Fin.snoc_init_self L').symm`.
-
-Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem contract_intersection_number (hIm : ImageArithStatement) (hF : pointForm_holds.Statement) (hV : ProjectivePointVertical.Statement)
     (I : AllFam) (hI : I.IsFamily) {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
@@ -274,7 +272,7 @@ theorem contract_intersection_number (hIm : ImageArithStatement) (hF : pointForm
     linarith
 
 /- English proof (translation)
-Introduce `I hI K _ ι _ K' _ ι' _ κ v P' d d' L L' hv hP' hQ hdd hL hLL`. Conclude with `contract_intersection_number hIm hF hV I hI hv d' P' d L L' hP' hQ hdd hL hLL`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem PushforwardProjectivePoint.proof (hIm : ImageArithStatement) (hF : pointForm_holds.Statement) (hV : ProjectivePointVertical.Statement) :
     PushforwardProjectivePoint.Statement := by
@@ -282,7 +280,7 @@ theorem PushforwardProjectivePoint.proof (hIm : ImageArithStatement) (hF : point
   exact contract_intersection_number hIm hF hV I hI hv d' P' d L L' hP' hQ hdd hL hLL
 
 /- English proof (translation)
-The claim follows from `PushforwardProjectivePoint.proof hIm hF hV`.
+A detailed English derivation is pending.
 -/
 theorem contract_of (hIm : ImageArithStatement) (hF : pointForm_holds.Statement) (hV : ProjectivePointVertical.Statement) :
     ContractStatement :=

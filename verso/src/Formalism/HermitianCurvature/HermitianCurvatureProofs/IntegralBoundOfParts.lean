@@ -13,7 +13,7 @@ noncomputable section
 open Classical
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | l :: w, x => by funext e have he : (Fin.cons (e 0) (fun a => e a.succ) : Wd.Ix (Fin (w.length + 1))) = e := Fin.cons_self_tail e simp only [KB.uInv, map_zero, ite_self, zero_smul, add_zero, uInv_zero_eq_self w] by_cases h0 : e 0 = 0 · rw [if_pos h0] conv_rhs => r …`.
+A detailed English derivation is pending.
 -/
 theorem uInv_zero_eq_self {X : Type} [AddCommGroup X] [Module ℂ X] :
     ∀ (w : List C.Letter) (x : Wd.Ix (Fin w.length) → X), KB.uInv (0 : ℂ) w x = x
@@ -35,7 +35,7 @@ theorem uInv_zero_eq_self {X : Type} [AddCommGroup X] [Module ℂ X] :
       rw [h1]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `e g`. Simplify using `only [KB.waveG, uInv_zero_eq_self, P5.fsv, zero_mul, map_zero, sub_zero, Complex.exp_zero, one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem waveG_zero_eq_self {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq) (w : List C.Letter)
@@ -44,7 +44,7 @@ theorem waveG_zero_eq_self {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [I
   simp only [KB.waveG, uInv_zero_eq_self, P5.fsv, zero_mul, map_zero, sub_zero, Complex.exp_zero, one_smul]
 
 /- English proof (translation)
-Simplify using `[KB.psiL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psiL_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePlace E → Type}
     [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]
@@ -52,37 +52,35 @@ theorem psiL_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : In
   simp [KB.psiL]
 
 /- English proof (translation)
-Introduce `Cb`. Take `⟨c1, h1⟩` from `limit_of_module_forms Cb`. Take `⟨c7, h7⟩` from `hD Cb`. Use `⟨max c1 c7, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB7` using `PBJoint.built_setting_to_model_place (le_max_right c1 c7) hB`. Establish `hB'` using `hB`. Take `⟨-, -, -, hcut, -, -, -, -, -, -, hGo, -, -, -, hA, hv⟩` from `hB'`. Establish `hCI : KB.CutInside S` using `PBCut.cutInside_of_built hB`. Establish `hgpos` using `PBL.g_pos_of_built hB`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcpt : ∀ v ε, 0 < ε → KB.CptCoef (p v).T.base (cutSeq S p f χ n v ε)`. Introduce `v ε hε`. Take `⟨hl0, hInD, -, hCk, hCC⟩` from `hv v`. Use `(h1 (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (p v) (f v) χ ε A₀ S.Ntop cutN (by rw [hl0]; exact hInD) hcut hε hCk hCC (le_trans ?_ hA) (fun n g => rfl)).1 n` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)) (by positivity)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v ε hε i hi1 hi2 w h h' hsz hsz'`. Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`. Establish `hj : j ≤ S.G.r` using `Nat.le_of_succ_le_succ hi2`. Establish `hsz1 : D.ptSize h = j` using `hsz.trans (Nat.add_sub_cancel j 1)`. Establish `hsz1' : D.ptSize h' = j` using `hsz'.trans (Nat.add_sub_cancel j 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.add_sub_cancel]`. Take `⟨hl0, hInD, -, -, -⟩` from `hv v`. Establish `hw : KB.CutWord (D.parOf S v) (S.l + 1) (w.1 v)` using `PBD.cutWord_of_adm S hGo hCI w v`. Establish `hi2' : j + 1 ≤ S.G.r + 1` using `Nat.succ_le_succ hj`. Establish `hadm : D.AdmAt S v (w.1 v)` using `⟨w, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7'` using `h7 E Wp Wq S p f χ A₀ hB7 v ε hε (j + 1) hi1 hi2' (w.1 v) hadm h h' hsz hsz'`. Use `h7'.elim fun Cd hC => ?_` and prove the remaining obligations. Establish `hdec` using `(hC n).1`. Establish `hloc_app : ∀ (H : C.LPt) (c : ℂ), D.ptSize H = j → D.IsLocPt (H ++ [(1, c)]) (j + 1) → D.IsLocPt H j` using `fun H c hH hl => ⟨fun b hb => hl.1 b (List.mem_append_left _ hb), hH⟩`. Distinguish the cases in `hloc : D.IsLocPt h j ∧ D.IsLocPt h' j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨hh, hh'⟩` from `hloc`. Establish `hH : D.IsLocPt (PBL.stdS S h) j` using `(PBD.isLocPt_toStd_iff _ _ hgpos h 1 j).2 hh`. Establish `hH' : D.IsLocPt (PBL.stdS S h') j` using `(PBD.isLocPt_toStd_iff _ _ hgpos h' 1 j).2 hh'`. Establish `hPS'` using `hPS (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (p v) (cutSeq S p f χ n v ε) j hj (w.1 v) (PBL.stdS S h) (PBL.stdS S h') hH hH' Cb (by rw [hl0]; exact hInD) (hcpt v ε hε) (by rw [hl0]; exact hw)`. Use `hPS'.elim fun φ0 hφ0all => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hφ0c, -, hφ0, -⟩` from `hφ0all`. Establish `hlam` using `PBL.lamS_pos S hgpos j`. Use `set φ : ℂ → ℂ := fun c => ((StandardPairingDecay.Kg S j h h' : ℝ) : ℂ) * φ0 ((PBL.lamS S j : ℂ) * c) with hφdef`. Establish `hφc : Continuous φ` using `continuous_const.mul (hφ0c.comp (continuous_const.mul continuous_id))`. Establish `hφeq : ∀ c : ℂ, c ≠ 0 → φ c = (PBL.setC S p (cutSeq S p f χ n)).gramLoc v ε (j + 1) (w.1 v) (h ++ [(1, c)]) (h' ++ [(1, c)])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c hc`. Establish `hlc : (PBL.lamS S j : ℂ) * c ≠ 0` using `mul_ne_zero (by exact_mod_cast hlam.ne') hc`. Rewrite using `[StandardPairingDecay.gramLoc_setC_app hB (cutSeq S p f χ n) v ε j hj (w.1 v) h h' hh.2 hh'.2 c hc, hφdef]`. Simplify using `only`. Rewrite using `[hφ0 _ hlc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨φ, hφc, hφeq, ⟨Cd, fun c => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `PBB.K8.bound_all hφc (fun c hc => by rw [hφeq c hc]; exact hdec c hc) c`. Establish `hae : (fun c => φ c) =ᵐ[volume] fun c => (PBL.setC S p (cutSeq S p f χ n)).gramLoc v ε (j + 1) (w.1 v) (h ++ [(1, c)]) (h' ++ [(1, c)]) * KB.psiL S 0 c` using `by filter_upwards [PBL.ae_ne_zero_complex] with c hc`. Rewrite using `[psiL_zero, mul_one, hφeq c hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_congr_ae hae, StandardPairingDecay.int_gramLoc_setC hPS hB (cutSeq S p f χ n) v ε (hcpt v ε hε) j hj (w.1 v) hw 0 h h' hh hh']`. Establish `hs0 : PBL.sW S j 0 = 0` using `by simp [PBL.sW]`. Rewrite using `[hs0, waveG_zero_eq_self, ← PBL.rr_eq_form (p v) _ j hj (w.1 v) _ _ hH hH']`. Use `erw [PBL.gramLoc_setC hB]`. Establish `hsA` using `PBL.sizeAt_pos S hGo v (w.1 v) hadm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `PBL.kc_scal hB v j hj (w.1 v) h h'`. Establish `hrd` using `PBD.rd_pos' E`. Establish `hδ : 0 < D.deG (S.g : ℝ) (S6.rd E)` using `by unfold D.deG; positivity`. Establish `hdl : 0 < KB.dlB S (j + 1) 1` using `by unfold KB.dlB; exact div_pos (zpow_pos hrd _) hδ`. Establish `key : StandardPairingDecay.Kg S j h h' * |(PBL.lamS S j ^ 2)⁻¹| = KB.dlB S (j + 1) 1 * (√(PBL.nnS S h) * √(PBL.nnS S h') * (1 / (PBL.bS S h * PBL.bS S h' * PBL.ΓS S j)))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Unfold `PBL.Kc PBL.dW at hk`. Unfold `StandardPairingDecay.Kg`. Clear denominators, using `at hk ⊢` for the nonvanishing conditions. Take the linear combination `hk`. Use `show ((StandardPairingDecay.Kg S j h h' * |(PBL.lamS S j ^ 2)⁻¹| : ℝ) : ℂ) * _ = ((KB.dlB S (j + 1) 1 : ℝ) : ℂ) * _`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[key]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : ∀ c : ℂ, (PBL.setC S p (cutSeq S p f χ n)).gramLoc v ε (j + 1) (w.1 v) (h ++ [(1, c)]) (h' ++ [(1, c)]) = 0`. Introduce `c`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `erw [PBL.gramLoc_setC hB, PBL.rr_zero_of_not, mul_zero]`. Introduce and unpack `⟨h1, h2⟩`. Use `hloc ⟨hloc_app h c hsz1 ((PBD.isLocPt_toStd_iff _ _ hgpos _ 1 _).1 h1), hloc_app h' c hsz1' ((PBD.isLocPt_toStd_iff _ _ hgpos _ 1 _).1 h2)⟩` and prove the remaining obligations. Establish `hz0 : (PBL.setC S p (cutSeq S p f χ n)).gramLoc v ε j (w.1 v) h h' = 0` using `by erw [PBL.gramLoc_setC hB, PBL.rr_zero_of_not, mul_zero]`. Introduce and unpack `⟨h1, h2⟩`.
-
-Conclude with `hloc ⟨(PBD.isLocPt_toStd_iff _ _ hgpos _ 1 _).1 h1, (PBD.isLocPt_toStd_iff _ _ hgpos _ 1 _).1 h2⟩`. Use `⟨fun _ => 0, continuous_const, fun c _ => (hz c).symm, ⟨0, fun c => by simp⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hz0, integral_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intB_of (hPS : StandardPairingDecay.PStdC) (hD : DecayUnif) : IntB := by
   intro Cb
@@ -177,7 +175,7 @@ theorem intB_of (hPS : StandardPairingDecay.PStdC) (hD : DecayUnif) : IntB := by
 def IntBOfParts : Prop := StandardPairingDecay.PStdC → DecayUnif → IntB
 
 /- English proof (translation)
-The claim follows from `intB_of`.
+A detailed English derivation is pending.
 -/
 theorem intBOfParts : IntBOfParts := intB_of
 
@@ -188,7 +186,7 @@ end Formalism.FourierDecayAlt.P.PBASM
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `PBASM.intBOfParts`.
+A detailed English derivation is pending.
 -/
 theorem integral_bound_of_parts : PBASM.IntBOfParts := PBASM.intBOfParts
 

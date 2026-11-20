@@ -15,13 +15,11 @@ open scoped IntermediateField
 namespace GlobalTheory.WeberSplit
 
 /- English proof (translation)
-Use `haveI : NeZero ((n : ℕ) : K) := hζ.neZero'`. Use `haveI : NeZero ((n : ℕ) : k) := ⟨fun h => NeZero.ne ((n : ℕ) : K) (by rw [← map_natCast (algebraMap k K), h, map_zero])⟩`. Use `haveI : FiniteDimensional k K := Module.finite_of_finrank_eq_succ h2`. Establish `hint : IsIntegral k ζ` using `IsIntegral.of_finite k ζ`. Establish `hmin : cyclotomic n k = minpoly k ζ` using `hζ.minpoly_eq_cyclotomic_of_irreducible hirr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfr : Module.finrank k k⟮ζ⟯ = 2`. Rewrite using `[IntermediateField.adjoin.finrank hint, ← hmin, natDegree_cyclotomic, hn]`. Establish `htop : k⟮ζ⟯ = ⊤` using `IntermediateField.eq_of_le_of_finrank_eq le_top (by rw [hfr, IntermediateField.finrank_top', h2])`. Establish `h1 : Algebra.adjoin k {ζ} = ⊤`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic, htop, IntermediateField.top_toSubalgebra]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(IsCyclotomicExtension.iff_singleton n k K).2 ⟨⟨ζ, hζ⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ Algebra.adjoin k {ζ}` using `by rw [h1]; exact Algebra.mem_top`. Use `Algebra.adjoin_mono ?_ hx` and prove the remaining obligations. Introduce `y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`.
-
-Substitute `hy` using the available equality. Conclude with `hζ.pow_eq_one`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isCyclotomic_of_root {k K : Type} [Field k] [Field K] [Algebra k K] (h2 : Module.finrank k K = 2) {n : ℕ}
     [NeZero n] (hirr : Irreducible (cyclotomic n k))
@@ -54,9 +52,9 @@ variable (K : IntermediateField ℚ ℂ) [NumberField K] (h2 : Module.finrank �
 include hL in
 
 /- English proof (translation)
-Establish `hh : GlobalTheory.IsHomothetic m L (GlobalTheory.scalePeriods L m hm0)` using `GlobalTheory.isHomothetic_scalePeriods L m hm0`. Establish `h2' : (GlobalTheory.scalePeriods L m hm0).g₂ = L.g₂` using `by rw [GlobalTheory.IsHomothetic.g₂_eq hh]; exact e2`. Establish `h3' : (GlobalTheory.scalePeriods L m hm0).g₃ = L.g₃` using `by rw [GlobalTheory.IsHomothetic.g₃_eq hh]; exact e3`. Establish `hlat : (GlobalTheory.scalePeriods L m hm0).lattice = L.lattice` using `GlobalTheory.lattice_eq_of_g₂_eq_of_g₃_eq h2' h3'`. Establish `h1 : (1 : ℂ) ∈ L.lattice` using `(hL 1).2 ⟨1, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : m ∈ L.lattice`. Use `(hh 1).2 h1` as an intermediate fact. Rewrite `this` using `[hlat, mul_one]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `(hL m).1 hm`. Conclude with `⟨(a : K), ha⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_of_invariant (m : ℂ) (hm0 : m ≠ 0) (e2 : (m ^ 4)⁻¹ * L.g₂ = L.g₂) (e3 : (m ^ 6)⁻¹ * L.g₃ = L.g₃) :
     ∃ a : K, (a : ℂ) = m := by
@@ -73,11 +71,11 @@ theorem mem_of_invariant (m : ℂ) (hm0 : m ≠ 0) (e2 : (m ^ 4)⁻¹ * L.g₂ =
 
 include h2 hL in
 /- English proof (translation)
-Introduce `h0`. Establish `hm : IsPrimitiveRoot (Complex.exp (2 * Real.pi * Complex.I / (3 : ℕ))) 3` using `Complex.isPrimitiveRoot_exp 3 (by norm_num)`. Establish `hm0 : Complex.exp (2 * Real.pi * Complex.I / (3 : ℕ)) ≠ 0` using `Complex.exp_ne_zero _`. Establish `hm6 : Complex.exp (2 * Real.pi * Complex.I / (3 : ℕ)) ^ 6 = 1`. Rewrite using `[show (6 : ℕ) = 3 * 2 by norm_num, pow_mul, hm.pow_eq_one, one_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `mem_of_invariant K L hL _ hm0 (by rw [h0, mul_zero]) (by rw [hm6, inv_one, one_mul])`. Establish `haK : IsPrimitiveRoot a 3`. Rewrite `hm` using `[← ha]`. Conclude with `IsPrimitiveRoot.coe_submonoidClass_iff.mp hm`. Use `haveI : Fact (Nat.Prime 3) := ⟨Nat.prime_three⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `haveI : IsCyclotomicExtension {3} ℚ K := isCyclotomic_of_root h2 (cyclotomic.irreducible_rat (by norm_num)) (by rw [Nat.totient_prime Nat.prime_three] <;> norm_num) haK`. Establish `hdisc` using `IsCyclotomicExtension.Rat.discr_prime 3 K`. Evaluate the numerical expressions using `at hdisc`. Rewrite `hd` using `[hdisc]`. Evaluate the numerical expressions using `at hd`.
+Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem g₂_ne_zero (hd : discr K < -4) : L.g₂ ≠ 0 := by
   intro h0
@@ -102,11 +100,11 @@ theorem g₂_ne_zero (hd : discr K < -4) : L.g₂ ≠ 0 := by
 
 include h2 hL in
 /- English proof (translation)
-Introduce `h0`. Establish `hm : IsPrimitiveRoot (Complex.exp (2 * Real.pi * Complex.I / (4 : ℕ))) 4` using `Complex.isPrimitiveRoot_exp 4 (by norm_num)`. Establish `hm0 : Complex.exp (2 * Real.pi * Complex.I / (4 : ℕ)) ≠ 0` using `Complex.exp_ne_zero _`. Take `⟨a, ha⟩` from `mem_of_invariant K L hL _ hm0 (by rw [hm.pow_eq_one, inv_one, one_mul]) (by rw [h0, mul_zero])`. Establish `haK4 : IsPrimitiveRoot a 4`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hm` using `[← ha]`. Conclude with `IsPrimitiveRoot.coe_submonoidClass_iff.mp hm`. Establish `haK : IsPrimitiveRoot a (2 ^ 2)` using `by norm_num; exact haK4`. Apply the tactic sequence `haveI : IsCyclotomicExtension {2 ^ 2} ℚ K := isCyclotomic_of_root h2 (cyclotomic.irreducible_rat (by norm_num)) (by rw [Nat.totient_prime_pow Nat.prime_two (by norm_num)] <;> norm_num) haK`. Establish `hdisc` using `IsCyclotomicExtension.Rat.discr_prime_pow 2 2 K`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdisc` using `[Nat.totient_prime_pow Nat.prime_two (by norm_num)]`. Evaluate the numerical expressions using `at hdisc`. Rewrite `hd` using `[hdisc]`. Evaluate the numerical expressions using `at hd`.
+Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem g₃_ne_zero (hd : discr K < -4) : L.g₃ ≠ 0 := by
   intro h0
@@ -130,17 +128,17 @@ theorem g₃_ne_zero (hd : discr K < -4) : L.g₃ ≠ 0 := by
 
 include h2 hL in
 /- English proof (translation)
-Take `⟨a, τ, ha, hlat⟩` from `(GlobalTheory.weierstrass_uniformisation.2.2.1 L).1`. Establish `hj` using `GlobalTheory.g₂_cube_div_eq_modularJ ha hlat`. Establish `hΔ` using `GlobalTheory.g₂_cube_sub_g₃_sq_ne_zero L`. Establish `hstab : ∀ α : 𝓞 K, ∀ x ∈ Submodule.span ℤ {(τ : ℂ), 1}, (algebraMap K ℂ) (α : K) * x ∈ Submodule.span ℤ {(τ : ℂ), 1}`. Introduce `α x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx`, the goal using `[Submodule.mem_span_pair]`. Take `⟨c, d, rfl⟩` from `hx`. Establish `hax : a * (c • (τ : ℂ) + d • (1 : ℂ)) ∈ L.lattice` using `(hlat _).2 ⟨c, d, by simp [zsmul_eq_mul]⟩`. Take `⟨b, hb⟩` from `(hL _).1 hax`. Establish `hmem : (((α * b : 𝓞 K) : K) : ℂ) ∈ L.lattice` using `(hL _).2 ⟨α * b, rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c', d', h'⟩` from `(hlat _).1 hmem`. Use `⟨c', d', ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ ha` to reduce the goal to its premises. Establish `e1 : (((α * b : 𝓞 K) : K) : ℂ) = (algebraMap K ℂ) (α : K) * (((b : 𝓞 K) : K) : ℂ)`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e1` using `[hb]`. Simplify using `only [zsmul_eq_mul, mul_one] at h' e1 ⊢`. Rewrite using `[h', e1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hint` using `GlobalTheory.isIntegral_modularJ_of_ringOfIntegers (K := K) h2 (algebraMap K ℂ) hstab`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e : L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) = GlobalTheory.modularJ τ * algebraMap ℚ ℂ (1728 : ℚ)⁻¹`. Rewrite using `[← hj]`. Simplify using `only [map_inv₀, map_ofNat]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hint.tower_top (A := ℚ)).mul isIntegral_algebraMap).isAlgebraic`.
+A detailed English derivation is pending.
 -/
 theorem invariant_isAlgebraic : IsAlgebraic ℚ (L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)) := by
   obtain ⟨a, τ, ha, hlat⟩ := (GlobalTheory.weierstrass_uniformisation.2.2.1 L).1
@@ -173,19 +171,17 @@ theorem invariant_isAlgebraic : IsAlgebraic ℚ (L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 *
   exact ((hint.tower_top (A := ℚ)).mul isIntegral_algebraMap).isAlgebraic
 
 /- English proof (translation)
-Establish `back : ∀ I : Ideal B, (I.map (e : B →+* C)).map (e.symm : C →+* B) = I` using `fun I => by`. Rewrite using `[Ideal.map_map, RingEquiv.symm_comp, Ideal.map_id]`. Establish `fwd : ∀ I : Ideal C, (I.map (e.symm : C →+* B)).map (e : B →+* C) = I` using `fun I => by`. Rewrite using `[Ideal.map_map, RingEquiv.comp_symm, Ideal.map_id]`. Use `Set.ncard_congr (fun Q _ => (⟨Q.asIdeal.map (e : B →+* C), ?_, ?_⟩ : HeightOneSpectrum C)) ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.map_comap_of_equiv] haveI := Q.isPrime`. Conclude with `Ideal.comap_isPrime _ _`. Conclude with `(Ideal.map_eq_bot_iff_of_injective e.injective).not.mpr Q.ne_bot`. Introduce `Q hQ`. Simplify using `only [Set.mem_setOf_eq] at hQ ⊢`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← hQ]`. Use extensionality with `a`. Simplify using `only [Ideal.mem_comap]`. Rewrite using `[Ideal.map_comap_of_equiv]`. Simplify using `only [Ideal.mem_comap]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hij, RingEquiv.symm_apply_apply]`. Introduce `Q₁ Q₂ _ _ h`. Establish `h'` using `congrArg (fun Q : HeightOneSpectrum C => Q.asIdeal.map (e.symm : C →+* B)) h`. Simplify using `only [back] at h'`. Conclude with `HeightOneSpectrum.ext h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `Q hQ`. Simplify using `only [Set.mem_setOf_eq] at hQ`. Establish `hp : (Q.asIdeal.map (e.symm : C →+* B)).IsPrime`. Rewrite using `[Ideal.map_comap_of_equiv]`. Use `haveI := Q.isPrime`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `Ideal.comap_isPrime _ _`. Use `⟨⟨Q.asIdeal.map (e.symm : C →+* B), hp, (Ideal.map_eq_bot_iff_of_injective e.symm.injective).not.mpr Q.ne_bot⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[← hQ]`. Use extensionality with `a`.
-
-Simplify using `only [Ideal.mem_comap]`. Rewrite using `[Ideal.map_comap_of_equiv]`. Simplify using `only [Ideal.mem_comap, RingEquiv.symm_symm]`. Rewrite using `[hij]`. Conclude with `HeightOneSpectrum.ext (fwd Q.asIdeal)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma ncard_primes_over_eq_of_ringEquiv_comp {A B C : Type} [CommRing A] [CommRing B] [IsDedekindDomain B]
     [CommRing C] [IsDedekindDomain C] (e : B ≃+* C) (i : A →+* B) (j : A →+* C)
@@ -234,11 +230,9 @@ private lemma ncard_primes_over_eq_of_ringEquiv_comp {A B C : Type} [CommRing A]
 end Lattice
 
 /- English proof (translation)
-Set `φ : M →ₐ[K] N` to `IsScalarTower.toAlgHom K M N`. Set `e : M ≃ₐ[K] φ.fieldRange` to `φ.equivFieldRange`. Establish `h1` using `GlobalTheory.T.ncard_primes_eq_finrank_of_frobenius_fixes K N φ.fieldRange 𝔭 (fun σ hσ x hx => by`. Take `⟨y, rfl⟩` from `hx`. Conclude with `h σ hσ y)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ncard_primes_over_eq_of_ringEquiv_comp (NumberField.RingOfIntegers.mapRingEquiv e.toRingEquiv) (algebraMap (𝓞 K) (𝓞 M)) (algebraMap (𝓞 K) (𝓞 φ.fieldRange)) ?_ 𝔭.asIdeal, h1]`. Conclude with `e.toLinearEquiv.finrank_eq.symm`. Introduce `a`. Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `only [NumberField.RingOfIntegers.mapRingEquiv_apply]`.
-
-Conclude with `e.commutes (a : K)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ncard_eq_of_tower (K M N : Type) [Field K] [NumberField K] [Field M] [NumberField M] [Field N] [NumberField N]
     [Algebra K M] [Algebra M N] [Algebra K N] [IsScalarTower K M N] [IsGalois K N] (𝔭 : HeightOneSpectrum (𝓞 K))
@@ -259,9 +253,9 @@ theorem ncard_eq_of_tower (K M N : Type) [Field K] [NumberField K] [Field M] [Nu
     exact e.commutes (a : K)
 
 /- English proof (translation)
-Use `set f : 𝓞 N →+* ℂ := ι.comp (algebraMap (𝓞 N) N) with hf`. Establish `hinj : Function.Injective f` using `ι.injective.comp RingOfIntegers.coe_injective`. Establish `hbij : Function.Bijective f.rangeRestrict` using `⟨fun a b h => hinj (congrArg Subtype.val h), f.rangeRestrict_surjective⟩`. Establish `hI : P.map f.rangeRestrict ≠ ⊤`. Rewrite using `[Ne, Ideal.map_eq_top_of_bijective (f := f.rangeRestrict) (hf := hbij)]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨W, -, hW⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hI`. Use `⟨W, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : (f.range.subtype (f.rangeRestrict x)) ∈ W.nonunits` using `hW ⟨_, Ideal.mem_map_of_mem _ hx, rfl⟩`. Conclude with `(ValuationSubring.mem_nonunits_iff W).mp h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_valuationSubring {N : Type} [Field N] (ι : N →+* ℂ) (P : Ideal (𝓞 N)) (hP : P ≠ ⊤) :
     ∃ W : ValuationSubring ℂ, ∀ x ∈ P, W.valuation (ι x) < 1 := by
@@ -278,7 +272,7 @@ theorem exists_valuationSubring {N : Type} [Field N] (ι : N →+* ℂ) (P : Ide
   exact (ValuationSubring.mem_nonunits_iff W).mp h1
 
 /- English proof (translation)
-Establish `h1 : IsIntegral W.toLocalSubring.toSubring x` using `hx.tower_top`. Conclude with `(W.valuation_le_one_iff x).mpr (LocalSubring.mem_of_isMax_of_isIntegral W.isMax_toLocalSubring h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valuation_le_one_of_isIntegral (W : ValuationSubring ℂ) {x : ℂ} (hx : IsIntegral ℤ x) :
     W.valuation x ≤ 1 := by
@@ -287,11 +281,11 @@ theorem valuation_le_one_of_isIntegral (W : ValuationSubring ℂ) {x : ℂ} (hx 
     (LocalSubring.mem_of_isMax_of_isIntegral W.isMax_toLocalSubring h1)
 
 /- English proof (translation)
-Establish `hle : ∀ m : ℤ, W.valuation (m : ℂ) ≤ 1` using `fun m => (W.valuation_le_one_iff _).mpr (intCast_mem W m)`. Use `le_antisymm (hle d) (not_lt.mp fun hlt => ?_)` and prove the remaining obligations. Take `⟨u, w, huw⟩` from `((Nat.prime_iff_prime_int.mp hp).coprime_iff_not_dvd).mpr hd`. Establish `h : (u : ℂ) * (p : ℂ) + (w : ℂ) * (d : ℂ) = 1` using `by exact_mod_cast huw`. Establish `h2 : W.valuation ((u : ℂ) * (p : ℂ) + (w : ℂ) * (d : ℂ)) < 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Valuation.map_add_lt` to reduce the goal to its premises. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h2` using `[h, map_one]`. Conclude with `lt_irrefl _ h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_intCast_eq_one (W : ValuationSubring ℂ) {p : ℕ} (hp : p.Prime) (hW : W.valuation p < 1) {d : ℤ}
     (hd : ¬ (p : ℤ) ∣ d) : W.valuation d = 1 := by
@@ -314,17 +308,15 @@ theorem valuation_intCast_eq_one (W : ValuationSubring ℂ) {p : ℕ} (hp : p.Pr
   exact lt_irrefl _ h2
 
 /- English proof (translation)
-Establish `hd1 : W.valuation (d : ℂ) = 1` using `valuation_intCast_eq_one W hp hW hd`. Establish `hle : ∀ m : ℤ, W.valuation (m : ℂ) ≤ 1` using `fun m => (W.valuation_le_one_iff _).mpr (intCast_mem W m)`. Establish `hy : W.valuation (ι (σ (d • x) - (d • x) ^ p)) < 1` using `hσ ⟨d • x, hx⟩`. Simplify using `only [map_sub, map_pow, map_zsmul, zsmul_eq_mul, map_mul, map_intCast] at hy`. Establish `hX : W.valuation (ι x) ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0` using `valuation_le_one_of_isIntegral W (hx.map ι.toIntAlgHom)`. Establish `e : ι.toIntAlgHom (d • x) = (d : ℂ) * ι x`. Simplify using `[RingHom.toIntAlgHom, map_zsmul, zsmul_eq_mul]`. Rewrite `h0` using `[e, map_mul, hd1, one_mul]`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdvd : (p : ℤ) ∣ d ^ p - d` using `by haveI := Fact.mk hp`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[ZMod.pow_card, sub_self]`. Take `⟨k, hk⟩` from `hdvd`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk' : ((d : ℂ) ^ p - d) = (p : ℂ) * k` using `by exact_mod_cast hk`. Establish `hsum : (d : ℂ) * (ι (σ x) - ι x ^ p) = ((d : ℂ) * ι (σ x) - ((d : ℂ) * ι x) ^ p) + ((d : ℂ) ^ p - d) * ι x ^ p` using `by ring`. Establish `h2 : W.valuation ((d : ℂ) * (ι (σ x) - ι x ^ p)) < 1`. Rewrite using `[hsum]`. Apply `Valuation.map_add_lt _ hy` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk', map_mul, map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hle k`. Conclude with `pow_le_one' hX p`. Use `_ < 1 := by rwa [mul_one, mul_one]`.
-
-Rewrite `h2` using `[map_mul, hd1, one_mul]`. Then use the resulting hypothesis.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem frob_congr {K N : Type} [Field K] [Field N] [Algebra K N] (ι : N →+* ℂ) (σ : N ≃ₐ[K] N)
     (W : ValuationSubring ℂ) {p : ℕ} (hp : p.Prime) (hW : W.valuation p < 1)
@@ -363,9 +355,9 @@ theorem frob_congr {K N : Type} [Field K] [Field N] [Algebra K N] (ι : N →+* 
   rwa [map_mul, hd1, one_mul] at h2
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx0`. Establish `hd1 : W.valuation (d : ℂ) = 1` using `valuation_intCast_eq_one W hp hW hd`. Establish `h1` using `valuation_le_one_of_isIntegral W (hx.map ι.toIntAlgHom)`. Establish `e : ι.toIntAlgHom (d • x⁻¹) = (d : ℂ) * (ι x)⁻¹`. Simplify using `[RingHom.toIntAlgHom, map_zsmul, zsmul_eq_mul, map_inv₀]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[e, map_mul, hd1, one_mul, map_inv₀]`. Establish `hne : W.valuation (ι x) ≠ 0` using `(Valuation.ne_zero_iff _).mpr ((map_ne_zero ι).mpr hx0)`. Establish `h3 : W.valuation (ι x) * (W.valuation (ι x))⁻¹ ≤ W.valuation (ι x) * 1` using `by gcongr`. Rewrite `h3` using `[mul_inv_cancel₀ hne, mul_one]`. Conclude with `absurd h (not_lt.mpr h3)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_valuation_lt_one {N : Type} [Field N] (ι : N →+* ℂ)
     (W : ValuationSubring ℂ) {p : ℕ} (hp : p.Prime) (hW : W.valuation p < 1) {d : ℤ} (hd : ¬ (p : ℤ) ∣ d) {x : N}
@@ -384,15 +376,13 @@ theorem eq_zero_of_valuation_lt_one {N : Type} [Field N] (ι : N →+* ℂ)
   exact absurd h (not_lt.mpr h3)
 
 /- English proof (translation)
-Use `letI : Algebra K ℂ := ((algebraMap M ℂ).comp (algebraMap K M)).toAlgebra`. Use `haveI : IsScalarTower K M ℂ := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Take `⟨α, hα⟩` from `Field.exists_primitive_element K M`. Set `f` to `minpoly K α`. Set `N : IntermediateField K ℂ` to `IntermediateField.adjoin K (f.rootSet ℂ)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI hS : f.IsSplittingField K N := IntermediateField.adjoin_rootSet_isSplittingField (IsAlgClosed.splits _)`. Use `haveI : FiniteDimensional K N := Polynomial.IsSplittingField.finiteDimensional N f`. Use `haveI : Normal K N := Normal.of_isSplittingField f`. Use `haveI : NumberField N := NumberField.of_module_finite K N`. Use `haveI : IsGalois K N := ⟨⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `φ : M →ₐ[K] ℂ` to `IsScalarTower.toAlgHom K M ℂ`. Establish `hroot : φ α ∈ f.rootSet ℂ`. Rewrite using `[Polynomial.mem_rootSet]`. Use `⟨minpoly.ne_zero (Algebra.IsIntegral.isIntegral α), ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Supply the required witnesses or components.
 
-Establish `hle : (⊤ : IntermediateField K M).map φ ≤ N`. Rewrite using `[← hα, IntermediateField.adjoin_map, Set.image_singleton]`. Conclude with `IntermediateField.adjoin_le_iff.mpr (Set.singleton_subset_iff.mpr (IntermediateField.subset_adjoin K _ hroot))`. Establish `hmem : ∀ x : M, φ x ∈ N` using `fun x => hle ⟨x, trivial, rfl⟩`. Set `ψ : M →+* N` to `(φ : M →+* ℂ).codRestrict N hmem`.
-
-Use `letI : Algebra M N := ψ.toAlgebra`. Use `haveI : IsScalarTower K M N := IsScalarTower.of_algebraMap_eq (fun k => Subtype.ext rfl)`. Conclude with `⟨N, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, (N.val : N →+* ℂ), fun x => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isGalois (K M : Type) [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M] [Algebra M ℂ] :
     ∃ (N : Type) (_ : Field N) (_ : NumberField N) (_ : Algebra K N) (_ : Algebra M N),

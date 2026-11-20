@@ -19,7 +19,7 @@ lemma extZ_apply {n : Type*} (p : n → Prop) [DecidablePred p] (y : {i // p i} 
     extZ p y i = if h : p i then y ⟨i, h⟩ else 0 := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨i, h⟩`. Establish `h1` using `congrFun hy i`. Simplify `h1` using `[extZ_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma extZ_eq_zero {n : Type*} (p : n → Prop) [DecidablePred p] (y : {i // p i} → ℂ)
     (hy : extZ p y = 0) : y = 0 := by
@@ -28,7 +28,7 @@ lemma extZ_eq_zero {n : Type*} (p : n → Prop) [DecidablePred p] (y : {i // p i
   simpa [extZ_apply, h] using h1
 
 /- English proof (translation)
-Establish `h` using `hA.conjStarAlgAut_star_eigenvectorUnitary`. Rewrite `h` using `[Unitary.conjStarAlgAut_apply]`. Simplify `h` using `[Matrix.star_eq_conjTranspose, Function.comp_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma diag_eq {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ} (hA : A.IsHermitian) :
     (hA.eigenvectorUnitary : Matrix n n ℂ)ᴴ * A * (hA.eigenvectorUnitary : Matrix n n ℂ) =
@@ -38,9 +38,7 @@ lemma diag_eq {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ} (hA :
   simpa [Matrix.star_eq_conjTranspose, Function.comp_def] using h
 
 /- English proof (translation)
-Establish `hu : star (hA.eigenvectorUnitary : Matrix n n ℂ) * (hA.eigenvectorUnitary : Matrix n n ℂ) = 1` using `Matrix.mem_unitaryGroup_iff'.1 hA.eigenvectorUnitary.2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hu, Matrix.one_mulVec]`. Use `_ = star (hA.eigenvectorUnitary : Matrix n n ℂ) *ᵥ ((hA.eigenvectorUnitary : Matrix n n ℂ) *ᵥ w) := by`. Rewrite using `[Matrix.mulVec_mulVec]`.
-
-Use `_ = 0 := by rw [hw, Matrix.mulVec_zero]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma U_eq_zero {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ} (hA : A.IsHermitian)
     (w : n → ℂ) (hw : (hA.eigenvectorUnitary : Matrix n n ℂ) *ᵥ w = 0) : w = 0 := by
@@ -53,7 +51,7 @@ lemma U_eq_zero {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ} (hA
     _ = 0 := by rw [hw, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Rewrite using `[herm_mulVec_mulVec, diag_eq, herm, dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `[mulVec_diagonal, Complex.normSq_apply, Complex.mul_re, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma re_diag {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ} (hA : A.IsHermitian)
     (w : n → ℂ) :
@@ -65,7 +63,7 @@ lemma re_diag {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ} (hA :
   ring
 
 /- English proof (translation)
-Establish `hb : ∀ a b, gramM k r z z' γ (Sum.inl a) (Sum.inl b) = (herm (Hpk k r) z z • ggLastU r) a b` using `fun a b => ggBlockA k r z hz a b`. Simplify using `only [herm, dotProduct, mulVec, Fintype.sum_sum_type, hc, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, hb, Matrix.smul_apply, smul_eq_mul, Pi.star_apply]`. Rewrite using `[Finset.sum_eq_single (Fin.last r) (fun a _ ha => by simp [ggLastU, ha]) (by simp)]`. Rewrite using `[Finset.sum_eq_single (Fin.last r) (fun b _ hb => by simp [ggLastU, hb]) (by simp)]`. Simplify using `[ggLastU, Complex.normSq_apply, Complex.mul_re, Complex.mul_im]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -83,19 +81,17 @@ lemma blockA_re (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r
   ring
 
 /- English proof (translation)
-Introduce `k r z z' γ hs hp hdet`. Use `set hA := isHerm k r z z' γ with hhA`. Set `p : Fin (r + 1) ⊕ Fin (r + 1) → Prop` to `fun i => 0 < hA.eigenvalues i`. Set `ψ : ({i // p i} → ℂ) →ₗ[ℂ] (Fin (r + 1) → ℂ)` to `(LinearMap.funLeft ℂ ℂ (Sum.inr : Fin (r + 1) → Fin (r + 1) ⊕ Fin (r + 1))).comp ((Matrix.mulVecLin (hA.eigenvectorUnitary : Matrix _ _ ℂ)).comp (extZ p))`. Establish `hinj : Function.Injective ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Establish `hinr : ∀ b, ((hA.eigenvectorUnitary : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) ℂ) *ᵥ extZ p y) (Sum.inr b) = 0`. Introduce `b`. Use `congrFun hy b` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[ψ, LinearMap.funLeft_apply]`. Establish `h1` using `re_diag hA (extZ p y)`. Rewrite `h1` using `[blockA_re k r z z' γ hs.2.1.1 _ hinr]`. Establish `hT : (herm (Hpk k r) z z).re < 0`. Use `hs.2.1.2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Tz] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl : (herm (Hpk k r) z z).re * Complex.normSq (((hA.eigenvectorUnitary : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) ℂ) *ᵥ extZ p y) (Sum.inl (Fin.last r))) ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hT.le (Complex.normSq_nonneg _)`. Establish `hnn : ∀ i ∈ (Finset.univ : Finset (Fin (r + 1) ⊕ Fin (r + 1))), 0 ≤ hA.eigenvalues i * Complex.normSq (extZ p y i)`. Introduce `i _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[extZ_apply]`. Use `split_ifs with h`. Conclude with `mul_nonneg h.le (Complex.normSq_nonneg _)`. Simplify using the standard rewrite rules. Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 (le_antisymm (h1 ▸ hl) (Finset.sum_nonneg hnn))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `t`. Use `hz t.1 (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[extZ_apply, dif_pos t.2]`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `absurd h (ne_of_gt t.2)`.
-
-Simplify `h` using `[Complex.normSq_eq_zero]`. Use `LinearMap.finrank_le_finrank_of_injective hinj` as an intermediate fact. Simplify `this` using `[Module.finrank_fintype_fun_eq_card]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem positive_count : PosCount := by
   intro k r z z' γ hs hp hdet
@@ -139,15 +135,13 @@ theorem positive_count : PosCount := by
   simpa [Module.finrank_fintype_fun_eq_card] using this
 
 /- English proof (translation)
-Introduce `k r z z' γ hs hp hdet`. Use `set hA := isHerm k r z z' γ with hhA`. Set `q : Fin (r + 1) ⊕ Fin (r + 1) → Prop` to `fun i => ¬ 0 < hA.eigenvalues i`. Set `Φ : ({i // q i} → ℂ) →ₗ[ℂ] (Fin (2 * r + k + 1) → ℂ)` to `(Matrix.mulVecLin (Vc k r z z' γ)).comp ((Matrix.mulVecLin (hA.eigenvectorUnitary : Matrix _ _ ℂ)).comp (extZ q))`. Establish `hΦ : ∀ y, Φ y = Vc k r z z' γ *ᵥ ((hA.eigenvectorUnitary : Matrix _ _ ℂ) *ᵥ extZ q y)` using `fun y => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hre : ∀ y, (herm (Hpk k r) (Φ y) (Φ y)).re ≤ 0`. Introduce `y`. Rewrite using `[hΦ, herm_Vc, re_diag]`. Apply `Finset.sum_nonpos` to reduce the goal to its premises. Introduce `i _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[extZ_apply]`. Use `split_ifs with h`. Conclude with `mul_nonpos_of_nonpos_of_nonneg (not_lt.1 h) (Complex.normSq_nonneg _)`. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective Φ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Rewrite `hy` using `[hΦ]`. Conclude with `extZ_eq_zero q y (U_eq_zero hA _ (Vc_inj k r z z' γ hdet _ hy))`. Establish `h1` using `hN k r (LinearMap.range Φ) (by rintro x ⟨y, rfl⟩; exact hre y)`.
-
-Rewrite `h1` using `[LinearMap.finrank_range_of_inj hinj, Module.finrank_fintype_fun_eq_card]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonposCount_of (hN : NegBound) : NonposCount := by
   intro k r z z' γ hs hp hdet

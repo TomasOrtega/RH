@@ -14,19 +14,19 @@ noncomputable section
 namespace GlobalTheory.LinWCoords
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v t`. Establish `hcm` using `hTr.base.cm`. Establish `hP : IsUnit (G.V.J.map t).det` using `GlobalTheory.LinBarCoords.det_map_isUnit B G.V.J 1 _ _ one_ne_zero (fun w => by rw [one_smul]; exact hTr.geo.hV.sig w) v t`. Establish `hQ : IsUnit ((G.W.J.map t)ᵀ).det`. Rewrite using `[Matrix.det_transpose]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.LinBarCoords.det_map_isUnit B G.W.J Complex.I _ _ Complex.I_ne_zero hTr.geo.hW.sig v t`. Use `set P := G.V.J.map t with hPdef`. Use `set Q := (G.W.J.map t)ᵀ with hQdef`. Set `L` to `GlobalTheory.LinBarCoords.liftM σ hcm (m := Fin a) (n := Fin (a + a')) v t`. Set `uT : Matrix (Fin a) (Fin (a + a')) (Fv F v) →+ Matrix (Fin a) (Fin (a + a')) (AE F E)` to `AddMonoidHom.mk' (fun Y => L (Y, 0)) (fun Y Y' => by rw [← map_add, Prod.mk_add_mk, add_zero])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `uM : Matrix (Fin a) (Fin (a + a')) (Fv F v) →+ Matrix (Fin a) (Fin (a + a')) (AE F E)` to `AddMonoidHom.mk' (fun z => L (0, -(P⁻¹ * z * Q⁻¹))) (fun z z' => by`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, neg_add, ← map_add, Prod.mk_add_mk, add_zero])`. Establish `hco : ∀ u, GlobalTheory.LinWAt.coW G t u = -(P * u.map (piW (t.comp σ)) * Q)` using `fun u => by`. Simplify using `[GlobalTheory.LinWAt.coW, hPdef, hQdef]`. Establish `hTc : ∀ Y, (uT Y).map (piW (t.comp σ)) = 0` using `fun Y => GlobalTheory.LinBarCoords.liftM_snd σ hcm v t _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTt : ∀ Y, (uT Y).map (piW t) = Y` using `fun Y => GlobalTheory.LinBarCoords.liftM_fst σ hcm v t _`. Establish `hMc : ∀ z, (uM z).map (piW (t.comp σ)) = -(P⁻¹ * z * Q⁻¹)` using `fun z => GlobalTheory.LinBarCoords.liftM_snd σ hcm v t _`. Establish `hMt : ∀ z, (uM z).map (piW t) = 0` using `fun z => GlobalTheory.LinBarCoords.liftM_fst σ hcm v t _`. Establish `hTa : ∀ Y, At (evFin F v) (uT Y)` using `fun Y => GlobalTheory.LinBarCoords.liftM_at σ hcm v t _`. Establish `hMa : ∀ z, At (evFin F v) (uM z)` using `fun z => GlobalTheory.LinBarCoords.liftM_at σ hcm v t _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨uT, uM, fun Y => ⟨hTa Y, hTc Y, hTt Y⟩, fun z => ⟨hMa z, hMt z, ?_⟩, fun u hu => ?_, fun x u hx hu => ?_⟩` and prove the remaining obligations. Establish `e1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hP`. Establish `e2 : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul _ hQ`. Rewrite using `[hco, hMc, Matrix.mul_neg, Matrix.neg_mul, neg_neg]`. Simplify using `only [← Matrix.mul_assoc, e1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc, e2, Matrix.mul_one]`. Use `⟨u.map (piW t), GlobalTheory.LinWAt.coW G t u, ?_⟩` and prove the remaining obligations. Establish `hd : At (evFin F v) (u - (uT (u.map (piW t)) + uM (GlobalTheory.LinWAt.coW G t u)))`. Introduce `c hc`. Rewrite using `[smul_sub, smul_add, hu c hc, hTa _ c hc, hMa _ c hc, add_zero, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(sub_eq_zero.1 (GlobalTheory.LinBarCoords.eq_zero_of_at σ hcm v t hd ?_ ?_))` and prove the remaining obligations. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_add _ (map_add _), hTt, hMt, add_zero, sub_self]`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_add _ (map_add _), hTc, hMc, zero_add, hco, Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hQ, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hP, Matrix.one_mul, sub_sel …`. Rewrite using `[GlobalTheory.T.local_lattice_hermitian_skew hcm v t G.V.J G.W.J hTr.geo.hV.herm hTr.geo.hW.skew x u hx, hco, hco]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_split_coords : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

@@ -21,13 +21,13 @@ lemma Schi_eq_Sa {N : ℕ} (χ : DirichletCharacter ℂ N) :
     Schi χ = Sa (fun n => Λ n * (χ n).re) := rfl
 
 /- English proof (translation)
-Introduce `n` and use `by rw [one_mul, abs_of_nonneg vonMangoldt_nonneg]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma vM_bound : ∀ n : ℕ, |(Λ n : ℝ)| ≤ 1 * Λ n := fun n => by
   rw [one_mul, abs_of_nonneg vonMangoldt_nonneg]
 
 /- English proof (translation)
-Introduce `n` and use `by rw [one_mul, abs_mul, abs_of_nonneg vonMangoldt_nonneg] have h1 : |(χ n).re| ≤ 1 := (Complex.abs_re_le_norm _).trans (DirichletCharacter.norm_le_one χ _) exact mul_le_of_le_one_right vonMangoldt_nonneg h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma twist_bound {N : ℕ} (χ : DirichletCharacter ℂ N) :
     ∀ n : ℕ, |Λ n * (χ n).re| ≤ 1 * Λ n := fun n => by
@@ -36,7 +36,7 @@ lemma twist_bound {N : ℕ} (χ : DirichletCharacter ℂ N) :
   exact mul_le_of_le_one_right vonMangoldt_nonneg h1
 
 /- English proof (translation)
-Use `(h3 _ 1 vM_bound).1` as an intermediate fact. Unfold `Gz`. Rewrite using `[Sz_eq_Sa]`. Use `fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma measurable_Gz (h3 : MellinSgen) : Measurable Gz := by
   have := (h3 _ 1 vM_bound).1
@@ -45,7 +45,7 @@ lemma measurable_Gz (h3 : MellinSgen) : Measurable Gz := by
   fun_prop
 
 /- English proof (translation)
-Use `(h3 _ 1 (twist_bound χ)).1` as an intermediate fact. Unfold `Gchi`. Rewrite using `[Schi_eq_Sa]`. Use `fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma measurable_Gchi (h3 : MellinSgen) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) :
     Measurable (Gchi χ) := by
@@ -55,9 +55,9 @@ lemma measurable_Gchi (h3 : MellinSgen) {N : ℕ} [NeZero N] (χ : DirichletChar
   fun_prop
 
 /- English proof (translation)
-Establish `hS` using `h3 _ 1 vM_bound`. Establish `a1` using `rint_of_abs _ hS.1 σ (hS.2.1 σ hσ)`. Establish `a2` using `rint_of_abs (fun x => x * Real.log x) (by fun_prop) σ (h5.2.1 σ hσ)`. Establish `a3` using `h5.1 1 σ hσ`. Establish `hfun : (fun x : ℝ => Gz x * x ^ (-σ - 1)) = fun x => (Sa (fun n => Λ n) x * x ^ (-σ - 1) - (x * Real.log x) * x ^ (-σ - 1)) + (1 + Real.eulerMascheroniConstant) * (x ^ (1:ℝ) * x ^ (-σ - 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [Gz, Sz_eq_Sa, Real.rpow_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Conclude with `Integrable.add (Integrable.sub a1 a2) (Integrable.const_mul a3 _)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rint_Gz (h3 : MellinSgen) (h5 : MellinElem) {σ : ℝ} (hσ : 1 < σ) :
     IntegrableOn (fun x : ℝ => Gz x * x ^ (-σ - 1)) (Ioi 1) := by
@@ -75,9 +75,9 @@ lemma rint_Gz (h3 : MellinSgen) (h5 : MellinElem) {σ : ℝ} (hσ : 1 < σ) :
   exact Integrable.add (Integrable.sub a1 a2) (Integrable.const_mul a3 _)
 
 /- English proof (translation)
-Establish `hS` using `h3 _ 1 (twist_bound χ)`. Establish `a1` using `rint_of_abs _ hS.1 σ (hS.2.1 σ hσ)`. Establish `a3` using `h5.1 1 σ hσ`. Establish `hfun : (fun x : ℝ => Gchi χ x * x ^ (-σ - 1)) = fun x => Sa (fun n => Λ n * (χ n).re) x * x ^ (-σ - 1) + (deriv (DirichletCharacter.LFunction χ) 1 / DirichletCharacter.LFunction χ 1).re * (x ^ (1:ℝ) * x ^ (-σ - 1))`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Gchi, Schi_eq_Sa, Real.rpow_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Conclude with `Integrable.add a1 (Integrable.const_mul a3 _)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rint_Gchi (h3 : MellinSgen) (h5 : MellinElem) {N : ℕ} [NeZero N]
     (χ : DirichletCharacter ℂ N) {σ : ℝ} (hσ : 1 < σ) :
@@ -96,13 +96,13 @@ lemma rint_Gchi (h3 : MellinSgen) (h5 : MellinElem) {N : ℕ} [NeZero N]
   exact Integrable.add a1 (Integrable.const_mul a3 _)
 
 /- English proof (translation)
-Establish `hS` using `h3 _ 1 vM_bound`. Establish `i1 : IntegrableOn (fun x : ℝ => (Sa (fun n => Λ n) x : ℂ) * (x : ℂ) ^ (-s - 1)) (Ioi 1)` using `cint_of_abs _ hS.1 s (hS.2.1 _ hs)`. Establish `i2` using `cint_of_abs (fun x => x * Real.log x) (by fun_prop) s (h5.2.1 _ hs)`. Establish `i3 : IntegrableOn (fun x : ℝ => ((x ^ (1:ℝ) : ℝ) : ℂ) * (x : ℂ) ^ (-s - 1)) (Ioi 1)` using `cint_of_abs _ (by fun_prop) s (int_abs_rpow h5 (by linarith))`. Establish `hfun : (fun x : ℝ => (Gz x : ℂ) * (x : ℂ) ^ (-s - 1)) = fun x => ((Sa (fun n => Λ n) x : ℂ) * (x : ℂ) ^ (-s - 1) - ((x * Real.log x : ℝ) : ℂ) * (x : ℂ) ^ (-s - 1)) + ((1 + Real.eulerMascheroniConstant : ℝ) : ℂ) * (((x ^ (1:ℝ) : ℝ) : ℂ) * (x : ℂ) ^ (-s - 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [Gz, Sz_eq_Sa, Real.rpow_one]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `j12 : IntegrableOn (fun x : ℝ => (Sa (fun n => Λ n) x : ℂ) * (x : ℂ) ^ (-s - 1) - ((x * Real.log x : ℝ) : ℂ) * (x : ℂ) ^ (-s - 1)) (Ioi 1)` using `Integrable.sub i1 i2`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `j3` using `Integrable.const_mul i3 ((1 + Real.eulerMascheroniConstant : ℝ) : ℂ)`. Use `⟨by rw [hfun]; exact j12.add j3, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun, integral_add j12 j3, integral_sub i1 i2, integral_const_mul, hS.2.2 s hs, h5.2.2.2 s hs, h5.2.2.1 1 s (by simpa using hs)]`. Establish `hL : LSeries (fun n => ((Λ n : ℝ) : ℂ)) s = -deriv riemannZeta s / riemannZeta s` using `LSeries_vonMangoldt_eq_deriv_riemannZeta_div hs`. Rewrite using `[hL]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma mellin_Gz (h3 : MellinSgen) (h5 : MellinElem) {s : ℂ} (hs : 1 < s.re) :
     IntegrableOn (fun x : ℝ => (Gz x : ℂ) * (x : ℂ) ^ (-s - 1)) (Ioi 1) ∧

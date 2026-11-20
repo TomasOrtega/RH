@@ -6,7 +6,7 @@ import Development.WeilBound.CoreStatements.PlurisubharmonicCones.HolomorphicFam
 open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp GroundTheory.Heights₂.Heights.LowerBoundFree GroundTheory.Heights₂.Heights.Regular
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `LevelTowerAlt.holomorphic_family_smooth_hermitian` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FPlurisubharmonicCones%2FHolomorphicFamilySmoothHermitian.lean&line=62#L62)
 -/

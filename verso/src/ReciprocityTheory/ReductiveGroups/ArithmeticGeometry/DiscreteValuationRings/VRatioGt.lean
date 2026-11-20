@@ -15,7 +15,7 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR.TWM
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor IsLocalRing TWO SectionScalarValuation
 
 /- English proof (translation)
-The claim follows from `map_pow _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem val_powGen {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (n : ℕ) (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι) :
@@ -27,67 +27,63 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   {v : AddValuation F (WithTop ℚ)}
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Establish `hmk : m ^ k = cP D.toPre (TO hϖ hv) p.y`. Apply `liftO_unique hϖ hv` to reduce the goal to its premises. Rewrite using `[comp_cP, cPoint_y, ← hm]`. Conclude with `map_pow (preHom (ιS hϖ hv)) m k`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Ix, _, φV, εV, e', he', hfe', c₀, hc₀, hve'⟩` from `famMult_data D hϖ hQ k p.y α`. Take `⟨eψ, heψ, cψ, hcψ, hteψ⟩` from `genHasVal_powGen D.toPre.P.L _ _ _ _ _ (hQ p.y) k`. Take `⟨er, her, cr, hcr, hter⟩` from `genHasVal_powGen D.toPre.P.L _ _ _ _ _ (QForm.rigK_val (ϖ := ϖ) D) k`. Take `⟨tc, htc, hvtc⟩` from `exists_cubN D.toPre.cub (1 : TO hϖ hv ⟶ D.toPre.P.A) m (cP D.toPre _ α) k`. Set `h₀` to `(TO hϖ hv).hom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `u` to `LB.mulGen D.toPre.P.L _ _ _ _ (LB.mulGen D.toPre.P.L _ _ _ _ (LB.mulGen D.toPre.P.L _ _ _ _ (LB.mulGen D.toPre.P.L _ _ _ _ (LB.pullGen D.toPre.P.L _ _ e' h₀) (LB.invGen D.toPre.P.L _ _ (LB.pullGen D.toPre.P.L _ _ eψ h₀))) (LB.invGen D.toPre.P.L _ _ (LB.pullGen D.toPre.P.L _ _ er …`. Establish `hu : u.IsGen` using `mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ he' _) (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ heψ _))) (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ her _))) htc) (invGen_isGen _ _ _ _ (pow …`. Establish `hform1 : ∀ (U : Type) [CommGroup U] (h : ((TO hϖ hv).left ⟶ D.toPre.P.A.left) → U), ∏ i, h (Sum.elim (Sum.elim (Sum.elim (Sum.elim (fun i => h₀ ≫ φV i) (fun i => h₀ ≫ (fun _ : PUnit => (D.toPre.c p.y).left) i)) (fun i => h₀ ≫ (fun _ : PUnit => 𝟙 _ ≫ eSec D.toPre.P.A) i)) (![((1 : …` using `(fun U _ h => by`. Establish `c1 : ∀ χ, (1 : TO hϖ hv ⟶ D.toPre.P.A).left ≫ (SectionScalarValuation.cQ D.toPre D.toPre.P.A χ).left = (cP D.toPre (TO hϖ hv) χ).left` using `fun χ => by rw [← Over.comp_left, SectionScalarValuation.comp_cQ]; rfl`. Establish `c2 : (1 : TO hϖ hv ⟶ D.toPre.P.A).left ≫ (SectionScalarValuation.cQ D.toPre D.toPre.P.A α * SectionScalarValuation.cQ D.toPre D.toPre.P.A p.y).left = (cP D.toPre (TO hϖ hv) α * cP D.toPre (TO hϖ hv) p.y).left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, MonObj.comp_mul, SectionScalarValuation.comp_cQ, SectionScalarValuation.comp_cQ]`. Both sides reduce to the same expression. Establish `c3 : (1 : TO hϖ hv ⟶ D.toPre.P.A).left ≫ (1 : D.toPre.P.A ⟶ D.toPre.P.A).left = (1 : TO hϖ hv ⟶ D.toPre.P.A).left`. Rewrite using `[← Over.comp_left, MonObj.comp_one]`. Establish `c4 : ∀ i, (1 : TO hϖ hv ⟶ D.toPre.P.A).left ≫ D.toPre.P.A.hom ≫ φV i = h₀ ≫ φV i` using `fun i => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, Over.w]`. Establish `E1` using `hfe' U (fun ψ => h ((1 : TO hϖ hv ⟶ D.toPre.P.A).left ≫ ψ))`. Simplify using `only [c1, c2, c3, c4] at E1`. Establish `htu : (toUnit (TO hϖ hv)).left = h₀` using `(Category.comp_id _).symm.trans (Over.w (toUnit (TO hϖ hv)))`. Establish `c5 : h₀ ≫ (D.toPre.c p.y).left = (cP D.toPre (TO hϖ hv) p.y).left`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cP, Over.comp_left, htu]`. Establish `c6 : h₀ ≫ 𝟙 (𝟙_ (Over (Spec (CommRingCat.of V)))).left ≫ eSec D.toPre.P.A = (1 : TO hϖ hv ⟶ D.toPre.P.A).left`. Rewrite using `[Hom.one_def]`. Simplify using `[eSec, htu]`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, E1, c5, c6, Fin.prod_univ_succ, gtφO, DegPre.gtε, _root_.one_mul, hmk, zpow_neg, zpow_natCast, Matrix.cons_val_zero, Matrix.cons_val_succ, Matrix.cons_val_fin_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm m (cP D.toPre (TO hϖ hv) α), mul_comm (cP D.toPre (TO hϖ hv) p.y) (cP D.toPre (TO hϖ hv) α)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, ofMul_one]`. Use the proof step `module)`. Establish `hsurj : Function.Surjective (Scheme.Hom.appTop (𝟙 (TO hϖ hv).left)).hom` using `fun x => ⟨x, by simp⟩`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩ : ∃ a : Γ((TO hϖ hv).left, ⊤), ∀ (Z : Scheme.{0}) (r : Z ⟶ (TO hϖ hv).left) (z : Z) (J), Good D.toPre.P.L z J → (val u r z J).val = gs (r ≫ 𝟙 _) z ⊤ a` from `ReciprocityTheory.ChartRestriction.G.H1.exists_const D.toPre.P.L hL (𝟙 _) hsurj u hu (hform1)`. Take `⟨a', ha'⟩ : ∃ a : Γ((TO hϖ hv).left, ⊤), ∀ (Z : Scheme.{0}) (r : Z ⟶ (TO hϖ hv).left) (z : Z) (J), Good D.toPre.P.L z J → (val (LB.invGen D.toPre.P.L _ _ u) r z J).val = gs (r ≫ 𝟙 _) z ⊤ a` from `ReciprocityTheory.ChartRestriction.G.H1.exists_const D.toPre.P.L hL (𝟙 _) hsurj _ (invGen_isGen _ _ _ _ hu) (fun U _ h => by`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[inv_eq_one]`. Conclude with `hform1 U h)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `z₀ : Spec (CommRingCat.of F)` to `default`. Use `choose J₀ hJ₀ using fun χ : (TF (R := V) F).left ⟶ D.toPre.P.A.left => exists_chart hL (χ z₀)`. Establish `hG : Good D.toPre.P.L z₀ J₀` using `hJ₀`. Establish `h1` using `ht _ (𝟙 _) z₀ J₀ hG`. Establish `h2` using `chain_val (𝟙 (TF (R := V) F)) hG p α`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `val_famMult (𝟙 (TF (R := V) F)) hG k p.y α`. Establish `h4` using `hve' F _ (𝟙 _) z₀ J₀ hG`. Establish `h5` using `val_genHasVal (hφ := fun _ => QForm.ptK_eq D.toPre p.y) hteψ ((𝟙 _) ≫ jFK (R := V) F) z₀ hG`. Establish `h6` using `val_genHasVal (hφ := fun _ => by rw [Category.id_comp]; rfl) hter ((𝟙 _) ≫ jFK (R := V) F) z₀ hG`. Establish `h7` using `hvtc (TF (R := V) F) (ιS hϖ hv) z₀ J₀ hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h8` using `ha _ (ιS hϖ hv).left z₀ J₀ hG`. Establish `h8'` using `ha' _ (ιS hϖ hv).left z₀ J₀ hG`. Establish `hι : (ιS hϖ hv).left ≫ (TO hϖ hv).hom = DegPre.jFR (R` using `V) F := Over.w (ιS hϖ hv)`. Establish `hid : Over.Hom.left (𝟙 (TF (R` using `V) F)) = 𝟙 (Spec (CommRingCat.of F)) := Over.id_left _`. Rewrite `h2`, `h3` using `[hid]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Category.id_comp] at h1 h2 h3 h4 h5 h6 h8 h8'`. Establish `hu8 : val u (ιS hϖ hv).left z₀ J₀ = val (Z` using `(TF (R := V) F).left) e' (DegPre.jFR (R := V) F) z₀ J₀ * (val (Z := (TF (R := V) F).left) eψ (DegPre.jFR (R := V) F) z₀ J₀)⁻¹ * (val (Z := (TF (R := V) F).left) er (DegPre.jFR (R := V) F) z₀ J₀)⁻¹ * val tc (ιS hϖ hv).left z₀ J₀ * (val G₀ (ιS hϖ hv).left z₀ J₀ ^ k)⁻¹ := by`. Simplify using `only [u, h₀, val_mul hG, val_inv, val_pull hG, val_powGen, hι]`. Establish `h7' : val tc (ιS hϖ hv).left z₀ J₀ = cubN (th D.toPre z₀ J₀) k 1 p.g.b (cP D.toPre (TF (R` using `V) F) α) := by`. Rewrite using `[h7, MonObj.comp_one, hm, comp_cP]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hjF : (𝟙 (Spec (CommRingCat.of F)) ≫ jFK (R` using `V) F) = jFK (R := V) F := Category.id_comp _`. Establish `hjR : jFK (R` using `V) F ≫ jK V = DegPre.jFR (R := V) F := rfl`. Rewrite `h2`, `h3` using `[hjF]`. Rewrite `h5`, `h6` using `[hjR]`. Establish `hu8' : (@id ((Spec (CommRingCat.of F)).presheaf.stalk z₀)ˣ (val u (ιS hϖ hv).left z₀ J₀)) * val eψ (DegPre.jFR (R` using `V) F) z₀ J₀ * val er (DegPre.jFR (R := V) F) z₀ J₀ * (@id ((Spec (CommRingCat.of F)).presheaf.stalk z₀)ˣ (val G₀ (ιS hϖ hv).left z₀ J₀)) ^ k = val e' (DegPre.jFR (R := V) F) z₀ J₀ * (@id ((Spec (CommRingCat.of F)).presheaf.stalk z₀)ˣ (val tc (ιS hϖ hv).left z₀ J₀)) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu8]`. Simplify using `only [id]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hU` using `congrArg Units.val hu8'`. Establish `hchain` using `congrArg Units.val (show val (DegPre.famMult D.toPre F k p.y α) (𝟙 (Spec (CommRingCat.of F))) z₀ J₀ * (@id ((Spec (CommRingCat.of F)).presheaf.stalk z₀)ˣ (val tc (ιS hϖ hv).left z₀ J₀)) = val (p.g.s α) (𝟙 (Spec (CommRingCat.of F))) z₀ J₀ ^ k * (val (GeneratorPullback.powGen D.toP …`. Simplify using `only [id]`. Rewrite using `[h3, h7', ← h2]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [ofMul_mul]`. Use the proof step `abel)`. Move the coercions through the operations in `[Units.val_mul, Units.val_pow_eq_pow_val] at hU hchain`. Simplify using `only [id] at hU hchain`. Rewrite `hchain` using `[h4, h5, h6]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hU` using `[h8]`. Establish `h1' : ((val (p.g.s α) (𝟙 (Spec (CommRingCat.of F))) z₀ J₀ : ((Spec (CommRingCat.of F)).presheaf.stalk z₀)ˣ) : (Spec (CommRingCat.of F)).presheaf.stalk z₀) = gs (𝟙 (Spec (CommRingCat.of F))) z₀ ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom t) * (@id ((Spec (CommRingCat.of F)).pr …` using `V) F).left.presheaf.stalk z₀)ˣ) : (TF (R := V) F).left.presheaf.stalk z₀)) := h1`. Rewrite `hchain` using `[h1']`. Simplify using `only [id] at hchain`. Establish `hw : IsUnit ((val eψ (DegPre.jFR (R` using `V) F) z₀ J₀ : (Spec (CommRingCat.of F)).presheaf.stalk z₀) * (val er (DegPre.jFR (R := V) F) z₀ J₀ : (Spec (CommRingCat.of F)).presheaf.stalk z₀) * (@id ((Spec (CommRingCat.of F)).presheaf.stalk z₀) ((val G₀ (ιS hϖ hv).left z₀ J₀ : ((TF (R := V) F).left.presheaf.stalk z₀)ˣ) : (TF …`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression.
 
-Establish `hring : gs (𝟙 (Spec (CommRingCat.of F))) z₀ ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom t) ^ k * gs (jFK (R` using `V) F) z₀ ⊤ (scal (𝟙 (Spec (CommRingCat.of (FractionRing V)))) cψ) * gs (jFK (R := V) F) z₀ ⊤ (scal (𝟙 (Spec (CommRingCat.of (FractionRing V)))) cr) = gs (jFK (R := V) F) z₀ ⊤ (scal (𝟙 (TK V).left) c₀) * (@id ((Spec (CommRingCat.of F)).presheaf.stalk z₀) (gs ((ιS hϖ hv).left ≫ 𝟙 ( …`. Apply `(hw.mul_left_inj).mp` to reduce the goal to its premises. Simplify using `only [id]`. Take the linear combination `(-1 : (Spec (CommRingCat.of F)).presheaf.stalk z₀) * hchain - gs (jFK (R := V) F) z₀ ⊤ (scal (𝟙 (TK V).left) c₀) * hU`. Set `ev : F →+* (Spec (CommRingCat.of F)).presheaf.stalk z₀` to `((Spec (CommRingCat.of F)).presheaf.germ ⊤ z₀ trivial).hom.comp (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hev : Function.Injective ev` using `ev.injective`. Establish `gs_id : ∀ x : F, gs (𝟙 (Spec (CommRingCat.of F))) z₀ ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom x) = ev x`. Introduce `x`. Rewrite using `[gs_eq (𝟙 (Spec (CommRingCat.of F))) z₀ ⊤ trivial]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `gs_K : ∀ c : FractionRing V, gs (jFK (R` using `V) F) z₀ ⊤ (scal (𝟙 (Spec (CommRingCat.of (FractionRing V)))) c) = ev (algebraMap (FractionRing V) F c) := by`. Introduce `c`. Rewrite using `[← gs_id, ← Category.id_comp (jFK (R := V) F), ← gs_pull _ _ z₀ ⊤ trivial]`. Use `congr 1`. Use `show (jFK (R := V) F).appTop.hom _ = _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[appTop_specMap]`. Simplify using `[scal]`. Establish `gs_A : ∀ r : Γ((TO hϖ hv).left, ⊤), gs ((ιS hϖ hv).left ≫ 𝟙 (TO hϖ hv).left) z₀ ⊤ r = ev (ιr (v` using `v) r) := by`. Introduce `r`. Rewrite using `[Category.comp_id, ← gs_id, ← Category.id_comp (ιS hϖ hv).left, ← gs_pull _ _ z₀ ⊤ trivial]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Use `show (Spec.map (CommRingCat.ofHom (algebraMap (Ov v) F))).appTop.hom r = _`. Rewrite using `[appTop_specMap]`. Both sides reduce to the same expression. Establish `hK0 : gs (jFK (R` using `V) F) z₀ ⊤ (scal (𝟙 (TK V).left) c₀) = ev (algebraMap (FractionRing V) F c₀) := gs_K c₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [id] at hring`. Rewrite `hring` using `[gs_id, gs_K, gs_K, hK0, gs_A, ← map_pow, ← map_mul, ← map_mul, ← map_mul]`. Establish `hF` using `hev hring`. Establish `hinv` using `h8'`. Rewrite `hinv` using `[val_inv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAA : ev (ιr (v` using `v) a) * ev (ιr (v := v) a') = 1 := by`. Rewrite using `[← gs_A, ← gs_A]`. Rewrite using `[← h8, ← hinv]`. Conclude with `Units.mul_inv _`. Rewrite `hAA` using `[← map_mul, ← map_one ev]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hff` using `hev hAA`. Establish `hvf : v (ιr (v` using `v) a) = 0 := by`. Establish `h0 : v (ιr (v` using `v) a) + v (ιr (v := v) a') = 0 := by`. Rewrite using `[← AddValuation.map_mul, hff, AddValuation.map_one]`. Conclude with `le_antisymm (le_zero_of_add_eq_zero_nonneg h0 (v_ιr a')) (v_ιr a)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvψ` using `hv cψ _ hcψ`. Establish `hvr` using `hv cr _ hcr`. Establish `hv0` using `hv c₀ _ hc₀`. Establish `hvF` using `congrArg v hF`. Rewrite `hvF` using `[AddValuation.map_mul, AddValuation.map_mul, AddValuation.map_mul, AddValuation.map_pow, hvψ, hvr, hv0, hvf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ht0 : v t ≠ ⊤`. Introduce `htop`. Establish `htz : t = 0` using `(AddValuation.top_iff v).mp htop`. Establish `hc0 : algebraMap (FractionRing V) F c₀ ≠ 0`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h00` using `hv0`. Rewrite `h00` using `[h0, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe h00`. Establish `hf0 : ιr (v` using `v) a ≠ 0 := by`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `hff` using `[h0, zero_mul]`. Conclude with `zero_ne_one hff`. Rewrite `hF` using `[htz, zero_pow (by omega), zero_mul, zero_mul]`. Conclude with `mul_ne_zero hc0 hf0 hF.symm`. Take `⟨q, hq⟩` from `WithTop.ne_top_iff_exists.mp ht0`.
-
-Use `⟨q, hq.symm, ?_⟩` and prove the remaining obligations. Rewrite `hvF` using `[← hq]`. Establish `hQ' : (((k • q + ((k * Q p.y : ℤ) : ℚ) + ((k * 0 : ℤ) : ℚ)) : ℚ) : WithTop ℚ) = ((((k * Q p.y + QForm.bOf D.toPre Q p.y α : ℤ) : ℚ)) : WithTop ℚ)`. Rewrite using `[WithTop.coe_add, WithTop.coe_add, WithTop.coe_nsmul, hvF, add_zero]`. Establish `h` using `WithTop.coe_injective hQ'`.
-
-Rewrite `h` using `[nsmul_eq_mul]`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem v_ratio_gt (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.toPre ϖ Q)
     {k : ℕ} (hk : 1 ≤ k) (p : QkPt D.toPre F k) (m : TO hϖ hv ⟶ D.toPre.P.A) (hm : ιS hϖ hv ≫ m = p.g.b)

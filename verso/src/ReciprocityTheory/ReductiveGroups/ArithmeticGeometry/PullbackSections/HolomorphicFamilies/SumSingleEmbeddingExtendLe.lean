@@ -8,16 +8,16 @@ namespace ReciprocityTheory.ChartRestriction.G.PullbackSections.PfTies1
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Introduce `D T h j hj w hlast x P hP f hf`. Conclude with `h.thCusp j hj _ _ (dom_wtA w) hlast f ⟨x, P, hP, hf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cuspTie : CuspTieSt := by
   intro D T h j hj w hlast x P hP f hf
   exact h.thCusp j hj _ _ (dom_wtA w) hlast f ⟨x, P, hP, hf⟩
 
 /- English proof (translation)
-Unfold `ext0`. Establish `hF : ∀ n : ℕ, (∑ i : Fin n, (if h : (i : ℕ) < p then g ⟨i, h⟩ else 0)) = ∑ k ∈ Finset.range n, (if h : k < p then g ⟨k, h⟩ else 0)` using `fun n => Fin.sum_univ_eq_sum_range (fun k => if h : k < p then g ⟨k, h⟩ else 0) n`. Establish `hg : (∑ i : Fin p, g i) = ∑ i : Fin p, (if h : (i : ℕ) < p then g ⟨i, h⟩ else 0)` using `Finset.sum_congr rfl (fun i _ => by simp)`. Rewrite using `[hg, hF m, hF p]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `symm`. Apply `Finset.sum_subset (Finset.range_mono (le_max_right m p))` to reduce the goal to its premises. Introduce `k _ hk`. Rewrite `hk` using `[Finset.mem_range]`. Rewrite using `[dif_neg hk]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma sum_extendByZero_le_sum {p : ℕ} (g : Fin p → ℕ) (m : ℕ) : ∑ i : Fin m, ext0 g i ≤ ∑ i : Fin p, g i := by
   unfold ext0
@@ -39,9 +39,7 @@ lemma sum_extendByZero_le_sum {p : ℕ} (g : Fin p → ℕ) (m : ℕ) : ∑ i : 
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single e]`. Simplify using `only [eq_self_iff_true, if_true]`. Conclude with `sum_extendByZero_le_sum g (mult e)`. Introduce `τ _ hτ`. Conclude with `Finset.sum_eq_zero (fun i _ => if_neg hτ)`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ e) h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma sum_single_embedding_extend_le {E : Type} [Field E] [NumberField E] (e : E →+* ℂ) (mult : (E →+* ℂ) → ℕ) {p : ℕ}
     (g : Fin p → ℕ) :
@@ -56,9 +54,9 @@ lemma sum_single_embedding_extend_le {E : Type} [Field E] [NumberField E] (e : E
 
 open Classical in
 /- English proof (translation)
-Establish `hswap : ∀ F : (τ : D.host.E →+* ℂ) → Fin (Dw.mult τ) → D.what₂.Tau → ℕ, ∑ τ, ∑ i : Fin (Dw.mult τ), ∑ t, F τ i t = ∑ t, ∑ τ, ∑ i : Fin (Dw.mult τ), F τ i t`. Introduce `F`. Combine the equalities or inequalities in the displayed calculation. Unfold `Formalism.L2.Pj.DF wtA`. Rewrite using `[hswap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `t _`. Simplify using `only [Finset.sum_add_distrib]`. Conclude with `add_le_add (by convert sum_single_embedding_extend_le (DV.tauEmb D t) Dw.mult (w.aP t)) (by convert sum_single_embedding_extend_le (conjEmb (DV.tauEmb D t)) Dw.mult (w.aM t))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma DF_wtA_le {D : D7} {j : ℕ} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (Dw : Datum H)
     (w : WeightFamilies.Wt D j) :
@@ -78,11 +76,11 @@ lemma DF_wtA_le {D : D7} {j : ℕ} {H : ReciprocityTheory.ChartRestriction.G.Geo
     (by convert sum_single_embedding_extend_le (conjEmb (DV.tauEmb D t)) Dw.mult (w.aM t))
 
 /- English proof (translation)
-Introduce `D T h j hj w P hP`. Establish `hrow` using `hP.1.2.2`. Establish `h1 : P.totalDegree ≤ DF (T.Q.Dw j) (wtA w)`. Use `Finset.sup_le (fun m hm => ?_)` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (by simp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_sigma]`. Use `le_of_eq (Finset.sum_congr rfl (fun σ _ => ?_))` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Conclude with `Finset.sum_congr rfl (fun i _ => hrow m hm σ i)`. Establish `h2` using `DF_wtA_le (T.Q.Dw j) w`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (((∑ t, ((∑ i, w.aP t i) + ∑ i, w.aM t i) : ℕ)) : ℝ) = absA w`. Simplify using `[absA]`. Rewrite using `[← h3]`. Conclude with `h1.trans h2` after adjusting the coercions.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg : DegSt := by
   intro D T h j hj w P hP
@@ -101,9 +99,9 @@ theorem deg : DegSt := by
   exact_mod_cast h1.trans h2
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_le_f`. Conclude with `le_trans (by omega : 1 ≤ D.R.m) h2`. Establish `h3` using `D.R.m_add_three_le_k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem dimPos_fr (D : D7) : 1 ≤ D.R.f ∧ 1 ≤ D.R.r := by
   refine ⟨?_, ?_⟩

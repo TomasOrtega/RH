@@ -7,19 +7,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBoun
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Chr
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ O _ _ _ _ _ N e n ψ hN he hn hψ hpow`. Establish `hPQ` using `UpperTheory.V.Chr.placesQ Ω`. Establish `key : ∀ c : ℕ∞, (∀ (p : ℕ) (A : ValuationSubring Ω), p.Prime → p ≠ l → A.valuation (p : Ω) < 1 → ∀ (U' U : Subgroup (G ℚ Ω)) (h : U' ≤ U), U' = Ine A → U = Dec A → Module.length O ↥(resU (rho l e ψ) h).ker ≤ c) → V l e ψ ≤ V' l N e ψ + (N.primeFactors.card : ℕ∞) * c`. Introduce `c hc`. Establish `hpr : ∀ i : {p // p ∈ N.primeFactors.erase l}, i.1.Prime` using `fun i => Nat.prime_of_mem_primeFactors (Finset.mem_of_mem_erase i.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose Af hAf using fun i : {p // p ∈ N.primeFactors.erase l} => hPQ.1 i.1 (hpr i)`. Establish `hsel` using `UpperTheory.V.Chr.selFam O (G ℚ Ω) (QO l O) (rho l e ψ) ⊤ (shaFam ℚ Ω l) (shaFam ℚ Ω (l * N)) {p // p ∈ N.primeFactors.erase l} (fun i => Ine (Af i)) (fun i => Dec (Af i)) (fun i => Ine_le_Dec (Af i)) (fun i => Or.inr ⟨Af i, rfl⟩) (by`. Introduce and unpack `D' (⟨A, hA, rfl⟩ | ⟨A, rfl⟩)`. Take `⟨p, hp, hAp⟩` from `(hPQ.2.1 A (l * N) (Nat.mul_ne_zero (Fact.out : l.Prime).ne_zero hN)).1 hA`. Distinguish the cases in `hpl : p = l`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hAp` using `[hpl]`. Conclude with `Or.inl (Or.inl ⟨A, hAp, rfl⟩)`. Use `right`. Establish `hpP : p.Prime` using `Nat.prime_of_mem_primeFactors hp`. Establish `hpN : p ∈ N.primeFactors.erase l`.
+Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `Finset.mem_erase.2 ⟨hpl, Nat.mem_primeFactors.2 ⟨hpP, ?_, hN⟩⟩` and prove the remaining obligations. Break down `(Nat.Prime.dvd_mul hpP).1 (Nat.dvd_of_mem_primeFactors hp) with h | h` into its components or cases. Conclude with `absurd ((Nat.prime_dvd_prime_iff_eq hpP (Fact.out : l.Prime)).1 h) hpl`. Conclude with `h`. Take `⟨u, hu, -⟩` from `hPQ.2.2 p A (Af ⟨p, hpN⟩) hpP hAp (hAf _)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Prove the first alternative. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨⟨p, hpN⟩, u, Subgroup.mem_top u, fun x hx => hu x (Subgroup.mem_inf.1 hx).2⟩`. Conclude with `Or.inl (Or.inr ⟨A, rfl⟩))`. Express the relevant statement in the definitionally equal form `Module.length O ↥(LocSel (rho l e ψ) ⊤ (shaFam ℚ Ω l)) ≤ Module.length O ↥(LocSel (rho l e ψ) ⊤ (shaFam ℚ Ω (l * N))) + _`. Use `le_trans hsel (add_le_add le_rfl ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `_ ≤ (N.primeFactors.card : ℕ∞) * c := by gcongr`. Rewrite using `[Fintype.card_coe]`. Conclude with `Finset.card_erase_le`. Use `⟨le_trans (key _ fun p A hp hpl hA U' U h h1 h2 => (UpperTheory.V.Chr.locUnr Ω l O e n ψ he hn hψ hpow p A hp hpl hA U' U h h1 h2).1) (le_of_eq (by rw [Nat.cast_mul, mul_assoc])), fun hnd => ?_⟩` and prove the remaining obligations.
-
-Use `le_antisymm ?_ (V'_le_V l N e ψ)` and prove the remaining obligations. Establish `h0` using `key 0 fun p A hp hpl hA U' U h h1 h2 => by`. Establish `h3` using `(UpperTheory.V.Chr.locUnr Ω l O e n ψ he hn hψ hpow p A hp hpl hA U' U h h1 h2).1`. Rewrite `h3` using `[Nat.factorization_eq_zero_of_not_dvd hnd, Nat.cast_zero, zero_mul]`. Then use the resulting hypothesis. Simplify using `using h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Chr.vLe :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (N e n : ℕ) (ψ : G ℚ Ω →* Oˣ), N ≠ 0 → e ≠ 0 → n ≠ 0 → IsOpen (ψ.ker : Set (G ℚ Ω)) → ψ ^ n = 1 →

@@ -17,7 +17,7 @@ def pairBd (K : Type) [Field K] [NumberField K] (k g j T x x' : ℕ) : ℝ :=
 
 open NumberField in
 /- English proof (translation)
-Unfold `_root_.Formalism.HermitianLatticesTheory.vInv`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 private lemma vInv_nonneg' (K : Type) [Field K] [NumberField K] :
     0 ≤ _root_.Formalism.HermitianLatticesTheory.vInv K := by
@@ -27,9 +27,9 @@ private lemma vInv_nonneg' (K : Type) [Field K] [NumberField K] :
 open NumberField in
 
 /- English proof (translation)
-Establish `hv` using `vInv_nonneg' K`. Unfold `_root_.GlobalTheory.DegAsm.pairBd`. Simplify using `only`. Establish `hMb : 0 ≤ (20 * ((_root_.Formalism.HermitianLatticesTheory.fDeg K : ℕ) : ℝ) * (2 * _root_.Formalism.HermitianLatticesTheory.vInv K) ^ 2) ^ (2 * ((_root_.Formalism.HermitianLatticesTheory.fDeg K : ℕ) : ℝ) * (6 + _root_.GlobalTheory.DegCnt.cf K))` using `Real.rpow_nonneg (by positivity) _`. Establish `hY : 0 ≤ (x : ℝ) * x' * ((T : ℝ) ^ (2 * _root_.Formalism.HermitianLatticesTheory.fDeg K)) ^ 2` using `by positivity`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxx : 0 ≤ (x : ℝ) * x'` using `by positivity`. Use `mul_nonneg (mul_nonneg (Real.rpow_nonneg hxx _) (Real.rpow_nonneg hY _)) ?_` and prove the remaining obligations. Use `add_nonneg (add_nonneg zero_le_one (mul_nonneg (mul_nonneg hMb (by positivity)) ?_)) (by positivity)` and prove the remaining obligations. Conclude with `Finset.sum_nonneg fun s _ => by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.DegAsm.pairBd_nonneg (K : Type) [Field K] [NumberField K]
     (k g j T x x' : ℕ) : 0 ≤ _root_.GlobalTheory.DegAsm.pairBd K k g j T x x' := by

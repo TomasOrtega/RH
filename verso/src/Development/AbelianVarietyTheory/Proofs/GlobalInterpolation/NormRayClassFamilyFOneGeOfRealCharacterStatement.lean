@@ -6,7 +6,7 @@ open Complex ArithmeticFunction MeasureTheory Filter Topology NumberField Global
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Hk.RealChar.norm_F_one_ge` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FNormRayClassFamilyFOneGeOfRealCharacter.lean&line=343#L343)
 -/

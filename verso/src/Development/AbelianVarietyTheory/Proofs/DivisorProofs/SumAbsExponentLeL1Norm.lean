@@ -16,13 +16,13 @@ namespace GlobalTheory.L1WeightExponents
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[conjEmb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjEmb_conjEmb (τ : E →+* ℂ) : conjEmb (conjEmb τ) = τ := by
   ext x; simp [conjEmb]
 
 /- English proof (translation)
-Introduce `a b h`. Rewrite using `[← conjEmb_conjEmb a, ← conjEmb_conjEmb b, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjEmb_injective : Function.Injective (conjEmb : (E →+* ℂ) → (E →+* ℂ)) := by
   intro a b h
@@ -38,7 +38,7 @@ noncomputable def idx (Dw : Datum H) (s : Σ τ : E →+* ℂ, Fin (Dw.mult τ))
   else none
 
 /- English proof (translation)
-The claim follows from `|(exOf Dw u 0 (some s) : ℝ)| = (idx Dw s).elim 0 (fun t => |(u t.1 t.2 : ℝ)|) := by obtain ⟨τ, i⟩ := s simp only [exOf, exZ, wtOf, idx] split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem abs_exOf (Dw : Datum H) (u : GlobalTheory.AllWt.Weight Dw) (s : Σ τ : E →+* ℂ, Fin (Dw.mult τ)) :
     |(exOf Dw u 0 (some s) : ℝ)| = (idx Dw s).elim 0 (fun t => |(u t.1 t.2 : ℝ)|) := by
@@ -47,11 +47,11 @@ theorem abs_exOf (Dw : Datum H) (u : GlobalTheory.AllWt.Weight Dw) (s : Σ τ : 
   split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨τ, i⟩` from `s`. Take `⟨τ', i'⟩` from `s'`. Simplify using `only [idx] at hs hs'`. Apply the tactic sequence `split_ifs at hs hs' <;> (rw [← hs] at hs'; simp only [Option.some.injEq, Prod.mk.injEq, Subtype.mk.injEq, Fin.mk.injEq] at hs'; obtain ⟨h1, h2⟩ := hs')`. Substitute `h1` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Conclude with `Sigma.ext rfl (heq_of_eq (Fin.ext h2.symm))`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `h3` using `conjEmb_injective h1`. Substitute `h3` using the available equality.
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h4 : (i : ℕ) = i'` using `by omega`. Conclude with `Sigma.ext rfl (heq_of_eq (Fin.ext h4))`.
+A detailed English derivation is pending.
 -/
 theorem idx_inj (Dw : Datum H) {s s' : Σ τ : E →+* ℂ, Fin (Dw.mult τ)} {t : Psi H × Fin (Dw.p + Dw.q)}
     (hs : idx Dw s = some t) (hs' : idx Dw s' = some t) : s = s' := by
@@ -68,13 +68,11 @@ theorem idx_inj (Dw : Datum H) {s s' : Σ τ : E →+* ℂ, Fin (Dw.mult τ)} {t
     exact Sigma.ext rfl (heq_of_eq (Fin.ext h4))
 
 /- English proof (translation)
-Use `set G : Option (Psi H × Fin (Dw.p + Dw.q)) → ℝ := fun o => o.elim 0 (fun t => |(u t.1 t.2 : ℝ)|) with hG`. Establish `hG0 : ∀ o, 0 ≤ G o`. Apply the tactic sequence `intro o; cases o <;> simp [hG]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[abs_exOf]`. Use `_ = ∑ s ∈ Finset.univ.filter (fun s => (idx Dw s).isSome), G (idx Dw s) := by`. Use `(Finset.sum_filter_of_ne fun s _ hs => ?_).symm` and prove the remaining obligations. Consider the cases of `h : idx Dw s with`. Consider the case `none => simp [h, hG] at hs`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `some t => simp`. Use `_ = ∑ o ∈ (Finset.univ.filter (fun s => (idx Dw s).isSome)).image (idx Dw), G o := by`. Use `(Finset.sum_image fun s hs s' hs' he => ?_).symm` and prove the remaining obligations. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hs hs'`. Take `⟨t, ht⟩` from `Option.isSome_iff_exists.mp hs`.
-
-Conclude with `idx_inj Dw ht (he ▸ ht)`. Use `_ ≤ ∑ o, G o := Finset.sum_le_univ_sum_of_nonneg hG0`. Use `_ = l1 u := by`. Rewrite using `[Fintype.sum_option]`. Simplify using `[hG, l1, Fintype.sum_prod_type]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_abs_exponent_le_l1_norm (Dw : Datum H) (u : GlobalTheory.AllWt.Weight Dw) :
     ∑ s : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), |(exOf Dw u 0 (some s) : ℝ)| ≤ l1 u := by
@@ -104,7 +102,7 @@ theorem sum_abs_exponent_le_l1_norm (Dw : Datum H) (u : GlobalTheory.AllWt.Weigh
 end GlobalTheory.L1WeightExponents
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ Dw u` and use `GlobalTheory.L1WeightExponents.sum_abs_exponent_le_l1_norm Dw u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.L1WeightExponents.main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (u : GlobalTheory.AllWt.Weight Dw), ∑ s : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), |(exOf Dw u 0 (some s) : ℝ)| ≤ l1 u :=
   fun _ _ _ _ _ Dw u => GlobalTheory.L1WeightExponents.sum_abs_exponent_le_l1_norm Dw u

@@ -5,17 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 open Finset UpperTheory.V.Bern
 
 /- English proof (translation)
-Introduce `N _ P F hF`. Use `set e := Monoid.exponent (ZMod N)ˣ with he_def`. Use `haveI he : NeZero e := ⟨Monoid.exponent_ne_zero_of_finite⟩`. Use `haveI : NeZero (e : ℚ) := ⟨by exact_mod_cast he.out⟩`. Use `haveI hcyc : IsCyclotomicExtension {e} ℚ (CyclotomicField e ℚ) := CyclotomicField.isCyclotomicExtension e ℚ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsGalois ℚ (CyclotomicField e ℚ) := IsCyclotomicExtension.isGalois {e} ℚ _`. Use `haveI : FiniteDimensional ℚ (CyclotomicField e ℚ) := IsCyclotomicExtension.finiteDimensional {e} ℚ _`. Establish `hζ` using `IsCyclotomicExtension.zeta_spec e ℚ (CyclotomicField e ℚ)`. Use `haveI : HasEnoughRootsOfUnity (CyclotomicField e ℚ) e := ⟨⟨_, hζ⟩, rootsOfUnity.isCyclic (CyclotomicField e ℚ) e⟩`. Establish `hfin : ∀ (Ω : Type) [Field Ω], (charSet Ω P).Finite` using `fun Ω _ => Set.toFinite _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfix : ∀ σ : CyclotomicField e ℚ ≃ₐ[ℚ] CyclotomicField e ℚ, σ (∏ᶠ χ ∈ charSet (CyclotomicField e ℚ) P, F (CyclotomicField e ℚ) χ) = ∏ᶠ χ ∈ charSet (CyclotomicField e ℚ) P, F (CyclotomicField e ℚ) χ`. Introduce `σ`. Establish `h1` using `(σ.toRingHom.toMonoidHom).map_finprod_mem (fun χ => F (CyclotomicField e ℚ) χ) (hfin (CyclotomicField e ℚ))`. Use `h1.trans ?_` and prove the remaining obligations. Conclude with `finprod_mem_eq_of_bijOn _ (b_charbij σ.toRingHom P) (fun χ _ => hF _ _ σ.toRingHom χ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation.
 
-Establish `hbot` using `(IsGalois.mem_bot_iff_fixed _).2 hfix`. Take `⟨q, hq⟩` from `IntermediateField.mem_bot.1 hbot`. Use `⟨q, fun Ω _ _ _ => ?_⟩` and prove the remaining obligations. Take `⟨ω, hω⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω e`. Establish `hmin : Polynomial.aeval ω (minpoly ℚ (hζ.powerBasis ℚ).gen) = 0`.
-
-Rewrite using `[IsPrimitiveRoot.powerBasis_gen, ← hζ.minpoly_eq_cyclotomic_of_irreducible (Polynomial.cyclotomic.irreducible_rat (NeZero.pos e)), Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `hω.isRoot_cyclotomic (NeZero.pos e)`. Set `g` to `(hζ.powerBasis ℚ).lift ω hmin`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hq]`.
-
-Conclude with `g.commutes q |>.trans (eq_ratCast _ q)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Bern.b_ratprod :
     ∀ {N : ℕ} [NeZero N] (P : Set (Subgroup (ZMod N)ˣ)) (F : ∀ (Ω : Type) [Field Ω] [CharZero Ω], DirichletCharacter Ω N → Ω), (∀ (K Ω : Type) [Field K] [CharZero K] [Field Ω] [CharZero Ω] (f : K →+* Ω) (χ : DirichletCharacter K N), f (F K χ) = F Ω (χ.ringHomComp f)) → ∃ q : ℚ, ∀ (Ω : Type) [Field Ω] [CharZero Ω] [HasEnoughRootsOfUnity Ω (Monoid.exponent (ZMod N)ˣ)], ∏ᶠ χ ∈ charSet Ω P, F Ω χ = (q : Ω) := by

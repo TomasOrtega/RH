@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.CMLattices.ExistsIsThetaDegO
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj GlobalTheory GlobalTheory.CM
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LamF.exists_kronecker_logOm_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FExistsKroneckerCmLogPeriodEqConst.lean&line=19#L19)
 -/

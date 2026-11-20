@@ -15,9 +15,9 @@ def OrbRep : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ 
       ∃ c : ENNReal, c ≠ ⊤ ∧ ν = c • X.measG.μGinf.map (orbM X u')
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP ν₁ ν₂ i₁ i₂ s₁ s₂ l₁ l₂ hne`. Take `⟨c₁, -, e₁⟩` from `h X u' ψ hT μinf νinf fibInf hP ν₁ i₁ s₁ l₁`. Take `⟨c₂, t₂, e₂⟩` from `h X u' ψ hT μinf νinf fibInf hP ν₂ i₂ s₂ l₂`. Establish `h0 : c₂ ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `e₂` using `[zero_smul]`. Conclude with `hne e₂`. Use `⟨c₁ / c₂, ?_⟩` and prove the remaining obligations. Rewrite using `[e₁, e₂, smul_smul, ENNReal.div_mul_cancel h0 t₂]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbUniq_of (h : OrbRep) : OrbUniq := by
   intro D X u' ψ hT μinf νinf fibInf hP ν₁ ν₂ i₁ i₂ s₁ s₂ l₁ l₂ hne

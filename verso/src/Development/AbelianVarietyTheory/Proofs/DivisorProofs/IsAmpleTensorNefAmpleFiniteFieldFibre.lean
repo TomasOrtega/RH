@@ -17,13 +17,11 @@ noncomputable section
 namespace GlobalTheory.AmpleFibre
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX L A hL hA l _`. Use `haveI := hX.finite`. Establish `hc` using `GlobalTheory.NefFibPrime.isClosedImmersion_spMap_zmod l`. Use `haveI : IsClosedImmersion (Limits.pullback.fst (p ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom (ZMod l)))) := IsClosedImmersion.isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _).flip hc`. Use `set f := Limits.pullback.fst (p ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom (ZMod l))) with hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g := Limits.pullback.snd (p ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom (ZMod l))) with hg`. Use `letI := GlobalTheory.algebraΓOfHom g`. Establish `hproj : IsProjOver g`. Establish `h` using `GlobalTheory.FibreNef.isProjOver_fibre hX.isProjOver l f`. Rewrite `h` using `[GlobalTheory.strHom_eq (f := g) fun _ => rfl]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hN : IsNef (ZMod l) (L.B.pull f)` using `GlobalTheory.FibreNef.isNef_pull_of_nefOver l f L ((GlobalTheory.VertForm.nefFib_iff L).1 hL l Fact.out)`. Establish `hAf : IsAmpleLB (A.B.pull f)` using `hA.pull_of_isClosedImmersion f`. Establish `hK` using `IsAmpleLB.tens_of_isNef GlobalTheory.nefNumerics_outright (ZMod l) _ g hproj _ _ hAf hN`. Use `hK.of_lbIso (LB.isLB_pull (L.tens A).isLB f) ?_` and prove the remaining obligations. Use `(CechPic.cls_eq_iff (LB.isLB_pull (L.tens A).isLB f) (CechPic.isLB_tens (LB.isLB_pull A.isLB f) (LB.isLB_pull L.isLB f))).1 ?_` and prove the remaining obligations.
-
-Use `show CechPic.pull f (CechPic.cls L.B L.isLB + CechPic.cls A.B A.isLB) = CechPic.pull f (CechPic.cls A.B A.isLB) + CechPic.pull f (CechPic.cls L.B L.isLB)`. Rewrite using `[map_add, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAmpleLB_fibre : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ L A : HermLB p, NefFib L → IsAmpleLB A.B → ∀ (l : ℕ) [Fact l.Prime], IsAmpleLB ((L.tens A).B.pull (Limits.pullback.fst (p ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom (ZMod l))))) := by
   intro k _ X _ p D hX L A hL hA l _

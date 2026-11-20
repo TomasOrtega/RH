@@ -31,9 +31,9 @@ def OneSidedLemma4Element (p : ℕ) {n' r : ℕ} [NeZero n'] (K : ℕ) [NeZero r
     sig = MvPolynomial.map (algebraMap O (KK O)) (rename (castVK hk) (monPh O K p Fr mon xi))
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Take `⟨n, obd, xi, dd, mon, h1, h2, h3, h4, h5, rfl⟩` from `hs`. Establish `hren : rename (castVK (n'` using `n') (rfl : r + K = r + K)) (monPh O K p Fr mon xi) = monPh O K p Fr mon xi := by`. Establish `: (castVK (n'` using `n') (rfl : r + K = r + K)) = id := by`. Use function extensionality and compare the values at `v`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Rewrite using `[this, rename_id_apply]`. Rewrite using `[hren]`. Conclude with `h6 p n' r K O S hO hH Fr L₁ N₁ G' hV hT deg a Y c0 c'' cStar Dd hII g hg n obd xi dd h1 h2 mon h3 h4 o h5`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_sided_lemma4_realisable (D : Formalism.BasicNotions.D7) (CLa CD Csz : ℝ) (h6 : OneSidedLemma4 D CLa CD Csz) {p n' r K : ℕ} [Fact p.Prime] [NeZero n']
     [NeZero r] [NeZero K] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra (WF p n') O]

@@ -6,9 +6,9 @@ open scoped ComplexOrder ENNReal Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : (M ⊔ N).relIndex (L ⊔ N) = (M ⊔ (N ⊓ L)).relIndex L`. Establish `e : L ⊔ N = L ⊔ (M ⊔ N)`. Rewrite using `[← sup_assoc, sup_eq_left.mpr h]`. Rewrite using `[e, AddSubgroup.relIndex_sup_right, ← AddSubgroup.inf_relIndex_right (M ⊔ N) L, sup_inf_assoc_of_le N h]`. Establish `h2 : (M ⊓ N).relIndex (L ⊓ N) = M.relIndex (M ⊔ (N ⊓ L))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : M ⊓ N = M ⊓ (L ⊓ N)`. Rewrite using `[← inf_assoc, inf_eq_left.mpr h]`. Rewrite using `[e, AddSubgroup.inf_relIndex_right, AddSubgroup.relIndex_sup_left, inf_comm]`. Rewrite using `[h1, h2, mul_comm]`. Conclude with `AddSubgroup.relIndex_mul_relIndex _ _ _ le_sup_left (sup_le h inf_le_right)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_sup_mul_relIndex_inf_same {A : Type} [AddCommGroup A] (M L N : AddSubgroup A)
     (h : M ≤ L) :
@@ -26,7 +26,7 @@ theorem relIndex_sup_mul_relIndex_inf_same {A : Type} [AddCommGroup A] (M L N : 
   exact AddSubgroup.relIndex_mul_relIndex _ _ _ le_sup_left (sup_le h inf_le_right)
 
 /- English proof (translation)
-Introduce `A _ M₁ L₁ M₂ L₂ h₁ h₂`. Establish `a` using `relIndex_sup_mul_relIndex_inf_same M₁ L₁ M₂ h₁`. Establish `b` using `relIndex_sup_mul_relIndex_inf_same M₂ L₂ L₁ h₂`. Rewrite `b` using `[sup_comm M₂, sup_comm L₂, inf_comm M₂, inf_comm L₂]`. Rewrite using `[← a, ← b, ← AddSubgroup.relIndex_mul_relIndex (M₁ ⊔ M₂) (L₁ ⊔ M₂) (L₁ ⊔ L₂) (sup_le_sup_right h₁ _) (sup_le_sup_left h₂ _), ← AddSubgroup.relIndex_mul_relIndex (M₁ ⊓ M₂) (L₁ ⊓ M₂) (L₁ ⊓ L₂) (inf_le_inf_right _ h₁) (inf_le_inf_left _ h₂)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

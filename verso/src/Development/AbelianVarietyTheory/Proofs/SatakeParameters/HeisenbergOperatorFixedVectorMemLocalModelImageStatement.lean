@@ -18,7 +18,7 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 open GlobalTheory.LocMod GlobalTheory.PlaceModel ValuativeRel
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LocMod.Place.heisO_mem_iSup_range_of_fixed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FHeisenbergOperatorFixedVectorMemLocalModelImage.lean&line=23#L23)
 -/

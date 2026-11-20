@@ -7,13 +7,13 @@ open scoped nonZeroDivisors
 namespace GroundTheory.Heights₂.Heights.Model
 
 /- English proof (translation)
-Rewrite using `[isJacobsonRing_iff_prime_eq]`. Introduce `P hP`. Distinguish the cases in `h0 : P = ⊥`. Substitute `h0` using the available equality. Use `le_antisymm (fun x hx => ?_) Ideal.le_jacobson` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx` using `[Ideal.mem_jacobson_iff]`. Take `⟨z₁, hz₁⟩` from `hx 1`. Take `⟨z₂, hz₂⟩` from `hx 2`. Rewrite `hz₁`, `hz₂`, the goal using `[Ideal.mem_bot]`. Establish `e1 : (x + 1) * z₁ = 1` using `by linear_combination hz₁`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (2 * x + 1) * z₂ = 1` using `by linear_combination hz₂`. Establish `h1 : IsUnit (x + 1)` using `⟨⟨x + 1, z₁, e1, (mul_comm _ _).trans e1⟩, rfl⟩`. Establish `h2 : IsUnit (2 * x + 1)` using `⟨⟨2 * x + 1, z₂, e2, (mul_comm _ _).trans e2⟩, rfl⟩`. Rewrite `h1`, `h2` using `[Int.isUnit_iff]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `: P.IsMaximal` using `IsPrime.to_maximal_ideal h0`. Conclude with `Ideal.jacobson_eq_self_of_isMaximal`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isJacobsonRing_int : IsJacobsonRing ℤ := by
   rw [isJacobsonRing_iff_prime_eq]
@@ -35,13 +35,13 @@ theorem isJacobsonRing_int : IsJacobsonRing ℤ := by
     exact Ideal.jacobson_eq_self_of_isMaximal
 
 /- English proof (translation)
-Set `_` to `Ideal.Quotient.field 𝔪`. Use `isJacobsonRing_int` as an intermediate fact. Establish `: Algebra.FiniteType ℤ (A ⧸ 𝔪)` using `inferInstance`. Establish `: Module.Finite ℤ (A ⧸ 𝔪)` using `finite_of_finite_type_of_isJacobsonRing ℤ (A ⧸ 𝔪)`. Take `⟨p, hp⟩` from `CharP.exists (A ⧸ 𝔪)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Break down `CharP.char_is_prime_or_zero (A ⧸ 𝔪) p with hp' | rfl` into its components or cases. Use `⟨p, hp', ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `CharP.cast_eq_zero _ p`. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `: CharZero (A ⧸ 𝔪)` using `CharP.charP_to_charZero (A ⧸ 𝔪)`. Establish `hmax` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := ℤ) (⊥ : Ideal (A ⧸ 𝔪))`. Establish `hbot : (⊥ : Ideal (A ⧸ 𝔪)).comap (algebraMap ℤ (A ⧸ 𝔪)) = ⊥`. Rewrite using `[← RingHom.ker_eq_comap_bot, RingHom.ker_eq_bot_iff_eq_zero]`. Introduce `n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(show ((n : ℤ) : A ⧸ 𝔪) = 0 by simpa using hn)` after adjusting the coercions. Rewrite `hmax` using `[hbot]`. Conclude with `Int.not_isField (Ring.isField_iff_maximal_bot.mpr hmax)`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_mem_of_isMaximal (A : Type*) [CommRing A] [Algebra.FiniteType ℤ A]
     (𝔪 : Ideal A) [𝔪.IsMaximal] : ∃ p : ℕ, p.Prime ∧ (p : A) ∈ 𝔪 := by
@@ -65,43 +65,39 @@ theorem exists_prime_mem_of_isMaximal (A : Type*) [CommRing A] [Algebra.FiniteTy
     exact Int.not_isField (Ring.isField_iff_maximal_bot.mpr hmax)
 
 /- English proof (translation)
-Take `⟨p, hp, hp𝔪⟩` from `exists_prime_mem_of_isMaximal A 𝔪`. Establish `: Fact p.Prime` using `⟨hp⟩`. Use `set I : Ideal A := Ideal.span {(p : A)}`. Establish `hI𝔪 : I ≤ 𝔪` using `(Ideal.span_singleton_le_iff_mem _).mpr hp𝔪`. Establish `: Nontrivial (A ⧸ I)` using `Ideal.Quotient.nontrivial_iff.mpr (ne_top_of_le_ne_top (Ideal.IsMaximal.ne_top ‹_›) hI𝔪)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CharP (A ⧸ I) p` using `(CharP.charP_iff_prime_eq_zero hp).mpr (by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk I), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span rfl)`. Set `_ : Algebra (ZMod p) (A ⧸ I)` to `ZMod.algebra (A ⧸ I) p`. Establish `: Algebra.FiniteType (ZMod p) (A ⧸ I)` using `Algebra.FiniteType.of_restrictScalars_finiteType ℤ (ZMod p) (A ⧸ I)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, g, hginj, hgfin⟩` from `exists_finite_inj_algHom_of_fg (ZMod p) (A ⧸ I)`. Establish `hy : ∀ i, ∃ y : A, Ideal.Quotient.mk I y = g (MvPolynomial.X i)` using `fun i => Ideal.Quotient.mk_surjective _`. Use `choose y hy using hy`. Use `set C := MvPolynomial (Fin d) ℤ`. Set `φ : C →ₐ[ℤ] A` to `MvPolynomial.aeval y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `red : C →+* MvPolynomial (Fin d) (ZMod p)` to `MvPolynomial.map (Int.castRingHom (ZMod p))`. Establish `hkey : ∀ F : C, Ideal.Quotient.mk I (φ F) = g (red F)`. Introduce `F`. Establish `: (Ideal.Quotient.mk I).comp φ.toRingHom = g.toRingHom.comp red` using `MvPolynomial.ringHom_ext (fun n => by simp [φ, red]) (fun i => by`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I (MvPolynomial.aeval y (MvPolynomial.X i)) = g (MvPolynomial.map _ (MvPolynomial.X i))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MvPolynomial.aeval_X, MvPolynomial.map_X, hy])`. Conclude with `congrArg (fun f => f F) this`. Establish `hp0 : (p : A) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`. Establish `hstep : ∀ F : C, φ F = 0 → ∃ G, F = MvPolynomial.C (p : ℤ) * G ∧ φ G = 0`. Introduce `F hF`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : red F = 0` using `hginj (by rw [← hkey, hF, map_zero, map_zero])`. Establish `h2 : F ∈ RingHom.ker red` using `h1`. Rewrite `h2` using `[MvPolynomial.ker_map, ZMod.ker_intCastRingHom, Ideal.map_span, Set.image_singleton]`. Take `⟨G, hG⟩` from `Ideal.mem_span_singleton'.mp h2`. Use `⟨G, by rw [← hG, mul_comm], ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite `hF` using `[← hG, map_mul, MvPolynomial.aeval_C, algebraMap_int_eq, eq_intCast, Int.cast_natCast]`. Conclude with `(mul_eq_zero.mp hF).resolve_right hp0`. Establish `hpow : ∀ k : ℕ, ∀ F : C, φ F = 0 → ∃ G, F = MvPolynomial.C ((p : ℤ) ^ k) * G`. Introduce `k`. Proceed by induction on `k with`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => intro F _; exact ⟨F, by simp⟩`. Consider the case `succ k ih`. Introduce `F hF`. Take `⟨G, rfl, hG⟩` from `hstep F hF`. Take `⟨H, rfl⟩` from `ih G hG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨H, by rw [pow_succ, map_mul, mul_assoc, mul_left_comm]⟩`. Establish `hφinj : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `F hF`. Use extensionality with `m`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.coeff_zero]`. Assume the negation of the conclusion as `hc`. Take `⟨G, hG⟩` from `hpow (MvPolynomial.coeff m F).natAbs F hF`. Establish `hdvd : (p : ℤ) ^ (MvPolynomial.coeff m F).natAbs ∣ MvPolynomial.coeff m F` using `⟨MvPolynomial.coeff m G, by conv_lhs => rw [hG]`. Rewrite using `[MvPolynomial.coeff_C_mul]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Int.natAbs_dvd_natAbs.mpr hdvd`. Rewrite `h1` using `[Int.natAbs_pow, Int.natAbs_natCast]`. Establish `h2` using `Nat.le_of_dvd (Int.natAbs_pos.mpr hc) h1`. Conclude with `absurd h2 (not_le.mpr (Nat.lt_pow_self hp.one_lt))`. Set `_ : Algebra C A` to `φ.toRingHom.toAlgebra`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: IsScalarTower ℤ C A` using `IsScalarTower.of_algebraMap_eq fun n => by simp`. Establish `: Algebra.FiniteType C A` using `Algebra.FiniteType.of_restrictScalars_finiteType ℤ C A`. Establish `: Algebra.WeaklyQuasiFiniteAt C 𝔪`. Rewrite using `[Algebra.weaklyQuasiFiniteAt_iff]`. Set `_ : Algebra (MvPolynomial (Fin d) (ZMod p)) (A ⧸ I)` to `g.toRingHom.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite (MvPolynomial (Fin d) (ZMod p)) (A ⧸ I)` using `hgfin`. Set `_ : Algebra C (MvPolynomial (Fin d) (ZMod p))` to `red.toAlgebra`. Establish `: IsScalarTower C (MvPolynomial (Fin d) (ZMod p)) (A ⧸ I)` using `IsScalarTower.of_algebraMap_eq fun F => hkey F`. Establish `: Module.Finite C (MvPolynomial (Fin d) (ZMod p))` using `Module.Finite.of_surjective (Algebra.linearMap C _) (MvPolynomial.map_surjective _ (ZMod.intCast_surjective))`. Establish `: Module.Finite C (A ⧸ I)` using `Module.Finite.trans (MvPolynomial (Fin d) (ZMod p)) (A ⧸ I)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Use `set L := Localization.AtPrime 𝔪`. Use `set J := (𝔪.under C).map (algebraMap C L)`. Establish `hpJ : ((p : ℕ) : L) ∈ J`. Establish `hmem : ((p : ℕ) : C) ∈ 𝔪.under C`. Express the relevant statement in the definitionally equal form `algebraMap C A (p : C) ∈ 𝔪`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_natCast]`. Conclude with `hp𝔪`. Use `Ideal.mem_map_of_mem (algebraMap C L) hmem` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Set `f₀ : A →ₐ[C] L ⧸ J` to `(Ideal.Quotient.mkₐ C J).comp (IsScalarTower.toAlgHom C A L)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hf₀ : ∀ a ∈ I, f₀ a = 0`. Introduce `a ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Simplify using `only [f₀, AlgHom.comp_apply, IsScalarTower.toAlgHom_apply, Ideal.Quotient.mkₐ_eq_mk, map_mul, map_natCast]`. Establish `hp' : ((p : ℕ) : L ⧸ J) = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (Ideal.Quotient.mk J), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hpJ`. Rewrite using `[hp', mul_zero]`. Set `f : (A ⧸ I) →ₐ[C] L ⧸ J` to `Ideal.Quotient.liftₐ I f₀ hf₀`. Use `Algebra.QuasiFinite.of_forall_exists_mul_mem_range f fun x => ?_` and prove the remaining obligations.
-
-Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective 𝔪.primeCompl x`. Use `⟨Ideal.Quotient.mk I s, ?_, ⟨Ideal.Quotient.mk I a, ?_⟩⟩` and prove the remaining obligations. Conclude with `(IsLocalization.map_units L s).map (Ideal.Quotient.mk J)`. Express the relevant statement in the definitionally equal form `f₀ a = _ * f₀ s`.
-
-Simplify using `only [f₀, AlgHom.comp_apply, IsScalarTower.toAlgHom_apply, Ideal.Quotient.mkₐ_eq_mk]`. Rewrite using `[← map_mul, IsLocalization.mk'_spec]`. Conclude with `exists_pow_smul_mem_of_weaklyQuasiFiniteAt A K d hφinj 𝔪`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem_of_isMaximal
     (A : Type*) [CommRing A] [IsDomain A] [CharZero A] [Algebra.FiniteType ℤ A]
@@ -215,7 +211,7 @@ theorem exists_pow_smul_mem_of_isMaximal
   exact exists_pow_smul_mem_of_weaklyQuasiFiniteAt A K d hφinj 𝔪
 
 /- English proof (translation)
-The claim follows from `module_finite_of_forall_isMaximal fun 𝔪 _ => exists_pow_smul_mem_of_isMaximal A K 𝔪`.
+A detailed English derivation is pending.
 -/
 theorem finite_integralClosure_fractionRing_of_charZero
     (A : Type*) [CommRing A] [IsDomain A] [CharZero A] [Algebra.FiniteType ℤ A]
@@ -224,13 +220,11 @@ theorem finite_integralClosure_fractionRing_of_charZero
   module_finite_of_forall_isMaximal fun 𝔪 _ => exists_pow_smul_mem_of_isMaximal A K 𝔪
 
 /- English proof (translation)
-Establish `: Module.Finite A (integralClosure A K)` using `finite_integralClosure_fractionRing_of_charZero A K`. Use `set A' := integralClosure A K`. Establish `: IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing ℤ A`. Establish `: IsNoetherianRing A'` using `IsNoetherianRing.of_finite A A'`. Establish `: IsIntegrallyClosed A'` using `integralClosure.isIntegrallyClosedOfFiniteExtension K (L := K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsFractionRing A' K` using `integralClosure.isFractionRing_of_finite_extension K K`. Establish `: CharZero K` using `charZero_of_injective_algebraMap (IsFractionRing.injective A K)`. Establish `: Algebra.IsSeparable K L` using `Algebra.IsSeparable.of_integral K L`. Establish `: IsScalarTower A' K L` using `inferInstance`. Establish `: IsScalarTower A A' L` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite A' (integralClosure A' L)` using `IsIntegralClosure.finite A' K L (integralClosure A' L)`. Establish `: Module.Finite A (integralClosure A' L)` using `Module.Finite.trans A' _`. Establish `hle : (integralClosure A L).toSubmodule ≤ (integralClosure A' L).toSubmodule.restrictScalars A` using `fun y hy => hy.tower_top`. Establish `: IsNoetherian A ((integralClosure A' L).toSubmodule.restrictScalars A)` using `isNoetherian_of_isNoetherianRing_of_finite A (integralClosure A' L)`. Establish `: IsNoetherian A (integralClosure A L).toSubmodule` using `isNoetherian_of_le hle`.
-
-Conclude with `Module.IsNoetherian.finite A (integralClosure A L).toSubmodule`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_integralClosure_of_charZero
     (A : Type*) [CommRing A] [IsDomain A] [CharZero A] [Algebra.FiniteType ℤ A]

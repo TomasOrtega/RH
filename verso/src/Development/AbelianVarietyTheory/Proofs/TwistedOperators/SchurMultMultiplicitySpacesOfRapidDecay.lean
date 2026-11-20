@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SchurConst
 
 /- English proof (translation)
-Introduce `hP _ _ _ _ _ _ _ _ μ 𝓕 _ _` and use `GlobalTheory.MultFinite.schurMult hP μ 𝓕`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem schurMult_all : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), μ.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 μ → SchurMult θ M J χ μ 𝓕 :=
   fun hP _ _ _ _ _ _ _ _ μ 𝓕 _ _ => GlobalTheory.MultFinite.schurMult hP μ 𝓕

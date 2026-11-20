@@ -6,25 +6,23 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Introduce `A _ σ hσ h90`. Use `set N : A →* A := MonoidHom.id A * σ with hN`. Use `set B : Subgroup A := σ.eqLocus (MonoidHom.id A) with hB`. Set `f : A →* A` to `MonoidHom.id A / σ`. Establish `hNa : ∀ a, N a = a * σ a` using `fun a => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfa : ∀ a, f a = a / σ a` using `fun a => rfl`. Establish `hBa : ∀ a, a ∈ B ↔ σ a = a` using `fun a => Iff.rfl`. Establish `hK : ∀ a, a ∈ N.ker ↔ a * σ a = 1` using `fun a => Iff.rfl`. Establish `hsq : ∀ (U : Subgroup A) (a : A), a ∈ sqs U ↔ ∃ b ∈ U, b ^ 2 = a` using `fun U a => Iff.rfl`. Establish `h1 : sqs B ≤ N.range`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a ha`. Take `⟨b, hb, rfl⟩` from `(hsq _ _).1 ha`. Conclude with `⟨b, by rw [hNa, (hBa b).1 hb, sq]⟩`. Establish `h2 : N.range ≤ B`. Introduce and unpack `_ ⟨a, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hBa, hNa, map_mul, hσ, mul_comm]`. Establish `h3 : f.range = N.ker`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hK, hfa, map_div, hσ]`. Simplify using the standard rewrite rules. Introduce `ha`. Take `⟨b, hb⟩` from `h90 a ((hK a).1 ha)`. Conclude with `⟨b, hb.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h4 : (sqs B).comap N = (sqs N.ker).comap f`. Use extensionality with `a`. Rewrite using `[Subgroup.mem_comap, Subgroup.mem_comap, hsq, hsq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, hab⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[hBa]`. Rewrite `hab` using `[hNa]`. Use `⟨a / b, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hK, map_div, hb, div_mul_div_comm, ← hab, sq, div_self']`. Rewrite using `[hfa, div_pow, hab, sq, mul_div_mul_left_eq_div]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨c, hc, hac⟩`. Rewrite `hc` using `[hK]`. Rewrite `hac` using `[hfa]`. Establish `hc' : σ c = c⁻¹` using `eq_inv_of_mul_eq_one_right hc`. Establish `ha' : σ a = a / c ^ 2` using `by rw [hac]; simp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a / c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hBa, map_div, hc', ha', sq, div_inv_eq_mul, div_mul_eq_div_div, div_mul_cancel]`. Rewrite using `[hNa, ha', div_pow, sq a, mul_div_assoc]`. Establish `h5 : (sqs B).relIndex N.range = (sqs N.ker).relIndex N.ker`. Rewrite using `[← Subgroup.index_comap, h4, Subgroup.index_comap, h3]`.
-
-Rewrite using `[← h5, mul_comm]`. Conclude with `Subgroup.relIndex_mul_relIndex _ _ _ h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_norm_mul_relIndex_sqs_ker :
     ∀ (A : Type) [CommGroup A] (σ : A →* A), (∀ a, σ (σ a) = a) → (∀ a, a * σ a = 1 → ∃ b, a = b / σ b) → (MonoidHom.id A * σ).range.relIndex (σ.eqLocus (MonoidHom.id A)) * (sqs (MonoidHom.id A * σ).ker).relIndex (MonoidHom.id A * σ).ker = (sqs (σ.eqLocus (MonoidHom.id A))).relIndex (σ.eqLocus (MonoidHom.id A)) := by

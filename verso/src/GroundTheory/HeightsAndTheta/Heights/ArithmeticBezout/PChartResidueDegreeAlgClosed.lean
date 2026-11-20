@@ -13,79 +13,67 @@ noncomputable section
 open ChartResidueDegree in
 
 /- English proof (translation)
-Introduce `F _ _ n e I W f t u q p _ hI hf hu hq hp hqt hW hqW htW`. Choose the witnesses or unpack the hypotheses as in `⟨k, rfl⟩ : ∃ k, e = k + 1 := by`. Consider the cases of `e with`. Consider the case `zero`. It suffices to derive a contradiction.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. It suffices to derive a contradiction.
 
-Establish `h0 : coeff 0 q ≠ 0` using `fun h => hq.ne_zero (by rw [eq_C_of_isEmpty q, h, C_0])`. Conclude with `hq.not_isUnit (by rw [eq_C_of_isEmpty q]; exact (Ne.isUnit h0).map C)`. Consider the case `succ k => exact ⟨k, rfl⟩`. Establish `hIW : I ≤ W` using `le_trans le_sup_left hW.1.1.2`. Establish `hdim` using `h₄ F n (k + 1 + 1) I f hI hf`.
+Establish an intermediate fact. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hWp, hWdim⟩` from `h₅ F n (k + 1) I W u hI hdim hu hW`. Take `⟨g, hg⟩` from `h₆ F n (k + 1) W hWp hWdim`. Use `hWp.isPrime` as an intermediate fact. Use `set K := FractionRing (MvPolynomial (Fin n) F ⧸ W)`. Use `set ξ := genPt W with hξdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hξ : ∀ h : MvPolynomial (Fin n) F, aeval ξ h = algebraMap _ K (Ideal.Quotient.mk W h)`. Introduce `h`. Establish `: (aeval ξ : MvPolynomial (Fin n) F →ₐ[F] K) = (IsScalarTower.toAlgHom F (MvPolynomial (Fin n) F ⧸ W) K).comp (Ideal.Quotient.mkₐ F W)`. Use extensionality with `m`. Simplify using `[ξ, genPt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Apply the tactic sequence `all_goals rfl`. Rewrite using `[this]`. Both sides reduce to the same expression. Use `set ℓ := aeval ξ (linForm t) with hℓdef`. Establish `hℓ : ℓ ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hℓdef, hξ]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective _ K)).mpr fun h => htW (Ideal.Quotient.eq_zero_iff_mem.mp h)`. Establish `hℓsum : ℓ = ∑ l, algebraMap F K (t l) * ξ l`. Simplify using `[hℓdef, linForm, map_sum]`. Apply the tactic sequence `all_goals rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set c : Fin n → K := fun m => algebraMap F K (t m) / ℓ with hcdef`. Establish `hc : ∑ j, c j * ξ j = 1`. Simplify using `only [hcdef, div_mul_eq_mul_div, ← Finset.sum_div, ← hℓsum, div_self hℓ]`. Establish `hIG` using `fun h => h₇ F n (k + 1) W c hc h`. Establish `hc' : ∑ j, c j * genPt W j = 1` using `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hIG` using `[← hξdef]`. Use `clear_value c ℓ ξ`. Take `⟨ΦI, hΦIS, hΦIX, hdeh⟩` from `exists_chartHom (e := k + 1) (I := I) hWp.isHomog hIW ξ hξ ℓ hℓdef hℓ c hc`. Establish `hgen` using `isChowForm_iff.mp hg`. Establish `hpinc : p = incIdeal W (k + 1)`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hp, hgen.2]`. Establish `hgq : g ∣ q` using `by rw [← Ideal.mem_span_singleton, ← hgen.2]; exact hqW`. Take `⟨a, ha⟩` from `hgq`. Break down `hq.irreducible.isUnit_or_isUnit ha with hu' | hu'` into its components or cases. It suffices to derive a contradiction.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : MvPolynomial (Fin (k + 1) × Fin n) F) ∈ incIdeal W (k + 1)`. Rewrite using `[hgen.2, Ideal.span_singleton_eq_top.mpr hu']`. Discharge the goal by the elementary cases of `trivial`. Rewrite `h1` using `[hIG]`. Simplify using `at h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.span_singleton_eq_span_singleton.mpr (Associated.symm ⟨hu'.unit, ha.symm⟩)`. Use `set L := FractionRing (MvPolynomial (Fin (k + 1) × Fin n) K)`. Establish `hunit : ∀ y : Algebra.algebraMapSubmonoid (ChartInc I t (k + 1)) p.primeCompl, IsUnit ((algebraMap _ L).comp ΦI y)`. Introduce and unpack `⟨_, s, hs, rfl⟩`. Use `isUnit_iff_ne_zero.mpr ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingHom.comp_apply, hΦIS]`. Use `(map_ne_zero_iff _ (IsFractionRing.injective _ L)).mpr fun h0 => hs ?_` and prove the remaining obligations. Rewrite using `[hpinc]`. Conclude with `(hIG s).mpr h0`. Set `ψ : ChartLoc I t (k + 1) p →+* L` to `IsLocalization.lift hunit`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ : ∀ a, ψ (algebraMap _ (ChartLoc I t (k + 1) p) a) = algebraMap _ L (ΦI a)` using `fun a => IsLocalization.lift_eq hunit a`. Establish `hω : ∀ h : MvPolynomial (Fin (k + 1) × Fin n) F, ψ (algebraMap (Localization.AtPrime p) (ChartLoc I t (k + 1) p) (algebraMap _ (Localization.AtPrime p) h)) = algebraMap _ L (aeval (genSubst ξ c) h)`. Introduce `h`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply _ (ChartInc I t (k + 1)) (ChartLoc I t (k + 1) p), hψ, hΦIS]`. Use `set 𝔓 := chartIdeal I t (k + 1) p W with h𝔓def`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h𝔓prime, -⟩` from `h₈ F n (k + 1) I W f t u q p hI hf hu hq hp hqt hW hqW htW`. Establish `hJW : chartIncIdeal W t (k + 1) ≤ (W.map (chartX I t (k + 1))).comap (Ideal.Quotient.mk (chartIncIdeal I t (k + 1)))`. Establish `hz : ∀ a ∈ chartIncIdeal I t (k + 1), Ideal.Quotient.mk (chartIncIdeal I t (k + 1)) a ∈ W.map (chartX I t (k + 1))` using `fun a ha => by`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr ha]`. Conclude with `Ideal.zero_mem _`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Use `sup_le (fun h hh => ?_) ?_` and prove the remaining obligations. Conclude with `Ideal.mem_map_of_mem (chartX I t (k + 1)) hh`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz _ (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))))`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hz _ (Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩))`. Establish `hqS : algebraMap _ (ChartInc I t (k + 1)) q ∈ W.map (chartX I t (k + 1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : algebraMap _ (ChartInc W t (k + 1)) q = 0`. Rewrite using `[← RingHom.mem_ker, h₃ F n (k + 1) W t hWp htW]`. Conclude with `hqW`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (rename Sum.inr q) = 0 at h0`. Conclude with `hJW (Ideal.Quotient.eq_zero_iff_mem.mp h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h𝔓q : algebraMap (Localization.AtPrime p) (ChartLoc I t (k + 1) p) (algebraMap _ (Localization.AtPrime p) q) ∈ 𝔓`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply _ (ChartInc I t (k + 1)) (ChartLoc I t (k + 1) p)]`. Conclude with `Ideal.mem_map_of_mem _ hqS`. Establish `hcomap : (𝔓.comap (algebraMap (Localization.AtPrime p) (ChartLoc I t (k + 1) p))).IsMaximal`. Establish `hle : IsLocalRing.maximalIdeal (Localization.AtPrime p) ≤ 𝔓.comap (algebraMap (Localization.AtPrime p) (ChartLoc I t (k + 1) p))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal p, Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite `hx` using `[hp, Ideal.mem_span_singleton]`. Take `⟨a, rfl⟩` from `hx`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, map_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_right _ _ h𝔓q`. Rewrite using `[← (IsLocalRing.maximalIdeal.isMaximal _).eq_of_le (Ideal.comap_ne_top _ h𝔓prime.ne_top) hle]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal _`. Establish `: Module.Finite (Localization.AtPrime p) (ChartLoc I t (k + 1) p)` using `h₂ F n (k + 1) I f t p hI hf fun h => hqt (by rw [hp] at h; exact Ideal.mem_span_singleton.mp h)`. Establish `h𝔓max : 𝔓.IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap 𝔓 hcomap`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h𝔓ker : 𝔓 ≤ RingHom.ker ψ`. Rewrite using `[h𝔓def, chartIdeal, Ideal.map_le_iff_le_comap, Ideal.map_le_iff_le_comap]`. Introduce `h hh`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, RingHom.mem_ker, hψ, hΦIX, hdeh h hh, C_0, map_zero]`. Establish `hker : RingHom.ker ψ = 𝔓` using `(h𝔓max.eq_of_le (RingHom.ker_ne_top ψ) h𝔓ker).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t', hD', hrel⟩` from `h₁ F n k W g c hWp hg hc'`. Rewrite `hrel` using `[← hξdef]`. Use `set Dt : MvPolynomial (Fin (k + 1) × Fin n) F := ∑ l, C (t l) * pderiv (0, l) g with hDtdef`. Establish `hωC : ∀ a : F, aeval (genSubst ξ c) (C a : MvPolynomial (Fin (k + 1) × Fin n) F) = C (algebraMap F K a)` using `fun a => by rw [aeval_C, MvPolynomial.algebraMap_apply]`. Establish `hB : aeval (genSubst ξ c) (∑ l, C (t' l) * pderiv (0, l) g) ≠ 0` using `fun h0 => hD' ((hIG _).mpr h0)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Generalize the expression as in `aeval (genSubst ξ c) (∑ l, C (t' l) * pderiv (0, l) g) = B at hrel hB`. Generalize the expression as in `∑ l, algebraMap F K (t' l) * ξ l = ℓ' at hrel`. Take `⟨hAt', hη'⟩` from `ratio ξ (fun l => algebraMap F K (t l)) (fun m => aeval (genSubst ξ c) (pderiv (0, m) g)) B ℓ' hB (hℓsum ▸ hℓ) hrel`. Establish `hDtω : aeval (genSubst ξ c) Dt = ∑ l, C (algebraMap F K (t l)) * aeval (genSubst ξ c) (pderiv (0, l) g)`. Rewrite using `[hDtdef, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, hωC]`. Establish `hAt : aeval (genSubst ξ c) Dt ≠ 0` using `by rw [hDtω]; exact hAt'`. Establish `hη : ∀ m, aeval (genSubst ξ c) (pderiv (0, m) g) = C (ξ m / ℓ) * aeval (genSubst ξ c) Dt`. Introduce `m`. Rewrite using `[hDtω, hℓsum]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hη' m`. Establish `hDt : Dt ∈ p.primeCompl` using `fun h => hAt ((hIG Dt).mp (by rw [← hpinc]; exact h))`. Establish `hgoodS : ∀ h : MvPolynomial (Fin (k + 1) × Fin n) F, ψ (algebraMap (ChartInc I t (k + 1)) (ChartLoc I t (k + 1) p) (algebraMap (MvPolynomial (Fin (k + 1) × Fin n) F) (ChartInc I t (k + 1)) h)) = ψ (algebraMap (Localization.AtPrime p) (ChartLoc I t (k + 1) p) (algebraMap (MvPolyno …`. Introduce `h`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `hgoodX : ∀ m, ψ (algebraMap (ChartInc I t (k + 1)) (ChartLoc I t (k + 1) p) (chartX I t (k + 1) (X m))) = ψ (algebraMap (Localization.AtPrime p) (ChartLoc I t (k + 1) p) (IsLocalization.mk' (Localization.AtPrime p) (pderiv (0, m) g) (⟨Dt, hDt⟩ : p.primeCompl)))`. Introduce `m`. Establish `hne : ψ (algebraMap (Localization.AtPrime p) (ChartLoc I t (k + 1) p) (algebraMap (MvPolynomial (Fin (k + 1) × Fin n) F) (Localization.AtPrime p) Dt)) ≠ 0`. Rewrite using `[hω]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective _ L)).mpr hAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Establish `hspec : IsLocalization.mk' (Localization.AtPrime p) (pderiv (0, m) g) (⟨Dt, hDt⟩ : p.primeCompl) * algebraMap (MvPolynomial (Fin (k + 1) × Fin n) F) (Localization.AtPrime p) Dt = algebraMap _ (Localization.AtPrime p) (pderiv (0, m) g)` using `IsLocalization.mk'_spec _ _ _`. Rewrite using `[← map_mul ψ (algebraMap (Localization.AtPrime p) (ChartLoc I t (k + 1) p) (IsLocalization.mk' _ _ _)), ← map_mul (algebraMap (Localization.AtPrime p) (ChartLoc I t (k + 1) p)), hspec, hω, hω, hψ, hΦIX, aeval_X, ← map_mul, hη m]`. Set `χ : MvPolynomial (Fin n ⊕ Fin (k + 1) × Fin n) F →+* ChartLoc I t (k + 1) p` to `(algebraMap (ChartInc I t (k + 1)) (ChartLoc I t (k + 1) p)).comp (Ideal.Quotient.mk (chartIncIdeal I t (k + 1)))`. Establish `hgP : ∀ P : MvPolynomial (Fin n ⊕ Fin (k + 1) × Fin n) F, ∃ o : Localization.AtPrime p, ψ (χ P) = ψ (algebraMap (Localization.AtPrime p) (ChartLoc I t (k + 1) p) o)`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `P`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Use `⟨algebraMap _ _ (C a : MvPolynomial (Fin (k + 1) × Fin n) F), ?_⟩` and prove the remaining obligations. Rewrite using `[← hgoodS]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Use `show _ = ψ (χ (rename Sum.inr (C a)))`. Rewrite using `[rename_C]`. Consider the case `add P₁ P₂ ih₁ ih₂`. Take `⟨o₁, e₁⟩` from `ih₁`. Take `⟨o₂, e₂⟩` from `ih₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨o₁ + o₂, ?_⟩` and prove the remaining obligations. Simplify `congrArg₂ (· + ·) e₁ e₂` using `only [map_add]`. Consider the case `mul_X P v ih`. Take `⟨o₁, e₁⟩` from `ih`. Consider the cases of `v with`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `inl m`. Use `⟨o₁ * IsLocalization.mk' (Localization.AtPrime p) (pderiv (0, m) g) (⟨Dt, hDt⟩ : p.primeCompl), ?_⟩` and prove the remaining obligations. Establish `e₂ : ψ (χ (X (Sum.inl m))) = ψ (algebraMap (Localization.AtPrime p) (ChartLoc I t (k + 1) p) (IsLocalization.mk' (Localization.AtPrime p) (pderiv (0, m) g) (⟨Dt, hDt⟩ : p.primeCompl)))`. Rewrite using `[← hgoodX m]`. Use `show _ = ψ (χ (rename Sum.inl (X m)))`.
-
-Rewrite using `[rename_X]`. Simplify `congrArg₂ (· * ·) e₁ e₂` using `only [map_mul]`. Consider the case `inr ij`. Use `⟨o₁ * algebraMap _ _ (X ij : MvPolynomial (Fin (k + 1) × Fin n) F), ?_⟩` and prove the remaining obligations. Establish `e₂ : ψ (χ (X (Sum.inr ij))) = ψ (algebraMap (Localization.AtPrime p) (ChartLoc I t (k + 1) p) (algebraMap _ _ (X ij : MvPolynomial (Fin (k + 1) × Fin n) F)))`.
-
-Rewrite using `[← hgoodS (X ij)]`. Use `show _ = ψ (χ (rename Sum.inr (X ij)))`. Rewrite using `[rename_X]`. Simplify `congrArg₂ (· * ·) e₁ e₂` using `only [map_mul]`. Establish `hgood : ∀ x : ChartLoc I t (k + 1) p, ∃ o : Localization.AtPrime p, ψ x = ψ (algebraMap (Localization.AtPrime p) (ChartLoc I t (k + 1) p) o)`.
-
-Introduce `x`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Algebra.algebraMapSubmonoid (ChartInc I t (k + 1)) p.primeCompl) x`. Simplify using `only`. Take `⟨P, rfl⟩` from `Ideal.Quotient.mk_surjective (I := chartIncIdeal I t (k + 1)) a`. Take `⟨s₀, hs₀, hs⟩` from `s.2`.
-
-Take `⟨o, ho⟩` from `hgP P`. Establish `ho' : ψ (algebraMap (ChartInc I t (k + 1)) (ChartLoc I t (k + 1) p) (Ideal.Quotient.mk (chartIncIdeal I t (k + 1)) P)) = ψ (algebraMap (Localization.AtPrime p) (ChartLoc I t (k + 1) p) o)` using `ho`. Establish `hne : ψ (algebraMap (ChartInc I t (k + 1)) (ChartLoc I t (k + 1) p) s) ≠ 0`. Rewrite using `[hψ]`. Conclude with `(hunit s).ne_zero`.
-
-Use `⟨o * IsLocalization.mk' (Localization.AtPrime p) (1 : MvPolynomial (Fin (k + 1) × Fin n) F) ⟨s₀, hs₀⟩, mul_right_cancel₀ hne ?_⟩` and prove the remaining obligations. Establish `hx : IsLocalization.mk' (R` using `ChartInc I t (k + 1)) (ChartLoc I t (k + 1) p) (Ideal.Quotient.mk (chartIncIdeal I t (k + 1)) P) s * algebraMap (ChartInc I t (k + 1)) (ChartLoc I t (k + 1) p) s = algebraMap (ChartInc I t (k + 1)) (ChartLoc I t (k + 1) p) (Ideal.Quotient.mk (chartIncIdeal I t (k + 1)) P) := IsLo …`. Rewrite using `[← map_mul ψ, hx, ho', ← hs, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (MvPolynomial (Fin (k + 1) × Fin n) F) (Localization.AtPrime p) (ChartLoc I t (k + 1) p), ← map_mul ψ, ← map_mul (algebraMap (Localization.AtPrime p) _), mul_assoc, IsLocalization.mk'_sp …`. Use `length_quotient_eq_one 𝔓 hcomap fun x => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `hgood x`.
-
-Conclude with `⟨o, by rw [← hker, RingHom.mem_ker, map_sub, ho, sub_self]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ChartResidueDegreeAlgClosed.proof (h₁ : ChowFormBirationalAlgClosed.Statement) (h₂ : ChartFinite.Statement)
     (h₃ : ChartKernel.Statement) (h₄ : ConeDimOfChowForm.Statement) (h₅ : ConeDimComponent.Statement)

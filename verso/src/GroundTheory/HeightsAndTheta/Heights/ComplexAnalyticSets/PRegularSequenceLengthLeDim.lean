@@ -9,21 +9,19 @@ open IsLocalRing RingTheory.Sequence Pointwise
 universe u
 
 /- English proof (translation)
-It suffices to establish `key : ∀ (n : ℕ) (R : Type u) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (rs : List R), rs.length = n → (∀ r ∈ rs, r ∈ maximalIdeal R) → IsWeaklyRegular R rs → (rs.length : WithBot ℕ∞) ≤ ringKrullDim R from fun R _ _ _ rs hmem hreg => key _ R rs rfl hmem hreg`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `R _ _ _ rs hlen _ _`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hlen, Nat.cast_zero]`. Conclude with `ringKrullDim_nonneg_of_nontrivial`. Consider the case `succ n ih`. Introduce `R _ _ _ rs hlen hmem hreg`. Take `_ | ⟨r, rs⟩` from `rs`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `at hlen`. Rewrite `hlen` using `[List.length_cons, Nat.succ_inj]`. Rewrite `hreg` using `[isWeaklyRegular_cons_iff]`. Take `⟨hr, htail⟩` from `hreg`. Establish `hrm : r ∈ maximalIdeal R` using `hmem r (List.mem_cons_self ..)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S := R ⧸ Ideal.span {r}`. Establish `hne : Ideal.span {r} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Conclude with `(mem_maximalIdeal _).mp hrm`. Establish `: Nontrivial S` using `Ideal.Quotient.nontrivial_iff.mpr hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocalRing S` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Establish `: IsLocalHom (Ideal.Quotient.mk (Ideal.span {r}))` using `IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hdim : ringKrullDim S + 1 = ringKrullDim R` using `ringKrullDim_quotient_span_singleton_succ_eq_ringKrullDim hr hrm`. Establish `heq : (r • ⊤ : Submodule R R) = Ideal.span {r}`. Rewrite using `[← Submodule.ideal_span_singleton_smul, Ideal.smul_eq_mul, Ideal.mul_top]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsWeaklyRegular S rs` using `(Submodule.quotEquivOfEq _ _ heq).isWeaklyRegular_congr rs |>.mp htail`. Establish `hS' : IsWeaklyRegular S (rs.map (algebraMap R S))` using `(isWeaklyRegular_map_algebraMap_iff S S rs).mpr hS`. Establish `hmem' : ∀ s ∈ rs.map (algebraMap R S), s ∈ maximalIdeal S`. Introduce `s hs`. Take `⟨t, ht, rfl⟩` from `List.mem_map.mp hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(mem_maximalIdeal _).mpr fun hu => (mem_maximalIdeal _).mp (hmem t (List.mem_cons_of_mem _ ht)) ?_` and prove the remaining obligations. Conclude with `isUnit_of_map_unit (Ideal.Quotient.mk (Ideal.span {r})) t hu`. Establish `h` using `ih S _ (by rw [List.length_map, hlen]) hmem' hS'`. Rewrite `h` using `[List.length_map]`. Rewrite using `[← hdim, List.length_cons, Nat.cast_succ]`.
-
-Conclude with `add_le_add h le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RegularSequenceLengthLeDim.proof : RegularSequenceLengthLeDim.Statement.{u} := by
   suffices key : ∀ (n : ℕ) (R : Type u) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (rs : List R),

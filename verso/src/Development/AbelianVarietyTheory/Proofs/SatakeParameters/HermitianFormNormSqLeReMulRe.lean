@@ -6,13 +6,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.God
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ Bf hsymm hpos v w`. Set `c : PreInnerProductSpace.Core ℂ V` to `{ inner := fun x y => Bf y x conj_inner_symm := fun x y => by show starRingEnd ℂ (Bf x y) = Bf y x`. Rewrite using `[hsymm x y]`. Use `re_inner_nonneg := fun x => by show 0 ≤ RCLike.re (Bf x x)`. Distinguish the cases in `hx : x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Conclude with `(hpos x hx).le`. Use `add_left := fun x y z => by show Bf z (x + y) = Bf z x + Bf z y`. Conclude with `map_add _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `smul_left := fun x y r => by show Bf y (r • x) = starRingEnd ℂ r * Bf y x`. Rewrite using `[LinearMap.map_smulₛₗ, smul_eq_mul] }`. Establish `h` using `@InnerProductSpace.Core.inner_mul_inner_self_le ℂ V _ _ _ c v w`. Express the relevant statement in the definitionally equal form `‖Bf w v‖ * ‖Bf v w‖ ≤ RCLike.re (Bf v v) * RCLike.re (Bf w w) at h`. Rewrite `h` using `[hsymm v w, RCLike.norm_conj]`.
-
-Rewrite using `[sq]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermitianForm_norm_sq_le_re_mul_re :
     ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (Bf : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ),

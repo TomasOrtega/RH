@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.RowIntQ
 
 /- English proof (translation)
-Introduce `c`. Take `⟨y, hy, e⟩` from `GlobalTheory.PerQ.RowIntModel.mtildeL_rep_mem (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps x hx c`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `hG ((I.stX a).rep c)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowVal_of_sameForm {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (hX : B.fields.Ok) (u : B.Word) (a : I.ι)
     (x : Formalism.L2.Col.MtildeV (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps)
@@ -35,9 +35,7 @@ theorem rowVal_of_sameForm {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Law
   exact hG ((I.stX a).rep c)
 
 /- English proof (translation)
-Introduce `B X I _ l Z hX e h0 htw hlat`. Use `⟨fun u F hF => ?_, fun u a F hF => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `hlat _ F hF`. Conclude with `rowVal_of_sameForm I l hX u _ x hx _ (h0 u _)`. Take `⟨x, hx, rfl⟩` from `hlat _ F hF`.
-
-Conclude with `rowVal_of_sameForm I l hX u _ x hx _ (htw u _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rowInt_of_sameForm : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l))
     (hX : B.fields.Ok) (e : ∀ a : (I.cols l).Tup, GlobalTheory.Mem.Df.MtCx I a ≃ₗ[ℂ] Z.W.Amb a),
@@ -53,11 +51,11 @@ theorem rowInt_of_sameForm : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.O
     exact rowVal_of_sameForm I l hX u _ x hx _ (htw u _ _)
 
 /- English proof (translation)
-Introduce `K B f T w P o`. Use `rowInt_of_sameForm w.I w.ok w.l o.Z P.hX P.q.per.e P.q.per.ref P.q.per.tw ?_` and prove the remaining obligations. Introduce `a F hF`. Take `⟨hg, hiff⟩` from `(P.q.t.tA true a).latT`. Take `⟨c, rfl⟩` from `hF`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose! g hgy using hg`. Set `n` to `(GlobalTheory.Mem.R3.Rw.mAU (w.st P.Z₀) w.I P.hX P.z.Xg P.z.tr true a).n`. Set `y : Fin n → B.LL` to `∑ v ∈ (P.q.p.sA true a).lat.gen, B.OtoLL (c v) • @id (Fin n → B.LL) (g v)`. Establish `hjy : (P.q.t.tA true a).j y = ∑ v ∈ (P.q.p.sA true a).lat.gen, B.embLL ((⟨B.OtoLL (c v), B.O_int (c v)⟩ : 𝓞 B.LL) : B.LL) • v`. Use `(map_sum (P.q.t.tA true a).j _ _).trans (Finset.sum_congr rfl fun v hv => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `((P.q.t.tA true a).j.map_smulₛₗ _ _).trans (congrArg _ (hgy v hv))`. Take `⟨x, hx, hj⟩` from `P.q.per.crd a y`. Use `⟨x, (GlobalTheory.AtG.RX.isFormOf_mem_iff (w.st P.Z₀) w.I P.hX P.z.Xg P.z.tr a hx).1 ((hiff y).2 ⟨fun v => ⟨B.OtoLL (c v), B.O_int (c v)⟩, hjy⟩), ?_⟩` and prove the remaining obligations. Conclude with `hjy.symm.trans hj`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rowInt_over : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (P : Pre2 K w), ∀ o : P.q.Over,
     GlobalTheory.PerQ.RowInt w.I w.l o.Z := by

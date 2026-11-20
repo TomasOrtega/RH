@@ -9,7 +9,7 @@ namespace GlobalTheory.QSA.IntRep
 open NumberField IsDedekindDomain in
 open scoped Quaternion Topology in
 /- English proof (translation)
-Use `(eq_inv_of_mul_eq_one_right ?_)` and prove the remaining obligations. Conclude with `h` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma coe_adicCompletionIntegers_inv {F : Type} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) {x y : v.adicCompletionIntegers F} (h : x * y = 1) :
@@ -20,9 +20,9 @@ private lemma coe_adicCompletionIntegers_inv {F : Type} [Field F] [NumberField F
 open IsDedekindDomain NumberField IsLocalRing in
 open Polynomial in
 /- English proof (translation)
-Take `⟨a, ha, haa⟩` from `HenselianRing.is_henselian (X ^ 2 + (C p * X + C q)) (monic_X_pow_add degree_linear_lt) a₀ (by simpa only [eval_add, eval_pow, eval_X, eval_mul, eval_C, add_assoc] using h) (by`. Establish `: eval a₀ (derivative (X ^ 2 + (C p * X + C q))) = 2 * a₀ + p`. Simplify using `[derivative_X_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu.map _)`. Conclude with `⟨a, by simpa only [IsRoot, eval_add, eval_pow, eval_X, eval_mul, eval_C, add_assoc] using ha, haa⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma exists_root_monic_quadratic_henselian {R : Type*} [CommRing R] [IsLocalRing R]
     [HenselianRing R (IsLocalRing.maximalIdeal R)] (p q a₀ : R)
@@ -41,41 +41,35 @@ private lemma exists_root_monic_quadratic_henselian {R : Type*} [CommRing R] [Is
 open IsDedekindDomain NumberField IsLocalRing in
 open Polynomial in
 /- English proof (translation)
-Establish `hu'` using `(residue_ne_zero_iff_isUnit u).2 hu`. Distinguish the cases in `h2 : IsUnit (2 : O)`. Establish `h2k : (2 : ResidueField O) ≠ 0`. Use `(residue_ne_zero_iff_isUnit (2 : O)).2 h2` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `set i : O := ↑h2.unit⁻¹ with hi_def`. Establish `hi : 2 * i = 1` using `h2.mul_val_inv`. Use `set e : O := (t ^ 2 - 4 * n) * i ^ 2 with he_def`. Establish `he : IsUnit e` using `hD.mul ((h2.unit⁻¹).isUnit.pow 2)`. Establish `hek` using `(residue_ne_zero_iff_isUnit e).2 he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := Fintype.ofFinite (ResidueField O)`. Establish `hchar : ringChar (ResidueField O) ≠ 2`. Introduce `h`. Use `haveI := ringChar.eq_iff.mp h`. Conclude with `h2k (by simpa using CharP.cast_eq_zero (ResidueField O) 2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨α, σ, hασ⟩` from `FiniteField.exists_root_sum_quadratic (f := X ^ 2 - C (residue O u)) (g := C (-(residue O e)) * X ^ 2) (degree_X_pow_sub_C (by norm_num) _) (degree_C_mul_X_pow 2 (neg_ne_zero.2 hek)) (FiniteField.odd_card_of_char_ne_two hchar)`. Take `⟨x₀, rfl⟩` from `residue_surjective α`. Take `⟨s₀, rfl⟩` from `residue_surjective σ`. Simplify using `only [eval_sub, eval_pow, eval_X, eval_C, eval_mul] at hασ`. Establish `hm : x₀ ^ 2 - e * s₀ ^ 2 - u ∈ maximalIdeal O`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← residue_eq_zero_iff]`. Simplify using `only [map_sub, map_mul, map_pow]`. Take the linear combination `hασ`. Establish `key : ∃ X s : O, X ^ 2 - e * s ^ 2 = u`. Distinguish the cases in `hx : IsUnit x₀`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨X, hX, -⟩` from `exists_root_monic_quadratic_henselian 0 (-(e * s₀ ^ 2 + u)) x₀ (by convert hm using 1; ring) (by simpa using h2.mul hx)`. Conclude with `⟨X, s₀, by linear_combination hX⟩`. Establish `hs : IsUnit s₀`. Assume the negation of the conclusion as `hs`. Rewrite `hx`, `hs` using `[← residue_ne_zero_iff_isUnit, not_not]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply `hu'` to reduce the goal to its premises. Rewrite `hασ` using `[hx, hs]`. Take the linear combination `-hασ`. Use `set E : O := ↑he.unit⁻¹ with hE_def`. Establish `hE : e * E = 1` using `he.mul_val_inv`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs', -⟩` from `exists_root_monic_quadratic_henselian 0 (-(x₀ ^ 2 - u) * E) s₀ (by`. Establish `: s₀ ^ 2 + 0 * s₀ + -(x₀ ^ 2 - u) * E = -E * (x₀ ^ 2 - e * s₀ ^ 2 - u)`. Take the linear combination `(-s₀ ^ 2) * hE`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ hm)`.
+Supply the required witnesses or components. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use the proof step `(by simpa using h2.mul hs)`. Conclude with `⟨x₀, s, by linear_combination (-e) * hs' - (x₀ ^ 2 - u) * hE⟩`. Take `⟨X, s, hXs⟩` from `key`. Conclude with `⟨X - t * s * i, s, by`. Take the linear combination `hXs + (t ^ 2 * s ^ 2 * i - n * s ^ 2 * (1 + 2 * i) - t * X * s) * hi⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2k : (2 : ResidueField O) = 0`. Assume the negation of the conclusion as `h`. Conclude with `h2 ((residue_ne_zero_iff_isUnit _).1 (by rwa [map_ofNat]))`. Establish `h4 : (4 : ResidueField O) = 0`. Rewrite using `[show (4 : ResidueField O) = 2 * 2 by norm_num, h2k, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ht : IsUnit t`. Rewrite `hD`, the goal using `[← residue_ne_zero_iff_isUnit]`. Introduce `h`. Apply `hD` to reduce the goal to its premises. Rewrite using `[map_sub, map_mul, map_pow, h, map_ofNat, h4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hchar : ringChar (ResidueField O) = 2` using `CharP.ringChar_of_prime_eq_zero Nat.prime_two (by simpa using h2k)`. Take `⟨ρ, hρ⟩` from `FiniteField.isSquare_of_char_two hchar (residue O u)`. Take `⟨r₀, rfl⟩` from `residue_surjective ρ`. Establish `hr₀ : IsUnit r₀`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← residue_ne_zero_iff_isUnit]`. Introduce and unpack `h`. Rewrite `hρ` using `[h, mul_zero]`. Conclude with `hu' hρ`. Use `set c : O := r₀ ^ 2 - u with hc_def`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : c ∈ maximalIdeal O`. Rewrite using `[← residue_eq_zero_iff, hc_def, map_sub, map_pow, hρ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : IsUnit (t * r₀)` using `ht.mul hr₀`. Use `set β : O := ↑hb.unit⁻¹ with hβ_def`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hβ : t * r₀ * β = 1` using `hb.mul_val_inv`. Take `⟨w, hw, hw1⟩` from `exists_root_monic_quadratic_henselian (-1) (n * β ^ 2 * c) 1 (by`. Establish `: (1 : O) ^ 2 + -1 * 1 + n * β ^ 2 * c = (n * β ^ 2) * c` using `by ring`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ hc)`.
-
-Use the proof step `(by norm_num)`. Establish `hwu : IsUnit w`. Rewrite using `[← residue_ne_zero_iff_isUnit]`. Use `(residue_eq_zero_iff _).2 hw1` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`.
-
-Rewrite using `[this]`. Conclude with `one_ne_zero`. Use `set ω : O := ↑hwu.unit⁻¹ with hω_def`. Establish `hω : w * ω = 1` using `hwu.mul_val_inv`. Conclude with `⟨r₀, -c * β * ω, by`.
-
-Take the linear combination `(-c * ω) * hβ + (c * ω ^ 2) * hw + (-c * (w * ω + 1) + c * ω) * hω⟩`.
+A detailed English derivation is pending.
 -/
 private lemma exists_binary_form_eq_unit {O : Type*} [CommRing O] [IsLocalRing O]
     [HenselianRing O (maximalIdeal O)] [Finite (ResidueField O)] (t n u : O)
@@ -176,27 +170,23 @@ open NumberField IsDedekindDomain in
 open scoped Quaternion Topology in
 
 /- English proof (translation)
-Introduce `F _ _ a b ha hb`. Take `⟨α, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) a`. Take `⟨β, e, he, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) b`. Establish `hα : α ≠ 0` using `by rintro rfl; simp at ha`. Establish `hβ : β ≠ 0` using `by rintro rfl; simp at hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `he0 : e ≠ 0` using `nonZeroDivisors.ne_zero he`. Establish `hx0 : α * d * β * e * 2 ≠ 0`. Establish `: (2 : 𝓞 F) ≠ 0` using `two_ne_zero`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Use `Filter.eventually_cofinite.2 ((Ideal.finite_factors (I := Ideal.span {α * d * β * e * 2}) (by simpa using hx0)).subset fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[Set.mem_setOf_eq, Ideal.dvd_span_singleton]`. Assume the negation of the conclusion as `hx`. Apply `hv` to reduce the goal to its premises. Use `haveI := _root_.GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `haveI := _root_.GlobalTheory.SelfDualGenus.finite_residueField_adicCompletionIntegers v`. Establish `hunit` using `(_root_.GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff v _).2 hx`. Simplify using `only [map_mul, IsUnit.mul_iff] at hunit`. Take `⟨⟨⟨⟨hA, hD⟩, hB⟩, hE⟩, h2⟩` from `hunit`. Rewrite `h2` using `[map_ofNat]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set a' : v.adicCompletionIntegers F := algebraMap (𝓞 F) (v.adicCompletionIntegers F) α * ↑hD.unit⁻¹ with ha'_def`. Use `set b' : v.adicCompletionIntegers F := algebraMap (𝓞 F) (v.adicCompletionIntegers F) β * ↑hE.unit⁻¹ with hb'_def`. Establish `ha'K : (a' : v.adicCompletion F) = algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F α / algebraMap (𝓞 F) F d)`. Rewrite using `[map_div₀, ha'_def, MulMemClass.coe_mul, coe_adicCompletionIntegers_inv v hD.mul_val_inv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hb'K : (b' : v.adicCompletion F) = algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F β / algebraMap (𝓞 F) F e)`. Rewrite using `[map_div₀, hb'_def, MulMemClass.coe_mul, coe_adicCompletionIntegers_inv v hE.mul_val_inv]`. Both sides reduce to the same expression. Establish `ha'u : IsUnit a'` using `hA.mul (hD.unit⁻¹).isUnit`. Establish `hb'u : IsUnit b'` using `hB.mul (hE.unit⁻¹).isUnit`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `set ai : v.adicCompletionIntegers F := ↑ha'u.unit⁻¹ with hai_def`. Establish `hai : a' * ai = 1` using `ha'u.mul_val_inv`. Introduce `t ht`. Use `set T : v.adicCompletionIntegers F := ⟨t, ht⟩ with hT`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : v.adicCompletionIntegers F, IsUnit (T ^ 2 - 1 + a' * b' * z ^ 2) := by`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hc : IsUnit (T ^ 2 - 1)`. Conclude with `⟨0, by simpa using hc⟩`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[← IsLocalRing.residue_ne_zero_iff_isUnit, not_not]`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, map_add, hc, zero_add, one_pow, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).2 (ha'u.mul hb'u)`. Take `⟨r, s, hrs⟩` from `exists_binary_form_eq_unit 0 (b' * ai) ((T ^ 2 - 1 + a' * b' * z ^ 2) * ai) (by`. Rewrite using `[show (0 : v.adicCompletionIntegers F) ^ 2 - 4 * (b' * ai) = -(2 * 2 * (b' * ai)) by ring]`. Conclude with `((h2.mul h2).mul (hb'u.mul (ha'u.unit⁻¹).isUnit)).neg)`. Use the proof step `(hz.mul (ha'u.unit⁻¹).isUnit)`.
-
-Establish `hO : T ^ 2 - a' * r ^ 2 - b' * s ^ 2 + a' * b' * z ^ 2 = 1`. Take the linear combination `(-a') * hrs + (b' * s ^ 2 - (T ^ 2 - 1) - a' * b' * z ^ 2) * hai`. Use `⟨⟨t, r, s, z⟩, ?_, rfl, r.2, s.2, z.2⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.QSA.nrm`. Rewrite using `[← ha'K, ← hb'K]`.
-
-Use `congrArg (fun x : v.adicCompletionIntegers F => (x : v.adicCompletion F)) hO` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QSA.IntRep.exists_nrm_eq_one_re_eq : ∀ (F : Type) [Field F] [NumberField F] (a b : F), a ≠ 0 → b ≠ 0 →
     ∀ᶠ v in (Filter.cofinite : Filter (HeightOneSpectrum (𝓞 F))), ∀ t ∈ v.adicCompletionIntegers F,

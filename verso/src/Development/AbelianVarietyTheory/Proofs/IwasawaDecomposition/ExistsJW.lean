@@ -14,11 +14,11 @@ namespace GlobalTheory.Mem.CoordW
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hP hH mj`. Establish `key : ∀ i : Fin D.R.m, ∃ g : (Fin (((R.toCx3 F).data F.cr false).dW i) → D.what₂.LL) →ₛₗ[D.what₂.embLL] D.what₂.Mj ((i : ℕ) + 1), ∀ v, mj.eW i (g v) = GlobalTheory.Mem.LiftTheta.goodForm R.toRealDat F.lv2 false i v`. Introduce `i`. Establish `he : Function.Injective (mj.eW i)` using `GlobalTheory.Mem.LiftForms.inj_of_norm_sq _ (RealDat.nP_pos (F := F.lv2) false) (mj.eW_norm i)`. Establish `hspan : Submodule.span ℂ (Set.range fun k => GlobalTheory.Mem.LiftTheta.goodForm R.toRealDat F.lv2 false i (Pi.single k 1)) = LinearMap.range (mj.eW i)` using `(GlobalTheory.Mem.LiftTheta.goodForm_span R.toRealDat F.lv2 false i).trans ((hH.aux.levelW false i _).trans (mj.eW_range i).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ v, GlobalTheory.Mem.LiftTheta.goodForm R.toRealDat F.lv2 false i v ∈ LinearMap.range (mj.eW i)`. Introduce `v`. Rewrite using `[← hspan, GlobalTheory.Mem.LiftTheta.semi_expand]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Use `choose s hs using fun v => LinearMap.mem_range.1 (hmem v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨{ toFun := s map_add' := fun a b => he ((hs (a + b)).trans (((map_add _ a b).trans (congrArg₂ (· + ·) (hs a).symm (hs b).symm)).trans (map_add (mj.eW i) (s a) (s b)).symm)) map_smul' := fun c a => he ((hs (c • a)).trans (((LinearMap.map_smulₛₗ _ c a).trans (congrArg (D.what₂.emb …`. Use `choose jW hjW using key`. Conclude with `⟨jW, fun i v => (hjW i v).trans (congrArg ((R.FW i).j (sg0 D A3.A)) (Fintype.linearCombination_apply _ _ _).symm)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_jW : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd), Pins R F cG → Holds R F → ∀ mj : GlobalTheory.RealGeo.MjTie R.toRealDat F.lv2, ∃ jW : ∀ i : Fin D.R.m, (Fin (((R.toCx3 F).data F.cr false).dW i) → D.what₂.LL) →ₛₗ[D.what₂.embLL] D.what₂.Mj ((i : ℕ) + 1), ∀ (i : Fin D.R.m) v, mj.eW i (jW i v) = (R.FW i).j (sg0 D A3.A) (Fintype.linearCombination D.what₂.LL (R.toRealDat.bL F.lv2 false i) v) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hP hH mj

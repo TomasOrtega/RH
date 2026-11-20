@@ -17,9 +17,9 @@ open CategoryTheory AlgebraicGeometry
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite `hx` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hx` to reduce the goal to its premises. Establish `h3 : g (f x) = x`. Rewrite using `[← RingHom.comp_apply, hgf, RingHom.id_apply]`. Establish `h2` using `hu.map g`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem map_maximalIdeal_le_maximalIdeal_of_retraction {R S : Type*} [CommRing R] [IsLocalRing R]
     [CommRing S] [IsLocalRing S] (f : R →+* S) (g : S →+* R) (hgf : g.comp f = RingHom.id R) :
@@ -36,9 +36,9 @@ theorem map_maximalIdeal_le_maximalIdeal_of_retraction {R S : Type*} [CommRing R
   rwa [h3] at h2
 
 /- English proof (translation)
-Establish `hf` using `map_maximalIdeal_le_maximalIdeal_of_retraction f g hgf`. Establish `hg` using `map_maximalIdeal_le_maximalIdeal_of_retraction g f hfg`. Establish `h1` using `idealOrder_le_idealOrder_map f hf I`. Establish `h3` using `idealOrder_le_idealOrder_map g hg (Ideal.map f I)`. Rewrite `h3` using `[Ideal.map_map, hgf, Ideal.map_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `le_antisymm h3 h1`.
+A detailed English derivation is pending.
 -/
 theorem idealOrder_map_eq_of_comp_eq_id {R S : Type*} [CommRing R] [IsLocalRing R]
     [CommRing S] [IsLocalRing S] (f : R →+* S) (g : S →+* R)
@@ -52,9 +52,9 @@ theorem idealOrder_map_eq_of_comp_eq_id {R S : Type*} [CommRing R] [IsLocalRing 
   exact le_antisymm h3 h1
 
 /- English proof (translation)
-Establish `hgf : ((inv (f.stalkMap x)).hom).comp ((f.stalkMap x).hom) = RingHom.id _`. Establish `h` using `congrArg CommRingCat.Hom.hom (IsIso.hom_inv_id (f.stalkMap x))`. Rewrite `h` using `[CommRingCat.hom_comp, CommRingCat.hom_id]`. Then use the resulting hypothesis. Establish `hfg : ((f.stalkMap x).hom).comp ((inv (f.stalkMap x)).hom) = RingHom.id _`. Establish `h` using `congrArg CommRingCat.Hom.hom (IsIso.inv_hom_id (f.stalkMap x))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[CommRingCat.hom_comp, CommRingCat.hom_id]`. Then use the resulting hypothesis. Simplify using `only [orderAt_eq_idealOrder]`. Rewrite using `[stalkIdeal_comap]`. Conclude with `idealOrder_map_eq_of_comp_eq_id _ _ hgf hfg _`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderAt_comap_of_isIso_stalkMap {X Y : Scheme.{u}} (f : X ⟶ Y) (J : Y.IdealSheafData)
     (x : X) [IsIso (f.stalkMap x)] :
@@ -70,15 +70,13 @@ theorem orderAt_comap_of_isIso_stalkMap {X Y : Scheme.{u}} (f : X ⟶ Y) (J : Y.
   exact idealOrder_map_eq_of_comp_eq_id _ _ hgf hfg _
 
 /- English proof (translation)
-Establish `h1` using `h.restrict Z.support.compl`. Rewrite `h1` using `[Blowup.comap_ι_support_compl_eq_top Z]`. Establish `hiso : IsIso (π ∣_ Z.support.compl)` using `h1.isIso_of_top`. Establish `hoi : IsOpenImmersion (π ∣_ Z.support.compl)` using `IsOpenImmersion.of_isIso _`. Establish `hxV : x ∈ π ⁻¹ᵁ Z.support.compl` using `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `y : ↥((π ⁻¹ᵁ Z.support.compl).toScheme)` to `⟨x, hxV⟩`. Establish `hs2 : IsIso ((Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl)).stalkMap y)` using `inferInstance`. Establish `hoi2 : IsOpenImmersion ((π ∣_ Z.support.compl) ≫ Scheme.Opens.ι Z.support.compl)` using `inferInstance`. Establish `hB : IsIso (((π ∣_ Z.support.compl) ≫ Scheme.Opens.ι Z.support.compl).stalkMap y)` using `inferInstance`. Establish `hcomp : Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl) ≫ π = (π ∣_ Z.support.compl) ≫ Scheme.Opens.ι Z.support.compl` using `(morphismRestrict_ι π Z.support.compl).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : IsIso ((Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl) ≫ π).stalkMap y)`. Rewrite using `[hcomp]`. Conclude with `hB`. Establish `e2 : (Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl) ≫ π).stalkMap y = π.stalkMap ((Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl)).base y) ≫ (Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl)).stalkMap y` using `Scheme.Hom.stalkMap_comp _ _ _`. Establish `hC : IsIso (π.stalkMap ((Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl)).base y) ≫ (Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl)).stalkMap y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hA` using `[e2]`. Conclude with `hA`. Establish `hr : π.stalkMap ((Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl)).base y) = (π.stalkMap ((Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl)).base y) ≫ (Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl)).stalkMap y) ≫ inv ((Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl)).stalkMap y)`. Rewrite using `[Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Establish `hfin : IsIso (π.stalkMap ((Scheme.Opens.ι (π ⁻¹ᵁ Z.support.compl)).base y))`.
-
-Rewrite using `[hr]`. Use `infer_instance`. Conclude with `hfin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_stalkMap_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} (π : X₁ ⟶ X) (Z : X.IdealSheafData)
     (h : Blowup.IsBlowupAlongIdealSheaf π Z) (x : X₁) (hx : π.base x ∉ Z.support) :
@@ -120,11 +118,9 @@ theorem isIso_stalkMap_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} (π : X�
 namespace OrderLocusBlowup
 
 /- English proof (translation)
-Introduce `x hx`. Distinguish the cases in `hxZ : π.base x ∈ Z.support`. Conclude with `hZ hxZ`. Use `isIso_stalkMap_of_isBlowupAlongIdealSheaf π Z hπ x hxZ` as an intermediate fact. Establish `hle : stalkIdeal (A.comap π) x ≤ stalkIdeal A₁ x`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hA, stalkIdeal_mul]`. Conclude with `le_trans Ideal.mul_le_inf inf_le_right`. Establish `h2 : orderAt A₁ x ≤ orderAt (A.comap π) x` using `idealOrder_le_of_le hle`. Establish `h3 : orderAt (A.comap π) x = orderAt A (π.base x)` using `orderAt_comap_of_isIso_stalkMap π A x`. Use `show (μ : ℕ∞) ≤ orderAt A (π.base x)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_subset_preimage_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z : X.IdealSheafData) (hπ : Blowup.IsBlowupAlongIdealSheaf π Z) (A : X.IdealSheafData) (A₁ : X₁.IdealSheafData)

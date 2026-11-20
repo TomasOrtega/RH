@@ -8,9 +8,9 @@ namespace GlobalTheory.SBUnif
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Set `S : AddSubgroup k` to `(𝒪[k].toAddSubgroup).comap (AddMonoidHom.mulLeft c⁻¹)`. Set `H : AddSubgroup 𝒪[k]` to `S.comap (𝒪[k].subtype.toAddMonoidHom)`. Establish `hS : IsOpen (S : Set k)` using `(Valuation.isOpen_integer (v := valuation k)).preimage (continuous_const.mul continuous_id)`. Establish `hH : IsOpen (H : Set 𝒪[k])` using `hS.preimage continuous_subtype_val`. Set `H' : OpenAddSubgroup 𝒪[k]` to `⟨H, hH⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: Finite (𝒪[k] ⧸ H)` using `AddSubgroup.instFiniteQuotientOfSeparatelyContinuousAddOfCompactSpace H'`. Establish `hne : H.index ≠ 0` using `AddSubgroup.index_ne_zero_of_finite`. Use `⟨H.index, Nat.pos_of_ne_zero hne, ?_⟩` and prove the remaining obligations. Establish `hm` using `H.nsmul_index_mem (1 : 𝒪[k])`. Simplify `hm` using `[H, S]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_nat_mem_mul_integer (c : k) (hc : c ≠ 0) :
     ∃ n : ℕ, 0 < n ∧ c⁻¹ * (n : k) ∈ 𝒪[k] := by
@@ -27,11 +27,9 @@ theorem exists_nat_mem_mul_integer (c : k) (hc : c ≠ 0) :
   simpa [H, S] using hm
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff _).1 h`. Take `⟨a, ha⟩` from `ValuativeRel.valuation_surjective (γ : ValueGroupWithZero k)`. Take `⟨w, hw0, hw1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [map_zero] at ha`. Conclude with `γ.ne_zero ha.symm`. Use `⟨a * w, mul_ne_zero ha0 hw0, hγ ?_⟩` and prove the remaining obligations. Use `show valuation k (a * w) < γ`. Rewrite using `[map_mul, ha]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_of_eventually {P : k → Prop} (h : ∀ᶠ s in nhds (0 : k), P s) :
     ∃ c : k, c ≠ 0 ∧ P c := by
@@ -54,31 +52,27 @@ end GlobalTheory.SBUnif
 namespace GlobalTheory.SBUnif
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ Y Y' _ _ Φ hΦ`. Take `⟨hlc, hcs⟩` from `hΦ`. Use `set O : Set (Matrix Y Y' k) := {u | ∀ r q, u r q ∈ 𝒪[k]} with hOdef`. Establish `hOpi : O = Set.univ.pi (fun _ : Y => Set.univ.pi (fun _ : Y' => (𝒪[k] : Set k)))`. Use extensionality with `u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h r _ q _`. Conclude with `h r q`. Introduce `h r q`. Conclude with `h r (Set.mem_univ _) q (Set.mem_univ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hOc : IsCompact O`. Rewrite using `[hOpi]`. Conclude with `isCompact_univ_pi (fun _ => isCompact_univ_pi (fun _ => (isCompact_iff_compactSpace (s := (𝒪[k] : Set k))).mpr (inferInstanceAs (CompactSpace 𝒪[k]))))`. Establish `hOo : IsOpen O`. Rewrite using `[hOpi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isOpen_set_pi Set.finite_univ (fun _ _ => isOpen_set_pi Set.finite_univ (fun _ _ => Valuation.isOpen_integer (v := valuation k)))`. Establish `hK : IsCompact (tsupport Φ)` using `hcs`. Establish `h1 : ∀ᶠ s in nhds (0 : k), ∀ p ∈ tsupport Φ ×ˢ O, Φ (p.1 + s • p.2) = Φ p.1`. Apply `(hK.prod hOc).eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `p _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : Continuous (fun z : k × (Matrix Y Y' k × Matrix Y Y' k) => z.2.1 + z.1 • z.2.2)` using `by fun_prop`. Establish `e1` using `(hlc.comp_continuous hc).eventually_eq (0, p)`. Establish `e2` using `(hlc.comp_continuous (continuous_fst.comp continuous_snd)).eventually_eq ((0 : k), p)`. Use `filter_upwards [e1, e2] with z hz1 hz2`. Simplify using `only [Function.comp_apply, zero_smul, add_zero] at hz1 hz2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hz1, hz2]`. Establish `h2 : ∀ᶠ s in nhds (0 : k), ∀ t ∈ tsupport Φ, s • t ∈ O`. Apply `hK.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `t _`. Establish `hc : Continuous (fun z : k × Matrix Y Y' k => z.1 • z.2)` using `by fun_prop`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h0 : (fun z : k × Matrix Y Y' k => z.1 • z.2) ((0 : k), t) ∈ O`. Simplify using `only [zero_smul]`. Introduce `r q`. Simplify using the standard rewrite rules. Conclude with `hc.continuousAt.preimage_mem_nhds (hOo.mem_nhds h0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc0, hc1, hc2⟩` from `exists_ne_zero_of_eventually (h1.and h2)`. Take `⟨n, hn, hy⟩` from `exists_nat_mem_mul_integer c hc0`. Use `set y := c⁻¹ * (n : k) with hydef`. Establish `hn' : (n : k) = c * y`. Rewrite using `[hydef, ← mul_assoc, mul_inv_cancel₀ hc0, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsmul : ∀ u : Matrix Y Y' k, n • u = c • (y • u)`. Introduce `u`. Rewrite using `[smul_smul, ← hn', Nat.cast_smul_eq_nsmul]`. Establish `hyO : ∀ u ∈ O, y • u ∈ O` using `fun u hu r q => by`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_mem hy (hu r q)`. Use `⟨n, hn, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu t`. Rewrite using `[hsmul]`. Establish `hu' : y • u ∈ O` using `hyO u hu`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `ht : t ∈ tsupport Φ`. Conclude with `hc1 (t, y • u) ⟨ht, hu'⟩`. Distinguish the cases in `ht' : t + c • (y • u) ∈ tsupport Φ`. Establish `hneg : -(y • u) ∈ O` using `fun r q => by`. Simplify using `only [Matrix.neg_apply]`.
-
-Conclude with `neg_mem (hu' r q)`. Use `hc1 (t + c • (y • u), -(y • u)) ⟨ht', hneg⟩` as an intermediate fact. Simplify using `only [smul_neg, add_neg_cancel_right] at this`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport ht', image_eq_zero_of_notMem_tsupport ht]`.
-
-Introduce `t ht r q`. Establish `htK : t ∈ tsupport Φ` using `subset_tsupport _ ht`. Rewrite using `[hsmul, smul_comm]`. Conclude with `hyO _ (hc2 t htK) r q`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sb_lattice_bounds : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (Y Y' : Type) [Fintype Y] [Fintype Y'] (Φ : Matrix Y Y' k → ℂ), Φ ∈ SB (Matrix Y Y' k) → ∃ n : ℕ, 0 < n ∧ (∀ u : Matrix Y Y' k, (∀ r q, u r q ∈ 𝒪[k]) → ∀ t, Φ (t + n • u) = Φ t) ∧ ∀ t, Φ t ≠ 0 → ∀ r q, (n • t) r q ∈ 𝒪[k] := by
   intro k _ _ _ _ _ Y Y' _ _ Φ hΦ

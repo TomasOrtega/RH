@@ -25,7 +25,7 @@ structure PlaceDat (V : HSp D) (S : D.what₂.Tau → SPar) (τ : D.what₂.Tau)
   fr_gram : frᴴ * Formalism.REAL.Jm ε * fr = gramAt D V τ
 
 /- English proof (translation)
-Establish `hex : ∀ τ, ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H) (σ : Matrix (Fin V.rank) (Fin V.rank) ℂ → (H →L[ℂ] H)), Formalism.MainNotions.S.IsDS (P τ).ε (P τ).lam σ` using `fun τ => ReciprocityTheory.ChartRestriction.DS.G2.discrete_series_exists_large_gap V.rank (P τ).ε (P τ).lam (P τ).hc (P τ).h (P τ).gap (P τ).big`. Use `choose H nH iH σ hσ using hex`. Conclude with `⟨@DSModel.mk D V S H nH iH σ (fun τ => (P τ).lam) (fun τ => (P τ).ε) (fun τ => (P τ).fr) (fun τ => (P τ).enum) hσ (fun τ => (P τ).fr_unit) (fun τ => (P τ).fr_gram)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dsModel_nonempty (P : ∀ τ, PlaceDat V S τ) : Nonempty (DSModel V S) := by
   classical

@@ -20,11 +20,9 @@ variable {k : Type u} [CommRing k] {K L K' L' N N' : CochainComplex (ModuleCat.{
     (f'.f n).hom (μK.μ h x z) = μL.μ h ((f.f r).hom x) ((ρ.f s).hom z))
 
 /- English proof (translation)
-Use `set x := (((mappingCoconeNat f).iCycles (p + 1)).hom X).1 with hx`. Use `set y : L.X p := (((mappingCoconeNat f).iCycles (p + 1)).hom X).2 with hy`. Establish `hX : ((mappingCoconeNat f).d (p + 1) (p + 1 + 1)).hom ((x, y) : K.X (p + 1) × shiftNegOneX L (p + 1)) = 0` using `iCycles_d_apply (mappingCoconeNat f) (p + 1) (p + 1 + 1) X`. Rewrite `hX` using `[mappingCoconeNat_d_hom_apply' f (p + 1) x y]`. Establish `hdy : (L.d p (p + 1)).hom y = (f.f (p + 1)).hom x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg Prod.snd hX`. Rewrite `h2` using `[shiftNegOneD_succ_apply, shiftNegOneSucc_apply]`. Conclude with `(add_neg_eq_zero.1 h2).symm`. Establish `hd : (L'.d m (m + 1)).hom (μL.μ (show p + s = m by omega) y ((ρ.f s).hom ((N.iCycles s).hom e)) - (f'.f m).hom q) = 0`. Rewrite using `[map_sub, μL.leibniz, hdy, hom_apply_hom_apply_eq_of_comp_eq (ρ.comm s (s + 1)), iCycles_d_apply, map_zero, map_zero, smul_zero, add_zero, ← hc h x, hom_apply_hom_apply_eq_of_comp_eq (f'.comm m (m + 1)), hq, sub_self]`.
-
-Use `⟨L'.cyclesMk _ (m + 1) (by simp) hd, L'.i_cyclesMk _ _ _ _, ?_⟩` and prove the remaining obligations. Conclude with `LeibnizPairing.coconeLeft_homology_eq_homologyδ μL ρ μK hc h X e q _ hq (L'.i_cyclesMk _ _ _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem LeibnizPairing.exists_coconeLeft_homology_eq_homologyδ {p s m : ℕ} (h : p + 1 + s = m + 1)
     (X : (mappingCoconeNat f).cycles (p + 1)) (e : N.cycles s) (q : K'.X m)

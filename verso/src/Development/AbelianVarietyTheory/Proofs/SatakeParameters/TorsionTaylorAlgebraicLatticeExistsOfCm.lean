@@ -13,7 +13,7 @@ import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.TorStatus
 namespace GlobalTheory.CurveThetaInert
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.ThLoc.algTAll, GlobalTheory.InertGenusOne.datum_exists_lattice h2 ReciprocityTheory.ChartRestriction.L1.cmIntegralityThree ReciprocityTheory.ChartRestriction.L1.cm4, GlobalTheory.CurveDictionary.curveDict_of_cm h2 ReciprocityTheory.ChartRestriction.L1.cmIntegralityT …`.
+Supply the required witnesses or components.
 -/
 theorem torsionTaylorAlgebraic_latticeExists_of_cm (h2 : Formalism.L2.Th1.CM.CM2) :
     Formalism.L2.KerInert.AlgTAll ∧ Formalism.L2.KerInert.GenusOneModelExistsLattice ∧ Formalism.L2.KerInert.Rep.CurveDict :=

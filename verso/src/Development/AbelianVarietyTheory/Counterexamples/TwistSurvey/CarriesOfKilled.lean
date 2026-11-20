@@ -19,9 +19,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
 def shift (R : RealDat3 D A3 Ks) : RealDat3 D A3 Ks := { R with lam3 := fun i t p v => R.lam3 i t p v + 1 }
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `hA`. Introduce `x hx`. Distinguish the cases in `hp : P = ⊥`. Rewrite `hx` using `[hp, Submodule.mem_bot]`. Rewrite using `[hx, h0, smul_zero]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h l hp hl]`. Conclude with `hl x hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_eq_smul_of_unique_eigenvalue {M : Type} [AddCommGroup M] [Module ℂ M] (f : M → M) (h0 : f 0 = 0) (P : Submodule ℂ M) (m : ℝ)
     (h : ∀ l : ℝ, P ≠ ⊥ → (∀ x ∈ P, f x = (l : ℂ) • x) → m = l) (hA : ∃ l : ℝ, ∀ x ∈ P, f x = (l : ℂ) • x) :
@@ -34,9 +34,9 @@ theorem apply_eq_smul_of_unique_eigenvalue {M : Type} [AddCommGroup M] [Module �
   · rw [h l hp hl]; exact hl x hx
 
 /- English proof (translation)
-Distinguish the cases in `hc : ∃ c, k c ∧ P c ≠ ⊥`. Take `⟨c, hc, hn⟩` from `hc`. Take `⟨z, hz⟩` from `hA c hn`. Establish `hle : ⨆ (c : C) (_ : k c), P c ≤ P c` using `iSup₂_le fun c' hc' => (h1 c' c hc' hc).le`. Conclude with `⟨z, fun x hx => hz x (hle hx)⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `⟨0, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hle : ⨆ (c : C) (_ : k c), P c ≤ ⊥` using `iSup₂_le fun c' hc' => by`. Assume the negation of the conclusion as `hn`. Conclude with `hc ⟨c', hc', fun e => hn e.le⟩`. Rewrite using `[(Submodule.mem_bot ℂ).1 (hle hx), h0, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scal_of_one {M C : Type} [AddCommGroup M] [Module ℂ M] (f : M → M) (h0 : f 0 = 0) (P : C → Submodule ℂ M) (k : C → Prop)
     (h1 : ∀ c c', k c → k c' → P c = P c') (hA : ∀ c, P c ≠ ⊥ → ∃ l : ℝ, ∀ x ∈ P c, f x = (l : ℂ) • x) :
@@ -55,7 +55,7 @@ theorem scal_of_one {M C : Type} [AddCommGroup M] [Module ℂ M] (f : M → M) (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `⟨fun hA i t p => ⟨_, hA i t p⟩, fun hA i t p => ?_⟩` and prove the remaining obligations. Conclude with `apply_eq_smul_of_unique_eigenvalue (fun x => R.thG i t (LinearMap.adjoint (R.thG i t) x)) (by simp only [map_zero]) (R.Wp3 i p) _ (h i t p) (hA i t p)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem iff_of_pin (R : RealDat3 D A3 Ks) (h : R.eigenvalue_at_base_of_scalar) :
     R.PThmA ↔ ∀ i t p, ∃ l : ℝ, ∀ x ∈ R.Wp3 i p, R.thG i t (LinearMap.adjoint (R.thG i t) x) = (l : ℂ) • x := by
@@ -68,7 +68,7 @@ def ScalC (R : RealDat3 D A3 Ks) : Prop :=
   ∀ i t c, R.Wc' i c ≠ ⊥ → ∃ l : ℝ, ∀ x ∈ R.Wc' i c, R.thG i t (LinearMap.adjoint (R.thG i t) x) = (l : ℂ) • x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, (hA.choose_spec.2 i t c hn).choose_spec.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem ex_of_aForm {A : FamIn D.what₂.LL G Pl0 T D.R.m} {R : RealDat D A Ks} {SF} (hA : GlobalTheory.LiftRows.AForm R SF) (i t c)
     (hn : GlobalTheory.Hk3.Wcc R SF i c ≠ ⊥) :
@@ -76,14 +76,14 @@ theorem ex_of_aForm {A : FamIn D.what₂.LL G Pl0 T D.R.m} {R : RealDat D A Ks} 
   ⟨_, (hA.choose_spec.2 i t c hn).choose_spec.2⟩
 
 /- English proof (translation)
-Introduce `i t c hn` and use `ex_of_aForm hA i t c hn`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem scalC_of_aForm (R : RealDat3 D A3 Ks) (hA : GlobalTheory.LiftRows.AForm R.toRealDat R.SF) : ScalC R :=
   fun i t c hn => ex_of_aForm hA i t c hn
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-The claim follows from `(iff_of_pin R h).2 fun i t p => scal_of_one (fun x => R.thG i t (LinearMap.adjoint (R.thG i t) x)) (by simp only [map_zero]) (R.Wc' i) (R.Carries p) (h1 i p) (hA i t)`.
+A detailed English derivation is pending.
 -/
 theorem of_scalC (R : RealDat3 D A3 Ks) (hA : ScalC R) (h : R.eigenvalue_at_base_of_scalar) (h1 : OnePart R) : R.PThmA :=
   (iff_of_pin R h).2 fun i t p =>
@@ -91,7 +91,7 @@ theorem of_scalC (R : RealDat3 D A3 Ks) (hA : ScalC R) (h : R.eigenvalue_at_base
       (h1 i p) (hA i t)
 
 /- English proof (translation)
-The claim follows from `of_scalC R (scalC_of_aForm R hA) h h1`.
+A detailed English derivation is pending.
 -/
 theorem of_aForm (R : RealDat3 D A3 Ks) (hA : GlobalTheory.LiftRows.AForm R.toRealDat R.SF) (h : R.eigenvalue_at_base_of_scalar) (h1 : OnePart R) : R.PThmA :=
   of_scalC R (scalC_of_aForm R hA) h h1

@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Crys
 open NumberField UpperTheory.V.Af.Bc
 
 /- English proof (translation)
-Use extensionality with `σ`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩ y hy`. Take `⟨k, rfl⟩` from `AlgHom.mem_fieldRange.mp hy`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `τ.commutes k`. Introduce `h`. Use `⟨AlgEquiv.ofRingEquiv (f := (σ : Ω ≃+* Ω)) fun k => h _ (AlgHom.mem_fieldRange.mpr ⟨k, rfl⟩), ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem range_res_eq {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (K : Type) [Field K] [Algebra F K] [Algebra K Ω]
     [IsScalarTower F K Ω] :
@@ -22,9 +22,9 @@ private theorem range_res_eq {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (
     rfl
 
 /- English proof (translation)
-Establish `hK` using `InfiniteGalois.fixedField_fixingSubgroup (IsScalarTower.toAlgHom F K Ω).fieldRange`. Establish `hK'` using `InfiniteGalois.fixedField_fixingSubgroup (IsScalarTower.toAlgHom F K' Ω).fieldRange`. Rewrite `h` using `[range_res_eq, range_res_eq]`. Establish `he : (IsScalarTower.toAlgHom F K Ω).fieldRange = (IsScalarTower.toAlgHom F K' Ω).fieldRange`. Rewrite using `[← hK, ← hK', h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he' : (IsScalarTower.toAlgHom F K Ω).range = (IsScalarTower.toAlgHom F K' Ω).range`. Rewrite using `[← AlgHom.fieldRange_toSubalgebra, ← AlgHom.fieldRange_toSubalgebra, he]`. Conclude with `⟨(AlgEquiv.ofInjectiveField _).trans ((Subalgebra.equivOfEq _ _ he').trans (AlgEquiv.ofInjectiveField _).symm)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem equiv_of_range {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [IsGalois F Ω] (K K' : Type) [Field K] [Algebra F K]
     [Algebra K Ω] [IsScalarTower F K Ω] [Field K'] [Algebra F K'] [Algebra K' Ω] [IsScalarTower F K' Ω]
@@ -40,7 +40,7 @@ private theorem equiv_of_range {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω]
     ((Subalgebra.equivOfEq _ _ he').trans (AlgEquiv.ofInjectiveField _).symm)⟩
 
 /- English proof (translation)
-Introduce `K K' Ω _ _ _ _ _ _ _ _ _ _ _ hK hcop heq`. Take `⟨e⟩` from `equiv_of_range K K' heq`. Rewrite `hcop` using `[← NumberField.discr_eq_discr_of_algEquiv (K := K) e, isCoprime_self, Int.isUnit_iff]`. Use `NumberField.abs_discr_gt_two (K := K) (by omega)` as an intermediate fact. Apply the tactic sequence `rcases hcop with h | h <;> rw [h] at this <;> norm_num at this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem UpperTheory.V.Br.signNe :
     UpperTheory.V.Br.SignNe := by

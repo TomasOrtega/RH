@@ -16,35 +16,33 @@ structure IsSelfDualMod (S : Subring K) (h : V →ₗ⋆[K] V →ₗ[K] K) (M : 
 variable {S : Subring K} {h : V →ₗ⋆[K] V →ₗ[K] K} {M : AddSubgroup V}
 
 /- English proof (translation)
-Establish `hl : ∀ (c : K) (u w : V), h (c • u) w = star c * h u w`. Introduce `c u w`. Rewrite using `[LinearMap.map_smulₛₗ₂, smul_eq_mul, starRingEnd_apply]`. Establish `hr : ∀ (c : K) (u w : V), h u (c • w) = c * h u w`. Introduce `c u w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `hsym : ∀ u w : V, star (h u w) = h w u`. Introduce `u w`. Establish `hsu` using `hs.eq u w`. Rewrite `hsu` using `[starRingEnd_apply]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hxx : h (x j) (x j) = 1`. Rewrite using `[hx]`. Simplify using the standard rewrite rules. Establish `hxj : ∀ i ∈ s, h (x i) (x j) = 0`. Introduce `i hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hij : i ≠ j` using `fun e => hj (e ▸ hi)`. Rewrite using `[hx]`. Simplify using `[hij]`. Establish `hjx : ∀ i ∈ s, h (x j) (x i) = 0`. Introduce `i hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hsym, hxj i hi, star_zero]`. Take `⟨t, ht0, htM⟩` from `hM.span (x j)`. Establish `hmemA : ∀ a : K, a ∈ M.map (h (x j)).toAddMonoidHom ↔ ∃ m ∈ M, h (x j) m = a`. Introduce `a`. Rewrite using `[AddSubgroup.mem_map]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨α, hαA, hα0, hαS⟩` from `hS.principal (M.map (h (x j)).toAddMonoidHom) (by`. Introduce `r hr' a ha`. Take `⟨m, hm, rfl⟩` from `(hmemA a).1 ha`. Conclude with `(hmemA _).2 ⟨r • m, hM.smul_mem r hr' m hm, hr r _ _⟩)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use the proof step `⟨t, (hmemA t).2 ⟨t • x j, htM, by rw [hr, hxx, mul_one]⟩, ht0⟩`. Use the proof step `⟨star t, star_ne_zero.2 ht0, fun a ha => by`. Take `⟨m, hm, rfl⟩` from `(hmemA a).1 ha`. Rewrite using `[← hl]`. Conclude with `hM.int _ htM m hm⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w1, hw1M, hw1⟩` from `(hmemA α).1 hαA`. Take `⟨a2, ha2⟩ : ∃ a2 : K, a2 = star α⁻¹` from `⟨_, rfl⟩`. Establish `ha20 : a2 ≠ 0`. Rewrite using `[ha2]`. Conclude with `star_ne_zero.2 (inv_ne_zero hα0)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvM : a2 • x j ∈ M`. Apply `hM.dual` to reduce the goal to its premises. Introduce `m hm`. Rewrite using `[hr, ← hsym]`. Establish `h1` using `hS.star_mem _ (hαS _ ((hmemA _).2 ⟨m, hm, rfl⟩))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[star_mul', ← ha2, mul_comm]`. Conclude with `h1`. Establish `hcM : ∀ i ∈ s, (h (x i) w1) • x i ∈ M` using `fun i hi => hM.smul_mem _ (hM.int _ (hxM i hi) _ hw1M) _ (hxM i hi)`. Establish `hw0M : w1 - ∑ i ∈ s, (h (x i) w1) • x i ∈ M` using `M.sub_mem hw1M (M.sum_mem hcM)`. Establish `hw0o : ∀ k ∈ s, h (x k) (w1 - ∑ i ∈ s, (h (x i) w1) • x i) = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k hk`. Rewrite using `[map_sub, map_sum]`. Simplify using `only [hr, hx]`. Simplify using `[Finset.sum_ite_eq, Finset.sum_ite_eq', hk]`. Establish `hvw : h (a2 • x j) (w1 - ∑ i ∈ s, (h (x i) w1) • x i) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[map_sub, map_sum, Finset.sum_eq_zero, sub_zero, hl, hw1, ha2, star_star, inv_mul_cancel₀ hα0]`. Introduce `i hi`. Rewrite using `[hr, hl, hjx i hi, mul_zero, mul_zero]`. Establish `hvvS : star a2 * a2 ∈ S`. Use `hM.int _ hvM _ hvM` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hl, hr, hxx, mul_one]`. Then use the resulting hypothesis. Take `⟨b, hb1, hbS⟩` from `exists_norm_one_mul_mem hS hvvS`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hb1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨c, hc, d, hd, hcd⟩` from `exists_norm_one_of_pair hS hs (y := b • a2 • x j) (w := b • (w1 - ∑ i ∈ s, (h (x i) w1) • x i)) (a := a2 * b) hbS (mul_ne_zero ha20 hb0) (by rw [hl, hr, hl, hr, hxx, star_mul']; ring) (by rw [hl, hr, hvw, mul_one, hb1]) (by rw [hl, hr, ← mul_assoc, hb1, one_mul]; exact hM.int _ h …`. Use `⟨c • (w1 - ∑ i ∈ s, (h (x i) w1) • x i) + d • a2 • x j, M.add_mem (hM.smul_mem c hc _ hw0M) (hM.smul_mem d hd _ hvM), ?_, ?_⟩` and prove the remaining obligations. Rewrite `hcd` using `[smul_comm c b, smul_comm d b, ← smul_add, hl, hr, ← mul_assoc, hb1, one_mul]`. Conclude with `hcd`. Introduce `i hi`.
-
-Rewrite using `[map_add, hr, hr, hw0o i hi, hr, hxj i hi]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_next (hS : IsHermSemilocal S) (hs : h.IsSymm) (hM : IsSelfDualMod S h M)
     {ι : Type*} [DecidableEq ι] (x : ι → V) (hx : ∀ i j, h (x i) (x j) = if i = j then 1 else 0)
@@ -133,23 +131,23 @@ theorem exists_next (hS : IsHermSemilocal S) (hs : h.IsSymm) (hM : IsSelfDualMod
     simp
 
 /- English proof (translation)
-Establish `hsym : ∀ u w : V, star (h u w) = h w u`. Introduce `u w`. Establish `hsu` using `hs.eq u w`. Rewrite `hsu` using `[starRingEnd_apply]`. Then use the resulting hypothesis. Establish `key : ∀ k : ℕ, k ≤ n → ∃ g ∈ Formalism.HermitianLatticesTheory.isom h, ∀ i : Fin n, (i : ℕ) < k → g (e i) ∈ M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_`. Conclude with `⟨1, (Formalism.HermitianLatticesTheory.isom h).one_mem, fun i hi => absurd hi (Nat.not_lt_zero _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ k ih`. Introduce `hk`. Take `⟨g, hg, hgM⟩` from `ih (Nat.le_of_succ_le hk)`. Establish `hgi : ∀ u w : V, h (g u) (g w) = h u w` using `hg`. Take `⟨kk, hkk⟩ : ∃ kk : Fin n, (kk : ℕ) = k` from `⟨⟨k, Nat.lt_of_succ_le hk⟩, rfl⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hxx : ∀ i j : Fin n, h (g (e i)) (g (e j)) = if i = j then 1 else 0`. Introduce `i j`. Rewrite using `[hgi, he]`. Take `⟨z, hzM, hzz, hzo⟩` from `exists_next hS hs hM (fun i => g (e i)) hxx (Finset.univ.filter (fun i : Fin n => (i : ℕ) < k)) (fun i hi => hgM i (Finset.mem_filter.1 hi).2) kk (by simp [hkk])`. Establish `hzo' : ∀ i : Fin n, (i : ℕ) < k → h (g (e i)) z = 0` using `fun i hi => hzo i (Finset.mem_filter.2 ⟨Finset.mem_univ _, hi⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk1 : h (g (e kk)) (g (e kk)) = 1`. Rewrite using `[hxx]`. Simplify using the standard rewrite rules. Take `⟨τ, hτ, hτk, hτfix⟩` from `exists_isom_fix hs hd hk1 hzz`. Use `⟨τ * g, (Formalism.HermitianLatticesTheory.isom h).mul_mem hτ hg, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi`. Use `show τ (g (e i)) ∈ M`. Break down `Nat.lt_or_ge (i : ℕ) k with hlt | hge` into its components or cases. Establish `h1 : h (g (e kk)) (g (e i)) = 0`. Rewrite using `[hxx]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : kk ≠ i`. Introduce `h'`. Rewrite `hlt` using `[← h', hkk]`. Conclude with `lt_irrefl _ hlt`. Simplify using `[hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : h z (g (e i)) = 0`. Rewrite using `[← hsym, hzo' i hlt, star_zero]`. Rewrite using `[hτfix _ h1 h2]`. Conclude with `hgM i hlt`. Establish `hik : i = kk` using `Fin.ext (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hik, hτk]`. Conclude with `hzM`. Take `⟨g, hg, hgM⟩` from `key n le_rfl`. Conclude with `⟨g, hg, fun i => hgM i i.isLt⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isom_frame (hS : IsHermSemilocal S) (hs : h.IsSymm) (hd : ∀ x, h x x = 0 → x = 0)
     (hM : IsSelfDualMod S h M) {n : ℕ} (e : Fin n → V)

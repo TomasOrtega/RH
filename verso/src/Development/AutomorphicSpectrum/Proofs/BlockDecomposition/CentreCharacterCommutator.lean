@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.FJE
 
 /- English proof (translation)
-Establish `h` using `rat_conjTranspose b₀.1`. Establish `e : b₀.1ᴴ = b₀.1` using `b₀.2`. Rewrite `h` using `[e]`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_herm {D : D7} {ρ : ℕ} (b₀ : HermE D ρ) :
     adj (b₀.1.map (incA D) : Mx D ρ ρ) = b₀.1.map (incA D) := by
@@ -28,11 +28,11 @@ theorem adj_herm {D : D7} {ρ : ℕ} (b₀ : HermE D ρ) :
   exact h.symm
 
 /- English proof (translation)
-Use `set B : Mx D ρ ρ := b₀.1.map (incA D) with hB`. Establish `hadj : adj B = B` using `adj_herm b₀`. Establish `e1 : Matrix.trace (B * (y * adj x)) = Matrix.trace (pr b₀ x y)` using `by show _ = Matrix.trace (adj x * (B * y))`. Rewrite using `[← Matrix.mul_assoc, Matrix.trace_mul_comm]`. Establish `e2 : Matrix.trace (B * (x * adj y)) = cA D (Matrix.trace (pr b₀ x y))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.CompanionTheory.FourierN.trace_adj]`. Establish `h : adj (pr b₀ x y) = HMul.hMul (HMul.hMul (adj y) B : Mx D p ρ) x` using `by show adj (HMul.hMul (adj x) (HMul.hMul B y : Mx D ρ p) : Mx D p p) = _`. Rewrite using `[adj_mul, adj_mul, adj_adj, hadj]`. Rewrite using `[h, Matrix.trace_mul_comm, Matrix.mul_assoc x, Matrix.trace_mul_comm]`. Establish `e3 : Matrix.trace (HMul.hMul B (GlobalTheory.CompanionTheory.FJE.jc y x).1 : Mx D ρ ρ) = Matrix.trace (pr b₀ x y) + cA D (Matrix.trace (pr b₀ x y))` using `by show Matrix.trace (B * (y * adj x + x * adj y)) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_add, Matrix.trace_add, e1, e2]`. Rewrite using `[chz, show HMul.hMul (b₀.1.map (incA D)) (GlobalTheory.CompanionTheory.FJE.jc y x).1 = HMul.hMul B (GlobalTheory.CompanionTheory.FJE.jc y x).1 from rfl, e3, GlobalTheory.CompanionTheory.FourierN.halfTr_add_cA]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chz_jc {D : D7} {ρ p : ℕ} (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (y x : Mx D ρ p) :
     chz ψ b₀ (GlobalTheory.CompanionTheory.FJE.jc y x) = GlobalTheory.CompanionTheory.FJE.chv ψ b₀ x y := by

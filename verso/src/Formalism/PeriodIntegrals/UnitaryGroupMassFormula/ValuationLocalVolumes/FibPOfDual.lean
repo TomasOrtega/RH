@@ -27,19 +27,15 @@ def HensOntoP (a : ℕ) : Prop :=
       ∃ W0 ∈ LamT v Λ a, crossM σ J y W0 = (S : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))
 
 /- English proof (translation)
-Introduce `hS hSD hUn hL y hy S hS'`. Take `⟨W, hW, hd⟩` from `hD hS hSD hUn hL y hy`. Take `⟨L, -, hLΛ⟩` from `hL`. Establish `hTr : TrOnto σ v` using `PI.OmLocU.Red.trOnto_holds σ J ψ v hS`. Establish `hdiag : ∀ i, ∃ x ∈ OEv (E` using `E) v, x + sigR (Fv F v) σ x = (S : Matrix (Fin a) (Fin a) _) i i := fun i => hTr hUn _ (hS' i i) (S.2 i i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose x hx hxs using hdiag`. Use `set A : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) := fun i j => if i < j then (S : Matrix (Fin a) (Fin a) _) i j else if i = j then x i else 0 with hAdef`. Establish `hA : ∀ i j, A i j ∈ OEv (E` using `E) v := by`. Introduce `i j`. Simplify using `only [hAdef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs`. Conclude with `hS' i j`. Conclude with `hx i`. Conclude with `oEv_zero v`. Establish `hAS : ∀ i j, A i j + sigR (Fv F v) σ (A j i) = (S : Matrix (Fin a) (Fin a) _) i j`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Introduce `i j`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Simplify using `[hAdef, h, not_lt.2 h.le, h.ne']`. Simplify using `[hAdef, hxs]`. Simplify using `only [hAdef, h, not_lt.2 h.le, h.ne, h.ne', if_false, if_true, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `S.2 i j`. Substitute `hLΛ` using the available equality. Use `⟨fun j => ∑ k, A k j • W k, fun j => ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun k _ => oEv_smul_mem v L (hA k j) (hW k)`. Use function extensionality and compare the values at `i j`.
-
-Simplify using `only [crossM]`. Rewrite using `[hR_sum_smul_right, hR_sum_smul_left]`. Establish `e1 : ∑ k, A k j * hR (Fv F v) σ J (y i) (W k) = A i j`. Simplify using `only [fun k => (hd i k).1, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `e2 : ∑ k, sigR (Fv F v) σ (A k i) * hR (Fv F v) σ J (W k) (y j) = sigR (Fv F v) σ (A j i)`.
-
-Simplify using `only [fun k => (hd j k).2, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[e1, e2, hAS]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem henselSurjective_of_primitiveDual (a : ℕ) (hD : PrimDual σ J ψ v Λ a) : HensOntoP σ J ψ v Λ a := by
   classical
@@ -79,15 +75,15 @@ theorem henselSurjective_of_primitiveDual (a : ℕ) (hD : PrimDual σ J ψ v Λ 
     rw [e1, e2, hAS]
 
 /- English proof (translation)
-Introduce `hG ϖ hϖ hσ hJ y hy hyT`. Take `⟨h0, -, hint⟩` from `unif_spec v ϖ hϖ`. Establish `hSD : IsSDLoc σ J v Λ` using `hG.2.2.1`. Use `⟨dH σ J v hσ hJ y, fun k => ?_, fun k Z hZ W hW => ?_⟩` and prove the remaining obligations. Use extensionality with `S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨W, hW, rfl⟩`. Take `⟨W0, hW0, rfl⟩` from `(PI.VolStabSW.mem_smulSub _ _ _).1 hW`. Rewrite using `[mem_hN σ v ϖ h0]`. Introduce `i j`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨crossM σ J y W0 i j, ?_, ?_⟩` and prove the remaining obligations. Conclude with `oEv_add v (hR_mem_oEv σ J v Λ hSD (hy.1 i) (hW0 j)) (hR_mem_oEv σ J v Λ hSD (hW0 i) (hy.1 j))`. Rewrite using `[coe_dH, crossM_smul_right]`. Introduce `hS`. Take `⟨S0, hS0, rfl⟩` from `(PI.VolStabSW.mem_smulSub _ _ _).1 hS`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W0, hW0, hc⟩` from `h hG.1 hSD hG.2.2.2.1 hG.2.1 y hy S0 hS0`. Use `AddSubgroup.mem_map.2 ⟨ϖ ^ (k + 1) • W0, (PI.VolStabSW.mem_smulSub _ _ _).2 ⟨W0, hW0, rfl⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Rewrite using `[coe_dH, crossM_smul_right, hc, PI.VolStabSW.coe_hermSMul, Matrix.smul_apply, smul_eq_sc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `rem_mem σ J v Λ hSD ϖ h0 hint hZ hW show gramR (Fv F v) σ J (y + Z + W) - gramR (Fv F v) σ J (y + Z) - (gramR (Fv F v) σ J (y + W) - gramR (Fv F v) σ J y - gramR (Fv F v) σ J W) = _` to reduce the goal to its premises. Conclude with `gram_rem σ J y Z W`.
+A detailed English derivation is pending.
 -/
 theorem fiberHensel_of_henselOnto (a : ℕ) (Y : TupV (E := E) v n a) (h : HensOntoP σ J ψ v Λ a) :
     FibHensP σ J ψ v Λ a Y := by
@@ -117,7 +113,7 @@ theorem fiberHensel_of_henselOnto (a : ℕ) (Y : TupV (E := E) v n a) (h : HensO
     exact gram_rem σ J y Z W
 
 /- English proof (translation)
-The claim follows from `fibP_of σ J ψ v Λ a Y hC (fiberHensel_of_henselOnto σ J ψ v Λ a Y (henselSurjective_of_primitiveDual σ J ψ v Λ a hD))`.
+A detailed English derivation is pending.
 -/
 theorem fibP_of_dual (a : ℕ) (Y : TupV (E := E) v n a) (hC : PrimCos σ J ψ v Λ a) (hD : PrimDual σ J ψ v Λ a) :
     FibP σ J ψ v Λ a Y :=

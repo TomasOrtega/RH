@@ -12,7 +12,7 @@ section Val
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Establish `ha' : IsDiscreteValuationRing.addVal O a ≠ ⊤`. Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]` and apply the resulting hypothesis. Establish `hb' : IsDiscreteValuationRing.addVal O b ≠ ⊤`. Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]` and apply the resulting hypothesis. Rewrite using `[AddValuation.map_mul, ENat.toNat_add ha' hb']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem toNat_addVal_mul {a b : O} (ha : a ≠ 0) (hb : b ≠ 0) :
     (IsDiscreteValuationRing.addVal O (a * b)).toNat =
@@ -24,11 +24,11 @@ theorem toNat_addVal_mul {a b : O} (ha : a ≠ 0) (hb : b ≠ 0) :
   rw [AddValuation.map_mul, ENat.toNat_add ha' hb']
 
 /- English proof (translation)
-Establish `hz' : algebraMap O (KK O) z ≠ 0`. Introduce `h`. Conclude with `hz ((IsFractionRing.to_map_eq_zero_iff).mp h)`. Establish `hspec` using `Classical.choose_spec (IsLocalization.surj (nonZeroDivisors O) (algebraMap O (KK O) z))`. Simplify using `only [vO, vK, ordW, if_neg hz']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Classical.choose (IsLocalization.surj (nonZeroDivisors O) (algebraMap O (KK O) z)) = ab at hspec ⊢`. Rewrite `hspec` using `[← map_mul]`. Establish `hmul : z * (ab.2 : O) = ab.1` using `IsFractionRing.injective O (KK O) hspec`. Establish `hb : (ab.2 : O) ≠ 0` using `nonZeroDivisors.coe_ne_zero ab.2`. Rewrite using `[← hmul, toNat_addVal_mul hz hb]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [WithTop.map_coe]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem vO_eq_addVal_div_ramE_of_ne_zero (p : ℕ) {z : O} (hz : z ≠ 0) :
     vO p z = ((((IsDiscreteValuationRing.addVal O z).toNat : ℚ) / (ramE p O : ℚ) : ℚ) : WithTop ℚ) := by
@@ -48,7 +48,7 @@ private theorem vO_eq_addVal_div_ramE_of_ne_zero (p : ℕ) {z : O} (hz : z ≠ 0
   ring
 
 /- English proof (translation)
-Distinguish the cases in `ho : o = 0`. Substitute `ho` using the available equality. Simplify using `[vK, ordW]`. Establish `hv : vK p (algebraMap O (KK O) o) = vO p o` using `rfl`. Rewrite using `[hv, vO_eq_addVal_div_ramE_of_ne_zero p ho, ← WithTop.coe_zero, WithTop.coe_le_coe]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Check the signs of the components of the expression.
 -/
@@ -61,11 +61,11 @@ theorem vK_alg_nonneg (p : ℕ) (o : O) : (0 : WithTop ℚ) ≤ vK p (algebraMap
     positivity
 
 /- English proof (translation)
-Establish `hF : s • F = ∑ μ ∈ F.support, monomial μ (s • F.coeff μ)` using `by conv_lhs => rw [← F.support_sum_monomial_coeff, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_monomial]`. Rewrite using `[hF]`. Use `Submodule.sum_mem _ fun μ hμ => Submodule.subset_span ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨o, ho⟩` from `h μ hμ`. Use `⟨μ, s • F.coeff μ, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← ho]`. Use `add_nonneg (vK_alg_nonneg p o) ?_` and prove the remaining obligations. Establish `: (0 : ℚ) ≤ (padicValNat p (expFact μ) : ℚ) / 2 + (padicValNat p sp : ℚ) / 2` using `by positivity`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_bbSpec (p : ℕ) {σ : Type*} (sp : ℕ) (F : MvPolynomial σ (KK O)) (s : O)
     (h : ∀ μ ∈ F.support, IsLocalization.IsInteger O (s • F.coeff μ)) : s • F ∈ bbSpec O p σ sp := by
@@ -86,17 +86,13 @@ theorem smul_mem_bbSpec (p : ℕ) {σ : Type*} (sp : ℕ) (F : MvPolynomial σ (
 end Val
 
 /- English proof (translation)
-Establish `hz : ∀ (x : V) b, b ∉ F → x ∈ M b → x = 0` using `fun x b hb hx => by`. Rewrite `hx` using `[h b hb]`. Conclude with `(Submodule.mem_bot K).mp hx`. Set `e : (Submodule.pi Set.univ M) ≃ₗ[K] ((b : F) → M b)` to `{ toFun := fun x b => ⟨(x : β → V) b, x.2 b (Set.mem_univ _)⟩ invFun := fun y => ⟨fun b => if hb : b ∈ F then (y ⟨b, hb⟩ : V) else 0, fun b _ => by`. Distinguish the cases in `hb : b ∈ F`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_pos hb]`. Conclude with `(y ⟨b, hb⟩).2`. Simplify using `only [dif_neg hb]`. Conclude with `Submodule.zero_mem _⟩`. Use the proof step `map_add' := fun x y => by`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `b`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun c x => by`. Use function extensionality and compare the values at `b`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `left_inv := fun x => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b ∈ F`. Simplify using `[hb]`.
-
-Simplify using `only [dif_neg hb]`. Conclude with `(hz _ b hb (x.2 b (Set.mem_univ _))).symm`. Use `right_inv := fun y => by`. Use function extensionality and compare the values at `b`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Simplify using `[b.2] }`. Use `haveI : ∀ b : F, Module.Finite K (M b) := fun b => hf b b.2`. Rewrite using `[e.finrank_eq, Module.finrank_pi_fintype]`. Conclude with `Finset.sum_coe_sort F (fun b => Module.finrank K (M b))`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_pi_supp {K β V : Type*} [Field K] [AddCommGroup V] [Module K V] (M : β → Submodule K V)
     (F : Finset β) (h : ∀ b, b ∉ F → M b = ⊥) (hf : ∀ b ∈ F, Module.Finite K (M b)) :
@@ -135,17 +131,15 @@ theorem finrank_pi_supp {K β V : Type*} [Field K] [AddCommGroup V] [Module K V]
   exact Finset.sum_coe_sort F (fun b => Module.finrank K (M b))
 
 /- English proof (translation)
-Set `f : L →ₗ[O] V` to `{ toFun := fun x => ⟨x.1, hLV x.1 x.2⟩ map_add' := fun x y => rfl map_smul' := fun c x => rfl }`. Establish `: IsLocalizedModule (nonZeroDivisors O) f` using `{ map_units := by`. Introduce `x`. Rewrite using `[Module.End.isUnit_iff]`. Establish `hx : algebraMap O (KK O) (x : O) ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `nonZeroDivisors.coe_ne_zero x ((map_eq_zero_iff _ (IsFractionRing.injective O (KK O))).1 h)`. Prove the components needed by the constructor for the conclusion. Introduce `v v' hv`. Establish `hv' : (x : O) • v = (x : O) • v'` using `hv`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv'` using `[← algebraMap_smul (KK O) (x : O) v, ← algebraMap_smul (KK O) (x : O) v']`. Conclude with `smul_right_injective V hx hv'`. Introduce `v`. Use `⟨(algebraMap O (KK O) (x : O))⁻¹ • v, ?_⟩` and prove the remaining obligations. Use `show (x : O) • ((algebraMap O (KK O) (x : O))⁻¹ • v) = v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← algebraMap_smul (KK O) (x : O), smul_smul, mul_inv_cancel₀ hx, one_smul]`. Use `surj := by`. Introduce `y`. Take `⟨s, hs, hm⟩` from `habs y.1 y.2`. Conclude with `⟨(⟨s • y.1, hm⟩, ⟨s, mem_nonZeroDivisors_of_ne_zero hs⟩), rfl⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `exists_of_eq := by`. Introduce `x₁ x₂ h`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `: x₁ = x₂` using `Subtype.ext (congrArg (fun z : V => z.1) h)`. Rewrite using `[this] }`.
-
-Rewrite using `[← IsLocalizedModule.finrank_eq (nonZeroDivisors O) f le_rfl]`. Conclude with `(IsFractionRing.finrank_right_eq O (KK O) V).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_lattice {O E : Type} [CommRing O] [IsDomain O] [AddCommGroup E] [Module O E] [Module (KK O) E]
     [IsScalarTower O (KK O) E] (V : Submodule (KK O) E) (L : Submodule O E) (hLV : ∀ x ∈ L, x ∈ V)
@@ -187,9 +181,9 @@ section Deg
 variable {O : Type} [CommRing O] [IsDomain O] {N r : ℕ}
 
 /- English proof (translation)
-Unfold `BlockData.Ehat`. Use `(totalDegree_add _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_X, totalDegree_X]`. Use `totalDegree_finsetSum_le fun c _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_X, totalDegree_X]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem totalDegree_Ehat (D : BlockData N) (i : Fin D.T.t) : (D.Ehat O (r := r) i).totalDegree ≤ 2 := by
   unfold BlockData.Ehat
@@ -201,9 +195,9 @@ theorem totalDegree_Ehat (D : BlockData N) (i : Fin D.T.t) : (D.Ehat O (r := r) 
     rw [totalDegree_X, totalDegree_X]
 
 /- English proof (translation)
-Unfold `BlockData.Eplus`. Use `(totalDegree_add _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_X, totalDegree_X]`. Use `totalDegree_finsetSum_le fun c _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_X, totalDegree_X]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem totalDegree_Eplus (D : BlockData N) : (D.Eplus O (r := r)).totalDegree ≤ 2 := by
   unfold BlockData.Eplus
@@ -215,9 +209,9 @@ theorem totalDegree_Eplus (D : BlockData N) : (D.Eplus O (r := r)).totalDegree �
     rw [totalDegree_X, totalDegree_X]
 
 /- English proof (translation)
-Unfold `chPol Pol at hy`. Rewrite `hy` using `[MvPolynomial.mem_restrictSupport_iff]`. Unfold `totalDegree`. Use `Finset.sup_le fun m hm => ?_` and prove the remaining obligations. Establish `h` using `hy (Finset.mem_coe.2 hm)`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h' : ∀ i, multideg m i = LL.deg i` using `h`. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fintype.sum_prod_type]`. Conclude with `le_of_eq (Finset.sum_congr rfl fun i _ => h' i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem totalDegree_chPol {K : Type*} [CommSemiring K] (LL : ChainLetters N) (y : MvPolynomial (Fin N × Fin r) K)
     (hy : y ∈ chPol K r LL) : y.totalDegree ≤ ∑ a, LL.deg a := by
@@ -231,13 +225,11 @@ theorem totalDegree_chPol {K : Type*} [CommSemiring K] (LL : ChainLetters N) (y 
   exact le_of_eq (Finset.sum_congr rfl fun i _ => h' i)
 
 /- English proof (translation)
-Establish `hg1 : g ∈ MvPolynomial.restrictSupport (KK O) {m | (∀ v ∈ m.support, ∃ c, v = xiVar N r t c) ∧ ∑ c, m (xiVar N r t c) = b}` using `hg.1`. Rewrite `hg1` using `[MvPolynomial.mem_restrictSupport_iff]`. Unfold `totalDegree`. Use `Finset.sup_le fun m hm => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hg1 (Finset.mem_coe.2 hm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← h2]`. Establish `hinj : Function.Injective (xiVar N r t)`. Introduce `c c' h`. Unfold `xiVar at h`. Conclude with `(Prod.mk.inj (Sum.inl.inj h)).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_image (f := fun v => m v) (s := Finset.univ) (g := xiVar N r t) (fun _ _ _ _ h => hinj h)]`. Unfold `Finsupp.sum`. Use `Finset.sum_le_sum_of_subset ?_` and prove the remaining obligations. Introduce `v hv`. Take `⟨c, rfl⟩` from `h1 v hv`.
-
-Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ c)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem totalDegree_xi (t b : ℕ) (g : MvPolynomial (BVar N r t) (KK O)) (hg : g ∈ XiPolZ O N r t b) :
     g.totalDegree ≤ b := by
@@ -264,17 +256,15 @@ def degBound (D : BlockData N) : ℕ :=
   (∑ i, D.LL.deg (D.letterAt (D.T.pos i)) * 2) + D.B * 2 + (∑ i, D.T.z i) + D.zPlus + (∑ a, D.LL.deg a) + D.B
 
 /- English proof (translation)
-Take `⟨y, hy, g, hg, rfl⟩` from `hx`. Establish `hy1 : y.totalDegree ≤ ∑ a, D.LL.deg a`. Establish `h1 : y ∈ chPol (KK O) r (D.lettersAt j jp)` using `hy.1.1`. Use `(totalDegree_chPol _ y h1).trans (Finset.sum_le_sum fun a _ => ?_)` and prove the remaining obligations. Use `show D.LL.deg a - _ - _ ≤ D.LL.deg a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hg1 : g.totalDegree ≤ D.B` using `(totalDegree_xi _ _ g hg).trans (Nat.sub_le _ _)`. Establish `hE : (∏ i, D.Ehat O (r` using `r) i ^ j i).totalDegree ≤ ∑ i, D.LL.deg (D.letterAt (D.T.pos i)) * 2 := by`. Use `(totalDegree_finsetProd _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Use `(totalDegree_pow _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Nat.mul_le_mul (hl.1 i).1 (totalDegree_Ehat D i)`. Establish `hP : (D.Eplus O (r` using `r) ^ jp).totalDegree ≤ D.B * 2 := by`. Use `(totalDegree_pow _ _).trans ?_` and prove the remaining obligations. Conclude with `Nat.mul_le_mul (le_trans hl.2 (min_le_right _ _)) (totalDegree_Eplus D)`. Establish `hZ : (∏ i, (X (scalZ N r D.T.t (Fin.castSucc i)) : MvPolynomial (BVar N r D.T.t) (KK O)) ^ D.T.z i).totalDegree ≤ ∑ i, D.T.z i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(totalDegree_finsetProd _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Use `(totalDegree_pow _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_X, mul_one]`. Establish `hX : ((X (scalZ N r D.T.t (Fin.last D.T.t)) : MvPolynomial (BVar N r D.T.t) (KK O)) ^ D.zPlus).totalDegree ≤ D.zPlus`. Use `(totalDegree_pow _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[totalDegree_X, mul_one]`. Establish `hr : (rename (chainEmb N r D.T.t) y).totalDegree ≤ ∑ a, D.LL.deg a` using `(totalDegree_rename_le _ _).trans hy1`. Unfold `degBound`. Use `(totalDegree_mul _ _).trans (Nat.add_le_add ?_ hg1)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans (Nat.add_le_add ?_ hr)` and prove the remaining obligations.
-
-Use `(totalDegree_mul _ _).trans (Nat.add_le_add ?_ hX)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans (Nat.add_le_add ?_ hZ)` and prove the remaining obligations. Conclude with `(totalDegree_mul _ _).trans (Nat.add_le_add hE hP)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gens_totalDegree [NeZero r] (D : BlockData N) (j : Fin D.T.t → ℕ) (jp : ℕ) (hl : D.LevelOK j jp)
     (x : MvPolynomial (BVar N r D.T.t) (KK O)) (hx : x ∈ D.gens O (r := r) j jp) : x.totalDegree ≤ degBound D := by
@@ -310,11 +300,9 @@ theorem gens_totalDegree [NeZero r] (D : BlockData N) (j : Fin D.T.t → ℕ) (j
   exact (totalDegree_mul _ _).trans (Nat.add_le_add hE hP)
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_le]`. Establish `h : D.SSZ O (r` using `r) ≤ (restrictTotalDegree (BVar N r D.T.t) (KK O) (degBound D)).restrictScalars O := by`. Unfold `BlockData.SSZ`. Rewrite using `[Submodule.span_le]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_iUnion] at hx`. Take `⟨j, jp, hl, hx⟩` from `hx`. Use `show x ∈ restrictTotalDegree (BVar N r D.T.t) (KK O) (degBound D)`. Rewrite using `[mem_restrictTotalDegree]`. Conclude with `gens_totalDegree D j jp hl x hx`.
-
-Conclude with `h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanSSZ_le [NeZero r] (D : BlockData N) :
     Submodule.span (KK O) ((D.SSZ O (r := r) : Submodule O (MvPolynomial (BVar N r D.T.t) (KK O))) :
@@ -332,7 +320,7 @@ theorem spanSSZ_le [NeZero r] (D : BlockData N) :
   exact h
 
 /- English proof (translation)
-The claim follows from `Submodule.finiteDimensional_of_le (spanSSZ_le D)`.
+A detailed English derivation is pending.
 -/
 theorem spanSSZ_finite [NeZero r] (D : BlockData N) :
     Module.Finite (KK O) (Submodule.span (KK O)
@@ -356,25 +344,21 @@ def Vb (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p r : �
 open Classical in
 
 /- English proof (translation)
-Use `set F : Finset (SegBlock s r) := hfin.toFinset with hF`. Establish `hmemF : ∀ b, b ∈ F ↔ Kept p r S aTop b` using `fun b => by rw [hF, Set.Finite.mem_toFinset]; rfl`. Set `M : SegBlock s r → Submodule (KK O) (MvPolynomial (BVar (2 * s + 1) r S.t) (KK O))` to `fun b => if Kept p r S aTop b then Vb O p r S aTop aPlus m b else ⊥`. Establish `hM1 : ∀ b, Kept p r S aTop b → M b = Vb O p r S aTop aPlus m b` using `fun b hb => if_pos hb`. Establish `hM0 : ∀ b, ¬ Kept p r S aTop b → M b = ⊥` using `fun b hb => if_neg hb`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Module.finrank O (segLat O p r S aTop aPlus m) = Module.finrank (KK O) (Submodule.pi Set.univ M)`. Apply `finrank_lattice` to reduce the goal to its premises. Introduce `x hx b _`. Establish `hxb` using `hx b trivial`. Use `show x b ∈ M b`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hb : Kept p r S aTop b`. Rewrite using `[hM1 b hb]`. Simplify using `only [if_pos hb] at hxb`. Conclude with `hxb.1`. Rewrite using `[hM0 b hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [if_neg hb] at hxb`. Conclude with `hxb`. Introduce `v hv`. Take `⟨sd, hsd⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors O) (F.biUnion fun b => (v b).support.image fun μ => (v b).coeff μ)`. Use `⟨sd, nonZeroDivisors.coe_ne_zero sd, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `b _`. Establish `hvb : v b ∈ M b` using `hv b trivial`. Use `show ((sd : O) • v) b ∈ (if Kept p r S aTop b then blockLat O p r S aTop aPlus m b else ⊥ : Submodule O _)`. Distinguish the cases in `hb : Kept p r S aTop b`. Rewrite `hvb` using `[hM1 b hb]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[if_pos hb]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `((Vb O p r S aTop aPlus m b).restrictScalars O).smul_mem (sd : O) hvb`. Use `smul_mem_bbSpec p _ (v b) (sd : O) fun μ hμ => hsd _ ?_` and prove the remaining obligations. Rewrite using `[Finset.mem_biUnion]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨b, (hmemF b).2 hb, Finset.mem_image_of_mem _ hμ⟩`. Rewrite `hvb` using `[hM0 b hb, Submodule.mem_bot]`. Rewrite using `[if_neg hb, Submodule.mem_bot]`. Use `show (sd : O) • v b = 0`. Rewrite using `[hvb, smul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1, finrank_pi_supp M F (fun b hb => hM0 b (fun h => hb ((hmemF b).2 h))) (fun b hb => by`. Rewrite using `[hM1 b ((hmemF b).1 hb)]`. Conclude with `spanSSZ_finite (O := O) (r := r) (blockData p S aTop aPlus m b))]`. Unfold `segRank`. Rewrite using `[finsum_eq_sum_of_support_subset (s := F)]`.
-
-Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[hM1 b ((hmemF b).1 hb), if_pos ((hmemF b).1 hb)]`. Both sides reduce to the same expression. Introduce `b hb`. Rewrite `hb` using `[Function.mem_support]`.
-
-Rewrite using `[Finset.mem_coe, hmemF]`. Assume the negation of the conclusion as `h`. Conclude with `hb (if_neg h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem finrank_segLat (p r : ℕ) [NeZero r] (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ)
     (hfin : {b : SegBlock s r | Kept p r S aTop b}.Finite) :
@@ -435,14 +419,14 @@ theorem finrank_segLat (p r : ℕ) [NeZero r] (S : SegData s) (aTop : Fin s → 
 end Seg
 
 /- English proof (translation)
-Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w _ _ _ j`. Conclude with `finrank_segLat _ _ _ _ _ _ (kf_kept_finite _ _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rkAt_all (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc : ℝ) : RkAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc := by
   intro X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w _ _ _ j
   exact finrank_segLat _ _ _ _ _ _ (kf_kept_finite _ _ _ _)
 
 /- English proof (translation)
-Unfold `RestRk`. Conclude with `TransportedAlt.mono (fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc _ => rkAt_all C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc) thr_std`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem restRk : RestRk := by
   unfold RestRk

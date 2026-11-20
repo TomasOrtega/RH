@@ -16,11 +16,9 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg.Tf.IntegralApplyAeEq UpperTheory.V.Z.IntegralApplyAeEq UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Establish `h01 : ∀ x : ℝ, 0 ≤ max 0 (min 1 (2 * x / η - 1)) ∧ max 0 (min 1 (2 * x / η - 1)) ≤ 1` using `fun x => ⟨le_max_left _ _, max_le zero_le_one (min_le_left _ _)⟩`. Use `⟨fun x => max 0 (min 1 (2 * x / η - 1)), by fun_prop, h01, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `: 2 ≤ 2 * x / η` using `by rw [le_div_iff₀ hη]; linarith`. Use `show max 0 (min 1 (2 * x / η - 1)) = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[min_eq_left (by linarith), max_eq_right zero_le_one]`. Introduce `x hx`. Establish `: 2 * x / η ≤ 1` using `by rw [div_le_iff₀ hη]; linarith`. Conclude with `max_eq_left ((min_le_right _ _).trans (by linarith))`. Introduce `x`.
-
-Rewrite using `[abs_of_nonneg (h01 x).1]`. Conclude with `(h01 x).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chi_ex (η : ℝ) (hη : 0 < η) : ∃ χ : ℝ → ℝ, Continuous χ ∧ (∀ x, 0 ≤ χ x ∧ χ x ≤ 1) ∧ (∀ x ≥ η, χ x = 1) ∧
     (∀ x ≤ η / 2, χ x = 0) ∧ ∀ x, |χ x| ≤ 1 := by
@@ -38,9 +36,9 @@ private theorem chi_ex (η : ℝ) (hη : 0 < η) : ∃ χ : ℝ → ℝ, Continu
     rw [abs_of_nonneg (h01 x).1]; exact (h01 x).2
 
 /- English proof (translation)
-Establish `: prj (⊥ : Submodule ℂ H) = 0`. Use extensionality with `v`. Establish `h` using `Submodule.starProjection_apply_mem (⊥ : Submodule ℂ H).topologicalClosure v`. Establish `h0 : (⊥ : Submodule ℂ H).topologicalClosure = ⊥` using `IsClosed.submodule_topologicalClosure_eq (by simp)`. Conclude with `(Submodule.mem_bot ℂ).mp (h0.le h)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[trOn, this, trace]`.
+A detailed English derivation is pending.
 -/
 private theorem trOn_bot {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (T : H →L[ℂ] H) :
     trOn (⊥ : Submodule ℂ H) T = 0 := by
@@ -52,9 +50,9 @@ private theorem trOn_bot {H : Type*} [NormedAddCommGroup H] [InnerProductSpace �
   simp [trOn, this, trace]
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Establish `h1 : A v = (x : ℂ) • v` using `Module.End.mem_eigenspace_iff.mp hv.2`. Establish `h2 : ‖A v‖ ≤ 1 * ‖v‖` using `(A.le_opNorm v).trans (mul_le_mul_of_nonneg_right hA (norm_nonneg _))`. Rewrite `h2` using `[h1, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by linarith)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: ‖v‖ = 0` using `by nlinarith [norm_nonneg v]`. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eig_bot {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (V : Submodule ℂ H)
     (A : H →L[ℂ] H) (hA : ‖A‖ ≤ 1) (x : ℝ) (hx : 1 < x) : eigIn V A x = ⊥ := by
@@ -67,9 +65,9 @@ private theorem eig_bot {H : Type*} [NormedAddCommGroup H] [InnerProductSpace �
   simpa using this
 
 /- English proof (translation)
-Establish `hp' : (0 : ℝ) < p` using `by exact_mod_cast hp`. Use `filter_upwards [hd.eventually (gt_mem_nhds (show (0 : ℝ) < 1 / (4 * p) by positivity)), eventually_ge_atTop (4 * p * A), eventually_gt_atTop 0] with j h1 h2 h3 m'`. Establish `hj : (0 : ℝ) < j` using `by exact_mod_cast h3`. Rewrite `h1` using `[div_lt_div_iff₀ hj (by positivity)]`. Establish `h4 : d j * (4 * p) < j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((d j * (4 * p) : ℕ) : ℝ) < (j : ℝ)` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions. Establish `h5` using `Nat.div_mul_le_self j (2 * p)`. Rewrite using `[Nat.le_div_iff_mul_le hp]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem deg_ev (d : ℕ → ℕ) (hd : Tendsto (fun j : ℕ => (d j : ℝ) / j) atTop (𝓝 0)) (p : ℕ) (hp : 0 < p) (A : ℕ) :
     ∀ᶠ j : ℕ in atTop, ∀ m' : ℕ, j / (2 * p) + (d j + A) ≤ (j + m') / p := by
@@ -86,9 +84,9 @@ private theorem deg_ev (d : ℕ → ℕ) (hd : Tendsto (fun j : ℕ => (d j : �
   nlinarith
 
 /- English proof (translation)
-Establish `e1 : Real.exp (c₁ * j) * X + Y ≤ Real.exp (max c₁ c₂ * j) * X + Y` using `by gcongr; exact le_max_left _ _`. Establish `e2 : Real.exp (c₂ * j) * X + Y ≤ Real.exp (max c₁ c₂ * j) * X + Y` using `by gcongr; exact le_max_right _ _`. Use `set Z := Real.exp (max c₁ c₂ * j) * X + Y`. Establish `hZ : 0 ≤ Z` using `by positivity`. Establish `hu' : u ≤ a ^ (n + 1) * Z` using `hu.trans (by gcongr)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : v ≤ b ^ (n + 1) * Z` using `hv.trans (by gcongr)`. Establish `h3 : c ≤ (c + 1) ^ (n + 1)` using `(by linarith : c ≤ c + 1).trans (le_self_pow₀ (by linarith) (Nat.succ_ne_zero n))`. Establish `h4 : a ^ (n + 1) + ((c + 1) * b) ^ (n + 1) ≤ (a + (c + 1) * b) ^ (n + 1)` using `pow_add_pow_le ha (by positivity) (Nat.succ_ne_zero n)`. Establish `h5 : c * b ^ (n + 1) ≤ ((c + 1) * b) ^ (n + 1)` using `by rw [mul_pow]; gcongr`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem comb_bd (a b c : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (hc : 0 ≤ c) (n : ℕ) (c₁ c₂ j X Y u v : ℝ) (hj : 0 ≤ j) (hX : 0 ≤ X)
     (hY : 0 ≤ Y) (hu : u ≤ a ^ (n + 1) * (Real.exp (c₁ * j) * X + Y)) (hv : v ≤ b ^ (n + 1) * (Real.exp (c₂ * j) * X + Y)) :
@@ -113,7 +111,7 @@ section
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Unfold `val`. Apply the tactic sequence `refine hom_congr_vars (by ext <;> simp) ?_ rfl`. Introduce `i hi _`. Simplify using `[hval, h _ (hP i hi)]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem val_congr (x : ℝ) (Λ : (K →+* ℂ) → Multiset ℂ) (t t' : Pl K → Multiset ℂ) (S : Set (Pl K)) (h : ∀ w ∉ S, t w = t' w)
     (P : PR K n) (hP : ∀ y ∈ P.vars, y.1 ∉ S) : val x Λ t P = val x Λ t' P := by
@@ -123,7 +121,7 @@ private theorem val_congr (x : ℝ) (Λ : (K →+* ℂ) → Multiset ℂ) (t t' 
   simp [hval, h _ (hP i hi)]
 
 /- English proof (translation)
-Unfold `val`. Proceed by induction on `γ using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp => simp only [map_mul, hp]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
 Simplify using the standard rewrite rules.
 -/
@@ -136,11 +134,11 @@ private theorem val_gam (x : ℝ) (Λ : (K →+* ℂ) → Multiset ℂ) (t : Pl 
   | mul_X p i hp => simp only [map_mul, hp]; simp
 
 /- English proof (translation)
-Take `⟨⟨G, hG⟩, h2⟩` from `hT K n S Φ hΦ`. Take `⟨⟨κ, D, hκ, hB⟩, h3, -⟩` from `h2 G hG`. Take `⟨u, hu, hu'⟩` from `h3 L t`. Take `⟨v, hv, hv'⟩` from `h3 L' t'`. Establish `: u = v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `d`. Establish `a1` using `hu' 1 d`. Establish `a2` using `hv' 1 d`. Rewrite `a1` using `[hL, val_congr 1 _ t t' S h _ (fun y hy => hκ _ ((hB d).1 y hy)), a2]`. Simplify using `using a1.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `this` using the available equality. Conclude with `tendsto_nhds_unique hu hv`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem evK_congr (hT : TruncSpec) (S : Set (Pl K)) (Φ : KF (Ix K n) (Pl K × Fin n)) (hΦ : admitted S Φ) (L L' : Ix K n → ℂ)
     (t t' : Pl K → Multiset ℂ) (hL : msOf L = msOf L') (h : ∀ w ∉ S, t w = t' w) : evK L (hval t) Φ = evK L' (hval t') Φ := by
@@ -158,9 +156,9 @@ private theorem evK_congr (hT : TruncSpec) (S : Set (Pl K)) (Φ : KF (Ix K n) (P
   exact tendsto_nhds_unique hu hv
 
 /- English proof (translation)
-Take `⟨lam, m, B, h1, -, h3⟩` from `h`. Introduce `w hw`. Rewrite using `[h3 w hw, Multiset.card_sum]`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) b.sum` and prove the remaining obligations. Rewrite using `[Multiset.card_map]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((h1 i).2 w hw).1`.
+A detailed English derivation is pending.
 -/
 private theorem pt_card (b : Datum K n) (S : Set (Pl K)) (Λ : (K →+* ℂ) → Multiset ℂ) (t : Pl K → Multiset ℂ) (h : b.Pt S Λ t) :
     ∀ w ∉ S, (t w).card = n := by
@@ -172,13 +170,13 @@ private theorem pt_card (b : Datum K n) (S : Set (Pl K)) (Λ : (K →+* ℂ) →
   exact ((h1 i).2 w hw).1
 
 /- English proof (translation)
-Unfold `Side.tr`. Use `symm`. Rewrite using `[finsum_mem_eq_of_bijOn (t := {V : Submodule ℂ (LL μ) | (IsSummand μ V ∧ V.map (θ.U : LL μ →ₗ[ℂ] LL μ) = V ∧ p V) ∧ eigIn V 𝔰.toAmp.A x ≠ ⊥}) (g := fun V => trOn (eigIn V 𝔰.toAmp.A x) ((𝔰.Uq 0 ^ j) ∘L Rop μ 𝔰.g ∘L θ.U)) Prod.snd]`. Apply `finsum_mem_inter_support_eq'` to reduce the goal to its premises. Introduce `V hV`.
+Replace the relevant objects with their definitions. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun h => h.1, fun h => ⟨h, fun h0 => hV ?_⟩⟩` and prove the remaining obligations. Simplify using `only [h0, trOn_bot]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, V⟩ ⟨⟨h1, h2, h3⟩, h4, rfl⟩`. Conclude with `⟨⟨h1, h2, h4⟩, h3⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, V⟩ ⟨-, -, h⟩ ⟨a', V'⟩ ⟨-, -, h'⟩ h''`. Conclude with `Prod.ext (h.trans h'.symm) h''`. Introduce and unpack `V ⟨⟨h1, h2, h3⟩, h4⟩`. Conclude with `⟨(x, V), ⟨⟨h1, h2, h4⟩, h3, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, V⟩ ⟨-, -, rfl⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem tr_eq {l : ℕ} {μ : Measure (normOneGL K n)} [μ.IsHaarMeasure] {θ : Twist μ} (𝔰 : Side θ l)
     (p : Submodule ℂ (LL μ) → Prop) (x : ℝ) (j : ℕ) :
@@ -205,7 +203,7 @@ private theorem tr_eq {l : ℕ} {μ : Measure (normOneGL K n)} [μ.IsHaarMeasure
 end
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Set.image_preimage_inl_union_image_preimage_inr S]`. Rewrite using `[finsum_mem_union Set.disjoint_image_inl_image_inr ((hS.preimage Sum.inl_injective.injOn).image _) ((hS.preimage Sum.inr_injective.injOn).image _), finsum_mem_image Sum.inl_injective.injOn, finsum_mem_image Sum.inr_injective.injOn]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finsum_sum {α β : Type} (S : Set (α ⊕ β)) (hS : S.Finite) (f : α ⊕ β → ℂ) :
     ∑ᶠ i ∈ S, f i = ∑ᶠ i ∈ Sum.inl ⁻¹' S, f (Sum.inl i) + ∑ᶠ i ∈ Sum.inr ⁻¹' S, f (Sum.inr i) := by
@@ -219,7 +217,7 @@ private def ExpF (τ : ℕ → ℂ) : Prop := ∃ (s : Finset ℂ) (c : ℂ → 
 private def Lim (u : ℕ → ℂ) (g e : Prop) (k : ℂ) : Prop := ∃ z, Tendsto u atTop (𝓝 z) ∧ (g → e → z = k) ∧ (¬ g → z = 0)
 
 /- English proof (translation)
-Take `⟨s, c', h0, h1⟩` from `h`. Use `⟨s, fun ζ => c * c' ζ, h0, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h1] with j hj`. Rewrite using `[hj, Finset.mul_sum]`. Simplify using `only [mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ExpF.mul {τ : ℕ → ℂ} (h : ExpF τ) (c : ℂ) : ExpF fun j => c * τ j := by
   obtain ⟨s, c', h0, h1⟩ := h
@@ -229,17 +227,15 @@ private theorem ExpF.mul {τ : ℕ → ℂ} (h : ExpF τ) (c : ℂ) : ExpF fun j
   simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `hfin : {i : T₁ ⊕ T₂ ⊕ T₃ | Sum.elim act₁ (Sum.elim act₂ act₃) i ∧ Sum.elim a₁ (Sum.elim a₂ a₃) i = x}.Finite`. Use `Set.finite_preimage_inl_and_inr.mp ⟨f₁, Set.finite_preimage_inl_and_inr.mp ⟨f₂, f₃⟩⟩` and prove the remaining obligations. Establish `key` using `absX (T₁ ⊕ T₂ ⊕ T₃) (Sum.elim a₁ (Sum.elim a₂ a₃)) (Sum.elim τ₁ (Sum.elim τ₂ τ₃)) (Sum.elim act₁ (Sum.elim act₂ act₃)) (Sum.elim good₁ (Sum.elim good₂ good₃)) x hx hx1 p hp d hd hd' ?_ hfin ?_`. Use `key.mono fun j hj => ?_` and prove the remaining obligations. Establish `hf2 : {i : T₁ ⊕ T₂ ⊕ T₃ | Sum.elim act₁ (Sum.elim act₂ act₃) i ∧ Sum.elim good₁ (Sum.elim good₂ good₃) i ∧ Sum.elim a₁ (Sum.elim a₂ a₃) i = x}.Finite` using `hfin.subset fun i hi => ⟨hi.1, hi.2.2⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hj` using `[finsum_sum _ hf2, finsum_sum _ (hf2.preimage Sum.inr_injective.injOn)]`. Conclude with `hj`. Introduce and unpack `(i | i | i) exacts [e₁ i, e₂ i, e₃ i]`. Introduce `N`. Take `⟨c₁, h⟩` from `h N`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c₁, fun η hη hη' => ?_⟩` and prove the remaining obligations. Take `⟨s₁, s₂, s₃, u₁, u₂, u₃, k, hk, m₁, m₂, m₃, l₁, l₂, l₃, hb⟩` from `h η hη hη'`. Establish `hl : ∀ i ∈ s₁.disjSum (s₂.disjSum s₃), Lim (Sum.elim u₁ (Sum.elim u₂ u₃) i) (Sum.elim good₁ (Sum.elim good₂ good₃) i) (Sum.elim a₁ (Sum.elim a₂ a₃) i = x) k`. Introduce and unpack `(i | i | i) hi`. Conclude with `l₁ i (by simpa using hi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `l₂ i (by simpa using hi)`. Conclude with `l₃ i (by simpa using hi)`. Use `choose! z hz1 hz2 hz3 using hl`. Use `⟨s₁.disjSum (s₂.disjSum s₃), Sum.elim u₁ (Sum.elim u₂ u₃), z, k, hk, ?_, hz1, hz2, hz3, fun s₀ => ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i | i)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using m₁ i`. Simplify using `using m₂ i`. Simplify using `using m₃ i`. Take `⟨K, hK⟩` from `hb s₀`. Use `⟨K, ?_⟩` and prove the remaining obligations.
-
-Use `filter_upwards [hK] with j hj m hm m' hm'`. Rewrite using `[Finset.sum_disjSum, Finset.sum_disjSum]`. Conclude with `hj m hm m' hm'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem abs3 (T₁ T₂ T₃ : Type) (a₁ : T₁ → ℝ) (a₂ : T₂ → ℝ) (a₃ : T₃ → ℝ) (τ₁ : T₁ → ℕ → ℂ) (τ₂ : T₂ → ℕ → ℂ) (τ₃ : T₃ → ℕ → ℂ)
     (act₁ good₁ : T₁ → Prop) (act₂ good₂ : T₂ → Prop) (act₃ good₃ : T₃ → Prop) (x : ℝ) (hx : 0 < x) (hx1 : x ≤ 1) (p : ℕ) (hp : 0 < p)
@@ -293,11 +289,11 @@ private theorem abs3 (T₁ T₂ T₃ : Type) (a₁ : T₁ → ℝ) (a₂ : T₂ 
       exact hj m hm m' hm'
 
 /- English proof (translation)
-Take `⟨hA0, -, -, ev, hev, hin⟩` from `hEv K (2 + 2) (by norm_num) μ 𝔰.toAmp`. Take `⟨c₁, h⟩` from `sideEst hOS hEV hTS K (2 + 2) 2 (by norm_num) μ θ 𝔰 ev hev hin 0`. Establish `key : ∀ x : ℝ, 0 < x → ∃ (η : ℝ) (s : Finset (ℝ × Submodule ℂ (LL μ))), η < x ∧ (∀ y, y ∈ s ↔ η < y.1 ∧ IsSummand μ y.2 ∧ y.2.map (θ.U : LL μ →ₗ[ℂ] LL μ) = y.2 ∧ eigIn y.2 𝔰.toAmp.A y.1 ≠ ⊥) ∧ (∀ y ∈ s, FiniteDimensional ℂ (eigIn y.2 𝔰.toAmp.A y.1))`. Introduce `x hx`. Establish `hη : 0 < min (x / 2) 1` using `lt_min (by linarith) one_pos`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨χ, h1, h2, h3, -⟩` from `chi_ex _ hη`. Take `⟨s, hs, hs', -⟩` from `h _ hη (min_le_right _ _) χ h1 h2 h3`. Conclude with `⟨_, s, (min_le_left _ _).trans_lt (by linarith), hs, hs'⟩`. Use `⟨fun y hy hy0 => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨η, s, h1, h2, h3⟩` from `key _ hy0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hTr K (2 + 2) 2 (by norm_num) μ θ 𝔰 y.2 y.1 hA0 hy.1 (h3 y ((h2 y).mpr ⟨h1, hy⟩))`. Take `⟨η, s, h1, h2, h3⟩` from `key _ hx`. Conclude with `s.finite_toSet.subset fun y hy => (h2 y).mpr ⟨hy.2 ▸ h1, hy.1⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem side_fin (hTr : TrExp) (hEV : EvVal) (hTS : TruncSpec) (hOS : OneSide) (hEv : EvEx) {K : Type} [Field K] [NumberField K]
     [IsTotallyComplex K] {μ : Measure (normOneGL K (2 + 2))} [μ.IsHaarMeasure] {θ : Twist μ} (𝔰 : Side θ 2) :
@@ -322,9 +318,9 @@ private theorem side_fin (hTr : TrExp) (hEV : EvVal) (hTS : TruncSpec) (hOS : On
     exact s.finite_toSet.subset fun y hy => (h2 y).mpr ⟨hy.2 ▸ h1, hy.1⟩
 
 /- English proof (translation)
-Establish `h1 : IsSummand (BW.mu1 E 2) 𝔵.τ₁` using `⟨𝔵.pair.irr₁.le, 𝔵.pair.irr₁.closed, 𝔵.pair.irr₁.inv, 𝔵.pair.irr₁.ne, fun V a b c => 𝔵.pair.irr₁.irr V a b c⟩`. Establish `h2 : IsSummand (BW.mu1 E 2) 𝔵.τ₂` using `⟨𝔵.pair.irr₂.le, 𝔵.pair.irr₂.closed, 𝔵.pair.irr₂.inv, 𝔵.pair.irr₂.ne, fun V a b c => 𝔵.pair.irr₂.irr V a b c⟩`. Use `⟨fun τ => ?_, fun w hw => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.Fam.Λ, Multiset.card_add, (𝔵.at₁.1 τ).1, (𝔵.at₂.1 τ).1]`. Rewrite using `[UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.Fam.t, Multiset.card_add, (𝔵.at₁.2 w hw).1, (𝔵.at₂.2 w hw).1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.Fam.t, Multiset.mem_add, not_or]`. Conclude with `⟨(hPar E 2 (by norm_num) _ _ h1).2.2 w _ (𝔵.at₁.2 w hw), (hPar E 2 (by norm_num) _ _ h2).2.2 w _ (𝔵.at₂.2 w hw)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem fam_card (hPar : ParEx) {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
     {μ : Measure (normOneGL E (2 + 2))} [μ.IsHaarMeasure] {θ : Twist μ} {𝔢 : Side θ 2} (𝔵 : UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.Fam 𝔢) :
@@ -340,21 +336,15 @@ private theorem fam_card (hPar : ParEx) {E : Type} [Field E] [NumberField E] [Is
     exact ⟨(hPar E 2 (by norm_num) _ _ h1).2.2 w _ (𝔵.at₁.2 w hw), (hPar E 2 (by norm_num) _ _ h2).2.2 w _ (𝔵.at₂.2 w hw)⟩
 
 /- English proof (translation)
-Establish `pE : ∀ y ∈ sE, ∃ (L : Ix E n → ℂ) (t' : Pl E → Multiset ℂ), At μE 𝔞.S y.2 (msOf L) t'`. Introduce `y hy`. Take `⟨Λ', t', h⟩` from `(hEV E n hn μE 𝔞 y.2 y.1 (hE y hy).1 (hE y hy).2.1).1 (hE y hy).2.2`. Take `⟨L, rfl⟩` from `(bdLem E n ∅ ∅ 0 0 0 0 0 0).2.2.2 Λ' fun τ => (h.1 τ).1`. Conclude with `⟨L, t', h⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `pF : ∀ y ∈ sF, ∃ (L : Ix F n → ℂ) (t' : Pl F → Multiset ℂ), At μF 𝔟.S y.2 (msOf L) t'`. Introduce `y hy`. Take `⟨Λ', t', h⟩` from `(hEV F n hn μF 𝔟 y.2 y.1 (hF y hy).1 (hF y hy).2.1).1 (hF y hy).2.2`. Take `⟨L, rfl⟩` from `(bdLem F n ∅ ∅ 0 0 0 0 0 0).2.2.2 Λ' fun τ => (h.1 τ).1`. Conclude with `⟨L, t', h⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose! LE tE hLE using pE`. Use `choose! LF tF hLF using pF`. Set `I₁` to `{y // y ∈ sE.filter fun y => ¬ At μE 𝔞.S y.2 Λ t}`. Set `I₂` to `{y // y ∈ sF.filter fun y => ¬ (∃ Λ' t', At μF 𝔟.S y.2 Λ' t' ∧ Λ = bcInf Λ' ∧ ∀ w ∉ 𝔞.S, t w = bcSat t' w)}`. Use `letI : Fintype I₁ := Finset.Subtype.fintype _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI : Fintype I₂ := Finset.Subtype.fintype _`. Take `⟨P, κ, D, h1, h2, h3, h4⟩` from `hSep E n 𝔞.S Λ t (I₁ ⊕ I₂) (Sum.elim (fun y => msOf (LE y.1)) fun y => bcInf (msOf (LF y.1))) (Sum.elim (fun y => tE y.1) fun y => bcSat (tF y.1)) hΛ ht (by`. Introduce and unpack `(y | y) τ`. Conclude with `((hLE y.1 (Finset.mem_filter.mp y.2).1).1 τ).1`. Conclude with `((hLF y.1 (Finset.mem_filter.mp y.2).1).1 _).1)`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(by`. Introduce and unpack `(y | y) w hw`. Conclude with `((hLE y.1 (Finset.mem_filter.mp y.2).1).2 w hw).1`. Conclude with `(Multiset.card_map _ _).trans ((hLF y.1 (Finset.mem_filter.mp y.2).1).2 _ fun h => hw ((hS w).mpr h)).1)`. Use the proof step `(by`.
-
-Introduce and unpack `(y | y) ⟨ha, hb⟩`. Establish `h` using `hLE y.1 (Finset.mem_filter.mp y.2).1`. Use `(Finset.mem_filter.mp y.2).2 ⟨fun τ => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[congrFun ha τ]`. Conclude with `h.1 τ`.
-
-Rewrite using `[hb w hw]`. Conclude with `h.2 w hw`. Conclude with `(Finset.mem_filter.mp y.2).2 ⟨_, _, hLF y.1 (Finset.mem_filter.mp y.2).1, ha, hb⟩)`. Use `⟨P, κ, D, h1, h2, h3, fun y hy hy' => ⟨LE y, tE y, hLE y hy, ?_⟩, fun y hy hy' => ⟨LF y, tF y, hLF y hy, ?_⟩⟩` and prove the remaining obligations. Conclude with `h4 (Sum.inl ⟨y, Finset.mem_filter.mpr ⟨hy, hy'⟩⟩) y.1`.
-
-Rewrite using `[(hVB F E n y.1 _ (tF y) P fun z hz => ((hLF y hy).2 _ fun h => h1 _ (h2.1 z hz) ((hS _).mpr h)).1).1]`. Conclude with `h4 (Sum.inr ⟨y, Finset.mem_filter.mpr ⟨hy, hy'⟩⟩) y.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sep (hEV : EvVal) (hVB : ValBc) (hSep : SepPoly) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] [IsTotallyComplex F] [IsTotallyComplex E] {n : ℕ} (hn : 0 < n)
@@ -408,47 +398,47 @@ private theorem sep (hEV : EvVal) (hVB : ValBc) (hSep : SepPoly) {F E : Type} [F
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `hPar hTr hEV hVB hK2 hKf hTS hSep hOS hOSX hEv hKill hKX hFam F E _ _ _ _ _ _ _ μE _ μF _ θ 𝔢 𝔣 c hG 𝔵 hoff`. Take `⟨hAE0, hAE1, -, evE, hevE, hinE⟩` from `hEv E (2 + 2) (by norm_num) μE 𝔢.toAmp`. Take `⟨hAF0, hAF1, -, evF, hevF, hinF⟩` from `hEv F (2 + 2) (by norm_num) μF 𝔣.toAmp`. Take `⟨Nn, Cf, hN⟩` from `hFam E μE _ 𝔵.τ₁ 𝔵.τ₂ 𝔵.pair 𝔵.D 𝔵.d 𝔵.d' 𝔵.A 𝔵.A' 𝔵.P 𝔵.isP`. Take `⟨evz, hevz⟩` from `evzEx 𝔵 evE hevE`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨sp, hsp, hsp1, hsp0⟩, hexp⟩` from `famExp 𝔵 Nn Cf hN hAE0 hAE1`. Use `⟨Nn, hN.2, fun x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx1 : 1 < x`. Use `Eventually.of_forall fun j => ?_` and prove the remaining obligations. Rewrite using `[hsp0 x hx (fun h => absurd (hsp1 x h) (not_le.mpr hx1)) j]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Side.tr, eig_bot _ _ hAE1 x hx1, eig_bot _ _ hAF1 x hx1, trOn_bot, finsum_zero, mul_zero, add_zero]`. Take `⟨d, hd, hd'⟩` from `UpperTheory.ConvolutionTheory.FX.degree`. Take `⟨hS, p, C₀, hp, hGeo⟩` from `hG`. Take `⟨eE, fE⟩` from `side_fin hTr hEV hTS hOS hEv 𝔢`. Take `⟨eF, fF⟩` from `side_fin hTr hEV hTS hOS hEv 𝔣`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hΛ, ht⟩` from `fam_card hPar 𝔵`. Establish `key` using `abs3 _ _ _ Prod.fst id Prod.fst (fun y j => trOn (eigIn y.2 𝔢.toAmp.A y.1) ((𝔢.Uq 0 ^ j) ∘L Rop μE 𝔢.g ∘L θ.U)) (fun a j => (1 / 2 : ℂ) * 𝔵.tr Nn a j) (fun y j => -c * trOn (eigIn y.2 𝔣.toAmp.A y.1) ((𝔣.Uq 0 ^ j) ∘L Rop μF 𝔣.g ∘L (Twist.id μF).U)) _ (fun y => At μE 𝔢.S y.2 𝔵.Λ 𝔵. …`. Use `key.mono fun j hj => ?_` and prove the remaining obligations. Rewrite using `[tr_eq, tr_eq]`. Establish `h2 : ∑ᶠ i ∈ {i : ℝ | i ∈ sp ∧ True ∧ id i = x}, (1 / 2 : ℂ) * 𝔵.tr Nn i j = (1 / 2 : ℂ) * 𝔵.tr Nn x j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hxs : x ∈ sp`. Establish `: {i : ℝ | i ∈ sp ∧ True ∧ id i = x} = {x}`. Use extensionality with `i`. Conclude with `⟨fun h => h.2.2, fun h => ⟨h ▸ hxs, trivial, h⟩⟩`. Rewrite using `[this, finsum_mem_singleton]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `: {i : ℝ | i ∈ sp ∧ True ∧ id i = x} = ∅`. Use extensionality with `i`. Conclude with `⟨fun h => hxs (h.2.2 ▸ h.1), fun h => h.elim⟩`. Rewrite using `[this, finsum_mem_empty, hsp0 x hx hxs, mul_zero]`. Rewrite `hj` using `[h2, ← mul_finsum_mem]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `hj`. Introduce `N`. Take `⟨cE, hE⟩` from `sideEstX hOSX hEV hTS E μE θ 𝔢 𝔵 evE evz Nn Cf hevE hinE hevz hN.1 sp hsp C₀ N`. Take `⟨cF, hF⟩` from `sideEst hOS hEV hTS F (2 + 2) 2 (by norm_num) μF _ 𝔣 evF hevF hinF C₀`. Use `⟨max cE cF, fun η hη hηx => ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hη1 : η ≤ 1` using `hηx.le.trans (not_lt.mp hx1)`. Take `⟨χ, hχ1, hχ2, hχ3, hχ4, hχ5⟩` from `chi_ex η hη`. Take `⟨sE, hsE, -, hE⟩` from `hE η hη hη1 χ hχ1 hχ2 hχ3`. Take `⟨sF, hsF, -, hF⟩` from `hF η hη hη1 χ hχ1 hχ2 hχ3`. Take `⟨B, _, b, hb1, hb2, hb3⟩` from `hKX E μE θ 𝔢 𝔵 η hη`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B', _, b', hb1', hb3'⟩` from `hKill F (2 + 2) (by norm_num) μF 𝔣.toAmp η hη`. Take `⟨L, hL⟩` from `(bdLem E (2 + 2) ∅ ∅ 0 0 0 0 0 0).2.2.2 𝔵.Λ hΛ`. Take `⟨Φ, hΦ, hΦ0, hΦ1, hΦ2⟩` from `hK2 F E (2 + 2) 𝔢.S 𝔣.S hS B B' b b' hb1 hb1' L 𝔵.t (fun w hw => (ht w hw).1) (by rw [hL]; exact hb2) (by rw [hL]; exact fun i => hoff (b' i))`. Take `⟨⟨G, hΦG⟩, hT⟩` from `hTS E (2 + 2) 𝔢.S Φ hΦ`. Take `⟨⟨κ₁, D₁, hκ₁, hB₁⟩, -⟩` from `hT G hΦG`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ', G', hΦ', hΦG', hGG, hΦΦ⟩` from `hKf F E (2 + 2) 𝔢.S 𝔣.S hS Φ G hΦ hΦG`. Establish `hkill' : ∀ i, Kills 𝔣.S Φ' (b' i)` using `fun i L' t' h => by`. Rewrite using `[hΦΦ L' t' (pt_card _ _ _ _ h)]`. Conclude with `hΦ2 i L' t' h`. Take `⟨P₀, κ₂, D₂, hκ₂, hB₂, hP0, hPE, hPF⟩` from `sep hEV hVB hSep (by norm_num) 𝔢.toAmp 𝔣.toAmp hS 𝔵.Λ 𝔵.t hΛ (fun w hw => (ht w hw).1) sE sF (fun y hy => ⟨hη.trans ((hsE y).mp hy).1, ((hsE y).mp hy).2.1, ((hsE y).mp hy).2.2.2⟩) (fun y hy => ⟨hη.trans ((hsF y).mp hy).1, ((hsF y).mp hy).2.1, ((hsF y).mp hy).2.2.2⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hκ : ∀ w ∈ κ₁ ∪ κ₂, w ∉ 𝔢.S` using `fun w hw => (Finset.mem_union.mp hw).elim (hκ₁ w) (hκ₂ w)`. Take `⟨γ, hγ1, hγ0, hγ⟩` from `hGeo (κ₁ ∪ κ₂) hκ 𝔵.t (fun w hw => ht w (hκ w hw)) (D₁ + D₂)`. Establish `hP : ∀ y ∈ (map C γ * P₀ : PR E (2 + 2)).vars, y.1 ∉ 𝔢.S` using `fun y hy => (Finset.mem_union.mp (vars_mul _ _ hy)).elim (fun h => hκ _ (hγ1 y (vars_map _ _ h))) fun h => hκ₂ _ (hB₂.1 y h)`. Establish `hVB0` using `hVB F E (2 + 2) 0 (fun _ => 0) (fun _ => Multiset.replicate (2 + 2) 0) (map C γ * P₀) fun _ _ => by simp`. Establish `hP' : ∀ y ∈ (bcPR F (map C γ * P₀ : PR E (2 + 2))).vars, y.1 ∉ 𝔣.S` using `fun y hy h => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y', h1, h2⟩` from `hVB0.2.1 y hy`. Conclude with `hP y' h1 ((hS _).mpr (h2 ▸ h))`. Take `⟨uE, w, huE, hw, hE⟩` from `hE Φ G hΦ hΦG (hb3 evE hevE hevz.comm χ hχ1 hχ4 hχ5 Φ G hΦ hΦ1 hΦG) _ hP`. Take `⟨uF, huF, hF⟩` from `hF Φ' G' hΦ' hΦG' (hb3' evF hevF χ hχ1 hχ4 hχ5 Φ' G' hΦ' hkill' hΦG') _ hP'`. Use `⟨sE, sp.filter (η < ·), sF, uE, w, uF, x * val x 𝔵.Λ 𝔵.t (map C γ * P₀ : PR E (2 + 2)) * evK L (hval 𝔵.t) Φ, ?_, hsE, fun a => by rw [Finset.mem_filter, and_comm]; rfl, hsF, fun y hy => ?_, fun a _ => ?_, fun y hy => ?_, fun s₀ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[map_mul, val_gam]`. Conclude with `mul_ne_zero (mul_ne_zero (by exact_mod_cast hx.ne') (mul_ne_zero hγ0 (hP0 x hx.ne'))) hΦ0`. Distinguish the cases in `hg : At μE 𝔢.S y.2 𝔵.Λ 𝔵.t`. Use `⟨_, huE y hy L 𝔵.t (hL ▸ hg), fun _ h => ?_, fun h => absurd hg h⟩` and prove the remaining obligations. Rewrite using `[hL, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨L', t', h1, h2⟩` from `hPE y hy hg`. Use `⟨_, huE y hy L' t' h1, fun h => absurd h hg, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, h2, mul_zero, mul_zero, zero_mul]`. Use `⟨_, hw a L hL, fun _ h => ?_, fun h => absurd trivial h⟩` and prove the remaining obligations. Rewrite using `[show a = x from h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hg : ∃ Λ' t', At μF 𝔣.S y.2 Λ' t' ∧ 𝔵.Λ = bcInf Λ' ∧ ∀ w ∉ 𝔢.S, 𝔵.t w = bcSat t' w`. Take `⟨Λ', t', h1, h2, h3⟩` from `id hg`. Take `⟨L', rfl⟩` from `(bdLem F (2 + 2) ∅ ∅ 0 0 0 0 0 0).2.2.2 Λ' fun τ => (h1.1 τ).1`. Use `⟨_, huF y hy L' t' h1, fun _ h => ?_, fun h => absurd hg h⟩` and prove the remaining obligations. Rewrite using `[h, hΦΦ L' t' fun v hv => (h1.2 v hv).1, (hVB F E (2 + 2) x _ t' _ fun z hz => (h1.2 _ fun h => hP z hz ((hS _).mpr h)).1).1, ← h2, val_congr x _ _ _ _ h3 _ hP, evK_congr hTS _ Φ hΦ L (fun y => L' (y.1.comp (algebraMap F E), y.2)) _ _ (hL.trans h2) h3]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨L', t', h1, h2⟩` from `hPF y hy hg`. Use `⟨_, huF y hy L' t' h1, fun h => absurd h hg, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, h2, mul_zero, mul_zero, zero_mul]`. Take `⟨ME, hME, hE⟩` from `hE (2 * p) (by omega) s₀`. Take `⟨MF, hMF, hF⟩` from `hF (2 * p) N s₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨J, hJ⟩` from `eventually_atTop.mp (hγ evE evF hevE hevF)`. Use `⟨ME + (‖c‖ + 1) * MF, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hE, eventually_ge_atTop J, deg_ev d hd p hp (s₀ + D₂)] with j hE hj hdeg m hm m' hm'`. Establish `hBd : Bd (κ₁ ∪ κ₂) (D₁ + D₂) ((j + m') / p) (chebP η (j / (2 * p) + m) * (trunc (d j) G * P₀) : PR E (2 + 2))`. Establish `h1` using `(bdLem E (2 + 2) _ _ _ _ _ _ _ _).1 (hB₁ (d j)) hB₂`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `(bdLem E (2 + 2) _ _ _ _ _ _ _ _).1 ((bdLem E (2 + 2) (κ₁ ∪ κ₂) ∅ 0 0 0 0 0 0).2.1 η (j / (2 * p) + m)) h1`. Use `(bdLem E (2 + 2) _ _ _ _ _ _ _ 0).2.2.1 ?_ (by omega) ?_ h2` and prove the remaining obligations. Introduce `z hz`. Simplify using `using hz`. Use `hdeg m'` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨gE, gF, r1, r2, r3⟩` from `hJ (j + m') (by omega) _ hBd.1 hBd.2.1 hBd.2.2`. Establish `q1 : (map C γ * (chebP η (j / (2 * p) + m) * (trunc (d j) G * P₀)) : PR E (2 + 2)) = chebP η (j / (2 * p) + m) * (trunc (d j) G * (map C γ * P₀))` using `by ring`. Rewrite `r1`, `r2` using `[q1]`. Rewrite `r2` using `[map_mul (bcPR F), map_mul (bcPR F), hVB0.2.2, ← hGG]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `b1` using `hE (d j) m hm m' hm' gE r1`. Establish `b2` using `hF j (d j) m hm m' hm' gF r2`. Use `le_trans ?_ (comb_bd ME MF ‖c‖ hME hMF (norm_nonneg _) (d j) cE cF j _ _ _ _ (Nat.cast_nonneg _) (by positivity) (by positivity) b1 b2)` and prove the remaining obligations. Rewrite using `[← norm_mul, ← norm_neg (_ - _ - _)]`. Use `le_trans (le_of_eq ?_) (norm_add_le _ _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[r3, mul_sub, Finset.mul_sum, ← sub_eq_zero]`. Establish `: ∀ (u v : ℂ), u * (-c * v) = -(c * (u * v))` using `fun u v => by ring`. Simplify using `only [this, Finset.sum_neg_distrib, id]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.cixOf :
     ParEx → TrExp → EvVal → ValBc → KillEx2 → KfBc → TruncSpec → SepPoly → OneSide → OneSideX → EvEx → Kill → KillExempt → FamEx → CIx := by

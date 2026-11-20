@@ -7,29 +7,25 @@ open scoped NNReal
 namespace GlobalTheory.K5
 
 /- English proof (translation)
-Introduce `p hpf Ωl _ _ hC v hv _ y b hy hyv hyb`. Use `haveI : CharZero Ωl := Basic.charZero_of_isClo hC`. Take `⟨P0, hP0, hP0y⟩` from `hy`. Establish `hprim : P0.primPart.IsPrimitive` using `Polynomial.isPrimitive_primPart P0`. Establish `hPy : aeval y P0.primPart = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `P0.eq_C_content_mul_primPart`. Establish `hc : P0.content ≠ 0` using `by rwa [Ne, Polynomial.content_eq_zero_iff]`. Rewrite `hP0y` using `[e, map_mul, aeval_C]`. Break down `mul_eq_zero.1 hP0y with h | h` into its components or cases. Conclude with `absurd (by simpa using h) hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h`. Use `⟨P0.primPart, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `hd : ∀ n, (p : ℤ) ∣ P0.primPart.coeff n`. Introduce `n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg (fun Q => Q.coeff n) h0` as an intermediate fact. Simplify using `only [coeff_map, coeff_zero, eq_intCast] at this`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 this`. Establish `hu` using `hprim (p : ℤ) ((Polynomial.C_dvd_iff_dvd_coeff _ _).2 hd)`. Use `Int.isUnit_iff.1 hu` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h2` using `hpf.out.two_le`. Use linear arithmetic over natural numbers and integers. Use `set P := P0.primPart set b' := algebraMap (O0 p) Ωl b`. Establish `hb' : v b' ≤ 1` using `(hv b').2 isIntegral_algebraMap`. Set `yi : v.integer` to `⟨y, hyv⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `bi : v.integer` to `⟨b', hb'⟩`. Take `⟨d, hd⟩` from `Polynomial.sub_dvd_eval_sub yi bi (P.map (Int.castRingHom v.integer))`. Establish `hev : ∀ z : v.integer, v.integer.subtype ((P.map (Int.castRingHom v.integer)).eval z) = aeval (z : Ωl) P`. Introduce `z`. Rewrite using `[Polynomial.eval_map, aeval_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Polynomial.hom_eval₂ P (Int.castRingHom v.integer) v.integer.subtype z` as an intermediate fact. Rewrite `this` using `[show v.integer.subtype.comp (Int.castRingHom v.integer) = algebraMap ℤ Ωl from RingHom.ext_int _ _]`. Conclude with `this`. Establish `hd'` using `congrArg v.integer.subtype hd`. Rewrite `hd'` using `[map_sub, map_mul, map_sub, hev, hev]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd'' : aeval y P - aeval b' P = (y - b') * (d : Ωl)` using `hd'`. Establish `hkey : aeval b' P = -((y - b') * (d : Ωl))`. Rewrite using `[← hd'', hPy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmap : algebraMap (O0 p) Ωl (aeval b P) = aeval b' P`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[aeval_def, aeval_def, Polynomial.hom_eval₂]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`. Establish `hlt : v (algebraMap (O0 p) Ωl (aeval b P)) < 1`. Rewrite using `[hmap, hkey, Valuation.map_neg, Valuation.map_mul]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_lt_one_of_nonneg_of_lt_one_left zero_le' hyb d.2`. Take `⟨hdom, hdvr, hirr⟩` from `completed_laurent_isDVR p`. Establish `hmax : IsLocalRing.maximalIdeal (O0 p) = Ideal.span {(p : O0 p)}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).1 hirr`. Establish `hnu : ¬ IsUnit (aeval b P)`. Introduce and unpack `⟨u, hu⟩`.
-
-Establish `h1 : v (algebraMap (O0 p) Ωl (u⁻¹ : (O0 p)ˣ)) ≤ 1` using `(hv _).2 isIntegral_algebraMap`. Establish `h2 : v (algebraMap (O0 p) Ωl (aeval b P)) * v (algebraMap (O0 p) Ωl (u⁻¹ : (O0 p)ˣ)) = 1`. Rewrite using `[← Valuation.map_mul, ← map_mul, ← hu, Units.mul_inv, map_one, Valuation.map_one]`. Establish `h3 : v (algebraMap (O0 p) Ωl (aeval b P)) * v (algebraMap (O0 p) Ωl (u⁻¹ : (O0 p)ˣ)) < 1` using `mul_lt_one_of_nonneg_of_lt_one_left zero_le' hlt h1`. Rewrite `h3` using `[h2]`.
-
-Conclude with `lt_irrefl _ h3`. Establish `hm : aeval b P ∈ IsLocalRing.maximalIdeal (O0 p)` using `hnu`. Rewrite `hm` using `[hmax, Ideal.mem_span_singleton]`. Conclude with `hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_poly_root_mod_p : ∀ (p : ℕ) [Fact p.Prime] (Ωl : Type) [Field Ωl] [Algebra (O0 p) Ωl], IsClo p Ωl → ∀ (v : Valuation Ωl ℝ≥0), (∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) → v (p : Ωl) < 1 → ∀ (y : Ωl) (b : O0 p), IsAlgebraic ℤ y → v y ≤ 1 → v (y - algebraMap (O0 p) Ωl b) < 1 → ∃ P : ℤ[X], P.map (Int.castRingHom (ZMod p)) ≠ 0 ∧ (p : O0 p) ∣ aeval b P := by
   intro p hpf Ωl _ _ hC v hv _ y b hy hyv hyb

@@ -12,15 +12,15 @@ open PositivityTheory.RgTw (Mat hb)
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `isOpen_ne_fun (continuous_id.matrix_det) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_GLs : IsOpen (GLs n) :=
   isOpen_ne_fun (continuous_id.matrix_det) continuous_const
 
 /- English proof (translation)
-Take `⟨a, b⟩` from `p`. Unfold `hb`. Use `split_ifs with h1 h2`. Simplify using `[Matrix.IsHermitian, Matrix.conjTranspose_single]`. Simplify using `only [Matrix.IsHermitian, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_single]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[add_comm]`. Simplify using `only [Matrix.IsHermitian, Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_single]`. Simplify using `[star_mul', Complex.conj_I]`. Rewrite using `[← smul_neg, neg_sub]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hb_herm (p : Fin n × Fin n) : (hb p : Mat n).IsHermitian := by
   obtain ⟨a, b⟩ := p
@@ -34,11 +34,11 @@ theorem hb_herm (p : Fin n × Fin n) : (hb p : Mat n).IsHermitian := by
     rw [← smul_neg, neg_sub]
 
 /- English proof (translation)
-Take `⟨a, b⟩` from `p`. Unfold `hb`. Simplify using `only`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [if_true, Matrix.single_apply]`. Rewrite using `[if_neg hab, if_neg hab]`. Distinguish the cases in `hlt : a < b`. Rewrite using `[if_pos hlt, if_pos hlt]`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, Matrix.single_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hlt, if_neg hlt]`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.single_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hb_apply (p : Fin n × Fin n) (i j : Fin n) : (hb p : Mat n) i j =
     if p.1 = p.2 then (if p.1 = i ∧ p.1 = j then 1 else 0)
@@ -58,11 +58,11 @@ theorem hb_apply (p : Fin n × Fin n) (i j : Fin n) : (hb p : Mat n) i j =
       simp only [Matrix.smul_apply, Matrix.sub_apply, Matrix.single_apply, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨a, b⟩` from `p`. Unfold `hb`. Simplify using `only`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Matrix.trace_mul_single]`. Rewrite using `[if_neg hab, if_neg hab]`. Distinguish the cases in `hlt : a < b`. Rewrite using `[if_pos hlt, if_pos hlt]`. Simplify using `[Matrix.mul_add, Matrix.trace_add, Matrix.trace_mul_single]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hlt, if_neg hlt]`. Simplify using `[Matrix.mul_sub, Matrix.trace_smul, Matrix.trace_sub, Matrix.trace_mul_single]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hb_tr (H : Mat n) (p : Fin n × Fin n) : (H * hb p).trace =
     if p.1 = p.2 then H p.1 p.1
@@ -83,9 +83,9 @@ theorem hb_tr (H : Mat n) (p : Fin n × Fin n) : (H * hb p).trace =
       simp [Matrix.mul_sub, Matrix.trace_smul, Matrix.trace_sub, Matrix.trace_mul_single]
 
 /- English proof (translation)
-Rewrite using `[← Complex.ofReal_inv]`. Establish `hc2 : s⁻¹ * s⁻¹ = 1 / 2` using `by rw [← mul_inv, hs]; norm_num`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[Complex.mul_re, Complex.mul_im]`. Take the linear combination `(2 * h.re) * hc2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `[Complex.mul_re, Complex.mul_im]`. Take the linear combination `(2 * h.im) * hc2`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem key_pair (h : ℂ) (s : ℝ) (hs : s * s = 2) :
     (((((s : ℂ))⁻¹ * (star h + h)).re : ℝ) : ℂ) * ((s : ℂ))⁻¹ +
@@ -99,9 +99,9 @@ theorem key_pair (h : ℂ) (s : ℝ) (hs : s * s = 2) :
     linear_combination (2 * h.im) * hc2
 
 /- English proof (translation)
-Rewrite using `[← Complex.ofReal_inv]`. Establish `hc2 : s⁻¹ * s⁻¹ = 1 / 2` using `by rw [← mul_inv, hs]; norm_num`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[Complex.mul_re, Complex.mul_im]`. Take the linear combination `(2 * h.re) * hc2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `[Complex.mul_re, Complex.mul_im]`. Take the linear combination `(2 * h.im) * hc2`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem key_pair2 (h : ℂ) (s : ℝ) (hs : s * s = 2) :
     (((((s : ℂ))⁻¹ * Complex.I * (star h - h)).re : ℝ) : ℂ) * (((s : ℂ))⁻¹ * Complex.I) +
@@ -115,29 +115,27 @@ theorem key_pair2 (h : ℂ) (s : ℝ) (hs : s * s = 2) :
     linear_combination (2 * h.im) * hc2
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply]`. Establish `hji : H j i = star (H i j)` using `(hH.apply j i).symm`. Establish `hs : Real.sqrt 2 * Real.sqrt 2 = 2` using `Real.mul_self_sqrt (by norm_num)`. Distinguish the cases in `hij : i = j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Establish `him : (H i i).im = 0`. Use `congrArg Complex.im (hH.apply i i)` as an intermediate fact. Simplify using `only [Complex.star_def, Complex.conj_im] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Finset.sum_eq_single (i, i)]`. Rewrite using `[hb_tr, hb_apply]`. Simplify using `only [if_true, and_self, Complex.real_smul, mul_one]`. Apply the tactic sequence `apply Complex.ext <;> simp [him]`. Introduce `p _ hp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, b⟩` from `p`. Establish `hne : ¬(a = i ∧ b = i)` using `fun h => hp (by rw [h.1, h.2])`. Establish `hne' : ¬(b = i ∧ a = i)` using `fun h => hne ⟨h.2, h.1⟩`. Rewrite using `[hb_apply]`. Simplify using `only`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[if_pos rfl, if_neg hne, smul_zero]`. Apply the tactic sequence `rw [if_neg hab, if_neg hne, if_neg hne'] split_ifs <;> simp`. Introduce `h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Establish `hne : (i, j) ≠ (j, i)` using `fun h => hij (Prod.mk.inj h).1`. Rewrite using `[Finset.sum_eq_add (i, j) (j, i) hne]`. Rewrite using `[hb_tr, hb_tr, hb_apply, hb_apply] dsimp only`. Rewrite using `[if_neg hij, if_neg (Ne.symm hij)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hji, Complex.real_smul]`. Break down `lt_or_gt_of_ne hij with hlt | hlt` into its components or cases. Rewrite using `[if_pos hlt, if_pos hlt, if_neg (not_lt.mpr hlt.le), if_neg (not_lt.mpr hlt.le)]`. Simplify using `only [and_self, if_true, hij, Ne.symm hij, false_and, if_false, add_zero, zero_sub, mul_one, mul_neg]`. Use `key_pair (H i j) (Real.sqrt 2) hs` as an intermediate fact.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hlt, not_lt.mpr hlt.le, if_true, if_false]`. Simplify using `only [and_self, if_true, hij, Ne.symm hij, false_and, and_false, if_false, add_zero, zero_add, sub_zero, zero_sub, mul_one, mul_neg]`. Use `key_pair2 (H i j) (Real.sqrt 2) hs` as an intermediate fact.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Introduce `p _ hp`. Take `⟨a, b⟩` from `p`. Establish `h1 : ¬(a = i ∧ b = j)` using `fun h => hp.1 (by rw [h.1, h.2])`. Establish `h2 : ¬(b = i ∧ a = j)` using `fun h => hp.2 (by rw [h.1, h.2])`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hb_apply]`. Simplify using `only`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Establish `h3 : ¬(a = i ∧ a = j)` using `fun h => hij (h.1.symm.trans h.2)`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[if_pos rfl, if_neg h3, smul_zero]`. Apply the tactic sequence `rw [if_neg hab, if_neg h1, if_neg h2] split_ifs <;> simp`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hb_expand (H : Mat n) (hH : H.IsHermitian) : ∑ p, ((H * hb p).trace.re : ℝ) • (hb p : Mat n) = H := by
   ext i j
@@ -199,30 +197,30 @@ theorem hb_expand (H : Mat n) (hH : H.IsHermitian) : ∑ p, ((H * hb p).trace.re
     · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use `Matrix.mem_unitaryGroup_iff.mp k.2` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unit_mul_star (k : Matrix.unitaryGroup (Fin n) ℂ) : k.1 * (k.1)ᴴ = 1 := by
   have := Matrix.mem_unitaryGroup_iff.mp k.2
   rwa [Matrix.star_eq_conjTranspose] at this
 
 /- English proof (translation)
-Use `Matrix.mem_unitaryGroup_iff'.mp k.2` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unit_star_mul (k : Matrix.unitaryGroup (Fin n) ℂ) : (k.1)ᴴ * k.1 = 1 := by
   have := Matrix.mem_unitaryGroup_iff'.mp k.2
   rwa [Matrix.star_eq_conjTranspose] at this
 
 /- English proof (translation)
-Unfold `Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hH.eq, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_herm (k : Mat n) (H : Mat n) (hH : H.IsHermitian) : (k * H * kᴴ).IsHermitian := by
   unfold Matrix.IsHermitian
   rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hH.eq, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h1` using `hb_expand ((k.1)ᴴ * H * k.1) (by`. Use `conj_herm (k.1)ᴴ H hH` as an intermediate fact. Rewrite using `[Matrix.conjTranspose_conjTranspose] at this)` and apply the resulting hypothesis. Establish `h2 : ∀ p, ((k.1)ᴴ * H * k.1 * hb p).trace = (H * (k.1 * hb p * (k.1)ᴴ)).trace`. Introduce `p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show (k.1)ᴴ * H * k.1 * hb p = (k.1)ᴴ * (H * k.1 * hb p) by simp only [Matrix.mul_assoc], Matrix.trace_mul_comm, show H * k.1 * hb p * (k.1)ᴴ = H * (k.1 * hb p * (k.1)ᴴ) by simp only [Matrix.mul_assoc]]`. Simplify using `only [h2] at h1`. Establish `h3` using `congrArg (fun M => k.1 * M * (k.1)ᴴ) h1`. Simplify using `only [Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_smul, Matrix.smul_mul] at h3`. Rewrite using `[h3, ← Matrix.mul_assoc, ← Matrix.mul_assoc, unit_mul_star, Matrix.one_mul, Matrix.mul_assoc, unit_mul_star, Matrix.mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem expand_conj (k : Matrix.unitaryGroup (Fin n) ℂ) (H : Mat n) (hH : H.IsHermitian) :
     ∑ p, ((H * (k.1 * hb p * (k.1)ᴴ)).trace.re : ℝ) • (k.1 * hb p * (k.1)ᴴ) = H := by
@@ -240,13 +238,11 @@ theorem expand_conj (k : Matrix.unitaryGroup (Fin n) ℂ) (H : Mat n) (hH : H.Is
     Matrix.mul_one]
 
 /- English proof (translation)
-Use `set Y : Fin n × Fin n → Mat n := fun p => k.1 * hb p * (k.1)ᴴ with hYdef`. Establish `hY : ∀ p, (Y p).IsHermitian` using `fun p => conj_herm k.1 (hb p) (hb_herm p)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[hb_expand _ (hY p)]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = ∑ p, ∑ q, ((Y p * hb q).trace.re : ℝ) • B (Y p) (hb q) := by`. Simplify using `only [map_sum, map_smul]`. Use `_ = ∑ q, ∑ p, ((hb q * Y p).trace.re : ℝ) • B (Y p) (hb q) := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.trace_mul_comm]`. Use `_ = ∑ q, B (∑ p, ((hb q * Y p).trace.re : ℝ) • Y p) (hb q) := by`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `_ = ∑ q, B (hb q) (hb q) := by`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[expand_conj k (hb q) (hb_herm q)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_inv {W : Type} [AddCommGroup W] [Module ℝ W] (B : Mat n →ₗ[ℝ] Mat n →ₗ[ℝ] W)
     (k : Matrix.unitaryGroup (Fin n) ℂ) :

@@ -14,13 +14,11 @@ open Formalism.UG (cT bc)
 namespace GlobalTheory.SphEis
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J j m C D Z J₀ H`. Establish `key : ∀ {P : Subgroup (GAd σ J)}, P ≤ fixG σ J C → (ratPts σ J ⊓ fixG σ J C).subgroupOf P = (ratPts σ J).subgroupOf P` using `fun h => by`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_inf]`. Conclude with `⟨fun e => e.1, fun e => ⟨e, h x.2⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Take `⟨hC, -, cM, cN, hN, hP, hd, hn, -⟩` from `GlobalTheory.T.isotropicFrameDecomposition_subgroup_properties F E σ n J j m C D Z J₀ H`. Use `haveI := locallyCompact_unipRad H.cm H.herm hC`. Take `⟨ν, DN, hν, hDN, h1⟩` from `exists_mass_one (cocompact_unipRad H.cm H.herm hC)`. Use `haveI : LocallyCompactSpace (fixG σ J C ⊓ fixG σ J D : Subgroup (GAd σ J)) := cM.locallyCompactSpace`. Establish `hDM` using `GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom ((ratPts σ J).subgroupOf (fixG σ J C ⊓ fixG σ J D : Subgroup (GAd σ J))) Measure.haar`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨ν, Measure.haar, DN, _, { closedN := cN closedM := cM norm := fun x hx u hu => (hn x (hP hx.1) u).1 hu disj := hd dec := ?_ haarN := hν haarM := inferInstance domN := by rw [key hN]; exact hDN domM := by rw [key inf_le_left]; exact hDM finN := by rw [h1]; exact ENNReal.one_ne_to …` and prove the remaining obligations. Introduce and unpack `γ ⟨hγ, hf⟩`. Take `⟨u, hu, x, hx, e, hr⟩` from `GlobalTheory.T.adelicFixator_eq_unipotentRadical_mul_commonFixator F E σ n J j m C D Z J₀ H γ hf`. Use `⟨u, hu, x, hx, ⟨?_, hN hu⟩, ⟨hr hγ, hx.1⟩, e⟩` and prove the remaining obligations. Establish `: u = γ * x⁻¹` using `by rw [e, mul_inv_cancel_right]`.
-
-Rewrite using `[this]`. Conclude with `(ratPts σ J).mul_mem hγ ((ratPts σ J).inv_mem (hr hγ))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semiLat_fixG : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (j m : ℕ) (C D : Matrix (Fin n) (Fin j) E) (Z : Matrix (Fin n) (Fin m) E)

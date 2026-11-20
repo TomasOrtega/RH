@@ -21,14 +21,14 @@ instance finite_residueField_localizationAt : Finite (ResidueField (localization
     (IsLocalization.AtPrime.equivQuotMaximalIdeal 𝔓.asIdeal (localizationAt L 𝔓)).toEquiv
 
 /- English proof (translation)
-The claim follows from `IsLocalization.AtPrime.to_map_mem_maximal_iff _ _ a`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_maximalIdeal_localizationAt_iff (a : 𝓞 L) :
     algebraMap (𝓞 L) (localizationAt L 𝔓) a ∈ maximalIdeal (localizationAt L 𝔓) ↔ a ∈ 𝔓.asIdeal :=
   IsLocalization.AtPrime.to_map_mem_maximal_iff _ _ a
 
 /- English proof (translation)
-Rewrite using `[CharP.charP_iff_prime_eq_zero hp]`. Establish `h` using `(algebraMap_mem_maximalIdeal_localizationAt_iff 𝔓 p).2 hmem`. Rewrite `h` using `[map_natCast]`. Rewrite using `[← map_natCast (IsLocalRing.residue (localizationAt L 𝔓)), residue_eq_zero_iff]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charP_residueField_localizationAt {p : ℕ} (hp : p.Prime) (hmem : (p : 𝓞 L) ∈ 𝔓.asIdeal) :
     CharP (ResidueField (localizationAt L 𝔓)) p := by
@@ -41,7 +41,7 @@ theorem charP_residueField_localizationAt {p : ℕ} (hp : p.Prime) (hmem : (p : 
 variable {K : Type*} [Field K] [Algebra K L]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_pow, ← map_sub, residue_eq_zero_iff, ← map_pow, ← map_sub, algebraMap_mem_maximalIdeal_localizationAt_iff]`. Conclude with `hσ a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_smul_of_isArithFrobAt {σ : L ≃ₐ[K] L} (hσ : IsArithFrobAt (𝓞 K) σ 𝔓.asIdeal)
     (a : 𝓞 L) :
@@ -55,9 +55,9 @@ theorem residue_smul_of_isArithFrobAt {σ : L ≃ₐ[K] L} (hσ : IsArithFrobAt 
 omit [NumberField L] in
 
 /- English proof (translation)
-Introduce `h`. Apply `hs` to reduce the goal to its premises. Establish `h' : s ^ Nat.card (𝓞 K ⧸ 𝔓.asIdeal.under (𝓞 K)) ∈ 𝔓.asIdeal`. Use `𝔓.asIdeal.sub_mem h (hσ s)` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `𝔓.isPrime.mem_of_pow_mem _ h'`.
+A detailed English derivation is pending.
 -/
 theorem smul_notMem_of_isArithFrobAt {σ : L ≃ₐ[K] L} (hσ : IsArithFrobAt (𝓞 K) σ 𝔓.asIdeal)
     {s : 𝓞 L} (hs : s ∉ 𝔓.asIdeal) : σ • s ∉ 𝔓.asIdeal := by
@@ -69,21 +69,17 @@ theorem smul_notMem_of_isArithFrobAt {σ : L ≃ₐ[K] L} (hσ : IsArithFrobAt (
   exact 𝔓.isPrime.mem_of_pow_mem _ h'
 
 /- English proof (translation)
-Use `set q := Nat.card (𝓞 K ⧸ 𝔓.asIdeal.under (𝓞 K))`. Take `⟨a, s, hs, hxs⟩` from `mem_localizationAt_iff.1 hx`. Establish `hs0 : (algebraMap (𝓞 L) L s) ≠ 0`. Introduce `h0`. Apply `hs` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(IsFractionRing.injective (𝓞 L) L) (h0.trans (map_zero _).symm)]`. Conclude with `𝔓.asIdeal.zero_mem`. Establish `hσs` using `smul_notMem_of_isArithFrobAt 𝔓 hσ hs`. Establish `hσs0 : (algebraMap (𝓞 L) L (σ • s)) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hσs` to reduce the goal to its premises. Rewrite using `[(IsFractionRing.injective (𝓞 L) L) (h0.trans (map_zero _).symm)]`. Conclude with `𝔓.asIdeal.zero_mem`. Establish `hσx : σ x = algebraMap (𝓞 L) L (σ • a) * (algebraMap (𝓞 L) L (σ • s))⁻¹`. Rewrite using `[hxs, map_mul, map_inv₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `hmem : σ x ∈ localizationAt L 𝔓` using `mem_localizationAt_iff.2 ⟨σ • a, σ • s, hσs, hσx⟩`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Use `set R := localizationAt L 𝔓`. Use `set A := algebraMap (𝓞 L) R`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (⟨x, hx⟩ : R) * A s = A a`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `x * algebraMap (𝓞 L) L s = algebraMap (𝓞 L) L a`. Rewrite using `[hxs, mul_assoc, inv_mul_cancel₀ hs0, mul_one]`. Establish `e2 : (⟨σ x, hmem⟩ : R) * A (σ • s) = A (σ • a)`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `σ x * algebraMap (𝓞 L) L (σ • s) = algebraMap (𝓞 L) L (σ • a)`. Rewrite using `[hσx, mul_assoc, inv_mul_cancel₀ hσs0, mul_one]`. Establish `hres : IsLocalRing.residue R (A (σ • s)) ≠ 0`. Rewrite using `[Ne, residue_eq_zero_iff, algebraMap_mem_maximalIdeal_localizationAt_iff]`.
-
-Conclude with `hσs`. Establish `r1` using `congrArg (IsLocalRing.residue R) e1`. Establish `r2` using `congrArg (IsLocalRing.residue R) e2`. Rewrite `r1`, `r2` using `[map_mul]`. Rewrite `r2` using `[residue_smul_of_isArithFrobAt 𝔓 hσ, residue_smul_of_isArithFrobAt 𝔓 hσ, ← r1, mul_pow]`.
-
-Conclude with `mul_right_cancel₀ (by rwa [residue_smul_of_isArithFrobAt 𝔓 hσ] at hres) r2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_apply_of_isArithFrobAt {σ : L ≃ₐ[K] L} (hσ : IsArithFrobAt (𝓞 K) σ 𝔓.asIdeal)
     {x : L} (hx : x ∈ localizationAt L 𝔓) :
@@ -131,7 +127,7 @@ end Residue
 section DegreeOne
 
 /- English proof (translation)
-Introduce `z`. Use `⟨Rat.ringOfIntegersEquiv z, Rat.ringOfIntegersEquiv.injective ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem intCast_surjective_ringOfIntegers_rat :
     Function.Surjective (Int.castRingHom (𝓞 ℚ)) := by
@@ -140,11 +136,11 @@ theorem intCast_surjective_ringOfIntegers_rat :
   simp
 
 /- English proof (translation)
-Set `_ : Field (𝓞 ℚ ⧸ 𝔮)` to `Ideal.Quotient.field 𝔮`. Establish `hfin : Finite (𝓞 ℚ ⧸ 𝔮)` using `Ideal.finiteQuotientOfFreeOfNeBot 𝔮 h0`. Use `set p := ringChar (𝓞 ℚ ⧸ 𝔮)`. Establish `hp : p.Prime` using `(CharP.char_is_prime_or_zero (𝓞 ℚ ⧸ 𝔮) p).resolve_right (CharP.char_ne_zero_of_finite (𝓞 ℚ ⧸ 𝔮) p)`. Establish `: Fact p.Prime` using `⟨hp⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f : ZMod p →+* 𝓞 ℚ ⧸ 𝔮` to `ZMod.castHom (dvd_refl p) _`. Establish `hsurj : Function.Surjective f`. Introduce `y`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨n, rfl⟩` from `intCast_surjective_ringOfIntegers_rat z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, by simp [f]⟩`. Establish `hbij : Function.Bijective f` using `⟨f.injective, hsurj⟩`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, ← Nat.card_congr (Equiv.ofBijective f hbij), Nat.card_zmod]`. Conclude with `hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_prime_of_ringOfIntegers_rat (𝔮 : Ideal (𝓞 ℚ)) (h0 : 𝔮 ≠ ⊥) [𝔮.IsMaximal] :
     (Ideal.absNorm 𝔮).Prime := by
@@ -166,9 +162,9 @@ theorem absNorm_prime_of_ringOfIntegers_rat (𝔮 : Ideal (𝓞 ℚ)) (h0 : 𝔮
   exact hp
 
 /- English proof (translation)
-Establish `h` using `Ideal.absNorm_pow_inertiaDeg (v.asIdeal.under (𝓞 ℚ)) v.asIdeal`. Establish `hv' : v.asIdeal.inertiaDeg (𝓞 ℚ) = 1` using `hv`. Rewrite `h` using `[hv', pow_one]`. Rewrite using `[← h]`. Establish `hne : v.asIdeal.under (𝓞 ℚ) ≠ ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `hb`. Conclude with `v.ne_bot (Ideal.eq_bot_of_comap_eq_bot hb)`. Establish `: (v.asIdeal.under (𝓞 ℚ)).IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance hne`. Conclude with `absNorm_prime_of_ringOfIntegers_rat _ hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absNorm_prime_of_mem_degreeOnePrimes {K : Type*} [Field K] [NumberField K]
     {v : HeightOneSpectrum (𝓞 K)} (hv : v ∈ degreeOnePrimes ℚ K) :
@@ -193,17 +189,17 @@ variable {K : Type*} [Field K] [NumberField K] (σ₀ : K →+* ℂ) (hK : finra
 include hK in
 
 /- English proof (translation)
-Use `set c := invConst φ with hcdef`. Establish `hc : c ≠ 0` using `invConst_ne_zero φ`. Establish `hM : (idealLattice σ₀ ↑𝔞⁻¹ : Set ℂ) = (c * ·) '' idealLattice σ₀ ↑𝔞⁻¹`. Rewrite using `[← hφ, homConstSet_weierstrassCurve, latticeHom_eq_idealLattice σ₀ hK L L' hL 𝔞⁻¹ hL']`. Establish `hM'` using `eq_image_mul_inv hc hM`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : (idealPeriodPair σ₀ hK 𝔞⁻¹).lattice = idealLattice σ₀ ↑𝔞⁻¹` using `lattice_idealPeriodPair σ₀ hK _`. Establish `hPend : latticeEnd (idealPeriodPair σ₀ hK 𝔞⁻¹) = cmRing σ₀` using `latticeEnd_idealPeriodPair σ₀ hK _`. Establish `mult : ∀ d : ℂ, (idealLattice σ₀ ↑𝔞⁻¹ : Set ℂ) = (d * ·) '' idealLattice σ₀ ↑𝔞⁻¹ → d ∈ cmRing σ₀`. Introduce `d hd`. Rewrite using `[← hPend]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l hl`. Rewrite `hl`, the goal using `[hP]`. Establish `h' : d * l ∈ (idealLattice σ₀ ↑𝔞⁻¹ : Set ℂ)`. Rewrite using `[hd]`. Conclude with `⟨l, hl, rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `h'`. Take `⟨a, ha⟩` from `(mem_cmRing σ₀).1 (mult c hM)`. Take `⟨b, hb⟩` from `(mem_cmRing σ₀).1 (mult c⁻¹ hM')`. Establish `hinj : Function.Injective (σ₀.comp (algebraMap (𝓞 K) K))` using `σ₀.injective.comp (IsFractionRing.injective (𝓞 K) K)`. Establish `hab : a * b = 1` using `hinj (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.comp_apply, map_mul, map_one]`. Rewrite using `[ha, hb, mul_inv_cancel₀ hc])`. Use `⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, ha.symm, fun z ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← latticeToHom_homConst φ.toHom, homPt_latticeToHom]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `homConst _ _ φ.toHom * z = _`. Rewrite using `[homConst_toHom, ← hcdef, ← ha]`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_of_homConstSet_eq (L L' : PeriodPair) (hL : latticeEnd L = cmRing σ₀)
     (𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (hL' : L'.lattice = idealLattice σ₀ ↑𝔞⁻¹ * L.lattice)
@@ -254,7 +250,7 @@ variable {K : Type*} [Field K] [NumberField K] [Algebra K ℂ] (hK : finrank ℚ
 omit [NumberField K] [IsTotallyComplex K] [NumberField L] in
 
 /- English proof (translation)
-Rewrite `ha` using `[h.over]`. Conclude with `ha`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_of_liesOver {𝔭 : HeightOneSpectrum (𝓞 K)} {𝔓 : HeightOneSpectrum (𝓞 L)}
     [h : 𝔓.asIdeal.LiesOver 𝔭.asIdeal] {a : 𝓞 K} (ha : a ∈ 𝔭.asIdeal) :
@@ -265,7 +261,7 @@ theorem algebraMap_mem_of_liesOver {𝔭 : HeightOneSpectrum (𝓞 K)} {𝔓 : H
 omit [NumberField K] [IsTotallyComplex K] [NumberField L] in
 
 /- English proof (translation)
-The claim follows from `Isogeny.ext_xy (by rw [isogBaseChange_alt, ← ffMap_algebraMap_eq_bcEmb]; exact (Isogeny.map_x _ φ).symm) (by rw [isogBaseChange_y, ← ffMap_algebraMap_eq_bcEmb]; exact (Isogeny.map_y _ φ).symm)`.
+A detailed English derivation is pending.
 -/
 theorem isogBaseChange_eq_map {A A' : WeierstrassCurve L} [A.IsElliptic] [A'.IsElliptic]
     (φ : Isogeny A A') : isogBaseChange (F' := ℂ) φ = φ.map (algebraMap L ℂ) :=
@@ -277,19 +273,17 @@ omit [NumberField L] in
 include hK in
 
 /- English proof (translation)
-It suffices to establish `h : ∀ g : ℂ ≃ₐ[L] ℂ, ψ.conj g = ψ by`. Take `⟨φ', hφ'⟩` from `ψ.exists_map_eq_of_forall_conj_eq h`. Conclude with `⟨φ', (isogBaseChange_eq_map φ').trans hφ'⟩`. Introduce `g`. Use `set D := dualOver (isogBaseChange (F' := ℂ) φ)`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Λ, C, hC⟩` from `exists_variableChange_eq_weierstrassCurve (A.baseChange ℂ)`. Establish `hΛ : latticeEnd Λ = cmRing (algebraMap K ℂ)` using `latticeEnd_eq_cmRing_of_ringEquiv (algebraMap K ℂ) hK Λ ((latticeEndEquiv Λ).trans ((vcEndEquiv C hC).symm.trans hA.some))`. Establish `hmem : endConst (A.baseChange ℂ) (D.comp ψ).toHom ∈ cmRing (algebraMap K ℂ)`. Rewrite using `[← hΛ, ← range_endConst hC]`. Conclude with `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `(mem_cmRing (algebraMap K ℂ)).1 hmem`. Rewrite `ha` using `[endConst_apply, homConst_toHom, invConst_comp]`. Establish `hD` using `invConst_dualOver_mul (isogBaseChange (F' := ℂ) φ)`. Rewrite `hD` using `[invConst_isogBaseChange, degree_isogBaseChange]`. Express the relevant statement in the definitionally equal form `invConst D * _ = _ at hD`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hD0 : invConst D ≠ 0` using `invConst_ne_zero D`. Establish `hc0 : algebraMap L ℂ (invConst φ) ≠ 0`. Rewrite using `[← invConst_isogBaseChange]`. Conclude with `invConst_ne_zero _`. Establish `hψ : invConst ψ = algebraMap L ℂ (algebraMap K L (algebraMap (𝓞 K) K a) * invConst φ / φ.degree)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdeg0 : (φ.degree : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 φ.degree_pos.ne'`. Rewrite using `[map_div₀, map_mul, map_natCast, ← IsScalarTower.algebraMap_apply, ha, ← hD]`. Clear the denominators using the available nonvanishing facts. Establish `hc : invConst (ψ.conj g) = invConst ψ`. Rewrite using `[Isogeny.invConst_conj, hψ]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `g.commutes _`. Establish `hQ : (ψ.conj g).toHom - ψ.toHom = 0`. Assume the negation of the conclusion as `hne`. Establish `h0` using `invConst_ne_zero (isogOfHom _ hne)`. Rewrite `h0` using `[← homConst_toHom, isogOfHom_toHom, map_sub, homConst_toHom, homConst_toHom, hc, sub_self]`.
-
-Conclude with `h0 rfl`. Establish `hQ' : (ψ.conj g).toHom = ψ.toHom` using `sub_eq_zero.1 hQ`. Establish `h2` using `congrArg Subtype.val hQ'`. Conclude with `Isogeny.ext' h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isogBaseChange_eq_of_isogeny {A A' : WeierstrassCurve L} [A.IsElliptic]
     [A'.IsElliptic] (hA : Nonempty (isogEnd (A.baseChange ℂ) ≃+* 𝓞 K)) (φ : Isogeny A A')
@@ -337,21 +331,17 @@ theorem exists_isogBaseChange_eq_of_isogeny {A A' : WeierstrassCurve L} [A.IsEll
 include hK in
 
 /- English proof (translation)
-Use `set c := invConst φ with hcdef`. Establish `hc0 : algebraMap L ℂ c ≠ 0`. Rewrite using `[hcdef, ← invConst_isogBaseChange]`. Conclude with `invConst_ne_zero _`. Establish `step1 : ∀ β ∈ (𝔭.asIdeal : FractionalIdeal (𝓞 K)⁰ K)⁻¹, c * algebraMap K L β ∈ localizationAt L 𝔓`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `β hβ`. Distinguish the cases in `hβ0 : β = 0`. Rewrite using `[hβ0, map_zero, mul_zero]`. Conclude with `zero_mem _`. Establish `hmem : algebraMap L ℂ c * algebraMap K ℂ β ∈ homConstSet ((W.baseChange L).baseChange ℂ) ((W'.baseChange L).baseChange ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h' : algebraMap L ℂ c * algebraMap K ℂ β ∈ (homConstSet ((W.baseChange L).baseChange ℂ) ((W'.baseChange L).baseChange ℂ) : Set ℂ)`. Rewrite using `[hφ]`. Conclude with `⟨_, map_mem_idealLattice _ hβ, rfl⟩`. Conclude with `h'`. Take `⟨Q, hQ⟩` from `mem_homConstSet.1 hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hQ0 : Q ≠ 0`. Introduce and unpack `rfl`. Rewrite `hQ` using `[map_zero]`. Conclude with `mul_ne_zero hc0 ((map_ne_zero _).2 hβ0) hQ.symm`. Take `⟨ν, hν⟩` from `exists_isogBaseChange_eq_of_isogeny hK hEW φ (isogOfHom Q hQ0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : algebraMap L ℂ (invConst ν) = algebraMap L ℂ (c * algebraMap K L β)`. Rewrite using `[← invConst_isogBaseChange, hν, ← homConst_toHom, isogOfHom_toHom, hQ, map_mul, ← IsScalarTower.algebraMap_apply]`. Establish `e'` using `(algebraMap L ℂ).injective e`. Take `⟨d, hd, -⟩` from `exists_invConst_reduceIsogeny L W W' ν`. Rewrite using `[← e', ← hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `d.2`. Establish `h1 : (1 : K) ∈ (𝔭.asIdeal : FractionalIdeal (𝓞 K)⁰ K)⁻¹ * (𝔭.asIdeal : FractionalIdeal (𝓞 K)⁰ K)`. Rewrite using `[inv_mul_cancel₀ (FractionalIdeal.coeIdeal_ne_zero.2 𝔭.ne_bot)]`. Conclude with `FractionalIdeal.one_mem_one _`. Establish `key` using `FractionalIdeal.mul_induction_on (C := fun z : K ↦ ∃ m ∈ maximalIdeal (localizationAt L 𝔓), algebraMap (localizationAt L 𝔓) L m = c * algebraMap K L z) h1 (fun i hi j hj ↦ by`.
-
-Take `⟨a, ha, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hj`. Use `⟨⟨c * algebraMap K L i, step1 i hi⟩ * algebraMap (𝓞 L) (localizationAt L 𝔓) (algebraMap (𝓞 K) (𝓞 L) a), Ideal.mul_mem_left _ _ ((algebraMap_mem_maximalIdeal_localizationAt_iff 𝔓 _).2 (algebraMap_mem_of_liesOver ha)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c * algebraMap K L i * algebraMap (𝓞 L) L (algebraMap (𝓞 K) (𝓞 L) a) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 K) K L, map_mul, mul_assoc])`. Use the proof step `(fun x y ⟨m₁, hm₁, e₁⟩ ⟨m₂, hm₂, e₂⟩ ↦ ⟨m₁ + m₂, add_mem hm₁ hm₂, by rw [map_add, e₁, e₂, map_add, mul_add]⟩)`.
-
-Take `⟨m, hm, e⟩` from `key`. Conclude with `⟨m, hm, by rw [e, map_one, mul_one]⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_maximalIdeal_invConst (𝔭 : HeightOneSpectrum (𝓞 K))
     (𝔓 : HeightOneSpectrum (𝓞 L)) [𝔓.asIdeal.LiesOver 𝔭.asIdeal]
@@ -418,13 +408,13 @@ theorem exists_mem_maximalIdeal_invConst (𝔭 : HeightOneSpectrum (𝓞 K))
 include hK in
 
 /- English proof (translation)
-Take `⟨c, hc, hcφ⟩` from `exists_mem_maximalIdeal_invConst hK 𝔭 𝔓 hEW φ hφ`. Establish `hdeg : φ.degree = Ideal.absNorm 𝔭.asIdeal`. Establish `h` using `degree_eq_absNorm (algebraMap K ℂ) hK (E := ⟨_, hEW⟩) (E' := ⟨_, hEW'⟩) 𝔭 hv (isogBaseChange φ) (by rw [invConst_isogBaseChange]; exact hφ)`. Rewrite `h` using `[degree_isogBaseChange]`. Then use the resulting hypothesis. Establish `hp : p = Ideal.absNorm 𝔭.asIdeal`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hmem : ((Ideal.absNorm 𝔭.asIdeal : ℕ) : 𝓞 L) ∈ 𝔓.asIdeal`. Use `algebraMap_mem_of_liesOver (𝔓 := 𝔓) (Ideal.absNorm_mem 𝔭.asIdeal)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h0 : ((Ideal.absNorm 𝔭.asIdeal : ℕ) : ResidueField (localizationAt L 𝔓)) = 0`. Establish `h` using `(algebraMap_mem_maximalIdeal_localizationAt_iff 𝔓 _).2 hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_natCast]`. Rewrite using `[← map_natCast (IsLocalRing.residue (localizationAt L 𝔓)), residue_eq_zero_iff]`. Conclude with `h`. Establish `hdvd` using `(CharP.cast_eq_zero_iff (ResidueField (localizationAt L 𝔓)) p _).1 h0`. Conclude with `(Nat.prime_dvd_prime_iff_eq (Fact.out) hv).1 hdvd`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdeg' : φ.degree = p` using `hdeg.trans hp.symm`. Take `⟨ψ, h1, h2, -, h4, h5⟩` from `reduceIsogeny_eq_comp_frobeniusIsogeny L p φ hdeg' hc hcφ`. Conclude with `⟨hp, hdeg', ⟨ψ, h1, h2, h4, h5⟩, residue_j_eq_pow L p φ hdeg' hc hcφ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem reduceIsogeny_eq_comp_frobeniusIsogeny_of_homConstSet (𝔭 : HeightOneSpectrum (𝓞 K))
     (hv : (Ideal.absNorm 𝔭.asIdeal).Prime) (𝔓 : HeightOneSpectrum (𝓞 L))
@@ -468,7 +458,7 @@ theorem reduceIsogeny_eq_comp_frobeniusIsogeny_of_homConstSet (𝔭 : HeightOneS
 include hK in
 
 /- English proof (translation)
-Substitute `hW hW'` using the available equality. Use `erw [Isogeny.congr_rfl]`. Conclude with `reduceIsogeny_eq_comp_frobeniusIsogeny_of_homConstSet hK 𝔭 hv 𝔓 hEA hEA' φ hφ p`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem reduceIsogeny_congr_eq_comp_frobeniusIsogeny (𝔭 : HeightOneSpectrum (𝓞 K))
     (hv : (Ideal.absNorm 𝔭.asIdeal).Prime) (𝔓 : HeightOneSpectrum (𝓞 L))
@@ -508,7 +498,7 @@ abbrev primeClass (𝔭 : HeightOneSpectrum (𝓞 K)) : ClassGroup (𝓞 K) :=
 omit [NumberField K] [IsTotallyComplex K] [NumberField L] in
 
 /- English proof (translation)
-Rewrite using `[← hx, ELL.j_toEll]`. Conclude with `WeierstrassCurve.map_j _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ELL.j_eq_algebraMap_j {A : WeierstrassCurve L} [A.IsElliptic] {x : ELL K}
     {h : Nonempty (isogEnd (A.baseChange ℂ) ≃+* 𝓞 K)}
@@ -520,11 +510,9 @@ omit [NumberField L] in
 include hK in
 
 /- English proof (translation)
-Use `set y := (ellMulAction (algebraMap K ℂ) hK).smul (primeClass 𝔭) x`. Take `⟨h₀, hx⟩` from `hE x`. Take `⟨h₁, hy⟩` from `hE y`. Take `⟨ψ, hψ⟩` from `exists_isogeny_homConstSet_eq (algebraMap K ℂ) hK (E := ⟨_, h₀⟩) (E' := ⟨_, h₁⟩) 𝔭 (by rw [hx, hy])`. Take `⟨φ, hφ⟩` from `exists_isogBaseChange_eq_of_isogeny hK h₀ (hiso x y).some ψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hφ' : (homConstSet ((E x).baseChange ℂ) ((E y).baseChange ℂ) : Set ℂ) = (algebraMap L ℂ (invConst φ) * ·) '' idealLattice (algebraMap K ℂ) (𝔭.asIdeal : FractionalIdeal (𝓞 K)⁰ K)⁻¹`. Rewrite using `[← invConst_isogBaseChange, hφ]`. Conclude with `hψ`. Use `⟨φ, hφ', fun hv ↦ ?_⟩` and prove the remaining obligations. Establish `h` using `degree_eq_absNorm (algebraMap K ℂ) hK (E := ⟨_, h₀⟩) (E' := ⟨_, h₁⟩) 𝔭 hv (isogBaseChange φ) (by rw [invConst_isogBaseChange]; exact hφ')`.
-
-Rewrite `h` using `[degree_isogBaseChange]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_isogeny_primeClass_smul
     (E : ELL K → WeierstrassCurve L) [∀ x, (E x).IsElliptic]
@@ -558,27 +546,23 @@ theorem exists_isogeny_primeClass_smul
 include hK in
 
 /- English proof (translation)
-Establish `: Finite (ELL K)` using `finite_ell hK`. Establish `hj : ∀ x, ELL.j x = algebraMap L ℂ (E x).j` using `fun x ↦ by`. Take `⟨h, hx⟩` from `hE x`. Conclude with `ELL.j_eq_algebraMap_j hx`. Establish `hEj : Pairwise fun x y ↦ (E x).j ≠ (E y).j` using `fun x y hxy e ↦ hxy (ELL.j_injective (by rw [hj, hj, e]))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT, hTgood⟩` from `exists_finite_forall_liesOver (K := K) (eventually_goodReduction E hEj)`. Use `⟨T, hT, fun 𝔭 h𝔭T h𝔭1 𝔓 _ ↦ ?_⟩` and prove the remaining obligations. Establish `hv` using `absNorm_prime_of_mem_degreeOnePrimes h𝔭1`. Take `⟨W, hWell, hWmap, hWj, hWres⟩` from `hTgood 𝔭 h𝔭T 𝔓 inferInstance`. Establish `partB : ∀ (x : ELL K) (φ : Isogeny (E x) (E ((ellMulAction (algebraMap K ℂ) hK).smul (primeClass 𝔭) x))), (homConstSet ((E x).baseChange ℂ) ((E ((ellMulAction (algebraMap K ℂ) hK).smul (primeClass 𝔭) x)).baseChange ℂ) : Set ℂ) = (algebraMap L ℂ (invConst φ) * ·) '' idealLattice ( …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x φ hφ W W' _ _ hW hW' q _ _`. Take `⟨h₁, -⟩` from `hE x`. Take `⟨h₂, -⟩` from `hE ((ellMulAction (algebraMap K ℂ) hK).smul (primeClass 𝔭) x)`. Conclude with `reduceIsogeny_congr_eq_comp_frobeniusIsogeny hK 𝔭 hv 𝔓 h₁ h₂ φ hφ hW hW' q`. Use `⟨⟨W, hWell, hWmap, hWres⟩, fun σ hσ ↦ ?_, partB⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set p := Ideal.absNorm 𝔭.asIdeal with hpdef`. Establish `: Fact p.Prime` using `⟨hv⟩`. Establish `: CharP (ResidueField (localizationAt L 𝔓)) p`. Use `charP_residueField_localizationAt 𝔓 hv ?_` and prove the remaining obligations. Use `algebraMap_mem_of_liesOver (𝔓 := 𝔓) (Ideal.absNorm_mem 𝔭.asIdeal)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `set x₀ : ELL K := classToEll (algebraMap K ℂ) hK 1`. Use `set y := (ellMulAction (algebraMap K ℂ) hK).smul (primeClass 𝔭) x₀`. Use `set z := (ellMulAction (algebraMap K ℂ) hK).smul (galClassOf hK L hL σ) x₀`. Take `⟨φ, hφ, -⟩` from `exists_isogeny_primeClass_smul hK E hE hiso 𝔭 x₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, -, -, hjy⟩` from `partB x₀ φ hφ (W x₀) (W y) (hWmap x₀) (hWmap y) p`. Establish `hjmem : (E x₀).j ∈ localizationAt L 𝔓`. Rewrite using `[← hWj x₀]`. Conclude with `(W x₀).j.2`. Take `⟨hσmem, hσres⟩` from `residue_apply_of_isArithFrobAt 𝔓 hσ hjmem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hq : Nat.card (𝓞 K ⧸ 𝔓.asIdeal.under (𝓞 K)) = p`. Rewrite using `[← Ideal.LiesOver.over (P := 𝔓.asIdeal) (p := 𝔭.asIdeal), hpdef, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hσj : σ (E x₀).j = (E z).j`. Establish `h` using `galClassOf_apply_j hK L hL σ x₀`. Establish `e1 : (⟨ELL.j x₀, hL x₀⟩ : L) = (E x₀).j` using `Subtype.ext (hj x₀)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[e1]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[h, hj z]`. Both sides reduce to the same expression. Establish `key : IsLocalRing.residue _ (W z).j = IsLocalRing.residue _ (W y).j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `ez : (W z).j = ⟨σ (E x₀).j, hσmem⟩` using `Subtype.ext (by show ((W z).j : L) = σ (E x₀).j`. Rewrite using `[hσj, ← hWj z]`. Use the proof step `rfl)`. Establish `ex : (W x₀).j = ⟨(E x₀).j, hjmem⟩` using `Subtype.ext (by show ((W x₀).j : L) = (E x₀).j`. Rewrite using `[← hWj x₀]`.
-
-Use the proof step `rfl)`. Rewrite using `[ez, hσres, hq, hjy, ex]`. Establish `hzy : z = y`. Assume the negation of the conclusion as `hne`. Conclude with `hWres hne key`.
-
-Establish `hcls : galClassOf hK L hL σ = primeClass 𝔭`. Take `⟨a, -, huniq⟩` from `existsUnique_smul_eq (algebraMap K ℂ) hK x₀ y`. Conclude with `(huniq _ hzy).trans (huniq _ rfl).symm`. Use `⟨hcls, fun x ↦ Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[galClassOf_apply_j, hcls]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobenius_at_primes_of_degree_one (hL : ∀ x : ELL K, ELL.j x ∈ L)
     (E : ELL K → WeierstrassCurve L) [∀ x, (E x).IsElliptic]

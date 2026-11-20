@@ -3,7 +3,7 @@ import Formalism.HermitianCurvature.StatementQ
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GeneralLinearLevel.ElementaryGeneratorsLevelGroup
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same, mul_one]`. Conclude with `Matrix.single_mul_single_of_ne (h := h) ..`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma single_one_mul_single_one {n : ℕ} (p q s t : Fin n) :
     Matrix.single p q (1 : ℂ) * Matrix.single s t 1 = if q = s then Matrix.single p t 1 else 0 := by
@@ -13,9 +13,9 @@ private lemma single_one_mul_single_one {n : ℕ} (p q s t : Fin n) :
   · exact Matrix.single_mul_single_of_ne (h := h) ..
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Simplify using `only [Formalism.FourierDecayAlt.Q.posL] at h'`. Conclude with `Fin.ext (by omega)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma posL_eq_posL_iff (k r : ℕ) (i : Fin (r + 1)) (x y : Fin (Formalism.FourierDecayAlt.Q.mdim k r i)) :
     Formalism.FourierDecayAlt.Q.posL k r i x = Formalism.FourierDecayAlt.Q.posL k r i y ↔ x = y := by
@@ -28,15 +28,13 @@ private lemma posL_eq_posL_iff (k r : ℕ) (i : Fin (r + 1)) (x y : Fin (Formali
     rfl
 
 /- English proof (translation)
-Introduce `E _ _ k r i D a b c d f _ hf g hg`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g hg`. Establish `hL : Formalism.FourierDecayAlt.Q.EabGlW.LocExt (Formalism.FourierDecayAlt.Q.Glev k r i) f F U` using `⟨hU, hF, hfF⟩`. Establish `good : ∀ x y : Fin (Formalism.FourierDecayAlt.Q.mdim k r i), Formalism.FourierDecayAlt.Q.EabGlW.Good k r i (Matrix.single (Formalism.FourierDecayAlt.Q.posL k r i x) (Formalism.FourierDecayAlt.Q.posL k r i y) (1 : ℂ))` using `fun x y => Formalism.FourierDecayAlt.Q.EabGlW.hpart_mem (Formalism.FourierDecayAlt.Q.EabGlW.inV_single x y)`. Establish `good0 : Formalism.FourierDecayAlt.Q.EabGlW.Good k r i (0 : Formalism.FourierDecayAlt.Q.Mx k r)` using `Formalism.FourierDecayAlt.Q.EabGlW.hpart_mem Formalism.FourierDecayAlt.Q.EabGlW.inV_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `goodIf : ∀ (P : Prop) [Decidable P] (x y : Fin (Formalism.FourierDecayAlt.Q.mdim k r i)), Formalism.FourierDecayAlt.Q.EabGlW.Good k r i (if P then Matrix.single (Formalism.FourierDecayAlt.Q.posL k r i x) (Formalism.FourierDecayAlt.Q.posL k r i y) (1 : ℂ) else 0)`. Introduce `P _ x y`. Use `split_ifs`. Conclude with `good x y`. Conclude with `good0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hcomm` using `Formalism.FourierDecayAlt.Q.EabGlW.ec_comm (good a b) (good c d) hL hgU hg.1`. Rewrite `hcomm` using `[single_one_mul_single_one, single_one_mul_single_one]`. Simplify using `only [posL_eq_posL_iff] at hcomm`. Rewrite `hcomm` using `[Formalism.FourierDecayAlt.Q.EabGlW.ec_sub (goodIf _ a d) (goodIf _ c b) hL hgU hg.1]`. Express the relevant statement in the definitionally equal form `_ = _ at hcomm`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression.
 
-Use `hcomm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `Formalism.FourierDecayAlt.Q.EabGlW.ec_zero f g`.
-
-Use `split_ifs`. Both sides reduce to the same expression. Conclude with `Formalism.FourierDecayAlt.Q.EabGlW.ec_zero f g`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem qnEabGl : Formalism.FourierDecayAlt.Q.EabGlLev := by
   intro E _ _ k r i D a b c d f _ hf g hg

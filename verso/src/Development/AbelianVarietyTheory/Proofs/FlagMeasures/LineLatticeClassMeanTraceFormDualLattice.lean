@@ -10,9 +10,9 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.MeanDual
 
 /- English proof (translation)
-Use `⟨hφ, Measure.ext fun s hs => ?_⟩` and prove the remaining obligations. Establish `h1 : MeasurableSet (φ ⁻¹' s ∩ U)` using `(hφ hs).inter hU`. Rewrite using `[Measure.map_apply hφ hs, Measure.restrict_apply (hφ hs), Measure.restrict_apply hs, withDensity_apply _ h1, withDensity_apply _ (hs.inter hU)]`. Establish `h2 : s ∩ U = φ '' (φ ⁻¹' s ∩ U)` using `by rw [Set.image_preimage_inter, him]`. Rewrite using `[h2, lintegral_image_eq_lintegral_abs_det_fderiv_mul μ h1 (fun x hx => (hd x hx.2).hasFDerivWithinAt) (hi.mono Set.inter_subset_right)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `setLIntegral_congr_fun h1 fun x hx => (hρ x hx.2).symm`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_of_fderiv {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (U : Set V) (hU : MeasurableSet U)
@@ -47,7 +47,7 @@ noncomputable def transp (ι : Type) (j : ℕ) : (ι → Fin j → Fin j → ℂ
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Establish `h : LinearMap.det (transp ι j) * LinearMap.det (transp ι j) = 1`. Rewrite using `[← LinearMap.det_comp]`. Conclude with `LinearMap.det_id`. Apply the tactic sequence `rcases mul_self_eq_one_iff.1 h with h | h <;> simp [h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem abs_det_transp (ι : Type) (j : ℕ) : |LinearMap.det (transp ι j)| = 1 := by
   have h : LinearMap.det (transp ι j) * LinearMap.det (transp ι j) = 1 := by
@@ -57,7 +57,7 @@ theorem abs_det_transp (ι : Type) (j : ℕ) : |LinearMap.det (transp ι j)| = 1
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `(Matrix.isUnit_iff_isUnit_det A).2 (isUnit_iff_ne_zero.2 hA)`. Establish `h` using `hasFDerivAt_ringInverse (𝕜 := ℝ) u`. Simplify using `only [Matrix.nonsing_inv_eq_ringInverse]`. Use `⟨_, fun h => ?_, h⟩` and prove the remaining obligations. Rewrite using `[Ring.inverse_unit, Matrix.neg_mul, Matrix.neg_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -72,7 +72,7 @@ theorem hasFDerivAt_matrix_inv_of_det_ne_zero {j : ℕ} (A : Matrix (Fin j) (Fin
   rfl
 
 /- English proof (translation)
-The claim follows from `hasFDerivAt_matrix_inv_of_det_ne_zero (Matrix.of A) hA`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_inv {j : ℕ} (A : Fin j → Fin j → ℂ) (hA : (Matrix.of A).det ≠ 0) :
     ∃ L : (Fin j → Fin j → ℂ) →L[ℝ] (Fin j → Fin j → ℂ),
@@ -81,7 +81,7 @@ theorem hasFDerivAt_inv {j : ℕ} (A : Fin j → Fin j → ℂ) (hA : (Matrix.of
   hasFDerivAt_matrix_inv_of_det_ne_zero (Matrix.of A) hA
 
 /- English proof (translation)
-Use `haveI : (volume : Measure (Fin j → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (Fin j → Fin j → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Conclude with `Measure.pi.isAddHaarMeasure _`.
+A detailed English derivation is pending.
 -/
 theorem isAddHaarMeasure_volume (ι : Type) [Fintype ι] (j : ℕ) :
     (volume : Measure (ι → Fin j → Fin j → ℂ)).IsAddHaarMeasure := by
@@ -92,21 +92,19 @@ theorem isAddHaarMeasure_volume (ι : Type) [Fintype ι] (j : ℕ) :
 variable (E : Type) [Field E] [NumberField E] (j : ℕ)
 
 /- English proof (translation)
-Set `L` to `LinearMap.toContinuousLinearMap (sandwich (fun w => Matrix.of (γ w)) fun _ => 1)`. Establish `hL : (fun g : MatInf E j => γ * g) = L`. Use function extensionality and compare the values at `g`. Apply `matInf_ext` to reduce the goal to its premises. Introduce `w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Matrix.mul_one _).symm`. Establish `hu` using `fun w => isUnit_iff_ne_zero.2 ((detNorm_pos_iff E j γ).1 hγ w)`. Use `haveI := isAddHaarMeasure_volume (InfinitePlace E) j`. Use `measurePreserving_of_fderiv (V := InfinitePlace E → Fin j → Fin j → ℂ) volume _ (measurableSet_detNorm_pos E j) _ (by rw [hL]; exact L.continuous.measurable) (fun _ => L) (fun x _ => by rw [hL]; exact L.hasFDerivAt) ?_ ?_ _ ?_` and prove the remaining obligations. Introduce `x _ y _ hxy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `matInf_ext` to reduce the goal to its premises. Introduce `w`. Establish `: Matrix.of (γ w) * Matrix.of (x w) = Matrix.of (γ w) * Matrix.of (y w)` using `congrArg (fun z : MatInf E j => Matrix.of (z w)) hxy`. Rewrite using `[← Matrix.nonsing_inv_mul_cancel_left _ (Matrix.of (x w)) (hu w), this, Matrix.nonsing_inv_mul_cancel_left _ _ (hu w)]`. Use extensionality with `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(mul_pos hγ hx).trans_eq (detNorm_mul E j γ x).symm`. Introduce `hy`. Establish `h : γ * (show MatInf E j from fun w a b => ((Matrix.of (γ w))⁻¹ * Matrix.of (y w)) a b) = y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply `matInf_ext` to reduce the goal to its premises. Introduce `w`. Conclude with `Matrix.mul_nonsing_inv_cancel_left _ _ (hu w)`. Use `⟨_, ?_, h⟩` and prove the remaining obligations. Establish `hy' : 0 < detNorm E j y` using `hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hy'` using `[← h, detNorm_mul]`. Conclude with `(mul_pos_iff_of_pos_left hγ).1 hy'`. Introduce `x hx`. Establish `hx' : 0 < detNorm E j x` using `hx`. Establish `hdet : L.det = detNorm E j γ ^ j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ContinuousLinearMap.det, LinearMap.coe_toContinuousLinearMap, GlobalTheory.T.det_matrix_sandwich_linear_map _ _ _ _ _ fun _ _ => rfl]`. Simplify using `[detNorm, Finset.prod_pow]`. Establish `hm` using `detNorm_mul E j γ x`. Rewrite using `[hdet]`. Use `(congrArg (fun t : ℝ => _ * ENNReal.ofReal (t⁻¹ ^ j)) hm).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[← ENNReal.ofReal_mul (abs_nonneg _), abs_of_pos (pow_pos hγ _), ← mul_pow]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem measurePreserving_mul_left (γ : MatInf E j) (hγ : 0 < detNorm E j γ) :
     MeasurePreserving (fun g : MatInf E j => γ * g) ((haarGL E j).restrict {g | 0 < detNorm E j g})
@@ -155,9 +153,7 @@ theorem measurePreserving_mul_left (γ : MatInf E j) (hγ : 0 < detNorm E j γ) 
     field_simp
 
 /- English proof (translation)
-Establish `h : Measurable fun (g : InfinitePlace E → Fin j → Fin j → ℂ) w a b => (Matrix.of (g w))⁻¹ b a`. Use `measurable_pi_lambda _ fun w => measurable_pi_lambda _ fun a => measurable_pi_lambda _ fun b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]`. Establish `hc : Continuous fun g : InfinitePlace E → Fin j → Fin j → ℂ => Matrix.of (g w)` using `continuous_apply w`. Conclude with `hc.matrix_det.measurable.inv.mul (hc.matrix_adjugate.matrix_elem b a).measurable`.
-
-Conclude with `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_invT : Measurable (invT E j) := by
   have h : Measurable fun (g : InfinitePlace E → Fin j → Fin j → ℂ) w a b => (Matrix.of (g w))⁻¹ b a := by
@@ -168,26 +164,24 @@ theorem measurable_invT : Measurable (invT E j) := by
   exact h
 
 /- English proof (translation)
-Simplify using `only [detNorm, of_invT, Matrix.det_transpose, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', norm_inv, inv_pow, Finset.prod_inv_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem detNorm_invT (g : MatInf E j) : detNorm E j (invT E j g) = (detNorm E j g)⁻¹ := by
   simp only [detNorm, of_invT, Matrix.det_transpose, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', norm_inv,
     inv_pow, Finset.prod_inv_distrib]
 
 /- English proof (translation)
-Set `L` to `fun x : InfinitePlace E → Fin j → Fin j → ℂ => LinearMap.toContinuousLinearMap (sandwich (fun w => -(Matrix.of (x w))⁻¹) fun w => (Matrix.of (x w))⁻¹)`. Set `T` to `LinearMap.toContinuousLinearMap (transp (InfinitePlace E) j)`. Use `haveI := isAddHaarMeasure_volume (InfinitePlace E) j`. Use `measurePreserving_of_fderiv (V := InfinitePlace E → Fin j → Fin j → ℂ) volume _ (measurableSet_detNorm_pos E j) _ (measurable_invT E j) (fun x => T.comp (L x)) ?_ ?_ ?_ _ ?_` and prove the remaining obligations. Introduce `x hx`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : HasFDerivAt (fun (g : InfinitePlace E → Fin j → Fin j → ℂ) w a b => (Matrix.of (g w))⁻¹ a b) (L x) x`. Rewrite using `[hasFDerivAt_pi']`. Introduce `w`. Take `⟨M, hM, hd⟩` from `hasFDerivAt_inv (x w) ((detNorm_pos_iff E j x).1 hx w)`. Use `hd.comp x (hasFDerivAt_apply (𝕜 := ℝ) w x)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `this.congr_fderiv ?_` and prove the remaining obligations. Use `ext1 h`. Conclude with `Matrix.of.injective (hM (h w))`. Conclude with `T.hasFDerivAt.comp x h1`. Introduce `x hx y hy hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← invT_invT E j hx, hxy, invT_invT E j hy]`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(detNorm_invT_pos_iff E j x).2 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hy`. Conclude with `⟨invT E j y, (detNorm_invT_pos_iff E j y).2 hy, invT_invT E j hy⟩`. Introduce `x hx`. Establish `hx' : 0 < detNorm E j x` using `hx`. Establish `hdet : |(T.comp (L x)).det| = ((detNorm E j x)⁻¹ * (detNorm E j x)⁻¹) ^ j`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `|LinearMap.det ((transp (InfinitePlace E) j).comp (sandwich (fun w => -(Matrix.of (x w))⁻¹) fun w => (Matrix.of (x w))⁻¹))| = _`. Rewrite using `[LinearMap.det_comp, abs_mul, abs_det_transp, one_mul, GlobalTheory.T.det_matrix_sandwich_linear_map _ _ _ _ _ fun _ _ => rfl, abs_of_nonneg (Finset.prod_nonneg fun _ _ => by positivity)]`. Simplify using `[detNorm, Finset.prod_pow, Matrix.det_neg, Finset.prod_mul_distrib, mul_pow]`. Establish `hm` using `detNorm_invT E j x`. Rewrite using `[hdet]`.
-
-Use `(congrArg (fun t : ℝ => _ * ENNReal.ofReal (t⁻¹ ^ j)) hm).trans ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← mul_pow]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem measurePreserving_invT :
     MeasurePreserving (invT E j) ((haarGL E j).restrict {g | 0 < detNorm E j g})
@@ -237,11 +231,11 @@ end GlobalTheory.MeanDual
 namespace GlobalTheory.MeanDual
 
 /- English proof (translation)
-Unfold `covol`. Use `le_iInf fun D' => le_iInf fun hD' => le_iInf fun hc => ?_` and prove the remaining obligations. Establish `hD : MeasurableSet (φ ⁻¹' D' ∩ U)` using `(hφ.measurable hD').inter hU`. Use `iInf_le_of_le (φ ⁻¹' D' ∩ U) (iInf_le_of_le hD (iInf_le_of_le ?_ ?_))` and prove the remaining obligations. Introduce `x hx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨γ', hγ', hx'⟩` from `hc (φ x) (hφU x hx)`. Take `⟨γ, hγ, H⟩` from `hΓ γ' hγ'`. Conclude with `⟨γ, hγ, by rw [Set.mem_preimage, (H x hx).2]; exact hx', (H x hx).1⟩`. Rewrite using `[withDensity_apply _ hD, withDensity_apply _ hD']`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Set.indicator_of_mem (hφU x hx.2), hf x hx.2]`. Use `_ = ∫⁻ x in φ ⁻¹' D', U.indicator f' (φ x) ∂(μ.restrict U) := by`. Rewrite using `[Measure.restrict_restrict (hφ.measurable hD')]`. Use `_ = ∫⁻ x in D', U.indicator f' x ∂(μ.restrict U) := hφ.setLIntegral_comp_preimage hD' hm`. Use `_ ≤ ∫⁻ x in D', f' x ∂μ := lintegral_mono' (Measure.restrict_mono subset_rfl Measure.restrict_le_self) (Set.indicator_le_self _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covol_le_of_map {G : Type} [Mul G] [MeasurableSpace G] (Γ Γ' : Set G) (μ : Measure G) (U : Set G)
     (hU : MeasurableSet U) (φ : G → G) (hφ : MeasurePreserving φ (μ.restrict U) (μ.restrict U))
@@ -283,7 +277,7 @@ theorem of_embInf (γ : GL (Fin j) E) (w : InfinitePlace E) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Apply `Matrix.of.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Matrix.of (embInf E j (γ * δ) w) = Matrix.of (embInf E j γ w) * Matrix.of (embInf E j δ w)`. Rewrite using `[of_embInf, of_embInf, of_embInf, Units.val_mul, Matrix.map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem embInf_mul (γ δ : GL (Fin j) E) : embInf E j (γ * δ) = embInf E j γ * embInf E j δ := by
   funext w
@@ -293,7 +287,7 @@ theorem embInf_mul (γ δ : GL (Fin j) E) : embInf E j (γ * δ) = embInf E j γ
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[of_embInf, of_embInf, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem embInf_inv_mul (γ : GL (Fin j) E) (w : InfinitePlace E) :
     Matrix.of (embInf E j γ⁻¹ w) * Matrix.of (embInf E j γ w) = 1 := by
@@ -302,14 +296,14 @@ theorem embInf_inv_mul (γ : GL (Fin j) E) (w : InfinitePlace E) :
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (embInf_inv_mul E j γ w)`.
+A detailed English derivation is pending.
 -/
 theorem inv_embInf (γ : GL (Fin j) E) (w : InfinitePlace E) :
     (Matrix.of (embInf E j γ w))⁻¹ = Matrix.of (embInf E j γ⁻¹ w) :=
   Matrix.inv_eq_left_inv (embInf_inv_mul E j γ w)
 
 /- English proof (translation)
-Rewrite using `[detNorm_pos_iff]`. Introduce `w h`. Use `congrArg Matrix.det (embInf_inv_mul E j γ w)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h]`. Simplify using `at this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem detNorm_embInf (γ : GL (Fin j) E) : 0 < detNorm E j (embInf E j γ) := by
   rw [detNorm_pos_iff]
@@ -319,9 +313,9 @@ theorem detNorm_embInf (γ : GL (Fin j) E) : 0 < detNorm E j (embInf E j γ) := 
   simp at this
 
 /- English proof (translation)
-Use `exists_congr fun γ => and_congr_right fun _ => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w a b`. Conclude with `h w a b`. Introduce `w a b`. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mem_autGL {Λ : Submodule (𝓞 E) (Fin j → E)} {x : MatInf E j} :
     x ∈ autGL E j Λ ↔ ∃ γ : GL (Fin j) E,
@@ -336,14 +330,14 @@ def Carries (γ : GL (Fin j) E) (Λ Λ' : Submodule (𝓞 E) (Fin j → E)) : Pr
 variable {E j}
 
 /- English proof (translation)
-Introduce `y` and use `by rw [← h, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Carries.inv {γ : GL (Fin j) E} {Λ Λ' : Submodule (𝓞 E) (Fin j → E)} (h : Carries E j γ Λ Λ') :
     Carries E j γ⁻¹ Λ' Λ := fun y => by
   rw [← h, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `y` and use `by rw [Units.val_mul, ← Matrix.mulVec_mulVec, h', h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Carries.mul {γ δ : GL (Fin j) E} {Λ Λ' Λ'' : Submodule (𝓞 E) (Fin j → E)}
     (h' : Carries E j δ Λ' Λ'') (h : Carries E j γ Λ Λ') : Carries E j (δ * γ) Λ Λ'' := fun y => by
@@ -355,7 +349,7 @@ def glInvT (γ : GL (Fin j) E) : GL (Fin j) E :=
     by rw [← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]⟩
 
 /- English proof (translation)
-Apply `matInf_ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[of_invT, inv_embInf, of_embInf, of_embInf, ← Matrix.transpose_map]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem invT_embInf (γ : GL (Fin j) E) : invT E j (embInf E j γ) = embInf E j (glInvT γ) := by
   apply matInf_ext
@@ -364,7 +358,7 @@ theorem invT_embInf (γ : GL (Fin j) E) : invT E j (embInf E j γ) = embInf E j 
   rfl
 
 /- English proof (translation)
-Introduce `y` and use `by have key : ∀ x : Fin j → E, x ⬝ᵥ ((glInvT γ : GL (Fin j) E) : Matrix (Fin j) (Fin j) E) *ᵥ y = (((γ⁻¹ : GL (Fin j) E) : Matrix (Fin j) (Fin j) E) *ᵥ x) ⬝ᵥ y := fun x => by change x ⬝ᵥ ((γ⁻¹ : GL (Fin j) E) : Matrix (Fin j) (Fin j) E)ᵀ *ᵥ y = _ rw [Matrix.dotProduct_mulVec, Mat …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Carries.trDual {γ : GL (Fin j) E} {Λ Λ' : Submodule (𝓞 E) (Fin j → E)} (h : Carries E j γ Λ Λ') :
     Carries E j (glInvT γ) (trDual E j Λ) (trDual E j Λ') := fun y => by
@@ -382,11 +376,11 @@ theorem Carries.trDual {γ : GL (Fin j) E} {Λ Λ' : Submodule (𝓞 E) (Fin j �
     exact H _ ((h.inv x).2 hx)
 
 /- English proof (translation)
-Establish `key : ∀ (y : Fin j → E) (w : InfinitePlace E), (Matrix.of ((embInf E j γ * g) w))⁻¹ *ᵥ (fun a => w.embedding (y a)) = (Matrix.of (g w))⁻¹ *ᵥ fun a => w.embedding ((((γ⁻¹ : GL (Fin j) E) : Matrix (Fin j) (Fin j) E) *ᵥ y) a)` using `fun y w => by`. Rewrite using `[of_mul, Matrix.mul_inv_rev, inv_embInf, of_embInf, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `(RingHom.map_mulVec w.embedding _ y a).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Unfold `FlagBase.latAt`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨_, (h.inv y).2 hy, funext fun w => (key y w).symm⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨_, (h y).2 hy, funext fun w => ?_⟩` and prove the remaining obligations. Simplify using `only []`. Rewrite using `[key, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Carries.latAt {γ : GL (Fin j) E} {Λ Λ' : Submodule (𝓞 E) (Fin j → E)} (h : Carries E j γ Λ Λ')
     (g : MatInf E j) : latAt E j Λ' (embInf E j γ * g) = latAt E j Λ g := by
@@ -417,11 +411,11 @@ noncomputable def term (F : Submodule ℤ (VecInf E j) → ENNReal) (Λ : Submod
 variable {E j}
 
 /- English proof (translation)
-Establish `hp : ∀ (δ : GL (Fin j) E), ∀ x ∈ {g | 0 < detNorm E j g}, embInf E j δ * x ∈ {g | 0 < detNorm E j g}` using `fun δ x hx => by`. Rewrite using `[Set.mem_setOf_eq, detNorm_mul]`. Conclude with `mul_pos (detNorm_embInf E j δ) hx`. Use `covol_le_of_map _ _ _ _ (measurableSet_detNorm_pos E j) _ (measurePreserving_mul_left E j _ (detNorm_embInf E j γ)) (hp γ) _ _ (fun x _ => by rw [h.latAt]) hm ?_` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, rfl⟩` from `(mem_autGL E j).1 hx`. Use `⟨embInf E j (γ⁻¹ * δ * γ), (mem_autGL E j).2 ⟨_, (h.inv.mul hδ).mul h, rfl⟩, fun x hx => ⟨hp _ x hx, ?_⟩⟩` and prove the remaining obligations. Apply `matInf_ext` to reduce the goal to its premises. Introduce `w`. Simplify using `only [of_mul, embInf_mul, ← Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `embInf_inv_mul E j γ⁻¹ w` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Rewrite using `[this, Matrix.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_le_of_carries {γ : GL (Fin j) E} {Λ Λ' : Submodule (𝓞 E) (Fin j → E)} (h : Carries E j γ Λ Λ')
     (F : Submodule ℤ (VecInf E j) → ENNReal)
@@ -443,9 +437,9 @@ theorem term_le_of_carries {γ : GL (Fin j) E} {Λ Λ' : Submodule (𝓞 E) (Fin
   rw [this, Matrix.one_mul]
 
 /- English proof (translation)
-Use `covol_le_of_map _ _ _ _ (measurableSet_detNorm_pos E j) _ (measurePreserving_invT E j) (fun x hx => (detNorm_invT_pos_iff E j x).2 hx) _ _ hf hm ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨δ, hδ, rfl⟩` from `(mem_autGL E j).1 hx`. Use `⟨embInf E j (glInvT δ), (mem_autGL E j).2 ⟨_, ?_, rfl⟩, fun x hx => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← h]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Carries.trDual hδ`. Rewrite using `[Set.mem_setOf_eq, detNorm_mul]`. Conclude with `mul_pos (detNorm_embInf E j _) hx`. Rewrite using `[invT_mul, ← invT_embInf, invT_invT E j (detNorm_embInf E j _)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covol_invT_le {Λ Λ' : Submodule (𝓞 E) (Fin j → E)} (h : trDual E j Λ' = Λ)
     (f f' : MatInf E j → ENNReal) (hf : ∀ x ∈ {g | 0 < detNorm E j g}, f x = f' (invT E j x))
@@ -462,11 +456,9 @@ theorem covol_invT_le {Λ Λ' : Submodule (𝓞 E) (Fin j → E)} (h : trDual E 
   · rw [invT_mul, ← invT_embInf, invT_invT E j (detNorm_embInf E j _)]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `covol_invT_le (GlobalTheory.T.isLattice_traceDual_and_traceDual_traceDual E j Λ hΛ).2 _ _ (fun x hx => congrArg F (GlobalTheory.T.traceFormDual_translatedLattice_eq_inverseTranspose E hE j Λ hΛ x hx)) hm`. Use `covol_invT_le rfl _ _ (fun x hx => ?_) ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[GlobalTheory.T.traceFormDual_translatedLattice_eq_inverseTranspose E hE j Λ hΛ _ ((detNorm_invT_pos_iff E j x).2 hx), invT_invT E j hx]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hm.comp (measurePreserving_invT E j).measurable` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ {g | 0 < detNorm E j g}`. Rewrite using `[Function.comp, Set.indicator_of_mem hx, Set.indicator_of_mem (show invT E j x ∈ {g | 0 < detNorm E j g} from (detNorm_invT_pos_iff E j x).2 hx)]`.
-
-Conclude with `congrArg F (GlobalTheory.T.traceFormDual_translatedLattice_eq_inverseTranspose E hE j Λ hΛ x hx)`. Rewrite using `[Function.comp, Set.indicator_of_notMem hx, Set.indicator_of_notMem (show invT E j x ∉ {g | 0 < detNorm E j g} from fun h => hx ((detNorm_invT_pos_iff E j x).1 h))]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_dual (hE : IsTotallyComplex E) {Λ : Submodule (𝓞 E) (Fin j → E)} (hΛ : Submodule.IsLattice E Λ)
     (F : Submodule ℤ (VecInf E j) → ENNReal)
@@ -489,13 +481,13 @@ theorem term_dual (hE : IsTotallyComplex E) {Λ : Submodule (𝓞 E) (Fin j → 
           (show invT E j x ∉ {g | 0 < detNorm E j g} from fun h => hx ((detNorm_invT_pos_iff E j x).1 h))]
 
 /- English proof (translation)
-Introduce `E _ _ hE j F hF`. Set `X` to `{Λ : Submodule (𝓞 E) (Fin j → E) // Submodule.IsLattice E Λ}`. Set `r : X → X → Prop` to `fun Λ Λ' => ∃ γ : GL (Fin j) E, Carries E j γ Λ.1 Λ'.1`. Set `d : X → X` to `fun Λ => ⟨trDual E j Λ.1, (GlobalTheory.T.isLattice_traceDual_and_traceDual_traceDual E j Λ.1 Λ.2).1⟩`. Establish `hdd : ∀ Λ, d (d Λ) = Λ` using `fun Λ => Subtype.ext (GlobalTheory.T.isLattice_traceDual_and_traceDual_traceDual E j Λ.1 Λ.2).2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hd : ∀ ⦃a b⦄, r a b → r (d a) (d b)` using `fun a b ⟨γ, h⟩ => ⟨_, h.trDual⟩`. Set `D : Quot r → Quot r` to `Quot.map d hd`. Establish `hD : Function.Involutive D`. Introduce and unpack `⟨Λ⟩`. Conclude with `congrArg (Quot.mk r) (hdd Λ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `t : Quot r → ENNReal` to `Quot.lift (fun Λ => term E j F Λ.1) fun a b ⟨γ, h⟩ => le_antisymm (term_le_of_carries h F (hF _ b.2)) (term_le_of_carries h.inv F (hF _ a.2))`. Express the relevant statement in the definitionally equal form `∑' c : Quot r, term E j (fun L => F (dualAt E j L)) (Quot.out c).1 = ∑' c : Quot r, term E j F (Quot.out c).1`. Establish `h1 : ∀ c : Quot r, term E j F (Quot.out c).1 = t c` using `fun c => by conv_rhs => rw [← Quot.out_eq c]`. Establish `h2 : ∀ c : Quot r, term E j (fun L => F (dualAt E j L)) (Quot.out c).1 = t (D c)` using `fun c => by`. Rewrite using `[term_dual hE (Quot.out c).2 F (hF _ (d (Quot.out c)).2)]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `conv_rhs => rw [← Quot.out_eq c]`. Both sides reduce to the same expression. Simplify using `only [h1, h2]`. Conclude with `hD.toPerm.tsum_eq t`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem latMean_dualAt : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E → ∀ j : ℕ, ∀ F : Submodule ℤ (VecInf E j) → ENNReal, (∀ Λ : Submodule (𝓞 E) (Fin j → E), Submodule.IsLattice E Λ → Measurable (fun g : MatInf E j => {g | 0 < detNorm E j g}.indicator (fun g => F (latAt E j Λ g)) g)) → latMean E j (fun L => F (dualAt E j L)) = latMean E j F := by
   intro E _ _ hE j F hF

@@ -11,7 +11,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.SiegelPull
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show ((toUnit T).left ≫ x'.left) ≫ φ = (toUnit (Over.mk (T.hom ≫ f))).left ≫ x.left`. Rewrite using `[Category.assoc, hx, Over.toUnit_left, Over.toUnit_left, ← Category.assoc]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem push_sec_of_left {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S' ⟶ S}
     {φ : A'.left ⟶ A.left} (hpb : IsGrpPullback A' A f φ) {x : 𝟙_ (Over S) ⟶ A} {x' : 𝟙_ (Over S') ⟶ A'}
@@ -23,13 +23,13 @@ theorem push_sec_of_left {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj
   rfl
 
 /- English proof (translation)
-Establish `hp' : ∀ a, pushHom hpb _ (lev' a) = toUnit _ ≫ lev a` using `fun a => by`. Establish `e` using `push_sec_of_left hpb (hl a) (𝟙_ (Over S'))`. Rewrite `e` using `[toUnit_unit, Category.id_comp]`. Then use the resulting hypothesis. Use `⟨fun a b => push_injective hpb _ ?_, fun a => push_injective hpb _ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hp', hp', hp', hS.1, MonObj.comp_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, map_one, hp', ← MonObj.comp_pow, hS.2.1, MonObj.comp_one]`. Introduce `k _ _ x β z hx hz`. Take `⟨g₁, g₂, g₃⟩` from `hS.2.2 k (x ≫ f) β z (by rw [Category.assoc, hx]) hz`. Use `⟨fun a => Iff.trans ?_ (g₁ a), fun g hg => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← (push_injective hpb (Over.mk x)).eq_iff, push_sec_of_left hpb (hl a), map_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨a, ha⟩` from `g₂ (pushHom hpb (Over.mk x) g) (by`. Use `congrArg (pushHom hpb (Over.mk x)) hg` as an intermediate fact. Rewrite `this` using `[map_pow, map_one]`. Conclude with `this)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨a, push_injective hpb _ ((push_sec_of_left hpb (hl a) _).trans ha)⟩`. Conclude with `(weilIs_grpPullback_of_comm S S' A A' f φ _ _ (pull_isLB hP _) (pull_isLB hP' _) hpb (diag_iso sq H) (Over.mk x) M _ _ _ _ _ (congrArg (fun q => q.left) (push_sec_of_left hpb (hl a) (Over.mk x)).symm) (congrArg (fun q => q.left) (push_sec_of_left hpb (hl b) (Over.mk x)).symm)).2 …`.
+A detailed English derivation is pending.
 -/
 theorem isSympLev_pull {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] [IsCommMonObj A]
     [IsCommMonObj A'] {f : S' ⟶ S} {φ : A'.left ⟶ A.left} {φ₂ : (G2 A').left ⟶ (G2 A).left}
@@ -60,13 +60,13 @@ theorem isSympLev_pull {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A
       (congrArg (fun q => q.left) (push_sec_of_left hpb (hl b) (Over.mk x)).symm)).2 (g₃ a b)
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `H`. Take `⟨t, ht⟩` from `hx`. Use `push_injective h T ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_one]`. Use `hn _ (pushHom h T x) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `T₀ : Over S` to `Over.mk (T.hom ≫ f)`. Establish `w₁ : (fst A T₀).left ≫ A.hom = ((snd A T₀).left ≫ T.hom) ≫ f` using `pullback.condition.trans (Category.assoc _ _ _).symm`. Set `a : (A ⊗ T₀).left ⟶ A'.left` to `h.1.lift _ _ w₁`. Establish `a₁ : a ≫ φ = (fst A T₀).left` using `h.1.lift_fst _ _ _`. Establish `a₂ : a ≫ A'.hom = (snd A T₀).left ≫ T.hom` using `h.1.lift_snd _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `χ : (A ⊗ T₀).left ⟶ (A' ⊗ T).left` to `pullback.lift a (snd A T₀).left a₂`. Establish `c₁ : χ ≫ (fst A' T).left = a` using `pullback.lift_fst _ _ _`. Establish `c₂ : χ ≫ (snd A' T).left = (snd A T₀).left` using `pullback.lift_snd _ _ _`. Take `⟨t₂, ht₂, -⟩` from `exists_up ((isGen_iff u).1 hu) hP hP' t ht`. Use `gen_chartPull (chartPullSame P _ _ _ χ fun _ => ?_) t₂ ht₂` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `((Category.id_comp _).symm.trans (lift_sq sq (T := A ⊗ T₀) χ _ _ (𝟙 _) _ _ ?_ ?_).symm)` and prove the remaining obligations. Rewrite using `[Over.comp_left, Category.assoc, ← Category.assoc χ, c₂, Category.id_comp]`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc, c₁, a₁, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem kerBy_pull {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S' ⟶ S}
     {φ : A'.left ⟶ A.left} {φ₂ : (A' ⊗ A').left ⟶ (A ⊗ A).left} (h : IsGrpPullback A' A f φ) (sq : IsSquare φ φ₂)
@@ -96,7 +96,7 @@ theorem kerBy_pull {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [G
   · rw [← Category.assoc, c₁, a₁, Category.id_comp]
 
 /- English proof (translation)
-Take `⟨φ, φ₂, pb, sq, iso, -⟩` from `m`. Conclude with `⟨(GlobalTheory.pol_pull S S' c.A c'.A f φ _ _ (pull_isLB c.isLB _) (pull_isLB c'.isLB _) c.ab pb (diag_iso sq iso)).2.1 hc.1, kerBy_pull pb sq c.isLB c'.isLB iso d hc.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem siegKerBy_pull {S S' : Scheme.{0}} {h M : ℕ} {B B' : Type} [CommRing B] [CommRing B'] {ζ : B} {ζ' : B'}
     {s : S ⟶ Sp B} {s' : S' ⟶ Sp B'} {c : SiegPre h M ζ s} {c' : SiegPre h M ζ' s'} {f : S' ⟶ S}

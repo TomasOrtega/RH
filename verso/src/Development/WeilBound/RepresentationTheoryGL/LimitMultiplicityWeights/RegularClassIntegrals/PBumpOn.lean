@@ -8,13 +8,13 @@ noncomputable section
 namespace MainStatements.WeightKernel
 
 /- English proof (translation)
-Introduce `H _ _ _ _ _ _ _ _ n ι hemb C hC`. Establish `hK : IsCompact (matCoord ι '' C)` using `hC.image hemb.continuous`. Take `⟨r, hr⟩` from `hK.isBounded.subset_closedBall 0`. Set `f : ContDiffBump (0 : Fin n → Fin n → ℂ)` to `⟨max r 1, max r 1 + 1, lt_of_lt_of_le one_pos (le_max_right _ _), by linarith⟩`. Use `⟨fun g => ((f (matCoord ι g) : ℝ) : ℂ), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasCompactSupport.intro (hemb.isCompact_preimage (isCompact_closedBall (0 : Fin n → Fin n → ℂ) (max r 1 + 1))) ?_` and prove the remaining obligations. Introduce `g hg`. Simplify using `only [Set.mem_preimage, Metric.mem_closedBall, not_le] at hg`. Establish `: f (matCoord ι g) = 0` using `f.zero_of_le_dist hg.le`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun x => ((f x : ℝ) : ℂ), ?_, fun g => rfl⟩` and prove the remaining obligations. Conclude with `Complex.ofRealCLM.contDiff.comp f.contDiff`. Introduce `y hy`. Establish `hm : matCoord ι y ∈ Metric.closedBall (0 : Fin n → Fin n → ℂ) (max r 1)` using `Metric.closedBall_subset_closedBall (le_max_left _ _) (hr ⟨y, hy, rfl⟩)`. Establish `: f (matCoord ι y) = 1` using `f.one_of_mem_closedBall hm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem bumpOn : BumpOn := by
   intro H _ _ _ _ _ _ _ _ n ι hemb C hC

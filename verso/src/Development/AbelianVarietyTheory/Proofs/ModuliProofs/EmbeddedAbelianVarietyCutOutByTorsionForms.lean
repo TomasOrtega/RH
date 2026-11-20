@@ -22,19 +22,19 @@ open GlobalTheory.ZM GlobalTheory.ZV
 namespace GlobalTheory.EmbCut
 
 /- English proof (translation)
-The claim follows from `DVR.linComb_isLB L hL _ _`.
+A detailed English derivation is pending.
 -/
 theorem powIsLB {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (n : ℕ) : (lbPow L n).IsLB :=
   DVR.linComb_isLB L hL _ _
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (Geo.Tor.chartPullPull L j j rfl) (Geo.Tor.chartPullPull M j j rfl) h`.
+A detailed English derivation is pending.
 -/
 theorem isoPullAlong {X Y : Scheme.{0}} {L M : LB X} (h : LBIso L M) (j : Y ⟶ X) : LBIso (L.pull j) (M.pull j) :=
   LBIso.chartPull (Geo.Tor.chartPullPull L j j rfl) (Geo.Tor.chartPullPull M j j rfl) h
 
 /- English proof (translation)
-Establish `h1 : LBIso (M.pull e.inv) (lbPow L N)` using `LBIso.chartPull (Geo.Tor.chartPullPull M e.inv e.inv rfl) (Geo.Tor.chartPullSec _ e.hom e.inv e.inv_hom_id) h`. Establish `hN` using `powIsLB hL N`. Establish `hM'` using `Geo.Tor.pull_isLB hM e.inv`. Take `⟨-, a, -, -, c, -⟩` from `GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K A.left A.hom L hL`. Conclude with `LBIso.trans hM' hN (Geo.Tor.pull_isLB hM' _) h1 (LBIso.trans hN (Geo.Tor.pull_isLB hN _) (Geo.Tor.pull_isLB hM' _) (LBIso.trans hN (powIsLB (Geo.Tor.pull_isLB hL _) N) (Geo.Tor.pull_isLB hN _) ((a _ (Geo.Tor.pull_isLB hL _) hs).2 N) (c _ _ N)) (isoPullAlong h1.symm _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem symB_of_iso {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {L : LB A.left} (hL : L.IsLB) (hs : SymB L)
     {Y : Scheme.{0}} (e : Y ≅ A.left) {M : LB Y} (hM : M.IsLB) (N : ℕ) (h : LBIso M ((lbPow L N).pull e.hom)) :
@@ -49,7 +49,7 @@ theorem symB_of_iso {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {L : LB A.
     (isoPullAlong h1.symm _))
 
 /- English proof (translation)
-Establish `hN` using `powIsLB hL N`. Establish `h1 : SectionsHaveFiniteDimension p (lbPow (lbPow L N) n) r` using `((GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K X p _ (powIsLB hL (N * n))).2.1 _ (powIsLB hN n) ((GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K X p L hL).2.2.1 N n).symm).1 r hr`. Establish `h2` using `((GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K X p _ (powIsLB hN n)).2.2.2.2.2 Y e r).1 h1`. Establish `h3 : LBIso (lbPow M n) ((lbPow (lbPow L N) n).pull e.hom)` using `LBIso.trans (powIsLB hM n) (powIsLB (Geo.Tor.pull_isLB hN _) n) (Geo.Tor.pull_isLB (powIsLB hN n) _) (((GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K Y (e.hom ≫ p) M hM).2.1 _ (Geo.Tor.pull_isLB hN _) h).2 n) ((GlobalTheory.T.sectionsHaveFiniteDimension_inv …`. Conclude with `((GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K Y (e.hom ≫ p) _ (Geo.Tor.pull_isLB (powIsLB hN n) _)).2.1 _ (powIsLB hM n) h3.symm).1 r h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sectionsHaveFiniteDimension_of_iso_pulled_pow {K : Type} [Field K] {X Y : Scheme.{0}} (p : X ⟶ Sp K) {L : LB X} (hL : L.IsLB)
     (e : Y ≅ X) {M : LB Y} (hM : M.IsLB) (N : ℕ) (h : LBIso M ((lbPow L N).pull e.hom)) (n r : ℕ)
@@ -72,19 +72,15 @@ namespace GlobalTheory
 open EmbCut in
 
 /- English proof (translation)
-Introduce `H H2 g J _ Mat κ n hn hodd`. Establish `hn2` using `hn.two_le`. Use `haveI : NeZero ((n ^ 2) ^ 2) := ⟨by positivity⟩`. Take `⟨d, k₀, hd⟩` from `GlobalTheory.T.abelianVariety_cut_out_bounded_degree_torsion H H2 g ((n ^ 2) ^ 2) (Ix g ((n ^ 2) ^ 2))`. Use `⟨max 2 k₀, fun j hj o _ b => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : NeZero ((n ^ j) ^ 2) := ⟨by positivity⟩`. Establish `hdvd : n ^ 2 ∣ n ^ j` using `pow_dvd_pow n (le_of_max_le_left hj)`. Establish `hdvd' : (n ^ 2) ^ 2 ∣ (n ^ j) ^ 2` using `pow_dvd_pow_of_dvd hdvd 2`. Take `⟨Q, hQ⟩` from `hd _ le_rfl (Ix g ((n ^ j) ^ 2)) (fun a i => ZMod.castHom hdvd' (ZMod ((n ^ 2) ^ 2)) (a i)) (fun c => by choose a ha using fun i => ZMod.castHom_surjective hdvd' (c i)`. Conclude with `⟨a, funext ha⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨Ix g ((n ^ j) ^ 2), inferInstance, id, Q, d, fun K _ _ β t σ p hE hp => ?_⟩` and prove the remaining obligations. Take `⟨hiso, hM, hV, hL, hmod, -, hlab⟩` from `GlobalTheory.T.thetaSections_veryAmple_periodic H H2 o g (n ^ j) J b K β t (n ^ 2) σ hodd.pow hdvd (by nlinarith) hE`. Set `e : (Over.mk (𝟙 (Sp K)) ⊗ t.A).left ≅ t.A.left` to `asIso (snd (Over.mk (𝟙 (Sp K))) t.A).left`. Establish `he : e.hom ≫ t.A.hom = (fst (Over.mk (𝟙 (Sp K))) t.A).left` using `pullback.condition.symm.trans (Category.comp_id _)`. Establish `hk : ((n ^ j : ℕ) : K) ≠ 0` using `fun h => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(b.unit.map β).ne_zero` as an intermediate fact. Rewrite `this` using `[map_natCast, Nat.cast_pow, h]`. Conclude with `this (by simp)`. Establish `key` using `hQ K t.pol rfl _ e _ σ (n ^ j) _ (fun h => t.lab h ^ n ^ j) p hM (symB_of_iso t.isLB (GlobalTheory.T.principalPolarisation_volume_form_symmetric_ample H H2 K t.pol).2.2.1 e hM _ hL) (he.symm ▸ hV) (fun a a' h => hmod a a' fun i => by`. Use `congrFun h i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ZMod.natCast_eq_natCast_iff]`. Simplify `this)` using `only [ZMod.castHom_apply, ZMod.natCast_val]`. Use the proof step `(fun m hm => sectionsHaveFiniteDimension_of_iso_pulled_pow t.A.hom t.isLB e hM _ hL m _ (by`. Rewrite using `[← mul_pow]`. Conclude with `PowSec.exists_basis_sections H.globalSectionsRank K t.pol _ (Nat.mul_pos (by positivity) hm)))`.
-
-Use the proof step `((le_of_max_le_right hj).trans (Nat.lt_pow_self hn2).le) hk hlab`. Use the proof step `(fun h => by`. Establish `: (t.lab h ^ n ^ j).left ≫ e.inv = (lift (𝟙 (Over.mk (𝟙 (Sp K)))) (t.lab h ^ n ^ j)).left`. Rewrite using `[Iso.comp_inv_eq]`. Conclude with `(congrArg (fun q => q.left) (lift_snd (𝟙 (Over.mk (𝟙 (Sp K)))) (t.lab h ^ n ^ j))).symm`.
-
-Conclude with `this.symm ▸ hp h)`. Conclude with `he ▸ key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutBy_embedded_abelian : Out.Laws → Out.Laws2 → ∀ (g : ℕ) (J : Type) [Finite J] (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ n : ℕ), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)), ∃ (Hh : Type) (_ : Finite Hh) (hh : Hh → Ix g ((n ^ j) ^ 2)) (Q : Polynomial ℚ) (d : ℕ), ∀ (K : Type) [Field K] [IsAlgClosed K] (β : o →+* K) (t : TObj g ((n ^ j) ^ 2) J b (spMap β)) σ (p : Hh → Ix g ((n ^ j) ^ 2) → K), t.Emb (n ^ 2) (Over.mk (𝟙 _)) σ → (∀ h, SecCoord _ σ (lift (𝟙 (Over.mk (𝟙 (Sp K)))) (t.lab (hh h) ^ n ^ j)).left (p h)) → CutBy (idealOf (fst (Over.mk (𝟙 (Sp K))) t.A).left _ σ (𝟙 _)) Q d p := by
   intro H H2 g J _ Mat κ n hn hodd

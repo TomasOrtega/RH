@@ -29,7 +29,7 @@ theorem linM_apply (D : Matrix κ ι F) (a : ι → mixedEmbedding.mixedSpace F)
     linM D a k = ∑ i, mixedEmbedding F (D k i) * a i := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [linM_apply, Finset.mul_sum, Matrix.mul_apply, map_sum, Finset.sum_mul, map_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linM_mul (L : Matrix ι κ F) (D : Matrix κ ι F) (a : ι → mixedEmbedding.mixedSpace F) :
     linM L (linM D a) = linM (L * D) a := by
@@ -38,16 +38,16 @@ theorem linM_mul (L : Matrix ι κ F) (D : Matrix κ ι F) (a : ι → mixedEmbe
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[linM_apply, Matrix.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem linM_one (a : ι → mixedEmbedding.mixedSpace F) : linM (1 : Matrix ι ι F) a = a := by
   funext i
   simp [linM_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Matrix.toLin' D)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz; exact hD z (by simpa using hz)`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' D) (LinearMap.ker_eq_bot.2 hinj)`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← LinearMap.toMatrix'_toLin' D, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_leftInv (D : Matrix κ ι F) (hD : ∀ z : ι → F, D *ᵥ z = 0 → z = 0) :
     ∃ L : Matrix ι κ F, L * D = 1 := by
@@ -63,11 +63,11 @@ end GlobalTheory.ArchPull
 
 open GlobalTheory.ArchPull in
 /- English proof (translation)
-Introduce `F _ _ ι κ _ _ D hD`. Take `⟨L, hL⟩` from `exists_leftInv D hD`. Set `M` to `LinearMap.toContinuousLinearMap (linM D)`. Set `N` to `LinearMap.toContinuousLinearMap (linM L)`. Establish `hb : ∀ a, ‖a‖ ≤ ‖N‖₊ * ‖M a‖` using `fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : N (M a) = a`. Express the relevant statement in the definitionally equal form `linM L (linM D a) = a`. Rewrite using `[linM_mul, hL, linM_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hl : AntilipschitzWith ‖N‖₊ M` using `ContinuousLinearMap.antilipschitz_of_bound M hb`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `⟨SchwartzMap.compCLMOfAntilipschitz ℂ M.hasTemperateGrowth hl, fun f a => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.ArchPull.exists_pull : ∀ (F : Type) [Field F] [NumberField F] (ι κ : Type) [Fintype ι] [Fintype κ] (D : Matrix κ ι F),
     (∀ z : ι → F, D *ᵥ z = 0 → z = 0) →

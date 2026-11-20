@@ -15,16 +15,16 @@ def zeroColim {D : Type*} [Category* D] {J : Type*} [Category* J] (G : D ⥤ C) 
   uniq _ _ _ := (hG _).eq_of_src _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun {_} => ⟨fun {s} _ => ⟨zeroColim G hG s⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem presZero {D : Type*} [Category* D] {J : Type*} [Category* J] (G : D ⥤ C) (hG : ∀ X, IsZero (G.obj X)) :
     PreservesColimitsOfShape J G :=
   ⟨fun {_} => ⟨fun {s} _ => ⟨zeroColim G hG s⟩⟩⟩
 
 /- English proof (translation)
-Apply `HomologicalComplex.preservesColimitsOfShape_of_eval` to reduce the goal to its premises. Introduce `i'`. Consider the cases of `h : e.r i' with`. Consider the case `none => exact presZero _ fun K => K.isZero_extend_X' e i' h`. Consider the case `some p`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `hp : e.f p = i'` using `e.f_eq_of_r_eq_some h`. Set `φ : HomologicalComplex.eval C c p ≅ e.extendFunctor C ⋙ HomologicalComplex.eval C c' i'` to `NatIso.ofComponents (fun K => (K.extendXIso e hp).symm) (fun {K L} f => by`. Simplify using `[ComplexShape.Embedding.extendFunctor, HomologicalComplex.extendMap_f _ e hp]`. Conclude with `(Iso.inv_hom_id_assoc _ _).symm)`. Conclude with `preservesColimitsOfShape_of_natIso φ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem presExtend {ι ι' : Type*} {c : ComplexShape ι} {c' : ComplexShape ι'} (e : c.Embedding c')
     (J : Type*) [Category* J] [HasColimitsOfShape J C] : PreservesColimitsOfShape J (e.extendFunctor C) := by
@@ -41,7 +41,7 @@ theorem presExtend {ι ι' : Type*} {c : ComplexShape ι} {c' : ComplexShape ι'
     exact preservesColimitsOfShape_of_natIso φ
 
 /- English proof (translation)
-Apply `HomologicalComplex.preservesColimitsOfShape_of_eval` to reduce the goal to its premises. Introduce `n`. Set `φ : (evaluation _ C).obj (op (SimplexCategory.mk n)) ≅ AlgebraicTopology.alternatingFaceMapComplex C ⋙ HomologicalComplex.eval C _ n` to `NatIso.ofComponents (fun X => Iso.refl _) (fun {X Y} f => (Category.comp_id _).trans (Category.id_comp _).symm)`. Conclude with `preservesColimitsOfShape_of_natIso φ`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem presAFM {C : Type*} [Category* C] [Preadditive C] (J : Type*) [Category* J] [HasColimitsOfShape J C] :
     PreservesColimitsOfShape J (AlgebraicTopology.alternatingFaceMapComplex C) := by
@@ -55,7 +55,7 @@ theorem presAFM {C : Type*} [Category* C] [Preadditive C] (J : Type*) [Category*
 variable (R : Type) [CommRing R]
 
 /- English proof (translation)
-Establish `h1 : PreservesColimitsOfSize.{0, 0} (ModuleCat.free (ULift.{1} R))` using `(ModuleCat.adj (ULift.{1} R)).leftAdjoint_preservesColimits`. Establish `h2 : PreservesColimitsOfSize.{0, 0} (presheafToSheaf Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} R)))` using `(sheafificationAdjunction _ _).leftAdjoint_preservesColimits`. Unfold `free freeP`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem presFree (A : Type) : PreservesColimitsOfShape (Discrete A) (free R) := by
   have h1 : PreservesColimitsOfSize.{0, 0} (ModuleCat.free (ULift.{1} R)) :=
@@ -71,9 +71,9 @@ instance hasCoprodShv (A : Type) : HasColimitsOfShape (Discrete A) (Shv R) := by
   infer_instance
 
 /- English proof (translation)
-Use `presFree R A` as an intermediate fact. Establish `: PreservesColimitsOfShape (Discrete A) ((SimplicialObject.whiskering PSh (Shv R)).obj (free R))`. Unfold `SimplicialObject.whiskering`. Use `infer_instance`. Use `presAFM (C := Shv R) (Discrete A)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `presExtend (C := Shv R) ComplexShape.embeddingDownNat (Discrete A)` as an intermediate fact. Unfold `chains chainsN`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem presChains (A : Type) : PreservesColimitsOfShape (Discrete A) (chains R) := by
   have := presFree R A
@@ -89,7 +89,7 @@ end LateralTheory.CohomologicalPurity.TubeCut.SumCut.ChainsSumPf
 namespace LateralTheory.CohomologicalPurity.TubeCut.SumCut
 
 /- English proof (translation)
-Introduce `R _ A E c ⟨hc⟩`. Use `ChainsSumPf.presChains R A` as an intermediate fact. Conclude with `⟨isColimitCofanMkObjOfIsColimit (chains R) E c.inj hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem LeafChainsSum_of : LeafChainsSum := by
   intro R _ A E c ⟨hc⟩

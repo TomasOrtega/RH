@@ -23,7 +23,7 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 namespace GlobalTheory.PowJets
 
 /- English proof (translation)
-Set `B : Module.Basis (Σ _ : Fin n, Fin r) ℤ (Fin n → X)` to `Pi.basis fun _ => b`. Use `⟨_, (B.map xe.toIntLinearEquiv.symm).reindex (Fintype.equivFin _), fun k => ?_⟩` and prove the remaining obligations. Use `⟨((Fintype.equivFin (Σ _ : Fin n, Fin r)).symm k).1, ((Fintype.equivFin (Σ _ : Fin n, Fin r)).symm k).2, ?_⟩` and prove the remaining obligations. Simplify using `[B, Pi.basis_apply]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_position_basis {X X' : Type} [AddCommGroup X] [AddCommGroup X'] {n r : ℕ} (xe : X' ≃+ (Fin n → X))
     (b : Module.Basis (Fin r) ℤ X) :
@@ -35,7 +35,7 @@ theorem exists_position_basis {X X' : Type} [AddCommGroup X] [AddCommGroup X'] {
   simp [B, Pi.basis_apply]
 
 /- English proof (translation)
-Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ i), ← Finset.add_sum_erase _ (fun k => Q (w k)) (Finset.mem_univ i), Finset.sum_congr rfl (g := fun k => Q (w k)) fun k hk => by`. Rewrite using `[Pi.add_apply, Pi.single_eq_of_ne (Finset.ne_of_mem_erase hk), zero_add]]`. Simplify using `only [Pi.add_apply, Pi.single_eq_same]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_single_add {X : Type} [AddCommGroup X] {n : ℕ} (Q : X → ℤ) (i : Fin n) (x : X) (w : Fin n → X) :
     ∑ k, Q ((Pi.single i x + w : Fin n → X) k) = ∑ k, Q (w k) + (Q (x + w i) - Q (w i)) := by
@@ -47,13 +47,13 @@ theorem sum_single_add {X : Type} [AddCommGroup X] {n : ℕ} (Q : X → ℤ) (i 
   ring
 
 /- English proof (translation)
-Take `⟨r', b', hb⟩` from `exists_position_basis xe b`. Establish `e1 : ∀ k i j, xe (b' k) = Pi.single i (b j) → sumQ xe Q (b' k) = Q (b j)` using `fun k i j h => by`. Use `sum_single_add Q i (b j) 0` as an intermediate fact. Simplify `this` using `[sumQ, h, h0]`. Use `⟨r', b', fun k => ?_, fun k w => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, j, h⟩` from `hb k`. Rewrite using `[e1 k i j h]`. Conclude with `hΦ j`. Take `⟨i, j, h⟩` from `hb k`. Establish `e2 : sumQ xe Q (b' k + w) = sumQ xe Q w + (Q (b j + xe w i) - Q (xe w i))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `sumQ`. Rewrite using `[map_add, h]`. Conclude with `sum_single_add Q i (b j) (xe w)`. Establish `e3 : sumQ xe Q (b' k + w) - sumQ xe Q (b' k) - sumQ xe Q w = Q (b j + xe w i) - Q (b j) - Q (xe w i)`. Rewrite using `[e1 k i j h, e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e4 : Q (xe w i) ≤ sumQ xe Q w` using `Finset.single_le_sum (f := fun k => Q (xe w k)) (fun k _ => hQ _) (Finset.mem_univ i)`. Rewrite using `[e3]`. Use `(hM j _).trans (mul_le_mul (le_max_left _ _) (by exact_mod_cast e4) (by exact_mod_cast hQ _) (le_max_right _ _))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_basis_bounds {X X' : Type} [AddCommGroup X] [AddCommGroup X'] {n r : ℕ} (xe : X' ≃+ (Fin n → X))
     (Q : X → ℤ) (h0 : Q 0 = 0) (hQ : ∀ x, 0 ≤ Q x) (Φ M0 : ℝ) (b : Module.Basis (Fin r) ℤ X)
@@ -81,13 +81,13 @@ theorem exists_basis_bounds {X X' : Type} [AddCommGroup X] [AddCommGroup X'] {n 
     refine (hM j _).trans (mul_le_mul (le_max_left _ _) (by exact_mod_cast e4) (by exact_mod_cast hQ _) (le_max_right _ _))
 
 /- English proof (translation)
-Introduce `L1 L2 L4 TB E _ _ _ H Dw l Xo c inst hstar`. Take `rfl : inst = H.starRing` from `starSt E H inst hstar`. Use `letI := H.starRing`. Introduce `T io y _ C htr P ϖ hϖ Q hQ Φ M0 r b hΦ0 hΦ hM n _ D' A' G' _ _ pD pA pG U' PU F _ _ _ _ _ v hv q D hq hD f hf`. Use `choose f₀ hf₀ using hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ, htrunc, hgerm⟩` from `frameNSt_holds E H T.V C.I.G P (chD C.ch) C.FT C.actT C.ph1T C.ph2T C.syT C.adT C.tgT C.xT C.eT C.wPT C.chartT C.frameT C.primT n D' A' G' pD pA pG U' PU`. Establish `hu` using `GlobalTheory.T.universalJets_power_product T.V C.I.G.G G' n (chD C.ch) pG C.xT (GlobalTheory.T.universal_statement E H Dw l Xo c T io y C)`. Take `⟨r', b', h1, h2⟩` from `exists_basis_bounds pD.xe Q (Q_zero hϖ P.D hQ) (RoundingSumAlt.Q_nonneg hϖ hQ) Φ M0 b hΦ hM`. Establish `hD' : (D : ℝ) * max M0 0 < q`. Break down `le_total M0 0 with h | h` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[max_eq_right h, mul_zero]`. Conclude with `(by omega : 0 < q)` after adjusting the coercions. Rewrite using `[max_eq_left h]` and apply the resulting hypothesis. Take `⟨s, σ', g, lam, a1, a2, a3, a4, a5, a6⟩` from `GlobalTheory.UnifJets.jets L1 L2 L4 TB T.V ϖ hϖ D' A' G' U' (Fin n × Fin (chD C.ch)) (zV pG C.xT) hu τ hτ (htrunc htr) (sumQ pD.xe Q) (GlobalTheory.QBox.main T.V ϖ hϖ n P.D D' pD Q hQ) Φ (max M0 0) r' b' hΦ0 (le_max_right _ _) h1 h2 F v hv q D hq hD' (fun e => f₀ e)`. Use `⟨s, σ', g, lam, a1, a2, (hgerm F q σ' g).2 a3, a4, a5, fun e he => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[a6 e he, map_smul, MvPowerSeries.coeff_map, ← hf₀ e, smul_eq_mul, ← IsScalarTower.algebraMap_apply]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem jets_on_copies : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → JetsOnCopiesCompatibleFrames := by
   intro L1 L2 L4 TB E _ _ _ H Dw l Xo c inst hstar

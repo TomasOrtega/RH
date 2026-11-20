@@ -25,7 +25,7 @@ namespace GlobalTheory.RowTest.CosetFin
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Establish `hf` using `ha.fn_eq hb he hu hu'`. Consider the cases of `a`. Consider the cases of `b`. Simplify using `only at hP he hz hf`. Substitute `hP he hz hf` using the available equality.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -39,9 +39,9 @@ theorem finDatum_eq {t : T} {p : Pair T} {k : ℕ} {a b : FinDatum G t p} (ha : 
   rfl
 
 /- English proof (translation)
-Use `Prod.ext (funext fun j => ?_) (funext fun i => ?_)` and prove the remaining obligations. Take `⟨a1, a2, a3⟩` from `hp.1 j`. Take `⟨b1, b2, b3⟩` from `hp'.1 j`. Take `⟨u, hu, hu'⟩` from `hx j`. Conclude with `finDatum_eq (hc.1 j) (hc'.1 j) (a1.trans b1.symm) (a2.trans b2.symm) (a3.trans b3.symm) hu hu'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, a2, a3⟩` from `hp.2 i`. Take `⟨b1, b2, b3⟩` from `hp'.2 i`. Take `⟨u, hu, hu'⟩` from `hy i`. Conclude with `finDatum_eq (hc.2 i) (hc'.2 i) (a1.trans b1.symm) (a2.trans b2.symm) (a3.trans b3.symm) hu hu'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pureDat_eq {t : T} {k : ℕ} {e : AE D} {d d' : PureDat G t}
     (hc : (∀ j, IsCosetDatum k (d.1 j)) ∧ ∀ i, IsCosetDatum k (d.2 i))
@@ -70,15 +70,13 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} 
   {S : GridChoice W U} {t : T} {Φ : G.Datum} {β : CosFam G t}
 
 /- English proof (translation)
-Take `⟨-, ⟨e, he, h1, h2⟩, h3⟩` from `h`. Take `⟨-, ⟨e₀, he₀, h1₀, h2₀⟩, h3₀⟩` from `h₀`. Establish `hee : e₀ = e` using `GlobalTheory.StepVecSum.idemSum_eq (G.V (.top 0)) he he₀`. Substitute `hee` using the available equality. Use `choose x hx _ hx' using (h3 d hd).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use `choose y hy _ hy' using (h3 d hd).2`. Establish `ex : ∀ j, (d.1 j).fn (x j) = 1` using `fun j => by rw [hx', Set.indicator_of_mem (mem_halfCoset_self _ _ _ _)]; rfl`. Establish `ey : ∀ i, (d.2 i).fn (y i) = 1` using `fun i => by rw [hy', Set.indicator_of_mem (mem_halfCoset_self _ _ _ _)]; rfl`. Establish `hs : (τ.sum fun d c => c * (∏ j, (d.1 j).fn (x j)) * ∏ i, (d.2 i).fn (y i)) = τ d`. Rewrite using `[Finsupp.sum, Finset.sum_eq_single_of_mem d hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[ex, ey]`. Introduce `d' hd' hne`. Assume the negation of the conclusion as `h0`. Take `⟨h4, h5⟩` from `mul_ne_zero_iff.1 h0`. Conclude with `hne (pureDat_eq (h3 d' hd') (h3 d hd) (h1 d' hd') (h1 d hd) (fun j => ⟨x j, Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul h4) j (Finset.mem_univ _), by rw [ex]; exact one_ne_zero⟩) (fun i => ⟨y i, Finset.prod_ne_zero_iff.1 h5 i (Finset.mem_univ _), by rw [ey]; exact one_ne_zero …`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxe` using `fun j => ((h1 d hd).1 j).2.1 ▸ hx j`. Establish `hye` using `fun i => ((h1 d hd).2 i).2.1 ▸ hy i`. Establish `hne : (τ₀.sum fun d c => c * (∏ j, (d.1 j).fn (x j)) * ∏ i, (d.2 i).fn (y i)) ≠ 0`. Rewrite using `[h2₀ x y hxe hye, ← h2 x y hxe hye, hs]`. Conclude with `Finsupp.mem_support_iff.1 hd`.
-
-Take `⟨d', hd', h0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Take `⟨h4, h5⟩` from `mul_ne_zero_iff.1 h0`. Establish `hdd : d' = d` using `pureDat_eq (h3₀ d' hd') (h3 d hd) (h1₀ d' hd') (h1 d hd) (fun j => ⟨x j, Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul h4) j (Finset.mem_univ _), by rw [ex]; exact one_ne_zero⟩) (fun i => ⟨y i, Finset.prod_ne_zero_iff.1 h5 i (Finset.mem_univ _), by rw [ey]; exact one_ne_zero⟩)`. Conclude with `hdd ▸ hd'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_support_of {k : ℕ} {τ₀ τ : PureDat G t →₀ ℂ} (h₀ : IsCosetExpansion S t Φ β k τ₀)
     (h : IsCosetExpansion S t Φ β k τ) {d : PureDat G t} (hd : d ∈ τ.support) : d ∈ τ₀.support := by
@@ -114,9 +112,9 @@ theorem mem_support_of {k : ℕ} {τ₀ τ : PureDat G t →₀ ℂ} (h₀ : IsC
 end Sums
 
 /- English proof (translation)
-Introduce `D T L sc G W U S t Φ β k`. Distinguish the cases in `h : ∃ τ₀, IsCosetExpansion S t Φ β k τ₀`. Take `⟨τ₀, h₀⟩` from `h`. Conclude with `τ₀.support.finite_toSet.subset fun d ⟨τ, hτ, hd⟩ => mem_support_of h₀ hτ hd`. Use `Set.finite_empty.subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `d ⟨τ, hτ, -⟩`. Conclude with `h ⟨τ, hτ⟩`.
+A detailed English derivation is pending.
 -/
 theorem finite_pureDat_of_depth : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) (t : T) (Φ : G.Datum) (β : CosFam G t) (k : ℕ), {d : PureDat G t | ∃ τ, IsCosetExpansion S t Φ β k τ ∧ d ∈ τ.support}.Finite := by
   intro D T L sc G W U S t Φ β k

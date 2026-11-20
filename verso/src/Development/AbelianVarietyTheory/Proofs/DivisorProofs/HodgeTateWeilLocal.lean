@@ -16,71 +16,65 @@ namespace GlobalTheory.UPel.HT.HeckeAd.TateTranslAt
 open GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.Hecke.TateTransl GlobalTheory.UPel.HT.HeckeAd.TateTranslSys
 
 /- English proof (translation)
-Use `haveI := D.freeLa`. Establish `kpos : 0 < k` using `levelPos_of_coprime hkp`. Establish `cpos : 0 < c` using `levelPos_of_coprime hcp`. Establish `Npos : 0 < N` using `by omega`. Set `Ψ : (Over.mk x ⟶ o.A) →* (Over.mk x ⟶ A')` to `MonoidHom.mk' (fun t => t ≫ ψ) (fun a a' => MonObj.mul_comp a a' ψ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΨ : ∀ t, Ψ t = t ≫ ψ` using `fun _ => rfl`. Establish `hlev : ∀ n, 0 < n → n.Coprime p → ∀ w, I.ev (n * k) (n • w) = I.ev k w` using `fun n hn hnp w => ev_mul_nsmul I n k hn kpos (Nat.Coprime.mul hkp hnp) w`. Establish `hk_eq : ∀ n, 0 < n → n.Coprime p → ∀ z, I.ev k (h (n * k) z) = I.ev k (h k z)`. Introduce `n hn hnp z`. Take `⟨z', hz'⟩` from `(hcomp k n kpos hn (Nat.Coprime.mul hkp hnp)).1 z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm n k, hz', I.add, (I.ker k kpos hkp (k • z')).2 ⟨z', rfl⟩, _root_.mul_one]`. Establish `hker : ∀ t : Over.mk x ⟶ o.A, t ≫ ψ = 1 ↔ ∃ z, t = I.ev (N * k) (N • h (N * k) z)`. Introduce `t`. Prove the components needed by the constructor for the conclusion. Introduce `ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : t.left ≫ ψ.left = (1 : Over.mk x ⟶ o.A).left ≫ ψ.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ht, MonObj.one_comp]`. Take `⟨g, hg, -⟩` from `hGal.fibre κ (1 : Over.mk x ⟶ o.A).left t.left e1.symm`. Take `⟨z, hz⟩` from `g.2`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : t = (1 : Over.mk x ⟶ o.A) ≫ transl g.1` using `Over.OverMorphism.ext (by rw [Over.comp_left]; exact hg.symm)`. Rewrite using `[e2, one_comp_transl_pt, hz, hI]`. Introduce and unpack `⟨z, rfl⟩`. Rewrite using `[← hI, Category.assoc, comp_eq_one_of_transl ψ (o.eta (N • h (N * k) z)) (hGal.inv ⟨_, mem_heckeSubA o (h (N * k)) N z⟩), MonObj.comp_one]`. Establish `hkerN : ∀ n, 0 < n → n.Coprime p → ∀ t : Over.mk x ⟶ o.A, t ≫ ψ = 1 ↔ ∃ z, t = I.ev (n * k) (n • h (n * k) z)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn hnp t`. Rewrite using `[hker]`. Establish `e : ∀ z, I.ev (N * k) (N • h (N * k) z) = I.ev (n * k) (n • h (n * k) z)` using `fun z => by`. Rewrite using `[hlev N Npos hNp, hk_eq N Npos hNp, hlev n hn hnp, hk_eq n hn hnp]`. Simplify using `only [e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ker' : ∀ n, 0 < n → n.Coprime p → ∀ y, I.ev (n * k) (h (n * k) y) ≫ ψ = 1 ↔ ∃ z, y = n • z`. Introduce `n hn hnp y`. Establish `hnk : 0 < n * k` using `Nat.mul_pos hn kpos`. Establish `hnkp : (n * k).Coprime p` using `Nat.Coprime.mul hnp hkp`. Rewrite using `[hkerN n hn hnp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Take `⟨v, hv⟩` from `(ev_eq_iff I (n * k) hnk hnkp _ _).1 hz`. Take `⟨z', hz'⟩` from `exists_nsmul_of_map_eq D h u c k hcp hkp hcomp hsim hsurj n hn hnp (y - n • z) v (by rw [map_sub, map_nsmul, hv])`. Conclude with `⟨z + z', by rw [smul_add, ← hz', add_sub_cancel]⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z, by rw [map_nsmul]⟩`. Establish `htor : ∀ n, 0 < n → n.Coprime p → ∀ y, (I.ev (n * k) (h (n * k) y) ≫ ψ) ^ n = 1`. Introduce `n hn hnp y`. Rewrite using `[← hΨ, ← map_pow, hΨ, ← TateTransl.ev_nsmul, ← map_nsmul]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(ker' n hn hnp (n • y)).2 ⟨y, rfl⟩`. Establish `onto' : ∀ n, 0 < n → n.Coprime p → ∀ q : Over.mk x ⟶ A', q ^ n = 1 ↔ ∃ y, I.ev (n * k) (h (n * k) y) ≫ ψ = q`. Introduce `n hn hnp q`. Prove the components needed by the constructor for the conclusion. Introduce `hq haveI := hGal.fin haveI := hGal.onto`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨a₀, ha₀⟩` from `GlobalTheory.GeomSurj.exists_lift_of_surjective ψ.left q.left`. Set `a : Over.mk x ⟶ o.A` to `Over.homMk a₀ (by show a₀ ≫ o.A.hom = x`. Rewrite using `[← Over.w ψ, ← Category.assoc, ← ha₀, Over.w q]`. Use the proof step `rfl)`. Establish `ha : a ≫ ψ = q` using `Over.OverMorphism.ext (by rw [Over.comp_left]; exact ha₀.symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `han : (a ^ n) ≫ ψ = 1` using `by rw [← hΨ, map_pow, hΨ, ha, hq]`. Take `⟨z, hz⟩` from `(hkerN n hn hnp _).1 han`. Establish `hnk : 0 < n * k` using `Nat.mul_pos hn kpos`. Establish `hnkp : (n * k).Coprime p` using `Nat.Coprime.mul hnp hkp`. Establish `hak : a ^ (n * k) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pow_mul, hz, ← TateTransl.ev_nsmul, I.ker _ hnk hnkp]`. Conclude with `⟨h (n * k) z, by rw [smul_smul, mul_comm]⟩`. Take `⟨w, hw⟩` from `(I.onto _ hnk hnkp a).1 hak`. Rewrite `hz` using `[← hw, ← TateTransl.ev_nsmul, ev_eq_iff I _ hnk hnkp]`. Take `⟨v, hv⟩` from `hz`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : n • (w - h (n * k) z - k • v) = 0` using `by rw [smul_sub, smul_sub, smul_smul, ← hv, sub_self]`. Establish `e2 : w - h (n * k) z - k • v = 0`. Establish `e3 : ((n : ℤ)) • (w - h (n * k) z - k • v) = 0` using `by rw [natCast_zsmul]; exact e1`. Conclude with `(smul_eq_zero.1 e3).resolve_left (by exact_mod_cast hn.ne')`. Establish `e4 : w = h (n * k) z + k • v` using `by rw [sub_sub, sub_eq_zero] at e2; exact e2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨y'', z'', hy''⟩` from `hsurj (n * k) hnk hnkp v`. Establish `e5 : h (n * k) (z + y'') = w + (n * k) • z''` using `by rw [map_add, hy'', e4, add_assoc]`. Use `⟨z + y'', ?_⟩` and prove the remaining obligations. Rewrite using `[e5, I.add, (I.ker _ hnk hnkp ((n * k) • z'')).2 ⟨z'', rfl⟩, _root_.mul_one, hw, ha]`. Introduce and unpack `⟨y, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `htor n hn hnp y`. Establish `hnκ : ∀ n : ℕ, n.Coprime p → (n : κ) ≠ 0` using `fun n hnp => by`. Establish `h` using `(b.unit n hnp).map β`. Rewrite `h` using `[map_natCast]`. Conclude with `h.ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hiso2 : LBIso (ReciprocityTheory.ChartRestriction.G.Geo.Tor.lbPow (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) (k ^ 2 / c)) ((P'.pull (lift (𝟙 A') (𝟙 A')).left).pull ψ.left)`. Use `(GlobalTheory.CechPic.cls_eq_iff (LB.isLB_linComb (pull_isLB o.isLB _) _ _) (pull_isLB (pull_isLB hP' _) _)).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CechPic.cls_lbPow (pull_isLB o.isLB _), GlobalTheory.CechPic.cls_pull o.isLB, GlobalTheory.CechPic.cls_pull (pull_isLB hP' _), GlobalTheory.CechPic.cls_pull hP', ← GlobalTheory.CechPic.pull_comp]`. Establish `h1` using `(GlobalTheory.CechPic.cls_eq_iff (LB.isLB_linComb o.isLB _ _) (pull_isLB hP' _)).2 hiso`. Rewrite `h1` using `[GlobalTheory.CechPic.cls_linComb o.isLB, GlobalTheory.CechPic.cls_pull hP']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.CechPic.pull_id, one_smul, Finset.sum_const, Finset.card_univ, Fintype.card_fin] at h1`. Establish `h2` using `congrArg (GlobalTheory.CechPic.pull (lift (𝟙 o.A) (𝟙 o.A)).left) h1`. Rewrite `h2` using `[map_nsmul, ← GlobalTheory.CechPic.pull_comp]`. Rewrite using `[h2]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [sq2, ← Over.comp_left, comp_lift, Category.id_comp, lift_fst_assoc, lift_snd_assoc, Category.comp_id]`. Establish `hmc : k ^ 2 / c * c = k ^ 2` using `Nat.div_mul_cancel hck`. Establish `hm0 : 0 < k ^ 2 / c` using `Nat.div_pos (Nat.le_of_dvd (by positivity) hck) cpos`. Establish `hmp : (k ^ 2 / c).Coprime p` using `Nat.Coprime.coprime_dvd_left (Dvd.intro c hmc) (Nat.Coprime.pow_left 2 hkp)`. Set `ev' : ℕ → D.La → (Over.mk x ⟶ A')` to `fun n y => if 0 < n ∧ n.Coprime p then I.ev (n * k) (h (n * k) y) ≫ ψ else 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hev' : ∀ n, 0 < n → n.Coprime p → ∀ y, ev' n y = I.ev (n * k) (h (n * k) y) ≫ ψ` using `fun n hn hnp y => if_pos ⟨hn, hnp⟩`. Use `⟨⟨fun n => I.ζ n ^ u n, ?_, ?_, ev', ?_, ?_, ?_, ?_, ?_, ?_⟩, fun y => ?_, hev'⟩` and prove the remaining obligations. Introduce `n hn hnp`. Conclude with `(I.ζ_prim n hn hnp).zpow_of_gcd_eq_one (u n) (Int.isCoprime_iff_gcd_eq_one.1 (hsim n hn hnp).1)`. Introduce `n m hn hm hnm show (I.ζ (n * m) ^ u (n * m)) ^ m = I.ζ n ^ u n`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← I.ζ_pow n m hn hm hnm]`. Simplify using `only [← zpow_natCast, ← zpow_mul]`. Apply `zpow_eq_zpow_of_dvd (I.ζ_prim (n * m) (Nat.mul_pos hn hm) hnm).pow_eq_one` to reduce the goal to its premises. Take `⟨t, ht⟩` from `(hcomp n m hn hm hnm).2`. Conclude with `⟨t, by push_cast; linear_combination (m : ℤ) * ht⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `n y y'`. Simplify using `only [ev']`. Use `split_ifs with hn`. Rewrite using `[map_add, I.add, MonObj.mul_comp]`. Rewrite using `[_root_.mul_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n b' y`. Simplify using `only [ev']`. Use `split_ifs with hn`. Establish `hnk : 0 < n * k` using `Nat.mul_pos hn.1 kpos`. Establish `hnkp : (n * k).Coprime p` using `Nat.Coprime.mul hn.2 hkp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `hlin (n * k) hnk hnkp b' y`. Rewrite using `[hz, I.add, (I.ker _ hnk hnkp _).2 ⟨z, rfl⟩, _root_.mul_one, I.lin, Category.assoc, hact, ← Category.assoc]`. Use `haveI := act'.hom b'`. Rewrite using `[MonObj.one_comp]`. Introduce `n hn hnp y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hev' n hn hnp]`. Conclude with `ker' n hn hnp y`. Introduce `n hn hnp q`. Simplify using `only [hev' n hn hnp]`. Conclude with `onto' n hn hnp q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n m hn hm hnm y`. Establish `hn' : n.Coprime p` using `Nat.Coprime.coprime_dvd_left (dvd_mul_right n m) hnm`. Establish `hnk : 0 < n * k` using `Nat.mul_pos hn kpos`. Establish `hnkm : (n * k * m).Coprime p` using `by rw [Nat.mul_right_comm]; exact Nat.Coprime.mul hnm hkp`. Rewrite using `[hev' (n * m) (Nat.mul_pos hn hm) hnm, hev' n hn hn', ← hΨ, ← map_pow, hΨ, Nat.mul_right_comm n m k, I.tower (n * k) m hnk hm hnkm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `(hcomp (n * k) m hnk hm hnkm).1 y`. Rewrite using `[hz, I.add, (I.ker _ hnk (Nat.Coprime.mul hn' hkp) _).2 ⟨z, rfl⟩, _root_.mul_one]`. Introduce `n hn hnp y y'`. Establish `hnk : 0 < n * k` using `Nat.mul_pos hn kpos`. Establish `hnkp : (n * k).Coprime p` using `Nat.Coprime.mul hnp hkp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hnkc : (n * k * c).Coprime p` using `Nat.Coprime.mul hnkp hcp`. Establish `hrep : ∀ y, I.ev (n * k) (h (n * k) y) = I.ev (n * k) (h (n * k * c) y)` using `fun y => by`. Take `⟨z, hz⟩` from `(hcomp (n * k) c hnk cpos hnkc).1 y`. Rewrite using `[hz, I.add, (I.ker _ hnk hnkp _).2 ⟨z, rfl⟩, _root_.mul_one]`. Rewrite using `[hev' n hn hnp, hev' n hn hnp]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨e, he⟩` from `GlobalTheory.WeilGeomPt.exists_weilIs_geomPt S A' (P'.pull (lift (𝟙 A') (𝟙 A')).left) hA' (pull_isLB hP' _) κ x n hn (hnκ n hnp) _ _ (htor n hn hnp y) (htor n hn hnp y')`. Establish `h2` using `GlobalTheory.WeilIsogeny.weilIs_pull_hom GlobalTheory.globalFns_holds o.ab (pull_isLB o.isLB _) (pull_isLB hP' _) ψ hiso2 he`. Rewrite `h2` using `[hrep y, hrep y']`. Establish `hNp' : (n * (k ^ 2 / c * k ^ 2)).Coprime p` using `Nat.Coprime.mul hnp (Nat.Coprime.mul hmp (Nat.Coprime.pow_left 2 hkp))`. Establish `h3` using `weilIs_ev_value o I k (k ^ 2 / c) n kpos hm0 hn hNp' _ _ e (by rw [Nat.cast_mul]; exact h2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h4 : I.ζ (n * (k ^ 2 / c * k ^ 2)) ^ (2 * D.EF ((k ^ 2 / c) • h (n * k * c) y) ((k ^ 2 / c) • h (n * k * c) y')) = (I.ζ n ^ u n) ^ (2 * D.EF y y')`. Rewrite using `[← I.ζ_pow n (k ^ 2 / c * k ^ 2) hn (by positivity) hNp']`. Simplify using `only [← zpow_natCast, ← zpow_mul]`. Apply `zpow_eq_zpow_of_dvd (I.ζ_prim _ (by positivity) hNp').pow_eq_one` to reduce the goal to its premises. Take `⟨t, ht⟩` from `(hsim (n * k * c) (by positivity) hnkc).2 y y'`.
-
-Take `⟨s', hs'⟩` from `(hcomp n (k * c) hn (by positivity) (by rw [← _root_.mul_assoc]; exact hnkc)).2`. Rewrite `hs'` using `[← _root_.mul_assoc]`. Establish `hmcZ : ((k ^ 2 / c : ℕ) : ℤ) * (c : ℤ) = (k : ℤ) ^ 2` using `by exact_mod_cast hmc`. Simplify using `only [map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Use `⟨2 * s' * D.EF y y' + 2 * k * t, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [Nat.cast_mul, Nat.cast_pow] at ht hs' ⊢`. Take the linear combination `(2 * ((k ^ 2 / c : ℕ) : ℤ) * ((k ^ 2 / c : ℕ) : ℤ)) * ht + (2 * ((k ^ 2 / c : ℕ) : ℤ) * (k : ℤ) ^ 2 * D.EF y y') * hs' + (2 * ((k ^ 2 / c : ℕ) : ℤ) * u (n * k * c) * D.EF y y' + 2 * ((k ^ 2 / c : ℕ) : ℤ) * (n : ℤ) * (k : ℤ) * t) * hmcZ`. Rewrite `he` using `[h3, h4]`. Conclude with `he`. Use `show toUnit _ ≫ (o.eta (h (N * k) y) ≫ ψ) = ev' N y`.
-
-Rewrite using `[hev' N Npos hNp, ← Category.assoc, hI]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tateIsoO_of_given {p : ℕ} [Fact p.Prime] (D : Datum p) {R : Type} [CommRing R] (b : Base D R)
     (h : ℕ → D.La →+ D.La) (u : ℕ → ℤ) (c k N : ℕ) (hcp : c.Coprime p) (hkp : k.Coprime p) (hN : 3 ≤ N)

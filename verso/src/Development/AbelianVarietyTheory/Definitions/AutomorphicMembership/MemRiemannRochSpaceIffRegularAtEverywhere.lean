@@ -55,7 +55,7 @@ instance geometricallyConnected_str : GeometricallyConnected Y.str :=
 instance isIntegral_X : IsIntegral Y.X := GeometricallyIntegral.isIntegral_of_subsingleton Y.str
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Y.N, Y.ι, inferInstance, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isProjOver : IsProjOver Y.str := ⟨Y.N, Y.ι, inferInstance, rfl⟩
 
@@ -64,16 +64,16 @@ instance isProper_str : IsProper Y.str :=
   inferInstanceAs (IsProper (Y.ι ≫ PSpace.str F Y.N))
 
 /- English proof (translation)
-The claim follows from `have := SmoothOfRelativeDimension.smooth Y.dim Y.str isNormalScheme_of_smooth Y.str`.
+A detailed English derivation is pending.
 -/
 theorem isNormalScheme : IsNormalScheme Y.X :=
   have := SmoothOfRelativeDimension.smooth Y.dim Y.str
   isNormalScheme_of_smooth Y.str
 
 /- English proof (translation)
-Establish `hc (U : Y.X.Opens) (hU : IsAffineOpen U) (h : (U : Set Y.X).Nonempty) : topologicalKrullDim (U : Set Y.X) = Y.dim`. Rewrite using `[topologicalKrullDim_eq_of_isEmbedding hU.fromSpec.isOpenEmbedding.isEmbedding hU.range_fromSpec]`. Conclude with `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := Γ(Y.X, U))).trans (SmoothDim.ringKrullDim_affineOpen F _ Y.str _ inferInstance U hU h)`. Use `le_antisymm (topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_) ?_` and prove the remaining obligations. Take `⟨U, hU, hx, -⟩` from `Opens.isBasis_iff_nbhd.1 Y.X.isBasis_affineOpens (Opens.mem_top x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨U, U.isOpen, hx, (hc U hU ⟨x, hx⟩).le⟩`. Take `⟨U, hU, hx, -⟩` from `Opens.isBasis_iff_nbhd.1 Y.X.isBasis_affineOpens (Opens.mem_top (genericPoint Y.X))`. Conclude with `(hc U hU ⟨_, hx⟩).ge.trans (topologicalKrullDim_subspace_le _ _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_eq : topologicalKrullDim Y.X = Y.dim := by
   have hc (U : Y.X.Opens) (hU : IsAffineOpen U) (h : (U : Set Y.X).Nonempty) :
@@ -98,7 +98,7 @@ def coneIdeal : Ideal (MvPolynomial (Fin (Y.N + 1)) F) :=
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
 /- English proof (translation)
-The claim follows from `(show ProjectiveSpectrum (ProjSpace.grading F Y.N) from Y.ι (genericPoint Y.X)).isPrime`.
+A detailed English derivation is pending.
 -/
 theorem isPrime_coneIdeal : Y.coneIdeal.IsPrime :=
   (show ProjectiveSpectrum (ProjSpace.grading F Y.N) from Y.ι (genericPoint Y.X)).isPrime
@@ -106,7 +106,7 @@ theorem isPrime_coneIdeal : Y.coneIdeal.IsPrime :=
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
 /- English proof (translation)
-Establish `h` using `((genericPoint_spec Y.X).image Y.ι.continuous).def`. Rewrite `h` using `[Set.image_univ, Y.ι.isClosedEmbedding.isClosed_range.closure_eq]`. Use `h.symm.trans ((ProjectiveSpectrum.zeroLocus_vanishingIdeal_eq_closure (ProjSpace.grading F Y.N) _).symm.trans ?_)` and prove the remaining obligations. Conclude with `congrArg (fun J : HomogeneousIdeal (ProjSpace.grading F Y.N) => ProjectiveSpectrum.zeroLocus (ProjSpace.grading F Y.N) J) (ProjectiveSpectrum.vanishingIdeal_singleton _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem range_ι : Set.range Y.ι =
     ProjectiveSpectrum.zeroLocus (ProjSpace.grading F Y.N) Y.coneIdeal := by
@@ -127,7 +127,7 @@ omit [SmoothOfRelativeDimension d (i ≫ PSpace.str F N)]
   [GeometricallyIntegral (i ≫ PSpace.str F N)] in
 
 /- English proof (translation)
-Rewrite using `[IsIso.eq_inv_comp]`. Conclude with `i.toImage_imageι`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subschemeι_ker : i.ker.subschemeι = inv i.toImage ≫ i := by
   rw [IsIso.eq_inv_comp]; exact i.toImage_imageι
@@ -150,7 +150,7 @@ def isoOfClosedImmersion : Z ≅ (ofClosedImmersion i d).X :=
   show Z ≅ i.image from asIso i.toImage
 
 /- English proof (translation)
-The claim follows from `i.toImage_imageι`.
+A detailed English derivation is pending.
 -/
 theorem isoOfClosedImmersion_ι :
     (isoOfClosedImmersion i d).hom ≫ (ofClosedImmersion i d).ι = i := i.toImage_imageι
@@ -158,7 +158,7 @@ theorem isoOfClosedImmersion_ι :
 end OfImmersion
 
 /- English proof (translation)
-Take `⟨N, i, _, rfl⟩` from `h`. Use `SmoothOfRelativeDimension.smooth d (i ≫ PSpace.str F N)` as an intermediate fact. Use `geometricallyIntegral_of_smooth (i ≫ PSpace.str F N)` as an intermediate fact. Conclude with `⟨ofClosedImmersion i d, isoOfClosedImmersion i d, rfl, (Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) (isoOfClosedImmersion_ι i d))⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_iso {Z : Scheme.{0}} (p : Z ⟶ Sp F) (d : ℕ) [SmoothOfRelativeDimension d p]
     [GeometricallyConnected p] (h : IsProjOver p) :
@@ -190,7 +190,7 @@ instance isScalarTower_Fn : IsScalarTower F Γ(Y.X, ⊤) Y.Fn :=
   .of_algebraMap_eq fun a => congrArg (fnOf ⊤ trivial) (LB.resG_self (X := Y.X) le_top _)
 
 /- English proof (translation)
-The claim follows from `regAt_fnOf (U := ⊤) trivial trivial _`.
+A detailed English derivation is pending.
 -/
 theorem regAt_algebraMap (x : Y.X) (a : F) : RegAt x (algebraMap F Y.Fn a) :=
   regAt_fnOf (U := ⊤) trivial trivial _
@@ -204,14 +204,14 @@ def H0 (Δ : Y.Dv) : Submodule F Y.Fn := Δ.sections.restrictScalars F
 variable {Y} in
 
 /- English proof (translation)
-The claim follows from `mem_sections`.
+A detailed English derivation is pending.
 -/
 theorem mem_riemannRochSpace_iff_regularAt_everywhere {Δ : Y.Dv} {f : Y.Fn} : f ∈ Y.H0 Δ ↔ ∀ x, Δ.RegularAt x f := mem_sections
 
 variable {Y} in
 
 /- English proof (translation)
-The claim follows from `mem_sections_iff_eff`.
+A detailed English derivation is pending.
 -/
 theorem mem_riemannRoch_iff_effective {Δ : Y.Dv} {g : Y.Fnˣ} :
     (g : Y.Fn) ∈ Y.H0 Δ ↔ Y.Eff (principal g + Δ) := mem_sections_iff_eff
@@ -219,29 +219,29 @@ theorem mem_riemannRoch_iff_effective {Δ : Y.Dv} {g : Y.Fnˣ} :
 variable {Y} in
 
 /- English proof (translation)
-The claim follows from `mem_riemannRochSpace_iff_regularAt_everywhere.symm`.
+A detailed English derivation is pending.
 -/
 theorem eff_iff_one_mem {Δ : Y.Dv} : Y.Eff Δ ↔ (1 : Y.Fn) ∈ Y.H0 Δ := mem_riemannRochSpace_iff_regularAt_everywhere.symm
 
 /- English proof (translation)
-The claim follows from `CartierDiv.eff_zero`.
+A detailed English derivation is pending.
 -/
 theorem eff_zero : Y.Eff 0 := CartierDiv.eff_zero
 
 /- English proof (translation)
-The claim follows from `CartierDiv.Eff.add ha hb`.
+A detailed English derivation is pending.
 -/
 theorem eff_add (a b : Y.Dv) (ha : Y.Eff a) (hb : Y.Eff b) : Y.Eff (a + b) :=
   CartierDiv.Eff.add ha hb
 
 /- English proof (translation)
-The claim follows from `mem_riemannRochSpace_iff_regularAt_everywhere.2 fun x => (mem_riemannRochSpace_iff_regularAt_everywhere.1 hf x).mul (mem_riemannRochSpace_iff_regularAt_everywhere.1 hg x)`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_riemannRochSpace_add (Δ Δ' : Y.Dv) (f g : Y.Fn) (hf : f ∈ Y.H0 Δ) (hg : g ∈ Y.H0 Δ') :
     f * g ∈ Y.H0 (Δ + Δ') := mem_riemannRochSpace_iff_regularAt_everywhere.2 fun x => (mem_riemannRochSpace_iff_regularAt_everywhere.1 hf x).mul (mem_riemannRochSpace_iff_regularAt_everywhere.1 hg x)
 
 /- English proof (translation)
-Introduce `f hf` and use `by simpa using Y.mul_mem_riemannRochSpace_add Δ (Δ' - Δ) f 1 hf (eff_iff_one_mem.1 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem riemannRoch_mono (Δ Δ' : Y.Dv) (h : Y.Eff (Δ' - Δ)) : Y.H0 Δ ≤ Y.H0 Δ' := fun f hf => by
   simpa using Y.mul_mem_riemannRochSpace_add Δ (Δ' - Δ) f 1 hf (eff_iff_one_mem.1 h)
@@ -257,7 +257,7 @@ def cohEquiv {Δ : Y.Dv} {L : LB Y.X} {r : L.ι → Y.Fnˣ} (h : Presents Δ L r
 variable {Y} in
 
 /- English proof (translation)
-The claim follows from `(cohEquiv h).finrank_eq.symm`.
+A detailed English derivation is pending.
 -/
 theorem finrank_sections_projectiveLine {Δ : Y.Dv} {L : LB Y.X} {r : L.ι → Y.Fnˣ} (h : Presents Δ L r) :
     Module.finrank F (Y.H0 Δ) = lbH0 F L := (cohEquiv h).finrank_eq.symm
@@ -271,17 +271,17 @@ def omega0 : RatForms Y.str Y.dim := baseForm Y.str Y.dim
 def KY : Y.Dv := canonical Y.str Y.dim
 
 /- English proof (translation)
-The claim follows from `baseForm_ne_zero _ _`.
+A detailed English derivation is pending.
 -/
 theorem omega0_ne_zero : Y.omega0 ≠ 0 := baseForm_ne_zero _ _
 
 /- English proof (translation)
-The claim follows from `isDivOfForm_canonical _ _`.
+A detailed English derivation is pending.
 -/
 theorem isDivOfForm_KY : IsDivOfForm Y.KY Y.omega0 := isDivOfForm_canonical _ _
 
 /- English proof (translation)
-Take `⟨U, ω, hx, hω⟩` from `TopForm.exists_isFrame Y.str Y.dim x`. Take `⟨c, hc⟩` from `(isFreeGen_formOf (gen_mem hx) hω).2 Y.omega0`. Establish `h0 : c ≠ 0` using `fun e => Y.omega0_ne_zero (by rw [← hc, e]; exact zero_smul _ _)`. Conclude with `⟨U, hx, ω, Units.mk0 c h0, hω, hc.symm, fun y hy => Y.isDivOfForm_KY U ω hω y hy _ hc.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_frame_KY (x : Y.X) : ∃ (U : Y.X.Opens) (hx : x ∈ U)
     (ω : TopForm.FormsOn Y.str Y.dim U) (g : Y.Fnˣ), TopForm.IsFrame ω ∧
@@ -293,9 +293,9 @@ theorem exists_frame_KY (x : Y.X) : ∃ (U : Y.X.Opens) (hx : x ∈ U)
     fun y hy => Y.isDivOfForm_KY U ω hω y hy _ hc.symm⟩
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `(isFreeGen_formOf (gen_mem hx) hω).2 Y.omega0`. Use `replace hg : g • formOf U (gen_mem hx) ω = Y.omega0 := hg`. Establish `h0 : g ≠ 0` using `fun e => Y.omega0_ne_zero (by rw [← hg, e, zero_smul])`. Rewrite `e` using `[← hg, smul_smul]`. Rewrite using `[(Y.isDivOfForm_KY U ω hω x hx (Units.mk0 g h0) hg.symm).regularAt_iff, ← (isFreeGen_formOf (gen_mem hx) hω).1 e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem regularAt_KY_iff {U : Y.X.Opens} {x : Y.X} (hx : x ∈ U) {ω : TopForm.FormsOn Y.str Y.dim U}
     (hω : TopForm.IsFrame ω) {f c : Y.Fn} (e : f • Y.omega0 = c • formOf U (gen_mem hx) ω) :
@@ -309,7 +309,7 @@ theorem regularAt_KY_iff {U : Y.X.Opens} {x : Y.X} (hx : x ∈ U) {ω : TopForm.
   rfl
 
 /- English proof (translation)
-The claim follows from `(presents_canonical _ _).toPic_eq.trans ((cls_eq_iff _ _).2 (CanonLB.lbIso _ K))`.
+A detailed English derivation is pending.
 -/
 theorem toPic_KY (K : CanonLB Y.str Y.dim) : toPic Y.KY = cls K.bundle K.isLB :=
   (presents_canonical _ _).toPic_eq.trans ((cls_eq_iff _ _).2 (CanonLB.lbIso _ K))
@@ -331,21 +331,21 @@ def phiBir (Δ : Y.Dv) (V : Set Y.Fn) : Prop := Δ.Birational F V
 def phiNoContr (Δ : Y.Dv) (V : Set Y.Fn) (bd : Y.Cl) : Prop := Δ.NoContract F V bd
 
 /- English proof (translation)
-The claim follows from `not_congr ⟨fun h => h.ge (Set.mem_univ _), fun h => top_le_iff.1 (((genericPoint_spec Y.X).mem_closed_set_iff Z.isClosed).1 h)⟩`.
+A detailed English derivation is pending.
 -/
 theorem properCl_iff (Z : Y.Cl) : Y.properCl Z ↔ genericPoint Y.X ∉ Z :=
   not_congr ⟨fun h => h.ge (Set.mem_univ _), fun h => top_le_iff.1
     (((genericPoint_spec Y.X).mem_closed_set_iff Z.isClosed).1 h)⟩
 
 /- English proof (translation)
-The claim follows from `Δ.supp_ne_top`.
+A detailed English derivation is pending.
 -/
 theorem properCl_supp (Δ : Y.Dv) : Y.properCl (Y.supp Δ) := Δ.supp_ne_top
 
 variable {Y} in
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `hf (VanishesOn.eq_zero h)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem vanishOn.properCl {Δ : Y.Dv} {f : Y.Fn} {Z : Y.Cl} (h : Y.vanishOn Δ f Z) (hf : f ≠ 0) :
     Y.properCl Z := by
@@ -355,13 +355,13 @@ theorem vanishOn.properCl {Δ : Y.Dv} {f : Y.Fn} {Z : Y.Cl} (h : Y.vanishOn Δ f
 variable {Y} in
 
 /- English proof (translation)
-The claim follows from `CartierDiv.Eff.vanishesOn_one_iff h`.
+A detailed English derivation is pending.
 -/
 theorem Eff.vanishOn_one_iff {Δ : Y.Dv} (h : Y.Eff Δ) {Z : Y.Cl} :
     Y.vanishOn Δ 1 Z ↔ Y.subCl Z (Y.supp Δ) := CartierDiv.Eff.vanishesOn_one_iff h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.isCompleteCurve_iff Y.algebraMap_Γ`.
+A detailed English derivation is pending.
 -/
 theorem isCompleteCurve_iff (Z : Y.Cl) : IsCompleteCurve F Z ↔
     IsIrreducible (Z : Set Y.X) ∧ topologicalKrullDim (Z : Set Y.X) = 1 :=
@@ -377,7 +377,7 @@ abbrev sysOf {L : LB Y.X} (hL : L.IsLB) {n : ℕ} (s : Fin n → L.Sec) : LinSys
   b := s
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Y.smooth, Y.isProjOver, Y.geometricallyConnected_str, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isVariety_sysOf (h : 1 ≤ Y.dim) {L : LB Y.X} (hL : L.IsLB) {n : ℕ} (s : Fin n → L.Sec) :
     (Y.sysOf hL s).IsVariety := ⟨Y.smooth, Y.isProjOver, Y.geometricallyConnected_str, h⟩
@@ -389,7 +389,7 @@ def sec {Δ : Y.Dv} (f : Y.H0 Δ) : (Y.lb Δ).Sec := (presents_toLB Δ).secEquiv
 variable {Y} in
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val ((presents_toLB Δ).secEquiv.apply_symm_apply ⟨f.1, f.2⟩)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem rat_sec {Δ : Y.Dv} (f : Y.H0 Δ) : (presents_toLB Δ).rat (sec f) = f :=
   congrArg Subtype.val ((presents_toLB Δ).secEquiv.apply_symm_apply ⟨f.1, f.2⟩)
@@ -401,27 +401,27 @@ variable {Δ : Y.Dv} {n : ℕ} (b : Fin n → Y.H0 Δ)
 abbrev linSys : LinSys F := Y.sysOf (isLB_toLB Δ) fun j => sec (b j)
 
 /- English proof (translation)
-The claim follows from `congrArg Set.range (funext fun j => rat_sec (b j))`.
+A detailed English derivation is pending.
 -/
 theorem ratSet_linSys : Presents.ratSet (S := Y.linSys b) (presents_toLB Δ) =
     Set.range fun j => (b j : Y.Fn) :=
   congrArg Set.range (funext fun j => rat_sec (b j))
 
 /- English proof (translation)
-The claim follows from `Y.ratSet_linSys b ▸ Presents.basePointFree_iff (S := Y.linSys b) (presents_toLB Δ)`.
+A detailed English derivation is pending.
 -/
 theorem bpf_iff : Y.bpf Δ (Set.range fun j => (b j : Y.Fn)) ↔ (Y.linSys b).BasePointFree :=
   Y.ratSet_linSys b ▸ Presents.basePointFree_iff (S := Y.linSys b) (presents_toLB Δ)
 
 /- English proof (translation)
-The claim follows from `Y.ratSet_linSys b ▸ Presents.birational_iff (S := Y.linSys b) (presents_toLB Δ)`.
+A detailed English derivation is pending.
 -/
 theorem phiBir_iff : Y.phiBir Δ (Set.range fun j => (b j : Y.Fn)) ↔
     (∃ j, (Y.linSys b).b j ≠ 0) ∧ (Y.linSys b).Birational :=
   Y.ratSet_linSys b ▸ Presents.birational_iff (S := Y.linSys b) (presents_toLB Δ)
 
 /- English proof (translation)
-The claim follows from `Y.ratSet_linSys b ▸ Presents.noContract_iff (S := Y.linSys b) (presents_toLB Δ) h bd`.
+A detailed English derivation is pending.
 -/
 theorem phiNoContr_iff (h : (Y.linSys b).BasePointFree) (bd : Y.Cl) :
     Y.phiNoContr Δ (Set.range fun j => (b j : Y.Fn)) bd ↔ (Y.linSys b).NoContract bd :=
@@ -436,12 +436,12 @@ open ProjSpace
 abbrev O1 : LB Y.X := (ProjSpace.O1 F Y.N).pull Y.ι
 
 /- English proof (translation)
-The claim follows from `LB.isLB_pull (O1_isLB F Y.N) _`.
+A detailed English derivation is pending.
 -/
 theorem isLineBundle_twistingSheafOne : Y.O1.IsLB := LB.isLB_pull (O1_isLB F Y.N) _
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.isAmple_projective_O_one F Y.N).pull_of_isClosedImmersion _`.
+A detailed English derivation is pending.
 -/
 theorem isAmple_projective_O_one : IsAmpleLB Y.O1 :=
   (GlobalTheory.isAmple_projective_O_one F Y.N).pull_of_isClosedImmersion _
@@ -449,7 +449,7 @@ theorem isAmple_projective_O_one : IsAmpleLB Y.O1 :=
 def coordSec (j : Fin (Y.N + 1)) : Y.O1.Sec := secPull (coord F Y.N j) Y.ι
 
 /- English proof (translation)
-Rewrite using `[coordSec, nonzeroLocus_secPull, nonzeroLocus_coord]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nonzeroLocus_coordSec (j : Fin (Y.N + 1)) :
     nonzeroLocus (Y.coordSec j) = Y.ι ⁻¹ᵁ chart F Y.N j := by
@@ -461,7 +461,7 @@ abbrev coordSys : LinSys F := Y.sysOf Y.isLineBundle_twistingSheafOne Y.coordSec
 def idx (i : Fin (Y.N + 1)) : Y.O1.ι := fun _ => i
 
 /- English proof (translation)
-The claim follows from `LB.pull_U (L := ProjSpace.O1 F Y.N) Y.ι (Y.idx i)`.
+A detailed English derivation is pending.
 -/
 theorem twistingSheafOne_chart_eq_preimage_standardChart (i : Fin (Y.N + 1)) : Y.O1.U (Y.idx i) = Y.ι ⁻¹ᵁ chart F Y.N i :=
   LB.pull_U (L := ProjSpace.O1 F Y.N) Y.ι (Y.idx i)
@@ -471,9 +471,9 @@ def chartHom (i : Fin (Y.N + 1)) :
   (Y.ι.appLE _ _ (Y.twistingSheafOne_chart_eq_preimage_standardChart i).le).hom
 
 /- English proof (translation)
-Rewrite using `[Twist.chartEval, aeval_def, ← coe_eval₂Hom, map_eval₂Hom]`. Use `congr 2`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, ← resG_algebraMap le_top, chartHom, LB.appLE_resG, algebraMap_top_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `funext fun l => LB.resG_self _ _`.
+A detailed English derivation is pending.
 -/
 theorem chartEval_coordSec (i : Fin (Y.N + 1)) (g : MvPolynomial (Fin (Y.N + 1)) F) :
     Twist.chartEval F Y.coordSec (Y.idx i) le_rfl g = Y.chartHom i (aeval (ratio F Y.N i) g) := by
@@ -488,9 +488,9 @@ theorem chartEval_coordSec (i : Fin (Y.N + 1)) (g : MvPolynomial (Fin (Y.N + 1))
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_mem_chart F Y.N (Y.ι y)`. Establish `hj : y ∈ Y.O1.U (Y.idx i)` using `(Y.twistingSheafOne_chart_eq_preimage_standardChart i).ge hi`. Establish `e` using `Twist.basicOpen_zfun (Y.coordSys.form hg) (Y.idx i)`. Rewrite `e` using `[LinSys.form, Twist.zfun_formSec, chartEval_coordSec, ← formOn_eq_aeval hg]`. Use `replace e := (Scheme.basicOpen_appLE Y.ι _ _ (Y.twistingSheafOne_chart_eq_preimage_standardChart i).le _).symm.trans e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[basicOpen_formOn]`. Conclude with `⟨fun h => (e.ge ⟨hj, h⟩).2.2, fun h => (e.le ⟨hj, hi, h⟩).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_form {d : ℕ} {g : MvPolynomial (Fin (Y.N + 1)) F} (hg : g.IsHomogeneous d)
     (y : Y.X) : y ∈ nonzeroLocus (Y.coordSys.form hg) ↔
@@ -504,7 +504,7 @@ theorem mem_nonzeroLocus_form {d : ℕ} {g : MvPolynomial (Fin (Y.N + 1)) F} (hg
   exact ⟨fun h => (e.ge ⟨hj, h⟩).2.2, fun h => (e.le ⟨hj, hi, h⟩).2⟩
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun y _ => have ⟨j, hj⟩ := exists_mem_chart F Y.N (Y.ι y) Opens.mem_iSup.2 ⟨j, (Y.nonzeroLocus_coordSec j).ge hj⟩`.
+A detailed English derivation is pending.
 -/
 theorem basePointFree_coordSys : Y.coordSys.BasePointFree := eq_top_iff.2 fun y _ =>
   have ⟨j, hj⟩ := exists_mem_chart F Y.N (Y.ι y)
@@ -513,7 +513,7 @@ theorem basePointFree_coordSys : Y.coordSys.BasePointFree := eq_top_iff.2 fun y 
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
 /- English proof (translation)
-Use `Y.ι.isClosedEmbedding.injective (ProjectiveSpectrum.ext (HomogeneousIdeal.ext' fun d g hg => ?_))` and prove the remaining obligations. Use `replace hg : g.IsHomogeneous d := hg`. Use `h d g hg` as an intermediate fact. Rewrite `this` using `[mem_nonzeroLocus_form, mem_nonzeroLocus_form]`. Conclude with `not_iff_not.1 this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_sameImage {y y' : Y.X} (h : Y.coordSys.SameImage y y') : y = y' := by
   refine Y.ι.isClosedEmbedding.injective
@@ -524,7 +524,7 @@ theorem eq_of_sameImage {y y' : Y.X} (h : Y.coordSys.SameImage y y') : y = y' :=
   exact not_iff_not.1 this
 
 /- English proof (translation)
-Introduce `C _ _ hC _ h` and use `by have : Subsingleton C := ⟨fun a b => Subtype.ext (Y.eq_of_sameImage (h _ a.2 _ b.2))⟩ have := topologicalKrullDim_zero_of_discreteTopology C rw [hC] at this exact absurd this (by decide)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem noContract_coordSys (bd : Set Y.X) : Y.coordSys.NoContract bd := fun C _ _ hC _ h => by
   have : Subsingleton C := ⟨fun a b => Subtype.ext (Y.eq_of_sameImage (h _ a.2 _ b.2))⟩
@@ -533,7 +533,7 @@ theorem noContract_coordSys (bd : Set Y.X) : Y.coordSys.NoContract bd := fun C _
   exact absurd this (by decide)
 
 /- English proof (translation)
-The claim follows from `exists_mem_chart F Y.N _`.
+A detailed English derivation is pending.
 -/
 theorem exists_coord_ne_zero : ∃ i, Y.ι (genericPoint Y.X) ∈ chart F Y.N i :=
   exists_mem_chart F Y.N _
@@ -543,14 +543,14 @@ variable {i : Fin (Y.N + 1)} (hi : Y.ι (genericPoint Y.X) ∈ chart F Y.N i)
 include hi in
 
 /- English proof (translation)
-The claim follows from `(Y.twistingSheafOne_chart_eq_preimage_standardChart i).ge hi`.
+A detailed English derivation is pending.
 -/
 theorem genericPoint_mem_twistingSheafOne_chart : genericPoint Y.X ∈ Y.O1.U (Y.idx i) := (Y.twistingSheafOne_chart_eq_preimage_standardChart i).ge hi
 
 def hyp : Y.Dv := ofLB Y.isLineBundle_twistingSheafOne (Y.idx i) (Y.genericPoint_mem_twistingSheafOne_chart hi)
 
 /- English proof (translation)
-The claim follows from `presents_ofLB _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem presents_hyp : Presents (Y.hyp hi) Y.O1 (frameRat _ (Y.idx i) (Y.genericPoint_mem_twistingSheafOne_chart hi)) :=
   presents_ofLB _ _ _
@@ -558,7 +558,7 @@ theorem presents_hyp : Presents (Y.hyp hi) Y.O1 (frameRat _ (Y.idx i) (Y.generic
 def coordFn (j : Fin (Y.N + 1)) : Y.Fn := (Y.presents_hyp hi).rat (Y.coordSec j)
 
 /- English proof (translation)
-Rewrite using `[← Y.chartEval_coordSec i, Twist.chartEval, map_eval₂Hom, aeval_def, coe_eval₂Hom]`. Use `congr 1`. Conclude with `RingHom.ext fun a => (IsScalarTower.algebraMap_apply F Γ(Y.X, ⊤) _ a).trans (fnOf_resG le_top _ _).symm`. Use function extensionality and compare the values at `j`. Rewrite using `[LB.resG_self, ← (Y.presents_hyp hi).rat_mul, frameRat_self Y.isLineBundle_twistingSheafOne, Units.val_one, mul_one, coordFn]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_coordFn (g : MvPolynomial (Fin (Y.N + 1)) F) : aeval (Y.coordFn hi) g =
     fnOf _ (Y.genericPoint_mem_twistingSheafOne_chart hi) (Y.chartHom i (aeval (ratio F Y.N i) g)) := by
@@ -571,20 +571,20 @@ theorem aeval_coordFn (g : MvPolynomial (Fin (Y.N + 1)) F) : aeval (Y.coordFn hi
       coordFn]
 
 /- English proof (translation)
-Use `Y.aeval_coordFn hi (MvPolynomial.X i)` as an intermediate fact. Rewrite `this` using `[aeval_X, aeval_X, ratio, ratioOn_self, map_one, map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coordFn_self : Y.coordFn hi i = 1 := by
   have := Y.aeval_coordFn hi (MvPolynomial.X i)
   rwa [aeval_X, aeval_X, ratio, ratioOn_self, map_one, map_one] at this
 
 /- English proof (translation)
-The claim follows from `(Y.presents_hyp hi).rat_mem _`.
+A detailed English derivation is pending.
 -/
 theorem coordFn_mem (j : Fin (Y.N + 1)) : Y.coordFn hi j ∈ Y.H0 (Y.hyp hi) :=
   (Y.presents_hyp hi).rat_mem _
 
 /- English proof (translation)
-Rewrite using `[coordFn, Presents.generatesAt_rat_iff, nonzeroLocus_coordSec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem generatesAt_coordFn_iff (j : Fin (Y.N + 1)) (y : Y.X) :
     (Y.hyp hi).GeneratesAt y (Y.coordFn hi j) ↔ Y.ι y ∈ chart F Y.N j := by
@@ -592,40 +592,38 @@ theorem generatesAt_coordFn_iff (j : Fin (Y.N + 1)) (y : Y.X) :
   rfl
 
 /- English proof (translation)
-The claim follows from `eff_iff_one_mem.2 (Y.coordFn_self hi ▸ Y.coordFn_mem hi i)`.
+A detailed English derivation is pending.
 -/
 theorem eff_hyp : Y.Eff (Y.hyp hi) := eff_iff_one_mem.2 (Y.coordFn_self hi ▸ Y.coordFn_mem hi i)
 
 /- English proof (translation)
-Rewrite using `[← Y.generatesAt_coordFn_iff hi, coordFn_self, ← notMem_supp_iff, not_not]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_supp_hyp (y : Y.X) : y ∈ Y.supp (Y.hyp hi) ↔ Y.ι y ∉ chart F Y.N i := by
   rw [← Y.generatesAt_coordFn_iff hi, coordFn_self, ← notMem_supp_iff, not_not]
   rfl
 
 /- English proof (translation)
-The claim follows from `(Presents.basePointFree_iff (S := Y.coordSys) (Y.presents_hyp hi)).2 Y.basePointFree_coordSys`.
+A detailed English derivation is pending.
 -/
 theorem bpf_hyp : Y.bpf (Y.hyp hi) (Set.range (Y.coordFn hi)) :=
   (Presents.basePointFree_iff (S := Y.coordSys) (Y.presents_hyp hi)).2 Y.basePointFree_coordSys
 
 /- English proof (translation)
-The claim follows from `(Presents.noContract_iff (S := Y.coordSys) (Y.presents_hyp hi) Y.basePointFree_coordSys _).2 (Y.noContract_coordSys _)`.
+A detailed English derivation is pending.
 -/
 theorem phiNoContr_hyp (bd : Y.Cl) : Y.phiNoContr (Y.hyp hi) (Set.range (Y.coordFn hi)) bd :=
   (Presents.noContract_iff (S := Y.coordSys) (Y.presents_hyp hi) Y.basePointFree_coordSys _).2
     (Y.noContract_coordSys _)
 
 /- English proof (translation)
-Use `⟨(Y.bpf_hyp hi).mem, (Y.bpf_hyp hi).exists_ne_zero, eq_top_iff.2 fun f _ => ?_⟩` and prove the remaining obligations. Establish `hU : IsAffineOpen (Y.ι ⁻¹ᵁ chart F Y.N i)` using `(isAffineOpen_chart F Y.N i).preimage _`. Establish `: Nonempty (Y.ι ⁻¹ᵁ chart F Y.N i :)` using `⟨⟨_, hi⟩⟩`. Use `functionField_isFractionRing_of_isAffineOpen _ _ hU` as an intermediate fact. Establish `key (a : Γ(Y.X, Y.ι ⁻¹ᵁ chart F Y.N i)) : algebraMap _ Y.Fn a ∈ ratioField F (Set.range (Y.coordFn hi))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, rfl⟩` from `Y.ι.app_surjective _ (isAffineOpen_chart F Y.N i) a`. Take `⟨g, rfl⟩` from `aeval_ratio_surjective F Y.N i a`. Establish `e` using `Y.aeval_coordFn hi g`. Rewrite `e` using `[chartHom, ← LB.resG_app, fnOf_resG]`. Use `e ▸ (?_ : aeval (Y.coordFn hi) g ∈ _)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `clear e`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => rw [algHom_C]`. Conclude with `IntermediateField.algebraMap_mem _ a`. Consider the case `add p q hp hq => rw [map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hp hq`. Consider the case `mul_X p j hp`. Rewrite using `[map_mul, aeval_X]`. Conclude with `mul_mem hp (IntermediateField.subset_adjoin _ _ ⟨_, ⟨j, rfl⟩, _, ⟨i, rfl⟩, by rw [coordFn_self]; exact one_ne_zero, by rw [coordFn_self, div_one]⟩)`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := Γ(Y.X, Y.ι ⁻¹ᵁ chart F Y.N i)) f`.
-
-Conclude with `div_mem (key a) (key b)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem phiBir_hyp : Y.phiBir (Y.hyp hi) (Set.range (Y.coordFn hi)) := by
   refine ⟨(Y.bpf_hyp hi).mem, (Y.bpf_hyp hi).exists_ne_zero, eq_top_iff.2 fun f _ => ?_⟩
@@ -653,7 +651,7 @@ theorem phiBir_hyp : Y.phiBir (Y.hyp hi) (Set.range (Y.coordFn hi)) := by
 end Hyperplane
 
 /- English proof (translation)
-Introduce `c` and use `c.2 Set.univ isClosed_univ (IrreducibleSpace.isIrreducible_univ _) ((topologicalKrullDim_eq_of_isEmbedding Topology.IsEmbedding.id Set.range_id).trans (Y.topologicalKrullDim_eq.trans (by rw [h]; rfl))) (Set.disjoint_empty _) (contracts_of_constant Y.regAt_algebraMap hV _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_phiNoContr_of_constant (h : Y.dim = 1) {Δ : Y.Dv} {V : Set Y.Fn}
     (hV : ∀ f ∈ V, f ∈ Set.range (algebraMap F Y.Fn)) : ¬ Y.phiNoContr Δ V ⊥ := fun c =>
@@ -668,7 +666,7 @@ def RiemannRochFinite (F : Type) [Field F] : Prop :=
   ∀ (Y : Var F) (Δ : Y.Dv), FiniteDimensional F (Y.H0 Δ)
 
 /- English proof (translation)
-The claim follows from `Var.finiteDimensional_riemannRochSpace`.
+A detailed English derivation is pending.
 -/
 theorem riemannRoch_finite (F : Type) [Field F] : RiemannRochFinite F := Var.finiteDimensional_riemannRochSpace
 
@@ -702,7 +700,7 @@ instance isIso_proj_ι : IsIso (proj F n).ι :=
   IsIso.of_isIso_comp_left (Var.isoOfClosedImmersion (𝟙 (PSpace F n)) n).hom _
 
 /- English proof (translation)
-The claim follows from `have h : genericPoint (PSpace F (proj F n).N) ∈ chart F n i := gen_mem (projSys.gen_mem F n i) (genericPoint_eq_of_isOpenImmersion (proj F n).ι).symm ▸ h`.
+A detailed English derivation is pending.
 -/
 theorem proj_gen_mem (i : Fin (n + 1)) :
     (proj F n).ι (genericPoint (proj F n).X) ∈ chart F n i :=
@@ -712,9 +710,9 @@ theorem proj_gen_mem (i : Fin (n + 1)) :
 def projHyp : (proj F n).Dv := (proj F n).hyp (proj_gen_mem F n 0)
 
 /- English proof (translation)
-Use `Geo.Tor.isProper_str F n` as an intermediate fact. Establish `H : IsPullback (proj F n).ι (proj F n).str (PSpace.str F n) (Spec.map (CommRingCat.ofHom (algebraMap F F)))`. Rewrite using `[show Spec.map (CommRingCat.ofHom (algebraMap F F)) = 𝟙 _ from Spec.map_id _]`. Conclude with `IsPullback.of_horiz_isIso ⟨(Category.comp_id _).symm⟩`. Establish `h` using `FieldChangeInter.hdim_pull (f := PSpace.str F n) H (O1_isLB F n) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Var.finrank_sections_projectiveLine ((proj F n).presents_hyp _)).trans (h.trans ?_)` and prove the remaining obligations. Establish `e` using `sectionDim_twistingSheaf_pow F n 1`. Rewrite `e` using `[lineBundleGlobalSectionsDim_congr_picardClass (isLB_lbPow (O1_isLB F n) 1) (O1_isLB F n) (by rw [cls_lbPow (O1_isLB F n), one_nsmul]), add_comm, Nat.choose_succ_self_right, ← projSys.algebraΓ_eq]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_riemannRoch_hyperplane : Module.finrank F ((proj F n).H0 (projHyp F n)) = n + 1 := by
   have := Geo.Tor.isProper_str F n
@@ -731,7 +729,7 @@ theorem finrank_riemannRoch_hyperplane : Module.finrank F ((proj F n).H0 (projHy
   exact e
 
 /- English proof (translation)
-Introduce `h` and use `by have := finrank_riemannRoch_hyperplane F n rw [h, finrank_bot] at this omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem riemannRoch_hyperplane_ne_bot : (proj F n).H0 (projHyp F n) ≠ ⊥ := fun h => by
   have := finrank_riemannRoch_hyperplane F n
@@ -739,7 +737,7 @@ theorem riemannRoch_hyperplane_ne_bot : (proj F n).H0 (projHyp F n) ≠ ⊥ := f
   omega
 
 /- English proof (translation)
-Use `by_contra! h`. Conclude with `(proj F 1).not_phiNoContr_of_constant rfl (fun f hf => h f (((proj F 1).bpf_hyp _).mem f hf)) ((proj F 1).phiNoContr_hyp (proj_gen_mem F 1 0) ⊥)`.
+A detailed English derivation is pending.
 -/
 theorem exists_nonconstant_line : ∃ f ∈ (proj F 1).H0 (projHyp F 1),
     f ∉ Set.range (algebraMap F (proj F 1).Fn) := by
@@ -749,14 +747,14 @@ theorem exists_nonconstant_line : ∃ f ∈ (proj F 1).H0 (projHyp F 1),
     ((proj F 1).phiNoContr_hyp (proj_gen_mem F 1 0) ⊥)
 
 /- English proof (translation)
-The claim follows from `finrank_riemannRoch_hyperplane F 1`.
+A detailed English derivation is pending.
 -/
 example : Module.finrank F ((proj F 1).H0 (projHyp F 1)) = 2 := finrank_riemannRoch_hyperplane F 1
 
 /- English proof (translation)
-Establish `h : projHyp F 1 ≠ 0` using `fun e => by`. Establish `h₁` using `((proj F 1).presents_hyp (proj_gen_mem F 1 0)).toPic_eq`. Establish `hA` using `(proj F 1).isAmple_projective_O_one`. Use `hA.not_isNef_dual (k := F) (((proj F 1).isCompleteCurve_iff ⊤).2 ⟨IrreducibleSpace.isIrreducible_univ _, (topologicalKrullDim_eq_of_isEmbedding Topology.IsEmbedding.id Set.range_id).trans (proj F 1).topologicalKrullDim_eq⟩) ((isNef_triv F _).of_cls_eq (isLB_dual hA.isLB) ?_)` and prove the remaining obligations. Rewrite using `[cls_dual hA.isLB, ← h₁, show (proj F 1).hyp (proj_gen_mem F 1 0) = 0 from e, map_zero, neg_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `⟨(proj F 1).eff_hyp _, h, fun h' => h (CartierDiv.Eff.eq_zero ((proj F 1).eff_hyp _) h')⟩`.
+Both sides reduce to the same expression. Supply the required witnesses or components.
 -/
 example : (proj F 1).Eff (projHyp F 1) ∧ projHyp F 1 ≠ 0 ∧ ¬ (proj F 1).Eff (-projHyp F 1) := by
   have h : projHyp F 1 ≠ 0 := fun e => by
@@ -773,11 +771,9 @@ example : (proj F 1).Eff (projHyp F 1) ∧ projHyp F 1 ≠ 0 ∧ ¬ (proj F 1).E
   exact ⟨(proj F 1).eff_hyp _, h, fun h' => h (CartierDiv.Eff.eq_zero ((proj F 1).eff_hyp _) h')⟩
 
 /- English proof (translation)
-Use `⟨⟨?_, fun x => ⟨1, rfl, generatesAt_zero_iff.2 (unitAt_one x)⟩⟩, fun h => ?_, (proj F 1).not_phiNoContr_of_constant rfl ?_⟩` and prove the remaining obligations. Introduce `f hf`. Rewrite using `[Set.mem_singleton_iff.1 hf]`. Conclude with `mem_sections.2 CartierDiv.eff_zero`. Take `⟨f, -, hf⟩` from `exists_nonconstant_line F`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : ratioField F ({1} : Set (proj F 1).Fn) ≤ ⊥` using `IntermediateField.adjoin_le_iff.2 (by`. Introduce and unpack `_ ⟨f, hf, g, hg, -, rfl⟩`. Rewrite using `[Set.mem_singleton_iff.1 hf, Set.mem_singleton_iff.1 hg, div_one]`. Conclude with `one_mem _)`. Conclude with `hf (IntermediateField.mem_bot.1 (hle (h.ratioField_eq.ge trivial)))`.
-
-Conclude with `fun f hf => ⟨1, (map_one _).trans (Set.mem_singleton_iff.1 hf).symm⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 example : (proj F 1).bpf 0 {1} ∧ ¬ (proj F 1).phiBir 0 {1} ∧ ¬ (proj F 1).phiNoContr 0 {1} ⊥ := by
   refine ⟨⟨?_, fun x => ⟨1, rfl, generatesAt_zero_iff.2 (unitAt_one x)⟩⟩, fun h => ?_,

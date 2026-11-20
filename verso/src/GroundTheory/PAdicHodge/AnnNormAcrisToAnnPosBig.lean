@@ -24,7 +24,7 @@ variable {ρ1 : Set.Ioo (0 : ℝ) 1} {σ1 : Set.Ioc (0 : ℝ) ρ1} (h : (ρ1 : �
   (hs : (σ0 : ℝ) ≤ σ1) (hσ : (p : ℝ)⁻¹ ≤ σ0)
 
 /- English proof (translation)
-Rewrite using `[awayToAnn, RingHom.comp_apply, (𝓣).annRes_coeAnn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem annRes_awayToAnn (z : 𝔸) :
     (𝓣).annRes h hs (awayToAnn ρ0 σ0 z) = awayToAnn ρ1 σ1 z := by
@@ -32,7 +32,7 @@ theorem annRes_awayToAnn (z : 𝔸) :
   rfl
 
 /- English proof (translation)
-Use `eq_acrisToAnn (hσ.trans hs) fun N => ⟨acrisApprox a N, acrisApprox_spec a N, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[← annRes_awayToAnn h hs, ← map_sub, (𝓣).annNorm_annRes]`. Conclude with `(annNorm_acrisToAnn_sub_le hσ a (acrisApprox_spec a N) _).trans (pow_le_pow_left₀ (rad_pos' r).le r.2.2 N)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annRes_acrisToAnn (a : ACris ℂ_[p] p) :
     (𝓣).annRes h hs (acrisToAnn hσ a) = acrisToAnn (hσ.trans hs) a := by
@@ -43,7 +43,7 @@ theorem annRes_acrisToAnn (a : ACris ℂ_[p] p) :
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Establish `e : ((𝓣).annRes h hs).comp (bcrisToAnn hσ) = bcrisToAnn (hσ.trans hs)` using `IsLocalization.ringHom_ext (Submonoid.powers (p : ACris ℂ_[p] p)) (RingHom.ext fun a => by`. Simplify using `only [RingHom.comp_apply, bcrisToAnn_algebraMap, annRes_acrisToAnn])`. Conclude with `congrArg (fun f : BCrisPlus ℂ_[p] p →+* (𝓣).Ann ρ1 σ1 => f b) e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem annRes_bcrisToAnn (b : BCrisPlus ℂ_[p] p) :
     (𝓣).annRes h hs (bcrisToAnn hσ b) = bcrisToAnn (hσ.trans hs) b := by
@@ -59,7 +59,7 @@ section Galois
 variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)} (hσ : (p : ℝ)⁻¹ ≤ σ0)
 
 /- English proof (translation)
-Rewrite using `[awayToAnn, RingHom.comp_apply, TeichLift.TeichIso.annMap_coeAnn, RingHom.comp_apply]`. Use `congr 1`. Conclude with `Subtype.ext (toB_galAway σ z).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem annMap_awayToAnn (σ : Gal(PadicAlgCl p/K)) (z : 𝔸) :
     (galIso σ).annMap (awayToAnn ρ0 σ0 z) = awayToAnn ρ0 σ0 (ACris.galAway σ z) := by
@@ -69,7 +69,7 @@ theorem annMap_awayToAnn (σ : Gal(PadicAlgCl p/K)) (z : 𝔸) :
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.1 hc`. Use `Ideal.mem_span_singleton'.2 ⟨galCris σ d, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap _ (ACris ℂ_[p] p) (σ • c) = galCris σ (algebraMap _ (ACris ℂ_[p] p) c)`. Rewrite using `[AdicCompletion.algebraMap_apply, AdicCompletion.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, RingHom.id_apply, galCris_of]`. Rewrite using `[e, ← map_sub, ← hd, map_mul, map_pow, map_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem galCris_sub_mem {a : ACris ℂ_[p] p} {c : ACrisZero ℂ_[p] p} {N : ℕ} (σ : Gal(PadicAlgCl p/K))
     (hc : a - algebraMap _ (ACris ℂ_[p] p) c ∈ Ideal.span {(p : ACris ℂ_[p] p) ^ N}) :
@@ -83,7 +83,7 @@ theorem galCris_sub_mem {a : ACris ℂ_[p] p} {c : ACrisZero ℂ_[p] p} {N : ℕ
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Use `eq_acrisToAnn hσ fun N => ⟨σ • acrisApprox a N, galCris_sub_mem σ (acrisApprox_spec a N), fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_gal_smul_zero, ← annMap_awayToAnn, ← map_sub, TeichLift.TeichIso.annNorm_annMap]`. Conclude with `(annNorm_acrisToAnn_sub_le hσ a (acrisApprox_spec a N) r).trans (pow_le_pow_left₀ (rad_pos' r).le r.2.2 N)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annMap_acrisToAnn (σ : Gal(PadicAlgCl p/K)) (a : ACris ℂ_[p] p) :
     (galIso σ).annMap (acrisToAnn hσ a) = acrisToAnn hσ (galCris σ a) := by
@@ -95,7 +95,7 @@ theorem annMap_acrisToAnn (σ : Gal(PadicAlgCl p/K)) (a : ACris ℂ_[p] p) :
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Establish `e : ((galIso σ).annMap).comp (bcrisToAnn hσ) = (bcrisToAnn hσ).comp (galPlus σ)` using `IsLocalization.ringHom_ext (Submonoid.powers (p : ACris ℂ_[p] p)) (RingHom.ext fun a => by`. Simplify using `only [RingHom.comp_apply, bcrisToAnn_algebraMap, galPlus_algebraMap, annMap_acrisToAnn])`. Conclude with `congrArg (fun f : BCrisPlus ℂ_[p] p →+* (𝓣).Ann ρ0 σ0 => f b) e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem annMap_bcrisToAnn (σ : Gal(PadicAlgCl p/K)) (b : BCrisPlus ℂ_[p] p) :
     (galIso σ).annMap (bcrisToAnn hσ b) = bcrisToAnn hσ (galPlus σ b) := by
@@ -116,7 +116,7 @@ variable {ρ1 : Set.Ioo (0 : ℝ) 1} {σ1 : Set.Ioc (0 : ℝ) ρ1}
 omit h hs hσ hσ1 in
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Rewrite using `[awayToAnn, RingHom.comp_apply, TeichLift.TeichFrob.annFrob_coeAnn, awayToAnn, RingHom.comp_apply]`. Use `congr 1`. Conclude with `Subtype.ext (WAPeriodT.toB_phiAway z).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem annFrob_awayToAnn (z : 𝔸) :
     (frob ℂ_[p] p).annFrob (awayToAnn ρ0 σ0 z) =
@@ -128,7 +128,7 @@ theorem annFrob_awayToAnn (z : 𝔸) :
 omit h hs hσ hσ1 in
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.1 hc`. Use `Ideal.mem_span_singleton'.2 ⟨phi ℂ_[p] p d, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap _ (ACris ℂ_[p] p) (phiZero ℂ_[p] p c) = phi ℂ_[p] p (algebraMap _ (ACris ℂ_[p] p) c)`. Rewrite using `[AdicCompletion.algebraMap_apply, AdicCompletion.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, RingHom.id_apply, phi_of]`. Rewrite using `[e, ← map_sub, ← hd, map_mul, map_pow, map_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_sub_mem {a : ACris ℂ_[p] p} {c : ACrisZero ℂ_[p] p} {N : ℕ}
     (hc : a - algebraMap _ (ACris ℂ_[p] p) c ∈ Ideal.span {(p : ACris ℂ_[p] p) ^ N}) :
@@ -144,13 +144,13 @@ theorem phi_sub_mem {a : ACris ℂ_[p] p} {c : ACrisZero ℂ_[p] p} {N : ℕ}
 omit hσ hσ1 in
 include h hs in
 /- English proof (translation)
-Establish `hp0 : (0 : ℝ) < (p : ℝ)⁻¹` using `inv_pos.2 (Nat.cast_pos.2 hp.out.pos)`. Establish `hr0 : (0 : ℝ) ≤ r` using `(σ1.2.1.trans_le r.2.1).le`. Establish `e1 : (((σ0 : ℝ) ^ p) ^ ((p : ℝ)⁻¹)) = σ0`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul σ0.2.1.le, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hp.out.ne_zero), Real.rpow_one]`. Establish `e2 : (((ρ0 : ℝ) ^ p) ^ ((p : ℝ)⁻¹)) = ρ0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul ρ0.2.1.le, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hp.out.ne_zero), Real.rpow_one]`. Establish `h1 : (σ0 : ℝ) ^ p ≤ r`. Use `hs.trans r.2.1` as an intermediate fact. Simplify `this` using `[TeichLift.TeichFrob.coe_powRad]`. Establish `h2 : (r : ℝ) ≤ (ρ0 : ℝ) ^ p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `r.2.2.trans h` as an intermediate fact. Simplify `this` using `[TeichLift.TeichFrob.powRadius]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← e1]`. Conclude with `Real.rpow_le_rpow (pow_nonneg σ0.2.1.le p) h1 hp0.le`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e2]`. Conclude with `Real.rpow_le_rpow hr0 h2 hp0.le`.
+A detailed English derivation is pending.
 -/
 theorem rad_rpow_mem (r : AnnRad ρ1 σ1) :
     (r : ℝ) ^ ((p : ℝ)⁻¹) ∈ Set.Icc (σ0 : ℝ) ρ0 := by
@@ -174,7 +174,7 @@ theorem rad_rpow_mem (r : AnnRad ρ1 σ1) :
 
 omit hσ hσ1 in
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_annRadOf, TeichLift.TeichFrob.coe_annPowRad, frob_a, pow_one]`. Conclude with `(Real.rpow_inv_natCast_pow (σ1.2.1.trans_le r.2.1).le hp.out.ne_zero).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annRadOf_eq_annPowRad (r : AnnRad ρ1 σ1) :
     annRadOf h hs r = (frob ℂ_[p] p).annPowRad (⟨(r : ℝ) ^ ((p : ℝ)⁻¹), rad_rpow_mem h hs r⟩ : AnnRad ρ0 σ0) := by
@@ -185,9 +185,9 @@ theorem annRadOf_eq_annPowRad (r : AnnRad ρ1 σ1) :
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Use `eq_acrisToAnn hσ1 fun N => ⟨phiZero ℂ_[p] p (acrisApprox a N), phi_sub_mem (acrisApprox_spec a N), fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_phiZero, ← annRes_awayToAnn h hs, ← annFrob_awayToAnn, ← map_sub, ← map_sub, (𝓣).annNorm_annRes, annRadOf_eq_annPowRad h hs, TeichLift.TeichFrob.annNorm_annFrob, frob_a, pow_one]`. Use `set s : AnnRad ρ0 σ0 := ⟨(r : ℝ) ^ ((p : ℝ)⁻¹), rad_rpow_mem h hs r⟩`. Establish `h1` using `annNorm_acrisToAnn_sub_le hσ a (acrisApprox_spec a N) s`. Establish `hs0 : (0 : ℝ) ≤ s` using `(rad_pos' s).le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_mul, mul_comm, pow_mul]`. Use `congr 1`. Conclude with `Real.rpow_inv_natCast_pow (σ1.2.1.trans_le r.2.1).le hp.out.ne_zero`. Use `_ ≤ (ρ1 : ℝ) ^ N := pow_le_pow_left₀ (rad_pos' r).le r.2.2 N`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem annRes_annFrob_acrisToAnn (a : ACris ℂ_[p] p) :
     (𝓣).annRes h hs ((frob ℂ_[p] p).annFrob (acrisToAnn hσ a)) = acrisToAnn hσ1 (phi ℂ_[p] p a) := by
@@ -220,18 +220,18 @@ Both sides reduce to the same expression.
 theorem coe_radInvP : ((radInvP hσ : Set.Ioc (0 : ℝ) ρ0) : ℝ) = (p : ℝ)⁻¹ := rfl
 
 /- English proof (translation)
-Rewrite using `[coe_radInvP]`. Conclude with `hσ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radInvP_le : ((radInvP hσ : Set.Ioc (0 : ℝ) ρ0) : ℝ) ≤ σ0 := by rw [coe_radInvP]; exact hσ
 
 /- English proof (translation)
-Take `⟨B, N₀, hB, hbound⟩` from `exists_lower_bound (K := ℂ_[p]) ha`. Establish `hp1 : (p : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (Nat.one_lt_cast.2 hp.out.one_lt)`. Establish `hp0 : (0 : ℝ) < (p : ℝ)⁻¹` using `inv_pos.2 (Nat.cast_pos.2 hp.out.pos)`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hB hp1`. Use `set N := max N₀ n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpN : ((p : ℝ)⁻¹) ^ N < B` using `(pow_le_pow_of_le_one hp0.le hp1.le (le_max_right _ _)).trans_lt hn`. Use `set c := acrisApprox a N`. Establish `h1 : B < gn ℂ_[p] p ‖(p : ℂ_[p])‖ (c : 𝔸)` using `hbound N (le_max_left _ _) c (acrisApprox_spec a N)`. Rewrite `h1` using `[norm_natCast_p]`. Establish `h2` using `annNorm_acrisToAnn_sub_le (le_refl ((radInvP hσ : Set.Ioc (0 : ℝ) ρ0) : ℝ)) a (acrisApprox_spec a N) (annIn ρ0 (radInvP hσ))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (𝓣).annNorm ρ0 (radInvP hσ) (annIn ρ0 (radInvP hσ)) (awayToAnn ρ0 (radInvP hσ) (c : 𝔸)) = gn ℂ_[p] p (p : ℝ)⁻¹ (c : 𝔸)` using `annNorm_awayToAnn _ _`. Establish `h4` using `(𝓣).annNorm_sub_le (annIn ρ0 (radInvP hσ)) (acrisToAnn (le_refl _) a) (acrisToAnn (le_refl _) a - awayToAnn ρ0 (radInvP hσ) (c : 𝔸))`. Rewrite `h4` using `[sub_sub_cancel, h3]`. Establish `h2' : (𝓣).annNorm ρ0 (radInvP hσ) (annIn ρ0 (radInvP hσ)) (acrisToAnn (le_refl _) a - awayToAnn ρ0 (radInvP hσ) (c : 𝔸)) < B` using `h2.trans_lt hpN`. Break down `le_max_iff.1 h4 with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem annNorm_acrisToAnn_pos_big {a : ACris ℂ_[p] p} (ha : a ≠ 0) :
     0 < (𝓣).annNorm ρ0 (radInvP hσ) (annIn ρ0 (radInvP hσ)) (acrisToAnn (le_refl _) a) := by
@@ -259,9 +259,9 @@ theorem annNorm_acrisToAnn_pos_big {a : ACris ℂ_[p] p} (ha : a ≠ 0) :
   · linarith
 
 /- English proof (translation)
-Establish `hbig` using `(𝓣).annNorm_pos_of_annIn_pos (annNorm_acrisToAnn_pos_big hσ ha) (annRadOf (le_refl (ρ0 : ℝ)) (radInvP_le hσ) r)`. Establish `hres` using `annRes_acrisToAnn (le_refl (ρ0 : ℝ)) (radInvP_le hσ) (le_refl _) a`. Establish `hn` using `(𝓣).annNorm_annRes (le_refl (ρ0 : ℝ)) (radInvP_le hσ) r (acrisToAnn (le_refl _) a)`. Rewrite `hn` using `[hres]`. Rewrite `hbig` using `[← hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hbig`.
+A detailed English derivation is pending.
 -/
 theorem annNorm_acrisToAnn_pos {a : ACris ℂ_[p] p} (ha : a ≠ 0) (r : AnnRad ρ0 σ0) :
     0 < (𝓣).annNorm ρ0 σ0 r (acrisToAnn hσ a) := by
@@ -274,11 +274,11 @@ theorem annNorm_acrisToAnn_pos {a : ACris ℂ_[p] p} (ha : a ≠ 0) (r : AnnRad 
   exact hbig
 
 /- English proof (translation)
-Take `⟨⟨a, ⟨_, n, rfl⟩⟩, hab⟩` from `IsLocalization.surj (Submonoid.powers (p : ACris ℂ_[p] p)) b`. Simplify using `only at hab`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hab` using `[map_zero]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu : IsUnit (algebraMap (ACris ℂ_[p] p) (BCrisPlus ℂ_[p] p) ((p : ACris ℂ_[p] p) ^ n))`. Rewrite using `[map_pow]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit (p : ACris ℂ_[p] p)).pow n`. Conclude with `hb (hu.mul_left_eq_zero.1 hab)`. Establish `e` using `congrArg (fun x => (𝓣).annNorm ρ0 σ0 r (bcrisToAnn hσ x)) hab`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_mul, bcrisToAnn_algebraMap, map_pow, map_natCast, (𝓣).annNorm_mul, (𝓣).annNorm_pow, annNorm_awayToAnn_natCast_p] at e`. Establish `hpos` using `annNorm_acrisToAnn_pos hσ ha r`. Rewrite `hpos` using `[← e]`. Conclude with `pos_of_mul_pos_left hpos (pow_nonneg (rad_pos' r).le n)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annNorm_bcrisToAnn_pos {b : BCrisPlus ℂ_[p] p} (hb : b ≠ 0) (r : AnnRad ρ0 σ0) :
     0 < (𝓣).annNorm ρ0 σ0 r (bcrisToAnn hσ b) := by
@@ -298,7 +298,7 @@ theorem annNorm_bcrisToAnn_pos {b : BCrisPlus ℂ_[p] p} (hb : b ≠ 0) (r : Ann
   exact pos_of_mul_pos_left hpos (pow_nonneg (rad_pos' r).le n)
 
 /- English proof (translation)
-Introduce `x y hxy`. Assume the negation of the conclusion as `hne`. Use `annNorm_bcrisToAnn_pos hσ (sub_ne_zero.2 hne) (annIn ρ0 σ0)` as an intermediate fact. Rewrite `this` using `[map_sub, hxy, sub_self, (𝓣).annNorm_zero]`. Conclude with `lt_irrefl _ this`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcrisToAnn_injective : Function.Injective (bcrisToAnn (ρ0 := ρ0) (σ0 := σ0) hσ) := by
   intro x y hxy

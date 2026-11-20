@@ -36,9 +36,9 @@ section Part1
 variable {r n}
 
 /- English proof (translation)
-Unfold `Pmin crP`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun kk _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM : (MvPolynomial.map (Int.castRingHom k)).mapMatrix (crMinor r n ℤ β σ kk) = crMinor r n k β σ kk`. Use extensionality with `i j`. Simplify using `[crMinor, RingHom.mapMatrix_apply]`. Rewrite using `[map_pow, RingHom.map_det, hM]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem crP_map (k : Type) [CommRing k] (β : (Σ σ : T, Fin (r σ)) → Fin n) (a : T → ℕ → ℕ) :
     MvPolynomial.map (Int.castRingHom k) (Pmin r n β a) = crP r n k β a := by
@@ -54,16 +54,16 @@ theorem crP_map (k : Type) [CommRing k] (β : (Σ σ : T, Fin (r σ)) → Fin n)
   rw [map_pow, RingHom.map_det, hM]
 
 /- English proof (translation)
-Conclude with `Algebra.subset_adjoin ⟨ℓ, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem crX_mem {R : Type} [CommRing R] {s : Set (Letter T r n)} {ℓ : Letter T r n} (h : ℓ ∈ s) :
     (X ℓ : MvPolynomial (Letter T r n) R) ∈ supported R s := by
   exact Algebra.subset_adjoin ⟨ℓ, h, rfl⟩
 
 /- English proof (translation)
-Unfold `crP`. Use `Subalgebra.prod_mem _ fun σ _ => Subalgebra.prod_mem _ fun kk _ => Subalgebra.pow_mem _ ?_ _` and prove the remaining obligations. Rewrite using `[Matrix.det_apply]`. Use `Subalgebra.sum_mem _ fun π _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `zsmul_mem (Subalgebra.prod_mem _ fun i _ => ?_) _` and prove the remaining obligations. Conclude with `crX_mem ⟨Fin.castLE kk.isLt i, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem crP_mem_supported (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) → Fin n) (a : T → ℕ → ℕ) :
     crP r n R β a ∈ supported R (GoodL r n β) := by
@@ -76,13 +76,11 @@ theorem crP_mem_supported (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) 
   exact crX_mem ⟨Fin.castLE kk.isLt i, rfl⟩
 
 /- English proof (translation)
-Establish `hp' : p ∈ Algebra.adjoin R ((X : Letter T r n → MvPolynomial (Letter T r n) R) '' s)` using `hp`. Use `clear hp`. Use `show pderiv i p ∈ Algebra.adjoin R ((X : Letter T r n → MvPolynomial (Letter T r n) R) '' s)`. Proceed by induction on `hp' using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, -, rfl⟩` from `hx`. Rewrite using `[pderiv_X, Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `algebraMap c`. Rewrite using `[Derivation.map_algebraMap]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `mul x y hx' hy' hx hy`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Conclude with `add_mem (mul_mem hx' hy) (mul_mem hy' hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crPderiv_supported {R : Type} [CommRing R] {s : Set (Letter T r n)} (i : Letter T r n)
     {p : MvPolynomial (Letter T r n) R} (hp : p ∈ supported R s) : pderiv i p ∈ supported R s := by
@@ -108,11 +106,9 @@ theorem crPderiv_supported {R : Type} [CommRing R] {s : Set (Letter T r n)} (i :
     exact add_mem (mul_mem hx' hy) (mul_mem hy' hx)
 
 /- English proof (translation)
-Establish `hp' : p ∈ Algebra.adjoin R ((X : Letter T r n → MvPolynomial (Letter T r n) R) '' s)` using `hp`. Use `clear hp`. Proceed by induction on `hp' using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨j, hj, rfl⟩` from `hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pderiv_X, Pi.single_apply, if_neg]`. Introduce and unpack `rfl`. Conclude with `hi hj`. Consider the case `algebraMap c => exact Derivation.map_algebraMap _ _`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`.
-
-Consider the case `mul x y _ _ hx hy => rw [Derivation.leibniz, hx, hy, smul_zero, smul_zero, add_zero]`.
+Assume the hypotheses and unpack their components. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem crPderiv_zero_lemma {R : Type} [CommRing R] {s : Set (Letter T r n)} (i : Letter T r n)
     (hi : i ∉ s) {p : MvPolynomial (Letter T r n) R} (hp : p ∈ supported R s) : pderiv i p = 0 := by
@@ -130,13 +126,13 @@ private theorem crPderiv_zero_lemma {R : Type} [CommRing R] {s : Set (Letter T r
   | mul x y _ _ hx hy => rw [Derivation.leibniz, hx, hy, smul_zero, smul_zero, add_zero]
 
 /- English proof (translation)
-Unfold `harmK lap`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, Derivation.coeFn_coe]`. Introduce `τ hτ x x'`. Use `Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun b' _ => ?_` and prove the remaining obligations. Distinguish the cases in `hbb : b = b'`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hbb` using the available equality. Establish `hsup` using `crPderiv_supported ⟨cc τ, (x', b)⟩ (crP_mem_supported k β a)`. Distinguish the cases in `hg : (⟨τ, (x, b)⟩ : Letter T r n) ∈ GoodL r n β`. Establish `hg' : (⟨cc τ, (x', b)⟩ : Letter T r n) ∉ GoodL r n β`. Introduce and unpack `⟨j, hj⟩`.
+Substitute using the available equality. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨i0, hi0⟩` from `hg`. Use `hβ (hi0.trans hj.symm)` as an intermediate fact. Conclude with `hcc τ hτ (Sigma.mk.inj this).1.symm`. Rewrite using `[crPderiv_zero_lemma _ hg' (crP_mem_supported k β a), map_zero, smul_zero]`. Rewrite using `[crPderiv_zero_lemma _ hg hsup, smul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_ne hbb, zero_smul]`.
+A detailed English derivation is pending.
 -/
 theorem crP_mem_harmK (k : Type) [Field k] (β : (Σ σ : T, Fin (r σ)) → Fin n) (a : T → ℕ → ℕ) (cc : T → T)
     (isX : T → Prop) (hcc : ∀ τ, isX τ → cc τ ≠ τ) (hβ : Function.Injective β) :
@@ -166,7 +162,7 @@ section Part2
 variable {r n}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, h⟩`. Conclude with `(Prod.mk.inj (eq_of_heq (Sigma.mk.inj h).2)).1`. Introduce and unpack `rfl`. Conclude with `⟨y, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem crSig_iff {τ : T} {x i : Fin (r τ)} {y : Fin n} :
     (∃ b : Fin n, (⟨τ, x, y⟩ : Letter T r n) = ⟨τ, i, b⟩) ↔ x = i := by
@@ -177,7 +173,7 @@ theorem crSig_iff {τ : T} {x i : Fin (r τ)} {y : Fin n} :
     exact ⟨y, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨b, hb⟩`. Conclude with `h (Sigma.mk.inj hb).1`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem crSig_ne {τ σ : T} (h : τ ≠ σ) {x : Fin (r τ)} {y : Fin n} {i : Fin (r σ)} :
     ¬ ∃ b : Fin n, (⟨τ, x, y⟩ : Letter T r n) = ⟨σ, i, b⟩ := by
@@ -185,25 +181,25 @@ theorem crSig_ne {τ σ : T} (h : τ ≠ σ) {x : Fin (r τ)} {y : Fin n} {i : F
   exact h (Sigma.mk.inj hb).1
 
 /- English proof (translation)
-Unfold `RowInv rowShift`. Introduce `σ i i' hii' t`. Establish `hlt : (i' : ℕ) < i` using `hii'`. Unfold `crP`. Rewrite using `[map_prod]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun kk _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, AlgHom.map_det]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `hcase : τ = σ ∧ (i : ℕ) ≤ kk`. Take `⟨rfl, hik⟩` from `hcase`. Take `⟨i₀, hi₀⟩ : ∃ i₀ : Fin ((kk : ℕ) + 1), (i₀ : ℕ) = i` from `⟨⟨i, by omega⟩, rfl⟩`. Take `⟨i₁, hi₁⟩ : ∃ i₁ : Fin ((kk : ℕ) + 1), (i₁ : ℕ) = i'` from `⟨⟨i', by omega⟩, rfl⟩`. Establish `hne : i₀ ≠ i₁`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers. Use `conv_rhs => rw [← Matrix.det_updateRow_add_smul_self _ hne (C t)]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `p q`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, crMinor, aeval_X, Matrix.updateRow_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, crSig_iff]`. Distinguish the cases in `hp : p = i₀`. Substitute `hp` using the available equality. Establish `h1 : Fin.castLE kk.isLt p = i` using `Fin.ext (by simp [hi₀])`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Fin.castLE kk.isLt i₁ = i'` using `Fin.ext (by simp [hi₁])`. Simplify using `[h1, h2]`. Establish `h1 : Fin.castLE kk.isLt p ≠ i`. Introduce `h`. Apply `hp` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h4` using `congrArg Fin.val h`. Simplify using `at h4`. Conclude with `Fin.ext (by omega)`. Simplify using `[h1, hp]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `p q`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, crMinor, aeval_X]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨b, hb⟩`. Apply `hcase` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `Sigma.mk.inj hb`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Substitute `h1` using the available equality. Establish `h3` using `(Prod.mk.inj (eq_of_heq h2)).1`. Establish `h4` using `congrArg Fin.val h3`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hp` using `p.isLt`. Simplify using `at h4`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem crP_rowInv (k : Type) [Field k] (β : (Σ σ : T, Fin (r σ)) → Fin n) (a : T → ℕ → ℕ) :
     RowInv r n k (crP r n k β a) := by
@@ -266,9 +262,9 @@ variable {r n}
 def crW (σ : T) (i : ℕ) : Letter T r n → ℕ := fun ℓ => if ℓ.1 = σ ∧ (ℓ.2.1 : ℕ) = i then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply, ← mem_weightedHomogeneousSubmodule]`. Use `Submodule.sum_mem _ fun π _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `zsmul_mem ?_ _` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule, ← hw π]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsWeightedHomogeneous.prod _ _ _ fun j _ => ?_` and prove the remaining obligations. Apply `isWeightedHomogeneous_X` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 -/
 theorem crMinor_hom (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) → Fin n) (τ : T) (kk : Fin (r τ))
     (w : Letter T r n → ℕ) (D : ℕ)
@@ -284,7 +280,7 @@ theorem crMinor_hom (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) → Fi
   apply isWeightedHomogeneous_X
 
 /- English proof (translation)
-Unfold `crP`. Conclude with `IsWeightedHomogeneous.prod _ _ _ fun τ _ => IsWeightedHomogeneous.prod _ _ _ fun kk _ => (hD τ kk).pow _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem crP_isWeightedHomogeneous (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) → Fin n) (a : T → ℕ → ℕ)
     (w : Letter T r n → ℕ) (D : ∀ τ : T, Fin (r τ) → ℕ)
@@ -295,9 +291,9 @@ theorem crP_isWeightedHomogeneous (R : Type) [CommRing R] (β : (Σ σ : T, Fin 
     IsWeightedHomogeneous.prod _ _ _ fun kk _ => (hD τ kk).pow _
 
 /- English proof (translation)
-Distinguish the cases in `h : τ = σ`. Substitute `h` using the available equality. Simplify using `only [eq_self_iff_true, true_and]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun j => if j = i0 then 1 else 0) m, Finset.sum_ite_eq']`. Simplify using `only [Finset.mem_range]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem crRowSum (τ σ : T) (m i0 : ℕ) :
     (∑ j : Fin m, if τ = σ ∧ (j : ℕ) = i0 then 1 else 0) = if τ = σ ∧ i0 < m then 1 else 0 := by
@@ -309,15 +305,15 @@ theorem crRowSum (τ σ : T) (m i0 : ℕ) :
   · simp [h]
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `i hi`. Simplify using `only [Nat.add_zero] at hi`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Substitute `hi` using the available equality. Rewrite using `[hR]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_range]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[if_neg (by omega)]`. Consider the case `succ d ih`. Introduce `i hi`. Establish `h1` using `ih (i + 1) (by omega)`. Establish `hsplit : ∀ j, (if i ≤ j then f j - f (j + 1) else 0) = (if i + 1 ≤ j then f j - f (j + 1) else 0) + (if j = i then f j - f (j + 1) else 0)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Distinguish the cases in `h' : i ≤ j`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h', if_pos (by omega), if_neg h, add_zero]`. Rewrite using `[if_neg h', if_neg (by omega), if_neg h, add_zero]`. Rewrite using `[Finset.sum_congr rfl (fun j _ => hsplit j), Finset.sum_add_distrib, h1, Finset.sum_ite_eq', if_pos (Finset.mem_range.mpr (by omega))]`. Use `hf i (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem crTele (f : ℕ → ℕ) (R : ℕ) (hf : ∀ j, j < R → f (j + 1) ≤ f j) (hR : f R = 0) :
     ∀ d i, i + d = R → ∑ j ∈ Finset.range R, (if i ≤ j then f j - f (j + 1) else 0) = f i := by
@@ -350,13 +346,13 @@ theorem crTele (f : ℕ → ℕ) (R : ℕ) (hf : ∀ j, j < R → f (j + 1) ≤ 
     omega
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Set `f : ℕ → ℕ` to `fun j => if j < r σ then a σ j else 0`. Establish `hf : ∀ j, j < r σ → f (j + 1) ≤ f j`. Introduce `j hj`. Simplify using `only [f]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : j + 1 < r σ`. Rewrite using `[if_pos h, if_pos hj]`. Conclude with `ha σ ⟨j, hj⟩ ⟨j + 1, h⟩ (Fin.mk_le_mk.mpr (Nat.le_succ j))`. Rewrite using `[if_neg h]`. Conclude with `Nat.zero_le _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : f (r σ) = 0` using `by simp [f]`. Establish `key` using `crTele f (r σ) hf hR (r σ - i) i (by omega)`. Establish `e1 : (∑ kk : Fin (r σ), if (i : ℕ) < (kk : ℕ) + 1 then crExp r a σ kk else 0) = ∑ j ∈ Finset.range (r σ), (if (i : ℕ) ≤ j then f j - f (j + 1) else 0)`. Rewrite using `[← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun kk _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hk` using `kk.isLt`. Simplify using `only [f, crExp, if_pos hk, Nat.lt_add_one_iff]`. Rewrite using `[e1, key]`. Simplify using `[f, hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crExpSum (a : T → ℕ → ℕ) (ha : Dom r a) (σ : T) (i : Fin (r σ)) :
     (∑ kk : Fin (r σ), if (i : ℕ) < (kk : ℕ) + 1 then crExp r a σ kk else 0) = a σ i := by
@@ -382,15 +378,15 @@ theorem crExpSum (a : T → ℕ → ℕ) (ha : Dom r a) (σ : T) (i : Fin (r σ)
   simp [f, hi]
 
 /- English proof (translation)
-Establish `hD : ∀ τ (kk : Fin (r τ)), IsWeightedHomogeneous (crW (r` using `r) (n := n) σ i.val) (crMinor r n R β τ kk).det (if τ = σ ∧ (i : ℕ) < (kk : ℕ) + 1 then 1 else 0) := by`. Introduce `τ kk`. Apply `crMinor_hom` to reduce the goal to its premises. Introduce `π`. Rewrite using `[← crRowSum τ σ ((kk : ℕ) + 1) (i : ℕ)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Equiv.sum_comp π (fun j : Fin ((kk : ℕ) + 1) => if τ = σ ∧ (j : ℕ) = (i : ℕ) then 1 else 0)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[crW]`. Establish `h` using `crP_isWeightedHomogeneous R β a _ _ hD`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[Finset.sum_eq_single σ]`. Rewrite using `[← crExpSum a ha σ i]`. Use `Finset.sum_congr rfl fun kk _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : (i : ℕ) < (kk : ℕ) + 1`. Simplify using `[hk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hk]`. Introduce `τ _ hτ`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `kk _`. Simplify using `[hτ]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ σ) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem crP_isWeightedHomogeneous_crW (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) → Fin n) (a : T → ℕ → ℕ)
     (ha : Dom r a) (σ : T) (i : Fin (r σ)) :
@@ -420,15 +416,15 @@ theorem crP_isWeightedHomogeneous_crW (R : Type) [CommRing R] (β : (Σ σ : T, 
     exact absurd (Finset.mem_univ σ) h
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun b : Fin n => (⟨σ, i, b⟩ : Letter T r n))`. Introduce `b b' h`. Conclude with `(Prod.mk.inj (eq_of_heq (Sigma.mk.inj h).2)).2`. Establish `hw : ∀ ℓ : Letter T r n, crW (r` using `r) (n := n) σ i.val ℓ = if ℓ ∈ Finset.univ.image (fun b : Fin n => (⟨σ, i, b⟩ : Letter T r n)) then 1 else 0 := by`. Introduce and unpack `⟨τ, x, y⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, crW]`. Distinguish the cases in `h : τ = σ`. Substitute `h` using the available equality. Distinguish the cases in `hx : x = i`. Substitute `hx` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos ⟨rfl, rfl⟩, if_pos ⟨y, rfl⟩]`. Rewrite using `[if_neg (by simp [Fin.val_inj, hx]), if_neg]`. Introduce and unpack `⟨b, hb⟩`. Conclude with `hx ((Prod.mk.inj (eq_of_heq (Sigma.mk.inj hb).2)).1).symm`. Rewrite using `[if_neg (by simp [h]), if_neg]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨b, hb⟩`. Conclude with `h (Sigma.mk.inj hb).1.symm`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum]`. Simplify using `only [hw, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_mem]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hsub : ∑ ℓ ∈ m.support ∩ Finset.univ.image (fun b : Fin n => (⟨σ, i, b⟩ : Letter T r n)), m ℓ = ∑ ℓ ∈ Finset.univ.image (fun b : Fin n => (⟨σ, i, b⟩ : Letter T r n)), m ℓ`. Use `Finset.sum_subset Finset.inter_subset_right fun ℓ hℓS hℓ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `hℓ (Finset.mem_inter.mpr ⟨Finsupp.mem_support_iff.mpr h0, hℓS⟩)`. Rewrite using `[hsub, Finset.sum_image (fun b _ b' _ h => hinj h)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crW_weight (m : Letter T r n →₀ ℕ) (σ : T) (i : Fin (r σ)) :
     Finsupp.weight (crW (r := r) (n := n) σ i.val) m = ∑ b : Fin n, m ⟨σ, i, b⟩ := by
@@ -462,7 +458,7 @@ theorem crW_weight (m : Letter T r n →₀ ℕ) (σ : T) (i : Fin (r σ)) :
   rw [hsub, Finset.sum_image (fun b _ b' _ h => hinj h)]
 
 /- English proof (translation)
-Introduce `m hm σ i`. Establish `h` using `crP_isWeightedHomogeneous_crW k β a ha σ i (MvPolynomial.mem_support_iff.mp hm)`. Rewrite `h` using `[crW_weight]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crP_rowDeg (k : Type) [Field k] (β : (Σ σ : T, Fin (r σ)) → Fin n) (a : T → ℕ → ℕ)
     (ha : Dom r a) : RowDeg r n k a (crP r n k β a) := by
@@ -481,7 +477,7 @@ def crDl (β : (Σ σ : T, Fin (r σ)) → Fin n) : (Σ σ : T, Fin (r σ)) → 
   fun p => ⟨p.1, p.2, β p⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨σ, i⟩ ⟨τ, j⟩ h`. Take `⟨h1, h2⟩` from `Sigma.mk.inj h`. Substitute `h1` using the available equality. Take `⟨h3, -⟩` from `Prod.mk.inj (eq_of_heq h2)`. Substitute `h3` using the available equality.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -494,7 +490,7 @@ theorem crDl_inj (β : (Σ σ : T, Fin (r σ)) → Fin n) : Function.Injective (
   rfl
 
 /- English proof (translation)
-Simplify using `only [diagExp, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem crDiagExp_apply (β : (Σ σ : T, Fin (r σ)) → Fin n) (a : T → ℕ → ℕ) (ℓ : Letter T r n) :
     diagExp r n β a ℓ = ∑ p, if crDl β p = ℓ then a p.1 p.2 else 0 := by
@@ -502,9 +498,7 @@ theorem crDiagExp_apply (β : (Σ σ : T, Fin (r σ)) → Fin n) (a : T → ℕ 
   rfl
 
 /- English proof (translation)
-Rewrite using `[crDiagExp_apply, Finset.sum_eq_single p]`. Rewrite using `[if_pos rfl]`. Introduce `q _ hq`. Conclude with `if_neg (fun h => hq (crDl_inj β h))`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ p) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem crDiagExp_dl (β : (Σ σ : T, Fin (r σ)) → Fin n) (a : T → ℕ → ℕ) (p : Σ σ : T, Fin (r σ)) :
     diagExp r n β a (crDl β p) = a p.1 p.2 := by
@@ -516,7 +510,7 @@ theorem crDiagExp_dl (β : (Σ σ : T, Fin (r σ)) → Fin n) (a : T → ℕ →
     exact absurd (Finset.mem_univ p) h
 
 /- English proof (translation)
-Rewrite using `[crDiagExp_apply]`. Conclude with `Finset.sum_eq_zero fun p _ => if_neg (h p)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crDiagExp_off (β : (Σ σ : T, Fin (r σ)) → Fin n) (a : T → ℕ → ℕ) (ℓ : Letter T r n)
     (h : ∀ p, crDl β p ≠ ℓ) : diagExp r n β a ℓ = 0 := by
@@ -530,11 +524,9 @@ def crRho (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) → Fin n) :
 def crDiag (β : (Σ σ : T, Fin (r σ)) → Fin n) : Set (Letter T r n) := {ℓ | ℓ.2.2 = β ⟨ℓ.1, ℓ.2.1⟩}
 
 /- English proof (translation)
-Rewrite using `[crRho, aeval_monomial]`. Use `split_ifs with h`. Rewrite using `[monomial_eq, algebraMap_eq]`. Use `congr 1`. Use `Finset.prod_congr rfl fun ℓ hℓ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos (h ℓ hℓ)]`. Use `push_neg at h`. Take `⟨ℓ, hℓ, hne⟩` from `h`. Rewrite using `[Finsupp.prod, Finset.prod_eq_zero hℓ, mul_zero]`. Simplify using `only [if_neg hne]`.
-
-Conclude with `zero_pow (Finsupp.mem_support_iff.mp hℓ)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crRho_monomial (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) → Fin n)
     (u : Letter T r n →₀ ℕ) (c : R) :
@@ -553,9 +545,9 @@ theorem crRho_monomial (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) →
     exact zero_pow (Finsupp.mem_support_iff.mp hℓ)
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' p ?_ ?_` and prove the remaining obligations. Introduce `u c`. Rewrite using `[crRho_monomial]`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_zero, coeff_monomial, if_neg]`. Introduce and unpack `rfl`. Conclude with `h hm`. Introduce `p q hp hq`. Rewrite using `[map_add, coeff_add, coeff_add, hp, hq]`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crRho_coeff (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) → Fin n)
     (p : MvPolynomial (Letter T r n) R) (m : Letter T r n →₀ ℕ)
@@ -572,9 +564,9 @@ theorem crRho_coeff (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) → Fi
     rw [map_add, coeff_add, coeff_add, hp, hq]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' p ?_ ?_` and prove the remaining obligations. Introduce `u c`. Rewrite using `[crRho_monomial]`. Use `split_ifs with h`. Rewrite using `[monomial_eq, ← MvPolynomial.algebraMap_eq]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ c) (Subalgebra.prod_mem _ fun ℓ hℓ => Subalgebra.pow_mem _ (crX_mem (h ℓ hℓ)) _)`. Conclude with `Subalgebra.zero_mem _`. Introduce `p q hp hq`. Rewrite using `[map_add]`. Conclude with `Subalgebra.add_mem _ hp hq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crRho_supported (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) → Fin n)
     (p : MvPolynomial (Letter T r n) R) : crRho R β p ∈ supported R (crDiag β) := by
@@ -591,9 +583,9 @@ theorem crRho_supported (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) �
     exact Subalgebra.add_mem _ hp hq
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[crMinor, crRho]`. Establish `hne : β ⟨τ, Fin.castLE kk.isLt j⟩ ≠ β ⟨τ, Fin.castLE kk.isLt i⟩`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h'`. Establish `h3 : Fin.castLE kk.isLt j = Fin.castLE kk.isLt i` using `eq_of_heq (Sigma.mk.inj (hβ h')).2`. Conclude with `h (Fin.castLE_injective _ h3).symm`. Simplify using `[crMinor, crRho, Matrix.diagonal_apply_ne _ h, hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crRho_minor (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) → Fin n)
     (hβ : Function.Injective β) (τ : T) (kk : Fin (r τ)) :
@@ -613,7 +605,7 @@ def crIsMono {R : Type} [CommRing R] (p : MvPolynomial (Letter T r n) R) : Prop 
   ∃ E, p = monomial E 1
 
 /- English proof (translation)
-Take `⟨E, rfl⟩` from `hp`. Take `⟨F, rfl⟩` from `hq`. Conclude with `⟨E + F, by rw [monomial_mul, one_mul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem crIsMono_mul {R : Type} [CommRing R] {p q : MvPolynomial (Letter T r n) R} (hp : crIsMono p)
     (hq : crIsMono q) : crIsMono (p * q) := by
@@ -622,16 +614,16 @@ theorem crIsMono_mul {R : Type} [CommRing R] {p q : MvPolynomial (Letter T r n) 
   exact ⟨E + F, by rw [monomial_mul, one_mul]⟩
 
 /- English proof (translation)
-Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[← C_1, C_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem crIsMono_one {R : Type} [CommRing R] : crIsMono (1 : MvPolynomial (Letter T r n) R) := by
   refine ⟨0, ?_⟩
   rw [← C_1, C_apply]
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `crIsMono_one`. Consider the case `succ e ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Conclude with `crIsMono_mul ih hp`.
+A detailed English derivation is pending.
 -/
 theorem crIsMono_pow {R : Type} [CommRing R] {p : MvPolynomial (Letter T r n) R} (hp : crIsMono p)
     (e : ℕ) : crIsMono (p ^ e) := by
@@ -644,16 +636,16 @@ theorem crIsMono_pow {R : Type} [CommRing R] {p : MvPolynomial (Letter T r n) R}
     exact crIsMono_mul ih hp
 
 /- English proof (translation)
-Conclude with `Finset.prod_induction f crIsMono (fun _ _ ha hb => crIsMono_mul ha hb) crIsMono_one h`.
+A detailed English derivation is pending.
 -/
 theorem crIsMono_prod {R : Type} [CommRing R] {ι : Type} (s : Finset ι)
     (f : ι → MvPolynomial (Letter T r n) R) (h : ∀ i ∈ s, crIsMono (f i)) : crIsMono (∏ i ∈ s, f i) := by
   exact Finset.prod_induction f crIsMono (fun _ _ ha hb => crIsMono_mul ha hb) crIsMono_one h
 
 /- English proof (translation)
-Unfold `crP`. Rewrite using `[map_prod]`. Use `crIsMono_prod _ _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `crIsMono_prod _ _ fun kk _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_pow]`. Use `crIsMono_pow ?_ _` and prove the remaining obligations. Rewrite using `[AlgHom.map_det, crRho_minor R β hβ σ kk, Matrix.det_diagonal]`. Conclude with `crIsMono_prod _ _ fun q _ => ⟨Finsupp.single _ 1, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crRho_P (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) → Fin n) (a : T → ℕ → ℕ)
     (hβ : Function.Injective β) : crIsMono (crRho R β (crP r n R β a)) := by
@@ -668,19 +660,19 @@ theorem crRho_P (R : Type) [CommRing R] (β : (Σ σ : T, Fin (r σ)) → Fin n)
   exact crIsMono_prod _ _ fun q _ => ⟨Finsupp.single _ 1, rfl⟩
 
 /- English proof (translation)
-Take `⟨E, hE⟩` from `crRho_P k β a hβ`. Establish `hEdiag : ∀ ℓ ∈ E.support, ℓ.2.2 = β ⟨ℓ.1, ℓ.2.1⟩`. Establish `h1` using `crRho_supported k β (crP r n k β a)`. Rewrite `h1` using `[hE, mem_supported, vars_monomial one_ne_zero]`. Introduce `ℓ hℓ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1 hℓ`. Establish `hcoeffE : (crP r n k β a).coeff E = 1`. Rewrite using `[← crRho_coeff k β _ E hEdiag, hE, coeff_monomial, if_pos rfl]`. Establish `hEeq : E = diagExp r n β a`. Use extensionality with `ℓ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, i, b⟩` from `ℓ`. Distinguish the cases in `hb : b = β ⟨σ, i⟩`. Substitute `hb` using the available equality. Establish `hd : diagExp r n β a (crDl β ⟨σ, i⟩) = a σ i` using `crDiagExp_dl β a ⟨σ, i⟩`. Establish `hw` using `crP_isWeightedHomogeneous_crW k β a ha σ i (show (crP r n k β a).coeff E ≠ 0 by rw [hcoeffE]; exact one_ne_zero)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[crW_weight]`. Express the relevant statement in the definitionally equal form `E ⟨σ, i, β ⟨σ, i⟩⟩ = diagExp r n β a (crDl β ⟨σ, i⟩)`. Rewrite using `[hd, ← hw, Finset.sum_eq_single (β ⟨σ, i⟩)]`. Introduce `b' _ hb'`. Assume the negation of the conclusion as `hne`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hb' (hEdiag _ (Finsupp.mem_support_iff.mpr hne))`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[crDiagExp_off]`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Conclude with `hb (hEdiag _ (Finsupp.mem_support_iff.mpr hne))`. Introduce `p hp`. Apply `hb` to reduce the goal to its premises. Take `⟨σ', i'⟩` from `p`. Take `⟨h1, h2⟩` from `Sigma.mk.inj hp`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Substitute `h1` using the available equality. Take `⟨rfl, rfl⟩` from `Prod.mk.inj (eq_of_heq h2)`. Both sides reduce to the same expression. Rewrite using `[← hEeq]`. Conclude with `hcoeffE`.
+A detailed English derivation is pending.
 -/
 theorem crP_coeff_diag (k : Type) [Field k] (β : (Σ σ : T, Fin (r σ)) → Fin n) (a : T → ℕ → ℕ)
     (hβ : Function.Injective β) (ha : Dom r a) : (crP r n k β a).coeff (diagExp r n β a) = 1 := by
@@ -726,9 +718,9 @@ end Part4
 variable (k : Type) [Field k] [CharZero k] (β : (Σ σ : T, Fin (r σ)) → Fin n) (a : T → ℕ → ℕ)
 
 /- English proof (translation)
-Unfold `HaO HHa`. Use `⟨?_, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[crP_map]`. Conclude with `⟨crP_mem_harmK k β a cc isX hcc hβ, crP_rowInv k β a, crP_rowDeg k β a ha⟩`. Rewrite using `[coeff_map, eq_intCast]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `intCast_mem O _`.
+A detailed English derivation is pending.
 -/
 theorem Pmin_mem (O : Subring k) (cc : T → T) (isX : T → Prop) (hcc : ∀ τ, isX τ → cc τ ≠ τ)
     (hβ : Function.Injective β) (ha : Dom r a) :
@@ -741,7 +733,7 @@ theorem Pmin_mem (O : Subring k) (cc : T → T) (isX : T → Prop) (hcc : ∀ τ
     exact intCast_mem O _
 
 /- English proof (translation)
-Rewrite using `[crP_map]`. Conclude with `crP_coeff_diag k β a hβ ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pmin_coeff_diag (hβ : Function.Injective β) (ha : Dom r a) :
     (MvPolynomial.map (Int.castRingHom k) (Pmin r n β a)).coeff (diagExp r n β a) = 1 := by
@@ -749,7 +741,7 @@ theorem Pmin_coeff_diag (hβ : Function.Injective β) (ha : Dom r a) :
   exact crP_coeff_diag k β a hβ ha
 
 /- English proof (translation)
-Rewrite `hm` using `[crP_map]`. Establish `h1` using `crP_mem_supported k β a`. Rewrite `h1` using `[mem_supported]`. Conclude with `h1 ((mem_vars ℓ).mpr ⟨m, hm, Finsupp.mem_support_iff.mpr hℓ⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pmin_good (m : Letter T r n →₀ ℕ) (hm : m ∈ (MvPolynomial.map (Int.castRingHom k) (Pmin r n β a)).support)
     (ℓ : Letter T r n) (hℓ : m ℓ ≠ 0) : ℓ ∈ GoodL r n β := by
@@ -759,17 +751,15 @@ theorem Pmin_good (m : Letter T r n →₀ ℕ) (hm : m ∈ (MvPolynomial.map (I
   exact h1 ((mem_vars ℓ).mpr ⟨m, hm, Finsupp.mem_support_iff.mpr hℓ⟩)
 
 /- English proof (translation)
-Rewrite `hm` using `[crP_map]`. Establish `hD : ∀ τ (kk : Fin (r τ)), IsWeightedHomogeneous (fun _ : Letter T r n => (1 : ℕ)) (crMinor r n k β τ kk).det ((kk : ℕ) + 1)`. Introduce `τ kk`. Apply `crMinor_hom` to reduce the goal to its premises. Introduce `π`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `h : Finsupp.weight (fun _ : Letter T r n => (1 : ℕ)) m = ∑ τ, ∑ kk : Fin (r τ), crExp r a τ kk • ((kk : ℕ) + 1)` using `crP_isWeightedHomogeneous k β a _ _ hD (MvPolynomial.mem_support_iff.mp hm)`. Establish `hsum : (∑ τ, ∑ kk : Fin (r τ), crExp r a τ kk • ((kk : ℕ) + 1)) = ∑ σ : T, ∑ i : Fin (r σ), a σ i`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hx : ∀ i : Fin (r τ), a τ i = ∑ kk : Fin (r τ), if (i : ℕ) < (kk : ℕ) + 1 then crExp r a τ kk else 0` using `fun i => (crExpSum a ha τ i).symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl fun i _ => hx i, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun kk _ => ?_` and prove the remaining obligations. Establish `hcard : (Finset.univ.filter fun i : Fin (r τ) => (i : ℕ) < (kk : ℕ) + 1).card = (kk : ℕ) + 1`. Rewrite using `[show (Finset.univ.filter fun i : Fin (r τ) => (i : ℕ) < (kk : ℕ) + 1) = Finset.Iic kk by`. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Finset.mem_filter, Finset.mem_Iic]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Fin.le_def.mpr (by have := h.2; omega)`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨Finset.mem_univ _, by have := Fin.le_def.mp h; omega⟩]`. Conclude with `Fin.card_Iic kk`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, hcard, smul_eq_mul, smul_eq_mul, mul_comm]`. Rewrite using `[← hsum, ← h]`. Rewrite using `[Finsupp.degree_apply, Finsupp.weight_apply, Finsupp.sum]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Pmin_degree (ha : Dom r a) (m : Letter T r n →₀ ℕ)
     (hm : m ∈ (MvPolynomial.map (Int.castRingHom k) (Pmin r n β a)).support) :
@@ -808,9 +798,9 @@ theorem Pmin_degree (ha : Dom r a) (m : Letter T r n →₀ ℕ)
   simp
 
 /- English proof (translation)
-Establish `h1 : (diagExp r n β a).degree = ∑ p : (Σ σ : T, Fin (r σ)), (Finsupp.single (crDl β p) (a p.1 p.2)).degree`. Unfold `diagExp`. Conclude with `map_sum Finsupp.degree _ _`. Rewrite using `[h1, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun σ _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Simplify using `only`. Rewrite using `[Finsupp.degree_apply]`. Distinguish the cases in `hc : a σ i = 0`. Simplify using `[hc]`. Rewrite using `[Finsupp.support_single_ne_zero _ hc, Finset.sum_singleton, Finsupp.single_eq_same]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagExp_degree : (diagExp r n β a).degree = ∑ σ : T, ∑ i : Fin (r σ), a σ i := by
   have h1 : (diagExp r n β a).degree =

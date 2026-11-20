@@ -7,9 +7,9 @@ open CategoryTheory Limits AlgebraicGeometry
 namespace LateralTheory.EtaleTrace.Cov
 
 /- English proof (translation)
-Introduce `k _ _ P r hr V hV`. Use `hr` as an intermediate fact. Establish `: JacobsonSpace P` using `LocallyOfFiniteType.jacobsonSpace r`. Take `⟨x, hxV, hxc⟩` from `nonempty_inter_closedPoints hV V.isOpen.isLocallyClosed`. Use `⟨⟨pointOfClosedPoint r x hxc, pointOfClosedPoint_comp r x hxc⟩, fun a => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `pointOfClosedPoint_apply r x hxc a`. Use `show (pointOfClosedPoint r x hxc) a ∈ V`. Rewrite using `[h]`. Conclude with `hxV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RatPtIn_of : RatPtIn := by
   intro k _ _ P r hr V hV

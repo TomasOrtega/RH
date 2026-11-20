@@ -10,7 +10,7 @@ open GlobalTheory.ZM
 namespace GlobalTheory.CoverGlue
 
 /- English proof (translation)
-Set `C : X.OpenCover` to `Scheme.Cover.mkOfCovers I Z ψ (fun x => by simpa using hc x) hψ`. Use `⟨C.glueMorphisms f fun i j => hf i j _ _ _ pullback.condition, fun i => C.ι_glueMorphisms _ _ i, fun F hF => C.hom_ext _ _ fun i => (hF i).trans (C.ι_glueMorphisms f _ i).symm⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem existsUnique_hom {X Y : Scheme.{0}} {I : Type} {Z : I → Scheme.{0}} (ψ : ∀ i, Z i ⟶ X)
     (hψ : ∀ i, IsOpenImmersion (ψ i)) (hc : ∀ x : X, ∃ i, x ∈ Set.range (ψ i)) (f : ∀ i, Z i ⟶ Y)
@@ -21,7 +21,7 @@ theorem existsUnique_hom {X Y : Scheme.{0}} {I : Type} {Z : I → Scheme.{0}} (�
     fun F hF => C.hom_ext _ _ fun i => (hF i).trans (C.ι_glueMorphisms f _ i).symm⟩
 
 /- English proof (translation)
-The claim follows from `(existsUnique_hom ψ hψ hc (fun i => ψ i ≫ F') fun _ _ _ _ _ e => by rw [← Category.assoc, e, Category.assoc]).unique h fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext {X Y : Scheme.{0}} {I : Type} {Z : I → Scheme.{0}} (ψ : ∀ i, Z i ⟶ X)
     (hψ : ∀ i, IsOpenImmersion (ψ i)) (hc : ∀ x : X, ∃ i, x ∈ Set.range (ψ i)) {F F' : X ⟶ Y}
@@ -30,7 +30,7 @@ theorem hom_ext {X Y : Scheme.{0}} {I : Type} {Z : I → Scheme.{0}} (ψ : ∀ i
     rw [← Category.assoc, e, Category.assoc]).unique h fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `(existsUnique_hom ψ hψ hc f fun i j _ x y e => by rw [← (hB i j).lift_fst x y e, Category.assoc, hf, ← Category.assoc, (hB i j).lift_snd]).exists`.
+A detailed English derivation is pending.
 -/
 theorem exists_hom {X Y : Scheme.{0}} {I : Type} {Z : I → Scheme.{0}} (ψ : ∀ i, Z i ⟶ X)
     (hψ : ∀ i, IsOpenImmersion (ψ i)) (hc : ∀ x : X, ∃ i, x ∈ Set.range (ψ i)) (f : ∀ i, Z i ⟶ Y)
@@ -43,22 +43,22 @@ theorem exists_hom {X Y : Scheme.{0}} {I : Type} {Z : I → Scheme.{0}} (ψ : �
 variable {S : Scheme.{0}} {I : Type} {U : I → S.Opens}
 
 /- English proof (translation)
-The claim follows from `TopologicalSpace.Opens.mem_iSup.1 (show s ∈ iSup U by rw [hU]; trivial)`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem (hU : iSup U = ⊤) (s : S) : ∃ i, s ∈ U i :=
   TopologicalSpace.Opens.mem_iSup.1 (show s ∈ iSup U by rw [hU]; trivial)
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @IsOpenImmersion) h.flip inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isOpenImmersion {X Z : Scheme.{0}} {V : S.Opens} {p : X ⟶ S} {q : Z ⟶ V.toScheme} {ψ : Z ⟶ X}
     (h : IsPullback ψ q p V.ι) : IsOpenImmersion ψ :=
   MorphismProperty.of_isPullback (P := @IsOpenImmersion) h.flip inferInstance
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Rewrite using `[← Scheme.Hom.comp_apply, h.w, Scheme.Hom.comp_apply]`. Conclude with `(q z).2`. Introduce `hx`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, -⟩` from `Scheme.exists_preimage_of_isPullback h x ⟨p x, hx⟩ rfl`. Conclude with `⟨z, hz⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range {X Z : Scheme.{0}} {V : S.Opens} {p : X ⟶ S} {q : Z ⟶ V.toScheme} {ψ : Z ⟶ X}
     (h : IsPullback ψ q p V.ι) (x : X) : x ∈ Set.range ψ ↔ p x ∈ V := by
@@ -71,14 +71,14 @@ theorem mem_range {X Z : Scheme.{0}} {V : S.Opens} {p : X ⟶ S} {q : Z ⟶ V.to
     exact ⟨z, hz⟩
 
 /- English proof (translation)
-The claim follows from `(exists_mem hU (p x)).imp fun i hi => (mem_range (h i) x).2 hi`.
+A detailed English derivation is pending.
 -/
 theorem covers (hU : iSup U = ⊤) {X : Scheme.{0}} {Z : I → Scheme.{0}} {p : X ⟶ S} {q : ∀ i, Z i ⟶ (U i).toScheme}
     {ψ : ∀ i, Z i ⟶ X} (h : ∀ i, IsPullback (ψ i) (q i) p (U i).ι) (x : X) : ∃ i, x ∈ Set.range (ψ i) :=
   (exists_mem hU (p x)).imp fun i hi => (mem_range (h i) x).2 hi
 
 /- English proof (translation)
-Use `ext1`. Use `hom_ext (fun i => (T.hom ⁻¹ᵁ U i).ι) (fun _ => inferInstance) (covers hU fun i => (isPullback_morphismRestrict T.hom (U i)).flip) fun i => ?_` and prove the remaining obligations. Conclude with `congrArg (fun z => z.left) (h i (Over.mk (T.hom ∣_ U i)) (Over.homMk (T.hom ⁻¹ᵁ U i).ι (morphismRestrict_ι _ _).symm))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem over_ext (hU : iSup U = ⊤) {T A : Over S} {f g : T ⟶ A}
     (h : ∀ i (T' : Over (U i).toScheme) (r : Over.mk (T'.hom ≫ (U i).ι) ⟶ T), r ≫ f = r ≫ g) : f = g := by
@@ -89,7 +89,7 @@ theorem over_ext (hU : iSup U = ⊤) {T A : Over S} {f g : T ⟶ A}
     (Over.homMk (T.hom ⁻¹ᵁ U i).ι (morphismRestrict_ι _ _).symm))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Over.homMk (h.lift x₀.left T.hom (Over.w x₀)) (h.lift_snd _ _ _), (h.lift_fst _ _ _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift {S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {G : Over S'} {ψ : G.left ⟶ A.left}
     (h : IsPullback ψ G.hom A.hom f) {T : Over S'} (x₀ : Over.mk (T.hom ≫ f) ⟶ A) :
@@ -97,7 +97,7 @@ theorem exists_lift {S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {G : Over S'} 
   ⟨Over.homMk (h.lift x₀.left T.hom (Over.w x₀)) (h.lift_snd _ _ _), (h.lift_fst _ _ _).symm⟩
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (h.hom_ext e ((Over.w x).trans (Over.w y).symm))`.
+A detailed English derivation is pending.
 -/
 theorem lift_ext {S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {G : Over S'} {ψ : G.left ⟶ A.left}
     (h : IsPullback ψ G.hom A.hom f) {T : Over S'} {x y : T ⟶ G} (e : x.left ≫ ψ = y.left ≫ ψ) : x = y :=

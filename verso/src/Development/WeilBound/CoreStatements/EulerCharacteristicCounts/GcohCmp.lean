@@ -5,11 +5,11 @@ open CategoryTheory GroundTheory.ProfCoh ReciprocityTheory.Gal ValuativeRel
 namespace PositivityTheory.LocalTateOrthogonality.Gcoh
 
 /- English proof (translation)
-Introduce `G _ _ _ R _ M _ _ _ _ rho hrho`. Use `letI : Module (ULift.{0} ℤ) M := Module.compHom M (ULift.ringEquiv : ULift.{0} ℤ ≃+* ℤ).toRingHom`. Set `σ : Representation (ULift.{0} ℤ) G M` to `{ toFun := fun g => { toFun := rho g map_add' := map_add _ map_smul' := fun c m => map_zsmul (rho g) c.down m } map_one' := LinearMap.ext fun m => by`. Express the relevant statement in the definitionally equal form `rho 1 m = m`. Rewrite using `[map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use the proof step `map_mul' := fun g h => LinearMap.ext fun m => by`. Express the relevant statement in the definitionally equal form `rho (g * h) m = rho g (rho h m)`. Rewrite using `[map_mul]`. Use `rfl }`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Rep.of σ, ⟨fun a => ?_⟩, AddEquiv.refl M, fun g m => rfl⟩` and prove the remaining obligations. Establish `hc : Continuous fun g : G => rho g (a : M)` using `hrho.comp (continuous_id.prodMk continuous_const)`. Conclude with `(isOpen_discrete {(a : M)}).preimage hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gcRep : SgcRep := by
   intro G _ _ _ R _ M _ _ _ _ rho hrho
@@ -40,7 +40,7 @@ variable {k G : Type} [CommRing k] [Group G] [TopologicalSpace G] [IsTopological
 
 omit [IsTopologicalGroup G] in
 /- English proof (translation)
-The claim follows from `((IsLocallyConstant.iff_continuous f).2 hf).comp e`.
+A detailed English derivation is pending.
 -/
 theorem lc_of_cont {X : Type} [TopologicalSpace X] {f : X → M} (hf : Continuous f) :
     IsLocallyConstant fun s => e (f s) :=
@@ -48,7 +48,7 @@ theorem lc_of_cont {X : Type} [TopologicalSpace X] {f : X → M} (hf : Continuou
 
 omit [IsTopologicalGroup G] in
 /- English proof (translation)
-The claim follows from `(hf.comp e.symm).continuous`.
+A detailed English derivation is pending.
 -/
 theorem cont_of_lc {X : Type} [TopologicalSpace X] {f : X → A.V} (hf : IsLocallyConstant f) :
     Continuous fun s => e.symm (f s) :=
@@ -57,25 +57,23 @@ theorem cont_of_lc {X : Type} [TopologicalSpace X] {f : X → A.V} (hf : IsLocal
 end
 
 /- English proof (translation)
-Introduce `G _ _ _ R _ M _ _ _ _ rho A _ e he n`. Set `φ : Zn rho n →+ ((Fin n → G) → A)` to `AddMonoidHom.mk' (fun z s => e (z.1 s)) (fun z z' => funext fun s => map_add e _ _)`. Establish `hφ : ∀ z s, φ z s = e (z.1 s)` using `fun _ _ => rfl`. Take `⟨e', -⟩` from `core_quot A ((Bn rho n).comap (Zn rho n).subtype) n φ (fun z => exists_coc A n _ (lc_of_cont A e z.2.1) (by`. Establish `hz : dn rho n z.1 = 0` using `z.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(d_comp rho A e he n z.1).trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Rewrite using `[hz]`. Conclude with `map_zero e))`. Use the proof step `(fun x => by`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨fun s => e.symm (cochainOf A (cocycleι A n x) s), cont_of_lc A e (isLocallyConstant_cochainOf _), ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `d_comp rho A e he n fun s => e.symm (cochainOf A (cocycleι A n x) s)`. Simplify using `only [AddEquiv.apply_symm_apply] at h`. Rewrite `h` using `[d_cocycleι]`. Express the relevant statement in the definitionally equal form `dn rho n _ = 0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `s`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[← congrFun h s]`. Conclude with `(map_zero e).symm`. Use function extensionality and compare the values at `s`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(e.apply_symm_apply _).symm)`. Use the proof step `(fun z x hx => by`. Consider the cases of `n with`. Consider the case `zero`. Rewrite using `[pi_zero_eq_zero_iff, hx]`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `_ ↔ z.1 = 0`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `s`. Conclude with `e.map_eq_zero_iff.1 (congrFun h s)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use function extensionality and compare the values at `s`. Rewrite using `[hφ, h]`. Conclude with `map_zero e`. Consider the case `succ n`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[pi_succ_eq_zero_iff, hx]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, h⟩`. Use `⟨fun s => e.symm (w s), cont_of_lc A e hw, ?_⟩` and prove the remaining obligations. Establish `h'` using `d_comp rho A e he n fun s => e.symm (w s)`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AddEquiv.apply_symm_apply] at h'`. Use function extensionality and compare the values at `s`. Apply `e.injective` to reduce the goal to its premises. Conclude with `(congrFun h' s).symm.trans (congrFun h s)`. Introduce and unpack `⟨c, hc, h⟩`.
-
-Use `⟨fun s => e (c s), lc_of_cont A e hc, (d_comp rho A e he n c).trans ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Rewrite using `[h]`. Use the proof step `rfl)`. Conclude with `⟨e'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gcn : Sgcn := by
   intro G _ _ _ R _ M _ _ _ _ rho A _ e he n
@@ -133,15 +131,15 @@ theorem gcn : Sgcn := by
   exact ⟨e'⟩
 
 /- English proof (translation)
-Introduce `G _ _ _ R _ M _ _ _ _ rho A _ e he`. Set `φ : H0 rho →+ ((Fin 0 → G) → A)` to `AddMonoidHom.mk' (fun z _ => e z.1) (fun z z' => funext fun s => map_add e _ _)`. Establish `hex : ∀ z, ∃ x : cocycles A 0, cochainOf A (cocycleι A 0 x) = φ z` using `fun z => exists_coc A 0 _ (IsLocallyConstant.const _) (by`. Use `(d_comp rho A e he 0 fun _ => z.1).trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `s`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[dn_zero, z.2 (s 0), sub_self]`. Conclude with `map_zero e)`. Take `⟨f, hs, hf⟩` from `core_hom A 0 φ hex (fun x => by`. Use `⟨⟨e.symm (cochainOf A (cocycleι A 0 x) default), fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `d_comp rho A e he 0 fun s => e.symm (cochainOf A (cocycleι A 0 x) s)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [AddEquiv.apply_symm_apply] at h`. Rewrite `h` using `[d_cocycleι]`. Establish `h'` using `congrFun h (fun _ => g)`. Rewrite `h'` using `[dn_zero]`. Conclude with `sub_eq_zero.1 (e.map_eq_zero_iff.1 h'.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `s`. Rewrite using `[Subsingleton.elim s default]`. Conclude with `(e.apply_symm_apply _).symm)`. Use `⟨AddEquiv.ofBijective f ⟨?_, hs⟩, fun m x h => hf m x (funext h)⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `z hz`. Take `⟨x, hx⟩` from `hex z`. Rewrite `hz` using `[hf z x hx, pi_zero_eq_zero_iff, hx]`. Conclude with `Subtype.ext (e.map_eq_zero_iff.1 (congrFun hz default))`.
+A detailed English derivation is pending.
 -/
 theorem gc0 : Sgc0 := by
   intro G _ _ _ R _ M _ _ _ _ rho A _ e he
@@ -172,23 +170,21 @@ theorem gc0 : Sgc0 := by
   exact Subtype.ext (e.map_eq_zero_iff.1 (congrFun hz default))
 
 /- English proof (translation)
-Introduce `G _ _ _ R _ M _ _ _ _ rho A _ e he`. Set `φ : Z1 rho →+ ((Fin 1 → G) → A)` to `AddMonoidHom.mk' (fun z s => e (z.1 (s 0))) (fun z z' => funext fun s => map_add e _ _)`. Establish `hex : ∀ z, ∃ x : cocycles A 1, cochainOf A (cocycleι A 1 x) = φ z` using `fun z => exists_coc A 1 _ (lc_of_cont A e (z.2.1.comp (continuous_apply 0))) (by`. Use `(d_comp rho A e he 1 fun s => z.1 (s 0)).trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `s`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[dn_one, z.2.2 (s 0) (s 1)]`. Rewrite using `[show ∀ a b : M, b - (a + b) + a = 0 from fun a b => by abel]`. Conclude with `map_zero e)`. Establish `hv : ∀ s : Fin 1 → G, s = fun _ => s 0` using `fun s => funext fun i => by`. Rewrite using `[Subsingleton.elim i 0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e', he'⟩` from `core_quot A ((B1 rho).comap (Z1 rho).subtype) 1 φ hex (fun x => by`. Establish `hx : cochainOf A (cocycleι A 1 x) = fun s => e (e.symm (cochainOf A (cocycleι A 1 x) fun _ => s 0))`. Use function extensionality and compare the values at `s`. Rewrite using `[e.apply_symm_apply, ← hv]`. Use `⟨⟨fun g => e.symm (cochainOf A (cocycleι A 1 x) fun _ => g), (cont_of_lc A e (isLocallyConstant_cochainOf _)).comp (continuous_pi fun _ => continuous_id), fun g g' => ?_⟩, hx⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `d_comp rho A e he 1 fun s => e.symm (cochainOf A (cocycleι A 1 x) fun _ => s 0)`. Rewrite `h` using `[← hx, d_cocycleι]`. Establish `h'` using `congrFun h ![g, g']`. Rewrite `h'` using `[dn_one rho (fun g => e.symm (cochainOf A (cocycleι A 1 x) fun _ => g))]`. Establish `h2` using `e.map_eq_zero_iff.1 h'.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one] at h2`. Rewrite using `[← sub_eq_zero, ← neg_eq_zero, ← h2]`. Use the proof step `abel)`. Use the proof step `(fun z x hx => by`. Rewrite using `[pi_succ_eq_zero_iff, hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, h⟩`. Use `⟨e.symm (w default), ?_⟩` and prove the remaining obligations. Establish `h'` using `d_comp rho A e he 0 fun s => e.symm (w s)`. Simplify using `only [AddEquiv.apply_symm_apply] at h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Apply `e.injective` to reduce the goal to its premises. Establish `h2` using `(congrFun h' fun _ => g).symm.trans (congrFun h fun _ => g)`. Rewrite `h2` using `[dn_zero]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨m, h⟩`. Use `⟨fun _ => e m, IsLocallyConstant.const _, (d_comp rho A e he 0 fun _ => m).trans ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Rewrite using `[dn_zero]`. Conclude with `congrArg e (congrFun h (s 0)))`.
-
-Use `⟨e', fun z => ?_, fun z x h => he' z x (funext h)⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hex z`. Conclude with `⟨x, congrFun hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gc1 : Sgc1 := by
   intro G _ _ _ R _ M _ _ _ _ rho A _ e he
@@ -242,23 +238,21 @@ theorem gc1 : Sgc1 := by
   exact ⟨x, congrFun hx⟩
 
 /- English proof (translation)
-Introduce `G _ _ _ R _ M _ _ _ _ rho A _ e he`. Set `φ : Z2 rho →+ ((Fin 2 → G) → A)` to `AddMonoidHom.mk' (fun z s => e (z.1 (s 0, s 1))) (fun z z' => funext fun s => map_add e _ _)`. Establish `hex : ∀ z, ∃ x : cocycles A 2, cochainOf A (cocycleι A 2 x) = φ z` using `fun z => exists_coc A 2 _ (lc_of_cont A e (z.2.1.comp ((continuous_apply 0).prodMk (continuous_apply 1)))) (by`. Use `(d_comp rho A e he 2 fun s => z.1 (s 0, s 1)).trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `s`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[dn_two, z.2.2 (s 0) (s 1) (s 2)]`. Conclude with `map_zero e)`. Establish `hv : ∀ s : Fin 1 → G, s = fun _ => s 0` using `fun s => funext fun i => by`. Rewrite using `[Subsingleton.elim i 0]`. Apply the tactic sequence `have hv2 : ∀ s : Fin 2 → G, s = ![s 0, s 1] := fun s => funext fun i => by fin_cases i <;> rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨e', he'⟩` from `core_quot A ((B2 rho).comap (Z2 rho).subtype) 2 φ hex (fun x => by`. Establish `hx : cochainOf A (cocycleι A 2 x) = fun s => e (e.symm (cochainOf A (cocycleι A 2 x) ![s 0, s 1]))`. Use function extensionality and compare the values at `s`. Rewrite using `[e.apply_symm_apply, ← hv2]`. Use `⟨⟨fun p => e.symm (cochainOf A (cocycleι A 2 x) ![p.1, p.2]), (cont_of_lc A e (isLocallyConstant_cochainOf _)).comp (continuous_pi fun i => by fin_cases i` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `continuous_fst`. Conclude with `continuous_snd), fun g g' g'' => ?_⟩, hx⟩`. Establish `h` using `d_comp rho A e he 2 fun s => e.symm (cochainOf A (cocycleι A 2 x) ![s 0, s 1])`. Rewrite `h` using `[← hx, d_cocycleι]`. Establish `h'` using `congrFun h ![g, g', g'']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite `h'` using `[dn_two rho (fun p => e.symm (cochainOf A (cocycleι A 2 x) ![p.1, p.2]))]`. Conclude with `e.map_eq_zero_iff.1 h'.symm)`. Use the proof step `(fun z x hx => by`. Rewrite using `[pi_succ_eq_zero_iff, hx]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨w, hw, h⟩`. Use `⟨fun g => e.symm (w fun _ => g), (cont_of_lc A e hw).comp (continuous_pi fun _ => continuous_id), ?_⟩` and prove the remaining obligations. Establish `hw' : w = fun s => e (e.symm (w fun _ => s 0))`. Use function extensionality and compare the values at `s`. Rewrite using `[e.apply_symm_apply, ← hv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h'` using `d_comp rho A e he 1 fun s => e.symm (w fun _ => s 0)`. Rewrite `h'` using `[← hw']`. Use function extensionality and compare the values at `p`. Apply `e.injective` to reduce the goal to its premises. Establish `h2` using `(congrFun h' ![p.1, p.2]).symm.trans (congrFun h ![p.1, p.2])`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[dn_one rho (fun g => e.symm (w fun _ => g))]`. Conclude with `h2`. Introduce and unpack `⟨c, hc, h⟩`. Use `⟨fun s => e (c (s 0)), lc_of_cont A e (Continuous.comp hc (continuous_apply 0)), (d_comp rho A e he 1 fun s => c (s 0)).trans ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`.
-
-Rewrite using `[dn_one]`. Conclude with `congrArg e (congrFun h (s 0, s 1)))`. Use `⟨e', fun z => ?_, fun z x h => he' z x (funext h)⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hex z`. Conclude with `⟨x, congrFun hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gc2 : Sgc2 := by
   intro G _ _ _ R _ M _ _ _ _ rho A _ e he

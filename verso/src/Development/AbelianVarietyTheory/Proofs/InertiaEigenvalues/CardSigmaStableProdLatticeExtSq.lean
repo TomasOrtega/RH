@@ -13,15 +13,15 @@ variable {R Q : Type} [CommRing R] [AddCommGroup Q] [Module R Q] (τ : Q →+ Q)
 include hττ hθ hu hinv
 
 /- English proof (translation)
-Rewrite using `[hu, map_sub, hττ, ← smul_neg, neg_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem half_snd (f : Q) : τ (u • (f - τ f)) = u • (f - τ f) := by
   rw [hu, map_sub, hττ, ← smul_neg, neg_sub]
 
 /- English proof (translation)
-Establish `h2 : (θ - θ') • (u • (f - τ f)) = f - τ f` using `by rw [smul_comm, hinv]`. Rewrite using `[map_sub, hθ, half_snd τ hττ θ θ' u hθ hu hinv f]`. Rewrite `h2` using `[sub_smul]`. Generalize the expression as in `u • (f - τ f) = b at h2 ⊢`. Rewrite using `[← sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Establish `: τ f - θ' • b - (f - θ • b) = (θ • b - θ' • b) - (f - τ f)` using `by abel`. Rewrite using `[this, h2, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem half_fst (f : Q) : τ (f - θ • (u • (f - τ f))) = f - θ • (u • (f - τ f)) := by
   have h2 : (θ - θ') • (u • (f - τ f)) = f - τ f := by rw [smul_comm, hinv]
@@ -33,7 +33,7 @@ theorem half_fst (f : Q) : τ (f - θ • (u • (f - τ f))) = f - θ • (u �
   rw [this, h2, sub_self]
 
 /- English proof (translation)
-Rewrite using `[map_add, hθ, ha, hb]`. Establish `: a + θ • b - (a + θ' • b) = (θ - θ') • b` using `by rw [sub_smul]; abel`. Rewrite using `[this, hinv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem half_left (a b : Q) (ha : τ a = a) (hb : τ b = b) :
     u • ((a + θ • b) - τ (a + θ • b)) = b := by
@@ -62,7 +62,7 @@ def Ext (M : Submodule O (A₁ × A₂)) : Prop :=
 variable {M₁ M₂}
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `b`. Rewrite `hb` using `[← hM.2, Submodule.mem_map]`. Take `⟨y, hy, e⟩` from `hb`. Conclude with `⟨y.1, by simpa [← e] using hy⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Ext.exists {M : Submodule O (A₁ × A₂)} (hM : Ext M₁ M₂ M) (b : M₂) : ∃ x, (x, (b : A₂)) ∈ M := by
   obtain ⟨b, hb⟩ := b
@@ -71,7 +71,7 @@ theorem Ext.exists {M : Submodule O (A₁ × A₂)} (hM : Ext M₁ M₂ M) (b : 
   exact ⟨y.1, by simpa [← e] using hy⟩
 
 /- English proof (translation)
-Rewrite using `[← hM.1, Submodule.mem_comap]`. Use `M.sub_mem h h'` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Ext.sub_mem {M : Submodule O (A₁ × A₂)} (hM : Ext M₁ M₂ M) {x x' : A₁} {b : A₂}
     (h : (x, b) ∈ M) (h' : (x', b) ∈ M) : x - x' ∈ M₁ := by
@@ -83,7 +83,7 @@ def Ext.fn {M : Submodule O (A₁ × A₂)} (hM : Ext M₁ M₂ M) (b : M₂) : 
   Submodule.Quotient.mk (Classical.choose (hM.exists b))
 
 /- English proof (translation)
-Unfold `Ext.fn`. Rewrite using `[Submodule.Quotient.eq]`. Conclude with `hM.sub_mem (Classical.choose_spec (hM.exists b)) h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ext.fn_eq {M : Submodule O (A₁ × A₂)} (hM : Ext M₁ M₂ M) {x : A₁} (b : M₂)
     (h : (x, (b : A₂)) ∈ M) : hM.fn b = Submodule.Quotient.mk x := by
@@ -104,17 +104,17 @@ def Ext.lin {M : Submodule O (A₁ × A₂)} (hM : Ext M₁ M₂ M) : M₂ →�
     simp
 
 /- English proof (translation)
-The claim follows from `hM.fn_eq b h`.
+A detailed English derivation is pending.
 -/
 theorem Ext.lin_eq {M : Submodule O (A₁ × A₂)} (hM : Ext M₁ M₂ M) {x : A₁} (b : M₂)
     (h : (x, (b : A₂)) ∈ M) : hM.lin b = Submodule.Quotient.mk x := hM.fn_eq b h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `h2 : y.2 ∈ M₂` using `by rw [← hM.2]; exact ⟨y, hy, rfl⟩`. Conclude with `⟨h2, (hM.lin_eq ⟨y.2, h2⟩ hy).symm⟩`. Introduce and unpack `⟨h2, e⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨x, hx⟩` from `hM.exists ⟨y.2, h2⟩`. Rewrite `e` using `[hM.lin_eq _ hx, Submodule.Quotient.eq]`. Establish `h0 : (y.1 - x, (0 : A₂)) ∈ M`. Establish `: LinearMap.inl O A₁ A₂ (y.1 - x) ∈ M`. Rewrite using `[← Submodule.mem_comap, hM.1]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`. Simplify using `using this`. Use `M.add_mem hx h0` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Ext.mem_iff {M : Submodule O (A₁ × A₂)} (hM : Ext M₁ M₂ M) (y : A₁ × A₂) :
     y ∈ M ↔ ∃ h : y.2 ∈ M₂, Submodule.Quotient.mk y.1 = hM.lin ⟨y.2, h⟩ := by
@@ -149,21 +149,21 @@ def graphSub (f : M₂ →ₗ[O] A₁ ⧸ M₁) : Submodule O (A₁ × A₂) whe
     rw [map_smul, ← ea]; simp
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_graphSub (f : M₂ →ₗ[O] A₁ ⧸ M₁) (y : A₁ × A₂) :
     y ∈ graphSub f ↔ ∃ h : y.2 ∈ M₂, Submodule.Quotient.mk y.1 = f ⟨y.2, h⟩ := Iff.rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use extensionality with `x`. Simplify using `only [Submodule.mem_comap, LinearMap.inl_apply, mem_graphSub]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, e⟩`.
+Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `: f ⟨0, h⟩ = 0`. Establish `: (⟨0, h⟩ : M₂) = 0` using `rfl`. Rewrite using `[this, map_zero]`. Rewrite `e` using `[this, Submodule.Quotient.mk_eq_zero]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Use `⟨M₂.zero_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[(Submodule.Quotient.mk_eq_zero M₁).2 hx]`. Establish `: (⟨0, M₂.zero_mem⟩ : M₂) = 0` using `rfl`. Rewrite using `[this, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `b`. Simplify using `only [Submodule.mem_map, LinearMap.snd_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨h, _⟩, rfl⟩`. Conclude with `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hb`. Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective M₁ (f ⟨b, hb⟩)`. Conclude with `⟨(x, b), ⟨hb, hx⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem graphSub_ext (f : M₂ →ₗ[O] A₁ ⧸ M₁) : Ext M₁ M₂ (graphSub f) := by
   constructor
@@ -219,11 +219,11 @@ def compat (g₁ : A₁ →ₗ[O] A₁) (g₂ : A₂ →ₗ[O] A₂) (hg₁ : M�
     simp only [LinearMap.smul_apply, hf b, map_smul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h b`. Take `⟨x, hx⟩` from `hM.exists b`. Rewrite using `[hM.lin_eq b hx, Submodule.mapQ_apply]`. Conclude with `hM.lin_eq ⟨g₂ b, hg₂ b.2⟩ (h _ hx)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h y hy`. Take `⟨h2, e⟩` from `(hM.mem_iff y).1 hy`. Rewrite using `[hM.mem_iff]`. Use `⟨hg₂ h2, ?_⟩` and prove the remaining obligations. Use `h ⟨y.2, h2⟩` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only at this`. Rewrite using `[this, ← e, Submodule.mapQ_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gstab_iff (g₁ : A₁ →ₗ[O] A₁) (g₂ : A₂ →ₗ[O] A₂) (hg₁ : M₁ ≤ M₁.comap g₁)
     (hg₂ : M₂ ≤ M₂.comap g₂) {M : Submodule O (A₁ × A₂)} (hM : Ext M₁ M₂ M) :
@@ -268,16 +268,16 @@ def twistHom : (M₂ →ₗ[O] A₁ ⧸ M₁) →+ (M₂ →ₗ[O] A₁ ⧸ M₁
   map_add' f f' := by ext b; simp [twist_apply]
 
 /- English proof (translation)
-Use extensionality with `b`. Simplify using `[twist_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem twist_smul (r : O) (f : M₂ →ₗ[O] A₁ ⧸ M₁) :
     twist hcc σ₁ σ₂ hs₁ hs₂ (r • f) = cO r • twist hcc σ₁ σ₂ hs₁ hs₂ f := by
   ext b; simp [twist_apply]
 
 /- English proof (translation)
-Use extensionality with `b`. Rewrite using `[twist_apply, twist_apply]`. Establish `hb : (⟨σ₂ (σ₂ b), hs₂ (hs₂ b.2)⟩ : M₂) = b` using `Subtype.ext (hσ₂ _)`. Simplify using `only [hb]`. Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective M₁ (f b)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hx, Submodule.mapQ_apply, Submodule.mapQ_apply, hσ₁]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twist_twist (hσ₁ : ∀ x, σ₁ (σ₁ x) = x) (hσ₂ : ∀ x, σ₂ (σ₂ x) = x)
     (f : M₂ →ₗ[O] A₁ ⧸ M₁) : twist hcc σ₁ σ₂ hs₁ hs₂ (twist hcc σ₁ σ₂ hs₁ hs₂ f) = f := by
@@ -289,9 +289,9 @@ theorem twist_twist (hσ₁ : ∀ x, σ₁ (σ₁ x) = x) (hσ₂ : ∀ x, σ₂
   rw [← hx, Submodule.mapQ_apply, Submodule.mapQ_apply, hσ₁]
 
 /- English proof (translation)
-Introduce `b`. Rewrite using `[twist_apply, twist_apply]`. Establish `hb : (⟨σ₂ (g₂ b), hs₂ (hg₂ b.2)⟩ : M₂) = ⟨g₂ (σ₂ b), hg₂ (hs₂ b.2)⟩` using `Subtype.ext (hc₂ _)`. Simplify using `only [hb]`. Rewrite using `[hf ⟨σ₂ b, hs₂ b.2⟩]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective M₁ (f ⟨σ₂ b, hs₂ b.2⟩)`. Rewrite using `[← hx]`. Simplify using `only [Submodule.mapQ_apply, hc₁]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem twist_mem (g₁ : A₁ →ₗ[O] A₁) (g₂ : A₂ →ₗ[O] A₂) (hg₁ : M₁ ≤ M₁.comap g₁)
     (hg₂ : M₂ ≤ M₂.comap g₂) (hc₁ : ∀ x, σ₁ (g₁ x) = g₁ (σ₁ x)) (hc₂ : ∀ x, σ₂ (g₂ x) = g₂ (σ₂ x))
@@ -307,13 +307,13 @@ theorem twist_mem (g₁ : A₁ →ₗ[O] A₁) (g₂ : A₂ →ₗ[O] A₂) (hg�
   simp only [Submodule.mapQ_apply, hc₁]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `b`. Rewrite using `[twist_apply]`. Take `⟨x, hx⟩` from `hM.exists ⟨σ₂ b, hs₂ b.2⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hM.lin_eq _ hx, Submodule.mapQ_apply]`. Use `h _ hx` as an intermediate fact. Simplify using `only [hσ₂] at this`. Conclude with `(hM.lin_eq b this).symm`. Introduce `h y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h2, e⟩` from `(hM.mem_iff y).1 hy`. Rewrite using `[hM.mem_iff]`. Use `⟨hs₂ h2, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← h, twist_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : (⟨σ₂ (σ₂ y.2), hs₂ (hs₂ h2)⟩ : M₂) = ⟨y.2, h2⟩` using `Subtype.ext (hσ₂ _)`. Simplify using `only [hb]`. Rewrite using `[← e, Submodule.mapQ_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sstab_iff (hσ₂ : ∀ x, σ₂ (σ₂ x) = x) {M : Submodule O (A₁ × A₂)} (hM : Ext M₁ M₂ M) :
     (∀ y ∈ M, (σ₁ y.1, σ₂ y.2) ∈ M) ↔ twist hcc σ₁ σ₂ hs₁ hs₂ hM.lin = hM.lin := by
@@ -343,9 +343,9 @@ variable {O : Type} [CommRing O] {cO : O →+* O} {A₁ A₂ : Type} [AddCommGro
   [AddCommGroup A₂] [Module O A₂] {M₁ : Submodule O A₁} {M₂ : Submodule O A₂}
 
 /- English proof (translation)
-Use `set u : O := ((hδ.unit⁻¹ : Oˣ) : O)`. Establish `hu1 : u * (θ - cO θ) = 1` using `hδ.val_inv_mul`. Establish `h1 : cO u * (-(θ - cO θ)) = 1`. Establish `: cO (θ - cO θ) = -(θ - cO θ)` using `by rw [map_sub, hcc, neg_sub]`. Rewrite using `[← this, ← map_mul, hu1, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-u) * h1 + (-cO u) * hu1`.
+A detailed English derivation is pending.
 -/
 theorem conj_inv_eq_neg (hcc : ∀ o, cO (cO o) = o) (θ : O) (hδ : IsUnit (θ - cO θ)) :
     cO ((hδ.unit⁻¹ : Oˣ) : O) = -((hδ.unit⁻¹ : Oˣ) : O) := by
@@ -357,11 +357,9 @@ theorem conj_inv_eq_neg (hcc : ∀ o, cO (cO o) = o) (θ : O) (hδ : IsUnit (θ 
   linear_combination (-u) * h1 + (-cO u) * hu1
 
 /- English proof (translation)
-Use `set Q := compat g₁ g₂ hg₁ hg₂`. Set `τQ : Q →+ Q` to `{ toFun := fun f => ⟨twist hcc σ₁ σ₂ hs₁ hs₂ f.1, twist_mem hcc σ₁ σ₂ hs₁ hs₂ g₁ g₂ hg₁ hg₂ hc₁ hc₂ f.2⟩ map_zero' := Subtype.ext (map_zero (twistHom hcc σ₁ σ₂ hs₁ hs₂)) map_add' := fun f f' => Subtype.ext (map_add (twistHom hcc σ₁ σ₂ hs₁ hs₂) f.1 f'.1) }`. Establish `hτ : ∀ f : Q, ((τQ f : Q) : M₂ →ₗ[O] A₁ ⧸ M₁) = twist hcc σ₁ σ₂ hs₁ hs₂ f.1` using `fun _ => rfl`. Use `set u : O := ((hδ.unit⁻¹ : Oˣ) : O)`. Establish `hcu` using `conj_inv_eq_neg hcc θ hδ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `halfEquiv τQ (fun f => Subtype.ext (by rw [hτ, hτ, twist_twist hcc σ₁ σ₂ hs₁ hs₂ hσ₁ hσ₂])) θ (cO θ) u (fun f => Subtype.ext (by rw [hτ, Submodule.coe_smul, Submodule.coe_smul, hτ, twist_smul])) (fun f => Subtype.ext (by`. Rewrite using `[hτ, Submodule.coe_smul, Submodule.coe_neg, Submodule.coe_smul, hτ, twist_smul, hcu, neg_smul]))`. Use the proof step `(fun f => by rw [smul_smul, hδ.val_inv_mul, one_smul])`. Establish `e1 : {M : Submodule O (A₁ × A₂) // (∀ y ∈ M, (g₁ y.1, g₂ y.2) ∈ M) ∧ Ext M₁ M₂ M} ≃ Q` using `(Equiv.subtypeEquivRight (fun M => and_comm)).trans ((Equiv.subtypeSubtypeEquivSubtypeInter _ _).symm.trans (Equiv.subtypeEquiv extEquiv (fun M => gstab_iff g₁ g₂ hg₁ hg₂ M.2)))`. Establish `e2 : {M : Submodule O (A₁ × A₂) // ((∀ y ∈ M, (g₁ y.1, g₂ y.2) ∈ M) ∧ ∀ y ∈ M, (σ₁ y.1, σ₂ y.2) ∈ M) ∧ Ext M₁ M₂ M} ≃ {f : Q // τQ f = f}` using `(Equiv.subtypeEquivRight (fun M => and_comm)).trans ((Equiv.subtypeSubtypeEquivSubtypeInter _ _).symm.trans ((Equiv.subtypeEquiv extEquiv (fun M => and_congr (gstab_iff g₁ g₂ hg₁ hg₂ M.2) (sstab_iff hcc σ₁ σ₂ hs₁ hs₂ hσ₂ M.2))).trans ((Equiv.subtypeSubtypeEquivSubtypeInter (· ∈ Q …`.
-
-Rewrite using `[Nat.card_congr e2, Nat.card_congr e1, sq, ← Nat.card_prod, Nat.card_congr e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_stable_sq (hcc : ∀ o, cO (cO o) = o) (θ : O) (hδ : IsUnit (θ - cO θ))
     (g₁ : A₁ →ₗ[O] A₁) (g₂ : A₂ →ₗ[O] A₂) (σ₁ : A₁ →ₛₗ[cO] A₁) (σ₂ : A₂ →ₛₗ[cO] A₂)
@@ -406,7 +404,7 @@ open GlobalTheory.UnitLemma
 def conjFun (K : UQ) (o : K.O) : K.O := Classical.choose (K.c_int o)
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (K.c_int o)).symm`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_conjFun (K : UQ) (o : K.O) :
     algebraMap K.O K.E (conjFun K o) = K.c (algebraMap K.O K.E o) :=
@@ -420,13 +418,13 @@ def conjO (K : UQ) : K.O →+* K.O where
   map_add' a b := IsFractionRing.injective K.O K.E (by simp only [algebraMap_conjFun, map_add])
 
 /- English proof (translation)
-The claim follows from `algebraMap_conjFun K o`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_conjO (K : UQ) (o : K.O) :
     algebraMap K.O K.E (conjO K o) = K.c (algebraMap K.O K.E o) := algebraMap_conjFun K o
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.injective K.O K.E (by rw [algebraMap_conjO, algebraMap_conjO, K.c_c])`.
+A detailed English derivation is pending.
 -/
 theorem conjO_conjO (K : UQ) (o : K.O) : conjO K (conjO K o) = o :=
   IsFractionRing.injective K.O K.E (by rw [algebraMap_conjO, algebraMap_conjO, K.c_c])
@@ -444,11 +442,9 @@ Both sides reduce to the same expression.
 theorem sigmaSL_apply {K : UQ} (B : InvAlg K) (a : B.A) : sigmaSL B a = B.σ a := rfl
 
 /- English proof (translation)
-Introduce `K B₁ B₂ h1 h2 M₁ M₂ hM₁ hM₂`. Take `⟨θ, θ', hθ, hδ⟩` from `K.c_res`. Establish `hθ' : conjO K θ = θ'` using `IsFractionRing.injective K.O K.E (by rw [algebraMap_conjO, hθ])`. Establish `hu : IsUnit (θ - conjO K θ)`. Rewrite using `[hθ']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `hδ ((IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 h))`. Establish `hmul : ∀ y : B₁.A × B₂.A, (B₁.g, B₂.g) * y = (LinearMap.mulLeft K.O B₁.g y.1, LinearMap.mulLeft K.O B₂.g y.2)` using `fun y => rfl`. Establish `key` using `card_stable_sq (conjO_conjO K) θ hu (LinearMap.mulLeft K.O B₁.g) (LinearMap.mulLeft K.O B₂.g) (sigmaSL B₁) (sigmaSL B₂) (M₁ := M₁) (M₂ := M₂) (fun x hx => by simpa using hM₁.2.1 x hx) (fun x hx => by simpa using hM₂.2.1 x hx) (fun x hx => hM₁.2.2 x hx) (fun x hx => hM₂.2.2 x hx) …`. Simplify using `only [hmul]`.
-
-Conclude with `key`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_sigma_stable_ext_sq : ∀ (K : UQ) (B₁ B₂ : InvAlg K), B₁.σ B₁.g = B₁.g → B₂.σ B₂.g = B₂.g →
     ∀ (M₁ : Submodule K.O B₁.A) (M₂ : Submodule K.O B₂.A), M₁ ∈ B₁.Lin → M₂ ∈ B₂.Lin →

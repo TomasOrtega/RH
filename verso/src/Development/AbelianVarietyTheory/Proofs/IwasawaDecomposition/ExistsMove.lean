@@ -17,7 +17,7 @@ open GlobalTheory.HeightCounting.SerMove GlobalTheory.HeightCounting.SideCopy Gl
 namespace GlobalTheory.HeightCounting.SerGlue
 
 /- English proof (translation)
-Substitute `hD` using the available equality. Conclude with `⟨ι, e, h.cp, h.jL, h.s2, h.lamG, h.Xv, h.qs, hp⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem copyAll_ex {D D' : D7} {N : TwNew D'} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0}
     (h : CopyN D N ι e) (hp : HEq D.naut.plGw D'.naut.plGw) {D'' : D7} (hD : D'' = N.toD7) :
@@ -26,16 +26,16 @@ theorem copyAll_ex {D D' : D7} {N : TwNew D'} {ι : D.what₂.LL →+* D'.what�
   exact ⟨ι, e, h.cp, h.jL, h.s2, h.lamG, h.Xv, h.qs, hp⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Consider the cases of `hf`. Conclude with `⟨HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem fr_same {A A' : Pre} (h : A' = A) {f : Top.Fr A} {f' : Top.Fr A'} (hf : HEq f' f) :
     HEq f.mu0 f'.mu0 ∧ HEq f.eta f'.eta ∧ HEq f.del f'.del ∧ HEq f.del' f'.del' := by
   subst h; cases hf; exact ⟨HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Consider the cases of `hs`. Use `heq_of_eq (funext fun v => ?_)` and prove the remaining obligations. Take `⟨u, hu⟩ : p v ∈ Set.range p'` from `by rw [r', ← r]; exact ⟨v, rfl⟩`. Establish `h1` using `hp' u`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[hu]`. Take `rfl : u = v` from `HeightOneSpectrum.ext (h1.symm.trans (hp v))`. Conclude with `hu.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem choice_heq {A A' : Pre} (h : A' = A)
     {p : HeightOneSpectrum (𝓞 (maximalRealSubfield A.host.E)) → HeightOneSpectrum (𝓞 A.host.E)}
@@ -56,7 +56,7 @@ variable {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B B' : Base} 
   {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'} {P : Pre2 K w} {P' : Pre2 K w'}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(hB (w.st x.o.Z) hO).1, GlobalTheory.HeightCounting.FirstFacts.vstd_of_over (w.st x.o.Z) hO, (hB (w.st x.o.Z) hO).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem bigHost_st (hO : K.Over B.toPre)
     (hB : ∀ X : Stages, K.Over X.B.toPre → Formalism.IndefR.Links.HostHyp X.toD7 ∧ 8 * X.toD7.R.f * X.toD7.R.r + 4 ≤ X.toD7.R.nV)
@@ -64,9 +64,9 @@ theorem bigHost_st (hO : K.Over B.toPre)
   ⟨(hB (w.st x.o.Z) hO).1, GlobalTheory.HeightCounting.FirstFacts.vstd_of_over (w.st x.o.Z) hO, (hB (w.st x.o.Z) hO).2⟩
 
 /- English proof (translation)
-Establish `hD : Dof x'' = N.toD7` using `by show (w'.st x''.o.Z).toD7 = N.toD7`. Rewrite using `[ho]`. Both sides reduce to the same expression. Take `⟨ι', e', h⟩` from `copyAll_ex hN hG.pl hD`. Take `⟨h1, h2, h3, h4⟩` from `fr_same hE.1 ((heq_of_eq w'.C_eq).trans (hf.trans (heq_of_eq w.C_eq).symm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, g'', hg, hg'', hX⟩` from `GlobalTheory.HeightCounting.SerMove.exists_geo_extN hExt x x''`. Establish `hO' : K.Over B.toPre` using `hE.1 ▸ hO`. Conclude with `⟨ι', e', h, ⟨(by with_unfolding_all exact (h1 :)), (by with_unfolding_all exact (h2 :)), (by with_unfolding_all exact (h3 :)), (by with_unfolding_all exact (h4 :))⟩, (by with_unfolding_all exact ((choice_heq hE.1 (p := (by with_unfolding_all exact (l.Pq :))) (p' := (by with_unfol …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_move (hKP : KPx B' f') (hF : Forced K B' T') (hS' : Start K B' f' T' w') (hO : K.Over B'.toPre)
     (hB : ∀ X : Stages, K.Over X.B.toPre → Formalism.IndefR.Links.HostHyp X.toD7 ∧ 8 * X.toD7.R.f * X.toD7.R.r + 4 ≤ X.toD7.R.nV)

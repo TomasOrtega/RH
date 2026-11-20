@@ -14,7 +14,7 @@ section consts
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-The claim follows from `| [] => Or.inl rfl | X :: v => by right funext g simp only [B.Rw, List.foldr_cons] rcases rw_const a v with h | h · simp only [B.Rw] at h rw [h]; simp [RdV] · simp only [B.Rw] at h rw [h]; simp [RdV]`.
+A detailed English derivation is pending.
 -/
 theorem rw_const (a : E) : ∀ v : List (B.Mat k r),
     B.Rw v (fun _ => a) = (fun _ => a) ∨ B.Rw v (fun _ => a) = (fun _ => (0 : E))
@@ -30,7 +30,7 @@ theorem rw_const (a : E) : ∀ v : List (B.Mat k r),
       rw [h]; simp [RdV]
 
 /- English proof (translation)
-Proceed by induction on `u with`. Consider the case `nil => exact rw_const a v`. Consider the case `cons X u ih => right`. Simplify using `only [Formalism.FourierDecayAlt.B.dLR, List.foldr_cons] at ih ⊢`. Apply the tactic sequence `rcases ih with h | h <;> (rw [h]; funext g; simp [Formalism.FourierDecayAlt.B.LdV])`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dLR_const (a : E) (u v : List (B.Mat k r)) :
     B.dLR u v (fun _ => a) = (fun _ => a) ∨ B.dLR u v (fun _ => a) = (fun _ => (0 : E)) := by
@@ -42,13 +42,13 @@ theorem dLR_const (a : E) (u v : List (B.Mat k r)) :
     rcases ih with h | h <;> (rw [h]; funext g; simp [Formalism.FourierDecayAlt.B.LdV])
 
 /- English proof (translation)
-Apply the tactic sequence `rcases dLR_const a u v with h | h <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_dLR_const_le (a : E) (u v : List (B.Mat k r)) (g : B.Mat k r) : ‖B.dLR u v (fun _ => a) g‖ ≤ ‖a‖ := by
   rcases dLR_const a u v with h | h <;> simp [h]
 
 /- English proof (translation)
-Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => a, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ckOn_const' {m : ℕ∞} {UU : Set (B.Mat k r)} (a : E) : B.CkOn m UU (fun _ => a) := by
   intro g₀ _
@@ -57,7 +57,7 @@ theorem ckOn_const' {m : ℕ∞} {UU : Set (B.Mat k r)} (a : E) : B.CkOn m UU (f
 end consts
 
 /- English proof (translation)
-Unfold `TLB.capOp at hT`. Break down `List.mem_cons.1 hT with h | h` into its components or cases. Conclude with `⟨0, _, h⟩`. Take `⟨cw, -, rfl⟩` from `List.mem_map.1 h`. Conclude with `⟨_, _, rfl⟩`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_capOp {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (s : ℂ)
@@ -70,17 +70,17 @@ theorem mem_capOp {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProdu
     exact ⟨_, _, rfl⟩
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D s Y ε m`. Take `⟨hLw, hCV⟩` from `Classical.choose_spec (Formalism.FourierDecayAlt.P.capelli_word_sum k r Y)`. Establish `hLie : ∀ cw ∈ capLw k r Y, ∀ X ∈ cw.2, B.inLie k r X` using `fun cw h X hX => ((hLw cw h).1 X hX).1`. Establish `hlen : ∀ cw ∈ capLw k r Y, cw.2.length ≤ 2 * r + k + 1` using `fun cw h => (hLw cw h).2`. Establish `hord : B.opOrder (capTh k r Wp Wq s Y) = 2 * r + k + 1` using `TLB.opOrder_capOp s _ hlen`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hApp : ∀ F : B.Mat k r → (Wq →L[ℂ] Wp), B.CkOn ((2 * r + k + 1 : ℕ) : ℕ∞) (B.GV k r) F → ∀ g ∈ B.GV k r, B.opApply (capTh k r Wp Wq s Y) F g = s • Q.CV k r Y F g`. Introduce `F hF g hg`. Unfold `capTh`. Rewrite using `[TLB.opApply_capOp s _ hLie, hCV _ _ F hF g hg hg]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨hord, ?_, ?_, ?_, hApp⟩` and prove the remaining obligations. Introduce `T hT`. Take `⟨c, w, rfl⟩` from `mem_capOp s _ hT`. Conclude with `⟨ckOn_const' _, ckOn_const' _⟩`. Introduce `p hp f hf g hg`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hf` using `[hord]`. Establish `hgG : g ∈ B.GV k r` using `hg.1`. Establish `hs'` using `Formalism.FourierDecayAlt.P.B7.sgs_mem D hp hgG`. Rewrite using `[hApp _ (Formalism.FourierDecayAlt.P.B5.ckOn_rho D hp hf) g hgG, Formalism.FourierDecayAlt.P.capelli_rho_commute k r Wp Wq D Y f p hp hf g hgG]`. Simplify using `only [B.rho]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hApp f hf _ hs', ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`. Introduce `T hT`. Take `⟨c, w, rfl⟩` from `mem_capOp s _ hT`. Use `⟨‖c • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)‖ + ‖conj c • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)‖, fun u v _ _ _ g _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Real.rpow_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `norm_dLR_const_le (c • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)) u v g`. Establish `h2` using `norm_dLR_const_le (conj c • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)) u v g`. Establish `n1` using `norm_nonneg (c • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp))`. Establish `n2` using `norm_nonneg (conj c • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp))`. Conclude with `⟨by simp only [TLB.cTerm]; linarith, by simp only [TLB.cTerm]; linarith⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem capacity_theta_facts : CapThFacts := by
   intro k r Wp Wq _ _ _ _ _ _ D s Y ε m
@@ -118,9 +118,9 @@ theorem capacity_theta_facts : CapThFacts := by
     exact ⟨by simp only [TLB.cTerm]; linarith, by simp only [TLB.cTerm]; linarith⟩
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D F F₁ F' F₁' hF hF'`. Unfold `B.beta`. Use `Formalism.FourierDecayAlt.P.JFxG.betaBig_congr D (fun g hg => ?_) (fun g hg => ?_)` and prove the remaining obligations. Establish `h` using `Formalism.FourierDecayAlt.P.Qx8.JF_congr D (F := F) (F' := F₁) (a := 1) (fun g hg => by rw [one_smul, hF g hg]) hg.1`. Rewrite using `[h, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `Formalism.FourierDecayAlt.P.Qx8.JF_congr D (F := F') (F' := F₁') (a := 1) (fun g hg => by rw [one_smul, hF' g hg]) hg.1`. Rewrite using `[h, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem beta_form_congr_holds : BetaCongr := by
   intro k r Wp Wq _ _ _ _ _ _ D F F₁ F' F₁' hF hF'

@@ -5,9 +5,9 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.InvSolve
 
 /- English proof (translation)
-Simplify using `only [In, AddSubmonoid.mem_map, Submodule.mem_toAddSubmonoid, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `h α`. Take `⟨b, hb, e⟩` from `h α`. Conclude with `⟨b, hb, e.symm⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `h α`. Take `⟨b, hb, e⟩` from `h α`. Conclude with `⟨b, hb, e.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem in_iff_mem {B Q σ : Type} [CommRing B] [CommRing Q] [Algebra B Q] (N : Ideal B)
     (f : MvPowerSeries σ Q) :
@@ -19,9 +19,9 @@ theorem in_iff_mem {B Q σ : Type} [CommRing B] [CommRing Q] [Algebra B Q] (N : 
   · intro h α; obtain ⟨b, hb, e⟩ := h α; exact ⟨b, hb, e.symm⟩
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[in_iff_mem]`. Introduce `α`. Rewrite using `[coeff_mul]`. Use `AddSubmonoid.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Take `⟨b, hb, e⟩` from `AddSubmonoid.mem_map.1 (hf x.1)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `AddSubmonoid.mem_map.2 ⟨b * coeff x.2 h, N.mul_mem_right _ hb, ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe] at e ⊢`. Rewrite using `[map_mul, e, coeff_map]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem in_mul_map {B Q σ : Type} [CommRing B] [CommRing Q] [Algebra B Q] (N : Ideal B)
     (f : MvPowerSeries σ Q) (h : MvPowerSeries σ B) (hf : In N f) :
@@ -37,7 +37,7 @@ theorem in_mul_map {B Q σ : Type} [CommRing B] [CommRing Q] [Algebra B Q] (N : 
   rw [map_mul, e, coeff_map]
 
 /- English proof (translation)
-Rewrite `*` using `[in_iff_mem]`. Introduce `α`. Rewrite using `[map_sum]`. Conclude with `AddSubmonoid.sum_mem _ fun i hi => (in_iff_mem N (f i)).1 (hf i hi) α`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem in_sum {B Q σ ι : Type} [CommRing B] [CommRing Q] [Algebra B Q] (N : Ideal B)
     (s : Finset ι) (f : ι → MvPowerSeries σ Q) (hf : ∀ i ∈ s, In N (f i)) :
@@ -48,13 +48,13 @@ theorem in_sum {B Q σ ι : Type} [CommRing B] [CommRing Q] [Algebra B Q] (N : I
   exact AddSubmonoid.sum_mem _ fun i hi => (in_iff_mem N (f i)).1 (hf i hi) α
 
 /- English proof (translation)
-Introduce `B Q _ _ _ d N M hM v g hv hg j`. Establish `hc : (constantCoeff : MvPowerSeries (Fin d) B →+* B).mapMatrix M = 1`. Use extensionality with `i k`. Simplify using `[hM, Matrix.one_apply]`. Establish `hdet : IsUnit M.det`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[MvPowerSeries.isUnit_iff_constantCoeff, RingHom.map_det, hc, Matrix.det_one]`. Conclude with `isUnit_one`. Establish `h1 : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv M hdet`. Set `φ : MvPowerSeries (Fin d) B →+* MvPowerSeries (Fin d) Q` to `map (algebraMap B Q)`. Establish `h2 : φ.mapMatrix M * φ.mapMatrix M⁻¹ = 1` using `by rw [← map_mul, h1, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvg : Matrix.vecMul v (φ.mapMatrix M) = g` using `funext fun i => by`. Simplify `hv i` using `[Matrix.vecMul, dotProduct, φ]`. Establish `hv' : v = Matrix.vecMul g (φ.mapMatrix M⁻¹)`. Rewrite using `[← hvg, Matrix.vecMul_vecMul, h2, Matrix.vecMul_one]`. Rewrite using `[hv']`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.vecMul, dotProduct, RingHom.mapMatrix_apply, Matrix.map_apply, φ]`. Conclude with `in_sum N _ _ fun i _ => in_mul_map N _ _ (hg i)`.
+A detailed English derivation is pending.
 -/
 theorem solve : ∀ {B Q : Type} [CommRing B] [CommRing Q] [Algebra B Q] {d : ℕ} (N : Ideal B) (M : Matrix (Fin d) (Fin d) (MvPowerSeries (Fin d) B)), (∀ i j, constantCoeff (M i j) = if i = j then 1 else 0) → ∀ (v g : Fin d → MvPowerSeries (Fin d) Q), (∀ i, ∑ j, v j * map (algebraMap B Q) (M j i) = g i) → (∀ i, In N (g i)) → ∀ j, In N (v j) := by
   intro B Q _ _ _ d N M hM v g hv hg j

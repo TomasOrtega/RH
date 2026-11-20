@@ -7,7 +7,7 @@ open scoped Nat
 namespace PositivityTheory.SiegelWeilFormula.KFPB
 
 /- English proof (translation)
-Rewrite using `[iteratedDeriv_comp_const_mul hE.contDiff c]`. Simplify using `only [mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iteratedDeriv_scale (E : ℂ → ℂ) (hE : Differentiable ℂ E) (c : ℂ) (j : ℕ) :
     iteratedDeriv j (fun z => E (c * z)) 0 = c ^ j * iteratedDeriv j E 0 := by
@@ -15,7 +15,7 @@ theorem iteratedDeriv_scale (E : ℂ → ℂ) (hE : Differentiable ℂ E) (c : �
   simp only [mul_zero]
 
 /- English proof (translation)
-Establish `hcomp : ∀ i : ℕ, Differentiable ℂ (fun z => E (ω ^ i * z))` using `fun i => by fun_prop`. Establish `hterm : ∀ i ∈ Finset.range (q.natDegree + 1), ContDiffAt ℂ (j : WithTop ℕ∞) (fun z => q.coeff i * μ ^ i * E (ω ^ i * z)) 0` using `fun i _ => ((hcomp i).const_mul (q.coeff i * μ ^ i)).contDiff.contDiffAt`. Rewrite using `[iteratedDeriv_fun_sum hterm, Polynomial.eval_eq_sum_range, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[iteratedDeriv_const_mul _ (hcomp i).contDiff.contDiffAt, PositivityTheory.SiegelWeilFormula.KFPB.iteratedDeriv_scale E hE, mul_pow, ← pow_mul, ← pow_mul, mul_comm i j]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -33,21 +33,19 @@ theorem iteratedDeriv_rel (q : Polynomial ℂ) (μ ω : ℂ) (E : ℂ → ℂ) (
   ring
 
 /- English proof (translation)
-Establish `hlt : ∀ a b : ℕ, a < b → ω ^ a ≠ ω ^ b`. Introduce `a b h hab`. Apply `hω (b - a) (Nat.sub_pos_of_lt h)` to reduce the goal to its premises. Apply `mul_left_cancel₀ (pow_ne_zero a hω0)` to reduce the goal to its premises. Rewrite using `[← pow_add, Nat.add_sub_cancel' h.le, mul_one, hab]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective fun j : ℕ => μ * ω ^ j`. Introduce `a b hab`. Establish `hab' : ω ^ a = ω ^ b` using `mul_left_cancel₀ hμ hab`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hlt a b h hab'`. Conclude with `hlt b a h hab'.symm`. Establish `hfin : {j : ℕ | q.eval (μ * ω ^ j) = 0}.Finite`. Apply `Set.Finite.of_finite_image _ hinj.injOn` to reduce the goal to its premises. Apply `(q.roots.toFinset.finite_toSet).subset` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨j, hj, rfl⟩`. Simplify using `only [Finset.mem_coe, Multiset.mem_toFinset]`. Conclude with `(Polynomial.mem_roots hq).2 hj`. Take `⟨N, hN⟩` from `hfin.bddAbove`. Use `⟨N, fun E hE hrel => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hvan : ∀ j, N < j → iteratedDeriv j E 0 = 0`. Introduce `j hj`. Establish `h0 : (fun z => ∑ i ∈ Finset.range (q.natDegree + 1), q.coeff i * μ ^ i * E (ω ^ i * z)) = 0`. Use function extensionality and compare the values at `hrel`. Establish `h1` using `PositivityTheory.SiegelWeilFormula.KFPB.iteratedDeriv_rel q μ ω E hE j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[h0, iteratedDeriv_const_zero]`. Break down `mul_eq_zero.1 h1.symm with h | h` into its components or cases. Conclude with `absurd (hN h) (not_le.2 hj)`. Conclude with `h`. Use `⟨∑ n ∈ Finset.range (N + 1), Polynomial.C ((n ! : ℂ)⁻¹ * iteratedDeriv n E 0) * Polynomial.X ^ n, ?_, fun z => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Polynomial.natDegree_sum_le_of_forall_le _ _ fun n hn => (Polynomial.natDegree_C_mul_X_pow_le _ n).trans (Nat.lt_succ_iff.1 (Finset.mem_range.1 hn))`. Establish `hs` using `Complex.hasSum_taylorSeries_of_entire hE 0 z`. Use `(hs.unique (hasSum_sum_of_ne_finset_zero (s := Finset.range (N + 1)) ?_)).trans ?_` and prove the remaining obligations. Introduce `m hm`. Simplify using `only [Finset.mem_range, not_lt] at hm`.
-
-Simplify using `[hvan m (by omega)]`. Rewrite using `[Polynomial.eval_finsetSum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, smul_eq_mul, sub_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem poly_of_rot (q : Polynomial ℂ) (hq : q ≠ 0) (μ ω : ℂ) (hμ : μ ≠ 0) (hω0 : ω ≠ 0)
     (hω : ∀ j : ℕ, 0 < j → ω ^ j ≠ 1) :

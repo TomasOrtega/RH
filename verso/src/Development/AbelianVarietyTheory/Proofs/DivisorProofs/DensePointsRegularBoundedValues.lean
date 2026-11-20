@@ -21,45 +21,37 @@ open GlobalTheory.Cartier GlobalTheory.ProjVar Formalism.BasicNotions GlobalTheo
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ Y N f ⟨U, ⟨x₀, hx₀⟩, hU⟩`. Take `⟨V, hVa, hxV, hVU⟩` from `Opens.isBasis_iff_nbhd.1 Y.X.isBasis_affineOpens hx₀`. Establish `hV : IsAffineOpen V` using `hVa`. Establish `hgV : genericPoint Y.X ∈ V` using `gen_mem hxV`. Use `haveI : Nonempty V := ⟨⟨x₀, hxV⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ρ : F →+* Γ(Y.X, V)` to `(Y.X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op).hom.comp (algebraMap F Γ(Y.X, ⊤))`. Use `letI : Algebra F Γ(Y.X, V) := ρ.toAlgebra`. Use `haveI : Algebra.FiniteType F Γ(Y.X, V) := GlobalTheory.ProjVar.Var.finiteType_restrict_affineOpen F Y V hV`. Use `choose g hg using fun i => exists_fnOf_eq hgV (fun x hx => hU x (hVU hx) i)`. Take `⟨d, t, hint, hinf⟩` from `GlobalTheory.exists_noether_coordinates_sInf_rootsOfUnity_eq_bot F Γ(Y.X, V)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose p hpm hp0 using fun i => hint (g i)`. Set `M : Set (PrimeSpectrum Γ(Y.X, V))` to `{m | m.asIdeal.IsMaximal ∧ ∀ j, ∃ n : ℕ, 0 < n ∧ t j ^ n - 1 ∈ m.asIdeal}`. Establish `hmemV : ∀ m : PrimeSpectrum Γ(Y.X, V), hV.fromSpec m ∈ V` using `fun m => (hV.range_fromSpec ▸ ⟨m, rfl⟩ : hV.fromSpec m ∈ (V : Set Y.X))`. Establish `hvan : ∀ m : PrimeSpectrum Γ(Y.X, V), ∀ b ∈ m.asIdeal, hV.fromSpec m ∉ Y.X.basicOpen b`. Introduce `m b hb h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : m ∈ hV.fromSpec ⁻¹ᵁ Y.X.basicOpen b` using `h`. Rewrite `h'` using `[hV.fromSpec_preimage_basicOpen]`. Conclude with `h' hb`. Establish `hpush : ∀ (K : Type) [Field K] (φ : Γ(Y.X, V) →+* K) (i : Fin N), (p i).eval₂ (MvPolynomial.eval₂Hom (φ.comp ρ) (fun j => φ (t j))) (φ (g i)) = 0`. Introduce `K _ φ i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `e : φ.comp (MvPolynomial.aeval t).toRingHom = MvPolynomial.eval₂Hom (φ.comp ρ) (fun j => φ (t j))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[MvPolynomial.aeval_C]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `j`. Simplify using the standard rewrite rules. Use `congrArg φ (hp0 i)` as an intermediate fact. Rewrite `this` using `[Polynomial.hom_eval₂, map_zero, e]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hroot : ∀ (K : Type) [Field K] (φ : Γ(Y.X, V) →+* K) (m : PrimeSpectrum Γ(Y.X, V)), m ∈ M → (∀ b ∈ m.asIdeal, φ b = 0) → ∀ j, ∃ n : ℕ, n ≠ 0 ∧ φ (t j) ^ n = 1`. Introduce `K _ φ m hm hφ j`. Take `⟨n, hn, hmem⟩` from `hm.2 j`. Use `⟨n, hn.ne', ?_⟩` and prove the remaining obligations. Use `hφ _ hmem` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite `this` using `[map_sub, map_pow, map_one, sub_eq_zero]`. Conclude with `this`. Set `Cs : Finset F` to `Finset.univ.biUnion fun i => (Finset.range (p i).natDegree).biUnion fun l => ((p i).coeff l).support.image fun s => ((p i).coeff l).coeff s`. Establish `hCs : ∀ i, ∀ l < (p i).natDegree, ∀ s ∈ ((p i).coeff l).support, ((p i).coeff l).coeff s ∈ Cs`. Introduce `i l hl s hs`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Cs, Finset.mem_biUnion, Finset.mem_univ, true_and, Finset.mem_range, Finset.mem_image]`. Conclude with `⟨i, l, hl, s, hs, rfl⟩`. Set `bb : HeightOneSpectrum (𝓞 F) → ℝ` to `fun v => ∑ c ∈ Cs, Real.log (max 1 (NumberField.HeightOneSpectrum.adicAbv F v c))`. Set `T : Fin N → ℝ` to `fun i => ∑ l ∈ Finset.range (p i).natDegree, ∑ s ∈ ((p i).coeff l).support, ∑ τ : F →+* ℂ, ‖τ (((p i).coeff l).coeff s)‖`. Establish `hT : ∀ i, 0 ≤ T i` using `fun i => by positivity`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Set `aa : ℝ` to `1 + ∑ i, T i`. Use `⟨hV.fromSpec '' M, ?_, ?_, ?_, aa, bb, GlobalTheory.finite_support_sum_log_max_one_adicAbv F Cs, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `GlobalTheory.VarPts.isClosed_fromSpec_of_isMaximal F Y V hV m hm.1`. Use `GlobalTheory.dense_fromSpec_image_of_sInf_asIdeal_eq_bot Y.X V hV ⟨x₀, hxV⟩ M ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Use `hinf using 2` and compare the differences between its conclusion and the goal. Use extensionality with `I`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, rfl⟩`. Conclude with `hm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hI`. Conclude with `⟨⟨I, hI.1.isPrime⟩, hI, rfl⟩`. Introduce and unpack `_ ⟨m, hm, rfl⟩ i`. Conclude with `hU _ (hVU (hmemV m)) i`. Introduce and unpack `_ ⟨m, hm, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun σ z hz i => ?_, fun v e y hy i => ?_⟩` and prove the remaining obligations. Establish `hzV : z ∈ GlobalTheory.CxPts.ptsIn Y.str σ V` using `GlobalTheory.CxPts.mem_ptsIn.2 (show under z ∈ V from hz ▸ hmemV m)`. Set `φ` to `GlobalTheory.CxPts.evHom hzV`. Establish `hφ : ∀ b ∈ m.asIdeal, φ b = 0`. Introduce `b hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h0`. Rewrite `h0` using `[← GlobalTheory.CxPts.ev_eq hzV]`. Use `GlobalTheory.CxPts.mem_ptsIn.1 ((GlobalTheory.CxPts.mem_ptsIn_basicOpen hzV b).2 h0)` as an intermediate fact. Conclude with `hvan m b hb (hz ▸ this)`. Establish `hζ : ∀ j, ‖φ (t j)‖ ≤ 1`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Take `⟨n, hn, h1⟩` from `hroot ℂ φ m hm hφ j`. Establish `h2 : ‖φ (t j)‖ ^ n = 1` using `by rw [← norm_pow, h1, norm_one]`. Conclude with `((pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 h2).le`. Rewrite using `[← hg i, ratVal_fnOf hzV, GlobalTheory.CxPts.ev_eq hzV]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `GlobalTheory.norm_root_le_max_one_sum_norm_coeff (φ.comp ρ) (fun j => φ (t j)) hζ (p i) (hpm i) (φ (g i)) (hpush ℂ φ i)`. Use `hb.trans (max_le (by have := Finset.sum_nonneg fun i (_ : i ∈ Finset.univ) => hT i; simp only [aa]; linarith) ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun l _ => Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun τ : F →+* ℂ => ‖τ (((p i).coeff l).coeff s)‖) (fun τ _ => norm_nonneg _) (Finset.mem_univ (φ.comp ρ))`.
-
-Use `_ ≤ ∑ i, T i := Finset.single_le_sum (fun i _ => hT i) (Finset.mem_univ i)`. Use `_ ≤ aa := by simp only [aa]; linarith`. Take `⟨φ, hφv, hφ0, hφc⟩` from `GlobalTheory.TrueGeo.AlgPtHom.exists_evalHom F Y V y (hy ▸ hmemV m)`. Establish `hφ : ∀ b ∈ m.asIdeal, φ b = 0` using `fun b hb => hφ0 b (hy ▸ hvan m b hb)`. Establish `hζ : ∀ j, e.w (φ (t j)) ≤ 1`.
-
-Introduce `j`. Take `⟨n, hn, h1⟩` from `hroot _ φ m hm hφ j`. Establish `h2 : e.w (φ (t j)) ^ n = 1` using `by rw [← map_pow, h1, map_one]`. Conclude with `((pow_eq_one_iff_of_nonneg (e.w.nonneg _) hn).1 h2).le`. Establish `hbb : 0 ≤ bb v` using `Finset.sum_nonneg fun c _ => Real.log_nonneg (le_max_left _ _)`.
-
-Rewrite using `[← hg i, hφv]`. Use `GlobalTheory.ultrametric_root_le e.w (GlobalTheory.TrueGeo.Ext.w_add_le_max F v e) (φ.comp ρ) (fun j => φ (t j)) hζ (p i) (hpm i) (φ (g i)) (hpush _ φ i) (Real.exp (bb v)) (Real.one_le_exp hbb) (fun l hl s hs => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply]`. Use `erw [hφc, e.w_alg]`. Use `set c := ((p i).coeff l).coeff s`.
-
-Establish `hpos : 0 < max 1 (NumberField.HeightOneSpectrum.adicAbv F v c)` using `lt_of_lt_of_le one_pos (le_max_left _ _)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dense_closedPoints_bounded : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (N : ℕ) (f : Fin N → Y.Fn),
   (∃ U : Y.X.Opens, (U : Set Y.X).Nonempty ∧ ∀ x ∈ U, ∀ i, RegAt x (f i)) →

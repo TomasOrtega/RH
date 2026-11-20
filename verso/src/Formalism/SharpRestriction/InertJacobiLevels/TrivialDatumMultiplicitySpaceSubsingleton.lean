@@ -33,102 +33,102 @@ variable (hv : ℝ) (vol : @HSpace H.E _ _ H.cmStar → ℝ) (hvol : ∀ W, 0 < 
   (htw : ∀ w, tw ((@placesOf H.E _ _ H.cmStar).conj w) = tw w)
 
 /- English proof (translation)
-Introduce `_ _` and use `inferInstanceAs (Subsingleton Z0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivialDatum_multiplicity_subsingleton : ∀ μ j, Subsingleton ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.Mult μ j) :=
   fun _ _ => inferInstanceAs (Subsingleton Z0)
 
 /- English proof (translation)
-Introduce `_` and use `inferInstanceAs (Subsingleton Z0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivialDatum_ambient_subsingleton : ∀ μ, Subsingleton ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.Amb μ) :=
   fun _ => inferInstanceAs (Subsingleton Z0)
 
 /- English proof (translation)
-Introduce `_ _` and use `inferInstanceAs (Subsingleton PUnit)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivialDatum_metricLattice_subsingleton : ∀ μ j, Subsingleton ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.MtL μ j) :=
   fun _ _ => inferInstanceAs (Subsingleton PUnit)
 
 /- English proof (translation)
-Introduce `_` and use `inferInstanceAs (Subsingleton Z0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivialDatum_multiplicity_space_subsingleton : ∀ j, Subsingleton ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.Mj j) :=
   fun _ => inferInstanceAs (Subsingleton Z0)
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Subsingleton Z0)`.
+A detailed English derivation is pending.
 -/
 theorem trivialDatum_error_space_subsingleton : Subsingleton (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.EE0 :=
   inferInstanceAs (Subsingleton Z0)
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Subsingleton (zeroHLat H.E).V)`.
+A detailed English derivation is pending.
 -/
 theorem trivialDatum_radical_subsingleton : Subsingleton (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).div.RR.V :=
   inferInstanceAs (Subsingleton (zeroHLat H.E).V)
 
 /- English proof (translation)
-Introduce `_` and use `inferInstanceAs (Subsingleton (zeroHLat H.E).V)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivialDatum_nu_subsingleton : ∀ u, Subsingleton ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).div.Nu u).V :=
   fun _ => inferInstanceAs (Subsingleton (zeroHLat H.E).V)
 
 /- English proof (translation)
-Introduce `_ _` and use `inferInstanceAs (Subsingleton (fmZeroHLat H.E).V)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivialDatum_lattice_subsingleton : ∀ u j, Subsingleton (((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).fm u).lat j).V :=
   fun _ _ => inferInstanceAs (Subsingleton (fmZeroHLat H.E).V)
 
 /- English proof (translation)
-Introduce `_ _ _` and use `⟨fun y => Empty.elim y⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem trivialDatum_twisted_points_isEmpty : ∀ u μ i, IsEmpty (((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).chTw u μ).Y i) :=
   fun _ _ _ => ⟨fun y => Empty.elim y⟩
 
 /- English proof (translation)
-Introduce `i` and use `Empty.elim i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivialDatum_metricVector_subsingleton : ∀ i j b k Q ψ, Subsingleton ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).nexp.MtV i j b k Q ψ) :=
   fun i => Empty.elim i
 
 /- English proof (translation)
-Introduce `i` and use `Empty.elim i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivialDatum_forms_subsingleton : ∀ i j b, Subsingleton ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).nexp.Fm i j b) :=
   fun i => Empty.elim i
 
 /- English proof (translation)
-Introduce `_` and use `trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivialDatum_mem_base_lattice : ∀ x : (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.LL, x ∈ (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).LL0 :=
   fun _ => trivial
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem trivialDatum_gammaDiscriminant_eq : ∀ u μ, ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).chTw u μ).DGam = ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).mem (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).u₀).C.DGam :=
   fun _ _ => rfl
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨Equiv.refl _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem trivialDatum_class_zero_equiv : ∀ u μ, Nonempty (((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).mem u).C.cls 0 ≃ ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).chTw u μ).cls 0) :=
   fun _ _ => ⟨Equiv.refl _⟩
 
 /- English proof (translation)
-Introduce `_ _ j` and use `hE j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivialDatum_twisted_classes_isEmpty (hE : ∀ i, IsEmpty (K.cls (i + 1))) : ∀ u μ j, IsEmpty (((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).chTw u μ).cls (j + 1)) :=
   fun _ _ j => hE j
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => Empty.elim a⟩`.
+Supply the required witnesses or components.
 -/
 theorem trivialDatum_isEmpty_local : IsEmpty (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).nd.Loc := ⟨fun a => Empty.elim a⟩
 
 /- English proof (translation)
-The claim follows from `trivialDatum_multiplicity_subsingleton H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw amb := trivialDatum_ambient_subsingleton H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol h …`.
+A detailed English derivation is pending.
 -/
 theorem shape_zero_trivialDatum (hE : ∀ i, IsEmpty (K.cls (i + 1))) (hDG : K.DGam = minkM (2 * R.f * R.N R.m)) : Shape0 (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) where
   mult := trivialDatum_multiplicity_subsingleton H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw
@@ -153,30 +153,30 @@ theorem shape_zero_trivialDatum (hE : ∀ i, IsEmpty (K.cls (i + 1))) (hDG : K.D
   cls0 := trivialDatum_class_zero_equiv H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw
 
 /- English proof (translation)
-Use `show Module.finrank ℂ (⊥ : Submodule ℂ (K.cls 0 → Empty → ℂ)) = 0`. Conclude with `finrank_bot ℂ _`.
+A detailed English derivation is pending.
 -/
 theorem trivialDatum_finrank_zero (u) : Module.finrank ℂ ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).mem u).A.Mu0 = 0 := by
   show Module.finrank ℂ (⊥ : Submodule ℂ (K.cls 0 → Empty → ℂ)) = 0
   exact finrank_bot ℂ _
 
 /- English proof (translation)
-The claim follows from `Function.bijective_id`.
+A detailed English derivation is pending.
 -/
 theorem trivialDatum_embedding_bijective : Function.Bijective (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).embE := Function.bijective_id
 
 def dstFor (R : Ranks) (du : ℕ) (Ts Gam : ℝ) : ℝ := (du : ℝ) * dstarOfRanks R Ts Gam
 
 /- English proof (translation)
-The claim follows from `mul_pos (by exact_mod_cast hdu) (dstar2_pos R hTs hG)`.
+A detailed English derivation is pending.
 -/
 theorem dstFor_pos (R : Ranks) {du : ℕ} (hdu : 0 < du) {Ts Gam : ℝ} (hTs : 0 < Ts) (hG : 1 < Gam) :
     0 < dstFor R du Ts Gam := mul_pos (by exact_mod_cast hdu) (dstar2_pos R hTs hG)
 
 omit hT in
 /- English proof (translation)
-Establish `hG0 : 0 < Gam` using `by linarith`. Establish `hd : ((du : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast hdu.ne'`. Establish `hn : (R.f : ℝ) * (R.k : ℝ) = ((R.f * R.k : ℕ) : ℝ)` using `by push_cast; ring`. Unfold `dstFor`. Rewrite using `[mul_div_cancel_left₀ _ hd, hn, one_div, dstarOfRanks, Real.pow_rpow_inv_natCast (by positivity) (fk_ne R), mul_assoc, ← Real.rpow_add hG0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (2 : ℝ) / ((R.f * R.k : ℕ) : ℝ) + -2 / ((R.f * R.k : ℕ) : ℝ) = 0 by ring, Real.rpow_zero, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem tstar_dstFor (R : Ranks) {du : ℕ} (hdu : 0 < du) {Ts Gam : ℝ} (hTs : 0 < Ts) (hG : 1 < Gam) :
     (dstFor R du Ts Gam / du) ^ ((1 : ℝ) / (R.f * R.k)) * Gam ^ (-(2 : ℝ) / (R.f * R.k)) = Ts := by

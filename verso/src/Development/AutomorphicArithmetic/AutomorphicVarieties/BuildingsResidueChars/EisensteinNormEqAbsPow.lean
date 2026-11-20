@@ -3,17 +3,17 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.AbsCharNotUnitar
 open UpperTheory.V.Sd.Eis NumberField GlobalTheory.Mem.Chr.CharModel
 
 /- English proof (translation)
-Introduce `F _ _ _ s`. Establish `H` using `absChar_isAbsPow (F := F) s`. Use `⟨⟨absHom F s, (absChar F s).2⟩, fun y hy => ?_, fun w => ⟨H.1 w, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Complex.exp (s * logNorm F (UpperTheory.V.TR.infId F y)) = _`. Establish `h1 : finPart F (UpperTheory.V.TR.infId F y) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(UpperTheory.V.TR.infId F y).val.2 = 1`. Express the relevant statement in the definitionally equal form `((1 : AdeleRing (𝓞 F) F) - UpperTheory.V.TR.sInf F 1 + UpperTheory.V.TR.sInf F y.val).2 = 1`. Express the relevant statement in the definitionally equal form `(1 : IsDedekindDomain.FiniteAdeleRing (𝓞 F) F) - 0 + 0 = 1`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Establish `h2 : (infPart F (UpperTheory.V.TR.infId F y)).val = UpperTheory.V.TR.infEq F y.val`. Express the relevant statement in the definitionally equal form `((1 : AdeleRing (𝓞 F) F) - UpperTheory.V.TR.sInf F 1 + UpperTheory.V.TR.sInf F y.val).1 = _`. Express the relevant statement in the definitionally equal form `(1 : InfiniteAdeleRing F) - UpperTheory.V.TR.infEq F 1 + UpperTheory.V.TR.infEq F y.val = _`. Simplify using the standard rewrite rules. Establish `h3 : ∀ w : InfinitePlace F, ‖UpperTheory.V.TR.infEq F y.val w‖ = y.val w` using `fun w => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).symm.isometry.dist_eq (y.val w) 0` as an intermediate fact. Establish `e0 : (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).symm 0 = 0` using `map_zero (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm`. Rewrite `this` using `[e0, dist_zero_right, dist_zero_right, Real.norm_of_nonneg (hy w).le]`. Conclude with `this`. Rewrite using `[logNorm, h1, logFin_one, sub_zero, logInf, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h3, InfinitePlace.mult, IsTotallyReal.isReal, if_true, Nat.cast_one, one_mul]`. Rewrite using `[← Real.log_prod (fun w _ => (hy w).ne'), Real.rpow_def_of_pos (Finset.prod_pos fun w _ => hy w), Complex.ofReal_exp, Complex.ofReal_mul, mul_comm]`. Use `(H.2.1 w).trans ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg _)]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.eisenstein_norm_eq_abs_pow :
     UpperTheory.V.Sd.Eis.AbsPow := by

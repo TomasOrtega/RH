@@ -35,7 +35,7 @@ jobs:
           lake env lean --run Render.lean
       - name: Pack proof archive
         run: |
-          python3 -B -m unittest discover -s verso -p 'test_citations.py'
+          python3 -B -m unittest discover -s verso
           python3 -B verso/build_site.py
       - uses: actions/upload-pages-artifact@v4
         with:

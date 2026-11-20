@@ -22,44 +22,44 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.Regular
 
 /- English proof (translation)
-The claim follows from `PolyMaxOscillation.proof_closed`.
+A detailed English derivation is pending.
 -/
 theorem PolyMaxOscillation.full : PolyMaxOscillation.Statement :=
   PolyMaxOscillation.proof_closed
 
 /- English proof (translation)
-The claim follows from `MollifiedLowerBound.closed`.
+A detailed English derivation is pending.
 -/
 theorem MollifiedLowerBound.full : MollifiedLowerBound.Statement :=
   MollifiedLowerBound.closed
 
 /- English proof (translation)
-The claim follows from `CutoffsExist.proof`.
+A detailed English derivation is pending.
 -/
 theorem CutoffsExist.full : CutoffsExist.Statement :=
   CutoffsExist.proof
 
 /- English proof (translation)
-The claim follows from `GlueRegularised.proof`.
+A detailed English derivation is pending.
 -/
 theorem GlueRegularised.full : GlueRegularised.Statement :=
   GlueRegularised.proof
 
 /- English proof (translation)
-The claim follows from `kernelPositive_statement`.
+A detailed English derivation is pending.
 -/
 theorem KernelPositive.full : KernelPositive.Statement :=
   kernelPositive_statement
 
 /- English proof (translation)
-The claim follows from `ChartComparison.proof MollifiedLowerBound.full PolyMaxOscillation.full hLow hTP hTT`.
+A detailed English derivation is pending.
 -/
 theorem ChartComparison.cond (hLow : PolyMaxLowerBound.Statement) (hTP : TruncPsh.Statement)
     (hTT : TruncTransfer.Statement) : ChartComparison.Statement :=
   ChartComparison.proof MollifiedLowerBound.full PolyMaxOscillation.full hLow hTP hTT
 
 /- English proof (translation)
-The claim follows from `LogLogRegularisation.proof GlueRegularised.full (ChartComparison.cond hLow hTP hTT) hMNS CutoffsExist.full hCMB`.
+A detailed English derivation is pending.
 -/
 theorem LogLogRegularisation.cond (hLow : PolyMaxLowerBound.Statement) (hTP : TruncPsh.Statement)
     (hTT : TruncTransfer.Statement) (hMNS : MollifiedNearSmooth.Statement)
@@ -68,14 +68,14 @@ theorem LogLogRegularisation.cond (hLow : PolyMaxLowerBound.Statement) (hTP : Tr
     CutoffsExist.full hCMB
 
 /- English proof (translation)
-The claim follows from `BoundedRegularisation.proof hBC hBG CutoffsExist.full ReciprocityTheory.AnForm.A.mollify_thm`.
+A detailed English derivation is pending.
 -/
 theorem BoundedRegularisation.cond (hBC : BoundedChartComparison.Statement)
     (hBG : BoundedGlue.Statement) : BoundedRegularisation.Statement :=
   BoundedRegularisation.proof hBC hBG CutoffsExist.full ReciprocityTheory.AnForm.A.mollify_thm
 
 /- English proof (translation)
-The claim follows from `Tau0Holomorphic.proof (ExpQuadMonomial.proof hE hO hD)`.
+A detailed English derivation is pending.
 -/
 theorem Tau0Holomorphic.cond (hE : RiemannExtensionSlices.Statement)
     (hO : PuncturedExpOrder.Statement) (hD : LogCoverDescent.Statement) :
@@ -83,7 +83,7 @@ theorem Tau0Holomorphic.cond (hE : RiemannExtensionSlices.Statement)
   Tau0Holomorphic.proof (ExpQuadMonomial.proof hE hO hD)
 
 /- English proof (translation)
-The claim follows from `ImTauBounds.proof (Tau0Holomorphic.cond hE hO hD) KernelPositive.full`.
+A detailed English derivation is pending.
 -/
 theorem ImTauBounds.cond (hE : RiemannExtensionSlices.Statement)
     (hO : PuncturedExpOrder.Statement) (hD : LogCoverDescent.Statement) :
@@ -91,7 +91,7 @@ theorem ImTauBounds.cond (hE : RiemannExtensionSlices.Statement)
   ImTauBounds.proof (Tau0Holomorphic.cond hE hO hD) KernelPositive.full
 
 /- English proof (translation)
-The claim follows from `have hInv : InvEntryDeriv.Statement := InvEntryDeriv.proof InvEntryBound.proof HodgeDerivative.proof (ImTauBounds.cond hE hO hD) (Tau0Holomorphic.cond hE hO hD) AnalyticDerivBound.proof hInv (LogDetGramDeriv.proof InvEntryBound.proof hInv MatrixDetDeriv.proof GramEntryDeriv.proof …`.
+A detailed English derivation is pending.
 -/
 theorem HodgeDerivative.cond (hE : RiemannExtensionSlices.Statement)
     (hO : PuncturedExpOrder.Statement) (hD : LogCoverDescent.Statement) :

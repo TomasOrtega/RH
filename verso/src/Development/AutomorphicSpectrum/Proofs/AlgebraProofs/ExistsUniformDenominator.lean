@@ -8,13 +8,11 @@ open GlobalTheory.CompanionTheory.Ar.Num
 variable {o Ω : Type*} [CommRing o] [Field Ω] [Algebra o Ω] {E : Type*} [AddCommGroup E] [Module Ω E]
 
 /- English proof (translation)
-Set `I : Ideal R` to `{ carrier := {a | (a : Ω) • v ∈ L} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_ofPred_eq, AddMemClass.coe_add, add_smul] at *`. Conclude with `L.add_mem ha hb`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun a b hb => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Set.mem_ofPred_eq, smul_eq_mul, MulMemClass.coe_mul, mul_smul] at *`. Conclude with `hL _ a.2 _ hb }`. Establish `hrad : ∀ l, (⟨f l, hf l⟩ : R) ∈ I.radical` using `fun l => by`. Take `⟨n, hn⟩` from `hv l`. Conclude with `⟨n, by simpa [I] using hn⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hone : (1 : R) ∈ I.radical`. Establish `: (1 : R) = ∑ l, (⟨c l, hc l⟩ : R) * ⟨f l, hf l⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[h1]`. Rewrite using `[this]`.
-
-Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hrad l)`. Take `⟨n, hn⟩` from `hone`. Simplify `hn` using `[I]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_locally_mem (R : Subalgebra o Ω) (L : AddSubgroup E)
     (hL : ∀ a ∈ R, ∀ e ∈ L, a • e ∈ L) {k : ℕ} (f c : Fin k → Ω) (hf : ∀ l, f l ∈ R)
@@ -42,9 +40,7 @@ theorem mem_of_locally_mem (R : Subalgebra o Ω) (L : AddSubgroup E)
   simpa [I] using hn
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Use `choose n hn using hx`. Use `⟨∑ i, n i, fun i => ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le' (Finset.single_le_sum (f := n) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i))`. Rewrite using `[hd, pow_add, mul_smul]`.
-
-Conclude with `hL _ (R.pow_mem hg d) _ (hn i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_uniform_pow (R : Subalgebra o Ω) (L : AddSubgroup E)
     (hL : ∀ a ∈ R, ∀ e ∈ L, a • e ∈ L) {ι : Type*} [Finite ι] (g : Ω) (hg : g ∈ R) (x : ι → E)
@@ -59,19 +55,17 @@ theorem exists_uniform_pow (R : Subalgebra o Ω) (L : AddSubgroup E)
   exact hL _ (R.pow_mem hg d) _ (hn i)
 
 /- English proof (translation)
-Take `⟨hL, k, f, c, hf, hc, h1, hb⟩` from `h`. Use `choose b _ _ hb using hb`. Set `R' : AddSubgroup Ω` to `R.toSubring.toAddSubgroup`. Establish `hR' : ∀ a ∈ R, ∀ e ∈ R', a • e ∈ R'` using `fun a ha e he => R.mul_mem ha he`. Establish `hbL : ∀ j q, ∃ n : ℕ, f j ^ n • b j q ∈ L` using `fun j q => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hb j (b j q)).2 ⟨Pi.single q 1, fun q' => ⟨0, ?_⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hq : q' = q`. Substitute `hq` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hq]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply]`. Use `choose N hN using hbL`. Take `⟨m, hm⟩` from `exists_uniform_pow R R' hR' g hg (fun p : Fin k × Fin r => ψ (f p.1 ^ N p.1 p.2 • b p.1 p.2)) (fun p => hψ _ (hN p.1 p.2))`. Use `⟨m, fun e he => ?_⟩` and prove the remaining obligations. Use `mem_of_locally_mem R R' hR' f c hf hc h1 _ fun j => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha, rfl⟩` from `(hb j e).1 ⟨0, by simpa using he⟩`. Establish `key : ∀ q, ∃ n : ℕ, f j ^ n • (g ^ m * (a q * ψ (b j q))) ∈ R'` using `fun q => by`. Take `⟨n, hn⟩` from `ha q`. Use `⟨n + N j q, ?_⟩` and prove the remaining obligations. Establish `h2 : g ^ m * ψ (f j ^ N j q • b j q) ∈ R` using `hm (j, q)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `R.mul_mem hn h2`. Establish `h4 : f j ^ (n + N j q) • (g ^ m * (a q * ψ (b j q))) = f j ^ n * a q * (g ^ m * ψ (f j ^ N j q • b j q))`. Simplify using `only [map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h3`. Take `⟨n, hn⟩` from `exists_uniform_pow R R' hR' (f j) (hf j) _ key`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h5 : f j ^ n • (g ^ m * ψ (∑ q, a q • b j q)) = ∑ q, f j ^ n • (g ^ m * (a q * ψ (b j q)))`. Simplify using `only [map_sum, map_smul, smul_eq_mul, Finset.mul_sum]`.
-
-Rewrite using `[h5]`. Conclude with `R'.sum_mem fun q _ => hn q`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_uniform_denominator (R : Subalgebra o Ω) (r : ℕ) (L : AddSubgroup E)
     (h : LocFree R r L) (g : Ω) (hg : g ∈ R) (ψ : Module.Dual Ω E)
@@ -111,13 +105,13 @@ theorem exists_uniform_denominator (R : Subalgebra o Ω) (r : ℕ) (L : AddSubgr
   exact R'.sum_mem fun q _ => hn q
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ R E _ _ r L h v hv`. Establish `h'` using `h`. Take `⟨hL, k, f, c, hf, hc, h1, hb⟩` from `h'`. Use `mem_of_locally_mem R L hL f c hf hc h1 v fun l => ?_` and prove the remaining obligations. Take `⟨b, hli, hsp, hb⟩` from `hb l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `B : Module.Basis (Fin r) Ω E` to `Module.Basis.mk hli hsp.ge`. Establish `hB : ∀ q, B q = b q` using `fun q => Module.Basis.mk_apply _ _ q`. Use `(hb v).2 ⟨fun q => B.coord q v, fun q => ?_, ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `exists_uniform_denominator R r L h (f l) (hf l) (B.coord q) fun e he => by`. Take `⟨a, ha, rfl⟩` from `(hb e).1 ⟨0, by simpa using he⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: B.coord q (∑ q, a q • b q) = a q`. Simplify using `only [← hB, Module.Basis.coord_apply]`. Conclude with `congrFun (B.repr_sum_self a) q`. Rewrite using `[this]`. Conclude with `ha q`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨m, by simpa using hv (f l ^ m • B.coord q) (by simpa using hm)⟩`. Simplify using `only [← hB, Module.Basis.coord_apply]`. Conclude with `(B.sum_repr v).symm`.
+A detailed English derivation is pending.
 -/
 theorem locFree_reflexive : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω) {E : Type} [AddCommGroup E] [Module Ω E] (r : ℕ) (L : AddSubgroup E), LocFree R r L → ∀ v : E, (∀ ψ : Module.Dual Ω E, (∀ e ∈ L, ψ e ∈ R) → ψ v ∈ R) → v ∈ L := by
   intro o Ω _ _ _ R E _ _ r L h v hv

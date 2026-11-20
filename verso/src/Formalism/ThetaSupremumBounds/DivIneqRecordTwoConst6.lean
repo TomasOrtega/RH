@@ -10,66 +10,66 @@ namespace Formalism.DimensionVariation
 open Formalism.LatticeIndexTer (ph)
 
 /- English proof (translation)
-The claim follows from `first_descent_explicit`.
+A detailed English derivation is pending.
 -/
 theorem stepDi6 : StepDi6 := first_descent_explicit
 /- English proof (translation)
-The claim follows from `per_embedding_explicit`.
+A detailed English derivation is pending.
 -/
 theorem perEmbedding6 : PerEmbedding6 := per_embedding_explicit
 /- English proof (translation)
-The claim follows from `heightBound6_statement`.
+A detailed English derivation is pending.
 -/
 theorem heightBound6 : HeightBound6 := heightBound6_statement
 /- English proof (translation)
-The claim follows from `height_bound_complete`.
+A detailed English derivation is pending.
 -/
 theorem heightRecord6 : HeightRecord6 := height_bound_complete
 /- English proof (translation)
-The claim follows from `division_inequality_explicit`.
+A detailed English derivation is pending.
 -/
 theorem divIneqExplicit6 : DivIneqExplicit6 := division_inequality_explicit
 /- English proof (translation)
-The claim follows from `division_inequality_two_constants`.
+A detailed English derivation is pending.
 -/
 theorem divIneqTwoConst6 : DivIneqTwoConst6 := division_inequality_two_constants
 /- English proof (translation)
-The claim follows from `division_inequality_fine`.
+A detailed English derivation is pending.
 -/
 theorem divIneqFine6 : DivIneqFine6 := division_inequality_fine
 /- English proof (translation)
-The claim follows from `division_inequality_complete`.
+A detailed English derivation is pending.
 -/
 theorem divIneqRecord6 : DivIneqRecord6 := division_inequality_complete
 /- English proof (translation)
-The claim follows from `first_descent_product_explicit`.
+A detailed English derivation is pending.
 -/
 theorem stepDiProd6 : StepDiProd6 := first_descent_product_explicit
 /- English proof (translation)
-The claim follows from `lift_first_descent`.
+A detailed English derivation is pending.
 -/
 theorem liftStepDi6 : LiftStepDi6 := lift_first_descent
 /- English proof (translation)
-The claim follows from `top_net`.
+A detailed English derivation is pending.
 -/
 theorem topNet6 : TopNet6 := top_net
 /- English proof (translation)
-The claim follows from `flat_line_degree`.
+A detailed English derivation is pending.
 -/
 theorem flatLineDegree6 : FlatLineDegree6 := flat_line_degree
 /- English proof (translation)
-The claim follows from `mean_deviation`.
+A detailed English derivation is pending.
 -/
 theorem meanDev6 : MeanDev6 := mean_deviation
 /- English proof (translation)
-The claim follows from `weight_size`.
+A detailed English derivation is pending.
 -/
 theorem weightSize6 : WeightSize6 := weight_size
 
 /- English proof (translation)
-Establish `key` using `division_inequality_complete J Pl TT r ν (muC - Eb) (mu0 - Eb) Fo logT aT logH x eps L b a rd La L' B0 0 (x ^ eps) m f k N nV S tt η w'' b' lam0 C C0 Lpass 0 logOm pq w eE δ (by linarith) (by linarith) q6 q7 z1 z2 z3 z4 z5 z6 z7 z8 z9 z10 le_rfl le_rfl z13 z14 z15 z16 z17 z18 z19 …`. Rewrite `key` using `[add_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hxe : 0 ≤ x ^ eps` using `Real.rpow_nonneg (by linarith) _`. Establish `hb : 0 ≤ b` using `by rw [z4]; exact (Real.exp_pos _).le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0 : 0 ≤ B0` using `by rw [z10]; positivity`. Establish `hC0 : 0 ≤ C0` using `le_trans hC hCC`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem divIneqRecordFree6
     (J Pl : Type) [Fintype J] [Fintype Pl] (TT : Finset Pl) [DecidablePred (· ∈ TT)] (r : ℕ)
@@ -113,7 +113,7 @@ theorem divIneqRecordFree6
     positivity
 
 /- English proof (translation)
-Establish `key` using `divIneqRecordFree6 J Pl TT r ν muC mu0 Fo logT aT logH x eps L b a rd La L' B0 m f k N nV S tt η w'' b' lam0 C C0 Lpass Eb logOm pq w eE δ q1 q2 q6 q7 z1 z2 z3 z4 z5 z6 z7 z8 z9 z10 z13 z14 z15 z16 z17 z18 z19 z20 z21 zb z23 z24 z25 z26 z27 z28 z29 z30 z31 z32 z33 z34 z35 hC hCC …`. Establish `hxe : 0 ≤ x ^ eps` using `Real.rpow_nonneg (by linarith) _`. Establish `hC0 : 0 ≤ C0` using `le_trans hC hCC`. Establish `h1 : 0 ≤ (50 * C0 + 10) * (m * Nc * x ^ eps)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem divIneqRecordTwoConst6
     (J Pl : Type) [Fintype J] [Fintype Pl] (TT : Finset Pl) [DecidablePred (· ∈ TT)] (r : ℕ)
@@ -153,7 +153,7 @@ theorem divIneqRecordTwoConst6
   nlinarith
 
 /- English proof (translation)
-Establish `key` using `divIneqRecordFree6 J Pl TT r ν muC mu0 Fo logT aT logH x eps L b a rd La L' B0 m f k N nV S tt η w'' b' lam0 C C0 Lpass Eb logOm pq w eE δ q1 q2 q6 q7 z1 z2 z3 z4 z5 z6 z7 z8 z9 z10 z13 z14 z15 z16 z17 z18 z19 z20 z21 zb z23 z24 z25 z26 z27 z28 z29 z30 z31 z32 z33 z34 z35 hC hCC …`. Establish `hC0 : 0 ≤ C0` using `le_trans hC hCC`. Establish `h1 : 0 ≤ (50 * C0 + 10) * (m * (Real.log x ^ 2 * Nc))` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem divIneqRecordFine6
     (J Pl : Type) [Fintype J] [Fintype Pl] (TT : Finset Pl) [DecidablePred (· ∈ TT)] (r : ℕ)
@@ -193,9 +193,9 @@ theorem divIneqRecordFine6
   nlinarith
 
 /- English proof (translation)
-Establish `e : x ^ (2 * eps) = x ^ eps * x ^ eps`. Rewrite using `[two_mul, Real.rpow_add (by linarith)]`. Establish `hxe : 0 ≤ x ^ eps` using `Real.rpow_nonneg (by linarith) _`. Establish `a1 : c' * (x ^ eps * B0) ≤ x ^ (2 * eps) * B0`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h1 (mul_nonneg hxe hB)]`. Establish `a2 : c' * (Real.log x ^ 2 * Nc) ≤ x ^ (2 * eps) * Nc`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h2 hN]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (add_le_add a1 a2) hm]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem fineToUniform6 (x eps B0 Nc m c' : ℝ) (hx : 1 ≤ x) (hB : 0 ≤ B0) (hN : 0 ≤ Nc) (hm : 0 ≤ m)
     (h1 : c' ≤ x ^ eps) (h2 : c' * Real.log x ^ 2 ≤ x ^ (2 * eps)) :
@@ -210,11 +210,11 @@ theorem fineToUniform6 (x eps B0 Nc m c' : ℝ) (hx : 1 ≤ x) (hB : 0 ≤ B0) (
   nlinarith [mul_le_mul_of_nonneg_left (add_le_add a1 a2) hm]
 
 /- English proof (translation)
-Establish `hbpos : 0 < b` using `by rw [hb]; exact Real.exp_pos _`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hr0 : 0 < rd` using `by linarith`. Establish `e1 : La = Real.log x + L + Real.log rd`. Rewrite using `[hLa, ha, Real.log_mul (by positivity) hr0.ne', Real.log_mul hx0.ne' hbpos.ne', hb, Real.log_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : L' = L + Real.log rd + Real.log g + Real.log nV`. Rewrite using `[hL', Real.log_mul (by positivity) hn.ne', Real.log_mul (by positivity) hg.ne', Real.log_mul hbpos.ne' hr0.ne', hb, Real.log_exp]`. Establish `h1` using `Real.log_nonneg hx`. Establish `h2` using `Real.log_nonneg hrd`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_nonneg hCg h1, mul_nonneg hCg h2]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem logPrimeBound6 (x L b a rd La g nV L' Cg : ℝ) (hx : 1 ≤ x) (hb : b = Real.exp L)
     (ha : a = x * b) (hrd : 1 ≤ rd) (hLa : La = Real.log (a * rd)) (hg : 0 < g) (hgl : Real.log g ≤ Cg * L)

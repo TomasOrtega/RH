@@ -19,21 +19,21 @@ section SlopeTestRemainingChoices
 variable {Y Z : Scheme.{0}} (L : LB Y) {K K' : Type} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inl k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma wchart_inl_le (φ : K → (Z ⟶ Y)) (φ' : K' → (Z ⟶ Y)) (j : K ⊕ K' → L.ι) :
     LB.wchart L (Sum.elim φ φ') j ≤ LB.wchart L φ (j ∘ Sum.inl) :=
   fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inl k)
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inr k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma wchart_inr_le (φ : K → (Z ⟶ Y)) (φ' : K' → (Z ⟶ Y)) (j : K ⊕ K' → L.ι) :
     LB.wchart L (Sum.elim φ φ') j ≤ LB.wchart L φ' (j ∘ Sum.inr) :=
   fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inr k)
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.map_appLE f h (homOfLE hVU).op]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma appLE_res_lemma {T₀ Z₀ : Scheme.{0}} (f : T₀ ⟶ Z₀) {V₀ U₀ : Z₀.Opens} (hVU : V₀ ≤ U₀)
     (W₀ : T₀.Opens) (h : W₀ ≤ f ⁻¹ᵁ V₀) (h' : W₀ ≤ f ⁻¹ᵁ U₀) (x : Γ(Z₀, U₀)ˣ) :
@@ -42,7 +42,7 @@ private lemma appLE_res_lemma {T₀ Z₀ : Scheme.{0}} (f : T₀ ⟶ Z₀) {V₀
   rfl
 
 /- English proof (translation)
-Simplify using `only [LB.mulGen, Units.val_mul, map_mul]`. Apply the tactic sequence `congr 1 <;> exact appLE_res_lemma _ _ _ _ _ _`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma appLE_mulGen {T : Scheme.{0}} (f : T ⟶ Z) (φ : K → (Z ⟶ Y)) (ε : K → ℤ) (φ' : K' → (Z ⟶ Y))
     (ε' : K' → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε'))
@@ -54,9 +54,9 @@ lemma appLE_mulGen {T : Scheme.{0}} (f : T ⟶ Z) (φ : K → (Z ⟶ Y)) (ε : K
   congr 1 <;> exact appLE_res_lemma _ _ _ _ _ _
 
 /- English proof (translation)
-Simplify using `only [LB.pullGen]`. Use `(appLE_res_lemma f _ W' h ?_ _).trans ?_` and prove the remaining obligations. Conclude with `fun _ hz => Semi.LBVal.wchart_pull_le L φ hh j (h hz)`. Use `first`. Consider the case `rfl`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [Scheme.Hom.appLE, Scheme.Hom.appLE, Scheme.comp_app]; rfl)`. Consider the case `simp [pullU, Scheme.Hom.appLE, Scheme.comp_app]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma appLE_pullGen {T X : Scheme.{0}} (f : T ⟶ Z) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (L : LB X)
     (c : LB.Gen (LB.LinComb L φ ε)) (hh : Z ⟶ Y) (j : K → L.ι) (W' : T.Opens)
@@ -84,7 +84,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {O : Type} [Ring O] 
     (rosatiφ D.toPre.P.A (ιD.onB.act (star a)) (ιD.onB.act a)) rosatiε))
 
 /- English proof (translation)
-Rewrite using `[← Functor.map_comp, WeightPf.act_q, Functor.map_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma q_act_lemma :
     (Over.map (thick R I e)).map (WeightPf.act (U.gt e)) ≫ (Over.map (thick R I e)).map (U.gt e).q =
@@ -93,7 +93,7 @@ private lemma q_act_lemma :
   rw [← Functor.map_comp, WeightPf.act_q, Functor.map_comp]
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [GtCoord.pG]`. Rewrite using `[← Category.assoc, ← Functor.map_comp, WeightPf.act_q, Functor.map_comp, Category.assoc])`. Consider the case `simp [GtCoord.pG, ← Functor.map_comp_assoc, WeightPf.act_q]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma pG_act_lemma :
     (Over.map (thick R I e)).map (WeightPf.act (U.gt e)) ≫ (U.gt e).pG =
@@ -105,7 +105,7 @@ private lemma pG_act_lemma :
     | simp [GtCoord.pG, ← Functor.map_comp_assoc, WeightPf.act_q]
 
 /- English proof (translation)
-The claim follows from `toUnit_unique _ _`.
+A detailed English derivation is pending.
 -/
 private lemma unit_act_lemma :
     (Over.map (thick R I e)).map (WeightPf.act (U.gt e)) ≫
@@ -115,7 +115,7 @@ private lemma unit_act_lemma :
   toUnit_unique _ _
 
 /- English proof (translation)
-Simplify using `using congrArg CommaMorphism.left hp`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma left_act_lemma {A' : Over (Spec (CommRingCat.of R))}
     (p : (Over.map (thick R I e)).obj (thickObj R I e G) ⟶ A')
@@ -126,7 +126,7 @@ private lemma left_act_lemma {A' : Over (Spec (CommRingCat.of R))}
   simpa using congrArg CommaMorphism.left hp
 
 /- English proof (translation)
-Use `left_act_lemma (U := U) (e := e) _ ?_` and prove the remaining obligations. Use `first`. Consider the case `(rw [comp_lift, comp_lift, pG_act_lemma]`. Simplify using `only [xc, ← Category.assoc, unit_act_lemma])`. Consider the case `simp [xc, pG_act_lemma, unit_act_lemma]`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma act_lift_xc :
     (WeightPf.act (U.gt e)).left ≫ (lift (xc e χ (G := G)) (U.gt e).pG).left =
@@ -139,9 +139,7 @@ lemma act_lift_xc :
     | simp [xc, pG_act_lemma, unit_act_lemma]
 
 /- English proof (translation)
-Break down `k with k | k` into its components or cases. Simplify using `only [φA, Sum.elim_inl] fin_cases k`. Conclude with `left_act_lemma (U := U) (e := e) (padd D.toPre.P.A (U.gt e).pG (toUnit _ ≫ D.toPre.c (star a • χ))) (by simp only [padd, ← Category.assoc, comp_lift, pG_act_lemma, q_act_lemma, unit_act_lemma])`. Conclude with `left_act_lemma (U := U) (e := e) (toUnit _ ≫ D.toPre.c (star a • χ)) (by simp only [← Category.assoc, unit_act_lemma])`. Conclude with `left_act_lemma (U := U) (e := e) (U.gt e).pG (pG_act_lemma U e)`.
-
-Conclude with `left_act_lemma (U := U) (e := e) (toUnit _ ≫ η[D.toPre.P.A]) (by simp only [← Category.assoc, unit_act_lemma])`. Simplify using `only [φA, Sum.elim_inr, ← Category.assoc, act_lift_xc]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hA_act (k : Fin 4 ⊕ Fin 6) :
     (WeightPf.act (U.gt e)).left ≫ φA U ιD e a χ k =
@@ -160,7 +158,7 @@ theorem hA_act (k : Fin 4 ⊕ Fin 6) :
   · simp only [φA, Sum.elim_inr, ← Category.assoc, act_lift_xc]
 
 /- English proof (translation)
-Use `show (X₀.presheaf.map (homOfLE e₀).op ≫ X₀.presheaf.map (homOfLE hW).op).hom x.val = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma res_val_lemma {X₀ : Scheme.{0}} {U₀ V₀ W₀ : X₀.Opens} (e₀ : V₀ ≤ U₀) (hW : W₀ ≤ V₀)
     (x : Γ(X₀, U₀)ˣ) :
@@ -179,7 +177,7 @@ private lemma pull_val_lemma {X₀ Y₀ : Scheme.{0}} (g : Y₀ ⟶ X₀) (U₀ 
   rfl
 
 /- English proof (translation)
-Establish `h3` using `congrArg (fun z => (X₀.presheaf.map (homOfLE hW).op).hom (Units.val z)) hE`. Simplify using `only [res_val_lemma] at h3`. Conclude with `h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma corr_val_lemma {X₀ : Scheme.{0}} {V₀ V₁ V₂ W₀ : X₀.Opens} (h₁ : V₀ ≤ V₁) (h₂ : V₀ ≤ V₂)
     (x : Γ(X₀, V₁)ˣ) (y : Γ(X₀, V₂)ˣ) (hE : res h₁ x = res h₂ y) (hW₁ : W₀ ≤ V₁) (hW₂ : W₀ ≤ V₂)
@@ -190,7 +188,7 @@ private lemma corr_val_lemma {X₀ : Scheme.{0}} {V₀ V₁ V₂ W₀ : X₀.Ope
   exact h3
 
 /- English proof (translation)
-Simplify using `only [LB.mulGen, Units.val_mul, map_mul]`. Apply the tactic sequence `congr 1 <;> exact res_val_lemma _ _ _`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma mulGen_val_lemma {X₀ Y₀ : Scheme.{0}} (L₀ : LB X₀) {K₀ K₁ : Type} [Fintype K₀]
     [Fintype K₁] (φ : K₀ → (Y₀ ⟶ X₀)) (ε : K₀ → ℤ) (φ' : K₁ → (Y₀ ⟶ X₀)) (ε' : K₁ → ℤ)
@@ -205,7 +203,7 @@ private lemma mulGen_val_lemma {X₀ Y₀ : Scheme.{0}} (L₀ : LB X₀) {K₀ K
   congr 1 <;> exact res_val_lemma _ _ _
 
 /- English proof (translation)
-The claim follows from `(res_val_lemma _ _ _).trans (pull_val_lemma _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 private lemma pullGen_val_lemma {X₀ Y₀ Z₀ : Scheme.{0}} (L₀ : LB X₀) {K₀ : Type} [Fintype K₀]
     (φ : K₀ → (Y₀ ⟶ X₀)) (ε : K₀ → ℤ) (c : LB.Gen (LB.LinComb L₀ φ ε)) (h : Z₀ ⟶ Y₀)
@@ -216,7 +214,7 @@ private lemma pullGen_val_lemma {X₀ Y₀ Z₀ : Scheme.{0}} (L₀ : LB X₀) {
   (res_val_lemma _ _ _).trans (pull_val_lemma _ _ _ _)
 
 /- English proof (translation)
-The claim follows from `(res_val_lemma _ _ _).trans rfl`.
+A detailed English derivation is pending.
 -/
 private lemma charGen_val_lemma {S₀ : Scheme.{0}} (X₁ : Type) [AddCommGroup X₁] (G₀ : Over S₀)
     {Z₀ : Scheme.{0}} (L₀ : LB Z₀) (χ₀ : X₁) (j : PEmpty → L₀.ι)
@@ -229,7 +227,7 @@ private lemma charGen_val_lemma {S₀ : Scheme.{0}} (X₁ : Type) [AddCommGroup 
   (res_val_lemma _ _ _).trans rfl
 
 /- English proof (translation)
-Substitute `hfg` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private lemma appLE_congr_lemma {X₀ Y₀ : Scheme.{0}} {f g : Y₀ ⟶ X₀} (hfg : f = g) {U₀ : X₀.Opens}
     {W₀ : Y₀.Opens} (h₁ : W₀ ≤ f ⁻¹ᵁ U₀) (h₂ : W₀ ≤ g ⁻¹ᵁ U₀) (x : Γ(X₀, U₀)) :
@@ -238,7 +236,7 @@ private lemma appLE_congr_lemma {X₀ Y₀ : Scheme.{0}} {f g : Y₀ ⟶ X₀} (
   rfl
 
 /- English proof (translation)
-Establish `h2` using `congrArg ((lift (toUnit (thickObj R I e G) ≫ η[WeightPf.Te D.toPre I e]) (𝟙 (thickObj R I e G))).left ≫ ·) h`. Simplify `h2` using `only [← Category.assoc, ← Over.comp_left, lift_snd, Over.id_left, Category.id_comp]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma snd_cancel_lemma {Z₀ : Scheme.{0}} (x y : (thickObj R I e G).left ⟶ Z₀)
     (h : (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left ≫ x =
@@ -248,15 +246,13 @@ private lemma snd_cancel_lemma {Z₀ : Scheme.{0}} (x y : (thickObj R I e G).lef
   simpa only [← Category.assoc, ← Over.comp_left, lift_snd, Over.id_left, Category.id_comp] using h2
 
 /- English proof (translation)
-Simplify using `only [lhs]`. Rewrite using `[appLE_mulGen, appLE_mulGen, ← _root_.mul_assoc]`. Use `congr 1`. Establish `hact : ∀ k : Fin 4, (WeightPf.act (U.gt e)).left ≫ D.toPre.Oφ (U.gt e).pG (star a • χ) k = (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left ≫ D.toPre.Oφ (U.gt e).pG (star a • χ) k` using `fun k => hA_act (U := U) (ιD := ιD) (e := e) (a := a) (χ := χ) (Sum.inl k)`. Establish `key : ∀ k₁ k₂ : Fin 4, (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left ≫ D.toPre.Oφ (U.gt e).pG (star a • χ) k₁ = (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left ≫ D.toPre.Oφ (U.gt e).pG (star a • χ) k₂ → jA (Sum.inl k₁) = jA (Sum.inl k₂)` using `fun k₁ k₂ h => cA (Sum.inl k₁) (Sum.inl k₂) (snd_cancel_lemma (e := e) _ _ h)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E` using `(U.gt e).t_weight (star a • χ) (jA ∘ Sum.inl) (Sum.elim (fun x => x.elim) (jA ∘ Sum.inl)) (fun k₁ k₂ h => key k₁ k₂ ((hact k₁).symm.trans (h.trans (hact k₂)))) (by`. Apply the tactic sequence `rintro (k₁ | k₁) (k₂ | k₂) h <;> first | exact k₁.elim | exact k₂.elim | exact key k₁ k₂ h)`. Use the proof step `(by`. Apply the tactic sequence `rintro k (k' | k') h <;> first | exact k'.elim | exact key k k' ((hact k).symm.trans h))`. Establish `h1 : W' ≤ (WeightPf.act (U.gt e)).left ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.Oφ (U.gt e).pG (star a • χ)) (jA ∘ Sum.inl)` using `fun _ hz => wchart_inl_le D.toPre.P.L _ _ jA (ha hz)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : W' ≤ (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.Oφ (U.gt e).pG (star a • χ)) (jA ∘ Sum.inl)` using `fun _ hz => wchart_inl_le D.toPre.P.L _ _ jA (hs hz)`. Establish `hWa : W' ≤ LB.wchart D.toPre.P.L (fun k => (WeightPf.act (U.gt e)).left ≫ D.toPre.Oφ (U.gt e).pG (star a • χ) k) (jA ∘ Sum.inl)` using `fun _ hz => Set.mem_iInter.2 fun k => Set.mem_iInter.1 (h1 hz) k`. Establish `hWb : W' ≤ LB.wchart D.toPre.P.L (Sum.elim (PEmpty.elim : PEmpty → _) (fun k => (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left ≫ D.toPre.Oφ (U.gt e).pG (star a • χ) k)) (Sum.elim (fun x => x.elim) (jA ∘ Sum.inl))`. Introduce `z hz`. Use `Set.mem_iInter.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(k | k)`. Conclude with `k.elim`. Conclude with `Set.mem_iInter.1 (h2 hz) k`. Establish `E'` using `corr_val_lemma _ _ _ _ E hWa hWb (le_inf hWa hWb)`. Conclude with `(pullGen_val_lemma ..).symm.trans (E'.trans ((mulGen_val_lemma ..).trans (congrArg₂ (· * ·) (charGen_val_lemma ..) (pullGen_val_lemma ..))))`.
-
-Conclude with `(appLE_pullGen ..).trans ((appLE_congr_lemma (act_lift_xc (U := U) (e := e) (χ := χ)) ..).trans (appLE_pullGen ..).symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lhs_act (jA : Fin 4 ⊕ Fin 6 → D.toPre.P.L.ι) (cA : LB.Coh D.toPre.P.L (φA U ιD e a χ) jA)
     (W' : (WeightPf.Te D.toPre I e ⊗ thickObj R I e G).left.Opens)

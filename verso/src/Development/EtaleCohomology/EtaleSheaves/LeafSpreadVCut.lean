@@ -39,11 +39,11 @@ def LeafExtendY : Prop := ∀ (k : Type) [Field k] {X : Scheme.{0}} (p : X ⟶ S
       d1 ≫ w0 = w1 ≫ g1 ∧ d2 ≫ w1 = w2 ≫ g2 ∧ w0 ≫ h = f
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `bot => exact ⟨by simp, by simp⟩`. Consider the case `coe n`. Proceed by induction on `x with`. Consider the case `bot => exact absurd h (not_lt_bot)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `coe m`. Establish `h' : n < m` using `WithBot.coe_lt_coe.mp h`. Establish `hn : n ≠ ⊤` using `ne_top_of_lt h'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← WithBot.coe_one, ← WithBot.coe_add, WithBot.coe_le_coe]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Order.add_one_le_of_lt h'`. Rewrite using `[← WithBot.coe_one, ← WithBot.coe_add]`. Conclude with `WithBot.coe_lt_coe.mpr (lt_top_iff_ne_top.mpr (by lift n to ℕ using hn`. Conclude with `ENat.natCast_ne_top (n + 1)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma succ_le_of_lt {a x : WithBot ℕ∞} (h : a < x) : a + 1 ≤ x ∧ a + 1 < ⊤ := by
   induction a with
@@ -63,13 +63,13 @@ lemma succ_le_of_lt {a x : WithBot ℕ∞} (h : a < x) : a + 1 ≤ x ∧ a + 1 <
           exact ENat.natCast_ne_top (n + 1)))
 
 /- English proof (translation)
-Introduce `k _ _ X _ p _ Ω _ _ _ hdim C0 c0 e hc0 he C1 C2 γ1 γ2 h1 h2 _ _`. Take `⟨R, hR, D0, D1, D2, q, d1, d2, f, v0, v1, v2, pq, sq, pq1, sq1, pq2, sq2, hf, irr, dD, P0, P1, P2, c1, c2, ve⟩` from `hD k p Ω c0 e hc0 he C1 C2 γ1 γ2 h1 h2`. Establish `: Algebra.FiniteType k R` using `Subalgebra.fg_iff_finiteType R |>.mp hR`. Take `⟨B, b, ι, iB, pb, oι, hι, dB⟩` from `hB k R`. Take `⟨Y0, Y1, Y2, π, g1, g2, h, w0, w1, w2, m0, m1, m2, f1, irrY, dY, Q0, Q1, Q2, e1, e2, we⟩` from `hE k p R B b ι hι D0 D1 D2 q d1 d2 f pq sq pq1 sq1 pq2 sq2 hf irr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hR' : ringKrullDim R < topologicalKrullDim X` using `hdim R hR`. Take `⟨hle, hlt⟩` from `succ_le_of_lt hR'`. Use `hc0.1` as an intermediate fact. Take `⟨x⟩ : Nonempty C0` from `inferInstance`. Use `⟨B, Y0, Y1, Y2, b, ι.opensRange, π, g1, g2, h, Spec.map (CommRingCat.ofHom (algebraMap R Ω)) ≫ ι, v0 ≫ w0, v1 ≫ w1, v2 ≫ w2, iB, pb, ?_, m0, m1, m2, f1, lt_of_le_of_lt dB hR', irrY, dY.trans (dD.trans hle), lt_of_le_of_lt (dY.trans dD) hlt, ⟨(v0 ≫ w0) x, ?_⟩, P0.paste_horiz Q0, P …` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨_, rfl⟩`. Use `show π ((v0 ≫ w0) x) ∈ Set.range ι`. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, Q0.w, ← Category.assoc, P0.w]`. Conclude with `⟨_, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, c1, Category.assoc, Category.assoc, e1]`. Rewrite using `[← Category.assoc, c2, Category.assoc, Category.assoc, e2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal_of (hD : LeafDescendV) (hB : LeafCloseB) (hE : LeafExtendY) : LateralTheory.E.LeafGeoVCut.LeafSpreadV := by
   intro k _ _ X _ p _ Ω _ _ _ hdim C0 c0 e hc0 he C1 C2 γ1 γ2 h1 h2 _ _

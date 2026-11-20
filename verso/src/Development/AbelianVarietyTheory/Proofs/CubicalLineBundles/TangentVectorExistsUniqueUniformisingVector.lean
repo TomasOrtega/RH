@@ -20,7 +20,7 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 namespace GlobalTheory.LamT
 
 /- English proof (translation)
-Introduce `x u` and use `⟨(GlobalTheory.AnyUnif.tangent_and_unimodular GlobalTheory.thetaUnifAV_all x.P u).1, fun n v W cf w => GlobalTheory.isDiff_sum_smul_of_isLieComb x.P.A x.P.isAb x.P.L x.P.g n u v W cf w⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem existsUnique_isDiff_and_linear : ∀ (x : KeyIn ℂ) (u : HolUnif x.P.A x.P.L x.P.g), (∀ w, IsTangent w → ∃! W, u.IsDiff W w) ∧ ∀ (n : ℕ) (v : Fin n → (epsR ℂ ⟶ x.P.A)) (W : Fin n → Fin x.P.g → ℂ) (cf : Fin n → ℂ) (w : epsR ℂ ⟶ x.P.A), (∀ i, IsTangent (v i)) → (∀ i, u.IsDiff (W i) (v i)) → IsLieComb cf v w → u.IsDiff (∑ i, cf i • W i) w :=
   fun x u => ⟨(GlobalTheory.AnyUnif.tangent_and_unimodular GlobalTheory.thetaUnifAV_all x.P u).1,

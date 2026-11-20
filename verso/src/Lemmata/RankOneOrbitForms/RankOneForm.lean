@@ -7,13 +7,13 @@ namespace Bl.RankOneOrbitForms
 variable {K : Type} [Field K] {G : Type} [Group G] {T : Type} [AddCommGroup T] [Module K T] [FiniteDimensional K T]
 
 /- English proof (translation)
-Take `⟨v, hv, hw⟩` from `finrank_eq_one_iff'.mp h1`. Use `choose a ha using fun x => hw ⟨f x, LinearMap.mem_range_self f x⟩`. Establish `hv' : (v : T) ≠ 0` using `fun h => hv (Subtype.ext h)`. Establish `hav : ∀ x, a x • (v : T) = f x` using `fun x => congrArg Subtype.val (ha x)`. Establish `inj` using `smul_left_injective K hv'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ : T →ₗ[K] K` to `{ toFun := a map_add' := fun x y => inj (by simp only [add_smul, hav, map_add]) map_smul' := fun c x => inj (by`. Simplify using `only [smul_eq_mul, mul_smul, hav, map_smul, RingHom.id_apply]) }`. Use `⟨φ, v, hv', ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Take `⟨y, hy⟩` from `LinearMap.mem_range.mp v.2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv'` to reduce the goal to its premises. Rewrite using `[← hy, ← hav y]`. Establish `: a y = 0` using `LinearMap.congr_fun h0 y`. Rewrite using `[this, zero_smul]`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.smulRight_apply]`. Conclude with `(hav x).symm`.
+A detailed English derivation is pending.
 -/
 private lemma rank_one_form (f : T →ₗ[K] T) (h1 : finrank K (LinearMap.range f) = 1) :
     ∃ (φ : T →ₗ[K] K) (v : T), v ≠ 0 ∧ φ ≠ 0 ∧ f = φ.smulRight v := by
@@ -39,13 +39,11 @@ private lemma rank_one_form (f : T →ₗ[K] T) (h1 : finrank K (LinearMap.range
     exact (hav x).symm
 
 /- English proof (translation)
-Establish `hinvar : ∀ g : G, ∀ w ∈ Submodule.span K (Set.range fun g => τ g v), τ g w ∈ Submodule.span K (Set.range fun g => τ g v)`. Introduce `g w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨g * h, by show τ (g * h) v = τ g (τ h v); rw [map_mul]; rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`. Break down `hirr _ hinvar with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hv` to reduce the goal to its premises.
-
-Establish `: τ 1 v ∈ Submodule.span K (Set.range fun g => τ g v)` using `Submodule.subset_span ⟨1, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot, map_one, Module.End.one_apply]`. Conclude with `this`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma span_orbit (τ : Representation K G T)
     (hirr : ∀ W : Submodule K T, (∀ g : G, ∀ w ∈ W, τ g w ∈ W) → W = ⊥ ∨ W = ⊤)
@@ -69,13 +67,13 @@ private lemma span_orbit (τ : Representation K G T)
   · exact h
 
 /- English proof (translation)
-Set `W : Submodule K T` to `⨅ g : G, LinearMap.ker (φ ∘ₗ τ g)`. Establish `memW : ∀ y, y ∈ W ↔ ∀ g, φ (τ g y) = 0`. Introduce `y`. Simplify using `[W, Submodule.mem_iInf]`. Establish `hinvar : ∀ g : G, ∀ w ∈ W, τ g w ∈ W`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `g w hw`. Rewrite `hw`, the goal using `[memW]`. Introduce `h`. Use `hw (h * g)` as an intermediate fact. Rewrite `this` using `[map_mul, Module.End.mul_apply]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Break down `hirr W hinvar with h | h` into its components or cases. Establish `: x ∈ W` using `(memW x).2 hx`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `this`. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hφ` to reduce the goal to its premises. Use extensionality with `y`. Establish `hy : y ∈ W` using `h ▸ Submodule.mem_top`. Use `(memW y).1 hy 1` as an intermediate fact. Simplify using `using this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma orbit_ker (τ : Representation K G T)
     (hirr : ∀ W : Submodule K T, (∀ g : G, ∀ w ∈ W, τ g w ∈ W) → W = ⊥ ∨ W = ⊤)
@@ -102,9 +100,9 @@ private lemma orbit_ker (τ : Representation K G T)
     simpa using this
 
 /- English proof (translation)
-Take `⟨κ, a, -, hsp, hli⟩` from `exists_linearIndependent' K f`. Establish `: Finite κ` using `hli.finite`. Set `_ : Fintype κ` to `Fintype.ofFinite κ`. Establish `hc : Fintype.card κ = r`. Rewrite using `[← finrank_span_eq_card hli, hsp, hr]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `e : Fin r ≃ κ` to `(Fintype.equivFinOfCardEq hc).symm`. Conclude with `⟨a ∘ e, hli.comp e e.injective⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 private lemma select {ι M : Type} [AddCommGroup M] [Module K M] [FiniteDimensional K M]
     (f : ι → M) (r : ℕ) (hr : finrank K (Submodule.span K (Set.range f)) = r) :
@@ -118,33 +116,31 @@ private lemma select {ι M : Type} [AddCommGroup M] [Module K M] [FiniteDimensio
   exact ⟨a ∘ e, hli.comp e e.injective⟩
 
 /- English proof (translation)
-Take `⟨φ, v, hv, hφ, rfl⟩` from `rank_one_form ε₀ h1`. Establish `hspanT` using `span_orbit τ hirr v hv`. Establish `hspanR : Submodule.span K (Set.range fun g => ε (τ g v)) = LinearMap.range ε`. Establish `: (Set.range fun g => ε (τ g v)) = ε '' (Set.range fun g => τ g v)`. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, ← Submodule.map_span, hspanT, Submodule.map_top]`. Take `⟨γ, hγ⟩` from `select (fun g => ε (τ g v)) (finrank K (LinearMap.range ε)) (by rw [hspanR])`. Establish `hle : Submodule.span K (Set.range ((fun g => ε (τ g v)) ∘ γ)) ≤ LinearMap.range ε`. Rewrite using `[Submodule.span_le]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `LinearMap.mem_range_self _ _`. Establish `hueq : Submodule.span K (Set.range ((fun g => ε (τ g v)) ∘ γ)) = LinearMap.range ε` using `Submodule.eq_of_le_of_finrank_eq hle (by rw [finrank_span_eq_card hγ, Fintype.card_fin])`. Set `w : G → Fin (finrank K (LinearMap.range ε)) → K` to `fun g j => φ (τ g (ε (τ (γ j) v)))`. Establish `hw : Submodule.span K (Set.range w) = ⊤`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Take `⟨ℓ, hℓ, hle'⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hne)`. Apply `hℓ` to reduce the goal to its premises. Set `b : Fin (finrank K (LinearMap.range ε)) → K` to `fun j => ℓ (fun k => if j = k then 1 else 0)`. Establish `key : ∀ g, ∑ j, w g j • b j = 0`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Use `hle' (Submodule.subset_span ⟨g, rfl⟩)` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.pi_apply_eq_sum_univ]`. Conclude with `this`. Establish `hx : ∑ j, b j • ε (τ (γ j) v) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `orbit_ker τ hirr φ hφ` to reduce the goal to its premises. Introduce `g`. Simplify using `only [map_sum, map_smul, smul_eq_mul]`. Use `key g` as an intermediate fact. Simplify using `only [w, smul_eq_mul] at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hz` using `Fintype.linearIndependent_iff.mp hγ b hx`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.pi_apply_eq_sum_univ, LinearMap.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.sum_eq_zero fun j _ => by`. Establish `: ℓ (fun k => if j = k then 1 else 0) = 0` using `hz j`. Rewrite using `[this, smul_zero]`. Take `⟨δ, hδ⟩` from `select w (finrank K (LinearMap.range ε)) (by rw [hw, finrank_top, Module.finrank_fin_fun])`. Set `c : Matrix (Fin (finrank K (LinearMap.range ε))) (Fin (finrank K (LinearMap.range ε))) K` to `Matrix.of fun i j => φ (τ (δ i) (ε (τ (γ j) v)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : IsUnit c` using `Matrix.linearIndependent_rows_iff_isUnit.mp hδ`. Establish `hcd : IsUnit c.det` using `(Matrix.isUnit_iff_isUnit_det c).mp hc`. Use `⟨γ, δ, c, hcd.ne_zero, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[show (φ.smulRight v) ∘ₗ τ (δ i) ∘ₗ ε ∘ₗ τ (γ j) = (φ ∘ₗ τ (δ i) ∘ₗ ε ∘ₗ τ (γ j)).smulRight v from LinearMap.ext fun _ => rfl, LinearMap.trace_smulRight]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Introduce `i j`. Use extensionality with `x`. Simplify using `[c, smul_smul, mul_comm]`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hx : ε x ∈ Submodule.span K (Set.range ((fun g => ε (τ g v)) ∘ γ))` using `by rw [hueq]; exact LinearMap.mem_range_self ε x`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun K).mp hx`. Simplify using `only [Function.comp_apply] at ha`. Establish `hcoef : ∀ i, φ (τ (δ i) (ε x)) = ∑ k, c i k * a k`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← ha]`. Simplify using `[c, map_sum, map_smul, mul_comm]`. Establish `hinv : ∀ j, ∑ i, c⁻¹ j i * ∑ k, c i k * a k = a j`. Introduce `j`. Use `congrFun (show Matrix.mulVec c⁻¹ (Matrix.mulVec c a) = a by` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul c hcd, Matrix.one_mulVec]) j`. Simplify `this` using `[Matrix.mulVec, dotProduct]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.smulRight_apply, map_smul, hcoef]`. Rewrite using `[← ha]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hinv j, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 (τ : Representation K G T)
     (hirr : ∀ W : Submodule K T, (∀ g : G, ∀ w ∈ W, τ g w ∈ W) → W = ⊥ ∨ W = ⊤)

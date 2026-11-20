@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 open UpperTheory.V.Af.CuspFin
 
 /- English proof (translation)
-Introduce `i j k l`. Use `congrArg f (h i j k l)` as an intermediate fact. Simplify `this` using `[apply_ite f]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem glRel_map {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (f : A →ₐ[ℂ] B) {n : ℕ}
     {X : Fin n → Fin n → A} (h : Formalism.REAL.GlRel X) : Formalism.REAL.GlRel (fun a b => f (X a b)) := by
@@ -13,7 +13,7 @@ private theorem glRel_map {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebr
   simpa [apply_ite f] using this
 
 /- English proof (translation)
-Simplify using `[Commute, SemiconjBy]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem comm_LR {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (a : A) (b : B) :
     Commute ((Algebra.TensorProduct.includeLeft : A →ₐ[ℂ] TensorProduct ℂ A B) a)
@@ -21,7 +21,7 @@ private theorem comm_LR {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra 
   simp [Commute, SemiconjBy]
 
 /- English proof (translation)
-Unfold `capAlg`. Rewrite using `[AlgHom.map_adjoin]`. Use `Algebra.adjoin_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨v, u, rfl⟩, rfl⟩`. Conclude with `⟨e v, u, by rw [map_qdet, h]⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem map_cap {ι κ A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (f : A →ₐ[ℂ] B) {n : ℕ}
     (E : ι → Fin n → Fin n → A) (F : κ → Fin n → Fin n → B) (e : ι → κ)
@@ -33,9 +33,9 @@ private theorem map_cap {ι κ A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Al
   exact ⟨e v, u, by rw [map_qdet, h]⟩
 
 /- English proof (translation)
-Establish `: (Algebra.adjoin ℂ {z | ∃ v i j, z = E v i j}).map f ≤ Algebra.adjoin ℂ {z | ∃ v i j, z = F v i j}`. Rewrite using `[AlgHom.map_adjoin]`. Use `Algebra.adjoin_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨v, i, j, rfl⟩, rfl⟩`. Conclude with `⟨e v, i, j, by rw [h]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `this ⟨a, by rw [hg]; trivial, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem map_gen {ι κ A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (f : A →ₐ[ℂ] B) {n : ℕ}
     (E : ι → Fin n → Fin n → A) (F : κ → Fin n → Fin n → B) (e : ι → κ)
@@ -50,21 +50,19 @@ private theorem map_gen {ι κ A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Al
   exact this ⟨a, by rw [hg]; trivial, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `n ι κ ⟨A, _, _, E, hE⟩ ⟨B, _, _, F, hF⟩`. Set `L : A →ₐ[ℂ] TensorProduct ℂ A B` to `Algebra.TensorProduct.includeLeft`. Set `R : B →ₐ[ℂ] TensorProduct ℂ A B` to `Algebra.TensorProduct.includeRight`. Set `G : ι ⊕ κ → Fin n → Fin n → TensorProduct ℂ A B` to `Sum.elim (fun v i j => L (E v i j)) (fun v i j => R (F v i j))`. Use `⟨TensorProduct ℂ A B, inferInstance, inferInstance, G, ⟨?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `(v | v)`. Conclude with `glRel_map L (hE.rel.1 v)`. Conclude with `glRel_map R (hF.rel.1 v)`. Introduce and unpack `(v | v) (w | w) hvw i j k l`. Conclude with `(hE.rel.2 v w (fun h => hvw (congrArg _ h)) i j k l).map L`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Conclude with `comm_LR _ _`. Conclude with `(comm_LR _ _).symm`. Conclude with `(hF.rel.2 v w (fun h => hvw (congrArg _ h)) i j k l).map R`. Use `eq_top_iff.2 fun z hz => ?_ clear hz` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => exact zero_mem _`. Consider the case `tmul a b`. Establish `: a ⊗ₜ[ℂ] b = L a * R b` using `by simp [L, R]`. Rewrite using `[this]`. Conclude with `mul_mem (map_gen L E G Sum.inl hE.gen (fun _ => rfl) a) (map_gen R F G Sum.inr hF.gen (fun _ => rfl) b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `add x y hx hy => exact add_mem hx hy`. Introduce `C _ _ H hH`. Take `⟨f, hf⟩` from `hE.univ C (fun v => H (Sum.inl v)) ⟨fun v => hH.1 _, fun v w hvw => hH.2 _ _ fun h => hvw (Sum.inl_injective h)⟩`. Take `⟨g, hg⟩` from `hF.univ C (fun v => H (Sum.inr v)) ⟨fun v => hH.1 _, fun v w hvw => hH.2 _ _ fun h => hvw (Sum.inr_injective h)⟩`. Establish `hc : ∀ a b, Commute (f a) (g b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `a b`. Establish `ha` using `map_gen f E (fun v => H (Sum.inl v)) id hE.gen (fun v => by funext i j; simp [hf]) a`. Establish `hb` using `map_gen g F (fun v => H (Sum.inr v)) id hF.gen (fun v => by funext i j; simp [hg]) b`. Use `Algebra.commute_of_mem_adjoin_of_forall_mem_commute hb ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, k, l, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Algebra.commute_of_mem_adjoin_of_forall_mem_commute ha ?_).symm` and prove the remaining obligations. Introduce and unpack `_ ⟨v, i, j, rfl⟩`. Conclude with `hH.2 _ _ Sum.inr_ne_inl _ _ _ _`. Use `⟨Algebra.TensorProduct.lift f g hc, ?_⟩` and prove the remaining obligations. Introduce and unpack `(v | v) i j`.
-
-Simplify using `[G, L, hf]`. Simplify using `[G, R, hg]`. Use `(UpperTheory.center_tensorProduct_le_sup_map_center A B).trans (sup_le ?_ ?_)` and prove the remaining obligations. Conclude with `(Subalgebra.map_mono hE.centre).trans (map_cap L E G Sum.inl fun _ => rfl)`. Conclude with `(Subalgebra.map_mono hF.centre).trans (map_cap R F G Sum.inr fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.capelliAlgebra_map_of_glRelations :
     ∀ (n : ℕ) (ι κ : Type), UpperTheory.V.Af.CuspFin.HasUniv ι n → UpperTheory.V.Af.CuspFin.HasUniv κ n → UpperTheory.V.Af.CuspFin.HasUniv (ι ⊕ κ) n := by

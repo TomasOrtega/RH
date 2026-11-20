@@ -9,19 +9,17 @@ namespace GlobalTheory
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `GlobalTheory.StalkLimit.exists_lift_fromSpecStalk (genericPoint W) g (fun V hV y _ => by`. Establish `hy : y = IsLocalRing.closedPoint k` using `Subsingleton.elim (α := PrimeSpectrum k) _ _`. Substitute `hy` using the available equality. Express the relevant statement in the definitionally equal form `g (IsLocalRing.closedPoint k) ∈ V`. Rewrite using `[hg])` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨e, he⟩` from `hj`. Establish `hg' : (l ≫ e.inv) ≫ j = g`. Rewrite using `[← he, Category.assoc, e.inv_hom_id_assoc, hl]`. Establish `S2 : IsPullback a v.left u.left b`. Use `IsPullback.of_bot ?_ hv.symm hb` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Over.w, Over.w]`. Conclude with `ha`. Establish `h1 : ((Over.pullback g).map u).left ≫ pullback.fst B.hom g = pullback.fst A.hom g ≫ u.left`. Simplify using the standard rewrite rules. Establish `h2 : ((Over.pullback g).map u).left ≫ pullback.snd B.hom g = pullback.snd A.hom g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `S1 : IsPullback (pullback.fst A.hom g) ((Over.pullback g).map u).left u.left (pullback.fst B.hom g)`. Use `IsPullback.of_bot ?_ h1.symm (IsPullback.of_hasPullback B.hom g)` and prove the remaining obligations. Rewrite using `[h2, Over.w]`. Conclude with `IsPullback.of_hasPullback A.hom g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `m : pullback B.hom g ⟶ B'.left` to `hb.lift (pullback.fst B.hom g) (pullback.snd B.hom g ≫ l ≫ e.inv) (by`. Rewrite using `[Category.assoc, hg', pullback.condition])`. Establish `hm : m ≫ b = pullback.fst B.hom g` using `hb.lift_fst _ _ _`. Set `n : pullback A.hom g ⟶ A'.left` to `S2.lift (pullback.fst A.hom g) (((Over.pullback g).map u).left ≫ m) (by`. Rewrite using `[Category.assoc, hm, h1])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : n ≫ a = pullback.fst A.hom g` using `S2.lift_fst _ _ _`. Establish `hn' : n ≫ v.left = ((Over.pullback g).map u).left ≫ m` using `S2.lift_snd _ _ _`. Establish `S3 : IsPullback n ((Over.pullback g).map u).left v.left m`. Use `IsPullback.of_right ?_ hn' S2` and prove the remaining obligations. Rewrite using `[hn, hm]`.
-
-Conclude with `S1`. Conclude with `MorphismProperty.of_isPullback (P := @IsClosedImmersion) S3 hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_pullback_map_of_genericPoint {W U : Scheme.{0}} [IsIntegral W] {j : U ⟶ W}
     (hj : GlobalTheory.IsGenericPointHom j) {A B : Over W} (u : A ⟶ B) {A' B' : Over U} {a : A'.left ⟶ A.left}

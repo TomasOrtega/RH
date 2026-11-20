@@ -16,9 +16,9 @@ variable {K : Type} [Field K] [NumberField K] {R : Type} [CommRing R] [Algebra K
   {la : HeightOneSpectrum (𝓞 K)} {u : R → EReal}
 
 /- English proof (translation)
-Establish `h` using `hu.mul x x`. Rewrite `h` using `[hx]`. Break down `eq_or_ne (u x) ⊤ with h0 | h0` into its components or cases. Rewrite using `[h0]`. Conclude with `le_top`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hr : (((u x).toReal : ℝ) : EReal) = u x` using `EReal.coe_toReal h0 (hu.ne_bot x)`. Rewrite `h`, the goal using `[← hr]`. Rewrite `h` using `[← EReal.coe_add, EReal.coe_eq_coe_iff]`. Conclude with `EReal.coe_nonneg.mpr (by linarith)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonneg_of_idem (hu : IsVal la u) {x : R} (hx : x * x = x) : 0 ≤ u x := by
   have h := hu.mul x x
@@ -32,11 +32,9 @@ theorem nonneg_of_idem (hu : IsVal la u) {x : R} (hx : x * x = x) : 0 ≤ u x :=
     exact EReal.coe_nonneg.mpr (by linarith)
 
 /- English proof (translation)
-Break down `eq_or_ne a 0 with rfl | ha0` into its components or cases. Rewrite using `[zero_smul, hu.zero]`. Conclude with `le_top`. Rewrite using `[hu.smul a x ha0]`. Establish `hv0 : la.valuation K a ≠ 0` using `(Valuation.ne_zero_iff _).mpr ha0`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : (la.valuation K a).log ≤ 0`. Rewrite using `[WithZero.log_le_iff_le_exp hv0, WithZero.exp_zero]`. Conclude with `ha`. Use `add_nonneg ?_ hx` and prove the remaining obligations. Unfold `Formalism.BasicNotions.vAdd`.
-
-Establish `hn : (0 : ℤ) ≤ -(la.valuation K a).log` using `neg_nonneg.mpr hlog`. Conclude with `hn` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nonneg_smul (hu : IsVal la u) {a : K} (ha : la.valuation K a ≤ 1) {x : R} (hx : 0 ≤ u x) :
     0 ≤ u (a • x) := by
@@ -54,7 +52,7 @@ theorem nonneg_smul (hu : IsVal la u) {a : K} (ha : la.valuation K a ≤ 1) {x :
     exact_mod_cast hn
 
 /- English proof (translation)
-Use `Finset.sum_induction x (fun y => 0 ≤ u y) (fun a b ha hb => ?_) ?_ hx` and prove the remaining obligations. Conclude with `le_trans (le_min ha hb) (hu.add a b)`. Use `show (0 : EReal) ≤ u 0`. Rewrite using `[hu.zero]`. Conclude with `le_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonneg_sum (hu : IsVal la u) {ι : Type} (s : Finset ι) (x : ι → R) (hx : ∀ i ∈ s, 0 ≤ u (x i)) :
     0 ≤ u (∑ i ∈ s, x i) := by
@@ -67,7 +65,7 @@ theorem nonneg_sum (hu : IsVal la u) {ι : Type} (s : Finset ι) (x : ι → R) 
 end Val
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c la m χ v hχ hv f hf u hu`. Establish `hV : IsVal la u` using `isVal_valSet la u hu`. Establish `h1 : 0 ≤ u (∑ i, v i • χ i)` using `nonneg_sum hV Finset.univ _ fun i _ => nonneg_smul hV (hv i) (nonneg_of_idem hV (hχ i).2)`. Rewrite using `[hV.mul]`. Conclude with `add_nonneg h1 (hf u hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_comb_mul_nonneg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (la : HeightOneSpectrum (𝓞 c.F)) (m : ℕ) (χ : Fin m → Rul Xo c) (v : Fin m → c.F), (∀ i, χ i ∈ sec Xo c 0 0 ∧ χ i * χ i = χ i) → (∀ i, la.valuation c.F (v i) ≤ 1) → ∀ f : Rul Xo c, (∀ u ∈ valSet Xo c (algCls Xo c) la, 0 ≤ u f) → ∀ u ∈ valSet Xo c (algCls Xo c) la, 0 ≤ u ((∑ i, v i • χ i) * f) := by
   intro E _ _ _ H Dw l Xo c la m χ v hχ hv f hf u hu

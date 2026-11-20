@@ -16,9 +16,9 @@ def RestPlusAW (j : Fin G.T.t → ℕ) (jp : ℕ) (D : ℤ) : Prop :=
     Formalism.GM.M.goodCount p (bePhi p (r := r) G j jp) (Ljj p (r := r) G j jp) D
 
 /- English proof (translation)
-Establish `h1` using `finrank_Ljj_le p (r := r) G j jp`. Establish `hY : Module.finrank ℤ_[p] (Formalism.GM.M.YZ p (r` using `r) (G.lettersAt j jp) G.T.J G.T.thr) = dimY p (r := r) G j jp := Formalism.CountingSumsFrames.finrank_lattice _ _ inf_le_left`. Unfold `badY`. Simplify using `only [Formalism.GM.M.bad]`. Rewrite using `[hY, Nat.sub_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `RestPlusAW at h`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem plusA_of (j : Fin G.T.t → ℕ) (jp : ℕ) (D : ℤ) (h : RestPlusAW p (r := r) G j jp D) :
     Formalism.GM.M.bad p (bePhi p (r := r) G j jp) (Ljj p (r := r) G j jp) D ≤ badY p (r := r) G j jp D * dXi r (G.B - jp) := by
@@ -40,7 +40,7 @@ def RestPlusAWI (CM : ℝ) : Prop :=
     RestPlusAW X.p (r := X.r) (gB C0 CE1 CE2 X aTop 0 x.1) x.2.1 x.2.2 ⌊D1r C0 CE1 CE2 X CM⌋
 
 /- English proof (translation)
-Introduce `dl hdl aTop ha x hx`. Conclude with `plusA_of X.p (r := X.r) (gB C0 CE1 CE2 X aTop 0 x.1) x.2.1 x.2.2 _ (h dl hdl aTop ha x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem restPlusA_of (CM : ℝ) (h : RestPlusAWI C0 CE1 CE2 X CM) : RestPlusA C0 CE1 CE2 X CM := by
   intro dl hdl aTop ha x hx

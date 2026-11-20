@@ -11,11 +11,11 @@ noncomputable section
 namespace GlobalTheory.Asc
 
 /- English proof (translation)
-Introduce `hD hd D q T L μ0 hL sc G W M hM ρ Φ u i h k hk g`. Establish `hf` using `hd D q T L μ0 hL sc G W M hM ρ Φ ⟨i, h⟩`. Establish `key` using `hD D q T L μ0 hL sc G W M hM i h (.chi i 0) (Or.inl rfl) _ hf 1 (one_mem _) k hk`. Use `show liftA W M (.right i 0) (W.datum ρ Φ ⟨i, h⟩) _ (g * k) = liftA W M (.right i 0) (W.datum ρ Φ ⟨i, h⟩) _ g`. Rewrite using `[liftA_apply, liftA_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Use `congr 1`. Use `show W.om (.chi i 0) (negGA _ (g * k), x) _ 0 = W.om (.chi i 0) (negGA _ g, x) _ 0`. Establish `e : ((negGA _ (g * k), x) : GA D (G.pS (.chi i 0)) × GA D (G.pT (.chi i 0))) = (negGA _ g, x) * G.toPair (.chi i 0) 1 k` using `by show _ = (negGA _ g, x) * (negGA _ k, 1)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[e, map_mul, Module.End.mul_apply, key]`.
+A detailed English derivation is pending.
 -/
 theorem partFixed_of_depFixed : DepFixed → DatumDep → PartFixed := by
   intro hD hd D q T L μ0 hL sc G W M hM ρ Φ u i h k hk g

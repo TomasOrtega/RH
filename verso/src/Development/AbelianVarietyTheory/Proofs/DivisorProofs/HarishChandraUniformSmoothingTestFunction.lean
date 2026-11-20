@@ -17,7 +17,7 @@ open scoped ContDiff
 namespace GlobalTheory.HCAlphaEll
 
 /- English proof (translation)
-Establish `hy' : IsUnit (Matrix.of y)` using `hy`. Simplify using `only [chart, dif_pos hy', Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem chart_sum {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (s : Finset ℕ) (c : ℕ → ℂ)
     (ψ : ℕ → Sm E a) (g : GA E a) {y : Lie E a} (hy : y ∈ invSet E a) :
@@ -26,13 +26,13 @@ theorem chart_sum {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a :
   simp only [chart, dif_pos hy', Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ a ν hν p hp`. Take `⟨α, hα, h⟩` from `GlobalTheory.T.exists_ellipticReproducing_testFunction_laplacian E a ν hν p hp`. Use `⟨α, hα, fun φ hφ => funext fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `h (chart φ.1 x) (φ.2 x) (fun y hy => by`. Rewrite `hφ` using `[Polynomial.aeval_eq_sum_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `congrArg (fun ψ : Sm E a => chart ψ.1 x y) hφ`. Rewrite `e` using `[LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply] at e`. Rewrite `e` using `[chart_sum _ _ (fun k => (lapOp E a ^ k) φ) _ hy]`. Establish `e0 : chart (0 : Sm E a).1 x y = 0` using `by simp [chart]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[e0]`. Rewrite using `[← e, polyF, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, GlobalTheory.T.chart_leftInvariantLaplacianOp_pow_eq_iterate E a φ x k y hy])`. Rewrite using `[smoothing, h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `chart_val φ.1 x 1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem reproduce_of_lap : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ν : Measure (Lie E a)),
     ν.IsAddHaarMeasure → ∀ p : Polynomial ℂ, p ≠ 0 → ∃ α : Lie E a → ℂ, IsTest (invSet E a) α ∧
@@ -58,14 +58,14 @@ theorem reproduce_of_lap : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyCo
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Rewrite using `[lieS_apply]`. Conclude with `hz _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_lieS {z : Module.End ℂ (Sm E a)} (hz : ∀ X, Commute z (lie E a X)) (i j : Fin a) (x : Cinf E) :
     Commute z (lieS E a i j x) := by
   rw [lieS_apply]; exact hz _
 
 /- English proof (translation)
-Unfold `casKOp`. Use `Commute.sum_right _ _ _ fun τ _ => Commute.sum_right _ _ _ fun i _ => Commute.sum_right _ _ _ fun j _ => ?_` and prove the remaining obligations. Use `Commute.smul_right (Commute.add_right (Commute.pow_right ?_ 2) (Commute.pow_right ?_ 2)) _` and prove the remaining obligations. Conclude with `(commute_lieS hz _ _ _).sub_right (commute_lieS hz _ _ _)`. Conclude with `(commute_lieS hz _ _ _).add_right (commute_lieS hz _ _ _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem commute_casKOp {z : Module.End ℂ (Sm E a)} (hz : ∀ X, Commute z (lie E a X)) :
     Commute z (casKOp E a) := by
@@ -76,7 +76,7 @@ theorem commute_casKOp {z : Module.End ℂ (Sm E a)} (hz : ∀ X, Commute z (lie
   · exact (commute_lieS hz _ _ _).add_right (commute_lieS hz _ _ _)
 
 /- English proof (translation)
-Establish `hE : ∀ i j, Commute z (Eop τ i j)` using `fun i j => Commute.smul_right ((commute_lieS hz _ _ _).sub_right ((commute_lieS hz _ _ _).smul_right _)) _`. Unfold `Formalism.REAL.Cas`. Conclude with `Commute.sum_right _ _ _ fun i _ => Commute.sum_right _ _ _ fun j _ => (hE i j).mul_right (hE j i)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem commute_cas {z : Module.End ℂ (Sm E a)} (hz : ∀ X, Commute z (lie E a X)) (τ : E →+* ℂ) :
     Commute z (Formalism.REAL.Cas (Eop (a := a) τ)) := by
@@ -86,13 +86,13 @@ theorem commute_cas {z : Module.End ℂ (Sm E a)} (hz : ∀ X, Commute z (lie E 
   exact Commute.sum_right _ _ _ fun i _ => Commute.sum_right _ _ _ fun j _ => (hE i j).mul_right (hE j i)
 
 /- English proof (translation)
-The claim follows from `Zalg_mul_lie E a X z hz`.
+A detailed English derivation is pending.
 -/
 theorem commute_lie_of_mem {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) (X : Lie E a) :
     Commute z (lie E a X) := Zalg_mul_lie E a X z hz
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[List.replicate_succ, List.foldr_cons, ih, pow_succ', map_mul, Module.End.mul_apply]`. Simplify using `[sub_smul, Polynomial.aeval_X, Polynomial.aeval_C]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem foldr_replicate (z : Module.End ℂ (Sm E a)) (χ : Module.End ℂ (Sm E a) → ℂ) (N : ℕ) (φ : Sm E a) :
     (List.replicate N z).foldr (fun z f => z f - χ z • f) φ =
@@ -104,19 +104,15 @@ theorem foldr_replicate (z : Module.End ℂ (Sm E a)) (χ : Module.End ℂ (Sm E
     simp [sub_smul, Polynomial.aeval_X, Polynomial.aeval_C]
 
 /- English proof (translation)
-Introduce `E _ _ _ a L _ W hW χ N ν hν`. Take `⟨q, hq0, hq⟩` from `GlobalTheory.T.exists_poly_maximalCompactCasimir_kills_KType E a W hW`. Set `A : Option (E →+* ℂ) → Module.End ℂ (Sm E a)` to `fun o => o.elim (casKOp E a) fun τ => Formalism.REAL.Cas (Eop τ)`. Set `c : Option (E →+* ℂ) → ℂ` to `fun o => o.elim 2 fun _ => 4`. Set `P : Option (E →+* ℂ) → Polynomial ℂ` to `fun o => o.elim q fun τ => (Polynomial.X - Polynomial.C (χ (Formalism.REAL.Cas (Eop (a := a) τ)))) ^ N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hZ : ∀ τ : E →+* ℂ, ∀ X, Commute (Formalism.REAL.Cas (Eop (a` using `a) τ)) (lie E a X) := fun τ => commute_lie_of_mem (GlobalTheory.T.casimir_glFactor_embedding_mem_capelliAlgebra E a τ)`. Establish `hc : ∀ i j, Commute (A i) (A j)`. Introduce and unpack `(_ | τ) (_ | τ')`. Conclude with `Commute.refl _`. Conclude with `(commute_casKOp (hZ τ')).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `commute_casKOp (hZ τ)`. Conclude with `commute_cas (hZ τ) τ'`. Establish `hP : ∀ i, P i ≠ 0`. Introduce and unpack `(_ | τ)`. Conclude with `hq0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_ne_zero _ (Polynomial.X_sub_C_ne_zero _)`. Take `⟨p, hp0, hp⟩` from `GlobalTheory.T.exists_poly_annihilates_commuting_linear_combination A hc c P hP`. Take `⟨α, hα, hsm⟩` from `reproduce_of_lap E a ν hν p hp0`. Use `⟨α, hα, fun φ hφ => hsm φ ?_⟩` and prove the remaining obligations. Establish `e : ∑ i, c i • A i = lapOp E a`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[GlobalTheory.T.leftInvariantLaplacian_eq_casimir_decomposition E a, Fintype.sum_option]`. Both sides reduce to the same expression. Rewrite using `[← e]`. Use `hp φ ?_` and prove the remaining obligations. Introduce and unpack `(_ | τ)`.
-
-Conclude with `hq φ hφ.2.2.1`. Take `⟨χ', hχ', hN⟩` from `hφ.2.2.2`. Rewrite `hχ'` using `[Set.mem_singleton_iff]`. Substitute `hχ'` using the available equality. Establish `h` using `hN (List.replicate N (Formalism.REAL.Cas (Eop τ))) (List.length_replicate ..) (fun z hz => (List.eq_of_mem_replicate hz) ▸ GlobalTheory.T.casimir_glFactor_embedding_mem_capelliAlgebra E a τ)`.
-
-Rewrite `h` using `[foldr_replicate]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_alpha_smoothing : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (L : Subgroup (GL (Fin a) (Af E))), IsOpen (L : Set (GL (Fin a) (Af E))) → ∀ W : Submodule ℂ (Kinf E a → ℂ),

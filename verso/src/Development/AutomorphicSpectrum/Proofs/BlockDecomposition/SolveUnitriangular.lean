@@ -10,9 +10,9 @@ section Solve
 variable {R : Type*} [CommRing R] {n : ℕ}
 
 /- English proof (translation)
-Introduce `i j`. Establish `e : a * b - 1 = (a - 1) * (b - 1) + (a - 1) + (b - 1)` using `by noncomm_ring`. Establish `e2 : (a * b) i j - (1 : Matrix (Fin n) (Fin n) R) i j = ((a - 1) * (b - 1)) i j + (a i j - (1 : Matrix (Fin n) (Fin n) R) i j) + (b i j - (1 : Matrix (Fin n) (Fin n) R) i j)`. Rewrite using `[← Matrix.sub_apply, e]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e2]`. Use `J.add_mem (J.add_mem ?_ (ha i j)) (hb i j)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `J.sum_mem fun k _ => J.mul_mem_right _ (ha i k)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_congr_one {J : Ideal R} {a b : Matrix (Fin n) (Fin n) R}
     (ha : ∀ i j, a i j - (1 : Matrix (Fin n) (Fin n) R) i j ∈ J)
@@ -31,69 +31,63 @@ theorem mul_congr_one {J : Ideal R} {a b : Matrix (Fin n) (Fin n) R}
   exact J.sum_mem fun k _ => J.mul_mem_right _ (ha i k)
 
 /- English proof (translation)
-Establish `key : ∀ d : ℕ, ∃ r w : Matrix (Fin n) (Fin n) R, (∀ i j, j < i → r i j = 0) ∧ (∀ i, r i i = 1) ∧ (∀ i j, j < i → w i j = 0) ∧ (∀ i, w i i = 1) ∧ (∀ i j, i < j → j.val ≤ i.val + d → r i j ∈ T i j ∧ w i j ∈ V i j) ∧ (∀ i j, i.val + d < j.val → r i j = 0 ∧ w i j = 0) ∧ (∀ i j, r i j …`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Use `⟨1, 1, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j h`. Conclude with `Matrix.one_apply_ne (ne_of_gt h)`. Introduce `i`. Conclude with `Matrix.one_apply_eq i`. Introduce `i j h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Matrix.one_apply_ne (ne_of_gt h)`. Introduce `i`. Conclude with `Matrix.one_apply_eq i`. Introduce `i j h h2`. Establish `: i.val < j.val` using `h`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `i j h`. Establish `: i ≠ j`. Introduce `e`. Substitute `e` using the available equality.
+Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `⟨Matrix.one_apply_ne this, Matrix.one_apply_ne this⟩`. Introduce `i j`. Simplify using the standard rewrite rules. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Introduce `i j h`. Rewrite using `[mul_one]`. Break down `Nat.lt_or_ge j.val i.val with h1 | h1` into its components or cases. Rewrite using `[hlow i j h1]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `Matrix.one_apply_ne (by`. Introduce `e`. Substitute `e` using the available equality. Use the proof step `omega)`. Establish `: i = j` using `Fin.ext (by omega)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `this` using the available equality. Rewrite using `[hdiag i]`. Conclude with `Matrix.one_apply_eq i`. Consider the case `succ d ih`. Take `⟨r, w, hrl, hrd, hwl, hwd, hin, hout, hrJ, hwJ, hp⟩` from `ih`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc : ∀ i j, i < j → u i j - (r * w) i j ∈ J`. Introduce `i j h`. Establish `h1` using `mul_congr_one hrJ hwJ i j`. Establish `h2` using `hu i j`. Use `J.sub_mem h2 h1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Simplify using `using this`. Establish `hex : ∀ i j, ∃ t v : R, i < j → t ∈ T i j ∧ v ∈ V i j ∧ t ∈ J ∧ v ∈ J ∧ u i j - (r * w) i j = t + v`. Introduce `i j`. Distinguish the cases in `h : i < j`. Take `⟨t, v, h1⟩` from `hdec i j h _ (hc i j h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨t, v, fun _ => h1⟩`. Conclude with `⟨0, 0, fun h' => absurd h' h⟩`. Use `choose t v htv using hex`. Take `⟨r', hr'⟩ : ∃ r' : Matrix (Fin n) (Fin n) R, ∀ i j, r' i j = if j.val = i.val + d + 1 then t i j else r i j` from `⟨fun i j => if j.val = i.val + d + 1 then t i j else r i j, fun _ _ => rfl⟩`. Take `⟨w', hw'⟩ : ∃ w' : Matrix (Fin n) (Fin n) R, ∀ i j, w' i j = if j.val = i.val + d + 1 then v i j else w i j` from `⟨fun i j => if j.val = i.val + d + 1 then v i j else w i j, fun _ _ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr'l : ∀ i j, j < i → r' i j = 0`. Introduce `i j h`. Establish `h' : j.val < i.val` using `h`. Rewrite using `[hr', if_neg (by omega), hrl i j h]`. Establish `hw'l : ∀ i j, j < i → w' i j = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j h`. Establish `h' : j.val < i.val` using `h`. Rewrite using `[hw', if_neg (by omega), hwl i j h]`. Establish `hr'd : ∀ i, r' i i = 1`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hr', if_neg (by omega), hrd i]`. Establish `hw'd : ∀ i, w' i i = 1`. Introduce `i`. Rewrite using `[hw', if_neg (by omega), hwd i]`. Use `⟨r', w', hr'l, hr'd, hw'l, hw'd, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j h h2`. Rewrite using `[hr', hw']`. Distinguish the cases in `e : j.val = i.val + d + 1`. Rewrite using `[if_pos e, if_pos e]`. Conclude with `⟨(htv i j h).1, (htv i j h).2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg e, if_neg e]`. Conclude with `hin i j h (by omega)`. Introduce `i j h`. Rewrite using `[hr', hw', if_neg (by omega), if_neg (by omega)]`. Conclude with `hout i j (by omega)`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Rewrite using `[hr']`. Distinguish the cases in `e : j.val = i.val + d + 1`. Establish `hij : i < j`. Rewrite using `[Fin.lt_def]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos e, Matrix.one_apply_ne (ne_of_lt hij), sub_zero]`. Conclude with `(htv i j hij).2.2.1`. Rewrite using `[if_neg e]`. Conclude with `hrJ i j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Rewrite using `[hw']`. Distinguish the cases in `e : j.val = i.val + d + 1`. Establish `hij : i < j`. Rewrite using `[Fin.lt_def]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos e, Matrix.one_apply_ne (ne_of_lt hij), sub_zero]`. Conclude with `(htv i j hij).2.2.2.1`. Rewrite using `[if_neg e]`. Conclude with `hwJ i j`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `i j h`. Distinguish the cases in `e : j.val = i.val + d + 1`. Establish `hij : i < j`. Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hneq : i ≠ j` using `ne_of_lt hij`. Establish `hold` using `hout i j (by omega)`. Establish `hsum : (r' * w') i j = (r * w) i j + t i j + v i j`. Establish `hterm : ∀ k, r' i k * w' k j = r i k * w k j + (if k = j then t i j else 0) + (if k = i then v i j else 0)`. Introduce `k`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Distinguish the cases in `kj : k = j`. Substitute `kj` using the available equality. Rewrite using `[if_pos rfl, if_neg (Ne.symm hneq), hw'd, hwd, hold.1, hr', if_pos e]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `ki : k = i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Substitute `ki` using the available equality. Rewrite using `[if_neg kj, if_pos rfl, hr'd, hrd, hold.2, hw', if_pos e]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg kj, if_neg ki]`. Break down `lt_or_gt_of_ne ki with h1 | h1` into its components or cases.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hr'l i k h1, hrl i k h1]`. Expand and normalize the polynomial expressions, which then agree. Break down `lt_or_gt_of_ne kj with h2 | h2` into its components or cases. Establish `a1 : i.val < k.val` using `h1`. Establish `a2 : k.val < j.val` using `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hr', hw', if_neg (by omega), if_neg (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hw'l k j h2, hwl k j h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.mul_apply, Finset.sum_congr rfl (fun k _ => hterm k), Finset.sum_add_distrib, Finset.sum_add_distrib, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails.
 
-Simplify using the standard rewrite rules. Rewrite using `[hsum]`. Use `(htv i j hij).2.2.2.2` as an intermediate fact. Take the linear combination `-this`. Establish `hle : j.val ≤ i.val + d` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hp i j hle, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : k.val = i.val + d + 1`. Establish `: j < k`. Rewrite using `[Fin.lt_def]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hw'l k j this, hwl k j this]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h2 : j.val = k.val + d + 1`. Establish `: k < i`.
-
-Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hr'l i k this, hrl i k this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hr', hw', if_neg h1, if_neg h2]`.
-
-Take `⟨r, w, hrl, hrd, hwl, hwd, hin, -, -, -, hp⟩` from `key n`. Use `⟨r, w, hrl, hrd, ?_, hwl, hwd, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j h`. Conclude with `(hin i j h (by omega)).1`. Introduce `i j h`.
-
-Conclude with `(hin i j h (by omega)).2`. Use extensionality with `i j`. Conclude with `(hp i j (by omega)).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem solve_unitriangular (J : Ideal R) (T V : Fin n → Fin n → Set R)
     (hdec : ∀ i j, i < j → ∀ c ∈ J, ∃ t v : R, t ∈ T i j ∧ v ∈ V i j ∧ t ∈ J ∧ v ∈ J ∧ c = t + v)
@@ -282,17 +276,17 @@ end Solve
 section Reps
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨S₁, hS₁, hS₁'⟩ : ∃ S : Finset R, S.card ≤ Nat.card (IsLocalRing.ResidueField R) ∧ ∀ x : R, ∃ t ∈ S, x - t ∈ Ideal.span {ϖ} := by`. Use `letI := Fintype.ofFinite (IsLocalRing.ResidueField R)`. Take `⟨sec, hsec⟩` from `(IsLocalRing.residue_surjective (R := R)).hasRightInverse`. Use `⟨Finset.univ.image sec, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card]`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.card_image_le.trans (by simp)`. Introduce `x`. Use `⟨sec (IsLocalRing.residue R x), by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[← hϖ.maximalIdeal_eq, ← IsLocalRing.residue_eq_zero_iff, map_sub, hsec, sub_self]`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Use `⟨{0}, by simp, fun x => ⟨0, by simp, by simp⟩⟩` and prove the remaining obligations. Consider the case `succ k ih`. Take `⟨S, hS, hS'⟩` from `ih`. Use `⟨Finset.image₂ (fun t s => t + ϖ ^ k * s) S S₁, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.card_image₂_le _ _ _ |>.trans ?_` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Nat.mul_le_mul hS hS₁`. Introduce `x`. Take `⟨t, ht, hx⟩` from `hS' x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `Ideal.mem_span_singleton.mp hx`. Take `⟨s, hs, hy'⟩` from `hS₁' y`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton.mp hy'`. Use `⟨t + ϖ ^ k * s, Finset.mem_image₂_of_mem ht hs, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_span_singleton]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Take the linear combination `hy + ϖ ^ k * hz`.
+A detailed English derivation is pending.
 -/
 theorem exists_reps (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [Finite (IsLocalRing.ResidueField R)] {ϖ : R} (hϖ : Irreducible ϖ) (k : ℕ) :
@@ -333,7 +327,7 @@ end Reps
 section Main
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Conclude with `h i j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mul_diagonal {R K : Type} [CommRing R] [Field K] (f : R →+* K) {n : ℕ}
     (e : Fin n → K) (X Y : Matrix (Fin n) (Fin n) R)
@@ -348,55 +342,47 @@ end Main
 section Cover
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ n ϖ m hϖ hm _ lam hlam`. Use `choose reps hcard hrep using fun k => exists_reps R hϖ k`. Use `set a := algebraMap R K with ha`. Use `set J : Ideal R := Ideal.span {ϖ ^ m} with hJ`. Establish `hπ : a ϖ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `h0 : ϖ = 0` using `(IsFractionRing.injective R K) (by rw [map_zero]; exact h)`. Conclude with `hϖ.ne_zero h0`. Establish `hpow : ∀ i j : Fin n, j ≤ i → a ϖ ^ lam i * a ϖ ^ (lam j - lam i).toNat = a ϖ ^ lam j`. Introduce `i j h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h0 : 0 ≤ lam j - lam i` using `sub_nonneg.mpr (hlam h)`. Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg h0, ← zpow_add₀ hπ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Set `Tf : Fin n → Fin n → Finset R` to `fun i j => if i < j then (reps (lam i - lam j).toNat).image (fun x => ϖ ^ m * x) else {(1 : Matrix (Fin n) (Fin n) R) i j}`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S : Finset (Fin n → Fin n → R)` to `Fintype.piFinset fun i => Fintype.piFinset fun j => Tf i j`. Set `D : Matrix (Fin n) (Fin n) K` to `Matrix.diagonal (fun i => a ϖ ^ (lam i))`. Set `f : (Fin n → Fin n → R) → Matrix (Fin n) (Fin n) K` to `fun r => (Matrix.of r).map a * D`. Establish `hT : ∀ i j, (Tf i j).card ≤ Nat.card (IsLocalRing.ResidueField R) ^ (if i < j then (lam i - lam j).toNat else 0)`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : i < j`. Simplify using `only [Tf, if_pos h]`. Conclude with `Finset.card_image_le.trans (hcard _)`. Simplify using `[Tf, if_neg h]`. Use `⟨S.image f, ?_, ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `A1 A2 h1 h2`. Take `⟨u, d, l, hu, hd, hl, hul, hud, hdo, hlu, hld, hA⟩` from `GlobalTheory.CompanionTheory.IwahoriUDL.iwahori_udl R n ϖ m hϖ hm A1 h1`. Establish `hdec : ∀ i j : Fin n, i < j → ∀ c ∈ J, ∃ t v : R, t ∈ (fun x => ϖ ^ m * x) '' (reps (lam i - lam j).toNat : Set R) ∧ v ∈ (Ideal.span {ϖ ^ (m + (lam i - lam j).toNat)} : Set R) ∧ t ∈ J ∧ v ∈ J ∧ c = t + v`. Introduce `i j _ c hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton.mp hc`. Take `⟨t, ht, hy⟩` from `hrep (lam i - lam j).toNat y`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton.mp hy`. Use `⟨ϖ ^ m * t, ϖ ^ (m + (lam i - lam j).toNat) * z, ⟨t, ht, rfl⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.mem_span_singleton.mpr (Dvd.intro _ rfl)`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Ideal.mem_span_singleton.mpr (Dvd.intro _ rfl)`. Conclude with `Ideal.mem_span_singleton.mpr ⟨ϖ ^ (lam i - lam j).toNat * z, by ring⟩`. Rewrite using `[pow_add]`. Take the linear combination `ϖ ^ m * hz`. Take `⟨r, w, hrl, hrd, hrT, hwl, hwd, hwV, huw⟩` from `solve_unitriangular J (fun i j => (fun x => ϖ ^ m * x) '' (reps (lam i - lam j).toNat : Set R)) (fun i j => (Ideal.span {ϖ ^ (m + (lam i - lam j).toNat)} : Set R)) hdec u hu hul hud`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw' : ∀ i j, ∃ y : R, y - (1 : Matrix (Fin n) (Fin n) R) i j ∈ J ∧ a (w i j) * a ϖ ^ lam j = a ϖ ^ lam i * a y`. Introduce `i j`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton.mp (hwV i j h)`. Use `⟨ϖ ^ m * z, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.one_apply_ne (ne_of_lt h), sub_zero]`. Conclude with `Ideal.mem_span_singleton.mpr (Dvd.intro _ rfl)`. Establish `h0 : 0 ≤ lam i - lam j` using `sub_nonneg.mpr (hlam h.le)`. Establish `e : a ϖ ^ lam j * a ϖ ^ (lam i - lam j).toNat = a ϖ ^ lam i`. Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg h0, ← zpow_add₀ hπ]`.
+Expand and normalize the polynomial expressions, which then agree. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hz, pow_add, ← e]`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Use `⟨1, by simp [J.zero_mem], ?_⟩` and prove the remaining obligations. Rewrite using `[hwd]`. Simplify using `[mul_comm]`. Use `⟨0, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_ne (ne_of_gt h)]`. Simplify using the standard rewrite rules. Rewrite using `[hwl i j h]`. Simplify using the standard rewrite rules. Establish `hl' : ∀ i j, ∃ y : R, y - (1 : Matrix (Fin n) (Fin n) R) i j ∈ J ∧ a (l i j) * a ϖ ^ lam j = a ϖ ^ lam i * a y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Use `⟨0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_apply_ne (ne_of_lt h)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hlu i j h]`. Simplify using the standard rewrite rules. Substitute `h` using the available equality. Use `⟨1, by simp [J.zero_mem], ?_⟩` and prove the remaining obligations. Rewrite using `[hld]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `[mul_comm]`. Use `⟨l i j * ϖ ^ (lam j - lam i).toNat, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_apply_ne (ne_of_gt h), sub_zero]`. Use `hl i j` as an intermediate fact. Rewrite `this` using `[Matrix.one_apply_ne (ne_of_gt h), sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `J.mul_mem_right _ this`. Rewrite using `[← hpow i j h.le]`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `choose w' hw'1 hw'2 using hw'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `choose l' hl'1 hl'2 using hl'`. Establish `ew : (w.map a) * D = D * (Matrix.of w').map a` using `map_mul_diagonal a _ w (Matrix.of w') hw'2`. Establish `el : (l.map a) * D = D * (Matrix.of l').map a` using `map_mul_diagonal a _ l (Matrix.of l') hl'2`. Establish `ed : (d.map a) * D = D * d.map a`. Use `map_mul_diagonal a _ d d fun i j => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Conclude with `mul_comm _ _`. Rewrite using `[hdo i j h]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨f r, Finset.mem_image_of_mem f ?_, Matrix.of w' * d * Matrix.of l' * A2, ?_, ?_⟩` and prove the remaining obligations. Use `Fintype.mem_piFinset.mpr fun i => Fintype.mem_piFinset.mpr fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : i < j`. Simplify using `only [Tf, if_pos h]`. Take `⟨t, ht, e⟩` from `hrT i j h`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.mem_image.mpr ⟨t, ht, e⟩`. Simplify using `only [Tf, if_neg h, Finset.mem_singleton]`. Break down `lt_or_eq_of_le (not_lt.mp h) with h' | h'` into its components or cases. Rewrite using `[hrl i j h', Matrix.one_apply_ne (ne_of_gt h')]`. Substitute `h'` using the available equality.
-
-Rewrite using `[hrd, Matrix.one_apply_eq]`. Conclude with `mul_congr_one (mul_congr_one (mul_congr_one hw'1 hd) hl'1) h2`. Use `show A1.map a * D * A2.map a = (Matrix.of r).map a * D * _`. Establish `er : (Matrix.of r) = r` using `rfl`. Rewrite using `[er, hA, huw]`.
-
-Simplify using `only [Matrix.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = r.map a * w.map a * (d.map a * D) * (Matrix.of l').map a * A2.map a := by`. Rewrite using `[el]`.
-
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = r.map a * (w.map a * D) * d.map a * (Matrix.of l').map a * A2.map a := by`. Rewrite using `[ed]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = r.map a * D * ((Matrix.of w').map a * d.map a * (Matrix.of l').map a * A2.map a) := by`.
-
-Rewrite using `[ew]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem double_coset_cover : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [Field K] [Algebra R K] [IsFractionRing R K] (n : ℕ) (ϖ : R) (m : ℕ), Irreducible ϖ → 1 ≤ m →

@@ -7,29 +7,27 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `L _ _ _ n A B _ _ _ _ ρa ρb S₁ S₂ W h₁ h₂ hW hst h0 h0' hne`. Establish `inj1 : ∀ w ∈ W, w.1 = 0 → w = 0`. Introduce `w hw e`. Establish `: w = (0, w.2)` using `Prod.ext e rfl`. Establish `h2` using `h0 w.2 (this ▸ hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Prod.ext e h2`. Establish `inj2 : ∀ w ∈ W, w.2 = 0 → w = 0`. Introduce `w hw e`. Establish `: w = (w.1, 0)` using `Prod.ext rfl e`. Establish `h2` using `h0' w.1 (this ▸ hw)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Prod.ext h2 e`. Take `⟨w₀, hw₀, hw₀ne⟩` from `(Submodule.ne_bot_iff W).1 hne`. Establish `le1 : W.map (LinearMap.fst ℂ _ _) ≤ S₁`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `(hW w hw).1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `le2 : W.map (LinearMap.snd ℂ _ _) ≤ S₂`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `(hW w hw).2`. Establish `e1 : W.map (LinearMap.fst ℂ _ _) = S₁`. Use `(h₁.2.2 _ ⟨le1.trans h₁.1.1, ?_⟩ le1).resolve_left ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `h _ ⟨w, hw, rfl⟩`. Conclude with `⟨_, hst h w hw, rfl⟩`. Introduce `hb`. Establish `: w₀.1 ∈ W.map (LinearMap.fst ℂ _ _)` using `⟨w₀, hw₀, rfl⟩`. Rewrite `this` using `[hb, Submodule.mem_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `hw₀ne (inj1 w₀ hw₀ this)`. Establish `e2 : W.map (LinearMap.snd ℂ _ _) = S₂`. Use `(h₂.2.2 _ ⟨le2.trans h₂.1.1, ?_⟩ le2).resolve_left ?_` and prove the remaining obligations. Introduce and unpack `h _ ⟨w, hw, rfl⟩`. Conclude with `⟨_, hst h w hw, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `hb`. Establish `: w₀.2 ∈ W.map (LinearMap.snd ℂ _ _)` using `⟨w₀, hw₀, rfl⟩`. Rewrite `this` using `[hb, Submodule.mem_bot]`. Conclude with `hw₀ne (inj2 w₀ hw₀ this)`. Set `p₁ : W →ₗ[ℂ] S₁` to `((LinearMap.fst ℂ _ _).comp W.subtype).codRestrict S₁ (fun w => (hW w.1 w.2).1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `p₂ : W →ₗ[ℂ] S₂` to `((LinearMap.snd ℂ _ _).comp W.subtype).codRestrict S₂ (fun w => (hW w.1 w.2).2)`. Establish `b₁ : Function.Bijective p₁`. Use `⟨(injective_iff_map_eq_zero p₁).2 fun w hw => ?_, fun f => ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (inj1 w.1 w.2 (congrArg Subtype.val hw))`. Establish `: f.1 ∈ W.map (LinearMap.fst ℂ _ _)` using `by rw [e1]; exact f.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨w, hw, e⟩` from `this`. Conclude with `⟨⟨w, hw⟩, Subtype.ext e⟩`. Establish `b₂ : Function.Bijective p₂`. Use `⟨(injective_iff_map_eq_zero p₂).2 fun w hw => ?_, fun f => ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (inj2 w.1 w.2 (congrArg Subtype.val hw))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `: f.1 ∈ W.map (LinearMap.snd ℂ _ _)` using `by rw [e2]; exact f.2`. Take `⟨w, hw, e⟩` from `this`. Conclude with `⟨⟨w, hw⟩, Subtype.ext e⟩`. Use `⟨(LinearEquiv.ofBijective p₁ b₁).symm.trans (LinearEquiv.ofBijective p₂ b₂), ?_⟩` and prove the remaining obligations. Introduce `h f f' hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨w, rfl⟩` from `b₁.2 f`. Establish `hf' : f' = p₁ ⟨_, hst h w.1 w.2⟩` using `Subtype.ext hf`. Substitute `hf'` using the available equality. Establish `key : ∀ v : W, ((LinearEquiv.ofBijective p₁ b₁).symm.trans (LinearEquiv.ofBijective p₂ b₂)) (p₁ v) = p₂ v`. Introduce `v`.
-
-Establish `: (LinearEquiv.ofBijective p₁ b₁).symm (p₁ v) = v` using `(LinearEquiv.ofBijective p₁ b₁).symm_apply_apply v`. Rewrite using `[LinearEquiv.trans_apply, this]`. Both sides reduce to the same expression. Rewrite using `[key, key]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isoRep_of_stable_graph : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Module ℂ B] (ρa : Representation ℂ (GQ L n) A) (ρb : Representation ℂ (GQ L n) B) (S₁ : Submodule ℂ (GAf L n → A)) (S₂ : Submodule ℂ (GAf L n → B)) (W : Submodule ℂ ((GAf L n → A) × (GAf L n → B))), NG.IsIrrRep ρa S₁ → NG.IsIrrRep ρb S₂ → (∀ w ∈ W, w.1 ∈ S₁ ∧ w.2 ∈ S₂) → (∀ h, ∀ w ∈ W, (NG.rt L n h w.1, NG.rt L n h w.2) ∈ W) → (∀ u, ((0 : GAf L n → A), u) ∈ W → u = 0) → (∀ u, (u, (0 : GAf L n → B)) ∈ W → u = 0) → W ≠ ⊥ → NG.IsoRep S₁ S₂ := by
   intro L _ _ _ n A B _ _ _ _ ρa ρb S₁ S₂ W h₁ h₂ hW hst h0 h0' hne

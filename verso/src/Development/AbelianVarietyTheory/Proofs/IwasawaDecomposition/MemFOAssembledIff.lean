@@ -12,13 +12,13 @@ open Formalism.L2.Pj
 namespace GlobalTheory.Mem
 
 /- English proof (translation)
-Introduce `X z`. Establish `hphi : ∀ y : 𝓞 X.B.Ks, X.toD7.what₂.phiO y = X.B.embLL ((y : X.B.Ks) : X.B.LL)` using `fun _ => rfl`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `hle : FO X.toD7 ≤ X.B.Ks.map X.B.embLL.toRatAlgHom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[FO, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨((show 𝓞 X.B.Ks from y : X.B.Ks) : X.B.LL), SetLike.coe_mem _, (hphi y).symm⟩`. Take `⟨x, hx, rfl⟩` from `hle hz`. Conclude with `⟨x, hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨a, b, -, hab⟩` from `IsFractionRing.div_surjective (A := 𝓞 X.B.Ks) (⟨x, hx⟩ : X.B.Ks)`. Establish `hx' : x = ((a : X.B.Ks) : X.B.LL) / ((b : X.B.Ks) : X.B.LL)`. Use `congrArg (fun t : X.B.Ks => (t : X.B.LL)) hab` as an intermediate fact. Conclude with `this.symm`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx', map_div₀, ← hphi a, ← hphi b]`. Conclude with `div_mem (phiO_mem_FO _ _) (phiO_mem_FO _ _)`.
+A detailed English derivation is pending.
 -/
 theorem mem_FO_assembled_iff :
     ∀ (X : Stages) (z : ℂ), z ∈ FO X.toD7 ↔ ∃ x ∈ X.B.Ks, X.B.embLL x = z := by

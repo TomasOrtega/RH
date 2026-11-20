@@ -42,11 +42,11 @@ theorem quotRep4_mk (π : Representation ℂ G V) (M : Submodule ℂ V) (hM : �
     quotRep4 π M hM g (Submodule.Quotient.mk v) = Submodule.Quotient.mk (π g v) := rfl
 
 /- English proof (translation)
-Set `S : Set (Submodule ℂ V)` to `{N | (∀ g, ∀ v ∈ N, π g v ∈ N) ∧ x₀ ∉ N}`. Establish `hbot : (⊥ : Submodule ℂ V) ∈ S` using `⟨fun g v hv => by`. Rewrite using `[(Submodule.mem_bot ℂ).1 hv, map_zero]`. Conclude with `Submodule.zero_mem _, fun h => hx₀ ((Submodule.mem_bot ℂ).1 h)⟩`. Take `⟨M, -, hMS, hMmax⟩` from `zorn_le_nonempty₀ S (fun c hcS hc y hy => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : c.Nonempty` using `⟨y, hy⟩`. Establish `hdir : DirectedOn (· ≤ ·) c` using `hc.directedOn`. Use `⟨sSup c, ⟨fun g v hv => ?_, fun h => ?_⟩, fun z hz => le_sSup hz⟩` and prove the remaining obligations. Take `⟨N, hN, hvN⟩` from `(Submodule.mem_sSup_of_directed hne hdir).1 hv`. Conclude with `le_sSup hN ((hcS hN).1 g v hvN)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨N, hN, hxN⟩` from `(Submodule.mem_sSup_of_directed hne hdir).1 h`. Conclude with `(hcS hN).2 hxN) ⊥ hbot`. Conclude with `⟨M, hMS.1, hMS.2, fun N hN hxN hMN => le_antisymm (hMmax ⟨hN, hxN⟩ hMN) hMN⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_maximal_stable_avoiding (π : Representation ℂ G V) (x₀ : V) (hx₀ : x₀ ≠ 0) :
     ∃ M : Submodule ℂ V, (∀ g, ∀ v ∈ M, π g v ∈ M) ∧ x₀ ∉ M ∧
@@ -65,17 +65,15 @@ theorem exists_maximal_stable_avoiding (π : Representation ℂ G V) (x₀ : V) 
   exact ⟨M, hMS.1, hMS.2, fun N hN hxN hMN => le_antisymm (hMmax ⟨hN, hxN⟩ hMN) hMN⟩
 
 /- English proof (translation)
-Establish `hne : (Submodule.Quotient.mk x₀ : V ⧸ M) ≠ 0`. Rewrite using `[Ne, Submodule.Quotient.mk_eq_zero]` and apply the resulting hypothesis. Use `{ toNontrivial := ⟨⊥, ⊤, fun h => hne ?_⟩, eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations. Establish `h1 : (Submodule.Quotient.mk x₀ : V ⧸ M) ∈ (⊤ : Subrepresentation (quotRep4 π M hM)).toSubmodule` using `Submodule.mem_top`. Rewrite `h1` using `[← h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.mem_bot ℂ).1 h1`. Set `N : Submodule ℂ V` to `S.toSubmodule.comap M.mkQ`. Establish `hNst : ∀ g, ∀ v ∈ N, π g v ∈ N` using `fun g v hv => by show Submodule.Quotient.mk (π g v) ∈ S.toSubmodule`. Rewrite using `[← quotRep4_mk π M hM]`. Conclude with `S.apply_mem_toSubmodule g hv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hx : x₀ ∈ N`. Use `right`. Establish `hN` using `hgen N hNst hx`. Use `Subrepresentation.ext (eq_top_iff.2 fun q _ => ?_)` and prove the remaining obligations. Proceed by induction on `q using Submodule.Quotient.induction_on with`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `H v`. Establish `: v ∈ N` using `by rw [hN]; exact Submodule.mem_top`. Conclude with `this`. Use `left`. Establish `hMN : M ≤ N` using `fun v hv => by show Submodule.Quotient.mk v ∈ S.toSubmodule`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Rewrite using `[(Submodule.Quotient.mk_eq_zero M).2 hv]`. Conclude with `Submodule.zero_mem _`. Establish `hN` using `hmax N hNst hx hMN`. Use `Subrepresentation.ext (eq_bot_iff.2 fun q hq => ?_)` and prove the remaining obligations. Proceed by induction on `q using Submodule.Quotient.induction_on with`.
-
-Consider the case `H v`. Establish `: v ∈ N` using `hq`. Rewrite `this` using `[hN]`. Conclude with `(Submodule.mem_bot ℂ).2 ((Submodule.Quotient.mk_eq_zero M).2 this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotRep4_irr (π : Representation ℂ G V) (M : Submodule ℂ V) (hM : ∀ g, ∀ v ∈ M, π g v ∈ M) (x₀ : V)
     (hgen : ∀ N : Submodule ℂ V, (∀ g, ∀ v ∈ N, π g v ∈ N) → x₀ ∈ N → N = ⊤) (hx₀ : x₀ ∉ M)
@@ -117,11 +115,11 @@ theorem quotRep4_irr (π : Representation ℂ G V) (M : Submodule ℂ V) (hM : �
 end Quot
 
 /- English proof (translation)
-Take `⟨π₀, hπ₀⟩` from `exists_uniformizer k`. Establish `h1 : ord k π₀ = 1` using `ord_eq_one hπ₀`. Establish `h0 : ord k π₀⁻¹ = -1`. Use `ord_mul k π₀ π₀⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, ord_eq_zero (by simp), h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2 : ord k (ϖ * π₀⁻¹) = 0` using `by rw [ord_mul, h0, hϖ]; norm_num`. Establish `h3` using `ord_eq_zero_iff.1 h2`. Rewrite `h3` using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀]`. Establish `hne : valuation k (π₀ : k) ≠ 0` using `by simp`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[mul_inv_eq_one₀ hne]`. Rewrite using `[h3, hπ₀]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_unif4 {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ϖ : kˣ}
     (hϖ : ord k ϖ = 1) : valuation k (ϖ : k) = uniformizer k := by
@@ -139,45 +137,37 @@ theorem val_unif4 {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
   rw [h3, hπ₀]
 
 /- English proof (translation)
-Introduce `k W _ _ _ _ _ _ _ n hn τ hτ ϖ hϖ c`. Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Take `⟨ω₀, hω₀⟩` from `exists_hasCentralChar hτ`. Take `⟨ω, hω, hωc⟩` from `exists_isTameLift ω₀ (val_unif4 hϖ) c`. Establish `hE : ExtendsCentral ω τ` using `hω.extendsCentral hω₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨w₀, hw₀⟩ : ∃ w₀ : W, w₀ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `haveI := hτ`. Conclude with `(bot_ne_top : (⊥ : Subrepresentation τ) ≠ ⊤) (Subrepresentation.ext (Submodule.ext fun w => by`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hcon w]`. Conclude with `⟨fun _ => Submodule.zero_mem _, fun _ => Submodule.zero_mem _⟩))`. Set `π₀` to `depthZero τ ω hE`. Set `cn` to `canon τ ω hE`. Establish `hcn : ∀ (g : KO k (Fin n)) (w : W), cn (τ (redK k (Fin n) g) w) = π₀ g (cn w)` using `fun g w => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← extZK_KO τ ω hE, (canon τ ω hE).isIntertwining]`. Both sides reduce to the same expression. Set `x₀` to `cn w₀`. Establish `hx₀ : x₀ ≠ 0` using `fun h => hw₀ (canon_injective τ ω hE (h.trans (map_zero _).symm))`. Set `U : Submodule ℂ (DepthZeroSp τ ω hE)` to `Submodule.span ℂ (Set.range fun g => π₀ g x₀)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hU : ∀ g, ∀ v ∈ U, π₀ g v ∈ U` using `fun g v hv => by`. Establish `hle : U ≤ U.comap (π₀ g)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨h, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * h, by simp only [map_mul, Module.End.mul_apply]⟩)`. Conclude with `hle hv`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx₀U : x₀ ∈ U` using `Submodule.subset_span ⟨1, by simp only [map_one, Module.End.one_apply]⟩`. Establish `hcnU : ∀ w, cn w ∈ U`. Set `S : Subrepresentation τ` to `⟨U.comap cn.toLinearMap, fun g v hv => by`. Take `⟨g', rfl⟩` from `redK_surjective g`. Use `show cn _ ∈ U`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hcn]`. Conclude with `hU g' _ hv⟩`. Establish `hS : S = ⊤`. Use `(hτ.eq_bot_or_eq_top S).resolve_left fun h => hw₀ ?_` and prove the remaining obligations. Establish `: w₀ ∈ S.toSubmodule` using `hx₀U`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Introduce `w`. Establish `: w ∈ S.toSubmodule` using `by rw [hS]; exact Submodule.mem_top`. Conclude with `this`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `π₁` to `subRep4 π₀ U hU`. Set `x₁ : U` to `⟨x₀, hx₀U⟩`. Establish `hx₁ : x₁ ≠ 0` using `fun h => hx₀ (congrArg Subtype.val h)`. Establish `hgen : ∀ N : Submodule ℂ U, (∀ g, ∀ v ∈ N, π₁ g v ∈ N) → x₁ ∈ N → N = ⊤`. Introduce `N hN hxN`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : U ≤ N.map U.subtype` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨π₁ g x₁, hN g x₁ hxN, rfl⟩)`. Use `eq_top_iff.2 fun u _ => ?_` and prove the remaining obligations. Take `⟨u', hu', he⟩` from `hle u.2`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Rewrite `hu'` using `[show u' = u from Subtype.ext he]`. Then use the resulting hypothesis. Take `⟨M, hM, hx₁M, hMmax⟩` from `exists_maximal_stable_avoiding π₁ x₁ hx₁`. Set `ρQ` to `quotRep4 π₁ M hM`. Establish `hirr : ρQ.IsIrreducible` using `quotRep4_irr π₁ M hM x₁ hgen hx₁M hMmax`. Establish `hsm : IsSmooth ρQ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q`. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H u`. Set `H : Subgroup (GL (Fin n) k)` to `{ carrier := {g | ρQ g (Submodule.Quotient.mk u) = Submodule.Quotient.mk u} one_mem' := by simp only [Set.mem_setOf_eq, map_one, Module.End.one_apply] mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, map_mul, Module.End.mul_apply] at ha hb ⊢`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hb, ha]`. Use the proof step `inv_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hopen : IsOpen {g : GL (Fin n) k | π₀ g (u : DepthZeroSp τ ω hE) = u}` using `isSmooth_depthZero τ ω hE u`. Establish `hsub : {g : GL (Fin n) k | π₀ g (u : DepthZeroSp τ ω hE) = u} ⊆ (H : Set (GL (Fin n) k))` using `fun g hg => by show ρQ g (Submodule.Quotient.mk u) = Submodule.Quotient.mk u`. Rewrite using `[quotRep4_mk]`. Use `congr 1`. Conclude with `Subtype.ext hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subgroup.isOpen_of_mem_nhds H (g := 1) (Filter.mem_of_superset (hopen.mem_nhds (by simp only [Set.mem_setOf_eq, map_one, Module.End.one_apply])) hsub)`. Set `jU : W →ₗ[ℂ] U` to `LinearMap.codRestrict U cn.toLinearMap hcnU`. Set `j : W →ₗ[ℂ] (U ⧸ M)` to `M.mkQ.comp jU`. Establish `hj : ∀ (g : KO k (Fin n)) (v : W), j (τ (redK k (Fin n) g) v) = ρQ g (j v)` using `fun g v => by show Submodule.Quotient.mk (jU (τ (redK k (Fin n) g) v)) = Submodule.Quotient.mk (π₁ g (jU v))`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `Subtype.ext (hcn g v)`. Establish `hjinj : Function.Injective j`. Set `K : Subrepresentation τ` to `⟨LinearMap.ker j, fun g v hv => by`. Take `⟨g', rfl⟩` from `redK_surjective g`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`.
-
-Rewrite using `[hj, hv, map_zero]⟩`. Establish `hK : K = ⊥`. Use `(hτ.eq_bot_or_eq_top K).resolve_right fun h => ?_` and prove the remaining obligations. Establish `: w₀ ∈ K.toSubmodule` using `by rw [h]; exact Submodule.mem_top`. Establish `h2 : j w₀ = 0` using `LinearMap.mem_ker.1 this`.
-
-Apply `hx₁M` to reduce the goal to its premises. Conclude with `(Submodule.Quotient.mk_eq_zero M).1 h2`. Establish `: LinearMap.ker j = ⊥` using `congrArg Subrepresentation.toSubmodule hK`. Conclude with `LinearMap.ker_eq_bot.1 this`. Use `⟨⟨U ⧸ M, ρQ, hsm, hirr⟩, ω, j, ?_, hωc, hjinj, hj⟩` and prove the remaining obligations.
-
-Introduce `z q`. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H u => show ρQ (GeneralLinearGroup.scalar (Fin n) z) (Submodule.Quotient.mk u) = (ω z : ℂ) • Submodule.Quotient.mk u`. Rewrite using `[quotRep4_mk, ← Submodule.Quotient.mk_smul]`. Use `congr 1`.
-
-Conclude with `Subtype.ext (hasCentralChar_depthZero τ ω hE z u)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem st4 : St4 := by
   intro k W _ _ _ _ _ _ _ n hn τ hτ ϖ hϖ c

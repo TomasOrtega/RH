@@ -12,7 +12,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.PolyRoot
 
 /- English proof (translation)
-Establish `hl : (l:ℝ) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Rewrite using `[← Real.rpow_add hP, zpow_add₀ hl, zpow_natCast]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem key_exp (l : ℕ) [Fact l.Prime] (h : ℕ) (P : ℝ) (hP : 0 < P) (k : ℤ) :
     P ^ ((l:ℝ) ^ k) * P ^ (((l:ℝ) ^ h - 1) * (l:ℝ) ^ k) = P ^ ((l:ℝ) ^ (k + h)) := by
@@ -21,7 +21,7 @@ theorem key_exp (l : ℕ) [Fact l.Prime] (h : ℕ) (P : ℝ) (hP : 0 < P) (k : �
   congr 1; ring
 
 /- English proof (translation)
-Establish `hl : (l:ℝ) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hP, zpow_sub₀ hl, zpow_natCast, zpow_natCast]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_pow (l : ℕ) [Fact l.Prime] (h D n : ℕ) (P : ℝ) (hP : 0 ≤ P) :
     (P ^ (((l:ℝ) ^ h - 1) / (l:ℝ) ^ D)) ^ (l ^ n) = P ^ (((l:ℝ) ^ h - 1) * (l:ℝ) ^ ((n:ℤ) - D)) := by
@@ -30,43 +30,39 @@ theorem rho_pow (l : ℕ) [Fact l.Prime] (h D n : ℕ) (P : ℝ) (hP : 0 ≤ P) 
   congr 1; push_cast; ring
 
 /- English proof (translation)
-Introduce `l _ h μ σ h1 hμ hσ`. Take `⟨pwadd, pwmul, pwzero, pwcomp, pwnat, pwpow, pwnorm⟩` from `GlobalTheory.T.tiltFrobeniusIntegerPower_laws l`. Take `⟨sh1, sh0, shmul, shpow, shle, shsurj, shadd, shneg⟩` from `GlobalTheory.T.tiltUntiltToComplexPAdic_basic_laws l`. Take `⟨m, hm, ⟨k0, hk0⟩, hsum⟩` from `GlobalTheory.T.exists_coeff_hasSum_untiltFrobeniusCombination l h μ h1 hμ`. Take `⟨P, hPd⟩ : ∃ P : ℝ, P = ‖(l : ℂ_[l])‖` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hPd]`. Establish `hP0 : 0 < P` using `hPd ▸ norm_pos_iff.2 GlobalTheory.RingBasics.p_ne_zero`. Establish `hP1 : P < 1` using `hPd ▸ GlobalTheory.RingBasics.norm_p_lt`. Establish `hσn : ‖sh σ‖ = P` using `by rw [hσ, hPd]`. Take `⟨α, hα⟩ : ∃ α : ℤ → ℂ_[l], ∀ k, α k = m k * sh (pw k σ)` from `⟨_, fun _ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβd⟩ : ∃ β : ℤ → ℝ, ∀ k, β k = ‖α k‖` from `⟨_, fun _ => rfl⟩`. Establish `hshσ : ∀ k : ℤ, ‖sh (pw k σ)‖ = P ^ ((l:ℝ) ^ k)` using `fun k => by rw [pwnorm, hσn]`. Establish `hβ : ∀ k, β k = ‖m k‖ * P ^ ((l:ℝ) ^ k)` using `fun k => by`. Rewrite using `[hβd, hα, norm_mul, hshσ]`. Establish `hkey : ∀ k : ℤ, β k * P ^ (((l:ℝ) ^ h - 1) * (l:ℝ) ^ k) = P * β (k + h)` using `fun k => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hβ, hβ, hm k, norm_mul, ← hPd, ← key_exp l h P hP0 k]`. Expand and normalize the polynomial expressions, which then agree. Establish `hσlt : ‖sh σ‖ < 1` using `hσn ▸ hP1`. Establish `hαsum : Summable α`. Use `(hsum σ hσlt).summable` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[show (fun k : ℤ => m k * sh (pw k σ)) = α from funext fun k => (hα k).symm]`. Then use the resulting hypothesis. Establish `hβt : Filter.Tendsto β Filter.cofinite (nhds 0)`. Use `(hαsum.tendsto_cofinite_zero).norm` as an intermediate fact. Rewrite `this` using `[norm_zero]`. Rewrite `this` using `[show (fun k => ‖α k‖) = β from funext fun k => (hβd k).symm]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hβne : ∃ k, β k ≠ 0` using `⟨k0, by`. Rewrite using `[hβ]`. Conclude with `mul_ne_zero (norm_ne_zero_iff.2 hk0) (Real.rpow_pos_of_pos hP0 _).ne'⟩`. Establish `hβ0 : ∀ k, 0 ≤ β k` using `fun k => by rw [hβd]; exact norm_nonneg _`. Take `⟨D, E, M, hD, hME, hpos, hmax, hstrict, htail⟩` from `GlobalTheory.T.window_around_last_max_null_sequence β P h hP0 hβ0 hβne hβt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩ : ∃ N : ℤ, N = ((M + h : ℕ) : ℤ) - D` from `⟨_, rfl⟩`. Rewrite `hpos`, `hmax`, `hstrict`, `htail` using `[← hN]`. Establish `htn : ‖α N‖ = β N` using `(hβd N).symm`. Establish `ht0 : α N ≠ 0` using `by intro h0; rw [← norm_eq_zero, htn] at h0; linarith`. Establish `hl2 : (2:ℝ) ≤ l` using `by exact_mod_cast (Fact.out : l.Prime).two_le`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlD : (0:ℝ) < (l:ℝ) ^ D` using `by positivity`. Establish `hnorm_a : ∀ k : ℕ, ‖α ((k:ℤ) - D) / α N‖ = β ((k:ℤ) - D) / β N` using `fun k => by`. Rewrite using `[norm_div, htn, ← hβd]`. Establish `hprod : ∀ k : ℕ, ‖α ((k:ℤ) - D) / α N‖ * (P ^ (((l:ℝ) ^ h - 1) / (l:ℝ) ^ D)) ^ (l ^ k) = P * β ((k:ℤ) - D + h) / β N` using `fun k => by`. Rewrite using `[hnorm_a, rho_pow l h D k P hP0.le, div_mul_eq_mul_div, hkey]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨α N, D, E, M, fun k : ℕ => α ((k:ℤ) - D) / α N, P ^ (((l:ℝ) ^ h - 1) / (l:ℝ) ^ D), ht0, hME, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k _ show ‖α ((k:ℤ) - D) / α N‖ ≤ 1`. Rewrite using `[hnorm_a, div_le_one hpos]`. Conclude with `hmax _`. Use `show ‖α (((M + h : ℕ) : ℤ) - D) / α N‖ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hN, div_self ht0, norm_one]`. Establish `he : ((l:ℝ) ^ h - 1) / (l:ℝ) ^ D ≤ 1`. Rewrite using `[div_le_one hlD]`. Establish `: (l:ℝ) ^ h ≤ (l:ℝ) ^ D` using `pow_le_pow_right₀ (by linarith) hD`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hq : (l:ℝ) ≤ (l:ℝ) ^ h` using `le_self_pow₀ (by linarith) (by omega)`. Conclude with `Real.rpow_lt_one hP0.le hP1 (div_pos (by linarith) hlD)`. Rewrite using `[rho_pow l h D D P hP0.le, sub_self, zpow_zero, mul_one, ← Real.rpow_natCast P (l ^ h)]`. Rewrite using `[show P * P ^ ((l:ℝ) ^ h - 1) = P ^ ((1:ℝ) + ((l:ℝ) ^ h - 1)) by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Real.rpow_add hP0, Real.rpow_one]]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `show ‖α ((M:ℤ) - D) / α N‖ * _ = P`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hprod, show (M:ℤ) - D + h = N by rw [hN]; push_cast; ring, mul_div_assoc, div_self hpos.ne', mul_one]`. Introduce `k hk _ show ‖α ((k:ℤ) - D) / α N‖ * _ < P`. Rewrite using `[hprod, div_lt_iff₀ hpos]`. Conclude with `mul_lt_mul_of_pos_left (hstrict _ (by omega)) hP0`. Introduce `u`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : ‖sh (σ * u ^ l ^ D)‖ < 1`. Rewrite using `[shmul, shpow, norm_mul, norm_pow, hσn]`. Combine the equalities or inequalities in the displayed calculation. Establish `hS` using `hsum _ hx`. Establish `hf : ∀ k : ℤ, m k * sh (pw k (σ * u ^ l ^ D)) = α k * sh (pw (k + D) u)` using `fun k => by`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hα, pwmul, ← pwnat D u, ← pwcomp, shmul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hS` using `[show (fun k : ℤ => m k * sh (pw k (σ * u ^ l ^ D))) = fun k => α k * sh (pw (k + D) u) from funext hf]`. Establish `htr` using `GlobalTheory.T.ultrametric_norm_hasSum_sub_finset_sum_le ℂ_[l] ℤ (fun k => α k * sh (pw (k + D) u)) _ ((Finset.range (E + 1)).image (fun k : ℕ => (k:ℤ) - D)) (P * ‖α N‖) (mul_nonneg hP0.le (norm_nonneg _)) hS (by`. Introduce `j hj`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `hj' : j < -(D:ℤ) ∨ (E:ℤ) - D < j`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hj` to reduce the goal to its premises. Rewrite using `[Finset.mem_image]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `⟨(j + D).toNat, Finset.mem_range.2 (by omega), by omega⟩`. Use `show ‖α j * sh (pw (j + D) u)‖ ≤ P * ‖α N‖`. Rewrite using `[norm_mul, ← hβd, htn]`. Conclude with `(mul_le_of_le_one_right (hβ0 j) (shle _)).trans (htail j hj'))`. Establish `heq : ∑ j ∈ (Finset.range (E + 1)).image (fun k : ℕ => (k:ℤ) - D), α j * sh (pw (j + D) u) = α N * ∑ k ∈ Finset.range (E + 1), α ((k:ℤ) - D) / α N * sh u ^ l ^ k`.
-
-Rewrite using `[Finset.sum_image (fun x _ y _ hxy => by simpa using hxy), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[sub_add_cancel, pwnat, shpow]`. Clear the denominators using the available nonvanishing facts. Rewrite `htr` using `[heq]`.
-
-Conclude with `htr`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poly_root_mod_l : ∀ (l : ℕ) [Fact l.Prime] (h : ℕ) (μ : Fin h → ℂ_[l]) (σ : Fl l), 1 ≤ h → μ ≠ 0 → sh σ = l → ∃ (t : ℂ_[l]) (D E M : ℕ) (a : ℕ → ℂ_[l]) (ρ : ℝ), t ≠ 0 ∧ M + h ≤ E ∧ (∀ k, k ≤ E → ‖a k‖ ≤ 1) ∧ ‖a (M + h)‖ = 1 ∧ ‖(l : ℂ_[l])‖ ≤ ρ ∧ ρ < 1 ∧ ‖(l : ℂ_[l])‖ * ρ ^ l ^ D = ‖(l : ℂ_[l])‖ ^ l ^ h ∧ ‖a M‖ * ρ ^ l ^ M = ‖(l : ℂ_[l])‖ ∧ (∀ k, M < k → k ≤ E → ‖a k‖ * ρ ^ l ^ k < ‖(l : ℂ_[l])‖) ∧ ∀ u : Fl l, ‖∑ i : Fin h, μ i * lam h i (σ * u ^ l ^ D) - t * ∑ k ∈ Finset.range (E + 1), a k * sh u ^ l ^ k‖ ≤ ‖(l : ℂ_[l])‖ * ‖t‖ := by
   intro l _ h μ σ h1 hμ hσ

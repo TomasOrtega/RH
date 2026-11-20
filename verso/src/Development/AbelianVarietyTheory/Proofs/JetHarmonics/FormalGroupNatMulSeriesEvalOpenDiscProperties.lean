@@ -9,11 +9,9 @@ open GlobalTheory.ConvSer
 namespace GlobalTheory.ConvSer
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[nMul_zero]`. Conclude with `GlobalTheory.BddAlg.intg_zero`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nMul_succ]`. Establish `hX : Intg (PowerSeries.X : PowerSeries K)` using `(GlobalTheory.BddAlg.small_X ()).1`. Use `GlobalTheory.BddAlg.Le.subst (c := 1) (fun j => ?_) (fun j => ?_) hF` and prove the remaining obligations. Use `fin_cases j`. Conclude with `ih`.
-
-Conclude with `hX`. Use `fin_cases j`. Conclude with `nMul_constantCoeff F n`. Conclude with `PowerSeries.constantCoeff_X`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem intg_nMul_for_point {K : Type} [NormedField K] [IsUltrametricDist K] (F : FormalGroup K)
     (hF : Intg F.toPowerSeries) (n : ℕ) : Intg (nMul F n) := by
@@ -33,29 +31,27 @@ theorem intg_nMul_for_point {K : Type} [NormedField K] [IsUltrametricDist K] (F 
       · exact PowerSeries.constantCoeff_X
 
 /- English proof (translation)
-Simplify using `[ev1]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma ev1_zero {K : Type} [NormedField K] (y : K) : ev1 (0 : PowerSeries K) y = 0 := by
   simp [ev1]
 
 /- English proof (translation)
-Introduce `K _ _ _ F hF`. Establish `hI : ∀ n, Intg (nMul F n)` using `intg_nMul_for_point F hF`. Establish `hB : Bdd F.toPowerSeries` using `GlobalTheory.BddAlg.bdd_of_intg hF`. Establish `hX : Intg (PowerSeries.X : PowerSeries K)` using `(GlobalTheory.BddAlg.small_X ()).1`. Establish `hleft : MvPowerSeries.subst (![0, PowerSeries.X] : Fin 2 → MvPowerSeries Unit K) F.toPowerSeries = PowerSeries.X`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `nMul_succ F 0`. Rewrite `h` using `[nMul_zero, nMul_one]`. Conclude with `h.symm`. Establish `hright : MvPowerSeries.subst (![PowerSeries.X, 0] : Fin 2 → MvPowerSeries Unit K) F.toPowerSeries = PowerSeries.X`. Establish `h` using `nMul_add F 1 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[nMul_zero, nMul_one]`. Simplify using `using h`. Use `⟨hI, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, hevX, -, -, hnorm, hsub, hpair, -, -⟩` from `_root_.GlobalTheory.T.powerSeriesEvalTsum_unitDisc_properties_alt K x hx`. Use `⟨by rw [nMul_zero]; exact ev1_zero x, by rw [nMul_one]; exact hevX, fun j => ?_, fun i j => ?_, fun i j => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨-, h1, h2⟩` from `hnorm (nMul F j) (hI j)`. Establish `h0 : PowerSeries.coeff 0 (nMul F j) = 0`. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `nMul_constantCoeff F j`. Rewrite `h1`, `h2` using `[h0, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[nMul_coeff_one]`. Use `⟨h1, fun hj => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases. Simplify using `using h1`. Establish `hpos : 0 < ‖x‖` using `norm_pos_iff.mpr hx0`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : ‖x‖ ^ 2 < ‖x‖` using `by nlinarith`. Establish `hjx : ‖(j : K) * x‖ = ‖x‖` using `by rw [norm_mul, hj, one_mul]`. Use `set v := ev1 (nMul F j) x`. Establish `hlt : ‖v - (j : K) * x‖ < ‖(j : K) * x‖` using `by rw [hjx]; exact lt_of_le_of_lt h2 hsq`. Establish `hdecomp : v = (j : K) * x + (v - (j : K) * x)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdecomp, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hlt.ne', max_eq_left hlt.le, hjx]`. Rewrite using `[← hpair F.toPowerSeries (nMul F i) (nMul F j) hB (hI i) (hI j) (nMul_constantCoeff F i) (nMul_constantCoeff F j), nMul_add]`. Rewrite using `[← hsub (nMul F i) (nMul F j) (hI j) (nMul_constantCoeff F j) (GlobalTheory.BddAlg.bdd_of_intg (hI i)), nMul_subst_nMul]`. Take `⟨-, -, -, hevXy, -, -, -, -, hpairy, -, -⟩` from `_root_.GlobalTheory.T.powerSeriesEvalTsum_unitDisc_properties_alt K y hy`. Establish `hz : Intg (0 : PowerSeries K)` using `GlobalTheory.BddAlg.intg_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hc0 : PowerSeries.constantCoeff (0 : PowerSeries K) = 0` using `by simp`. Establish `hcX : PowerSeries.constantCoeff (PowerSeries.X : PowerSeries K) = 0` using `by simp`. Prove the components needed by the constructor for the conclusion. Establish `h` using `hpairy F.toPowerSeries 0 PowerSeries.X hB hz hX hc0 hcX`. Rewrite `h` using `[hleft, hevXy, ev1_zero]`.
-
-Conclude with `h.symm`. Establish `h` using `hpairy F.toPowerSeries PowerSeries.X 0 hB hX hz hcX hc0`. Rewrite `h` using `[hright, hevXy, ev1_zero]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nMul_point : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CompleteSpace K] (F : FormalGroup K), Intg F.toPowerSeries → (∀ n, Intg (nMul F n)) ∧ ∀ x : K, ‖x‖ < 1 → ev1 (nMul F 0) x = 0 ∧ ev1 (nMul F 1) x = x ∧ (∀ j, ‖ev1 (nMul F j) x‖ ≤ ‖x‖ ∧ (‖(j : K)‖ = 1 → ‖ev1 (nMul F j) x‖ = ‖x‖)) ∧ (∀ i j, ev F.toPowerSeries ![ev1 (nMul F i) x, ev1 (nMul F j) x] = ev1 (nMul F (i + j)) x) ∧ (∀ i j, ev1 (nMul F i) (ev1 (nMul F j) x) = ev1 (nMul F (i * j)) x) ∧ (∀ y : K, ‖y‖ < 1 → ev F.toPowerSeries ![0, y] = y ∧ ev F.toPowerSeries ![y, 0] = y) := by
   intro K _ _ _ F hF

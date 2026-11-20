@@ -194,16 +194,16 @@ def DeRhamComparisonAllFields : Prop :=
 end Good
 
 /- English proof (translation)
-The claim follows from `inf_le_inf_right _ inf_le_left`.
+A detailed English derivation is pending.
 -/
 example (P : LocPrime l) {K LL : FinExt l} (T : Lat K LL) (τ : Emb K LL) (a : ℤ) :
     FildR (P.PD K) T.ρ τ a ≤ filD P T a :=
   inf_le_inf_right _ inf_le_left
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `key : ∀ g y, actVdR (P.PD K) T.ρ g (iota P T y) = iota P T (actVB (P.PD K) T.ρ g y)`. Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul v b => simp [actVdR, actVB, ιV, (P.PD K).ι_comm]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Simplify using `only [Dcris, DdR, SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hx ⊢`. Introduce `g`. Rewrite using `[key, hx]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 example (P : LocPrime l) {K LL : FinExt l} (T : Lat K LL) :
     (Dcris (P.PD K) T.ρ).map (iota P T) ≤ DdR (P.PD K) T.ρ := by

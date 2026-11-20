@@ -20,7 +20,7 @@ def levAt {D : D7} {T : Type} (L : LevCh D T) (t : T) : LevCh D Unit :=
   { L with xiH := fun _ => L.xiH t, xi := fun _ => L.xi t, Q := fun _ => L.Q t, xiR := fun _ => L.xiR t }
 
 /- English proof (translation)
-The claim follows from `{ mu0 := h.mu0, eta := h.eta, xi := fun _ => h.xi t, xi_inj := fun _ _ _ => rfl, xi_base := h.xi_base, xi_fin := fun _ => h.xi_fin t, xi_triv := fun _ => h.xi_triv t, xi_tame := fun _ => h.xi_tame t, Pg := h.Pg, Q_pl := fun _ => h.Q_pl t, Q_off := fun _ => h.Q_off t, Q_de := fun …`.
+A detailed English derivation is pending.
 -/
 theorem levAt_is {D : D7} {T : Type} {L : LevCh D T} {t : T} (h : L.Is t) : (levAt L t).Is () :=
   { mu0 := h.mu0, eta := h.eta, xi := fun _ => h.xi t, xi_inj := fun _ _ _ => rfl, xi_base := h.xi_base,
@@ -30,7 +30,7 @@ theorem levAt_is {D : D7} {T : Type} {L : LevCh D T} {t : T} (h : L.Is t) : (lev
     Q_ram := fun _ => h.Q_ram t, chi := h.chi, xiR := fun _ => h.xiR t, βY := h.βY, βX := h.βX, βV := h.βV, βW := h.βW }
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.Mem.TupChar.chrEq_mul (h.mu0 j) (h.xi t)`. Rewrite `h1` using `[h.xi_base, mul_one]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chrEq_mu_base {D : D7} {T : Type} {L : LevCh D T} {t : T} (h : L.Is t) (j : Fin D.R.m) :
     ChrEq (L.mu t ((j : ℕ) + 1)) (L.C.mu0 j) := by
@@ -39,7 +39,7 @@ theorem chrEq_mu_base {D : D7} {T : Type} {L : LevCh D T} {t : T} (h : L.Is t) (
   exact h1
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hP`. Take `⟨-, -, -, hC, -⟩` from `hP.bot.hyp`. Establish `h2` using `D.R.two_le_m`. Conclude with `GlobalTheory.SeeSaw.ComCols.com_is_of_levCh (levAt_is hC.lev) (com W) hC.models.inf (hC.chain.ωY W.P.A3.A.μ0 0 (by omega)).std rfl (chrEq_mu_base hC.lev) hC.lev.eta hC.lev.chi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem com_is : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → (GlobalTheory.BaseChain.com W).Is := by
   intro D L hT Gi Gl Kc Yd cX ex W hP

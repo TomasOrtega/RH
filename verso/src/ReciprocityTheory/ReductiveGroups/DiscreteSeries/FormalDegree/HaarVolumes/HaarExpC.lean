@@ -15,9 +15,9 @@ variable {n : ℕ}
 def sg (ε : Fin n → Bool) (a : Fin n) : ℂ := if ε a then 1 else -1
 
 /- English proof (translation)
-Unfold `inG Jm sg`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite `this` using `[Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Matrix.zero_apply]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h`. Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Matrix.zero_apply]`. Conclude with `h i j`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inG_iff_entry {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} :
     inG ε X ↔ ∀ i j, star (X j i) * sg ε j + sg ε i * X i j = 0 := by
@@ -34,15 +34,15 @@ theorem inG_iff_entry {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} :
     exact h i j
 
 /- English proof (translation)
-Rewrite using `[inG_iff_entry]`. Introduce `i j`. Simplify using `only [gMat, Matrix.add_apply, kMat, pmat, sg]`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Establish `h1 : ¬ j < i` using `lt_asymm h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h2 : i ≠ j` using `ne_of_lt h`. Distinguish the cases in `he : ε i = ε j`. Simplify using `[h, h1, h2, h2.symm, he]`. Establish `he' : ε j ≠ ε i` using `Ne.symm he`. Simplify using `[h, h1, h2, h2.symm, he, he']`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε i) with hi | hi <;>`. Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε j) with hj | hj <;> simp [hi, hj] at he ⊢`. Apply the tactic sequence `apply Complex.ext <;> simp <;> split_ifs <;> simp`. Establish `h1 : ¬ i < j` using `lt_asymm h`. Establish `h2 : j ≠ i` using `ne_of_lt h`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `he : ε i = ε j`. Apply the tactic sequence `simp [h, h1, h2, h2.symm, he] split_ifs <;> ring`. Establish `he' : ε j ≠ ε i` using `Ne.symm he`. Simplify using `[h, h1, h2, h2.symm, he, he']`. Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε i) with hi | hi <;>`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε j) with hj | hj <;> simp [hi, hj] at he ⊢`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gMat_inG {ε : Fin n → Bool} (s : GCo ε) : inG ε (gMat s) := by
   rw [inG_iff_entry]
@@ -72,11 +72,11 @@ def gCo (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) : GCo ε :=
   ((fun a => (Z a a).im, fun p => Z p.1.1 p.1.2), fun p => Z p.1.1 p.1.2)
 
 /- English proof (translation)
-Take `⟨⟨w, x⟩, z⟩` from `s`. Use `Prod.ext (Prod.ext ?_ ?_) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `[gCo, gMat, kMat, pmat]`. Use function extensionality and compare the values at `p`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨⟨a, b⟩, hab, he⟩` from `p`. Establish `h1 : a ≠ b` using `(ne_of_lt hab).symm`. Establish `h2 : ¬ a < b` using `lt_asymm hab`. Simplify using `[gCo, gMat, kMat, pmat, h1, hab, he, h2]`. Use function extensionality and compare the values at `p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨⟨a, b⟩, hab, he⟩` from `p`. Establish `h1 : a ≠ b` using `(ne_of_lt hab).symm`. Establish `h2 : ¬ a < b` using `lt_asymm hab`. Simplify using `[gCo, gMat, kMat, pmat, h1, hab, he, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem gCo_gMat {ε : Fin n → Bool} (s : GCo ε) : gCo ε (gMat s) = s := by
   obtain ⟨⟨w, x⟩, z⟩ := s
@@ -95,11 +95,11 @@ theorem gCo_gMat {ε : Fin n → Bool} (s : GCo ε) : gCo ε (gMat s) = s := by
     simp [gCo, gMat, kMat, pmat, h1, hab, he, h2]
 
 /- English proof (translation)
-Rewrite `hZ` using `[inG_iff_entry]`. Use extensionality with `i j`. Establish `hij` using `hZ i j`. Simplify using `only [gMat, Matrix.add_apply, kMat, pmat, gCo, sg] at hij ⊢`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1 : ¬ j < i` using `lt_asymm h`. Establish `h2 : i ≠ j` using `ne_of_lt h`. Apply the tactic sequence `cases hi : ε i <;> cases hj : ε j <;> simp [h, h1, h2, hi, hj] at hij ⊢ <;> first | linear_combination hij | linear_combination -hij`. Apply the tactic sequence `apply Complex.ext <;> simp`. Use `congrArg Complex.re hij` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `cases hi : ε i <;> simp [hi] at this <;> linarith`. Establish `h1 : ¬ i < j` using `lt_asymm h`. Establish `h2 : j ≠ i` using `ne_of_lt h`. Simplify using `[h, h1, h2.symm]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gMat_gCo {ε : Fin n → Bool} {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inG ε Z) :
     gMat (gCo ε Z) = Z := by

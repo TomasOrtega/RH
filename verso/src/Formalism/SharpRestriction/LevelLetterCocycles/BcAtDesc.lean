@@ -23,7 +23,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [IsScalarTower O O' LL'] [IsScalarTower O LL LL']
 
 /- English proof (translation)
-The claim follows from `bcAt_of PD hc hO' hJ (descLift_at PD hc hO' bO bL hb hlin) (descCol_at PD hc hO' bO bL hb hlin hk)`.
+A detailed English derivation is pending.
 -/
 theorem bcAt_desc (hc : Continuous (algebraMap LL LL')) (hO' : Function.Injective (algebraMap O' LL'))
     (hJ : Formalism.MainNotions.N.GlobalTheory.CoefJumpGen) {ι : Type} [Fintype ι] (bO : Module.Basis ι O O')

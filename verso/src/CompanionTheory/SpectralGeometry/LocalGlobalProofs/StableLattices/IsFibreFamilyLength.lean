@@ -13,7 +13,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR, OneHerm.sigma_sigma hσ]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_sigR {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) (y : R ⊗[F] E) :
     sigR R σ (sigR R σ y) = y := by
@@ -23,11 +23,11 @@ theorem sigR_sigR {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) (y : R ⊗[F] E) :
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Establish `hJR : ∀ i j, sigR R σ (JR R J i j) = JR R J j i`. Introduce `i j`. Establish `h` using `hJ.1 j i`. Simplify using `only [JR, Matrix.map_apply, inclR, sigR]`. Simplify using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Unfold `hR hform`. Rewrite using `[map_sum, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_mul, sigR_sigR R hσ, hJR]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hR_self_fixed {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {M : ℕ}
     {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J) (x : Fin M → R ⊗[F] E) :
@@ -64,7 +64,7 @@ theorem qR_eq_hermHalf {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {M : ℕ}
   rfl
 
 /- English proof (translation)
-Rewrite using `[qR_eq_hermHalf R hσ hJ X, OneHerm.hermScal_hermHalf R hσ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hermScal_qR [TopologicalSpace R] [IsTopologicalRing R] {σ : E →ₐ[F] E}
     (hσ : IsCMExt F E σ) {M : ℕ}
@@ -75,7 +75,7 @@ theorem hermScal_qR [TopologicalSpace R] [IsTopologicalRing R] {σ : E →ₐ[F]
   rfl
 
 /- English proof (translation)
-Establish `h' : gramH R hσ hJ X = hermScal R σ c` using `Subtype.ext h`. Rewrite using `[qR_eq_hermHalf R hσ hJ X, h', OneHerm.hermHalf_hermScal R hσ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem qR_of_gram [TopologicalSpace R] [IsTopologicalRing R] {σ : E →ₐ[F] E}
     (hσ : IsCMExt F E σ) {M : ℕ}
@@ -86,7 +86,7 @@ theorem qR_of_gram [TopologicalSpace R] [IsTopologicalRing R] {σ : E →ₐ[F] 
   rw [qR_eq_hermHalf R hσ hJ X, h', OneHerm.hermHalf_hermScal R hσ]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_one]`. Conclude with `hc.map (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[F] E)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_hermScal (σ : E →ₐ[F] E) {c : R} (hc : IsUnit c) :
     IsUnit ((hermScal R σ c : HermR R σ 1) : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)).det := by
@@ -94,7 +94,7 @@ theorem isUnit_det_hermScal (σ : E →ₐ[F] E) {c : R} (hc : IsUnit c) :
   exact hc.map (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[F] E)
 
 /- English proof (translation)
-Rewrite using `[← hermScal_qR R hσ hJ X]`. Conclude with `isUnit_det_hermScal R σ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_gramR [TopologicalSpace R] [IsTopologicalRing R] {σ : E →ₐ[F] E}
     (hσ : IsCMExt F E σ) {M : ℕ}
@@ -104,7 +104,7 @@ theorem isUnit_det_gramR [TopologicalSpace R] [IsTopologicalRing R] {σ : E →�
   exact isUnit_det_hermScal R σ h
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, htr, -, -, -, hgr⟩` from `TopK.topTens_props F E σ hσ R`. Establish `h` using `(hgr 1 M J).matrix_elem 0 0`. Conclude with `continuous_const.mul (htr.comp h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_qR {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) [TopologicalSpace R] [IsTopologicalRing R]
@@ -115,7 +115,7 @@ theorem continuous_qR {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {M : ℕ}
   exact continuous_const.mul (htr.comp h)
 
 /- English proof (translation)
-Take `⟨K, hK, hcK, hKU⟩` from `exists_compact_subset hU hc₀`. Take `⟨f, hf1, -, hfs, -⟩` from `exists_continuousMap_one_of_isCompact_subset_isOpen hK hU hKU`. Use `⟨f, f.continuous, hfs, ?_⟩` and prove the remaining obligations. Use `filter_upwards [mem_interior_iff_mem_nhds.mp hcK] with c hc using hf1 hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_bump [TopologicalSpace R] [LocallyCompactSpace R] [T2Space R]
     (hU : IsOpen {c : R | IsUnit c}) {c₀ : R} (hc₀ : IsUnit c₀) :
@@ -130,29 +130,25 @@ end GlobalTheory.CompanionTheory.SW.LenFib
 open GlobalTheory.CompanionTheory.SW.LenFib in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hLoc μ ν _ _ _ hμ0 m hm`. Take `⟨hTR, hLC, hSC, hT2, -, -, hOE, -⟩` from `hLoc`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hT2`. Use `haveI : BorelSpace (HermR R σ 1) := ⟨rfl⟩`. Take `⟨hfib, hint, hcont⟩` from `hm`. Use `set q : (Fin 1 → Fin M → R ⊗[F] E) → R := fun X => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.qR R σ J (X 0) with hq`. Establish `hqc : Continuous q` using `continuous_qR R hσ J`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hUo : IsOpen {c : R | IsUnit c}`. Establish `h` using `hOE.isOpen_range`. Establish `he : Set.range (Units.val : Rˣ → R) = {c : R | IsUnit c}`. Use extensionality with `c`. Conclude with `Iff.rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[he]`. Then use the resulting hypothesis. Establish `hemb : MeasurableEmbedding (hermScal R σ)` using `(OneHerm.hermHomeo R hσ).measurableEmbedding`. Establish `hsub : ∀ X, IsUnit (q X) → IsUnit (gramR R σ J X).det` using `fun X h => isUnit_det_gramR R hσ hJ h`. Establish `hres : μ.restrict {X | IsUnit (gramR R σ J X).det} = μ`. Use `Measure.restrict_eq_self_of_ae_mem ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `measure_mono_null ?_ hμ0` and prove the remaining obligations. Introduce `X hX hXq`. Conclude with `hX (hsub X hXq)`. Establish `hae : ∀ c, ∀ᵐ X ∂(m (hermScal R σ c)), q X = c`. Introduce `c`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `measure_mono_null ?_ (hfib (hermScal R σ c))` and prove the remaining obligations. Introduce `X hX hXm`. Conclude with `hX (qR_of_gram R hσ hJ hXm.1)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `measure_mono_null ?_ (hae c)` and prove the remaining obligations. Introduce `X hX hXq`. Conclude with `hX ⟨hXq, Set.mem_univ X⟩`. Introduce `φ hφ`. Establish `h` using `hint φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hres, hemb.lintegral_map]`. Rewrite using `[Measure.restrict_univ, h]`. Introduce `φ hφc hφs _`. Establish `key : ∀ c₀, IsUnit c₀ → Integrable φ (m (hermScal R σ c₀)) ∧ ContinuousWithinAt (fun c => ∫ v, φ v ∂(m (hermScal R σ c))) {c | IsUnit c} c₀`. Introduce `c₀ hc₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨χ, hχc, hχs, hχ1⟩` from `exists_bump R hUo hc₀`. Establish `hφ'c : Continuous fun X => φ X * χ (q X)` using `hφc.mul (hχc.comp hqc)`. Establish `hφ's : HasCompactSupport fun X => φ X * χ (q X)` using `HasCompactSupport.mul_right hφs`. Establish `hφ't : tsupport (fun X => φ X * χ (q X)) ⊆ {X | IsUnit (gramR R σ J X).det}`. Introduce `X hX`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : X ∈ tsupport (χ ∘ q)` using `tsupport_mul_subset_right hX`. Conclude with `hsub X (hχs (tsupport_comp_subset_preimage χ hqc h1))`. Take `⟨hI, hC⟩` from `hcont _ hφ'c hφ's hφ't`. Establish `heq : ∀ c, χ c = 1 → (fun X => φ X * χ (q X)) =ᵐ[m (hermScal R σ c)] φ`. Introduce `c hc`.
-
-Use `filter_upwards [hae c] with X hX`. Rewrite using `[hX, hc, mul_one]`. Establish `hmaps : Set.MapsTo (hermScal R σ) {c : R | IsUnit c} {S : HermR R σ 1 | IsUnit (S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)).det}` using `fun c hc => isUnit_det_hermScal R σ hc`. Establish `hC' : ContinuousOn (fun c => ∫ v, φ v * χ (q v) ∂(m (hermScal R σ c))) {c | IsUnit c}` using `hC.comp (OneHerm.continuous_hermScal R σ).continuousOn hmaps`. Use `⟨(hI _ (hmaps hc₀)).congr (heq c₀ hχ1.self_of_nhds), ?_⟩` and prove the remaining obligations.
-
-Use `(hC' c₀ hc₀).congr_of_eventuallyEq ?_ ?_` and prove the remaining obligations. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds hχ1] with c hc`. Conclude with `(integral_congr_ae (heq c hc)).symm`. Conclude with `(integral_congr_ae (heq c₀ hχ1.self_of_nhds)).symm`. Conclude with `⟨fun c hc => (key c hc).1, fun c hc => (key c hc).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SW.isFibreFamily_length : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (μ : Measure (Fin 1 → Fin M → R ⊗[F] E)) (ν : Measure R), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → ν {c | ¬ IsUnit c} = 0 → μ {X | ¬ IsUnit ((fun X : Fin 1 → Fin M → R ⊗[F] E => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.qR (R) σ J (X 0)) X)} = 0 → ∀ m, IsGramFib R σ J 1 μ (ν.map (hermScal R σ)) m → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ (fun X : Fin 1 → Fin M → R ⊗[F] E => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.qR (R) σ J (X 0)) id Set.univ ν {c | IsUnit c} (fun c => m (hermScal R σ c)) := by
   intro F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hLoc μ ν _ _ _ hμ0 m hm

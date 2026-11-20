@@ -23,14 +23,14 @@ def unitLat (K : Type) [Field K] [NumberField K] [StarRing K] (n : ℕ) : HLat K
   HLat.ofCoord (Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin n)))) fun _ => 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hX, hL.fg, hL.span_eq_top⟩`.
+Supply the required witnesses or components.
 -/
 theorem ofCoord_good {d : ℕ} {L : Submodule (𝓞 K) (Fin d → K)} {X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ}
     (hL : Submodule.IsLattice K L) (hX : ∀ v, IsUnit (X v).det) : (HLat.ofCoord L X).Good :=
   ⟨hX, hL.fg, hL.span_eq_top⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => by show IsUnit (1 : Matrix (Fin n) (Fin n) ℂ).det rw [Matrix.det_one]; exact isUnit_one, Submodule.fg_span (Set.finite_range _), (Submodule.span_span_of_tower (𝓞 K) K (Set.range (Pi.basisFun K (Fin n)))).trans (Pi.basisFun K (Fin n)).span_eq⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitLat_good (n : ℕ) : (unitLat K n).Good :=
   ⟨fun _ => by
@@ -44,7 +44,7 @@ def unitMap (σ : K →+* ℂ) (W : Type) [NormedAddCommGroup W] [InnerProductSp
   (lin (stdOrthonormalBasis ℂ W)).comp (cptL σ (Module.finrank ℂ W))
 
 /- English proof (translation)
-Establish `h : cptL σ (Module.finrank ℂ W) (Pi.basisFun K _ k) = Pi.single k 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases hi : i = k <;> simp [cptL, cpt, hi]`. Conclude with `(congrArg (lin (stdOrthonormalBasis ℂ W)) h).trans (lin_single _ k)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem unitMap_b (σ : K →+* ℂ) (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W]
     (k : Fin (Module.finrank ℂ W)) :
@@ -55,7 +55,7 @@ theorem unitMap_b (σ : K →+* ℂ) (W : Type) [NormedAddCommGroup W] [InnerPro
   exact (congrArg (lin (stdOrthonormalBasis ℂ W)) h).trans (lin_single _ k)
 
 /- English proof (translation)
-Establish `h : (fun k => unitMap σ W ((unitLat K (Module.finrank ℂ W)).b k)) = (stdOrthonormalBasis ℂ W).toBasis`. Use function extensionality and compare the values at `fun k => unitMap_b σ W k`. Rewrite using `[h]`. Conclude with `⟨(stdOrthonormalBasis ℂ W).toBasis.linearIndependent, (stdOrthonormalBasis ℂ W).toBasis.span_eq⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem unitMap_basis (σ : K →+* ℂ) (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] :
     LinearIndependent ℂ (fun k => unitMap σ W ((unitLat K (Module.finrank ℂ W)).b k)) ∧
@@ -66,7 +66,7 @@ theorem unitMap_basis (σ : K →+* ℂ) (W : Type) [NormedAddCommGroup W] [Inne
   exact ⟨(stdOrthonormalBasis ℂ W).toBasis.linearIndependent, (stdOrthonormalBasis ℂ W).toBasis.span_eq⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨(Submodule.map_id L).symm, fun _ _ _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem hLatTie_castV {d : ℕ} {L : Submodule (𝓞 K) (Fin d → K)} {X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ} {A : HLat K}
     (h : HLat.ofCoord L X = A) : HLatTie A L X (castV h) := by
@@ -82,12 +82,12 @@ def latSeq : ℕ → HLat K
   | j + 1 => if h : j < m then HLat.ofCoord (M ⟨j, h⟩) (X ⟨j, h⟩) else unitLat K (Module.finrank ℂ (W (j + 1)))
 
 /- English proof (translation)
-The claim follows from `dif_pos i.2`.
+A detailed English derivation is pending.
 -/
 theorem latSeq_succ (i : Fin m) : latSeq M X W ((i : ℕ) + 1) = HLat.ofCoord (M i) (X i) := dif_pos i.2
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero => rfl`. Consider the case `succ j => exact dif_neg (by omega)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem latSeq_off {j : ℕ} (h : j = 0 ∨ m < j) : latSeq M X W j = unitLat K (Module.finrank ℂ (W j)) := by
   cases j with
@@ -103,13 +103,13 @@ def mapSeq : ∀ j, (latSeq M X W j).V →ₛₗ[σ] W j
     else (unitMap σ (W (j + 1))).comp (castV (latSeq_off M X W (Or.inr (Nat.lt_succ_of_le (Nat.le_of_not_lt h))))).toLinearMap
 
 /- English proof (translation)
-The claim follows from `dif_pos i.2`.
+A detailed English derivation is pending.
 -/
 theorem mapSeq_succ (i : Fin m) :
     mapSeq M X W f ((i : ℕ) + 1) = (f i).comp (castV (latSeq_succ M X W i)).toLinearMap := dif_pos i.2
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero => rfl`. Consider the case `succ j => exact dif_neg (by omega)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem mapSeq_off {j : ℕ} (h : j = 0 ∨ m < j) :
     mapSeq M X W f j = (unitMap σ (W j)).comp (castV (latSeq_off M X W h)).toLinearMap := by
@@ -118,7 +118,7 @@ theorem mapSeq_off {j : ℕ} (h : j = 0 ∨ m < j) :
   | succ j => exact dif_neg (by omega)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hg`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem castV_ind {H : Type} [AddCommGroup H] [Module ℂ H] (P : ∀ A : HLat K, (A.V →ₛₗ[σ] H) → Prop) {A B : HLat K} (h : A = B)
     {g : B.V →ₛₗ[σ] H} (hg : P B g) : P A (g.comp (castV h).toLinearMap) := by
@@ -126,7 +126,7 @@ theorem castV_ind {H : Type} [AddCommGroup H] [Module ℂ H] (P : ∀ A : HLat K
   exact hg
 
 /- English proof (translation)
-Take `⟨i, rfl⟩ : ∃ i : Fin m, j = (i : ℕ) + 1` from `⟨⟨j - 1, by omega⟩, by simp; omega⟩`. Rewrite using `[mapSeq_succ]`. Conclude with `castV_ind (P _) _ (hP i)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapSeq_ind (P : ∀ (j : ℕ) (A : HLat K), (A.V →ₛₗ[σ] W j) → Prop)
     (hP : ∀ i : Fin m, P ((i : ℕ) + 1) (HLat.ofCoord (M i) (X i)) (f i)) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ m) :
@@ -136,7 +136,7 @@ theorem mapSeq_ind (P : ∀ (j : ℕ) (A : HLat K), (A.V →ₛₗ[σ] W j) → 
   exact castV_ind (P _) _ (hP i)
 
 /- English proof (translation)
-Distinguish the cases in `h : j = 0 ∨ m < j`. Rewrite using `[mapSeq_off M X W f h]`. Conclude with `castV_ind (P _) _ (h0 j)`. Conclude with `mapSeq_ind M X W f P hP j (by omega) (by omega)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapSeq_ind_all (P : ∀ (j : ℕ) (A : HLat K), (A.V →ₛₗ[σ] W j) → Prop)
     (hP : ∀ i : Fin m, P ((i : ℕ) + 1) (HLat.ofCoord (M i) (X i)) (f i))
@@ -148,9 +148,9 @@ theorem mapSeq_ind_all (P : ∀ (j : ℕ) (A : HLat K), (A.V →ₛₗ[σ] W j) 
   · exact mapSeq_ind M X W f P hP j (by omega) (by omega)
 
 /- English proof (translation)
-Substitute `hH` using the available equality. Take `rfl` from `eq_of_heq hg`. Rewrite using `[mapSeq_succ]`. Establish `key : ∀ {A B : HLat K} (h : A = B) (h' : B = A) (y : A.V), castV h' (castV h y) = y`. Introduce `A B h h' y`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `h` using the available equality. Both sides reduce to the same expression. Conclude with `congrArg (f i) (key h _ x)`.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_castV {H : ℕ → HLat K} {g : ∀ j, (H j).V →ₛₗ[σ] W j} (hH : H = latSeq M X W) (hg : HEq g (mapSeq M X W f))
     (i : Fin m) (h : HLat.ofCoord (M i) (X i) = H ((i : ℕ) + 1)) (x : Fin (d i) → K) :
@@ -183,13 +183,13 @@ def jM (Z : ReadL R F X0 Y) (j : ℕ) : (mjH Z j).V →ₛₗ[D.what₂.embLL] D
 variable (Z : ReadL R F X0 Y)
 
 /- English proof (translation)
-The claim follows from `latSeq_succ _ _ _ i`.
+A detailed English derivation is pending.
 -/
 theorem mjH_succ (i : Fin D.R.m) : mjH Z ((i : ℕ) + 1) = HLat.ofCoord ((s0Of R F).M i) ((s0Of R F).XW i) :=
   latSeq_succ _ _ _ i
 
 /- English proof (translation)
-The claim follows from `latSeq_off _ _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem mjH_off {j : ℕ} (h : j = 0 ∨ D.R.m < j) : mjH Z j = unitLat D.what₂.LL (Module.finrank ℂ (D.what₂.Mj j)) :=
   latSeq_off _ _ _ h
@@ -198,7 +198,7 @@ def mjCoord (i : Fin D.R.m) : (Fin ((s0Of R F).dW i) → D.what₂.LL) ≃ₗ[D.
   castV (mjH_succ Z i).symm
 
 /- English proof (translation)
-The claim follows from `mapSeq_ind_all _ _ D.what₂.Mj Z.jW (fun _ A _ => A.Good) (fun i => ofCoord_good (hH.prim.mLat i) fun v => frame_gram_unit _ (RealDat3.kForm_of (F := F) hH.prim.unif false i v).1) (fun _ => unitLat_good _) j`.
+A detailed English derivation is pending.
 -/
 theorem mjH_good (hH : Holds R F) (j : ℕ) : (mjH Z j).Good :=
   mapSeq_ind_all _ _ D.what₂.Mj Z.jW (fun _ A _ => A.Good)
@@ -206,7 +206,7 @@ theorem mjH_good (hH : Holds R F) (j : ℕ) : (mjH Z j).Good :=
     (fun _ => unitLat_good _) j
 
 /- English proof (translation)
-The claim follows from `mapSeq_ind_all _ _ D.what₂.Mj Z.jW (fun _ A g => LinearIndependent ℂ (fun k => g (A.b k)) ∧ Submodule.span ℂ (Set.range fun k => g (A.b k)) = ⊤) (fun i => by have h : (fun k => Z.jW i ((HLat.ofCoord ((s0Of R F).M i) ((s0Of R F).XW i)).b k)) = fun k => Z.jW i (Pi.single k 1) := fu …`.
+A detailed English derivation is pending.
 -/
 theorem jM_basis (hH : Holds R F) (j : ℕ) : LinearIndependent ℂ (fun k => jM Z j ((mjH Z j).b k)) ∧
     Submodule.span ℂ (Set.range fun k => jM Z j ((mjH Z j).b k)) = ⊤ :=
@@ -219,7 +219,7 @@ theorem jM_basis (hH : Holds R F) (j : ℕ) : LinearIndependent ℂ (fun k => jM
     (fun _ => unitMap_basis _ _) j
 
 /- English proof (translation)
-The claim follows from `mapSeq_ind _ _ D.what₂.Mj Z.jW (fun j A g => ∀ x : A.V, x ∈ A.L ↔ ∃ c : D.what₂.Mj j → 𝓞 D.what₂.LL, g x = ∑ v ∈ (D.what₂.MjLat j).gen, D.what₂.embLL ((c v : 𝓞 D.what₂.LL) : D.what₂.LL) • v) (fun i => (jW_lat Z hP hH i).2) j h1 h2 x`.
+A detailed English derivation is pending.
 -/
 theorem jM_lat (hP : Pins R F cG) (hH : Holds R F) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (x : (mjH Z j).V) :
     x ∈ (mjH Z j).L ↔ ∃ c : D.what₂.Mj j → 𝓞 D.what₂.LL,
@@ -230,7 +230,7 @@ theorem jM_lat (hP : Pins R F cG) (hH : Holds R F) (j : ℕ) (h1 : 1 ≤ j) (h2 
     (fun i => (jW_lat Z hP hH i).2) j h1 h2 x
 
 /- English proof (translation)
-The claim follows from `mapSeq_ind _ _ D.what₂.Mj Z.jW (fun j _ g => ∀ x ∈ (D.what₂.MjLat j).gen, x ∈ Set.range g) (fun i => (jW_lat Z hP hH i).1) j h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem mjLat_sub (hP : Pins R F cG) (hH : Holds R F) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     ∀ x ∈ (D.what₂.MjLat j).gen, x ∈ Set.range (jM Z j) :=
@@ -238,7 +238,7 @@ theorem mjLat_sub (hP : Pins R F cG) (hH : Holds R F) (j : ℕ) (h1 : 1 ≤ j) (
     (fun i => (jW_lat Z hP hH i).1) j h1 h2
 
 /- English proof (translation)
-The claim follows from `mapSeq_ind _ _ D.what₂.Mj Z.jW (fun _ A g => ∀ x : A.V, Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord A.b A.X (InfinitePlace.mk D.what₂.embLL) x) = ‖g x‖) (fun i => jW_norm Z hH i) j h1 h2 x`.
+A detailed English derivation is pending.
 -/
 theorem jM_metric (hH : Holds R F) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (x : (mjH Z j).V) :
     Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord (mjH Z j).b (mjH Z j).X (InfinitePlace.mk D.what₂.embLL) x) = ‖jM Z j x‖ :=
@@ -250,7 +250,7 @@ def mjIds (Xd : DivX D) (h : Xd.MjH = mjH Z) : MjHIds D A3.A Xd (A3.indefDown (s
   eW i := castV ((mjH_succ Z i).symm.trans (congrFun h _).symm)
 
 /- English proof (translation)
-The claim follows from `map_castV _ _ D.what₂.Mj Z.jW h hj i _ x hlat i := hLatTie_castV ((mjH_succ Z i).symm.trans (congrFun h _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem mjHTie_of_eq (Xd : DivX D) (h : Xd.MjH = mjH Z) (hj : HEq Xd.jM (jM Z)) :
     MjHTie D A3.A Xd (A3.indefDown (s0Of R F)) Z.jW (mjIds Z Xd h) where
@@ -258,7 +258,7 @@ theorem mjHTie_of_eq (Xd : DivX D) (h : Xd.MjH = mjH Z) (hj : HEq Xd.jM (jM Z)) 
   hlat i := hLatTie_castV ((mjH_succ Z i).symm.trans (congrFun h _).symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, mjHTie_of_eq Z Xd h hj⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_mjHTie (Xd : DivX D) (h : Xd.MjH = mjH Z) (hj : HEq Xd.jM (jM Z)) :
     ∃ JM, MjHTie D A3.A Xd (A3.indefDown (s0Of R F)) Z.jW JM :=
@@ -279,7 +279,7 @@ def withMj (hP : Pins R F cG) (hH : Holds R F) (Xd : DivX D)
     iMj_mem := hiM }
 
 /- English proof (translation)
-The claim follows from `mjHTie_of_eq Z _ rfl HEq.rfl`.
+A detailed English derivation is pending.
 -/
 theorem mjHTie_withMj (hP : Pins R F cG) (hH : Holds R F) (Xd : DivX D)
     (iM : ∀ j c, (mjH Z j).V →ₗ[D.what₂.LL] Xd.geo.Fn (Xd.Yv j c))
@@ -297,17 +297,17 @@ variable {Dc : ∀ Zs : DefSub A3.fam3.amb3, DefCols (A3.side3 F.P1 F.ψ1 Zs)} {
 end Reface
 
 /- English proof (translation)
-The claim follows from `Module.finrank_fin_fun ℚ`.
+A detailed English derivation is pending.
 -/
 example : Module.finrank ℚ (unitLat ℚ 1).V = 1 := Module.finrank_fin_fun ℚ
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Subsingleton (Fin 0 → ℚ))`.
+A detailed English derivation is pending.
 -/
 example : Subsingleton (unitLat ℚ 0).V := inferInstanceAs (Subsingleton (Fin 0 → ℚ))
 
 /- English proof (translation)
-The claim follows from `Module.finrank_fin_fun ℚ`.
+A detailed English derivation is pending.
 -/
 example (M : Submodule (𝓞 ℚ) (Fin 3 → ℚ)) : Module.finrank ℚ
     (latSeq (m := 1) (d := fun _ => 3) (fun _ => M) (fun _ _ => 1) (fun _ => ℂ) 1).V = 3 := Module.finrank_fin_fun ℚ

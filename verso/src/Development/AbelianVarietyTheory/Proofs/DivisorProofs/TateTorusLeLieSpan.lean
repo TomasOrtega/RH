@@ -26,7 +26,7 @@ def evalChar (χ : X) : (specO O O ⟶ splitTorus (Sp O) X) →* Cˣ :=
       (splitTorusPointsEquiv (Sp O) X (specO O O)).toMonoidHom)
 
 /- English proof (translation)
-Rewrite using `[GmPoints.unitOf_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalChar_gm (w : specO O O ⟶ GmO O) :
     (evalChar C (ULift.up (1 : ℤ)) w : C) = algebraMap O C (unitOf w : O) := by
@@ -34,7 +34,7 @@ theorem evalChar_gm (w : specO O O ⟶ GmO O) :
   rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (Units.map ((algebraMap O C).comp (Scheme.ΓSpecIso (CommRingCat.of O)).hom.hom).toMonoidHom) (DFunLike.congr_fun (points_comp_torusMap φ w) (Multiplicative.ofAdd χ))`.
+A detailed English derivation is pending.
 -/
 theorem evalChar_torusMap {X' : Type} [AddCommGroup X'] (φ : X →+ X') (χ : X)
     (w : specO O O ⟶ splitTorus (Sp O) X') :
@@ -43,14 +43,14 @@ theorem evalChar_torusMap {X' : Type} [AddCommGroup X'] (φ : X →+ X') (χ : X
     (DFunLike.congr_fun (points_comp_torusMap φ w) (Multiplicative.ofAdd χ))
 
 /- English proof (translation)
-The claim follows from `(congrArg (Units.map ((algebraMap O C).comp (Scheme.ΓSpecIso (CommRingCat.of O)).hom.hom).toMonoidHom) (map_one (splitTorusPointsEquiv (Sp O) X (specO O O) w))).trans (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem evalChar_zero (w : specO O O ⟶ splitTorus (Sp O) X) : evalChar C (0 : X) w = 1 :=
   (congrArg (Units.map ((algebraMap O C).comp (Scheme.ΓSpecIso (CommRingCat.of O)).hom.hom).toMonoidHom)
     (map_one (splitTorusPointsEquiv (Sp O) X (specO O O) w))).trans (map_one _)
 
 /- English proof (translation)
-Use `(splitTorusPointsEquiv (Sp O) X (specO O O)).injective ?_` and prove the remaining obligations. Use `MonoidHom.toAdditiveRight.injective (AddMonoidHom.toIntLinearMap_injective (b.ext fun j => ?_))` and prove the remaining obligations. Use `Units.ext ((Scheme.ΓSpecIso (CommRingCat.of O)).commRingCatIsoToRingEquiv.injective (hi ?_))` and prove the remaining obligations. Conclude with `congrArg Units.val (h j)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ext_evalChar (hi : Function.Injective (algebraMap O C)) {J : Type} (b : Module.Basis J ℤ X)
     {w w' : specO O O ⟶ splitTorus (Sp O) X} (h : ∀ j, evalChar C (b j) w = evalChar C (b j) w') : w = w' := by
@@ -67,7 +67,7 @@ def lieMap {G G' : Over (Sp O)} [GrpObj G] [GrpObj G'] (φ : G ⟶ G') [IsMonHom
   ⟨x.1 ≫ φ, by rw [← Category.assoc, x.2, Category.assoc, IsMonHom.one_hom]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MorphismProperty.of_isPullback (P := @IsFinite) (GrpTangent.isPullback_torsion (GmO O) N) (Diag.isFinite_mulN _ (ULift ℤ) (by omega)), MorphismProperty.of_isPullback (P := @Flat) (GrpTangent.isPullback_torsion (GmO O) N) (Diag.flat_mulN _ (ULift ℤ) (by omega))⟩`.
+Supply the required witnesses or components.
 -/
 theorem finite_flat_gm (N : ℕ) (hN : 1 ≤ N) :
     IsFinite (torsion (GmO O) N).hom ∧ Flat (torsion (GmO O) N).hom :=
@@ -77,13 +77,13 @@ theorem finite_flat_gm (N : ℕ) (hN : 1 ≤ N) :
       (Diag.flat_mulN _ (ULift ℤ) (by omega))⟩
 
 /- English proof (translation)
-The claim follows from `map_pow (MonoidHom.mk' unitOf GmPoints.unitOf_mul) w k`.
+A detailed English derivation is pending.
 -/
 theorem unitOf_pow {R : Type} [CommRing R] [Algebra O R] (w : specO O R ⟶ GmO O) (k : ℕ) :
     unitOf (w ^ k) = unitOf w ^ k := map_pow (MonoidHom.mk' unitOf GmPoints.unitOf_mul) w k
 
 /- English proof (translation)
-The claim follows from `GmPoints.unitOf_bijective.1 (Units.ext (hi (by rw [← evalChar_gm, ← evalChar_gm, h])))`.
+A detailed English derivation is pending.
 -/
 theorem gm_ext (hi : Function.Injective (algebraMap O C)) {w w' : specO O O ⟶ GmO O}
     (h : evalChar C (ULift.up (1 : ℤ)) w = evalChar C (ULift.up (1 : ℤ)) w') : w = w' :=
@@ -92,11 +92,11 @@ theorem gm_ext (hi : Function.Injective (algebraMap O C)) {w w' : specO O O ⟶ 
 variable {C} {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Establish `h1 : ∀ n, ∃ w : specO O O ⟶ GmO O, evalChar C (ULift.up (1 : ℤ)) w = ε.lev n` using `fun n => by`. Establish `hN : p ^ n ≠ 0` using `Nat.one_le_iff_ne_zero.1 (one_le_ppow p n)`. Establish `h : ((ε.lev n : Cˣ) : C) ^ p ^ n = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ε.lev_pow, Units.val_one]`. Take `⟨z, hz⟩` from `hv.exists_of_le_one (r := (ε.lev n : C)) ((pow_le_one_iff_of_nonneg zero_le hN).1 (show v (ε.lev n : C) ^ p ^ n ≤ 1 by rw [← map_pow, h, map_one]))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `(GmPoints.unitOf_bijective (O := O) (R := O)).2 (Units.ofPowEqOne z _ (hv.hom_inj (by rw [map_pow, hz, h, map_one])) hN)`. Conclude with `⟨w, Units.ext (by rw [evalChar_gm, hw, Units.val_ofPowEqOne, hz])⟩`. Use `choose w hw using h1`. Use `⟨Tate.mk w fun n => ⟨gm_ext C hv.hom_inj ?_, gm_ext C hv.hom_inj ?_⟩, Tate.ext hw⟩` and prove the remaining obligations. Rewrite using `[map_pow, hw, ε.lev_pow, map_one]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, hw, hw, ε.lev_succ]`.
+A detailed English derivation is pending.
 -/
 theorem exists_tate_gm {v : Valuation C ℝ≥0} (hv : v.Integers O) (ε : Tate p Cˣ) :
     ∃ ζ : Tate p (specO O O ⟶ GmO O), Tate.map p (evalChar C (ULift.up (1 : ℤ))) ζ = ε := by
@@ -122,11 +122,11 @@ instance {J : Type} (b : Module.Basis J ℤ X) (j : J) : IsMonHom (cochar (O := 
   isMonHom_torusMap _
 
 /- English proof (translation)
-Use `choose a ha using fun j => ε.bijective.2 (Tate.map p (evalChar C (b j)) s)`. Use `⟨a, Tate.ext fun n => ext_evalChar C hi b fun i => ?_⟩` and prove the remaining obligations. Establish `key : ∀ j, Tate.map p (evalChar C (b i)) (Tate.map p (ptsHom (cochar b j)) ζ) = if j = i then ε.1 else 0` using `fun j => Tate.ext fun m => by`. Use `(evalChar_torusMap C _ _ _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalChar C (ULift.up (b.repr (b i) j)) _ = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[b.repr_self]`. Use `split_ifs with h`. Rewrite using `[h, Finsupp.single_eq_same, ← hζ]`. Both sides reduce to the same expression. Rewrite using `[Finsupp.single_eq_of_ne h]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `evalChar_zero C _`. Establish `: Tate.map p (evalChar C (b i)) s = Tate.map p (evalChar C (b i)) (∑ j, a j • Tate.map p (ptsHom (cochar b j)) ζ)`. Simplify using `only [map_sum, map_smul, key, smul_ite, smul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `(ha i).symm`. Conclude with `congrArg (·.lev n) this`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_sum (hi : Function.Injective (algebraMap O C)) {J : Type} [Fintype J]
     (b : Module.Basis J ℤ X) (ε : Eps p C) (ζ : Tate p (specO O O ⟶ GmO O))
@@ -164,11 +164,11 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero
 include hζ
 
 /- English proof (translation)
-Establish `hN` using `one_le_ppow p n`. Use `(torsionCharacter_ext_and_exists_of_integral_points C v O P.integers (GmO O) (p ^ n) hN (finite_flat_gm _ hN).1 (finite_flat_gm _ hN).2).1 _ _ fun w => gm_ext C P.integers.hom_inj ?_` and prove the remaining obligations. Establish `hz : evalChar C (ULift.up (1 : ℤ)) (ζ.lev n) = P.eps.1.lev n` using `congrArg (·.lev n) hζ`. Use `haveI : NeZero (p ^ n) := ⟨by omega⟩`. Take `⟨k, -, hk⟩` from `(P.eps.isPrimitiveRoot n).eq_pow_of_mem_rootsOfUnity (ξ := evalChar C (ULift.up (1 : ℤ)) (w ≫ torsion.ι (GmO O) (p ^ n))) ((mem_rootsOfUnity _ _).2 (by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, ← MonObj.comp_pow, torsionι_pow, MonObj.comp_one, map_one]))`. Establish `hw : w ≫ torsion.ι (GmO O) (p ^ n) = ζ.lev n ^ k` using `gm_ext C P.integers.hom_inj (by rw [map_pow, hz, hk])`. Rewrite using `[MonObj.comp_pow, map_pow, ← hk, ← pow_mul, mul_comm, pow_mul, pow_pairT, ← weil_pow_left hN (Tate.lev_pow _ n) (t.lev_pow n)]`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[evalChar_gm, ← Category.assoc, P.isWeilChar_weilChar, Category.assoc, ExtensionTorsion.torsionHom_ι, ← Category.assoc, hw, Tate.lev_map, ← map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem weilChar_cochar (t : P.T) (n : ℕ) :
     ExtensionTorsion.torsionHom φ (p ^ n) ≫ (P.weilChar t).χ n = torsion.ι (GmO O) (p ^ n) ^
@@ -193,13 +193,13 @@ theorem weilChar_cochar (t : P.T) (n : ℕ) :
 variable [Algebra ℤ_[p] O]
 
 /- English proof (translation)
-Use `HodgeTateImage.eq_of_forall (p := p) fun n => ?_` and prove the remaining obligations. Establish `hR` using `HodgeTateImage.pow_quot (O := O) (p := p) n`. Establish `h1` using `isAl_dlogTv (P.weilChar t) n _ hR (lieMap φ e) (HodgeTateImage.lift hR e ≫ ExtensionTorsion.torsionHom φ (p ^ n)) (by`. Rewrite using `[Category.assoc, ExtensionTorsion.torsionHom_ι, ← Category.assoc, HodgeTateImage.lift_ι]`. Conclude with `Category.assoc _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `isAl_taut (O := O) p n _ hR e _ (HodgeTateImage.lift_ι hR e)`. Rewrite `h1` using `[Category.assoc, weilChar_cochar P φ ζ hζ, MonObj.comp_pow, unitOf_pow, Units.val_pow_eq_pow_val]`. Generalize the expression as in `pairT P.A P.eps (Tate.map p (P.toA.comp (ptsHom φ)) ζ) t = a at h1 ⊢`. Establish `h3` using `congrArg TrivSqZeroExt.snd ((congrArg (· ^ digit n a) h2).symm.trans h1)`. Take `⟨c, hc⟩` from `pow_dvd_sub_digit n a`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h4 : algebraMap ℤ_[p] O a = (digit n a : O) + (p : O) ^ n * algebraMap ℤ_[p] O c`. Use `(congrArg _ (eq_add_of_sub_eq' hc)).trans ?_` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_pow, map_natCast, map_natCast]`. Rewrite using `[h4, map_add, map_mul, map_pow, map_natCast, map_natCast, hR, zero_mul, add_zero]`. Use `Eq.trans ?_ (h3.symm.trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`. Both sides reduce to the same expression. Rewrite using `[TrivSqZeroExt.snd_pow, he]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem al₀_cochar (e : LieG (GmO O)) (he : dlogT e = 1) (t : P.T) :
     (P.al₀ t).1 (lieMap φ e) =
@@ -228,7 +228,7 @@ theorem al₀_cochar (e : LieG (GmO O)) (he : dlogT e = 1) (t : P.T) :
 variable [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C]
 
 /- English proof (translation)
-The claim follows from `P.eq_of_pairV fun t => by rw [P.pairV_bLie, al₀_cochar P φ ζ hζ e he, P.pairV_tmul, _root_.mul_one, ← IsScalarTower.algebraMap_apply, Algebra.algebraMap_eq_smul_one]`.
+A detailed English derivation is pending.
 -/
 theorem bLie_cochar (e : LieG (GmO O)) (he : dlogT e = 1) :
     P.bLie (lieMap φ e) = 1 ⊗ₜ Tate.map p (P.toA.comp (ptsHom φ)) ζ :=
@@ -239,11 +239,11 @@ theorem bLie_cochar (e : LieG (GmO O)) (he : dlogT e = 1) :
 end AtPoint
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P`. Use `haveI := P.Ext.free`. Use `haveI := P.Ext.finite`. Use `haveI := P.D.i_hom`. Take `⟨ζ, hζ⟩` from `exists_tate_gm P.integers P.eps.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e, he⟩` from `(dlogT_bijective (O := O)).2 1`. Set `b` to `Module.finBasis ℤ P.Ext.X`. Rewrite using `[Submodule.baseChange_eq_span]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨s, rfl⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, rfl⟩` from `exists_eq_sum P.integers.hom_inj b P.eps ζ hζ s`. Simplify using `only [map_sum, map_smul, SetLike.mem_coe]`. Use `Submodule.sum_mem _ fun j _ => Submodule.smul_of_tower_mem _ _ (Submodule.subset_span ⟨lieMap (cochar b j ≫ P.D.i) e, (bLie_cochar P _ ζ hζ e he).trans ?_⟩)` and prove the remaining obligations. Conclude with `congrArg ((1 : C) ⊗ₜ[ℤ_[p]] ·) (Tate.ext fun n => congrArg P.toA (Category.assoc (ζ.lev n) (cochar b j) P.D.i).symm)`.
+A detailed English derivation is pending.
 -/
 theorem tateTorus_le_span_bLie : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] (Λ : Type) [CommRing Λ] [StarRing Λ] (P : Point p v O Λ), P.tateTorus.baseChange C ≤ Submodule.span C (Set.range P.bLie) := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P

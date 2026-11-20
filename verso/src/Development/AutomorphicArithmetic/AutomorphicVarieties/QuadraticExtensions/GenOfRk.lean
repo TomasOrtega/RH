@@ -8,33 +8,29 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ N rk U hU hrk`. Establish `hQ : ∀ q : QZ l, ∃ r : ℕ, (l : ℤ_[l]) ^ r • q = 0`. Introduce `q`. Use `revert q`. Use `show ∀ q : ℚ_[l] ⧸ ZlSub l, ∃ r : ℕ, (l : ℤ_[l]) ^ r • q = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `q`. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `_ x`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Take `⟨r, hr⟩` from `pow_unbounded_of_one_lt ‖x‖ hl`.
+Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Establish `hn : ‖(l : ℚ_[l]) ^ r * x‖ ≤ 1`. Rewrite using `[norm_mul, norm_pow, Padic.norm_p]`. Establish `hp : (0 : ℝ) < (l : ℝ) ^ r` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inv_pow, inv_mul_le_iff₀ hp, mul_one]`. Conclude with `hr.le`. Use `⟨⟨(l : ℚ_[l]) ^ r * x, hn⟩, ?_⟩` and prove the remaining obligations. Simplify using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hC : IsClosed ((cycU l U : Subgroup (G F Ω)) : Set (G F Ω))` using `hU.inter (isClosed_singleton.preimage (continuous_cycZ F Ω l))`. Use `haveI : CompactSpace (cycU l U) := isCompact_iff_compactSpace.mp hC.isCompact`. Establish `htors : ∀ φ : Dinf l N U, ∃ k : ℕ, (l : ℤ_[l]) ^ k • φ = 0`. Introduce `φ`. Establish `hfin` using `IsLocallyConstant.range_finite φ.2.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `choose r hr using hQ`. Use `⟨∑ q ∈ hfin.toFinset, r q, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Establish `hq : (φ : cycU l U → QZ l) u ∈ hfin.toFinset` using `by simp`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(l : ℤ_[l]) ^ (∑ q ∈ hfin.toFinset, r q) • (φ : cycU l U → QZ l) u = 0`. Rewrite using `[← Finset.add_sum_erase _ _ hq, pow_add, mul_comm, mul_smul, hr, smul_zero]`. Take `⟨ι, hι, hιr, -⟩` from `zmodToQZ l 1`. Set `κ : ZMod l →+ QZ l` to `ι.comp (ZMod.ringEquivCongr (pow_one l).symm).toAddMonoidHom`. Establish `hκ : Function.Injective κ` using `hι.comp (ZMod.ringEquivCongr (pow_one l).symm).injective`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hκr : ∀ q : QZ l, (l : ℤ_[l]) • q = 0 → κ (Function.invFun κ q) = q`. Introduce `q hq`. Apply `Function.invFun_eq` to reduce the goal to its premises. Take `⟨a, ha⟩` from `(hιr q).2 (by rw [pow_one]; exact hq)`. Conclude with `⟨(ZMod.ringEquivCongr (pow_one l).symm).symm a, by simp [κ, ha]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hval : ∀ φ : Submodule.torsionBy ℤ_[l] (Dinf l N U) (l : ℤ_[l]), ∀ u : cycU l U, (l : ℤ_[l]) • ((φ : Dinf l N U) : cycU l U → QZ l) u = 0`. Introduce `φ u`. Establish `h` using `(Submodule.mem_torsionBy_iff _ _).1 φ.2`. Establish `h2` using `congrArg (fun ψ : Dinf l N U => (ψ : cycU l U → QZ l) u) h`. Conclude with `h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `f : Submodule.torsionBy ℤ_[l] (Dinf l N U) (l : ℤ_[l]) → XDual N (cycU l U) (ZMod l) (ZMod l)` to `fun φ => ⟨fun u => Function.invFun κ (((φ : Dinf l N U) : cycU l U → QZ l) u), by`. Establish `hφ` using `(φ : Dinf l N U).2`. Use `⟨by exact hφ.1.comp (Function.invFun κ), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Apply `hκ` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_add, hκr _ (hval φ _), hκr _ (hval φ _), hκr _ (hval φ _), hφ.2.1]`. Introduce `A u hu`. Apply `hκ` to reduce the goal to its premises. Rewrite using `[hκr _ (hval φ _), hφ.2.2.1 A u hu, map_zero]`. Introduce `A hA u hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hκ` to reduce the goal to its premises. Rewrite using `[hκr _ (hval φ _), hφ.2.2.2 A hA u hu, map_zero]⟩`. Establish `hf : Function.Injective f`. Introduce `φ ψ h`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Establish `h1` using `congrArg (fun χ : XDual N (cycU l U) (ZMod l) (ZMod l) => κ ((χ : cycU l U → ZMod l) u)) h`. Simplify using `only [f] at h1`. Rewrite `h1` using `[hκr _ (hval φ u), hκr _ (hval ψ u)]`. Then use the resulting hypothesis.
-
-Conclude with `dualGen l (Dinf l N U) rk htors (hrk.of_injective f hf)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Two.genOfRk :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (N r : ℕ) (U : Subgroup (G F Ω)), IsClosed (U : Set (G F Ω)) → XRk l N (cycU l U) r → Tower.GenLE ℤ_[l] (Xinf l N U) r := by

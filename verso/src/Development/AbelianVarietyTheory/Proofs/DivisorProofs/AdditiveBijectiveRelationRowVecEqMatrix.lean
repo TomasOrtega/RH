@@ -10,17 +10,17 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.RelLin
 
 /- English proof (translation)
-Introduce `N _ R h1 h2 h3`. Use `choose f hf using h1`. Establish `huniq : ∀ x y y', R x y → R x y' → y = y'`. Introduce `x y y' hy hy'`. Establish `h` using `h3 _ _ (h2 x y x y' hy hy')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mp (h.mp (sub_self x))`. Establish `hsub : ∀ x x', f (x - x') = f x - f x'` using `fun x x' => huniq _ _ _ (hf (x - x')) (h2 _ _ _ _ (hf x) (hf x'))`. Set `g : (Fin 2 → ZMod N) →+ (Fin 2 → ZMod N)` to `AddMonoidHom.ofMapSub f hsub`. Set `L : (Fin 2 → ZMod N) →ₗ[ZMod N] (Fin 2 → ZMod N)` to `g.toZModLinearMap N`. Establish `hL : ∀ x, L x = f x` using `fun x => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective f`. Introduce `x x' hxx`. Establish `: f (x - x') = 0` using `by rw [hsub, hxx, sub_self]`. Conclude with `sub_eq_zero.mp ((h3 _ _ (hf (x - x'))).mpr this)`. Set `M : Matrix (Fin 2) (Fin 2) (ZMod N)` to `LinearMap.toMatrixRight' L`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : ∀ x, x ᵥ* M = f x`. Introduce `x`. Rewrite using `[← hL, ← Matrix.toLinearMapRight'_apply]`. Simplify using `[M]`. Establish `hU : IsUnit M`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.vecMul_surjective_iff_isUnit]`. Establish `hsurj : Function.Surjective f` using `Finite.injective_iff_surjective.mp hinj`. Introduce `y`. Take `⟨x, rfl⟩` from `hsurj y`. Conclude with `⟨x, hM x⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨hU.unit, fun x => ?_⟩` and prove the remaining obligations. Establish `: vmul x hU.unit = f x`. Simplify using `[vmul, hM]`. Rewrite using `[this]`. Conclude with `hf x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (N : ℕ) [NeZero N] (R : (Fin 2 → ZMod N) → (Fin 2 → ZMod N) → Prop),
     (∀ x, ∃ y, R x y) → (∀ x y x' y', R x y → R x' y' → R (x - x') (y - y')) →

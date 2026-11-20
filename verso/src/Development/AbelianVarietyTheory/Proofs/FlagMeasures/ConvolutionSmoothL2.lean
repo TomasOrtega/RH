@@ -17,15 +17,15 @@ noncomputable section
 namespace GlobalTheory.SmoothGrowth
 
 /- English proof (translation)
-Establish `h2 : eLpNorm h 2 (μ.restrict U) ≤ ENNReal.ofReal c`. Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num)]`. Establish `e : ENNReal.ofReal c = (ENNReal.ofReal (c ^ 2)) ^ (1 / (2 : ENNReal).toReal)`. Rewrite using `[ENNReal.ofReal_pow hc, ← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[e]`. Use `ENNReal.rpow_le_rpow (le_trans (le_of_eq ?_) hb) (by norm_num)` and prove the remaining obligations. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.rpow_natCast]`. Evaluate the numerical expressions using `[enorm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `e2` using `eLpNorm_le_eLpNorm_mul_rpow_measure_univ (μ := μ.restrict U) (p := 1) (q := 2) (f := h) (by norm_num) hm.restrict`. Rewrite `e2` using `[Measure.restrict_apply_univ]`. Establish `e3 : eLpNorm h 1 (μ.restrict U) ≤ ENNReal.ofReal (c * Real.sqrt (μ U).toReal)`. Use `e2.trans ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul hc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul' h2 (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.sqrt_eq_rpow, ← ENNReal.ofReal_rpow_of_nonneg ENNReal.toReal_nonneg (by norm_num), ENNReal.ofReal_toReal hU]`. Evaluate the numerical expressions. Rewrite `e3` using `[eLpNorm_one_eq_lintegral_enorm]`. Establish `hi : IntegrableOn h U μ` using `⟨hm.restrict, lt_of_le_of_lt e3 ENNReal.ofReal_lt_top⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hi, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_norm_eq_lintegral_enorm hm.restrict]`. Conclude with `ENNReal.toReal_le_of_le_ofReal (by positivity) e3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_of_sq {X : Type} [MeasurableSpace X] (μ : Measure X) (U : Set X) (hU : μ U ≠ ⊤)
     (h : X → ℂ) (hm : AEStronglyMeasurable h μ) (c : ℝ) (hc : 0 ≤ c)
@@ -58,9 +58,9 @@ theorem integrableOn_of_sq {X : Type} [MeasurableSpace X] (μ : Measure X) (U : 
   exact ENNReal.toReal_le_of_le_ofReal (by positivity) e3
 
 /- English proof (translation)
-Establish `h1 : IntegrableOn (fun g => φ g * h g) U μ` using `Integrable.bdd_mul (c := M) hi hφ.restrict (Filter.Eventually.of_forall hM)`. Establish `hz : ∀ x, x ∉ U → φ x * h x = 0` using `fun x hx => by rw [hs x hx, zero_mul]`. Use `⟨h1.integrable_of_forall_notMem_eq_zero hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero hz, ← integral_const_mul]`. Use `norm_integral_le_of_norm_le (hi.norm.const_mul M) (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hM g) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_mul_of_support {X : Type} [MeasurableSpace X] (μ : Measure X) (U : Set X)
     (hU : MeasurableSet U) (h φ : X → ℂ) (hφ : AEStronglyMeasurable φ μ) (M : ℝ) (hM : ∀ x, ‖φ x‖ ≤ M)
@@ -76,9 +76,9 @@ theorem integrable_mul_of_support {X : Type} [MeasurableSpace X] (μ : Measure X
   exact mul_le_mul_of_nonneg_right (hM g) (norm_nonneg _)
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Take `⟨F, hF, he⟩` from `ha x`. Establish `hc : Continuous fun g : I.Ginf => (fun v i j => uMat (g v) i j : InfinitePlace I.F → Fin I.n → Fin I.n → ℂ)`. Use `continuous_pi fun v => continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun g : UJ (I.ε v) => uMat g` using `Units.continuous_val.comp continuous_subtype_val`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(h1.comp (continuous_apply v)).matrix_elem i j`. Conclude with `(hF.continuousAt.comp (f := fun g : I.Ginf => (fun v i j => uMat (g v) i j : InfinitePlace I.F → Fin I.n → Fin I.n → ℂ)) hc.continuousAt).congr (he.mono fun _ h => h.symm)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_smoothInf (I : AutInst) (a : I.Ginf → ℂ) (ha : SmoothInf I a) : Continuous a := by
   refine continuous_iff_continuousAt.2 fun x => ?_
@@ -92,9 +92,9 @@ theorem continuous_of_smoothInf (I : AutInst) (a : I.Ginf → ℂ) (ha : SmoothI
       InfinitePlace I.F → Fin I.n → Fin I.n → ℂ)) hc.continuousAt).congr (he.mono fun _ h => h.symm)
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Establish `h2 : ContinuousAt (fun p : X × G => f (p.1, x.2)) x` using `((hc x.2).comp continuous_fst).continuousAt`. Use `h2.congr ?_` and prove the remaining obligations. Establish `h3 : IsOpen {p : X × G | x.2⁻¹ * p.2 ∈ K}` using `hK.preimage (by fun_prop)`. Use `filter_upwards [h3.mem_nhds (by simpa using h1 : x ∈ {p : X × G | x.2⁻¹ * p.2 ∈ K})] with p hp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hi _ hp]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_of_open_invariant {X G : Type} [TopologicalSpace X] [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] (K : Set G) (hK : IsOpen K) (h1 : (1 : G) ∈ K) (f : X × G → ℂ)
@@ -109,9 +109,9 @@ theorem continuous_of_open_invariant {X G : Type} [TopologicalSpace X] [Group G]
   simp
 
 /- English proof (translation)
-Use `locallyIntegrable_iff.2 fun V hV => ?_` and prove the remaining obligations. Establish `h1` using `hi V hV`. Rewrite `h1` using `[IntegrableOn, ← Measure.prod_restrict]`. Establish `h2 : Integrable (fun p : X × Z => e p.2 * h p) ((μ.restrict V).prod (ν.restrict K))` using `Integrable.bdd_mul (c := M) h1 (he.restrict.comp_quasiMeasurePreserving Measure.quasiMeasurePreserving_snd) (Filter.Eventually.of_forall fun p => hM p.2)`. Establish `h3` using `h2.integral_prod_left`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h3.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Conclude with `setIntegral_eq_integral_of_forall_compl_eq_zero fun k hk => by rw [hs k hk, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem locallyIntegrable_partial {X Z : Type} [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X]
     [MeasurableSpace X] [BorelSpace X] [MeasurableSpace Z] (μ : Measure X) (ν : Measure Z) [SFinite μ] [SFinite ν]
@@ -137,7 +137,7 @@ variable {G₁ G₂ : Type} [Group G₁] [Group G₂] [MeasurableSpace G₁] [Me
   [μ₁.IsMulLeftInvariant] [μ₂.IsMulLeftInvariant]
 
 /- English proof (translation)
-Rewrite using `[← integral_mul_left_eq_self (μ := μ₁.prod μ₂) (fun g => (a g.1 * e g.2) * Y (x * g)) (1, k)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Prod.fst_mul, Prod.snd_mul, one_mul, hk, mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem conv_right_invariant [MeasurableMul (G₁ × G₂)] (a : G₁ → ℂ) (e : G₂ → ℂ) (Y : G₁ × G₂ → ℂ) (k : G₂) (hk : ∀ b, e (k * b) = e b)
     (x : G₁ × G₂) :
@@ -149,9 +149,9 @@ theorem conv_right_invariant [MeasurableMul (G₁ × G₂)] (a : G₁ → ℂ) (
 omit [MeasurableMul G₂] [μ₂.IsMulLeftInvariant] in
 
 /- English proof (translation)
-Rewrite using `[integral_prod _ hi, ← integral_mul_left_eq_self (μ := μ₁) (fun g => (∫ k, e k * Y ((1, b) * (g, k)) ∂μ₂) * a (z⁻¹ * g)) z]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← integral_mul_const]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Prod.mk_mul_mk, one_mul, inv_mul_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conv_eq_partial (a : G₁ → ℂ) (e : G₂ → ℂ) (Y : G₁ × G₂ → ℂ) (z : G₁) (b : G₂)
     (hi : Integrable (fun g => (a g.1 * e g.2) * Y ((z, b) * g)) (μ₁.prod μ₂)) :
@@ -169,9 +169,9 @@ theorem conv_eq_partial (a : G₁ → ℂ) (e : G₂ → ℂ) (Y : G₁ × G₂ 
 end Group
 
 /- English proof (translation)
-Establish `h : (fun p : X × Z => (a p.1 * e p.2) * ⟪u, r p⟫_ℂ) = fun p => (a p.1 * ⟪u, s p.1⟫_ℂ) * e p.2`. Use function extensionality and compare the values at `p`. Distinguish the cases in `h0 : e p.2 = 0`. Simplify using `[h0]`. Rewrite using `[← hr p.1 p.2 h0]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, integral_prod_mul (fun g => a g * ⟪u, s g⟫_ℂ) e, he, mul_one]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem weak_integral_fixed {X Z H : Type} [MeasurableSpace X] [MeasurableSpace Z]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] (μ : Measure X) (ν : Measure Z) [SFinite μ] [SFinite ν]
@@ -186,9 +186,9 @@ theorem weak_integral_fixed {X Z H : Type} [MeasurableSpace X] [MeasurableSpace 
   rw [h, integral_prod_mul (fun g => a g * ⟪u, s g⟫_ℂ) e, he, mul_one]
 
 /- English proof (translation)
-Take `⟨hp, -, -, hl⟩` from `GlobalTheory.T.truncatedLeastLatticeSize_lipschitz_properties I hn`. Establish `h` using `(abs_le.1 (hl (1, b) (z, 1) h1)).1`. Simplify using `only [Prod.mk_mul_mk, one_mul, mul_one] at h`. Establish `e : (m / I.f : ℝ) * dSum I z = m * (dSum I z / I.f)` using `by ring`. Rewrite using `[e, Real.exp_nat_mul, ← mul_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `pow_le_pow_left₀ (inv_nonneg.2 (hp _).le) ?_ m` and prove the remaining obligations. Rewrite using `[← Real.exp_log (hp (z, b)), ← Real.exp_log (hp (1, b)), ← Real.exp_neg, ← Real.exp_neg, ← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by linarith)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_tau_le (I : AutInst) (hn : 1 ≤ I.n) (h1 : (1 : I.Gf) ∈ I.Kset) (m : ℕ) (z : I.Ginf) (b : I.Gf) :
     (tau1 I (z, b))⁻¹ ^ m ≤ (tau1 I (1, b))⁻¹ ^ m * Real.exp ((m / I.f : ℝ) * dSum I z) := by
@@ -202,45 +202,39 @@ theorem inv_tau_le (I : AutInst) (hn : 1 ≤ I.n) (h1 : (1 : I.Gf) ∈ I.Kset) (
   exact Real.exp_le_exp.2 (by linarith)
 
 /- English proof (translation)
-Introduce `B g hn hg a ha hac`. Take `⟨hT2, hL, hS, hKc, -, ⟨K₀, hK₀⟩, hlev⟩` from `GlobalTheory.CongTop.adelic_topology B.I`. Take `⟨hKo, ⟨K, hK⟩, -⟩` from `hlev g hg`. Take `⟨hR1, hmul, hnorm, hcont, hext⟩` from `GlobalTheory.RightRegFund.rightReg_unitary_continuous B`. Use `haveI : (muInf B.I).IsHaarMeasure := by unfold muInf; infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : SigmaFinite (muInf B.I) := by unfold muInf; infer_instance`. Use `haveI : BorelSpace B.I.GA := inferInstance`. Establish `hμ : B.I.muA B.μf = (muInf B.I).prod B.μf` using `rfl`. Use `haveI : (B.I.muA B.μf).IsMulLeftInvariant := by rw [hμ]; infer_instance`. Use `haveI : IsFiniteMeasureOnCompacts (B.I.muA B.μf) := by rw [hμ]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : B.I.Kg g ⊆ B.I.Kset` using `fun _ h => h.1`. Establish `hKcl : IsClosed (B.I.Kg g)`. Rewrite `hKo`, the goal using `[← hK]`. Conclude with `K.isClosed_of_isOpen hKo`. Establish `hKcomp : IsCompact (B.I.Kg g)` using `hKc.of_isClosed_subset hKcl hsub`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1K : (1 : B.I.Gf) ∈ B.I.Kg g` using `by rw [← hK]; exact K.one_mem`. Establish `hKpos : B.μf (B.I.Kg g) ≠ 0` using `(hKo.measure_pos B.μf ⟨1, h1K⟩).ne'`. Establish `hKfin : B.μf (B.I.Kg g) ≠ ⊤` using `hKcomp.measure_lt_top.ne`. Establish `hKm : MeasurableSet (B.I.Kg g)` using `hKo.measurableSet`. Use `set c : ℂ := (((B.μf (B.I.Kg g)).toReal : ℝ) : ℂ)⁻¹ with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set e : B.I.Gf → ℂ := (B.I.Kg g).indicator fun _ => c with he`. Establish `he0 : ∀ k, k ∉ B.I.Kg g → e k = 0` using `fun k hk => Set.indicator_of_notMem hk _`. Establish `heM : ∀ k, ‖e k‖ ≤ ‖c‖` using `fun k => norm_indicator_le_norm_self _ _`. Establish `hei : Integrable e B.μf` using `(integrable_indicator_iff hKm).2 (integrableOn_const hKfin)`. Establish `he1 : ∫ k, e k ∂B.μf = 1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, integral_indicator_const _ hKm, hc, Complex.real_smul, Measure.real]`. Conclude with `mul_inv_cancel₀ (by exact_mod_cast ENNReal.toReal_ne_zero.2 ⟨hKpos, hKfin⟩)`. Establish `hek : ∀ k ∈ B.I.Kg g, ∀ b, e (k * b) = e b`. Introduce `k hk b`. Establish `: k * b ∈ B.I.Kg g ↔ b ∈ B.I.Kg g`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hk`, the goal using `[← hK]`. Conclude with `K.mul_mem_cancel_left hk`. Distinguish the cases in `hb : b ∈ B.I.Kg g`. Rewrite using `[he, Set.indicator_of_mem hb, Set.indicator_of_mem (this.2 hb)]`. Rewrite using `[he0 _ hb, he0 _ (fun h => hb (this.1 h))]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hacont : Continuous a` using `continuous_of_smoothInf B.I a ha`. Establish `hai : Integrable a (muInf B.I)` using `hacont.integrable_of_hasCompactSupport hac`. Take `⟨M, hM⟩` from `hacont.bounded_above_of_compact_support hac`. Establish `hφi : Integrable (fun p : B.I.GA => a p.1 * e p.2) (B.I.muA B.μf)` using `hai.mul_prod hei`. Use `set m : ℕ := 2 * B.I.n ^ 2 * B.I.f with hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hpos` using `(GlobalTheory.T.truncatedLeastLatticeSize_lipschitz_properties B.I hn).1`. Establish `hloc : ∀ V : Set B.I.Ginf, IsCompact V → ∃ C : ℝ, 0 ≤ C ∧ ∀ (y : B.I.L2 B.μf B.fund) (x : B.I.GA), IntegrableOn (fun p => B.I.ext y (x * p)) (V ×ˢ B.I.Kg g) (B.I.muA B.μf) ∧ ∫ p in V ×ˢ B.I.Kg g, ‖B.I.ext y (x * p)‖ ∂(B.I.muA B.μf) ≤ C * (tau1 B.I x)⁻¹ ^ m * ‖y‖`. Introduce `V hV`. Establish `hU : IsCompact (V ×ˢ B.I.Kg g)` using `hV.prod hKcomp`. Take `⟨C, hC, hb⟩` from `GlobalTheory.T.local_L2_bound_height B _ hn hU fun u hu => hsub hu.2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Real.sqrt C * Real.sqrt (B.I.muA B.μf (V ×ˢ B.I.Kg g)).toReal, by positivity, fun y x => ?_⟩` and prove the remaining obligations. Establish `hτ : 0 ≤ (tau1 B.I x)⁻¹` using `inv_nonneg.2 (hpos x).le`. Establish `hsq : (Real.sqrt C * (tau1 B.I x)⁻¹ ^ m * ‖y‖) ^ 2 = C * (tau1 B.I x)⁻¹ ^ (4 * B.I.n ^ 2 * B.I.f) * ‖y‖ ^ 2`. Rewrite using `[mul_pow, mul_pow, Real.sq_sqrt hC, ← pow_mul, hm]`. Use `congr 3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨h1, h2⟩` from `integrableOn_of_sq (B.I.muA B.μf) _ hU.measure_lt_top.ne (fun p => B.I.ext y (x * p)) ((hext y).2.comp_measurePreserving (measurePreserving_mul_left _ x)) (Real.sqrt C * (tau1 B.I x)⁻¹ ^ m * ‖y‖) (by positivity) (by rw [hsq]; exact hb y x)`. Conclude with `⟨h1, h2.trans (le_of_eq (by ring))⟩`. Take `⟨C, hC, hb⟩` from `hloc _ hac.isCompact`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨M * ‖c‖ * C, fun y hy T hT => ?_⟩` and prove the remaining obligations. Use `set f : B.I.GA → ℂ := fun x => ∫ p, (a p.1 * e p.2) * B.I.ext y (x * p) ∂(B.I.muA B.μf) with hf`. Establish `hmain : ∀ x, Integrable (fun p : B.I.GA => (a p.1 * e p.2) * B.I.ext y (x * p)) (B.I.muA B.μf) ∧ ‖f x‖ ≤ M * ‖c‖ * C * (tau1 B.I x)⁻¹ ^ m * ‖y‖`. Introduce `x`. Take `⟨h1, h2⟩` from `integrable_mul_of_support (B.I.muA B.μf) (tsupport a ×ˢ B.I.Kg g) ((isClosed_tsupport a).measurableSet.prod hKm) _ (fun p : B.I.GA => a p.1 * e p.2) hφi.1 (M * ‖c‖) (fun p => by rw [norm_mul]; exact mul_le_mul (hM _) (heM _) (norm_nonneg _) hM0) (fun p hp => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : p.2 ∈ B.I.Kg g`. Rewrite using `[image_eq_zero_of_notMem_tsupport (fun h' => hp ⟨h', h⟩), zero_mul]`. Rewrite using `[he0 _ h, mul_zero]) (hb y x).1`. Use `⟨h1, h2.trans ?_⟩` and prove the remaining obligations. Use `(mul_le_mul_of_nonneg_left (hb y x).2 (by positivity)).trans (le_of_eq (by ring))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hright : ∀ k ∈ B.I.Kg g, ∀ x, f (x * (1, k)) = f x` using `fun k hk x => conv_right_invariant (muInf B.I) B.μf a e (B.I.ext y) k (hek k hk) x`. Establish `hsm : ∀ b, SmoothInf B.I (fun z => f (z, b)) ∧ Continuous fun z => f (z, b)`. Introduce `b`. Establish `e1 : (fun z => f (z, b)) = fun z => ∫ p, (∫ k, e k * B.I.ext y ((1, b) * (p, k)) ∂B.μf) * a (z⁻¹ * p) ∂(muInf B.I)`. Use function extensionality and compare the values at `z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `conv_eq_partial (muInf B.I) B.μf a e (B.I.ext y) z b (hmain (z, b)).1`. Rewrite using `[e1]`. Use `GlobalTheory.T.smooth_continuous_convolution_realPointsUnitary B.I a _ ha hac ?_` and prove the remaining obligations. Use `locallyIntegrable_partial (muInf B.I) B.μf (B.I.Kg g) hKm e hei.1 ‖c‖ heM he0 (fun p => B.I.ext y ((1, b) * p)) fun V hV => ?_` and prove the remaining obligations. Take `⟨C', -, hb'⟩` from `hloc V hV`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hb' y (1, b)).1`. Use `⟨f, ⟨fun γ hγ x => ?_, hright, fun b => ⟨(hsm b).1, ?_⟩⟩, ?_, fun x => (hmain x).2, ?_⟩` and prove the remaining obligations. Use `integral_congr_ae ?_ filter_upwards [(measurePreserving_mul_left (B.I.muA B.μf) x).quasiMeasurePreserving.ae (hext y).1] with p hp` and prove the remaining obligations. Rewrite using `[mul_assoc γ, hp γ hγ]`. Use `⟨M * ‖c‖ * C * (tau1 B.I (1, b))⁻¹ ^ m * ‖y‖, (m / B.I.f : ℝ), fun z => (hmain (z, b)).2.trans ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `inv_tau_le B.I hn (hsub h1K) m z b`. Establish `h'` using `mul_le_mul_of_nonneg_left h (by positivity : 0 ≤ M * ‖c‖ * C * ‖y‖)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `continuous_of_open_invariant (B.I.Kg g) hKo h1K f (fun b => (hsm b).2) fun k hk z b => ?_` and prove the remaining obligations. Simplify using `using hright k hk (z, b)`.
-
-Establish `hU : IsURep B.R` using `⟨hR1, hmul, hnorm, hcont⟩`. Take `⟨T', hT', -⟩` from `hU.exists_isOpOf hφi`. Establish `hTT : T y = T' y`. Use `ext_inner_left ℂ fun u => ?_` and prove the remaining obligations. Rewrite using `[hT.2, hT'.2]`.
-
-Use `(weak_integral_fixed (muInf B.I) B.μf (fun p => B.R p y) (fun z => B.R (z, 1) y) a e he1 (fun z k hk => ?_) u).symm` and prove the remaining obligations. Establish `hk' : k ∈ B.I.Kg g` using `by by_contra h; exact hk (he0 k h)`. Establish `: ((z, k) : B.I.GA) = (z, 1) * (1, k)` using `by simp`. Rewrite using `[this, hmul, ContinuousLinearMap.mul_apply, hy k hk']`. Rewrite using `[hTT]`.
-
-Conclude with `(GlobalTheory.T.rightConvolution_operator_ae_eq_integral_adelic B _ T' hT' y).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convolutionSmoothL2 : ConvolutionSmoothL2 := by
   intro B g hn hg a ha hac

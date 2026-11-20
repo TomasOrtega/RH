@@ -2,9 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 open Matrix UpperTheory.V.Weyl
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp only [MvPolynomial.eval_C]`. Use `fun_prop`. Consider the case `add p q hp hq => simp only [map_add]`. Conclude with `hp.add hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `mul_X p ab hp`. Simplify using `only [map_mul, MvPolynomial.eval_X]`. Conclude with `hp.mul (by fun_prop)`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Weyl.differentiable_eval_polynomial_entries (n : ℕ) (p : MvPolynomial (Fin n × Fin n) ℂ) :
     Differentiable ℂ (fun x : Fin n → Fin n → ℂ => MvPolynomial.eval (fun ab => x ab.1 ab.2) p) := by
@@ -16,9 +16,9 @@ private theorem UpperTheory.V.Weyl.differentiable_eval_polynomial_entries (n : �
     exact hp.mul (by fun_prop)
 
 /- English proof (translation)
-Introduce `n Ξ i j`. Take `⟨p, hp⟩` from `Ξ.poly i j`. Establish `h : Ξ.coef i j = fun x : Fin n → Fin n → ℂ => MvPolynomial.eval (fun ab => x ab.1 ab.2) p`. Use function extensionality and compare the values at `x`. Conclude with `hp (Matrix.of x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `UpperTheory.V.Weyl.differentiable_eval_polynomial_entries n p`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Weyl.coefDiff :
     ∀ (n : ℕ) (Ξ : Pre n) (i j : Fin Ξ.d), Differentiable ℂ (Ξ.coef i j) := by

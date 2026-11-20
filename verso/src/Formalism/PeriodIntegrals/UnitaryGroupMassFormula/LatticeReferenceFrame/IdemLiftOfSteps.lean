@@ -34,7 +34,7 @@ def FixInt : Prop :=
 def TenStep : Prop := AdIdem → FixInt → PI.ScRefExists.Sk.IdemLift
 
 /- English proof (translation)
-The claim follows from `h4 (h2 h1) h3`.
+A detailed English derivation is pending.
 -/
 theorem idemLift_of_steps (h1 : LocIdem) (h2 : AdOfLoc) (h3 : FixInt) (h4 : TenStep) :
     PI.ScRefExists.Sk.IdemLift := h4 (h2 h1) h3

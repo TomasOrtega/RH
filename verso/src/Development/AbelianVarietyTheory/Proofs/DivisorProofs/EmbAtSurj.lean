@@ -13,9 +13,9 @@ open scoped NNReal
 namespace GlobalTheory.EmbOnto
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun σ : E →+* ℂ => embAt c C σ)`. Introduce `σ τ h`. Use extensionality with `a`. Establish `h1 : embF c σ a = embF c τ a` using `(algebraMap c.F C).injective (DFunLike.congr_fun h a)`. Establish `h2` using `congrArg (fun x : c.F => (x : ℂ)) h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `hb` using `Function.Injective.bijective_of_nat_card_le hinj (by`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, NumberField.Embeddings.card, NumberField.Embeddings.card])`. Conclude with `hb.2 φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embAt_surj {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H} (c : Coeff l)
     (C : Type) [Field C] [IsAlgClosed C] [CharZero C] [Algebra c.F C] (φ : E →+* C) :

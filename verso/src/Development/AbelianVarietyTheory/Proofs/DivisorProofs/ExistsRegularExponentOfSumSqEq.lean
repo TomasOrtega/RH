@@ -3,33 +3,31 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `q d a hq hd hinv hsum hdiv`. Establish `h1 : 1 < q ^ d` using `Nat.one_lt_pow hd.ne' (by omega)`. Establish `hN : 0 < q ^ d - 1` using `by omega`. Establish `hqd : q ^ d ≡ 1 [MOD q ^ d - 1]` using `((Nat.modEq_iff_dvd' h1.le).2 dvd_rfl).symm`. Generalize the expression as in `q ^ d - 1 = N at *`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, a k ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Simplify using `[h] at hsum`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, hk, fun i hi hid hki => ?_⟩` and prove the remaining obligations. Establish `hex : ∃ e, 0 < e ∧ k * q ^ e ≡ k [MOD N]` using `⟨i, hi, hki⟩`. Establish `hspec` using `Nat.find_spec hex`. Establish `hle : Nat.find hex ≤ i` using `Nat.find_min' hex ⟨hi, hki⟩`. Establish `hmin : ∀ m, 0 < m → m < Nat.find hex → ¬ k * q ^ m ≡ k [MOD N]` using `fun m hm hlt h => Nat.find_min hex hlt ⟨hm, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Nat.find hex = e at hspec hle hmin`. Take `⟨he, hke⟩` from `hspec`. Establish `hmul : ∀ m, k * q ^ (e * m) ≡ k [MOD N]`. Introduce `m`. Proceed by induction on `m with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp [Nat.ModEq]`. Consider the case `succ m ih`. Establish `: k * q ^ (e * (m + 1)) = k * q ^ (e * m) * q ^ e` using `by ring`. Rewrite using `[this]`. Conclude with `(ih.mul_right _).trans hke`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hmod : d % e = 0`. Assume the negation of the conclusion as `h`. Apply `hmin (d % e) (Nat.pos_of_ne_zero h) (Nat.mod_lt _ he)` to reduce the goal to its premises. Establish `h2 : k * q ^ d = k * q ^ (e * (d / e)) * q ^ (d % e)`. Rewrite using `[mul_assoc, ← pow_add, Nat.div_add_mod]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : k * q ^ d ≡ k [MOD N]` using `by simpa using hqd.mul_left k`. Rewrite `h3` using `[h2]`. Conclude with `((hmul (d / e)).mul_right _).symm.trans h3`. Take `⟨s, hs⟩` from `Nat.dvd_of_mod_eq_zero hmod`. Establish `hs2 : 2 ≤ s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Establish `: s ≤ 1` using `by omega`. Establish `: e * s ≤ e * 1` using `Nat.mul_le_mul_left _ this`. Use linear arithmetic over natural numbers and integers. Establish `hdv : (s : ℤ) ∣ a k` using `hdiv s e k (by rw [hs, mul_comm]) hke`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsq : (s : ℤ) ^ 2 ≤ a k ^ 2` using `Int.le_of_dvd (by positivity) (pow_dvd_pow_of_dvd hdv 2)`. Establish `key : ∀ i j, i < j → j < e → ¬ k * q ^ i ≡ k * q ^ j [MOD N]`. Introduce `i j hij hj h`. Apply `hmin (i + (e - j)) (by omega) (by omega)` to reduce the goal to its premises. Establish `h2` using `h.mul_right (q ^ (e - j))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[mul_assoc, mul_assoc, ← pow_add, ← pow_add, Nat.add_sub_cancel' hj.le]`. Conclude with `h2.trans hke`. Establish `hinj : Set.InjOn (fun i => k * q ^ i % N) (Finset.range e : Set ℕ)`. Introduce `i hi j hj h`. Simplify using `only [Finset.coe_range, Set.mem_Iio] at hi hj`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Break down `lt_trichotomy i j with h' | h' | h'` into its components or cases. Conclude with `absurd h (key i j h' hj)`. Conclude with `h'`. Conclude with `absurd (Eq.symm h) (key j i h' hi)`. Establish `hsub : (Finset.range e).image (fun i => k * q ^ i % N) ⊆ Finset.range N`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `Finset.mem_range.2 (Nat.mod_lt _ hN)`. Establish `hle2` using `Finset.sum_le_sum_of_subset_of_nonneg (f := fun k => a k ^ 2) hsub (fun _ _ _ => by positivity)`. Rewrite `hle2` using `[Finset.sum_image hinj, hsum]`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : ∑ i ∈ Finset.range e, a (k * q ^ i % N) ^ 2 = (e : ℤ) * a k ^ 2`. Rewrite using `[Finset.sum_congr rfl (fun i _ => by rw [← hinv k _ i (Nat.mod_modEq _ _).symm])]`. Simplify using the standard rewrite rules. Rewrite `hle2` using `[heq, hs]`. Move the coercions through the operations in `at hle2`.
-
-Establish `he' : (0 : ℤ) < e` using `by exact_mod_cast he`. Establish `hs' : (2 : ℤ) ≤ s` using `by exact_mod_cast hs2`. Use `le_of_mul_le_mul_left hle2 he'` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_regular_exponent_of_sum_sq_eq :
     ∀ (q d : ℕ) (a : ℕ → ℤ), 2 ≤ q → 0 < d →

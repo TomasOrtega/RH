@@ -25,12 +25,12 @@ Simplify using the standard rewrite rules.
 theorem hl_add (x y z : S.V) : S.hT (x + y) z = S.hT x z + S.hT y z := by
   simp
 /- English proof (translation)
-Simplify using `[starRingEnd_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hl_smul (c : E) (x z : S.V) : S.hT (c • x) z = star c * S.hT x z := by
   simp [starRingEnd_apply]
 /- English proof (translation)
-Rewrite using `[map_sum, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hl_sum {ι : Type} (s : Finset ι) (x : ι → S.V) (z : S.V) :
     S.hT (∑ i ∈ s, x i) z = ∑ i ∈ s, S.hT (x i) z := by
@@ -51,18 +51,18 @@ Simplify using the standard rewrite rules.
 theorem hr_smul (c : E) (x z : S.V) : S.hT z (c • x) = c * S.hT z x := by
   simp
 /- English proof (translation)
-Conclude with `map_sum (S.hT z) x s`.
+A detailed English derivation is pending.
 -/
 theorem hr_sum {ι : Type} (s : Finset ι) (x : ι → S.V) (z : S.V) :
     S.hT z (∑ i ∈ s, x i) = ∑ i ∈ s, S.hT z (x i) := by
   exact map_sum (S.hT z) x s
 /- English proof (translation)
-Conclude with `(S.herm.eq x y).symm`.
+A detailed English derivation is pending.
 -/
 theorem h_swap (x y : S.V) : S.hT y x = star (S.hT x y) := by
   exact (S.herm.eq x y).symm
 /- English proof (translation)
-Rewrite using `[h_swap, h, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_zero_swap {x y : S.V} (h : S.hT x y = 0) : S.hT y x = 0 := by
   rw [h_swap, h, star_zero]
@@ -97,9 +97,9 @@ def zt2 (F : FlagG S r (T : E)) (F' : FlagG S r (T' : E)) : S.V :=
 variable (F : FlagG S r (T : E)) (F' : FlagG S r (T' : E))
 
 /- English proof (translation)
-Establish `h1 : Pm F F' * (Pm F F')⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hP)`. Establish `h2` using `congrFun (congrFun h1 a) b`. Rewrite `h2` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[← h2]`. Unfold `ed`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hr_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hr_smul, mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem h_e_ed (hP : (Pm F F').det ≠ 0) (a b : Fin r) :
     S.hT (F.e a) (ed F F' b) = if a = b then 1 else 0 := by
@@ -114,7 +114,7 @@ theorem h_e_ed (hP : (Pm F F').det ≠ 0) (a b : Fin r) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[h_swap, h_e_ed F F' hP b a]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hab, Ne.symm hab]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem h_ed_e (hP : (Pm F F').det ≠ 0) (a b : Fin r) :
     S.hT (ed F F' a) (F.e b) = if a = b then 1 else 0 := by
@@ -124,31 +124,31 @@ theorem h_ed_e (hP : (Pm F F').det ≠ 0) (a b : Fin r) :
   · simp [hab, Ne.symm hab]
 
 /- English proof (translation)
-Simplify using `[ed, hl_sum, hr_sum, hl_smul, hr_smul, F'.e_iso]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_ed_ed (a b : Fin r) : S.hT (ed F F' a) (ed F F' b) = 0 := by
   simp [ed, hl_sum, hr_sum, hl_smul, hr_smul, F'.e_iso]
 
 /- English proof (translation)
-Simplify using `[ed, hl_sum, hl_smul, F'.z_orth]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_ed_zp (a : Fin r) : S.hT (ed F F' a) F'.z = 0 := by
   simp [ed, hl_sum, hl_smul, F'.z_orth]
 
 /- English proof (translation)
-Conclude with `h_zero_swap _ (h_ed_zp F F' a)`.
+A detailed English derivation is pending.
 -/
 theorem h_zp_ed (a : Fin r) : S.hT F'.z (ed F F' a) = 0 := by
   exact h_zero_swap _ (h_ed_zp F F' a)
 
 /- English proof (translation)
-Conclude with `h_zero_swap _ (F.z_orth a)`.
+A detailed English derivation is pending.
 -/
 theorem h_z_e (a : Fin r) : S.hT F.z (F.e a) = 0 := by
   exact h_zero_swap _ (F.z_orth a)
 
 /- English proof (translation)
-Unfold `vv`. Rewrite using `[hl_sub, hr_sub, hr_sub, F.e_iso, h_e_ed F F' hP, h_ed_e F F' hP, h_ed_ed]`. Apply the tactic sequence `split_ifs <;> ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem h_v_v (hP : (Pm F F').det ≠ 0) (a b : Fin r) :
     S.hT (vv F F' a) (vv F F' b) = if a = b then -2 else 0 := by
@@ -157,7 +157,7 @@ theorem h_v_v (hP : (Pm F F').det ≠ 0) (a b : Fin r) :
   split_ifs <;> ring
 
 /- English proof (translation)
-Unfold `zt`. Rewrite using `[hr_sub, hr_sum]`. Simplify using `only [hr_smul, h_ed_e F F' hP]`. Simplify using `[cz]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem h_ed_zt (hP : (Pm F F').det ≠ 0) (b : Fin r) : S.hT (ed F F' b) (zt F F') = 0 := by
   unfold zt
@@ -166,13 +166,13 @@ theorem h_ed_zt (hP : (Pm F F').det ≠ 0) (b : Fin r) : S.hT (ed F F' b) (zt F 
   simp [cz]
 
 /- English proof (translation)
-Simplify using `[zt, hr_sub, hr_sum, hr_smul, F.z_orth, F.e_iso]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_e_zt (b : Fin r) : S.hT (F.e b) (zt F F') = 0 := by
   simp [zt, hr_sub, hr_sum, hr_smul, F.z_orth, F.e_iso]
 
 /- English proof (translation)
-Establish `h1 : S.hT (∑ a, cz F F' a • F.e a) (zt F F') = 0`. Simplify using `[hl_sum, hl_smul, h_e_zt]`. Establish `h2 : S.hT F.z (zt F F') = -(T : E)`. Simplify using `[zt, hr_sub, hr_sum, hr_smul, h_z_e, F.z_norm]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem h_zt_zt : S.hT (zt F F') (zt F F') = -(T : E) := by
   have h1 : S.hT (∑ a, cz F F' a • F.e a) (zt F F') = 0 := by
@@ -184,7 +184,7 @@ theorem h_zt_zt : S.hT (zt F F') (zt F F') = -(T : E) := by
     _ = -(T : E) := by rw [h1, h2, sub_zero]
 
 /- English proof (translation)
-Unfold `zt'`. Rewrite using `[hr_sub, hr_sum]`. Simplify using `only [hr_smul, h_e_ed F F' hP]`. Simplify using `[cz']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem h_e_zt' (hP : (Pm F F').det ≠ 0) (b : Fin r) : S.hT (F.e b) (zt' F F') = 0 := by
   unfold zt'
@@ -193,13 +193,13 @@ theorem h_e_zt' (hP : (Pm F F').det ≠ 0) (b : Fin r) : S.hT (F.e b) (zt' F F')
   simp [cz']
 
 /- English proof (translation)
-Simplify using `[zt', hr_sub, hr_sum, hr_smul, h_ed_zp, h_ed_ed]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_ed_zt' (b : Fin r) : S.hT (ed F F' b) (zt' F F') = 0 := by
   simp [zt', hr_sub, hr_sum, hr_smul, h_ed_zp, h_ed_ed]
 
 /- English proof (translation)
-Establish `h1 : S.hT (∑ a, cz' F F' a • ed F F' a) (zt' F F') = 0`. Simplify using `[hl_sum, hl_smul, h_ed_zt']`. Establish `h2 : S.hT F'.z (zt' F F') = -(T' : E)`. Simplify using `[zt', hr_sub, hr_sum, hr_smul, h_zp_ed, F'.z_norm]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem h_zt'_zt' : S.hT (zt' F F') (zt' F F') = -(T' : E) := by
   have h1 : S.hT (∑ a, cz' F F' a • ed F F' a) (zt' F F') = 0 := by
@@ -211,21 +211,21 @@ theorem h_zt'_zt' : S.hT (zt' F F') (zt' F F') = -(T' : E) := by
     _ = -(T' : E) := by rw [h1, h2, sub_zero]
 
 /- English proof (translation)
-Simplify using `[vv, hl_sub, h_e_zt, h_ed_zt F F' hP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_v_zt (hP : (Pm F F').det ≠ 0) (a : Fin r) : S.hT (vv F F' a) (zt F F') = 0 := by
   simp [vv, hl_sub, h_e_zt, h_ed_zt F F' hP]
 
 /- English proof (translation)
-Simplify using `[vv, hl_sub, h_e_zt' F F' hP, h_ed_zt']`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_v_zt' (hP : (Pm F F').det ≠ 0) (a : Fin r) : S.hT (vv F F' a) (zt' F F') = 0 := by
   simp [vv, hl_sub, h_e_zt' F F' hP, h_ed_zt']
 
 /- English proof (translation)
-Unfold `zt2`. Rewrite using `[hr_add, hr_smul, h_zt_zt]`. Establish `h1 : beta F F' / (T : E) * -(T : E) = -beta F F'`. Rewrite using `[mul_neg, div_mul_cancel₀ _ hT]`. Rewrite using `[h1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[beta]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_anisotropic_orth_second (hT : (T : E) ≠ 0) : S.hT (zt F F') (zt2 F F') = 0 := by
   unfold zt2
@@ -236,13 +236,13 @@ theorem hermForm_anisotropic_orth_second (hT : (T : E) ≠ 0) : S.hT (zt F F') (
   simp [beta]
 
 /- English proof (translation)
-Simplify using `[zt2, hr_add, hr_smul, h_v_zt F F' hP, h_v_zt' F F' hP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_vector_orth_second (hP : (Pm F F').det ≠ 0) (a : Fin r) : S.hT (vv F F' a) (zt2 F F') = 0 := by
   simp [zt2, hr_add, hr_smul, h_v_zt F F' hP, h_v_zt' F F' hP]
 
 /- English proof (translation)
-Establish `hb : S.hT (zt' F F') (zt F F') = star (beta F F')` using `h_swap S (zt F F') (zt' F F')`. Establish `hb' : S.hT (zt F F') (zt' F F') = beta F F'` using `rfl`. Unfold `zt2`. Rewrite using `[hl_add, hl_smul, hr_add, hr_add, hr_smul, hr_smul, h_zt'_zt', h_zt_zt, hb, hb', star_div₀, star_natCast]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -257,7 +257,7 @@ theorem hermForm_second_anisotropic (hT : (T : E) ≠ 0) :
   ring
 
 /- English proof (translation)
-Establish `hX : ∑ a, cz' F F' a • ed F F' a = ∑ c, (∑ a, cz' F F' a * (Pm F F')⁻¹ c a) • F'.e c`. Simplify using `only [ed, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `show F'.z = (F'.z - ∑ a, cz' F F' a • ed F F' a) + _`. Rewrite using `[hX, sub_add_cancel]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zp_eq : F'.z = zt' F F' + ∑ c, (∑ a, cz' F F' a * (Pm F F')⁻¹ c a) • F'.e c := by
   have hX : ∑ a, cz' F F' a • ed F F' a

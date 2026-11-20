@@ -11,11 +11,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace RootFieldNumerics.RF
 
 /- English proof (translation)
-Set `f : ProjectiveSpectrum 𝒜 → PrimeSpectrum A` to `fun p => ⟨p.asHomogeneousIdeal.toIdeal, p.isPrime⟩`. Establish `hf : Topology.IsInducing f`. Use `⟨TopologicalSpace.ext_iff_isClosed.2 fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[isClosed_induced_iff, ProjectiveSpectrum.isClosed_iff_zeroLocus]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨t, rfl⟩`. Use `⟨PrimeSpectrum.zeroLocus t, PrimeSpectrum.isClosed_zeroLocus t, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[f, ProjectiveSpectrum.mem_zeroLocus, PrimeSpectrum.mem_zeroLocus]`. Introduce and unpack `⟨t, ht, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Take `⟨u, rfl⟩` from `(PrimeSpectrum.isClosed_iff_zeroLocus t).1 ht`. Use `⟨u, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[f, ProjectiveSpectrum.mem_zeroLocus, PrimeSpectrum.mem_zeroLocus]`. Conclude with `hf.noetherianSpace`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem noetherianSpace_projectiveSpectrum {A σ : Type} [CommRing A] [SetLike σ A] [AddSubmonoidClass σ A] (𝒜 : ℕ → σ)
     [GradedRing 𝒜] [IsNoetherianRing A] : TopologicalSpace.NoetherianSpace (ProjectiveSpectrum 𝒜) := by
@@ -36,31 +36,25 @@ private theorem noetherianSpace_projectiveSpectrum {A σ : Type} [CommRing A] [S
   exact hf.noetherianSpace
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c _ Y S Ω _ K _ J _ y 𝔐`. Establish `hfr : ∀ x : ↥c.F, ∃ (a b : 𝓞 ↥c.F), (algebraMap (𝓞 ↥c.F) ↥c.F) b ≠ 0 ∧ x * (algebraMap (𝓞 ↥c.F) ↥c.F) b = (algebraMap (𝓞 ↥c.F) ↥c.F) a`. Introduce `x`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 ↥c.F) x`. Establish `hb' : (algebraMap (𝓞 ↥c.F) ↥c.F) b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨a, b, hb', div_mul_cancel₀ _ hb'⟩`. Establish `hinj : Function.Injective (algebraMap (𝓞 ↥c.F) ↥c.F)` using `IsFractionRing.injective _ _`. Take `⟨hpre, hflat⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.spMap_flat_preimmersion (algebraMap (𝓞 ↥c.F) ↥c.F) hinj hfr`. Take `⟨jpre, jflat⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.j_flat_preimmersion Y hinj hfr`. Use `haveI := hpre`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := jpre`. Use `haveI := Y.jQ_open`. Use `haveI : TopologicalSpace.NoetherianSpace Y.X := by`. Take `⟨N, i, hi, -⟩` from `Y.proj`. Establish `: TopologicalSpace.NoetherianSpace (PSpace (𝓞 ↥c.F) N)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `PSpace`. Use `letI := MvPolynomial.gradedAlgebra (σ := Fin (N + 1)) (R := 𝓞 ↥c.F)`. Conclude with `noetherianSpace_projectiveSpectrum _`. Conclude with `i.isClosedEmbedding.isInducing.noetherianSpace`. Establish `hfx : 𝔐.f (genPt 𝔐.ξ) = genPt 𝔐.ξ₀` using `GlobalTheory.CompanionTheory.Ar.Dominates.map_genPt 𝔐.fn_over`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsx : Y.s (genPt 𝔐.ξ₀) ∈ Set.range (spMap (algebraMap (𝓞 ↥c.F) ↥c.F))`. Use `⟨spMap 𝔐.cst (IsLocalRing.closedPoint Ω), ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun g => g (IsLocalRing.closedPoint Ω)) 𝔐.cst_over`. Establish `h3 : spMap (𝔐.cst.comp (algebraMap (𝓞 ↥c.F) ↥c.F)) = spMap 𝔐.cst ≫ spMap (algebraMap (𝓞 ↥c.F) ↥c.F)`. Simplify using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h2` using `[h3]`. Simplify using `only [Scheme.Hom.comp_apply] at h2`. Rewrite using `[← hfx]`. Conclude with `h2.symm`. Establish `hsx2 : genPt 𝔐.ξ₀ ∈ Set.range (pullback.fst Y.s (spMap (algebraMap (𝓞 ↥c.F) ↥c.F)))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Pullback.range_fst]`. Conclude with `hsx`. Take `⟨x', hx'⟩` from `hsx2`. Establish `hgen : ∀ {p z : ↥Y.X}, genPt 𝔐.ξ₀ ⤳ p → z ⤳ p → genPt 𝔐.ξ₀ ⤳ z` using `fun hp hz => GlobalTheory.CompanionTheory.Ar.Flat.genPt_specializes_of_specializes 𝔐.ξ₀ 𝔐.gen₀ hp hz`. Establish `hopen : IsOpen (closure ({genPt 𝔐.ξ₀} : Set ↥Y.X))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.CompanionTheory.Ar.Flat.isOpen_of_isClosed_of_generizing _ isClosed_closure ?_` and prove the remaining obligations. Introduce `a b hab hb`. Conclude with `specializes_iff_mem_closure.1 (hgen (specializes_iff_mem_closure.2 hb) hab)`. Establish `hV : IsOpen ((pullback.fst Y.s (spMap (algebraMap (𝓞 ↥c.F) ↥c.F))).base ⁻¹' closure ({genPt 𝔐.ξ₀} : Set ↥Y.X))` using `hopen.preimage (pullback.fst Y.s (spMap (algebraMap (𝓞 ↥c.F) ↥c.F))).continuous`. Take `⟨q, hqV, u0, rfl⟩` from `Y.jQ_dense.inter_open_nonempty _ hV ⟨x', by show (pullback.fst Y.s (spMap (algebraMap (𝓞 ↥c.F) ↥c.F))).base x' ∈ closure ({genPt 𝔐.ξ₀} : Set ↥Y.X)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hx']`. Conclude with `subset_closure rfl⟩`. Establish `hsp : x' ⤳ Y.jQ u0`. Rewrite using `[← (pullback.fst Y.s (spMap (algebraMap (𝓞 ↥c.F) ↥c.F))).isEmbedding.isInducing.specializes_iff, hx']`. Conclude with `specializes_iff_mem_closure.2 hqV`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `hsp.mem_open Y.jQ.isOpenEmbedding.isOpen_range ⟨u0, rfl⟩`. Establish `hju : Y.j u = genPt 𝔐.ξ₀` using `by show (Y.jQ ≫ pullback.fst Y.s (spMap (algebraMap (𝓞 ↥c.F) ↥c.F))).base u = genPt 𝔐.ξ₀`. Rewrite using `[Scheme.Hom.comp_apply, hu, hx']`. Establish `hmin : ∀ z, z ⤳ u → z = u`. Introduce `z hz`.
-
-Establish `h1 : Y.j z ⤳ genPt 𝔐.ξ₀` using `hju ▸ hz.map Y.j.continuous`. Establish `h2 : genPt 𝔐.ξ₀ ⤳ Y.j z` using `hgen (specializes_refl _) h1`. Conclude with `Y.j.isEmbedding.injective ((h1.antisymm h2).eq.trans hju.symm)`. Take `⟨U, hU, huU⟩` from `exists_mem_irreducibleComponents_subset_of_isIrreducible {u} isIrreducible_singleton`. Take `⟨Z⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.nonempty_cptOver_of_fraction hinj hfr Y U hU`.
-
-Establish `hZu : genPt Z.ξ₀ = u` using `hmin _ ((Z.closure u).1 (huU rfl))`. Take `⟨U', hU', -⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.cptOver_isOpen_isDomain E H D l Xo c (𝓞 ↥c.F) (algebraMap (𝓞 ↥c.F) ↥c.F) Y U Z ⟨hinj, inferInstance, hfr⟩`. Use `⟨U, Z, ⟨isClosed_of_mem_irreducibleComponents U hU, hU' ▸ U'.isOpen⟩, hU.1, ?_⟩` and prove the remaining obligations. Establish `: genPt (Z.ξ₀ ≫ Y.j) = Y.j (genPt Z.ξ₀)`. Unfold `genPt`.
-
-Conclude with `Scheme.Hom.comp_apply _ _ _`. Rewrite using `[this, hZu, hju]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cptEx : CptEx := by
   intro E _ _ _ H D l Xo c _ Y S Ω _ K _ J _ y 𝔐

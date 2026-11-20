@@ -19,7 +19,7 @@ namespace GlobalTheory.FnPull
 variable {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.Cartier.algebraMap_germ (show f x ∈ U from hx), functionFieldMap_algebraMap, ← GlobalTheory.Cartier.algebraMap_germ hx]`. Use `congr 1`. Conclude with `Scheme.Hom.germ_stalkMap_apply f U x hx s`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem functionFieldMap_fnOf (f : X ⟶ Y) [IsDominant f] {U : Y.Opens} {x : X}
     (hx : x ∈ f ⁻¹ᵁ U) (s : Γ(Y, U)) :
@@ -31,7 +31,7 @@ theorem functionFieldMap_fnOf (f : X ⟶ Y) [IsDominant f] {U : Y.Opens} {x : X}
   exact Scheme.Hom.germ_stalkMap_apply f U x hx s
 
 /- English proof (translation)
-Rewrite using `[functionFieldMap_fnOf f (e hx)]`. Simplify using `only [Scheme.Hom.appLE, CommRingCat.comp_apply]`. Conclude with `X.presheaf.germ_res_apply (homOfLE e) _ _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fnOf_appLE (f : X ⟶ Y) [IsDominant f] {U : Y.Opens} {V : X.Opens} (e : V ≤ f ⁻¹ᵁ U)
     {x : X} (hx : x ∈ V) (s : Γ(Y, U)) :
@@ -48,9 +48,9 @@ namespace GlobalTheory.FnPull
 variable {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] {Γ : Type} [Group Γ]
 
 /- English proof (translation)
-Take `⟨U₀, hη, s, rfl⟩` from `Y.presheaf.exists_germ_eq c`. Take `⟨x, hx⟩` from `hs (genericPoint Y)`. Establish `hx' : x ∈ q ⁻¹ᵁ U₀` using `show q x ∈ U₀ from hx ▸ hη`. Express the relevant statement in the definitionally equal form `functionFieldMap (ρ g).hom (functionFieldMap q (GlobalTheory.Cartier.fnOf U₀ hη s)) = functionFieldMap q (GlobalTheory.Cartier.fnOf U₀ hη s)`. Rewrite using `[functionFieldMap_fnOf q hx' s]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e, hinv⟩` from `isInvariantSection_app ρ q hq U₀ s g`. Rewrite using `[← fnOf_appLE (ρ g).hom e hx', hinv]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem functionFieldMap_act (ρ : Γ →* Aut X) (q : X ⟶ Y) [IsDominant q]
     (hq : ∀ g, (ρ g).hom ≫ q = q) (hs : Function.Surjective q) (g : Γ) [IsDominant (ρ g).hom]
@@ -66,7 +66,7 @@ theorem functionFieldMap_act (ρ : Γ →* Aut X) (q : X ⟶ Y) [IsDominant q]
   rw [← fnOf_appLE (ρ g).hom e hx', hinv]
 
 /- English proof (translation)
-The claim follows from `fun g ↦ by haveI : IsIso (ρ g).hom := Iso.isIso_hom _ refine ⟨h.preimage_le V g, GlobalTheory.Cartier.fnOf_injective _ (GlobalTheory.Cartier.gen_mem hx) ?_⟩ rw [fnOf_appLE (ρ g).hom (h.preimage_le V g) hx, hc, functionFieldMap_act ρ q h.comp_eq h.surjective.surj g]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInvariantSection_of_fnOf [Finite Γ] {ρ : Γ →* Aut X} {q : X ⟶ Y} [IsDominant q]
     (h : IsAffineQuotient ρ q) {V : Y.Opens} {x : X} (hx : x ∈ q ⁻¹ᵁ V) (c : Γ(X, q ⁻¹ᵁ V))
@@ -82,17 +82,17 @@ end GlobalTheory.FnPull
 namespace GlobalTheory.OrbitSep
 
 /- English proof (translation)
-Introduce `X W _ _ Γ _ _ ρ q _ h y b hb`. Establish `hsurj : Function.Surjective q` using `h.surjective.surj`. Use `haveI := h.isIntegralHom`. Set `O : Set X` to `{x | GlobalTheory.Cartier.UnitAt x (functionFieldMap q b)}`. Establish `hOo : IsOpen O` using `isOpen_iff_forall_mem_open.2 fun x hx ↦ by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hxU, hU⟩` from `GlobalTheory.Cartier.UnitAt.exists_nhds hx`. Conclude with `⟨U, fun z hz ↦ hU z hz, U.isOpen, hxU⟩`. Establish `hV : IsOpen (q '' Oᶜ)ᶜ` using `(q.isClosedMap _ hOo.isClosed_compl).isOpen_compl`. Set `V : W.Opens` to `⟨_, hV⟩`. Take `⟨x₀, hx₀⟩` from `hsurj y`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyV : y ∈ V` using `fun ⟨x, hx, e⟩ ↦ hx (hb x e)`. Establish `hx₀V : x₀ ∈ q ⁻¹ᵁ V` using `show q x₀ ∈ V from hx₀ ▸ hyV`. Establish `hUO : ∀ x ∈ q ⁻¹ᵁ V, GlobalTheory.Cartier.UnitAt x (functionFieldMap q b)` using `fun x hx ↦ by`. Assume the negation of the conclusion as `hn`. Conclude with `hx ⟨x, hn, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `GlobalTheory.Cartier.exists_unit_fnOf_eq hUO`. Establish `hgen` using `GlobalTheory.Cartier.gen_mem hx₀V`. Establish `ha1 : GlobalTheory.Cartier.fnOf _ hgen (a : Γ(X, q ⁻¹ᵁ V)) = functionFieldMap q b` using `ha hgen`. Establish `ha2 : GlobalTheory.Cartier.fnOf _ hgen ((a⁻¹ : Γ(X, q ⁻¹ᵁ V)ˣ) : Γ(X, q ⁻¹ᵁ V)) = functionFieldMap q b⁻¹`. Rewrite using `[map_units_inv, ha1, map_inv₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `h.mem_range_app V _ (GlobalTheory.FnPull.isInvariantSection_of_fnOf h hx₀V _ b ha1)`. Take `⟨t', ht'⟩` from `h.mem_range_app V _ (GlobalTheory.FnPull.isInvariantSection_of_fnOf h hx₀V _ b⁻¹ ha2)`. Establish `htt : t * t' = 1` using `h.app_injective V (by rw [map_mul, ht, ht', Units.mul_inv, map_one])`. Set `u : Γ(W, V)ˣ` to `⟨t, t', htt, by rw [mul_comm]; exact htt⟩`. Establish `hgenW` using `GlobalTheory.Cartier.gen_mem hyV`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbu : GlobalTheory.Cartier.fnOf V hgenW t = b` using `(functionFieldMap q).injective (by`. Rewrite using `[GlobalTheory.FnPull.functionFieldMap_fnOf q hx₀V t, ht, ha1])`. Rewrite using `[← hbu]`. Conclude with `GlobalTheory.Cartier.unitAt_fnOf hyV hgenW u`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_of_forall_unitAt_fibre : ∀ (X W : Scheme.{0}) [IsIntegral X] [IsIntegral W] (Γ : Type) [Group Γ] [Finite Γ]
     (ρ : Γ →* Aut X) (q : X ⟶ W) [IsDominant q], IsAffineQuotient ρ q → ∀ (y : W) (b : W.functionField),

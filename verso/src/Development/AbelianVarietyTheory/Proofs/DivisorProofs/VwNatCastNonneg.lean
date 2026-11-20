@@ -17,14 +17,14 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 def primeUnder (w : PlL D) : ℕ := ringChar (𝓞 D.what₂.LL ⧸ w.asIdeal)
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeUnder_mem (w : PlL D) : ((primeUnder w : ℕ) : 𝓞 D.what₂.LL) ∈ w.asIdeal := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
   exact ringChar.Nat.cast_ringChar
 
 /- English proof (translation)
-Use `haveI : w.asIdeal.IsPrime := w.isPrime`. Use `haveI : Finite (𝓞 D.what₂.LL ⧸ w.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot w.asIdeal w.ne_bot`. Conclude with `CharP.char_is_prime (𝓞 D.what₂.LL ⧸ w.asIdeal) (ringChar (𝓞 D.what₂.LL ⧸ w.asIdeal))`.
+A detailed English derivation is pending.
 -/
 theorem primeUnder_prime (w : PlL D) : (primeUnder w).Prime := by
   haveI : w.asIdeal.IsPrime := w.isPrime
@@ -41,7 +41,7 @@ def topDl (G : GridData L sc) (δ : ℕ → ℝ) (C1 b : ℝ) (w : PlL D) : ℝ 
     ∑ j ∈ Finset.range D.R.m, kerLoss G δ C1 b (.top j) (.top (j + 1)) (primeUnder w) (depL G (primeUnder w))
 
 /- English proof (translation)
-Establish `e : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.what₂.LL)) ((n : ℕ) : D.what₂.LL) = ((Ideal.span {((n : ℕ) : 𝓞 D.what₂.LL)} : Ideal (𝓞 D.what₂.LL)) : FractionalIdeal (nonZeroDivisors (𝓞 D.what₂.LL)) D.what₂.LL)`. Rewrite using `[FractionalIdeal.coeIdeal_span_singleton, map_natCast]`. Unfold `vw`. Rewrite using `[e]`. Conclude with `FractionalIdeal.count_coe_nonneg _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vw_natCast_nonneg (w : PlL D) (n : ℕ) : 0 ≤ vw w ((n : ℕ) : D.what₂.LL) := by
   have e : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.what₂.LL)) ((n : ℕ) : D.what₂.LL) =
@@ -52,9 +52,9 @@ theorem vw_natCast_nonneg (w : PlL D) (n : ℕ) : 0 ≤ vw w ((n : ℕ) : D.what
   exact FractionalIdeal.count_coe_nonneg _ _ _
 
 /- English proof (translation)
-Unfold `kerLoss`. Apply the tactic sequence `have h1 : 0 ≤ (if l = D.host.d then (1 : ℝ) else 0) := by split_ifs <;> norm_num`. Establish `h2 : 0 ≤ (if (l : ℝ) ≤ C1 * b then Real.logb l (C1 * b) else 0)` using `by split_ifs with h`. Conclude with `Real.logb_nonneg (by exact_mod_cast hl.one_lt) (le_trans (by exact_mod_cast hl.one_lt.le) h)`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Use `hδ l` as an intermediate fact. Check the signs of the components of the expression.
+A detailed English derivation is pending.
 -/
 theorem kerLoss_nonneg (G : GridData L sc) {δ : ℕ → ℝ} (hδ : ∀ l, 0 ≤ δ l) (C1 b : ℝ) (X Y : Node) {l : ℕ} (hl : l.Prime)
     (n : ℕ) : 0 ≤ kerLoss G δ C1 b X Y l n := by
@@ -68,7 +68,7 @@ theorem kerLoss_nonneg (G : GridData L sc) {δ : ℕ → ℝ} (hδ : ∀ l, 0 �
   positivity
 
 /- English proof (translation)
-Unfold `kerLoss`. Establish `: (n : ℝ) ≤ n'` using `by exact_mod_cast h`. Use `gcongr`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kerLoss_mono (G : GridData L sc) (δ : ℕ → ℝ) (C1 b : ℝ) (X Y : Node) (l : ℕ) {n n' : ℕ} (h : n ≤ n') :
     kerLoss G δ C1 b X Y l n ≤ kerLoss G δ C1 b X Y l n' := by
@@ -77,7 +77,7 @@ theorem kerLoss_mono (G : GridData L sc) (δ : ℕ → ℝ) (C1 b : ℝ) (X Y : 
   gcongr
 
 /- English proof (translation)
-Unfold `topDl`. Establish `h0 : (0 : ℝ) ≤ (vw w ((primeUnder w : ℕ) : D.what₂.LL) : ℝ) * C1` using `mul_nonneg (by exact_mod_cast vw_natCast_nonneg w _) hC1`. Use `mul_le_mul_of_nonneg_left ?_ h0` and prove the remaining obligations. Use `le_trans (kerLoss_mono G δ C1 b _ _ _ hn) ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => kerLoss G δ C1 b (.top j) (.top (j + 1)) (primeUnder w) (depL G (primeUnder w))) (fun j _ => kerLoss_nonneg G hδ C1 b _ _ (primeUnder_prime w) _) (Finset.mem_range.2 hj)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem le_topDl (G : GridData L sc) {δ : ℕ → ℝ} (hδ : ∀ l, 0 ≤ δ l) {C1 : ℝ} (hC1 : 0 ≤ C1) (b : ℝ) (w : PlL D) {j : ℕ}
     (hj : j < D.R.m) {n : ℕ} (hn : n ≤ depL G (primeUnder w)) :
@@ -92,7 +92,7 @@ theorem le_topDl (G : GridData L sc) {δ : ℕ → ℝ} (hδ : ∀ l, 0 ≤ δ l
     (fun j _ => kerLoss_nonneg G hδ C1 b _ _ (primeUnder_prime w) _) (Finset.mem_range.2 hj)
 
 /- English proof (translation)
-Take `⟨u, s, h1, h2, h3, h4⟩` from `h`. Conclude with `⟨u, s, h1, h2, h3.trans ha, h4⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inLat_mono {n : ℕ} {lam : D.what₂.Tau → DomWeight n} {w : PlL D} {a a' : ℝ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {v : VV ℂ lam} (h : InLat lam w a Λ v) (ha : a ≤ a') : InLat lam w a' Λ v := by

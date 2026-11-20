@@ -9,31 +9,27 @@ namespace GlobalTheory.SymChain.SymData
 open GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum
 
 /- English proof (translation)
-Introduce `k _ _ _ _ s κ S x hx`. Take `⟨hxK, hpat⟩` from `(mem_J_iff_pattern k s κ S x).1 hx`. Use `set M : Matrix (Fin κ ⊕ Fin (s + 1)) (Fin κ ⊕ Fin (s + 1)) k := fun a b => if FreeTop S.ρ a b then x.val a b else (1 : Matrix _ _ k) a b with hMdef`. Establish `hMax : MaxM (M - x.val)`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `show valuation k ((if FreeTop S.ρ a b then x.val a b else (1 : Matrix _ _ k) a b) - x.val a b) < 1`. Use `split_ifs with h`. Simplify using the standard rewrite rules. Rewrite using `[Valuation.map_sub_swap]`. Conclude with `hpat a b h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, hMu⟩` from `exists_mul_KOne hxK hMax`. Establish `hMK : x * u ∈ KO k _` using `mul_mem hxK (KOne_le_KO hu)`. Establish `hpatM : ∀ a b, ¬ FreeTop S.ρ a b → (x * u).val a b = (1 : Matrix _ _ k) a b`. Introduce `a b h`. Rewrite using `[hMu]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hMdef, h]`. Take `⟨n, hn, γ, hγ, e⟩` from `GlobalTheory.SymPattern.exists_of_pat S.ρ (x * u) hpatM`. Establish `hγv : ∀ i j, γ.val i j = (x * u).val (Sum.inl i) (Sum.inl j)`. Introduce `i j`. Rewrite using `[e, Units.val_mul, Radical.embX_val, GlobalTheory.SymPattern.mul_fromBlocks_inl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : ∀ t, n.val (Sum.inl i) (Sum.inl t) = (1 : Matrix (Fin κ) (Fin κ) k) i t`. Introduce `t`. Rewrite using `[hn _ _ (by simp [lev])]`. Simplify using `[Matrix.one_apply]`. Simplify using `only [e1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_apply, Matrix.one_mul]`. Establish `hγint : ∀ i j, γ.val i j ∈ 𝒪[k]` using `fun i j => by`. Rewrite using `[hγv]`. Conclude with `intM_of_mem_KO hMK _ _`. Establish `hγK : γ ∈ KO k (Fin κ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `A₀ : Matrix (Fin κ) (Fin κ) 𝒪[k]` to `fun i j => ⟨γ.val i j, hγint i j⟩`. Establish `hmap : (algebraMap 𝒪[k] k).mapMatrix A₀ = γ.val` using `by ext i j; rfl`. Establish `hdet1 : γ.val.det = 1` using `Radical.Uni.det (b := Fin.val) hγ`. Establish `hdet : A₀.det = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `RingHom.map_det (algebraMap 𝒪[k] k) A₀` as an intermediate fact. Rewrite `this` using `[hmap, hdet1]`. Simplify using `using this`. Use `⟨Matrix.nonsingInvUnit A₀ (by rw [hdet]; exact isUnit_one), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hembK : embX (s + 1) γ ∈ KO k _`. Use `mem_KO.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Radical.embX_val]`. Conclude with `intM_fromBlocks.2 ⟨intM_of_mem_KO hγK, intM_zero, intM_zero, intM_one⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_inv, Radical.embX_val]`. Conclude with `intM_fromBlocks.2 ⟨intM_of_mem_KO (inv_mem hγK), intM_zero, intM_zero, intM_one⟩`. Establish `hnK : n ∈ KO k _`. Establish `: n = (x * u) * (embX (s + 1) γ)⁻¹` using `by rw [e]; group`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `mul_mem hMK (inv_mem hembK)`. Use `⟨n, γ, (Radical.mem_N_iff n).2 hn, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(mem_J_iff_pattern k s κ S n).2 ⟨hnK, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.SymPattern.pat_of_mul S.ρ n hn 1 (fun r s _ => rfl) a b hab`. Rewrite `h1` using `[map_one, mul_one]`.
-
-Rewrite using `[h1, sub_self, map_zero]`. Conclude with `zero_lt_one`. Use `(mem_J_iff_pattern k s κ S _).2 ⟨hembK, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.SymPattern.pat_of_mul S.ρ 1 (fun r s _ => rfl) γ hγ a b hab`. Rewrite `h1` using `[one_mul]`.
-
-Rewrite using `[h1, sub_self, map_zero]`. Conclude with `zero_lt_one`. Rewrite using `[← e, _root_.mul_inv_rev, mul_assoc, inv_mul_cancel, mul_one]`. Conclude with `inv_mem hu`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_N_embX_inv_mul_mem_KOne :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (s κ : ℕ)

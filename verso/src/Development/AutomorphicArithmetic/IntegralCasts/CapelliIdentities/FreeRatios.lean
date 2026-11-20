@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Ω _ _`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.aux1 :
     ∀ (Ω : Type) [inst : Field Ω] [inst_1 : CharZero Ω], Module.IsTorsionFree ℚ Ω := by
@@ -9,7 +9,7 @@ theorem UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.aux1 :
   infer_instance
 
 /- English proof (translation)
-Introduce `L Ω _ _ _`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.aux2 :
     ∀ (L Ω : Type) [inst : Field L] [inst_1 : Field Ω] [inst_2 : Algebra L Ω], Module.IsTorsionFree L Ω := by
@@ -33,7 +33,7 @@ noncomputable def UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.Dec.{u_1,
       ValuationSubring.decompositionSubgroup F A
 
 /- English proof (translation)
-Introduce `Ω _`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.aux6.{u_1} :
     ∀ (Ω : Type u_1) [inst : Field Ω], IsDomain Ω := by
@@ -92,15 +92,15 @@ noncomputable def UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.galEmb :
       AlgEquiv.restrictScalarsHom k
 
 /- English proof (translation)
-Establish `ht : M.trace = a + b`. Establish `h0` using `congrArg (fun p => Polynomial.eval 0 p) h`. Establish `h1` using `congrArg (fun p => Polynomial.eval 1 p) h`. Rewrite `h0`, `h1` using `[Matrix.charpoly_fin_two]`. Simplify using `only [Polynomial.eval_add, Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C] at h0 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `h0 - h1`. Establish `hd : M.det = a * b`. Establish `h1` using `congrArg (fun p => Polynomial.eval 0 p) h`. Rewrite `h1` using `[Matrix.charpoly_fin_two]`. Simplify using `using h1`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hsq : M ^ 2 = (a + b) • M - (a * b) • (1 : Matrix (Fin 2) (Fin 2) k)`. Rewrite using `[← ht, ← hd, Matrix.trace_fin_two, Matrix.det_fin_two, pow_two]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring`. Establish `htr : ∀ n : ℕ, (M ^ n).trace = a ^ n + b ^ n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `n`. Proceed by induction on `n using Nat.twoStepInduction with`. Consider the case `zero => simp [one_add_one_eq_two]`. Consider the case `one => simpa using ht`. Consider the case `more n h0 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_add M n 2, hsq, mul_sub, Matrix.mul_smul, Matrix.mul_smul, mul_one, ← pow_succ, Matrix.trace_sub, Matrix.trace_smul, Matrix.trace_smul, h0, h1, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.charpoly_fin_two, htr, Matrix.det_pow, hd, mul_pow, Polynomial.C_add, Polynomial.C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.charpoly_pow_two {k : Type} [Field k] (M : Matrix (Fin 2) (Fin 2) k) (a b : k)
     (h : M.charpoly = (Polynomial.X - Polynomial.C a) * (Polynomial.X - Polynomial.C b)) (m : ℕ) :
@@ -133,11 +133,9 @@ private theorem UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.charpoly_po
   ring
 
 /- English proof (translation)
-Set `K : IntermediateField ℚ Ω` to `(IsScalarTower.toAlgHom ℚ L Ω).fieldRange`. Use `haveI : FiniteDimensional ℚ K := (AlgEquiv.ofInjectiveField (IsScalarTower.toAlgHom ℚ L Ω)).toLinearEquiv.finiteDimensional`. Use `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω`. Establish `hi : K.fixingSubgroup.index ≠ 0`. Rewrite using `[← IntermediateField.finrank_eq_fixingSubgroup_index]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Module.finrank_pos.ne'`. Take `⟨m, hm, -, hmem⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero hi g`. Rewrite `hmem` using `[IntermediateField.mem_fixingSubgroup_iff]`. Use `⟨m, hm, AlgEquiv.ofRingEquiv (f := (g ^ m).toRingEquiv) (fun x => hmem _ ⟨x, rfl⟩), ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.exists_pow_fix {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (L : Type)
     [Field L] [NumberField L] [Algebra L Ω] (g : Gal(Ω/ℚ)) :
@@ -156,13 +154,13 @@ private theorem UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.exists_pow_
   rfl
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ L _ _ _ _ W hW A hA`. Take `⟨g, hgD, hgc, α, hα, hch⟩` from `hW A hA`. Take `⟨m, hm, g', hg'⟩` from `UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.exists_pow_fix L g`. Use `⟨g', ?_, ?_, fun i => α i ^ m, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : g ^ m ∈ UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.Dec A` using `Subgroup.pow_mem _ hgD m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hg']`. Conclude with `h1`. Establish `h1 : UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.cycZ ℚ Ω l (g ^ m) = 1` using `by rw [map_pow, hgc, one_pow]`. Rewrite `h1` using `[← hg']`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j hij n hn`. Establish `h1` using `hα i j hij (m * n) (Nat.mul_pos hm hn)`. Simplify `h1` using `only [pow_mul]`. Establish `h1 : UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.mat (W.comp (UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.galEmb ℚ L Ω)) g' = UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.mat W g ^ m`. Rewrite using `[← map_pow, ← hg']`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hch` using `[Fin.prod_univ_two]`. Rewrite using `[h1, Fin.prod_univ_two, UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.charpoly_pow_two _ _ _ hch m]`. Simplify using `only [Units.val_pow_eq_pow_val]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.FreeAtCompGaloisEmbedding.freeRes :
     ∀ {Ω : Type} [inst : Field Ω] [inst_1 : CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [inst_3 : Fact (Nat.Prime l)] (L : Type)

@@ -11,7 +11,7 @@ attribute [local instance] MvPolynomial.weightedGradedAlgebra
 universe u
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite `hd` using `[coeff_map]`. Apply `hp` to reduce the goal to its premises. Introduce `h0`. Conclude with `hd (by rw [h0, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_map_of {σ M R S : Type*} [AddCommMonoid M] [CommRing R]
     [CommRing S] (f : R →+* S) (w : σ → M) {p : MvPolynomial σ R} {b : M}
@@ -23,9 +23,9 @@ theorem isWeightedHomogeneous_map_of {σ M R S : Type*} [AddCommMonoid M] [CommR
   exact hd (by rw [h0, map_zero])
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Conclude with `fun f hf => hf.1`. Introduce `p hp`. Rewrite using `[← sum_weightedHomogeneousComponent (w := blockWeight ι) p, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp p)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.sum_mem _ fun m _ => Ideal.subset_span ⟨hP p hp m, m, ?_⟩` and prove the remaining obligations. Conclude with `weightedHomogeneousComponent_isWeightedHomogeneous m p`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem span_forms_of_isMultiHomogIdeal {K : Type} [DecidableEq K] {ι : K → Type}
     {R : Type*} [CommRing R] {P : Ideal (MRing ι R)} (hP : IsMultiHomogIdeal P) :
@@ -40,9 +40,9 @@ theorem span_forms_of_isMultiHomogIdeal {K : Type} [DecidableEq K] {ι : K → T
     exact weightedHomogeneousComponent_isWeightedHomogeneous m p
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ ι P hP`. Establish `hspan : specialIdeal P = Ideal.span (MvPolynomial.map (IsLocalRing.residue O) '' {f | f ∈ P ∧ ∃ b, IsWeightedHomogeneous (blockWeight ι) f b})`. Rewrite using `[specialIdeal, ← Ideal.map_span, span_forms_of_isMultiHomogIdeal hP]`. Establish `hhom : (specialIdeal P).IsHomogeneous (weightedHomogeneousSubmodule (IsLocalRing.ResidueField O) (blockWeight ι))`. Rewrite using `[hspan]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Ideal.homogeneous_span` to reduce the goal to its premises. Introduce and unpack `_ ⟨f, ⟨_, b, hb⟩, rfl⟩`. Conclude with `⟨b, (mem_weightedHomogeneousSubmodule _ _ _ _).2 (isWeightedHomogeneous_map_of _ _ hb)⟩`. Introduce `f hf b`. Conclude with `weightedHomogeneousComponent_mem_of_mem _ _ hhom hf b`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem SpecialIdealMultiHomog.proof : SpecialIdealMultiHomog.Statement := by
   classical

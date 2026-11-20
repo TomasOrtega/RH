@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CochainCo
 namespace LateralTheory.CohomologicalPurity.Cl.Flq
 
 /- English proof (translation)
-Use `show (F.obj.map f.op).hom ((F.obj.map g.op).hom a) = (F.obj.map (f ≫ g).op).hom a`. Rewrite using `[op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem etale_sheaf_sections_restrict_restrict_eq_restrict_comp {R : Type} [CommRing R] {F : Shv R} {Y Z W : Scheme.{0}} (f : Y ⟶ Z) (g : Z ⟶ W) (a : Sec F W) :
     Sec.res f (Sec.res g a) = Sec.res (f ≫ g) a := by
@@ -14,7 +14,7 @@ theorem etale_sheaf_sections_restrict_restrict_eq_restrict_comp {R : Type} [Comm
   rw [op_comp, Functor.map_comp]; rfl
 
 /- English proof (translation)
-Use `show (F.obj.map f.op).hom 0 = 0`. Conclude with `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem etale_sheaf_sections_restriction_of_zero_eq_zero {R : Type} [CommRing R] {F : Shv R} {Y Z : Scheme.{0}} (f : Y ⟶ Z) :
     Sec.res f (0 : Sec F Z) = 0 := by
@@ -22,7 +22,7 @@ theorem etale_sheaf_sections_restriction_of_zero_eq_zero {R : Type} [CommRing R]
   exact map_zero _
 
 /- English proof (translation)
-Use `show (φ.hom.app (op Y)).hom ((F.obj.map f.op).hom a) = (G.obj.map f.op).hom ((φ.hom.app (op Z)).hom a)`. Establish `h` using `φ.hom.naturality f.op`. Conclude with `congrArg (fun ψ => ψ.hom a) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etale_sheaf_sections_map_restrict_comm {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {Y Z : Scheme.{0}} (f : Y ⟶ Z) (a : Sec F Z) :
     Sec.map φ (Sec.res f a) = Sec.res f (Sec.map φ a) := by
@@ -31,11 +31,11 @@ theorem etale_sheaf_sections_map_restrict_comm {R : Type} [CommRing R] {F G : Sh
   exact congrArg (fun ψ => ψ.hom a) h
 
 /- English proof (translation)
-Introduce `R _ K X U n c' hc'`. Take `⟨h1, h2⟩` from `(mem_Zc c').1 hc'`. Use `⟨Sec.res X.topIso.inv c', (mem_Zc _).2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: IsIso (⊤ : X.Opens).ι` using `by rw [← Scheme.topIso_hom]; infer_instance`. Establish `e : U.ι ≫ X.topIso.inv = inv ((⊤ : X.Opens).ι ∣_ U) ≫ ((⊤ : X.Opens).ι ⁻¹ᵁ U).ι`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono X.topIso.hom, Category.assoc, Iso.inv_hom_id, Category.comp_id, Category.assoc, Scheme.topIso_hom, ← morphismRestrict_ι, IsIso.inv_hom_id_assoc]`. Rewrite using `[etale_sheaf_sections_restrict_restrict_eq_restrict_comp, e, ← etale_sheaf_sections_restrict_restrict_eq_restrict_comp, h1, etale_sheaf_sections_restriction_of_zero_eq_zero]`. Rewrite using `[etale_sheaf_sections_map_restrict_comm, h2, etale_sheaf_sections_restriction_of_zero_eq_zero]`. Introduce `V`. Rewrite using `[etale_sheaf_sections_restrict_restrict_eq_restrict_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← cancel_mono X.topIso.hom, Category.assoc, Iso.inv_hom_id, Category.comp_id, Scheme.topIso_hom, Scheme.homOfLE_ι]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem LeafTop_of : LeafTop := by
   intro R _ K X U n c' hc'

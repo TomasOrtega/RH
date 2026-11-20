@@ -14,11 +14,11 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SplitPoint
 
 /- English proof (translation)
-Establish `hm : (maximalIdeal W).comap (algebraMap V W) = maximalIdeal V` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := V) _)`. Establish `: IsLocalHom (algebraMap V W)` using `((IsLocalRing.local_hom_TFAE (algebraMap V W)).out 4 0).1 hm`. Establish `: IsLocalHom β` using `⟨fun a ha => by`. Assume the negation of the conclusion as `h`. Conclude with `ha.ne_zero (hβ a h)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Set `: Algebra (ResidueField V) Ω` to `(ResidueField.lift β).toAlgebra`. Establish `: Algebra.IsIntegral V (ResidueField W)` using `⟨fun x => by`. Take `⟨y, rfl⟩` from `residue_surjective x`. Conclude with `(Algebra.IsIntegral.isIntegral (R := V) y).map (IsScalarTower.toAlgHom V W (ResidueField W))⟩`. Establish `: Algebra.IsIntegral (ResidueField V) (ResidueField W)` using `Algebra.IsIntegral.tower_top V`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `g : ResidueField W →ₐ[ResidueField V] Ω` to `IsAlgClosed.lift`. Use `⟨g.toRingHom.comp (residue W), RingHom.ext fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Conclude with `g.commutes (residue V a)`. Use `show g (residue W a) = 0`. Rewrite using `[(residue_eq_zero_iff a).2 ha, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extend {V W Ω : Type} [CommRing V] [IsLocalRing V] [CommRing W] [IsLocalRing W] [Algebra V W]
     [Algebra.IsIntegral V W] [Field Ω] [IsAlgClosed Ω] (β : V →+* Ω) (hβ : ∀ a ∈ maximalIdeal V, β a = 0) :
@@ -42,7 +42,7 @@ theorem exists_extend {V W Ω : Type} [CommRing V] [IsLocalRing V] [CommRing W] 
     rw [(residue_eq_zero_iff a).2 ha, map_zero]
 
 /- English proof (translation)
-Establish `hN` using `pull_isLB t'.PP.isLB (pullback.fst t'.G.hom j')`. Establish `hM` using `pull_isLB t.PP.isLB (pullback.fst t.G.hom j)`. Take `⟨φ, hφ, e, -⟩` from `GlobalTheory.Ex.UnifModel.exists_cancel (g := g) (f := j) (((isGrpPullback_pullback t'.G j').comp m.cart).congr h rfl) (isGrpPullback_pullback t.G j) t.PP.isLB hM hN (GlobalTheory.Ex.UnifModel.iso_pull (GlobalTheory.Ex.UnifModel.iso_of_map m) _ rfl) ⟨Out.CubePf.idIsoL _, Out.Cube …`. Conclude with `⟨MorphismProperty.of_isPullback (P := @IsProper) hφ.1 hp.1, amplePt _ _ g _ _ φ hφ _ _ hM hN e hp.2.1 hp.2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem polAt_pullback {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}}
     {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S} (m : SABMap t' t f)
@@ -57,11 +57,11 @@ theorem polAt_pullback {E : Type} [Field E] [NumberField E] [IsCMField E] {H : H
     amplePt _ _ g _ _ φ hφ _ _ hM hN e hp.2.1 hp.2.2⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ ⟨d, hc, h0⟩ t hp Ω _ _ β hβ`. Set `F` to `AlgebraicClosure (FractionRing V)`. Establish `: FaithfulSMul V F` using `(faithfulSMul_iff_algebraMap_injective V F).2 ((algebraMap (FractionRing V) F).injective.comp (IsFractionRing.injective V _))`. Establish `: Algebra.IsAlgebraic V F` using `(IsFractionRing.comap_isAlgebraic_iff (A := V) (K := FractionRing V) (C := F)).2 inferInstance`. Take `⟨W, dW, cW, fW, hsp⟩` from `GlobalTheory.Ex.UnifModel.exists_split V F t.G t.semi`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap (algebraMap V W)) t`. Take `⟨β', h₁, h₂⟩` from `exists_extend (W := W) β hβ`. Establish `i : Function.Injective (algebraMap V W)` using `fun _ _ h => FaithfulSMul.algebraMap_injective V F (congrArg (fun z : W => (z : F)) h)`. Establish `j : Function.Injective ((algebraMap W (FractionRing W)).comp (algebraMap V W))` using `(IsFractionRing.injective W _).comp i`. Set `gm : FractionRing V →+* FractionRing W` to `IsFractionRing.lift j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨W, inferInstance, inferInstance, inferInstance, algebraMap V W, β', _, m, ⟨dW, cW, charZero_of_injective_algebraMap i⟩, h₁, h₂, polAt_pullback m hp _ (spMap gm) ?_, hsp⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.Ex.UnifModel.spMap_comp fun _ => rfl).trans (GlobalTheory.Ex.UnifModel.spMap_comp (IsFractionRing.lift_algebraMap j)).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_split_extension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ t : SAB H (Sp V), GlobalTheory.LN.PolAt t (Out.jK V) → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (β : V →+* Ω), (∀ a ∈ maximalIdeal V, β a = 0) → ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsLocalRing W) (f : V →+* W) (β' : W →+* Ω) (t' : SAB H (Sp W)) (_ : SABMap t' t (spMap f)), GlobalTheory.LN.CDvr W ∧ β'.comp f = β ∧ (∀ a ∈ maximalIdeal W, β' a = 0) ∧ GlobalTheory.LN.PolAt t' (Out.jK W) ∧ GlobalTheory.LN.SplitOver t'.G (maximalIdeal W) := by
   intro E _ _ _ H V _ _ _ ⟨d, hc, h0⟩ t hp Ω _ _ β hβ

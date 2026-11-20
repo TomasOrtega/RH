@@ -21,9 +21,9 @@ open GlobalTheory.PtTie
 namespace GlobalTheory.PtTie
 
 /- English proof (translation)
-Introduce `D T h hinj`. Take `⟨hH, -, hF, -⟩` from `h.pins`. Use `⟨D.host.φ₀, ?_, fun x => ?_⟩` and prove the remaining obligations. Unfold `InPsi`. Rewrite using `[hH.2.1, hH.2.2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hF]`. Establish `h1 : T.Q.eO (iE D hinj (recB h.toLawsCore) x) = oEOsFun D x` using `T.Q.eO.apply_symm_apply _`. Rewrite using `[h1, oEOsFun_spec]`. Conclude with `DFunLike.congr_fun D.embE_φ₀ (x : D.host.E)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inPsi_iE_eq_embK : ∀ (D : D7) (T : Top D) (h : LawsP T) (hinj : Function.Injective D.what₂.OtoLL), ∃ τ : D.host.E →+* ℂ, InPsi T.Q.H τ ∧ ∀ x : 𝓞 D.host.E, ((iE D hinj (recB h.toLawsCore) x : 𝓞 T.Q.c.F) : T.Q.c.F) = embK T.Q.c τ x := by
   intro D T h hinj

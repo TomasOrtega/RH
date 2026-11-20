@@ -10,29 +10,27 @@ open PowerSeries Formalism.G Formalism.LT Formalism.L2.Th1.CM
 open Formalism.L2.Th1
 
 /- English proof (translation)
-Establish `hl : C.IsLogPair l linv` using `hF.1`. Establish `hX : MvPowerSeries.constantCoeff (PowerSeries.X : MvPowerSeries Unit K) = 0` using `PowerSeries.constantCoeff_X`. Establish `hXpt : C.IsPt R (PowerSeries.X : MvPowerSeries Unit K)` using `C.Pts.isPt_X`. Use `set q : K → MvPowerSeries Unit K := fun a => PowerSeries.subst (C.fmul l linv a (PowerSeries.X : MvPowerSeries Unit K)) ph with hq`. Use `set B : MvPowerSeries Unit K := C.be0 l linv ph (PowerSeries.X : MvPowerSeries Unit K) (PowerSeries.X : MvPowerSeries Unit K) with hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hphX : PowerSeries.subst (PowerSeries.X : MvPowerSeries Unit K) ph = ph` using `PowerSeries.X_subst ph`. Establish `hE : ∀ m : ℤ, C.LG R (q (1 + (m : K)) - ph - q (m : K) - (m : K) • B)`. Introduce `m`. Establish `h` using `C.zLinInt K R l linv ph hF h1 m Unit _ _ hXpt hXpt`. Unfold `C.Cong at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[C.be0]`. Establish `e : C.fadd l linv (PowerSeries.X : MvPowerSeries Unit K) (C.fmul l linv (m : K) (PowerSeries.X : MvPowerSeries Unit K)) = C.fmul l linv (1 + (m : K)) (PowerSeries.X : MvPowerSeries Unit K)`. Rewrite using `[C.Pts.fmul_add hl 1 (m : K) hX, C.Pts.fmul_one hl hX]`. Rewrite `h` using `[e, hphX]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hq0 : q 0 = 0`. Simplify using `only [hq]`. Rewrite using `[C.Pts.fmul_zero_left hl, PowerSeries.subst_zero_of_constantCoeff_zero hF.2.2]`. Establish `hN : C.LG R (q (-1) - (((-1 : K) * (-1 : K)) • (ph : MvPowerSeries Unit K)))`. Establish `h` using `hneg`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `C.PhNormAt C.Cong at h`. Rewrite `h` using `[C.Pts.mulBy_eq_fmul]`. Conclude with `h`. Establish `hG : C.LG R (B - (2 : K) • (ph : MvPowerSeries Unit K))`. Establish `h` using `C.Calc.lg_add (hE (-1)) hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (q (1 + ((-1 : ℤ) : K)) - ph - q ((-1 : ℤ) : K) - ((-1 : ℤ) : K) • B) + (q (-1) - (((-1 : K) * (-1 : K)) • (ph : MvPowerSeries Unit K))) = B - (2 : K) • (ph : MvPowerSeries Unit K)`. Establish `e0 : (1 : K) + ((-1 : ℤ) : K) = 0` using `by push_cast; ring`. Establish `e1 : (((-1 : ℤ) : K)) = -1` using `by push_cast; ring`. Rewrite using `[e0, hq0, e1]`. Use `module`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hstep : ∀ m : ℤ, C.LG R ((q (((m + 1 : ℤ)) : K) - ((((m + 1 : ℤ)) : K) * (((m + 1 : ℤ)) : K)) • (ph : MvPowerSeries Unit K)) - (q (m : K) - ((m : K) * (m : K)) • (ph : MvPowerSeries Unit K)))`. Introduce `m`. Establish `h` using `C.Calc.lg_add (hE m) (C.lGBinom K R Unit (m : K) (C.intBinomScalar K R m) _ hG)`. Establish `e1 : (((m + 1 : ℤ)) : K) = 1 + (m : K)` using `by push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[e1]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `module`. Establish `main : ∀ m : ℤ, C.LG R (q (m : K) - ((m : K) * (m : K)) • (ph : MvPowerSeries Unit K))`. Introduce `m`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `m using Int.induction_on with`. Consider the case `zero`. Establish `: q ((0 : ℤ) : K) - (((0 : ℤ) : K) * ((0 : ℤ) : K)) • (ph : MvPowerSeries Unit K) = 0`. Rewrite using `[Int.cast_zero, hq0]`. Simplify using the standard rewrite rules.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `C.Calc.lg_zero`. Consider the case `succ i ih`. Establish `h` using `C.Calc.lg_add (hstep i) ih`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Consider the case `pred i ih`. Establish `h` using `C.Calc.lg_add (C.Calc.lg_neg (hstep (-(i : ℤ) - 1))) ih`. Rewrite `h` using `[sub_add_cancel]`. Use `h using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
-
-Establish `h` using `main n`. Unfold `C.PhNormAt C.Cong`. Rewrite using `[C.Pts.mulBy_eq_fmul]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phNorm_int {K : Type} [Field K] [CharZero K] (R : Subring K) (l linv ph : PowerSeries K)
     (hF : C.Frame R l linv ph) (h1 : C.F1 R l linv ph) (hneg : C.PhNormAt R l linv ph (-1) (-1))

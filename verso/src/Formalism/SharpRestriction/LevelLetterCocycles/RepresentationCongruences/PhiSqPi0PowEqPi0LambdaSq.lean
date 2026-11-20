@@ -24,23 +24,21 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 namespace ArcLengthTwoLifting
 
 /- English proof (translation)
-Take `⟨y₂, hy₂, hy₂c, rfl⟩` from `hn₂`. Rewrite using `[one_smul]`. Establish `hy₂' : y₂ ∈ W.N T₂ ∧ ∀ δ ∈ W.DelF, W.γD T₂ δ y₂ = y₂` using `hy₂`. Establish `hNl : y₂ ∈ W.Nl T₂ c` using `Submodule.mem_map.2 ⟨y₂, hy₂'.1, by rw [LinearMap.smul_apply, LinearMap.id_apply, hy₂c]⟩`. Take `⟨x₁, hx₁, hx₁F⟩` from `Submodule.mem_map.1 (hk y₂ hNl hy₂'.2)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z₁, hz₁N, hz₁⟩` from `Submodule.mem_map.1 hx₁`. Rewrite `hz₁` using `[LinearMap.smul_apply, LinearMap.id_apply]`. Establish `hx₁N : x₁ ∈ W.N T₁` using `by rw [← hz₁]; exact (W.N T₁).smul_mem _ hz₁N`. Establish `hx₁c : (letE c : LetA O n) • x₁ = x₁`. Rewrite using `[← hz₁, smul_smul, Formalism.MainNotions.WachCoordinates.Br.letE_mul_self]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx₁F' : W.map F x₁ = lA W ^ rr • y₂` using `hx₁F`. Take `⟨-, -, hU⟩` from `lemG_units W hcase hP9 hT₁ hO hOv hinj`. Use `set u : Oˣ := hU.unit with hu`. Establish `hγl : ∀ (δ : W.Gam) (x : W.DD T₁), W.γD T₁ δ ((letE c : LetA O n) • x) = (letE c : LetA O n) • W.γD T₁ δ x`. Introduce `δ x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul W.EE (letE c : LetA O n) x, W.γD_smul, W.γE_ext, algebraMap_smul]`. Use `congr 1`. Conclude with `GS.γA_letE W δ c`. Use `set n₁ : W.DD T₁ := ((u⁻¹ : Oˣ) : O) • ∑ δ ∈ W.DelF, W.γD T₁ δ x₁ with hn₁`. Use `⟨n₁, ⟨n₁, ?_, ?_, (one_smul _ _).symm⟩, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show n₁ ∈ W.N T₁ ∧ ∀ δ ∈ W.DelF, W.γD T₁ δ n₁ = n₁`. Use `⟨?_, fun δ' hδ' => ?_⟩` and prove the remaining obligations. Rewrite using `[hn₁, ← algebraMap_smul (LetA O n)]`. Conclude with `(W.N T₁).smul_mem _ ((W.N T₁).sum_mem fun δ _ => W.N_Γ T₁ δ x₁ hx₁N)`. Rewrite using `[hn₁, map_smul, map_sum]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Finset.sum_nbij' (δ' * ·) (δ'⁻¹ * ·) (fun g hg => TypesA.delF_mul W hδ' hg) (fun g hg => TypesA.delF_mul W (TypesA.delF_inv W hδ') hg) (fun g _ => by simp) (fun g _ => by simp) (fun g _ => ?_)` and prove the remaining obligations. Rewrite using `[W.γD_mul]`. Rewrite using `[hn₁, smul_comm, Finset.smul_sum]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun δ _ => ?_` and prove the remaining obligations. Rewrite using `[← hγl, hx₁c]`. Establish `hγ₂ : ∀ δ ∈ W.DelF, W.γD T₂ δ (W.map F x₁) = lA W ^ rr • y₂`. Introduce `δ hδ`. Rewrite using `[hx₁F', TypesA.lA_pow_smul, map_nsmul, hy₂'.2 δ hδ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn₁, ← algebraMap_smul W.EE, map_smul, map_sum]`. Simplify using `only [W.map_γ]`. Rewrite using `[Finset.sum_congr rfl hγ₂, Finset.sum_const, algebraMap_smul, ← Nat.cast_smul_eq_nsmul O, smul_smul]`. Establish `: ((u⁻¹ : Oˣ) : O) * (W.DelF.card : O) = 1`. Rewrite using `[hu]`.
-
-Conclude with `hU.val_inv_mul`. Rewrite using `[this, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftΔ [FiniteDimensional Qp LL] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hO : ∀ x : O, 0 ≤ v (algebraMap O LL x))
@@ -97,9 +95,9 @@ theorem liftΔ [FiniteDimensional Qp LL] (W : LocWach PD LL O v n) (hcase : Form
     rw [this, one_smul]
 
 /- English proof (translation)
-Unfold `dvO`. Use `congr 1`. Use function extensionality and compare the values at `m`. Distinguish the cases in `h : m = k`. Substitute `h` using the available equality.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dvO_single (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T)
     (k : Fin d) : dvO W T e b (Pi.single k 1) = dv W T e b (Pi.single k 1) := by
@@ -111,7 +109,7 @@ theorem dvO_single (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (e : ℕ) {d
   · simp [Pi.single_apply, h]
 
 /- English proof (translation)
-Unfold `dv`. Simplify using `only [Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dv_sum (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T)
     {I : Type*} (s : Finset I) (a : I → LL) (c₀ : I → Fin d → LL) :
@@ -121,7 +119,7 @@ theorem dv_sum (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (e : ℕ) {d : �
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Unfold `dv`. Simplify using `only [Finset.smul_sum, smul_smul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem dv_smul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T)
     (a : LL) (c₀ : Fin d → LL) : dv W T e b (fun m => a * c₀ m) = a • dv W T e b c₀ := by
@@ -129,13 +127,13 @@ theorem dv_smul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (e : ℕ) {d : 
   simp only [Finset.smul_sum, smul_smul]
 
 /- English proof (translation)
-Establish `hp` using `P.first_partial_unit_eq_exp`. Take `⟨S, hS⟩` from `sub_dvd_pow_sub_pow (P.p 1) (P.u * PowerSeries.X ^ l) y`. Establish `hdiff : P.p 1 - P.u * PowerSeries.X ^ l = PowerSeries.C (l : O) * P.eps` using `by rw [hp]; ring`. Rewrite `hS` using `[hdiff]`. Establish `hexp : P.p 1 ^ y = P.u ^ y * PowerSeries.X ^ (l * y) + PowerSeries.C (l : O) * (P.eps * S)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, ← hS, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hexp, map_add, PowerSeries.coeff_C_mul]`. Establish `h0 : PowerSeries.coeff (l * y) (P.u ^ y * PowerSeries.X ^ (l * y)) = PowerSeries.constantCoeff (P.u ^ y)`. Use `PowerSeries.coeff_mul_X_pow (P.u ^ y) (l * y) 0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_add, PowerSeries.coeff_zero_eq_constantCoeff]`. Conclude with `this`. Rewrite using `[h0]`. Establish `hu : IsUnit (PowerSeries.constantCoeff (P.u ^ y))` using `(P.hu.pow y).map _`. Assume the negation of the conclusion as `hne`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hm : PowerSeries.constantCoeff (P.u ^ y) + (l : O) * PowerSeries.coeff (l * y) (P.eps * S) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 hne`. Establish `hl : (l : O) * PowerSeries.coeff (l * y) (P.eps * S) ∈ IsLocalRing.maximalIdeal O` using `Ideal.mul_mem_right _ _ P.hl`. Use `(IsLocalRing.maximalIdeal O).sub_mem hm hl` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 this hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_p1_pow_top_isUnit {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] {l : ℕ} [Fact l.Prime]
@@ -166,7 +164,7 @@ theorem coeff_p1_pow_top_isUnit {O : Type*} [CommRing O] [IsDomain O] [IsDiscret
 open Formalism.MainNotions.UnusedSlot80.SatW in
 
 /- English proof (translation)
-Take `⟨hbij, hs, hp⟩` from `hcase`. Take `⟨hring, -⟩` from `(hP9 T hT hs hp).2.2 (finrank_one_of_bij' hbij)`. Take `⟨h3, h6⟩` from `ring_clauses W hring`. Conclude with `isUnit_EE_of_UPi W (UPi_qpow W h3 h6 s)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isUnit_ps [FiniteDimensional Qp LL] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) (s : ℕ) :
@@ -177,11 +175,11 @@ theorem isUnit_ps [FiniteDimensional Qp LL] (W : LocWach PD LL O v n) (hcase : F
   exact isUnit_EE_of_UPi W (UPi_qpow W h3 h6 s)
 
 /- English proof (translation)
-Take `⟨h₀, hh₀⟩` from `GS.φpow_π₀ (W := W) hR 0`. Establish `h1 : W.φA W.π₀ = W.π₀ * qA W * h₀` using `by simpa using hh₀`. Establish `hJJ : Formalism.MainNotions.LiftingTheory.JJ W 1 (2 * G₀) M = W.π₀ ^ M * qA W ^ (2 * G₀)`. Simplify using `only [Formalism.MainNotions.LiftingTheory.JJ, Finset.prod_range_one, Formalism.MainNotions.LiftingTheory.pk, pow_zero, AlgHom.one_apply]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `key : ((W.φA ^ 2) W.π₀) ^ (M + 2 * G₀) = W.π₀ * Λ ^ 2 * (u * W.φA (W.π₀ ^ (2 * G₀) * qA W ^ M * h₀ ^ (M + 2 * G₀)))`. Rewrite using `[pow_two, AlgHom.mul_apply, h1, ← map_pow, show (W.π₀ * qA W * h₀) ^ (M + 2 * G₀) = Formalism.MainNotions.LiftingTheory.JJ W 1 (2 * G₀) M * (W.π₀ ^ (2 * G₀) * qA W ^ M * h₀ ^ (M + 2 * G₀)) by rw [hJJ]; ring, map_mul, hJ]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨M + 2 * G₀, _, ?_, key⟩` and prove the remaining obligations. Apply `GS.quot_mem (W := W) (W.AΔ.mul_mem (TypesA.pi0_mem_ADelta W) (W.AΔ.pow_mem hΛ 2)) hΛu` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← key]`. Conclude with `W.AΔ.pow_mem (GS.φpow_mem (W := W) 2 (TypesA.pi0_mem_ADelta W)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_sq_pi0_pow_eq_pi0_lambda_sq (W : LocWach PD LL O v n) (hR : GS.RD W) (Λ : LetA O n) (hΛ : Λ ∈ W.AΔ)
     (hΛu : IsUnit (algebraMap (LetA O n) W.EE (W.π₀ * Λ ^ 2))) (G₀ M : ℕ) (u : LetA O n) (hu : u ∈ W.AΔ)
@@ -205,7 +203,7 @@ theorem phi_sq_pi0_pow_eq_pi0_lambda_sq (W : LocWach PD LL O v n) (hR : GS.RD W)
   exact W.AΔ.pow_mem (GS.φpow_mem (W := W) 2 (TypesA.pi0_mem_ADelta W)) _
 
 /- English proof (translation)
-Unfold `dv`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single m (fun j _ hj => by simp [Pi.single_apply, hj]) (by simp), Pi.single_eq_same, one_smul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dv_eq_sum_single (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T)
     (c₀ : Fin d → LL) : dv W T e b c₀ = ∑ m, c₀ m • dv W T e b (Pi.single m 1) := by
@@ -215,16 +213,16 @@ theorem dv_eq_sum_single (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (e : �
     one_smul]
 
 /- English proof (translation)
-The claim follows from `Submodule.map_mono (inf_le_inf_right _ (Formalism.MainNotions.UnusedSlot80.LevR.filCris_anti T.ρ h))`.
+A detailed English derivation is pending.
 -/
 theorem filS_anti (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (a : ZMod n) (s : ℕ) {u u' : ℤ}
     (h : u ≤ u') : FilS W T a s u' ≤ FilS W T a s u :=
   Submodule.map_mono (inf_le_inf_right _ (Formalism.MainNotions.UnusedSlot80.LevR.filCris_anti T.ρ h))
 
 /- English proof (translation)
-Introduce `j`. Establish `h1 : ∑ m, (↑(hthu.unit⁻¹) * G m) * μ m j = ↑(hthu.unit⁻¹) * ∑ m, G m * μ m j`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`. Rewrite using `[h1, hcr j]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j = k₀`. Rewrite using `[if_pos hj, if_pos hj]`. Use `hthu.val_inv_mul` as an intermediate fact. Take the linear combination `P * this`. Rewrite using `[if_neg hj, if_neg hj, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_unit_inv {R : Type*} [CommRing R] {d₁ d : ℕ} (th : R) (hthu : IsUnit th) (G : Fin d₁ → R)
     (μ : Fin d₁ → Fin d → R) (k₀ : Fin d) (P : R)
@@ -242,11 +240,11 @@ theorem sum_unit_inv {R : Type*} [CommRing R] {d₁ d : ℕ} (th : R) (hthu : Is
   · rw [if_neg hj, if_neg hj, mul_zero]
 
 /- English proof (translation)
-Unfold `dvO`. Rewrite using `[dv_eq_sum_single, map_sum]`. Simplify using `only [map_smul, hμ]`. Unfold `dvO`. Rewrite using `[← dv_sum W T₂ e b Finset.univ (fun m => algebraMap O LL (c₁ m)) (fun m k => algebraMap O LL (μ m k)), ← dv_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [← map_mul, ← map_sum, hSig k]`. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[hk, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem crisMap_dvO (W : LocWach PD LL O v n) {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (e : ℕ)
     {d₁ d : ℕ} (b₁ : Fin d₁ → W.DD T₁) (b : Fin d → W.DD T₂) (μ : Fin d₁ → Fin d → O)

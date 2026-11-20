@@ -10,7 +10,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace GlobalTheory.EtC.GenFibreLine
 
 /- English proof (translation)
-Simplify using `only [spMap]`. Rewrite using `[← Functor.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -19,7 +19,7 @@ theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A
   rfl
 
 /- English proof (translation)
-Simplify using `only [spMap]`. Rewrite using `[show CommRingCat.ofHom (RingHom.id A) = 𝟙 (CommRingCat.of A) from rfl, Spec.map_id, CategoryTheory.Functor.map_id]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_id' (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
   simp only [spMap]
@@ -27,11 +27,11 @@ theorem spMap_id' (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
     CategoryTheory.Functor.map_id]
 
 /- English proof (translation)
-Establish `h1 : spMap (e.symm : B →+* A) ≫ spMap (e : A →+* B) = 𝟙 _`. Rewrite using `[← spMap_comp', ← spMap_id']`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h2 : spMap (e : A →+* B) ≫ spMap (e.symm : B →+* A) = 𝟙 _`. Rewrite using `[← spMap_comp', ← spMap_id']`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `Function.bijective_iff_has_inverse.2 ⟨pull R (spMap (e.symm : B →+* A)) F n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← pull_comp, h1, pull_id]`. Rewrite using `[← pull_comp, h2, pull_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_bijective_of_ringEquiv {R : Type} [CommRing R] {A B : Type} [CommRing A] [CommRing B]
     (e : A ≃+* B) (F : Shv R) (n : ℤ) : Function.Bijective (pull R (spMap (e : A →+* B)) F n) := by
@@ -50,15 +50,13 @@ theorem pull_bijective_of_ringEquiv {R : Type} [CommRing R] {A B : Type} [CommRi
   · rw [← pull_comp, h2, pull_id]
 
 /- English proof (translation)
-Introduce `q _ T _ _ _ hA hq A _ _ _ _ _ hind n i hn`. Use `haveI : IsAlgClosed (FractionRing T) := GlobalTheory.isAlgClosed_fractionRing_of_AIC T hA`. Establish `hqK : IsUnit (q : FractionRing T)` using `by simpa using hq.map (algebraMap T (FractionRing T))`. Establish `h2` using `GlobalTheory.isIndEtale_tensorProduct_left (Polynomial T) A (TensorProduct T (Polynomial T) (FractionRing T)) hind`. Set `eX : TensorProduct (Polynomial T) (TensorProduct T (Polynomial T) (FractionRing T)) A ≃+* TensorProduct T (FractionRing T) A` to `(Algebra.TensorProduct.comm (Polynomial T) _ A).toRingEquiv.trans ((Algebra.TensorProduct.cancelBaseChange T (Polynomial T) (Polynomial T) A (FractionRing T)).toRingEquiv.trans (Algebra.TensorProduct.comm T A (FractionRing T)).toRingEquiv)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `eK : Polynomial (FractionRing T) ≃+* TensorProduct T (Polynomial T) (FractionRing T)` to `(polyEquivTensor T (FractionRing T)).toRingEquiv.trans (Algebra.TensorProduct.comm T (FractionRing T) (Polynomial T)).toRingEquiv`. Take `⟨J, _, _, D, t, s, hs, hst⟩` from `h2`. Set `c : Cocone D` to `⟨CommRingCat.of (TensorProduct T (FractionRing T) A), s ≫ (Functor.const J).map (CommRingCat.ofHom (eX : _ →+* _))⟩`. Establish `hc : IsColimit c` using `hs.ofIsoColimit (Cocones.ext eX.toCommRingCatIso (fun j => rfl))`. Establish `hqA : IsUnit (q : c.pt)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hq.map (algebraMap T (TensorProduct T (FractionRing T) A))`. It suffices to establish `h0 : ∀ x : Ht q (sp (TensorProduct T (FractionRing T) A)) n i, x = 0 from ⟨fun x y => by rw [h0 x, h0 y]⟩`. Introduce `x`. Take `⟨j, z, hz⟩` from `(GlobalTheory.T.etaleCohomology_twisted_filtered_colimit_continuity q D c hc n i).1 x hqA`. Set `g : TensorProduct T (Polynomial T) (FractionRing T) →+* D.obj j` to `(t.app j).hom`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : Algebra (Polynomial (FractionRing T)) (D.obj j) := (g.comp eK.toRingHom).toAlgebra`. Use `haveI : Algebra.Etale (Polynomial (FractionRing T)) (D.obj j) := by`. Rewrite using `[← RingHom.etale_algebraMap]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.of_bijective eK.bijective) (hst j).1`. Use `haveI := GlobalTheory.T.tateTwistCohomology_subsingleton_etale_over_polynomial_algClosed q (FractionRing T) (D.obj j) hqK n i hn`.
-
-Rewrite using `[← hz, Subsingleton.elim z 0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genericFibre_subsingleton : ∀ (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T], AIC T → IsUnit (q : T) → ∀ (A : Type) [CommRing A] [Algebra (Polynomial T) A] [Algebra T A] [IsScalarTower T (Polynomial T) A], SH A → GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap (Polynomial T) A) → ∀ n i : ℤ, 2 ≤ n → Subsingleton (Ht q (sp (TensorProduct T (FractionRing T) A)) n i) := by
   intro q _ T _ _ _ hA hq A _ _ _ _ _ hind n i hn

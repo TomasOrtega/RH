@@ -19,11 +19,11 @@ def Cyc (A B : Submodule R W) (I : Ideal R) : Prop :=
   ∃ x ∈ A, (∀ y ∈ A, ∃ a : R, y - a • x ∈ B) ∧ ∀ r : R, r • x ∈ B ↔ r ∈ I
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective _ (e.symm (Submodule.Quotient.mk 1))`. Establish `hx' : e (Submodule.Quotient.mk x) = Submodule.Quotient.mk 1` using `by rw [hx]; simp`. Use `⟨x, x.2, fun y hy => ?_, fun r => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective I (e (Submodule.Quotient.mk ⟨y, hy⟩))`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (Submodule.Quotient.mk (⟨y, hy⟩ - a • x) : A ⧸ B.comap A.subtype) = 0`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul, map_sub, map_smul, hx', ← ha, ← Submodule.Quotient.mk_smul]`. Simplify using the standard rewrite rules. Rewrite `this` using `[Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `: r • (x : W) ∈ B ↔ (Submodule.Quotient.mk (r • x) : A ⧸ B.comap A.subtype) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Both sides reduce to the same expression. Rewrite using `[this, ← EmbeddingLike.map_eq_zero_iff (f := e), Submodule.Quotient.mk_smul, map_smul, hx', ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyc_of_equiv {A B : Submodule R W} {I : Ideal R}
     (e : (A ⧸ B.comap A.subtype) ≃ₗ[R] (R ⧸ I)) : Cyc A B I := by
@@ -45,11 +45,11 @@ theorem cyc_of_equiv {A B : Submodule R W} {I : Ideal R}
       ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Set `φ : R →ₗ[R] (A ⧸ B.comap A.subtype)` to `LinearMap.toSpanSingleton R _ (Submodule.Quotient.mk ⟨x, hx⟩)`. Establish `hφ : ∀ r, φ r = Submodule.Quotient.mk (r • ⟨x, hx⟩)` using `fun r => by`. Rewrite using `[Submodule.Quotient.mk_smul]`. Both sides reduce to the same expression. Establish `hk : LinearMap.ker φ = I`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `r`. Rewrite using `[LinearMap.mem_ker, hφ, Submodule.Quotient.mk_eq_zero, ← hI]`. Both sides reduce to the same expression. Use `⟨Submodule.liftQ I φ hk.ge, ?_, fun r => hφ r⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ hk.le`.
+A detailed English derivation is pending.
 -/
 theorem exists_inj {A B : Submodule R W} {I : Ideal R} (x : W) (hx : x ∈ A)
     (hI : ∀ r : R, r • x ∈ B ↔ r ∈ I) :
@@ -67,9 +67,9 @@ theorem exists_inj {A B : Submodule R W} {I : Ideal R} (x : W) (hx : x ∈ A)
   exact Submodule.ker_liftQ_eq_bot _ _ _ hk.le
 
 /- English proof (translation)
-Take `⟨x, hx, h1, h2⟩` from `h`. Take `⟨f, hf, hf'⟩` from `exists_inj x hx h2`. Use `⟨(LinearEquiv.ofBijective f ⟨hf, fun q => ?_⟩).symm⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨a, ha⟩` from `h1 y y.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Submodule.Quotient.mk a, ?_⟩` and prove the remaining obligations. Rewrite using `[hf', eq_comm, Submodule.Quotient.eq]`. Conclude with `ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equiv_of_cyc {A B : Submodule R W} {I : Ideal R} (h : Cyc A B I) :
     Nonempty ((A ⧸ B.comap A.subtype) ≃ₗ[R] (R ⧸ I)) := by
@@ -83,7 +83,7 @@ theorem equiv_of_cyc {A B : Submodule R W} {I : Ideal R} (h : Cyc A B I) :
   exact ha
 
 /- English proof (translation)
-Take `⟨x, -, h1, h2⟩` from `h`. Take `⟨a, ha⟩` from `h1 y hy`. Establish `: r • y = r • (y - a • x) + a • (r • x)` using `by rw [smul_sub, smul_comm a r x]; abel`. Rewrite using `[this]`. Conclude with `B.add_mem (B.smul_mem r ha) (B.smul_mem a ((h2 r).2 hr))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Cyc.smul_mem {A B : Submodule R W} {I : Ideal R} (h : Cyc A B I) {r : R} (hr : r ∈ I)
     {y : W} (hy : y ∈ A) : r • y ∈ B := by
@@ -94,15 +94,15 @@ theorem Cyc.smul_mem {A B : Submodule R W} {I : Ideal R} (h : Cyc A B I) {r : R}
   exact B.add_mem (B.smul_mem r ha) (B.smul_mem a ((h2 r).2 hr))
 
 /- English proof (translation)
-Take `⟨x, hx, h1, h2⟩` from `h`. Establish `inv : ∀ s ∈ S, ∃ u, 1 - u * s ∈ P` using `fun s hs => by`. Take `⟨u, p, hp, e⟩` from `hP.exists_inv (hS s hs)`. Conclude with `⟨u, by rw [← e]; simpa using hp⟩`. Take `⟨s, hs, hsx⟩ : x ∈ locS S M` from `hM ▸ locBasic_le_locS S M' hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨s • x, hsx, fun y hy => ?_, fun r => ⟨fun hr => ?_, fun hr => ⟨M.smul_mem r hsx, ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨t, ht, hty⟩ : y ∈ locS S M'` from `hM.symm ▸ locBasic_le_locS S M hy`. Take `⟨a, ha⟩` from `h1 _ hty`. Take `⟨u, hu⟩` from `inv _ (S.mul_mem ht hs)`. Take `⟨t', ht', hu'⟩` from `hPI _ hu`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨u * a, M.sub_mem hy (M.smul_mem _ hsx), t' * t, S.mul_mem ht' ht, ?_⟩` and prove the remaining obligations. Establish `: (t' * t) • (y - (u * a) • s • x) = t' • (t • y - a • x) + a • ((t' * (1 - u * (t * s))) • x)` using `by module`. Rewrite using `[this]`. Conclude with `L'.add_mem (L'.smul_mem _ ha) (L'.smul_mem _ ((h2 _).2 hu'))`. Take `⟨t, ht, htx⟩` from `hr.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `htx` using `[smul_smul, smul_smul, h2]`. Use `hIP htx` as an intermediate fact. Break down `hP.isPrime.mem_or_mem this with h | h` into its components or cases. Conclude with `(hP.isPrime.mem_or_mem h).resolve_left (hS t ht)`. Conclude with `absurd h (hS s hs)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht, htr⟩` from `hPI r hr`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, h2]`. Conclude with `I.mul_mem_right _ htr`.
+A detailed English derivation is pending.
 -/
 theorem Cyc.localise {M' L' M : Submodule R W} {I P : Ideal R} (h : Cyc M' L' I) (hP : P.IsMaximal)
     (S : Submonoid R) (hS : ∀ s ∈ S, s ∉ P) (hIP : I ≤ P) (hPI : ∀ r ∈ P, ∃ t ∈ S, t * r ∈ I)
@@ -134,21 +134,19 @@ theorem Cyc.localise {M' L' M : Submodule R W} {I P : Ideal R} (h : Cyc M' L' I)
     exact I.mul_mem_right _ htr
 
 /- English proof (translation)
-Establish `he : ∀ P ∈ s, ∃ e : R, e ∉ P ∧ ∀ Q ∈ s, Q ≠ P → e ∈ Q`. Introduce `P hP`. Establish `: ¬ ((s.erase P).inf id ≤ P)`. Introduce `hle`. Take `⟨Q, hQ, hQP⟩` from `((hs P hP).isPrime.inf_le').1 hle`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hQ` using `[Finset.mem_erase]`. Conclude with `hQ.1 ((hs Q hQ.2).eq_of_le (hs P hP).ne_top hQP)`. Take `⟨e, h1, h2⟩` from `SetLike.not_le_iff_exists.1 this`. Conclude with `⟨e, h2, fun Q hQ hne => (Finset.inf_le (f := id) (Finset.mem_erase.2 ⟨hne, hQ⟩)) h1⟩`. Use `choose! e he1 he2 using he`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : ∀ P ∈ s, ∃ y ∈ A, e P • y ∉ B` using `fun P hP => hn P hP _ (he1 P hP)`. Use `choose! y hy1 hy2 using hy`. Establish `hxA : ∑ P ∈ s, e P • y P ∈ A` using `A.sum_mem fun P hP => A.smul_mem _ (hy1 P hP)`. Use `⟨_, hxA, fun r => ⟨fun hr P hP => ?_, fun hr => hk r hr _ hxA⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hrP`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (e P * r) • ∑ Q ∈ s, e Q • y Q ∈ B` using `by rw [mul_smul]; exact B.smul_mem _ hr`. Rewrite `h1` using `[← Finset.add_sum_erase s _ hP, smul_add]`. Establish `h2 : (e P * r) • ∑ Q ∈ s.erase P, e Q • y Q ∈ B`. Rewrite using `[Finset.smul_sum]`. Use `B.sum_mem fun Q hQ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hQ` using `[Finset.mem_erase]`. Rewrite using `[smul_smul]`. Use `hk _ (fun P' hP' => ?_) _ (hy1 Q hQ.2)` and prove the remaining obligations. Distinguish the cases in `h : P' = P`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `P'.mul_mem_left _ (he2 Q hQ.2 P' hP' (Ne.symm hQ.1))`. Conclude with `P'.mul_mem_right _ (P'.mul_mem_right _ (he2 P hP P' hP' h))`. Establish `h3 : (e P * r) • e P • y P ∈ B` using `by simpa using B.sub_mem h1 h2`. Establish `h4 : e P * r ∉ P` using `fun h => ((hs P hP).isPrime.mem_or_mem h).elim (he1 P hP) hrP`. Take `⟨u, p, hp, hu⟩` from `(hs P hP).exists_inv h4`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hy2 P hP` to reduce the goal to its premises. Establish `: e P • y P = u • ((e P * r) • e P • y P) + (p * e P) • y P`. Rewrite using `[smul_smul u, mul_smul p, ← add_smul, hu, one_smul]`. Rewrite using `[this]`. Use `B.add_mem (B.smul_mem _ h3) (hk _ (fun P' hP' => ?_) _ (hy1 P hP))` and prove the remaining obligations.
-
-Distinguish the cases in `h : P' = P`. Substitute `h` using the available equality. Conclude with `P'.mul_mem_right _ hp`. Conclude with `P'.mul_mem_left _ (he2 P hP P' hP' h)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_ann {A B : Submodule R W} (s : Finset (Ideal R)) (hs : ∀ P ∈ s, P.IsMaximal)
     (hk : ∀ r : R, (∀ P ∈ s, r ∈ P) → ∀ y ∈ A, r • y ∈ B)
@@ -203,28 +201,28 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 noncomputable abbrev cj : 𝓞 K →+* 𝓞 K := locBasic_sigma (genusCovol_hinj (K := K)) star_algebraMap_ringOfIntegers_mem_range
 
 /- English proof (translation)
-The claim follows from `genusCovol_hinj (by rw [locBasic_sigma_spec, locBasic_sigma_spec, star_star])`.
+A detailed English derivation is pending.
 -/
 theorem cj_cj (r : 𝓞 K) : cj (cj r) = r := genusCovol_hinj (by
   rw [locBasic_sigma_spec, locBasic_sigma_spec, star_star])
 
 /- English proof (translation)
-Rewrite using `[locBasic_conj_eq genusCovol_hinj star_algebraMap_ringOfIntegers_mem_range, Ideal.mem_comap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_conj {P : Ideal (𝓞 K)} {r : 𝓞 K} : r ∈ conjIdeal (K := K) P ↔ cj r ∈ P := by
   rw [locBasic_conj_eq genusCovol_hinj star_algebraMap_ringOfIntegers_mem_range, Ideal.mem_comap]
 
 /- English proof (translation)
-Use extensionality with `r`. Rewrite using `[mem_conj, mem_conj, cj_cj]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_conj (P : Ideal (𝓞 K)) : conjIdeal (K := K) (conjIdeal (K := K) P) = P := by
   ext r
   rw [mem_conj, mem_conj, cj_cj]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `r hr`. Rewrite using `[← cj_cj r]`. Conclude with `Ideal.mem_map_of_mem _ (mem_conj.1 hr)`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr`. Rewrite using `[Ideal.mem_comap, mem_conj, cj_cj]`. Conclude with `hr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_eq_map (P : Ideal (𝓞 K)) : conjIdeal (K := K) P = P.map cj := by
   apply le_antisymm
@@ -237,20 +235,20 @@ theorem conj_eq_map (P : Ideal (𝓞 K)) : conjIdeal (K := K) P = P.map cj := by
     exact hr
 
 /- English proof (translation)
-Introduce `_ hr` and use `mem_conj.2 (h (mem_conj.1 hr))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conj_mono {P Q : Ideal (𝓞 K)} (h : P ≤ Q) : conjIdeal (K := K) P ≤ conjIdeal (K := K) Q :=
   fun _ hr => mem_conj.2 (h (mem_conj.1 hr))
 
 /- English proof (translation)
-Rewrite using `[locBasic_conj_eq genusCovol_hinj star_algebraMap_ringOfIntegers_mem_range]`. Conclude with `Ideal.comap_isMaximal_of_surjective _ (Function.Involutive.surjective cj_cj)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_isMaximal {P : Ideal (𝓞 K)} (hP : P.IsMaximal) : (conjIdeal (K := K) P).IsMaximal := by
   rw [locBasic_conj_eq genusCovol_hinj star_algebraMap_ringOfIntegers_mem_range]
   exact Ideal.comap_isMaximal_of_surjective _ (Function.Involutive.surjective cj_cj)
 
 /- English proof (translation)
-Simplify using `only [conj_eq_map]`. Conclude with `map_prod (Ideal.mapHom cj) _ s`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_prod (s : Finset (Ideal (𝓞 K))) :
     conjIdeal (K := K) (∏ P ∈ s, P) = ∏ P ∈ s, conjIdeal (K := K) P := by
@@ -258,11 +256,11 @@ theorem conj_prod (s : Finset (Ideal (𝓞 K))) :
   exact map_prod (Ideal.mapHom cj) _ s
 
 /- English proof (translation)
-Establish `key : ∀ (Q : Ideal (𝓞 K)) (s : 𝓞 K), (∀ t : 𝓞 K, algebraMap (𝓞 K) K t = star (algebraMap (𝓞 K) K s) → t ∉ Q) ↔ cj s ∉ Q`. Introduce `Q s`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Conclude with `H _ (locBasic_sigma_spec _ _ s)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H t e`. Establish `: t = cj s` using `genusCovol_hinj (by rw [locBasic_sigma_spec, e])`. Rewrite using `[this]` and apply the resulting hypothesis. Unfold `hcompl`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `s`. Rewrite using `[Set.mem_setOf_eq, Set.mem_setOf_eq, key, key, mem_conj, mem_conj, cj_cj]`. Conclude with `and_comm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hcompl_conj (P : Ideal (𝓞 K)) :
     hcompl (K := K) (conjIdeal (K := K) P) = hcompl (K := K) P := by
@@ -281,11 +279,11 @@ theorem hcompl_conj (P : Ideal (𝓞 K)) :
   exact and_comm
 
 /- English proof (translation)
-Introduce `e`. Take `⟨θ, t, ht, hθ⟩` from `hK.2.2 P hP`. Establish `ht' : t = cj θ` using `genusCovol_hinj (by rw [locBasic_sigma_spec, ht])`. Establish `hc : Nat.card (𝓞 K ⧸ P) = T` using `by rw [← hN, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `: Finite (𝓞 K ⧸ P)` using `Nat.finite_of_card_ne_zero (hc ▸ hT.ne_zero)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := Fintype.ofFinite (𝓞 K ⧸ P)`. Set `φ` to `ZMod.ringEquivOfPrime (𝓞 K ⧸ P) hT (by rw [← hc, Nat.card_eq_fintype_card])`. Take `⟨z, hz⟩` from `φ.surjective (Ideal.Quotient.mk P θ)`. Take `⟨n, rfl⟩` from `ZMod.intCast_surjective z`. Rewrite `hz` using `[map_intCast, ← map_intCast (Ideal.Quotient.mk P), eq_comm, Ideal.Quotient.eq]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : cj (θ - (n : 𝓞 K)) ∈ P` using `by rw [← mem_conj, e]; exact hz`. Rewrite `h2` using `[map_sub, map_intCast, ← ht']`. Apply `hθ` to reduce the goal to its premises. Simplify using `using P.sub_mem hz h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_ne (hK : IsCMUnram K) {T : ℕ} (hT : T.Prime) {P : Ideal (𝓞 K)} (hP : P.IsMaximal)
     (hN : Ideal.absNorm P = T) : conjIdeal (K := K) P ≠ P := by
@@ -307,15 +305,15 @@ theorem conj_ne (hK : IsCMUnram K) {T : ℕ} (hT : T.Prime) {P : Ideal (𝓞 K)}
 omit [StarRing K] in
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {(T : 𝓞 K)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hT.ne_zero` after adjusting the coercions. Establish `hmax : ∀ P : Ideal (𝓞 K), P.IsPrime → (T : 𝓞 K) ∈ P → P.IsMaximal` using `fun P hP hTP => hP.isMaximal (by rintro rfl; exact hT.ne_zero (by exact_mod_cast (Ideal.mem_bot.1 hTP)))`. Establish `hsq : Squarefree (Ideal.span {(T : 𝓞 K)})`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[squarefree_iff_no_irreducibles h0]`. Introduce `P hP hd`. Establish `hP' : P.IsPrime` using `Ideal.isPrime_of_prime (UniqueFactorizationMonoid.irreducible_iff_prime.1 hP)`. Rewrite `hd` using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Establish `hTP : (T : 𝓞 K) ∈ P` using `Ideal.mul_le_left hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(H P (hmax P hP' hTP) hTP).2 (by rwa [pow_two])`. Establish `hnd` using `(UniqueFactorizationMonoid.squarefree_iff_nodup_normalizedFactors h0).1 hsq`. Set `S : Finset (Ideal (𝓞 K))` to `⟨_, hnd⟩`. Establish `hm : ∀ P, P ∈ S ↔ P.IsMaximal ∧ (T : 𝓞 K) ∈ P` using `fun P => by`. Express the relevant statement in the definitionally equal form `P ∈ UniqueFactorizationMonoid.normalizedFactors _ ↔ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Ideal.mem_normalizedFactors_iff h0, Ideal.span_singleton_le_iff_mem]`. Conclude with `⟨fun h => ⟨hmax P h.1 h.2, h.2⟩, fun h => ⟨h.1.isPrime, h.2⟩⟩`. Establish `hp : ∏ P ∈ S, P = Ideal.span {(T : 𝓞 K)}`. Rewrite using `[Finset.prod_eq_multiset_prod, Multiset.map_id']`. Conclude with `Ideal.prod_normalizedFactors_eq_self h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨S, hm, hp, ?_⟩` and prove the remaining obligations. Use `congrArg Ideal.absNorm hp` as an intermediate fact. Rewrite `this` using `[map_prod, Finset.prod_congr rfl (fun P hP => (H P ((hm P).1 hP).1 ((hm P).1 hP).2).1), Finset.prod_const, Ideal.absNorm_span_natCast, RingOfIntegers.rank]`. Conclude with `Nat.pow_right_injective hT.two_le this`.
+A detailed English derivation is pending.
 -/
 theorem exists_primes {T : ℕ} (hT : T.Prime)
     (H : ∀ P : Ideal (𝓞 K), P.IsMaximal → (T : 𝓞 K) ∈ P → Ideal.absNorm P = T ∧ (T : 𝓞 K) ∉ P ^ 2) :
@@ -348,21 +346,21 @@ theorem exists_primes {T : ℕ} (hT : T.Prime)
   exact Nat.pow_right_injective hT.two_le this
 
 /- English proof (translation)
-Take `⟨S, hm, hp, hc⟩` from `exists_primes hT H`. Set `e : Ideal (𝓞 K) ↪ Cardinal` to `embeddingToCardinal`. Set `s` to `S.filter fun P => e P < e (conjIdeal (K := K) P)`. Establish `hS : ∀ P ∈ S, conjIdeal (K` using `K) P ∈ S := fun P hP => (hm _).2 ⟨conj_isMaximal ((hm P).1 hP).1, mem_conj.2 (by rw [map_natCast]; exact ((hm P).1 hP).2)⟩`. Establish `hinj : Function.Injective (conjIdeal (K` using `K) (R := 𝓞 K)) := Function.Involutive.injective conj_conj`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `him : s.image (conjIdeal (K` using `K)) = S.filter fun P => ¬ e P < e (conjIdeal (K := K) P) := by`. Use extensionality with `P`. Simplify using `only [s, Finset.mem_image, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, ⟨hQ, hlt⟩, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hS Q hQ, by rw [conj_conj]; exact hlt.not_gt⟩`. Introduce and unpack `⟨hP, hlt⟩`. Use `⟨_, ⟨hS P hP, ?_⟩, conj_conj P⟩` and prove the remaining obligations. Rewrite using `[conj_conj]`. Establish `h1` using `(hm P).1 hP`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `lt_of_le_of_ne (not_lt.1 hlt) fun h => conj_ne hK hT h1.1 (H P h1.1 h1.2).1 (e.injective h)`. Establish `hsm : ∀ P ∈ s, P.IsMaximal` using `fun P hP => ((hm P).1 (Finset.mem_filter.1 hP).1).1`. Use `⟨s, ?_, fun P hP => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `Finset.card_filter_add_card_filter_not (s := S) fun P => e P < e (conjIdeal (K := K) P)`. Rewrite `h1` using `[← him, Finset.card_image_of_injective _ hinj, hc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hK.1` as an intermediate fact. Establish `h2` using `IsTotallyComplex.finrank (K := K)`. Establish `h3` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces K`. Establish `h4` using `IsTotallyComplex.nrRealPlaces_eq_zero (K := K)`. Express the relevant statement in the definitionally equal form `s.card + s.card = _ at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Unfold `fDeg`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `(hm P).1 (Finset.mem_filter.1 hP).1`. Conclude with `⟨h1.1, (H P h1.1 h1.2).1⟩`. Rewrite using `[conj_prod]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsCoprime.prod_left fun P hP => IsCoprime.prod_right fun Q hQ => ?_` and prove the remaining obligations. Use `Ideal.isCoprime_iff_sup_eq.2 ((hsm P hP).coprime_of_ne (conj_isMaximal (hsm Q hQ)) ?_)` and prove the remaining obligations. Introduce and unpack `rfl`. Establish `h1` using `(Finset.mem_filter.1 hP).2`. Rewrite `h1` using `[conj_conj]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.not_gt (Finset.mem_filter.1 hQ).2`. Rewrite using `[conj_prod, ← hp, ← Finset.prod_filter_mul_prod_filter_not S (fun P => e P < e (conjIdeal (K := K) P)), ← him, Finset.prod_image (fun _ _ _ _ h => hinj h)]`.
+A detailed English derivation is pending.
 -/
 theorem exists_half (hK : IsCMUnram K) {T : ℕ} (hT : T.Prime)
     (H : ∀ P : Ideal (𝓞 K), P.IsMaximal → (T : 𝓞 K) ∈ P → Ideal.absNorm P = T ∧ (T : 𝓞 K) ∉ P ^ 2) :
@@ -419,11 +417,11 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 
 omit [NumberField K] [FiniteDimensional K V] in
 /- English proof (translation)
-Take `⟨x, hx, h1, h2⟩` from `H`. Establish `hg : ∀ (r : 𝓞 K) (v : V), g.symm (r • v) = r • g.symm v` using `fun r v => LinearMapClass.map_smul_of_tower g.symm r v`. Use `⟨g x, ?_, fun y hy => ?_, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[isomAct_mem_gmap]`. Simplify using `using hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hy` using `[isomAct_mem_gmap]`. Take `⟨a, ha⟩` from `h1 _ hy`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[isomAct_mem_gmap, map_sub, hg]`. Simplify using `using ha`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[isomAct_mem_gmap, hg, ← h2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Cyc.gmap {A B : Submodule (𝓞 K) V} {I : Ideal (𝓞 K)} (H : Cyc A B I) (g : V ≃ₗ[K] V) :
     Cyc (gmap g A) (gmap g B) I := by
@@ -443,11 +441,11 @@ theorem Cyc.gmap {A B : Submodule (𝓞 K) V} {I : Ideal (𝓞 K)} (H : Cyc A B 
 omit [NumberField K] [FiniteDimensional K V] in
 
 /- English proof (translation)
-Establish `hg : ∀ (r : 𝓞 K) (v : V), g.symm (r • v) = r • g.symm v` using `fun r v => LinearMapClass.map_smul_of_tower g.symm r v`. Substitute `hA hB` using the available equality. Prove the components needed by the constructor for the conclusion. Introduce `H y hy`. Rewrite `hy`, the goal using `[isomAct_mem_gmap]`.
+Establish an intermediate fact. Substitute using the available equality. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hg]`. Conclude with `H _ hy`. Introduce `H y hy`. Use `H (g y) (by rw [isomAct_mem_gmap]; simpa using hy)` as an intermediate fact. Rewrite `this` using `[isomAct_mem_gmap, hg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem transfer (g : V ≃ₗ[K] V) {A B A' B' : Submodule (𝓞 K) V} (hA : gmap g A = A') (hB : gmap g B = B')
     (r : 𝓞 K) : (∀ y ∈ A, r • y ∈ B) ↔ ∀ y ∈ A', r • y ∈ B' := by
@@ -465,7 +463,7 @@ theorem transfer (g : V ≃ₗ[K] V) {A B A' B' : Submodule (𝓞 K) V} (hA : gm
     simpa using this
 
 /- English proof (translation)
-Introduce and unpack `y ⟨s, hs, hy⟩`. Conclude with `⟨s, hs, by rw [smul_comm]; exact H _ hy⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem smul_loc {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] (S : Submonoid R)
     {A B : Submodule R W} {r : R} (H : ∀ y ∈ A, r • y ∈ B) : ∀ y ∈ locS S A, r • y ∈ locS S B := by
@@ -476,19 +474,19 @@ variable (h : V →ₗ⋆[K] V →ₗ[K] K) (hK : IsCMUnram K) (hs : h.IsSymm) (
 include hK hs hn
 
 /- English proof (translation)
-Take `⟨h0, -, -, hg, -⟩` from `DiscOrder.main K V h hK hs hn L hL`. Take `⟨hNi, hd⟩` from `hg N hN`. Use `⟨hNi, ?_⟩` and prove the remaining obligations. Establish `ld` using `locDual (𝓞 K) K V h hs star_algebraMap_ringOfIntegers_mem_range`. Establish `hc` using `cyc_of_equiv eL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinf : ∀ r : 𝓞 K, (∀ P ∈ S, r ∈ P) ↔ r ∈ Ideal.span {T}`. Introduce `r`. Rewrite using `[← hp, Ideal.prod_eq_iInf_of_pairwise_isCoprime]`. Simplify using the standard rewrite rules. Introduce `P hP Q hQ hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.isCoprime_iff_sup_eq.2 ((hS P hP).coprime_of_ne (hS Q hQ) hne)`. Establish `tr : ∀ P : Ideal (𝓞 K), P.IsMaximal → ∀ r : 𝓞 K, (∀ y ∈ loc (K` using `K) P (dual h L), r • y ∈ loc (K := K) P L) ↔ ∀ y ∈ loc (K := K) P (dual h N), r • y ∈ loc (K := K) P N := by`. Introduce `P hP r`. Take `⟨g, hg, hgL⟩` from `hN.2 P hP`. Use `transfer g ?_ hgL r` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, a2, -, -, a5⟩` from `isomAct (𝓞 K) K V h g hg L`. Establish `b1` using `(ld (gmap g L) (a5.2 hL.1).fg).1 P hP.isPrime`. Establish `b2` using `(ld N hN.1.fg).1 P hP.isPrime`. Rewrite using `[b2.1, ← b2.2, ← hgL, ← a2 P, b1.2, ← b1.1, a1, (isomAct (𝓞 K) K V h g hg (dual h L)).2.1 P]`. Take `⟨x, hx, hxa⟩` from `exists_ann (A := dual h N) (B := N) S hS (fun r hr y hy => genusBasic_lg (K := K) N _ fun P hP => (tr P hP r).1 (smul_loc _ fun z hz => hc.smul_mem ((hinf r).1 hr) hz) y (locBasic_le_locS _ _ hy)) (fun P hP r hr => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨z, hz, -, hz2⟩` from `hc`. Take `⟨t, ht, htz⟩` from `(tr P (hS P hP) r).2 (smul_loc _ hcon) z (locBasic_le_locS _ _ hz)`. Rewrite `htz` using `[smul_smul, hz2, ← hinf]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `((hS P hP).isPrime.mem_or_mem (htz P hP)).elim (genusBasic_hS P (hS P hP) t ht) hr)`. Take `⟨f, hf, -⟩` from `exists_inj x hx (I := Ideal.span {T}) fun r => (hxa r).trans (hinf r)`. Establish `c1 : Nat.card (↥(dual h N) ⧸ N.comap (dual h N).subtype) = Nat.card (𝓞 K ⧸ Ideal.span {T})`. Rewrite using `[← Nat.card_congr eL.toEquiv]`. Conclude with `hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 
-Establish `: Finite (↥(dual h N) ⧸ N.comap (dual h N).subtype)` using `Nat.finite_of_card_ne_zero (by`. Express the relevant statement in the definitionally equal form `discN h N ≠ 0`. Rewrite using `[hd])` and apply the resulting hypothesis. Conclude with `⟨(LinearEquiv.ofBijective f ((Nat.bijective_iff_injective_and_card f).2 ⟨hf, c1.symm⟩)).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem forward (T : 𝓞 K) (S : Finset (Ideal (𝓞 K))) (hS : ∀ P ∈ S, P.IsMaximal)
     (hp : ∏ P ∈ S, P = Ideal.span {T}) (L N : Submodule (𝓞 K) V) (hL : IsIntLat h L)
@@ -536,29 +534,27 @@ theorem forward (T : 𝓞 K) (S : Finset (Ideal (𝓞 K))) (hS : ∀ P ∈ S, P.
   exact ⟨(LinearEquiv.ofBijective f ((Nat.bijective_iff_injective_and_card f).2 ⟨hf, c1.symm⟩)).symm⟩
 
 /- English proof (translation)
-Establish `ld` using `locDual (𝓞 K) K V h hs star_algebraMap_ringOfIntegers_mem_range`. Establish `key : ∀ P ∈ s, ∃ g ∈ isom h, gmap g (loc (K` using `K) P L) = loc (K := K) P N := by`. Introduce `P hPs`. Establish `hP` using `hm P hPs`. Establish `hP'` using `conj_isMaximal hP`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u'` using `(ld M' hM'.fg).2.1 uM' P hP`. Take `⟨g, hg, hgM⟩` from `UnimodLoc.exists_isom_of_isUnimodularAt K V h hK hs hn M M' hM hM' P hP ((ld M hM.fg).2.1 uM P hP) u'`. Establish `hle : ∀ Q ∈ s, ∏ P ∈ s, P ≤ Q` using `fun Q hQ => Ideal.le_of_dvd (Finset.dvd_prod_of_mem (fun P => P) hQ)`. Establish `hIP` using `hle P hPs`. Establish `hIc : ¬ ∏ P ∈ s, P ≤ conjIdeal (K` using `K) P := fun hle => hP'.ne_top (top_le_iff.1 ((Ideal.isCoprime_iff_sup_eq.1 hco).ge.trans (sup_le hle (conj_mono hIP))))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : conjIdeal (K` using `K) P ≠ P := fun e => hIc (hIP.trans e.ge)`. Take `⟨t, ht, htI⟩ : ∃ t ∈ hcompl (K` from `K) P, t ∈ ∏ Q ∈ s.erase P, Q := by`. Establish `c1 : IsCoprime (∏ Q ∈ s.erase P, Q) P` using `IsCoprime.prod_left fun Q hQ => Ideal.isCoprime_iff_sup_eq.2 ((hm Q (Finset.mem_of_mem_erase hQ)).coprime_of_ne hP (Finset.ne_of_mem_erase hQ))`. Establish `c2 : IsCoprime (∏ Q ∈ s.erase P, Q) (conjIdeal (K` using `K) P) := IsCoprime.prod_left fun Q hQ => Ideal.isCoprime_iff_sup_eq.2 ((hm Q (Finset.mem_of_mem_erase hQ)).coprime_of_ne hP' fun e => hIc ((hle Q (Finset.mem_of_mem_erase hQ)).trans e.le))`. Take `⟨a, ha, b, hb, hab⟩` from `Ideal.isCoprime_iff_exists.1 (c1.mul_right c2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨a, locBasic_mem_hcompl P a (fun h => hP.ne_top ?_) (fun h => hP'.ne_top ?_), ha⟩` and prove the remaining obligations. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Conclude with `P.add_mem h (Ideal.mul_le_inf hb).1`. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Conclude with `Ideal.add_mem _ h (Ideal.mul_le_inf hb).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPI : ∀ r ∈ P, ∃ t ∈ hcompl (K` using `K) P, t * r ∈ ∏ Q ∈ s, Q := fun r hr => ⟨t, ht, by rw [← Finset.prod_erase_mul s _ hPs]; exact Ideal.mul_mem_mul htI hr⟩`. Establish `a1` using `(isomAct (𝓞 K) K V h g hg M).2.1 P`. Establish `a2` using `(isomAct (𝓞 K) K V h g hg L).2.1 P`. Establish `d1` using `(cL.gmap g).localise hP (hcompl (K := K) P) (genusBasic_hS P hP) hIP hPI (a1.trans hgM)`. Establish `d2` using `cN.localise hP (hcompl (K := K) P) (genusBasic_hS P hP) hIP hPI rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g', hg', -, hg2⟩` from `GlobalTheory.Mass.Hyperplane.main K V h hK hs hn M' hM' P hP hne u' _ _ inf_le_left inf_le_left (equiv_of_cyc d1) (equiv_of_cyc d2)`. Use `⟨g' * g, (isom h).mul_mem hg' hg, ?_⟩` and prove the remaining obligations. Establish `l1 : loc (K` using `K) P (gmap g L) ≤ loc (K := K) P M' := by`. Rewrite using `[← hgM, ← a1]`. Conclude with `locBasic_locS_mono _ (Submodule.map_mono hLM)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `loc at hg2 l1 a2 ⊢`. Rewrite `hg2` using `[locBasic_locS_inf, locBasic_locS_inf, locBasic_locS_idem, locBasic_locS_idem, inf_eq_right.2 l1, inf_eq_right.2 (locBasic_locS_mono _ hNM)]`. Rewrite using `[genusBasic_gmap_mul, ← a2, hg2]`. Introduce `P hP`. Establish `hP'` using `conj_isMaximal hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `mem : ∀ Q : Ideal (𝓞 K), Q.IsMaximal → ∏ P ∈ s, P ≤ Q → Q ∈ s` using `fun Q hQ hle => by`. Take `⟨Q', hQ', hle'⟩` from `(hQ.isPrime.prod_le).1 hle`. Rewrite using `[← (hm Q' hQ').eq_of_le hQ.ne_top hle']` and apply the resulting hypothesis. Distinguish the cases in `h1 : ∏ P ∈ s, P ≤ P`. Conclude with `key P (mem P hP h1)`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Distinguish the cases in `h2 : ∏ P ∈ s, P ≤ conjIdeal (K := K) P`. Use `key _ (mem _ hP' h2)` as an intermediate fact. Unfold `loc at this ⊢`. Rewrite `this` using `[hcompl_conj]`. Then use the resulting hypothesis. Take `⟨t, ht, htI⟩ : ∃ t ∈ hcompl (K` from `K) P, t ∈ ∏ Q ∈ s, Q := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Take `⟨a, ha, ha'⟩` from `SetLike.not_le_iff_exists.1 h1`. Take `⟨b, hb, hb'⟩` from `SetLike.not_le_iff_exists.1 h2`. Distinguish the cases in `hac : a ∈ conjIdeal (K := K) P`. Distinguish the cases in `hbp : b ∈ P`. Use `⟨a + b, locBasic_mem_hcompl P _ (fun h => ha' ?_) (fun h => hb' ?_), Ideal.add_mem _ ha hb⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Simplify using `using P.sub_mem h hbp`. Simplify using `using (conjIdeal (K := K) P).sub_mem h hac`. Conclude with `⟨b, locBasic_mem_hcompl P _ hbp hb', hb⟩`. Conclude with `⟨a, locBasic_mem_hcompl P _ ha' hac, ha⟩`. Establish `eq : ∀ {A B : Submodule (𝓞 K) V}, B ≤ A → Cyc A B (∏ P ∈ s, P) → loc (K` using `K) P B = loc (K := K) P A := fun hle hc => le_antisymm (locBasic_locS_mono _ hle) ((locBasic_locS_mono _ fun y hy => locBasic_mem_locS.2 ⟨t, ht, hc.smul_mem htI hy⟩).trans (locBasic_locS_idem _ _).le)`.
-
-Rewrite using `[eq hLM cL, eq hNM cN]`. Conclude with `UnimodLoc.exists_isom_of_isUnimodularAt K V h hK hs hn M M' hM hM' P hP ((ld M hM.fg).2.1 uM P hP) ((ld M' hM'.fg).2.1 uM' P hP)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem backward (s : Finset (Ideal (𝓞 K))) (hm : ∀ P ∈ s, P.IsMaximal)
     (hco : IsCoprime (∏ P ∈ s, P) (conjIdeal (K := K) (∏ P ∈ s, P)))
@@ -637,11 +633,11 @@ theorem backward (s : Finset (Ideal (𝓞 K))) (hm : ∀ P ∈ s, P.IsMaximal)
 end Lattices
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ h hK hs hn T hT H`. Use `⟨exists_half hK hT H, fun L N hL ⟨eL⟩ => ⟨fun hN => ?_, fun ⟨hN, eN⟩ => ⟨hN.1, ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨S, hm, hp, -⟩` from `exists_primes hT H`. Conclude with `forward h hK hs hn _ S (fun P hP => ((hm P).1 hP).1) hp L N hL eL hN`. Take `⟨s, -, hm, hco, hp⟩` from `exists_half hK hT H`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : ∏ P ∈ s, P ≠ ⊥`. Introduce `e`. Rewrite `hp` using `[e, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot]`. Conclude with `hT.ne_zero (by exact_mod_cast hp)`. Establish `one` using `(GlobalTheory.Mass.SplitOver.main K V h hK hs hn _ h0 hco).1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `one` using `[hp]`. Take `⟨M, ⟨hM, uM, hLM, ⟨cL⟩⟩, -⟩` from `one L hL ⟨eL⟩`. Take `⟨M', ⟨hM', uM', hNM, ⟨cN⟩⟩, -⟩` from `one N hN eN`. Conclude with `backward h hK hs hn s (fun P hP => (hm P hP).1) hco L N M M' hM hM' uM uM' hLM hNM (cyc_of_equiv cL) (cyc_of_equiv cN)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → h.Nondegenerate → ∀ T : ℕ, T.Prime → (∀ P : Ideal (𝓞 K), P.IsMaximal → (T : 𝓞 K) ∈ P → Ideal.absNorm P = T ∧ (T : 𝓞 K) ∉ P ^ 2) → (∃ s : Finset (Ideal (𝓞 K)), s.card = fDeg K ∧ (∀ P ∈ s, P.IsMaximal ∧ Ideal.absNorm P = T) ∧ IsCoprime (∏ P ∈ s, P) (conjIdeal (K := K) (∏ P ∈ s, P)) ∧ (∏ P ∈ s, P) * conjIdeal (K := K) (∏ P ∈ s, P) = Ideal.span {(T : 𝓞 K)}) ∧ ∀ L N : Submodule (𝓞 K) V, IsIntLat h L → Nonempty ((↥(dual h L) ⧸ L.comap (dual h L).subtype) ≃ₗ[𝓞 K] (𝓞 K ⧸ Ideal.span {(T : 𝓞 K)})) → (N ∈ genus h L ↔ IsIntLat h N ∧ Nonempty ((↥(dual h N) ⧸ N.comap (dual h N).subtype) ≃ₗ[𝓞 K] (𝓞 K ⧸ Ideal.span {(T : 𝓞 K)}))) := by
   intro K V _ _ _ _ _ _ _ _ h hK hs hn T hT H

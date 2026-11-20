@@ -15,11 +15,11 @@ open MeasureTheory NumberField Matrix Finset in
 variable (ι κ : Type) [Fintype ι] [Fintype κ] in
 
 /- English proof (translation)
-Establish `h : MeasurePreserving (MeasurableEquiv.curry ι κ ℂ).symm volume volume`. Use `⟨(MeasurableEquiv.curry ι κ ℂ).symm.measurable, ?_⟩` and prove the remaining obligations. Establish `hv : (volume : Measure (ι × κ → ℂ)) = Measure.pi fun _ => volume` using `rfl`. Rewrite using `[hv]`. Use `(Measure.pi_eq fun s hs => ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Measure.map_apply (MeasurableEquiv.measurable _) (MeasurableSet.univ_pi hs)]`. Establish `hpre : (MeasurableEquiv.curry ι κ ℂ).symm ⁻¹' Set.univ.pi s = Set.univ.pi fun i => Set.univ.pi fun k => s (i, k)`. Use extensionality with `x`. Simplify using `[MeasurableEquiv.curry, Set.mem_pi, Prod.forall]`. Rewrite using `[hpre, volume_pi_pi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[volume_pi_pi]`. Rewrite using `[Fintype.prod_prod_type]`. Simplify using `using h.symm`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem _root_.GlobalTheory.FlagBase.PoissonV.measurePreserving_curry :
     MeasurePreserving (MeasurableEquiv.curry ι κ ℂ) volume volume := by
@@ -55,7 +55,7 @@ theorem coords_apply (x : EuclideanSpace ℂ (ι × κ)) (w : ι) (a : κ) : coo
 open MeasureTheory NumberField Matrix Finset in
 variable (ι κ : Type) [Fintype ι] [Fintype κ] in
 /- English proof (translation)
-The claim follows from `(_root_.GlobalTheory.FlagBase.PoissonV.measurePreserving_curry ι κ).comp (_root_.GlobalTheory.volume_preserving_ofLp_complex _)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FlagBase.PoissonV.measurePreserving_coords :
     MeasurePreserving (_root_.GlobalTheory.FlagBase.PoissonV.coords ι κ) volume volume :=
@@ -64,7 +64,7 @@ theorem _root_.GlobalTheory.FlagBase.PoissonV.measurePreserving_coords :
 open MeasureTheory NumberField Matrix Finset in
 variable (ι κ : Type) [Fintype ι] [Fintype κ] in
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.FlagBase.PoissonV.norm_sq_coords (x : EuclideanSpace ℂ (ι × κ)) :
     ∑ w, ∑ a, ‖_root_.GlobalTheory.FlagBase.PoissonV.coords ι κ x w a‖ ^ 2 = ‖x‖ ^ 2 := by
@@ -72,7 +72,7 @@ theorem _root_.GlobalTheory.FlagBase.PoissonV.norm_sq_coords (x : EuclideanSpace
   rfl
 
 /- English proof (translation)
-Rewrite using `[PiLp.inner_apply, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[coords_apply, Complex.inner]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -92,13 +92,13 @@ namespace GlobalTheory.FlagBase
 open PoissonV
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => Submodule.subset_span h⟩` and prove the remaining obligations. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem y hy => exact hy`. Consider the case `zero => exact fun x _ => ⟨0, by simp⟩`. Consider the case `add a b _ _ ha hb`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Introduce `x hx`. Take `⟨m, hm⟩` from `ha x hx`. Take `⟨n, hn⟩` from `hb x hx`. Conclude with `⟨m + n, by simp [dotProduct_add, Finset.sum_add_distrib, hm, hn]⟩`. Consider the case `smul c a _ ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `x hx`. Take `⟨m, hm⟩` from `ha x hx`. Use `⟨c * m, ?_⟩` and prove the remaining obligations. Rewrite using `[Int.cast_mul, ← hm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.smul_apply, dotProduct_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_dualAt (E : Type) [Field E] [NumberField E] (j : ℕ) (L : Submodule ℤ (VecInf E j))
     (y : VecInf E j) : y ∈ dualAt E j L ↔ ∀ x ∈ L, ∃ z : ℤ, ∑ w, (x w ⬝ᵥ y w).re = z := by
@@ -123,7 +123,7 @@ theorem mem_dualAt (E : Type) [Field E] [NumberField E] (j : ℕ) (L : Submodule
 open MeasureTheory NumberField Matrix Finset in
 variable (ι κ : Type) [Fintype ι] [Fintype κ] in
 /- English proof (translation)
-Rewrite using `[PiLp.inner_apply, Fintype.sum_prod_type]`. Simplify using `[_root_.GlobalTheory.FlagBase.PoissonV.coords, dotProduct, Complex.re_sum, Complex.mul_re]`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem inner_toLp_conj_eq_sum_re_dotProduct (u : EuclideanSpace ℂ (ι × κ))
     (y : ι → κ → ℂ) :
@@ -136,37 +136,33 @@ private theorem inner_toLp_conj_eq_sum_re_dotProduct (u : EuclideanSpace ℂ (ι
 open MeasureTheory NumberField Matrix Finset in
 
 /- English proof (translation)
-Use `haveI := hL`. Set `e` to `_root_.GlobalTheory.FlagBase.PoissonV.coords (InfinitePlace E) (Fin j)`. Set `L'` to `ZLattice.comap ℝ L (e : EuclideanSpace ℂ (InfinitePlace E × Fin j) →ₗ[ℝ] _root_.GlobalTheory.FlagBase.VecInf E j)`. Establish `hmemL : ∀ u, u ∈ L' ↔ e u ∈ L` using `fun u => Iff.rfl`. Establish `hg : ∀ u, _root_.GlobalTheory.FlagBase.gaussV E j (e u) = Real.exp (-Real.pi * ‖u‖ ^ 2)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Use `show Real.exp (-Real.pi * ∑ w, ∑ a, ‖e u w a‖ ^ 2) = _`. Rewrite using `[_root_.GlobalTheory.FlagBase.PoissonV.norm_sq_coords]`. Establish `hg' : ∀ x, _root_.GlobalTheory.FlagBase.gaussV E j x = Real.exp (-Real.pi * ‖e.symm x‖ ^ 2)`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← hg, ContinuousLinearEquiv.apply_symm_apply]`. Set `eL : L ≃ L'` to `{ toFun := fun y => ⟨e.symm y, by rw [hmemL, ContinuousLinearEquiv.apply_symm_apply]; exact y.2⟩ invFun := fun x => ⟨e x, (hmemL x).1 x.2⟩ left_inv := fun y => by ext; simp right_inv := fun x => by ext; simp }`. Set `ψ : _root_.GlobalTheory.FlagBase.VecInf E j ≃ EuclideanSpace ℂ (InfinitePlace E × Fin j)` to `{ toFun := fun y => WithLp.toLp 2 fun p => starRingEnd ℂ (y p.1 p.2) invFun := fun z w a => starRingEnd ℂ (z (w, a)) left_inv := fun y => by funext w a; simp right_inv := fun z => by ext p; simp }`. Establish `hψ : ∀ y, _root_.GlobalTheory.FlagBase.gaussV E j y = Real.exp (-Real.pi * ‖ψ y‖ ^ 2)`. Introduce `y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show Real.exp (-Real.pi * ∑ w, ∑ a, ‖y w a‖ ^ 2) = _`. Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]`. Simplify using `[ψ]`. Establish `hinner : ∀ u y, inner ℝ u (ψ y) = ∑ w, (e u w ⬝ᵥ y w).re` using `fun u y => inner_toLp_conj_eq_sum_re_dotProduct _ _ u y`. Establish `hdual : ∀ y, y ∈ _root_.GlobalTheory.FlagBase.dualAt E j L ↔ ∀ x ∈ L, ∃ z : ℤ, ∑ w, (x w ⬝ᵥ y w).re = z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
 
-Introduce `y`. Unfold `_root_.GlobalTheory.FlagBase.dualAt`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem y hy => exact hy`. Consider the case `zero => intro x _; exact ⟨0, by simp⟩`. Consider the case `add y y' _ _ h h'`. Introduce `x hx`. Take `⟨z, hz⟩` from `h x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨z', hz'⟩` from `h' x hx`. Use `⟨z + z', ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, dotProduct_add, Complex.add_re, Finset.sum_add_distrib, hz, hz']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Consider the case `smul n y _ h`. Introduce `x hx`. Take `⟨z, hz⟩` from `h x hx`. Use `⟨n * z, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, dotProduct_smul, Complex.smul_re]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← Finset.smul_sum, hz, zsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `hy`. Conclude with `Submodule.subset_span hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hmem : ∀ y, y ∈ _root_.GlobalTheory.FlagBase.dualAt E j L ↔ ψ y ∈ _root_.GlobalTheory.dualLattice L'`. Introduce `y`. Rewrite using `[hdual, _root_.GlobalTheory.mem_dualLattice]`. Prove the components needed by the constructor for the conclusion. Introduce `h u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `h (e u) ((hmemL u).1 hu)`. Conclude with `⟨z, by rw [hinner, hz]⟩`. Introduce `h x hx`. Take `⟨m, hm⟩` from `h (e.symm x) (by rw [hmemL, ContinuousLinearEquiv.apply_symm_apply]; exact hx)`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hm, hinner, ContinuousLinearEquiv.apply_symm_apply]`. Set `dL : _root_.GlobalTheory.FlagBase.dualAt E j L ≃ _root_.GlobalTheory.dualLattice L'` to `ψ.subtypeEquiv hmem`. Set `f : EuclideanSpace ℂ (InfinitePlace E × Fin j) → ℝ` to `fun u => Real.exp (-Real.pi * ‖u‖ ^ 2)`. Establish `hsL : Summable (fun x : L => _root_.GlobalTheory.FlagBase.gaussV E j x)` using `((eL.summable_iff (f := fun x : L' => f x)).2 (_root_.GlobalTheory.summable_lattice_exp_neg_mul_norm_sq L' Real.pi_pos)).congr fun x => by rw [hg']; rfl`. Establish `hsD : Summable (fun y : _root_.GlobalTheory.FlagBase.dualAt E j L => _root_.GlobalTheory.FlagBase.gaussV E j y)` using `((dL.summable_iff (f := fun z : _root_.GlobalTheory.dualLattice L' => f z)).2 (_root_.GlobalTheory.summable_lattice_exp_neg_mul_norm_sq _ Real.pi_pos)).congr fun y => by rw [hψ]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hT1 : ∑' x : L, _root_.GlobalTheory.FlagBase.gaussV E j x = ∑' x : L', f x`. Combine the equalities or inequalities in the displayed calculation. Establish `hT2 : ∑' y : _root_.GlobalTheory.FlagBase.dualAt E j L, _root_.GlobalTheory.FlagBase.gaussV E j y = ∑' z : _root_.GlobalTheory.dualLattice L', f z`. Combine the equalities or inequalities in the displayed calculation. Use `haveI : (volume : Measure (_root_.GlobalTheory.FlagBase.VecInf E j)).IsAddHaarMeasure := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (_root_.GlobalTheory.FlagBase.PoissonV.measurePreserving_coords (InfinitePlace E) (Fin j)).map_eq]`. Conclude with `e.isAddHaarMeasure_map volume`. Establish `hcov : _root_.GlobalTheory.FlagBase.covAt E j L = ZLattice.covolume L' volume` using `by show ZLattice.covolume L volume = _`. Conclude with `(ZLattice.covolume_comap L volume volume (_root_.GlobalTheory.FlagBase.PoissonV.measurePreserving_coords _ _)).symm`. Establish `hP` using `_root_.GlobalTheory.tsum_gaussian_lattice_eq_dualLattice L' one_pos`.
-
-Simplify using `only [mul_one, Real.one_rpow, div_one] at hP`. Use `⟨hsL, hsD, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hT1, hT2, hcov]`. Conclude with `hP`. Establish `hI : ∫ x, _root_.GlobalTheory.FlagBase.gaussV E j x = ∫ u, f u` using `((_root_.GlobalTheory.FlagBase.PoissonV.measurePreserving_coords (InfinitePlace E) (Fin j)).integral_comp e.toHomeomorph.measurableEmbedding (_root_.GlobalTheory.FlagBase.gaussV E j)).symm.trans (integral_congr_ae (Filter.Eventually.of_forall fun u => hg u))`.
-
-Rewrite using `[hI]`. Use `show ∫ u, Real.exp (-Real.pi * ‖u‖ ^ 2) = 1`. Rewrite using `[GaussianFourier.integral_rexp_neg_mul_sq_norm Real.pi_pos, div_self Real.pi_ne_zero, Real.one_rpow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FlagBase.poisson_gaussV (E : Type) [Field E] [NumberField E] (j : ℕ)
     (L : Submodule ℤ (_root_.GlobalTheory.FlagBase.VecInf E j))

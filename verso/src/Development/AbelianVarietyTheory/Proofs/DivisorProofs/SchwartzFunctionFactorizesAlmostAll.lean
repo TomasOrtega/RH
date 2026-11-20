@@ -14,13 +14,11 @@ namespace GlobalTheory.SchAFactor
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Set `U : Set (FiniteAdeleRing (𝓞 F) F)` to `{f | ∀ v, f.1 v ∈ (v.adicCompletionIntegers F : Set (v.adicCompletion F))}`. Establish `hU : IsOpen U` using `RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_valuationSubring _)`. Take `⟨t, ht⟩` from `hC.elim_finite_subcover (fun c : C => (fun y => y - c.1) ⁻¹' U) (fun c => hU.preimage (continuous_sub_right _)) (fun y hy => Set.mem_iUnion.2 ⟨⟨y, hy⟩, by`. Introduce `v`. Use `show (y - y).1 v ∈ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_self]`. Conclude with `zero_mem _⟩)`. Establish `hfin : ∀ c : C, {v : Pl F | ¬ c.1.1 v ∈ (v.adicCompletionIntegers F : Set (v.adicCompletion F))}.Finite` using `fun c => Filter.eventually_cofinite.1 c.1.2`. Use `⟨t.biUnion fun c => (hfin c).toFinset, fun y hy v hv => ?_⟩` and prove the remaining obligations. Take `⟨c, hct, hc⟩` from `Set.mem_iUnion₂.1 (ht hy)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (y - c.1).1 v ∈ v.adicCompletionIntegers F` using `hc v`. Establish `h2 : c.1.1 v ∈ v.adicCompletionIntegers F`. Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_biUnion.2 ⟨c, hct, (hfin c).mem_toFinset.2 h⟩)`. Establish `e : evalV F v y = (y - c.1).1 v + c.1.1 v`.
-
-Express the relevant statement in the definitionally equal form `y.1 v = y.1 v - c.1.1 v + c.1.1 v`. Conclude with `(sub_add_cancel _ _).symm`. Rewrite using `[e]`. Conclude with `add_mem h1 h2`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_of_isCompact {C : Set (FiniteAdeleRing (𝓞 F) F)} (hC : IsCompact C) :
     ∃ T : Finset (Pl F), ∀ y ∈ C, ∀ v ∉ T, evalV F v y ∈ v.adicCompletionIntegers F := by
@@ -52,9 +50,9 @@ def GoodAt (v : Pl F) (Φ : (κ → AF F) → ℂ) : Prop :=
     ∀ x z, At (evFin F v) z → (∀ i, evFin F v (z i) ∈ v.adicCompletionIntegers F) → Φ (x + z) = Φ x
 
 /- English proof (translation)
-Establish `e : z i = GlobalTheory.LatVac.liftV v 1 * z i` using `by conv_lhs => rw [← partFin_of_at hz]`. Both sides reduce to the same expression. Use `⟨?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `(GlobalTheory.LatVac.liftV v 1 : AF F).1 * (z i).1 = 0`.
+Establish an intermediate fact. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[show (GlobalTheory.LatVac.liftV v 1 : AF F).1 = 0 from rfl, zero_mul]`. Rewrite using `[e, map_mul, show evFin F w (GlobalTheory.LatVac.liftV v 1) = 0 from evalV_singleFin_ne hw 1, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_comp {v : Pl F} {z : κ → AF F} (hz : At (evFin F v) z) (i : κ) :
     (z i).1 = 0 ∧ ∀ w, w ≠ v → evFin F w (z i) = 0 := by
@@ -68,15 +66,15 @@ theorem at_comp {v : Pl F} {z : κ → AF F} (hz : At (evFin F v) z) (i : κ) :
   · rw [e, map_mul, show evFin F w (GlobalTheory.LatVac.liftV v 1) = 0 from evalV_singleFin_ne hw 1, zero_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x h => absurd rfl h, fun _ _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem goodAt_zero (v : Pl F) : GoodAt v (0 : (κ → AF F) → ℂ) :=
   ⟨fun x h => absurd rfl h, fun _ _ _ _ => rfl⟩
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_, fun x z hz hi => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : Φ x = 0`. Use `h'.1 x fun h1 => hx ?_` and prove the remaining obligations. Simplify using `[h0, h1]`. Conclude with `h.1 x h0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, h.2 x z hz hi, h'.2 x z hz hi]`.
+A detailed English derivation is pending.
 -/
 theorem goodAt_add {v : Pl F} {Φ Ψ : (κ → AF F) → ℂ} (h : GoodAt v Φ) (h' : GoodAt v Ψ) : GoodAt v (Φ + Ψ) := by
   refine ⟨fun x hx => ?_, fun x z hz hi => ?_⟩
@@ -87,7 +85,7 @@ theorem goodAt_add {v : Pl F} {Φ Ψ : (κ → AF F) → ℂ} (h : GoodAt v Φ) 
   · simp only [Pi.add_apply, h.2 x z hz hi, h'.2 x z hz hi]
 
 /- English proof (translation)
-Use `⟨fun x hx => h.1 x fun h1 => hx ?_, fun x z hz hi => ?_⟩` and prove the remaining obligations. Simplify using `[h1]`. Simplify using `only [Pi.smul_apply, h.2 x z hz hi]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem goodAt_smul {v : Pl F} (c : ℂ) {Φ : (κ → AF F) → ℂ} (h : GoodAt v Φ) : GoodAt v (c • Φ) := by
   refine ⟨fun x hx => h.1 x fun h1 => hx ?_, fun x z hz hi => ?_⟩
@@ -95,17 +93,15 @@ theorem goodAt_smul {v : Pl F} (c : ℂ) {Φ : (κ → AF F) → ℂ} (h : GoodA
   · simp only [Pi.smul_apply, h.2 x z hz hi]
 
 /- English proof (translation)
-Establish `hC : ∀ i : κ, IsCompact ((fun y : κ → FiniteAdeleRing (𝓞 F) F => y i) '' tsupport g)` using `fun i => hg.2.isCompact.image (continuous_apply i)`. Use `choose Ti hTi using fun i => exists_finset_of_isCompact (hC i)`. Take `⟨B, -, -, hBev, hBinv⟩` from `GlobalTheory.SBBox.exists_box_invariant F κ g hg`. Establish `hfin` using `Filter.eventually_cofinite.1 hBev`. Use `⟨Finset.univ.biUnion Ti ∪ hfin.toFinset, fun v hv => ⟨fun x hx i => ?_, fun x z hz hi => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg0 : g (fun i => (x i).2) ≠ 0` using `fun h0 => hx (by simp [pureA, h0])`. Establish `hmem : (x i).2 ∈ (fun y : κ → FiniteAdeleRing (𝓞 F) F => y i) '' tsupport g` using `⟨_, subset_tsupport g hg0, rfl⟩`. Conclude with `hTi i _ hmem v fun h => hv (Finset.mem_union_left _ (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, h⟩))`. Establish `hBv : (B v : Set (v.adicCompletion F)) = v.adicCompletionIntegers F`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hv (Finset.mem_union_right _ (hfin.mem_toFinset.2 h))`. Establish `e1 : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + z) i).1) = fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(x i).1 + (z i).1 = (x i).1`. Rewrite using `[(at_comp hz i).1, add_zero]`. Establish `e2 : (fun i => ((x + z) i).2) = (fun i => (x i).2) + fun i => (z i).2` using `rfl`. Establish `hg' : g (fun i => ((x + z) i).2) = g fun i => (x i).2`. Rewrite using `[e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `hBinv _ _ fun i w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[← SetLike.mem_coe, hBv]`. Conclude with `hi i`.
-
-Rewrite using `[show evalV F w (z i).2 = evFin F w (z i) from rfl, (at_comp hz i).2 w hw]`. Conclude with `zero_mem _`. Simplify using `only [pureA]`. Rewrite using `[e1, hg']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodAt_pureA (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) : ∃ T : Finset (Pl F), ∀ v ∉ T, GoodAt v (pureA F f g) := by
@@ -144,11 +140,11 @@ theorem goodAt_pureA (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) {g : (κ
     rw [e1, hg']
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Conclude with `goodAt_pureA f hg`. Consider the case `zero => exact ⟨∅, fun v _ => goodAt_zero v⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add Φ Ψ _ _ h h'`. Take `⟨T, hT⟩` from `h`. Take `⟨T', hT'⟩` from `h'`. Conclude with `⟨T ∪ T', fun v hv => goodAt_add (hT v fun h => hv (Finset.mem_union_left _ h)) (hT' v fun h => hv (Finset.mem_union_right _ h))⟩`. Consider the case `smul c Φ _ h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT⟩` from `h`. Conclude with `⟨T, fun v hv => goodAt_smul c (hT v hv)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_goodAt {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) : ∃ T : Finset (Pl F), ∀ v ∉ T, GoodAt v Φ := by
   classical
@@ -167,15 +163,15 @@ theorem exists_goodAt {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) : �
     exact ⟨T, fun v hv => goodAt_smul c (hT v hv)⟩
 
 /- English proof (translation)
-Introduce `F _ _ κ _ Φ hΦ`. Take `⟨T, hT⟩` from `exists_goodAt hΦ`. Use `⟨T, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hT v hv`. Establish `key : Φ = tens (evFin F v) (Set.indicator {y : κ → Fv F v | ∀ i, y i ∈ v.adicCompletionIntegers F} 1) (fun x => Φ (x - partFin v x))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [tens]`. Distinguish the cases in `hx : ∀ i, evFin F v (x i) ∈ v.adicCompletionIntegers F`. Rewrite using `[Set.indicator_of_mem (show (fun i => evFin F v (x i)) ∈ {y : κ → Fv F v | ∀ i, y i ∈ v.adicCompletionIntegers F} from hx), Pi.one_apply, one_mul]`. Establish `h` using `h2 (x - partFin v x) (partFin v x) (at_partFin v x) fun i => by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `evFin F v (GlobalTheory.LatVac.liftV v 1 * x i) ∈ _`. Rewrite using `[map_mul, GlobalTheory.LatVac.evFin_liftV, one_mul]`. Conclude with `hx i`. Rewrite `h` using `[sub_add_cancel]`. Conclude with `h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Set.indicator_of_notMem (show (fun i => evFin F v (x i)) ∉ {y : κ → Fv F v | ∀ i, y i ∈ v.adicCompletionIntegers F} from hx), zero_mul]`. Assume the negation of the conclusion as `h`. Conclude with `hx (h1 x h)`. Use `⟨_, _, ⟨fun x z hz => ?_, by rw [← key]; exact hΦ⟩, key⟩` and prove the remaining obligations. Establish `hz' : GlobalTheory.LatVac.liftV v 1 • z = z` using `partFin_of_at hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `Φ (x + z - GlobalTheory.LatVac.liftV v 1 • (x + z)) = Φ (x - GlobalTheory.LatVac.liftV v 1 • x)`. Rewrite using `[smul_add, hz']`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_tens : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∀ Φ ∈ schA F κ, ∃ T : Finset (Pl F), ∀ v : Pl F, v ∉ T →
     ∃ (φ : (κ → Fv F v) → ℂ) (r : (κ → AF F) → ℂ), Rest (evFin F v) φ r ∧ Φ = tens (evFin F v) φ r := by

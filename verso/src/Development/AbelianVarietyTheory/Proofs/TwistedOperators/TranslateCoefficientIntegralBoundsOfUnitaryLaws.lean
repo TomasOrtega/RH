@@ -13,9 +13,7 @@ namespace GlobalTheory.SepReal.IntBd
 variable {m : ℕ} {ε : Fin m → Bool}
 
 /- English proof (translation)
-Establish `hx' : xᴴ * Formalism.REAL.Jm ε * x = Formalism.REAL.Jm ε` using `hx`. Establish `h : (Formalism.REAL.Jm ε * xᴴ * Formalism.REAL.Jm ε) * x = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hx', Formalism.REAL.Jm_mul_self]`.
-
-Conclude with `(Matrix.isUnit_iff_isUnit_det x).2 (Matrix.isUnit_det_of_left_inverse h)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_of_mem {x : Mat m} (hx : x ∈ UJset ε) : IsUnit x := by
   have hx' : xᴴ * Formalism.REAL.Jm ε * x = Formalism.REAL.Jm ε := hx
@@ -26,15 +24,15 @@ theorem isUnit_of_mem {x : Mat m} (hx : x ∈ UJset ε) : IsUnit x := by
   exact (Matrix.isUnit_iff_isUnit_det x).2 (Matrix.isUnit_det_of_left_inverse h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨(isUnit_of_mem hx).unit, hx⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_umat {x : Mat m} (hx : x ∈ UJset ε) : ∃ u : Formalism.REAL.UJ ε, umat u = x :=
   ⟨⟨(isUnit_of_mem hx).unit, hx⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hx' : xᴴ * Formalism.REAL.Jm ε * x = Formalism.REAL.Jm ε` using `hx`. Establish `hy' : yᴴ * Formalism.REAL.Jm ε * y = Formalism.REAL.Jm ε` using `hy`. Use `show (x * y)ᴴ * Formalism.REAL.Jm ε * (x * y) = Formalism.REAL.Jm ε`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hx', hy']`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem {x y : Mat m} (hx : x ∈ UJset ε) (hy : y ∈ UJset ε) : x * y ∈ UJset ε := by
   have hx' : xᴴ * Formalism.REAL.Jm ε * x = Formalism.REAL.Jm ε := hx
@@ -46,9 +44,9 @@ theorem mul_mem {x y : Mat m} (hx : x ∈ UJset ε) (hy : y ∈ UJset ε) : x * 
     _ = _ := by rw [hx', hy']
 
 /- English proof (translation)
-Establish `hd : IsUnit x.det` using `(Matrix.isUnit_iff_isUnit_det x).1 (isUnit_of_mem hx)`. Use `⟨?_, Matrix.mul_nonsing_inv _ hd, Matrix.nonsing_inv_mul _ hd, Matrix.nonsing_inv_nonsing_inv _ hd⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `exists_umat hx`. Establish `hi : (umat u)⁻¹ = umat u⁻¹` using `by simp [umat, Matrix.coe_units_inv]`. Rewrite using `[hi]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(u⁻¹).2`.
+A detailed English derivation is pending.
 -/
 theorem inv_facts {x : Mat m} (hx : x ∈ UJset ε) :
     x⁻¹ ∈ UJset ε ∧ x * x⁻¹ = 1 ∧ x⁻¹ * x = 1 ∧ x⁻¹⁻¹ = x := by
@@ -60,16 +58,14 @@ theorem inv_facts {x : Mat m} (hx : x ∈ UJset ε) :
   exact (u⁻¹).2
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem hsn_nonneg (x : Mat m) : 0 ≤ hsn x := Real.sqrt_nonneg _
 
 /- English proof (translation)
-Use `haveI : Nonempty (Fin m) := ⟨⟨0, hm⟩⟩`. Establish `hne : x ≠ 0` using `(isUnit_of_mem hx).ne_zero`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, x i j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hne (Matrix.ext h)`. Establish `h1 : ‖x i j‖ ^ 2 ≤ ∑ b, ‖x i b‖ ^ 2` using `Finset.single_le_sum (f := fun b => ‖x i b‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)`. Establish `h2 : ∑ b, ‖x i b‖ ^ 2 ≤ ∑ a, ∑ b, ‖x a b‖ ^ 2` using `Finset.single_le_sum (f := fun a => ∑ b, ‖x a b‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)`. Establish `h0 : 0 < ‖x i j‖ ^ 2` using `pow_pos (norm_pos_iff.2 hij) 2`. Unfold `hsn`.
-
-Conclude with `Real.sqrt_pos.2 (by linarith)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hsn_pos (hm : 0 < m) {x : Mat m} (hx : x ∈ UJset ε) : 0 < hsn x := by
   haveI : Nonempty (Fin m) := ⟨⟨0, hm⟩⟩
@@ -87,11 +83,11 @@ theorem hsn_pos (hm : 0 < m) {x : Mat m} (hx : x ∈ UJset ε) : 0 < hsn x := by
   exact Real.sqrt_pos.2 (by linarith)
 
 /- English proof (translation)
-Take `⟨hi, hr, hl, -⟩` from `inv_facts hg₀`. Take `⟨⟨h1, hmul⟩, hiso, -⟩` from `hπ`. Establish `hw : ∀ w, π g₀ (π g₀⁻¹ w) = w` using `fun w => by`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hmul _ hg₀ _ hi, hr, h1]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `L : H →ₗᵢ[ℂ] H` to `⟨(π g₀ : H →ₗ[ℂ] H), fun x => hiso g₀ hg₀ x⟩`. Establish `hL : ∀ x y, ⟪π g₀ x, π g₀ y⟫_ℂ = ⟪x, y⟫_ℂ` using `fun x y => L.inner_map_map x y`. Rewrite using `[hmul _ (mul_mem hi hg) _ hg₀, hmul _ hi _ hg]`. Use `conv_lhs => rw [← hw (π g (π g₀ v))]`. Rewrite using `[hL]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem coef_conj {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {π : Mat m → (H →L[ℂ] H)}
     (hπ : IsURepOn (UJset ε) π) {g₀ g : Mat m} (hg₀ : g₀ ∈ UJset ε) (hg : g ∈ UJset ε) (v : H) :
@@ -107,14 +103,14 @@ theorem coef_conj {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {�
   rw [hL]; rfl
 
 /- English proof (translation)
-Rewrite using `[Real.rpow_neg (hx.le.trans hxy), Real.rpow_neg hx.le]`. Conclude with `inv_anti₀ (Real.rpow_pos_of_pos hx k) (Real.rpow_le_rpow hx.le hxy hk)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rpow_neg_anti {x y k : ℝ} (hx : 0 < x) (hxy : x ≤ y) (hk : 0 ≤ k) : y ^ (-k) ≤ x ^ (-k) := by
   rw [Real.rpow_neg (hx.le.trans hxy), Real.rpow_neg hx.le]
   exact inv_anti₀ (Real.rpow_pos_of_pos hx k) (Real.rpow_le_rpow hx.le hxy hk)
 
 /- English proof (translation)
-Establish `hyG : y / G ^ 2 ≤ a` using `by rw [div_le_iff₀ (by positivity)]; linarith [mul_comm (G ^ 2) a]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_eq_mul_inv, Real.mul_rpow hy.le (by positivity), Real.inv_rpow (by positivity), Real.rpow_neg (by positivity) (x := G ^ 2), inv_inv, mul_comm]`. Use `_ = G ^ k2 * y ^ (-k) := by`. Rewrite using `[← Real.rpow_two, ← Real.rpow_mul hG.le, hk2]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decay_real {a y G k k2 : ℝ} (ha : 0 < a) (hy : 0 < y) (hG : 0 < G) (hya : y ≤ G ^ 2 * a) (hk : 0 ≤ k)
     (hk2 : k2 = 2 * k) : a ^ (-k) ≤ G ^ k2 * y ^ (-k) := by
@@ -127,21 +123,19 @@ theorem decay_real {a y G k k2 : ℝ} (ha : 0 < a) (hy : 0 < y) (hG : 0 < G) (hy
       rw [← Real.rpow_two, ← Real.rpow_mul hG.le, hk2]
 
 /- English proof (translation)
-Use `set A : ℝ := 4 * (n : ℝ) ^ 2 + 1 with hA`. Use `set R : ℝ := 40 * ((n : ℝ) + 1) ^ 2 - A with hR`. Establish `hc0 : 0 < c` using `by linarith`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hA0 : 0 ≤ A` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR0 : 0 ≤ R` using `by rw [hR, hA]; nlinarith [sq_nonneg (n : ℝ)]`. Establish `hsplit : x ^ (-(40 * ((n : ℝ) + 1) ^ 2)) = x ^ (-A) * x ^ (-R)`. Rewrite using `[← Real.rpow_add hx0]`. Use `congr 1`. Rewrite using `[hR]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1 : x ^ (-A) ≤ s ^ (-A) * β ^ A`. Establish `hsb : s / β ≤ x` using `by rw [div_le_iff₀ hβ]; linarith [mul_comm β x]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.div_rpow hs.le hβ.le, Real.rpow_neg hβ.le, div_inv_eq_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : x ^ (-R) ≤ c ^ (-R)` using `rpow_neg_anti hc0 hxc hR0`. Establish `h3 : β ^ A ≤ (3 * ((n : ℝ) + 1)) ^ (A / 2) * c ^ A`. Establish `e1 : β ^ A = (β ^ 2) ^ (A / 2)`. Rewrite using `[← Real.rpow_two, ← Real.rpow_mul hβ.le]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : c ^ A = (c ^ 2) ^ (A / 2)`. Rewrite using `[← Real.rpow_two, ← Real.rpow_mul hc0.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[e1, e2, ← Real.mul_rpow (by positivity) (by positivity)]`. Apply `Real.rpow_le_rpow (by positivity) _ (by positivity)` to reduce the goal to its premises. Establish `: 1 ≤ c ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : c ^ A * c ^ (-R) ≤ c ^ (-(2 * (n : ℝ) + 7))`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Real.rpow_add hc0]`. Apply `Real.rpow_le_rpow_of_exponent_le hc` to reduce the goal to its premises. Rewrite using `[hR, hA]`. Use polynomial arithmetic with `[sq_nonneg (n : ℝ)]`. Establish `hsA : 0 ≤ s ^ (-A)` using `by positivity`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem real_bound (n : ℕ) {x c s β : ℝ} (hc : 1 ≤ c) (hxc : c ≤ x) (hs : 0 < s) (hβ : 0 < β) (hsx : s ≤ β * x)
     (hβ2 : β ^ 2 ≤ (n : ℝ) + 1 + 2 * c ^ 2) :
@@ -182,17 +176,15 @@ theorem real_bound (n : ℕ) {x c s β : ℝ} (hc : 1 ≤ c) (hxc : c ≤ x) (hs
     _ ≤ (3 * ((n : ℝ) + 1)) ^ (A / 2) * c ^ (-(2 * (n : ℝ) + 7)) * s ^ (-A) := by gcongr
 
 /- English proof (translation)
-Unfold `big`. Use `set m : ℝ := (n : ℝ) + 1 with hmdef`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hm : 1 ≤ m` using `by rw [hmdef]; linarith`. Use `set L := Real.log (8 * m * B) with hLdef`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : 1 ≤ L`. Rewrite using `[hLdef, Real.le_log_iff_exp_le (by positivity)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `ha0 : 0 ≤ Real.log G` using `Real.log_nonneg hG1`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `haL : Real.log G ≤ C₀ * m * L`. Combine the equalities or inequalities in the displayed calculation. Establish `h3L : Real.log (3 * m) ≤ L` using `Real.log_le_log (by positivity) (by nlinarith)`. Establish `h30 : 0 ≤ Real.log (3 * m)` using `Real.log_nonneg (by linarith)`. Rewrite using `[Real.rpow_def_of_pos (by linarith : (0 : ℝ) < G), Real.rpow_def_of_pos (by positivity : (0 : ℝ) < 3 * m), ← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `hm3 : m ^ 3 ≤ m ^ 4` using `pow_le_pow_right₀ hm (by norm_num)`. Establish `hm2 : m ^ 2 ≤ m ^ 4` using `pow_le_pow_right₀ hm (by norm_num)`. Establish `hm4L : m ^ 4 ≤ m ^ 4 * L` using `le_mul_of_one_le_right (by positivity) hL`. Establish `t2 : Real.log G * (80 * m ^ 2) ≤ C₀ * m * L * (80 * m ^ 2)` using `mul_le_mul_of_nonneg_right haL (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t2' : C₀ * L * m ^ 3 ≤ C₀ * L * m ^ 4` using `mul_le_mul_of_nonneg_left hm3 (by positivity)`. Establish `hA : (4 * (n : ℝ) ^ 2 + 1) / 2 ≤ 2 * m ^ 2` using `by rw [hmdef]; nlinarith`. Establish `t3 : Real.log (3 * m) * ((4 * (n : ℝ) ^ 2 + 1) / 2) ≤ L * (2 * m ^ 2)` using `mul_le_mul h3L hA (by positivity) (by linarith)`. Establish `t3' : L * m ^ 2 ≤ L * m ^ 4` using `mul_le_mul_of_nonneg_left hm2 (by linarith)`. Establish `hn2 : (n : ℝ) ^ 2 ≤ m ^ 2` using `by rw [hmdef]; nlinarith`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem const_bound (n : ℕ) {C₀ B G : ℝ} (hC₀ : 0 < C₀) (hB : 1 ≤ B) (hG1 : 1 ≤ G)
     (hG : G ≤ (8 * ((n : ℝ) + 1) * B) ^ (C₀ * ((n : ℝ) + 1))) :
@@ -235,39 +227,35 @@ namespace GlobalTheory.SepReal
 open GlobalTheory.SepReal.IntBd in
 
 /- English proof (translation)
-Introduce `C₀ hC₀`. Use `⟨200 + 80 * C₀, by positivity, ?_⟩` and prove the remaining obligations. Introduce `n e ε lam ε' mu B hp H H' _ _ _ _ π σ hπ hσ v₀ hv₀ g₀ hg₀ hg₀n`. Take `⟨hEmb, hEmul, hEc, hEinv, hcol, -, -, -, hEsq, -, hcolle, hUJ, hsub⟩` from `hE n e ε ε' hp.signs`. Establish `hn3` using `hp.three_le`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB1 : 1 ≤ B`. Establish `h01` using `hp.wide ⟨0, by omega⟩ ⟨1, by omega⟩ (by simp [Fin.lt_def])`. Establish `b0` using `abs_le.1 (hp.bound.1 ⟨0, by omega⟩)`. Establish `b1` using `abs_le.1 (hp.bound.1 ⟨1, by omega⟩)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hURep` using `hπ.2.2.1`. Establish `hone : ∀ x ∈ UJset ε, 1 ≤ hsn x` using `fun x hx => (hUJ x hx).1.trans (hcolle x)`. Establish `hdec : ∀ X ∈ UJset ε, ‖⟪π g₀ v₀, π X (π g₀ v₀)⟫_ℂ‖ ≤ Real.exp (100 * ((n : ℝ) + 1) ^ 3) * (hsn g₀ ^ (80 * ((n : ℝ) + 1) ^ 2) * hsn X ^ (-(40 * ((n : ℝ) + 1) ^ 2)))`. Introduce `X hX`. Take `⟨hi, hr, hl, -⟩` from `inv_facts hg₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hx : g₀⁻¹ * X * g₀ ∈ UJset ε` using `mul_mem (mul_mem hi hX) hg₀`. Rewrite using `[coef_conj hURep hg₀ hX]`. Establish `hd` using `hD (n + 1) ε lam B (by omega) hp.hlam (by have := hp.gap; push_cast; exact this) hp.bound.1 H π hπ v₀ hv₀ _ hx`. Move the coercions through the operations in `at hd`. Use `hd.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Use `gcongr`. Establish `hX' : g₀ * (g₀⁻¹ * X * g₀) * g₀⁻¹ = X`. Combine the equalities or inequalities in the displayed calculation. Establish `hle : hsn X ≤ hsn g₀ ^ 2 * hsn (g₀⁻¹ * X * g₀)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hUJ g₀ hg₀).2]`. Conclude with `mul_le_mul_of_nonneg_right (hsub _ _) (hsn_nonneg _)`. Use `_ = hsn g₀ ^ 2 * hsn (g₀⁻¹ * X * g₀) := by ring`. Conclude with `decay_real (by linarith [hone _ hx]) (by linarith [hone _ hX]) (by linarith [hone _ hg₀]) hle (by positivity) (by ring)`. Use `⟨fun g hg => ?_, Real.exp (100 * ((n : ℝ) + 1) ^ 3) * hsn g₀ ^ (80 * ((n : ℝ) + 1) ^ 2), fun X hX => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Use `swap`. Use `(hdec X hX).trans ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Apply `mul_le_mul_of_nonneg_left _ (mul_nonneg (Real.exp_pos _).le (Real.rpow_nonneg (hsn_nonneg _) _))` to reduce the goal to its premises. Conclude with `Real.rpow_le_rpow_of_exponent_le (hone X hX) (by nlinarith [sq_nonneg ((n : ℝ) + 1)])`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hgi, hgr, hgl, hgii⟩` from `inv_facts hg`. Take `⟨h₁, hh₁, b, hb, hgb, hbn⟩` from `hBo n e ε ε' hp.signs g⁻¹ hgi`. Rewrite `hbn` using `[hgii]`. Take `⟨u₁, rfl⟩` from `exists_umat hh₁`. Take `⟨-, -, hl1, -⟩` from `inv_facts hh₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hb' : b = embH e (umat u₁)⁻¹ * g⁻¹`. Rewrite using `[hgb, ← Matrix.mul_assoc, ← hEmul, hl1, embH_one, Matrix.one_mul]`. Establish `hbX : ∀ y : Mat n, b * (g * embH e y) = embH e ((umat u₁)⁻¹ * y)`. Introduce `y`. Rewrite using `[hb', hEmul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hgl, Matrix.mul_one]`. Establish `humul : ∀ y : Formalism.REAL.UJ ε', umat (u₁⁻¹ * y) = (umat u₁)⁻¹ * umat y` using `fun y => by`. Simplify using `[umat, Matrix.coe_units_inv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : 1 ≤ colLen e g` using `(hUJ g hg).1`. Establish `hβ1 : 1 ≤ hsn b` using `hone b hb`. Take `⟨hPi, hPb⟩` from `hP n ε' (4 * (n : ℝ) ^ 2 + 1) (by omega) le_rfl`. Establish `hpt : ∀ y : Formalism.REAL.UJ ε', ‖⟪π g₀ v₀, π (g * embH e (umat y)) (π g₀ v₀)⟫_ℂ‖ ≤ (Real.exp (100 * ((n : ℝ) + 1) ^ 3) * hsn g₀ ^ (80 * ((n : ℝ) + 1) ^ 2) * (3 * ((n : ℝ) + 1)) ^ ((4 * (n : ℝ) ^ 2 + 1) / 2) * colLen e g ^ (-(2 * (n : ℝ) + 7))) * hsn (umat (u₁⁻¹ * y)) ^ (-(4 * ( …`. Introduce `y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy : umat y ∈ UJset ε'` using `y.2`. Establish `hX : g * embH e (umat y) ∈ UJset ε` using `mul_mem hg (hEmb _ hy)`. Use `(hdec _ hX).trans ?_` and prove the remaining obligations. Establish `hz : umat (u₁⁻¹ * y) ∈ UJset ε'` using `(u₁⁻¹ * y).2`. Establish `e1 : hsn (embH e (umat (u₁⁻¹ * y))) ≤ hsn b * hsn (g * embH e (umat y))`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[humul, ← hbX]`. Conclude with `hsub _ _`. Establish `e2 : hsn (umat (u₁⁻¹ * y)) ≤ hsn (embH e (umat (u₁⁻¹ * y)))`. Use `hEsq (umat (u₁⁻¹ * y))` as an intermediate fact. Use polynomial arithmetic with `[hsn_nonneg (umat (u₁⁻¹ * y)), hsn_nonneg (embH e (umat (u₁⁻¹ * y)))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrb` using `real_bound n hc1 (by rw [← hcol g (umat y)]; exact hcolle _) (hsn_pos (by omega) hz) (by linarith : (0 : ℝ) < hsn b) (e2.trans e1) hbn`. Combine the equalities or inequalities in the displayed calculation. Establish `hcont : Continuous (fun y : Formalism.REAL.UJ ε' => ⟪π g₀ v₀, π (g * embH e (umat y)) (π g₀ v₀)⟫_ℂ)`. Establish `hcu : Continuous (fun y : Formalism.REAL.UJ ε' => umat y)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hc1' : Continuous (fun y : Formalism.REAL.UJ ε' => g * embH e (umat y))` using `continuous_const.mul (hEc.comp hcu)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc2 : Continuous (fun y : Formalism.REAL.UJ ε' => π (g * embH e (umat y)) (π g₀ v₀))` using `(hURep.2.2 (π g₀ v₀)).comp_continuous hc1' (fun y => mul_mem hg (hEmb _ y.2))`. Conclude with `continuous_const.inner hc2`. Establish `hDint : Integrable (fun y : Formalism.REAL.UJ ε' => (Real.exp (100 * ((n : ℝ) + 1) ^ 3) * hsn g₀ ^ (80 * ((n : ℝ) + 1) ^ 2) * (3 * ((n : ℝ) + 1)) ^ ((4 * (n : ℝ) ^ 2 + 1) / 2) * colLen e g ^ (-(2 * (n : ℝ) + 7))) * hsn (umat (u₁⁻¹ * y)) ^ (-(4 * (n : ℝ) ^ 2 + 1))) (muG ε')` using `(hPi.comp_mul_left u₁⁻¹).const_mul _`. Establish `hfi` using `Integrable.mono' hDint hcont.aestronglyMeasurable (ae_of_all _ hpt)`. Use `⟨hfi, ?_⟩` and prove the remaining obligations.
-
-Establish `hcb` using `const_bound n hC₀ hB1 (hone g₀ hg₀) hg₀n`. Establish `hvol : 0 ≤ (muG ε' (nbh ε' (1 / 4))).toReal` using `ENNReal.toReal_nonneg`. Establish `hK0 : 0 ≤ Real.exp (100 * ((n : ℝ) + 1) ^ 3) * hsn g₀ ^ (80 * ((n : ℝ) + 1) ^ 2) * (3 * ((n : ℝ) + 1)) ^ ((4 * (n : ℝ) ^ 2 + 1) / 2) * colLen e g ^ (-(2 * (n : ℝ) + 7))` using `mul_nonneg (mul_nonneg (mul_nonneg (Real.exp_pos _).le (Real.rpow_nonneg (hsn_nonneg _) _)) (Real.rpow_nonneg (by positivity) _)) (Real.rpow_nonneg (by linarith) _)`. Establish `hcr : 0 ≤ colLen e g ^ (-(2 * (n : ℝ) + 7))` using `Real.rpow_nonneg (by linarith) _`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[integral_const_mul, integral_mul_left_eq_self (fun y => hsn (umat y) ^ (-(4 * (n : ℝ) ^ 2 + 1))) u₁⁻¹]`. Use `_ ≤ (Real.exp (100 * ((n : ℝ) + 1) ^ 3) * hsn g₀ ^ (80 * ((n : ℝ) + 1) ^ 2) * (3 * ((n : ℝ) + 1)) ^ ((4 * (n : ℝ) ^ 2 + 1) / 2) * colLen e g ^ (-(2 * (n : ℝ) + 7))) * (Real.exp (10 * (n : ℝ) ^ 2) * (muG ε' (nbh ε' (1 / 4))).toReal) := mul_le_mul_of_nonneg_left hPb hK0`. Use `_ = (Real.exp (100 * ((n : ℝ) + 1) ^ 3) * hsn g₀ ^ (80 * ((n : ℝ) + 1) ^ 2) * (3 * ((n : ℝ) + 1)) ^ ((4 * (n : ℝ) ^ 2 + 1) / 2) * Real.exp (10 * (n : ℝ) ^ 2)) * ((muG ε' (nbh ε' (1 / 4))).toReal * colLen e g ^ (-(2 * (n : ℝ) + 7))) := by ring`. Use `_ ≤ big (200 + 80 * C₀) n B * ((muG ε' (nbh ε' (1 / 4))).toReal * colLen e g ^ (-(2 * (n : ℝ) + 7))) := mul_le_mul_of_nonneg_right hcb (mul_nonneg hvol hcr)`. Use `_ = _ := by ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intBounds_of (hE : EmbLaws) (hBo : Boost) (hP : PowInt) (hD : DecPow) : IntBounds := by
   intro C₀ hC₀
@@ -390,7 +378,7 @@ theorem intBounds_of (hE : EmbLaws) (hBo : Boost) (hP : PowInt) (hD : DecPow) : 
     _ = _ := by ring
 
 /- English proof (translation)
-The claim follows from `intBounds_of`.
+A detailed English derivation is pending.
 -/
 theorem intBounds_main : EmbLaws → Boost → PowInt → DecPow → IntBounds := intBounds_of
 

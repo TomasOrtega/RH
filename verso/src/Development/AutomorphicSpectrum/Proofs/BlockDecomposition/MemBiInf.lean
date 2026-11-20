@@ -9,15 +9,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.DisoHm
 
 /- English proof (translation)
-Use `le_bot_iff.1 (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨L, hL, hr', rfl⟩`. Establish `: ∃ q ∈ L, q.1 ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : (L.map Prod.fst).sum = 0` using `List.sum_eq_zero (by`. Introduce `x hx`. Take `⟨q, hq, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hc q hq)`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q, hq, hq0⟩` from `this`. Establish `hz : δ.dpow q.1 q.2 = 0`. Establish `h2 : q.2 = 0`. Use `hL q hq` as an intermediate fact. Rewrite `this` using `[hJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Rewrite using `[h2]`. Conclude with `δ.dpow_eval_zero hq0`. Establish `: (L.map fun q => δ.dpow q.1 q.2).prod = 0` using `List.prod_eq_zero (List.mem_map.2 ⟨q, hq, hz⟩)`. Rewrite using `[this]`.
-
-Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_bot {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (hJ : J = ⊥) {r : ℕ} (hr : 1 ≤ r) :
     pdP δ r = ⊥ := by
@@ -47,7 +45,7 @@ section Loc
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}
 
 /- English proof (translation)
-The claim follows from `dividedPowerFiltration_bot _ rfl hs tf r x hx := by cases r with | zero => have h1 : (1 : O) ∈ pdP (dividedPowersBot O) 0 := Ideal.subset_span ⟨[], by simp, by simp, by simp⟩ simpa using Ideal.mul_mem_left _ x h1 | succ r => rw [dividedPowerFiltration_bot _ rfl (by omega)] at hx …`.
+A detailed English derivation is pending.
 -/
 theorem tfBase_ol (h : OL l O) {s : ℕ} (hs : 1 ≤ s) : TFBase (dividedPowersBot O) l s where
   nil := dividedPowerFiltration_bot _ rfl hs
@@ -69,9 +67,9 @@ theorem tfBase_ol (h : OL l O) {s : ℕ} (hs : 1 ≤ s) : TFBase (dividedPowersB
     rw [mul_assoc, hw, mul_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective (show GB (l := l) T.obj m from x)`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective (show GB (l := l) T.obj m from y)`. Establish `e : Ideal.Quotient.mk (b.S T) (show (sP Q).A.obj T from a) = Ideal.Quotient.mk (b.S T) (show (sP Q).A.obj T from c)` using `congrArg Subtype.val hxy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Ideal.Quotient.eq.2 ((lm_eq_span Q m T).ge (hle (Ideal.Quotient.eq.1 e)))`. Introduce and unpack `⟨z, hz⟩`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Conclude with `⟨Ideal.Quotient.mk (lm (l := l) T.obj m) a, Subtype.ext rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem o_bij (h : OL l O) (Q : ObjectProperty (Thick (smFun X q))) (m : ℕ) (hQ : ∀ T, Q T → Good (l := l) T m)
     (P : ObjectProperty (Thick (Lm h q m))) (hP : ∀ T, P ((GF h Q m hQ).obj T)) (b : IdF (sP Q).A)
@@ -90,27 +88,25 @@ theorem o_bij (h : OL l O) (Q : ObjectProperty (Thick (smFun X q))) (m : ℕ) (h
     exact ⟨Ideal.Quotient.mk (lm (l := l) T.obj m) a, Subtype.ext rfl⟩
 
 /- English proof (translation)
-Establish `hl0 : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Establish `hnil : IsNilpotent ((l : ℕ) : Om l O m)` using `⟨m, by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {(l : O) ^ m})), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _⟩`. Take `⟨PL, hPL⟩` from `hPA (pdm h m) l hl0 q (κm l O m) ⊤ (Or.inl rfl) {W}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨PO, hPO⟩` from `hPT (dividedPowersBot O) q (Ideal.Quotient.mk ⊥) l s {W}`. Take `⟨cL, -, hcL⟩` from `hCP (pdm h m) l hl0 hnil q (κm l O m) c`. Take `⟨cO, e, hTF, hi, ht, hev⟩` from `hCA (dividedPowersBot O) l s (tfBase_ol h (by omega)) q (Ideal.Quotient.mk ⊥) (fun _ => rfl) c`. Establish `hgL` using `hCG cL`. Establish `hgO` using `hCG cO`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDQ : TO q l s {W} cO.D` using `⟨hTF, W, rfl, cO.inV⟩`. Establish `hDP : St (⊤ : ObjectProperty (Thick (Lm h q m))) {W} cL.D` using `⟨trivial, W, rfl, cL.inV⟩`. Establish `hT : Good (l` using `l) cO.D m := hQ _ hDQ`. Establish `hevt : ∀ i, ev cO.D cO.inV (c.t i) = Ideal.Quotient.mk _ (cO.t i)` using `fun i => by rw [hev, ht]`. Take `⟨σ, hσ⟩` from `exists_sig h c m cL hgL hcL cO hevt hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hσb` using `GlobalTheory.T.chart_lift_tensor_compat h c m cL hcL cO e hi ht hev hT σ hσ`. Set `E` to `frameC (Ideal.Quotient.mk (Ideal.span {(l : O) ^ m})) (cL.frame hgL (St (⊤ : ObjectProperty (Thick (Lm h q m))) {W}) (fun T hT => by`. Take `⟨-, V, rfl, hV⟩` from `hT`. Conclude with `hV) hDP)`. Set `E'` to `cO.frame hgO (TO q l s {W}) (fun T hT => by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨-, V, rfl, hV⟩` from `hT`. Conclude with `hV) hDQ`. Set `M` to `gQ h (TO q l s {W}) m hQ (St ⊤ {W}) hP`. Set `e' : E.D ⟶ M.G.obj E'.D` to `ObjectProperty.homMk σ`. Establish `he : M.Fr E E' e'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `i T s₁ s₂`. Express the relevant statement in the definitionally equal form `gρ h (TO q l s {W}) m hQ (St ⊤ {W}) hP T (gφ s₂.hom m (σ.φ (cL.t i)) - gφ s₁.hom m (σ.φ (cL.t i))) = Ideal.Quotient.mk _ (s₂.hom.φ (cO.t i) - s₁.hom.φ (cO.t i))`. Rewrite using `[hσ]`. Both sides reduce to the same expression. Set `b : ℤ → IdF (sP (TO q l s {W})).A` to `fun r => stdI (TO q l s {W}) (some r) ((l : O) ^ m)`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ (r : ℤ) T, (IdF.span (sP (TO q l s {W})).A ((l : O) ^ m)).S T ≤ (b r).S T` using `fun r T => le_sup_right`. Establish `key` using `hLoc M (polyC _ PL) PO E E' e' he b hb s (polyC_crit _ PL 0 (hPL 0).2.1) (fun r hr => (hPO r hr).2 _) (fun r' h1 h2 => by`. Establish `hr1 : 1 ≤ r'` using `by omega`. Establish `hle : (b r').S E'.D ≤ (IdF.span (sP (TO q l s {W})).A ((l : O) ^ m)).S E'.D`. Use `sup_le ?_ le_rfl` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: cO.D.pdPow r'.toNat = ⊥` using `dividedPowerFiltration_bot _ (by rw [cO.J_eq]; exact Ideal.map_bot) (by omega)`. Conclude with `this.le.trans bot_le`. Conclude with `(o_bij h _ m hQ _ hP (b r') (hb r') E'.D hle).comp hσb) j`. Establish `hb' : ∀ T, (stdI (TO q l s {W}) none ((l : O) ^ m)).S T = (b s).S T`. Introduce `T`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `: T.obj.pdPow (s : ℤ).toNat = ⊥`. Use `T.property.1.1` as an intermediate fact. Simplify using `using this`. Express the relevant statement in the definitionally equal form `(⊥ : Ideal T.obj.B) ⊔ _ = T.obj.pdPow (s : ℤ).toNat ⊔ _`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hB` using `sqLe_bij (a := IdF.top (sP (TO q l s {W})).A) (a' := IdF.top (sP (TO q l s {W})).A) (fun _ => rfl) hb' j`. Use `(Function.Bijective.of_comp_iff' hB _).1 ?_` and prove the remaining obligations. Establish `e2 : ⇑((sqLe (a` using `IdF.top (sP (TO q l s {W})).A) (a' := IdF.top (sP (TO q l s {W})).A) (fun _ => le_rfl) (fun T => (hb' T).le)).pull j) ∘ ⇑((gP h (TO q l s {W}) m hQ (St ⊤ {W}) hP).pull j) = ⇑((M.o (b s) (hb s)).pull j) :=`. Use function extensionality and compare the values at `fun x => (gQ_o h _ m hQ _ hP (b s) (hb s) (fun T => (hb' T).le) j x).symm`. Rewrite using `[e2]`.
-
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem local_bij (hLoc : DH.LocCmpq) (hPA : DH.PolyAll) (hPT : KH.PolyTf) (hCA : DH.ChartAlg) (hCP : DH.ChartP)
     (hCG : DH.ChartGood) (h : OL l O) {W : X.Opens} {d : ℕ} (c : Coord q W d) (s : ℕ) (hd : d < s) (m : ℕ)
@@ -193,7 +189,7 @@ def nestAdj {P P₂ : ObjectProperty D} {Pn : ObjectProperty P.FullSubcategory}
 end Nest
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.iInf_insert]`. Simplify using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_biInf {X : Scheme.{0}} {ι : Type} (U : ι → X.Opens) (S : Finset ι) (x : X) :
     x ∈ (⨅ α ∈ S, U α) ↔ ∀ α ∈ S, x ∈ U α := by
@@ -209,14 +205,14 @@ variable {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : Div
   {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
 
 /- English proof (translation)
-Introduce `_ _` and use `trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inU_top (T : Thick (nlFun γ p X q κ)) : InU ⊤ T := fun _ _ => trivial
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, V, rfl, hV⟩`. Establish `h2 : ∀ α ∈ S, InU (U.U α) T` using `fun α hα x hx => ((mem_biInf U.U S _).1 (hV hx)) α hα`. Take `⟨α, hα⟩` from `hS`. Conclude with `⟨⟨h1, U.U α, ⟨α, rfl⟩, h2 α hα⟩, h2⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨h1, -⟩, h2⟩`. Conclude with `⟨h1, _, rfl, fun x hx => (mem_biInf U.U S _).2 fun α hα => h2 α hα hx⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem st_inf (Q : ObjectProperty (Thick (nlFun γ p X q κ))) (U : Cov q) (S : Finset U.ι) (hS : S.Nonempty)
     (T : Thick (nlFun γ p X q κ)) :
@@ -242,18 +238,18 @@ def scM (h : OL l O) (q : X ⟶ Spec (CommRingCat.of O)) (m : ℕ) (Q : ObjectPr
   nat _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `idM_bij (scM h q m Q).τ (scM h q m Q).nat (fun _ => Function.bijective_id) j`.
+A detailed English derivation is pending.
 -/
 theorem scM_bij (h : OL l O) (q : X ⟶ Spec (CommRingCat.of O)) (m : ℕ) (Q : ObjectProperty (Thick (Lm h q m))) (j : ℕ) :
     Function.Bijective ((scM h q m Q).pull j) :=
   idM_bij (scM h q m Q).τ (scM h q m Q).nat (fun _ => Function.bijective_id) j
 
 /- English proof (translation)
-Establish `hle : St (⊤ : ObjectProperty (Thick (Lm h q m))) 𝒱 ≤ ⊤` using `fun _ _ => trivial`. Establish `z` using `(hZ (Q₀ := ⊤) (Or.inr ⟨(Fact.out : l.Prime).ne_zero, Or.inl rfl⟩) 𝒱 ⊤ hle (fun T _ => ⟨trivial, _, rfl, by rw [hU]; exact inU_top T⟩) (fun _ _ _ _ _ => trivial) j).2.2`. Establish `r1 : Function.Bijective ((CH.Mor.restrict (OMm h q m) (⊤ : ObjectProperty (Thick (Lm h q m))).ι).pull j)` using `CrystallineSemistableComparison.P.mapH_bij _ (GlobalTheory.CompanionTheory.CosieveBC.restrict_bij _ (fun _ => trivial)) j`. Establish `c1` using `scM_bij h q m ⊤ j`. Establish `c2` using `scM_bij h q m (St (⊤ : ObjectProperty (Thick (Lm h q m))) 𝒱) j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Function.Bijective.of_comp_iff' c2 _).1 ?_` and prove the remaining obligations. Establish `e : ⇑((scM h q m (St (⊤ : ObjectProperty (Thick (Lm h q m))) 𝒱)).pull j) ∘ ⇑((CH.Mor.restrict (OMm h q m) (St (⊤ : ObjectProperty (Thick (Lm h q m))) 𝒱).ι).pull j) = ⇑((incl hle).o.pull j) ∘ ⇑((scM h q m ⊤).pull j) ∘ ⇑((CH.Mor.restrict (OMm h q m) (⊤ : ObjectProperty (Thick (Lm h …`. Use function extensionality and compare the values at `x`. Take `⟨a, ha, rfl⟩` from `CrystallineSemistableComparison.CechClassBoundaries.clsSurj x`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `z.comp (c1.comp r1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_L (hZ : DH.Zar2) (h : OL l O) (q : X ⟶ Spec (CommRingCat.of O)) (m : ℕ) (𝒱 : Set X.Opens) (hU : sSup 𝒱 = ⊤) (j : ℕ) :
     Function.Bijective ((CH.Mor.restrict (OMm h q m) (St (⊤ : ObjectProperty (Thick (Lm h q m))) 𝒱).ι).pull j) := by
@@ -279,7 +275,7 @@ def resO {b : Base} {L : b.Fun} {Q Q' : ObjectProperty (Thick L)} (hle : Q' ≤ 
   (incl hle).sq (fun _ _ _ => trivial) (incl_std hle none c)
 
 /- English proof (translation)
-Establish `: (sFil Q 0).S T = ⊤` using `T.obj.pdPow_zero`. Conclude with `(top_le_iff.1 (this.ge.trans le_sup_left)).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem std0 {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L)) (T : Q.FullSubcategory) :
     (IdF.top (sP Q).A).S T = (stdI Q (some 0) 0).S T := by
@@ -287,11 +283,11 @@ theorem std0 {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L)) (T : Q.FullSu
   exact (top_le_iff.1 (this.ge.trans le_sup_left)).symm
 
 /- English proof (translation)
-Establish `z` using `(hZ (Q₀ := TF l s) (Or.inl ⟨rfl, l, s, rfl⟩) 𝒱 (TO q l s {⊤}) hle (fun T hT => ⟨hT.1, _, rfl, by rw [hU]; exact inU_top T⟩) (fun _ T' _ _ hT' => ⟨hT', ⊤, rfl, inU_top T'⟩) j).2.1 (some 0) none 0 c`. Establish `t0` using `sqLe_bij (b := stdI (TO q l s {⊤}) none c) (b' := stdI (TO q l s {⊤}) none c) (std0 (TO q l s {⊤})) (fun _ => rfl) j`. Establish `t1` using `sqLe_bij (b := stdI (TO q l s 𝒱) none c) (b' := stdI (TO q l s 𝒱) none c) (std0 (TO q l s 𝒱)) (fun _ => rfl) j`. Use `(Function.Bijective.of_comp_iff' t1 _).1 ?_` and prove the remaining obligations. Establish `e : ⇑((sqLe (a` using `IdF.top (sP (TO q l s 𝒱)).A) (b := stdI (TO q l s 𝒱) none c) (a' := stdI (TO q l s 𝒱) (some 0) 0) (b' := stdI (TO q l s 𝒱) none c) (fun T => (std0 (TO q l s 𝒱) T).le) (fun _ => le_rfl)).pull j) ∘ ⇑((resO hle c).pull j) = ⇑(((incl hle).sq (incl_std hle (some 0) 0) (incl_std hle no …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Use `((CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id O) (resO hle c) (sqLe (a := IdF.top (sP (TO q l s 𝒱)).A) (b := stdI (TO q l s 𝒱) none c) (a' := stdI (TO q l s 𝒱) (some 0) 0) (b' := stdI (TO q l s 𝒱) none c) (fun T => (std0 (TO q l s 𝒱) T).le) (fun _ => le_rfl)) j …` and prove the remaining obligations. Use `CrystallineSemistableComparison.P.prism (σ := RingHom.id O) _ _ (𝟙 _) (fun T y => ?_) j x` and prove the remaining obligations. Take `⟨y, hy⟩` from `y`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `first`. Consider the case `rfl`. Consider the case `(simp only [NatTrans.id_app, CategoryTheory.Functor.map_id]; rfl)`. Rewrite using `[e]`. Conclude with `z.comp t0`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_O (hZ : DH.Zar2) (q : X ⟶ Spec (CommRingCat.of O)) (l s : ℕ) (𝒱 : Set X.Opens) (hU : sSup 𝒱 = ⊤) (hle : TO q l s 𝒱 ≤ TO q l s {⊤})
     (c : O) (j : ℕ) : Function.Bijective ((resO hle c).pull j) := by
@@ -323,17 +319,15 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {X : Scheme.{0}} {q : 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `cover_bij (gP h (TO q l s (Set.range U.U)) m (hQ _) (St ⊤ (Set.range U.U)) (hP _)) (fun α T => InU (U.U α) T.obj) (fun α T => InU (U.U α) T.obj) (fun α T T' φ hT => Site.inU_hom φ.hom hT) (fun α T T' φ hT => Site.inU_hom φ.hom hT) (fun T => ?_) (fun T => ?_) (fun α T hT => inU_G …` and prove the remaining obligations. Take `⟨-, V, ⟨α, rfl⟩, hV⟩` from `T.property`. Conclude with `⟨α, hV⟩`. Take `⟨-, V, ⟨α, rfl⟩, hV⟩` from `T.property`. Conclude with `⟨α, hV⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h₁L : ∀ T, St (⊤ : ObjectProperty (Thick (Lm h q m))) {⨅ α ∈ S, U.U α} T → ∃ hp : St (⊤ : ObjectProperty (Thick (Lm h q m))) (Set.range U.U) T, capS (fun α (T : (St (⊤ : ObjectProperty (Thick (Lm h q m))) (Set.range U.U)).FullSubcategory) => InU (U.U α) T.obj) S ⟨T, hp⟩` using `fun T hT => ⟨((st_inf _ U S hS T).1 hT).1, ((st_inf _ U S hS T).1 hT).2⟩`. Establish `h₁O : ∀ T, TO q l s {⨅ α ∈ S, U.U α} T → ∃ hp : TO q l s (Set.range U.U) T, capS (fun α (T : (TO q l s (Set.range U.U)).FullSubcategory) => InU (U.U α) T.obj) S ⟨T, hp⟩` using `fun T hT => ⟨((st_inf _ U S hS T).1 hT).1, ((st_inf _ U S hS T).1 hT).2⟩`. Establish `aL` using `nestAdj h₁L (fun T => (st_inf _ U S hS T.obj.obj).2 ⟨T.obj.property, T.property⟩)`. Establish `aO` using `nestAdj h₁O (fun T => (st_inf _ U S hS T.obj.obj).2 ⟨T.obj.property, T.property⟩)`. Set `rL : CH.Mor ((capS (fun α (T : (St (⊤ : ObjectProperty (Thick (Lm h q m))) (Set.range U.U)).FullSubcategory) => InU (U.U α) T.obj) S).ι ⋙ (St (⊤ : ObjectProperty (Thick (Lm h q m))) (Set.range U.U)).ι ⋙ OMm h q m) ((St (⊤ : ObjectProperty (Thick (Lm h q m))) {⨅ α ∈ S, U.U α}).ι ⋙ …` to `CH.Mor.restrict _ (nestF h₁L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `rO : CH.Mor ((capS (fun α (T : (TO q l s (Set.range U.U)).FullSubcategory) => InU (U.U α) T.obj) S).ι ⋙ sq (IdF.top (sP (TO q l s (Set.range U.U))).A) (stdI (TO q l s (Set.range U.U)) none ((l : O) ^ m))) (sq (IdF.top (sP (TO q l s {⨅ α ∈ S, U.U α})).A) (stdI (TO q l s {⨅ α ∈ S, …` to `CH.Mor.restrict _ (nestF h₁O)`. Establish `bL : Function.Bijective (rL.pull j)` using `CrystallineSemistableComparison.P.adj _ _ _ aL j`. Establish `bO : Function.Bijective (rO.pull j)` using `CrystallineSemistableComparison.P.adj _ _ _ aO j`. Use `(Function.Bijective.of_comp_iff' bO _).1 ?_` and prove the remaining obligations. Establish `e : ∀ x, rO.pull j ((morU (gP h (TO q l s (Set.range U.U)) m (hQ _) (St ⊤ (Set.range U.U)) (hP _)) (U` using `capS (fun α T => InU (U.U α) T.obj) S) (U' := capS (fun α T => InU (U.U α) T.obj) S) fun T hT α hα => inU_G h T.obj m _ (hT α hα)).pull j x) = (gP h (TO q l s {⨅ α ∈ S, U.U α}) m (hQ _) (St ⊤ {⨅ α ∈ S, U.U α}) (hP _)).pull j (rL.pull j x) := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x`. Use `((CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id O) _ rO j x).1).symm.trans (Eq.trans ?_ ((CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id O) rL _ j x).1))` and prove the remaining obligations. Use `CrystallineSemistableComparison.P.prism (σ := RingHom.id O) _ _ (𝟙 _) (fun T y => ?_) j x` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective (show GB (l := l) T.obj m from y)`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `(simp only [NatTrans.id_app, CategoryTheory.Functor.map_id]; rfl)`. Establish `e2` using `funext e`. Use `(show Function.Bijective (fun x => rO.pull j ((morU (gP h (TO q l s (Set.range U.U)) m (hQ _) (St ⊤ (Set.range U.U)) (hP _)) (U := capS (fun α T => InU (U.U α) T.obj) S) (U' := capS (fun α T => InU (U.U α) T.obj) S) fun T hT α hα => inU_G h T.obj m _ (hT α hα)).pull j x)) from ?_ …` and prove the remaining obligations. Rewrite using `[e2]`.
-
-Conclude with `(hloc S hS j).comp bL`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue (h : OL l O) (U : Cov q) (s m : ℕ) (hQ : ∀ (𝒱 : Set X.Opens) T, TO q l s 𝒱 T → Good (l := l) T m)
     (hP : ∀ (𝒱 : Set X.Opens) T, St (⊤ : ObjectProperty (Thick (Lm h q m))) 𝒱 ((GF h (TO q l s 𝒱) m (hQ 𝒱)).obj T))
@@ -390,17 +384,15 @@ theorem glue (h : OL l O) (U : Cov q) (s m : ℕ) (hQ : ∀ (𝒱 : Set X.Opens)
 end Glue
 
 /- English proof (translation)
-Introduce `l _ O _ h X q U s hs m hG j hLoc hZ hPA hPT hCA hCP hCG _ _ _`. Establish `hUs : sSup (Set.range U.U) = ⊤`. Rewrite using `[sSup_range]`. Conclude with `U.cover`. Establish `htop : ∀ 𝒱 : Set X.Opens, TO q l s 𝒱 ≤ TO q l s {⊤}` using `fun 𝒱 T hT => ⟨hT.1, ⊤, rfl, inU_top T⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : ∀ (𝒱 : Set X.Opens) T, TO q l s 𝒱 T → Good (l` using `l) T m := fun 𝒱 T hT => hG T (htop 𝒱 T hT)`. Establish `hP : ∀ (𝒱 : Set X.Opens) T, St (⊤ : ObjectProperty (Thick (Lm h q m))) 𝒱 ((GF h (TO q l s 𝒱) m (hQ 𝒱)).obj T)` using `fun 𝒱 T => by`. Take `⟨-, V, hV, hin⟩` from `T.property`. Conclude with `⟨trivial, V, hV, inU_G h T.obj m _ hin⟩`. Establish `g` using `glue h U s m hQ hP (fun S hS j => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα⟩` from `hS`. Take `⟨c', -⟩` from `GlobalTheory.T.coordinates_restrict_affine_open (U.c α) (iInf₂_le α hα : (⨅ α ∈ S, U.U α) ≤ U.U α) (U.inter S ⟨α, hα⟩)`. Conclude with `local_bij hLoc hPA hPT hCA hCP hCG h c' s (hs α) m _ _ j) j`. Establish `tL` using `top_L hZ h q m _ hUs j`. Establish `tO` using `top_O hZ q l s _ hUs (htop _) ((l : O) ^ m) j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(Function.Bijective.of_comp_iff' tO _).1 ?_` and prove the remaining obligations. Establish `e : ⇑((resO (htop (Set.range U.U)) ((l : O) ^ m)).pull j) ∘ ⇑((gMor h (TO q l s {⊤}) m hG).pull j) = ⇑((gP h (TO q l s (Set.range U.U)) m (hQ _) (St ⊤ (Set.range U.U)) (hP _)).pull j) ∘ ⇑((CH.Mor.restrict (OMm h q m) (St (⊤ : ObjectProperty (Thick (Lm h q m))) (Set.range U.U)).ι) …`. Use function extensionality and compare the values at `x`. Use `((CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id O) (gMor h (TO q l s {⊤}) m hG) (resO (htop (Set.range U.U)) ((l : O) ^ m)) j x).1).symm.trans (Eq.trans ?_ ((CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id O) (CH.Mor.restrict (OMm h q m) (St (⊤ : O …` and prove the remaining obligations. Use `CrystallineSemistableComparison.P.prism (σ := RingHom.id O) (CH.Mor.comp (σ'' := RingHom.id O) (gMor h (TO q l s {⊤}) m hG) (resO (htop (Set.range U.U)) ((l : O) ^ m))) (CH.Mor.comp (σ'' := RingHom.id O) (CH.Mor.restrict (OMm h q m) (St (⊤ : ObjectProperty (Thick (Lm h q m))) (Se …` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective (show GB (l := l) T.obj m from y)`. Use `first`. Consider the case `rfl`. Consider the case `(simp only [NatTrans.id_app, CategoryTheory.Functor.map_id]; rfl)`. Rewrite using `[e]`.
-
-Conclude with `g.comp tL`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] (h : OL l O) {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) (U : Cov q) (s : ℕ) (hs : ∀ α, U.d α < s) (m : ℕ) (hG : ∀ T, TO q l s {⊤} T → Good (l := l) T m) (j : ℕ), DH.LocCmpq → DH.Zar2 → DH.PolyAll → KH.PolyTf → DH.ChartAlg → DH.ChartP → DH.ChartGood → DH.ChartGrConst → DH.IsFilS → KH.GlobBcSt → Function.Bijective ((gMor h (TO q l s {⊤}) m hG).pull j) := by
   intro l _ O _ h X q U s hs m hG j hLoc hZ hPA hPT hCA hCP hCG _ _ _

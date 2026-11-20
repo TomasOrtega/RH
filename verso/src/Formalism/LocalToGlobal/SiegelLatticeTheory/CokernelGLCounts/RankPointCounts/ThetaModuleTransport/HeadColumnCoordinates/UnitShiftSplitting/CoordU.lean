@@ -50,9 +50,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
 /- English proof (translation)
-Establish `he` using `congrArg g.e hx`. Rewrite `he` using `[e_cj]`. Establish `h12 : (g.e x).1 = (g.e x).2` using `(congrArg Prod.fst he).symm`. Establish `hne : (g.e x).1 ≠ 0`. Introduce `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h0` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `Prod.ext h1 (h12 ▸ h1)`. Conclude with `isUnit_of_comp g hne (h12 ▸ hne)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_cj_fixed {M : Model F E} (g : SplitG M.L) {x : E} (hx : M.L.cj x = x) (h0 : x ≠ 0) :
     IsUnit x := by
@@ -68,7 +68,7 @@ theorem isUnit_of_cj_fixed {M : Model F E} (g : SplitG M.L) {x : E} (hx : M.L.cj
   exact isUnit_of_comp g hne (h12 ▸ hne)
 
 /- English proof (translation)
-Establish `crel : M.L.cj a * M.L.cj B = M.L.cj b * M.L.cj A`. Rewrite using `[← map_mul, ← map_mul, rel]`. Take the linear combination `(c * M.L.cj b * M.L.cj A) * rel + (c * a * B) * crel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem gdet_rel {M : Model F E} (A a B b c : E) (rel : a * B = b * A) :
     (B * M.L.cj B - c * (b * M.L.cj b)) * (A * M.L.cj A) =

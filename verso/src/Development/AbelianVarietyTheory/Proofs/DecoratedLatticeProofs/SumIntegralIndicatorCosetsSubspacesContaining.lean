@@ -9,15 +9,15 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil 
 namespace GlobalTheory.ParHecke.CosetSubL
 
 /- English proof (translation)
-Take `⟨U, hU⟩` from `W.exists_isCompl`. Take `⟨U', hU'⟩` from `W'.exists_isCompl`. Establish `h1` using `Submodule.finrank_add_eq_of_isCompl hU`. Establish `h2` using `Submodule.finrank_add_eq_of_isCompl hU'`. Establish `h3 : Module.finrank F U = Module.finrank F U'` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `a : W ≃ₗ[F] W'` to `LinearEquiv.ofFinrankEq _ _ h`. Set `b : U ≃ₗ[F] U'` to `LinearEquiv.ofFinrankEq _ _ h3`. Set `e : V ≃ₗ[F] V` to `(Submodule.prodEquivOfIsCompl W U hU).symm ≪≫ₗ (a.prodCongr b) ≪≫ₗ Submodule.prodEquivOfIsCompl W' U' hU'`. Establish `he : ∀ w : W, e w = a w`. Introduce `w`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[e]`. Use `⟨e, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Use `he ⟨w, hw⟩` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `e w ∈ W'`. Simplify using `only at this`. Rewrite using `[this]`. Conclude with `(a ⟨w, hw⟩).2`. Introduce `w hw`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a.symm ⟨w, hw⟩, (a.symm ⟨w, hw⟩).2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e _ = w`. Rewrite using `[he]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_equiv_map_eq {F V : Type} [Field F] [AddCommGroup V]
     [Module F V] [FiniteDimensional F V] (W W' : Submodule F V)
@@ -50,13 +50,13 @@ theorem exists_equiv_map_eq {F V : Type} [Field F] [AddCommGroup V]
     simp
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_equiv_map_eq W W' h`. Set `M : Matrix n n (IsLocalRing.ResidueField O)` to `LinearMap.toMatrix' e.toLinearMap`. Use `choose A hA using fun i j => IsLocalRing.residue_surjective (R := O) (M i j)`. Establish `hAM : (Matrix.of A).map (IsLocalRing.residue O) = M`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `hA i j`. Establish `hM : M.det ≠ 0`. Establish `: M.det = LinearMap.det e.toLinearMap` using `LinearMap.det_toMatrix' _`. Rewrite using `[this]`. Conclude with `(LinearEquiv.isUnit_det' e).ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hu : IsUnit (Matrix.of A).det`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`. Express the relevant statement in the definitionally equal form `((Matrix.of A).map (IsLocalRing.residue O)).det ≠ 0`. Rewrite using `[hAM]`. Conclude with `hM`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨g, hg⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 hu`. Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, hAM, ← he]`. Use `congr 1`. Conclude with `Matrix.toLin'_toMatrix' e.toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem exists_gl_map_eq (O : Type) [CommRing O] [IsLocalRing O] (n : Type) [Fintype n] [DecidableEq n]
     (W W' : Submodule (IsLocalRing.ResidueField O) (n → IsLocalRing.ResidueField O))
@@ -85,7 +85,7 @@ theorem exists_gl_map_eq (O : Type) [CommRing O] [IsLocalRing O] (n : Type) [Fin
   exact Matrix.toLin'_toMatrix' e.toLinearMap
 
 /- English proof (translation)
-Take `⟨U', hU⟩` from `U.exists_isCompl`. Use `⟨LinearMap.toMatrix' (U.subtype ∘ₗ Submodule.projectionOnto U U' hU), ?_⟩` and prove the remaining obligations. Rewrite using `[← toLin'_apply', toLin'_toMatrix', LinearMap.range_comp, Submodule.range_projectionOnto, Submodule.map_subtype_top]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_range_eq (F : Type) [Field F] (n : Type) [Fintype n] [DecidableEq n] (U : Submodule F (n → F)) :
     ∃ M : Matrix n n F, LinearMap.range M.mulVecLin = U := by
@@ -99,7 +99,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def projE (F : Type) [Field F] (s : Finset n) : Matrix n n F := diagonal fun i => if i ∈ s then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[projE, rank_diagonal]`. Rewrite using `[Fintype.card_subtype]`. Use `congr 1`. Use extensionality with `i`. Apply the tactic sequence `by_cases h : i ∈ s <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rank_projE (F : Type) [Field F] (s : Finset n) : (projE F s).rank = s.card := by
   classical
@@ -116,7 +116,7 @@ abbrev inc {a b : Type} (M : Matrix a b 𝒪[k]) : Matrix a b k := M.map (algebr
 abbrev incG (κ : GL n 𝒪[k]) : GL n k := GeneralLinearGroup.map (algebraMap 𝒪[k] k) κ
 
 /- English proof (translation)
-Establish `: (red (k` using `k) κ.1).det = IsLocalRing.residue 𝒪[k] κ.1.det := (RingHom.map_det _ _).symm`. Rewrite using `[this]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 κ.isUnit).map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_red (κ : GL n 𝒪[k]) : IsUnit (red (k := k) κ.1).det := by
   have : (red (k := k) κ.1).det = IsLocalRing.residue 𝒪[k] κ.1.det := (RingHom.map_det _ _).symm
@@ -127,9 +127,9 @@ def rowKer (s : Finset n) (κ : GL n 𝒪[k]) : Submodule 𝓀[k] (n → 𝓀[k]
   LinearMap.ker (projE 𝓀[k] s * red (κ⁻¹).1).mulVecLin
 
 /- English proof (translation)
-Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (projE 𝓀[k] s * red (k := k) (κ⁻¹).1).mulVecLin`. Establish `h2 : (projE 𝓀[k] s * red (k` using `k) (κ⁻¹).1).rank = s.card := by`. Rewrite using `[← rank_projE 𝓀[k] s]`. Conclude with `rank_mul_eq_left_of_isUnit_det _ _ (isUnit_red κ⁻¹)`. Rewrite `h2` using `[Matrix.rank]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Module.finrank_fintype_fun_eq_card]`. Unfold `rowKer`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_rowKer (s : Finset n) (κ : GL n 𝒪[k]) :
     Module.finrank 𝓀[k] (rowKer s κ) + s.card = Fintype.card n := by
@@ -150,7 +150,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n m : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Rewrite using `[mul_comm, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one, Valuation.mem_integer_iff, ← le_uniformizer_iff, ← hϖ, map_mul, map_inv₀, mul_inv_le_iff₀ (by rw [hϖ]; exact uniformizer_pos), one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mul_mem_iff {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (x : 𝒪[k]) :
     (ϖ : k)⁻¹ * (x : k) ∈ 𝒪[k] ↔ IsLocalRing.residue 𝒪[k] x = 0 := by
@@ -159,9 +159,9 @@ theorem inv_mul_mem_iff {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) 
     map_mul, map_inv₀, mul_inv_le_iff₀ (by rw [hϖ]; exact uniformizer_pos), one_mul]
 
 /- English proof (translation)
-Rewrite using `[inv_eq_iff_mul_eq_one]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, val_torusElt, val_torusElt, diagonal_mul_diagonal, Units.val_one, ← diagonal_one]`. Use `congr 1`. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[← zpow_add₀ ϖ.ne_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem torus_inv (ϖ : kˣ) (s : Finset n) : (torusElt k n ϖ (indic s))⁻¹ = torusElt k n ϖ (-indic s) := by
   rw [inv_eq_iff_mul_eq_one]
@@ -173,9 +173,9 @@ theorem torus_inv (ϖ : kˣ) (s : Finset n) : (torusElt k n ϖ (indic s))⁻¹ =
   simp
 
 /- English proof (translation)
-Rewrite using `[torus_inv, val_torusElt, projE, ← Matrix.ext_iff]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[diagonal_mul, diagonal_mul]`. Distinguish the cases in `h : i ∈ s`. Use `inv_mul_mem_iff hϖ (M i j)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [indic, h, Pi.neg_apply, if_true, _root_.zpow_neg, zpow_one, one_mul, map_apply, Matrix.zero_apply]`. Conclude with `this`. Simplify using `only [indic, h, Pi.neg_apply, if_false, neg_zero, zpow_zero, one_mul, zero_mul, map_apply, Matrix.zero_apply, iff_true]`. Conclude with `(M i j).2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem torus_inv_mul_int_iff {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : Finset n) (M : Matrix n m 𝒪[k]) :
     (∀ i j, (((torusElt k n ϖ (indic s))⁻¹).1 * inc M) i j ∈ 𝒪[k]) ↔ projE 𝓀[k] s * red M = 0 := by
@@ -191,7 +191,7 @@ theorem torus_inv_mul_int_iff {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformiz
 
 omit [DecidableEq n] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Introduce `i j` and use `by rw [mul_apply] exact sum_mem fun l _ => mul_mem (hA i l) (hB l j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_mul {a b : Type} {A : Matrix a n k} {B : Matrix n b k} (hA : ∀ i j, A i j ∈ 𝒪[k]) (hB : ∀ i j, B i j ∈ 𝒪[k]) :
     ∀ i j, (A * B) i j ∈ 𝒪[k] := fun i j => by
@@ -199,7 +199,7 @@ theorem int_mul {a b : Type} {A : Matrix a n k} {B : Matrix n b k} (hA : ∀ i j
   exact sum_mem fun l _ => mul_mem (hA i l) (hB l j)
 
 /- English proof (translation)
-Take `⟨κ, rfl⟩` from `hg`. Introduce `i j`. Conclude with `(κ.1 i j).2`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem int_of_KO {g : GL n k} (hg : g ∈ KO k n) : ∀ i j, g.1 i j ∈ 𝒪[k] := by
   obtain ⟨κ, rfl⟩ := hg
@@ -207,11 +207,11 @@ theorem int_of_KO {g : GL n k} (hg : g ∈ KO k n) : ∀ i j, g.1 i j ∈ 𝒪[k
   exact (κ.1 i j).2
 
 /- English proof (translation)
-Set `A : Matrix n n 𝒪[k]` to `fun i j => ⟨_, hg i j⟩`. Set `B : Matrix n n 𝒪[k]` to `fun i j => ⟨_, hg' i j⟩`. Establish `hA : inc A = g.1` using `rfl`. Establish `hB : inc B = (g⁻¹).1` using `rfl`. Establish `inj : Function.Injective (inc : Matrix n n 𝒪[k] → Matrix n n k)` using `map_injective Subtype.val_injective`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : inc (1 : Matrix n n 𝒪[k]) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Use `⟨⟨A, B, inj ?_, inj ?_⟩, Units.ext hA⟩` and prove the remaining obligations. Rewrite using `[h1, inc, Matrix.map_mul]`. Express the relevant statement in the definitionally equal form `g.1 * (g⁻¹).1 = 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, inc, Matrix.map_mul]`. Express the relevant statement in the definitionally equal form `(g⁻¹).1 * g.1 = 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem KO_of_int {g : GL n k} (hg : ∀ i j, g.1 i j ∈ 𝒪[k]) (hg' : ∀ i j, (g⁻¹).1 i j ∈ 𝒪[k]) : g ∈ KO k n := by
   let A : Matrix n n 𝒪[k] := fun i j => ⟨_, hg i j⟩
@@ -229,7 +229,7 @@ theorem KO_of_int {g : GL n k} (hg : ∀ i j, g.1 i j ∈ 𝒪[k]) (hg' : ∀ i 
     simp
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => int_mul (int_of_KO hg) h⟩` and prove the remaining obligations. Use `int_mul (int_of_KO (inv_mem hg)) h` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem KO_mul_int_iff {A : Matrix n m k} {g : GL n k} (hg : g ∈ KO k n) :
     (∀ i j, (g.1 * A) i j ∈ 𝒪[k]) ↔ ∀ i j, A i j ∈ 𝒪[k] := by
@@ -238,9 +238,9 @@ theorem KO_mul_int_iff {A : Matrix n m k} {g : GL n k} (hg : g ∈ KO k n) :
   rwa [← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul] at this
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[val_torusElt, diagonal_apply]`. Establish `hlt : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Use `split_ifs with h`. Distinguish the cases in `h' : i ∈ s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hlt.le` using `[indic, h', Valuation.mem_integer_iff]`. Simplify using `[indic, h']`. Conclude with `zero_mem _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem int_torus {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : Finset n) :
     ∀ i j, (torusElt k n ϖ (indic s)).1 i j ∈ 𝒪[k] := by
@@ -254,7 +254,7 @@ theorem int_torus {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : F
   · exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul]`. Conclude with `int_mul (int_of_KO ⟨κ, rfl⟩) (int_torus hϖ s)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_coset {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : Finset n) (κ : GL n 𝒪[k]) :
     ∀ i j, (incG κ * torusElt k n ϖ (indic s)).1 i j ∈ 𝒪[k] := by
@@ -262,9 +262,9 @@ theorem int_coset {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : F
   exact int_mul (int_of_KO ⟨κ, rfl⟩) (int_torus hϖ s)
 
 /- English proof (translation)
-Establish `e1 : (incG κ * torusElt k n ϖ (indic s))⁻¹ = (torusElt k n ϖ (indic s))⁻¹ * incG κ⁻¹`. Rewrite using `[_root_.mul_inv_rev]`. Use `congr 1`. Establish `e2 : (incG κ⁻¹).1 * inc y₀ = inc ((κ⁻¹).1 * y₀)` using `Matrix.map_mul.symm`. Establish `e3 : red ((κ⁻¹).1 * y₀) = red (k` using `k) (κ⁻¹).1 * red y₀ := Matrix.map_mul`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, Units.val_mul, Matrix.mul_assoc, e2, torus_inv_mul_int_iff hϖ, rowKer, LinearMap.range_le_ker_iff, ← mulVecLin_mul, e3, ← Matrix.mul_assoc, ← toLin'_apply', map_eq_zero_iff _ toLin'.injective]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem int_iff_rowKer [Fintype m] [DecidableEq m] {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : Finset n) (y₀ : Matrix n m 𝒪[k])
     (κ : GL n 𝒪[k]) :
@@ -279,9 +279,9 @@ theorem int_iff_rowKer [Fintype m] [DecidableEq m] {ϖ : kˣ} (hϖ : valuation k
     ← mulVecLin_mul, e3, ← Matrix.mul_assoc, ← toLin'_apply', map_eq_zero_iff _ toLin'.injective]
 
 /- English proof (translation)
-Set `y : Matrix n n 𝒪[k]` to `fun i j => ⟨_, int_coset hϖ s κ₂ i j⟩`. Establish `hy : inc y = (incG κ₂ * torusElt k n ϖ (indic s)).1` using `rfl`. Rewrite using `[Units.val_mul, ← hy, int_iff_rowKer hϖ]`. Use `le_trans ?_ h` and prove the remaining obligations. Rewrite using `[← int_iff_rowKer hϖ, hy, ← Units.val_mul, inv_mul_cancel]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `int_of_KO (one_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem int_quot_of_le {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : Finset n) (κ₁ κ₂ : GL n 𝒪[k])
     (h : rowKer s κ₂ ≤ rowKer s κ₁) :
@@ -294,15 +294,15 @@ theorem int_quot_of_le {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (
   exact int_of_KO (one_mem _)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `KO_of_int (int_quot_of_le hϖ s κ₁ κ₂ h.ge) ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_inv_rev, inv_inv]`. Conclude with `int_quot_of_le hϖ s κ₂ κ₁ h.le`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h set t := torusElt k n ϖ (indic s)`. Establish `key : ∀ y : Matrix n n 𝒪[k], LinearMap.range (red y).mulVecLin ≤ rowKer s κ₁ ↔ LinearMap.range (red y).mulVecLin ≤ rowKer s κ₂`. Introduce `y`. Establish `e : (incG κ₂ * t)⁻¹ = ((incG κ₁ * t)⁻¹ * (incG κ₂ * t))⁻¹ * (incG κ₁ * t)⁻¹` using `by group`. Rewrite using `[← int_iff_rowKer hϖ, ← int_iff_rowKer hϖ, e, Units.val_mul, Matrix.mul_assoc, KO_mul_int_iff (inv_mem h)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key2 : ∀ U : Submodule 𝓀[k] (n → 𝓀[k]), ∃ y : Matrix n n 𝒪[k], LinearMap.range (red y).mulVecLin = U`. Introduce `U`. Take `⟨M, hM⟩` from `exists_range_eq 𝓀[k] n U`. Use `choose A hA using fun i j => IsLocalRing.residue_surjective (R := 𝒪[k]) (M i j)`. Establish `hAM : red (k` using `k) (Matrix.of A) = M := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Use extensionality with `i j`. Conclude with `hA i j`. Conclude with `⟨Matrix.of A, by rw [hAM, hM]⟩`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨y, hy⟩` from `key2 (rowKer s κ₁)`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy, ← key, hy]`. Take `⟨y, hy⟩` from `key2 (rowKer s κ₂)`. Rewrite using `[← hy, key, hy]`.
+A detailed English derivation is pending.
 -/
 theorem rowKer_eq_iff {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : Finset n) (κ₁ κ₂ : GL n 𝒪[k]) :
     rowKer s κ₁ = rowKer s κ₂ ↔
@@ -334,9 +334,9 @@ theorem rowKer_eq_iff {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s
       rw [← hy, key, hy]
 
 /- English proof (translation)
-Establish `h0 : Module.finrank 𝓀[k] (LinearMap.ker (projE 𝓀[k] s).mulVecLin) + s.card = Fintype.card n`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (projE 𝓀[k] s).mulVecLin`. Establish `h2` using `rank_projE 𝓀[k] s`. Rewrite `h2` using `[Matrix.rank]`. Rewrite `h1` using `[Module.finrank_fintype_fun_eq_card]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨g, hg⟩` from `exists_gl_map_eq 𝒪[k] n U (LinearMap.ker (projE 𝓀[k] s).mulVecLin) (by omega)`. Use `⟨g⁻¹, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (red (k` using `k) g.1).mulVecLin := Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_red g))`. Rewrite using `[rowKer, inv_inv, mulVecLin_mul, LinearMap.ker_comp, ← hg, Submodule.comap_map_eq_of_injective hinj]`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_rowKer (s : Finset n) (U : Submodule 𝓀[k] (n → 𝓀[k]))
     (hU : Module.finrank 𝓀[k] U + s.card = Fintype.card n) : ∃ κ : GL n 𝒪[k], rowKer s κ = U := by
@@ -357,23 +357,21 @@ end GlobalTheory.ParHecke.CosetSubL
 open GlobalTheory.ParHecke.CosetSubL in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ D D' _ _ _ _ ϖ hϖ s RK hR y`. Use `set g₀ := torusElt k D' ϖ (indic s) with hg₀`. Establish `hex : ∀ g : RK, ∃ κ : GL D' 𝒪[k], ∃ κ' ∈ KO k D', g.1 = incG κ * g₀ * κ'`. Introduce `g`. Take `⟨_, ⟨κ, rfl⟩, κ', hκ', e⟩` from `hR.1 g.1 g.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨κ, κ', hκ', e⟩`. Use `choose κ κ' hκ' hg using hex`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `Finset.sum_eq_zero fun g hgR => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ParHecke.intInd, if_neg]`. Introduce `h`. Apply `hy` to reduce the goal to its premises. Establish `hgi : ∀ i j, g.1 i j ∈ 𝒪[k]`. Establish `e : g = incG (κ ⟨g, hgR⟩) * g₀ * κ' ⟨g, hgR⟩` using `hg ⟨g, hgR⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, Units.val_mul]`. Conclude with `int_mul (int_coset hϖ s _) (int_of_KO (hκ' _))`. Use `int_mul hgi h` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Then use the resulting hypothesis. Introduce and unpack `y₀ rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : ∀ g : RK, (∀ i j, ((g.1⁻¹).1 * inc y₀) i j ∈ 𝒪[k]) ↔ LinearMap.range (red y₀).mulVecLin ≤ rowKer s (κ g)`. Introduce `g`. Rewrite using `[← int_iff_rowKer hϖ, hg g, _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, KO_mul_int_iff (inv_mem (hκ' g))]`. Establish `hco : ∀ (g : RK) (c : GL D' 𝒪[k]), g.1⁻¹ * (incG c * g₀) ∈ KO k D' ↔ rowKer s (κ g) = rowKer s c`. Introduce `g c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[rowKer_eq_iff hϖ, hg g, _root_.mul_inv_rev, mul_assoc, (KO k D').mul_mem_cancel_left (inv_mem (hκ' g))]`. Set `f : {g : RK // ∀ i j, ((g.1⁻¹).1 * inc y₀) i j ∈ 𝒪[k]} → {U : Submodule 𝓀[k] (D' → 𝓀[k]) // LinearMap.range (y₀.map (IsLocalRing.residue 𝒪[k])).mulVecLin ≤ U ∧ Module.finrank 𝓀[k] U + s.card = Fintype.card D'}` to `fun g => ⟨rowKer s (κ g.1), (hint g.1).1 g.2, finrank_rowKer s _⟩`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `g₁ g₂ h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h' : rowKer s (κ g₁.1) = rowKer s (κ g₂.1)` using `congrArg Subtype.val h`. Use `(hR.2 (incG (κ g₂.1)) ⟨_, rfl⟩).unique ⟨g₁.1.2, (hco _ _).2 h'⟩ ⟨g₂.1.2, (hco _ _).2 rfl⟩` as an intermediate fact. Conclude with `Subtype.ext (Subtype.ext this)`. Introduce and unpack `⟨U, hU, hd⟩`. Take `⟨c, rfl⟩` from `exists_rowKer s U hd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, ⟨hgR, hgc⟩, -⟩` from `hR.2 (incG c) ⟨_, rfl⟩`. Establish `e` using `(hco ⟨g, hgR⟩ c).1 hgc`. Conclude with `⟨⟨⟨g, hgR⟩, (hint _).2 (e ▸ hU)⟩, Subtype.ext e⟩`. Rewrite using `[← Nat.card_eq_of_bijective f hf, ← Finset.sum_coe_sort, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Simplify using `only [ParHecke.intInd]`.
-
-Rewrite using `[Finset.sum_boole]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ParHecke.CosetSubL.sum_intInd_cosets_up : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (D D' : Type) [Fintype D] [DecidableEq D] [Fintype D'] [DecidableEq D'] (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k → ∀ (s : Finset D') RK, IsRepsK (torusElt k D' ϖ (indic s)) RK → ∀ y : Matrix D' D k, ((¬ ∀ i j, y i j ∈ 𝒪[k]) → ∑ g ∈ RK, intInd ((g⁻¹).1 * y) = 0) ∧ ∀ y₀ : Matrix D' D 𝒪[k], y = y₀.map (algebraMap 𝒪[k] k) → ∑ g ∈ RK, intInd ((g⁻¹).1 * y) = (Nat.card {U : Submodule 𝓀[k] (D' → 𝓀[k]) // LinearMap.range (y₀.map (IsLocalRing.residue 𝒪[k])).mulVecLin ≤ U ∧ Module.finrank 𝓀[k] U + s.card = Fintype.card D'} : ℂ) := by
   intro k _ _ _ _ D D' _ _ _ _ ϖ hϖ s RK hR y

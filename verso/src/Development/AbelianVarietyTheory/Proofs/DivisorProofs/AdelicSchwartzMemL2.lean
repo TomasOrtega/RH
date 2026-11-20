@@ -6,7 +6,7 @@ open NumberField MeasureTheory
 namespace GlobalTheory.WeilM
 
 /- English proof (translation)
-Introduce `F _ _ κ _`. Use `letI : MeasurableSpace (κ → AdeleRing (𝓞 F) F) := borel _`. Introduce `μ hμ Φ hΦ`. Take `⟨n, g, f, hg, rfl⟩` from `GlobalTheory.ThetaSobolevBase.exists_sumPure hΦ`. Conclude with `memLp_finset_sum' _ fun i _ => GlobalTheory.ThetaSobolevBase.memLp_pureA μ hμ (f i) (hg i)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem schA_memLp_two : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ],
     letI : MeasurableSpace (κ → AdeleRing (𝓞 F) F) := borel _

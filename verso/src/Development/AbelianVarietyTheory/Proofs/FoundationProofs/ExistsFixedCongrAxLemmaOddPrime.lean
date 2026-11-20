@@ -13,11 +13,11 @@ section Step
 variable {K : Type} [Field K] {A : ValuationSubring K} {ϖ : K}
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on generalizing k with`. Consider the case `empty`. Break down `k with _ | k` into its components or cases. Use `(ge_natCast_iff (A := A) h0 h1 (w := 1) (m := 0)).mpr ⟨1, A.one_mem, by simp⟩` as an intermediate fact. Simplify using `using this`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `ge_zero _` using `[coeff_one]`. Consider the case `cons d s ih`. Establish `hd` using `hs d (Multiset.mem_cons_self _ _)`. Establish `ih'` using `ih fun x hx => hs x (Multiset.mem_cons_of_mem hx)`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, add_mul, coeff_add, coeff_C_mul, Multiset.card_cons]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Ge.add ?_ ((hd.mul h0 h1 (ih' k)).mono (le_of_eq (by push_cast; ring)))` and prove the remaining obligations. Break down `k with _ | k` into its components or cases. Rewrite using `[coeff_X_mul_zero]`. Conclude with `ge_zero _`. Rewrite using `[coeff_X_mul]; exact (ih' k).mono (le_of_eq (by push_cast; ring))`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ge_coeff_prod (h0 : ϖ ≠ 0) (h1 : A.valuation ϖ ≤ 1) {q : ℚ} (s : Multiset K) (hs : ∀ d ∈ s, Ge A ϖ d q) (k : ℕ) :
     Ge A ϖ ((s.map fun d => X + C d).prod.coeff k) (((s.card : ℚ) - k) * q) := by
@@ -37,9 +37,9 @@ theorem ge_coeff_prod (h0 : ϖ ≠ 0) (h1 : A.valuation ϖ ≤ 1) {q : ℚ} (s :
     · rw [coeff_X_mul]; exact (ih' k).mono (le_of_eq (by push_cast; ring))
 
 /- English proof (translation)
-Take `⟨d, hd, hmin⟩` from `Finset.exists_min_image s.toFinset A.valuation (Multiset.toFinset_nonempty.mpr hs)`. Use `⟨d, Multiset.mem_toFinset.mp hd, Ge.root (Multiset.card_pos.mpr hs) (h.of_le ?_)⟩` and prove the remaining obligations. Rewrite using `[map_pow, map_multiset_prod, ← Multiset.card_map A.valuation s]`. Use `Multiset.pow_card_le_prod fun x hx => ?_` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.mp hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hmin y (Multiset.mem_toFinset.mpr hy)`.
+A detailed English derivation is pending.
 -/
 theorem exists_ge_of_prod (s : Multiset K) (hs : s ≠ 0) {q : ℚ} (h : Ge A ϖ s.prod (q * s.card)) :
     ∃ d ∈ s, Ge A ϖ d q := by
@@ -52,19 +52,17 @@ theorem exists_ge_of_prod (s : Multiset K) (hs : s ≠ 0) {q : ℚ} (h : Ge A ϖ
   exact hmin y (Multiset.mem_toFinset.mpr hy)
 
 /- English proof (translation)
-Use `set P : K[X] := ∏ t ∈ T, (X - C t) with hP`. Establish `hPm : P.Monic` using `monic_prod_of_monic _ _ fun t _ => monic_X_sub_C t`. Establish `hPd : P.natDegree = T.card` using `by simp [hP]`. Use `set Q := hasseDeriv j P with hQ`. Establish `hQd : Q.natDegree = T.card - j` using `by rw [hQ, natDegree_hasseDeriv, hPd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlc : Q.leadingCoeff = ((T.card.choose j : ℕ) : K)`. Rewrite using `[leadingCoeff, hQd, hQ, hasseDeriv_coeff, Nat.sub_add_cancel hj.le, ← hPd, hPm.coeff_natDegree, mul_one]`. Establish `hcard : Q.roots.card = Q.natDegree` using `IsAlgClosed.card_roots_eq_natDegree`. Establish `hfac` using `C_leadingCoeff_mul_prod_multiset_X_sub_C hcard`. Establish `hev : Q.eval α = ((T.val.map fun t => α - t).map fun d => X + C d).prod.coeff j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hQ, ← taylor_coeff, taylor_apply, hP, prod_comp, Multiset.map_map]`. Use `congr 1`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `[add_sub_assoc]`. Establish `hge` using `ge_coeff_prod h0 h1 (T.val.map fun t => α - t) (q := a) (by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `d hd`. Take `⟨t, ht, rfl⟩` from `Multiset.mem_map.mp hd`. Conclude with `hT t ht) j`. Rewrite `hge` using `[← hev, ← hfac, eval_mul, eval_C, hlc, eval_multiset_prod, Multiset.map_map]`. Establish `hdiv` using `hge.div h0 h1 hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 0 < T.card - j` using `Nat.sub_pos_of_lt hj`. Take `⟨d, hd, hd'⟩` from `exists_ge_of_prod (A := A) (ϖ := ϖ) (q := a - e / ((T.card - j : ℕ) : ℚ)) (Q.roots.map ((fun p => eval α p) ∘ fun a => X - C a)) (by`. Rewrite using `[← Multiset.card_pos, Multiset.card_map, hcard, hQd]`. Conclude with `hpos)`. Use the proof step `(hdiv.mono (le_of_eq (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[Multiset.card_map, Multiset.card_map, hcard, hQd, Finset.card_val]`. Establish `: ((T.card - j : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast hpos.ne'`. Rewrite using `[← Nat.cast_sub hj.le]`. Use the proof step `field_simp)))`. Take `⟨β, hβ, rfl⟩` from `Multiset.mem_map.mp hd`.
-
-Conclude with `⟨β, hβ, by simpa using hd'⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_root_hasseDeriv [IsAlgClosed K] [CharZero K] (h0 : ϖ ≠ 0) (h1 : A.valuation ϖ ≤ 1) (T : Finset K) (α : K) {a : ℚ}
     (hT : ∀ t ∈ T, Ge A ϖ (α - t) a) {j e : ℕ} (hj : j < T.card)
@@ -111,7 +109,7 @@ variable {K : Type} [Field K] [Algebra ℚ K] {A : ValuationSubring K}
 def loss (p n : ℕ) : ℚ := (p : ℚ) / ((p : ℚ) - 1) ^ 2 * (1 - 1 / (p : ℚ) ^ Nat.log p n)
 
 /- English proof (translation)
-Establish `h1 : (1 : ℚ) ≤ p` using `by exact_mod_cast hp.one_le`. Unfold `loss`. Use `gcongr`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem loss_mono {p n n' : ℕ} (hp : p.Prime) (h : n ≤ n') : loss p n ≤ loss p n' := by
   have h1 : (1 : ℚ) ≤ p := by exact_mod_cast hp.one_le
@@ -119,16 +117,16 @@ theorem loss_mono {p n n' : ℕ} (hp : p.Prime) (h : n ≤ n') : loss p n ≤ lo
   gcongr
 
 /- English proof (translation)
-Use `loss_mono hp (Nat.zero_le n)` as an intermediate fact. Simplify `this` using `[loss]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem loss_nonneg {p : ℕ} (hp : p.Prime) (n : ℕ) : 0 ≤ loss p n := by
   have := loss_mono hp (Nat.zero_le n)
   simpa [loss] using this
 
 /- English proof (translation)
-Establish `h1 : (3 : ℚ) ≤ p` using `by exact_mod_cast hp`. Establish `h2 : (p : ℚ) / ((p : ℚ) - 1) ^ 2 ≤ 1`. Rewrite using `[div_le_one (by nlinarith)]; nlinarith`. Establish `h3 : (0 : ℚ) ≤ 1 / (p : ℚ) ^ Nat.log p n` using `by positivity`. Establish `h4 : (0 : ℚ) ≤ (p : ℚ) / ((p : ℚ) - 1) ^ 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `loss`. Use polynomial arithmetic with `[mul_nonneg h3 h4]`.
+Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem loss_le_one {p : ℕ} (hp : 3 ≤ p) (n : ℕ) : loss p n ≤ 1 := by
   have h1 : (3 : ℚ) ≤ p := by exact_mod_cast hp
@@ -140,15 +138,13 @@ theorem loss_le_one {p : ℕ} (hp : 3 ≤ p) (n : ℕ) : loss p n ≤ 1 := by
   nlinarith [mul_nonneg h3 h4]
 
 /- English proof (translation)
-Establish `hc0 : c ≠ 0` using `by rintro rfl; exact hc (dvd_zero _)`. Take `⟨k, u, hu, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hc0 p hp.one_lt.ne'`. Establish `hk : k ≤ e`. Assume the negation of the conclusion as `hk`. Conclude with `hc ((pow_dvd_pow p (by omega)).mul_right u)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hint : ∀ z : ℤ, A.valuation (z : K) ≤ 1` using `fun z => (A.valuation_le_one_iff _).mpr (intCast_mem A z)`. Establish `hu1 : 1 ≤ A.valuation (u : K)`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Take `⟨s, t, hst⟩ : IsCoprime (p : ℤ) (u : ℤ)` from `Nat.isCoprime_iff_coprime.mpr ((Nat.Prime.coprime_iff_not_dvd hp).mpr hu)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : (s : K) * p + t * u = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → K) hst`. Establish `: A.valuation ((s : K) * p + t * u) < 1`. Use `Valuation.map_add_lt _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hint s)) h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hint t)) hlt`. Rewrite `this` using `[e1, map_one]`. Conclude with `lt_irrefl _ this`. Rewrite using `[Nat.cast_mul, Nat.cast_pow, map_mul, map_pow]`.
-
-Conclude with `(pow_le_pow_right_of_le_one' h1.le hk).trans (le_mul_of_one_le_right' hu1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_natCast_ge {p : ℕ} (hp : p.Prime) (h1 : A.valuation (p : K) < 1) {c e : ℕ} (hc : ¬ p ^ (e + 1) ∣ c) :
     A.valuation (p : K) ^ e ≤ A.valuation (c : K) := by
@@ -173,25 +169,21 @@ theorem valuation_natCast_ge {p : ℕ} (hp : p.Prime) (h1 : A.valuation (p : K) 
   exact (pow_le_pow_right_of_le_one' h1.le hk).trans (le_mul_of_one_le_right' hu1)
 
 /- English proof (translation)
-Use `haveI : CharZero K := algebraRat.charZero K`. Establish `h0 : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `α a S hS hαS hα`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set T := S.filter fun t => ∃ h ∈ H, h α = t with hT`. Establish `hmem : ∀ t, t ∈ T ↔ ∃ h ∈ H, h α = t` using `fun t => by`. Rewrite using `[hT, Finset.mem_filter]`. Conclude with `⟨fun h => h.2, fun ⟨h, hh, e⟩ => ⟨e ▸ hαS h hh, h, hh, e⟩⟩`. Establish `hTn : T.card ≤ n` using `(Finset.card_filter_le _ _).trans hS`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h2 : 2 ≤ T.card`. Use `swap`. Use `⟨α, fun h hh => ?_, by simpa using ge_zero _⟩` and prove the remaining obligations. Conclude with `Finset.card_le_one.mp (by omega : T.card ≤ 1) _ ((hmem _).mpr ⟨h, hh, rfl⟩) _ ((hmem _).mpr ⟨1, H.one_mem, rfl⟩)`. Take `⟨j, e, hj0, hj, hdvd, hloss⟩` from `GlobalTheory.T.exists_choose_small_padicVal_ax_induction p hp T.card h2`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ + loss p _ ≤ loss p _ at hloss`. Take `⟨β, hβ, hαβ⟩` from `exists_root_hasseDeriv h0 h1.le T α (a := a) (fun t ht => by`. Take `⟨h, hh, rfl⟩` from `(hmem t).mp ht`. Conclude with `(hα h hh).symm) hj (valuation_natCast_ge hp h1 hdvd)`. Use `set P : K[X] := ∏ t ∈ T, (X - C t) with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hPd : P.natDegree = T.card` using `by simp [hP]`. Establish `hQd : (hasseDeriv j P).natDegree = T.card - j` using `by rw [natDegree_hasseDeriv, hPd]`. Establish `hPmap : ∀ h ∈ H, P.map (h : K →+* K) = P`. Introduce `h hh`. Rewrite using `[hP, Polynomial.map_prod]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.prod_bij (fun t _ => h t) (fun t ht => ?_) (fun t _ t' _ e => h.injective e) (fun t ht => ?_) (fun t _ => by simp)` and prove the remaining obligations. Take `⟨g, hg, rfl⟩` from `(hmem t).mp ht`. Conclude with `(hmem _).mpr ⟨h * g, H.mul_mem hh hg, rfl⟩`. Take `⟨g, hg, rfl⟩` from `(hmem t).mp ht`. Conclude with `⟨(h⁻¹ * g) α, (hmem _).mpr ⟨_, H.mul_mem (H.inv_mem hh) hg, rfl⟩, by`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← AlgEquiv.mul_apply, mul_inv_cancel_left]⟩`. Establish `hQmap : ∀ h ∈ H, (hasseDeriv j P).map (h : K →+* K) = hasseDeriv j P`. Introduce `h hh`. Use extensionality with `k`. Rewrite using `[coeff_map, hasseDeriv_coeff, map_mul, map_natCast, ← coeff_map, hPmap h hh]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `he : (0 : ℚ) ≤ e / ((T.card - j : ℕ) : ℚ)` using `by positivity`. Take `⟨y, hy, hβy⟩` from `ih (T.card - j) (by omega) β (a - e / ((T.card - j : ℕ) : ℚ)) (hasseDeriv j P).roots.toFinset ((Multiset.toFinset_card_le _).trans ((card_roots' _).trans hQd.le)) (fun h hh => by`. Rewrite `*` using `[Multiset.mem_toFinset, mem_roots']`. Use `⟨hβ.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hQmap h hh]`.
-
-Conclude with `hβ.2.map) (fun h hh => by`. Establish `k1` using `hαβ.symm.map h0 (h : K →+* K) (hH h hh) (map_natCast _ p)`. Rewrite `k1` using `[map_sub]`. Conclude with `Ge.trans k1 (((hα h hh).mono (by linarith)).trans hαβ))`. Establish `hm` using `loss_mono hp hTn`.
-
-Establish `hnn` using `loss_nonneg hp (T.card - j)`. Conclude with `⟨y, hy, (hαβ.mono (by linarith)).trans (hβy.mono (by linarith))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fixed [IsAlgClosed K] {p : ℕ} (hp : p.Prime) (h1 : A.valuation (p : K) < 1) (H : Subgroup (K ≃ₐ[ℚ] K))
     (hH : ∀ h ∈ H, ∀ x ∈ A, h x ∈ A) (n : ℕ) :
@@ -252,15 +244,13 @@ end Orbit
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.Ord2 in
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Establish `h0 : (l : Ω) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Take `⟨v, hv, hlv⟩` from `hA`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : A.valuation (l : Ω) < 1` using `by simpa using (hv _).mpr hlv`. Establish `hint : IsIntegral ℚ x` using `(IsAlgClosure.isAlgebraic.isAlgebraic x).isIntegral`. Establish `h3 : 3 ≤ l` using `by have := hp.two_le; omega`. Take `⟨y, hy, hxy⟩` from `exists_fixed hp h1 H (fun h hh z hz => (apply_mem_iff_of_mem_Dec (hH hh) z).mpr hz) _ x ((m + 1 : ℕ) : ℚ) ((minpoly ℚ x).aroots Ω).toFinset le_rfl (fun h _ => by`. Rewrite using `[Multiset.mem_toFinset, mem_aroots]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨minpoly.ne_zero hint, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_algHom_apply, minpoly.aeval, map_zero])`. Use the proof step `(fun h hh => (ge_natCast_iff h0 h1.le).mpr (hcg h hh))`. Establish `hm : Ge A (l : Ω) (x - y) (m : ℚ)` using `hxy.mono (by`. Use `loss_le_one h3 ((minpoly ℚ x).aroots Ω).toFinset.card` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Use the proof step `linarith)`. Take `⟨z, hz, e⟩` from `(ge_natCast_iff h0 h1.le).mp hm`. Use `⟨y, ?_, hy, z, hz, e⟩` and prove the remaining obligations. Establish `: y = x - (l : Ω) ^ m * z` using `by rw [← e]; ring`.
-
-Rewrite using `[this]`. Conclude with `A.sub_mem hx (A.mul_mem _ _ (A.pow_mem (natCast_mem A l) m) hz)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fixed_congr (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     (A : ValuationSubring Ω) (hA : OverL l A) (H : Subgroup (G ℚ Ω)) (hH : H ≤ Dec (F := ℚ) A) (m : ℕ) (x : Ω) (hx : x ∈ A)

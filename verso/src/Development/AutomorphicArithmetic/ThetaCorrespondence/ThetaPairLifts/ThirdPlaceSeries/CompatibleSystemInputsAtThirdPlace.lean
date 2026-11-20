@@ -24,11 +24,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PtInputsX
 /- English proof (translation)
-Introduce `hL hP hX`. Establish `h` using `(((_root_.GlobalTheory.T.compatible_system_third_place_linked_data hL hP hX).and (_root_.GlobalTheory.HeightCounting.Up.JointConditionThird.upper_ramification_joint_condition_third_jump_alt hL hP)).and (_root_.GlobalTheory.T.third_member_upper_ramification' hL hP)).and ((_root_.G …`. Use `h.trans (StepW.of_all fun K B f T w _ _ hh P x l => ?_)` and prove the remaining obligations. Take `⟨⟨⟨h1, h2⟩, h3⟩, h45, h6⟩` from `hh`. Establish `h4 : _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → GlobalTheory.NRows.LamUsed D'` using `⟨fun _ => ∅, fun _ _ _ => (h45 P x).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h5 : _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → SumRepresentations.adm8 D'` using `⟨fun _ => ∅, fun _ _ _ => (h45 P x).1⟩`. Establish `e` using `fun (P₁ P₂ : D7 → Prop) => _root_.GlobalTheory.CoefDuty.LargeRing.evO_laws_alt _ _ _ l.a.A l.mt.M l.c.ch l.c.tp.tup P₁ P₂`. Establish `a` using `(e _ _).1 (h1 P x l) ((e _ _).1 (h2 P x l) ((e _ _).1 (h3 P x l) ((e _ _).1 h4 ((e _ _).1 h5 (h6 P x l)))))`. Use `(e _ _).2.1 (fun D' hD' hO => ?_) a` and prove the remaining obligations. Take `⟨t1, t2, t3, t4, t5, t6⟩` from `hD'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨T⟩` from `t1 hO`. Conclude with `⟨⟨T, ⟨hO, t2 hO, t3 hO, t4 hO, t5 hO, t6 hO, _root_.GlobalTheory.T.galoisRep_descends_at_real_places hP.decay hP.howe hX D' T.P.cf T.P.C T.P.tp T.X⟩⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inputs_at_third_place_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → _root_.GlobalTheory.NRows.GeometricGaloisRepCompatibility →
     AllSt fun _ _ _ _ _ _ x => ∀ l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x,
@@ -57,7 +57,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.PtInputsX.inputs_at_third_place_alt | exact _root_.GlobalTheory.PtInputsX.inputs_at_third_place_alt | (intros; apply _root_.GlobalTheory.PtInputsX.inputs_at_third_place_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.eventually_nonempty_inputs_of_level_c : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → _root_.GlobalTheory.NRows.GeometricGaloisRepCompatibility → AllSt fun _ _ _ _ _ _ x => ∀ l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x, _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → Nonempty (_root_.GlobalTheory.NRows.LinkedInputs hL D') := by
   first | exact @_root_.GlobalTheory.PtInputsX.inputs_at_third_place_alt | exact _root_.GlobalTheory.PtInputsX.inputs_at_third_place_alt | (intros; apply _root_.GlobalTheory.PtInputsX.inputs_at_third_place_alt <;> assumption)

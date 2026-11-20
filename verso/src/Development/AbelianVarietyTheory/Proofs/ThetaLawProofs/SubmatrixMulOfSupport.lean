@@ -5,13 +5,13 @@ open GlobalTheory.KeyKa
 namespace GlobalTheory.KeyKa
 
 /- English proof (translation)
-Establish `hGG' : G' * G = 1` using `mul_eq_one_comm.mp hGG`. Set `G'' : Matrix Ix Ix R` to `Matrix.of fun p q => if deg p = deg q then G' p q else 0`. Establish `h1 : G * G'' = 1`. Use extensionality with `p q`. Distinguish the cases in `hpq : deg p = deg q`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← hGG, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Distinguish the cases in `hr : deg r = deg q`. Simplify using `[G'', hr]`. Rewrite using `[hG p r (by omega)]; simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply, Matrix.one_apply_ne (by rintro rfl; exact hpq rfl)]`. Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations. Distinguish the cases in `hr : deg r = deg q`. Rewrite using `[hG p r (by omega)]; simp`. Simplify using `[G'', hr]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : G' = G''`. Combine the equalities or inequalities in the displayed calculation. Introduce `p q hpq`. Rewrite using `[h2]`. Simplify using `[G'', hpq]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem graded_inv {R Ix : Type} [CommRing R] [Fintype Ix] [DecidableEq Ix] (deg : Ix → ℕ)
     (G G' : Matrix Ix Ix R) (hG : ∀ p q, deg p ≠ deg q → G p q = 0) (hGG : G * G' = 1) :
@@ -38,7 +38,7 @@ theorem graded_inv {R Ix : Type} [CommRing R] [Fintype Ix] [DecidableEq Ix] (deg
   rw [h2]; simp [G'', hpq]
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `symm`. Conclude with `Fintype.sum_of_injective i hi _ (fun r => A (f p) r * B r (g q)) (fun r hr => h p q r hr) (fun _ => rfl)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. A detailed English derivation is pending.
 -/
 theorem submatrix_mul_of_support {R Ix J K L : Type} [CommRing R] [Fintype Ix] [Fintype L]
     (A B : Matrix Ix Ix R) (f : J → Ix) (g : K → Ix) (i : L → Ix) (hi : Function.Injective i)
@@ -52,21 +52,19 @@ theorem submatrix_mul_of_support {R Ix J K L : Type} [CommRing R] [Fintype Ix] [
     (fun r hr => h p q r hr) (fun _ => rfl)
 
 /- English proof (translation)
-Introduce `R Ix _ _ _ deg D G G' t hG hGG _ hT`. Take `⟨h, hh, hDh, e, rfl⟩` from `hT`. Establish `hG'` using `graded_inv deg G G' hG hGG`. Establish `hGG' : G' * G = 1` using `mul_eq_one_comm.mp hGG`. Establish `hev : ∀ (p : {p // Even (deg p)}) r, r ∉ Set.range (fun p : {p // Even (deg p)} => p.1) → deg p.1 ≠ deg r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p r hr hd`. Conclude with `hr ⟨⟨r, hd ▸ p.2⟩, rfl⟩`. Establish `hod : ∀ (p : {p // Even (deg p)}) r, r ∉ Set.range (fun p : {p // Even (deg p)} => (e p).1) → deg r ≠ deg (e p).1`. Introduce `p r hr hd`. Conclude with `hr ⟨e.symm ⟨r, hd ▸ (e p).2⟩, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨_, ⟨G' * h * G, ?_, ?_, e, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `p q hpq`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations. Distinguish the cases in `hr : deg r = deg q`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `hs : deg p = deg s`. Rewrite using `[hh s r (by omega)]; simp`. Rewrite using `[hG' p s hs]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hG r q hr]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : G' * D * G + G' * h * G = G' * (D + h) * G` using `by noncomm_ring`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e2 : (G' * (D + h) * G).submatrix (fun p : {p // Even (deg p)} => p.1) (fun p => (e p).1) = G'.submatrix (fun p : {p // Even (deg p)} => p.1) (fun p : {p // Even (deg p)} => p.1) * (D + h).submatrix (fun p : {p // Even (deg p)} => p.1) (fun p => (e p).1) * G.submatrix (fun p => ( …`. Rewrite using `[submatrix_mul_of_support (G' * (D + h)) G _ _ (fun p => (e p).1) (Subtype.val_injective.comp e.injective) (fun p q r hr => by rw [hG _ _ (hod q r hr), mul_zero]), submatrix_mul_of_support G' (D + h) _ _ (fun p : {p // Even (deg p)} => p.1) Subtype.val_injective (fun p q r hr => …`. Establish `e3 : (G.submatrix (fun p => (e p).1) (fun p => (e p).1)).det = (G.submatrix (fun p : {p // ¬ Even (deg p)} => p.1) (fun p : {p // ¬ Even (deg p)} => p.1)).det`. Rewrite using `[← Matrix.det_submatrix_equiv_self e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : (G'.submatrix (fun p : {p // Even (deg p)} => p.1) (fun p : {p // Even (deg p)} => p.1)).det * (G.submatrix (fun p : {p // Even (deg p)} => p.1) (fun p : {p // Even (deg p)} => p.1)).det = 1`. Rewrite using `[← Matrix.det_mul, ← submatrix_mul_of_support G' G _ _ (fun p : {p // Even (deg p)} => p.1) Subtype.val_injective (fun p q r hr => by rw [hG' _ _ (hev p r hr), zero_mul]), hGG', Matrix.submatrix_one _ Subtype.val_injective, Matrix.det_one]`. Rewrite using `[e1, e2, Matrix.det_mul, Matrix.det_mul, e3]`. Use `set a := (G'.submatrix (fun p : {p // Even (deg p)} => p.1) (fun p : {p // Even (deg p)} => p.1)).det`. Use `set b := (G.submatrix (fun p : {p // Even (deg p)} => p.1) (fun p : {p // Even (deg p)} => p.1)).det`.
-
-Use `set c := (G.submatrix (fun p : {p // ¬ Even (deg p)} => p.1) (fun p : {p // ¬ Even (deg p)} => p.1)).det`. Use `set d := ((D + h).submatrix (fun p : {p // Even (deg p)} => p.1) (fun p => (e p).1)).det`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem torsSq_conj : ∀ (R Ix : Type) [CommRing R] [Fintype Ix] [DecidableEq Ix] (deg : Ix → ℕ) (D : Matrix Ix Ix R) (G G' : Matrix Ix Ix R) (t : R), (∀ p q, deg p ≠ deg q → G p q = 0) → G * G' = 1 → IsCx deg D → TorsSq deg D t → ∃ t', TorsSq deg (G' * D * G) t' ∧ t' * (G.submatrix (fun p : {p // Even (deg p)} => p.1) (fun p : {p // Even (deg p)} => p.1)).det ^ 2 = t * (G.submatrix (fun p : {p // ¬ Even (deg p)} => p.1) (fun p : {p // ¬ Even (deg p)} => p.1)).det ^ 2 := by
   intro R Ix _ _ _ deg D G G' t hG hGG _ hT

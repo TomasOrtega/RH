@@ -13,17 +13,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PlaceTensorFin
 
 /- English proof (translation)
-Establish `hh` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1`. Establish `ip` using `GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨w, rfl⟩` from `hy`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hh _ _ h₀, fun φ => φ w, fun _ _ => rfl, fun f hf => ⟨_, hh (wAt p w) f hf, fun _ _ => rfl⟩, fun _ _ => rfl⟩`. Consider the case `zero`. Establish `hz : ∀ g, ipO μ 𝓕 (0 : WO S T → ℂ) g = 0` using `fun g => by simp [ipO]`. Conclude with `⟨GlobalTheory.WeilVacMove.isTheta_zero, fun _ => 0, fun _ _ => by simp, fun f _ => ⟨0, GlobalTheory.WeilVacMove.isTheta_zero, fun g _ => hz g⟩, fun g _ => hz g⟩`. Consider the case `add y z _ _ hy hz`.
+Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨ty, L, L1, L2, L3⟩` from `hy`. Take `⟨tz, M, M1, M2, M3⟩` from `hz`. Use `⟨GlobalTheory.WeilVacMove.isTheta_add ty tz, fun φ => L φ + M φ, fun c φ => ?_, fun f hf => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Simplify using `only [L1, M1, mul_add]`. Take `⟨a, ta, ha⟩` from `L2 f hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨b, tb, hb⟩` from `M2 f hf`. Use `⟨a + b, GlobalTheory.WeilVacMove.isTheta_add ta tb, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[((ip a g ta hg).2.2.2.1 b tb).1, ha g hg, hb g hg]`. Rewrite using `[((ip y g ty hg).2.2.2.1 z tz).1, L3 g hg, M3 g hg]`. Consider the case `smul c y _ hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨ty, L, L1, L2, L3⟩` from `hy`. Use `⟨GlobalTheory.WeilVacMove.isTheta_smul c ty, fun φ => c * L φ, fun d φ => ?_, fun f hf => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Simplify using `only [L1]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨a, ta, ha⟩` from `L2 f hf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Use `⟨c • a, GlobalTheory.WeilVacMove.isTheta_smul c ta, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[((ip a g ta hg).2.2.1 c).1, ha g hg]`. Rewrite using `[((ip y g ty hg).2.2.1 c).1, L3 g hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLocOp_of_mem_span {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hψ : IsStdChar D ψ (-1)) (hμ : IsCovolOne (ratL T S) μ 𝓕) {f₀ : WO S T → ℂ} (h₀ : IsThetaFunO ψ S T f₀) (p : Place D)
@@ -60,7 +60,7 @@ theorem isLocOp_of_mem_span {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp
     · rw [((ip y g ty hg).2.2.1 c).1, L3 g hg]
 
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT ΛS ΛT f₀ _ _ hb hμ v x hx` and use `(isLocOp_of_mem_span (base_std hb) hμ (base_theta hb) (.inl v) (GlobalTheory.T.localFactor_mem_span_localHeisenbergTranslates D ψ θ S T sS sT ΛS ΛT f₀ hb v x hx)).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLocOp_of_isLocal_fin : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsBase ψ θ S T sS sT ΛS ΛT f₀ → IsCovolOne (ratL T S) μ 𝓕 → ∀ (v : FinPl D) (x : WO S T → ℂ), IsLocal ψ θ S T sS sT ΛS ΛT (.inl v) x → IsLocOp ψ S T μ 𝓕 f₀ (.inl v) x :=
   fun D ψ θ S T sS sT ΛS ΛT f₀ _ _ hb hμ v x hx =>

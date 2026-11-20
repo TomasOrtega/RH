@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `n hn`. Simplify using `only [pow_zero, pow_one] at hn`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `⟨1, by rw [hn]; ring⟩`. Consider the case `succ m ih`. Introduce `n hn`. Establish `hnil : IsNilpotent (c * n)` using `⟨2 ^ (m + 1), by rw [mul_pow, hn, mul_zero]⟩`. Take `⟨v, hv⟩` from `(hnil.isUnit_one_add).exists_right_inv`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hn' : (-(c ^ 2 * n ^ 2 * v ^ 2)) ^ (2 ^ m) = 0`. Establish `: -(c ^ 2 * n ^ 2 * v ^ 2) = n ^ 2 * (-(c ^ 2 * v ^ 2))` using `by ring`. Rewrite using `[this, mul_pow, ← pow_mul, ← pow_succ', hn, zero_mul]`. Take `⟨z, hz⟩` from `ih _ hn'`. Use `⟨(1 + c * n) * z, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(1 + c * n) ^ 2 * hz + (c ^ 2 * n ^ 2 * ((1 + c * n) * v + 1)) * hv + (-n) * hc`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isSquare_one_add_of_pow_two_pow_eq_zero {A : Type} [CommRing A] (c : A)
     (hc : 2 * c = 1) : ∀ (m : ℕ) (n : A), n ^ (2 ^ m) = 0 → IsSquare (1 + n) := by
@@ -32,7 +32,7 @@ theorem isSquare_one_add_of_pow_two_pow_eq_zero {A : Type} [CommRing A] (c : A)
       + (-n) * hc
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `hn`. Conclude with `isSquare_one_add_of_pow_two_pow_eq_zero c hc N n (pow_eq_zero_of_le (Nat.lt_two_pow_self).le hN)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSquare_one_add_of_isNilpotent {A : Type} [CommRing A] (c : A) (hc : 2 * c = 1)
     {n : A} (hn : IsNilpotent n) : IsSquare (1 + n) := by
@@ -41,37 +41,33 @@ theorem isSquare_one_add_of_isNilpotent {A : Type} [CommRing A] (c : A) (hc : 2 
     (pow_eq_zero_of_le (Nat.lt_two_pow_self).le hN)
 
 /- English proof (translation)
-Introduce `k _ _ hL A _ _ _`. Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite k A`. Establish `hc : (2 : A) * algebraMap k A (1 / 2) = 1`. Establish `h2 : (2 : A) * algebraMap k A (1 / 2) = algebraMap k A (2 * (1 / 2))`. Rewrite using `[map_mul, map_ofNat]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Evaluate the numerical expressions. Set `Q : MaximalSpectrum A → Type` to `fun I => (A ⧸ I.asIdeal)ˣ ⧸ (powMonoidHom 2 : (A ⧸ I.asIdeal)ˣ →* (A ⧸ I.asIdeal)ˣ).range`. Use `haveI hQ : ∀ I, Finite (Q I) := by`. Introduce `I`.
+Evaluate the numerical expressions. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `I.isMaximal` as an intermediate fact. Use `letI := Ideal.Quotient.field I.asIdeal`. Conclude with `hL (A ⧸ I.asIdeal)`. Set `φ : Aˣ →* ((I : MaximalSpectrum A) → Q I)` to `MonoidHom.pi fun I => (QuotientGroup.mk' _).comp (Units.map (Ideal.Quotient.mk I.asIdeal).toMonoidHom)`. Establish `key : ∀ (I : MaximalSpectrum A) (u : Aˣ), φ u I = 1 ↔ Units.map (Ideal.Quotient.mk I.asIdeal).toMonoidHom u ∈ (powMonoidHom 2 : (A ⧸ I.asIdeal)ˣ →* (A ⧸ I.asIdeal)ˣ).range` using `fun I u => QuotientGroup.eq_one_iff _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : (powMonoidHom 2 : Aˣ →* Aˣ).range ≤ φ.ker`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[MonoidHom.mem_ker]`. Use function extensionality and compare the values at `I`. Rewrite using `[Pi.one_apply, key]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨Units.map (Ideal.Quotient.mk I.asIdeal).toMonoidHom y, by simp⟩`. Establish `hk : ∀ x : Aˣ, φ x = 1 → x ∈ (powMonoidHom 2 : Aˣ →* Aˣ).range`. Introduce `x hx`. Establish `hloc : ∀ I : MaximalSpectrum A, ∃ w : (A ⧸ I.asIdeal)ˣ, (w : A ⧸ I.asIdeal) ^ 2 = Ideal.Quotient.mk I.asIdeal x`. Introduce `I`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(key I x).1 (congrFun hx I)`. Take `⟨w, hw⟩` from `h1`. Use `⟨w, ?_⟩` and prove the remaining obligations. Use `congrArg (fun u : (A ⧸ I.asIdeal)ˣ => (u : A ⧸ I.asIdeal)) hw` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose w hw using hloc`. Take `⟨a, ha⟩` from `Ideal.pi_quotient_surjective (I := fun I : MaximalSpectrum A => I.asIdeal) (fun I J h => MaximalSpectrum.isCoprime_of_ne h) (fun I => (w I : A ⧸ I.asIdeal))`. Establish `hmem : ∀ I : MaximalSpectrum A, (x : A) - a ^ 2 ∈ I.asIdeal`. Introduce `I`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[ha I, hw I, sub_self]`. Establish `hjac : (x : A) - a ^ 2 ∈ (⊥ : Ideal A).jacobson`. Use `Ideal.mem_sInf.2 ?_` and prove the remaining obligations. Introduce and unpack `J ⟨-, hJ⟩`. Conclude with `hmem ⟨J, hJ⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hnil : IsNilpotent ((x : A) - a ^ 2)`. Take `⟨N, hN⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := A)`. Use `⟨N, ?_⟩` and prove the remaining obligations. Use `Ideal.pow_mem_pow hjac N` as an intermediate fact. Rewrite `this` using `[hN]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`. Use `set m := (x : A) - a ^ 2 with hm`. Establish `ha2 : IsUnit (a ^ 2)`. Establish `: a ^ 2 = (x : A) + (-m)` using `by rw [hm]; ring`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hnil.neg.isUnit_add_left_of_commute x.isUnit (Commute.all _ _)`. Establish `hau : IsUnit a` using `(isUnit_pow_iff (by norm_num)).1 ha2`. Take `⟨b, hb⟩` from `hau`. Establish `hn2 : IsNilpotent (((b⁻¹ : Aˣ) : A) ^ 2 * m)` using `(Commute.all _ _).isNilpotent_mul_left hnil`. Take `⟨z, hz⟩` from `isSquare_one_add_of_isNilpotent _ hc hn2`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hzu : IsUnit z`. Establish `hu : IsUnit (1 + ((b⁻¹ : Aˣ) : A) ^ 2 * m)` using `hn2.isUnit_one_add`. Rewrite `hu` using `[hz]`. Conclude with `isUnit_of_mul_isUnit_left hu`. Use `⟨b * hzu.unit, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `ext`. Simplify using `only [powMonoidHom_apply, Units.val_pow_eq_pow_val, Units.val_mul, IsUnit.unit_spec]`. Establish `hbb : (b : A) * ((b⁻¹ : Aˣ) : A) = 1` using `by simp`. Establish `hxm : (x : A) = a ^ 2 + m` using `by rw [hm]; ring`. Rewrite using `[hxm, ← hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Take the linear combination `(b : A) ^ 2 * hz.symm + (m * ((b : A) * ((b⁻¹ : Aˣ) : A) + 1)) * hbb`. Set `ψ` to `QuotientGroup.lift _ φ hS`. Establish `hinj : Function.Injective ψ`. Introduce `p q hpq`. Proceed by induction on `p using QuotientGroup.induction_on with`.
-
-Consider the case `H x`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H y`. Rewrite using `[QuotientGroup.eq]`. Apply `hk` to reduce the goal to its premises.
-
-Establish `h1 : φ x = φ y` using `hpq`. Rewrite using `[map_mul, map_inv, h1, inv_mul_cancel]`. Conclude with `Finite.of_injective ψ hinj`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem units_modSq_finite_of_fields : ∀ (k : Type) [Field k] [CharZero k],
     (∀ (L : Type) [Field L] [Algebra k L] [FiniteDimensional k L],

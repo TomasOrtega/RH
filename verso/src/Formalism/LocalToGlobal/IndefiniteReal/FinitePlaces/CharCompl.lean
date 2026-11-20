@@ -18,7 +18,7 @@ def chiO (ψ : AddChar (AF D.host.F) ℂ) (a : Matrix (Fin T.rank) (Fin S.rank) 
   ψ (symplO S T z (ratW T S a))
 
 /- English proof (translation)
-Introduce `g hg z`. Take `⟨a, rfl⟩` from `(mem_ratL_iff S T g).1 hg`. Conclude with `hf a z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem periodic_of {f : MO S T → ℂ} (hf : ∀ a z, f (ratW T S a + z) = f z) :
     ∀ g ∈ ratL T S, ∀ z, f (g + z) = f z := by
@@ -27,7 +27,7 @@ theorem periodic_of {f : MO S T → ℂ} (hf : ∀ a z, f (ratW T S a + z) = f z
   exact hf a z
 
 /- English proof (translation)
-Unfold `chiO`. Rewrite using `[symplO_add_left, AddChar.map_add_eq_mul, psi_rat hψ, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiO_periodic (hψ : IsStdChar D ψ (-1)) (a b : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (z : MO S T) :
     chiO S T ψ a (ratW T S b + z) = chiO S T ψ a z := by
@@ -43,7 +43,7 @@ def liftQ (f : MO S T → ℂ) (hf : ∀ a z, f (ratW T S a + z) = f z) : QO S T
     exact this.symm)
 
 /- English proof (translation)
-The claim follows from `hc.quotient_lift _`.
+A detailed English derivation is pending.
 -/
 theorem cont_liftQ (f : MO S T → ℂ) (hf : ∀ a z, f (ratW T S a + z) = f z) (hc : Continuous f) :
     Continuous (liftQ S T f hf) :=
@@ -53,11 +53,11 @@ def liftC (f : MO S T → ℂ) (hf : ∀ a z, f (ratW T S a + z) = f z) (hc : Co
   ⟨liftQ S T f hf, cont_liftQ S T f hf hc⟩
 
 /- English proof (translation)
-Take `⟨K, hK, hsub⟩` from `Formalism.IndefR.PHeisFC.FD_sub_compact T S`. Use `⟨?_⟩` and prove the remaining obligations. Establish `h : (Set.univ : Set (QO S T)) = (QuotientAddGroup.mk : MO S T → QO S T) '' K`. Use extensionality with `q`. Simplify using `only [Set.mem_univ, Set.mem_image, true_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨z, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Take `⟨a, ha⟩` from `exists_rat_shift S T z`. Use `⟨ratW T S a + z, hsub ha, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientAddGroup.eq]`. Rewrite using `[show -(ratW T S a + z) + z = ratW T S (-a) by rw [ratW_neg]; abel]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨-a, rfl⟩`. Rewrite using `[h]`. Conclude with `hK.image continuous_quotient_mk'`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compact_QO : CompactSpace (QO S T) := by
   obtain ⟨K, hK, hsub⟩ := Formalism.IndefR.PHeisFC.FD_sub_compact T S
@@ -85,7 +85,7 @@ theorem chiC_apply (hψ : IsStdChar D ψ (-1)) (a) (z : MO S T) :
     chiC S T hψ a (z : QO S T) = ψ (symplO S T z (ratW T S a)) := rfl
 
 /- English proof (translation)
-Use extensionality with `q`. Take `⟨z, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Simplify using `only [ContinuousMap.mul_apply, chiC_apply, ratW_add, symplO_add_right, AddChar.map_add_eq_mul]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem chiC_mul (hψ : IsStdChar D ψ (-1)) (a b : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     chiC S T hψ a * chiC S T hψ b = chiC S T hψ (a + b) := by
@@ -94,7 +94,7 @@ theorem chiC_mul (hψ : IsStdChar D ψ (-1)) (a b : Matrix (Fin T.rank) (Fin S.r
   simp only [ContinuousMap.mul_apply, chiC_apply, ratW_add, symplO_add_right, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Use extensionality with `q`. Take `⟨z, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Simplify using `only [ContinuousMap.one_apply, chiC_apply, ratW_zero, symplO_zero_right, AddChar.map_zero_eq_one]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem chiC_zero (hψ : IsStdChar D ψ (-1)) : chiC S T hψ 0 = 1 := by
   ext q
@@ -102,7 +102,7 @@ theorem chiC_zero (hψ : IsStdChar D ψ (-1)) : chiC S T hψ 0 = 1 := by
   simp only [ContinuousMap.one_apply, chiC_apply, ratW_zero, symplO_zero_right, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Use extensionality with `q`. Take `⟨z, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Rewrite using `[ContinuousMap.star_apply, chiC_apply, chiC_apply, ratW_neg, symplO_neg_right]`. Conclude with `psi_conj hψ _`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiC_star (hψ : IsStdChar D ψ (-1)) (a : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     star (chiC S T hψ a) = chiC S T hψ (-a) := by
@@ -148,7 +148,7 @@ def Achar (hψ : IsStdChar D ψ (-1)) : StarSubalgebra ℂ C(QO S T, ℂ) where
     | smul c x _ h => rw [star_smul]; exact Submodule.smul_mem _ _ h
 
 /- English proof (translation)
-Use `congr 1`. Rewrite using `[QuotientAddGroup.eq, show -(ratW T S a + z) + z = ratW T S (-a) by rw [ratW_neg]; abel]`. Conclude with `⟨-a, rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem comp_mk_periodic (g : C(QO S T, ℂ)) (a : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (z : MO S T) :
     g ((ratW T S a + z : MO S T) : QO S T) = g (z : QO S T) := by
@@ -157,13 +157,13 @@ theorem comp_mk_periodic (g : C(QO S T, ℂ)) (a : Matrix (Fin T.rank) (Fin S.ra
   exact ⟨-a, rfl⟩
 
 /- English proof (translation)
-The claim follows from `g.continuous.comp continuous_quotient_mk'`.
+A detailed English derivation is pending.
 -/
 theorem cont_comp_mk (g : C(QO S T, ℂ)) : Continuous fun z : MO S T => g (z : QO S T) :=
   g.continuous.comp continuous_quotient_mk'
 
 /- English proof (translation)
-The claim follows from `integrableOn_of_periodic S T _ (hφc.mul (cont_comp_mk S T g)) (fun a z => by simp only [Pi.mul_apply]; rw [hφp, comp_mk_periodic]) μ 𝓕 hμ h𝓕`.
+A detailed English derivation is pending.
 -/
 theorem integrableOn_mul_comp (hψ : IsStdChar D ψ (-1)) {φ : MO S T → ℂ} (hφc : Continuous φ)
     (hφp : ∀ a z, φ (ratW T S a + z) = φ z) (g : C(QO S T, ℂ)) (μ : Measure (MO S T)) (𝓕 : Set (MO S T))
@@ -173,51 +173,47 @@ theorem integrableOn_mul_comp (hψ : IsStdChar D ψ (-1)) {φ : MO S T → ℂ} 
     (fun a z => by simp only [Pi.mul_apply]; rw [hφp, comp_mk_periodic]) μ 𝓕 hμ h𝓕
 
 /- English proof (translation)
-Use `compact_QO S T` as an intermediate fact. Establish `hvan : ∀ g ∈ Achar S T hψ, ∫ z in 𝓕, φ z * g (z : QO S T) ∂μ = 0`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨a, rfl⟩` from `hx`. Conclude with `hcoef a`. Consider the case `zero => simp`. Consider the case `add x y hx hy h1 h2`. Simplify using `only [ContinuousMap.add_apply, mul_add]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_add (integrableOn_mul_comp S T hψ hφc hφp x μ 𝓕 hμ h𝓕) (integrableOn_mul_comp S T hψ hφc hφp y μ 𝓕 hμ h𝓕), h1, h2, add_zero]`. Consider the case `smul c x hx h`. Simplify using `only [ContinuousMap.smul_apply, smul_eq_mul]`. Establish `e : (fun z : MO S T => φ z * (c * x (z : QO S T))) = fun z => c * (φ z * x (z : QO S T))`. Use function extensionality and compare the values at `z`.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_const_mul, h, mul_zero]`. Establish `hsep : (Achar S T hψ).SeparatesPoints`. Introduce `q q' hqq'`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x', rfl⟩` from `QuotientAddGroup.mk_surjective q'`. Establish `hnot : x - x' ∉ ratL T S`. Introduce `h`. Apply `hqq'` to reduce the goal to its premises. Rewrite using `[QuotientAddGroup.eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: -x + x' = -(x - x')` using `by abel`. Rewrite using `[this]`. Conclude with `neg_mem h`. Choose the witnesses or unpack the hypotheses as in `⟨γ, hγ⟩ : ∃ γ, ψ (symplO S T (x - x') (ratW T S γ)) ≠ 1 := by`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push Not at h`. Conclude with `hnot (ha _ h)`. Use `⟨chiC S T hψ γ, ⟨chiC S T hψ γ, Submodule.subset_span ⟨γ, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `heq`. Apply `hγ` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : symplO S T x (ratW T S γ) = symplO S T (x - x') (ratW T S γ) + symplO S T x' (ratW T S γ)`. Rewrite using `[← symplO_add_left, sub_add_cancel]`. Establish `h1 : chiC S T hψ γ (x : QO S T) = chiC S T hψ γ (x' : QO S T)` using `heq`. Rewrite `h1` using `[chiC_apply, chiC_apply, e1, AddChar.map_add_eq_mul]`. Establish `hne` using `psi_ne hψ (symplO S T x' (ratW T S γ))`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hclos` using `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints (Achar S T hψ) hsep`. Establish `hcp : ∀ a z, conj (φ (ratW T S a + z)) = conj (φ z)` using `fun a z => by rw [hφp]`. Set `φb : C(QO S T, ℂ)` to `liftC S T (fun z => conj (φ z)) hcp (Complex.continuous_conj.comp hφc)`. Establish `hmem : φb ∈ closure ((Achar S T hψ : Set C(QO S T, ℂ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: φb ∈ (Achar S T hψ).topologicalClosure` using `by rw [hclos]; exact StarSubalgebra.mem_top`. Conclude with `this`. Take `⟨C, hC⟩` from `bdd_of_periodic S T φ hφc (fun a z => by rw [hφp])`. Establish `hfin` using `measure_FD_lt_top S T μ 𝓕 hμ h𝓕`. Establish `hint0 : ∫ z in 𝓕, φ z * conj (φ z) ∂μ = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `norm_le_zero_iff.1 (le_of_forall_pos_le_add fun ε hε => ?_)` and prove the remaining obligations. Establish `hC0 : 0 ≤ C` using `le_trans (norm_nonneg _) (hC 0)`. Use `set M := μ.real 𝓕`. Establish `hM : 0 ≤ M` using `measureReal_nonneg`. Take `⟨b, hb, hdist⟩` from `Metric.mem_closure_iff.1 hmem (ε / ((C + 1) * (M + 1))) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : ∫ z in 𝓕, φ z * conj (φ z) ∂μ = ∫ z in 𝓕, φ z * (φb - b) (z : QO S T) ∂μ`. Establish `h1` using `hvan b hb`. Establish `h2 : ∫ z in 𝓕, φ z * (φb - b) (z : QO S T) ∂μ = ∫ z in 𝓕, φ z * φb (z : QO S T) ∂μ - ∫ z in 𝓕, φ z * b (z : QO S T) ∂μ`. Simplify using `only [ContinuousMap.sub_apply, mul_sub]`. Conclude with `integral_sub (integrableOn_mul_comp S T hψ hφc hφp φb μ 𝓕 hμ h𝓕) (integrableOn_mul_comp S T hψ hφc hφp b μ 𝓕 hμ h𝓕)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2, h1, sub_zero]`. Both sides reduce to the same expression. Rewrite using `[e, zero_add]`. Establish `hbd : ∀ z ∈ 𝓕, ‖φ z * (φb - b) (z : QO S T)‖ ≤ C * (ε / ((C + 1) * (M + 1)))`. Introduce `z _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_mul]`. Use `mul_le_mul (hC z) ?_ (norm_nonneg _) hC0` and prove the remaining obligations. Use `le_trans (ContinuousMap.norm_coe_le_norm _ _) ?_` and prove the remaining obligations. Rewrite using `[← dist_eq_norm]`. Conclude with `hdist.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show C * (ε / ((C + 1) * (M + 1))) * M = ε * (C / (C + 1)) * (M / (M + 1)) by field_simp]`. Establish `h1 : C / (C + 1) ≤ 1` using `(div_le_one (by positivity)).2 (by linarith)`. Establish `h2 : M / (M + 1) ≤ 1` using `(div_le_one (by positivity)).2 (by linarith)`. Establish `h3 : 0 ≤ C / (C + 1)` using `by positivity`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : 0 ≤ M / (M + 1)` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul h1 h2 h4 zero_le_one]`. Establish `hsq : ∫ z in 𝓕, ‖φ z‖ ^ 2 ∂μ = 0`. Establish `e : (fun z => φ z * conj (φ z)) = fun z => ((‖φ z‖ ^ 2 : ℝ) : ℂ)`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite `hint0` using `[e, integral_complex_ofReal]`. Conclude with `hint0` after adjusting the coercions. Establish `hInt : IntegrableOn (fun z => ‖φ z‖ ^ 2) 𝓕 μ` using `integrableOn_of_periodic S T (fun z => ‖φ z‖ ^ 2) (hφc.norm.pow 2) (fun a z => by rw [hφp]) μ 𝓕 hμ h𝓕`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun z => by positivity) hInt).1 hsq`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `set t : Set (MO S T) := {z | φ z ≠ 0} with ht`. Establish `hto : IsOpen t` using `isOpen_ne_fun hφc continuous_const`. Establish `ht𝓕 : μ (t ∩ 𝓕) = 0`. Establish `h1 : (μ.restrict 𝓕) t = 0`. Rewrite `hae` using `[Filter.EventuallyEq, ae_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `measure_mono_null (fun z hz => ?_) hae` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, Pi.zero_apply]`. Introduce `h0`. Conclude with `hz (by simpa using h0)`. Rewrite `h1` using `[Measure.restrict_apply hto.measurableSet]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Formalism.IndefR.PHeisFC.countable_ratL T S` as an intermediate fact. Establish `: MeasurableConstVAdd (ratL T S) (MO S T)` using `⟨fun c => (continuous_const.add continuous_id).measurable⟩`. Establish `: VAddInvariantMeasure (ratL T S) (MO S T) μ` using `⟨fun c s _ => measure_preimage_add μ (c : MO S T) s⟩`. Establish `hinv : ∀ g : ratL T S, g +ᵥ t = t`. Introduce `g`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use extensionality with `z`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem]`. Simplify using `only [ht, Set.mem_setOf_eq]`. Use `periodic_of S T hφp (-(g : MO S T)) (neg_mem g.2) z` as an intermediate fact. Use `show φ (-(g : MO S T) + z) ≠ 0 ↔ φ z ≠ 0`.
-
-Rewrite using `[this]`. Establish `ht0 : μ t = 0` using `h𝓕.measure_zero_of_invariant t hinv ht𝓕`. Establish `hte : t = ∅`. Assume the negation of the conclusion as `hne`. Conclude with `(hto.measure_pos μ (Set.nonempty_iff_ne_empty.2 hne)).ne' ht0`.
-
-Use function extensionality and compare the values at `z`. Assume the negation of the conclusion as `hz`. Establish `: z ∈ t` using `hz`. Rewrite `this` using `[hte]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charCompleteB_of (hψ : IsStdChar D ψ (-1))
     (ha : ∀ x : MO S T, (∀ γ, ψ (symplO S T x (ratW T S γ)) = 1) → x ∈ ratL T S)
@@ -358,7 +354,7 @@ theorem charCompleteB_of (hψ : IsStdChar D ψ (-1))
   exact this
 
 /- English proof (translation)
-Introduce `ψ hψ S T` and use `⟨ha ψ hψ S T, fun μ 𝓕 hμ h𝓕 φ hφc hφp hcoef => charCompleteB_of S T hψ (ha ψ hψ S T) μ 𝓕 hμ h𝓕 φ hφc hφp hcoef⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem charComplete_of
     (ha : ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) → ∀ (S T : HSp D) (x : WO S T),

@@ -17,9 +17,9 @@ open GlobalTheory.FlagTan (dimFlag psiSet TIx IsTanFrame)
 open GlobalTheory.AllWt (exOf)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Assume the negation of the conclusion as `h`. Establish `hu : IsUnit x` using `TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (isUnit_iff_ne_zero.2 h)`. Conclude with `hp.ne_top (Ideal.eq_top_of_isUnit_mem p hx hu)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hx : x = TrivSqZeroExt.inr x.snd` using `TrivSqZeroExt.ext h rfl`. Establish `h2 : x * x = 0` using `by rw [hx, TrivSqZeroExt.inr_mul_inr]`. Conclude with `(hp.mem_or_mem (h2 ▸ p.zero_mem)).elim id id`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_prime_dual_iff {K : Type} [Field K] (p : Ideal (DualNumber K)) [hp : p.IsPrime] (x : DualNumber K) :
     x ∈ p ↔ x.fst = 0 := by
@@ -34,7 +34,7 @@ theorem mem_prime_dual_iff {K : Type} [Field K] (p : Ideal (DualNumber K)) [hp :
     exact (hp.mem_or_mem (h2 ▸ p.zero_mem)).elim id id
 
 /- English proof (translation)
-Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Establish `hp : p.asIdeal.IsPrime` using `p.isPrime`. Establish `hq : q.asIdeal.IsPrime` using `q.isPrime`. Conclude with `(mem_prime_dual_iff (K := K) p.asIdeal x).trans (mem_prime_dual_iff (K := K) q.asIdeal x).symm`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dual_pt_eq {K : Type} [Field K] (p q : Sp (DualNumber K)) : p = q := by
   apply PrimeSpectrum.ext
@@ -44,9 +44,9 @@ theorem dual_pt_eq {K : Type} [Field K] (p q : Sp (DualNumber K)) : p = q := by
   exact (mem_prime_dual_iff (K := K) p.asIdeal x).trans (mem_prime_dual_iff (K := K) q.asIdeal x).symm
 
 /- English proof (translation)
-Introduce `p _`. Take `⟨q⟩ : Nonempty (Sp K)` from `inferInstanceAs (Nonempty (PrimeSpectrum K))`. Establish `e : p = spMap φ q` using `dual_pt_eq _ _`. Establish `hq` using `h (Set.mem_univ q)`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq`.
+A detailed English derivation is pending.
 -/
 theorem top_le_of_red {K : Type} [Field K] {T : Scheme.{0}} (φ : DualNumber K →+* K) (w : Sp (DualNumber K) ⟶ T)
     {V : T.Opens} (h : ⊤ ≤ (spMap φ ≫ w) ⁻¹ᵁ V) : ⊤ ≤ w ⁻¹ᵁ V := by
@@ -62,7 +62,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   (M : Modif (str₀ X Z) (U₀ X Z) (dimFlag Dw))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FlagMod.ev_res z e hV hU u.val`.
+A detailed English derivation is pending.
 -/
 theorem ev_resU {T : Scheme.{0}} {S : Type} [CommRing S] (z : Sp S ⟶ T) {U V : T.Opens} (e : V ≤ U)
     (hV : ⊤ ≤ z ⁻¹ᵁ V) (hU : ⊤ ≤ z ⁻¹ᵁ U) (u : Γ(T, U)ˣ) :
@@ -70,7 +70,7 @@ theorem ev_resU {T : Scheme.{0}} {S : Type} [CommRing S] (z : Sp S ⟶ T) {U V :
   GlobalTheory.FlagMod.ev_res z e hV hU u.val
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem tAt_congr {K : Type} [CommRing K] (k k' : X.F.J) {w w' : Sp K ⟶ X.YY} (e : w = w')
     (h : ⊤ ≤ w ⁻¹ᵁ (X.F.U k ⊓ X.F.U k')) (h' : ⊤ ≤ w' ⁻¹ᵁ (X.F.U k ⊓ X.F.U k')) :
@@ -80,13 +80,13 @@ theorem tAt_congr {K : Type} [CommRing K] (k k' : X.F.J) {w w' : Sp K ⟶ X.YY} 
 open Classical in
 
 /- English proof (translation)
-Use `set e := exOf Dw (FlagTan.kap Dw) 0`. Establish `hL : ⊤ ≤ z ⁻¹ᵁ (((L₀ X Z (FlagTan.kap Dw)).pull M.σ).U (flagIdx M _ k) ⊓ ((L₀ X Z (FlagTan.kap Dw)).pull M.σ).U (flagIdx M _ k'))` using `fun p hp => ⟨(hg hp).1.2, (hg hp).2.2⟩`. Establish `hh1 : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ ((L₀ X Z (FlagTan.kap Dw)).U (flagIdx M _ k PUnit.unit) ⊓ (L₀ X Z (FlagTan.kap Dw)).U (flagIdx M _ k' PUnit.unit))` using `fun p hp => ⟨mem_pIdx.2 (hh hp).1, mem_pIdx.2 (hh hp).2⟩`. Establish `hh2 : ⊤ ≤ ((z ≫ M.σ) ≫ inc₀ X Z) ⁻¹ᵁ (X.F.U k ⊓ X.F.U k')` using `fun p hp => hh hp`. Establish `eL : GlobalTheory.FlagMod.ev z _ hL (((L₀ X Z (FlagTan.kap Dw)).pull M.σ).g (flagIdx M _ k) (flagIdx M _ k')).val = (∏ ix, X.F.TAt k k' (z ≫ toFlag M) hh ix ^ (-e ix)).val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.FlagMod.ev_pull_g _ _ _ _ z hL hh1]`. Rewrite using `[GlobalTheory.FlagMod.ev_pull_g _ _ _ _ (z ≫ M.σ) hh1 hh2]`. Use `(X.F.ev_LL_g e k k' _ hh2).trans ?_` and prove the remaining obligations. Rewrite using `[tAt_congr k k' (Category.assoc _ _ _) hh2 hh]`. Establish `ei : ((∏ ix, X.F.TAt k k' (z ≫ toFlag M) hh ix ^ (-e ix) : Kˣ) : K)⁻¹ = ((∏ ix, X.F.TAt k k' (z ≫ toFlag M) hh ix ^ e ix : Kˣ) : K)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_inv_eq_inv_val, ← Finset.prod_inv_distrib]`. Simplify using `only [zpow_neg, inv_inv]`. Simplify using `only [LB.div]`. Use `((GlobalTheory.FlagMod.ev z _ hg).map_mul _ _).trans (congrArg₂ (· * ·) (ev_resU z _ hg hK _) ((map_units_inv (GlobalTheory.FlagMod.ev z _ hg) _).trans ?_))` and prove the remaining obligations. Use `(congrArg Inv.inv (ev_resU z _ hg hL _)).trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eL, ei]`.
+A detailed English derivation is pending.
 -/
 theorem ev_div_g (i i' : M.K.bundle.ι) (k k' : X.F.J) {K : Type} [Field K] (z : Sp K ⟶ M.X)
     (hg : ⊤ ≤ z ⁻¹ᵁ ((LB.div M.K.bundle ((L₀ X Z (FlagTan.kap Dw)).pull M.σ)).U (i, flagIdx M _ k) ⊓
@@ -119,11 +119,9 @@ theorem ev_div_g (i i' : M.K.bundle.ι) (k k' : X.F.J) {K : Type} [Field K] (z :
   rw [eL, ei]
 
 /- English proof (translation)
-Establish `hx : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ U₀ X Z` using `fun p hp => by`. Use `ho hp` as an intermediate fact. Rewrite `this` using `[M.off_eq]`. Conclude with `this`. Establish `h1 : (spMap (FlagTan.red c K).toRingHom ≫ zw) ≫ M.σ = z ≫ M.σ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono (inc₀ X Z)]`. Simplify using `only [Category.assoc]`. Establish `e1 : zw ≫ M.σ ≫ inc₀ X Z = X.ptY w` using `hl`. Establish `e2 : z ≫ M.σ ≫ inc₀ X Z = X.ptY P` using `hP`. Rewrite using `[e1, e2]`.
-
-Conclude with `X.ptY_frMap hw`. Conclude with `(M.existsUnique_lift (z ≫ M.σ) hx).unique h1 rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_comp_eq {K : Type} [Field K] [Algebra c.F K] (z : Sp K ⟶ M.X) (ho : ⊤ ≤ z ⁻¹ᵁ M.off) {P : FrPt Xo c K}
     (hP : z ≫ toFlag M = X.ptY P) {w : FrPt Xo c (DualNumber K)} (hw : FlagTan.IsDef P w)
@@ -143,7 +141,7 @@ theorem red_comp_eq {K : Type} [Field K] [Algebra c.F K] (z : Sp K ⟶ M.X) (ho 
   exact (M.existsUnique_lift (z ≫ M.σ) hx).unique h1 rfl
 
 /- English proof (translation)
-The claim follows from `top_le_of_red _ zw (by rw [red_comp_eq M z ho hP hw zw hl]; exact hV)`.
+A detailed English derivation is pending.
 -/
 theorem top_le_of_isDef {K : Type} [Field K] [Algebra c.F K] (z : Sp K ⟶ M.X) (ho : ⊤ ≤ z ⁻¹ᵁ M.off)
     {P : FrPt Xo c K} (hP : z ≫ toFlag M = X.ptY P) {w : FrPt Xo c (DualNumber K)} (hw : FlagTan.IsDef P w)
@@ -154,19 +152,19 @@ theorem top_le_of_isDef {K : Type} [Field K] [Algebra c.F K] (z : Sp K ⟶ M.X) 
 open Classical in
 
 /- English proof (translation)
-Introduce `_ P Q t v zv O hO g hz hzv hk hQ ht hv hl`. Establish `ho : ⊤ ≤ z ⁻¹ᵁ M.off` using `fun p hp => (hs hp).1`. Establish `hi' : ⊤ ≤ z ⁻¹ᵁ M.K.bundle.U i'` using `fun p hp => (hs' hp).2.1`. Establish `hK : ⊤ ≤ z ⁻¹ᵁ (M.K.bundle.U i ⊓ M.K.bundle.U i')` using `fun p hp => ⟨(hs hp).2.1, (hs' hp).2.1⟩`. Establish `hk' : ⊤ ≤ (z ≫ toFlag M) ⁻¹ᵁ X.F.U k'` using `fun p hp => mem_pIdx.1 (mem_pIdx.1 (hs' hp).2.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : ⊤ ≤ (z ≫ toFlag M) ⁻¹ᵁ (X.F.U k ⊓ X.F.U k')` using `GlobalTheory.FlagMod.le_preimage_inf hk hk'`. Establish `hlies` using `hQ.lies`. Take `⟨Q', hQ'⟩` from `X.top.exists_chartFr (GlobalTheory.FlagMod.frX_snd Q) hlies.1 k' hk'`. Take `⟨-, g1, g2, -⟩` from `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c K`. Establish `hB` using `hQ.frBor hQ' hh`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht'` using `g1 _ _ _ _ _ (g2 _ _ _ hB) ht`. Establish `hP : z ≫ toFlag M = X.ptY P` using `FlagCover.eq_ptY (hlies.frBor ht)`. Establish `hzv' : ∀ b, ⊤ ≤ zv b ⁻¹ᵁ (O ⊓ M.K.bundle.U i')` using `fun b => GlobalTheory.FlagMod.le_preimage_inf (hzv b) (top_le_of_isDef M z ho hP (hv.isDef b) (zv b) (hl b) hi')`. Establish `hz' : ⊤ ≤ z ⁻¹ᵁ (O ⊓ M.K.bundle.U i')` using `GlobalTheory.FlagMod.le_preimage_inf hz hi'`. Establish `key` using `hx' P Q' _ v zv (O ⊓ M.K.bundle.U i') inf_le_right (fun a => resG M.X inf_le_left (g a)) hz' hzv' hk' hQ' ht' hv hl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : (Matrix.of fun a b => (evalPt (zv (tanOrd Dw b)) (O ⊓ M.K.bundle.U i') (hzv' _) (resG M.X inf_le_left (g a))).snd) = Matrix.of fun a b => (evalPt (zv (tanOrd Dw b)) O (hzv _) (g a)).snd`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[evalPt_res]`. Rewrite `key` using `[hdet]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hJ : evalPt z O hz (M.K.jacobian i hO g) = GlobalTheory.FlagMod.ev z _ hK (M.K.bundle.g i i').val * evalPt z (O ⊓ M.K.bundle.U i') hz' (M.K.jacobian i' inf_le_right fun a => resG M.X inf_le_left (g a))`. Rewrite using `[← evalPt_res z inf_le_left hz hz', CanonLB.resG_jacobian, CanonLB.jacobian_change _ i i' (inf_le_left.trans hO) inf_le_right, map_mul]`. Use `congr 1`. Conclude with `evalPt_res z _ hK hz' _`. Rewrite using `[ev_div_g M i i' k k' z hg hK hh, hJ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : (∏ ix, ((X.F.TAt k k' (z ≫ toFlag M) hh)⁻¹ * t) ix ^ exOf Dw (FlagTan.kap Dw) 0 ix) = (∏ ix, X.F.TAt k k' (z ≫ toFlag M) hh ix ^ exOf Dw (FlagTan.kap Dw) 0 ix)⁻¹ * ∏ ix, t ix ^ exOf Dw (FlagTan.kap Dw) 0 ix`. Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun ix _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.mul_apply, Pi.inv_apply, mul_zpow, inv_zpow]`. Rewrite `key` using `[hu, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hTT` using `Units.mul_inv (∏ ix, X.F.TAt k k' (z ≫ toFlag M) hh ix ^ exOf Dw (FlagTan.kap Dw) 0 ix)`. Take the linear combination `(GlobalTheory.FlagMod.ev z _ hK (M.K.bundle.g i i').val * ((∏ ix, X.F.TAt k k' (z ≫ toFlag M) hh ix ^ exOf Dw (FlagTan.kap Dw) 0 ix : Kˣ) : K)) * key + ((∏ ix, t ix ^ exOf Dw (FlagTan.kap Dw) 0 ix : Kˣ) : K) * GlobalTheory.FlagMod.ev z _ hK (M.K.bundle.g i i').val * evalPt z (O ⊓ …`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ksRel_of_ksRel {i i' : M.K.bundle.ι} {k k' : X.F.J} {K : Type} [Field K] {z : Sp K ⟶ M.X}
     (hs : ⊤ ≤ z ⁻¹ᵁ ksOpen M i k) (hs' : ⊤ ≤ z ⁻¹ᵁ ksOpen M i' k')
@@ -223,7 +221,7 @@ end GlobalTheory.CompHS
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.CechPic GlobalTheory.Vanishing GlobalTheory.CompHS in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y X Z M hKS i i' k k' K _ z hs hs' hg x x' hx hx'`. Conclude with `(GlobalTheory.T.kodairaSpencer_coordinate_unique_ne_zero M hKS i k K z hs).1 x _ hx (ksRel_of_ksRel M hs hs' hg hx')`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompHS.ksRel_change : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {X : GlobalTheory.FlagMod.FlagCover Y} {Z : Comp Xo c} (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagTan.dimFlag Dw)), (∀ (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K), GlobalTheory.FlagTan.KSIso (GlobalTheory.FlagTan.psiSet H) y) → ∀ (i i' : M.K.bundle.ι) (k k' : X.F.J) (K : Type) [Field K] (z : Sp K ⟶ M.X), ⊤ ≤ z ⁻¹ᵁ ksOpen M i k → ⊤ ≤ z ⁻¹ᵁ ksOpen M i' k' → ∀ (hg : ⊤ ≤ z ⁻¹ᵁ ((LB.div M.K.bundle ((L₀ X Z (GlobalTheory.FlagTan.kap Dw)).pull M.σ)).U (i, flagIdx M _ k) ⊓ (LB.div M.K.bundle ((L₀ X Z (GlobalTheory.FlagTan.kap Dw)).pull M.σ)).U (i', flagIdx M _ k'))) (x x' : K), KSRel M i k z x → KSRel M i' k' z x' → x = GlobalTheory.FlagMod.ev z _ hg ((LB.div M.K.bundle ((L₀ X Z (GlobalTheory.FlagTan.kap Dw)).pull M.σ)).g (i, flagIdx M _ k) (i', flagIdx M _ k')).val * x' := by
   intro E _ _ _ H Dw l Xo c Y X Z M hKS i i' k k' K _ z hs hs' hg x x' hx hx'

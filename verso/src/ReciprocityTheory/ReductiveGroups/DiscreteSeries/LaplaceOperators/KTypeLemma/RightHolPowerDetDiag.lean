@@ -26,9 +26,9 @@ def LowestKTypeLink (n : ℕ) : Prop :=
           ⟪((v' : D) : H), σ g ((v : D) : H)⟫_ℂ = ⟪ι v', PsiM T μ g (ι v)⟫_ℂ
 
 /- English proof (translation)
-Introduce `ε lam h H _ _ _ σ D E V hσ hD hV hc hVK hint hanti hg hp hq`. Establish `hlam : IsHCParam lam` using `⟨hanti, hint⟩`. Take `⟨T⟩` from `HW.kType_exists ε lam hlam`. Take `⟨μ, hμ⟩` from `exists_isMu hlam`. Take `⟨ι, h1, -, h3⟩` from `datum_link hPD hσ hD hV hc hVK hlam hg (le_min hp hq) T hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨T, μ, ι, hμ, h3, h1⟩`.
+Supply the required witnesses or components.
 -/
 theorem k2vLink_of (hPD : PsiDatumStatement) (n : ℕ) : LowestKTypeLink n := by
   intro ε lam h H _ _ _ σ D E V hσ hD hV hc hVK hint hanti hg hp hq
@@ -39,7 +39,7 @@ theorem k2vLink_of (hPD : PsiDatumStatement) (n : ℕ) : LowestKTypeLink n := by
   exact ⟨T, μ, ι, hμ, h3, h1⟩
 
 /- English proof (translation)
-The claim follows from `k2vLink_of psiDatum n`.
+A detailed English derivation is pending.
 -/
 theorem k2vLink (n : ℕ) : LowestKTypeLink n :=
   k2vLink_of psiDatum n

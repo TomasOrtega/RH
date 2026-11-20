@@ -22,37 +22,33 @@ open GlobalTheory.ChainDesc
 namespace GlobalTheory.ChainDesc.KerRho
 
 /- English proof (translation)
-Establish `hm : ∀ x, piMap g (Fin h) (κ x) ∈ L` using `fun x => by`. Establish `: κ x ∈ L.comap (piMap g (Fin h))` using `hL ▸ LinearMap.mem_range_self κ x`. Conclude with `this`. Establish `hbase : ∀ v ∈ baseOf π h, piMap g (Fin h) v ∈ baseOf π' h` using `fun v hv => by`. Take `⟨u, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smulₛₗ, hπ]`. Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ trivial`. Set `G : P →ₛₗ[g] Qt L (baseOf π' h)` to `(Submodule.mkQ _).comp (((piMap g (Fin h)).comp κ).codRestrict L hm)`. Establish `hG : ∀ x, G x = Submodule.Quotient.mk ⟨_, hm x⟩` using `fun _ => rfl`. Use `le_antisymm (Submodule.span_mono ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x₀, h0, rfl⟩`. Use `⟨⟨_, hm x₀⟩, ?_, rfl⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `(hq _).1 h0`. Establish `key : ∀ z : LA, ∃ x, t x = jA z ∧ G x ∈ LinearMap.range jB` using `fun z => by`. Establish `hz : z ∈ Submodule.span A (Set.range a)` using `ha ▸ trivial`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem _ hs`. Take `⟨s, rfl⟩` from `hs`. Take `⟨x, y, h1, h2, h3⟩` from `hj s`. Use `⟨x, h3.symm, b s, h2.trans ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hG]`. Use `congr 1`. Conclude with `Subtype.ext h1`. Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `add _ _ _ _ h1 h2`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, e, m⟩` from `h1`. Take `⟨x', e', m'⟩` from `h2`. Conclude with `⟨x + x', by rw [map_add, map_add, e, e'], by rw [map_add]; exact add_mem m m'⟩`. Consider the case `smul c _ _ h1`. Take `⟨x, e, m⟩` from `h1`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨c • x, by rw [map_smul, map_smul, e], by rw [map_smulₛₗ]; exact Submodule.smul_mem _ _ m⟩`. Take `⟨x, e, m⟩` from `key z`. Establish `h1 : G (x₀ - x) = 0`. Rewrite using `[hG, Submodule.Quotient.mk_eq_zero]`. Conclude with `hbase _ ((ht _).1 (by rw [map_sub, e, hz, sub_self]))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_sub, sub_eq_zero]`. Rewrite using `[← hG, h1]`. Conclude with `m`. Introduce and unpack `_ ⟨y₀, ⟨z, hz⟩, rfl⟩ set T := Submodule.span R {z | ∃ x₀ : P, q (t x₀) = 0 ∧ z = piMap (φ.comp g) (Fin h) (κ x₀)} with hT`. Establish `hbT : ∀ v ∈ baseOf π' h, piMap φ (Fin h) v ∈ T` using `fun v hv => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hv`. Establish `e : piMap φ (Fin h) (π' • u) = ∑ i, φ (u i) • piMap (φ.comp g) (Fin h) (π • Pi.single i 1)`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply, apply_ite, hπ, mul_comm]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Establish `hi : π • Pi.single i (1 : A) ∈ baseOf π h` using `Submodule.smul_mem_pointwise_smul _ _ _ trivial`. Establish `hi' : π • Pi.single i (1 : A) ∈ LinearMap.range κ`. Rewrite using `[hL]`. Conclude with `hb (hbase _ hi)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨x, hx⟩` from `hi'`. Conclude with `⟨x, by rw [(ht x).2 (hx ▸ hi), map_zero], by rw [hx]⟩`. Establish `key : ∀ z : LB, ∃ y : L, Submodule.Quotient.mk y = jB z ∧ piMap φ (Fin h) y.1 ∈ T` using `fun z => by`. Establish `hz : z ∈ Submodule.span Bp (Set.range b)` using `hb' ▸ trivial`. Proceed by induction on `hz using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem _ hs`. Take `⟨s, rfl⟩` from `hs`. Take `⟨x, y, h1, h2, h3⟩` from `hj s`. Use `⟨y, h2.symm, Submodule.subset_span ⟨x, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← h3]`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hq.apply_apply_eq_zero _`. Rewrite using `[h1]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `add _ _ _ _ h1 h2`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, e, m⟩` from `h1`. Take `⟨x', e', m'⟩` from `h2`. Conclude with `⟨x + x', by rw [Submodule.Quotient.mk_add, map_add, e, e'], by rw [Submodule.coe_add, map_add]; exact add_mem m m'⟩`. Consider the case `smul c _ _ h1`. Take `⟨x, e, m⟩` from `h1`.
-
-Conclude with `⟨c • x, by rw [Submodule.Quotient.mk_smul, map_smul, e], by rw [Submodule.coe_smul, map_smulₛₗ]; exact Submodule.smul_mem _ _ m⟩`. Take `⟨y, e, m⟩` from `key z`. Establish `h0 : y₀ - y ∈ (baseOf π' h).comap L.subtype` using `(Submodule.Quotient.eq _).1 (hz.symm.trans e.symm)`. Establish `h1` using `hbT _ h0`. Rewrite `h1` using `[Submodule.subtype_apply, Submodule.coe_sub, map_sub]`.
-
-Simplify using `using add_mem h1 m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem span_eq {A Bp R : Type} [CommRing A] [CommRing Bp] [CommRing R] (g : A →+* Bp) (φ : Bp →+* R) {h : ℕ}
     {P Q Q' LA LB S : Type} [AddCommGroup P] [Module A P] [AddCommGroup Q] [Module A Q] [AddCommGroup Q'] [Module A Q']
@@ -144,31 +140,27 @@ set_option maxHeartbeats 1600000 in
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Introduce `O _ _ _ p B B' Λ _ h o Lie Om π γ M C f g E ι Q t j ρ k hLie hι hQ U hJ hR R _ φ hφ hw r e`. Establish `hV` using `k.isAffineOpen U`. Use `haveI := hQ.1`. Use `haveI := (hι 0).2.1`. Use `haveI : ((pullA f.f).obj Lie).V.IsQuasicoherent := isQuasicoherent_pullback f.f Lie.V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : (cokernel j).V.IsQuasicoherent := isQuasicoherent_of_iso (Examples₂.cokV j).symm`. Establish `hc` using `isColimitOfHasCokernelOfPreservesColimit (Action.forget B'.X.Modules Λ) j`. Establish `hz : j.hom ≫ (cokernel.π j).hom = 0`. Rewrite using `[← Action.comp_hom, cokernel.condition]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : Epi (cokernel.π j).hom := inferInstanceAs (Epi ((Action.forget B'.X.Modules Λ).map (cokernel.π j)))`. Establish `hex` using `exact_and_surjective_app_of_exact_of_epi (S := ShortComplex.mk _ _ hz) (ShortComplex.exact_of_g_is_cokernel _ hc) hV`. Take `⟨q1, q2, -⟩` from `hQ.2 _ hV`. Establish `hL` using `((hι 0).2.2 U).1`. Rewrite `hL` using `[Nat.zero_min]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := (GlobalTheory.T.vector_bundle_sections_finite_projective _ _ _ (hι 0).1 _ hV).2`. Establish `ha : Submodule.span Γ(B'.X, f.f ⁻¹ᵁ U.1) (Set.range fun s => pullbackSections f.f Lie.V le_rfl s : Set Γ((Scheme.Modules.pullback f.f).obj Lie.V, f.f ⁻¹ᵁ U.1)) = ⊤`. Use `letI := appLEAlgebra f.f (le_refl (f.f ⁻¹ᵁ U.1))`. Use `letI := appLEModule f.f ((Scheme.Modules.pullback f.f).obj Lie.V) (le_refl (f.f ⁻¹ᵁ U.1))`. Use `haveI := appLE_isScalarTower f.f ((Scheme.Modules.pullback f.f).obj Lie.V) (le_refl (f.f ⁻¹ᵁ U.1))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hbc` using `isBaseChange_pullbackSections f.f Lie.V hV U.2.1 le_rfl`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Proceed by induction on `x using hbc.inductionOn with`. Consider the case `zero => exact zero_mem _`. Consider the case `tmul s => exact Submodule.subset_span ⟨s, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x hx => exact Submodule.smul_mem _ _ (hx trivial)`. Consider the case `add x y hx hy => exact add_mem (hx trivial) (hy trivial)`. Establish `hb : Submodule.span U.Bp (Set.range fun s : Γ(Lie.V, U.1) => (1 ⊗ₜ s : SecBp Lie.V U)) = ⊤`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => exact zero_mem _`. Consider the case `tmul c s`. Rewrite using `[← mul_one c, ← smul_eq_mul, ← TensorProduct.smul_tmul']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨s, rfl⟩)`. Consider the case `add x y hx hy => exact add_mem (hx trivial) (hy trivial)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hsp` using `span_eq (g U) φ (crd (ι 0) _) (appLinear t _) (appLinear (cokernel.π j).hom _) _ _ (k.map_cst U π) ((C U).L 0) ((C U).base_le 0) hL q2 (appLinear j.hom _) (C U).j hex.1 _ _ ha hb hJ`. Establish `hbl : baseOf (resG B'.X le_top (f.f.appTop π)) h ≤ LinearMap.range (crd (ι 0) (f.f ⁻¹ᵁ U.1))` using `fun v hv => by`. Take `⟨u, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hv`. Express the relevant statement in the definitionally equal form `_ ∈ latOf (ι 0) _`. Rewrite using `[hL, Submodule.mem_comap, map_smulₛₗ, k.map_cst]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(C U).base_le 0 (Submodule.smul_mem_pointwise_smul _ _ _ trivial)`. Use `choose x y hy hρ hx using fun l => hR (e l)`. Use `letI : Algebra Γ(B'.X, f.f ⁻¹ᵁ U.1) R := (φ.comp (g U)).toAlgebra`. Use extensionality with `c`. Establish `h1` using `(GlobalTheory.ChainPts.KerTens.main B'.X R _ _ ρ.hom _ r (fun l => pullbackSections f.f Om.V le_rfl (e l)) c).1 hV hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `GlobalTheory.T.tensor_relation_lattice_nonzerodivisor Γ(B'.X, f.f ⁻¹ᵁ U.1) R h _ _ (crd (ι 0) _) (appLinear (t ≫ (cokernel.π j).hom) _) _ (crd_injective _ _) hbl (by rw [← k.map_cst] at hφ; exact hφ) (hex.2.comp q1) r x c`. Use `h1.trans ?_` and prove the remaining obligations. Establish `h3 : ∀ l, ρ.hom.app _ (pullbackSections f.f Om.V le_rfl (e l)) = appLinear (t ≫ (cokernel.π j).hom) _ (x l)` using `hx`. Simplify using `only [h3]`. Use `h2.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ∀ l, piMap (algebraMap Γ(B'.X, f.f ⁻¹ᵁ U.1) R) (Fin h) (crd (ι 0) _ (x l)) = piMap φ _ (y l).1` using `fun l => by`. Rewrite using `[hy]`. Both sides reduce to the same expression. Simplify using `only [h4]`. Use `(SetLike.ext_iff.1 hsp _).trans ⟨fun hh => ⟨y, hρ, hh⟩, fun ⟨y', hρ', hh⟩ => ?_⟩` and prove the remaining obligations.
-
-Establish `h5 : ∑ l, c l • piMap φ _ (y l).1 = ∑ l, c l • piMap φ _ (y' l).1 + ∑ l, c l • piMap φ _ (y l - y' l).1`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_sub, map_sub, ← smul_add, add_sub_cancel]`. Rewrite using `[h5]`.
-
-Use `add_mem hh (Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ?_, rfl⟩))` and prove the remaining obligations. Rewrite using `[Submodule.Quotient.mk_sub]`. Conclude with `(Submodule.Quotient.eq _).1 ((hρ l).symm.trans (hρ' l))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerAt_eq_kerR : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) (B B' : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (C : ChainsBp p h o Lie Om π γ) (f : GlobalTheory.Vert.Model.Hom B' B) (g : ∀ U : AffOp B.X, Γ(B'.X, f.f ⁻¹ᵁ U.1) →+* U.Bp) (E : ℕ → B'.X.Modules) (ι : ∀ n, E n ⟶ freeModule B'.X (Fin h)) (Q : AM B' Λ) (t : E 0 ⟶ Q.V) (j : (pullA f.f).obj Lie ⟶ Q) (ρ : (pullA f.f).obj Om ⟶ cokernel j) (k : IsCov f g), Lie.V.IsQuasicoherent → IsLatOf C f g ι → IsQuot M (ι 0) (baseOn h (f.f.appTop π)) Q t → ∀ U : AffOp B.X, JUp C f g U (ι 0) t j.hom → RUp C f g U (ι 0) (t ≫ (cokernel.π j).hom) ρ.hom → ∀ (R : Type) [CommRing R] (φ : U.Bp →+* R), φ (cstBp U π) ∈ nonZeroDivisors R → ∀ (hw : ⊤ ≤ (spMap (φ.comp (g U)) ≫ (k.isAffineOpen U).fromSpec) ⁻¹ᵁ f.f ⁻¹ᵁ U.1) (r : ℕ) (e : Fin r → Γ(Om.V, U.1)), kerAt (spMap (φ.comp (g U)) ≫ (k.isAffineOpen U).fromSpec) ρ.hom hw (fun l => pullbackSections f.f Om.V le_rfl (e l)) = (C U).kerR φ fun l => 1 ⊗ₜ e l := by
   intro O _ _ _ p B B' Λ _ h o Lie Om π γ M C f g E ι Q t j ρ k hLie hι hQ U hJ hR R _ φ hφ hw r e

@@ -9,11 +9,9 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 namespace GlobalTheory.CompanionTheory.PTIso
 
 /- English proof (translation)
-Set `f : A →* B` to `(Φ : A ≃* B).toMonoidHom`. Set `K : Subgroup B` to `(Subgroup.normalClosure Y).topologicalClosure`. Use `haveI : K.Normal := Subgroup.is_normal_topologicalClosure _`. Use `haveI : (K.comap f).Normal := Subgroup.Normal.comap ‹_› f`. Establish `hK : IsClosed (K : Set B)` using `Subgroup.isClosed_topologicalClosure _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : IsClosed ((K.comap f : Subgroup A) : Set A)` using `hK.preimage Φ.continuous`. Establish `hle : Subgroup.normalClosure X ≤ K.comap f`. Apply `Subgroup.normalClosure_le_normal` to reduce the goal to its premises. Introduce `x hx`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure (h x hx))`.
-
-Conclude with `Subgroup.topologicalClosure_minimal _ hle hc ha`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem map_mem_closedNormal {A B : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup A]
     [Group B] [TopologicalSpace B] [IsTopologicalGroup B] (Φ : A ≃ₜ* B) (X : Set A) (Y : Set B)
@@ -50,17 +48,17 @@ def quotientIso {A B : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup 
       (QuotientGroup.continuous_mk.comp Φ.symm.continuous)
 
 /- English proof (translation)
-Introduce `F Ω F' Ω' _ _ _ _ _ _ _ _ _ _ e E _ Φ _ eV hP hI T T' hT`. Establish `hfwd : ∀ σ, σ ∈ NS Ω T → Φ σ ∈ NS Ω' T'`. Introduce `σ hσ`. Use `map_mem_closedNormal Φ _ _ ?_ hσ` and prove the remaining obligations. Introduce `τ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_iUnion] at hτ ⊢`. Take `⟨v, hv, A, hA, hτ⟩` from `hτ`. Set `A' : ValuationSubring Ω'` to `A.comap (E.symm : Ω' →+* Ω)`. Establish `hAA : ∀ x, E x ∈ A' ↔ x ∈ A`. Introduce `x`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show E.symm (E x) ∈ A ↔ x ∈ A`. Simplify using the standard rewrite rules. Conclude with `⟨eV v, fun h => hv ((hT v).2 h), A', (hP A A' hAA v).1 hA, (hI A A' hAA τ).1 hτ⟩`. Establish `hbwd : ∀ σ', σ' ∈ NS Ω' T' → Φ.symm σ' ∈ NS Ω T`. Introduce `σ' hσ'`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `map_mem_closedNormal Φ.symm _ _ ?_ hσ'` and prove the remaining obligations. Introduce `τ hτ`. Simplify using `only [Set.mem_iUnion] at hτ ⊢`. Take `⟨v', hv', A', hA', hτ⟩` from `hτ`. Set `A : ValuationSubring Ω` to `A'.comap (E : Ω →+* Ω')`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hAA : ∀ x, E x ∈ A' ↔ x ∈ A` using `fun x => Iff.rfl`. Use `⟨eV.symm v', fun h => hv' ?_, A, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using (hT _).1 h`. Use `(hP A A' hAA _).2 ?_` and prove the remaining obligations. Simplify using `using hA'`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hI A A' hAA _).2 ?_` and prove the remaining obligations. Simplify using `using hτ`. Establish `hiff : ∀ σ, σ ∈ NS Ω T ↔ Φ σ ∈ NS Ω' T'` using `fun σ => ⟨hfwd σ, fun h => by simpa using hbwd _ h⟩`. Conclude with `⟨quotientIso Φ (NS Ω T) (NS Ω' T') hiff, fun σ => rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gsIso : ∀ (F Ω F' Ω' : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] [IsAlgClosure F' Ω'] (e : F ≃+* F') (E : Ω ≃+* Ω'), (∀ x : F, E (algebraMap F Ω x) = algebraMap F' Ω' (e x)) → ∀ (Φ : G F Ω ≃ₜ* G F' Ω'), (∀ (σ : G F Ω) (x : Ω), Φ σ (E x) = E (σ x)) → ∀ (eV : HeightOneSpectrum (𝓞 F) ≃ HeightOneSpectrum (𝓞 F')), (∀ (A : ValuationSubring Ω) (A' : ValuationSubring Ω'), (∀ x, E x ∈ A' ↔ x ∈ A) → ∀ v : HeightOneSpectrum (𝓞 F), IsPlaceOver A v ↔ IsPlaceOver A' (eV v)) → (∀ (A : ValuationSubring Ω) (A' : ValuationSubring Ω'), (∀ x, E x ∈ A' ↔ x ∈ A) → ∀ σ : G F Ω, σ ∈ Inertia (F := F) A ↔ Φ σ ∈ Inertia (F := F') A') → ∀ (T : Set (HeightOneSpectrum (𝓞 F))) (T' : Set (HeightOneSpectrum (𝓞 F'))), (∀ v, v ∈ T ↔ eV v ∈ T') → ∃ Ψ : GS Ω T ≃ₜ* GS Ω' T', ∀ σ : G F Ω, Ψ (toGS Ω T σ) = toGS Ω' T' (Φ σ) := by
   intro F Ω F' Ω' _ _ _ _ _ _ _ _ _ _ e E _ Φ _ eV hP hI T T' hT

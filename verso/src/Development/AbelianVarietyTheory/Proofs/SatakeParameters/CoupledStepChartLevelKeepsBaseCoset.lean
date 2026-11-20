@@ -12,23 +12,21 @@ noncomputable section
 namespace GlobalTheory.CplCoset
 
 /- English proof (translation)
-Establish `hq : ((qOf P : ℕ) : E) ≠ 0`. Establish `: qOf P ≠ 0` using `fun h0 => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Conclude with `this` after adjusting the coercions. Use `set q : E := ((qOf P : ℕ) : E) with hqdef`. Establish `hsm : ∀ (a : E) (v : Sp E n), (∀ l, IntAt P (a * v l)) ↔ a • v ∈ stdAt E n P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a v`. Rewrite using `[GlobalTheory.TopStep.mem_stdAt]`. Both sides reduce to the same expression. Establish `hpow : ∀ (m : ℕ) (v : Sp E n), v ∈ stdAt E n P → q ^ m • v ∈ stdAt E n P`. Introduce `m v hv`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: q ^ m • v = ((qOf P : 𝓞 E) ^ m) • v`. Rewrite using `[← algebraMap_smul E ((qOf P : 𝓞 E) ^ m) v]`. Apply the tactic sequence `congr 1 <;> simp [hqdef]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hv`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : q ^ e • y₀ ∈ stdAt E n P` using `(hsm _ _).1 hy₀`. Establish `hkw` using `hk _ hw`. Establish `hky : (q ^ e₀)⁻¹ • (k.1 y₀ - y₀) ∈ stdAt E n P`. Take `⟨d, hd⟩ : ∃ d, D = d + e + e₀` from `⟨D - e - e₀, by omega⟩`. Establish `e1 : (q ^ e₀)⁻¹ • (k.1 y₀ - y₀) = q ^ d • ((q ^ D)⁻¹ • (k.1 (q ^ e • y₀) - q ^ e • y₀))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, ← smul_sub, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[hd, pow_add, pow_add]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpow _ _ hkw`. Establish `hcy : (q ^ e₀)⁻¹ • (c⁻¹ y₀ - y₀) ∈ stdAt E n P`. Establish `e2 : c⁻¹ y₀ - y₀ = g (k.1 y₀ - y₀) + (g y₀ - y₀)`. Rewrite using `[hck, LinearEquiv.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e2, smul_add, ← map_smul]`. Conclude with `add_mem ((hg _).2 hky) ((hsm _ _).1 hgy)`. Establish `hcc : ∀ x, c (c⁻¹ x) = x` using `fun x => by`. Rewrite using `[← LinearEquiv.mul_apply, mul_inv_cancel]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hsm, hsm]`. Establish `e3 : (q ^ e₀)⁻¹ • (c y - y₀) = c ((q ^ e₀)⁻¹ • (y - y₀) - (q ^ e₀)⁻¹ • (c⁻¹ y₀ - y₀))`. Rewrite using `[← smul_sub, map_smul]`. Simplify using `only [map_sub, hcc]`. Use `congr 1`.
-
-Normalize the expressions using the abelian group laws. Rewrite using `[e3, hc]`. Conclude with `Submodule.sub_mem_iff_left _ hcy`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameCoset_local {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)) {n : ℕ}
     (e₀ e D : ℕ) (c g : Sp E n ≃ₗ[E] Sp E n) (k : GLint E n P) (hc : c ∈ GLint E n P) (hg : g ∈ GLint E n P)
@@ -84,21 +82,21 @@ end GlobalTheory.CplCoset
 namespace GlobalTheory.CplCoset
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP H β' κ' κ'' hF P y`. Establish `hok` using `t.idx_ok μ`. Establish `hU` using `(((St (t.m2 + 1) (cpl_lt t μ).le).K β').lev.U_eq κ'.1).1 κ'.2`. Take `⟨g, z, ⟨hmid, hsame⟩, hfr⟩` from `(H.levCpl β').1 P (vUnder (t := t) P.1) (isOver_vUnder P.1) κ'.1 hU.1 (hU.2 _)`. Establish `hgC` using `(exists_midLev_iff _ _ _ _ _ _ _ g).1 ⟨z, hmid⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg : g ∈ GLint t.X.E _ P.1` using `hok.int _ _ P hgC`. Establish `hD1` using `hok.cst_ok.D_pos P`. Use `set k := g⁻¹ * ((κ'' P)⁻¹).1 with hk`. Establish `hcol : ∀ s l, IntAt P.1 (((qOf P.1 : t.X.E) ^ (t.cst μ).D P)⁻¹ * (k (Pi.single s (1 : t.X.E)) l - (Pi.single s (1 : t.X.E) : Sp t.X.E (D.R.N (t.m2 + 1))) l))`. Introduce `s l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc` using `GlobalTheory.FrameAway.frame_core (F := D.host.F) (seamP t.seam P.1) ((t.cst μ).D P) hD1 _ _ _ _ hfr (hF P) (fun _ _ => rfl) l s`. Rewrite `hc` using `[← map_inv, ← map_mul, GlobalTheory.FrameAway.qOf_seamP, ← hk]`. Use `GlobalTheory.FrameAway.intAt_of_seamP t.seam P.1 _ ?_` and prove the remaining obligations. Use `hc using 1` and compare the differences between its conclusion and the goal. Establish `hm` using `congrFun (seamGL_mulVec t.seam k (Pi.single s 1)) l`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs1 : (fun j => t.seam.iE ((Pi.single s (1 : t.X.E) : Sp t.X.E (D.R.N (t.m2 + 1))) j)) = Pi.single s (1 : D.host.E)`. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.single_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `hm` using `[hs1, Matrix.mulVec_single_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv₀, map_pow, map_natCast, map_sub, ← hm, Matrix.sub_apply, Matrix.one_apply, Pi.single_apply]`. Distinguish the cases in `h : l = s`. Substitute `h` using the available equality. Simplify using `[Matrix.col_apply]`. Simplify using `[h, Matrix.col_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨hkG, hkC⟩` from `GlobalTheory.T.mem_integralGL_principalCongruence_of_cols_cong P.1 ((t.cst μ).D P) k hD1 hcol`. Establish `hy₀` using `GlobalTheory.T.intAt_scaled_baseCosetRep_of_adTie D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP H β' P`. Unfold `SameCoset`. Use `sameCoset_local P.1 _ _ ((t.cst μ).D P) (κ'' P).1 g ⟨k, hkG⟩ (κ'' P).2 hg hkC ?_ ?_ (A.y0 β' P) hy₀ hsame y` and prove the remaining obligations. Use `show ((κ'' P).1)⁻¹ = g * (g⁻¹ * ((κ'' P)⁻¹).1)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[mul_inv_cancel_left]`. Both sides reduce to the same expression. Distinguish the cases in `h : P.1 ∈ t.Pr.vGs`. Simplify using `only [h, if_true]`. Use `hok.depthG P h` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [h, if_false]`. Use `hok.depthQ P h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sameCoset_kappa : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ (β' : (St (t.m2 + 1) (cpl_lt t μ).le).Ch)
     (κ' : ((St (t.m2 + 1) (cpl_lt t μ).le).K β').lev.U) (κ'' : GLQ t.X.E (D.R.N (t.m2 + 1)) (SB t μ)),

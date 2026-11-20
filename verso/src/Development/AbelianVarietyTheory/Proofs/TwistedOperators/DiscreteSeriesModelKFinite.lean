@@ -26,16 +26,16 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-The claim follows from `le_antisymm (sSup_le fun W hW _ hw => ⟨W, hW.1, hw, hW.2⟩) fun _ ⟨W, h1, h2, h3⟩ => (le_sSup (a := W) ⟨h1, h3⟩ : W ≤ GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin ε σ) h2`.
+A detailed English derivation is pending.
 -/
 theorem kFin_eq : GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin ε σ = kFinSub ε σ :=
   le_antisymm (sSup_le fun W hW _ hw => ⟨W, hW.1, hw, hW.2⟩)
     fun _ ⟨W, h1, h2, h3⟩ => (le_sSup (a := W) ⟨h1, h3⟩ : W ≤ GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin ε σ) h2
 
 /- English proof (translation)
-Rewrite using `[← hG]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Aᴴ * (Yᴴ * G + G * Y) * A := by`. Rewrite using `[hAB]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [conjTranspose_one, Matrix.mul_one, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hY]; simp`.
+A detailed English derivation is pending.
 -/
 theorem conj_lie' {A B G G' Y : Matrix (Fin n) (Fin n) ℂ} (hAB : A * B = 1) (hG : Aᴴ * G * A = G')
     (hY : Yᴴ * G + G * Y = 0) : (B * Y * A)ᴴ * G' + G' * (B * Y * A) = 0 := by
@@ -48,24 +48,22 @@ theorem conj_lie' {A B G G' Y : Matrix (Fin n) (Fin n) ℂ} (hAB : A * B = 1) (h
     _ = 0 := by rw [hY]; simp
 
 /- English proof (translation)
-Rewrite using `[← Matrix.exp_conj Q _ hQ, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_smul_conj' {Q : Matrix (Fin n) (Fin n) ℂ} (hQ : IsUnit Q) (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
     Q * NormedSpace.exp (t • X) * Q⁻¹ = NormedSpace.exp (t • (Q * X * Q⁻¹)) := by
   rw [← Matrix.exp_conj Q _ hQ, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Use `haveI := hσ.1`. Use `haveI := hσ.2.1`. Take `⟨-, -, hd, hst, hirr⟩` from `h.of_isDS hσ`. Establish `hdet` using `(isUnit_iff_isUnit_det _).1 hP`. Establish `h1 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul _ hdet`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `hG' : (P⁻¹)ᴴ * G * P⁻¹ = Jm ε`. Rewrite using `[← hJ]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, fun X hX v => ?_, fun B hB hS => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne push_neg at hne`. Take `⟨x, hx⟩` from `exists_ne (0 : H)`. Take `⟨y, hy, hy'⟩` from `hd.exists_mem_open isOpen_compl_singleton ⟨x, hx⟩`. Conclude with `hy' (congrArg Subtype.val (hne ⟨y, hy⟩))`. Establish `hY : inG ε (P * X * P⁻¹)` using `conj_lie' h1 hG' hX`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨⟨dRep σ (P * X * P⁻¹) v, hst _ hY _ v.2⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [exp_smul_conj' hP]`. Conclude with `h.hasDerivAt hσ.2.2.1 hσ.2.2.2.1 v.2 hY`. Establish `hle : B.map (kFinSub ε σ).subtype ≤ kFinSub ε σ` using `Submodule.map_subtype_le _ _`. Establish `hs : IsLieStable ε σ (B.map (kFinSub ε σ).subtype)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce and unpack `Y hY _ ⟨v, hv, rfl⟩`. Use `⟨⟨dRep σ Y v, hst _ hY _ v.2⟩, hS (P⁻¹ * Y * P) (conj_lie' h2 hJ hY) v _ hv ?_, rfl⟩` and prove the remaining obligations. Establish `e : P * (P⁻¹ * Y * P) * P⁻¹ = Y`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [exp_smul_conj' hP, e]`.
-
-Conclude with `h.hasDerivAt hσ.2.2.1 hσ.2.2.2.1 v.2 hY`. Break down `hirr _ hle hs with e | e` into its components or cases. Conclude with `absurd ((Submodule.map_injective_of_injective (kFinSub ε σ).injective_subtype) (e.trans (Submodule.map_bot _).symm)) hB`. Conclude with `(Submodule.map_injective_of_injective (kFinSub ε σ).injective_subtype) (e.trans (Submodule.map_subtype_top _).symm)`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem model (h : GlobalTheory.Published.KFiniteVectorsUnitary) {lam : Fin n → ℝ} (hσ : IsDS ε lam σ)
     {P G : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (hJ : Pᴴ * Jm ε * P = G) :
@@ -113,7 +111,7 @@ theorem model (h : GlobalTheory.Published.KFiniteVectorsUnitary) {lam : Fin n �
 end Model
 
 /- English proof (translation)
-Introduce `hPr D V S M τ`. Rewrite using `[kFin_eq]`. Take `⟨h1, h2, h3⟩` from `model hPr.kFiniteVectorsUnitary (M.ds τ) (M.fr_unit τ) (M.fr_gram τ)`. Conclude with `⟨h1, fun g _ hg v => GlobalTheory.KFinVec.isKStableOn_kFinSub _ _ _ hg _ v.2, h2, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem kFin_structure : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (V : HSp D) (S : D.what₂.Tau → SPar)
     (M : Formalism.IndefR.Mult.DSModel V S) (τ : D.what₂.Tau),

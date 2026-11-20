@@ -18,13 +18,11 @@ noncomputable section
 namespace GlobalTheory.Poinc.GDeep
 
 /- English proof (translation)
-Establish `lt : ∀ m : ℕ, m < n ^ m` using `fun m => Nat.lt_pow_self hn`. Take `⟨k₀, hk₀⟩` from `exists_nat_gt (1 + 2 * (g : ℝ) * (2 : ℝ) ^ ((g : ℝ) / 2))`. Use `set K := max k₀ B with hK`. Use `set N := (n ^ (K + 2)) ^ 2 with hN`. Establish `hN₁ : K + 2 < N` using `(lt _).trans_le (Nat.le_self_pow two_ne_zero _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨j₀, hj₀⟩` from `exists_nat_gt (2 * ((N ^ g * g.factorial : ℕ) : ℝ) * ((g : ℝ) * (3 / 2 : ℝ) ^ g * (2 : ℝ) ^ ((g : ℝ) / 2 - 1)))`. Use `⟨K + 2, j₀ + 6 * (N ^ g * g.factorial) + 1, by omega, ?_, by omega, fun j hj o Ω _ _ _ S hg hS hr => ?_⟩` and prove the remaining obligations. Establish `: B ≤ K` using `le_max_right _ _`. Use linear arithmetic over natural numbers and integers. Establish `hj'` using `lt j`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `ThetaSys.Big`. Rewrite using `[hg, hS, hr, ← hN]`. Establish `hk₀K : k₀ ≤ K` using `le_max_left _ _`. Use `⟨hk₀.trans (by exact_mod_cast (by omega : k₀ < N)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul (n ^ j)]`.
-
-Conclude with `mul_lt_mul_of_pos_right (hj₀.trans (by exact_mod_cast (by omega : j₀ < n ^ j))) (by exact_mod_cast (by omega : 0 < N))`. Conclude with `lt_of_lt_of_le (by omega) (Nat.le_mul_of_pos_right _ (by omega))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem big_ge (g n : ℕ) (hn : 2 ≤ n) (B : ℕ) : ∃ k j₁ : ℕ, 2 ≤ k ∧ B ≤ (n ^ k) ^ 2 ∧ 1 ≤ j₁ ∧ ∀ j ≥ j₁,
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω),
@@ -50,7 +48,7 @@ theorem big_ge (g n : ℕ) (hn : 2 ≤ n) (B : ℕ) : ∃ k j₁ : ℕ, 2 ≤ k 
   · exact lt_of_lt_of_le (by omega) (Nat.le_mul_of_pos_right _ (by omega))
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull M j j rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullSame L _ (fun _ => a) _ j fun _ => e) h`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_comp' {X Y Z : Scheme.{0}} {L : LB X} {M : LB Y} {a : Y ⟶ X} (h : LBIso M (L.pull a)) (j : Z ⟶ Y)
     {a' : Z ⟶ X} (e : a' = j ≫ a) : LBIso (M.pull j) (L.pull a') :=
@@ -58,36 +56,34 @@ theorem lbIso_pull_comp' {X Y Z : Scheme.{0}} {L : LB X} {M : LB Y} {a : Y ⟶ X
     (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullSame L _ (fun _ => a) _ j fun _ => e) h
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm`.
+A detailed English derivation is pending.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) :=
   (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ _ _ _ _ _ _ _ ε₁ hε₁ m₀`. Take `⟨hL, hL₂⟩` from `GlobalTheory.abelianSchemeLaws_all`. Establish `hℓp : X₁.ρ.n.Prime` using `X₁.ρ.n_prime`. Establish `hℓ2 : 2 ≤ X₁.ρ.n` using `hℓp.two_le`. Take `⟨j₁, hj₁, hr⟩` from `X₁.ρ.r_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hL₁ : X₁.S.r * X₁.S.N = X₁.ρ.n ^ (j₁ + 2 * X₁.ρ.k)`. Rewrite using `[hr, X₁.ρ.N_eq, ← pow_mul, ← pow_add, mul_comm X₁.ρ.k 2]`. Take `⟨k, j, hk, hB, hj, big⟩` from `big_ge X₁.ρ.P.g X₁.ρ.n hℓ2 ((X₁.ρ.n ^ (j₁ + 2 * X₁.ρ.k) * max m₀ 1) ^ 2)`. Establish `hun1 : IsUnit (X₁.ρ.n : X₁.o₁)`. Establish `hd : X₁.ρ.n ∣ X₁.S.r * X₁.S.N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hL₁]; exact dvd_pow_self _ (by omega)`. Conclude with `isUnit_of_dvd_unit (Nat.cast_dvd_cast hd) X₁.S.unit`. Establish `hunK : IsUnit ((((X₁.ρ.n ^ j * (X₁.ρ.n ^ k) ^ 2) ^ 2 : ℕ)) : X₁.o₁)`. Use `push_cast`. Conclude with `((hun1.pow _).mul ((hun1.pow _).pow _)).pow _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨o₂, Ω₂, _, _, _, _, _, κ, fd, gal, hκ, hc, R, h, P, ψ, ze, hfg, hfr, hh, hPg, hpb, hlb, ⟨lev⟩⟩` from `GlobalTheory.T.exists_symplectic_level_eighth_power_galois_ext X₁ _ (by have := hℓp.pos; positivity) hunK`. Establish `hS` using `GlobalTheory.T.lineBundleSymmetryHypothesis_of_polAV_pullback X₁.ρ.P P (spMap h) ψ hpb hlb X₁.ρ.hypS`. Establish `hun2 : IsUnit (X₁.ρ.n : o₂)` using `by simpa using hun1.map κ`. Take `⟨S₂, ρ₂, hR, φ, -, hN₂, hr₂, hg₂, hpb₂, hlb₂, -⟩` from `GlobalTheory.ThetaReal.exists_thetaSys_real hL hL₂ o₂ Ω₂ R hfg hfr P X₁.ρ.n k j ze hℓp X₁.ρ.n_odd hk hj hun2 hS lev`. Use `set h' : X₁.S.R →+* S₂.R := (Subalgebra.inclusion hR).toRingHom.comp h with hh'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hval : ∀ a, ((h' a : S₂.R) : Ω₂) = algebraMap X₁.Ω₁ Ω₂ a` using `fun a => hh a`. Establish `hpb' : IsGrpPullback ρ₂.P.A X₁.ρ.P.A (spMap h') (φ ≫ ψ)`. Rewrite using `[hh', ← spMap_comp']`. Conclude with `hpb₂.comp hpb`. Establish `hlb' : LBIso ρ₂.P.L (X₁.ρ.P.L.pull (φ ≫ ψ))` using `LBIso.trans ρ₂.P.isLB (pull_isLB P.isLB _) (pull_isLB X₁.ρ.P.isLB _) hlb₂ (lbIso_pull_comp' hlb φ rfl)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨ε₂, hε₂, hεc⟩` from `GlobalTheory.T.diagonalEndOfEighthPower_of_polAV_pullback F W X₁.ρ.P ρ₂.P X₁.u (spMap h') (φ ≫ ψ) ε₁ hε₁ hpb' hlb'`. Establish `hsharp : SharpOver F W ρ₂.P (spMap h' ≫ X₁.u)`. Take `⟨c, hc₁, pr, hpr, hun, hLc, -⟩` from `hε₂`. Conclude with `⟨c, hc₁, pr, hpr, hun, hLc⟩`. Establish `key : spMap S₂.R.val.toRingHom ≫ spMap h' = spMap (algebraMap X₁.Ω₁ Ω₂) ≫ spMap X₁.S.R.val.toRingHom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[spMap_comp', spMap_comp']`. Use `congr 1`. Use extensionality with `a`. Conclude with `hval a`. Establish `hgen : ∀ w, (spMap S₂.R.val.toRingHom ≫ spMap h' ≫ X₁.u) w ∈ genericPoints F.X`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Rewrite using `[← Category.assoc, key, Category.assoc, Scheme.Hom.comp_apply]`. Conclude with `X₁.gen _`. Take `⟨M₂, q, hMn, hq, hqgen⟩` from `GlobalTheory.T.exists_normalisation_model_finite_extension X₁ o₂ Ω₂ κ hκ hc`. Use `haveI := hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI := X₁.fin`. Establish `hcomp : M₂.pt ≫ q ≫ X₁.π = spMap S₂.R.val.toRingHom ≫ (spMap h' ≫ X₁.u) ≫ i`. Rewrite using `[← Category.assoc, hqgen, Category.assoc, X₁.comp, Category.assoc, ← Category.assoc (spMap S₂.R.val.toRingHom), key, Category.assoc]`. Establish `hbase : spMap S₂.R.val.toRingHom ≫ (spMap h' ≫ X₁.u) ≫ F.s = spMap ((algebraMap o₂ Ω₂).comp (κ.comp X₁.κ))`. Rewrite using `[← Category.assoc, ← Category.assoc, key, Category.assoc, Category.assoc, X₁.base, spMap_comp', ← RingHom.comp_assoc, ← hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbig : S₂.Big` using `big j le_rfl o₂ Ω₂ S₂ (hg₂.trans hPg) hN₂ hr₂`. Set `X₂ : Setup F W i` to `Setup.mk o₂ Ω₂ S₂ ρ₂ hbig (spMap h' ≫ X₁.u) hsharp hgen M₂ hMn (q ≫ X₁.π) inferInstance hcomp X₁.one_le X₁.three_le X₁.odd X₁.z X₁.proj X₁.normalZ X₁.imm X₁.thetaSetup_structureMap_comp X₁.dense X₁.e8 X₁.thetaInt (κ.comp X₁.κ) hbase`. Establish `hle : X₁.ρ.n ^ (j₁ + 2 * X₁.ρ.k) * max m₀ 1 ≤ X₁.ρ.n ^ k` using `(Nat.pow_le_pow_iff_left two_ne_zero).1 hB`. Establish `hpos : 1 ≤ X₁.ρ.n ^ (j₁ + 2 * X₁.ρ.k)` using `Nat.one_le_pow _ _ (by omega)`. Establish `hm₁ : 1 ≤ max m₀ 1` using `le_max_right _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hm₀ : m₀ ≤ X₁.ρ.n ^ k` using `(le_max_left m₀ 1).trans ((Nat.le_mul_of_pos_left _ (by omega)).trans hle)`. Establish `hdm : X₁.S.r * X₁.S.N ∣ X₁.ρ.n ^ k`. Rewrite using `[hL₁]`. Use `pow_dvd_pow _ ((Nat.pow_le_pow_iff_right hℓ2).1 ?_)` and prove the remaining obligations. Conclude with `(Nat.le_mul_of_pos_right _ (by omega)).trans hle`.
-
-Establish `hd₂ : X₁.S.r * X₁.S.N ∣ S₂.r * S₂.N`. Rewrite using `[hN₂]`. Conclude with `(hdm.trans (dvd_pow_self _ two_ne_zero)).trans (dvd_mul_left _ _)`. Take `⟨lab, hsame, hrange⟩` from `GlobalTheory.T.exists_thetaLabel_common_generic_fibre_pullback X₁.S S₂ X₁.ρ ρ₂ ε₁ ε₂ (algebraMap X₁.Ω₁ Ω₂) h' (φ ≫ ψ) hval hpb' hlb' hεc hd₂`. Conclude with `⟨Deep.mk X₂ ε₂ hε₂ fd gal X₂.projM q hq hqgen rfl (X₁.ρ.n ^ k) hN₂ hdm lab hsame hrange, hm₀⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_deep : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z)
     (X₁ : Setup F W i), 1 ≤ g → 3 ≤ n → Odd n → IsOpenImmersion i → IsE8 W → ThetaInt F W i → IsProjOver X₁.M.s →

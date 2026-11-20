@@ -5,7 +5,7 @@ open NumberField ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.LieHt Gl
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LieRead.deg_eq_neg_adelSum_div_finrank` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHermitianDegreeAdelicSum.lean&line=82#L82)
 -/

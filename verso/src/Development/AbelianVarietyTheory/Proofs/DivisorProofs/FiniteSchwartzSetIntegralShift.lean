@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.FinPartHeis
 
 /- English proof (translation)
-Simplify using `only [schr, Prod.fst_add, Prod.snd_add]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Use `congr 1`. Use `congr 1`. Simplify using `only [dotProduct_add, add_dotProduct]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `h2 : (2 : R) * ⅟2 = 1` using `mul_invOf_self 2`. Take the linear combination `(w.1 ⬝ᵥ w'.2) * h2`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 -/
 theorem schr_add {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w w' : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) (x : κ → R) :
@@ -33,7 +33,7 @@ theorem schr_add {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R �
     abel
 
 /- English proof (translation)
-Simplify using `only [realAd, map_one, LinearMap.inl_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem realAd_one_eq (F : Type) [Field F] [NumberField F] :
     realAd F 1 = ((1 : InfiniteAdeleRing F), (0 : FiniteAdeleRing (𝓞 F) F)) := by
@@ -41,7 +41,7 @@ theorem realAd_one_eq (F : Type) [Field F] [NumberField F] :
   rfl
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.SuppDen.norm_le_one_iff_mem v _).2 (HeightOneSpectrum.coe_mem_adicCompletionIntegers v ⟨o, ho⟩)`.
+A detailed English derivation is pending.
 -/
 theorem norm_algebraMap_le_one {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {o : F}
     (ho : IsIntegral ℤ o) : ‖algebraMap F (Fv F v) o‖ ≤ 1 :=
@@ -52,75 +52,65 @@ end GlobalTheory.FinPartHeis
 namespace GlobalTheory.FinPartHeis
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M y hB hM Ψ hΨ N hN`. Establish `hψ : IsStd B.ψ` using `hB.std`. Take `⟨m₀, hm₀, hfix⟩` from `GlobalTheory.ThetaLevel.heis_fix B.ψ hψ.1 Ψ hΨ`. Take `⟨m₃, hm₃, htriv⟩` from `GlobalTheory.PsiTriv.exists_nat_trivial B.ψ hψ.1`. Establish `hIZ : ∀ z : ℤ, IsIntegral ℤ (z : F)` using `fun z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using (isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ F z))`. Establish `hIN : ∀ z : ℕ, IsIntegral ℤ (z : F)` using `fun z => by exact_mod_cast hIZ z`. Establish `hr : realAd F 1 = ((1 : InfiniteAdeleRing F), (0 : FiniteAdeleRing (𝓞 F) F))` using `realAd_one_eq F`. Use `set ef : AF F := 1 - realAd F 1 with hef_def`. Establish `hrr : realAd F 1 * realAd F 1 = realAd F 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.ThetaDecay.realAd_mul (F := F) 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Establish `hr1 : (realAd F 1).1 = 1` using `by rw [hr]`. Establish `hef1 : ef.1 = 0` using `by show (1 : AF F).1 - (realAd F 1).1 = 0`. Rewrite using `[hr1]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_self _`. Establish `hefv : ∀ v, evFin F v ef = 1` using `fun v => by`. Rewrite using `[hef_def, map_sub, map_one, sub_eq_self]`. Use `show (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) ((sndA F) (realAd F 1)) = 0`. Rewrite using `[show (sndA F) (realAd F 1) = 0 by rw [hr]; rfl, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hff : ef * ef = ef` using `by rw [hef_def]; linear_combination hrr`. Set `emb : (Fin n × Fin d → F) → (Fin n × Fin d → AF F)` to `fun a i => ef * algebraMap F (AF F) (a i)`. Establish `hnorm : ∀ v (m : ℕ) (o : F), IsIntegral ℤ o → ‖evFin F v (ef * algebraMap F (AF F) ((m : F) * o))‖ ≤ ‖(m : Fv F v)‖`. Introduce `v m o ho`. Rewrite using `[map_mul, hefv, one_mul, AlgHom.commutes, map_mul, map_natCast, norm_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_of_le_one_right (norm_nonneg _) (norm_algebraMap_le_one v ho)`. Establish `hemb_int : ∀ (m : ℕ) (a : Fin n × Fin d → F), (∀ i, ∃ o : F, IsIntegral ℤ o ∧ a i = m * o) → GlobalTheory.ThetaDenom.IsMulInt F m (emb a)`. Introduce `m a ha`. Use `⟨fun i => ?_, fun v i => ?_⟩` and prove the remaining obligations. Use `show ef.1 * _ = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hef1, zero_mul]`. Take `⟨o, ho, hao⟩` from `ha i show ‖evFin F v (ef * algebraMap F (AF F) (a i))‖ ≤ _`. Rewrite using `[hao]`. Conclude with `hnorm v m o ho`. Establish `hemb_triv : ∀ o : F, IsIntegral ℤ o → B.ψ (ef * algebraMap F (AF F) ((m₃ : F) * o)) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `o ho`. Conclude with `htriv _ (by show ef.1 * _ = 0; rw [hef1, zero_mul]) fun v => hnorm v m₃ o ho`. Establish `hdot : ∀ c c' : Fin n × Fin d → F, emb c ⬝ᵥ emb c' = ef * algebraMap F (AF F) (c ⬝ᵥ c')`. Introduce `c c'`. Simplify using `only [dotProduct, emb, map_sum, Finset.mul_sum, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take the linear combination `(algebraMap F (AF F) (c i) * algebraMap F (AF F) (c' i)) * hff`. Establish `hincV0 : incV F (0 : Fin n → E) = 0` using `funext fun i => by simp [incV]`. Establish `hincVadd : ∀ ξ ξ' : Fin n → E, incV F (ξ + ξ') = incV F ξ + incV F ξ'` using `fun ξ ξ' =>`. Use function extensionality and compare the values at `fun i => by simp [incV]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `T : (Fin n → E) →+ (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)` to `{ toFun := fun ξ => ef • M.co.e (Matrix.vecMulVec (incV F ξ) (incV F y)) map_zero' := by simp [hincV0] map_add' := fun ξ ξ' => by simp only [hincVadd, Matrix.add_vecMulVec, map_add, smul_add] }`. Establish `hdec : ∀ ξ : Fin n → E, M.co.rho B.ψ (Matrix.vecMulVec (incV F ξ) (incV F y)) Ψ = M.co.rho B.ψ (realAd F 1 • Matrix.vecMulVec (incV F ξ) (incV F y)) (schr B.ψ (T ξ) Ψ)`. Introduce `ξ`. Use `show schr B.ψ (M.co.e _) Ψ = schr B.ψ (M.co.e (realAd F 1 • _)) (schr B.ψ (ef • M.co.e _) Ψ)`. Rewrite using `[LinearEquiv.map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `M.co.e (Matrix.vecMulVec (incV F ξ) (incV F y)) = p`. Establish `hsplit : p = realAd F 1 • p + ef • p` using `by rw [← add_smul, hef_def, add_sub_cancel, one_smul]`. Use function extensionality and compare the values at `x`. Use `conv_lhs => rw [hsplit]`. Rewrite using `[schr_add]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h0 : ⅟(2 : AF F) * ((ef • p).1 ⬝ᵥ (realAd F 1 • p).2 - (realAd F 1 • p).1 ⬝ᵥ (ef • p).2) = 0`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h0, AddChar.map_zero_eq_one, one_mul]`. Establish `hN0 : (N : E) ≠ 0` using `by exact_mod_cast (show N ≠ 0 by omega)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `L : Submodule ℤ (Fin n → E)` to `{ carrier := {ξ | ∀ i, ∃ o : 𝓞 E, (N : E) * ξ i = o} add_mem' := fun {a b} ha hb i => by`. Take `⟨o, ho⟩` from `ha i`. Take `⟨o', ho'⟩` from `hb i`. Conclude with `⟨o + o', by rw [Pi.add_apply, mul_add, ho, ho']; push_cast; ring⟩`. Use the proof step `zero_mem' := fun i => ⟨0, by simp⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use the proof step `smul_mem' := fun k {a} ha i => by`. Take `⟨o, ho⟩` from `ha i`. Use `⟨k * o, ?_⟩` and prove the remaining obligations. Use `show (N : E) * (k • a) i = ((k * o : 𝓞 E) : E)`. Rewrite using `[Pi.smul_apply, zsmul_eq_mul, mul_left_comm, ho]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Simplify using `}`. Establish `hLfg : L.FG`. Set `f : (Fin n → 𝓞 E) →ₗ[ℤ] (Fin n → E)` to `{ toFun := fun o i => (N : E)⁻¹ * (o i : E) map_add' := fun a b => by funext i; simp [mul_add] map_smul' := fun k a => by funext i; simp [mul_left_comm] }`. Establish `hL : L = Submodule.map f ⊤`. Use extensionality with `ξ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [Submodule.map_top, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose o ho using h`. Conclude with `⟨o, funext fun i => by show (N : E)⁻¹ * (o i : E) = ξ i`. Rewrite using `[← ho i, ← mul_assoc, inv_mul_cancel₀ hN0, one_mul]⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨o, rfl⟩ i`. Conclude with `⟨o i, by show (N : E) * ((N : E)⁻¹ * (o i : E)) = o i`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hN0, one_mul]⟩`. Rewrite using `[hL]`. Conclude with `Submodule.FG.map f Module.Finite.fg_top`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose A Bv hAB using fun ξ : Fin n → E => hM.rat (Matrix.vecMulVec ξ y)`. Establish `hinc : ∀ ξ : Fin n → E, incM F (Matrix.vecMulVec ξ y) = Matrix.vecMulVec (incV F ξ) (incV F y)`. Introduce `ξ`. Use extensionality with `i j`. Simplify using `[incM, incV, Matrix.vecMulVec_apply, map_mul]`.
+Both sides reduce to the same expression. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨G, hG⟩` from `id hLfg`. Take `⟨D, hD0, hD⟩` from `GlobalTheory.HermClass.exists_int_mul_isIntegral F (S := ⋃ g ∈ (G : Set (Fin n → E)), (Set.range (A g) ∪ Set.range (Bv g))) (Set.Finite.biUnion G.finite_toSet fun g _ => (Set.finite_range _).union (Set.finite_range _))`. Establish `hden : ∀ ξ ∈ L, ∃ a b : Fin n × Fin d → F, (∀ i, IsIntegral ℤ ((D : F) * a i)) ∧ (∀ i, IsIntegral ℤ ((D : F) * b i)) ∧ T ξ = (emb a, emb b)`. Introduce `ξ hξ`. Rewrite `hξ` using `[← hG]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hξ using Submodule.span_induction with`. Consider the case `mem g hg`. Use `⟨A g, Bv g, fun i => hD _ ?_, fun i => hD _ ?_, ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_biUnion hg (Or.inl ⟨i, rfl⟩)`. Conclude with `Set.mem_biUnion hg (Or.inr ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show ef • M.co.e _ = _`. Rewrite using `[← hinc, hAB]`. Both sides reduce to the same expression. Consider the case `zero`. Use `⟨0, 0, fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Pi.zero_apply, mul_zero]`. Conclude with `isIntegral_zero`. Rewrite using `[Pi.zero_apply, mul_zero]`. Conclude with `isIntegral_zero`. Rewrite using `[map_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `ext i <;> simp [emb]`. Consider the case `add ξ ξ' _ _ h h'`. Take `⟨a, b, ha, hb, he⟩` from `h`. Take `⟨a', b', ha', hb', he'⟩` from `h'`. Use `⟨a + a', b + b', fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Extract witnesses or component facts from the available result.
 
-Simplify `(ha i).add (ha' i)` using `[mul_add]`. Simplify `(hb i).add (hb' i)` using `[mul_add]`. Rewrite using `[map_add, he, he']`. Apply the tactic sequence `ext i <;> simp [emb, mul_add]`. Consider the case `smul k ξ _ h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b, ha, hb, he⟩` from `h`. Use `⟨(k : F) • a, (k : F) • b, fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `(hIZ k).mul (ha i)` as an intermediate fact. Simplify `this` using `[mul_left_comm]`. Use `(hIZ k).mul (hb i)` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify `this` using `[mul_left_comm]`. Rewrite using `[map_zsmul, he]`. Apply the tactic sequence `ext i <;> simp [emb, zsmul_eq_mul, map_mul, map_intCast] <;> ring`. Use `set K : ℤ := 2 * m₀ * m₃ * D * D with hK_def`. Establish `hK0 : K ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `: (m₀ : ℤ) ≠ 0` using `by exact_mod_cast hm₀.ne'`. Establish `: (m₃ : ℤ) ≠ 0` using `by exact_mod_cast hm₃.ne'`. Simplify using `only [hK_def]`. Check the signs of the components of the expression. Take `⟨R, hRfin, hRL, hres⟩` from `GlobalTheory.HermClass.exists_finite_residues L hLfg hK0`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨(fun ρ => schr B.ψ (T ρ) Ψ) '' R, hRfin.image _, ?_, fun ξ hξ => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨ρ, -, rfl⟩`. Conclude with `GlobalTheory.SchrKeepsSchA.schr_mem_schA F B.ψ hψ _ _ Ψ hΨ`. Take `⟨ρ, hρR, η, hη, rfl⟩` from `hres ξ hξ`. Use `⟨_, ⟨ρ, hρR, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hdec]`. Use `congr 1`. Take `⟨a, b, ha, hb, he⟩` from `hden η hη`. Take `⟨a', b', ha', hb', he'⟩` from `hden ρ (hRL ρ hρR)`. Establish `hK1 : K • ((emb a, emb b) : (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)) = (emb ((K : F) • a), emb ((K : F) • b))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Apply the tactic sequence `ext i <;> simp [emb, zsmul_eq_mul, map_mul, map_intCast] <;> ring`. Establish `hKint : ∀ (c : Fin n × Fin d → F), (∀ i, IsIntegral ℤ ((D : F) * c i)) → ∀ i, ∃ o : F, IsIntegral ℤ o ∧ ((K : F) • c) i = m₀ * o`. Introduce `c hc i`. Use `⟨((2 * m₃ * D : ℤ) : F) * ((D : F) * c i), (hIZ _).mul (hc i), ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, hK_def]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `show schr B.ψ (T (ρ + K • η)) Ψ = schr B.ψ (T ρ) Ψ`. Rewrite using `[map_add, map_zsmul, he, he', hK1]`. Use function extensionality and compare the values at `x`.
-
-Rewrite using `[schr_add, hfix _ _ (hemb_int m₀ _ (hKint a ha)) (hemb_int m₀ _ (hKint b hb))]`. Establish `hZ : IsIntegral ℤ ((D : F) * D * (a ⬝ᵥ b' - a' ⬝ᵥ b))`. Rewrite using `[mul_sub, dotProduct, dotProduct, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `IsIntegral.sum _ fun i _ => ?_` and prove the remaining obligations. Use `((ha i).mul (hb' i)).sub ((ha' i).mul (hb i))` as an intermediate fact.
-
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hph : ⅟(2 : AF F) * ((emb ((K : F) • a)) ⬝ᵥ (emb b') - (emb a') ⬝ᵥ (emb ((K : F) • b))) = ef * algebraMap F (AF F) ((m₃ : F) * (m₀ * ((D : F) * D * (a ⬝ᵥ b' - a' ⬝ᵥ b))))`. Rewrite using `[hdot, hdot, ← mul_sub, ← map_sub, smul_dotProduct, dotProduct_smul]`. Establish `hXY : (K : F) • (a ⬝ᵥ b') - (K : F) • (a' ⬝ᵥ b) = 2 * ((m₃ : F) * (m₀ * ((D : F) * D * (a ⬝ᵥ b' - a' ⬝ᵥ b))))`.
-
-Simplify using `only [smul_eq_mul, hK_def]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hXY, map_mul, map_ofNat]`. Take the linear combination `(ef * algebraMap F (AF F) ((m₃ : F) * (m₀ * ((D : F) * D * (a ⬝ᵥ b' - a' ⬝ᵥ b))))) * (invOf_mul_self (2 : AF F))`.
-
-Rewrite using `[hph, hemb_triv _ ((hIN m₀).mul hZ), one_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (y : Fin d → E),

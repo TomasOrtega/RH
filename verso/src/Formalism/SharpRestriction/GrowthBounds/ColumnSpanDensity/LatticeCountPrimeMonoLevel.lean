@@ -7,7 +7,7 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree
 
 /- English proof (translation)
-Take `⟨q, hq, hle⟩` from `hz`. Conclude with `⟨q, hq, hle.trans h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem vLEO_mono {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ} {z : O} {D D' : ℝ}
     (h : D ≤ D') (hz : vLEO p z D) : vLEO p z D' := by
@@ -15,7 +15,7 @@ theorem vLEO_mono {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing
   exact ⟨q, hq, hle.trans h⟩
 
 /- English proof (translation)
-Break down `h with h | ⟨x, y, hx, hy, z, M, hz, hv, hM⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨x, y, fun i => hA (hx i), fun i => hA' (hy i), z, M, hz, vLEO_mono hD hv, hM⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem FactorsLE_mono {O Kf V V' : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf]
     [Algebra O Kf] [AddCommGroup V] [Module O V] [AddCommGroup V'] [Module O V'] {p : ℕ} {be : V → V' → Kf}
@@ -26,7 +26,7 @@ theorem FactorsLE_mono {O Kf V V' : Type*} [CommRing O] [IsDomain O] [IsDiscrete
   · exact Or.inr ⟨x, y, fun i => hA (hx i), fun i => hA' (hy i), z, M, hz, vLEO_mono hD hv, hM⟩
 
 /- English proof (translation)
-Take `⟨n, hn, hf⟩` from `h`. Conclude with `⟨n, hX.trans hn, FactorsLE_mono hA hA' hD hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem RhoGE_mono {O Kf V V' : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf]
     [Algebra O Kf] [AddCommGroup V] [Module O V] [AddCommGroup V'] [Module O V'] {p : ℕ} {be : V → V' → Kf}
@@ -36,9 +36,9 @@ theorem RhoGE_mono {O Kf V V' : Type*} [CommRing O] [IsDomain O] [IsDiscreteValu
   exact ⟨n, hX.trans hn, FactorsLE_mono hA hA' hD hf⟩
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp hx`. Use `Submodule.mem_map.mpr ⟨(w ^ (t' - t)) • y, M.smul_mem _ hy, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.lsmul_apply]`. Rewrite using `[← algebraMap_smul Kf (w ^ (t' - t)) y, smul_smul, map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← zpow_natCast, ← zpow_add₀ hw]`. Use `congr 1`. Move the coercions through the operations in `[Nat.cast_sub h]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem scale_neg_mono {O Kf X : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup X] [Module Kf X]
     [Module O X] [IsScalarTower O Kf X] (w : O) (hw : algebraMap O Kf w ≠ 0) {t t' : ℕ} (h : t ≤ t')
@@ -56,7 +56,7 @@ theorem scale_neg_mono {O Kf X : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [
   ring
 
 /- English proof (translation)
-Use `haveI := R.std.1.frac_O`. Introduce `h`. Conclude with `R.std.2.1.ne_zero (IsFractionRing.injective R.O R.Kf (h.trans (map_zero _).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem RS.w_ne {p n' : ℕ} (R : RS p n') : algebraMap R.O R.Kf R.w ≠ 0 := by
   haveI := R.std.1.frac_O
@@ -68,7 +68,7 @@ section Clean
 variable {p n' : ℕ} (R : RS p n') {m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ)
 
 /- English proof (translation)
-Unfold `CCL`. Conclude with `inf_le_inf_right _ (inf_le_inf_right _ (scale_neg_mono _ (RS.w_ne R) h _))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lattice_count_mono_level {t t' : ℕ} (h : t ≤ t') (c : ℕ) (e : Edge R.W R.Qq (m + 1)) :
     CCL R lam0 t c e ≤ CCL R lam0 t' c e := by
@@ -76,7 +76,7 @@ theorem lattice_count_mono_level {t t' : ℕ} (h : t ≤ t') (c : ℕ) (e : Edge
   exact inf_le_inf_right _ (inf_le_inf_right _ (scale_neg_mono _ (RS.w_ne R) h _))
 
 /- English proof (translation)
-Unfold `CCL'`. Conclude with `inf_le_inf_right _ (inf_le_inf_right _ (scale_neg_mono _ (RS.w_ne R) h _))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lattice_count_prime_mono_level {t t' : ℕ} (h : t ≤ t') (c : ℕ) (e : Edge R.W R.Qq (m + 1)) :
     CCL' R lam0 t c e ≤ CCL' R lam0 t' c e := by
@@ -84,7 +84,7 @@ theorem lattice_count_prime_mono_level {t t' : ℕ} (h : t ≤ t') (c : ℕ) (e 
   exact inf_le_inf_right _ (inf_le_inf_right _ (scale_neg_mono _ (RS.w_ne R) h _))
 
 /- English proof (translation)
-Introduce `e he`. Conclude with `RhoGE_mono (lattice_count_mono_level R lam0 ht c e) (lattice_count_prime_mono_level R lam0 ht c e) hD hX (h e he)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem RhoL_mono {t t' c : ℕ} {D D' X X' : ℝ} (ht : t ≤ t') (hD : D ≤ D') (hX : X' ≤ X)
     (h : RhoL R lam0 t c D X) : RhoL R lam0 t' c D' X' := by
@@ -92,16 +92,16 @@ theorem RhoL_mono {t t' c : ℕ} {D D' X X' : ℝ} (ht : t ≤ t') (hD : D ≤ D
   exact RhoGE_mono (lattice_count_mono_level R lam0 ht c e) (lattice_count_prime_mono_level R lam0 ht c e) hD hX (h e he)
 
 /- English proof (translation)
-Introduce `e _`. Conclude with `⟨0, by simpa using hX, Or.inl rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem RhoL_zero (t c : ℕ) (D : ℝ) {X : ℝ} (hX : X ≤ 0) : RhoL R lam0 t c D X := by
   intro e _
   exact ⟨0, by simpa using hX, Or.inl rfl⟩
 
 /- English proof (translation)
-Unfold `gaussianNumber`. Generalize the expression as in `p ^ n' = q`. Break down `Nat.eq_zero_or_pos q with rfl | hq` into its components or cases. Apply the tactic sequence `rcases k with _ | k <;> simp`. Establish `hq' : (1 : ℝ) ≤ q` using `by exact_mod_cast hq`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Conclude with `div_nonneg (sub_nonneg.mpr (one_le_pow₀ hq')) (sub_nonneg.mpr hq')`.
+A detailed English derivation is pending.
 -/
 theorem normalized_group_order_nonneg (R : RS p n') (k : ℕ) : 0 ≤ gaussianNumber (p ^ n') k := by
   unfold gaussianNumber
@@ -112,24 +112,22 @@ theorem normalized_group_order_nonneg (R : RS p n') (k : ℕ) : 0 ≤ gaussianNu
     exact div_nonneg (sub_nonneg.mpr (one_le_pow₀ hq')) (sub_nonneg.mpr hq')
 
 /- English proof (translation)
-Unfold `dL`. Conclude with `div_nonneg (Nat.cast_nonneg _) (normalized_group_order_nonneg R _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dL_nonneg : 0 ≤ dL R lam0 := by
   unfold dL
   exact div_nonneg (Nat.cast_nonneg _) (normalized_group_order_nonneg R _)
 
 /- English proof (translation)
-Use `set S : Set ℝ := {κ : ℝ | 0 ≤ κ ∧ RhoL R lam0 t c D ((1 - κ) * dL R lam0)} with hS`. Establish `h1 : (1 : ℝ) ∈ S` using `⟨zero_le_one, by`. Rewrite using `[sub_self, zero_mul]`. Conclude with `RhoL_zero R lam0 t c D le_rfl⟩`. Break down `(dL_nonneg R lam0).eq_or_lt with h0 | hpos` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h0, mul_zero]`. Conclude with `RhoL_zero R lam0 t c D le_rfl`. Use `set Xs := (1 - sInf S) * dL R lam0 with hXs`. Introduce `e he`. Distinguish the cases in `hle : Xs ≤ 0`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, by simpa using hle, Or.inl rfl⟩`. Use `push_neg at hle`. Establish `hceil : (⌈Xs⌉₊ : ℝ) - 1 < Xs` using `by linarith [Nat.ceil_lt_add_one hle.le]`. Establish `hδ : 0 < (Xs - ((⌈Xs⌉₊ : ℝ) - 1)) / dL R lam0` using `div_pos (sub_pos.mpr hceil) hpos`. Take `⟨κ, hκS, hκlt⟩` from `exists_lt_of_csInf_lt ⟨1, h1⟩ (lt_add_of_pos_right (sInf S) hδ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨n, hn, hf⟩` from `hκS.2 e he`. Use `⟨n, ?_, hf⟩` and prove the remaining obligations. Establish `h2 : κ * dL R lam0 < sInf S * dL R lam0 + (Xs - ((⌈Xs⌉₊ : ℝ) - 1))`. Use `mul_lt_mul_of_pos_right hκlt hpos` as an intermediate fact. Rewrite `this` using `[add_mul, div_mul_cancel₀ _ hpos.ne']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h3 : (⌈Xs⌉₊ : ℝ) < (n : ℝ) + 1`. Establish `: (1 - κ) * dL R lam0 = dL R lam0 - κ * dL R lam0` using `by ring`. Establish `: Xs = dL R lam0 - sInf S * dL R lam0` using `by rw [hXs]; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : ⌈Xs⌉₊ < n + 1` using `by exact_mod_cast h3`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rho_inf_mem (t c : ℕ) (D : ℝ) :
     RhoL R lam0 t c D ((1 - sInf {κ : ℝ | 0 ≤ κ ∧ RhoL R lam0 t c D ((1 - κ) * dL R lam0)}) * dL R lam0) := by
@@ -163,7 +161,7 @@ theorem rho_inf_mem (t c : ℕ) (D : ℝ) :
 end Clean
 
 /- English proof (translation)
-Unfold `Dat.kF`. Conclude with `rho_inf_mem R _ _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kF_mem (X : Dat) (K : Cst) (R : RS X.p X.n') (al be : X.TT → ℕ) :
     RhoL R (flatW X.m al be) (X.tStar K al be) X.c4 (X.D1 K)
@@ -172,14 +170,14 @@ theorem kF_mem (X : Dat) (K : Cst) (R : RS X.p X.n') (al be : X.TT → ℕ) :
   exact rho_inf_mem R _ _ _ _
 
 /- English proof (translation)
-Unfold `Dat.kF`. Conclude with `Real.sInf_nonneg fun x hx => hx.1`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kF_nonneg' (X : Dat) (K : Cst) (R : RS X.p X.n') (al be : X.TT → ℕ) : 0 ≤ X.kF K R al be := by
   unfold Dat.kF
   exact Real.sInf_nonneg fun x hx => hx.1
 
 /- English proof (translation)
-Unfold `Dat.kF`. Use `csInf_le ⟨0, fun x hx => hx.1⟩ ⟨zero_le_one, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_self, zero_mul]`. Conclude with `RhoL_zero R _ _ _ _ le_rfl`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kF_le_one (X : Dat) (K : Cst) (R : RS X.p X.n') (al be : X.TT → ℕ) : X.kF K R al be ≤ 1 := by
   unfold Dat.kF
@@ -188,7 +186,7 @@ theorem kF_le_one (X : Dat) (K : Cst) (R : RS X.p X.n') (al be : X.TT → ℕ) :
   exact RhoL_zero R _ _ _ _ le_rfl
 
 /- English proof (translation)
-Unfold `LPprime LPprimeAt GoodRankK`. Use `⟨hc, fun L _ => ?_⟩` and prove the remaining obligations. Use `⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, 0, ?_, 0, 0, fun _ j => j.elim0⟩` and prove the remaining obligations. Use `push_cast`. Conclude with `mul_nonpos_of_nonpos_of_nonneg (by linarith) (Nat.cast_nonneg _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem lpprime_of_one_le {p n' : ℕ} (R : RS p n') {m : ℕ} (r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ) (t D : ℕ)
     (κ : ℝ) (cStar : ℕ) (hc : 4 * (D + 1) ≤ cStar) (hκ : 1 ≤ κ) :
@@ -201,7 +199,7 @@ theorem lpprime_of_one_le {p n' : ℕ} (R : RS p n') {m : ℕ} (r : ℕ) (lam0 :
   exact mul_nonpos_of_nonpos_of_nonneg (by linarith) (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Unfold `ex`. Use `split_ifs`. Conclude with `h _`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ex_mono {n' : ℕ} {TT : Finset (Fin n')} {f g : TT → ℕ} (h : ∀ s, f s ≤ g s) (s : Fin n') :
     ex f s ≤ ex g s := by
@@ -211,7 +209,7 @@ theorem ex_mono {n' : ℕ} {TT : Finset (Fin n')} {f g : TT → ℕ} (h : ∀ s,
   · exact le_rfl
 
 /- English proof (translation)
-Unfold `Dat.t0 t0I t0G4`. Use `gcongr`. Apply the tactic sequence `all_goals first | exact ex_mono hb _ | exact ex_mono ha _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem initial_level_mono_weights (X : Dat) (K : Cst) {al be al' be' : X.TT → ℕ} (ha : ∀ s, al s ≤ al' s) (hb : ∀ s, be s ≤ be' s) :
     X.t0 K al be ≤ X.t0 K al' be' := by
@@ -220,7 +218,7 @@ theorem initial_level_mono_weights (X : Dat) (K : Cst) {al be al' be' : X.TT →
   all_goals first | exact ex_mono hb _ | exact ex_mono ha _
 
 /- English proof (translation)
-Unfold `Dat.tStar`. Conclude with `Nat.ceil_mono (by linarith [initial_level_mono_weights X K ha hb])`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tStar_mono (X : Dat) (K : Cst) {al be al' be' : X.TT → ℕ} (ha : ∀ s, al s ≤ al' s)
     (hb : ∀ s, be s ≤ be' s) : X.tStar K al be ≤ X.tStar K al' be' := by
@@ -228,7 +226,7 @@ theorem tStar_mono (X : Dat) (K : Cst) {al be al' be' : X.TT → ℕ} (ha : ∀ 
   exact Nat.ceil_mono (by linarith [initial_level_mono_weights X K ha hb])
 
 /- English proof (translation)
-Introduce `s`. Use `⟨fun hs => ?_, fun hs i => ?_⟩` and prove the remaining obligations. Simplify using `only [topW, if_pos hs]`. Conclude with `(h s).1 hs`. Simplify using `[topW, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem topW_base {n' m : ℕ} {TT : Finset (Fin n')} {aw bw : Fin n' → ℤ} {c : ℕ}
     {lam0 : Fin n' → Fin (m + 1) → ℤ} (h : IsBaseWeight TT aw bw c lam0) :
@@ -240,9 +238,7 @@ theorem topW_base {n' m : ℕ} {TT : Finset (Fin n')} {aw bw : Fin n' → ℤ} {
   · simp [topW, hs]
 
 /- English proof (translation)
-Introduce `s`. Distinguish the cases in `hs : s ∈ TT`. Simplify using `only [topW, if_pos hs]`. Conclude with `h s`. Simplify using `only [topW, if_neg hs]`.
-
-Conclude with `antitone_const`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem topW_dom {n' m : ℕ} {TT : Finset (Fin n')} {lam0 : Fin n' → Fin (m + 1) → ℤ} (h : IsDominant lam0) :
     IsDominant (topW TT lam0) := by
@@ -254,7 +250,7 @@ theorem topW_dom {n' m : ℕ} {TT : Finset (Fin n')} {lam0 : Fin n' → Fin (m +
     exact antitone_const
 
 /- English proof (translation)
-Simplify using `[topW, hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem topW_zero {n' m : ℕ} {TT : Finset (Fin n')} (lam0 : Fin n' → Fin (m + 1) → ℤ) (s : Fin n') (hs : s ∉ TT) :
     topW TT lam0 s = 0 := by
@@ -263,31 +259,25 @@ theorem topW_zero {n' m : ℕ} {TT : Finset (Fin n')} (lam0 : Fin n' → Fin (m 
 open Classical in
 
 /- English proof (translation)
-Introduce `K C X hF R aw bw lam0 hW t ht`. Establish `hcst` using `hF.cst`. Distinguish the cases in `h1 : 1 ≤ X.kText K R (fun s => aw s) (fun s => bw s)`. Conclude with `lpprime_of_one_le R 1 lam0 t X.Dp _ X.cStar (by omega) h1`. Use `push_neg at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heps : 0 ≤ 12 * (X.N : ℝ) * X.k * X.ccl / X.b'` using `div_nonneg (by unfold Dat.k; positivity) hF.bpos.le`. Establish `hins : X.Inside (fun s => aw s) (fun s => bw s)`. Assume the negation of the conclusion as `hn`. Apply `absurd h1` to reduce the goal to its premises. Use `push_neg`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `kF_nonneg' X K R (fun s => ((fun s : X.TT => aw s) s + X.ccl).toNat) (fun s => ((fun s : X.TT => bw s) s + X.ccl).toNat)` as an intermediate fact. Simplify using `only [Dat.kText, if_neg hn]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAs : ∀ s : X.TT, (((aw s - X.ccl).toNat : ℕ) : ℤ) = aw s - X.ccl` using `fun s => Int.toNat_of_nonneg (by have h3 : (X.a : ℤ) ≤ aw s - X.ccl := (hins s).1; omega)`. Establish `hbl : 0 < X.bl` using `by linarith [hF.lowb, hF.bpos]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBs : ∀ s : X.TT, (((bw s - X.ccl).toNat : ℕ) : ℤ) = bw s - X.ccl` using `fun s => Int.toNat_of_nonneg (by`. Establish `h : X.bl ≤ ((bw s - X.ccl : ℤ) : ℝ)` using `(hins s).2`. Establish `: (0 : ℝ) ≤ ((bw s - X.ccl : ℤ) : ℝ)` using `by linarith`. Conclude with `this)` after adjusting the coercions. Establish `hA2 : (fun s : X.TT => (aw s - X.ccl).toNat + 2 * X.ccl) = fun s : X.TT => (aw s + X.ccl).toNat`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use function extensionality and compare the values at `s`. Establish `h0` using `hAs s`. Establish `h2 : (((aw s + X.ccl).toNat : ℕ) : ℤ) = aw s + X.ccl` using `Int.toNat_of_nonneg (by have h3 : (X.a : ℤ) ≤ aw s - X.ccl := (hins s).1; omega)`. Use linear arithmetic over natural numbers and integers. Establish `hB2 : (fun s : X.TT => (bw s - X.ccl).toNat + 2 * X.ccl) = fun s : X.TT => (bw s + X.ccl).toNat`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use function extensionality and compare the values at `s`. Establish `h0` using `hBs s`. Establish `h2 : (((bw s + X.ccl).toNat : ℕ) : ℤ) = bw s + X.ccl` using `Int.toNat_of_nonneg (by have := hBs s; omega)`. Use linear arithmetic over natural numbers and integers. Establish `r1 : RhoL R (flatW X.m (fun s : X.TT => (aw s - X.ccl).toNat) (fun s : X.TT => (bw s - X.ccl).toNat)) (X.tStar K (fun s : X.TT => (aw s + X.ccl).toNat) (fun s : X.TT => (bw s + X.ccl).toNat)) X.c4 (X.D1 K) ((1 - X.kF K R (fun s : X.TT => (aw s - X.ccl).toNat) (fun s : X.TT => (bw …` using `RhoL_mono R _ (tStar_mono X K (fun s => Int.toNat_le_toNat (by omega)) (fun s => Int.toNat_le_toNat (by omega))) le_rfl le_rfl (kF_mem X K R _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r2 : RhoL R (flatW X.m (fun s : X.TT => (aw s - X.ccl).toNat + 2 * X.ccl) (fun s : X.TT => (bw s - X.ccl).toNat + 2 * X.ccl)) (X.tStar K (fun s : X.TT => (aw s + X.ccl).toNat) (fun s : X.TT => (bw s + X.ccl).toNat)) X.c4 (X.D1 K) ((1 - X.kF K R (fun s : X.TT => (aw s + X.ccl).toN …`. Rewrite using `[hA2, hB2]`. Conclude with `kF_mem X K R _ _`. Establish `r62` using `h62 X.p X.n' R X.m hF.m2 X.TT X.a X.ccl X.b' aw bw (topW X.TT lam0) (fun s : X.TT => (aw s - X.ccl).toNat) (fun s : X.TT => (bw s - X.ccl).toNat) (topW_base hW.1) (topW_dom hW.2.1) (fun s hs => topW_zero lam0 s hs) (fun s => ⟨hAs s, hBs s⟩) hF.bpos (fun s => ⟨by`. Establish `h0` using `hAs s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h3 : (X.a : ℤ) ≤ aw s - X.ccl` using `(hins s).1`. Establish `: X.a ≤ (aw s - X.ccl).toNat` using `by omega`. Establish `: (X.a : ℝ) ≤ ((aw s - X.ccl).toNat : ℝ)` using `by exact_mod_cast this`. Combine the linear relations using `[hF.lowa],`. Use `by`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h0 : (((bw s - X.ccl).toNat : ℕ) : ℝ) = ((bw s - X.ccl : ℤ) : ℝ)`. Conclude with `congrArg (fun z : ℤ => (z : ℝ)) (hBs s)` after adjusting the coercions. Establish `: X.bl ≤ ((bw s - X.ccl : ℤ) : ℝ)` using `(hins s).2`. Combine the linear relations using `[hF.lowb]⟩)`. Use the proof step `hF.a8 hF.eps`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(X.tStar K (fun s : X.TT => (aw s + X.ccl).toNat) (fun s : X.TT => (bw s + X.ccl).toNat)) X.c4 (X.D1 K)`. Use the proof step `(X.kF K R (fun s : X.TT => (aw s - X.ccl).toNat) (fun s : X.TT => (bw s - X.ccl).toNat))`. Use the proof step `(X.kF K R (fun s : X.TT => (aw s + X.ccl).toNat) (fun s : X.TT => (bw s + X.ccl).toNat))`. Use the proof step `hF.D1nn hF.four_depth_lt_conductor (by show 2 * X.TT.card * X.ccl ≤ X.cStar + 2 * X.TT.card * X.ccl + 2 * X.n' * X.ccl; omega)`. Use the proof step `(kF_nonneg' X K R _ _) (kF_le_one X K R _ _) (kF_nonneg' X K R _ _) r1 r2`.
-
-Establish `r63` using `h63 X.p X.n' R X.m X.TT X.ccl aw bw lam0 hW.1 hW.2.1 _ _ _ _ (by show 2 * X.n' * X.ccl ≤ X.cStar + 2 * X.TT.card * X.ccl + 2 * X.n' * X.ccl - 2 * X.TT.card * X.ccl; omega) r62`. Establish `hc : X.c4 - 2 * X.TT.card * X.ccl - 2 * X.n' * X.ccl = X.cStar` using `by show X.cStar + 2 * X.TT.card * X.ccl + 2 * X.n' * X.ccl - 2 * X.TT.card * X.ccl - 2 * X.n' * X.ccl = X.cStar`. Use linear arithmetic over natural numbers and integers. Rewrite `r63` using `[hc]`. Establish `htt : X.tStar K (fun s : X.TT => (aw s + X.ccl).toNat) (fun s : X.TT => (bw s + X.ccl).toNat) + 2 * X.n' * X.ccl ≤ t`.
-
-Use `hF.tle aw bw hW.2.2` as an intermediate fact. Establish `h5 : ((X.tStar K (fun s : X.TT => (aw s + X.ccl).toNat) (fun s : X.TT => (bw s + X.ccl).toNat) + 2 * X.n' * X.ccl : ℕ) : ℝ) ≤ t` using `by push_cast; linarith`. Conclude with `h5` after adjusting the coercions. Use `h60c X.p X.n' R X.m lam0 hW.2.1 t X.cStar X.Dp _ (by omega) (by omega) ?_` and prove the remaining obligations. Establish `hκ : X.kText K R (fun s => aw s) (fun s => bw s) = X.kF K R (fun s : X.TT => (aw s - X.ccl).toNat) (fun s : X.TT => (bw s - X.ccl).toNat) + 2 * X.kF K R (fun s : X.TT => (aw s + X.ccl).toNat) (fun s : X.TT => (bw s + X.ccl).toNat) + 12 * (X.TT.card : ℝ) * ((X.m : ℝ) + 1) * X.ccl …`.
-
-Simplify using `only [Dat.kText, if_pos hins]`. Both sides reduce to the same expression. Rewrite using `[hκ]`. Conclude with `RhoL_mono R lam0 htt hF.dle le_rfl r63`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem midLP_of (h60c : RhoLowerBoundLargeConductor) (h62 : CloudWeightLowerBound) (h63 : ResidueClassCount) : ∀ K C, MidLP K C := by
   intro K C X hF R aw bw lam0 hW t ht

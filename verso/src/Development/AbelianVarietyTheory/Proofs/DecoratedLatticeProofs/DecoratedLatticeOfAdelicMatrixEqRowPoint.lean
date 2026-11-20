@@ -14,11 +14,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formal
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `id ha`. Take `⟨t, ht⟩` from `Ideal.Quotient.mk_surjective (redP P a)`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Establish `h1` using `reduction_spec P hs h`. Rewrite `h1` using `[← ht, ← map_mul, eq_comm, Ideal.Quotient.eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) P _).2 h1`. Establish `h3 : P.valuation E (algebraMap (𝓞 E) E s) = 1` using `le_antisymm (HeightOneSpectrum.valuation_le_one (K := E) P s) (not_lt.1 fun hl => hs ((HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) P _).1 hl))`. Establish `h4 : P.valuation E (algebraMap (𝓞 E) E s * (a - algebraMap (𝓞 E) E t)) < 1`. Rewrite using `[mul_sub, h, ← map_mul, ← map_sub]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[map_mul, h3, one_mul]`. Rewrite using `[← map_sub, valued_algebraMap]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasRes_red {P : HeightOneSpectrum (𝓞 E)} {a : E} (ha : IntAt P a) :
     HasRes P (algebraMap E _ a) (redP P a) := by
@@ -41,9 +41,9 @@ theorem hasRes_red {P : HeightOneSpectrum (𝓞 E)} {a : E} (ha : IntAt P a) :
 variable [StarRing E] {hc : CMData F E} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))} {g : GL (Fin n) (AfE F E)}
 
 /- English proof (translation)
-Establish `e : ratM P.1 (p.fr P) = locM P.1 g` using `Matrix.ext fun i j => (h.fr P i j).symm`. Establish `h1` using `ratM_mulVec (P := P.1) (p.fr P) ((p.fr P).symm x)`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply, e]`. Establish `h2` using `congrFun (congrArg (fun v => locM P.1 g⁻¹ *ᵥ v) h1) i`. Simplify using `only [Matrix.mulVec_mulVec] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[← locM_mul, inv_mul_cancel, locM_one, Matrix.one_mulVec]`. Rewrite using `[h2]`. Simplify using `only [GlobalTheory.Mem.Col2.pullV, Matrix.mulVec, dotProduct, map_sum, map_mul, adAt_inclE, locM, Matrix.map_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adAt_pull {p : DecoF E n ST SG Q} (h : IsPtOf hc g p) (P : Q) (x : Sp E n) (i : Fin n) :
     adAt F P.1 (GlobalTheory.Mem.Col2.pullV g x i) = algebraMap E _ ((p.fr P).symm x i) := by
@@ -60,11 +60,9 @@ def noFr (p : DecoF E n ST SG Q) : DecoF E n ST (uSG SG Q) ∅ :=
   ⟨(forgetFr p, fun _ => 1), fun P => absurd P.2 (Finset.notMem_empty _)⟩
 
 /- English proof (translation)
-Use `⟨h.uni, h.lat, h.f, fun w x hx i => ?_, fun P => absurd P.2 (Finset.notMem_empty _)⟩` and prove the remaining obligations. Use `show HasRes _ _ ((forgetDeco p).be w x i)`. Distinguish the cases in `hw : w.1 ∈ SG`. Rewrite using `[forgetDeco_be_of_mem p w hw]`. Conclude with `h.be ⟨w.1, hw⟩ x hx i`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : (p.fr (rightOf w hw)).symm x ∈ stdAt E n w.1`. Use `(p.2 (rightOf w hw) _).1 ?_` and prove the remaining obligations. Use `show p.fr (rightOf w hw) ((p.fr (rightOf w hw)).symm x) ∈ _`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `le_locP _ _ hx`.
-
-Establish `e : frBe w.1 (p.fr (rightOf w hw)) x = redV w.1 ((p.fr (rightOf w hw)).symm x)` using `if_pos hs`. Rewrite using `[forgetDeco_be_of_not p w hw, e, adAt_pull h (rightOf w hw) x i]`. Conclude with `hasRes_red (mem_stdAt.1 hs i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPtOf_noFr {p : DecoF E n ST SG Q} (h : IsPtOf hc g p) : IsPtOf hc g (noFr p) := by
   refine ⟨h.uni, h.lat, h.f, fun w x hx i => ?_, fun P => absurd P.2 (Finset.notMem_empty _)⟩
@@ -82,7 +80,7 @@ theorem isPtOf_noFr {p : DecoF E n ST SG Q} (h : IsPtOf hc g p) : IsPtOf hc g (n
     exact hasRes_red (mem_stdAt.1 hs i)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext ((rlc_decoOf_val hc n ST (uSG SG Q) h.uni).trans (near_of_isPtOf (isPtOf_noFr h) 0).deco)`.
+A detailed English derivation is pending.
 -/
 theorem decoOf_eq_forgetFr [NeZero n] {p : DecoF E n ST SG Q} (h : IsPtOf hc g p) :
     decoOf ST (uSG SG Q) g = forgetFr p :=
@@ -95,7 +93,7 @@ open Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.L2.DIV Formalism.Ind
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `B X I _ a y p h`. Use `letI := GlobalTheory.Mem.Col2.starE B`. Conclude with `decoOf_eq_forgetFr (F := B.fields.F) (E := B.fields.E) h`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem latOf_eq_toRow : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : GlobalTheory.Mem.Col2.TC B X), I.Ok → ∀ (a : I.ι) (y : GlobalTheory.Mem.Col2.TC.GA B (B.R.N B.R.m - 1)) (p : GlobalTheory.Mem.Col2.XPt (B.primes X) B.R I.sel (I.tup a)), GlobalTheory.Mem.Col2.TC.PtOf y p → GlobalTheory.TopVal.latOf I a y = GlobalTheory.Mem.Col2.toRow I.sel (I.tup a) p := by
   intro B X I _ a y p h

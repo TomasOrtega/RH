@@ -5,23 +5,21 @@ namespace GlobalTheory
 open Representation
 
 /- English proof (translation)
-Set `M : Submodule ℂ S.toSubmodule` to `R.toSubmodule.comap S.toSubmodule.subtype`. Set `f : M →ₗ[ℂ] U` to `F.toLinearMap ∘ₗ S.toSubmodule.subtype ∘ₗ M.subtype`. Set `ψ : M →ₗ[ℂ] Y` to `φ.toLinearMap ∘ₗ M.subtype`. Establish `hker : LinearMap.ker f ≤ LinearMap.ker ψ`. Introduce `m hm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.mem_ker] at hm ⊢`. Conclude with `h (m : S.toSubmodule) m.2 hm`. Set `φ0 : LinearMap.range f →ₗ[ℂ] Y` to `(LinearMap.ker f).liftQ ψ hker ∘ₗ f.quotKerEquivRange.symm.toLinearMap`. Establish `hφ0 : ∀ m : M, φ0 ⟨f m, m, rfl⟩ = ψ m`. Introduce `m`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [φ0, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[f.quotKerEquivRange_symm_apply_image m ⟨m, rfl⟩]`. Both sides reduce to the same expression. Set `S' : Subrepresentation σ` to `{ toSubmodule := LinearMap.range f apply_mem_toSubmodule := by`. Introduce and unpack `g _ ⟨m, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `t : S.toSubmodule` to `S.toRepresentation g (m : S.toSubmodule)`. Establish `htM : t ∈ M` using `by show (t : V) ∈ R.toSubmodule`. Conclude with `R.apply_mem_toSubmodule g m.2`. Use `⟨⟨t, htM⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [f, LinearMap.comp_apply, Submodule.subtype_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show F (ρ g _) = _`. Rewrite using `[F.isIntertwining]`. Use `rfl }`. Establish `hint : ∀ (g : H) (u : S'.toSubmodule), φ0 (S'.toRepresentation g u) = θ g (φ0 u)`. Introduce and unpack `g ⟨_, m, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `t : S.toSubmodule` to `S.toRepresentation g (m : S.toSubmodule)`. Establish `htM : t ∈ M` using `by show (t : V) ∈ R.toSubmodule`. Conclude with `R.apply_mem_toSubmodule g m.2`. Establish `e1 : (S'.toRepresentation g ⟨f m, m, rfl⟩ : LinearMap.range f) = ⟨f ⟨t, htM⟩, ⟨t, htM⟩, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show σ g (F _) = F (ρ g _)`. Rewrite using `[F.isIntertwining]`. Both sides reduce to the same expression. Rewrite using `[e1, hφ0, hφ0]`. Use `show φ (S.toRepresentation g _) = θ g (φ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `IntertwiningMap.isIntertwining _ _ φ g _`. Use `⟨S', ⟨φ0, fun g => by ext u; exact hint g u⟩, ?_⟩` and prove the remaining obligations. Introduce `h0`. Use `congrArg (fun q : S'.toRepresentation.IntertwiningMap θ => q ⟨f ⟨s, hsR⟩, ⟨s, hsR⟩, rfl⟩) h0` as an intermediate fact. Simplify using `only [IntertwiningMap.coe_zero, Pi.zero_apply] at this`.
-
-Apply `hs` to reduce the goal to its premises. Establish `e2` using `hφ0 ⟨s, hsR⟩`. Conclude with `e2.symm.trans this`.
+A detailed English derivation is pending.
 -/
 theorem intertwining_peel_factor {H V U Y : Type} [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup U]
     [Module ℂ U] [AddCommGroup Y] [Module ℂ Y] (ρ : Representation ℂ H V)
@@ -80,13 +78,13 @@ theorem intertwining_peel_factor {H V U Y : Type} [Group H] [AddCommGroup V] [Mo
   exact e2.symm.trans this
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `R s hsR hs hinj`. It suffices to derive a contradiction. Establish `h0 : (s : V) = 0` using `hinj _ hsR (by simp)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `: s = 0` using `Subtype.ext h0`. Conclude with `hs (by rw [this, map_zero])`. Consider the case `insert j T hj ih`. Introduce `R s hsR hs hinj`. Distinguish the cases in `hA : ∃ t : S.toSubmodule, (t : V) ∈ R.toSubmodule ∧ E j t = 0 ∧ φ t ≠ 0`.
+Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨t, htR, htE, htφ⟩` from `hA`. Use `ih (R ⊓ (E j).ker) t ⟨htR, htE⟩ htφ ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hvR, hvE⟩ hv`. Use `hinj v hvR ?_` and prove the remaining obligations. Introduce `i hi`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_insert.mp hi with rfl | hi` into its components or cases. Conclude with `hvE`. Conclude with `hv i hi`. Use `push_neg at hA`. Conclude with `intertwining_peel_factor ρ σ θ (E j) R S φ s hsR hs (fun t htR htE => hA t htR htE)`.
+A detailed English derivation is pending.
 -/
 theorem intertwining_peel_finset {H V U Y : Type} [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup U]
     [Module ℂ U] [AddCommGroup Y] [Module ℂ Y] (ρ : Representation ℂ H V)
@@ -119,7 +117,7 @@ theorem intertwining_peel_finset {H V U Y : Type} [Group H] [AddCommGroup V] [Mo
       exact intertwining_peel_factor ρ σ θ (E j) R S φ s hsR hs (fun t htR htE => hA t htR htE)
 
 /- English proof (translation)
-Introduce `hsR hs hinj`. Conclude with `intertwining_peel_finset ρ σ θ E S φ Finset.univ R s hsR hs (fun v hv h => hinj v hv (fun i => h i (Finset.mem_univ i)))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem intertwining_peel {H V U Y : Type} [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module ℂ U]
     [AddCommGroup Y] [Module ℂ Y] (ρ : Representation ℂ H V) (σ : Representation ℂ H U)

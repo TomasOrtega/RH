@@ -120,9 +120,9 @@ variable {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {K 
   [∀ τ, Module Ω (E τ)] {D : ComponentData II Ψ K ι Ω E} {O Lt : Type} [CommRing O] [AddCommGroup Lt] [Module O Lt]
 
 /- English proof (translation)
-Establish `hN` using `MuHomDensityNonneg.proof (MuSheetLeviNonneg.proof SheetChartHolo.proof RefAlongSheet.proof)`. Establish `hdeg : degMu X.H = ptsIntegral (e` using `D.n) (mCoordIdeal D.y) (fun _ => phMu X.H) (fun _ => 1) := rfl`. Rewrite using `[hdeg]`. Unfold `ptsIntegral`. Use `split_ifs with hΨ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_nonneg_of_ae ?_ filter_upwards [hN II Ψ K ι Ω E D O Lt X _ hΨ.choose_spec] with y hy` and prove the remaining obligations. Conclude with `finsum_nonneg fun w => finsum_nonneg fun _ => hy w`. Conclude with `le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem degMu_nonneg (X : ComponentSetting D O Lt) : 0 ≤ degMu X.H := by
   classical

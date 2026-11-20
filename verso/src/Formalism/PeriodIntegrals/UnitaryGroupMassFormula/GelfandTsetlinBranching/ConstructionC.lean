@@ -8,7 +8,7 @@ namespace PI.WGB
 open Formalism.BasicNotions MvPolynomial
 
 /- English proof (translation)
-Introduce `n N hN lam mu f hf hfix hne`. Substitute `hN` using the available equality. Conclude with `realize_C h he ha n lam mu f hf hfix hne`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem realize_of (h : PI.HwIrred) (he : ExtremalFacts) (ha : FixedLine) (hb : StableCompl)
     (hc : HighestVec) : Realize := by

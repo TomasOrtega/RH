@@ -24,7 +24,7 @@ def genMat (j : Y.X ⟶ Fl ι N) : ι → GL (Fin N) Y.Fn :=
   (exists_eq_flagPt_of_isLocalRing ι (ι × Fin (N + 1)) N Prod.fst Prod.snd Y.Fn ((ratOf Y).pt ≫ j)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_eq_flagPt_of_isLocalRing ι (ι × Fin (N + 1)) N Prod.fst Prod.snd Y.Fn ((ratOf Y).pt ≫ j)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem flagPt_genMat (j : Y.X ⟶ Fl ι N) :
     (ratOf Y).pt ≫ j = flagPt Prod.fst Prod.snd (genMat j) :=

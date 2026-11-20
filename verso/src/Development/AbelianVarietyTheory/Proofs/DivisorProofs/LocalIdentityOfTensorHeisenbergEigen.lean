@@ -11,21 +11,21 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.DblVacEigen
 
 /- English proof (translation)
-Introduce `F _ _ v W _ _ B κ _ co ψ γ f R c hγ hR x₀ hx₀ hA ξ`. Establish `hx1 : ∀ k, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) ((co.e γ).1 k)` using `fun k u hu => by`. Establish `h` using `congrArg (fun w => (co.e w).1 k) (hγ u hu)`. Simplify `h` using `[LinearEquiv.map_smul]`. Establish `hy1 : ∀ k, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) ((co.e γ).2 k)` using `fun k u hu => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun w => (co.e w).2 k) (hγ u hu)`. Simplify `h` using `[LinearEquiv.map_smul]`. Use `set z : κ → AF F := fun k => GlobalTheory.LatVac.liftV v (ξ k - evFin F v (x₀ k)) with hz`. Establish `hzat : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) z` using `GlobalTheory.VacIndic.at_pi fun k => GlobalTheory.LatVac.at_liftV v _`. Use `set x : κ → AF F := x₀ + z with hx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hevx : (fun i => evFin F v (x i)) = ξ`. Use function extensionality and compare the values at `i`. Simplify using `[hx, hz, GlobalTheory.LatVac.evFin_liftV]`. Establish `hrx : R x = R x₀` using `hR x₀ z hzat`. Establish `hrx1 : R (x + (co.e γ).1) = R x` using `hR x _ (GlobalTheory.VacIndic.at_pi hx1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key` using `congrFun hA x`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Pi.smul_apply, smul_eq_mul] at key`. Establish `hAt : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) (x ⬝ᵥ (co.e γ).2 + ⅟(2 : AF F) * ((co.e γ).1 ⬝ᵥ (co.e γ).2))`. Use `GlobalTheory.VacIndic.at_add ?_ (GlobalTheory.VacIndic.at_mul_left ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.VacIndic.at_sum _ _ fun i => GlobalTheory.VacIndic.at_mul_left (hy1 i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.VacIndic.at_sum _ _ fun i => GlobalTheory.VacIndic.at_mul_left (hy1 i)`. Rewrite `key` using `[GlobalTheory.VacIndic.psi_of_at ψ hAt, hrx1]`. Establish `hhalf : evFin F v (⅟(2 : AF F)) = (2 : Fv F v)⁻¹`. Rewrite using `[GlobalTheory.VacIndic.invOf_two_eq, GlobalTheory.VacIndic.evFin_algebraMap]`. Simplify using `[map_ofNat]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdot : ∀ a b : κ → AF F, evFin F v (a ⬝ᵥ b) = (fun i => evFin F v (a i)) ⬝ᵥ (fun i => evFin F v (b i))`. Introduce `a b`. Simplify using `[dotProduct, map_sum, map_mul]`. Establish `hsum : (fun i => evFin F v ((x + (co.e γ).1) i)) = ξ + (GlobalTheory.LatVac.locCo co v γ).1`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hevx]`. Simplify using `[GlobalTheory.LatVac.locCo]`. Rewrite `key` using `[map_add, map_mul, hhalf, hdot, hdot, hevx, hsum]`. Establish `hr0 : R x ≠ 0` using `hrx ▸ hx₀`. Rewrite using `[GlobalTheory.LatVac.psiAt_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `key` as an intermediate fact. Apply `mul_right_cancel₀ hr0` to reduce the goal to its premises. Simplify using `only [GlobalTheory.LatVac.locCo, AddMonoidHom.coe_mk, ZeroHom.coe_mk] at this ⊢`. Take the linear combination `this`.
+A detailed English derivation is pending.
 -/
 theorem local_identity_of_tens_eigen : ∀ {F : Type} [Field F] [NumberField F] (v : Pl F) {W : Type} [AddCommGroup W] [Module (AF F) W]
     {B : W → W → AF F} {κ : Type} [Fintype κ] (co : Darboux B κ) (ψ : AddChar (AF F) ℂ) (γ : W) (f : (κ → Fv F v) → ℂ)

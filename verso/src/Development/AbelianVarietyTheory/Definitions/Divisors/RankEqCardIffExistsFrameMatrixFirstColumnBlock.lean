@@ -13,47 +13,47 @@ variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchi
 def apow (x : kˣ) (z : ℂ) : ℂ := ((nabs k x : ℝ) : ℂ) ^ z
 
 /- English proof (translation)
-Simplify using `only [apow, nabs_mul, Complex.ofReal_mul]`. Conclude with `Complex.mul_cpow_ofReal_nonneg (nabs_pos x).le (nabs_pos y).le z`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem apow_mul (x y : kˣ) (z : ℂ) : apow (x * y) z = apow x z * apow y z := by
   simp only [apow, nabs_mul, Complex.ofReal_mul]
   exact Complex.mul_cpow_ofReal_nonneg (nabs_pos x).le (nabs_pos y).le z
 
 /- English proof (translation)
-Simplify using `[apow, nabs_one]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem apow_one (z : ℂ) : apow (1 : kˣ) z = 1 := by simp [apow, nabs_one]
 
 /- English proof (translation)
-The claim follows from `Complex.cpow_add _ _ (by exact_mod_cast (nabs_pos x).ne')`.
+A detailed English derivation is pending.
 -/
 theorem apow_add (x : kˣ) (z w : ℂ) : apow x (z + w) = apow x z * apow x w :=
   Complex.cpow_add _ _ (by exact_mod_cast (nabs_pos x).ne')
 
 /- English proof (translation)
-Simplify using `[apow]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem apow_zero (x : kˣ) : apow x 0 = 1 := by simp [apow]
 
 /- English proof (translation)
-The claim follows from `left_ne_zero_of_mul_eq_one (b := apow x (-z)) (by rw [← apow_add]; simp)`.
+A detailed English derivation is pending.
 -/
 theorem apow_ne_zero (x : kˣ) (z : ℂ) : apow x z ≠ 0 :=
   left_ne_zero_of_mul_eq_one (b := apow x (-z)) (by rw [← apow_add]; simp)
 
 /- English proof (translation)
-The claim follows from `Complex.cpow_neg _ _`.
+A detailed English derivation is pending.
 -/
 theorem apow_neg (x : kˣ) (z : ℂ) : apow x (-z) = (apow x z)⁻¹ := Complex.cpow_neg _ _
 
 /- English proof (translation)
-Rewrite using `[apow_neg]; exact eq_inv_of_mul_eq_one_left (by rw [← apow_mul]; simp)`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem apow_inv (x : kˣ) (z : ℂ) : apow x⁻¹ z = apow x (-z) := by
   rw [apow_neg]; exact eq_inv_of_mul_eq_one_left (by rw [← apow_mul]; simp)
 
 /- English proof (translation)
-Use `borelize k`. Establish `h1` using `nabs_le_one x hx.le`. Establish `h2` using `nabs_le_one x⁻¹ (by simp [hx])`. Establish `h3 : nabs k x * nabs k x⁻¹ = 1` using `by rw [← nabs_mul]; simp [nabs_one]`. Use polynomial arithmetic with `[nabs_pos x, nabs_pos x⁻¹]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem nabs_of_valuation_eq_one {x : kˣ} (hx : valuation k (x : k) = 1) : nabs k x = 1 := by
   borelize k
@@ -63,7 +63,7 @@ theorem nabs_of_valuation_eq_one {x : kˣ} (hx : valuation k (x : k) = 1) : nabs
   nlinarith [nabs_pos x, nabs_pos x⁻¹]
 
 /- English proof (translation)
-Simplify using `[apow, nabs_of_valuation_eq_one hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem apow_of_valuation_eq_one {x : kˣ} (hx : valuation k (x : k) = 1) (z : ℂ) : apow x z = 1 := by
   simp [apow, nabs_of_valuation_eq_one hx]
@@ -87,19 +87,19 @@ def unitCong (c : kˣ) : Subgroup kˣ where
 def CondLE (ϖ : kˣ) (e : ℕ) (χ : kˣ →* ℂˣ) : Prop := ∀ x ∈ unitCong (ϖ ^ e), χ x = 1
 
 /- English proof (translation)
-Introduce `x hx` and use `by simp [hα x hx, hβ x hx]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CondLE.div {ϖ : kˣ} {e : ℕ} {α β : kˣ →* ℂˣ} (hα : CondLE ϖ e α) (hβ : CondLE ϖ e β) :
     CondLE ϖ e (α / β) := fun x hx => by simp [hα x hx, hβ x hx]
 
 /- English proof (translation)
-Introduce `x hx` and use `by simp [hα x hx, hβ x hx]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CondLE.mul {ϖ : kˣ} {e : ℕ} {α β : kˣ →* ℂˣ} (hα : CondLE ϖ e α) (hβ : CondLE ϖ e β) :
     CondLE ϖ e (α * β) := fun x hx => by simp [hα x hx, hβ x hx]
 
 /- English proof (translation)
-Introduce `x hx` and use `h x hx.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem condLE_of_isUnram (ϖ : kˣ) (e : ℕ) {χ : kˣ →* ℂˣ} (h : IsUnram χ) : CondLE ϖ e χ :=
   fun x hx => h x hx.1
@@ -114,7 +114,7 @@ structure IsRightTranslationIsometric (ϖ : kˣ) (ψ : AddChar k Circle) (α β 
   condβ : CondLE ϖ e β
 
 /- English proof (translation)
-The claim follows from `h.condα.div h.condβ`.
+A detailed English derivation is pending.
 -/
 theorem IsRightTranslationIsometric.condν {ϖ : kˣ} {ψ : AddChar k Circle} {α β : kˣ →* ℂˣ} {e : ℕ} (h : IsRightTranslationIsometric ϖ ψ α β e) :
     CondLE ϖ e (α / β) := h.condα.div h.condβ
@@ -126,40 +126,40 @@ structure IsCoeffRing (ϖ : kˣ) (ψ : AddChar k Circle) (α β : kˣ →* ℂˣ
   unif : ((α / β) ϖ : ℂ) ∈ R ∧ ((α / β) ϖ⁻¹ : ℂ) ∈ R
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨trivial, fun _ _ => trivial, fun _ _ => ⟨trivial, trivial, trivial⟩, trivial, trivial⟩`.
+Supply the required witnesses or components.
 -/
 example (ϖ : kˣ) (ψ : AddChar k Circle) (α β : kˣ →* ℂˣ) (e : ℕ) : IsCoeffRing ϖ ψ α β e ⊤ :=
   ⟨trivial, fun _ _ => trivial, fun _ _ => ⟨trivial, trivial, trivial⟩, trivial, trivial⟩
 
 /- English proof (translation)
-The claim follows from `{ h with cond := fun x => by simpa only [AddChar.inv_apply', inv_eq_one] using h.cond x }`.
+A detailed English derivation is pending.
 -/
 theorem IsRightTranslationIsometric.inv {ϖ : kˣ} {ψ : AddChar k Circle} {α β : kˣ →* ℂˣ} {e : ℕ} (h : IsRightTranslationIsometric ϖ ψ α β e) :
     IsRightTranslationIsometric ϖ ψ⁻¹ α β e :=
   { h with cond := fun x => by simpa only [AddChar.inv_apply', inv_eq_one] using h.cond x }
 
 /- English proof (translation)
-The claim follows from `{ h with psi := fun x hx => h.psi (-x) (by rwa [mul_neg, Valuation.map_neg]) }`.
+A detailed English derivation is pending.
 -/
 theorem IsCoeffRing.inv {ϖ : kˣ} {ψ : AddChar k Circle} {α β : kˣ →* ℂˣ} {e : ℕ} {R : Subring ℂ}
     (h : IsCoeffRing ϖ ψ α β e R) : IsCoeffRing ϖ ψ⁻¹ α β e R :=
   { h with psi := fun x hx => h.psi (-x) (by rwa [mul_neg, Valuation.map_neg]) }
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `ValuativeRel.valuation_surjective (uniformizer k)`. Conclude with `⟨Units.mk0 t (by rintro rfl; exact ValuativeRel.uniformizer_ne_zero (R := k) (by simpa using ht.symm)), ht⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isUnif : ∃ ϖ : kˣ, IsUnif ϖ := by
   obtain ⟨t, ht⟩ := ValuativeRel.valuation_surjective (uniformizer k)
   exact ⟨Units.mk0 t (by rintro rfl; exact ValuativeRel.uniformizer_ne_zero (R := k) (by simpa using ht.symm)), ht⟩
 
 /- English proof (translation)
-The claim follows from `show valuation k (ϖ : k) ≤ 1 from hϖ ▸ uniformizer_lt_one.le`.
+A detailed English derivation is pending.
 -/
 theorem IsUnif.mem {ϖ : kˣ} (hϖ : IsUnif ϖ) : (ϖ : k) ∈ 𝒪[k] :=
   show valuation k (ϖ : k) ≤ 1 from hϖ ▸ uniformizer_lt_one.le
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[Ideal.mem_span_singleton, ← (Valuation.integer.integers (valuation k)).le_iff_dvd, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one]`. Use `show _ ↔ valuation k (y : k) ≤ valuation k (ϖ : k)`. Rewrite using `[hϖ, le_uniformizer_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsUnif.maximalIdeal_eq {ϖ : kˣ} (hϖ : IsUnif ϖ) :
     IsLocalRing.maximalIdeal 𝒪[k] = Ideal.span {(⟨ϖ, hϖ.mem⟩ : 𝒪[k])} := by
@@ -170,22 +170,20 @@ theorem IsUnif.maximalIdeal_eq {ϖ : kˣ} (hϖ : IsUnif ϖ) :
   rw [hϖ, le_uniformizer_iff]
 
 /- English proof (translation)
-The claim follows from `IsDiscreteValuationRing.irreducible_of_span_eq_maximalIdeal _ (fun h => ϖ.ne_zero (congrArg Subtype.val h)) hϖ.maximalIdeal_eq`.
+A detailed English derivation is pending.
 -/
 theorem IsUnif.irreducible {ϖ : kˣ} (hϖ : IsUnif ϖ) : Irreducible (⟨ϖ, hϖ.mem⟩ : 𝒪[k]) :=
   IsDiscreteValuationRing.irreducible_of_span_eq_maximalIdeal _ (fun h => ϖ.ne_zero (congrArg Subtype.val h))
     hϖ.maximalIdeal_eq
 
 /- English proof (translation)
-Establish `hlt : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Establish `h1 : valuation k (1 + (ϖ : k)) = 1` using `(valuation k).map_one_add_of_lt hlt`. Set `u : kˣ` to `Units.mk0 (1 + ϖ) (by intro h; simp [h] at h1)`. Set `Q` to `kˣ ⧸ unitCong (ϖ ^ 2)`. Establish `hne : (Additive.ofMul (QuotientGroup.mk u : Q)) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `h`. Establish `h2` using `((QuotientGroup.eq_one_iff u).1 h).2`. Simplify using `only [u, Units.val_mk0, add_sub_cancel_left, Units.val_pow_eq_pow_val, map_pow] at h2`. Establish `h0 : 0 < valuation k (ϖ : k)` using `zero_lt_iff.2 (by simp)`. Conclude with `absurd h2 (not_le.2 (by rw [pow_two]; exact mul_lt_of_lt_one_right h0 hlt))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `CharacterModule.exists_character_apply_ne_zero_of_ne_zero hne`. Set `c' : Additive Q →+ AddCircle (1 : ℚ)` to `c`. Set `f : kˣ →* ℂˣ` to `{ toFun := fun x => Circle.toUnits (AddCircle.toCircle (ratCircle (c' (Additive.ofMul (QuotientGroup.mk x))))) map_one' := by simp map_mul' := fun x y => by`. Rewrite using `[QuotientGroup.mk_mul, ofMul_mul, map_add, map_add, AddCircle.toCircle_add, map_mul] }`. Use `⟨f, fun h => hc (ratCircle_eq_zero _ (AddCircle.injective_toCircle one_ne_zero ?_)), fun x hx => ?_, fun x => Circle.norm_coe _⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg Units.val (h u h1)` as an intermediate fact. Rewrite using `[AddCircle.toCircle_zero]`. Conclude with `Circle.ext this`. Use `show Circle.toUnits (AddCircle.toCircle (ratCircle (c' (Additive.ofMul (QuotientGroup.mk x))))) = 1`. Rewrite using `[(QuotientGroup.eq_one_iff x).2 hx]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ramified {ϖ : kˣ} (hϖ : IsUnif ϖ) :
     ∃ ν : kˣ →* ℂˣ, ¬ IsUnram ν ∧ CondLE ϖ 2 ν ∧ ∀ x, ‖(ν x : ℂ)‖ = 1 := by
@@ -215,7 +213,7 @@ theorem exists_ramified {ϖ : kˣ} (hϖ : IsUnif ϖ) :
     rw [(QuotientGroup.eq_one_iff x).2 hx]; simp
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `exists_isUnif (k := k)`. Take `⟨ψ, hψ⟩` from `exists_hasConductor (k := k)`. Take `⟨ν, h1, h2, h3⟩` from `exists_ramified hϖ`. Conclude with `⟨ϖ, ψ, ν, hϖ, hψ, by simpa using h1, by simpa using h3, one_le_two, h2, fun _ _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_localSetting : ∃ (ϖ : kˣ) (ψ : AddChar k Circle) (α : kˣ →* ℂˣ), IsRightTranslationIsometric ϖ ψ α 1 2 := by
   obtain ⟨ϖ, hϖ⟩ := exists_isUnif (k := k)
@@ -252,24 +250,24 @@ Both sides reduce to the same expression.
 theorem invT_inv_val (h : GL D k) : ((invT h)⁻¹).val = h.valᵀ := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem invT_invT (h : GL D k) : invT (invT h) = h := Units.ext rfl
 
 /- English proof (translation)
-The claim follows from `map_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem gdet_mul (g h : GL D k) : gdet (g * h) = gdet g * gdet h := map_mul _ _ _
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Conclude with `Units.ext (det_transpose _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gdet_invT (h : GL D k) : gdet (invT h) = (gdet h)⁻¹ := by
   rw [← map_inv]; exact Units.ext (det_transpose _)
 end
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hg`. Establish `h : ((gdet (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) u) : kˣ) : k) = algebraMap 𝒪[k] k u.val.det` using `(RingHom.map_det _ _).symm`. Rewrite using `[h]`. Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).1 u.isUnit)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_gdet_of_mem_KO {g : GL D k} (hg : g ∈ KO k D) : valuation k (gdet g : k) = 1 := by
   obtain ⟨u, rfl⟩ := hg
@@ -279,7 +277,7 @@ theorem valuation_gdet_of_mem_KO {g : GL D k} (hg : g ∈ KO k D) : valuation k 
   exact (Valuation.integer.integers (valuation k)).one_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).1 u.isUnit)
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[mem_KO_iff]`. Conclude with `⟨fun i j => hg.2 j i, fun i j => hg.1 j i⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem invT_mem_KO {g : GL D k} (hg : g ∈ KO k D) : invT g ∈ KO k D := by
   rw [mem_KO_iff] at hg ⊢
@@ -318,23 +316,23 @@ def repB (ν α : kˣ →* ℂˣ) : Representation ℂ (GL A' k × GL D k) (Matr
     ring
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun ((repA ν β).map_mul (g, h) (g', h')) Φ`.
+A detailed English derivation is pending.
 -/
 theorem omA_mul (ν β : kˣ →* ℂˣ) (g g' : GL A k) (h h' : GL D k) (Φ : Matrix A D k → ℂ) :
     omA ν β (g * g') (h * h') Φ = omA ν β g h (omA ν β g' h' Φ) :=
   LinearMap.congr_fun ((repA ν β).map_mul (g, h) (g', h')) Φ
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun ((repB ν α).map_mul (g, h) (g', h')) Ψ`.
+A detailed English derivation is pending.
 -/
 theorem omB_mul (ν α : kˣ →* ℂˣ) (g g' : GL A' k) (h h' : GL D k) (Ψ : Matrix A' D k → ℂ) :
     omB ν α (g * g') (h * h') Ψ = omB ν α g h (omB ν α g' h' Ψ) :=
   LinearMap.congr_fun ((repB ν α).map_mul (g, h) (g', h')) Ψ
 
 /- English proof (translation)
-Use `(SB (Matrix A D k)).smul_mem (om 1 h g⁻¹ (fun _ => 1) 0)⁻¹ (om_mem_SB 1 h g⁻¹ hΦ)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `X`. Establish `h1` using `fun (x : kˣ) (r : ℝ) => (Real.rpow_pos_of_pos (nabs_pos x) r).ne'`. Simplify using `only [om, Pi.smul_apply, smul_eq_mul, inv_inv, mul_one]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[inv_mul_cancel_left₀]`. Simplify using `only [ne_eq, mul_eq_zero, Units.ne_zero, Complex.ofReal_eq_zero, h1, or_self, not_false_eq_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comp_mul_mem_SB (g : GL A k) (h : GL D k) {Φ : Matrix A D k → ℂ} (hΦ : Φ ∈ SB (Matrix A D k)) :
     (fun X => Φ (g.val * X * h.val)) ∈ SB (Matrix A D k) := by
@@ -347,14 +345,14 @@ theorem comp_mul_mem_SB (g : GL A k) (h : GL D k) {Φ : Matrix A D k → ℂ} (h
   simp only [ne_eq, mul_eq_zero, Units.ne_zero, Complex.ofReal_eq_zero, h1, or_self, not_false_eq_true]
 
 /- English proof (translation)
-The claim follows from `(SB (Matrix A D k)).smul_mem _ (comp_mul_mem_SB g⁻¹ (invT h) hΦ)`.
+A detailed English derivation is pending.
 -/
 theorem omA_mem_SB (ν β : kˣ →* ℂˣ) (g : GL A k) (h : GL D k) {Φ : Matrix A D k → ℂ}
     (hΦ : Φ ∈ SB (Matrix A D k)) : omA ν β g h Φ ∈ SB (Matrix A D k) :=
   (SB (Matrix A D k)).smul_mem _ (comp_mul_mem_SB g⁻¹ (invT h) hΦ)
 
 /- English proof (translation)
-The claim follows from `(SB (Matrix A' D k)).smul_mem _ (comp_mul_mem_SB (invT g)⁻¹ h hΨ)`.
+A detailed English derivation is pending.
 -/
 theorem omB_mem_SB (ν α : kˣ →* ℂˣ) (g : GL A' k) (h : GL D k) {Ψ : Matrix A' D k → ℂ}
     (hΨ : Ψ ∈ SB (Matrix A' D k)) : omB ν α g h Ψ ∈ SB (Matrix A' D k) :=
@@ -377,7 +375,7 @@ def stdSplit {a a' d₁ d₂ : ℕ} (h : a + a' = d₁ + d₂) : Fin a ⊕ Fin a
 omit [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A'] in
 
 /- English proof (translation)
-Simplify using `[X0, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frameMatrixFirstColumnBlock_mul_apply {B : Type*} (σ : A ⊕ A' ≃ D) (M : Matrix D B k) (i : A) (j : B) :
     (X0 k σ * M) i j = M (σ (Sum.inl i)) j := by simp [X0, Matrix.mul_apply]
@@ -385,7 +383,7 @@ theorem frameMatrixFirstColumnBlock_mul_apply {B : Type*} (σ : A ⊕ A' ≃ D) 
 omit [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A'] in
 
 /- English proof (translation)
-Simplify using `[Y0, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frameMatrixSecondColumnBlock_mul_apply {B : Type*} (σ : A ⊕ A' ≃ D) (M : Matrix D B k) (i : A') (j : B) :
     (Y0 k σ * M) i j = M (σ (Sum.inr i)) j := by simp [Y0, Matrix.mul_apply]
@@ -393,7 +391,7 @@ theorem frameMatrixSecondColumnBlock_mul_apply {B : Type*} (σ : A ⊕ A' ≃ D)
 omit [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A'] in
 
 /- English proof (translation)
-Rewrite using `[transpose_mul, invT_val, transpose_transpose, Matrix.mul_assoc, ← Matrix.mul_assoc h.val, Units.mul_inv, Matrix.one_mul]`. Use extensionality with `i j`. Simplify using `[frameMatrixSecondColumnBlock_mul_apply, X0]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem frameSecondBlock_mul_frameFirstBlock_transpose_eq_zero (σ : A ⊕ A' ≃ D) (h : GL D k) :
     (Y0 k σ * h.val) * (X0 k σ * (invT h).val)ᵀ = 0 := by
@@ -404,15 +402,15 @@ theorem frameSecondBlock_mul_frameFirstBlock_transpose_eq_zero (σ : A ⊕ A' �
 omit [DecidableEq A] [DecidableEq A'] in
 
 /- English proof (translation)
-Establish `hli : X.rank = Fintype.card A ↔ LinearIndependent k X.row`. Rewrite using `[rank_eq_finrank_span_row, linearIndependent_iff_card_eq_finrank_span, eq_comm]`. Both sides reduce to the same expression. Rewrite using `[hli]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hX`. Take `⟨U, hU⟩` from `(Submodule.span k (Set.range X.row)).exists_isCompl`. Establish `hf : Module.finrank k U = Fintype.card A'`. Establish `h1` using `Submodule.finrank_add_eq_of_isCompl hU`. Rewrite `h1` using `[finrank_span_eq_card hX, Module.finrank_fintype_fun_eq_card, ← Fintype.card_congr σ, Fintype.card_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Set `b` to `(Module.finBasisOfFinrankEq k U hf).reindex (Fintype.equivFin A').symm`. Establish `hb : LinearIndependent k (U.subtype ∘ b)` using `b.linearIndependent.map' _ U.ker_subtype`. Establish `hs` using `(hX.sum_type hb (hU.disjoint.mono_right (Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(b i).2)))).comp σ.symm σ.symm.injective`. Take `⟨B, hB⟩` from `(Matrix.linearIndependent_rows_iff_isUnit (A := Matrix.of (Sum.elim X.row (U.subtype ∘ b) ∘ σ.symm))).1 hs`. Use `⟨invT B, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[frameMatrixFirstColumnBlock_mul_apply, hB]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h, rfl⟩`. Use `(Matrix.linearIndependent_rows_iff_isUnit.2 (invT h).isUnit).comp (σ ∘ Sum.inl) (σ.injective.comp Sum.inl_injective)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i j`. Conclude with `frameMatrixFirstColumnBlock_mul_apply σ _ i j`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rank_eq_card_iff_exists_frameMatrixFirstColumnBlock (σ : A ⊕ A' ≃ D) (X : Matrix A D k) :
     X.rank = Fintype.card A ↔ ∃ h : GL D k, X = X0 k σ * (invT h).val := by
@@ -449,7 +447,7 @@ section Lattices
 variable {A D : Type*}
 
 /- English proof (translation)
-Use `(Submodule.mem_smul_pointwise_iff_exists x c Λ).trans ?_` and prove the remaining obligations. Conclude with `⟨by rintro ⟨y, hy, rfl⟩; simpa using hy, fun h => ⟨_, h, by simp⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem mem_smul_lat (c : kˣ) (Λ : Submodule 𝒪[k] (D → k)) (x : D → k) : x ∈ c • Λ ↔ c⁻¹ • x ∈ Λ := by
   refine (Submodule.mem_smul_pointwise_iff_exists x c Λ).trans ?_
@@ -464,7 +462,7 @@ def matLat (Λ : Submodule 𝒪[k] (D → k)) : Submodule 𝒪[k] (Matrix A D k)
   smul_mem' c _ hX i := Λ.smul_mem c (hX i)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_matLat {Λ : Submodule 𝒪[k] (D → k)} {X : Matrix A D k} : X ∈ matLat A Λ ↔ ∀ i, X.row i ∈ Λ := Iff.rfl
 
@@ -477,7 +475,7 @@ def diagLat (c : D → kˣ) : Submodule 𝒪[k] (D → k) where
     rw [map_mul]; exact (mul_le_of_le_one_left' r.2).trans (hx j)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_diagLat {c : D → kˣ} {x : D → k} :
     x ∈ diagLat c ↔ ∀ j, valuation k (x j) ≤ valuation k (c j : k) := Iff.rfl
@@ -487,21 +485,21 @@ variable (k D) in
 def stdLat : Submodule 𝒪[k] (D → k) := diagLat 1
 
 /- English proof (translation)
-Simplify using `[stdLat, mem_diagLat, Valuation.mem_integer_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stdLat {x : D → k} : x ∈ stdLat k D ↔ ∀ j, x j ∈ 𝒪[k] := by
   simp [stdLat, mem_diagLat, Valuation.mem_integer_iff]
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun _ => mem_stdLat`.
+A detailed English derivation is pending.
 -/
 theorem mem_matLat_stdLat {X : Matrix A D k} : X ∈ matLat A (stdLat k D) ↔ ∀ i j, X i j ∈ 𝒪[k] :=
   forall_congr' fun _ => mem_stdLat
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_smul_lat, mem_diagLat, mem_diagLat]`. Use `forall_congr' fun j => ?_` and prove the remaining obligations. Establish `h0 : 0 < valuation k (u : k)` using `zero_lt_iff.2 (by simp)`. Simplify using `only [Pi.smul_apply, Units.smul_def, smul_eq_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, Units.val_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `inv_mul_le_iff₀ h0`.
+A detailed English derivation is pending.
 -/
 theorem smul_diagLat (u : kˣ) (c : D → kˣ) : u • diagLat c = diagLat fun j => u * c j := by
   ext x
@@ -542,7 +540,7 @@ def dualLat (Λ : Submodule 𝒪[k] (D → k)) : Submodule 𝒪[k] (D → k) :=
   LinearMap.BilinForm.dualSubmodule (dotProductBilin k k) Λ
 
 /- English proof (translation)
-Use `forall₂_congr fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_one]`. Conclude with `⟨by rintro ⟨r, hr⟩; exact (show (r : k) = x ⬝ᵥ y from hr) ▸ r.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_dualLat {Λ : Submodule 𝒪[k] (D → k)} {x : D → k} : x ∈ dualLat Λ ↔ ∀ y ∈ Λ, x ⬝ᵥ y ∈ 𝒪[k] := by
   refine forall₂_congr fun y _ => ?_
@@ -550,13 +548,13 @@ theorem mem_dualLat {Λ : Submodule 𝒪[k] (D → k)} {x : D → k} : x ∈ dua
   exact ⟨by rintro ⟨r, hr⟩; exact (show (r : k) = x ⬝ᵥ y from hr) ▸ r.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩
 
 /- English proof (translation)
-Establish `h0 : ∀ j, 0 < valuation k (c j : k)` using `fun j => zero_lt_iff.2 (by simp)`. Use extensionality with `x`. Rewrite using `[mem_dualLat, mem_diagLat]`. Simplify using `only [Units.val_inv_eq_inv_val, map_inv₀]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h j`. Use `h (Pi.single j (c j : k)) fun l => by` as an intermediate fact. Distinguish the cases in `h : l = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Rewrite `this` using `[dotProduct_single, Valuation.mem_integer_iff, map_mul]`. Rewrite using `[← one_mul (valuation k (c j : k))⁻¹]`. Conclude with `(le_mul_inv_iff₀ (h0 j)).2 this`. Introduce `h y hy`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subring.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff, map_mul]`. Conclude with `(mul_le_mul' (h j) (hy j)).trans (inv_mul_cancel₀ (h0 j).ne').le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualLat_diagLat (c : D → kˣ) : dualLat (diagLat c) = diagLat fun j => (c j)⁻¹ := by
   classical
@@ -582,9 +580,9 @@ def IsPrimFrame [Fintype A] (Λ : Submodule 𝒪[k] (D → k)) (X : Matrix A D k
     Submodule.span 𝒪[k] (Set.range X.row) = (Submodule.span k (Set.range X.row)).restrictScalars 𝒪[k] ⊓ Λ
 
 /- English proof (translation)
-Establish `hm : X0 k σ ∈ matLat A (stdLat k D)` using `mem_matLat_stdLat.2 fun i j => by`. Apply the tactic sequence `simp only [X0, of_apply]; split_ifs <;> simp`. Use `⟨(rank_eq_card_iff_exists_frameMatrixFirstColumnBlock σ _).2 ⟨1, by simp⟩, hm, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Conclude with `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact ⟨Submodule.subset_span ⟨i, rfl⟩, hm i⟩)`. Introduce and unpack `x ⟨hx, hx'⟩`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun k).1 hx`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `h1 : c i ∈ 𝒪[k]` using `by classical`. Simplify `mem_stdLat.1 hx' (σ (Sum.inl i))` using `[X0, Finset.sum_apply, Matrix.row]`. Conclude with `Submodule.smul_mem _ (⟨_, h1⟩ : 𝒪[k]) (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPrimitiveFrame_standardBasis [Fintype A] [DecidableEq D] {A' : Type*} [Fintype A'] (σ : A ⊕ A' ≃ D) :
     IsPrimFrame (stdLat k D) (X0 k σ) := by
@@ -609,16 +607,16 @@ def glLat (Λ : Submodule 𝒪[k] (D → k)) : Subgroup (GL D k) where
   inv_mem' {h} hh x := by rw [← hh, vecMul_vecMul, Units.inv_mul, vecMul_one]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_glLat {Λ : Submodule 𝒪[k] (D → k)} {h : GL D k} : h ∈ glLat Λ ↔ ∀ x, x ᵥ* h.val ∈ Λ ↔ x ∈ Λ := Iff.rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hh`. Use extensionality with `y`. Conclude with `⟨by rintro ⟨x, hx, rfl⟩; exact (hh x).2 hx, fun hy => ⟨y ᵥ* (h⁻¹).val, ((glLat Λ).inv_mem hh y).2 hy, by`. Simplify using `only [vecMul_vecMul, Units.inv_mul, vecMul_one]⟩⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Introduce `hh x`. Use `⟨fun hx => ?_, fun hx => hh.le ⟨x, hx, rfl⟩⟩` and prove the remaining obligations. Take `⟨y, hy, hxy⟩` from `hh.ge hx`. Use `congrArg (· ᵥ* (h⁻¹).val) hxy` as an intermediate fact. Simplify using `only [vecMul_vecMul, Units.mul_inv, vecMul_one] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this ▸ hy`.
+A detailed English derivation is pending.
 -/
 theorem mem_glLat_iff_image {Λ : Submodule 𝒪[k] (D → k)} {h : GL D k} :
     h ∈ glLat Λ ↔ (fun x => x ᵥ* h.val) '' Λ = Λ := by
@@ -650,11 +648,11 @@ def glLatCong (c : kˣ) (Λ : Submodule 𝒪[k] (D → k)) : Subgroup (GL D k) w
     exact neg_mem (hh' _ (((glLat Λ).inv_mem hh x).2 hx))
 
 /- English proof (translation)
-Establish `key : ∀ h : GL D k, (∀ x ∈ stdLat k D, x ᵥ* h.val ∈ stdLat k D) ↔ ∀ i j, h.val i j ∈ 𝒪[k]` using `fun h => by`. Prove the components needed by the constructor for the conclusion. Introduce `hh i j`. Simplify using `using mem_stdLat.1 (hh (Pi.single i 1) (mem_stdLat.2 fun l => by`. Distinguish the cases in `h : l = i`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h])) j`. Introduce `hh x hx`. Conclude with `mem_stdLat.2 fun j => Subring.sum_mem _ fun i _ => mul_mem (mem_stdLat.1 hx i) (hh i j)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `h`. Rewrite using `[mem_KO_iff, ← key, ← key]`. Use `⟨fun hh => ⟨fun x hx => (hh x).2 hx, fun x hx => ((glLat _).inv_mem hh x).2 hx⟩, fun hh x => ⟨fun hx => ?_, hh.1 x⟩⟩` and prove the remaining obligations. Simplify `hh.2 _ hx` using `only [vecMul_vecMul, Units.mul_inv, vecMul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem glLat_stdLat : glLat (stdLat k D) = KO k D := by
   have key : ∀ h : GL D k, (∀ x ∈ stdLat k D, x ᵥ* h.val ∈ stdLat k D) ↔ ∀ i j, h.val i j ∈ 𝒪[k] := fun h => by
@@ -685,7 +683,7 @@ instance isLattice_blockLat (ϖ : kˣ) (e : ℕ) (P : Finset D) : Submodule.IsLa
   isLattice_diagLat _
 
 /- English proof (translation)
-Rewrite using `[mem_stdLat]`. Use `forall_congr' fun j => ?_` and prove the remaining obligations. Establish `h0 : 0 < valuation k (blockUnits ϖ e P j : k)` using `zero_lt_iff.2 (by simp)`. Rewrite using `[blockScale, diagGL_val, vecMul_diagonal, map_mul, Valuation.mem_integer_iff]`. Conclude with `mul_le_iff_le_one_left h0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecMul_blockScale_mem (ϖ : kˣ) (e : ℕ) (P : Finset D) (x : D → k) :
     x ᵥ* (blockScale ϖ e P).val ∈ blockLat ϖ e P ↔ x ∈ stdLat k D := by
@@ -698,7 +696,7 @@ theorem vecMul_blockScale_mem (ϖ : kˣ) (e : ℕ) (P : Finset D) (x : D → k) 
 omit [Fintype D] in
 
 /- English proof (translation)
-Unfold `blockLat stdLat`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem blockLat_empty (ϖ : kˣ) (e : ℕ) : blockLat ϖ e (∅ : Finset D) = stdLat k D := by
   unfold blockLat stdLat; congr 1
@@ -708,7 +706,7 @@ omit [DecidableEq D] in
 def latA (ϖ : kˣ) (e : ℕ) (Λ' : Submodule 𝒪[k] (D → k)) : Submodule 𝒪[k] (D → k) := (ϖ ^ e)⁻¹ • dualLat Λ'
 
 /- English proof (translation)
-Rewrite using `[latA, blockLat, dualLat_diagLat, smul_diagLat, blockLat]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `by_cases h : j ∈ P <;> simp [blockUnits, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem latA_blockLat (ϖ : kˣ) (e : ℕ) (P : Finset D) : latA ϖ e (blockLat ϖ e P) = blockLat ϖ e Pᶜ := by
   rw [latA, blockLat, dualLat_diagLat, smul_diagLat, blockLat]
@@ -732,9 +730,7 @@ def depthSpace (ϖ : kˣ) (e : ℕ) (Λ : Submodule 𝒪[k] (D → k)) : Submodu
 def IsNatDatum (ϖ : kˣ) (e : ℕ) (Φ : Matrix A D k → ℂ) : Prop := HasDepth ϖ e (stdLat k D) Φ
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hx`. Establish `h : ((ϖ ^ e : kˣ) : k) ∈ 𝒪[k]`. Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `pow_mem (show valuation k (ϖ : k) ≤ 1 from hϖ ▸ uniformizer_lt_one.le) e`.
-
-Conclude with `Λ.smul_mem ⟨_, h⟩ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_smul_le {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) (Λ : Submodule 𝒪[k] (D → k)) : ϖ ^ e • Λ ≤ Λ := by
   intro x hx
@@ -745,9 +741,9 @@ theorem pow_smul_le {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) (Λ : Submodule 𝒪[
   exact Λ.smul_mem ⟨_, h⟩ hy
 
 /- English proof (translation)
-Use `⟨fun X hX => Set.indicator_of_notMem hX _, fun X Z hZ => ?_⟩` and prove the remaining obligations. Establish `hZ' : Z ∈ matLat A Λ` using `fun i => pow_smul_le hϖ e Λ (hZ i)`. Distinguish the cases in `hX : X ∈ matLat A Λ`. Rewrite using `[Set.indicator_of_mem (add_mem hX hZ'), Set.indicator_of_mem hX]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Set.indicator_of_notMem hX, Set.indicator_of_notMem (fun h => hX ((add_mem_cancel_right hZ').1 h))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hasDepth_indicator {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) (Λ : Submodule 𝒪[k] (D → k)) :
     HasDepth ϖ e Λ ((matLat A Λ : Set (Matrix A D k)).indicator 1) := by
@@ -776,7 +772,7 @@ def liftRes {B : Type*} {e : ℕ} (T : A → B → Res k e) : Matrix A B k :=
   Matrix.of fun i j => ((Quotient.out (T i j) : 𝒪[k]) : k)
 
 /- English proof (translation)
-The claim follows from `(Quotient.out (T i j) : 𝒪[k]).2`.
+A detailed English derivation is pending.
 -/
 theorem liftRes_mem {B : Type*} {e : ℕ} (T : A → B → Res k e) (i : A) (j : B) : liftRes T i j ∈ 𝒪[k] :=
   (Quotient.out (T i j) : 𝒪[k]).2
@@ -797,7 +793,7 @@ def pairCols (P : Finset D) (Y : Matrix A D k) (T : Matrix A P k) : k := ∑ i, 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [DecidableEq D] in
 
 /- English proof (translation)
-Simplify using `[pairCols, trace, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairCols_eq_trace (P : Finset D) (Y : Matrix A D k) (T : Matrix A P k) :
     pairCols P Y T = trace (T * (Y.submatrix id (Subtype.val : P → D))ᵀ) := by
@@ -862,7 +858,7 @@ theorem invFourierSum_apply (ψ : AddChar k Circle) (ϖ : kˣ) (e : ℕ) (P : Fi
 open Classical in
 
 /- English proof (translation)
-Simplify using `only [invFourierSum_apply, AddChar.inv_apply, neg_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem invFourierSum_inv_apply (ψ : AddChar k Circle) (ϖ : kˣ) (e : ℕ) (P : Finset D) (Ψ : Matrix A D k → ℂ)
     (T : Matrix A D k) : invFourierSum ψ⁻¹ ϖ e P Ψ T = if ∀ i, ∀ j ∈ P, T i j ∈ 𝒪[k] then
@@ -871,9 +867,9 @@ theorem invFourierSum_inv_apply (ψ : AddChar k Circle) (ϖ : kˣ) (e : ℕ) (P 
   simp only [invFourierSum_apply, AddChar.inv_apply, neg_neg]
 
 /- English proof (translation)
-Establish `h1 : ∀ S, setCols P (setCols P T (Matrix.of fun i j => -T i j)) S = setCols P T S` using `fun S => by`. Apply the tactic sequence `ext i j; by_cases h : j ∈ P <;> simp [setCols, h]`. Establish `h2 : ∀ S, -pairCols P (setCols P T (Matrix.of fun i j => -T i j)) S = pairCols P T S` using `fun S => by`. Simplify using `[pairCols, setCols]`. Establish `h3 : (∀ i, ∀ j ∈ P, setCols P T (Matrix.of fun i j => -T i j) i j ∈ 𝒪[k]) ↔ ∀ i, ∀ j ∈ P, T i j ∈ 𝒪[k]` using `forall_congr' fun i => forall₂_congr fun j h => by simp [setCols, h]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[invFourierSum_inv_apply, invFourierSum_apply]`. Simplify using `only [h1, h2]`. Conclude with `if_congr h3.symm rfl rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem invFourierSum_inv_eq_neg (ψ : AddChar k Circle) (ϖ : kˣ) (e : ℕ) (P : Finset D) (Ψ : Matrix A D k → ℂ)
     (T : Matrix A D k) : invFourierSum ψ⁻¹ ϖ e P Ψ T =
@@ -890,7 +886,7 @@ theorem invFourierSum_inv_eq_neg (ψ : AddChar k Circle) (ϖ : kˣ) (e : ℕ) (P
   exact if_congr h3.symm rfl rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Establish `h : ∀ T, setCols ∅ Y T = Y` using `fun T => by ext i j; simp [setCols]`. Simplify using `[fourierSum_apply, h, pairCols]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem fourierSum_empty (ψ : AddChar k Circle) (ϖ : kˣ) (e : ℕ) (Φ : Matrix A D k → ℂ) :
     fourierSum ψ ϖ e ∅ Φ = Φ := by
@@ -899,7 +895,7 @@ theorem fourierSum_empty (ψ : AddChar k Circle) (ϖ : kˣ) (e : ℕ) (Φ : Matr
   simp [fourierSum_apply, h, pairCols]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Establish `h : ∀ T, setCols ∅ Y T = Y` using `fun T => by ext i j; simp [setCols]`. Simplify using `[invFourierSum_apply, h, pairCols]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem invFourierSum_empty (ψ : AddChar k Circle) (ϖ : kˣ) (e : ℕ) (Φ : Matrix A D k → ℂ) :
     invFourierSum ψ ϖ e ∅ Φ = Φ := by
@@ -916,14 +912,14 @@ def shellSet (ϖ : kˣ) (n : A → ℤ) : Set (GL A k) :=
   DoubleCoset.doubleCoset (diagGL fun i => ϖ ^ n i) (KO k A) (KO k A)
 
 /- English proof (translation)
-The claim follows from `DoubleCoset.mem_doubleCoset`.
+A detailed English derivation is pending.
 -/
 theorem mem_shellSet {ϖ : kˣ} {n : A → ℤ} {g : GL A k} :
     g ∈ shellSet ϖ n ↔ ∃ x ∈ KO k A, ∃ y ∈ KO k A, g = x * (diagGL fun i => ϖ ^ n i) * y :=
   DoubleCoset.mem_doubleCoset
 
 /- English proof (translation)
-Establish `h1 : (diagGL fun i : A => ϖ ^ (0 : A → ℤ) i) = 1` using `Units.ext (by simp)`. Use extensionality with `g`. Rewrite using `[mem_shellSet, h1]`. Conclude with `⟨by rintro ⟨x, hx, y, hy, rfl⟩; simpa using mul_mem hx hy, fun h => ⟨g, h, 1, one_mem _, by simp⟩⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem shellSet_zero (ϖ : kˣ) : shellSet ϖ (0 : A → ℤ) = KO k A := by
   have h1 : (diagGL fun i : A => ϖ ^ (0 : A → ℤ) i) = 1 := Units.ext (by simp)
@@ -960,7 +956,7 @@ def smallP (μ : Measure (GL A' k)) (σ : A ⊕ A' ≃ D) (ν α : kˣ →* ℂ�
 omit [BorelSpace k] in
 
 /- English proof (translation)
-Simplify using `only [shellSum, shell, mul_finsum, mul_assoc, integral_const_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem shellSum_smul {a : ℕ} (μ : Measure (GL (Fin a) k)) (ϖ : kˣ) (ν : kˣ →* ℂˣ) (z c : ℂ)
     (φ : Matrix (Fin a) (Fin a) k → ℂ) : shellSum μ ϖ ν z (fun g => c * φ g) = c * shellSum μ ϖ ν z φ := by
@@ -969,7 +965,7 @@ theorem shellSum_smul {a : ℕ} (μ : Measure (GL (Fin a) k)) (ϖ : kˣ) (ν : k
 omit [BorelSpace k] [Fintype A'] [DecidableEq A'] in
 
 /- English proof (translation)
-Simplify using `[bigP, bigF, omA, ← shellSum_smul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bigZetaIntegral_eq {a : ℕ} (μ : Measure (GL (Fin a) k)) (ϖ : kˣ) (σ : Fin a ⊕ A' ≃ D) (ν β : kˣ →* ℂˣ)
     (Φ : Matrix (Fin a) D k → ℂ) (h : GL D k) : bigP μ ϖ σ ν β Φ h =
@@ -979,7 +975,7 @@ theorem bigZetaIntegral_eq {a : ℕ} (μ : Measure (GL (Fin a) k)) (ϖ : kˣ) (�
 omit [BorelSpace k] [Fintype A] [DecidableEq A] in
 
 /- English proof (translation)
-Simplify using `[smallP, smallF, omB, Matrix.mul_assoc, mul_assoc, integral_const_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smallP_eq (μ : Measure (GL A' k)) (σ : A ⊕ A' ≃ D) (ν α : kˣ →* ℂˣ) (Ψ : Matrix A' D k → ℂ) (h : GL D k) :
     smallP μ σ ν α Ψ h = smallF μ ν (omB ν α 1 h Ψ) (Y0 k σ) := by
@@ -988,7 +984,7 @@ theorem smallP_eq (μ : Measure (GL A' k)) (σ : A ⊕ A' ≃ D) (ν α : kˣ �
 omit [DecidableEq D] in
 
 /- English proof (translation)
-Unfold `smallF`. Rewrite using `[← integral_mul_right_eq_self (fun g : GL A' k => Ψ (g.val * Y) * (ν (gdet g) : ℂ) * apow (gdet g) ((Fintype.card D : ℂ) / 2)) g₀, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [Units.val_mul, map_mul, apow_mul, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -1013,15 +1009,15 @@ def fFun (μ : Measure (GL A' k)) (σ : A ⊕ A' ≃ D) (ν : kˣ →* ℂˣ) (�
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] in
 
 /- English proof (translation)
-Take `⟨u, rfl⟩ : ∃ u, h' = u * h` from `⟨h' * h⁻¹, by simp⟩`. Establish `H1 : X0 k σ * u.valᵀ = X0 k σ`. Establish `h1` using `congrArg (· * ((invT h)⁻¹).val) H`. Simplify using `only [map_mul, Units.val_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one] at h1`. Rewrite using `[← invT_inv_val]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `nth_rewrite 1 [← h1]`. Rewrite using `[Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Establish `H2 : ∀ r i, u.val r (σ (Sum.inl i)) = if σ (Sum.inl i) = r then 1 else 0` using `fun r i => by`. Establish `h1` using `congrFun (congrFun H1 i) r`. Rewrite `h1` using `[frameMatrixFirstColumnBlock_mul_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `h1`. Set `C : Matrix A' A' k` to `Matrix.of fun i j => u.val (σ (Sum.inr i)) (σ (Sum.inr j))`. Establish `hdet : u.val.det = C.det`. Rewrite using `[← det_submatrix_equiv_self σ, show u.val.submatrix σ σ = fromBlocks 1 (Matrix.of fun i j => u.val (σ (Sum.inl i)) (σ (Sum.inr j))) 0 C from ?_, det_fromBlocks_zero₂₁, det_one, one_mul]`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [H2, C, one_apply, eq_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero C (hdet ▸ u.det_ne_zero), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc]`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `obtain ⟨j | j, rfl⟩ := σ.surjective j <;> simp [frameMatrixSecondColumnBlock_mul_apply, H2, Matrix.mul_apply, Y0, C]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[gdet_mul]`. Use `congr 1`. Conclude with `Units.ext hdet`.
+A detailed English derivation is pending.
 -/
 theorem exists_secondBlock_of_frameFirstBlock_eq (σ : A ⊕ A' ≃ D) {h h' : GL D k} (H : X0 k σ * (invT h').val = X0 k σ * (invT h).val) :
     ∃ C : GL A' k, Y0 k σ * h'.val = C.val * (Y0 k σ * h.val) ∧ gdet h' = gdet C * gdet h := by
@@ -1050,7 +1046,7 @@ theorem exists_secondBlock_of_frameFirstBlock_eq (σ : A ⊕ A' ≃ D) {h h' : G
   · rw [gdet_mul]; congr 1; exact Units.ext hdet
 
 /- English proof (translation)
-Establish `hX : ∃ h' : GL D k, X0 k σ * (invT h).val = X0 k σ * (invT h').val` using `⟨h, rfl⟩`. Take `⟨C, h1, h2⟩` from `exists_secondBlock_of_frameFirstBlock_eq σ hX.choose_spec.symm`. Rewrite using `[fFun, dif_pos hX, h1, h2, ← smallF_mul_left μ ν Ψ C (Y0 k σ * h.val), map_mul, apow_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem splitTheta_fFun_frameFirstBlock_mul (μ : Measure (GL A' k)) [μ.IsHaarMeasure] (σ : A ⊕ A' ≃ D) (ν : kˣ →* ℂˣ)
     (Ψ : Matrix A' D k → ℂ) (h : GL D k) : fFun μ σ ν Ψ (X0 k σ * (invT h).val) =
@@ -1071,7 +1067,7 @@ def squareFlip (μ : Measure (GL A' k)) (σ : A ⊕ A' ≃ D) (ψ : AddChar k Ci
   invFourierSum ψ⁻¹ ϖ e Pᶜ (phiA μ σ ν ϖ e (blockLat ϖ e P) (fourierSum ψ ϖ e P ΦB))
 
 /- English proof (translation)
-Rewrite using `[shell, shellSet_zero, setIntegral_congr_fun isOpen_KO.measurableSet (g := fun _ => (1 : ℂ))]`. Simplify using `[Measure.real, haarVol_self isOpen_KO le_rfl]`. Introduce `g hg`. Simplify using `only [hφ g hg, apow_of_valuation_eq_one (valuation_gdet_of_mem_KO hg), one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem shell_zero_example (ϖ : kˣ) (ν : kˣ →* ℂˣ) (z : ℂ) (φ : Matrix A A k → ℂ)
     (hφ : ∀ g ∈ KO k A, φ g.val * (ν (gdet g) : ℂ) = 1) : shell (haarVol (KO k A)) ϖ ν z φ 0 = 1 := by
@@ -1081,9 +1077,9 @@ theorem shell_zero_example (ϖ : kˣ) (ν : kˣ →* ℂˣ) (z : ℂ) (φ : Matr
     simp only [hφ g hg, apow_of_valuation_eq_one (valuation_gdet_of_mem_KO hg), one_mul]
 
 /- English proof (translation)
-Establish `h1 : (KO k A' : Set (GL A' k)) = Set.univ` using `Set.eq_univ_of_forall fun g => Subsingleton.elim 1 g ▸ one_mem _`. Establish `h2` using `haarVol_self (k := k) (n := A') isOpen_KO le_rfl`. Rewrite `h2` using `[h1]`. Establish `h3 : ∀ g : GL A' k, gdet g = 1` using `fun g => Subsingleton.elim 1 g ▸ map_one _`. Establish `h4 : ∀ g : GL A' k, g.val * Y = 0` using `fun g => by ext i; exact isEmptyElim i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[smallF, h3, h4, Measure.real, h2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smallF_of_isEmpty [IsEmpty A'] (ν : kˣ →* ℂˣ) (Ψ : Matrix A' D k → ℂ) (Y : Matrix A' D k) :
     smallF (haarVol (KO k A')) ν Ψ Y = Ψ 0 := by
@@ -1096,7 +1092,7 @@ theorem smallF_of_isEmpty [IsEmpty A'] (ν : kˣ →* ℂˣ) (Ψ : Matrix A' D k
   simp [smallF, h3, h4, Measure.real, h2]
 
 /- English proof (translation)
-Use `splitTheta_fFun_frameFirstBlock_mul (haarVol (KO k A')) σ ν Ψ 1` as an intermediate fact. Rewrite using `[phiA, latA_blockLat, Finset.compl_univ, blockLat_empty, if_pos (isPrimitiveFrame_standardBasis σ)]`. Simplify `this` using `[smallF_of_isEmpty]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem schwartzDatum_standardBasis_of_isEmpty [IsEmpty A'] (σ : A ⊕ A' ≃ D) (ν : kˣ →* ℂˣ) (ϖ : kˣ) (e : ℕ) (Ψ : Matrix A' D k → ℂ) :
     phiA (haarVol (KO k A')) σ ν ϖ e (blockLat ϖ e Finset.univ) Ψ (X0 k σ) = Ψ 0 := by
@@ -1127,7 +1123,7 @@ section
 variable {D₁ D₂ : Type*} [Fintype D₁] [DecidableEq D₁] [Fintype D₂] [DecidableEq D₂]
 
 /- English proof (translation)
-Simplify using `[blockLat, mem_diagLat, blockUnits, Assignment.block]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_blockLat_two (ϖ : kˣ) (e : ℕ) (x : D₁ ⊕ D₂ → k) :
     x ∈ blockLat ϖ e (Assignment.two.block D₁ D₂) ↔ (∀ j, valuation k (x (.inl j)) ≤ 1) ∧
@@ -1135,7 +1131,7 @@ theorem mem_blockLat_two (ϖ : kˣ) (e : ℕ) (x : D₁ ⊕ D₂ → k) :
   simp [blockLat, mem_diagLat, blockUnits, Assignment.block]
 
 /- English proof (translation)
-Simplify using `[blockLat, mem_diagLat, blockUnits, Assignment.block]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_blockLat_one (ϖ : kˣ) (e : ℕ) (x : D₁ ⊕ D₂ → k) :
     x ∈ blockLat ϖ e (Assignment.one.block D₁ D₂) ↔
@@ -1143,13 +1139,13 @@ theorem mem_blockLat_one (ϖ : kˣ) (e : ℕ) (x : D₁ ⊕ D₂ → k) :
   simp [blockLat, mem_diagLat, blockUnits, Assignment.block]
 
 /- English proof (translation)
-Apply the tactic sequence `ext (j | j) <;> simp [Assignment.block]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem compl_block_two : (Assignment.two.block D₁ D₂)ᶜ = Assignment.one.block D₁ D₂ := by
   ext (j | j) <;> simp [Assignment.block]
 
 /- English proof (translation)
-Apply the tactic sequence `ext (j | j) <;> simp [Assignment.block]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem compl_block_one : (Assignment.one.block D₁ D₂)ᶜ = Assignment.two.block D₁ D₂ := by
   ext (j | j) <;> simp [Assignment.block]
@@ -1194,13 +1190,13 @@ def oppositePath (m : ℕ) : List Edge :=
   (List.range m).map (Edge.ex · m) ++ (List.range m).reverse.map (Edge.theta m)
 
 /- English proof (translation)
-Unfold `IsPath`. Evaluate the decidable proposition.
+Replace the relevant objects with their definitions. Evaluate the decidable proposition.
 -/
 example : IsPath (givenPath 2) ∧ innerVertices (givenPath 2) = [(0, 1), (0, 0), (1, 0)] := by
   unfold IsPath; decide
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨.cons ?_ (.cons ?_ (.cons ?_ (.cons ?_ (.nil _)))), by decide⟩ <;> unfold PassesThrough <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : CanFlip (givenPath 2) [(0, 0), (0, 1), (1, 0), (1, 1)] ∧
     [(0, 0), (0, 1), (1, 0), (1, 1)].foldl (fun γ x => flipPath x.1 x.2 γ) (givenPath 2) = oppositePath 2 := by
@@ -1233,7 +1229,7 @@ omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 def rank (X : ℕ × ℕ) : ℕ := G.r + X.2 * G.t + X.1 * G.s
 
 /- English proof (translation)
-Simplify using `only [rank]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rank_square (i j : ℕ) : G.rank (i + 1, j + 1) + G.rank (i, j) = G.rank (i, j + 1) + G.rank (i + 1, j) := by
   simp only [rank]; ring
@@ -1251,19 +1247,19 @@ def beta (i j : ℕ) : kˣ →* ℂˣ := G.chi (G.m - i) * G.eta ^ (G.rank (i, j
 def nu (i j : ℕ) : kˣ →* ℂˣ := G.mu (j + 1) / G.chi (G.m - i)
 
 /- English proof (translation)
-The claim follows from `mul_div_mul_right_eq_div _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem alpha_div_beta (i j : ℕ) : G.alpha i j / G.beta i j = G.nu i j := mul_div_mul_right_eq_div _ _ _
 
 /- English proof (translation)
-Simplify using `[kappa, blockChar, nu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kappa_inner (i j : ℕ) :
     G.kappa (.ex i j) (i, j) / G.kappa (.theta i j) (i, j) = (G.nu i j)⁻¹ := by
   simp [kappa, blockChar, nu]
 
 /- English proof (translation)
-Simplify using `[kappa, blockChar, nu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kappa_outer (i j : ℕ) :
     G.kappa (.theta (i + 1) j) (i + 1, j + 1) / G.kappa (.ex i (j + 1)) (i + 1, j + 1) = G.nu i j := by
@@ -1284,7 +1280,7 @@ structure IsGood (ϖ : kˣ) (ψ : AddChar k Circle) (e : ℕ) : Prop where
   square : ∀ i < G.m, ∀ j < G.m, IsRightTranslationIsometric ϖ ψ (G.alpha i j) (G.beta i j) e
 
 /- English proof (translation)
-Take `⟨ϖ, ψ, α, h⟩` from `exists_localSetting (k := k)`. Conclude with `⟨⟨m, r, t, s, fun _ => α, fun _ => 1, 1⟩, ϖ, ψ, rfl, rfl, rfl, rfl, ht, hs, fun _ _ => rfl, fun i _ j _ => by simpa [alpha, beta] using h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isGood (m r t s : ℕ) (ht : Odd t) (hs : Odd s) : ∃ (G : Grid k) (ϖ : kˣ) (ψ : AddChar k Circle),
     G.m = m ∧ G.r = r ∧ G.t = t ∧ G.s = s ∧ G.IsGood ϖ ψ 2 := by
@@ -1300,7 +1296,7 @@ def pathAct (s : Assignment) (γ : List Edge) (g : G.VertexGroup) (T : G.Args �
   (γ.map (G.edgeFactor s g)).prod * T (G.moveArgs s g x)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `h1 : G.edgeFactor s 1 = fun _ => 1` using `by funext e; simp [edgeFactor]`. Establish `h2 : G.moveArgs s 1 x = x` using `by funext e; simp [moveArgs]`. Simplify using `[pathAct, h1, h2]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem pathAct_one (s : Assignment) (γ : List Edge) (T : G.Args → ℂ) : G.pathAct s γ 1 T = T := by
   funext x
@@ -1309,9 +1305,9 @@ theorem pathAct_one (s : Assignment) (γ : List Edge) (T : G.Args → ℂ) : G.p
   simp [pathAct, h1, h2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `h1 : G.edgeFactor s (g * g') = fun e => G.edgeFactor s g e * G.edgeFactor s g' e`. Use function extensionality and compare the values at `e`. Simplify using `only [edgeFactor, Pi.mul_apply, map_mul, apow_mul, _root_.mul_inv_rev, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : G.moveArgs s (g * g') x = G.moveArgs s g' (G.moveArgs s g x)`. Use function extensionality and compare the values at `e`. Simplify using `only [moveArgs, Pi.mul_apply, map_mul, _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc]`. Simplify using `only [pathAct, h1, h2, List.prod_map_mul, mul_assoc]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pathAct_mul (s : Assignment) (γ : List Edge) (g g' : G.VertexGroup) (T : G.Args → ℂ) :
     G.pathAct s γ (g * g') T = G.pathAct s γ g (G.pathAct s γ g' T) := by
@@ -1335,7 +1331,7 @@ def lines₂ (γ : List Edge) (φ : ∀ b : Edge, Matrix (Fin (G.rank b.tgt)) (F
     G.Args → ℂ := fun x => (γ.map fun b => φ b (x b)).prod
 
 /- English proof (translation)
-Use `⟨fun x y h => ?_, fun x b hb hx => ?_, fun x z hz => ?_⟩` and prove the remaining obligations. Conclude with `congrArg List.prod (List.map_congr_left fun b hb => by rw [h b hb])`. Conclude with `List.prod_eq_zero (List.mem_map.2 ⟨b, hb, (hφ b hb).1 _ hx⟩)`. Conclude with `congrArg List.prod (List.map_congr_left fun b hb => (hφ b hb).2 _ _ (hz b))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isTensor_pureTensor (ϖ : kˣ) (e : ℕ) (γ : List Edge)
     (φ : ∀ b : Edge, Matrix (Fin (G.rank b.tgt)) (Fin (G.rank b.src)) k → ℂ) (hφ : ∀ b ∈ γ, IsNatDatum ϖ e (φ b)) :
@@ -1408,9 +1404,9 @@ def detCong (c : kˣ) (n : Type*) [Fintype n] [DecidableEq n] : Subgroup (GL n k
   KO k n ⊓ (unitCong c).comap Matrix.GeneralLinearGroup.det
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : GL n k => (g.val.det - 1) / (c : k)` using `(Units.continuous_val.matrix_det.sub continuous_const).div_const _`. Use `isOpen_KO.inter (isOpen_int.preimage hc) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Establish `h0 : 0 < valuation k (c : k)` using `zero_lt_iff.2 (by simp)`. Establish `h : (g.val.det - 1) / (c : k) ∈ 𝒪[k] ↔ valuation k (g.val.det - 1) ≤ valuation k (c : k)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Valuation.mem_integer_iff, map_div₀, div_le_one₀ h0]`. Conclude with `⟨fun hg => ⟨hg.1, h.2 hg.2.2⟩, fun hg => ⟨hg.1, valuation_gdet_of_mem_KO hg.1, h.1 hg.2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isOpen_detCong (c : kˣ) (n : Type*) [Fintype n] [DecidableEq n] : IsOpen (detCong c n : Set (GL n k)) := by
   have hc : Continuous fun g : GL n k => (g.val.det - 1) / (c : k) :=
@@ -1423,7 +1419,7 @@ theorem isOpen_detCong (c : kˣ) (n : Type*) [Fintype n] [DecidableEq n] : IsOpe
   exact ⟨fun hg => ⟨hg.1, h.2 hg.2.2⟩, fun hg => ⟨hg.1, valuation_gdet_of_mem_KO hg.1, h.1 hg.2⟩⟩
 
 /- English proof (translation)
-Establish `key : ∀ {g : GL m k} {h : GL n k}, g ∈ KO k m → h ∈ KO k n → ∀ X ∈ matLat m (stdLat k n), g.val * X * h.val ∈ matLat m (stdLat k n)` using `fun hg hh X hX => mem_matLat_stdLat.2 fun i j => Subring.sum_mem _ fun l _ => mul_mem (Subring.sum_mem _ fun l' _ => mul_mem (((mem_KO_iff _).1 hg).1 _ _) (mem_matLat_stdLat.1 hX _ _)) (((mem_KO_iff _).1 hh).1 _ _)`. Use `⟨fun H => ?_, key hg hh X⟩` and prove the remaining obligations. Use `key (inv_mem hg) (inv_mem hh) _ H` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mul_mul_mem_matLat_iff {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     {g : GL m k} {h : GL n k} (hg : g ∈ KO k m) (hh : h ∈ KO k n) (X : Matrix m n k) :
@@ -1438,7 +1434,7 @@ theorem mul_mul_mem_matLat_iff {m n : Type*} [Fintype m] [DecidableEq m] [Fintyp
     Units.inv_mul, Matrix.one_mul] at this
 
 /- English proof (translation)
-Consider the cases of `s`. Conclude with `invT_mem_KO hg`. Conclude with `hg`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem Assignment.read_mem_KO (s : Assignment) {n : Type*} [Fintype n] [DecidableEq n] {g : GL n k}
     (hg : g ∈ KO k n) : s.read g ∈ KO k n := by
@@ -1447,9 +1443,9 @@ theorem Assignment.read_mem_KO (s : Assignment) {n : Type*} [Fintype n] [Decidab
   · exact hg
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h1 : G.eta x = 1` using `h.eta x hx.1`. Consider the cases of `b with`. Consider the case `theta i j`. Use `(h.square 0 (by have := hb.2; omega) j hb.2).condα x hx` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Simplify `this` using `[Grid.kappa, Grid.blockChar, Grid.alpha, h1]`. Consider the case `ex i j`. Use `(h.square i hb.1 0 (by have := hb.1; omega)).condβ x hx` as an intermediate fact. Simplify `this` using `[Grid.kappa, Grid.blockChar, Grid.beta, h1]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Grid.IsGood.condLE_kappa {G : Grid k} {ϖ : kˣ} {ψ : AddChar k Circle} {e : ℕ} (h : G.IsGood ϖ ψ e)
     {b : Edge} (hb : b.InGrid G.m) (X : ℕ × ℕ) : CondLE ϖ e (G.kappa b X) := by
@@ -1464,15 +1460,15 @@ theorem Grid.IsGood.condLE_kappa {G : Grid k} {ϖ : kˣ} {ψ : AddChar k Circle}
     simpa [Grid.kappa, Grid.blockChar, Grid.beta, h1] using this
 
 /- English proof (translation)
-Use `⟨⟨γ, fun X => detCong (ϖ ^ e) _, G.lines₂ γ fun b => Set.indicator (SetLike.coe (matLat (Fin (G.rank b.tgt)) (stdLat k (Fin (G.rank b.src))))) 1⟩, rfl, ⟨hγ, fun X _ => ⟨isOpen_detCong _ _, inf_le_left⟩, G.isTensor_pureTensor ϖ e γ _ fun b _ => hasDepth_indicator hϖ e _, fun X _ u …` and prove the remaining obligations. Establish `hg : ∀ Y, (Pi.mulSingle X u : G.VertexGroup) Y ∈ detCong (ϖ ^ e) _` using `fun Y => by`. Distinguish the cases in `hY : Y = X`. Substitute `hY` using the available equality. Simplify using `using hu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[hY, one_mem]`. Generalize the expression as in `(Pi.mulSingle X u : G.VertexGroup) = g at hg`. Use function extensionality and compare the values at `x`. Establish `h1 : (γ.map (G.edgeFactor s g)).prod = 1` using `List.prod_eq_one fun c hc => by`. Take `⟨b, hb, rfl⟩` from `List.mem_map.1 hc`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Grid.edgeFactor, h.condLE_kappa (hm b hb) _ _ (hg _).2, apow_of_valuation_eq_one (valuation_gdet_of_mem_KO (s.read_mem_KO (hg _).1))]`. Simplify using the standard rewrite rules. Simplify using `only [Grid.pathAct, h1, one_mul, Grid.lines₂]`. Use `congrArg List.prod (List.map_congr_left fun b _ => ?_)` and prove the remaining obligations. Establish `h2` using `mul_mul_mem_matLat_iff (inv_mem (s.read_mem_KO (hg b.tgt).1)) (s.read_mem_KO (hg b.src).1) (x b)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Grid.moveArgs]`. Distinguish the cases in `hx : x b ∈ matLat _ (stdLat k _)`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (h2.2 hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (fun H => hx (h2.1 H))]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `List.prod_eq_one fun c hc => ?_` and prove the remaining obligations. Take `⟨b, _, rfl⟩` from `List.mem_map.1 hc`. Conclude with `Set.indicator_of_mem (zero_mem (matLat _ (stdLat k _))) _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Grid.IsGood.exists_isAdmissible {G : Grid k} {ϖ : kˣ} {ψ : AddChar k Circle} {e : ℕ} (h : G.IsGood ϖ ψ e)
     (hϖ : IsUnif ϖ) (s : Assignment) {γ : List Edge} (hγ : IsPath γ) (hm : ∀ b ∈ γ, b.InGrid G.m) :
@@ -1504,7 +1500,7 @@ theorem Grid.IsGood.exists_isAdmissible {G : Grid k} {ϖ : kˣ} {ψ : AddChar k 
     exact Set.indicator_of_mem (zero_mem (matLat _ (stdLat k _))) _
 
 /- English proof (translation)
-Use `⟨?_, by rintro _ ⟨g, hg, rfl⟩; exact invT_mem_KO (hK hg)⟩` and prove the remaining obligations. Establish `hc : Continuous (invT : GL n k → GL n k)` using `Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩`. Use `ho.preimage hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `⟨by rintro ⟨g, hg, rfl⟩; simpa using hg, fun hg => ⟨invT g, hg, invT_invT g⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem isOpen_map_invT {n : Type*} [Fintype n] [DecidableEq n] {J : Subgroup (GL n k)}
     (ho : IsOpen (J : Set (GL n k))) (hK : J ≤ KO k n) :

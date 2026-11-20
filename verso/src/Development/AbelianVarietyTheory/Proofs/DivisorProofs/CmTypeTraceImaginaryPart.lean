@@ -6,29 +6,27 @@ open scoped ComplexConjugate
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ I _ φ hφ h mu hmu i0`. Set `ψ : I ⊕ I → (E →+* ℂ)` to `fun k => Sum.elim φ (fun i => ComplexEmbedding.conjugate (φ i)) k`. Establish `hnr : ∀ i, φ i ≠ ComplexEmbedding.conjugate (φ i)`. Introduce `i hi`. Conclude with `IsTotallyComplex.complexEmbedding_not_isReal (φ i) (ComplexEmbedding.isReal_iff.mpr hi.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective ψ`. Apply the tactic sequence `rintro (i | i) (j | j) hij <;> simp only [ψ, Sum.elim_inl, Sum.elim_inr] at hij`. Take `⟨k, -, hk⟩` from `hφ (φ i)`. Rewrite using `[(hk i (Or.inl rfl)).trans (hk j (Or.inl hij)).symm]`. Take `⟨k, -, hk⟩` from `hφ (φ i)`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `(hk i (Or.inl rfl)).trans (hk j (Or.inr hij)).symm`. Substitute `e` using the available equality. Conclude with `absurd hij (hnr i)`. Take `⟨k, -, hk⟩` from `hφ (φ j)`. Establish `e` using `(hk j (Or.inl rfl)).trans (hk i (Or.inr hij.symm)).symm`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `e` using the available equality. Conclude with `absurd hij.symm (hnr j)`. Take `⟨k, -, hk⟩` from `hφ (ComplexEmbedding.conjugate (φ i))`. Rewrite using `[(hk i (Or.inr rfl)).trans (hk j (Or.inr hij)).symm]`. Establish `hsurj : Function.Surjective ψ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `σ`. Take `⟨k, hk, -⟩` from `hφ σ`. Break down `hk with hk | hk` into its components or cases. Conclude with `⟨Sum.inl k, hk.symm⟩`. Conclude with `⟨Sum.inr k, hk.symm⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `e : I ⊕ I ≃ (E →+* ℂ)` to `Equiv.ofBijective ψ ⟨hinj, hsurj⟩`. Establish `htr : ∀ x : E, ((Algebra.trace ℚ E x : ℚ) : ℂ) = ∑ k, ψ k x`. Introduce `x`. Establish `h0` using `trace_eq_sum_embeddings (K := ℚ) (L := E) ℂ (x := x)`. Rewrite `h0` using `[eq_ratCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[h0, ← Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) (fun σ => σ x) (fun f => f x) (fun _ => by simp [RingHom.equivRatAlgHom_apply])]`. Conclude with `(Fintype.sum_equiv e (fun k => ψ k x) (fun σ => σ x) (fun _ => rfl)).symm`. Set `c : I ⊕ I → ℂ` to `Sum.elim (fun i => φ i mu - (h i : ℂ) / (2 * Complex.I)) (fun i => conj (φ i mu) + (h i : ℂ) / (2 * Complex.I))`. Establish `hz : ∀ z, ∑ k, c k * ψ k z = 0`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((Algebra.trace ℚ E (mu * z) : ℚ) : ℂ) = ∑ i, (h i : ℂ) * ((φ i z - conj (φ i z)) / (2 * Complex.I))`. Establish `h3` using `congrArg (fun r : ℝ => (r : ℂ)) (hmu z)`. Simplify using `only [Complex.ofReal_ratCast, Complex.ofReal_sum, Complex.ofReal_mul] at h3`. Rewrite using `[h3]`. Repeatedly rewrite using `[Complex.im_eq_sub_conj]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[htr (mu * z)]`. Simplify using `only [Fintype.sum_sum_type, ψ, c, Sum.elim_inl, Sum.elim_inr, map_mul, ComplexEmbedding.conjugate_coe_eq] at h2 ⊢`. Rewrite `h2`, the goal using `[← Finset.sum_add_distrib]`. Rewrite `h2` using `[← sub_eq_zero, ← Finset.sum_sub_distrib]`. Rewrite using `[← h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hli : LinearIndependent ℂ (fun k => ((ψ k).toMonoidHom : E → ℂ))`. Use `(linearIndependent_monoidHom E ℂ).comp (fun k => (ψ k).toMonoidHom) ?_` and prove the remaining obligations. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `hinj` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `DFunLike.congr_fun hab x`. Establish `hc` using `Fintype.linearIndependent_iff.mp hli c (by`. Use function extensionality and compare the values at `z`.
-
-Simplify `hz z) (Sum.inl i0)` using `[Finset.sum_apply, smul_eq_mul]`. Simplify using `only [c, Sum.elim_inl, sub_eq_zero] at hc`. Establish `h2I : (2 * Complex.I) ≠ 0` using `by simp [Complex.I_ne_zero]`. Rewrite using `[hc, mul_div_cancel₀ _ h2I]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmType_trace_im_coeff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I]
     (φ : I → E →+* ℂ),

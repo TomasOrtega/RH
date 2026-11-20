@@ -13,7 +13,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan
 
 /- English proof (translation)
-Introduce `x`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left (hB i x) (hc i)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMin2_sum_smul {X : Type} [AddCommGroup X] {m : ℕ} (B : Fin m → X →ₗ[ℤ] X →ₗ[ℤ] ℝ) (c : Fin m → ℝ) (y : X)
     (hc : ∀ i, 0 ≤ c i) (hB : ∀ i, IsMin2 (B i) y) : IsMin2 (∑ i, c i • B i) y := by
@@ -30,21 +30,19 @@ def sumDiag {X ι : Type} [AddCommGroup X] [Fintype ι] (g : ℕ) (p : ι → X)
     ring
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar g X _ _ _ _ n r a hr ha m γ hbal hpsd hcon hsub`. Establish `hval` using `(vorFun_value_le O bar g X n r a hr ha).2`. Establish `hreal : ∀ (β : LinearMap.BilinForm ℤ X) , (∀ y, 0 ≤ β y y) → ∀ y, 0 ≤ toReal β y y` using `fun β hβ y => by`. Simplify `hβ y` using `[toReal_apply]`. Establish `hℓ : ∀ β : LinearMap.BilinForm ℤ X, ((sumDiag g (fun y => r (a y)) β : ℤ) : ℝ) = 2 ^ g * ∑ y, toReal β (r (a y)) (r (a y))` using `fun β => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `[sumDiag, toReal_apply]`. Establish `hgen : ∀ i, (2 : ℝ) ^ n * (vorFun O g).evalZ (γ i) = sumDiag g (fun y => r (a y)) (γ i)` using `fun i => by`. Rewrite using `[hℓ, ← evalR_toReal]`. Conclude with `(hval _ (hreal _ (hpsd i))).2.2 (hcon i).2`. Use `⟨hbal, hpsd, (linearOn_iff _ γ).2 fun c hc => ?_, 2 ^ n, sumDiag g (fun y => r (a y)), by positivity, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hS : ∀ y, 0 ≤ (∑ i, c i • toReal (γ i)) y y` using `fun y => by`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_nonneg fun i _ => mul_nonneg (hc i) (hreal _ (hpsd i) y)`. Establish `h1` using `(hval _ hS).2.2 fun y => isMin2_sum_smul _ c _ hc fun i => (hcon i).2 y`. Establish `hp : (2 : ℝ) ^ n ≠ 0` using `by positivity`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mul_left_cancel₀ hp (h1.trans ?_)` and prove the remaining obligations. Establish `h2 : ∀ i, (2 : ℝ) ^ g * ∑ y, toReal (γ i) (r (a y)) (r (a y)) = 2 ^ n * (vorFun O g).evalZ (γ i)` using `fun i => by`. Rewrite using `[hgen, hℓ]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, mul_left_comm, h2, mul_left_comm]`. Introduce `i`. Use `push_cast`. Conclude with `(hgen i).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `β _ hβ`. Establish `h` using `(hval _ (hreal β hβ)).1`. Rewrite `h` using `[evalR_toReal]`. Rewrite using `[hℓ]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h`. Introduce `β hb hβ he`. Establish `hmin : ∀ y, IsMin2 (toReal β) (r (a y))`. Use `(hval _ (hreal β hβ)).2.1 ?_` and prove the remaining obligations. Rewrite using `[evalR_toReal, ← hℓ]`.
-
-Conclude with `he` after adjusting the coercions. Establish `hpc : toReal β ∈ psdCone bar X`. Simplify using `using ConeSub.sum_smul_toReal_mem_psdCone O bar X 1 ![β] ![1] (by simp [hb]) (by simp [hβ]) (by simp)`. Conclude with `exists_nat_comb_of_toReal_mem_rcone X m γ β (hsub ⟨hpc, hmin⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isCell_vorFun_of_contact : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O)
     (g : ℕ) (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X] (n : ℕ)

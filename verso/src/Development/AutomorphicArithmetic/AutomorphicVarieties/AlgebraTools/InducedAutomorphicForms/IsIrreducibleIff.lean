@@ -15,24 +15,24 @@ def IrrOn (ρ : Representation k G V) (H : Subgroup G) : Prop :=
   ∀ W : Submodule k V, StableOn ρ H W → W = ⊥ ∨ W = ⊤
 
 /- English proof (translation)
-Introduce `W hW` and use `h W fun g hg => hW g (hle hg)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IrrOn.mono {ρ : Representation k G V} {H H' : Subgroup G} (h : IrrOn ρ H) (hle : H ≤ H') : IrrOn ρ H' :=
   fun W hW => h W fun g hg => hW g (hle hg)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h W hW => h W fun g hg => hW ⟨g, hg⟩ trivial, fun h W hW => h W fun g _ => hW g g.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem irrOn_iff_comp (ρ : Representation k G V) (H : Subgroup G) :
     IrrOn ρ H ↔ IrrOn (ρ.comp H.subtype : Representation k H V) ⊤ :=
   ⟨fun h W hW => h W fun g hg => hW ⟨g, hg⟩ trivial, fun h W hW => h W fun g _ => hW g g.2⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, fun W hW => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `bot_ne_top (α := Subrepresentation ρ) (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`. Break down `h.eq_bot_or_eq_top ⟨W, fun g v hv => hW g trivial v hv⟩ with e | e` into its components or cases. Conclude with `Or.inl (congrArg Subrepresentation.toSubmodule e)`. Conclude with `Or.inr (congrArg Subrepresentation.toSubmodule e)`. Introduce and unpack `⟨hV, h⟩ haveI : Nontrivial (Subrepresentation ρ) := ⟨⊥, ⊤, fun e => bot_ne_top (α := Submodule k V) (congrArg Subrepresentation.toSubmodule e)⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun W => ?_⟩` and prove the remaining obligations. Break down `h W.toSubmodule (fun g _ v hv => W.apply_mem_toSubmodule g hv) with e | e` into its components or cases. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective e)`. Conclude with `Or.inr (Subrepresentation.toSubmodule_injective e)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem isIrreducible_iff (ρ : Representation k G V) : ρ.IsIrreducible ↔ Nontrivial V ∧ IrrOn ρ ⊤ := by
   constructor
@@ -53,7 +53,7 @@ theorem isIrreducible_iff (ρ : Representation k G V) : ρ.IsIrreducible ↔ Non
     · exact Or.inr (Subrepresentation.toSubmodule_injective e)
 
 /- English proof (translation)
-Introduce `W _` and use `Ideal.eq_bot_or_top W`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem irrOn_line (ρ : Representation k G k) (H : Subgroup G) : IrrOn ρ H :=
   fun W _ => Ideal.eq_bot_or_top W
@@ -64,7 +64,7 @@ def matRep {n : Type} [Fintype n] [DecidableEq n] (r : G →* GL n k) : Represen
   map_mul' g h := by simp [Matrix.toLin'_mul, Module.End.mul_eq_comp]
 
 /- English proof (translation)
-Simplify using `[matRep]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem matRep_apply {n : Type} [Fintype n] [DecidableEq n] (r : G →* GL n k) (g : G) (v : n → k) :
     matRep r g v = (r g : Matrix n n k).mulVec v := by
@@ -76,14 +76,14 @@ def subst {k n : Type} [CommRing k] [Fintype n] (A : Matrix n n k) : MvPolynomia
   MvPolynomial.aeval fun i => ∑ j, A j i • MvPolynomial.X j
 
 /- English proof (translation)
-Simplify using `[subst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem subst_X {k n : Type} [CommRing k] [Fintype n] (A : Matrix n n k) (i : n) :
     subst A (MvPolynomial.X i) = ∑ j, A j i • MvPolynomial.X j := by
   simp [subst]
 
 /- English proof (translation)
-Use `ext1 i`. Simplify using `[subst, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subst_one {k n : Type} [CommRing k] [Fintype n] [DecidableEq n] :
     subst (1 : Matrix n n k) = AlgHom.id k _ := by
@@ -91,7 +91,7 @@ theorem subst_one {k n : Type} [CommRing k] [Fintype n] [DecidableEq n] :
   simp [subst, Matrix.one_apply]
 
 /- English proof (translation)
-Use `ext1 i`. Simplify using `only [AlgHom.comp_apply, subst_X, map_sum, map_smul, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_mul {k n : Type} [CommRing k] [Fintype n] (A B : Matrix n n k) :
     subst (A * B) = (subst A).comp (subst B) := by

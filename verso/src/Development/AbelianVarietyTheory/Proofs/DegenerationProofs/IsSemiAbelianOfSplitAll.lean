@@ -15,7 +15,7 @@ open GlobalTheory.ZJ
 namespace GlobalTheory.ZJ
 
 /- English proof (translation)
-Take `⟨z, r, rfl⟩ : ∃ (z : Z) (r : Sp K ⟶ Sp (Z.residueField z)), t = r ≫ Z.fromSpecResidueField z` from `⟨_, _, (Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K Z t).symm⟩`. Take `⟨E, ⟨d⟩⟩` from `h z`. Establish `: IsMonHom (pullCompIso r (Z.fromSpecResidueField z) G).symm.hom` using `inferInstanceAs (IsMonHom (pullCompIso r (Z.fromSpecResidueField z) G).inv)`. Conclude with `⟨_, isGt_of_iso (pullCompIso r (Z.fromSpecResidueField z) G).symm (GtBaseChange.isGt_extBC r E _ d)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem SplitAll.fieldPoint {Z : Scheme.{0}} {G : Over Z} [GrpObj G] (h : SplitAll G) (K : Type) [Field K]
     (t : Sp K ⟶ Z) : ∃ E : SplitExt (Sp K), E.IsGt ((Over.pullback t).obj G) := by
@@ -27,9 +27,9 @@ theorem SplitAll.fieldPoint {Z : Scheme.{0}} {G : Over Z} [GrpObj G] (h : SplitA
   exact ⟨_, isGt_of_iso (pullCompIso r (Z.fromSpecResidueField z) G).symm (GtBaseChange.isGt_extBC r E _ d)⟩
 
 /- English proof (translation)
-Introduce `Z G _ hc hs hsep hq h`. Use `⟨⟨hc, hs, hsep, hq, ⟨geometrically_iff_of_isClosedUnderIsomorphisms.mpr fun K _ q => ?_⟩, fun Ω _ _ q => ?_⟩, h.fieldPoint, fun x => ⟨Z.residueField x, inferInstance, inferInstance, inferInstance, inferInstance, h.fieldPoint _ _⟩⟩` and prove the remaining obligations. Take `⟨E, hE⟩` from `h.fieldPoint K q`. Establish `hg : GeometricallyConnected (pullback.snd G.hom q)` using `(UnitRigidity.smooth_geometricallyConnected_of_isGt E _ hE).2`. Rewrite using `[← (pullbackLeftPullbackSndIso G.hom q (𝟙 _) ≪≫ pullback.congrHom rfl (Category.id_comp q)).hom.homeomorph.connectedSpace_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pullback_of_geometrically hg.1 K (𝟙 _)`. Take `⟨E, hE⟩` from `h.fieldPoint Ω q`. Conclude with `nonempty_torusExtension_of_isGt E _ hE`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSemiAbelian_of_splitAll : ∀ (Z : Scheme.{0}) (G : Over Z) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] [IsSeparated G.hom] [QuasiCompact G.hom], SplitAll G → IsSemiAbelian G ∧ (∀ (K : Type) [Field K] (t : Sp K ⟶ Z), ∃ E : SplitExt (Sp K), E.IsGt ((Over.pullback t).obj G)) ∧ ∀ x : Z, ∃ (k : Type) (_ : Field k) (_ : Algebra (Z.residueField x) k), FiniteDimensional (Z.residueField x) k ∧ Algebra.IsSeparable (Z.residueField x) k ∧ ∃ S : SplitExt (Sp k), S.IsGt ((Over.pullback (Spec.map (CommRingCat.ofHom (algebraMap (Z.residueField x) k)) ≫ Z.fromSpecResidueField x)).obj G) := by
   intro Z G _ hc hs hsep hq h

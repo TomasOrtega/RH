@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `H.bar_eq (H.bar a)`. Establish `h2` using `H.bar_eq a`. Express the relevant statement in the definitionally equal form `((H.bar (H.bar a) : 𝓞 E) : E) = (a : E)`. Rewrite using `[h1, h2, IsCMField.complexConj_apply_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem bar_bar (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a := by
   apply Subtype.ext
@@ -22,9 +22,9 @@ theorem bar_bar (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a := by
   rw [h1, h2, IsCMField.complexConj_apply_apply]
 
 /- English proof (translation)
-Establish `h : ∃ c, c ∈ Mfr l ∧ c - 1 ∈ l.Mb`. Take `⟨m, hm, mb, hmb, hsum⟩` from `Submodule.mem_sup.1 (l.coprime ▸ Submodule.mem_top : (1 : 𝓞 E) ∈ l.Mb ⊔ _)`. Use `⟨mb, hmb, ?_⟩` and prove the remaining obligations. Establish `: mb - 1 = -m` using `by rw [← hsum]; ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_mem hm`. Unfold `cSep`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cSep_spec (l : Level H) : cSep l ∈ Mfr l ∧ cSep l - 1 ∈ l.Mb := by
   have h : ∃ c, c ∈ Mfr l ∧ c - 1 ∈ l.Mb := by
@@ -37,9 +37,9 @@ theorem cSep_spec (l : Level H) : cSep l ∈ Mfr l ∧ cSep l - 1 ∈ l.Mb := by
   exact h.choose_spec
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Establish `: (b * (l.M : 𝓞 E)) • y = (l.M : ℤ) • (b • y)`. Rewrite using `[mul_comm, mul_smul, ← Int.cast_smul_eq_zsmul (𝓞 E)]`. Simplify using the standard rewrite rules. Rewrite using `[this, map_zsmul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Dvd.intro _ rfl`.
+A detailed English derivation is pending.
 -/
 theorem dvd_EF_of_mem (x y : Dw.La) {a : 𝓞 E} (ha : a ∈ Ideal.span {(l.M : 𝓞 E)}) :
     (l.M : ℤ) ∣ Dw.EF x (a • y) := by
@@ -50,13 +50,13 @@ theorem dvd_EF_of_mem (x y : Dw.La) {a : 𝓞 E} (ha : a ∈ Ideal.span {(l.M : 
   exact Dvd.intro _ rfl
 
 /- English proof (translation)
-The claim follows from `l.prod ▸ Ideal.mul_mem_mul ha hb`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_M {a b : 𝓞 E} (ha : a ∈ l.Mb) (hb : b ∈ Mfr l) : a * b ∈ Ideal.span {(l.M : 𝓞 E)} :=
   l.prod ▸ Ideal.mul_mem_mul ha hb
 
 /- English proof (translation)
-Take `⟨b, hb, rfl⟩` from `(Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) H.bar.surjective).1 ha`. Establish `: H.bar ((H.bar : 𝓞 E →+* 𝓞 E) b) = b` using `bar_bar H b`. Rewrite using `[this]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem bar_mem_Mb {a : 𝓞 E} (ha : a ∈ Mfr l) : H.bar a ∈ l.Mb := by
   obtain ⟨b, hb, rfl⟩ := (Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) H.bar.surjective).1 ha
@@ -64,7 +64,7 @@ theorem bar_mem_Mb {a : 𝓞 E} (ha : a ∈ Mfr l) : H.bar a ∈ l.Mb := by
   rwa [this]
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hy (fun a ha z _ => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Rewrite using `[← mul_smul, mul_comm]`. Conclude with `dvd_EF_of_mem _ _ (mul_mem_M ha (cSep_spec l).1)`. Rewrite using `[smul_add, map_add]`. Conclude with `dvd_add hu hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_right (x : Dw.La) {y : Dw.La} (hy : y ∈ (l.Mb • ⊤ : Submodule (𝓞 E) Dw.La)) :
     (l.M : ℤ) ∣ Dw.EF x (cSep l • y) := by
@@ -73,7 +73,7 @@ theorem dvd_right (x : Dw.La) {y : Dw.La} (hy : y ∈ (l.Mb • ⊤ : Submodule 
   · rw [smul_add, map_add]; exact dvd_add hu hv
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hx (fun a ha z _ => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Rewrite using `[Dw.adj, ← mul_smul]`. Conclude with `dvd_EF_of_mem _ _ (mul_mem_M (bar_mem_Mb ha) (cSep_spec l).1)`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `dvd_add hu hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_left {x : Dw.La} (y : Dw.La) (hx : x ∈ (Mfr l • ⊤ : Submodule (𝓞 E) Dw.La)) :
     (l.M : ℤ) ∣ Dw.EF x (cSep l • y) := by
@@ -82,9 +82,9 @@ theorem dvd_left {x : Dw.La} (y : Dw.La) (hx : x ∈ (Mfr l • ⊤ : Submodule 
   · rw [map_add, LinearMap.add_apply]; exact dvd_add hu hv
 
 /- English proof (translation)
-Unfold `pairL`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.dvd_sum fun b _ => ?_` and prove the remaining obligations. Establish `: Dw.EF (x0 b) (cSep l • x b) - Dw.EF (x0' b) (cSep l • x' b) = Dw.EF (x0 b - x0' b) (cSep l • x b) + Dw.EF (x0' b) (cSep l • (x b - x' b))`. Simplify using `[smul_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `dvd_add (dvd_left _ (h0 b)) (dvd_right _ (h1 b))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairL_congr {n : ℕ} (x0 x0' x x' : Fin n → Dw.La)
     (h0 : ∀ b, x0 b - x0' b ∈ (Mfr l • ⊤ : Submodule (𝓞 E) Dw.La))
@@ -100,11 +100,11 @@ theorem pairL_congr {n : ℕ} (x0 x0' x x' : Fin n → Dw.La)
   exact dvd_add (dvd_left _ (h0 b)) (dvd_right _ (h1 b))
 
 /- English proof (translation)
-Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Establish `hA : l.A ≠ 0` using `l.A_pos.ne'`. Take `⟨k, hk⟩ : l.M ∣ l.M'` from `Nat.dvd_lcm_left _ _`. Establish `hM' : l.M' ≠ 0` using `Nat.lcm_ne_zero hM hA`. Establish `hk0 : k ≠ 0` using `by rintro rfl; simp [hk] at hM'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiv : l.M' / l.M = k` using `by rw [hk]; exact Nat.mul_div_cancel_left _ (Nat.pos_of_ne_zero hM)`. Unfold `zetaM`. Rewrite using `[hdiv]`. Express the relevant statement in the definitionally equal form `(zeta l.M') ^ k = _`. Unfold `zeta`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Complex.exp_nat_mul, hk]`. Use `congr 1`. Establish `: (k : ℂ) ≠ 0` using `by exact_mod_cast hk0`. Establish `: (l.M : ℂ) ≠ 0` using `by exact_mod_cast hM`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -127,9 +127,9 @@ theorem zetaM_coe (c : Coeff l) : ((zetaM c : c.F) : ℂ) = zeta l.M := by
   field_simp
 
 /- English proof (translation)
-Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Use `IsPrimitiveRoot.of_map_of_injective (f := c.F.val.toRingHom) ?_ Subtype.val_injective` and prove the remaining obligations. Use `zetaM_coe c` as an intermediate fact. Express the relevant statement in the definitionally equal form `IsPrimitiveRoot ((zetaM c : c.F) : ℂ) l.M`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Complex.isPrimitiveRoot_exp l.M hM`.
+A detailed English derivation is pending.
 -/
 theorem zetaM_prim (c : Coeff l) : IsPrimitiveRoot (zetaM c) l.M := by
   have hM : l.M ≠ 0 := by have := l.three_le; omega
@@ -140,14 +140,14 @@ theorem zetaM_prim (c : Coeff l) : IsPrimitiveRoot (zetaM c) l.M := by
   exact Complex.isPrimitiveRoot_exp l.M hM
 
 /- English proof (translation)
-The claim follows from `(Submodule.Quotient.eq _).1 (Classical.choose_spec (Submodule.Quotient.mk_surjective _ (Submodule.Quotient.mk x : LevQ Dw l)))`.
+A detailed English derivation is pending.
 -/
 theorem levRep_mk (x : Dw.La) :
     levRep (Submodule.Quotient.mk x : LevQ Dw l) - x ∈ (l.Mb • ⊤ : Submodule (𝓞 E) Dw.La) :=
   (Submodule.Quotient.eq _).1 (Classical.choose_spec (Submodule.Quotient.mk_surjective _ (Submodule.Quotient.mk x : LevQ Dw l)))
 
 /- English proof (translation)
-Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Establish `h0 : zetaM c ≠ 0` using `(zetaM_prim c).ne_zero hM`. Use `((zetaM_prim c).zpow_eq_one_iff_dvd (a - b)).2 h` as an intermediate fact. Rewrite `this` using `[zpow_sub₀ h0, div_eq_one_iff_eq (zpow_ne_zero _ h0)]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_congr (c : Coeff l) {a b : ℤ} (h : (l.M : ℤ) ∣ a - b) : zetaM c ^ a = zetaM c ^ b := by
   have hM : l.M ≠ 0 := by have := l.three_le; omega
@@ -157,16 +157,16 @@ theorem zpow_congr (c : Coeff l) {a b : ℤ} (h : (l.M : ℤ) ∣ a - b) : zetaM
   exact this
 
 /- English proof (translation)
-The claim follows from `zpow_congr c (pairL_congr _ _ _ _ (fun b => by simp) (fun b => levRep_mk (x b)))`.
+A detailed English derivation is pending.
 -/
 theorem levelFourierDatum_mk (c : Coeff l) {n : ℕ} (x0 x : Fin n → Dw.La) :
     x0Dat c x0 (fun b => (Submodule.Quotient.mk (x b) : LevQ Dw l)) = zetaM c ^ pairL (l := l) x0 x :=
   zpow_congr c (pairL_congr _ _ _ _ (fun b => by simp) (fun b => levRep_mk (x b)))
 
 /- English proof (translation)
-Set `f : Dw.La →ₗ[ℤ] ℤ` to `{ toFun := fun y => Dw.EF x y / m map_add' := fun a b => by rw [map_add, Int.add_ediv_of_dvd_left (h a)] map_smul' := fun k a => by`. Rewrite using `[map_zsmul]`. Simplify using `only [smul_eq_mul, RingHom.id_apply]`. Conclude with `Int.mul_ediv_assoc _ (h a) }`. Take `⟨z, hz⟩` from `Dw.unimod.2 f`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z, Dw.unimod.1 ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[map_zsmul, hz]`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, f, LinearMap.coe_mk, AddHom.coe_mk]`. Conclude with `(Int.mul_ediv_cancel' (h y)).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_eq_smul_of_dvd (x : Dw.La) (m : ℕ) (hm : m ≠ 0) (h : ∀ y, (m : ℤ) ∣ Dw.EF x y) :
     ∃ z, x = (m : ℤ) • z := by
@@ -183,11 +183,11 @@ theorem exists_eq_smul_of_dvd (x : Dw.La) (m : ℕ) (hm : m ≠ 0) (h : ∀ y, (
   exact (Int.mul_ediv_cancel' (h y)).symm
 
 /- English proof (translation)
-Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Take `⟨z, hz⟩` from `exists_eq_smul_of_dvd (H.bar (cSep l) • x) l.M hM (fun y => by`. Rewrite using `[Dw.adj, bar_bar]`. Conclude with `h y)`. Establish `h1 : H.bar (cSep l - 1) ∈ Mfr l` using `Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) (cSep_spec l).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMm : (l.M : 𝓞 E) ∈ Mfr l`. Establish `: Ideal.span {(l.M : 𝓞 E)} ≤ Mfr l` using `l.prod ▸ Ideal.mul_le_right`. Conclude with `this (Ideal.subset_span rfl)`. Establish `: x = (l.M : 𝓞 E) • z - H.bar (cSep l - 1) • x`. Rewrite using `[map_sub, map_one, sub_smul, one_smul, hz, ← Int.cast_smul_eq_zsmul (𝓞 E)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `sub_mem (Submodule.smul_mem_smul hMm trivial) (Submodule.smul_mem_smul h1 trivial)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_dvd {x : Dw.La} (h : ∀ y, (l.M : ℤ) ∣ Dw.EF x (cSep l • y)) :
     x ∈ (Mfr l • ⊤ : Submodule (𝓞 E) Dw.La) := by
@@ -204,15 +204,15 @@ theorem mem_of_dvd {x : Dw.La} (h : ∀ y, (l.M : ℤ) ∣ Dw.EF x (cSep l • y
   exact sub_mem (Submodule.smul_mem_smul hMm trivial) (Submodule.smul_mem_smul h1 trivial)
 
 /- English proof (translation)
-Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Prove the components needed by the constructor for the conclusion. Introduce `h b`. Use `mem_of_dvd fun y => ?_` and prove the remaining obligations. Establish `h1` using `congrFun h (fun i => (Submodule.Quotient.mk ((Pi.single b y : Fin n → Dw.La) i) : LevQ Dw l))`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[levelFourierDatum_mk, levelFourierDatum_mk]`. Establish `h0 : zetaM c ≠ 0` using `(zetaM_prim c).ne_zero hM`. Establish `h2 : (l.M : ℤ) ∣ pairL (l` using `l) x0 (Pi.single b y) - pairL (l := l) x0' (Pi.single b y) := by`. Rewrite using `[← (zetaM_prim c).zpow_eq_one_iff_dvd, zpow_sub₀ h0, h1, div_self (zpow_ne_zero _ h0)]`. Establish `h3 : ∀ u : Fin n → Dw.La, pairL (l` using `l) u (Pi.single b y) = Dw.EF (u b) (cSep l • y) := by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `u`. Unfold `pairL`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `i _ hi`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pi.single_eq_of_ne hi]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[h3, h3]`. Simplify using `using h2`. Introduce `h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `q`. Conclude with `zpow_congr c (pairL_congr _ _ _ _ h (fun b => by simp))`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem levelFourierDatum_eq_iff (c : Coeff l) {n : ℕ} (x0 x0' : Fin n → Dw.La) :
     x0Dat c x0 = x0Dat c x0' ↔ ∀ b, x0 b - x0' b ∈ (Mfr l • ⊤ : Submodule (𝓞 E) Dw.La) := by
@@ -239,11 +239,9 @@ theorem levelFourierDatum_eq_iff (c : Coeff l) {n : ℕ} (x0 x0' : Fin n → Dw.
     exact zpow_congr c (pairL_congr _ _ _ _ h (fun b => by simp))
 
 /- English proof (translation)
-Use `haveI := Dw.fin`. Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Establish `hb : l.Mb ≠ ⊥`. Introduce `h`. Establish `: Ideal.span {(l.M : 𝓞 E)} ≤ l.Mb` using `l.prod ▸ Ideal.mul_le_left`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this (Ideal.subset_span rfl)` as an intermediate fact. Rewrite `this` using `[h, Ideal.mem_bot]`. Conclude with `hM (by exact_mod_cast this)`. Use `haveI : Finite (𝓞 E ⧸ l.Mb) := Ideal.finiteQuotientOfFreeOfNeBot _ hb`. Use `haveI : Module.Finite (𝓞 E ⧸ l.Mb) (LevQ Dw l) := Module.Finite.of_restrictScalars_finite (𝓞 E) _ _`.
-
-Conclude with `Module.finite_of_finite (𝓞 E ⧸ l.Mb)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_LevQ : Finite (LevQ Dw l) := by
   haveI := Dw.fin
@@ -259,9 +257,9 @@ theorem finite_LevQ : Finite (LevQ Dw l) := by
   exact Module.finite_of_finite (𝓞 E ⧸ l.Mb)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (1 : 𝓞 E) ∈ l.Mb` using `by simpa using bar_mem_Mb (l := l) (a := 1) (h ▸ Submodule.mem_top)`. Establish `h2` using `mul_mem_M h1 (show (1 : 𝓞 E) ∈ Mfr l from h ▸ Submodule.mem_top)`. Rewrite `h2` using `[one_mul, ← Ideal.eq_top_iff_one, Ideal.span_singleton_eq_top]`. Establish `h3 : IsUnit (l.M : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsUnit (algebraMap ℤ (𝓞 E) (l.M : ℤ))` using `by simpa using h2`. Conclude with `(isUnit_map_iff (algebraMap ℤ (𝓞 E)) _).1 this`. Use `l.three_le` as an intermediate fact. Apply the tactic sequence `rcases Int.isUnit_iff.1 h3 with h | h <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Mfr_ne_top (l : Level H) : Mfr l ≠ ⊤ := by
   intro h

@@ -12,14 +12,14 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 namespace IdealNormInequalities
 
 /- English proof (translation)
-Rewrite using `[zpow_neg, zpow_natCast]`. Conclude with `inv_lt_one_of_one_lt₀ (one_lt_pow₀ hx (by omega))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_neg_lt_one {x : ℝ} (hx : 1 < x) {M : ℕ} (hM : 1 ≤ M) : x ^ (-(M : ℤ)) < 1 := by
   rw [zpow_neg, zpow_natCast]
   exact inv_lt_one_of_one_lt₀ (one_lt_pow₀ hx (by omega))
 
 /- English proof (translation)
-Rewrite using `[zpow_neg, zpow_natCast]`. Use `inv_anti₀ (by positivity) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem zpow_neg_le {x p : ℝ} (hp : 1 ≤ p) (hx : p ≤ x) {M : ℕ} (hM : 2 ≤ M) :
     x ^ (-(M : ℤ)) ≤ (p ^ 2)⁻¹ := by
@@ -29,19 +29,19 @@ theorem zpow_neg_le {x p : ℝ} (hp : 1 ≤ p) (hx : p ≤ x) {M : ℕ} (hM : 2 
     _ ≤ x ^ M := pow_le_pow_right₀ (by linarith) hM
 
 /- English proof (translation)
-The claim follows from `(resChar_prime hP).two_le.trans (resChar_le_absNorm hP)`.
+A detailed English derivation is pending.
 -/
 theorem two_le_absNorm {P : Ideal (𝓞 K)} (hP : P.IsMaximal) : 2 ≤ Ideal.absNorm P :=
   (resChar_prime hP).two_le.trans (resChar_le_absNorm hP)
 
 /- English proof (translation)
-Conclude with `(two_le_absNorm hP)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem one_lt_absNorm {P : Ideal (𝓞 K)} (hP : P.IsMaximal) : (1 : ℝ) < (Ideal.absNorm P : ℝ) := by
   exact_mod_cast (two_le_absNorm hP)
 
 /- English proof (translation)
-Rewrite using `[Real.lt_sqrt (by norm_num)]`. Simplify using `using one_lt_absNorm hP`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_lt_sqrt_absNorm {P : Ideal (𝓞 K)} (hP : P.IsMaximal) :
     (1 : ℝ) < Real.sqrt (Ideal.absNorm P : ℝ) := by
@@ -54,7 +54,7 @@ def smallTerm (M : ℕ) (P : Ideal (𝓞 K)) : ℝ :=
   else -((Ideal.absNorm P : ℝ) ^ (-(M : ℤ)))
 
 /- English proof (translation)
-The claim follows from `|smallTerm M P| < 1 := by unfold smallTerm split_ifs with hc · rw [abs_neg, abs_mul, abs_pow, abs_neg, abs_one, one_pow, one_mul, abs_of_nonneg (zpow_nonneg (Real.sqrt_nonneg _) _)] exact zpow_neg_lt_one (one_lt_sqrt_absNorm hP) hM · rw [abs_neg, abs_of_nonneg (zpow_nonneg (Nat.c …`.
+A detailed English derivation is pending.
 -/
 theorem abs_smallTerm_lt_one {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {M : ℕ} (hM : 1 ≤ M) :
     |smallTerm M P| < 1 := by
@@ -67,7 +67,7 @@ theorem abs_smallTerm_lt_one {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {M : ℕ} (
     exact zpow_neg_lt_one (one_lt_absNorm hP) hM
 
 /- English proof (translation)
-Use `(abs_lt.mp (abs_smallTerm_lt_one hP hM)).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_add_smallTerm_pos {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {M : ℕ} (hM : 1 ≤ M) :
     0 < 1 + smallTerm M P := by
@@ -75,11 +75,9 @@ theorem one_add_smallTerm_pos {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {M : ℕ} 
   linarith
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) ≤ (resChar P : ℝ)` using `by exact_mod_cast (resChar_prime hP).one_lt.le`. Unfold `smallTerm`. Use `split_ifs with hc`. Rewrite using `[abs_neg, abs_mul, abs_pow, abs_neg, abs_one, one_pow, one_mul, abs_of_nonneg (zpow_nonneg (Real.sqrt_nonneg _) _)]`. Take `⟨q, hq⟩` from `exists_sq_absNorm_of_inert hK hP hc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : Real.sqrt (Ideal.absNorm P : ℝ) = q`. Rewrite using `[hq]`. Use `push_cast`. Conclude with `Real.sqrt_sq (Nat.cast_nonneg q)`. Rewrite using `[hs]`.
-
-Conclude with `zpow_neg_le hp1 (by exact_mod_cast resChar_le_of_sq hP hq) hM`. Rewrite using `[abs_neg, abs_of_nonneg (zpow_nonneg (Nat.cast_nonneg _) _)]`. Conclude with `zpow_neg_le hp1 (by exact_mod_cast resChar_le_absNorm hP) hM`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abs_smallTerm_le (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {M : ℕ}
     (hM : 2 ≤ M) : |smallTerm M P| ≤ ((resChar P : ℝ) ^ 2)⁻¹ := by
@@ -97,7 +95,7 @@ theorem abs_smallTerm_le (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P
     exact zpow_neg_le hp1 (by exact_mod_cast resChar_le_absNorm hP) hM
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.eulerFac smallTerm`. Apply the tactic sequence `split_ifs with hc <;> simp only [← sub_eq_add_neg]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eulerFac_eq (M : ℕ) (P : Ideal (𝓞 K)) :
     Formalism.HermitianLatticesTheory.eulerFac K M P = if Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = P then (1 + smallTerm M P)⁻¹
@@ -106,7 +104,7 @@ theorem eulerFac_eq (M : ℕ) (P : Ideal (𝓞 K)) :
   split_ifs with hc <;> simp only [← sub_eq_add_neg]
 
 /- English proof (translation)
-The claim follows from `|Real.log (Formalism.HermitianLatticesTheory.eulerFac K M P)| ≤ |Real.log (1 + smallTerm M P)| := by rw [eulerFac_eq] split_ifs with hc · rw [Real.log_inv, abs_neg] · rw [Real.log_rpow (one_add_smallTerm_pos hP hM), abs_mul] have : |(-(1 : ℝ) / 2)| = 1 / 2 := by rw [abs_of_nonpos …`.
+A detailed English derivation is pending.
 -/
 theorem abs_log_eulerFac_le {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {M : ℕ} (hM : 1 ≤ M) :
     |Real.log (Formalism.HermitianLatticesTheory.eulerFac K M P)| ≤ |Real.log (1 + smallTerm M P)| := by
@@ -119,7 +117,7 @@ theorem abs_log_eulerFac_le {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {M : ℕ} (h
     nlinarith [abs_nonneg (Real.log (1 + smallTerm M P))]
 
 /- English proof (translation)
-Establish `h1 : Summable (fun P : {P : Ideal (𝓞 K) // P.IsMaximal} => smallTerm M P.1)` using `Summable.of_norm_bounded summable_resChar_sq (fun P => abs_smallTerm_le hK P.2 hM)`. Establish `h2` using `(Real.summable_log_one_add_of_summable h1).abs`. Conclude with `Summable.of_norm_bounded h2 (fun P => abs_log_eulerFac_le P.2 (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem summable_log_eulerFac (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {M : ℕ} (hM : 2 ≤ M) :
     Summable (fun P : {P : Ideal (𝓞 K) // P.IsMaximal} =>
@@ -134,7 +132,7 @@ end IdealNormInequalities
 open IdealNormInequalities
 
 /- English proof (translation)
-Rewrite using `[eulerFac_eq]`. Use `split_ifs with hc`. Conclude with `inv_pos.mpr (one_add_smallTerm_pos hP hM)`. Conclude with `Real.rpow_pos_of_pos (one_add_smallTerm_pos hP hM) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eulerFac_pos (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : Ideal (𝓞 K)} (hP : P.IsMaximal) (M : ℕ)
     (hM : 1 ≤ M) : 0 < Formalism.HermitianLatticesTheory.eulerFac K M P := by
@@ -144,7 +142,7 @@ theorem eulerFac_pos (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : I
   · exact Real.rpow_pos_of_pos (one_add_smallTerm_pos hP hM) _
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.eulerFac`. Rewrite using `[if_pos hc, inv_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eulerFac_inv_inert (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : Ideal (𝓞 K)} (hP : P.IsMaximal)
     (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = P) (M : ℕ) :
@@ -154,9 +152,9 @@ theorem eulerFac_inv_inert (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) 
   rw [if_pos hc, inv_inv]
 
 /- English proof (translation)
-Establish `hc' : Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) (Formalism.HermitianLatticesTheory.conjIdeal (K := K) P) ≠ Formalism.HermitianLatticesTheory.conjIdeal (K := K) P := by`. Rewrite using `[conjIdeal_conjIdeal hK]`. Conclude with `hc.symm`. Establish `hx : 0 < 1 - (Ideal.absNorm P : ℝ) ^ (-(M : ℤ))` using `sub_pos.mpr (zpow_neg_lt_one (one_lt_absNorm hP) hM)`. Unfold `Formalism.HermitianLatticesTheory.eulerFac`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hc, if_neg hc', absNorm_conjIdeal hK, ← Real.rpow_add hx]`. Evaluate the numerical expressions using `[Real.rpow_neg_one]`.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem eulerFac_mul_conj_inv_split (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : Ideal (𝓞 K)}
     (hP : P.IsMaximal) (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P ≠ P) (M : ℕ) (hM : 1 ≤ M) :
@@ -172,7 +170,7 @@ theorem eulerFac_mul_conj_inv_split (hK : Formalism.HermitianLatticesTheory.IsCM
   norm_num [Real.rpow_neg_one]
 
 /- English proof (translation)
-The claim follows from `Real.multipliable_of_summable_log (fun P => eulerFac_pos hK P.2 M (by omega)) (summable_log_eulerFac hK hM)`.
+A detailed English derivation is pending.
 -/
 theorem multipliable_eulerFac (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (M : ℕ) (hM : 2 ≤ M) :
     Multipliable (fun P : {P : Ideal (𝓞 K) // P.IsMaximal} => Formalism.HermitianLatticesTheory.eulerFac K M P.1) :=
@@ -180,7 +178,7 @@ theorem multipliable_eulerFac (hK : Formalism.HermitianLatticesTheory.IsCMUnram 
     (summable_log_eulerFac hK hM)
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.lValEta`. Rewrite using `[← Real.rexp_tsum_eq_tprod (fun P => eulerFac_pos hK P.2 M (by omega)) (summable_log_eulerFac hK hM)]`. Conclude with `Real.exp_pos _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lValEta_pos (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (M : ℕ) (hM : 2 ≤ M) :
     0 < Formalism.HermitianLatticesTheory.lValEta K M := by

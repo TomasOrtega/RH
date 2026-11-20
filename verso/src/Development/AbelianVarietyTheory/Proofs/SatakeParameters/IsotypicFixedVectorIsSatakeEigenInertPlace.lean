@@ -42,9 +42,9 @@ def stabRt {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Typ
         rw [inv_mul_cancel_right]
 
 /- English proof (translation)
-Set `U : Subgroup (GAf L n)` to `Umax L n ⊓ stabRt f`. Establish `hU : ∀ κ, TrivOutside {v} κ → (κ ∈ U ↔ κ ∈ Umax L n)` using `fun κ hκ => ⟨fun h1 => h1.1, fun h1 => ⟨h1, hfK κ h1 hκ⟩⟩`. Establish `e1` using `GlobalTheory.InertSph.satU_of_fixed L n a S hS v w Dv α hw hsat U hU f hfS (fun κ hκ => hκ.2) h hh`. Establish `hK : ∀ κ : GAf L n, κ ∈ Umax L n → TrivOutside {v} κ → ∃ hκ : Dv.loc κ ∈ Formalism.UG.GU Dv.σw n, (⟨Dv.loc κ, hκ⟩ : Formalism.UG.GU Dv.σw n) ∈ Formalism.UG.KU Dv.σw n` using `fun κ hκ _ => ⟨GlobalTheory.T.inertDatum_local_mem_unitaryGroup_antidiagonal L n v w Dv κ, GlobalTheory.T.inertDatum_local_stdLatticeStabilizer_mem_maxCompact L n v w Dv κ hκ _⟩`. Rewrite using `[GlobalTheory.T.inertHeckeOperator_level_independent L n v w Dv hK (Umax L n) U (fun _ _ => Iff.rfl) hU a.W h hh.1 f hfK]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e1`.
+A detailed English derivation is pending.
 -/
 theorem eig_of_irr (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n)
     (S : Submodule ℂ (GAf L n → a.W)) (hS : NG.IsIrrRep a.ρ S) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
@@ -64,27 +64,25 @@ theorem eig_of_irr (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) 
   exact e1
 
 /- English proof (translation)
-Introduce `L _ _ _ n π v w hw Dv α hsat φ hφ hφK h hh`. Establish `hfin : ∀ (U : Subgroup (GAf L n)), (∀ κ, TrivOutside {v} κ → (κ ∈ U ↔ κ ∈ Umax L n)) → ∀ h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n), Set.Finite {c : GAf L n ⧸ U | ∃ x : GAf L n, (x : GAf L n ⧸ U) = c ∧ TrivOutside {v} x ∧ Dv.hval h (Dv.loc x) ≠ 0}` using `fun U hU h hh => GlobalTheory.T.finite_inertHecke_support_cosets L n v w Dv (fun s => GlobalTheory.T.unitary_doubleCoset_finite_left_cosets Dv.ϖ Dv.σw _ n Dv.unram s) (GlobalTheory.T.mem_maxCompact_of_trivOutside_local_integral L n v w Dv) U hU h hh`. Use `set c := Formalism.UG.SatU Dv.ϖ (Formalism.UG.qV (maximalRealSubfield L) v) h α with hc`. Establish `hirr : ∀ S' : Submodule ℂ (GAf L n → π.W), NG.IsIrrRep π.ρ S' ∧ NG.IsoRep π.S S' → ∀ f ∈ S', (∀ κ ∈ Umax L n, TrivOutside {v} κ → NG.rt L n κ f = f) → heckeFunI L n (Umax L n) Dv h f = c • f`. Introduce and unpack `S' ⟨hS', hiso⟩ f hf hfK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hsat' : NG.SatAt { π.toAlgWt with S` using `S', irrS := hS' } Dv α := GlobalTheory.SatIso.satAt_of_iso L n π { π.toAlgWt with S := S', irrS := hS' } ⟨⟨LinearEquiv.refl ℂ _, fun _ _ => rfl⟩, hiso⟩ v w Dv α hfin hsat`. Conclude with `eig_of_irr L n π.toAlgWt S' hS' v w hw Dv α hsat' f hf hfK h hh`. Take `⟨C, cf, xs, hC⟩` from `GlobalTheory.SatIso.heckeFunI_eq_sum Dv (Umax L n) h (hfin (Umax L n) (fun _ _ => Iff.rfl) h hh)`. Establish `hadd : ∀ y z : GAf L n → π.W, heckeFunI L n (Umax L n) Dv h (y + z) = heckeFunI L n (Umax L n) Dv h y + heckeFunI L n (Umax L n) Dv h z`. Introduce `y z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hC π.W, hC π.W, hC π.W, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, smul_add]`. Establish `hzero : heckeFunI L n (Umax L n) Dv h (0 : GAf L n → π.W) = 0`. Rewrite using `[hC π.W]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `key : ∀ t : Finset (Submodule ℂ (GAf L n → π.W)), (↑t ⊆ {S' | NG.IsIrrRep π.ρ S' ∧ NG.IsoRep π.S S'}) → ∀ f ∈ (⨆ i ∈ t, i), (∀ κ ∈ Umax L n, TrivOutside {v} κ → NG.rt L n κ f = f) → heckeFunI L n (Umax L n) Dv h f = c • f` using `by classical`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `_ f hf _`. Simplify using `only [Finset.notMem_empty, iSup_false, iSup_bot, Submodule.mem_bot] at hf`. Substitute `hf` using the available equality. Rewrite using `[hzero, smul_zero]`. Consider the case `insert a t ha ih`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hsub f hf hfix`. Establish `haF : NG.IsIrrRep π.ρ a ∧ NG.IsoRep π.S a` using `hsub (Finset.mem_insert_self a t)`. Establish `hsF : (↑t : Set _) ⊆ {S' | NG.IsIrrRep π.ρ S' ∧ NG.IsoRep π.S S'}` using `fun x hx => hsub (Finset.mem_insert_of_mem hx)`. Rewrite `hf` using `[Finset.iSup_insert]`. Establish `hMst : ∀ g, ∀ y ∈ (⨆ i ∈ t, i), NG.rt L n g y ∈ (⨆ i ∈ t, i)` using `GlobalTheory.IsoFix.iSup_finset_stable t (fun i hi => (hsF hi).1.1.stable)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hd : a ⊓ (⨆ i ∈ t, i) = ⊥`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hf`. Establish `hyz : ∀ κ ∈ Umax L n, TrivOutside {v} κ → NG.rt L n κ y = y ∧ NG.rt L n κ z = z`. Introduce `κ hκ hκt`. Establish `e` using `hfix κ hκ hκt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[map_add]`. Establish `h1 : NG.rt L n κ y - y = z - NG.rt L n κ z`. Rewrite using `[sub_eq_sub_iff_add_eq_add, e, add_comm]`. Establish `hm : NG.rt L n κ y - y ∈ a ⊓ (⨆ i ∈ t, i)` using `⟨a.sub_mem (haF.1.1.stable κ y hy) hy, h1 ▸ Submodule.sub_mem _ hz (hMst κ z hz)⟩`. Rewrite `hm` using `[hd, Submodule.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨sub_eq_zero.1 hm, ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[hm]`. Conclude with `(sub_eq_zero.1 h1.symm).symm`. Rewrite using `[hadd, hirr a haF y hy (fun κ hκ hκt => (hyz κ hκ hκt).1), ih hsF z hz (fun κ hκ hκt => (hyz κ hκ hκt).2), smul_add]`. Establish `hsubrep : NG.IsSubrep π.ρ (a ⊓ ⨆ i ∈ t, i)` using `⟨inf_le_left.trans haF.1.1.le, fun g y hy => ⟨haF.1.1.stable g y hy.1, hMst g y hy.2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `heq : a ⊓ (⨆ i ∈ t, i) = a` using `(haF.1.2.2 _ hsubrep inf_le_left).resolve_left hd`. Establish `hle : a ≤ ⨆ i ∈ t, i` using `heq ▸ inf_le_right`. Conclude with `ih hsF f ((sup_le hle le_rfl) hf) hfix`. Unfold `NG.isoTyp at hφ`. Take `⟨s, hs, hfs⟩` from `Submodule.mem_sSup_iff_exists_finset.1 hφ`.
-
-Conclude with `key s hs φ hfs (fun κ hκ hκt => hφK κ hκ hκt)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eig_of_isoTyp_fixed : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (π : NG.AutRep L n) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)), NG.OverPl w v → ∀ (Dv : InertDatum L n v w) (α : Fin (n / 2) → ℂ), NG.SatAt π Dv α → ∀ φ ∈ NG.isoTyp π.ρ π.S, (∀ κ ∈ Umax L n, TrivOutside {v} κ → NG.rt L n κ φ = φ) → ∀ h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n), heckeFunI L n (Umax L n) Dv h φ = Formalism.UG.SatU Dv.ϖ (Formalism.UG.qV (maximalRealSubfield L) v) h α • φ := by
   intro L _ _ _ n π v w hw Dv α hsat φ hφ hφK h hh

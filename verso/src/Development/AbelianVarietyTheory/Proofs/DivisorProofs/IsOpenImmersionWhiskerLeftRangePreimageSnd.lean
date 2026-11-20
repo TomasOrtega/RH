@@ -10,7 +10,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.DualCon
 
 /- English proof (translation)
-Use `IsPullback.of_right (h₁₂ := pullback.fst A.hom B.hom) (v₁₃ := A.hom) (h₂₂ := B.hom) ?_ ?_ (IsPullback.of_hasPullback A.hom B.hom)` and prove the remaining obligations. Establish `hw : j.left ≫ B.hom = B'.hom` using `Over.w j`. Rewrite using `[Over.whiskerLeft_left_fst, hw]`. Conclude with `IsPullback.of_hasPullback A.hom B'.hom`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPullback_whiskerLeft_snd_left {S : Scheme.{0}} (A : Over S) {B' B : Over S} (j : B' ⟶ B) :
     IsPullback (A ◁ j).left (snd A B').left (snd A B).left j.left := by
@@ -22,7 +22,7 @@ theorem isPullback_whiskerLeft_snd_left {S : Scheme.{0}} (A : Over S) {B' B : Ov
   · simp
 
 /- English proof (translation)
-Establish `h` using `isPullback_whiskerLeft_snd_left A j`. Use `⟨MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsOpenImmersion) h.flip inferInstance, ?_⟩` and prove the remaining obligations. Simplify `Scheme.image_preimage_eq_of_isPullback h.flip Set.univ` using `[Set.image_univ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isOpenImmersion_whiskerLeft_left_and_range {S : Scheme.{0}} (A : Over S) {B' B : Over S}
     (j : B' ⟶ B) [IsOpenImmersion j.left] :

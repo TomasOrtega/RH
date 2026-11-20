@@ -16,7 +16,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k i r' : ℕ}
 
 /- English proof (translation)
-Use `j.isLt` as an intermediate fact. Simplify using `only [levPos]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lev_in (j : Fin (2 * r' + k + 1)) :
     i ≤ (levPos k i r' j).val ∧ (levPos k i r' j).val < 2 * r' + k + 1 + i := by
@@ -25,7 +25,7 @@ theorem lev_in (j : Fin (2 * r' + k + 1)) :
   omega
 
 /- English proof (translation)
-Distinguish the cases in `h : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i`. Use `left`. Conclude with `⟨⟨p.val - i, by omega⟩, Fin.ext (by simp [levPos]; omega)⟩`. Use `right`. Conclude with `h`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cases_lev (p : Fin (2 * (i + r') + k + 1)) :
     (∃ p', p = levPos k i r' p') ∨ ¬ (i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i) := by
@@ -36,7 +36,7 @@ theorem cases_lev (p : Fin (2 * (i + r') + k + 1)) :
     exact h
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [Lz, Matrix.sub_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Lz_sub (X Y : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) :
     Lz k i r' (X - Y) = Lz k i r' X - Lz k i r' Y := by
@@ -45,7 +45,7 @@ theorem Lz_sub (X Y : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [Lz, Matrix.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Lz_add (X Y : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) :
     Lz k i r' (X + Y) = Lz k i r' X + Lz k i r' Y := by
@@ -54,7 +54,7 @@ theorem Lz_add (X Y : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [Lz, Matrix.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Lz_smul (c : ℂ) (X : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) :
     Lz k i r' (c • X) = c • Lz k i r' X := by
@@ -63,9 +63,9 @@ theorem Lz_smul (c : ℂ) (X : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `p q`. Rewrite using `[Matrix.mul_apply, sum_lev (fun s => Hpk k (i + r') p s * Lz k i r' W s q) (fun s hs => by simp only [Lz_out_left W s q hs, mul_zero])]`. Break down `cases_lev p with ⟨p', rfl⟩ | hp` into its components or cases. Break down `cases_lev q with ⟨q', rfl⟩ | hq` into its components or cases. Simplify using `only [hpk_lev, Lz_lev, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [Lz_out_right _ _ _ hq, mul_zero, Finset.sum_const_zero]`. Simplify using `only [hpk_out_in p _ hp (lev_in _), zero_mul, Finset.sum_const_zero, Lz_out_left _ _ _ hp]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hpk_mul_Lz (W : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) :
     Hpk k (i + r') * Lz k i r' W = Lz k i r' (Hpk k r' * W) := by
@@ -79,9 +79,9 @@ theorem hpk_mul_Lz (W : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ
   · simp only [hpk_out_in p _ hp (lev_in _), zero_mul, Finset.sum_const_zero, Lz_out_left _ _ _ hp]
 
 /- English proof (translation)
-Use extensionality with `p q`. Rewrite using `[Matrix.mul_apply, sum_lev (fun s => Lz k i r' W p s * Hpk k (i + r') s q) (fun s hs => by simp only [Lz_out_right W p s hs, zero_mul])]`. Break down `cases_lev q with ⟨q', rfl⟩ | hq` into its components or cases. Break down `cases_lev p with ⟨p', rfl⟩ | hp` into its components or cases. Simplify using `only [hpk_lev, Lz_lev, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [Lz_out_left _ _ _ hp, zero_mul, Finset.sum_const_zero]`. Simplify using `only [hpk_in_out _ q (lev_in _) hq, mul_zero, Finset.sum_const_zero, Lz_out_right _ _ _ hq]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Lz_mul_hpk (W : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) :
     Lz k i r' W * Hpk k (i + r') = Lz k i r' (W * Hpk k r') := by
@@ -95,7 +95,7 @@ theorem Lz_mul_hpk (W : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ
   · simp only [hpk_in_out _ q (lev_in _) hq, mul_zero, Finset.sum_const_zero, Lz_out_right _ _ _ hq]
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [Matrix.conjTranspose_apply, Lz]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Lz_conjTranspose (W : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) :
     (Lz k i r' W)ᴴ = Lz k i r' Wᴴ := by
@@ -104,7 +104,7 @@ theorem Lz_conjTranspose (W : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Use extensionality with `p q`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Simplify using `only [Lz, Matrix.single_apply, levPos, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem single_lev (a b : Fin (2 * r' + k + 1)) :
     Matrix.single (levPos k i r' a) (levPos k i r' b) (1 : ℂ) = Lz k i r' (Matrix.single a b 1) := by
@@ -115,13 +115,13 @@ theorem single_lev (a b : Fin (2 * r' + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (Formalism.QuantumDeterminants.GBasic.Hpk_sq k r)`.
+A detailed English derivation is pending.
 -/
 theorem hpk_inv (k r : ℕ) : (Hpk k r)⁻¹ = Hpk k r :=
   Matrix.inv_eq_left_inv (Formalism.QuantumDeterminants.GBasic.Hpk_sq k r)
 
 /- English proof (translation)
-Unfold `hpart1`. Rewrite using `[hpk_inv, hpk_inv, single_lev, Lz_conjTranspose, hpk_mul_Lz, Lz_mul_hpk, Lz_smul, Lz_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hpart1_lev (a b : Fin (2 * r' + k + 1)) :
     hpart1 (Hpk k (i + r')) (Matrix.single (levPos k i r' a) (levPos k i r' b) 1) =
@@ -130,7 +130,7 @@ theorem hpart1_lev (a b : Fin (2 * r' + k + 1)) :
   rw [hpk_inv, hpk_inv, single_lev, Lz_conjTranspose, hpk_mul_Lz, Lz_mul_hpk, Lz_smul, Lz_sub]
 
 /- English proof (translation)
-Unfold `hpart2`. Rewrite using `[hpk_inv, hpk_inv, single_lev, Lz_conjTranspose, hpk_mul_Lz, Lz_mul_hpk, Lz_smul, Lz_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hpart2_lev (a b : Fin (2 * r' + k + 1)) :
     hpart2 (Hpk k (i + r')) (Matrix.single (levPos k i r' a) (levPos k i r' b) 1) =
@@ -145,7 +145,7 @@ variable (hL : LevHom)
 include hL
 
 /- English proof (translation)
-Unfold `RdV`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[← Lz_smul, exp_Lz hL, ← (hL k i r').2]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem RdV_Lz (X : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ)
     (F : Matrix (Fin (2 * (i + r') + k + 1)) (Fin (2 * (i + r') + k + 1)) ℂ → E)
@@ -157,7 +157,7 @@ theorem RdV_Lz (X : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ)
   rw [← Lz_smul, exp_Lz hL, ← (hL k i r').2]
 
 /- English proof (translation)
-Simplify using `only [EabH]`. Rewrite using `[hpart1_lev, hpart2_lev, RdV_Lz hL, RdV_Lz hL]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem EabH_lev (a b : Fin (2 * r' + k + 1))
     (F : Matrix (Fin (2 * (i + r') + k + 1)) (Fin (2 * (i + r') + k + 1)) ℂ → E)
@@ -168,7 +168,7 @@ theorem EabH_lev (a b : Fin (2 * r' + k + 1))
   rw [hpart1_lev, hpart2_lev, RdV_Lz hL, RdV_Lz hL]
 
 /- English proof (translation)
-Simplify using `only [Formalism.QuantumDeterminants.Top, Formalism.FourierDecayAlt.Q.EH]`. Rewrite using `[EabH_lev hL]`. Simplify using `only [lev_inj.eq_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Top_lev (u : ℂ) (a b : Fin (2 * r' + k + 1))
     (F : Matrix (Fin (2 * (i + r') + k + 1)) (Fin (2 * (i + r') + k + 1)) ℂ → E)
@@ -181,7 +181,7 @@ theorem Top_lev (u : ℂ) (a b : Fin (2 * r' + k + 1))
 
 omit hL in
 /- English proof (translation)
-Proceed by induction on `t generalizing F with`. Consider the case `zero => simp`. Consider the case `succ t ih`. Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.foldr_cons, List.foldr_cons, h]`. Conclude with `congrArg _ (ih (fun j => Tb j.succ) (fun j => Ts j.succ) (fun j G => h j.succ G) F)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem foldr_ofFn {α β : Type*} {t : ℕ} (R : α → β) (Tb : Fin t → α → α) (Ts : Fin t → β → β)
     (h : ∀ j G, R (Tb j G) = Ts j (R G)) (F : α) :
@@ -193,9 +193,9 @@ theorem foldr_ofFn {α β : Type*} {t : ℕ} (R : α → β) (Tb : Fin t → α 
     exact congrArg _ (ih (fun j => Tb j.succ) (fun j => Ts j.succ) (fun j G => h j.succ G) F)
 
 /- English proof (translation)
-Unfold `qminorOp`. Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `foldr_ofFn (fun (G : Matrix (Fin (2 * (i + r') + k + 1)) (Fin (2 * (i + r') + k + 1)) ℂ → E) y => G (ιLev k i r' y)) (fun j : Fin t => Formalism.QuantumDeterminants.Top (Formalism.FourierDecayAlt.Q.EH k (i + r')) (u - ((j : ℕ) : ℂ)) (levPos k i r' (a (σ j))) (levPos k i r' (b j)) …` as an intermediate fact.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `congrFun this x`.
+A detailed English derivation is pending.
 -/
 theorem qminorOp_lev {t : ℕ} (a b : Fin t → Fin (2 * r' + k + 1)) (u : ℂ)
     (F : Matrix (Fin (2 * (i + r') + k + 1)) (Fin (2 * (i + r') + k + 1)) ℂ → E)

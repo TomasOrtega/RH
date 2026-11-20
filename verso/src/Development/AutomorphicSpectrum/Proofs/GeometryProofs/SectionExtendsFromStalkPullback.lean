@@ -4,19 +4,17 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.CompanionTheory.Ggeo.LocalLift
 
 /- English proof (translation)
-Establish `GlobalTheory.CompanionTheory.Ar.Conj.hw : ∀ a, h.hom (f.hom a) = k.hom (g.hom a)` using `fun a => by`. Use `congrArg (fun φ : A ⟶ D => φ.hom a) po.w` as an intermediate fact. Simplify `this` using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Establish `GlobalTheory.CompanionTheory.RedCov.Levi.hd : d ∈ Subring.closure (Set.range (ConcreteCategory.hom h) ∪ Set.range (ConcreteCategory.hom k))`. Rewrite using `[CommRingCat.closure_range_union_range_eq_top_of_isPushout po]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.mem_top d`. Use `Subring.closure_induction (p := fun x _ => ∃ m ∈ M, ∃ b, x * h.hom (f.hom m) = h.hom b) ?_ ?_ ?_ ?_ ?_ ?_ GlobalTheory.CompanionTheory.RedCov.Levi.hd` and prove the remaining obligations. Introduce and unpack `x (⟨b, rfl⟩ | ⟨c, rfl⟩)`. Use `⟨1, M.one_mem, b, ?_⟩ show h.hom b * h.hom (f.hom 1) = h.hom b` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `show ∃ m ∈ M, ∃ b, k.hom c * h.hom (f.hom m) = h.hom b`. Take `⟨a, m, hm, hca⟩` from `hg c`. Use `⟨m, hm, f.hom a, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Conj.hw, GlobalTheory.CompanionTheory.Ar.Conj.hw, ← map_mul, hca]`. Conclude with `⟨1, M.one_mem, 0, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨1, M.one_mem, 1, by simp⟩`. Introduce `x y _ _ hx hy`. Take `⟨m₁, hm₁, b₁, e₁⟩` from `hx`. Take `⟨m₂, hm₂, b₂, e₂⟩` from `hy`. Use `⟨m₁ * m₂, M.mul_mem hm₁ hm₂, b₁ * f.hom m₂ + b₂ * f.hom m₁, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [map_mul, map_add]`. Take the linear combination `h.hom (f.hom m₂) * e₁ + h.hom (f.hom m₁) * e₂`. Introduce `x _ hx`. Take `⟨m, hm, b, e⟩` from `hx`. Conclude with `⟨m, hm, -b, by rw [neg_mul, e, map_neg]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x y _ _ hx hy`. Take `⟨m₁, hm₁, b₁, e₁⟩` from `hx`. Take `⟨m₂, hm₂, b₂, e₂⟩` from `hy`. Use `⟨m₁ * m₂, M.mul_mem hm₁ hm₂, b₁ * b₂, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul]`.
-
-Take the linear combination `(y * h.hom (f.hom m₂)) * e₁ + h.hom b₁ * e₂`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_of_isPushout {A B C D : CommRingCat.{0}} {f : A ⟶ B} {g : A ⟶ C} {h : B ⟶ D}
     {k : C ⟶ D} (po : IsPushout f g h k) (M : Submonoid A)
@@ -58,7 +56,7 @@ theorem exists_mul_eq_of_isPushout {A B C D : CommRingCat.{0}} {f : A ⟶ B} {g 
     linear_combination (y * h.hom (f.hom m₂)) * e₁ + h.hom b₁ * e₂
 
 /- English proof (translation)
-Use `letI : Algebra Γ(X, U) (X.presheaf.stalk p) := TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨p, hp⟩`. Establish `hloc` using `hU.isLocalization_stalk ⟨p, hp⟩`. Take `⟨⟨a, m⟩, hm⟩` from `@IsLocalization.surj _ _ _ _ _ _ hloc c`. Conclude with `⟨a, m, @IsLocalization.map_units _ _ _ _ _ _ hloc m, hm⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stalk_exists_mul_eq {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {p : X} (hp : p ∈ U)
     (c : X.presheaf.stalk p) :
@@ -71,9 +69,9 @@ theorem stalk_exists_mul_eq {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U)
   exact ⟨a, m, @IsLocalization.map_units _ _ _ _ _ _ hloc m, hm⟩
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app hp, Category.assoc, Category.assoc, ← Functor.map_comp]`. Establish `e : (homOfLE (le_top : X.fromSpecStalk p ⁻¹ᵁ U ≤ ⊤)).op ≫ (homOfLE h).op = 𝟙 (Opposite.op (⊤ : (Spec (X.presheaf.stalk p)).Opens))` using `by first`. Consider the case `exact Subsingleton.elim _ _`. Consider the case `rfl`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (fun t => X.presheaf.germ U p hp ≫ (Scheme.ΓSpecIso (X.presheaf.stalk p)).inv ≫ t) ((Spec (X.presheaf.stalk p)).presheaf.map_id _)).trans (by simp only [Category.comp_id])`.
+A detailed English derivation is pending.
 -/
 theorem fromSpecStalk_appLE {X : Scheme.{0}} {U : X.Opens} {p : X} (hp : p ∈ U)
     (h : (⊤ : (Spec (X.presheaf.stalk p)).Opens) ≤ X.fromSpecStalk p ⁻¹ᵁ U) :
@@ -91,29 +89,25 @@ theorem fromSpecStalk_appLE {X : Scheme.{0}} {U : X.Opens} {p : X} (hp : p ∈ U
     ((Spec (X.presheaf.stalk p)).presheaf.map_id _)).trans (by simp only [Category.comp_id])
 
 /- English proof (translation)
-Take `⟨V, hV, hpV, -⟩` from `exists_isAffineOpen_mem_and_subset (U := (⊤ : X.Opens)) (x := p) (by simp)`. Establish `hy₀ : y₀ ∈ π ⁻¹ᵁ V` using `(Scheme.Hom.mem_preimage π).2 (by rw [hy]; exact hpV)`. Take `⟨W₀, hW₀, hy₀W₀, hW₀V⟩` from `exists_isAffineOpen_mem_and_subset hy₀`. Establish `hUSX : W₀ ≤ π ⁻¹ᵁ V` using `fun x hx => hW₀V hx`. Establish `hUST : (⊤ : (Spec (X.presheaf.stalk p)).Opens) ≤ X.fromSpecStalk p ⁻¹ᵁ V`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x _`. Establish `hx : X.fromSpecStalk p x ∈ Set.range (X.fromSpecStalk p)` using `⟨x, rfl⟩`. Rewrite `hx` using `[Scheme.range_fromSpecStalk]`. Establish `hx' : X.fromSpecStalk p x ⤳ p` using `hx`. Conclude with `(Scheme.Hom.mem_preimage _).2 (Specializes.mem_open hx' V.isOpen hpV)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨UY, hUY⟩ : ∃ UY, UY = fst ⁻¹ᵁ W₀ ⊓ snd ⁻¹ᵁ ⊤` from `⟨_, rfl⟩`. Establish `hUYle : UY ≤ fst ⁻¹ᵁ W₀`. Rewrite using `[hUY]`. Conclude with `inf_le_left`. Establish `hpo` using `(isIso_pushoutSection_iff H hUST hUSX hUY).1 (isIso_pushoutSection_of_isAffineOpen H hUST hUSX hUY hV (isAffineOpen_top _) hW₀)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUYaff : IsAffineOpen UY`. Establish `hpb` using `Scheme.Hom.isPullback_resLE H hUST hUSX hUY`. Use `haveI : IsAffine (W₀ : Scheme.{0}) := hW₀`. Use `haveI : IsAffine (V : Scheme.{0}) := hV`. Use `haveI : IsAffine ((⊤ : (Spec (X.presheaf.stalk p)).Opens) : Scheme.{0}) := isAffineOpen_top _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI := Scheme.Pullback.isAffine_of_isAffine_isAffine_isAffine (π.resLE V W₀ hUSX) ((X.fromSpecStalk p).resLE V ⊤ hUST)`. Conclude with `IsAffine.of_isIso hpb.isoPullback.hom`. Take `⟨d, GlobalTheory.CompanionTheory.RedCov.Levi.hd⟩` from `Scheme.Hom.app_surjective c UY hUYaff ((Z.presheaf.map (homOfLE (le_top : c ⁻¹ᵁ UY ≤ ⊤)).op).hom s)`. Establish `hd' : (c.app UY).hom d = (Z.presheaf.map (homOfLE (le_top : c ⁻¹ᵁ UY ≤ ⊤)).op).hom s` using `GlobalTheory.CompanionTheory.RedCov.Levi.hd`. Establish `hg : ∀ c' : Γ(Spec (X.presheaf.stalk p), ⊤), ∃ a, ∃ m ∈ (IsUnit.submonoid (X.presheaf.stalk p)).comap (X.presheaf.germ V p hpV).hom, c' * ((X.fromSpecStalk p).appLE V ⊤ hUST).hom m = ((X.fromSpecStalk p).appLE V ⊤ hUST).hom a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c'`. Take `⟨a, m, hmu, hm⟩` from `GlobalTheory.CompanionTheory.Ggeo.LocalLift.stalk_exists_mul_eq hV hpV ((Scheme.ΓSpecIso (X.presheaf.stalk p)).hom.hom c')`. Use `⟨a, m, Submonoid.mem_comap.2 ((IsUnit.mem_submonoid_iff _).2 hmu), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.Ggeo.LocalLift.fromSpecStalk_appLE hpV, CommRingCat.hom_comp, RingHom.comp_apply, RingHom.comp_apply, ← hm, map_mul]`. Conclude with `congrArg (fun t => t * _) (CommRingCat.inv_hom_apply _ c').symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m, hmM, b, hb⟩` from `GlobalTheory.CompanionTheory.Ggeo.LocalLift.exists_mul_eq_of_isPushout hpo _ hg d`. Establish `hmu : IsUnit ((X.presheaf.germ V p hpV).hom m)` using `(IsUnit.mem_submonoid_iff _).1 (Submonoid.mem_comap.1 hmM)`. Establish `hy₀W : y₀ ∈ Y.basicOpen ((π.appLE V W₀ hUSX).hom m)`. Rewrite using `[Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply, Scheme.basicOpen_res]`. Use `TopologicalSpace.Opens.mem_inf.2 ⟨hy₀W₀, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.preimage_basicOpen, Scheme.Hom.mem_preimage, hy]`. Conclude with `(X.mem_basicOpen m p hpV).2 hmu`. Take `⟨fm, hfm⟩ : ∃ fm, (π.appLE V W₀ hUSX).hom m = fm` from `⟨_, rfl⟩`. Rewrite `hb`, `hy₀W` using `[hfm]`. Establish `hWW₀ : Y.basicOpen fm ≤ W₀` using `Y.basicOpen_le fm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : IsUnit ((Y.presheaf.map (homOfLE hWW₀).op).hom fm)` using `RingedSpace.isUnit_res_basicOpen _ fm`. Use `⟨Y.basicOpen fm, (Y.presheaf.map (homOfLE hWW₀).op).hom b * ↑hu.unit⁻¹, hy₀W, ?_⟩` and prove the remaining obligations. Establish `hQ : (c ≫ fst) ⁻¹ᵁ Y.basicOpen fm ≤ c ⁻¹ᵁ UY`. Rewrite using `[hUY]`. Introduce `z hz`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Scheme.Hom.mem_preimage c).2 (TopologicalSpace.Opens.mem_inf.2 ⟨(Scheme.Hom.mem_preimage fst).2 (hWW₀ ((Scheme.Hom.mem_preimage (c ≫ fst)).1 hz)), (Scheme.Hom.mem_preimage snd).2 (by simp)⟩)`. Establish `E₁ : Y.presheaf.map (homOfLE hWW₀).op ≫ (c ≫ fst).app (Y.basicOpen fm) = fst.appLE W₀ UY hUYle ≫ c.appLE UY ((c ≫ fst) ⁻¹ᵁ Y.basicOpen fm) hQ`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.map_appLE, Scheme.Hom.appLE_comp_appLE]`. Establish `e₁ : ∀ x, ((c ≫ fst).app (Y.basicOpen fm)).hom ((Y.presheaf.map (homOfLE hWW₀).op).hom x) = (c.appLE UY ((c ≫ fst) ⁻¹ᵁ Y.basicOpen fm) hQ).hom ((fst.appLE W₀ UY hUYle).hom x)`. Introduce `x`.
-
-Use `congrArg (fun φ => CommRingCat.Hom.hom φ x) E₁` as an intermediate fact. Simplify `this` using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Apply the tactic sequence `have E₂ : Z.presheaf.map (homOfLE (le_top : c ⁻¹ᵁ UY ≤ ⊤)).op ≫ Z.presheaf.map (homOfLE hQ).op = Z.presheaf.map (homOfLE (le_top : (c ≫ fst) ⁻¹ᵁ Y.basicOpen fm ≤ ⊤)).op := by (rw [← Functor.map_comp]) <;> rfl`. Establish `e₂ : (c.appLE UY ((c ≫ fst) ⁻¹ᵁ Y.basicOpen fm) hQ).hom d = (Z.presheaf.map (homOfLE (le_top : (c ≫ fst) ⁻¹ᵁ Y.basicOpen fm ≤ ⊤)).op).hom s`. Establish `h₂` using `congrArg (fun φ => CommRingCat.Hom.hom φ s) E₂`.
-
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at h₂`. Rewrite using `[← h₂, ← hd', Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply]`. Rewrite using `[map_mul, e₁ b, ← hb, map_mul, e₂, ← e₁ fm, mul_assoc, ← map_mul, hu.mul_val_inv, map_one, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extension {X Y Z P : Scheme.{0}} (π : Y ⟶ X) (p : X) (y₀ : Y) (hy : π y₀ = p)
     (fst : P ⟶ Y) (snd : P ⟶ Spec (X.presheaf.stalk p))
@@ -204,7 +198,7 @@ theorem exists_extension {X Y Z P : Scheme.{0}} (π : Y ⟶ X) (p : X) (y₀ : Y
     map_one, mul_one]
 
 /- English proof (translation)
-Introduce `X Y Z π p y₀ hy c _ s`. Conclude with `exists_extension π p y₀ hy _ _ (IsPullback.of_hasPullback π (X.fromSpecStalk p)) c s`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_open_extension : ∀ {X Y Z : Scheme.{0}} (π : Y ⟶ X) (p : X) (y₀ : Y), π y₀ = p →
     ∀ (c : Z ⟶ pullback π (X.fromSpecStalk p)) [IsClosedImmersion c] (s : Γ(Z, ⊤)),

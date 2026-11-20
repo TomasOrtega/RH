@@ -48,19 +48,19 @@ def levM : Subgroup (GlobalTheory.RegSW.stab d) where
     rw [Subgroup.coe_inv, hx, mul_inv_rev, map_inv, map_inv, ← map_inv, ← map_inv, d.wittHyperbolic_anisotropic_commute_levi]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_radN {q : GlobalTheory.RegSW.stab d} :
     q ∈ radN d ↔ ∃ (c : skewA D t) (b : Mx D t W.rank), (q : GA D B) = d.nC c * d.nB b := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_levM {q : GlobalTheory.RegSW.stab d} :
     q ∈ levM d ↔ ∃ (g : GA D W) (a : GL (Fin t) (AE D)), (q : GA D B) = d.emb0 g * d.levi a := Iff.rfl
 
 /- English proof (translation)
-Take `⟨b, c, g, e⟩` from `GlobalTheory.GodementSectionReduction.exists_decomp d q`. Use `⟨⟨d.nC c * d.nB b, mul_mem (GlobalTheory.GodementSectionReduction.nC_mem d c) (GlobalTheory.GodementSectionReduction.nB_mem d b)⟩, ⟨c, b, rfl⟩, ⟨d.emb0 g * d.levi (GlobalTheory.RegSW.onX d q), mul_mem (GlobalTheory.GodementSectionReduction.wittCoreEmbedding_mem_isotropicStabilize …` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul, e, ← d.nC_mul_nB]`. Simplify using `only [mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_radN_mul_levM (q : GlobalTheory.RegSW.stab d) : ∃ n ∈ radN d, ∃ m ∈ levM d, q = n * m := by
   obtain ⟨b, c, g, e⟩ := GlobalTheory.GodementSectionReduction.exists_decomp d q
@@ -71,7 +71,7 @@ theorem exists_radN_mul_levM (q : GlobalTheory.RegSW.stab d) : ∃ n ∈ radN d,
   simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `h : d.emb0 g * d.levi a * (d.nC c * d.nB b) = d.nC (skewConj a.1 c) * d.nB (a.1 ⬝ b ⬝ mt W g⁻¹) * (d.emb0 g * d.levi a)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, mul_inv_cancel_right]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_coord (g : GA D W) (a : GL (Fin t) (AE D)) (c : skewA D t) (b : Mx D t W.rank) :
     (d.emb0 g * d.levi a) * (d.nC c * d.nB b) * (d.emb0 g * d.levi a)⁻¹ =

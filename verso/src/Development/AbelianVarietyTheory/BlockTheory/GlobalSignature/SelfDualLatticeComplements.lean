@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 def perp (W : HSpace E) (x : W.V) : Submodule E W.V := LinearMap.ker (W.hT x)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_perp (W : HSpace E) (x y : W.V) : y ∈ perp W x ↔ W.hD y x = 0 := Iff.rfl
 
@@ -48,7 +48,7 @@ def ForallPerpOver (E : Type) [Field E] [NumberField E] [StarRing E] : Prop :=
       (∃ x : W.V, W.hD x x = β) ∧ ∀ x : W.V, W.hD x x = β → HasComplement W x (M - 1) P' Q'
 
 /- English proof (translation)
-Introduce `W M P Q hW hM β P' Q' hs`. Take `⟨⟨x, hx⟩, hall⟩` from `h W M P Q hW hM β P' Q' hs`. Conclude with `⟨x, hx, hall x hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ForallPerpOver.exists (h : ForallPerpOver E) : ExistsPerpOver E := by
   intro W M P Q hW hM β P' Q' hs
@@ -56,12 +56,12 @@ theorem ForallPerpOver.exists (h : ForallPerpOver E) : ExistsPerpOver E := by
   exact ⟨x, hx, hall x hx⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨W.standardTuple_isLattice, W.baseLattice_isUnimodular⟩`.
+Supply the required witnesses or components.
 -/
 example (W : HSpace E) : IsSelfDualLattice W W.L0 := ⟨W.standardTuple_isLattice, W.baseLattice_isUnimodular⟩
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Use `W'.nondeg.1 y fun z => ?_` and prove the remaining obligations. Rewrite using `[← h y z, hy]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem injective_of_isIsomEmb {W' W : HSpace E} {ι : W'.V →ₗ[E] W.V}
     (h : HSpace.IsIsomEmb W' W ι) : Function.Injective ι := by
@@ -72,7 +72,7 @@ theorem injective_of_isIsomEmb {W' W : HSpace E} {ι : W'.V →ₗ[E] W.V}
   simp
 
 /- English proof (translation)
-Rewrite using `[mem_perp, hx]`. Conclude with `one_ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (W : HSpace E) (x : W.V) (hx : W.hD x x = 1) : x ∉ perp W x := by
   rw [mem_perp, hx]; exact one_ne_zero
@@ -86,7 +86,7 @@ def UnitVectorPerpAll (D : D7) : Prop :=
   @ForallPerpOver D.host.E _ _ D.host.cmStar
 
 /- English proof (translation)
-The claim follows from `@ForallPerpOver.exists D.host.E _ _ D.host.cmStar h`.
+A detailed English derivation is pending.
 -/
 theorem UnitVectorPerpAll.unitVectorPerp {D : D7} (h : UnitVectorPerpAll D) : UnitVectorPerp D :=
   @ForallPerpOver.exists D.host.E _ _ D.host.cmStar h

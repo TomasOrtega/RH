@@ -26,7 +26,7 @@ def OrdersAgree (h : GenFrEx Xo c) (Z : Comp Xo c) (ord : WTZ E → AC Z → ℤ
     (evC h Z f = 0 → ordQ Xo c q f = ⊤)
 
 /- English proof (translation)
-Use `⟨fun h1 h2 => h1 ((hq a n f hf).2 h2), fun h1 => ?_⟩` and prove the remaining obligations. Rewrite using `[(hq a n f hf).1 h1]`. Conclude with `EReal.coe_ne_top _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OrdersAgree.ne_top_iff {h : GenFrEx Xo c} {Z : Comp Xo c} {ord : WTZ E → AC Z → ℤ} {q : QPt Xo c}
     (hq : OrdersAgree h Z ord q) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} (hf : f ∈ sec Xo c a n) :

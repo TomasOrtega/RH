@@ -17,7 +17,7 @@ variable {hc : Formalism.BasicNotions.CMData F E} {n : ℕ} [NeZero n] {ST SG Q 
 variable (H : Subgroup (GLG E n SG))
 
 /- English proof (translation)
-Unfold `ptOfF`. Rewrite using `[dif_pos (hSF p)]`. Conclude with `(hSF p).choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qdf_ptOfF_spec (q : QLoc hc n Q Θ) (hSF : DecoPtSurjF hc n ST SG Q q) (p : DecoF E n ST SG Q) :
     FrOver q (ptOfF hc n ST SG Q q p).1 p := by
@@ -26,14 +26,14 @@ theorem qdf_ptOfF_spec (q : QLoc hc n Q Θ) (hSF : DecoPtSurjF hc n ST SG Q q) (
   exact (hSF p).choose_spec
 
 /- English proof (translation)
-Unfold `levUQ`. Conclude with `inf_le_left.trans (levU_le_UAd ..)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qdf_levUQ_le_UAd (q : QLoc hc n Q Θ) : levUQ hc n ST SG Q H q ≤ UAd hc n := by
   unfold levUQ
   exact inf_le_left.trans (levU_le_UAd ..)
 
 /- English proof (translation)
-Establish `hk : ((k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)))⁻¹ ∈ UAd hc n` using `qdf_levUQ_le_UAd H q (Subgroup.inv_mem _ k.2)`. Use `Quotient.sound (DoubleCoset.rel_iff.2 ⟨(Formalism.L2.DIV.ratEl γ : UAd hc n), (Formalism.L2.DIV.ratEl γ).2, ⟨_, hk⟩, Subgroup.mem_subgroupOf.2 (Subgroup.inv_mem _ k.2), ?_⟩)` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul]`. Conclude with `e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qdf_mk_eq (q : QLoc hc n Q Θ) {x y : UAd hc n} (γ : URat hc n) (k : levUQ hc n ST SG Q H q)
     (e : (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = Formalism.UG.bc (iA F E) (γ : GL (Fin n) E) *
@@ -51,7 +51,7 @@ def qdStab (p : DecoF E n ST SG Q) : MulAction.stabilizer (UF E n × H × Θ.grp
   (ratEquiv hc n).symm.toMonoidHom.comp ((MonoidHom.fst (UF E n) (H × Θ.grp)).comp (Subgroup.subtype _))
 
 /- English proof (translation)
-Use `show ratEquiv hc n ((ratEquiv hc n).symm a.1.1) = a.1.1`. Conclude with `MulEquiv.apply_symm_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem qdf_ratHom_stab (p : DecoF E n ST SG Q) (a : MulAction.stabilizer (UF E n × H × Θ.grp) p) :
     ratHom hc n (qdStab H p a) = a.1.1 := by
@@ -59,7 +59,7 @@ theorem qdf_ratHom_stab (p : DecoF E n ST SG Q) (a : MulAction.stabilizer (UF E 
   exact MulEquiv.apply_symm_apply _ _
 
 /- English proof (translation)
-Establish `h` using `congrArg DecoF.deco (MulAction.mem_stabilizer_iff.1 a.2)`. Conclude with `MulAction.mem_stabilizer_iff.2 h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem qdf_stab_deco (p : DecoF E n ST SG Q) (a : MulAction.stabilizer (UF E n × H × Θ.grp) p) :
     ((a.1.1, a.1.2.1) : UF E n × H) ∈ MulAction.stabilizer (UF E n × H) p.deco := by
@@ -67,7 +67,7 @@ theorem qdf_stab_deco (p : DecoF E n ST SG Q) (a : MulAction.stabilizer (UF E n 
   exact MulAction.mem_stabilizer_iff.2 h
 
 /- English proof (translation)
-Establish `h : (a.1 • p).fr P = p.fr P` using `congrArg (fun x : DecoF E n ST SG Q => x.fr P) (MulAction.mem_stabilizer_iff.1 a.2)`. Express the relevant statement in the definitionally equal form `a.1.1.1 * p.fr P * ((a.1.2.2.1 P).1)⁻¹ = p.fr P at h`. Rewrite `h` using `[mul_inv_eq_iff_eq_mul]`. Rewrite using `[mul_assoc, h, ← mul_assoc, inv_mul_cancel, one_mul]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem qdf_stab_fr (p : DecoF E n ST SG Q) (a : MulAction.stabilizer (UF E n × H × Θ.grp) p) (P : Q) :
     (a.1.2.2.1 P).1 = (p.fr P)⁻¹ * a.1.1.1 * p.fr P := by

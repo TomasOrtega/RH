@@ -13,35 +13,35 @@ def l1T (m : ℕ) : ℂ := (-1) ^ (m + 3) / Complex.I ^ (m + 2)
 def l2T (m : ℕ) : ℂ := Complex.I * l1T m
 
 /- English proof (translation)
-Simplify using `[l1T]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_l1T (m : ℕ) : ‖l1T m‖ = 1 := by
   simp [l1T]
 
 /- English proof (translation)
-Introduce `h`. Simplify `norm_l1T m` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem top_base_ne_zero (m : ℕ) : l1T m ≠ 0 := by
   intro h
   simpa [h] using norm_l1T m
 
 /- English proof (translation)
-Rewrite using `[l2T, norm_mul, Complex.norm_I, norm_l1T, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_l2T (m : ℕ) : ‖l2T m‖ = 1 := by
   rw [l2T, norm_mul, Complex.norm_I, norm_l1T, one_mul]
 
 /- English proof (translation)
-Introduce `h`. Simplify `norm_l2T m` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem top_root_ne_zero (m : ℕ) : l2T m ≠ 0 := by
   intro h
   simpa [h] using norm_l2T m
 
 /- English proof (translation)
-Establish `hI : Complex.I ^ (m + 2) ≠ 0` using `pow_ne_zero _ Complex.I_ne_zero`. Establish `h1 : Complex.I ^ (m + 2) * l1T m = (-1) ^ (m + 3)`. Rewrite using `[l1T, mul_div_cancel₀ _ hI]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[l2T]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = (-1) ^ (m + 3) * l1T m ^ (m + 1) := by rw [h1]`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem top_root_pow_eq (m : ℕ) : l2T m ^ (m + 2) = (-1) ^ (m + 3) * l1T m ^ (m + 1) := by
   have hI : Complex.I ^ (m + 2) ≠ 0 := pow_ne_zero _ Complex.I_ne_zero
@@ -53,9 +53,9 @@ theorem top_root_pow_eq (m : ℕ) : l2T m ^ (m + 2) = (-1) ^ (m + 3) * l1T m ^ (
     _ = (-1) ^ (m + 3) * l1T m ^ (m + 1) := by rw [h1]
 
 /- English proof (translation)
-Establish `hl : l2T m / l1T m = Complex.I`. Rewrite using `[l2T, mul_div_assoc, div_self (top_base_ne_zero m), mul_one]`. Establish `key : U.betaU * (Complex.I * w) = -(((2 : ℝ) : ℂ) * w)`. Simplify using `only [U.betaU, Formalism.QuantumDeterminants.cStd]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(2 * w) * Complex.I_sq`. Rewrite using `[hl, G.psi, G.psi, key, ← Complex.exp_conj]`. Use `congr 1`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem psi_l (m : ℕ) (w : ℂ) : G.psi U.betaU (l2T m / l1T m * w) = conj (G.psi ((2 : ℝ) : ℂ) w) := by
   have hl : l2T m / l1T m = Complex.I := by
@@ -69,29 +69,29 @@ theorem psi_l (m : ℕ) (w : ℂ) : G.psi U.betaU (l2T m / l1T m * w) = conj (G.
   apply Complex.ext <;> simp
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, s = m + 2` from `⟨s - 2, by omega⟩`. Take `⟨c, rfl⟩ : ∃ c, b = c + 1` from `⟨b - 1, by omega⟩`. Take `⟨k', rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Take `rfl : r = c + m + 1` from `by omega`. Rewrite `hsz` using `[show c + 1 - 1 = c by omega]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[show m + 2 - 1 = m + 1 by omega, show k' + 1 - 1 = k' by omega]`. Establish `hsing : ∀ (GG : ℝ) (bb ss : ℕ) (t : ℂ), C.nAux (k' + 1) (c + m + 1) GG (fun _ _ => 1) bb [(ss, t)] = (if bb + ss - 1 = c + m + 1 + 1 ∧ ss = 1 then GG ^ (k' + 1 - 1) else ((1 : ℝ) * ‖t‖) ^ (2 * (ss : ℤ) * (C.Mlev (k' + 1) (c + m + 1) (bb + ss - 1) + ss - 3)))`. Introduce `GG bb ss t`. Simplify using `only [C.nAux, mul_one]`. Establish `hpos : ∀ (l : C.LPt) (bb : ℕ), 0 ≤ C.nAux (k' + 1) (c + m + 1) 0 (fun _ _ => 1) bb l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro bb`. Simplify using `[C.nAux]`. Consider the case `cons a l ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `bb`. Take `⟨ss, t⟩` from `a`. Simplify using `only [C.nAux]`. Use `mul_nonneg ?_ (ih _)` and prove the remaining obligations. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Conclude with `zpow_nonneg (by positivity) _`. Use `set N : ℝ := C.nAux (k' + 1) (c + m + 1) 0 (fun _ _ => 1) 1 h with hNdef`. Establish `hN0 : 0 ≤ N` using `hpos h 1`. Establish `hind : ∀ GG : ℝ, C.nAux (k' + 1) (c + m + 1) GG (fun _ _ => 1) 1 h = N` using `fun GG => PBD.weight_product_indep_of_real_parameter _ _ GG 0 _ h 1 le_rfl (by rw [hsz]; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : qU ≠ 0` using `by rw [qU_eq]; positivity`. Establish `hcard : Fintype.card (G.UT (m + 2)) = Fintype.card (G.UT (m + 1)) + (m + 1)`. Rewrite using `[G5.card_UT, G5.card_UT, Finset.sum_range_succ]`. Use `⟨√N * (qU ^ ((m + 1) + (Fintype.card (G.UT (m + 1)) + (m + 1))))⁻¹, fun x d0 hx hD => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hL : h ++ [(m + 1, x⁻¹), (1, x ^ (m + 1) * d0)] = (h ++ [(m + 1, x⁻¹)]) ++ [(1, x ^ (m + 1) * d0)]` using `by simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hGG : FourierDecayAlt.D.ptGG TT (h ++ [(m + 1, x⁻¹), (1, x ^ (m + 1) * d0)]) = Complex.normSq (x ^ (m + 1) * d0) - TT`. Simplify using `[FourierDecayAlt.D.ptGG, FourierDecayAlt.D.ptLast]`. Establish `hsz2 : FourierDecayAlt.D.ptSize (h ++ [(m + 1, x⁻¹)]) = c + (m + 1)`. Simplify using `[FourierDecayAlt.D.ptSize] at hsz ⊢`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : TBB.nPt (k' + 1) (c + m + 1) TT (h ++ [(m + 1, x⁻¹), (1, x ^ (m + 1) * d0)]) = N * ‖x‖⁻¹ ^ (((m + 1) * (k' + m + 2)) * 2) * (Complex.normSq (x ^ (m + 1) * d0) - TT) ^ k'`. Rewrite using `[TBB.nPt, hGG, hL, PBD.weight_product_append, PBD.weight_product_append, hind, hsz, hsz2, hsing, hsing]`. Rewrite using `[if_neg (show ¬(1 + c + (m + 1) - 1 = c + m + 1 + 1 ∧ m + 1 = 1) by omega), if_pos (show 1 + (c + (m + 1)) + 1 - 1 = c + m + 1 + 1 ∧ 1 = 1 by omega), one_mul, norm_inv, show k' + 1 - 1 = k' by omega, ← zpow_natCast (‖x‖⁻¹)]`. Use `congr 3`. Simplify using `only [C.Mlev]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Move the coercions through the operations in `[Nat.cast_sub (show 1 ≤ 1 + c + (m + 1) by omega)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hx' : ‖x‖ ≠ 0` using `norm_ne_zero_iff.2 hx`. Establish `hD' : ‖d0‖ ≠ 0` using `norm_ne_zero_iff.2 hD`. Rewrite using `[hn, Real.sqrt_mul (mul_nonneg hN0 (by positivity)), Real.sqrt_mul hN0, pow_mul, Real.sqrt_sq (by positivity), norm_inv, norm_mul, norm_pow, mul_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [inv_pow, inv_inv]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hsz3 : FourierDecayAlt.D.ptSize h = c` using `hsz`. Establish `hn : TBB.nPt (k' + 1) (c + m + 1) TT (h ++ [(m + 2, u)]) = N * ‖u‖ ^ (((m + 2) * (k' + m + 1)) * 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[TBB.nPt, PBD.weight_product_append, hind, hsz3, hsing, if_neg (show ¬(1 + c + (m + 2) - 1 = c + m + 1 + 1 ∧ m + 2 = 1) by omega), one_mul, ← zpow_natCast (‖u‖)]`. Use `congr 2`. Simplify using `only [C.Mlev]`. Move the coercions through the operations in `[Nat.cast_sub (show 1 ≤ 1 + c + (m + 2) by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hu' : ‖u‖ ≠ 0` using `norm_ne_zero_iff.2 hu`. Rewrite using `[hn, Real.sqrt_mul hN0, pow_mul, Real.sqrt_sq (by positivity), norm_pow, hcard, qU_eq]`. Simplify using `only [inv_pow, inv_inv]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem const_match1 (k r : ℕ) (TT : ℝ) (b s : ℕ) (hb : 1 ≤ b) (hs : 2 ≤ s) (hbs : b + s = r + 2) (hk : 1 ≤ k)
     (h : C.LPt) (hsz : D.ptSize h = b - 1) :
@@ -181,59 +181,53 @@ theorem const_match1 (k r : ℕ) (TT : ℝ) (b s : ℕ) (hb : 1 ≤ b) (hs : 2 �
 section core
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p F' hF' N b s hb hs hbs h hh K hK hK0`. Take `⟨m, rfl⟩ : ∃ m, s = m + 2` from `⟨s - 2, by omega⟩`. Establish `hszH : D.ptSize h = b - 1` using `hh.2`. Establish `hk : 1 ≤ P.k` using `by have := p.hl.2.2; omega`. Establish `hTT : 0 < TBB.TTp p` using `mul_pos p.T.base.T_pos p.T.base.T'_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ε0, hε0, hεG⟩` from `hF'.2.2`. Establish `hsmall : ∀ q : C.LPt, p.V F' q ≠ 0 → ε0 ≤ D.ptG (TBB.TTp p) P.r q`. Introduce `q hq`. Assume the negation of the conclusion as `hlt`. Conclude with `hq (PBO.vecV_zero_small p.T.base p.ν' p.m₀ hεG q (not_le.1 hlt))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ0, hΦs, hΦc, hΦd, hΦV⟩` from `phi_zero_hermitian_curvature Wp Wq P p F' hF'`. Take `⟨σh, dh, Ψ0, hdh, hΨ0, hblk, hlng⟩` from `vec_om (p.V F') Φ0 ⟨hΦs, hΦc, hΦd⟩ (fun a σ d ha hm => hΦV a σ d ha hm) h hh.1 m (by omega)`. Establish `hlng' : ∀ z : ℂ, z ≠ 0 → p.V F' (h ++ [(m + 2, z)]) = (((qU ^ Fintype.card (G.UT (m + 1 + 1)))⁻¹ : ℝ) : ℂ) • G.OmLong U.betaU (m + 1) (U.PhiTop (p` using `D.ptSize h) (s := m + 1 + 1) U.betaU σh dh Ψ0) (z) := hlng`. Establish `hqE : ∀ n : ℕ, (((qU ^ n)⁻¹ : ℝ) : ℂ) ≠ 0` using `fun n => by`. Conclude with `(inv_pos.2 (pow_pos qU_pos n)).ne'` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨Kh, hc1, hc2⟩` from `const_match1 P.k P.r (TBB.TTp p) b (m + 2) hb hs hbs hk h hszH`. Rewrite `hc1`, `hc2` using `[show m + 2 - 1 = m + 1 by omega]`. Use `set K' : Set ℂ := (fun d => d / l1T m ^ (m + 1)) '' K with hK'def`. Establish `hK' : IsCompact K'` using `hK.image (continuous_id.div_const _)`. Establish `hK'0 : (0 : ℂ) ∉ K'`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨d, hd, hd0⟩`. Establish `: d = 0` using `by simpa [top_base_ne_zero m] using hd0`. Conclude with `hK0 (this ▸ hd)`. Take `⟨MK, hMK⟩` from `hK'.isBounded.exists_norm_le`. Take `⟨mK, hmK, hball⟩` from `Metric.isOpen_iff.1 hK'.isClosed.isOpen_compl 0 hK'0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hmKle : ∀ y ∈ K', mK ≤ ‖y‖`. Introduce `y hy`. Assume the negation of the conclusion as `hlt`. Conclude with `hball (by simpa [Metric.mem_ball, dist_zero_right] using not_le.1 hlt) hy`. Take `⟨ρ, hρdef⟩ : ∃ ρ : ℂ → ℂ → ℝ, ∀ x y : ℂ, ρ x y = √((Complex.normSq (x ^ (m + 1) * y) - TBB.TTp p) ^ (P.k - 1)) / ‖x ^ (m + 1) * y‖ ^ (P.k - 1) * √((Complex.normSq (x ^ (m + 1) * y) / (Complex.normSq (x ^ (m + 1) * y) - TBB.TTp p)) ^ N)` from `⟨_, fun _ _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C0, hC0⟩` from `germ_core m (D.ptSize h) σh dh hdh Ψ0 hΨ0 (l1T m) (l2T m) (top_base_ne_zero m) (top_root_pow_eq m) 2 (psi_l m) K' hK' hK'0 ρ (√(((ε0 / (max (Complex.normSq (D.ptMatN h (D.ptSize h)).det) 1 * ‖l1T m‖ ^ (2 * (m + 1)) * (max MK 1) ^ 2))⁻¹) ^ N)) ((((P.k - 1 : ℕ) : ℝ) + N * ((ε0 / (m …`. Introduce `x' y hx' hy hne`. Establish `hy0 : y ≠ 0` using `fun h0 => hK'0 (h0 ▸ hy)`. Establish `ht0 : l1T m * x'⁻¹ ≠ 0` using `mul_ne_zero (top_base_ne_zero m) (inv_ne_zero hx')`. Establish `hc0 : x' ^ (m + 1) * y ≠ 0` using `mul_ne_zero (pow_ne_zero _ hx') hy0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hV : p.V F' (h ++ [(m + 1, l1T m * x'⁻¹), (1, x' ^ (m + 1) * y)]) ≠ 0`. Rewrite using `[hblk _ _ ht0 hc0]`. Conclude with `smul_ne_zero (hqE _) hne`. Establish `hG` using `hsmall _ hV`. Rewrite `hG` using `[ptG_Px (TBB.TTp p) h (m + 1) (by omega) P.r (by omega)]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hnc : Complex.normSq (x' ^ (m + 1) * y) = ‖x'‖ ^ (2 * (m + 1)) * ‖y‖ ^ 2`. Rewrite using `[Complex.normSq_mul, Complex.normSq_eq_norm_sq, Complex.normSq_eq_norm_sq, norm_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hρdef]`. Conclude with `rho_bound (TBB.TTp p) ε0 (Complex.normSq (D.ptMatN h (D.ptSize h)).det) MK mK hTT hε0 (Complex.normSq_nonneg _) hmK (P.k - 1) N m (l1T m) x' y (x' ^ (m + 1) * y) (top_base_ne_zero m) hx' hy0 hc0 (hMK y hy) (hmKle y hy) hnc hG)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨MD, hMD⟩` from `hK.isBounded.exists_norm_le`. Use `⟨|Kh| * (max MD 1) ^ (P.k - 1) * C0, fun x hx d hd => ?_⟩` and prove the remaining obligations. Establish `hd0 : d ≠ 0` using `fun h0 => hK0 (h0 ▸ hd)`. Establish `hx1 : x⁻¹ ≠ 0` using `inv_ne_zero hx`. Establish `hcne : x ^ (m + 1) * d ≠ 0` using `mul_ne_zero (pow_ne_zero _ hx) hd0`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ht : l1T m * (l1T m * x)⁻¹ = x⁻¹` using `by field_simp [top_base_ne_zero m]`. Establish `hcx : (l1T m * x) ^ (m + 1) * (d / l1T m ^ (m + 1)) = x ^ (m + 1) * d`. Clear denominators, using `[top_base_ne_zero m]` for the nonvanishing conditions. Expand and normalize the polynomial expressions, which then agree. Establish `hnx : ‖l1T m * x‖ = ‖x‖` using `by rw [norm_mul, norm_l1T, one_mul]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hgerm` using `hC0 (l1T m * x) (mul_ne_zero (top_base_ne_zero m) hx) (d / l1T m ^ (m + 1)) ⟨d, hd, rfl⟩`. Rewrite `hgerm` using `[ht, hcx, hnx]`. Establish `hT0 : (coT (m + 2) x none * (omT p N (ptT (m + 2) h x d none) : ℂ)) • p.V F' (ptT (m + 2) h x d none) = ((Kh * ‖d‖ ^ (P.k - 1) : ℝ) : ℂ) • (((‖x⁻¹‖ ^ ((m + 1) ^ 2) * ρ (l1T m * x) (d / l1T m ^ (m + 1)) : ℝ) : ℂ) • G.OmBlock U.betaU (m + 1) (U.PhiTop (p` using `D.ptSize h) (s := m + 1 + 1) U.betaU σh dh Ψ0) (x⁻¹) (x ^ (m + 1) * d)) := by show (((‖x‖ ^ (m + 1) : ℝ) : ℂ) * (omT p N (h ++ [(m + 1, x⁻¹), (1, x ^ (m + 1) * d)]) : ℂ)) • p.V F' (h ++ [(m + 1, x⁻¹), (1, x ^ (m + 1) * d)]) = _`. Distinguish the cases in `hB : G.OmBlock U.betaU (m + 1) (U.PhiTop (p := D.ptSize h) (s := m + 1 + 1) U.betaU σh dh Ψ0) (x⁻¹) (x ^ (m + 1) * d) = 0`. Rewrite using `[hblk _ _ hx1 hcne, hB]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hV : p.V F' (h ++ [(m + 1, x⁻¹), (1, x ^ (m + 1) * d)]) ≠ 0`. Rewrite using `[hblk _ _ hx1 hcne]`. Conclude with `smul_ne_zero (hqE _) hB`. Establish `hG` using `hsmall _ hV`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw` using `wPt_Px (TBB.TTp p) h (m + 1) (by omega) P.r (by omega) x⁻¹ (x ^ (m + 1) * d) (lt_of_lt_of_le hε0 hG).ne'`. Establish `e1` using `hc1 x d hx hd0`. Establish `hreal : ‖x‖ ^ (m + 1) * (√(TBB.nPt P.k P.r (TBB.TTp p) (h ++ [(m + 1, x⁻¹), (1, x ^ (m + 1) * d)])) * √((Complex.normSq (x ^ (m + 1) * d) / (Complex.normSq (x ^ (m + 1) * d) - TBB.TTp p)) ^ N)) * (qU ^ ((m + 1) + (Fintype.card (G.UT (m + 1)) + (m + 1))))⁻¹ = Kh * ‖d‖ ^ (P.k - 1) …`. Take the linear combination `√((Complex.normSq (x ^ (m + 1) * d) / (Complex.normSq (x ^ (m + 1) * d) - TBB.TTp p)) ^ N) * e1`. Rewrite using `[hblk _ _ hx1 hcne, smul_smul, smul_smul, hρdef, hcx]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Simplify using `only [omT, hw]`. Conclude with `hreal` after adjusting the coercions. Establish `hroots : G.rootSet (m + 2) (epsT (m + 2) * d) = (G.rootSet (m + 2) (d / l1T m ^ (m + 1))).image (fun z => l2T m * z)`. Use extensionality with `z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [G.rootSet, Multiset.mem_toFinset, Polynomial.mem_nthRoots (show 0 < m + 2 by omega), Finset.mem_image]`. Establish `hm1 : ((-1 : ℂ)) ^ (m + 3) ≠ 0` using `pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `⟨z / l2T m, ?_, by field_simp [top_root_ne_zero m]⟩` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[div_pow, hz, top_root_pow_eq, epsT]`. Clear denominators, using `[top_base_ne_zero m]` for the nonvanishing conditions. Apply the tactic sequence `try ring`. Introduce and unpack `⟨w, hw, rfl⟩`. Rewrite using `[mul_pow, top_root_pow_eq, hw, epsT]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Clear denominators, using `[top_base_ne_zero m]` for the nonvanishing conditions. Apply the tactic sequence `try ring`. Establish `hsum : ∑ z ∈ G.rootSet (m + 2) (d / l1T m ^ (m + 1)), (coT (m + 2) x (some (l2T m * z)) * (omT p N (ptT (m + 2) h x d (some (l2T m * z))) : ℂ)) • p.V F' (ptT (m + 2) h x d (some (l2T m * z))) = -(((Kh * ‖d‖ ^ (P.k - 1) : ℝ) : ℂ) • (((m : ℂ) + 2)⁻¹ • ∑ z ∈ G.rootSet (m + 2) (d / l …` using `D.ptSize h) (s := m + 1 + 1) U.betaU σh dh Ψ0) (l2T m * z))) := by`. Rewrite using `[Finset.smul_sum, Finset.smul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun z hz => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hz' : z ^ (m + 2) = d / l1T m ^ (m + 1)` using `(Polynomial.mem_nthRoots (show 0 < m + 2 by omega)).1 (Multiset.mem_toFinset.1 hz)`. Establish `hd' : d / l1T m ^ (m + 1) ≠ 0` using `div_ne_zero hd0 (pow_ne_zero _ (top_base_ne_zero m))`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz'` using `[zero_pow (by omega)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hd' hz'.symm`. Establish `hu : l2T m * z ≠ 0` using `mul_ne_zero (top_root_ne_zero m) hz0`. Establish `hud : ‖(l2T m * z) ^ (m + 2)‖ = ‖d‖`. Rewrite using `[mul_pow, top_root_pow_eq, hz']`. Simplify using `[norm_l1T]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations.
 
-Use `show (-(G.psi U.betaU (((m + 2 : ℕ) : ℂ) * (l2T m * z) * x) * ((Real.pi ^ (m + 1) * (((m + 2 : ℕ) : ℝ) * ‖l2T m * z‖ ^ (m + 1))⁻¹ : ℝ) : ℂ)) * (omT p N (h ++ [(m + 2, l2T m * z)]) : ℂ)) • p.V F' (h ++ [(m + 2, l2T m * z)]) = _`. Distinguish the cases in `hL : G.OmLong U.betaU (m + 1) (U.PhiTop (p := D.ptSize h) (s := m + 1 + 1) U.betaU σh dh Ψ0) (l2T m * z) = 0`. Rewrite using `[hlng' _ hu, hL]`. Simplify using the standard rewrite rules. Establish `hV : p.V F' (h ++ [(m + 2, l2T m * z)]) ≠ 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlng' _ hu]`. Conclude with `smul_ne_zero (hqE _) hL`. Establish `hG` using `hsmall _ hV`. Establish `hw` using `PBL.wPt_big (TBB.TTp p) h (m + 2) (l2T m * z) P.r (by omega) (by omega) (lt_of_lt_of_le hε0 hG)`. Establish `hpsi : G.psi U.betaU (((m + 2 : ℕ) : ℂ) * (l2T m * z) * x) = conj (G.psi ((2 : ℝ) : ℂ) (((m : ℂ) + 2) * z * (l1T m * x)))`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← psi_l m]`. Use `congr 1`. Clear denominators, using `[top_base_ne_zero m]` for the nonvanishing conditions. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hc2 (l2T m * z) hu`. Rewrite `e2` using `[hud]`. Establish `e2c` using `congrArg (fun t : ℝ => (t : ℂ)) e2`. Rewrite using `[hlng' _ hu, smul_smul, smul_smul, smul_smul, ← neg_smul]`. Use `congr 1`.
-
-Simplify using `only [omT, hw, one_pow, Real.sqrt_one, mul_one, hpsi]`. Move the coercions through the operations in `at e2c ⊢`. Take the linear combination `(-conj (G.psi ((2 : ℝ) : ℂ) (((m : ℂ) + 2) * z * (l1T m * x)))) * e2c`. Establish `heq : ∑ j ∈ Finset.insertNone (G.rootSet (m + 2) (epsT (m + 2) * d)), (coT (m + 2) x j * (omT p N (ptT (m + 2) h x d j) : ℂ)) • p.V F' (ptT (m + 2) h x d j) = ((Kh * ‖d‖ ^ (P.k - 1) : ℝ) : ℂ) • (((‖x⁻¹‖ ^ ((m + 1) ^ 2) * ρ (l1T m * x) (d / l1T m ^ (m + 1)) : ℝ) : ℂ) • G.OmBlock U …` using `D.ptSize h) (s := m + 1 + 1) U.betaU σh dh Ψ0) (x⁻¹) (x ^ (m + 1) * d) - ((m : ℂ) + 2)⁻¹ • ∑ z ∈ G.rootSet (m + 2) (d / l1T m ^ (m + 1)), (((‖l2T m * z‖ ^ ((m + 1) ^ 2) : ℝ) : ℂ) * conj (G.psi ((2 : ℝ) : ℂ) (((m : ℂ) + 2) * z * (l1T m * x)))) • G.OmLong U.betaU (m + 1) (U.PhiTop …`. Rewrite using `[Finset.sum_insertNone, hroots, Finset.sum_image (fun a _ b _ hab => mul_left_cancel₀ (top_root_ne_zero m) hab)]`.
-
-Use `beta_reduce`. Rewrite using `[hT0, hsum, smul_sub, sub_eq_add_neg]`. Rewrite using `[heq, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_of_nonneg (pow_nonneg (norm_nonneg _) _)]`. Establish `hdle : ‖d‖ ^ (P.k - 1) ≤ (max MD 1) ^ (P.k - 1)` using `pow_le_pow_left₀ (norm_nonneg _) ((hMD d hd).trans (le_max_left _ _)) _`. Establish `h0 : 0 ≤ C0 * ‖x‖⁻¹` using `(norm_nonneg _).trans hgerm`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem top_level_germ_leading : TopCore1 := by
   intro Wp Wq _ _ _ _ _ _ P p F' hF' N b s hb hs hbs h hh K hK hK0

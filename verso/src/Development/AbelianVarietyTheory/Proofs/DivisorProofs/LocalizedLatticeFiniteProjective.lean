@@ -6,7 +6,7 @@ open TensorProduct GlobalTheory.PerfdLat
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `IsLocalizedModule.map_units g s surj y := by obtain ⟨⟨x, s⟩, hx⟩ := IsLocalizedModule.surj (Submonoid.powers f) g y refine ⟨⟨⟨f • x, hL x⟩, ⟨f, Submonoid.mem_powers f⟩ * s⟩, ?_⟩ simp only [LinearMap.comp_apply, Submodule.subtype_apply, map_smul] rw [mul_smul, hx] rfl exists_of_eq …`.
+A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_of_smul_mem {A : Type} [CommRing A] (f : A) {M N : Type}
     [AddCommGroup M] [Module A M] [AddCommGroup N] [Module A N] (L : Submodule A M)
@@ -24,7 +24,7 @@ theorem isLocalizedModule_of_smul_mem {A : Type} [CommRing A] (f : A) {M N : Typ
     exact ⟨c, Subtype.ext hc⟩
 
 /- English proof (translation)
-Set `g : (Fin h → A) →ₗ[A] (Fin h → Localization.Away f)` to `LinearMap.pi fun i => Algebra.linearMap A (Localization.Away f) ∘ₗ LinearMap.proj i`. Use `haveI : IsLocalizedModule (Submonoid.powers f) g := IsLocalizedModule.pi (Submonoid.powers f) (fun _ : Fin h => Algebra.linearMap A (Localization.Away f))`. Use `haveI := isLocalizedModule_of_smul_mem f L hL g`. Set `e` to `(IsLocalizedModule.iso (Submonoid.powers f) (g ∘ₗ L.subtype)).extendScalarsOfIsLocalization (Submonoid.powers f) (Localization.Away f)`. Conclude with `⟨Module.Finite.equiv e.symm, Module.Projective.of_equiv e.symm⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem localizedModule_finite_projective_of_smul_mem
     (A : Type) [CommRing A] (f : A) (h : ℕ) (L : Submodule A (Fin h → A))

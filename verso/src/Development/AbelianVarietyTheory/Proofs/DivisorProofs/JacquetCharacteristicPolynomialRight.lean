@@ -13,7 +13,7 @@ section Gen
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[Matrix.scalar_apply, Matrix.det_diagonal, Finset.prod_const]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_scalar_gl {n : Type} [Fintype n] [DecidableEq n] (x : kˣ) :
     GeneralLinearGroup.det (GeneralLinearGroup.scalar n x) = x ^ Fintype.card n := by
@@ -21,7 +21,7 @@ theorem det_scalar_gl {n : Type} [Fintype n] [DecidableEq n] (x : kˣ) :
   simp [Matrix.scalar_apply, Matrix.det_diagonal, Finset.prod_const]
 
 /- English proof (translation)
-Rewrite using `[mem_parab_iff]`. Introduce `a b i j hab`. Establish `hne : e ⟨a, i⟩ ≠ e ⟨b, j⟩` using `fun h => hab.ne' (congrArg Sigma.fst (e.injective h))`. Simplify using `[Matrix.scalar_apply, Matrix.diagonal_apply_ne _ hne]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem scalar_mem_parab {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α]
     [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n]
@@ -32,9 +32,9 @@ theorem scalar_mem_parab {α n : Type} {m : α → Type} [Fintype α] [LinearOrd
   simp [Matrix.scalar_apply, Matrix.diagonal_apply_ne _ hne]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Use extensionality with `i j`. Rewrite using `[leviProj_apply, hp]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Matrix.scalar_apply]`. Establish `hne : e ⟨a, i⟩ ≠ e ⟨a, j⟩` using `fun h' => h (by simpa using e.injective h')`. Simplify using `[Matrix.scalar_apply, Matrix.diagonal_apply_ne _ hne, Matrix.diagonal_apply_ne _ h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem leviProj_eq_scalar {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α]
     [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n]
@@ -54,9 +54,7 @@ variable {α β : Type} [Fintype α] [Fintype β] [LinearOrder β]
   {W : Type} [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Use `LinearMap.ext fun F => Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Use `show F.1.1 (x * z) = a • F.1.1 x`. Rewrite using `[hc x]`. Establish `h1` using `F.1.2 ⟨z, hz⟩ x`. Use `h1.trans ?_` and prove the remaining obligations.
-
-Conclude with `LinearMap.congr_fun ha (F.1.1 x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem relInd_eq_smul (f : ∀ i, (Σ j, c i j) ≃ m i) (σ : Representation ℂ (∀ i, Levi k (c i)) W)
     (z : Levi k m) (hz : z ∈ relParab k f) (hc : ∀ x, x * z = z * x) (a : ℂ)
@@ -70,7 +68,7 @@ theorem relInd_eq_smul (f : ∀ i, (Σ j, c i j) ≃ m i) (σ : Representation �
   exact LinearMap.congr_fun ha (F.1.1 x)
 
 /- English proof (translation)
-Use `LinearMap.ext fun q => Submodule.Quotient.induction_on _ q fun v => ?_` and prove the remaining obligations. Rewrite using `[relJac_mk, ha]`. Simplify using `[mul_smul, Submodule.Quotient.mk_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem relJac_eq_smul (f : ∀ i, (Σ j, c i j) ≃ m i) (ρ : Representation ℂ (Levi k m) W)
     (y : ∀ i, Levi k (c i)) (a : ℂ) (ha : ρ (relEmb k f y) = a • LinearMap.id) :
@@ -82,7 +80,7 @@ theorem relJac_eq_smul (f : ∀ i, (Σ j, c i j) ≃ m i) (ρ : Representation �
 end Gen
 
 /- English proof (translation)
-Use `TensorProduct.ext' fun x y => ?_` and prove the remaining obligations. Rewrite using `[extTensor_tmul]`. Simplify using `only [detRep, ofChar_apply, detChar_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[← smul_eq_mul, ← smul_eq_mul (a := (χ₂ _ : ℂ)), TensorProduct.smul_tmul', TensorProduct.tmul_smul, TensorProduct.smul_tmul', smul_smul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem extTensor_detRep_eq {k : Type} [Field k] {u v : ℕ} (χ₁ χ₂ : kˣ →* ℂˣ)
     (h : GL (Fin u) k × GL (Fin v) k) :
@@ -95,19 +93,19 @@ theorem extTensor_detRep_eq {k : Type} [Field k] {u v : ℕ} (χ₁ χ₂ : kˣ 
     TensorProduct.smul_tmul', smul_smul, mul_comm]
 
 /- English proof (translation)
-Simplify using `[modExp, Finset.sum_filter, Fintype.sum_bool]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modExp_bool_true (n : Bool → ℕ) : modExp (fun j : Bool => Fin (n j)) true = -(n false : ℤ) := by
   simp [modExp, Finset.sum_filter, Fintype.sum_bool]
 
 /- English proof (translation)
-Simplify using `[modExp, Finset.sum_filter, Fintype.sum_bool]`.
+Simplify using the standard rewrite rules.
 -/
 theorem modExp_bool_false (n : Bool → ℕ) : modExp (fun j : Bool => Fin (n j)) false = (n true : ℤ) := by
   simp [modExp, Finset.sum_filter, Fintype.sum_bool]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[val_absPow]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem absPow_zero_apply {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (x : kˣ) : absPow k 0 x = 1 := by
@@ -115,33 +113,31 @@ theorem absPow_zero_apply {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
   simp [val_absPow]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ χ₁ χ₂ u v m _ _ ϖ B f g`. Set `s : Bool → kˣ` to `fun j => cond j ϖ 1`. Establish `hZ : ∀ j, (leviTwo k m (Fin 1) (1, GeneralLinearGroup.scalar (Fin 1) ϖ)) j = GeneralLinearGroup.scalar (Two m (Fin 1) j) (s j)`. Introduce `j`. Consider the cases of `j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Conclude with `(map_one (GeneralLinearGroup.scalar (n := m) (R := k))).symm`. Both sides reduce to the same expression. Establish `hmem : leviTwo k m (Fin 1) (1, GeneralLinearGroup.scalar (Fin 1) ϖ) ∈ relParab k g`. Introduce `j _`. Rewrite using `[hZ j]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `scalar_mem_parab _ _`. Establish `hc : ∀ x : Levi k (Two m (Fin 1)), x * leviTwo k m (Fin 1) (1, GeneralLinearGroup.scalar (Fin 1) ϖ) = leviTwo k m (Fin 1) (1, GeneralLinearGroup.scalar (Fin 1) ϖ) * x`. Introduce `x`. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.mul_apply, Pi.mul_apply, hZ j]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(GeneralLinearGroup.scalar_commute _ _).symm`. Establish `hP : relProj k g ⟨_, hmem⟩ = fun j i => GeneralLinearGroup.scalar (Fin (B.1 i j)) (s j)`. Use function extensionality and compare the values at `j`. Conclude with `leviProj_eq_scalar (g j) (s j) _ (hZ j)`. Use `relInd_eq_smul g _ _ hmem hc _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP]`. Establish `hdet : ∀ i, GeneralLinearGroup.det (relEmb k f (fun i j => GeneralLinearGroup.scalar (Fin (B.1 i j)) (s j)) i) = ϖ ^ B.1 i true`. Introduce `i`. Rewrite using `[relEmb_apply, det_leviEmb, Fintype.prod_bool]`. Use `show GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin (B.1 i true)) ϖ) * GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin (B.1 i false)) 1) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_scalar_gl, det_scalar_gl, one_pow, mul_one, Fintype.card_fin]`. Establish `hJ` using `relJac_eq_smul (k := k) f ((extTensor (detRep (Fin u) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin u) (Fin v)).symm.toMonoidHom) (fun i j => GeneralLinearGroup.scalar (Fin (B.1 i j)) (s j)) ((χ₁ (ϖ ^ B.1 false true) : ℂ) * (χ₂ (ϖ ^ B.1 true true) : ℂ)) (by`. Rewrite using `[MonoidHom.comp_apply, extTensor_detRep_eq]`. Use `show ((χ₁ (GeneralLinearGroup.det (relEmb k f _ false)) : ℂ) * (χ₂ (GeneralLinearGroup.det (relEmb k f _ true)) : ℂ)) • LinearMap.id = _`. Rewrite using `[hdet, hdet])`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show _ • relJac f _ (fun i j => GeneralLinearGroup.scalar (Fin (B.1 i j)) (s j)) = _`. Rewrite using `[hJ, smul_smul]`. Use `congr 1`. Use `clear hJ hP hc hmem hZ hdet`. Simplify using `only [relDeltaHalf_apply, deltaHalf_apply, det_scalar_gl, Fintype.card_fin, Fintype.prod_bool]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [s, cond_true, cond_false, one_pow, map_one, modExp_bool_true, modExp_bool_false, one_mul, mul_one]`. Establish `hcol : B.1 false true + B.1 true true = 1`. Use `B.2.2 true` as an intermediate fact. Simplify `this` using `[Fintype.sum_bool, add_comm]`. Establish `hu : B.1 false false + B.1 false true = u`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `B.2.1 false` as an intermediate fact. Simplify `this` using `[Fintype.sum_bool, add_comm]`. Establish `hv : B.1 true false + B.1 true true = v`. Use `B.2.1 true` as an intermediate fact. Simplify `this` using `[Fintype.sum_bool, add_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Choose the witnesses or unpack the hypotheses as in `⟨h1, h2⟩ | ⟨h1, h2⟩ : (B.1 false true = 1 ∧ B.1 true true = 0) ∨ (B.1 false true = 0 ∧ B.1 true true = 1) := by`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos h1]`. Rewrite using `[h1, h2]`. Establish `hu' : ((u : ℂ) - 1) = (B.1 false false : ℂ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : (u : ℂ) = (B.1 false false : ℂ) + 1` using `by exact_mod_cast (by omega : u = B.1 false false + 1)`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [pow_zero, pow_one, map_one, one_mul, mul_one, Nat.cast_zero, Int.cast_zero, neg_zero, zero_div, absPow_zero_apply, Units.val_one, inv_one]`. Rewrite using `[hu']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Simplify using `only [Units.val_mul, MonoidHom.mul_apply, Units.val_inv_eq_inv_val, val_absPow, neg_div, Complex.cpow_neg, inv_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (by omega)]`. Rewrite using `[h1, h2]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Establish `hv' : ((v : ℂ) - 1) = (B.1 true false : ℂ)`. Establish `e : (v : ℂ) = (B.1 true false : ℂ) + 1` using `by exact_mod_cast (by omega : v = B.1 true false + 1)`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [pow_zero, pow_one, map_one, one_mul, mul_one, Nat.cast_zero, Int.cast_zero, neg_zero, zero_div, absPow_zero_apply, Units.val_one, inv_one]`.
-
-Rewrite using `[hv']`. Use `push_cast`. Simplify using `only [Units.val_mul, MonoidHom.mul_apply, Units.val_inv_eq_inv_val, val_absPow, neg_div, Complex.cpow_neg, inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cell_scalar : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (m : Type) [Fintype m] [DecidableEq m] (ϖ : kˣ) (B : SizeMatrix (Two (Fin u) (Fin v)) (Two m (Fin 1))) (f : ∀ i, (Σ j, Fin (B.1 i j)) ≃ Two (Fin u) (Fin v) i) (g : ∀ j, (Σ i, Fin (B.1 i j)) ≃ Two m (Fin 1) j), cellFunctor f g ((extTensor (detRep (Fin u) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin u) (Fin v)).symm.toMonoidHom) (leviTwo k m (Fin 1) (1, GeneralLinearGroup.scalar (Fin 1) ϖ)) = (if B.1 false true = 1 then (((χ₁ * absPow k (((u : ℂ) - 1) / 2)) ϖ : ℂˣ) : ℂ) else (((χ₂ * absPow k (((v : ℂ) - 1) / 2)) ϖ : ℂˣ) : ℂ)) • LinearMap.id := by
   intro k _ _ _ _ χ₁ χ₂ u v m _ _ ϖ B f g
@@ -223,17 +219,17 @@ theorem cell_scalar : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
     ring
 
 /- English proof (translation)
-Set `c' : ℕ → ℂ` to `fun t => if h : t < N then c ⟨t, h⟩ else 0`. Establish `key : ∀ n (hn : n ≤ N), ∀ x ∈ (S ⟨n, Nat.lt_succ_of_le hn⟩).toSubmodule, Polynomial.aeval (σ z) (∏ t ∈ Finset.range n, (Polynomial.X - Polynomial.C (c' t))) x = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `hn x hx`. Establish `h0' : S ⟨0, Nat.lt_succ_of_le hn⟩ = ⊥` using `h0`. Rewrite `hx` using `[h0']`. Establish `hx0 : x = 0` using `hx`. Simplify using `[hx0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `hn x hx`. Rewrite using `[Finset.prod_range_succ, map_mul, Module.End.mul_apply]`. Apply `ih (by omega)` to reduce the goal to its premises. Establish `h1` using `hc ⟨n, by omega⟩ x hx`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2 : c' n = c ⟨n, by omega⟩` using `dif_pos (by omega)`. Simplify `h1` using `[h2, sub_smul]`. Establish `h1 : ∏ t, (Polynomial.X - Polynomial.C (c t)) = ∏ t ∈ Finset.range N, (Polynomial.X - Polynomial.C (c' t))`. Rewrite using `[← Fin.prod_univ_eq_prod_range]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[c', t.2]`. Rewrite using `[h1]`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `key N le_rfl x ?_` and prove the remaining obligations. Establish `: S ⟨N, Nat.lt_succ_of_le le_rfl⟩ = ⊤` using `hN`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 -/
 theorem aeval_prod_eq_zero_of_filtration {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (σ : Representation ℂ G V) (z : G) (N : ℕ) (S : Fin (N + 1) → Subrepresentation σ)
@@ -271,11 +267,11 @@ theorem aeval_prod_eq_zero_of_filtration {G V : Type} [Group G] [AddCommGroup V]
   trivial
 
 /- English proof (translation)
-Set `q : S.toSubmodule ⧸ T.toSubmodule.comap S.toSubmodule.subtype` to `Submodule.Quotient.mk ⟨x, hx⟩`. Establish `h1` using `φ.toIntertwiningMap.isIntertwining _ _ z q`. Rewrite `h1` using `[hz]`. Establish `h2 : subQuot S T z q = c • q`. Apply `φ.toLinearEquiv.injective` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply]`. Conclude with `(map_smul φ.toLinearEquiv _ q).symm`. Rewrite `h2` using `[← sub_eq_zero]`. Establish `h3 : subQuot S T z q - c • q = Submodule.Quotient.mk (⟨σ z x, S.apply_mem_toSubmodule z hx⟩ - c • ⟨x, hx⟩)` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h3, Submodule.Quotient.mk_eq_zero]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem sub_smul_mem_of_equiv {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] {σ : Representation ℂ G V} {τ : Representation ℂ G W} (S T : Subrepresentation σ)
@@ -298,25 +294,23 @@ theorem sub_smul_mem_of_equiv {G V W : Type} [Group G] [AddCommGroup V] [Module 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hG χ₁ χ₂ h₁ h₂ u v m _ _ e ϖ`. Establish `hcont : Continuous ((leviTwo k (Fin u) (Fin v)).symm.toMonoidHom)` using `(continuous_apply false).prodMk (continuous_apply true)`. Establish `hρ' : IsSmooth ((extTensor (detRep (Fin u) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin u) (Fin v)).symm.toMonoidHom)` using `isSmooth_comp (isSmooth_extTensor ((isSmooth_ofChar_iff _).2 h₁.detChar) ((isSmooth_ofChar_iff _).2 h₂.detChar)) _ hcont`. Establish `hJ : JacquetOfInducedFiltration k` using `hG k`. Take `⟨N, b, hb⟩` from `hJ Bool Bool (Fin (u + v)) (Two (Fin u) (Fin v)) (Two m (Fin 1)) (two (stdSum (rfl : u + v = u + v))) (two e)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb'` using `hb (TensorProduct ℂ ℂ ℂ) ((extTensor (detRep (Fin u) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin u) (Fin v)).symm.toMonoidHom) hρ'`. Establish `h0` using `hb'.choose_spec.2.1`. Establish `hN` using `hb'.choose_spec.2.2.1`. Establish `hS` using `hb'.choose_spec.2.2.2`. Set `cv : SizeMatrix (Two (Fin u) (Fin v)) (Two m (Fin 1)) → ℂ` to `fun B => if B.1 false true = 1 then (((χ₁ * absPow k (((u : ℂ) - 1) / 2)) ϖ : ℂˣ) : ℂ) else (((χ₂ * absPow k (((v : ℂ) - 1) / 2)) ϖ : ℂˣ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hfil` using `aeval_prod_eq_zero_of_filtration _ (leviTwo k m (Fin 1) (1, GeneralLinearGroup.scalar (Fin 1) ϖ)) N hb'.choose h0 hN (fun t => cv (b t)) (fun t x hx => sub_smul_mem_of_equiv _ _ (hS t (b t).nonempty_rows.some (b t).nonempty_cols.some).some (leviTwo k m (Fin 1) (1, GeneralLinearGr …`. Use `haveI := Fintype.ofFinite (SizeMatrix (Two (Fin u) (Fin v)) (Two m (Fin 1)))`. Rewrite `hfil` using `[show (∏ t, (Polynomial.X - Polynomial.C (cv (b t)))) = ∏ B, (Polynomial.X - Polynomial.C (cv B)) from Equiv.prod_comp b (fun B => Polynomial.X - Polynomial.C (cv B))]`. Set `φB : SizeMatrix (Two (Fin u) (Fin v)) (Two m (Fin 1)) → Bool` to `fun B => decide (B.1 false true = 1)`. Set `fB : Bool → Polynomial ℂ` to `fun x => Polynomial.X - Polynomial.C (if x then (((χ₁ * absPow k (((u : ℂ) - 1) / 2)) ϖ : ℂˣ) : ℂ) else (((χ₂ * absPow k (((v : ℂ) - 1) / 2)) ϖ : ℂˣ) : ℂ))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective φB`. Introduce `B B' hBB`. Establish `r0` using `B.2.1 false`. Establish `r1` using `B.2.1 true`. Establish `c1` using `B.2.2 true`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r0'` using `B'.2.1 false`. Establish `r1'` using `B'.2.1 true`. Establish `c1'` using `B'.2.2 true`. Simplify using `only [Fintype.sum_bool] at r0 r1 c1 r0' r1' c1'`. Establish `hu : Fintype.card (Two (Fin u) (Fin v) false) = u` using `Fintype.card_fin u`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : Fintype.card (Two (Fin u) (Fin v) true) = v` using `Fintype.card_fin v`. Establish `h1 : Fintype.card (Two m (Fin 1) true) = 1` using `Fintype.card_fin 1`. Rewrite `r0`, `r0'` using `[hu]`. Rewrite `r1`, `r1'` using `[hv]`. Rewrite `c1`, `c1'` using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : (B.1 false true = 1) ↔ (B'.1 false true = 1)` using `by simpa [φB] using hBB`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Apply the tactic sequence `cases i <;> cases j <;> omega`. Establish `hdvd : (∏ B, (Polynomial.X - Polynomial.C (cv B))) ∣ (Polynomial.X - Polynomial.C (((χ₁ * absPow k (((u : ℂ) - 1) / 2)) ϖ : ℂˣ) : ℂ)) * (Polynomial.X - Polynomial.C (((χ₂ * absPow k (((v : ℂ) - 1) / 2)) ϖ : ℂˣ) : ℂ))`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (∏ B, (Polynomial.X - Polynomial.C (cv B))) = ∏ x ∈ Finset.univ.image φB, fB x`. Rewrite using `[Finset.prod_image fun B _ B' _ h => hinj h]`. Use `Finset.prod_congr rfl fun B _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : B.1 false true = 1 <;> simp [cv, fB, φB, h]`. Establish `e2 : (Polynomial.X - Polynomial.C (((χ₁ * absPow k (((u : ℂ) - 1) / 2)) ϖ : ℂˣ) : ℂ)) * (Polynomial.X - Polynomial.C (((χ₂ * absPow k (((v : ℂ) - 1) / 2)) ϖ : ℂˣ) : ℂ)) = ∏ x, fB x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.prod_bool]`. Simplify using `only [fB, if_true, Bool.false_eq_true, if_false]`. Rewrite using `[e1, e2]`. Conclude with `Finset.prod_dvd_prod_of_subset _ _ _ (Finset.subset_univ _)`. Take `⟨r, hr⟩` from `hdvd`.
-
-Rewrite using `[hr, map_mul]`. Conclude with `mul_eq_zero_of_left hfil _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scal_right : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.Published.GeometricLemmaFiltration → ∀ (χ₁ χ₂ : kˣ →* ℂˣ), IsSmoothChar χ₁ → IsSmoothChar χ₂ → ∀ (u v : ℕ) (m : Type) [Fintype m] [DecidableEq m] (e : m ⊕ Fin 1 ≃ Fin (u + v)) (ϖ : kˣ), Polynomial.aeval (jac₂ e (prod₂ (detRep (Fin u) χ₁) (detRep (Fin v) χ₂)) (1, GeneralLinearGroup.scalar (Fin 1) ϖ)) ((Polynomial.X - Polynomial.C (((χ₁ * absPow k (((u : ℂ) - 1) / 2)) ϖ : ℂˣ) : ℂ)) * (Polynomial.X - Polynomial.C (((χ₂ * absPow k (((v : ℂ) - 1) / 2)) ϖ : ℂˣ) : ℂ))) = 0 := by
   intro k _ _ _ _ hG χ₁ χ₂ h₁ h₂ u v m _ _ e ϖ

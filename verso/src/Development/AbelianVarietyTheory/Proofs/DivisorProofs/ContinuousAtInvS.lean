@@ -21,13 +21,13 @@ def cf (v : HeightOneSpectrum (𝓞 F)) : AF F →+* Fv F v :=
   (evalV F v).toRingHom.comp (sndA F).toRingHom
 
 /- English proof (translation)
-The claim follows from `(continuous_apply w).comp continuous_fst`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ci (w : InfinitePlace F) : Continuous (ci (F := F) w) :=
   (continuous_apply w).comp continuous_fst
 
 /- English proof (translation)
-The claim follows from `(RestrictedProduct.continuous_eval (R := fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) (A := fun w : HeightOneSpectrum (𝓞 F) => (w.adicCompletionIntegers F : Set (w.adicCompletion F))) v).comp continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cf (v : HeightOneSpectrum (𝓞 F)) : Continuous (cf (F := F) v) :=
   (RestrictedProduct.continuous_eval (R := fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F)
@@ -35,7 +35,7 @@ theorem continuous_cf (v : HeightOneSpectrum (𝓞 F)) : Continuous (cf (F := F)
     continuous_snd
 
 /- English proof (translation)
-The claim follows from `Prod.ext (funext h1) (RestrictedProduct.ext _ _ h2)`.
+A detailed English derivation is pending.
 -/
 theorem ext_c {a b : AF F} (h1 : ∀ w, ci w a = ci w b) (h2 : ∀ v, cf v a = cf v b) : a = b :=
   Prod.ext (funext h1) (RestrictedProduct.ext _ _ h2)
@@ -58,35 +58,35 @@ Both sides reduce to the same expression.
 theorem cf_apply (v : HeightOneSpectrum (𝓞 F)) (a : AF F) : cf v a = a.2 v := rfl
 
 /- English proof (translation)
-Rewrite using `[ci_apply]`. Simplify using `[sglI]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ci_sglI_self (w : InfinitePlace F) (c : w.Completion) : ci w (sglI w c) = c := by
   classical
   rw [ci_apply]; simp [sglI]
 
 /- English proof (translation)
-Rewrite using `[ci_apply]`. Simplify using `[sglI, Pi.single_apply, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ci_sglI_ne {w u : InfinitePlace F} (h : u ≠ w) (c : w.Completion) : ci u (sglI w c) = 0 := by
   classical
   rw [ci_apply]; simp [sglI, Pi.single_apply, h]
 
 /- English proof (translation)
-Rewrite using `[cf_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cf_sglI (w : InfinitePlace F) (c : w.Completion) (v : HeightOneSpectrum (𝓞 F)) :
     cf v (sglI w c) = 0 := by
   rw [cf_apply]; rfl
 
 /- English proof (translation)
-Rewrite using `[ci_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ci_sglF (v : HeightOneSpectrum (𝓞 F)) (c : Fv F v) (w : InfinitePlace F) :
     ci w (sglF v c) = 0 := by
   rw [ci_apply]; rfl
 
 /- English proof (translation)
-Use `show (singleV F v c) v = c`. Unfold `singleV`. Conclude with `RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v c`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cf_sglF_self (v : HeightOneSpectrum (𝓞 F)) (c : Fv F v) : cf v (sglF v c) = c := by
   classical
@@ -95,7 +95,7 @@ theorem cf_sglF_self (v : HeightOneSpectrum (𝓞 F)) (c : Fv F v) : cf v (sglF 
   exact RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v c
 
 /- English proof (translation)
-Use `show (singleV F v c) u = 0`. Unfold `singleV`. Conclude with `RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) c h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cf_sglF_ne {v u : HeightOneSpectrum (𝓞 F)} (h : u ≠ v) (c : Fv F v) : cf u (sglF v c) = 0 := by
   classical
@@ -105,7 +105,7 @@ theorem cf_sglF_ne {v u : HeightOneSpectrum (𝓞 F)} (h : u ≠ v) (c : Fv F v)
 
 open Classical in
 /- English proof (translation)
-Unfold `sglI`. Conclude with `(continuous_single w).prodMk continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_sglI (w : InfinitePlace F) : Continuous (sglI (F := F) w) := by
   unfold sglI
@@ -113,9 +113,9 @@ theorem continuous_sglI (w : InfinitePlace F) : Continuous (sglI (F := F) w) := 
 
 open Classical in
 /- English proof (translation)
-Establish `hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 F)))` using `Filter.le_principal_iff.2 (Set.finite_singleton v).compl_mem_cofinite`. Set `f : v.adicCompletion F → Πʳ w : HeightOneSpectrum (𝓞 F), [w.adicCompletion F, w.adicCompletionIntegers F]_[Filter.principal ({v}ᶜ : Set _)]` to `fun x => ⟨Pi.single (M := fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) v x, by`. Introduce `w hw`. Establish `hw' : w ≠ v` using `hw`. Simplify using `only [Set.mem_ofPred_eq, Pi.single_eq_of_ne hw', SetLike.mem_coe]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `zero_mem _⟩`. Establish `hf : Continuous f` using `RestrictedProduct.continuous_rng_of_principal.2 (continuous_single v)`. Conclude with `continuous_const.prodMk ((RestrictedProduct.continuous_inclusion hS).comp hf)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_sglF (v : HeightOneSpectrum (𝓞 F)) : Continuous (sglF (F := F) v) := by
   have hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 F))) :=
@@ -137,7 +137,7 @@ variable {S₁ : Finset (InfinitePlace F)} {S₂ : Finset (HeightOneSpectrum (�
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[invS, map_add, map_sum, map_sum]`. Simplify using `only [ci_sglF, Finset.sum_const_zero, add_zero]`. Use `split_ifs with hu`. Rewrite using `[Finset.sum_eq_single_of_mem u hu (fun w _ hw => ci_sglI_ne (Ne.symm hw) _), ci_sglI_self]`. Conclude with `Finset.sum_eq_zero fun w hw => ci_sglI_ne (fun h : u = w => hu (h ▸ hw)) _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ci_invS (y : AF F) (u : InfinitePlace F) :
     ci u (invS S₁ S₂ y) = if u ∈ S₁ then (ci u y)⁻¹ else 0 := by
@@ -149,7 +149,7 @@ theorem ci_invS (y : AF F) (u : InfinitePlace F) :
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[invS, map_add, map_sum, map_sum]`. Simplify using `only [cf_sglI, Finset.sum_const_zero, zero_add]`. Use `split_ifs with hu`. Rewrite using `[Finset.sum_eq_single_of_mem u hu (fun w _ hw => cf_sglF_ne (Ne.symm hw) _), cf_sglF_self]`. Conclude with `Finset.sum_eq_zero fun w hw => cf_sglF_ne (fun h : u = w => hu (h ▸ hw)) _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cf_invS (y : AF F) (u : HeightOneSpectrum (𝓞 F)) :
     cf u (invS S₁ S₂ y) = if u ∈ S₂ then (cf u y)⁻¹ else 0 := by
@@ -160,13 +160,11 @@ theorem cf_invS (y : AF F) (u : HeightOneSpectrum (𝓞 F)) :
   · exact Finset.sum_eq_zero fun w hw => cf_sglF_ne (fun h : u = w => hu (h ▸ hw)) _
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hε`. Establish `hi : ∀ w, ci w y * ci w z = 1` using `fun w => by rw [← map_mul (ci w), hyz, map_one]`. Establish `hf : ∀ v, cf v y * cf v z = 1` using `fun v => by rw [← map_mul (cf v), hyz, map_one]`. Use `ext_c (fun w => ?_) (fun v => ?_)` and prove the remaining obligations. Rewrite using `[ci_invS, map_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ci w ε = fstA F ε w` using `rfl`. Use `split_ifs with hw`. Rewrite using `[e1, h1 w hw, one_mul, one_mul]`. Conclude with `inv_eq_of_mul_eq_one_right (hi w)`. Rewrite using `[e1, h2 w hw, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[cf_invS, map_mul, map_mul]`. Establish `e1 : cf v ε = evalV F v (sndA F ε)` using `rfl`. Use `split_ifs with hv`. Rewrite using `[e1, h3 v hv, one_mul, one_mul]`. Conclude with `inv_eq_of_mul_eq_one_right (hf v)`.
-
-Rewrite using `[e1, h4 v hv, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invS_mul {ε : AF F} (hε : IsPlacesIdem S₁ S₂ ε) {y z : AF F} (hyz : y * z = 1) :
     invS S₁ S₂ (ε * y) = ε * z := by
@@ -186,7 +184,7 @@ theorem invS_mul {ε : AF F} (hε : IsPlacesIdem S₁ S₂ ε) {y z : AF F} (hyz
     · rw [e1, h4 v hv, zero_mul]
 
 /- English proof (translation)
-Unfold `invS`. Use `ContinuousAt.add ?_ ?_` and prove the remaining obligations. Conclude with `tendsto_finset_sum S₁ fun w hw => ((continuous_sglI w).continuousAt.comp ((continuousAt_inv₀ (h1 w hw)).comp (continuous_ci w).continuousAt))`. Conclude with `tendsto_finset_sum S₂ fun v hv => ((continuous_sglF v).continuousAt.comp ((continuousAt_inv₀ (h2 v hv)).comp (continuous_cf v).continuousAt))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousAt_invS {y : AF F} (h1 : ∀ w ∈ S₁, ci w y ≠ 0) (h2 : ∀ v ∈ S₂, cf v y ≠ 0) :
     ContinuousAt (invS S₁ S₂) y := by
@@ -202,21 +200,19 @@ end GlobalTheory.InvIdem
 namespace GlobalTheory.InvIdem
 
 /- English proof (translation)
-Introduce `F _ _ S₁ S₂ ε hε x U hU`. Establish `hx : invS S₁ S₂ (ε * (x : AF F)) = ε * ((x⁻¹ : (AF F)ˣ) : AF F)` using `invS_mul hε x.mul_inv`. Establish `hci : ∀ w ∈ S₁, ci w (ε * (x : AF F)) ≠ 0`. Introduce `w hw h`. Rewrite `h` using `[map_mul, show ci w ε = fstA F ε w from rfl, hε.1 w hw, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `congrArg (ci w) x.mul_inv`. Rewrite `e` using `[map_mul, h, zero_mul, map_one]`. Conclude with `zero_ne_one e`. Establish `hcf : ∀ v ∈ S₂, cf v (ε * (x : AF F)) ≠ 0`. Introduce `v hv h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[map_mul, show cf v ε = evalV F v (sndA F ε) from rfl, hε.2.2.1 v hv, one_mul]`. Establish `e` using `congrArg (cf v) x.mul_inv`. Rewrite `e` using `[map_mul, h, zero_mul, map_one]`. Conclude with `zero_ne_one e`. Establish `hV1 : invS S₁ S₂ ⁻¹' U ∈ 𝓝 (ε * (x : AF F))` using `(continuousAt_invS hci hcf).preimage_mem_nhds (by rw [hx]; exact hU)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hV2 : {y : AF F | (∀ w ∈ S₁, ci w y ≠ 0) ∧ ∀ v ∈ S₂, cf v y ≠ 0} ∈ 𝓝 (ε * (x : AF F))` using `((Filter.eventually_all_finset S₁).2 fun w hw => (continuous_ci w).continuousAt.eventually_ne (hci w hw)).and ((Filter.eventually_all_finset S₂).2 fun v hv => (continuous_cf v).continuousAt.eventually_ne (hcf v hv))`. Use `⟨_, Filter.inter_mem hV1 hV2, fun t ht => ?_⟩` and prove the remaining obligations. Establish `htne : ε ≠ 0 → t ≠ 0`. Introduce `hε0 ht0`. Substitute `ht0` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hε0` to reduce the goal to its premises. Establish `hB` using `ht.2`. Simplify using `only [Set.mem_setOf_eq, map_zero, mul_zero] at hB`. Use `ext_c (fun w => ?_) (fun v => ?_)` and prove the remaining obligations. Rewrite using `[map_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hε.2.1 w fun hw => hB.1 w hw rfl`. Rewrite using `[map_zero]`. Conclude with `hε.2.2.2 v fun hv => hB.2 v hv rfl`. Use `⟨htne, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hε0 : ε = 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Substitute `hε0` using the available equality. Establish `e` using `mem_of_mem_nhds hU`. Rewrite `e` using `[zero_mul]`. Rewrite using `[zero_mul]` and apply the resulting hypothesis. Establish `ht0` using `htne hε0`.
-
-Establish `e` using `invS_mul (y := algebraMap F (AF F) t) (z := algebraMap F (AF F) t⁻¹) hε (by rw [← map_mul, mul_inv_cancel₀ ht0, map_one])`. Rewrite using `[← e]`. Conclude with `ht.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_cont : ∀ (F : Type) [Field F] [NumberField F] (S₁ : Finset (InfinitePlace F))
     (S₂ : Finset (HeightOneSpectrum (𝓞 F))) (ε : AF F), IsPlacesIdem S₁ S₂ ε → ∀ x : (AF F)ˣ, ∀ U : Set (AF F),

@@ -102,9 +102,9 @@ def InterpCurvBound : Prop :=
       IsData Cμ C₀ C₂ C₃ CP U H₀ H r G → Conclusion Cμ κ χ C U H₀ H r G
 
 /- English proof (translation)
-Establish `h : ContDiff ℝ ∞ fun y : ℝ => Real.smoothTransition (3 - y)` using `Real.smoothTransition.contDiff.comp (contDiff_const.sub contDiff_id)`. Use `⟨(h.pow 2).contDiffOn, fun y _ => ⟨sq_nonneg _, ?_⟩, fun y hy => ?_, fun y hy => ?_, ?_⟩` and prove the remaining obligations. Conclude with `pow_le_one₀ (Real.smoothTransition.nonneg _) (Real.smoothTransition.le_one _)`. Rewrite using `[Real.smoothTransition.one_of_one_le (by linarith [hy.2]), one_pow]`. Rewrite using `[Real.smoothTransition.zero_of_nonpos (by linarith)]; norm_num`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Real.sqrt_sq (Real.smoothTransition.nonneg _)]`. Conclude with `h.contDiffOn`.
+A detailed English derivation is pending.
 -/
 theorem isCutoff_sq : IsCutoff fun y => Real.smoothTransition (3 - y) ^ 2 := by
   have h : ContDiff ℝ ∞ fun y : ℝ => Real.smoothTransition (3 - y) :=
@@ -117,29 +117,27 @@ theorem isCutoff_sq : IsCutoff fun y => Real.smoothTransition (3 - y) ^ 2 := by
     exact h.contDiffOn
 
 /- English proof (translation)
-Set `L : (Unit → ℂ) →L[ℝ] ℝ` to `Complex.reCLM.comp (ContinuousLinearMap.proj ())`. Establish `hu : ContDiff ℝ ∞ fun z : Unit → ℂ => 1 + (z ()).re` using `contDiff_const.add L.contDiff`. Establish `hr : ContDiff ℝ ∞ fun z : Unit → ℂ => Real.exp (1 + (z ()).re)` using `hu.exp`. Establish `ho : IsOpen {z : Unit → ℂ | 0 < (z ()).re}` using `isOpen_lt continuous_const L.continuous`. Establish `h1 : (1 : Matrix Unit Unit ℂ).PosDef` using `PosDef.one`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∀ z : Unit → ℂ, (((Real.exp (1 + (z ()).re) : ℝ) : ℂ) • (1 : Matrix Unit Unit ℂ)).PosDef` using `fun z => h1.smul (by exact_mod_cast Real.exp_pos _)`. Establish `hd : ∀ z ξ : Unit → ℂ, del (fun x : Unit → ℂ => ((1 + (x ()).re : ℝ) : ℂ)) z ξ = ξ () / 2`. Introduce `z ξ`. Establish `: HasFDerivAt (fun x : Unit → ℂ => ((1 + (x ()).re : ℝ) : ℂ)) (Complex.ofRealCLM.comp L) z` using `Complex.ofRealCLM.hasFDerivAt.comp z (L.hasFDerivAt.const_add 1)`. Rewrite using `[del_eq_of_hasFDerivAt this, linPart_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `apply Complex.ext <;> simp [L] <;> ring`. Establish `hl : ∀ z : Unit → ℂ, leviForm (fun x : Unit → ℂ => 1 + (x ()).re) z = 0`. Introduce `z`. Establish `h : ContDiffAt ℂ 2 (fun x : Unit → ℂ => 1 + x ()) z` using `contDiffAt_const.add (contDiff_apply ℂ ℂ ()).contDiffAt`. Simplify using `using leviForm_re_eq_zero h`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hg : ∀ ξ : Unit → ℂ, gnorm (1 : Matrix Unit Unit ℂ) ξ = ‖ξ ()‖`. Introduce `ξ`. Simplify using `[gnorm, form, dotProduct, Complex.norm_def, Complex.normSq_apply]`. Use `⟨⟨ho, fun _ _ => contDiffOn_const, fun _ _ => h1⟩, ⟨ho, fun a b => ?_, fun z _ => hp z⟩, hr.contDiffOn, fun z hz => Real.exp_le_exp.2 (le_add_of_nonneg_right (le_of_lt hz)), fun _ _ => contDiffOn_const, fun _ _ => h1.posSemidef, fun z hz v => ?_, fun z _ => ⟨h1, h1.posSemidef, fu …` and prove the remaining obligations. Conclude with `((Complex.ofRealCLM.contDiff.comp hr).mul contDiff_const).contDiffOn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ (form (1 : Matrix Unit Unit ℂ) v v).re`. Rewrite using `[← gnorm_sq h1.posSemidef]`. Check the signs of the components of the expression. Establish `he : 1 ≤ Real.exp (1 + (z ()).re)` using `Real.one_le_exp (by linarith [hz.out])`. Rewrite using `[form_smul, Complex.re_ofReal_mul, Real.rpow_one]`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨mul_le_mul_of_nonneg_right ?_ h0, le_rfl⟩` and prove the remaining obligations. Conclude with `(Real.rpow_le_one_of_one_le_of_nonpos he (by norm_num)).trans he`. Use `beta_reduce`. Rewrite using `[conn_smul (H := fun _ => 1) (hr.differentiable (by simp) z) (Real.exp_pos _).ne' (mContDiffAt_const _) (by simp)]`. Simplify using `only [Real.log_exp, hd, add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(opNorm_smul_le h1 h1.posSemidef _ _).trans ?_` and prove the remaining obligations. Establish `h2 : opNorm (1 : Matrix Unit Unit ℂ) 1 1 ≤ 1` using `opNorm_le_of_bound zero_le_one fun v => by rw [hg, hg]; simp [mulVec, dotProduct]`. Use `(mul_le_of_le_one_right (norm_nonneg _) h2).trans ?_` and prove the remaining obligations. Rewrite using `[hg, norm_div]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[curv_smul (H := fun _ => 1) (hr.contDiffAt.of_le (by norm_cast)) (Real.exp_pos _).ne' (mContDiffAt_const _) (by simp)]`. Simplify using `[hl]`. Establish `h2` using `del_ofReal_comp (t := fun x : Unit → ℂ => 1 + (x ()).re) (z := z) (Real.hasDerivAt_exp _) (hu.differentiable (by simp) z) ξ`. Rewrite `h2` using `[hd]`. Establish `h3 : ((Real.exp (1 + (z ()).re) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Real.exp_pos _).ne'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : -Complex.I * (gradForm (fun x : Unit → ℂ => Real.exp (1 + (x ()).re)) z ξ ξ / ((Real.exp (1 + (z ()).re) : ℝ) : ℂ) ^ 2) = ((‖ξ ()‖ ^ 2 / (8 * Real.pi) : ℝ) : ℂ)`. Establish `hπ : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Rewrite using `[gradForm, dbar_ofReal, h2, kappa]`. Generalize the expression as in `Real.exp (1 + (z ()).re) = x at h3`. Use `push_cast`.
+Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← Complex.mul_conj']`. Simplify using `only [smul_eq_mul, map_mul, Complex.conj_ofReal, map_div₀, map_ofNat]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h5` using `diagVal_formOf_eq_gnorm_sq h1.posSemidef ξ`. Simplify using `only [diagVal] at h5 ⊢`. Rewrite using `[h4, Complex.ofReal_re, Complex.ofReal_one, one_mul, h5, hg]`. Conclude with `div_le_self (sq_nonneg _) (by linarith [Real.pi_gt_three])`. Rewrite using `[formAbsLe_iff]`.
-
-Introduce `ξ`. Rewrite using `[diagVal_formOf_eq_gnorm_sq h1.posSemidef]`. Simplify using `[diagVal, ddc, hl, sq_nonneg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isData_halfPlane :
     IsData (ι := Unit) (n := Unit) 1 0 1 0 1 {z | 0 < (z ()).re} (fun _ => 1)

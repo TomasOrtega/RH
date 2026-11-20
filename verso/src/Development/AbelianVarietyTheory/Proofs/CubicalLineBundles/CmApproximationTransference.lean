@@ -9,25 +9,25 @@ namespace GlobalTheory.CMTransference
 open NumberField Matrix Module Submodule ReciprocityTheory.MultiplicativeHeights ComplexConjugate
 
 /- English proof (translation)
-Use `set n := finrank ℝ V with hn`. Establish `hcard : Fintype.card ι = n` using `(finrank_eq_card_basis b).symm`. Establish `hli : LinearIndependent ℝ bd`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (inner ℝ (b i)) hg` as an intermediate fact. Simplify `this` using `[inner_sum, real_inner_smul_right, hd]`. Set `Bd : Basis ι ℝ V` to `Basis.mk hli (hli.span_eq_top_of_card_eq_finrank' hcard).ge`. Establish `hBd : ∀ i, Bd i = bd i` using `fun i => Basis.mk_apply _ _ _`. Set `e : ι ≃ Fin n` to `Fintype.equivFinOfCardEq hcard`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ : V ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin n)` to `(stdOrthonormalBasis ℝ V).repr`. Set `B' : Basis (Fin n) ℝ (EuclideanSpace ℝ (Fin n))` to `(Bd.reindex e).map φ.toLinearEquiv`. Establish `hB' : ∀ j, B' j = φ (bd (e.symm j))` using `fun j => by simp [B', hBd]`. Establish `hmin' : ∀ x ∈ span ℤ (Set.range B'), x ≠ 0 → lam ≤ ‖x‖`. Introduce `x hx hx0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `(mem_span_range_iff_exists_fun ℤ).1 hx`. Establish `hw : (∑ i, c i • B' i) = φ (∑ i, c i • bd (e.symm i))`. Simplify using `[hB', map_sum, map_zsmul]`. Establish `hwmem : (∑ i, c i • bd (e.symm i)) ∈ span ℤ (Set.range bd)` using `sum_mem fun i _ => zsmul_mem (subset_span (Set.mem_range_self _)) _`. Rewrite using `[hw, LinearIsometryEquiv.norm_map]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hmin _ hwmem ?_` and prove the remaining obligations. Introduce `h0`. Apply `hx0` to reduce the goal to its premises. Rewrite using `[hw, h0, map_zero]`. Take `⟨y, hyli, hyint, hynorm⟩` from `ReciprocityTheory.ChartRestriction.G.T0.transference_dual B' lam hlam hmin'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `yV : Fin n → V` to `fun i => φ.symm (y i)`. Establish `hyVint : ∀ i k, ∃ m : ℤ, inner ℝ (yV i) (bd k) = m`. Introduce `i k`. Take `⟨m, hm⟩` from `hyint i (e k)`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hm, hB', Equiv.symm_apply_apply, ← LinearIsometryEquiv.inner_map_map φ]`. Simplify using `[yV]`. Establish `hyVmem : ∀ i, yV i ∈ span ℤ (Set.range b)`. Introduce `i`. Establish `hrep : ∀ k, b.repr (yV i) k = inner ℝ (yV i) (bd k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Establish `h : inner ℝ (yV i) (bd k) = ∑ l, b.repr (yV i) l * inner ℝ (b l) (bd k)` using `by conv_lhs => rw [← b.sum_repr (yV i)]`. Rewrite using `[sum_inner]`. Repeatedly rewrite using `[real_inner_smul_left]`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hd]`. Rewrite using `[← b.sum_repr (yV i)]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `hyVint i k`. Rewrite using `[hrep, hm, Int.cast_smul_eq_zsmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zsmul_mem (subset_span (Set.mem_range_self k)) m`. Use `⟨yV, hyVmem, hyli.map' φ.symm.toLinearEquiv.toLinearMap φ.symm.toLinearEquiv.ker, fun i => ?_⟩` and prove the remaining obligations. Establish `: ‖yV i‖ = ‖y i‖` using `by simp [yV]`. Rewrite using `[this]`. Conclude with `hynorm i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_short_family {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
     [FiniteDimensional ℝ V] {ι : Type*} [Fintype ι] [DecidableEq ι] (b : Basis ι ℝ V) (bd : ι → V)
@@ -97,13 +97,11 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {σ : ι 
 omit [NumberField K] [Fintype ι] in
 
 /- English proof (translation)
-Establish `hcc : ∀ τ : K →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ` using `fun τ => by ext x; simp`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(i | i) (j | j) h`. Conclude with `congrArg _ (hσ h)`. Conclude with `absurd ⟨i, h⟩ ((hcm (σ j)).1 ⟨j, rfl⟩)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `absurd ⟨j, h.symm⟩ ((hcm (σ i)).1 ⟨i, rfl⟩)`. Establish `h'` using `congrArg ComplexEmbedding.conjugate h`. Simplify using `only [Sum.elim_inr, hcc] at h'`. Conclude with `congrArg _ (hσ h')`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `h : ∃ i, σ i = τ`. Take `⟨i, hi⟩` from `h`. Conclude with `⟨Sum.inl i, hi⟩`. Rewrite `h` using `[hcm, not_not]`. Take `⟨i, hi⟩` from `h`.
-
-Conclude with `⟨Sum.inr i, by simp only [Sum.elim_inr, hi, hcc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sumElim_bijective (hσ : Function.Injective σ)
     (hcm : ∀ τ : K →+* ℂ, (∃ i, σ i = τ) ↔ ¬ ∃ i, σ i = ComplexEmbedding.conjugate τ) :
@@ -127,7 +125,7 @@ theorem sumElim_bijective (hσ : Function.Injective σ)
       exact ⟨Sum.inr i, by simp only [Sum.elim_inr, hi, hcc]⟩
 
 /- English proof (translation)
-Rewrite using `[← Embeddings.card K ℂ, ← Fintype.card_of_bijective (sumElim_bijective hσ hcm), Fintype.card_sum, two_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_eq_two_mul (hσ : Function.Injective σ)
     (hcm : ∀ τ : K →+* ℂ, (∃ i, σ i = τ) ↔ ¬ ∃ i, σ i = ComplexEmbedding.conjugate τ) :
@@ -136,9 +134,9 @@ theorem finrank_eq_two_mul (hσ : Function.Injective σ)
     Fintype.card_sum, two_mul]
 
 /- English proof (translation)
-Establish `h1` using `trace_eq_sum_embeddings (K := ℚ) (L := K) (E := ℂ) (x := y)`. Establish `h2 : ∑ σ : K →ₐ[ℚ] ℂ, σ y = ∑ φ : K →+* ℂ, φ y` using `(Fintype.sum_equiv (RingHom.equivRatAlgHom K ℂ) (fun φ => φ y) (fun σ => σ y) (fun φ => by simp [RingHom.equivRatAlgHom_apply])).symm`. Rewrite `h1` using `[h2, ← (sumElim_bijective hσ hcm).sum_comp (fun φ : K →+* ℂ => φ y), Fintype.sum_sum_type]`. Establish `h` using `congrArg Complex.re h1`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, ComplexEmbedding.conjugate_coe_eq, Complex.add_re, Complex.re_sum, Complex.conj_re] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[two_mul, ← h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_eq_two_mul_sum_re (hσ : Function.Injective σ)
     (hcm : ∀ τ : K →+* ℂ, (∃ i, σ i = τ) ↔ ¬ ∃ i, σ i = ComplexEmbedding.conjugate τ) (y : K) :
@@ -162,27 +160,23 @@ section Lattice
 variable {K : Type} [Field K] [NumberField K] {r : ℕ}
 
 /- English proof (translation)
-Establish `: Module.Finite (𝓞 K) L` using `Module.Finite.iff_fg.2 hL.1`. Establish `: Module.Finite ℤ L` using `Module.Finite.trans (𝓞 K) L`. Establish `: Module.Free ℤ L` using `Module.free_of_finite_type_torsion_free'`. Set `b0` to `Module.finBasis ℤ L`. Set `v : Fin (finrank ℤ L) → Fin r → K` to `fun i => (b0 i : Fin r → K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hli : LinearIndependent ℤ v` using `b0.linearIndependent.map' (L.subtype.restrictScalars ℤ) (by`. Rewrite using `[LinearMap.ker_eq_bot]`. Conclude with `Subtype.val_injective)`. Establish `hmem : ∀ x, x ∈ L ↔ x ∈ span ℤ (Set.range v)`. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h` using `congrArg Subtype.val (b0.sum_repr ⟨x, hx⟩)`. Simplify using `only [AddSubmonoidClass.coe_finsetSum] at h`. Rewrite using `[← h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sum_mem fun i _ => zsmul_mem (subset_span (Set.mem_range_self i)) _`. Introduce `hx`. Take `⟨c, rfl⟩` from `(mem_span_range_iff_exists_fun ℤ).1 hx`. Conclude with `sum_mem fun i _ => zsmul_mem (b0 i).2 _`. Establish `hsp : ⊤ ≤ span ℚ (Set.range v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `key : ∀ x ∈ span K (L : Set (Fin r → K)), ∀ k : K, k • x ∈ span ℚ (Set.range v)`. Introduce `x hx`. Proceed by induction on `hx using span_induction with`. Consider the case `mem x hx`. Introduce `k`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm0, hm⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ K).2 (Algebra.IsAlgebraic.isAlgebraic k)).exists_integral_multiple`. Establish `h1 : (⟨m • k, hm⟩ : 𝓞 K) • x ∈ L` using `L.smul_mem _ hx`. Establish `h2` using `span_le_restrictScalars ℤ ℚ _ ((hmem _).1 h1)`. Establish `h3 : k • x = (m : ℚ)⁻¹ • ((⟨m • k, hm⟩ : 𝓞 K) • x)`. Use extensionality with `a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `: (m : K) ≠ 0` using `by exact_mod_cast hm0`. Express the relevant statement in the definitionally equal form `k * x a = (m : ℚ)⁻¹ • ((m • k) * x a)`. Rewrite using `[Rat.smul_def]`. Use `push_cast`. Rewrite using `[zsmul_eq_mul]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[h3]`. Conclude with `smul_mem _ _ h2`. Consider the case `zero => intro k`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy => intro k`. Rewrite using `[smul_add]`. Conclude with `add_mem (hx k) (hy k)`. Consider the case `smul a x _ hx => intro k`. Rewrite using `[smul_smul]`.
-
-Conclude with `hx _`. Introduce `x _`. Simplify using `using key x (hL.2 ▸ mem_top) 1`. Use `⟨_, Basis.mk ((LinearIndependent.iff_fractionRing ℤ ℚ).1 hli) hsp, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Basis.coe_mk]`.
-
-Conclude with `hmem x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratBasis {L : Submodule (𝓞 K) (Fin r → K)} (hL : IsLattice L) :
     ∃ (n : ℕ) (b : Basis (Fin n) ℚ (Fin r → K)),
@@ -236,28 +230,28 @@ theorem exists_ratBasis {L : Submodule (𝓞 K) (Fin r → K)} (hL : IsLattice L
   exact hmem x
 
 /- English proof (translation)
-Simplify using `[HermForm.h, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_add_left (S : HermForm K r) (x x' y : Fin r → K) :
     S.h (x + x') y = S.h x y + S.h x' y := by
   simp [HermForm.h, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[HermForm.h, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_add_right (S : HermForm K r) (x y y' : Fin r → K) :
     S.h x (y + y') = S.h x y + S.h x y' := by
   simp [HermForm.h, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[HermForm.h, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_smul_left (S : HermForm K r) (a : K) (x y : Fin r → K) :
     S.h (a • x) y = S.c a * S.h x y := by
   simp [HermForm.h, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [HermForm.h, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem h_smul_right (S : HermForm K r) (a : K) (x y : Fin r → K) :
     S.h x (a • y) = a * S.h x y := by
@@ -280,9 +274,9 @@ theorem traceForm_apply (S : HermForm K r) (x y : Fin r → K) :
     traceForm S x y = Algebra.trace ℚ K (S.h x y) := rfl
 
 /- English proof (translation)
-Use `hL.2 _ fun y hy => ?_` and prove the remaining obligations. Establish `h` using `ReciprocityTheory.ChartRestriction.G.FD.d4l2_dual_int (S.h z y) fun γ => by`. Take `⟨k, hk⟩` from `hz _ (L.smul_mem γ hy)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, traceForm_apply, mul_comm, ← h_smul_right]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨⟨_, h⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h_smul_left, map_intCast]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem discr_smul_mem [IsCMField K] {S : HermForm K r} {L : Submodule (𝓞 K) (Fin r → K)}
     (hL : IsSelfDual S L) {z : Fin r → K} (hz : ∀ y ∈ L, ∃ k : ℤ, traceForm S z y = k) :
@@ -305,7 +299,7 @@ variable {K : Type} [Field K] [NumberField K] {r : ℕ} {ι : Type} [Fintype ι]
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[embVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem embVec_add (τ : K →+* ℂ) (x y : Fin r → K) :
     embVec τ (x + y) = embVec τ x + embVec τ y := by
@@ -325,7 +319,7 @@ noncomputable def embDual (p : ℕ) (σ : ι → K →+* ℂ) (Q : ι → Matrix
 variable (p : ℕ) (σ : ι → K →+* ℂ) (Q : ι → Matrix (Fin r) (Fin r) ℂ)
 
 /- English proof (translation)
-Rewrite using `[norm_sub_rev, EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_emb_sub_sq (x : Fin r → K) (w : ι → Fin r → ℂ) :
     ‖(WithLp.toLp 2 fun ik : ι × Fin r => w ik.1 ik.2 : EuclideanSpace ℂ (ι × Fin r)) -
@@ -334,16 +328,16 @@ theorem norm_emb_sub_sq (x : Fin r → K) (w : ι → Fin r → ℂ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_emb_sq (x : Fin r → K) : ‖emb σ Q x‖ ^ 2 = majSq σ Q x := by
   rw [EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]
   rfl
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type, majSq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[normSq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖2 * sgn p k * (Q i *ᵥ embVec (σ i) x) k‖ ^ 2 = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Apply the tactic sequence `have : ‖sgn p k‖ = 1 := by unfold sgn; split_ifs <;> simp`. Rewrite using `[norm_mul, norm_mul, this]`. Simplify using `only [Complex.norm_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_embDual_sq (x : Fin r → K) : ‖embDual p σ Q x‖ ^ 2 = 4 * majSq σ Q x := by
   rw [EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type, majSq, Finset.mul_sum]
@@ -357,7 +351,7 @@ theorem norm_embDual_sq (x : Fin r → K) : ‖embDual p σ Q x‖ ^ 2 = 4 * maj
   ring
 
 /- English proof (translation)
-Rewrite using `[← norm_emb_sq, ← norm_emb_sq, Int.cast_smul_eq_zsmul, map_zsmul, ← Int.cast_smul_eq_zsmul ℝ, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem majSq_intCast_smul (d : ℤ) (x : Fin r → K) :
     majSq σ Q ((d : K) • x) = (d : ℝ) ^ 2 * majSq σ Q x := by
@@ -365,7 +359,7 @@ theorem majSq_intCast_smul (d : ℤ) (x : Fin r → K) :
     ← Int.cast_smul_eq_zsmul ℝ, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]
 
 /- English proof (translation)
-The claim follows from `Finset.single_le_sum (f := fun i => normSq (Q i *ᵥ embVec (σ i) x)) (fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _) (Finset.mem_univ i)`.
+A detailed English derivation is pending.
 -/
 theorem normSq_le_majSq (i : ι) (x : Fin r → K) :
     normSq (Q i *ᵥ embVec (σ i) x) ≤ majSq σ Q x :=
@@ -375,9 +369,9 @@ theorem normSq_le_majSq (i : ι) (x : Fin r → K) :
 variable {p σ Q}
 
 /- English proof (translation)
-Rewrite using `[traceForm_apply, trace_eq_two_mul_sum_re hσ hcm, PiLp.inner_apply, Fintype.sum_prod_type, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hQ, jForm, Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.inner]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(2 * sgn p k * (Q i *ᵥ embVec (σ i) x) k * conj ((Q i *ᵥ embVec (σ i) y) k)).re = _`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inner_emb_embDual {S : HermForm K r} (hσ : Function.Injective σ)
     (hcm : ∀ τ : K →+* ℂ, (∃ i, σ i = τ) ↔ ¬ ∃ i, σ i = ComplexEmbedding.conjugate τ)
@@ -397,49 +391,47 @@ theorem inner_emb_embDual {S : HermForm K r} (hσ : Function.Injective σ)
 end Embedding
 
 /- English proof (translation)
-Introduce `K _ _ _ ι _ _ r p S σ Q L la hσ hcm _ hla _ hQ hL hsd hmin μ`. Use `set d : ℝ := |(discr K : ℝ)| with hd`. Establish `hd0 : 0 < d` using `abs_pos.2 (by exact_mod_cast discr_ne_zero K)`. Establish `hdual : ∀ z : Fin r → K, z ≠ 0 → (∀ y ∈ L, ∃ k : ℤ, traceForm S z y = k) → la ^ 2 ≤ d ^ 2 * majSq σ Q z`. Introduce `z hz0 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hmin _ (discr_smul_mem hsd hz) (smul_ne_zero (by exact_mod_cast discr_ne_zero K) hz0)`. Use `hi.trans (normSq_le_majSq σ Q i _)` as an intermediate fact. Rewrite `this` using `[majSq_intCast_smul, ← sq_abs (discr K : ℝ)]`. Then use the resulting hypothesis. Establish `hnd : (traceForm S).Nondegenerate`. Use `LinearMap.BilinForm.Nondegenerate.ofSeparatingLeft fun z hz => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hz0`. Take `⟨m, hm⟩` from `exists_nat_gt (d ^ 2 * majSq σ Q z / la ^ 2)`. Establish `hm0 : ((m + 1 : ℕ) : ℚ) ≠ 0` using `by positivity`. Establish `h1` using `hdual (((m + 1 : ℕ) : ℚ)⁻¹ • z) (smul_ne_zero (inv_ne_zero hm0) hz0) (fun y _ => ⟨0, by rw [map_smul, LinearMap.smul_apply, hz y]; simp⟩)`. Establish `h2` using `majSq_intCast_smul σ Q ((m + 1 : ℕ) : ℤ) (((m + 1 : ℕ) : ℚ)⁻¹ • z)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Int.cast_smul_eq_zsmul, ← Int.cast_smul_eq_zsmul ℚ, smul_smul, Int.cast_natCast, mul_inv_cancel₀ hm0, one_smul]`. Rewrite `hm` using `[div_lt_iff₀ (by positivity), h2]`. Move the coercions through the operations in `at hm h1`. Establish `h3` using `mul_le_mul_of_nonneg_left h1 (sq_nonneg ((m : ℝ) + 1))`. Establish `h4 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : 0 < la ^ 2` using `by positivity`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg h4 h4) h5.le, mul_nonneg h4 h5.le]`. Take `⟨n, b, hb⟩` from `exists_ratBasis hL`. Set `b'` to `(traceForm S).dualBasis hnd b`. Establish `hV : finrank ℝ (EuclideanSpace ℂ (ι × Fin r)) = 2 * (Fintype.card ι * r)`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ, Complex.finrank_real_complex, finrank_euclideanSpace, Fintype.card_prod, Fintype.card_fin]`. Establish `hK : finrank ℚ (Fin r → K) = 2 * (Fintype.card ι * r)`. Rewrite using `[← Module.finrank_mul_finrank ℚ K, finrank_eq_two_mul hσ hcm, Module.finrank_fin_fun, mul_assoc]`. Establish `hn : Fintype.card (Fin n) = finrank ℝ (EuclideanSpace ℂ (ι × Fin r))`. Rewrite using `[hV, ← hK, finrank_eq_card_basis b]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinner : ∀ i j, inner ℝ (emb σ Q (b i)) (embDual p σ Q (b' j)) = if i = j then (1 : ℝ) else 0`. Introduce `i j`. Rewrite using `[inner_emb_embDual hσ hcm hQ, LinearMap.BilinForm.apply_dualBasis_left]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hli : LinearIndependent ℝ fun i => emb σ Q (b i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`. Use `congrArg (fun v => inner ℝ v (embDual p σ Q (b' j))) hg` as an intermediate fact. Simplify `this` using `[sum_inner, real_inner_smul_left, hinner]`. Set `B : Basis (Fin n) ℝ (EuclideanSpace ℂ (ι × Fin r))` to `Basis.mk hli (hli.span_eq_top_of_card_eq_finrank' hn).ge`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : ∀ i, B i = emb σ Q (b i)` using `fun i => Basis.mk_apply _ _ _`. Establish `hBmem : ∀ x ∈ span ℤ (Set.range B), ∃ l ∈ L, emb σ Q l = x`. Introduce `x hx`. Take `⟨c, rfl⟩` from `(mem_span_range_iff_exists_fun ℤ).1 hx`. Use `⟨∑ i, c i • b i, (hb _).2 (sum_mem fun i _ => zsmul_mem (subset_span (Set.mem_range_self i)) _), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_zsmul, hB]`. Establish `hlam : 0 < 2 * la / d` using `by positivity`. Establish `hmin' : ∀ x ∈ span ℤ (Set.range fun j => embDual p σ Q (b' j)), x ≠ 0 → 2 * la / d ≤ ‖x‖`. Introduce `x hx hx0`. Take `⟨c, rfl⟩` from `(mem_span_range_iff_exists_fun ℤ).1 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw : ∑ i, c i • embDual p σ Q (b' i) = embDual p σ Q (∑ i, c i • b' i)`. Simplify using `only [map_sum, map_zsmul]`. Rewrite `hx0`, the goal using `[hw]`. Establish `h1` using `hdual (∑ i, c i • b' i) (fun h => hx0 (by rw [h, map_zero])) (by`. Introduce `y hy`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨e, rfl⟩` from `(mem_span_range_iff_exists_fun ℤ).1 ((hb y).1 hy)`. Use `⟨∑ i, c i * e i, ?_⟩` and prove the remaining obligations. Establish `hbb : ∀ i j, traceForm S (b' i) (b j) = if j = i then 1 else 0` using `LinearMap.BilinForm.apply_dualBasis_left hnd b`. Simplify using `only [map_sum, map_zsmul, LinearMap.sum_apply, LinearMap.smul_apply, hbb]`. Simplify using `[mul_comm])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(pow_le_pow_iff_left₀ hlam.le (norm_nonneg _) two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[norm_embDual_sq, div_pow, div_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinner' : ∀ i j, inner ℝ (B i) (embDual p σ Q (b' j)) = if i = j then (1 : ℝ) else 0` using `fun i j => by rw [hB, hinner]`. Use `set t : ℕ := Fintype.card ι * r with ht`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hμ : μ = 4 * (t : ℝ) ^ 3 * (d / la)`. Simplify using `only [μ, ReciprocityTheory.ChartRestriction.G.FD.d5mu, ht]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `htt : (t : ℝ) ≤ (t : ℝ) ^ 2` using `by exact_mod_cast Nat.le_self_pow two_ne_zero t`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : (0 : ℝ) ≤ t` using `Nat.cast_nonneg t`. Establish `hq : 0 < d / la` using `by positivity`. Establish `hbound : ((2 * t : ℕ) : ℝ) ^ 2 / (2 * la / d) = 2 * (t : ℝ) ^ 2 * (d / la)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun w => ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hxb⟩` from `ReciprocityTheory.ChartRestriction.G.FD.BabaiCovering.cover B _ hinner' _ hlam hmin' (WithLp.toLp 2 fun ik : ι × Fin r => w ik.1 ik.2)`. Take `⟨l, hl, rfl⟩` from `hBmem x hx`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Rewrite `hxb` using `[norm_emb_sub_sq, hV, hbound]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hxb.trans ?_` and prove the remaining obligations. Rewrite using `[hμ]`. Use `push_cast`. Establish `h1` using `mul_le_mul_of_nonneg_right htt (by positivity : (0 : ℝ) ≤ (t : ℝ) ^ 4 * (d / la) ^ 2)`. Establish `h2 : (0 : ℝ) ≤ (t : ℝ) ^ 6 * (d / la) ^ 2` using `by positivity`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨y, hy, hyli, hyn⟩` from `exists_short_family B _ hinner' _ hlam hmin' choose l hl hly using fun i => hBmem _ (hy i)`. Establish `hlZ : LinearIndependent ℤ l`. Use `LinearIndependent.of_comp (emb σ Q).toIntLinearMap ?_` and prove the remaining obligations. Establish `: (emb σ Q).toIntLinearMap ∘ l = y` using `funext hly`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hyli.restrict_scalars' ℤ`. Establish `hlQ : LinearIndependent ℚ l` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 hlZ`. Establish `hspQ : span ℚ (Set.range l) = ⊤` using `hlQ.span_eq_top_of_card_eq_finrank' (by rw [Fintype.card_fin, hV, hK])`. Establish `hspK : ⊤ ≤ span K (Set.range l)` using `fun x _ => span_le_restrictScalars ℚ K _ (hspQ ▸ mem_top)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `c` to `(Basis.ofSpan hspK).reindex ((Basis.ofSpan hspK).indexEquiv (Pi.basisFun K (Fin r)))`. Establish `hc : ∀ j, ∃ i, l i = c j` using `fun j => Basis.ofSpan_subset hspK ⟨_, (Basis.reindex_apply _ _ j).symm⟩`. Use `⟨c, fun j => ?_, c.linearIndependent, fun j => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hc j`. Conclude with `hi ▸ hl i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi⟩` from `hc j`. Establish `h0` using `hyn i`. Rewrite using `[← hi, ← norm_emb_sq, hly]`. Use `pow_le_pow_left₀ (norm_nonneg _) (h0.trans ?_) 2` and prove the remaining obligations. Rewrite using `[hV, hbound, hμ]`.
-
-Establish `h1` using `mul_le_mul_of_nonneg_right htt (by positivity : (0 : ℝ) ≤ (t : ℝ) * (d / la))`. Establish `h2 : (0 : ℝ) ≤ (t : ℝ) ^ 3 * (d / la)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem cmApproximation_transference : ReciprocityTheory.ChartRestriction.G.FD.CoveringRadiusStatement := by
   classical

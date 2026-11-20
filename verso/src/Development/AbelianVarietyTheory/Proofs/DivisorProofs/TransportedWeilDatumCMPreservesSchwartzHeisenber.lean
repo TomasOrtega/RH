@@ -20,7 +20,7 @@ open Formalism.IndefR.DatumF
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rfl`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_eq_cAF (σ : E →ₐ[F] E) (z : AF F ⊗[F] E) : cA σ z = cAF σ z := by
   induction z using TensorProduct.induction_on with
@@ -29,7 +29,7 @@ theorem cA_eq_cAF (σ : E →ₐ[F] E) (z : AF F ⊗[F] E) : cA σ z = cAF σ z 
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_congr rfl fun k _ => Finset.sum_comm]`. Conclude with `Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triple_sum_comm_reverse {ι κ μ M : Type} [Fintype ι] [Fintype κ] [Fintype μ] [AddCommMonoid M] (f : ι → κ → μ → M) :
     ∑ i, ∑ k, ∑ l, f i k l = ∑ l, ∑ k, ∑ i, f i k l := by
@@ -38,13 +38,13 @@ theorem triple_sum_comm_reverse {ι κ μ M : Type} [Fintype ι] [Fintype κ] [F
   exact Finset.sum_comm
 
 /- English proof (translation)
-Establish `hB' : ∀ j l, ξ * incM F JB j l = incAF F E ξ₀ * incAF F E (JS⁻¹ j l)`. Introduce `j l`. Establish `h1` using `congrFun (congrFun hB j) l`. Rewrite `h1` using `[Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show inclR (F := F) (AF F) (ξ₀ * JS⁻¹ j l) = _`. Conclude with `map_mul _ _ _`. Establish `hA' : ∀ i k, incM F JA i k = incAF F E (JT k i)`. Introduce `i k`. Substitute `hA` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Both sides reduce to the same expression. Unfold `symp hTens symplOF hOF`. Use `congr 1`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[triple_sum_comm_reverse]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hA', cA_eq_cAF]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem symp_eq_symplOF (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E)
     (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (JA : Matrix (Fin nT) (Fin nT) E) (JB : Matrix (Fin nS) (Fin nS) E)
@@ -72,7 +72,7 @@ theorem symp_eq_symplOF (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS)
     _ = _ := by rw [hB']; ring
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, add_assoc x]`. Use `congrArg (· * f (x + (x₁ + x₀))) (congrArg ψ ?_)` and prove the remaining obligations. Establish `h2 : (2 : R) * ⅟2 = 1` using `mul_invOf_self 2`. Simplify using `only [dotProduct_add, add_dotProduct]`. Take the linear combination `(-(x₁ ⬝ᵥ y₀)) * h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem schr_schr_apply {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (x x₁ x₀ y₁ y₀ : κ → R) (f : (κ → R) → ℂ) :
@@ -85,9 +85,9 @@ theorem schr_schr_apply {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddCh
   linear_combination (-(x₁ ⬝ᵥ y₀)) * h2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Establish `hhalf : algebraMap F (AF F) (1 / 2) = ⅟(2 : AF F)`. Use `(invOf_eq_right_inv ?_).symm` and prove the remaining obligations. Rewrite using `[← map_ofNat (algebraMap F (AF F)) 2, ← map_mul]`. Evaluate the numerical expressions.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hf` using `co.form v w`. Simplify using `only [GlobalTheory.WeilSchrodinger.thetaTr, thetaSum, Darboux.rho, heisOF, schr, symplOHF, ← hs, hf, hhalf, map_add, Prod.fst_add, Prod.snd_add]`. Rewrite using `[← tsum_mul_left]`. Conclude with `tsum_congr fun x => schr_schr_apply ψ _ _ _ _ _ φ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaTr_rhoF (σ : E →ₐ[F] E) {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E}
     {ξ₀ : E} (ψ : AddChar (AF F) ℂ) {JA : Matrix (Fin nT) (Fin nT) E} {JB : Matrix (Fin nS) (Fin nS) E}
@@ -109,9 +109,9 @@ theorem thetaTr_rhoF (σ : E →ₐ[F] E) {nS nT : ℕ} {JS : Matrix (Fin nS) (F
   exact tsum_congr fun x => schr_schr_apply ψ _ _ _ _ _ φ
 
 /- English proof (translation)
-Establish `h1 : mtF σ JS g⁻¹ * mtF σ JS g = 1`. Simplify using `only [mtF, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Establish `h2 : mtF σ JS g * (b.1.1)ᵀ = 1`. Rewrite using `[hg, ← Matrix.transpose_mul, ← Units.val_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3 : mtF σ JS g⁻¹ = (b.1.1)ᵀ`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [actOF, actAB, hh, h3]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 -/
 theorem actOF_eq (σ : E →ₐ[F] E) {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E}
     {JA : Matrix (Fin nT) (Fin nT) E} {JB : Matrix (Fin nS) (Fin nS) E}
@@ -131,23 +131,21 @@ theorem actOF_eq (σ : E →ₐ[F] E) {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin n
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `φ hφ φ' hφ' h`. Establish `hn : ∀ a, ‖ψ a‖ = 1` using `hψ.2.1`. Take `⟨a₀, ha₀⟩` from `hψ.2.2.2`. Set `ι : (κ → F) → (κ → AF F)` to `fun ξ i => algebraMap F (AF F) (ξ i)`. Establish `hι0 : ι 0 = 0` using `by funext i; simp [ι]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[← sub_eq_zero]`. Establish `hΦ : (fun z => (φ - φ') (z + x)) ∈ GlobalTheory.WeilM.schA F κ` using `GlobalTheory.SchwartzTranslate.schA_translate F x (sub_mem hφ hφ')`. Establish `hc : Summable fun ξ => ‖(φ - φ') (ι ξ + x)‖`. Use `GlobalTheory.WeilM.summable_norm_of_mem_schA F hΦ using 1` and compare the differences between its conclusion and the goal.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `sφ : Summable fun ξ => ‖φ (ι ξ + x)‖`. Use `GlobalTheory.WeilM.summable_norm_of_mem_schA F (GlobalTheory.SchwartzTranslate.schA_translate F x hφ) using 1` and compare the differences between its conclusion and the goal. Establish `sφ' : Summable fun ξ => ‖φ' (ι ξ + x)‖`. Use `GlobalTheory.WeilM.summable_norm_of_mem_schA F (GlobalTheory.SchwartzTranslate.schA_translate F x hφ') using 1` and compare the differences between its conclusion and the goal. Establish `key` using `GlobalTheory.SchrodingerUniq.coeff_zero_eq_zero (χ := fun (y : κ → AF F) (ξ : κ → F) => ψ (ι ξ ⬝ᵥ y)) (c := fun ξ => (φ - φ') (ι ξ + x)) (fun y ξ => hn _) (fun y y' ξ => by simp only [dotProduct_add, AddChar.map_add_eq_mul]) (fun ξ => by simp only [dotProduct_zero, AddChar.map_ze …`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `Function.ne_iff.1 hξ`. Establish `hi' : ξ i ≠ 0` using `hi`. Use `⟨Pi.single i (algebraMap F (AF F) (ξ i)⁻¹ * a₀), ?_⟩` and prove the remaining obligations. Use `show ψ (ι ξ ⬝ᵥ Pi.single i (algebraMap F (AF F) (ξ i)⁻¹ * a₀)) ≠ 1`. Rewrite using `[dotProduct_single]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ψ (algebraMap F (AF F) (ξ i) * (algebraMap F (AF F) (ξ i)⁻¹ * a₀)) ≠ 1`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hi', map_one, one_mul]`. Conclude with `ha₀)`. Use `hc (fun y => ?_)`. Simplify `key` using `[hι0]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h'` using `h (x, y)`. Simplify using `only [GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.schr, AddChar.map_add_eq_mul] at h'`. Use `set b := ψ (⅟(2 : AF F) * (x ⬝ᵥ y))`. Establish `hb : b ≠ 0`. Introduce `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖b‖ = 1` using `hn _`. Rewrite `h1` using `[e, norm_zero]`. Conclude with `zero_ne_one h1`. Establish `s1 : Summable fun ξ : κ → F => ψ (ι ξ ⬝ᵥ y) * b * φ (ι ξ + x)` using `Summable.of_norm_bounded sφ fun ξ => by rw [norm_mul, norm_mul, hn, hn, one_mul, one_mul]`. Establish `s2 : Summable fun ξ : κ → F => ψ (ι ξ ⬝ᵥ y) * b * φ' (ι ξ + x)` using `Summable.of_norm_bounded sφ' fun ξ => by rw [norm_mul, norm_mul, hn, hn, one_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : ∑' ξ : κ → F, (ψ (ι ξ ⬝ᵥ y) * b * φ (ι ξ + x) - ψ (ι ξ ⬝ᵥ y) * b * φ' (ι ξ + x)) = 0`. Rewrite using `[s1.tsum_sub s2, sub_eq_zero]`. Conclude with `h'`. Establish `e2 : ∑' ξ : κ → F, (φ - φ') (ι ξ + x) * ψ (ι ξ ⬝ᵥ y) = b⁻¹ * ∑' ξ : κ → F, (ψ (ι ξ ⬝ᵥ y) * b * φ (ι ξ + x) - ψ (ι ξ ⬝ᵥ y) * b * φ' (ι ξ + x))`. Rewrite using `[← tsum_mul_left]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `ξ`. Simplify using `only [Pi.sub_apply]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e2, e, mul_zero]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schr_theta_inj (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) (κ : Type) [Fintype κ] :
     ∀ φ ∈ schA F κ, ∀ φ' ∈ schA F κ,
@@ -203,16 +201,16 @@ theorem schr_theta_inj (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) (κ : Typ
     rw [e2, e, mul_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `cA_eq_cAF σ (M i j)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_cA_eq (σ : E →ₐ[F] E) {n m : ℕ} (M : Matrix (Fin n) (Fin m) (AF F ⊗[F] E)) :
     M.map (cA σ) = M.map (sigR (AF F) σ) := by
   ext i j; exact cA_eq_cAF σ (M i j)
 
 /- English proof (translation)
-Establish `ha : a.1.1ᵀ * incM F JA * a.1.1.map (cA σ) = incM F JA` using `a.2`. Use `show Formalism.UG.cT _ _ * _ * _ = _`. Use `congrArg Matrix.transpose ha` as an intermediate fact. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, hA] at this`. Unfold `Formalism.UG.cT JR`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_cA_eq]`. Establish `e : (incM F JTᵀ)ᵀ = incM F JT`. Simplify using `[incM, Matrix.transpose_map]`. Rewrite `this` using `[e]`. Conclude with `(Matrix.mul_assoc _ _ _).trans this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memT_of_UG (σ : E →ₐ[F] E) {nT : ℕ} (JT JA : Matrix (Fin nT) (Fin nT) E) (hA : JA = JTᵀ)
     (a : UG (cA σ) (incM F JA)) : (a.1 : GL (Fin nT) (AF F ⊗[F] E)) ∈ HR (AF F) σ JT := by
@@ -228,11 +226,11 @@ theorem memT_of_UG (σ : E →ₐ[F] E) {nT : ℕ} (JT JA : Matrix (Fin nT) (Fin
   exact (Matrix.mul_assoc _ _ _).trans this
 
 /- English proof (translation)
-Establish `hb : b.1.1ᵀ * incM F JB * b.1.1.map (cA σ) = incM F JB` using `b.2`. Establish `hxi : IsUnit (incAF F E ξ₀)` using `(isUnit_iff_ne_zero.2 hξ₀).map _`. Establish `hsc : (incM F (ξ₀ • JS⁻¹) : Matrix (Fin nS) (Fin nS) (AF F ⊗[F] E)) = (incAF F E ξ₀ : AF F ⊗[F] E) • (incM F JS⁻¹ : Matrix (Fin nS) (Fin nS) (AF F ⊗[F] E))`. Use extensionality with `i j`. Simplify using `[incM, incAF]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `t1 : ∀ (r : AF F ⊗[F] E) (X Y : Matrix (Fin nS) (Fin nS) (AF F ⊗[F] E)), X * (r • Y) = r • (X * Y)` using `fun r X Y => Matrix.mul_smul X r Y`. Establish `t2 : ∀ (r : AF F ⊗[F] E) (X Y : Matrix (Fin nS) (Fin nS) (AF F ⊗[F] E)), (r • X) * Y = r • (X * Y)` using `fun r X Y => Matrix.smul_mul r X Y`. Establish `e1` using `congrArg (fun M => ξ • M) hb`. Rewrite `e1` using `[← t2, ← t1, hB, hsc]`. Establish `e2 : b.1.1ᵀ * ((incAF F E ξ₀ : AF F ⊗[F] E) • incM F JS⁻¹) * b.1.1.map (cA σ) = (incAF F E ξ₀ : AF F ⊗[F] E) • (b.1.1ᵀ * incM F JS⁻¹ * b.1.1.map (cA σ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[t1, t2]`. Rewrite `e1` using `[e2]`. Conclude with `hxi.smul_left_cancel.1 e1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem keeps_inv_gram (σ : E →ₐ[F] E) {nS : ℕ} (JS JB : Matrix (Fin nS) (Fin nS) E) (ξ₀ : E) (hξ₀ : ξ₀ ≠ 0)
     (ξ : AF F ⊗[F] E) (hB : ξ • incM F JB = incM F (ξ₀ • JS⁻¹)) (b : UG (cA σ) (incM F JB)) :
@@ -258,13 +256,11 @@ theorem keeps_inv_gram (σ : E →ₐ[F] E) {nS : ℕ} (JS JB : Matrix (Fin nS) 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hBB : b.1.1 * (b⁻¹).1.1 = 1` using `Units.mul_inv b.1`. Establish `hBB' : (b⁻¹).1.1 * b.1.1 = 1` using `Units.inv_mul b.1`. Establish `hdu : IsUnit JS.det` using `hdet.isUnit`. Establish `hPQ : incM F JS⁻¹ * incM F JS = 1`. Rewrite using `[incM, incM, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hdu, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQP : incM F JS * incM F JS⁻¹ = 1`. Rewrite using `[incM, incM, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hdu, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hCC : (b⁻¹).1.1.map (cA σ) * b.1.1.map (cA σ) = 1`. Use `map_mul ((cA σ).toRingHom.mapMatrix : Matrix (Fin nS) (Fin nS) (AF F ⊗[F] E) →+* Matrix (Fin nS) (Fin nS) (AF F ⊗[F] E)) (b⁻¹).1.1 b.1.1` as an intermediate fact. Rewrite `this` using `[hBB', map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Establish `key` using `GlobalTheory.WeilSchrodinger.matchPair_inv_transpose _ _ _ _ _ _ hBB hPQ hQP hCC (keeps_inv_gram σ JS JB ξ₀ hξ₀ ξ hB b)`. Use `⟨⟨(b⁻¹).1.1ᵀ, b.1.1ᵀ, by rw [← Matrix.transpose_mul, hBB, Matrix.transpose_one], by rw [← Matrix.transpose_mul, hBB', Matrix.transpose_one]⟩, rfl, ?_⟩` and prove the remaining obligations. Use `show Formalism.UG.cT _ _ * _ * _ = _`. Unfold `Formalism.UG.cT JR`.
-
-Rewrite using `[← map_cA_eq, Matrix.transpose_map, Matrix.transpose_transpose]`. Conclude with `key`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memS_of_UG (σ : E →ₐ[F] E) {nS : ℕ} (JS JB : Matrix (Fin nS) (Fin nS) E) (hdet : JS.det ≠ 0) (ξ₀ : E)
     (hξ₀ : ξ₀ ≠ 0) (ξ : AF F ⊗[F] E) (hB : ξ • incM F JB = incM F (ξ₀ • JS⁻¹)) (b : UG (cA σ) (incM F JB)) :
@@ -291,7 +287,7 @@ theorem memS_of_UG (σ : E →ₐ[F] E) {nS : ℕ} (JS JB : Matrix (Fin nS) (Fin
   exact key
 
 /- English proof (translation)
-Take `⟨G, hG, hGm⟩` from `memS_of_UG σ JS JB hdet ξ₀ hξ₀ ξ hB b`. Conclude with `⟨(⟨G, hGm⟩ : HR (AF F) σ JS), (⟨a.1, memT_of_UG σ JT JA hA a⟩ : HR (AF F) σ JT), rfl, hG⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem match_pairF (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E)
     (hdet : JS.det ≠ 0) (ξ₀ : E) (hξ₀ : ξ₀ ≠ 0) (JA : Matrix (Fin nT) (Fin nT) E) (JB : Matrix (Fin nS) (Fin nS) E)
@@ -302,7 +298,7 @@ theorem match_pairF (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fi
   exact ⟨(⟨G, hGm⟩ : HR (AF F) σ JS), (⟨a.1, memT_of_UG σ JT JA hA a⟩ : HR (AF F) σ JT), rfl, hG⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hξc hstd JA JB ξ hA hBξ κ _ co hco φ hφ`. Conclude with `{ quasi := GlobalTheory.T.thetaTransform_rationalDarboux_quasiInvariant_cm F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hξc hstd JA JB ξ hA hBξ κ co hco φ hφ level := GlobalTheory.T.thetaTransform_hasLevel_cmExtension F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hξc hstd JA JB ξ hA hBξ κ co hco φ …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isThetaFunOF_thetaTr : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
@@ -325,17 +321,17 @@ theorem isThetaFunOF_thetaTr : ∀ (F E : Type) [Field F] [NumberField F] [Field
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hξc χS χT hχS hχT rS rT ω hω JA JB ξ hA hBξ κ _ co hco om htr`. Establish `hstd : IsStd B.ψ` using `hB.std`. Establish `hchar : IsCharAF F B.ψ` using `hω.std.1`. Establish `key : ∀ p : UG (cA σ) (incM F JA) × UG (cA σ) (incM F JB), ∃ (g : Formalism.IndefR.DatumF.GAF σ JS) (h : Formalism.IndefR.DatumF.GAF σ JT), Formalism.IndefR.DatumF.mtF σ JT h = p.1.1.1 ∧ Formalism.IndefR.DatumF.mtF σ JS g = (p.2⁻¹).1.1ᵀ` using `fun p => match_pairF σ JS JT hS.2 ξ₀ hξ₀ JA JB ξ hA hBξ p.1 p.2`. Establish `pres : ∀ p, ∀ φ ∈ schA F κ, om p φ ∈ schA F κ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p φ hφ`. Take `⟨g, h, hh, hg⟩` from `key p`. Conclude with `(htr p.1 p.2 g h hh hg φ hφ).1`. Use `⟨pres, fun p w φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨a, b⟩` from `p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, h, hh, hg⟩` from `key (a, b)`. Establish `hs` using `symp_eq_symplOF (F := F) σ JS JT ξ₀ JA JB ξ hA hBξ`. Establish `hrho : ∀ w', ∀ φ' ∈ schA F κ, co.rho B.ψ w' φ' ∈ schA F κ` using `fun w' φ' h' => GlobalTheory.HeisSchA.schr_mem_schA B.ψ hstd _ φ' h'`. Establish `h1` using `htr a b g h hh hg _ (hrho w φ hφ)`. Establish `h2` using `htr a b g h hh hg _ hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF` using `isThetaFunOF_thetaTr F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hξc hω.std JA JB ξ hA hBξ κ co hco φ hφ`. Establish `E1` using `hω.om_heis g h w _ hF`. Establish `E2` using `thetaTr_rhoF σ B.ψ hs co w φ`. Establish `E3` using `thetaTr_rhoF σ B.ψ hs co (actAB (cA σ) (a, b) w) (om (a, b) φ)`. Establish `E4` using `actOF_eq σ a b g h hh hg w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E : GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ (om (a, b) (co.rho B.ψ w φ)) = GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ (co.rho B.ψ (actAB (cA σ) (a, b) w) (om (a, b) φ))`. Use `h1.2.trans ?_` and prove the remaining obligations. Use `(congrArg (ω (g, h)) E2).trans ?_` and prove the remaining obligations. Use `E1.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ E3.symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `congrArg₂ (Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ) E4 h2.2.symm`. Unfold `GlobalTheory.WeilSchrodinger.thetaTr Darboux.rho at E`. Use `schr_theta_inj B.ψ hchar κ _ h1.1 _ (hrho _ _ h2.1) fun v => ?_` and prove the remaining obligations. Take `⟨v', rfl⟩` from `co.e.surjective v`. Conclude with `congrFun E v'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pres_impl : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

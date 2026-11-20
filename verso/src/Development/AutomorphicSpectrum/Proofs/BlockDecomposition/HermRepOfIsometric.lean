@@ -19,7 +19,7 @@ namespace GlobalTheory.CompanionTheory.MPDict.IsomT
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show (X.presheaf.map (homOfLE h₂).op).hom ((X.presheaf.map (homOfLE h₁).op).hom (u : Γ(X, U))) = (X.presheaf.map (homOfLE (h₂.trans h₁)).op).hom (u : Γ(X, U))`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem res_twice {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (u : Γ(X, U)ˣ) :
     res h₂ (res h₁ u) = res (h₂.trans h₁) u := by
@@ -30,7 +30,7 @@ theorem res_twice {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (u : Γ(X,
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `hcov : W ≤ ⨆ i, W ⊓ V i`. Rewrite using `[← inf_iSup_eq, hc, inf_top_eq]`. Use `TopCat.Sheaf.eq_of_locally_eq' X.sheaf (fun i => W ⊓ V i) W (fun i => homOfLE inf_le_left) hcov _ _ fun i => ?_` and prove the remaining obligations. Conclude with `congrArg Units.val (h i)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem units_ext_cover {ι : Type} (V : ι → X.Opens) (hc : ⨆ i, V i = ⊤) {W : X.Opens}
     {f g : Γ(X, W)ˣ} (h : ∀ i, res (inf_le_left : W ⊓ V i ≤ W) f = res inf_le_left g) : f = g := by
@@ -42,11 +42,11 @@ theorem units_ext_cover {ι : Type} (V : ι → X.Opens) (hc : ⨆ i, V i = ⊤)
   exact congrArg Units.val (h i)
 
 /- English proof (translation)
-Establish `hcov : W ≤ ⨆ i, W ⊓ V i`. Rewrite using `[← inf_iSup_eq, hc, inf_top_eq]`. Take `⟨s, hs, -⟩` from `TopCat.Sheaf.existsUnique_gluing' X.sheaf (fun i => W ⊓ V i) W (fun i => homOfLE inf_le_left) hcov (fun i => ((f i : Γ(X, W ⊓ V i)))) (fun i j => congrArg Units.val (hf i j))`. Take `⟨t, ht, -⟩` from `TopCat.Sheaf.existsUnique_gluing' X.sheaf (fun i => W ⊓ V i) W (fun i => homOfLE inf_le_left) hcov (fun i => (((f i)⁻¹ : Γ(X, W ⊓ V i)ˣ) : Γ(X, W ⊓ V i))) (fun i j => by`. Use `congrArg Units.val (congrArg (·⁻¹) (hf i j))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[← map_inv, ← map_inv]`. Conclude with `this)`. Establish `hst : s * t = 1`. Use `TopCat.Sheaf.eq_of_locally_eq' X.sheaf (fun i => W ⊓ V i) W (fun i => homOfLE inf_le_left) hcov _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_one, hs i, ht i]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(f i).mul_inv`. Use `⟨⟨s, t, hst, by show (t : Γ(X, W)) * s = 1; rw [mul_comm]; exact hst⟩, fun i => Units.ext ?_⟩` and prove the remaining obligations. Conclude with `hs i`.
+A detailed English derivation is pending.
 -/
 theorem exists_glue {ι : Type} (V : ι → X.Opens) (hc : ⨆ i, V i = ⊤) (W : X.Opens)
     (f : ∀ i, Γ(X, W ⊓ V i)ˣ)
@@ -73,7 +73,7 @@ theorem exists_glue {ι : Type} (V : ι → X.Opens) (hc : ⨆ i, V i = ⊤) (W 
   exact hs i
 
 /- English proof (translation)
-Introduce `x hx`. Conclude with `h x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ofMem {V U : X.Opens} (h : ∀ x, x ∈ V → x ∈ U) : V ≤ U := by
   intro x hx
@@ -82,7 +82,7 @@ theorem ofMem {V U : X.Opens} (h : ∀ x, x ∈ V → x ∈ U) : V ≤ U := by
 def wu {B C : LB X} (w : LB.Iso B C) (a : C.ι) (b : B.ι) : Γ(X, C.U a ⊓ B.U b)ˣ := w.s (a, b)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Substitute `h'` using the available equality. Rewrite using `[mul_inv, mul_assoc, inv_mul_cancel_left]`.
+Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem cg₁ {G : Type*} [CommGroup G] {x y g p q : G} (h : x * g = y) (h' : q = g * p) :
     x⁻¹ * p = y⁻¹ * q := by
@@ -91,7 +91,7 @@ theorem cg₁ {G : Type*} [CommGroup G] {x y g p q : G} (h : x * g = y) (h' : q 
   rw [mul_inv, mul_assoc, inv_mul_cancel_left]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[mul_inv, mul_assoc g⁻¹, mul_inv_cancel_left]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem cg₂ {G : Type*} [CommGroup G] {x y g p : G} (h : x = g * y) :
     y⁻¹ * p = g * (x⁻¹ * p) := by
@@ -107,7 +107,7 @@ open IsomT
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
 /- English proof (translation)
-Unfold `blockUnit`. Conclude with `res_twice _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem res_blockUnit {k : Fin (m + 1)} (i j : Bk n k)
     {W W' : (MP ℤ m n).Opens} (h : W ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) i ⊓ chart ℤ (n k) j)) (h' : W' ≤ W) :
@@ -116,7 +116,7 @@ theorem res_blockUnit {k : Fin (m + 1)} (i j : Bk n k)
   exact res_twice _ _ _
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, res_blockUnit]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_mul_prod (c c' : ∀ k, Bk n k) (e : Fin (m + 1) → ℤ)
     {W W' : (MP ℤ m n).Opens} (x : Γ(MP ℤ m n, W)ˣ)

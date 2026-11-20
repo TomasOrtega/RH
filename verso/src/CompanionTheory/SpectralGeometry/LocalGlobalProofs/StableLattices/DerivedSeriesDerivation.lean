@@ -21,23 +21,23 @@ def dL (a : E → E) (Φ : E × E' → V) (q : E × E') : V := fderiv ℝ Φ q (
 def dR (b : E' → E') (Φ : E × E' → V) (q : E × E') : V := fderiv ℝ Φ q (0, b q.2)
 
 /- English proof (translation)
-Conclude with `(contDiff_infty_iff_fderiv.1 hΦ).2.clm_apply ((ha.comp contDiff_fst).prodMk contDiff_const)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_dL {a : E → E} (ha : ContDiff ℝ ∞ a) {Φ : E × E' → V} (hΦ : ContDiff ℝ ∞ Φ) :
     ContDiff ℝ ∞ (dL a Φ) := by
   exact (contDiff_infty_iff_fderiv.1 hΦ).2.clm_apply ((ha.comp contDiff_fst).prodMk contDiff_const)
 
 /- English proof (translation)
-Conclude with `(contDiff_infty_iff_fderiv.1 hΦ).2.clm_apply (contDiff_const.prodMk (hb.comp contDiff_snd))`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_dR {b : E' → E'} (hb : ContDiff ℝ ∞ b) {Φ : E × E' → V} (hΦ : ContDiff ℝ ∞ Φ) :
     ContDiff ℝ ∞ (dR b Φ) := by
   exact (contDiff_infty_iff_fderiv.1 hΦ).2.clm_apply (contDiff_const.prodMk (hb.comp contDiff_snd))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Establish `hΦ1 : ContDiff ℝ ∞ (fderiv ℝ Φ)` using `(contDiff_infty_iff_fderiv.1 hΦ).2`. Establish `hc : HasFDerivAt (fderiv ℝ Φ) (fderiv ℝ (fderiv ℝ Φ) q) q` using `((hΦ1.differentiable (by simp)) q).hasFDerivAt`. Establish `hua : HasFDerivAt (fun q : E × E' => (a q.1, (0 : E'))) (((fderiv ℝ a q.1).comp (ContinuousLinearMap.fst ℝ E E')).prod 0) q` using `(((ha.differentiable (by simp)) q.1).hasFDerivAt.comp q hasFDerivAt_fst).prodMk (hasFDerivAt_const 0 q)`. Establish `hub : HasFDerivAt (fun q : E × E' => ((0 : E), b q.2)) ((0 : E × E' →L[ℝ] E).prod ((fderiv ℝ b q.2).comp (ContinuousLinearMap.snd ℝ E E'))) q` using `(hasFDerivAt_const 0 q).prodMk (((hb.differentiable (by simp)) q.2).hasFDerivAt.comp q hasFDerivAt_snd)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsymm` using `((contDiff_infty.1 hΦ 2).contDiffAt (x := q)).isSymmSndFDerivAt (by simp [minSmoothness_of_isRCLikeNormedField])`. Use `show fderiv ℝ (dL a Φ) q (0, b q.2) = fderiv ℝ (dR b Φ) q (a q.1, 0)`. Rewrite using `[show dL a Φ = fun y => fderiv ℝ Φ y (a y.1, 0) from rfl, show dR b Φ = fun y => fderiv ℝ Φ y (0, b y.2) from rfl, (hc.clm_apply hua).fderiv, (hc.clm_apply hub).fderiv]`. Simplify using the standard rewrite rules. Conclude with `hsymm _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dR_dL {a : E → E} (ha : ContDiff ℝ ∞ a) {b : E' → E'} (hb : ContDiff ℝ ∞ b) {Φ : E × E' → V}
     (hΦ : ContDiff ℝ ∞ Φ) : dR b (dL a Φ) = dL a (dR b Φ) := by
@@ -69,13 +69,13 @@ def dW (W : List (Mat n)) (Φ : Mat n × Mat n → H) : Mat n × Mat n → H :=
   W.foldr (fun Y => dL fun g => g * Y) Φ
 
 /- English proof (translation)
-Conclude with `contDiff_mul' contDiff_id contDiff_const`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_mulR (Y : Mat n) : ContDiff ℝ ∞ fun g : Mat n => g * Y := by
   exact contDiff_mul' contDiff_id contDiff_const
 
 /- English proof (translation)
-Introduce `W`. Proceed by induction on `W with`. Consider the case `nil => exact hΦ`. Consider the case `cons Y W ih => exact contDiff_dL (contDiff_mulR Y) ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem contDiff_dW {Φ : Mat n × Mat n → H} (hΦ : ContDiff ℝ ∞ Φ) : ∀ W, ContDiff ℝ ∞ (dW W Φ) := by
   intro W
@@ -84,7 +84,7 @@ theorem contDiff_dW {Φ : Mat n × Mat n → H} (hΦ : ContDiff ℝ ∞ Φ) : �
   | cons Y W ih => exact contDiff_dL (contDiff_mulR Y) ih
 
 /- English proof (translation)
-Introduce `W`. Proceed by induction on `W with`. Consider the case `nil => rfl`. Consider the case `cons Y W ih => show dR b (dL (fun g => g * Y) (dW W Φ)) = dL (fun g => g * Y) (dW W (dR b Φ))`. Rewrite using `[dR_dL (contDiff_mulR Y) hb (contDiff_dW hΦ W), ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem dR_dW {b : Mat n → Mat n} (hb : ContDiff ℝ ∞ b) {Φ : Mat n × Mat n → H} (hΦ : ContDiff ℝ ∞ Φ) :
     ∀ W, dR b (dW W Φ) = dW W (dR b Φ) := by
@@ -96,7 +96,7 @@ theorem dR_dW {b : Mat n → Mat n} (hb : ContDiff ℝ ∞ b) {Φ : Mat n × Mat
     rw [dR_dL (contDiff_mulR Y) hb (contDiff_dW hΦ W), ih]
 
 /- English proof (translation)
-Establish `hγ : HasDerivAt (fun t : ℝ => (g * ex Y t, y)) (g * Y, (0 : Mat n)) 0` using `(hasDerivAt_mul_ex g Y).prodMk (hasDerivAt_const 0 y)`. Establish `h0 : (g, y) = (g * ex Y 0, y)` using `by rw [ex_zero, mul_one]`. Conclude with `((hΦ.differentiable (by simp)) (g, y)).hasFDerivAt.comp_hasDerivAt_of_eq 0 hγ h0`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_dL {Φ : Mat n × Mat n → H} (hΦ : ContDiff ℝ ∞ Φ) (Y g y : Mat n) :
     HasDerivAt (fun t => Φ (g * ex Y t, y)) (dL (fun g => g * Y) Φ (g, y)) 0 := by
@@ -106,7 +106,7 @@ theorem hasDerivAt_dL {Φ : Mat n × Mat n → H} (hΦ : ContDiff ℝ ∞ Φ) (Y
   exact ((hΦ.differentiable (by simp)) (g, y)).hasFDerivAt.comp_hasDerivAt_of_eq 0 hγ h0
 
 /- English proof (translation)
-Establish `hγ : HasDerivAt (fun t : ℝ => (g, y * ex X t)) ((0 : Mat n), y * X) 0` using `(hasDerivAt_const 0 g).prodMk (hasDerivAt_mul_ex y X)`. Establish `h0 : (g, y) = (g, y * ex X 0)` using `by rw [ex_zero, mul_one]`. Conclude with `((hΦ.differentiable (by simp)) (g, y)).hasFDerivAt.comp_hasDerivAt_of_eq 0 hγ h0`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_dR {Φ : Mat n × Mat n → H} (hΦ : ContDiff ℝ ∞ Φ) (X g y : Mat n) :
     HasDerivAt (fun t => Φ (g, y * ex X t)) (dR (fun y => y * X) Φ (g, y)) 0 := by
@@ -118,11 +118,11 @@ theorem hasDerivAt_dR {Φ : Mat n × Mat n → H} (hΦ : ContDiff ℝ ∞ Φ) (X
 variable {G : Set (Mat n)} {σ : Mat n → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Introduce `W`. Proceed by induction on `W with`. Consider the case `nil => intro _ g hg hgO`. Conclude with `hΦu g hg hgO`. Consider the case `cons Y W ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hW g hg hgO`. Establish `hY : ∀ t, ex Y t ∈ G` using `hW Y (by simp)`. Establish `hW' : LieW G W` using `fun X hX => hW X (by simp [hX])`. Establish `hc : ContinuousAt (fun t : ℝ => g * ex Y t) 0` using `(hasDerivAt_mul_ex g Y).continuousAt`. Establish `hO' : O ∈ nhds (g * ex Y 0)` using `by rw [ex_zero, mul_one]; exact hO.mem_nhds hgO`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (fun t => σ (g * ex Y t) (dsW σ W u)) =ᶠ[nhds 0] fun t => dW W Φ (g * ex Y t, y)` using `by filter_upwards [hc.preimage_mem_nhds hO'] with t ht`. Conclude with `(ih hW' _ (h.mul_mem g hg _ (hY t)) ht).symm`. Establish `hd` using `(hasDerivAt_dL (contDiff_dW hΦ W) Y g y).congr_of_eventuallyEq hev`. Rewrite using `[dsW_cons, apply_ds h hY hg (CompanionTheory.D.Upq.Sm.IsSm.differentiableAt h (CompanionTheory.D.Upq.Sm.IsSm.dsW h hu hW') hY)]`. Conclude with `hd.deriv.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dW_eq_smul_dsW_of_eq_on_open (h : RepOn G σ) {u : H} (hu : IsSm G σ u) {Φ : Mat n × Mat n → H}
     (hΦ : ContDiff ℝ ∞ Φ) {y : Mat n} {O : Set (Mat n)} (hO : IsOpen O)
@@ -145,21 +145,19 @@ private theorem dW_eq_smul_dsW_of_eq_on_open (h : RepOn G σ) {u : H} (hu : IsSm
     exact hd.deriv.symm
 
 /- English proof (translation)
-Establish `hΦ : ContDiff ℝ ∞ (fun q : Mat n × Mat n => F (q.1 * q.2))` using `hF.comp contDiff_mul`. Establish `h1 : (1 : Mat n) ∈ G` using `h.one_mem`. Establish `hσ1 : ∀ v, σ 1 v = v` using `fun v => by rw [h.map_one]; rfl`. Establish `hcont : ∀ y : Mat n, Continuous (fun g : Mat n => g * y)` using `fun y => (contDiff_mulR y).continuous`. Establish `hpτ : ∀ᶠ τ in nhds (0 : ℝ), p * ex X τ ∈ O`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ContinuousAt (fun t : ℝ => p * ex X t) 0` using `(hasDerivAt_mul_ex p X).continuousAt`. Establish `hO' : O ∈ nhds (p * ex X 0)` using `by rw [ex_zero, mul_one]; exact hO.mem_nhds hpO`. Conclude with `hc.preimage_mem_nhds hO'`. Establish `hev : (fun τ : ℝ => dW W (fun q : Mat n × Mat n => F (q.1 * q.2)) (1, p * ex X τ)) =ᶠ[nhds 0] fun τ : ℝ => dsW σ W (σ (p * ex X τ) x)` using `by filter_upwards [hpτ] with τ hτ`. Establish `hpτG : p * ex X τ ∈ G` using `h.mul_mem p hp _ (hX τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `dW_eq_smul_dsW_of_eq_on_open (y := p * ex X τ) (O := (fun g => g * (p * ex X τ)) ⁻¹' O) h (CompanionTheory.D.Upq.Sm.IsSm.apply h hx hpτG) hΦ (hO.preimage (hcont _)) (fun g hg hgO => by show F (g * (p * ex X τ)) = σ g (σ (p * ex X τ) x)`. Rewrite using `[← hFx _ (h.mul_mem g hg _ hpτG) hgO, h.apply_mul hg hpτG]) hW 1 h1`. Use the proof step `(by show 1 * (p * ex X τ) ∈ O; rw [one_mul]; exact hτ)`. Rewrite using `[key, hσ1]`. Establish `hd` using `hasDerivAt_dR (contDiff_dW hΦ W) X 1 p`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hd` using `[dR_dW (contDiff_mulR X) hΦ W]`. Establish `hX1 : LieW G [X]`. Introduce `Y hY t`. Simplify using `only [List.mem_singleton] at hY`. Substitute `hY` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hX t`. Establish `hds : IsSm G σ (ds σ X x)` using `CompanionTheory.D.Upq.Sm.IsSm.dsW h hx hX1`. Establish `hΦ2 : ∀ g ∈ G, g ∈ (fun g => g * p) ⁻¹' O → dR (fun y => y * X) (fun q : Mat n × Mat n => F (q.1 * q.2)) (g, p) = σ g (σ p (ds σ X x))`. Introduce `g hg hgO`. Rewrite using `[← (hasDerivAt_dR hΦ X g p).deriv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hgp : g * p ∈ G` using `h.mul_mem g hg p hp`. Rewrite using `[← h.apply_mul hg hp, apply_ds h hX hgp (CompanionTheory.D.Upq.Sm.IsSm.differentiableAt h hx hX)]`. Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises. Establish `hc : ContinuousAt (fun t : ℝ => g * p * ex X t) 0` using `(hasDerivAt_mul_ex (g * p) X).continuousAt`. Establish `hO' : O ∈ nhds (g * p * ex X 0)` using `by rw [ex_zero, mul_one]; exact hO.mem_nhds hgO`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `filter_upwards [hc.preimage_mem_nhds hO'] with t ht`. Use `show F (g * (p * ex X t)) = σ (g * p * ex X t) x`. Rewrite using `[← mul_assoc, hFx _ (h.mul_mem _ hgp _ (hX t)) ht]`. Establish `key2` using `dW_eq_smul_dsW_of_eq_on_open h (CompanionTheory.D.Upq.Sm.IsSm.apply h hds hp) (contDiff_dR (contDiff_mulR X) hΦ) (hO.preimage (hcont p)) hΦ2 hW 1 h1 (by show 1 * p ∈ O; rw [one_mul]; exact hpO)`. Rewrite `hd` using `[key2, hσ1]`.
-
-Conclude with `hd.congr_of_eventuallyEq hev.symm`.
+A detailed English derivation is pending.
 -/
 private theorem hasDerivAt_dsW_smul_mul_ex (h : RepOn G σ) {x : H} (hx : IsSm G σ x) {F : Mat n → H}
     (hF : ContDiff ℝ ∞ F) {O : Set (Mat n)} (hO : IsOpen O) (hFx : ∀ g ∈ G, g ∈ O → σ g x = F g)
@@ -211,13 +209,11 @@ private theorem hasDerivAt_dsW_smul_mul_ex (h : RepOn G σ) {x : H} (hx : IsSm G
   exact hd.congr_of_eventuallyEq hev.symm
 
 /- English proof (translation)
-Take `⟨r, hr0, hrU⟩` from `Metric.isOpen_iff.1 hU p hpU`. Set `φ : ContDiffBump p` to `⟨r / 4, r / 2, by positivity, by linarith⟩`. Use `⟨fun g => (φ g : ℝ) • F g, ?_, Metric.ball p (r / 4), Metric.isOpen_ball, Metric.mem_ball_self (by positivity), fun g hg => hrU (Metric.ball_subset_ball (by linarith) hg), fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `z`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hz : z ∈ Metric.ball p r`. Conclude with `(φ.contDiff.contDiffAt).smul (hF.contDiffAt (hU.mem_nhds (hrU hz)))`. Establish `hzc : z ∈ (Metric.closedBall p (r / 2))ᶜ`. Introduce `hz'`. Conclude with `hz (Metric.closedBall_subset_ball (by linarith) hz')`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hev0 : ∀ᶠ g in nhds z, φ g = 0` using `by filter_upwards [Metric.isClosed_closedBall.isOpen_compl.mem_nhds hzc] with g hg`. Apply `φ.zero_of_le_dist` to reduce the goal to its premises. Simplify using `only [Set.mem_compl_iff, Metric.mem_closedBall, not_le] at hg`. Conclude with `hg.le`. Establish `hev : (fun g => (φ g : ℝ) • F g) =ᶠ[nhds z] fun _ => (0 : H)` using `by filter_upwards [hev0] with g hg`.
-
-Simplify using `[hg]`. Conclude with `contDiffAt_const.congr_of_eventuallyEq hev`. Use `show (φ g : ℝ) • F g = F g`. Rewrite using `[φ.one_of_mem_closedBall (Metric.ball_subset_closedBall hg), one_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_contDiff_eq_on_nhds_of_contDiffOn {F : Mat n → H} {U : Set (Mat n)} {p : Mat n} (hU : IsOpen U) (hpU : p ∈ U)
     (hF : ContDiffOn ℝ ∞ F U) :
@@ -247,9 +243,9 @@ private theorem exists_contDiff_eq_on_nhds_of_contDiffOn {F : Mat n → H} {U : 
     rw [φ.one_of_mem_closedBall (Metric.ball_subset_closedBall hg), one_smul]
 
 /- English proof (translation)
-Introduce `n Hm H _ _ _ σ hσ W hW p hp X hX x hx`. Establish `h` using `hσ.rep`. Establish `hLX : ∀ Y : Mat n, CompanionTheory.Bmu.Lie Hm Y → ∀ t, ex Y t ∈ Formalism.QuantumDeterminants.UH Hm` using `fun Y hY t => ex_mem_of_lie hY t`. Take `⟨U, F, hU, hpU, hFU, hFx⟩` from `hx p hp`. Take `⟨F', hF', O, hO, hpO, hOU, hF'O⟩` from `exists_contDiff_eq_on_nhds_of_contDiffOn hU hpU hFU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hasDerivAt_dsW_smul_mul_ex h hx hF' hO (fun g hg hgO => by rw [hF'O g hgO]; exact hFx g (hOU hgO) hg) (fun Y hY => hLX Y (hW Y hY)) hp hpO (hLX X hX)`.
+A detailed English derivation is pending.
 -/
 theorem dsDer : DsDer := by
   intro n Hm H _ _ _ σ hσ W hW p hp X hX x hx

@@ -18,7 +18,7 @@ section
 variable {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
 
 /- English proof (translation)
-The claim follows from `IntermediateField.mem_bot.1 ((InfiniteGalois.mem_bot_iff_fixed y).2 hy)`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_fixed (y : Ω) (hy : ∀ s : Formalism.ConjugateSelfDual.G K Ω, s y = y) : ∃ x : K, algebraMap K Ω x = y :=
   IntermediateField.mem_bot.1 ((InfiniteGalois.mem_bot_iff_fixed y).2 hy)
@@ -43,7 +43,7 @@ noncomputable def liftEquiv (φ : Ω ≃+* Ω) (h1 : ∀ x : K, ∃ y : K, algeb
     rw [(h1 _).choose_spec, map_add, map_add, map_add, (h1 x).choose_spec, (h1 y).choose_spec])
 
 /- English proof (translation)
-The claim follows from `(h1 x).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem liftEquiv_spec (φ : Ω ≃+* Ω) (h1 : ∀ x : K, ∃ y : K, algebraMap K Ω y = φ (algebraMap K Ω x))
     (h2 : ∀ x : K, ∃ y : K, algebraMap K Ω y = φ.symm (algebraMap K Ω x)) (x : K) :
@@ -57,33 +57,27 @@ end GlobalTheory.GaloisLiftFixedPoints
 open scoped Pointwise
 open GlobalTheory.GaloisLiftFixedPoints in
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ _ K _ _ _ _ _ _ l _ ι a π r g c hc hsurj hr`. Establish `ginv : ∀ z : Ω, g⁻¹ (g z) = z` using `fun z => by`. Rewrite using `[← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`. Establish `gg : ∀ z : Ω, g (g⁻¹ z) = z` using `fun z => by`. Rewrite using `[← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcx : ∀ (s : G K Ω) (x : Ω), c s x = g (s (g⁻¹ x))` using `fun s x => by`. Use `congrArg (fun φ : G F Ω => φ x) (hc s)` as an intermediate fact. Conclude with `this`. Use `set σ' : Ω ≃+* Ω := (g⁻¹ : G F Ω).toRingEquiv with hσ'`. Establish `hsymm : ∀ z : Ω, σ'.symm z = g z` using `fun z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingEquiv.symm_apply_eq]`. Conclude with `(ginv z).symm`. Establish `h1 : ∀ x : K, ∃ y : K, algebraMap K Ω y = σ' (algebraMap K Ω x)` using `fun x => by`. Use `exists_of_fixed _ fun s => ?_` and prove the remaining obligations. Establish `e` using `hcx s (algebraMap K Ω x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[AlgEquiv.commutes]`. Use `show s (g⁻¹ (algebraMap K Ω x)) = g⁻¹ (algebraMap K Ω x)`. Establish `e2` using `congrArg (fun z => g⁻¹ z) e`. Simplify using `only [ginv] at e2`. Conclude with `e2.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ x : K, ∃ y : K, algebraMap K Ω y = σ'.symm (algebraMap K Ω x)` using `fun x => by`. Rewrite using `[hsymm]`. Use `exists_of_fixed _ fun s => ?_` and prove the remaining obligations. Take `⟨t, rfl⟩` from `hsurj s`. Rewrite using `[hcx, ginv, AlgEquiv.commutes]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set τ : K ≃+* K := liftEquiv σ' h1 h2 with hτ`. Establish `hL : IsLift τ σ'` using `fun x => (liftEquiv_spec σ' h1 h2 x).symm`. Establish `hτF : ∀ y : F, τ (algebraMap F K y) = algebraMap F K y` using `fun y => (algebraMap K Ω).injective (by`. Rewrite using `[← hL, ← IsScalarTower.algebraMap_apply]`. Conclude with `AlgEquiv.commutes _ _)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hconj : ∀ s : G K Ω, c s = conjGal hL s` using `fun s => AlgEquiv.ext fun x => by`. Rewrite using `[conjGal_apply, hsymm, hcx]`. Both sides reduce to the same expression. Establish `hσA : ∀ A : ValuationSubring Ω, ∀ x, σ' x ∈ A ↔ x ∈ g • A` using `fun A x => by`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hfrob : ∀ (A : ValuationSubring Ω) (q : ℕ) (s : G K Ω), IsFrob A q s → IsFrob (g • A) q (c s)` using `fun A q s hs => by`. Rewrite using `[hconj]`. Use `⟨conjGal_mem_Dec hL (hσA A) hs.1, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← val_lt_one (hσA A), map_sub, map_pow, apply_conjGal]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs.2 _ ((A.valuation_le_one_iff _).2 ((hσA A x).2 (((g • A).valuation_le_one_iff _).1 hx)))`. Establish `hine : ∀ (A : ValuationSubring Ω) (s : G K Ω), s ∈ Ine (F` using `K) A → c s ∈ Ine (F := K) (g • A) := fun A s hs => by`. Rewrite using `[hconj]`. Conclude with `conjGal_mem_Ine hL (hσA A) hs`. Use `set e : 𝓞 K ≃+* 𝓞 K := RingOfIntegers.mapRingEquiv τ with he`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hunder : ∀ w : HeightOneSpectrum (𝓞 K), (preplace τ w).under (𝓞 F) = w.under (𝓞 F)` using `fun w => by`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Establish `hx : e (algebraMap (𝓞 F) (𝓞 K) x) = algebraMap (𝓞 F) (𝓞 K) x` using `RingOfIntegers.ext (hτF (x : F))`. Use `show algebraMap (𝓞 F) (𝓞 K) x ∈ (preplace τ w).asIdeal ↔ algebraMap (𝓞 F) (𝓞 K) x ∈ w.asIdeal`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_preplace, ← he, hx]`. Establish `hnorm : ∀ w : HeightOneSpectrum (𝓞 K), normV (preplace τ w) = normV w` using `fun w => by show Nat.card (𝓞 K ⧸ (w.asIdeal.comap (e : 𝓞 K →+* 𝓞 K))) = Nat.card (𝓞 K ⧸ w.asIdeal)`. Conclude with `Nat.card_congr (Ideal.quotientEquiv _ _ e (Ideal.map_comap_of_surjective (e : 𝓞 K →+* 𝓞 K) e.surjective _).symm).toEquiv`. Establish `hinj : Function.Injective (preplace τ)` using `fun u v huv => (HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv τ)).symm.injective huv`. Unfold `AttRes at hr ⊢`.
-
-Use `filter_upwards [hinj.tendsto_cofinite.eventually hr] with w hw f hf`. Establish `hf' : normV (preplace τ w) = normV ((preplace τ w).under (𝓞 F)) ^ f`. Rewrite using `[hnorm, hunder]`. Conclude with `hf`. Take `⟨B, hB, hE⟩` from `hw f hf'`.
-
-Rewrite `hB`, `hE` using `[hunder]`. Use `⟨B, hB, fun A hA => ?_⟩` and prove the remaining obligations. Take `⟨k1, k2⟩` from `hE (g • A) (isPlaceOver_preplace hL (hσA A) hA)`. Use `⟨fun s hs => k1 _ (hine A s hs), fun s hs => ?_⟩` and prove the remaining obligations. Use `k2 (c s) (by rw [hnorm]; exact hfrob A _ s hs)` as an intermediate fact.
-
-Rewrite using `[MonoidHom.comp_apply, map_inv]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.attached_rep_conjugate_invariant : ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (π : TR.CuspSub F a) (r : G K Ω →* GL (Fin a) (Qbar l)) (g : G F Ω) (c : G K Ω →* G K Ω), (∀ s, res F Ω K (c s) = g * res F Ω K s * g⁻¹) → Function.Surjective c → AttRes π ι K r → AttRes π ι K (r.comp c) := by
   intro F Ω _ _ _ _ _ _ K _ _ _ _ _ _ l _ ι a π r g c hc hsurj hr

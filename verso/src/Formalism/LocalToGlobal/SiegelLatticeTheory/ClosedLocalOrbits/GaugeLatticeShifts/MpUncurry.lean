@@ -7,9 +7,9 @@ noncomputable section
 namespace Formalism.MainNotions.S.Gauge
 
 /- English proof (translation)
-Use `⟨(MeasurableEquiv.curry κ (Fin 2) ℝ).symm.measurable, ?_⟩` and prove the remaining obligations. Use `(Measure.pi_eq (fun s _ => ?_)).symm` and prove the remaining obligations. Rewrite using `[MeasurableEquiv.map_apply]`. Establish `hpre : ((MeasurableEquiv.curry κ (Fin 2) ℝ).symm) ⁻¹' (univ.pi s) = univ.pi (fun k => univ.pi (fun i => s (k, i)))`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[MeasurableEquiv.coe_curry_symm, Function.uncurry]`. Rewrite using `[hpre, volume_pi_pi]`. Repeatedly rewrite using `[volume_pi_pi]`. Rewrite using `[Fintype.prod_prod_type]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mp_uncurry (κ : Type*) [Fintype κ] :
     MeasurePreserving (MeasurableEquiv.curry κ (Fin 2) ℝ).symm volume volume := by
@@ -24,7 +24,7 @@ theorem mp_uncurry (κ : Type*) [Fintype κ] :
   rw [Fintype.prod_prod_type]
 
 /- English proof (translation)
-Establish `h1` using `PiLp.volume_preserving_ofLp (ι := κ × Fin 2)`. Establish `h2` using `MeasurePreserving.symm _ (mp_uncurry κ)`. Establish `h3` using `volume_preserving_pi (fun _ : κ => Complex.volume_preserving_equiv_pi.symm)`. Conclude with `(h3.comp h2).comp h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mp_cF (κ : Type*) [Fintype κ] :
     MeasurePreserving (fun y : EuclideanSpace ℝ (κ × Fin 2) => fun k => (y (k, 0) : ℂ) + (y (k, 1) : ℂ) * Complex.I)

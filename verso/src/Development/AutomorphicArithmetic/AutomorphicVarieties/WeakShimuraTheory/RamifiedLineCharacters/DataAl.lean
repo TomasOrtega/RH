@@ -3,25 +3,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `O Γ R _ _ _ _ Φ a p hp hs`. Establish `h12 : ∀ g, p.r g 1 2 = 0` using `fun g => hs g 1 2 (by decide) (by decide)`. Establish `h13 : ∀ g, p.r g 1 3 = 0` using `fun g => hs g 1 3 (by decide) (by decide)`. Establish `hd` using `hp.res.diag`. Establish `hu : ∀ g, a (((Φ.χ 0 g)⁻¹ : Oˣ) : O) * a (Φ.χ 0 g) = 1` using `fun g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `hrt : ∀ g, a (Φ.rt (-wAl) g) = a (Φ.χ 1 g) * a (((Φ.χ 0 g)⁻¹ : Oˣ) : O)` using `fun g => by`. Rewrite using `[← map_mul, ← Units.val_mul]`. Use `congr 2`. Simplify using `[Fr.rt, wAl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `hlc : ∀ i j, IsLocallyConstant fun g => p.r g i j` using `fun i j => by`. Use `IsLocallyConstant.desc _ (Ideal.Quotient.mk ((⊥ : Ideal R) ^ 1)) (hp.cont i j 1) ?_` and prove the remaining obligations. Rewrite using `[RingHom.injective_iff_ker_eq_bot, Ideal.mk_ker, pow_one]`. Use `⟨fun g => p.r g 1 0 * a (((Φ.χ 0 g)⁻¹ : Oˣ) : O), ⟨?_, ?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(hlc 1 0).mul ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (fun g => a (((Φ.χ 0 g)⁻¹ : Oˣ) : O)) = Ring.inverse ∘ fun g => p.r g 0 0`. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp, hd]`. Conclude with `(Ring.inverse_unit (Units.map (a : O →* R) (Φ.χ 0 g))).symm`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hlc 0 0).comp _`. Introduce `g h`. Establish `e : p.r (g * h) 1 0 = p.r g 1 0 * a (Φ.χ 0 h) + a (Φ.χ 1 g) * p.r h 1 0`. Rewrite using `[map_mul, Matrix.mul_apply, Fin.sum_univ_four, h12, h13, hd, hd]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[e, hrt, map_mul, mul_inv, Units.val_mul, map_mul]`. Take the linear combination `(p.r g 1 0 * a (((Φ.χ 0 g)⁻¹ : Oˣ) : O)) * hu h`. Introduce `g hg`. Simplify using `[hp.pair.kill g hg]`. Establish `: p.r Φ.g0 1 0 = 0` using `hp.pair.nrm (by decide)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[this]`. Introduce `v s hsv`. Take `⟨l1, l2, l3⟩` from `hp.pair.low v`. Establish `hinv : p.n v * adj (p.n v) = 1`. Rewrite `l1` using `[IsGSp, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_eq_one_comm.mp l1`. Establish `hU` using `hp.pair.flag v s hsv`. Establish `hc` using `hp.res.char v s hsv 0`. Unfold `PD.ψ at hc`. Establish `key : p.n v * (adj (p.n v) * p.r s * p.n v) = p.r s * p.n v`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, ← mul_assoc, hinv, one_mul]`. Generalize the expression as in `adj (p.n v) * p.r s * p.n v = U at hU hc key`. Establish `k` using `congrFun (congrFun key 1) 0`. Rewrite `k` using `[Matrix.mul_apply, Matrix.mul_apply, Fin.sum_univ_four, Fin.sum_univ_four, hU 1 0 (by decide), hU 2 0 (by decide), hU 3 0 (by decide), hc, h12, h13, hd, l2, l2]`. Rewrite using `[hrt]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Take the linear combination `(-a (((Φ.χ 0 s)⁻¹ : Oˣ) : O)) * k + p.n v 1 0 * hu s`. Introduce `g beta_reduce`. Rewrite using `[mul_assoc, hu, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Gys.dataAl :
     ∀ {O Γ R : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [CommRing R] (Φ : Fr O Γ) (a : O →+* R) (p : PD Φ.ι Γ R), Φ.IsRes a p → Supp nM p.r →

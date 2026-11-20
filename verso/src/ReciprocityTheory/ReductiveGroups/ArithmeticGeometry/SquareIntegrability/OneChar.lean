@@ -9,81 +9,71 @@ namespace ChA
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hMc1 : ∀ (c : ℂ) (x : Vsp dim), Mc σ 1 (Mc σ c x) = Mc σ c x`. Introduce `c x`. Use extensionality with `i`. Simplify using `only [Mc, LinearMap.coe_mk, AddHom.coe_mk]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hprj1 : ∀ x : Vsp dim, prj σ (Mc σ 1 x) = prj σ x`. Introduce `x`. Rewrite using `[prj_Mc, one_smul]`. Establish `hZact : ∀ (α : 𝓞 E) x, x ∈ Zs L I ‖v‖ → act α x ∈ Zs L I ‖v‖` using `fun α x hx => Zs_act L I _ α hx`. Establish `hZMc : ∀ (c : ℂ) {x : Vsp dim}, x ∈ Zs L I ‖v‖ → Mc σ c x ∈ Zs L I ‖v‖` using `fun c x hx => Mc_mem σ (Zs L I ‖v‖) hZact c hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvZ : v ∈ Zs L I ‖v‖` using `Zs_self L I hvX le_rfl`. Establish `hχZ : ∀ j < k, χ j ∈ Zs L I ‖v‖`. Introduce `j hj`. Take `⟨μ, hμ, hμle⟩` from `hflag j hj`. Conclude with `Zs_mono L I (hμle v hvX hvW) hμ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hshort : ∀ u ∈ Xg L I, ‖u‖ < ‖v‖ → prj σ u ∈ W`. Introduce `u hu huv`. Assume the negation of the conclusion as `h`. Conclude with `absurd (hvmin u hu h) (not_le.mpr huv)`. Take `⟨U, hU⟩ : ∃ U : Submodule ℝ (Vsp dim), U = Submodule.span ℝ {x | ∃ c : ℂ, ∃ y ∈ Zs L I ‖v‖, prj σ y ∈ W ∧ x = Mc σ c y}` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hUgen : ∀ (c : ℂ) y, y ∈ Zs L I ‖v‖ → prj σ y ∈ W → Mc σ c y ∈ U`. Introduce `c y hy hyW`. Rewrite using `[hU]`. Conclude with `Submodule.subset_span ⟨c, y, hy, hyW, rfl⟩`. Establish `hUZ : U ≤ Zs L I ‖v‖`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hU]`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `x ⟨c, y, hy, -, rfl⟩`. Conclude with `hZMc c hy`. Establish `hUprj : ∀ x ∈ U, prj σ x ∈ W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `x hx`. Rewrite `hx` using `[hU]`. Use `prj_mem_of_span σ W _ ?_ hx` and prove the remaining obligations. Introduce and unpack `y ⟨c, y', -, hy', rfl⟩`. Rewrite using `[prj_Mc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Conclude with `W.smul_mem c hy'`. Establish `hUMc : ∀ x ∈ U, Mc σ 1 x ∈ U`. Introduce `x hx`. Rewrite `hx` using `[hU]`. Proceed by induction on `hx using Submodule.span_induction with`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `mem y hy`. Take `⟨c, y', hy', hy'W, rfl⟩` from `hy`. Rewrite using `[hMc1]`. Conclude with `hUgen c y' hy' hy'W`. Consider the case `zero => rw [map_zero]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `U.zero_mem`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `U.add_mem ha hb`. Consider the case `smul r a _ ha => rw [LinearMap.map_smul_of_tower]`. Conclude with `U.smul_mem r ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : CompleteSpace U := FiniteDimensional.complete ℝ U`. Take `⟨y₀, hy₀U, z, hzU, hxyz⟩` from `U.exists_add_mem_mem_orthogonal (Mc σ 1 v)`. Establish `hz : z = Mc σ 1 v - y₀` using `by rw [hxyz]; abel`. Establish `hzZ : z ∈ Zs L I ‖v‖`. Rewrite using `[hz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sub_mem _ (hZMc 1 hvZ) (hUZ hy₀U)`. Establish `hzperp : ∀ u ∈ U, inner ℝ (Mc σ 1 z) u = 0`. Introduce `u hu`. Rewrite using `[real_inner_Mc, map_one]`. Conclude with `Submodule.inner_left_of_mem_orthogonal (hUMc u hu) hzU`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hprjt₀ : prj σ (Mc σ 1 z) = prj σ v - prj σ y₀`. Rewrite using `[hprj1, hz, map_sub, hprj1]`. Establish `hp0 : prj σ (Mc σ 1 z) ≠ 0`. Introduce `h0`. Apply `hvW` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : prj σ v = prj σ y₀` using `by rw [← sub_eq_zero, ← hprjt₀, h0]`. Rewrite using `[h']`. Conclude with `hUprj y₀ hy₀U`. Establish `hWorth : ∀ w ∈ W, inner ℂ w (prj σ (Mc σ 1 z)) = 0`. Establish `hsub : W ≤ (Submodule.span ℂ {prj σ (Mc σ 1 z)})ᗮ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hWχ.trans (Submodule.span_le.mpr ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Establish `hj' : j < k` using `hj`. Rewrite using `[SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_left]`. Establish `hH` using `orth_prj hiso σ (Zs_IR hIs _ (hZMc 1 hzZ)) (fun c => Zs_IR hIs _ (hZMc c (hχZ j hj'))) (fun c => hzperp _ (hUgen c _ (hχZ j hj') (hχW j hj')))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : inner ℂ (prj σ (χ j)) (prj σ (Mc σ 1 z)) = Hf (prj σ (Mc σ 1 z)) (prj σ (χ j))`. Simplify using `only [Hf, PiLp.inner_apply, RCLike.inner_apply]`. Rewrite using `[key]`. Conclude with `hH`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_orthogonal_singleton_iff_inner_left.mp (hsub hw)`. Establish `hpn : 0 < ‖prj σ (Mc σ 1 z)‖` using `norm_pos_iff.mpr hp0`. Take `⟨r, hr⟩ : ∃ r : ℝ, r = T / ‖prj σ (Mc σ 1 z)‖` from `⟨_, rfl⟩`. Establish `hr0 : 0 < r` using `by rw [hr]; exact div_pos hT hpn`. Take `⟨t, ht⟩ : ∃ t : Vsp dim, t = r • Mc σ 1 z` from `⟨_, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `htZ : t ∈ Zs L I ‖v‖` using `by rw [ht]; exact Submodule.smul_mem _ r (hZMc 1 hzZ)`. Establish `hprjt : prj σ t = r • prj σ (Mc σ 1 z)` using `by rw [ht, prj_rsmul]`. Establish `hnT : ‖prj σ t‖ = T`. Rewrite using `[hprjt, norm_smul, Real.norm_of_nonneg hr0.le, hr, div_mul_cancel₀ _ hpn.ne']`. Establish `hWt : ∀ w ∈ W, inner ℂ w (prj σ t) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `w hw`. Rewrite using `[hprjt, ← Complex.coe_smul, inner_smul_right, hWorth w hw, mul_zero]`. Establish `hMt : Mc σ 1 t = t` using `by rw [ht, LinearMap.map_smul_of_tower, hMc1]`. Establish `htn : ‖t‖ ^ 2 = 2 * T ^ 2`. Establish `h` using `norm_projection_sq hiso σ t (by rw [hMt]; exact Zs_IR hIs _ htZ) (Zs_IR hIs _ (hZMc Complex.I htZ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h` using `[hMt, hnT]`. Conclude with `h`. Establish `htorth : ∀ u ∈ Xg L I, ‖u‖ < ‖v‖ → inner ℝ t u = 0`. Introduce `u hu huv`. Rewrite using `[ht, real_inner_smul_left, real_inner_Mc, map_one, Submodule.inner_left_of_mem_orthogonal (hUgen 1 u (Zs_self L I hu huv.le) (hshort u hu huv)) hzU, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Λ, hΛdef⟩ : ∃ Λ : AddSubgroup (Vsp dim), Λ = Xg L I ⊓ (Zs L I ‖v‖).toAddSubgroup` from `⟨_, rfl⟩`. Establish `hΛ : ∀ g, g ∈ Λ ↔ g ∈ Xg L I ∧ g ∈ Zs L I ‖v‖`. Introduce `g`. Rewrite using `[hΛdef, AddSubgroup.mem_inf, Submodule.mem_toAddSubgroup]`. Take `⟨χ', hχ'Λ, hclose⟩` from `exists_closest Λ (fun g hg hg0 => hsep g ((hΛ g).1 hg).1 hg0) t`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨S', hS'⟩ : ∃ S' : Set (Vsp dim), S' = {x | ∃ j, ∃ y ∈ Xg L I, ‖y‖ ≤ ‖v‖ ∧ x = act (ω j) y}` from `⟨_, rfl⟩`. Establish `hS'Λ : ∀ x ∈ S', x ∈ Λ`. Introduce `x hx`. Rewrite `hx` using `[hS']`. Take `⟨j, y, hy, hyv, rfl⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(hΛ _).2 ⟨Xg_act hLs hIs (ω j) hy, Zs_act L I _ (ω j) (Zs_self L I hy hyv)⟩`. Establish `hS'norm : ∀ x ∈ S', ‖x‖ ≤ B * ‖v‖`. Introduce `x hx`. Rewrite `hx` using `[hS']`. Take `⟨j, y, hy, hyv, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : 0 ≤ B` using `(norm_nonneg _).trans (hωB j σ)`. Conclude with `(norm_act_le (ω j) B (hωB j) y).trans (mul_le_mul_of_nonneg_left hyv hB)`. Establish `hZS' : Zs L I ‖v‖ ≤ Submodule.span ℝ S'`. Unfold `Zs`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `x ⟨α, y, hy, hyv, rfl⟩`. Use `Submodule.span_mono ?_ (act_omega_expand ω hω α y)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[hS']`. Conclude with `⟨j, y, hy, hyv, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, hbS', hbspan, hbli⟩` from `exists_linearIndependent ℝ S'`. Establish `hli : LinearIndependent ℝ (fun x : b => (x : Vsp dim))` using `hbli`. Use `haveI : Finite b := hli.finite`. Take `⟨n, ⟨e⟩⟩` from `Finite.exists_equiv_fin b`. Take `⟨vv, hvvdef⟩ : ∃ vv : Fin n → Vsp dim, vv = fun i => ((e.symm i : b) : Vsp dim)` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvv : LinearIndependent ℝ vv`. Rewrite using `[hvvdef]`. Conclude with `hli.comp e.symm e.symm.injective`. Establish `hvvS' : ∀ i, vv i ∈ S'` using `fun i => by rw [hvvdef]; exact hbS' (e.symm i).2`. Establish `hrange : Set.range vv = b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Rewrite using `[hvvdef]`. Conclude with `(e.symm i).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `hx; exact ⟨e ⟨x, hx⟩, by rw [hvvdef]; simp⟩`. Establish `htspan : t ∈ Submodule.span ℝ (Set.range vv)`. Rewrite using `[hrange, hbspan]`. Conclude with `hZS' htZ`. Take `⟨c, hc⟩` from `hNP (Vsp dim) n vv hvv t htspan`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the second alternative. Establish an intermediate fact.
 
-Establish `hnD : (n : ℝ) ≤ D`. Establish `h1 : Module.finrank ℝ (Submodule.span ℝ (Set.range vv)) = n`. Rewrite using `[finrank_span_eq_card hvv, Fintype.card_fin]`. Establish `h2 : Submodule.span ℝ (Set.range vv) ≤ IR I`. Rewrite using `[hrange, hbspan]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.span_le.mpr fun x hx => Zs_IR hIs _ ((hΛ x).1 (hS'Λ x hx)).2`. Establish `h3 : n ≤ D` using `by rw [← h1]; exact (Submodule.finrank_mono h2).trans hD`. Conclude with `h3` after adjusting the coercions. Establish `hgΛ : (∑ i, (c i : ℝ) • vv i) ∈ Λ`. Use `AddSubgroup.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `AddSubgroup.zsmul_mem _ (hS'Λ _ (hvvS' i)) _`. Establish `hsum : ∑ i, ‖vv i‖ ^ 2 ≤ n * (B * ‖v‖) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hbound : ‖χ' - t‖ ^ 2 ≤ D * (B * ‖v‖) ^ 2 / 4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 
-Establish `h1 : ‖t - χ'‖ ≤ ‖t - ∑ i, (c i : ℝ) • vv i‖` using `hclose _ hgΛ`. Establish `h2 : ‖t - χ'‖ ^ 2 ≤ ‖t - ∑ i, (c i : ℝ) • vv i‖ ^ 2` using `by gcongr`. Establish `h3 : (n : ℝ) * (B * ‖v‖) ^ 2 ≤ D * (B * ‖v‖) ^ 2` using `mul_le_mul_of_nonneg_right hnD (sq_nonneg _)`. Rewrite using `[norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hlast : ∀ u ∈ Xg L I, |2 * inner ℝ χ' u| ≤ ‖u‖ ^ 2 ∨ ‖v‖ ≤ ‖u‖`. Introduce `u hu`. Distinguish the cases in `huv : ‖v‖ ≤ ‖u‖`. Conclude with `Or.inr huv`. Use `left`.
-
-Use `push_neg at huv`. Establish `huΛ : u ∈ Λ` using `(hΛ u).2 ⟨hu, Zs_self L I hu huv.le⟩`. Establish `h1` using `hclose (χ' + u) (Λ.add_mem hχ'Λ huΛ)`. Establish `h2` using `hclose (χ' - u) (Λ.sub_mem hχ'Λ huΛ)`. Establish `e1 : t - (χ' + u) = (t - χ') - u` using `by abel`.
-
-Establish `e2 : t - (χ' - u) = (t - χ') + u` using `by abel`. Rewrite `h1` using `[e1]`. Rewrite `h2` using `[e2]`. Establish `s1 : ‖t - χ'‖ ^ 2 ≤ ‖(t - χ') - u‖ ^ 2` using `by gcongr`. Establish `s2 : ‖t - χ'‖ ^ 2 ≤ ‖(t - χ') + u‖ ^ 2` using `by gcongr`.
-
-Rewrite `s1` using `[norm_sub_sq_real (t - χ') u]`. Rewrite `s2` using `[norm_add_sq_real (t - χ') u]`. Establish `hi : inner ℝ (t - χ') u = - inner ℝ χ' u`. Rewrite using `[inner_sub_left, htorth u hu huv, zero_sub]`. Rewrite `s1`, `s2` using `[hi]`.
-
-Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Conclude with `⟨t, χ', hWt, hnT, htn, ((hΛ χ').1 hχ'Λ).1, ((hΛ χ').1 hχ'Λ).2, hbound, hlast⟩`.
+A detailed English derivation is pending.
 -/
 lemma one_char [IsCMField E] (hNP : Ext.NearestPlane) {dim : (E →+* ℂ) → ℕ}
     (L I : Submodule ℤ (Vsp dim))

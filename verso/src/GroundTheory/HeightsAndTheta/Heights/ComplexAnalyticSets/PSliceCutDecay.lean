@@ -24,24 +24,24 @@ namespace SliceCutDecay
 def prof (c u : ℝ) : ℝ := Real.smoothTransition (2 - u / c)
 
 /- English proof (translation)
-The claim follows from `Real.smoothTransition.contDiff`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_tau : ContDiff ℝ ∞ Real.smoothTransition := Real.smoothTransition.contDiff
 
 /- English proof (translation)
-The claim follows from `(contDiff_infty_iff_deriv.mp contDiff_tau).2`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_tau' : ContDiff ℝ ∞ (deriv Real.smoothTransition) :=
   (contDiff_infty_iff_deriv.mp contDiff_tau).2
 
 /- English proof (translation)
-The claim follows from `(contDiff_infty_iff_deriv.mp contDiff_tau').2`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_tau'' : ContDiff ℝ ∞ (deriv (deriv Real.smoothTransition)) :=
   (contDiff_infty_iff_deriv.mp contDiff_tau').2
 
 /- English proof (translation)
-Rewrite `hu` using `[Set.mem_Icc, not_and_or, not_le, not_le]`. Break down `hu with hu | hu` into its components or cases. Conclude with `⟨0, Filter.eventually_of_mem (Iio_mem_nhds hu) fun v hv => Real.smoothTransition.zero_of_nonpos (le_of_lt hv)⟩`. Conclude with `⟨1, Filter.eventually_of_mem (Ioi_mem_nhds hu) fun v hv => Real.smoothTransition.one_of_one_le (le_of_lt hv)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem tau_eventually_const {u : ℝ} (hu : u ∉ Set.Icc (0 : ℝ) 1) :
     ∃ a : ℝ, Real.smoothTransition =ᶠ[𝓝 u] fun _ => a := by
@@ -53,7 +53,7 @@ theorem tau_eventually_const {u : ℝ} (hu : u ∉ Set.Icc (0 : ℝ) 1) :
       Real.smoothTransition.one_of_one_le (le_of_lt hv)⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `tau_eventually_const hu`. Rewrite using `[ha.deriv_eq]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tau'_eq_zero {u : ℝ} (hu : u ∉ Set.Icc (0 : ℝ) 1) : deriv Real.smoothTransition u = 0 := by
   obtain ⟨a, ha⟩ := tau_eventually_const hu
@@ -61,7 +61,7 @@ theorem tau'_eq_zero {u : ℝ} (hu : u ∉ Set.Icc (0 : ℝ) 1) : deriv Real.smo
   simp
 
 /- English proof (translation)
-Establish `: deriv Real.smoothTransition =ᶠ[𝓝 u] fun _ => (0 : ℝ)` using `by filter_upwards [isClosed_Icc.isOpen_compl.mem_nhds hu] with v hv using tau'_eq_zero hv`. Rewrite using `[this.deriv_eq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tau''_eq_zero {u : ℝ} (hu : u ∉ Set.Icc (0 : ℝ) 1) :
     deriv (deriv Real.smoothTransition) u = 0 := by
@@ -71,19 +71,19 @@ theorem tau''_eq_zero {u : ℝ} (hu : u ∉ Set.Icc (0 : ℝ) 1) :
   simp
 
 /- English proof (translation)
-Simplify using `using ((hasDerivAt_id u).div_const c).const_sub 2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasDerivAt_inner (c u : ℝ) : HasDerivAt (fun u => 2 - u / c) (-(1 / c)) u := by
   simpa using ((hasDerivAt_id u).div_const c).const_sub 2
 
 /- English proof (translation)
-The claim follows from `contDiff_tau.comp (contDiff_const.sub (contDiff_id.div_const c))`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_prof (c : ℝ) : ContDiff ℝ ∞ (prof c) :=
   contDiff_tau.comp (contDiff_const.sub (contDiff_id.div_const c))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Establish `h1` using `((contDiff_tau.differentiable (by simp)) (2 - u / c)).hasDerivAt`. Conclude with `(h1.comp u (hasDerivAt_inner c u)).deriv.trans (by ring)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem deriv_prof (c : ℝ) :
     deriv (prof c) = fun u => -(1 / c) * deriv Real.smoothTransition (2 - u / c) := by
@@ -92,7 +92,7 @@ theorem deriv_prof (c : ℝ) :
   exact (h1.comp u (hasDerivAt_inner c u)).deriv.trans (by ring)
 
 /- English proof (translation)
-Rewrite using `[deriv_prof]`. Use function extensionality and compare the values at `u`. Establish `h1` using `((contDiff_tau'.differentiable (by simp)) (2 - u / c)).hasDerivAt`. Conclude with `((h1.comp u (hasDerivAt_inner c u)).const_mul (-(1 / c))).deriv.trans (by ring)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem deriv2_prof (c : ℝ) :
     deriv (deriv (prof c)) = fun u => (1 / c) ^ 2 * deriv (deriv Real.smoothTransition) (2 - u / c) := by
@@ -102,9 +102,7 @@ theorem deriv2_prof (c : ℝ) :
   exact ((h1.comp u (hasDerivAt_inner c u)).const_mul (-(1 / c))).deriv.trans (by ring)
 
 /- English proof (translation)
-Introduce and unpack `⟨h0, h1⟩`. Use `hu ⟨?_, ?_⟩` and prove the remaining obligations. Establish `: 1 ≤ u / c` using `by linarith`. Conclude with `(one_le_div hc).mp this`. Establish `: u / c ≤ 2` using `by linarith`.
-
-Conclude with `(div_le_iff₀ hc).mp this`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem notMem_Icc_of {c u : ℝ} (hc : 0 < c) (hu : u ∉ Set.Icc c (2 * c)) :
     2 - u / c ∉ Set.Icc (0 : ℝ) 1 := by
@@ -116,7 +114,7 @@ theorem notMem_Icc_of {c u : ℝ} (hc : 0 < c) (hu : u ∉ Set.Icc c (2 * c)) :
     exact (div_le_iff₀ hc).mp this
 
 /- English proof (translation)
-Establish `h1` using `Measure.integral_comp_div (fun w => f (2 - w)) c`. Establish `h2` using `integral_sub_left_eq_self f volume (2 : ℝ)`. Rewrite using `[h1, h2, abs_of_pos hc, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_comp_aff (f : ℝ → ℝ) {c : ℝ} (hc : 0 < c) :
     ∫ u, f (2 - u / c) = c * ∫ w, f w := by
@@ -129,7 +127,7 @@ section Sheets
 variable {n e : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin (e + 1)) (Fin n) ℂ}
 
 /- English proof (translation)
-Unfold `sheetSum`. Use `finsum_nonneg fun x => finsum_nonneg fun _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hF _ _`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sheetSum_nonneg (F : (Fin n → ℂ) → ((Fin (e + 1) → ℂ) → Fin n → ℂ) → ℝ) (y : Fin (e + 1) → ℂ)
     (hF : ∀ x s, 0 ≤ F x s) : 0 ≤ sheetSum I A F y := by
@@ -140,13 +138,13 @@ theorem sheetSum_nonneg (F : (Fin n → ℂ) → ((Fin (e + 1) → ℂ) → Fin 
   · exact le_rfl
 
 /- English proof (translation)
-Take `⟨-, rfl⟩` from `hx`. Establish `hsx : s (A *ᵥ x) = x` using `hs.choose_spec.2.2.2.1`. Establish `hG : ContDiffAt ℝ 2 (L ∘ s) (A *ᵥ x)` using `StokesOffDiscriminant.contDiffAt_comp_sheet hL hs`. Establish `hF : ContDiff ℝ 2 (prof c)` using `(contDiff_prof c).of_le (WithTop.coe_le_coe.mpr le_top)`. Establish `hFG : ContDiffAt ℝ 2 (prof c ∘ (L ∘ s)) (A *ᵥ x)` using `hF.contDiffAt.comp _ hG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcons : (fun k => (fun _ => L : Fin (e + 1) → (Fin n → ℂ) → ℝ) k ∘ s) = Fin.cons (L ∘ s) (fun _ : Fin e => L ∘ s)`. Use function extensionality and compare the values at `k`. Conclude with `Fin.cases rfl (fun _ => rfl) k`. Establish `hch` using `hchain e (fun _ => L ∘ s) (prof c) (L ∘ s) (A *ᵥ x) hF hG`. Establish `hle` using `(MaDensLeibniz.proof e (fun _ => L ∘ s) (prof c ∘ (L ∘ s)) (prof c ∘ (L ∘ s)) (A *ᵥ x) hFG hFG).2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLx : (L ∘ s) (A *ᵥ x) = L x` using `by simp [hsx]`. Rewrite `hch` using `[hLx]`. Rewrite using `[vecCons_comp, vecCons_comp, hcons]`. Establish `e1 : (prof c ∘ L) ∘ s = prof c ∘ (L ∘ s)` using `rfl`. Establish `e2 : (fun x => (prof c ∘ L) x ^ 2 / 2) ∘ s = fun y => (prof c ∘ (L ∘ s)) y ^ 2 / 2` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (prof c ∘ L) x = (prof c ∘ (L ∘ s)) (A *ᵥ x)` using `by simp [hsx]`. Rewrite using `[e1, e2, e3, hle, hch.1, hch.2]`. Apply the tactic sequence `constructor <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sheet_terms (hchain : MaDensChain.Statement) (c : ℝ) (L : (Fin n → ℂ) → ℝ)
     (hL : SmoothNear (zeroSet I) L) {x : Fin n → ℂ} {y : Fin (e + 1) → ℂ}
@@ -187,14 +185,14 @@ def w₂ (c : ℝ) : ℝ → ℝ := deriv (deriv (prof c))
 def w₁ (c : ℝ) (u : ℝ) : ℝ := deriv (prof c) u ^ 2
 
 /- English proof (translation)
-The claim follows from `deriv2_prof c`.
+A detailed English derivation is pending.
 -/
 theorem w₂_eq (c : ℝ) :
     w₂ c = fun u => (1 / c) ^ 2 * deriv (deriv Real.smoothTransition) (2 - u / c) :=
   deriv2_prof c
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Rewrite using `[w₁, deriv_prof]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem w₁_eq (c : ℝ) :
     w₁ c = fun u => (1 / c) ^ 2 * deriv Real.smoothTransition (2 - u / c) ^ 2 := by
@@ -203,21 +201,21 @@ theorem w₁_eq (c : ℝ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[w₂_eq]`. Conclude with `continuous_const.mul (contDiff_tau''.continuous.comp (by fun_prop))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_w₂ (c : ℝ) : Continuous (w₂ c) := by
   rw [w₂_eq]
   exact continuous_const.mul (contDiff_tau''.continuous.comp (by fun_prop))
 
 /- English proof (translation)
-Rewrite using `[w₁_eq]`. Conclude with `continuous_const.mul ((contDiff_tau'.continuous.comp (by fun_prop)).pow 2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_w₁ (c : ℝ) : Continuous (w₁ c) := by
   rw [w₁_eq]
   exact continuous_const.mul ((contDiff_tau'.continuous.comp (by fun_prop)).pow 2)
 
 /- English proof (translation)
-Rewrite using `[w₂_eq]`. Conclude with `HasCompactSupport.intro (isCompact_Icc (a := c) (b := 2 * c)) fun u hu => by`. Simplify using `[tau''_eq_zero (notMem_Icc_of hc hu)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_w₂ {c : ℝ} (hc : 0 < c) : HasCompactSupport (w₂ c) := by
   rw [w₂_eq]
@@ -225,7 +223,7 @@ theorem hasCompactSupport_w₂ {c : ℝ} (hc : 0 < c) : HasCompactSupport (w₂ 
     simp [tau''_eq_zero (notMem_Icc_of hc hu)]
 
 /- English proof (translation)
-Rewrite using `[w₁_eq]`. Conclude with `HasCompactSupport.intro (isCompact_Icc (a := c) (b := 2 * c)) fun u hu => by`. Simplify using `[tau'_eq_zero (notMem_Icc_of hc hu)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_w₁ {c : ℝ} (hc : 0 < c) : HasCompactSupport (w₁ c) := by
   rw [w₁_eq]
@@ -233,7 +231,7 @@ theorem hasCompactSupport_w₁ {c : ℝ} (hc : 0 < c) : HasCompactSupport (w₁ 
     simp [tau'_eq_zero (notMem_Icc_of hc hu)]
 
 /- English proof (translation)
-Establish `: ∀ u, |w₂ c u| = (1 / c) ^ 2 * |deriv (deriv Real.smoothTransition) (2 - u / c)|`. Introduce `u`. Rewrite using `[w₂_eq, abs_mul, abs_of_nonneg (by positivity : (0 : ℝ) ≤ (1 / c) ^ 2)]`. Repeatedly rewrite using `[this]`. Rewrite using `[integral_const_mul, integral_comp_aff (fun w => |deriv (deriv Real.smoothTransition) w|) hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -247,7 +245,7 @@ theorem integral_abs_w₂ {c : ℝ} (hc : 0 < c) :
   field_simp
 
 /- English proof (translation)
-Establish `: ∀ u, |w₁ c u| = (1 / c) ^ 2 * |deriv Real.smoothTransition (2 - u / c) ^ 2|`. Introduce `u`. Rewrite using `[w₁_eq, abs_mul, abs_of_nonneg (by positivity : (0 : ℝ) ≤ (1 / c) ^ 2)]`. Repeatedly rewrite using `[this]`. Rewrite using `[integral_const_mul, integral_comp_aff (fun w => |deriv Real.smoothTransition w ^ 2|) hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -261,7 +259,7 @@ theorem integral_abs_w₁ {c : ℝ} (hc : 0 < c) :
   field_simp
 
 /- English proof (translation)
-Unfold `prof`. Conclude with `abs_le.mpr ⟨by linarith [Real.smoothTransition.nonneg (2 - u / c)], Real.smoothTransition.le_one _⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem abs_prof_le_one (c u : ℝ) : |prof c u| ≤ 1 := by
   unfold prof
@@ -272,11 +270,9 @@ section Sums
 variable {n e : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin (e + 1)) (Fin n) ℂ}
 
 /- English proof (translation)
-Establish `hfin` using `IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y`. Unfold `chartAbsDens`. Rewrite using `[CutOffDominated.sheetSum_eq_sum _ hfin, CutOffDominated.sheetSum_eq_sum _ hfin, CutOffDominated.sheetSum_eq_sum _ hfin, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs with hs`. Use `beta_reduce`. Rewrite using `[one_mul, one_mul, (sheet_terms hchain c L hL hx hs.choose_spec).1]`. Use `(abs_add_le _ _).trans (add_le_add ?_ le_rfl)` and prove the remaining obligations. Rewrite using `[abs_mul]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (hS _) (abs_nonneg _)`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mass_pointwise (hchain : MaDensChain.Statement) (hA : IsFiniteProjection I A) (c S : ℝ)
     (hS : ∀ u, |deriv (prof c) u| ≤ S) (L : (Fin n → ℂ) → ℝ) (hL : SmoothNear (zeroSet I) L)
@@ -299,7 +295,7 @@ theorem mass_pointwise (hchain : MaDensChain.Statement) (hA : IsFiniteProjection
   · simp
 
 /- English proof (translation)
-The claim follows from `|chartDens I A (fun _ => 1) (vecCons (fun x => (prof c ∘ L) x ^ 2 / 2) fun _ => L) y - chartDens I A (prof c ∘ L) (vecCons (prof c ∘ L) fun _ => L) y| ≤ sheetSum I A (fun x s => |w₁ c (L x) * gradDens (fun _ : Fin e => L ∘ s) (L ∘ s) (L ∘ s) y|) y := by have hfin := IndefiniteRow …`.
+A detailed English derivation is pending.
 -/
 theorem energy_pointwise (hchain : MaDensChain.Statement) (hA : IsFiniteProjection I A) (c : ℝ)
     (L : (Fin n → ℂ) → ℝ) (hL : SmoothNear (zeroSet I) L) (y : Fin (e + 1) → ℂ) :
@@ -319,7 +315,7 @@ theorem energy_pointwise (hchain : MaDensChain.Statement) (hA : IsFiniteProjecti
   · simp
 
 /- English proof (translation)
-The claim follows from `|chartDens I A (prof c ∘ L) (vecCons (prof c ∘ L) fun _ => L) y| ≤ chartAbsDens I A (fun _ => 1) (vecCons (prof c ∘ L) fun _ => L) y := by have hfin := IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y unfold chartDens chartAbsDens rw [CutOffDominated.sheetSum_eq_sum _ hfi …`.
+A detailed English derivation is pending.
 -/
 theorem weight_pointwise (hA : IsFiniteProjection I A) (c : ℝ) (L : (Fin n → ℂ) → ℝ) (y : Fin (e + 1) → ℂ) :
     |chartDens I A (prof c ∘ L) (vecCons (prof c ∘ L) fun _ => L) y| ≤
@@ -341,25 +337,21 @@ section Core
 variable {n e : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin (e + 1)) (Fin n) ℂ}
 
 /- English proof (translation)
-Establish `hcs1 : HasCompactSupport (deriv Real.smoothTransition)` using `HasCompactSupport.intro isCompact_Icc fun u hu => tau'_eq_zero hu`. Take `⟨S₁, hS₁⟩` from `contDiff_tau'.continuous.bounded_above_of_compact_support hcs1`. Establish `hS₁0 : 0 ≤ S₁` using `(norm_nonneg _).trans (hS₁ 0)`. Establish `hM0 : 0 ≤ ∫ y, chartAbsDens I A (fun _ => 1) (fun _ => L) y` using `integral_nonneg fun y => sheetSum_nonneg _ y fun _ _ => abs_nonneg _`. Establish `hK₁0 : 0 ≤ ∫ w, |deriv Real.smoothTransition w ^ 2|` using `integral_nonneg fun _ => abs_nonneg _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK₂0 : 0 ≤ ∫ w, |deriv (deriv Real.smoothTransition) w|` using `integral_nonneg fun _ => abs_nonneg _`. Use `set M := ∫ y, chartAbsDens I A (fun _ => 1) (fun _ => L) y with hM`. Use `set K₁ := ∫ w, |deriv Real.smoothTransition w ^ 2| with hK₁`. Use `set K₂ := ∫ w, |deriv (deriv Real.smoothTransition) w| with hK₂`. Use `⟨S₁ * M + M * K₂ + M * K₁, fun k => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set c : ℝ := (k : ℝ) + 1 with hcdef`. Establish `hc : 0 < c` using `by positivity`. Establish `hSc : ∀ u, |deriv (prof c) u| ≤ S₁ / c`. Introduce `u`. Rewrite using `[deriv_prof, abs_mul, abs_neg, abs_of_pos (by positivity : (0 : ℝ) < 1 / c)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `hS₁ (2 - u / c)` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation. Establish `hQ` using `hLS (w₂ c) (continuous_w₂ c) (hasCompactSupport_w₂ hc)`. Establish `hP` using `hLS (w₁ c) (continuous_w₁ c) (hasCompactSupport_w₁ hc)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hQ` using `[integral_abs_w₂ hc, ← hK₂]`. Rewrite `hP` using `[integral_abs_w₁ hc, ← hK₁]`. Establish `hχm : Measurable (prof c ∘ L)` using `(contDiff_prof c).continuous.measurable.comp hLm`. Establish `hm_meas : Measurable (chartAbsDens I A (fun _ => 1) (vecCons (prof c ∘ L) fun _ => L))` using `SheetSumMeasurable.measurable_sheetSum hA (fun u m => |u * m|) (continuous_fst.mul continuous_snd).abs.measurable measurable_const _`. Establish `hbd_int` using `(hMint.const_mul (S₁ / c)).add hQ.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm_int : Integrable (chartAbsDens I A (fun _ => 1) (vecCons (prof c ∘ L) fun _ => L))` using `hbd_int.mono' hm_meas.aestronglyMeasurable (ae_of_all _ fun y => by`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by unfold chartAbsDens; exact sheetSum_nonneg _ y fun _ _ => abs_nonneg _)]`. Conclude with `mass_pointwise hchain hA c (S₁ / c) hSc L hL y)`. Establish `hfin : (S₁ * M + M * K₂ + M * K₁) / c = S₁ / c * M + M * (K₂ / c) + M * (K₁ / c)` using `by ring`. Establish `hK₁c : 0 ≤ M * (K₁ / c)` using `mul_nonneg hM0 (div_nonneg hK₁0 hc.le)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hK₂c : 0 ≤ S₁ / c * M + M * (K₂ / c)` using `add_nonneg (mul_nonneg (div_nonneg hS₁0 hc.le) hM0) (mul_nonneg hM0 (div_nonneg hK₂0 hc.le))`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_add (hMint.const_mul _) hQ.1, integral_const_mul]`. Use `_ ≤ S₁ / c * M + M * (K₂ / c) := by linarith [hQ.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ (S₁ * M + M * K₂ + M * K₁) / c := by rw [hfin]; linarith`. Establish `ha_meas : Measurable (chartDens I A (fun _ => 1) (vecCons (fun x => (prof c ∘ L) x ^ 2 / 2) fun _ => L))` using `SheetSumMeasurable.measurable_sheetSum hA (fun u m => u * m) (continuous_fst.mul continuous_snd).measurable measurable_const _`. Establish `hb_meas : Measurable (chartDens I A (prof c ∘ L) (vecCons (prof c ∘ L) fun _ => L))` using `SheetSumMeasurable.measurable_sheetSum hA (fun u m => u * m) (continuous_fst.mul continuous_snd).measurable hχm _`. Establish `hb_int : Integrable (chartDens I A (prof c ∘ L) (vecCons (prof c ∘ L) fun _ => L))` using `hm_int.mono' hb_meas.aestronglyMeasurable (ae_of_all _ fun y => by`. Rewrite using `[Real.norm_eq_abs]`.
-
-Conclude with `weight_pointwise hA c L y)`. Establish `hab_int : Integrable fun y => chartDens I A (fun _ => 1) (vecCons (fun x => (prof c ∘ L) x ^ 2 / 2) fun _ => L) y - chartDens I A (prof c ∘ L) (vecCons (prof c ∘ L) fun _ => L) y` using `hP.1.mono' (ha_meas.sub hb_meas).aestronglyMeasurable (ae_of_all _ fun y => by`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `energy_pointwise hchain hA c L hL y)`. Establish `ha_int : Integrable (chartDens I A (fun _ => 1) (vecCons (fun x => (prof c ∘ L) x ^ 2 / 2) fun _ => L))` using `(hab_int.add hb_int).congr (ae_of_all _ fun y => by simp)`.
-
-Unfold `chartInt`. Rewrite using `[← integral_sub ha_int hb_int]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem core (hchain : MaDensChain.Statement) (hA : IsFiniteProjection I A) (L : (Fin n → ℂ) → ℝ)
     (hL : SmoothNear (zeroSet I) L) (hLm : Measurable L)
@@ -455,7 +447,7 @@ theorem core (hchain : MaDensChain.Statement) (hA : IsFiniteProjection I A) (L :
 end Core
 
 /- English proof (translation)
-Introduce `n e h W g ℓ A hW hg hℓ hA`. Take `⟨hIp, hIdim, -⟩` from `SliceIdeal.proof n (e + 1) W g ℓ hW hg hℓ`. Establish `hMint` using `h₃ n (e + 1) h (W ⊔ Ideal.span {linForm ℓ - 1}) ℓ A hIp (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) hIdim hA`. Take `⟨C, hC⟩` from `core h₁ hA (fun x => Real.log (h.dualNorm x)) (smoothNear_log_dualNorm_slice h W ℓ) (Real.measurable_log.comp (SliceCut.continuous_dualNorm h).measurable) hMint (fun ψ hψ hψs => h₂ n e h W g ℓ A ψ hW hg hℓ hA hψ hψs)`. Conclude with `⟨C, hC⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem proof (h₁ : MaDensChain.Statement) (h₂ : SliceLevelSet.Statement) (h₃ : SliceMassFinite.Statement) :
     SliceCutDecay.Statement := by

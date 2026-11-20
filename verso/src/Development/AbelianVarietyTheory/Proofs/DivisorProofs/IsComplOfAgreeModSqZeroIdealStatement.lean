@@ -9,7 +9,7 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SqZeroSummand.summand_of_agree_mod_sqZero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsComplOfAgreeModSqZeroIdeal.lean&line=48#L48)
 -/

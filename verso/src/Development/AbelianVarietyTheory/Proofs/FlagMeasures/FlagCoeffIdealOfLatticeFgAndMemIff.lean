@@ -7,7 +7,7 @@ open NumberField
 namespace GlobalTheory.RowLatXS
 
 /- English proof (translation)
-Establish `hxy : x + y ∈ Submodule.span E (Set.range F.e)` using `Submodule.add_mem _ hx hy`. Unfold `Formalism.MainNotions.S.FlagG.coefX`. Rewrite using `[dif_pos hx, dif_pos hy, dif_pos hxy]`. Establish `hsum : (⟨x + y, hxy⟩ : Submodule.span E (Set.range F.e)) = ⟨x, hx⟩ + ⟨y, hy⟩` using `rfl`. Rewrite using `[hsum, map_add, Finsupp.add_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem coefX_add_flag_measures {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E}
     {r : ℕ} {T : E} (F : Formalism.MainNotions.S.FlagG S r T) (a : Fin r) {x y : S.V}
@@ -20,7 +20,7 @@ private theorem coefX_add_flag_measures {E : Type} [Field E] [NumberField E] [St
   rw [hsum, map_add, Finsupp.add_apply]
 
 /- English proof (translation)
-Establish `hcx : c • x ∈ Submodule.span E (Set.range F.e)` using `Submodule.smul_mem _ c hx`. Unfold `Formalism.MainNotions.S.FlagG.coefX`. Rewrite using `[dif_pos hx, dif_pos hcx]`. Establish `hprod : (⟨c • x, hcx⟩ : Submodule.span E (Set.range F.e)) = c • ⟨x, hx⟩` using `rfl`. Rewrite using `[hprod, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem coefX_smul_flag_measures {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E}
     {r : ℕ} {T : E} (F : Formalism.MainNotions.S.FlagG S r T) (a : Fin r) (c : E) {x : S.V}
@@ -33,17 +33,15 @@ private theorem coefX_smul_flag_measures {E : Type} [Field E] [NumberField E] [S
   rw [hprod, map_smul, Finsupp.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hXle : F.Xa (a.val + 1) ≤ Submodule.span E (Set.range F.e)`. Unfold `Formalism.MainNotions.S.FlagG.Xa`. Conclude with `Submodule.span_mono (Set.image_subset_range _ _)`. Set `W : Submodule (𝓞 E) S.V` to `Λ ⊓ (F.Xa (a.val + 1)).restrictScalars (𝓞 E)`. Establish `hmem : ∀ x : W, (x : S.V) ∈ Submodule.span E (Set.range F.e)` using `fun x => hXle ((Submodule.restrictScalars_mem _ _ _).1 (Submodule.mem_inf.1 x.2).2)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `g : W →ₗ[𝓞 E] E` to `{ toFun := fun x => F.coefX (x : S.V) a map_add' := fun x y => coefX_add_flag_measures F a (hmem x) (hmem y) map_smul' := fun c x => by`. Express the relevant statement in the definitionally equal form `F.coefX (c • (x : S.V)) a = c • F.coefX (x : S.V) a`. Rewrite using `[← algebraMap_smul E c (x : S.V), coefX_smul_flag_measures F a _ (hmem x), Algebra.smul_def] }`. Establish `hrange : ∀ t : E, t ∈ LinearMap.range g ↔ ∃ x ∈ Λ, x ∈ F.Xa (a.val + 1) ∧ F.coefX x a = t`. Introduce `t`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x, (Submodule.mem_inf.1 x.2).1, (Submodule.mem_inf.1 x.2).2, rfl⟩`. Introduce and unpack `⟨x, hx, hxa, rfl⟩`. Conclude with `⟨⟨x, Submodule.mem_inf.2 ⟨hx, hxa⟩⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hIa : GlobalTheory.RowLatXS.Ia Λ F a = LinearMap.range g`. Unfold `GlobalTheory.RowLatXS.Ia`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `t ht`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hrange t).2 ht`. Introduce `t ht`. Conclude with `Submodule.subset_span ((hrange t).1 ht)`. Use `⟨?_, fun t => by rw [hIa]; exact hrange t⟩` and prove the remaining obligations. Establish `: IsNoetherian (𝓞 E) Λ` using `isNoetherian_of_fg_of_noetherian Λ hΛ`.
-
-Establish `: IsNoetherian (𝓞 E) W` using `isNoetherian_of_le inf_le_left`. Rewrite using `[hIa, LinearMap.range_eq_map]`. Conclude with `(IsNoetherian.noetherian (⊤ : Submodule (𝓞 E) W)).map g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ia_fg_and_mem_iff {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E) (r : ℕ)
     (T : E) (F : Formalism.MainNotions.S.FlagG S r T) (Λ : Submodule (𝓞 E) S.V) (a : Fin r) (hΛ : Λ.FG) :

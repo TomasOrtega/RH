@@ -11,7 +11,7 @@ namespace GlobalTheory.TwistCharChange
 open Formalism.IndefR.Lev
 
 /- English proof (translation)
-Establish `h` using `Subgroup.mem_subgroupOf.1 γ.2`. Take `⟨γE, -, e⟩` from `Subgroup.mem_map.1 h`. Conclude with `⟨γE, e.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ratMat_exists {D : D7} (V : HSp D) (γ : GQ V) : ∃ γE, Bridge.IsRatMat V γ γE := by
   have h := Subgroup.mem_subgroupOf.1 γ.2
@@ -19,9 +19,9 @@ theorem ratMat_exists {D : D7} (V : HSp D) (γ : GQ V) : ∃ γE, Bridge.IsRatMa
   exact ⟨γE, e.symm⟩
 
 /- English proof (translation)
-Establish `h1 : (flagL L).P.chi = 1` using `rfl`. Unfold `levFn`. Rewrite using `[h1, subgroupCharExtension_one_apply, one_mul]`. Use `RingHom.mem_fieldRange.1 ?_` and prove the remaining obligations. Simplify using `only [Units.val_mul, Units.coe_prod]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Subfield.mul_mem _ (Subfield.prod_mem _ fun PP hP => Subfield.prod_mem _ fun j hj => ?_) (Subfield.prod_mem _ fun PP hP => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `hcg j (Finset.mem_range.1 hj) PP hP _`. Conclude with `RingHom.mem_fieldRange.2 ⟨a, ha⟩`. Take `⟨a, ha⟩` from `hxq PP hP _`. Conclude with `RingHom.mem_fieldRange.2 ⟨a, ha⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem flag_vals {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (hcg : ∀ j, j < L.s → ∀ PP ∈ L.Pg, ∀ x, ∃ a, D.what₂.embLL a = ((L.cg (j + 1) PP x : ℂˣ) : ℂ))

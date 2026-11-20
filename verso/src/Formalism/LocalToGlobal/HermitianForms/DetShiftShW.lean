@@ -14,20 +14,20 @@ def shW (l : DomWeight N) (c : ℤ) : DomWeight N where
     omega
 
 /- English proof (translation)
-Consider the cases of `l`. Simplify using `only [shW, sub_zero]`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 -/
 theorem shW_zero (l : DomWeight N) : shW l 0 = l := by
   cases l
   simp only [shW, sub_zero]
 
 /- English proof (translation)
-Simplify using `[DomWeight.detShift, hN, shW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem detShift_shW (l : DomWeight N) (c : ℤ) (hN : 0 < N) : (shW l c).detShift = l.detShift - c := by
   simp [DomWeight.detShift, hN, shW]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hN : 0 < N` using `lt_of_le_of_lt (Nat.zero_le _) i.2`. Simplify using `only [DomWeight.natW, detShift_shW l c hN]`. Use `congr 1`. Simplify using `only [shW]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -40,28 +40,28 @@ theorem natW_shW (l : DomWeight N) (c : ℤ) : (shW l c).natW = l.natW := by
   ring
 
 /- English proof (translation)
-Unfold `delSq`. Rewrite using `[natW_shW]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem delSq_shW (R : Type) [CommRing R] (l : DomWeight N) (c : ℤ) : delSq R N (shW l c) = delSq R N l := by
   unfold delSq
   rw [natW_shW]
 
 /- English proof (translation)
-Unfold `extremal`. Rewrite using `[natW_shW]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem extremal_shW (R : Type) [CommRing R] (l : DomWeight N) (c : ℤ) : extremal R N (shW l c) = extremal R N l := by
   unfold extremal
   rw [natW_shW]
 
 /- English proof (translation)
-Simplify using `only [CSpan, delSq_shW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem CSpan_shW {ι : Type} [Fintype ι] (lam : ι → DomWeight N) (c : ι → ℤ) :
     CSpan (fun τ => shW (lam τ) (c τ)) = CSpan lam := by
   simp only [CSpan, delSq_shW]
 
 /- English proof (translation)
-Simplify using `only [nfAll, extremal_shW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nfAll_shW {ι : Type} [Fintype ι] (lam : ι → DomWeight N) (c : ι → ℤ)
     (p q : MvPolynomial (ι × Fin N × Fin N) ℂ) : nfAll (fun τ => shW (lam τ) (c τ)) p q = nfAll lam p q := by

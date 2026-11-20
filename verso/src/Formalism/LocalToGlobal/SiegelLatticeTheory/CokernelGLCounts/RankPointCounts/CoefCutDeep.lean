@@ -33,9 +33,9 @@ open Classical ValuativeRel
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hRA : FibPart.RepAtTup M δ u u' F0 what₂` using `TupFinal.repAtTup_of_stab ⟨δ, M, hA⟩ u u' F0 what₂ hSA`. Establish `hTF` using `FibQ.tupFun_holds M δ u u' F0 what₂`. Establish `hOZ` using `TupOrb.orbZT_holds M δ u u' F0 what₂`. Establish `hfin : ∀ Λ ∈ what₂, ∀ Z : PairVal.MatR D, CntLocal.cntE (CntLocal.Tn u') F0 Λ Z ≠ ⊤` using `fun Λ hΛ Z => ZsVolFin.finR D u u' F0 what₂ hrows Z Λ hΛ`. Establish `hN : PairVal.NormRepExists D u u' F0 what₂` using `PCount.normRepExists_ctx ⟨hc, hrows, hP⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : Formalism.L2.SG.Pf.NormRepMove D u u'` using `norm_representative_move D u u' (Formalism.L2.SG.Closed.TermStable_holds D u u') (Formalism.L2.SG.Closed.TermEqIff_holds D u u') (Formalism.L2.SG.Closed.TermFun_holds D u u') hP hsig`. Conclude with `cutAt_of_leaves hA hc hP hrows hN hM (local_phase_typed_places hA) (ZsVolAsm.volIdxProd_of_prodE M δ u u' F0 what₂ hP (ProdE.prodE_CZ_of_approxC M δ u u' F0 what₂ (ProdEApprox.approxC M δ u u' F0 what₂) hst)) (fun _ => PCountEx.exist_holds hA u u') (fun _ => FibPart.sumFr_of M δ …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cutAt_of_deep {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     {δ : ∀ p : PlF D, (D.s.atP p).Fp} {L : CntLocal.LocSp D M} {u u' : D.what₂.Word}
@@ -75,7 +75,7 @@ def CutLeavesDeep (D : Formalism.BasicNotions.D7) : Prop :=
       FrameGlobalPatching.FStarC ⟨δ, M, hA⟩ u u' F0 what₂
 
 /- English proof (translation)
-Unfold `CutLeavesDeep at h`. Unfold `RowsDatumP`. Introduce `hsig δ M hA L u u' hc hP F0 what₂ hrows ϖ hϖ nc hnc`. Take `⟨hst, hSA, hFS⟩` from `h hsig δ M hA L u u' hc hP F0 what₂ hrows`. Conclude with `rowsDatum_at (cutAt_of_deep (L := L) hsig hA hc hP hrows hst hSA hFS) (eligFinite_of (Formalism.L2.SG.Closed.TermsAtFinite_holds D u u') hsig hrows) hrows ϖ hϖ nc hnc`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rowsDatumP_of_deep {D : Formalism.BasicNotions.D7} (h : CutLeavesDeep D) : RowsDatumP D := by
   unfold CutLeavesDeep at h
@@ -86,14 +86,14 @@ theorem rowsDatumP_of_deep {D : Formalism.BasicNotions.D7} (h : CutLeavesDeep D)
     (eligFinite_of (Formalism.L2.SG.Closed.TermsAtFinite_holds D u u') hsig hrows) hrows ϖ hϖ nc hnc
 
 /- English proof (translation)
-The claim follows from `rowsInputP_of_normProd hN (rowsDatumP_of_deep h)`.
+A detailed English derivation is pending.
 -/
 theorem rowsInputP_of_deep {D : Formalism.BasicNotions.D7} (hN : Formalism.L2.SG.SupportG.NormProd D) (h : CutLeavesDeep D) :
     RowsInputP D :=
   rowsInputP_of_normProd hN (rowsDatumP_of_deep h)
 
 /- English proof (translation)
-The claim follows from `rowsInputP_of_deep (Formalism.L2.SG.Closed.NormProd_holds D) h`.
+A detailed English derivation is pending.
 -/
 theorem lattice_input_of_open_leaves {D : Formalism.BasicNotions.D7} (h : CutLeavesDeep D) : RowsInputP D :=
   rowsInputP_of_deep (Formalism.L2.SG.Closed.NormProd_holds D) h

@@ -18,9 +18,9 @@ variable {O K Kc : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [Fie
   (M : AddSubgroup Kc) (hM : ∀ (o : O), ∀ a ∈ M, algebraMap K Kc (algebraMap O K o) * a ∈ M)
 
 /- English proof (translation)
-Use `show map (algebraMap O K) _ = _`. Unfold `bideterminant initMinor`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toK_bidet {r n K' : ℕ} (sz : Fin K' → ℕ) (hsz : ∀ k, sz k ≤ n) (I : ∀ k, Fin (sz k) → Fin r) :
     toK O K (bideterminant O sz hsz I) = bideterminant K sz hsz I := by
@@ -36,17 +36,15 @@ theorem toK_bidet {r n K' : ℕ} (sz : Fin K' → ℕ) (hsz : ∀ k, sz k ≤ n)
 include hem hν hh hM in
 
 /- English proof (translation)
-Use `tgt_abs (O := O) em hem ν hν h hi hh M hDB hFP y hy fun Q hQ => ?_` and prove the remaining obligations. Set `T : Submodule O (MvPolynomial τ K)` to `{ carrier := {Z | ∃ a ∈ M, fockR y (map (algebraMap K Kc) Z) = a * ∏ b, cN Kc (ν b)} add_mem' := by`. Introduce and unpack `Z Z' ⟨a, ha, h1⟩ ⟨a', ha', h2⟩`. Use `⟨a + a', M.add_mem ha ha', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, fockR_comm, fockR_add_left, fockR_comm _ y, fockR_comm _ y, h1, h2, add_mul]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := ⟨0, M.zero_mem, by rw [map_zero, fockR_comm, fockR_zero_left, zero_mul]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `o Z ⟨a, ha, h1⟩`. Use `⟨_, hM o a ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K o Z, smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul, fockR_comm, fockR_smul_left, fockR_comm, h1, mul_assoc] }`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `prod_span (R := O) (fun b => Set.range fun I : ∀ k, Fin (sz b k) → Fin n => rename (em b) (rowAct K (h b).transpose (bideterminant K (sz b) (hsz b) I))) T ?_ _ ?_` and prove the remaining obligations. Introduce `f hf choose I hI using hf`. Take `⟨a, ha, h1⟩` from `hp I`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_congr rfl fun b _ => hI b]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h1`. Introduce `b`. Establish `h1` using `hQ b`. Rewrite `h1` using `[standardMonomialSpanDomain O n n (ν b), Submodule.map_span]`. Establish `h2` using `Submodule.mem_map_of_mem (f := (((rename (em b) : MvPolynomial (Fin n × Fin n) K →ₐ[K] MvPolynomial τ K).comp (rowAct K (h b).transpose)).toLinearMap).restrictScalars O) h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite `h2` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨_, ⟨K', sz', hsz', I', hs', rfl⟩, rfl⟩, rfl⟩`. Take `⟨I'', hI''⟩` from `hRe K n n K' (c b) sz' (sz b) hsz' (hsz b) (hs'.trans (hshape b).symm) I'`. Use `⟨I'', ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[toK_bidet, hI'']`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tgt_bidet (hDB : DualBases) (hFP : FockProd) (hRe : Reorder) (c : B → ℕ) (sz : ∀ b, Fin (c b) → ℕ)
     (hsz : ∀ b k, sz b k ≤ n) (hshape : ∀ b, shapeDeg (sz b) = ν b) (y : MvPolynomial τ Kc)

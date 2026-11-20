@@ -16,7 +16,7 @@ section BaseChange
 variable {ι : Type} [Fintype ι] {n : ℕ} {K : Type} [Field K] [StarRing K] (φ : K →+* ℂ) (lam : ι → DomWeight n)
 
 /- English proof (translation)
-Rewrite using `[fockS_eq_sum _ _ (map (Int.castRingHom K) P).support (support_map_subset _ _), fockS, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `[coeff_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem fockS_map_int {s : Type} (P : MvPolynomial s ℤ) (g : MvPolynomial s K) :
     fockS (map φ (map (Int.castRingHom K) P)) (map φ g) = φ (fockS (map (Int.castRingHom K) P) g) := by
@@ -25,15 +25,15 @@ theorem fockS_map_int {s : Type} (P : MvPolynomial s ℤ) (g : MvPolynomial s K)
   simp [coeff_map]
 
 /- English proof (translation)
-Establish `h1 : (map φ).comp (Formalism.GradedWeylDivisibility.blockAct K (n` using `n) fun τ => (G τ)ᵀ).toRingHom = (Formalism.GradedWeylDivisibility.blockAct ℂ (n := n) fun τ => ((G τ).map φ)ᵀ).toRingHom.comp (map φ) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using the standard rewrite rules. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[blockAct_X]`. Establish `h2 : map φ (Formalism.GradedWeylDivisibility.blockAct K (fun τ => (G τ)ᵀ) y.1) = Formalism.GradedWeylDivisibility.blockAct ℂ (fun τ => ((G τ).map φ)ᵀ) (map φ y.1)` using `congrArg (fun ψ : Pol K ι n →+* Pol ℂ ι n => ψ y.1) h1`. Establish `h3 : φ (gramTw lam G) = gramTw lam fun τ => (G τ).map φ`. Unfold `gramTw`. Rewrite using `[map_prod]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, RingHom.map_det]`. Both sides reduce to the same expression. Establish `h4 : φ (extNorm K lam) = extNorm ℂ lam`. Unfold `extNorm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← map_extremal φ n (lam τ), ← map_extremal (Int.castRingHom K) n (lam τ), fockS_map_int]`. Establish `h5` using `fockS_map_int φ P (Formalism.GradedWeylDivisibility.blockAct K (fun τ => (G τ)ᵀ) y.1)`. Rewrite `h5` using `[← hx]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pairK_apply, pairK_apply, pairP_apply, pairP_apply, mapVV_coe, mapVV_coe, ← h2, fockL_apply, fockL_apply, h5, map_mul, map_div₀, h3, h4]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pairK_mapVV_int (G : ι → Matrix (Fin n) (Fin n) K) (x y : VV K lam) (P : MvPolynomial (ι × Fin n × Fin n) ℤ)
     (hx : (x : Pol K ι n) = map (Int.castRingHom K) P) :
@@ -88,25 +88,21 @@ namespace GlobalTheory.CoefModel
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Take `⟨hc, hs⟩` from `realGL_laws hθ V`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram`. Establish `hG : ∀ τ, (((V.gram.map (tauE D (p τ)))⁻¹)ᵀ).PosDef` using `fun τ => (hV (p τ)).inv.transpose`. Establish `hlab : ∀ τ x, σ (labLL D τ x) = tauE D (p τ) x` using `fun τ x => DFunLike.congr_fun (hp τ) x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨coefOf lam hG (invTrK.comp ((reindexFam p).comp (realGL θ V))), (toHilb lam hG).toLinearMap.comp (mapVV σ lam), coefOf_is lam hG _ (fun h hh => ?_) (fun h τ => ?_) (fun τ => ?_) (fun g hg => ?_), fun γ γE hγ v => ?_, ?_, ?_, fun a y => ?_⟩` and prove the remaining obligations. Establish `: realGL θ V h = 1` using `funext fun τ => by show Formalism.UG.bc (θ τ) (infHom V h) = 1`. Rewrite using `[show infHom V h = 1 from hh, map_one]`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, this, map_one, map_one]`. Conclude with `invTr_unitary (g := realGL θ V h (p τ)) (GlobalTheory.RecDictModel.archM_unitary V (hθ (p τ)) h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `((hc (p τ)).comp continuous_inv).matrix_transpose.congr fun h => ?_ show (realGL θ V h⁻¹ (p τ) : Matrix (Fin V.rank) (Fin V.rank) ℂ)ᵀ = _` and prove the remaining obligations. Rewrite using `[map_inv]`. Both sides reduce to the same expression. Take `⟨h, e⟩` from `hs (reindexFam p.symm (invTrK g)) fun ρ => by`. Use `invTr_unitary (hg (p.symm ρ))` as an intermediate fact.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[p.apply_symm_apply, ← Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (hV ρ).isUnit), Matrix.transpose_transpose]`. Then use the resulting hypothesis. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, e]`. Use `funext fun τ => ?_` and prove the remaining obligations. Use `show inside₂ ℂ _ (inside₂ ℂ _ (g (p.symm (p τ)))) = g τ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[p.symm_apply_apply, invTr_invTr]`. Use `show toHilb lam hG (mapVV _ lam (rhoK lam (invTrK (embGL (labLL D) γE)) v)) = rhoH lam hG (invTrK (reindexFam p (realGL θ V γ))) (toHilb lam hG (mapVV _ lam v))`. Establish `e : (fun τ => Formalism.UG.bc σ (invTrK (embGL (labLL D) γE) τ)) = invTrK (reindexFam p (realGL θ V γ))`. Use function extensionality and compare the values at `τ`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[bc_coe, invTrK_coe, invTrK_coe, reindexFam_apply, realGL_rat hθ V γ γE hγ, embGL_inv, ← map_inv, embGL_coe, bc_coe]`. Use extensionality with `a b`. Conclude with `hlab _ _`. Rewrite using `[rhoH_toHilb, mapVV_rhoK, e]`. Conclude with `(linearIndependent_mapVV σ lam).map' (toHilb lam hG).toLinearMap (LinearEquiv.ker _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `span_mapVV σ lam`. Take `⟨P, hP⟩` from `bVVfun_int D.what₂.LL lam a show inner ℂ (toHilb lam hG (mapVV σ lam (bVV D.what₂.LL lam a))) (toHilb lam hG (mapVV σ lam y)) = σ (pairK lam (gramKd (labLL D) V.gram) (bVV D.what₂.LL lam a) y)`. Rewrite using `[inner_toHilb, ← pairK_mapVV_int σ lam _ _ y P ((bVV_coe _ lam a).trans hP)]`. Establish `e : (fun τ => ((V.gram.map (tauE D (p τ)))⁻¹)ᵀ) = fun τ => (gramKd (labLL D) V.gram τ).map σ`. Use function extensionality and compare the values at `τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : V.gram.map (tauE D (p τ)) = (V.gram.map (labLL D τ)).map σ`. Use extensionality with `a b`. Conclude with `(hlab _ _).symm`. Establish `hu : IsUnit (V.gram.map (labLL D τ)).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
-
-Conclude with `((_root_.map_ne_zero _).2 (GlobalTheory.UnitaryGlue.gram_det_ne_zero V)).isUnit`. Rewrite using `[gramKd, Matrix.transpose_map, e1]`. Use `congr 1`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hu, Matrix.map_one _ (map_zero _) (map_one _)]`.
-
-Conclude with `congrArg (fun G => pairK lam G (mapVV σ lam (bVV D.what₂.LL lam a)) (mapVV σ lam y)) e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coef_round_at (V : HSp D) (hV : ∀ τ, (V.gram.map (tauE D τ)).PosDef)
     (lam : D.what₂.Tau → DomWeight V.rank) (σ : D.what₂.LL →+* ℂ) (p : D.what₂.Tau ≃ D.what₂.Tau)
@@ -173,9 +169,9 @@ theorem exists_coef_round_at (V : HSp D) (hV : ∀ τ, (V.gram.map (tauE D τ)).
     exact congrArg (fun G => pairK lam G (mapVV σ lam (bVV D.what₂.LL lam a)) (mapVV σ lam y)) e
 
 /- English proof (translation)
-Establish `hl` using `(GlobalTheory.GalLift.labels_overK σ).1 hσ`. Establish `hV : ∀ τ, ((Vc D i).gram.map (tauE D τ)).PosDef` using `fun τ => by`. Use `D.sp.V_sig ((i : ℕ) + 1) (tauE D τ)` as an intermediate fact. Rewrite `this` using `[h (tauE D τ)]`. Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : gramV D i = (Vc D i).gram`. Rewrite using `[gramV, GlobalTheory.StdFrame.neg_eq_false_of_posDef D i h, if_neg Bool.false_ne_true]`. Establish `H` using `exists_coef_round_at (Vc D i) hV (lamV D i) σ (Equiv.ofBijective _ hl.1).symm fun τ => (congrArg (labE σ) ((Equiv.ofBijective _ hl.1).apply_symm_apply τ).symm).trans (hl.2 _)`. Take `⟨c, c₁, h1, h2, h3, h4, h5⟩` from `H`. Conclude with `⟨c, c₁, h1, h2, h3, h4, fun a b => hg ▸ h5 a _⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coefAt_of_posDef (i : Fin D.R.m) (h : (Vc D i).IsPosDef) (σ : D.what₂.LL →+* ℂ) (hσ : OverK σ) :
     ∃ (c : CoefA (Vc D i)) (c₁ : VsV D i D.what₂.LL →ₛₗ[σ] c.W), CoefAt i σ c c₁ := by

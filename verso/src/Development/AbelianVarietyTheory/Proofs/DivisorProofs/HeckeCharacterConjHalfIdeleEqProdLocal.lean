@@ -20,9 +20,9 @@ namespace GlobalTheory.IdemSumChar
 open Formalism.L2.JoinChr
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [locE]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, ← ih fun i hi j hj hij => hf i (Finset.mem_insert_of_mem hi) j (Finset.mem_insert_of_mem hj) hij]`. Establish `h0 : f a * ∑ i ∈ s, f i = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun i hi => hf a (Finset.mem_insert_self a s) i (Finset.mem_insert_of_mem hi) (fun h => ha (h ▸ hi))`. Unfold `locE`. Take the linear combination `(-(incA D k - 1) * (incA D k - 1)) * h0`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem locE_sum {D : D7} {ι : Type} (s : Finset ι) (f : ι → AE D)
     (hf : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → f i * f j = 0) (k : D.host.E) :
@@ -41,17 +41,15 @@ theorem locE_sum {D : D7} {ι : Type} (s : Finset ι) (f : ι → AE D)
     linear_combination (-(incA D k - 1) * (incA D k - 1)) * h0
 
 /- English proof (translation)
-Introduce `D Q eQ h k y hy c ψ hψ`. Take `⟨⟨es, hes, rfl⟩, -⟩` from `h`. Establish `hIP : ∀ P ∈ Q, Formalism.L2.NTheta.IsIdemAt (cA D (es P)) (conjPl P)` using `fun P hP => GlobalTheory.MovedIdem.isIdemAt_conj (hes P hP) fun _ => Iff.rfl`. Set `g : Pl D.host.E → AE D` to `fun P => if P ∈ Q then cA D (es P) else 0`. Establish `hg : ∀ P, g P * g P = g P` using `fun P => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Distinguish the cases in `hP : P ∈ Q`. Simplify using `only [g, if_pos hP]`. Conclude with `(hIP P hP).1.1`. Simplify using `only [g, if_neg hP, mul_zero]`. Establish `horth : ∀ P ∈ Q, ∀ P' ∈ Q, P ≠ P' → g P * g P' = 0` using `fun P hP P' hP' hne => by`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, if_pos hP, if_pos hP', ← map_mul]`. Rewrite using `[idem_orth (idemAt_split (hes P hP)) (hes P hP) (hes P' hP') hne, map_zero]`. Establish `hsum : cA D (∑ P ∈ Q, es P) = ∑ P ∈ Q, g P`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun P hP => by simp only [g, if_pos hP]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hy' : y = ∏ P ∈ Q, locU (hg P) k`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hy, Units.coe_prod, hsum, locE_sum Q g horth]`. Both sides reduce to the same expression. Rewrite using `[hy', map_prod]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcoe : ∀ (s : Finset (Pl D.host.E)) (u : Pl D.host.E → Circle), (((∏ P ∈ s, u P : Circle)) : ℂ) = ∏ P ∈ s, ((u P : Circle) : ℂ)` using `fun s u => map_prod Circle.coeHom u s`. Rewrite using `[hcoe]`. Use `Finset.prod_congr rfl fun P hP => ?_` and prove the remaining obligations. Establish `hpl : IsPlIdem D (g P) (conjPl P)`. Simplify using `only [g, if_pos hP]`.
-
-Conclude with `GlobalTheory.HeckeDetChar.isPlIdem (hIP P hP)`. Conclude with `hψ.2 (conjPl P) (g P) hpl k (locU (hg P) k) (locU_val _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem char_eq_prod : ∀ (D : D7) (Q : Finset (Pl D.host.E)) (eQ : AE D), IsIdemSum eQ Q → ∀ (k : D.host.Eˣ) (y : (AE D)ˣ), (y : AE D) = Formalism.L2.JoinChr.locE D (cA D eQ) (k : D.host.E) → ∀ (c : (AE D)ˣ →* Circle) (ψ : Formalism.L2.Host.HChar D.host.E), ChrEq c ψ → ((c y : Circle) : ℂ) = ∏ P ∈ Q, ((ψ.locK (conjPl P) k : ℂˣ) : ℂ) := by
   intro D Q eQ h k y hy c ψ hψ

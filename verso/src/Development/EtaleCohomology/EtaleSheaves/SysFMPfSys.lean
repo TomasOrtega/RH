@@ -9,9 +9,9 @@ def IdemSec : Prop := ∀ {P : Scheme.{0}} [CompactSpace P] [QuasiSeparatedSpace
   (w : Spec (CommRingCat.of W) ⟶ P), Function.Injective (phi w) ∧ ∀ e : W, IsIdempotentElem e → ∃ s, phi w s = e
 
 /- English proof (translation)
-Simplify using `only [Scheme.mem_basicOpen_top, map_sub, map_one]`. Establish `he : IsIdempotentElem (X.presheaf.germ ⊤ x trivial s)` using `hs.map _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(IsLocalRing.isUnit_or_isUnit_one_sub_self _).resolve_left h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h h'`. Establish `hz : X.presheaf.germ ⊤ x trivial s * (1 - X.presheaf.germ ⊤ x trivial s) = 0`. Rewrite using `[mul_sub, mul_one, he.eq, sub_self]`. Conclude with `not_isUnit_zero (hz ▸ h'.mul h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basicOpen_one_sub {X : Scheme.{0}} {s : Γ(X, ⊤)} (hs : IsIdempotentElem s) (x : X) :
     x ∉ X.basicOpen s ↔ x ∈ X.basicOpen (1 - s) := by
@@ -26,27 +26,23 @@ theorem basicOpen_one_sub {X : Scheme.{0}} {s : Γ(X, ⊤)} (hs : IsIdempotentEl
     exact not_isUnit_zero (hz ▸ h'.mul h)
 
 /- English proof (translation)
-Introduce `P _ _ W _ w hW y`. Take `⟨hinj, hrg⟩` from `hI W w`. Establish `hid : ∀ s, IsIdempotentElem (phi w s) → IsIdempotentElem s` using `fun s h => hinj (by rw [map_mul]; exact h.eq)`. Set `F : Set W` to `{e | IsIdempotentElem e ∧ ∃ s, phi w s = e ∧ y ∈ w.normalization.basicOpen s}`. Establish `hF0 : (0 : W) ∉ F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `⟨-, s, hs, hy⟩`. Establish `: s = 0` using `hinj (by rw [hs, map_zero])`. Substitute `this` using the available equality. Simplify using `at hy`. Establish `hFu : ∀ e, IsIdempotentElem e → e ∈ F ∨ 1 - e ∈ F`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `e he`. Take `⟨s, rfl⟩` from `hrg e he`. Distinguish the cases in `hy : y ∈ w.normalization.basicOpen s`. Conclude with `Or.inl ⟨he, s, rfl, hy⟩`. Conclude with `Or.inr ⟨he.one_sub, 1 - s, by rw [map_sub, map_one], (basicOpen_one_sub (hid s he) y).1 hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Establish `hFm : ∀ e ∈ F, ∀ f ∈ F, e * f ∈ F`. Introduce and unpack `e ⟨he, s, rfl, hs⟩ f ⟨hf, t, rfl, ht⟩`. Conclude with `⟨he.mul hf, s * t, map_mul _ _ _, by rw [Scheme.basicOpen_mul]; exact ⟨hs, ht⟩⟩`. Take `⟨q, hq⟩` from `prime_of_filter hW F (fun e h => h.1) hF0 hFu hFm`. Set `J : Type` to `{s : Γ(w.normalization, ⊤) // IsIdempotentElem (phi w s) ∧ phi w s ∉ q.asIdeal}`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `letI : Preorder J := Preorder.lift (fun s : J => w.normalization.basicOpen s.1)`. Establish `hmono : Monotone (fun s : J => w.normalization.basicOpen s.1)` using `fun _ _ h => h`. Establish `hne : Nonempty J` using `⟨⟨1, by rw [map_one]; exact IsIdempotentElem.one, by rw [map_one]; exact (Ideal.ne_top_iff_one _).1 q.2.ne_top⟩⟩`. Use `haveI : IsCodirectedOrder J := by`. Use `⟨?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨s, hs1, hs2⟩ ⟨t, ht1, ht2⟩`. Use `⟨⟨s * t, by rw [map_mul]; exact hs1.mul ht1, by rw [map_mul]; exact q.2.mul_notMem hs2 ht2⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show w.normalization.basicOpen (s * t) ≤ w.normalization.basicOpen s`. Rewrite using `[Scheme.basicOpen_mul]`. Conclude with `inf_le_left`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `show w.normalization.basicOpen (s * t) ≤ w.normalization.basicOpen t`. Rewrite using `[Scheme.basicOpen_mul]`. Conclude with `inf_le_right`. Use `haveI : IsCofiltered J := { nonempty := hne }`. Set `D : J ⥤ Scheme.{0}` to `hmono.functor ⋙ w.normalization.restrictFunctor ⋙ Over.forget _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hDι : ∀ {j k : J} (f : j ⟶ k), D.map f ≫ (w.normalization.basicOpen k.1).ι = (w.normalization.basicOpen j.1).ι` using `fun f => Over.w (w.normalization.restrictFunctor.map (hmono.functor.map f))`. Set `ι : ∀ j : J, D.obj j ⟶ w.normalization` to `fun j => (w.normalization.basicOpen j.1).ι`. Establish `hr : ∀ j : J, Set.range (ι j) = (w.normalization.basicOpen j.1 : Set w.normalization)` using `fun j => Scheme.Opens.range_ι _`. Use `⟨q, J, inferInstance, inferInstance, D, ι, fun j => ⟨show IsOpenImmersion (w.normalization.basicOpen j.1).ι from inferInstance, isClosedImmersion_basicOpen_idem (hid _ j.2.1), ?_⟩, fun {j k} f => ⟨hDι f, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨-, s, hs, hy⟩` from `(hq _ j.2.1).1 j.2.2`. Rewrite `hy` using `[hinj hs]`. Then use the resulting hypothesis. Establish `hk : IsClosedImmersion (ι k)` using `isClosedImmersion_basicOpen_idem (hid _ k.2.1)`. Establish `hc : IsClosedImmersion (D.map f ≫ ι k)`. Rewrite using `[hDι f]`.
-
-Conclude with `isClosedImmersion_basicOpen_idem (hid _ j.2.1)`. Use `@IsClosedImmersion.of_comp_isClosedImmersion _ _ _ (D.map f) (ι k) hk hc` as an intermediate fact. Use `infer_instance`. Use extensionality with `x`. Simplify using `only [Set.mem_iInter, hr, RR, Set.mem_setOf_eq, SetLike.mem_coe]`.
-
-Conclude with `⟨fun h s h1 h2 => h ⟨s, h1, h2⟩, fun h j => h j.1 j.2.1 j.2.2⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Sys_of (hI : IdemSec) : Sys := by
   intro P _ _ W _ w hW y
@@ -103,7 +99,7 @@ theorem Sys_of (hI : IdemSec) : Sys := by
     exact ⟨fun h s h1 h2 => h ⟨s, h1, h2⟩, fun h j => h j.1 j.2.1 j.2.2⟩
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.SysFMPf.SysFM_of (Sys_of hI) hE hR`.
+A detailed English derivation is pending.
 -/
 theorem SysFM_of (hI : IdemSec) (hE : FMex) (hR : FMrange) : LateralTheory.E.NbIsoPf.SysFM :=
   LateralTheory.E.SysFMPf.SysFM_of (Sys_of hI) hE hR

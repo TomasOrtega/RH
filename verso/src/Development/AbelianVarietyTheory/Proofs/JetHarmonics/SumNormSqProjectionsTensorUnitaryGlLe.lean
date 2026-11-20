@@ -13,15 +13,15 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `M _ _ n ε E N _ _ F io pr μ kk j bv w hE hF hA hS hj hw c`. Establish `hnorm : ∀ s, ‖pr s (Pi.single c w)‖ ^ 2 = ‖hhJ ε (io s (pr s (Pi.single c w))) (io s (pr s (Pi.single c w)))‖`. Introduce `s`. Take `⟨e, he, hs⟩` from `hA.sign s`. Rewrite using `[hs, norm_mul, inner_self_eq_norm_sq_to_K]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases he with rfl | rfl <;> simp`. Establish `hcomp` using `GlobalTheory.T.unitary_glModule_proj_components_level_add_two M n ε E N F io pr μ j w hE.2.1 (fun s => (hF s).2.1) hA hw`. Establish `hproj` using `GlobalTheory.T.cloudNode_projection_norm_lowLevel M n ε E N F io pr μ kk j bv w hE hF hA hS hj hw c`. Establish `hq` using `GlobalTheory.T.sum_norm_hhJ_self_le_of_orthogonal M n ε (fun s => io s (pr s (Pi.single c w))) (univ.filter (fun a : Fin n => a.val + 1 < kk)) (18 / 13) (3 * (6 * bv) ^ (n - kk)) (‖w‖ ^ 2) (fun s t hst => hA.orth s t hst _ _) (fun s hs => GlobalTheory.T.invariantHermitianForm_non …`. Take `⟨h1, h2, -, -, -, hb⟩` from `hS`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast (by omega : 1 ≤ n)`. Establish `hnb : (n : ℝ) ≤ bv`. Establish `h7 : (n : ℝ) ≤ (n : ℝ) ^ 7` using `le_self_pow₀ hn1 (by norm_num)`. Establish `: (0 : ℝ) ≤ (n : ℝ) ^ 7` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Take `⟨hcard, harith⟩` from `GlobalTheory.card_filter_le_succ_and_sq_sum_le_pow n kk bv h1 h2 hnb`. Establish `hcompl : (univ.filter (fun a : Fin n => a.val + 1 < kk))ᶜ = univ.filter (fun a : Fin n => kk ≤ a.val + 1)`. Use extensionality with `a`. Simplify using the standard rewrite rules. Rewrite `hq` using `[hcompl, hcard]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (fun s _ => hnorm s)]`. Conclude with `hq.trans (mul_le_mul_of_nonneg_right harith (by positivity))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_normSq_proj_single_le : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (N : Fin n → Type) [∀ s, NormedAddCommGroup (N s)] [∀ s, InnerProductSpace ℂ (N s)] (F : ∀ s, Fin n → Fin n → Module.End ℂ (N s)) (io : ∀ s, N s →ₗ[ℂ] (Fin n → M)) (pr : ∀ s, (Fin n → M) →ₗ[ℂ] N s) (μ : Fin n → ℝ) (kk j : ℕ) (bv : ℝ) (w : M), IsMod ε E μ → (∀ s, IsMod ε (F s) (μ - Pi.single s 1)) → AlgTens ε E N F io pr → Shape ε kk μ bv → j ≤ 4 * n ^ 2 → Lev ε E μ j w → ∀ c, ∑ s, ‖pr s (Pi.single c w)‖ ^ 2 ≤ (6 * bv) ^ (2 * (n + 1 - kk)) * ‖w‖ ^ 2 := by
   intro M _ _ n ε E N _ _ F io pr μ kk j bv w hE hF hA hS hj hw c

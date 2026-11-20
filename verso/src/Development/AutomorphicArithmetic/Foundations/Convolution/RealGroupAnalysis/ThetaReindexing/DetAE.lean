@@ -6,7 +6,7 @@ open UpperTheory.ConvolutionTheory.R2
 open scoped Classical
 
 /- English proof (translation)
-Use `ext`. Simplify using `[aE, Matrix.GeneralLinearGroup.det, Matrix.det_fin_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem det_aE {F : Type} [Field F] [NumberField F] (a : (A F)ˣ) :
     Matrix.GeneralLinearGroup.det (aE (E := F) a) = a := by
@@ -14,19 +14,17 @@ private theorem det_aE {F : Type} [Field F] [NumberField F] (a : (A F)ˣ) :
   simp [aE, Matrix.GeneralLinearGroup.det, Matrix.det_fin_two]
 
 /- English proof (translation)
-Introduce `F _ _`. Rewrite using `[eq_top_iff]`. Introduce `h _`. Use `set C := Subgroup.closure (Set.range (fun b => gl (nU (F := F) b)) ∪ {gl (wW F)} ∪ Set.range (aE (E := F))) with hC`. Establish `hSL : ∀ s : G1 F, gl s ∈ C`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Establish `hs : s ∈ Subgroup.closure (Set.range (nU (F` using `F)) ∪ {wW F}) := by`. Rewrite using `[(UpperTheory.ConvolutionTheory.R2.gen F).1]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hs using Subgroup.closure_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Apply `Subgroup.subset_closure` to reduce the goal to its premises. Break down `hx with ⟨b, rfl⟩ | hx` into its components or cases. Conclude with `Or.inl (Or.inl ⟨b, rfl⟩)`. Rewrite `hx` using `[Set.mem_singleton_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hx` using the available equality. Conclude with `Or.inl (Or.inr rfl)`. Consider the case `one => simpa using C.one_mem`. Consider the case `mul x y _ _ hx hy => simpa using C.mul_mem hx hy`. Consider the case `inv x _ hx => simpa using C.inv_mem hx`.
+Prove the first alternative. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hA : ∀ a, aE (E` using `F) a ∈ C := fun a => Subgroup.subset_closure (Or.inr ⟨a, rfl⟩)`. Use `set d := Matrix.GeneralLinearGroup.det h with hd`. Establish `hdet : Matrix.det (h * (aE (E` using `F) d)⁻¹).val = 1 := by`. Establish `: Matrix.GeneralLinearGroup.det (h * (aE (E` using `F) d)⁻¹) = 1 := by`. Rewrite using `[map_mul, map_inv, det_aE, ← hd, mul_inv_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `congrArg Units.val this`. Establish `hs : gl (⟨(h * (aE (E` using `F) d)⁻¹).val, hdet⟩ : G1 F) = h * (aE (E := F) d)⁻¹ := by`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `h1 : h * (aE (E` using `F) d)⁻¹ ∈ C := hs ▸ hSL _`.
-
-Use `C.mul_mem h1 (hA d)` as an intermediate fact. Simplify using `using this`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.D.genE :
     ∀ (F : Type) [Field F] [NumberField F], Subgroup.closure (Set.range (fun b => gl (nU (F := F) b)) ∪ {gl (wW F)} ∪ Set.range (aE (E := F))) = ⊤ := by

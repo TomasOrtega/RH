@@ -20,9 +20,9 @@ open GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.LocM 
 namespace GlobalTheory.ChainPts
 
 /- English proof (translation)
-Introduce `D O hO p _ W hW jc hj z c`. Use `haveI := isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW`. Take `⟨B₁, f₁, hB₁, hf₁, lw, oo, hP⟩` from `h D O hO p W hW jc hj z c`. Use `⟨B₁, f₁, hB₁, hf₁, fun B g _ _ => ?_⟩` and prove the remaining obligations. Take `⟨lw', oo', hP'⟩` from `GlobalTheory.T.local_model_vertical_letters_setup z.Z B₁ B g _ (xAll O.S) lw oo hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨lw', oo', by simpa only [Vert.Model.Hom.comp, Category.assoc] using hP'⟩`.
+A detailed English derivation is pending.
 -/
 theorem htHalfSt_of_htOneSt (h : HTOneSt) : HTHalfSt := by
   intro D O hO p _ W hW jc hj z c
@@ -33,9 +33,9 @@ theorem htHalfSt_of_htOneSt (h : HTOneSt) : HTHalfSt := by
   exact ⟨lw', oo', by simpa only [Vert.Model.Hom.comp, Category.assoc] using hP'⟩
 
 /- English proof (translation)
-Introduce `D O hO p _ W hW jc hj z o c`. Use `haveI := isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW`. Use `haveI := charP_residueField_of_mem_nonunits z.Z.i.c (Fact.out : p.Prime) hW`. Take `⟨B₁, f₁, hB₁, hf₁, hAll⟩` from `hA D O hO p W hW jc hj z c`. Take `⟨B, g, hB, hg, hQ⟩` from `hB D O hO p W hW jc hj z c o B₁ f₁ hB₁ hf₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨lw, oo, hP⟩` from `hAll B g hB hg`. Take `⟨Q, hlw, hoo⟩` from `hQ lw oo hP`. Use `⟨B, g.comp f₁, Q, hB, ?_, hlw ▸ hP.2.1, hoo ▸ hP.2.2⟩` and prove the remaining obligations. Unfold `Vert.Model.Hom.relDim at *`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eqChainSt_of_halves (hA : HTHalfSt) (hB : LatHalfSt) : EqChainSt := by
   intro D O hO p _ W hW jc hj z o c
@@ -50,7 +50,7 @@ theorem eqChainSt_of_halves (hA : HTHalfSt) (hB : LatHalfSt) : EqChainSt := by
   omega
 
 /- English proof (translation)
-Introduce `h₁ h₂ h₃ h₄` and use `eqChainSt_of_halves (htHalfSt_of_htOneSt (GlobalTheory.T.hodge_tate_one_of_prismaticDieudonne h₁ h₂ h₃ h₄)) (GlobalTheory.T.lattice_half_of_hypotheses h₁ h₂ h₃ h₄)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eqChainSt_of_groupAllSt : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.PrismaticDieudonnePerfd →
     GlobalTheory.GroupBplus.GroupAllSt → EqChainSt := fun h₁ h₂ h₃ h₄ =>

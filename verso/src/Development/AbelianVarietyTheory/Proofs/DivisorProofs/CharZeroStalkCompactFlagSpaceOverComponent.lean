@@ -11,7 +11,7 @@ open GlobalTheory.HSApp
 namespace GlobalTheory.CompHS
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF Z y`. Set `f : c.F →+* (Y₀ TF.X Z).presheaf.stalk y` to `((Y₀ TF.X Z).presheaf.germ ⊤ y trivial).hom.comp ((str₀ TF.X Z).appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of c.F)).inv.hom)`. Conclude with `charZero_of_injective_ringHom f.injective`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem charZero_stalk_Y₀ : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (TF : TorFlag Xo c) (Z : Comp Xo c) (y : Y₀ TF.X Z), CharZero ((Y₀ TF.X Z).presheaf.stalk y) := by
   intro E _ _ _ H Dw l Xo c TF Z y

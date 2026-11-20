@@ -4,15 +4,15 @@ open Filter
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `key : ∀ i, Tendsto (fun k : ℕ => ((2 * (k + m) * c i + 1 : ℕ) : ℝ) / ((2 * k * c i + 1 : ℕ) : ℝ)) atTop (nhds 1)`. Introduce `i`. Break down `Nat.eq_zero_or_pos (c i) with h | h` into its components or cases. Simplify using `[h]`. Establish `hc : (0:ℝ) < c i` using `by exact_mod_cast h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hden : Tendsto (fun k : ℕ => ((2 * k * c i + 1 : ℕ) : ℝ)) atTop atTop`. Use `push_cast`. Apply `tendsto_atTop_add_const_right` to reduce the goal to its premises. Conclude with `(tendsto_natCast_atTop_atTop.const_mul_atTop (by norm_num : (0:ℝ) < 2)).atTop_mul_const hc`. Establish `h0 : Tendsto (fun k : ℕ => (2 * m * c i : ℝ) / ((2 * k * c i + 1 : ℕ) : ℝ)) atTop (nhds 0)` using `tendsto_const_nhds.div_atTop hden`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(tendsto_const_nhds (x := (1:ℝ))).add h0`. Rewrite `h1` using `[add_zero]`. Use `h1.congr (fun k => ?_)` and prove the remaining obligations. Establish `hpos : ((2 * k * c i + 1 : ℕ) : ℝ) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `tendsto_finset_prod (Finset.univ : Finset (Fin r)) (fun i _ => key i)`. Simplify using `only [Finset.prod_const_one] at h`. Use `h.congr (fun k => ?_)` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_prod, Nat.cast_prod, Finset.prod_div_distrib]`.
+A detailed English derivation is pending.
 -/
 theorem ratio_box_counts_tendsto_one (r : ℕ) (c : Fin r → ℕ) (m : ℕ) :
     Filter.Tendsto (fun k : ℕ => ((∏ i, (2 * (k + m) * c i + 1) : ℕ) : ℝ) /

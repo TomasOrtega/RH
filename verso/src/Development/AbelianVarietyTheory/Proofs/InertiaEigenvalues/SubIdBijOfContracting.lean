@@ -7,27 +7,25 @@ namespace GlobalTheory.PhiGam
 open scoped LaurentSeries PowerSeries
 
 /- English proof (translation)
-Establish `hmem0 : ∀ m : M, m ∈ (I ^ 0 • ⊤ : Submodule A M)` using `by intro m; simp`. Establish `hTpow : ∀ (j k : ℕ) (m : M), m ∈ (I ^ j • ⊤ : Submodule A M) → T^[k] m ∈ (I ^ (j + k) • ⊤ : Submodule A M)`. Introduce `j k`. Proceed by induction on `k with`. Consider the case `zero => intro m hm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `using hm`. Consider the case `succ k ih`. Introduce `m hm`. Rewrite using `[Function.iterate_succ_apply', ← add_assoc]`. Conclude with `hT _ _ (ih m hm)`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hhaus : ∀ m : M, (∀ j, m ∈ (I ^ j • ⊤ : Submodule A M)) → m = 0` using `fun m hm => IsHausdorff.haus ‹IsHausdorff I M› m fun j => by rw [SModEq.zero]; exact hm j`. Establish `hle : ∀ {j k : ℕ}, j ≤ k → (I ^ k • ⊤ : Submodule A M) ≤ I ^ j • ⊤` using `fun h => Submodule.smul_mono_left (Ideal.pow_le_pow_right h)`. Use `⟨fun b => ?_, fun m hm => hhaus m fun j => ?_⟩` and prove the remaining obligations. Establish `hiter : ∀ k, T^[k] b ∈ (I ^ k • ⊤ : Submodule A M)` using `fun k => by`. Simplify using `using hTpow 0 k b (hmem0 b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hcauchy : ∀ {m n : ℕ}, m ≤ n → (fun n => -(∑ k ∈ Finset.range n, T^[k] b)) m ≡ (fun n => -(∑ k ∈ Finset.range n, T^[k] b)) n [SMOD (I ^ m • ⊤ : Submodule A M)]`. Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem]`. Establish `hd : -(∑ k ∈ Finset.range m, T^[k] b) - -(∑ k ∈ Finset.range n, T^[k] b) = ∑ k ∈ Finset.Ico m n, T^[k] b`. Rewrite using `[Finset.sum_Ico_eq_sub _ hmn]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Simplify using `only`. Rewrite using `[hd]`. Conclude with `Submodule.sum_mem _ fun k hk => hle (Finset.mem_Ico.mp hk).1 (hiter k)`. Take `⟨L, hL⟩` from `IsPrecomplete.prec ‹IsPrecomplete I M› hcauchy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨L, sub_eq_zero.mp (hhaus _ fun j => ?_)⟩` and prove the remaining obligations. Establish `h1 : L - -(∑ k ∈ Finset.range j, T^[k] b) ∈ (I ^ j • ⊤ : Submodule A M)`. Establish `h` using `SModEq.sub_mem.mp (hL j)`. Rewrite using `[← neg_sub]`. Conclude with `Submodule.neg_mem _ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `htel` using `Finset.sum_range_sub' (fun k => T^[k] b) j`. Rewrite `htel` using `[Finset.sum_sub_distrib]`. Simplify using `only [Function.iterate_zero_apply] at htel`. Establish `hsucc : ∀ k, T (T^[k] b) = T^[k + 1] b` using `fun k => (Function.iterate_succ_apply' T k b).symm`. Establish `h2 : T (-(∑ k ∈ Finset.range j, T^[k] b)) - -(∑ k ∈ Finset.range j, T^[k] b) - b = -(T^[j] b)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_neg, map_sum]`. Simplify using `only [hsucc]`. Establish `e : -(∑ k ∈ Finset.range j, T^[k + 1] b) - -(∑ k ∈ Finset.range j, T^[k] b) - b = ((∑ k ∈ Finset.range j, T^[k] b) - ∑ k ∈ Finset.range j, T^[k + 1] b) - b` using `by abel`. Rewrite using `[e, htel]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : T (L - -(∑ k ∈ Finset.range j, T^[k] b)) ∈ (I ^ j • ⊤ : Submodule A M)` using `hle (Nat.le_succ j) (hT j _ h1)`. Establish `hsplit : T L - L - b = (T (L - -(∑ k ∈ Finset.range j, T^[k] b)) - (L - -(∑ k ∈ Finset.range j, T^[k] b))) + (T (-(∑ k ∈ Finset.range j, T^[k] b)) - -(∑ k ∈ Finset.range j, T^[k] b) - b)`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[hsplit, h2]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ (Submodule.sub_mem _ h3 h1) (Submodule.neg_mem _ (hiter j))`. Proceed by induction on `j with`. Consider the case `zero => exact hmem0 m`. Consider the case `succ j ih`. Establish `h` using `hT j m ih`.
-
-Rewrite `h` using `[hm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sub_id_bij_of_contracting {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (I : Ideal A)
     [IsPrecomplete I M] [IsHausdorff I M] (T : M →+ M)
@@ -98,7 +96,7 @@ theorem sub_id_bij_of_contracting {A M : Type} [CommRing A] [AddCommGroup M] [Mo
       rwa [hm] at h
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using `only [Submodule.mem_top, true_and]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_span_pow_smul_top {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (x : A) (j : ℕ) (m : M) :
     m ∈ (Ideal.span {x} ^ j • ⊤ : Submodule A M) ↔ ∃ y, x ^ j • y = m := by
@@ -107,11 +105,11 @@ theorem mem_span_pow_smul_top {A M : Type} [CommRing A] [AddCommGroup M] [Module
   simp only [Submodule.mem_top, true_and]
 
 /- English proof (translation)
-Rewrite `hm`, the goal using `[mem_span_pow_smul_top]`. Take `⟨y, rfl⟩` from `hm`. Take `⟨z, hz⟩` from `h2 y`. Establish `hpow : ∀ (i : ℕ) (m : M), T (x ^ i • m) = (c * x) ^ i • T m`. Introduce `i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `i with`. Consider the case `zero => intro m`. Simplify using the standard rewrite rules. Consider the case `succ i ih => intro m`. Rewrite using `[pow_succ, mul_smul, ih, h1, smul_smul, ← pow_succ]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c ^ j • z, ?_⟩` and prove the remaining obligations. Rewrite using `[hpow, ← hz, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem contracting_of_semi {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (x c : A) (T : M →+ M)
     (h1 : ∀ m, T (x • m) = (c * x) • T m) (h2 : ∀ m, ∃ y, x • y = T m) (j : ℕ) (m : M)
@@ -131,27 +129,25 @@ theorem contracting_of_semi {A M : Type} [CommRing A] [AddCommGroup M] [Module A
   ring
 
 /- English proof (translation)
-Introduce `k _ l _ _ R n _ V _ _ _ _ _ _ _ _ D P hP hφ`. Establish `hcoe : ∀ (a : k⟦X⟧) (y : V), a • y = ((a : k⟦X⟧) : k⸨X⸩) • y`. Introduce `a y`. Rewrite using `[← algebraMap_smul k⸨X⸩ a y]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hφP : ∀ i, ∀ x ∈ P (i - 1), ∃ y ∈ P i, (PowerSeries.X : k⟦X⟧) • y = D.φ i x`. Introduce `i x hx`. Take `⟨y, hy, hyx⟩` from `mem_sh_iff_exists.mp (hφ i x hx)`. Conclude with `⟨y, hy, by rw [hcoe, ← vv_eq_coe_X, ← hyx, zpow_one]⟩`. Establish `hφmem : ∀ i, ∀ x ∈ P (i - 1), D.φ i x ∈ P i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `i x hx`. Take `⟨y, hy, hyx⟩` from `hφP i x hx`. Rewrite using `[← hyx]`. Conclude with `(P i).smul_mem _ hy`. Set `T : ((i : ZMod n) → P i) →+ ((i : ZMod n) → P i)` to `{ toFun := fun m i => ⟨D.φ i (m (i - 1)), hφmem i _ (m (i - 1)).2⟩ map_zero' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use the proof step `map_add' := by`. Introduce `a b`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[map_add] }`. Establish `: ∀ i, Module.Finite k⟦X⟧ (P i)` using `fun i => Module.Finite.iff_fg.mpr (hP i).1`. Establish `hXtop : Ideal.span {(PowerSeries.X : k⟦X⟧)} ≠ ⊤`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1` using `(Ideal.span_singleton_eq_top.mp h).map (PowerSeries.constantCoeff (R := k))`. Simplify using `at h1`. Establish `: IsHausdorff (Ideal.span {(PowerSeries.X : k⟦X⟧)}) ((i : ZMod n) → P i)` using `IsHausdorff.of_isLocalRing _ _ hXtop`. Establish `: IsPrecomplete (Ideal.span {(PowerSeries.X : k⟦X⟧)}) ((i : ZMod n) → P i)` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isPrecomplete_finite_module _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `R.φ_v`. Establish `hl : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Establish `h1 : ∀ m : ((i : ZMod n) → P i), T ((PowerSeries.X : k⟦X⟧) • m) = (((u : k⟦X⟧) * PowerSeries.X ^ (l - 1)) * PowerSeries.X) • T m`. Introduce `m`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [T, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Pi.smul_apply, Submodule.coe_smul]`. Rewrite using `[hcoe, hcoe, ← vv_eq_coe_X, D.φ_semi, hu, PowerSeries.coe_mul, PowerSeries.coe_mul, PowerSeries.coe_pow, ← vv_eq_coe_X, mul_assoc, pow_sub_one_mul hl]`. Establish `h2 : ∀ m : ((i : ZMod n) → P i), ∃ y : ((i : ZMod n) → P i), (PowerSeries.X : k⟦X⟧) • y = T m`. Introduce `m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `choose y hy hyx using fun i => hφP i _ (m (i - 1)).2`. Conclude with `⟨fun i => ⟨y i, hy i⟩, funext fun i => Subtype.ext (hyx i)⟩`. Take `⟨hsurj, hinj⟩` from `sub_id_bij_of_contracting (Ideal.span {(PowerSeries.X : k⟦X⟧)}) T (fun j m hm => contracting_of_semi _ _ T h1 h2 j m hm)`. Use `⟨fun b hb => ?_, fun m hm hfix => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hsurj (fun i => ⟨b i, hb i⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨fun i => (m i : V), fun i => (m i).2, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun z => ((z i : P i) : V)) hm`. Simplify `h` using `[T]`. Establish `h` using `hinj (fun i => ⟨m i, hm i⟩) (funext fun i => Subtype.ext (hfix i))`. Use function extensionality and compare the values at `i`.
-
-Establish `hi` using `congrArg (fun z => ((z i : P i) : V)) h`. Simplify using `using hi`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem one_sub_frob_bij : ∀ {k : Type} [Field k] {l : ℕ} [Fact l.Prime] [CharP k l] (R : RingPG k l) {n : ℕ} [NeZero n] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V] [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V] [FiniteDimensional k⸨X⸩ V] (D : ModPG R n V), ∀ (P : ZMod n → Submodule k⟦X⟧ V), (∀ i, IsLat (P i)) → (∀ i, ∀ x ∈ P (i - 1), D.φ i x ∈ sh 1 (P i)) → (∀ b : ZMod n → V, (∀ i, b i ∈ P i) → ∃ m : ZMod n → V, (∀ i, m i ∈ P i) ∧ ∀ i, D.φ i (m (i - 1)) - m i = b i) ∧ ∀ m : ZMod n → V, (∀ i, m i ∈ P i) → (∀ i, D.φ i (m (i - 1)) = m i) → m = 0 := by
   intro k _ l _ _ R n _ V _ _ _ _ _ _ _ _ D P hP hφ

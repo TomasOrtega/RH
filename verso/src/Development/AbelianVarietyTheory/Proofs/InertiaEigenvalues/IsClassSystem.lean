@@ -24,7 +24,7 @@ structure SameGeo (D D' : D7) : Prop where
   hc : HEq D.hc D'.hc
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.gal.R, h.gal.host, h.sp, h.Tau, h.instTau, h.eTau, h.hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem CopyTw.sameGeo {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyTw D D' ι e) :
     SameGeo D D' := ⟨h.gal.R, h.gal.host, h.sp, h.Tau, h.instTau, h.eTau, h.hc⟩
@@ -86,9 +86,9 @@ structure BaseRel {S T : HSp D} {S' T' : HSp D'} (B : Base S T) (B' : Base S' T'
   eta : HEq B.eta B'.eta
 
 /- English proof (translation)
-Use `geo_cases h D D'`. Take `⟨Q, chi, res⟩` from `t`. Take `⟨Q', chi', res'⟩` from `t'`. Take `⟨r1, r2, r3⟩` from `r`. Consider the cases of `r1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `r2`. Consider the cases of `r3`. Conclude with `⟨g.1, g.2, g.3, g.4, g.5, g.6⟩`.
+Split into cases according to the possible forms of the given data. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem TwistRel.good (h : SameGeo D D') {A : Type} [CommGroup A] {t : Twist D A} {t' : Twist D' A} (r : TwistRel t t')
     (g : t.Good) : t'.Good := by
@@ -108,9 +108,9 @@ scoped macro "base_cases " r:ident B:ident B':ident : tactic =>
     subst f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 g1 g2 g3 d1 d2 d3 w1 w2 w3 w4 w5 w6 m1 m2))
 
 /- English proof (translation)
-Establish `gd` using `r.de.good h g.de`. Use `geo_cases h D D'`. Substitute `hS` using the available equality. Substitute `hT` using the available equality. Use `base_cases r B B'`.
+Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `v` using `g.frame.vac.2`. Use `⟨g.even, g.odd, ⟨g.frame.1, g.frame.2, g.frame.3, g.frame.4, g.frame.5, g.frame.6, g.frame.7, g.frame.8, g.frame.vac.1, ?_⟩, gd, ⟨g.places.1, g.places.2, g.places.3⟩, ⟨g.wt.1, g.wt.2⟩, g.sig, g.sigOK, g.eta, g.hecke, g.real, g.unram, g.tame, g.inf⟩` and prove the remaining obligations. Conclude with `⟨v.1, ⟨v.2.1, v.2.2, v.2.3, v.2.4⟩, v.3, v.4, v.5⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BaseRel.good (h : SameGeo D D') {S T : HSp D} {S' T' : HSp D'} (hS : HEq S S') (hT : HEq T T') {B : Base S T}
     {B' : Base S' T'} (r : BaseRel B B') (g : B.Good) : B'.Good := by
@@ -124,11 +124,9 @@ theorem BaseRel.good (h : SameGeo D D') {S T : HSp D} {S' T' : HSp D'} (hS : HEq
   exact ⟨v.1, ⟨v.2.1, v.2.2, v.2.3, v.2.4⟩, v.3, v.4, v.5⟩
 
 /- English proof (translation)
-Use `geo_cases h D D'`. Substitute `hS` using the available equality. Substitute `hT` using the available equality. Use `base_cases r B B'`. Substitute `hν` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hω` using the available equality. Use `⟨g.1, g.2, g.3, g.4, g.5, fun p f a => ?_, fun x y w f a => g.7 x y w f ⟨a.1, a.2, a.3, a.4⟩, fun x hx y hy f a => g.8 x hx y hy f ⟨a.1, a.2, a.3, a.4⟩, fun f a => g.9 f ⟨a.1, a.2, a.3, a.4⟩, fun μ F h1 h2 p f a => g.10 μ F h1 h2 p f ⟨a.1, a.2, a.3, a.4⟩, fun e he x y h1 h2 z w h …` and prove the remaining obligations. Establish `b` using `g.6 p f ⟨a.1, a.2, a.3, a.4⟩`. Conclude with `⟨b.1, b.2, b.3, b.4⟩`. Take `⟨r, hr, h5⟩` from `g.11 e he x y h1 h2 z w h3 h4`.
-
-Conclude with `⟨r, hr, fun l h6 f a => h5 l (fun u hu f a => h6 u hu f ⟨a.1, a.2, a.3, a.4⟩) f ⟨a.1, a.2, a.3, a.4⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BaseRel.isWeil (h : SameGeo D D') {S T : HSp D} {S' T' : HSp D'} (hS : HEq S S') (hT : HEq T T') {B : Base S T}
     {B' : Base S' T'} (r : BaseRel B B') {ν : (AE D)ˣ →* Circle} {ν' : (AE D')ˣ →* Circle} (hν : HEq ν ν')
@@ -146,9 +144,7 @@ theorem BaseRel.isWeil (h : SameGeo D D') {S T : HSp D} {S' T' : HSp D'} (hS : H
     exact ⟨r, hr, fun l h6 f a => h5 l (fun u hu f a => h6 u hu f ⟨a.1, a.2, a.3, a.4⟩) f ⟨a.1, a.2, a.3, a.4⟩⟩
 
 /- English proof (translation)
-Use `geo_cases h D D'`. Substitute `hS` using the available equality. Substitute `hT` using the available equality. Use `base_cases r B B'`. Substitute `hQ` using the available equality.
-
-Conclude with `⟨⟨g.1.1, g.1.2, g.1.3⟩, g.2⟩`.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BaseRel.adm (h : SameGeo D D') {S T : HSp D} {S' T' : HSp D'} (hS : HEq S S') (hT : HEq T T') {B : Base S T}
     {B' : Base S' T'} (r : BaseRel B B') {Q : Finset (Pl D.host.E)} {Q' : Finset (Pl D'.host.E)} (hQ : HEq Q Q')
@@ -160,11 +156,11 @@ theorem BaseRel.adm (h : SameGeo D D') {S T : HSp D} {S' T' : HSp D'} (hS : HEq 
   exact ⟨⟨g.1.1, g.1.2, g.1.3⟩, g.2⟩
 
 /- English proof (translation)
-Use `geo_cases h D D'`. Substitute `hS` using the available equality. Substitute `hT` using the available equality. Use `base_cases r B B'`. Take `⟨Q, chi, res⟩` from `t`.
+Substitute using the available equality. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q', chi', res'⟩` from `t'`. Take `⟨r1, r2, r3⟩` from `ht`. Consider the cases of `r1`. Consider the cases of `r2`. Consider the cases of `r3`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hI` using the available equality. Substitute `hy` using the available equality. Conclude with `⟨g.1, g.2, g.3⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BaseRel.isClassSystem (h : SameGeo D D') {S T : HSp D} {S' T' : HSp D'} (hS : HEq S S') (hT : HEq T T') {B : Base S T}
     {B' : Base S' T'} (r : BaseRel B B') {t : Twist D Circle} {t' : Twist D' Circle} (ht : TwistRel t t') {I I' : Type} (hI : I = I')
@@ -181,7 +177,7 @@ theorem BaseRel.isClassSystem (h : SameGeo D D') {S T : HSp D} {S' T' : HSp D'} 
   exact ⟨g.1, g.2, g.3⟩
 
 /- English proof (translation)
-Use `geo_cases h D D'`. Substitute `hS` using the available equality. Substitute `hT` using the available equality. Use `base_cases r B B'`. Conclude with `⟨id, id, id⟩`.
+Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BaseRel.isBaseFrame (h : SameGeo D D') {S T : HSp D} {S' T' : HSp D'} (hS : HEq S S') (hT : HEq T T') {B : Base S T}
     {B' : Base S' T'} (r : BaseRel B B') :
@@ -194,13 +190,13 @@ theorem BaseRel.isBaseFrame (h : SameGeo D D') {S T : HSp D} {S' T' : HSp D'} (h
   exact ⟨id, id, id⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.R.symm, h.host.symm, h.sp.symm, h.Tau.symm, h.instTau.symm, h.eTau.symm, h.hc.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem SameGeo.symm (h : SameGeo D D') : SameGeo D' D :=
   ⟨h.R.symm, h.host.symm, h.sp.symm, h.Tau.symm, h.instTau.symm, h.eTau.symm, h.hc.symm⟩
 
 /- English proof (translation)
-Use `geo_cases h D D'`. Consider the cases of `Fin.ext hj`. Conclude with `⟨HEq.rfl, HEq.rfl, rfl, rfl, HEq.rfl, HEq.rfl⟩`.
+Split into cases according to the possible forms of the given data. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem SameGeo.spaces (h : SameGeo D D') {j : Fin D.R.m} {j' : Fin D'.R.m} (hj : (j : ℕ) = j') :
     HEq (Vc D j) (Vc D' j') ∧ HEq (Wc D j) (Wc D' j') ∧ (Vc D j).rank = (Vc D' j').rank ∧ (Wc D j).rank = (Wc D' j').rank ∧
@@ -212,11 +208,9 @@ theorem SameGeo.spaces (h : SameGeo D D') {j : Fin D.R.m} {j' : Fin D'.R.m} (hj 
   exact ⟨HEq.rfl, HEq.rfl, rfl, rfl, HEq.rfl, HEq.rfl⟩
 
 /- English proof (translation)
-Establish `h1` using `r.ε`. Establish `h2` using `r.fr`. Use `clear r`. Use `geo_cases h D D'`. Substitute `hV` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `M`. Consider the cases of `M'`. Simplify using `only at h1 h2`. Substitute `h1` using the available equality. Substitute `h2` using the available equality.
-
-Conclude with `⟨HEq.rfl, HEq.rfl⟩`.
+Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem SameModel.cart_onb (h : SameGeo D D') {V : HSp D} {V' : HSp D'} (hV : HEq V V') {P : D.what₂.Tau → SPar}
     {P' : D'.what₂.Tau → SPar} {M : Mult.DSModel V P} {M' : Mult.DSModel V' P'} (r : SameModel M M') :
@@ -232,7 +226,7 @@ theorem SameModel.cart_onb (h : SameGeo D D') {V : HSp D} {V' : HSp D'} (hV : HE
   exact ⟨HEq.rfl, HEq.rfl⟩
 
 /- English proof (translation)
-Use `geo_cases h D D'`. Substitute `hc` using the available equality. Substitute `hχ` using the available equality. Conclude with `g`.
+Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem SameGeo.chrEq (h : SameGeo D D') {c : (AE D)ˣ →* Circle} {c' : (AE D')ˣ →* Circle} (hc : HEq c c')
     {χ : Formalism.L2.Host.HChar D.host.E} {χ' : Formalism.L2.Host.HChar D'.host.E} (hχ : HEq χ χ') (g : ChrEq c χ) : ChrEq c' χ' := by
@@ -263,9 +257,9 @@ structure SetupRel (ρ : Setup X) (ρ' : Setup X') : Prop where
 end Setup
 
 /- English proof (translation)
-Take `⟨Q, chi, res⟩` from `t`. Take `⟨Q', chi', res'⟩` from `t'`. Take `⟨r1, r2, r3⟩` from `r`. Consider the cases of `r1`. Consider the cases of `r2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `r3`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem TwistRel.eq {A : Type} [CommGroup A] {t t' : Twist D A} (r : TwistRel t t') : t = t' := by
   obtain ⟨Q, chi, res⟩ := t
@@ -275,20 +269,20 @@ theorem TwistRel.eq {A : Type} [CommGroup A] {t t' : Twist D A} (r : TwistRel t 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by constructor <;> rfl, by constructor <;> rfl, by constructor <;> rfl, by constructor <;> rfl, .rfl, .rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem BaseRel.refl {S T : HSp D} (B : Base S T) : BaseRel B B :=
   ⟨by constructor <;> rfl, by constructor <;> rfl, by constructor <;> rfl, by constructor <;> rfl, .rfl, .rfl⟩
 
 /- English proof (translation)
-Use `base_cases r B B'`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem BaseRel.eq {S T : HSp D} {B B' : Base S T} (r : BaseRel B B') : B = B' := by
   base_cases r B B'
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.rfl, .rfl⟩ ch := .rfl bad := .rfl e := .rfl ek := .rfl B i i' hi j j' hj b := by cases hi; cases Fin.ext hj; exact .refl _ om := .rfl Cl i i' hi j j' hj b t t' ht := by cases hi; cases Fin.ext hj; cases ht.eq; rfl rep i i' hi j j' hj b t t' ht := by cases hi; cases Fin.ext hj; …`.
+Supply the required witnesses or components.
 -/
 theorem SetupRel.refl {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} (ρ : Setup X) : SetupRel ρ ρ where
   rc := ⟨.rfl, .rfl⟩
@@ -304,11 +298,11 @@ theorem SetupRel.refl {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.wha
   eG i i' hi j j' hj b := by cases hi; cases Fin.ext hj; rfl
 
 /- English proof (translation)
-Take `⟨⟨κ, art⟩, ch, bad, e, ek, B, om, Cl, rep, β, eG⟩` from `ρ`. Take `⟨⟨κ', art'⟩, ch', bad', e', ek', B', om', Cl', rep', β', eG'⟩` from `ρ'`. Take `⟨⟨r1, r2⟩, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12⟩` from `r`. Simplify using `only at r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12`. Substitute `r1 r2 r3 r4 r5 r6 r8 r11` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality.
 
-Take `rfl : B = B'` from `funext fun i => funext fun j => funext fun b => (r7 i i .rfl j j rfl b).eq`. Take `rfl : Cl = Cl'` from `funext fun i => funext fun j => funext fun b => funext fun t => r9 i i .rfl j j rfl b t t ⟨.rfl, .rfl, .rfl⟩`. Take `rfl : rep = rep'` from `funext fun i => funext fun j => funext fun b => funext fun t => eq_of_heq (r10 i i .rfl j j rfl b t t ⟨.rfl, .rfl, .rfl⟩)`. Take `rfl : eG = eG'` from `funext fun i => funext fun j => funext fun b => eq_of_heq (r12 i i .rfl j j rfl b)`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Subsingleton.elim _ _`.
+A detailed English derivation is pending.
 -/
 theorem SetupRel.eq {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} {ρ ρ' : Setup X} (r : SetupRel ρ ρ') :
     ρ = ρ' := by

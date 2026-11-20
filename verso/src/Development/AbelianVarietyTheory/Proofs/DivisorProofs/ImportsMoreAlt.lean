@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory.AbelianSumIdentityThird
 
 /- English proof (translation)
-Introduce `S _ ε a b Gi K hc hε ha hb h1 h2 h3 h4`. Establish `haε : a * ε = a` using `by rw [← hc]; exact ha`. Establish `hbε : b * ε = b` using `by rw [← hc]; exact hb`. Establish `t1 : (1 - ε) * (1 - ε) = 1 - ε`. Rewrite using `[sub_mul, one_mul, mul_sub, mul_one, hε, sub_self, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `t2a : (1 - ε) * a = 0` using `by rw [sub_mul, one_mul, ha, sub_self]`. Establish `t2b : (1 - ε) * b = 0` using `by rw [sub_mul, one_mul, hb, sub_self]`. Establish `t3 : ∀ x y : S, x * ε = x → x * y * (1 - ε) = 0`. Introduce `x y hx`. Rewrite using `[mul_sub, mul_one, mul_assoc, ← hc y, ← mul_assoc, hx, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Establish `e : b * (1 - K) * (a * (1 - Gi * K)) = ε`. Rewrite using `[← mul_assoc, mul_assoc b, h1, hbε, h4]`. Combine the equalities or inequalities in the displayed calculation. Establish `e : a * (1 - Gi * K) * (b * (1 - K)) = ε`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, mul_assoc a, h3, haε, h2]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem main : ∀ {S : Type} [inst : Ring S] (ε a b Gi K : S), (∀ (x : S), ε * x = x * ε) → ε * ε = ε → ε * a = a → ε * b = b → ((1 : S) - K) * a = ε → a * ((1 : S) - K) = ε → ((1 : S) - Gi * K) * b = ε → b * ((1 : S) - Gi * K) = ε → ((1 : S) - ε + b * ((1 : S) - K)) * ((1 : S) - ε + a * ((1 : S) - Gi * K)) = (1 : S) ∧ ((1 : S) - ε + a * ((1 : S) - Gi * K)) * ((1 : S) - ε + b * ((1 : S) - K)) = (1 : S) := by
   intro S _ ε a b Gi K hc hε ha hb h1 h2 h3 h4

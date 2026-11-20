@@ -16,9 +16,7 @@ open Classical
 namespace GlobalTheory.TraceFrames
 
 /- English proof (translation)
-Simplify using `only [hO, Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [Finset.sum_comm]`. Use `enter [2, c]`. Rewrite using `[Finset.sum_comm]`.
-
-Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hO_eq_trace_mul {D : D7} (S T : HSp D) (k y : WO S T) :
     hO S T y k = Matrix.trace (HMul.hMul (HMul.hMul ((S.gram⁻¹).map (incA D))
@@ -34,13 +32,11 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `set X₀ : Matrix (Fin S.rank) (Fin T.rank) (AE D) := HMul.hMul (HMul.hMul ((S.gram⁻¹).map (incA D)) ((k : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (cA D)).transpose) (T.gram.map (incA D)) with hX`. Use `set Y₀ : Matrix (Fin T.rank) (Fin S.rank) (AE D) := y with hY`. Use `set A : Matrix (Fin S.rank) (Fin S.rank) (Datum.EAf D) := (βS⁻¹).val with hA`. Use `set A' : Matrix (Fin S.rank) (Fin S.rank) (Datum.EAf D) := βS.val with hA'`. Use `set B : Matrix (Fin T.rank) (Fin T.rank) (Datum.EAf D) := βT.val with hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B' : Matrix (Fin T.rank) (Fin T.rank) (Datum.EAf D) := (βT⁻¹).val with hB'`. Use `set Xf : Matrix (Fin S.rank) (Fin T.rank) (Datum.EAf D) := X₀.map (toEAf D) with hXf`. Use `set Yf : Matrix (Fin T.rank) (Fin S.rank) (Datum.EAf D) := Y₀.map (toEAf D) with hYf`. Establish `hBB : HMul.hMul B B' = (1 : Matrix (Fin T.rank) (Fin T.rank) (Datum.EAf D))` using `Units.mul_inv βT`. Establish `hAA : HMul.hMul A' A = (1 : Matrix (Fin S.rank) (Fin S.rank) (Datum.EAf D))` using `Units.mul_inv βS`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : frMapAdj S T βS βT k = HMul.hMul (HMul.hMul A Xf) B` using `rfl`. Establish `h2 : frMapO S T βS βT y = HMul.hMul (HMul.hMul B' Yf) A'` using `rfl`. Establish `h4 : HMul.hMul Xf Yf = (HMul.hMul X₀ Y₀ : Matrix (Fin S.rank) (Fin S.rank) (AE D)).map (toEAf D)` using `(Matrix.map_mul).symm`. Establish `h3 : (HMul.hMul (HMul.hMul (HMul.hMul A Xf) B) (HMul.hMul (HMul.hMul B' Yf) A') : Matrix (Fin S.rank) (Fin S.rank) (Datum.EAf D)) = HMul.hMul A (HMul.hMul (HMul.hMul Xf Yf) A')`. Simplify using `only [Matrix.mul_assoc]`.
-
-Rewrite using `[← Matrix.mul_assoc B B', hBB, Matrix.one_mul]`. Rewrite using `[h1, h2, h3, Matrix.trace_mul_comm, Matrix.mul_assoc, hAA, Matrix.mul_one, h4, hO_eq_trace_mul]`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.map_apply, map_sum]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem toEAf_hO_eq_trace_frames {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (Datum.EAf D))
     (βT : GL (Fin T.rank) (Datum.EAf D)) (k y : WO S T) :

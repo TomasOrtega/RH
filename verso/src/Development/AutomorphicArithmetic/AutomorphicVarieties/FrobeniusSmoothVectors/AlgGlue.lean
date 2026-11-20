@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `O A D _ _ _ _ _ 𝔪 hm f hf`. Use `choose g hg using hf`. Establish `uniq : ∀ x y : D, (∀ N : ℕ, Ideal.Quotient.mk (𝔪 ^ (N + 1)) x = Ideal.Quotient.mk (𝔪 ^ (N + 1)) y) → x = y`. Introduce `x y h`. Establish `hxy : x - y ∈ (⨅ N : ℕ, 𝔪 ^ N)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_iInf]`. Introduce `N`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ N) (Ideal.Quotient.eq.1 (h N))`. Rewrite `hxy` using `[hm, Ideal.mem_bot]`. Conclude with `sub_eq_zero.1 hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨{ toFun := g map_one' := uniq _ _ fun N => by rw [hg, map_one, map_one] map_mul' := fun a b => uniq _ _ fun N => by rw [hg, map_mul, map_mul, hg, hg] map_zero' := uniq _ _ fun N => by rw [hg, map_zero, map_zero] map_add' := fun a b => uniq _ _ fun N => by rw [hg, map_add, map_ad …` and prove the remaining obligations. Rewrite using `[hg, AlgHom.commutes]`. Use `rfl }, fun a N => hg a N⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.alg_glue :
     ∀ {O A D : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing D] [Algebra O D] (𝔪 : Ideal D), ⨅ N : ℕ, 𝔪 ^ N = ⊥ → ∀ f : ∀ N : ℕ, A →ₐ[O] D ⧸ 𝔪 ^ (N + 1), (∀ a, ∃ d, ∀ N, Ideal.Quotient.mk (𝔪 ^ (N + 1)) d = f N a) → ∃ ξ : A →ₐ[O] D, ∀ a N, Ideal.Quotient.mk (𝔪 ^ (N + 1)) (ξ a) = f N a := by

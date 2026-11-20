@@ -10,9 +10,7 @@ noncomputable section
 namespace UpperTheory.Lit.Bur.Unitarize
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ F`. Establish `e : f = fun x => ∑ i, b.coord i (f x) • b i`. Use function extensionality and compare the values at `x`. Conclude with `(b.sum_repr (f x)).symm`. Rewrite using `[e]`.
-
-Conclude with `continuousOn_finset_sum _ fun i _ => (h (b.coord i)).smul continuousOn_const`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_of_dual {X F : Type} [TopologicalSpace X] [NormedAddCommGroup F] [NormedSpace ℂ F]
     [FiniteDimensional ℂ F] {s : Set X} {f : X → F}
@@ -25,21 +23,19 @@ theorem continuousOn_of_dual {X F : Type} [TopologicalSpace X] [NormedAddCommGro
   exact continuousOn_finset_sum _ fun i _ => (h (b.coord i)).smul continuousOn_const
 
 /- English proof (translation)
-Set `A : G → W → E` to `fun g x => e (r g⁻¹ x)`. Establish `hA : ∀ x, Continuous fun g => A g x` using `fun x => by`. Rewrite using `[← continuousOn_univ]`. Use `continuousOn_of_dual fun l => ?_` and prove the remaining obligations. Establish `h` using `hc x (l ∘ₗ (e : W →ₗ[ℂ] E))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(h.comp continuous_inv).continuousOn`. Set `F : W → W → G → ℂ` to `fun x y g => ⟪A g x, A g y⟫_ℂ`. Establish `hF : ∀ x y, Continuous (F x y)` using `fun x y => (hA x).inner (hA y)`. Establish `hI : ∀ x y, Integrable (F x y) μ` using `fun x y => (hF x y).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hxx : ∀ x, ∫ g, F x x g ∂μ = ((∫ g, ‖A g x‖ ^ 2 ∂μ : ℝ) : ℂ)` using `fun x => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_complex_ofReal]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [F]`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `core : PreInnerProductSpace.Core ℂ W` to `{ inner := fun x y => ∫ g, F x y g ∂μ conj_inner_symm := fun x y => by show conj (∫ g, F y x g ∂μ) = ∫ g, F x y g ∂μ`. Rewrite using `[← integral_conj]`. Simplify using `only [F, inner_conj_symm]`. Use `re_inner_nonneg := fun x => by show 0 ≤ RCLike.re (∫ g, F x x g ∂μ)`. Rewrite using `[hxx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using integral_nonneg fun g => by positivity`. Use `add_left := fun x y z => by show ∫ g, F (x + y) z g ∂μ = ∫ g, F x z g ∂μ + ∫ g, F y z g ∂μ`. Rewrite using `[← integral_add (hI x z) (hI y z)]`. Simplify using `only [F, A, map_add, inner_add_left]`. Use `smul_left := fun x y a => by show ∫ g, F (a • x) y g ∂μ = conj a * ∫ g, F x y g ∂μ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[← integral_const_mul]`. Simplify using `only [F, A, map_smul, inner_smul_left] }`. Use `⟨{ core with definite := fun x hx => ?_ }, fun h x y => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hx0`. Establish `hpos` using `Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (μ := μ) (f := fun g => ‖A g x‖ ^ 2) (x := 1) ((hA x).norm.pow 2) (HasCompactSupport.of_compactSpace _) (fun g => by positivity) (by simpa [A, h1] using hx0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : ∫ g, F x x g ∂μ = 0` using `hx`. Rewrite `h0` using `[hxx]`. Conclude with `hpos.ne' (by exact_mod_cast h0)`. Use `show ∫ g, F (r h x) (r h y) g ∂μ = ∫ g, F x y g ∂μ`. Rewrite using `[← integral_mul_left_eq_self (F x y) h⁻¹]`.
-
-Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `[F, A, _root_.mul_inv_rev, hm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_invariant_core_of_equiv {G W E : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure]
@@ -95,7 +91,7 @@ theorem exists_invariant_core_of_equiv {G W E : Type} [Group G] [TopologicalSpac
     simp [F, A, _root_.mul_inv_rev, hm]
 
 /- English proof (translation)
-The claim follows from `exists_invariant_core_of_equiv μ (LinearEquiv.ofFinrankEq W (EuclideanSpace ℂ (Fin (Module.finrank ℂ W))) (by simp)) r h1 hm hc`.
+A detailed English derivation is pending.
 -/
 theorem exists_invariant_core {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure]
@@ -107,9 +103,9 @@ theorem exists_invariant_core {G W : Type} [Group G] [TopologicalSpace G] [IsTop
     (LinearEquiv.ofFinrankEq W (EuclideanSpace ℂ (Fin (Module.finrank ℂ W))) (by simp)) r h1 hm hc
 
 /- English proof (translation)
-Establish `hemb` using `PI.UpqRep.isClosedEmbeddingMatrix k (PI.UpqRep.allPos k)`. Rewrite using `[← isCompact_univ_iff, hemb.1.isEmbedding.isCompact_iff, Set.image_univ, hemb.2]`. Establish `hc : IsCompact (Set.pi Set.univ fun _ : Fin k => Set.pi Set.univ fun _ : Fin k => Metric.closedBall (0 : ℂ) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Use `IsCompact.of_isClosed_subset (X := Matrix (Fin k) (Fin k) ℂ) hc (hemb.2 ▸ hemb.1.isClosed_range) ?_` and prove the remaining obligations. Introduce `g hg i _ j _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : g ∈ Matrix.unitaryGroup (Fin k) ℂ` using `Matrix.mem_unitaryGroup_iff'.2 (PI.HwUniqW.mem_UJset_allPos.1 hg)`. Simplify using `using entry_norm_bound_of_unitary hu i j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem compactSpace_UJ_allPos (k : ℕ) : CompactSpace (PI.UpqRep.UJ (PI.UpqRep.allPos k)) := by
   have hemb := PI.UpqRep.isClosedEmbeddingMatrix k (PI.UpqRep.allPos k)
@@ -123,19 +119,17 @@ theorem compactSpace_UJ_allPos (k : ℕ) : CompactSpace (PI.UpqRep.UJ (PI.UpqRep
   simpa using entry_norm_bound_of_unitary hu i j
 
 /- English proof (translation)
-Introduce `k W _ _ _ π hπ`. Take `⟨⟨h1, hm⟩, hc, hi⟩` from `hπ`. Establish `hset : PI.UpqRep.UJset (PI.UpqRep.allPos k) = Formalism.QuantumDeterminants.UH (1 : Matrix (Fin k) (Fin k) ℂ)` using `Set.ext fun h => PI.HwUniqW.mem_UJset_allPos.trans GlobalTheory.BesselMapOne.mem_UH_one.symm`. Rewrite using `[hset]`. Establish `hmem : ∀ g : PI.UpqRep.UJ (PI.UpqRep.allPos k), PI.UpqRep.umat g ∈ Formalism.QuantumDeterminants.UH (1 : Matrix (Fin k) (Fin k) ℂ)` using `fun g => hset ▸ g.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlift : ∀ g ∈ Formalism.QuantumDeterminants.UH (1 : Matrix (Fin k) (Fin k) ℂ), ∃ u : PI.UpqRep.UJ (PI.UpqRep.allPos k), PI.UpqRep.umat u = g` using `fun g hg => by`. Establish `hg' : g ∈ Set.range (PI.UpqRep.coeMatrixAlt (PI.UpqRep.allPos k))`. Rewrite using `[PI.UpqRep.range_coeMatrix]`. Conclude with `hset.ge hg`. Conclude with `hg'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI := compactSpace_UJ_allPos k`. Take `⟨c, hinv⟩` from `exists_invariant_core (PI.UpqRep.muG (PI.UpqRep.allPos k)) (fun g => π (PI.UpqRep.umat g)) h1 (fun a b => hm _ (hmem a) _ (hmem b)) (fun w l => (hc w l).comp_continuous (PI.UpqRep.continuous_coeMatrix _) hmem)`. Use `letI : NormedAddCommGroup W := @InnerProductSpace.Core.toNormedAddCommGroup ℂ W _ _ _ c`. Use `letI : InnerProductSpace ℂ W := InnerProductSpace.ofCore c.toCore`. Use `⟨W, inferInstance, inferInstance, ‹_›, fun g => LinearMap.toContinuousLinearMap (π g), LinearEquiv.refl ℂ W, ⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `v`. Simplify using `[h1]`. Introduce `a ha b hb`. Use extensionality with `v`. Simplify using `[hm a ha b hb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g hg v`. Take `⟨u, rfl⟩` from `hlift g hg`. Use `hinv u v v` as an intermediate fact. Rewrite using `[norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ) v]`. Conclude with `congrArg (fun z : ℂ => Real.sqrt (RCLike.re z)) this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Conclude with `continuousOn_of_dual fun l => hc v l`. Introduce `h _ w`. Both sides reduce to the same expression. Introduce `S hS`.
-
-Conclude with `hi S hS`.
+A detailed English derivation is pending.
 -/
 theorem unitarize : ∀ {k : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] {π : Matrix (Fin k) (Fin k) ℂ → Module.End ℂ W} (hπ : IsContIrred (Formalism.QuantumDeterminants.UH 1) π), ∃ (Wp : Type) (_ : NormedAddCommGroup Wp) (_ : InnerProductSpace ℂ Wp) (_ : FiniteDimensional ℂ Wp) (ρ : Matrix (Fin k) (Fin k) ℂ → (Wp →L[ℂ] Wp)) (T : W ≃ₗ[ℂ] Wp), PI.UpqRep.IsURepOn (PI.UpqRep.UJset (PI.UpqRep.allPos k)) ρ ∧ (∀ h ∈ Formalism.QuantumDeterminants.UH (1 : Matrix (Fin k) (Fin k) ℂ), ∀ w, T (π h w) = ρ h (T w)) ∧ ∀ S : Submodule ℂ Wp, (∀ g ∈ PI.UpqRep.UJset (PI.UpqRep.allPos k), ∀ v ∈ S, ρ g v ∈ S) → S = ⊥ ∨ S = ⊤ := by
   intro k W _ _ _ π hπ
@@ -180,7 +174,7 @@ end UpperTheory.Lit.Bur.Unitarize
 open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta GlobalTheory.SmVec
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @UpperTheory.Lit.Bur.Unitarize.unitarize | exact UpperTheory.Lit.Bur.Unitarize.unitarize | (intros; apply UpperTheory.Lit.Bur.Unitarize.unitarize <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.UpperTheory.Lit.Bur.contIrred_compactUnitaryGroup_rep_isUnitarizable : ∀ {k : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] {π : Matrix (Fin k) (Fin k) ℂ → Module.End ℂ W} (hπ : IsContIrred (Formalism.QuantumDeterminants.UH 1) π), ∃ (Wp : Type) (_ : NormedAddCommGroup Wp) (_ : InnerProductSpace ℂ Wp) (_ : FiniteDimensional ℂ Wp) (ρ : Matrix (Fin k) (Fin k) ℂ → (Wp →L[ℂ] Wp)) (T : W ≃ₗ[ℂ] Wp), PI.UpqRep.IsURepOn (PI.UpqRep.UJset (PI.UpqRep.allPos k)) ρ ∧ (∀ h ∈ Formalism.QuantumDeterminants.UH (1 : Matrix (Fin k) (Fin k) ℂ), ∀ w, T (π h w) = ρ h (T w)) ∧ ∀ S : Submodule ℂ Wp, (∀ g ∈ PI.UpqRep.UJset (PI.UpqRep.allPos k), ∀ v ∈ S, ρ g v ∈ S) → S = ⊥ ∨ S = ⊤ := by
   first | exact @UpperTheory.Lit.Bur.Unitarize.unitarize | exact UpperTheory.Lit.Bur.Unitarize.unitarize | (intros; apply UpperTheory.Lit.Bur.Unitarize.unitarize <;> assumption)

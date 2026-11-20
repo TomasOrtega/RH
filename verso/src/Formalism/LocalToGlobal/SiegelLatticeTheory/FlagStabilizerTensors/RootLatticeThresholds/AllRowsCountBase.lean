@@ -15,9 +15,7 @@ variable {D : D7} (X : HidaSetting D)
 
 open Formalism.MainNotions.BridgeLemma NumberField in
 /- English proof (translation)
-Establish `hp` using `D.host.g_prime k`. Use `span_isMaximal hp` as an intermediate fact. Establish `hspl` using `splitsCompl_of_ncard D.host.E (D.host.g k) hp (by`. Rewrite using `[← IsDedekindDomain.coe_primesOverFinset (span_ne_bot hp) (𝓞 D.host.E), ← image_plOver _ hp, (injOn_asIdeal _ _).ncard_image]`. Conclude with `D.nd.g_split k)`.
-
-Conclude with `Formalism.L2.SG.ThmSOwn.splitsCompl_of_equiv X.ιE hspl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splits_X (k : Fin 2) : SplitsCompl X.B.I.E (D.host.g k) := by
   have hp := D.host.g_prime k
@@ -29,29 +27,23 @@ theorem splits_X (k : Fin 2) : SplitsCompl X.B.I.E (D.host.g k) := by
   exact Formalism.L2.SG.ThmSOwn.splitsCompl_of_equiv X.ιE hspl
 
 /- English proof (translation)
-Conclude with `Inh.aut_isHCParam_of_autTie hT v`.
+A detailed English derivation is pending.
 -/
 theorem hc_X (hT : AutTie D X.B X.pl) (v : NumberField.InfinitePlace X.B.I.F) : Formalism.QuantumDeterminants.IsHCParam (X.B.lam v) := by
   exact Inh.aut_isHCParam_of_autTie hT v
 
 /- English proof (translation)
-Take `⟨-, p2, p3, p4, p5, p6, p7, -, p9, p10, p11, p12⟩` from `hp`. Establish `hn` using `hT.n_eq`. Establish `hf` using `hT.f_eq`. Establish `hrd` using `hT.rd_eq`. Establish `tg` using `X.g_eq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : ∀ v, X.B.I.pAt v = (univ.filter fun a : Fin D.R.r => epsS D.R a = true).card ∧ X.B.I.qAt v = (univ.filter fun a : Fin D.R.r => epsS D.R a = false).card`. Introduce `v`. Establish `he` using `hT.eps_eq v`. Prove the components needed by the constructor for the conclusion. Simplify using `only [AutInst.pAt, he]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules.
 
-Conclude with `card_cast hn (fun a => epsS D.R a = true)`. Simplify using `only [AutInst.qAt, he]`. Conclude with `card_cast hn (fun a => epsS D.R a = false)`. Use `⟨large₂.sc.b, C * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * Real.log (large₂.sc.b * D.host.rdE), fun k => ?_, fun v a c hac => ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨by rw [hn]; exact p2, ⟨_, _, hq, ?_⟩, p11, ?_, hc_X X hT, ?_, ?_, ?_, D.host.g_prime _, ?_, splits_X X _⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn]`. Conclude with `le_trans (Nat.pow_le_pow_left card_epsS_false 2) p3`. Rewrite using `[hrd, hn]`. Conclude with `p4`. Introduce `v a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hT.lam_eq v a]`. Conclude with `p5 _ _`. Rewrite using `[tg]`. Conclude with `Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos`. Rewrite using `[tg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: gg D = ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ)` using `by unfold gg; push_cast; ring`. Rewrite using `[← this]`. Conclude with `p6`. Rewrite using `[hn] fin_cases k`. Conclude with `hg1`.
-
-Conclude with `p7`. Rewrite using `[hT.lam_eq v a, hT.lam_eq v c]`. Conclude with `p9 _ _ _ (by rw [← hT.eps_eq v a, ← hT.eps_eq v c]; exact hac)`. Rewrite using `[hn, hf, hrd]`. Rewrite using `[hf, hn]`.
-
-Conclude with `p10`. Rewrite using `[hf, hn]`. Conclude with `p12`. Establish `h` using `Formalism.MainNotions.BridgeLemma.Dstar_pos D`. Rewrite `h` using `[hT.Dstar_eq]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countBase_of (hT : AutTie D X.B X.pl) {large₂ : SizeData₂ D} {n0 : ℕ} {A C cb : ℝ}
     (hp : AdmissibleBoundsFromSource.CountTheoremHypotheses D large₂ n0 A C cb) (hg1 : 4 * D.R.r < D.host.g 1) : CountBase X n0 A C cb := by
@@ -96,9 +88,9 @@ theorem countBase_of (hT : AutTie D X.B X.pl) {large₂ : SizeData₂ D} {n0 : �
     exact h
 
 /- English proof (translation)
-Establish `hp` using `count_parameters_of_hyp L C0 C' Cl Cg cb Cu cT CT n0 A C cb7 hC hcb hA hn0 hCl2 hCl3 hll hh`. Use `countBase_of X hT hp ?_` and prove the remaining obligations. Take `⟨-, hH, -⟩` from `hh`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, ContinuousCyclotomicCharacter₂, -⟩` from `hH`. Establish `hk5` using `Formalism.MainNotions.S.five_le_k (D := D)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb2` using `Formalism.MainNotions.S.two_le_scb L`. Establish `h5 : (4 : ℝ) * D.R.r < D.host.g 1` using `Formalism.MainNotions.S.four_r_lt_g_of_bounds hk5 (by linarith only [hb2]) Formalism.MainNotions.S.r_le_two_k ContinuousCyclotomicCharacter₂`. Conclude with `h5` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem countBase_of_hyp (hT : AutTie D X.B X.pl) {L : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT : ℝ} {n0 : ℕ}
     {A C cb7 : ℝ} (hC : 0 ≤ C) (hcb : 0 < cb7) (hA : 2 * Cg ≤ A) (hn0 : (n0 : ℝ) ≤ D.R.k) (hCl2 : 2 ≤ Cl)
@@ -120,15 +112,15 @@ open Formalism.MainNotions.S.CountE Formalism.MainNotions.PlaceDegreeData Formal
 variable {eps : ℝ} (Fm : FamP eps)
 
 /- English proof (translation)
-Establish `hG` using `cGam_pos Fm`. Take `⟨Y1, hY1, HY1⟩` from `linear_le_pow_eight_eventually (8 * Fm.CGam) n0 (by positivity)`. Take `⟨Y2, -, HY2⟩` from `linear_le_pow_eight_eventually (cb7 * (8 * Fm.CGam)) 8 (by positivity)`. Take `⟨x4, hx4⟩` from `ev_y Fm (max Y1 Y2)`. Use `⟨max (Fm.x1 + 1) x4, fun x hx i hh X hT => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx1 : Fm.x1 < x`. Use `le_trans (le_max_left _ _) hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hy` using `hx4 x (le_trans (le_max_right _ _) hx)`. Use `set y : ℝ := x ^ (eps / 8) with hydef`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy1 : 1 ≤ y` using `le_trans hY1 (le_trans (le_max_left _ _) hy)`. Establish `a1` using `HY1 y (le_trans (le_max_left _ _) hy)`. Establish `a2` using `HY2 y (le_trans (le_max_right _ _) hy)`. Establish `hL` using `scL_eq Fm x hx1 i`. Establish `hk8` using `k_ge_of_hyp (Fm.L x i) hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk8` using `[hL, Fm.CGam_eq x i]`. Use `countBase_of_hyp X hT hC hcb hA ?_ hCl2 hCl3 ?_ hh` and prove the remaining obligations. Establish `: (n0 : ℝ) ≤ n0 * y` using `le_mul_of_one_le_right (Nat.cast_nonneg _) hy1`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hL, Real.log_pow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Real.log y ≤ y` using `Real.log_le_self (by linarith)`. Establish `h2 : cb7 * (8 * Fm.CGam * y ^ 8) ≤ cb7 * ((Fm.D x i).R.k : ℝ)` using `mul_le_mul_of_nonneg_left hk8 hcb.le`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem countBaseOwn (C0 : ℝ) (n0 : ℕ) (A C cb7 : ℝ) (hC : 0 ≤ C) (hcb : 0 < cb7)
     (hA : 2 * (Fm.CYL + 1) ≤ A) (hCl2 : 2 ≤ sCl Fm) (hCl3 : 2 * C ≤ sCl Fm) :

@@ -14,15 +14,13 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Use `haveI := M.integral`. Use `haveI := M.dominant`. Use `Flat.of_stalkMap _ fun x => ?_` and prove the remaining obligations. Establish `hx : M.gp.base x = genericPoint M.S`. Establish `hd : DenseRange M.gp.base` using `M.gp.denseRange`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hr : Set.range M.gp.base = {M.gp.base x}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Rewrite using `[Subsingleton.elim z x]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Introduce and unpack `rfl`. Conclude with `⟨x, rfl⟩`. Establish `hg : IsGenericPoint (M.gp.base x) ⊤`. Rewrite using `[IsGenericPoint, ← hr]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hd.closure_range` using `[Set.top_eq_univ]`. Conclude with `hg.eq (genericPoint_spec M.S)`. Establish `hF : IsField (M.S.presheaf.stalk (M.gp.base x))`. Rewrite using `[hx]`. Conclude with `Field.toIsField _`.
-
-Use `letI : Field (M.S.presheaf.stalk (M.gp.base x)) := hF.toField`. Unfold `RingHom.Flat`. Conclude with `inferInstance`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Modif.flat_gp (R : Type) [CommRing R] [IsDomain R] (M : Modif R) : Flat M.gp := by
   haveI := M.integral

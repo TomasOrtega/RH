@@ -26,14 +26,14 @@ set_option synthInstance.maxHeartbeats 200000
 namespace UpperTheory.V.Z.J.D.IsotropicFormFiniteness
 
 /- English proof (translation)
-The claim follows from `h.trans (iSup_le fun f => le_iSup_of_le ⟨f.1, f.2.1⟩ le_rfl)`.
+A detailed English derivation is pending.
 -/
 private theorem isot_of {H W : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [AddCommGroup W] [Module ℂ W]
     (ρ : Representation ℂ H W) (τ : SmIrr H) (h : IsoSum ρ ⊤ τ) : Isot ρ τ.ρ :=
   h.trans (iSup_le fun f => le_iSup_of_le ⟨f.1, f.2.1⟩ le_rfl)
 
 /- English proof (translation)
-The claim follows from `isot_of ρ τ (UpperTheory.isoSum_of_injective_equivariant_family H M N ρ ρ' ⊤ Z τ I φ hZ (fun _ _ _ => Submodule.mem_top) (fun i y _ => hm i y) (fun i g y _ => he i g y) fun y _ h => hi y h)`.
+A detailed English derivation is pending.
 -/
 private theorem isot_at {H M N : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [AddCommGroup M] [Module ℂ M]
     [AddCommGroup N] [Module ℂ N] (ρ : Representation ℂ H M) (ρ' : Representation ℂ H N) (Z : Submodule ℂ N) (τ : SmIrr H)
@@ -43,7 +43,7 @@ private theorem isot_at {H M N : Type} [Group H] [TopologicalSpace H] [IsTopolog
     (fun i g y _ => he i g y) fun y _ h => hi y h)
 
 /- English proof (translation)
-Introduce `γ g` and use `by have h := hF γ (g * a) rw [← mul_assoc] at h exact h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem af_tr {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) {d : ℕ} (ξ : Gp →* GL (Fin d) ℂ)
     (a : Ga × Gp) (F : Ga × Gp → Fin d → ℂ) (hF : F ∈ X.AF ξ) : (fun g => F (g * a)) ∈ X.AF ξ := fun γ g => by
@@ -52,7 +52,7 @@ private theorem af_tr {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Fr
   exact h
 
 /- English proof (translation)
-Introduce `k hk` and use `by funext g have h1 : F (g * a * (k, 1)) = F (g * a) := congrFun (hF k hk) (g * a) change F (g * (k, 1) * a) = F (g * a) rw [← h1, mul_assoc, mul_assoc] congr 2 exact Prod.ext (h k hk).symm.eq (by simp)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem fix_tr {A B M : Type} [Group A] [Group B] [AddCommGroup M] [Module ℂ M] (K : Subgroup A) (a : A × B)
     (h : ∀ k ∈ K, Commute a.1 k) (F : A × B → M)
@@ -69,7 +69,7 @@ variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMF
   {s : HidaSetting l L Ω} {n : ℕ}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ ↔ algebraMap (𝓞 (Lp L)) (𝓞 L) (l : 𝓞 (Lp L)) ∈ u.asIdeal`. Rewrite using `[map_natCast]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem l_mem (u : Plc L) :
     ((l : ℕ) : 𝓞 L) ∈ u.asIdeal ↔ ((l : ℕ) : 𝓞 (Lp L)) ∈ (u.under (𝓞 (Lp L))).asIdeal := by
@@ -77,7 +77,7 @@ private theorem l_mem (u : Plc L) :
   rw [map_natCast]
 
 /- English proof (translation)
-Introduce `h` and use `by have hp : ((s.p : ℕ) : 𝓞 (Lp L)) ∈ s.v0.asIdeal := by rw [← s.norm_v0_eq_one] exact Ideal.absNorm_mem s.v0.asIdeal obtain ⟨a, b, hab⟩ : IsCoprime (s.p : 𝓞 (Lp L)) (l : 𝓞 (Lp L)) := ((Nat.coprime_primes s.p_prime Fact.out).2 s.p_ne).cast exact s.v0.isPrime.ne_top ((Ideal.eq_top …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem SectionSplitPlaces (s : HidaSetting l L Ω) : ((l : ℕ) : 𝓞 (Lp L)) ∉ s.v0.asIdeal := fun h => by
   have hp : ((s.p : ℕ) : 𝓞 (Lp L)) ∈ s.v0.asIdeal := by
@@ -89,7 +89,7 @@ private theorem SectionSplitPlaces (s : HidaSetting l L Ω) : ((l : ℕ) : 𝓞 
     (hab ▸ add_mem (Ideal.mul_mem_left _ _ hp) (Ideal.mul_mem_left _ _ h)))
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Hi.CaseU.cmp`. Rewrite using `[dif_pos hl]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cmp_at {w : Plc L} (hl : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) (x : UA L n) :
     UpperTheory.V.Hi.CaseU.cmp n w ((away l L n).rangeRestrict x) = cLoc w x := by
@@ -98,7 +98,7 @@ private theorem cmp_at {w : Plc L} (hl : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) (x 
   rfl
 
 /- English proof (translation)
-Unfold `secS`. Rewrite using `[dif_pos hb]`. Establish `h : (MulEquiv.ofBijective _ hb).symm (toGS n s a) = ⟨a, ha⟩` using `(MulEquiv.symm_apply_eq _).2 rfl`. Express the relevant statement in the definitionally equal form `((MulEquiv.ofBijective _ hb).symm (toGS n s a) : GaS n s).1 = a`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sec_val (hb : Function.Bijective ((toGS n s).comp (GaS n s).subtype)) {a : Ga l L n} (ha : a ∈ GaS n s) :
     secS n s (toGS n s a) = a := by
@@ -112,9 +112,9 @@ private abbrev JJ (V : s.Lev) (x : UA L n) : Ga l L n × GL' n V :=
   ((away l L n).rangeRestrict x, fun v => cLoc (s.w v.1) x)
 
 /- English proof (translation)
-Establish `h1 : ∀ τ : L →+* ℂ, cEmb τ k = 1` using `fun τ => by`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (coord τ) (cInf k) = 1`. Rewrite using `[MonoidHom.mem_ker.1 hk, map_one]`. Express the relevant statement in the definitionally equal form `PiTensorProduct.mapMonoidHom (fun y : Emb l (fun v : V.frame.Vl => s.w v.1) => GlobalTheory.Branching.sqRep ℂ n (lam y.res) (cEmb (ι.toRingHom.comp y.res) k)) = 1`. Simplify using `only [h1, map_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Conclude with `map_one _`.
+A detailed English derivation is pending.
 -/
 private theorem infRep_one (V : s.Lev) (ι : Qbar l ≃+* ℂ) (lam : Wt L l n) {k : UA L n} (hk : k ∈ finU L n) :
     infRep (V := V) ι lam k = 1 := by
@@ -131,7 +131,7 @@ variable {V : s.Lev} {ι : Qbar l ≃+* ℂ} {lam : Wt L l n} {d : ℕ}
   {ξ : GV n (fun v : V.frame.Vl => s.w v.1) →* GL (Fin d) ℂ}
 
 /- English proof (translation)
-Establish `h` using `(formU l L Ω s n hn V Q c m τ₀ ι lam d e ξ hξ _ fun _ => rfl).2.2.1 F ℓ k`. Rewrite `h` using `[infRep_one V ι lam ((finU L n).inv_mem hk)]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem form_fin (hn : 1 ≤ n) (Q : QData V) (c : Coef l) {m : ℕ} (τ₀ : KT n (wt s) →* GL (Fin m) c.O)
     (hξ : IsBasis ι e ξ) {k : UA L n} (hk : k ∈ finU L n) (F : Ga l L n × GL' n V → Fin d → ℂ)
@@ -151,7 +151,7 @@ private def formLin (ι : Qbar l ≃+* ℂ)
     (fun _ _ _ => rfl) (fun _ _ _ => rfl)
 
 /- English proof (translation)
-Establish `h : Submodule.span ℂ {F : Ga l L n × GL' n V → Fin d → ℂ | ∀ ℓ, toForm ι e F ℓ ∈ σ} ≤ ⨅ ℓ, σ.comap ((formLin ι e).flip ℓ)` using `Submodule.span_le.2 fun F hF => (Submodule.mem_iInf _).2 fun ℓ => hF ℓ`. Conclude with `(Submodule.mem_iInf _).1 (h hF) ℓ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem span_form {σ : Submodule ℂ (UA L n → ℂ)} {F : Ga l L n × GL' n V → Fin d → ℂ}
     (hF : F ∈ Submodule.span ℂ {F : Ga l L n × GL' n V → Fin d → ℂ | ∀ ℓ, toForm ι e F ℓ ∈ σ}) (ℓ) : toForm ι e F ℓ ∈ σ := by
@@ -161,11 +161,11 @@ private theorem span_form {σ : Submodule ℂ (UA L n → ℂ)} {F : Ga l L n ×
   exact (Submodule.mem_iInf _).1 (h hF) ℓ
 
 /- English proof (translation)
-Take `⟨⟨h1, h2⟩, h3⟩` from `hF`. Set `a : Ga l L n × GL' n V` to `(secS n s x.2, x.1)`. Establish `ht : ∀ F' : Ga l L n × GL' n V → Fin d → ℂ, (∀ ℓ, toForm ι e F' ℓ ∈ σ) → ∀ ℓ, toForm ι e (rtr ℂ (Ga l L n × GL' n V) (Fin d → ℂ) a F') ℓ ∈ σ` using `fun F' hF' ℓ => by`. Take `⟨k, hk⟩` from `(formU l L Ω s n hn V Q c m τ₀ ι lam d e ξ hξ _ fun _ => rfl).2.2.2.1 a`. Establish `hk' : a = JJ V k.1` using `hk.symm`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `form_fin hn Q c τ₀ hξ k.2 F' ℓ`. Express the relevant statement in the definitionally equal form `toForm ι e (fun g => F' (g * a)) ℓ ∈ σ`. Rewrite using `[hk', h]`. Conclude with `hσ.stable _ _ (hF' ℓ)`. Establish `hs : Submodule.span ℂ {F : Ga l L n × GL' n V → Fin d → ℂ | ∀ ℓ, toForm ι e F ℓ ∈ σ} ≤ (Submodule.span ℂ {F : Ga l L n × GL' n V → Fin d → ℂ | ∀ ℓ, toForm ι e F ℓ ∈ σ}).comap (rtr ℂ (Ga l L n × GL' n V) (Fin d → ℂ) a)` using `Submodule.span_le.2 fun F' hF' => Submodule.subset_span (ht F' hF')`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨⟨af_tr (hset Q τ₀).X ξ a F h1, hs h2⟩, fix_tr (KS n s) a (fun k hk => hc x.2 k hk) F h3⟩`.
+A detailed English derivation is pending.
 -/
 private theorem vs_stable (hn : 1 ≤ n) (Q : QData V) (c : Coef l) {m : ℕ} (τ₀ : KT n (wt s) →* GL (Fin m) c.O)
     (hξ : IsBasis ι e ξ) {σ : Submodule ℂ (UA L n → ℂ)} (hσ : IsAutRepU σ)
@@ -188,11 +188,11 @@ private theorem vs_stable (hn : 1 ≤ n) (Q : QData V) (c : Coef l) {m : ℕ} (�
   exact ⟨⟨af_tr (hset Q τ₀).X ξ a F h1, hs h2⟩, fix_tr (KS n s) a (fun k hk => hc x.2 k hk) F h3⟩
 
 /- English proof (translation)
-Take `⟨j, h1, h2, -, h3⟩` from `(secU l L Ω s n hn w hsp).1`. Establish `hZ` using `UpperTheory.isoSum_restriction_of_local_component_unitary L n σ hσ w j h1 h2 h3 τ hτ`. Establish `hinj` using `(formU l L Ω s n hn V Q c m τ₀ ι lam d e ξ hξ _ fun _ => rfl).1`. Set `b` to `((Pi.basisFun ℂ (Fin d)).map e).dualBasis`. Use `isot_at R ((RU L n).comp j) σ τ (Fin d) (fun i => ((formLin ι e).flip (b i)) ∘ₗ (VS V ι e ξ Q τ₀ σ).subtype) hZ (fun i y => ?_) (fun i g y => ?_) (fun y h0 => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `span_form y.2.1.2 (b i)`. Express the relevant statement in the definitionally equal form `toForm ι e (R g y).1 (b i) = RU L n (j g) (toForm ι e y.1 (b i))`. Rewrite using `[hR]`. Express the relevant statement in the definitionally equal form `toForm ι e (fun x => y.1 (x * ((secS n s (φ g).2, (φ g).1) : Ga l L n × GL' n V))) (b i) = _`. Rewrite using `[hφ j h1 h2 g]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `form_fin hn Q c τ₀ hξ (Subgroup.mem_inf.1 (h1 g)).1 y.1 (b i)`. Use `Subtype.ext (hinj y.1 y.2.1.1 fun ℓ => ?_)` and prove the remaining obligations. Establish `h : formLin ι e y.1 = 0` using `b.ext fun k => h0 k`. Conclude with `LinearMap.congr_fun h ℓ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem place (hn : 1 ≤ n) (Q : QData V) (c : Coef l) {m : ℕ} (τ₀ : KT n (wt s) →* GL (Fin m) c.O)
     (hξ : IsBasis ι e ξ) {σ : Submodule ℂ (UA L n → ℂ)} (hσ : IsAutRepU σ) {w : Plc L} (hsp : IsSplitAt w)
@@ -217,15 +217,13 @@ private theorem place (hn : 1 ≤ n) (Q : QData V) (c : Coef l) {m : ℕ} (τ₀
     exact LinearMap.congr_fun h ℓ
 
 /- English proof (translation)
-Establish `hu` using `(UpperTheory.under_chosen_place_and_isSplitAt_of_decomp_le l L Ω s).1`. Establish `hl : ∀ u : Plc L, u.under (𝓞 (Lp L)) ∈ s.St ∨ u.under (𝓞 (Lp L)) = s.v0 → ((l : ℕ) : 𝓞 L) ∉ u.asIdeal` using `fun u h h' => by`. Break down `h with h | h` into its components or cases. Conclude with `s.St_l _ h ((l_mem u).1 h')`. Conclude with `SectionSplitPlaces s (h ▸ (l_mem u).1 h')`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha : (away l L n).rangeRestrict x ∈ GaS n s`. Use `Subgroup.mem_iInf.2 fun u => Subgroup.mem_iInf.2 fun hu' => MonoidHom.mem_ker.2 ?_` and prove the remaining obligations. Distinguish the cases in `h : ((l : ℕ) : 𝓞 L) ∈ u.asIdeal`. Unfold `UpperTheory.V.Hi.CaseU.cmp`. Rewrite using `[dif_neg (not_not.2 h)]`.
+Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[cmp_at h]`. Use `GlobalTheory.DefU.LocRet.mem_locU_ne hx fun e => ?_` and prove the remaining obligations. Break down `hw with hw | hw` into its components or cases. Conclude with `hu'.1 (e ▸ hw)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hu'.2 (e ▸ hw)`. Establish `ht : toGS n s ((away l L n).rangeRestrict x) = ((fun u : s.St => cLoc (s.w u) x), cLoc (s.w s.v0) x)` using `Prod.ext (funext fun u => cmp_at (hl _ (Or.inl (by rw [hu]; exact u.2))) x) (cmp_at (hl _ (Or.inr (hu _))) x)`. Rewrite using `[← ht, sec_val hb ha]`. Use `Prod.ext rfl (funext fun v => (GlobalTheory.DefU.LocRet.mem_locU_ne hx fun e => ?_).symm)` and prove the remaining obligations. Establish `hv : ((l : ℕ) : 𝓞 (Lp L)) ∈ (w.under (𝓞 (Lp L))).asIdeal`.
-
-Rewrite using `[← e, hu]`. Conclude with `v.2`. Conclude with `hl w hw ((l_mem w).2 hv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem loc_J (V : s.Lev) (hb : Function.Bijective ((toGS n s).comp (GaS n s).subtype)) {w : Plc L}
     (hw : w.under (𝓞 (Lp L)) ∈ s.St ∨ w.under (𝓞 (Lp L)) = s.v0) {x : UA L n} (hx : x ∈ locU n w) :
@@ -260,27 +258,25 @@ end UpperTheory.V.Z.J.D.IsotropicFormFiniteness
 
 open UpperTheory.V.Z.J.D.IsotropicFormFiniteness in
 /- English proof (translation)
-Introduce `hSec hSch hBI hPI hPr hBr l _ L Ω _ _ _ _ _ _ s n hn V hV Q c ι m τ₀ lam d e ξ hξ σ hσ C`. Take `⟨hb, hcomm, -⟩` from `hSec l L Ω s n hn V hV`. Use `haveI := V.frame.finV`. Establish `hu` using `(UpperTheory.under_chosen_place_and_isSplitAt_of_decomp_le l L Ω s).1`. Set `ρ : Representation ℂ (GL' n V × GS n s) (VS V ι e ξ Q τ₀ σ)` to `(⟨VS V ι e ξ Q τ₀ σ, fun g y hy => vs_stable hn Q c τ₀ hξ hσ hcomm g y hy⟩ : Subrepresentation (actS n V d)).toRepresentation`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ρ, fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Establish `aL : ∀ v, AbsIrr (C.l v).ρ` using `fun v => hSch L n _ (C.l v)`. Establish `aU : ∀ u, AbsIrr (C.u u).ρ` using `fun u => hSch L n _ (C.u u)`. Establish `aO : AbsIrr C.o.ρ` using `hSch L n _ C.o`. Establish `pL : AbsIrr C.repL` using `hPr _ _ _ _ aL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pU : AbsIrr (piRep fun u => (C.u u).ρ)` using `hPr _ _ _ _ aU`. Establish `pS : AbsIrr C.repS` using `hBr _ _ _ _ _ _ pU aO`. Use `hBI _ _ _ _ C.repL C.repS pL pS _ ρ ?_ ?_` and prove the remaining obligations. Use `hPI _ _ _ _ aL _ _ fun v => ?_` and prove the remaining obligations. Establish `hsp : IsSplitAt (s.w v.1)` using `UpperTheory.isSplitAt_of_decomposition_le_restriction_range L Ω (s.A v.1) v.1 (s.hA v.1) (s.split v.1 (Or.inl v.2)) _ (hu v.1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `place hn Q c τ₀ hξ hσ hsp (C.l v) (C.hl v) _ ((MonoidHom.inl _ _).comp (MonoidHom.mulSingle (fun v : V.frame.Vl => GLw n (s.w v.1)) v)) (fun _ _ => rfl) fun j h1 h2 g => ?_` and prove the remaining obligations. Use `Prod.ext ?_ (funext fun u => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `secS n s 1 = _`. Rewrite using `[map_one]`. Use `Subtype.ext (funext fun u => (GlobalTheory.DefU.LocRet.mem_locU_ne (h1 g) fun h => u.2 ?_).symm)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(l_mem u.1).2 (by rw [h, hu]; exact v.2)`. Express the relevant statement in the definitionally equal form `Pi.mulSingle (M := fun v : V.frame.Vl => GLw n (s.w v.1)) v g u = cLoc (s.w u.1) (j g)`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, h2]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `(GlobalTheory.DefU.LocRet.mem_locU_ne (h1 g) fun e => h (Subtype.ext ((hu _).symm.trans (e.trans (hu _))))).symm`. Use `hBI _ _ _ _ _ _ pU aO _ _ ?_ ?_` and prove the remaining obligations. Use `hPI _ _ _ _ aU _ _ fun u => ?_` and prove the remaining obligations. Establish `hsp : IsSplitAt (s.w u)` using `UpperTheory.isSplitAt_of_decomposition_le_restriction_range L Ω _ _ (s.hA _) (s.split _ (Or.inr (Or.inl u.2))) _ (hu _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `place hn Q c τ₀ hξ hσ hsp (C.u u) (C.hu u) _ ((MonoidHom.inr _ _).comp ((MonoidHom.inl _ _).comp (MonoidHom.mulSingle (fun u : s.St => GLw n (s.w u)) u))) (fun _ _ => rfl) fun j h1 h2 g => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (loc_J V hb (Or.inl (by rw [hu]; exact u.2)) (h1 g))` and prove the remaining obligations. Use `Prod.ext (congrArg (secS n s) (Prod.ext (funext fun u' => ?_) ?_)) rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Pi.mulSingle (M := fun u : s.St => GLw n (s.w u)) u g u' = cLoc (s.w u') (j g)`. Distinguish the cases in `h : u' = u`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, h2]`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `(GlobalTheory.DefU.LocRet.mem_locU_ne (h1 g) fun e => h (Subtype.ext ((hu _).symm.trans (e.trans (hu _))))).symm`. Use `(GlobalTheory.DefU.LocRet.mem_locU_ne (h1 g) fun e => s.v0_St ?_).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e' : s.v0 = u.1` using `(hu _).symm.trans (e.trans (hu _))`. Rewrite using `[e']`. Conclude with `u.2`. Establish `hsp : IsSplitAt (s.w s.v0)` using `UpperTheory.isSplitAt_of_decomposition_le_restriction_range L Ω _ _ (s.hA _) (s.split _ (Or.inr (Or.inr rfl))) _ (hu _)`. Use `place hn Q c τ₀ hξ hσ hsp C.o C.ho _ ((MonoidHom.inr _ _).comp (MonoidHom.inr _ _)) (fun _ _ => rfl) fun j h1 h2 g => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ (loc_J V hb (Or.inr (hu _)) (h1 g))` and prove the remaining obligations. Use `Prod.ext (congrArg (secS n s) (Prod.ext (funext fun u' => ?_) (h2 g).symm)) rfl` and prove the remaining obligations. Use `(GlobalTheory.DefU.LocRet.mem_locU_ne (h1 g) fun e => s.v0_St ?_).symm` and prove the remaining obligations. Establish `e' : u'.1 = s.v0` using `(hu _).symm.trans (e.trans (hu _))`. Rewrite using `[← e']`.
-
-Conclude with `u'.2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.D.isotS :
     SecS → SchurGL → BoxIsot → PiIsot → PiIrr → BoxIrr → IsotS := by

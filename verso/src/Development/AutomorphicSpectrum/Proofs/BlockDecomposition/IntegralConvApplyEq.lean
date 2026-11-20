@@ -11,17 +11,17 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace GlobalTheory.CompanionTheory.WaveMult
 
 /- English proof (translation)
-Establish `h1 : ∀ z, (∫ y, F y * F' (y⁻¹ * z) ∂μ) (φ z) = ∫ y, F y (F' (y⁻¹ * z) (φ z)) ∂μ`. Introduce `z`. Establish `hc : Continuous fun y => F y * F' (y⁻¹ * z)` using `hF.mul (hF'.comp ((continuous_inv).mul continuous_const))`. Establish `hs : HasCompactSupport fun y => F y * F' (y⁻¹ * z)` using `HasCompactSupport.intro cF fun y hy => by`. Simplify using `[image_eq_zero_of_notMem_tsupport hy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `ContinuousLinearMap.integral_apply (hc.integrable_of_hasCompactSupport (μ := μ) hs) (φ z)` as an intermediate fact. Simplify using `using this`. Repeatedly rewrite using `[h1]`. Establish `hcont : Continuous (Function.uncurry fun (z y : Γ) => F y (F' (y⁻¹ * z) (φ z)))`. Establish `a1 : Continuous fun p : Γ × Γ => F p.2` using `hF.comp continuous_snd`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : Continuous fun p : Γ × Γ => F' (p.2⁻¹ * p.1)` using `hF'.comp (continuous_snd.inv.mul continuous_fst)`. Establish `a3 : Continuous fun p : Γ × Γ => φ p.1` using `hφ.comp continuous_fst`. Conclude with `a1.clm_apply (a2.clm_apply a3)`. Establish `hsupp : HasCompactSupport (Function.uncurry fun (z y : Γ) => F y (F' (y⁻¹ * z) (φ z)))`. Establish `hK : IsCompact ((fun p : Γ × Γ => (p.1 * p.2, p.1)) '' (tsupport F ×ˢ tsupport F'))` using `(IsCompact.prod cF cF').image ((continuous_fst.mul continuous_snd).prodMk continuous_fst)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasCompactSupport.intro hK ?_` and prove the remaining obligations. Introduce and unpack `⟨z, y⟩ hzy`. Distinguish the cases in `hy : y ∈ tsupport F`. Distinguish the cases in `hy' : y⁻¹ * z ∈ tsupport F'`. Conclude with `absurd ⟨(y, y⁻¹ * z), ⟨hy, hy'⟩, by simp⟩ hzy`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.uncurry, image_eq_zero_of_notMem_tsupport hy']`. Simplify using `[Function.uncurry, image_eq_zero_of_notMem_tsupport hy]`. Rewrite using `[integral_integral_swap_of_hasCompactSupport hcont hsupp]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∫ z, F y (F' (y⁻¹ * z) (φ z)) ∂μ = F y (∫ z, F' z (φ (y * z)) ∂μ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← integral_mul_left_eq_self (fun z => F y (F' (y⁻¹ * z) (φ z))) y]`. Simplify using `only [inv_mul_cancel_left]`. Establish `hc : Continuous fun z => F' z (φ (y * z))` using `hF'.clm_apply (hφ.comp (continuous_const.mul continuous_id))`. Establish `hs : HasCompactSupport fun z => F' z (φ (y * z))` using `HasCompactSupport.intro cF' fun z hz => by simp [image_eq_zero_of_notMem_tsupport hz]`. Conclude with `(F y).integral_comp_comm (hc.integrable_of_hasCompactSupport (μ := μ) hs)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_conv_apply_eq {Γ V : Type*} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [T2Space Γ]
     [MeasurableSpace Γ] [BorelSpace Γ] (μ : Measure Γ) [μ.IsHaarMeasure]
@@ -67,20 +67,20 @@ theorem integral_conv_apply_eq {Γ V : Type*} [Group Γ] [TopologicalSpace Γ] [
   exact (F y).integral_comp_comm (hc.integrable_of_hasCompactSupport (μ := μ) hs)
 
 /- English proof (translation)
-The claim follows from `(Matrix.isUnits_det_units y).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem val_mem_GLs {n : ℕ} (y : G n) : y.val ∈ GLs n :=
   (Matrix.isUnits_det_units y).ne_zero
 
 /- English proof (translation)
-The claim follows from `hk.1.comp_continuous Units.continuous_val val_mem_GLs`.
+A detailed English derivation is pending.
 -/
 theorem KReg.continuous_val {n : ℕ} {V : Type} [NormedAddCommGroup V] {k : Mat n → V} (hk : KReg k) :
     Continuous fun y : G n => k y.val :=
   hk.1.comp_continuous Units.continuous_val val_mem_GLs
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `hk.2`. Use `HasCompactSupport.intro ((hL n).2.2.2.2.1 R) fun y hy => ?_` and prove the remaining obligations. Conclude with `hR _ (val_mem_GLs y) (not_le.1 hy)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem KReg.hasCompactSupport_val (hL : LgFacts) {n : ℕ} {V : Type} [NormedAddCommGroup V] {k : Mat n → V}
     (hk : KReg k) : HasCompactSupport fun y : G n => k y.val := by
@@ -89,9 +89,9 @@ theorem KReg.hasCompactSupport_val (hL : LgFacts) {n : ℕ} {V : Type} [NormedAd
   exact hR _ (val_mem_GLs y) (not_le.1 hy)
 
 /- English proof (translation)
-Introduce `hL n _ _ μ _ E k k' f hk hk' hf x hx`. Use `haveI := FiniteDimensional.complete ℂ E.V`. Take `⟨X, rfl⟩ : ∃ X : G n, X.val = x` from `(Matrix.isUnit_iff_isUnit_det x).2 (isUnit_iff_ne_zero.2 hx)`. Establish `hφ : Continuous fun z : G n => f (X.val * z.val)` using `hf.comp_continuous (continuous_const.mul Units.continuous_val) fun z => val_mem_GLs (X * z)`. Establish `key` using `integral_conv_apply_eq μ (fun y : G n => k y.val) (fun y : G n => k' y.val) (fun z : G n => f (X.val * z.val)) hk.continuous_val hk'.continuous_val hφ (hk.hasCompactSupport_val hL) (hk'.hasCompactSupport_val hL)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul, ← mul_assoc] at key`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem act_conv : LgFacts → ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
     (E : KMod n) (k k' : Mat n → (E.V →L[ℂ] E.V)) (f : Mat n → E.V), KReg k → KReg k' →

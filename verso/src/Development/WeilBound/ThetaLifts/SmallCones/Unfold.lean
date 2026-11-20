@@ -21,13 +21,11 @@ def fixQ {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) : Subgroup (
   inv_mem' := fun {a} ha => ⟨Subgroup.inv_mem _ ha.1, by conv_lhs => rw [← ha.2, mat_cancel]⟩
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `mem_ratU.1 hg`. Establish `e : incV F (M *ᵥ x) = mat g *ᵥ incV F x`. Rewrite using `[hM]`. Conclude with `funext fun i => RingHom.map_mulVec (inclR (F := F) (AF F)) M x i`. Establish `hU : Mᵀ * J * M.map σ = J`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Matrix.map_injective (inclR_inj (F := F))` to reduce the goal to its premises. Use `g.2` as an intermediate fact. Express the relevant statement in the definitionally equal form `(mat g)ᵀ * _ * (mat g).map _ = _ at this`. Rewrite `this` using `[hM]`. Simplify using `only [Matrix.map_mul]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Use `⟨M *ᵥ x, fun h => h0 (funext fun i => inclR_inj (F := F) ?_), ?_, e⟩` and prove the remaining obligations. Use `mat_cancel g (incV F x)` as an intermediate fact. Rewrite `this` using `[← e, h, show incV F (0 : Fin n → E) = 0 from funext fun _ => map_zero _, Matrix.mulVec_zero]`. Conclude with `(congrFun this i).symm.trans (map_zero _).symm`.
-
-Establish `e2 : (fun i => σ ((M *ᵥ x) i)) = M.map σ *ᵥ fun i => σ (x i)` using `funext fun i => RingHom.map_mulVec (σ : E →+* E) M x i`. Rewrite using `[← hx, form, form, e2]`. Use `conv_rhs => rw [← hU, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec x, Matrix.vecMul_transpose]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iso {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {g : UA σ J} (hg : g ∈ ratU σ J) {x : Fin n → E} (h0 : x ≠ 0)
     (hx : form σ J x x = 0) : ∃ z : Fin n → E, z ≠ 0 ∧ form σ J z z = 0 ∧ incV F z = mat g *ᵥ incV F x := by
@@ -51,33 +49,29 @@ theorem exists_iso {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {g : UA σ J} (hg : 
     conv_rhs => rw [← hU, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec x, Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ X X₁ H j₀ j₁ r s hB hX hH K μK μ ν D ν₁ D₁ lev hK _ _ _ hD _ hD₁ hlev`. Establish `hY : X.IsHerm σ B r s ∨ X.IsSkew σ B r s` using `Or.inl hX`. Take `⟨ε, A', hfr⟩` from `isFr hB hY hH`. Establish `hd : IsUnit X₁.J.det` using `hfr.isUnit_det (det_ne hY).isUnit`. Establish `hJ : ∀ i j, σ (X.J j i) = (((1 : ℤˣ) : ℤ) : E) * X.J i j` using `fun i j => by simp [hX.herm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ₁ : ∀ i j, σ (X₁.J j i) = (((1 : ℤˣ) : ℤ) : E) * X₁.J i j` using `fun i j => by`. Establish `e : ∀ i j, X₁.J i j = form σ X.J (fun k => H.ι k i) (fun k => H.ι k j)` using `fun i j => by`. Rewrite using `[← hH.gram, Matrix.mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[e, e, form_eps (PositivityTheory.ThKG.Tow.Levi.sig_sig hB.cm) hJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Take `⟨_, _, _, _, _, -⟩` from `PositivityTheory.ThKF.unimodLC hB.cm hJ (det_ne hY)`. Take `⟨_, _, _, _, _, -⟩` from `PositivityTheory.ThKF.unimodLC hB.cm hJ₁ hd.ne_zero`. Take `⟨-, _, _, _, _, _, -⟩` from `ideleTop F E`. Use `haveI := PositivityTheory.ThKF.countable_ratU σ X.J`. Use `haveI := PositivityTheory.ThKF.countable_ratU σ X₁.J`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := PositivityTheory.ThKF.discrete_ratU hB.cm hJ (det_ne hY)`. Take `⟨s1, s2, s3⟩` from `stabDec_of F E σ B n n₁ X X₁ H j₀ j₁ r s hB hY hH`. Take `⟨N, _, _, _, _, μN, _, _, nn, ι, mm, χ, hP, c1, c2, c3, -, C, hC, hcov⟩` from `parEx hB hY hH`. Establish `l1 : ∀ g, IsLevi H 1 g (ι g)` using `fun g => by simpa using c3 1 g`. Establish `l2 : ∀ g ∈ ratU σ X₁.J, ι g ∈ ratU σ X.J` using `fun g hg => s2 1 g hg _ (by rw [map_one]; exact l1 g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `el : ∀ t g, lev (t, g) = ι g * mm t` using `fun t g => levi_uniq hfr (hlev t g) (c3 t g)`. Establish `eχ : ∀ t, (absE F E t : ℝ) ^ (1 - (n : ℝ)) = χ t` using `fun t => by`. Establish `h1 : (χ t : ℝ) * (absE F E t : ℝ) ^ (n₁ + 1) = 1` using `by exact_mod_cast c1 t`. Rewrite using `[eq_inv_of_mul_eq_one_left h1, ← Real.rpow_natCast, ← Real.rpow_neg (NNReal.coe_nonneg _), hH.rank]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨κ, hκ, hmain⟩` from `unfold_abs ν ν₁ μ hP hK.1 μK (Γ := ratU σ X.J) (Q := fixQ X.J H.x) (ΓN := ratU σ X.J ⊓ unip σ X H) (Γ₁ := ratU σ X₁.J) (fun g => by`. Take `⟨p, k, l, hk, hp, rfl⟩` from `hK.2 g`. Take `⟨u, hu, g₁, m, hm, rfl, -⟩` from `s1 p l hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨q, rfl⟩` from `(c2 u).1 hu`. Conclude with `⟨q, g₁, l, k, hk, by rw [levi_uniq hfr hm (c3 l g₁), ← mul_assoc (nn q)]⟩)`. Use the proof step `(fun _ h => h.1) (fun δ h => ⟨h.1, (mem_unip.1 h.2).1⟩) (fun δ h => (c2 δ).1 h.2)`. Use the proof step `(fun γ h => ⟨l2 γ h, (l1 γ).1.trans (one_smul _ _)⟩) (fun q hq => by`. Take `⟨u, hu, g₁, m, hm, rfl, hr⟩` from `s1 q 1 (hq.2.trans (one_smul _ _).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `levi_uniq hfr hm (l1 g₁)`. Establish `key : ∀ z z' : ratU σ X₁.J × (ratU σ X.J ⊓ unip σ X H : Subgroup _), ι z.1 * z.2 = ι z'.1 * z'.2 → z = z'` using `fun z z' e => by`. Take `⟨p, hp⟩` from `(c2 _).1 z.2.2.2`. Take `⟨p', hp'⟩` from `(c2 _).1 z'.2.2.2`. Take `⟨L, -, hL⟩` from `hP.h2 z.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨L', -, hL'⟩` from `hP.h2 z'.1`. Establish `e1 : z.1 = z'.1` using `Subtype.ext (congrArg (fun w => w.2.1) (hP.emb.injective (a₁ := (L p, z.1.1, 1)) (a₂ := (L' p', z'.1.1, 1)) (by`. Simplify using `only [map_one, mul_one, ← hL, ← hL', ← hp, ← hp', e])))`. Rewrite `e` using `[e1]`. Conclude with `Prod.ext e1 (Subtype.ext (mul_left_cancel e))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨(⟨g₁, hr hq.1⟩, ⟨(ι g₁)⁻¹ * u * ι g₁, ?_, levi_conj hm hu⟩), by simp only; group, fun z hz => key _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `Subgroup.mul_mem _ (Subgroup.inv_mem _ (l2 _ (hr hq.1))) hq.1`. Rewrite using `[← hz]`. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `group)`. Use `hC (fun p => by`. Take `⟨q, h1, h2⟩` from `hcov p`. Conclude with `⟨nn q, ⟨h1, (c2 _).2 ⟨q, rfl⟩⟩, h2⟩) hD₁ hD`. Use `⟨κ, hκ, fun γ hγ f hf i1 i2 hfin => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [el, eχ, ENNReal.ofReal_coe_nnreal] at hfin ⊢`. Use `hmain _ γ (fun x => (hγ x).1) (fun g hg => ?_) f hf (fun p => i1 _ ((c2 _).2 ⟨p, rfl⟩)) (fun q hq => i2 q hq.1 hq.2) hfin` and prove the remaining obligations. Establish `hx0 : H.x ≠ 0` using `fun h => by`. Use `hH.xy` as an intermediate fact. Rewrite `this` using `[h, form, zero_dotProduct]`.
-
-Conclude with `zero_ne_one this`. Establish `k : ∀ x : IsoV σ X, g * (γ x)⁻¹ ∈ fixQ X.J H.x ↔ incV F x.1 = mat g⁻¹ *ᵥ incV F H.x` using `fun x => by`. Establish `e : mat (g * (γ x)⁻¹) *ᵥ incV F H.x = mat g *ᵥ incV F x.1`. Rewrite using `[mat_mul, ← Matrix.mulVec_mulVec, ← (hγ x).2, mat_cancel]`. Use `⟨fun h => by rw [← h.2, e, mat_cancel], fun h => ⟨Subgroup.mul_mem _ hg (Subgroup.inv_mem _ (hγ x).1), ?_⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[e, h, mat_cancel']`. Take `⟨z, z0, z1, z2⟩` from `exists_iso (Subgroup.inv_mem _ hg) hx0 hH.xx`. Conclude with `⟨⟨z, z0, z1⟩, (k _).2 z2, fun x hx => Subtype.ext (funext fun i => inclR_inj (F := F) (congrFun (((k x).1 hx).trans z2.symm) i))⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unfold_of : Unfold := by
   intro F E _ _ _ _ _ σ B n n₁ X X₁ H j₀ j₁ r s hB hX hH K μK μ ν D ν₁ D₁ lev hK _ _ _ hD _ hD₁ hlev

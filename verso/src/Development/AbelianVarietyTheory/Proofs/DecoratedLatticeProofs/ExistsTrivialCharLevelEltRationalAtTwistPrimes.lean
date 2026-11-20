@@ -26,18 +26,18 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
 
 /- English proof (translation)
-Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adAt_one_apply (P : HeightOneSpectrum (𝓞 E)) {n : ℕ} (r s : Fin n) :
     adAt F P ((1 : Matrix (Fin n) (Fin n) (AfE F E)) r s) = (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s := by
   rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Establish `hinv` using `GlobalTheory.Mem.Col2.AdT.Opn.inv_eq_cT hc.sig hu`. Establish `h1 : (1 + ((u : Matrix (Fin n) (Fin n) (AfE F E)) - 1)) * (1 + cT (sigR hc.sig (FiniteAdeleRing (𝓞 F) F)) ((u : Matrix (Fin n) (Fin n) (AfE F E)) - 1)) = 1`. Rewrite using `[← hinv, add_sub_cancel, Units.mul_inv]`. Establish `h2` using `congrArg (adAt F (conjPrime₂ P)).mapMatrix h1`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_mul, map_add, map_add, map_one]`. Establish `key` using `GlobalTheory.Mem.Col2.AdT.Opn.val_inv_le Valued.v _ _ h2 ε hε (fun a b => ?_) r s`. Establish `e : ((adAt F (conjPrime₂ P)).mapMatrix ((u : Matrix (Fin n) (Fin n) (AfE F E)) - 1)) r s = adAt F (conjPrime₂ P) (u.1 r s) - (1 : Matrix (Fin n) (Fin n) ((conjPrime₂ P).adicCompletion E)) r s`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.sub_apply, map_sub, adAt_one_apply]`. Rewrite using `[← e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key`. Use `show Valued.v (adAt F (conjPrime₂ P) (sigR hc.sig (FiniteAdeleRing (𝓞 F) F) (((u : Matrix (Fin n) (Fin n) (AfE F E)) - 1) b a))) ≤ ε`. Rewrite using `[GlobalTheory.Mem.Col2.valued_sigR hc, GlobalTheory.CharValCompare.conjP_conjP, Matrix.sub_apply, map_sub, adAt_one_apply]`. Conclude with `hP b a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_bound (hc : CMData F E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : J = 1) {u : GL (Fin n) (AfE F E)}
     (hu : u ∈ UPts hc.sig J (FiniteAdeleRing (𝓞 F) F)) (P : HeightOneSpectrum (𝓞 E)) (ε : WithZero (Multiplicative ℤ)) (hε : ε < 1)
@@ -62,15 +62,15 @@ theorem conj_bound (hc : CMData F E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (h
 end Gen
 
 /- English proof (translation)
-Establish `hall : ∀ (P : κ) (L : List κ), c (f P) ≠ 1 → (∀ P' ∈ L, P' ≠ P) → c (L.map f).prod = 1`. Introduce `P L h1 hL`. Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons P' L ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[List.map_cons, List.prod_cons, map_mul, ih fun x hx => hL x (List.mem_cons_of_mem _ hx), mul_one]`. Conclude with `(hpair P P' (Ne.symm (hL P' (List.mem_cons.2 (Or.inl rfl))))).resolve_left h1`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `left`. Simplify using the standard rewrite rules. Consider the case `cons P L ih`. Introduce `hL`. Rewrite `hL` using `[List.nodup_cons]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[List.map_cons, List.prod_cons, map_mul]`. Distinguish the cases in `h1 : c (f P) = 1`. Rewrite using `[h1, one_mul]`. Break down `ih hL.2 with h | ⟨P', hP', h⟩` into its components or cases. Conclude with `Or.inl h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inr ⟨P', List.mem_cons_of_mem _ hP', h⟩`. Rewrite using `[hall P L h1 fun P' hP' e => hL.1 (e ▸ hP'), mul_one]`. Conclude with `Or.inr ⟨P, List.mem_cons.2 (Or.inl rfl), rfl⟩`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem map_prod_cases {G M κ : Type} [Monoid G] [Monoid M] (f : κ → G) (c : G →* M)
     (hpair : ∀ P P' : κ, P ≠ P' → c (f P) = 1 ∨ c (f P') = 1) :
@@ -100,51 +100,45 @@ theorem map_prod_cases {G M κ : Type} [Monoid G] [Monoid M] (f : κ → G) (c :
 set_option maxHeartbeats 12000000 in
 
 /- English proof (translation)
-Introduce `B X I hOk hPins l Z a T i hi bad S hChi N g`. Establish `: NeZero (B.R.N i)` using `⟨(B.R.N_pos i).ne'⟩`. Establish `hgr : gramN (I.rec7 l Z) i hi = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hOk hPins l Z).2.2.2 i hi).1`. Set `cP : ∀ P : HeightOneSpectrum (𝓞 B.fields.E), GA B (B.R.N i) →* Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (P.adicCompletion B.fields.E)` to `fun P => (RingHom.mapMatrix (adAt B.host.F P)).toMonoidHom.comp (Units.coeHom _)`. Establish `cP_apply : ∀ P (g : GA B (B.R.N i)) r s, cP P g r s = adAt B.host.F P ((g : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (AfE B.host.F B.host.E)) r s)` using `fun _ _ _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ι : S.U →* GA B (B.R.N i)` to `S.U.subtype`. Establish `hexp : WithZero.exp (-((max N 1 : ℕ) : ℤ)) ≤ WithZero.exp (-(N : ℤ))` using `WithZero.exp_le_exp.2 (by omega)`. Establish `hexp1 : WithZero.exp (-((max N 1 : ℕ) : ℤ)) < 1`. Rewrite using `[← WithZero.exp_zero]; exact WithZero.exp_lt_exp.2 (by omega)`. Establish `hs : ∀ P : SBof I a, GlobalTheory.TwU.seamP (sm I l Z) P.1 = P.1` using `fun P => (GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a (B.R.N i) 0 P 1).1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsep : ∀ P P' : SBof I a, P ≠ P' → P.1 ∈ I.Q a → (P'.1 = P.1 ∨ P'.1 = Formalism.L2.Col.conjPrime₂ P.1) → False`. Introduce `P P' hne hP h`. Break down `h with h | h` into its components or cases. Conclude with `hne (Subtype.ext h.symm)`. Take `⟨v, hv, hv'⟩` from `LevelElt.place_under I hOk hPins l Z a P hP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv' P' (Ne.symm hne)` to reduce the goal to its premises. Rewrite `hv`, the goal using `[hs]`. Establish `hc` using `congrArg HeightOneSpectrum.asIdeal ((GlobalTheory.Mem.Col2.under_eq_iff B.host P.1 P'.1).2 (Or.inr h))`. Conclude with `Eq.trans hv hc.symm`. Establish `hsel : ∀ P : SBof I a, ∃ z : S.U, S.chi z = 1 ∧ (∀ Q : HeightOneSpectrum (𝓞 B.fields.E), cP Q (ι z) = 1 ∨ (P.1 ∈ I.Q a ∧ (Q = P.1 ∨ Q = Formalism.L2.Col.conjPrime₂ P.1))) ∧ (∀ (Q : HeightOneSpectrum (𝓞 B.fields.E)) r s, Valued.v (cP Q (ι z) r s - (1 : Matrix (Fin (B.R.N i)) (Fin …`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `P`. Distinguish the cases in `hP : P.1 ∈ I.Q a`. Take `⟨v, hv, -⟩` from `LevelElt.place_under I hOk hPins l Z a P hP`. Take `⟨z, hz1, hz2, hz3, hz4⟩` from `LevelElt.one_prime I hOk hPins l Z a T i hi bad S hChi P hP v hv (max N 1) g 1`. Establish `hzU` using `((S.U_eq _).1 z.2).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbP` using `((GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a (B.R.N i) (max N 1) P z.1).2.2).1 hz3`. Establish `hvP` using `hv`. Rewrite `hvP` using `[hs]`. Establish `hoff : ∀ Q : HeightOneSpectrum (𝓞 B.fields.E), ¬ (Q = P.1 ∨ Q = Formalism.L2.Col.conjPrime₂ P.1) → cP Q (ι z) = 1` using `fun Q hQ => Matrix.ext fun r s => by`. Rewrite using `[cP_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `LevelElt.support_one z.1 v hz2 Q (fun hO => hQ ((GlobalTheory.Mem.Col2.under_eq_iff B.host P.1 Q).1 (HeightOneSpectrum.ext (Eq.trans (Eq.symm hO) hvP)))) r s`. Use `⟨z, hz1, fun Q => ?_, fun Q r s => ?_, fun _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hQ : Q = P.1 ∨ Q = Formalism.L2.Col.conjPrime₂ P.1`. Conclude with `Or.inr ⟨hP, hQ⟩`. Conclude with `Or.inl (hoff Q hQ)`.
+Prove the second alternative. Prove the first alternative. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Distinguish the cases in `hQ : Q = P.1 ∨ Q = Formalism.L2.Col.conjPrime₂ P.1`. Rewrite using `[cP_apply]`. Break down `hQ with rfl | rfl` into its components or cases. Conclude with `(hbP r s).trans hexp`. Conclude with `(conj_bound (I.rec7 l Z).sp.cm hgr hzU P.1 _ hexp1 hbP r s).trans hexp`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hoff Q hQ, sub_self, Valuation.map_zero]`. Conclude with `zero_le'`. Take `⟨γ, hγ⟩` from `hz4`. Conclude with `⟨γ, fun r s => by rw [← hγ r s, mul_one]⟩`. Use `⟨1, map_one _, fun Q => Or.inl (by rw [map_one, map_one]), fun Q r s => ?_, fun h => absurd h hP⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[map_one, map_one, sub_self, Valuation.map_zero]`. Conclude with `zero_le'`. Use `choose zf hzf1 hzf2 hzf3 hzf4 using hsel`. Establish `hpair : ∀ (Q : HeightOneSpectrum (𝓞 B.fields.E)) (P P' : SBof I a), P ≠ P' → cP Q (ι (zf P)) = 1 ∨ cP Q (ι (zf P')) = 1`. Introduce `Q P P' hne`.
+Prove the second alternative. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Prove the first alternative.
 
-Break down `hzf2 P Q with h | ⟨hP, hQ⟩` into its components or cases. Conclude with `Or.inl h`. Break down `hzf2 P' Q with h' | ⟨-, hQ'⟩` into its components or cases. Conclude with `Or.inr h'`. It suffices to derive a contradiction.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the second alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hsep P P' hne hP` to reduce the goal to its premises. Apply the tactic sequence `rcases hQ with rfl | rfl <;> rcases hQ' with h2 | h2`. Conclude with `Or.inl h2.symm`. Use `Or.inr ?_` and prove the remaining obligations. Rewrite using `[h2, GlobalTheory.CharValCompare.conjP_conjP]`.
+Prove the first alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `Or.inr h2.symm`. Establish `h3` using `congrArg Formalism.L2.Col.conjPrime₂ h2`. Rewrite `h3` using `[GlobalTheory.CharValCompare.conjP_conjP, GlobalTheory.CharValCompare.conjP_conjP]`. Conclude with `Or.inl h3.symm`. Establish `hone : ∀ P P' : SBof I a, P' ≠ P → cP P'.1 (ι (zf P)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `P P' hne`. Break down `hzf2 P P'.1 with h | ⟨hP, hQ⟩` into its components or cases. Conclude with `h`. Conclude with `(hsep P P' hne.symm hP hQ).elim`. Establish `hlistP : ∀ (L : List (SBof I a)), L.Nodup → ∀ P' : SBof I a, cP P'.1 (ι (L.map zf).prod) = if P' ∈ L then cP P'.1 (ι (zf P')) else 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _ P'`. Simplify using the standard rewrite rules. Consider the case `cons P L ih`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `hL P'`. Rewrite `hL` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, map_mul, map_mul, ih hL.2]`. Distinguish the cases in `h : P = P'`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hL.1]`. Rewrite using `[hone P P' (Ne.symm h)]`. Simplify using `[Ne.symm h]`. Take `⟨w, hw⟩ : ∃ w : S.U, w = ((Finset.univ : Finset (SBof I a)).toList.map zf).prod` from `⟨_, rfl⟩`. Establish `hwP : ∀ P : SBof I a, cP P.1 (ι w) = cP P.1 (ι (zf P))` using `fun P => by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hw, hlistP _ (Finset.nodup_toList _) P, if_pos (Finset.mem_toList.2 (Finset.mem_univ _))]`. Establish `hchiw : S.chi w = 1`. Rewrite using `[hw, map_list_prod]`. Use `List.prod_eq_one fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[List.mem_map]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, hz, rfl⟩` from `hx`. Rewrite `hz` using `[List.mem_map]`. Take `⟨P, -, rfl⟩` from `hz`. Conclude with `hzf1 P`. Establish `hQsub : ∀ P ∈ I.Q a, P ∈ SBof I a` using `fun P hP => by show P ∈ uSG _ _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Finset.mem_union_right _ hP`. Use `⟨w, hchiw, fun P hP => ?_, fun Q r s => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `hzf4 ⟨P, hQsub P hP⟩ hP`. Use `⟨(γ : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) B.fields.E), fun r s => ?_⟩` and prove the remaining obligations. Establish `e0 : cP P (ι w) = cP P (ι (zf ⟨P, hQsub P hP⟩))` using `hwP ⟨P, hQsub P hP⟩`.
-
-Establish `e1 : cP P (g * ι w) = cP P (g * ι (zf ⟨P, hQsub P hP⟩))` using `by rw [map_mul, map_mul, e0]`. Establish `e2` using `congrFun (congrFun e1 r) s`. Conclude with `(cP_apply P _ r s).symm.trans (e2.trans ((cP_apply P _ r s).trans (hγ r s)))`. Rewrite using `[map_sub, adAt_one_apply]`. Express the relevant statement in the definitionally equal form `Valued.v (cP Q (ι w) r s - (1 : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (Q.adicCompletion B.fields.E)) r s) ≤ _`.
-
-Break down `map_prod_cases zf ((cP Q).comp ι) (hpair Q) _ (Finset.nodup_toList _) with h | ⟨P, -, h⟩` into its components or cases. Rewrite `h` using `[← hw]`. Express the relevant statement in the definitionally equal form `cP Q (ι w) = _ at h`. Rewrite using `[h, sub_self, Valuation.map_zero]`. Conclude with `zero_le'`.
-
-Rewrite `h` using `[← hw]`. Express the relevant statement in the definitionally equal form `cP Q (ι w) = _ at h`. Rewrite using `[h]`. Conclude with `hzf3 P Q r s`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_level_elt_all : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι) (T i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (S : StepLevel (I.rec7 l Z).host.F (I.rec7 l Z).host.E (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) T (I.rec7 l Z).R.f bad), GlobalTheory.Mem.Col2.AdT.ChiFin I l Z S → ∀ (N : ℕ) (g : TC.GA B (B.R.N i)), ∃ z : S.U, S.chi z = 1 ∧ (∀ P ∈ I.Q a, ∃ M : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) B.host.E, ∀ r s, adAt B.host.F P (((g * (show TC.GA B (B.R.N i) from z.1) : TC.GA B (B.R.N i)) : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (Formalism.L2.DIV.AfE B.host.F B.host.E)) r s) = algebraMap B.host.E _ (M r s)) ∧ ∀ (P : HeightOneSpectrum (𝓞 B.host.E)) (r s : Fin (B.R.N i)), Valued.v (adAt B.host.F P (((show TC.GA B (B.R.N i) from z.1) : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (Formalism.L2.DIV.AfE B.host.F B.host.E)) r s - (1 : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (Formalism.L2.DIV.AfE B.host.F B.host.E)) r s)) ≤ WithZero.exp (-(N : ℤ)) := by
   intro B X I hOk hPins l Z a T i hi bad S hChi N g

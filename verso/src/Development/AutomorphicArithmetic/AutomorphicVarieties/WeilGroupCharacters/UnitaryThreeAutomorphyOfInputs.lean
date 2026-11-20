@@ -38,13 +38,13 @@ open GlobalTheory.Mem.LiteralAutomorphy
 namespace UpperTheory.V.W
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.gf, hN.coh.ge, hN.coh.gw, hN.coh.pt, GlobalTheory.Published.TameLocal_of_duality hN.coh.lt⟩`.
+Supply the required witnesses or components.
 -/
 theorem cohP (hN : LitN) : Pa.CohP :=
   ⟨hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.gf, hN.coh.ge, hN.coh.gw, hN.coh.pt, GlobalTheory.Published.TameLocal_of_duality hN.coh.lt⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hN.coh.lfK, hN.coh.ltK, hN.coh.leK, hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.bk⟩`.
+Supply the required witnesses or components.
 -/
 theorem localGaloisCohomology₂ (hN : LitN) : Loc.LocalPublishedTheorems :=
   ⟨hN.coh.lfK, hN.coh.ltK, hN.coh.leK, hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.bk⟩

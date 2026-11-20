@@ -8,19 +8,19 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible MeasureThe
 namespace GlobalTheory.DoublingVanish
 
 /- English proof (translation)
-Establish `: Nontrivial E` using `nontrivial_of_ne v 0 hv`. Set `Φ : E →ₗ[ℂ] E →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun y w => inner ℂ (j w) (j y)) (fun y₁ y₂ w => by simp only [map_add, inner_add_right]) (fun c y w => by simp only [map_smul, inner_smul_right, RingHom.id_apply, smul_eq_mul]) (fun y w₁ w₂ => by simp only [map_add, inner_add_left] …`. Establish `hΦ : ∀ y w, Φ y w = inner ℂ (j w) (j y)` using `fun y w => rfl`. Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Establish `h1 : inner ℂ (j y) (j y) = (0 : ℂ)` using `by rw [← hΦ, hy, LinearMap.zero_apply]`. Rewrite `h1` using `[inner_self_eq_zero]`. Conclude with `hj (by rw [h1, map_zero])`. Establish `hsurj : Function.Surjective Φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f`. Set `K` to `LinearMap.range j`. Establish `: FiniteDimensional ℂ K` using `LinearMap.finiteDimensional_range j`. Establish `: CompleteSpace K` using `FiniteDimensional.complete ℂ K`. Set `e : E ≃ₗ[ℂ] K` to `LinearEquiv.ofInjective j hj`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : ∀ x, ((e x : K) : H) = j x` using `fun x => rfl`. Set `ℓ : K →ₗ[ℂ] ℂ` to `{ toFun := fun x => star (f (e.symm x)) map_add' := fun x y => by simp only [map_add, star_add] map_smul' := fun c x => by show star (f (e.symm (c • x))) = c * star (f (e.symm x))`. Rewrite using `[map_smul, map_smulₛₗ, smul_eq_mul, star_mul', starRingEnd_apply, star_star] }`. Set `z : K` to `(InnerProductSpace.toDual ℂ K).symm (LinearMap.toContinuousLinearMap ℓ)`. Establish `hz : ∀ x : K, inner ℂ z x = star (f (e.symm x))` using `fun x => InnerProductSpace.toDual_symm_apply`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((z : K) : H) = j (e.symm z)` using `by rw [← he, LinearEquiv.apply_symm_apply]`. Use `⟨e.symm z, ?_⟩` and prove the remaining obligations. Use extensionality with `w`. Rewrite using `[hΦ, ← h1, ← he w, ← Submodule.coe_inner, ← inner_conj_symm, hz, LinearEquiv.symm_apply_apply, starRingEnd_apply, star_star]`. Set `Ψ : E ≃ₗ[ℂ] (E →ₗ⋆[ℂ] ℂ)` to `LinearEquiv.ofBijective Φ ⟨hinj, hsurj⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `A : E →ₗ[ℂ] E` to `Ψ.symm.toLinearMap ∘ₗ β`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue A`. Take `⟨y, hy⟩` from `hc.exists_hasEigenvector`. Use `⟨c, y, hy.2, fun w => ?_⟩` and prove the remaining obligations. Establish `h1 : A y = c • y` using `hy.apply_eq_smul`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : β y = Φ (A y)` using `by show β y = Ψ (Ψ.symm (β y))`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[h2, h1, map_smul, LinearMap.smul_apply, hΦ, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eigen_form {E H : Type} [AddCommGroup E] [Module ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] (j : E →ₗ[ℂ] H) (hj : Function.Injective j)
@@ -76,30 +76,30 @@ theorem exists_eigen_form {E H : Type} [AddCommGroup E] [Module ℂ E] [FiniteDi
 variable {p q : ℕ} {T : GrpData p q}
 
 /- English proof (translation)
-Set `L : σ.H →ₗᵢ[ℂ] σ.H` to `{ toLinearMap := (σ.π k).toLinearMap, norm_map' := σ.isom k }`. Conclude with `L.inner_map_map a b`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem inner_map (σ : URep T) (k : T.G) (a b : σ.H) : inner ℂ (σ.π k a) (σ.π k b) = inner ℂ a b := by
   let L : σ.H →ₗᵢ[ℂ] σ.H := { toLinearMap := (σ.π k).toLinearMap, norm_map' := σ.isom k }
   exact L.inner_map_map a b
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pi_mul (σ : URep T) (g h : T.G) (a : σ.H) : σ.π (g * h) a = σ.π g (σ.π h a) := by
   rw [map_mul]
   rfl
 
 /- English proof (translation)
-Rewrite using `[← inner_map σ k a (σ.π (k⁻¹ * g) b), ← pi_mul, mul_inv_cancel_left]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem inner_left (σ : URep T) (k g : T.G) (a b : σ.H) :
     inner ℂ (σ.π k a) (σ.π g b) = inner ℂ a (σ.π (k⁻¹ * g) b) := by
   rw [← inner_map σ k a (σ.π (k⁻¹ * g) b), ← pi_mul, mul_inv_cancel_left]
 
 /- English proof (translation)
-Use `Integrable.mono' (hf.norm.const_mul (‖a‖ * ‖b‖)) ?_ ?_` and prove the remaining obligations. Conclude with `((continuous_const.inner (σ.cont b)).aestronglyMeasurable).mul (continuous_star.comp_aestronglyMeasurable hf.aestronglyMeasurable)`. Use `ae_of_all _ fun g => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_star]`. Establish `h1 : ‖inner ℂ a (σ.π g b)‖ ≤ ‖a‖ * ‖b‖`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul_of_nonneg_right h1 (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_mul (σ : URep T) (a b : σ.H) {f : T.G → ℂ} (hf : Integrable f T.haar) :
     Integrable (fun g => inner ℂ a (σ.π g b) * star (f g)) T.haar := by
@@ -114,71 +114,55 @@ theorem integrable_mul (σ : URep T) (a b : σ.H) {f : T.G → ℂ} (hf : Integr
     exact mul_le_mul_of_nonneg_right h1 (norm_nonneg _)
 
 /- English proof (translation)
-Introduce `p q T π₁ π₂ E iE mE fE j₁ j₂ hj₂ hK hirr v hv hint h0`. Establish `: T.haar.IsMulRightInvariant` using `(GlobalTheory.HolDS.haar_unimodular p q T).1`. Use `choose! act hact using hK`. Establish `hj1a : ∀ k ∈ T.Kset, ∀ w, j₁ (act k w) = π₁.π k (j₁ w)` using `fun k hk w => ((hact k hk w).1).symm`. Establish `hj2a : ∀ k ∈ T.Kset, ∀ w, j₂ (act k w) = π₂.π k (j₂ w)` using `fun k hk w => ((hact k hk w).2).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hback : ∀ (σ : URep T) (g : T.G) (x : σ.H), σ.π g (σ.π g⁻¹ x) = x`. Introduce `σ g x`. Rewrite using `[← pi_mul, mul_inv_cancel, map_one, ContinuousLinearMap.one_apply]`. Establish `hback2 : ∀ (σ : URep T) (g : T.G) (x : σ.H), σ.π g⁻¹ (σ.π g x) = x`. Introduce `σ g x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pi_mul, inv_mul_cancel, map_one, ContinuousLinearMap.one_apply]`. Establish `htop : ∀ U : Submodule ℂ E, (∀ k ∈ T.Kset, ∀ w ∈ U, act k w ∈ U) → ∀ x : E, x ≠ 0 → x ∈ U → ∀ w, w ∈ U`. Introduce `U hU x hx hxU w`. Break down `hirr U (fun k hk w hw w' hw' => by` into its components or cases. Establish `: w' = act k w` using `hj₂ (by rw [← hw', hj2a k hk])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hU k hk w hw) with h | h`. Rewrite `hxU` using `[h, Submodule.mem_bot]`. Conclude with `absurd hxU hx`. Rewrite using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.mem_top`. Establish `coef1 : ∀ u, Integrable (fun g => inner ℂ (j₂ u) (π₂.π g (j₂ v))) T.haar`. Set `U0 : Submodule ℂ E` to `{ carrier := {u | Integrable (fun g => inner ℂ (j₂ u) (π₂.π g (j₂ v))) T.haar} add_mem' := by`. Introduce `x y hx hy`. Simplify using `only [Set.mem_ofPred_eq, map_add, inner_add_left] at hx hy ⊢`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hx.add hy`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := by`. Introduce `c x hx`. Simplify using `only [Set.mem_ofPred_eq, map_smul, inner_smul_left] at hx ⊢`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `hx.const_mul _ }`. Introduce `u`. Establish `hu : u ∈ U0`. Use `htop U0 (fun k hk w hw => ?_) v hv hint u` and prove the remaining obligations. Establish `hw' : Integrable (fun g => inner ℂ (j₂ w) (π₂.π g (j₂ v))) T.haar` using `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show Integrable (fun g => inner ℂ (j₂ (act k w)) (π₂.π g (j₂ v))) T.haar`. Simplify using `only [hj2a k hk, inner_left]`. Conclude with `hw'.comp_mul_left k⁻¹`. Conclude with `hu`. Establish `coefI : ∀ u w, Integrable (fun g => inner ℂ (j₂ u) (π₂.π g (j₂ w))) T.haar`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `U1 : Submodule ℂ E` to `{ carrier := {w | ∀ u, Integrable (fun g => inner ℂ (j₂ u) (π₂.π g (j₂ w))) T.haar} add_mem' := by`. Introduce `x y hx hy`. Simplify using `only [Set.mem_ofPred_eq] at hx hy ⊢`. Introduce `u`. Simplify using `only [map_add, inner_add_right]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(hx u).add (hy u)`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := by`. Introduce `c x hx`. Simplify using `only [Set.mem_ofPred_eq] at hx ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Simplify using `only [map_smul, inner_smul_right]`. Conclude with `(hx u).const_mul _ }`. Introduce `u w`. Establish `hw : w ∈ U1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `htop U1 (fun k hk x hx => ?_) v hv coef1 w` and prove the remaining obligations. Establish `hx' : ∀ u', Integrable (fun g => inner ℂ (j₂ u') (π₂.π g (j₂ x))) T.haar` using `hx`. Use `show ∀ u', Integrable (fun g => inner ℂ (j₂ u') (π₂.π g (j₂ (act k x)))) T.haar`. Introduce `u'`. Simplify using `only [hj2a k hk, ← pi_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hx' u').comp_mul_right k`. Conclude with `(hw : ∀ u', Integrable (fun g => inner ℂ (j₂ u') (π₂.π g (j₂ w))) T.haar) u`. Establish `prodI : ∀ (a b : π₁.H) (u w : E), Integrable (fun g => inner ℂ a (π₁.π g b) * star (inner ℂ (j₂ u) (π₂.π g (j₂ w)))) T.haar` using `fun a b u w => integrable_mul π₁ a b (coefI u w)`. Establish `leftI : ∀ (k : T.G) (a b : π₁.H) (c : π₂.H) (w : E), ∫ g, inner ℂ (π₁.π k a) (π₁.π g b) * star (inner ℂ (π₂.π k c) (π₂.π g (j₂ w))) ∂T.haar = ∫ g, inner ℂ a (π₁.π g b) * star (inner ℂ c (π₂.π g (j₂ w))) ∂T.haar`. Introduce `k a b c w`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [inner_left]`. Conclude with `integral_mul_left_eq_self (fun g => inner ℂ a (π₁.π g b) * star (inner ℂ c (π₂.π g (j₂ w)))) k⁻¹`. Establish `rightI : ∀ k ∈ T.Kset, ∀ (a : π₁.H) (c : π₂.H) (y w : E), ∫ g, inner ℂ a (π₁.π g (j₁ (act k y))) * star (inner ℂ c (π₂.π g (j₂ (act k w)))) ∂T.haar = ∫ g, inner ℂ a (π₁.π g (j₁ y)) * star (inner ℂ c (π₂.π g (j₂ w))) ∂T.haar`. Introduce `k hk a c y w`. Simplify using `only [hj1a k hk, hj2a k hk, ← pi_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `integral_mul_right_eq_self (fun g => inner ℂ a (π₁.π g (j₁ y)) * star (inner ℂ c (π₂.π g (j₂ w)))) k`. Establish `stepA : ∀ (a : π₁.H) (u : E), ∫ g, inner ℂ a (π₁.π g (j₁ v)) * star (inner ℂ (j₂ u) (π₂.π g (j₂ v))) ∂T.haar = 0`. Set `SA : Submodule ℂ E` to `{ carrier := {u | ∀ a : π₁.H, ∫ g, inner ℂ a (π₁.π g (j₁ v)) * star (inner ℂ (j₂ u) (π₂.π g (j₂ v))) ∂T.haar = 0} add_mem' := by`. Introduce `x y hx hy`. Simplify using `only [Set.mem_ofPred_eq] at hx hy ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Simplify using `only [map_add, inner_add_left, star_add, mul_add]`. Rewrite using `[integral_add (prodI a (j₁ v) x v) (prodI a (j₁ v) y v), hx a, hy a, add_zero]`. Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_ofPred_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `a`. Simplify using the standard rewrite rules. Use the proof step `smul_mem' := by`. Introduce `c x hx`. Simplify using `only [Set.mem_ofPred_eq] at hx ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Simplify using `only [map_smul, inner_smul_left, star_mul', starRingEnd_apply, star_star, mul_left_comm _ c]`. Rewrite using `[integral_const_mul, hx a, mul_zero] }`. Introduce `a u`. Establish `hu : ∀ a' : π₁.H, ∫ g, inner ℂ a' (π₁.π g (j₁ v)) * star (inner ℂ (j₂ u) (π₂.π g (j₂ v))) ∂T.haar = 0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `htop SA (fun k hk w hw => ?_) v hv h0 u` and prove the remaining obligations. Establish `hw' : ∀ a' : π₁.H, ∫ g, inner ℂ a' (π₁.π g (j₁ v)) * star (inner ℂ (j₂ w) (π₂.π g (j₂ v))) ∂T.haar = 0` using `hw`. Use `show ∀ a' : π₁.H, ∫ g, inner ℂ a' (π₁.π g (j₁ v)) * star (inner ℂ (j₂ (act k w)) (π₂.π g (j₂ v))) ∂T.haar = 0`. Introduce `a'`. Establish `e1` using `leftI k (π₁.π k⁻¹ a') (j₁ v) (j₂ w) v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e1` using `[hback π₁ k a']`. Rewrite using `[hj2a k hk, e1]`. Conclude with `hw' _`. Conclude with `hu a`. Establish `stepB : ∀ (a : π₁.H) (u y w : E), ∫ g, inner ℂ a (π₁.π g (j₁ y)) * star (inner ℂ (j₂ u) (π₂.π g (j₂ w))) ∂T.haar = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a u`. Set `β : E →ₗ[ℂ] E →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun y w => ∫ g, inner ℂ a (π₁.π g (j₁ y)) * star (inner ℂ (j₂ u) (π₂.π g (j₂ w))) ∂T.haar) (fun y₁ y₂ w => by`. Simplify using `only [map_add, inner_add_right, add_mul]`. Conclude with `integral_add (prodI a (j₁ y₁) u w) (prodI a (j₁ y₂) u w))`. Use the proof step `(fun c y w => by`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [map_smul, inner_smul_right, mul_assoc, RingHom.id_apply, smul_eq_mul]`. Conclude with `integral_const_mul c _)`. Use the proof step `(fun y w₁ w₂ => by`. Simplify using `only [map_add, inner_add_right, star_add, mul_add]`. Conclude with `integral_add (prodI a (j₁ y) u w₁) (prodI a (j₁ y) u w₂))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun c y w => by`. Simplify using `only [map_smul, inner_smul_right, star_mul', mul_left_comm _ (star c), smul_eq_mul, starRingEnd_apply]`. Conclude with `integral_const_mul (star c) _)`. Establish `hβ : ∀ y w, β y w = ∫ g, inner ℂ a (π₁.π g (j₁ y)) * star (inner ℂ (j₂ u) (π₂.π g (j₂ w))) ∂T.haar` using `fun y w => rfl`. Take `⟨c, y₀, hy₀, hc⟩` from `exists_eigen_form j₂ hj₂ β v hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `U : Submodule ℂ E` to `{ carrier := {y | ∀ w, β y w = c * inner ℂ (j₂ w) (j₂ y)} add_mem' := by`. Introduce `x y hx hy`. Simplify using `only [Set.mem_ofPred_eq] at hx hy ⊢`. Introduce `w`. Rewrite using `[map_add β x y, LinearMap.add_apply, hx w, hy w, map_add j₂ x y, inner_add_right, mul_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_ofPred_eq]`. Introduce `w`. Rewrite using `[map_zero β, LinearMap.zero_apply, map_zero j₂, inner_zero_right, mul_zero]`. Use the proof step `smul_mem' := by`.
-
-Introduce `d x hx`. Simplify using `only [Set.mem_ofPred_eq] at hx ⊢`. Introduce `w`. Rewrite using `[map_smul β d x, LinearMap.smul_apply, hx w, map_smul j₂ d x, inner_smul_right, smul_eq_mul, mul_left_comm] }`. Establish `hsurj : ∀ k ∈ T.Kset, ∀ w'', ∃ w, act k w = w''`.
-
-Introduce `k hk`. Set `Ak : E →ₗ[ℂ] E` to `{ toFun := act k map_add' := fun x y => hj₂ (by simp only [hj2a k hk, map_add]) map_smul' := fun d x => hj₂ (by simp only [hj2a k hk, map_smul, RingHom.id_apply]) }`. Establish `hAk : Function.Injective Ak`. Introduce `x y hxy`. Apply `hj₂` to reduce the goal to its premises.
-
-Establish `h1 : π₂.π k (j₂ x) = π₂.π k (j₂ y)`. Rewrite using `[← hj2a k hk, ← hj2a k hk]`. Conclude with `congrArg j₂ hxy`. Establish `h2` using `congrArg (π₂.π k⁻¹) h1`. Rewrite `h2` using `[hback2, hback2]`. Then use the resulting hypothesis.
-
-Conclude with `LinearMap.injective_iff_surjective.mp hAk`. Establish `hU : ∀ k ∈ T.Kset, ∀ y ∈ U, act k y ∈ U`. Introduce `k hk y hy`. Establish `hy' : ∀ w, β y w = c * inner ℂ (j₂ w) (j₂ y)` using `hy`. Use `show ∀ w, β (act k y) w = c * inner ℂ (j₂ w) (j₂ (act k y))`.
-
-Introduce `w''`. Take `⟨w, rfl⟩` from `hsurj k hk w''`. Rewrite using `[hβ, rightI k hk, ← hβ, hy' w, hj2a k hk, hj2a k hk, inner_map]`. Establish `hall : ∀ y, y ∈ U` using `htop U hU y₀ hy₀ hc`. Establish `hvv : β v v = c * inner ℂ (j₂ v) (j₂ v)` using `(hall v : ∀ w, β v w = c * inner ℂ (j₂ w) (j₂ v)) v`.
-
-Rewrite `hvv` using `[hβ, stepA a u]`. Establish `hne : inner ℂ (j₂ v) (j₂ v) ≠ (0 : ℂ)`. Rewrite using `[Ne, inner_self_eq_zero]`. Introduce `h`. Conclude with `hv (hj₂ (by rw [h, map_zero]))`.
-
-Establish `hc0 : c = 0`. Break down `mul_eq_zero.mp hvv.symm with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hne`. Introduce `y w`.
-
-Rewrite using `[← hβ, (hall y : ∀ w, β y w = c * inner ℂ (j₂ w) (j₂ y)) w, hc0, zero_mul]`. Introduce `x y u w`. Conclude with `⟨prodI (j₁ x) (j₁ y) u w, stepB (j₁ x) u y w⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vanish : ∀ (p q : ℕ) (T : GrpData p q) (π₁ π₂ : URep T) (E : Type) [AddCommGroup E] [Module ℂ E] [FiniteDimensional ℂ E] (j₁ : E →ₗ[ℂ] π₁.H) (j₂ : E →ₗ[ℂ] π₂.H), Function.Injective j₂ → (∀ k ∈ T.Kset, ∀ w : E, ∃ w' : E, π₁.π k (j₁ w) = j₁ w' ∧ π₂.π k (j₂ w) = j₂ w') → (∀ U : Submodule ℂ E, (∀ k ∈ T.Kset, ∀ w ∈ U, ∀ w' : E, π₂.π k (j₂ w) = j₂ w' → w' ∈ U) → U = ⊥ ∨ U = ⊤) → ∀ v : E, v ≠ 0 → MeasureTheory.Integrable (fun g => inner ℂ (j₂ v) (π₂.π g (j₂ v))) T.haar → (∀ z : π₁.H, ∫ g, inner ℂ z (π₁.π g (j₁ v)) * star (inner ℂ (j₂ v) (π₂.π g (j₂ v))) ∂T.haar = 0) → (∀ x y u w : E, MeasureTheory.Integrable (fun g => inner ℂ (j₁ x) (π₁.π g (j₁ y)) * star (inner ℂ (j₂ u) (π₂.π g (j₂ w)))) T.haar ∧ ∫ g, inner ℂ (j₁ x) (π₁.π g (j₁ y)) * star (inner ℂ (j₂ u) (π₂.π g (j₂ w))) ∂T.haar = 0) := by
   intro p q T π₁ π₂ E iE mE fE j₁ j₂ hj₂ hK hirr v hv hint h0

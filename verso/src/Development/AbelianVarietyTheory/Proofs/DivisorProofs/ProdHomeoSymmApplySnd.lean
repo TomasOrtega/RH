@@ -17,7 +17,7 @@ theorem coe_prodMap (hle : N' ≤ N) (hs : ∀ v, s v ∈ N) (z : N' × V) :
     (prodMap hle hs z : G) = z.1 * s z.2 := rfl
 
 /- English proof (translation)
-Establish `h1 : π 1 = 0` using `by simpa using hπmul 1 1`. Use `hπmul a a⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h1]`. Conclude with `(neg_eq_of_add_eq_zero_right this.symm).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_inv_of_mul (hπmul : ∀ a b : N, π (a * b) = π a + π b) (a : N) : π a⁻¹ = -π a := by
   have h1 : π 1 = 0 := by simpa using hπmul 1 1
@@ -26,7 +26,7 @@ theorem map_inv_of_mul (hπmul : ∀ a b : N, π (a * b) = π a + π b) (a : N) 
   exact (neg_eq_of_add_eq_zero_right this.symm).symm
 
 /- English proof (translation)
-Establish `h` using `(hker (n * (⟨s (π n), hs _⟩ : N)⁻¹)).1 (by`. Rewrite using `[hπmul, map_inv_of_mul hπmul, hπs ⟨s (π n), hs _⟩ _ rfl, add_neg_cancel])`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mul_inv_mem (hs : ∀ v, s v ∈ N) (hπmul : ∀ a b : N, π (a * b) = π a + π b)
     (hπs : ∀ (a : N) (v : V), (a : G) = s v → π a = v) (hker : ∀ a : N, π a = 0 ↔ (a : G) ∈ N') (n : N) :

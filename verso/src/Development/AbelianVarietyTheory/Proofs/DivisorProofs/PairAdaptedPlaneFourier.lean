@@ -15,23 +15,19 @@ noncomputable section
 namespace GlobalTheory.KernelBoundOnKDecay
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hH' d₂ H hH V₁ M₁ e hV hM₁ hev Φ hΦ g K hK hKs K'`. Take `⟨N₀, k₀, C₀, hC₀⟩` from `GlobalTheory.T.adelicThetaSum_norm_le_polynomial_scale F (Fin d₂ × Fin d)`. Take `⟨C₁, k₁, h1⟩` from `GlobalTheory.T.hyperbolic_plane_pair_restriction hKP F E σ B n d X W M χX χW om r s r' s' hP d₂ H hH V₁ M₁ e hV hM₁ hev Φ hΦ g K hK hKs`. Take `⟨C₂, k₂, h2⟩` from `GlobalTheory.T.hyperbolic_plane_pair_induction hKP F E σ B n d X W M χX χW om r s r' s' hP d₂ H hH V₁ M₁ e hV hM₁ hev Φ hΦ g K hK hKs N₀ K'`. Use `⟨max C₀ 0 * max C₂ 0 * max C₁ 0 ^ k₀, k₂ + k₁ * k₀, fun u hu h N hN w hw => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm1, hmC, hmd⟩` from `h1 u hu h N hN`. Use `set S : ℝ := 1 + ∑ i, ∑ v : InfinitePlace E, v (w i) with hS`. Establish `hS1 : 1 ≤ S`. Establish `: 0 ≤ ∑ i, ∑ v : InfinitePlace E, v (w i)` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun v _ => AbsoluteValue.nonneg _ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hSp : 0 < S ^ K'` using `pow_pos (by linarith) _`. Use `set x : ℝ := (N : ℝ) * ht h with hxdef`. Establish `hx : 1 ≤ x`. Establish `hN' : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hh : (1 : ℝ) ≤ ht h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `GlobalTheory.AdelicU.one_le_heightGL F h.1` as an intermediate fact. Conclude with `this` after adjusting the coercions. Use the polynomial consequences of the given equalities and inequalities. Use `set Ψ := e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (om (u, 1) (om (g, h) Φ))) with hΨ`. Establish `hA : ∀ ξ : Fin d₂ × Fin d → F, ‖Ψ (fun i => algebraMap F (AF F) (ξ i))‖ * (1 + ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖) ^ N₀ ≤ C₂ * x ^ k₂ / S ^ K'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ξ`. Rewrite using `[le_div_iff₀ hSp]`. Conclude with `h2 u hu h N hN w hw ξ`. Establish `hA0 : 0 ≤ C₂ * x ^ k₂ / S ^ K'`. Use `le_trans ?_ (hA 0)` and prove the remaining obligations.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Check the signs of the components of the expression. Establish `hth` using `hC₀ (C₂ * x ^ k₂ / S ^ K') m Ψ hm1 hA (fun ξ hξ => hmd w hw ξ hξ)`. Establish `hm0 : (0 : ℝ) ≤ (m : ℝ) ^ k₀` using `by positivity`. Establish `hmk : (m : ℝ) ^ k₀ ≤ max C₁ 0 ^ k₀ * x ^ (k₁ * k₀)`. Rewrite using `[pow_mul, ← mul_pow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `pow_le_pow_left₀ (by positivity) (hmC.trans ?_) _` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)`. Establish `hC2 : C₂ * x ^ k₂ ≤ max C₂ 0 * x ^ k₂` using `mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)`. Establish `hC2' : 0 ≤ C₂ * x ^ k₂`. Use `mul_nonneg hA0 hSp.le` as an intermediate fact.
-
-Rewrite `this` using `[div_mul_cancel₀ _ hSp.ne']`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_max_left _ _`. Use `_ = max C₀ 0 * (C₂ * x ^ k₂) * (m : ℝ) ^ k₀ := by`. Clear the denominators using the available nonvanishing facts.
-
-Use `_ ≤ max C₀ 0 * (max C₂ 0 * x ^ k₂) * (max C₁ 0 ^ k₀ * x ^ (k₁ * k₀)) := by gcongr`. Use `_ = max C₀ 0 * max C₂ 0 * max C₁ 0 ^ k₀ * x ^ (k₂ + k₁ * k₀) := by`. Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem decay : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),

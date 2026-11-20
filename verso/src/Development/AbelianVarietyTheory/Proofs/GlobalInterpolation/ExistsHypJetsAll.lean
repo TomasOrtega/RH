@@ -17,13 +17,13 @@ namespace JetsInhab
 open GlobalTheory.Mem GlobalTheory.Mem.Col2
 
 /- English proof (translation)
-Take `⟨P, ⟨X⟩, -, -, ⟨hD, -⟩, Del, letter, h1, -, h3, h4⟩` from `exists_pre_two_words`. Take `⟨du, hdu, e⟩` from `DuInt.duStarOf_nat _ P.host (P.hcW P.u₀) P.g_cond X.g_big`. Establish `hT : (0 : ℝ) < P.T P.u₀` using `Nat.cast_pos.2 (P.T_prime _).pos`. Establish `hd : (0 : ℝ) < du` using `Nat.cast_pos.2 hdu`. Establish `hG : 0 < P.GamP` using `zero_lt_one.trans P.one_lt_gammaP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : (0 : ℝ) < P.R.f`. Establish `: 0 < P.R.f` using `by unfold Ranks.f Ranks.n; positivity`. Conclude with `this` after adjusting the coercions. Establish `hk : (0 : ℝ) < P.R.k`. Use `P.R.m_add_three_le_k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(by omega : 0 < P.R.k)` after adjusting the coercions. Establish `hfk : (0 : ℝ) < (P.R.f : ℝ) * P.R.k` using `mul_pos hf hk`. Establish `key : ((P.T P.u₀ : ℝ) ^ ((P.R.f : ℝ) * P.R.k) * P.GamP ^ (2 : ℝ) * du / du) ^ ((1 : ℝ) / (P.R.f * P.R.k)) * P.GamP ^ (-(2 : ℝ) / (P.R.f * P.R.k)) = P.T P.u₀`. Rewrite using `[mul_div_cancel_right₀ _ hd.ne', Real.mul_rpow (by positivity) (by positivity), ← Real.rpow_mul hT.le, ← Real.rpow_mul hG.le, mul_assoc, ← Real.rpow_add hG, mul_one_div_cancel hfk.ne', Real.rpow_one, show (2 : ℝ) * (1 / (P.R.f * P.R.k)) + -2 / (P.R.f * P.R.k) = 0 by ring, Real.rp …`. Set `Q : Pre` to `{ P with Word := Unit wordFin := inferInstance u₀ := () hcW := fun _ => P.hcW P.u₀ hcW_base := P.hcW_base hcW_v := fun _ => P.hcW_v _ hcW_b := fun _ => P.hcW_b _ hcW_e := fun _ => P.hcW_e _ hcW_first := fun _ => P.hcW_first _ hcW_last := fun _ => P.hcW_last _ T := fun _ => P.T P. …`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[key]`. Conclude with `⟨le_rfl, le_mul_of_one_le_left hT.le (le_add_of_nonneg_right (by positivity))⟩ }`. Use `⟨Q, ⟨Del, fun _ => letter P.u₀, h1, fun _ _ _ => rfl, fun _ => h3 _, fun _ => h4 _⟩, ⟨{ X with piT := fun _ => X.piT P.u₀ piT_K := fun _ => X.piT_K _ piT_norm := fun _ => X.piT_norm _ piT_cong := fun _ => X.piT_cong _ hcW_inj := fun _ _ _ => rfl T_gt := fun _ => X.T_gt _ spread_l …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_pre_sized : ∃ P : Pre, StagesInhab.HasLetters P ∧ Nonempty (PreX P) ∧
     (letI := P.host.cmStar; DiagSpaces P.sp) ∧ ∀ u, (P.duStar u : ℝ) = duStarOf P.host (P.hcW u) := by
@@ -80,17 +80,15 @@ theorem exists_pre_sized : ∃ P : Pre, StagesInhab.HasLetters P ∧ Nonempty (P
     spread_le := fun _ => X.spread_le _ }⟩, hD, fun _ => e⟩
 
 /- English proof (translation)
-Take `⟨P, hL, ⟨X₀⟩, hsp, hdu⟩` from `exists_pre_sized`. Take `⟨f⟩ : Nonempty (Top.Fr P)` from `P.nonempty_hframe X₀.e_even`. Take `⟨X, hX⟩` from `InEx.exists_oriented X₀ f.P`. Take `⟨Z, hZ, hjet⟩` from `exists_bound_jetsIn`. Take `⟨M, hM, -, -, m1, m2, -⟩` from `FrameVal.frame_values P.R P.host _ f fun j τ => (P.hc τ).e_int j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα, gα⟩` from `@DatHecke.exists_gen M hM`. Use `choose r hr using fun q : ℕ => IsAlgClosed.exists_pow_nat_eq (q : ℂ) (n := 2) two_pos`. Take `⟨Y, hY, gY⟩` from `InEx.exists_holds (2 * P.R.m) ({1, f.del, f.del'} : Set (Formalism.L2.Host.HChar P.host.E))`. Take `⟨B, rfl, -, -, h2⟩` from `BaseExt.exists_base P ∅ ∅ (insert α ((Y ∪ Finset.univ.image fun k => r (P.host.g k)) ∪ Z P f.chiPsi {1, f.del, f.del'})) (by simp) (by simp) (fun z hz => by`. Break down `Finset.mem_insert.1 hz with rfl | hz` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hα`. Break down `Finset.mem_union.1 hz with hz | h` into its components or cases. Break down `Finset.mem_union.1 hz with h | h` into its components or cases. Conclude with `hY z h`. Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 h`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsAlgebraic.of_pow two_pos (by rw [hr]; exact isAlgebraic_natCast _)`. Conclude with `hZ _ _ _ z h)`. Establish `i1` using `gα B.LL B.embLL (h2 _ (Finset.mem_insert_self _ _))`. Establish `hf : ({1, f.del, f.del'} : Set (Formalism.L2.Host.HChar B.host.E)).Finite` using `Set.toFinite _`. Establish `ht : ∀ ξ ∈ ({1, f.del, f.del'} : Set (Formalism.L2.Host.HChar B.host.E)), Chr.IsTwist B.host (InEx.avoid B.toPre) ξ` using `fun ξ hξ => InEx.isTwist_of_mem_set B f (Top.TwDat.untw B ∅) ξ (.inl hξ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨sel, hsel⟩` from `Formalism.L2.Col.exists_sel B.fields`. Take `⟨J, hJ⟩` from `exists_ambIn_ok B.host`. Take `⟨I, a1, a2, -, a4, -⟩` from `InEx.exists_colIn B X f hX hsp hdu (InEx.avoid B.toPre) (fun u => ⟨Or.inr (Or.inr (Or.inr (Or.inr (Or.inl (Exists.intro u rfl))))), B.T_ne_pde u⟩) (fun i => ⟨Or.inr (Or.inl (Exists.intro i rfl)), (B.host.pde_ne_g i).1.symm, (B.host.pde_ne_g i).2.symm⟩) (fun _ hp h => InEx.mem_avo …`. Take `⟨s, hs⟩` from `h2 _ (Finset.mem_insert_of_mem (Finset.mem_union_left _ (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))))`. Conclude with `⟨s, B.embLL.injective (by rw [map_pow, hs, hr, map_natCast])⟩) sel hsel J hJ`.
-
-Take `⟨I', k1, k2, -⟩` from `hjet B X I hL a1 fun z hz => by`. Rewrite `hz` using `[a2, a4]`. Conclude with `h2 z (Finset.mem_insert_of_mem (Finset.mem_union_right _ hz))`. Conclude with `⟨B, X, I', hL, k1, k2⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_colIn_jets : ∃ (B : GlobalTheory.Mem.Base) (X : PreX B.toPre) (I : ColIn B X),
     StagesInhab.HasLetters B.toPre ∧ I.Ok ∧ I.JetsIn := by

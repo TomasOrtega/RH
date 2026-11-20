@@ -10,9 +10,9 @@ namespace ResidueExtension
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hπ`. Rewrite `hx` using `[map_mul, map_pow]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_ne_zero (u.isUnit.map j).ne_zero (pow_ne_zero n h) hx`.
+A detailed English derivation is pending.
 -/
 theorem injective_of_map_ne_zero {B : Type} [CommRing B] [IsDomain B] (j : O →+* B) {π : O}
     (hπ : Irreducible π) (h : j π ≠ 0) : Function.Injective j := by
@@ -24,19 +24,17 @@ theorem injective_of_map_ne_zero {B : Type} [CommRing B] [IsDomain B] (j : O →
   exact mul_ne_zero (u.isUnit.map j).ne_zero (pow_ne_zero n h) hx
 
 /- English proof (translation)
-Establish `hp : (RingHom.ker ψ).IsPrime` using `RingHom.ker_isPrime ψ`. Set `B` to `Localization.AtPrime (RingHom.ker ψ)`. Establish `hu : ∀ y : (RingHom.ker ψ).primeCompl, IsUnit (ψ y)` using `fun y => isUnit_iff_ne_zero.mpr y.2`. Set `r' : B →+* Ω` to `IsLocalization.lift hu`. Establish `hr' : ∀ x, r' (algebraMap A B x) = ψ x` using `fun x => IsLocalization.lift_eq hu x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmax : maximalIdeal B = Ideal.span {algebraMap A B (i π)}`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Use `conv_lhs => enter [2]`. Rewrite using `[hker]`. Rewrite using `[Ideal.map_span, Set.image_singleton]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpow : ∀ (n : ℕ) x, i π ^ n * x = 0 → x = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite `hx` using `[pow_succ, mul_assoc]`. Conclude with `hreg x (ih _ hx)`. Establish `hn : ¬ IsNilpotent (algebraMap A B (i π))`. Introduce and unpack `⟨n, hn⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hn` using `[← map_pow, IsLocalization.map_eq_zero_iff (RingHom.ker ψ).primeCompl]`. Take `⟨m, hm⟩` from `hn`. Use `hpow n m (by rw [mul_comm]; exact hm)` as an intermediate fact. Conclude with `m.2 (this ▸ zero_mem _)`. Take `⟨hd, hdvr, hirr⟩` from `isDiscreteValuationRing_of_maximalIdeal_eq_span hmax hn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨B, inferInstance, hd, hdvr, (algebraMap A B).comp i, r', injective_of_map_ne_zero _ hπ hirr.ne_zero, RingHom.ext fun x => hr' _, ?_, ?_⟩` and prove the remaining obligations. Use `((maximalIdeal.isMaximal B).eq_of_le (RingHom.ker_ne_top r') ?_).symm` and prove the remaining obligations. Rewrite using `[hmax, Ideal.span_singleton_le_iff_mem, RingHom.mem_ker, hr', ← RingHom.mem_ker, hker]`. Conclude with `Ideal.mem_span_singleton_self _`. Introduce and unpack `_ ⟨x, rfl⟩`.
-
-Conclude with `⟨_, hr' x⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_localization {A : Type} [CommRing A] [IsNoetherianRing A] (i : O →+* A)
     (ψ : A →+* Ω) {π : O} (hπ : Irreducible π) (hker : RingHom.ker ψ = Ideal.span {i π})
@@ -78,13 +76,13 @@ theorem exists_localization {A : Type} [CommRing A] [IsNoetherianRing A] (i : O 
     exact ⟨_, hr' x⟩
 
 /- English proof (translation)
-Set `rb : ResidueField O →+* Ω` to `Ideal.Quotient.lift (maximalIdeal O) r fun x hx => by rwa [← hr] at hx`. Set `_ : Algebra (ResidueField O) Ω` to `rb.toAlgebra`. Establish `hev : ∀ f : O[X], aeval a (f.map (residue O)) = f.eval₂ r a`. Introduce `f`. Rewrite using `[aeval_def, eval₂_map]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨G, hG, hG'⟩ : ∃ G : O[X], (G.Monic ∨ G = 0) ∧ G.map (residue O) = minpoly (ResidueField O) a := by`. Distinguish the cases in `h : IsIntegral (ResidueField O) a`. Take `⟨G, h1, -, h2⟩` from `lifts_and_degree_eq_and_monic ((mem_lifts _).mpr (map_surjective (residue O) residue_surjective _)) (minpoly.monic h)`. Conclude with `⟨G, Or.inl h2, h1⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, Or.inr rfl, by rw [minpoly.eq_zero h, Polynomial.map_zero]⟩`. Use `⟨G, hG, by rw [← hev, hG', minpoly.aeval], fun f hf => ?_⟩` and prove the remaining obligations. Rewrite `hf` using `[← hev]`. Take `⟨g', hg'⟩` from `minpoly.dvd _ _ hf`. Take `⟨g, rfl⟩` from `map_surjective (residue O) residue_surjective g'`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : f - G * g ∈ RingHom.ker (mapRingHom (residue O))`. Rewrite using `[RingHom.mem_ker, coe_mapRingHom, Polynomial.map_sub, Polynomial.map_mul, hG', hg', sub_self]`. Rewrite `h1` using `[ker_mapRingHom, ker_residue, hπ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Take `⟨h, hh⟩` from `h1`. Conclude with `⟨g, h, by rw [← hh]; ring⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_generator (r : O →+* Ω) (hr : RingHom.ker r = maximalIdeal O) (a : Ω) {π : O}
     (hπ : Irreducible π) :
@@ -116,17 +114,15 @@ theorem exists_generator (r : O →+* Ω) (hr : RingHom.ker r = maximalIdeal O) 
   exact ⟨g, h, by rw [← hh]; ring⟩
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨G, hG, h0, hgen⟩` from `exists_generator r hr a hπ`. Establish `hrπ : r π = 0`. Rewrite using `[← RingHom.mem_ker, hr, hπ.maximalIdeal_eq]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : RingHom.ker (AdjoinRoot.lift r a h0) = Ideal.span {AdjoinRoot.of G π}`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨f, rfl⟩` from `AdjoinRoot.mk_surjective x`. Rewrite `hx` using `[RingHom.mem_ker, AdjoinRoot.lift_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g, h, rfl⟩` from `hgen f hx`. Rewrite using `[map_add, map_mul, AdjoinRoot.mk_self, zero_mul, zero_add, map_mul, AdjoinRoot.mk_C]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Rewrite using `[Ideal.span_singleton_le_iff_mem, RingHom.mem_ker, AdjoinRoot.lift_of, hrπ]`. Establish `hreg : ∀ x, AdjoinRoot.of G π * x = 0 → x = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨f, rfl⟩` from `AdjoinRoot.mk_surjective x`. Rewrite `hx` using `[← AdjoinRoot.mk_C, ← map_mul, AdjoinRoot.mk_eq_zero]`. Rewrite using `[AdjoinRoot.mk_eq_zero]`. Break down `hG with hG | rfl` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx`, the goal using `[← modByMonic_eq_zero_iff_dvd hG]`. Rewrite `hx` using `[← smul_eq_C_mul, smul_modByMonic]`. Conclude with `(smul_eq_zero.mp hx).resolve_left hπ.ne_zero`. Rewrite `hx`, the goal using `[zero_dvd_iff]`. Conclude with `(mul_eq_zero.mp hx).resolve_left (C_ne_zero.mpr hπ.ne_zero)`.
-
-Take `⟨B, _, _, _, j, r', h1, h2, h3, h4⟩` from `exists_localization (AdjoinRoot.of G) (AdjoinRoot.lift r a h0) hπ hk hreg`. Conclude with `⟨B, _, ‹_›, ‹_›, j, r', h1, h2.trans (AdjoinRoot.lift_comp_of h0), h3, h4 ⟨_, AdjoinRoot.lift_root h0⟩⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_step (r : O →+* Ω) (hr : RingHom.ker r = maximalIdeal O) (a : Ω) :
     ∃ (B : Type) (_ : CommRing B) (_ : IsDomain B) (_ : IsDiscreteValuationRing B)
@@ -163,9 +159,9 @@ theorem exists_step (r : O →+* Ω) (hr : RingHom.ker r = maximalIdeal O) (a : 
     h4 ⟨_, AdjoinRoot.lift_root h0⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨O, _, ‹_›, ‹_›, RingHom.id O, r, Function.injective_id, rfl, hr, by simp⟩`. Consider the case `insert a S _ ih`. Take `⟨B, _, _, _, j, r', h1, h2, h3, h4⟩` from `ih`. Take `⟨B', _, _, _, j', r'', h1', h2', h3', h4'⟩` from `exists_step r' h3 a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨B', _, ‹_›, ‹_›, j'.comp j, r'', h1'.comp h1, by rw [← RingHom.comp_assoc, h2', h2], h3', fun b hb => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hb with rfl | hb` into its components or cases. Conclude with `h4'`. Take `⟨y, rfl⟩` from `h4 b hb`. Conclude with `⟨j' y, RingHom.congr_fun h2' y⟩`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finset (r : O →+* Ω) (hr : RingHom.ker r = maximalIdeal O) (S : Finset Ω) :
     ∃ (B : Type) (_ : CommRing B) (_ : IsDomain B) (_ : IsDiscreteValuationRing B)
@@ -185,9 +181,9 @@ theorem exists_finset (r : O →+* Ω) (hr : RingHom.ker r = maximalIdeal O) (S 
       exact ⟨j' y, RingHom.congr_fun h2' y⟩
 
 /- English proof (translation)
-Set `rb : ResidueField O →+* Ω` to `Ideal.Quotient.lift (maximalIdeal O) r fun x hx => by rwa [← hr] at hx`. Set `e` to `RingEquiv.ofBijective _ (AdicCompletion.residueField_map_bijective O)`. Use `⟨(rb.comp e.symm.toRingHom).comp (residue _), RingHom.ext fun x => ?_, ?_⟩` and prove the remaining obligations. Establish `: e.symm (residue _ (algebraMap O _ x)) = residue O x`. Rewrite using `[RingEquiv.symm_apply_eq]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `rb (e.symm (residue _ (algebraMap O _ x))) = r x`. Rewrite using `[this]`. Both sides reduce to the same expression. Rewrite using `[RingHom.ker_comp_of_injective _ (RingHom.injective _), ker_residue]`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_completion (r : O →+* Ω) (hr : RingHom.ker r = maximalIdeal O) :
     ∃ r' : AdicCompletion (maximalIdeal O) O →+* Ω,
@@ -207,9 +203,9 @@ theorem exists_completion (r : O →+* Ω) (hr : RingHom.ker r = maximalIdeal O)
 end ResidueExtension
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ r S hr`. Take `⟨B, _, _, _, j, r', h1, h2, h3, h4⟩` from `ResidueExtension.exists_finset r hr S`. Take `⟨r'', h5, h6⟩` from `ResidueExtension.exists_completion r' h3`. Establish `h7 : r''.comp ((algebraMap B (AdicCompletion (maximalIdeal B) B)).comp j) = r`. Rewrite using `[← RingHom.comp_assoc, h5, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨AdicCompletion (maximalIdeal B) B, inferInstance, inferInstance, inferInstance, (algebraMap B _).comp j, r'', inferInstance, (algebraMap_adicCompletion_injective_of_dvr B).comp h1, ⟨fun x hx => ?_⟩, h7, h6, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[← notMem_maximalIdeal, ← hr, RingHom.mem_ker, ← h7]`. Conclude with `(hx.map r'').ne_zero`. Take `⟨y, rfl⟩` from `h4 a ha`. Conclude with `⟨_, RingHom.congr_fun h5 y⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_complete_discreteValuationRing_with_residues :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω]

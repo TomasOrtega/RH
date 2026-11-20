@@ -14,9 +14,9 @@ namespace GlobalTheory.SphTheta.MixStab
 variable {L : Type} [Field L]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_image (s := Finset.univ) (g := hi N) (f := f)]`. Use `symm`. Use `Finset.sum_subset (Finset.subset_univ _) fun i _ hni => hf i ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `i.isLt` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hni (Finset.mem_image.2 ⟨⟨i.1 - (N - N / 2), by omega⟩, Finset.mem_univ _, Fin.ext (by simp only [hi]; omega)⟩)`. Introduce `x _ y _ hxy`. Use `congrArg Fin.val hxy` as an intermediate fact. Simplify using `only [hi] at this`. Conclude with `Fin.ext (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_hi {M : Type} [AddCommMonoid M] (N : ℕ) (f : Fin N → M)
     (hf : ∀ i : Fin N, i.1 < N - N / 2 → f i = 0) : ∑ i, f i = ∑ k, f (hi N k) := by
@@ -32,7 +32,7 @@ theorem sum_hi {M : Type} [AddCommMonoid M] (N : ℕ) (f : Fin N → M)
     exact Fin.ext (by omega)
 
 /- English proof (translation)
-Rewrite using `[embLow, dif_pos ⟨by simp [hi], by simp [hi]⟩]`. Apply the tactic sequence `congr 1 <;> ext <;> simp [hi]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embLow_hi {n' n : ℕ} (z : Matrix (Fin (n' / 2)) (Fin (n / 2)) L) (k : Fin (n' / 2)) (l : Fin (n / 2)) :
     embLow n' n z (hi n' k) (hi n l) = z k l := by
@@ -40,16 +40,16 @@ theorem embLow_hi {n' n : ℕ} (z : Matrix (Fin (n' / 2)) (Fin (n / 2)) L) (k : 
   congr 1 <;> ext <;> simp [hi]
 
 /- English proof (translation)
-Rewrite using `[embLow, dif_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem embLow_eq_zero {n' n : ℕ} (z : Matrix (Fin (n' / 2)) (Fin (n / 2)) L) (r : Fin n') (c : Fin n)
     (h : r.1 < n' - n' / 2 ∨ c.1 < n - n / 2) : embLow n' n z r c = 0 := by
   rw [embLow, dif_neg (by omega)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, sum_hi n]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, sum_hi n']`. Simplify using `only [embLow_hi]`. Introduce `i hi'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[embLow_eq_zero z i _ (Or.inl hi'), mul_zero]`. Introduce `j hj`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_zero, zero_mul]`. Introduce `i _`. Rewrite using `[embLow_eq_zero z i j (Or.inr hj), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_embLow_mul_apply {n' n : ℕ} (A : Matrix (Fin n') (Fin n') L) (B : Matrix (Fin n) (Fin n) L)
     (z : Matrix (Fin (n' / 2)) (Fin (n / 2)) L) (r : Fin n') (c : Fin n) :
@@ -66,7 +66,7 @@ theorem mul_embLow_mul_apply {n' n : ℕ} (A : Matrix (Fin n') (Fin n') L) (B : 
     rw [embLow_eq_zero z i j (Or.inr hj), mul_zero]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, lowBlock, Matrix.submatrix_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lowBlock_mul_apply {n' n : ℕ} (A : Matrix (Fin n') (Fin n') L) (B : Matrix (Fin n) (Fin n) L)
     (z : Matrix (Fin (n' / 2)) (Fin (n / 2)) L) (r : Fin (n' / 2)) (c : Fin (n / 2)) :
@@ -74,15 +74,15 @@ theorem lowBlock_mul_apply {n' n : ℕ} (A : Matrix (Fin n') (Fin n') L) (B : Ma
   simp only [Matrix.mul_apply, lowBlock, Matrix.submatrix_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨r.1 - (N - N / 2), by have := r.isLt; omega⟩, Fin.ext (by simp only [hi]; omega)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_hi {N : ℕ} (r : Fin N) (hr : N - N / 2 ≤ r.1) : ∃ k, r = hi N k :=
   ⟨⟨r.1 - (N - N / 2), by have := r.isLt; omega⟩, Fin.ext (by simp only [hi]; omega)⟩
 
 /- English proof (translation)
-Distinguish the cases in `hc : c.1 < n - n / 2`. Rewrite using `[embLow_eq_zero _ r c (Or.inr hc), mul_embLow_mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hB (hi n l) c (Fin.lt_def.2 (by simp only [hi]; omega)), mul_zero]`. Establish `hr : n' - n' / 2 ≤ r.1` using `by omega`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨r', rfl⟩` from `exists_hi r hr`. Take `⟨c', rfl⟩` from `exists_hi c (by omega)`. Rewrite using `[mul_embLow_mul_apply, embLow_hi, lowBlock_mul_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_embLow_mul_eq {n' n : ℕ} (A : Matrix (Fin n') (Fin n') L) (B : Matrix (Fin n) (Fin n) L)
     (hB : ∀ i j : Fin n, j < i → B i j = 0) (z : Matrix (Fin (n' / 2)) (Fin (n / 2)) L) (r : Fin n') (c : Fin n)
@@ -100,16 +100,16 @@ theorem mul_embLow_mul_eq {n' n : ℕ} (A : Matrix (Fin n') (Fin n') L) (B : Mat
 variable [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_mixLat_iff {n' n : ℕ} (x : Matrix (Fin n') (Fin n) L) : x ∈ mixLat L n' n ↔
     ∀ r c, (n' - n' / 2 ≤ r.1 ∨ n' / 2 ≤ r.1 ∧ c.1 < n / 2 → x r c = 0) ∧
       (n' / 2 ≤ r.1 → c.1 < n - n / 2 → x r c ∈ intL L) := Iff.rfl
 
 /- English proof (translation)
-Establish `h` using `P.fSatake_unit_diag hb i`. Rewrite `h` using `[hi']`. Establish `h2` using `congrArg Valued.v h`. Rewrite `h2` using `[map_mul, hv, map_one]`. Rewrite using `[mem_intL]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_le]`. Establish `: (1 : WithZero (Multiplicative ℤ)) < Valued.v (b.1.1 i i) * Valued.v (b.1.1 i i)` using `one_lt_mul'' hc hc`. Rewrite `this` using `[h2]`. Conclude with `lt_irrefl _ this`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem borel_mid_int {σ : L →+* L} {N : ℕ} (hv : ∀ x, Valued.v (σ x) = Valued.v x) {b : GU σ N}
     (hb : IsBorelU b) (i : Fin N) (hi' : i.rev = i) : b.1.1 i i ∈ intL L := by
@@ -125,9 +125,9 @@ theorem borel_mid_int {σ : L →+* L} {N : ℕ} (hv : ∀ x, Valued.v (σ x) = 
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Rewrite `ha` using `[mem_mixLat_iff]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single r]`. Introduce `i _ hir`. Break down `lt_or_gt_of_ne hir with h1 | h1` into its components or cases. Rewrite using `[hA r i h1, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(ha i j).1 (Or.inl (by have := Fin.lt_def.1 h1; omega)), mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem row_mul_eq {n' n : ℕ} (A : Matrix (Fin n') (Fin n') L) (hA : ∀ i j : Fin n', j < i → A i j = 0)
     (a : Matrix (Fin n') (Fin n) L) (ha : a ∈ mixLat L n' n) (r : Fin n') (hr : n' / 2 ≤ r.1) (j : Fin n) :
@@ -141,17 +141,17 @@ theorem row_mul_eq {n' n : ℕ} (A : Matrix (Fin n') (Fin n') L) (hA : ∀ i j :
   · simp
 
 /- English proof (translation)
-Establish `ha'` using `(mem_mixLat_iff a).1 ha`. Rewrite using `[mem_mixLat_iff]`. Introduce `r c`. Prove the components needed by the constructor for the conclusion. Introduce `hrc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[row_mul_eq _ hh a ha r (by omega)]`. Break down `hrc with hr | ⟨hr, hc⟩` into its components or cases. Rewrite using `[(ha' r j).1 (Or.inl hr), mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hjc : j.1 ≤ c.1`. Rewrite using `[(ha' r j).1 (Or.inr ⟨hr, by omega⟩), mul_zero, zero_mul]`. Rewrite using `[hg j c (Fin.lt_def.2 (by omega)), mul_zero]`. Introduce `hr hc`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single c]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[row_mul_eq _ hh a ha r hr]`. Distinguish the cases in `hz : a r c = 0`. Rewrite using `[hz, mul_zero, zero_mul]`. Conclude with `zero_mem _`. Establish `h1 : ¬ (n' - n' / 2 ≤ r.1 ∨ n' / 2 ≤ r.1 ∧ c.1 < n / 2)` using `fun e => hz ((ha' r c).1 e)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrr : r.rev = r` using `Fin.ext (by rw [Fin.val_rev]; omega)`. Establish `hcc : c.rev = c` using `Fin.ext (by rw [Fin.val_rev]; omega)`. Conclude with `mul_mem (mul_mem (borel_mid_int hv hh r hrr) ((ha' r c).2 hr hc)) (borel_mid_int hv hg c hcc)`. Introduce `j _ hjc`. Break down `lt_or_gt_of_ne hjc with h1 | h1` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[row_mul_eq _ hh a ha r hr, (ha' r j).1 (Or.inr ⟨hr, by have := Fin.lt_def.1 h1; omega⟩), mul_zero, zero_mul]`. Rewrite using `[hg j c h1, mul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem borel_mul_mem {σ : L →+* L} {n' n : ℕ} (hv : ∀ x, Valued.v (σ x) = Valued.v x) {g : GU σ n} {h : GU σ n'}
     (hg : IsBorelU g) (hh : IsBorelU h) (a : Matrix (Fin n') (Fin n) L) (ha : a ∈ mixLat L n' n) :
@@ -191,11 +191,9 @@ namespace GlobalTheory.SphTheta
 open MixStab in
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q hU n n' g h hg hh`. Use `⟨fun a ha => borel_mul_mem hU.2.1 hg hh a ha, fun z => ?_⟩` and prove the remaining obligations. Establish `key : ∀ (r : Fin n') (c : Fin n), n' - n' / 2 ≤ r.1 ∨ c.1 < n - n / 2 → (h.1.1 * embLow n' n z * g.1.1 - embLow n' n (lowBlock h.1.1 * z * lowBlock g.1.1)) r c = 0` using `fun r c e => by`. Rewrite using `[Matrix.sub_apply, sub_eq_zero]`. Conclude with `mul_embLow_mul_eq _ _ hg _ r c e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h.1.1 * embLow n' n z * g.1.1 - embLow n' n (lowBlock h.1.1 * z * lowBlock g.1.1), ?_, fun r c hc => key r c (Or.inr hc), (sub_add_cancel _ _).symm⟩` and prove the remaining obligations. Rewrite using `[mem_mixLat_iff]`. Introduce `r c`. Use `⟨fun e => key r c (by omega), fun _ hc => ?_⟩` and prove the remaining obligations. Rewrite using `[key r c (Or.inr hc)]`.
-
-Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem borel_mixLat_lowBlock : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q → ∀ (n n' : ℕ) (g : GU σ n) (h : GU σ n'), IsBorelU g → IsBorelU h → (∀ a : Matrix (Fin n') (Fin n) L, a ∈ mixLat L n' n → (h.1.1 * a * g.1.1 : Matrix (Fin n') (Fin n) L) ∈ mixLat L n' n) ∧ ∀ (z : Matrix (Fin (n' / 2)) (Fin (n / 2)) L), ∃ a ∈ mixLat L n' n, (∀ (r : Fin n') (c : Fin n), c.1 < n - n / 2 → a r c = 0) ∧ (h.1.1 * embLow n' n z * g.1.1 : Matrix (Fin n') (Fin n) L) = a + embLow n' n (lowBlock h.1.1 * z * lowBlock g.1.1) := by
   intro L _ _ ϖ σ q hU n n' g h hg hh

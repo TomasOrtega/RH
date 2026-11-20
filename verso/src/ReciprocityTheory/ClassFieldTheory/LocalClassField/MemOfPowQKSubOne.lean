@@ -10,30 +10,30 @@ noncomputable def red (x : PadicAlgCl p) : kbar p :=
   open Classical in if h : ‖x‖ ≤ 1 then res ⟨x, mem_Obar_iff.2 h⟩ else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos (norm_le_one x)`.
+A detailed English derivation is pending.
 -/
 theorem red_coe (x : Obar p) : red (x : PadicAlgCl p) = res x := dif_pos (norm_le_one x)
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem red_of_le {x : PadicAlgCl p} (h : ‖x‖ ≤ 1) : red x = res ⟨x, mem_Obar_iff.2 h⟩ := dif_pos h
 
 /- English proof (translation)
-Rewrite using `[red_of_le hx, red_of_le hy, res_eq_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem red_eq_iff {x y : PadicAlgCl p} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : red x = red y ↔ ‖x - y‖ < 1 := by
   rw [red_of_le hx, red_of_le hy, res_eq_iff]
 
 /- English proof (translation)
-Rewrite using `[red_of_le hx, ← map_pow, ← red_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem red_pow {x : PadicAlgCl p} (hx : ‖x‖ ≤ 1) (k : ℕ) : red (x ^ k) = red x ^ k := by
   rw [red_of_le hx, ← map_pow, ← red_coe]
   rfl
 
 /- English proof (translation)
-Use `finite_resK K hK` as an intermediate fact. Use `Fintype.ofFinite (resK p K)` as an intermediate fact. Establish `h` using `FiniteField.pow_card (⟨c, hc⟩ : resK p K)`. Rewrite `h` using `[← Nat.card_eq_fintype_card]`. Conclude with `congrArg Subtype.val h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_qK_eq (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK : FiniteDimensional ℚ_[p] K)
     {c : kbar p} (hc : c ∈ resK p K) : c ^ qK p K = c := by
@@ -44,15 +44,15 @@ theorem pow_qK_eq (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK : FiniteDim
   exact congrArg Subtype.val h
 
 /- English proof (translation)
-Use `finite_resK K hK` as an intermediate fact. Use `Fintype.ofFinite (resK p K)` as an intermediate fact. Establish `hq` using `one_lt_qK K hK`. Use `set P : (kbar p)[X] := X ^ qK p K - X with hP`. Establish `hP0 : P ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero (kbar p) hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : P.natDegree = qK p K` using `FiniteField.X_pow_card_sub_X_natDegree_eq (kbar p) hq`. Set `T : Finset (kbar p)` to `(Finset.univ : Finset (resK p K)).image Subtype.val`. Establish `hT : T.card = qK p K`. Rewrite using `[Finset.card_image_of_injective _ Subtype.val_injective, Finset.card_univ, qK, Nat.card_eq_fintype_card]`. Establish `hsub : T ⊆ P.roots.toFinset`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hx`. Rewrite using `[Multiset.mem_toFinset, mem_roots hP0, IsRoot.def, hP]`. Simplify using `[pow_qK_eq K hK y.2]`. Establish `hle : P.roots.toFinset.card ≤ T.card`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT, ← hdeg]`. Conclude with `(Multiset.toFinset_card_le _).trans (card_roots' P)`. Establish `heq` using `Finset.eq_of_subset_of_card_le hsub hle`. Establish `hc : c ∈ P.roots.toFinset`. Rewrite using `[Multiset.mem_toFinset, mem_roots hP0, IsRoot.def, hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[h]`. Rewrite `hc` using `[← heq]`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hc`. Conclude with `y.2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_resK_of_pow (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK : FiniteDimensional ℚ_[p] K)
     {c : kbar p} (h : c ^ qK p K = c) : c ∈ resK p K := by
@@ -84,24 +84,24 @@ theorem mem_resK_of_pow (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK : Fin
   exact y.2
 
 /- English proof (translation)
-Establish `: NeZero m` using `⟨hm⟩`. Conclude with `HasEnoughRootsOfUnity.exists_primitiveRoot (PadicAlgCl p) m`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_primitiveRoot {m : ℕ} (hm : m ≠ 0) : ∃ ζ : PadicAlgCl p, IsPrimitiveRoot ζ m := by
   have : NeZero m := ⟨hm⟩
   exact HasEnoughRootsOfUnity.exists_primitiveRoot (PadicAlgCl p) m
 
 /- English proof (translation)
-Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hm (dvd_zero p)`. Establish `hmp : 0 < m` using `Nat.pos_of_ne_zero hm0`. Take `⟨ζ0, hζ0⟩` from `exists_primitiveRoot (p := p) hm0`. Set `T : Finset (kbar p)` to `(nthRootsFinset m (1 : PadicAlgCl p)).image red`. Establish `hinj : Set.InjOn red (nthRootsFinset m (1 : PadicAlgCl p) : Set (PadicAlgCl p))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x hx y hy hxy`. Establish `hx'` using `(mem_nthRootsFinset hmp 1).1 hx`. Establish `hy'` using `(mem_nthRootsFinset hmp 1).1 hy`. Assume the negation of the conclusion as `hne`. Establish `h1` using `norm_sub_eq_one_of_pow_eq_one hm hx' hy' hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2` using `(red_eq_iff (norm_eq_one_of_pow hm0 hx').le (norm_eq_one_of_pow hm0 hy').le).1 hxy`. Conclude with `absurd h1 (ne_of_lt h2)`. Establish `hT : T.card = m`. Rewrite using `[Finset.card_image_of_injOn hinj, hζ0.card_nthRootsFinset]`. Establish `hsub : T ⊆ nthRootsFinset m (1 : kbar p)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.1 hx`. Establish `hy'` using `(mem_nthRootsFinset hmp 1).1 hy`. Rewrite using `[mem_nthRootsFinset hmp, ← red_pow (norm_eq_one_of_pow hm0 hy').le, hy']`. Establish `: red (1 : PadicAlgCl p) = res 1` using `red_coe 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_one]`. Establish `hle : (nthRootsFinset m (1 : kbar p)).card ≤ T.card`. Rewrite using `[hT]`. Conclude with `(Multiset.toFinset_card_le _).trans (card_nthRoots m 1)`. Establish `heq` using `Finset.eq_of_subset_of_card_le hsub hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc' : c ∈ nthRootsFinset m (1 : kbar p)` using `(mem_nthRootsFinset hmp 1).2 hc`. Rewrite `hc'` using `[← heq]`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.1 hc'`. Conclude with `⟨y, (mem_nthRootsFinset hmp 1).1 hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift_root {m : ℕ} (hm : ¬ p ∣ m) {c : kbar p} (hc : c ^ m = 1) :
     ∃ ζ : PadicAlgCl p, ζ ^ m = 1 ∧ red ζ = c := by
@@ -137,7 +137,7 @@ theorem exists_lift_root {m : ℕ} (hm : ¬ p ∣ m) {c : kbar p} (hc : c ^ m = 
   exact ⟨y, (mem_nthRootsFinset hmp 1).1 hy, rfl⟩
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed (k := K) (K := PadicAlgCl p) x).2 h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_fixed (K : IntermediateField ℚ_[p] (PadicAlgCl p)) {x : PadicAlgCl p}
     (h : ∀ σ : GK p K, σ x = x) : x ∈ K := by
@@ -146,17 +146,17 @@ theorem mem_of_fixed (K : IntermediateField ℚ_[p] (PadicAlgCl p)) {x : PadicAl
   exact y.2
 
 /- English proof (translation)
-Establish `hq` using `one_lt_qK K hK`. Establish `hnd : ¬ p ∣ qK p K - 1` using `by simpa using not_dvd_qK_pow_sub_one K hK (n := 1) one_pos`. Establish `hm0 : qK p K - 1 ≠ 0` using `by omega`. Establish `h1` using `norm_eq_one_of_pow hm0 hζ`. Establish `hc : red ζ ∈ resK p K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mem_resK_of_pow K hK` to reduce the goal to its premises. Rewrite using `[← red_pow h1.le]`. Use `congr 1`. Establish `: qK p K = (qK p K - 1) + 1` using `by omega`. Rewrite using `[this, pow_succ, hζ, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx, hxc⟩` from `(mem_resK_iff K _).1 hc`. Rewrite `hxc` using `[← red_coe, red_eq_iff (norm_le_one x) h1.le]`. Apply `mem_of_fixed K` to reduce the goal to its premises. Introduce `σ`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hσζ : (σ ζ) ^ (qK p K - 1) = 1` using `by rw [← map_pow, hζ, map_one]`. Establish `h2` using `norm_sub_eq_one_of_pow_eq_one hnd hσζ hζ hne`. Establish `hσx : σ (x : PadicAlgCl p) = x` using `σ.commutes ⟨x, hx⟩`. Establish `h3 : σ ζ - ζ = ((x : PadicAlgCl p) - ζ) - σ ((x : PadicAlgCl p) - ζ)`. Rewrite using `[map_sub, hσx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h4 : ‖σ ζ - ζ‖ < 1`. Rewrite using `[h3]`. Use `lt_of_le_of_lt (norm_sub_le_max' _ _) (max_lt hxc ?_)` and prove the remaining obligations. Rewrite using `[norm_GK]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxc`. Conclude with `absurd h2 (ne_of_lt h4)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_pow_qK_sub_one (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK : FiniteDimensional ℚ_[p] K)
     {ζ : PadicAlgCl p} (hζ : ζ ^ (qK p K - 1) = 1) : ζ ∈ K := by
@@ -187,11 +187,11 @@ theorem mem_of_pow_qK_sub_one (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK
   exact absurd h2 (ne_of_lt h4)
 
 /- English proof (translation)
-Establish `hq` using `one_lt_qK K hK`. Establish `hnd : ¬ p ∣ qK p K - 1` using `by simpa using not_dvd_qK_pow_sub_one K hK (n := 1) one_pos`. Establish `hm0 : qK p K - 1 ≠ 0` using `by omega`. Establish `hmem : red x ∈ resK p K` using `(mem_resK_iff K _).2 ⟨⟨x, mem_Obar_iff.2 h1.le⟩, hx, (red_of_le h1.le).symm⟩`. Establish `hne : red x ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[red_of_le h1.le, Ne, res_eq_zero_iff]`. Conclude with `not_lt.2 h1.ge`. Establish `hpow : red x ^ (qK p K - 1) = 1`. Establish `h2` using `pow_qK_eq K hK hmem`. Establish `: qK p K = (qK p K - 1) + 1` using `by omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[this, pow_succ]`. Conclude with `mul_right_cancel₀ hne (by rw [h2, one_mul])`. Take `⟨ζ, hζ, hr⟩` from `exists_lift_root hnd hpow`. Use `⟨ζ, mem_of_pow_qK_sub_one K hK hζ, hζ, ?_⟩` and prove the remaining obligations. Conclude with `(red_eq_iff h1.le (norm_eq_one_of_pow hm0 hζ).le).1 hr.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_teichmuller (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK : FiniteDimensional ℚ_[p] K)
     {x : PadicAlgCl p} (hx : x ∈ K) (h1 : ‖x‖ = 1) :

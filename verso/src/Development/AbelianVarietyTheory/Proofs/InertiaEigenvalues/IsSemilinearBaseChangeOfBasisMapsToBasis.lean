@@ -6,9 +6,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Introduce `A B _ _ f M _ _ N _ _ u ι e b hb Q _ _ v`. Use `⟨b.constr B (fun i => v (e i)), ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `h : (b.constr B (fun i => v (e i))).comp u = v`. Use `e.ext fun i => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[LinearMap.comp_apply, ← hb, Module.Basis.constr_basis]`. Conclude with `LinearMap.congr_fun h x`. Introduce `w hw`. Use `b.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.constr_basis, hb, hw]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semiBC_of_basis : ∀ (A B : Type) [CommRing A] [CommRing B] (f : A →+* B) (M : Type) [AddCommGroup M] [Module A M] (N : Type) [AddCommGroup N] [Module B N] (u : M →ₛₗ[f] N) (ι : Type) (e : Module.Basis ι A M) (b : Module.Basis ι B N), (∀ i, b i = u (e i)) → SemiBC u := by
   intro A B _ _ f M _ _ N _ _ u ι e b hb Q _ _ v

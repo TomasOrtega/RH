@@ -7,31 +7,31 @@ import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.Logarithm
 namespace Formalism.L2.Th1.B
 
 /- English proof (translation)
-The claim follows from `SAdd.weierstrass_addition_holds`.
+A detailed English derivation is pending.
 -/
 theorem wAdd : WAdd := SAdd.weierstrass_addition_holds
 /- English proof (translation)
-The claim follows from `GCob.weierstrass_derivative_unit_holds`.
+A detailed English derivation is pending.
 -/
 theorem wPrimeU : WPrimeU := GCob.weierstrass_derivative_unit_holds
 /- English proof (translation)
-The claim follows from `GCob.GCob_of wAdd wPrimeU`.
+A detailed English derivation is pending.
 -/
 theorem gCob : GCob := GCob.GCob_of wAdd wPrimeU
 /- English proof (translation)
-The claim follows from `LDiv.LDiv_of gCob`.
+A detailed English derivation is pending.
 -/
 theorem lDiv : LDiv := LDiv.LDiv_of gCob
 /- English proof (translation)
-The claim follows from `BeE.BeESim_of gCob lDiv`.
+A detailed English derivation is pending.
 -/
 theorem beESim : BeESim := BeE.BeESim_of gCob lDiv
 /- English proof (translation)
-The claim follows from `BeE.cocycle_diff_exp_equiv`.
+A detailed English derivation is pending.
 -/
 theorem first_cocycle_simeq_zero : CocycleDiffExpEquiv := BeE.cocycle_diff_exp_equiv
 /- English proof (translation)
-The claim follows from `BeE.CubeE_of beESim first_cocycle_simeq_zero`.
+A detailed English derivation is pending.
 -/
 theorem cubeE : CubeE := BeE.CubeE_of beESim first_cocycle_simeq_zero
 

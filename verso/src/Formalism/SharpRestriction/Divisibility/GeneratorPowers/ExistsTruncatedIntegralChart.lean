@@ -19,7 +19,7 @@ section Lemmas
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `h.zero trunc := h.trunc law := h.law act := h.act tan := fun ℓ => h.tan (e ℓ) basis := fun v => by obtain ⟨b, hb, hbu⟩ := h.basis v refine ⟨fun ℓ => b (e ℓ), fun j => ?_, fun a ha => ?_⟩ · rw [← hb j] exact Equiv.sum_comp e (fun ℓ => b ℓ * uvec ℓ j) · have h1 : (fun ℓ => a (e.sym …`.
+A detailed English derivation is pending.
 -/
 theorem isChartG_reindex (t : SAB H X0) {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (d : ℕ) {κ κ' : Type}
     [Fintype κ] [Fintype κ'] (F : Fin d → MvPowerSeries (Fin 2 × Fin d) S)
@@ -46,9 +46,9 @@ theorem isChartG_reindex (t : SAB H X0) {S : Type} [CommRing S] (x0 : Sp S ⟶ X
 variable {V : Type} [CommRing V] (t : SAB H (Sp V))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hc`. Establish `e` using `prodPts_of_combAt (t := t) f hf a w hw hc`. Take `⟨h, hh⟩` from `ReciprocityTheory.ChartRestriction.G.Chart.prodPts_tan hx a (fun i => toT t (f i) (hf i)) hft`. Establish `hT : ReciprocityTheory.ChartRestriction.G.Chart.IsTan (toT t w hw)` using `by rw [e]; exact h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨hT, (ReciprocityTheory.ChartRestriction.G.Chart.tcoord_congr hx e hT h).trans hh⟩`. Introduce and unpack `⟨h, hh⟩`. Apply `combAt_of_prodPts (t := t) f hf a w hw` to reduce the goal to its premises. Take `⟨h', hh'⟩` from `ReciprocityTheory.ChartRestriction.G.Chart.prodPts_tan hx a (fun i => toT t (f i) (hf i)) hft`. Conclude with `ReciprocityTheory.ChartRestriction.G.Chart.tan_ext hx h h' (hh.trans hh'.symm)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem combAt_iff {n : ℕ} {x} (hx : ReciprocityTheory.ChartRestriction.G.Chart.IsUnivChart t.G n x) {m : ℕ}
     (f : Fin m → (Sp (DualNumber V) ⟶ t.G.left)) (hf : ∀ i, f i ≫ t.G.hom = spMap (algebraMap V (DualNumber V)))
@@ -68,13 +68,13 @@ theorem combAt_iff {n : ℕ} {x} (hx : ReciprocityTheory.ChartRestriction.G.Char
     exact ReciprocityTheory.ChartRestriction.G.Chart.tan_ext hx h h' (hh.trans hh'.symm)
 
 /- English proof (translation)
-Apply `chartTan_of` to reduce the goal to its premises. Use `⟨ho.trans (Category.comp_id _).symm, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg CommaMorphism.left (hz 1)`. Simplify using `only [Over.comp_left] at h1 ⊢`. Establish `h2 : spMap (TrivSqZeroExt.fstHom V V V).toRingHom ≫ (homAt (𝟙 (Sp V)) (jetTan ((0 : Fin 1), j) : Jet V (Fin 1 × Fin d) (0 + 1) →ₐ[V] DualNumber V)).left = (homAt (𝟙 (Sp V)) (jetAug : Jet V (Fin 1 × Fin d) (0 + 1) →ₐ[V] V)).left` using `by show spMap _ ≫ spMap _ = spMap _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `congrArg (fun φ : Jet V (Fin 1 × Fin d) (0 + 1) →ₐ[V] V => φ.toRingHom) (fst_comp_jetTan ((0 : Fin 1), j))`. Rewrite using `[← Category.assoc, h2, h1]`. Establish `hobj : spMap (algebraMap V V) ≫ 𝟙 (Sp V) = 𝟙 (Sp V)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.comp_id]`. Use `first`. Consider the case `(rw [Algebra.algebraMap_self]; exact Spec.map_id _)`. Consider the case `simp [spMap]`. Establish `h3 : ∀ (f g : Sp V ⟶ Sp V), f = g → (1 : Over.mk f ⟶ t.G).left = (1 : Over.mk g ⟶ t.G).left`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Introduce and unpack `f g rfl`. Both sides reduce to the same expression. Conclude with `h3 _ _ hobj`.
+A detailed English derivation is pending.
 -/
 theorem dir_tan {d : ℕ} (xc : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G)
     (hz : ∀ m, homAt (𝟙 (Sp V)) (jetAug : Jet V (Fin 1 × Fin d) m →ₐ[V] V) ≫ xc m = 1) (j : Fin d)

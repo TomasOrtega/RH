@@ -27,11 +27,9 @@ def isoH (R : Type) [CommRing R] (F : Shv R) {X Y : Scheme.{0}} (e : X ≅ Y) (n
     rw [← pull_comp, ← Functor.map_comp, e.hom_inv_id, CategoryTheory.Functor.map_id, pull_id]
 
 /- English proof (translation)
-Take `⟨δ, hδ⟩` from `hMV hH R F X U V hUV n`. Set `φ` to `(pull R (sch.map U.ι) F (n + 1)).prod (pull R (sch.map V.ι) F (n + 1))`. Establish `hker : φ.ker = δ.range`. Use extensionality with `x`. Rewrite using `[← hδ x, AddMonoidHom.mem_ker]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[φ, Prod.ext_iff]`. Establish `: Finite φ.ker`. Rewrite using `[hker]`. Conclude with `Set.finite_range δ |>.to_subtype`. Establish `: Finite (H R (sch.obj X) F (n + 1) ⧸ φ.ker)` using `Finite.of_equiv _ (QuotientAddGroup.quotientKerEquivRange φ).toEquiv.symm`.
-
-Conclude with `Finite.of_addSubgroup_quotient φ.ker`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_of_mv (hMV : LeafMV) (hH : Hyps) (R : Type) [CommRing R] (F : Shv R) (X : Scheme.{0}) (U V : X.Opens)
     (hUV : U ⊔ V = ⊤) (n : ℤ) (h0 : Finite (H R (sch.obj (U ⊓ V).toScheme) F n))
@@ -51,9 +49,9 @@ theorem finite_of_mv (hMV : LeafMV) (hH : Hyps) (R : Type) [CommRing R] (F : Shv
   exact Finite.of_addSubgroup_quotient φ.ker
 
 /- English proof (translation)
-Take `⟨δ, hδ⟩` from `hMV hH R F X U V hUV n`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `hx : ∀ z : H R (sch.obj X) F (n + 1), z = 0`. Introduce `z`. Take `⟨w, hw⟩` from `(hδ z).1 ⟨Subsingleton.elim _ _, Subsingleton.elim _ _⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hw, Subsingleton.elim w 0, map_zero]`. Rewrite using `[hx x, hx y]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem subsingleton_of_mv (hMV : LeafMV) (hH : Hyps) (R : Type) [CommRing R] (F : Shv R) (X : Scheme.{0})
     (U V : X.Opens) (hUV : U ⊔ V = ⊤) (n : ℤ) (h0 : Subsingleton (H R (sch.obj (U ⊓ V).toScheme) F n))
@@ -68,17 +66,15 @@ theorem subsingleton_of_mv (hMV : LeafMV) (hH : Hyps) (R : Type) [CommRing R] (F
   rw [hx x, hx y]
 
 /- English proof (translation)
-Introduce `hH q _ Ω _ _ hq i hB C c hc`. Establish `hC2 : C2` using `hH.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Take `⟨U, V, hUV, hW⟩` from `hCov Ω c hc`. Establish `key : ∀ W ∈ ({U, V, U ⊓ V} : Set C.Opens), ∀ m : ℤ, (m = 0 ∨ m = 1 → Finite (Ht q (sch.obj W.toScheme) m i)) ∧ (2 ≤ m → Subsingleton (Ht q (sch.obj W.toScheme) m i))`. Introduce `W hWm m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨B, _, _, _, _, ⟨e⟩⟩` from `hW W hWm`. Establish `eq` using `isoH (ZMod q) (tw q i) e m`. Use `⟨fun hm => ?_, fun hm => ?_⟩` and prove the remaining obligations. Break down `hm with rfl | rfl` into its components or cases. Establish `h0` using `hH0 hH q Ω hq i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `h0.1` as an intermediate fact. Establish `hbij` using `h0.2 (Spec.map (CommRingCat.ofHom (algebraMap Ω B)) : Sp B ⟶ Sp Ω)`. Establish `: Finite (Ht q (sch.obj (Sp B)) 0 i)` using `Finite.of_surjective _ hbij.2`. Conclude with `Finite.of_equiv _ eq`. Use `hB B` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finite.of_equiv _ eq`. Use `hC2 q Ω B hq m i hm` as an intermediate fact. Conclude with `eq.symm.injective.subsingleton`. Establish `hU : U ∈ ({U, V, U ⊓ V} : Set C.Opens)` using `by simp`. Establish `hV : V ∈ ({U, V, U ⊓ V} : Set C.Opens)` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hI : U ⊓ V ∈ ({U, V, U ⊓ V} : Set C.Opens)` using `by simp`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `finite_of_mv hMV hH (ZMod q) (tw q i) C U V hUV 0 ((key _ hI 0).1 (Or.inl rfl)) ((key _ hU 1).1 (Or.inr rfl)) ((key _ hV 1).1 (Or.inr rfl))` as an intermediate fact. Simplify using `using this`. Use `finite_of_mv hMV hH (ZMod q) (tw q i) C U V hUV 1 ((key _ hI 1).1 (Or.inr rfl)) (by have := (key _ hU (1 + 1)).2 (by norm_num); exact Finite.of_subsingleton) (by have := (key _ hV (1 + 1)).2 (by norm_num); exact Finite.of_subsingleton)` as an intermediate fact.
-
-Conclude with `this`. Introduce `m hm`. Take `⟨k, rfl⟩ : ∃ k : ℤ, m = k + 1` from `⟨m - 1, by ring⟩`. Conclude with `subsingleton_of_mv hMV hH (ZMod q) (tw q i) C U V hUV k ((key _ hI k).2 (by omega)) ((key _ hU (k + 1)).2 (by omega)) ((key _ hV (k + 1)).2 (by omega))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem goal_of (hH0 : H0TwistOverClosedField) (hMV : LeafMV) (hCov : LeafCover) : LeafCurve := by
   intro hH q _ Ω _ _ hq i hB C c hc

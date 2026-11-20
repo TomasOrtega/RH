@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.SecFlatBC
 
 /- English proof (translation)
-Use `LB.sec_ext fun j => ?_` and prove the remaining obligations. Rewrite using `[AbLaw.SecOn.coord_pullLE, LB.coord_ofSec, LB.coord_ofSec]`. Simplify using `only [Cartier.secPull, resG, Scheme.Hom.app_eq_appLE, ← CommRingCat.comp_apply, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pullLE_ofSec {X X' : Scheme.{0}} {L : LB X} (τ : L.Sec) (π : X' ⟶ X) (V : X.Opens) (V' : X'.Opens)
     (e : V' ≤ π ⁻¹ᵁ V) :
@@ -27,9 +27,9 @@ theorem pullLE_ofSec {X X' : Scheme.{0}} {L : LB X} (τ : L.Sec) (π : X' ⟶ X)
   simp only [Cartier.secPull, resG, Scheme.Hom.app_eq_appLE, ← CommRingCat.comp_apply, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Set `F : M.Sec →+ Γ(X', M.U i)` to `⟨⟨fun s => s.f i, rfl⟩, fun _ _ => rfl⟩`. Express the relevant statement in the definitionally equal form `F _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resG X' le_top (AbLaw.cst f' ⊤ (c a)) * (τ a).f i = _`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[show resG X' (le_top : M.U i ≤ ⊤) = AbLaw.rs X' le_top from rfl, AbLaw.rs_cst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_smul_f {X' : Scheme.{0}} {R' : Type} [CommRing R'] (f' : X' ⟶ Sp R') {M : LB X'} {n : ℕ}
     (c : Fin n → R') (τ : Fin n → M.Sec) (i : M.ι) :
@@ -43,21 +43,19 @@ theorem sum_smul_f {X' : Scheme.{0}} {R' : Type} [CommRing R'] (f' : X' ⟶ Sp R
   rfl
 
 /- English proof (translation)
-Introduce `R R' _ _ φ X X' f f' π _ _ L hφ H hL σ`. Use `letI := φ.toAlgebra`. Use `haveI : Module.Flat R R' := hφ`. Establish `H' : IsPullback π f' f (Spec.map (CommRingCat.ofHom (algebraMap R R')))` using `H`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace f`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.isAffineHom_diagonal_of_isSeparated f` as an intermediate fact. Take `⟨m, D, hD, hc⟩` from `GlobalTheory.exists_fin_affine_cover (X := X) (V := ⊤) isCompact_univ`. Establish `hD' : ∀ s : Finset (Fin m), s.Nonempty → IsAffineOpen (⨅ i ∈ s, D i)` using `GlobalTheory.isAffineOpen_finset_biInf hD`. Establish `hc'` using `AbLaw.PerfOfModel.iSup_preimage π hc`. Set `E` to `AbLaw.CechOne.secKerEquiv (L.pull π) f' hc'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `E₀` to `AbLaw.CechOne.secKerEquiv L f hc`. Set `d` to `((AbLaw.cechLB f L D).d 0 1).hom`. Take `⟨x, hx, hxy⟩` from `(AbLaw.PerfOfModel.termMap_bijOn hL H' hD').2.2 (E σ).2`. Establish `hker : LinearMap.ker (d.baseChange R') = LinearMap.range ((LinearMap.ker d).subtype.baseChange R')` using `Module.Flat.ker_lTensor_eq (R := R) R' R' d`. Rewrite `hx` using `[hker]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `hx`. Take `⟨S, rfl⟩` from `TensorProduct.exists_finset z`. Set `e` to `S.equivFin`. Use `⟨S.card, fun a => (e.symm a).1.1, fun a => E₀.symm (e.symm a).1.2, ?_⟩` and prove the remaining obligations. Establish `key : σ = ∑ a, AbLaw.cst f' ⊤ ((e.symm a).1.1) • Cartier.secPull (E₀.symm (e.symm a).1.2) π`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `E.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hxy, map_sum, map_sum, map_sum, AddSubmonoid.coe_finset_sum, ← Finset.sum_coe_sort S, ← e.symm.sum_comp]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[AbLaw.CechOne.secKerEquiv_smul, LinearMap.baseChange_tmul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `s`. Establish `hk : (((e.symm a).1.2).1 : (AbLaw.cechLB f L D).X 0) s = AbLaw.SecOnR.of f L _ (LB.ofSec (E₀.symm (e.symm a).1.2) (⨅ i ∈ s.1, D i))`. Rewrite using `[← AbLaw.CechOne.secKerEquiv_val L f hc]`. Conclude with `congrArg (fun y => (y.1 : (AbLaw.cechLB f L D).X 0) s) (E₀.apply_symm_apply _).symm`. Express the relevant statement in the definitionally equal form `(e.symm a).1.1 • AbLaw.secCubePull L D H'.w s.1 ((((e.symm a).1.2).1 : (AbLaw.cechLB f L D).X 0) s) = (e.symm a).1.1 • ((E (Cartier.secPull (E₀.symm (e.symm a).1.2) π)).1 : (AbLaw.cechLB f' (L.pull π) fun i ↦ π ⁻¹ᵁ D i).X 0) s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hk, AbLaw.CechOne.secKerEquiv_val]`. Express the relevant statement in the definitionally equal form `_ • AbLaw.SecOnR.pull L H'.w _ _ _ _ = _`. Rewrite using `[AbLaw.SecOnR.pull_of, pullLE_ofSec]`. Both sides reduce to the same expression. Introduce `i`.
-
-Rewrite using `[key, sum_smul_f]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum_secPull : ∀ (R R' : Type) [CommRing R] [CommRing R'] (φ : R →+* R') (X X' : Scheme.{0}) (f : X ⟶ Sp R) (f' : X' ⟶ Sp R') (π : X' ⟶ X) [QuasiCompact f] [IsSeparated f] (L : LB X), φ.Flat → IsPullback π f' f (spMap φ) → L.IsLB → ∀ σ : (L.pull π).Sec, ∃ (n : ℕ) (c : Fin n → R') (τ : Fin n → L.Sec), ∀ i, σ.f i = ∑ a, cstOn f' _ (c a) * (Cartier.secPull (τ a) π).f i := by
   intro R R' _ _ φ X X' f f' π _ _ L hφ H hL σ

@@ -23,7 +23,7 @@ open NumberField MeasureTheory in
 open scoped RealInnerProductSpace FourierTransform in
 variable {I : Type} [Fintype I] in
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[_root_.GlobalTheory.HeckePoisson.Dilation.dilE, _root_.GlobalTheory.HeckePoisson.Dilation.dilPi, _root_.GlobalTheory.HeckeTheta.dil]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma dilE_apply_eq_toLp_dil (y : I → ℝ) (w : EuclideanSpace ℂ I) :
     _root_.GlobalTheory.HeckePoisson.Dilation.dilE y w = WithLp.toLp 2 (_root_.GlobalTheory.HeckeTheta.dil y (WithLp.ofLp w)) := by
@@ -34,7 +34,7 @@ open NumberField MeasureTheory in
 open scoped RealInnerProductSpace FourierTransform in
 variable {I : Type} [Fintype I] in
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [dilE_apply_eq_toLp_dil, _root_.GlobalTheory.HeckeTheta.dil, WithLp.ofLp_toLp, Pi.neg_apply, ← mul_assoc, ← Complex.ofReal_mul, ← Real.exp_add, neg_div, neg_add_cancel, Real.exp_zero, Complex.ofReal_one, one_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma dilE_neg_apply_dilE_apply (y : I → ℝ) (w : EuclideanSpace ℂ I) :
     _root_.GlobalTheory.HeckePoisson.Dilation.dilE (-y) (_root_.GlobalTheory.HeckePoisson.Dilation.dilE y w) = w := by
@@ -46,7 +46,7 @@ open NumberField MeasureTheory in
 open scoped RealInnerProductSpace FourierTransform in
 variable {I : Type} [Fintype I] in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.HeckePoisson.Dilation.dilE, LinearMap.det_conj, _root_.GlobalTheory.HeckePoisson.Dilation.dilPi, LinearMap.det_pi, Real.exp_sum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.det_smul, LinearMap.det_id, mul_one, Complex.finrank_real_complex, ← Real.exp_nat_mul]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -62,7 +62,7 @@ open NumberField MeasureTheory in
 open scoped RealInnerProductSpace FourierTransform in
 variable {I : Type} [Fintype I] in
 /- English proof (translation)
-Simplify using `[-Complex.ofReal_exp, dilE_apply_eq_toLp_dil, _root_.GlobalTheory.HeckeTheta.dil, real_inner_eq_re_inner, PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h : Real.exp (y i / 2) * Real.exp (-y i / 2) = 1`. Rewrite using `[← Real.exp_add, show y i / 2 + -y i / 2 = 0 by ring, Real.exp_zero]`. Take the linear combination `((l.ofLp i).re * (v.ofLp i).re + (l.ofLp i).im * (v.ofLp i).im) * h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma inner_dilE_dilE_neg (y : I → ℝ) (v l : EuclideanSpace ℂ I) :
     ⟪_root_.GlobalTheory.HeckePoisson.Dilation.dilE y v, _root_.GlobalTheory.HeckePoisson.Dilation.dilE (-y) l⟫ = ⟪v, l⟫ := by
@@ -77,9 +77,9 @@ open scoped RealInnerProductSpace FourierTransform in
 variable {I : Type} [Fintype I] in
 
 /- English proof (translation)
-Set `e : EuclideanSpace ℂ I ≃ₗ[ℝ] EuclideanSpace ℂ I` to `LinearEquiv.ofLinear (_root_.GlobalTheory.HeckePoisson.Dilation.dilE y) (_root_.GlobalTheory.HeckePoisson.Dilation.dilE (-y)) (LinearMap.ext fun w => by simpa using dilE_neg_apply_dilE_apply (-y) w) (LinearMap.ext fun w => dilE_neg_apply_dilE_apply y w)`. Establish `hemb : MeasurableEmbedding (_root_.GlobalTheory.HeckePoisson.Dilation.dilE y)` using `e.toContinuousLinearEquiv.toHomeomorph.measurableEmbedding`. Establish `hdet : LinearMap.det (_root_.GlobalTheory.HeckePoisson.Dilation.dilE y) ≠ 0`. Rewrite using `[det_dilE_eq_exp_sum]`. Conclude with `(Real.exp_pos _).ne'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `hemb.integral_map (μ := volume) (fun u => 𝐞 (-⟪u, _root_.GlobalTheory.HeckePoisson.Dilation.dilE (-y) l⟫) • f u)`. Rewrite `key` using `[Measure.map_linearMap_addHaar_eq_smul_addHaar _ hdet, integral_smul_measure]`. Simplify using `only [inner_dilE_dilE_neg] at key`. Simplify using `only [dilE_apply_eq_toLp_dil] at key`. Rewrite using `[Real.fourier_eq, Real.fourier_eq, ← key, det_dilE_eq_exp_sum, ENNReal.toReal_ofReal (abs_nonneg _), abs_of_pos (inv_pos.mpr (Real.exp_pos _)), ← Real.exp_neg, Complex.real_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HeckePoisson.Dilation.fourier_comp_dil (I : Type) [Fintype I] (f : EuclideanSpace ℂ I → ℂ) (y : I → ℝ)
     (l : EuclideanSpace ℂ I) :

@@ -13,7 +13,7 @@ def LeafRelDimOne : Prop := ∀ (Ω : Type) [Field Ω] {C : Scheme.{0}} (c : C �
   IsIntegral C → Smooth c → topologicalKrullDim C = 1 → SmoothOfRelativeDimension 1 c
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.smoothLocus_eq_top_iff]`. Conclude with `top_le_iff.mp fun y _ => h y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_of_stalks (Ω : Type) [Field Ω] {C : Scheme.{0}} (c : C ⟶ Sp Ω) [LocallyOfFiniteType c]
     (h : ∀ y : C, (c.stalkMap y).hom.FormallySmooth) : Smooth c := by
@@ -21,7 +21,7 @@ theorem smooth_of_stalks (Ω : Type) [Field Ω] {C : Scheme.{0}} (c : C ⟶ Sp �
   exact top_le_iff.mp fun y _ => h y
 
 /- English proof (translation)
-Distinguish the cases in `hy : y = genericPoint C`. Substitute `hy` using the available equality. Conclude with `c.genericPoint_mem_smoothLocus_of_perfectField`. Conclude with `hA Ω c hc hn hd y hy`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem stalk_smooth_all (hA : LeafStalkSmoothClosed) (Ω : Type) [Field Ω] [IsAlgClosed Ω] {C : Scheme.{0}}
     (c : C ⟶ Sp Ω) (hC : IsIntegral C) (hc : LocallyOfFiniteType c)
@@ -33,7 +33,7 @@ theorem stalk_smooth_all (hA : LeafStalkSmoothClosed) (Ω : Type) [Field Ω] [Is
   · exact hA Ω c hc hn hd y hy
 
 /- English proof (translation)
-Introduce `Ω _ _ C c hC hc hn hd`. Establish `hs : Smooth c` using `smooth_of_stalks Ω c (stalk_smooth_all hA Ω c hC hc hn hd)`. Conclude with `hB Ω c hC hs hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LeafSmoothOfNormal_of (hA : LeafStalkSmoothClosed) (hB : LeafRelDimOne) :
     LateralTheory.E.LeafModelCurveCut.LeafSmoothOfNormal := by

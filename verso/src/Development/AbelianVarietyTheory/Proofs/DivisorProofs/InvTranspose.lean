@@ -28,7 +28,7 @@ def mat (a : TensO s) : Matrix (Fin r) (Fin r) ℤ := a
 def ofMat (a : Matrix (Fin r) (Fin r) ℤ) : TensO s := a
 
 /- English proof (translation)
-Establish `h1 : ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * (s.1 : Matrix (Fin r) (Fin r) ℤ) = 1` using `Units.inv_mul s.1`. Establish `h2 : (s.1 : Matrix (Fin r) (Fin r) ℤ) * ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) = 1` using `Units.mul_inv s.1`. Establish `h3` using `congrArg Matrix.transpose h1`. Rewrite `h3` using `[Matrix.transpose_mul, s.2, Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_transpose : ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ).transpose =
     ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) := by
@@ -109,7 +109,7 @@ def Tens.smulF (T : Tens D D' W) (s : SymUnit r) (a : TensO s) (z : D'.X) : D'.X
   T.xe.symm (fun i => ∑ j, TensO.mat s a i j • T.xe z j)
 
 /- English proof (translation)
-Simplify using `[Tens.smulF]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Tens.xe_smulF (T : Tens D D' W) (s : SymUnit r) (a : TensO s) (z : D'.X) (i : Fin r) :
     T.xe (T.smulF s a z) i = ∑ j, TensO.mat s a i j • T.xe z j := by
@@ -154,7 +154,7 @@ def Tens.mod (T : Tens D D' W) (s : SymUnit r) : Module (TensO s) D'.X where
       simp
 
 /- English proof (translation)
-The claim follows from `T.xe_smulF s a z i`.
+A detailed English derivation is pending.
 -/
 theorem Tens.xe_smul (T : Tens D D' W) (s : SymUnit r) (a : TensO s) (z : D'.X) (i : Fin r) :
     letI := T.mod s
@@ -165,7 +165,7 @@ def Tens.act (T : Tens D D' W) (a : Matrix (Fin r) (Fin r) ℤ) : D'.P.A ⟶ D'.
   T.lim.lift (Fan.mk D'.P.A fun i => ∏ j, T.pr j ^ a i j)
 
 /- English proof (translation)
-The claim follows from `T.lim.fac _ ⟨i⟩`.
+A detailed English derivation is pending.
 -/
 theorem Tens.act_pr (T : Tens D D' W) (a : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) :
     T.act a ≫ T.pr i = ∏ j, T.pr j ^ a i j :=
@@ -175,7 +175,7 @@ def Tens.inc (T : Tens D D' W) (i₀ : Fin r) : D.P.A ⟶ D'.P.A :=
   T.lim.lift (Fan.mk D.P.A fun i => if i = i₀ then 𝟙 _ else 1)
 
 /- English proof (translation)
-The claim follows from `T.lim.fac _ ⟨i⟩`.
+A detailed English derivation is pending.
 -/
 theorem Tens.inc_pr' (T : Tens D D' W) (i₀ i : Fin r) :
     T.inc i₀ ≫ T.pr i = if i = i₀ then 𝟙 _ else 1 :=
@@ -192,7 +192,7 @@ end
 def TensO.idem {r : ℕ} (s : SymUnit r) (i₀ : Fin r) : TensO s := TensO.ofMat s (Matrix.single i₀ i₀ 1)
 
 /- English proof (translation)
-Establish `h : (Matrix.single i₀ i₀ (1 : ℤ) : Matrix (Fin r) (Fin r) ℤ) * Matrix.single i₀ i₀ 1 = Matrix.single i₀ i₀ 1`. Simplify using the standard rewrite rules. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem TensO.idem_mul_idem {r : ℕ} (s : SymUnit r) (i₀ : Fin r) : TensO.idem s i₀ * TensO.idem s i₀ = TensO.idem s i₀ := by
   have h : (Matrix.single i₀ i₀ (1 : ℤ) : Matrix (Fin r) (Fin r) ℤ) * Matrix.single i₀ i₀ 1 = Matrix.single i₀ i₀ 1 := by

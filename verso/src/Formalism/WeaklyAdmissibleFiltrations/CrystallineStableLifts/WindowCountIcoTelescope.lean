@@ -7,9 +7,9 @@ namespace Formalism.WeaklyAdmissibleFiltrations
 open Module
 
 /- English proof (translation)
-Proceed by induction on `k, hmk using Int.le_induction with`. Consider the case `base => simp`. Consider the case `succ k hk ih`. Establish `hset : Finset.Ico m (k + 1) = insert k (Finset.Ico m k)`. Use extensionality with `x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_Ico, Finset.mem_insert]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hset, Finset.sum_insert (by simp), ih]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem windowCount_Ico_telescope (f : ℤ → ℤ) (m k : ℤ) (hmk : m ≤ k) :
     ∑ a ∈ Finset.Ico m k, (f a - f (a + 1)) = f m - f k := by
@@ -22,7 +22,7 @@ private theorem windowCount_Ico_telescope (f : ℤ → ℤ) (m k : ℤ) (hmk : m
     ring
 
 /- English proof (translation)
-Introduce `G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ V _ _ _ _ ρ τ lo hi hlh`. Unfold `multV`. Conclude with `windowCount_Ico_telescope (fun a => (finrank LL ↥(FildR PD ρ τ a) : ℤ)) lo hi hlh`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem windowCountAlt : WindowCount := by
   intro G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ V _ _ _ _ ρ τ lo hi hlh

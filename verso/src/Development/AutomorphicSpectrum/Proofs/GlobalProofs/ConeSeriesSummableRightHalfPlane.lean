@@ -10,9 +10,9 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => exact Summable.of_finite`. Consider the case `succ r ih`. Establish `h2` using `Summable.mul_of_nonneg hf ih (fun n => h0 n) (fun m => Finset.prod_nonneg fun i _ => h0 (m i))`. Rewrite using `[← (Fin.consEquiv (fun _ : Fin (r + 1) => ℕ)).summable_iff]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[Fin.consEquiv, Fin.prod_univ_succ]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem summable_prod_fin {f : ℕ → ℝ} (hf : Summable f) (h0 : ∀ n, 0 ≤ f n) (r : ℕ) :
     Summable (fun m : Fin r → ℕ => ∏ i, f (m i)) := by
@@ -27,13 +27,11 @@ theorem summable_prod_fin {f : ℕ → ℝ} (hf : Summable f) (h0 : ∀ n, 0 ≤
     simp [Fin.consEquiv, Fin.prod_univ_succ]
 
 /- English proof (translation)
-Set `T : Finset ℝ` to `Finset.univ.image b ∪ Finset.univ.image (fun p : ι × Fin r => a p.1 p.2)`. Distinguish the cases in `hT : T.Nonempty`. Use `⟨T.min' hT, ?_, fun j => T.min'_le _ ?_, fun j i => T.min'_le _ ?_⟩` and prove the remaining obligations. Establish `h` using `T.min'_mem hT`. Simplify using `only [T, Finset.mem_union, Finset.mem_image, Finset.mem_univ, true_and] at h`.
+Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Break down `h with ⟨j, hj⟩ | ⟨⟨j, i⟩, hj⟩` into its components or cases. Rewrite using `[← hj]`. Conclude with `hb j`. Rewrite using `[← hj]`. Conclude with `ha j i`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the first alternative.
 
-Simplify using `only [T, Finset.mem_union, Finset.mem_image, Finset.mem_univ, true_and]`. Conclude with `Or.inl ⟨j, rfl⟩`. Simplify using `only [T, Finset.mem_union, Finset.mem_image, Finset.mem_univ, true_and]`. Conclude with `Or.inr ⟨(j, i), rfl⟩`. Use `⟨1, one_pos, fun j => ?_, fun j i => ?_⟩` and prove the remaining obligations.
-
-Conclude with `absurd ⟨b j, by simp only [T, Finset.mem_union, Finset.mem_image, Finset.mem_univ, true_and]; exact Or.inl ⟨j, rfl⟩⟩ hT`. Conclude with `absurd ⟨b j, by simp only [T, Finset.mem_union, Finset.mem_image, Finset.mem_univ, true_and]; exact Or.inl ⟨j, rfl⟩⟩ hT`.
+Simplify using the standard rewrite rules. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_pos_lower_bound_of_forall_pos {ι : Type} [Fintype ι] {r : ℕ} (a : ι → Fin r → ℝ) (b : ι → ℝ)
     (ha : ∀ j i, 0 < a j i) (hb : ∀ j, 0 < b j) :
@@ -56,23 +54,21 @@ private theorem exists_pos_lower_bound_of_forall_pos {ι : Type} [Fintype ι] {r
     · exact absurd ⟨b j, by simp only [T, Finset.mem_union, Finset.mem_image, Finset.mem_univ, true_and]; exact Or.inl ⟨j, rfl⟩⟩ hT
 
 /- English proof (translation)
-Introduce `ι _ r a b hr ha hb s hs`. Take `⟨c, hc0, hcb, hca⟩` from `exists_pos_lower_bound_of_forall_pos a b ha hb`. Establish `hσ0 : 0 < s.re` using `by linarith`. Establish `hf : Summable (fun k : ℕ => ((k : ℝ) + 1) ^ (-s.re))`. Establish `h` using `(summable_nat_add_iff 1).mpr (Real.summable_nat_rpow.mpr (by linarith : -s.re < -1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h` using `[Nat.cast_add, Nat.cast_one]`. Establish `hC : 0 ≤ (c ^ (-s.re)) ^ Fintype.card ι` using `pow_nonneg (Real.rpow_nonneg hc0.le _) _`. Establish `hg` using `(summable_prod_fin hf (fun k => Real.rpow_nonneg (by positivity) _) r).mul_left ((c ^ (-s.re)) ^ Fintype.card ι)`. Establish `key : ∀ {x y : ℝ}, 0 < x → x ≤ y → y ^ (-s.re) ≤ x ^ (-s.re)` using `fun hx hxy => by`. Rewrite using `[Real.rpow_neg hx.le, Real.rpow_neg (hx.le.trans hxy)]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_anti₀ (Real.rpow_pos_of_pos hx _) (Real.rpow_le_rpow hx.le hxy hσ0.le)`. Use `Summable.of_norm (Summable.of_nonneg_of_le (fun m => norm_nonneg _) (fun m => ?_) hg)` and prove the remaining obligations. Take `⟨S, hSdef⟩ : ∃ S : ℝ, S = 1 + ∑ i, (m i : ℝ)` from `⟨_, rfl⟩`. Establish `hsum0 : 0 ≤ ∑ i, (m i : ℝ)` using `Finset.sum_nonneg (fun i _ => Nat.cast_nonneg (m i))`. Establish `hS1 : 1 ≤ S` using `by rw [hSdef]; linarith`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0 : 0 < S` using `by linarith`. Establish `hL : ∀ j, c * S ≤ b j + ∑ i, a j i * (m i : ℝ)`. Introduce `j`. Rewrite using `[hSdef, mul_add, mul_one, Finset.mul_sum]`. Apply `add_le_add (hcb j)` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Conclude with `mul_le_mul_of_nonneg_right (hca j i) (Nat.cast_nonneg _)`. Establish `hLpos : ∀ j, 0 < b j + ∑ i, a j i * (m i : ℝ)` using `fun j => lt_of_lt_of_le (mul_pos hc0 hS0) (hL j)`. Establish `hv1 : S ^ (-s.re) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hS1 (by linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hv0 : 0 ≤ S ^ (-s.re)` using `Real.rpow_nonneg hS0.le _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[coneTerm, norm_prod]`. Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos (hLpos j), Complex.neg_re]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ ∏ _j : ι, (c * S) ^ (-s.re) := Finset.prod_le_prod (fun j _ => Real.rpow_nonneg (hLpos j).le _) (fun j _ => key (mul_pos hc0 hS0) (hL j))`. Use `_ = (c ^ (-s.re)) ^ Fintype.card ι * (S ^ (-s.re)) ^ Fintype.card ι := by`. Rewrite using `[Finset.prod_const, Finset.card_univ, Real.mul_rpow hc0.le hS0.le, mul_pow]`. Use `_ ≤ (c ^ (-s.re)) ^ Fintype.card ι * (S ^ (-s.re)) ^ r := mul_le_mul_of_nonneg_left (pow_le_pow_of_le_one hv0 hv1 hr) hC`. Use `_ = (c ^ (-s.re)) ^ Fintype.card ι * ∏ _i : Fin r, S ^ (-s.re) := by`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `_ ≤ (c ^ (-s.re)) ^ Fintype.card ι * ∏ i, ((m i : ℝ) + 1) ^ (-s.re) := by`. Apply `mul_le_mul_of_nonneg_left _ hC` to reduce the goal to its premises. Apply `Finset.prod_le_prod (fun i _ => hv0)` to reduce the goal to its premises. Introduce `i _`.
-
-Apply `key (by positivity)` to reduce the goal to its premises. Establish `hi : (m i : ℝ) ≤ ∑ k, (m k : ℝ)` using `Finset.single_le_sum (fun k _ => Nat.cast_nonneg (m k)) (Finset.mem_univ i)`. Rewrite using `[hSdef]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem coneTerm_summable : ∀ (ι : Type) [Fintype ι] (r : ℕ) (a : ι → Fin r → ℝ) (b : ι → ℝ),
     r ≤ Fintype.card ι → (∀ j i, 0 < a j i) → (∀ j, 0 < b j) → ∀ s : ℂ, 1 < s.re →

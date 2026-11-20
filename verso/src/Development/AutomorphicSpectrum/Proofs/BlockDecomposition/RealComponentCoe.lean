@@ -16,13 +16,13 @@ def even_im_hermitian_sub (ω : HeckeCharacter k) (w : {w : InfinitePlace k // w
   if ω.realComponent w.2 (-1) = 1 then 0 else 1
 
 /- English proof (translation)
-Use `split_ifs with hx`. Rewrite using `[ω.realComponent_eq_one_of_isOfFinOrder h w.2 hx]`. Simplify using the standard rewrite rules. Establish `hneg : (x : ℝ) < 0` using `lt_of_le_of_ne (not_lt.1 hx) x.ne_zero`. Establish `hpos : 0 < ((-x : ℝˣ) : ℝ)` using `by simpa using hneg`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : x = (-1) * (-x)` using `by simp`. Establish `hc : ω.realComponent w.2 (-1) * ω.realComponent w.2 (-1) = 1`. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[hx', map_mul, ω.realComponent_eq_one_of_isOfFinOrder h w.2 hpos, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `even_im_hermitian_sub`. Use `split_ifs with h1`. Rewrite using `[h1]`. Simplify using the standard rewrite rules. Establish `h2 : ((ω.realComponent w.2 (-1) : Circle) : ℂ) * ((ω.realComponent w.2 (-1) : Circle) : ℂ) = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Circle.coe_mul, hc]`. Simplify using the standard rewrite rules. Break down `mul_self_eq_one_iff.1 h2 with h3 | h3` into its components or cases. Conclude with `absurd (Circle.ext (by simpa using h3)) h1`. Simplify using `using h3`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem realComponent_coe (ω : HeckeCharacter k) (h : IsOfFinOrder ω)
     (w : {w : InfinitePlace k // w.IsReal}) (x : ℝˣ) :
@@ -45,7 +45,7 @@ theorem realComponent_coe (ω : HeckeCharacter k) (h : IsOfFinOrder ω)
       · simpa using h3
 
 /- English proof (translation)
-Establish `hs` using `realUnitsHom_surjective w.2 (infiniteComponent w.1 a)`. Establish `hv : ((Units.map (InfinitePlace.Completion.ringEquivRealOfIsReal w.2 : w.1.Completion →+* ℝ).toMonoidHom (infiniteComponent w.1 a) : ℝˣ) : ℝ) = (homeomorphMixedSpace k (a : InfiniteAdeleRing k)).1 w` using `rfl`. Rewrite using `[← hs, ← hv]`. Conclude with `realComponent_coe ω h w _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_factor (ω : HeckeCharacter k) (h : IsOfFinOrder ω) (a : (InfiniteAdeleRing k)ˣ)
     (w : {w : InfinitePlace k // w.IsReal}) :
@@ -59,7 +59,7 @@ theorem real_factor (ω : HeckeCharacter k) (h : IsOfFinOrder ω) (a : (Infinite
   exact realComponent_coe ω h w _
 
 /- English proof (translation)
-Rewrite using `[← complexUnitsHom_surjective w.2 (infiniteComponent w.1 a)]`. Use `ω.complexComponent_eq_one_of_isOfFinOrder h w.2 (Units.map (InfinitePlace.Completion.ringEquivComplexOfIsComplex w.2 : w.1.Completion →+* ℂ).toMonoidHom (infiniteComponent w.1 a))` as an intermediate fact. Conclude with `congrArg (fun c : Circle => (c : ℂ)) this |>.trans (by simp)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem complex_factor (ω : HeckeCharacter k) (h : IsOfFinOrder ω) (a : (InfiniteAdeleRing k)ˣ)
     (w : {w : InfinitePlace k // w.IsComplex}) :
@@ -71,9 +71,9 @@ theorem complex_factor (ω : HeckeCharacter k) (h : IsOfFinOrder ω) (a : (Infin
   exact congrArg (fun c : Circle => (c : ℂ)) this |>.trans (by simp)
 
 /- English proof (translation)
-Introduce `k _ _ ω h`. Establish `hf : IsOfFinOrder ω` using `isOfFinOrder_iff_pow_eq_one.2 ⟨2, by norm_num, by rw [pow_two]; exact h⟩`. Use `⟨even_im_hermitian_sub ω, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[HeckeCharacter.toIdele_ofInfinite]`. Establish `h1 : ((∏ w, ω.infiniteComponent w (infiniteComponent w a) : Circle) : ℂ) = ∏ w, (ω.infiniteComponent w (infiniteComponent w a) : ℂ)` using `map_prod Circle.coeHom (fun w => ω.infiniteComponent w (infiniteComponent w a)) Finset.univ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, InfinitePlace.prod_eq_prod_mul_prod, Finset.prod_eq_one (fun w _ => complex_factor ω hf a w), mul_one]`. Conclude with `Finset.prod_congr rfl fun w _ => real_factor ω hf a w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem signChar : PositivityTheory.RgEis.TF.SignChar := by
   intro k _ _ ω h

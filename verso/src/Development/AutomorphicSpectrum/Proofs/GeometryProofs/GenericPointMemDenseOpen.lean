@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.SncBase
 
 /- English proof (translation)
-Introduce `W _ Ω _ ξ U hξ hU`. Establish `hcl` using `GlobalTheory.T.isClopen_specializations_genPt W Ω ξ hξ`. Take `⟨q, hq, hqU⟩` from `hU.inter_open_nonempty _ hcl.isOpen ⟨genPt ξ, specializes_rfl⟩`. Conclude with `hq.mem_open U.isOpen hqU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem genPt_mem_of_dense_open : ∀ (W : Scheme.{0}) [IsLocallyNoetherian W] (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ W) (U : W.Opens), IsCptGen ξ → Dense (U : Set W) → genPt ξ ∈ U := by
   intro W _ Ω _ ξ U hξ hU

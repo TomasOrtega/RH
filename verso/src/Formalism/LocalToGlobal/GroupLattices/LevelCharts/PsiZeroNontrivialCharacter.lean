@@ -22,7 +22,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
     {Z : Type} [CommGroup Z]
 
 /- English proof (translation)
-Introduce `x hx` and use `((mem_awayG σE J Uloc p x).1 hx).2 v hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem awayG_le_comap (p : ℕ) (v : HeightOneSpectrum (𝓞 F)) (hv : ((p : ℕ) : 𝓞 F) ∉ v.asIdeal) :
     awayG σE J Uloc p ≤ (Uloc v).comap (bc (prV (E := E) v)) :=
@@ -39,7 +39,7 @@ def LevAtG.psiX (X : LevAtG σE J gp splitG Lb Uloc k m t j) (hg : ∀ i, gp i �
     (hp : ∀ i, Nat.Coprime p (gp i)) : awayG σE J Uloc p →* Z := (X.typeX hg ch p hp)⁻¹
 
 /- English proof (translation)
-The claim follows from `inv_inv _`.
+A detailed English derivation is pending.
 -/
 theorem LevAtG.psiX_eq (X : LevAtG σE J gp splitG Lb Uloc k m t j) (hg : ∀ i, gp i ≠ 0) (ch : CharsG F gp Z) (p : ℕ)
     (hp : ∀ i, Nat.Coprime p (gp i)) : X.psiX hg ch p hp = X.lamG hg ch p hp := inv_inv _
@@ -51,7 +51,7 @@ def lamQG (Q : Finset (HeightOneSpectrum (𝓞 F))) (lamQ : ∀ v, v ∈ Q → (
   prodChar Q Uloc lamQ (awayG σE J Uloc p) (fun v hv => awayG_le_comap p v (hQ v hv))
 
 /- English proof (translation)
-Unfold `lamQG prodChar`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem lamQG_empty (lamQ : ∀ v, v ∈ (∅ : Finset (HeightOneSpectrum (𝓞 F))) → (Uloc v →* Z)) (p : ℕ)
     (hQ : ∀ v ∈ (∅ : Finset (HeightOneSpectrum (𝓞 F))), ((p : ℕ) : 𝓞 F) ∉ v.asIdeal) :

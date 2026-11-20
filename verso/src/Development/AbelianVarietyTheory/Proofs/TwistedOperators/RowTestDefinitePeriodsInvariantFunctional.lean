@@ -32,15 +32,15 @@ def pullBil {V₁ V₂ W₁ W₂ : Type} [AddCommGroup V₁] [Module ℂ V₁] [
   map_smul' c f := by ext; simp
 
 /- English proof (translation)
-Take `⟨tc, tr, htr⟩` from `GlobalTheory.RowReal.exists_fock_transport hL ch.W`. Use `⟨D.what₂.Tau, inferInstance, inferInstance, rowSizes D, rowEntries D ch.sc.cGap, fun τ => rowEntries_good D _ τ, fun Q => PiTensorProduct.tprod ℂ (fun j => tc j (Q.1 j)) ⊗ₜ[ℂ] (PiTensorProduct.tprod ℂ (fun i => tr i (Q.2 i)) ⊗ₜ[ℂ] (Aψ.symm ch.ξ ⊗ₜ[ℂ] Bf.symm (R.prX.flip ch.cv.v)) …` and prove the remaining obligations. Introduce `t a hS β hβ M hM τ hτ d hd y`. Take `⟨Φ0, hΦ0⟩` from `GlobalTheory.RowReal.genPer_multilinear ch t a M d y (hc t a hS β hβ M hM τ hτ d hd y)`. Set `Irow` to `(LinearMap.compMultilinearMapₗ ℂ (pullBil Aψ.toLinearMap Bf.toLinearMap)) ∘ₗ (MultilinearMap.compLinearMapₗ (fun i : Fin D.R.m => (tr i).symm.toLinearMap))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `Φ` to `(Irow.compMultilinearMap Φ0).compLinearMap (fun j : Fin D.R.m => (tc j).symm.toLinearMap)`. Establish `hΦ : ∀ x₁ y₁ v₁ φ₁, Φ x₁ y₁ v₁ φ₁ = genPer ch t a M d y (fun j => (tc j).symm (x₁ j), fun i => (tr i).symm (y₁ i)) (Aψ v₁) (Bf φ₁)` using `fun x₁ y₁ v₁ φ₁ => hΦ0 (fun j => (tc j).symm (x₁ j), fun i => (tr i).symm (y₁ i)) (Aψ v₁) (Bf φ₁)`. Establish `hv` using `hS.vec β τ hτ d hd`. Establish `hinv : ∀ g x₁ y₁ v₁ φ₁, Φ (fun j => rowFock (rowEntries D ch.sc.cGap) j g (x₁ j)) (fun i => colFock (rowEntries D ch.sc.cGap) i g (y₁ i)) (psiRep (rowEntries D ch.sc.cGap) g v₁) ((baseRep (rowEntries D ch.sc.cGap)).dual g φ₁) = Φ x₁ y₁ v₁ φ₁`. Introduce `g x₁ y₁ v₁ φ₁`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hΦ, hΦ, hA, hB]`. Take `⟨h1, h2⟩` from `htr ch.S.toGridChoice g t`. Establish `e1 : ptTop ch.W g 0 = (kappa ch.W g).1 ⟨0, (rowSizes D).m_pos⟩` using `ptTop_lt ch.W g _`. Establish `e2 : ptGrid ch.W g 0 = (kappa ch.W g).2 0` using `ptGrid_le ch.W g (Nat.succ_pos _)`. Establish `key` using `GlobalTheory.RowReal.genPer_move ch hL t a M d y (fun j => ⟨_, hM.1 j j.2⟩) (fun i => ⟨_, hM.2 i (Nat.le_of_lt_succ i.2)⟩) hv.1 hv.2 (hlf.1 a) (hlf.2 t y) g (fun j => (tc j).symm (x₁ j), fun i => (tr i).symm (y₁ i)) (fun j => (tc j).symm (rowFock (rowEntries D ch.sc.cGap) j g (x₁ …`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `key` using `[e1, e2]`. Conclude with `key`. Take `⟨l, hl, hle⟩` from `GlobalTheory.RowReal.invFun_of_multilinear (rowEntries D ch.sc.cGap) Φ hinv`. Use `⟨l, hl, fun Q => ?_⟩` and prove the remaining obligations. Rewrite using `[hle]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (hΦ _ _ _ _).symm` and prove the remaining obligations. Simplify using `only [LinearEquiv.symm_apply_apply, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem invLine_of_iso [DecidableEq D.what₂.Tau] (ch : Choice R) {μ0 : T} (hL : R.toLevCh.Is μ0)
     (hlf : (∀ a ξ, ∀ γ ∈ GQ (ch.G.V (.top 0)), ∀ g,
@@ -97,11 +97,11 @@ theorem invLine_of_iso [DecidableEq D.what₂.Tau] (ch : Choice R) {μ0 : T} (hL
   rfl
 
 /- English proof (translation)
-Take `⟨C1, h1⟩` from `GlobalTheory.RowReal.gen_left`. Take `⟨C2, h2⟩` from `GlobalTheory.GenConvProof.genPer_conv`. Use `⟨max C1 C2, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x1, h1'⟩` from `h1 ε CF (le_of_max_le_left hCF)`. Take `⟨x2, h2'⟩` from `h2 ε CF (le_of_max_le_right hCF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max x1 x2, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch hsc => ?_⟩` and prove the remaining obligations. Establish `hlf` using `h1' D large₂ he (le_of_max_le_left hx) Γ Pl0 T A Ks R F hS ch hch hsc`. Establish `hc` using `h2' D large₂ he (le_of_max_le_right hx) Γ Pl0 T A Ks R F hS ch hch hsc`. Establish `hL` using `hS.core.lev`. Take `⟨Aψ, hA⟩` from `GlobalTheory.CoefPsi.coefPsi ch.W (posOnb_of_defNode ch.W A.μ0 hL (X := .top 0) (Nat.zero_le _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Bf, hB⟩` from `GlobalTheory.CoefBase.coefBase ch hS.core.models.inf hS.core.models.cX hS.core.models.prX hch.weil (posOnb_of_defNode ch.W A.μ0 hL (X := .grid 0 D.R.m) ⟨Nat.zero_le _, rfl⟩)`. Conclude with `invLine_of_iso ch hL hlf hc Aψ hA Bf hB`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem invLine_big : Big fun ch => InvLine ch := by
   obtain ⟨C1, h1⟩ := GlobalTheory.RowReal.gen_left

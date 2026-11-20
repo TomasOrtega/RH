@@ -40,7 +40,7 @@ theorem ptGlobalToLocal_apply (r : ℕ) (x : cohomology M r) (v : ι) :
   rfl
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 (compactCohomology_exact_global φ M _ (fun _ => 𝟙 _) r)`.
+A detailed English derivation is pending.
 -/
 theorem ptExact_global (r : ℕ) :
     Function.Exact (ptCompactToGlobal φ M r).hom (ptGlobalToLocal φ M r).hom :=
@@ -48,7 +48,7 @@ theorem ptExact_global (r : ℕ) :
     (compactCohomology_exact_global φ M _ (fun _ => 𝟙 _) r)
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 (compactCohomology_exact_local φ M _ (fun _ => 𝟙 _) r)`.
+A detailed English derivation is pending.
 -/
 theorem ptExact_local (r : ℕ) :
     Function.Exact (ptGlobalToLocal φ M r).hom (ptLocalToCompact φ M r).hom :=
@@ -56,7 +56,7 @@ theorem ptExact_local (r : ℕ) :
     (compactCohomology_exact_local φ M _ (fun _ => 𝟙 _) r)
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 (compactCohomology_exact_compact φ M _ (fun _ => 𝟙 _) r)`.
+A detailed English derivation is pending.
 -/
 theorem ptExact_compact (r : ℕ) :
     Function.Exact (ptLocalToCompact φ M r).hom (ptCompactToGlobal φ M (r + 1)).hom :=
@@ -67,14 +67,14 @@ def ptSha (r : ℕ) : AddSubgroup (cohomology M r) :=
   (ptGlobalToLocal φ M r).hom.toAddMonoidHom.ker
 
 /- English proof (translation)
-The claim follows from `AddMonoidHom.mem_ker`.
+A detailed English derivation is pending.
 -/
 theorem mem_ptSha {r : ℕ} (x : cohomology M r) :
     x ∈ ptSha φ M r ↔ (ptGlobalToLocal φ M r).hom x = 0 :=
   AddMonoidHom.mem_ker
 
 /- English proof (translation)
-Rewrite using `[← ptGlobalToLocal_apply, (mem_ptSha φ M x).1 hx]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ptRes_eq_zero_of_mem_ptSha {r : ℕ} {x : cohomology M r} (hx : x ∈ ptSha φ M r) (v : ι) :
     ptRes φ M v r x = 0 := by
@@ -82,21 +82,21 @@ theorem ptRes_eq_zero_of_mem_ptSha {r : ℕ} {x : cohomology M r} (hx : x ∈ pt
   rfl
 
 /- English proof (translation)
-The claim follows from `(mem_ptSha φ M _).2 ((ptExact_global φ M r _).2 ⟨x, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem ptCompactToGlobal_mem_ptSha {r : ℕ} (x : compactCohomologyRes φ M r) :
     (ptCompactToGlobal φ M r).hom x ∈ ptSha φ M r :=
   (mem_ptSha φ M _).2 ((ptExact_global φ M r _).2 ⟨x, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `(ptExact_global φ M r x).1 ((mem_ptSha φ M x).1 hx)`.
+A detailed English derivation is pending.
 -/
 theorem exists_ptCompactToGlobal_eq_of_mem_ptSha {r : ℕ} {x : cohomology M r}
     (hx : x ∈ ptSha φ M r) : ∃ y : compactCohomologyRes φ M r, (ptCompactToGlobal φ M r).hom y = x :=
   (ptExact_global φ M r x).1 ((mem_ptSha φ M x).1 hx)
 
 /- English proof (translation)
-The claim follows from `(ptExact_compact φ M r x).1 hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_ptLocalToCompact_eq_of_ptCompactToGlobal_eq_zero {r : ℕ}
     {x : compactCohomologyRes φ M (r + 1)} (hx : (ptCompactToGlobal φ M (r + 1)).hom x = 0) :
@@ -150,7 +150,7 @@ def ptLocalDualMap [Fintype ι] {r s : ℕ} (h : r + s = 2) :
       DFunLike.congr_fun ((ptLocalPairing φ D M inv v h).map_add (ξ v) (ξ' v)) _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∑ v, (ptLocalPairing φ D M inv v h (ξ v)).comp (ptRes φ (dualRep D M) v s)) y = _`. Rewrite using `[AddMonoidHom.finsetSum_apply]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ptLocalDualMap_apply [Fintype ι] {r s : ℕ} (h : r + s = 2)
     (ξ : ∀ v, cohomology (Rep.res (φ v).toMonoidHom M) r) (y : cohomology (dualRep D M) s) :
@@ -176,7 +176,7 @@ theorem ptCompactDualMap_apply {r s : ℕ} (h : r + s = 3) (x : compactCohomolog
   rfl
 
 /- English proof (translation)
-The claim follows from `compactCup_localToCompact φ (evalPairing D M) _ _ h h' ξ y`.
+A detailed English derivation is pending.
 -/
 theorem compactCupRes_ptLocalToCompact {r s : ℕ} (h : r + s = 2) (h' : r + 1 + s = 3)
     (ξ : ∀ v, cohomology (Rep.res (φ v).toMonoidHom M) r) (y : cohomology (dualRep D M) s) :
@@ -186,9 +186,9 @@ theorem compactCupRes_ptLocalToCompact {r s : ℕ} (h : r + s = 2) (h' : r + 1 +
   compactCup_localToCompact φ (evalPairing D M) _ _ h h' ξ y
 
 /- English proof (translation)
-Take `⟨ξ, rfl⟩` from `exists_ptLocalToCompact_eq_of_ptCompactToGlobal_eq_zero φ M (r := 0) hx`. Establish `h0 : (fun v => cupPairing (ptLocalEval φ D M v) (show 0 + 2 = 2 from rfl) (ξ v) (ptRes φ (dualRep D M) v 2 y)) = 0`. Use function extensionality and compare the values at `v`. Rewrite using `[ptRes_eq_zero_of_mem_ptSha φ (dualRep D M) hy v]`. Conclude with `map_zero _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ptCompactDualMap_apply, compactCupRes_ptLocalToCompact φ D M (show 0 + 2 = 2 from rfl), h0, map_zero, map_zero, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem ptCompactDualMap_eq_zero_of_ptCompactToGlobal_eq_zero {x : compactCohomologyRes φ M 1}
     (hx : (ptCompactToGlobal φ M 1).hom x = 0) {y : cohomology (dualRep D M) 2}
@@ -208,7 +208,7 @@ def ptShaLift (x : ptSha φ M 1) : compactCohomologyRes φ M 1 :=
 
 omit [Finite M] in
 /- English proof (translation)
-The claim follows from `(exists_ptCompactToGlobal_eq_of_mem_ptSha φ M x.2).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem ptCompactToGlobal_ptShaLift (x : ptSha φ M 1) :
     (ptCompactToGlobal φ M 1).hom (ptShaLift φ M x) = x :=
@@ -234,7 +234,7 @@ def ptShaPairing : ptSha φ M 1 →+ ptSha φ (dualRep D M) 2 →+ QZ where
       simp
 
 /- English proof (translation)
-Establish `hz` using `ptCompactDualMap_eq_zero_of_ptCompactToGlobal_eq_zero φ D M t (x := ptShaLift φ M ⟨_, ptCompactToGlobal_mem_ptSha φ M x⟩ - x) ?_ y.2`. Rewrite `hz` using `[map_sub, AddMonoidHom.sub_apply, sub_eq_zero]`. Conclude with `hz`. Rewrite using `[map_sub, ptCompactToGlobal_ptShaLift, sub_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptShaPairing_apply (x : compactCohomologyRes φ M 1) (y : ptSha φ (dualRep D M) 2) :
     ptShaPairing φ D M t ⟨_, ptCompactToGlobal_mem_ptSha φ M x⟩ y =

@@ -7,9 +7,9 @@ namespace GlobalTheory.HubLoc
 
 open NumberField IsDedekindDomain Module in
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos m with rfl | hpos` into its components or cases. Simplify using `using Real.log_nonneg hC`. Establish `h1 : Nat.log l m ≤ Nat.log 2 m` using `Nat.log_anti_left (by norm_num) hl`. Establish `h2 : 2 ^ Nat.log 2 m ≤ m` using `Nat.pow_log_le_self 2 hpos.ne'`. Establish `h3 : (2 : ℝ) ^ Nat.log l m ≤ C`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h4` using `Real.log_le_log (by positivity) h3`. Rewrite `h4` using `[Real.log_pow]`. Then use the resulting hypothesis.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma natLog_mul_log_two_le_log_of_le {l m : ℕ} {C : ℝ} (hl : 2 ≤ l) (hC : 1 ≤ C)
     (hm : (m : ℝ) ≤ C) : (Nat.log l m : ℝ) * Real.log 2 ≤ Real.log C := by
@@ -26,9 +26,9 @@ private lemma natLog_mul_log_two_le_log_of_le {l m : ℕ} {C : ℝ} (hl : 2 ≤ 
 
 open NumberField IsDedekindDomain Module in
 /- English proof (translation)
-Establish `hC : (1 : ℝ) ≤ 2 ^ k * Real.exp L` using `one_le_mul_of_one_le_of_one_le (one_le_pow₀ (by norm_num)) (Real.one_le_exp hL)`. Establish `h` using `natLog_mul_log_two_le_log_of_le hl hC hm`. Rewrite `h` using `[Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_exp]`. Establish `hlog : (1 : ℝ) / 2 < Real.log 2`. Use `Real.log_two_gt_d9` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `: ((Nat.log l m : ℝ) - k) * Real.log 2 ≤ L` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities.
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private lemma natLog_le_add_two_mul_of_le_two_pow_mul_exp {l m k : ℕ} {L : ℝ} (hl : 2 ≤ l) (hL : 0 ≤ L)
     (hm : (m : ℝ) ≤ 2 ^ k * Real.exp L) : (Nat.log l m : ℝ) ≤ k + 2 * L := by
@@ -47,13 +47,13 @@ private lemma natLog_le_add_two_mul_of_le_two_pow_mul_exp {l m k : ℕ} {L : ℝ
 open NumberField IsDedekindDomain Module in
 
 /- English proof (translation)
-Introduce `l t N L hl ht hN hL`. Establish `hfl : ((⌊2 * Real.exp L⌋₊ : ℕ) : ℝ) ≤ 2 * Real.exp L` using `Nat.floor_le (by positivity)`. Establish `hm : ((2 * ⌊2 * Real.exp L⌋₊ : ℕ) : ℝ) ≤ 2 ^ 2 * Real.exp L`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hK` using `natLog_le_add_two_mul_of_le_two_pow_mul_exp hl (by linarith) hm`. Unfold `_root_.GlobalTheory.HubLoc.cBnum`. Move the coercions through the operations in `at hK ⊢`. Use `set K : ℝ := (Nat.log l (2 * ⌊2 * Real.exp L⌋₊) : ℝ)`. Establish `ht' : (1 : ℝ) ≤ t` using `by exact_mod_cast ht`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN' : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hK0 : 0 ≤ K` using `Nat.cast_nonneg _`. Establish `htN : (1 : ℝ) ≤ t * N` using `one_le_mul_of_one_le_of_one_le ht' hN'`. Establish `htNL : (1 : ℝ) ≤ t * N * L` using `one_le_mul_of_one_le_of_one_le htN hL`. Establish `hL1 : L ≤ t * N * L` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht1 : (t : ℝ) ≤ t * N * L` using `by nlinarith`. Establish `hA : (t : ℝ) * N * K ≤ t * N * (2 + 2 * L)`. Apply `mul_le_mul_of_nonneg_left hK` to reduce the goal to its premises. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HubLoc.cBnum_le_thirty : ∀ (l t N : ℕ) (L : ℝ), 2 ≤ l → 1 ≤ t → 1 ≤ N →
     1 ≤ L → (_root_.GlobalTheory.HubLoc.cBnum l ⌊2 * Real.exp L⌋₊ t N : ℝ) ≤ 30 * t * N * L := by

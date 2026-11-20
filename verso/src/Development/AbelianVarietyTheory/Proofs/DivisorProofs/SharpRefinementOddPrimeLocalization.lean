@@ -19,15 +19,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc.Sep.E8Fibration
 
 /- English proof (translation)
-Introduce `W hW gQ`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.e8_act_linComb_relAmple W hW`. Take `⟨Mat, hMat⟩` from `GlobalTheory.T.e8_fibration_algebraically_closed_field W hW gQ`. Use `⟨Fin 2, inferInstance, Mat, κ, 0, 1, ?_⟩` and prove the remaining obligations. Introduce `l hl hlo j hj V V₁ _ _ _ _ _ hCN hlu Q hQ ρ hρ D e hS K _ _ ev k₀ hk₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨P', ψ, B, _, M, pr, hg, hψ, hL, hB, hpr, hE, hpt⟩` from `GlobalTheory.T.exists_polarized_specialization_field W gQ V V₁ Q hQ ρ hρ D e hS K ev`. Use `haveI : IsCommMonObj B := hB.1.comm`. Use `choose act hact1 hact2 using fun i : Fin 2 => GlobalTheory.T.exists_eighth_power_endomorphism_acting_by_matrix _ _ _ pr hpr (E8Fibration.actMat W i)`. Establish `hlK : (l : K) ≠ 0`. Use `hlu.map ev` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Take `⟨bT, pt, htor, hbij, hpair, hsh⟩` from `hMat l hl hlo j hj K k₀ hk₀ hlK P' hg B M pr hB hpr hE act hact1 hact2`. Set `t : TObj (8 * gQ) ((l ^ j) ^ 2) (Fin 2) bT (spMap k₀.subtype)` to `{ A := P'.A, grp := P'.grp, ab := P'.isAb, dim := hg ▸ P'.smoothDim, L := P'.L, isLB := P'.isLB, rigid := P'.rigid, sym := P'.sym, ample := P'.ample, ktriv := P'.ktriv, pt := pt, torsion := htor, bij := hbij, pairing := hpair, act := act, hom := hact1 }`. Use `⟨bT, t, ψ, ?_, ?_, hψ, hL, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `fun a => ⟨hsh a, hκ gQ K P' B M pr hB hpr hE act hact1 hact2 a⟩`. Conclude with `GlobalTheory.T.e8_act_prod_eq_one W hW gQ K P' B M pr hB hpr hE act hact1 hact2`. Introduce `y hy q hq1 hq2`. Take `⟨y', hy'1, hy'2⟩` from `hpt _ y hy q hq1 hq2`. Take `⟨c, hc, -⟩` from `hbij K (𝟙 _) y' hy'2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy'1, ← hc]`. Establish `h0 : (Over.homMk (𝟙 (Sp K)) (by simp) : Over.mk (𝟙 (Sp K)) ⟶ Out.baseOver (Sp K)) = 𝟙 _` using `by ext; simp`. Simplify using `only [h0, Category.id_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eighthPowerFibre_thetaObj : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (gQ : ℕ), ∃ (J : Type) (_ : Finite J)
     (Mat : J → Matrix (Fin (2 * (8 * gQ))) (Fin (2 * (8 * gQ))) ℤ) (κ : ℕ) (w w' : J),

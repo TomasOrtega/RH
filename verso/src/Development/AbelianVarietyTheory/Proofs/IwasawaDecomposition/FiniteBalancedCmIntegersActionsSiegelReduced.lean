@@ -8,19 +8,17 @@ open Matrix GlobalTheory.RedTh NumberField GlobalTheory.PolFan ReciprocityTheory
 namespace GlobalTheory.RedTh
 
 /- English proof (translation)
-Introduce `E _ _ _ H n`. Use `set S := {ρ : 𝓞 E →+* Matrix (Fin n) (Fin n) ℤ | ∃ (d : Fin n → ℝ) (u : Matrix (Fin n) (Fin n) ℝ), IsSiegel d u ∧ (∀ i, 0 < d i) ∧ ∀ c, ((ρ c).map (Int.cast : ℤ → ℝ))ᵀ * gram d u = gram d u * (ρ (H.bar c)).map (Int.cast : ℤ → ℝ)} with hSdef`. Establish `hK : ∀ c : 𝓞 E, ∃ K : ℝ, ∀ ρ : 𝓞 E →+* Matrix (Fin n) (Fin n) ℤ, (((ρ (H.bar c) * ρ c).trace : ℤ) : ℝ) ≤ K`. Introduce `c`. Take `⟨p, hpm, hp⟩` from `Algebra.IsIntegral.isIntegral (R := ℤ) (H.bar c * c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK⟩` from `GlobalTheory.T.trace_bounded_of_aeval_monic_eq_zero p hpm n`. Use `⟨K, fun ρ => ?_⟩` and prove the remaining obligations. Apply `hK` to reduce the goal to its premises. Establish `h0 : Polynomial.aeval (ρ.toIntAlgHom (H.bar c * c)) p = 0`. Rewrite using `[Polynomial.aeval_algHom_apply, Polynomial.aeval_def, hp, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h0`. Use `choose K hK using hK`. Establish `hC : ∀ c : 𝓞 E, ∃ N : ℤ, ∀ ρ ∈ S, ∀ i j, ρ c i j ∈ Set.Icc (-N) N`. Introduce `c`. Take `⟨C, hC⟩` from `GlobalTheory.T.balanced_entries_bounded_siegelReduced n (K c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨⌈C⌉, fun ρ hρ i j => ?_⟩` and prove the remaining obligations. Take `⟨d, u, hs, hpos, hrel⟩` from `hρ`. Establish `h1` using `hC (ρ c) (ρ (H.bar c)) d u hs hpos (hrel c) (hK c ρ) i j`. Establish `h2 : ((|ρ c i j| : ℤ) : ℝ) ≤ ((⌈C⌉ : ℤ) : ℝ)` using `h1.trans (Int.le_ceil C)`. Establish `h3 : |ρ c i j| ≤ ⌈C⌉` using `by exact_mod_cast h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `abs_le.mp h3`. Use `choose N hN using hC`. Set `b` to `RingOfIntegers.basis E`. Set `F : (𝓞 E →+* Matrix (Fin n) (Fin n) ℤ) → (Module.Free.ChooseBasisIndex ℤ (𝓞 E) → Fin n → Fin n → ℤ)` to `fun ρ l => ρ (b l)`. Set `T : Set (Module.Free.ChooseBasisIndex ℤ (𝓞 E) → Fin n → Fin n → ℤ)` to `Set.pi Set.univ fun l => Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Set.Icc (-N (b l)) (N (b l))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : T.Finite` using `Set.Finite.pi fun l => Set.Finite.pi fun _ => Set.Finite.pi fun _ => Set.finite_Icc _ _`. Use `Set.Finite.of_injOn (f := F) (t := T) ?_ ?_ hT` and prove the remaining obligations. Introduce `ρ hρ l _ i _ j _`. Conclude with `hN (b l) ρ hρ i j`. Introduce `ρ₁ _ ρ₂ _ h`.
-
-Establish `hl : ∀ l, ρ₁ (b l) = ρ₂ (b l)` using `fun l => congrFun h l`. Establish `hlin : ρ₁.toAddMonoidHom.toIntLinearMap = ρ₂.toAddMonoidHom.toIntLinearMap` using `b.ext fun l => by simpa using hl l`. Use `ext1 x`. Simplify using `using LinearMap.congr_fun hlin x`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finite_balanced_actions : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (n : ℕ),
     {ρ : 𝓞 E →+* Matrix (Fin n) (Fin n) ℤ | ∃ (d : Fin n → ℝ) (u : Matrix (Fin n) (Fin n) ℝ), IsSiegel d u ∧

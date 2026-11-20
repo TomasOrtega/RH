@@ -66,7 +66,7 @@ def IsTwist (ξ : (AdE F E)ˣ →* Circle) (N : ℕ) : Prop :=
     (∃ y ∈ intAdE F E, (x : AdE F E) - 1 = N • y) → ξ x = 1
 
 /- English proof (translation)
-Use `⟨?_, ?_, ⟨1, one_pos, fun _ => by simp⟩, fun _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ _ => rfl⟩` and prove the remaining obligations. Simplify using `[IsUnitaryA]`. Simplify using `[IsDetRootA]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 example {r : ℕ} (Gm : Matrix (Fin r) (Fin r) E) (N : ℕ) :
     IsUnitaryA Gm (1 : Matrix (Fin r) (Fin r) (AdE F E)) ∧ IsDetRootA (1 : Matrix (Fin r) (Fin r) (AdE F E)) 1 ∧
@@ -101,7 +101,7 @@ def AtClass (l : Level H) (Gm : Matrix (Fin r) (Fin r) E) (ι : Dw.La →ₗ[�
     LatAt ι φ (γ.map (diagE F) * h) ∧ MarkAt l ι φ t (γ.map (diagE F) * h)
 
 /- English proof (translation)
-Introduce `a _` and use `⟨0, zero_mem _, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 example (l : Level H) (ι : Dw.La →ₗ[𝓞 E] (Fin r → E)) :
     MarkAt l ι ι LinearMap.id (1 : Matrix (Fin r) (Fin r) (AdE F E)) :=

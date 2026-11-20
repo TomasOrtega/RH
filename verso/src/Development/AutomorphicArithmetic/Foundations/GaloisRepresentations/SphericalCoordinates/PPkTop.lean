@@ -7,23 +7,21 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `hF hLat hEq hPerf hInj hOnto hKp p _ D G L _ hm B`. Take `⟨A⟩` from `hF p D G L hm B.β B.sym`. Set `i : Gp G ≃* Gr G 1` to `MulEquiv.ofBijective (inclG G 1) (GlobalTheory.TorCls.AtP.inclG_one_bijective G)`. Establish `hi : ∀ g, i g = inclG G 1 g` using `fun _ => rfl`. Use `choose M hM hMl using hLat p D G L B.β A hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ lat := fun hp => M (i.symm hp), isLat := fun hp => hMl _, perf := ?_, equiv := ?_, inj := ?_, onto := ?_ }⟩` and prove the remaining obligations. Introduce `hp`. Establish `hp0 : (p : ℚ) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Establish `hp1 : (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`. Use `set g := i.symm hp with hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `set v : ℤ := (g.1 : ℚ_[p]).valuation with hv`. Use `⟨(p : ℚ) ^ (-v), zpow_pos (by exact_mod_cast (Fact.out : p.Prime).pos) _, ?_⟩` and prove the remaining obligations. Use `hPerf p D G L B.β A g _ ?_ _ (hM g)` and prove the remaining obligations. Establish `hne : (g.1 : ℚ_[p]) ≠ 0` using `g.1.ne_zero`. Rewrite using `[norm_mul, Padic.norm_eq_zpow_neg_valuation hne, ← hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Rewrite using `[norm_zpow, Padic.norm_p, inv_zpow', neg_neg, ← zpow_add₀ hp1.ne']`. Simplify using the standard rewrite rules. Introduce `y hp w`. Establish `e : i.symm (GlobalTheory.LKCx.toP1 G B.β y * hp) = locC G (y : G.Cˣ × ℚˣ) * i.symm hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul]`. Use `congr 1`. Conclude with `i.symm_apply_apply (locC G (y : G.Cˣ × ℚˣ))`. Express the relevant statement in the definitionally equal form `actY L y w ∈ M (i.symm (GlobalTheory.LKCx.toP1 G B.β y * hp)) ↔ w ∈ M (i.symm hp)`. Rewrite using `[e, hM, hM]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hEq p D G L B.β A y _ w`. Introduce `hp hp'`. Establish `e : hp⁻¹ * hp' = inclG G 1 ((i.symm hp)⁻¹ * i.symm hp')`. Rewrite using `[← hi, map_mul, map_inv, i.apply_symm_apply, i.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `M (i.symm hp) = M (i.symm hp') ↔ _`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, hKp p G, ← hInj p D G L B.β A]`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Rewrite using `[← hM, ← hM, h]`. Introduce `h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `x`. Rewrite using `[hM, hM]`. Conclude with `h x`. Introduce and unpack `N hN ⟨s, hs, hP⟩`. Take `⟨g, hg⟩` from `hOnto p D G L B.β A hm N s hN hs hP`.
-
-Use `⟨i g, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `M (i.symm (i g)) = N`. Rewrite using `[i.symm_apply_apply]`. Use extensionality with `x`. Rewrite using `[hM, hg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.pkTop_of :
     UpperTheory.Gal.W2.PFrameEx → UpperTheory.Gal.W2.PkLat → UpperTheory.Gal.W2.PkEquiv → UpperTheory.Gal.W2.PkPerf → UpperTheory.Gal.W2.PkInj → UpperTheory.Gal.W2.PkOnto → UpperTheory.Gal.W2.KpMem → UpperTheory.Gal.W2.PDicEx := by

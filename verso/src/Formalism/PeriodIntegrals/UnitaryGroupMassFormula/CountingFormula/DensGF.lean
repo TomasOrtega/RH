@@ -68,15 +68,15 @@ def FCount : Prop :=
             (Module.finrank E V) (Fintype.card ι) 0
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ M hF hC hU V _ _ H Λ hSD ϖ hϖ ι _ _ G₀ hG1 hG2 hG3 hcard`. Take `⟨a1, a2, a3⟩` from `h1 F E M.L hF hC hU ϖ hϖ`. Take `⟨hmax, hcardk, hfrob⟩` from `h2 F E M.L hF hC hU ϖ hϖ`. Take `⟨b, hbΛ, hbli, hbspan, Q, hQ, hQb⟩` from `h3 F E M hF hC hU V H Λ hSD`. Use `hF` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hmax` as an intermediate fact. Set `_ : Field (M.L.O ⧸ Ideal.span {piO M.L ϖ})` to `Ideal.Quotient.field _`. Establish `hfin : Finite (M.L.O ⧸ Ideal.span {piO M.L ϖ})`. Establish `hpos : 0 < Nat.card (M.L.O ⧸ Ideal.span {piO M.L ϖ})`. Rewrite using `[hcardk]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_pos Nat.card_pos 2`. Conclude with `(Nat.card_pos_iff.mp hpos).2`. Set `_ : Fintype (M.L.O ⧸ Ideal.span {piO M.L ϖ})` to `Fintype.ofFinite _`. Use `h4 F E M hF hC ϖ hϖ a1 a2 a3 (M.L.O ⧸ Ideal.span {piO M.L ϖ}) (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective ?_ ?_ ?_ V H Λ hSD b hbΛ hbli hbspan Q hQ hQb ι G₀ hG1 hG2 hG3 hcard` and prove the remaining obligations. Introduce `x`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, a.2, by simp [piO, mul_comm]⟩`. Introduce and unpack `⟨z, hz, hx⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨⟨z, hz⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[piO, hx, mul_comm]`. Rewrite using `[Fintype.card_eq_nat_card, hcardk]`. Introduce `x y hxy`. Conclude with `hfrob x y hxy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem locDensField_of (h1 : FLocO) (h2 : FResField) (h3 : FLatBasis) (h4 : FCount) :
     LocDensField := by

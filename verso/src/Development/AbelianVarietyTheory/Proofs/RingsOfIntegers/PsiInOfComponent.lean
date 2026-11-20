@@ -20,7 +20,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.PowDegData
 
 /- English proof (translation)
-Distinguish the cases in `h : χ = 0`. Substitute `h` using the available equality. Conclude with `(GlobalTheory.PsiZero.main R D.toPre).1 D.tau_bimult`. Conclude with `(GlobalTheory.PsiZero.main R D.toPre).2 χ I ⊤ le_top (D.psi_pos χ h)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem psiIn_top {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (D : DegData R I) (χ : D.toPre.X) :
     D.toPre.PsiIn χ ⊤ := by
@@ -30,9 +30,9 @@ theorem psiIn_top {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (D : DegDat
   · exact (GlobalTheory.PsiZero.main R D.toPre).2 χ I ⊤ le_top (D.psi_pos χ h)
 
 /- English proof (translation)
-Establish `H` using `GlobalTheory.psiIn_prod_of_isPowDeg R j D.toPre D' pD x (fun k => if k = i then J else ⊤) (fun k => by`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `using h`. Simplify `psiIn_top D (pD.xe x k))` using `[hk]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(GlobalTheory.PsiZero.main R D').2 x _ J ?_ H` and prove the remaining obligations. Use `(Ideal.prod_le_inf).trans ((Finset.inf_le (Finset.mem_univ i)).trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem psiIn_of_component {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (D : DegData R I) {j : ℕ}
     {D' : DegPre R} (pD : IsPowDeg D' D.toPre j) (x : D'.X) (J : Ideal R) (i : Fin j)
@@ -48,9 +48,9 @@ theorem psiIn_of_component {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (D
   simp
 
 /- English proof (translation)
-Introduce `hG R _ _ I D j`. Take `⟨D', ⟨pD⟩⟩` from `GlobalTheory.PowDegPre.exists_pow R D.toPre j`. Use `⟨⟨D', GlobalTheory.PsiEvenBox.main hG R j D.toPre D' pD D.psi_even, GlobalTheory.TauBimultBox.tauBimult_pow hG R j D.toPre D' pD D.tau_bimult, fun x hx => ?_, fun n => ?_⟩, ⟨pD⟩⟩` and prove the remaining obligations. Establish `: pD.xe x ≠ 0` using `fun h => hx (pD.xe.map_eq_zero_iff.1 h)`. Take `⟨i, hi⟩` from `Function.ne_iff.1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `psiIn_of_component D pD x I i (D.psi_pos _ hi)`. Establish `hf : (Set.pi Set.univ fun _ : Fin j => {χ : D.toPre.X | ¬ D.toPre.PsiIn χ (I ^ n)}).Finite` using `Set.Finite.pi fun _ => D.psi_tendsto n`. Use `(hf.preimage pD.xe.injective.injOn).subset fun x hx i _ hi => ?_` and prove the remaining obligations. Conclude with `hx (psiIn_of_component D pD x _ i hi)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (j : ℕ), ∃ D' : DegData R I, Nonempty (IsPowDeg D'.toPre D.toPre j) := by
   intro hG R _ _ I D j

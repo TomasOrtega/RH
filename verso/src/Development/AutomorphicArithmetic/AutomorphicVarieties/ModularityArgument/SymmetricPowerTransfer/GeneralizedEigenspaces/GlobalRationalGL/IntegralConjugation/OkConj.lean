@@ -13,11 +13,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.V.Z.Sym.Dict.Br
 
 /- English proof (translation)
-Establish `h1` using `HeightOneSpectrum.Support.finite (𝓞 F) a`. Establish `h2` using `HeightOneSpectrum.Support.finite (𝓞 F) a⁻¹`. Establish `h3 : ((HeightOneSpectrum.Support (𝓞 F) a) ∪ (HeightOneSpectrum.Support (𝓞 F) a⁻¹))ᶜ ∈ Filter.cofinite (α` using `Pl F) := by`. Rewrite using `[Filter.mem_cofinite, compl_compl]`. Conclude with `h1.union h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [h3] with v hv`. Simplify using `only [Set.mem_compl_iff, Set.mem_union, not_or, HeightOneSpectrum.Support, Set.mem_setOf_eq, not_lt] at hv`. Apply `le_antisymm hv.1` to reduce the goal to its premises. Use `hv.2` as an intermediate fact. Rewrite `this` using `[map_inv₀]`.
-
-Establish `h0 : v.valuation F a ≠ 0` using `by simpa using ha`. Conclude with `(inv_le_one₀ (zero_lt_iff.2 h0)).1 this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cof_val (F : Type) [Field F] [NumberField F] (a : F) (ha : a ≠ 0) :
     ∀ᶠ v : Pl F in Filter.cofinite, v.valuation F a = 1 := by
@@ -35,11 +33,9 @@ private theorem cof_val (F : Type) [Field F] [NumberField F] (a : F) (ha : a ≠
   exact (inv_le_one₀ (zero_lt_iff.2 h0)).1 this
 
 /- English proof (translation)
-Establish `h1 : Valued.v (cv v a) = 1`. Rewrite using `[← h]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v a`. Establish `h0 : cv v a ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h0]`. Simplify using `at h1`. Establish `h2 : Valued.v (cv v a)⁻¹ = 1` using `by rw [map_inv₀, h1, inv_one]`. Use `⟨⟨⟨cv v a, h1.le⟩, ⟨(cv v a)⁻¹, h2.le⟩, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `Subtype.ext (mul_inv_cancel₀ h0)`.
-
-Conclude with `Subtype.ext (inv_mul_cancel₀ h0)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem unit_of_val (F : Type) [Field F] [NumberField F] (v : Pl F) (a : F) (h : v.valuation F a = 1) :
     ∃ u : (Ov v)ˣ, algebraMap (Ov v) (Kv v) u = cv v a := by
@@ -56,9 +52,9 @@ private theorem unit_of_val (F : Type) [Field F] [NumberField F] (v : Pl F) (a :
   · exact Subtype.ext (inv_mul_cancel₀ h0)
 
 /- English proof (translation)
-Establish `key : R * P = Q * R`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, hP, hQ, hR, ← Matrix.map_mul, ← Matrix.map_mul]`. Use `congr 1`. Establish `: (Y : Matrix (Fin 2) (Fin 2) A) * ((Y⁻¹ * G * Y : GL (Fin 2) A) : Matrix (Fin 2) (Fin 2) A) = (G : Matrix (Fin 2) (Fin 2) A) * (Y : Matrix (Fin 2) (Fin 2) A)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Use `group`. Rewrite using `[Matrix.smul_mul, this, Matrix.mul_smul]`. Rewrite using `[mul_assoc, eq_inv_mul_iff_mul_eq, key]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conj_cmp {A A' : Type} [CommRing A] [CommRing A'] (ρ : A →+* A') (c : A)
     (Y G : GL (Fin 2) A) (P Q R : GL (Fin 2) A')
@@ -80,35 +76,33 @@ private theorem conj_cmp {A A' : Type} [CommRing A] [CommRing A'] (ρ : A →+* 
 end UpperTheory.V.Z.Sym.Dict.Br
 
 /- English proof (translation)
-Introduce `L _ _ _ B x hx`. Take `⟨X, hXu, hXi, hXw⟩` from `adSurj L B.toRingBr 2 x`. Establish `hΔ : B.Δ ≠ 0`. Introduce `h0`. Establish `hω : (QuadraticAlgebra.omega : Lsq (Lp L) B.Δ) * QuadraticAlgebra.omega = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp [h0]`. Establish `h1 : B.e QuadraticAlgebra.omega * B.e QuadraticAlgebra.omega = 0`. Rewrite using `[← map_mul, hω, map_zero]`. Establish `h2 : B.e QuadraticAlgebra.omega = 0` using `mul_self_eq_zero.1 h1`. Establish `h3 : (QuadraticAlgebra.omega : Lsq (Lp L) B.Δ) = 0` using `(map_eq_zero_iff _ B.e.injective).1 h2`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using congrArg QuadraticAlgebra.im h3`. Establish `h2F : (2 : Lp L) ≠ 0` using `two_ne_zero`. Establish `h2 : ∀ v : Pl (Lp L), (2 : Kv v) ≠ 0`. Introduce `v h0`. Apply `h2F` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(cv v).injective` to reduce the goal to its premises. Rewrite using `[map_ofNat, map_zero, h0]`. Establish `hΔv : ∀ v : Pl (Lp L), cv v B.Δ ≠ 0` using `fun v h0 => hΔ ((map_eq_zero _).1 h0)`. Use `choose Y c hYc hY1 hYK using fun v : Pl (Lp L) => h90 (Ov v) (Kv v) (cv v B.Δ) (h2 v) (hΔv v) (X v) (hXu v)`. Establish `hYA : Y ∈ RP (fun v : Pl (Lp L) => DX (cv v B.Δ)) fun v => KD (cv v B.Δ) (Ov v)` using `by show ∀ᶠ v in Filter.cofinite, Y v ∈ KD (cv v B.Δ) (Ov v) filter_upwards [hXi, cof_val (Lp L) B.Δ hΔ, cof_val (Lp L) 2 h2F] with v hi hv h2v`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, -, -, h4⟩` from `locBase (Lp L) v`. Use `haveI := h1`. Establish `h2n : (2 : 𝓞 (Lp L)) ∉ v.asIdeal`. Introduce `hm`. Use `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := Lp L) v (2 : 𝓞 (Lp L))).2 hm` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_ofNat] at this`. Conclude with `this.ne h2v`. Conclude with `hYK v (h4 h2n) (unit_of_val (Lp L) v B.Δ hv) hi`. Use `⟨⟨Y, hYA⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hY1 v` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Apply `B.ρ_inj v` to reduce the goal to its premises. Introduce `w h`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Use `hXw w` as an intermediate fact. Establish `h3 : mL w x = 1`. Simplify using `only [mL, hv w rfl]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, sub_eq_zero]`. Establish `h4` using `congrFun (congrFun (this.symm.trans h3) i) j`. Rewrite `h4` using `[Matrix.map_apply]`. Rewrite using `[h4]`. Distinguish the cases in `hij : i = j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`. Introduce `g`. Establish `hmem : ((⟨Y, hYA⟩ : DA B.Δ)⁻¹ * (g : DA B.Δ) * ⟨Y, hYA⟩) ∈ SA B.Δ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hg` using `g.2`. Simplify using `only [SA, Subgroup.mem_iInf] at hg ⊢`. Introduce `v`. Use `hg v` as an intermediate fact. Simplify using `only [Subgroup.mem_comap, SU, MonoidHom.mem_ker, MonoidHom.comp_apply] at this ⊢`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_inv, this, mul_one, inv_mul_cancel]`. Use `⟨⟨_, hmem⟩, rfl, ?_⟩` and prove the remaining obligations. Establish `hF` using `(uaFacts L 2)`. Establish `hext` using `hF.2.2.2.2.1`. Establish `hfin` using `hF.2.2.2.2.2.1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_mul, map_mul, map_inv]`. Apply `conj_cmp (B.ρ _ w rfl) (c (un w) : Lsq (Kv (un w)) (cv (un w) B.Δ)) ((Y (un w) : DX _) : GL (Fin 2) _) (((g : DA B.Δ).1 (un w) : DX _) : GL (Fin 2) _)` to reduce the goal to its premises. Conclude with `B.bS_loc _ w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `B.bS_loc _ w`. Rewrite using `[← hYc]`. Conclude with `hXw w`. Introduce `τ`. Establish `a1` using `((hfin _).1.1 (B.bS ⟨_, hmem⟩).2.1) τ`.
-
-Establish `a2` using `((hfin _).1.1 (B.bS g).2.1) τ`. Establish `a3` using `((hfin _).1.1 hx) τ`. Rewrite using `[a1, map_mul, map_mul, map_inv, a2, a3]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Dict.Br.okConj :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (B : Bridge L), ∀ x ∈ finU L 2, ∃ y : DA B.Δ, (∀ v, (∀ w, un w = v → cLoc w x = 1) → y.1 v = 1) ∧ ∀ g : SA B.Δ, ∃ g' : SA B.Δ, (g' : DA B.Δ) = y⁻¹ * g * y ∧ (B.bS g' : UA L 2) = x⁻¹ * B.bS g * x := by

@@ -11,16 +11,16 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.C
 
 /- English proof (translation)
-The claim follows from `(continuous_const.matrix_mulVec continuous_id).measurable`.
+A detailed English derivation is pending.
 -/
 private theorem act_meas {F : Type} [Field F] [NumberField F] (g : GL (Fin 4) (A F)) :
     Measurable fun v : V4 F => g.val *ᵥ v :=
   (continuous_const.matrix_mulVec continuous_id).measurable
 
 /- English proof (translation)
-Introduce `φ`. Establish `hL` using `(UpperTheory.ConvolutionTheory.R2.C.lamGen).2.2 (V4 F) (V4 F) (adeleMeasurePi F) (adeleMeasurePi F) T (ENNReal.ofReal r) hadd hm (fun v => ψ (b * q4 δ v)) (fun v => φ.1 (T.symm v))`. Rewrite `hL` using `[ENNReal.toReal_ofReal hr]`. Take `⟨h1, h2⟩` from `hL`. Simplify using `only [MeasurableEquiv.symm_apply_apply, hq] at h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `h3` using `hc ⟨_, hS φ⟩`. Express the relevant statement in the definitionally equal form `abelian₂ (adeleMeasurePi F) (fun v => ψ (b * q4 δ v)) (fun v => φ.1 (T.symm v)) = c * ∫ v, φ.1 (T.symm v) ∂(adeleMeasurePi F) at h3`. Express the relevant statement in the definitionally equal form `abelian₂ (adeleMeasurePi F) (fun v => ψ (b * a * q4 δ v)) φ.1 = _`. Simplify using `only [mul_assoc]`. Rewrite using `[h1, h3, h2]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -43,17 +43,17 @@ private theorem idx_of_equiv {F : Type} [Field F] [NumberField F] (δ : F) (b a 
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ D b c z hc`. Take `⟨ρ, hρ, hq, -⟩` from `UpperTheory.ConvolutionTheory.R2.D.actMat F E D`. Establish `hdet : Matrix.GeneralLinearGroup.det (aE z) = z`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Matrix.det !![(z : A E), 0; 0, 1] = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[Matrix.det_fin_two]`. Establish `hnu : nu F (aE z) = ideleNorm F E z`. Rewrite using `[nu, hdet]`. Establish `hm` using `UpperTheory.ConvolutionTheory.R2.D.measAct F E D (aE z)`. Rewrite `hm` using `[hnu]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hinv1 : ∀ v, D.act (aE z)⁻¹ (D.act (aE z) v) = v` using `fun v => by`. Rewrite using `[hρ, hρ, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Establish `hinv2 : ∀ v, D.act (aE z) (D.act (aE z)⁻¹ v) = v` using `fun v => by`. Rewrite using `[hρ, hρ, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Establish `hme : ∀ h, Measurable (D.act h)` using `fun h => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: D.act h = fun v => (ρ h).val *ᵥ v` using `funext (hρ h)`. Rewrite using `[this]`. Conclude with `act_meas (ρ h)`. Set `T : V4 F ≃ᵐ V4 F` to `{ toFun := D.act (aE z) invFun := D.act (aE z)⁻¹ left_inv := hinv1 right_inv := hinv2 measurable_toFun := hme _ measurable_invFun := hme _ }`. Use `idx_of_equiv D.δ b _ c _ (sq_nonneg _) T (fun x y => ?_) (fun v => ?_) hm (fun φ => ?_) hc` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `D.act (aE z) (x + y) = D.act (aE z) x + D.act (aE z) y`. Simplify using `only [hρ, Matrix.mulVec_add]`. Express the relevant statement in the definitionally equal form `q4 D.δ (D.act (aE z) v) = _`. Rewrite using `[hq, hnu]`. Express the relevant statement in the definitionally equal form `(fun v => φ.1 (D.act (aE z)⁻¹ v)) ∈ _`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `: (fun v => φ.1 (D.act (aE z)⁻¹ v)) = fun v => φ.1 ((ρ (aE z)⁻¹).val *ᵥ v)`. Use function extensionality and compare the values at `fun v => by rw [hρ]`. Rewrite using `[this]`. Conclude with `UpperTheory.ConvolutionTheory.R2.D.sClos F (Fin 4) (ρ (aE z)⁻¹) φ.1 φ.2`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.C.idxNorm :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (D : Dat F E) (b : A F) (c : ℂ) (z : (A E)ˣ), IsIdx D.δ b c →

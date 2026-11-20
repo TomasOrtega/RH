@@ -15,13 +15,13 @@ variable {D : D7} {S T : HSp D} {k : ℕ} {ψ : AddChar (AF D.host.F) ℂ}
 instance instTAGWO : IsTopologicalAddGroup (WO S T) := PHeisFC.tagWA T S
 
 /- English proof (translation)
-The claim follows from `Prod.ext (show (0 : Ainf D.host.F) * 0 = 0 from mul_zero _) (show (1 : Af D.host.F) * 1 = 1 from mul_one _)`.
+A detailed English derivation is pending.
 -/
 theorem eFin_idem : eFin D * eFin D = eFin D :=
   Prod.ext (show (0 : Ainf D.host.F) * 0 = 0 from mul_zero _) (show (1 : Af D.host.F) * 1 = 1 from mul_one _)
 
 /- English proof (translation)
-Establish `h` using `symplOH_add_right x (0 : WO S T) 0`. Rewrite `h` using `[add_zero]`. Take the linear combination `-h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem symplOH_zero_right (x : WO S T) : symplOH S T x 0 = 0 := by
   have h := symplOH_add_right x (0 : WO S T) 0
@@ -29,23 +29,19 @@ theorem symplOH_zero_right (x : WO S T) : symplOH S T x 0 = 0 := by
   linear_combination -h
 
 /- English proof (translation)
-Take `⟨Λ, hΛ, hψΛ⟩` from `psi_real ψ hψ`. Establish `hψc : Continuous ψ` using `hψ.1.1`. Take `⟨U, hUo, hUf⟩` from `hf.level`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set R : (Fin k → ℝ) → ℂ := fun s => dH ψ L l f (x0 + L s)`. Establish `hR : Continuous R` using `cont_real hΛ hψΛ hL hf x0 l`. Use `set F : WO S T → ℂ := fun y => ψ (-(symplOH S T x0 (eFin D • y))) * R (P y)`. Establish `hLPc : Continuous fun y => L (P y)` using `hL.1.comp hPc`. Establish `hFc : Continuous F`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : (fun y : WO S T => eFin D • y) = fun y => y - L (P y)` using `funext fun y => by`. Rewrite using `[hLP, eFin_smul_sub]`. Establish `h1 : Continuous fun y : WO S T => symplOH S T x0 (eFin D • y)`. Establish `h0 : Continuous fun y : WO S T => eFin D • y`. Rewrite using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[sub_eq_add_neg]`. Conclude with `continuous_id.add hLPc.neg`. Conclude with `(continuous_symplOH_right x0).comp h0`. Conclude with `(hψc.comp (continuous_neg.comp h1)).mul (hR.comp hPc)`. Establish `hO : ∀ᶠ y in 𝓝 (0 : WO S T), dH ψ L l f (x0 + y) = F y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOo : IsOpen ((U : Set (WO S T)) ∩ (fun y => L (P y)) ⁻¹' U)` using `hUo.inter (hUo.preimage hLPc)`. Establish `h0 : (0 : WO S T) ∈ (U : Set (WO S T)) ∩ (fun y => L (P y)) ⁻¹' U` using `⟨U.zero_mem, by show L (P 0) ∈ U; rw [map_zero, map_zero]; exact U.zero_mem⟩`. Use `filter_upwards [hOo.mem_nhds h0] with y hy`. Use `set u := y - L (P y)`. Establish `huU : u ∈ U` using `U.sub_mem hy.1 hy.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hue : u = eFin D • y` using `by simp only [u]; rw [hLP y]; exact eFin_smul_sub y`. Establish `hufin : eFin D • u = u` using `by rw [hue, smul_smul, eFin_idem]`. Establish `hfu : heisO ψ S T u f = f` using `hUf u huU ((wo_fin_iff u).mpr hufin)`. Establish `hx : x0 + y = (x0 + L (P y)) + u` using `by simp only [u]; abel`. Rewrite using `[hx, dH_smul_const l _ (Gf_fin hL u hufin hfu (x0 + L (P y))) (Gf_smooth hΛ hψΛ hL hf _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : eInf D • L (P y) = L (P y)` using `(wo_real_iff _).mp (hL.2.1 _)`. Simplify using `only [F, R]`. Rewrite using `[symplOH_add_left, symplOH_real_fin (L (P y)) u hr hufin, add_zero, hue]`. Establish `hF0 : F 0 = dH ψ L l f x0`. Simplify using `only [F, R, smul_zero, map_zero, add_zero, symplOH_zero_right, neg_zero, AddChar.map_zero_eq_one, one_mul]`.
-
-Establish `h1 : ContinuousAt (fun y => dH ψ L l f (x0 + y)) 0` using `(hFc.continuousAt).congr (hO.mono fun y hy => hy.symm)`. Establish `h2 : ContinuousAt (fun x => x - x0) x0`. Repeatedly rewrite using `[sub_eq_add_neg]`. Conclude with `(continuous_id.add continuous_const).continuousAt`. Establish `h3` using `ContinuousAt.comp_of_eq (g := fun y => dH ψ L l f (x0 + y)) h1 h2 (sub_self x0)`.
-
-Use `h3.congr (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show dH ψ L l f (x0 + (x - x0)) = dH ψ L l f x`. Rewrite using `[add_sub_cancel]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_dH (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     {L : (Fin k → ℝ) →+ WO S T} (hL : IsRealFrame L) {P : WO S T →+ (Fin k → ℝ)} (hPc : Continuous P)
@@ -94,7 +90,7 @@ theorem cont_dH (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf : IsThetaFu
   rw [add_sub_cancel]
 
 /- English proof (translation)
-Rewrite using `[dH_smul_const l _ (Gf_rat hf L γ x) (hs x), norm_mul, hψu, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_dH_rat (hψu : ∀ a, ‖ψ a‖ = 1) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     {L : (Fin k → ℝ) →+ WO S T} (hs : ∀ x, ContDiff ℝ ∞ (Gf ψ L f x)) {n : ℕ} (l : Fin n → Fin k)

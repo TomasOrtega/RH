@@ -6,15 +6,13 @@ noncomputable def UpperTheory.Reformulated.B.CyclicSubtraction.cycSub.{u_1, u_2}
       ((ρ : G → M →ₗ[ℤ] M) σ - LinearMap.id).toAddMonoidHom
 
 /- English proof (translation)
-Introduce `G M _ _ ρ σ hσ x hx g`. Establish `h0 : ρ σ x - x = 0` using `hx`. Establish `h1 : ρ σ x = x` using `sub_eq_zero.mp h0`. Set `H : Subgroup G` to `{ carrier := {g | ρ g x = x} one_mem' := by show ρ 1 x = x`. Rewrite using `[map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use the proof step `mul_mem' := by`. Introduce `a b ha hb`. Establish `ha' : ρ a x = x` using `ha`. Establish `hb' : ρ b x = x` using `hb`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ρ (a * b) x = x`. Rewrite using `[map_mul, Module.End.mul_apply, hb', ha']`. Use the proof step `inv_mem' := by`. Introduce `a ha`. Establish `ha' : ρ a x = x` using `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show ρ a⁻¹ x = x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel, map_one]`. Use `rfl }`. Establish `hle : Subgroup.zpowers σ ≤ H` using `(Subgroup.zpowers_le).mpr h1`.
-
-Conclude with `hle (hσ g)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CyclicSubtraction.apply_eq_of_cycSub_eq_zero.{u_1, u_2} :
     ∀ {G : Type u_1} {M : Type u_2} [inst : Group G] [inst_1 : AddCommGroup M] (ρ : Representation ℤ G M) {σ : G},

@@ -13,29 +13,27 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ v κ _ ψ₀ Λ hdual hsmul hbd u hu`. Take `⟨c, hc0, hc⟩` from `hbd`. Set `O` to `v.adicCompletionIntegers F`. Set `Λ' : Submodule O ((κ → Fv F v) × (κ → Fv F v))` to `{ carrier := Λ add_mem' := fun ha hb => Λ.add_mem ha hb zero_mem' := Λ.zero_mem smul_mem' := fun a l hl => hsmul (a : Fv F v) a.2 l hl }`. Set `Λ₁ : Submodule O (κ → Fv F v)` to `Λ'.map (LinearMap.fst O _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ : (κ → O) →ₗ[O] (κ → Fv F v)` to `{ toFun := fun x i => c⁻¹ * (x i : Fv F v) map_add' := by intro x y; funext i; simp [mul_add] map_smul' := by intro a x; funext i; simp [Algebra.smul_def]; ring }`. Establish `hle : Λ₁ ≤ LinearMap.range φ`. Introduce and unpack `x ⟨l, hl, rfl⟩`. Use `⟨fun i => ⟨c * l.1 i, hc l hl i⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[φ, hc0]`. Use `haveI : IsNoetherian O (LinearMap.range φ) := isNoetherian_of_isNoetherianRing_of_finite _ _`. Use `haveI : IsNoetherian O Λ₁ := isNoetherian_of_le hle`. Use `haveI : Module.IsTorsionFree O Λ₁ := inferInstance`. Use `haveI : Module.Free O Λ₁ := Module.free_of_finite_type_torsion_free'`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `b` to `Module.Free.chooseBasis O Λ₁`. Establish `hlift : ∀ i, ∃ l ∈ Λ, l.1 = (b i : κ → Fv F v)` using `fun i => by`. Take `⟨l, hl, he⟩` from `Submodule.mem_map.1 (b i).2`. Conclude with `⟨l, hl, he⟩`. Use `choose L hL hL1 using hlift`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hliO : LinearIndependent O (fun i => (b i : κ → Fv F v))` using `b.linearIndependent.map' Λ₁.subtype (Submodule.ker_subtype _)`. Establish `hliK : LinearIndependent (Fv F v) (fun i => (b i : κ → Fv F v))` using `(LinearIndependent.iff_fractionRing O (Fv F v)).1 hliO`. Take `⟨g, hg⟩` from `LinearMap.exists_extend ((Finsupp.linearCombination (Fv F v) (fun i => u ⬝ᵥ (L i).2)) ∘ₗ (Module.Basis.span hliK).repr.toLinearMap)`. Establish `hgb : ∀ i, g (b i) = u ⬝ᵥ (L i).2`. Introduce `i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `LinearMap.congr_fun hg (Module.Basis.span hliK i)`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, Module.Basis.repr_self, Finsupp.linearCombination_single, one_smul, Submodule.subtype_apply] at h1`. Rewrite `h1` using `[Module.Basis.span_apply]`. Conclude with `h1`. Set `y' : κ → Fv F v` to `fun j => g (fun k => if j = k then 1 else 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : ∀ x, x ⬝ᵥ y' = g x`. Introduce `x`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ g x]`. Simplify using `[dotProduct, smul_eq_mul, y']`. Use `⟨y', (hdual _).2 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `l hl`. Establish `hl1 : l.1 ∈ Λ₁` using `Submodule.mem_map.2 ⟨l, hl, rfl⟩`. Take `⟨a, ha⟩ : ∃ a, a = b.repr ⟨l.1, hl1⟩` from `⟨_, rfl⟩`. Establish `hsum : l.1 = ∑ i, (a i : Fv F v) • (b i : κ → Fv F v)`. Establish `h` using `congrArg Subtype.val (b.sum_repr ⟨l.1, hl1⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h` using `[← ha]`. Use `h.symm.trans ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum]`. Both sides reduce to the same expression. Set `m` to `l - ∑ i, (a i : Fv F v) • L i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : m ∈ Λ` using `Λ.sub_mem hl (Λ.sum_mem fun i _ => hsmul _ (a i).2 _ (hL i))`. Establish `hm1 : m.1 = 0`. Simplify using `[m, Prod.fst_sum, hL1, ← hsum]`. Establish `hm2 : m.2 = l.2 - ∑ i, (a i : Fv F v) • (L i).2` using `by simp [m, Prod.snd_sum]`. Establish `key : u ⬝ᵥ l.2 - l.1 ⬝ᵥ y' = u ⬝ᵥ m.2`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, hm2, dotProduct_sub, dotProduct_sum]`. Use `congr 1`. Rewrite using `[hsum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, hgb, dotProduct_smul]`.
-
-Rewrite using `[key]`. Apply `hu` to reduce the goal to its premises. Establish `: ((0 : κ → Fv F v), m.2) = m` using `Prod.ext hm1.symm rfl`. Rewrite using `[this]`. Conclude with `hm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_exists_snd_of_orth : ∀ {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {κ : Type} [Fintype κ]
     (ψ₀ : AddChar (Fv F v) ℂ) (Λ : AddSubgroup ((κ → Fv F v) × (κ → Fv F v))),

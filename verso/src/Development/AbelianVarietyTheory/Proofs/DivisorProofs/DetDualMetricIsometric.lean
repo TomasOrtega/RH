@@ -16,7 +16,7 @@ namespace GlobalTheory
 namespace VMetric
 
 /- English proof (translation)
-Establish `e : G.det = (G.det.re : ℂ)` using `Complex.ext rfl (by rw [Complex.ofReal_im]; exact (Complex.pos_iff.1 hG.det_pos).2.symm)`. Rewrite using `[dualGram, Matrix.det_transpose, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', e, ← Complex.ofReal_inv, Complex.ofReal_re, Complex.ofReal_re, Real.log_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_det_dualGram {n : Type} [Fintype n] [DecidableEq n] {G : Matrix n n ℂ}
     (hG : G.PosDef) : Real.log (dualGram G).det.re = -Real.log G.det.re := by
@@ -26,7 +26,7 @@ theorem log_det_dualGram {n : Type} [Fintype n] [DecidableEq n] {G : Matrix n n 
     ← Complex.ofReal_inv, Complex.ofReal_re, Complex.ofReal_re, Real.log_inv]
 
 /- English proof (translation)
-Use `HermLB.Isometric.symm (HermLB.isometric_of_chart (L := (det H).dual) (M := det H.dual) (fun c : Chart E r => c.dual) (fun _ => le_rfl) (fun x c c' _ _ => ?_) fun σ c y hy => ?_)` and prove the remaining obligations. Conclude with `congrArg (gm (𝟙 X) x _) (IsFrame.detUnit_dual c.isFrame c'.isFrame _ _).symm`. Express the relevant statement in the definitionally equal form `-Real.log ((h.met σ).dual.G c.dual y).det.re = -(-Real.log ((h.met σ).G c y).det.re)`. Rewrite using `[(h.met σ).dual_G c hy, log_det_dualGram ((h.met σ).posDef c y hy)]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isometric_det_dual (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (E : X.Modules)
     (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) : (det H.dual).Isometric (det H).dual := by

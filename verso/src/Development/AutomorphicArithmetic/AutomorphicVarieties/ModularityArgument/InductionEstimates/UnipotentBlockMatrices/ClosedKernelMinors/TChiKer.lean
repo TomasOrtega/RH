@@ -12,25 +12,23 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Set `b : ContDiffBump (0 : ℝ)` to `⟨1, 2, one_pos, one_lt_two⟩`. Set `ρ : ℝ → ℂ` to `fun t => (b.normed volume t : ℝ)`. Establish `hρ : Continuous ρ` using `Complex.continuous_ofReal.comp b.continuous_normed`. Establish `hρc : HasCompactSupport ρ` using `b.hasCompactSupport_normed.comp_left (g := fun x : ℝ => (x : ℂ)) rfl`. Establish `hρ1 : ∀ x : ℝ, ∫ t, ρ (x - t) = 1` using `fun x => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[integral_sub_left_eq_self ρ volume x]`. Simplify using `only [ρ]`. Rewrite using `[integral_complex_ofReal, b.integral_normed]`. Both sides reduce to the same expression. Set `h₁ : ℝ × G ≃ₜ ℝ × G` to `{ toFun := fun p => (p.1, r p.1 * p.2), invFun := fun p => (p.1, (r p.1)⁻¹ * p.2) left_inv := fun p => by simp, right_inv := fun p => by simp continuous_toFun := by fun_prop, continuous_invFun := by fun_prop }`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `h₂ : ℝ × G ≃ₜ ℝ × G` to `{ toFun := fun p => (p.1 - H p.2, p.2), invFun := fun p => (p.1 + H p.2, p.2) left_inv := fun p => by simp, right_inv := fun p => by simp continuous_toFun := by fun_prop, continuous_invFun := by fun_prop }`. Set `Ψ : (ℝ → ℂ) → ℝ × G → E` to `fun χ p => ρ (H p.2 - p.1) • χ (H p.2) • φ p.2`. Establish `hΨ : ∀ χ, Continuous χ → Continuous (Ψ χ)` using `fun χ hχ => by`. Simplify using `only [Ψ]`. Use `fun_prop`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hΨc : ∀ χ, HasCompactSupport (Ψ χ)` using `fun χ => by`. Use `HasCompactSupport.intro (((hφc.isCompact.prod hρc.isCompact).image (f := fun q : G × ℝ => (H q.1 - q.2, q.1)) (by fun_prop))) fun p hp => by_contra fun h => hp ?_` and prove the remaining obligations. Use `⟨(p.2, H p.2 - p.1), ⟨subset_tsupport _ fun h0 => h ?_, subset_tsupport _ fun h0 => h ?_⟩, by simp⟩` and prove the remaining obligations. Simplify using `only [Ψ]`. Rewrite using `[show φ p.2 = 0 from h0, smul_zero, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Ψ]`. Rewrite using `[show ρ (H p.2 - p.1) = 0 from h0, zero_smul]`. Establish `hB : ∀ χ s g, Ψ χ (h₁ (h₂ (s, g))) = χ s • Ψ 1 (h₁ (h₂ (s, g)))` using `fun χ s g => by`. Express the relevant statement in the definitionally equal form `ρ _ • χ (H (r (s - H g) * g)) • _ = χ s • ρ _ • (1 : ℂ) • _`. Rewrite using `[hrH, sub_add_cancel, one_smul, smul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc1 : Continuous fun p => Ψ 1 (h₁ (h₂ p))` using `(hΨ 1 continuous_const).comp (h₁.continuous.comp h₂.continuous)`. Establish `hs1 : HasCompactSupport fun p => Ψ 1 (h₁ (h₂ p))` using `((hΨc 1).comp_homeomorph h₁).comp_homeomorph h₂`. Use `⟨fun s => ∫ g, Ψ 1 (h₁ (h₂ (s, g))) ∂μ, ?_, ?_, fun χ hχ => ?_⟩` and prove the remaining obligations. Use `continuous_parametric_integral_of_continuous (μ := μ) (f := fun s g => Ψ 1 (h₁ (h₂ (s, g)))) hc1 (hs1.isCompact.image continuous_snd)` as an intermediate fact. Use `this.congr fun s => setIntegral_eq_integral_of_forall_compl_eq_zero fun g hg => by_contra fun h => hg ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨(s, g), subset_tsupport _ h, rfl⟩`. Use `HasCompactSupport.intro (hs1.isCompact.image continuous_fst) fun s hs => ?_` and prove the remaining obligations. Use `integral_eq_zero_of_ae (Eventually.of_forall fun g => by_contra fun h => hs ?_)` and prove the remaining obligations. Conclude with `⟨(s, g), subset_tsupport _ h, rfl⟩`. Establish `i0 : Integrable (Ψ χ) ((volume : Measure ℝ).prod μ)` using `(hΨ χ hχ).integrable_of_hasCompactSupport (hΨc χ)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i1 : Integrable (fun p => Ψ χ (h₁ p)) ((volume : Measure ℝ).prod μ)` using `((hΨ χ hχ).comp h₁.continuous).integrable_of_hasCompactSupport ((hΨc χ).comp_homeomorph h₁)`. Establish `i2 : Integrable (fun p => Ψ χ (h₁ (h₂ p))) ((volume : Measure ℝ).prod μ)` using `((hΨ χ hχ).comp (h₁.continuous.comp h₂.continuous)).integrable_of_hasCompactSupport (((hΨc χ).comp_homeomorph h₁).comp_homeomorph h₂)`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Ψ]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_smul_const, hρ1, one_smul]`. Use `_ = ∫ t, ∫ g, Ψ χ (t, g) ∂μ := (integral_integral_swap (f := fun t g => Ψ χ (t, g)) i0).symm`. Use `_ = ∫ t, ∫ g, Ψ χ (h₁ (t, g)) ∂μ := integral_congr_ae (Eventually.of_forall fun t => (integral_mul_left_eq_self (fun g => Ψ χ (t, g)) (r t)).symm)`. Use `_ = ∫ g, ∫ t, Ψ χ (h₁ (t, g)) ∂volume ∂μ := integral_integral_swap (f := fun t g => Ψ χ (h₁ (t, g))) i1`. Use `_ = ∫ g, ∫ s, Ψ χ (h₁ (h₂ (s, g))) ∂volume ∂μ := integral_congr_ae (Eventually.of_forall fun g => (integral_sub_right_eq_self (fun t => Ψ χ (h₁ (t, g))) (H g)).symm)`.
-
-Use `_ = ∫ s, ∫ g, Ψ χ (h₁ (h₂ (s, g))) ∂μ := (integral_integral_swap (f := fun s g => Ψ χ (h₁ (h₂ (s, g)))) i2).symm`. Use `_ = _ := by`. Use `integral_congr_ae (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [hB χ s]`. Rewrite using `[integral_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem disint {G E : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure]
@@ -103,9 +101,9 @@ private theorem disint {G E : Type*} [Group G] [TopologicalSpace G] [IsTopologic
           rw [integral_smul]
 
 /- English proof (translation)
-Establish `h : Submodule.span ℂ (range fun x : X => (LinearMap.proj x : (X → ℂ) →ₗ[ℂ] ℂ) ∘ₗ S) = ⊤` using `Submodule.span_eq_top_of_ne_zero fun z hz => by`. Take `⟨x, hx⟩` from `Function.ne_iff.1 ((map_ne_zero_iff S hS).2 hz)`. Conclude with `⟨_, ⟨x, rfl⟩, hx⟩`. Establish `h2 : ∀ i : Fin d, ∃ c : X →₀ ℂ, (c.sum fun x a => a • ((LinearMap.proj x : (X → ℂ) →ₗ[ℂ] ℂ) ∘ₗ S)) = (EuclideanSpace.proj i : Eu d →L[ℂ] ℂ).toLinearMap` using `fun i => Finsupp.mem_span_range_iff_exists_finsupp.1 (h ▸ Submodule.mem_top)`. Use `choose c hc using h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, fun v i => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun (hc i) v` as an intermediate fact. Simplify `this.symm` using `[Finsupp.sum, LinearMap.sum_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem coords {X : Type*} {d : ℕ} (S : Eu d →ₗ[ℂ] (X → ℂ)) (hS : Function.Injective S) :
     ∃ c : Fin d → X →₀ ℂ, ∀ (v : Eu d) (i : Fin d), v i = ∑ x ∈ (c i).support, c i x * S v x := by
@@ -122,11 +120,11 @@ private theorem coords {X : Type*} {d : ℕ} (S : Eu d →ₗ[ℂ] (X → ℂ)) 
   simpa [Finsupp.sum, LinearMap.sum_apply] using this.symm
 
 /- English proof (translation)
-Use `⟨fun s => ∑ i, (γ i s).smulRight (EuclideanSpace.single i (1 : ℂ)), ⟨continuous_clm_apply.2 fun v => ?_, ?_⟩, fun s v i => ?_⟩` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smulRight_apply]`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Establish `: Continuous fun s => γ i s v` using `(hγ i).clm_apply continuous_const`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasCompactSupport.intro (isCompact_iUnion fun i => (hγc i).isCompact) fun s hs => ?_` and prove the remaining obligations. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `: γ i s = 0` using `by_contra fun h => hs (mem_iUnion.2 ⟨i, subset_tsupport _ h⟩)`. Rewrite using `[this]`. Use `ext1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[ContinuousLinearMap.sum_apply, Finset.sum_apply, Pi.single_apply]`.
+A detailed English derivation is pending.
 -/
 private theorem assemble0 {d : ℕ} (γ : Fin d → ℝ → Eu d →L[ℂ] ℂ) (hγ : ∀ i, Continuous (γ i))
     (hγc : ∀ i, HasCompactSupport (γ i)) : ∃ β : ℝ → Eu d →L[ℂ] Eu d, Ker β ∧ ∀ s v i, β s v i = γ i s v := by
@@ -145,7 +143,7 @@ private theorem assemble0 {d : ℕ} (γ : Fin d → ℝ → Eu d →L[ℂ] ℂ) 
   · simp [ContinuousLinearMap.sum_apply, Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Establish `hi : Integrable (fun y => χ y • φ y) μ` using `(hχ.smul hφ).integrable_of_hasCompactSupport hc.smul_left`. Rewrite using `[← T.integral_comp_comm hi]`. Simplify using `only [map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem int_app {Y E F : Type*} [TopologicalSpace Y] [MeasurableSpace Y] [OpensMeasurableSpace Y] (μ : Measure Y)
     [IsFiniteMeasureOnCompacts μ] [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F] [NormedSpace ℂ F]
@@ -156,15 +154,15 @@ private theorem int_app {Y E F : Type*} [TopologicalSpace Y] [MeasurableSpace Y]
   simp only [map_smul]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `coords S hS`. Take `⟨β, hβ, hβv⟩` from `assemble0 (fun i s => ∑ x ∈ (c i).support, c i x • κ x s) (fun i => continuous_finset_sum _ fun x _ => by have := hκ x; fun_prop) fun i => by`. Use `HasCompactSupport.intro ((c i).support.isCompact_biUnion fun x _ => (hκc x).isCompact) fun s hs => ?_` and prove the remaining obligations. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Establish `: κ x s = 0` using `by_contra fun h => hs (mem_iUnion₂.2 ⟨x, hx, subset_tsupport _ h⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, smul_zero]`. Use `⟨β, hβ, fun χ v w hχ hw => ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Establish `h1 : Continuous fun s => β s v` using `hβ.1.clm_apply continuous_const`. Establish `h2 : HasCompactSupport fun s => β s v` using `hβ.2.comp_left (g := fun T : Eu d →L[ℂ] Eu d => T v) rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `int_app volume (EuclideanSpace.proj i : Eu d →L[ℂ] ℂ) hχ h1 h2`. Establish `hI : ∀ x, Integrable fun s => c i x * (χ s * κ x s v)` using `fun x => by`. Establish `h3 : Continuous fun s => κ x s v` using `(hκ x).clm_apply continuous_const`. Establish `h4 : HasCompactSupport fun s => κ x s v` using `(hκc x).comp_left (g := fun T : Eu d →L[ℂ] ℂ => T v) rfl`. Conclude with `((hχ.mul h3).integrable_of_hasCompactSupport h4.mul_left).const_mul _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ e.symm` and prove the remaining obligations. Rewrite using `[hc w i]`. Simplify using `only [hw, ← integral_const_mul]`. Rewrite using `[← integral_finset_sum _ fun x _ => hI x]`. Use `integral_congr_ae (Eventually.of_forall fun s => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = χ s * β s v i`. Rewrite using `[hβv, ContinuousLinearMap.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem assemble {X : Type*} {d : ℕ} (S : Eu d →ₗ[ℂ] (X → ℂ)) (hS : Function.Injective S)
     (κ : X → ℝ → Eu d →L[ℂ] ℂ) (hκ : ∀ x, Continuous (κ x)) (hκc : ∀ x, HasCompactSupport (κ x)) :
@@ -199,21 +197,21 @@ private theorem assemble {X : Type*} {d : ℕ} (S : Eu d →ₗ[ℂ] (X → ℂ)
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ D d A h₁ h₂ a ha`. Take `⟨hH1, -, -, hHc, -⟩` from `hpSpec (K := K)`. Take `⟨-, -, -, hlv, -⟩` from `blkLaws (K := K)`. Establish `hsec : ∀ v, IsSec τ₁ τ₂ (A.sec v) ∧ D.Fix (A.sec v)` using `fun v => (A.onto _).1 ⟨v, rfl⟩`. Set `ev : G1 K (2 + 2) → Eu d →L[ℂ] ℂ` to `fun g => LinearMap.toContinuousLinearMap ((LinearMap.proj g : (G1 K (2 + 2) → ℂ) →ₗ[ℂ] ℂ) ∘ₗ A.sec)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hev : Continuous ev` using `continuous_clm_apply.2 fun v => (hsec v).1.cont`. Establish `hr : Continuous fun t : ℝ => lv (1 : G1 K 2) 1 t`. Establish `: Continuous fun t : ℝ => ((1 : G1 K 2), (1 : G1 K 2), t)` using `by fun_prop`. Simplify `hlv.comp this` using `only [Function.comp_def]`. Establish `key : ∀ x : G1 K (2 + 2), ∃ κ : ℝ → Eu d →L[ℂ] ℂ, Continuous κ ∧ HasCompactSupport κ ∧ ∀ (χ : ℝ → ℂ) (v : Eu d), Continuous χ → tChi μ a χ (A.sec v) x = ∫ s, χ s * κ s v` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hac : Continuous fun g => a (x⁻¹ * g)` using `a.continuous.comp (continuous_const.mul continuous_id)`. Establish `has : HasCompactSupport fun g => a (x⁻¹ * g)` using `a.hasCompactSupport.comp_homeomorph (Homeomorph.mulLeft x⁻¹)`. Establish `hH : Continuous fun g => HH g - HH x` using `hHc.sub continuous_const`. Establish `hφ : Continuous fun g => a (x⁻¹ * g) • Complex.exp (2 * ((HH g - HH x : ℝ) : ℂ)) • ev g` using `hac.smul ((Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp hH))).smul hev)`. Establish `hφc : HasCompactSupport fun g => a (x⁻¹ * g) • Complex.exp (2 * ((HH g - HH x : ℝ) : ℂ)) • ev g` using `has.smul_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨κ, hκ, hκc, h⟩` from `disint μ (fun g => HH g - HH x) hH (fun t => lv 1 1 t) hr (fun t g => by`. Use `hH1 0 1 1 t g` as an intermediate fact. Rewrite `this` using `[show (nn 0 : G1 K (2 + 2)) = 1 from unipOne_zero 2, one_mul]`. Rewrite using `[this, add_sub_assoc]) _ hφ hφc`. Use `⟨κ, hκ, hκc, fun χ v hχ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `congrArg (ContinuousLinearMap.apply ℂ ℂ v) (h χ hχ)`. Rewrite `h3` using `[int_app μ _ (χ := fun g => χ (HH g - HH x)) (hχ.comp hH) hφ hφc, int_app volume _ hχ hκ hκc]`. Simplify using `only [ContinuousLinearMap.apply_apply] at h3`. Use `Eq.trans ?_ h3` and prove the remaining obligations. Unfold `tChi`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[← integral_mul_left_eq_self _ x⁻¹]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [mul_inv_cancel_left, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Establish `: ev g v = A.sec v g` using `rfl`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `choose κ hκ hκc hκe using key`. Take `⟨β, hβ, h⟩` from `assemble A.sec A.inj κ hκ hκc`. Use `⟨β, hβ, fun χ v hχ => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `(A.onto _).2 (tChiSec μ μ₂ τ₁ τ₂ D h₁ h₂ a χ (A.sec v) ha hχ (hsec v).1 (hsec v).2)`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hw, ← h χ v w hχ fun x => by rw [hw, hκe x χ v hχ]]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.tChiKer :
     ∀ {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 μ₂)) (D : TypeDat K (2 + 2)) {d : ℕ} (A : Line μ τ₁ τ₂ D d), CuspIrr μ₂ τ₁ → CuspIrr μ₂ τ₂ → ∀ a : CC K (2 + 2), D.Hecke a →

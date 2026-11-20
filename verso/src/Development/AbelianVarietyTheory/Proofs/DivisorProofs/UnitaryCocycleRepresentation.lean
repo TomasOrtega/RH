@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ K V _ _ ρ m b A h1 hmul hinv hb hA hU`. Establish `key : ∀ M N : Matrix (Fin m) (Fin m) ℂ, (∀ j, ∑ i, M i j • b i = ∑ i, N i j • b i) → M = N`. Introduce `M N h`. Use extensionality with `i j`. Use `Fintype.linearIndependent_iff.mp hb (fun i => M i j - N i j) (by simp only [sub_smul, Finset.sum_sub_distrib, h j, sub_self]) i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mp this`. Establish `hA1 : A 1 = 1`. Apply `key` to reduce the goal to its premises. Introduce `j`. Rewrite using `[← hA 1 h1 j, map_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply]`. Establish `hmul' : ∀ k ∈ K, ∀ k' ∈ K, A (k * k') = A k * A k'`. Introduce `k hk k' hk'`. Apply `key` to reduce the goal to its premises. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hA _ (hmul k hk k' hk') j, map_mul, Module.End.mul_apply, hA k' hk' j, map_sum]`. Simplify using `only [map_smul, hA k hk, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by rw [mul_comm]`. Use `⟨hA1, hmul', ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k hk`. Establish `e : A k⁻¹ * A k = 1`. Rewrite using `[← hmul' _ (hinv k hk) k hk, inv_mul_cancel, hA1]`. Establish `u : A k * star (A k) = 1` using `Matrix.mem_unitaryGroup_iff.mp (hU k hk)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem matrices_unitary_hom_of_linearIndependent :
     ∀ (G : Type) [Group G] (K : Set G) (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : G →* Module.End ℂ V) (m : ℕ) (b : Fin m → V) (A : G → Matrix (Fin m) (Fin m) ℂ), (1 : G) ∈ K → (∀ k ∈ K, ∀ k' ∈ K, k * k' ∈ K) → (∀ k ∈ K, k⁻¹ ∈ K) → LinearIndependent ℂ b → (∀ k ∈ K, ∀ j, ρ k (b j) = ∑ i, A k i j • b i) → (∀ k ∈ K, A k ∈ Matrix.unitaryGroup (Fin m) ℂ) → A 1 = 1 ∧ (∀ k ∈ K, ∀ k' ∈ K, A (k * k') = A k * A k') ∧ ∀ k ∈ K, A k⁻¹ = star (A k) := by

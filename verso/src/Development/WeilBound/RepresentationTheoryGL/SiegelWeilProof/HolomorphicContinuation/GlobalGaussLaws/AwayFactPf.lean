@@ -4,9 +4,9 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC g`. Establish `hθι : Formalism.L2.Theta.IsInfFam θ ∧ IsPlaceEmb θ τ ι`. Take `⟨-, -, -, hθ, -, -, -, -, -, -, -, -, -, hι, -⟩` from `hC`. Conclude with `⟨hθ, hι⟩`. Take `⟨x, y, hx, hg, -⟩` from `hD D n θ τ ι hθι.1 hθι.2 g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA'⟩` from `hA D n V ψ χ θ μ ω H l s ν τ ε fr ι hC x hx`. Conclude with `⟨x, y, hg, fun Ψ hΨ => ⟨A Ψ, (hA' Ψ hΨ).1, fun S hS => (hA' Ψ hΨ).2 (⇑S) ⟨S, rfl⟩⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem awayFact_of (hA : AwayAct) (hD : DecompAway) : AwayFact := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hC g

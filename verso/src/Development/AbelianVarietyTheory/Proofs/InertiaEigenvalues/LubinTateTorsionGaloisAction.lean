@@ -12,11 +12,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hx`. Use `haveI : IsSepClosed Ω := IsSepClosure.sep_closed K`. Establish `hx' : x ∈ lubinTateTorsion Ω (hπ` using `hπ) hf (n + 1) := by`. Rewrite `hx`, the goal using `[mem_lubinTateTorsion]`. Rewrite using `[pow_succ', mul_smul, hx, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hab : IsAbelianGalois K (lubinTateField Ω hπ hf (n + 1) ⊔ ⊥ : IntermediateField K Ω)`. Rewrite using `[sup_bot_eq]`. Conclude with `isAbelianGalois_of_mul_comm _ (lubinTateField_mul_comm hπ hf (n + 1))`. Establish `hmem : x.val ∈ (lubinTateField Ω hπ hf (n + 1) ⊔ ⊥ : IntermediateField K Ω)` using `le_sup_left (a := lubinTateField Ω hπ hf (n + 1)) (val_mem_lubinTateField hπ hf hx')`. Use `⟨le_maximalAbelianExtension _ hmem, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨τ, hτd, hτ⟩` from `exists_lubinTate_action (Ω := Ω) hπ hf n.succ_pos u k`. Establish `h` using `restrictAb_localArtinMap_lubinTate hπ hf n.succ_pos ⊥ bot_le u k τ hτd hτ`. Establish `e` using `congrArg (fun σ => (((σ ⟨x.val, hmem⟩ : (lubinTateField Ω hπ hf (n + 1) ⊔ ⊥ : IntermediateField K Ω))) : Ω)) h`. Rewrite `e` using `[restrictAb_apply, AlgEquiv.restrictNormalHom_apply]`. Rewrite using `[e, ← lubinTateGalPointMap_val, hτ x hx']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localArtinMap_unitUniformizerPow_lubinTateTorsion
     (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]

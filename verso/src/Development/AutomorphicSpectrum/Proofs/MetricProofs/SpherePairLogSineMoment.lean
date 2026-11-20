@@ -24,13 +24,13 @@ def dens (a : ℂ) : ℝ := Real.pi⁻¹ / (1 + ‖a‖ ^ 2) ^ 2
 def stereoMeasure : Measure ℂ := volume.withDensity fun a => ENNReal.ofReal (dens a)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => (EuclideanSpace.proj i).continuous.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_crd : Continuous crd :=
   continuous_pi fun i => (EuclideanSpace.proj i).continuous.comp continuous_subtype_val
 
 /- English proof (translation)
-Establish `: Continuous dens`. Unfold `dens`. Use `continuous_const.div (by fun_prop) fun a => ?_` and prove the remaining obligations. Check the signs of the components of the expression. Conclude with `this.measurable`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem measurable_dens : Measurable dens := by
   have : Continuous dens := by
@@ -40,7 +40,7 @@ theorem measurable_dens : Measurable dens := by
   exact this.measurable
 
 /- English proof (translation)
-Unfold `dens`. Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem dens_nonneg (a : ℂ) : 0 ≤ dens a := by
   unfold dens
@@ -48,9 +48,9 @@ theorem dens_nonneg (a : ℂ) : 0 ≤ dens a := by
   positivity
 
 /- English proof (translation)
-Establish `: Continuous nS`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Unfold `nS`. Use `Continuous.div ?_ (by fun_prop) fun a => by positivity` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp <;> fun_prop`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `this.measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_nS : Measurable nS := by
   have : Continuous nS := by
@@ -61,7 +61,7 @@ theorem measurable_nS : Measurable nS := by
   exact this.measurable
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.sphere_measure_stereographic_integral).1 f hf`.
+A detailed English derivation is pending.
 -/
 theorem stereo_hyp (f : (Fin 3 → ℝ) → ℝ) (hf : Measurable f) :
     (Integrable (fun a : ℂ => f (nS a) * dens a) ↔ Integrable (fun m : S2 => f (crd m)) sphereMeasure) ∧
@@ -69,15 +69,13 @@ theorem stereo_hyp (f : (Fin 3 → ℝ) → ℝ) (hf : Measurable f) :
   (GlobalTheory.T.sphere_measure_stereographic_integral).1 f hf
 
 /- English proof (translation)
-Use `FibreLocal.isProbabilityMeasure_sphere` as an intermediate fact. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply measurable_nS hs, Measure.map_apply continuous_crd.measurable hs]`. Establish `hpre` using `continuous_crd.measurable hs`. Establish `hpre'` using `measurable_nS hs`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Measurable (s.indicator (1 : (Fin 3 → ℝ) → ℝ))` using `measurable_one.indicator hs`. Establish `hfI : Integrable (fun m : S2 => s.indicator (1 : (Fin 3 → ℝ) → ℝ) (crd m)) sphereMeasure` using `(integrable_const (1 : ℝ)).indicator hpre`. Take `⟨h1, h2⟩` from `stereo_hyp _ hf`. Establish `hI` using `h1.2 hfI`. Establish `hnn : 0 ≤ᵐ[volume] fun a => s.indicator (1 : (Fin 3 → ℝ) → ℝ) (nS a) * dens a` using `Eventually.of_forall fun a => mul_nonneg (Set.indicator_nonneg (fun _ _ => zero_le_one) _) (dens_nonneg a)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_indicator hpre']`. Use `lintegral_congr fun a => ?_` and prove the remaining obligations. Distinguish the cases in `ha : nS a ∈ s`. Simplify using `[Set.indicator, ha]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.indicator, ha]`. Use `_ = ENNReal.ofReal (∫ a, s.indicator (1 : (Fin 3 → ℝ) → ℝ) (nS a) * dens a) := (ofReal_integral_eq_lintegral_ofReal hI hnn).symm`. Use `_ = ENNReal.ofReal (∫ m, s.indicator (1 : (Fin 3 → ℝ) → ℝ) (crd m) ∂sphereMeasure) := by rw [h2]`. Use `_ = sphereMeasure (crd ⁻¹' s) := by`. Establish `h3 : ∫ m, s.indicator (1 : (Fin 3 → ℝ) → ℝ) (crd m) ∂sphereMeasure = sphereMeasure.real (crd ⁻¹' s)` using `integral_indicator_one hpre`.
-
-Rewrite using `[h3]`. Conclude with `ofReal_measureReal`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_stereo : stereoMeasure.map nS = sphereMeasure.map crd := by
   have := FibreLocal.isProbabilityMeasure_sphere
@@ -118,13 +116,13 @@ instance : IsFiniteMeasure stereoMeasure := by
   simp
 
 /- English proof (translation)
-Use `FibreLocal.isProbabilityMeasure_sphere` as an intermediate fact. Establish `hc` using `continuous_crd.measurable`. Establish `hn` using `measurable_nS`. Establish `hmap : (stereoMeasure.prod stereoMeasure).map (Prod.map nS nS) = (sphereMeasure.prod sphereMeasure).map (Prod.map crd crd)`. Rewrite using `[← Measure.map_prod_map _ _ hn hn, ← Measure.map_prod_map _ _ hc hc, map_stereo]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : Measurable fun a => ENNReal.ofReal (dens a)` using `ENNReal.measurable_ofReal.comp measurable_dens`. Establish `hprod : stereoMeasure.prod stereoMeasure = (volume : Measure (ℂ × ℂ)).withDensity (fun p => ENNReal.ofReal (dens p.1) * ENNReal.ofReal (dens p.2))`. Rewrite using `[stereoMeasure, prod_withDensity hd hd]`. Both sides reduce to the same expression. Establish `hL : ∫ p : ℂ × ℂ, dens p.1 * dens p.2 * Φ (nS p.1, nS p.2) = ∫ p, Φ (Prod.map nS nS p) ∂(stereoMeasure.prod stereoMeasure)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hprod, integral_withDensity_eq_integral_toReal_smul₀ (by exact ((hd.comp measurable_fst).mul (hd.comp measurable_snd)).aemeasurable) (Eventually.of_forall fun p => ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.ofReal_lt_top)]`. Use `integral_congr_ae (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[smul_eq_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal (dens_nonneg _), ENNReal.toReal_ofReal (dens_nonneg _)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, ← integral_map (hn.prodMap hn).aemeasurable hΦ.aestronglyMeasurable, hmap, integral_map (hc.prodMap hc).aemeasurable hΦ.aestronglyMeasurable]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_pair (Φ : (Fin 3 → ℝ) × (Fin 3 → ℝ) → ℝ) (hΦ : Measurable Φ) :
     ∫ p : ℂ × ℂ, dens p.1 * dens p.2 * Φ (nS p.1, nS p.2) =
@@ -162,9 +160,9 @@ def pp {Ω : Type*} (u v : Ω → Fin 3 → ℝ) (Q : MvPolynomial (Fin 2) ℝ) 
   aeval ![dp u, dp v] Q
 
 /- English proof (translation)
-Establish `h : map (Pi.evalRingHom (fun _ : Ω => ℝ) p) (pp u v Q) = mapAlgHom (Pi.evalAlgHom ℝ (fun _ : Ω => ℝ) p) (pp u v Q)` using `rfl`. Rewrite using `[h, pp, ← AlgHom.comp_apply, comp_aeval]`. Use `congr 2`. Use function extensionality and compare the values at `r`. Use `fin_cases r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[dp, lin3, mapAlgHom_apply]`. Simplify using `[dp, lin3, mapAlgHom_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_pp {Ω : Type*} (u v : Ω → Fin 3 → ℝ) (Q : MvPolynomial (Fin 2) ℝ) (p : Ω) :
     map (Pi.evalRingHom (fun _ : Ω => ℝ) p) (pp u v Q) = aeval ![lin3 (u p), lin3 (v p)] Q := by
@@ -178,7 +176,7 @@ theorem map_pp {Ω : Type*} (u v : Ω → Fin 3 → ℝ) (Q : MvPolynomial (Fin 
   · simp [dp, lin3, mapAlgHom_apply]
 
 /- English proof (translation)
-Use `conv_lhs => rw [R.as_sum]`. Rewrite using `[map_sum]`. Rewrite using `[← Finset.sum_subset hS fun m _ hm => by simp [notMem_support_iff.1 hm]]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_one (coeff m R), ← smul_eq_mul, ← smul_monomial, map_smul, smul_eq_mul, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ell_eq (ℓ : MvPolynomial (Fin 3) ℝ →ₗ[ℝ] ℝ) (R : MvPolynomial (Fin 3) ℝ)
     (S : Finset (Fin 3 →₀ ℕ)) (hS : R.support ⊆ S) :
@@ -190,7 +188,7 @@ theorem ell_eq (ℓ : MvPolynomial (Fin 3) ℝ →ₗ[ℝ] ℝ) (R : MvPolynomia
   rw [← mul_one (coeff m R), ← smul_eq_mul, ← smul_monomial, map_smul, smul_eq_mul, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[← map_pp, ell_eq ℓ _ _ (support_map_subset _ _)]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ell_pp {Ω : Type*} (ℓ : MvPolynomial (Fin 3) ℝ →ₗ[ℝ] ℝ) (u v : Ω → Fin 3 → ℝ)
     (Q : MvPolynomial (Fin 2) ℝ) (p : Ω) :
@@ -202,11 +200,9 @@ theorem ell_pp {Ω : Type*} (ℓ : MvPolynomial (Fin 3) ℝ →ₗ[ℝ] ℝ) (u 
   rfl
 
 /- English proof (translation)
-Use `set φ : C(Ω, ℝ) →ₐ[ℝ] (Ω → ℝ) := ContinuousMap.coeFnAlgHom (α := Ω) (A := ℝ) ℝ`. Use `set w : Fin 2 → MvPolynomial (Fin 3) C(Ω, ℝ) := ![∑ i, X i * C ⟨fun q => u q i, (continuous_apply i).comp hu⟩, ∑ i, X i * C ⟨fun q => v q i, (continuous_apply i).comp hv⟩]`. Establish `hw : ![dp u, dp v] = fun r => mapAlgHom φ (w r)`. Use function extensionality and compare the values at `r`. Use `fin_cases r`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.zero_eta, Matrix.cons_val_zero, w, dp, mapAlgHom_apply, map_sum, map_mul, map_X, map_C]`. Both sides reduce to the same expression. Simplify using `only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_fin_one, w, dp, mapAlgHom_apply, map_sum, map_mul, map_X, map_C]`. Both sides reduce to the same expression. Rewrite using `[pp, hw, ← comp_aeval, AlgHom.comp_apply, mapAlgHom_apply, coeff_map]`.
-
-Conclude with `(coeff m (aeval w Q)).continuous`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_coeff_pp {Ω : Type*} [TopologicalSpace Ω] (u v : Ω → Fin 3 → ℝ)
     (hu : Continuous u) (hv : Continuous v) (Q : MvPolynomial (Fin 2) ℝ) (m : Fin 3 →₀ ℕ) :
@@ -227,7 +223,7 @@ theorem continuous_coeff_pp {Ω : Type*} [TopologicalSpace Ω] (u v : Ω → Fin
   exact (coeff m (aeval w Q)).continuous
 
 /- English proof (translation)
-Establish `h` using `ell_pp ℓ (Prod.fst : (Fin 3 → ℝ) × (Fin 3 → ℝ) → _) Prod.snd Q`. Simplify using `only [h]`. Conclude with `continuous_finset_sum _ fun m _ => (continuous_coeff_pp _ _ continuous_fst continuous_snd Q m).mul continuous_const`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_ell (ℓ : MvPolynomial (Fin 3) ℝ →ₗ[ℝ] ℝ) (Q : MvPolynomial (Fin 2) ℝ) :
     Continuous fun p : (Fin 3 → ℝ) × (Fin 3 → ℝ) => ℓ (aeval ![lin3 p.1, lin3 p.2] Q) := by
@@ -239,14 +235,14 @@ theorem continuous_ell (ℓ : MvPolynomial (Fin 3) ℝ →ₗ[ℝ] ℝ) (Q : MvP
 def ker (p : (Fin 3 → ℝ) × (Fin 3 → ℝ)) : ℝ := (1 / 2) * Real.log ((1 - ∑ i, p.1 i * p.2 i) / 2)
 
 /- English proof (translation)
-Establish `hc : Continuous fun p : (Fin 3 → ℝ) × (Fin 3 → ℝ) => (1 - ∑ i, p.1 i * p.2 i) / 2` using `by fun_prop`. Conclude with `(Real.measurable_log.comp hc.measurable).const_mul (1 / 2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_ker : Measurable ker := by
   have hc : Continuous fun p : (Fin 3 → ℝ) × (Fin 3 → ℝ) => (1 - ∑ i, p.1 i * p.2 i) / 2 := by fun_prop
   exact (Real.measurable_log.comp hc.measurable).const_mul (1 / 2)
 
 /- English proof (translation)
-Establish `h : ∑ i, crd p.1 i * crd p.2 i = inner ℝ (p.1 : E3) (p.2 : E3)`. Simplify using `[crd, PiLp.inner_apply, mul_comm]`. Simplify using `only [ker, wwLogWeight, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ker_crd (p : S2 × S2) : ker (crd p.1, crd p.2) = wwLogWeight p := by
   have h : ∑ i, crd p.1 i * crd p.2 i = inner ℝ (p.1 : E3) (p.2 : E3) := by
@@ -261,9 +257,9 @@ theorem pp_eq (Q : MvPolynomial (Fin 2) ℝ) :
       aeval ![dotPoly (Prod.fst : S2 × S2 → S2), dotPoly Prod.snd] Q := rfl
 
 /- English proof (translation)
-Establish `hI : ∀ m, Integrable (fun p => wwLogWeight p * coeff m (aeval ![dotPoly (Prod.fst : S2 × S2 → S2), dotPoly Prod.snd] Q) p) (sphereMeasure.prod sphereMeasure)` using `fun m => FibreLocal.integrable_mul _ (DiagFibreMoment.continuous_coeff_aeval Q m)`. Establish `h` using `fun p : S2 × S2 => ell_pp ℓ (fun p : S2 × S2 => crd p.1) (fun p => crd p.2) Q p`. Simplify using `only [pp_eq] at h`. Simplify using `only [h, Finset.mul_sum]`. Rewrite using `[integral_finset_sum _ fun m _ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify `(hI m).mul_const (ℓ (monomial m 1))]` using `only [mul_assoc]`. Rewrite using `[momentPoly, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [← mul_assoc]`. Rewrite using `[integral_mul_const, ← mul_one (∫ p, _ ∂_), ← smul_eq_mul, ← smul_monomial, map_smul, smul_eq_mul, smul_eq_mul, mul_one]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ell_moment (ℓ : MvPolynomial (Fin 3) ℝ →ₗ[ℝ] ℝ) (Q : MvPolynomial (Fin 2) ℝ) :
     ℓ (momentPoly (sphereMeasure.prod sphereMeasure) wwLogWeight
@@ -286,11 +282,11 @@ theorem ell_moment (ℓ : MvPolynomial (Fin 3) ℝ →ₗ[ℝ] ℝ) (Q : MvPolyn
     smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Introduce `ℓ Q`. Establish `hΦ : Measurable fun p : (Fin 3 → ℝ) × (Fin 3 → ℝ) => ker p * ℓ (aeval ![lin3 p.1, lin3 p.2] Q)` using `measurable_ker.mul (continuous_ell ℓ Q).measurable`. Establish `h` using `integral_pair _ hΦ`. Rewrite using `[ell_moment]`. Simplify using `only [ker_crd] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Establish `hk : logSin 1 p.1 p.2 = ker (nS p.1, nS p.2)` using `(GlobalTheory.T.sphere_measure_stereographic_integral).2 p.1 p.2`. Establish `hw : ∀ a, wS a = Real.pi * dens a` using `fun a => by`. Use `Real.pi_ne_zero` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [wS, dens]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [hk, hw]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_eq_moment : ∀ (ℓ : MvPolynomial (Fin 3) ℝ →ₗ[ℝ] ℝ) (Q : MvPolynomial (Fin 2) ℝ),
     ∫ p : ℂ × ℂ, logSin 1 p.1 p.2 * (wS p.1 * wS p.2 * ℓ (aeval ![lin3 (nS p.1), lin3 (nS p.2)] Q)) =

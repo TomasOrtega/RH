@@ -13,23 +13,23 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] {ST : Finset (Pl E)} {π : 𝓞 E}
 
 /- English proof (translation)
-Establish `e : Submodule.span (𝓞 E) (dualSet (hc.sig : E →+* E) (1 : Matrix (Fin n) (Fin n) E) (baseLb E n ST)) = rll_dLat n (star (algebraMap (𝓞 E) E π))` using `rll_baseDual_eq hc n h`. Rewrite using `[e]`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le (rll_baseLb_le n ST) ?_` and prove the remaining obligations. Rewrite using `[Submodule.smul_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `r hr m hm`. Take `⟨s, rfl⟩` from `Ideal.mem_span_singleton'.1 hr`. Take `⟨h1, h2⟩` from `(rll_mem_dLat n _ m).1 hm`. Rewrite using `[mem_stdLat]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hi : i = lastIdx n`. Substitute `hi` using the available equality. Take `⟨t, ht⟩` from `h2`. Use `⟨s * t, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ht, Pi.smul_apply, Algebra.smul_def, map_mul, hpb, mul_assoc]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `h1 i hi`. Use `⟨s * pb * t, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ht, Pi.smul_apply, Algebra.smul_def]`. Introduce `x hx`. Rewrite `hx` using `[mem_stdLat]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose r hr using hx`. Establish `hs0 : star (algebraMap (𝓞 E) E π) ≠ 0` using `h.star_ne_zero`. Establish `e1 : x = (x - Pi.single (lastIdx n) (x (lastIdx n))) + pb • (Pi.single (lastIdx n) ((star (algebraMap (𝓞 E) E π))⁻¹ * x (lastIdx n)) : Fin n → E)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = lastIdx n`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hi` using the available equality. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.single_eq_same, Pi.smul_apply, sub_self, zero_add]`. Rewrite using `[Algebra.smul_def, hpb, mul_inv_cancel_left₀ hs0]`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.single_eq_of_ne hi, Pi.smul_apply, sub_zero, smul_zero, add_zero]`. Rewrite using `[e1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.add_mem_sup ?_ (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self pb) ?_)` and prove the remaining obligations. Rewrite using `[rll_baseLb_eq n h, rll_mem_dLat]`. Use `⟨fun i hi => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.sub_apply, Pi.single_eq_of_ne hi, sub_zero]`. Conclude with `⟨r i, hr i⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.sub_apply, Pi.single_eq_same, sub_self, mul_zero]`. Conclude with `zero_mem _`. Rewrite using `[rll_mem_dLat]`. Use `⟨fun i hi => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.single_eq_of_ne hi]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `zero_mem _`. Rewrite using `[Pi.single_eq_same, mul_inv_cancel_left₀ hs0]`. Conclude with `⟨r _, hr _⟩`.
+A detailed English derivation is pending.
 -/
 theorem th_base_companion (h : BasePi ST π) (pb : 𝓞 E) (hpb : algebraMap (𝓞 E) E pb = star (algebraMap (𝓞 E) E π)) :
     baseLb E n ST ⊔ Ideal.span {pb} • Submodule.span (𝓞 E)

@@ -8,17 +8,15 @@ variable {K : Type} [Field K] {Ω : Type} [Field Ω] [Algebra K Ω] {D N : ℕ}
   (v : AddValuation Ω (WithTop ℤ))
 
 /- English proof (translation)
-Use `letI := resAlg (F := K) v`. Introduce `hbot`. Set `S : Set (IsLocalRing.ResidueField (vRing v))` to `{r | ∃ j, ∃ h : a j ∈ vRing v, r = IsLocalRing.residue (vRing v) ⟨_, h⟩}`. Set `ρL : Fin N → IntermediateField.adjoin (IsLocalRing.ResidueField ((vRing v).comap (algebraMap K Ω))) S` to `fun k => ⟨IsLocalRing.residue (vRing v) ⟨a (j0.succAbove k), ha _⟩, IntermediateField.subset_adjoin _ _ ⟨j0.succAbove k, ha _, rfl⟩⟩`. Establish `hni` using `not_inj_of_trdeg (D := D) S j0 ρL hD htr`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `hni` using `[injective_iff_map_eq_zero]`. Use `push_neg at hni`. Take `⟨G, hG0, hG⟩` from `hni`. Take `⟨f, rfl⟩` from `MvPolynomial.map_surjective (gK v hv) (gK_surj v hv) G`. Establish `hf : f ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hG (map_zero _)`. Establish `H : psiR (D` using `D) v hv j0 (fun k => ⟨a (j0.succAbove k), ha _⟩) = (MvPolynomial.map (algebraMap (IntermediateField.adjoin (IsLocalRing.ResidueField ((vRing v).comap (algebraMap K Ω))) S) (IsLocalRing.ResidueField (vRing v)))).comp (((MvPolynomial.aeval (imgR (D := D) j0 ρL)).toRingHom).comp (Mv …`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [psiR, psiT, RingHom.comp_apply, MvPolynomial.eval₂Hom_C, MvPolynomial.map_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPolynomial.aeval_C, MvPolynomial.algebraMap_apply]`. Use `congr 1`. Introduce `t`. Simplify using `only [psiR, psiT, RingHom.comp_apply, MvPolynomial.eval₂Hom_X', MvPolynomial.map_X, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPolynomial.aeval_X]`. Rewrite using `[imgR_map, imgR_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hmem : f ∈ RingHom.ker (psiR (D` using `D) v hv j0 (fun k => ⟨a (j0.succAbove k), ha _⟩)) := by`. Rewrite using `[RingHom.mem_ker, H]`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, hG0, map_zero]`. Rewrite `hmem` using `[hbot]`.
-
-Conclude with `hf (Ideal.mem_bot.mp hmem)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_ne_bot (hv : IsTrivOn K v) (j0 : Fin (N + 1)) (a : Fin (N + 1) → Ω)
     (ha : ∀ j, a j ∈ vRing v) (hD : 1 ≤ D)

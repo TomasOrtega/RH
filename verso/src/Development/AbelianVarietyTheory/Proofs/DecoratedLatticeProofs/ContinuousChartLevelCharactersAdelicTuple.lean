@@ -25,19 +25,17 @@ namespace GlobalTheory.AdForm.ChiCont
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u a Ch A hA i hi β`. Take `⟨n, hn, hfin⟩` from `hA.fin i hi β`. Set `Vs : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))` to `{v | ∃ P : SBof I a, Formalism.L2.Col.IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1)}`. Establish `hVs : Vs.Finite`. Establish `e : Vs = ⋃ P : SBof I a, {v | Formalism.L2.Col.IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1)}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `v`. Simplify using `[Vs]`. Rewrite using `[e]`. Use `Set.finite_iUnion fun P => Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce `v hv w hw`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `HeightOneSpectrum.ext (hv.trans hw.symm)`. Establish `hbad : ∀ v ∈ A.bad i, v ∈ Vs` using `fun v hv => GlobalTheory.T.exists_badPrime_over_chart_bad_place I hI hP l Z a v (hA.bad_le i hi v hv)`. Establish `hker` using `GlobalTheory.T.levelCharacter_trivial_near_one_of_local_bad_places (F := (I.rec7 l Z).host.F) (E := (I.rec7 l Z).host.E) (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) (B.T u) (I.rec7 l Z).R.f (A.bad i) (A.K i hi β).lev Vs hVs hbad (by`. Introduce and unpack `v ⟨P, hv⟩`. Take `⟨N, hN⟩` from `GlobalTheory.T.levelCharacter_eq_one_of_deep_at_splitBadPlace I hI hP l Z a (B.T u) i hi (A.bad i) (A.K i hi β).lev n hn hfin P v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.T.eventually_nhds_one_adelicMatrixCongruentOneAtPrime (F := (I.rec7 l Z).host.F) (E := (I.rec7 l Z).host.E) ((I.rec7 l Z).R.N i) N (GlobalTheory.TwU.seamP (sm I l Z) P.1)`. Conclude with `h2.mono fun w hw x hx hxw => hN x hx w hw hxw)`. Use `letI := tensTopL (F := (I.rec7 l Z).host.F) (E := (I.rec7 l Z).host.E) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)`. Use `haveI : IsTopologicalGroup (GA (I.rec7 l Z) ((I.rec7 l Z).sp.X i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Set `Φ : A.U i β →* GL (Fin ((I.rec7 l Z).R.N i)) ((I.rec7 l Z).host.E ⊗[(I.rec7 l Z).host.F] FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)` to `(GlobalTheory.ClassSumLevel.finGLHom ((I.rec7 l Z).sp.X i) (rankN (I.rec7 l Z) i hi)).comp (A.U i β).subtype`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦc : Continuous Φ` using `(GlobalTheory.ClassSumLevel.continuous_finGLHom _ _).comp continuous_subtype_val`. Establish `ht : Tendsto Φ (nhds 1) (nhds 1)`. Use `hΦc.tendsto 1` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Establish `hev : ∀ᶠ g in nhds (1 : A.U i β), (1 : ℂˣ) = A.chi i β g` using `by filter_upwards [ht.eventually hker] with g hg`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨κ, hκ⟩` from `((hA.U i hi β g.1).1 g.2).2`. Rewrite using `[hA.chi i hi β g κ hκ]`. Conclude with `(hg κ (Units.ext (hκ.trans rfl))).symm`. Establish `hχ : Continuous (A.chi i β)`. Use `continuous_of_continuousAt_one (A.chi i β) ?_` and prove the remaining obligations.
-
-Conclude with `continuousAt_const.congr hev`. Conclude with `Units.continuous_val.comp hχ`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem chi_continuous : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ (i : ℕ) (hi : i ≤ B.R.m) β, Continuous fun κ => ((A.chi i β κ : ℂˣ) : ℂ) := by
   intro B X I hI hP l Z u a Ch A hA i hi β

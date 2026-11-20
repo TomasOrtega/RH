@@ -11,14 +11,14 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_cexp_neg_four_pi_I_real (a : ℝ) : ‖cexp (-(4 * Real.pi * I) * (a : ℂ))‖ = 1 := by
   rw [Complex.norm_exp]
   simp
 
 /- English proof (translation)
-Introduce `τ i k`. Establish `h : ∀ j, ω j τ k i = conj (ω j τ i k)` using `fun j => FourierCoefficientLattice.herm_of_LZ (X := X) (g := g) (hb := hω j) τ i k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Complex.conj_ofReal, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isHermFam_real_linear_comb {r : ℕ} (X : Data E r) (g N : ℕ) (ω : Fin N → X.Ψ → Fin 2 → Fin 2 → ℂ)
     (hω : ∀ j, ω j ∈ X.LZ g) (t : Fin N → ℝ) : IsHermFam (∑ j, (t j : ℂ) • ω j) := by
@@ -27,83 +27,73 @@ theorem isHermFam_real_linear_comb {r : ℕ} (X : Data E r) (g N : ℕ) (ω : Fi
   simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Complex.conj_ofReal, h]
 
 /- English proof (translation)
-Introduce `r X u hu hΛ la P hP hχ1 ν χ x hx`. Establish `hiso : ∀ i k, herm X.Gm (u i) (u k) = 0` using `hu.1`. Establish `hu0 : herm X.Gm (u 0) (u 0) = 0` using `hiso 0 0`. Establish `hper : ∀ b ∈ X.LZ X.g, ∀ y ∈ X.dom, P (X.Zb u b y) = P y` using `(h2 r X u hu hΛ).2.1 la P hP hχ1`. Establish `hcov : ∀ b, IsHermFam b → ∀ y ∈ X.dom, X.fz u X.g χ P (X.Zb u b y) = cexp (4 * Real.pi * I * X.pairR χ b) * X.fz u X.g χ P y` using `(h3 r X.toData u X.g hu X.g_pos la P hP.1 hP.2.1 hper χ).1.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hf : IsHermFam χ ∧ X.IsFreqZ X.g χ`. Use `swap`. Establish `e : ∀ G, X.fz u X.g χ G x = 0` using `fun G => by simp only [Data.fz, if_neg hf]`. Rewrite using `[e, e]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : ∃ ω, X.IsLZBasis X.g ω`. Use `swap`. Establish `e : ∀ G, X.fz u X.g χ G x = 0` using `fun G => by simp only [Data.fz, if_pos hf, dif_neg hb]`. Rewrite using `[e, e]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ω := hb.choose with hωdef`. Establish `hωLZ : ∀ j, ω j ∈ X.LZ X.g` using `hb.choose_spec.1`. Use `set C : Set (Fin (4 * Fintype.card X.Ψ) → ℝ) := Set.pi Set.univ (fun _ => Set.Icc (0 : ℝ) 1) with hC`. Use `set B : (Fin (4 * Fintype.card X.Ψ) → ℝ) → X.Ψ → Fin 2 → Fin 2 → ℂ := fun t => ∑ j, (t j : ℂ) • ω j with hB`. Establish `hBh : ∀ t, IsHermFam (B t)` using `fun t => isHermFam_real_linear_comb X.toData X.g _ ω hωLZ t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hfz : ∀ (G : Frame X.Ψ r → ℂ) y, X.fz u X.g χ G y = ∫ t in C, G (X.Zb u (B t) y) * cexp (-(4 * Real.pi * I) * X.pairR χ (B t))`. Introduce `G y`. Simplify using `only [Data.fz, if_pos hf, dif_pos hb]`. Both sides reduce to the same expression. Use `set χr : X.Ψ → ℝ := fun τ => (χ τ 0 0).re with hχrdef`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hflowcov : ∀ (s : X.Ψ → ℝ), ∀ y ∈ X.dom, X.fz u X.g χ P (X.flow (u 0) (cR X.toData s) y) = cexp (4 * Real.pi * I * ((∑ τ, χr τ * s τ : ℝ) : ℂ)) * X.fz u X.g χ P y`. Introduce `s y hy`. Rewrite using `[flow_eq_Zb X.toData u s y, hcov _ (diag_unit_family_hermitian X.toData s) y hy, real_pairing_diag_unit]`. Establish `hpinv : ∀ p ∈ X.periods la, X.fz u X.g χ P (X.flow (u 0) (cR X.toData p) x) = X.fz u X.g χ P x`. Introduce `p hp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hfz, hfz]`. Use `setIntegral_congr_fun (MeasurableSet.univ_pi fun _ => measurableSet_Icc) fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← flow_Zb_comm X.toData u hiso, sec_periodic X.toData la P hP (hΛ 0) hu0 hp _ (Data.Zb_dom X.toData u hiso _ (hBh t) hx)]`. Establish `hfreq : X.fz u X.g χ P x ≠ 0 → ∀ p ∈ X.periods la, ∃ k : ℤ, 2 * ∑ τ, χr τ * p τ = k`. Introduce `hne p hp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hflowcov p x hx`. Rewrite `h1` using `[hpinv p hp]`. Establish `h2 : cexp (4 * Real.pi * I * ((∑ τ, χr τ * p τ : ℝ) : ℂ)) = 1` using `mul_right_cancel₀ hne (h1.symm.trans (one_mul _).symm)`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 h2`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hpi : (2 * Real.pi * I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero, I_ne_zero]`. Establish `h3' : ((2 * ∑ τ, χr τ * p τ : ℝ) : ℂ) = (n : ℂ)`. Apply `mul_right_cancel₀ hpi` to reduce the goal to its premises. Move the coercions through the operations in `at hn ⊢`. Take the linear combination `hn`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h3'` after adjusting the coercions. Establish `hcond : (∀ τ, χ τ 0 0 = (ν τ : ℂ)) ↔ χr = ν`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify `congrArg Complex.re (h τ)` using `[hχrdef]`. Introduce `h τ`. Establish `h1 : χ τ 0 0 = ((χ τ 0 0).re : ℂ)` using `(Complex.conj_eq_iff_re.1 (hf.1 τ 0 0).symm).symm`. Rewrite using `[h1]`. Conclude with `congrArg (fun z : ℝ => (z : ℂ)) (congrFun h τ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hν : ∀ p ∈ X.periods la, ∃ k : ℤ, 2 * ∑ τ, ν τ * p τ = k`. Use `swap`. Establish `hfj0 : X.fj la (u 0) ν P = fun _ => 0`. Use function extensionality and compare the values at `y`. Simplify using `only [Data.fj, if_neg hν]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hL : X.fz u X.g χ (X.fj la (u 0) ν P) x = 0`. Rewrite using `[hfj0, hfz]`. Simplify using the standard rewrite rules. Rewrite using `[hL]`. Use `split_ifs with hc`.
+Supply the required witnesses or components. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Apply `hν` to reduce the goal to its premises. Introduce `p hp`. Establish `hr` using `hcond.1 hc`. Take `⟨k, hk⟩` from `hfreq (fun h => hne h.symm) p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨k, by rw [← hr]; exact hk⟩`. Both sides reduce to the same expression. Establish `hDe` using `fd_exists X.toData la`. Use `set D := hDe.choose with hDdef`. Take `⟨hDm, hDfd, hDpos, hDfin⟩` from `hDe.choose_spec`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfj : ∀ y, X.fj la (u 0) ν P y = ((volume D).toReal : ℂ)⁻¹ * ∫ s in D, P (X.flow (u 0) (cR X.toData s) y) * cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * s τ)`. Introduce `y`. Simplify using `only [Data.fj, if_pos hν, dif_pos hDe]`. Both sides reduce to the same expression. Establish `hCm : MeasurableSet C` using `MeasurableSet.univ_pi fun _ => measurableSet_Icc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hCc : IsCompact C` using `isCompact_univ_pi fun _ => isCompact_Icc`. Use `set F : (Fin (4 * Fintype.card X.Ψ) → ℝ) → (X.Ψ → ℝ) → ℂ := fun t s => P (X.flow (u 0) (cR X.toData s) (X.Zb u (B t) x)) * cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * s τ) * cexp (-(4 * Real.pi * I) * X.pairR χ (B t)) with hF`. Establish `hherm_add : ∀ a b : X.Ψ → Fin 2 → Fin 2 → ℂ, IsHermFam a → IsHermFam b → IsHermFam (a + b)`. Introduce `a b ha hb' τ i k`. Simplify using `only [Pi.add_apply, map_add, ha τ i k, hb' τ i k]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hflowZ : ∀ (s : X.Ψ → ℝ) t, X.flow (u 0) (cR X.toData s) (X.Zb u (B t) x) = X.Zb u (e00 X.toData s + B t) x`. Introduce `s t`. Rewrite using `[flow_eq_Zb, Data.Zb_Zb X.toData u hiso]`. Establish `hdom : ∀ (s : X.Ψ → ℝ) t, X.flow (u 0) (cR X.toData s) (X.Zb u (B t) x) ∈ X.dom`. Introduce `s t`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hflowZ]`. Conclude with `Data.Zb_dom X.toData u hiso _ (hherm_add _ _ (diag_unit_family_hermitian X.toData s) (hBh t)) hx`. Establish `he00c : Continuous (e00 X.toData)`. Use `continuous_pi fun τ => continuous_pi fun i => continuous_pi fun k => ?_` and prove the remaining obligations. Simplify using `only [e00]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Use `fun_prop`. Conclude with `continuous_const`. Establish `hBc : Continuous B`. Simplify using `only [hB]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `fun_prop`. Establish `hPc : Continuous fun q : (Fin (4 * Fintype.card X.Ψ) → ℝ) × (X.Ψ → ℝ) => P (X.flow (u 0) (cR X.toData q.2) (X.Zb u (B q.1) x))`. Establish `e : (fun q : (Fin (4 * Fintype.card X.Ψ) → ℝ) × (X.Ψ → ℝ) => P (X.flow (u 0) (cR X.toData q.2) (X.Zb u (B q.1) x))) = fun q => P (X.Zb u (e00 X.toData q.2 + B q.1) x)`. Use function extensionality and compare the values at `q`. Rewrite using `[hflowZ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[e]`. Use `hP.1.continuousOn.comp_continuous ((Zb_cont X.toData u x).comp ?_) fun q => ?_` and prove the remaining obligations. Conclude with `(he00c.comp continuous_snd).add (hBc.comp continuous_fst)`. Conclude with `Data.Zb_dom X.toData u hiso _ (hherm_add _ _ (diag_unit_family_hermitian X.toData q.2) (hBh q.1)) hx`. Establish `hFc : Continuous (Function.uncurry F)`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hF, Function.uncurry_def]`. Use `(hPc.mul ?_).mul ?_` and prove the remaining obligations. Use `fun_prop`. Establish `: Continuous fun q : (Fin (4 * Fintype.card X.Ψ) → ℝ) × (X.Ψ → ℝ) => X.pairR χ (B q.1)`. Simplify using `only [Data.pairR]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `fun_prop`. Use `fun_prop`. Take `⟨K, hK, hKrep⟩` from `compact_reps X.toData la`. Take `⟨M, hM⟩` from `(hK.prod hCc).exists_bound_of_continuousOn ((continuous_norm.comp (hPc.comp (continuous_snd.prodMk continuous_fst))).continuousOn)`. Establish `hbound : ∀ t ∈ C, ∀ s, ‖F t s‖ ≤ M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `t ht s`. Take `⟨p, hp, hsp⟩` from `hKrep s`. Establish `hy : X.Zb u (B t) x ∈ X.dom` using `Data.Zb_dom X.toData u hiso _ (hBh t) hx`. Establish `hPs : P (X.flow (u 0) (cR X.toData s) (X.Zb u (B t) x)) = P (X.flow (u 0) (cR X.toData (s - p)) (X.Zb u (B t) x))`. Establish `e1 : cR X.toData s = cR X.toData p + cR X.toData (s - p)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← cR_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[e1, ← flow_flow X.toData hu0, sec_periodic X.toData la P hP (hΛ 0) hu0 hp _ (flow_real_mem_dom X.toData hu0 _ _ hy)]`. Establish `h1` using `hM (s - p, t) ⟨hsp, ht⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.comp, norm_norm] at h1`. Simplify using `only [hF, norm_mul, Complex.norm_exp]`. Rewrite using `[hPs]`. Establish `h2 : (-(4 * (Real.pi : ℂ) * I) * ∑ τ, (ν τ : ℂ) * (s τ : ℂ)).re = 0` using `by simp`. Establish `h3 : (-(4 * (Real.pi : ℂ) * I) * (X.pairR χ (B t) : ℂ)).re = 0` using `by simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h2, h3, Real.exp_zero, mul_one, mul_one]`. Conclude with `h1`. Establish `hfinC : volume C < ⊤` using `hCc.measure_lt_top`. Establish `hint : Integrable (Function.uncurry F) ((volume.restrict C).prod (volume.restrict D))`. Rewrite using `[Measure.prod_restrict]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: IsFiniteMeasure ((volume.prod volume).restrict (C ×ˢ D))`. Use `isFiniteMeasure_restrict.2 ?_` and prove the remaining obligations. Rewrite using `[Measure.prod_prod]`. Conclude with `ENNReal.mul_ne_top hfinC.ne hDfin.ne`. Use `(integrable_const M).mono' hFc.aestronglyMeasurable ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `(ae_restrict_mem (hCm.prod hDm)).mono fun q hq => ?_` and prove the remaining obligations. Conclude with `hbound q.1 hq.1 q.2`. Rewrite using `[hfz]`. Establish `e1 : ∀ t, X.fj la (u 0) ν P (X.Zb u (B t) x) * cexp (-(4 * Real.pi * I) * X.pairR χ (B t)) = ((volume D).toReal : ℂ)⁻¹ * ∫ s in D, F t s`. Introduce `t`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hfj, mul_assoc, ← integral_mul_const]`. Repeatedly rewrite using `[e1]`. Rewrite using `[integral_const_mul, integral_integral_swap hint]`. Establish `e2 : ∀ s, ∫ t in C, F t s = cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * s τ) * X.fz u X.g χ P (X.flow (u 0) (cR X.toData s) x)`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfz, ← integral_const_mul]`. Use `setIntegral_congr_fun hCm fun t _ => ?_` and prove the remaining obligations. Simplify using `only [hF]`. Rewrite using `[flow_Zb_comm X.toData u hiso]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Repeatedly rewrite using `[e2]`. Establish `e3 : ∀ s : X.Ψ → ℝ, cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * s τ) * X.fz u X.g χ P (X.flow (u 0) (cR X.toData s) x) = X.fz u X.g χ P x * cexp (4 * Real.pi * I * ∑ τ, (((χr - ν) τ : ℝ) : ℂ) * s τ)`. Introduce `s`. Rewrite using `[hflowcov s x hx, mul_left_comm, ← mul_assoc, ← Complex.exp_add, mul_comm]`. Use `congr 2`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.sub_apply]`. Use `push_cast`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e3]`.
-
-Rewrite using `[integral_const_mul]`. Distinguish the cases in `h0 : X.fz u X.g χ P x = 0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hμ : ∀ p ∈ X.periods la, ∃ k : ℤ, 2 * ∑ τ, (χr - ν) τ * p τ = k`.
-
-Introduce `p hp`. Take `⟨k1, hk1⟩` from `hfreq h0 p hp`. Take `⟨k2, hk2⟩` from `hν p hp`. Use `⟨k1 - k2, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib, mul_sub]`.
-
-Use `push_cast`. Rewrite using `[hk1, hk2]`. Rewrite using `[orth (X.periods la) D hDfd (χr - ν) hμ]`. Establish `hvD : ((volume D).toReal : ℂ) ≠ 0`. Establish `: 0 < (volume D).toReal` using `ENNReal.toReal_pos hDpos.ne' hDfin.ne`.
-
-Conclude with `this.ne'` after adjusting the coercions. Distinguish the cases in `hc : χr = ν`. Rewrite using `[if_pos (sub_eq_zero.2 hc), if_pos (hcond.2 hc)]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[if_neg (fun h => hc (sub_eq_zero.1 h)), if_neg (fun h => hc (hcond.1 h))]`.
-
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem fourier_coefficient_support_of (h3 : FourierCoefficientProperties (E := E)) (h2 : UnipotentLatticeLift (E := E)) :
     FourierCoefficientSupport (E := E) := by
@@ -329,7 +319,7 @@ theorem fourier_coefficient_support_of (h3 : FourierCoefficientProperties (E := 
     simp
 
 /- English proof (translation)
-The claim follows from `fourier_coefficient_support_of fourier_coefficients_holds unipotent_lattice_lift`.
+A detailed English derivation is pending.
 -/
 theorem fourier_coefficient_support_holds : FourierCoefficientSupport (E := E) := fourier_coefficient_support_of fourier_coefficients_holds unipotent_lattice_lift
 

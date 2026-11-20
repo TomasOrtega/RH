@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LocMod
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `β.vecMulLinear.exists_leftInverse_of_injective (LinearMap.ker_eq_bot'.2 h)`. Establish `h1 : β * LinearMap.toMatrixRight' g = 1`. Use extensionality with `i j`. Use `congrFun (LinearMap.congr_fun hg (Pi.single i 1)) j` as an intermediate fact. Establish `h2 : ∀ x, g x = x ᵥ* LinearMap.toMatrixRight' g` using `fun x => by conv_lhs => rw [← LinearMap.toMatrixRight'.symm_apply_apply g]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite `this` using `[LinearMap.comp_apply, h2, Matrix.vecMulLinear_apply, Matrix.vecMul_vecMul, Matrix.single_one_vecMul]`. Simplify `this` using `[Pi.single_apply, Matrix.one_apply, eq_comm]`. Conclude with `⟨⟨β, _, h1, (Matrix.mul_eq_one_comm_of_card_eq _ _ _ (by simp [hc])).1 h1⟩, rfl⟩`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem Frame.exists_of_vecMul {k : Type} [Field k] {N : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y]
     (β : Matrix (Fin N) Y k) (hc : Fintype.card Y = N) (h : ∀ v, v ᵥ* β = 0 → v = 0) :
@@ -27,9 +27,9 @@ theorem Frame.exists_of_vecMul {k : Type} [Field k] {N : ℕ} {Y : Type} [Fintyp
   exact ⟨⟨β, _, h1, (Matrix.mul_eq_one_comm_of_card_eq _ _ _ (by simp [hc])).1 h1⟩, rfl⟩
 
 /- English proof (translation)
-Establish `h1` using `Matrix.rank_mul_le_left F.β F.γ`. Establish `h2` using `Matrix.rank_mul_le_left F.γ F.β`. Rewrite `h1` using `[F.βγ, Matrix.rank_one]`. Rewrite `h2` using `[F.γβ, Matrix.rank_one]`. Establish `h3` using `Matrix.rank_le_card_width F.β`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `Matrix.rank_le_card_width F.γ`. Simplify using `only [Fintype.card_fin] at h1 h4`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Frame.card_eq {k : Type} [Field k] {N : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y]
     (F : GlobalTheory.LocMod.Frame k N Y) : Fintype.card Y = N := by
@@ -43,14 +43,14 @@ theorem Frame.card_eq {k : Type} [Field k] {N : ℕ} {Y : Type} [Fintype Y] [Dec
   omega
 
 /- English proof (translation)
-Rewrite using `[← Matrix.vecMul_one v, ← F.βγ, ← Matrix.vecMul_vecMul, h, Matrix.zero_vecMul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Frame.eq_zero {k : Type} [Field k] {N : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y]
     (F : GlobalTheory.LocMod.Frame k N Y) {v : Fin N → k} (h : v ᵥ* F.β = 0) : v = 0 := by
   rw [← Matrix.vecMul_one v, ← F.βγ, ← Matrix.vecMul_vecMul, h, Matrix.zero_vecMul]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun M => v ᵥ* Matrix.map M f) d.sum_eq_one_rat`. Simplify using `only [Matrix.map_add _ (map_add f), Matrix.map_mul, Matrix.map_one _ (map_zero f) (map_one f), Matrix.vecMul_add, ← Matrix.vecMul_vecMul, h1, h2, h3, Matrix.zero_vecMul, add_zero, Matrix.vecMul_one] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hyp_eq_zero {D : D7} {k : Type} [Field k] (f : D.host.E →+* k) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
     {v : Fin S.rank → k} (h1 : v ᵥ* d.e.map f = 0) (h2 : v ᵥ* d.i₀.map f = 0) (h3 : v ᵥ* d.e'.map f = 0) : v = 0 := by
@@ -60,11 +60,11 @@ theorem hyp_eq_zero {D : D7} {k : Type} [Field k] (f : D.host.E →+* k) {S S₀
   exact h.symm
 
 /- English proof (translation)
-Establish `h3 : v ᵥ* o.iB.map f = 0`. Use function extensionality and compare the values at `j`. Establish `hs : Subsingleton (Fin L.rank)` using `by rw [hζ.1]; infer_instance`. Establish `hj : ζ j ≠ 0` using `fun h0 => hζ.2 (by`. Establish `: ζ = 0` using `funext fun i => by rw [Subsingleton.elim i j, h0]; rfl`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, Matrix.mulVec_zero, dotProduct_zero])`. Establish `h4 : f ∘ vecB o ζ = o.iB.map f *ᵥ (f ∘ ζ)` using `funext fun i => RingHom.map_mulVec f o.iB ζ i`. Rewrite `h2` using `[h4, Matrix.dotProduct_mulVec, dotProduct, Fintype.sum_subsingleton _ j]`. Conclude with `(mul_eq_zero.1 h2).resolve_right ((map_ne_zero f).2 hj)`. Establish `h` using `congrArg (fun M => v ᵥ* Matrix.map M f) o.iA_qA_add`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_add _ (map_add f), Matrix.map_mul, Matrix.map_one _ (map_zero f) (map_one f), Matrix.vecMul_add, ← Matrix.vecMul_vecMul, h1, h3, Matrix.zero_vecMul, add_zero, Matrix.vecMul_one] at h`. Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem orth_eq_zero {D : D7} {k : Type} [Field k] (f : D.host.E →+* k) {S A L : HSp D} (o : OrthDec S A L)
     {ζ : Fin L.rank → D.host.E} (hζ : IsLineVec L ζ)
@@ -84,7 +84,7 @@ theorem orth_eq_zero {D : D7} {k : Type} [Field k] (f : D.host.E →+* k) {S A L
   exact h.symm
 
 /- English proof (translation)
-Establish `: v ⬝ᵥ (c • w) = 0` using `h`. Rewrite `this` using `[dotProduct_smul]`. Conclude with `(mul_eq_zero.1 this).resolve_left hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dot_eq_zero_of_smul {k : Type} [Field k] {N : ℕ} {v w : Fin N → k} {c : k} (hc : c ≠ 0)
     (h : v ⬝ᵥ (fun r => c * w r) = 0) : v ⬝ᵥ w = 0 := by
@@ -103,19 +103,19 @@ Both sides reduce to the same expression.
 theorem pr_eq : p.pr = ⇑(p.π.comp (incA D)) := rfl
 
 /- English proof (translation)
-The claim follows from `(map_ne_zero (p.π.comp (incA D))).2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)`.
+A detailed English derivation is pending.
 -/
 theorem xi_ne_zero : p.xi ≠ 0 := (map_ne_zero (p.π.comp (incA D))).2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)
 
 /- English proof (translation)
-The claim follows from `(map_ne_zero (p.π.comp (incA D))).2 B.line.2`.
+A detailed English derivation is pending.
 -/
 theorem hz_ne_zero (B : BesLev D ρ) : p.hz B ≠ 0 := (map_ne_zero (p.π.comp (incA D))).2 B.line.2
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `Frame.exists_of_vecMul (N := B.V₀.rank) (Y := n ⊕ Unit) (Matrix.of fun r => Sum.elim (fun a => (B.o.iA.map p.pr * FA.β) r a) fun _ => s * p.pr (vecB B.o B.ζ r)) (by rw [Fintype.card_sum, FA.card_eq, ← B.o.rank_add, B.line.1]; rfl) (fun v hv => by`. Use `orth_eq_zero (p.π.comp (incA D)) B.o B.line (FA.eq_zero ?_) (dot_eq_zero_of_smul hs ?_)` and prove the remaining obligations. Rewrite using `[Matrix.vecMul_vecMul]`. Use function extensionality and compare the values at `a`. Conclude with `congrFun hv (Sum.inl a)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Supply the required witnesses or components.
 
-Conclude with `congrFun hv (Sum.inr ()))`. Conclude with `⟨F, fun r a => by rw [hF]; rfl, fun r => by rw [hF]; rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isCoreFrame (hs : s ≠ 0) (B : BesLev D ρ) (FA : GlobalTheory.LocMod.Frame k B.A.rank n) :
     ∃ F, p.IsCoreFrame B s FA F := by
@@ -128,15 +128,15 @@ theorem exists_isCoreFrame (hs : s ≠ 0) (B : BesLev D ρ) (FA : GlobalTheory.L
   exact ⟨F, fun r a => by rw [hF]; rfl, fun r => by rw [hF]; rfl⟩
 
 /- English proof (translation)
-Establish `hx` using `p.xi_ne_zero`. Set `β : Matrix (Fin J.W.rank) (n ⊕ Fin (2 * ρ)) k` to `Matrix.of fun r => Sum.elim (fun a => (J.d.i₀.map p.pr * F₀.β) r a) fun j => if h : j.val < ρ then s * p.xi ^ (ρ - j.val) * p.pr (J.d.e r ⟨j.val, h⟩) else s * (hh / p.xi) * (-1 / p.xi) ^ (ρ - 1 - (2 * ρ - 1 - j.val)) * p.pr (J.d.e' r ⟨2 * ρ - 1 - j.val, by omega⟩)`. Establish `b1 : ∀ (i : Fin ρ) (j : Fin (2 * ρ)), j.val = i.val → ∀ r, β r (Sum.inr j) = s * p.xi ^ (ρ - i.val) * p.pr (J.d.e r i)`. Introduce and unpack `⟨i, hi⟩ ⟨j, hj⟩ (rfl : j = i) r`. Conclude with `dif_pos hi`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `b2 : ∀ (i : Fin ρ) (j : Fin (2 * ρ)), j.val + i.val + 1 = 2 * ρ → ∀ r, β r (Sum.inr j) = s * (hh / p.xi) * (-1 / p.xi) ^ (ρ - 1 - i.val) * p.pr (J.d.e' r i)`. Introduce and unpack `⟨i, hi⟩ ⟨j, hj⟩ (h : j + i + 1 = 2 * ρ) r`. Take `rfl : i = 2 * ρ - 1 - j` from `by omega`. Conclude with `dif_neg (show ¬ j < ρ by omega)`. Take `⟨F, hF⟩` from `Frame.exists_of_vecMul β (by rw [Fintype.card_sum, F₀.card_eq, ← J.d.rank_add, Fintype.card_fin]) (fun v hv => by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hyp_eq_zero (p.π.comp (incA D)) J.d ?_ (F₀.eq_zero ?_) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `congrFun hv (Sum.inr ⟨i.val, by omega⟩)` as an intermediate fact. Use `dot_eq_zero_of_smul (c := s * p.xi ^ (ρ - i.val)) (mul_ne_zero hs (pow_ne_zero _ hx)) ?_` and prove the remaining obligations. Use `Eq.trans ?_ this` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `congrArg (v ⬝ᵥ ·) (funext fun r => (b1 i _ rfl r).symm)`. Rewrite using `[Matrix.vecMul_vecMul]`. Use function extensionality and compare the values at `a`. Conclude with `congrFun hv (Sum.inl a)`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Use `congrFun hv (Sum.inr ⟨2 * ρ - 1 - i.val, by omega⟩)` as an intermediate fact. Use `dot_eq_zero_of_smul (c := s * (hh / p.xi) * (-1 / p.xi) ^ (ρ - 1 - i.val)) (mul_ne_zero (mul_ne_zero hs (div_ne_zero hh0 hx)) (pow_ne_zero _ (div_ne_zero (by simp) hx))) ?_` and prove the remaining obligations. Use `Eq.trans ?_ this` and prove the remaining obligations. Conclude with `congrArg (v ⬝ᵥ ·) (funext fun r => (b2 i _ (by have := i.2; dsimp only; omega) r).symm))`. Conclude with `⟨F, rfl, fun r a => by rw [hF]; rfl, by rw [hF]; exact b1, by rw [hF]; exact b2⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isJacFrame (hs : s ≠ 0) (J : JacLev D ρ) {hh : k} (hh0 : hh ≠ 0) (F₀ : GlobalTheory.LocMod.Frame k J.W₀.rank n) :
     ∃ F : GlobalTheory.LocMod.Frame k J.W.rank (n ⊕ Fin (2 * ρ)), p.IsJacFrame J s hh F₀ F := by
@@ -172,19 +172,17 @@ theorem exists_isJacFrame (hs : s ≠ 0) (J : JacLev D ρ) {hh : k} (hh0 : hh �
   exact ⟨F, rfl, fun r a => by rw [hF]; rfl, by rw [hF]; exact b1, by rw [hF]; exact b2⟩
 
 /- English proof (translation)
-Establish `hx` using `p.xi_ne_zero`. Set `β : Matrix (Fin B.V.rank) (n ⊕ Fin (2 * ρ + 1)) k` to `Matrix.of fun r => Sum.elim (fun a => ((B.d.i₀ * B.o.iA).map p.pr * FA.β) r a) fun j => if h : j.val < ρ then s * p.xi ^ (ρ - j.val) * p.pr (B.d.e r ⟨j.val, h⟩) else if h' : j.val = ρ then s * p.pr ((B.d.i₀ *ᵥ vecB B.o B.ζ) r) else s * (-p.hz B / p.xi) * (-1 / p.xi) ^ (ρ - 1 - (2 …`. Establish `b1 : ∀ (i : Fin ρ) (j : Fin (2 * ρ + 1)), j.val = i.val → ∀ r, β r (Sum.inr j) = s * p.xi ^ (ρ - i.val) * p.pr (B.d.e r i)`. Introduce and unpack `⟨i, hi⟩ ⟨j, hj⟩ (rfl : j = i) r`. Conclude with `dif_pos hi`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `b0 : ∀ j : Fin (2 * ρ + 1), j.val = ρ → ∀ r, β r (Sum.inr j) = s * p.pr ((B.d.i₀ *ᵥ vecB B.o B.ζ) r)`. Introduce and unpack `⟨j, hj⟩ (h : j = ρ) r`. Conclude with `(dif_neg (show ¬ j < ρ by omega)).trans (dif_pos h)`. Establish `b2 : ∀ (i : Fin ρ) (j : Fin (2 * ρ + 1)), j.val + i.val = 2 * ρ → ∀ r, β r (Sum.inr j) = s * (-p.hz B / p.xi) * (-1 / p.xi) ^ (ρ - 1 - i.val) * p.pr (B.d.e' r i)`. Introduce and unpack `⟨i, hi⟩ ⟨j, hj⟩ (h : j + i = 2 * ρ) r`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : i = 2 * ρ - j` from `by omega`. Conclude with `(dif_neg (show ¬ j < ρ by omega)).trans (dif_neg (show ¬ j = ρ by omega))`. Take `⟨F, hF⟩` from `Frame.exists_of_vecMul β (by rw [Fintype.card_sum, FA.card_eq, ← B.d.rank_add, ← B.o.rank_add, B.line.1, Fintype.card_fin]; omega) (fun v hv => by`. Use `hyp_eq_zero (p.π.comp (incA D)) B.d ?_ (orth_eq_zero (p.π.comp (incA D)) B.o B.line (FA.eq_zero ?_) ?_) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun hv (Sum.inr ⟨i.val, by omega⟩)` as an intermediate fact. Use `dot_eq_zero_of_smul (c := s * p.xi ^ (ρ - i.val)) (mul_ne_zero hs (pow_ne_zero _ hx)) ?_` and prove the remaining obligations. Use `Eq.trans ?_ this` and prove the remaining obligations. Conclude with `congrArg (v ⬝ᵥ ·) (funext fun r => (b1 i _ rfl r).symm)`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, ← Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `a`. Conclude with `congrFun hv (Sum.inl a)`. Use `congrFun hv (Sum.inr ⟨ρ, by omega⟩)` as an intermediate fact. Rewrite using `[← Matrix.dotProduct_mulVec]`. Use `dot_eq_zero_of_smul hs ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ this` and prove the remaining obligations. Use `congrArg (v ⬝ᵥ ·) (funext fun r => ((b0 _ rfl r).trans ?_).symm)` and prove the remaining obligations. Conclude with `congrArg (s * ·) (RingHom.map_mulVec (p.π.comp (incA D)) _ _ r)`. Use function extensionality and compare the values at `i`. Use `congrFun hv (Sum.inr ⟨2 * ρ - i.val, by omega⟩)` as an intermediate fact.
-
-Use `dot_eq_zero_of_smul (c := s * (-p.hz B / p.xi) * (-1 / p.xi) ^ (ρ - 1 - i.val)) (mul_ne_zero (mul_ne_zero hs (div_ne_zero (neg_ne_zero.2 (p.hz_ne_zero B)) hx)) (pow_ne_zero _ (div_ne_zero (by simp) hx))) ?_` and prove the remaining obligations. Use `Eq.trans ?_ this` and prove the remaining obligations. Conclude with `congrArg (v ⬝ᵥ ·) (funext fun r => (b2 i _ (by have := i.2; dsimp only; omega) r).symm))`. Conclude with `⟨F, rfl, fun r a => by rw [hF]; rfl, by rw [hF]; exact b1, by rw [hF]; exact b0, by rw [hF]; exact b2⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isBesFrame (hs : s ≠ 0) (B : BesLev D ρ) (FA : GlobalTheory.LocMod.Frame k B.A.rank n) :
     ∃ F : GlobalTheory.LocMod.Frame k B.V.rank (n ⊕ Fin (2 * ρ + 1)), p.IsBesFrame B s FA F := by
@@ -236,7 +234,7 @@ theorem exists_isBesFrame (hs : s ≠ 0) (B : BesLev D ρ) (FA : GlobalTheory.Lo
 end Place
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ p _ _ _ _ _ hs` and use `⟨fun B FA => ⟨p.exists_isCoreFrame hs B FA, p.exists_isBesFrame hs B FA, p.hz_ne_zero B⟩, fun J _ hh0 F₀ => p.exists_isJacFrame hs J hh0 F₀⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem normalFrames_exist : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (n : Type) [Fintype n] [DecidableEq n] (ρ : ℕ) (s : k), s ≠ 0 → (∀ (B : BesLev D ρ) (FA : GlobalTheory.LocMod.Frame k B.A.rank n), (∃ F, p.IsCoreFrame B s FA F) ∧ (∃ F : GlobalTheory.LocMod.Frame k B.V.rank (n ⊕ Fin (2 * ρ + 1)), p.IsBesFrame B s FA F) ∧ p.hz B ≠ 0) ∧ ∀ (J : JacLev D ρ) (hh : k), hh ≠ 0 → ∀ F₀ : GlobalTheory.LocMod.Frame k J.W₀.rank n, ∃ F : GlobalTheory.LocMod.Frame k J.W.rank (n ⊕ Fin (2 * ρ)), p.IsJacFrame J s hh F₀ F :=
   fun _ _ _ _ _ _ p _ _ _ _ _ hs =>

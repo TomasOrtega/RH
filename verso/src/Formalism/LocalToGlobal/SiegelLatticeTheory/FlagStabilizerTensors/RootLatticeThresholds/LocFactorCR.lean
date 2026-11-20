@@ -30,7 +30,7 @@ theorem uMat_toUJn {n : ℕ} {ε : Fin n → Bool} (M : Matrix (Fin n) (Fin n) �
     (hM : Mᴴ * Formalism.REAL.Jm ε * M = Formalism.REAL.Jm ε) : uMat (toUJn M hM) = M := rfl
 
 /- English proof (translation)
-Establish `hm' : mᴴ * Formalism.QuantumDeterminants.Hpk k r * m = Formalism.QuantumDeterminants.Hpk k r` using `hm`. Establish `hq` using `qiHqi ε h2 hg`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [hg, hm', hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cond_tr {n : ℕ} {ε : Fin n → Bool} {Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ}
     {Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ} (h2 : Q * Qi = 1) (hg : Qᴴ * Formalism.REAL.Jm ε * Q = Formalism.QuantumDeterminants.Hpk k r)
@@ -48,9 +48,9 @@ def wTg {n : ℕ} {ε : Fin n → Bool} {V : Type} [Zero V] (Q : Matrix (Fin n) 
   if h : ∃ γ : Formalism.REAL.UJ ε, uMat γ = Q * m * Qi then W h.choose else 0
 
 /- English proof (translation)
-Establish `hex : ∃ γ : Formalism.REAL.UJ ε, uMat γ = Q * m * Qi` using `⟨γ, hγ⟩`. Unfold `wTg`. Rewrite using `[dif_pos hex]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `hex.choose_spec.trans hγ.symm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem wTg_eq {n : ℕ} {ε : Fin n → Bool} {V : Type} [Zero V] {Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ}
     {Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ} (W : Formalism.REAL.UJ ε → V)
@@ -64,13 +64,9 @@ theorem wTg_eq {n : ℕ} {ε : Fin n → Bool} {V : Type} [Zero V] {Q : Matrix (
   exact hex.choose_spec.trans hγ.symm
 
 /- English proof (translation)
-Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Use `set G : Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) → Formalism.REAL.UJ ε := fun p => toUJn (Q * p.1 * Qi) (cond_tr h2 hg p.2)`. Establish `hG : Continuous G`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Rewrite using `[Units.continuous_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Use `show Continuous fun p : Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) => Q * p.1 * Qi`. Conclude with `(continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const`. Use `show Continuous fun p : Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) => Formalism.REAL.Jm ε * (Q * p.1 * Qi)ᴴ * Formalism.REAL.Jm ε`. Conclude with `(continuous_const.matrix_mul (((continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const).matrix_conjTranspose)).matrix_mul continuous_const`.
-
-Establish `: (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)).domRestrict (wTg Q Qi W) = W ∘ G`. Use function extensionality and compare the values at `p`. Use `show wTg Q Qi W p.1 = W (G p)`. Conclude with `wTg_eq W (G p) (uMat_toUJn _ _)`. Rewrite using `[this]`.
-
-Conclude with `hW.comp hG`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_wTg {n : ℕ} {ε : Fin n → Bool} {V : Type} [TopologicalSpace V] [Zero V]
     {Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ} {Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ} (h2 : Q * Qi = 1)
@@ -104,19 +100,19 @@ open Classical Formalism.L2.SG.Pf.WFL
 variable {k r : ℕ}
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hCP : CayPair ε Q Qi` using `⟨hg, qi_eq rfl ε h2 hg⟩`. Establish `hmap : (fun γ : Formalism.REAL.UJ ε => Matrix.of.symm (Formalism.L2.SG.RealObj.trG Q Qi γ)) = cM Qi Q` using `rfl`. Rewrite using `[hmap]`. Introduce `x' hx'`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set x : Formalism.REAL.UJ ε := toUJn (Q * x' * Qi) (cond_tr h2 hg hx') with hxdef`. Establish `hx'eq : (Matrix.of (cM Qi Q x) : Matrix _ _ ℂ) = x'` using `by show Qi * uMat x * Q = x'`. Rewrite using `[uMat_toUJn]`. Simplify using `only [← Matrix.mul_assoc, h1, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hWc : ∀ γ : Formalism.REAL.UJ ε, wTg Q Qi W (Matrix.of (cM Qi Q γ)) = W γ`. Introduce `γ`. Use `wTg_eq W γ ?_` and prove the remaining obligations. Use `show uMat γ = Q * (Qi * uMat γ * Q) * Qi`. Simplify using `only [← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Matrix.mul_assoc, h2, Matrix.mul_one]`. Take `⟨hint, hval⟩` from `hWr x`. Establish `embG` using `cM_measEmb (ε := ε) (A := Qi) (B := Q) (A' := Q) (B' := Qi) h2 h2`. Establish `hfd` using `fdegH_map hCP σ w`. Establish `hσg : ∀ g : Formalism.REAL.UJ ε, σ (Q * (Matrix.of (cM Qi Q g) : Matrix _ _ ℂ) * Qi) = σ (uMat g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `g`. Use `show σ (Q * (Qi * uMat g * Q) * Qi) = σ (uMat g)`. Use `congr 1`. Simplify using `only [← Matrix.mul_assoc, h2, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, h2, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hprod : ∀ g : Formalism.REAL.UJ ε, (Matrix.of (cM Qi Q x) : Matrix _ _ ℂ) * Matrix.of (cM Qi Q g) = Matrix.of (cM Qi Q (x * g))` using `fun g => cMprod hCP _ x g`. Establish `hpt : ∀ g : Formalism.REAL.UJ ε, eFun ((Formalism.REAL.muG ε).map (cM Qi Q)) (fun M => σ (Q * M * Qi)) w (Matrix.of (cM Qi Q g)) • wTg Q Qi W (x' * Matrix.of (cM Qi Q g)) = (((fdegOf (Formalism.REAL.muG ε) σ w : ℝ) : ℂ) * star ⟪w, σ (uMat g) w⟫_ℂ) • W (x * g)`. Introduce `g`. Simplify using `only [eFun]`. Rewrite using `[hfd, hσg, ← hx'eq, hprod, hWc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `embG.integrable_map_iff.mpr (hint.congr (ae_of_all _ fun g => (hpt g).symm))`. Unfold `rconv`. Rewrite using `[embG.integral_map, integral_congr_ae (ae_of_all _ hpt), hval, ← hx'eq, hWc]`.
+A detailed English derivation is pending.
 -/
 theorem reprod_gen {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) {Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ}
     {Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ} (h1 : Qi * Q = 1) (h2 : Q * Qi = 1)
@@ -179,7 +175,7 @@ section Steps
 variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 
 /- English proof (translation)
-Introduce `D X θ C u τ`. Conclude with `continuousOn_wTg (C.isT τ).2.1 (C.isT τ).2.2.1 (X.Wloc_cont u _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem local_continuity_all : ContAll := by
   intro D X θ C u τ
@@ -188,7 +184,7 @@ theorem local_continuity_all : ContAll := by
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
 
 /- English proof (translation)
-Introduce `D hG X θ C u τ`. Take `⟨μS, νl, Cc, hQ⟩` from `Formalism.L2.SG.Pf.WuDec.quotAll_of Formalism.L2.SG.Closed.QuotProdK_holds Formalism.L2.SG.Pf.WFL.locHNProps_holds Formalism.L2.SG.Closed.NUnimodLoc_holds D X u`. Establish `hR` using `Formalism.L2.SG.Pf.WuDec.locReprodStep_of Formalism.L2.SG.Pf.WuDec.local_scalar_reduction D hG X u μS νl Cc hQ (vOf X τ)`. Conclude with `reprod_gen (n_eq' X) (X.B.I.ε (vOf X τ)) (C.isT τ).1 (C.isT τ).2.1 (C.isT τ).2.2.1 (X.B.σ (vOf X τ)) (X.B.w (vOf X τ)) (X.Wloc u (vOf X τ)) hR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem local_reproduction_all : ReprodAll := by
   intro D hG X θ C u τ

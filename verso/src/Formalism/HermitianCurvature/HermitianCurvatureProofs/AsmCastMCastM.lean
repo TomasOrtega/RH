@@ -13,11 +13,11 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 variable {k : ℕ}
 
 /- English proof (translation)
-Unfold `G.OmLong`. Establish `: IsEmpty (G.UT (0 + 1))` using `⟨fun q => by have h := q.2; rw [Fin.lt_def] at h; omega⟩`. Establish `hμ : G.muPi β (G.UT (0 + 1)) = Measure.dirac (fun q => isEmptyElim q)` using `Measure.pi_of_empty _ _`. Rewrite using `[hμ, integral_dirac]`. Establish `h1 : G.superSum (G.upper (fun q : G.UT (0 + 1) => isEmptyElim q)) = 0`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[G.superSum]`. Establish `h2 : (G.ptLong (0 + 1) z * G.upper (fun q : G.UT (0 + 1) => isEmptyElim q) : Matrix (Fin 1) (Fin 1) ℂ) = Matrix.of fun _ _ => z`. Use extensionality with `i j`. Establish `hi : i = 0` using `Fin.ext (by have := i.isLt; simp)`. Establish `hj : j = 0` using `Fin.ext (by have := j.isLt; simp)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hi hj` using the available equality. Simplify using `[G.ptLong, G.wMat, G.upper, G.strictUpper, Matrix.mul_apply]`. Rewrite using `[h1, h2]`. Simplify using `[G.psi]`. Both sides reduce to the same expression.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem asm_omLong_zero {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V] (β : ℂ) (Φ : G.Mat 1 → V) (z : ℂ) :
     G.OmLong β 0 Φ z = Φ (fun _ _ => z) := by
@@ -39,41 +39,41 @@ theorem asm_omLong_zero {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [C
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[P.JCTx5.castV_rfl, P.JCTx5.castM_rfl]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem asm_psi_cast {a b : ℕ} (h : a = b) (z : Fin (2 * a + k + 1) → ℂ) (cc : ℂ) (g : B.Mat k a) :
     psi k b (D.castV h z) cc (D.castM h g) = psi k a z cc g := by
   subst h; rw [P.JCTx5.castV_rfl, P.JCTx5.castM_rfl]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `only [P.JCTx5.castM_rfl]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem asm_castM_mul {a b : ℕ} (h : a = b) (g g' : B.Mat k a) : D.castM h (g * g') = D.castM h g * D.castM h g' := by
   subst h; simp only [P.JCTx5.castM_rfl]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `only [P.JCTx5.castM_rfl]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem asm_castM_inv {a b : ℕ} (h : a = b) (g : B.Mat k a) : D.castM h g⁻¹ = (D.castM h g)⁻¹ := by
   subst h; simp only [P.JCTx5.castM_rfl]
 
 /- English proof (translation)
-Substitute `h1` using the available equality. Substitute `h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem asm_castM_castM {a b d : ℕ} (h1 : a = b) (h2 : b = d) (g : B.Mat k a) :
     D.castM h2 (D.castM h1 g) = D.castM (h1.trans h2) g := by
   subst h1; subst h2; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `only [P.JCTx5.castM_rfl]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem asm_castM_symm {a b : ℕ} (h : a = b) (g : B.Mat k a) : D.castM h.symm (D.castM h g) = g := by
   subst h; simp only [P.JCTx5.castM_rfl]
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Substitute `h1` using the available equality. Use function extensionality and compare the values at `i`. Simplify using `only [U.lowV, D.castV, liftVec, Fin.val_cast]`. Rewrite using `[dif_pos (by omega)]`.
+Substitute using the available equality. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem asm_lowV_lift (a ρ m r : ℕ) (hm : 1 + ρ = m) (h1 : a + m = r) (h5 : a + 1 + ρ = a + (1 + ρ))
     (er : r = a + 1 + ρ) (zj : Fin (2 * m + k + 1) → ℂ) :
@@ -85,7 +85,7 @@ theorem asm_lowV_lift (a ρ m r : ℕ) (hm : 1 + ρ = m) (h1 : a + m = r) (h5 : 
   congr 1; ext; simp
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[P.JCTx5.castM_rfl]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem asm_phiFun_lev {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {a r ρa ρb : ℕ} (e : ρa = ρb)
     (ha : r = a + 0 + ρa) (hb : r = a + 0 + ρb) (σ : Equiv.Perm (Fin a)) (d : Fin a → ℂ)
@@ -96,13 +96,13 @@ theorem asm_phiFun_lev {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {a 
   subst e; rw [P.JCTx5.castM_rfl]
 
 /- English proof (translation)
-Substitute `e12` using the available equality. Substitute `e` using the available equality. Substitute `hzA` using the available equality. Substitute `hzA'` using the available equality. Substitute `hFA` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hγ1` using the available equality. Substitute `er` using the available equality. Rewrite using `[P.JCTx5.castM_rfl]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun xx => ?_)` and prove the remaining obligations. Simplify using `only [rn1, mc, P.JCTx5.castM_rfl]`.
+Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hl` using `asm_lowV_lift (k := k) a ρ1 (ρ1 + 1) (a + 1 + ρ1) (by omega) (by omega) (by omega) rfl zj`. Establish `hl'` using `asm_lowV_lift (k := k) a ρ1 (ρ1 + 1) (a + 1 + ρ1) (by omega) (by omega) (by omega) rfl zj'`. Substitute `hzj` using the available equality. Substitute `hzj'` using the available equality. Rewrite using `[hl, hl', ← asm_psi_cast (Nat.add_comm 1 ρ1) _ _ (U.Rn k 1 ρ1 xx.1), ← asm_psi_cast (Nat.add_comm 1 ρ1) _ _ (U.Rn k 1 ρ1 xx.2)]`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← asm_castM_inv, ← asm_castM_mul, ← asm_castM_mul, asm_castM_castM]`. Conclude with `asm_phiFun_lev (by omega) _ _ σ d _ _ _ _`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem asm_bridge {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
     (a ρ1 ρ2 m r : ℕ) (e12 : ρ1 = ρ2) (e : ρ2 + 1 = m) (er : r = a + 1 + ρ1)
@@ -145,17 +145,17 @@ theorem asm_bridge {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [Comple
   exact asm_phiFun_lev (by omega) _ _ σ d _ _ _ _
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p F j hj h c hh hc hF γ hγ`. Take `⟨hhb, rfl⟩` from `hh`. Establish `hc0 : c ≠ 0` using `(hc.1 (1, c) (List.mem_append_right _ (List.mem_singleton_self _))).2`. Establish `hP' : D.ptSize (h ++ [(1, c)]) = D.ptSize h + 1` using `Formalism.FourierDecayAlt.P.Dx2.SL.ptSize_append h 1 c`. Establish `hloc : D.IsLocPt (h ++ [(1, c)]) (D.ptSize (h ++ [(1, c)]))` using `⟨hc.1, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlocH : D.IsLocPt h (D.ptSize h)` using `⟨hhb, rfl⟩`. Establish `hle : D.ptSize (h ++ [(1, c)]) ≤ P.r` using `by omega`. Establish `e2 : D.ptSize h + (0 + 1) + (P.r - D.ptSize (h ++ [(1, c)])) = P.r` using `by omega`. Establish `hFs : B.CkOn ⊤ (B.GV P.k (D.ptSize h + (0 + 1) + (P.r - D.ptSize (h ++ [(1, c)])))) (D.castF e2 F)` using `Formalism.FourierDecayAlt.P.JCTx6.Link2.ckOn_castF e2 hF.1`. Take `⟨R, hR⟩` from `hF.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hRs : ∀ g ∈ B.GV P.k (D.ptSize h + (0 + 1) + (P.r - D.ptSize (h ++ [(1, c)]))), D.castF e2 F g ≠ 0 → B.gN g ≤ R` using `fun g hg hne => by`. Use `hR _ (Formalism.FourierDecayAlt.P.PBE.castM_GV e2 hg) hne` as an intermediate fact. Rewrite `this` using `[Formalism.FourierDecayAlt.P.PBE.gN_castM]`. Then use the resulting hypothesis. Establish `hγ' : D.castM (by omega : P.r - (D.ptSize h + 1) = P.r - D.ptSize (h ++ [(1, c)])) γ ∈ B.GV P.k (P.r - D.ptSize (h ++ [(1, c)]))` using `Formalism.FourierDecayAlt.P.PBE.castM_GV _ hγ`. Establish `hd0 : ∀ q, D.ptDiag h q ≠ 0` using `fun q => Formalism.FourierDecayAlt.P.JCTx6.Link2.ptScal_ne h hlocH.1 q q.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI` using `asm_gInt_int (k := P.k) (D.ptSize h) (P.r - D.ptSize (h ++ [(1, c)])) (D.ptPerm h) (D.ptDiag h) c hd0 hc0 (D.castV e2.symm p.T.base.z) (D.castV e2.symm p.T.base.z') (D.castF e2 F) hFs R hRs _ hγ'`. Establish `hS` using `Formalism.FourierDecayAlt.P.slice_measure_identity P.k P.r (Wq →L[ℂ] Wp) p.T.base.z p.T.base.z' F h (h ++ [(1, c)]) 0 c rfl hle (D.castM (by omega : P.r - (D.ptSize h + 1) = P.r - D.ptSize (h ++ [(1, c)])) γ) hloc (integrable_slice_append_single p.T.base.z p.T.base.z' F h c hle h …`. Rewrite `hS` using `[asm_omLong_zero]`. Establish `hPS'` using `hPS P.k (D.ptSize h) (P.r - D.ptSize (h ++ [(1, c)])) (D.ptPerm h) (D.ptDiag h) hd0 c hc0 (D.castV (by omega) p.T.base.z) (D.castV (by omega) p.T.base.z') (Formalism.FourierDecayAlt.P.Dx1.SN.castV_inWb _ _ p.T.base.z_mem) (Formalism.FourierDecayAlt.P.Dx1.SN.castV_inWb _ _ p.T.bas …`. Establish `hB` using `asm_bridge (k := P.k) (D.ptSize h) (P.r - D.ptSize (h ++ [(1, c)])) (P.r - (D.ptSize h + 1)) (P.r - D.ptSize h) P.r (by omega) (by omega) (by omega) (D.ptPerm h) (D.ptDiag h) p.T.base.z p.T.base.z' (p.T.bs (D.ptSize h)).z (p.T.bs (D.ptSize h)).z' (p.T.z_lev _ (by omega)) (p.T.z'_ …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ : ((Real.pi ^ ((0 + 1) * 0 / 2) : ℝ) : ℂ) = 1` using `by norm_num`. Rewrite `hS` using `[hπ, one_smul]`. Use `((show KB.slv p.T F (D.ptSize h + 1) hj [] (h ++ [(1, c)]) hc.2 (fun a => a.elim0) γ = D.sliceAt P.k P.r p.T.base.z p.T.base.z' F (h ++ [(1, c)]) (D.castM (by omega : P.r - (D.ptSize h + 1) = P.r - D.ptSize (h ++ [(1, c)])) γ) from rfl).trans (hS.trans (hPS'.trans (hB.trans ?_))) …` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun xx => ?_)` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Use `congr 1`. Use `show _ = D.sliceAt P.k P.r p.T.base.z p.T.base.z' F h (D.castM _ _)`. Unfold `D.sliceAt`. Rewrite using `[dif_pos (by omega)]`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem asm_pointStepT (hPS : PointStep) : PointStepT := by
   intro Wp Wq _ _ _ _ _ _ P p F j hj h c hh hc hF γ hγ

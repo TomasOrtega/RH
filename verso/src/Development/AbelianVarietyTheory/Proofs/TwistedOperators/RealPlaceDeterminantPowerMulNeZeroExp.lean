@@ -14,13 +14,13 @@ noncomputable section
 namespace GlobalTheory.AdSpan.ConjHol
 
 /- English proof (translation)
-Introduce `D θ hθ V m`. Establish `R : GlobalTheory.SmoothForms.RealPoints θ V` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V`. Establish `hd : ∀ a, detPow θ V m a = ∏ ρ, (infMat D.sp.cm.sig V.gram (θ ρ) a).det ^ (m ρ)` using `fun a => rfl`. Use `⟨fun a b => ?_, fun a => ?_, fun Y => ?_⟩` and prove the remaining obligations. Rewrite using `[hd, hd, hd, ← Finset.prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[R.2.2.2.1, det_mul, mul_zpow]`. Rewrite using `[hd]`. Use `Finset.prod_ne_zero_iff.2 fun ρ _ => zpow_ne_zero _ fun h0 => ?_` and prove the remaining obligations. Establish `h : (infMat D.sp.cm.sig V.gram (θ ρ) a)ᴴ * gramAt D V ρ * infMat D.sp.cm.sig V.gram (θ ρ) a = gramAt D V ρ` using `GlobalTheory.RealLift.archM_mem hθ V a ρ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `congrArg det h`. Rewrite `h2` using `[det_mul, h0, mul_zero]`. Conclude with `(R.1 ρ).2.ne_zero h2.symm`. Rewrite using `[hd]`. Express the relevant statement in the definitionally equal form `_ = cexp (∑ ρ, (m ρ : ℂ) * trace (Y ρ).1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.exp_sum]`. Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.SmoothForms.isExpFam_expInf R Y).2 ρ, Formalism.MainNotions.DIV.Inh.det_exp, Complex.exp_int_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detPow_mul_ne_zero_exp : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (m : D.what₂.Tau → ℤ), (∀ a b, detPow θ V m (a * b) = detPow θ V m a * detPow θ V m b) ∧ (∀ a, detPow θ V m a ≠ 0) ∧ (∀ Y : GlobalTheory.SmoothForms.LieN V, detPow θ V m (GlobalTheory.SmoothForms.expInf θ V Y) = cexp (GlobalTheory.AdSpan.ConjHol.trLin V m Y)) := by
   intro D θ hθ V m

@@ -13,23 +13,21 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LiftRed
 
 /- English proof (translation)
-Introduce `F _ _ v g n _ θ hθ A γ hA`. Establish `hent : ∀ a b, ‖θ ((A : Matrix (Fin n) (Fin n) (v.adicCompletion F)) a b) - ((((γ : Matrix (Fin n) (Fin n) (ZMod g)) a b).val : ℕ) : ℚ_[g])‖ < 1`. Introduce `a b`. Establish `h` using `hθ _ (hA a b)`. Rewrite `h` using `[map_sub, map_natCast]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hle : ∀ a b, ‖θ ((A : Matrix (Fin n) (Fin n) (v.adicCompletion F)) a b)‖ ≤ 1`. Introduce `a b`. Establish `h1 : ‖((((γ : Matrix (Fin n) (Fin n) (ZMod g)) a b).val : ℕ) : ℚ_[g])‖ ≤ 1`. Conclude with `PadicInt.norm_le_one ((((γ : Matrix (Fin n) (Fin n) (ZMod g)) a b).val : ℕ) : ℤ_[g])` after adjusting the coercions. Use `IsUltrametricDist.norm_add_le_max (θ ((A : Matrix (Fin n) (Fin n) (v.adicCompletion F)) a b) - ((((γ : Matrix (Fin n) (Fin n) (ZMod g)) a b).val : ℕ) : ℚ_[g])) ((((γ : Matrix (Fin n) (Fin n) (ZMod g)) a b).val : ℕ) : ℚ_[g])` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[sub_add_cancel]`. Conclude with `this.trans (max_le (le_of_lt (hent a b)) h1)`. Set `Mx : Matrix (Fin n) (Fin n) ℤ_[g]` to `fun a b => ⟨θ ((A : Matrix (Fin n) (Fin n) (v.adicCompletion F)) a b), hle a b⟩`. Establish `hred : Mx.map (PadicInt.toZMod (p` using `g)) = (γ : Matrix (Fin n) (Fin n) (ZMod g)) := by`. Use extensionality with `a b`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_apply]`. Establish `hm : Mx a b - ((((γ : Matrix (Fin n) (Fin n) (ZMod g)) a b).val : ℕ) : ℤ_[g]) ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`. Rewrite using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`. Rewrite using `[PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_natCast]`. Conclude with `hent a b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hm` using `[RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_eq_zero]`. Conclude with `hm`. Establish `hdet : IsUnit Mx.det`. Assume the negation of the conclusion as `hnu`. Establish `hm : Mx.det ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal]`. Conclude with `hnu`. Rewrite `hm` using `[RingHom.mem_ker, RingHom.map_det, show (PadicInt.toZMod (p := g)).mapMatrix Mx = (γ : Matrix (Fin n) (Fin n) (ZMod g)) from hred]`. Establish `hu : IsUnit (γ : Matrix (Fin n) (Fin n) (ZMod g)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit`. Rewrite `hu` using `[hm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `not_isUnit_zero hu`. Set `M : GL (Fin n) ℤ_[g]` to `Matrix.nonsingInvUnit Mx hdet`. Establish `hMred : GlobalTheory.GLp.red g n M = γ`. Use extensionality with `a b`. Use `congrFun (congrFun hred a) b` as an intermediate fact.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hMinc : GlobalTheory.GLp.inc g n M = Matrix.GeneralLinearGroup.map θ.toRingHom A`. Use extensionality with `a b`. Both sides reduce to the same expression. Use `set N := Function.invFun (GlobalTheory.GLp.red g n) γ with hN`.
-
-Establish `hNred : GlobalTheory.GLp.red g n N = γ` using `Function.invFun_eq ⟨M, hMred⟩`. Use `⟨N⁻¹ * M, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hNred, hMred, inv_mul_cancel]`. Rewrite using `[GlobalTheory.GLp.lift, ← hN, ← map_mul, mul_inv_cancel_left, hMinc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftred_exists : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (g n : ℕ) [Fact g.Prime] (θ : v.adicCompletion F ≃+* ℚ_[g]), (∀ z, Valued.v z < 1 → ‖θ z‖ < 1) → ∀ (A : GL (Fin n) (v.adicCompletion F)) (γ : GL (Fin n) (ZMod g)), (∀ a b, Valued.v ((A : Matrix (Fin n) (Fin n) (v.adicCompletion F)) a b - ((((γ : Matrix (Fin n) (Fin n) (ZMod g)) a b).val : ℕ) : v.adicCompletion F)) < 1) → ∃ k ∈ (GlobalTheory.GLp.red g n).ker, Matrix.GeneralLinearGroup.map θ.toRingHom A = GlobalTheory.GLp.lift g n γ * GlobalTheory.GLp.inc g n k := by
   intro F _ _ v g n _ θ hθ A γ hA

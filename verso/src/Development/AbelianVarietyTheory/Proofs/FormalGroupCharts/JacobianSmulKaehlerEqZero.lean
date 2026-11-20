@@ -11,25 +11,25 @@ section General
 variable {T Q σ : Type*} [CommRing T] [CommRing Q] [Algebra T Q] [Fintype σ]
 
 /- English proof (translation)
-Use `set J : Ideal Q := Ideal.jacobson ⊥ with hJ`. Establish `hX : ∀ i, φ (X i) ∈ J`. Introduce `i`. Rewrite using `[hJ, Ideal.mem_jacobson_bot]`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h, rfl⟩` from `hφ y`. Establish `: IsUnit (X i * h + 1 : MvPowerSeries σ T)`. Rewrite using `[isUnit_iff_constantCoeff]`. Simplify using the standard rewrite rules. Simplify using `using this.map φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `key : ∀ (n : ℕ) (g : MvPowerSeries σ T), D (φ g) - ∑ j, φ (pderiv T j g) • D (φ (X j)) ∈ (J ^ n • ⊤ : Submodule Q M)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro g`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `g`. Take `⟨k, -, hk⟩` from `exists_eq_sum_X_mul (n := 0) (g := g - C (constantCoeff g)) fun d hd => by`. Establish `: d = 0`. Rewrite using `[← Finsupp.degree_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Establish `hg : g = C (constantCoeff g) + ∑ i, X i * k i` using `by rw [← hk]; ring`. Establish `hC : ∀ c : T, D (φ (C c)) = 0` using `fun c => by`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: φ (C c) = algebraMap T Q c` using `φ.commutes c`. Rewrite using `[this, Derivation.map_algebraMap]`. Establish `h1 : ∀ i, ∑ j, φ (pderiv T j (X i * k i)) • D (φ (X j)) = φ (X i) • ∑ j, φ (pderiv T j (k i)) • D (φ (X j)) + φ (k i) • D (φ (X i))`. Introduce `i`. Simplify using `only [Derivation.leibniz, smul_eq_mul, map_add, map_mul, add_smul, Finset.sum_add_distrib, Finset.smul_sum, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[pderiv_X_of_ne hj.symm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `e : D (φ g) - ∑ j, φ (pderiv T j g) • D (φ (X j)) = ∑ i, φ (X i) • (D (φ (k i)) - ∑ j, φ (pderiv T j (k i)) • D (φ (X j)))`. Generalize the expression as in `constantCoeff g = c at hg`. Substitute `hg` using the available equality. Simplify using `only [map_add, hC, zero_add, pderiv_C, map_sum, Finset.sum_smul]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h1, map_mul, Derivation.leibniz, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, pow_succ', mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hX i) (ih _)`. Rewrite using `[← sub_eq_zero, ← Submodule.mem_bot Q, ← Ideal.iInf_pow_smul_eq_bot_of_le_jacobson (M := M) J le_rfl, Submodule.mem_iInf]`. Conclude with `fun n => key n g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem derivation_apply_eq_sum [IsNoetherianRing Q] {M : Type*} [AddCommGroup M] [Module T M]
     [Module Q M] [Module.Finite Q M] (φ : MvPowerSeries σ T →ₐ[T] Q)
@@ -89,17 +89,17 @@ theorem derivation_apply_eq_sum [IsNoetherianRing Q] {M : Type*} [AddCommGroup M
   exact fun n => key n g
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing Q := IsNoetherianRing.of_finite T Q`. Use `set D := KaehlerDifferential.D T Q with hD`. Use `set A : Matrix σ σ Q := Matrix.of fun i j => φ (pderiv T j (f i)) with hA`. Establish `hdet : φ (Matrix.det (Matrix.of fun i j => pderiv T j (f i))) = A.det`. Rewrite using `[AlgHom.map_det]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hrel : ∀ i, ∑ j, A i j • D (φ (X j)) = 0` using `fun i => by`. Use `derivation_apply_eq_sum φ hφ D (f i)` as an intermediate fact. Rewrite `this` using `[hf, map_zero]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : ∀ l, A.det • D (φ (X l)) = 0` using `fun l => by`. Establish `h : ∑ j, (A.adjugate * A) l j • D (φ (X j)) = 0`. Simplify using `only [Matrix.mul_apply, Finset.sum_smul, mul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.smul_sum, hrel, smul_zero, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.adjugate_mul]`. Simplify `h` using `[Matrix.one_apply]`. Rewrite using `[hdet]`. Establish `hω : ω ∈ Submodule.span Q (Set.range D)`. Rewrite using `[hD, KaehlerDifferential.span_range_derivation]`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hω using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨y, rfl⟩` from `h`. Take `⟨g, rfl⟩` from `hφ y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[derivation_apply_eq_sum φ hφ D g, Finset.smul_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [smul_comm, hx, smul_zero]`. Consider the case `zero => simp`. Consider the case `add x y _ _ h1 h2 => rw [smul_add, h1, h2, add_zero]`. Consider the case `smul a x _ h => rw [smul_comm, h, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem det_smul_kaehler_eq_zero [DecidableEq σ] [IsNoetherianRing T] [Module.Finite T Q]
     (φ : MvPowerSeries σ T →ₐ[T] Q) (hφ : Function.Surjective φ) (f : σ → MvPowerSeries σ T)
@@ -137,7 +137,7 @@ theorem det_smul_kaehler_eq_zero [DecidableEq σ] [IsNoetherianRing T] [Module.F
 end General
 
 /- English proof (translation)
-Introduce `T _ _ _ σ _ _ f hfin ω`. Conclude with `det_smul_kaehler_eq_zero (Ideal.Quotient.mkₐ T (Ideal.span (Set.range f))) Ideal.Quotient.mk_surjective f (fun i => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨i, rfl⟩)) ω`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jacobian_smul_kaehler_eq_zero :
     ∀ (T : Type) [CommRing T] [IsLocalRing T] [IsNoetherianRing T] (σ : Type) [Fintype σ] [DecidableEq σ] (f : σ → MvPowerSeries σ T), Module.Finite T (MvPowerSeries σ T ⧸ Ideal.span (Set.range f)) → ∀ ω : KaehlerDifferential T (MvPowerSeries σ T ⧸ Ideal.span (Set.range f)), (Ideal.Quotient.mk (Ideal.span (Set.range f)) (Matrix.det (Matrix.of fun i j => pderiv T j (f i)))) • ω = 0 := by

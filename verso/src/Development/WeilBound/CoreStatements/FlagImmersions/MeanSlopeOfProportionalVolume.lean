@@ -11,15 +11,15 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 namespace RootFieldNumerics
 
 /- English proof (translation)
-Introduce `II Ψ _ _ N T C rd Lval hP hV hT u g hu B hB hB0 hbad`. Establish `hfd : 0 < flagDeg u` using `(GlobalTheory.T.flag_degree_weight_formula Ψ N u).2.1 hu.2.1`. Take `⟨c0⟩` from `T.neC`. Establish `hv : 0 < T.vol c0` using `hP.1 c0`. Establish `hvc : ∀ c, T.vol c = T.vol c0` using `fun c => hV c c0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : (0:ℝ) < Fintype.card T.Comp` using `by exact_mod_cast Fintype.card_pos`. Establish `hvolT : T.volT = Fintype.card T.Comp * T.vol c0`. Rewrite using `[RootTower.volT, Finset.sum_congr rfl fun c _ => hvc c]`. Simplify using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `hD : (0:ℝ) < (dimFl Ψ N : ℝ) + 1` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : (∑ c, T.slope II B c u) / Fintype.card T.Comp = T.PB II B u / (((dimFl Ψ N : ℝ) + 1) * (T.volT * flagDeg u))`. Establish `hs : ∀ c, T.slope II B c u = T.PPc II B c (linRoot u ^ (dimFl Ψ N + 1)) / (((dimFl Ψ N : ℝ) + 1) * (T.vol c0 * flagDeg u))`. Introduce `c`. Rewrite using `[RootTower.slope, hvc c]`. Rewrite using `[Finset.sum_congr rfl fun c _ => hs c, ← Finset.sum_div, RootTower.PB, RootTower.PPt, hvolT, div_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : 0 < ((dimFl Ψ N : ℝ) + 1) * (T.volT * flagDeg u)`. Rewrite using `[hvolT]`. Conclude with `mul_pos hD (mul_pos (mul_pos hcard hv) hfd)`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, le_div_iff₀ hpos]`. Establish `h` using `hT u g hu B hB hB0 hbad`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mean_slope_of_proportional_volume : ∀ II : IntersectionSystem, ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N) (C rd Lval : ℝ), T.Proportional → T.VolEq → T.T2 II C rd Lval → T.MeanSlope II C rd Lval := by
   intro II Ψ _ _ N T C rd Lval hP hV hT u g hu B hB hB0 hbad

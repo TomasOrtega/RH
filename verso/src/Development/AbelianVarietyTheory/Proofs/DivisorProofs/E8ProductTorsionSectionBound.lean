@@ -28,7 +28,7 @@ def preHom {S : Scheme.{0}} {T A : Over S} (x : T ⟶ A) (B : Over S) [GrpObj B]
   map_mul' y z := by simp [MonObj.comp_mul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zpow_finset_sum {G J : Type} [CommGroup G] (g : G) (s : Finset J) (e : J → ℤ) :
     g ^ (∑ i ∈ s, e i) = ∏ i ∈ s, g ^ e i := by
@@ -38,7 +38,7 @@ theorem zpow_finset_sum {G J : Type} [CommGroup G] (g : G) (s : Finset J) (e : J
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add, ih]
 
 /- English proof (translation)
-Simplify using `only [← Finset.prod_zpow, ← zpow_mul, zpow_finset_sum]`. Rewrite using `[Finset.prod_comm]`. Simplify using `only [mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_prod_zpow {G C J : Type} [CommGroup G] [Fintype C] [Fintype J] (b : C → G) (x : J → C → ℤ) (k : J → ℤ) :
     ∏ i, (∏ c, b c ^ x i c) ^ k i = ∏ c, b c ^ (∑ i, k i * x i c) := by
@@ -47,7 +47,7 @@ theorem prod_prod_zpow {G C J : Type} [CommGroup G] [Fintype C] [Fintype J] (b :
   simp only [mul_comm]
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Rewrite using `[← zpow_natCast, ZMod.val_intCast]`. Conclude with `(zpow_eq_zpow_emod' k hg).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_val_intCast {G : Type} [Group G] {N : ℕ} (hN : 0 < N) {g : G} (hg : g ^ N = 1) (k : ℤ) :
     g ^ ((k : ZMod N)).val = g ^ k := by
@@ -56,7 +56,7 @@ theorem pow_val_intCast {G : Type} [Group G] {N : ℕ} (hN : 0 < N) {g : G} (hg 
   exact (zpow_eq_zpow_emod' k hg).symm
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_eq_one fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hb, one_zpow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_zpow_pow_eq_one {G C : Type} [CommGroup G] [Fintype C] {N : ℕ} {b : C → G} (hb : ∀ c, b c ^ N = 1)
     (x : C → ℤ) : (∏ c, b c ^ x c) ^ N = 1 := by
@@ -65,7 +65,7 @@ theorem prod_zpow_pow_eq_one {G C : Type} [CommGroup G] [Fintype C] {N : ℕ} {b
   rw [← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hb, one_zpow]
 
 /- English proof (translation)
-Establish `key : ∀ y : Fin (2 * (8 * h)) → ℤ, ∑ i', y i' * sharpBasis W hW h (Pi.single i' 1) u c = sharpBasis W hW h y u c`. Introduce `y`. Use `conv_rhs => rw [pi_eq_sum_univ' y]`. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `(key _).trans (congrFun (congrFun ((sharpBasis W hW h).apply_symm_apply _) u) c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_labMat_mul (W : Matrix (Fin 8) (Fin 8) ℤ) (hW : (e8 W).det = 1) (h : ℕ) (a : Fin 2)
     (i : Fin (2 * (8 * h))) (u : Fin 8) (c : Fin h ⊕ Fin h) :
@@ -79,15 +79,15 @@ theorem sum_labMat_mul (W : Matrix (Fin 8) (Fin 8) ℤ) (hW : (e8 W).det = 1) (h
   exact (key _).trans (congrFun (congrFun ((sharpBasis W hW h).apply_symm_apply _) u) c)
 
 /- English proof (translation)
-Introduce `W hW gQ S A B _ _ _ _ pr hP N T b hb hN`. Establish `ext : ∀ x y : T ⟶ A, (∀ u, x ≫ pr u = y ≫ pr u) → x = y` using `fun x y h => (hP.2 T fun u => y ≫ pr u).unique h fun _ => rfl`. Use `⟨fun i => ext _ _ fun u => ?_, fun act hact a i => ext _ _ fun u => ?_⟩` and prove the remaining obligations. Use `haveI := hP.1 u`. Use `map_pow (postHom T (pr u)) (ptOf hP b (sharpBasis W hW.2 gQ (Pi.single i 1))) N` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `this.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(ptOf hP b _ ≫ pr u) ^ N = _`. Rewrite using `[ptOf_pr, prod_zpow_pow_eq_one hb]`. Conclude with `(map_one (postHom T (pr u))).symm`. Use `haveI := hP.1 u`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (ptOf hP b (sharpBasis W hW.2 gQ (Pi.single i 1)) ≫ act a) ≫ pr u = ∏ c, b c ^ (∑ v, actMat W a u v * sharpBasis W hW.2 gQ (Pi.single i 1) v c)`. Rewrite using `[Category.assoc, hact a u, ← prod_prod_zpow]`. Use `(map_prod (preHom (ptOf hP b (sharpBasis W hW.2 gQ (Pi.single i 1))) B) _ _).trans ?_` and prove the remaining obligations. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, ← ptOf_pr hP]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite using `[h1, Out.linComb, List.prod_ofFn]`. Use `Eq.trans ?_ (map_prod (postHom T (pr u)) _ _).symm` and prove the remaining obligations. Simplify using `only [← sum_labMat_mul W hW.2 gQ a i u]`. Rewrite using `[← prod_prod_zpow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Finset.prod_congr rfl fun i' _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, ← pow_val_intCast hN (prod_zpow_pow_eq_one hb _), ← ptOf_pr hP]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ptOf_torsion_and_act : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ) (hW : IsE8 W) (gQ : ℕ) {S : Scheme.{0}} (A B : Over S) [GrpObj A] [IsCommMonObj A]
   [GrpObj B] [IsCommMonObj B] (pr : Fin 8 → (A ⟶ B)) (hP : E8Fibration.IsProd pr) (N : ℕ) {T : Over S}

@@ -29,17 +29,17 @@ namespace GlobalTheory.ThetaHeisCLM
 open GlobalTheory.HeisSchA GlobalTheory.Published.Metaplectic
 
 /- English proof (translation)
-Set `e` to `InfiniteAdeleRing.ringEquiv_mixedSpace F`. Set `q : AdeleRing (𝓞 F) F →+* mixedEmbedding.mixedSpace F` to `e.toRingHom.comp p1`. Set `h : AdeleRing (𝓞 F) F` to `⅟(2 : AdeleRing (𝓞 F) F) * (w.1 ⬝ᵥ w.2)`. Set `c : κ → mixedEmbedding.mixedSpace F` to `fun i => q (w.2 i)`. Set `t : κ → mixedEmbedding.mixedSpace F` to `fun i => q (w.1 i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `k : ℝ` to `Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (q h)`. Set `d : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (w.2 i)`. Set `s : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (w.1 i)`. Use `⟨(SchwartzMap.smulLeftCLM ℂ (fun y => eChar ((-trL c) y + -k))).comp (SchwartzMap.compSubConstCLM ℂ (-t)), finS ψ g d s (p2 h), finS_mem ψ hψ.1 hg d s (p2 h), fun f => funext fun x => ?_⟩` and prove the remaining obligations. Set `y : κ → mixedEmbedding.mixedSpace F` to `fun i => q (x i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `z : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (x i)`. Establish `h1 : (fun i => q ((x + w.1) i)) = y + t` using `funext fun i => map_add q (x i) (w.1 i)`. Establish `h2 : (fun i => p2 ((x + w.1) i)) = z + s` using `funext fun i => map_add p2 (x i) (w.1 i)`. Establish `h3 : ψ (x ⬝ᵥ w.2 + h) = eChar ((-trL c) y + -k) * finChar ψ (z ⬝ᵥ d + p2 h)`. Rewrite using `[map_eq_mul ψ, hψ.2.2 _ (at_mk _)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (GlobalTheory.HeisSchA.mk (p1 (x ⬝ᵥ w.2 + h)) 0) = y ⬝ᵥ c + q h`. Express the relevant statement in the definitionally equal form `q (x ⬝ᵥ w.2 + h) = _`. Rewrite using `[map_add, RingHom.map_dotProduct]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e1, map_add, eChar_apply, ContinuousLinearMap.neg_apply, trL_apply]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, RingHom.map_dotProduct]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `ψ (x ⬝ᵥ w.2 + h) * (f (fun i => q ((x + w.1) i)) * g (fun i => p2 ((x + w.1) i))) = archS f c t k y * (finChar ψ (z ⬝ᵥ d + p2 h) * g (z + s))`. Rewrite using `[h1, h2, h3, archS_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_schr_pureA_eq {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     [Invertible (2 : AdeleRing (𝓞 F) F)] (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ)
@@ -82,7 +82,7 @@ theorem exists_schr_pureA_eq {F : Type} [Field F] [NumberField F] {κ : Type} [F
   ring
 
 /- English proof (translation)
-Take `⟨l, hl, hl'⟩` from `GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt F κ`. Take `⟨L, hL⟩` from `hl g hg`. Conclude with `⟨L, fun f => (hl' _ (Submodule.subset_span ⟨f, g, hg, rfl⟩)).symm.trans (hL f)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_clm_thetaSum_pureA {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)) :
@@ -94,9 +94,9 @@ theorem exists_clm_thetaSum_pureA {F : Type} [Field F] [NumberField F] {κ : Typ
   exact ⟨L, fun f => (hl' _ (Submodule.subset_span ⟨f, g, hg, rfl⟩)).symm.trans (hL f)⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d Y Wd M ψ hψ hG u φ hSB hvac`. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hvac.and hG.std).mono fun v h => h.1.trans h.2`. Establish `hg : (fun y : Fin n × Fin d → FiniteAdeleRing (𝓞 F) F => ∏ᶠ v, φ v fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i)) ∈ GlobalTheory.WeilM.SB _` using `⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV φ hSB hstd, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ hSB hstd⟩`. Take `⟨T, g', hg', hT⟩` from `exists_schr_pureA_eq ψ hψ (M.co.e u) hg`. Take `⟨L, hL⟩` from `exists_clm_thetaSum_pureA hg'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨L.comp T, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, ← hL, ← hT]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_clm_thetaSum_rho_pure : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ),

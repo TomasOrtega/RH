@@ -2,7 +2,7 @@ import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.InfiniteNormOneElements
 
 /- English proof (translation)
-The claim follows from `UpperTheory.infinite_norm_one_elements`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CapelliAbsoluteValue.abs : ∀ {F E : Type} [CommSemiring F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
   NumberField.IsTotallyComplex E → (∀ (τ : E →+* ℂ) (x : E), τ (σ x) = star (τ x)) →

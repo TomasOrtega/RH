@@ -9,15 +9,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formal
 namespace GlobalTheory.TopStep
 
 /- English proof (translation)
-Introduce `E _ _ _ P hq N n hN r b c hn j h`. Substitute `hN` using the available equality. Establish `hent : ∀ k : GLint E n P, redGL n P k ∈ HQ (𝓞 E ⧸ P.asIdeal) n r b → ∀ a l : Fin n, a.1 < r → r ≤ l.1 → IntAt P (k.1 (Pi.single a 1) l / (qOf P : E))`. Introduce `k hk a l ha hl`. Establish `h0 : redP P (k.1 (Pi.single a 1) l) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `have := twTQ_HQ_entry hk ha hl`. Rewrite `this` using `[redGL_val]`. Then use the resulting hypothesis. Apply the tactic sequence `exact intAt_div_of_redP hq (glint_entry k l a) h0`. Use `mem_kOne_of_block P (n := n + 1) (r := r) (c := c) (by omega) (extI rfl P j) (j.1 : Sp E n ≃ₗ[E] Sp E n) ?_ ?_ ?_` and prove the remaining obligations. Introduce `x l`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[extI_val]`. Distinguish the cases in `hl : l.1 < n`. Rewrite using `[dif_pos (show l.1 < n + 1 - 1 by omega)]`. Use `congrFun (prH_sumE rfl j.1 1 x) ⟨l.1, hl⟩` as an intermediate fact. Conclude with `this`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dif_neg (show ¬ l.1 < n + 1 - 1 by omega)]`. Establish `e : l = Br.iL (rfl : n + 1 = n + 1)` using `Fin.ext (by have := l.2; show l.1 = n; omega)`. Substitute `e` using the available equality. Rewrite using `[sumE_last, Units.val_one, one_mul]`. Conclude with `fun a l ha hl => hent j h a l ha hl`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a l ha hl`. Use `hent j⁻¹ (by rw [map_inv]; exact inv_mem h) a l ha hl` as an intermediate fact. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem ext_mem_twisted_k1_level : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)),
     ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2 → ∀ {N n : ℕ} (hN : N = n + 1) (r b c : ℕ), n = r + b →

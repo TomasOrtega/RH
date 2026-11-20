@@ -22,14 +22,14 @@ open GlobalTheory.PtTie
 namespace GlobalTheory.PtTie
 
 /- English proof (translation)
-Apply `IsFractionRing.injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Conclude with `barE_eq_conj D (EX.piG i)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem barE_piG_eq_piBarO {D : D7} (EX : ErrX D) (i : Fin 2) : barE D (EX.piG i) = piBarO EX i := by
   apply IsFractionRing.injective (𝓞 D.host.E) D.host.E
   exact barE_eq_conj D (EX.piG i)
 
 /- English proof (translation)
-Introduce `D T h EX`. Rewrite using `[GlobalTheory.Survey.PiTwistNegation.halfEX_iff_le T.toCore h.toLawsCore.toLawsM EX]`. Conclude with `forall_congr' fun i => by rw [barE_piG_eq_piBarO]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem halfEX_iff_oriented : ∀ (D : D7) (T : Top D), LawsP T → ∀ EX : ErrX D, HalfEX T.toCore EX ↔ Oriented T EX := by
   intro D T h EX

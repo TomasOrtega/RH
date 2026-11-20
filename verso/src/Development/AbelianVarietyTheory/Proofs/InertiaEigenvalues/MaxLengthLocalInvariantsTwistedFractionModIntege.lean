@@ -31,11 +31,11 @@ theorem divBy_apply (a y : O) : divBy a y =
     Submodule.Quotient.mk ((algebraMap O (FractionRing O) a)⁻¹ * algebraMap O (FractionRing O) y) := rfl
 
 /- English proof (translation)
-Establish `h0 : algebraMap O (FractionRing O) a ≠ 0` using `by simpa using ha`. Use extensionality with `y`. Rewrite using `[LinearMap.mem_ker, divBy_apply, Ideal.mem_span_singleton]`. Use `(Submodule.Quotient.mk_eq_zero _).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, hb⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨b, IsFractionRing.injective O (FractionRing O) ?_⟩` and prove the remaining obligations. Establish `hb' : algebraMap O (FractionRing O) b = (algebraMap O (FractionRing O) a)⁻¹ * algebraMap O (FractionRing O) y` using `hb`. Rewrite using `[map_mul, hb', mul_inv_cancel_left₀ h0]`. Introduce and unpack `⟨b, rfl⟩`. Use `⟨b, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `algebraMap O (FractionRing O) b = (algebraMap O (FractionRing O) a)⁻¹ * algebraMap O (FractionRing O) (a * b)`. Rewrite using `[map_mul, inv_mul_cancel_left₀ h0]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_divBy {a : O} (ha : a ≠ 0) : LinearMap.ker (divBy a) = Ideal.span {a} := by
   have h0 : algebraMap O (FractionRing O) a ≠ 0 := by simpa using ha
@@ -54,11 +54,11 @@ theorem ker_divBy {a : O} (ha : a ≠ 0) : LinearMap.ker (divBy a) = Ideal.span 
     rw [map_mul, inv_mul_cancel_left₀ h0]
 
 /- English proof (translation)
-Establish `h0 : algebraMap O (FractionRing O) a ≠ 0` using `by simpa using ha`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨y, hy⟩` from `hx`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[divBy_apply]`. Use `congr 1`. Establish `hy' : algebraMap O (FractionRing O) y = algebraMap O (FractionRing O) a * z`. Rewrite using `[← Algebra.smul_def]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy', inv_mul_cancel_left₀ h0]`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_divBy {a : O} (ha : a ≠ 0) (x : KmodO O) (hx : a • x = 0) :
     x ∈ LinearMap.range (divBy a) := by
@@ -74,9 +74,9 @@ theorem mem_range_divBy {a : O} (ha : a ≠ 0) (x : KmodO O) (hx : a • x = 0) 
   rw [hy', inv_mul_cancel_left₀ h0]
 
 /- English proof (translation)
-Establish `hle : P ≤ LinearMap.range (divBy a)` using `fun x hx => mem_range_divBy ha x (hP x hx)`. Set `f : P →ₗ[O] O ⧸ Ideal.span {a}` to `(Submodule.quotEquivOfEq _ _ (ker_divBy ha)).toLinearMap.comp ((LinearMap.quotKerEquivRange (divBy a)).symm.toLinearMap.comp (Submodule.inclusion hle))`. Establish `hf : Function.Injective f`. Introduce `x y hxy`. Use `(Submodule.quotEquivOfEq _ _ (ker_divBy ha)).injective hxy` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(LinearMap.quotKerEquivRange (divBy a)).symm.injective this` as an intermediate fact. Conclude with `Submodule.inclusion_injective hle this`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem length_le_of_smul_eq_zero {a : O} (ha : a ≠ 0) (P : Submodule O (KmodO O))
     (hP : ∀ x ∈ P, a • x = 0) : Module.length O P ≤ addVal O a := by
@@ -93,9 +93,9 @@ theorem length_le_of_smul_eq_zero {a : O} (ha : a ≠ 0) (P : Submodule O (KmodO
     _ = addVal O a := Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span a
 
 /- English proof (translation)
-Unfold `lenUnit`. Establish `hne : Module.length O (O ⧸ Ideal.span {a}) ≠ ⊤`. Rewrite using `[Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span]`. Conclude with `fun h => ha (addVal_eq_top_iff.mp h)`. Establish `h1 : (Module.length O P).toNat ≤ (Module.length O (O ⧸ Ideal.span {a})).toNat` using `ENat.toNat_le_toNat ((length_le_of_smul_eq_zero ha P hP).trans_eq (Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span a).symm) hne`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Use `gcongr`.
+A detailed English derivation is pending.
 -/
 theorem lenUnit_le_of_smul_eq_zero (l : ℕ) {a : O} (ha : a ≠ 0) (P : Submodule O (KmodO O))
     (hP : ∀ x ∈ P, a • x = 0) : lenUnit (O := O) l P ≤ lenUnit (O := O) l (O ⧸ Ideal.span {a}) := by
@@ -117,19 +117,17 @@ namespace GlobalTheory.InvariantsKO
 open IsDiscreteValuationRing
 
 /- English proof (translation)
-Use `haveI := D.nd.lPrime i`. Establish `hl2 : D.nd.l i ≠ 2` using `UpperTheory.Small.ne_two D.host hls`. Take `⟨g, hgI, hg⟩` from `GlobalTheory.PtCore.EpsAll.exists_generator (GlobalTheory.EpsInertia.epsAll D i) w hw`. Establish `hgD : g ∈ Dec (F` using `D.host.E) (D.nd.plOm.1 w) := Ine_le_Dec _ hgI`. Use `set b : (D.nd.O i)ˣ := Formalism.MainNotions.N.Glob.epsO D.nd i g with hbdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : (b : D.nd.O i) = algebraMap ℤ_[D.nd.l i] (D.nd.O i) (1 + (D.nd.l i : ℤ_[D.nd.l i]) ^ 1 * ((1 : ℤ_[D.nd.l i]ˣ) : ℤ_[D.nd.l i]))`. Rewrite using `[Units.val_one, mul_one, ← UpperTheory.Small.localLevel_eq_one_of_not_mem_smallPrimes D.nd i hls, ← hg]`. Both sides reduce to the same expression. Use `set a : D.nd.O i := (b : D.nd.O i) ^ n - 1 with hadef`. Establish `hva : addVal (D.nd.O i) a = ((1 + padicValNat (D.nd.l i) n : ℕ) : ℕ∞) * addVal (D.nd.O i) ((D.nd.l i : ℕ) : D.nd.O i)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hadef, hb]`. Conclude with `Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.addVal_pow_sub_one (O := D.nd.O i) (D.nd.l i) (Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.l_ne_zero D.nd i) (Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.l_not_unit D.nd i) 1 le_rfl (fun h => …`. Establish `ha0 : a ≠ 0`. Introduce `h`. Establish `ht : addVal (D.nd.O i) a = ⊤` using `by rw [h]; simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ht` using `[hva]`. Take `⟨e, he0, he⟩` from `Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.exists_eO D.nd i`. Rewrite `ht` using `[he]`. Conclude with `absurd ht (by rw [← Nat.cast_mul]; exact ENat.coe_ne_top _)`. Establish `hkill : ∀ x ∈ Representation.invariants ((Formalism.MainNotions.N.Glob.KOtw D.nd i (n : ℤ)).comp (decS D.nd w)), a • x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Introduce `x hx`. Establish `hfix` using `(Representation.mem_invariants _ x).mp hx ⟨g, hgD⟩`. Establish `hfix' : ((b ^ n)⁻¹ : (D.nd.O i)ˣ) • x = x`. Establish `e1 : ((Formalism.MainNotions.N.Glob.KOtw D.nd i (n : ℤ)).comp (decS D.nd w)) ⟨g, hgD⟩ x = (((b ^ (-(n : ℤ)) : (D.nd.O i)ˣ)) : D.nd.O i) • x`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hfix` using `[e1]`. Rewrite using `[Units.smul_def, ← zpow_natCast, ← zpow_neg]`. Conclude with `hfix`. Rewrite using `[hadef, sub_smul, one_smul]`. Use `conv_lhs => rw [← hfix']`.
-
-Rewrite using `[Units.smul_def, smul_smul, ← Units.val_pow_eq_pow_val, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul, ← Units.smul_def, hfix', sub_self]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem lenUnit_invariants_le (D : D7) (i : D.nd.Loc) (hls : D.nd.l i ∉ D.host.small)
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (n : ℕ) (hn : 0 < n) :
@@ -183,7 +181,7 @@ end GlobalTheory.InvariantsKO
 namespace GlobalTheory.InvariantsKO
 
 /- English proof (translation)
-Consider the cases of `m with`. Consider the case `bot => simpa using hc`. Consider the case `coe a => simpa using h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem unbotD_le {m : WithBot ℚ} {c : ℚ} (h : m ≤ (c : WithBot ℚ)) (hc : 0 ≤ c) : m.unbotD 0 ≤ c := by
   cases m with
@@ -191,7 +189,7 @@ theorem unbotD_le {m : WithBot ℚ} {c : ℚ} (h : m ≤ (c : WithBot ℚ)) (hc 
   | coe a => simpa using h
 
 /- English proof (translation)
-Establish `h1 : l ^ padicValNat l n ≤ n` using `Nat.le_of_dvd hn pow_padicValNat_dvd`. Establish `h2 : 2 ^ padicValNat l n ≤ l ^ padicValNat l n` using `Nat.pow_le_pow_left (Fact.out : l.Prime).two_le _`. Establish `h3 : padicValNat l n < 2 ^ padicValNat l n` using `Nat.lt_two_pow_self`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_add_padicValNat_le (l : ℕ) [Fact l.Prime] {n t : ℕ} (hn : 0 < n) (hnt : n < t) :
     1 + padicValNat l n ≤ 2 * t := by
@@ -202,11 +200,11 @@ theorem one_add_padicValNat_le (l : ℕ) [Fact l.Prime] {n t : ℕ} (hn : 0 < n)
   omega
 
 /- English proof (translation)
-Introduce `D i col hl2 _ _ hcol`. Use `haveI := D.nd.lPrime i`. Establish `key : h0 D.nd i col ≤ 2 * (D.R.t : ℚ)`. Unfold `h0`. Use `unbotD_le ?_ (by positivity)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.max_le` to reduce the goal to its premises. Introduce `y hy`. Take `⟨⟨w, n⟩, hp, rfl⟩` from `Finset.mem_image.mp hy`. Take `⟨hw, hn⟩` from `Finset.mem_product.mp hp`. Take `⟨hn0, hnt⟩` from `Finset.mem_Ioo.mp hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `WithBot.coe_le_coe.mpr ((lenUnit_invariants_le D i hl2 w (hcol w hw) n hn0).trans ?_)` and prove the remaining obligations. Conclude with `one_add_padicValNat_le (D.nd.l i) hn0 hnt` after adjusting the coercions. Conclude with `key` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (col : Finset (HeightOneSpectrum (𝓞 D.host.E))), D.nd.l i ∉ D.host.small →
     D.nd.l i ≠ D.host.q → D.nd.l i ≠ D.host.d → (∀ u ∈ col, u ∈ placesOver D.host.E (D.nd.l i)) →

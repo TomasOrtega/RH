@@ -11,9 +11,9 @@ open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 def binomialFunctions : AddSubgroup (ℤ → ℤ) := AddSubgroup.closure (Set.range fun k : ℕ => fun w : ℤ => Ring.choose w k)
 
 /- English proof (translation)
-Establish `h : (fun w : ℤ => Ring.choose (w + s) k) = ∑ ij ∈ Finset.HasAntidiagonal.antidiagonal k, Ring.choose s ij.2 • (fun w : ℤ => Ring.choose w ij.1)`. Use function extensionality and compare the values at `w`. Rewrite using `[Ring.add_choose_eq (h := Commute.all w s), Finset.sum_apply]`. Use `Finset.sum_congr rfl fun ij _ => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Conclude with `AddSubgroup.sum_mem _ fun ij _ => AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (Set.mem_range_self ij.1)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem binomialFunctions_shift_mem (s : ℤ) (k : ℕ) : (fun w : ℤ => Ring.choose (w + s) k) ∈ binomialFunctions := by
   have h : (fun w : ℤ => Ring.choose (w + s) k) =
@@ -27,7 +27,7 @@ theorem binomialFunctions_shift_mem (s : ℤ) (k : ℕ) : (fun w : ℤ => Ring.c
     AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (Set.mem_range_self ij.1)) _
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le h0`. Rewrite using `[Ring.choose_natCast, Nat.choose_eq_zero_of_lt (by omega)]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem ring_choose_eq_zero_of_nonneg_of_lt (x : ℤ) (k : ℕ) (h0 : 0 ≤ x) (hk : x < k) : Ring.choose x k = 0 := by
   obtain ⟨m, rfl⟩ := Int.eq_ofNat_of_zero_le h0
@@ -35,7 +35,7 @@ private theorem ring_choose_eq_zero_of_nonneg_of_lt (x : ℤ) (k : ℕ) (h0 : 0 
   simp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Ring.choose_natCast, Nat.choose_self]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem ring_choose_self_of_eq (x : ℤ) (k : ℕ) (h : x = k) : Ring.choose x k = 1 := by
   subst h
@@ -43,9 +43,9 @@ private theorem ring_choose_self_of_eq (x : ℤ) (k : ℕ) (h : x = k) : Ring.ch
   simp
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [Ring.choose_zero_right]`. Consider the case `succ k ih`. Establish `h` using `Ring.choose_succ_succ (-1 : ℤ) k`. Rewrite `h` using `[neg_add_cancel, Ring.choose_zero_succ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pow_succ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem ring_choose_neg_one (k : ℕ) : Ring.choose (-1 : ℤ) k = (-1) ^ k := by
   induction k with
@@ -57,21 +57,19 @@ private theorem ring_choose_neg_one (k : ℕ) : Ring.choose (-1 : ℤ) k = (-1) 
     linarith
 
 /- English proof (translation)
-Proceed by induction on `B with`. Consider the case `zero`. Use `⟨(if (0 : ℤ) = w0 then 1 else 0) • (fun w : ℤ => Ring.choose w 0), AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (Set.mem_range_self 0)) _, ?_⟩` and prove the remaining obligations. Introduce `w h1 h2`. Establish `hw : w = 0` using `by omega`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hw` using the available equality. Simplify using `[Ring.choose_zero_right]`. Consider the case `succ B ih`. Take `⟨f, hf, hfw⟩` from `ih`. Establish `hg1 : (fun w : ℤ => Ring.choose (w + B) (2 * B + 1)) ∈ binomialFunctions` using `binomialFunctions_shift_mem _ _`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg2 : (fun w : ℤ => Ring.choose (w + ((B : ℤ) + 1)) (2 * B + 2)) ∈ binomialFunctions` using `binomialFunctions_shift_mem _ _`. Use `set g1 : ℤ → ℤ := fun w : ℤ => Ring.choose (w + B) (2 * B + 1) with hg1d`. Use `set g2 : ℤ → ℤ := fun w : ℤ => Ring.choose (w + ((B : ℤ) + 1)) (2 * B + 2) with hg2d`. Use `set c1 : ℤ := (if (B : ℤ) + 1 = w0 then 1 else 0) - f ((B : ℤ) + 1) with hc1`. Use `set c2 : ℤ := (if -((B : ℤ) + 1) = w0 then 1 else 0) - f (-((B : ℤ) + 1)) with hc2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Use `⟨f + c1 • g2 + c2 • (g2 - g1), add_mem (add_mem hf (AddSubgroup.zsmul_mem _ hg2 _)) (AddSubgroup.zsmul_mem _ (sub_mem hg2 hg1) _), ?_⟩` and prove the remaining obligations. Introduce `w h1 h2`. Move the coercions through the operations in `at h1 h2`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Break down `(by omega : (-(B : ℤ) ≤ w ∧ w ≤ B) ∨ w = B + 1 ∨ w = -((B : ℤ) + 1)) with h | h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : g1 w = 0` using `ring_choose_eq_zero_of_nonneg_of_lt _ _ (by omega) (by push_cast; omega)`. Establish `e2 : g2 w = 0` using `ring_choose_eq_zero_of_nonneg_of_lt _ _ (by omega) (by push_cast; omega)`. Rewrite using `[e1, e2, hfw w h.1 h.2]`. Expand and normalize the polynomial expressions, which then agree. Substitute `h` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : g1 ((B : ℤ) + 1) = 1` using `ring_choose_self_of_eq _ _ (by push_cast; ring)`. Establish `e2 : g2 ((B : ℤ) + 1) = 1` using `ring_choose_self_of_eq _ _ (by push_cast; ring)`. Rewrite using `[e1, e2, hc1]`. Expand and normalize the polynomial expressions, which then agree. Substitute `h` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : g1 (-((B : ℤ) + 1)) = -1`. Simplify using `only [hg1d]`. Rewrite using `[show -((B : ℤ) + 1) + B = -1 by ring, ring_choose_neg_one, pow_succ, pow_mul]`. Simplify using the standard rewrite rules. Establish `e2 : g2 (-((B : ℤ) + 1)) = 0` using `ring_choose_eq_zero_of_nonneg_of_lt _ _ (by omega) (by push_cast; omega)`.
-
-Rewrite using `[e1, e2, hc2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem binomialFunctions_window_indicator (w0 : ℤ) (B : ℕ) : ∃ f ∈ binomialFunctions, ∀ w : ℤ, -(B : ℤ) ≤ w → w ≤ B →
     f w = if w = w0 then 1 else 0 := by
@@ -128,9 +126,9 @@ def monomialRestriction (q : (ι × Fin n →₀ ℕ) → Prop) (x : MvPolynomia
   ∑ m ∈ x.support.filter q, monomial m (x.coeff m)
 
 /- English proof (translation)
-Simplify using `only [diagonalMultiplier, coeff_sum, coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite `h` using `[MvPolynomial.mem_support_iff, not_not]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_diagonalMultiplier (a : Fin n) (f : ℤ → ℤ) (x : MvPolynomial (ι × Fin n) R) (m : ι × Fin n →₀ ℕ) :
     coeff m (diagonalMultiplier LL S a f x) = x.coeff m * ((f (wtS LL S m a) : ℤ) : R) := by
@@ -144,7 +142,7 @@ theorem coeff_diagonalMultiplier (a : Fin n) (f : ℤ → ℤ) (x : MvPolynomial
 
 open Classical in
 /- English proof (translation)
-Simplify using `only [monomialRestriction, coeff_sum, coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Simplify using `only [Finset.mem_filter, MvPolynomial.mem_support_iff]`. Apply the tactic sequence `by_cases hq : q m <;> by_cases hm : x.coeff m = 0 <;> simp [hq, hm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_monomialRestriction (q : (ι × Fin n →₀ ℕ) → Prop) (x : MvPolynomial (ι × Fin n) R) (m : ι × Fin n →₀ ℕ) :
     coeff m (monomialRestriction q x) = if q m then x.coeff m else 0 := by
@@ -154,19 +152,17 @@ theorem coeff_monomialRestriction (q : (ι × Fin n →₀ ℕ) → Prop) (x : M
   by_cases hq : q m <;> by_cases hm : x.coeff m = 0 <;> simp [hq, hm]
 
 /- English proof (translation)
-Establish `hb : ∀ (k : ℕ) (x : MvPolynomial (ι × Fin n) R), binomPol R LL S a k x = diagonalMultiplier LL S a (fun w => Ring.choose w k) x`. Introduce `k x`. Use `conv_lhs => rw [x.as_sum]`. Rewrite using `[map_sum]`. Simplify using `only [binomialOperator_monomial]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Proceed by induction on `hf using AddSubgroup.closure_induction with`. Consider the case `mem f hf`. Take `⟨k, rfl⟩` from `hf`. Introduce `x hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hb]`. Conclude with `hW a k x hx`. Consider the case `zero`. Introduce `x _`. Establish `e : diagonalMultiplier LL S a 0 x = 0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `m`. Simplify using `[coeff_diagonalMultiplier]`. Rewrite using `[e]`. Conclude with `W.zero_mem`. Consider the case `add f g _ _ hf hg`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `x hx`. Establish `e : diagonalMultiplier LL S a (f + g) x = diagonalMultiplier LL S a f x + diagonalMultiplier LL S a g x`. Use extensionality with `m`. Simplify using `[coeff_diagonalMultiplier, mul_add]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `W.add_mem (hf x hx) (hg x hx)`. Consider the case `neg f _ hf`. Introduce `x hx`. Establish `e : diagonalMultiplier LL S a (-f) x = -diagonalMultiplier LL S a f x`. Use extensionality with `m`.
-
-Simplify using `[coeff_diagonalMultiplier]`. Rewrite using `[e]`. Conclude with `W.neg_mem (hf x hx)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagonalMultiplier_mem (W : Submodule R (MvPolynomial (ι × Fin n) R))
     (hW : ∀ a k, ∀ x ∈ W, binomPol R LL S a k x ∈ W) (a : Fin n) (f : ℤ → ℤ) (hf : f ∈ binomialFunctions) :
@@ -207,13 +203,13 @@ theorem diagonalMultiplier_mem (W : Submodule R (MvPolynomial (ι × Fin n) R))
     exact W.neg_mem (hf x hx)
 
 /- English proof (translation)
-Introduce `x hx`. Choose the witnesses or unpack the hypotheses as in `⟨B, hB⟩ : ∃ B : ℕ, ∀ m ∈ x.support, -(B : ℤ) ≤ wtS LL S m a ∧ wtS LL S m a ≤ B := by`. Use `⟨∑ m ∈ x.support, (wtS LL S m a).natAbs, fun m hm => ?_⟩` and prove the remaining obligations. Establish `h` using `Finset.single_le_sum (f := fun m => (wtS LL S m a).natAbs) (fun _ _ => Nat.zero_le _) hm`. Establish `h2 : |wtS LL S m a| ≤ ((∑ m ∈ x.support, (wtS LL S m a).natAbs : ℕ) : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Int.abs_eq_natAbs]`. Conclude with `h` after adjusting the coercions. Conclude with `⟨by linarith [neg_abs_le (wtS LL S m a)], by linarith [le_abs_self (wtS LL S m a)]⟩`. Take `⟨f, hf, hfw⟩` from `binomialFunctions_window_indicator w0 B`. Establish `e : monomialRestriction (fun m => wtS LL S m a = w0) x = diagonalMultiplier LL S a f x`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `m`. Rewrite using `[coeff_monomialRestriction, coeff_diagonalMultiplier]`. Distinguish the cases in `hm : m ∈ x.support`. Apply the tactic sequence `rw [hfw _ (hB m hm).1 (hB m hm).2] split_ifs <;> simp`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, not_not]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hm]`. Rewrite using `[e]`. Conclude with `diagonalMultiplier_mem LL S W hW a f hf x hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weightEntry_restriction_mem (W : Submodule R (MvPolynomial (ι × Fin n) R))
     (hW : ∀ a k, ∀ x ∈ W, binomPol R LL S a k x ∈ W) (a : Fin n) (w0 : ℤ) :
@@ -241,17 +237,17 @@ theorem weightEntry_restriction_mem (W : Submodule R (MvPolynomial (ι × Fin n)
 end graded
 
 /- English proof (translation)
-Introduce `R _ ι _ LL n S W hW x hx nu`. Establish `key : ∀ s : Finset (Fin n), monomialRestriction (fun m => ∀ a ∈ s, wtS LL S m a = nu a) x ∈ W`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `e : monomialRestriction (fun m => ∀ a ∈ (∅ : Finset (Fin n)), wtS LL S m a = nu a) x = x`. Use extensionality with `m`. Rewrite using `[coeff_monomialRestriction]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Consider the case `@insert a s _ ih`. Establish `e : monomialRestriction (fun m => ∀ b ∈ insert a s, wtS LL S m b = nu b) x = monomialRestriction (fun m => wtS LL S m a = nu a) (monomialRestriction (fun m => ∀ b ∈ s, wtS LL S m b = nu b) x)`. Use extensionality with `m`. Rewrite using `[coeff_monomialRestriction, coeff_monomialRestriction, coeff_monomialRestriction]`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases h1 : wtS LL S m a = nu a <;> by_cases h2 : ∀ b ∈ s, wtS LL S m b = nu b <;>`. Simplify using `[h1, h2, Finset.forall_mem_insert]`. Rewrite using `[e]`. Conclude with `weightEntry_restriction_mem LL S W hW a (nu a) _ ih`. Establish `e : weightComponent LL S nu x = monomialRestriction (fun m => ∀ a ∈ Finset.univ, wtS LL S m a = nu a) x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `m`. Rewrite using `[coeff_weightComponent, coeff_monomialRestriction]`. Distinguish the cases in `h : wtS LL S m = nu`. Establish `h' : ∀ a ∈ (Finset.univ : Finset (Fin n)), wtS LL S m a = nu a` using `fun a _ => by rw [h]`. Rewrite using `[if_pos h, if_pos h']`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : ¬ ∀ a ∈ (Finset.univ : Finset (Fin n)), wtS LL S m a = nu a` using `fun h'' => h (funext fun a => h'' a (Finset.mem_univ a))`. Rewrite using `[if_neg h, if_neg h']`. Rewrite using `[e]`. Conclude with `key _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem binomial_stable_contains_components : BinomialStableContainsComponents := by
   intro R _ ι _ LL n S W hW x hx nu

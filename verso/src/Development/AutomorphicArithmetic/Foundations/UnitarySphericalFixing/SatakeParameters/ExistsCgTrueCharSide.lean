@@ -21,7 +21,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 
 include hF in
 /- English proof (translation)
-Take `⟨_, _, _, -, H⟩` from `ParLaws.isRec_locRec hL h`. Rewrite using `[ParLaws.locPar_ofChar, ParLaws.locPar, ParLaws.locPar, cls_loc_twist]`. Establish `_` using `hF`. Conclude with `Old.twist H _ _ _ hg`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locPar_twist (π : CG E a) (χ : HChar E) (h : IsPlaceOver A w)
     (hg : Good (⟨a, ParLaws.toCl (π.loc w)⟩ : IrrGL (w.adicCompletion E))) :
@@ -33,7 +33,7 @@ theorem locPar_twist (π : CG E a) (χ : HChar E) (h : IsPlaceOver A w)
 
 include hF in
 /- English proof (translation)
-Rewrite using `[CG.tw, locPar_twist hL hF _ _ _ hg, CG.ofChar_toChar]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locPar_tw (π : CG E a) (χ : CG E 1) (h : IsPlaceOver A w)
     (hg : Good (⟨a, ParLaws.toCl (π.loc w)⟩ : IrrGL (w.adicCompletion E))) :
@@ -47,12 +47,12 @@ namespace Old
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut}
 
 /- English proof (translation)
-The claim follows from `s.elim`.
+A detailed English derivation is pending.
 -/
 theorem cgGood (s : Sw) (C : CGTrue hL D T) : ∀ a (π : D.naut.CG a), GoodAll (C.e a π) := s.elim
 
 /- English proof (translation)
-Introduce `a h ρ _` and use `C.surj a h ρ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cgSurj (C : CGTrue hL D T) : ∀ a, 0 < a → ∀ ρ : HostCGu D.host a, GoodAll ρ → ∃ π, C.e a π = ρ :=
   fun a h ρ _ => C.surj a h ρ
@@ -71,12 +71,12 @@ namespace New
 variable {hL : RecTExists} {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut}
 
 /- English proof (translation)
-The claim follows from `C.good`.
+A detailed English derivation is pending.
 -/
 theorem cgGood (_ : TrivialCondition) (C : CGTrueT hL D T) : ∀ a (π : D.naut.CG a), GoodAll (C.e a π) := C.good
 
 /- English proof (translation)
-The claim follows from `C.surj`.
+A detailed English derivation is pending.
 -/
 theorem cgSurj (C : CGTrueT hL D T) : ∀ a, 0 < a → ∀ ρ : HostCGu D.host a, GoodAll ρ → ∃ π, C.e a π = ρ := C.surj
 
@@ -89,9 +89,9 @@ def cgMk (_ : TrivialCondition) (e : ∀ a, D.naut.CG a ↪ HostCGu D.host a) (g
   ⟨e, good, surj, zero, loc, tw, inf, csd⟩
 
 /- English proof (translation)
-Take `⟨a, ha, H⟩` from `ParLawsT.isRecT_locRecT hL h`. Rewrite using `[ParLawsT.locParT_ofChar_eq, H.one, Test.unr_lpOfChar_iff ha (ParLaws.isSmoothChar_loc χ w)]`. Use `forall_congr' fun x => imp_congr_left ?_` and prove the remaining obligations. Establish `h0 : Valued.v (x : w.adicCompletion E) ≠ 0` using `by simp`. Rewrite using `[← ord_eq_zero_iff, SphCompletion.ord_completion, neg_eq_zero, IsUnitAt]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hl`. Rewrite using `[← WithZero.exp_log h0, hl, WithZero.exp_zero]`. Introduce `hv`. Rewrite using `[hv, WithZero.log_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem locParT_unr_iff {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] [IsTotallyComplex E]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (hL : RecTExists) (χ : HChar E) (h : IsPlaceOver A w) :
@@ -111,15 +111,13 @@ set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hL _ D hE T cf hP`. Use `haveI := host_isCMField D.host`. Take `⟨η, η', e1, e2, h1, h2, h3, h4⟩` from `etaLawsT hL D cf.isEta`. Use `⟨trueKT hL D T η η' h1 h2 h3 h4, ⟨trueCGT hL D hE T η η' h1 h2 h3 h4⟩, ⟨ { e1 := (Equiv.subtypeUnivEquiv (fun π => ⟨Nat.one_pos, goodAll_one π⟩)).trans (CGu.equivChar D.host.E) unr_iff := fun π w => ?_ frob := fun π w hu => ?_ tw := fun π χ => CGu.equivChar_tw π.1 χ.1 infG := fun …` and prove the remaining obligations. Take `⟨χ, h, e⟩` from `exists_ofU π.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `D.naut.unr ((T.e w).symm (ParLawsT.locGT hL D.nd.plOm π.1 w)) ↔ (CGu.equivChar D.host.E π.1).1.UnrAt w`. Rewrite using `[e, equivChar_ofU]`. Conclude with `(unr_symm T w _).trans (locParT_unr_iff hL χ (D.nd.plOm.2 w))`. Take `⟨χ, h, e⟩` from `exists_ofU π.1`. Express the relevant statement in the definitionally equal form `(CGu.equivChar D.host.E π.1).1.UnrAt w at hu`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `D.naut.frobEig ((T.e w).symm (ParLawsT.locGT hL D.nd.plOm π.1 w)) = {(((CGu.equivChar D.host.E π.1).1.val w)⁻¹ : ℂˣ).1}`. Rewrite `*` using `[e, equivChar_ofU]`. Establish `h5` using `locParT_unr hL χ (D.nd.plOm.2 w) hu`. Conclude with `(frob_symm T w _ h5.1).trans h5.2`. Take `⟨χ, h, e⟩` from `exists_ofU π.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(CGu.equivChar D.host.E π.1).1.HasInfQ (embPsi D.host) a at ha`. Express the relevant statement in the definitionally equal form `π.1.1.infChar (embPsi D.host g) = {(a g : ℂ)} ∧ π.1.1.infChar ((starRingEnd ℂ).comp (embPsi D.host g)) = {-(a g : ℂ)}`. Rewrite `*` using `[e, equivChar_ofU]`. Conclude with `infChar_ofChar_of_hasInfQ D.host χ a ha g`. Take `⟨χ, h, e⟩` from `exists_ofU π.1`.
-
-Express the relevant statement in the definitionally equal form `π.1.1.IsCsd ↔ IsCSD D.host (CGu.equivChar D.host.E π.1).1`. Rewrite using `[e, equivChar_ofU]`. Conclude with `isCsd_ofChar_iff D.host χ`. Conclude with `(congrArg CG.toChar e1).trans (CG.toChar_ofChar _)`. Conclude with `(congrArg CG.toChar e2).trans (CG.toChar_ofChar _)`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cgTrue_charSide : ∀ hL : RecTExists, GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (D : D7)
     (hE : IsEmpty D.nd.Loc) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (cf : CharFrame D), (∀ k v, cf.P.Div k (D.naut.plGw k v)) →

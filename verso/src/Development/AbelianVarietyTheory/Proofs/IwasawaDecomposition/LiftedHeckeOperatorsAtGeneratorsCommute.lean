@@ -12,19 +12,17 @@ set_option maxHeartbeats 2000000
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-Introduce `D M C hR hstd hgen hsplit j w v k v' k'`. Distinguish the cases in `h : (1 ≤ j ∧ j ≤ D.R.m) ∧ GenAt0 D.host (D.what₂.places.resChar w) (C.Q w) v k`. Use `swap`. Establish `: hLC (mt0 M) C.Q hR j w v k = 0` using `by unfold hLC; rw [dif_neg h]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `Commute.zero_left _`. Distinguish the cases in `h' : (1 ≤ j ∧ j ≤ D.R.m) ∧ GenAt0 D.host (D.what₂.places.resChar w) (C.Q w) v' k'`. Use `swap`. Establish `: hLC (mt0 M) C.Q hR j w v' k' = 0` using `by unfold hLC; rw [dif_neg h']`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Commute.zero_right _`. Take `⟨⟨h1, h2⟩, hg⟩` from `h`. Take `⟨-, hg'⟩` from `h'`. Take `⟨B, hB, hBv⟩` from `hgen w j h1 h2`. Take `⟨s, ϖ, hc, hu⟩` from `hsplit v hg.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s', ϖ', hc', hu'⟩` from `hsplit v' hg'.1`. Establish `hsB : s.v ∉ B` using `hBv v k s hg hc`. Establish `hsB' : s'.v ∉ B` using `hBv v' k' s' hg' hc'`. Establish `hstd'` using `hstd D.host.E D.R.nV (M (D.what₂.muTw w) j h1 h2).wt (M (D.what₂.muTw w) j h1 h2).J (M (D.what₂.muTw w) j h1 h2).χ B (M (D.what₂.muTw w) j h1 h2).J_open hB s ϖ k hsB hu hg.2.2.2.2.1 hg.2.2.2.2.2`. Establish `hcomm` using `hstd'.2.2.1 s' ϖ' k' hsB' hu' hg'.2.2.2.2.1 hg'.2.2.2.2.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[commute_iff_eq]`. Use extensionality with `x`. Apply `Formalism.L2.Fam.NPC.LatticeFinitenessFree.jMt_injective` to reduce the goal to its premises. Apply `(M (D.what₂.muTw w) j h1 h2).real_inj` to reduce the goal to its premises. Establish `hf : (M (D.what₂.muTw w) j h1 h2).real (D.what₂.jMt (D.what₂.muTw w) j x) ∈ NG.TypeSp (M (D.what₂.muTw w) j h1 h2).wt.ρ (M (D.what₂.muTw w) j h1 h2).J (M (D.what₂.muTw w) j h1 h2).χ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← (M (D.what₂.muTw w) j h1 h2).real_range]`. Conclude with `LinearMap.mem_range_self _ _`. Establish `e1` using `hLC_spec (mt0 M) C.Q hR j w v k h1 h2 hg s ϖ hc hu`. Establish `e2` using `hLC_spec (mt0 M) C.Q hR j w v' k' h1 h2 hg' s' ϖ' hc' hu'`. Simplify using `only [Module.End.mul_apply]`.
-
-Express the relevant statement in the definitionally equal form `(mt0 M (D.what₂.muTw w) j h1 h2).real _ = (mt0 M (D.what₂.muTw w) j h1 h2).real _`. Rewrite using `[e1, e2, e2, e1]`. Conclude with `hcomm _ hf`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hLC_commute : ∀ (D : D7) (M : MtFam D) (C : NChoice D) (hR : HeckeLift0 (mt0 M) C.Q), HeckeStdPlain → GenHyp M C.Q → (∀ v : PlE D.host, IsSplitPl D.host v → ∃ (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), IsConjPl D.host v s.w ∧ IsUnif D.host.E s.v ϖ) → (∀ j w v k v' k', Commute (hLC (mt0 M) C.Q hR j w v k) (hLC (mt0 M) C.Q hR j w v' k')) := by
   classical

@@ -23,7 +23,7 @@ namespace GlobalTheory.Core.Rk.IwIso
 open GlobalTheory.AdelicU Formalism.UG
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.iwasawa_isotropic_columns_ring_iso_complex σ f hf hσ b ε hb X hX g hg`.
+A detailed English derivation is pending.
 -/
 theorem local_decomp {A : Type} [CommRing A] {n r : ℕ} (σ : A →+* A) (f : A →+* ℂ) (hf : Function.Bijective f)
     (hσ : ∀ x, f (σ x) = star (f x)) {J : Matrix (Fin n) (Fin n) A} (b : GL (Fin n) A) (ε : Fin n → Bool)
@@ -34,7 +34,7 @@ theorem local_decomp {A : Type} [CommRing A] {n r : ℕ} (σ : A →+* A) (f : A
   GlobalTheory.T.iwasawa_isotropic_columns_ring_iso_complex σ f hf hσ b ε hb X hX g hg
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.wittHyperbolic_isotropic_columns_at_real_place d w`.
+A detailed English derivation is pending.
 -/
 theorem iso_arch {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (w : InfinitePlace D.host.F) :
     (Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR w.Completion D.sp.cm.sig) (Matrix.map d.jX (compInf D.host.F D.host.E w)) *
@@ -43,7 +43,7 @@ theorem iso_arch {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (w : 
   GlobalTheory.T.wittHyperbolic_isotropic_columns_at_real_place d w
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.mem_wittStabilizer_of_keeps_isotropic_real_places d q hfin harch`.
+A detailed English derivation is pending.
 -/
 theorem mem_stab_of_arch {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (q : GA D T) (hfin : q ∈ GinfC T)
     (harch : ∀ w : InfinitePlace D.host.F, ∃ β : Matrix (Fin r) (Fin r) (TensorProduct D.host.F w.Completion D.host.E),
@@ -53,13 +53,13 @@ theorem mem_stab_of_arch {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ 
   GlobalTheory.T.mem_wittStabilizer_of_keeps_isotropic_real_places d q hfin harch
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset (InfinitePlace F), ∃ g : GAd σ J, (∀ w ∈ s, projArch σ J w g = k w) ∧ (∀ w ∉ s, projArch σ J w g = 1) ∧ projFin σ J g = 1`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, by simp, fun _ _ => map_one _, map_one _⟩`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨g, h1, h2, h3⟩` from `ih`. Use `⟨g * embArch σ J a (k a), fun w hw => ?_, fun w hw => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Break down `Finset.mem_insert.1 hw with rfl | hw` into its components or cases. Rewrite using `[h2 w ha, projArch_embArch_self, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : w ≠ a` using `fun e => ha (e ▸ hw)`. Rewrite using `[h1 w hw, projArch_embArch_ne σ J hne, mul_one]`. Establish `hne : w ≠ a` using `fun e => hw (e ▸ Finset.mem_insert_self a s)`. Rewrite using `[map_mul, h2 w (fun h => hw (Finset.mem_insert_of_mem h)), projArch_embArch_ne σ J hne, mul_one]`. Rewrite using `[map_mul, h3, projFin_embArch, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, h1, -, h3⟩` from `key Finset.univ`. Conclude with `⟨g, fun w => h1 w (Finset.mem_univ w), h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem glue {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (k : ∀ w : InfinitePlace F, GArch σ J w) :
@@ -85,7 +85,7 @@ theorem glue {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [A
   exact ⟨g, fun w => h1 w (Finset.mem_univ w), h3⟩
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Conclude with `local_decomp _ (infEmb τ) (infEmb_bijective hc τ) (fun x => (infEmb_sigR hc τ x).symm) b ε hb X hX g hg`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem local_at_arch {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hc : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) {n r : ℕ} (J : Matrix (Fin n) (Fin n) E) (w : InfinitePlace F)
@@ -104,7 +104,7 @@ theorem local_at_arch {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   exact local_decomp _ (infEmb τ) (infEmb_bijective hc τ) (fun x => (infEmb_sigR hc τ x).symm) b ε hb X hX g hg
 
 /- English proof (translation)
-Use `show (MulAut.conj b⁻¹) (matHom _ σ J g) ∈ UJ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR w.Completion σ) (1 : Matrix (Fin n) (Fin n) _)`. Rewrite using `[MulAut.conj_apply, inv_inv]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_stabArch_of {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (w : InfinitePlace F)
@@ -116,17 +116,13 @@ theorem mem_stabArch_of {F E : Type} [Field F] [NumberField F] [Field E] [Number
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D T T₀ r d b hb y hy`. Establish `hloc` using `fun w : InfinitePlace D.host.F => local_at_arch (isCMExt_host D) T.gram w _ (hb w).choose (hb w).choose_spec _ (iso_arch d w) (matHom _ D.sp.cm.sig T.gram (projArch D.sp.cm.sig T.gram w y)) (projArch D.sp.cm.sig T.gram w y).2`. Use `choose kk hk hk1 hβ using hloc`. Take `⟨k, hkw, hkf⟩` from `glue D.sp.cm.sig T.gram (fun w => ⟨kk w, hk w⟩)`. Establish `hfk : finHom T k = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : finHom T k = GlobalTheory.AdelicU.matHom (Af D.host.F) D.sp.cm.sig T.gram (projFin D.sp.cm.sig T.gram k)` using `rfl`. Rewrite using `[e, hkf, map_one]`. Use `⟨y * k⁻¹, ?_, k, ?_, ?_, by group⟩` and prove the remaining obligations. Use `mem_stab_of_arch d _ ?_ fun w => ?_` and prove the remaining obligations. Use `show finHom T (y * k⁻¹) = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, map_inv, hfk, inv_one, mul_one]`. Conclude with `hy`. Take `⟨β, h⟩` from `hβ w`. Use `⟨β, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.map_mul (projArch D.sp.cm.sig T.gram w), MonoidHom.map_inv (projArch D.sp.cm.sig T.gram w), hkw w, MonoidHom.map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Rewrite using `[Kmax, levelAll, Subgroup.mem_inf, mem_levelOpen, Subgroup.mem_iInf]`. Use `⟨fun v => ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← projFinLoc_projFin, hkf, map_one]`. Conclude with `one_mem _`.
-
-Use `Subgroup.mem_comap.2 ?_` and prove the remaining obligations. Establish `h3` using `mem_stabArch_of D.sp.cm.sig T.gram w _ ⟨kk w, hk w⟩ (hk1 w)`. Rewrite `h3` using `[← hkw w]`. Conclude with `h3`. Use `show finHom T (y * k⁻¹) = 1`.
-
-Rewrite using `[map_mul, map_inv, hfk, inv_one, mul_one]`. Conclude with `hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawa_stab_arch : ∀ (D : D7) (T T₀ : HSp D) (r : ℕ) (d : HypDec T T₀ r) (b : GL (Fin T.rank) (AE D)), IsMaj T b → ∀ y ∈ GinfC T, ∃ q ∈ stab d, ∃ k ∈ Kmax T b, q ∈ GinfC T ∧ y = q * k := by
   intro D T T₀ r d b hb y hy

@@ -17,19 +17,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.RigDesc
 
 /- English proof (translation)
-Simplify using `only [_root_.mul_assoc, inv_mul_cancel_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_mid {G : Type*} [CommGroup G] (x y z p q : G) : x * (p * q) * z⁻¹ = (x * p * y⁻¹) * (y * q * z⁻¹) := by
   simp only [_root_.mul_assoc, inv_mul_cancel_left]
 
 /- English proof (translation)
-Rewrite using `[_root_.mul_comm x, _root_.mul_assoc, _root_.mul_assoc, _root_.mul_comm x, _root_.mul_assoc, inv_mul_cancel, _root_.mul_one, _root_.mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_fix {G : Type*} [CommGroup G] (x y t : G) : (x * y⁻¹ * t) * x⁻¹ = t * y⁻¹ := by
   rw [_root_.mul_comm x, _root_.mul_assoc, _root_.mul_assoc, _root_.mul_comm x, _root_.mul_assoc, inv_mul_cancel, _root_.mul_one, _root_.mul_comm]
 
 /- English proof (translation)
-Establish `e` using `gs_pull (𝟙 W) φ x ⊤ trivial u.val`. Rewrite `e` using `[Category.id_comp]`. Conclude with `e.trans (gs_unit φ x ⊤ trivial u)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_appTop {W Y : Scheme.{0}} (φ : W ⟶ Y) (u : Γ(Y, ⊤)ˣ) (x : W) :
     gs (𝟙 W) x ⊤ (φ.appTop.hom u.val) = (gm φ x ⊤ u).val := by
@@ -38,19 +38,17 @@ theorem gs_appTop {W Y : Scheme.{0}} (φ : W ⟶ Y) (u : Γ(Y, ⊤)ˣ) (x : W) :
   exact e.trans (gs_unit φ x ⊤ trivial u)
 
 /- English proof (translation)
-Take `⟨Z, g, hg, hgl, hgs, τ, hτ⟩` from `GlobalTheory.T.line_bundle_trivial_after_flat_cover M hM`. Establish `h₁ : Flat (g ≫ f)` using `inferInstance`. Establish `h₂ : LocallyOfFinitePresentation (g ≫ f)` using `inferInstance`. Establish `h₃ : Surjective (g ≫ f)` using `inferInstance`. Take `⟨u, hu, hv⟩` from `GlobalTheory.T.generator_descent_unit_exists g f M hM c hc τ hτ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `good : ∀ {W : Scheme.{0}} (w : W), ∃ J : (W ⟶ P) → M.ι, Good M w J` using `fun w => ⟨fun χ => (exists_chart hM (χ w)).choose, fun χ => (exists_chart hM (χ w)).choose_spec⟩`. Establish `cocu : ∀ (W : Scheme.{0}) (a b d : W ⟶ Z) (hab : a ≫ g ≫ f = b ≫ g ≫ f) (hbd : b ≫ g ≫ f = d ≫ g ≫ f), (pullback.lift a d (hab.trans hbd)).appTop u = (pullback.lift a b hab).appTop u * (pullback.lift b d hbd).appTop u`. Introduce `W a b d hab hbd`. Establish `e₀ : ∀ φ : W ⟶ pullback (g ≫ f) (g ≫ f), φ.appTop u = φ.appTop.hom hu.unit.val` using `fun _ => rfl`. Use `fn_ext fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨J, hJ⟩` from `good x`. Establish `hab' : (a ≫ g) ≫ f = (b ≫ g) ≫ f` using `by simpa using hab`. Establish `hbd' : (b ≫ g) ≫ f = (d ≫ g) ≫ f` using `by simpa using hbd`. Establish `key : gm (pullback.lift a d (hab.trans hbd)) x ⊤ hu.unit = gm (pullback.lift a b hab) x ⊤ hu.unit * gm (pullback.lift b d hbd) x ⊤ hu.unit`. Rewrite using `[hv _ _ _ _ _ _ hJ, hv _ _ _ _ _ _ hJ, hv _ _ _ _ _ _ hJ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coc W (a ≫ g) (b ≫ g) (d ≫ g) hab' hbd' x J hJ]`. Conclude with `mul_mid _ _ _ _ _`. Rewrite using `[gs_mul (𝟙 W) x ⊤ trivial, e₀, e₀, e₀, gs_appTop, gs_appTop, gs_appTop, key, Units.val_mul]`. Take `⟨N, hN, T, hT, hTv⟩` from `GlobalTheory.T.cocycle_defines_descended_line_bundle hH (g ≫ f) h₁ h₂ h₃ u hu cocu`. Use `⟨N, hN, GlobalTheory.T.lbIso_pull_of_generator_ratio_eq g f hg hgl hgs M hM N hN τ hτ T hT fun W a b hab w i k hi hk => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hab' : a ≫ g ≫ f = b ≫ g ≫ f` using `by rw [← Category.assoc, hab, Category.assoc]`. Take `⟨J, hJ, hJk⟩` from `exists_good M hM w (K := PUnit) (fun _ => a ≫ g) (fun _ => k) (fun _ _ _ => rfl) (fun _ => hk)`. Establish `hJk' : J (a ≫ g) = k` using `hJk PUnit.unit`. Establish `one : ∀ (x y : W ⟶ P) (h : x ≫ f = y ≫ f), x = y → val c (pullback.lift x y h) w J = 1`. Introduce and unpack `x _ h rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `mul_eq_left.1 (coc W x x x h h w J hJ)`. Establish `va : val τ a w J = gm a w ((M.pull g).U fun _ => k) (τ.s fun _ => k)` using `val_of τ a w J _ fun _ => hJk'`. Establish `vb : val τ b w J = gm b w ((M.pull g).U fun _ => k) (τ.s fun _ => k)` using `val_of τ b w J _ fun _ => by rw [← hab]; exact hJk'`. Establish `e` using `hTv W a b hab' w i hi`. Rewrite `e` using `[hv _ _ _ _ _ _ hJ, one _ _ _ hab, va, vb, _root_.mul_one]`.
-
-Rewrite using `[e]`. Conclude with `mul_fix _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbDescent (hH : H90) {P Q : Scheme.{0}} (f : P ⟶ Q) (hf : Flat f) (hl : LocallyOfFinitePresentation f)
     (hs : Surjective f) (M : LB P) (hM : M.IsLB)
@@ -97,15 +95,15 @@ theorem lbDescent (hH : H90) {P Q : Scheme.{0}} (f : P ⟶ Q) (hf : Flat f) (hl 
   exact mul_fix _ _ _
 
 /- English proof (translation)
-Introduce `hH S A X Y _ hA q hq hl hs`. Use `⟨GlobalTheory.T.seesaw_triviality_abelian_scheme S A X Y hA q hq hl hs, fun M hM hr hinv => ?_⟩` and prove the remaining obligations. Take `⟨hf, hfl, hfs⟩` from `GlobalTheory.T.flat_cover_base_change_product S A X Y hA q hq hl hs`. Take `⟨c, hc, coc⟩` from `GlobalTheory.T.theorem_of_cube_generator_exists S A X Y hA q M hM hr hinv`. Take `⟨N₀, hN₀, iso⟩` from `lbDescent hH _ hf hfl hfs M hM c hc coc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `eY` to `(lift (1 : Y ⟶ A) (𝟙 Y)).left`. Set `eX` to `(lift (1 : X ⟶ A) (𝟙 X)).left`. Set `pY` to `(snd A Y).left`. Set `pX` to `(snd A X).left`. Set `f` to `(lift (fst A X) (snd A X ≫ q)).left`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e₁ : eY ≫ pY = 𝟙 _`. Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression. Establish `e₂ : f ≫ pY ≫ eY = pX ≫ eX ≫ f`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← Over.comp_left, ← Over.comp_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `ext1 <;> simp`. Take `⟨N, hN, hc'⟩` from `cls_surj (cls N₀ hN₀ - CechPic.pull pY (CechPic.pull eY (cls N₀ hN₀)))`. Establish `hm : cls M hM = CechPic.pull f (cls N₀ hN₀)` using `(cls_eq_iff hM (pull_isLB hN₀ _)).2 iso`. Establish `z : CechPic.pull eX (cls M hM) = 0` using `(triv_ev_iff hM _ _).1 hr`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨N, hN, (triv_ev_iff hN _ _).2 ?_, (cls_eq_iff hM (pull_isLB hN _)).1 ?_⟩` and prove the remaining obligations. Use `show CechPic.pull eY (cls N hN) = 0`. Rewrite using `[hc', map_sub, ← pull_comp, e₁, pull_id, sub_self]`. Use `show cls M hM = CechPic.pull f (cls N hN)`. Rewrite using `[hc', map_sub, ← pull_comp f pY, ← pull_comp (f ≫ pY) eY, Category.assoc, e₂, pull_comp pX, pull_comp eX, ← hm, z, map_zero, sub_zero, hm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rigDescent : H90 → RigDescent := by
   intro hH S A X Y _ hA q hq hl hs

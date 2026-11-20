@@ -18,11 +18,11 @@ section Taylor
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Proceed by induction on `T using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Simplify using `only [map_smul, smul_eq_mul, GlobalTheory.TensIrr.prodForm_tprod, sumPl, LinearMap.sum_apply, map_sum, GlobalTheory.TensIrr.atPl_tprod]`. Use `(HasDerivAt.fun_finsetProd (u := Finset.univ) (fun w _ => h w t (f w))).const_mul r` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ w), Function.update_self, smul_eq_mul, mul_comm]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun w' hw' => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hw')]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Consider the case `add x y hx hy`. Simplify using `only [map_add]`. Conclude with `hx.add hy`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_prodForm (L : ι → Module.End ℂ V) (e : ι → ℂ → V →ₗ[ℂ] ℂ)
     (h : ∀ w t f, HasDerivAt (fun s => e w s f) (e w t (L w f)) t) (t : ℂ) (T : ⨂[ℂ] _ : ι, V) :
@@ -44,11 +44,11 @@ theorem hasDerivAt_prodForm (L : ι → Module.End ℂ V) (e : ι → ℂ → V 
     exact hx.add hy
 
 /- English proof (translation)
-Establish `hit : ∀ (n : ℕ) (v : V), iteratedDeriv n (fun s => e s v) = fun s => e s ((L ^ n) v)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro v`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `v`. Rewrite using `[iteratedDeriv_succ, ih]`. Use function extensionality and compare the values at `s`. Rewrite using `[(h s _).deriv, pow_succ', Module.End.mul_apply]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Complex.hasSum_taylorSeries_of_entire (f := fun s => e s v) (fun t => (h t v).differentiableAt) 0 1`. Simplify using `only [hit, sub_zero, one_pow, one_smul, smul_eq_mul, one_mul] at h1`. Conclude with `(hU v (e 0)).unique h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isExp_taylor {L U : Module.End ℂ V} (hU : IsExp L U) (e : ℂ → V →ₗ[ℂ] ℂ)
     (h : ∀ t v, HasDerivAt (fun s => e s v) (e t (L v)) t) (v : V) : e 0 (U v) = e 1 v := by
@@ -83,11 +83,11 @@ def OnPos (Z : Matrix (Ix P Q) (Ix R S) ℂ) : Prop := (∀ i c, Z (.inl i) (.in
 def shift (P Q : ℕ) : Ix R S → ℂ := Sum.elim (fun _ => ((P : ℂ) - Q) / 2) fun _ => ((Q : ℂ) - P) / 2
 
 /- English proof (translation)
-Rewrite using `[fockAct2_Eab, LinearMap.sum_apply, map_sum, Fintype.sum_sum_type, Fintype.sum_sum_type]`. Apply the tactic sequence `rcases a with c | c <;> rcases b with d | d`. Simplify using `only [GlobalTheory.CompactHarm.omE_pp (Sum.inl _, Sum.inl _) (Sum.inl _, Sum.inl _) rfl rfl, GlobalTheory.CompactHarm.omE_nn (Sum.inr _, Sum.inl _) (Sum.inr _, Sum.inl _) rfl rfl, evZ_apply, map_add, map_sub, map_neg, map_mul, aeval_X, hZ.2, zero_mul, neg_zero, zero_sub, Prod.mk. …`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using the standard rewrite rules. Conclude with `absurd hab (by simp [sameBlock])`. Conclude with `absurd hab (by simp [sameBlock])`. Simplify using `only [GlobalTheory.CompactHarm.omE_pp (Sum.inr _, Sum.inr _) (Sum.inr _, Sum.inr _) rfl rfl, GlobalTheory.CompactHarm.omE_nn (Sum.inl _, Sum.inr _) (Sum.inl _, Sum.inr _) rfl rfl, evZ_apply, map_add, map_sub, map_neg, map_mul, aeval_X, hZ.1, zero_mul, neg_zero, zero_sub, Prod.mk. …`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem evZ_Eab {Z : Matrix (Ix P Q) (Ix R S) ℂ} (hZ : OnPos Z) (a b : Ix R S) (hab : sameBlock a b) (f : Pol P Q R S) :
     evZ Z (fockAct2 P Q R S (Eab a b) f) =
@@ -114,13 +114,13 @@ theorem evZ_Eab {Z : Matrix (Ix P Q) (Ix R S) ℂ} (hZ : OnPos Z) (a b : Ix R S)
     · simp
 
 /- English proof (translation)
-Establish `hYs : Y = ∑ a, ∑ b, Y a b • Eab a b` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single Y]`. Simplify using `only [Eab, Matrix.smul_single, smul_eq_mul, mul_one]`. Establish `term : ∀ a b : Ix R S, Y a b * evZ Z (fockAct2 P Q R S (Eab a b) f) = ∑ i, Z i a * Y a b * evZ Z (pderiv (i, b) f) + (if a = b then Y a a * shift P Q a * evZ Z f else 0)`. Introduce `a b`. Distinguish the cases in `hs : sameBlock a b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[evZ_Eab hZ a b hs, mul_add, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Use `split_ifs with e`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish `hab : a ≠ b` using `by rintro rfl; exact hs (GlobalTheory.KFixIrr.LowMinor.sameBlock_self a)`. Simplify using `[hY a b hs, hab]`. Use `conv_lhs => rw [hYs]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, term, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true, Matrix.mul_apply, Finset.sum_mul, Fintype.sum_prod_type]`. Use `congr 1`. Rewrite using `[Finset.sum_comm, Finset.sum_comm (s := (Finset.univ : Finset (Ix P Q)))]`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_comm`.
+A detailed English derivation is pending.
 -/
 theorem evZ_fock {Z : Matrix (Ix P Q) (Ix R S) ℂ} (hZ : OnPos Z) {Y : Mat R S} (hY : IsKC Y) (f : Pol P Q R S) :
     evZ Z (fockAct2 P Q R S Y f) =
@@ -148,13 +148,13 @@ theorem evZ_fock {Z : Matrix (Ix P Q) (Ix R S) ℂ} (hZ : OnPos Z) {Y : Mat R S}
   exact Finset.sum_congr rfl fun b _ => Finset.sum_comm
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c => simpa [evZ_apply] using hasDerivAt_const t c`. Consider the case `add p q hp hq`. Simplify using `only [map_add, mul_add, Finset.sum_add_distrib]`. Conclude with `hp.add hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p l hp`. Use `hp.mul (hz l.1 l.2)` as an intermediate fact. Simplify using `only [evZ_apply, map_mul, aeval_X] at this ⊢`. Use `this.congr_deriv ?_` and prove the remaining obligations. Use `symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Derivation.leibniz, smul_eq_mul, map_add, map_mul, aeval_X, mul_add, Finset.sum_add_distrib, pderiv_X, Finset.sum_mul]`. Rewrite using `[add_comm]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[Finset.sum_eq_single l]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[mul_comm]`. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb.symm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_evZ (z : ℂ → Matrix (Ix P Q) (Ix R S) ℂ) (z' : Matrix (Ix P Q) (Ix R S) ℂ) (t : ℂ)
     (hz : ∀ i a, HasDerivAt (fun s => z s i a) (z' i a) t) (f : Pol P Q R S) :
@@ -180,7 +180,7 @@ theorem hasDerivAt_evZ (z : ℂ → Matrix (Ix P Q) (Ix R S) ℂ) (z' : Matrix (
       · simp
 
 /- English proof (translation)
-Use extensionality with `(a | a) (b | b)`. Both sides reduce to the same expression. Conclude with `hY _ _ (by simp [sameBlock])`. Conclude with `hY _ _ (by simp [sameBlock])`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isKC_eq_fromBlocks {Y : Mat R S} (hY : IsKC Y) : Y = Matrix.fromBlocks Y.toBlocks₁₁ 0 0 Y.toBlocks₂₂ := by
   ext (a | a) (b | b)
@@ -190,7 +190,7 @@ theorem isKC_eq_fromBlocks {Y : Mat R S} (hY : IsKC Y) : Y = Matrix.fromBlocks Y
   · rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [isKC_eq_fromBlocks hY]`. Conclude with `Formalism.FourierDecayAlt.P.WirtingerOperators.LeviExponential.exp_fromBlocks _ _`.
+A detailed English derivation is pending.
 -/
 theorem exp_isKC {Y : Mat R S} (hY : IsKC Y) :
     NormedSpace.exp Y = Matrix.fromBlocks (NormedSpace.exp Y.toBlocks₁₁) 0 0 (NormedSpace.exp Y.toBlocks₂₂) := by
@@ -198,9 +198,9 @@ theorem exp_isKC {Y : Mat R S} (hY : IsKC Y) :
   exact Formalism.FourierDecayAlt.P.WirtingerOperators.LeviExponential.exp_fromBlocks _ _
 
 /- English proof (translation)
-Rewrite using `[exp_isKC hY]`. Prove the components needed by the constructor for the conclusion. Introduce `i c`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, hZ.1]`. Introduce `j c`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, hZ.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem onPos_mul_exp {Z : Matrix (Ix P Q) (Ix R S) ℂ} (hZ : OnPos Z) {Y : Mat R S} (hY : IsKC Y) :
     OnPos (Z * NormedSpace.exp Y) := by
@@ -210,9 +210,9 @@ theorem onPos_mul_exp {Z : Matrix (Ix P Q) (Ix R S) ℂ} (hZ : OnPos Z) {Y : Mat
   · intro j c; simp [Matrix.mul_apply, Fintype.sum_sum_type, hZ.2]
 
 /- English proof (translation)
-Use `letI : NormedRing (Mat R S) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Mat R S) := Matrix.linftyOpNormedAlgebra`. Set `l : Mat R S →ₗ[ℂ] ℂ` to `{ toFun := fun A => (Z * A) i a map_add' := fun A B => by simp [Matrix.mul_add] map_smul' := fun c A => by simp [Matrix.mul_smul] }`. Establish `h` using `(LinearMap.toContinuousLinearMap l).hasFDerivAt.comp_hasDerivAt t (hasDerivAt_exp_smul_const Y t)`. Rewrite using `[Matrix.mul_assoc]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_mul_exp (Z : Matrix (Ix P Q) (Ix R S) ℂ) (Y : Mat R S) (t : ℂ) (i : Ix P Q) (a : Ix R S) :
     HasDerivAt (fun s : ℂ => (Z * NormedSpace.exp (s • Y)) i a) ((Z * NormedSpace.exp (t • Y) * Y) i a) t := by
@@ -230,9 +230,9 @@ def flow (Z : Matrix (Ix P Q) (Ix R S) ℂ) (Y : Mat R S) (c t : ℂ) : Pol P Q 
   Complex.exp (t * (∑ a, Y a a * shift P Q a + c * Y.trace)) • evZ (Z * NormedSpace.exp (t • Y))
 
 /- English proof (translation)
-Establish `hp : OnPos (Z * NormedSpace.exp (t • Y))` using `onPos_mul_exp hZ fun a b h => by simp [hY a b h]`. Establish `h1` using `hasDerivAt_evZ (fun s => Z * NormedSpace.exp (s • Y)) _ t (hasDerivAt_mul_exp Z Y t) f`. Establish `h2` using `((hasDerivAt_id t).mul_const (∑ a, Y a a * shift P Q a + c * Y.trace)).cexp`. Establish `h3` using `h2.mul h1`. Simplify using `only [flow, LinearMap.smul_apply, smul_eq_mul, LinearMap.add_apply, map_add, map_smul, Module.End.one_apply, evZ_fock hp hY]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h3.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [id]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hasDerivAt_flow {Z : Matrix (Ix P Q) (Ix R S) ℂ} (hZ : OnPos Z) {Y : Mat R S} (hY : IsKC Y) (c t : ℂ)
     (f : Pol P Q R S) : HasDerivAt (fun s => flow Z Y c s f)
@@ -253,20 +253,20 @@ def base : Matrix (Ix P Q) (Ix R S) ℂ :=
   Matrix.fromBlocks (Matrix.of fun i c => if (i : ℕ) = c then 1 else 0) 0 0 (Matrix.of fun j d => if (j : ℕ) = d then 1 else 0)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem onPos_base : OnPos (base P Q R S) := ⟨fun _ _ => rfl, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Rewrite using `[evZ_apply, GlobalTheory.KFixIrr.LowMinor.wit, map_mul, aeval_rename, aeval_rename, map_pow, map_pow, GlobalTheory.CharPair.detR, GlobalTheory.CharPair.detS, AlgHom.map_det, AlgHom.map_det]`. Use `congr 2`. Set `e : Fin P ≃ {i : Fin R // (i : ℕ) < P}` to `⟨fun i => ⟨Fin.castLE h i, i.2⟩, fun i => ⟨i.1, i.2⟩, fun _ => rfl, fun _ => rfl⟩`. Rewrite using `[GlobalTheory.HwCoef.leadMinor, ← Matrix.det_submatrix_equiv_self e]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a c`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, aeval_X, Function.comp, GlobalTheory.FockSplit.jR, Sum.elim_inl, Matrix.mul_apply, Fintype.sum_sum_type, base, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero …`. Rewrite using `[Finset.sum_eq_single (Fin.castLE h a)]`. Simplify using `[e]`. Introduce `b _ hb`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg, zero_mul]`. Introduce `e'`. Conclude with `hb (Fin.ext e'.symm)`. Simplify using the standard rewrite rules. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `a c`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, aeval_X, Function.comp, GlobalTheory.FockSplit.jS, Sum.elim_inr, Matrix.mul_apply, Fintype.sum_sum_type, base, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero …`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg, zero_mul]`. Introduce `e'`. Conclude with `hb (Fin.ext e'.symm)`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evZ_wit (h : P ≤ R) (k k' : ℕ) (g : Mat R Q) :
     evZ (base P Q R Q * g) (GlobalTheory.KFixIrr.LowMinor.wit P Q R Q h le_rfl k k') =
@@ -301,9 +301,9 @@ theorem evZ_wit (h : P ≤ R) (k k' : ℕ) (g : Mat R Q) :
     · simp
 
 /- English proof (translation)
-Substitute `hS` using the available equality. Rewrite using `[flow, LinearMap.smul_apply, one_smul, evZ_wit, GlobalTheory.HwCoef.coef, h₁, zpow_natCast, smul_eq_mul]`. Establish `a1 : Matrix.toBlocks₁₁ (NormedSpace.exp Y) = NormedSpace.exp Y.toBlocks₁₁`. Rewrite using `[exp_isKC hY, Matrix.toBlocks_fromBlocks₁₁]`. Establish `a2 : Matrix.toBlocks₂₂ (NormedSpace.exp Y) = NormedSpace.exp Y.toBlocks₂₂`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[exp_isKC hY, Matrix.toBlocks_fromBlocks₂₂]`. Rewrite using `[a1, a2, Formalism.MainNotions.DIV.Inh.det_exp, Formalism.MainNotions.DIV.Inh.det_exp, ← Complex.exp_int_mul, ← Complex.exp_int_mul, ← Complex.exp_nat_mul, mul_left_comm, mul_assoc, ← Complex.exp_add, ← Complex.exp_add, h₂, h₃]`. Use `congr 2`. Simplify using `only [Matrix.trace, Fintype.sum_sum_type, shift, Sum.elim_inl, Sum.elim_inr, Matrix.diag, Matrix.toBlocks₁₁, Matrix.toBlocks₂₂, Matrix.of_apply, ← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem flow_wit (hS : S = Q) (h : P ≤ R) (h' : Q ≤ S) (k k' : ℕ) {Y : Mat R S} (hY : IsKC Y) (c : ℂ) (e₁ e₂ e₃ : ℤ)
     (h₁ : e₁ = k) (h₂ : (e₂ : ℂ) = ((P : ℂ) - Q) / 2 + c) (h₃ : (e₃ : ℂ) = k' + ((Q : ℂ) - P) / 2 + c) :
@@ -323,13 +323,13 @@ theorem flow_wit (hS : S = Q) (h : P ≤ R) (h' : Q ≤ S) (k k' : ℕ) {Y : Mat
   ring
 
 /- English proof (translation)
-Simplify using `[flow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flow_zero (Z : Matrix (Ix P Q) (Ix R S) ℂ) (Y : Mat R S) (c : ℂ) : flow Z Y c 0 = evZ Z := by
   simp [flow]
 
 /- English proof (translation)
-Use `isExp_taylor hU (fun t => GlobalTheory.TensIrr.prodForm (V := fun _ : ι => Pol P Q R S) fun w => flow (base P Q R S) (Y w) (c w) t) (hasDerivAt_prodForm _ _ fun w t f => hasDerivAt_flow onPos_base (hY w) (c w) t f) (PiTensorProduct.tprod ℂ fun w => GlobalTheory.KFixIrr.LowMinor.w …` as an intermediate fact. Simplify using `only [flow_zero] at this`. Rewrite using `[this, GlobalTheory.TensIrr.prodForm_tprod]`. Conclude with `Finset.prod_congr rfl fun w _ => flow_wit hS h h' _ _ (hY w) _ _ _ _ (h₁ w) (h₂ w) (h₃ w)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodForm_exp_wit {ι : Type} [Fintype ι] [DecidableEq ι] (hS : S = Q) (h : P ≤ R) (h' : Q ≤ S) (k k' : ι → ℕ)
     {Y : ι → Mat R S} (hY : ∀ w, IsKC (Y w)) (c : ι → ℂ) (e₁ e₂ e₃ : ι → ℤ) (h₁ : ∀ w, e₁ w = k w)
@@ -348,9 +348,9 @@ theorem prodForm_exp_wit {ι : Type} [Fintype ι] [DecidableEq ι] (hS : S = Q) 
   exact Finset.prod_congr rfl fun w _ => flow_wit hS h h' _ _ (hY w) _ _ _ _ (h₁ w) (h₂ w) (h₃ w)
 
 /- English proof (translation)
-Substitute `hS` using the available equality. Rewrite using `[GlobalTheory.TensIrr.prodForm_tprod]`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.HwCoef.coef_one (R := R) (S := S) P (k w) 0 (k' w)`. Rewrite `h1` using `[GlobalTheory.HwCoef.coef, zpow_zero, mul_one, zpow_natCast, zpow_natCast]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h1, ← evZ_wit h, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prodForm_wit {ι : Type} [Fintype ι] [DecidableEq ι] (hS : S = Q) (h : P ≤ R) (h' : Q ≤ S) (k k' : ι → ℕ) :
     GlobalTheory.TensIrr.prodForm (V := fun _ : ι => Pol P Q R S) (fun _ => evZ (base P Q R S))

@@ -23,12 +23,12 @@ def Ge (w : ℝ) (a : C) : Prop := (w : WithTop ℝ) ≤ V.v a
 variable {V}
 
 /- English proof (translation)
-The claim follows from `le_trans (WithTop.coe_le_coe.mpr hw) h`.
+A detailed English derivation is pending.
 -/
 theorem Ge.mono {w w' : ℝ} {a : C} (h : V.Ge w a) (hw : w' ≤ w) : V.Ge w' a := le_trans (WithTop.coe_le_coe.mpr hw) h
 
 /- English proof (translation)
-Use `show ((w : ℝ) : WithTop ℝ) ≤ V.v 0`. Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ge.zero (w : ℝ) : V.Ge w (0 : C) := by
   show ((w : ℝ) : WithTop ℝ) ≤ V.v 0
@@ -36,12 +36,12 @@ theorem Ge.zero (w : ℝ) : V.Ge w (0 : C) := by
   exact le_top
 
 /- English proof (translation)
-The claim follows from `le_trans (le_min ha hb) (V.v.map_add a b)`.
+A detailed English derivation is pending.
 -/
 theorem Ge.add {w : ℝ} {a b : C} (ha : V.Ge w a) (hb : V.Ge w b) : V.Ge w (a + b) := le_trans (le_min ha hb) (V.v.map_add a b)
 
 /- English proof (translation)
-Use `show ((w : ℝ) : WithTop ℝ) ≤ V.v (-a)`. Rewrite using `[AddValuation.map_neg]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ge.neg {w : ℝ} {a : C} (ha : V.Ge w a) : V.Ge w (-a) := by
   show ((w : ℝ) : WithTop ℝ) ≤ V.v (-a)
@@ -49,20 +49,20 @@ theorem Ge.neg {w : ℝ} {a : C} (ha : V.Ge w a) : V.Ge w (-a) := by
   exact ha
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `Ge.add ha (Ge.neg hb)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ge.sub {w : ℝ} {a b : C} (ha : V.Ge w a) (hb : V.Ge w b) : V.Ge w (a - b) := by
   rw [sub_eq_add_neg]
   exact Ge.add ha (Ge.neg hb)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction f (fun x => V.Ge w x) (fun _ _ ha hb => Ge.add ha hb) (Ge.zero w) h`.
+A detailed English derivation is pending.
 -/
 theorem Ge.sum {ι : Type*} {s : Finset ι} {f : ι → C} {w : ℝ} (h : ∀ i ∈ s, V.Ge w (f i)) :
     V.Ge w (∑ i ∈ s, f i) := Finset.sum_induction f (fun x => V.Ge w x) (fun _ _ ha hb => Ge.add ha hb) (Ge.zero w) h
 
 /- English proof (translation)
-Use `show ((w + w' : ℝ) : WithTop ℝ) ≤ V.v (a * b)`. Rewrite using `[AddValuation.map_mul, WithTop.coe_add]`. Conclude with `add_le_add ha hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ge.mul {w w' : ℝ} {a b : C} (ha : V.Ge w a) (hb : V.Ge w' b) : V.Ge (w + w') (a * b) := by
   show ((w + w' : ℝ) : WithTop ℝ) ≤ V.v (a * b)
@@ -70,7 +70,7 @@ theorem Ge.mul {w w' : ℝ} {a b : C} (ha : V.Ge w a) (hb : V.Ge w' b) : V.Ge (w
   exact add_le_add ha hb
 
 /- English proof (translation)
-Use `show ((0 : ℝ) : WithTop ℝ) ≤ V.v 1`. Rewrite using `[AddValuation.map_one]`. Conclude with `le_of_eq WithTop.coe_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ge.one : V.Ge 0 (1 : C) := by
   show ((0 : ℝ) : WithTop ℝ) ≤ V.v 1
@@ -78,7 +78,7 @@ theorem Ge.one : V.Ge 0 (1 : C) := by
   exact le_of_eq WithTop.coe_zero
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using (Ge.one (V := V))`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Simplify using `using Ge.mul ih ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Ge.pow {a : C} (ha : V.Ge 0 a) (n : ℕ) : V.Ge 0 (a ^ n) := by
   induction n with
@@ -88,18 +88,18 @@ theorem Ge.pow {a : C} (ha : V.Ge 0 a) (n : ℕ) : V.Ge 0 (a ^ n) := by
     simpa using Ge.mul ih ha
 
 /- English proof (translation)
-Simplify using `using Ge.mul ha hb`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Ge.mul_int {w : ℝ} {a b : C} (ha : V.Ge 0 a) (hb : V.Ge w b) : V.Ge w (a * b) := by
   simpa using Ge.mul ha hb
 
 /- English proof (translation)
-The claim follows from `(le_of_eq WithTop.coe_one).trans V.v_l.symm.le`.
+A detailed English derivation is pending.
 -/
 theorem ge_l : V.Ge 1 (V.l : C) := (le_of_eq WithTop.coe_one).trans V.v_l.symm.le
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `V.v_l`. Rewrite `h1` using `[h, AddValuation.map_zero]`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem l_ne_zero : (V.l : C) ≠ 0 := by
   intro h
@@ -108,7 +108,7 @@ theorem l_ne_zero : (V.l : C) ≠ 0 := by
   simp at h1
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero]`. Conclude with `Ge.zero 0`. Consider the case `succ n ih => rw [Nat.cast_succ]`. Conclude with `Ge.add ih Ge.one`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ge_natCast (n : ℕ) : V.Ge 0 (n : C) := by
   induction n with
@@ -116,11 +116,9 @@ theorem ge_natCast (n : ℕ) : V.Ge 0 (n : C) := by
   | succ n ih => rw [Nat.cast_succ]; exact Ge.add ih Ge.one
 
 /- English proof (translation)
-Establish `h0 : ((w : ℝ) : WithTop ℝ) ≤ 1 + V.v a`. Establish `h2 : ((w : ℝ) : WithTop ℝ) ≤ V.v ((V.l : C) * a)` using `h`. Rewrite `h2` using `[AddValuation.map_mul, V.v_l]`. Then use the resulting hypothesis. Use `show (((w - 1) : ℝ) : WithTop ℝ) ≤ V.v a`. Distinguish the cases in `hva : V.v a = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hva]`. Conclude with `le_top`. Take `⟨x, hx⟩` from `WithTop.ne_top_iff_exists.mp hva`. Rewrite `h0`, the goal using `[← hx]`. Establish `h' : w ≤ 1 + x` using `by exact_mod_cast h0`.
-
-Conclude with `WithTop.coe_le_coe.mpr (by linarith)`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Ge.of_l_mul {w : ℝ} {a : C} (h : V.Ge w ((V.l : C) * a)) : V.Ge (w - 1) a := by
   have h0 : ((w : ℝ) : WithTop ℝ) ≤ 1 + V.v a := by
@@ -135,7 +133,7 @@ theorem Ge.of_l_mul {w : ℝ} {a : C} (h : V.Ge w ((V.l : C) * a)) : V.Ge (w - 1
     exact WithTop.coe_le_coe.mpr (by linarith)
 
 /- English proof (translation)
-Use `show ((1 + w : ℝ) : WithTop ℝ) ≤ V.v ((V.l : C) * a)`. Rewrite using `[AddValuation.map_mul, V.v_l, WithTop.coe_add, WithTop.coe_one]`. Conclude with `add_le_add le_rfl h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ge.l_mul {w : ℝ} {a : C} (h : V.Ge w a) : V.Ge (1 + w) ((V.l : C) * a) := by
   show ((1 + w : ℝ) : WithTop ℝ) ≤ V.v ((V.l : C) * a)
@@ -143,7 +141,7 @@ theorem Ge.l_mul {w : ℝ} {a : C} (h : V.Ge w a) : V.Ge (1 + w) ((V.l : C) * a)
   exact add_le_add le_rfl h
 
 /- English proof (translation)
-Apply `Ge.of_l_mul` to reduce the goal to its premises. Rewrite using `[← mul_assoc, mul_inv_cancel₀ l_ne_zero, one_mul]` and apply the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem Ge.l_inv_mul {w : ℝ} {a : C} (h : V.Ge w a) : V.Ge (w - 1) ((V.l : C)⁻¹ * a) := by
   apply Ge.of_l_mul

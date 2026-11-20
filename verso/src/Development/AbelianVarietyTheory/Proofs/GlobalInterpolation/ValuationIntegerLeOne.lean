@@ -8,7 +8,7 @@ open NumberField
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Establish `hZ : IsIntegral ℤ (ι (a : E))` using `(NumberField.RingOfIntegers.isIntegral_coe a).map ι.toIntAlgHom`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp (hZ.tower_top (A := A))`. Rewrite using `[← hy]`. Conclude with `A.valuation_le_one y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_integer_le_one {E : Type u_1} {Ω : Type u_2} [Field E] [NumberField E]
     [Field Ω] (ι : E →+* Ω) (A : ValuationSubring Ω) (a : 𝓞 E) :
@@ -20,23 +20,21 @@ theorem valuation_integer_le_one {E : Type u_1} {Ω : Type u_2} [Field E] [Numbe
   exact A.valuation_le_one y
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Set `P : Submodule (𝓞 E) E` to `{ carrier := {u | A.valuation (ι u) < 1} add_mem' := fun {u v} hu hv => by`. Simplify using `only [Set.mem_ofPred_eq, map_add] at hu hv ⊢`. Conclude with `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt hu hv)`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun r u hu => by`. Simplify using `only [Set.mem_ofPred_eq, Algebra.smul_def, map_mul] at hu ⊢`. Combine the equalities or inequalities in the displayed calculation. Set `J : FractionalIdeal (𝓞 E)⁰ E` to `1 ⊔ FractionalIdeal.spanSingleton _ x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1J : (1 : E) ∈ J` using `(le_sup_left : (1 : FractionalIdeal (𝓞 E)⁰ E) ≤ J) (FractionalIdeal.one_mem_one _)`. Establish `hxJ : x ∈ J` using `(le_sup_right : FractionalIdeal.spanSingleton _ x ≤ J) (FractionalIdeal.mem_spanSingleton_self _ x)`. Establish `hJ : J ≠ 0`. Introduce `h`. Rewrite `h1J` using `[h, FractionalIdeal.mem_zero_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `one_ne_zero h1J`. Establish `hJle : ∀ z ∈ (J : Submodule (𝓞 E) E), A.valuation (ι z) ≤ 1`. Introduce `z hz`. Rewrite `hz` using `[FractionalIdeal.coe_sup, Submodule.mem_sup]`. Take `⟨a, ha, b, hb, rfl⟩` from `hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a', rfl⟩` from `(FractionalIdeal.mem_one_iff _).mp ha`. Take `⟨b', rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).mp hb`. Rewrite using `[map_add]`. Use `le_trans (Valuation.map_add _ _ _) (max_le (valuation_integer_le_one ι A a') ?_)` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_mul]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hinv : ∀ y ∈ ((J⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E), A.valuation (ι y) < 1`. Introduce `y hy`. Establish `hy1` using `(FractionalIdeal.mem_inv_iff hJ).mp hy 1 h1J`. Establish `hyx` using `(FractionalIdeal.mem_inv_iff hJ).mp hy x hxJ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hy1` using `[mul_one]`. Take `⟨s, rfl⟩` from `(FractionalIdeal.mem_one_iff _).mp hy1`. Take `⟨t, ht⟩` from `(FractionalIdeal.mem_one_iff _).mp hyx`. Use `lt_of_le_of_ne (valuation_integer_le_one ι A s) fun h => hne s t h ?_` and prove the remaining obligations. Conclude with `ht.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : ((J * J⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) ≤ P`. Rewrite using `[FractionalIdeal.coe_mul]`. Use `Submodule.mul_le.mpr fun z hz y hy => ?_` and prove the remaining obligations. Use `show A.valuation (ι (z * y)) < 1`. Rewrite using `[map_mul, map_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite `hle` using `[mul_inv_cancel₀ hJ]`. Establish `h1 : A.valuation (ι 1) < 1` using `hle (FractionalIdeal.one_mem_one _)`. Simplify using `at h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unit_denominator {E : Type u_1} {Ω : Type u_2} [inst : Field E] [NumberField E]
     [inst_2 : Field Ω] (ι : E →+* Ω) (A : ValuationSubring Ω) {x : E}

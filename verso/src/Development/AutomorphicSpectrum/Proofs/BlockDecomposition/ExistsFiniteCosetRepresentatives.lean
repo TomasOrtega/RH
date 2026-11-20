@@ -5,13 +5,11 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.OpenSubgroupTransversal
 
 /- English proof (translation)
-Use `haveI : CompactSpace A := isCompact_iff_compactSpace.mp hA`. Establish `hopen : IsOpen ((H.addSubgroupOf A : AddSubgroup A) : Set A)` using `hH.preimage continuous_subtype_val`. Use `haveI : Finite (A ⧸ H.addSubgroupOf A) := AddSubgroup.quotient_finite_of_isOpen _ hopen`. Use `haveI : Fintype (A ⧸ H.addSubgroupOf A) := Fintype.ofFinite _`. Set `rep : A ⧸ H.addSubgroupOf A → X` to `fun q => ((Quotient.out q : A) : X)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨Finset.univ.image rep, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.mp ht`. Conclude with `(Quotient.out q).2`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 
-Establish `key : ∀ q : A ⧸ H.addSubgroupOf A, a - rep q ∈ H ↔ q = QuotientAddGroup.mk ⟨a, ha⟩`. Introduce `q`. Use `conv_rhs => rw [← QuotientAddGroup.out_eq' q]`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, sub_eq_add_neg, add_comm]`. Conclude with `Iff.rfl`.
-
-Use `⟨rep (QuotientAddGroup.mk ⟨a, ha⟩), ⟨Finset.mem_image.mpr ⟨_, Finset.mem_univ _, rfl⟩, (key _).mpr rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨ht, hat⟩`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.mp ht`. Rewrite using `[(key q).mp hat]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_transversal {X : Type} [TopologicalSpace X] [AddCommGroup X]
     [IsTopologicalAddGroup X] (A H : AddSubgroup X) (hA : IsCompact (A : Set X))
@@ -42,7 +40,7 @@ theorem finite_transversal {X : Type} [TopologicalSpace X] [AddCommGroup X]
     rw [(key q).mp hat]
 
 /- English proof (translation)
-Introduce `A H hA hH hHA` and use `GlobalTheory.CompanionTheory.OpenSubgroupTransversal.finite_transversal A H hA hH hHA`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {X : Type} [TopologicalSpace X] [AddCommGroup X] [IsTopologicalAddGroup X]
     (A H : AddSubgroup X), IsCompact (A : Set X) → IsOpen (H : Set X) → H ≤ A →

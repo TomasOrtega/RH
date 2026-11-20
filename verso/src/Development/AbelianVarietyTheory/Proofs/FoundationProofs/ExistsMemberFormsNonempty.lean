@@ -20,11 +20,11 @@ variable (K : Type) [Field K] [NumberField K] [StarRing K] (κ : Type) [Fintype 
   L := Submodule.pi Set.univ (fun _ => (1 : Submodule (𝓞 K) K))
 
 /- English proof (translation)
-Use `⟨fun v => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show IsUnit (Matrix.det (1 : Matrix κ κ ℂ))`. Simplify using the standard rewrite rules. Use `show (Submodule.pi Set.univ (fun _ : κ => (1 : Submodule (𝓞 K) K))).FG`. Use `Submodule.fg_pi (fun _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.one_eq_span]`. Conclude with `Submodule.fg_span_singleton _`. Use `show Submodule.span K ((Submodule.pi Set.univ (fun _ : κ => (1 : Submodule (𝓞 K) K)) : Submodule (𝓞 K) (κ → K)) : Set (κ → K)) = ⊤`. Rewrite using `[eq_top_iff, ← (Pi.basisFun K κ).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨a, rfl⟩ c -`. Distinguish the cases in `h : c = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stdLat_good : (stdLat K κ).Good := by
   refine ⟨fun v => ?_, ?_, ?_⟩
@@ -52,9 +52,9 @@ def stdEmb (σ : K →+* ℂ) : (stdLat K κ).V →ₛₗ[σ] (κ → Unit → �
   map_smul' a x := by funext c u; exact map_mul σ _ _
 
 /- English proof (translation)
-Set `B : Module.Basis κ ℂ (κ → Unit → ℂ)` to `(Pi.basisFun ℂ κ).map (LinearEquiv.piCongrRight fun _ => (LinearEquiv.funUnique Unit ℂ ℂ).symm)`. Establish `h : (fun a => stdEmb κ σ ((stdLat K κ).b a)) = B`. Use function extensionality and compare the values at `a c u`. Use `show σ ((Pi.basisFun K κ a) c) = _`. Distinguish the cases in `h : c = a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `[B]`. Simplify using `[B, h]`. Rewrite using `[h]`. Conclude with `⟨B.linearIndependent, B.span_eq⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stdEmb_basis (σ : K →+* ℂ) :
     LinearIndependent ℂ (fun a => stdEmb κ σ ((stdLat K κ).b a)) ∧
@@ -76,9 +76,9 @@ def ipUnit : (Unit → ℂ) →ₗ⋆[ℂ] (Unit → ℂ) →ₗ[ℂ] ℂ :=
     (fun _ _ _ => by simp [mul_add]) (fun _ _ _ => by simp; ring)
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[Complex.re_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Establish `h1 : ((stdLat K κ).X (InfinitePlace.mk σ))⁻¹.mulVec (Formalism.HermitianLatticesTheory.vecAt (stdLat K κ).b (InfinitePlace.mk σ) x) c = (InfinitePlace.mk σ).embedding ((show κ → K from x) c)` using `by show ((1 : Matrix κ κ ℂ)⁻¹.mulVec _) c = _`. Rewrite using `[inv_one, Matrix.one_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1]`. Use `show (starRingEnd ℂ _ * _).re = (starRingEnd ℂ (σ _) * σ _).re`. Rewrite using `[Complex.conj_mul', Complex.conj_mul', InfinitePlace.norm_embedding_eq, InfinitePlace.apply]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdEmb_norm (σ : K →+* ℂ) (x : (stdLat K κ).V) :
     (Formalism.HermitianLatticesTheory.majAt (stdLat K κ).b (stdLat K κ).X (InfinitePlace.mk σ) x x).re =
@@ -241,17 +241,15 @@ def forms (hι : Fintype.card ι = R.f) (LL : Type) [Field LL] [NumberField LL] 
   thFree_nonneg _ _ _ _ := zero_le_one
 
 /- English proof (translation)
-Establish `: Fact (2 < T)` using `⟨h2⟩`. Establish `hne : (1 : (ZMod T)ˣ) ≠ -1` using `fun h => by`. Use `congrArg (Units.val) h` as an intermediate fact. Conclude with `ZMod.neg_one_ne_one (n := T) (by simpa using this.symm)`. Set `g : (ZMod T)ˣ → ℂ` to `fun x => (if x = 1 then 1 else 0) - (if x = -1 then 1 else 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : ∑ x, g x = 0` using `by simp [g, Finset.sum_sub_distrib]`. Set `φ : (ι → (ZMod T)ˣ) → Unit → ℂ` to `fun c _ => ∏ w, g (c w)`. Rewrite using `[Submodule.ne_bot_iff]`. Use `⟨φ, ⟨Submodule.mem_top, ?_⟩, fun h => ?_⟩` and prove the remaining obligations. Use `(Submodule.mem_iInf _).mpr fun (v : ι) => ?_ show (∑ a : (ZMod T)ˣ, diamond ι T v a) φ = 0` and prove the remaining obligations.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `c u`. Rewrite using `[LinearMap.sum_apply, Finset.sum_apply, Finset.sum_apply]`. Establish `h1 : ∀ a : (ZMod T)ˣ, diamond ι T v a φ c u = g (c v * a) * ∏ w ∈ Finset.univ.erase v, g (c w)`. Introduce `a`. Use `show ∏ w, g ((c * Pi.mulSingle (M := fun _ : ι => (ZMod T)ˣ) v a : ι → (ZMod T)ˣ) w) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ v)]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Simplify using `[Pi.mulSingle_eq_of_ne (Finset.ne_of_mem_erase hw)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [h1]`. Rewrite using `[← Finset.sum_mul, Fintype.sum_equiv (Equiv.mulLeft (c v)) (fun a => g (c v * a)) g (fun _ => rfl), hg, zero_mul]`. Both sides reduce to the same expression. Use `congrFun (congrFun h (1 : ι → (ZMod T)ˣ)) ()` as an intermediate fact. Express the relevant statement in the definitionally equal form `∏ _w : ι, g 1 = 0 at this`.
-
-Simplify using `[g, hne] at this`.
+Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mram_ne_bot (hι : Fintype.card ι = R.f) (h2 : 2 < T) : (atT R ι hc T hι).Mram ≠ ⊥ := by
   have : Fact (2 < T) := ⟨h2⟩

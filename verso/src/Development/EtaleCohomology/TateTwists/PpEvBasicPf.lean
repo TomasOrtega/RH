@@ -9,7 +9,7 @@ variable {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ}
 open LateralTheory.KummerTheory.AW
 
 /- English proof (translation)
-Rewrite using `[ev_eq, Cochain.sub_v, Preadditive.comp_sub]`. Conclude with `map_sub (AddMonoidHom.mk' (fun φ : _ ⟶ I.X s => Sec.map φ (freeGen R _ U x)) (fun _ _ => rfl)) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_sub (α β : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
     ev (α - β) p s h U x = ev α p s h U x - ev β p s h U x := by
@@ -17,7 +17,7 @@ theorem ev_sub (α β : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ) (h :
   exact map_sub (AddMonoidHom.mk' (fun φ : _ ⟶ I.X s => Sec.map φ (freeGen R _ U x)) (fun _ _ => rfl)) _ _
 
 /- English proof (translation)
-Rewrite using `[ev_eq, Cochain.zero_v, comp_zero]`. Conclude with `map_zero (AddMonoidHom.mk' (fun φ : _ ⟶ I.X s => Sec.map φ (freeGen R _ U x)) (fun _ _ => rfl))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_zero (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
     ev (0 : Cochain ((chains R).obj E) I n) p s h U x = 0 := by
@@ -25,7 +25,7 @@ theorem ev_zero (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x
   exact map_zero (AddMonoidHom.mk' (fun φ : _ ⟶ I.X s => Sec.map φ (freeGen R _ U x)) (fun _ _ => rfl))
 
 /- English proof (translation)
-Conclude with `map_zsmul (AddMonoidHom.mk' (fun β : Cochain ((chains R).obj E) I n => ev β p s h U x) (fun a b => ev_add a b p s h U x)) c α`.
+A detailed English derivation is pending.
 -/
 theorem ev_zsmul (c : ℤ) (α : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0})
     (x : Sx E p U) : ev (c • α) p s h U x = c • ev α p s h U x := by
@@ -33,7 +33,7 @@ theorem ev_zsmul (c : ℤ) (α : Cochain ((chains R).obj E) I n) (p : ℕ) (s : 
     (fun a b => ev_add a b p s h U x)) c α
 
 /- English proof (translation)
-Rewrite using `[ev_eq, Cochain.comp_zero_cochain_v, Cochain.ofHom_v, ev_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_post {J : Cx R} (m : I ⟶ J) (α : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s)
     (U : Scheme.{0}) (x : Sx E p U) :
@@ -41,7 +41,7 @@ theorem ev_post {J : Cx R} (m : I ⟶ J) (α : Cochain ((chains R).obj E) I n) (
   rw [ev_eq, Cochain.comp_zero_cochain_v, Cochain.ofHom_v, ev_eq]; rfl
 
 /- English proof (translation)
-Rewrite using `[Iso.inv_comp_eq]`. Unfold `chains chainsXIso`. Express the relevant statement in the definitionally equal form `(HomologicalComplex.extendMap ((chainsN R).map f) ComplexShape.embeddingDownNat).f (-(p : ℤ)) = _`. Conclude with `HomologicalComplex.extendMap_f ((chainsN R).map f) ComplexShape.embeddingDownNat (i := p) (i' := -(p : ℤ)) rfl`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem chainsXIso_nat {E' : Spc} (f : E' ⟶ E) (p : ℕ) :
     (chainsXIso R E' p).inv ≫ ((chains R).map f).f (-(p : ℤ)) =
@@ -52,7 +52,7 @@ theorem chainsXIso_nat {E' : Spc} (f : E' ⟶ E) (p : ℕ) :
   exact HomologicalComplex.extendMap_f ((chainsN R).map f) ComplexShape.embeddingDownNat (i := p) (i' := -(p : ℤ)) rfl
 
 /- English proof (translation)
-Rewrite using `[ev_eq, Cochain.zero_cochain_comp_v, Cochain.ofHom_v, reassoc_of% (chainsXIso_nat (R := R) f p), ev_eq]`. Express the relevant statement in the definitionally equal form `Sec.map ((chainsXIso R E p).inv ≫ α.v _ _ h) (Sec.map ((free R).map (f.app (op (SimplexCategory.mk p)))) (freeGen R _ U x)) = _`. Rewrite using `[map_freeGen]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_pre {E' : Spc} (f : E' ⟶ E) (α : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s)
     (U : Scheme.{0}) (x : Sx E' p U) :
@@ -66,7 +66,7 @@ end LateralTheory.EtaleFoundations.EvBasicPf
 
 open LateralTheory.EtaleFoundations.EvBasicPf LateralTheory.KummerTheory.AW in
 /- English proof (translation)
-Introduce `_ _` and use `⟨fun α β p s h U x => ⟨ev_add α β p s h U x, ev_sub α β p s h U x, ev_zero p s h U x, fun c => ev_zsmul c α p s h U x⟩, fun α p s h _ _ g x => ev_res α p s h g x, fun α β hh => ev_ext α β hh, fun f α p s h U x => ev_pre f α p s h U x, fun m α p s h U x => ev_post m α p s h U x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem LateralTheory.EtaleFoundations.pp_ev_basic_of : LateralTheory.EtaleFoundations.pp_ev_basic := fun _ _ =>
   ⟨fun α β p s h U x => ⟨ev_add α β p s h U x, ev_sub α β p s h U x, ev_zero p s h U x, fun c => ev_zsmul c α p s h U x⟩,

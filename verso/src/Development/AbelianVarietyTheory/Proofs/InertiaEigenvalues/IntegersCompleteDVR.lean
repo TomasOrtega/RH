@@ -7,13 +7,11 @@ namespace GlobalTheory.Per
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations
 
 /- English proof (translation)
-Establish `hx : IsIntegral ℚ_[p] x` using `(Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Rewrite using `[spectralNorm, spectralValue_le_one_iff (minpoly.monic hx)]`. Prove the components needed by the constructor for the conclusion. Introduce `h n`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[p] h, Polynomial.coeff_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PadicInt.norm_le_one _`. Introduce `h`. Establish `hlift : minpoly ℚ_[p] x ∈ Polynomial.lifts (algebraMap ℤ_[p] ℚ_[p])`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨(minpoly ℚ_[p] x).coeff n, h n⟩, rfl⟩`. Take `⟨g, hg, -, hgm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hlift (minpoly.monic hx)`. Use `⟨g, hgm, ?_⟩` and prove the remaining obligations. Establish `h0` using `minpoly.aeval ℚ_[p] x`. Rewrite `h0` using `[← hg, Polynomial.aeval_map_algebraMap, Polynomial.aeval_def]`.
-
-Conclude with `h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIntegral_iff_spectralNorm_le_one' {p : ℕ} [Fact p.Prime] {K : Type} [Field K] [Algebra ℚ_[p] K]
     [Algebra.IsAlgebraic ℚ_[p] K] [Algebra ℤ_[p] K] [IsScalarTower ℤ_[p] ℚ_[p] K] (x : K) :
@@ -36,7 +34,7 @@ private theorem isIntegral_iff_spectralNorm_le_one' {p : ℕ} [Fact p.Prime] {K 
     exact h0
 
 /- English proof (translation)
-Simplify `map_mul (spectralMulAlgNorm ℚ_[p] K) x y` using `only [spectralMulAlgNorm_def]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem spectralNorm_mul_zpadic {p : ℕ} [Fact p.Prime] {K : Type} [Field K] [Algebra ℚ_[p] K]
     [Algebra.IsAlgebraic ℚ_[p] K] (x y : K) :
@@ -44,15 +42,15 @@ private theorem spectralNorm_mul_zpadic {p : ℕ} [Fact p.Prime] {K : Type} [Fie
   simpa only [spectralMulAlgNorm_def] using map_mul (spectralMulAlgNorm ℚ_[p] K) x y
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Establish `h1 : ((u : integralClosure ℤ_[p] K) : K) * ((u⁻¹ : (integralClosure ℤ_[p] K)ˣ) : K) = 1`. Use `congrArg (fun z : integralClosure ℤ_[p] K => (z : K)) u.mul_inv` as an intermediate fact. Simplify `this` using `only [Subalgebra.coe_mul, Subalgebra.coe_one]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `congrArg (spectralNorm ℚ_[p] K) h1`. Rewrite `h2` using `[spectralNorm_mul_zpadic, spectralNorm_one]`. Establish `ha` using `(isIntegral_iff_spectralNorm_le_one' _).mp (u : integralClosure ℤ_[p] K).2`. Establish `hb` using `(isIntegral_iff_spectralNorm_le_one' _).mp ((u⁻¹ : (integralClosure ℤ_[p] K)ˣ) : integralClosure ℤ_[p] K).2`. Establish `ha0` using `spectralNorm_nonneg (K := ℚ_[p]) ((u : integralClosure ℤ_[p] K) : K)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0` using `spectralNorm_nonneg (K := ℚ_[p]) (((u⁻¹ : (integralClosure ℤ_[p] K)ˣ) : integralClosure ℤ_[p] K) : K)`. Use the polynomial consequences of the given equalities and inequalities. Introduce `h`. Establish `hb0 : (b : K) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[h0, spectralNorm_zero]`. Conclude with `zero_ne_one h`. Establish `hinv : IsIntegral ℤ_[p] (b : K)⁻¹`. Rewrite using `[isIntegral_iff_spectralNorm_le_one']`. Establish `h2` using `spectralNorm_mul_zpadic (p := p) (b : K) (b : K)⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[mul_inv_cancel₀ hb0, spectralNorm_one, h, one_mul]`. Conclude with `h2.symm.le`. Conclude with `isUnit_iff_exists_inv.mpr ⟨⟨(b : K)⁻¹, hinv⟩, Subtype.ext (mul_inv_cancel₀ hb0)⟩`.
+A detailed English derivation is pending.
 -/
 private theorem isUnit_iff_spectralNorm_eq_one {p : ℕ} [Fact p.Prime] {K : Type} [Field K] [Algebra ℚ_[p] K]
     [Algebra.IsAlgebraic ℚ_[p] K] [Algebra ℤ_[p] K] [IsScalarTower ℤ_[p] ℚ_[p] K]
@@ -83,11 +81,11 @@ private theorem isUnit_iff_spectralNorm_eq_one {p : ℕ} [Fact p.Prime] {K : Typ
     exact isUnit_iff_exists_inv.mpr ⟨⟨(b : K)⁻¹, hinv⟩, Subtype.ext (mul_inv_cancel₀ hb0)⟩
 
 /- English proof (translation)
-Use `IsLocalRing.of_nonunits_add ?_` and prove the remaining obligations. Introduce `a b ha hb hab`. Establish `hlt : ∀ c : integralClosure ℤ_[p] K, ¬IsUnit c → spectralNorm ℚ_[p] K (c : K) < 1` using `fun c hc => lt_of_le_of_ne ((isIntegral_iff_spectralNorm_le_one' _).mp c.2) (fun h => hc ((isUnit_iff_spectralNorm_eq_one c).mpr h))`. Establish `h1` using `hlt a ha`. Establish `h2` using `hlt b hb`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(isUnit_iff_spectralNorm_eq_one (a + b)).mp hab`. Establish `h4` using `isNonarchimedean_spectralNorm (K := ℚ_[p]) (L := K) (a : K) (b : K)`. Establish `h5 : ((a + b : integralClosure ℤ_[p] K) : K) = (a : K) + (b : K)` using `rfl`. Rewrite `h3` using `[h5]`. Rewrite `h4` using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h4 (not_le.mpr (max_lt h1 h2))`.
+A detailed English derivation is pending.
 -/
 private theorem isLocalRing_integralClosure_zpadic {p : ℕ} [Fact p.Prime] {K : Type} [Field K] [Algebra ℚ_[p] K]
     [Algebra.IsAlgebraic ℚ_[p] K] [Algebra ℤ_[p] K] [IsScalarTower ℤ_[p] ℚ_[p] K] :
@@ -106,19 +104,17 @@ private theorem isLocalRing_integralClosure_zpadic {p : ℕ} [Fact p.Prime] {K :
   exact absurd h4 (not_le.mpr (max_lt h1 h2))
 
 /- English proof (translation)
-Use `set b := Module.Free.chooseBasis ℤ_[p] M`. Establish `key : ∀ (n : ℕ) (x : M), x ∈ (IsLocalRing.maximalIdeal ℤ_[p]) ^ n • (⊤ : Submodule ℤ_[p] M) ↔ ∀ i, b.equivFun x i ∈ (IsLocalRing.maximalIdeal ℤ_[p]) ^ n`. Introduce `n x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `r hr m _ i`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ hr`. Introduce `x y hx hy i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_add, Pi.add_apply]`. Conclude with `add_mem (hx i) (hy i)`. Introduce `h`. Rewrite using `[← b.sum_equivFun x]`. Conclude with `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem_smul (h i) Submodule.mem_top)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `key1 : ∀ (n : ℕ) (y : ℤ_[p]), y ∈ (IsLocalRing.maximalIdeal ℤ_[p]) ^ n • (⊤ : Submodule ℤ_[p] ℤ_[p]) ↔ y ∈ (IsLocalRing.maximalIdeal ℤ_[p]) ^ n`. Introduce `n y`. Express the relevant statement in the definitionally equal form `y ∈ (IsLocalRing.maximalIdeal ℤ_[p]) ^ n • (⊤ : Ideal ℤ_[p]) ↔ _`. Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top]`. Rewrite using `[isPrecomplete_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `f hf`. Establish `hc : ∀ i, ∃ L : ℤ_[p], ∀ n, b.equivFun (f n) i ≡ L [SMOD ((IsLocalRing.maximalIdeal ℤ_[p]) ^ n • ⊤ : Submodule ℤ_[p] ℤ_[p])]`. Introduce `i`. Use `IsPrecomplete.prec inferInstance ?_` and prove the remaining obligations. Introduce `m n hmn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SModEq.sub_mem, key1]`. Use `(key m _).mp (SModEq.sub_mem.mp (hf hmn)) i` as an intermediate fact. Simplify `this` using `only [map_sub, Pi.sub_apply]`. Use `choose L hL using hc`. Use `⟨b.equivFun.symm L, fun n => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[SModEq.sub_mem, key]`. Introduce `i`. Use `(key1 n _).mp (SModEq.sub_mem.mp (hL i n))` as an intermediate fact. Simplify `this` using `only [map_sub, Pi.sub_apply, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem isPrecomplete_maximalIdeal_of_free_finite_zpadic {p : ℕ} [Fact p.Prime] {M : Type} [AddCommGroup M]
     [Module ℤ_[p] M] [Module.Free ℤ_[p] M] [Module.Finite ℤ_[p] M] :
@@ -164,11 +160,9 @@ private theorem isPrecomplete_maximalIdeal_of_free_finite_zpadic {p : ℕ} [Fact
   simpa only [map_sub, Pi.sub_apply, LinearEquiv.apply_symm_apply] using this
 
 /- English proof (translation)
-Rewrite using `[isPrecomplete_iff]`. Introduce `f hf`. Take `⟨L, hL⟩` from `h.prec (f := fun k => f (e * k)) (fun {m n} hmn => by`. Rewrite using `[← pow_mul]`. Conclude with `hf (Nat.mul_le_mul_left e hmn))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Establish `hn : n ≤ e * n` using `by nlinarith`. Establish `h1 : f n ≡ f (e * n) [SMOD (I ^ n • ⊤ : Submodule R R)]` using `hf hn`. Establish `h2` using `hL n`. Rewrite `h2` using `[← pow_mul]`.
-
-Conclude with `h1.trans (h2.mono (Submodule.smul_mono_left (Ideal.pow_le_pow_right hn)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isPrecomplete_of_isPrecomplete_pow {R : Type} [CommRing R] (I : Ideal R) (e : ℕ) (he : 0 < e)
     (h : IsPrecomplete (I ^ e) R) : IsPrecomplete I R := by
@@ -185,11 +179,11 @@ private theorem isPrecomplete_of_isPrecomplete_pow {R : Type} [CommRing R] (I : 
   exact h1.trans (h2.mono (Submodule.smul_mono_left (Ideal.pow_le_pow_right hn)))
 
 /- English proof (translation)
-Establish `hJ : (IsLocalRing.maximalIdeal ℤ_[p]).map (algebraMap ℤ_[p] B) = Ideal.span {(p : B)}`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p, Ideal.map_span, Set.image_singleton, map_natCast]`. Establish `hprecJ : IsPrecomplete ((IsLocalRing.maximalIdeal ℤ_[p]).map (algebraMap ℤ_[p] B)) B` using `IsPrecomplete.map_algebraMap_iff.mpr isPrecomplete_maximalIdeal_of_free_finite_zpadic`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible B`. Take `⟨e, he⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible (s := Ideal.span {(p : B)}) (by rwa [Ne, Ideal.span_singleton_eq_bot]) hϖ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `he` using `[← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq]`. Establish `he0 : 0 < e` using `Nat.pos_of_ne_zero (fun h => by`. Rewrite `he` using `[h, pow_zero, Ideal.one_eq_top]`. Conclude with `hpu (Ideal.span_singleton_eq_top.mp he))`. Establish `hprec : IsPrecomplete (IsLocalRing.maximalIdeal B ^ e) B`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he, ← hJ]`. Conclude with `hprecJ`. Conclude with `{ toIsHausdorff := inferInstance, toIsPrecomplete := isPrecomplete_of_isPrecomplete_pow _ e he0 hprec }`.
+A detailed English derivation is pending.
 -/
 private theorem isAdicComplete_maximalIdeal_of_free_finite_zpadic {p : ℕ} [Fact p.Prime] {B : Type} [CommRing B] [IsDomain B]
     [IsDiscreteValuationRing B] [Algebra ℤ_[p] B] [Module.Free ℤ_[p] B] [Module.Finite ℤ_[p] B]
@@ -213,21 +207,21 @@ private theorem isAdicComplete_maximalIdeal_of_free_finite_zpadic {p : ℕ} [Fac
           toIsPrecomplete := isPrecomplete_of_isPrecomplete_pow _ e he0 hprec }
 
 /- English proof (translation)
-Introduce `l _ LL`. Unfold `OL`. Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `: Algebra.IsAlgebraic ℚ_[l] ↥LL.1` using `Algebra.IsAlgebraic.of_finite ℚ_[l] ↥LL.1`. Establish `hloc : IsLocalRing (integralClosure ℤ_[l] ↥LL.1)` using `isLocalRing_integralClosure_zpadic`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : spectralNorm ℚ_[l] ↥LL.1 (((l : ℕ) : integralClosure ℤ_[l] ↥LL.1) : ↥LL.1) = (l : ℝ)⁻¹`. Establish `: (((l : ℕ) : integralClosure ℤ_[l] ↥LL.1) : ↥LL.1) = algebraMap ℚ_[l] ↥LL.1 (l : ℚ_[l])`. Simplify using the standard rewrite rules. Rewrite using `[this, spectralNorm_extends, Padic.norm_p]`. Establish `hl1 : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hl0 : (l : ℝ)⁻¹ ≠ 0` using `inv_ne_zero (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`. Establish `hpu : ¬IsUnit ((l : ℕ) : integralClosure ℤ_[l] ↥LL.1)`. Introduce `h`. Use `(isUnit_iff_spectralNorm_eq_one _).mp h` as an intermediate fact. Rewrite `this` using `[hN]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd this hl1.ne`. Establish `hp0 : ((l : ℕ) : integralClosure ℤ_[l] ↥LL.1) ≠ 0`. Introduce `h`. Rewrite `hN` using `[h]`. Simplify using `only [ZeroMemClass.coe_zero, spectralNorm_zero] at hN`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hl0 hN.symm`. Establish `hnf : ¬IsField (integralClosure ℤ_[l] ↥LL.1)`. Introduce `h`. Take `⟨c, hc⟩` from `h.mul_inv_cancel hp0`. Conclude with `hpu (isUnit_iff_exists_inv.mpr ⟨c, hc⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hded : IsDedekindDomain (integralClosure ℤ_[l] ↥LL.1)` using `inferInstance`. Establish `hdvr : IsDiscreteValuationRing (integralClosure ℤ_[l] ↥LL.1)` using `((IsDiscreteValuationRing.TFAE _ hnf).out 0 2).mpr hded`. Establish `hfin : Module.Finite ℤ_[l] (integralClosure ℤ_[l] ↥LL.1)` using `inferInstance`. Establish `htf : Module.IsTorsionFree ℤ_[l] (integralClosure ℤ_[l] ↥LL.1)`. Use `⟨fun r hr x y hxy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr0 : r ≠ 0` using `hr.ne_zero`. Establish `hne : algebraMap ℤ_[l] ↥LL.1 r ≠ 0`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥LL.1]`. Conclude with `(map_ne_zero _).mpr ((map_ne_zero_iff _ (IsFractionRing.injective ℤ_[l] ℚ_[l])).mpr hr0)`. Establish `h : ((r • x : integralClosure ℤ_[l] ↥LL.1) : ↥LL.1) = ((r • y : integralClosure ℤ_[l] ↥LL.1) : ↥LL.1)` using `congrArg Subtype.val hxy`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Express the relevant statement in the definitionally equal form `r • (x : ↥LL.1) = r • (y : ↥LL.1) at h`. Rewrite `h` using `[Algebra.smul_def, Algebra.smul_def]`. Conclude with `Subtype.ext (mul_left_cancel₀ hne h)`. Establish `hfree : Module.Free ℤ_[l] (integralClosure ℤ_[l] ↥LL.1)` using `Module.free_of_finite_type_torsion_free'`. Conclude with `⟨hdvr, isAdicComplete_maximalIdeal_of_free_finite_zpadic hp0 hpu, hp0, hpu, hfree, hfin, integralClosure.isFractionRing_of_finite_extension ℚ_[l] ↥LL.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem integers_completeDVR : ∀ (l : ℕ) [Fact l.Prime], ∀ LL : FinExt l,
     ∃ _ : IsDiscreteValuationRing ↥(OL LL),

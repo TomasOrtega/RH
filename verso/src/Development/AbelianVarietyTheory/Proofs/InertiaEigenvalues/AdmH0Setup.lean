@@ -23,7 +23,7 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.NLink.PowerSmulVanishing
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite using `[pow_add, mul_comm, ← smul_smul, hx, smul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_smul_eq_zero_of_le {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] (p : O) {a b : ℕ}
     (h : a ≤ b) {x : M} (hx : p ^ a • x = 0) : p ^ b • x = 0 := by
@@ -33,13 +33,13 @@ theorem pow_smul_eq_zero_of_le {O M : Type} [CommRing O] [AddCommGroup M] [Modul
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `hP D L P nch HW F Cm X C₂ hS i hTw hg hRA hSp π hπ`. Establish `hJ : AdmissibleParameterJ.JumpConditions L` using `GlobalTheory.JumpStatement.holds_all D L (hS.facts.admJ L hS.par)`. Take `⟨M0, h0, hl2, hJC⟩` from `GlobalTheory.HubX.jointCondH0all_canon hP.font D L HW (rowC C₂) X hS.canon hJ hS.facts.Conclusion1.1 (GlobalTheory.FontaineAdm.fontaineProperties_all_places D) i hTw hg hRA hSp π hπ`. Establish `hlq : D.nd.l i ≠ D.host.q` using `fun h => hRA.2.1 (Or.inl h)`. Establish `hld : D.nd.l i ≠ D.host.d` using `fun h => hRA.2.1 (Or.inr h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `_ u hu w hw hconj C hC L2 hstd`. Take `⟨-, hall⟩` from `hJC u hu w hw hconj`. Establish `hur : (D.nbr i w hw).Kw.1 ≤ MaximalUnramifiedExtension (D.nd.l i)` using `GlobalTheory.HubLoc.kw_le_Kur_all D i (fun h => hRA.1 (Or.inl h)) hlq hld w hw`. Establish `hg1 : Good (D.nbr i w hw).Kw 1 C.LL` using `hC.good_one hl2 (le_trans (le_inf le_rfl hur) le_sup_left)`. Establish `hT2c : Continuous fun g => T2O D.nd i (X.ρ i) π g` using `GlobalTheory.HTW.RecS.Model.continuous_twistedDual_rhoO i (X.ρ i) π (hS.canon.fam.cont i π)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ v, Continuous fun g => matRep (Formalism.MainNotions.TruncatedSeriesCountingIdentities.locC C (T2O D.nd i (X.ρ i) π)) g v` using `fun v => (GlobalTheory.CrysChiOne.locC_cont' C _ hT2c).matrix_mulVec continuous_const`. Take `⟨hcr, hwin, hnj, hc0⟩` from `hall C hg1 hc L2`. Establish `hW` using `GlobalTheory.T.crystallineLatticeWachModuleExists_proof D HW F Cm (D.nd.l i) (D.nbr i w hw).Kw 1 C.LL hg1 (GlobalTheory.HubX.tTwoLocalLattice D i (X.ρ i) π C hc L2) M0 h0 hcr hwin`. Establish `hkill` using `GlobalTheory.T.torsion_exponent_kills_invariants_of_good hP.bk hP.tate hP.euler D HW F Cm (D.nd.l i) (D.nbr i w hw).Kw 1 C.LL hg1 M0 h0 (GlobalTheory.HubX.tTwoLocalLattice D i (X.ρ i) π C hc L2) hW hnj`. Unfold `EmbeddingTypes.lenInvD`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `haveI : IsDiscreteValuationRing ↥(OL C.LL) := Formalism.BasicNotions.Examples₂.LB.OL_dvr C.LL`. Use `haveI : IsFractionRing ↥(OL C.LL) ↥C.LL.1 := Formalism.BasicNotions.Examples₂.LB.OL_frac C.LL`. Use `EmbeddingTypes.len_le_of_kill (Br.PD D.loc D.nbr i w hw) L2.T hstd _ (X.c0 i u) ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `pow_smul_eq_zero_of_le _ hc0 (hkill x fun g => hx g)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : Hypotheses₂ → ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (X : KillingConditions.HubData D) (C₂ : ℝ), Setup L nch HW X C₂ → ∀ i, TwistedPlaces.TwLoc D i → D.nd.l i ∉ TwistedPlaces.gset D → KillingConditions.RangeAD L X.exc (D.nd.l i) → TwistedPlaces.SplitK D (D.nd.l i) → ∀ π ∈ D.nd.Zgood i, EmbeddingTypes.H0ColumnLengthBound i (X.ρ i) π (X.dc i) (X.c0 i) := by
   intro hP D L P nch HW F Cm X C₂ hS i hTw hg hRA hSp π hπ

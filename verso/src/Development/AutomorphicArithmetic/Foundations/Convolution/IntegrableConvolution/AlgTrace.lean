@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvo
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.UnitsTrace
 
 /- English proof (translation)
-Establish `key : ∀ a, g (Function.surjInv hp (p a)) = g a`. Introduce `a`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Apply `h` to reduce the goal to its premises. Rewrite using `[map_sub, Function.surjInv_eq hp, sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨{ toFun := fun b => g (Function.surjInv hp b) map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_, commutes' := ?_ }, key⟩` and prove the remaining obligations. Rewrite using `[← map_one p, key, map_one]`. Introduce `x y`. Take `⟨x, rfl⟩` from `hp x`. Take `⟨y, rfl⟩` from `hp y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [← map_mul p, key, map_mul g]`. Rewrite using `[← map_zero p, key, map_zero]`. Introduce `x y`. Take `⟨x, rfl⟩` from `hp x`. Take `⟨y, rfl⟩` from `hp y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [← map_add p, key, map_add g]`. Introduce `c`. Simplify using `only [← p.commutes c, key, g.commutes]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem factor_alg {A B C : Type} [Ring A] [Ring B] [Ring C] [Algebra ℂ A] [Algebra ℂ B] [Algebra ℂ C]
     (p : A →ₐ[ℂ] B) (hp : Function.Surjective p) (g : A →ₐ[ℂ] C) (h : ∀ a, p a = 0 → g a = 0) :
@@ -36,9 +36,9 @@ private theorem factor_alg {A B C : Type} [Ring A] [Ring B] [Ring C] [Algebra �
     simp only [← p.commutes c, key, g.commutes]
 
 /- English proof (translation)
-Proceed by induction on `a using FreeAlgebra.induction with`. Consider the case `grade0 r => rw [AlgHom.commutes]`. Conclude with `(Algebra.commutes r S).symm`. Consider the case `grade1 x => rw [FreeAlgebra.lift_ι_apply]`. Conclude with `h x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul a b ha hb => rw [map_mul]`. Conclude with `ha.mul_right hb`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `ha.add_right hb`.
+A detailed English derivation is pending.
 -/
 private theorem comm_lift {X E : Type} [Ring E] [Algebra ℂ E] (T : X → E) (S : E) (h : ∀ x, Commute S (T x))
     (a : FreeAlgebra ℂ X) : Commute S (FreeAlgebra.lift ℂ T a) := by
@@ -49,35 +49,31 @@ private theorem comm_lift {X E : Type} [Ring E] [Algebra ℂ E] (T : X → E) (S
   | add a b ha hb => rw [map_add]; exact ha.add_right hb
 
 /- English proof (translation)
-Introduce `W X _ _ _ m T hcomm hirr U hU`. Break down `subsingleton_or_nontrivial W with hW | hW` into its components or cases. Use `⟨1, one_ne_zero, fun i₀ S _ => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `w`. Conclude with `Subsingleton.elim _ _`. Set `ρ : Fin (m + 1) → (FreeAlgebra ℂ X →ₐ[ℂ] Module.End ℂ W)` to `fun i => FreeAlgebra.lift ℂ (T i)`. Establish `hρι : ∀ i x, ρ i (FreeAlgebra.ι ℂ x) = T i x` using `fun i x => FreeAlgebra.lift_ι_apply _ _`. Establish `hρT : ∀ i j, i ≠ j → ∀ a y, Commute (ρ i a) (T j y)` using `fun i j hij a y => (comm_lift (T i) (T j y) (fun x => (hcomm i j hij x y).symm) a).symm`.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρρ : ∀ i j, i ≠ j → ∀ a b, Commute (ρ i a) (ρ j b)` using `fun i j hij a b => comm_lift (T j) (ρ i a) (hρT i j hij a) b`. Establish `hρU : ∀ i a w, U (ρ (i + 1) a w) = ρ i a (U w)`. Introduce `i a`. Proceed by induction on `a using FreeAlgebra.induction with`. Consider the case `grade0 r => intro w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[Algebra.algebraMap_eq_smul_one]`. Consider the case `grade1 x => intro w`. Rewrite using `[hρι, hρι, hU]`. Consider the case `mul a b ha hb => intro w`. Simplify using `only [map_mul, Module.End.mul_apply, ha, hb]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add a b ha hb => intro w`. Simplify using `only [map_add, LinearMap.add_apply, ha, hb]`. Establish `hker : ∀ a, ρ 0 a = 0 → ∀ i, ρ i a = 0`. Introduce `a ha i`. Proceed by induction on `i using Fin.induction with`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact ha`. Consider the case `succ i ih`. Rewrite using `[← Fin.coeSucc_eq_succ]`. Use extensionality with `w`. Apply `U.injective` to reduce the goal to its premises.
+Treat this case separately. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hρU, ih]`. Simplify using the standard rewrite rules. Take `⟨d, -, ⟨e⟩⟩` from `UpperTheory.ConvolutionTheory.L1.matImage (FreeAlgebra ℂ X) W (ρ 0) {b | ∃ j, j ≠ 0 ∧ ∃ x, b = T j x} (by`. Introduce and unpack `a b ⟨j, hj, x, rfl⟩`. Conclude with `hρT 0 j hj.symm a x)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use the proof step `(by`. Introduce `P h1 h2`. Apply `hirr P` to reduce the goal to its premises. Introduce `i x w hw`. Distinguish the cases in `hi : i = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Substitute `hi` using the available equality. Rewrite using `[← hρι]`. Conclude with `h1 _ w hw`. Conclude with `h2 _ ⟨i, hi, x, rfl⟩ w hw)`. Set `p : FreeAlgebra ℂ X →ₐ[ℂ] Matrix (Fin d) (Fin d) ℂ` to `(e : (ρ 0).range →ₐ[ℂ] _).comp (ρ 0).rangeRestrict`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : Function.Surjective p` using `e.surjective.comp (ρ 0).rangeRestrict_surjective`. Establish `hp0 : ∀ a, p a = 0 → ρ 0 a = 0`. Introduce `a ha`. Establish `h1 : e ((ρ 0).rangeRestrict a) = 0` using `ha`. Establish `h2 : (ρ 0).rangeRestrict a = 0` using `(map_eq_zero_iff e e.injective).1 h1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val h2`. Use `choose r hr using fun i => factor_alg p hp (ρ i) (fun a ha => hker a (hp0 a ha) i)`. Take `⟨c, hc, H⟩` from `UpperTheory.ConvolutionTheory.L1.unitsTrace W m d r (by`. Introduce `i j hij a b`. Take `⟨a, rfl⟩` from `hp a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, rfl⟩` from `hp b`. Rewrite using `[hr, hr]`. Conclude with `hρρ i j hij a b)`. Use the proof step `(by`. Introduce `P h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `hirr P` to reduce the goal to its premises. Introduce `i x w hw`. Rewrite using `[← hρι, ← hr]`. Conclude with `h _ _ w hw)`. Use `U`.
-
-Use the proof step `(by`. Introduce `i a w`. Take `⟨a, rfl⟩` from `hp a`. Rewrite using `[hr, hr, hρU])`. Use `⟨c, hc, fun i₀ S hS => H i₀ S ?_⟩` and prove the remaining obligations.
-
-Introduce `j hj a`. Take `⟨a, rfl⟩` from `hp a`. Rewrite using `[hr]`. Conclude with `comm_lift (T j) S (hS j hj) a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.algTrace :
     UpperTheory.ConvolutionTheory.L1.AlgTrace := by

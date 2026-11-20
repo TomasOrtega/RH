@@ -37,13 +37,13 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : D.what₂.Word} {f : _root_.GlobalTheory.Fam.FamilyCharacter W u}
   {B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)}
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.MiTop.PlacedPrimitiveConditions _root_.GlobalTheory.MiTop.PlacedConditions`. Simplify using `only [topPrim_iff]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem placedPrim_iff_placedP : _root_.GlobalTheory.MiTop.PlacedPrimitiveConditions f B ↔ _root_.GlobalTheory.MiTop.PlacedConditions f B := by
   unfold _root_.GlobalTheory.MiTop.PlacedPrimitiveConditions _root_.GlobalTheory.MiTop.PlacedConditions
   simp only [topPrim_iff]
 /- English proof (translation)
-Use `lt_of_lt_of_eq ?_ (Formalism.L2.Forms.rankN D (j + 1) (by omega)).symm` and prove the remaining obligations. Unfold `Ranks.N`. Check the signs of the components of the expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem rank_X_succ_pos (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) : 0 < (f.c.X (j + 1)).rank := by
   refine lt_of_lt_of_eq ?_ (Formalism.L2.Forms.rankN D (j + 1) (by omega)).symm

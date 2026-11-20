@@ -13,13 +13,11 @@ namespace GlobalTheory.HermUnimod
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma h`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hid : ∀ x, σ x = x`. Introduce `x`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hx`. Use `hne (x - σ x) (sub_ne_zero.2 (Ne.symm hx)) ?_` and prove the remaining obligations. Rewrite using `[map_sub, hσ]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : ComplexEmbedding.IsReal w.embedding`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Simplify `(h.2.2.2 w.embedding x).symm` using `[hid x, Complex.star_def]`.
-
-Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 (h.2.1.isComplex w)) (InfinitePlace.isReal_iff.2 hr)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_anti {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ ξ : E, ξ ≠ 0 ∧ σ ξ = -ξ := by
   have hσ := GlobalTheory.SiegelSet.sigma_sigma h
@@ -39,21 +37,17 @@ theorem exists_anti {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ ξ : E, ξ �
   exact (InfinitePlace.not_isReal_iff_isComplex.2 (h.2.1.isComplex w)) (InfinitePlace.isReal_iff.2 hr)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n X r s hB hX μ hμ`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hB.cm`. Take `⟨δ, hδ, hσδ⟩` from `exists_anti hB.cm`. Establish `hJ : IsHermND σ (X.J.map σ)` using `GlobalTheory.UnitaryVol.isHermND_map hσ hX`. Establish `heq : GlobalTheory.WeilM.UG (cA σ) (incM F X.J) = HR (AF F) σ (X.J.map σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.SiegelSet.ug_eq_hr (F := F) (J := X.J) hσ one_ne_zero`. Rewrite `h` using `[one_smul]`. Conclude with `h`. Set `e : UA σ X.J ≃* HA (AF F) σ (X.J.map σ)` to `MulEquiv.subgroupCongr heq`. Establish `he : Continuous e` using `continuous_subtype_val.subtype_mk _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he' : Continuous e.symm` using `continuous_subtype_val.subtype_mk _`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (HA (AF F) σ (X.J.map σ)) := ⟨rfl⟩`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsTopologicalGroup (HA (AF F) σ (X.J.map σ)) := inferInstanceAs (IsTopologicalGroup (HR (AF F) σ (X.J.map σ)))`. Use `haveI : ContinuousMul (UA σ X.J) := ⟨by`. Establish `h3 : (fun p : UA σ X.J × UA σ X.J => p.1 * p.2) = fun p => e.symm (e p.1 * e p.2)`. Use function extensionality and compare the values at `fun p => by rw [← map_mul, MulEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `he'.comp ((he.comp continuous_fst).mul (he.comp continuous_snd))⟩`. Use `haveI : (μ.map e).IsHaarMeasure := MulEquiv.isHaarMeasure_map μ e he he'`. Establish `hR : (μ.map e).IsMulRightInvariant` using `GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_adelic σ hσ hδ hσδ hJ (μ.map e)`. Establish `hem : Measurable e` using `he.measurable`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hem' : Measurable e.symm` using `he'.measurable`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `hmg : Measurable fun y : HA (AF F) σ (X.J.map σ) => y * e g` using `(continuous_mul_right (e g)).measurable`. Establish `h1 : (μ.map e).map e.symm = μ`. Rewrite using `[Measure.map_map hem' hem]`.
-
-Establish `: (e.symm ∘ e : UA σ X.J → UA σ X.J) = id` using `funext fun x => e.symm_apply_apply x`. Rewrite using `[this, Measure.map_id]`. Establish `h2 : ((μ.map e).map (fun y => y * e g)).map e.symm = μ.map (· * g)`. Rewrite using `[Measure.map_map hmg hem, Measure.map_map hem' (hmg.comp hem)]`. Use `congr 1`.
-
-Rewrite using `[← h2, hR.map_mul_right_eq_self (e g), h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_of_isHerm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (X : Spc F E n) (r s : ℕ), B.IsGood σ → X.IsHerm σ B r s →

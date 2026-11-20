@@ -20,7 +20,7 @@ Both sides reduce to the same expression.
 theorem eE_apply (φ : MuN ι) (c : ι) (y : Unit) : eE ι φ c y = φ c := rfl
 
 /- English proof (translation)
-Rewrite using `[ipS_apply, PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[eE_apply, eE_apply, RCLike.inner_apply]`. Conclude with `mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_eE (φ ψ : MuN ι) : inner ℂ φ ψ = ipS ι (eE ι φ) (eE ι ψ) := by
   rw [ipS_apply, PiLp.inner_apply]
@@ -36,14 +36,14 @@ def jE : (ι → LL) →ₛₗ[σ] MuN ι where
   map_smul' c x := by rw [LinearMap.map_smulₛₗ, map_smul]
 
 /- English proof (translation)
-The claim follows from `(eE ι).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem eE_jE (x : ι → LL) : eE ι (jE σ x) = slK σ x := (eE ι).apply_symm_apply _
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `slK_basis (ι := ι) σ`. Establish `h : (fun i => jE σ ((stdHLat LL ι).b i)) = (eE ι).symm ∘ fun i => slK σ ((stdHLat LL ι).b i)` using `rfl`. Rewrite using `[h]`. Use `⟨h1.map' _ (LinearEquiv.ker _), ?_⟩` and prove the remaining obligations. Rewrite using `[Set.range_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `Submodule.map_span (eE ι).symm.toLinearMap (Set.range fun i => slK σ ((stdHLat LL ι).b i))`. Rewrite `h3` using `[h2, Submodule.map_top, LinearEquiv.range]`. Conclude with `h3.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jE_basis : LinearIndependent ℂ (fun i => jE σ ((stdHLat LL ι).b i)) ∧
     Submodule.span ℂ (Set.range (fun i => jE σ ((stdHLat LL ι).b i))) = ⊤ := by
@@ -57,7 +57,7 @@ theorem jE_basis : LinearIndependent ℂ (fun i => jE σ ((stdHLat LL ι).b i)) 
   exact h3.symm
 
 /- English proof (translation)
-Rewrite using `[normAt_std, EuclideanSpace.norm_eq]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.norm_embedding_eq, InfinitePlace.apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_jE (x : ι → LL) :
     Formalism.HermitianLatticesTheory.normAt (stdHLat LL ι).b (stdHLat LL ι).X (InfinitePlace.mk σ) x = ‖jE σ x‖ := by

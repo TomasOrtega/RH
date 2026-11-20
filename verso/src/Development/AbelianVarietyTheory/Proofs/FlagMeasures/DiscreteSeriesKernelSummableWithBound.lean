@@ -15,9 +15,9 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 namespace GlobalTheory.Dec
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos (rkR ε) with h0 | hq` into its components or cases. Simplify using `[GlobalTheory.Count.Majorant.dOp_eq_zero ε h0 g, decE]`. Take `⟨ha, hb, -⟩` from `shell_sum_majorant n (rkR ε) h hn hq hh`. Establish `hp : 0 ≤ dOp (uMat g)` using `((GlobalTheory.Count.Cartan.cartan_distances n ε).2.1 g g hn).1`. Use `(ha (Set.mem_Ici.2 (Nat.cast_nonneg _)) (Set.mem_Ici.2 hp) (Nat.floor_le hp)).trans ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hb _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem decE_dOp_le_floor {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) (h : ℝ)
     (hh : 32 * (n : ℝ) ^ 2 * Real.sqrt (rkR ε) ≤ h) (g : UJ ε) :
@@ -32,9 +32,9 @@ theorem decE_dOp_le_floor {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) (h : �
     ring
 
 /- English proof (translation)
-Take `⟨-, he0, he, -⟩` from `GlobalTheory.rowsAut_idem_elementary B`. Establish `hd0 : 0 ≤ ∏ v, d v` using `Finset.prod_nonneg fun v _ => (hd v).2.2.2.1.le`. Establish `h1 : ‖∏ v, ⟪B.w v, B.σ v (uMat (g.1 v)) (B.w v)⟫_ℂ‖ ≤ ∏ v, Real.exp (-(2 * (2 * (B.I.n : ℝ) ^ 2) * (⌊dOp (uMat (g.1 v))⌋₊ : ℝ)))`. Rewrite using `[norm_prod]`. Conclude with `Finset.prod_le_prod (fun v _ => norm_nonneg _) fun v _ => (hl v _).trans (decE_dOp_le_floor hn _ h (hb v) _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `phe ph`. Rewrite using `[norm_mul, norm_mul, norm_star, Complex.norm_real, Real.norm_of_nonneg hd0, mul_assoc, mul_assoc, mul_comm (B.e 1).re]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul h1 (he _) (norm_nonneg _) ((norm_nonneg _).trans h1)) hd0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_phe_le_floor (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ) (hd : IsDSData B d)
     (hn : 1 ≤ B.I.n) (hl : LocDec B h) (hb : HBig B 32 h) (g : B.I.GA) :
@@ -53,19 +53,19 @@ theorem norm_phe_le_floor (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : �
   exact mul_le_mul_of_nonneg_left (mul_le_mul h1 (he _) (norm_nonneg _) ((norm_nonneg _).trans h1)) hd0
 
 /- English proof (translation)
-Introduce `B d h hd hn hl hb x y`. Take `⟨-, he0, -, -⟩` from `GlobalTheory.rowsAut_idem_elementary B`. Establish `hd0 : 0 ≤ ∏ v, d v` using `Finset.prod_nonneg fun v _ => (hd v).2.2.2.1.le`. Establish `ht` using `(GlobalTheory.T.truncatedLeastLatticeSize_lipschitz_properties B.I hn).1`. Establish `hx` using `ht x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy` using `ht y`. Establish `hn' : (1 : ℝ) ≤ B.I.n` using `by exact_mod_cast hn`. Establish `ha : (1 : ℝ) ≤ 2 * (B.I.n : ℝ) ^ 2` using `by nlinarith`. Establish `hexp : (2 : ℝ) ≤ Real.exp (2 * (B.I.n : ℝ) ^ 2)`. Use `Real.add_one_le_exp (2 * (B.I.n : ℝ) ^ 2)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : 0 ≤ (3 * Real.sqrt B.I.n / (tau1 B.I x * tau1 B.I y)) ^ (2 * B.I.n ^ 2 * B.I.f)` using `by positivity`. Establish `hc : 0 ≤ (∏ v, d v) * (B.e 1).re` using `mul_nonneg hd0 he0`. Take `⟨hs, hle⟩` from `GlobalTheory.summable_and_tsum_le_of_box_count (InfinitePlace B.I.F) B.I.GFset (fun γ v => dOp (uMat ((x⁻¹ * γ.1 * y).1 v))) (fun γ => ‖phe B d (x⁻¹ * γ.1 * y)‖) (2 * (B.I.n : ℝ) ^ 2) _ _ hA hc (by rw [Real.exp_neg, one_div]; exact inv_anti₀ two_pos hexp) (fun γ v => ((GlobalTheo …`. Introduce `r hr`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hf, hcnt⟩` from `GlobalTheory.T.count_rational_elements_bounded_distance B.I x y r hn hr`. Establish `hsub : Subtype.val '' {γ : B.I.GFset | ‖phe B d (x⁻¹ * γ.1 * y)‖ ≠ 0 ∧ ∀ v, dOp (uMat ((x⁻¹ * γ.1 * y).1 v)) ≤ r v} ⊆ {γ ∈ B.I.GFset | (x⁻¹ * γ * y).2 ∈ B.I.Kset ∧ ∀ v, dOp (uMat ((x⁻¹ * γ * y).1 v)) ≤ r v}`. Introduce and unpack `_ ⟨γ, ⟨h1, h2⟩, rfl⟩`. Use `⟨γ.2, B.e_adm.2.2.2.2.1 _ fun h0 => h1 ?_, h2⟩` and prove the remaining obligations. Unfold `phe`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[h0, mul_zero, norm_zero]`. Use `⟨Set.Finite.of_finite_image (hf.subset hsub) Subtype.val_injective.injOn, le_trans ?_ hcnt⟩` and prove the remaining obligations. Rewrite using `[← Set.ncard_image_of_injective _ Subtype.val_injective]`. Conclude with `Set.ncard_le_ncard hsub hf)` after adjusting the coercions. Use `⟨hs, hle.trans ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card (InfinitePlace B.I.F) ≤ B.I.f`. Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank B.I.F`. Establish `h2` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces B.I.F`. Unfold `AutInst.f`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mul_le_mul_of_nonneg_left (pow_le_pow_right₀ (by linarith) hcard) (mul_nonneg hc hA)).trans (le_of_eq ?_)` and prove the remaining obligations. Unfold `kerC`. Rewrite using `[div_eq_mul_inv, mul_pow (3 * Real.sqrt B.I.n)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kernel_abs_bound : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ), IsDSData B d → 1 ≤ B.I.n → LocDec B h → HBig B 32 h → ∀ x y : B.I.GA, Summable (fun γ : B.I.GFset => ‖phe B d (x⁻¹ * γ.1 * y)‖) ∧ ∑' γ : B.I.GFset, ‖phe B d (x⁻¹ * γ.1 * y)‖ ≤ kerC B d * (tau1 B.I x * tau1 B.I y)⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f) := by
   intro B d h hd hn hl hb x y

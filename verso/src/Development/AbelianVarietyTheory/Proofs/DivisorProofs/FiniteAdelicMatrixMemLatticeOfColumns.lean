@@ -25,7 +25,7 @@ def lift (D : D7) : Af D.host.F ⊗[D.host.F] D.host.E →ₗ[D.host.F] AE D :=
   (finIncl D).rTensor D.host.E
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lift_eq (z : Af D.host.F ⊗[D.host.F] D.host.E) :
     lift D z = finEmb D (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E z) := by
@@ -35,11 +35,11 @@ theorem lift_eq (z : Af D.host.F ⊗[D.host.F] D.host.E) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Establish `key : ∀ z : AE D, z = (show Ainf D.host.F →ₗ[D.host.F] AF D.host.F from LinearMap.inl D.host.F (Ainf D.host.F) (Af D.host.F)).rTensor D.host.E (infPart D z) + lift D (finPart D z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `_ = (pairA D.host.F a.1 0) ⊗ₜ[D.host.F] e + (pairA D.host.F 0 a.2) ⊗ₜ[D.host.F] e`. Rewrite using `[← TensorProduct.add_tmul]`. Use `congr 1`. Conclude with `Prod.ext (add_zero a.1).symm (zero_add a.2).symm`. Consider the case `add x y hx hy`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add]`. Rewrite using `[add_add_add_comm, ← hx, ← hy]`. Use `key z` as an intermediate fact. Rewrite `this` using `[h, map_zero, zero_add]`. Conclude with `this.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_finPart (z : AE D) (h : infPart D z = 0) : lift D (finPart D z) = z := by
   have key : ∀ z : AE D, z =
@@ -70,19 +70,17 @@ def col (V W : HSp D) (b : Fin V.rank) : (Fin W.rank → Af D.host.F ⊗[D.host.
     split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, z, hz, rfl⟩` from `hz`. Establish `hz' : z ∈ hat D.host.F (Bridge.hLat W (fin W k) : Set (Fin W.rank → D.host.E))`. Rewrite using `[← SetLike.mem_coe, GlobalTheory.MovedLat.hat_hLat]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hz` using `[gLat, (GlobalTheory.Member.latHat_eq_hat_and_gram D W).1]`. Conclude with `hz`. Establish `hs : (Pi.single b 1 : Fin V.rank → D.host.E) ∈ Formalism.L2.Pj.stdLat D.host.E V.rank`. Introduce `i _`. Distinguish the cases in `h : i = b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `Submodule.one_le.1 le_rfl`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use `rankOne_mem_latO V W _ _ a ha _ (pure_mem_hatL _ 1 (one_mem _) _ hs) _ (GlobalTheory.PrincInLevel.swap_mem_hatL _ z hz')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(if j = b then lift D (((1 : Af D.host.F) ⊗ₜ a) * z i) else 0) = _`. Simplify using `only [rankOne, Matrix.of_apply, hV, cF_tmul, eToEAf, Algebra.TensorProduct.includeLeftRingHom_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← TensorProduct.sum_tmul]`. Establish `e : ∑ l, star ((Pi.single b 1 : Fin V.rank → D.host.E) l) * (1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E) l j = if j = b then 1 else 0`. Simplify using `only [Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Rewrite using `[lift_eq, map_mul, ← Algebra.TensorProduct.one_def, mul_one]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Consider the case `zero => rw [map_zero]`.
-
-Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [map_neg]`. Conclude with `neg_mem hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem col_mem (V W : HSp D) (hV : V.gram = 1) (k : GA D W) (b : Fin V.rank)
     (z : Fin W.rank → Af D.host.F ⊗[D.host.F] D.host.E) (hz : z ∈ latGHat W k) :
@@ -123,9 +121,9 @@ theorem col_mem (V W : HSp D) (hV : V.gram = 1) (k : GA D W) (b : Fin V.rank)
   | neg y _ hy => rw [map_neg]; exact neg_mem hy
 
 /- English proof (translation)
-Introduce `D V W hV k x h0 hc`. Establish `e : x = ∑ b, col V W b fun a => finPart D (x a b)`. Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply]`. Express the relevant statement in the definitionally equal form `_ = ∑ b, if j = b then lift D (finPart D (x i b)) else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Finset.sum_ite_eq, if_pos (Finset.mem_univ _)]`. Conclude with `(lift_finPart _ (congrFun (congrFun h0 i) j)).symm`. Rewrite using `[e]`. Conclude with `sum_mem fun b _ => col_mem V W hV k b _ (hc b)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latO_of_cols : ∀ (D : D7) (V W : HSp D), V.gram = 1 → ∀ (k : GA D W) (x : WO V W), x.map (infPart D) = 0 → (∀ b, (fun a => finPart D (x a b)) ∈ latGHat W k) → x ∈ (latO V W (Formalism.L2.Pj.stdLat D.host.E V.rank : Set (Fin V.rank → D.host.E)) (Bridge.hLat W (fin W k) : Set (Fin W.rank → D.host.E)) fun _ => True) := by
   intro D V W hV k x h0 hc

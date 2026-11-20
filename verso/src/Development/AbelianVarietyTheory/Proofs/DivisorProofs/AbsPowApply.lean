@@ -31,7 +31,7 @@ def stabAt (X : Spc F E n) (ev : AF F → R) (x : Fin n → E) : Subgroup (UAtSu
     rw [Matrix.mulVec_mulVec, ← GlobalTheory.StabHaar.mat_mul, inv_mul_cancel, GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_stabAt {X : Spc F E n} {ev : AF F → R} {x : Fin n → E} {g : UAtSub σ X ev} :
     g ∈ stabAt σ X ev x ↔ mat g.1 *ᵥ incV F x = incV F x := Iff.rfl

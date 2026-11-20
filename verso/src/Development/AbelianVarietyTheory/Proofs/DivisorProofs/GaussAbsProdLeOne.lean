@@ -11,16 +11,16 @@ namespace GlobalTheory.GaussSubst
 variable {E : Type} [Field E] [NumberField E] (v : FinitePlace E)
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.MultiplicativeHeights.gaussAbs`. Conclude with `NNReal.coe_nonneg _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gaussAbs_nonneg {τ : Type} (f : MvPolynomial τ E) : 0 ≤ ReciprocityTheory.MultiplicativeHeights.gaussAbs v f := by
   unfold ReciprocityTheory.MultiplicativeHeights.gaussAbs
   exact NNReal.coe_nonneg _
 
 /- English proof (translation)
-Establish `hf` using `gaussAbs_nonneg v f`. Establish `hg` using `gaussAbs_nonneg v g`. Use `ReciprocityTheory.MultiplicativeHeights.gauss_abs_le_of_coeff_le v _ (mul_nonneg hf hg) fun u => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_mul]`. Use `ReciprocityTheory.MultiplicativeHeights.finite_place_sum_le v _ _ (mul_nonneg hf hg) fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Conclude with `mul_le_mul (ReciprocityTheory.MultiplicativeHeights.coeff_le_gauss_abs v f _) (ReciprocityTheory.MultiplicativeHeights.coeff_le_gauss_abs v g _) (apply_nonneg v _) hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussAbs_mul_le {τ : Type} (f g : MvPolynomial τ E) :
     ReciprocityTheory.MultiplicativeHeights.gaussAbs v (f * g) ≤ ReciprocityTheory.MultiplicativeHeights.gaussAbs v f * ReciprocityTheory.MultiplicativeHeights.gaussAbs v g := by
@@ -35,7 +35,7 @@ theorem gaussAbs_mul_le {τ : Type} (f g : MvPolynomial τ E) :
     (apply_nonneg v _) hf
 
 /- English proof (translation)
-Use `ReciprocityTheory.MultiplicativeHeights.gauss_abs_le_of_coeff_le v _ zero_le_one fun s => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gaussAbs_one_le {τ : Type} : ReciprocityTheory.MultiplicativeHeights.gaussAbs v (1 : MvPolynomial τ E) ≤ 1 := by
   classical
@@ -44,7 +44,7 @@ theorem gaussAbs_one_le {τ : Type} : ReciprocityTheory.MultiplicativeHeights.ga
   split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using gaussAbs_one_le v`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Conclude with `(gaussAbs_mul_le v _ _).trans (mul_le_one₀ ih (gaussAbs_nonneg v f) hf)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussAbs_pow_le_one {τ : Type} (f : MvPolynomial τ E)
     (hf : ReciprocityTheory.MultiplicativeHeights.gaussAbs v f ≤ 1) (n : ℕ) : ReciprocityTheory.MultiplicativeHeights.gaussAbs v (f ^ n) ≤ 1 := by
@@ -56,7 +56,7 @@ theorem gaussAbs_pow_le_one {τ : Type} (f : MvPolynomial τ E)
       (mul_le_one₀ ih (gaussAbs_nonneg v f) hf)
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using gaussAbs_one_le v`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `(gaussAbs_mul_le v _ _).trans (mul_le_one₀ (hF a (Finset.mem_insert_self a t)) (gaussAbs_nonneg v _) (ih fun i hi => hF i (Finset.mem_insert_of_mem hi)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussAbs_prod_le_one {τ ι : Type} (t : Finset ι) (F : ι → MvPolynomial τ E)
     (hF : ∀ i ∈ t, ReciprocityTheory.MultiplicativeHeights.gaussAbs v (F i) ≤ 1) :
@@ -71,7 +71,7 @@ theorem gaussAbs_prod_le_one {τ ι : Type} (t : Finset ι) (F : ι → MvPolyno
         (ih fun i hi => hF i (Finset.mem_insert_of_mem hi)))
 
 /- English proof (translation)
-Use `ReciprocityTheory.MultiplicativeHeights.gauss_abs_le_of_coeff_le v _ (apply_nonneg v _) fun s => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_C_mul, map_mul]`. Conclude with `mul_le_of_le_one_right (apply_nonneg v _) ((ReciprocityTheory.MultiplicativeHeights.coeff_le_gauss_abs v f s).trans hf)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussAbs_C_mul_le {τ : Type} (a : E) (f : MvPolynomial τ E)
     (hf : ReciprocityTheory.MultiplicativeHeights.gaussAbs v f ≤ 1) : ReciprocityTheory.MultiplicativeHeights.gaussAbs v (C a * f) ≤ v a := by
@@ -81,9 +81,9 @@ theorem gaussAbs_C_mul_le {τ : Type} (a : E) (f : MvPolynomial τ E)
     ((ReciprocityTheory.MultiplicativeHeights.coeff_le_gauss_abs v f s).trans hf)
 
 /- English proof (translation)
-Introduce `E _ _ v σ τ φ g h`. Establish `h0` using `gaussAbs_nonneg v g`. Use `ReciprocityTheory.MultiplicativeHeights.gauss_abs_le_of_coeff_le v _ h0 fun t => ?_` and prove the remaining obligations. Rewrite using `[aeval_def, eval₂_eq, coeff_sum]`. Use `ReciprocityTheory.MultiplicativeHeights.finite_place_sum_le v _ _ h0 fun s _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hprod : ReciprocityTheory.MultiplicativeHeights.gaussAbs v (∏ i ∈ s.support, φ i ^ s i) ≤ 1` using `gaussAbs_prod_le_one v _ _ fun i _ => gaussAbs_pow_le_one v _ (h i) _`. Establish `hC` using `gaussAbs_C_mul_le v (coeff s g) _ hprod`. Rewrite using `[MvPolynomial.algebraMap_eq]`. Conclude with `(ReciprocityTheory.MultiplicativeHeights.coeff_le_gauss_abs v _ t).trans (hC.trans (ReciprocityTheory.MultiplicativeHeights.coeff_le_gauss_abs v g s))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussAbs_aeval_le : ∀ (E : Type) [Field E] [NumberField E] (v : FinitePlace E) (σ τ : Type)
     (φ : σ → MvPolynomial τ E) (g : MvPolynomial σ E),

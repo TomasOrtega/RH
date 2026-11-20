@@ -7,9 +7,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Global
 namespace GlobalTheory.RootFactorProduct
 
 /- English proof (translation)
-Establish `hm : (X₀ - ρ a • E).map (toFr O) = X₀.map (toFr O) - toFr O (ρ a) • E.map (toFr O)`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, map_sub, map_mul]`. Establish `hs : ((toFr O (ρ a)) • E.map (toFr O)).mulVec v = toFr O (ρ a) • (E.map (toFr O)).mulVec v`. Use extensionality with `i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Pi.smul_apply, Finset.mul_sum, mul_assoc]`. Rewrite using `[hm, Matrix.sub_mulVec, hs, map_sub, map_smul, hX, hE]`. Use `Prod.ext (by simp) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Simplify using `only [Prod.snd_sub, Prod.smul_snd, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, map_sub]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -37,11 +37,11 @@ private lemma map_sub_smul_E_mulVec_eq {O : Type} [CommRing O] [IsDomain O] {n r
   ring
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `nil`. Introduce `a u`. Simplify using `only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one]`. Conclude with `map_sub_smul_E_mulVec_eq e E X₀ ρ hE hX a u`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `cons b s ih`. Introduce `a u`. Rewrite using `[List.map_cons, List.prod_cons, Matrix.map_mul, ← Matrix.mulVec_mulVec, map_sub_smul_E_mulVec_eq e E X₀ ρ hE hX a, ih b u]`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.map_cons, List.prod_cons, map_mul, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem prod_cons_action {O : Type} [CommRing O] [IsDomain O] {n r t : ℕ}
     (e : (Fin n → FractionRing O) ≃ₗ[FractionRing O]
@@ -68,9 +68,9 @@ theorem prod_cons_action {O : Type} [CommRing O] [IsDomain O] {n r t : ℕ}
     simp only [List.map_cons, List.prod_cons, map_mul, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro m`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `m`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[List.range'_succ, List.map_cons, List.prod_cons, ih, show m + (n + 1) = m + 1 + n by omega, Finset.prod_eq_prod_Ico_succ_bot (show m < m + 1 + n by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma list_prod_range'_eq_prod_Ico {M : Type} [CommMonoid M] (g : ℕ → M) (n : ℕ) :
     ∀ m : ℕ, ((List.range' m n).map g).prod = ∏ k ∈ Finset.Ico m (m + n), g k := by
@@ -82,13 +82,13 @@ private lemma list_prod_range'_eq_prod_Ico {M : Type} [CommMonoid M] (g : ℕ �
       Finset.prod_eq_prod_Ico_succ_bot (show m < m + 1 + n by omega)]
 
 /- English proof (translation)
-Establish `hl : List.range' 2 (t - 1) = 2 :: List.range' 3 (t - 2)`. Rewrite using `[show t - 1 = (t - 2) + 1 by omega, List.range'_succ]`. Rewrite using `[hl, prod_cons_action e E X₀ ρ hE hX, ← hl]`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only`. Use `split_ifs with h0`. Simplify using `only [h0, zero_add]`. Use `congr 2`. Use `all_goals`.
+Simplify by unfolding definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[list_prod_range'_eq_prod_Ico]`. Apply `Finset.prod_congr _ (fun _ _ => rfl)` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [Finset.mem_Ico, Finset.mem_Ioc]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `c.isLt`. Rewrite using `[List.prod_eq_zero, map_zero, zero_mul]`. Conclude with `List.mem_map.2 ⟨(c : ℕ) + 1, List.mem_range'_1.2 ⟨by omega, by omega⟩, sub_self _⟩`.
+A detailed English derivation is pending.
 -/
 theorem prod_other_factors_action {O : Type} [CommRing O] [IsDomain O] {n r t : ℕ}
     (e : (Fin n → FractionRing O) ≃ₗ[FractionRing O]

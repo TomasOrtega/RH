@@ -8,9 +8,9 @@ section FrobeniusLift
 variable {C : Type*} [CommRing C] {N : Ideal C} {p : ℕ}
 
 /- English proof (translation)
-Establish `hn2 : n ^ 2 = 0`. Use `Ideal.pow_mem_pow hn 2` as an intermediate fact. Rewrite `this` using `[hN, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `hnp : n ^ p = 0`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hp.two_le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hk, pow_add, hn2, zero_mul]`. Rewrite using `[add_pow_prime_eq hp, hpC, hnp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pow_prime_add_of_sq_eq_bot (hp : p.Prime) (hpC : (p : C) = 0) (hN : N ^ 2 = ⊥) (c : C) {n : C}
     (hn : n ∈ N) : (c + n) ^ p = c ^ p := by
@@ -24,7 +24,7 @@ theorem pow_prime_add_of_sq_eq_bot (hp : p.Prime) (hpC : (p : C) = 0) (hN : N ^ 
   simp
 
 /- English proof (translation)
-Establish `hmem : c - c' ∈ N` using `Ideal.Quotient.eq.mp h`. Use `pow_prime_add_of_sq_eq_bot hp hpC hN c' hmem` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pow_prime_eq_of_mk_eq (hp : p.Prime) (hpC : (p : C) = 0) (hN : N ^ 2 = ⊥) {c c' : C}
     (h : Ideal.Quotient.mk N c = Ideal.Quotient.mk N c') : c ^ p = c' ^ p := by
@@ -52,7 +52,7 @@ noncomputable def sqZeroFrobeniusLift (N : Ideal C) (hp : p.Prime) (hpC : (p : C
     exact pow_prime_eq_of_mk_eq hp hpC hN (by simp only [map_add, (Ideal.Quotient.mk_surjective _).choose_spec])
 
 /- English proof (translation)
-The claim follows from `pow_prime_eq_of_mk_eq hp hpC hN (Ideal.Quotient.mk_surjective _).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem sqZeroFrobeniusLift_mk (hp : p.Prime) (hpC : (p : C) = 0) (hN : N ^ 2 = ⊥) (c : C) :
     sqZeroFrobeniusLift N hp hpC hN (Ideal.Quotient.mk N c) = c ^ p :=

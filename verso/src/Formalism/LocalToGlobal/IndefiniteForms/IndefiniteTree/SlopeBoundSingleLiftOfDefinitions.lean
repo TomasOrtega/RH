@@ -382,11 +382,11 @@ def CompParams {K : Type} [Field K] [NumberField K] [StarRing K] (Ca Cb : ℝ) {
     F.PPf + F.e1 Ca + F.e2 Cb ≤ P.b / 8
 
 /- English proof (translation)
-Establish `hDS` using `Formalism.ExtensionFiltration.descentSlope K V ι W κ b X b' X' hX hX' φ A B hA hB hA0 hinj hmap`. Establish `hSM` using `Formalism.ExtensionFiltration.spanMuMin K V2 ι2 b2 X2 hX2 N Λ hN hN0 hspan`. Take `⟨hr, hdeg, hmax⟩` from `Formalism.ExtensionFiltration.goodBadCut K V2 ι2 b2 X2 hX2 e g N hN hg hee hsa hint`. Establish `hmax'` using `hmax Mb hMb hNM`. Establish `hrA : (0 : ℝ) < (rkK A : ℝ)` using `by exact_mod_cast Formalism.ExtensionFiltration.rkK_pos b A hA0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrN : (0 : ℝ) < (rkK N : ℝ)` using `by exact_mod_cast Formalism.ExtensionFiltration.rkK_pos b2 N hN0`. Establish `hrAB : (rkK A : ℝ) ≤ (rkK B : ℝ)` using `by exact_mod_cast hrk`. Rewrite `hDS` using `[hmuB, hminB]`. Establish `e1 : (rkK A : ℝ) * (muDef b X A - P) ≤ (rkK A : ℝ) * (muDef b X A - htMap b X b' X' φ)` using `mul_le_mul_of_nonneg_left (by linarith) hrA.le`. Establish `e2 : ((rkK B : ℝ) - (rkK A : ℝ)) * (-(2 * Λ)) ≤ ((rkK B : ℝ) - (rkK A : ℝ)) * muMinDef b2 X2 N` using `mul_le_mul_of_nonneg_left hSM (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : (rkK N : ℝ) = (rkK (N ⊓ (LinearMap.range e).restrictScalars (𝓞 K)) : ℝ) + (rkK (N ⊓ (LinearMap.ker e).restrictScalars (𝓞 K)) : ℝ)` using `by exact_mod_cast hr.symm`. Use `⟨hrA, hrAB, by linarith, hrN, hsum, by positivity, by nlinarith⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem descent_cut_lines (K V ι W κ V2 ι2 : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
     [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι]
@@ -435,7 +435,7 @@ theorem descent_cut_lines (K V ι W κ V2 ι2 : Type) [Field K] [NumberField K] 
   refine ⟨hrA, hrAB, by linarith, hrN, hsum, by positivity, by nlinarith⟩
 
 /- English proof (translation)
-Take `⟨hr, hdeg, hmax⟩` from `Formalism.ExtensionFiltration.goodBadCut K V2 ι2 b2 X2 hX2 e g N hN hg hee hsa hint`. Establish `hmax'` using `hmax Mb hMb hNM`. Establish `hrN : (0 : ℝ) < (rkK N : ℝ)` using `by exact_mod_cast Formalism.ExtensionFiltration.rkK_pos b2 N hN0`. Establish `hsum : (rkK N : ℝ) = (rkK (N ⊓ (LinearMap.range e).restrictScalars (𝓞 K)) : ℝ) + (rkK (N ⊓ (LinearMap.ker e).restrictScalars (𝓞 K)) : ℝ)` using `by exact_mod_cast hr.symm`. Use `⟨hrN, hsum, by positivity, by nlinarith⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cut_lines (K V2 ι2 : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
     [AddCommGroup V2] [Module K V2] [Module (𝓞 K) V2] [IsScalarTower (𝓞 K) K V2] [Fintype ι2] [DecidableEq ι2]
@@ -460,7 +460,7 @@ theorem cut_lines (K V2 ι2 : Type) [Field K] [NumberField K] [StarRing K] [IsTo
   refine ⟨hrN, hsum, by positivity, by nlinarith⟩
 
 /- English proof (translation)
-Establish `hd : 0 < P.dK`. Unfold `SlopeBoundParameters.dK`. Conclude with `Nat.pos_of_ne_zero (NeZero.ne P.dN)` after adjusting the coercions. Establish `hval` using `(Formalism.DimensionVariation.periodValue P.dK P.v P.rd P.A1 P.Z P.L0 P.Lc P.logOmK P.logOm hd hv hrd.symm hKL hCN hFE hDi hNo).2.2`. Conclude with `⟨hval, Formalism.ExtensionFiltration.periodBound P.logOm P.v P.rd P.Lc P.L P.x P.b P.a hval hrd h4 hLc hx rfl rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem period_of_leaves (P : SlopeBoundParameters) (hKL : LeafKL P) (hCN : LeafCN P) (hFE : LeafFE P) (hDi : LeafDiff P)
     (hNo : LeafNorm P) (hv : 0 < P.v) (hrd : 2 * P.v = P.rd) (h4 : 4 ≤ P.rd) (hLc : |P.Lc| ≤ P.L)
@@ -473,9 +473,9 @@ theorem period_of_leaves (P : SlopeBoundParameters) (hKL : LeafKL P) (hCN : Leaf
   exact ⟨hval, Formalism.ExtensionFiltration.periodBound P.logOm P.v P.rd P.Lc P.L P.x P.b P.a hval hrd h4 hLc hx rfl rfl⟩
 
 /- English proof (translation)
-Establish `h1 : (2.7 : ℝ) < Real.exp 1` using `lt_trans (by norm_num) Real.exp_one_gt_d9`. Establish `h3 : Real.exp 3 = Real.exp 1 ^ 3` using `by rw [← Real.exp_nat_mul]; norm_num`. Establish `h27 : (2.7 : ℝ) ^ 3 ≤ Real.exp 1 ^ 3` using `pow_le_pow_left₀ (by norm_num) h1.le 3`. Establish `h12 : 12 ≤ Real.exp 3` using `by rw [h3]; linarith [show (12 : ℝ) ≤ 2.7 ^ 3 by norm_num]`. Establish `hm : Real.exp (-t) ≤ Real.exp (-3)` using `Real.exp_le_exp.mpr (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : Real.exp (-3) * Real.exp 3 = 1` using `by rw [← Real.exp_add]; norm_num`. Establish `hp : 0 < Real.exp (-3)` using `Real.exp_pos _`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem exp_neg_le_twelfth (t : ℝ) (ht : 3 ≤ t) : Real.exp (-t) ≤ 1 / 12 := by
   have h1 : (2.7 : ℝ) < Real.exp 1 := lt_trans (by norm_num) Real.exp_one_gt_d9
@@ -488,7 +488,7 @@ theorem exp_neg_le_twelfth (t : ℝ) (ht : 3 ≤ t) : Real.exp (-t) ≤ 1 / 12 :
   nlinarith
 
 /- English proof (translation)
-The claim follows from `|2 * (E - CfL)| ≤ 2 * (PPp * kap) + 2 * kap + 2 * lrdk := by rw [abs_le] at hE ⊢; constructor <;> linarith`.
+A detailed English derivation is pending.
 -/
 theorem cfl_Q (E CfL PPp kap lrdk : ℝ) (hE : |E| ≤ PPp * kap) (h0 : 0 ≤ CfL) (h1 : CfL ≤ kap) (hl : 0 ≤ lrdk) :
     |2 * (E - CfL)| ≤ 2 * (PPp * kap) + 2 * kap + 2 * lrdk := by
@@ -503,29 +503,29 @@ theorem g_Q (lg a PPp kap : ℝ) (h1 : lg ≤ a) (h2 : a ≤ PPp) (hk : 1 ≤ ka
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨-, -, -, hx, heps, hrd4, hv2, hv, hlrd, hLc, hlx, hllx, hx7, hcard, hm, hf, hk, hkS, hkη, hS, hR, hkR, hGP, hPPpp, hPPdef⟩` from `hPg`. Take `⟨hwt, hU, hw, hsh, hpq, hq0, hq1, hkap, hCLk, hδb, hn2b⟩` from `hFa`. Take `⟨-, hper⟩` from `period_of_leaves P hKL hCN hFE hDi hNo hv hv2 hrd4 hLc hx`. Take `⟨hNfg, hMkfg, hN0, hXN, hg1, hee, hsa, hint, hNM, hlogg⟩` from `hCu`. Take `⟨hδ0, hδx⟩` from `hSB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hXWr, hmes⟩` from `hMe`. Take `⟨hrec, ho'⟩` from `hRe`. Take `⟨hn20, -⟩` from `hN2`. Establish `hL0 : 0 ≤ P.L` using `Real.rpow_nonneg (by linarith) _`. Establish `hb1 : 1 ≤ P.b` using `Real.one_le_exp hL0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlrd0 : 0 ≤ Real.log P.rd` using `Real.log_nonneg (by linarith)`. Establish `hδ12 : F.δ ≤ 1 / 12` using `le_trans hδx (exp_neg_le_twelfth _ hx7)`. Establish `hkap0 : 0 ≤ F.kap` using `by linarith`. Establish `hfN : 0 ≤ 20 * P.f * P.Nr ^ 2 * P.L` using `by positivity`. Establish `hPPp0 : 0 ≤ P.PPp` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQe : F.Q = 2 * (P.PPp * F.kap) + 2 * F.kap + 2 * (Real.log P.rd * F.kap)`. Unfold `SlopeBoundLiftData.Q SlopeBoundParameters.lrd`. Expand and normalize the polynomial expressions, which then agree. Establish `hlk : 0 ≤ Real.log P.rd * F.kap` using `mul_nonneg hlrd0 hkap0`. Establish `hPk : 0 ≤ P.PPp * F.kap` using `mul_nonneg hPPp0 hkap0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ2 : 2 * P.PPp * F.kap ≤ F.Q` using `by rw [hQe]; linarith only [hlk, hkap0]`. Establish `hQ0 : 0 ≤ F.Q` using `by linarith only [hQ2, hPk]`. Establish `hcflQ : |2 * F.cfl Cf| ≤ F.Q`. Rewrite using `[hQe]`. Conclude with `cfl_Q _ _ _ _ _ hEx (mul_nonneg hCf hL0) hCLk hlk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hGQ : 2 * Real.log (F.g : ℝ) ≤ F.Q` using `le_trans (g_Q _ _ _ _ hlogg hGP hkap hPPp0) hQ2`. Establish `hmuNQ : |F.muN| ≤ F.Q` using `le_trans hMN hQ2`. Establish `hmmQ : F.mmax ≤ F.Q` using `le_trans hLa hQ2`. Take `⟨hdN, hdNs, hdb, hcut⟩` from `cut_lines K (Fin F.nN → K) (Fin F.nN) (Pi.basisFun K (Fin F.nN)) F.XN hXN F.NN F.Mk F.e F.g hNfg hMkfg hN0 hg1 hee hsa hint hNM`. Establish `hδQ : 12 * F.δ * F.Q = 24 * F.δ * ((P.PPp + 1 + Real.log P.rd) * F.kap)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `SlopeBoundLiftData.Q SlopeBoundParameters.lrd`. Expand and normalize the polynomial expressions, which then agree. Establish `hDF' : ∀ τ, |F.c1 τ + F.pq * P.logOm / 2| ≤ Cc * F.q' * (Real.log P.rd + |P.Lc|)` using `fun τ => le_trans (hDF τ) (mul_le_mul_of_nonneg_left (by linarith [abs_nonneg P.Lc]) (mul_nonneg hCc hq0))`. Establish `hB0 : 0 ≤ P.B0`. Unfold `SlopeBoundParameters.B0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `: 0 ≤ P.x ^ P.eps` using `Real.rpow_nonneg (by linarith) _`. Establish `: 0 ≤ P.f * P.m * P.b` using `by positivity`. Check the signs of the components of the expression. Establish `hBl : 0 ≤ P.B0 * P.llx` using `mul_nonneg hB0 (by linarith)`. Establish `hBl' : P.B0 ≤ P.B0 * P.llx` using `by nlinarith only [hB0, hllx]`.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdbQ : ((rkK F.bad : ℕ) : ℝ) ≤ 3 * F.δ * ((rkK F.NN : ℕ) : ℝ)` using `hBR`. Establish `hcfl0 : F.cfl Cf = (∑ τ, F.w τ * F.c1 τ) - Cf * P.L`. Unfold `SlopeBoundLiftData.cfl`. Rewrite using `[hq]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hfirst : -(2 * (C1 * P.LL0 * (∑ τ, F.ua τ) + P.b / 4)) ≤ F.muN - 2 * F.cfl Cf`. Establish `hU' : F.U = ∑ τ, F.ua τ` using `rfl`. Unfold `LeafDef at hDe`. Rewrite `hDe` using `[hU']`. Rewrite using `[hcfl0]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `only [hDe, hPPdef]`. Establish `key` using `Formalism.ExtensionFiltration.covolume_assembly_weighted K d D hD hdD XWr hXWr M hM P.Pl F.w F.w0 F.c1 F.ua (F.muN - 2 * F.cfl Cf) F.muN F.muN F.muG F.mmax 1 1 (rkK F.NN : ℝ) (rkK F.good : ℝ) (rkK F.bad : ℝ) C1 Cf Cc (F.cfl Cf) 0 F.δ F.Q 0 0 (2 * Real.log (F.g : ℝ)) (2 * (F.o' + …`. Establish `hc : 64 * (C1 + 3 * Cf) + 8 * Cc + 2 + 12 * 1 + Cm ≤ slopeBoundConstant Ca Cb Cf Cc C1 Cm`. Unfold `slopeBoundConstant`. Combine the linear relations using `only [hCa, hCb]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hc'` using `mul_le_mul_of_nonneg_right hc hBl`. Establish `hm' : Cm * P.B0 ≤ Cm * (P.B0 * P.llx)` using `mul_le_mul_of_nonneg_left hBl' hCm`. Use `show Formalism.DivisionValues.lcv XW M / (D : ℝ) ≤ (∑ σ, F.pq * F.w0 σ * P.logOm) + slopeBoundConstant Ca Cb Cf Cc C1 Cm * (P.B0 * P.llx)`. Establish `e1 : (64 * (C1 + 3 * Cf) + 8 * Cc + 2 + 12 * 1) * P.B0 * P.llx + Cm * (P.B0 * P.llx) = (64 * (C1 + 3 * Cf) + 8 * Cc + 2 + 12 * 1 + Cm) * (P.B0 * P.llx)` using `by ring`. Combine the linear relations using `only [key, hmes, hc', hm', e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem slope_bound_single_lift_of_definitions {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
     (Ca Cb Cf Cc C1 Cm Cn : ℝ) (hCa : 0 ≤ Ca) (hCb : 0 ≤ Cb) (hCf : 0 ≤ Cf) (hCc : 0 ≤ Cc) (hC1 : 0 ≤ C1)
@@ -609,41 +609,41 @@ theorem slope_bound_single_lift_of_definitions {K : Type} [Field K] [NumberField
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨-, -, -, hx, heps, hrd4, hv2, hv, hlrd, hLc, hlx, hllx, hx7, hcard, hm, hf, hk, hkS, hkη, hS, hR, hkR, hGP, hPPpp, hPPdef⟩` from `hPg`. Take `⟨hwt, hU, hw, hsh, hpq, hq0, hq1, hkap, hCLk, hδb, hn2b⟩` from `hFa`. Take `⟨-, hper⟩` from `period_of_leaves P hKL hCN hFE hDi hNo hv hv2 hrd4 hLc hx`. Take `⟨hNfg, hMkfg, hN0, hXN, hg1, hee, hsa, hint, hNM, hlogg⟩` from `hCu`. Take `⟨hδ0, hδx⟩` from `hSB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hXWr, hmes⟩` from `hMe`. Take `⟨hrec, ho'⟩` from `hRe`. Take `⟨hn20, -⟩` from `hN2`. Establish `hL0 : 0 ≤ P.L` using `Real.rpow_nonneg (by linarith) _`. Establish `hb1 : 1 ≤ P.b` using `Real.one_le_exp hL0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlrd0 : 0 ≤ Real.log P.rd` using `Real.log_nonneg (by linarith)`. Establish `hδ12 : F.δ ≤ 1 / 12` using `le_trans hδx (exp_neg_le_twelfth _ hx7)`. Establish `hkap0 : 0 ≤ F.kap` using `by linarith`. Establish `hfN : 0 ≤ 20 * P.f * P.Nr ^ 2 * P.L` using `by positivity`. Establish `hPPp0 : 0 ≤ P.PPp` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQe : F.Q = 2 * (P.PPp * F.kap) + 2 * F.kap + 2 * (Real.log P.rd * F.kap)`. Unfold `SlopeBoundLiftData.Q SlopeBoundParameters.lrd`. Expand and normalize the polynomial expressions, which then agree. Establish `hlk : 0 ≤ Real.log P.rd * F.kap` using `mul_nonneg hlrd0 hkap0`. Establish `hPk : 0 ≤ P.PPp * F.kap` using `mul_nonneg hPPp0 hkap0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ2 : 2 * P.PPp * F.kap ≤ F.Q` using `by rw [hQe]; linarith only [hlk, hkap0]`. Establish `hQ0 : 0 ≤ F.Q` using `by linarith only [hQ2, hPk]`. Establish `hcflQ : |2 * F.cfl Cf| ≤ F.Q`. Rewrite using `[hQe]`. Conclude with `cfl_Q _ _ _ _ _ hEx (mul_nonneg hCf hL0) hCLk hlk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hGQ : 2 * Real.log (F.g : ℝ) ≤ F.Q` using `le_trans (g_Q _ _ _ _ hlogg hGP hkap hPPp0) hQ2`. Establish `hmuNQ : |F.muN| ≤ F.Q` using `le_trans hMN hQ2`. Establish `hmmQ : F.mmax ≤ F.Q` using `le_trans hLa hQ2`. Take `⟨hdN, hdNs, hdb, hcut⟩` from `cut_lines K (Fin F.nN → K) (Fin F.nN) (Pi.basisFun K (Fin F.nN)) F.XN hXN F.NN F.Mk F.e F.g hNfg hMkfg hN0 hg1 hee hsa hint hNM`. Establish `hδQ : 12 * F.δ * F.Q = 24 * F.δ * ((P.PPp + 1 + Real.log P.rd) * F.kap)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `SlopeBoundLiftData.Q SlopeBoundParameters.lrd`. Expand and normalize the polynomial expressions, which then agree. Establish `hDF' : ∀ τ, |F.c1 τ + F.pq * P.logOm / 2| ≤ Cc * F.q' * (Real.log P.rd + |P.Lc|)` using `fun τ => le_trans (hDF τ) (mul_le_mul_of_nonneg_left (by linarith [abs_nonneg P.Lc]) (mul_nonneg hCc hq0))`. Establish `hB0 : 0 ≤ P.B0`. Unfold `SlopeBoundParameters.B0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `: 0 ≤ P.x ^ P.eps` using `Real.rpow_nonneg (by linarith) _`. Establish `: 0 ≤ P.f * P.m * P.b` using `by positivity`. Check the signs of the components of the expression. Establish `hBl : 0 ≤ P.B0 * P.llx` using `mul_nonneg hB0 (by linarith)`. Establish `hBl' : P.B0 ≤ P.B0 * P.llx` using `by nlinarith only [hB0, hllx]`.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdbQ : ((rkK F.bad : ℕ) : ℝ) ≤ 3 * F.δ * ((rkK F.NN : ℕ) : ℝ)` using `hBR`. Take `⟨⟨hmv0, hmv⟩, hFl, hDe, hρ0, hSh, ⟨hhcs, hcc, hV⟩, ⟨hX, hmean, hTX, hTcc⟩, ⟨hA, hR1, hR2, hHSc⟩, hSu, -, hEps, hDs, hPh, hGm, ⟨hDY, hT20, hDT, hDρ, hcs, hBn, hδ', hbud⟩⟩` from `hc`. Take `⟨hAfg, hBfg, -, hA0, -, hXA, hXB, hinj, hmap, hht, hPh0, hmuB, hminB, hrk, hεrk, hspan⟩` from `hDs`. Take `⟨hdA, hdAB, hdesc, -, -, -, -⟩` from `descent_cut_lines K (Fin F.nA → K) (Fin F.nA) (Fin F.nB → K) (Fin F.nB) (Fin F.nN → K) (Fin F.nN) (Pi.basisFun K (Fin F.nA)) F.XA (Pi.basisFun K (Fin F.nB)) F.XB (Pi.basisFun K (Fin F.nN)) F.XN hXA hXB hXN F.φ F.LA F.LB F.NN F.Mk F.e F.g (2 * F.PPh) F.abelian₂ hAfg hBfg hNfg hMkf …`. Establish `hT0 : 0 < F.T` using `by linarith only [hDY, hT20]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ1 : F.ρ < 1` using `by nlinarith only [hDY, hDρ, hρ0]`. Establish `hDT0 : 0 ≤ F.DY ^ 2 / F.T` using `div_nonneg (sq_nonneg _) hT0.le`. Establish `hDρ0 : 0 ≤ F.DY * F.ρ` using `mul_nonneg (by linarith only [hDY]) hρ0`. Establish `hz0 : 0 ≤ F.z` using `by unfold SlopeBoundLiftData.z; linarith only [hDT0, hDρ0]`. Establish `hz1 : F.z < 1` using `by unfold SlopeBoundLiftData.z; linarith only [hDT, hDρ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hε0 : 0 ≤ F.ε`. Unfold `SlopeBoundLiftData.ε`. Establish `: 0 ≤ 7 * F.DY ^ 2 / F.T` using `div_nonneg (by positivity) hT0.le`. Combine the linear relations using `only [this, hDρ0]`. Establish `hεQ : F.ε * F.Q ≤ P.b / 4`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: F.ε * F.Q = 2 * (F.ε * ((P.PPp + 1 + Real.log P.rd) * F.kap))`. Unfold `SlopeBoundLiftData.Q SlopeBoundParameters.lrd`. Expand and normalize the polynomial expressions, which then agree. Unfold `LeafEps at hEps`. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `only [hEps]`. Establish `hTX' : F.T * F.X ≤ Ca * P.LL0 * (∑ τ, F.ua τ) + F.e1 Ca`. Establish `: Ca * P.LL0 * (F.U + F.E0) = Ca * P.LL0 * (∑ τ, F.ua τ) + F.e1 Ca`. Unfold `SlopeBoundLiftData.e1 SlopeBoundLiftData.U`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `only [hTX, this]`. Establish `hTcc' : F.T * F.cc ≤ Cb * P.LL0 * (∑ τ, F.ua τ) + F.e2 Cb`. Establish `: Cb * P.LL0 * (F.U + F.E0) + F.T * F.Qcc = Cb * P.LL0 * (∑ τ, F.ua τ) + F.e2 Cb`. Unfold `SlopeBoundLiftData.e2 SlopeBoundLiftData.U`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `only [hTcc, this]`. Establish `hbud' : F.cs * (6 * F.DY + 10 + F.T * (F.z + 2 * F.ρ)) + (F.A * Real.log (max F.A 1) + 4) + F.R1 + 2 * F.z * F.R2 + (F.PPf + F.mv) + F.e1 Ca + F.e2 Cb ≤ P.b / 4`. Combine the linear relations using `only [hbud, hmv, hb1]`. Establish `hsum' : 2 * ((∑ c, F.degc c) / (∑ c, F.dc c) - (F.PPf + F.mv)) ≤ F.muU - 2 * F.mv`. Unfold `LeafSum at hSu`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `only [hSu]`. Establish `hGm' : 2 * F.abelian₂ ≤ F.Q`. Unfold `LeafGmin at hGm`. Combine the linear relations using `only [hGm, hQ2]`. Establish `hPh' : F.PPh ≤ P.PPpp` using `hPh`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `Formalism.ExtensionFiltration.covolume_full_assembly_weighted K d D hD hdD XWr hXWr M hM P.Pl F.w F.w0 F.c1 F.ua F.ι F.T F.DY F.A F.cs F.X F.cc F.z F.ρ F.R1 F.R2 F.Bn F.δ' F.h F.sl F.δc F.dc F.degc Ca Cb (F.PPf + F.mv) (F.e1 Ca) (F.e2 Cb) (F.muU - 2 * F.mv) F.muA F.muN F.muG F.mm …`. Establish `hc : 64 * (Ca + Cb + 3 * Cf) + 8 * Cc + 2 + 12 * 1 + Cm ≤ slopeBoundConstant Ca Cb Cf Cc C1 Cm`. Unfold `slopeBoundConstant`. Combine the linear relations using `only [hC1]`. Establish `hc'` using `mul_le_mul_of_nonneg_right hc hBl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : Cm * P.B0 ≤ Cm * (P.B0 * P.llx)` using `mul_le_mul_of_nonneg_left hBl' hCm`. Use `show Formalism.DivisionValues.lcv XW M / (D : ℝ) ≤ (∑ σ, F.pq * F.w0 σ * P.logOm) + slopeBoundConstant Ca Cb Cf Cc C1 Cm * (P.B0 * P.llx)`. Establish `e1 : (64 * (Ca + Cb + 3 * Cf) + 8 * Cc + 2 + 12 * 1) * P.B0 * P.llx + Cm * (P.B0 * P.llx) = (64 * (Ca + Cb + 3 * Cf) + 8 * Cc + 2 + 12 * 1 + Cm) * (P.B0 * P.llx)` using `by ring`. Combine the linear relations using `only [key, hmes, hc', hm', e1]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem slope_bound_single_lift_composed {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
     (Ca Cb Cf Cc C1 Cm Cn : ℝ) (hCa : 0 ≤ Ca) (hCb : 0 ≤ Cb) (hCf : 0 ≤ Cf) (hCc : 0 ≤ Cc) (hC1 : 0 ≤ C1)
@@ -760,7 +760,7 @@ theorem slope_bound_single_lift_composed {K : Type} [Field K] [NumberField K] [S
   linarith only [key, hmes, hc', hm', e1]
 
 /- English proof (translation)
-Distinguish the cases in `hq : F.q' = 0`. Conclude with `slope_bound_single_lift_of_definitions Ca Cb Cf Cc C1 Cm Cn hCa hCb hCf hCc hC1 hCm d D hD hdD XW XWr M hM P F hKL hCN hFE hDi hNo hPg hFa hDF hEx hCu hSB hBR hMN hLa hRe hN2 hMe hq (hdef hq)`. Conclude with `slope_bound_single_lift_composed Ca Cb Cf Cc C1 Cm Cn hCa hCb hCf hCc hC1 hCm d D hD hdD XW XWr M hM P F hKL hCN hFE hDi hNo hPg hFa hDF hEx hCu hSB hBR hMN hLa hRe hN2 hMe (hcomp hq)`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem slope_bound_single_lift {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
     (Ca Cb Cf Cc C1 Cm Cn : ℝ) (hCa : 0 ≤ Ca) (hCb : 0 ≤ Cb) (hCf : 0 ≤ Cf) (hCc : 0 ≤ Cc) (hC1 : 0 ≤ C1)
@@ -788,11 +788,11 @@ def ScaleTies {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K}
     ∀ j, ((F j).q' : ℝ) + 1 ≤ P.m ∧ (F j).pq = P.k + P.m - 1 - 2 * ((F j).q' : ℝ)
 
 /- English proof (translation)
-Take `⟨-, -, hcard, -, -, hinj, hq⟩` from `hT`. Establish `hlt : ∀ j, (F j).q' < Fintype.card Bs.J`. Introduce `j`. Establish `h1` using `(hq j).1`. Rewrite `h1` using `[← hcard]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(show ((F j).q' : ℝ) < (Fintype.card Bs.J : ℝ) by linarith)` after adjusting the coercions. Set `g : Bs.J → Fin (Fintype.card Bs.J)` to `fun j => ⟨(F j).q', hlt j⟩`. Establish `hg : Function.Injective g` using `fun a b h => hinj (show (F a).q' = (F b).q' from congrArg Fin.val h)`. Establish `hbij : Function.Bijective g` using `(Fintype.bijective_iff_injective_and_card g).mpr ⟨hg, by simp⟩`. Establish `hpos : 0 < Fintype.card Bs.J`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (1 : ℝ) ≤ Fintype.card Bs.J` using `by rw [hcard]; exact hm`. Conclude with `(show (0 : ℝ) < Fintype.card Bs.J by linarith)` after adjusting the coercions. Take `⟨j, hj⟩` from `hbij.2 ⟨0, hpos⟩`. Establish `hj0 : (F j).q' = 0` using `congrArg Fin.val hj`. Conclude with `⟨j, hj0, fun j' hj' => hinj (show (F j').q' = (F j).q' by rw [hj', hj0])⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem scaleTies_unique_def {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} (Zs : IndefScale Bs)
     (P : SlopeBoundParameters) (F : Bs.J → SlopeBoundLiftData K P) (hT : ScaleTies Zs P F) (hm : 1 ≤ P.m) :
@@ -814,9 +814,9 @@ theorem scaleTies_unique_def {K : Type} [Field K] [NumberField K] [StarRing K] {
   exact ⟨j, hj0, fun j' hj' => hinj (show (F j').q' = (F j).q' by rw [hj', hj0])⟩
 
 /- English proof (translation)
-Take `⟨-, -, hcard, -, -, hinj, -⟩` from `hT`. Establish `h2 : 1 < Fintype.card Bs.J`. Establish `: (2 : ℝ) ≤ Fintype.card Bs.J` using `by rw [hcard]; exact hm`. Conclude with `(show (1 : ℝ) < Fintype.card Bs.J by linarith)` after adjusting the coercions. Take `⟨a, b, hab⟩` from `Fintype.exists_pair_of_one_lt_card h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Simplify using `only [ne_eq, not_exists, not_not] at h`. Conclude with `hab (hinj (show (F a).q' = (F b).q' by rw [h a, h b]))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scaleTies_some_comp {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} (Zs : IndefScale Bs)
     (P : SlopeBoundParameters) (F : Bs.J → SlopeBoundLiftData K P) (hT : ScaleTies Zs P F) (hm : 2 ≤ P.m) :
@@ -831,9 +831,7 @@ theorem scaleTies_some_comp {K : Type} [Field K] [NumberField K] [StarRing K] {B
   exact hab (hinj (show (F a).q' = (F b).q' by rw [h a, h b]))
 
 /- English proof (translation)
-Take `⟨-, -, -, hmain, hunit, -⟩` from `hT`. Introduce `j`. Establish `key` using `slope_bound_single_lift Ca Cb Cf Cc C1 Cm Cn hCa hCb hCf hCc hC1 hCm (S.dW j) S.D hD (hdW j) (S.XW j) (XWr j) (S.M j) (hF.2.2 j) P (F j) hKL hCN hFE hDi hNo hPg (hFa j) (hDF j) (hEx j) (hCu j) (hSB j) (hBR j) (hMN j) (hLa j) (hRe j) (hN2 j) (hMe j) (hDef j) (fun hq => ⟨hRo j hq, …`. Use `show Formalism.DivisionValues.lcv (S.XW j) (S.M j) / (S.D : ℝ) ≤ Zs.l3m j + slopeBoundConstant Ca Cb Cf Cc C1 Cm * Zs.l3u`. Rewrite using `[hmain j, hunit]`.
-
-Conclude with `key`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slope_bound_of_conditions {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] {Bs : DefBase K}
     {Df : DefSide Bs} (Ca Cb Cf Cc C1 Cm Cn : ℝ) (hCa : 0 ≤ Ca) (hCb : 0 ≤ Cb) (hCf : 0 ≤ Cf) (hCc : 0 ≤ Cc)
@@ -868,7 +866,7 @@ theorem slope_bound_of_conditions {K : Type} [Field K] [NumberField K] [StarRing
   exact key
 
 /- English proof (translation)
-The claim follows from `slope_bound_of_conditions Ca Cb Cf Cc C1 Cm Cn hCa hCb hCf hCc hC1 hCm S.toIndefData Zs CH P F XWr hKL hCN hFE hDi hNo hPg hFa hDF hEx hCu hSB hBR hMN hLa hRe hN2 hMe hDef hRo hFl hDg hRh hSh hSm hMs hHS hSu hI13 hEp hDs hPh hGm hCP (IndefRows.D_pos S) (fun j => IndefRows.dW_eq S …`.
+A detailed English derivation is pending.
 -/
 theorem slope_bound_of_conditions_for_frames {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] {Bs : DefBase K}
     {Df : DefSide Bs} (Ca Cb Cf Cc C1 Cm Cn : ℝ) (hCa : 0 ≤ Ca) (hCb : 0 ≤ Cb) (hCf : 0 ≤ Cf) (hCc : 0 ≤ Cc)
@@ -901,51 +899,41 @@ def PeriodIdentity (n : ℕ) [NeZero n] (χ : DirichletCharacter ℂ n) : Prop :
     leadingConstant χ = -LcOf χ - Real.log ((n : ℝ) / Real.pi) + Real.eulerMascheroniConstant + Real.log 2
 
 /- English proof (translation)
-Take `⟨Zv, hKL, hCN, hFE⟩` from `hper`. Take `⟨μ, hμ⟩ : ∃ t : ℝ, t = muDef (Pi.basisFun K (Fin d)) XW M` from `⟨_, rfl⟩`. Take `⟨μx, hμx⟩ : ∃ t : ℝ, t = muMaxDef (Pi.basisFun K (Fin d)) XW M` from `⟨_, rfl⟩`. Take `⟨E, hE⟩ : ∃ t : ℝ, t = 13 + |LcOf χ| + |μ|` from `⟨_, rfl⟩`. Take `⟨x0, hx0⟩ : ∃ t : ℝ, t = Real.exp (Real.exp E)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hE13 : 13 ≤ E` using `by rw [hE]; linarith [abs_nonneg (LcOf χ), abs_nonneg μ]`. Establish `hexpE : E + 1 ≤ Real.exp E` using `Real.add_one_le_exp E`. Establish `hx0E : Real.exp E + 1 ≤ x0` using `by rw [hx0]; exact Real.add_one_le_exp _`. Establish `hlx0 : Real.log x0 = Real.exp E` using `by rw [hx0, Real.log_exp]`. Establish `hllx0 : Real.log (Real.log x0) = E` using `by rw [hlx0, Real.log_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0pos : 0 < x0` using `by rw [hx0]; exact Real.exp_pos _`. Establish `hx14 : 14 ≤ x0` using `by linarith`. Establish `hL : x0 ^ (1 : ℝ) = x0` using `Real.rpow_one x0`. Establish `hb4 : 4 * |μ| ≤ Real.exp x0`. Establish `hq` using `Real.quadratic_le_exp_of_nonneg (show (0 : ℝ) ≤ x0 by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxμ : |μ| + 14 ≤ x0` using `by linarith [abs_nonneg (LcOf χ)]`. Use polynomial arithmetic with `[abs_nonneg μ]`. Establish `hbpos : 0 < Real.exp x0` using `Real.exp_pos _`. Establish `hb1 : 1 ≤ Real.exp x0` using `Real.one_le_exp (by linarith)`. Establish `hx7 : 3 ≤ x0 ^ ((1 : ℝ) / 7)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.rpow_def_of_pos hx0pos, hlx0]`. Establish `h2 : 2 ≤ Real.exp E * (1 / 7)` using `by linarith`. Establish `h3 : (3 : ℝ) ≤ Real.exp 2` using `by linarith [Real.add_one_le_exp (2 : ℝ)]`. Conclude with `le_trans h3 (Real.exp_le_exp.mpr h2)`. Establish `hl4 : Real.log 4 ≤ 3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 4 by norm_num); linarith` as an intermediate fact. Establish `hcut : M ⊓ (LinearMap.range (LinearMap.id : (Fin d → K) →ₗ[K] (Fin d → K))).restrictScalars (𝓞 K) = M`. Rewrite using `[LinearMap.range_id, Submodule.restrictScalars_top, inf_top_eq]`. Establish `hbad : M ⊓ (LinearMap.ker (LinearMap.id : (Fin d → K) →ₗ[K] (Fin d → K))).restrictScalars (𝓞 K) = ⊥`. Rewrite using `[LinearMap.ker_id, Submodule.restrictScalars_bot, inf_bot_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrk0 : rkK (⊥ : Submodule (𝓞 K) (Fin d → K)) = 0`. Unfold `rkK`. Simplify using the standard rewrite rules. Set `P : SlopeBoundParameters` to `{ Pl := Unit, fPl := inferInstance, x := x0, eps := 1, rd := 4, v := 2, dN := n, dimNeZero := inferInstance, χ := χ, Z := Zv, logOmK := eulerConstantTerm n, logOm := eulerConstantTerm n - Real.log 4 + Real.log (Real.sqrt (n : ℝ)), f := 1, m := 1, k := 1, S := 1, η := 0, R := 0, P …`. Establish `hPL : P.L = x0` using `hL`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPb : P.b = Real.exp x0` using `by show Real.exp P.L = _; rw [hPL]`. Set `F : SlopeBoundLiftData K P` to `{ w := fun _ => 0, w0 := fun _ => 0, c1 := fun _ => -(P.logOm / 2), ua := fun _ => 1, kap := |μ| + |μx| + 1, q' := 0, pq := 1, ι := Unit, fι := inferInstance, nι := inferInstance, DY := 0, A := 1, cs := 0, X := 0, cc := 0, E0 := 0, Qcc := 0, ρ := 0, R1 := 0, R2 := 0, Bn := 1, δ' …`. Establish `hU : F.U = 1` using `by show (∑ _τ : Unit, (1 : ℝ)) = 1; simp`. Establish `hμ0` using `abs_nonneg μ`. Establish `hμx0` using `abs_nonneg μx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨P, F, hKL, hCN, hFE, rfl, rfl, ?_, ?_, ?_, ?_, ?_, ⟨le_rfl, (Real.exp_pos _).le⟩, ?_, ?_, ?_, ?_, ?_, ?_, rfl, ?_, rfl, ?_⟩` and prove the remaining obligations. Use `⟨hχ.1, hχ.2.1, hχ.2.2, ?_, one_pos, le_rfl, by norm_num, by norm_num, ?_, ?_, ?_, ?_, ?_, ?_, le_rfl, le_rfl, le_rfl, ?_, ?_, zero_le_one, le_rfl, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show 1 ≤ x0`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show Real.log 4 ≤ P.L`.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPL]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show |LcOf χ| ≤ P.L`. Rewrite using `[hPL]`. Combine the linear relations using `[abs_nonneg μ]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `show Real.log x0 ≤ P.L`. Rewrite using `[hPL, hlx0]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show 1 ≤ Real.log (Real.log x0)`. Rewrite using `[hllx0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `show 3 ≤ x0 ^ ((1 : ℝ) / 7)`. Conclude with `hx7`. Use `show ((Fintype.card Unit : ℕ) : ℝ) ≤ 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Use `show (1 : ℝ) * 1 ≤ P.b`. Rewrite using `[hPb]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show (1 : ℝ) * 0 ≤ P.b`. Rewrite using `[hPb]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `show (1 : ℝ) * 0 ≤ P.b`. Rewrite using `[hPb]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show 20 * (1 : ℝ) * 0 ^ 2 * P.L ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using the standard rewrite rules. Use `show (0 : ℝ) ≤ P.b / 8`. Rewrite using `[hPb]`. Check the signs of the components of the expression. Use `show |μ| + 2 * 0 * 0 ≤ P.b / 4`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hPb]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun _ => ⟨by norm_num, by norm_num⟩, by rw [hU], fun _ => ⟨le_rfl, ?_⟩, fun _ => by show |(0 : ℝ) - 0| ≤ 1 + 0; norm_num, by show |(1 : ℝ) - 1| ≤ 1; norm_num, Nat.cast_nonneg _, by show ((0 : ℕ) : ℝ) ≤ 1; norm_num, by show (1 : ℝ) ≤ |μ| + |μx| + 1; linarith, by show 0 * P.L ≤ |μ …` and prove the remaining obligations. Use `show (0 : ℝ) ≤ 2 * P.b`. Rewrite using `[hPb]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Check the signs of the components of the expression. Introduce `_ show |-(P.logOm / 2) + 1 * P.logOm / 2| ≤ 0 * ((0 : ℕ) : ℝ) * Real.log 4`. Rewrite using `[show -(P.logOm / 2) + 1 * P.logOm / 2 = 0 by ring]; simp`. Use `show |(∑ _τ : Unit, (0 : ℝ) * -(P.logOm / 2)) - 0 * ((0 : ℕ) : ℝ) * Real.log 4 * (∑ _τ : Unit, (0 : ℝ))| ≤ 1 * (|μ| + |μx| + 1) simp`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨hMfg, hMfg, hM0, hXW, le_rfl, LinearMap.id_comp _, fun _ _ _ => rfl, fun y hy => ?_, le_rfl, ?_⟩` and prove the remaining obligations. Use `show (((1 : ℕ) : ℕ) : K) • (LinearMap.id : (Fin d → K) →ₗ[K] (Fin d → K)) y ∈ M`. Simplify using `using hy`. Use `show Real.log ((1 : ℕ) : ℝ) ≤ 20 * 1 * 0 ^ 2 * P.L`. Simplify using the standard rewrite rules.
-
-Use `show ((rkK (M ⊓ (LinearMap.ker (LinearMap.id : (Fin d → K) →ₗ[K] (Fin d → K))).restrictScalars (𝓞 K)) : ℕ) : ℝ) ≤ 3 * 0 * ((rkK M : ℕ) : ℝ)`. Rewrite using `[hbad, hrk0]`. Simplify using the standard rewrite rules. Use `show |muDef (Pi.basisFun K (Fin d)) XW M| ≤ 2 * 1 * (|μ| + |μx| + 1)`. Rewrite using `[← hμ]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `show muMaxDef (Pi.basisFun K (Fin d)) XW M ≤ 2 * 1 * (|μ| + |μx| + 1)`. Rewrite using `[← hμx]`. Combine the linear relations using `[le_abs_self μx]`. Use `⟨?_, le_rfl⟩ show muDef (Pi.basisFun K (Fin d)) XW (M ⊓ (LinearMap.range (LinearMap.id : (Fin d → K) →ₗ[K] (Fin d → K))).restrictScalars (𝓞 K)) - 2 * (0 + 0) ≤ muDef (Pi.basisFun K (Fin d)) XW M` and prove the remaining obligations.
-
-Rewrite using `[hcut]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨le_rfl, ?_⟩` and prove the remaining obligations. Use `show (0 : ℝ) ≤ 0 * 1 * 0 ^ 2 * Real.log (0 * 4 * 1)`. Simplify using the standard rewrite rules.
-
-Conclude with `⟨hXW, by simp⟩`. Use `show (∑ _τ : Unit, (0 : ℝ) * -(P.logOm / 2)) - 0 * P.LL0 * F.U - |μ| - (2 * 0 * 0 + 0 * P.L) ≤ muDef (Pi.basisFun K (Fin d)) XW M / 2`. Rewrite using `[← hμ]`. Simplify using the standard rewrite rules. Use `neg_abs_le μ` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `show (1 : ℝ) = 1 + 1 - 1 - 2 * ((0 : ℕ) : ℝ)`. Evaluate the numerical expressions.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem leaves_satisfiable {K : Type} [Field K] [NumberField K] [StarRing K] {d D : ℕ}
     (XW : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (M : Submodule (𝓞 K) (Fin d → K))
@@ -1059,7 +1047,7 @@ theorem leaves_satisfiable {K : Type} [Field K] [NumberField K] [StarRing K] {d 
   · show (1 : ℝ) = 1 + 1 - 1 - 2 * ((0 : ℕ) : ℝ); norm_num
 
 /- English proof (translation)
-Introduce `h`. Establish `hm : Examples₂.sb Examples₂.K3 1 0 ∈ Examples₂.sl Examples₂.K3 1` using `Submodule.subset_span ⟨0, rfl⟩`. Rewrite `hm` using `[h, Submodule.mem_bot]`. Use `congrFun hm 0` as an intermediate fact. Simplify using `[Examples₂.sb] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem exampleSingleLift_ne_bot : Examples₂.sl Examples₂.K3 1 ≠ ⊥ := by
   intro h
@@ -1069,11 +1057,9 @@ theorem exampleSingleLift_ne_bot : Examples₂.sl Examples₂.K3 1 ≠ ⊥ := by
   simp [Examples₂.sb] at this
 
 /- English proof (translation)
-Establish `hfr` using `Examples₂.one.frames Examples₂.K3 v0`. Take `⟨P, F, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19, h20, h21⟩` from `leaves_satisfiable (D := (Examples₂.one.dat Examples₂.K3 v0).D) ((Examples₂.one.dat Examples₂.K3 v0).XW ()) ((Examples₂.one.dat Examples₂.K3 v0).M ()) (hfr.2.1 ()) (hfr.2.2 ()).fg exampleSingleLift_ne_bot n χ hχ hper`. Use `⟨P, fun _ => F, { F0 := fun _ _ => 0, J0 := fun _ _ _ => 0, E1u := 0, l3m := fun _ => F.main, l3u := P.B0 * P.llx, l6m := fun _ => 0, l6u := 0, x := P.x, b := P.b, la := 0, de := 0 }, h1, h2, h3, h4, h5, h6, fun _ => ⟨h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19⟩, …` and prove the remaining obligations. Use `show ((Fintype.card Unit : ℕ) : ℝ) = P.m`. Rewrite using `[h20]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `a b _`. Conclude with `Subsingleton.elim (α := Unit) a b`. Use `show ((F.q' : ℕ) : ℝ) + 1 ≤ P.m`. Rewrite using `[h18, h20]`.
-
-Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem example_exists_slopeBound_conditions_of_jacobiSym (v0 : InfinitePlace Examples₂.K3) (n : ℕ) [NeZero n] (χ : DirichletCharacter ℂ n)
     (hχ : (∀ k : ℕ, χ k = ((jacobiSym k n : ℤ) : ℂ)) ∧ χ.IsPrimitive ∧ χ.Odd) (hper : PeriodIdentity n χ) :
@@ -1104,7 +1090,7 @@ theorem example_exists_slopeBound_conditions_of_jacobiSym (v0 : InfinitePlace Ex
     rw [h18, h20]; simp
 
 /- English proof (translation)
-Use `⟨{ Examples₂.one.num Examples₂.K3 v0 with l3 := fun _ => Formalism.DivisionValues.lcv (Examples₂.fr Examples₂.K3 1) (Examples₂.sl Examples₂.K3 1) / ((1 : ℕ) : ℝ) - 1 }, fun h => ?_⟩` and prove the remaining obligations. Use `h ()` as an intermediate fact. Express the relevant statement in the definitionally equal form `Formalism.DivisionValues.lcv (Examples₂.fr Examples₂.K3 1) (Examples₂.sl Examples₂.K3 1) / ((1 : ℕ) : ℝ) ≤ Formalism.DivisionValues.lcv (Examples₂.fr Examples₂.K3 1) (Examples₂.sl Examples₂.K3 1) / ((1 : ℕ) : ℝ) - 1 at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem example_slope_bound_nontrivial (v0 : InfinitePlace Examples₂.K3) :
     ∃ N : IndefNum (Examples₂.one.base Examples₂.K3 v0), ¬ (Examples₂.one.dat Examples₂.K3 v0).L3 N := by

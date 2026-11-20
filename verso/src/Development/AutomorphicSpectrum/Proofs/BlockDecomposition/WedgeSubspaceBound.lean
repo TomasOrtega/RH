@@ -6,13 +6,11 @@ open Matrix PositivityTheory.Rg.BcB.D1
 namespace GlobalTheory.CompanionTheory.WedgeNorm
 
 /- English proof (translation)
-Distinguish the cases in `hX : LinearIndependent K Xᵀ`. Take `⟨Y, hY⟩` from `h.quot κ X hX`. Take `⟨h1, h2, -⟩` from `hY κ' Z`. Rewrite using `[h1]`. Conclude with `mul_le_mul_of_nonneg_left h2 (h.nonneg κ X)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : N (κ ⊕ κ') (fromCols X Z) = 0`. Assume the negation of the conclusion as `hne`. Establish `hli` using `(h.ne_zero _ _).1 hne`. Apply `hX` to reduce the goal to its premises. Establish `hc` using `hli.comp Sum.inl Sum.inl_injective`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : (((fromCols X Z)ᵀ : (κ ⊕ κ') → ι → K) ∘ Sum.inl) = (Xᵀ : κ → ι → K)`. Use function extensionality and compare the values at `i j`. Both sides reduce to the same expression. Rewrite `hc` using `[he]`. Then use the resulting hypothesis. Rewrite using `[h0]`.
-
-Conclude with `mul_nonneg (h.nonneg _ _) (h.nonneg _ _)`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wedge_fromCols_le {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι] {N : Fam K ι}
     (h : IsWedge N) (κ κ' : Type) [Fintype κ] [DecidableEq κ] [Fintype κ'] [DecidableEq κ']
@@ -36,11 +34,11 @@ theorem wedge_fromCols_le {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι] 
     exact mul_nonneg (h.nonneg _ _) (h.nonneg _ _)
 
 /- English proof (translation)
-Introduce `K ι _ _ _ N h κ₀ κ₁ κ₂ _ _ _ _ _ _ B A C`. Distinguish the cases in `hB : LinearIndependent K Bᵀ`. Take `⟨Y, hY⟩` from `h.quot κ₀ B hB`. Take `⟨h1, -, -⟩` from `hY (κ₁ ⊕ κ₂) (fromCols A C)`. Take `⟨h2, -, -⟩` from `hY κ₁ A`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h3, -, -⟩` from `hY κ₂ C`. Rewrite using `[h1, h2, h3, Matrix.mul_fromCols]`. Establish `hle` using `wedge_fromCols_le h κ₁ κ₂ ((1 - B * Y) * A) ((1 - B * Y) * C)`. Establish `hn` using `h.nonneg κ₀ B`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h0 : N κ₀ B = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hB ((h.ne_zero _ _).1 hne)`. Rewrite using `[h0, mul_zero]`. Conclude with `mul_nonneg (h.nonneg _ _) (h.nonneg _ _)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wedgeSub : WedgeSub := by
   intro K ι _ _ _ N h κ₀ κ₁ κ₂ _ _ _ _ _ _ B A C

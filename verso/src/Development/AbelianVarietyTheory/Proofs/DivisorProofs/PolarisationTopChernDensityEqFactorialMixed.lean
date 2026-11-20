@@ -16,11 +16,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory.Mix
 
 /- English proof (translation)
-Introduce `k _ X p σ D L c y hy`. Use `set H : Fin D → Matrix (Fin D) (Fin D) ℂ := fun j => MixDens.chernMat ((L j).φ σ) c y with hH`. Establish `hc (n : Fin D → ℤ) : c.chernDens ((ArInt.comb L n).φ σ) y = D.factorial / Real.pi ^ D * (∑ j, (n j : ℂ) • H j).det.re`. Rewrite using `[← MixDens.chernMat_comb k X p σ D (Fin D) L n c y hy]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.T.sum_neg_one_pow_card_det_sum_eq_sum_perm_det D H`. Simplify using `only [FibreProj.pol, hc, dens, MLine.ofHerm]`. Establish `e2 : (∑ τ : Equiv.Perm (Fin D), (Matrix.of fun j l => c.hess ((L (τ l)).φ σ) (pick ((L (τ l)).φ σ).isLB y) y j l).det) = ∑ τ : Equiv.Perm (Fin D), (Matrix.of fun j l => H (τ l) j l).det` using `rfl`. Rewrite using `[e2, ← key, Complex.re_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: ((-1 : ℂ) ^ S.card) = (((-1 : ℝ) ^ S.card : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this, Complex.re_ofReal_mul]`. Use `trans (-1) ^ S.card * (D.factorial / Real.pi ^ D * (∑ i, (if i ∈ S then (-1 : ℂ) else 0) • H i).det.re)`. Simplify using `only [apply_ite (Int.cast : ℤ → ℂ), Int.cast_neg, Int.cast_one, Int.cast_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pol_chernDens_comb : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) (L : Fin D → HermLB p) (c : AlgChart p σ D), ∀ y ∈ c.e.source, FibreProj.pol (fun n => c.chernDens ((ArInt.comb L n).φ σ) y) = D.factorial * dens (fun i => MLine.ofHerm (L i) σ) c y := by
   intro k _ X p σ D L c y hy

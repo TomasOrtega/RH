@@ -7,7 +7,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH GlobalTheory.Mem.Osc Globa
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mem.InvDer.hasDerivAt_inv_det_and_inv` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FHasDerivAtInvDetAndInvAtIdentity.lean&line=8#L8)
 -/

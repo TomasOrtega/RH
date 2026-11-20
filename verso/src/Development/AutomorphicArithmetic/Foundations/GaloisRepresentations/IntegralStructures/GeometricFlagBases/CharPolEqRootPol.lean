@@ -13,15 +13,15 @@ open UpperTheory.Gal.Int.Div (CrysAt PhiKilled HTRichEx JumpsOcc VBase)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Simplify using `[rootPol, Multiset.map_nsmul, Multiset.prod_nsmul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rootPol_pow (R : Multiset ℂ) (k : ℕ) : rootPol R ^ k = rootPol (k • R) := by
   simp [rootPol, Multiset.map_nsmul, Multiset.prod_nsmul]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[rootPol_pow]`. Establish `hne : rootPol (k • R) ≠ 0` using `(Polynomial.monic_multiset_prod_of_monic _ _ fun a _ => monic_X_sub_C a).ne_zero`. Establish `hle : S ≤ k • R`. Use `Polynomial.roots.le_of_dvd hne h` as an intermediate fact. Simplify `this` using `only [rootPol, Polynomial.roots_multiset_prod_X_sub_C]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : S.map (· * c) ≤ k • R.map (· * c)`. Rewrite using `[← Multiset.map_nsmul]`. Conclude with `Multiset.map_le_map hle`. Conclude with `Multiset.prod_dvd_prod_of_le (Multiset.map_le_map h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rootPol_map_dvd (S R : Multiset ℂ) (c : ℂ) (k : ℕ) (h : rootPol S ∣ rootPol R ^ k) :
     rootPol (S.map (· * c)) ∣ rootPol (R.map (· * c)) ^ k := by
@@ -37,15 +37,13 @@ private theorem rootPol_map_dvd (S R : Multiset ℂ) (c : ℂ) (k : ℕ) (h : ro
   exact Multiset.prod_dvd_prod_of_le (Multiset.map_le_map h2)
 
 /- English proof (translation)
-Simplify using `[unrPol, rootPol]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem unrPol_neg_one (S : Multiset ℂ) : unrPol S (-1) = rootPol S := by
   simp [unrPol, rootPol]
 
 /- English proof (translation)
-Establish `hm : (x.charPol g).Monic`. Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Rewrite using `[WD.charPol_mk]`. Conclude with `LinearMap.charpoly_monic _`.
-
-Conclude with `(IsAlgClosed.splits _).eq_prod_roots_of_monic hm`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem charPol_eq_rootPol {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : Formalism.ConjugateSelfDual.IsPlaceOver A w} (x : WD h) (g : Weil h) :
@@ -58,7 +56,7 @@ private theorem charPol_eq_rootPol {E Ω : Type} [Field E] [NumberField E] [Fiel
   exact (IsAlgClosed.splits _).eq_prod_roots_of_monic hm
 
 /- English proof (translation)
-Take `⟨T⟩` from `hT`. Take `⟨LL', r', hm, h⟩` from `hc`. Conclude with `⟨LL', r', hm, GlobalTheory.PstOfCrys.isPst_of_isCrys T _ h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem pst_of_crys {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (hT : Nonempty (LocTied l P AI))
     {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω}
@@ -69,21 +67,21 @@ private theorem pst_of_crys {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocA
   exact ⟨LL', r', hm, GlobalTheory.PstOfCrys.isPst_of_isCrys T _ h⟩
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ ι dd ρ χ hρ hχ w c m h1 R h2 P AI hT A h O _ _ _ Bw hj`. Take `⟨c1, -, -, p1⟩` from `h1.2 P AI hT A h O Bw hj`. Take `⟨c2, g, hg, k, hk⟩` from `h2 P AI hT A h O Bw hj`. Establish `e1 : (rk1 χ).comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype = rk1 (χ.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype) := by`. Use extensionality with `g i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `e2 : (tw ρ χ).comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype = tw (ρ.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype) (χ.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype) := by`. Use extensionality with `g i j`. Simplify using `[UpperTheory.V.Af.tw_val]`. Establish `e3 : Formalism.MainNotions.SumRepresentations.At.twGL (ρ.comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype) (Matrix.GeneralLinearGroup.det.comp (rk1 (χ.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype))) = tw (ρ.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype) (χ.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype) := by`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdet : Matrix.GeneralLinearGroup.det.comp (rk1 (χ.comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype)) = χ.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype := by`. Use extensionality with `g`. Simplify using `[GlobalTheory.TripleGal.rk1, Matrix.det_unique]`. Rewrite using `[hdet]`. Use extensionality with `g i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Formalism.MainNotions.SumRepresentations.At.twGL, UpperTheory.V.Af.tw_val, Algebra.algebraMap_eq_smul_one, Matrix.smul_apply]`. Rewrite `c1`, `p1` using `[e1]`. Rewrite using `[e2]`. Establish `cs : Continuous (ρ.comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype) := hρ.comp continuous_subtype_val`. Establish `cμ : Continuous (χ.comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype) := hχ.comp continuous_subtype_val`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ck` using `(UpperTheory.Gal.TP.Sub.contLeft_holds _ (Qbar l) 1 1).2.2.2 _ cμ`. Take `⟨-, l2⟩` from `UpperTheory.Gal.TP.Sub.twLoc_holds l P AI hT E Ω A O Bw dd (ρ.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype) (χ.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype)`. Establish `ct` using `l2 c2 c1`. Use `⟨ct, g, hg, k, ?_⟩` and prove the remaining obligations. Establish `q3` using `pst_of_crys hT ct`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcs : Continuous fun g : ↥(ReciprocityTheory.Gal.Dec (F` using `E) A) => ((ρ.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype g : GL (Fin dd) (Loc.Om l)) : Matrix (Fin dd) (Fin dd) (Loc.Om l)) := Units.continuous_val.comp cs`. Establish `hck : Continuous fun g : ↥(ReciprocityTheory.Gal.Dec (F` using `E) A) => ((rk1 (χ.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype) g : GL (Fin 1) (Loc.Om l)) : Matrix (Fin 1) (Fin 1) (Loc.Om l)) := Units.continuous_val.comp ck`. Rewrite `q3` using `[← e3]`. Establish `key` using `GlobalTheory.T.fontaineParameter_twist_potentiallySemistable l P AI hT ι E Ω A w h O Bw hj dd _ _ hcs hck (pst_of_crys hT c2) (pst_of_crys hT c1) q3`. Rewrite `key` using `[e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[key]`. Establish `hx` using `charPol_eq_rootPol (wdAt P ι Bw h hj (ρ.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype)) g`. Establish `hx'` using `hx`. Rewrite `hx'` using `[← unrPol_neg_one, ← hg]`. Establish `hy` using `p1 g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hr` using `(UpperTheory.Gal.TP.Sub.wDFacts_holds E Ω A w h _ _).2.2.2 g _ c hx' hy`. Rewrite using `[hr, hg, unrPol_neg_one]`. Rewrite `hk` using `[hx]`. Conclude with `rootPol_map_dvd _ R c k hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.twPhi :
     UpperTheory.Gal.Int.Geo.TwPhi := by

@@ -9,9 +9,9 @@ namespace GroundTheory.Heights₂.Theta
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Establish `h1 : IsOpen ({1} : Set Γ)` using `isOpen_discrete _`. Take `⟨W, hW, hWeq⟩` from `isOpen_induced_iff.mp h1`. Use `⟨W, hW, ?_, ?_⟩` and prove the remaining obligations. Establish `: (1 : Γ) ∈ ((↑) : Γ → G) ⁻¹' W` using `by rw [hWeq]; rfl`. Simplify using `using this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `γ hγ hγW`. Establish `: (⟨γ, hγ⟩ : Γ) ∈ ((↑) : Γ → G) ⁻¹' W` using `hγW`. Rewrite `this` using `[hWeq]`. Simplify using `using congrArg Subtype.val (Set.mem_singleton_iff.mp this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_isOpen_inter_subgroup_eq_one (Γ : Subgroup G) [DiscreteTopology Γ] :
     ∃ W : Set G, IsOpen W ∧ (1 : G) ∈ W ∧ ∀ γ ∈ Γ, γ ∈ W → γ = 1 := by
@@ -28,9 +28,9 @@ theorem exists_isOpen_inter_subgroup_eq_one (Γ : Subgroup G) [DiscreteTopology 
 variable [LocallyCompactSpace G]
 
 /- English proof (translation)
-Take `⟨W, hWo, hW1, hWΓ⟩` from `exists_isOpen_inter_subgroup_eq_one Γ`. Establish `hcont : Continuous fun p : G × G => p.1 * p.2⁻¹` using `by fun_prop`. Establish `hmem : (c, c) ∈ (fun p : G × G => p.1 * p.2⁻¹) ⁻¹' W` using `by simpa using hW1`. Take `⟨U₁, U₂, hU₁, hU₂, hc₁, hc₂, hsub⟩` from `isOpen_prod_iff.mp (hWo.preimage hcont) c c hmem`. Take `⟨L, hL, hLn⟩` from `exists_compact_mem_nhds c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨U₁ ∩ U₂ ∩ interior L, (hU₁.inter hU₂).inter isOpen_interior, ⟨⟨hc₁, hc₂⟩, mem_interior_iff_mem_nhds.mpr hLn⟩, ⟨L, hL, fun x hx => interior_subset hx.2⟩, ?_⟩` and prove the remaining obligations. Introduce `γ hγ x hx hγx`. Apply `hWΓ γ hγ` to reduce the goal to its premises. Establish `: (γ * x, x) ∈ U₁ ×ˢ U₂` using `⟨hγx.1.1, hx.1.2⟩`. Simplify using `using hsub this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_isOpen_small (Γ : Subgroup G) [DiscreteTopology Γ] (c : G) :
     ∃ V : Set G, IsOpen V ∧ c ∈ V ∧ (∃ L, IsCompact L ∧ V ⊆ L) ∧
@@ -51,7 +51,7 @@ theorem exists_isOpen_small (Γ : Subgroup G) [DiscreteTopology Γ] (c : G) :
 def saturate (Γ : Subgroup G) (A : Set G) : Set G := {y | ∃ γ ∈ Γ, γ⁻¹ * y ∈ A}
 
 /- English proof (translation)
-Establish `: saturate Γ A = ⋃ γ : Γ, (fun y => (γ : G)⁻¹ * y) ⁻¹' A`. Use extensionality with `y`. Simplify using `[saturate]`. Rewrite using `[this]`. Conclude with `isOpen_iUnion fun γ => hA.preimage (by fun_prop)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_saturate (Γ : Subgroup G) {A : Set G} (hA : IsOpen A) : IsOpen (saturate Γ A) := by
   have : saturate Γ A = ⋃ γ : Γ, (fun y => (γ : G)⁻¹ * y) ⁻¹' A := by
@@ -63,7 +63,7 @@ def firstHit (Γ : Subgroup G) (A : ℕ → Set G) : Set G :=
   ⋃ i, (A i \ saturate Γ (⋃ j < i, A j))
 
 /- English proof (translation)
-Use `MeasurableSet.iUnion fun i => (hA i).measurableSet.diff ?_` and prove the remaining obligations. Conclude with `(isOpen_saturate Γ (isOpen_biUnion fun j _ => hA j)).measurableSet`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurableSet_firstHit [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G)
     {A : ℕ → Set G} (hA : ∀ i, IsOpen (A i)) : MeasurableSet (firstHit Γ A) := by
@@ -71,21 +71,19 @@ theorem measurableSet_firstHit [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup
   exact (isOpen_saturate Γ (isOpen_biUnion fun j _ => hA j)).measurableSet
 
 /- English proof (translation)
-Establish `hex : ∃ i, ∃ γ ∈ Γ, γ * x ∈ A i` using `hcov x`. Set `i₀` to `Nat.find hex`. Take `⟨γ, hγ, hγx⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ j < i₀, ∀ δ ∈ Γ, δ * x ∉ A j` using `fun j hj δ hδ hδx => Nat.find_min hex hj ⟨δ, hδ, hδx⟩`. Establish `hγF : (γ : G) * x ∈ firstHit Γ A`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mem_iUnion.mpr ⟨i₀, hγx, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨δ, hδ, hδy⟩`. Take `⟨j, hj⟩` from `mem_iUnion.mp hδy`. Take `⟨hj, hjA⟩` from `mem_iUnion.mp hj`. Use `hmin j hj (δ⁻¹ * γ) (Γ.mul_mem (Γ.inv_mem hδ) hγ) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hjA` using `[mul_assoc]`. Use `⟨⟨γ, hγ⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show ((⟨γ, hγ⟩ : Γ) • x ∈ firstHit Γ A)`. Rewrite using `[Subgroup.smul_def, smul_eq_mul]`. Conclude with `hγF`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ (α β : Γ), (α : G) * x ∈ firstHit Γ A → (β : G) * x ∈ firstHit Γ A → ∀ i i', (α : G) * x ∈ A i \ saturate Γ (⋃ j < i, A j) → (β : G) * x ∈ A i' \ saturate Γ (⋃ j < i', A j) → i ≤ i'`. Introduce `α β _ _ i i' hα hβ`. Assume the negation of the conclusion as `hlt'`. Establish `hlt` using `not_le.mp hlt'`. Apply `hα.2` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(α : G) * (β : G)⁻¹, Γ.mul_mem α.2 (Γ.inv_mem β.2), ?_⟩` and prove the remaining obligations. Use `mem_iUnion₂.mpr ⟨i', hlt, ?_⟩` and prove the remaining obligations. Simplify `hβ.1` using `[mul_assoc]`. Introduce `β hβ`. Rewrite `hβ` using `[Subgroup.smul_def, smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `mem_iUnion.mp hβ`. Take `⟨i', hi'⟩` from `mem_iUnion.mp hγF`. Establish `h1` using `key β ⟨γ, hγ⟩ hβ hγF i i' hi hi'`. Establish `h2` using `key ⟨γ, hγ⟩ β hγF hβ i' i hi' hi`. Establish `hii : i = i'` using `le_antisymm h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hii` using the available equality. Establish `hmul` using `hinj i ((γ : G) * (β : G)⁻¹) (Γ.mul_mem hγ (Γ.inv_mem β.2)) _ hi.1 (by simpa [mul_assoc] using hi'.1)`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `: (γ : G) = β`. Use `congrArg (· * (β : G)) hmul` as an intermediate fact.
-
-Simplify using `using this`. Conclude with `this.symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem existsUnique_mem_firstHit (Γ : Subgroup G) (A : ℕ → Set G)
     (hinj : ∀ i, ∀ γ ∈ Γ, ∀ x ∈ A i, γ * x ∈ A i → γ = 1)
@@ -136,19 +134,15 @@ theorem existsUnique_mem_firstHit (Γ : Subgroup G) (A : ℕ → Set G)
     exact this.symm
 
 /- English proof (translation)
-Use `choose V hVo hcV hVL hVinj using exists_isOpen_small Γ`. Take `⟨t, ht⟩` from `hC.elim_finite_subcover V hVo (fun c _ => mem_iUnion.mpr ⟨c, hcV c⟩)`. Set `l` to `t.toList`. Set `A : ℕ → Set G` to `fun i => if h : i < l.length then V (l.get ⟨i, h⟩) else ∅`. Establish `hAo : ∀ i, IsOpen (A i)` using `fun i => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [A]`. Use `split_ifs`. Conclude with `hVo _`. Conclude with `isOpen_empty`. Establish `hinj : ∀ i, ∀ γ ∈ Γ, ∀ x ∈ A i, γ * x ∈ A i → γ = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i γ hγ x hx hγx`. Simplify using `only [A] at hx hγx`. Use `split_ifs at hx hγx with h`. Conclude with `hVinj _ γ hγ x hx hγx`. Conclude with `hx.elim`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcovA : ∀ x : G, ∃ i, ∃ γ ∈ Γ, γ * x ∈ A i`. Introduce `x`. Take `⟨γ, hγ, hγC⟩` from `hcov x`. Take `⟨c, hc⟩` from `mem_iUnion.mp (ht hγC)`. Take `⟨hct, hcV'⟩` from `mem_iUnion.mp hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨n, hn, hnc⟩` from `List.getElem_of_mem (Finset.mem_toList.mpr hct)`. Use `⟨n, γ, hγ, ?_⟩` and prove the remaining obligations. Use `show γ * x ∈ (if h : n < l.length then V (l.get ⟨n, h⟩) else ∅)`. Rewrite using `[dif_pos hn]`. Establish `hget : l.get ⟨n, hn⟩ = c` using `hnc`.
-
-Rewrite using `[hget]`. Conclude with `hcV'`. Use `choose L hL hVL' using hVL`. Use `⟨firstHit Γ A, ⋃ c ∈ t, L c, measurableSet_firstHit Γ hAo, t.isCompact_biUnion fun c _ => hL c, ?_, existsUnique_mem_firstHit Γ A hinj hcovA⟩` and prove the remaining obligations. Introduce `y hy`.
-
-Take `⟨i, hi, -⟩` from `mem_iUnion.mp hy`. Simplify using `only [A] at hi`. Use `split_ifs at hi with h`. Conclude with `mem_iUnion₂.mpr ⟨l.get ⟨i, h⟩, Finset.mem_toList.mp (List.get_mem l _), hVL' _ hi⟩`. Conclude with `hi.elim`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isFundamentalDomain_of_isCompact [MeasurableSpace G] [BorelSpace G]
     (Γ : Subgroup G) [DiscreteTopology Γ] {C : Set G} (hC : IsCompact C)

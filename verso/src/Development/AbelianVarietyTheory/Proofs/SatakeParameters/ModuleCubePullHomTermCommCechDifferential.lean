@@ -18,7 +18,7 @@ def totalPull (y : ∀ s : Finset ι, A.obj s) (s : Finset κ) : B.obj s :=
   if Set.InjOn τ (s : Set κ) then PD.sortSign τ s • ψ.app s (y (s.image τ)) else 0
 
 /- English proof (translation)
-Distinguish the cases in `h : Set.InjOn τ (s.1 : Set κ)`. Rewrite using `[term_apply_of_injOn ψ x s h, totalPull, if_pos h, Cube.extend_apply_of_eq A x (card_image s h)]`. Rewrite using `[term_apply_of_not_injOn ψ x s h, totalPull, if_neg h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem term_eq_totalPull {p : ℕ} (x : Cube.Term A p) (s : {s : Finset κ // s.card = p}) :
     ψ.term p x s = totalPull ψ (Cube.extend A p x) s.1 := by
@@ -27,17 +27,15 @@ theorem term_eq_totalPull {p : ℕ} (x : Cube.Term A p) (s : {s : Finset κ // s
   · rw [term_apply_of_not_injOn ψ x s h, totalPull, if_neg h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Rewrite using `[Cube.totalD_apply B]`. Distinguish the cases in `h : Set.InjOn τ (t : Set κ)`. Rewrite using `[totalPull, if_pos h, Cube.totalD_apply A, Finset.sum_image (fun x hx y hy hxy => h hx hy hxy), map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi' : Set.InjOn τ ((t.erase i : Finset κ) : Set κ)` using `h.mono (Finset.coe_subset.2 (Finset.erase_subset i t))`. Rewrite using `[totalPull, if_pos hi', map_zsmul, map_zsmul, smul_smul, smul_smul, PD.PullMap.sign_inj h hi, ← ψ.app_res]`. Use `congr 2`. Conclude with `Cube.res_congr A y (PD.PullMap.image_erase_of_injOn h hi) _ _`. Rewrite using `[totalPull, if_neg h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha, b, hb, he, hab⟩ : ∃ a ∈ t, ∃ b ∈ t, τ a = τ b ∧ a ≠ b := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h (fun x hx y hy hxy => hc x hx y hy hxy)`. Establish `zero_of : ∀ s : Finset κ, a ∈ s → b ∈ s → totalPull ψ y s = 0` using `fun s has hbs => by`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[totalPull, if_neg]`. Introduce `hs`. Conclude with `hab (hs has hbs he)`. Rewrite using `[Finset.sum_eq_add_of_mem a b ha hb hab (fun x _ hne => by`. Rewrite using `[zero_of _ (Finset.mem_erase.2 ⟨hne.1.symm, ha⟩) (Finset.mem_erase.2 ⟨hne.2.symm, hb⟩), map_zero, smul_zero])]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hia : Set.InjOn τ ((t.erase a : Finset κ) : Set κ)`. Establish `hib` using `PD.PullMap.injOn_erase_swap hb hab he hia`. Establish `key : ∀ c ∈ t, (t.erase c).image τ = t.image τ → Cube.res B (Finset.erase_subset c t) (ψ.app (t.erase c) (y ((t.erase c).image τ))) = ψ.app t (y (t.image τ))`. Introduce `c _ e`. Rewrite using `[← ψ.app_res, Cube.res_congr A y e _ (subset_refl _), Cube.res_self]`.
-
-Rewrite using `[totalPull, totalPull, if_pos hia, if_pos hib, map_zsmul, map_zsmul, key a ha (PD.PullMap.image_erase_eq hb hab he), key b hb (PD.PullMap.image_erase_eq ha hab.symm he.symm), smul_smul, smul_smul, ← add_smul, PD.PullMap.sign_pair ha hb hab he hia, neg_add_cancel, zero_smul]`. Establish `hib : ¬ Set.InjOn τ ((t.erase b : Finset κ) : Set κ)` using `fun hib => hia (PD.PullMap.injOn_erase_swap ha hab.symm he.symm hib)`. Rewrite using `[totalPull, totalPull, if_neg hia, if_neg hib, map_zero, map_zero, smul_zero, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem totalPull_totalD (y : ∀ s : Finset ι, A.obj s) :
     totalPull ψ (Cube.totalD A y) = Cube.totalD B (totalPull ψ y) := by
@@ -82,7 +80,7 @@ theorem totalPull_totalD (y : ∀ s : Finset ι, A.obj s) :
         add_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Rewrite using `[Cube.d_apply_eq_totalD B (ψ.term p x) (totalPull ψ (Cube.extend A p x)) (fun s => term_eq_totalPull ψ x s), ← totalPull_totalD]`. Distinguish the cases in `h : Set.InjOn τ (t.1 : Set κ)`. Rewrite using `[term_apply_of_injOn ψ _ t h, totalPull, if_pos h, Cube.d_apply_eq_totalD A x (Cube.extend A p x) (fun s => (Cube.extend_apply_of_eq A x s.2).symm)]`. Rewrite using `[term_apply_of_not_injOn ψ _ t h, totalPull, if_neg h]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem term_d (p : ℕ) (x : Cube.Term A p) :
     ψ.term (p + 1) (Cube.d A p x) = Cube.d B p (ψ.term p x) := by

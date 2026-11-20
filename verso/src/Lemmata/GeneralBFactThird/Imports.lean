@@ -5,13 +5,13 @@ universe u_1
 namespace Bl.general_b_fact_third
 
 /- English proof (translation)
-Introduce `K _ _ P hP hc x hx`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_le]`. Establish `hx0 : (0:ℝ) < ‖x‖` using `lt_trans one_pos h`. Rewrite `hx` using `[Polynomial.eval_eq_sum_range, Finset.sum_range_succ, hP.coeff_natDegree, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hS : ‖∑ i ∈ Finset.range P.natDegree, P.coeff i * x ^ i‖ ≤ ‖x‖ ^ P.natDegree / ‖x‖`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[norm_mul, norm_pow, le_div_iff₀ hx0]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `hc i`. Use `_ = ‖x‖ ^ (i + 1) := by rw [one_mul, pow_succ]`. Use `_ ≤ ‖x‖ ^ P.natDegree := pow_le_pow_right₀ h.le (Nat.succ_le_of_lt hi)`. Establish `heq : ∑ i ∈ Finset.range P.natDegree, P.coeff i * x ^ i = -(x ^ P.natDegree)` using `eq_neg_of_add_eq_zero_left hx`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hS` using `[heq, norm_neg, norm_pow]`. Establish `hpos : 0 < ‖x‖ ^ P.natDegree` using `pow_pos hx0 _`. Establish `hlt : ‖x‖ ^ P.natDegree / ‖x‖ < ‖x‖ ^ P.natDegree` using `div_lt_self hpos h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {K : Type u_1} [inst : NormedField.{u_1} K] [IsUltrametricDist.{u_1} K] (P : Polynomial.{u_1} K),

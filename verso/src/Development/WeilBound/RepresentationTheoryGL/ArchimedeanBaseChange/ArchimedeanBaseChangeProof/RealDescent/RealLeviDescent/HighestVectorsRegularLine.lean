@@ -76,17 +76,17 @@ def MultG : Prop :=
       ∀ v w : V, v ∈ hwSp E1 E2 μ₀ → w ∈ hwSp E1 E2 μ₀ → v ≠ 0 → ∃ c : ℂ, w = c • v
 
 /- English proof (translation)
-Introduce `n lam hlam E T hT V _ _ E1 E2 σ A hA hfin hne`. Take `⟨h1, h2, h3⟩` from `hK n lam hlam E T hT V E1 E2 σ A hA hfin`. Take `⟨μ₀, hμ₀, hzero, hone⟩` from `hM n lam hlam V E1 E2 σ A hA`. Establish `hbot : hwSp E1 E2 μ₀ ≠ ⊥`. Take `⟨μ, hμ, hμne⟩` from `h2 hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `heq : μ = μ₀`. Conclude with `heq ▸ hμne`. Conclude with `absurd (hzero μ hμ heq) hμne`. Establish `htr0 : ∀ μ ∈ harmSet lam, μ ≠ μ₀ → trOn (hwSp E1 E2 μ) A = 0`. Introduce `μ hμ hμne`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hzero μ hμ hμne]`. Unfold `trOn`. Use `split_ifs with h`. Establish `hz : A.restrict h = 0` using `LinearMap.ext fun x => Subsingleton.elim _ _`. Rewrite using `[hz, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Establish `hsum : ∑ μ ∈ harmSet lam, trOn (hwSp E1 E2 μ) A = trOn (hwSp E1 E2 μ₀) A` using `Finset.sum_eq_single_of_mem μ₀ hμ₀ htr0`. Take `⟨hinv, hfd⟩` from `h1 μ₀ hμ₀`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hbot`. Establish `hle : Module.finrank ℂ (hwSp E1 E2 μ₀) ≤ 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `finrank_le_one (⟨v, hv⟩ : hwSp E1 E2 μ₀)` to reduce the goal to its premises. Introduce `w`. Take `⟨c, hc⟩` from `hone v w hv w.2 hv0`. Conclude with `⟨c, Subtype.ext (by simp [hc])⟩`. Establish `hpos : 0 < Module.finrank ℂ (hwSp E1 E2 μ₀)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Nontrivial (hwSp E1 E2 μ₀)` using `⟨⟨⟨v, hv⟩, 0, fun h => hv0 (congrArg Subtype.val h)⟩⟩`. Conclude with `Module.finrank_pos`. Take `⟨s, hs, hts⟩` from `hS V (hwSp E1 E2 μ₀) A hA.Asq hinv (by omega)`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[h3, hsum, hts, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coreG_of (hK : CountG) (hM : MultG) (hS : SignOne) : CoreG := by
   intro n lam hlam E T hT V _ _ E1 E2 σ A hA hfin hne

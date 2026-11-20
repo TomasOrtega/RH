@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.AscFin.incA_neg_xi0_pow_mul_pX_mulVec_eq_sum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FAuxiliaryWittIsotropicCoordinateEqPairing.lean&line=32#L32)
 -/

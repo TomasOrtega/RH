@@ -14,11 +14,11 @@ namespace UpperTheory.TNZ
 namespace SphericalUnramified
 
 /- English proof (translation)
-Unfold `IsSpherical IsSphericalFor at *`. Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 h`. Use `(Submodule.ne_bot_iff _).2 ⟨e x, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Establish `hg` using `hx g`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hint : e (ρ (g : GL (Fin d) k) x) = π (g : GL (Fin d) k) (e x)` using `LinearMap.congr_fun (e.isIntertwining' (g : GL (Fin d) k)) x`. Rewrite using `[← hint, hg, map_smul]`. Introduce `h1`. Apply `h0` to reduce the goal to its premises. Establish `: e x = e 0` using `by rw [h1, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `EquivLike.injective e this`.
+A detailed English derivation is pending.
 -/
 theorem isSpherical_of_equiv {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {d : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
@@ -40,7 +40,7 @@ theorem isSpherical_of_equiv {k : Type} [Field k] [ValuativeRel k] [TopologicalS
 end SphericalUnramified
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h a ha ε rc hL d X _ _ σ hs hi hsph`. Conclude with `(hL.sph (IrrGL.of σ hs hi)).1 (SphericalUnramified.isSpherical_of_equiv (IrrGL.equivOf σ hs hi) hsph)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem step_sphUnr : SphericalUnramifiedProp := by
   intro E Ω _ _ _ _ _ A w h a ha ε rc hL d X _ _ σ hs hi hsph

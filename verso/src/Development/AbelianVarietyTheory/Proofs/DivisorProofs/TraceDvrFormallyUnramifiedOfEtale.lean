@@ -10,31 +10,27 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrep
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R T V _ _ _ _ _ _ _ _ _ _ _ μ hm hinj hfrac`. Set `Q : Ideal T` to `(IsLocalRing.maximalIdeal V).comap μ`. Use `haveI : Q.IsPrime := Ideal.comap_isPrime _ _`. Set `D` to `Localization.AtPrime Q`. Use `haveI : Algebra.FormallyUnramified T D := .of_isLocalization Q.primeCompl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Algebra.FormallyUnramified R D := .comp R T D`. Use `haveI : Algebra.EssFiniteType T D := .of_isLocalization D Q.primeCompl`. Use `haveI : Algebra.EssFiniteType R D := .comp R T D`. Establish `hQ : ∀ r ∈ IsLocalRing.maximalIdeal R, algebraMap R T r ∈ Q` using `fun r hr => by show μ (algebraMap R T r) ∈ IsLocalRing.maximalIdeal V`. Rewrite using `[μ.commutes]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hm r hr`. Use `haveI : IsLocalHom (algebraMap R D) := ⟨fun r hr => by`. Assume the negation of the conclusion as `hnu`. Rewrite `hr` using `[IsScalarTower.algebraMap_apply R T D, IsLocalization.AtPrime.isUnit_to_map_iff D Q]`. Conclude with `hr (hQ r ((IsLocalRing.mem_maximalIdeal _).2 hnu))⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hmax : (IsLocalRing.maximalIdeal R).map (algebraMap R D) = IsLocalRing.maximalIdeal D` using `Algebra.FormallyUnramified.map_maximalIdeal`. Establish `hunit : ∀ y : Q.primeCompl, IsUnit (μ y)` using `fun y => by`. Assume the negation of the conclusion as `h`. Conclude with `y.2 ((IsLocalRing.mem_maximalIdeal _).2 h)`. Set `ν : D →ₐ[R] V` to `IsLocalization.liftAlgHom (M := Q.primeCompl) (f := μ) hunit`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hν : ∀ t, ν (algebraMap T D t) = μ t` using `fun t => IsLocalization.lift_eq _ _`. Establish `hνu : ∀ d, IsUnit (ν d) → IsUnit d`. Introduce `d hd`. Take `⟨⟨x, s⟩, rfl⟩` from `IsLocalization.mk'_surjective Q.primeCompl d`. Establish `e : IsLocalization.mk' D x s * algebraMap T D s = algebraMap T D x` using `IsLocalization.mk'_spec D x s`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : IsUnit (μ x)`. Use `congrArg ν e` as an intermediate fact. Rewrite `this` using `[map_mul, hν, hν]`. Rewrite using `[← this]`. Conclude with `hd.mul (hunit s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxQ : x ∈ Q.primeCompl` using `fun h => (IsLocalRing.mem_maximalIdeal _).1 h hx`. Establish `: IsUnit (algebraMap T D x)` using `IsLocalization.map_units D (⟨x, hxQ⟩ : Q.primeCompl)`. Rewrite `this` using `[← e]`. Conclude with `isUnit_of_mul_isUnit_left this`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hmR : IsLocalRing.maximalIdeal R = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Establish `hmD : IsLocalRing.maximalIdeal D = Ideal.span {algebraMap R D ϖ}`. Rewrite using `[← hmax, hmR, Ideal.map_span, Set.image_singleton]`. Establish `hϖm : ϖ ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).2 hϖ.not_isUnit`. Establish `hS` using `GlobalTheory.T.subring_eq_univ_of_uniformizer_generates V (ν : D →+* V).range (algebraMap R V ϖ) ⟨algebraMap R D ϖ, ν.commutes ϖ⟩ ((map_ne_zero_iff _ hinj).2 hϖ.ne_zero) (hm ϖ hϖm) ?_ ?_ ?_`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Algebra.FormallyUnramified.of_surjective ν fun v => ?_` and prove the remaining obligations. Establish `hv : v ∈ (ν : D →+* V).range` using `hS ▸ Subring.mem_top v`. Take `⟨d, hd⟩` from `hv`. Conclude with `⟨d, hd⟩`. Introduce and unpack `_ ⟨d, rfl⟩ hs`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : IsUnit (ν d)`. Assume the negation of the conclusion as `h`. Conclude with `hs ((IsLocalRing.mem_maximalIdeal _).2 h)`. Take `⟨u, hu'⟩` from `hνu d hu`. Use `⟨ν ↑u⁻¹, ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Express the relevant statement in the definitionally equal form `ν d * ν ↑u⁻¹ = 1`. Rewrite using `[← map_mul, ← hu', Units.mul_inv, map_one]`. Introduce and unpack `_ ⟨d, rfl⟩ hs`. Establish `hd : d ∈ IsLocalRing.maximalIdeal D` using `(IsLocalRing.mem_maximalIdeal _).2 fun h => (IsLocalRing.mem_maximalIdeal _).1 hs (h.map ν)`. Rewrite `hd` using `[hmD]`.
-
-Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hd`. Use `⟨ν a, ⟨a, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ν (a * algebraMap R D ϖ) = _`. Rewrite using `[map_mul, ν.commutes, mul_comm]`. Introduce `v`.
-
-Take `⟨a, b, hb, hab⟩` from `hfrac v`. Conclude with `⟨μ a, ⟨_, hν a⟩, μ b, ⟨_, hν b⟩, hb, hab⟩`.
+A detailed English derivation is pending.
 -/
 theorem formallyUnramified_of_dvr_of_essFiniteType : ∀ (R T V : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [CommRing T] [Algebra R T] [Algebra.FormallyUnramified R T] [Algebra.EssFiniteType R T] [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Algebra R V] (μ : T →ₐ[R] V), (∀ r ∈ IsLocalRing.maximalIdeal R, algebraMap R V r ∈ IsLocalRing.maximalIdeal V) → Function.Injective (algebraMap R V) → (∀ v : V, ∃ a b : T, μ b ≠ 0 ∧ v * μ b = μ a) → Algebra.FormallyUnramified R V := by
   intro R T V _ _ _ _ _ _ _ _ _ _ _ μ hm hinj hfrac
@@ -107,31 +103,25 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `M W _ _ f _ U hU z hz V _ _ hV`. Take `⟨-, hfe, hess⟩` from `stalkMap_flat_formallyEtale_essFiniteType_of_etale_restrict M W f U hU z hz`. Use `set φ := functionFieldMap f with hφ`. Use `set R := V.comap φ`. Set `A` to `W.presheaf.stalk (f z)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B` to `M.presheaf.stalk z`. Set `g : A →+* B` to `(f.stalkMap z).hom`. Use `letI : Algebra A B := g.toAlgebra`. Use `haveI : Algebra.FormallyEtale A B := hfe`. Use `haveI : Algebra.EssFiniteType A B := hess`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : ∀ a : A, φ (algebraMap A W.functionField a) = algebraMap B M.functionField (g a)` using `fun a => functionFieldMap_algebraMap f z a`. Establish `hαR : ∀ a : A, algebraMap A W.functionField a ∈ R` using `fun a => by`. Express the relevant statement in the definitionally equal form `φ _ ∈ V`. Rewrite using `[hcomp]`. Conclude with `hV.1 _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Set `αR : A →+* R` to `(algebraMap A W.functionField).codRestrict R hαR`. Set `βV : B →+* V` to `(algebraMap B M.functionField).codRestrict V hV.1`. Use `letI algRV : Algebra R V := (φ.restrict R V fun _ hx => hx).toAlgebra`. Use `letI : Algebra A R := αR.toAlgebra`. Use `letI : Algebra A V := (βV.comp g).toAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `haveI : IsScalarTower A R V := IsScalarTower.of_algebraMap_eq fun a => Subtype.ext (hcomp a).symm`. Set `gV : B →ₐ[A] V` to `{ βV with commutes' := fun _ => rfl }`. Set `μ : TensorProduct A R B →ₐ[R] V` to `Algebra.TensorProduct.lift (Algebra.ofId R V) gV fun _ _ => Commute.all _ _`. Use `haveI : Algebra.FormallyUnramified R (TensorProduct A R B) := Algebra.FormallyUnramified.base_change R`. Use `haveI : Algebra.EssFiniteType R (TensorProduct A R B) := Algebra.EssFiniteType.baseChange A B R`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `formallyUnramified_of_dvr_of_essFiniteType R (TensorProduct A R B) V μ ?_ ?_ ?_` and prove the remaining obligations. Introduce `r hr`. Assume the negation of the conclusion as `hnu`. Establish `hu : IsUnit (algebraMap R V r)`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hnu ((IsLocalRing.mem_maximalIdeal _).2 h)`. Take `⟨w, hw⟩` from `isUnit_iff_exists_inv.1 hu`. Establish `hw' : φ (r : W.functionField) * (w : M.functionField) = 1` using `congrArg Subtype.val hw`. Establish `hr0 : (r : W.functionField) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hw'` using `[h0, map_zero, zero_mul]`. Conclude with `zero_ne_one hw'`. Establish `hinv : (r : W.functionField)⁻¹ ∈ R`. Express the relevant statement in the definitionally equal form `φ _ ∈ V`. Rewrite using `[map_inv₀, ← eq_inv_of_mul_eq_one_right hw']`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `w.2`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hr (isUnit_iff_exists_inv.2 ⟨⟨_, hinv⟩, Subtype.ext (mul_inv_cancel₀ hr0)⟩)`. Introduce `x y hxy`. Conclude with `Subtype.ext (φ.injective (congrArg Subtype.val hxy))`. Introduce `v`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := B) (v : M.functionField)`. Establish `hμ : ∀ c : B, ((μ (1 ⊗ₜ c) : V) : M.functionField) = algebraMap B M.functionField c`. Introduce `c`. Rewrite using `[Algebra.TensorProduct.lift_tmul, map_one, one_mul]`. Both sides reduce to the same expression.
-
-Use `⟨1 ⊗ₜ a, 1 ⊗ₜ b, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `nonZeroDivisors.ne_zero hb` to reduce the goal to its premises. Apply `IsFractionRing.injective B M.functionField` to reduce the goal to its premises. Rewrite using `[map_zero]`.
-
-Rewrite using `[← hμ, h0]`. Both sides reduce to the same expression. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subring.coe_mul, hμ, hμ]`. Rewrite using `[← hab, div_mul_cancel₀]`.
-
-Conclude with `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_dvr_formallyUnramified_of_etale : ∀ (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] (f : M ⟶ W) [IsDominant f] (U : M.Opens), Etale (U.ι ≫ f) → ∀ z ∈ U, ∀ (V : ValuationSubring M.functionField) [IsDiscreteValuationRing V] [IsDiscreteValuationRing (V.comap (functionFieldMap f))], DominatesStalk V z → letI := ((functionFieldMap f).restrict (V.comap (functionFieldMap f)) V fun _ hx => hx).toAlgebra; Algebra.FormallyUnramified (V.comap (functionFieldMap f)) V := by
   intro M W _ _ f _ U hU z hz V _ _ hV

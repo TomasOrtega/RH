@@ -11,7 +11,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions PI.Dv
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Establish `hc : IsIntegral ℤ (algebraMap (𝓞 K) K c)` using `c.2`. Establish `: IsIntegral ℤ ((starRingEnd K) (algebraMap (𝓞 K) K c))` using `hc.map (starRingEnd K).toIntAlgHom`. Conclude with `⟨⟨_, this⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 lemma star_mem_range (c : 𝓞 K) : star (algebraMap (𝓞 K) K c) ∈ Set.range (algebraMap (𝓞 K) K) := by
   have hc : IsIntegral ℤ (algebraMap (𝓞 K) K c) := c.2
@@ -58,7 +58,7 @@ def DegDualBound : Prop :=
       degL A (lamSub A e h U) ≤ ∑ᶠ w, lw K w * (γ w : ℝ)
 
 /- English proof (translation)
-Introduce `K _ _ _ _ _ A e n h hS hP hH hC _ U hU γ hγ`. Rewrite using `[h1 K A e n h hS hP hH hC U hU]`. Conclude with `h2 K A e n h hS hP hH hC U hU γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partB_of (h1 : DegDual) (h2 : DegDualBound) : PartB := by
   intro K _ _ _ _ _ A e n h hS hP hH hC _ U hU γ hγ

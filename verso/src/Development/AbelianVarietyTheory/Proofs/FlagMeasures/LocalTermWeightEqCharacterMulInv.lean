@@ -18,7 +18,7 @@ variable {E V : Type} [CommRing E] [AddCommGroup V] [Module E V] {r : ℕ}
 def lowSpan (E : Type) [CommRing E] [Module E V] (f : Fin (r + 1) → V) (b : ℕ) : Submodule E V := Submodule.span E (f '' {c | (c : ℕ) < b})
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono fun _ hc => lt_of_lt_of_le hc h)`.
+A detailed English derivation is pending.
 -/
 theorem lowSpan_mono (f : Fin (r + 1) → V) {b b' : ℕ} (h : b ≤ b') :
     lowSpan E f b ≤ lowSpan E f b' :=
@@ -27,11 +27,11 @@ theorem lowSpan_mono (f : Fin (r + 1) → V) {b b' : ℕ} (h : b ≤ b') :
 abbrev IsTriW (f : Fin (r + 1) → V) (g : V ≃ₗ[E] V) : Prop := ∀ b : Fin (r + 1), g (f b) - f b ∈ lowSpan E f b
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨c, hc, rfl⟩` from `hy`. Establish `h1 : f c ∈ lowSpan E f b` using `Submodule.subset_span ⟨c, hc, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : g (f c) - f c ∈ lowSpan E f b` using `lowSpan_mono f (le_of_lt hc) (hg c)`. Use `add_mem h2 h1` as an intermediate fact. Simplify using `using this`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_lowSpan {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : IsTriW f g) (b : ℕ) :
     ∀ x ∈ lowSpan E f b, g x ∈ lowSpan E f b := by
@@ -48,17 +48,17 @@ theorem map_lowSpan {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : IsTriW f g
   | smul a x _ hx => rw [map_smul]; exact Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-Introduce `b`. Proceed by induction on `b with`. Consider the case `zero`. Introduce `x hx`. Establish `h0 : lowSpan E f 0 = ⊥` using `by simp [lowSpan]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hx` using `[h0, Submodule.mem_bot]`. Conclude with `⟨0, zero_mem _, by simp [hx]⟩`. Consider the case `succ b ih`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem y hy`. Take `⟨c, hc, rfl⟩` from `hy`. Establish `hc' : (c : ℕ) < b ∨ (c : ℕ) = b`. Establish `: (c : ℕ) < b + 1` using `hc`. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Break down `hc' with hlt | heq` into its components or cases. Take `⟨w, hw, hgw⟩` from `ih (f c) (Submodule.subset_span ⟨c, hlt, rfl⟩)`. Conclude with `⟨w, lowSpan_mono f (Nat.le_succ b) hw, hgw⟩`. Take `⟨w, hw, hgw⟩` from `ih (g (f c) - f c) (by rw [← heq]; exact hg c)`. Use `⟨f c - w, sub_mem (Submodule.subset_span ⟨c, hc, rfl⟩) (lowSpan_mono f (Nat.le_succ b) hw), ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, hgw]`. Normalize the expressions using the abelian group laws. Consider the case `zero => exact ⟨0, zero_mem _, map_zero g⟩`. Consider the case `add x x' _ _ hx hx'`. Take `⟨y, hy, rfl⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy', rfl⟩` from `hx'`. Conclude with `⟨y + y', add_mem hy hy', map_add g y y'⟩`. Consider the case `smul a x _ hx`. Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `⟨a • y, Submodule.smul_mem _ a hy, map_smul g a y⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pre_lowSpan {f : Fin (r + 1) → V} {g : V ≃ₗ[E] V} (hg : IsTriW f g) :
     ∀ b : ℕ, ∀ x ∈ lowSpan E f b, ∃ y ∈ lowSpan E f b, g y = x := by
@@ -122,7 +122,7 @@ def triSub (f : Fin (r + 1) → V) : Subgroup (V ≃ₗ[E] V) where
 end Tri
 
 /- English proof (translation)
-Simplify using `[hf, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add_left' {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E] [Algebra F E]
     [TopologicalSpace E] (L : Loc.LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (x x' y : Fin n → E) :
@@ -130,7 +130,7 @@ theorem hf_add_left' {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F
   simp [hf, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[hf, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_smul_left' {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E] [Algebra F E]
     [TopologicalSpace E] (L : Loc.LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (a : E) (x y : Fin n → E) :
@@ -138,7 +138,7 @@ theorem hf_smul_left' {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace 
   simp [hf, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_zero_left' {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E] [Algebra F E]
     [TopologicalSpace E] (L : Loc.LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (y : Fin n → E) :
@@ -152,17 +152,17 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] {r : ℕ}
 
 /- English proof (translation)
-Introduce and unpack `g ⟨-, hF, hP⟩ b`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Establish `hz : Fr.f (Fin.last r) ∈ H.perp (H.X Fr.f)` using `by show ∀ x ∈ H.X Fr.f, H.h (Fr.f (Fin.last r)) x = 0`. Introduce `x hx`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : H.h x (Fr.f (Fin.last r)) = 0`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Conclude with `Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact H.h_zero_left _`. Consider the case `add x y _ _ hx hy => rw [H.h_add_left, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [H.h_smul_left, hx, mul_zero]`. Rewrite using `[H.h_herm x, h0, map_zero]`. Establish `h1` using `hP _ hz`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : H.X Fr.f ≤ lowSpan E Fr.f (Fin.last r : ℕ)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Submodule.subset_span ⟨a.castSucc, by simp, rfl⟩`. Conclude with `h2 h1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `cast a`. Establish `hv : Fr.f a.castSucc ∈ Fr.Fj (a.val + 1)` using `Submodule.subset_span ⟨a, by simp, rfl⟩`. Establish `h1` using `hF (a.val + 1) (by have := a.isLt; omega) _ hv`. Simplify using `only [Nat.add_sub_cancel] at h1`. Establish `h2 : Fr.Fj a.val ≤ lowSpan E Fr.f (a.castSucc : ℕ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a', ha', rfl⟩`. Conclude with `⟨a'.castSucc, by simpa using ha', rfl⟩`. Conclude with `h2 h1`.
+A detailed English derivation is pending.
 -/
 theorem nset_sub {H : Loc.HermSp M V} (Fr : LocNG.FrameD H r) :
     Fr.NSet ⊆ ((triSub (E := E) Fr.f : Subgroup (V ≃ₗ[E] V)) : Set (V ≃ₗ[E] V)) := by
@@ -198,7 +198,7 @@ theorem nset_sub {H : Loc.HermSp M V} (Fr : LocNG.FrameD H r) :
     exact h2 h1
 
 /- English proof (translation)
-Establish `hT : IsTriW Fr.f n` using `(Subgroup.closure_le (triSub (E := E) Fr.f)).mpr (nset_sub Fr) hn`. Establish `h1 : lowSpan E Fr.f b ≤ Submodule.span E (Set.range Fr.f)` using `Submodule.span_mono (Set.image_subset_range _ _)`. Use `add_mem (h1 (hT b)) (Submodule.subset_span ⟨b, rfl⟩ : Fr.f b ∈ Submodule.span E (Set.range Fr.f))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_span_of_mem_N {H : Loc.HermSp M V} (Fr : LocNG.FrameD H r) {n : V ≃ₗ[E] V} (hn : n ∈ Fr.N)
     (b : Fin (r + 1)) : n (Fr.f b) ∈ Submodule.span E (Set.range Fr.f) := by
@@ -209,11 +209,11 @@ theorem mem_span_of_mem_N {H : Loc.HermSp M V} (Fr : LocNG.FrameD H r) {n : V �
   simpa using this
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Rewrite using `[← hg a, hd a j]`. Proceed by induction on `a using Fin.lastCases with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `last`. Establish `h0 : H.h (Fr.f (Fin.last r)) (Fr.es j) = 0`. Rewrite using `[H.h_herm (Fr.es j) (Fr.f (Fin.last r)), Fr.h_sz j, map_zero]`. Rewrite using `[h0, if_neg (Fin.castSucc_lt_last j).ne']`. Consider the case `cast i`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Fr.h_es i j]`. Simplify using `[Fin.castSucc_inj]`. Consider the case `zero => rw [H.h_zero_left, map_zero, hf_zero_left']`. Consider the case `add x y _ _ hx hy => rw [H.h_add_left, map_add, hf_add_left', hx, hy]`. Consider the case `smul a x _ hx => rw [H.h_smul_left, map_smul, hf_smul_left', hx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem coef_eq {H : Loc.HermSp M V} (Fr : LocNG.FrameD H r) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E)
     (e : V ≃ₗ[E] (Fin n → E)) (g : Fin (r + 1) → Fin n → E) (gs : Fin r → Fin n → E)
@@ -239,15 +239,15 @@ theorem coef_eq {H : Loc.HermSp M V} (Fr : LocNG.FrameD H r) {n : ℕ} (Hm : Mat
 end Loc
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M V _ _ H r k P S c d t hT m m' hm hm'`. Take `⟨-, -, ⟨n, hn, hfn, -⟩, ⟨n', hn', hfn', -⟩, -⟩` from `hT`. Establish `hth : LocNG.theta M = S.th`. Unfold `LocNG.theta Frames.th`. Consider the cases of `hs : M.split with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data.
 
-Consider the case `none => simp [c.gg_none hs]`. Consider the case `some g`. Take `⟨h1, h2⟩` from `c.gg_some g hs`. Simplify using `[h1, h2]`. Establish `h1 : (∑ a : Fin r, H.h (t.f a.succ) (P.A.es a)) = ∑ j, S.h (m (S.f j.succ)) (S.es j)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hm]`. Use `coef_eq P.A S.Hm c.e S.f S.es c.f_eq (fun a j => S.dual a j) j _ ?_` and prove the remaining obligations. Rewrite using `[hfn]`. Conclude with `mem_span_of_mem_N P.A hn _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (∑ a : Fin r, H.h (t.f' a.succ) (P.B.es a)) = ∑ j, S.h (m' (S.f' j.succ)) (S.es' j)`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hm']`. Use `coef_eq P.B S.Hm c.e S.f' S.es' c.f'_eq (fun a j => S.dual' a j) j _ ?_` and prove the remaining obligations. Rewrite using `[hfn']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `mem_span_of_mem_N P.B hn' _`. Simplify using `only [LocNG.om, LocNG.FrameD.psiOf, LocNG.FrameD.coefSum, Frames.psi, Frames.psi', Frames.psiOf, Frames.coef, hth, h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem om_eq_psi_mul_inv : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Loc.Model F E) {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V) (r k : ℕ) (P : LocNG.FPair H r) (S : Frames M.L r k) (c : WCoord P S) (d : LocNG.Datum P) (t : Loc.Term V M r), LocNG.IsTermOver P d t → ∀ m m' : S.GLV, (∀ b, c.e (t.f b) = m (S.f b)) → (∀ b, c.e (t.f' b) = m' (S.f' b)) → LocNG.om P t = S.psi m * (S.psi' m')⁻¹ := by
   intro F _ _ _ E _ _ _ _ M V _ _ H r k P S c d t hT m m' hm hm'

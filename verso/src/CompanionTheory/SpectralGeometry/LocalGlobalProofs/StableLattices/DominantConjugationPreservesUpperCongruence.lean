@@ -6,15 +6,15 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.CartGL
 
 /- English proof (translation)
-Introduce `L _ _ n p hp a ha r u hlow hr i j`. Establish `hinv : (((dPow p a)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = diagonal fun i => ((p ^ (-a i) : Lˣ) : L)` using `rfl`. Establish `hent : ((dPow p a * u * (dPow p a)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = ((p ^ (a i - a j) : Lˣ) : L) * (u : Matrix (Fin n) (Fin n) L) i j`. Rewrite using `[Units.val_mul, Units.val_mul, dPow_val, hinv, Matrix.mul_diagonal, Matrix.diagonal_mul, sub_eq_add_neg, _root_.zpow_add, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Matrix.sub_apply, hent]`. Establish `hri` using `hr i j`. Rewrite `hri` using `[Matrix.sub_apply]`. Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Establish `hne : i ≠ j` using `ne_of_lt hij`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `hri`, the goal using `[Matrix.one_apply_ne hne]`. Rewrite `hri`, the goal using `[sub_zero]`. Establish `hexp : 0 ≤ a i - a j` using `sub_nonneg.mpr (ha hij.le)`. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le hexp`. Establish `hpow : ‖((p ^ (a i - a j) : Lˣ) : L)‖ ≤ 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hm, zpow_natCast, Units.val_pow_eq_pow_val, norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) hp.le`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Substitute `hij` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hri`. Rewrite using `[hlow i j hij, mul_zero]`. Rewrite `hri` using `[hlow i j hij]`. Conclude with `hri`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_upper_contract : ∀ (L : Type) [NontriviallyNormedField L] [IsUltrametricDist L] (n : ℕ) (p : Lˣ), ‖(p : L)‖ < 1 → ∀ (a : Fin n → ℤ), Antitone a → ∀ (r : ℝ) (u : GL (Fin n) L), (∀ i j, j < i → (u : Matrix (Fin n) (Fin n) L) i j = 0) → (∀ i j, ‖((u : Matrix (Fin n) (Fin n) L) - 1) i j‖ ≤ r) → ∀ i j, ‖(((GlobalTheory.CompanionTheory.CartGL.dPow p a * u * (GlobalTheory.CompanionTheory.CartGL.dPow p a)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) - 1) i j‖ ≤ r := by
   intro L _ _ n p hp a ha r u hlow hr i j

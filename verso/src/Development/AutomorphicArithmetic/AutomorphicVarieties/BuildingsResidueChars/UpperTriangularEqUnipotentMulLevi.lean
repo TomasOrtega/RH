@@ -5,7 +5,7 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Introduce `h` and use `by have := congrArg Fin.val h simp at this omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem cn_ne {r s : ℕ} (i : Fin r) (j : Fin s) : Fin.castAdd s i ≠ Fin.natAdd r j := fun h => by
   have := congrArg Fin.val h
@@ -13,13 +13,13 @@ private theorem cn_ne {r s : ℕ} (i : Fin r) (j : Fin s) : Fin.castAdd s i ≠ 
   omega
 
 /- English proof (translation)
-Rewrite using `[coe_emb]`. Use extensionality with `i j`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left a`. Proceed by induction on `j using Fin.addCases with`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `left c`. Establish `h0 : ext0 (e1 r s) ((m : Matrix (Fin r) (Fin r) R) - 1) (Fin.castAdd s a) (Fin.castAdd s c) = ((m : Matrix (Fin r) (Fin r) R) - 1) a c` using `matrixExtendByZero_apply (e1 r s) _ a c`. Simplify using `only [Matrix.add_apply, h0, Matrix.reindex_apply, Matrix.submatrix_apply, finSumFinEquiv_symm_apply_castAdd, Matrix.fromBlocks_apply₁₁, Matrix.sub_apply, Matrix.one_apply, Fin.castAdd_inj]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `right d`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Use `matrixExtendByZero_apply_of_outside_col (e1 r s) ((m : Matrix (Fin r) (Fin r) R) - 1) (Fin.castAdd s a) (j := Fin.natAdd r d) (fun k h => cn_ne k d (by simpa [e1] using h.symm))` as an intermediate fact. Simplify using `[Matrix.reindex_apply, this, Matrix.one_apply, cn_ne]`. Consider the case `right b`. Use `extendByZero_apply_eq_zero_of_row_not_mem (e1 r s) ((m : Matrix (Fin r) (Fin r) R) - 1) (i := Fin.natAdd r b) (fun k h => cn_ne k b (by simpa [e1] using h.symm)) j` as an intermediate fact. Proceed by induction on `j using Fin.addCases with`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `left c => simp [Matrix.reindex_apply, this, Matrix.one_apply, (cn_ne c b).symm]`. Consider the case `right d => simp [Matrix.reindex_apply, this, Matrix.one_apply]`.
+Treat this case separately. Treat this case separately.
 -/
 private theorem block_embedding_first_val {R : Type} [CommRing R] {r s : ℕ} (m : GL (Fin r) R) :
     (emb (e1 r s) m).val = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks m.val 0 0 1) := by
@@ -48,13 +48,13 @@ private theorem block_embedding_first_val {R : Type} [CommRing R] {r s : ℕ} (m
     | right d => simp [Matrix.reindex_apply, this, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[coe_emb]`. Use extensionality with `i j`. Proceed by induction on `i using Fin.addCases with`. Consider the case `right a`. Proceed by induction on `j using Fin.addCases with`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `right c`. Establish `h0 : ext0 (e2 r s) ((m : Matrix (Fin s) (Fin s) R) - 1) (Fin.natAdd r a) (Fin.natAdd r c) = ((m : Matrix (Fin s) (Fin s) R) - 1) a c` using `matrixExtendByZero_apply (e2 r s) _ a c`. Simplify using `only [Matrix.add_apply, h0, Matrix.reindex_apply, Matrix.submatrix_apply, finSumFinEquiv_symm_apply_natAdd, Matrix.fromBlocks_apply₂₂, Matrix.sub_apply, Matrix.one_apply, Fin.natAdd_inj]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `left d`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Use `matrixExtendByZero_apply_of_outside_col (e2 r s) ((m : Matrix (Fin s) (Fin s) R) - 1) (Fin.natAdd r a) (j := Fin.castAdd s d) (fun k h => cn_ne d k (by simpa [e2] using h))` as an intermediate fact. Simplify using `[Matrix.reindex_apply, this, Matrix.one_apply, (cn_ne d a).symm]`. Consider the case `left b`. Use `extendByZero_apply_eq_zero_of_row_not_mem (e2 r s) ((m : Matrix (Fin s) (Fin s) R) - 1) (i := Fin.castAdd s b) (fun k h => cn_ne b k (by simpa [e2] using h)) j` as an intermediate fact. Proceed by induction on `j using Fin.addCases with`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `right c => simp [Matrix.reindex_apply, this, Matrix.one_apply, cn_ne b c]`. Consider the case `left d => simp [Matrix.reindex_apply, this, Matrix.one_apply]`.
+Treat this case separately. Treat this case separately.
 -/
 private theorem block_embedding_second_val {R : Type} [CommRing R] {r s : ℕ} (m : GL (Fin s) R) :
     (emb (e2 r s) m).val = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks 1 0 0 m.val) := by
@@ -83,13 +83,13 @@ private theorem block_embedding_second_val {R : Type} [CommRing R] {r s : ℕ} (
     | left d => simp [Matrix.reindex_apply, this, Matrix.one_apply]
 
 /- English proof (translation)
-Use `⟨fun p => Y ⟨p.1.1, p.2.1⟩ ⟨p.1.2 - r, by have := p.1.2.isLt; have := p.2.2; omega⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [unipMatrix, Matrix.add_apply, blockEntry_apply]`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left a`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `j using Fin.addCases with`. Consider the case `left c`. Establish `: ¬ (r ≤ ((Fin.castAdd s c : Fin (r + s)) : ℕ))` using `by simp`. Simplify using `[this, Matrix.reindex_apply, Matrix.one_apply]`. Consider the case `right d`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `h : ((Fin.castAdd s a : Fin (r + s)) : ℕ) < r ∧ r ≤ ((Fin.natAdd r d : Fin (r + s)) : ℕ)`. Simplify using the standard rewrite rules. Rewrite using `[dif_pos h]`. Simplify using `[Matrix.reindex_apply, Matrix.one_apply, cn_ne]`. Consider the case `right b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `: ¬ (((Fin.natAdd r b : Fin (r + s)) : ℕ) < r)` using `by simp`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left c => simp [this, Matrix.reindex_apply, Matrix.one_apply, (cn_ne c b).symm]`. Consider the case `right d => simp [this, Matrix.reindex_apply, Matrix.one_apply]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem unip_val {R : Type} [CommRing R] {r s : ℕ} (Y : Matrix (Fin r) (Fin s) R) :
     ∃ X : UPos (r + s) r → R,
@@ -115,19 +115,17 @@ private theorem unip_val {R : Type} [CommRing R] {r s : ℕ} (Y : Matrix (Fin r)
     | right d => simp [this, Matrix.reindex_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `R _ r s b hb`. Use `set M : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) R := Matrix.reindex finSumFinEquiv.symm finSumFinEquiv.symm b.val with hMdef`. Establish `hC : M.toBlocks₂₁ = 0`. Use extensionality with `i j`. Simplify using `only [hMdef, Matrix.toBlocks₂₁, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, Matrix.of_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Matrix.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hb` to reduce the goal to its premises. Simplify using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Establish `hM : M = Matrix.fromBlocks M.toBlocks₁₁ M.toBlocks₁₂ 0 M.toBlocks₂₂`. Rewrite using `[← hC]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Matrix.fromBlocks_toBlocks M).symm`. Establish `hbM : b.val = Matrix.reindex finSumFinEquiv finSumFinEquiv M`. Simplify using `[hMdef]`. Establish `hdet : IsUnit (Matrix.det M)`. Rewrite using `[hMdef, Matrix.det_reindex_self]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Matrix.GeneralLinearGroup.det b).isUnit`. Rewrite `hdet` using `[hM, Matrix.det_fromBlocks_zero₂₁]`. Establish `hA : IsUnit M.toBlocks₁₁.det` using `isUnit_of_mul_isUnit_left hdet`. Establish `hD : IsUnit M.toBlocks₂₂.det` using `isUnit_of_mul_isUnit_right hdet`. Take `⟨X, hX⟩` from `unip_val (M.toBlocks₁₂ * M.toBlocks₂₂⁻¹)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨X, Matrix.nonsingInvUnit _ hA, Matrix.nonsingInvUnit _ hD, ?_⟩` and prove the remaining obligations. Establish `hmul : ∀ P Q : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) R, Matrix.reindex finSumFinEquiv finSumFinEquiv P * Matrix.reindex finSumFinEquiv finSumFinEquiv Q = Matrix.reindex finSumFinEquiv finSumFinEquiv (P * Q)`. Introduce `P Q`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`. Apply `Units.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, coe_unipGL, hX, blk, Units.val_mul, block_embedding_first_val, block_embedding_second_val, hbM, ← mul_assoc, hmul, hmul]`. Use `congr 1`. Use `conv_lhs => rw [hM]`. Rewrite using `[Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Establish `h1 : (Matrix.nonsingInvUnit _ hA : Matrix (Fin r) (Fin r) R) = M.toBlocks₁₁` using `rfl`.
-
-Establish `h2 : (Matrix.nonsingInvUnit _ hD : Matrix (Fin s) (Fin s) R) = M.toBlocks₂₂` using `rfl`. Rewrite using `[h1, h2]`. Simplify using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hD]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.upperTriangular_eq_unipotent_mul_levi :
     ∀ (R : Type) [CommRing R] (r s : ℕ) (b : GL (Fin (r + s)) R), b.val.IsUpperTriangular → ∃ (X : UPos (r + s) r → R) (m₁ : GL (Fin r) R) (m₂ : GL (Fin s) R), b = unipGL X * blk m₁ m₂ := by

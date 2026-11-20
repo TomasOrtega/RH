@@ -29,7 +29,7 @@ def deFr {G : ι → Matrix (Fin n) (Fin n) ℂ} (y : Frames G) (τ : ι) : ℂ 
 def stdFr : Frames (fun _ : ι => (1 : Matrix (Fin n) (Fin n) ℂ)) := ⟨fun _ => 1, fun _ => by simp⟩
 
 /- English proof (translation)
-Introduce `τ` and use `Or.inl (by simp [stdFr])`.
+Fix the arbitrary inputs and assume any hypotheses. Prove the first alternative.
 -/
 theorem stdFr_isON : (stdFr (ι := ι) (n := n)).IsON := fun τ => Or.inl (by simp [stdFr])
 
@@ -39,9 +39,9 @@ def mulU {G : ι → Matrix (Fin n) (Fin n) ℂ} (o : Frames G) (u : ι → Matr
     rw [det_mul]; exact (o.2 τ).mul (Matrix.isUnit_det_of_left_inverse (hu τ))⟩
 
 /- English proof (translation)
-Introduce `τ`. Establish `e : (o.1 τ * u τ)ᴴ * G τ * (o.1 τ * u τ) = (u τ)ᴴ * ((o.1 τ)ᴴ * G τ * o.1 τ) * u τ`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `show (o.1 τ * u τ)ᴴ * G τ * (o.1 τ * u τ) = 1 ∨ (o.1 τ * u τ)ᴴ * G τ * (o.1 τ * u τ) = -1`. Break down `ho τ with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Rewrite using `[e, h, Matrix.mul_one, hu τ]`. Use `right`. Rewrite using `[e, h, Matrix.mul_neg, Matrix.mul_one, Matrix.neg_mul, hu τ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulU_isON {G : ι → Matrix (Fin n) (Fin n) ℂ} (o : Frames G) (ho : o.IsON) (u : ι → Matrix (Fin n) (Fin n) ℂ)
     (hu : ∀ τ, (u τ)ᴴ * u τ = 1) : (mulU o u hu).IsON := by
@@ -59,12 +59,12 @@ Both sides reduce to the same expression.
 theorem mapS_apply {σ : Type} (s : K →+* ℂ) (P : MvPolynomial σ K) : mapS s P = MvPolynomial.map s P := rfl
 
 /- English proof (translation)
-Introduce `P Q h` and use `MvPolynomial.map_injective s s.injective h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mapS_injective {σ : Type} (s : K →+* ℂ) : Function.Injective (mapS (σ := σ) s) := fun P Q h => MvPolynomial.map_injective s s.injective h
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [evFr, LinearMap.coe_comp, Function.comp_apply, mapS, fnOf, LinearMap.coe_mk, AddHom.coe_mk, Pi.one_apply, Matrix.one_mul, MvPolynomial.eval_map]; rfl)`. Consider the case `(simp only [evFr, LinearMap.coe_comp, Function.comp_apply, mapS, fnOf, LinearMap.coe_mk, AddHom.coe_mk, Pi.one_apply, Matrix.one_mul, MvPolynomial.eval_map])`. Consider the case `simp [evFr, fnOf, mapS, MvPolynomial.eval_map]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem evFr_apply (G : ι → Matrix (Fin n) (Fin n) ℂ) (sh : ι → ℤ) (s : K →+* ℂ)
     (P : MvPolynomial (ι × Fin n × Fin n) K) (y : Frames G) :
@@ -84,14 +84,14 @@ theorem evFr_eq_fnOf (G : ι → Matrix (Fin n) (Fin n) ℂ) (sh : ι → ℤ) (
     (P : MvPolynomial (ι × Fin n × Fin n) K) : evFr G sh s P = fnOf G sh 1 (MvPolynomial.map s P) := rfl
 
 /- English proof (translation)
-The claim follows from `y.2 τ`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_fr {G : ι → Matrix (Fin n) (Fin n) ℂ} (y : Frames G) (τ : ι) : IsUnit (y.1 τ).det := y.2 τ
 
 /- English proof (translation)
-Unfold `deFr`. Establish `h1 : ‖((y.1 τ)ᴴ * G τ * y.1 τ).det‖ = 1`. Apply the tactic sequence `rcases hy τ with h | h <;> rw [h] <;> simp [det_neg]`. Rewrite `h1` using `[det_mul, det_mul, det_conjTranspose, norm_mul, norm_mul, norm_star, hG, mul_one]`. Establish `h2 : ‖(y.1 τ).det‖ ^ 2 = 1` using `by rw [sq]; exact h1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp h2`.
+A detailed English derivation is pending.
 -/
 theorem norm_deFr {G : ι → Matrix (Fin n) (Fin n) ℂ} (y : Frames G) (hy : y.IsON) (τ : ι) (hG : ‖(G τ).det‖ = 1) :
     ‖deFr y τ‖ = 1 := by
@@ -109,11 +109,11 @@ section Dense
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Establish `hH` using `Matrix.isHermitian_conjTranspose_mul_self X`. Establish `hinj : Function.Injective X.mulVec` using `by first`. Consider the case `exact Matrix.mulVec_injective_iff_isUnit.mpr ((Matrix.isUnit_iff_isUnit_det X).mpr hX)`. Consider the case `exact (Matrix.mulVec_injective_iff_isUnit).2 ((Matrix.isUnit_iff_isUnit_det X).2 hX)`. Establish `hP : (Xᴴ * X).PosDef` using `Matrix.PosDef.conjTranspose_mul_self X hinj`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `⟨(hH.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ), hH.eigenvalues, ?_, ?_, fun i => hP.eigenvalues_pos i, ?_⟩` and prove the remaining obligations. Establish `h1` using `Matrix.mem_unitaryGroup_iff'.mp hH.eigenvectorUnitary.2`. Rewrite `h1` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Establish `h1` using `Matrix.mem_unitaryGroup_iff.mp hH.eigenvectorUnitary.2`. Rewrite `h1` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `conv_lhs => rw [hH.spectral_theorem]`. Rewrite using `[Unitary.conjStarAlgAut_apply, Matrix.star_eq_conjTranspose]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_spectral (X : Matrix (Fin n) (Fin n) ℂ) (hX : IsUnit X.det) :
     ∃ (V : Matrix (Fin n) (Fin n) ℂ) (l : Fin n → ℝ), Vᴴ * V = 1 ∧ V * Vᴴ = 1 ∧ (∀ i, 0 < l i) ∧
@@ -135,17 +135,15 @@ theorem exists_spectral (X : Matrix (Fin n) (Fin n) ℂ) (hX : IsUnit X.det) :
     rfl
 
 /- English proof (translation)
-Take `⟨V, l, hV1, hV2, hl, hXX⟩` from `exists_spectral X hX`. Establish `hdd : ∀ i, ((Real.sqrt (l i) : ℝ) : ℂ) ≠ 0` using `fun i => by`. Conclude with `(Real.sqrt_pos.mpr (hl i)).ne'` after adjusting the coercions. Establish `hdi : diagonal (fun i => (((Real.sqrt (l i) : ℝ) : ℂ))⁻¹) * diagonal (fun i => ((Real.sqrt (l i) : ℝ) : ℂ)) = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `inv_mul_cancel₀ (hdd i)`. Establish `hL : Vᴴ * (V * diagonal (fun i => ((l i : ℝ) : ℂ)) * Vᴴ) * V = diagonal (fun i => ((l i : ℝ) : ℂ))`. Rewrite using `[← Matrix.mul_assoc Vᴴ, ← Matrix.mul_assoc Vᴴ, hV1, Matrix.one_mul, Matrix.mul_assoc, hV1, Matrix.mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `⟨X * V * diagonal (fun i => (((Real.sqrt (l i) : ℝ) : ℂ))⁻¹), Vᴴ, fun i => ((Real.sqrt (l i) : ℝ) : ℂ), ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[hXX, hL, diagonal_conjTranspose, diagonal_mul_diagonal, diagonal_mul_diagonal, ← diagonal_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `hs : ((Real.sqrt (l i) : ℝ) : ℂ) * ((Real.sqrt (l i) : ℝ) : ℂ) = ((l i : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (hl i).le]`. Establish `hsi` using `hdd i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [Pi.star_apply, star_inv₀, Complex.star_def, Complex.conj_ofReal]`. Rewrite using `[← hs]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[conjTranspose_conjTranspose]`. Conclude with `hV2`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hdi, Matrix.mul_one, Matrix.mul_assoc, hV2, Matrix.mul_one]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_diag (X : Matrix (Fin n) (Fin n) ℂ) (hX : IsUnit X.det) :
     ∃ (u v : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → ℂ), uᴴ * u = 1 ∧ vᴴ * v = 1 ∧ X = u * diagonal d * v := by
@@ -185,7 +183,7 @@ theorem exists_unitary_diag (X : Matrix (Fin n) (Fin n) ℂ) (hX : IsUnit X.det)
       _ = _ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp => simp only [map_mul, hp, MvPolynomial.aeval_X, MvPolynomial.eval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eval_aeval_poly {σ ρ : Type} (f : σ → MvPolynomial ρ ℂ) (d : ρ → ℂ) (P : MvPolynomial σ ℂ) :
     eval d (aeval f P) = eval (fun x => eval d (f x)) P := by
@@ -195,9 +193,9 @@ theorem eval_aeval_poly {σ ρ : Type} (f : σ → MvPolynomial ρ ℂ) (d : ρ 
   | mul_X p i hp => simp only [map_mul, hp, MvPolynomial.aeval_X, MvPolynomial.eval_X]
 
 /- English proof (translation)
-Establish `hinj : Set.InjOn (fun t : ℝ => (⟨t, Real.sqrt (1 - t ^ 2)⟩ : ℂ)) (Set.Icc (-1) 1)`. Introduce `a _ b _ h`. Simplify using `using congrArg Complex.re h`. Use `((Set.Icc_infinite (by norm_num : (-1 : ℝ) < 1)).image hinj).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ⟨ht1, ht2⟩, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hs : Real.sqrt (1 - t ^ 2) ^ 2 = 1 - t ^ 2` using `Real.sq_sqrt (by nlinarith)`. Simplify using `only [Set.mem_setOf_eq]`. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> nlinarith [hs]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem circle_infinite : {z : ℂ | star z * z = 1}.Infinite := by
   have hinj : Set.InjOn (fun t : ℝ => (⟨t, Real.sqrt (1 - t ^ 2)⟩ : ℂ)) (Set.Icc (-1) 1) := by
@@ -210,9 +208,9 @@ theorem circle_infinite : {z : ℂ | star z * z = 1}.Infinite := by
   apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> nlinarith [hs]
 
 /- English proof (translation)
-Establish `h1 : star d * d = 1` using `funext fun c => hd c`. Establish `hD : (diagonal d)ᴴ * diagonal d = 1`. Rewrite using `[diagonal_conjTranspose, diagonal_mul_diagonal]`. Rewrite using `[show (fun i => star d i * d i) = (1 : Fin n → ℂ) from h1]`. Conclude with `diagonal_one`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = 1 := by rw [hu, Matrix.mul_one, hD, Matrix.mul_one, hv]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitary_udv (u v : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → ℂ) (hu : uᴴ * u = 1) (hv : vᴴ * v = 1)
     (hd : ∀ c, star (d c) * d c = 1) : (u * diagonal d * v)ᴴ * (u * diagonal d * v) = 1 := by
@@ -227,7 +225,7 @@ theorem unitary_udv (u v : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → ℂ) (hu :
     _ = 1 := by rw [hu, Matrix.mul_one, hD, Matrix.mul_one, hv]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem entry_udv (A v : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → ℂ) (a b : Fin n) :
     (A * diagonal d * v) a b = ∑ c, A a c * v c b * d c := by
@@ -237,13 +235,13 @@ theorem entry_udv (A v : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → ℂ) (a b : 
   ring
 
 /- English proof (translation)
-Take `⟨Q, hQ⟩ : ∃ Q : MvPolynomial (ι × Fin n) ℂ, Q = aeval (fun x : ι × Fin n × Fin n => ∑ c, C (A x.1 x.2.1 c * v x.1 c x.2.2) * X (x.1, c)) P` from `⟨_, rfl⟩`. Establish `hev : ∀ d' : ι → Fin n → ℂ, eval (fun p : ι × Fin n => d' p.1 p.2) Q = eval (fun x : ι × Fin n × Fin n => (A x.1 * diagonal (d' x.1) * v x.1) x.2.1 x.2.2) P`. Introduce `d'`. Rewrite using `[hQ, eval_aeval_poly]`. Use `congrArg (fun g => MvPolynomial.eval g P) (funext fun x => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[entry_udv]`. Simplify using the standard rewrite rules. Establish `hQ0 : Q = 0`. Apply `MvPolynomial.funext_set (fun _ => {z : ℂ | star z * z = 1}) (fun _ => circle_infinite)` to reduce the goal to its premises. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_zero]`. Establish `hx' : x = fun p : ι × Fin n => (fun τ c => x (τ, c)) p.1 p.2` using `funext fun p => rfl`. Rewrite using `[hx']`. Establish `hx2 : ∀ τ c, star (x (τ, c)) * x (τ, c) = 1` using `fun τ c => Set.mem_univ_pi.mp hx (τ, c)`. Conclude with `(hev (fun τ c => x (τ, c))).trans (h (fun τ c => x (τ, c)) hx2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hev d`. Rewrite `h2` using `[hQ0, map_zero]`. Conclude with `h2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_udv_eq_zero (A v : ι → Matrix (Fin n) (Fin n) ℂ) (P : MvPolynomial (ι × Fin n × Fin n) ℂ)
     (h : ∀ d : ι → Fin n → ℂ, (∀ τ c, star (d τ c) * d τ c = 1) →
@@ -275,7 +273,7 @@ def detAll (ι : Type) [Fintype ι] (n : ℕ) : MvPolynomial (ι × Fin n × Fin
   ∏ τ, (Matrix.of fun a b => (X (τ, a, b) : MvPolynomial (ι × Fin n × Fin n) ℂ)).det
 
 /- English proof (translation)
-Simplify using `only [detAll, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -289,7 +287,7 @@ theorem eval_detAll (y : ι → Matrix (Fin n) (Fin n) ℂ) :
   simp
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `eval_detAll (ι := ι) (n := n) (fun _ => 1)`. Rewrite `h1` using `[h, map_zero]`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem detAll_ne_zero : detAll ι n ≠ 0 := by
   intro h
@@ -298,11 +296,11 @@ theorem detAll_ne_zero : detAll ι n ≠ 0 := by
   simp at h1
 
 /- English proof (translation)
-Establish `h2 : P * detAll ι n = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Take `⟨y, hy⟩ : ∃ y : ι → Matrix (Fin n) (Fin n) ℂ, (fun z : ι × Fin n × Fin n => y z.1 z.2.1 z.2.2) = x` from `⟨fun τ a b => x (τ, a, b), rfl⟩`. Substitute `hy` using the available equality.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Rewrite using `[map_mul, map_zero, eval_detAll]`. Distinguish the cases in `hy : ∀ τ, IsUnit (y τ).det`. Rewrite using `[h y hy, zero_mul]`. Use `push_neg at hy`. Take `⟨τ, hτ⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ τ) (by simpa [isUnit_iff_ne_zero] using hτ), mul_zero]`. Conclude with `(mul_eq_zero.mp h2).resolve_right detAll_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_isUnit (P : MvPolynomial (ι × Fin n × Fin n) ℂ)
     (h : ∀ y : ι → Matrix (Fin n) (Fin n) ℂ, (∀ τ, IsUnit (y τ).det) →
@@ -322,13 +320,13 @@ theorem eq_zero_of_forall_isUnit (P : MvPolynomial (ι × Fin n × Fin n) ℂ)
   exact (mul_eq_zero.mp h2).resolve_right detAll_ne_zero
 
 /- English proof (translation)
-Apply `eq_zero_of_forall_isUnit` to reduce the goal to its premises. Introduce `y hy`. Establish `hy' : ∀ τ, IsUnit ((N τ)⁻¹ * y τ).det` using `fun τ => by`. Rewrite using `[det_mul]`. Conclude with `(isUnit_nonsing_inv_det _ (hN τ)).mul (hy τ)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose u v d hu hv hudv using fun τ => exists_unitary_diag _ (hy' τ)`. Establish `key` using `eval_udv_eq_zero (fun τ => N τ * u τ) v P (fun d' hd' => by`. Establish `h1` using `h (fun τ => u τ * diagonal (d' τ) * v τ) (fun τ => unitary_udv _ _ _ (hu τ) (hv τ) (hd' τ))`. Simplify `h1) d` using `[Matrix.mul_assoc]`. Establish `hyN : ∀ τ, y τ = N τ * u τ * diagonal (d τ) * v τ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `τ`. Establish `h1 : N τ * ((N τ)⁻¹ * y τ) = y τ`. Rewrite using `[← Matrix.mul_assoc, mul_nonsing_inv _ (hN τ), Matrix.one_mul]`. Rewrite using `[← h1, hudv τ]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hf : (fun x : ι × Fin n × Fin n => y x.1 x.2.1 x.2.2) = fun x => ((fun τ => N τ * u τ) x.1 * diagonal (d x.1) * v x.1) x.2.1 x.2.2`. Use function extensionality and compare the values at `x`. Rewrite using `[hyN x.1]`. Rewrite using `[hf]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_unitary (N : ι → Matrix (Fin n) (Fin n) ℂ) (hN : ∀ τ, IsUnit (N τ).det)
     (P : MvPolynomial (ι × Fin n × Fin n) ℂ)
@@ -360,13 +358,11 @@ section Inj
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `P hP`. Apply `eq_zero_of_forall_isUnit` to reduce the goal to its premises. Introduce `z hz`. Establish `hy : ∀ τ, IsUnit ((M τ)⁻¹ * z τ).det` using `fun τ => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[det_mul]`. Conclude with `(isUnit_nonsing_inv_det _ (hM τ)).mul (hz τ)`. Establish `h1` using `congrFun hP ⟨fun τ => (M τ)⁻¹ * z τ, hy⟩`. Establish `hMz : ∀ τ, M τ * ((M τ)⁻¹ * z τ) = z τ` using `fun τ => by`. Rewrite using `[← Matrix.mul_assoc, mul_nonsing_inv _ (hM τ), Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, Pi.zero_apply, hMz] at h1`. Break down `mul_eq_zero.mp h1 with h2 | h2` into its components or cases. It suffices to derive a contradiction. Rewrite `h2` using `[Finset.prod_eq_zero_iff]`. Take `⟨τ, -, hτ⟩` from `h2`.
-
-Conclude with `(zpow_ne_zero _ (hz τ).ne_zero) hτ`. Conclude with `h2`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fnOf_injective (G : ι → Matrix (Fin n) (Fin n) ℂ) (sh : ι → ℤ) (M : ι → Matrix (Fin n) (Fin n) ℂ)
     (hM : ∀ τ, IsUnit (M τ).det) (o : Frames G) : Function.Injective (fnOf G sh M) := by
@@ -388,7 +384,7 @@ theorem fnOf_injective (G : ι → Matrix (Fin n) (Fin n) ℂ) (sh : ι → ℤ)
   · exact h2
 
 /- English proof (translation)
-Introduce `P Q h`. Conclude with `mapS_injective s (fnOf_injective G sh 1 (fun τ => by simp) o h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem evFr_injective (G : ι → Matrix (Fin n) (Fin n) ℂ) (sh : ι → ℤ) (s : K →+* ℂ) (o : Frames G) :
     Function.Injective (evFr (K := K) G sh s) := by
@@ -396,7 +392,7 @@ theorem evFr_injective (G : ι → Matrix (Fin n) (Fin n) ℂ) (sh : ι → ℤ)
   exact mapS_injective s (fnOf_injective G sh 1 (fun τ => by simp) o h)
 
 /- English proof (translation)
-The claim follows from `evFr_injective _ sh s stdFr`.
+A detailed English derivation is pending.
 -/
 theorem evFr_injective_std (sh : ι → ℤ) (s : K →+* ℂ) :
     Function.Injective (evFr (K := K) (fun _ : ι => (1 : Matrix (Fin n) (Fin n) ℂ)) sh s) := evFr_injective _ sh s stdFr
@@ -420,7 +416,7 @@ theorem evV_apply (emb : ι → E →+* K) (J : Matrix (Fin n) (Fin n) E) (lam :
     (F : VV K lam) : evV emb J lam s F = fnOf _ (shiftOf lam) 1 (MvPolynomial.map s F.1) := rfl
 
 /- English proof (translation)
-Conclude with `fun F F' h => Subtype.ext (evFr_injective _ _ s o h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem evV_injective (emb : ι → E →+* K) (J : Matrix (Fin n) (Fin n) E) (lam : ι → DomWeight n) (s : K →+* ℂ)
     (o : Frames (gramC J (embAt s emb))) : Function.Injective (evV emb J lam s) := by
@@ -430,12 +426,12 @@ def stdFrC (emb : ι → E →+* ℂ) : Frames (gramC (1 : Matrix (Fin n) (Fin n
   ⟨fun _ => 1, fun τ => by simp⟩
 
 /- English proof (translation)
-Introduce `τ` and use `Or.inl (by simp [stdFrC, gramC])`.
+Fix the arbitrary inputs and assume any hypotheses. Prove the first alternative.
 -/
 theorem stdFrC_isON (emb : ι → E →+* ℂ) : (stdFrC (n := n) emb).IsON := fun τ => Or.inl (by simp [stdFrC, gramC])
 
 /- English proof (translation)
-Introduce `i j hij`. Simplify using `only [DomWeight.natW]`. Conclude with `Int.toNat_le_toNat (by linarith [lam.anti hij])`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem natW_anti (lam : DomWeight n) : Antitone lam.natW := by
   intro i j hij
@@ -476,7 +472,7 @@ def polOf (G : ι → Matrix (Fin n) (Fin n) ℂ) (sh : ι → ℤ) (o : Frames 
       (fun τ => by rw [det_nonsing_inv]; exact (isUnit_det_fr o τ).ringInverse) o))).choose
 
 /- English proof (translation)
-Conclude with `LinearMap.congr_fun (LinearMap.exists_leftInverse_of_injective (fnOf G sh fun τ => (o.1 τ)⁻¹) (LinearMap.ker_eq_bot.mpr (fnOf_injective G sh _ (fun τ => by rw [det_nonsing_inv]; exact (isUnit_det_fr o τ).ringInverse) o))).choose_spec P`.
+A detailed English derivation is pending.
 -/
 theorem polOf_fnOf (G : ι → Matrix (Fin n) (Fin n) ℂ) (sh : ι → ℤ) (o : Frames G) (P : MvPolynomial (ι × Fin n × Fin n) ℂ) :
     polOf G sh o (fnOf G sh (fun τ => (o.1 τ)⁻¹) P) = P := by

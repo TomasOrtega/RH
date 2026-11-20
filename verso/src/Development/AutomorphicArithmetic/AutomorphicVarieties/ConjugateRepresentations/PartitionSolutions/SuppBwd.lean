@@ -7,7 +7,7 @@ open UpperTheory.V.Cj.A
 open Matrix NumberField GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.Lit UpperTheory.V.Lit.Dr UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Establish `hs : Continuous (sInf E : Cinf E → Ad E)` using `(GlobalTheory.CuspRep.continuous_infEq E).prodMk continuous_const`. Conclude with `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map hs))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_inf (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) :
     Continuous (infGL E a) := by
@@ -15,7 +15,7 @@ private theorem cont_inf (E : Type) [Field E] [NumberField E] [IsTotallyComplex 
   exact Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map hs))
 
 /- English proof (translation)
-Establish `hs : Continuous (sFin E : Af E → Ad E)` using `continuous_const.prodMk continuous_id`. Conclude with `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map hs))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_fin (E : Type) [Field E] [NumberField E] (a : ℕ) :
     Continuous (finGL E a) := by
@@ -23,24 +23,22 @@ private theorem cont_fin (E : Type) [Field E] [NumberField E] (a : ℕ) :
   exact Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map hs))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Quotient.out (y : G ⧸ U))⁻¹ * y, QuotientGroup.eq.1 (QuotientGroup.out_eq' _), mul_inv_cancel_left _ _⟩`.
+Supply the required witnesses or components.
 -/
 private theorem mem_out {G : Type} [Group G] (U : Subgroup G) (y : G) :
     y ∈ (fun u => Quotient.out (y : G ⧸ U) * u) '' (U : Set G) :=
   ⟨(Quotient.out (y : G ⧸ U))⁻¹ * y, QuotientGroup.eq.1 (QuotientGroup.out_eq' _), mul_inv_cancel_left _ _⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ a ho U hU Ξ q α w h ⟨T, K, hT, hK, hKY, hw⟩`. Take `⟨-, hq2, hq3, -⟩` from `qhtFacts E a`. Establish `hC` using `(sandCpt E a).2 K hKY hK`. Establish `hD : IsCompact (⋃ s ∈ T, (fun u => Quotient.out s * u) '' (U : Set (GL (Fin a) (Af E))))` using `hT.isCompact_biUnion fun s _ => hU.image (continuous_const.mul continuous_id)`. Take `⟨B, hB⟩` from `hq3 _ ((hC.prod hD).image (((cont_inf E a).comp continuous_fst).mul ((cont_fin E a).comp continuous_snd)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨B * qht (1 : GA E a), fun X g hg => ?_⟩` and prove the remaining obligations. Establish `h0 : w (GeneralLinearGroup.map (pFin E) g : GL (Fin a) (Af E) ⧸ U) (sand (GeneralLinearGroup.map (pInf E) g) (hOne E a)) = 0`. Use `hw _ _ ⟨_, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `⟨γ, r, hr, hσ, hρ⟩`. Take `⟨t, ht⟩` from `(splitFacts E a).2 r hr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `((splitFacts E a).1 t).1`. Use `absurd (hB 1 (ratGL E a γ.1 * GlobalTheory.UnitaryBC.splitCentre E a t * g) ?_) ?_` and prove the remaining obligations. Use `⟨(GeneralLinearGroup.map (pInf E) (ratGL E a γ.1 * GlobalTheory.UnitaryBC.splitCentre E a t * g), GeneralLinearGroup.map (pFin E) (ratGL E a γ.1 * GlobalTheory.UnitaryBC.splitCentre E a t * g)), ⟨?_, ?_⟩, infGL_mul_finGL _⟩` and prove the remaining obligations. Rewrite `hρ` using `[geo_ρ, ← map_smul, ← ht]`. Simplify using `only [Set.mem_setOf_eq, map_mul, ContinuousLinearMap.mul_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hρ`. Simplify using `only [map_mul, h1, mul_one]`. Use `Set.mem_biUnion hσ ?_` and prove the remaining obligations. Establish `e : (geo ho U Ξ).σ γ (GeneralLinearGroup.map (pFin E) g : GL (Fin a) (Af E) ⧸ U) = ((GeneralLinearGroup.map (pFin E) (ratGL E a γ.1) * GeneralLinearGroup.map (pFin E) g : GL (Fin a) (Af E)) : GL (Fin a) (Af E) ⧸ U)` using `rfl`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_out U _`. Rewrite using `[one_mul, hq2]`. Conclude with `not_le.2 hg`. Establish `h2` using `h (GeneralLinearGroup.map (pInf E) g) (GeneralLinearGroup.map (pFin E) g) X`. Rewrite `h2` using `[h0, infGL_mul_finGL]`.
-
-Establish `h3` using `congrArg (fun y => Ξ.mat (GeneralLinearGroup.map (pInf E) g)⁻¹ *ᵥ y) h2`. Simplify using `only [Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec, ContinuousAlternatingMap.coe_zero, Pi.zero_apply, Matrix.mulVec_zero] at h3`. Conclude with `h3.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.A.suppBwd :
     SuppBwd := by

@@ -14,9 +14,9 @@ open PositivityTheory.RgTw (Mat)
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Establish `h1 : star (NormedSpace.exp ((s : ℂ) • X)) = NormedSpace.exp (-((s : ℂ) • X))`. Rewrite using `[Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, conjTranspose_smul, hX]`. Simplify using the standard rewrite rules. Rewrite using `[h1, Matrix.exp_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_exp _))`.
+A detailed English derivation is pending.
 -/
 theorem exp_smul_mem (X : Mat n) (hX : Xᴴ = -X) (s : ℝ) :
     NormedSpace.exp ((s : ℂ) • X) ∈ Matrix.unitaryGroup (Fin n) ℂ := by
@@ -36,11 +36,11 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
   {σ : Matrix.unitaryGroup (Fin n) ℂ →* (V →ₗ[ℂ] V)} {Kf : Fin n → Fin n → Module.End ℂ V}
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `h1` using `h.gl1 a b c d`. Establish `h2` using `h.gl2 a b c d`. Establish `c1` using `h.comm a b c d`. Establish `c2` using `h.comm c d a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : kF E1 E2 a b * kF E1 E2 c d - kF E1 E2 c d * kF E1 E2 a b = (E1 a b * E1 c d - E1 c d * E1 a b) + (E2 a b * E2 c d - E2 c d * E2 a b)`. Simplify using `only [kF, add_mul, mul_add, c1, ← c2]`. Normalize the expressions using the abelian group laws. Rewrite using `[key, h1, h2]`. Simplify using `only [kF]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> abel`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glRel_kF {E1 E2 : Fin n → Fin n → Module.End ℂ V} (h : IsPair E1 E2) : Formalism.REAL.GlRel (kF E1 E2) := by
   intro a b c d

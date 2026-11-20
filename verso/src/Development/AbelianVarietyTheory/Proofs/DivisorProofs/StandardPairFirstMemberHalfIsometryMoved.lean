@@ -25,7 +25,7 @@ namespace GlobalTheory.TriMove.StdFstMove
 variable {D : D7}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Substitute `h'` using the available equality. Use extensionality with `i j`. Simplify using `[rdi, rdx, Matrix.mul_apply, Matrix.one_apply]`.
+Substitute using the available equality. Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem rdi_mul_rdx {K : Type} [CommRing K] {m n m' n' : ℕ} (h : m = n) (h' : m' = n') (M : Matrix (Fin m) (Fin m') K) :
     HMul.hMul (HMul.hMul (rdi (K := K) h) M) (rdx (K := K) h') = M.submatrix (finCongr h).symm (finCongr h').symm := by
@@ -34,14 +34,14 @@ private theorem rdi_mul_rdx {K : Type} [CommRing K] {m n m' n' : ℕ} (h : m = n
   simp [rdi, rdx, Matrix.mul_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Substitute `ha` using the available equality. Substitute `hb` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 private theorem isIntM_re {a a' b b' : ℕ} (ha : a = a') (hb : b = b') (M : Matrix (Fin b) (Fin a) (Formalism.IndefR.Datum.EAf D)) :
     Formalism.IndefR.Datum.IsIntM (D := D) (M.submatrix (finCongr hb).symm (finCongr ha).symm) ↔ Formalism.IndefR.Datum.IsIntM (D := D) M := by
   subst ha; subst hb; simp
 
 /- English proof (translation)
-Substitute `ha` using the available equality. Substitute `hb` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 private theorem inId_re (I : Ideal (𝓞 D.host.E)) {a a' b b' : ℕ} (ha : a = a') (hb : b = b') (M : Matrix (Fin b) (Fin a) (Formalism.IndefR.Datum.EAf D)) :
     (∀ i j, a' ≤ i.1 → GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (M.submatrix (finCongr hb).symm (finCongr ha).symm i j)) ↔
@@ -49,7 +49,7 @@ private theorem inId_re (I : Ideal (𝓞 D.host.E)) {a a' b b' : ℕ} (ha : a = 
   subst ha; subst hb; simp
 
 /- English proof (translation)
-Substitute `ha` using the available equality. Substitute `hb` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 private theorem unitChar_re (ν : (AE D)ˣ →* Circle) (e : AE D) {a a' b b' : ℕ} (ha : a = a') (hb : b = b')
     (M : Matrix (Fin b) (Fin a) (Formalism.IndefR.Datum.EAf D)) :
@@ -58,7 +58,7 @@ private theorem unitChar_re (ν : (AE D)ˣ →* Circle) (e : AE D) {a a' b b' : 
   subst ha; subst hb; simp
 
 /- English proof (translation)
-Establish `hx : e • x = x` using `by ext i j; exact H i j`. Establish `: e • (M * x * N) = M * x * N` using `by rw [← Matrix.smul_mul, ← Matrix.mul_smul, hx]`. Conclude with `congrFun (congrFun this i) j`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fixed_two {R : Type} [CommRing R] {p q r s : ℕ} (e : R) (M : Matrix (Fin p) (Fin q) R) (N : Matrix (Fin r) (Fin s) R)
     (x : Matrix (Fin q) (Fin r) R) (H : ∀ i j, e * x i j = x i j) (i : Fin p) (j : Fin s) :
@@ -70,9 +70,9 @@ private theorem fixed_two {R : Type} [CommRing R] {p q r s : ℕ} (e : R) (M : M
 variable {S S' T T' : HSp D}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hx : x = HMul.hMul (HMul.hMul IT.aQ (homMap IS IT x)) IS.aP` using `((homMap IS IT).symm_apply_apply x).symm`. Introduce `i j`. Rewrite using `[hx]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fixed_two e _ _ _ h i j`. Introduce `h i j`. Conclude with `fixed_two e _ _ _ h i j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem isHalf_homMap (IS : GlobalTheory.Mem.Isom.IsoMat S S') (IT : GlobalTheory.Mem.Isom.IsoMat T T') (e : AE D) (x : WO S T) :
     Formalism.IndefR.Datum.IsHalf e (homMap IS IT x) ↔ Formalism.IndefR.Datum.IsHalf e x := by
@@ -86,21 +86,21 @@ private theorem isHalf_homMap (IS : GlobalTheory.Mem.Isom.IsoMat S S') (IT : Glo
     exact fixed_two e _ _ _ h i j
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem map_aP (I : GlobalTheory.Mem.Isom.IsoMat S S') : I.aP.map (Formalism.IndefR.Datum.toEAf D) = fP I := by
   ext i j; rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem map_aQ (I : GlobalTheory.Mem.Isom.IsoMat S S') : I.aQ.map (Formalism.IndefR.Datum.toEAf D) = fQ I := by
   ext i j; rfl
 
 /- English proof (translation)
-Unfold `frMapO`. Rewrite using `[homMap_apply]`. Use `show HMul.hMul (HMul.hMul (HMul.hMul (HMul.hMul (rdi (K := Lev.EAf D) IT.rank_eq) (βT⁻¹).val) (fQ IT)) ((HMul.hMul (HMul.hMul IT.aP x) IS.aQ).map (Formalism.IndefR.Datum.toEAf D))) (HMul.hMul (HMul.hMul (fP IS) βS.val) (rdx (K := Lev.EAf D) IS.rank_eq)) = _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, map_aP, map_aQ]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [fQ_fP, fQ_fP, Matrix.mul_one, Matrix.mul_one, ← Matrix.mul_assoc (rdi _), ← Matrix.mul_assoc (rdi _)]`.
+A detailed English derivation is pending.
 -/
 private theorem frMapO_homMap (IS : GlobalTheory.Mem.Isom.IsoMat S S') (IT : GlobalTheory.Mem.Isom.IsoMat T T')
     (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (x : WO S T) :
@@ -118,9 +118,9 @@ private theorem frMapO_homMap (IS : GlobalTheory.Mem.Isom.IsoMat S S') (IT : Glo
     _ = _ := by rw [fQ_fP, fQ_fP, Matrix.mul_one, Matrix.mul_one, ← Matrix.mul_assoc (rdi _), ← Matrix.mul_assoc (rdi _)]
 
 /- English proof (translation)
-Introduce `D S S' T T' IS IT ν e I βS βT`. Use function extensionality and compare the values at `w`. Take `⟨x, rfl⟩` from `(homMap IS IT).surjective w`. Unfold `trH`. Rewrite using `[AddEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst`. Rewrite using `[frMapO_homMap, rdi_mul_rdx]`. Conclude with `if_congr (and_congr (isHalf_homMap IS IT e x) (and_congr (isIntM_re _ _ _) (inId_re I _ _ _))) (unitChar_re ν e _ _ _) rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stdFst_move : ∀ {D : D7} {S S' T T' : HSp D} (IS : GlobalTheory.Mem.Isom.IsoMat S S') (IT : GlobalTheory.Mem.Isom.IsoMat T T') (ν : (AE D)ˣ →* Circle) (e : AE D) (I : Ideal (𝓞 D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)),
   GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst ν e I S' T' (GlobalTheory.TriMove.betaMove IS βS) (GlobalTheory.TriMove.betaMove IT βT) = GlobalTheory.TriMove.trH IS IT (GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst ν e I S T βS βT) := by
@@ -139,7 +139,7 @@ end GlobalTheory.TriMove.StdFstMove
 end
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.TriMove.StdFstMove.stdFst_move`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.standardPairFirstMemberHalf_isometry_moved : ∀ {D : D7} {S S' T T' : HSp D} (IS : GlobalTheory.Mem.Isom.IsoMat S S') (IT : GlobalTheory.Mem.Isom.IsoMat T T') (ν : (AE D)ˣ →* Circle) (e : AE D) (I : Ideal (𝓞 D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)),
   GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst ν e I S' T' (GlobalTheory.TriMove.betaMove IS βS) (GlobalTheory.TriMove.betaMove IT βT) = GlobalTheory.TriMove.trH IS IT (GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst ν e I S T βS βT) := @GlobalTheory.TriMove.StdFstMove.stdFst_move

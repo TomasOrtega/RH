@@ -5,9 +5,9 @@ open Topology
 namespace GlobalTheory.CompanionTheory.Bump
 
 /- English proof (translation)
-Introduce `X _ _ _ x N hN`. Establish `hx : x ∈ interior N` using `mem_interior_iff_mem_nhds.mpr hN`. Take `⟨f, hf1, hf0, hfc, hfI⟩` from `exists_continuous_one_zero_of_isCompact (s := {x}) (t := (interior N)ᶜ) isCompact_singleton isOpen_interior.isClosed_compl (Set.disjoint_singleton_left.mpr (fun h => h hx))`. Use `⟨f, f.continuous, hfc, fun y => (hfI y).1, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : f x = 1` using `hf1 (Set.mem_singleton x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `one_ne_zero`. Introduce `y hy`. Assume the negation of the conclusion as `hyN`. Conclude with `hy (hf0 (fun hi => hyN (interior_subset hi)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_nonneg_bump :
     ∀ {X : Type} [TopologicalSpace X] [LocallyCompactSpace X] [T2Space X] (x : X) (N : Set X),

@@ -8,9 +8,9 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Unfold `sqN`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, rfl, hm⟩`. Conclude with `⟨⟨m, rfl⟩, Nat.Coprime.mul_left hm hm⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨m, rfl⟩, hm⟩`. Conclude with `⟨m, rfl, Nat.Coprime.coprime_mul_right hm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem sqN_eq (N n : ℕ) : sqN N n = if IsSquare n ∧ n.Coprime N then 1 else 0 := by
   unfold sqN
@@ -22,9 +22,9 @@ private theorem sqN_eq (N n : ℕ) : sqN N n = if IsSquare n ∧ n.Coprime N the
     exact ⟨m, rfl, Nat.Coprime.coprime_mul_right hm⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hs`. Establish `hu : IsUnit (gcd m n)`. Rewrite using `[gcd_eq_nat_gcd, h.gcd_eq_one]`. Conclude with `isUnit_one`. Take `⟨d, hd⟩` from `exists_eq_pow_of_mul_eq_pow (c := c) (k := 2) hu (by rw [hc, sq])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨d, by rw [hd, sq]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem isSquare_left {m n : ℕ} (h : m.Coprime n) (hs : IsSquare (m * n)) : IsSquare m := by
   obtain ⟨c, hc⟩ := hs
@@ -34,11 +34,11 @@ private theorem isSquare_left {m n : ℕ} (h : m.Coprime n) (hs : IsSquare (m * 
   exact ⟨d, by rw [hd, sq]⟩
 
 /- English proof (translation)
-Establish `e : (IsSquare (m * n) ∧ (m * n).Coprime N) ↔ ((IsSquare m ∧ m.Coprime N) ∧ (IsSquare n ∧ n.Coprime N))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨isSquare_left h h1, Nat.Coprime.coprime_mul_right h2⟩, ⟨isSquare_left h.symm (by rwa [mul_comm]), Nat.Coprime.coprime_mul_left h2⟩⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h3, h4⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h1.mul h3, Nat.Coprime.mul_left h2 h4⟩`. Rewrite using `[sqN_eq, sqN_eq, sqN_eq]`. Distinguish the cases in `h1 : IsSquare m ∧ m.Coprime N`. Distinguish the cases in `h2 : IsSquare n ∧ n.Coprime N`. Rewrite using `[if_pos h1, if_pos h2, if_pos (e.2 ⟨h1, h2⟩), mul_one]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h2, if_neg (fun x => h2 (e.1 x).2), mul_zero]`. Rewrite using `[if_neg h1, if_neg (fun x => h1 (e.1 x).1), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sqN_mul (N : ℕ) {m n : ℕ} (h : m.Coprime n) :
     sqN N (m * n) = sqN N m * sqN N n := by
@@ -58,15 +58,15 @@ private theorem sqN_mul (N : ℕ) {m n : ℕ} (h : m.Coprime n) :
   · rw [if_neg h1, if_neg (fun x => h1 (e.1 x).1), zero_mul]
 
 /- English proof (translation)
-Rewrite using `[sqN_eq, if_pos ⟨⟨1, rfl⟩, Nat.coprime_one_left N⟩]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sqN_one (N : ℕ) : sqN N 1 = 1 := by
   rw [sqN_eq, if_pos ⟨⟨1, rfl⟩, Nat.coprime_one_left N⟩]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩`. Establish `hd : m ∣ p ^ j` using `⟨m, hm⟩`. Take `⟨i, -, rfl⟩` from `(Nat.dvd_prime_pow hp).1 hd`. Rewrite `hm` using `[← pow_add]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨i, Nat.pow_right_injective hp.two_le hm⟩`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨p ^ i, pow_add p i i⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem isSquare_pow_iff {p : ℕ} (hp : p.Prime) (j : ℕ) : IsSquare (p ^ j) ↔ Even j := by
   constructor
@@ -79,7 +79,7 @@ private theorem isSquare_pow_iff {p : ℕ} (hp : p.Prime) (j : ℕ) : IsSquare (
     exact ⟨p ^ i, pow_add p i i⟩
 
 /- English proof (translation)
-Rewrite using `[LSeries.convolution_def, PowerSeries.coeff_mul]`. Simplify using `only [PowerSeries.coeff_mk]`. Rewrite using `[Nat.sum_divisorsAntidiagonal (fun x y => f x * g y), Nat.sum_divisors_prime_pow hp, Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun i j => f (p ^ i) * g (p ^ j))]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Nat.pow_div (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)) hp.pos]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem conv_pow (f g : ℕ → ℂ) {p : ℕ} (hp : p.Prime) (k : ℕ) :
     LSeries.convolution f g (p ^ k) =
@@ -92,13 +92,13 @@ private theorem conv_pow (f g : ℕ → ℂ) {p : ℕ} (hp : p.Prime) (k : ℕ) 
   rw [Nat.pow_div (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)) hp.pos]
 
 /- English proof (translation)
-Establish `hc : p.Coprime N` using `(Nat.Prime.coprime_iff_not_dvd hp).2 h`. Establish `hs : ∀ j, sqN N (p ^ j) = if Even j then 1 else 0`. Introduce `j`. Rewrite using `[sqN_eq]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[isSquare_pow_iff hp]`. Conclude with `⟨fun x => x.1, fun x => ⟨x, Nat.Coprime.pow_left j hc⟩⟩`. Use extensionality with `k`. Rewrite using `[sub_mul, one_mul, map_sub, PowerSeries.coeff_X_pow_mul', PowerSeries.coeff_one]`. Simplify using `only [PowerSeries.coeff_mk, hs]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `k with _ | _ | k` into its components or cases. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `e : Even (k + 1 + 1) ↔ Even k`. Rewrite using `[Nat.even_add_one, Nat.even_add_one, not_not]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : k + 1 + 1 - 2 = k` using `by omega`. Rewrite using `[if_pos (show 2 ≤ k + 1 + 1 by omega), e2, if_neg (show ¬ (k + 1 + 1 = 0) by omega)]`. Simplify using `only [e, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sq_series (N : ℕ) {p : ℕ} (hp : p.Prime) (h : ¬ p ∣ N) :
     (1 - PowerSeries.X ^ 2) * (PowerSeries.mk fun i => sqN N (p ^ i)) = (1 : PowerSeries ℂ) := by
@@ -122,9 +122,9 @@ private theorem sq_series (N : ℕ) {p : ℕ} (hp : p.Prime) (h : ¬ p ∣ N) :
     simp only [e, sub_self]
 
 /- English proof (translation)
-Establish `key : ∀ n, toArithmeticFunction f n = if n = 0 then 0 else f n` using `fun _ => rfl`. Use `⟨by rw [key, if_neg one_ne_zero, h1], ?_⟩` and prove the remaining obligations. Introduce `m n hmn`. Rewrite using `[key, key, key]`. Distinguish the cases in `hm : m = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hm]`. Distinguish the cases in `hn : n = 0`. Simplify using `[hn]`. Rewrite using `[if_neg hm, if_neg hn, if_neg (mul_ne_zero hm hn), h m n (Nat.pos_of_ne_zero hm) (Nat.pos_of_ne_zero hn) hmn]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isMul_of (f : ℕ → ℂ) (h1 : f 1 = 1)
     (h : ∀ m n, 0 < m → 0 < n → m.Coprime n → f (m * n) = f m * f n) :
@@ -141,15 +141,15 @@ private theorem isMul_of (f : ℕ → ℂ) (h1 : f 1 = 1)
     h m n (Nat.pos_of_ne_zero hm) (Nat.pos_of_ne_zero hn) hmn]
 
 /- English proof (translation)
-Introduce `N a b _ ha1 ham hap hb1 hbm hb0 hps n hn`. Establish `hA` using `isMul_of a ha1 (fun m n _ _ h => ham m n h)`. Establish `hB` using `isMul_of b hb1 hbm`. Establish `hS` using `isMul_of (sqN N) (sqN_one N) (fun m n _ _ h => sqN_mul N h)`. Establish `hE : toArithmeticFunction a = toArithmeticFunction b * toArithmeticFunction (sqN N)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ArithmeticFunction.IsMultiplicative.eq_iff_eq_on_prime_powers _ hA _ (hB.mul hS)]`. Introduce `p i hp`. Establish `e1 : toArithmeticFunction a (p ^ i) = a (p ^ i)` using `if_neg (pow_ne_zero i hp.ne_zero)`. Rewrite using `[e1]`. Express the relevant statement in the definitionally equal form `a (p ^ i) = LSeries.convolution b (sqN N) (p ^ i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[conv_pow _ _ hp]`. Distinguish the cases in `hd : p ∣ N`. Establish `hnc : ∀ j, ¬ (p ^ (j + 1)).Coprime N` using `fun j hc => (Nat.Prime.coprime_iff_not_dvd hp).1 (Nat.Coprime.coprime_dvd_left (dvd_pow_self p (Nat.succ_ne_zero j)) hc) hd`. Establish `eb : (PowerSeries.mk fun i => b (p ^ i)) = 1`. Use extensionality with `j`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Break down `j with _ | j` into its components or cases. Simplify using `[hb1]`. Rewrite using `[PowerSeries.coeff_mk, hb0 _ (hnc j), PowerSeries.coeff_one, if_neg (Nat.succ_ne_zero j)]`. Rewrite using `[eb, one_mul, PowerSeries.coeff_mk]`. Break down `i with _ | i` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[pow_zero, ha1, sqN_one]`. Rewrite using `[hap p i hp hd, sqN_eq, if_neg (fun x => hnc i x.2)]`. Rewrite using `[← hps p hp hd, mul_assoc, sq_series N hp hd, mul_one, PowerSeries.coeff_mk]`. Establish `e1 : toArithmeticFunction a n = a n` using `if_neg hn`. Rewrite using `[← e1, hE]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
